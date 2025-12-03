@@ -1,10 +1,10 @@
 @interface WKWebView
-+ (BOOL)_willUpgradeToHTTPS:(id)a3;
++ (BOOL)_willUpgradeToHTTPS:(id)s;
 + (BOOL)handlesURLScheme:(NSString *)urlScheme;
 + (NSString)_stringForFind;
-+ (void)_permissionChanged:(id)a3 forOrigin:(id)a4;
-+ (void)_setApplicationBundleIdentifier:(id)a3;
-+ (void)_setStringForFind:(id)a3;
++ (void)_permissionChanged:(id)changed forOrigin:(id)origin;
++ (void)_setApplicationBundleIdentifier:(id)identifier;
++ (void)_setStringForFind:(id)find;
 - ($115C4C562B26FF47E01F9F4EA65B5887)presentingApplicationAuditToken;
 - (BOOL)_allMediaPresentationsClosed;
 - (BOOL)_allowAnimationControls;
@@ -16,47 +16,47 @@
 - (BOOL)_contentViewIsFirstResponder;
 - (BOOL)_hasServiceWorkerBackgroundActivityForTesting;
 - (BOOL)_hasServiceWorkerForegroundActivityForTesting;
-- (BOOL)_hasVisibleColorExtensionView:(unsigned __int8)a3;
+- (BOOL)_hasVisibleColorExtensionView:(unsigned __int8)view;
 - (BOOL)_isBackground;
 - (BOOL)_isDisplayingPDF;
 - (BOOL)_isDisplayingStandaloneImageDocument;
 - (BOOL)_isDisplayingStandaloneMediaDocument;
 - (BOOL)_isEditable;
 - (BOOL)_isInFullscreen;
-- (BOOL)_isNavigationSwipeGestureRecognizer:(id)a3;
+- (BOOL)_isNavigationSwipeGestureRecognizer:(id)recognizer;
 - (BOOL)_isValid;
 - (BOOL)_isWindowResizingEnabled;
 - (BOOL)_mayAutomaticallyShowVideoPictureInPicture;
-- (BOOL)_mayContainEditableElementsInRect:(CGRect)a3;
+- (BOOL)_mayContainEditableElementsInRect:(CGRect)rect;
 - (BOOL)_negotiatedLegacyTLS;
-- (BOOL)_restoreScrollAndZoomStateForTransaction:(const void *)a3;
-- (BOOL)_scrollToRect:(FloatRect)a3 origin:(FloatPoint)a4 minimumScrollDistance:(float)a5;
-- (BOOL)_scrollViewIsRubberBanding:(id)a3;
+- (BOOL)_restoreScrollAndZoomStateForTransaction:(const void *)transaction;
+- (BOOL)_scrollToRect:(FloatRect)rect origin:(FloatPoint)origin minimumScrollDistance:(float)distance;
+- (BOOL)_scrollViewIsRubberBanding:(id)banding;
 - (BOOL)_scrollViewIsRubberBandingForRefreshControl;
 - (BOOL)_selectionRectIsFullyVisibleAndNonEmpty;
 - (BOOL)_shouldHideTopScrollPocket;
-- (BOOL)_shouldUpdateKeyboardWithInfo:(id)a3;
+- (BOOL)_shouldUpdateKeyboardWithInfo:(id)info;
 - (BOOL)_tryClose;
 - (BOOL)_useSystemAppearance;
 - (BOOL)_webProcessIsResponsive;
 - (BOOL)_wirelessVideoPlaybackDisabled;
-- (BOOL)_zoomToRect:(FloatRect)a3 withOrigin:(FloatPoint)a4 fitEntireRect:(BOOL)a5 minimumScale:(double)a6 maximumScale:(double)a7 minimumScrollDistance:(float)a8;
+- (BOOL)_zoomToRect:(FloatRect)rect withOrigin:(FloatPoint)origin fitEntireRect:(BOOL)entireRect minimumScale:(double)scale maximumScale:(double)maximumScale minimumScrollDistance:(float)distance;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canGoBack;
 - (BOOL)canGoForward;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)hasOnlySecureContent;
 - (BOOL)isLoading;
 - (BOOL)resignFirstResponder;
 - (BOOL)supportsTextReplacement;
 - (CALayer)_layerForFindOverlay;
 - (CGFloat)pageZoom;
-- (CGPoint)_contentOffsetAdjustedForObscuredInset:(CGPoint)a3;
-- (CGPoint)_convertPointFromContentsToView:(CGPoint)a3;
-- (CGPoint)_convertPointFromViewToContents:(CGPoint)a3;
+- (CGPoint)_contentOffsetAdjustedForObscuredInset:(CGPoint)inset;
+- (CGPoint)_convertPointFromContentsToView:(CGPoint)view;
+- (CGPoint)_convertPointFromViewToContents:(CGPoint)contents;
 - (CGPoint)_initialContentOffsetForScrollView;
-- (CGRect)_contentBoundsExtendedForRubberbandingWithScale:(double)a3;
+- (CGRect)_contentBoundsExtendedForRubberbandingWithScale:(double)scale;
 - (CGRect)_contentRectForUserInteraction;
 - (CGRect)_contentVisibleRect;
 - (CGRect)_dragCaretRect;
@@ -64,16 +64,16 @@
 - (CGRect)_tapHighlightViewRect;
 - (CGRect)_uiTextCaretRect;
 - (CGRect)_visibleContentRect;
-- (CGRect)_visibleRectInEnclosingView:(id)a3;
+- (CGRect)_visibleRectInEnclosingView:(id)view;
 - (CGSize)_fixedLayoutSize;
 - (CGSize)_maximumUnobscuredSizeOverride;
 - (CGSize)_minimumLayoutSizeOverride;
 - (CGSize)_minimumUnobscuredSizeOverride;
 - (CGSize)_viewportSizeForCSSViewportUnits;
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5;
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size;
 - (Class)_intelligenceBaseClass;
 - (FloatRect)visibleRectInViewCoordinates;
-- (FloatSize)activeViewLayoutSize:(const CGRect *)a3;
+- (FloatSize)activeViewLayoutSize:(const CGRect *)size;
 - (NSArray)_certificateChain;
 - (NSArray)_corsDisablingPatterns;
 - (NSArray)_scrollPerformanceData;
@@ -96,7 +96,7 @@
 - (NSURL)_mainFrameURL;
 - (NSURL)_resourceDirectoryURL;
 - (OpaqueWKPage)_pageForTesting;
-- (OptionSet<WebKit::ViewStabilityFlag>)_viewStabilityState:(id)a3;
+- (OptionSet<WebKit::ViewStabilityFlag>)_viewStabilityState:(id)state;
 - (RectEdges<float>)_obscuredInsetsForFixedColorExtension;
 - (RefPtr<WebKit::ViewSnapshot,)_takeViewSnapshot;
 - (RefPtr<WebKit::WebPageProxy,)_protectedPage;
@@ -112,7 +112,7 @@
 - (UIEdgeInsets)_obscuredInsets;
 - (UIEdgeInsets)_scrollViewSystemContentInset;
 - (UIEdgeInsets)_unobscuredSafeAreaInsets;
-- (UIEdgeInsets)currentlyVisibleContentInsetsWithScale:(double)a3 obscuredInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)currentlyVisibleContentInsetsWithScale:(double)scale obscuredInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)maximumViewportInset;
 - (UIEdgeInsets)minimumViewportInset;
 - (UIEventAttribution)_uiEventAttribution;
@@ -137,7 +137,7 @@
 - (WKNavigation)reload;
 - (WKNavigation)reloadFromOrigin;
 - (WKWebView)initWithCoder:(NSCoder *)coder;
-- (WKWebView)initWithFrame:(CGRect)a3;
+- (WKWebView)initWithFrame:(CGRect)frame;
 - (WKWebView)initWithFrame:(CGRect)frame configuration:(WKWebViewConfiguration *)configuration;
 - (WKWebViewConfiguration)configuration;
 - (WKWebViewContentProviderRegistry)_contentProviderRegistry;
@@ -150,108 +150,108 @@
 - (_WKResourceLoadDelegate)_resourceLoadDelegate;
 - (_WKSessionState)_sessionState;
 - (_WKWebViewPrintProvider)_printProvider;
-- (atomic_uchar)intelligenceTextEffectCoordinator:(WebCore:(uint64_t *)a2 :DestinationColorSpace *)a1 contentPreviewForRange:completion:;
+- (atomic_uchar)intelligenceTextEffectCoordinator:(WebCore:(uint64_t *)coordinator :DestinationColorSpace *)self contentPreviewForRange:completion:;
 - (double)_contentZoomScale;
 - (double)_overrideDeviceScaleFactor;
 - (double)_pageScale;
-- (double)_targetContentZoomScaleForRect:(const FloatRect *)a3 currentScale:(double)a4 fitEntireRect:(BOOL)a5 minimumScale:(double)a6 maximumScale:(double)a7;
+- (double)_targetContentZoomScaleForRect:(const FloatRect *)rect currentScale:(double)scale fitEntireRect:(BOOL)entireRect minimumScale:(double)minimumScale maximumScale:(double)maximumScale;
 - (double)estimatedProgress;
-- (float)_adjustScrollRectToAvoidHighlightOverlay:(FloatRect)a3;
+- (float)_adjustScrollRectToAvoidHighlightOverlay:(FloatRect)overlay;
 - (id).cxx_construct;
 - (id)UIDelegate;
-- (id)_animationForFindOverlay:(BOOL)a3;
-- (id)_attachmentForIdentifier:(id)a3;
-- (id)_colorExtensionViewForTesting:(unint64_t)a3;
+- (id)_animationForFindOverlay:(BOOL)overlay;
+- (id)_attachmentForIdentifier:(id)identifier;
+- (id)_colorExtensionViewForTesting:(unint64_t)testing;
 - (id)_contentSizeCategory;
-- (id)_contentsOfUserInterfaceItem:(id)a3;
+- (id)_contentsOfUserInterfaceItem:(id)item;
 - (id)_currentContentView;
-- (id)_insertAttachmentWithFileWrapper:(id)a3 contentType:(id)a4 completion:(id)a5;
-- (id)_insertAttachmentWithFileWrapper:(id)a3 contentType:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)_insertAttachmentWithFilename:(id)a3 contentType:(id)a4 data:(id)a5 options:(id)a6 completion:(id)a7;
+- (id)_insertAttachmentWithFileWrapper:(id)wrapper contentType:(id)type completion:(id)completion;
+- (id)_insertAttachmentWithFileWrapper:(id)wrapper contentType:(id)type options:(id)options completion:(id)completion;
+- (id)_insertAttachmentWithFilename:(id)filename contentType:(id)type data:(id)data options:(id)options completion:(id)completion;
 - (id)_insertionPointColor;
-- (id)_loadData:(id)a3 MIMEType:(id)a4 characterEncodingName:(id)a5 baseURL:(id)a6 userData:(id)a7;
-- (id)_loadRequest:(id)a3 shouldOpenExternalURLs:(BOOL)a4;
-- (id)_loadRequest:(id)a3 shouldOpenExternalURLsPolicy:(int64_t)a4;
-- (id)_propertiesOfLayerWithID:(unint64_t)a3;
+- (id)_loadData:(id)data MIMEType:(id)type characterEncodingName:(id)name baseURL:(id)l userData:(id)userData;
+- (id)_loadRequest:(id)request shouldOpenExternalURLs:(BOOL)ls;
+- (id)_loadRequest:(id)request shouldOpenExternalURLsPolicy:(int64_t)policy;
+- (id)_propertiesOfLayerWithID:(unint64_t)d;
 - (id)_reloadExpiredOnly;
 - (id)_reloadWithoutContentBlockers;
 - (id)_remoteObjectRegistry;
-- (id)_restoreSessionState:(id)a3 andNavigate:(BOOL)a4;
+- (id)_restoreSessionState:(id)state andNavigate:(BOOL)navigate;
 - (id)_retainActiveFocusedState;
-- (id)_scrollbarState:(unint64_t)a3 processID:(unint64_t)a4 isVertical:(BOOL)a5;
-- (id)_scrollbarStateForScrollingNodeID:(unint64_t)a3 processID:(unint64_t)a4 isVertical:(BOOL)a5;
+- (id)_scrollbarState:(unint64_t)state processID:(unint64_t)d isVertical:(BOOL)vertical;
+- (id)_scrollbarStateForScrollingNodeID:(unint64_t)d processID:(unint64_t)iD isVertical:(BOOL)vertical;
 - (id)_searchableObject;
-- (id)_sessionStateWithFilter:(id)a3;
-- (id)_snapshotLayerContentsForBackForwardListItem:(id)a3;
+- (id)_sessionStateWithFilter:(id)filter;
+- (id)_snapshotLayerContentsForBackForwardListItem:(id)item;
 - (id)_textInputTraits;
 - (id)_viewForFindUI;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
 - (id)fullScreenWindowController;
 - (id)interactionState;
 - (id)navigationDelegate;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (id)undoManager;
-- (id)valueForUndefinedKey:(id)a3;
-- (id)viewForZoomingInScrollView:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (id)viewForZoomingInScrollView:(id)view;
 - (int)_deviceOrientationIgnoringOverrides;
 - (int)_gpuProcessIdentifier;
 - (int)_networkProcessIdentifier;
 - (int)_provisionalWebProcessIdentifier;
 - (int)_webProcessIdentifier;
 - (int64_t)_displayCaptureState;
-- (int64_t)_effectiveDataOwner:(int64_t)a3;
+- (int64_t)_effectiveDataOwner:(int64_t)owner;
 - (int64_t)_paginationMode;
 - (int64_t)_systemAudioCaptureState;
 - (int64_t)_webProcessState;
-- (uint64_t)_evaluateJavaScript:(WTF *)this asAsyncFunction:(void *)a2 withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
-- (uint64_t)_internalDoAfterNextPresentationUpdate:(const void *)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
-- (uint64_t)_internalDoAfterNextPresentationUpdate:(uint64_t)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
+- (uint64_t)_evaluateJavaScript:(WTF *)this asAsyncFunction:(void *)function withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
+- (uint64_t)_internalDoAfterNextPresentationUpdate:(const void *)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
+- (uint64_t)_internalDoAfterNextPresentationUpdate:(uint64_t)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
 - (uint64_t)_internalDoAfterNextPresentationUpdate:withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
-- (uint64_t)_showWarningView:(uint64_t)a1 completionHandler:;
+- (uint64_t)_showWarningView:(uint64_t)view completionHandler:;
 - (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(WTF *)this;
-- (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(uint64_t)a1;
+- (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(uint64_t)handler;
 - (uint64_t)compositionSession:didReceiveText:replacementRange:inContext:finished:;
-- (uint64_t)createPDFWithConfiguration:(const void *)a1 completionHandler:;
-- (uint64_t)createPDFWithConfiguration:(uint64_t)a1 completionHandler:;
-- (uint64_t)createWebArchiveDataWithCompletionHandler:(const void *)a1;
-- (uint64_t)createWebArchiveDataWithCompletionHandler:(uint64_t)a1;
+- (uint64_t)createPDFWithConfiguration:(const void *)configuration completionHandler:;
+- (uint64_t)createPDFWithConfiguration:(uint64_t)configuration completionHandler:;
+- (uint64_t)createWebArchiveDataWithCompletionHandler:(const void *)handler;
+- (uint64_t)createWebArchiveDataWithCompletionHandler:(uint64_t)handler;
 - (uint64_t)didEndWritingToolsSession:accepted:;
 - (uint64_t)fetchDataOfTypes:()WTF::ShouldValidateKey completionHandler:;
-- (uint64_t)fetchDataOfTypes:(uint64_t)a1 completionHandler:(WTF::StringImpl *)a2;
-- (uint64_t)findString:(const void *)a1 withConfiguration:completionHandler:;
-- (uint64_t)findString:(uint64_t)a1 withConfiguration:completionHandler:;
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 contentPreviewForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 decorateReplacementsForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 rectsForProofreadingSuggestionsInRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 setSelectionForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 contentPreviewForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 decorateReplacementsForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 rectsForProofreadingSuggestionsInRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 setSelectionForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 textPreviewsForRange:completion:;
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 updateTextVisibilityForRange:visible:identifier:completion:;
-- (uint64_t)observeValueForKeyPath:(id *)a1 ofObject:change:context:;
-- (uint64_t)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:;
+- (uint64_t)fetchDataOfTypes:(uint64_t)types completionHandler:(WTF::StringImpl *)handler;
+- (uint64_t)findString:(const void *)string withConfiguration:completionHandler:;
+- (uint64_t)findString:(uint64_t)string withConfiguration:completionHandler:;
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator contentPreviewForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator decorateReplacementsForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator rectsForProofreadingSuggestionsInRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator setSelectionForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator contentPreviewForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator decorateReplacementsForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator rectsForProofreadingSuggestionsInRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator setSelectionForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator textPreviewsForRange:completion:;
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator updateTextVisibilityForRange:visible:identifier:completion:;
+- (uint64_t)observeValueForKeyPath:(id *)path ofObject:change:context:;
+- (uint64_t)observeValueForKeyPath:(uint64_t)path ofObject:change:context:;
 - (uint64_t)proofreadingSession:didReceiveSuggestions:processedRange:inContext:finished:;
-- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(const void *)a1;
-- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(uint64_t)a1;
-- (uint64_t)restoreData:(WTF *)this completionHandler:(void *)a2;
-- (uint64_t)restoreData:(uint64_t)a1 completionHandler:(void *)a2;
-- (uint64_t)resumeDownloadFromResumeData:(const void *)a1 completionHandler:;
-- (uint64_t)resumeDownloadFromResumeData:(uint64_t)a1 completionHandler:;
-- (uint64_t)resumeDownloadFromResumeData:(uint64_t)result completionHandler:(uint64_t)a2;
-- (uint64_t)setCameraCaptureState:(const void *)a1 completionHandler:;
-- (uint64_t)setCameraCaptureState:(uint64_t)a1 completionHandler:;
-- (uint64_t)setMicrophoneCaptureState:(const void *)a1 completionHandler:;
-- (uint64_t)setMicrophoneCaptureState:(uint64_t)a1 completionHandler:;
-- (uint64_t)startDownloadUsingRequest:(const void *)a1 completionHandler:;
-- (uint64_t)startDownloadUsingRequest:(uint64_t)a1 completionHandler:;
-- (uint64_t)startDownloadUsingRequest:(uint64_t)result completionHandler:(uint64_t)a2;
-- (uint64_t)takeSnapshotWithConfiguration:(const void *)a1 completionHandler:;
-- (uint64_t)takeSnapshotWithConfiguration:(uint64_t)a1 completionHandler:;
-- (uint64_t)willBeginWritingToolsSession:(const void *)a1 requestContexts:;
-- (uint64_t)willBeginWritingToolsSession:(uint64_t)a1 requestContexts:;
-- (uint64_t)willBeginWritingToolsSession:(uint64_t)a1 requestContexts:(uint64_t)a2;
+- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(const void *)handler;
+- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(uint64_t)handler;
+- (uint64_t)restoreData:(WTF *)this completionHandler:(void *)handler;
+- (uint64_t)restoreData:(uint64_t)data completionHandler:(void *)handler;
+- (uint64_t)resumeDownloadFromResumeData:(const void *)data completionHandler:;
+- (uint64_t)resumeDownloadFromResumeData:(uint64_t)data completionHandler:;
+- (uint64_t)resumeDownloadFromResumeData:(uint64_t)result completionHandler:(uint64_t)handler;
+- (uint64_t)setCameraCaptureState:(const void *)state completionHandler:;
+- (uint64_t)setCameraCaptureState:(uint64_t)state completionHandler:;
+- (uint64_t)setMicrophoneCaptureState:(const void *)state completionHandler:;
+- (uint64_t)setMicrophoneCaptureState:(uint64_t)state completionHandler:;
+- (uint64_t)startDownloadUsingRequest:(const void *)request completionHandler:;
+- (uint64_t)startDownloadUsingRequest:(uint64_t)request completionHandler:;
+- (uint64_t)startDownloadUsingRequest:(uint64_t)result completionHandler:(uint64_t)handler;
+- (uint64_t)takeSnapshotWithConfiguration:(const void *)configuration completionHandler:;
+- (uint64_t)takeSnapshotWithConfiguration:(uint64_t)configuration completionHandler:;
+- (uint64_t)willBeginWritingToolsSession:(const void *)session requestContexts:;
+- (uint64_t)willBeginWritingToolsSession:(uint64_t)session requestContexts:;
+- (uint64_t)willBeginWritingToolsSession:(uint64_t)session requestContexts:(uint64_t)contexts;
 - (unint64_t)_countOfUpdatesWithLayerChanges;
 - (unint64_t)_displayCaptureSurfaces;
 - (unint64_t)_effectiveObscuredInsetEdgesAffectedBySafeArea;
@@ -259,213 +259,213 @@
 - (unint64_t)_mediaMutedState;
 - (unint64_t)_resetFocusPreservationCount;
 - (unint64_t)allowedWritingToolsResultOptions;
-- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)a3;
+- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)view;
 - (void)_UITraitHDRHeadroomUsageDidChange;
-- (void)_accessibilityRetrieveRectsAtSelectionOffset:(int64_t)a3 withText:(id)a4 completionHandler:(id)a5;
-- (void)_acquireResizeAssertionForReason:(id)a3;
+- (void)_accessibilityRetrieveRectsAtSelectionOffset:(int64_t)offset withText:(id)text completionHandler:(id)handler;
+- (void)_acquireResizeAssertionForReason:(id)reason;
 - (void)_addAppHighlight;
-- (void)_addAppHighlightInNewGroup:(BOOL)a3 originatedInApp:(BOOL)a4;
-- (void)_addEventAttributionWithSourceID:(unsigned __int8)a3 destinationURL:(id)a4 sourceDescription:(id)a5 purchaser:(id)a6 reportEndpoint:(id)a7 optionalNonce:(id)a8 applicationBundleID:(id)a9 ephemeral:(BOOL)a10;
+- (void)_addAppHighlightInNewGroup:(BOOL)group originatedInApp:(BOOL)app;
+- (void)_addEventAttributionWithSourceID:(unsigned __int8)d destinationURL:(id)l sourceDescription:(id)description purchaser:(id)purchaser reportEndpoint:(id)endpoint optionalNonce:(id)nonce applicationBundleID:(id)iD ephemeral:(BOOL)self0;
 - (void)_addLayerForFindOverlay;
-- (void)_addReasonToHideTopScrollPocket:(unsigned __int8)a3;
-- (void)_addShortcut:(id)a3;
+- (void)_addReasonToHideTopScrollPocket:(unsigned __int8)pocket;
+- (void)_addShortcut:(id)shortcut;
 - (void)_addUpdateVisibleContentRectPreCommitHandler;
-- (void)_adjustVisibilityForTargetedElements:(id)a3 completionHandler:(id)a4;
-- (void)_appPrivacyReportTestingData:(id)a3;
-- (void)_archiveWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)_becomeFirstResponderWithSelectionMovingForward:(BOOL)a3 completionHandler:(id)a4;
-- (void)_beginAnimatedResizeWithUpdates:(id)a3;
+- (void)_adjustVisibilityForTargetedElements:(id)elements completionHandler:(id)handler;
+- (void)_appPrivacyReportTestingData:(id)data;
+- (void)_archiveWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)_becomeFirstResponderWithSelectionMovingForward:(BOOL)forward completionHandler:(id)handler;
+- (void)_beginAnimatedResizeWithUpdates:(id)updates;
 - (void)_beginAutomaticLiveResizeIfNeeded;
 - (void)_beginLiveResize;
-- (void)_callAsyncJavaScript:(id)a3 arguments:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 completionHandler:(id)a7;
+- (void)_callAsyncJavaScript:(id)script arguments:(id)arguments inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler;
 - (void)_cancelAnimatedResize;
 - (void)_cancelFixedColorExtensionFadeAnimationsForTesting;
-- (void)_changeListType:(id)a3;
-- (void)_clearAppPrivacyReportTestingData:(id)a3;
+- (void)_changeListType:(id)type;
+- (void)_clearAppPrivacyReportTestingData:(id)data;
 - (void)_clearBackForwardCache;
 - (void)_clearOverrideLayoutParameters;
-- (void)_clearServiceWorkerEntitlementOverride:(id)a3;
+- (void)_clearServiceWorkerEntitlementOverride:(id)override;
 - (void)_clearWarningView;
 - (void)_clearWarningViewIfForMainFrameNavigation;
 - (void)_closeAllMediaPresentations;
-- (void)_completeTextManipulation:(id)a3 completion:(id)a4;
-- (void)_completeTextManipulationForItems:(id)a3 completion:(id)a4;
-- (void)_computePagesForPrinting:(id)a3 completionHandler:(id)a4;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_convertPoint:(CGPoint)a3 fromFrame:(id)a4 toMainFrameCoordinates:(id)a5;
-- (void)_convertRect:(CGRect)a3 fromFrame:(id)a4 toMainFrameCoordinates:(id)a5;
+- (void)_completeTextManipulation:(id)manipulation completion:(id)completion;
+- (void)_completeTextManipulationForItems:(id)items completion:(id)completion;
+- (void)_computePagesForPrinting:(id)printing completionHandler:(id)handler;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_convertPoint:(CGPoint)point fromFrame:(id)frame toMainFrameCoordinates:(id)coordinates;
+- (void)_convertRect:(CGRect)rect fromFrame:(id)frame toMainFrameCoordinates:(id)coordinates;
 - (void)_couldNotRestorePageState;
-- (void)_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
-- (void)_createIconDataFromImageData:(id)a3 withLengths:(id)a4 completionHandler:(id)a5;
-- (void)_createPDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :(unint64_t)a5 PDFPluginIdentifierType withFrame:pageCount:;
-- (void)_dataTaskWithRequest:(id)a3 runAtForegroundPriority:(BOOL)a4 completionHandler:(id)a5;
-- (void)_decodeImageData:(id)a3 preferredSize:(id)a4 completionHandler:(id)a5;
-- (void)_decreaseListLevel:(id)a3;
+- (void)_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count;
+- (void)_createIconDataFromImageData:(id)data withLengths:(id)lengths completionHandler:(id)handler;
+- (void)_createPDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :(unint64_t)a5 PDFPluginIdentifierType withFrame:pageCount:;
+- (void)_dataTaskWithRequest:(id)request runAtForegroundPriority:(BOOL)priority completionHandler:(id)handler;
+- (void)_decodeImageData:(id)data preferredSize:(id)size completionHandler:(id)handler;
+- (void)_decreaseListLevel:(id)level;
 - (void)_decrementFocusPreservationCount;
-- (void)_define:(id)a3;
+- (void)_define:(id)_define;
 - (void)_denyNextUserMediaRequest;
 - (void)_destroyResizeAnimationView;
-- (void)_detectDataWithTypes:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_didAddLayerForFindOverlay:(id)a3;
+- (void)_detectDataWithTypes:(unint64_t)types completionHandler:(id)handler;
+- (void)_didAddLayerForFindOverlay:(id)overlay;
 - (void)_didChangeEditorState;
-- (void)_didCommitLayerTree:(const void *)a3;
-- (void)_didCommitLayerTreeDuringAnimatedResize:(const void *)a3;
+- (void)_didCommitLayerTree:(const void *)tree;
+- (void)_didCommitLayerTreeDuringAnimatedResize:(const void *)resize;
 - (void)_didCommitLoadForMainFrame;
 - (void)_didCompleteAnimatedResize;
-- (void)_didDisableBrowserExtensions:(id)a3;
-- (void)_didEnableBrowserExtensions:(id)a3;
+- (void)_didDisableBrowserExtensions:(id)extensions;
+- (void)_didEnableBrowserExtensions:(id)extensions;
 - (void)_didEndPartialIntelligenceTextAnimation;
-- (void)_didFailNavigation:(Navigation *)a3;
-- (void)_didFinishLoadingDataForCustomContentProviderWithSuggestedFilename:(const void *)a3 data:(id)a4;
-- (void)_didFinishNavigation:(Navigation *)a3;
-- (void)_didFinishScrolling:(id)a3;
-- (void)_didInsertAttachment:(void *)a3 withSource:(id)a4;
-- (void)_didInvalidateDataForAttachment:(void *)a3;
+- (void)_didFailNavigation:(Navigation *)navigation;
+- (void)_didFinishLoadingDataForCustomContentProviderWithSuggestedFilename:(const void *)filename data:(id)data;
+- (void)_didFinishNavigation:(Navigation *)navigation;
+- (void)_didFinishScrolling:(id)scrolling;
+- (void)_didInsertAttachment:(void *)attachment withSource:(id)source;
+- (void)_didInvalidateDataForAttachment:(void *)attachment;
 - (void)_didInvokeUIScrollViewDelegateCallback;
-- (void)_didLoadAppInitiatedRequest:(id)a3;
-- (void)_didLoadNonAppInitiatedRequest:(id)a3;
+- (void)_didLoadAppInitiatedRequest:(id)request;
+- (void)_didLoadNonAppInitiatedRequest:(id)request;
 - (void)_didRelaunchProcess;
-- (void)_didRemoveAttachment:(void *)a3;
+- (void)_didRemoveAttachment:(void *)attachment;
 - (void)_didRemoveLayerForFindOverlay;
-- (void)_didSameDocumentNavigationForMainFrame:(unsigned __int8)a3;
+- (void)_didSameDocumentNavigationForMainFrame:(unsigned __int8)frame;
 - (void)_didScroll;
 - (void)_didStartProvisionalLoadForMainFrame;
 - (void)_didStopDeferringGeometryUpdates;
 - (void)_disableBackForwardSnapshotVolatilityForTesting;
 - (void)_disableURLSchemeCheckInDataDetectors;
-- (void)_dispatchSetDeviceOrientation:(int)a3;
-- (void)_dispatchSetOrientationForMediaCapture:(int)a3;
-- (void)_dispatchSetViewLayoutSize:(FloatSize)a3;
-- (void)_doAfterActivityStateUpdate:(id)a3;
-- (void)_doAfterNextPresentationUpdate:(id)a3;
-- (void)_doAfterNextPresentationUpdateWithoutWaitingForPainting:(id)a3;
-- (void)_doAfterNextStablePresentationUpdate:(id)a3;
+- (void)_dispatchSetDeviceOrientation:(int)orientation;
+- (void)_dispatchSetOrientationForMediaCapture:(int)capture;
+- (void)_dispatchSetViewLayoutSize:(FloatSize)size;
+- (void)_doAfterActivityStateUpdate:(id)update;
+- (void)_doAfterNextPresentationUpdate:(id)update;
+- (void)_doAfterNextPresentationUpdateWithoutWaitingForPainting:(id)painting;
+- (void)_doAfterNextStablePresentationUpdate:(id)update;
 - (void)_doAfterNextVisibleContentRectAndPresentationUpdate:;
-- (void)_doAfterNextVisibleContentRectAndPresentationUpdate:(id)a3;
-- (void)_doAfterNextVisibleContentRectAndStablePresentationUpdate:(id)a3;
-- (void)_doAfterNextVisibleContentRectUpdate:(id)a3;
-- (void)_doAfterProcessingAllPendingMouseEvents:(id)a3;
-- (void)_dumpPrivateClickMeasurement:(id)a3;
+- (void)_doAfterNextVisibleContentRectAndPresentationUpdate:(id)update;
+- (void)_doAfterNextVisibleContentRectAndStablePresentationUpdate:(id)update;
+- (void)_doAfterNextVisibleContentRectUpdate:(id)update;
+- (void)_doAfterProcessingAllPendingMouseEvents:(id)events;
+- (void)_dumpPrivateClickMeasurement:(id)measurement;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_enclosingScrollerScrollingEnded:(id)a3;
+- (void)_enclosingScrollerScrollingEnded:(id)ended;
 - (void)_endAnimatedFullScreenExit;
 - (void)_endAnimatedResize;
 - (void)_endLiveResize;
-- (void)_enhancedWindowingToggled:(id)a3;
+- (void)_enhancedWindowingToggled:(id)toggled;
 - (void)_ensureResizeAnimationView;
 - (void)_enterFullscreen;
 - (void)_enterInWindow;
-- (void)_evaluateJavaScript:(__n128)a3 asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
-- (void)_evaluateJavaScript:(id)a3 asAsyncFunction:(BOOL)a4 withSourceURL:(id)a5 withArguments:(id)a6 forceUserGesture:(BOOL)a7 inFrame:(id)a8 inWorld:(id)a9 completionHandler:(id)a10;
-- (void)_evaluateJavaScript:(id)a3 inFrame:(id)a4 inContentWorld:(id)a5 completionHandler:(id)a6;
-- (void)_evaluateJavaScript:(id)a3 withSourceURL:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 completionHandler:(id)a7;
-- (void)_evaluateJavaScript:(id)a3 withSourceURL:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 withUserGesture:(BOOL)a7 completionHandler:(id)a8;
-- (void)_evaluateJavaScript:(void *)a1 asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
-- (void)_evaluateJavaScriptWithoutUserGesture:(id)a3 completionHandler:(id)a4;
-- (void)_executeEditCommand:(id)a3 argument:(id)a4 completion:(id)a5;
+- (void)_evaluateJavaScript:(__n128)script asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
+- (void)_evaluateJavaScript:(id)script asAsyncFunction:(BOOL)function withSourceURL:(id)l withArguments:(id)arguments forceUserGesture:(BOOL)gesture inFrame:(id)frame inWorld:(id)world completionHandler:(id)self0;
+- (void)_evaluateJavaScript:(id)script inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler;
+- (void)_evaluateJavaScript:(id)script withSourceURL:(id)l inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler;
+- (void)_evaluateJavaScript:(id)script withSourceURL:(id)l inFrame:(id)frame inContentWorld:(id)world withUserGesture:(BOOL)gesture completionHandler:(id)handler;
+- (void)_evaluateJavaScript:(void *)script asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:;
+- (void)_evaluateJavaScriptWithoutUserGesture:(id)gesture completionHandler:(id)handler;
+- (void)_executeEditCommand:(id)command argument:(id)argument completion:(id)completion;
 - (void)_exitInWindow;
-- (void)_fetchDataOfTypes:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_findSelected:(id)a3;
-- (void)_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5;
+- (void)_fetchDataOfTypes:(unint64_t)types completionHandler:(id)handler;
+- (void)_findSelected:(id)selected;
+- (void)_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count;
 - (void)_firePresentationUpdateForPendingStableStatePresentationCallbacks;
-- (void)_focusTextInputContext:(id)a3 placeCaretAt:(CGPoint)a4 completionHandler:(id)a5;
+- (void)_focusTextInputContext:(id)context placeCaretAt:(CGPoint)at completionHandler:(id)handler;
 - (void)_forceScrollPocketsToRecomputeElementRegions;
-- (void)_frameInfoFromHandle:(id)a3 completionHandler:(id)a4;
+- (void)_frameInfoFromHandle:(id)handle completionHandler:(id)handler;
 - (void)_frameOrBoundsMayHaveChanged;
 - (void)_frameOrBoundsWillChange;
-- (void)_frameTrees:(id)a3;
-- (void)_frames:(id)a3;
-- (void)_getApplicationManifestWithCompletionHandler:(id)a3;
-- (void)_getContentsAsAttributedStringWithCompletionHandler:(id)a3;
-- (void)_getContentsAsStringWithCompletionHandler:(id)a3;
-- (void)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:(id)a3;
-- (void)_getContentsOfAllFramesAsStringWithCompletionHandler:(id)a3;
-- (void)_getInformationFromImageData:(id)a3 completionHandler:(id)a4;
-- (void)_getMainResourceDataWithCompletionHandler:(id)a3;
-- (void)_getNotifyStateForTesting:(id)a3 completionHandler:(id)a4;
-- (void)_getPDFFirstPageSizeInFrame:(id)a3 completionHandler:(id)a4;
-- (void)_getProcessDisplayNameWithCompletionHandler:(id)a3;
-- (void)_getTextFragmentMatchWithCompletionHandler:(id)a3;
-- (void)_getWebArchiveDataWithCompletionHandler:(id)a3;
-- (void)_gpuToWebProcessConnectionCountForTesting:(id)a3;
+- (void)_frameTrees:(id)trees;
+- (void)_frames:(id)_frames;
+- (void)_getApplicationManifestWithCompletionHandler:(id)handler;
+- (void)_getContentsAsAttributedStringWithCompletionHandler:(id)handler;
+- (void)_getContentsAsStringWithCompletionHandler:(id)handler;
+- (void)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:(id)testing;
+- (void)_getContentsOfAllFramesAsStringWithCompletionHandler:(id)handler;
+- (void)_getInformationFromImageData:(id)data completionHandler:(id)handler;
+- (void)_getMainResourceDataWithCompletionHandler:(id)handler;
+- (void)_getNotifyStateForTesting:(id)testing completionHandler:(id)handler;
+- (void)_getPDFFirstPageSizeInFrame:(id)frame completionHandler:(id)handler;
+- (void)_getProcessDisplayNameWithCompletionHandler:(id)handler;
+- (void)_getTextFragmentMatchWithCompletionHandler:(id)handler;
+- (void)_getWebArchiveDataWithCompletionHandler:(id)handler;
+- (void)_gpuToWebProcessConnectionCountForTesting:(id)testing;
 - (void)_grantAccessToAssetServices;
 - (void)_hideContentUntilNextUpdate;
 - (void)_hideFindOverlay;
 - (void)_hideFindUI;
 - (void)_hidePasswordView;
-- (void)_increaseListLevel:(id)a3;
-- (void)_indent:(id)a3;
-- (void)_initializeWithConfiguration:(id)a3;
-- (void)_insertNestedOrderedList:(id)a3;
-- (void)_insertNestedUnorderedList:(id)a3;
-- (void)_insertOrderedList:(id)a3;
-- (void)_insertUnorderedList:(id)a3;
+- (void)_increaseListLevel:(id)level;
+- (void)_indent:(id)_indent;
+- (void)_initializeWithConfiguration:(id)configuration;
+- (void)_insertNestedOrderedList:(id)list;
+- (void)_insertNestedUnorderedList:(id)list;
+- (void)_insertOrderedList:(id)list;
+- (void)_insertUnorderedList:(id)list;
 - (void)_installScreenTimeWebpageControllerIfNeeded;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
-- (void)_intelligenceCollectRemoteContentIn:(CGRect)a3 remoteContextWrapper:(id)a4;
-- (void)_internalDoAfterNextPresentationUpdate:(id)a3 withoutWaitingForPainting:(BOOL)a4 withoutWaitingForAnimatedResize:(BOOL)a5;
-- (void)_internalDoAfterNextPresentationUpdate:(uint64_t)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
+- (void)_intelligenceCollectRemoteContentIn:(CGRect)in remoteContextWrapper:(id)wrapper;
+- (void)_internalDoAfterNextPresentationUpdate:(id)update withoutWaitingForPainting:(BOOL)painting withoutWaitingForAnimatedResize:(BOOL)resize;
+- (void)_internalDoAfterNextPresentationUpdate:(uint64_t)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:;
 - (void)_invalidateResizeAssertions;
-- (void)_isForcedIntoAppBoundMode:(id)a3;
-- (void)_isJITEnabled:(id)a3;
-- (void)_isLayerTreeFrozenForTesting:(id)a3;
-- (void)_isNavigatingToAppBoundDomain:(id)a3;
-- (void)_keyboardChangedWithInfo:(id)a3 adjustScrollView:(BOOL)a4;
-- (void)_keyboardDidChangeFrame:(id)a3;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_isForcedIntoAppBoundMode:(id)mode;
+- (void)_isJITEnabled:(id)enabled;
+- (void)_isLayerTreeFrozenForTesting:(id)testing;
+- (void)_isNavigatingToAppBoundDomain:(id)domain;
+- (void)_keyboardChangedWithInfo:(id)info adjustScrollView:(BOOL)view;
+- (void)_keyboardDidChangeFrame:(id)frame;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_killWebContentProcess;
 - (void)_killWebContentProcessAndResetState;
-- (void)_lastNavigationWasAppInitiated:(id)a3;
+- (void)_lastNavigationWasAppInitiated:(id)initiated;
 - (void)_launchInitialProcessIfNecessary;
-- (void)_loadAlternateHTMLString:(id)a3 baseURL:(id)a4 forUnreachableURL:(id)a5;
-- (void)_loadAndDecodeImage:(id)a3 constrainedToSize:(CGSize)a4 maximumBytesFromNetwork:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_loadServiceWorker:(id)a3 usingModules:(BOOL)a4 completionHandler:(id)a5;
-- (void)_lookup:(id)a3;
+- (void)_loadAlternateHTMLString:(id)string baseURL:(id)l forUnreachableURL:(id)rL;
+- (void)_loadAndDecodeImage:(id)image constrainedToSize:(CGSize)size maximumBytesFromNetwork:(unint64_t)network completionHandler:(id)handler;
+- (void)_loadServiceWorker:(id)worker usingModules:(BOOL)modules completionHandler:(id)handler;
+- (void)_lookup:(id)_lookup;
 - (void)_navigationGestureDidBegin;
 - (void)_navigationGestureDidEnd;
-- (void)_nextAccessoryTab:(id)a3;
-- (void)_nowPlayingMediaTitleAndArtist:(id)a3;
-- (void)_numberOfVisibilityAdjustmentRectsWithCompletionHandler:(id)a3;
-- (void)_outdent:(id)a3;
-- (void)_overrideLayoutParametersWithMinimumLayoutSize:(CGSize)a3 minimumUnobscuredSizeOverride:(CGSize)a4 maximumUnobscuredSizeOverride:(CGSize)a5;
-- (void)_overrideViewportWithArguments:(id)a3;
-- (void)_pasteAndMatchStyle:(id)a3;
-- (void)_pasteAsQuotation:(id)a3;
-- (void)_pauseAllAnimationsWithCompletionHandler:(id)a3;
-- (void)_pauseNowPlayingMediaSession:(id)a3;
-- (void)_playAllAnimationsWithCompletionHandler:(id)a3;
-- (void)_playPredominantOrNowPlayingMediaSession:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_preconnectToServer:(id)a3;
+- (void)_nextAccessoryTab:(id)tab;
+- (void)_nowPlayingMediaTitleAndArtist:(id)artist;
+- (void)_numberOfVisibilityAdjustmentRectsWithCompletionHandler:(id)handler;
+- (void)_outdent:(id)_outdent;
+- (void)_overrideLayoutParametersWithMinimumLayoutSize:(CGSize)size minimumUnobscuredSizeOverride:(CGSize)override maximumUnobscuredSizeOverride:(CGSize)sizeOverride;
+- (void)_overrideViewportWithArguments:(id)arguments;
+- (void)_pasteAndMatchStyle:(id)style;
+- (void)_pasteAsQuotation:(id)quotation;
+- (void)_pauseAllAnimationsWithCompletionHandler:(id)handler;
+- (void)_pauseNowPlayingMediaSession:(id)session;
+- (void)_playAllAnimationsWithCompletionHandler:(id)handler;
+- (void)_playPredominantOrNowPlayingMediaSession:(id)session;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_preconnectToServer:(id)server;
 - (void)_presentLockdownMode;
 - (void)_presentLockdownModeAlertIfNeeded;
-- (void)_previousAccessoryTab:(id)a3;
+- (void)_previousAccessoryTab:(id)tab;
 - (void)_processDidExit;
 - (void)_processDidResumeForTesting;
-- (void)_processWillSuspendForTesting:(id)a3;
+- (void)_processWillSuspendForTesting:(id)testing;
 - (void)_processWillSuspendImminentlyForTesting;
 - (void)_processWillSwap;
 - (void)_processWillSwapOrDidExit;
-- (void)_promptForReplace:(id)a3;
-- (void)_proofreadingSessionShowDetailsForSuggestionWithUUID:(id)a3 relativeToRect:(CGRect)a4;
-- (void)_proofreadingSessionUpdateState:(unsigned __int8)a3 forSuggestionWithUUID:(id)a4;
-- (void)_recalculateViewportSizesWithMinimumViewportInset:(UIEdgeInsets)a3 maximumViewportInset:(UIEdgeInsets)a4 throwOnInvalidInput:(BOOL)a5;
+- (void)_promptForReplace:(id)replace;
+- (void)_proofreadingSessionShowDetailsForSuggestionWithUUID:(id)d relativeToRect:(CGRect)rect;
+- (void)_proofreadingSessionUpdateState:(unsigned __int8)state forSuggestionWithUUID:(id)d;
+- (void)_recalculateViewportSizesWithMinimumViewportInset:(UIEdgeInsets)inset maximumViewportInset:(UIEdgeInsets)viewportInset throwOnInvalidInput:(BOOL)input;
 - (void)_registerForNotifications;
 - (void)_reinsertTopFixedColorExtensionViewIfNeeded;
 - (void)_removeAnyPDFPageNumberIndicator;
-- (void)_removeDataDetectedLinks:(id)a3;
+- (void)_removeDataDetectedLinks:(id)links;
 - (void)_removeLayerForFindOverlay;
-- (void)_removePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType;
-- (void)_removeReasonToHideTopScrollPocket:(unsigned __int8)a3;
-- (void)_requestActivatedElementAtPosition:(CGPoint)a3 completionBlock:(id)a4;
-- (void)_requestActiveNowPlayingSessionInfo:(id)a3;
-- (void)_requestAllTargetableElementsInfo:(double)a3 completionHandler:(id)a4;
-- (void)_requestAllTextWithCompletionHandler:(id)a3;
-- (void)_requestTargetedElementInfo:(id)a3 completionHandler:(id)a4;
-- (void)_requestTextExtraction:(CGRect)a3 completionHandler:(id)a4;
-- (void)_requestTextInputContextsInRect:(CGRect)a3 completionHandler:(id)a4;
+- (void)_removePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType;
+- (void)_removeReasonToHideTopScrollPocket:(unsigned __int8)pocket;
+- (void)_requestActivatedElementAtPosition:(CGPoint)position completionBlock:(id)block;
+- (void)_requestActiveNowPlayingSessionInfo:(id)info;
+- (void)_requestAllTargetableElementsInfo:(double)info completionHandler:(id)handler;
+- (void)_requestAllTextWithCompletionHandler:(id)handler;
+- (void)_requestTargetedElementInfo:(id)info completionHandler:(id)handler;
+- (void)_requestTextExtraction:(CGRect)extraction completionHandler:(id)handler;
+- (void)_requestTextInputContextsInRect:(CGRect)rect completionHandler:(id)handler;
 - (void)_rescheduleEndLiveResizeTimer;
 - (void)_resetCachedScrollViewBackgroundColor;
 - (void)_resetContentOffset;
@@ -475,280 +475,280 @@
 - (void)_resetObscuredInsetsForTesting;
 - (void)_resetScrollViewInsetAdjustmentBehavior;
 - (void)_resetUnobscuredSafeAreaInsets;
-- (void)_resetVisibilityAdjustmentsForTargetedElements:(id)a3 completionHandler:(id)a4;
-- (void)_resizeWhileHidingContentWithUpdates:(id)a3;
-- (void)_restoreAndScrollToAppHighlight:(id)a3;
-- (void)_restoreAppHighlights:(id)a3;
-- (void)_restoreData:(id)a3 completionHandler:(id)a4;
-- (void)_restoreFromSessionStateData:(id)a3;
-- (void)_restorePageScrollPosition:(optional<WebCore:(FloatPoint)a4 :(RectEdges<float>)a5 FloatPoint>)a3 scrollOrigin:(double)a6 previousObscuredInset:scale:;
-- (void)_restorePageStateToUnobscuredCenter:(optional<WebCore:(double)a4 :FloatPoint>)a3 scale:;
+- (void)_resetVisibilityAdjustmentsForTargetedElements:(id)elements completionHandler:(id)handler;
+- (void)_resizeWhileHidingContentWithUpdates:(id)updates;
+- (void)_restoreAndScrollToAppHighlight:(id)highlight;
+- (void)_restoreAppHighlights:(id)highlights;
+- (void)_restoreData:(id)data completionHandler:(id)handler;
+- (void)_restoreFromSessionStateData:(id)data;
+- (void)_restorePageScrollPosition:(optional<WebCore:(FloatPoint)position :(RectEdges<float>)a5 FloatPoint>)a3 scrollOrigin:(double)origin previousObscuredInset:scale:;
+- (void)_restorePageStateToUnobscuredCenter:(optional<WebCore:(double)center :FloatPoint>)a3 scale:;
 - (void)_resumeAllMediaPlayback;
-- (void)_resumePage:(id)a3;
+- (void)_resumePage:(id)page;
 - (void)_revokeAccessToAssetServices;
-- (void)_saveBackForwardSnapshotForItem:(id)a3;
-- (void)_saveResources:(id)a3 suggestedFileName:(id)a4 completionHandler:(id)a5;
-- (void)_scheduleVisibleContentRectUpdateAfterScrollInView:(id)a3;
+- (void)_saveBackForwardSnapshotForItem:(id)item;
+- (void)_saveResources:(id)resources suggestedFileName:(id)name completionHandler:(id)handler;
+- (void)_scheduleVisibleContentRectUpdateAfterScrollInView:(id)view;
 - (void)_scrollToAndRevealSelectionIfNeeded;
-- (void)_scrollToContentScrollPosition:(FloatPoint)a3 scrollOrigin:(IntPoint)a4 animated:(BOOL)a5;
-- (void)_scrollToEdge:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_scrollViewDidInterruptDecelerating:(id)a3;
-- (void)_serviceWorkersEnabled:(id)a3;
-- (void)_setAddsVisitedLinks:(BOOL)a3;
-- (void)_setAllowsMediaDocumentInlinePlayback:(BOOL)a3;
-- (void)_setApplicationNameForUserAgent:(id)a3;
-- (void)_setAvoidsUnsafeArea:(BOOL)a3;
-- (void)_setBackgroundExtendsBeyondPage:(BOOL)a3;
-- (void)_setCORSDisablingPatterns:(id)a3;
-- (void)_setCanUseCredentialStorage:(BOOL)a3;
-- (void)_setDeviceOrientationUserPermissionHandlerForTesting:(id)a3;
-- (void)_setDiagnosticLoggingDelegate:(id)a3;
-- (void)_setDisplayCaptureState:(int64_t)a3 completionHandler:(id)a4;
-- (void)_setDragInteractionPolicy:(unint64_t)a3;
-- (void)_setEditable:(BOOL)a3;
-- (void)_setEphemeralUIEventAttribution:(id)a3 forApplicationWithBundleID:(id)a4;
-- (void)_setFindDelegate:(id)a3;
-- (void)_setFixedLayoutSize:(CGSize)a3;
-- (void)_setFont:(id)a3 sender:(id)a4;
-- (void)_setFontSize:(double)a3 sender:(id)a4;
-- (void)_setFullscreenDelegate:(id)a3;
-- (void)_setGamepadsRecentlyAccessed:(BOOL)a3;
-- (void)_setGapBetweenPages:(double)a3;
-- (void)_setHasCustomContentView:(BOOL)a3 loadedMIMEType:(const void *)a4;
-- (void)_setHistoryDelegate:(id)a3;
-- (void)_setIconLoadingDelegate:(id)a3;
-- (void)_setIndexOfGetDisplayMediaDeviceSelectedForTesting:(id)a3;
-- (void)_setInputDelegate:(id)a3;
-- (void)_setInterfaceOrientationOverride:(int64_t)a3;
-- (void)_setLayoutMode:(unint64_t)a3;
-- (void)_setMediaCaptureEnabled:(BOOL)a3;
-- (void)_setMinimumEffectiveDeviceWidth:(double)a3;
-- (void)_setNeedsScrollGeometryUpdates:(BOOL)a3;
-- (void)_setNowPlayingMetadataObserver:(id)a3;
-- (void)_setObscuredInsetEdgesAffectedBySafeArea:(unint64_t)a3;
-- (void)_setObscuredInsetsInternal:(UIEdgeInsets)a3;
-- (void)_setOpaqueInternal:(BOOL)a3;
-- (void)_setOverrideDeviceScaleFactor:(double)a3;
-- (void)_setPageLength:(double)a3;
-- (void)_setPageMuted:(unint64_t)a3;
-- (void)_setPageScale:(double)a3 withOrigin:(CGPoint)a4;
-- (void)_setPageZoomFactor:(double)a3;
-- (void)_setPaginationBehavesLikeColumns:(BOOL)a3;
-- (void)_setPaginationMode:(int64_t)a3;
-- (void)_setPointerTouchCompatibilitySimulatorEnabled:(BOOL)a3;
-- (void)_setPrivateClickMeasurementAppBundleIDForTesting:(id)a3 completionHandler:(id)a4;
-- (void)_setPrivateClickMeasurementAttributionReportURLsForTesting:(id)a3 destinationURL:(id)a4 completionHandler:(id)a5;
-- (void)_setPrivateClickMeasurementAttributionTokenPublicKeyURLForTesting:(id)a3 completionHandler:(id)a4;
-- (void)_setPrivateClickMeasurementAttributionTokenSignatureURLForTesting:(id)a3 completionHandler:(id)a4;
-- (void)_setPrivateClickMeasurementOverrideTimerForTesting:(BOOL)a3 completionHandler:(id)a4;
-- (void)_setRemoteInspectionNameOverride:(id)a3;
-- (void)_setResourceLoadDelegate:(id)a3;
-- (void)_setScrollPerformanceDataCollectionEnabled:(BOOL)a3;
-- (void)_setShouldSuppressTopColorExtensionView:(BOOL)a3;
-- (void)_setStatisticsCrossSiteLoadWithLinkDecorationForTesting:(id)a3 withToHost:(id)a4 withWasFiltered:(BOOL)a5 withCompletionHandler:(id)a6;
-- (void)_setSuppressSoftwareKeyboard:(BOOL)a3;
-- (void)_setSystemAudioCaptureState:(int64_t)a3 completionHandler:(id)a4;
-- (void)_setSystemCanPromptForGetDisplayMediaForTesting:(BOOL)a3;
-- (void)_setSystemPreviewCompletionHandlerForLoadTesting:(id)a3;
-- (void)_setTextColor:(id)a3 sender:(id)a4;
-- (void)_setTextZoomFactor:(double)a3;
-- (void)_setThrottleStateForTesting:(int)a3;
-- (void)_setUIEventAttribution:(id)a3;
-- (void)_setUnobscuredSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)_setUseSystemAppearance:(BOOL)a3;
-- (void)_setViewScale:(double)a3;
-- (void)_setViewportSizeForCSSViewportUnits:(CGSize)a3;
-- (void)_setupPageConfiguration:(void *)a3 withPool:(void *)a4;
+- (void)_scrollToContentScrollPosition:(FloatPoint)position scrollOrigin:(IntPoint)origin animated:(BOOL)animated;
+- (void)_scrollToEdge:(unint64_t)edge animated:(BOOL)animated;
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating;
+- (void)_serviceWorkersEnabled:(id)enabled;
+- (void)_setAddsVisitedLinks:(BOOL)links;
+- (void)_setAllowsMediaDocumentInlinePlayback:(BOOL)playback;
+- (void)_setApplicationNameForUserAgent:(id)agent;
+- (void)_setAvoidsUnsafeArea:(BOOL)area;
+- (void)_setBackgroundExtendsBeyondPage:(BOOL)page;
+- (void)_setCORSDisablingPatterns:(id)patterns;
+- (void)_setCanUseCredentialStorage:(BOOL)storage;
+- (void)_setDeviceOrientationUserPermissionHandlerForTesting:(id)testing;
+- (void)_setDiagnosticLoggingDelegate:(id)delegate;
+- (void)_setDisplayCaptureState:(int64_t)state completionHandler:(id)handler;
+- (void)_setDragInteractionPolicy:(unint64_t)policy;
+- (void)_setEditable:(BOOL)editable;
+- (void)_setEphemeralUIEventAttribution:(id)attribution forApplicationWithBundleID:(id)d;
+- (void)_setFindDelegate:(id)delegate;
+- (void)_setFixedLayoutSize:(CGSize)size;
+- (void)_setFont:(id)font sender:(id)sender;
+- (void)_setFontSize:(double)size sender:(id)sender;
+- (void)_setFullscreenDelegate:(id)delegate;
+- (void)_setGamepadsRecentlyAccessed:(BOOL)accessed;
+- (void)_setGapBetweenPages:(double)pages;
+- (void)_setHasCustomContentView:(BOOL)view loadedMIMEType:(const void *)type;
+- (void)_setHistoryDelegate:(id)delegate;
+- (void)_setIconLoadingDelegate:(id)delegate;
+- (void)_setIndexOfGetDisplayMediaDeviceSelectedForTesting:(id)testing;
+- (void)_setInputDelegate:(id)delegate;
+- (void)_setInterfaceOrientationOverride:(int64_t)override;
+- (void)_setLayoutMode:(unint64_t)mode;
+- (void)_setMediaCaptureEnabled:(BOOL)enabled;
+- (void)_setMinimumEffectiveDeviceWidth:(double)width;
+- (void)_setNeedsScrollGeometryUpdates:(BOOL)updates;
+- (void)_setNowPlayingMetadataObserver:(id)observer;
+- (void)_setObscuredInsetEdgesAffectedBySafeArea:(unint64_t)area;
+- (void)_setObscuredInsetsInternal:(UIEdgeInsets)internal;
+- (void)_setOpaqueInternal:(BOOL)internal;
+- (void)_setOverrideDeviceScaleFactor:(double)factor;
+- (void)_setPageLength:(double)length;
+- (void)_setPageMuted:(unint64_t)muted;
+- (void)_setPageScale:(double)scale withOrigin:(CGPoint)origin;
+- (void)_setPageZoomFactor:(double)factor;
+- (void)_setPaginationBehavesLikeColumns:(BOOL)columns;
+- (void)_setPaginationMode:(int64_t)mode;
+- (void)_setPointerTouchCompatibilitySimulatorEnabled:(BOOL)enabled;
+- (void)_setPrivateClickMeasurementAppBundleIDForTesting:(id)testing completionHandler:(id)handler;
+- (void)_setPrivateClickMeasurementAttributionReportURLsForTesting:(id)testing destinationURL:(id)l completionHandler:(id)handler;
+- (void)_setPrivateClickMeasurementAttributionTokenPublicKeyURLForTesting:(id)testing completionHandler:(id)handler;
+- (void)_setPrivateClickMeasurementAttributionTokenSignatureURLForTesting:(id)testing completionHandler:(id)handler;
+- (void)_setPrivateClickMeasurementOverrideTimerForTesting:(BOOL)testing completionHandler:(id)handler;
+- (void)_setRemoteInspectionNameOverride:(id)override;
+- (void)_setResourceLoadDelegate:(id)delegate;
+- (void)_setScrollPerformanceDataCollectionEnabled:(BOOL)enabled;
+- (void)_setShouldSuppressTopColorExtensionView:(BOOL)view;
+- (void)_setStatisticsCrossSiteLoadWithLinkDecorationForTesting:(id)testing withToHost:(id)host withWasFiltered:(BOOL)filtered withCompletionHandler:(id)handler;
+- (void)_setSuppressSoftwareKeyboard:(BOOL)keyboard;
+- (void)_setSystemAudioCaptureState:(int64_t)state completionHandler:(id)handler;
+- (void)_setSystemCanPromptForGetDisplayMediaForTesting:(BOOL)testing;
+- (void)_setSystemPreviewCompletionHandlerForLoadTesting:(id)testing;
+- (void)_setTextColor:(id)color sender:(id)sender;
+- (void)_setTextZoomFactor:(double)factor;
+- (void)_setThrottleStateForTesting:(int)testing;
+- (void)_setUIEventAttribution:(id)attribution;
+- (void)_setUnobscuredSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)_setUseSystemAppearance:(BOOL)appearance;
+- (void)_setViewScale:(double)scale;
+- (void)_setViewportSizeForCSSViewportUnits:(CGSize)units;
+- (void)_setupPageConfiguration:(void *)configuration withPool:(void *)pool;
 - (void)_setupScrollAndContentViews;
-- (void)_share:(id)a3;
-- (void)_showDigitalCredentialsPicker:(const void *)a3 completionHandler:(void *)a4;
+- (void)_share:(id)_share;
+- (void)_showDigitalCredentialsPicker:(const void *)picker completionHandler:(void *)handler;
 - (void)_showFindOverlay;
-- (void)_showPasswordViewWithDocumentName:(id)a3 passwordHandler:(id)a4;
-- (void)_showWarningView:(const void *)a3 completionHandler:(void *)a4;
-- (void)_showWarningView:(uint64_t)a1 completionHandler:(unsigned __int8 *)a2;
-- (void)_showWarningViewWithTitle:(id)a3 warning:(id)a4 details:(id)a5 completionHandler:(id)a6;
-- (void)_showWarningViewWithURL:(id)a3 title:(id)a4 warning:(id)a5 details:(id)a6 completionHandler:(id)a7;
-- (void)_showWarningViewWithURL:(id)a3 title:(id)a4 warning:(id)a5 detailsWithLinks:(id)a6 completionHandler:(id)a7;
-- (void)_simulateClickOverFirstMatchingTextInViewportWithUserInteraction:(id)a3 completionHandler:(id)a4;
-- (void)_simulateDeviceOrientationChangeWithAlpha:(double)a3 beta:(double)a4 gamma:(double)a5;
-- (void)_snapshotRectAfterScreenUpdates:(BOOL)a3 rectInViewCoordinates:(CGRect)a4 intoImageOfWidth:(double)a5 completionHandler:(id)a6;
-- (void)_startImageAnalysis:(id)a3 target:(id)a4;
-- (void)_startTextManipulationsWithConfiguration:(id)a3 completion:(id)a4;
+- (void)_showPasswordViewWithDocumentName:(id)name passwordHandler:(id)handler;
+- (void)_showWarningView:(const void *)view completionHandler:(void *)handler;
+- (void)_showWarningView:(uint64_t)view completionHandler:(unsigned __int8 *)handler;
+- (void)_showWarningViewWithTitle:(id)title warning:(id)warning details:(id)details completionHandler:(id)handler;
+- (void)_showWarningViewWithURL:(id)l title:(id)title warning:(id)warning details:(id)details completionHandler:(id)handler;
+- (void)_showWarningViewWithURL:(id)l title:(id)title warning:(id)warning detailsWithLinks:(id)links completionHandler:(id)handler;
+- (void)_simulateClickOverFirstMatchingTextInViewportWithUserInteraction:(id)interaction completionHandler:(id)handler;
+- (void)_simulateDeviceOrientationChangeWithAlpha:(double)alpha beta:(double)beta gamma:(double)gamma;
+- (void)_snapshotRectAfterScreenUpdates:(BOOL)updates rectInViewCoordinates:(CGRect)coordinates intoImageOfWidth:(double)width completionHandler:(id)handler;
+- (void)_startImageAnalysis:(id)analysis target:(id)target;
+- (void)_startTextManipulationsWithConfiguration:(id)configuration completion:(id)completion;
 - (void)_stopAllMediaPlayback;
 - (void)_stopMediaCapture;
-- (void)_storeAppHighlight:(const void *)a3;
+- (void)_storeAppHighlight:(const void *)highlight;
 - (void)_suspendAllMediaPlayback;
-- (void)_suspendPage:(id)a3;
+- (void)_suspendPage:(id)page;
 - (void)_switchFromStaticFontRegistryToUserFontRegistry;
-- (void)_takeFindStringFromSelection:(id)a3;
-- (void)_takePDFSnapshotWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)_targetedPreviewForElementWithID:(id)a3 completionHandler:(id)a4;
+- (void)_takeFindStringFromSelection:(id)selection;
+- (void)_takePDFSnapshotWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)_targetedPreviewForElementWithID:(id)d completionHandler:(id)handler;
 - (void)_terminateIdleServiceWorkersForTesting;
-- (void)_textFragmentDirectiveFromSelectionWithCompletionHandler:(id)a3;
-- (void)_textFragmentRangesWithCompletionHandlerForTesting:(id)a3;
+- (void)_textFragmentDirectiveFromSelectionWithCompletionHandler:(id)handler;
+- (void)_textFragmentRangesWithCompletionHandlerForTesting:(id)testing;
 - (void)_toggleInWindow;
 - (void)_togglePictureInPicture;
-- (void)_toggleStrikeThrough:(id)a3;
-- (void)_trackTransactionCommit:(const void *)a3;
-- (void)_translate:(id)a3;
-- (void)_transliterateChinese:(id)a3;
-- (void)_triggerSystemPreviewActionOnElement:(unint64_t)a3 document:(id)a4 page:(unint64_t)a5;
+- (void)_toggleStrikeThrough:(id)through;
+- (void)_trackTransactionCommit:(const void *)commit;
+- (void)_translate:(id)_translate;
+- (void)_transliterateChinese:(id)chinese;
+- (void)_triggerSystemPreviewActionOnElement:(unint64_t)element document:(id)document page:(unint64_t)page;
 - (void)_uninstallScreenTimeWebpageController;
 - (void)_updateDrawingAreaSize;
 - (void)_updateFindOverlayPosition;
-- (void)_updateFindOverlaysOutsideContentView:(id)a3;
+- (void)_updateFindOverlaysOutsideContentView:(id)view;
 - (void)_updateFixedColorExtensionViewFrames;
 - (void)_updateFixedColorExtensionViews;
-- (void)_updateFixedContainerEdges:(const void *)a3;
+- (void)_updateFixedContainerEdges:(const void *)edges;
 - (void)_updateHiddenScrollPocketEdges;
 - (void)_updateLastKnownWindowSizeAndOrientation;
 - (void)_updateLiveResizeTransform;
 - (void)_updateMediaPlaybackControlsManager;
 - (void)_updateNeedsTopScrollPocketDueToVisibleContentInset;
-- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType withFrame:;
-- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(unint64_t)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType currentPage:;
+- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType withFrame:;
+- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(unint64_t)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType currentPage:;
 - (void)_updatePDFPageNumberIndicatorIfNeeded;
 - (void)_updatePageLoadObserverState;
 - (void)_updatePrefersSolidColorHardPocket;
 - (void)_updateScreenTimeBasedOnWindowVisibility;
 - (void)_updateScreenTimeViewGeometry;
-- (void)_updateScrollGeometryWithContentOffset:(CGPoint)a3 contentSize:(CGSize)a4;
+- (void)_updateScrollGeometryWithContentOffset:(CGPoint)offset contentSize:(CGSize)size;
 - (void)_updateScrollViewBackground;
-- (void)_updateScrollViewForTransaction:(const void *)a3;
+- (void)_updateScrollViewForTransaction:(const void *)transaction;
 - (void)_updateScrollViewIndicatorStyle;
 - (void)_updateScrollViewInsetAdjustmentBehavior;
 - (void)_updateTopScrollPocketCaptureColor;
 - (void)_updateVisibleContentRects;
-- (void)_updateWebpagePreferences:(id)a3;
+- (void)_updateWebpagePreferences:(id)preferences;
 - (void)_videoControlsManagerDidChange;
 - (void)_videosInElementFullscreenChanged;
 - (void)_willOpenAppLink;
-- (void)_windowDidRotate:(id)a3;
-- (void)_zoomOutWithOrigin:(FloatPoint)a3 animated:(BOOL)a4;
-- (void)_zoomToCenter:(FloatPoint)a3 atScale:(double)a4 animated:(BOOL)a5 honorScrollability:(BOOL)a6;
-- (void)_zoomToFocusRect:(const FloatRect *)a3 selectionRect:(const FloatRect *)a4 fontSize:(float)a5 minimumScale:(double)a6 maximumScale:(double)a7 allowScaling:(BOOL)a8 forceScroll:(BOOL)a9;
-- (void)_zoomToRect:(FloatRect)a3 atScale:(double)a4 origin:(FloatPoint)a5 animated:(BOOL)a6;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
-- (void)addShortcut:(id)a3;
-- (void)alignCenter:(id)a3;
-- (void)alignJustified:(id)a3;
-- (void)alignLeft:(id)a3;
-- (void)alignRight:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_windowDidRotate:(id)rotate;
+- (void)_zoomOutWithOrigin:(FloatPoint)origin animated:(BOOL)animated;
+- (void)_zoomToCenter:(FloatPoint)center atScale:(double)scale animated:(BOOL)animated honorScrollability:(BOOL)scrollability;
+- (void)_zoomToFocusRect:(const FloatRect *)rect selectionRect:(const FloatRect *)selectionRect fontSize:(float)size minimumScale:(double)scale maximumScale:(double)maximumScale allowScaling:(BOOL)scaling forceScroll:(BOOL)scroll;
+- (void)_zoomToRect:(FloatRect)rect atScale:(double)scale origin:(FloatPoint)origin animated:(BOOL)animated;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
+- (void)addShortcut:(id)shortcut;
+- (void)alignCenter:(id)center;
+- (void)alignJustified:(id)justified;
+- (void)alignLeft:(id)left;
+- (void)alignRight:(id)right;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)callAsyncJavaScript:(NSString *)functionBody arguments:(NSDictionary *)arguments inFrame:(WKFrameInfo *)frame inContentWorld:(WKContentWorld *)contentWorld completionHandler:(void *)completionHandler;
-- (void)captureTextFromCamera:(id)a3;
-- (void)closeAllMediaPresentationsWithCompletionHandler:(void *)a1;
+- (void)captureTextFromCamera:(id)camera;
 - (void)closeAllMediaPresentationsWithCompletionHandler:(void *)completionHandler;
+- (void)closeAllMediaPresentationsWithCompletionHandler:(void *)handler;
 - (void)closeFullScreenWindowController;
-- (void)colorExtensionViewDidAppear:(id)a3;
-- (void)colorExtensionViewWillDisappear:(id)a3;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
+- (void)colorExtensionViewDidAppear:(id)appear;
+- (void)colorExtensionViewWillDisappear:(id)disappear;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
 - (void)compositionSession:didReceiveText:replacementRange:inContext:finished:;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)createPDFWithConfiguration:(WKPDFConfiguration *)pdfConfiguration completionHandler:(void *)completionHandler;
-- (void)createPDFWithConfiguration:(uint64_t)a1 completionHandler:(WebCore::SharedBuffer *)a2;
-- (void)createWebArchiveDataWithCompletionHandler:(uint64_t)a1;
+- (void)createPDFWithConfiguration:(uint64_t)configuration completionHandler:(WebCore::SharedBuffer *)handler;
+- (void)createWebArchiveDataWithCompletionHandler:(uint64_t)handler;
 - (void)createWebArchiveDataWithCompletionHandler:(void *)completionHandler;
-- (void)cut:(id)a3;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)decreaseSize:(id)a3;
-- (void)define:(id)a3;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
+- (void)decreaseSize:(id)size;
+- (void)define:(id)define;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
 - (void)didEndWritingToolsSession:accepted:;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void *)completionHandler;
 - (void)evaluateJavaScript:(NSString *)javaScriptString inFrame:(WKFrameInfo *)frame inContentWorld:(WKContentWorld *)contentWorld completionHandler:(void *)completionHandler;
 - (void)fetchDataOfTypes:()WTF::ShouldValidateKey completionHandler:;
-- (void)fetchDataOfTypes:(uint64_t)a1 completionHandler:;
-- (void)fetchDataOfTypes:(unint64_t)a3 completionHandler:(id)a4;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
-- (void)findSelected:(id)a3;
+- (void)fetchDataOfTypes:(uint64_t)types completionHandler:;
+- (void)fetchDataOfTypes:(unint64_t)types completionHandler:(id)handler;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
+- (void)findSelected:(id)selected;
 - (void)findString:(NSString *)string withConfiguration:(WKFindConfiguration *)configuration completionHandler:(void *)completionHandler;
-- (void)findString:(uint64_t)a1 withConfiguration:(uint64_t)a2 completionHandler:;
-- (void)increaseSize:(id)a3;
-- (void)intelligenceTextEffectCoordinator:(id)a3 contentPreviewForRange:(_NSRange)a4 completion:(id)a5;
-- (void)intelligenceTextEffectCoordinator:(id)a3 decorateReplacementsForRange:(_NSRange)a4 completion:(id)a5;
-- (void)intelligenceTextEffectCoordinator:(id)a3 rectsForProofreadingSuggestionsInRange:(_NSRange)a4 completion:(id)a5;
-- (void)intelligenceTextEffectCoordinator:(id)a3 setSelectionForRange:(_NSRange)a4 completion:(id)a5;
-- (void)intelligenceTextEffectCoordinator:(id)a3 textPreviewsForRange:(_NSRange)a4 completion:(id)a5;
-- (void)intelligenceTextEffectCoordinator:(id)a3 updateTextVisibilityForRange:(_NSRange)a4 visible:(BOOL)a5 identifier:(id)a6 completion:(id)a7;
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 rectsForProofreadingSuggestionsInRange:(uint64_t)a2 completion:;
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 textPreviewsForRange:(uint64_t *)a2 completion:;
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 updateTextVisibilityForRange:visible:identifier:completion:;
+- (void)findString:(uint64_t)string withConfiguration:(uint64_t)configuration completionHandler:;
+- (void)increaseSize:(id)size;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator contentPreviewForRange:(_NSRange)range completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator decorateReplacementsForRange:(_NSRange)range completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator rectsForProofreadingSuggestionsInRange:(_NSRange)range completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator setSelectionForRange:(_NSRange)range completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator textPreviewsForRange:(_NSRange)range completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(id)coordinator updateTextVisibilityForRange:(_NSRange)range visible:(BOOL)visible identifier:(id)identifier completion:(id)completion;
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator rectsForProofreadingSuggestionsInRange:(uint64_t)range completion:;
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator textPreviewsForRange:(uint64_t *)range completion:;
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator updateTextVisibilityForRange:visible:identifier:completion:;
 - (void)layoutSubviews;
-- (void)lookup:(id)a3;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionNatural:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
-- (void)pasteAndMatchStyle:(id)a3;
+- (void)lookup:(id)lookup;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionNatural:(id)natural;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
+- (void)pasteAndMatchStyle:(id)style;
 - (void)pauseAllMediaPlaybackWithCompletionHandler:(void *)completionHandler;
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)promptForReplace:(id)a3;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)promptForReplace:(id)replace;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
 - (void)proofreadingSession:didReceiveSuggestions:processedRange:inContext:finished:;
 - (void)removeFromSuperview;
-- (void)replace:(id)a3;
+- (void)replace:(id)replace;
 - (void)requestMediaPlaybackStateWithCompletionHandler:(void *)completionHandler;
-- (void)restoreData:(id)a3 completionHandler:(id)a4;
-- (void)restoreData:(uint64_t)a1 completionHandler:(char)a2;
-- (void)restoreData:(void *)a1 completionHandler:(void *)a2;
+- (void)restoreData:(id)data completionHandler:(id)handler;
+- (void)restoreData:(uint64_t)data completionHandler:(char)handler;
+- (void)restoreData:(void *)data completionHandler:(void *)handler;
 - (void)resumeDownloadFromResumeData:(NSData *)resumeData completionHandler:(void *)completionHandler;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollView:(id)a3 handleScrollUpdate:(id)a4 completion:(id)a5;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
+- (void)scrollView:(id)view handleScrollUpdate:(id)update completion:(id)completion;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
 - (void)setAllMediaPlaybackSuspended:(BOOL)suspended completionHandler:(void *)completionHandler;
 - (void)setAllowsBackForwardNavigationGestures:(BOOL)allowsBackForwardNavigationGestures;
 - (void)setAllowsLinkPreview:(BOOL)allowsLinkPreview;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCameraCaptureState:(WKMediaCaptureState)state completionHandler:(void *)completionHandler;
 - (void)setCustomUserAgent:(NSString *)customUserAgent;
 - (void)setFindInteractionEnabled:(BOOL)findInteractionEnabled;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setInspectable:(BOOL)inspectable;
 - (void)setInteractionState:(id)interactionState;
 - (void)setMediaType:(NSString *)mediaType;
 - (void)setMicrophoneCaptureState:(WKMediaCaptureState)state completionHandler:(void *)completionHandler;
 - (void)setMinimumViewportInset:(UIEdgeInsets)minimumViewportInset maximumViewportInset:(UIEdgeInsets)maximumViewportInset;
 - (void)setNavigationDelegate:(id)navigationDelegate;
-- (void)setObscuredContentInsets:(UIEdgeInsets)a3;
-- (void)setOpaque:(BOOL)a3;
+- (void)setObscuredContentInsets:(UIEdgeInsets)insets;
+- (void)setOpaque:(BOOL)opaque;
 - (void)setPageZoom:(CGFloat)pageZoom;
-- (void)setPresentingApplicationAuditToken:(id *)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setPresentingApplicationAuditToken:(id *)token;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setUIDelegate:(id)UIDelegate;
 - (void)setUnderPageBackgroundColor:(UIColor *)underPageBackgroundColor;
-- (void)share:(id)a3;
+- (void)share:(id)share;
 - (void)startDownloadUsingRequest:(NSURLRequest *)request completionHandler:(void *)completionHandler;
 - (void)stopLoading;
 - (void)takeSnapshotWithConfiguration:(WKSnapshotConfiguration *)snapshotConfiguration completionHandler:(void *)completionHandler;
-- (void)takeSnapshotWithConfiguration:(uint64_t)a1 completionHandler:;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
-- (void)translate:(id)a3;
-- (void)transliterateChinese:(id)a3;
-- (void)useSelectionForFind:(id)a3;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)takeSnapshotWithConfiguration:(uint64_t)configuration completionHandler:;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
+- (void)translate:(id)translate;
+- (void)transliterateChinese:(id)chinese;
+- (void)useSelectionForFind:(id)find;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation WKWebView
@@ -990,9 +990,9 @@
   [(WKContentView *)self->_contentView.m_ptr setFrame:v4, v6, v8, v10];
   [(WKScrollView *)self->_scrollView.m_ptr addSubview:self->_contentView.m_ptr];
   v17 = self->_scrollView.m_ptr;
-  v18 = [(WKContentView *)self->_contentView.m_ptr unscaledView];
+  unscaledView = [(WKContentView *)self->_contentView.m_ptr unscaledView];
 
-  [(WKScrollView *)v17 addSubview:v18];
+  [(WKScrollView *)v17 addSubview:unscaledView];
 }
 
 - (void)_updateScrollViewInsetAdjustmentBehavior
@@ -1309,11 +1309,11 @@ LABEL_43:
     CFRelease(p_isa[1]);
     if (BoolValueForKey)
     {
-      v8 = [(WKWebView *)self _containerForFixedColorExtension];
-      v9 = v8;
-      if (v8)
+      _containerForFixedColorExtension = [(WKWebView *)self _containerForFixedColorExtension];
+      v9 = _containerForFixedColorExtension;
+      if (_containerForFixedColorExtension)
       {
-        v10 = v8;
+        v10 = _containerForFixedColorExtension;
       }
 
       v30 = v9;
@@ -1351,11 +1351,11 @@ LABEL_43:
 
           else
           {
-            v22 = [(WKWebView *)self underPageBackgroundColor];
-            v21 = v22;
-            if (v22)
+            underPageBackgroundColor = [(WKWebView *)self underPageBackgroundColor];
+            v21 = underPageBackgroundColor;
+            if (underPageBackgroundColor)
             {
-              v23 = v22;
+              v23 = underPageBackgroundColor;
             }
 
             v24 = v33;
@@ -1572,11 +1572,11 @@ LABEL_16:
         break;
       }
 
-      v8 = [(WKWebView *)self _containerForFixedColorExtension];
-      v9 = v8;
-      if (v8)
+      _containerForFixedColorExtension = [(WKWebView *)self _containerForFixedColorExtension];
+      v9 = _containerForFixedColorExtension;
+      if (_containerForFixedColorExtension)
       {
-        v10 = v8;
+        v10 = _containerForFixedColorExtension;
       }
 
       [(WKWebView *)self _obscuredInsetsForFixedColorExtension];
@@ -1696,7 +1696,7 @@ LABEL_29:
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   v4 = MEMORY[0x1E6979518];
@@ -1706,14 +1706,14 @@ LABEL_29:
   v8[3] = &__block_descriptor_40_e8_32c90_ZTSKZ76__WKWebView_WKViewInternalIOS___addUpdateVisibleContentRectPreCommitHandler_E4__18_e5_v8__0l;
   if (self)
   {
-    v5 = self;
-    v9 = self;
-    v6 = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
+    selfCopy4 = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy3 = 0;
   }
 
   [v4 addCommitHandler:v8 forPhase:1];
@@ -1721,8 +1721,8 @@ LABEL_29:
   {
   }
 
-  v7 = v9;
-  v9 = 0;
+  v7 = selfCopy3;
+  selfCopy3 = 0;
   if (v7)
   {
   }
@@ -1735,28 +1735,28 @@ LABEL_29:
 - (void)_updatePageLoadObserverState
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1848);
+    v2 = *(self + 1848);
     if (v2)
     {
-      if (*(a1 + 1840))
+      if (*(self + 1840))
       {
-        if ((*(*(*(a1 + 416) + 32) + 80) & 4) != 0)
+        if ((*(*(*(self + 416) + 32) + 80) & 4) != 0)
         {
-          [a1 bounds];
+          [self bounds];
           v6 = v5;
           v8 = v7;
-          [objc_msgSend(objc_msgSend(a1 "window")];
+          [objc_msgSend(objc_msgSend(self "window")];
           v11 = v6 * v8 / (v10 * v9);
           if (v10 == 0.0 || v9 == 0.0 || v11 < 0.7)
           {
             v18 = qword_1ED640F18;
             if (os_log_type_enabled(qword_1ED640F18, OS_LOG_TYPE_DEBUG))
             {
-              v19 = *(a1 + 1848);
+              v19 = *(self + 1848);
               *buf = 134218499;
-              *&buf[4] = a1;
+              *&buf[4] = self;
               *&buf[12] = 2117;
               *&buf[14] = v19;
               *&buf[22] = 2048;
@@ -1781,13 +1781,13 @@ LABEL_27:
             v24[1] = 3321888768;
             v24[2] = __60__WKWebView_WKViewInternalIOS___updatePageLoadObserverState__block_invoke;
             v24[3] = &__block_descriptor_80_e8_32c74_ZTSKZ60__WKWebView_WKViewInternalIOS___updatePageLoadObserverState_E4__27_e5_v8__0l;
-            v13 = *(a1 + 1848);
+            v13 = *(self + 1848);
             if (v13)
             {
               v14 = v13;
             }
 
-            v15 = *(API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebProcessPool,&API::PageConfiguration::Data::createWebProcessPool>::get((*(*(a1 + 416) + 64) + 16)) + 48);
+            v15 = *(API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebProcessPool,&API::PageConfiguration::Data::createWebProcessPool>::get((*(*(self + 416) + 64) + 16)) + 48);
             v16 = *(v15 + 116);
             *buf = *(v15 + 100);
             *&buf[16] = v16;
@@ -1810,8 +1810,8 @@ LABEL_27:
               dispatch_async(v12, v24);
             }
 
-            v22 = *(a1 + 1848);
-            *(a1 + 1848) = 0;
+            v22 = *(self + 1848);
+            *(self + 1848) = 0;
             if (v22)
             {
             }
@@ -1830,7 +1830,7 @@ LABEL_27:
           if (os_log_type_enabled(qword_1ED640F18, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134218243;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2117;
             *&buf[14] = v2;
             v4 = "_updatePageLoadObserverState(%p): skipping event for host %{sensitive}@, not visible";
@@ -1848,7 +1848,7 @@ LABEL_26:
         if (os_log_type_enabled(qword_1ED640F18, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134218243;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2117;
           *&buf[14] = v2;
           v4 = "_updatePageLoadObserverState(%p): skipping event for host %{sensitive}@, never accessed bflist";
@@ -1862,18 +1862,18 @@ LABEL_26:
 - (void)_registerForNotifications
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
-  [v3 addObserver:self selector:sel__keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
-  [v3 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-  [v3 addObserver:self selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
-  [v3 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-  [v3 addObserver:self selector:sel__windowDidRotate_ name:*MEMORY[0x1E69DE7D0] object:0];
-  [v3 addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
-  [v3 addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8D0] object:0];
-  [v3 addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
-  [v3 addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD918] object:0];
-  [v3 addObserver:self selector:sel__enhancedWindowingToggled_ name:*MEMORY[0x1E69DEB38] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  [defaultCenter addObserver:self selector:sel__windowDidRotate_ name:*MEMORY[0x1E69DE7D0] object:0];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  [defaultCenter addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8D0] object:0];
+  [defaultCenter addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8D8] object:0];
+  [defaultCenter addObserver:self selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD918] object:0];
+  [defaultCenter addObserver:self selector:sel__enhancedWindowingToggled_ name:*MEMORY[0x1E69DEB38] object:0];
   v4[0] = objc_opt_class();
   -[WKWebView registerForTraitChanges:withAction:](self, "registerForTraitChanges:withAction:", [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1], sel__UITraitHDRHeadroomUsageDidChange);
   [(WKWebView *)self _UITraitHDRHeadroomUsageDidChange];
@@ -1889,9 +1889,9 @@ LABEL_26:
 
 - (id)_contentSizeCategory
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  return [v2 preferredContentSizeCategory];
+  return [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 }
 
 - (id)_remoteObjectRegistry
@@ -1908,10 +1908,10 @@ LABEL_26:
 
     v6 = API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebProcessPool,&API::PageConfiguration::Data::createWebProcessPool>::get((*(self->_page.m_ptr + 8) + 16));
     v7 = *(self->_page.m_ptr + 5);
-    v8 = [(_WKRemoteObjectRegistry *)self->_remoteObjectRegistry.m_ptr remoteObjectRegistry];
+    remoteObjectRegistry = [(_WKRemoteObjectRegistry *)self->_remoteObjectRegistry.m_ptr remoteObjectRegistry];
     v10[0] = 105;
     v10[1] = v7;
-    WTF::HashMap<std::pair<IPC::ReceiverName,unsigned long long>,WTF::WeakPtr<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl,WTF::RawPtrTraits<WTF::DefaultWeakPtrImpl>>,WTF::DefaultHash<std::pair<IPC::ReceiverName,unsigned long long>>,WTF::PairHashTraits<WTF::StrongEnumHashTraits<IPC::ReceiverName>,WTF::HashTraits<unsigned long long>>,WTF::HashTraits<WTF::WeakPtr<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl,WTF::RawPtrTraits<WTF::DefaultWeakPtrImpl>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::inlineSet<std::pair<IPC::ReceiverName,unsigned long long>,IPC::MessageReceiver&>((v6 + 64), v10, v8, v9);
+    WTF::HashMap<std::pair<IPC::ReceiverName,unsigned long long>,WTF::WeakPtr<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl,WTF::RawPtrTraits<WTF::DefaultWeakPtrImpl>>,WTF::DefaultHash<std::pair<IPC::ReceiverName,unsigned long long>>,WTF::PairHashTraits<WTF::StrongEnumHashTraits<IPC::ReceiverName>,WTF::HashTraits<unsigned long long>>,WTF::HashTraits<WTF::WeakPtr<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl,WTF::RawPtrTraits<WTF::DefaultWeakPtrImpl>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::inlineSet<std::pair<IPC::ReceiverName,unsigned long long>,IPC::MessageReceiver&>((v6 + 64), v10, remoteObjectRegistry, v9);
     return self->_remoteObjectRegistry.m_ptr;
   }
 
@@ -2016,8 +2016,8 @@ LABEL_26:
   if ((*(m_ptr + 865) & 1) == 0 && *(m_ptr + 864) == 1 && [(WKWebView *)self window])
   {
     v4 = self->_page.m_ptr;
-    v5 = [(WKWebView *)self _isWindowResizingEnabled];
-    WebKit::WebPageProxy::send<Messages::WebPage::SetIsWindowResizingEnabled>(v4, &v5);
+    _isWindowResizingEnabled = [(WKWebView *)self _isWindowResizingEnabled];
+    WebKit::WebPageProxy::send<Messages::WebPage::SetIsWindowResizingEnabled>(v4, &_isWindowResizingEnabled);
   }
 
   [(WKWebView *)self _invalidateResizeAssertions];
@@ -2045,9 +2045,9 @@ LABEL_26:
 
 - (BOOL)_contentViewIsFirstResponder
 {
-  v2 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
 
-  return [v2 isFirstResponder];
+  return [_currentContentView isFirstResponder];
 }
 
 - (id)_currentContentView
@@ -2065,9 +2065,9 @@ LABEL_26:
 
 - (void)_updateScreenTimeBasedOnWindowVisibility
 {
-  v3 = [(WKWebView *)self window];
-  v4 = [(WKWebViewConfiguration *)self->_configuration.m_ptr showsSystemScreenTimeBlockingView];
-  if (v3)
+  window = [(WKWebView *)self window];
+  showsSystemScreenTimeBlockingView = [(WKWebViewConfiguration *)self->_configuration.m_ptr showsSystemScreenTimeBlockingView];
+  if (window)
   {
     m_ptr = self->_screenTimeWebpageController.m_ptr;
     [(WKWebView *)self _installScreenTimeWebpageControllerIfNeeded];
@@ -2080,7 +2080,7 @@ LABEL_26:
       }
     }
 
-    if (v4)
+    if (showsSystemScreenTimeBlockingView)
     {
       [-[STWebpageController view](self->_screenTimeWebpageController.m_ptr "view")];
       v7 = qword_1ED6411C0;
@@ -2134,7 +2134,7 @@ LABEL_26:
 
     else
     {
-      if (!v4)
+      if (!showsSystemScreenTimeBlockingView)
       {
         goto LABEL_18;
       }
@@ -2156,7 +2156,7 @@ LABEL_26:
 LABEL_18:
   v12 = self->_screenTimeWebpageController.m_ptr;
   v13 = ![(WKWebsiteDataStore *)[(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore] isPersistent];
-  if (v3)
+  if (window)
   {
     v14 = v13;
   }
@@ -2219,11 +2219,11 @@ LABEL_18:
             self->_isBlockedByScreenTime = 0;
             [(STWebpageController *)self->_screenTimeWebpageController.m_ptr setProfileIdentifier:[(NSUUID *)[(WKWebsiteDataStore *)[(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore] identifier] UUIDString]];
             [(STWebpageController *)self->_screenTimeWebpageController.m_ptr setSuppressUsageRecording:[(WKWebsiteDataStore *)[(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore] isPersistent]^ 1];
-            v12 = [(STWebpageController *)self->_screenTimeWebpageController.m_ptr view];
-            v13 = v12;
-            if (v12)
+            view = [(STWebpageController *)self->_screenTimeWebpageController.m_ptr view];
+            v13 = view;
+            if (view)
             {
-              v14 = v12;
+              v14 = view;
             }
 
             if ([(WKWebViewConfiguration *)self->_configuration.m_ptr showsSystemScreenTimeBlockingView])
@@ -2305,7 +2305,7 @@ uint64_t __65__WKWebView_WKViewInternalIOS___presentLockdownModeAlertIfNeeded__b
 
       if (self)
       {
-        v7 = self;
+        selfCopy = self;
       }
 
       v8 = malloc_type_malloc(0x30uLL, 0x10E0040B46A7B6EuLL);
@@ -2483,20 +2483,20 @@ uint64_t __65__WKWebView_WKViewInternalIOS___presentLockdownModeAlertIfNeeded__b
     v3 = v13;
   }
 
-  v5 = [v3 effectiveGeometry];
-  v6 = v5;
-  if (v5)
+  effectiveGeometry = [v3 effectiveGeometry];
+  v6 = effectiveGeometry;
+  if (effectiveGeometry)
   {
-    v7 = v5;
+    v7 = effectiveGeometry;
   }
 
   [objc_msgSend(v6 "coordinateSpace")];
   v9 = v8;
   v11 = v10;
-  v12 = [v6 interfaceOrientation];
+  interfaceOrientation = [v6 interfaceOrientation];
   self->_lastKnownWindowSizeAndOrientation.first.width = v9;
   self->_lastKnownWindowSizeAndOrientation.first.height = v11;
-  self->_lastKnownWindowSizeAndOrientation.second = v12;
+  self->_lastKnownWindowSizeAndOrientation.second = interfaceOrientation;
   if (v6)
   {
   }
@@ -2634,9 +2634,9 @@ uint64_t __65__WKWebView_WKViewInternalIOS___presentLockdownModeAlertIfNeeded__b
   v8 = v7;
   v10 = v9;
   [(UIVisualEffectView *)self->_screenTimeBlurredSnapshot.m_ptr setFrame:?];
-  v11 = [(STWebpageController *)self->_screenTimeWebpageController.m_ptr view];
+  view = [(STWebpageController *)self->_screenTimeWebpageController.m_ptr view];
 
-  [v11 setFrame:{v4, v6, v8, v10}];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
 - (NSString)title
@@ -2852,8 +2852,8 @@ void __76__WKWebView_WKViewInternalIOS___addUpdateVisibleContentRectPreCommitHan
 {
   v150 = *MEMORY[0x1E69E9840];
   m_storage = self->_viewStabilityWhenVisibleContentRectUpdateScheduled.m_storage;
-  v4 = [(WKWebView *)self usesStandardContentView];
-  if ((v4 & 1) == 0)
+  usesStandardContentView = [(WKWebView *)self usesStandardContentView];
+  if ((usesStandardContentView & 1) == 0)
   {
     m_ptr = self->_passwordView.m_ptr;
     [(WKWebView *)self bounds];
@@ -2880,7 +2880,7 @@ LABEL_27:
     return;
   }
 
-  WTF::MonotonicTime::now(v4);
+  WTF::MonotonicTime::now(usesStandardContentView);
   v6 = v5;
   p_timeOfFirstVisibleContentRectUpdateWithPendingCommit = &self->_timeOfFirstVisibleContentRectUpdateWithPendingCommit;
   if (self->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_)
@@ -2948,7 +2948,7 @@ LABEL_27:
     }
 
     v20 = *(self->_page.m_ptr + 5);
-    v21 = [(WKWebView *)self _shouldDeferGeometryUpdates];
+    _shouldDeferGeometryUpdates = [(WKWebView *)self _shouldDeferGeometryUpdates];
     if (self->_perProcessState.resetViewStateAfterTransactionID.__engaged_)
     {
       v22 = self->_perProcessState.resetViewStateAfterTransactionID.var0.__val_.m_object.m_identifier;
@@ -2960,23 +2960,23 @@ LABEL_27:
     }
 
     dynamicViewportUpdateMode = self->_perProcessState.dynamicViewportUpdateMode;
-    v24 = [(WKContentView *)self->_contentView.m_ptr sizeChangedSinceLastVisibleContentRectUpdate];
-    v25 = [(WKScrollView *)self->_scrollView.m_ptr isZoomBouncing];
+    sizeChangedSinceLastVisibleContentRectUpdate = [(WKContentView *)self->_contentView.m_ptr sizeChangedSinceLastVisibleContentRectUpdate];
+    isZoomBouncing = [(WKScrollView *)self->_scrollView.m_ptr isZoomBouncing];
     currentlyAdjustingScrollViewInsetsForKeyboard = self->_perProcessState.currentlyAdjustingScrollViewInsetsForKeyboard;
     *buf = 134219776;
     *&buf[4] = self;
     *&buf[12] = 2048;
     *&buf[14] = v20;
     *&buf[22] = 1024;
-    *&buf[24] = v21;
+    *&buf[24] = _shouldDeferGeometryUpdates;
     *&buf[28] = 1024;
     *&buf[30] = dynamicViewportUpdateMode;
     *v143 = 2048;
     *&v143[2] = v22;
     v144 = 1024;
-    v145 = v24;
+    v145 = sizeChangedSinceLastVisibleContentRectUpdate;
     v146 = 1024;
-    v147 = v25;
+    v147 = isZoomBouncing;
     v148 = 1024;
     v149 = currentlyAdjustingScrollViewInsetsForKeyboard;
     v15 = "%p (pageProxyID=%llu) [WKWebView _updateVisibleContentRects:] - scroll view state is non-stable, bailing (shouldDeferGeometryUpdates %d, dynamicViewportUpdateMode %d, resetViewStateAfterTransactionID %llu, sizeChangedSinceLastVisibleContentRectUpdate %d, [_scrollView isZoomBouncing] %d, currentlyAdjustingScrollViewInsetsForKeyboard %d)";
@@ -3149,11 +3149,11 @@ LABEL_43:
   width = self->_inputViewBoundsInWindow.size.width;
   [(WKScrollView *)self->_scrollView.m_ptr minimumZoomScale];
   v70 = v69;
-  v71 = [(WKWebView *)self _scroller];
-  v72 = v71;
-  if (v71)
+  _scroller = [(WKWebView *)self _scroller];
+  v72 = _scroller;
+  if (_scroller)
   {
-    [v71 contentInset];
+    [_scroller contentInset];
     v74 = v73;
     v76 = v75;
     v78 = v77;
@@ -3239,10 +3239,10 @@ LABEL_43:
     y = v8;
     width = v9;
     height = v10;
-    v11 = [(WKWebView *)self _enclosingViewForExposedRectComputation];
-    if (v11)
+    _enclosingViewForExposedRectComputation = [(WKWebView *)self _enclosingViewForExposedRectComputation];
+    if (_enclosingViewForExposedRectComputation)
     {
-      [(WKWebView *)self _visibleRectInEnclosingView:v11];
+      [(WKWebView *)self _visibleRectInEnclosingView:_enclosingViewForExposedRectComputation];
       [(WKWebView *)self convertRect:self->_contentView.m_ptr toView:?];
       v23.origin.x = v12;
       v23.origin.y = v13;
@@ -3286,12 +3286,12 @@ LABEL_5:
 
   if (!self->_haveSetObscuredInsets)
   {
-    v15 = [(WKWebView *)self _safeAreaShouldAffectObscuredInsets];
+    _safeAreaShouldAffectObscuredInsets = [(WKWebView *)self _safeAreaShouldAffectObscuredInsets];
     top = *MEMORY[0x1E69DDCE0];
     left = *(MEMORY[0x1E69DDCE0] + 8);
     bottom = *(MEMORY[0x1E69DDCE0] + 16);
     right = *(MEMORY[0x1E69DDCE0] + 24);
-    if (!v15)
+    if (!_safeAreaShouldAffectObscuredInsets)
     {
       goto LABEL_6;
     }
@@ -3363,7 +3363,7 @@ LABEL_7:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
   v17 = sub_19E6CD0B8();
   v6 = *(v17 - 8);
@@ -3381,8 +3381,8 @@ LABEL_7:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v13 = a4;
-  v16 = self;
+  collectorCopy = collector;
+  selfCopy = self;
   sub_19E6CD028();
   __swift_project_boxed_opaque_existential_0(v18, v18[3]);
   sub_19E6CD0E8();
@@ -3395,12 +3395,12 @@ LABEL_7:
   (*(v10 + 8))(v12, v9);
 }
 
-- (void)_intelligenceCollectRemoteContentIn:(CGRect)a3 remoteContextWrapper:(id)a4
+- (void)_intelligenceCollectRemoteContentIn:(CGRect)in remoteContextWrapper:(id)wrapper
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB017A40);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v21 - v11;
@@ -3415,10 +3415,10 @@ LABEL_7:
 
   v14 = sub_19E6CD5D8();
   (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
-  v15 = a4;
-  v16 = self;
-  v17 = v15;
-  v18 = v16;
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  v17 = wrapperCopy;
+  v18 = selfCopy;
   v19 = sub_19E6CD5A8();
   v20 = swift_allocObject();
   *(v20 + 2) = v19;
@@ -3432,33 +3432,33 @@ LABEL_7:
   sub_19D62343C(0, 0, v12, &unk_19E702A60, v20);
 }
 
-- (void)_showDigitalCredentialsPicker:(const void *)a3 completionHandler:(void *)a4
+- (void)_showDigitalCredentialsPicker:(const void *)picker completionHandler:(void *)handler
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v6[0] = 6;
   v6[16] = 1;
-  WTF::CompletionHandler<void ()(std::experimental::fundamentals_v3::expected<WebCore::DigitalCredentialsResponseData,WebCore::ExceptionData> &&)>::operator()(a4);
+  WTF::CompletionHandler<void ()(std::experimental::fundamentals_v3::expected<WebCore::DigitalCredentialsResponseData,WebCore::ExceptionData> &&)>::operator()(handler);
   std::experimental::fundamentals_v3::expected<WebCore::DigitalCredentialsResponseData,WebCore::ExceptionData>::~expected(v6, v5);
 }
 
-- (WKWebView)initWithFrame:(CGRect)a3
+- (WKWebView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_alloc_init(WKWebViewConfiguration);
-  v9 = [(WKWebView *)self initWithFrame:v8 configuration:x, y, width, height];
+  height = [(WKWebView *)self initWithFrame:v8 configuration:x, y, width, height];
   if (v8)
   {
   }
 
-  return v9;
+  return height;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &_MergedGlobals_1159)
+  if (context == &_MergedGlobals_1159)
   {
     location = 0;
     objc_initWeak(&location, self);
@@ -3479,16 +3479,16 @@ LABEL_7:
     return;
   }
 
-  if (a6 != &off_1EB018A18)
+  if (context != &off_1EB018A18)
   {
     v24.receiver = self;
     v24.super_class = WKWebView;
-    [(WKWebView *)&v24 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WKWebView *)&v24 observeValueForKeyPath:path ofObject:object change:change context:?];
     return;
   }
 
-  v10 = [WTF::dynamic_objc_cast<NSNumber>(objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500], a4)), "BOOLValue"}];
-  v11 = [WTF::dynamic_objc_cast<NSNumber>(objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0])), "BOOLValue"}];
+  v10 = [WTF::dynamic_objc_cast<NSNumber>(objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500], object)), "BOOLValue"}];
+  v11 = [WTF::dynamic_objc_cast<NSNumber>(objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0])), "BOOLValue"}];
   isBlockedByScreenTime = self->_isBlockedByScreenTime;
   if (v10 != v11)
   {
@@ -3572,14 +3572,14 @@ LABEL_16:
   }
 }
 
-- (void)_initializeWithConfiguration:(id)a3
+- (void)_initializeWithConfiguration:(id)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Configuration cannot be nil"];
   }
 
-  v5 = [a3 copy];
+  v5 = [configuration copy];
   m_ptr = self->_configuration.m_ptr;
   self->_configuration.m_ptr = v5;
   if (m_ptr)
@@ -3591,16 +3591,16 @@ LABEL_16:
     dispatch_once(&addBrowsingContextControllerMethodStubsIfNeeded(void)::onceToken, &__block_literal_global_2575);
   }
 
-  v7 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _relatedWebView];
-  if (v7)
+  _relatedWebView = [(WKWebViewConfiguration *)self->_configuration.m_ptr _relatedWebView];
+  if (_relatedWebView)
   {
-    v8 = v7;
-    v9 = [(WKWebViewConfiguration *)self->_configuration.m_ptr processPool];
-    v10 = [(WKWebViewConfiguration *)v8->_configuration.m_ptr processPool];
-    v11 = v10;
-    if (v9)
+    v8 = _relatedWebView;
+    processPool = [(WKWebViewConfiguration *)self->_configuration.m_ptr processPool];
+    processPool2 = [(WKWebViewConfiguration *)v8->_configuration.m_ptr processPool];
+    v11 = processPool2;
+    if (processPool)
     {
-      v12 = v9 == v10;
+      v12 = processPool == processPool2;
     }
 
     else
@@ -3610,11 +3610,11 @@ LABEL_16:
 
     if (!v12)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Related web view %@ has process pool %@ but configuration specifies a different process pool %@", v8, v10, objc_msgSend(a3, "processPool")}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Related web view %@ has process pool %@ but configuration specifies a different process pool %@", v8, processPool2, objc_msgSend(configuration, "processPool")}];
     }
 
-    v13 = [(WKWebViewConfiguration *)v8->_configuration.m_ptr websiteDataStore];
-    if (v13 != [(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore]&& WTF::linkedOnOrAfterSDKWithBehavior())
+    websiteDataStore = [(WKWebViewConfiguration *)v8->_configuration.m_ptr websiteDataStore];
+    if (websiteDataStore != [(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore]&& WTF::linkedOnOrAfterSDKWithBehavior())
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Related web view %@ has data store %@ but configuration specifies a different data store %@", v8, -[WKWebViewConfiguration websiteDataStore](v8->_configuration.m_ptr, "websiteDataStore"), -[WKWebViewConfiguration websiteDataStore](self->_configuration.m_ptr, "websiteDataStore")}];
     }
@@ -3622,14 +3622,14 @@ LABEL_16:
     [(WKWebViewConfiguration *)self->_configuration.m_ptr setProcessPool:v11];
   }
 
-  v14 = [(WKWebViewConfiguration *)self->_configuration.m_ptr processPool];
-  CFRetain(*&v14->_processPool.m_storage.data[8]);
+  processPool3 = [(WKWebViewConfiguration *)self->_configuration.m_ptr processPool];
+  CFRetain(*&processPool3->_processPool.m_storage.data[8]);
   v15 = self->_configuration.m_ptr;
   CFRetain(*&v15->_pageConfiguration.m_storage.data[8]);
   API::PageConfiguration::create(&v98);
   API::PageConfiguration::Data::operator=(v98 + 2, &v15->_pageConfiguration.m_storage.data[16]);
   CFRelease(*&v15->_pageConfiguration.m_storage.data[8]);
-  [(WKWebView *)self _setupPageConfiguration:&v98 withPool:&v14->_processPool];
+  [(WKWebView *)self _setupPageConfiguration:&v98 withPool:&processPool3->_processPool];
   self->_usePlatformFindUI = 1;
   self->_obscuredInsetEdgesAffectedBySafeArea = 11;
   self->_allowsViewportShrinkToFit = 0;
@@ -3654,7 +3654,7 @@ LABEL_16:
   v26 = v98;
   CFRetain(*(v98 + 1));
   v99 = v26;
-  v27 = [(WKContentView *)v17 initWithFrame:&v14->_processPool processPool:&v99 configuration:self webView:v19, v21, v23, v25];
+  v27 = [(WKContentView *)v17 initWithFrame:&processPool3->_processPool processPool:&v99 configuration:self webView:v19, v21, v23, v25];
   v28 = self->_contentView.m_ptr;
   self->_contentView.m_ptr = v27;
   if (v28)
@@ -3668,15 +3668,15 @@ LABEL_16:
     CFRelease(*(v29 + 1));
   }
 
-  v30 = [(WKContentView *)self->_contentView.m_ptr page];
-  CFRetain(v30[1]);
+  page = [(WKContentView *)self->_contentView.m_ptr page];
+  CFRetain(page[1]);
   if (self->_page.m_ptr)
   {
     __break(0xC471u);
     goto LABEL_112;
   }
 
-  self->_page.m_ptr = v30;
+  self->_page.m_ptr = page;
   [(WKWebView *)self _setupScrollAndContentViews];
   if ([(WKWebView *)self isOpaque]&& (*(v98 + 310) & 1) != 0)
   {
@@ -3703,7 +3703,7 @@ LABEL_16:
   }
 
   WebKit::WebPageProxy::setForceAlwaysUserScalable(self->_page.m_ptr, [(WKWebViewConfiguration *)self->_configuration.m_ptr ignoresViewportScaleLimits]);
-  if ([a3 applicationNameForUserAgent])
+  if ([configuration applicationNameForUserAgent])
   {
     v35 = self->_page.m_ptr;
     MEMORY[0x19EB02040](&v99);
@@ -3720,7 +3720,7 @@ LABEL_16:
   }
 
   v39 = self->_page.m_ptr;
-  MEMORY[0x19EB02040](&v99, [a3 _applicationNameForDesktopUserAgent]);
+  MEMORY[0x19EB02040](&v99, [configuration _applicationNameForDesktopUserAgent]);
   v41 = v99;
   if (v99)
   {
@@ -3982,11 +3982,11 @@ LABEL_112:
   {
   }
 
-  v88 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-  v90 = v88;
-  if (v88)
+  strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+  v90 = strongToWeakObjectsMapTable;
+  if (strongToWeakObjectsMapTable)
   {
-    v91 = v88;
+    v91 = strongToWeakObjectsMapTable;
   }
 
   v92 = self->_writingToolsTextSuggestions.m_ptr;
@@ -4020,20 +4020,20 @@ LABEL_112:
     CFRelease(*(v95 + 1));
   }
 
-  if (v14)
+  if (processPool3)
   {
-    CFRelease(*&v14->_processPool.m_storage.data[8]);
+    CFRelease(*&processPool3->_processPool.m_storage.data[8]);
   }
 }
 
-- (void)_setupPageConfiguration:(void *)a3 withPool:(void *)a4
+- (void)_setupPageConfiguration:(void *)configuration withPool:(void *)pool
 {
-  v7 = *a3;
-  v8 = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
-  p_preferences = &v8->_preferences;
-  if (v8)
+  v7 = *configuration;
+  preferences = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
+  p_preferences = &preferences->_preferences;
+  if (preferences)
   {
-    CFRetain(*&v8->_preferences.m_storage.data[8]);
+    CFRetain(*&preferences->_preferences.m_storage.data[8]);
   }
 
   v10 = *(v7 + 4);
@@ -4043,11 +4043,11 @@ LABEL_112:
     CFRelease(*(v10 + 8));
   }
 
-  v11 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _relatedWebView];
-  if (v11)
+  _relatedWebView = [(WKWebViewConfiguration *)self->_configuration.m_ptr _relatedWebView];
+  if (_relatedWebView)
   {
-    v13 = *a3;
-    m_ptr = v11->_page.m_ptr;
+    v13 = *configuration;
+    m_ptr = _relatedWebView->_page.m_ptr;
     if (m_ptr)
     {
       WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(m_ptr + 6, m_ptr + 16);
@@ -4072,11 +4072,11 @@ LABEL_112:
     }
   }
 
-  v17 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _webViewToCloneSessionStorageFrom];
-  if (v17)
+  _webViewToCloneSessionStorageFrom = [(WKWebViewConfiguration *)self->_configuration.m_ptr _webViewToCloneSessionStorageFrom];
+  if (_webViewToCloneSessionStorageFrom)
   {
-    v19 = *a3;
-    v20 = v17->_page.m_ptr;
+    v19 = *configuration;
+    v20 = _webViewToCloneSessionStorageFrom->_page.m_ptr;
     if (v20)
     {
       WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(v20 + 6, v20 + 16);
@@ -4101,12 +4101,12 @@ LABEL_112:
     }
   }
 
-  v23 = *a3;
-  v24 = [(WKWebViewConfiguration *)self->_configuration.m_ptr userContentController];
-  p_userContentControllerProxy = &v24->_userContentControllerProxy;
-  if (v24)
+  v23 = *configuration;
+  userContentController = [(WKWebViewConfiguration *)self->_configuration.m_ptr userContentController];
+  p_userContentControllerProxy = &userContentController->_userContentControllerProxy;
+  if (userContentController)
   {
-    CFRetain(*&v24->_userContentControllerProxy.m_storage.data[8]);
+    CFRetain(*&userContentController->_userContentControllerProxy.m_storage.data[8]);
   }
 
   v26 = *(v23 + 3);
@@ -4116,12 +4116,12 @@ LABEL_112:
     CFRelease(*(v26 + 8));
   }
 
-  v27 = *a3;
-  v28 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _visitedLinkStore];
-  p_visitedLinkStore = &v28->_visitedLinkStore;
-  if (v28)
+  v27 = *configuration;
+  _visitedLinkStore = [(WKWebViewConfiguration *)self->_configuration.m_ptr _visitedLinkStore];
+  p_visitedLinkStore = &_visitedLinkStore->_visitedLinkStore;
+  if (_visitedLinkStore)
   {
-    CFRetain(*&v28->_visitedLinkStore.m_storage.data[8]);
+    CFRetain(*&_visitedLinkStore->_visitedLinkStore.m_storage.data[8]);
   }
 
   v30 = *(v27 + 5);
@@ -4131,10 +4131,10 @@ LABEL_112:
     CFRelease(*(v30 + 8));
   }
 
-  v31 = *a3;
-  v32 = [(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore];
-  p_websiteDataStore = &v32->_websiteDataStore;
-  CFRetain(*&v32->_websiteDataStore.m_storage.data[8]);
+  v31 = *configuration;
+  websiteDataStore = [(WKWebViewConfiguration *)self->_configuration.m_ptr websiteDataStore];
+  p_websiteDataStore = &websiteDataStore->_websiteDataStore;
+  CFRetain(*&websiteDataStore->_websiteDataStore.m_storage.data[8]);
   v34 = *(v31 + 7);
   *(v31 + 7) = p_websiteDataStore;
   if (v34)
@@ -4142,10 +4142,10 @@ LABEL_112:
     CFRelease(*(v34 + 8));
   }
 
-  v35 = *a3;
-  v36 = [(WKWebViewConfiguration *)self->_configuration.m_ptr defaultWebpagePreferences];
-  p_websitePolicies = &v36->_websitePolicies;
-  CFRetain(*&v36->_websitePolicies.m_storage.data[8]);
+  v35 = *configuration;
+  defaultWebpagePreferences = [(WKWebViewConfiguration *)self->_configuration.m_ptr defaultWebpagePreferences];
+  p_websitePolicies = &defaultWebpagePreferences->_websitePolicies;
+  CFRetain(*&defaultWebpagePreferences->_websitePolicies.m_storage.data[8]);
   v38 = *(v35 + 6);
   *(v35 + 6) = p_websitePolicies;
   if (v38)
@@ -4153,35 +4153,35 @@ LABEL_112:
     CFRelease(*(v38 + 8));
   }
 
-  v39 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _strongWebExtensionController];
-  if (v39)
+  _strongWebExtensionController = [(WKWebViewConfiguration *)self->_configuration.m_ptr _strongWebExtensionController];
+  if (_strongWebExtensionController)
   {
-    v40 = *a3;
-    v41 = [(WKWebExtensionController *)v39 _webExtensionController];
-    CFRetain(*(v41 + 8));
+    v40 = *configuration;
+    _webExtensionController = [(WKWebExtensionController *)_strongWebExtensionController _webExtensionController];
+    CFRetain(*(_webExtensionController + 8));
     v42 = *(v40 + 13);
-    *(v40 + 13) = v41;
+    *(v40 + 13) = _webExtensionController;
     if (v42)
     {
       CFRelease(*(v42 + 8));
     }
   }
 
-  v43 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _weakWebExtensionController];
-  if (v43)
+  _weakWebExtensionController = [(WKWebViewConfiguration *)self->_configuration.m_ptr _weakWebExtensionController];
+  if (_weakWebExtensionController)
   {
-    v44 = *a3;
-    v45 = [(WKWebExtensionController *)v43 _webExtensionController];
-    CFRetain(v45[1]);
-    API::PageConfiguration::setWeakWebExtensionController(v44, v45);
-    CFRelease(v45[1]);
+    v44 = *configuration;
+    _webExtensionController2 = [(WKWebExtensionController *)_weakWebExtensionController _webExtensionController];
+    CFRetain(_webExtensionController2[1]);
+    API::PageConfiguration::setWeakWebExtensionController(v44, _webExtensionController2);
+    CFRelease(_webExtensionController2[1]);
   }
 
-  v46 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _groupIdentifier];
-  if ([(NSString *)v46 length])
+  _groupIdentifier = [(WKWebViewConfiguration *)self->_configuration.m_ptr _groupIdentifier];
+  if ([(NSString *)_groupIdentifier length])
   {
-    v47 = *a3;
-    MEMORY[0x19EB02040](v73, v46);
+    v47 = *configuration;
+    MEMORY[0x19EB02040](v73, _groupIdentifier);
     v48 = API::Object::newObject(0x30uLL, 87);
     v49 = WebKit::WebPageGroup::WebPageGroup(v48, v73);
     CFRetain(v49[1]);
@@ -4201,10 +4201,10 @@ LABEL_112:
     }
   }
 
-  v53 = *a3;
-  v76 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _additionalSupportedImageTypes];
-  v54 = [(NSArray *)v76 count];
-  v75 = &v76;
+  v53 = *configuration;
+  _additionalSupportedImageTypes = [(WKWebViewConfiguration *)self->_configuration.m_ptr _additionalSupportedImageTypes];
+  v54 = [(NSArray *)_additionalSupportedImageTypes count];
+  v75 = &_additionalSupportedImageTypes;
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v72, v54, &v75, 0);
   std::optional<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>>::optional[abi:sn200100]<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,0>(v73, v72);
   std::__optional_storage_base<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,false>::__assign_from[abi:sn200100]<std::__optional_move_assign_base<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,false>>((v53 + 360), v73);
@@ -4214,13 +4214,13 @@ LABEL_112:
   }
 
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v72, v55);
-  v56 = *a3;
+  v56 = *configuration;
   *(v56 + 309) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _waitsForPaintAfterViewDidMoveToWindow];
-  v57 = *a3;
+  v57 = *configuration;
   *(v57 + 310) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _drawsBackground];
-  v58 = *a3;
+  v58 = *configuration;
   *(v58 + 311) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _isControlledByAutomation];
-  v59 = API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebPreferences,&API::PageConfiguration::Data::createWebPreferences>::get((*a3 + 32));
+  v59 = API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebPreferences,&API::PageConfiguration::Data::createWebPreferences>::get((*configuration + 32));
   CFRetain(*(v59 + 1));
   v60 = *(v59 + 26);
   if (!v60)
@@ -4274,23 +4274,23 @@ LABEL_112:
   WebKit::WebPreferences::setAllowsInlineMediaPlaybackAfterFullscreen(v59, v73);
   LOBYTE(v73[0]) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _inlineMediaPlaybackRequiresPlaysInlineAttribute];
   WebKit::WebPreferences::setInlineMediaPlaybackRequiresPlaysInlineAttribute(v59, v73);
-  v63 = [(WKWebViewConfiguration *)self->_configuration.m_ptr allowsPictureInPictureMediaPlayback];
-  if (v63)
+  allowsPictureInPictureMediaPlayback = [(WKWebViewConfiguration *)self->_configuration.m_ptr allowsPictureInPictureMediaPlayback];
+  if (allowsPictureInPictureMediaPlayback)
   {
     if (byte_1EB01D2FF == 1)
     {
-      LOBYTE(v63) = byte_1EB01D2FE;
+      LOBYTE(allowsPictureInPictureMediaPlayback) = byte_1EB01D2FE;
     }
 
     else
     {
-      LOBYTE(v63) = WTF::linkedOnOrAfterSDKWithBehavior();
-      byte_1EB01D2FE = v63;
+      LOBYTE(allowsPictureInPictureMediaPlayback) = WTF::linkedOnOrAfterSDKWithBehavior();
+      byte_1EB01D2FE = allowsPictureInPictureMediaPlayback;
       byte_1EB01D2FF = 1;
     }
   }
 
-  LOBYTE(v73[0]) = v63 & 1;
+  LOBYTE(v73[0]) = allowsPictureInPictureMediaPlayback & 1;
   WebKit::WebPreferences::setAllowsPictureInPictureMediaPlayback(v59, v73);
   LODWORD(v73[0]) = 0;
   WebKit::WebPreferences::setUserInterfaceDirectionPolicy(v59, v73);
@@ -4304,10 +4304,10 @@ LABEL_112:
   WebKit::WebPreferences::setScrollToTextFragmentIndicatorEnabled(v59, v73);
   LOBYTE(v73[0]) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _scrollToTextFragmentMarkingEnabled];
   WebKit::WebPreferences::setScrollToTextFragmentMarkingEnabled(v59, v73);
-  v64 = [(WKWebViewConfiguration *)self->_configuration.m_ptr mediaTypesRequiringUserActionForPlayback];
-  LOBYTE(v73[0]) = (v64 & 2) != 0;
+  mediaTypesRequiringUserActionForPlayback = [(WKWebViewConfiguration *)self->_configuration.m_ptr mediaTypesRequiringUserActionForPlayback];
+  LOBYTE(v73[0]) = (mediaTypesRequiringUserActionForPlayback & 2) != 0;
   WebKit::WebPreferences::setRequiresUserGestureForVideoPlayback(v59, v73);
-  LOBYTE(v73[0]) = v64 & 1;
+  LOBYTE(v73[0]) = mediaTypesRequiringUserActionForPlayback & 1;
   WebKit::WebPreferences::setRequiresUserGestureForAudioPlayback(v59, v73);
   if (byte_1EB01D301 == 1)
   {
@@ -4394,7 +4394,7 @@ LABEL_112:
 
   LOBYTE(v73[0]) = [(WKWebViewConfiguration *)self->_configuration.m_ptr _allowTestOnlyIPC];
   WebKit::WebPreferences::setAllowTestOnlyIPC(v59, v73);
-  LOBYTE(v73[0]) = *(*(a4 + 6) + 96);
+  LOBYTE(v73[0]) = *(*(pool + 6) + 96);
   WebKit::WebPreferences::setUsesSingleWebProcess(v59, v73);
   v71 = *(v59 + 26) - 1;
   *(v59 + 26) = v71;
@@ -4437,21 +4437,21 @@ LABEL_112:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WKWebView;
   [(WKWebView *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_configuration.m_ptr forKey:@"configuration"];
-  [a3 encodeBool:-[WKWebView allowsBackForwardNavigationGestures](self forKey:{"allowsBackForwardNavigationGestures"), @"allowsBackForwardNavigationGestures"}];
-  [a3 encodeObject:-[WKWebView customUserAgent](self forKey:{"customUserAgent"), @"customUserAgent"}];
-  [a3 encodeBool:-[WKWebView allowsLinkPreview](self forKey:{"allowsLinkPreview"), @"allowsLinkPreview"}];
-  [a3 encodeBool:-[WKWebView isFindInteractionEnabled](self forKey:{"isFindInteractionEnabled"), @"findInteractionEnabled"}];
+  [coder encodeObject:self->_configuration.m_ptr forKey:@"configuration"];
+  [coder encodeBool:-[WKWebView allowsBackForwardNavigationGestures](self forKey:{"allowsBackForwardNavigationGestures"), @"allowsBackForwardNavigationGestures"}];
+  [coder encodeObject:-[WKWebView customUserAgent](self forKey:{"customUserAgent"), @"customUserAgent"}];
+  [coder encodeBool:-[WKWebView allowsLinkPreview](self forKey:{"allowsLinkPreview"), @"allowsLinkPreview"}];
+  [coder encodeBool:-[WKWebView isFindInteractionEnabled](self forKey:{"isFindInteractionEnabled"), @"findInteractionEnabled"}];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"serverTrust"])
+  if ([key isEqualToString:@"serverTrust"])
   {
 
     return [(WKWebView *)self serverTrust];
@@ -4461,20 +4461,20 @@ LABEL_112:
   {
     v6.receiver = self;
     v6.super_class = WKWebView;
-    return [(WKWebView *)&v6 valueForUndefinedKey:a3];
+    return [(WKWebView *)&v6 valueForUndefinedKey:key];
   }
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  if ([a4 isEqualToString:@"_webProcessState"])
+  if ([path isEqualToString:@"_webProcessState"])
   {
     *(API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebProcessPool,&API::PageConfiguration::Data::createWebProcessPool>::get((*(self->_page.m_ptr + 8) + 16)) + 1056) = 1;
   }
 
   v11.receiver = self;
   v11.super_class = WKWebView;
-  [(WKWebView *)&v11 addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+  [(WKWebView *)&v11 addObserver:observer forKeyPath:path options:options context:context];
 }
 
 - (WKBackForwardList)backForwardList
@@ -4578,7 +4578,7 @@ LABEL_112:
   return v3;
 }
 
-- (void)_setIconLoadingDelegate:(id)a3
+- (void)_setIconLoadingDelegate:(id)delegate
 {
   m_ptr = self->_page.m_ptr;
   ptr = self->_iconLoadingDelegate.__ptr_;
@@ -4595,7 +4595,7 @@ LABEL_112:
 
   v8 = self->_iconLoadingDelegate.__ptr_;
 
-  WebKit::IconLoadingDelegate::setDelegate(v8, a3);
+  WebKit::IconLoadingDelegate::setDelegate(v8, delegate);
 }
 
 - (_WKResourceLoadDelegate)_resourceLoadDelegate
@@ -4610,7 +4610,7 @@ LABEL_112:
   return v3;
 }
 
-- (void)_setResourceLoadDelegate:(id)a3
+- (void)_setResourceLoadDelegate:(id)delegate
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
@@ -4618,7 +4618,7 @@ LABEL_112:
     ptr = self->_resourceLoadDelegate.__ptr_;
     if (ptr)
     {
-      if (a3)
+      if (delegate)
       {
         v7 = WebKit::ResourceLoadDelegate::ResourceLoadClient::operator new(0x10, a2);
         *v7 = &unk_1F1100868;
@@ -4632,7 +4632,7 @@ LABEL_112:
         }
 
         v8 = self->_resourceLoadDelegate.__ptr_;
-        v9 = a3;
+        delegateCopy = delegate;
       }
 
       else
@@ -4645,10 +4645,10 @@ LABEL_112:
         }
 
         v8 = self->_resourceLoadDelegate.__ptr_;
-        v9 = 0;
+        delegateCopy = 0;
       }
 
-      WebKit::ResourceLoadDelegate::setDelegate(v8, v9);
+      WebKit::ResourceLoadDelegate::setDelegate(v8, delegateCopy);
     }
   }
 }
@@ -4735,9 +4735,9 @@ LABEL_112:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView was used to load a service worker"];
   }
 
-  v8 = [(NSURL *)URL isFileURL];
+  isFileURL = [(NSURL *)URL isFileURL];
   v9 = MEMORY[0x1E695D940];
-  if (!v8)
+  if (!isFileURL)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", URL}];
   }
@@ -5016,9 +5016,9 @@ LABEL_112:
     }
   }
 
-  v5 = [(WKBackForwardListItem *)item _item];
-  CFRetain(*(v5 + 1));
-  v6 = *(v5 + 6);
+  _item = [(WKBackForwardListItem *)item _item];
+  CFRetain(*(_item + 1));
+  v6 = *(_item + 6);
   v7 = (v6 + 8);
   ++*(v6 + 8);
   WebKit::WebPageProxy::goToBackForwardItem(m_ptr, v6, 3u, &v15);
@@ -5044,7 +5044,7 @@ LABEL_112:
     CFRelease(*(v9 + 8));
     v12 = v10;
 LABEL_10:
-    CFRelease(*(v5 + 1));
+    CFRelease(*(_item + 1));
     return v10;
   }
 
@@ -5747,9 +5747,9 @@ LABEL_12:
   _Block_release(0);
 }
 
-- (void)_evaluateJavaScript:(id)a3 asAsyncFunction:(BOOL)a4 withSourceURL:(id)a5 withArguments:(id)a6 forceUserGesture:(BOOL)a7 inFrame:(id)a8 inWorld:(id)a9 completionHandler:(id)a10
+- (void)_evaluateJavaScript:(id)script asAsyncFunction:(BOOL)function withSourceURL:(id)l withArguments:(id)arguments forceUserGesture:(BOOL)gesture inFrame:(id)frame inWorld:(id)world completionHandler:(id)self0
 {
-  v13 = a4;
+  functionCopy = function;
   v70 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -5757,10 +5757,10 @@ LABEL_12:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v16 = [a10 copy];
+  v16 = [handler copy];
   LOBYTE(v65) = 0;
   v68 = 0;
-  if (v13)
+  if (functionCopy)
   {
     v55 = 0;
     v56 = 0;
@@ -5768,14 +5768,14 @@ LABEL_12:
     WTF::Vector<std::pair<WTF::String,WebKit::JavaScriptEvaluationResult>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v55, v17);
   }
 
-  v50 = a7;
+  gestureCopy = gesture;
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v18 = [a6 countByEnumeratingWithState:&v61 objects:v69 count:16];
-  v19 = v18;
-  if (!v18)
+  _handle = [arguments countByEnumeratingWithState:&v61 objects:v69 count:16];
+  v19 = _handle;
+  if (!_handle)
   {
     goto LABEL_35;
   }
@@ -5790,18 +5790,18 @@ LABEL_12:
     {
       if (*v62 != v20)
       {
-        objc_enumerationMutation(a6);
+        objc_enumerationMutation(arguments);
       }
 
-      v18 = WTF::dynamic_objc_cast<NSString>(*(*(&v61 + 1) + 8 * v21));
-      v22 = v18;
-      if (!v18)
+      _handle = WTF::dynamic_objc_cast<NSString>(*(*(&v61 + 1) + 8 * v21));
+      v22 = _handle;
+      if (!_handle)
       {
         goto LABEL_26;
       }
 
-      v23 = v18;
-      v24 = [a6 objectForKey:v22];
+      v23 = _handle;
+      v24 = [arguments objectForKey:v22];
       WebKit::JavaScriptEvaluationResult::extract(v24, v25, &v55);
       if ((v60 & 1) == 0)
       {
@@ -5909,9 +5909,9 @@ LABEL_34:
     }
 
     while (v19 != v21);
-    v18 = [a6 countByEnumeratingWithState:&v61 objects:v69 count:16];
-    v19 = v18;
-    if (v18)
+    _handle = [arguments countByEnumeratingWithState:&v61 objects:v69 count:16];
+    v19 = _handle;
+    if (_handle)
     {
       continue;
     }
@@ -5920,20 +5920,20 @@ LABEL_34:
   }
 
 LABEL_35:
-  if (a8)
+  if (frame)
   {
-    v18 = [a8 _handle];
-    if (v18 && (v18 = [a8 _handle], v18[3]))
+    _handle = [frame _handle];
+    if (_handle && (_handle = [frame _handle], _handle[3]))
     {
-      v18 = [a8 _handle];
-      a8 = v18[3];
-      v40 = a8 != 0;
+      _handle = [frame _handle];
+      frame = _handle[3];
+      v40 = frame != 0;
     }
 
     else
     {
       v40 = 0;
-      a8 = 0;
+      frame = 0;
     }
   }
 
@@ -5949,18 +5949,18 @@ LABEL_35:
 
   else
   {
-    shouldEvaluateJavaScriptWithoutTransientActivation = WebKit::shouldEvaluateJavaScriptWithoutTransientActivation(v18);
+    shouldEvaluateJavaScriptWithoutTransientActivation = WebKit::shouldEvaluateJavaScriptWithoutTransientActivation(_handle);
   }
 
   v42 = self->_page.m_ptr;
-  MEMORY[0x19EB02040](&v55, a3);
+  MEMORY[0x19EB02040](&v55, script);
   LOBYTE(v56) = 0;
-  MEMORY[0x19EB01DE0](&v57, a5);
-  v58 = v13;
+  MEMORY[0x19EB01DE0](&v57, l);
+  v58 = functionCopy;
   std::__optional_move_base<WTF::Vector<std::pair<WTF::String,WebKit::JavaScriptEvaluationResult>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,false>::__optional_move_base[abi:sn200100](v59, &v65);
-  v59[24] = v50;
+  v59[24] = gestureCopy;
   v59[25] = shouldEvaluateJavaScriptWithoutTransientActivation;
-  CFRetain(*(a9 + 2));
+  CFRetain(*(world + 2));
   if (v16)
   {
     v43 = v16;
@@ -5970,7 +5970,7 @@ LABEL_35:
   *v44 = &unk_1F10F9100;
   *(v44 + 1) = v16;
   v53 = v44;
-  WebKit::WebPageProxy::runJavaScriptInFrameInScriptWorld(v42, &v55, a8, v40, a9 + 8, v16 != 0, &v53);
+  WebKit::WebPageProxy::runJavaScriptInFrameInScriptWorld(v42, &v55, frame, v40, world + 8, v16 != 0, &v53);
   v45 = v53;
   v53 = 0;
   if (v45)
@@ -5978,7 +5978,7 @@ LABEL_35:
     (*(*v45 + 8))(v45);
   }
 
-  CFRelease(*(a9 + 2));
+  CFRelease(*(world + 2));
   if (v59[16] == 1)
   {
     WTF::Vector<std::pair<WTF::String,WebKit::JavaScriptEvaluationResult>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v59, v38);
@@ -6075,8 +6075,8 @@ LABEL_58:
   v25 = v21 == 0.0 || IsEmpty;
   if (v25 != 1)
   {
-    v28 = [objc_opt_class() web_requiresCustomSnapshotting];
-    if (v28)
+    web_requiresCustomSnapshotting = [objc_opt_class() web_requiresCustomSnapshotting];
+    if (web_requiresCustomSnapshotting)
     {
       [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
       v30 = v29;
@@ -6094,23 +6094,23 @@ LABEL_58:
       v30 = *(v31 + v32);
     }
 
-    if (!v28)
+    if (!web_requiresCustomSnapshotting)
     {
       v21 = v21 * v30;
     }
 
-    v33 = self;
+    selfCopy = self;
     if (snapshotConfiguration)
     {
-      v34 = [(WKSnapshotConfiguration *)snapshotConfiguration afterScreenUpdates];
+      afterScreenUpdates = [(WKSnapshotConfiguration *)snapshotConfiguration afterScreenUpdates];
     }
 
     else
     {
-      v34 = 0;
+      afterScreenUpdates = 0;
     }
 
-    v35 = self;
+    selfCopy2 = self;
     v36 = _Block_copy(v23);
     if (!snapshotConfiguration || [(WKSnapshotConfiguration *)snapshotConfiguration afterScreenUpdates]) && (WTF::linkedOnOrAfterSDKWithBehavior())
     {
@@ -6123,7 +6123,7 @@ LABEL_58:
         v40 = WTF::fastMalloc(0x60);
         *v40 = &unk_1F10F9150;
         *(v40 + 8) = self;
-        *(v40 + 16) = v34;
+        *(v40 + 16) = afterScreenUpdates;
         *(v40 + 24) = v13;
         *(v40 + 32) = v15;
         *(v40 + 40) = v17;
@@ -6167,7 +6167,7 @@ LABEL_58:
       v42 = _Block_copy(v36);
       aBlock = _Block_copy(v42);
       v46 = v30;
-      [(WKWebView *)self _snapshotRectAfterScreenUpdates:v34 rectInViewCoordinates:v44 intoImageOfWidth:v13 completionHandler:v15, v17, v19, v21];
+      [(WKWebView *)self _snapshotRectAfterScreenUpdates:afterScreenUpdates rectInViewCoordinates:v44 intoImageOfWidth:v13 completionHandler:v15, v17, v19, v21];
       _Block_release(v42);
       _Block_release(aBlock);
     }
@@ -6223,10 +6223,10 @@ LABEL_43:
       }
 
       WebKit::ViewGestureController::installSwipeHandler(v7, &self->super, [(WKWebView *)self scrollView]);
-      v10 = [(WKWebViewConfiguration *)self->_configuration.m_ptr _alternateWebViewForNavigationGestures];
-      if (v10)
+      _alternateWebViewForNavigationGestures = [(WKWebViewConfiguration *)self->_configuration.m_ptr _alternateWebViewForNavigationGestures];
+      if (_alternateWebViewForNavigationGestures)
       {
-        WebKit::ViewGestureController::setAlternateBackForwardListSourcePage(self->_gestureController.m_ptr, v10->_page.m_ptr);
+        WebKit::ViewGestureController::setAlternateBackForwardListSourcePage(self->_gestureController.m_ptr, _alternateWebViewForNavigationGestures->_page.m_ptr);
       }
     }
 
@@ -6363,16 +6363,16 @@ LABEL_7:
   {
     v10 = self->_page.m_ptr;
     MEMORY[0x19EB02040](&v23, string);
-    v11 = [(WKFindConfiguration *)configuration caseSensitive];
-    v12 = [(WKFindConfiguration *)configuration backwards];
-    v13 = [(WKFindConfiguration *)configuration wraps];
-    v14 = v11 ^ 1;
-    if (v12)
+    caseSensitive = [(WKFindConfiguration *)configuration caseSensitive];
+    backwards = [(WKFindConfiguration *)configuration backwards];
+    wraps = [(WKFindConfiguration *)configuration wraps];
+    v14 = caseSensitive ^ 1;
+    if (backwards)
     {
-      v14 = v11 ^ 1 | 8;
+      v14 = caseSensitive ^ 1 | 8;
     }
 
-    if (v13)
+    if (wraps)
     {
       v15 = v14 | 0x10;
     }
@@ -6649,7 +6649,7 @@ LABEL_7:
   }
 }
 
-- (void)_showWarningView:(const void *)a3 completionHandler:(void *)a4
+- (void)_showWarningView:(const void *)view completionHandler:(void *)handler
 {
   v7 = [_WKWarningView alloc];
   [(WKWebView *)self bounds];
@@ -6659,8 +6659,8 @@ LABEL_7:
   v15 = v14;
   location = 0;
   objc_initWeak(&location, self);
-  v16 = *a4;
-  *a4 = 0;
+  v16 = *handler;
+  *handler = 0;
   v24 = v16;
   v17 = WTF::fastMalloc(0x18);
   *v17 = &unk_1F10F9200;
@@ -6670,7 +6670,7 @@ LABEL_7:
   v24 = 0;
   v25 = v17;
   *(v17 + 16) = v18;
-  v19 = [(_WKWarningView *)v7 initWithFrame:a3 browsingWarning:&v25 completionHandler:v9, v11, v13, v15];
+  v19 = [(_WKWarningView *)v7 initWithFrame:view browsingWarning:&v25 completionHandler:v9, v11, v13, v15];
   m_ptr = self->_warningView.m_ptr;
   self->_warningView.m_ptr = v19;
   if (m_ptr)
@@ -6715,22 +6715,22 @@ LABEL_7:
   }
 }
 
-- (void)_internalDoAfterNextPresentationUpdate:(id)a3 withoutWaitingForPainting:(BOOL)a4 withoutWaitingForAnimatedResize:(BOOL)a5
+- (void)_internalDoAfterNextPresentationUpdate:(id)update withoutWaitingForPainting:(BOOL)painting withoutWaitingForAnimatedResize:(BOOL)resize
 {
-  v6 = a4;
-  v9 = [(WKWebView *)self usesStandardContentView];
-  if (v9)
+  paintingCopy = painting;
+  usesStandardContentView = [(WKWebView *)self usesStandardContentView];
+  if (usesStandardContentView)
   {
-    if (v6)
+    if (paintingCopy)
     {
       *(self->_page.m_ptr + 722) = 1;
-      v10 = _Block_copy(a3);
+      v10 = _Block_copy(update);
       v11 = self == 0;
     }
 
     else
     {
-      v10 = _Block_copy(a3);
+      v10 = _Block_copy(update);
       if (!self)
       {
         v11 = 1;
@@ -6740,19 +6740,19 @@ LABEL_7:
       v11 = 0;
     }
 
-    v16 = self;
+    selfCopy = self;
 LABEL_10:
     m_ptr = self->_page.m_ptr;
     v18 = _Block_copy(v10);
     if (!v11)
     {
-      v19 = self;
+      selfCopy2 = self;
     }
 
     v20 = WTF::fastMalloc(0x20);
     *v20 = &unk_1F10F9250;
     *(v20 + 8) = v18;
-    *(v20 + 16) = a5;
+    *(v20 + 16) = resize;
     *(v20 + 24) = self;
     v22 = v20;
     WebKit::WebPageProxy::callAfterNextPresentationUpdate(m_ptr, &v22);
@@ -6772,8 +6772,8 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  WTF::RunLoop::mainSingleton(v9);
-  v12 = _Block_copy(a3);
+  WTF::RunLoop::mainSingleton(usesStandardContentView);
+  v12 = _Block_copy(update);
   v13 = WTF::fastMalloc(0x10);
   *v13 = &unk_1F10F9228;
   v13[1] = v12;
@@ -6791,14 +6791,14 @@ LABEL_17:
   _Block_release(v15);
 }
 
-- (void)_doAfterNextVisibleContentRectAndPresentationUpdate:(id)a3
+- (void)_doAfterNextVisibleContentRectAndPresentationUpdate:(id)update
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(update);
   v7 = malloc_type_malloc(0x30uLL, 0x10E0040B46A7B6EuLL);
   *v7 = MEMORY[0x1E69E9818];
   v7[1] = 50331650;
@@ -6813,17 +6813,17 @@ LABEL_17:
   _Block_release(0);
 }
 
-- (void)_recalculateViewportSizesWithMinimumViewportInset:(UIEdgeInsets)a3 maximumViewportInset:(UIEdgeInsets)a4 throwOnInvalidInput:(BOOL)a5
+- (void)_recalculateViewportSizesWithMinimumViewportInset:(UIEdgeInsets)inset maximumViewportInset:(UIEdgeInsets)viewportInset throwOnInvalidInput:(BOOL)input
 {
-  v5 = a5;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3.right;
-  v11 = a3.bottom;
-  v12 = a3.left;
-  v13 = a3.top;
+  inputCopy = input;
+  right = viewportInset.right;
+  bottom = viewportInset.bottom;
+  left = viewportInset.left;
+  top = viewportInset.top;
+  v10 = inset.right;
+  v11 = inset.bottom;
+  v12 = inset.left;
+  v13 = inset.top;
   [(WKWebView *)self frame];
   v31[1] = v15;
   v32.width = v16;
@@ -6840,7 +6840,7 @@ LABEL_17:
   {
     if (v18 > 0.0 && v19 > 0.0)
     {
-      if (v5)
+      if (inputCopy)
       {
         v22 = MEMORY[0x1E695DF30];
         v23 = *MEMORY[0x1E695D940];
@@ -6871,7 +6871,7 @@ LABEL_16:
   {
     if (v26 > 0.0 && v27 > 0.0)
     {
-      if (v5)
+      if (inputCopy)
       {
         v22 = MEMORY[0x1E695DF30];
         v23 = *MEMORY[0x1E695D940];
@@ -6897,12 +6897,12 @@ LABEL_16:
   }
 }
 
-- (void)_didInsertAttachment:(void *)a3 withSource:(id)a4
+- (void)_didInsertAttachment:(void *)attachment withSource:(id)source
 {
-  v7 = [(WKWebView *)self UIDelegate];
+  uIDelegate = [(WKWebView *)self UIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = *(a3 + 1);
+    v8 = *(attachment + 1);
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       __break(0xC471u);
@@ -6911,17 +6911,17 @@ LABEL_16:
     else
     {
 
-      [v7 _webView:self didInsertAttachment:v8 withSource:a4];
+      [uIDelegate _webView:self didInsertAttachment:v8 withSource:source];
     }
   }
 }
 
-- (void)_didRemoveAttachment:(void *)a3
+- (void)_didRemoveAttachment:(void *)attachment
 {
-  v5 = [(WKWebView *)self UIDelegate];
+  uIDelegate = [(WKWebView *)self UIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = *(a3 + 1);
+    v6 = *(attachment + 1);
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       __break(0xC471u);
@@ -6930,17 +6930,17 @@ LABEL_16:
     else
     {
 
-      [v5 _webView:self didRemoveAttachment:v6];
+      [uIDelegate _webView:self didRemoveAttachment:v6];
     }
   }
 }
 
-- (void)_didInvalidateDataForAttachment:(void *)a3
+- (void)_didInvalidateDataForAttachment:(void *)attachment
 {
-  v5 = [(WKWebView *)self UIDelegate];
+  uIDelegate = [(WKWebView *)self UIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = *(a3 + 1);
+    v6 = *(attachment + 1);
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       __break(0xC471u);
@@ -6949,28 +6949,28 @@ LABEL_16:
     else
     {
 
-      [v5 _webView:self didInvalidateDataForAttachment:v6];
+      [uIDelegate _webView:self didInvalidateDataForAttachment:v6];
     }
   }
 }
 
-- (void)_storeAppHighlight:(const void *)a3
+- (void)_storeAppHighlight:(const void *)highlight
 {
-  v5 = [(WKWebView *)self _appHighlightDelegate];
-  if (!v5)
+  _appHighlightDelegate = [(WKWebView *)self _appHighlightDelegate];
+  if (!_appHighlightDelegate)
   {
     return;
   }
 
-  v6 = v5;
+  v6 = _appHighlightDelegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return;
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(highlight + 16) == 1)
   {
-    v7 = *(a3 + 1);
+    v7 = *(highlight + 1);
     if (v7)
     {
       atomic_fetch_add_explicit(v7, 2u, memory_order_relaxed);
@@ -6996,8 +6996,8 @@ LABEL_16:
   }
 
   v11 = [_WKAppHighlight alloc];
-  v12 = *a3;
-  atomic_fetch_add((*a3 + 8), 1u);
+  v12 = *highlight;
+  atomic_fetch_add((*highlight + 8), 1u);
   WebCore::FragmentedSharedBuffer::makeContiguous(&v16, v12);
   WebCore::SharedBuffer::createNSData(&v17, v16);
   v13 = [(_WKAppHighlight *)v11 initWithHighlight:v17 text:v9 image:0];
@@ -7031,7 +7031,7 @@ LABEL_15:
 
   if (objc_opt_respondsToSelector())
   {
-    [(_WKAppHighlightDelegate *)v6 _webView:self storeAppHighlight:v13 inNewGroup:*(a3 + 24) requestOriginatedInApp:*(a3 + 25), v16, v17];
+    [(_WKAppHighlightDelegate *)v6 _webView:self storeAppHighlight:v13 inNewGroup:*(highlight + 24) requestOriginatedInApp:*(highlight + 25), v16, v17];
   }
 
   if (v13)
@@ -7227,7 +7227,7 @@ LABEL_15:
     }
   }
 
-  v11 = [(WKWebView *)self UIDelegate];
+  uIDelegate = [(WKWebView *)self UIDelegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = *(self->_page.m_ptr + 4);
@@ -7305,7 +7305,7 @@ LABEL_15:
       v18 = &unk_1F1184DF0;
     }
 
-    [v11 _webView:self editorStateDidChange:v18];
+    [uIDelegate _webView:self editorStateDidChange:v18];
   }
 }
 
@@ -7435,9 +7435,9 @@ LABEL_15:
   }
 
   v8 = [(NSURLRequest *)request URL];
-  v9 = [(NSURL *)v8 isFileURL];
+  isFileURL = [(NSURL *)v8 isFileURL];
   v10 = MEMORY[0x1E695D940];
-  if (!v9)
+  if (!isFileURL)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", v8}];
   }
@@ -7447,11 +7447,11 @@ LABEL_15:
     [MEMORY[0x1E695DF30] raise:*v10 format:{@"%@ is not a file URL", readAccessURL}];
   }
 
-  v11 = [(NSURLRequest *)request attribution];
+  attribution = [(NSURLRequest *)request attribution];
   v12 = self->_page.m_ptr;
   MEMORY[0x19EB02040](&v23, [(NSURL *)v8 absoluteString]);
   MEMORY[0x19EB02040](&v22, [(NSURL *)readAccessURL absoluteString]);
-  WebKit::WebPageProxy::loadFile(v12, &v23, &v22, 0, v11 == NSURLRequestAttributionDeveloper, &v24);
+  WebKit::WebPageProxy::loadFile(v12, &v23, &v22, 0, attribution == NSURLRequestAttributionDeveloper, &v24);
   v14 = v24;
   if (v24)
   {
@@ -7548,8 +7548,8 @@ LABEL_15:
 - (void)setUnderPageBackgroundColor:(UIColor *)underPageBackgroundColor
 {
   m_ptr = self->_page.m_ptr;
-  v4 = [(UIColor *)underPageBackgroundColor CGColor];
-  v6 = WebCore::roundAndClampToSRGBALossy(v4, v5);
+  cGColor = [(UIColor *)underPageBackgroundColor CGColor];
+  v6 = WebCore::roundAndClampToSRGBALossy(cGColor, v5);
   v9 = (bswap32(v6) | 0x1104000000000000) & (v6 << 31 >> 63);
   WebKit::WebPageProxy::setUnderPageBackgroundColorOverride(m_ptr, &v9);
   if ((v9 & 0x8000000000000) != 0)
@@ -7634,16 +7634,16 @@ LABEL_15:
   self->_maximumViewportInset.right = right;
 }
 
-- (void)_setNeedsScrollGeometryUpdates:(BOOL)a3
+- (void)_setNeedsScrollGeometryUpdates:(BOOL)updates
 {
   m_ptr = self->_page.m_ptr;
-  if (*(m_ptr + 1428) != a3)
+  if (*(m_ptr + 1428) != updates)
   {
     v7 = v3;
     v8 = v4;
-    *(m_ptr + 1428) = a3;
-    v6 = a3;
-    WebKit::WebPageProxy::send<Messages::WebPage::SetNeedsScrollGeometryUpdates>(m_ptr, &v6);
+    *(m_ptr + 1428) = updates;
+    updatesCopy = updates;
+    WebKit::WebPageProxy::send<Messages::WebPage::SetNeedsScrollGeometryUpdates>(m_ptr, &updatesCopy);
   }
 }
 
@@ -7661,15 +7661,15 @@ LABEL_15:
   }
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
   v15 = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v14);
-  if (a3)
+  WebKit::convertToWebSession(session, v14);
+  if (session)
   {
-    v7 = a3;
+    sessionCopy = session;
     m_ptr = self->_activeWritingToolsSession.m_ptr;
-    self->_activeWritingToolsSession.m_ptr = a3;
+    self->_activeWritingToolsSession.m_ptr = session;
     if (m_ptr)
     {
     }
@@ -7678,7 +7678,7 @@ LABEL_15:
   }
 
   v9 = self->_page.m_ptr;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(contexts);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F92F0;
   v11[1] = v10;
@@ -7694,10 +7694,10 @@ LABEL_15:
   _Block_release(0);
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v30 = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v29);
+  WebKit::convertToWebSession(session, v29);
   if (v29[32] == 1)
   {
     v23 = 0;
@@ -7706,7 +7706,7 @@ LABEL_15:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [a4 countByEnumeratingWithState:&v19 objects:v28 count:16];
+    v7 = [contexts countByEnumeratingWithState:&v19 objects:v28 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -7716,7 +7716,7 @@ LABEL_4:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(contexts);
         }
 
         WebKit::convertToWebContext(*(*(&v19 + 1) + 8 * v9), &v25);
@@ -7750,7 +7750,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [a4 countByEnumeratingWithState:&v19 objects:v28 count:16];
+          v7 = [contexts countByEnumeratingWithState:&v19 objects:v28 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -7762,14 +7762,14 @@ LABEL_4:
     }
 
     WebKit::WebPageProxy::didBeginWritingToolsSession(self->_page.m_ptr, v29, &v23);
-    if ([a3 type] == 1)
+    if ([session type] == 1)
     {
       v14 = [objc_alloc(WebKit::getWKIntelligenceReplacementTextEffectCoordinatorClass(1)) initWithDelegate:self];
     }
 
     else
     {
-      if ([a3 type] != 2 || objc_msgSend(a3, "compositionSessionType") != 11)
+      if ([session type] != 2 || objc_msgSend(session, "compositionSessionType") != 11)
       {
         m_ptr = self->_intelligenceTextEffectCoordinator.m_ptr;
         self->_intelligenceTextEffectCoordinator.m_ptr = 0;
@@ -7783,7 +7783,7 @@ LABEL_23:
 
         v15 = self->_intelligenceTextEffectCoordinator.m_ptr;
 LABEL_24:
-        v17 = [objc_msgSend(a4 "firstObject")];
+        v17 = [objc_msgSend(contexts "firstObject")];
         [(WKIntelligenceTextEffectCoordinating *)v15 startAnimationForRange:v17 completion:v18, &__block_literal_global_144];
 LABEL_25:
         WTF::Vector<WebCore::WritingTools::Context,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v23, v10);
@@ -7805,16 +7805,16 @@ LABEL_25:
   }
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v75[1] = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v64);
+  WebKit::convertToWebSession(session, v64);
   if (v65 == 1)
   {
-    WebKit::convertToWebContext(a6, v61);
+    WebKit::convertToWebContext(context, v61);
     if (v63 == 1)
     {
       v43 = length;
@@ -7824,7 +7824,7 @@ LABEL_25:
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v13 = [a4 countByEnumeratingWithState:&v44 objects:v60 count:16];
+      v13 = [suggestions countByEnumeratingWithState:&v44 objects:v60 count:16];
       v14 = v13;
       if (v13)
       {
@@ -7836,7 +7836,7 @@ LABEL_25:
           {
             if (*v45 != v15)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(suggestions);
             }
 
             v17 = *(*(&v44 + 1) + 8 * v16);
@@ -7901,14 +7901,14 @@ LABEL_25:
           }
 
           while (v14 != v16);
-          v13 = [a4 countByEnumeratingWithState:&v44 objects:v60 count:16];
+          v13 = [suggestions countByEnumeratingWithState:&v44 objects:v60 count:16];
           v14 = v13;
         }
 
         while (v13);
       }
 
-      v28 = [WebKit::getWKIntelligenceReplacementTextEffectCoordinatorClass(v13) characterDeltaForReceivedSuggestions:a4];
+      v28 = [WebKit::getWKIntelligenceReplacementTextEffectCoordinatorClass(v13) characterDeltaForReceivedSuggestions:suggestions];
       v50 = v64[0];
       v51 = v64[1];
       LOBYTE(v52) = v65;
@@ -7955,7 +7955,7 @@ LABEL_25:
       *&v55 = location;
       *(&v55 + 1) = v43;
       std::__optional_copy_base<WebCore::WritingTools::Context,false>::__optional_copy_base[abi:sn200100](v56, v61);
-      v58 = v7;
+      v58 = finishedCopy;
       v59 = 0;
       objc_initWeak(&v59, self);
       v66 = v50;
@@ -8005,7 +8005,7 @@ LABEL_25:
       }
 
       WTF::Vector<WebCore::WritingTools::TextSuggestion,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v53, v41);
-      [(WKIntelligenceTextEffectCoordinating *)self->_intelligenceTextEffectCoordinator.m_ptr requestReplacementWithProcessedRange:location finished:v43 characterDelta:v7 operation:v28 completion:v36, &__block_literal_global_146];
+      [(WKIntelligenceTextEffectCoordinating *)self->_intelligenceTextEffectCoordinator.m_ptr requestReplacementWithProcessedRange:location finished:v43 characterDelta:finishedCopy operation:v28 completion:v36, &__block_literal_global_146];
       _Block_release(v36);
       WTF::Vector<WebCore::WritingTools::TextSuggestion,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v48, v42);
       if (v63)
@@ -8016,17 +8016,17 @@ LABEL_25:
   }
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v20);
+  WebKit::convertToWebSession(session, v20);
   if (v20[32] == 1)
   {
-    WebKit::convertToWebContext(a6, v17);
+    WebKit::convertToWebContext(context, v17);
     if (v19 == 1)
     {
-      v10 = a4 >= 5 ? 3 : 0x302030100uLL >> (8 * a4);
-      v11 = [(NSMapTable *)self->_writingToolsTextSuggestions.m_ptr objectForKey:a5];
+      v10 = state >= 5 ? 3 : 0x302030100uLL >> (8 * state);
+      v11 = [(NSMapTable *)self->_writingToolsTextSuggestions.m_ptr objectForKey:d];
       if (v11)
       {
         WebKit::convertToWebTextSuggestion(v11, v14);
@@ -8061,10 +8061,10 @@ LABEL_25:
   }
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v14);
+  WebKit::convertToWebSession(session, v14);
   if (v15 == 1)
   {
     m_ptr = self->_activeWritingToolsSession.m_ptr;
@@ -8085,7 +8085,7 @@ LABEL_25:
       v16 = v10;
       v17 = v11;
       v18 = v12;
-      v19 = a4;
+      acceptedCopy = accepted;
       v20[0] = 0;
       objc_moveWeak(v20, &v13);
       v8 = malloc_type_malloc(0x60uLL, 0x10E0040AD1225A2uLL);
@@ -8097,7 +8097,7 @@ LABEL_25:
       *(v8 + 2) = v16;
       *(v8 + 3) = v9;
       *(v8 + 4) = v18;
-      *(v8 + 80) = v19;
+      *(v8 + 80) = acceptedCopy;
       *(v8 + 11) = 0;
       objc_moveWeak(v8 + 11, v20);
       objc_destroyWeak(v20);
@@ -8109,29 +8109,29 @@ LABEL_25:
     else
     {
       WebKit::WebPageProxy::setWritingToolsActive(self->_page.m_ptr, 0);
-      WebKit::WebPageProxy::didEndWritingToolsSession(self->_page.m_ptr, v14, a4);
+      WebKit::WebPageProxy::didEndWritingToolsSession(self->_page.m_ptr, v14, accepted);
     }
   }
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v52[2] = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v42);
+  WebKit::convertToWebSession(session, v42);
   if (v43 == 1)
   {
-    WebKit::convertToWebContext(a6, v39);
+    WebKit::convertToWebContext(context, v39);
     if (v41 == 1)
     {
       if (self->_intelligenceTextEffectCoordinator.m_ptr)
       {
-        *&v44 = a4;
-        if (a4)
+        *&v44 = text;
+        if (text)
         {
-          v13 = a4;
+          textCopy = text;
         }
 
         WebCore::AttributedString::fromNSAttributedString();
@@ -8148,7 +8148,7 @@ LABEL_25:
         *&v34 = location;
         *(&v34 + 1) = length;
         std::__optional_copy_base<WebCore::WritingTools::Context,false>::__optional_copy_base[abi:sn200100](v35, v39);
-        v37 = v7;
+        v37 = finishedCopy;
         v38 = 0;
         objc_initWeak(&v38, self);
         v44 = v30;
@@ -8193,7 +8193,7 @@ LABEL_25:
         v18 = *(self->_page.m_ptr + 4);
         v19 = *(v18 + 528);
         v20 = *(v18 + 312);
-        v21 = [a4 length];
+        v21 = [text length];
         if (v19)
         {
           v22 = v20;
@@ -8204,20 +8204,20 @@ LABEL_25:
           v22 = 0;
         }
 
-        [(WKIntelligenceTextEffectCoordinating *)self->_intelligenceTextEffectCoordinator.m_ptr requestReplacementWithProcessedRange:0 finished:v22 characterDelta:v7 operation:v21 - v22 completion:v15, &__block_literal_global_148];
+        [(WKIntelligenceTextEffectCoordinating *)self->_intelligenceTextEffectCoordinator.m_ptr requestReplacementWithProcessedRange:0 finished:v22 characterDelta:finishedCopy operation:v21 - v22 completion:v15, &__block_literal_global_148];
         _Block_release(v15);
         MEMORY[0x19EB065D0](v28);
       }
 
       else
       {
-        self->_writingToolsTextReplacementsFinished = v7;
+        self->_writingToolsTextReplacementsFinished = finishedCopy;
         ++self->_partialIntelligenceTextAnimationCount;
         m_ptr = self->_page.m_ptr;
-        v28[0] = a4;
-        if (a4)
+        v28[0] = text;
+        if (text)
         {
-          v24 = a4;
+          textCopy2 = text;
         }
 
         WebCore::AttributedString::fromNSAttributedString();
@@ -8231,7 +8231,7 @@ LABEL_25:
         v25 = WTF::fastMalloc(0x10);
         *v25 = &unk_1F10F9318;
         v29 = v25;
-        WebKit::WebPageProxy::compositionSessionDidReceiveTextWithReplacementRange(m_ptr, v42, &v44, &v30, v39, v7, &v29);
+        WebKit::WebPageProxy::compositionSessionDidReceiveTextWithReplacementRange(m_ptr, v42, &v44, &v30, v39, finishedCopy, &v29);
         v26 = v29;
         v29 = 0;
         if (v26)
@@ -8255,18 +8255,18 @@ LABEL_25:
   }
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v8 = *MEMORY[0x1E69E9840];
-  WebKit::convertToWebSession(a3, v7);
+  WebKit::convertToWebSession(session, v7);
   if (v7[32] == 1)
   {
-    if (a4 == 1)
+    if (action == 1)
     {
       v6 = 0;
     }
 
-    else if (a4 == 2)
+    else if (action == 2)
     {
       v6 = 1;
     }
@@ -8282,16 +8282,16 @@ LABEL_25:
   }
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 rectsForProofreadingSuggestionsInRange:(_NSRange)a4 completion:(id)a5
+- (void)intelligenceTextEffectCoordinator:(id)coordinator rectsForProofreadingSuggestionsInRange:(_NSRange)range completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
-  v10 = a4;
-  v6 = _Block_copy(a5);
+  rangeCopy = range;
+  v6 = _Block_copy(completion);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F9340;
   v7[1] = v6;
   v9 = v7;
-  WebKit::WebPageProxy::proofreadingSessionSuggestionTextRectsInRootViewCoordinates(m_ptr, &v10, &v9);
+  WebKit::WebPageProxy::proofreadingSessionSuggestionTextRectsInRootViewCoordinates(m_ptr, &rangeCopy, &v9);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -8302,18 +8302,18 @@ LABEL_25:
   _Block_release(0);
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 updateTextVisibilityForRange:(_NSRange)a4 visible:(BOOL)a5 identifier:(id)a6 completion:(id)a7
+- (void)intelligenceTextEffectCoordinator:(id)coordinator updateTextVisibilityForRange:(_NSRange)range visible:(BOOL)visible identifier:(id)identifier completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v21 = *MEMORY[0x1E69E9840];
-  WTF::UUID::fromNSUUID(v19, a6, a2);
+  WTF::UUID::fromNSUUID(v19, identifier, a2);
   if (v20)
   {
     m_ptr = self->_page.m_ptr;
     v18[0] = location;
     v18[1] = length;
-    aBlock = _Block_copy(a7);
+    aBlock = _Block_copy(completion);
     v16 = 0;
     objc_initWeak(&v16, self);
     v13 = WTF::fastMalloc(0x18);
@@ -8322,7 +8322,7 @@ LABEL_25:
     *(v13 + 16) = 0;
     objc_moveWeak((v13 + 16), &v16);
     v17 = v13;
-    WebKit::WebPageProxy::updateTextVisibilityForActiveWritingToolsSession(m_ptr, v18, a5, v19, &v17);
+    WebKit::WebPageProxy::updateTextVisibilityForActiveWritingToolsSession(m_ptr, v18, visible, v19, &v17);
     v14 = v17;
     v17 = 0;
     if (v14)
@@ -8336,15 +8336,15 @@ LABEL_25:
 
   else
   {
-    (*(a7 + 2))(a7);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 textPreviewsForRange:(_NSRange)a4 completion:(id)a5
+- (void)intelligenceTextEffectCoordinator:(id)coordinator textPreviewsForRange:(_NSRange)range completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
-  v12 = a4;
-  aBlock = _Block_copy(a5);
+  rangeCopy = range;
+  aBlock = _Block_copy(completion);
   v10 = 0;
   objc_initWeak(&v10, self);
   v7 = WTF::fastMalloc(0x18);
@@ -8353,7 +8353,7 @@ LABEL_25:
   *(v7 + 16) = 0;
   objc_moveWeak((v7 + 16), &v10);
   v11 = v7;
-  WebKit::WebPageProxy::textPreviewDataForActiveWritingToolsSession(m_ptr, &v12, &v11);
+  WebKit::WebPageProxy::textPreviewDataForActiveWritingToolsSession(m_ptr, &rangeCopy, &v11);
   v8 = v11;
   v11 = 0;
   if (v8)
@@ -8365,16 +8365,16 @@ LABEL_25:
   _Block_release(0);
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 contentPreviewForRange:(_NSRange)a4 completion:(id)a5
+- (void)intelligenceTextEffectCoordinator:(id)coordinator contentPreviewForRange:(_NSRange)range completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
-  v10 = a4;
-  v6 = _Block_copy(a5);
+  rangeCopy = range;
+  v6 = _Block_copy(completion);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F93B8;
   v7[1] = v6;
   v9 = v7;
-  WebKit::WebPageProxy::textPreviewDataForActiveWritingToolsSession(m_ptr, &v10, &v9);
+  WebKit::WebPageProxy::textPreviewDataForActiveWritingToolsSession(m_ptr, &rangeCopy, &v9);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -8385,16 +8385,16 @@ LABEL_25:
   _Block_release(0);
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 decorateReplacementsForRange:(_NSRange)a4 completion:(id)a5
+- (void)intelligenceTextEffectCoordinator:(id)coordinator decorateReplacementsForRange:(_NSRange)range completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
-  v10 = a4;
-  v6 = _Block_copy(a5);
+  rangeCopy = range;
+  v6 = _Block_copy(completion);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F93E0;
   v7[1] = v6;
   v9 = v7;
-  WebKit::WebPageProxy::decorateTextReplacementsForActiveWritingToolsSession(m_ptr, &v10, &v9);
+  WebKit::WebPageProxy::decorateTextReplacementsForActiveWritingToolsSession(m_ptr, &rangeCopy, &v9);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -8405,16 +8405,16 @@ LABEL_25:
   _Block_release(0);
 }
 
-- (void)intelligenceTextEffectCoordinator:(id)a3 setSelectionForRange:(_NSRange)a4 completion:(id)a5
+- (void)intelligenceTextEffectCoordinator:(id)coordinator setSelectionForRange:(_NSRange)range completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
-  v10 = a4;
-  v6 = _Block_copy(a5);
+  rangeCopy = range;
+  v6 = _Block_copy(completion);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F9408;
   v7[1] = v6;
   v9 = v7;
-  WebKit::WebPageProxy::setSelectionForActiveWritingToolsSession(m_ptr, &v10, &v9);
+  WebKit::WebPageProxy::setSelectionForActiveWritingToolsSession(m_ptr, &rangeCopy, &v9);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -8425,16 +8425,16 @@ LABEL_25:
   _Block_release(0);
 }
 
-- (void)_proofreadingSessionShowDetailsForSuggestionWithUUID:(id)a3 relativeToRect:(CGRect)a4
+- (void)_proofreadingSessionShowDetailsForSuggestionWithUUID:(id)d relativeToRect:(CGRect)rect
 {
   m_ptr = self->_activeWritingToolsSession.m_ptr;
   if (m_ptr)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v11 = [(WTSession *)m_ptr textViewDelegate];
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    textViewDelegate = [(WTSession *)m_ptr textViewDelegate];
     if (objc_opt_respondsToSelector())
     {
       v13 = self->_contentView.m_ptr;
@@ -8443,7 +8443,7 @@ LABEL_25:
         v12 = v13;
       }
 
-      [v11 proofreadingSessionWithUUID:-[WTSession uuid](self->_activeWritingToolsSession.m_ptr showDetailsForSuggestionWithUUID:"uuid") relativeToRect:a3 inView:{v13, x, y, width, height}];
+      [textViewDelegate proofreadingSessionWithUUID:-[WTSession uuid](self->_activeWritingToolsSession.m_ptr showDetailsForSuggestionWithUUID:"uuid") relativeToRect:d inView:{v13, x, y, width, height}];
       if (v13)
       {
       }
@@ -8451,27 +8451,27 @@ LABEL_25:
   }
 }
 
-- (void)_proofreadingSessionUpdateState:(unsigned __int8)a3 forSuggestionWithUUID:(id)a4
+- (void)_proofreadingSessionUpdateState:(unsigned __int8)state forSuggestionWithUUID:(id)d
 {
   m_ptr = self->_activeWritingToolsSession.m_ptr;
   if (m_ptr)
   {
-    v7 = a3;
-    v8 = [(WTSession *)m_ptr textViewDelegate];
+    stateCopy = state;
+    textViewDelegate = [(WTSession *)m_ptr textViewDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(WTSession *)self->_activeWritingToolsSession.m_ptr uuid];
-      if ((v7 - 1) > 2)
+      uuid = [(WTSession *)self->_activeWritingToolsSession.m_ptr uuid];
+      if ((stateCopy - 1) > 2)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = qword_19E703578[(v7 - 1)];
+        v10 = qword_19E703578[(stateCopy - 1)];
       }
 
-      [v8 proofreadingSessionWithUUID:v9 updateState:v10 forSuggestionWithUUID:a4];
+      [textViewDelegate proofreadingSessionWithUUID:uuid updateState:v10 forSuggestionWithUUID:d];
     }
   }
 }
@@ -8490,11 +8490,11 @@ LABEL_25:
   }
 }
 
-- (void)_setGamepadsRecentlyAccessed:(BOOL)a3
+- (void)_setGamepadsRecentlyAccessed:(BOOL)accessed
 {
-  if (self->_gamepadsRecentlyAccessed != a3)
+  if (self->_gamepadsRecentlyAccessed != accessed)
   {
-    self->_gamepadsRecentlyAccessed = a3;
+    self->_gamepadsRecentlyAccessed = accessed;
   }
 }
 
@@ -8527,10 +8527,10 @@ LABEL_25:
   }
 }
 
-- (void)_updateScrollGeometryWithContentOffset:(CGPoint)a3 contentSize:(CGSize)a4
+- (void)_updateScrollGeometryWithContentOffset:(CGPoint)offset contentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [(WKWebView *)self frame];
   v8 = v7;
   v10 = v9;
@@ -8545,10 +8545,10 @@ LABEL_25:
     v16 = m_ptr;
   }
 
-  v17 = [[WKScrollGeometry alloc] initWithContainerSize:v8 contentInsets:v10 contentOffset:v12 contentSize:v15, v14, v13, a3.x, a3.y, *&width, *&height];
+  v17 = [[WKScrollGeometry alloc] initWithContainerSize:v8 contentInsets:v10 contentOffset:v12 contentSize:v15, v14, v13, offset.x, offset.y, *&width, *&height];
   if (!m_ptr || ![(WKScrollGeometry *)m_ptr isEqual:v17])
   {
-    v18 = [(WKWebView *)self UIDelegate];
+    uIDelegate = [(WKWebView *)self UIDelegate];
     if (objc_opt_respondsToSelector())
     {
       if (v17)
@@ -8562,7 +8562,7 @@ LABEL_25:
       {
       }
 
-      [v18 _webView:self geometryDidChange:v17];
+      [uIDelegate _webView:self geometryDidChange:v17];
     }
   }
 
@@ -8575,12 +8575,12 @@ LABEL_25:
   }
 }
 
-- (void)_updateFixedContainerEdges:(const void *)a3
+- (void)_updateFixedContainerEdges:(const void *)edges
 {
-  v3 = a3;
+  edgesCopy = edges;
   v5 = 0;
   p_fixedContainerEdges = &self->_fixedContainerEdges;
-  for (i = a3; ; i += 16)
+  for (i = edges; ; i += 16)
   {
     v8 = (p_fixedContainerEdges + v5 * 16);
     index = p_fixedContainerEdges->colors.m_sides.__elems_[v5].impl_.index_;
@@ -8679,7 +8679,7 @@ LABEL_25:
   do
   {
     v26 = p_fixedContainerEdges->colors.m_sides.__elems_[0].impl_.index_;
-    v27 = v3[8];
+    v27 = edgesCopy[8];
     if (v26 != 255 || v27 != 255)
     {
       if (v27 == 255)
@@ -8704,11 +8704,11 @@ LABEL_25:
       else
       {
         *&v32 = p_fixedContainerEdges;
-        _ZN5mpark6detail10visitation3alt12visit_alt_atIZNS0_10assignmentINS0_6traitsIJN7WebCore20PredominantColorTypeENS6_5ColorEEEEE14generic_assignIRKNS0_15copy_assignmentIS9_LNS0_5TraitE1EEEEEvOT_EUlRSH_OT0_E_JRSA_SG_EEEDcmSI_DpOT0_(v27, &v32, p_fixedContainerEdges, v3);
+        _ZN5mpark6detail10visitation3alt12visit_alt_atIZNS0_10assignmentINS0_6traitsIJN7WebCore20PredominantColorTypeENS6_5ColorEEEEE14generic_assignIRKNS0_15copy_assignmentIS9_LNS0_5TraitE1EEEEEvOT_EUlRSH_OT0_E_JRSA_SG_EEEDcmSI_DpOT0_(v27, &v32, p_fixedContainerEdges, edgesCopy);
       }
     }
 
-    v3 += 16;
+    edgesCopy += 16;
     p_fixedContainerEdges = (p_fixedContainerEdges + 16);
     --v25;
   }
@@ -8731,30 +8731,30 @@ LABEL_25:
   }
 }
 
-- (void)_createPDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :(unint64_t)a5 PDFPluginIdentifierType withFrame:pageCount:
+- (void)_createPDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :(unint64_t)a5 PDFPluginIdentifierType withFrame:pageCount:
 {
   height = a4.size.height;
   width = a4.size.width;
   y = a4.origin.y;
   x = a4.origin.x;
   [(WKWebView *)self _removePDFPageNumberIndicator:?];
-  v12 = [[WKPDFPageNumberIndicator alloc] initWithFrame:self view:a5 pageCount:x, y, width, height];
-  [(WKWebView *)self addSubview:v12];
+  height = [[WKPDFPageNumberIndicator alloc] initWithFrame:self view:a5 pageCount:x, y, width, height];
+  [(WKWebView *)self addSubview:height];
   m_ptr = self->_pdfPageNumberIndicator.second.m_ptr;
-  self->_pdfPageNumberIndicator.first.m_value = a3;
-  self->_pdfPageNumberIndicator.second.m_ptr = v12;
+  self->_pdfPageNumberIndicator.first.m_value = f;
+  self->_pdfPageNumberIndicator.second.m_ptr = height;
   if (m_ptr)
   {
   }
 }
 
-- (void)_removePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType
+- (void)_removePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType
 {
   p_pdfPageNumberIndicator = &self->_pdfPageNumberIndicator;
   m_identifier = self->_pdfPageNumberIndicator.first.m_value.m_identifier;
   if (m_identifier)
   {
-    v5 = m_identifier == a3.m_identifier;
+    v5 = m_identifier == f.m_identifier;
   }
 
   else
@@ -8775,12 +8775,12 @@ LABEL_25:
   }
 }
 
-- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType withFrame:
+- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(CGRect)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType withFrame:
 {
   m_identifier = self->_pdfPageNumberIndicator.first.m_value.m_identifier;
   if (m_identifier)
   {
-    v5 = m_identifier == a3.m_identifier;
+    v5 = m_identifier == f.m_identifier;
   }
 
   else
@@ -8790,16 +8790,16 @@ LABEL_25:
 
   if (v5)
   {
-    [(WKPDFPageNumberIndicator *)self->_pdfPageNumberIndicator.second.m_ptr updatePosition:a3.m_identifier, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(WKPDFPageNumberIndicator *)self->_pdfPageNumberIndicator.second.m_ptr updatePosition:f.m_identifier, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
   }
 }
 
-- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)a3 :(unint64_t)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType currentPage:
+- (void)_updatePDFPageNumberIndicator:()ObjectIdentifierGeneric<WebKit:()WTF:(unsigned long long>)f :(unint64_t)a4 ObjectIdentifierMainThreadAccessTraits<uint64_t> :PDFPluginIdentifierType currentPage:
 {
   m_identifier = self->_pdfPageNumberIndicator.first.m_value.m_identifier;
   if (m_identifier)
   {
-    v5 = m_identifier == a3.m_identifier;
+    v5 = m_identifier == f.m_identifier;
   }
 
   else
@@ -8857,11 +8857,11 @@ LABEL_25:
 {
   if (self->_needsTopScrollPocketDueToVisibleContentInset || [(WKScrollView *)self->_scrollView.m_ptr _usesHardTopScrollEdgeEffect])
   {
-    v3 = [(WKWebView *)self _sampledTopFixedPositionContentColor];
-    if (v3 || (v3 = [(WKWebView *)self underPageBackgroundColor]) != 0)
+    _sampledTopFixedPositionContentColor = [(WKWebView *)self _sampledTopFixedPositionContentColor];
+    if (_sampledTopFixedPositionContentColor || (_sampledTopFixedPositionContentColor = [(WKWebView *)self underPageBackgroundColor]) != 0)
     {
-      v5 = v3;
-      v4 = v3;
+      v5 = _sampledTopFixedPositionContentColor;
+      v4 = _sampledTopFixedPositionContentColor;
       [(WKScrollView *)self->_scrollView.m_ptr _setInternalTopPocketColor:v5];
     }
   }
@@ -8901,16 +8901,16 @@ LABEL_25:
   }
 }
 
-- (BOOL)_hasVisibleColorExtensionView:(unsigned __int8)a3
+- (BOOL)_hasVisibleColorExtensionView:(unsigned __int8)view
 {
-  if (a3 >= 4u)
+  if (view >= 4u)
   {
     __break(1u);
   }
 
   else
   {
-    m_ptr = self->_fixedColorExtensionViews.m_sides.__elems_[a3].m_ptr;
+    m_ptr = self->_fixedColorExtensionViews.m_sides.__elems_[view].m_ptr;
     if (m_ptr)
     {
       v4 = m_ptr;
@@ -8928,17 +8928,17 @@ LABEL_25:
   return self;
 }
 
-- (void)_addReasonToHideTopScrollPocket:(unsigned __int8)a3
+- (void)_addReasonToHideTopScrollPocket:(unsigned __int8)pocket
 {
   v12 = *MEMORY[0x1E69E9840];
   m_storage = self->_reasonsToHideTopScrollPocket.m_storage;
-  if ((m_storage & a3) == 0)
+  if ((m_storage & pocket) == 0)
   {
-    v4 = a3;
+    pocketCopy = pocket;
     v6 = qword_1ED641490;
     if (os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT))
     {
-      switch(v4)
+      switch(pocketCopy)
       {
         case 1:
           v7 = "FullScreen";
@@ -8955,29 +8955,29 @@ LABEL_25:
       }
 
       v8 = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2080;
       v11 = v7;
       _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "%p Hide top scroll pocket (%s)", &v8, 0x16u);
       LOBYTE(m_storage) = self->_reasonsToHideTopScrollPocket.m_storage;
     }
 
-    self->_reasonsToHideTopScrollPocket.m_storage = m_storage | v4;
+    self->_reasonsToHideTopScrollPocket.m_storage = m_storage | pocketCopy;
     [(WKWebView *)self _updateHiddenScrollPocketEdges];
   }
 }
 
-- (void)_removeReasonToHideTopScrollPocket:(unsigned __int8)a3
+- (void)_removeReasonToHideTopScrollPocket:(unsigned __int8)pocket
 {
   v12 = *MEMORY[0x1E69E9840];
   m_storage = self->_reasonsToHideTopScrollPocket.m_storage;
-  if ((m_storage & a3) != 0)
+  if ((m_storage & pocket) != 0)
   {
-    v4 = a3;
+    pocketCopy = pocket;
     v6 = qword_1ED641490;
     if (os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT))
     {
-      switch(v4)
+      switch(pocketCopy)
       {
         case 1:
           v7 = "FullScreen";
@@ -8994,21 +8994,21 @@ LABEL_25:
       }
 
       v8 = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2080;
       v11 = v7;
       _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "%p Unhide top scroll pocket (%s)", &v8, 0x16u);
       LOBYTE(m_storage) = self->_reasonsToHideTopScrollPocket.m_storage;
     }
 
-    self->_reasonsToHideTopScrollPocket.m_storage = m_storage & ~v4;
+    self->_reasonsToHideTopScrollPocket.m_storage = m_storage & ~pocketCopy;
     [(WKWebView *)self _updateHiddenScrollPocketEdges];
   }
 }
 
-- (void)colorExtensionViewWillDisappear:(id)a3
+- (void)colorExtensionViewWillDisappear:(id)disappear
 {
-  if (self->_fixedColorExtensionViews.m_sides.__elems_[0].m_ptr == a3)
+  if (self->_fixedColorExtensionViews.m_sides.__elems_[0].m_ptr == disappear)
   {
     [(WKWebView *)self _updatePrefersSolidColorHardPocket];
   }
@@ -9016,9 +9016,9 @@ LABEL_25:
   [(WKWebView *)self _updateHiddenScrollPocketEdges];
 }
 
-- (void)colorExtensionViewDidAppear:(id)a3
+- (void)colorExtensionViewDidAppear:(id)appear
 {
-  if (self->_fixedColorExtensionViews.m_sides.__elems_[0].m_ptr == a3)
+  if (self->_fixedColorExtensionViews.m_sides.__elems_[0].m_ptr == appear)
   {
     [(WKWebView *)self _updatePrefersSolidColorHardPocket];
   }
@@ -9026,25 +9026,25 @@ LABEL_25:
   [(WKWebView *)self _updateHiddenScrollPocketEdges];
 }
 
-- (void)setObscuredContentInsets:(UIEdgeInsets)a3
+- (void)setObscuredContentInsets:(UIEdgeInsets)insets
 {
-  if (a3.top < 0.0 || a3.left < 0.0 || a3.right < 0.0 || a3.bottom < 0.0)
+  if (insets.top < 0.0 || insets.left < 0.0 || insets.right < 0.0 || insets.bottom < 0.0)
   {
-    insets = a3.bottom;
-    right = a3.right;
-    top = a3.top;
-    left = a3.left;
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"-obscuredContentInsets cannot be negative: %@", NSStringFromUIEdgeInsets(a3)}];
-    a3.top = top;
-    a3.left = left;
-    a3.bottom = insets;
-    a3.right = right;
+    insets = insets.bottom;
+    right = insets.right;
+    top = insets.top;
+    left = insets.left;
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"-obscuredContentInsets cannot be negative: %@", NSStringFromUIEdgeInsets(insets)}];
+    insets.top = top;
+    insets.left = left;
+    insets.bottom = insets;
+    insets.right = right;
   }
 
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_obscuredInsets.top, v4), vceqq_f64(*&self->_obscuredInsets.bottom, v5)))) & 1) == 0)
   {
     v11 = v4;
@@ -9056,12 +9056,12 @@ LABEL_25:
   }
 }
 
-- (void)fetchDataOfTypes:(unint64_t)a3 completionHandler:(id)a4
+- (void)fetchDataOfTypes:(unint64_t)types completionHandler:(id)handler
 {
-  v5 = a3;
+  typesCopy = types;
   v24 = 0;
   v25 = 0;
-  if (a3)
+  if (types)
   {
     LODWORD(v23) = 0;
     v9 = WTF::Vector<WebKit::WebViewDataType,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(&v24, 1uLL, &v23);
@@ -9081,7 +9081,7 @@ LABEL_25:
   *v11 = 1;
   *(v11 + 8) = 0;
   *(v11 + 16) = 0;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = v25;
   v24 = 0;
   v25 = 0;
@@ -9097,7 +9097,7 @@ LABEL_25:
   *v15 = 1;
   *(v15 + 8) = v14;
   _Block_release(0);
-  if (v5)
+  if (typesCopy)
   {
     if (self)
     {
@@ -9148,13 +9148,13 @@ LABEL_25:
   }
 }
 
-- (void)restoreData:(id)a3 completionHandler:(id)a4
+- (void)restoreData:(id)data completionHandler:(id)handler
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    [a3 bytes];
-    [a3 length];
+    [data bytes];
+    [data length];
   }
 
   WTF::Persistence::Decoder::Decoder();
@@ -9163,7 +9163,7 @@ LABEL_25:
   v10[0] = @"Version number is missing.";
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:v6];
-  (*(a4 + 2))(a4, v7);
+  (*(handler + 2))(handler, v7);
   if (v7)
   {
   }
@@ -9197,123 +9197,123 @@ LABEL_25:
   return result;
 }
 
-- (void)_indent:(id)a3
+- (void)_indent:(id)_indent
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _indentForWebView:a3];
+    [(WKContentView *)m_ptr _indentForWebView:_indent];
   }
 }
 
-- (void)_outdent:(id)a3
+- (void)_outdent:(id)_outdent
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _outdentForWebView:a3];
+    [(WKContentView *)m_ptr _outdentForWebView:_outdent];
   }
 }
 
-- (void)_toggleStrikeThrough:(id)a3
+- (void)_toggleStrikeThrough:(id)through
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _toggleStrikeThroughForWebView:a3];
+    [(WKContentView *)m_ptr _toggleStrikeThroughForWebView:through];
   }
 }
 
-- (void)_insertOrderedList:(id)a3
+- (void)_insertOrderedList:(id)list
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _insertOrderedListForWebView:a3];
+    [(WKContentView *)m_ptr _insertOrderedListForWebView:list];
   }
 }
 
-- (void)_insertUnorderedList:(id)a3
+- (void)_insertUnorderedList:(id)list
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _insertUnorderedListForWebView:a3];
+    [(WKContentView *)m_ptr _insertUnorderedListForWebView:list];
   }
 }
 
-- (void)_insertNestedOrderedList:(id)a3
+- (void)_insertNestedOrderedList:(id)list
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _insertNestedOrderedListForWebView:a3];
+    [(WKContentView *)m_ptr _insertNestedOrderedListForWebView:list];
   }
 }
 
-- (void)_insertNestedUnorderedList:(id)a3
+- (void)_insertNestedUnorderedList:(id)list
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _insertNestedUnorderedListForWebView:a3];
+    [(WKContentView *)m_ptr _insertNestedUnorderedListForWebView:list];
   }
 }
 
-- (void)_increaseListLevel:(id)a3
+- (void)_increaseListLevel:(id)level
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _increaseListLevelForWebView:a3];
+    [(WKContentView *)m_ptr _increaseListLevelForWebView:level];
   }
 }
 
-- (void)_decreaseListLevel:(id)a3
+- (void)_decreaseListLevel:(id)level
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _decreaseListLevelForWebView:a3];
+    [(WKContentView *)m_ptr _decreaseListLevelForWebView:level];
   }
 }
 
-- (void)_changeListType:(id)a3
+- (void)_changeListType:(id)type
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _changeListTypeForWebView:a3];
+    [(WKContentView *)m_ptr _changeListTypeForWebView:type];
   }
 }
 
-- (void)_pasteAsQuotation:(id)a3
+- (void)_pasteAsQuotation:(id)quotation
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _pasteAsQuotationForWebView:a3];
+    [(WKContentView *)m_ptr _pasteAsQuotationForWebView:quotation];
   }
 }
 
-- (void)_pasteAndMatchStyle:(id)a3
+- (void)_pasteAndMatchStyle:(id)style
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _pasteAndMatchStyleForWebView:a3];
+    [(WKContentView *)m_ptr _pasteAndMatchStyleForWebView:style];
   }
 }
 
@@ -9325,16 +9325,16 @@ LABEL_25:
   return result;
 }
 
-- (void)_setViewportSizeForCSSViewportUnits:(CGSize)a3
+- (void)_setViewportSizeForCSSViewportUnits:(CGSize)units
 {
-  v8 = a3;
+  unitsCopy = units;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  WebCore::FloatSize::FloatSize(&v6, &v8);
+  WebCore::FloatSize::FloatSize(&v6, &unitsCopy);
   *&v5 = v6;
   if (v6 <= 0.0 || (*&v5 = v7, v7 <= 0.0))
   {
@@ -9380,7 +9380,7 @@ LABEL_8:
   return result;
 }
 
-- (void)_didEnableBrowserExtensions:(id)a3
+- (void)_didEnableBrowserExtensions:(id)extensions
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -9388,7 +9388,7 @@ LABEL_8:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v6 = WTF::HashTable<Inspector::Protocol::Automation::VirtualKey,WTF::KeyValuePair<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey>>,WTF::IntHash<Inspector::Protocol::Automation::VirtualKey>,WTF::HashMap<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey,WTF::IntHash<Inspector::Protocol::Automation::VirtualKey>,WTF::StrongEnumHashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::HashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::StrongEnumHashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::FastMalloc>::computeBestTableSize([a3 count]);
+  v6 = WTF::HashTable<Inspector::Protocol::Automation::VirtualKey,WTF::KeyValuePair<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey>>,WTF::IntHash<Inspector::Protocol::Automation::VirtualKey>,WTF::HashMap<Inspector::Protocol::Automation::VirtualKey,Inspector::Protocol::Automation::VirtualKey,WTF::IntHash<Inspector::Protocol::Automation::VirtualKey>,WTF::StrongEnumHashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::HashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::StrongEnumHashTraits<Inspector::Protocol::Automation::VirtualKey>,WTF::FastMalloc>::computeBestTableSize([extensions count]);
   v7 = WTF::fastZeroedMalloc((16 * v6 + 16));
   v10 = (v7 + 16);
   *(v7 + 8) = v6 - 1;
@@ -9399,7 +9399,7 @@ LABEL_8:
   v9[2] = __52__WKWebView_WKPrivate___didEnableBrowserExtensions___block_invoke;
   v9[3] = &__block_descriptor_40_e8_32c66_ZTSKZ52__WKWebView_WKPrivate___didEnableBrowserExtensions__E4__50_e35_v32__0__NSString_8__NSString_16_B24l;
   v9[4] = &v10;
-  [a3 enumerateKeysAndObjectsUsingBlock:v9];
+  [extensions enumerateKeysAndObjectsUsingBlock:v9];
   WebKit::WebPageInspectorController::browserExtensionsEnabled(*(self->_page.m_ptr + 151), &v10);
   if (v10)
   {
@@ -9564,7 +9564,7 @@ LABEL_38:
   return result;
 }
 
-- (void)_didDisableBrowserExtensions:(id)a3
+- (void)_didDisableBrowserExtensions:(id)extensions
 {
   v23 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
@@ -9573,7 +9573,7 @@ LABEL_38:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v6 = WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::computeBestTableSize([a3 count]);
+  v6 = WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::computeBestTableSize([extensions count]);
   v7 = WTF::fastZeroedMalloc((8 * v6 + 16));
   v20 = (v7 + 16);
   *(v7 + 8) = v6 - 1;
@@ -9583,7 +9583,7 @@ LABEL_38:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v8 = [extensions countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -9593,7 +9593,7 @@ LABEL_38:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(extensions);
         }
 
         MEMORY[0x19EB02040](&v15, *(*(&v16 + 1) + 8 * i));
@@ -9606,7 +9606,7 @@ LABEL_38:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v8 = [extensions countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v8);
@@ -9709,10 +9709,10 @@ LABEL_10:
   return &v4->isa;
 }
 
-- (void)_frames:(id)a3
+- (void)_frames:(id)_frames
 {
   m_ptr = self->_page.m_ptr;
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(_frames);
   v6 = self->_page.m_ptr;
   CFRetain(*(v6 + 1));
   v7 = WTF::fastMalloc(0x18);
@@ -9731,10 +9731,10 @@ LABEL_10:
   _Block_release(0);
 }
 
-- (void)_frameTrees:(id)a3
+- (void)_frameTrees:(id)trees
 {
   m_ptr = self->_page.m_ptr;
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(trees);
   v6 = self->_page.m_ptr;
   CFRetain(*(v6 + 1));
   v7 = WTF::fastMalloc(0x18);
@@ -9751,14 +9751,14 @@ LABEL_10:
   _Block_release(0);
 }
 
-- (void)_frameInfoFromHandle:(id)a3 completionHandler:(id)a4
+- (void)_frameInfoFromHandle:(id)handle completionHandler:(id)handler
 {
-  v6 = *(a3 + 3);
+  v6 = *(handle + 3);
   if (v6 && (v7 = WebKit::WebFrameProxy::webFrame(v6, 1)) != 0)
   {
     v8 = v7;
     CFRetain(*(v7 + 8));
-    v9 = _Block_copy(a4);
+    v9 = _Block_copy(handler);
     m_ptr = self->_page.m_ptr;
     if (m_ptr)
     {
@@ -9784,15 +9784,15 @@ LABEL_10:
 
   else
   {
-    v13 = *(a4 + 2);
+    v13 = *(handler + 2);
 
-    v13(a4, 0);
+    v13(handler, 0);
   }
 }
 
-- (void)_setEditable:(BOOL)a3
+- (void)_setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
   {
@@ -9801,8 +9801,8 @@ LABEL_10:
   }
 
   v6 = *(m_ptr + 736);
-  WebKit::WebPageProxy::setEditable(m_ptr, v3);
-  if (v6 != v3)
+  WebKit::WebPageProxy::setEditable(m_ptr, editableCopy);
+  if (v6 != editableCopy)
   {
     v7 = self->_contentView.m_ptr;
 
@@ -9810,7 +9810,7 @@ LABEL_10:
   }
 }
 
-- (void)_executeEditCommand:(id)a3 argument:(id)a4 completion:(id)a5
+- (void)_executeEditCommand:(id)command argument:(id)argument completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -9819,9 +9819,9 @@ LABEL_10:
     m_ptr = self->_page.m_ptr;
   }
 
-  MEMORY[0x19EB02040](&v18, a3);
-  MEMORY[0x19EB02040](&v17, a4);
-  v9 = _Block_copy(a5);
+  MEMORY[0x19EB02040](&v18, command);
+  MEMORY[0x19EB02040](&v17, argument);
+  v9 = _Block_copy(completion);
   v10 = WTF::fastMalloc(0x10);
   *v10 = &unk_1F10F9548;
   v10[1] = v9;
@@ -9853,7 +9853,7 @@ LABEL_10:
   }
 }
 
-- (void)_startTextManipulationsWithConfiguration:(id)a3 completion:(id)a4
+- (void)_startTextManipulationsWithConfiguration:(id)configuration completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
@@ -9862,23 +9862,23 @@ LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v8 = [a3 includeSubframes];
+  includeSubframes = [configuration includeSubframes];
   WeakRetained = objc_loadWeakRetained(&self->_textManipulationDelegate.m_weakReference);
   if (WeakRetained && (WeakRetained, (v10 = self->_page.m_ptr) != 0) && (v11 = *(v10 + 53)) != 0)
   {
-    v45 = v8;
+    v45 = includeSubframes;
     v46 = v11;
     CFRetain(*(v11 + 8));
     v55 = 0;
     v56 = 0;
-    if (a3)
+    if (configuration)
     {
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v12 = [a3 exclusionRules];
-      v13 = [v12 countByEnumeratingWithState:&v51 objects:v58 count:16];
+      exclusionRules = [configuration exclusionRules];
+      v13 = [exclusionRules countByEnumeratingWithState:&v51 objects:v58 count:16];
       if (v13)
       {
         v14 = *v52;
@@ -9888,7 +9888,7 @@ LABEL_10:
           {
             if (*v52 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(exclusionRules);
             }
 
             v16 = *(*(&v51 + 1) + 8 * i);
@@ -9898,8 +9898,8 @@ LABEL_10:
               if ([v16 className])
               {
                 LOBYTE(v48) = v17;
-                v22 = [v16 className];
-                WTF::AtomStringImpl::add(location, v22, v23);
+                className = [v16 className];
+                WTF::AtomStringImpl::add(location, className, v23);
                 *&v49 = location[0];
                 v50 = 2;
                 v25 = HIDWORD(v56);
@@ -9935,8 +9935,8 @@ LABEL_31:
               else
               {
                 LOBYTE(v48) = v17;
-                v33 = [v16 elementName];
-                WTF::AtomStringImpl::add(location, v33, v34);
+                elementName = [v16 elementName];
+                WTF::AtomStringImpl::add(location, elementName, v34);
                 *&v49 = location[0];
                 v50 = 0;
                 v25 = HIDWORD(v56);
@@ -9954,8 +9954,8 @@ LABEL_18:
             }
 
             LOBYTE(v48) = v17;
-            v18 = [v16 attributeName];
-            WTF::AtomStringImpl::add(&v57, v18, v19);
+            attributeName = [v16 attributeName];
+            WTF::AtomStringImpl::add(&v57, attributeName, v19);
             location[0] = v57;
             MEMORY[0x19EB02040](&location[1], [v16 attributeValue]);
             v21 = *location;
@@ -10009,7 +10009,7 @@ LABEL_18:
             }
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v51 objects:v58 count:16];
+          v13 = [exclusionRules countByEnumeratingWithState:&v51 objects:v58 count:16];
         }
 
         while (v13);
@@ -10024,7 +10024,7 @@ LABEL_18:
     *(v40 + 8) = 0;
     objc_moveWeak((v40 + 8), location);
     v48 = v40;
-    v41 = _Block_copy(a4);
+    v41 = _Block_copy(completion);
     v42 = WTF::fastMalloc(0x10);
     *v42 = &unk_1F10F9598;
     v42[1] = v41;
@@ -10048,17 +10048,17 @@ LABEL_18:
 
   else
   {
-    v44 = *(a4 + 2);
+    v44 = *(completion + 2);
 
-    v44(a4);
+    v44(completion);
   }
 }
 
-- (void)_completeTextManipulation:(id)a3 completion:(id)a4
+- (void)_completeTextManipulation:(id)manipulation completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
-  if (m_ptr && (*(m_ptr + 1426) != 1 || ([MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"], self->_page.m_ptr)) && (objc_msgSend(a3, "identifier"), coreTextManipulationItemIdentifierFromString(v42), (v43 & 1) != 0))
+  if (m_ptr && (*(m_ptr + 1426) != 1 || ([MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"], self->_page.m_ptr)) && (objc_msgSend(manipulation, "identifier"), coreTextManipulationItemIdentifierFromString(v42), (v43 & 1) != 0))
   {
     v40 = 0;
     v41 = 0;
@@ -10066,9 +10066,9 @@ LABEL_18:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v8 = [a3 tokens];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v50 count:16];
-    v32 = self;
+    tokens = [manipulation tokens];
+    v9 = [tokens countByEnumeratingWithState:&v36 objects:v50 count:16];
+    selfCopy = self;
     if (v9)
     {
       v10 = *v37;
@@ -10078,7 +10078,7 @@ LABEL_18:
         {
           if (*v37 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tokens);
           }
 
           v12 = *(*(&v36 + 1) + 8 * i);
@@ -10143,7 +10143,7 @@ LABEL_18:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v50 count:16];
+        v9 = [tokens countByEnumeratingWithState:&v36 objects:v50 count:16];
         if (v9)
         {
           continue;
@@ -10170,8 +10170,8 @@ LABEL_18:
     WTF::Vector<WebCore::TextManipulationToken,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(v22 + 24, &v46);
     v35 = 1;
     WTF::Vector<WebCore::TextManipulationToken,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v46, v24);
-    v25 = v32->_page.m_ptr;
-    v26 = _Block_copy(a4);
+    v25 = selfCopy->_page.m_ptr;
+    v26 = _Block_copy(completion);
     v27 = WTF::fastMalloc(0x10);
     *v27 = &unk_1F10F95C0;
     *(v27 + 1) = v26;
@@ -10191,25 +10191,25 @@ LABEL_18:
 
   else
   {
-    v31 = *(a4 + 2);
+    v31 = *(completion + 2);
 
-    v31(a4, 0);
+    v31(completion, 0);
   }
 }
 
-- (void)_completeTextManipulationForItems:(id)a3 completion:(id)a4
+- (void)_completeTextManipulationForItems:(id)items completion:(id)completion
 {
-  v4 = a3;
+  itemsCopy2 = items;
   v71 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
   if (!m_ptr || *(m_ptr + 1426) == 1 && ([MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"], !self->_page.m_ptr))
   {
-    v41 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v41 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy2, "count")}];
     *v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v42 = [v4 countByEnumeratingWithState:v56 objects:&v65 count:16];
+    v42 = [itemsCopy2 countByEnumeratingWithState:v56 objects:&v65 count:16];
     if (v42)
     {
       v43 = *v57;
@@ -10219,7 +10219,7 @@ LABEL_18:
         {
           if (*v57 != v43)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(items);
           }
 
           v45 = *(v56[1] + i);
@@ -10233,13 +10233,13 @@ LABEL_18:
           }
         }
 
-        v42 = [a3 countByEnumeratingWithState:v56 objects:&v65 count:16];
+        v42 = [items countByEnumeratingWithState:v56 objects:&v65 count:16];
       }
 
       while (v42);
     }
 
-    (*(a4 + 2))(a4, v41);
+    (*(completion + 2))(completion, v41);
     if (v41)
     {
     }
@@ -10249,7 +10249,7 @@ LABEL_18:
 
   v63 = 0;
   v64 = 0;
-  v7 = [v4 count];
+  v7 = [itemsCopy2 count];
   if (v7)
   {
     if (v7 >= 0x6666667)
@@ -10266,7 +10266,7 @@ LABEL_18:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v8 = [v4 countByEnumeratingWithState:&v52 objects:v62 count:{16, 416, self}];
+  v8 = [itemsCopy2 countByEnumeratingWithState:&v52 objects:v62 count:{16, 416, self}];
   if (!v8)
   {
     goto LABEL_37;
@@ -10279,7 +10279,7 @@ LABEL_18:
     {
       if (*v53 != v9)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
       v11 = *(*(&v52 + 1) + 8 * j);
@@ -10416,17 +10416,17 @@ LABEL_29:
       WTF::Vector<WebCore::TextManipulationToken,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v60, v33);
     }
 
-    v4 = a3;
-    v8 = [a3 countByEnumeratingWithState:&v52 objects:v62 count:16];
+    itemsCopy2 = items;
+    v8 = [items countByEnumeratingWithState:&v52 objects:v62 count:16];
   }
 
   while (v8);
 LABEL_37:
-  if (v4)
+  if (itemsCopy2)
   {
-    v34 = v4;
+    v34 = itemsCopy2;
     v35 = *(v49 + v48);
-    v36 = v4;
+    v36 = itemsCopy2;
   }
 
   else
@@ -10434,10 +10434,10 @@ LABEL_37:
     v35 = *(v49 + v48);
   }
 
-  v37 = _Block_copy(a4);
+  v37 = _Block_copy(completion);
   v38 = WTF::fastMalloc(0x18);
   *v38 = &unk_1F10F95E8;
-  v38[1] = v4;
+  v38[1] = itemsCopy2;
   v38[2] = v37;
   *&v65 = v38;
   WebKit::WebPageProxy::completeTextManipulation(v35, &v63, &v65);
@@ -10449,14 +10449,14 @@ LABEL_37:
   }
 
   _Block_release(0);
-  if (v4)
+  if (itemsCopy2)
   {
   }
 
   WTF::Vector<WebCore::TextManipulationItem,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v63, v40);
 }
 
-- (void)_startImageAnalysis:(id)a3 target:(id)a4
+- (void)_startImageAnalysis:(id)analysis target:(id)target
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
@@ -10472,13 +10472,13 @@ LABEL_37:
 
       if (WebKit::WebPreferencesStore::getBoolValueForKey((v8 + 40), &WebKit::WebPreferencesKey::visualTranslationEnabledKey(void)::key, v9))
       {
-        v11 = WebKit::languageIdentifierSupportsLiveText(a3, v10);
+        v11 = WebKit::languageIdentifierSupportsLiveText(analysis, v10);
         CFRelease(*(v8 + 8));
         if (v11)
         {
           v12 = self->_page.m_ptr;
-          MEMORY[0x19EB02040](&v18, a3);
-          MEMORY[0x19EB02040](&v17, a4);
+          MEMORY[0x19EB02040](&v18, analysis);
+          MEMORY[0x19EB02040](&v17, target);
           if ((*(v12 + 865) & 1) == 0 && *(v12 + 864) == 1)
           {
             v19[0] = &v18;
@@ -10515,20 +10515,20 @@ LABEL_37:
   }
 }
 
-- (void)_dataTaskWithRequest:(id)a3 runAtForegroundPriority:(BOOL)a4 completionHandler:(id)a5
+- (void)_dataTaskWithRequest:(id)request runAtForegroundPriority:(BOOL)priority completionHandler:(id)handler
 {
-  v6 = a4;
+  priorityCopy = priority;
   v17 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
-  MEMORY[0x19EB06210](v13, a3);
+  MEMORY[0x19EB06210](v13, request);
   v15[0] = 0;
   v16 = 0;
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = WTF::fastMalloc(0x10);
   *v9 = &unk_1F10F9610;
   v9[1] = v8;
   v12 = v9;
-  WebKit::WebPageProxy::dataTaskWithRequest(m_ptr, v13, v15, v6, &v12);
+  WebKit::WebPageProxy::dataTaskWithRequest(m_ptr, v13, v15, priorityCopy, &v12);
   v10 = v12;
   v12 = 0;
   if (v10)
@@ -10551,7 +10551,7 @@ LABEL_37:
   WebCore::ResourceRequestBase::~ResourceRequestBase(v13);
 }
 
-- (void)_takeFindStringFromSelection:(id)a3
+- (void)_takeFindStringFromSelection:(id)selection
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -10636,9 +10636,9 @@ LABEL_12:
   return &v4->isa;
 }
 
-+ (void)_setStringForFind:(id)a3
++ (void)_setStringForFind:(id)find
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, find);
   {
     WebKit::globalStringForFind(void)::string = 0;
   }
@@ -10691,7 +10691,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)_setHistoryDelegate:(id)a3
+- (void)_setHistoryDelegate:(id)delegate
 {
   m_ptr = self->_page.m_ptr;
   WTF::makeUniqueRefWithoutFastMallocCheck<WebKit::NavigationState::HistoryClient,WebKit::NavigationState&>(self->_navigationState.__ptr_, a2, &v9);
@@ -10710,7 +10710,7 @@ LABEL_12:
     }
   }
 
-  WebKit::NavigationState::setHistoryDelegate(self->_navigationState.__ptr_, a3);
+  WebKit::NavigationState::setHistoryDelegate(self->_navigationState.__ptr_, delegate);
 }
 
 - (void)_updateMediaPlaybackControlsManager
@@ -10737,7 +10737,7 @@ LABEL_12:
   }
 }
 
-- (void)_nowPlayingMediaTitleAndArtist:(id)a3
+- (void)_nowPlayingMediaTitleAndArtist:(id)artist
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -10745,23 +10745,23 @@ LABEL_12:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(artist + 2);
 
-  v5(a3, 0, 0);
+  v5(artist, 0, 0);
 }
 
-- (void)_convertPoint:(CGPoint)a3 fromFrame:(id)a4 toMainFrameCoordinates:(id)a5
+- (void)_convertPoint:(CGPoint)point fromFrame:(id)frame toMainFrameCoordinates:(id)coordinates
 {
-  v15 = a3;
-  if (!a4)
+  pointCopy = point;
+  if (!frame)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"frame must be non-null"];
   }
 
   m_ptr = self->_page.m_ptr;
-  WebCore::FloatPoint::FloatPoint(v14, &v15);
-  v9 = *(a4 + 35);
-  v10 = _Block_copy(a5);
+  WebCore::FloatPoint::FloatPoint(v14, &pointCopy);
+  v9 = *(frame + 35);
+  v10 = _Block_copy(coordinates);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F9638;
   *(v11 + 1) = v10;
@@ -10777,18 +10777,18 @@ LABEL_12:
   _Block_release(0);
 }
 
-- (void)_convertRect:(CGRect)a3 fromFrame:(id)a4 toMainFrameCoordinates:(id)a5
+- (void)_convertRect:(CGRect)rect fromFrame:(id)frame toMainFrameCoordinates:(id)coordinates
 {
-  v15 = a3;
-  if (!a4)
+  rectCopy = rect;
+  if (!frame)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"frame must be non-null"];
   }
 
   m_ptr = self->_page.m_ptr;
-  WebCore::FloatRect::FloatRect(v14, &v15);
-  v9 = *(a4 + 35);
-  v10 = _Block_copy(a5);
+  WebCore::FloatRect::FloatRect(v14, &rectCopy);
+  v9 = *(frame + 35);
+  v10 = _Block_copy(coordinates);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F9660;
   *(v11 + 1) = v10;
@@ -10853,23 +10853,23 @@ LABEL_12:
   }
 }
 
-- (void)_pauseAllAnimationsWithCompletionHandler:(id)a3
+- (void)_pauseAllAnimationsWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
     m_ptr = self->_page.m_ptr;
-    if (a3)
+    if (handler)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (handler)
   {
 LABEL_4:
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     v6 = WTF::fastMalloc(0x10);
     *v6 = &unk_1F10F8FE8;
     v6[1] = v5;
@@ -10898,23 +10898,23 @@ LABEL_4:
   }
 }
 
-- (void)_playAllAnimationsWithCompletionHandler:(id)a3
+- (void)_playAllAnimationsWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
     m_ptr = self->_page.m_ptr;
-    if (a3)
+    if (handler)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (handler)
   {
 LABEL_4:
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(handler);
     v6 = WTF::fastMalloc(0x10);
     *v6 = &unk_1F10F8FE8;
     v6[1] = v5;
@@ -10999,22 +10999,22 @@ LABEL_6:
   return v3;
 }
 
-- (void)_setStatisticsCrossSiteLoadWithLinkDecorationForTesting:(id)a3 withToHost:(id)a4 withWasFiltered:(BOOL)a5 withCompletionHandler:(id)a6
+- (void)_setStatisticsCrossSiteLoadWithLinkDecorationForTesting:(id)testing withToHost:(id)host withWasFiltered:(BOOL)filtered withCompletionHandler:(id)handler
 {
   v6 = *(self->_page.m_ptr + 198);
   if (v6)
   {
     ++v6[2];
-    MEMORY[0x19EB02040](&v21, a3);
+    MEMORY[0x19EB02040](&v21, testing);
     MEMORY[0x19EB01DD0](v22, &v21, 0);
-    MEMORY[0x19EB02040](&v19, a4);
+    MEMORY[0x19EB02040](&v19, host);
     MEMORY[0x19EB01DD0](v20, &v19, 0);
-    v10 = _Block_copy(a6);
+    v10 = _Block_copy(handler);
     v11 = WTF::fastMalloc(0x10);
     *v11 = &unk_1F10F8FE8;
     v11[1] = v10;
     v18 = v11;
-    WebKit::WebPageProxyTesting::setCrossSiteLoadWithLinkDecorationForTesting(v6, v22, v20, a5, &v18);
+    WebKit::WebPageProxyTesting::setCrossSiteLoadWithLinkDecorationForTesting(v6, v22, v20, filtered, &v18);
     v12 = v18;
     v18 = 0;
     if (v12)
@@ -11131,7 +11131,7 @@ LABEL_6:
   [(WKWebView *)self setAllMediaPlaybackSuspended:0 completionHandler:0];
 }
 
-- (void)_restoreAppHighlights:(id)a3
+- (void)_restoreAppHighlights:(id)highlights
 {
   v16 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
@@ -11146,7 +11146,7 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  v6 = [highlights countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -11157,14 +11157,14 @@ LABEL_6:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(highlights);
         }
 
         convertAndAddHighlight(v14, *(*(&v10 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [highlights countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -11174,7 +11174,7 @@ LABEL_6:
   WTF::Vector<WTF::Ref<WebCore::SharedMemory,WTF::RawPtrTraits<WebCore::SharedMemory>,WTF::DefaultRefDerefTraits<WebCore::SharedMemory>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v14, v9);
 }
 
-- (void)_restoreAndScrollToAppHighlight:(id)a3
+- (void)_restoreAndScrollToAppHighlight:(id)highlight
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11184,7 +11184,7 @@ LABEL_6:
 
   v7[0] = 0;
   v7[1] = 0;
-  convertAndAddHighlight(v7, a3);
+  convertAndAddHighlight(v7, highlight);
   WebKit::WebPageProxy::restoreAppHighlightsAndScrollToIndex(self->_page.m_ptr, v7, 0x100000000);
   WTF::Vector<WTF::Ref<WebCore::SharedMemory,WTF::RawPtrTraits<WebCore::SharedMemory>,WTF::DefaultRefDerefTraits<WebCore::SharedMemory>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v7, v6);
 }
@@ -11200,7 +11200,7 @@ LABEL_6:
   [(WKWebView *)self _addAppHighlightInNewGroup:0 originatedInApp:1];
 }
 
-- (void)_addAppHighlightInNewGroup:(BOOL)a3 originatedInApp:(BOOL)a4
+- (void)_addAppHighlightInNewGroup:(BOOL)group originatedInApp:(BOOL)app
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11209,13 +11209,13 @@ LABEL_6:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::createAppHighlightInSelectedRange(m_ptr, a3, a4);
+  WebKit::WebPageProxy::createAppHighlightInSelectedRange(m_ptr, group, app);
 }
 
-- (void)_textFragmentDirectiveFromSelectionWithCompletionHandler:(id)a3
+- (void)_textFragmentDirectiveFromSelectionWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F96D8;
   v5[1] = v4;
@@ -11231,12 +11231,12 @@ LABEL_6:
   _Block_release(0);
 }
 
-- (void)_requestAllTextWithCompletionHandler:(id)a3
+- (void)_requestAllTextWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   location = 0;
   objc_initWeak(&location, self);
-  aBlock = _Block_copy(a3);
+  aBlock = _Block_copy(handler);
   v5 = WTF::fastMalloc(0x18);
   *v5 = &unk_1F10F9700;
   *(v5 + 8) = 0;
@@ -11257,16 +11257,16 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_requestTargetedElementInfo:(id)a3 completionHandler:(id)a4
+- (void)_requestTargetedElementInfo:(id)info completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  CFRetain(*(a3 + 2));
-  v7 = _Block_copy(a4);
+  CFRetain(*(info + 2));
+  v7 = _Block_copy(handler);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F10F9728;
   v8[1] = v7;
   v10 = v8;
-  WebKit::WebPageProxy::requestTargetedElement(m_ptr, (a3 + 8), &v10);
+  WebKit::WebPageProxy::requestTargetedElement(m_ptr, (info + 8), &v10);
   v9 = v10;
   v10 = 0;
   if (v9)
@@ -11275,19 +11275,19 @@ LABEL_6:
   }
 
   _Block_release(0);
-  CFRelease(*(a3 + 2));
+  CFRelease(*(info + 2));
 }
 
-- (void)_requestAllTargetableElementsInfo:(double)a3 completionHandler:(id)a4
+- (void)_requestAllTargetableElementsInfo:(double)info completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = WTF::fastMalloc(0x10);
-  v8 = a3;
+  infoCopy = info;
   *v7 = &unk_1F10F9750;
   v7[1] = v6;
   v10 = v7;
-  WebKit::WebPageProxy::requestAllTargetableElements(m_ptr, &v10, v8);
+  WebKit::WebPageProxy::requestAllTargetableElements(m_ptr, &v10, infoCopy);
   v9 = v10;
   v10 = 0;
   if (v9)
@@ -11324,7 +11324,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)_loadAlternateHTMLString:(id)a3 baseURL:(id)a4 forUnreachableURL:(id)a5
+- (void)_loadAlternateHTMLString:(id)string baseURL:(id)l forUnreachableURL:(id)rL
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11332,18 +11332,18 @@ LABEL_6:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v10 = [a3 dataUsingEncoding:4];
-  if (v10)
+  data = [string dataUsingEncoding:4];
+  if (data)
   {
-    v22 = v10;
+    v22 = data;
 LABEL_7:
-    CFRetain(v10);
+    CFRetain(data);
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x1E695DEF0] data];
-  v22 = v10;
-  if (v10)
+  data = [MEMORY[0x1E695DEF0] data];
+  v22 = data;
+  if (data)
   {
     goto LABEL_7;
   }
@@ -11353,8 +11353,8 @@ LABEL_8:
   WebCore::DataSegment::create();
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v20 = v19[0];
-  MEMORY[0x19EB01DE0](v19, a4);
-  MEMORY[0x19EB01DE0](v18, a5);
+  MEMORY[0x19EB01DE0](v19, l);
+  MEMORY[0x19EB01DE0](v18, rL);
   WebKit::WebPageProxy::loadAlternateHTML(v11, &v21, &v20, v19, v18, 0);
   v13 = v18[0];
   v18[0] = 0;
@@ -11392,9 +11392,9 @@ LABEL_8:
   }
 }
 
-- (id)_loadData:(id)a3 MIMEType:(id)a4 characterEncodingName:(id)a5 baseURL:(id)a6 userData:(id)a7
+- (id)_loadData:(id)data MIMEType:(id)type characterEncodingName:(id)name baseURL:(id)l userData:(id)userData
 {
-  v32 = a3;
+  dataCopy = data;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -11402,15 +11402,15 @@ LABEL_8:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebCore::SharedBuffer::create<NSData *&>(&v32, a2, &v30);
-  MEMORY[0x19EB02040](&v29, a4);
-  MEMORY[0x19EB02040](&v28, a5);
-  MEMORY[0x19EB02040](&v27, [a6 absoluteString]);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, a2, &v30);
+  MEMORY[0x19EB02040](&v29, type);
+  MEMORY[0x19EB02040](&v28, name);
+  MEMORY[0x19EB02040](&v27, [l absoluteString]);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    API::Data::createWithoutCopying(a7, &v26);
+    API::Data::createWithoutCopying(userData, &v26);
     v13 = v26;
   }
 
@@ -11501,19 +11501,19 @@ LABEL_15:
   return v16;
 }
 
-- (id)_loadRequest:(id)a3 shouldOpenExternalURLs:(BOOL)a4
+- (id)_loadRequest:(id)request shouldOpenExternalURLs:(BOOL)ls
 {
-  v4 = a4;
+  lsCopy = ls;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  return [(WKWebView *)self _loadRequest:a3 shouldOpenExternalURLsPolicy:v4];
+  return [(WKWebView *)self _loadRequest:request shouldOpenExternalURLsPolicy:lsCopy];
 }
 
-- (id)_loadRequest:(id)a3 shouldOpenExternalURLsPolicy:(int64_t)a4
+- (id)_loadRequest:(id)request shouldOpenExternalURLsPolicy:(int64_t)policy
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11522,17 +11522,17 @@ LABEL_15:
     m_ptr = self->_page.m_ptr;
   }
 
-  if (a4 == 2)
+  if (policy == 2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = 2 * (a4 == 1);
+    v7 = 2 * (policy == 1);
   }
 
-  MEMORY[0x19EB06210](v15, a3);
+  MEMORY[0x19EB06210](v15, request);
   v18 = 0;
   WebKit::WebPageProxy::loadRequest(m_ptr, v15, v7, 0, &v18, 0, 1, &v17);
   v8 = v17;
@@ -11575,10 +11575,10 @@ LABEL_15:
   return v9;
 }
 
-- (void)_loadAndDecodeImage:(id)a3 constrainedToSize:(CGSize)a4 maximumBytesFromNetwork:(unint64_t)a5 completionHandler:(id)a6
+- (void)_loadAndDecodeImage:(id)image constrainedToSize:(CGSize)size maximumBytesFromNetwork:(unint64_t)network completionHandler:(id)handler
 {
-  v34 = a4;
-  if (a4.height == 0.0 && a4.width == 0.0)
+  sizeCopy = size;
+  if (size.height == 0.0 && size.width == 0.0)
   {
     v10 = 0;
     v11 = 0;
@@ -11586,12 +11586,12 @@ LABEL_15:
 
   else
   {
-    WebCore::FloatSize::FloatSize(v32, &v34);
+    WebCore::FloatSize::FloatSize(v32, &sizeCopy);
     v10 = 1;
     v11 = v32[0];
   }
 
-  MEMORY[0x19EB06210](v32, a3);
+  MEMORY[0x19EB06210](v32, image);
   v12 = WebCore::ResourceRequestBase::url(v32);
   v13 = *v12;
   if (*v12)
@@ -11603,8 +11603,8 @@ LABEL_15:
   v30 = *(v12 + 8);
   v31 = v14;
   m_ptr = self->_page.m_ptr;
-  MEMORY[0x19EB06210](v28, a3);
-  v16 = _Block_copy(a6);
+  MEMORY[0x19EB06210](v28, image);
+  v16 = _Block_copy(handler);
   if (v13)
   {
     atomic_fetch_add_explicit(v13, 2u, memory_order_relaxed);
@@ -11618,7 +11618,7 @@ LABEL_15:
   *(v17 + 1) = v16;
   WTF::URL::URL(v17 + 16, &v24);
   v27 = v17;
-  WebKit::WebPageProxy::loadAndDecodeImage(m_ptr, v28, v11, v10, a5, &v27);
+  WebKit::WebPageProxy::loadAndDecodeImage(m_ptr, v28, v11, v10, network, &v27);
   v19 = v27;
   v27 = 0;
   if (v19)
@@ -11655,13 +11655,13 @@ LABEL_15:
   WebCore::ResourceRequestBase::~ResourceRequestBase(v32);
 }
 
-- (void)_getInformationFromImageData:(id)a3 completionHandler:(id)a4
+- (void)_getInformationFromImageData:(id)data completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  if (a3)
+  if (data)
   {
-    v7 = [a3 bytes];
-    v8 = [a3 length];
+    bytes = [data bytes];
+    v8 = [data length];
     v9 = v8;
     v18 = 0;
     LODWORD(v19) = 0;
@@ -11680,7 +11680,7 @@ LABEL_15:
       v18 = v10;
       do
       {
-        *(v10 + v11) = *(v7 + v11);
+        *(v10 + v11) = *(bytes + v11);
         ++v11;
       }
 
@@ -11694,7 +11694,7 @@ LABEL_15:
     v19 = 0;
   }
 
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = WTF::fastMalloc(0x10);
   *v13 = &unk_1F10F97A0;
   v13[1] = v12;
@@ -11717,13 +11717,13 @@ LABEL_15:
   }
 }
 
-- (void)_createIconDataFromImageData:(id)a3 withLengths:(id)a4 completionHandler:(id)a5
+- (void)_createIconDataFromImageData:(id)data withLengths:(id)lengths completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
   v29 = 0;
-  v30 = a3;
+  dataCopy = data;
   v28 = 0;
-  v8 = [a4 count];
+  v8 = [lengths count];
   if (v8)
   {
     if (v8 >> 30)
@@ -11740,7 +11740,7 @@ LABEL_15:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v24 objects:v31 count:16];
+  v10 = [lengths countByEnumeratingWithState:&v24 objects:v31 count:16];
   if (v10)
   {
     v11 = *v25;
@@ -11750,12 +11750,12 @@ LABEL_15:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(lengths);
         }
 
-        v13 = [*(*(&v24 + 1) + 8 * i) unsignedIntValue];
-        LODWORD(v23) = v13;
-        if (v13)
+        unsignedIntValue = [*(*(&v24 + 1) + 8 * i) unsignedIntValue];
+        LODWORD(v23) = unsignedIntValue;
+        if (unsignedIntValue)
         {
           if (HIDWORD(v29) == v29)
           {
@@ -11765,22 +11765,22 @@ LABEL_15:
 
           else
           {
-            *(v28 + HIDWORD(v29)) = v13;
+            *(v28 + HIDWORD(v29)) = unsignedIntValue;
           }
 
           ++HIDWORD(v29);
         }
       }
 
-      v10 = [a4 countByEnumeratingWithState:&v24 objects:v31 count:16];
+      v10 = [lengths countByEnumeratingWithState:&v24 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  WebCore::SharedBuffer::create<NSData *&>(&v30, v9, &v23);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, v9, &v23);
   m_ptr = self->_page.m_ptr;
-  v16 = _Block_copy(a5);
+  v16 = _Block_copy(handler);
   v17 = WTF::fastMalloc(0x10);
   *v17 = &unk_1F10F97C8;
   v17[1] = v16;
@@ -11811,12 +11811,12 @@ LABEL_15:
   }
 }
 
-- (void)_decodeImageData:(id)a3 preferredSize:(id)a4 completionHandler:(id)a5
+- (void)_decodeImageData:(id)data preferredSize:(id)size completionHandler:(id)handler
 {
-  v18 = a3;
-  if (a4)
+  dataCopy = data;
+  if (size)
   {
-    [a4 CGSizeValue];
+    [size CGSizeValue];
     v16.width = v7;
     v16.height = v8;
     WebCore::FloatSize::FloatSize(&v17, &v16);
@@ -11830,9 +11830,9 @@ LABEL_15:
     v9 = 0;
   }
 
-  WebCore::SharedBuffer::create<NSData *&>(&v18, a2, &v16);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, a2, &v16);
   m_ptr = self->_page.m_ptr;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = WTF::fastMalloc(0x10);
   *v13 = &unk_1F10F97F0;
   v13[1] = v12;
@@ -11858,9 +11858,9 @@ LABEL_15:
   }
 }
 
-- (void)_loadServiceWorker:(id)a3 usingModules:(BOOL)a4 completionHandler:(id)a5
+- (void)_loadServiceWorker:(id)worker usingModules:(BOOL)modules completionHandler:(id)handler
 {
-  v6 = a4;
+  modulesCopy = modules;
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
   {
@@ -11874,13 +11874,13 @@ LABEL_15:
     m_ptr = self->_page.m_ptr;
   }
 
-  MEMORY[0x19EB01DE0](v16, a3);
-  v10 = _Block_copy(a5);
+  MEMORY[0x19EB01DE0](v16, worker);
+  v10 = _Block_copy(handler);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F9818;
   v11[1] = v10;
   v15 = v11;
-  WebKit::WebPageProxy::loadServiceWorker(m_ptr, v16, v6, &v15);
+  WebKit::WebPageProxy::loadServiceWorker(m_ptr, v16, modulesCopy, &v15);
   v12 = v15;
   v15 = 0;
   if (v12)
@@ -11952,7 +11952,7 @@ LABEL_15:
   }
 }
 
-- (void)_didLoadAppInitiatedRequest:(id)a3
+- (void)_didLoadAppInitiatedRequest:(id)request
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11961,7 +11961,7 @@ LABEL_15:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(request);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9840;
   v6[1] = v5;
@@ -11977,7 +11977,7 @@ LABEL_15:
   _Block_release(0);
 }
 
-- (void)_didLoadNonAppInitiatedRequest:(id)a3
+- (void)_didLoadNonAppInitiatedRequest:(id)request
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -11986,7 +11986,7 @@ LABEL_15:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(request);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9868;
   v6[1] = v5;
@@ -12002,12 +12002,12 @@ LABEL_15:
   _Block_release(0);
 }
 
-- (void)_suspendPage:(id)a3
+- (void)_suspendPage:(id)page
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(page);
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10F9890;
     v5[1] = v4;
@@ -12025,18 +12025,18 @@ LABEL_15:
 
   else
   {
-    v7 = *(a3 + 2);
+    v7 = *(page + 2);
 
-    v7(a3, 0);
+    v7(page, 0);
   }
 }
 
-- (void)_resumePage:(id)a3
+- (void)_resumePage:(id)page
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(page);
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10F98B8;
     v5[1] = v4;
@@ -12054,9 +12054,9 @@ LABEL_15:
 
   else
   {
-    v7 = *(a3 + 2);
+    v7 = *(page + 2);
 
-    v7(a3, 0);
+    v7(page, 0);
   }
 }
 
@@ -12201,7 +12201,7 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)_setApplicationNameForUserAgent:(id)a3
+- (void)_setApplicationNameForUserAgent:(id)agent
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -12210,7 +12210,7 @@ LABEL_7:
     m_ptr = self->_page.m_ptr;
   }
 
-  MEMORY[0x19EB02040](&v14, a3);
+  MEMORY[0x19EB02040](&v14, agent);
   WebKit::WebPageProxy::setApplicationNameForUserAgent(m_ptr, &v14, v6);
   v8 = v14;
   v14 = 0;
@@ -12220,7 +12220,7 @@ LABEL_7:
   }
 
   v9 = self->_page.m_ptr;
-  MEMORY[0x19EB02040](&v14, a3);
+  MEMORY[0x19EB02040](&v14, agent);
   v11 = v14;
   if (v14)
   {
@@ -12453,36 +12453,36 @@ LABEL_10:
   }
 }
 
-- (void)_takePDFSnapshotWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)_takePDFSnapshotWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-    if (a3)
+    if (configuration)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (configuration)
   {
 LABEL_4:
     v8 = objc_alloc_init(WKPDFConfiguration);
-    [a3 rect];
+    [configuration rect];
     [(WKPDFConfiguration *)v8 setRect:?];
     goto LABEL_7;
   }
 
   v8 = 0;
 LABEL_7:
-  [(WKWebView *)self createPDFWithConfiguration:v8 completionHandler:a4];
+  [(WKWebView *)self createPDFWithConfiguration:v8 completionHandler:handler];
   if (v8)
   {
   }
 }
 
-- (void)_getPDFFirstPageSizeInFrame:(id)a3 completionHandler:(id)a4
+- (void)_getPDFFirstPageSizeInFrame:(id)frame completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -12490,11 +12490,11 @@ LABEL_7:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v10 = *(a3 + 3);
+  v10 = *(frame + 3);
   if (v10)
   {
     v11 = self->_page.m_ptr;
-    v12 = _Block_copy(a4);
+    v12 = _Block_copy(handler);
     v13 = WTF::fastMalloc(0x10);
     *v13 = &unk_1F10F98E0;
     v13[1] = v12;
@@ -12514,11 +12514,11 @@ LABEL_7:
 
   else
   {
-    v15 = *(a4 + 2);
+    v15 = *(handler + 2);
     v4.n128_u64[0] = 0;
     v5.n128_u64[0] = 0;
 
-    v15(a4, v4, v5);
+    v15(handler, v4, v5);
   }
 }
 
@@ -12615,12 +12615,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)_sessionStateWithFilter:(id)a3
+- (id)_sessionStateWithFilter:(id)filter
 {
   m_ptr = self->_page.m_ptr;
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9908;
-  v5[1] = a3;
+  v5[1] = filter;
   v23 = v5;
   WebKit::WebPageProxy::sessionState(m_ptr, &v23, v24);
   v6 = v23;
@@ -12669,7 +12669,7 @@ LABEL_7:
   return v11;
 }
 
-- (void)_restoreFromSessionStateData:(id)a3
+- (void)_restoreFromSessionStateData:(id)data
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -12683,19 +12683,19 @@ LABEL_7:
   LOBYTE(v20) = 0;
   WTF::URL::URL(&v21);
   v24 = 1;
-  if (a3)
+  if (data)
   {
-    v6 = [a3 bytes];
-    v7 = [a3 length];
+    bytes = [data bytes];
+    v7 = [data length];
   }
 
   else
   {
-    v6 = 0;
+    bytes = 0;
     v7 = 0;
   }
 
-  if (WebKit::decodeLegacySessionState(v6, v7, &v18))
+  if (WebKit::decodeLegacySessionState(bytes, v7, &v18))
   {
     v9 = self->_page.m_ptr;
     v16.backForwardListState.items.m_buffer = v18;
@@ -12739,15 +12739,15 @@ LABEL_7:
   WTF::Vector<WTF::Ref<WebKit::FrameState,WTF::RawPtrTraits<WebKit::FrameState>,WTF::DefaultRefDerefTraits<WebKit::FrameState>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v18, v8);
 }
 
-- (id)_restoreSessionState:(id)a3 andNavigate:(BOOL)a4
+- (id)_restoreSessionState:(id)state andNavigate:(BOOL)navigate
 {
-  v4 = a4;
+  navigateCopy = navigate;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
     m_ptr = self->_page.m_ptr;
-    if (a3)
+    if (state)
     {
       goto LABEL_4;
     }
@@ -12761,28 +12761,28 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!state)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  WTF::Vector<WTF::Ref<WebKit::FrameState,WTF::RawPtrTraits<WebKit::FrameState>,WTF::DefaultRefDerefTraits<WebKit::FrameState>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v19, a3 + 8);
-  *&v19.backForwardListState.currentIndex.var0.__null_state_ = *(a3 + 24);
-  v7 = *(a3 + 5);
+  WTF::Vector<WTF::Ref<WebKit::FrameState,WTF::RawPtrTraits<WebKit::FrameState>,WTF::DefaultRefDerefTraits<WebKit::FrameState>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v19, state + 8);
+  *&v19.backForwardListState.currentIndex.var0.__null_state_ = *(state + 24);
+  v7 = *(state + 5);
   if (v7)
   {
     atomic_fetch_add_explicit(v7, 2u, memory_order_relaxed);
   }
 
   v19.provisionalURL.m_string.m_impl.m_ptr = v7;
-  v8 = *(a3 + 4);
-  *(&v19.provisionalURL + 8) = *(a3 + 3);
+  v8 = *(state + 4);
+  *(&v19.provisionalURL + 8) = *(state + 3);
   *&v19.provisionalURL.m_hostEnd = v8;
-  v9 = *(a3 + 80);
+  v9 = *(state + 80);
 LABEL_9:
   v19.isAppInitiated = v9;
-  WebKit::WebPageProxy::restoreFromSessionState(m_ptr, &v19, v4, &v20);
+  WebKit::WebPageProxy::restoreFromSessionState(m_ptr, &v19, navigateCopy, &v20);
   v12 = v20;
   if (v20)
   {
@@ -12847,22 +12847,22 @@ LABEL_9:
   return WebKit::WebPageProxy::tryClose(m_ptr);
 }
 
-- (id)_insertAttachmentWithFilename:(id)a3 contentType:(id)a4 data:(id)a5 options:(id)a6 completion:(id)a7
+- (id)_insertAttachmentWithFilename:(id)filename contentType:(id)type data:(id)data options:(id)options completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"The WKWebView is suspended", a5, a6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"The WKWebView is suspended", data, options}];
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:a5];
+  v13 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:data];
   v14 = v13;
-  if (a3)
+  if (filename)
   {
-    [v13 setPreferredFilename:a3];
+    [v13 setPreferredFilename:filename];
   }
 
-  v15 = [(WKWebView *)self _insertAttachmentWithFileWrapper:v14 contentType:a4 completion:a7];
+  v15 = [(WKWebView *)self _insertAttachmentWithFileWrapper:v14 contentType:type completion:completion];
   if (v14)
   {
   }
@@ -12870,20 +12870,20 @@ LABEL_9:
   return v15;
 }
 
-- (id)_insertAttachmentWithFileWrapper:(id)a3 contentType:(id)a4 options:(id)a5 completion:(id)a6
+- (id)_insertAttachmentWithFileWrapper:(id)wrapper contentType:(id)type options:(id)options completion:(id)completion
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"The WKWebView is suspended", a5}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"The WKWebView is suspended", options}];
   }
 
-  return [(WKWebView *)self _insertAttachmentWithFileWrapper:a3 contentType:a4 completion:a6];
+  return [(WKWebView *)self _insertAttachmentWithFileWrapper:wrapper contentType:type completion:completion];
 }
 
-- (id)_insertAttachmentWithFileWrapper:(id)a3 contentType:(id)a4 completion:(id)a5
+- (id)_insertAttachmentWithFileWrapper:(id)wrapper contentType:(id)type completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -12891,14 +12891,14 @@ LABEL_9:
   }
 
   WTF::createVersion4UUIDString(&v25, self);
-  v10 = v8->_page.m_ptr;
+  v10 = selfCopy->_page.m_ptr;
   v11 = API::Object::newObject(0x48uLL, 40);
   v12 = API::Attachment::Attachment(v11, &v25, v10);
-  API::Attachment::setFileWrapperAndUpdateContentType(v12, a3, a4);
-  v13 = v8->_page.m_ptr;
+  API::Attachment::setFileWrapperAndUpdateContentType(v12, wrapper, type);
+  v13 = selfCopy->_page.m_ptr;
   CFRetain(v11[1]);
   v24 = v11;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(completion);
   v15 = WTF::fastMalloc(0x10);
   *v15 = &unk_1F10F9930;
   v15[1] = v14;
@@ -12952,7 +12952,7 @@ LABEL_9:
   return v18;
 }
 
-- (id)_attachmentForIdentifier:(id)a3
+- (id)_attachmentForIdentifier:(id)identifier
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -12961,7 +12961,7 @@ LABEL_9:
     m_ptr = self->_page.m_ptr;
   }
 
-  MEMORY[0x19EB02040](&v13, a3);
+  MEMORY[0x19EB02040](&v13, identifier);
   WebKit::WebPageProxy::attachmentForIdentifier(m_ptr, &v13, v5, &v14);
   v7 = v13;
   v13 = 0;
@@ -13000,7 +13000,7 @@ LABEL_13:
   return result;
 }
 
-- (void)_simulateDeviceOrientationChangeWithAlpha:(double)a3 beta:(double)a4 gamma:(double)a5
+- (void)_simulateDeviceOrientationChangeWithAlpha:(double)alpha beta:(double)beta gamma:(double)gamma
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13009,7 +13009,7 @@ LABEL_13:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::simulateDeviceOrientationChange(m_ptr, a3, a4, a5);
+  WebKit::WebPageProxy::simulateDeviceOrientationChange(m_ptr, alpha, beta, gamma);
 }
 
 - (void)_launchInitialProcessIfNecessary
@@ -13041,9 +13041,9 @@ LABEL_13:
   CFRelease(v5);
 }
 
-+ (BOOL)_willUpgradeToHTTPS:(id)a3
++ (BOOL)_willUpgradeToHTTPS:(id)s
 {
-  MEMORY[0x19EB01DE0](v8, a3);
+  MEMORY[0x19EB01DE0](v8, s);
   shouldBeMadeSecure = WebCore::ContentExtensions::ContentExtensionsBackend::shouldBeMadeSecure(v8, v3);
   v6 = v8[0];
   v8[0] = 0;
@@ -13055,7 +13055,7 @@ LABEL_13:
   return shouldBeMadeSecure;
 }
 
-- (void)_showWarningViewWithTitle:(id)a3 warning:(id)a4 details:(id)a5 completionHandler:(id)a6
+- (void)_showWarningViewWithTitle:(id)title warning:(id)warning details:(id)details completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13067,11 +13067,11 @@ LABEL_13:
   v12[1] = 3221225472;
   v12[2] = __84__WKWebView_WKPrivate___showWarningViewWithTitle_warning_details_completionHandler___block_invoke;
   v12[3] = &unk_1E76314B0;
-  v12[4] = a6;
-  [(WKWebView *)self _showWarningViewWithURL:0 title:a3 warning:a4 detailsWithLinks:a5 completionHandler:v12];
+  v12[4] = handler;
+  [(WKWebView *)self _showWarningViewWithURL:0 title:title warning:warning detailsWithLinks:details completionHandler:v12];
 }
 
-- (void)_showWarningViewWithURL:(id)a3 title:(id)a4 warning:(id)a5 details:(id)a6 completionHandler:(id)a7
+- (void)_showWarningViewWithURL:(id)l title:(id)title warning:(id)warning details:(id)details completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13083,11 +13083,11 @@ LABEL_13:
   v13[1] = 3221225472;
   v13[2] = __88__WKWebView_WKPrivate___showWarningViewWithURL_title_warning_details_completionHandler___block_invoke;
   v13[3] = &unk_1E76314B0;
-  v13[4] = a7;
-  [(WKWebView *)self _showWarningViewWithURL:0 title:a4 warning:a5 detailsWithLinks:a6 completionHandler:v13];
+  v13[4] = handler;
+  [(WKWebView *)self _showWarningViewWithURL:0 title:title warning:warning detailsWithLinks:details completionHandler:v13];
 }
 
-- (void)_showWarningViewWithURL:(id)a3 title:(id)a4 warning:(id)a5 detailsWithLinks:(id)a6 completionHandler:(id)a7
+- (void)_showWarningViewWithURL:(id)l title:(id)title warning:(id)warning detailsWithLinks:(id)links completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13095,24 +13095,24 @@ LABEL_13:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  MEMORY[0x19EB01DE0](v29, a3);
-  MEMORY[0x19EB02040](&v28, a4);
-  MEMORY[0x19EB02040](&v27, a5);
-  v26 = a6;
-  if (a6)
+  MEMORY[0x19EB01DE0](v29, l);
+  MEMORY[0x19EB02040](&v28, title);
+  MEMORY[0x19EB02040](&v27, warning);
+  linksCopy = links;
+  if (links)
   {
-    v14 = a6;
+    linksCopy2 = links;
   }
 
   v24 = 0;
   v25 = 0;
   v15 = WTF::fastMalloc(0x60);
-  WebKit::BrowsingWarning::BrowsingWarning(v15, v29, &v28, &v27, &v26, &v24);
+  WebKit::BrowsingWarning::BrowsingWarning(v15, v29, &v28, &v27, &linksCopy, &v24);
   if (!v25 && v24)
   {
   }
 
-  if (v26)
+  if (linksCopy)
   {
   }
 
@@ -13137,7 +13137,7 @@ LABEL_13:
     WTF::StringImpl::destroy(v19, v16);
   }
 
-  v20 = _Block_copy(a7);
+  v20 = _Block_copy(handler);
   v21 = WTF::fastMalloc(0x10);
   *v21 = &unk_1F10F9958;
   *(v21 + 1) = v20;
@@ -13154,7 +13154,7 @@ LABEL_13:
   WTF::RefCounted<WebKit::BrowsingWarning>::deref(v15, v23);
 }
 
-- (void)_isJITEnabled:(id)a3
+- (void)_isJITEnabled:(id)enabled
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13163,7 +13163,7 @@ LABEL_13:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(enabled);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9980;
   v6[1] = v5;
@@ -13179,7 +13179,7 @@ LABEL_13:
   _Block_release(0);
 }
 
-- (void)_evaluateJavaScriptWithoutUserGesture:(id)a3 completionHandler:(id)a4
+- (void)_evaluateJavaScriptWithoutUserGesture:(id)gesture completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13187,10 +13187,10 @@ LABEL_13:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _evaluateJavaScript:a3 asAsyncFunction:0 withSourceURL:0 withArguments:0 forceUserGesture:0 inFrame:0 inWorld:+[WKContentWorld completionHandler:"pageWorld"], a4];
+  [(WKWebView *)self _evaluateJavaScript:gesture asAsyncFunction:0 withSourceURL:0 withArguments:0 forceUserGesture:0 inFrame:0 inWorld:+[WKContentWorld completionHandler:"pageWorld"], handler];
 }
 
-- (void)_callAsyncJavaScript:(id)a3 arguments:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 completionHandler:(id)a7
+- (void)_callAsyncJavaScript:(id)script arguments:(id)arguments inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13198,7 +13198,7 @@ LABEL_13:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _evaluateJavaScript:a3 asAsyncFunction:1 withSourceURL:0 withArguments:a4 forceUserGesture:1 inFrame:a5 inWorld:a6 completionHandler:a7];
+  [(WKWebView *)self _evaluateJavaScript:script asAsyncFunction:1 withSourceURL:0 withArguments:arguments forceUserGesture:1 inFrame:frame inWorld:world completionHandler:handler];
 }
 
 - (BOOL)_allMediaPresentationsClosed
@@ -13269,7 +13269,7 @@ LABEL_10:
   return isFullScreen ^ 1;
 }
 
-- (void)_evaluateJavaScript:(id)a3 inFrame:(id)a4 inContentWorld:(id)a5 completionHandler:(id)a6
+- (void)_evaluateJavaScript:(id)script inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13277,10 +13277,10 @@ LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _evaluateJavaScript:a3 asAsyncFunction:0 withSourceURL:0 withArguments:0 forceUserGesture:1 inFrame:a4 inWorld:a5 completionHandler:a6];
+  [(WKWebView *)self _evaluateJavaScript:script asAsyncFunction:0 withSourceURL:0 withArguments:0 forceUserGesture:1 inFrame:frame inWorld:world completionHandler:handler];
 }
 
-- (void)_evaluateJavaScript:(id)a3 withSourceURL:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 completionHandler:(id)a7
+- (void)_evaluateJavaScript:(id)script withSourceURL:(id)l inFrame:(id)frame inContentWorld:(id)world completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13288,22 +13288,22 @@ LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _evaluateJavaScript:a3 asAsyncFunction:0 withSourceURL:a4 withArguments:0 forceUserGesture:1 inFrame:a5 inWorld:a6 completionHandler:a7];
+  [(WKWebView *)self _evaluateJavaScript:script asAsyncFunction:0 withSourceURL:l withArguments:0 forceUserGesture:1 inFrame:frame inWorld:world completionHandler:handler];
 }
 
-- (void)_evaluateJavaScript:(id)a3 withSourceURL:(id)a4 inFrame:(id)a5 inContentWorld:(id)a6 withUserGesture:(BOOL)a7 completionHandler:(id)a8
+- (void)_evaluateJavaScript:(id)script withSourceURL:(id)l inFrame:(id)frame inContentWorld:(id)world withUserGesture:(BOOL)gesture completionHandler:(id)handler
 {
-  v9 = a7;
+  gestureCopy = gesture;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _evaluateJavaScript:a3 asAsyncFunction:0 withSourceURL:a4 withArguments:0 forceUserGesture:v9 inFrame:a5 inWorld:a6 completionHandler:a8];
+  [(WKWebView *)self _evaluateJavaScript:script asAsyncFunction:0 withSourceURL:l withArguments:0 forceUserGesture:gestureCopy inFrame:frame inWorld:world completionHandler:handler];
 }
 
-- (void)_updateWebpagePreferences:(id)a3
+- (void)_updateWebpagePreferences:(id)preferences
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13311,21 +13311,21 @@ LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v6 = [a3 _websiteDataStore];
+  _websiteDataStore = [preferences _websiteDataStore];
   v7 = MEMORY[0x1E695D940];
-  if (v6)
+  if (_websiteDataStore)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Updating WKWebsiteDataStore is only supported during decidePolicyForNavigationAction."];
   }
 
-  if ([a3 _userContentController])
+  if ([preferences _userContentController])
   {
     [MEMORY[0x1E695DF30] raise:*v7 format:@"Updating WKUserContentController is only supported during decidePolicyForNavigationAction."];
   }
 
-  CFRetain(*(a3 + 2));
-  API::WebsitePolicies::data((a3 + 8), v9);
-  CFRelease(*(a3 + 2));
+  CFRetain(*(preferences + 2));
+  API::WebsitePolicies::data((preferences + 8), v9);
+  CFRelease(*(preferences + 2));
   WebKit::WebPageProxy::updateWebsitePolicies(self->_page.m_ptr, v9);
   WebKit::WebsitePoliciesData::~WebsitePoliciesData(v9, v8);
 }
@@ -13388,7 +13388,7 @@ LABEL_13:
   return &v6->isa;
 }
 
-- (void)_setRemoteInspectionNameOverride:(id)a3
+- (void)_setRemoteInspectionNameOverride:(id)override
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13397,7 +13397,7 @@ LABEL_13:
     m_ptr = self->_page.m_ptr;
   }
 
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, override);
   WebKit::WebPageProxy::setRemoteInspectionNameOverride(m_ptr, &v8);
   v6 = v8;
   v8 = 0;
@@ -13410,7 +13410,7 @@ LABEL_13:
   }
 }
 
-- (void)_setAddsVisitedLinks:(BOOL)a3
+- (void)_setAddsVisitedLinks:(BOOL)links
 {
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
@@ -13419,7 +13419,7 @@ LABEL_13:
     m_ptr = self->_page.m_ptr;
   }
 
-  *(m_ptr + 961) = a3;
+  *(m_ptr + 961) = links;
 }
 
 - (NSArray)_corsDisablingPatterns
@@ -13440,17 +13440,17 @@ LABEL_13:
   return v2;
 }
 
-- (void)_setCORSDisablingPatterns:(id)a3
+- (void)_setCORSDisablingPatterns:(id)patterns
 {
   m_ptr = self->_page.m_ptr;
-  v7 = a3;
-  v6 = &v7;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v5, [a3 count], &v6, 0);
+  patternsCopy = patterns;
+  v6 = &patternsCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v5, [patterns count], &v6, 0);
   WebKit::WebPageProxy::setCORSDisablingPatterns(m_ptr, v5);
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v5, v4);
 }
 
-- (void)_saveResources:(id)a3 suggestedFileName:(id)a4 completionHandler:(id)a5
+- (void)_saveResources:(id)resources suggestedFileName:(id)name completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
@@ -13467,9 +13467,9 @@ LABEL_13:
 
   v20[0] = 0;
   v20[1] = 0;
-  MEMORY[0x19EB02040](&v19, [a3 path]);
-  MEMORY[0x19EB02040](&v18, a4);
-  v10 = _Block_copy(a5);
+  MEMORY[0x19EB02040](&v19, [resources path]);
+  MEMORY[0x19EB02040](&v18, name);
+  v10 = _Block_copy(handler);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F99A8;
   v11[1] = v10;
@@ -13504,13 +13504,13 @@ LABEL_13:
   }
 }
 
-- (void)_archiveWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)_archiveWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
   m_ptr = self->_page.m_ptr;
   if (!m_ptr || *(m_ptr + 1426) != 1)
   {
-    if (a3)
+    if (configuration)
     {
       goto LABEL_5;
     }
@@ -13519,7 +13519,7 @@ LABEL_13:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-  if (!a3)
+  if (!configuration)
   {
 LABEL_4:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Configuration cannot be nil"];
@@ -13532,9 +13532,9 @@ LABEL_5:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v47 = a3;
-  v6 = [a3 exclusionRules];
-  v7 = [v6 countByEnumeratingWithState:&v53 objects:v60 count:16];
+  configurationCopy = configuration;
+  exclusionRules = [configuration exclusionRules];
+  v7 = [exclusionRules countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v7)
   {
     v8 = *v54;
@@ -13545,7 +13545,7 @@ LABEL_5:
       {
         if (*v54 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(exclusionRules);
         }
 
         v10 = *(*(&v53 + 1) + 8 * v9);
@@ -13614,8 +13614,8 @@ LABEL_5:
             ++v11;
           }
 
-          v27 = [v10 elementLocalName];
-          WTF::AtomStringImpl::add(&v59, v27, v28);
+          elementLocalName = [v10 elementLocalName];
+          WTF::AtomStringImpl::add(&v59, elementLocalName, v28);
           v30 = v59;
           v48 = v59;
           v49 = v51;
@@ -13662,7 +13662,7 @@ LABEL_5:
       }
 
       while (v9 != v7);
-      v36 = [v6 countByEnumeratingWithState:&v53 objects:v60 count:16];
+      v36 = [exclusionRules countByEnumeratingWithState:&v53 objects:v60 count:16];
       v7 = v36;
     }
 
@@ -13676,9 +13676,9 @@ LABEL_5:
     CFRetain(*(v38 + 8));
   }
 
-  MEMORY[0x19EB02040](&v48, [objc_msgSend(v47 "directory")]);
-  MEMORY[0x19EB02040](&v51, [v47 suggestedFileName]);
-  v39 = _Block_copy(a4);
+  MEMORY[0x19EB02040](&v48, [objc_msgSend(configurationCopy "directory")]);
+  MEMORY[0x19EB02040](&v51, [configurationCopy suggestedFileName]);
+  v39 = _Block_copy(handler);
   v40 = WTF::fastMalloc(0x10);
   *v40 = &unk_1F10F99D0;
   *(v40 + 1) = v39;
@@ -13722,7 +13722,7 @@ LABEL_49:
   WTF::Vector<WebCore::MarkupExclusionRule,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v57, v42);
 }
 
-- (void)_getMainResourceDataWithCompletionHandler:(id)a3
+- (void)_getMainResourceDataWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
@@ -13737,7 +13737,7 @@ LABEL_49:
     CFRetain(*(v5 + 8));
   }
 
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(handler);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F99F8;
   v7[1] = v6;
@@ -13757,7 +13757,7 @@ LABEL_49:
   }
 }
 
-- (void)_getWebArchiveDataWithCompletionHandler:(id)a3
+- (void)_getWebArchiveDataWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13765,10 +13765,10 @@ LABEL_49:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self createWebArchiveDataWithCompletionHandler:a3];
+  [(WKWebView *)self createWebArchiveDataWithCompletionHandler:handler];
 }
 
-- (void)_getContentsAsStringWithCompletionHandler:(id)a3
+- (void)_getContentsAsStringWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13777,7 +13777,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9A20;
   v6[1] = v5;
@@ -13794,7 +13794,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:(id)a3
+- (void)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:(id)testing
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13803,7 +13803,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  aBlock[0] = _Block_copy(a3);
+  aBlock[0] = _Block_copy(testing);
   WebKit::AuxiliaryProcessProxy::protectedConnection(*(self->_page.m_ptr + 44), &aBlock[1]);
   v6 = WTF::fastMalloc(0x18);
   *v6 = &unk_1F10F9A48;
@@ -13830,7 +13830,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_getContentsOfAllFramesAsStringWithCompletionHandler:(id)a3
+- (void)_getContentsOfAllFramesAsStringWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13839,7 +13839,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9A70;
   v6[1] = v5;
@@ -13856,7 +13856,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_getContentsAsAttributedStringWithCompletionHandler:(id)a3
+- (void)_getContentsAsAttributedStringWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13865,7 +13865,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9A98;
   v6[1] = v5;
@@ -13881,7 +13881,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_getApplicationManifestWithCompletionHandler:(id)a3
+- (void)_getApplicationManifestWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13890,7 +13890,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9AC0;
   v6[1] = v5;
@@ -13906,7 +13906,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_getTextFragmentMatchWithCompletionHandler:(id)a3
+- (void)_getTextFragmentMatchWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13915,7 +13915,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9AE8;
   v6[1] = v5;
@@ -13944,7 +13944,7 @@ LABEL_49:
   }
 }
 
-- (void)_setPaginationMode:(int64_t)a3
+- (void)_setPaginationMode:(int64_t)mode
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13952,17 +13952,17 @@ LABEL_49:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  if (a3 <= 4)
+  if (mode <= 4)
   {
     v6 = self->_page.m_ptr;
 
-    WebKit::WebPageProxy::setPaginationMode(v6, a3);
+    WebKit::WebPageProxy::setPaginationMode(v6, mode);
   }
 }
 
-- (void)_setPaginationBehavesLikeColumns:(BOOL)a3
+- (void)_setPaginationBehavesLikeColumns:(BOOL)columns
 {
-  v3 = a3;
+  columnsCopy = columns;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -13970,22 +13970,10 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setPaginationBehavesLikeColumns(m_ptr, v3);
+  WebKit::WebPageProxy::setPaginationBehavesLikeColumns(m_ptr, columnsCopy);
 }
 
-- (void)_setPageLength:(double)a3
-{
-  m_ptr = self->_page.m_ptr;
-  if (m_ptr && *(m_ptr + 1426) == 1)
-  {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-    m_ptr = self->_page.m_ptr;
-  }
-
-  WebKit::WebPageProxy::setPageLength(m_ptr, a3);
-}
-
-- (void)_setGapBetweenPages:(double)a3
+- (void)_setPageLength:(double)length
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -13994,10 +13982,10 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setGapBetweenPages(m_ptr, a3);
+  WebKit::WebPageProxy::setPageLength(m_ptr, length);
 }
 
-- (void)_setTextZoomFactor:(double)a3
+- (void)_setGapBetweenPages:(double)pages
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14006,10 +13994,22 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setTextZoomFactor(m_ptr, a3);
+  WebKit::WebPageProxy::setGapBetweenPages(m_ptr, pages);
 }
 
-- (void)_setPageZoomFactor:(double)a3
+- (void)_setTextZoomFactor:(double)factor
+{
+  m_ptr = self->_page.m_ptr;
+  if (m_ptr && *(m_ptr + 1426) == 1)
+  {
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
+    m_ptr = self->_page.m_ptr;
+  }
+
+  WebKit::WebPageProxy::setTextZoomFactor(m_ptr, factor);
+}
+
+- (void)_setPageZoomFactor:(double)factor
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14017,7 +14017,7 @@ LABEL_49:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self setPageZoom:a3];
+  [(WKWebView *)self setPageZoom:factor];
 }
 
 - (_WKDiagnosticLoggingDelegate)_diagnosticLoggingDelegate
@@ -14045,7 +14045,7 @@ LABEL_49:
   return result;
 }
 
-- (void)_setDiagnosticLoggingDelegate:(id)a3
+- (void)_setDiagnosticLoggingDelegate:(id)delegate
 {
   v3 = *(self->_page.m_ptr + 18);
   if (v3)
@@ -14053,7 +14053,7 @@ LABEL_49:
     if ((*(*v3 + 64))(*(self->_page.m_ptr + 18), a2))
     {
 
-      WebKit::DiagnosticLoggingClient::setDelegate(v3, a3);
+      WebKit::DiagnosticLoggingClient::setDelegate(v3, delegate);
     }
 
     else
@@ -14087,13 +14087,13 @@ LABEL_49:
   return result;
 }
 
-- (void)_setFindDelegate:(id)a3
+- (void)_setFindDelegate:(id)delegate
 {
   v4 = *(self->_page.m_ptr + 16);
   if ((*(*v4 + 56))(v4, a2))
   {
 
-    WebKit::FindClient::setDelegate(v4, a3);
+    WebKit::FindClient::setDelegate(v4, delegate);
   }
 
   else
@@ -14102,7 +14102,7 @@ LABEL_49:
   }
 }
 
-- (void)_countStringMatches:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)_countStringMatches:(id)matches options:(unint64_t)options maxCount:(unint64_t)count
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14114,14 +14114,14 @@ LABEL_49:
   if (v10)
   {
 
-    [(WKWebViewContentProvider *)v10 web_countStringMatches:a3 options:a4 maxCount:a5];
+    [(WKWebViewContentProvider *)v10 web_countStringMatches:matches options:options maxCount:count];
   }
 
   else
   {
     v11 = self->_page.m_ptr;
-    MEMORY[0x19EB02040](&v14, a3);
-    WebKit::WebPageProxy::countStringMatches(v11, &v14, a4 | (((a4 >> 8) & 1) << 9) | (a4 >> 1) & 0x100, a5);
+    MEMORY[0x19EB02040](&v14, matches);
+    WebKit::WebPageProxy::countStringMatches(v11, &v14, options | (((options >> 8) & 1) << 9) | (options >> 1) & 0x100, count);
     v13 = v14;
     v14 = 0;
     if (v13 && atomic_fetch_add_explicit(v13, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -14131,7 +14131,7 @@ LABEL_49:
   }
 }
 
-- (void)_findString:(id)a3 options:(unint64_t)a4 maxCount:(unint64_t)a5
+- (void)_findString:(id)string options:(unint64_t)options maxCount:(unint64_t)count
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14139,7 +14139,7 @@ LABEL_49:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  MEMORY[0x19EB02040](&v18, a3);
+  MEMORY[0x19EB02040](&v18, string);
   {
     WebKit::globalStringForFind(void)::string = 0;
   }
@@ -14167,14 +14167,14 @@ LABEL_49:
   v14 = self->_customContentView.m_ptr;
   if (v14)
   {
-    [(WKWebViewContentProvider *)v14 web_findString:a3 options:a4 maxCount:a5];
+    [(WKWebViewContentProvider *)v14 web_findString:string options:options maxCount:count];
   }
 
   else
   {
     v15 = self->_page.m_ptr;
-    MEMORY[0x19EB02040](&v18, a3);
-    WebKit::WebPageProxy::findString(v15, &v18, a4 | (((a4 >> 8) & 1) << 9) | (a4 >> 1) & 0x100, a5);
+    MEMORY[0x19EB02040](&v18, string);
+    WebKit::WebPageProxy::findString(v15, &v18, options | (((options >> 8) & 1) << 9) | (options >> 1) & 0x100, count);
     v17 = v18;
     v18 = 0;
     if (v17)
@@ -14208,26 +14208,26 @@ LABEL_49:
   }
 }
 
-- (void)_saveBackForwardSnapshotForItem:(id)a3
+- (void)_saveBackForwardSnapshotForItem:(id)item
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-    if (!a3)
+    if (!item)
     {
       return;
     }
   }
 
-  else if (!a3)
+  else if (!item)
   {
     return;
   }
 
   v6 = self->_page.m_ptr;
-  v7 = [a3 _item];
-  CFRetain(*(v7 + 8));
+  _item = [item _item];
+  CFRetain(*(_item + 8));
   if (*(v6 + 991) == 1)
   {
     {
@@ -14236,31 +14236,31 @@ LABEL_49:
       *&qword_1ED6436A0 = 0u;
     }
 
-    WebKit::ViewSnapshotStore::recordSnapshot(&WebKit::ViewSnapshotStore::singleton(void)::store, v6, v7);
+    WebKit::ViewSnapshotStore::recordSnapshot(&WebKit::ViewSnapshotStore::singleton(void)::store, v6, _item);
   }
 
-  v8 = *(v7 + 8);
+  v8 = *(_item + 8);
 
   CFRelease(v8);
 }
 
-- (void)_serviceWorkersEnabled:(id)a3
+- (void)_serviceWorkersEnabled:(id)enabled
 {
-  v4 = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
-  CFRetain(*&v4->_preferences.m_storage.data[8]);
+  preferences = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
+  CFRetain(*&preferences->_preferences.m_storage.data[8]);
   {
     atomic_fetch_add_explicit(WebKit::WebPreferencesKey::serviceWorkersEnabledKey(void)::$_0::operator() const(void)::impl, 2u, memory_order_relaxed);
     WebKit::WebPreferencesKey::serviceWorkersEnabledKey(void)::key = WebKit::WebPreferencesKey::serviceWorkersEnabledKey(void)::$_0::operator() const(void)::impl;
   }
 
-  BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey(&v4->_preferences.m_storage.data[40], &WebKit::WebPreferencesKey::serviceWorkersEnabledKey(void)::key, v5);
-  CFRelease(*&v4->_preferences.m_storage.data[8]);
-  v7 = *(a3 + 2);
+  BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey(&preferences->_preferences.m_storage.data[40], &WebKit::WebPreferencesKey::serviceWorkersEnabledKey(void)::key, v5);
+  CFRelease(*&preferences->_preferences.m_storage.data[8]);
+  v7 = *(enabled + 2);
 
-  v7(a3, BoolValueForKey);
+  v7(enabled, BoolValueForKey);
 }
 
-- (void)_clearServiceWorkerEntitlementOverride:(id)a3
+- (void)_clearServiceWorkerEntitlementOverride:(id)override
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14269,7 +14269,7 @@ LABEL_49:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(override);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9B10;
   v6[1] = v5;
@@ -14285,7 +14285,7 @@ LABEL_49:
   _Block_release(0);
 }
 
-- (void)_preconnectToServer:(id)a3
+- (void)_preconnectToServer:(id)server
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14293,7 +14293,7 @@ LABEL_49:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  MEMORY[0x19EB01DE0](v10, a3);
+  MEMORY[0x19EB01DE0](v10, server);
   WebCore::ResourceRequestBase::ResourceRequestBase(v11, v10, 0);
   v12 = 0;
   v7 = v10[0];
@@ -14341,7 +14341,7 @@ LABEL_14:
   WebCore::ResourceRequestBase::~ResourceRequestBase(v11);
 }
 
-- (void)_setCanUseCredentialStorage:(BOOL)a3
+- (void)_setCanUseCredentialStorage:(BOOL)storage
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14350,9 +14350,9 @@ LABEL_14:
     m_ptr = self->_page.m_ptr;
   }
 
-  *(m_ptr + 1400) = a3;
-  v6 = a3;
-  WebKit::WebPageProxy::send<Messages::WebPage::SetCanUseCredentialStorage>(m_ptr, &v6);
+  *(m_ptr + 1400) = storage;
+  storageCopy = storage;
+  WebKit::WebPageProxy::send<Messages::WebPage::SetCanUseCredentialStorage>(m_ptr, &storageCopy);
 }
 
 - (UIColor)_sampledPageTopColor
@@ -14390,11 +14390,11 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setInputDelegate:(id)a3
+- (void)_setInputDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_inputDelegate.m_weakReference, a3);
+  objc_storeWeak(&self->_inputDelegate.m_weakReference, delegate);
   m_ptr = self->_page.m_ptr;
-  if (a3)
+  if (delegate)
   {
     if ([WKWebView(WKPrivate) _setInputDelegate:]::FormClient::operator new(unsigned long)::s_heapRef)
     {
@@ -14582,7 +14582,7 @@ LABEL_20:
   return isSupportedMediaMIMEType;
 }
 
-- (void)_setLayoutMode:(unint64_t)a3
+- (void)_setLayoutMode:(unint64_t)mode
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14591,7 +14591,7 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setUseFixedLayout(m_ptr, a3 - 1 < 2);
+  WebKit::WebPageProxy::setUseFixedLayout(m_ptr, mode - 1 < 2);
 }
 
 - (CGSize)_fixedLayoutSize
@@ -14602,9 +14602,9 @@ LABEL_20:
   return result;
 }
 
-- (void)_setFixedLayoutSize:(CGSize)a3
+- (void)_setFixedLayoutSize:(CGSize)size
 {
-  v12 = a3;
+  sizeCopy = size;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -14612,7 +14612,7 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebCore::FloatSize::FloatSize(v10, &v12);
+  WebCore::FloatSize::FloatSize(v10, &sizeCopy);
   v4 = ceilf(v10[0]);
   v5 = 0x7FFFFFFFLL;
   v6 = 0x80000000;
@@ -14646,9 +14646,9 @@ LABEL_20:
   WebKit::WebPageProxy::setFixedLayoutSize(m_ptr, &v11);
 }
 
-- (void)_setBackgroundExtendsBeyondPage:(BOOL)a3
+- (void)_setBackgroundExtendsBeyondPage:(BOOL)page
 {
-  v3 = a3;
+  pageCopy = page;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -14656,10 +14656,10 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setBackgroundExtendsBeyondPage(m_ptr, v3);
+  WebKit::WebPageProxy::setBackgroundExtendsBeyondPage(m_ptr, pageCopy);
 }
 
-- (void)_setViewScale:(double)a3
+- (void)_setViewScale:(double)scale
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14667,21 +14667,21 @@ LABEL_20:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  v6 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v7 = ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a3 >= 0.0)
+  v6 = (*&scale & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v7 = ((*&scale & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (scale >= 0.0)
   {
     v7 = 0;
     v6 = 0;
   }
 
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0)
+  if ((*&scale & 0x7FFFFFFFFFFFFFFFLL) == 0)
   {
     v6 = 1;
   }
 
-  v8 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v6;
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FF0000000000000)
+  v8 = (*&scale & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v6;
+  if ((*&scale & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FF0000000000000)
   {
     v8 = 1;
   }
@@ -14692,14 +14692,14 @@ LABEL_20:
   }
 
   v9 = self->_page.m_ptr;
-  if (*(v9 + 143) != a3)
+  if (*(v9 + 143) != scale)
   {
     v10 = *(*(v9 + 4) + 2452);
-    WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(v9, &v10, a3, *(v9 + 144));
+    WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(v9, &v10, scale, *(v9 + 144));
   }
 }
 
-- (void)_getProcessDisplayNameWithCompletionHandler:(id)a3
+- (void)_getProcessDisplayNameWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14708,7 +14708,7 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10F9B38;
   v6[1] = v5;
@@ -14724,7 +14724,7 @@ LABEL_20:
   _Block_release(0);
 }
 
-- (void)_setMinimumEffectiveDeviceWidth:(double)a3
+- (void)_setMinimumEffectiveDeviceWidth:(double)width
 {
   m_ptr = self->_page.m_ptr;
   if (*(m_ptr + 1426) == 1)
@@ -14733,26 +14733,26 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  if (*(m_ptr + 144) != a3)
+  if (*(m_ptr + 144) != width)
   {
-    v6 = [(WKWebView *)self _shouldDeferGeometryUpdates];
+    _shouldDeferGeometryUpdates = [(WKWebView *)self _shouldDeferGeometryUpdates];
     v7 = self->_page.m_ptr;
-    if (v6)
+    if (_shouldDeferGeometryUpdates)
     {
-      *(v7 + 144) = a3;
+      *(v7 + 144) = width;
     }
 
     else
     {
       v8 = *(*(v7 + 4) + 2452);
-      WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(v7, &v8, *(v7 + 143), a3);
+      WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(v7, &v8, *(v7 + 143), width);
     }
   }
 }
 
-- (void)_setScrollPerformanceDataCollectionEnabled:(BOOL)a3
+- (void)_setScrollPerformanceDataCollectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -14760,7 +14760,7 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setScrollPerformanceDataCollectionEnabled(m_ptr, v3);
+  WebKit::WebPageProxy::setScrollPerformanceDataCollectionEnabled(m_ptr, enabledCopy);
 }
 
 - (NSArray)_scrollPerformanceData
@@ -14774,9 +14774,9 @@ LABEL_20:
   return result;
 }
 
-- (void)_setAllowsMediaDocumentInlinePlayback:(BOOL)a3
+- (void)_setAllowsMediaDocumentInlinePlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -14784,21 +14784,21 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  if (*(m_ptr + 673) != v3)
+  if (*(m_ptr + 673) != playbackCopy)
   {
-    *(m_ptr + 673) = v3;
-    v6 = v3;
+    *(m_ptr + 673) = playbackCopy;
+    v6 = playbackCopy;
     WebKit::WebPageProxy::send<Messages::WebPage::SetAllowsMediaDocumentInlinePlayback>(m_ptr, &v6);
   }
 }
 
-- (void)_setFullscreenDelegate:(id)a3
+- (void)_setFullscreenDelegate:(id)delegate
 {
   v4 = *(self->_page.m_ptr + 64);
   if ((**v4)(v4, 1))
   {
 
-    WebKit::FullscreenClient::setDelegate(v4, a3);
+    WebKit::FullscreenClient::setDelegate(v4, delegate);
   }
 }
 
@@ -14820,7 +14820,7 @@ LABEL_20:
   return v4;
 }
 
-- (void)_setMediaCaptureEnabled:(BOOL)a3
+- (void)_setMediaCaptureEnabled:(BOOL)enabled
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14829,12 +14829,12 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  WebKit::WebPageProxy::setMediaCaptureEnabled(m_ptr, a3);
+  WebKit::WebPageProxy::setMediaCaptureEnabled(m_ptr, enabled);
 }
 
-- (void)_setPageMuted:(unint64_t)a3
+- (void)_setPageMuted:(unint64_t)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
   {
@@ -14842,13 +14842,13 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  v5 = v3 & 1;
-  if ((v3 & 2) != 0)
+  v5 = mutedCopy & 1;
+  if ((mutedCopy & 2) != 0)
   {
-    v5 = v3 & 1 | 6;
+    v5 = mutedCopy & 1 | 6;
   }
 
-  if ((v3 & 4) != 0)
+  if ((mutedCopy & 4) != 0)
   {
     v6 = v5 | 0x38;
   }
@@ -14870,7 +14870,7 @@ LABEL_20:
   }
 }
 
-- (void)_removeDataDetectedLinks:(id)a3
+- (void)_removeDataDetectedLinks:(id)links
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14879,7 +14879,7 @@ LABEL_20:
     m_ptr = self->_page.m_ptr;
   }
 
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(links);
   v7 = self->_page.m_ptr;
   if (v7)
   {
@@ -14907,7 +14907,7 @@ LABEL_20:
   _Block_release(0);
 }
 
-- (void)_doAfterNextPresentationUpdate:(id)a3
+- (void)_doAfterNextPresentationUpdate:(id)update
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14915,10 +14915,10 @@ LABEL_20:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _internalDoAfterNextPresentationUpdate:a3 withoutWaitingForPainting:0 withoutWaitingForAnimatedResize:0];
+  [(WKWebView *)self _internalDoAfterNextPresentationUpdate:update withoutWaitingForPainting:0 withoutWaitingForAnimatedResize:0];
 }
 
-- (void)_doAfterNextPresentationUpdateWithoutWaitingForPainting:(id)a3
+- (void)_doAfterNextPresentationUpdateWithoutWaitingForPainting:(id)painting
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr && *(m_ptr + 1426) == 1)
@@ -14926,13 +14926,13 @@ LABEL_20:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
   }
 
-  [(WKWebView *)self _internalDoAfterNextPresentationUpdate:a3 withoutWaitingForPainting:1 withoutWaitingForAnimatedResize:0];
+  [(WKWebView *)self _internalDoAfterNextPresentationUpdate:painting withoutWaitingForPainting:1 withoutWaitingForAnimatedResize:0];
 }
 
-- (void)_doAfterNextVisibleContentRectUpdate:(id)a3
+- (void)_doAfterNextVisibleContentRectUpdate:(id)update
 {
   p_visibleContentRectUpdateCallbacks = &self->_visibleContentRectUpdateCallbacks;
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(update);
   v13 = v5;
   m_size = p_visibleContentRectUpdateCallbacks->m_size;
   if (m_size == p_visibleContentRectUpdateCallbacks->m_capacity)
@@ -15009,13 +15009,13 @@ LABEL_20:
   }
 }
 
-- (void)_setDisplayCaptureState:(int64_t)a3 completionHandler:(id)a4
+- (void)_setDisplayCaptureState:(int64_t)state completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   m_ptr = self->_page.m_ptr;
   if (!m_ptr || *(m_ptr + 1426) != 1)
   {
-    if (a4)
+    if (handler)
     {
       goto LABEL_5;
     }
@@ -15024,10 +15024,10 @@ LABEL_20:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-  if (!v4)
+  if (!handlerCopy)
   {
 LABEL_4:
-    v4 = v18;
+    handlerCopy = v18;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3321888768;
     v18[2] = __66__WKWebView_WKPrivate___setDisplayCaptureState_completionHandler___block_invoke;
@@ -15036,9 +15036,9 @@ LABEL_4:
 
 LABEL_5:
   v8 = self->_page.m_ptr;
-  if (!a3)
+  if (!state)
   {
-    v15 = _Block_copy(v4);
+    v15 = _Block_copy(handlerCopy);
     v16 = WTF::fastMalloc(0x10);
     *v16 = &unk_1F10F9B88;
     v16[1] = v15;
@@ -15057,12 +15057,12 @@ LABEL_14:
 
   v9 = *(*(v8 + 4) + 1048);
   v10 = v9 | 0x18;
-  if (a3 == 1)
+  if (state == 1)
   {
     v9 &= 0xE7u;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v11 = v10;
   }
@@ -15072,7 +15072,7 @@ LABEL_14:
     v11 = v9;
   }
 
-  v12 = _Block_copy(v4);
+  v12 = _Block_copy(handlerCopy);
   v13 = WTF::fastMalloc(0x10);
   *v13 = &unk_1F10F9BB0;
   v13[1] = v12;
@@ -15089,13 +15089,13 @@ LABEL_12:
   _Block_release(0);
 }
 
-- (void)_setSystemAudioCaptureState:(int64_t)a3 completionHandler:(id)a4
+- (void)_setSystemAudioCaptureState:(int64_t)state completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   m_ptr = self->_page.m_ptr;
   if (!m_ptr || *(m_ptr + 1426) != 1)
   {
-    if (a4)
+    if (handler)
     {
       goto LABEL_5;
     }
@@ -15104,10 +15104,10 @@ LABEL_12:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The WKWebView is suspended"];
-  if (!v4)
+  if (!handlerCopy)
   {
 LABEL_4:
-    v4 = v18;
+    handlerCopy = v18;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3321888768;
     v18[2] = __70__WKWebView_WKPrivate___setSystemAudioCaptureState_completionHandler___block_invoke;
@@ -15116,9 +15116,9 @@ LABEL_4:
 
 LABEL_5:
   v8 = self->_page.m_ptr;
-  if (!a3)
+  if (!state)
   {
-    v15 = _Block_copy(v4);
+    v15 = _Block_copy(handlerCopy);
     v16 = WTF::fastMalloc(0x10);
     *v16 = &unk_1F10F9BD8;
     v16[1] = v15;
@@ -15137,12 +15137,12 @@ LABEL_14:
 
   v9 = *(*(v8 + 4) + 1048);
   v10 = v9 | 0x10;
-  if (a3 == 1)
+  if (state == 1)
   {
     v9 &= ~0x10u;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v11 = v10;
   }
@@ -15152,7 +15152,7 @@ LABEL_14:
     v11 = v9;
   }
 
-  v12 = _Block_copy(v4);
+  v12 = _Block_copy(handlerCopy);
   v13 = WTF::fastMalloc(0x10);
   *v13 = &unk_1F10F9C00;
   v13[1] = v12;
@@ -15169,14 +15169,14 @@ LABEL_12:
   _Block_release(0);
 }
 
-- (void)_setOverrideDeviceScaleFactor:(double)a3
+- (void)_setOverrideDeviceScaleFactor:(double)factor
 {
   m_ptr = self->_page.m_ptr;
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9C28;
   v8 = v5;
-  v6 = a3;
-  WebKit::WebPageProxy::setCustomDeviceScaleFactor(m_ptr, &v8, v6);
+  factorCopy = factor;
+  WebKit::WebPageProxy::setCustomDeviceScaleFactor(m_ptr, &v8, factorCopy);
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -15196,9 +15196,9 @@ LABEL_12:
   return result;
 }
 
-+ (void)_permissionChanged:(id)a3 forOrigin:(id)a4
++ (void)_permissionChanged:(id)changed forOrigin:(id)origin
 {
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, changed);
   v7 = WebCore::Permissions::toPermissionName(&v9, v5);
   v8 = v9;
   v9 = 0;
@@ -15216,14 +15216,14 @@ LABEL_12:
     return;
   }
 
-  WebKit::WebProcessProxy::permissionChanged(v7, a4 + 24);
+  WebKit::WebProcessProxy::permissionChanged(v7, origin + 24);
 }
 
-- (void)_resetVisibilityAdjustmentsForTargetedElements:(id)a3 completionHandler:(id)a4
+- (void)_resetVisibilityAdjustmentsForTargetedElements:(id)elements completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  elementsFromWKElements(v11, a3);
-  v6 = _Block_copy(a4);
+  elementsFromWKElements(v11, elements);
+  v6 = _Block_copy(handler);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F9C50;
   v7[1] = v6;
@@ -15240,11 +15240,11 @@ LABEL_12:
   WTF::Vector<WTF::Ref<WebKit::WebPageProxy,WTF::RawPtrTraits<WebKit::WebPageProxy>,WTF::DefaultRefDerefTraits<WebKit::WebPageProxy>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v11, v9);
 }
 
-- (void)_adjustVisibilityForTargetedElements:(id)a3 completionHandler:(id)a4
+- (void)_adjustVisibilityForTargetedElements:(id)elements completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  elementsFromWKElements(v11, a3);
-  v6 = _Block_copy(a4);
+  elementsFromWKElements(v11, elements);
+  v6 = _Block_copy(handler);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F9C78;
   v7[1] = v6;
@@ -15261,10 +15261,10 @@ LABEL_12:
   WTF::Vector<WTF::Ref<WebKit::WebPageProxy,WTF::RawPtrTraits<WebKit::WebPageProxy>,WTF::DefaultRefDerefTraits<WebKit::WebPageProxy>>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v11, v9);
 }
 
-- (void)_numberOfVisibilityAdjustmentRectsWithCompletionHandler:(id)a3
+- (void)_numberOfVisibilityAdjustmentRectsWithCompletionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9CA0;
   v5[1] = v4;
@@ -15280,12 +15280,12 @@ LABEL_12:
   _Block_release(0);
 }
 
-- (void)_playPredominantOrNowPlayingMediaSession:(id)a3
+- (void)_playPredominantOrNowPlayingMediaSession:(id)session
 {
   if ([(WKWebView *)self _isValid])
   {
     m_ptr = self->_page.m_ptr;
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(session);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9CC8;
     v7[1] = v6;
@@ -15303,18 +15303,18 @@ LABEL_12:
 
   else
   {
-    v9 = *(a3 + 2);
+    v9 = *(session + 2);
 
-    v9(a3, 0);
+    v9(session, 0);
   }
 }
 
-- (void)_pauseNowPlayingMediaSession:(id)a3
+- (void)_pauseNowPlayingMediaSession:(id)session
 {
   if ([(WKWebView *)self _isValid])
   {
     m_ptr = self->_page.m_ptr;
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(session);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9CF0;
     v7[1] = v6;
@@ -15333,15 +15333,15 @@ LABEL_12:
 
   else
   {
-    v10 = *(a3 + 2);
+    v10 = *(session + 2);
 
-    v10(a3, 0);
+    v10(session, 0);
   }
 }
 
-- (void)_simulateClickOverFirstMatchingTextInViewportWithUserInteraction:(id)a3 completionHandler:(id)a4
+- (void)_simulateClickOverFirstMatchingTextInViewportWithUserInteraction:(id)interaction completionHandler:(id)handler
 {
-  if (![a3 length])
+  if (![interaction length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The target text must be non-empty."];
   }
@@ -15349,8 +15349,8 @@ LABEL_12:
   if ([(WKWebView *)self _isValid])
   {
     m_ptr = self->_page.m_ptr;
-    MEMORY[0x19EB02040](&v15, a3);
-    v8 = _Block_copy(a4);
+    MEMORY[0x19EB02040](&v15, interaction);
+    v8 = _Block_copy(handler);
     v9 = WTF::fastMalloc(0x10);
     *v9 = &unk_1F10F9D18;
     v9[1] = v8;
@@ -15378,17 +15378,17 @@ LABEL_12:
 
   else
   {
-    v13 = *(a4 + 2);
+    v13 = *(handler + 2);
 
-    v13(a4, 0);
+    v13(handler, 0);
   }
 }
 
-- (void)_targetedPreviewForElementWithID:(id)a3 completionHandler:(id)a4
+- (void)_targetedPreviewForElementWithID:(id)d completionHandler:(id)handler
 {
   m_ptr = self->_page.m_ptr;
-  MEMORY[0x19EB02040](&v14, a3);
-  aBlock = _Block_copy(a4);
+  MEMORY[0x19EB02040](&v14, d);
+  aBlock = _Block_copy(handler);
   v12 = 0;
   objc_initWeak(&v12, self);
   v7 = WTF::fastMalloc(0x18);
@@ -15448,9 +15448,9 @@ LABEL_12:
   return 3 - v4;
 }
 
-- (void)_fetchDataOfTypes:(unint64_t)a3 completionHandler:(id)a4
+- (void)_fetchDataOfTypes:(unint64_t)types completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = malloc_type_malloc(0x28uLL, 0x10E0040799C3B1DuLL);
   *v7 = MEMORY[0x1E69E9818];
   v7[1] = 50331650;
@@ -15458,15 +15458,15 @@ LABEL_12:
   v7[3] = &WTF::BlockPtr<void ()(NSData *,NSError *)>::fromCallable<[WKWebView(WKPrivate) _fetchDataOfTypes:completionHandler:]::$_48>([WKWebView(WKPrivate) _fetchDataOfTypes:completionHandler:]::$_48)::descriptor;
   v7[4] = v6;
   _Block_release(0);
-  [(WKWebView *)self fetchDataOfTypes:a3 completionHandler:v7];
+  [(WKWebView *)self fetchDataOfTypes:types completionHandler:v7];
   _Block_release(v7);
 
   _Block_release(0);
 }
 
-- (void)_restoreData:(id)a3 completionHandler:(id)a4
+- (void)_restoreData:(id)data completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = malloc_type_malloc(0x28uLL, 0x10E0040799C3B1DuLL);
   *v7 = MEMORY[0x1E69E9818];
   v7[1] = 50331650;
@@ -15474,7 +15474,7 @@ LABEL_12:
   v7[3] = &WTF::BlockPtr<void ()(NSError *)>::fromCallable<[WKWebView(WKPrivate) _restoreData:completionHandler:]::$_49>([WKWebView(WKPrivate) _restoreData:completionHandler:]::$_49)::descriptor;
   v7[4] = v6;
   _Block_release(0);
-  [(WKWebView *)self restoreData:a3 completionHandler:v7];
+  [(WKWebView *)self restoreData:data completionHandler:v7];
   _Block_release(v7);
 
   _Block_release(0);
@@ -15499,7 +15499,7 @@ LABEL_12:
   return result;
 }
 
-- (void)setPresentingApplicationAuditToken:(id *)a3
+- (void)setPresentingApplicationAuditToken:(id *)token
 {
   if (self)
   {
@@ -15512,7 +15512,7 @@ LABEL_12:
     v5 = 0;
   }
 
-  WebKit::WebPageProxy::setPresentingApplicationAuditToken(self, a3);
+  WebKit::WebPageProxy::setPresentingApplicationAuditToken(self, token);
   v4 = v5;
   v5 = 0;
   if (v4)
@@ -15523,22 +15523,22 @@ LABEL_12:
 
 - (BOOL)_useSystemAppearance
 {
-  v2 = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
+  preferences = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
 
-  return [(WKPreferences *)v2 _useSystemAppearance];
+  return [(WKPreferences *)preferences _useSystemAppearance];
 }
 
-- (void)_setUseSystemAppearance:(BOOL)a3
+- (void)_setUseSystemAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v4 = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
+  appearanceCopy = appearance;
+  preferences = [(WKWebViewConfiguration *)self->_configuration.m_ptr preferences];
 
-  [(WKPreferences *)v4 _setUseSystemAppearance:v3];
+  [(WKPreferences *)preferences _setUseSystemAppearance:appearanceCopy];
 }
 
-- (void)_scrollToEdge:(unint64_t)a3 animated:(BOOL)a4
+- (void)_scrollToEdge:(unint64_t)edge animated:(BOOL)animated
 {
-  v5 = a3;
+  edgeCopy = edge;
   if (self)
   {
     [(WKWebView *)self _protectedPage];
@@ -15550,9 +15550,9 @@ LABEL_12:
     v7 = 0;
   }
 
-  v10 = (v5 << 13) & 0x10000 | ((v5 & 1) << 24) | (((v5 >> 2) & 1) << 8) | (v5 >> 1) & 1;
+  v10 = (edgeCopy << 13) & 0x10000 | ((edgeCopy & 1) << 24) | (((edgeCopy >> 2) & 1) << 8) | (edgeCopy >> 1) & 1;
   v8 = &v10;
-  v9 = a4;
+  animatedCopy = animated;
   WebKit::WebPageProxy::send<Messages::WebPage::ScrollToEdge>(self, &v8);
   v6 = v7;
   v7 = 0;
@@ -15562,12 +15562,12 @@ LABEL_12:
   }
 }
 
-- (void)_setShouldSuppressTopColorExtensionView:(BOOL)a3
+- (void)_setShouldSuppressTopColorExtensionView:(BOOL)view
 {
-  if (self->_shouldSuppressTopColorExtensionView != a3)
+  if (self->_shouldSuppressTopColorExtensionView != view)
   {
-    self->_shouldSuppressTopColorExtensionView = a3;
-    v4 = self;
+    self->_shouldSuppressTopColorExtensionView = view;
+    selfCopy = self;
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10F9D68;
     v5[1] = self;
@@ -15603,12 +15603,12 @@ LABEL_12:
   return v2;
 }
 
-- (void)_requestTextExtraction:(CGRect)a3 completionHandler:(id)a4
+- (void)_requestTextExtraction:(CGRect)extraction completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extraction.size.height;
+  width = extraction.size.width;
+  y = extraction.origin.y;
+  x = extraction.origin.x;
   if (![(WKWebView *)self _isValid])
   {
     goto LABEL_7;
@@ -15648,7 +15648,7 @@ LABEL_12:
 
     v24[16] = v13;
     m_ptr = self->_page.m_ptr;
-    *&aBlock.origin.x = _Block_copy(a4);
+    *&aBlock.origin.x = _Block_copy(handler);
     aBlock.origin.y = 0.0;
     objc_initWeak(&aBlock.origin.y, self);
     v20 = WTF::fastMalloc(0x18);
@@ -15674,9 +15674,9 @@ LABEL_12:
   else
   {
 LABEL_7:
-    v14 = *(a4 + 2);
+    v14 = *(handler + 2);
 
-    v14(a4, 0);
+    v14(handler, 0);
   }
 }
 
@@ -15747,15 +15747,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)_addEventAttributionWithSourceID:(unsigned __int8)a3 destinationURL:(id)a4 sourceDescription:(id)a5 purchaser:(id)a6 reportEndpoint:(id)a7 optionalNonce:(id)a8 applicationBundleID:(id)a9 ephemeral:(BOOL)a10
+- (void)_addEventAttributionWithSourceID:(unsigned __int8)d destinationURL:(id)l sourceDescription:(id)description purchaser:(id)purchaser reportEndpoint:(id)endpoint optionalNonce:(id)nonce applicationBundleID:(id)iD ephemeral:(BOOL)self0
 {
-  MEMORY[0x19EB01DE0](v31, a7, a3, a4, a5, a6);
+  MEMORY[0x19EB01DE0](v31, endpoint, d, l, description, purchaser);
   WebCore::RegistrableDomain::RegistrableDomain(&v32, v31);
-  MEMORY[0x19EB01DE0](v29, a4);
+  MEMORY[0x19EB01DE0](v29, l);
   WebCore::RegistrableDomain::RegistrableDomain(&v30, v29);
-  v14 = MEMORY[0x19EB02040](&v28, a9);
+  v14 = MEMORY[0x19EB02040](&v28, iD);
   WTF::WallTime::now(v14);
-  v33[0] = a3;
+  v33[0] = d;
   v17 = v32;
   if (v32)
   {
@@ -15771,7 +15771,7 @@ LABEL_7:
 
   v35 = v18;
   v36 = v16;
-  v37 = a10;
+  ephemeralCopy = ephemeral;
   v38 = 0;
   v39 = 0;
   v40 = 0;
@@ -15830,18 +15830,18 @@ LABEL_7:
   if (v24 && atomic_fetch_add_explicit(v24, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v24, v15);
-    if (!a8)
+    if (!nonce)
     {
       goto LABEL_26;
     }
   }
 
-  else if (!a8)
+  else if (!nonce)
   {
     goto LABEL_26;
   }
 
-  MEMORY[0x19EB02040](v31, a8);
+  MEMORY[0x19EB02040](v31, nonce);
   WebCore::PrivateClickMeasurement::setEphemeralSourceNonce();
   v26 = v31[0];
   v31[0] = 0;
@@ -15855,11 +15855,11 @@ LABEL_26:
   WebCore::PrivateClickMeasurement::~PrivateClickMeasurement(v33, v27);
 }
 
-- (void)_setPageScale:(double)a3 withOrigin:(CGPoint)a4
+- (void)_setPageScale:(double)scale withOrigin:(CGPoint)origin
 {
-  v16 = a4;
+  originCopy = origin;
   m_ptr = self->_page.m_ptr;
-  WebCore::FloatPoint::FloatPoint(v14, &v16);
+  WebCore::FloatPoint::FloatPoint(v14, &originCopy);
   v6 = roundf(v14[0]);
   v7 = 0x7FFFFFFFLL;
   v8 = v6;
@@ -15890,7 +15890,7 @@ LABEL_26:
   v12 = WTF::fastMalloc(0x10);
   *v12 = &unk_1F10F9DE0;
   v13 = v12;
-  WebKit::WebPageProxy::scalePage(m_ptr, &v15, &v13, a3);
+  WebKit::WebPageProxy::scalePage(m_ptr, &v15, &v13, scale);
   if (v13)
   {
     (*(*v13 + 8))(v13);
@@ -15909,10 +15909,10 @@ LABEL_26:
   return *(m_ptr + v3);
 }
 
-- (id)_contentsOfUserInterfaceItem:(id)a3
+- (id)_contentsOfUserInterfaceItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"validationBubble"])
+  if ([item isEqualToString:@"validationBubble"])
   {
     v5 = *(self->_page.m_ptr + 119);
     if (v5)
@@ -15942,7 +15942,7 @@ LABEL_26:
       v8 = 0.0;
     }
 
-    v19 = a3;
+    itemCopy = item;
     v17 = @"message";
     if (v7)
     {
@@ -15962,7 +15962,7 @@ LABEL_26:
 
     v18[1] = [MEMORY[0x1E696AD98] numberWithDouble:{v8, v16, v17, @"fontSize", v16}];
     v20[0] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:2];
-    v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&itemCopy count:1];
     v15 = v16;
     v16 = 0;
     if (v15)
@@ -15986,16 +15986,16 @@ LABEL_26:
   {
     m_ptr = self->_contentView.m_ptr;
 
-    return [(WKContentView *)m_ptr _contentsOfUserInterfaceItem:a3];
+    return [(WKContentView *)m_ptr _contentsOfUserInterfaceItem:item];
   }
 }
 
-- (void)_requestActiveNowPlayingSessionInfo:(id)a3
+- (void)_requestActiveNowPlayingSessionInfo:(id)info
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(info);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9E08;
     v7[1] = v6;
@@ -16013,23 +16013,23 @@ LABEL_26:
 
   else
   {
-    v9 = *(a3 + 2);
+    v9 = *(info + 2);
     v3.n128_u64[0] = 0x7FF8000000000000;
     v4.n128_u64[0] = 0x7FF8000000000000;
 
-    v9(a3, 0, 0, &stru_1F1147748, 0, v3, v4);
+    v9(info, 0, 0, &stru_1F1147748, 0, v3, v4);
   }
 }
 
-- (void)_setNowPlayingMetadataObserver:(id)a3
+- (void)_setNowPlayingMetadataObserver:(id)observer
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
     CFRetain(*(m_ptr + 1));
-    if (a3)
+    if (observer)
     {
-      v5 = _Block_copy(a3);
+      v5 = _Block_copy(observer);
       v6 = WTF::fastMalloc(0x10);
       v7 = WTF::fastMalloc(0x10);
       *v7 = &unk_1F10F8E68;
@@ -16211,14 +16211,14 @@ LABEL_26:
   }
 }
 
-- (void)_processWillSuspendForTesting:(id)a3
+- (void)_processWillSuspendForTesting:(id)testing
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
     v4 = *(m_ptr + 44);
     atomic_fetch_add((v4 + 16), 1u);
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(testing);
     v6 = WTF::fastMalloc(0x10);
     *v6 = &unk_1F10F9E30;
     v6[1] = v5;
@@ -16240,9 +16240,9 @@ LABEL_26:
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(testing + 2);
 
-    v8(a3);
+    v8(testing);
   }
 }
 
@@ -16293,7 +16293,7 @@ LABEL_26:
   }
 }
 
-- (void)_setThrottleStateForTesting:(int)a3
+- (void)_setThrottleStateForTesting:(int)testing
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
@@ -16301,7 +16301,7 @@ LABEL_26:
     v4 = *(m_ptr + 44);
     atomic_fetch_add((v4 + 16), 1u);
     *(v4 + 720) = 1;
-    WebKit::WebProcessProxy::didChangeThrottleState(v4, a3);
+    WebKit::WebProcessProxy::didChangeThrottleState(v4, testing);
     *(v4 + 720) = 0;
 
     WTF::ThreadSafeRefCounted<WebKit::AuxiliaryProcessProxy,(WTF::DestructionThread)2>::deref((v4 + 16));
@@ -16347,16 +16347,16 @@ LABEL_26:
   HIBYTE(word_1ED6435B0) = 1;
 }
 
-- (void)_setIndexOfGetDisplayMediaDeviceSelectedForTesting:(id)a3
+- (void)_setIndexOfGetDisplayMediaDeviceSelectedForTesting:(id)testing
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    if (a3)
+    if (testing)
     {
-      v5 = [a3 unsignedIntValue];
-      v6 = v5 & 0xFFFFFF00;
-      v7 = v5;
+      unsignedIntValue = [testing unsignedIntValue];
+      v6 = unsignedIntValue & 0xFFFFFF00;
+      v7 = unsignedIntValue;
       m_ptr = self->_page.m_ptr;
       v8 = 0x100000000;
     }
@@ -16395,7 +16395,7 @@ LABEL_26:
   }
 }
 
-- (void)_setSystemCanPromptForGetDisplayMediaForTesting:(BOOL)a3
+- (void)_setSystemCanPromptForGetDisplayMediaForTesting:(BOOL)testing
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
@@ -16410,7 +16410,7 @@ LABEL_26:
         byte_1EB01E110 = 0;
       }
 
-      if (a3)
+      if (testing)
       {
         v6 = 1;
       }
@@ -16457,10 +16457,10 @@ LABEL_26:
   return v3;
 }
 
-- (void)_doAfterProcessingAllPendingMouseEvents:(id)a3
+- (void)_doAfterProcessingAllPendingMouseEvents:(id)events
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(events);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9E80;
   v5[1] = v4;
@@ -16476,9 +16476,9 @@ LABEL_26:
   _Block_release(0);
 }
 
-+ (void)_setApplicationBundleIdentifier:(id)a3
++ (void)_setApplicationBundleIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v6, a3);
+  MEMORY[0x19EB02040](&v6, identifier);
   WTF::setApplicationBundleIdentifierOverride(&v6, v3);
   v5 = v6;
   v6 = 0;
@@ -16491,15 +16491,15 @@ LABEL_26:
   }
 }
 
-- (id)_scrollbarStateForScrollingNodeID:(unint64_t)a3 processID:(unint64_t)a4 isVertical:(BOOL)a5
+- (id)_scrollbarStateForScrollingNodeID:(unint64_t)d processID:(unint64_t)iD isVertical:(BOOL)vertical
 {
   v5 = &stru_1F1147748;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && iD - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     m_ptr = self->_page.m_ptr;
     if (m_ptr)
     {
-      WebKit::WebPageProxy::scrollbarStateForScrollingNodeID(m_ptr, a5, &v14);
+      WebKit::WebPageProxy::scrollbarStateForScrollingNodeID(m_ptr, vertical, &v14);
       v7 = v14;
       if (v14)
       {
@@ -16541,10 +16541,10 @@ LABEL_26:
   return v5;
 }
 
-- (void)_doAfterActivityStateUpdate:(id)a3
+- (void)_doAfterActivityStateUpdate:(id)update
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(update);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F8FE8;
   v5[1] = v4;
@@ -16560,18 +16560,18 @@ LABEL_26:
   _Block_release(0);
 }
 
-- (void)_setPrivateClickMeasurementOverrideTimerForTesting:(BOOL)a3 completionHandler:(id)a4
+- (void)_setPrivateClickMeasurementOverrideTimerForTesting:(BOOL)testing completionHandler:(id)handler
 {
   v4 = *(self->_page.m_ptr + 198);
   if (v4)
   {
     ++v4[2];
-    v6 = _Block_copy(a4);
+    v6 = _Block_copy(handler);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9EA8;
     v7[1] = v6;
     v10 = v7;
-    WebKit::WebPageProxyTesting::setPrivateClickMeasurementOverrideTimer(v4, a3, &v10);
+    WebKit::WebPageProxyTesting::setPrivateClickMeasurementOverrideTimer(v4, testing, &v10);
     v8 = v10;
     v10 = 0;
     if (v8)
@@ -16593,21 +16593,21 @@ LABEL_26:
 
   else
   {
-    v9 = *(a4 + 2);
+    v9 = *(handler + 2);
 
-    v9(a4);
+    v9(handler);
   }
 }
 
-- (void)_setPrivateClickMeasurementAttributionReportURLsForTesting:(id)a3 destinationURL:(id)a4 completionHandler:(id)a5
+- (void)_setPrivateClickMeasurementAttributionReportURLsForTesting:(id)testing destinationURL:(id)l completionHandler:(id)handler
 {
   v6 = *(self->_page.m_ptr + 198);
   if (v6)
   {
     ++v6[2];
-    MEMORY[0x19EB01DE0](v17, a3);
-    MEMORY[0x19EB01DE0](v16, a4);
-    v8 = _Block_copy(a5);
+    MEMORY[0x19EB01DE0](v17, testing);
+    MEMORY[0x19EB01DE0](v16, l);
+    v8 = _Block_copy(handler);
     v9 = WTF::fastMalloc(0x10);
     *v9 = &unk_1F10F9ED0;
     v9[1] = v8;
@@ -16648,20 +16648,20 @@ LABEL_26:
 
   else
   {
-    v14 = *(a5 + 2);
+    v14 = *(handler + 2);
 
-    v14(a5);
+    v14(handler);
   }
 }
 
-- (void)_setPrivateClickMeasurementAttributionTokenPublicKeyURLForTesting:(id)a3 completionHandler:(id)a4
+- (void)_setPrivateClickMeasurementAttributionTokenPublicKeyURLForTesting:(id)testing completionHandler:(id)handler
 {
   v5 = *(self->_page.m_ptr + 198);
   if (v5)
   {
     ++v5[2];
-    MEMORY[0x19EB01DE0](v13, a3);
-    v6 = _Block_copy(a4);
+    MEMORY[0x19EB01DE0](v13, testing);
+    v6 = _Block_copy(handler);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9EF8;
     v7[1] = v6;
@@ -16695,20 +16695,20 @@ LABEL_26:
 
   else
   {
-    v11 = *(a4 + 2);
+    v11 = *(handler + 2);
 
-    v11(a4);
+    v11(handler);
   }
 }
 
-- (void)_setPrivateClickMeasurementAttributionTokenSignatureURLForTesting:(id)a3 completionHandler:(id)a4
+- (void)_setPrivateClickMeasurementAttributionTokenSignatureURLForTesting:(id)testing completionHandler:(id)handler
 {
   v5 = *(self->_page.m_ptr + 198);
   if (v5)
   {
     ++v5[2];
-    MEMORY[0x19EB01DE0](v13, a3);
-    v6 = _Block_copy(a4);
+    MEMORY[0x19EB01DE0](v13, testing);
+    v6 = _Block_copy(handler);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9F20;
     v7[1] = v6;
@@ -16742,20 +16742,20 @@ LABEL_26:
 
   else
   {
-    v11 = *(a4 + 2);
+    v11 = *(handler + 2);
 
-    v11(a4);
+    v11(handler);
   }
 }
 
-- (void)_setPrivateClickMeasurementAppBundleIDForTesting:(id)a3 completionHandler:(id)a4
+- (void)_setPrivateClickMeasurementAppBundleIDForTesting:(id)testing completionHandler:(id)handler
 {
   v5 = *(self->_page.m_ptr + 198);
   if (v5)
   {
     ++v5[2];
-    MEMORY[0x19EB02040](&v13, a3);
-    v6 = _Block_copy(a4);
+    MEMORY[0x19EB02040](&v13, testing);
+    v6 = _Block_copy(handler);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10F9F48;
     v7[1] = v6;
@@ -16789,19 +16789,19 @@ LABEL_26:
 
   else
   {
-    v11 = *(a4 + 2);
+    v11 = *(handler + 2);
 
-    v11(a4);
+    v11(handler);
   }
 }
 
-- (void)_dumpPrivateClickMeasurement:(id)a3
+- (void)_dumpPrivateClickMeasurement:(id)measurement
 {
   v3 = *(self->_page.m_ptr + 198);
   if (v3)
   {
     ++v3[2];
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(measurement);
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10F9F70;
     v5[1] = v4;
@@ -16828,9 +16828,9 @@ LABEL_26:
 
   else
   {
-    v7 = *(a3 + 2);
+    v7 = *(measurement + 2);
 
-    v7(a3, 0);
+    v7(measurement, 0);
   }
 }
 
@@ -16842,10 +16842,10 @@ LABEL_26:
   [(WKContentView *)m_ptr setUpInteraction];
 }
 
-- (void)_lastNavigationWasAppInitiated:(id)a3
+- (void)_lastNavigationWasAppInitiated:(id)initiated
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(initiated);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9F98;
   v5[1] = v4;
@@ -16861,10 +16861,10 @@ LABEL_26:
   _Block_release(0);
 }
 
-- (void)_appPrivacyReportTestingData:(id)a3
+- (void)_appPrivacyReportTestingData:(id)data
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(data);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9FC0;
   v5[1] = v4;
@@ -16880,10 +16880,10 @@ LABEL_26:
   _Block_release(0);
 }
 
-- (void)_clearAppPrivacyReportTestingData:(id)a3
+- (void)_clearAppPrivacyReportTestingData:(id)data
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(data);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9FE8;
   v5[1] = v4;
@@ -16899,13 +16899,13 @@ LABEL_26:
   _Block_release(0);
 }
 
-- (void)_isLayerTreeFrozenForTesting:(id)a3
+- (void)_isLayerTreeFrozenForTesting:(id)testing
 {
   v3 = *(self->_page.m_ptr + 198);
   if (v3)
   {
     ++v3[2];
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(testing);
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10FA010;
     v5[1] = v4;
@@ -16933,20 +16933,20 @@ LABEL_26:
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(testing + 2);
 
-    v8(a3, 0);
+    v8(testing, 0);
   }
 }
 
-- (void)_computePagesForPrinting:(id)a3 completionHandler:(id)a4
+- (void)_computePagesForPrinting:(id)printing completionHandler:(id)handler
 {
   memset(v10, 0, 29);
-  v4 = *(a3 + 3);
+  v4 = *(printing + 3);
   if (v4)
   {
     m_ptr = self->_page.m_ptr;
-    v6 = _Block_copy(a4);
+    v6 = _Block_copy(handler);
     v7 = WTF::fastMalloc(0x10);
     *v7 = &unk_1F10FA038;
     v7[1] = v6;
@@ -16968,13 +16968,13 @@ LABEL_26:
   }
 }
 
-- (void)_gpuToWebProcessConnectionCountForTesting:(id)a3
+- (void)_gpuToWebProcessConnectionCountForTesting:(id)testing
 {
   v4 = *(API::PageConfiguration::Data::LazyInitializedRef<WebKit::WebProcessPool,&API::PageConfiguration::Data::createWebProcessPool>::get((*(self->_page.m_ptr + 8) + 16)) + 176);
   if (v4)
   {
     atomic_fetch_add((v4 + 16), 1u);
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(testing);
     v6 = WTF::fastMalloc(0x10);
     *v6 = &unk_1F10FA060;
     v6[1] = v5;
@@ -16993,16 +16993,16 @@ LABEL_26:
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(testing + 2);
 
-    v8(a3, 0);
+    v8(testing, 0);
   }
 }
 
-- (void)_setSystemPreviewCompletionHandlerForLoadTesting:(id)a3
+- (void)_setSystemPreviewCompletionHandlerForLoadTesting:(id)testing
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(testing);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FA088;
   v5[1] = v4;
@@ -17054,14 +17054,14 @@ LABEL_26:
   WTF::ThreadSafeRefCounted<WebKit::AuxiliaryProcessProxy,(WTF::DestructionThread)2>::deref(v3);
 }
 
-- (void)_getNotifyStateForTesting:(id)a3 completionHandler:(id)a4
+- (void)_getNotifyStateForTesting:(id)testing completionHandler:(id)handler
 {
   v5 = *(self->_page.m_ptr + 44);
   atomic_fetch_add((v5 + 16), 1u);
-  MEMORY[0x19EB02040](&v11, a3);
+  MEMORY[0x19EB02040](&v11, testing);
   v6 = WTF::fastMalloc(0x10);
   *v6 = &unk_1F10FA0D8;
-  v6[1] = a4;
+  v6[1] = handler;
   v10 = v6;
   v12 = &v11;
   WebKit::AuxiliaryProcessProxy::sendWithAsyncReply<Messages::WebProcess::GetNotifyStateForTesting,WTF::CompletionHandler<void ()(std::optional<unsigned long long>)>>(v5, &v12, &v10, 0, 0, 1);
@@ -17091,7 +17091,7 @@ LABEL_26:
   WTF::ThreadSafeRefCounted<WebKit::AuxiliaryProcessProxy,(WTF::DestructionThread)2>::deref((v5 + 16));
 }
 
-- (id)_propertiesOfLayerWithID:(unint64_t)a3
+- (id)_propertiesOfLayerWithID:(unint64_t)d
 {
   v3 = MEMORY[0x1EEE9AC00](self);
   v107[14] = *MEMORY[0x1E69E9840];
@@ -17324,10 +17324,10 @@ LABEL_26:
   return v61;
 }
 
-- (void)_textFragmentRangesWithCompletionHandlerForTesting:(id)a3
+- (void)_textFragmentRangesWithCompletionHandlerForTesting:(id)testing
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(testing);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FA100;
   v5[1] = v4;
@@ -17366,9 +17366,9 @@ LABEL_26:
 
 - (void)_doAfterNextVisibleContentRectAndPresentationUpdate:
 {
-  _Block_release(*(a1 + 40));
-  v2 = *(a1 + 32);
-  *(a1 + 32) = 0;
+  _Block_release(*(self + 40));
+  v2 = *(self + 32);
+  *(self + 32) = 0;
   if (v2)
   {
   }
@@ -17376,26 +17376,26 @@ LABEL_26:
 
 - (uint64_t)proofreadingSession:didReceiveSuggestions:processedRange:inContext:finished:
 {
-  *a1 = &unk_1F10F8D08;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F8D08;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)proofreadingSession:didReceiveSuggestions:processedRange:inContext:finished:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 216));
+  WeakRetained = objc_loadWeakRetained((self + 216));
   if (WeakRetained)
   {
-    if (*(a1 + 64) & 1) != 0 && (v5 = WeakRetained, v6 = WeakRetained[52], v13 = *(a1 + 96), (*(a1 + 192)))
+    if (*(self + 64) & 1) != 0 && (v5 = WeakRetained, v6 = WeakRetained[52], v13 = *(self + 96), (*(self + 192)))
     {
-      v7 = *(a1 + 208);
+      v7 = *(self + 208);
       v8 = _Block_copy(a2);
       v9 = WTF::fastMalloc(0x10);
       *v9 = &unk_1F10F8D08;
       v9[1] = v8;
       v12 = v9;
-      WebKit::WebPageProxy::proofreadingSessionDidReceiveSuggestions(v6, a1 + 32, a1 + 80, &v13, a1 + 112, v7, &v12);
+      WebKit::WebPageProxy::proofreadingSessionDidReceiveSuggestions(v6, self + 32, self + 80, &v13, self + 112, v7, &v12);
       v10 = v12;
       v12 = 0;
       if (v10)
@@ -17422,11 +17422,11 @@ LABEL_26:
 
 - (void)didEndWritingToolsSession:accepted:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
-  if (*(a1 + 64))
+  WeakRetained = objc_loadWeakRetained((self + 88));
+  if (*(self + 64))
   {
     v3 = WeakRetained;
-    WebKit::WebPageProxy::didEndWritingToolsSession(WeakRetained[52], a1 + 32, *(a1 + 80));
+    WebKit::WebPageProxy::didEndWritingToolsSession(WeakRetained[52], self + 32, *(self + 80));
   }
 
   else
@@ -17437,26 +17437,26 @@ LABEL_26:
 
 - (uint64_t)didEndWritingToolsSession:accepted:
 {
-  *a1 = &unk_1F10F8D50;
-  objc_destroyWeak(a1 + 9);
+  *self = &unk_1F10F8D50;
+  objc_destroyWeak(self + 9);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)compositionSession:didReceiveText:replacementRange:inContext:finished:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 248));
+  WeakRetained = objc_loadWeakRetained((self + 248));
   if (WeakRetained)
   {
-    if (*(a1 + 64) & 1) != 0 && (v5 = WeakRetained, v6 = WeakRetained[52], v13 = *(a1 + 120), (*(a1 + 224)))
+    if (*(self + 64) & 1) != 0 && (v5 = WeakRetained, v6 = WeakRetained[52], v13 = *(self + 120), (*(self + 224)))
     {
-      v7 = *(a1 + 240);
+      v7 = *(self + 240);
       v8 = _Block_copy(a2);
       v9 = WTF::fastMalloc(0x10);
       *v9 = &unk_1F10F8DB8;
       v9[1] = v8;
       v12 = v9;
-      WebKit::WebPageProxy::compositionSessionDidReceiveTextWithReplacementRange(v6, a1 + 32, a1 + 80, &v13, a1 + 144, v7, &v12);
+      WebKit::WebPageProxy::compositionSessionDidReceiveTextWithReplacementRange(v6, self + 32, self + 80, &v13, self + 144, v7, &v12);
       v10 = v12;
       v12 = 0;
       if (v10)
@@ -17483,48 +17483,48 @@ LABEL_26:
 
 - (uint64_t)compositionSession:didReceiveText:replacementRange:inContext:finished:
 {
-  *a1 = &unk_1F10F8DB8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F8DB8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
-- (uint64_t)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:
+- (uint64_t)observeValueForKeyPath:(uint64_t)path ofObject:change:context:
 {
-  Weak = objc_loadWeak((a1 + 8));
+  Weak = objc_loadWeak((path + 8));
 
   return [Weak _updateScreenTimeBasedOnWindowVisibility];
 }
 
-- (uint64_t)observeValueForKeyPath:(id *)a1 ofObject:change:context:
+- (uint64_t)observeValueForKeyPath:(id *)path ofObject:change:context:
 {
-  *a1 = &unk_1F10F8ED0;
-  objc_destroyWeak(a1 + 1);
+  *path = &unk_1F10F8ED0;
+  objc_destroyWeak(path + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(path, v2);
 }
 
-- (uint64_t)startDownloadUsingRequest:(uint64_t)a1 completionHandler:
+- (uint64_t)startDownloadUsingRequest:(uint64_t)request completionHandler:
 {
-  *a1 = &unk_1F10F8EF8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *request = &unk_1F10F8EF8;
+  _Block_release(*(request + 8));
+  return request;
 }
 
-- (uint64_t)startDownloadUsingRequest:(const void *)a1 completionHandler:
+- (uint64_t)startDownloadUsingRequest:(const void *)request completionHandler:
 {
-  *a1 = &unk_1F10F8EF8;
-  _Block_release(a1[1]);
+  *request = &unk_1F10F8EF8;
+  _Block_release(request[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(request, v2);
 }
 
-- (uint64_t)startDownloadUsingRequest:(uint64_t)result completionHandler:(uint64_t)a2
+- (uint64_t)startDownloadUsingRequest:(uint64_t)result completionHandler:(uint64_t)handler
 {
-  if (a2)
+  if (handler)
   {
     v2 = result;
-    if (*(a2 + 8) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (*(handler + 8) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       result = 117;
       __break(0xC471u);
@@ -17541,27 +17541,27 @@ LABEL_26:
   return result;
 }
 
-- (uint64_t)resumeDownloadFromResumeData:(uint64_t)a1 completionHandler:
+- (uint64_t)resumeDownloadFromResumeData:(uint64_t)data completionHandler:
 {
-  *a1 = &unk_1F10F8F20;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *data = &unk_1F10F8F20;
+  _Block_release(*(data + 8));
+  return data;
 }
 
-- (uint64_t)resumeDownloadFromResumeData:(const void *)a1 completionHandler:
+- (uint64_t)resumeDownloadFromResumeData:(const void *)data completionHandler:
 {
-  *a1 = &unk_1F10F8F20;
-  _Block_release(a1[1]);
+  *data = &unk_1F10F8F20;
+  _Block_release(data[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(data, v2);
 }
 
-- (uint64_t)resumeDownloadFromResumeData:(uint64_t)result completionHandler:(uint64_t)a2
+- (uint64_t)resumeDownloadFromResumeData:(uint64_t)result completionHandler:(uint64_t)handler
 {
-  if (a2)
+  if (handler)
   {
     v2 = result;
-    if (*(a2 + 8) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (*(handler + 8) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       result = 117;
       __break(0xC471u);
@@ -17578,17 +17578,17 @@ LABEL_26:
   return result;
 }
 
-- (void)closeAllMediaPresentationsWithCompletionHandler:(void *)a1
+- (void)closeAllMediaPresentationsWithCompletionHandler:(void *)handler
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F8F98;
-  a1[1] = 0;
+  v2 = handler[1];
+  *handler = &unk_1F10F8F98;
+  handler[1] = 0;
   if (v2)
   {
     WTF::ThreadSafeRefCounted<WTF::CallbackAggregatorOnThread<(WTF::DestructionThread)0>,(WTF::DestructionThread)0>::deref(v2);
   }
 
-  return a1;
+  return handler;
 }
 
 - (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(WTF *)this
@@ -17604,9 +17604,9 @@ LABEL_26:
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(uint64_t)a1
+- (uint64_t)closeAllMediaPresentationsWithCompletionHandler:(uint64_t)handler
 {
-  v3 = *(a1 + 8);
+  v3 = *(handler + 8);
   atomic_fetch_add(v3, 1u);
   v4 = WTF::fastMalloc(0x10);
   *v4 = &unk_1F10F8F70;
@@ -17623,64 +17623,64 @@ LABEL_26:
   return result;
 }
 
-- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(uint64_t)a1
+- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(uint64_t)handler
 {
-  *a1 = &unk_1F10F9010;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *handler = &unk_1F10F9010;
+  _Block_release(*(handler + 8));
+  return handler;
 }
 
-- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(const void *)a1
+- (uint64_t)requestMediaPlaybackStateWithCompletionHandler:(const void *)handler
 {
-  *a1 = &unk_1F10F9010;
-  _Block_release(a1[1]);
+  *handler = &unk_1F10F9010;
+  _Block_release(handler[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(handler, v2);
 }
 
-- (uint64_t)setMicrophoneCaptureState:(uint64_t)a1 completionHandler:
+- (uint64_t)setMicrophoneCaptureState:(uint64_t)state completionHandler:
 {
-  *a1 = &unk_1F10F9060;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *state = &unk_1F10F9060;
+  _Block_release(*(state + 8));
+  return state;
 }
 
-- (uint64_t)setMicrophoneCaptureState:(const void *)a1 completionHandler:
+- (uint64_t)setMicrophoneCaptureState:(const void *)state completionHandler:
 {
-  *a1 = &unk_1F10F9060;
-  _Block_release(a1[1]);
+  *state = &unk_1F10F9060;
+  _Block_release(state[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(state, v2);
 }
 
-- (uint64_t)setCameraCaptureState:(uint64_t)a1 completionHandler:
+- (uint64_t)setCameraCaptureState:(uint64_t)state completionHandler:
 {
-  *a1 = &unk_1F10F90B0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *state = &unk_1F10F90B0;
+  _Block_release(*(state + 8));
+  return state;
 }
 
-- (uint64_t)setCameraCaptureState:(const void *)a1 completionHandler:
+- (uint64_t)setCameraCaptureState:(const void *)state completionHandler:
 {
-  *a1 = &unk_1F10F90B0;
-  _Block_release(a1[1]);
+  *state = &unk_1F10F90B0;
+  _Block_release(state[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(state, v2);
 }
 
-- (void)_evaluateJavaScript:(void *)a1 asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
+- (void)_evaluateJavaScript:(void *)script asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F9100;
-  a1[1] = 0;
+  v2 = script[1];
+  *script = &unk_1F10F9100;
+  script[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return script;
 }
 
-- (uint64_t)_evaluateJavaScript:(WTF *)this asAsyncFunction:(void *)a2 withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
+- (uint64_t)_evaluateJavaScript:(WTF *)this asAsyncFunction:(void *)function withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
 {
   v3 = *(this + 1);
   *this = &unk_1F10F9100;
@@ -17689,17 +17689,17 @@ LABEL_26:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, function);
 }
 
-- (void)_evaluateJavaScript:(__n128)a3 asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
+- (void)_evaluateJavaScript:(__n128)script asAsyncFunction:withSourceURL:withArguments:forceUserGesture:inFrame:inWorld:completionHandler:
 {
-  v3 = a1[1];
+  v3 = self[1];
   if (v3)
   {
     if (!*(this + 128))
     {
-      WebKit::JavaScriptEvaluationResult::toID(this, this, v23, a3);
+      WebKit::JavaScriptEvaluationResult::toID(this, this, v23, script);
       (*(v3 + 16))(v3, v23[0], 0);
       v9 = v23[0];
       v23[0] = 0;
@@ -17720,10 +17720,10 @@ LABEL_26:
         goto LABEL_34;
       }
 
-      a1 = objc_alloc_init(MEMORY[0x1E695DF90]);
+      self = objc_alloc_init(MEMORY[0x1E695DF90]);
       if (*(this + 32))
       {
-        v6 = a1;
+        selfCopy = self;
         v7 = *(this + 16);
         if (v7 > 2)
         {
@@ -17736,7 +17736,7 @@ LABEL_26:
         }
 
         localizedDescriptionForErrorCode(v8, v5, v23);
-        a1 = [v6 setObject:v23[0] forKey:*MEMORY[0x1E696A578]];
+        self = [selfCopy setObject:v23[0] forKey:*MEMORY[0x1E696A578]];
         v11 = v23[0];
         v23[0] = 0;
         if (v11)
@@ -17762,7 +17762,7 @@ LABEL_26:
             v14 = &stru_1F1147748;
           }
 
-          a1 = [v6 setObject:v23[0] forKey:@"WKJavaScriptExceptionMessage"];
+          self = [selfCopy setObject:v23[0] forKey:@"WKJavaScriptExceptionMessage"];
           v15 = v23[0];
           v23[0] = 0;
           if (v15)
@@ -17771,10 +17771,10 @@ LABEL_26:
 
           if (*(this + 32))
           {
-            a1 = [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", *(this + 2)), @"WKJavaScriptExceptionLineNumber"}];
+            self = [selfCopy setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", *(this + 2)), @"WKJavaScriptExceptionLineNumber"}];
             if (*(this + 32))
             {
-              a1 = [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", *(this + 3)), @"WKJavaScriptExceptionColumnNumber"}];
+              self = [selfCopy setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", *(this + 3)), @"WKJavaScriptExceptionColumnNumber"}];
               if (*(this + 32))
               {
                 v18 = *(this + 3);
@@ -17793,7 +17793,7 @@ LABEL_26:
 
                   if (v24)
                   {
-                    [v6 setObject:v24 forKey:@"WKJavaScriptExceptionSourceURL"];
+                    [selfCopy setObject:v24 forKey:@"WKJavaScriptExceptionSourceURL"];
                     v21 = v24;
                     v24 = 0;
                     if (v21)
@@ -17802,9 +17802,9 @@ LABEL_26:
                   }
                 }
 
-                v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:v8 userInfo:v6];
+                v10 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:v8 userInfo:selfCopy];
                 v22 = v10;
-                if (v6)
+                if (selfCopy)
                 {
                 }
 
@@ -17829,67 +17829,47 @@ LABEL_9:
       __break(1u);
     }
 
-    mpark::throw_bad_variant_access(a1);
+    mpark::throw_bad_variant_access(self);
   }
 }
 
-- (uint64_t)takeSnapshotWithConfiguration:(uint64_t)a1 completionHandler:
+- (uint64_t)takeSnapshotWithConfiguration:(uint64_t)configuration completionHandler:
 {
-  *a1 = &unk_1F10F9150;
-  v2 = *(a1 + 88);
-  *(a1 + 88) = 0;
+  *configuration = &unk_1F10F9150;
+  v2 = *(configuration + 88);
+  *(configuration + 88) = 0;
   if (v2)
   {
     CFRelease(*(v2 + 8));
   }
 
-  _Block_release(*(a1 + 80));
-  _Block_release(*(a1 + 72));
-  v3 = *(a1 + 8);
-  *(a1 + 8) = 0;
+  _Block_release(*(configuration + 80));
+  _Block_release(*(configuration + 72));
+  v3 = *(configuration + 8);
+  *(configuration + 8) = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return configuration;
 }
 
+- (uint64_t)takeSnapshotWithConfiguration:(const void *)configuration completionHandler:
 {
-  *a1 = &unk_1F10F9150;
-  v2 = *(a1 + 88);
-  *(a1 + 88) = 0;
-  if (v2)
-  {
-    CFRelease(*(v2 + 8));
-  }
+  *configuration = &unk_1F10F9128;
+  _Block_release(configuration[1]);
 
-  _Block_release(*(a1 + 80));
-  _Block_release(*(a1 + 72));
-  v4 = *(a1 + 8);
-  *(a1 + 8) = 0;
-  if (v4)
-  {
-  }
-
-  return WTF::fastFree(a1, v3);
+  return WTF::fastFree(configuration, v2);
 }
 
-- (uint64_t)takeSnapshotWithConfiguration:(const void *)a1 completionHandler:
+- (void)takeSnapshotWithConfiguration:(uint64_t)configuration completionHandler:
 {
-  *a1 = &unk_1F10F9128;
-  _Block_release(a1[1]);
-
-  return WTF::fastFree(a1, v2);
-}
-
-- (void)takeSnapshotWithConfiguration:(uint64_t)a1 completionHandler:
-{
-  v2 = *(a1 + 88);
+  v2 = *(configuration + 88);
   if ((*(v2 + 865) & 1) != 0 || (*(v2 + 864) & 1) == 0)
   {
     kdebug_trace();
     createNSError(WKErrorUnknown, 0, v12);
-    (*(*(a1 + 80) + 16))();
+    (*(*(configuration + 80) + 16))();
     v7 = v12[0];
     v12[0] = 0;
     if (v7)
@@ -17906,14 +17886,14 @@ LABEL_8:
     v12[1] = 3321888768;
     v12[2] = ___ZZ61__WKWebView_takeSnapshotWithConfiguration_completionHandler__EN4__24clEv_block_invoke;
     v12[3] = &__block_descriptor_104_e8_32c87_ZTSKZZ61__WKWebView_takeSnapshotWithConfiguration_completionHandler__EN4__24clEvEUlvE__e5_v8__0l;
-    v4 = *(a1 + 8);
-    *(a1 + 8) = 0;
-    v8 = *(a1 + 16);
-    v9 = *(a1 + 32);
-    v10 = *(a1 + 48);
-    v5 = *(a1 + 72);
-    v11 = *(a1 + 64);
-    *(a1 + 72) = 0;
+    v4 = *(configuration + 8);
+    *(configuration + 8) = 0;
+    v8 = *(configuration + 16);
+    v9 = *(configuration + 32);
+    v10 = *(configuration + 48);
+    v5 = *(configuration + 72);
+    v11 = *(configuration + 64);
+    *(configuration + 72) = 0;
     v13 = v4;
     if (v4)
     {
@@ -17941,85 +17921,71 @@ LABEL_8:
   }
 }
 
-- (uint64_t)findString:(uint64_t)a1 withConfiguration:completionHandler:
+- (uint64_t)findString:(uint64_t)string withConfiguration:completionHandler:
 {
-  *a1 = &unk_1F10F91D8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *string = &unk_1F10F91D8;
+  _Block_release(*(string + 8));
+  return string;
 }
 
-- (uint64_t)findString:(const void *)a1 withConfiguration:completionHandler:
+- (uint64_t)findString:(const void *)string withConfiguration:completionHandler:
 {
-  *a1 = &unk_1F10F91D8;
-  _Block_release(a1[1]);
+  *string = &unk_1F10F91D8;
+  _Block_release(string[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(string, v2);
 }
 
-- (void)findString:(uint64_t)a1 withConfiguration:(uint64_t)a2 completionHandler:
+- (void)findString:(uint64_t)string withConfiguration:(uint64_t)configuration completionHandler:
 {
-  v3 = [[WKFindResult alloc] _initWithMatchFound:a2];
-  (*(*(a1 + 8) + 16))();
+  v3 = [[WKFindResult alloc] _initWithMatchFound:configuration];
+  (*(*(string + 8) + 16))();
   if (v3)
   {
   }
 }
 
-- (uint64_t)_showWarningView:(uint64_t)a1 completionHandler:
+- (uint64_t)_showWarningView:(uint64_t)view completionHandler:
 {
-  *a1 = &unk_1F10F9200;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *view = &unk_1F10F9200;
+  v2 = *(view + 16);
+  *(view + 16) = 0;
   if (v2)
   {
     (*(*v2 + 8))(v2);
   }
 
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  objc_destroyWeak((view + 8));
+  return view;
 }
 
+- (void)_showWarningView:(uint64_t)view completionHandler:(unsigned __int8 *)handler
 {
-  *a1 = &unk_1F10F9200;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    (*(*v2 + 8))(v2);
-  }
-
-  objc_destroyWeak((a1 + 8));
-
-  return WTF::fastFree(a1, v3);
-}
-
-- (void)_showWarningView:(uint64_t)a1 completionHandler:(unsigned __int8 *)a2
-{
-  WTF::CompletionHandler<void ()(mpark::variant<WebKit::ContinueUnsafeLoad,WTF::URL> &&)>::operator()((a1 + 16));
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WTF::CompletionHandler<void ()(mpark::variant<WebKit::ContinueUnsafeLoad,WTF::URL> &&)>::operator()((view + 16));
+  WeakRetained = objc_loadWeakRetained((view + 8));
   if (WeakRetained)
   {
     v5 = WeakRetained;
-    if (a2[40] == 1)
+    if (handler[40] == 1)
     {
       v6 = 1;
     }
 
     else
     {
-      if (a2[40])
+      if (handler[40])
       {
         mpark::throw_bad_variant_access(WeakRetained);
       }
 
-      v6 = *a2;
+      v6 = *handler;
     }
 
-    v7 = [WeakRetained[60] forMainFrameNavigation];
-    if ((v6 & v7 & 1) == 0)
+    forMainFrameNavigation = [WeakRetained[60] forMainFrameNavigation];
+    if ((v6 & forMainFrameNavigation & 1) == 0)
     {
       v8 = v5[60];
-      if ((v6 | v7) & 1 | (v8 == 0))
+      if ((v6 | forMainFrameNavigation) & 1 | (v8 == 0))
       {
         v5[60] = 0;
         [v8 removeFromSuperview];
@@ -18042,46 +18008,33 @@ LABEL_8:
   }
 }
 
-- (uint64_t)_internalDoAfterNextPresentationUpdate:(uint64_t)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:
+- (uint64_t)_internalDoAfterNextPresentationUpdate:(uint64_t)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:
 {
-  *a1 = &unk_1F10F9250;
-  v2 = *(a1 + 24);
-  *(a1 + 24) = 0;
+  *update = &unk_1F10F9250;
+  v2 = *(update + 24);
+  *(update + 24) = 0;
   if (v2)
   {
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
+  _Block_release(*(update + 8));
+  return update;
 }
 
+- (uint64_t)_internalDoAfterNextPresentationUpdate:(const void *)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:
 {
-  *a1 = &unk_1F10F9250;
-  v2 = *(a1 + 24);
-  *(a1 + 24) = 0;
+  *update = &unk_1F10F9228;
+  _Block_release(update[1]);
+
+  return WTF::fastFree(update, v2);
+}
+
+- (void)_internalDoAfterNextPresentationUpdate:(uint64_t)update withoutWaitingForPainting:withoutWaitingForAnimatedResize:
+{
+  v2 = *(update + 8);
   if (v2)
   {
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
-}
-
-- (uint64_t)_internalDoAfterNextPresentationUpdate:(const void *)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:
-{
-  *a1 = &unk_1F10F9228;
-  _Block_release(a1[1]);
-
-  return WTF::fastFree(a1, v2);
-}
-
-- (void)_internalDoAfterNextPresentationUpdate:(uint64_t)a1 withoutWaitingForPainting:withoutWaitingForAnimatedResize:
-{
-  v2 = *(a1 + 8);
-  if (v2)
-  {
-    if ((*(a1 + 16) & 1) != 0 || (v3 = *(a1 + 24), !*(v3 + 796)))
+    if ((*(update + 16) & 1) != 0 || (v3 = *(update + 24), !*(v3 + 796)))
     {
       v11 = v2[2];
 
@@ -18135,34 +18088,34 @@ LABEL_8:
 
 - (uint64_t)_internalDoAfterNextPresentationUpdate:withoutWaitingForPainting:withoutWaitingForAnimatedResize:
 {
-  *a1 = &unk_1F10F9278;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9278;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
-- (uint64_t)createPDFWithConfiguration:(uint64_t)a1 completionHandler:
+- (uint64_t)createPDFWithConfiguration:(uint64_t)configuration completionHandler:
 {
-  *a1 = &unk_1F10F92A0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *configuration = &unk_1F10F92A0;
+  _Block_release(*(configuration + 8));
+  return configuration;
 }
 
-- (uint64_t)createPDFWithConfiguration:(const void *)a1 completionHandler:
+- (uint64_t)createPDFWithConfiguration:(const void *)configuration completionHandler:
 {
-  *a1 = &unk_1F10F92A0;
-  _Block_release(a1[1]);
+  *configuration = &unk_1F10F92A0;
+  _Block_release(configuration[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(configuration, v2);
 }
 
-- (void)createPDFWithConfiguration:(uint64_t)a1 completionHandler:(WebCore::SharedBuffer *)a2
+- (void)createPDFWithConfiguration:(uint64_t)configuration completionHandler:(WebCore::SharedBuffer *)handler
 {
-  v3 = *a2;
-  if (*a2 && *(v3 + 7))
+  v3 = *handler;
+  if (*handler && *(v3 + 7))
   {
     WebCore::SharedBuffer::createCFData(&cf, v3);
-    (*(*(a1 + 8) + 16))();
+    (*(*(configuration + 8) + 16))();
     v4 = cf;
     cf = 0;
     if (v4)
@@ -18174,7 +18127,7 @@ LABEL_8:
   else
   {
     createNSError(WKErrorUnknown, 0, &cf);
-    (*(*(a1 + 8) + 16))();
+    (*(*(configuration + 8) + 16))();
     v5 = cf;
     cf = 0;
     if (v5)
@@ -18183,22 +18136,22 @@ LABEL_8:
   }
 }
 
-- (uint64_t)createWebArchiveDataWithCompletionHandler:(uint64_t)a1
+- (uint64_t)createWebArchiveDataWithCompletionHandler:(uint64_t)handler
 {
-  *a1 = &unk_1F10F92C8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *handler = &unk_1F10F92C8;
+  _Block_release(*(handler + 8));
+  return handler;
 }
 
-- (uint64_t)createWebArchiveDataWithCompletionHandler:(const void *)a1
+- (uint64_t)createWebArchiveDataWithCompletionHandler:(const void *)handler
 {
-  *a1 = &unk_1F10F92C8;
-  _Block_release(a1[1]);
+  *handler = &unk_1F10F92C8;
+  _Block_release(handler[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(handler, v2);
 }
 
-- (void)createWebArchiveDataWithCompletionHandler:(uint64_t)a1
+- (void)createWebArchiveDataWithCompletionHandler:(uint64_t)handler
 {
   if (a2)
   {
@@ -18209,7 +18162,7 @@ LABEL_8:
 
     else
     {
-      v3 = *(*(a1 + 8) + 16);
+      v3 = *(*(handler + 8) + 16);
 
       v3();
     }
@@ -18218,35 +18171,35 @@ LABEL_8:
   else
   {
     v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:0];
-    (*(*(a1 + 8) + 16))();
+    (*(*(handler + 8) + 16))();
     if (v4)
     {
     }
   }
 }
 
-- (uint64_t)willBeginWritingToolsSession:(uint64_t)a1 requestContexts:
+- (uint64_t)willBeginWritingToolsSession:(uint64_t)session requestContexts:
 {
-  *a1 = &unk_1F10F92F0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *session = &unk_1F10F92F0;
+  _Block_release(*(session + 8));
+  return session;
 }
 
-- (uint64_t)willBeginWritingToolsSession:(const void *)a1 requestContexts:
+- (uint64_t)willBeginWritingToolsSession:(const void *)session requestContexts:
 {
-  *a1 = &unk_1F10F92F0;
-  _Block_release(a1[1]);
+  *session = &unk_1F10F92F0;
+  _Block_release(session[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(session, v2);
 }
 
-- (uint64_t)willBeginWritingToolsSession:(uint64_t)a1 requestContexts:(uint64_t)a2
+- (uint64_t)willBeginWritingToolsSession:(uint64_t)session requestContexts:(uint64_t)contexts
 {
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(a2 + 12)];
-  v5 = *(a2 + 12);
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(contexts + 12)];
+  v5 = *(contexts + 12);
   if (v5)
   {
-    v6 = *a2;
+    v6 = *contexts;
     v7 = 80 * v5;
     do
     {
@@ -18265,31 +18218,31 @@ LABEL_8:
     while (v7);
   }
 
-  return (*(*(a1 + 8) + 16))();
+  return (*(*(session + 8) + 16))();
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 rectsForProofreadingSuggestionsInRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator rectsForProofreadingSuggestionsInRange:completion:
 {
-  *a1 = &unk_1F10F9340;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F9340;
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 rectsForProofreadingSuggestionsInRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator rectsForProofreadingSuggestionsInRange:completion:
 {
-  *a1 = &unk_1F10F9340;
-  _Block_release(a1[1]);
+  *coordinator = &unk_1F10F9340;
+  _Block_release(coordinator[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(coordinator, v2);
 }
 
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 rectsForProofreadingSuggestionsInRange:(uint64_t)a2 completion:
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator rectsForProofreadingSuggestionsInRange:(uint64_t)range completion:
 {
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a2 + 12)];
-  v5 = *(a2 + 12);
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(range + 12)];
+  v5 = *(range + 12);
   if (v5)
   {
-    v6 = *a2;
+    v6 = *range;
     v7 = 16 * v5;
     do
     {
@@ -18306,32 +18259,24 @@ LABEL_8:
     while (v7);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(coordinator + 8) + 16))();
   if (v9)
   {
   }
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 updateTextVisibilityForRange:visible:identifier:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator updateTextVisibilityForRange:visible:identifier:completion:
 {
-  *a1 = &unk_1F10F9368;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F9368;
+  objc_destroyWeak((coordinator + 16));
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator updateTextVisibilityForRange:visible:identifier:completion:
 {
-  *a1 = &unk_1F10F9368;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v2);
-}
-
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 updateTextVisibilityForRange:visible:identifier:completion:
-{
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v3 = *(a1 + 8);
+  WeakRetained = objc_loadWeakRetained((coordinator + 16));
+  v3 = *(coordinator + 8);
   if (WeakRetained)
   {
     v6 = WeakRetained;
@@ -18341,36 +18286,28 @@ LABEL_8:
   else
   {
     v4 = *(v3 + 16);
-    v5 = *(a1 + 8);
+    v5 = *(coordinator + 8);
 
     v4(v5);
   }
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 textPreviewsForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator textPreviewsForRange:completion:
 {
-  *a1 = &unk_1F10F9390;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F9390;
+  objc_destroyWeak((coordinator + 16));
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
+- (void)intelligenceTextEffectCoordinator:(uint64_t)coordinator textPreviewsForRange:(uint64_t *)range completion:
 {
-  *a1 = &unk_1F10F9390;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v2);
-}
-
-- (void)intelligenceTextEffectCoordinator:(uint64_t)a1 textPreviewsForRange:(uint64_t *)a2 completion:
-{
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((coordinator + 16));
   if (WeakRetained)
   {
     v5 = WeakRetained;
-    v6 = *a2;
-    if (*a2)
+    v6 = *range;
+    if (*range)
     {
       v7 = *(WeakRetained + 82);
       v8 = *(v6 + 40);
@@ -18481,7 +18418,7 @@ LABEL_8:
         WTF::fastFree(v26, v16);
       }
 
-      (*(*(a1 + 8) + 16))(*(a1 + 8), v21, v17, v18, v19, v20);
+      (*(*(coordinator + 8) + 16))(*(coordinator + 8), v21, v17, v18, v19, v20);
       if (v21)
       {
       }
@@ -18489,50 +18426,50 @@ LABEL_8:
 
     else
     {
-      (*(*(a1 + 8) + 16))();
+      (*(*(coordinator + 8) + 16))();
     }
   }
 
   else
   {
-    v27 = *(*(a1 + 8) + 16);
+    v27 = *(*(coordinator + 8) + 16);
 
     v27();
   }
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 contentPreviewForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator contentPreviewForRange:completion:
 {
-  *a1 = &unk_1F10F93B8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F93B8;
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 contentPreviewForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator contentPreviewForRange:completion:
 {
-  *a1 = &unk_1F10F93B8;
-  _Block_release(a1[1]);
+  *coordinator = &unk_1F10F93B8;
+  _Block_release(coordinator[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(coordinator, v2);
 }
 
-- (atomic_uchar)intelligenceTextEffectCoordinator:(WebCore:(uint64_t *)a2 :DestinationColorSpace *)a1 contentPreviewForRange:completion:
+- (atomic_uchar)intelligenceTextEffectCoordinator:(WebCore:(uint64_t *)coordinator :DestinationColorSpace *)self contentPreviewForRange:completion:
 {
-  if (*a2 && (v3 = *(*a2 + 96)) != 0)
+  if (*coordinator && (v3 = *(*coordinator + 96)) != 0)
   {
     ++v3[4];
-    v5 = WebCore::DestinationColorSpace::SRGB(a1);
+    v5 = WebCore::DestinationColorSpace::SRGB(self);
     (*(*v3 + 304))(&v21, v3, v5);
     if (v21 && (v6 = WebCore::NativeImage::platformImage(v21), (v7 = *v6) != 0))
     {
       CFRetain(*v6);
-      v8 = *a2;
-      v20 = *(*a2 + 24);
+      v8 = *coordinator;
+      v20 = *(*coordinator + 24);
       WTF::Vector<WebCore::LinearTimingFunction::Point,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v18, v8 + 56);
       v9 = [_WKTextPreview alloc];
       WebCore::FloatRect::operator CGRect();
       v10 = [(_WKTextPreview *)v9 initWithSnapshotImage:v7 presentationFrame:?];
-      (*(*(a1 + 1) + 16))();
+      (*(*(self + 1) + 16))();
       if (v10)
       {
       }
@@ -18550,7 +18487,7 @@ LABEL_8:
 
     else
     {
-      (*(*(a1 + 1) + 16))();
+      (*(*(self + 1) + 16))();
     }
 
     result = v21;
@@ -18591,7 +18528,7 @@ LABEL_19:
 
   else
   {
-    v14 = *(*(a1 + 1) + 16);
+    v14 = *(*(self + 1) + 16);
 
     return v14();
   }
@@ -18599,83 +18536,61 @@ LABEL_19:
   return result;
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 decorateReplacementsForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator decorateReplacementsForRange:completion:
 {
-  *a1 = &unk_1F10F93E0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F93E0;
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 decorateReplacementsForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator decorateReplacementsForRange:completion:
 {
-  *a1 = &unk_1F10F93E0;
-  _Block_release(a1[1]);
+  *coordinator = &unk_1F10F93E0;
+  _Block_release(coordinator[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(coordinator, v2);
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)a1 setSelectionForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(uint64_t)coordinator setSelectionForRange:completion:
 {
-  *a1 = &unk_1F10F9408;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *coordinator = &unk_1F10F9408;
+  _Block_release(*(coordinator + 8));
+  return coordinator;
 }
 
-- (uint64_t)intelligenceTextEffectCoordinator:(const void *)a1 setSelectionForRange:completion:
+- (uint64_t)intelligenceTextEffectCoordinator:(const void *)coordinator setSelectionForRange:completion:
 {
-  *a1 = &unk_1F10F9408;
-  _Block_release(a1[1]);
+  *coordinator = &unk_1F10F9408;
+  _Block_release(coordinator[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(coordinator, v2);
 }
 
-- (uint64_t)fetchDataOfTypes:(uint64_t)a1 completionHandler:(WTF::StringImpl *)a2
+- (uint64_t)fetchDataOfTypes:(uint64_t)types completionHandler:(WTF::StringImpl *)handler
 {
-  *a1 = &unk_1F10F9430;
-  v3 = *(a1 + 32);
-  *(a1 + 32) = 0;
+  *types = &unk_1F10F9430;
+  v3 = *(types + 32);
+  *(types + 32) = 0;
   if (v3)
   {
-    WTF::ThreadSafeRefCounted<WTF::Box<WKWebViewData>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
+    WTF::ThreadSafeRefCounted<WTF::Box<WKWebViewData>::Data,(WTF::DestructionThread)0>::deref(v3, handler);
   }
 
-  v4 = *(a1 + 16);
+  v4 = *(types + 16);
   if (v4)
   {
-    *(a1 + 16) = 0;
-    *(a1 + 24) = 0;
-    WTF::fastFree(v4, a2);
+    *(types + 16) = 0;
+    *(types + 24) = 0;
+    WTF::fastFree(v4, handler);
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
+  _Block_release(*(types + 8));
+  return types;
 }
 
+- (void)fetchDataOfTypes:(uint64_t)types completionHandler:
 {
-  *a1 = &unk_1F10F9430;
-  v3 = *(a1 + 32);
-  *(a1 + 32) = 0;
-  if (v3)
-  {
-    WTF::ThreadSafeRefCounted<WTF::Box<WKWebViewData>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
-  }
-
-  v4 = *(a1 + 16);
-  if (v4)
-  {
-    *(a1 + 16) = 0;
-    *(a1 + 24) = 0;
-    WTF::fastFree(v4, a2);
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v5);
-}
-
-- (void)fetchDataOfTypes:(uint64_t)a1 completionHandler:
-{
-  v1 = MEMORY[0x1EEE9AC00](a1);
+  v1 = MEMORY[0x1EEE9AC00](types);
   v12[1] = *MEMORY[0x1E69E9840];
   WTF::Persistence::Encoder::Encoder(&v9);
   WTF::Persistence::Encoder::operator<<();
@@ -18737,29 +18652,29 @@ LABEL_11:
 
 - (void)fetchDataOfTypes:()WTF::ShouldValidateKey completionHandler:
 {
-  *a1 = &unk_1F10F9458;
-  v3 = a1[3];
-  a1[3] = 0;
+  *self = &unk_1F10F9458;
+  v3 = self[3];
+  self[3] = 0;
   if (v3)
   {
     WTF::ThreadSafeRefCounted<WTF::Box<WKWebViewData>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
   }
 
-  v4 = a1[2];
-  a1[2] = 0;
+  v4 = self[2];
+  self[2] = 0;
   if (v4)
   {
     CFRelease(*(v4 + 8));
   }
 
-  v5 = a1[1];
-  a1[1] = 0;
+  v5 = self[1];
+  self[1] = 0;
   if (v5)
   {
     WTF::ThreadSafeRefCounted<WTF::CallbackAggregatorOnThread<(WTF::DestructionThread)0>,(WTF::DestructionThread)0>::deref(v5);
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)fetchDataOfTypes:()WTF::ShouldValidateKey completionHandler:
@@ -18789,62 +18704,48 @@ LABEL_11:
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)restoreData:(uint64_t)a1 completionHandler:(void *)a2
+- (uint64_t)restoreData:(uint64_t)data completionHandler:(void *)handler
 {
-  *a1 = &unk_1F10F9480;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *data = &unk_1F10F9480;
+  v3 = *(data + 16);
+  *(data + 16) = 0;
   if (v3)
   {
-    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
+    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, handler);
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
+  _Block_release(*(data + 8));
+  return data;
 }
 
+- (void)restoreData:(void *)data completionHandler:(void *)handler
 {
-  *a1 = &unk_1F10F9480;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *data = &unk_1F10F94A8;
+  v3 = data[2];
+  data[2] = 0;
   if (v3)
   {
-    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
+    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, handler);
   }
 
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v4);
-}
-
-- (void)restoreData:(void *)a1 completionHandler:(void *)a2
-{
-  *a1 = &unk_1F10F94A8;
-  v3 = a1[2];
-  a1[2] = 0;
-  if (v3)
-  {
-    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
-  }
-
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = data[1];
+  data[1] = 0;
   if (v4)
   {
     WTF::ThreadSafeRefCounted<WTF::CallbackAggregatorOnThread<(WTF::DestructionThread)0>,(WTF::DestructionThread)0>::deref(v4);
   }
 
-  return a1;
+  return data;
 }
 
-- (uint64_t)restoreData:(WTF *)this completionHandler:(void *)a2
+- (uint64_t)restoreData:(WTF *)this completionHandler:(void *)handler
 {
   *this = &unk_1F10F94A8;
   v3 = *(this + 2);
   *(this + 2) = 0;
   if (v3)
   {
-    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, a2);
+    WTF::ThreadSafeRefCounted<WTF::Box<WTF::RetainPtr<NSError>>::Data,(WTF::DestructionThread)0>::deref(v3, handler);
   }
 
   v4 = *(this + 1);
@@ -18854,31 +18755,31 @@ LABEL_11:
     WTF::ThreadSafeRefCounted<WTF::CallbackAggregatorOnThread<(WTF::DestructionThread)0>,(WTF::DestructionThread)0>::deref(v4);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, handler);
 }
 
-- (void)restoreData:(uint64_t)a1 completionHandler:(char)a2
+- (void)restoreData:(uint64_t)data completionHandler:(char)handler
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if ((a2 & 1) == 0)
+  if ((handler & 1) == 0)
   {
     v5 = *MEMORY[0x1E696A578];
     v6[0] = @"Unknown error occurred while restoring data.";
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
     v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:v3];
-    WTF::RetainPtr<NSError>::operator=((*(a1 + 16) + 8), v4);
+    WTF::RetainPtr<NSError>::operator=((*(data + 16) + 8), v4);
     if (v4)
     {
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(WKWebView *)self frame];
   if (v9 == width && v8 == height)
   {
@@ -18898,12 +18799,12 @@ LABEL_11:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(WKWebView *)self bounds];
   v10 = v9 == height && v8 == width;
   if (!v10)
@@ -18924,24 +18825,24 @@ LABEL_11:
   }
 }
 
-- (void)_setObscuredInsetsInternal:(UIEdgeInsets)a3
+- (void)_setObscuredInsetsInternal:(UIEdgeInsets)internal
 {
-  *&v3 = a3.top;
+  *&v3 = internal.top;
   self->_haveSetObscuredInsets = 1;
   p_obscuredInsets = &self->_obscuredInsets;
   v5.f64[0] = self->_obscuredInsets.top;
   v6.f64[0] = self->_obscuredInsets.left;
   v7.f64[0] = self->_obscuredInsets.bottom;
   v8.f64[0] = self->_obscuredInsets.right;
-  if (v6.f64[0] != a3.left || v5.f64[0] != *&v3 || v8.f64[0] != a3.right || v7.f64[0] != a3.bottom)
+  if (v6.f64[0] != internal.left || v5.f64[0] != *&v3 || v8.f64[0] != internal.right || v7.f64[0] != internal.bottom)
   {
     m_ptr = self->_page.m_ptr;
     if (m_ptr)
     {
       v26 = v3;
-      v27 = *&a3.left;
-      v28 = *&a3.bottom;
-      v29 = *&a3.right;
+      v27 = *&internal.left;
+      v28 = *&internal.bottom;
+      v29 = *&internal.right;
       CFRetain(*(m_ptr + 1));
       v14 = *(m_ptr + 41);
       if (v14)
@@ -18982,26 +18883,26 @@ LABEL_11:
       v6.f64[0] = p_obscuredInsets->left;
       v7.f64[0] = p_obscuredInsets->bottom;
       v8.f64[0] = p_obscuredInsets->right;
-      *&a3.bottom = v28;
-      *&a3.right = v29;
+      *&internal.bottom = v28;
+      *&internal.right = v29;
       *&v3 = v26;
-      *&a3.left = v27;
+      *&internal.left = v27;
     }
 
     *&v5.f64[1] = v3;
-    v6.f64[1] = a3.left;
+    v6.f64[1] = internal.left;
     v19 = vmovn_s64(vcgtzq_f64(v6));
-    v7.f64[1] = a3.bottom;
-    v8.f64[1] = a3.right;
+    v7.f64[1] = internal.bottom;
+    v8.f64[1] = internal.right;
     v20 = vmovn_s64(vcgtzq_f64(v5));
     v21 = vorr_s8(vand_s8(vsub_s32(0x800000008, v20), v19), vand_s8(vbic_s8(v20, v19), 0x100000001));
     v22 = vbsl_s8(vmovn_s64(vcgtzq_f64(v7)), (*&v21 | 0x400000004), v21);
     v23 = vbsl_s8(vmovn_s64(vcgtzq_f64(v8)), (*&v22 | 0x200000002), v22);
     *&p_obscuredInsets->top = v3;
-    p_obscuredInsets->left = a3.left;
+    p_obscuredInsets->left = internal.left;
     v24 = vceq_s32(vand_s8(v23, 0xFF000000FFLL), vand_s8(vdup_lane_s32(v23, 1), 0xFF000000FFLL)).u8[0];
-    p_obscuredInsets->bottom = a3.bottom;
-    p_obscuredInsets->right = a3.right;
+    p_obscuredInsets->bottom = internal.bottom;
+    p_obscuredInsets->right = internal.right;
     [(WKWebView *)self _scheduleVisibleContentRectUpdate:v26];
     if (v24)
     {
@@ -19047,27 +18948,27 @@ LABEL_11:
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v5.receiver = self;
   v5.super_class = WKWebView;
   [(WKWebView *)&v5 _populateArchivedSubviews:?];
   if (self->_scrollView.m_ptr)
   {
-    [a3 removeObject:?];
+    [subviews removeObject:?];
   }
 
   if (self->_customContentFixedOverlayView.m_ptr)
   {
-    [a3 removeObject:?];
+    [subviews removeObject:?];
   }
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
   m_ptr = self->_contentView.m_ptr;
-  if (m_ptr == v3 && [(WKContentView *)m_ptr superview])
+  if (m_ptr == _currentContentView && [(WKContentView *)m_ptr superview])
   {
     if ([(WKContentView *)self->_contentView.m_ptr becomeFirstResponderForWebView])
     {
@@ -19080,13 +18981,13 @@ LABEL_11:
 
   else
   {
-    if ([(WKContentView *)v3 becomeFirstResponder])
+    if ([(WKContentView *)_currentContentView becomeFirstResponder])
     {
       return 1;
     }
 
-    v7 = self;
-    v5 = &v7;
+    selfCopy = self;
+    v5 = &selfCopy;
   }
 
   v5->super_class = WKWebView;
@@ -19095,9 +18996,9 @@ LABEL_11:
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
   m_ptr = self->_contentView.m_ptr;
-  if (m_ptr != v3)
+  if (m_ptr != _currentContentView)
   {
     return 1;
   }
@@ -19124,9 +19025,9 @@ LABEL_11:
 
 - (id)undoManager
 {
-  v3 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
   m_ptr = self->_contentView.m_ptr;
-  if (m_ptr == v3)
+  if (m_ptr == _currentContentView)
   {
 
     return [(WKContentView *)m_ptr undoManagerForWebView];
@@ -19140,400 +19041,400 @@ LABEL_11:
   }
 }
 
-- (void)captureTextFromCamera:(id)a3
+- (void)captureTextFromCamera:(id)camera
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr captureTextFromCameraForWebView:a3];
+    [(WKContentView *)m_ptr captureTextFromCameraForWebView:camera];
   }
 }
 
-- (void)useSelectionForFind:(id)a3
+- (void)useSelectionForFind:(id)find
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr useSelectionForFindForWebView:a3];
+    [(WKContentView *)m_ptr useSelectionForFindForWebView:find];
   }
 }
 
-- (void)findSelected:(id)a3
+- (void)findSelected:(id)selected
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr findSelectedForWebView:a3];
+    [(WKContentView *)m_ptr findSelectedForWebView:selected];
   }
 }
 
-- (void)_findSelected:(id)a3
+- (void)_findSelected:(id)selected
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _findSelectedForWebView:a3];
+    [(WKContentView *)m_ptr _findSelectedForWebView:selected];
   }
 }
 
-- (void)addShortcut:(id)a3
+- (void)addShortcut:(id)shortcut
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr addShortcutForWebView:a3];
+    [(WKContentView *)m_ptr addShortcutForWebView:shortcut];
   }
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _addShortcutForWebView:a3];
+    [(WKContentView *)m_ptr _addShortcutForWebView:shortcut];
   }
 }
 
-- (void)define:(id)a3
+- (void)define:(id)define
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr defineForWebView:a3];
+    [(WKContentView *)m_ptr defineForWebView:define];
   }
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _defineForWebView:a3];
+    [(WKContentView *)m_ptr _defineForWebView:_define];
   }
 }
 
-- (void)lookup:(id)a3
+- (void)lookup:(id)lookup
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr lookupForWebView:a3];
+    [(WKContentView *)m_ptr lookupForWebView:lookup];
   }
 }
 
-- (void)_lookup:(id)a3
+- (void)_lookup:(id)_lookup
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _lookupForWebView:a3];
+    [(WKContentView *)m_ptr _lookupForWebView:_lookup];
   }
 }
 
-- (void)translate:(id)a3
+- (void)translate:(id)translate
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr translateForWebView:a3];
+    [(WKContentView *)m_ptr translateForWebView:translate];
   }
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _translateForWebView:a3];
+    [(WKContentView *)m_ptr _translateForWebView:_translate];
   }
 }
 
-- (void)promptForReplace:(id)a3
+- (void)promptForReplace:(id)replace
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr promptForReplaceForWebView:a3];
+    [(WKContentView *)m_ptr promptForReplaceForWebView:replace];
   }
 }
 
-- (void)_promptForReplace:(id)a3
+- (void)_promptForReplace:(id)replace
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _promptForReplaceForWebView:a3];
+    [(WKContentView *)m_ptr _promptForReplaceForWebView:replace];
   }
 }
 
-- (void)share:(id)a3
+- (void)share:(id)share
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr shareForWebView:a3];
+    [(WKContentView *)m_ptr shareForWebView:share];
   }
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _shareForWebView:a3];
+    [(WKContentView *)m_ptr _shareForWebView:_share];
   }
 }
 
-- (void)transliterateChinese:(id)a3
+- (void)transliterateChinese:(id)chinese
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr transliterateChineseForWebView:a3];
+    [(WKContentView *)m_ptr transliterateChineseForWebView:chinese];
   }
 }
 
-- (void)_transliterateChinese:(id)a3
+- (void)_transliterateChinese:(id)chinese
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _transliterateChineseForWebView:a3];
+    [(WKContentView *)m_ptr _transliterateChineseForWebView:chinese];
   }
 }
 
-- (void)_nextAccessoryTab:(id)a3
+- (void)_nextAccessoryTab:(id)tab
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _nextAccessoryTabForWebView:a3];
+    [(WKContentView *)m_ptr _nextAccessoryTabForWebView:tab];
   }
 }
 
-- (void)_previousAccessoryTab:(id)a3
+- (void)_previousAccessoryTab:(id)tab
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _previousAccessoryTabForWebView:a3];
+    [(WKContentView *)m_ptr _previousAccessoryTabForWebView:tab];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr copyForWebView:a3];
+    [(WKContentView *)m_ptr copyForWebView:copy];
   }
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr cutForWebView:a3];
+    [(WKContentView *)m_ptr cutForWebView:cut];
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr pasteForWebView:a3];
+    [(WKContentView *)m_ptr pasteForWebView:paste];
   }
 }
 
-- (void)replace:(id)a3
+- (void)replace:(id)replace
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr replaceForWebView:a3];
+    [(WKContentView *)m_ptr replaceForWebView:replace];
   }
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr selectForWebView:a3];
+    [(WKContentView *)m_ptr selectForWebView:select];
   }
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr selectAllForWebView:a3];
+    [(WKContentView *)m_ptr selectAllForWebView:all];
   }
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr toggleBoldfaceForWebView:a3];
+    [(WKContentView *)m_ptr toggleBoldfaceForWebView:boldface];
   }
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr toggleItalicsForWebView:a3];
+    [(WKContentView *)m_ptr toggleItalicsForWebView:italics];
   }
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr toggleUnderlineForWebView:a3];
+    [(WKContentView *)m_ptr toggleUnderlineForWebView:underline];
   }
 }
 
-- (void)increaseSize:(id)a3
+- (void)increaseSize:(id)size
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr increaseSizeForWebView:a3];
+    [(WKContentView *)m_ptr increaseSizeForWebView:size];
   }
 }
 
-- (void)decreaseSize:(id)a3
+- (void)decreaseSize:(id)size
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr decreaseSizeForWebView:a3];
+    [(WKContentView *)m_ptr decreaseSizeForWebView:size];
   }
 }
 
-- (void)pasteAndMatchStyle:(id)a3
+- (void)pasteAndMatchStyle:(id)style
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr pasteAndMatchStyleForWebView:a3];
+    [(WKContentView *)m_ptr pasteAndMatchStyleForWebView:style];
   }
 }
 
-- (void)makeTextWritingDirectionNatural:(id)a3
+- (void)makeTextWritingDirectionNatural:(id)natural
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr makeTextWritingDirectionNaturalForWebView:a3];
+    [(WKContentView *)m_ptr makeTextWritingDirectionNaturalForWebView:natural];
   }
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr makeTextWritingDirectionLeftToRightForWebView:a3];
+    [(WKContentView *)m_ptr makeTextWritingDirectionLeftToRightForWebView:right];
   }
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr makeTextWritingDirectionRightToLeftForWebView:a3];
+    [(WKContentView *)m_ptr makeTextWritingDirectionRightToLeftForWebView:left];
   }
 }
 
-- (void)alignCenter:(id)a3
+- (void)alignCenter:(id)center
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr alignCenterForWebView:a3];
+    [(WKContentView *)m_ptr alignCenterForWebView:center];
   }
 }
 
-- (void)alignJustified:(id)a3
+- (void)alignJustified:(id)justified
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr alignJustifiedForWebView:a3];
+    [(WKContentView *)m_ptr alignJustifiedForWebView:justified];
   }
 }
 
-- (void)alignLeft:(id)a3
+- (void)alignLeft:(id)left
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr alignLeftForWebView:a3];
+    [(WKContentView *)m_ptr alignLeftForWebView:left];
   }
 }
 
-- (void)alignRight:(id)a3
+- (void)alignRight:(id)right
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr alignRightForWebView:a3];
+    [(WKContentView *)m_ptr alignRightForWebView:right];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = self;
-  if (sel_captureTextFromCamera_ == a3 || sel_useSelectionForFind_ == a3 || sel_findSelected_ == a3 || sel__findSelected_ == a3 || sel_addShortcut_ == a3 || sel__addShortcut_ == a3 || sel_define_ == a3 || sel__define_ == a3 || sel_lookup_ == a3 || sel__lookup_ == a3 || sel_translate_ == a3 || sel__translate_ == a3 || sel_promptForReplace_ == a3 || sel__promptForReplace_ == a3 || sel_share_ == a3 || sel__share_ == a3 || sel_transliterateChinese_ == a3 || sel__transliterateChinese_ == a3 || sel__nextAccessoryTab_ == a3 || sel__previousAccessoryTab_ == a3 || sel_copy_ == a3 || sel_cut_ == a3 || sel_paste_ == a3 || sel_replace_ == a3 || sel_select_ == a3 || sel_selectAll_ == a3 || sel_toggleBoldface_ == a3 || sel_toggleItalics_ == a3 || sel_toggleUnderline_ == a3 || sel_increaseSize_ == a3 || sel_decreaseSize_ == a3 || sel_pasteAndMatchStyle_ == a3 || sel_makeTextWritingDirectionNatural_ == a3 || sel_makeTextWritingDirectionLeftToRight_ == a3 || sel_makeTextWritingDirectionRightToLeft_ == a3 || sel_alignCenter_ == a3 || sel_alignJustified_ == a3 || sel_alignLeft_ == a3 || sel_alignRight_ == a3 || sel__indent_ == a3 || sel__outdent_ == a3 || sel__toggleStrikeThrough_ == a3 || sel__insertOrderedList_ == a3 || sel__insertUnorderedList_ == a3 || sel__insertNestedOrderedList_ == a3 || sel__insertNestedUnorderedList_ == a3 || sel__increaseListLevel_ == a3 || sel__decreaseListLevel_ == a3 || sel__changeListType_ == a3 || sel__pasteAsQuotation_ == a3 || sel__pasteAndMatchStyle_ == a3 || sel__setTextColor_sender_ == a3 || sel__setFontSize_sender_ == a3 || sel__setFont_sender_ == a3)
+  selfCopy = self;
+  if (sel_captureTextFromCamera_ == action || sel_useSelectionForFind_ == action || sel_findSelected_ == action || sel__findSelected_ == action || sel_addShortcut_ == action || sel__addShortcut_ == action || sel_define_ == action || sel__define_ == action || sel_lookup_ == action || sel__lookup_ == action || sel_translate_ == action || sel__translate_ == action || sel_promptForReplace_ == action || sel__promptForReplace_ == action || sel_share_ == action || sel__share_ == action || sel_transliterateChinese_ == action || sel__transliterateChinese_ == action || sel__nextAccessoryTab_ == action || sel__previousAccessoryTab_ == action || sel_copy_ == action || sel_cut_ == action || sel_paste_ == action || sel_replace_ == action || sel_select_ == action || sel_selectAll_ == action || sel_toggleBoldface_ == action || sel_toggleItalics_ == action || sel_toggleUnderline_ == action || sel_increaseSize_ == action || sel_decreaseSize_ == action || sel_pasteAndMatchStyle_ == action || sel_makeTextWritingDirectionNatural_ == action || sel_makeTextWritingDirectionLeftToRight_ == action || sel_makeTextWritingDirectionRightToLeft_ == action || sel_alignCenter_ == action || sel_alignJustified_ == action || sel_alignLeft_ == action || sel_alignRight_ == action || sel__indent_ == action || sel__outdent_ == action || sel__toggleStrikeThrough_ == action || sel__insertOrderedList_ == action || sel__insertUnorderedList_ == action || sel__insertNestedOrderedList_ == action || sel__insertNestedUnorderedList_ == action || sel__increaseListLevel_ == action || sel__decreaseListLevel_ == action || sel__changeListType_ == action || sel__pasteAsQuotation_ == action || sel__pasteAndMatchStyle_ == action || sel__setTextColor_sender_ == action || sel__setFontSize_sender_ == action || sel__setFont_sender_ == action)
   {
     LODWORD(self) = [(WKWebView *)self usesStandardContentView];
     if (!self)
@@ -19541,24 +19442,24 @@ LABEL_11:
       return self & 1;
     }
 
-    m_ptr = v6->_contentView.m_ptr;
+    m_ptr = selfCopy->_contentView.m_ptr;
 
-    return [(WKContentView *)m_ptr canPerformActionForWebView:a3 withSender:a4];
+    return [(WKContentView *)m_ptr canPerformActionForWebView:action withSender:sender];
   }
 
   else
   {
-    if (sel_find_ == a3 || sel_findNext_ == a3 || sel_findPrevious_ == a3)
+    if (sel_find_ == action || sel_findNext_ == action || sel_findPrevious_ == action)
     {
       LOBYTE(self) = self->_findInteractionEnabled;
       return self & 1;
     }
 
-    if (sel_findAndReplace_ != a3)
+    if (sel_findAndReplace_ != action)
     {
       v9.receiver = self;
       v9.super_class = WKWebView;
-      LOBYTE(self) = [(WKWebView *)&v9 canPerformAction:a3 withSender:a4];
+      LOBYTE(self) = [(WKWebView *)&v9 canPerformAction:action withSender:sender];
       return self & 1;
     }
 
@@ -19572,79 +19473,79 @@ LABEL_11:
   }
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (sel_captureTextFromCamera_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_useSelectionForFind_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_findSelected_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__findSelected_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_addShortcut_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__addShortcut_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_define_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__define_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_lookup_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__lookup_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_translate_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__translate_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_promptForReplace_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__promptForReplace_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_share_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__share_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_transliterateChinese_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__transliterateChinese_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__nextAccessoryTab_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__previousAccessoryTab_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_copy_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_cut_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_paste_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_replace_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_select_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_selectAll_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_toggleBoldface_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_toggleItalics_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_toggleUnderline_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_increaseSize_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_decreaseSize_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_pasteAndMatchStyle_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_makeTextWritingDirectionNatural_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_makeTextWritingDirectionLeftToRight_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_makeTextWritingDirectionRightToLeft_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_alignCenter_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_alignJustified_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_alignLeft_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel_alignRight_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__indent_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__outdent_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__toggleStrikeThrough_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__insertOrderedList_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__insertUnorderedList_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__insertNestedOrderedList_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__insertNestedUnorderedList_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__increaseListLevel_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__decreaseListLevel_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__changeListType_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__pasteAsQuotation_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__pasteAndMatchStyle_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__setTextColor_sender_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__setFontSize_sender_ == a3 && [(WKWebView *)self usesStandardContentView]
-    || sel__setFont_sender_ == a3 && [(WKWebView *)self usesStandardContentView])
+  if (sel_captureTextFromCamera_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_useSelectionForFind_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_findSelected_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__findSelected_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_addShortcut_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__addShortcut_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_define_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__define_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_lookup_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__lookup_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_translate_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__translate_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_promptForReplace_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__promptForReplace_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_share_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__share_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_transliterateChinese_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__transliterateChinese_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__nextAccessoryTab_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__previousAccessoryTab_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_copy_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_cut_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_paste_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_replace_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_select_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_selectAll_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_toggleBoldface_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_toggleItalics_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_toggleUnderline_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_increaseSize_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_decreaseSize_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_pasteAndMatchStyle_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_makeTextWritingDirectionNatural_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_makeTextWritingDirectionLeftToRight_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_makeTextWritingDirectionRightToLeft_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_alignCenter_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_alignJustified_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_alignLeft_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel_alignRight_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__indent_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__outdent_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__toggleStrikeThrough_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__insertOrderedList_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__insertUnorderedList_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__insertNestedOrderedList_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__insertNestedUnorderedList_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__increaseListLevel_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__decreaseListLevel_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__changeListType_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__pasteAsQuotation_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__pasteAndMatchStyle_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__setTextColor_sender_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__setFontSize_sender_ == action && [(WKWebView *)self usesStandardContentView]
+    || sel__setFont_sender_ == action && [(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    return [(WKContentView *)m_ptr targetForActionForWebView:a3 withSender:a4];
+    return [(WKContentView *)m_ptr targetForActionForWebView:action withSender:sender];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WKWebView;
-    return [(WKWebView *)&v9 targetForAction:a3 withSender:a4];
+    return [(WKWebView *)&v9 targetForAction:action withSender:sender];
   }
 }
 
-- (void)_setHasCustomContentView:(BOOL)a3 loadedMIMEType:(const void *)a4
+- (void)_setHasCustomContentView:(BOOL)view loadedMIMEType:(const void *)type
 {
-  if (a3 && (v6 = [(WKWebViewContentProviderRegistry *)[(WKWebView *)self _contentProviderRegistry] providerForMIMEType:a4]) != 0)
+  if (view && (v6 = [(WKWebViewContentProviderRegistry *)[(WKWebView *)self _contentProviderRegistry] providerForMIMEType:type]) != 0)
   {
     v7 = v6;
     [(WKWebViewContentProvider *)self->_customContentView.m_ptr removeFromSuperview];
@@ -19655,7 +19556,7 @@ LABEL_11:
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = *a4;
+    v17 = *type;
     if (v17)
     {
       atomic_fetch_add_explicit(v17, 2u, memory_order_relaxed);
@@ -19764,11 +19665,11 @@ LABEL_11:
 
   if ([(WKWebView *)self isFirstResponder])
   {
-    v40 = [(WKWebView *)self _currentContentView];
+    _currentContentView = [(WKWebView *)self _currentContentView];
     v41 = self->_contentView.m_ptr;
-    if (v41 != v40)
+    if (v41 != _currentContentView)
     {
-      if (![(WKContentView *)v40 canBecomeFirstResponder])
+      if (![(WKContentView *)_currentContentView canBecomeFirstResponder])
       {
         return;
       }
@@ -19779,16 +19680,16 @@ LABEL_11:
     if ([(WKContentView *)v41 canBecomeFirstResponderForWebView])
     {
 LABEL_26:
-      [(WKContentView *)v40 becomeFirstResponder];
+      [(WKContentView *)_currentContentView becomeFirstResponder];
     }
   }
 }
 
-- (void)_didFinishLoadingDataForCustomContentProviderWithSuggestedFilename:(const void *)a3 data:(id)a4
+- (void)_didFinishLoadingDataForCustomContentProviderWithSuggestedFilename:(const void *)filename data:(id)data
 {
   m_ptr = self->_customContentView.m_ptr;
-  v7 = *a3;
-  if (*a3)
+  v7 = *filename;
+  if (*filename)
   {
     atomic_fetch_add_explicit(v7, 2u, memory_order_relaxed);
     MEMORY[0x19EB00B70](&v12, v7, a2);
@@ -19809,7 +19710,7 @@ LABEL_26:
   v11[2] = __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomContentProviderWithSuggestedFilename_data___block_invoke;
   v11[3] = &unk_1E7631230;
   v11[4] = self;
-  [(WKWebViewContentProvider *)m_ptr web_setContentProviderData:a4 suggestedFilename:v12 completionHandler:v11];
+  [(WKWebViewContentProvider *)m_ptr web_setContentProviderData:data suggestedFilename:v12 completionHandler:v11];
   v10 = v12;
   v12 = 0;
   if (v10)
@@ -19825,43 +19726,43 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   return WebKit::WebPageProxy::didReachLayoutMilestone(v1, 7u, v2);
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:a4])
+  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:event])
   {
     v7.receiver = self;
     v7.super_class = WKWebView;
-    [(WKWebView *)&v7 pressesBegan:a3 withEvent:a4];
+    [(WKWebView *)&v7 pressesBegan:began withEvent:event];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:a4])
+  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:event])
   {
     v7.receiver = self;
     v7.super_class = WKWebView;
-    [(WKWebView *)&v7 pressesChanged:a3 withEvent:a4];
+    [(WKWebView *)&v7 pressesChanged:changed withEvent:event];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:a4])
+  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:event])
   {
     v7.receiver = self;
     v7.super_class = WKWebView;
-    [(WKWebView *)&v7 pressesEnded:a3 withEvent:a4];
+    [(WKWebView *)&v7 pressesEnded:ended withEvent:event];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:a4])
+  if (![(WKWebView *)self _tryToHandleKeyEventInCustomContentView:event])
   {
     v7.receiver = self;
     v7.super_class = WKWebView;
-    [(WKWebView *)&v7 pressesCancelled:a3 withEvent:a4];
+    [(WKWebView *)&v7 pressesCancelled:cancelled withEvent:event];
   }
 }
 
@@ -19894,10 +19795,10 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   return result;
 }
 
-- (CGPoint)_contentOffsetAdjustedForObscuredInset:(CGPoint)a3
+- (CGPoint)_contentOffsetAdjustedForObscuredInset:(CGPoint)inset
 {
-  y = a3.y;
-  x = a3.x;
+  y = inset.y;
+  x = inset.x;
   [(WKWebView *)self _computedObscuredInset];
   v6 = x - v5;
   v8 = y - v7;
@@ -19922,11 +19823,11 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
 
 - (UIEdgeInsets)_contentInsetsFromSystemMinimumLayoutMargins
 {
-  v3 = [(UIView *)self _wk_viewControllerForFullScreenPresentation];
-  if (v3)
+  _wk_viewControllerForFullScreenPresentation = [(UIView *)self _wk_viewControllerForFullScreenPresentation];
+  if (_wk_viewControllerForFullScreenPresentation)
   {
-    v4 = v3;
-    [(UIViewController *)v3 systemMinimumLayoutMargins];
+    v4 = _wk_viewControllerForFullScreenPresentation;
+    [(UIViewController *)_wk_viewControllerForFullScreenPresentation systemMinimumLayoutMargins];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -19953,11 +19854,11 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
       v8 = v15;
     }
 
-    v16 = [(UIViewController *)v4 viewIfLoaded];
-    if (v16)
+    viewIfLoaded = [(UIViewController *)v4 viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v17 = v16;
-      [(UIView *)v16 bounds];
+      v17 = viewIfLoaded;
+      [(UIView *)viewIfLoaded bounds];
       v41 = v19;
       rect = v18;
       v21 = v20;
@@ -20189,7 +20090,7 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   if (os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19D52D000, v3, OS_LOG_TYPE_DEFAULT, "%p [WKWebView _processWillSwap]", &v4, 0xCu);
   }
 
@@ -20203,7 +20104,7 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   if (os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19D52D000, v3, OS_LOG_TYPE_DEFAULT, "%p [WKWebView _processDidExit]", &v5, 0xCu);
   }
 
@@ -20238,7 +20139,7 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
     }
 
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
     v10 = v5;
     _os_log_impl(&dword_19D52D000, v3, OS_LOG_TYPE_DEFAULT, "%p [WKWebView _didRelaunchProcess] (pid=%d)", &v7, 0x12u);
@@ -20293,10 +20194,10 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
     if (self->_findInteractionEnabled)
     {
       [(UIFindInteraction *)self->_findInteraction.m_ptr dismissFindNavigator];
-      v8 = [(UIFindInteraction *)self->_findInteraction.m_ptr activeFindSession];
-      if (v8)
+      activeFindSession = [(UIFindInteraction *)self->_findInteraction.m_ptr activeFindSession];
+      if (activeFindSession)
       {
-        v9 = v8;
+        v9 = activeFindSession;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -20401,26 +20302,26 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   return result;
 }
 
-- (void)_didCommitLayerTreeDuringAnimatedResize:(const void *)a3
+- (void)_didCommitLayerTreeDuringAnimatedResize:(const void *)resize
 {
-  if ((*(a3 + 234) & 1) != 0 && *(a3 + 116) == self->_currentDynamicViewportSizeUpdateID)
+  if ((*(resize + 234) & 1) != 0 && *(resize + 116) == self->_currentDynamicViewportSizeUpdateID)
   {
-    v4 = *(a3 + 35);
-    v6 = *(a3 + 44);
-    v5 = *(a3 + 45);
-    v7 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
+    v4 = *(resize + 35);
+    v6 = *(resize + 44);
+    v5 = *(resize + 45);
+    layer = [(UIView *)self->_resizeAnimationView.m_ptr layer];
     v8 = 0.0;
     m11 = 0.0;
-    if (v7)
+    if (layer)
     {
-      [(CALayer *)v7 transform];
+      [(CALayer *)layer transform];
       m11 = v23.m11;
     }
 
-    v10 = [(WKContentView *)self->_contentView.m_ptr layer];
-    if (v10)
+    layer2 = [(WKContentView *)self->_contentView.m_ptr layer];
+    if (layer2)
     {
-      [v10 transform];
+      [layer2 transform];
       v8 = v23.m11;
     }
 
@@ -20451,9 +20352,9 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
     *&v22.m23 = *&self->_resizeAnimationTransformAdjustments.m23;
     *&v22.m41 = *&self->_resizeAnimationTransformAdjustments.m41;
     *&v22.m43 = *&self->_resizeAnimationTransformAdjustments.m43;
-    v21 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
+    layer3 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
     v23 = v22;
-    [(CALayer *)v21 setSublayerTransform:&v23];
+    [(CALayer *)layer3 setSublayerTransform:&v23];
     self->_perProcessState.waitingForCommitAfterAnimatedResize = 0;
     if (!self->_perProcessState.waitingForEndAnimatedResize)
     {
@@ -20462,9 +20363,9 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   }
 }
 
-- (void)_trackTransactionCommit:(const void *)a3
+- (void)_trackTransactionCommit:(const void *)commit
 {
-  v4 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x1E69E9840];
   p_perProcessState = &self->_perProcessState;
   if (self->_perProcessState.didDeferUpdateVisibleContentRectsForUnstableScrollView)
@@ -20473,8 +20374,8 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
     self = os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT);
     if (self)
     {
-      v7 = *(v4->_page.m_ptr + 5);
-      v8 = *(a3 + 41);
+      v7 = *(selfCopy->_page.m_ptr + 5);
+      v8 = *(commit + 41);
       dynamicViewportUpdateMode = p_perProcessState->dynamicViewportUpdateMode;
       if (p_perProcessState->resetViewStateAfterTransactionID.__engaged_)
       {
@@ -20486,11 +20387,11 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
         m_identifier = 0;
       }
 
-      v11 = [(WKContentView *)v4->_contentView.m_ptr sizeChangedSinceLastVisibleContentRectUpdate];
-      v12 = [(WKScrollView *)v4->_scrollView.m_ptr isZoomBouncing];
+      sizeChangedSinceLastVisibleContentRectUpdate = [(WKContentView *)selfCopy->_contentView.m_ptr sizeChangedSinceLastVisibleContentRectUpdate];
+      isZoomBouncing = [(WKScrollView *)selfCopy->_scrollView.m_ptr isZoomBouncing];
       currentlyAdjustingScrollViewInsetsForKeyboard = p_perProcessState->currentlyAdjustingScrollViewInsetsForKeyboard;
       v19 = 134219776;
-      v20 = v4;
+      v20 = selfCopy;
       v21 = 2048;
       v22 = v7;
       v23 = 2048;
@@ -20500,32 +20401,32 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
       *&v26[4] = 2048;
       *&v26[6] = m_identifier;
       v27 = 1024;
-      v28 = v11;
+      v28 = sizeChangedSinceLastVisibleContentRectUpdate;
       v29 = 1024;
-      v30 = v12;
+      v30 = isZoomBouncing;
       v31 = 1024;
       v32 = currentlyAdjustingScrollViewInsetsForKeyboard;
       _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "%p (pageProxyID=%llu) [WKWebView _didCommitLayerTree:] - received a commit (%llu) while deferring visible content rect updates (dynamicViewportUpdateMode %d, resetViewStateAfterTransactionID %llu, sizeChangedSinceLastVisibleContentRectUpdate %d, [_scrollView isZoomBouncing] %d, currentlyAdjustingScrollViewInsetsForKeyboard %d)", &v19, 0x42u);
     }
   }
 
-  if (v4->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_)
+  if (selfCopy->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_)
   {
     WTF::MonotonicTime::now(self);
-    if (!v4->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_)
+    if (!selfCopy->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_)
     {
       __break(1u);
     }
 
-    v15 = v14 - v4->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.var0.__val_.m_value;
-    if (v15 <= 5.0 || (v16 = qword_1ED641490, !os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT)) || (v17 = *(v4->_page.m_ptr + 5), v18 = *(a3 + 41), v19 = 134218752, v20 = v4, v21 = 2048, v22 = v17, v23 = 2048, v24 = v15, v25 = 2048, *v26 = v18, _os_log_impl(&dword_19D52D000, v16, OS_LOG_TYPE_DEFAULT, "%p (pageProxyID=%llu) [WKWebView _didCommitLayerTree:] - finally received commit %.2fs after visible content rect update request; transactionID %llu", &v19, 0x2Au), v4->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_))
+    v15 = v14 - selfCopy->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.var0.__val_.m_value;
+    if (v15 <= 5.0 || (v16 = qword_1ED641490, !os_log_type_enabled(qword_1ED641490, OS_LOG_TYPE_DEFAULT)) || (v17 = *(selfCopy->_page.m_ptr + 5), v18 = *(commit + 41), v19 = 134218752, v20 = selfCopy, v21 = 2048, v22 = v17, v23 = 2048, v24 = v15, v25 = 2048, *v26 = v18, _os_log_impl(&dword_19D52D000, v16, OS_LOG_TYPE_DEFAULT, "%p (pageProxyID=%llu) [WKWebView _didCommitLayerTree:] - finally received commit %.2fs after visible content rect update request; transactionID %llu", &v19, 0x2Au), selfCopy->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_))
     {
-      v4->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_ = 0;
+      selfCopy->_timeOfFirstVisibleContentRectUpdateWithPendingCommit.__engaged_ = 0;
     }
   }
 }
 
-- (void)_updateScrollViewForTransaction:(const void *)a3
+- (void)_updateScrollViewForTransaction:(const void *)transaction
 {
   [(WKScrollView *)self->_scrollView.m_ptr contentSize];
   v6 = v5;
@@ -20545,17 +20446,17 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   if (self->_forcesInitialScaleFactor)
   {
     v16 = 0;
-    v17 = *(a3 + 38);
+    v17 = *(transaction + 38);
     v18 = v17;
     v19 = v17;
   }
 
   else
   {
-    v19 = *(a3 + 36);
-    v18 = *(a3 + 37);
-    v17 = *(a3 + 35);
-    v16 = *(a3 + 355);
+    v19 = *(transaction + 36);
+    v18 = *(transaction + 37);
+    v17 = *(transaction + 35);
+    v16 = *(transaction + 355);
   }
 
   [(WKScrollView *)self->_scrollView.m_ptr setMinimumZoomScale:v19];
@@ -20575,7 +20476,7 @@ uint64_t __104__WKWebView_WKViewInternalIOS___didFinishLoadingDataForCustomConte
   IsEmpty = CGRectIsEmpty(self->_inputViewBoundsInWindow);
   v25 = IsEmpty;
   v26 = v17;
-  v27 = *(a3 + 38);
+  v27 = *(transaction + 38);
   v28 = v27;
   v29 = WebKit::scalesAreEssentiallyEqual(IsEmpty, v26, v28);
   v30 = self->_page.m_ptr;
@@ -20619,7 +20520,7 @@ LABEL_31:
 LABEL_33:
   [-[WKScrollView panGestureRecognizer](self->_scrollView.m_ptr "panGestureRecognizer")];
   [(WKScrollView *)self->_scrollView.m_ptr _setScrollEnabledInternal:1];
-  if ((*(a3 + 354) & 1) != 0 || ([(WKScrollView *)self->_scrollView.m_ptr isZooming]& 1) != 0 || ([(WKScrollView *)self->_scrollView.m_ptr isZoomBouncing]& 1) != 0 || [(UIScrollView *)self->_scrollView.m_ptr _wk_isZoomAnimating]|| (v41 = [(WKScrollView *)self->_scrollView.m_ptr zoomScale], *&v42 = v42, v43 = v17, WebKit::scalesAreEssentiallyEqual(v41, *&v42, v43)))
+  if ((*(transaction + 354) & 1) != 0 || ([(WKScrollView *)self->_scrollView.m_ptr isZooming]& 1) != 0 || ([(WKScrollView *)self->_scrollView.m_ptr isZoomBouncing]& 1) != 0 || [(UIScrollView *)self->_scrollView.m_ptr _wk_isZoomAnimating]|| (v41 = [(WKScrollView *)self->_scrollView.m_ptr zoomScale], *&v42 = v42, v43 = v17, WebKit::scalesAreEssentiallyEqual(v41, *&v42, v43)))
   {
     v44 = v8 == v15 && v6 == v14;
     if (v44 || v8 <= 0.0 || ![(WKWebView *)self _isDisplayingPDF])
@@ -20687,10 +20588,10 @@ LABEL_53:
   }
 }
 
-- (BOOL)_restoreScrollAndZoomStateForTransaction:(const void *)a3
+- (BOOL)_restoreScrollAndZoomStateForTransaction:(const void *)transaction
 {
   p_perProcessState = &self->_perProcessState;
-  if (!self->_perProcessState.firstTransactionIDAfterPageRestore.__engaged_ || *(a3 + 41) < self->_perProcessState.firstTransactionIDAfterPageRestore.var0.__val_.m_object.m_identifier)
+  if (!self->_perProcessState.firstTransactionIDAfterPageRestore.__engaged_ || *(transaction + 41) < self->_perProcessState.firstTransactionIDAfterPageRestore.var0.__val_.m_object.m_identifier)
   {
     return 0;
   }
@@ -20704,10 +20605,10 @@ LABEL_53:
     }
 
     p_perProcessState->scrollOffsetToRestore.__engaged_ = 0;
-    v9 = [-[WKWebView _currentContentView](self "_currentContentView")];
-    if (v9)
+    affineTransform = [-[WKWebView _currentContentView](self "_currentContentView")];
+    if (affineTransform)
     {
-      v9 = [v9 affineTransform];
+      affineTransform = [affineTransform affineTransform];
       v10 = v26;
     }
 
@@ -20718,7 +20619,7 @@ LABEL_53:
 
     scaleToRestore = self->_scaleToRestore;
     v4 = 1;
-    if (WebKit::scalesAreEssentiallyEqual(v9, v10, scaleToRestore))
+    if (WebKit::scalesAreEssentiallyEqual(affineTransform, v10, scaleToRestore))
     {
       changeContentOffsetBoundedInValidRange(&self->_scrollView.m_ptr->super.super.super);
       p_perProcessState->commitDidRestoreScrollPosition = 1;
@@ -20745,10 +20646,10 @@ LABEL_23:
   if (p_perProcessState->unobscuredCenterToRestore.__engaged_)
   {
     p_perProcessState->unobscuredCenterToRestore.__engaged_ = 0;
-    v7 = [-[WKWebView _currentContentView](self "_currentContentView")];
-    if (v7)
+    affineTransform2 = [-[WKWebView _currentContentView](self "_currentContentView")];
+    if (affineTransform2)
     {
-      v7 = [v7 affineTransform];
+      affineTransform2 = [affineTransform2 affineTransform];
       v8 = v26;
     }
 
@@ -20758,7 +20659,7 @@ LABEL_23:
     }
 
     v12 = self->_scaleToRestore;
-    if (WebKit::scalesAreEssentiallyEqual(v7, v8, v12))
+    if (WebKit::scalesAreEssentiallyEqual(affineTransform2, v8, v12))
     {
       [(WKWebView *)self bounds];
       top = self->_obscuredInsets.top;
@@ -20783,10 +20684,10 @@ LABEL_25:
   return result;
 }
 
-- (void)_didCommitLayerTree:(const void *)a3
+- (void)_didCommitLayerTree:(const void *)tree
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 5))
+  if (*(tree + 5))
   {
 LABEL_2:
     if (self->_perProcessState.pendingFindLayerID.m_value.m_object.m_identifier)
@@ -20814,9 +20715,9 @@ LABEL_2:
   }
 
   [(WKWebView *)self _trackTransactionCommit:?];
-  v8 = *(a3 + 42);
+  v8 = *(tree + 42);
   engaged = self->_perProcessState.lastTransactionID.__engaged_;
-  self->_perProcessState.lastTransactionID.var0.__val_.m_object.m_identifier = *(a3 + 41);
+  self->_perProcessState.lastTransactionID.var0.__val_.m_object.m_identifier = *(tree + 41);
   self->_perProcessState.lastTransactionID.var0.__val_.m_processIdentifier.m_identifier = v8;
   if (!engaged)
   {
@@ -20824,17 +20725,17 @@ LABEL_2:
   }
 
   lastTransactionWasInStableState = self->_perProcessState.lastTransactionWasInStableState;
-  self->_perProcessState.lastTransactionWasInStableState = *(a3 + 359);
+  self->_perProcessState.lastTransactionWasInStableState = *(tree + 359);
   if ([(WKWebView *)self usesStandardContentView])
   {
-    updated = WebKit::WebPageProxy::updateLayoutViewportParameters(self->_page.m_ptr, a3);
-    if (self->_perProcessState.firstTransactionIDAfterObscuredInsetChange.__engaged_ && *(a3 + 41) >= self->_perProcessState.firstTransactionIDAfterObscuredInsetChange.var0.__val_.m_object.m_identifier)
+    updated = WebKit::WebPageProxy::updateLayoutViewportParameters(self->_page.m_ptr, tree);
+    if (self->_perProcessState.firstTransactionIDAfterObscuredInsetChange.__engaged_ && *(tree + 41) >= self->_perProcessState.firstTransactionIDAfterObscuredInsetChange.var0.__val_.m_object.m_identifier)
     {
       self->_perProcessState.firstTransactionIDAfterObscuredInsetChange.__engaged_ = 0;
       if (self->_overriddenLayoutParameters.__engaged_)
       {
-        v11 = [(WKWebView *)self _shouldDeferGeometryUpdates];
-        if (!v11 || WTF::IOSApplication::isSafariViewService(v11) && ([objc_msgSend(objc_msgSend(-[WKWebView window](self "window")] & 1) == 0)
+        _shouldDeferGeometryUpdates = [(WKWebView *)self _shouldDeferGeometryUpdates];
+        if (!_shouldDeferGeometryUpdates || WTF::IOSApplication::isSafariViewService(_shouldDeferGeometryUpdates) && ([objc_msgSend(objc_msgSend(-[WKWebView window](self "window")] & 1) == 0)
         {
           if (!self->_overriddenLayoutParameters.__engaged_ || (WebCore::FloatSize::FloatSize(buf, &self->_overriddenLayoutParameters), LODWORD(v13) = HIDWORD(buf[0].super.isa), LODWORD(v12) = buf[0].super.isa, [(WKWebView *)self _dispatchSetViewLayoutSize:v12, v13], !self->_overriddenLayoutParameters.__engaged_) || (m_ptr = self->_page.m_ptr, WebCore::FloatSize::FloatSize(buf, &self->_overriddenLayoutParameters.var0.__val_.minimumUnobscuredSize), WebKit::WebPageProxy::setMinimumUnobscuredSize(m_ptr, buf), !self->_overriddenLayoutParameters.__engaged_) || (v15 = self->_page.m_ptr, WebCore::FloatSize::FloatSize(buf, &self->_overriddenLayoutParameters.var0.__val_.maximumUnobscuredSize), WebKit::WebPageProxy::setDefaultUnobscuredSize(v15, buf), !self->_overriddenLayoutParameters.__engaged_))
           {
@@ -20851,7 +20752,7 @@ LABEL_2:
 
     if (self->_perProcessState.dynamicViewportUpdateMode)
     {
-      [(WKWebView *)self _didCommitLayerTreeDuringAnimatedResize:a3];
+      [(WKWebView *)self _didCommitLayerTreeDuringAnimatedResize:tree];
       return;
     }
 
@@ -20868,12 +20769,12 @@ LABEL_2:
         }
       }
 
-      [(WKWebView *)self _updateScrollViewForTransaction:a3];
+      [(WKWebView *)self _updateScrollViewForTransaction:tree];
       [(WKWebView *)self _updateNeedsTopScrollPocketDueToVisibleContentInset];
-      *&self->_perProcessState.viewportMetaTagWidthWasExplicit = *(a3 + 357);
-      *&self->_perProcessState.viewportMetaTagWidth = vextq_s8(*(a3 + 19), *(a3 + 19), 8uLL);
+      *&self->_perProcessState.viewportMetaTagWidthWasExplicit = *(tree + 357);
+      *&self->_perProcessState.viewportMetaTagWidth = vextq_s8(*(tree + 19), *(tree + 19), 8uLL);
       v18 = *(self->_page.m_ptr + 4);
-      if (*(v18 + 2784) == 1 && !*(v18 + 2776) && *(a3 + 359) == 1 && [(NSMutableArray *)self->_stableStatePresentationUpdateCallbacks.m_ptr count])
+      if (*(v18 + 2784) == 1 && !*(v18 + 2776) && *(tree + 359) == 1 && [(NSMutableArray *)self->_stableStatePresentationUpdateCallbacks.m_ptr count])
       {
         v34 = 0u;
         v35 = 0u;
@@ -20916,14 +20817,14 @@ LABEL_2:
       }
 
       [(WKWebView *)self _updateScrollViewBackground];
-      [(WKWebView *)self _setAvoidsUnsafeArea:*(a3 + 356)];
+      [(WKWebView *)self _setAvoidsUnsafeArea:*(tree + 356)];
       v24 = self->_gestureController.m_ptr;
       if (v24)
       {
-        WebKit::ViewGestureController::setRenderTreeSize(v24, *(a3 + 40));
+        WebKit::ViewGestureController::setRenderTreeSize(v24, *(tree + 40));
       }
 
-      if (self->_perProcessState.resetViewStateAfterTransactionID.__engaged_ && *(a3 + 41) >= self->_perProcessState.resetViewStateAfterTransactionID.var0.__val_.m_object.m_identifier)
+      if (self->_perProcessState.resetViewStateAfterTransactionID.__engaged_ && *(tree + 41) >= self->_perProcessState.resetViewStateAfterTransactionID.var0.__val_.m_object.m_identifier)
       {
         self->_perProcessState.resetViewStateAfterTransactionID.__engaged_ = 0;
         if (![(WKWebView *)self _scrollViewIsRubberBandingForRefreshControl])
@@ -20936,10 +20837,10 @@ LABEL_2:
           WebKit::NavigationState::didFirstPaint(self->_navigationState.__ptr_);
         }
 
-        [(WKWebView *)self _restoreScrollAndZoomStateForTransaction:a3];
+        [(WKWebView *)self _restoreScrollAndZoomStateForTransaction:tree];
       }
 
-      else if ((updated | [(WKWebView *)self _restoreScrollAndZoomStateForTransaction:a3]) != 1)
+      else if ((updated | [(WKWebView *)self _restoreScrollAndZoomStateForTransaction:tree]) != 1)
       {
         goto LABEL_54;
       }
@@ -20976,30 +20877,30 @@ LABEL_54:
   }
 }
 
-- (void)_restorePageScrollPosition:(optional<WebCore:(FloatPoint)a4 :(RectEdges<float>)a5 FloatPoint>)a3 scrollOrigin:(double)a6 previousObscuredInset:scale:
+- (void)_restorePageScrollPosition:(optional<WebCore:(FloatPoint)position :(RectEdges<float>)a5 FloatPoint>)a3 scrollOrigin:(double)origin previousObscuredInset:scale:
 {
   v7 = a5.m_sides.__elems_[3];
   v8 = a5.m_sides.__elems_[2];
   v9 = a5.m_sides.__elems_[1];
   v10 = a5.m_sides.__elems_[0];
-  m_y = a4.m_y;
-  m_x = a4.m_x;
+  m_y = position.m_y;
+  m_x = position.m_x;
   engaged = a3.__engaged_;
   v14 = a3.var0.__val_.m_x;
   v15 = a3.var0.__val_.m_y;
   if ([(WKWebView *)self _shouldDeferGeometryUpdates])
   {
-    v16 = self;
+    selfCopy4 = self;
     if (self)
     {
-      v17 = self;
-      v18 = self;
-      v16 = self;
+      selfCopy2 = self;
+      selfCopy3 = self;
+      selfCopy4 = self;
     }
 
-    p_callbacksDeferredDuringResize = &v16->_callbacksDeferredDuringResize;
-    m_size = v16->_callbacksDeferredDuringResize.m_size;
-    if (m_size == v16->_callbacksDeferredDuringResize.m_capacity)
+    p_callbacksDeferredDuringResize = &selfCopy4->_callbacksDeferredDuringResize;
+    m_size = selfCopy4->_callbacksDeferredDuringResize.m_size;
+    if (m_size == selfCopy4->_callbacksDeferredDuringResize.m_capacity)
     {
       v24 = m_size + (m_size >> 1);
       if (v24 <= m_size + 1)
@@ -21017,11 +20918,11 @@ LABEL_54:
         v25 = v24;
       }
 
-      WTF::Vector<WTF::Function<void ()(void)>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&v16->_callbacksDeferredDuringResize, v25);
+      WTF::Vector<WTF::Function<void ()(void)>,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&selfCopy4->_callbacksDeferredDuringResize, v25);
       m_size = p_callbacksDeferredDuringResize->m_size;
       m_buffer = p_callbacksDeferredDuringResize->m_buffer;
       v27 = WTF::fastMalloc(0x40);
-      v28 = self;
+      selfCopy6 = self;
       *v27 = &unk_1F10FD3C8;
       *(v27 + 8) = self;
       *(v27 + 16) = v14;
@@ -21035,7 +20936,7 @@ LABEL_54:
     {
       m_buffer = p_callbacksDeferredDuringResize->m_buffer;
       v27 = WTF::fastMalloc(0x40);
-      v28 = self;
+      selfCopy6 = self;
       *v27 = &unk_1F10FD3C8;
       *(v27 + 8) = self;
       *(v27 + 16) = v14;
@@ -21050,7 +20951,7 @@ LABEL_54:
     *(v27 + 40) = v9;
     *(v27 + 44) = v8;
     *(v27 + 48) = v7;
-    *(v27 + 56) = a6;
+    *(v27 + 56) = origin;
     m_buffer[m_size] = v27;
     ++p_callbacksDeferredDuringResize->m_size;
   }
@@ -21106,28 +21007,28 @@ LABEL_54:
       self->_obscuredInsetsWhenSaved.m_sides.__elems_[1] = v9;
       self->_obscuredInsetsWhenSaved.m_sides.__elems_[2] = v8;
       self->_obscuredInsetsWhenSaved.m_sides.__elems_[3] = v7;
-      self->_scaleToRestore = a6;
+      self->_scaleToRestore = origin;
     }
   }
 }
 
-- (void)_restorePageStateToUnobscuredCenter:(optional<WebCore:(double)a4 :FloatPoint>)a3 scale:
+- (void)_restorePageStateToUnobscuredCenter:(optional<WebCore:(double)center :FloatPoint>)a3 scale:
 {
   engaged = a3.__engaged_;
   var0 = a3.var0;
   if ([(WKWebView *)self _shouldDeferGeometryUpdates])
   {
-    v7 = self;
+    selfCopy4 = self;
     if (self)
     {
-      v8 = self;
-      v9 = self;
-      v7 = self;
+      selfCopy2 = self;
+      selfCopy3 = self;
+      selfCopy4 = self;
     }
 
-    p_callbacksDeferredDuringResize = &v7->_callbacksDeferredDuringResize;
-    m_size = v7->_callbacksDeferredDuringResize.m_size;
-    if (m_size == v7->_callbacksDeferredDuringResize.m_capacity)
+    p_callbacksDeferredDuringResize = &selfCopy4->_callbacksDeferredDuringResize;
+    m_size = selfCopy4->_callbacksDeferredDuringResize.m_size;
+    if (m_size == selfCopy4->_callbacksDeferredDuringResize.m_capacity)
     {
       v15 = m_size + (m_size >> 1);
       if (v15 <= m_size + 1)
@@ -21163,7 +21064,7 @@ LABEL_54:
     *(v18 + 24) = engaged;
     *(v18 + 25) = *v22;
     *(v18 + 28) = *&v22[3];
-    *(v18 + 32) = a4;
+    *(v18 + 32) = center;
     *(v17 + 8 * m_size) = v18;
     ++*(p_callbacksDeferredDuringResize + 12);
   }
@@ -21201,7 +21102,7 @@ LABEL_54:
 
       self->_perProcessState.unobscuredCenterToRestore.var0 = var0;
       self->_perProcessState.unobscuredCenterToRestore.__engaged_ = engaged;
-      self->_scaleToRestore = a4;
+      self->_scaleToRestore = center;
     }
   }
 }
@@ -21282,11 +21183,11 @@ LABEL_54:
   return v10;
 }
 
-- (void)_zoomToCenter:(FloatPoint)a3 atScale:(double)a4 animated:(BOOL)a5 honorScrollability:(BOOL)a6
+- (void)_zoomToCenter:(FloatPoint)center atScale:(double)scale animated:(BOOL)animated honorScrollability:(BOOL)scrollability
 {
-  v6 = a6;
-  m_y = a3.m_y;
-  m_x = a3.m_x;
+  scrollabilityCopy = scrollability;
+  m_y = center.m_y;
+  m_x = center.m_x;
   v12 = [-[WKWebView _currentContentView](self "_currentContentView")];
   if (v12)
   {
@@ -21299,7 +21200,7 @@ LABEL_54:
     v14 = 0.0;
   }
 
-  if (v14 != a4 && ((v16 = vabdd_f64(a4, v14), v17 = fabs(a4), v17 < 1.0) ? (v18 = v17 * 1.79769313e308 < v16) : (v18 = 0), v18 || (v17 * 2.22507386e-308 > v16 ? (v19 = v17 <= 1.0) : (v19 = 1), v19 && v16 / v17 > 2.22044605e-16 || (v20 = fabs(v14), v20 < 1.0) && v20 * 1.79769313e308 < v16 || (v20 * 2.22507386e-308 > v16 ? (v21 = v20 <= 1.0) : (v21 = 1), (v13 = v16 / v20, v21) ? (v22 = v13 > 2.22044605e-16) : (v22 = 0), v22))))
+  if (v14 != scale && ((v16 = vabdd_f64(scale, v14), v17 = fabs(scale), v17 < 1.0) ? (v18 = v17 * 1.79769313e308 < v16) : (v18 = 0), v18 || (v17 * 2.22507386e-308 > v16 ? (v19 = v17 <= 1.0) : (v19 = 1), v19 && v16 / v17 > 2.22044605e-16 || (v20 = fabs(v14), v20 < 1.0) && v20 * 1.79769313e308 < v16 || (v20 * 2.22507386e-308 > v16 ? (v21 = v20 <= 1.0) : (v21 = 1), (v13 = v16 / v20, v21) ? (v22 = v13 > 2.22044605e-16) : (v22 = 0), v22))))
   {
     WebKit::AuxiliaryProcessProxy::send<Messages::WebPage::WillStartUserTriggeredZooming>(*(self->_page.m_ptr + 44), v33, *(self->_page.m_ptr + 6), 0);
     v15 = 0;
@@ -21307,7 +21208,7 @@ LABEL_54:
 
   else
   {
-    if (v6 && ![(WKScrollView *)self->_scrollView.m_ptr isScrollEnabled])
+    if (scrollabilityCopy && ![(WKScrollView *)self->_scrollView.m_ptr isScrollEnabled])
     {
       return;
     }
@@ -21320,13 +21221,13 @@ LABEL_54:
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  v27 = CGRectGetWidth(v34) / a4;
+  v27 = CGRectGetWidth(v34) / scale;
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = height;
-  v28 = CGRectGetHeight(v35) / a4;
-  if (a5)
+  v28 = CGRectGetHeight(v35) / scale;
+  if (animated)
   {
     if (v15)
     {
@@ -21358,15 +21259,15 @@ LABEL_54:
   [(WKScrollView *)m_ptr zoomToRect:v31 animated:m_x - v27 * 0.5, m_y - v28 * 0.5, v30];
 }
 
-- (void)_zoomToRect:(FloatRect)a3 atScale:(double)a4 origin:(FloatPoint)a5 animated:(BOOL)a6
+- (void)_zoomToRect:(FloatRect)rect atScale:(double)scale origin:(FloatPoint)origin animated:(BOOL)animated
 {
-  v6 = a6;
-  m_y = a5.m_y;
-  m_x = a5.m_x;
-  m_height = a3.m_size.m_height;
-  v32 = a3.m_location.m_y;
-  v33 = a3.m_location.m_x;
-  m_width = a3.m_size.m_width;
+  animatedCopy = animated;
+  m_y = origin.m_y;
+  m_x = origin.m_x;
+  m_height = rect.m_size.m_height;
+  v32 = rect.m_location.m_y;
+  v33 = rect.m_location.m_x;
+  m_width = rect.m_size.m_width;
   v9 = [-[WKWebView _currentContentView](self "_currentContentView")];
   if (v9)
   {
@@ -21379,7 +21280,7 @@ LABEL_54:
     x = 0.0;
   }
 
-  v11 = x / a4;
+  v11 = x / scale;
   [(WKWebView *)self bounds];
   [(WKWebView *)self convertRect:[(WKWebView *)self _currentContentView] toView:v12, v13, v14, v15];
   v40.origin.x = v16;
@@ -21401,21 +21302,21 @@ LABEL_54:
   v29 = vadd_f32(v25, v26);
   v30 = COERCE_DOUBLE(vadd_f32(v28, vmul_f32(vadd_f32(v27, v29), 0x3F0000003F000000)));
   v29.i32[0] = HIDWORD(v30);
-  [(WKWebView *)self _zoomToCenter:v6 atScale:1 animated:v30 honorScrollability:*&v29, a4];
+  [(WKWebView *)self _zoomToCenter:animatedCopy atScale:1 animated:v30 honorScrollability:*&v29, scale];
 }
 
-- (void)_scrollToContentScrollPosition:(FloatPoint)a3 scrollOrigin:(IntPoint)a4 animated:(BOOL)a5
+- (void)_scrollToContentScrollPosition:(FloatPoint)position scrollOrigin:(IntPoint)origin animated:(BOOL)animated
 {
-  v35 = a3;
-  m_y = a3.m_y;
-  v37 = a4;
+  positionCopy = position;
+  m_y = position.m_y;
+  originCopy = origin;
   p_perProcessState = &self->_perProcessState;
   if (self->_perProcessState.commitDidRestoreScrollPosition)
   {
     return;
   }
 
-  v6 = a5;
+  animatedCopy = animated;
   if ([(WKWebView *)self _shouldDeferGeometryUpdates])
   {
     return;
@@ -21430,8 +21331,8 @@ LABEL_54:
 
   else
   {
-    WebCore::FloatPoint::FloatPoint(v38, &v37);
-    v14 = vadd_f32(__PAIR64__(LODWORD(m_y), LODWORD(v35.m_x)), v38[0]);
+    WebCore::FloatPoint::FloatPoint(v38, &originCopy);
+    v14 = vadd_f32(__PAIR64__(LODWORD(m_y), LODWORD(positionCopy.m_x)), v38[0]);
     v15 = [-[WKWebView _currentContentView](self "_currentContentView")];
     if (v15)
     {
@@ -21454,14 +21355,14 @@ LABEL_54:
     [(WKScrollView *)self->_scrollView.m_ptr contentOffset];
     if (v18 != v21 || v20 != v22)
     {
-      if (v35.m_x == 0.0)
+      if (positionCopy.m_x == 0.0)
       {
         v24 = 1;
         v25 = m_y;
         goto LABEL_26;
       }
 
-      v26 = fabsf(v35.m_x);
+      v26 = fabsf(positionCopy.m_x);
       v25 = m_y;
       if (v26 < 1.0 && (v26 * 3.4028e38) < v26)
       {
@@ -21470,20 +21371,20 @@ LABEL_54:
 
       if (v26 > 1.0)
       {
-        if ((v35.m_x / v35.m_x) > 0.00000011921 && (v26 * 1.1755e-38) <= v26)
+        if ((positionCopy.m_x / positionCopy.m_x) > 0.00000011921 && (v26 * 1.1755e-38) <= v26)
         {
           goto LABEL_25;
         }
       }
 
-      else if ((v35.m_x / v35.m_x) > 0.00000011921)
+      else if ((positionCopy.m_x / positionCopy.m_x) > 0.00000011921)
       {
 LABEL_25:
         v24 = 0;
         goto LABEL_26;
       }
 
-      v24 = (v26 / 0.0) <= 0.00000011921 && v35.m_x <= 0.0 && v35.m_x >= 0.0;
+      v24 = (v26 / 0.0) <= 0.00000011921 && positionCopy.m_x <= 0.0 && positionCopy.m_x >= 0.0;
 LABEL_26:
       if (v21 >= 0.0 || !v24)
       {
@@ -21499,7 +21400,7 @@ LABEL_35:
           v22 = v20;
         }
 
-        [(WKScrollView *)self->_scrollView.m_ptr setContentOffset:v6 animated:v21, v22, v35];
+        [(WKScrollView *)self->_scrollView.m_ptr setContentOffset:animatedCopy animated:v21, v22, positionCopy];
         return;
       }
 
@@ -21535,9 +21436,9 @@ LABEL_34:
   }
 }
 
-- (float)_adjustScrollRectToAvoidHighlightOverlay:(FloatRect)a3
+- (float)_adjustScrollRectToAvoidHighlightOverlay:(FloatRect)overlay
 {
-  v39 = a3;
+  overlayCopy = overlay;
   v4 = *(self->_page.m_ptr + 181);
   if (v4)
   {
@@ -21569,7 +21470,7 @@ LABEL_34:
     __asm { FMOV            V1.2S, #5.0 }
 
     v38 = vadd_f32(v38, _D1);
-    if (WebCore::FloatRect::intersects(&v39, v36))
+    if (WebCore::FloatRect::intersects(&overlayCopy, v36))
     {
       v23 = v37;
       [(WKWebView *)self bounds];
@@ -21594,20 +21495,20 @@ LABEL_34:
   return v17;
 }
 
-- (BOOL)_scrollToRect:(FloatRect)a3 origin:(FloatPoint)a4 minimumScrollDistance:(float)a5
+- (BOOL)_scrollToRect:(FloatRect)rect origin:(FloatPoint)origin minimumScrollDistance:(float)distance
 {
-  m_y = a4.m_y;
-  m_x = a4.m_x;
-  m_height = a3.m_size.m_height;
-  m_width = a3.m_size.m_width;
-  v10 = a3.m_location.m_y;
-  v11 = a3.m_location.m_x;
+  m_y = origin.m_y;
+  m_x = origin.m_x;
+  m_height = rect.m_size.m_height;
+  m_width = rect.m_size.m_width;
+  v10 = rect.m_location.m_y;
+  v11 = rect.m_location.m_x;
   if (![(WKScrollView *)self->_scrollView.m_ptr isScrollEnabled])
   {
     return 0;
   }
 
-  v62 = a5;
+  distanceCopy = distance;
   [(WKWebView *)self _contentRectForUserInteraction];
   v72.origin.x = v13;
   v72.origin.y = v14;
@@ -21720,8 +21621,8 @@ LABEL_34:
   v64.f32[0] = v64.f32[0] - v45;
   v64.f32[1] = v64.f32[1] - v46;
   [(WKWebView *)self _adjustScrollRectToAvoidHighlightOverlay:?];
-  v44 = v47 >= v62;
-  if (v47 >= v62)
+  v44 = v47 >= distanceCopy;
+  if (v47 >= distanceCopy)
   {
     v57 = v46 + v56;
     [(WKContentView *)self->_contentView.m_ptr willStartZoomOrScroll];
@@ -21739,17 +21640,17 @@ LABEL_34:
   return v44;
 }
 
-- (void)_zoomOutWithOrigin:(FloatPoint)a3 animated:(BOOL)a4
+- (void)_zoomOutWithOrigin:(FloatPoint)origin animated:(BOOL)animated
 {
-  v4 = a4;
-  m_y = a3.m_y;
-  m_x = a3.m_x;
+  animatedCopy = animated;
+  m_y = origin.m_y;
+  m_x = origin.m_x;
   [(WKScrollView *)self->_scrollView.m_ptr minimumZoomScale];
   v8 = v9;
   *&v9 = m_x;
   *&v10 = m_y;
 
-  [(WKWebView *)self _zoomToCenter:v4 atScale:1 animated:v9 honorScrollability:v10, v8];
+  [(WKWebView *)self _zoomToCenter:animatedCopy atScale:1 animated:v9 honorScrollability:v10, v8];
 }
 
 - (BOOL)_selectionRectIsFullyVisibleAndNonEmpty
@@ -21866,11 +21767,11 @@ LABEL_34:
   }
 }
 
-- (void)_zoomToFocusRect:(const FloatRect *)a3 selectionRect:(const FloatRect *)a4 fontSize:(float)a5 minimumScale:(double)a6 maximumScale:(double)a7 allowScaling:(BOOL)a8 forceScroll:(BOOL)a9
+- (void)_zoomToFocusRect:(const FloatRect *)rect selectionRect:(const FloatRect *)selectionRect fontSize:(float)size minimumScale:(double)scale maximumScale:(double)maximumScale allowScaling:(BOOL)scaling forceScroll:(BOOL)scroll
 {
-  v9 = a9;
-  v10 = a8;
-  v14 = [(WKScrollView *)self->_scrollView.m_ptr window];
+  scrollCopy = scroll;
+  scalingCopy = scaling;
+  window = [(WKScrollView *)self->_scrollView.m_ptr window];
   [(WKWebView *)self bounds];
   p_obscuredInsets = &self->_obscuredInsets;
   top = self->_obscuredInsets.top;
@@ -21879,8 +21780,8 @@ LABEL_34:
   v21 = v20 + top;
   v23 = v22 - (left + self->_obscuredInsets.right);
   v25 = v24 - (top + self->_obscuredInsets.bottom);
-  [v14 bounds];
-  [v14 convertRect:self toView:?];
+  [window bounds];
+  [window convertRect:self toView:?];
   v153.origin.x = v26;
   v153.origin.y = v27;
   v153.size.width = v28;
@@ -21896,7 +21797,7 @@ LABEL_34:
   y = v132.origin.y;
   width = v132.size.width;
   height = v132.size.height;
-  [v14 convertRect:self toView:{self->_inputViewBoundsInWindow.origin.x, self->_inputViewBoundsInWindow.origin.y, self->_inputViewBoundsInWindow.size.width, self->_inputViewBoundsInWindow.size.height}];
+  [window convertRect:self toView:{self->_inputViewBoundsInWindow.origin.x, self->_inputViewBoundsInWindow.origin.y, self->_inputViewBoundsInWindow.size.width, self->_inputViewBoundsInWindow.size.height}];
   v35 = v34;
   v37 = v36;
   v39 = v38;
@@ -21983,30 +21884,30 @@ LABEL_34:
       v45 = v130.origin.x;
     }
 
-    v54 = v45;
-    if (v10)
+    maximumScaleCopy = v45;
+    if (scalingCopy)
     {
-      v55 = 16.0 / a5;
-      v56 = a6;
-      if (v55 > a6)
+      v55 = 16.0 / size;
+      scaleCopy = scale;
+      if (v55 > scale)
       {
-        v56 = 16.0 / a5;
+        scaleCopy = 16.0 / size;
       }
 
-      if (v55 >= a7)
+      if (v55 >= maximumScale)
       {
-        v54 = a7;
+        maximumScaleCopy = maximumScale;
       }
 
       else
       {
-        v54 = v56;
+        maximumScaleCopy = scaleCopy;
       }
     }
 
     [(WKContentView *)self->_contentView.m_ptr bounds];
-    v129 = *a3;
-    recta = round(v54 * v57) / v57;
+    v129 = *rect;
+    recta = round(maximumScaleCopy * v57) / v57;
     v58 = recta;
     WebCore::FloatRect::scale(&v129, v58, v58);
     [(WKContentView *)self->_contentView.m_ptr frame];
@@ -22016,8 +21917,8 @@ LABEL_34:
     v130.size.height = v62;
     WebCore::FloatPoint::FloatPoint(v128, &v130.origin);
     v129.m_location = vadd_f32(v128[0], v129.m_location);
-    isZero = WebCore::FloatSize::isZero(&a4->m_size);
-    if (v9 && ![(WKContentView *)self->_contentView.m_ptr _shouldAvoidScrollingWhenFocusedContentIsVisible]|| (WebCore::FloatRect::operator CGRect(), [(WKWebView *)self convertRect:self->_contentView.m_ptr fromView:?], v155.origin.x = v64, v155.origin.y = v65, v155.size.width = v66, v155.size.height = v67, v143.origin.x = rect1_16, v143.origin.y = rect1_8 + v47, v143.size.width = width, v143.size.height = v124 - v46, !CGRectContainsRect(v143, v155)) && (isZero || (WebCore::FloatRect::operator CGRect(), [(WKWebView *)self convertRect:self->_contentView.m_ptr fromView:?], v156.origin.x = v68, v156.origin.y = v69, v156.size.width = v70, v156.size.height = v71, v144.origin.x = rect1_16, v144.origin.y = rect1_8 + v47, v144.size.width = width, v144.size.height = v124 - v46, !CGRectContainsRect(v144, v156))))
+    isZero = WebCore::FloatSize::isZero(&selectionRect->m_size);
+    if (scrollCopy && ![(WKContentView *)self->_contentView.m_ptr _shouldAvoidScrollingWhenFocusedContentIsVisible]|| (WebCore::FloatRect::operator CGRect(), [(WKWebView *)self convertRect:self->_contentView.m_ptr fromView:?], v155.origin.x = v64, v155.origin.y = v65, v155.size.width = v66, v155.size.height = v67, v143.origin.x = rect1_16, v143.origin.y = rect1_8 + v47, v143.size.width = width, v143.size.height = v124 - v46, !CGRectContainsRect(v143, v155)) && (isZero || (WebCore::FloatRect::operator CGRect(), [(WKWebView *)self convertRect:self->_contentView.m_ptr fromView:?], v156.origin.x = v68, v156.origin.y = v69, v156.size.width = v70, v156.size.height = v71, v144.origin.x = rect1_16, v144.origin.y = rect1_8 + v47, v144.size.width = width, v144.size.height = v124 - v46, !CGRectContainsRect(v144, v156))))
     {
       rect1_24a = v45;
       v72 = (width - v129.m_size.m_width) * 0.5;
@@ -22115,7 +22016,7 @@ LABEL_34:
 
       else
       {
-        v127 = *a4;
+        v127 = *selectionRect;
         WebCore::FloatRect::scale(&v127, v58, v58);
         [(WKContentView *)self->_contentView.m_ptr frame];
         v130.origin.x = v98;
@@ -22222,18 +22123,18 @@ LABEL_34:
   return v4;
 }
 
-- (double)_targetContentZoomScaleForRect:(const FloatRect *)a3 currentScale:(double)a4 fitEntireRect:(BOOL)a5 minimumScale:(double)a6 maximumScale:(double)a7
+- (double)_targetContentZoomScaleForRect:(const FloatRect *)rect currentScale:(double)scale fitEntireRect:(BOOL)entireRect minimumScale:(double)minimumScale maximumScale:(double)maximumScale
 {
   [(WKWebView *)self _contentRectForUserInteraction];
   v20.width = v9;
   v20.height = v10;
   WebCore::FloatSize::FloatSize(&v21, &v20);
-  v11 = vdivq_f64(vmulq_n_f64(vcvtq_f64_f32(v21), a4), vcvtq_f64_f32(a3->m_size));
-  v12 = vdupq_lane_s64(*&a6, 0);
+  v11 = vdivq_f64(vmulq_n_f64(vcvtq_f64_f32(v21), scale), vcvtq_f64_f32(rect->m_size));
+  v12 = vdupq_lane_s64(*&minimumScale, 0);
   v13 = vbslq_s8(vcgtq_f64(v12, v11), v12, v11);
-  v14 = vdupq_lane_s64(*&a7, 0);
+  v14 = vdupq_lane_s64(*&maximumScale, 0);
   v15 = vbslq_s8(vcgtq_f64(v13, v14), v14, v13);
-  if (a5 && *&v15.i64[1] < *v15.i64)
+  if (entireRect && *&v15.i64[1] < *v15.i64)
   {
     v15.i64[0] = v15.i64[1];
   }
@@ -22241,12 +22142,12 @@ LABEL_34:
   return *v15.i64;
 }
 
-- (BOOL)_zoomToRect:(FloatRect)a3 withOrigin:(FloatPoint)a4 fitEntireRect:(BOOL)a5 minimumScale:(double)a6 maximumScale:(double)a7 minimumScrollDistance:(float)a8
+- (BOOL)_zoomToRect:(FloatRect)rect withOrigin:(FloatPoint)origin fitEntireRect:(BOOL)entireRect minimumScale:(double)scale maximumScale:(double)maximumScale minimumScrollDistance:(float)distance
 {
-  v10 = a5;
-  m_y = a4.m_y;
-  m_x = a4.m_x;
-  v26 = a3;
+  entireRectCopy = entireRect;
+  m_y = origin.m_y;
+  m_x = origin.m_x;
+  rectCopy = rect;
   v14 = [-[WKWebView _currentContentView](self "_currentContentView")];
   if (v14)
   {
@@ -22259,7 +22160,7 @@ LABEL_34:
     v15 = 0.0;
   }
 
-  [(WKWebView *)self _targetContentZoomScaleForRect:&v26 currentScale:v10 fitEntireRect:v15 minimumScale:a6 maximumScale:a7];
+  [(WKWebView *)self _targetContentZoomScaleForRect:&rectCopy currentScale:entireRectCopy fitEntireRect:v15 minimumScale:scale maximumScale:maximumScale];
   v21 = v20;
   v22 = vabdd_f64(v20, v15);
   HIDWORD(v23) = 1066695393;
@@ -22267,10 +22168,10 @@ LABEL_34:
   {
     if (v21 != v15)
     {
-      *&v22 = v26.m_location.m_x;
-      *&v23 = v26.m_location.m_y;
-      *&v16 = v26.m_size.m_width;
-      *&v17 = v26.m_size.m_height;
+      *&v22 = rectCopy.m_location.m_x;
+      *&v23 = rectCopy.m_location.m_y;
+      *&v16 = rectCopy.m_size.m_width;
+      *&v17 = rectCopy.m_size.m_height;
       v24 = 1;
       *&v18 = m_x;
       *&v19 = m_y;
@@ -22281,29 +22182,29 @@ LABEL_34:
     return 0;
   }
 
-  *&v19 = a8;
-  *&v22 = v26.m_location.m_x;
-  *&v23 = v26.m_location.m_y;
-  *&v16 = v26.m_size.m_width;
-  *&v17 = v26.m_size.m_height;
+  *&v19 = distance;
+  *&v22 = rectCopy.m_location.m_x;
+  *&v23 = rectCopy.m_location.m_y;
+  *&v16 = rectCopy.m_size.m_width;
+  *&v17 = rectCopy.m_size.m_height;
   *&v21 = m_x;
   *&v18 = m_y;
   return [(WKWebView *)self _scrollToRect:v22 origin:v23 minimumScrollDistance:v16, v17, v21, v18, v19];
 }
 
-- (void)_setOpaqueInternal:(BOOL)a3
+- (void)_setOpaqueInternal:(BOOL)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   v13.receiver = self;
   v13.super_class = WKWebView;
   [(WKWebView *)&v13 setOpaque:?];
-  [(WKContentView *)self->_contentView.m_ptr setOpaque:v3];
+  [(WKContentView *)self->_contentView.m_ptr setOpaque:internalCopy];
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
     LOBYTE(v11) = 0;
     v12 = 0;
-    if (!v3)
+    if (!internalCopy)
     {
       v10 = 0x1104000000000000;
       std::optional<WebCore::Color>::operator=[abi:sn200100]<WebCore::Color,void>(&v11, &v10);
@@ -22334,22 +22235,22 @@ LABEL_34:
   }
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  if ([(WKWebView *)self isOpaque]!= a3)
+  opaqueCopy = opaque;
+  if ([(WKWebView *)self isOpaque]!= opaque)
   {
 
-    [(WKWebView *)self _setOpaqueInternal:v3];
+    [(WKWebView *)self _setOpaqueInternal:opaqueCopy];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = WKWebView;
   [(WKWebView *)&v5 setBackgroundColor:?];
-  [(WKContentView *)self->_contentView.m_ptr setBackgroundColor:a3];
+  [(WKContentView *)self->_contentView.m_ptr setBackgroundColor:color];
   [(WKWebView *)self _updateScrollViewBackground];
 }
 
@@ -22357,20 +22258,20 @@ LABEL_34:
 {
   if (self->_fastClickingIsDisabled)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isZoomEnabled) = 1;
   }
 
   else
   {
-    v2 = [(WKScrollView *)self->_scrollView.m_ptr isZoomEnabled];
-    if (v2)
+    isZoomEnabled = [(WKScrollView *)self->_scrollView.m_ptr isZoomEnabled];
+    if (isZoomEnabled)
     {
       [(WKScrollView *)self->_scrollView.m_ptr minimumZoomScale];
       v5 = v4;
       [(WKScrollView *)self->_scrollView.m_ptr maximumZoomScale];
       if (v5 >= v6 || ([(WKScrollView *)self->_scrollView.m_ptr minimumZoomScale], v8 = v7, v9 = [(WKScrollView *)self->_scrollView.m_ptr maximumZoomScale], v11 = v10, WebKit::scalesAreEssentiallyEqual(v9, v8, v11)))
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(isZoomEnabled) = 0;
       }
 
       else
@@ -22378,10 +22279,10 @@ LABEL_34:
         p_perProcessState = &self->_perProcessState;
         if (self->_perProcessState.viewportMetaTagWidthWasExplicit && !self->_perProcessState.viewportMetaTagCameFromImageDocument && p_perProcessState->viewportMetaTagWidth == -2.0)
         {
-          v13 = [-[WKWebView _currentContentView](self _currentContentView];
-          if (v13)
+          _currentContentView = [-[WKWebView _currentContentView](self _currentContentView];
+          if (_currentContentView)
           {
-            v13 = [v13 affineTransform];
+            _currentContentView = [_currentContentView affineTransform];
             v14 = v17;
           }
 
@@ -22391,21 +22292,21 @@ LABEL_34:
           }
 
           initialScaleFactor = self->_perProcessState.initialScaleFactor;
-          LOBYTE(v2) = !WebKit::scalesAreEssentiallyEqual(v13, v14, initialScaleFactor);
+          LOBYTE(isZoomEnabled) = !WebKit::scalesAreEssentiallyEqual(_currentContentView, v14, initialScaleFactor);
         }
 
         else
         {
-          LOBYTE(v2) = 1;
+          LOBYTE(isZoomEnabled) = 1;
         }
       }
     }
   }
 
-  return v2;
+  return isZoomEnabled;
 }
 
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size
 {
   m_ptr = self->_page.m_ptr;
   v6 = 824;
@@ -22415,14 +22316,14 @@ LABEL_34:
   }
 
   v7 = *(m_ptr + v6);
-  v8 = floor(a5.width * v7) / v7;
-  v9 = floor(a5.height * v7) / v7;
+  v8 = floor(size.width * v7) / v7;
+  v9 = floor(size.height * v7) / v7;
   result.height = v9;
   result.width = v8;
   return result;
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
   if (self->_resizeAnimationView.m_ptr)
   {
@@ -22435,11 +22336,11 @@ LABEL_34:
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
-    if ([objc_msgSend(a3 "pinchGestureRecognizer")] == 1)
+    if ([objc_msgSend(zooming "pinchGestureRecognizer")] == 1)
     {
       WebKit::AuxiliaryProcessProxy::send<Messages::WebPage::WillStartUserTriggeredZooming>(*(self->_page.m_ptr + 44), &v10, *(self->_page.m_ptr + 6), 0);
       [(WKContentView *)self->_contentView.m_ptr scrollViewWillStartPanOrPinchGesture];
@@ -22447,24 +22348,24 @@ LABEL_34:
 
     [(WKContentView *)self->_contentView.m_ptr willStartZoomOrScroll];
     m_ptr = self->_contentView.m_ptr;
-    v9 = [a3 pinchGestureRecognizer];
+    pinchGestureRecognizer = [zooming pinchGestureRecognizer];
 
-    [(WKContentView *)m_ptr cancelPointersForGestureRecognizer:v9];
+    [(WKContentView *)m_ptr cancelPointersForGestureRecognizer:pinchGestureRecognizer];
   }
 
   else if (objc_opt_respondsToSelector())
   {
     v7 = self->_customContentView.m_ptr;
 
-    [(WKWebViewContentProvider *)v7 web_scrollViewWillBeginZooming:a3 withView:a4];
+    [(WKWebViewContentProvider *)v7 web_scrollViewWillBeginZooming:zooming withView:view];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
-    if ([objc_msgSend(a3 "panGestureRecognizer")] == 1)
+    if ([objc_msgSend(dragging "panGestureRecognizer")] == 1)
     {
       [(WKContentView *)self->_contentView.m_ptr scrollViewWillStartPanOrPinchGesture];
     }
@@ -22488,9 +22389,9 @@ LABEL_34:
   }
 }
 
-- (void)_didFinishScrolling:(id)a3
+- (void)_didFinishScrolling:(id)scrolling
 {
-  if (self->_scrollView.m_ptr == a3)
+  if (self->_scrollView.m_ptr == scrolling)
   {
     if ([(WKWebView *)self usesStandardContentView])
     {
@@ -22507,29 +22408,29 @@ LABEL_34:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  if ([a3 isZooming])
+  y = velocity.y;
+  x = velocity.x;
+  if ([dragging isZooming])
   {
-    [a3 contentOffset];
-    a5->x = v11;
+    [dragging contentOffset];
+    offset->x = v11;
 LABEL_9:
-    a5->y = v10;
+    offset->y = v10;
     goto LABEL_10;
   }
 
-  v12 = [WTF::dynamic_objc_cast<WKBaseScrollView>(a3) axesToPreventMomentumScrolling];
-  if ([(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis]|| (v12 & 1) != 0)
+  axesToPreventMomentumScrolling = [WTF::dynamic_objc_cast<WKBaseScrollView>(dragging) axesToPreventMomentumScrolling];
+  if ([(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis]|| (axesToPreventMomentumScrolling & 1) != 0)
   {
-    [a3 contentOffset];
-    a5->x = v13;
+    [dragging contentOffset];
+    offset->x = v13;
   }
 
-  if ([(WKContentView *)self->_contentView.m_ptr preventsPanningInYAxis]|| (v12 & 2) != 0)
+  if ([(WKContentView *)self->_contentView.m_ptr preventsPanningInYAxis]|| (axesToPreventMomentumScrolling & 2) != 0)
   {
-    [a3 contentOffset];
+    [dragging contentOffset];
     goto LABEL_9;
   }
 
@@ -22537,18 +22438,18 @@ LABEL_10:
   v14 = *(self->_page.m_ptr + 43);
   if (v14)
   {
-    [a3 contentSize];
+    [dragging contentSize];
     v16 = v15;
-    [a3 bounds];
+    [dragging bounds];
     v18 = v16 - v17;
-    [a3 contentSize];
+    [dragging contentSize];
     v20 = v19;
-    [a3 bounds];
+    [dragging bounds];
     v22 = v20 - v21;
-    v23 = [(WKWebView *)self UIDelegate];
+    uIDelegate = [(WKWebView *)self UIDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v23 _webView:self finalObscuredInsetsForScrollView:a3 withVelocity:a5 targetContentOffset:{x, y}];
+      [uIDelegate _webView:self finalObscuredInsetsForScrollView:dragging withVelocity:offset targetContentOffset:{x, y}];
     }
 
     else
@@ -22559,7 +22460,7 @@ LABEL_10:
     v25 = v24;
     [(WKWebView *)self bounds];
     v27 = v25 + v26;
-    [a3 contentOffset];
+    [dragging contentOffset];
     v29 = v28;
     v31 = v30;
     v32 = v18;
@@ -22567,31 +22468,31 @@ LABEL_10:
     v34 = x;
     v35 = y;
 
-    WebKit::RemoteScrollingCoordinatorProxyIOS::adjustTargetContentOffsetForSnapping(v14, *&v32, *&v34, v27, *&v29, a5);
+    WebKit::RemoteScrollingCoordinatorProxyIOS::adjustTargetContentOffsetForSnapping(v14, *&v32, *&v34, v27, *&v29, offset);
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    [(WKWebView *)self _didFinishScrolling:a3];
+    [(WKWebView *)self _didFinishScrolling:dragging];
   }
 }
 
-- (void)scrollView:(id)a3 handleScrollUpdate:(id)a4 completion:(id)a5
+- (void)scrollView:(id)view handleScrollUpdate:(id)update completion:(id)completion
 {
-  if (WebKit::PointerTouchCompatibilitySimulator::handleScrollUpdate(self->_pointerTouchCompatibilitySimulator.__ptr_, a3, a4))
+  if (WebKit::PointerTouchCompatibilitySimulator::handleScrollUpdate(self->_pointerTouchCompatibilitySimulator.__ptr_, view, update))
   {
-    v8 = *(a5 + 2);
+    v8 = *(completion + 2);
 
-    v8(a5, 1);
+    v8(completion, 1);
   }
 
   else
   {
     m_ptr = self->_scrollView.m_ptr;
-    [a4 locationInView:m_ptr];
+    [update locationInView:m_ptr];
     v10 = [(WKScrollView *)m_ptr hitTest:0 withEvent:?];
     v11 = v10;
     if (v10)
@@ -22616,7 +22517,7 @@ LABEL_10:
     }
 
     v17 = !v15;
-    if (![a4 phase])
+    if (![update phase])
     {
       if (self->_currentScrollGestureState.__engaged_)
       {
@@ -22626,7 +22527,7 @@ LABEL_10:
       self->_wheelEventCountInCurrentScrollGesture = 0;
     }
 
-    [a4 locationInView:self->_contentView.m_ptr];
+    [update locationInView:self->_contentView.m_ptr];
     v40.x = v18;
     v40.y = v19;
     WebCore::FloatPoint::FloatPoint(&v36, &v40);
@@ -22664,22 +22565,22 @@ LABEL_10:
     }
 
     v28 = v27;
-    [a4 translationInView:self->_contentView.m_ptr];
+    [update translationInView:self->_contentView.m_ptr];
     *&v29 = v29;
     *&v30 = v30;
     *&v40.x = __PAIR64__(LODWORD(v30), LODWORD(v29));
-    if (WebCore::FloatSize::isZero(&v40) && [a4 phase] != 2)
+    if (WebCore::FloatSize::isZero(&v40) && [update phase] != 2)
     {
       goto LABEL_35;
     }
 
     v31 = (v28 & 2) != 0 && (!self->_currentScrollGestureState.__engaged_ || self->_currentScrollGestureState.var0.__null_state_ == 0);
-    WebKit::WebIOSEventFactory::createWebWheelEvent(a4, self->_contentView.m_ptr, (self->_wheelEventCountInCurrentScrollGesture == 0) | ((self->_wheelEventCountInCurrentScrollGesture == 0) << 32), &v40);
+    WebKit::WebIOSEventFactory::createWebWheelEvent(update, self->_contentView.m_ptr, (self->_wheelEventCountInCurrentScrollGesture == 0) | ((self->_wheelEventCountInCurrentScrollGesture == 0) << 32), &v40);
     ++self->_wheelEventCountInCurrentScrollGesture;
     v32 = self->_page.m_ptr;
     v36 = 0;
     objc_initWeak(&v36, self);
-    aBlock = _Block_copy(a5);
+    aBlock = _Block_copy(completion);
     LOBYTE(v38) = v31;
     HIBYTE(v38) = v17;
     v33 = WTF::fastMalloc(0x20);
@@ -22704,7 +22605,7 @@ LABEL_10:
     if (!v31)
     {
 LABEL_35:
-      (*(a5 + 2))(a5, v17);
+      (*(completion + 2))(completion, v17);
     }
   }
 }
@@ -22725,20 +22626,20 @@ LABEL_35:
   }
 
   v24 = m_ptr;
-  v4 = [(WKScrollView *)self->_scrollView.m_ptr refreshControl];
-  v5 = v4;
-  if (v4)
+  refreshControl = [(WKScrollView *)self->_scrollView.m_ptr refreshControl];
+  v5 = refreshControl;
+  if (refreshControl)
   {
-    v6 = v4;
+    v6 = refreshControl;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(WKScrollView *)self->_scrollView.m_ptr subviews];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
-  obj = v7;
+  subviews = [(WKScrollView *)self->_scrollView.m_ptr subviews];
+  v8 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = subviews;
   if (!v8)
   {
     goto LABEL_33;
@@ -22916,10 +22817,10 @@ LABEL_35:
   return [(WKWebView *)self _hasVisibleColorExtensionView:0];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   m_ptr = self->_scrollView.m_ptr;
-  if (m_ptr == a3)
+  if (m_ptr == scroll)
   {
     [(WKBaseScrollView *)m_ptr updateInteractiveScrollVelocity];
     [(WKWebView *)self _updateFixedColorExtensionViewFrames];
@@ -22929,11 +22830,11 @@ LABEL_35:
 
   if (![(WKWebView *)self usesStandardContentView]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidScroll:a3];
+    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidScroll:scroll];
   }
 
   [(WKWebView *)self _updateFindOverlayPosition];
-  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:a3];
+  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:scroll];
   v6 = *(self->_page.m_ptr + 130);
   if (v6)
   {
@@ -22950,49 +22851,49 @@ LABEL_35:
   [(WKWebView *)self _updatePDFPageNumberIndicatorIfNeeded];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
   if (![(WKWebView *)self usesStandardContentView]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidZoom:a3];
+    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidZoom:zoom];
   }
 
   [(WKWebView *)self _updateScrollViewBackground];
 
-  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:a3];
+  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:zoom];
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
   if (![(WKWebView *)self usesStandardContentView]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidEndZooming:a3 withView:a4 atScale:a5];
+    [(WKWebViewContentProvider *)self->_customContentView.m_ptr web_scrollViewDidEndZooming:zooming withView:view atScale:scale];
   }
 
   m_ptr = self->_contentView.m_ptr;
   [(WKWebView *)self bounds];
   [(WKContentView *)m_ptr setCenter:?];
-  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:a3];
-  [(WKContentView *)self->_contentView.m_ptr didZoomToScale:a5];
+  [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:zooming];
+  [(WKContentView *)self->_contentView.m_ptr didZoomToScale:scale];
   WebKit::AuxiliaryProcessProxy::send<Messages::WebPage::DidEndUserTriggeredZooming>(*(self->_page.m_ptr + 44), &v10, *(self->_page.m_ptr + 6), 0);
 }
 
-- (void)_scrollViewDidInterruptDecelerating:(id)a3
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     [(WKContentView *)self->_contentView.m_ptr didInterruptScrolling];
 
-    [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:a3];
+    [(WKWebView *)self _scheduleVisibleContentRectUpdateAfterScrollInView:decelerating];
   }
 }
 
-- (CGRect)_visibleRectInEnclosingView:(id)a3
+- (CGRect)_visibleRectInEnclosingView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    [a3 bounds];
-    [a3 convertRect:self toView:?];
+    [view bounds];
+    [view convertRect:self toView:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -23047,14 +22948,14 @@ LABEL_35:
     {
     }
 
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v6 addTimer:self->_enclosingScrollViewScrollTimer.m_ptr forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_enclosingScrollViewScrollTimer.m_ptr forMode:*MEMORY[0x1E695D918]];
   }
 
   self->_didScrollSinceLastTimerFire = 1;
 }
 
-- (void)_enclosingScrollerScrollingEnded:(id)a3
+- (void)_enclosingScrollerScrollingEnded:(id)ended
 {
   if (self->_didScrollSinceLastTimerFire)
   {
@@ -23073,7 +22974,7 @@ LABEL_35:
   }
 }
 
-- (FloatSize)activeViewLayoutSize:(const CGRect *)a3
+- (FloatSize)activeViewLayoutSize:(const CGRect *)size
 {
   p_overriddenLayoutParameters = &self->_overriddenLayoutParameters;
   if (!self->_overriddenLayoutParameters.__engaged_)
@@ -23107,8 +23008,8 @@ LABEL_35:
       }
     }
 
-    v18 = a3->size.height - (v11 + v7);
-    v21[0] = a3->size.width - (v13 + v9);
+    v18 = size->size.height - (v11 + v7);
+    v21[0] = size->size.width - (v13 + v9);
     v21[1] = v18;
     p_overriddenLayoutParameters = v21;
   }
@@ -23121,15 +23022,15 @@ LABEL_35:
   return result;
 }
 
-- (void)_dispatchSetViewLayoutSize:(FloatSize)a3
+- (void)_dispatchSetViewLayoutSize:(FloatSize)size
 {
-  v14 = a3;
+  sizeCopy = size;
   v4 = *(self->_page.m_ptr + 144);
   p_perProcessState = &self->_perProcessState;
   if (!self->_perProcessState.lastSentViewLayoutSize.__engaged_ || ((WebCore::FloatSize::operator CGSize(), v7 = v6, v9 = v8, WebCore::FloatSize::operator CGSize(), v7 == v11) ? (v12 = v9 == v10) : (v12 = 0), !v12 || !p_perProcessState->lastSentMinimumEffectiveDeviceWidth.__engaged_ || p_perProcessState->lastSentMinimumEffectiveDeviceWidth.var0.__val_ != v4))
   {
-    WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(self->_page.m_ptr, &v14, *(self->_page.m_ptr + 143), v4);
-    v13 = v14;
+    WebKit::WebPageProxy::setViewportConfigurationViewLayoutSize(self->_page.m_ptr, &sizeCopy, *(self->_page.m_ptr + 143), v4);
+    v13 = sizeCopy;
     if (!p_perProcessState->lastSentViewLayoutSize.__engaged_)
     {
       p_perProcessState->lastSentViewLayoutSize.__engaged_ = 1;
@@ -23141,24 +23042,24 @@ LABEL_35:
   }
 }
 
-- (void)_dispatchSetDeviceOrientation:(int)a3
+- (void)_dispatchSetDeviceOrientation:(int)orientation
 {
   p_perProcessState = &self->_perProcessState;
-  if (!self->_perProcessState.lastSentDeviceOrientation.__engaged_ || self->_perProcessState.lastSentDeviceOrientation.var0.__val_ != a3)
+  if (!self->_perProcessState.lastSentDeviceOrientation.__engaged_ || self->_perProcessState.lastSentDeviceOrientation.var0.__val_ != orientation)
   {
-    WebKit::WebPageProxy::setDeviceOrientation(self->_page.m_ptr, a3);
-    p_perProcessState->lastSentDeviceOrientation.var0.__val_ = a3;
+    WebKit::WebPageProxy::setDeviceOrientation(self->_page.m_ptr, orientation);
+    p_perProcessState->lastSentDeviceOrientation.var0.__val_ = orientation;
     p_perProcessState->lastSentDeviceOrientation.__engaged_ = 1;
   }
 }
 
-- (void)_dispatchSetOrientationForMediaCapture:(int)a3
+- (void)_dispatchSetOrientationForMediaCapture:(int)capture
 {
   p_perProcessState = &self->_perProcessState;
-  if (!self->_perProcessState.lastSentOrientationForMediaCapture.__engaged_ || self->_perProcessState.lastSentOrientationForMediaCapture.var0.__val_ != a3)
+  if (!self->_perProcessState.lastSentOrientationForMediaCapture.__engaged_ || self->_perProcessState.lastSentOrientationForMediaCapture.var0.__val_ != capture)
   {
-    WebKit::WebPageProxy::setOrientationForMediaCapture(self->_page.m_ptr, a3);
-    p_perProcessState->lastSentOrientationForMediaCapture.var0.__val_ = a3;
+    WebKit::WebPageProxy::setOrientationForMediaCapture(self->_page.m_ptr, capture);
+    p_perProcessState->lastSentOrientationForMediaCapture.var0.__val_ = capture;
     p_perProcessState->lastSentOrientationForMediaCapture.__engaged_ = 1;
   }
 }
@@ -23174,17 +23075,17 @@ LABEL_35:
       WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key = WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::$_0::operator() const(void)::impl;
     }
 
-    LODWORD(v6) = WebKit::WebPreferencesStore::getBoolValueForKey((v5 + 40), &WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key, v2);
-    if (v6)
+    LODWORD(window) = WebKit::WebPreferencesStore::getBoolValueForKey((v5 + 40), &WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key, v2);
+    if (window)
     {
-      LODWORD(v6) = [(WKWebView *)self usesStandardContentView];
-      if (v6)
+      LODWORD(window) = [(WKWebView *)self usesStandardContentView];
+      if (window)
       {
-        v6 = [(WKWebView *)self window];
-        if (v6)
+        window = [(WKWebView *)self window];
+        if (window)
         {
           [(WKWebView *)self bounds];
-          LOBYTE(v6) = !CGRectIsEmpty(v8);
+          LOBYTE(window) = !CGRectIsEmpty(v8);
         }
       }
     }
@@ -23192,10 +23093,10 @@ LABEL_35:
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(window) = 0;
   }
 
-  return v6;
+  return window;
 }
 
 - (void)_beginAutomaticLiveResizeIfNeeded
@@ -23287,7 +23188,7 @@ LABEL_35:
   }
 }
 
-- (void)_acquireResizeAssertionForReason:(id)a3
+- (void)_acquireResizeAssertionForReason:(id)reason
 {
   m_ptr = self->_page.m_ptr;
   if (!m_ptr)
@@ -23301,7 +23202,7 @@ LABEL_35:
     WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key = WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::$_0::operator() const(void)::impl;
   }
 
-  if ((WebKit::WebPreferencesStore::getBoolValueForKey((v6 + 40), &WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key, a3) & 1) == 0)
+  if ((WebKit::WebPreferencesStore::getBoolValueForKey((v6 + 40), &WebKit::WebPreferencesKey::automaticLiveResizeEnabledKey(void)::key, reason) & 1) == 0)
   {
 LABEL_45:
     v7 = [-[WKWebView window](self "window")];
@@ -23386,7 +23287,7 @@ LABEL_45:
         }
       }
 
-      v22 = [v8 _holdLiveResizeSnapshotForReason:a3];
+      v22 = [v8 _holdLiveResizeSnapshotForReason:reason];
       v23 = v22;
       if (v22)
       {
@@ -23493,9 +23394,9 @@ LABEL_45:
   v10 = top + v9;
   v12 = v11 - (left + right);
   v14 = v13 - (top + bottom);
-  v15 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
 
-  [(WKWebView *)self convertRect:v15 toView:v8, v10, v12, v14];
+  [(WKWebView *)self convertRect:_currentContentView toView:v8, v10, v12, v14];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -23503,7 +23404,7 @@ LABEL_45:
   return result;
 }
 
-- (BOOL)_scrollViewIsRubberBanding:(id)a3
+- (BOOL)_scrollViewIsRubberBanding:(id)banding
 {
   m_ptr = self->_page.m_ptr;
   v5 = 824;
@@ -23513,10 +23414,10 @@ LABEL_45:
   }
 
   v6 = *(m_ptr + v5);
-  [a3 contentOffset];
+  [banding contentOffset];
   x = v12.x;
   y = v12.y;
-  contentOffsetBoundedInValidRange(a3, v12);
+  contentOffsetBoundedInValidRange(banding, v12);
   return fabs(x * v6 - v10 * v6) >= 0.00000011920929 || fabs(y * v6 - v9 * v6) >= 0.00000011920929;
 }
 
@@ -23540,20 +23441,20 @@ LABEL_45:
   return [(WKWebView *)self _scrollViewIsRubberBanding:m_ptr];
 }
 
-- (OptionSet<WebKit::ViewStabilityFlag>)_viewStabilityState:(id)a3
+- (OptionSet<WebKit::ViewStabilityFlag>)_viewStabilityState:(id)state
 {
-  v5 = ([a3 isDragging] & 1) != 0 || objc_msgSend(a3, "isZooming");
-  if (([a3 isDecelerating] & 1) != 0 || (objc_msgSend(a3, "_wk_isZoomAnimating") & 1) != 0 || (objc_msgSend(a3, "_wk_isScrollAnimating") & 1) != 0 || objc_msgSend(a3, "isZoomBouncing"))
+  v5 = ([state isDragging] & 1) != 0 || objc_msgSend(state, "isZooming");
+  if (([state isDecelerating] & 1) != 0 || (objc_msgSend(state, "_wk_isZoomAnimating") & 1) != 0 || (objc_msgSend(state, "_wk_isScrollAnimating") & 1) != 0 || objc_msgSend(state, "isZoomBouncing"))
   {
     v5 |= 2u;
   }
 
-  if (self->_scrollView.m_ptr == a3 && self->_isChangingObscuredInsetsInteractively)
+  if (self->_scrollView.m_ptr == state && self->_isChangingObscuredInsetsInteractively)
   {
     v5 |= 8u;
   }
 
-  if ([(WKWebView *)self _scrollViewIsRubberBanding:a3])
+  if ([(WKWebView *)self _scrollViewIsRubberBanding:state])
   {
     v6.m_storage = v5 | 4;
   }
@@ -23563,10 +23464,10 @@ LABEL_45:
     v6.m_storage = v5;
   }
 
-  v7 = [(WKWebView *)self _stableStateOverride];
-  if (v7)
+  _stableStateOverride = [(WKWebView *)self _stableStateOverride];
+  if (_stableStateOverride)
   {
-    if ([(NSNumber *)v7 BOOLValue])
+    if ([(NSNumber *)_stableStateOverride BOOLValue])
     {
       return 0;
     }
@@ -23580,10 +23481,10 @@ LABEL_45:
   return v6;
 }
 
-- (void)_scheduleVisibleContentRectUpdateAfterScrollInView:(id)a3
+- (void)_scheduleVisibleContentRectUpdateAfterScrollInView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(WKWebView *)self _viewStabilityState:a3];
+  v4 = [(WKWebView *)self _viewStabilityState:view];
   self->_viewStabilityWhenVisibleContentRectUpdateScheduled.m_storage = v4;
   if (self->_perProcessState.hasScheduledVisibleRectUpdate)
   {
@@ -23603,7 +23504,7 @@ LABEL_45:
         v18 = 2048;
         v19 = v9;
         v20 = 1024;
-        v21 = [(WKWebView *)self _isValid];
+        _isValid = [(WKWebView *)self _isValid];
         _os_log_impl(&dword_19D52D000, v8, OS_LOG_TYPE_DEFAULT, "[WKWebView %p]: hasScheduledVisibleRectUpdate is true but haven't updated visible content rects for %.2fs (last update was %.2fs ago) - valid %d", v15, 0x26u);
       }
     }
@@ -23614,11 +23515,11 @@ LABEL_45:
     self->_perProcessState.hasScheduledVisibleRectUpdate = 1;
     WTF::MonotonicTime::now(v4);
     self->_timeOfRequestForVisibleContentRectUpdate.m_value = v10;
-    v11 = [MEMORY[0x1E6979518] currentPhase];
-    if ((v11 + 1) > 1)
+    currentPhase = [MEMORY[0x1E6979518] currentPhase];
+    if ((currentPhase + 1) > 1)
     {
-      WTF::RunLoop::mainSingleton(v11);
-      v12 = self;
+      WTF::RunLoop::mainSingleton(currentPhase);
+      selfCopy = self;
       v13 = WTF::fastMalloc(0x10);
       *v13 = &unk_1F10FD490;
       v13[1] = self;
@@ -23640,14 +23541,14 @@ LABEL_45:
   }
 }
 
-- (CGRect)_contentBoundsExtendedForRubberbandingWithScale:(double)a3
+- (CGRect)_contentBoundsExtendedForRubberbandingWithScale:(double)scale
 {
   [(WKScrollView *)self->_scrollView.m_ptr contentOffset];
   x = v17.x;
   y = v17.y;
   contentOffsetBoundedInValidRange(&self->_scrollView.m_ptr->super.super.super, v17);
-  v8 = (x - v7) / a3;
-  v10 = (y - v9) / a3;
+  v8 = (x - v7) / scale;
+  v10 = (y - v9) / scale;
   [(WKContentView *)self->_contentView.m_ptr bounds];
   v15 = v8 + v13;
   if (v8 <= 0.0)
@@ -23687,11 +23588,11 @@ LABEL_45:
   return result;
 }
 
-- (UIEdgeInsets)currentlyVisibleContentInsetsWithScale:(double)a3 obscuredInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)currentlyVisibleContentInsetsWithScale:(double)scale obscuredInsets:(UIEdgeInsets)insets
 {
-  left = a4.left;
-  top = a4.top;
-  [(WKScrollView *)self->_scrollView.m_ptr contentInset:a3];
+  left = insets.left;
+  top = insets.top;
+  [(WKScrollView *)self->_scrollView.m_ptr contentInset:scale];
   v7 = v6;
   v9 = v8;
   v42 = v11;
@@ -23718,12 +23619,12 @@ LABEL_45:
   v25 = *(MEMORY[0x1E69DDCE0] + 8);
   if (v9 <= 0.0)
   {
-    v26 = a3;
+    scaleCopy2 = scale;
   }
 
   else
   {
-    v26 = a3;
+    scaleCopy2 = scale;
     if (v23 < 0.0)
     {
       v27 = -v23;
@@ -23732,7 +23633,7 @@ LABEL_45:
         v27 = v9;
       }
 
-      v25 = v27 / a3;
+      v25 = v27 / scale;
     }
   }
 
@@ -23747,7 +23648,7 @@ LABEL_45:
       v31 = v7;
     }
 
-    v30 = v31 / v26;
+    v30 = v31 / scaleCopy2;
   }
 
   v32 = v40 - Height;
@@ -23764,7 +23665,7 @@ LABEL_45:
       v35 = v42;
     }
 
-    v34 = v35 / v26;
+    v34 = v35 / scaleCopy2;
   }
 
   if (v43 <= 0.0 || v28 <= v32)
@@ -23780,7 +23681,7 @@ LABEL_45:
       v38 = v43;
     }
 
-    v37 = v38 / v26;
+    v37 = v38 / scaleCopy2;
   }
 
   result.right = v34;
@@ -23817,9 +23718,9 @@ LABEL_45:
     [(WKScrollView *)self->_scrollView.m_ptr insertSubview:self->_resizeAnimationView.m_ptr atIndex:v3];
     [(UIView *)self->_resizeAnimationView.m_ptr addSubview:self->_contentView.m_ptr];
     v6 = self->_resizeAnimationView.m_ptr;
-    v7 = [(WKContentView *)self->_contentView.m_ptr unscaledView];
+    unscaledView = [(WKContentView *)self->_contentView.m_ptr unscaledView];
 
-    [(UIView *)v6 addSubview:v7];
+    [(UIView *)v6 addSubview:unscaledView];
   }
 }
 
@@ -23848,7 +23749,7 @@ LABEL_45:
     v4 = *(self->_page.m_ptr + 5);
     dynamicViewportUpdateMode = self->_perProcessState.dynamicViewportUpdateMode;
     v13 = 134218496;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = v4;
     v17 = 1024;
@@ -23911,7 +23812,7 @@ LABEL_45:
       v8 = [-[WKScrollView subviews](self->_scrollView.m_ptr "subviews")];
       [(WKScrollView *)self->_scrollView.m_ptr insertSubview:self->_contentView.m_ptr atIndex:v8];
       [(WKScrollView *)self->_scrollView.m_ptr insertSubview:[(WKContentView *)self->_contentView.m_ptr unscaledView] atIndex:v8 + 1];
-      v9 = [(WKContentView *)self->_contentView.m_ptr layer];
+      layer = [(WKContentView *)self->_contentView.m_ptr layer];
       m11 = self->_resizeAnimationTransformAdjustments.m11;
       v11 = MEMORY[0x1E69792E8];
       v12 = *(MEMORY[0x1E69792E8] + 80);
@@ -23926,11 +23827,11 @@ LABEL_45:
       v15 = *(MEMORY[0x1E69792E8] + 48);
       v40 = *(MEMORY[0x1E69792E8] + 32);
       v41 = v15;
-      [v9 setSublayerTransform:buf];
-      v16 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
-      if (v16)
+      [layer setSublayerTransform:buf];
+      layer2 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
+      if (layer2)
       {
-        [(CALayer *)v16 transform];
+        [(CALayer *)layer2 transform];
         v17 = *buf;
       }
 
@@ -23946,15 +23847,15 @@ LABEL_45:
       v40 = 0u;
       v41 = 0u;
       memset(buf, 0, sizeof(buf));
-      if (v9)
+      if (layer)
       {
-        [v9 transform];
+        [layer transform];
       }
 
-      v18 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
-      if (v18)
+      layer3 = [(UIView *)self->_resizeAnimationView.m_ptr layer];
+      if (layer3)
       {
-        [(CALayer *)v18 transform];
+        [(CALayer *)layer3 transform];
         v19 = *v38;
       }
 
@@ -23973,7 +23874,7 @@ LABEL_45:
       v38[1] = *&buf[16];
       v38[2] = v40;
       v38[3] = v41;
-      [v9 setTransform:v38];
+      [layer setTransform:v38];
       [(WKScrollView *)self->_scrollView.m_ptr contentOffset];
       v21 = v20;
       v23 = v22;
@@ -24153,30 +24054,30 @@ LABEL_21:
   }
 }
 
-- (void)_didFinishNavigation:(Navigation *)a3
+- (void)_didFinishNavigation:(Navigation *)navigation
 {
   m_ptr = self->_gestureController.m_ptr;
   if (m_ptr)
   {
-    WebKit::ViewGestureController::didReachNavigationTerminalState(m_ptr, a3);
+    WebKit::ViewGestureController::didReachNavigationTerminalState(m_ptr, navigation);
   }
 }
 
-- (void)_didFailNavigation:(Navigation *)a3
+- (void)_didFailNavigation:(Navigation *)navigation
 {
   m_ptr = self->_gestureController.m_ptr;
   if (m_ptr)
   {
-    WebKit::ViewGestureController::didReachNavigationTerminalState(m_ptr, a3);
+    WebKit::ViewGestureController::didReachNavigationTerminalState(m_ptr, navigation);
   }
 }
 
-- (void)_didSameDocumentNavigationForMainFrame:(unsigned __int8)a3
+- (void)_didSameDocumentNavigationForMainFrame:(unsigned __int8)frame
 {
   m_ptr = self->_customContentView.m_ptr;
-  if ((a3 - 1) < 3)
+  if ((frame - 1) < 3)
   {
-    v6 = (a3 - 1) + 1;
+    v6 = (frame - 1) + 1;
   }
 
   else
@@ -24189,14 +24090,14 @@ LABEL_21:
   if (v7)
   {
 
-    WebKit::ViewGestureController::didSameDocumentNavigationForMainFrame(v7, a3);
+    WebKit::ViewGestureController::didSameDocumentNavigationForMainFrame(v7, frame);
   }
 }
 
-- (void)_keyboardChangedWithInfo:(id)a3 adjustScrollView:(BOOL)a4
+- (void)_keyboardChangedWithInfo:(id)info adjustScrollView:(BOOL)view
 {
-  v4 = a4;
-  v7 = [a3 objectForKey:*MEMORY[0x1E69DDFA0]];
+  viewCopy = view;
+  v7 = [info objectForKey:*MEMORY[0x1E69DDFA0]];
   if (v7)
   {
     v8 = v7;
@@ -24205,7 +24106,7 @@ LABEL_21:
     y = self->_inputViewBoundsInWindow.origin.y;
     width = self->_inputViewBoundsInWindow.size.width;
     height = self->_inputViewBoundsInWindow.size.height;
-    v14 = [(WKWebView *)self _selectionRectIsFullyVisibleAndNonEmpty];
+    _selectionRectIsFullyVisibleAndNonEmpty = [(WKWebView *)self _selectionRectIsFullyVisibleAndNonEmpty];
     if ([objc_msgSend(MEMORY[0x1E69DCD68] "sharedInstance")])
     {
       v15 = *MEMORY[0x1E695F058];
@@ -24246,13 +24147,13 @@ LABEL_21:
     self->_inputViewBoundsInWindow.origin.y = v16;
     self->_inputViewBoundsInWindow.size.width = v17;
     self->_inputViewBoundsInWindow.size.height = v18;
-    if (v4)
+    if (viewCopy)
     {
       [(WKScrollView *)self->_scrollView.m_ptr contentInset];
       v32 = v31;
       currentlyAdjustingScrollViewInsetsForKeyboard = self->_perProcessState.currentlyAdjustingScrollViewInsetsForKeyboard;
       self->_perProcessState.currentlyAdjustingScrollViewInsetsForKeyboard = 1;
-      [(WKScrollView *)self->_scrollView.m_ptr _adjustForAutomaticKeyboardInfo:a3 animated:1 lastAdjustment:&self->_lastAdjustmentForScroller];
+      [(WKScrollView *)self->_scrollView.m_ptr _adjustForAutomaticKeyboardInfo:info animated:1 lastAdjustment:&self->_lastAdjustmentForScroller];
       [(WKScrollView *)self->_scrollView.m_ptr contentInset];
       if (v32 != v34)
       {
@@ -24262,7 +24163,7 @@ LABEL_21:
       self->_perProcessState.currentlyAdjustingScrollViewInsetsForKeyboard = currentlyAdjustingScrollViewInsetsForKeyboard;
     }
 
-    if (v14)
+    if (_selectionRectIsFullyVisibleAndNonEmpty)
     {
       if ([(WKContentView *)self->_contentView.m_ptr _hasFocusedElement])
       {
@@ -24299,7 +24200,7 @@ LABEL_21:
   }
 }
 
-- (BOOL)_shouldUpdateKeyboardWithInfo:(id)a3
+- (BOOL)_shouldUpdateKeyboardWithInfo:(id)info
 {
   if ([(WKContentView *)self->_contentView.m_ptr isFocusingElement]|| [(UIFindInteraction *)self->_findInteraction.m_ptr isFindNavigatorVisible])
   {
@@ -24308,7 +24209,7 @@ LABEL_21:
 
   else
   {
-    v5 = [a3 valueForKey:*MEMORY[0x1E69DDFC8]];
+    v5 = [info valueForKey:*MEMORY[0x1E69DDFC8]];
     if (v5)
     {
       LOBYTE(v5) = [v5 BOOLValue] ^ 1;
@@ -24318,28 +24219,28 @@ LABEL_21:
   return v5;
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  if (-[WKWebView _shouldUpdateKeyboardWithInfo:](self, "_shouldUpdateKeyboardWithInfo:", [a3 userInfo]))
+  if (-[WKWebView _shouldUpdateKeyboardWithInfo:](self, "_shouldUpdateKeyboardWithInfo:", [frame userInfo]))
   {
-    v5 = [a3 userInfo];
+    userInfo = [frame userInfo];
 
-    [(WKWebView *)self _keyboardChangedWithInfo:v5 adjustScrollView:1];
+    [(WKWebView *)self _keyboardChangedWithInfo:userInfo adjustScrollView:1];
   }
 }
 
-- (void)_keyboardDidChangeFrame:(id)a3
+- (void)_keyboardDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
+  userInfo = [frame userInfo];
 
-  [(WKWebView *)self _keyboardChangedWithInfo:v4 adjustScrollView:0];
+  [(WKWebView *)self _keyboardChangedWithInfo:userInfo adjustScrollView:0];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  if (-[WKWebView _shouldUpdateKeyboardWithInfo:](self, "_shouldUpdateKeyboardWithInfo:", [a3 userInfo]))
+  if (-[WKWebView _shouldUpdateKeyboardWithInfo:](self, "_shouldUpdateKeyboardWithInfo:", [show userInfo]))
   {
-    -[WKWebView _keyboardChangedWithInfo:adjustScrollView:](self, "_keyboardChangedWithInfo:adjustScrollView:", [a3 userInfo], 1);
+    -[WKWebView _keyboardChangedWithInfo:adjustScrollView:](self, "_keyboardChangedWithInfo:adjustScrollView:", [show userInfo], 1);
   }
 
   *(self->_page.m_ptr + 545) = 1;
@@ -24348,29 +24249,29 @@ LABEL_21:
   [(WKContentView *)m_ptr _keyboardWillShow];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   if (![(WKContentView *)self->_contentView.m_ptr shouldIgnoreKeyboardWillHideNotification])
   {
-    v5 = [a3 userInfo];
+    userInfo = [hide userInfo];
 
-    [(WKWebView *)self _keyboardChangedWithInfo:v5 adjustScrollView:1];
+    [(WKWebView *)self _keyboardChangedWithInfo:userInfo adjustScrollView:1];
   }
 }
 
-- (void)_windowDidRotate:(id)a3
+- (void)_windowDidRotate:(id)rotate
 {
   if (!self->_overridesInterfaceOrientation)
   {
     [(WKWebView *)self _dispatchSetDeviceOrientation:[(WKWebView *)self _deviceOrientationIgnoringOverrides]];
   }
 
-  v4 = [(WKWebView *)self _deviceOrientationIgnoringOverrides];
+  _deviceOrientationIgnoringOverrides = [(WKWebView *)self _deviceOrientationIgnoringOverrides];
 
-  [(WKWebView *)self _dispatchSetOrientationForMediaCapture:v4];
+  [(WKWebView *)self _dispatchSetOrientationForMediaCapture:_deviceOrientationIgnoringOverrides];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   m_ptr = self->_page.m_ptr;
   MEMORY[0x19EB02040](&v7, [(WKWebView *)self _contentSizeCategory]);
@@ -24388,12 +24289,12 @@ LABEL_21:
   }
 }
 
-- (BOOL)_isNavigationSwipeGestureRecognizer:(id)a3
+- (BOOL)_isNavigationSwipeGestureRecognizer:(id)recognizer
 {
   m_ptr = self->_gestureController.m_ptr;
   if (m_ptr)
   {
-    return [*(m_ptr + 23) isNavigationSwipeGestureRecognizer:a3];
+    return [*(m_ptr + 23) isNavigationSwipeGestureRecognizer:recognizer];
   }
 
   else
@@ -24512,11 +24413,11 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)_showPasswordViewWithDocumentName:(id)a3 passwordHandler:(id)a4
+- (void)_showPasswordViewWithDocumentName:(id)name passwordHandler:(id)handler
 {
   v7 = [WKPasswordView alloc];
   [(WKWebView *)self bounds];
-  v8 = [(WKPasswordView *)v7 initWithFrame:a3 documentName:?];
+  v8 = [(WKPasswordView *)v7 initWithFrame:name documentName:?];
   m_ptr = self->_passwordView.m_ptr;
   self->_passwordView.m_ptr = v8;
   if (m_ptr)
@@ -24525,7 +24426,7 @@ LABEL_10:
     v8 = self->_passwordView.m_ptr;
   }
 
-  [(WKPasswordView *)v8 setUserDidEnterPassword:a4];
+  [(WKPasswordView *)v8 setUserDidEnterPassword:handler];
   [(WKPasswordView *)self->_passwordView.m_ptr showInScrollView:self->_scrollView.m_ptr];
   [-[WKWebView _currentContentView](self "_currentContentView")];
 
@@ -24555,14 +24456,14 @@ LABEL_10:
   [(WKWebView *)self _updateScrollViewInsetAdjustmentBehavior];
 }
 
-- (void)_setAvoidsUnsafeArea:(BOOL)a3
+- (void)_setAvoidsUnsafeArea:(BOOL)area
 {
-  if (self->_perProcessState.avoidsUnsafeArea != a3)
+  if (self->_perProcessState.avoidsUnsafeArea != area)
   {
     v12[8] = v3;
     v12[9] = v4;
-    v5 = a3;
-    self->_perProcessState.avoidsUnsafeArea = a3;
+    areaCopy = area;
+    self->_perProcessState.avoidsUnsafeArea = area;
     if ([(WKWebView *)self _updateScrollViewContentInsetsIfNecessary]&& ![(WKWebView *)self _shouldDeferGeometryUpdates]&& !self->_overriddenLayoutParameters.__engaged_)
     {
       [(WKWebView *)self bounds];
@@ -24576,10 +24477,10 @@ LABEL_10:
 
     [(WKWebView *)self _updateScrollViewInsetAdjustmentBehavior];
     [(WKWebView *)self _scheduleVisibleContentRectUpdate];
-    v11 = [(WKWebView *)self UIDelegate];
+    uIDelegate = [(WKWebView *)self UIDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v11 _webView:self didChangeSafeAreaShouldAffectObscuredInsets:v5];
+      [uIDelegate _webView:self didChangeSafeAreaShouldAffectObscuredInsets:areaCopy];
     }
   }
 }
@@ -24599,7 +24500,7 @@ LABEL_10:
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -24608,14 +24509,14 @@ LABEL_10:
   v7[3] = &__block_descriptor_40_e8_32c111_ZTSKZ97__WKWebView_WKViewInternalIOS___firePresentationUpdateForPendingStableStatePresentationCallbacks_E4__22_e5_v8__0l;
   if (self)
   {
-    v4 = self;
-    v8 = self;
-    v5 = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
+    selfCopy4 = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy3 = 0;
   }
 
   [(WKWebView *)self _doAfterNextPresentationUpdate:v7];
@@ -24623,8 +24524,8 @@ LABEL_10:
   {
   }
 
-  v6 = v8;
-  v8 = 0;
+  v6 = selfCopy3;
+  selfCopy3 = 0;
   if (v6)
   {
   }
@@ -24657,7 +24558,7 @@ uint64_t __97__WKWebView_WKViewInternalIOS___firePresentationUpdateForPendingSta
   return result;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v7.receiver = self;
   v7.super_class = WKWebView;
@@ -24665,7 +24566,7 @@ uint64_t __97__WKWebView_WKViewInternalIOS___firePresentationUpdateForPendingSta
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    v6 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:a3];
+    v6 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:attribute];
     if ((*(m_ptr + 865) & 1) == 0 && *(m_ptr + 864) == 1)
     {
       v8 = v6 == 1;
@@ -24674,16 +24575,16 @@ uint64_t __97__WKWebView_WKViewInternalIOS___firePresentationUpdateForPendingSta
   }
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
-    [(WKContentView *)self->_contentView.m_ptr buildMenuForWebViewWithBuilder:a3];
+    [(WKContentView *)self->_contentView.m_ptr buildMenuForWebViewWithBuilder:builder];
   }
 
   v5.receiver = self;
   v5.super_class = WKWebView;
-  [(WKWebView *)&v5 buildMenuWithBuilder:a3];
+  [(WKWebView *)&v5 buildMenuWithBuilder:builder];
 }
 
 - (void)_beginLiveResize
@@ -24723,7 +24624,7 @@ LABEL_7:
   {
     v7 = *(self->_page.m_ptr + 5);
     v17 = 134218240;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
     v20 = v7;
     _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "%p (pageProxyID=%llu) [WKWebView _beginLiveResize]", &v17, 0x16u);
@@ -24771,12 +24672,12 @@ LABEL_7:
   }
 }
 
-- (id)_animationForFindOverlay:(BOOL)a3
+- (id)_animationForFindOverlay:(BOOL)overlay
 {
-  v3 = a3;
+  overlayCopy = overlay;
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   v5 = v4;
-  if (v3)
+  if (overlayCopy)
   {
     v6 = &unk_1F1184878;
   }
@@ -24786,7 +24687,7 @@ LABEL_7:
     v6 = &unk_1F1184890;
   }
 
-  if (v3)
+  if (overlayCopy)
   {
     v7 = &unk_1F1184890;
   }
@@ -24866,10 +24767,10 @@ LABEL_7:
   }
 
   [(WKWebView *)self _updateFindOverlayPosition];
-  v16 = [(WKWebView *)self _layerForFindOverlay];
-  if (v16)
+  _layerForFindOverlay = [(WKWebView *)self _layerForFindOverlay];
+  if (_layerForFindOverlay)
   {
-    v17 = v16;
+    v17 = _layerForFindOverlay;
     [(WKWebView *)self _updateFindOverlaysOutsideContentView:&__block_literal_global_20];
     [(CALayer *)v17 removeAllAnimations];
     LODWORD(v18) = 1.0;
@@ -24894,22 +24795,22 @@ uint64_t __48__WKWebView_WKViewInternalIOS___showFindOverlay__block_invoke(uint6
 
 - (void)_hideFindOverlay
 {
-  v3 = [(WKWebView *)self _layerForFindOverlay];
+  _layerForFindOverlay = [(WKWebView *)self _layerForFindOverlay];
   if (self->_findOverlaysOutsideContentView.__engaged_)
   {
-    v4 = [(UIView *)self->_findOverlaysOutsideContentView.var0.__val_.top.m_ptr layer];
+    layer = [(UIView *)self->_findOverlaysOutsideContentView.var0.__val_.top.m_ptr layer];
   }
 
   else
   {
-    v4 = 0;
+    layer = 0;
   }
 
-  if (v4 | v3)
+  if (layer | _layerForFindOverlay)
   {
-    if (![v4 animationForKey:@"findOverlayFadeOut"])
+    if (![layer animationForKey:@"findOverlayFadeOut"])
     {
-      [v3 removeAllAnimations];
+      [_layerForFindOverlay removeAllAnimations];
       [(WKWebView *)self _updateFindOverlaysOutsideContentView:&__block_literal_global_711];
       [MEMORY[0x1E6979518] begin];
       v5 = [(WKWebView *)self _animationForFindOverlay:0];
@@ -24924,7 +24825,7 @@ uint64_t __48__WKWebView_WKViewInternalIOS___showFindOverlay__block_invoke(uint6
       objc_copyWeak(&v10, &location);
       [v6 setCompletionBlock:v9];
       objc_destroyWeak(&location);
-      [v3 addAnimation:v5 forKey:@"findOverlayFadeOut"];
+      [_layerForFindOverlay addAnimation:v5 forKey:@"findOverlayFadeOut"];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_713;
@@ -24932,7 +24833,7 @@ uint64_t __48__WKWebView_WKViewInternalIOS___showFindOverlay__block_invoke(uint6
       v7[4] = v5;
       [(WKWebView *)self _updateFindOverlaysOutsideContentView:v7];
       [MEMORY[0x1E6979518] commit];
-      [v3 setOpacity:0.0];
+      [_layerForFindOverlay setOpacity:0.0];
       [(WKWebView *)self _updateFindOverlaysOutsideContentView:&__block_literal_global_716];
       objc_destroyWeak(&v10);
     }
@@ -25018,37 +24919,37 @@ uint64_t __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_2_714
   return [v2 setOpacity:0.0];
 }
 
-- (void)_enhancedWindowingToggled:(id)a3
+- (void)_enhancedWindowingToggled:(id)toggled
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [toggled object];
+  if (object)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = 0;
+      object = 0;
     }
   }
 
-  if (v4 == [-[WKWebView window](self "window")])
+  if (object == [-[WKWebView window](self "window")])
   {
     m_ptr = self->_page.m_ptr;
     if (m_ptr)
     {
       if ((*(m_ptr + 865) & 1) == 0 && *(m_ptr + 864) == 1)
       {
-        v6 = [(WKWebView *)self _isWindowResizingEnabled];
-        WebKit::WebPageProxy::send<Messages::WebPage::SetIsWindowResizingEnabled>(m_ptr, &v6);
+        _isWindowResizingEnabled = [(WKWebView *)self _isWindowResizingEnabled];
+        WebKit::WebPageProxy::send<Messages::WebPage::SetIsWindowResizingEnabled>(m_ptr, &_isWindowResizingEnabled);
       }
     }
   }
 }
 
-- (int64_t)_effectiveDataOwner:(int64_t)a3
+- (int64_t)_effectiveDataOwner:(int64_t)owner
 {
-  if ((a3 - 1) >= 3)
+  if ((owner - 1) >= 3)
   {
-    if (a3)
+    if (owner)
     {
       return 0;
     }
@@ -25064,21 +24965,21 @@ uint64_t __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_2_714
     }
   }
 
-  return a3;
+  return owner;
 }
 
-- (void)_updateFindOverlaysOutsideContentView:(id)a3
+- (void)_updateFindOverlaysOutsideContentView:(id)view
 {
   p_findOverlaysOutsideContentView = &self->_findOverlaysOutsideContentView;
   if (self->_findOverlaysOutsideContentView.__engaged_)
   {
-    (*(a3 + 2))(a3, p_findOverlaysOutsideContentView->var0.__val_.top.m_ptr);
-    if (p_findOverlaysOutsideContentView->__engaged_ && ((*(a3 + 2))(a3, p_findOverlaysOutsideContentView->var0.__val_.bottom.m_ptr), p_findOverlaysOutsideContentView->__engaged_) && ((*(a3 + 2))(a3, p_findOverlaysOutsideContentView->var0.__val_.left.m_ptr), p_findOverlaysOutsideContentView->__engaged_))
+    (*(view + 2))(view, p_findOverlaysOutsideContentView->var0.__val_.top.m_ptr);
+    if (p_findOverlaysOutsideContentView->__engaged_ && ((*(view + 2))(view, p_findOverlaysOutsideContentView->var0.__val_.bottom.m_ptr), p_findOverlaysOutsideContentView->__engaged_) && ((*(view + 2))(view, p_findOverlaysOutsideContentView->var0.__val_.left.m_ptr), p_findOverlaysOutsideContentView->__engaged_))
     {
       m_ptr = p_findOverlaysOutsideContentView->var0.__val_.right.m_ptr;
-      v6 = *(a3 + 2);
+      v6 = *(view + 2);
 
-      v6(a3, m_ptr);
+      v6(view, m_ptr);
     }
 
     else
@@ -25088,7 +24989,7 @@ uint64_t __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_2_714
   }
 }
 
-- (void)_didAddLayerForFindOverlay:(id)a3
+- (void)_didAddLayerForFindOverlay:(id)overlay
 {
   m_identifier = self->_perProcessState.pendingFindLayerID.m_value.m_object.m_identifier;
   v6 = self->_perProcessState.pendingFindLayerID.m_value.m_processIdentifier.m_identifier;
@@ -25098,7 +24999,7 @@ uint64_t __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_2_714
   self->_perProcessState.committedFindLayerID.m_value.m_processIdentifier.m_identifier = v6;
   (*(**(self->_page.m_ptr + 16) + 40))(*(self->_page.m_ptr + 16));
   v7 = [(WKWebView *)self _animationForFindOverlay:1];
-  [a3 addAnimation:v7 forKey:@"findOverlayFadeIn"];
+  [overlay addAnimation:v7 forKey:@"findOverlayFadeIn"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__WKWebView_WKViewInternalIOS___didAddLayerForFindOverlay___block_invoke;
@@ -25106,7 +25007,7 @@ uint64_t __48__WKWebView_WKViewInternalIOS___hideFindOverlay__block_invoke_2_714
   v9[4] = v7;
   [(WKWebView *)self _updateFindOverlaysOutsideContentView:v9];
   LODWORD(v8) = 1.0;
-  [a3 setOpacity:v8];
+  [overlay setOpacity:v8];
 }
 
 uint64_t __59__WKWebView_WKViewInternalIOS___didAddLayerForFindOverlay___block_invoke(uint64_t a1, void *a2)
@@ -25151,37 +25052,37 @@ uint64_t __59__WKWebView_WKViewInternalIOS___didAddLayerForFindOverlay___block_i
   [(WKWebView *)self _scheduleVisibleContentRectUpdate];
 }
 
-- (void)_setPointerTouchCompatibilitySimulatorEnabled:(BOOL)a3
+- (void)_setPointerTouchCompatibilitySimulatorEnabled:(BOOL)enabled
 {
   ptr = self->_pointerTouchCompatibilitySimulator.__ptr_;
-  if (*(ptr + 32) != a3)
+  if (*(ptr + 32) != enabled)
   {
-    *(ptr + 32) = a3;
-    if (!a3)
+    *(ptr + 32) = enabled;
+    if (!enabled)
     {
       WebKit::PointerTouchCompatibilitySimulator::resetState(ptr);
     }
   }
 }
 
-- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)a3
+- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)view
 {
-  v5 = [a3 panGestureRecognizer];
+  panGestureRecognizer = [view panGestureRecognizer];
   if (![(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis]&& ![(WKContentView *)self->_contentView.m_ptr preventsPanningInYAxis])
   {
-    v6 = 0;
+    preventsPanningInXAxis = 0;
 LABEL_11:
-    [(WKContentView *)self->_contentView.m_ptr cancelPointersForGestureRecognizer:v5];
-    return v6;
+    [(WKContentView *)self->_contentView.m_ptr cancelPointersForGestureRecognizer:panGestureRecognizer];
+    return preventsPanningInXAxis;
   }
 
-  v6 = [(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis];
+  preventsPanningInXAxis = [(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis];
   if ([(WKContentView *)self->_contentView.m_ptr preventsPanningInYAxis])
   {
-    v6 |= 2uLL;
+    preventsPanningInXAxis |= 2uLL;
   }
 
-  [v5 translationInView:a3];
+  [panGestureRecognizer translationInView:view];
   v8 = v7;
   v10 = v9;
   if (![(WKContentView *)self->_contentView.m_ptr preventsPanningInXAxis]&& fabs(v8) > 2.22044605e-16 || ![(WKContentView *)self->_contentView.m_ptr preventsPanningInYAxis]&& fabs(v10) > 2.22044605e-16)
@@ -25189,7 +25090,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  return v6;
+  return preventsPanningInXAxis;
 }
 
 uint64_t __60__WKWebView_WKViewInternalIOS___updatePageLoadObserverState__block_invoke(uint64_t result)
@@ -25506,18 +25407,18 @@ LABEL_59:
   AnalyticsSendEventLazy();
 }
 
-- (void)_setUIEventAttribution:(id)a3
+- (void)_setUIEventAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v5 = [a3 sourceIdentifier];
-    MEMORY[0x19EB01DE0](v28, [a3 reportEndpoint]);
+    sourceIdentifier = [attribution sourceIdentifier];
+    MEMORY[0x19EB01DE0](v28, [attribution reportEndpoint]);
     WebCore::RegistrableDomain::RegistrableDomain(&v29, v28);
-    MEMORY[0x19EB01DE0](v26, [a3 destinationURL]);
+    MEMORY[0x19EB01DE0](v26, [attribution destinationURL]);
     v6 = WebCore::RegistrableDomain::RegistrableDomain(&v27, v26);
     v7 = WTF::applicationBundleIdentifier(&v25, v6);
     WTF::WallTime::now(v7);
-    v30[0] = v5;
+    v30[0] = sourceIdentifier;
     v10 = v29;
     if (v29)
     {
@@ -25595,8 +25496,8 @@ LABEL_59:
     }
 
     m_ptr = self->_page.m_ptr;
-    MEMORY[0x19EB02040](&v24, [a3 sourceDescription]);
-    MEMORY[0x19EB02040](&v23, [a3 purchaser]);
+    MEMORY[0x19EB02040](&v24, [attribution sourceDescription]);
+    MEMORY[0x19EB02040](&v23, [attribution purchaser]);
     WebKit::WebPageProxy::setPrivateClickMeasurement(m_ptr, v30, &v24, &v23);
     v21 = v23;
     v23 = 0;
@@ -25772,18 +25673,18 @@ LABEL_37:
   return result;
 }
 
-- (void)_setEphemeralUIEventAttribution:(id)a3 forApplicationWithBundleID:(id)a4
+- (void)_setEphemeralUIEventAttribution:(id)attribution forApplicationWithBundleID:(id)d
 {
-  if (a3)
+  if (attribution)
   {
-    v7 = [a3 sourceIdentifier];
-    MEMORY[0x19EB01DE0](v29, [a3 reportEndpoint]);
+    sourceIdentifier = [attribution sourceIdentifier];
+    MEMORY[0x19EB01DE0](v29, [attribution reportEndpoint]);
     WebCore::RegistrableDomain::RegistrableDomain(&v30, v29);
-    MEMORY[0x19EB01DE0](v27, [a3 destinationURL]);
+    MEMORY[0x19EB01DE0](v27, [attribution destinationURL]);
     WebCore::RegistrableDomain::RegistrableDomain(&v28, v27);
-    v8 = MEMORY[0x19EB02040](&v26, a4);
+    v8 = MEMORY[0x19EB02040](&v26, d);
     WTF::WallTime::now(v8);
-    v31[0] = v7;
+    v31[0] = sourceIdentifier;
     v11 = v30;
     if (v30)
     {
@@ -25861,8 +25762,8 @@ LABEL_37:
     }
 
     m_ptr = self->_page.m_ptr;
-    MEMORY[0x19EB02040](&v25, [a3 sourceDescription]);
-    MEMORY[0x19EB02040](&v24, [a3 purchaser]);
+    MEMORY[0x19EB02040](&v25, [attribution sourceDescription]);
+    MEMORY[0x19EB02040](&v24, [attribution purchaser]);
     WebKit::WebPageProxy::setPrivateClickMeasurement(m_ptr, v31, &v25, &v24);
     v22 = v24;
     v24 = 0;
@@ -25899,9 +25800,9 @@ LABEL_37:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WKWebView *)self _currentContentView];
+  _currentContentView = [(WKWebView *)self _currentContentView];
 
-  [(WKWebView *)self convertRect:v11 toView:v4, v6, v8, v10];
+  [(WKWebView *)self convertRect:_currentContentView toView:v4, v6, v8, v10];
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -25974,11 +25875,11 @@ LABEL_37:
   return result;
 }
 
-- (void)_setObscuredInsetEdgesAffectedBySafeArea:(unint64_t)a3
+- (void)_setObscuredInsetEdgesAffectedBySafeArea:(unint64_t)area
 {
-  if (self->_obscuredInsetEdgesAffectedBySafeArea != a3)
+  if (self->_obscuredInsetEdgesAffectedBySafeArea != area)
   {
-    self->_obscuredInsetEdgesAffectedBySafeArea = a3;
+    self->_obscuredInsetEdgesAffectedBySafeArea = area;
     [(WKWebView *)self _scheduleVisibleContentRectUpdate];
 
     [(WKWebView *)self _updateFixedColorExtensionViewFrames];
@@ -25998,26 +25899,26 @@ LABEL_37:
   return result;
 }
 
-- (void)_setUnobscuredSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_setUnobscuredSafeAreaInsets:(UIEdgeInsets)insets
 {
   self->_haveSetUnobscuredSafeAreaInsets = 1;
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_unobscuredSafeAreaInsets.top, v3), vceqq_f64(*&self->_unobscuredSafeAreaInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_unobscuredSafeAreaInsets = a3;
+    self->_unobscuredSafeAreaInsets = insets;
     [(WKWebView *)self _scheduleVisibleContentRectUpdate];
   }
 }
 
-- (void)_setInterfaceOrientationOverride:(int64_t)a3
+- (void)_setInterfaceOrientationOverride:(int64_t)override
 {
-  if (!self->_overridesInterfaceOrientation || self->_interfaceOrientationOverride != a3)
+  if (!self->_overridesInterfaceOrientation || self->_interfaceOrientationOverride != override)
   {
     self->_overridesInterfaceOrientation = 1;
-    self->_interfaceOrientationOverride = a3;
+    self->_interfaceOrientationOverride = override;
     if (![(WKWebView *)self _shouldDeferGeometryUpdates])
     {
       v4 = self->_interfaceOrientationOverride - 2;
@@ -26060,11 +25961,11 @@ LABEL_37:
   return [(WKWebViewContentProvider *)m_ptr web_suggestedFilename];
 }
 
-- (void)_setDragInteractionPolicy:(unint64_t)a3
+- (void)_setDragInteractionPolicy:(unint64_t)policy
 {
-  if (self->_dragInteractionPolicy != a3)
+  if (self->_dragInteractionPolicy != policy)
   {
-    self->_dragInteractionPolicy = a3;
+    self->_dragInteractionPolicy = policy;
     [(WKContentView *)self->_contentView.m_ptr _didChangeDragInteractionPolicy];
   }
 }
@@ -26082,36 +25983,36 @@ LABEL_37:
   return result;
 }
 
-- (CGPoint)_convertPointFromContentsToView:(CGPoint)a3
+- (CGPoint)_convertPointFromContentsToView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WKWebView *)self _currentContentView];
+  y = view.y;
+  x = view.x;
+  _currentContentView = [(WKWebView *)self _currentContentView];
 
-  [(WKWebView *)self convertPoint:v6 fromView:x, y];
+  [(WKWebView *)self convertPoint:_currentContentView fromView:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)_convertPointFromViewToContents:(CGPoint)a3
+- (CGPoint)_convertPointFromViewToContents:(CGPoint)contents
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WKWebView *)self _currentContentView];
+  y = contents.y;
+  x = contents.x;
+  _currentContentView = [(WKWebView *)self _currentContentView];
 
-  [(WKWebView *)self convertPoint:v6 toView:x, y];
+  [(WKWebView *)self convertPoint:_currentContentView toView:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (void)_doAfterNextStablePresentationUpdate:(id)a3
+- (void)_doAfterNextStablePresentationUpdate:(id)update
 {
-  v5 = [(WKWebView *)self usesStandardContentView];
-  if (v5)
+  usesStandardContentView = [(WKWebView *)self usesStandardContentView];
+  if (usesStandardContentView)
   {
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(update);
     m_ptr = self->_stableStatePresentationUpdateCallbacks.m_ptr;
     if (m_ptr)
     {
@@ -26135,8 +26036,8 @@ LABEL_37:
 
   else
   {
-    WTF::RunLoop::mainSingleton(v5);
-    v8 = _Block_copy(a3);
+    WTF::RunLoop::mainSingleton(usesStandardContentView);
+    v8 = _Block_copy(update);
     v9 = WTF::fastMalloc(0x10);
     *v9 = &unk_1F10FD508;
     v9[1] = v8;
@@ -26151,41 +26052,41 @@ LABEL_37:
   }
 }
 
-- (void)_setFont:(id)a3 sender:(id)a4
+- (void)_setFont:(id)font sender:(id)sender
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _setFontForWebView:a3 sender:a4];
+    [(WKContentView *)m_ptr _setFontForWebView:font sender:sender];
   }
 }
 
-- (void)_setFontSize:(double)a3 sender:(id)a4
+- (void)_setFontSize:(double)size sender:(id)sender
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _setFontSizeForWebView:a4 sender:a3];
+    [(WKContentView *)m_ptr _setFontSizeForWebView:sender sender:size];
   }
 }
 
-- (void)_setTextColor:(id)a3 sender:(id)a4
+- (void)_setTextColor:(id)color sender:(id)sender
 {
   if ([(WKWebView *)self usesStandardContentView])
   {
     m_ptr = self->_contentView.m_ptr;
 
-    [(WKContentView *)m_ptr _setTextColorForWebView:a3 sender:a4];
+    [(WKContentView *)m_ptr _setTextColorForWebView:color sender:sender];
   }
 }
 
-- (void)_detectDataWithTypes:(unint64_t)a3 completionHandler:(id)a4
+- (void)_detectDataWithTypes:(unint64_t)types completionHandler:(id)handler
 {
-  v4 = a3;
+  typesCopy = types;
   m_ptr = self->_page.m_ptr;
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(handler);
   v8 = self->_page.m_ptr;
   if (v8)
   {
@@ -26202,7 +26103,7 @@ LABEL_37:
   v9[1] = v7;
   v9[2] = v8;
   v11 = v9;
-  WebKit::WebPageProxy::detectDataInAllFrames(m_ptr, v4 & 0x7F, &v11);
+  WebKit::WebPageProxy::detectDataInAllFrames(m_ptr, typesCopy & 0x7F, &v11);
   v10 = v11;
   v11 = 0;
   if (v10)
@@ -26213,10 +26114,10 @@ LABEL_37:
   _Block_release(0);
 }
 
-- (void)_requestActivatedElementAtPosition:(CGPoint)a3 completionBlock:(id)a4
+- (void)_requestActivatedElementAtPosition:(CGPoint)position completionBlock:(id)block
 {
-  v17 = a3;
-  WebCore::FloatPoint::FloatPoint(v16, &v17);
+  positionCopy = position;
+  WebCore::FloatPoint::FloatPoint(v16, &positionCopy);
   v6 = roundf(v16[0]);
   v7 = 0x80000000;
   if (v6 > -2147500000.0)
@@ -26256,7 +26157,7 @@ LABEL_37:
   v14[1] = 3321888768;
   v14[2] = __78__WKWebView_WKPrivateIOS___requestActivatedElementAtPosition_completionBlock___block_invoke;
   v14[3] = &__block_descriptor_40_e8_32c92_ZTSKZ78__WKWebView_WKPrivateIOS___requestActivatedElementAtPosition_completionBlock__E4__31_e5242_v536__0_InteractionInformationAtPosition__InteractionInformationRequest__IntPoint_ii_BBBBBBB_B_optional_BOOL_____cB_B_CBBBBBBBBBBBBB_Markable_WebCore::ProcessQualified_WTF::ObjectIdentifierGeneric_WebCore::ScrollingNodeIDType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long____WTF::MarkableTraits_WebCore::ProcessQualified_WTF::ObjectIdentifierGeneric_WebCore::ScrollingNodeIDType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long______ProcessQualified_WTF::ObjectIdentifierGeneric_WebCore::ScrollingNodeIDType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long____ObjectIdentifierGeneric_WebCore::ScrollingNodeIDType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q__ObjectIdentifierGeneric_WebCore::ProcessIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q___BBBBBB_FloatPoint_ff__URL__String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl___b1b1b1b3b26IIIIIII__URL__String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl___b1b1b1b3b26IIIIIII__String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____IntRect__IntPoint_ii__IntSize_ii___RefPtr_WebCore::ShareableBitmap__WTF::RawPtrTraits_WebCore::ShareableBitmap___WTF::DefaultRefDerefTraits_WebCore::ShareableBitmap_____ShareableBitmap___String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____CursorContext__FloatRect__FloatPoint_ff__FloatSize_ff___optional_WebCore::Cursor_____c_Cursor_C_RefPtr_WebCore::Image__WTF::RawPtrTraits_WebCore::Image___WTF::DefaultRefDerefTraits_WebCore::Image_____Image___IntPoint_ii__v__B_BB__RefPtr_WebCore::TextIndicator__WTF::RawPtrTraits_WebCore::TextIndicator___WTF::DefaultRefDerefTraits_WebCore::TextIndicator_____TextIndicator___String__RefPtr_WTF::StringImpl__WTF::RawPtrTraits_WTF::StringImpl___WTF::DefaultRefDerefTraits_WTF::StringImpl_____StringImpl____RetainPtr_NSArray_____IntRect__IntPoint_ii__IntSize_ii___optional_WebCore::ElementContext_____c_ElementContext__FloatRect__FloatPoint_ff__FloatSize_ff___Markable_WTF::ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long___WTF::MarkableTraits_WTF::ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long_____ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q___Markable_WebCore::ProcessQualified_WTF::UUID___WTF::MarkableTraits_WebCore::ProcessQualified_UUID_____ProcessQualified_WTF::UUID___UUID_T__ObjectIdentifierGeneric_WebCore::ProcessIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q____Markable_WTF::ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long___WTF::MarkableTraits_WTF::ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long_____ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q____B__optional_WebCore::ElementContext_____c_ElementContext__FloatRect__FloatPoint_ff__FloatSize_ff___Markable_WTF::ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long___WTF::MarkableTraits_WTF::ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long_____ObjectIdentifierGeneric_WebCore::PageIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q___Markable_WebCore::ProcessQualified_WTF::UUID___WTF::MarkableTraits_WebCore::ProcessQualified_UUID_____ProcessQualified_WTF::UUID___UUID_T__ObjectIdentifierGeneric_WebCore::ProcessIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q____Markable_WTF::ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long___WTF::MarkableTraits_WTF::ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long_____ObjectIdentifierGeneric_WebCore::ElementIdentifierType__WTF::ObjectIdentifierMainThreadAccessTraits_uint64_t___unsigned_long_long__Q____B__Vector_WebCore::ElementAnimationContext__0UL__WTF::CrashOnOverflow__16UL__WTF::FastMalloc____ElementAnimationContext_II__8l;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(block);
   aBlock = _Block_copy(v13);
   [(WKContentView *)m_ptr doAfterPositionInformationUpdate:v14 forRequest:v11 | v8, 16777217];
   _Block_release(v13);
@@ -26280,7 +26181,7 @@ uint64_t __78__WKWebView_WKPrivateIOS___requestActivatedElementAtPosition_comple
   }
 }
 
-- (void)_beginAnimatedResizeWithUpdates:(id)a3
+- (void)_beginAnimatedResizeWithUpdates:(id)updates
 {
   v155 = *MEMORY[0x1E69E9840];
   p_perProcessState = &self->_perProcessState;
@@ -26395,7 +26296,7 @@ LABEL_34:
 
             WebCore::FloatSize::FloatSize(&buf, p_maximumUnobscuredSize);
             v30 = buf.a;
-            (*(a3 + 2))(a3);
+            (*(updates + 2))(updates);
             memset(&v146, 0, sizeof(v146));
             [(WKWebView *)self bounds];
             v146.origin.x = v31;
@@ -26707,14 +26608,14 @@ LABEL_52:
   {
     v16 = self->_customContentView.m_ptr;
 
-    [(WKWebViewContentProvider *)v16 web_beginAnimatedResizeWithUpdates:a3];
+    [(WKWebViewContentProvider *)v16 web_beginAnimatedResizeWithUpdates:updates];
   }
 
   else
   {
-    v17 = *(a3 + 2);
+    v17 = *(updates + 2);
 
-    v17(a3);
+    v17(updates);
   }
 }
 
@@ -26727,7 +26628,7 @@ LABEL_52:
     v4 = *(self->_page.m_ptr + 5);
     dynamicViewportUpdateMode = self->_perProcessState.dynamicViewportUpdateMode;
     v6 = 134218496;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
     v9 = v4;
     v10 = 1024;
@@ -26742,7 +26643,7 @@ LABEL_52:
   }
 }
 
-- (void)_resizeWhileHidingContentWithUpdates:(id)a3
+- (void)_resizeWhileHidingContentWithUpdates:(id)updates
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = qword_1ED641490;
@@ -26750,13 +26651,13 @@ LABEL_52:
   {
     v6 = *(self->_page.m_ptr + 5);
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
     v10 = v6;
     _os_log_impl(&dword_19D52D000, v5, OS_LOG_TYPE_DEFAULT, "%p (pageProxyID=%llu) [WKWebView _resizeWhileHidingContentWithUpdates:]", &v7, 0x16u);
   }
 
-  [(WKWebView *)self _beginAnimatedResizeWithUpdates:a3];
+  [(WKWebView *)self _beginAnimatedResizeWithUpdates:updates];
   if (self->_perProcessState.dynamicViewportUpdateMode == 1)
   {
     [(WKContentView *)self->_contentView.m_ptr setHidden:1];
@@ -26765,29 +26666,29 @@ LABEL_52:
   }
 }
 
-- (void)_setSuppressSoftwareKeyboard:(BOOL)a3
+- (void)_setSuppressSoftwareKeyboard:(BOOL)keyboard
 {
   v4.receiver = self;
   v4.super_class = WKWebView;
-  [(WKWebView *)&v4 _setSuppressSoftwareKeyboard:a3];
+  [(WKWebView *)&v4 _setSuppressSoftwareKeyboard:keyboard];
   [(WKContentView *)self->_contentView.m_ptr updateSoftwareKeyboardSuppressionStateFromWebView];
 }
 
-- (void)_snapshotRectAfterScreenUpdates:(BOOL)a3 rectInViewCoordinates:(CGRect)a4 intoImageOfWidth:(double)a5 completionHandler:(id)a6
+- (void)_snapshotRectAfterScreenUpdates:(BOOL)updates rectInViewCoordinates:(CGRect)coordinates intoImageOfWidth:(double)width completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  updatesCopy = updates;
   if ([(WKWebView *)self _shouldDeferGeometryUpdates])
   {
     if (self)
     {
-      v14 = self;
+      selfCopy = self;
     }
 
-    v15 = _Block_copy(a6);
+    v15 = _Block_copy(handler);
     p_callbacksDeferredDuringResize = &self->_callbacksDeferredDuringResize;
     m_size = self->_callbacksDeferredDuringResize.m_size;
     if (m_size == self->_callbacksDeferredDuringResize.m_capacity)
@@ -26822,12 +26723,12 @@ LABEL_52:
 
     *v21 = &unk_1F10FD558;
     *(v21 + 8) = self;
-    *(v21 + 16) = v12;
+    *(v21 + 16) = updatesCopy;
     *(v21 + 24) = x;
     *(v21 + 32) = y;
     *(v21 + 40) = width;
     *(v21 + 48) = height;
-    *(v21 + 56) = a5;
+    *(v21 + 56) = width;
     *(v21 + 64) = v15;
     m_buffer[m_size] = v21;
     ++self->_callbacksDeferredDuringResize.m_size;
@@ -26848,15 +26749,15 @@ LABEL_52:
     *&v63[1] = v24;
     *&v63[2] = v26;
     *&v63[3] = v28;
-    v30 = a5 / v26;
-    v31 = v28 * (a5 / v26);
-    v62.width = a5;
+    v30 = width / v26;
+    v31 = v28 * (width / v26);
+    v62.width = width;
     v62.height = v31;
     if ([objc_opt_class() web_requiresCustomSnapshotting])
     {
       m_ptr = self->_customContentView.m_ptr;
 
-      [(WKWebViewContentProvider *)m_ptr web_snapshotRectInContentViewCoordinates:a6 snapshotWidth:v23 completionHandler:v25, v27, v29, a5];
+      [(WKWebViewContentProvider *)m_ptr web_snapshotRectInContentViewCoordinates:handler snapshotWidth:v23 completionHandler:v25, v27, v29, width];
     }
 
     else if ([objc_msgSend(objc_msgSend(-[WKWebView window](self "window")] && (objc_msgSend(-[WKWebView window](self, "window"), "isHidden") & 1) == 0)
@@ -26867,13 +26768,13 @@ LABEL_52:
       WebCore::IOSurface::create();
       if (v61)
       {
-        if (v12)
+        if (updatesCopy)
         {
           [MEMORY[0x1E6979518] synchronize];
         }
 
         memset(&v60, 0, sizeof(v60));
-        CATransform3DMakeScale(&v60, a5 / width, a5 / width, 1.0);
+        CATransform3DMakeScale(&v60, width / width, width / width, 1.0);
         v58 = v60;
         CATransform3DTranslate(&v59, &v58, -v55, -v56, 0.0);
         v60 = v59;
@@ -26884,7 +26785,7 @@ LABEL_52:
         v61 = 0;
         v57 = v38;
         WebCore::IOSurface::sinkIntoImage();
-        (*(a6 + 2))(a6, *&v59.m11);
+        (*(handler + 2))(handler, *&v59.m11);
         m11 = v59.m11;
         v59.m11 = 0.0;
         if (m11 != 0.0)
@@ -26901,7 +26802,7 @@ LABEL_52:
 
       else
       {
-        (*(a6 + 2))(a6, 0);
+        (*(handler + 2))(handler, 0);
       }
 
       v52 = v61;
@@ -26917,22 +26818,22 @@ LABEL_52:
 
     else if (self->_customContentView.m_ptr)
     {
-      v65.width = a5;
+      v65.width = width;
       v65.height = v31;
       UIGraphicsBeginImageContextWithOptions(v65, 1, 1.0);
       v34 = self->_customContentView.m_ptr;
       [-[WKWebViewContentProvider backgroundColor](v34 "backgroundColor")];
       v66.origin.x = 0.0;
       v66.origin.y = 0.0;
-      v66.size.width = a5;
+      v66.size.width = width;
       v66.size.height = v31;
       UIRectFill(v66);
       CurrentContext = UIGraphicsGetCurrentContext();
       CGContextTranslateCTM(CurrentContext, -(v23 * v30), -(v25 * v30));
       CGContextScaleCTM(CurrentContext, v30, v30);
       [-[WKWebViewContentProvider layer](v34 "layer")];
-      v36 = [(UIImage *)UIGraphicsGetImageFromCurrentImageContext() CGImage];
-      (*(a6 + 2))(a6, v36);
+      cGImage = [(UIImage *)UIGraphicsGetImageFromCurrentImageContext() CGImage];
+      (*(handler + 2))(handler, cGImage);
 
       UIGraphicsEndImageContext();
     }
@@ -26970,7 +26871,7 @@ LABEL_52:
       }
 
       *&v59.m11 = v48 | v45;
-      v50 = _Block_copy(a6);
+      v50 = _Block_copy(handler);
       v51 = WTF::fastMalloc(0x10);
       *v51 = &unk_1F10FD580;
       *(v51 + 1) = v50;
@@ -26986,16 +26887,16 @@ LABEL_52:
   }
 }
 
-- (void)_overrideLayoutParametersWithMinimumLayoutSize:(CGSize)a3 minimumUnobscuredSizeOverride:(CGSize)a4 maximumUnobscuredSizeOverride:(CGSize)a5
+- (void)_overrideLayoutParametersWithMinimumLayoutSize:(CGSize)size minimumUnobscuredSizeOverride:(CGSize)override maximumUnobscuredSizeOverride:(CGSize)sizeOverride
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3.height;
-  v10 = a3.width;
+  height = sizeOverride.height;
+  width = sizeOverride.width;
+  v7 = override.height;
+  v8 = override.width;
+  v9 = size.height;
+  v10 = size.width;
   v23 = *MEMORY[0x1E69E9840];
-  if (a3.width < 0.0 || a3.height < 0.0)
+  if (size.width < 0.0 || size.height < 0.0)
   {
     v12 = qword_1ED641508;
     if (os_log_type_enabled(qword_1ED641508, OS_LOG_TYPE_FAULT))
@@ -27062,12 +26963,12 @@ LABEL_52:
   WebKit::WebPageProxy::setMaximumUnobscuredSize(v5, &v6);
 }
 
-- (void)_overrideViewportWithArguments:(id)a3
+- (void)_overrideViewportWithArguments:(id)arguments
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
   {
-    if (a3)
+    if (arguments)
     {
       v14[0] = 2;
       __asm { FMOV            V0.4S, #-1.0 }
@@ -27081,7 +26982,7 @@ LABEL_52:
       v10[2] = WTF::BlockPtr<void ()(NSString *,NSString *,BOOL *)>::fromCallable<viewportArgumentsFromDictionary(NSDictionary<NSString *,NSString *> *)::$_0>(viewportArgumentsFromDictionary(NSDictionary<NSString *,NSString *> *)::$_0)::{lambda(void *,NSString *,NSString *,BOOL *)#1}::__invoke;
       v10[3] = &WTF::BlockPtr<void ()(NSString *,NSString *,BOOL *)>::fromCallable<viewportArgumentsFromDictionary(NSDictionary<NSString *,NSString *> *)::$_0>(viewportArgumentsFromDictionary(NSDictionary<NSString *,NSString *> *)::$_0)::descriptor;
       v10[4] = v14;
-      [a3 enumerateKeysAndObjectsUsingBlock:v10];
+      [arguments enumerateKeysAndObjectsUsingBlock:v10];
       _Block_release(v10);
       v11[0] = *v14;
       v11[1] = *&v14[16];
@@ -27101,9 +27002,9 @@ LABEL_52:
 
 - (id)_viewForFindUI
 {
-  v3 = [(WKWebView *)self scrollView];
+  scrollView = [(WKWebView *)self scrollView];
 
-  return [(WKWebView *)self viewForZoomingInScrollView:v3];
+  return [(WKWebView *)self viewForZoomingInScrollView:scrollView];
 }
 
 - (id)_retainActiveFocusedState
@@ -27124,12 +27025,12 @@ LABEL_52:
   return v3;
 }
 
-- (void)_becomeFirstResponderWithSelectionMovingForward:(BOOL)a3 completionHandler:(id)a4
+- (void)_becomeFirstResponderWithSelectionMovingForward:(BOOL)forward completionHandler:(id)handler
 {
-  v4 = a3;
-  if (a4)
+  forwardCopy = forward;
+  if (handler)
   {
-    v6 = _Block_copy(a4);
+    v6 = _Block_copy(handler);
   }
 
   else
@@ -27143,7 +27044,7 @@ LABEL_52:
   v8[2] = __93__WKWebView_WKPrivateIOS___becomeFirstResponderWithSelectionMovingForward_completionHandler___block_invoke;
   v8[3] = &__block_descriptor_40_e8_32c107_ZTSKZ93__WKWebView_WKPrivateIOS___becomeFirstResponderWithSelectionMovingForward_completionHandler__E4__37_e8_v12__0B8l;
   v8[4] = v6;
-  [(WKContentView *)m_ptr _becomeFirstResponderWithSelectionMovingForward:v4 completionHandler:v8];
+  [(WKContentView *)m_ptr _becomeFirstResponderWithSelectionMovingForward:forwardCopy completionHandler:v8];
 }
 
 void __93__WKWebView_WKPrivateIOS___becomeFirstResponderWithSelectionMovingForward_completionHandler___block_invoke(uint64_t a1)
@@ -27158,13 +27059,13 @@ void __93__WKWebView_WKPrivateIOS___becomeFirstResponderWithSelectionMovingForwa
   }
 }
 
-- (id)_snapshotLayerContentsForBackForwardListItem:(id)a3
+- (id)_snapshotLayerContentsForBackForwardListItem:(id)item
 {
   v4 = *(self->_page.m_ptr + 89);
   v5 = *(v4 + 16);
   if (!v5 || !*(v5 + 8) || *(v4 + 48) != 1)
   {
-    [a3 _item];
+    [item _item];
     goto LABEL_12;
   }
 
@@ -27175,7 +27076,7 @@ void __93__WKWebView_WKPrivateIOS___becomeFirstResponderWithSelectionMovingForwa
   }
 
   v8 = *(*(v4 + 24) + 8 * v6);
-  if (v8 != [a3 _item])
+  if (v8 != [item _item])
   {
     goto LABEL_12;
   }
@@ -27211,7 +27112,7 @@ LABEL_18:
   }
 
 LABEL_12:
-  result = *([a3 _item] + 128);
+  result = *([item _item] + 128);
   if (result)
   {
 
@@ -27221,16 +27122,16 @@ LABEL_12:
   return result;
 }
 
-- (void)_accessibilityRetrieveRectsAtSelectionOffset:(int64_t)a3 withText:(id)a4 completionHandler:(id)a5
+- (void)_accessibilityRetrieveRectsAtSelectionOffset:(int64_t)offset withText:(id)text completionHandler:(id)handler
 {
   m_ptr = self->_contentView.m_ptr;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3321888768;
   v9[2] = __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_withText_completionHandler___block_invoke;
   v9[3] = &__block_descriptor_40_e8_32c113_ZTSKZ99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_withText_completionHandler__E4__38_e10_v16__0r_v8l;
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   aBlock = _Block_copy(v8);
-  [(WKContentView *)m_ptr _accessibilityRetrieveRectsAtSelectionOffset:a3 withText:a4 completionHandler:v9];
+  [(WKContentView *)m_ptr _accessibilityRetrieveRectsAtSelectionOffset:offset withText:text completionHandler:v9];
   _Block_release(v8);
   _Block_release(aBlock);
 }
@@ -27280,10 +27181,10 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   }
 }
 
-- (void)_isNavigatingToAppBoundDomain:(id)a3
+- (void)_isNavigatingToAppBoundDomain:(id)domain
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(domain);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FD5A8;
   v5[1] = v4;
@@ -27303,10 +27204,10 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   _Block_release(0);
 }
 
-- (void)_isForcedIntoAppBoundMode:(id)a3
+- (void)_isForcedIntoAppBoundMode:(id)mode
 {
   m_ptr = self->_page.m_ptr;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(mode);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10FD5D0;
   v5[1] = v4;
@@ -27316,14 +27217,14 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   _Block_release(0);
 }
 
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator
 {
-  v8 = [(WKWebView *)self _searchableObject];
+  _searchableObject = [(WKWebView *)self _searchableObject];
 
-  [v8 performTextSearchWithQueryString:a3 usingOptions:a4 resultAggregator:a5];
+  [_searchableObject performTextSearchWithQueryString:string usingOptions:options resultAggregator:aggregator];
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD140]) initWithSearchableObject:{-[WKWebView _searchableObject](self, "_searchableObject")}];
   v5 = v4;
@@ -27335,9 +27236,9 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   return v5;
 }
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
-  v5 = [(WKWebView *)self _searchableObject:a3];
+  v5 = [(WKWebView *)self _searchableObject:interaction];
   m_ptr = self->_contentView.m_ptr;
   if (v5 == m_ptr)
   {
@@ -27346,9 +27247,9 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   }
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
-  v5 = [(WKWebView *)self _searchableObject:a3];
+  v5 = [(WKWebView *)self _searchableObject:interaction];
   m_ptr = self->_contentView.m_ptr;
   if (v5 == m_ptr)
   {
@@ -27493,9 +27394,9 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   }
 }
 
-- (void)_requestTextInputContextsInRect:(CGRect)a3 completionHandler:(id)a4
+- (void)_requestTextInputContextsInRect:(CGRect)rect completionHandler:(id)handler
 {
-  [(WKWebView *)self convertRect:self->_contentView.m_ptr toView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(WKWebView *)self convertRect:self->_contentView.m_ptr toView:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -27507,7 +27408,7 @@ void __99__WKWebView_WKPrivateIOS___accessibilityRetrieveRectsAtSelectionOffset_
   v17[3] = &__block_descriptor_48_e8_32c91_ZTSKZ77__WKWebView_WKTestingIOS___requestTextInputContextsInRect_completionHandler__E4__46_e17_v16__0__NSArray_8l;
   v15 = 0;
   objc_initWeak(&v15, self);
-  aBlock = _Block_copy(a4);
+  aBlock = _Block_copy(handler);
   v18 = 0;
   objc_copyWeak(&v18, &v15);
   v19 = _Block_copy(aBlock);
@@ -27592,18 +27493,18 @@ void __77__WKWebView_WKTestingIOS___requestTextInputContextsInRect_completionHan
   }
 }
 
-- (void)_focusTextInputContext:(id)a3 placeCaretAt:(CGPoint)a4 completionHandler:(id)a5
+- (void)_focusTextInputContext:(id)context placeCaretAt:(CGPoint)at completionHandler:(id)handler
 {
-  [(WKWebView *)self convertPoint:self->_contentView.m_ptr toView:a4.x, a4.y];
+  [(WKWebView *)self convertPoint:self->_contentView.m_ptr toView:at.x, at.y];
   m_ptr = self->_contentView.m_ptr;
 
-  [(WKContentView *)m_ptr _focusTextInputContext:a3 placeCaretAt:a5 completionHandler:?];
+  [(WKContentView *)m_ptr _focusTextInputContext:context placeCaretAt:handler completionHandler:?];
 }
 
-- (BOOL)_mayContainEditableElementsInRect:(CGRect)a3
+- (BOOL)_mayContainEditableElementsInRect:(CGRect)rect
 {
   m_ptr = self->_contentView.m_ptr;
-  [(WKWebView *)self convertRect:m_ptr toView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(WKWebView *)self convertRect:m_ptr toView:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v10.origin.x = v4;
   v10.origin.y = v5;
   v10.size.width = v6;
@@ -27692,33 +27593,33 @@ void __77__WKWebView_WKTestingIOS___requestTextInputContextsInRect_completionHan
   return v6;
 }
 
-- (id)_scrollbarState:(unint64_t)a3 processID:(unint64_t)a4 isVertical:(BOOL)a5
+- (id)_scrollbarState:(unint64_t)state processID:(unint64_t)d isVertical:(BOOL)vertical
 {
-  v7 = a3 - 1 < 0xFFFFFFFFFFFFFFFELL && a4 - 1 < 0xFFFFFFFFFFFFFFFELL;
+  v7 = state - 1 < 0xFFFFFFFFFFFFFFFELL && d - 1 < 0xFFFFFFFFFFFFFFFELL;
   m_ptr = self->_page.m_ptr;
   v9 = *(*(*(m_ptr + 43) + 32) + 24);
   if (v9)
   {
     if (v7)
     {
-      if (*(v9 + 56) != a3 || *(v9 + 64) != a4)
+      if (*(v9 + 56) != state || *(v9 + 64) != d)
       {
         goto LABEL_18;
       }
 
 LABEL_21:
-      v27 = 0;
-      v28 = 0;
+      stateCopy = 0;
+      dCopy = 0;
       v29 = 0;
       v30 = 1;
       v31 = 0;
       v32 = 256;
       v33 = 0;
-      WTF::TextStream::startGroup(&v27);
+      WTF::TextStream::startGroup(&stateCopy);
       [(WKScrollView *)self->_scrollView.m_ptr showsHorizontalScrollIndicator];
       WTF::TextStream::operator<<();
-      WTF::TextStream::endGroup(&v27);
-      WTF::TextStream::release(&v25, &v27);
+      WTF::TextStream::endGroup(&stateCopy);
+      WTF::TextStream::release(&v25, &stateCopy);
       v13 = v25;
       if (v25)
       {
@@ -27755,15 +27656,15 @@ LABEL_21:
         WTF::StringImpl::destroy(v22, v12);
       }
 
-      v23 = v28;
-      v28 = 0;
+      v23 = dCopy;
+      dCopy = 0;
       if (v23 && atomic_fetch_add_explicit(v23, 0xFFFFFFFE, memory_order_relaxed) == 2)
       {
         WTF::StringImpl::destroy(v23, v12);
       }
 
-      v18 = v27;
-      v27 = 0;
+      v18 = stateCopy;
+      stateCopy = 0;
       if (v18)
       {
         goto LABEL_41;
@@ -27780,14 +27681,14 @@ LABEL_21:
 
   if (!v7)
   {
-    a3 = 0;
+    state = 0;
   }
 
 LABEL_18:
-  v27 = a3;
-  v28 = a4;
+  stateCopy = state;
+  dCopy = d;
   LOBYTE(v29) = v7;
-  WebKit::WebPageProxy::scrollbarStateForScrollingNodeID(m_ptr, a5, &v25);
+  WebKit::WebPageProxy::scrollbarStateForScrollingNodeID(m_ptr, vertical, &v25);
   v11 = v25;
   if (v25)
   {
@@ -27831,18 +27732,18 @@ LABEL_41:
   return v15;
 }
 
-- (id)_colorExtensionViewForTesting:(unint64_t)a3
+- (id)_colorExtensionViewForTesting:(unint64_t)testing
 {
   v3 = 0;
-  if (a3 > 3)
+  if (testing > 3)
   {
-    if (a3 == 4)
+    if (testing == 4)
     {
       p_fixedColorExtensionViews = &self->_fixedColorExtensionViews.m_sides.__elems_[2];
       return p_fixedColorExtensionViews->m_sides.__elems_[0].m_ptr;
     }
 
-    if (a3 == 8)
+    if (testing == 8)
     {
       p_fixedColorExtensionViews = &self->_fixedColorExtensionViews.m_sides.__elems_[1];
       return p_fixedColorExtensionViews->m_sides.__elems_[0].m_ptr;
@@ -27851,13 +27752,13 @@ LABEL_41:
 
   else
   {
-    if (a3 == 1)
+    if (testing == 1)
     {
       p_fixedColorExtensionViews = &self->_fixedColorExtensionViews;
       return p_fixedColorExtensionViews->m_sides.__elems_[0].m_ptr;
     }
 
-    if (a3 == 2)
+    if (testing == 2)
     {
       p_fixedColorExtensionViews = &self->_fixedColorExtensionViews.m_sides.__elems_[3];
       return p_fixedColorExtensionViews->m_sides.__elems_[0].m_ptr;
@@ -27887,7 +27788,7 @@ LABEL_41:
   return result;
 }
 
-- (void)_triggerSystemPreviewActionOnElement:(unint64_t)a3 document:(id)a4 page:(unint64_t)a5
+- (void)_triggerSystemPreviewActionOnElement:(unint64_t)element document:(id)document page:(unint64_t)page
 {
   m_ptr = self->_page.m_ptr;
   if (m_ptr)
@@ -27895,16 +27796,16 @@ LABEL_41:
     v6 = *(m_ptr + 69);
     if (v6)
     {
-      WebKit::SystemPreviewController::triggerSystemPreviewActionWithTargetForTesting(v6, a3, a4, a5);
+      WebKit::SystemPreviewController::triggerSystemPreviewActionWithTargetForTesting(v6, element, document, page);
     }
   }
 }
 
-- (void)_setDeviceOrientationUserPermissionHandlerForTesting:(id)a3
+- (void)_setDeviceOrientationUserPermissionHandlerForTesting:(id)testing
 {
-  if (a3)
+  if (testing)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(testing);
     v5 = WTF::fastMalloc(0x10);
     *v5 = &unk_1F10FD648;
     v5[1] = v4;
@@ -27936,14 +27837,14 @@ LABEL_41:
   }
 }
 
-- (void)_doAfterNextVisibleContentRectAndStablePresentationUpdate:(id)a3
+- (void)_doAfterNextVisibleContentRectAndStablePresentationUpdate:(id)update
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(update);
   v7 = malloc_type_malloc(0x30uLL, 0x10E0040B46A7B6EuLL);
   *v7 = MEMORY[0x1E69E9818];
   v7[1] = 50331650;

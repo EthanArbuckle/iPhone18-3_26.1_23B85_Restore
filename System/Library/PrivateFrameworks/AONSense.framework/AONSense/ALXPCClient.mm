@@ -1,12 +1,12 @@
 @interface ALXPCClient
-- (void)onData:(id)a3;
+- (void)onData:(id)data;
 @end
 
 @implementation ALXPCClient
 
-- (void)onData:(id)a3
+- (void)onData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
 
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;

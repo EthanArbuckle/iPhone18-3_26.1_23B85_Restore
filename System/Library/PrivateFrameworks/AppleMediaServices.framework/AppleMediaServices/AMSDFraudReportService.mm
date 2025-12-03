@@ -1,14 +1,14 @@
 @interface AMSDFraudReportService
-+ (BOOL)isConnectionEntitled:(id)a3;
-+ (id)_reportedScoreFromFSRDataString:(id)a3 error:(id *)a4;
-- (void)performFraudReportRefreshWithOptions:(id)a3 completion:(id)a4;
++ (BOOL)isConnectionEntitled:(id)entitled;
++ (id)_reportedScoreFromFSRDataString:(id)string error:(id *)error;
+- (void)performFraudReportRefreshWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation AMSDFraudReportService
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,22 +20,22 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)performFraudReportRefreshWithOptions:(id)a3 completion:(id)a4
+- (void)performFraudReportRefreshWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = +[AMSLogConfig sharedFraudReportConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
@@ -44,38 +44,38 @@
     v26 = v10;
     v27 = 2114;
     v28 = v12;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running fraud report task.", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running fraud report task.", buf, 0x16u);
   }
 
   v13 = +[AMSDBag defaultBag];
   v14 = [[AMSDFraudReportPrivacyTask alloc] initWithBag:v13];
-  v15 = [v6 transactionIdentifier];
-  v16 = [v6 keyIdentifier];
-  v17 = [(AMSDFraudReportPrivacyTask *)v14 performBlindingWithTransactionID:v15 keyID:v16];
+  transactionIdentifier = [optionsCopy transactionIdentifier];
+  keyIdentifier = [optionsCopy keyIdentifier];
+  v17 = [(AMSDFraudReportPrivacyTask *)v14 performBlindingWithTransactionID:transactionIdentifier keyID:keyIdentifier];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10005AC0C;
   v21[3] = &unk_1002B0850;
   v21[4] = self;
-  v22 = v6;
+  v22 = optionsCopy;
   v23 = v13;
-  v24 = v7;
+  v24 = completionCopy;
   v18 = v13;
-  v19 = v6;
-  v20 = v7;
+  v19 = optionsCopy;
+  v20 = completionCopy;
   [v17 resultWithCompletion:v21];
 }
 
-+ (id)_reportedScoreFromFSRDataString:(id)a3 error:(id *)a4
++ (id)_reportedScoreFromFSRDataString:(id)string error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NSScanner alloc] initWithString:v5];
+  stringCopy = string;
+  v6 = [[NSScanner alloc] initWithString:stringCopy];
 
   [v6 scanUpToString:@"rs=" intoString:0];
   if ([v6 isAtEnd])
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -87,11 +87,11 @@
   v9 = 0;
   if (([v6 scanUnsignedLongLong:&v9] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
 LABEL_10:
       AMSError();
-      *a4 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_13;
     }
 
@@ -100,7 +100,7 @@ LABEL_10:
 
   if (_os_feature_enabled_impl() && v9 >= 0x100)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }

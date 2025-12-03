@@ -1,42 +1,42 @@
 @interface AXIPCClient
 + (id)allClients;
 + (void)initialize;
-- (AXIPCClient)initWithPort:(unsigned int)a3;
-- (AXIPCClient)initWithServiceName:(id)a3;
-- (BOOL)_handleErrorWithMessage:(id)a3 machError:(int)a4 outError:(id *)a5;
-- (BOOL)_handleErrorWithMessage:(id)a3 outError:(id *)a4;
-- (BOOL)_prepareToSendMessage:(id)a3 withError:(id *)a4 prepSuccessHandler:(id)a5;
-- (BOOL)_verifyConnectionWithError:(id *)a3;
-- (BOOL)connectWithError:(id *)a3;
-- (BOOL)disconnectWithError:(id *)a3;
-- (BOOL)sendAsyncMessage:(id)a3 replyOnQueue:(id)a4 replyHandler:(id)a5;
-- (BOOL)sendAsyncMessage:(id)a3 withReplyHandler:(id)a4;
-- (BOOL)sendSimpleMessage:(id)a3 synchronizationPort:(unsigned int)a4 error:(id *)a5;
+- (AXIPCClient)initWithPort:(unsigned int)port;
+- (AXIPCClient)initWithServiceName:(id)name;
+- (BOOL)_handleErrorWithMessage:(id)message machError:(int)error outError:(id *)outError;
+- (BOOL)_handleErrorWithMessage:(id)message outError:(id *)error;
+- (BOOL)_prepareToSendMessage:(id)message withError:(id *)error prepSuccessHandler:(id)handler;
+- (BOOL)_verifyConnectionWithError:(id *)error;
+- (BOOL)connectWithError:(id *)error;
+- (BOOL)disconnectWithError:(id *)error;
+- (BOOL)sendAsyncMessage:(id)message replyOnQueue:(id)queue replyHandler:(id)handler;
+- (BOOL)sendAsyncMessage:(id)message withReplyHandler:(id)handler;
+- (BOOL)sendSimpleMessage:(id)message synchronizationPort:(unsigned int)port error:(id *)error;
 - (BOOL)verifyConnectionExists;
 - (NSString)clientIdentifier;
 - (__CFRunLoopSource)clientCallbackSource;
-- (id)_createRegistrationWithReplyMachPort:(unsigned int)a3 forAsyncReplyOnQueue:(id)a4 responseHandler:(id)a5;
-- (id)_descriptionForMachError:(int)a3;
+- (id)_createRegistrationWithReplyMachPort:(unsigned int)port forAsyncReplyOnQueue:(id)queue responseHandler:(id)handler;
+- (id)_descriptionForMachError:(int)error;
 - (id)description;
-- (id)sendMessage:(id)a3 withError:(id *)a4;
+- (id)sendMessage:(id)message withError:(id *)error;
 - (unsigned)clientCallbackPort;
 - (unsigned)serviceMachPort;
 - (void)_attemptToEstablishConnection;
 - (void)_commonInit;
 - (void)_registerWithServer;
-- (void)_sendRegistrationMessageWithRetries:(int)a3;
+- (void)_sendRegistrationMessageWithRetries:(int)retries;
 - (void)_serverDied;
 - (void)dealloc;
-- (void)establishConnectionWithTimeout:(double)a3 completion:(id)a4;
-- (void)setClientIdentifier:(id)a3;
-- (void)setPortDeathHandler:(id)a3;
+- (void)establishConnectionWithTimeout:(double)timeout completion:(id)completion;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setPortDeathHandler:(id)handler;
 @end
 
 @implementation AXIPCClient
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___AXIPCClient;
   objc_msgSendSuper2(&v2, sel_initialize);
   if (initialize__AXIPCClientInitializeOnceToken != -1)
@@ -59,10 +59,10 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
 + (id)allClients
 {
   [AllClientLock lock];
-  v2 = [AllClients allObjects];
+  allObjects = [AllClients allObjects];
   [AllClientLock unlock];
 
-  return v2;
+  return allObjects;
 }
 
 - (void)_commonInit
@@ -71,8 +71,8 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
   [AllClientLock lock];
   [AllClients addPointer:self];
   [AllClientLock unlock];
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(AXIPCClient *)self setPostConnectionTasks:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [(AXIPCClient *)self setPostConnectionTasks:array];
 
   v4 = [objc_alloc(MEMORY[0x1E6988748]) initWithParentClass:objc_opt_class() description:@"connection" appendUUIDToLabel:1];
   [(AXIPCClient *)self setConnectionQueue:v4];
@@ -81,9 +81,9 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
   self->_connectionServiceLock._os_unfair_lock_opaque = 0;
 }
 
-- (AXIPCClient)initWithServiceName:(id)a3
+- (AXIPCClient)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = AXIPCClient;
   v5 = [(AXIPCClient *)&v8 init];
@@ -91,22 +91,22 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
   if (v5)
   {
     v5->_assignedServerMachPort = 0;
-    [(AXIPCClient *)v5 setServiceName:v4];
+    [(AXIPCClient *)v5 setServiceName:nameCopy];
     [(AXIPCClient *)v6 _commonInit];
   }
 
   return v6;
 }
 
-- (AXIPCClient)initWithPort:(unsigned int)a3
+- (AXIPCClient)initWithPort:(unsigned int)port
 {
   v6.receiver = self;
   v6.super_class = AXIPCClient;
   v4 = [(AXIPCClient *)&v6 init];
   if (v4)
   {
-    AXIncrefSendRight(a3);
-    v4->_assignedServerMachPort = a3;
+    AXIncrefSendRight(port);
+    v4->_assignedServerMachPort = port;
     [(AXIPCClient *)v4 _commonInit];
   }
 
@@ -127,7 +127,7 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
   v22 = 3221225472;
   v23 = __22__AXIPCClient_dealloc__block_invoke;
   v24 = &unk_1E71EA818;
-  v25 = self;
+  selfCopy = self;
   v26 = &v27;
   AX_PERFORM_WITH_LOCK();
   if (!v28[3])
@@ -157,8 +157,8 @@ uint64_t __25__AXIPCClient_initialize__block_invoke()
         v8 = *(*(&v17 + 1) + 8 * i);
         if (v8 != self)
         {
-          v9 = [(AXIPCClient *)v8 serverPort];
-          v6 &= v9 != v28[3];
+          serverPort = [(AXIPCClient *)v8 serverPort];
+          v6 &= serverPort != v28[3];
         }
       }
 
@@ -191,7 +191,7 @@ LABEL_17:
   v13 = 3221225472;
   v14 = __22__AXIPCClient_dealloc__block_invoke_2;
   v15 = &unk_1E71E9B98;
-  v16 = self;
+  selfCopy2 = self;
   AX_PERFORM_WITH_LOCK();
   _Block_object_dispose(&v27, 8);
   v11.receiver = self;
@@ -307,21 +307,21 @@ uint64_t __31__AXIPCClient_clientIdentifier__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AXLogIPC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "Setting client identifier %{public}@", buf, 0xCu);
   }
 
   v7 = MEMORY[0x1E69E9820];
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   AX_PERFORM_WITH_LOCK();
   [(AXIPCClient *)self _registerWithServer:v7];
 }
@@ -428,19 +428,19 @@ void __33__AXIPCClient_clientCallbackPort__block_invoke(uint64_t a1)
   v3 = AXLogIPC();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [MEMORY[0x1E696AF00] currentThread];
-    v5 = [MEMORY[0x1E696AF00] currentThread];
-    v6 = [v5 name];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    name = [currentThread2 name];
     v7 = MEMORY[0x1E696AD98];
-    v8 = [MEMORY[0x1E696AF00] currentThread];
-    v9 = [v7 numberWithBool:{objc_msgSend(v8, "isMainThread")}];
+    currentThread3 = [MEMORY[0x1E696AF00] currentThread];
+    v9 = [v7 numberWithBool:{objc_msgSend(currentThread3, "isMainThread")}];
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXIPCClient shouldRegisterCallbackSourceOnMainRunloop](self, "shouldRegisterCallbackSourceOnMainRunloop")}];
     *buf = 138544386;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = currentThread;
     *&buf[22] = 2114;
-    v27 = v6;
+    v27 = name;
     v28 = 2114;
     v29 = v9;
     v30 = 2114;
@@ -448,8 +448,8 @@ void __33__AXIPCClient_clientCallbackPort__block_invoke(uint64_t a1)
     _os_log_impl(&dword_18B15E000, v3, OS_LOG_TYPE_INFO, "Client (%{public}@) registering with server on thread (%{public}@:name:%{public}@:main:%{public}@). UsesMainThreadRunloop:%{public}@", buf, 0x34u);
   }
 
-  v11 = [(AXIPCClient *)self clientIdentifier];
-  v12 = v11 == 0;
+  clientIdentifier = [(AXIPCClient *)self clientIdentifier];
+  v12 = clientIdentifier == 0;
 
   if (!v12)
   {
@@ -461,7 +461,7 @@ void __33__AXIPCClient_clientCallbackPort__block_invoke(uint64_t a1)
     v21 = 3221225472;
     v22 = __34__AXIPCClient__registerWithServer__block_invoke;
     v23 = &unk_1E71EA1D8;
-    v24 = self;
+    selfCopy = self;
     v25 = buf;
     AX_PERFORM_WITH_LOCK();
     if ((*(*&buf[8] + 24) & 1) == 0)
@@ -503,11 +503,11 @@ void __33__AXIPCClient_clientCallbackPort__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sendRegistrationMessageWithRetries:(int)a3
+- (void)_sendRegistrationMessageWithRetries:(int)retries
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = [(AXIPCClient *)self clientIdentifier];
-  if (!v5)
+  clientIdentifier = [(AXIPCClient *)self clientIdentifier];
+  if (!clientIdentifier)
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = @"client identifer was NULL";
@@ -520,7 +520,7 @@ void __33__AXIPCClient_clientCallbackPort__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v5;
+      v20 = clientIdentifier;
       _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_DEFAULT, "Could not register with server with client identifier: %{public}@", buf, 0xCu);
     }
 
@@ -539,7 +539,7 @@ LABEL_13:
   v6 = [AXIPCMessage alloc];
   v7 = AXIPCRegisterClientWithServer;
   v25 = @"identifier";
-  v26[0] = v5;
+  v26[0] = clientIdentifier;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v9 = [(AXIPCMessage *)v6 initWithKey:v7 payload:v8];
 
@@ -551,9 +551,9 @@ LABEL_13:
     v11 = AXLogIPC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 ax_nonRedundantDescription];
+      ax_nonRedundantDescription = [v10 ax_nonRedundantDescription];
       *buf = 138543362;
-      v20 = v12;
+      v20 = ax_nonRedundantDescription;
       _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_DEFAULT, "Could not register with server: %{public}@", buf, 0xCu);
     }
   }
@@ -563,11 +563,11 @@ LABEL_13:
 LABEL_14:
     v16 = AXLogIPC();
     v17 = v16;
-    if (a3 < 1)
+    if (retries < 1)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(AXIPCClient *)v5 _sendRegistrationMessageWithRetries:v10, v17];
+        [(AXIPCClient *)clientIdentifier _sendRegistrationMessageWithRetries:v10, v17];
       }
     }
 
@@ -576,9 +576,9 @@ LABEL_14:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v20 = v5;
+        v20 = clientIdentifier;
         v21 = 1024;
-        v22 = a3;
+        retriesCopy = retries;
         v23 = 2114;
         v24 = v10;
         _os_log_impl(&dword_18B15E000, v17, OS_LOG_TYPE_DEFAULT, "Could not register with server for %{public}@. %d tries remaining: %{public}@", buf, 0x1Cu);
@@ -615,11 +615,11 @@ void __51__AXIPCClient__sendRegistrationMessageWithRetries___block_invoke(uint64
     v5 = AXLogIPC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 ax_nonRedundantDescription];
+      ax_nonRedundantDescription = [v4 ax_nonRedundantDescription];
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v6;
+      v12 = ax_nonRedundantDescription;
       _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "client could not connect to new service: %{public}@ %{public}@", buf, 0x16u);
     }
   }
@@ -627,11 +627,11 @@ void __51__AXIPCClient__sendRegistrationMessageWithRetries___block_invoke(uint64
   return v3;
 }
 
-- (BOOL)connectWithError:(id *)a3
+- (BOOL)connectWithError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(AXIPCClient *)self serviceName];
-  if (![v5 length] && !self->_assignedServerMachPort)
+  serviceName = [(AXIPCClient *)self serviceName];
+  if (![serviceName length] && !self->_assignedServerMachPort)
   {
     v6 = 0;
     v7 = @"Client could not connect. Was initialized with an empty service name.";
@@ -654,10 +654,10 @@ void __51__AXIPCClient__sendRegistrationMessageWithRetries___block_invoke(uint64
 
   else
   {
-    v9 = [(AXIPCClient *)self usesPerPidLookup];
+    usesPerPidLookup = [(AXIPCClient *)self usesPerPidLookup];
     v10 = *MEMORY[0x1E69E99F8];
-    v11 = [v5 UTF8String];
-    if (v9)
+    uTF8String = [serviceName UTF8String];
+    if (usesPerPidLookup)
     {
       [(AXIPCClient *)self pid];
       v12 = bootstrap_look_up2();
@@ -665,14 +665,14 @@ void __51__AXIPCClient__sendRegistrationMessageWithRetries___block_invoke(uint64
 
     else
     {
-      v12 = bootstrap_look_up(v10, v11, &sp);
+      v12 = bootstrap_look_up(v10, uTF8String, &sp);
     }
 
     v6 = v12;
     assignedServerMachPort = sp;
     if (!sp || v12)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not find server for service: %@. bootstrap error: %s", v5, bootstrap_strerror(v12)];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not find server for service: %@. bootstrap error: %s", serviceName, bootstrap_strerror(v12)];
       assignedServerMachPort = sp;
       if (!sp)
       {
@@ -712,12 +712,12 @@ LABEL_14:
   }
 
 LABEL_19:
-  v16 = [(AXIPCClient *)self _handleErrorWithMessage:v7 machError:v6 outError:a3];
+  v16 = [(AXIPCClient *)self _handleErrorWithMessage:v7 machError:v6 outError:error];
 
   return !v16;
 }
 
-- (BOOL)disconnectWithError:(id *)a3
+- (BOOL)disconnectWithError:(id *)error
 {
   if ([(AXIPCClient *)self isConnected])
   {
@@ -749,7 +749,7 @@ LABEL_19:
     v7 = @"Client could not disconnect. It is already disconnected";
   }
 
-  return ![(AXIPCClient *)self _handleErrorWithMessage:v7 outError:a3];
+  return ![(AXIPCClient *)self _handleErrorWithMessage:v7 outError:error];
 }
 
 uint64_t __35__AXIPCClient_disconnectWithError___block_invoke(uint64_t result)
@@ -759,7 +759,7 @@ uint64_t __35__AXIPCClient_disconnectWithError___block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)_verifyConnectionWithError:(id *)a3
+- (BOOL)_verifyConnectionWithError:(id *)error
 {
   if (self->_serverPort)
   {
@@ -779,19 +779,19 @@ uint64_t __35__AXIPCClient_disconnectWithError___block_invoke(uint64_t result)
     v5 = @"Could not verify connection. server port was nil";
   }
 
-  return ![(AXIPCClient *)self _handleErrorWithMessage:v5 outError:a3];
+  return ![(AXIPCClient *)self _handleErrorWithMessage:v5 outError:error];
 }
 
-- (BOOL)_prepareToSendMessage:(id)a3 withError:(id *)a4 prepSuccessHandler:(id)a5
+- (BOOL)_prepareToSendMessage:(id)message withError:(id *)error prepSuccessHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(AXIPCClient *)self _verifyConnectionWithError:a4])
+  messageCopy = message;
+  handlerCopy = handler;
+  if ([(AXIPCClient *)self _verifyConnectionWithError:error])
   {
-    if (v8)
+    if (messageCopy)
     {
       v26 = 0;
-      v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v26];
+      v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:messageCopy requiringSecureCoding:1 error:&v26];
     }
 
     else
@@ -812,15 +812,15 @@ uint64_t __35__AXIPCClient_disconnectWithError___block_invoke(uint64_t result)
     v12 = *(v19 + 6);
     if (v12)
     {
-      v11 = v9[2](v9, v12, *(v23 + 6), v10);
+      v11 = handlerCopy[2](handlerCopy, v12, *(v23 + 6), v10);
     }
 
     else
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [(AXIPCClient *)self serviceName];
-      v15 = [v13 stringWithFormat:@"Could not send simple message (%@). server port is NULL [%@]", v14, v8, v17, 3221225472, __66__AXIPCClient__prepareToSendMessage_withError_prepSuccessHandler___block_invoke, &unk_1E71EB278, self, &v18, &v22];
-      [(AXIPCClient *)self _handleErrorWithMessage:v15 outError:a4];
+      serviceName = [(AXIPCClient *)self serviceName];
+      v15 = [v13 stringWithFormat:@"Could not send simple message (%@). server port is NULL [%@]", serviceName, messageCopy, v17, 3221225472, __66__AXIPCClient__prepareToSendMessage_withError_prepSuccessHandler___block_invoke, &unk_1E71EB278, self, &v18, &v22];
+      [(AXIPCClient *)self _handleErrorWithMessage:v15 outError:error];
 
       v11 = 0;
     }
@@ -857,21 +857,21 @@ uint64_t __66__AXIPCClient__prepareToSendMessage_withError_prepSuccessHandler___
   return result;
 }
 
-- (BOOL)sendSimpleMessage:(id)a3 synchronizationPort:(unsigned int)a4 error:(id *)a5
+- (BOOL)sendSimpleMessage:(id)message synchronizationPort:(unsigned int)port error:(id *)error
 {
-  v8 = a3;
+  messageCopy = message;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__AXIPCClient_sendSimpleMessage_synchronizationPort_error___block_invoke;
   v11[3] = &unk_1E71EB2A0;
-  v14 = a4;
+  portCopy = port;
   v11[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v9 = v8;
-  LOBYTE(a5) = [(AXIPCClient *)self _prepareToSendMessage:v9 withError:a5 prepSuccessHandler:v11];
+  v12 = messageCopy;
+  errorCopy = error;
+  v9 = messageCopy;
+  LOBYTE(error) = [(AXIPCClient *)self _prepareToSendMessage:v9 withError:error prepSuccessHandler:v11];
 
-  return a5;
+  return error;
 }
 
 BOOL __59__AXIPCClient_sendSimpleMessage_synchronizationPort_error___block_invoke(uint64_t a1, uint64_t a2, int a3, void *a4)
@@ -903,9 +903,9 @@ BOOL __59__AXIPCClient_sendSimpleMessage_synchronizationPort_error___block_invok
   return v12 == 0;
 }
 
-- (id)sendMessage:(id)a3 withError:(id *)a4
+- (id)sendMessage:(id)message withError:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -918,10 +918,10 @@ BOOL __59__AXIPCClient_sendSimpleMessage_synchronizationPort_error___block_invok
   v12[3] = &unk_1E71EB2C8;
   v12[4] = self;
   v14 = &v16;
-  v7 = v6;
+  v7 = messageCopy;
   v13 = v7;
-  v15 = a4;
-  v8 = [(AXIPCClient *)self _prepareToSendMessage:v7 withError:a4 prepSuccessHandler:v12];
+  errorCopy = error;
+  v8 = [(AXIPCClient *)self _prepareToSendMessage:v7 withError:error prepSuccessHandler:v12];
   v9 = v17;
   if (!v8 && v17[5])
   {
@@ -986,30 +986,30 @@ LABEL_8:
   return v20 ^ 1u;
 }
 
-- (BOOL)sendAsyncMessage:(id)a3 withReplyHandler:(id)a4
+- (BOOL)sendAsyncMessage:(id)message withReplyHandler:(id)handler
 {
   v7 = dispatch_get_global_queue(0, 0);
-  LOBYTE(a4) = [(AXIPCClient *)self sendAsyncMessage:a3 replyOnQueue:v7 replyHandler:a4];
+  LOBYTE(handler) = [(AXIPCClient *)self sendAsyncMessage:message replyOnQueue:v7 replyHandler:handler];
 
-  return a4;
+  return handler;
 }
 
-- (BOOL)sendAsyncMessage:(id)a3 replyOnQueue:(id)a4 replyHandler:(id)a5
+- (BOOL)sendAsyncMessage:(id)message replyOnQueue:(id)queue replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  queueCopy = queue;
+  handlerCopy = handler;
   v27 = 0;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __58__AXIPCClient_sendAsyncMessage_replyOnQueue_replyHandler___block_invoke;
   v22[3] = &unk_1E71EB2F0;
   v22[4] = self;
-  v11 = v9;
+  v11 = queueCopy;
   v23 = v11;
-  v12 = v10;
+  v12 = handlerCopy;
   v25 = v12;
-  v13 = v8;
+  v13 = messageCopy;
   v24 = v13;
   v26 = &v27;
   v14 = [(AXIPCClient *)self _prepareToSendMessage:v13 withError:&v27 prepSuccessHandler:v22];
@@ -1082,39 +1082,39 @@ LABEL_3:
   return v10 == 0;
 }
 
-- (id)_createRegistrationWithReplyMachPort:(unsigned int)a3 forAsyncReplyOnQueue:(id)a4 responseHandler:(id)a5
+- (id)_createRegistrationWithReplyMachPort:(unsigned int)port forAsyncReplyOnQueue:(id)queue responseHandler:(id)handler
 {
-  v6 = *&a3;
-  v7 = a5;
-  v8 = a4;
-  v9 = [[AXIPCOutstandingAsyncRequest alloc] initWithReplyPort:v6 handlerQueue:v8 handler:v7];
+  v6 = *&port;
+  handlerCopy = handler;
+  queueCopy = queue;
+  v9 = [[AXIPCOutstandingAsyncRequest alloc] initWithReplyPort:v6 handlerQueue:queueCopy handler:handlerCopy];
 
   [(AXIPCOutstandingAsyncRequest *)v9 registerAndListenForResponse];
 
   return v9;
 }
 
-- (void)setPortDeathHandler:(id)a3
+- (void)setPortDeathHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   portDeathHandler = self->_portDeathHandler;
-  if (portDeathHandler != v4)
+  if (portDeathHandler != handlerCopy)
   {
-    v8 = v4;
+    v8 = handlerCopy;
     if (portDeathHandler)
     {
       self->_portDeathHandler = 0;
 
-      v4 = v8;
+      handlerCopy = v8;
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       v6 = [v8 copy];
       v7 = self->_portDeathHandler;
       self->_portDeathHandler = v6;
 
-      v4 = v8;
+      handlerCopy = v8;
     }
   }
 }
@@ -1122,12 +1122,12 @@ LABEL_3:
 - (void)_serverDied
 {
   [(AXIPCClient *)self setConnected:0];
-  v3 = [(AXIPCClient *)self portDeathHandler];
+  portDeathHandler = [(AXIPCClient *)self portDeathHandler];
 
-  if (v3)
+  if (portDeathHandler)
   {
-    v4 = [(AXIPCClient *)self portDeathHandler];
-    v4[2]();
+    portDeathHandler2 = [(AXIPCClient *)self portDeathHandler];
+    portDeathHandler2[2]();
   }
 
   v7 = 0;
@@ -1179,27 +1179,27 @@ void __26__AXIPCClient__serverDied__block_invoke(uint64_t a1)
   _os_log_error_impl(&dword_18B15E000, log, OS_LOG_TYPE_ERROR, "A connection to the server could not be made after %{public}@s. Calling timeout blocks", &v1, 0xCu);
 }
 
-- (void)establishConnectionWithTimeout:(double)a3 completion:(id)a4
+- (void)establishConnectionWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(AXIPCClient *)self isConnected])
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v7 = [(AXIPCClient *)self connectionQueue];
+      connectionQueue = [(AXIPCClient *)self connectionQueue];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __57__AXIPCClient_establishConnectionWithTimeout_completion___block_invoke;
       v8[3] = &unk_1E71EB318;
-      v10 = a3;
+      timeoutCopy = timeout;
       v8[4] = self;
-      v9 = v6;
-      [v7 performSynchronousWritingBlock:v8];
+      v9 = completionCopy;
+      [connectionQueue performSynchronousWritingBlock:v8];
     }
   }
 }
@@ -1222,64 +1222,64 @@ void __57__AXIPCClient_establishConnectionWithTimeout_completion___block_invoke(
   }
 }
 
-- (BOOL)_handleErrorWithMessage:(id)a3 machError:(int)a4 outError:(id *)a5
+- (BOOL)_handleErrorWithMessage:(id)message machError:(int)error outError:(id *)outError
 {
-  v6 = *&a4;
-  v7 = [(AXIPCClient *)self _handleErrorWithMessage:a3 outError:a5];
+  v6 = *&error;
+  v7 = [(AXIPCClient *)self _handleErrorWithMessage:message outError:outError];
   v8 = v7;
-  if (a5 && v7 && *a5)
+  if (outError && v7 && *outError)
   {
-    v9 = [*a5 userInfo];
-    v10 = [v9 mutableCopy];
+    userInfo = [*outError userInfo];
+    v10 = [userInfo mutableCopy];
 
     v11 = [MEMORY[0x1E696AD98] numberWithInt:v6];
     [v10 setObject:v11 forKeyedSubscript:@"AXIPCErrorKeyMachError"];
 
     v12 = MEMORY[0x1E696ABC0];
-    v13 = [*a5 domain];
-    *a5 = [v12 errorWithDomain:v13 code:objc_msgSend(*a5 userInfo:{"code"), v10}];
+    domain = [*outError domain];
+    *outError = [v12 errorWithDomain:domain code:objc_msgSend(*outError userInfo:{"code"), v10}];
   }
 
   return v8;
 }
 
-- (BOOL)_handleErrorWithMessage:(id)a3 outError:(id *)a4
+- (BOOL)_handleErrorWithMessage:(id)message outError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  messageCopy = message;
+  if (messageCopy)
   {
     v6 = AXLogIPC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v11 = v5;
+      v11 = messageCopy;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_INFO, "AX IPC Client: %{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      v7 = [MEMORY[0x1E69887C8] errorWithDescription:{@"%@", v5}];
+      v7 = [MEMORY[0x1E69887C8] errorWithDescription:{@"%@", messageCopy}];
 LABEL_8:
       v8 = v7;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  return v5 != 0;
+  return messageCopy != 0;
 }
 
-- (id)_descriptionForMachError:(int)a3
+- (id)_descriptionForMachError:(int)error
 {
-  if (a3 > 15871)
+  if (error > 15871)
   {
-    switch(a3)
+    switch(error)
     {
       case 268435457:
         v5 = @"MACH_SEND_IN_PROGRESS";
@@ -1352,7 +1352,7 @@ LABEL_8:
 
         break;
       default:
-        switch(a3)
+        switch(error)
         {
           case 268451841:
             v5 = @"MACH_RCV_IN_PROGRESS";
@@ -1415,7 +1415,7 @@ LABEL_8:
 
             break;
           default:
-            if (a3 != 15872)
+            if (error != 15872)
             {
               goto LABEL_35;
             }
@@ -1429,14 +1429,14 @@ LABEL_8:
     }
   }
 
-  else if (a3 <= 2047)
+  else if (error <= 2047)
   {
-    if (a3)
+    if (error)
     {
-      if (a3 != 1024)
+      if (error != 1024)
       {
 LABEL_35:
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown mach error :%d (0x%x)", *&a3, *&a3, v3];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown mach error :%d (0x%x)", *&error, *&error, v3];
 
         return v5;
       }
@@ -1452,7 +1452,7 @@ LABEL_35:
 
   else
   {
-    switch(a3)
+    switch(error)
     {
       case 0x800:
         v5 = @"MACH_MSG_IPC_KERNEL";

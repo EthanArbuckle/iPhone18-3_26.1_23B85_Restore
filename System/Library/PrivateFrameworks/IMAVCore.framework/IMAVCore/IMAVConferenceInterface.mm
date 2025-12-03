@@ -1,77 +1,77 @@
 @interface IMAVConferenceInterface
 + (BOOL)_useMultipleAVConference;
-+ (void)_postParticipantMediaChangeNotification:(id)a3 cameraChanged:(BOOL)a4 orientationChanged:(BOOL)a5 aspectChanged:(BOOL)a6 contentRectChanged:(BOOL)a7 cameraWillSwitch:(BOOL)a8 camera:(unsigned int)a9 orentation:(unsigned int)a10 aspect:(CGSize)a11 contentRect:(CGRect)a12;
-+ (void)_postParticipantScreenAttributesChangeNotification:(id)a3 cameraChanged:(BOOL)a4 orientationChanged:(BOOL)a5 aspectChanged:(BOOL)a6 cameraWillSwitch:(BOOL)a7 camera:(unsigned int)a8 orentation:(unsigned int)a9 aspect:(CGSize)a10;
-- (BOOL)_hasAVConferenceObjectsForChatsOtherThan:(id)a3;
-- (BOOL)_submitEndCallMetric:(id)a3 forCallID:(int64_t)a4;
-- (BOOL)_submitLoggingInformation:(id)a3 forChat:(id)a4;
-- (BOOL)avChat:(id)a3 generateCallInfoForID:(id)a4 service:(id)a5 usingRelay:(BOOL)a6 callInfo:(id)a7;
++ (void)_postParticipantMediaChangeNotification:(id)notification cameraChanged:(BOOL)changed orientationChanged:(BOOL)orientationChanged aspectChanged:(BOOL)aspectChanged contentRectChanged:(BOOL)rectChanged cameraWillSwitch:(BOOL)switch camera:(unsigned int)camera orentation:(unsigned int)self0 aspect:(CGSize)self1 contentRect:(CGRect)self2;
++ (void)_postParticipantScreenAttributesChangeNotification:(id)notification cameraChanged:(BOOL)changed orientationChanged:(BOOL)orientationChanged aspectChanged:(BOOL)aspectChanged cameraWillSwitch:(BOOL)switch camera:(unsigned int)camera orentation:(unsigned int)orentation aspect:(CGSize)self0;
+- (BOOL)_hasAVConferenceObjectsForChatsOtherThan:(id)than;
+- (BOOL)_submitEndCallMetric:(id)metric forCallID:(int64_t)d;
+- (BOOL)_submitLoggingInformation:(id)information forChat:(id)chat;
+- (BOOL)avChat:(id)chat generateCallInfoForID:(id)d service:(id)service usingRelay:(BOOL)relay callInfo:(id)info;
 - (BOOL)isAVInterfaceReady;
-- (BOOL)isMuteForAVChat:(id)a3;
-- (BOOL)isSendingAudioForAVChat:(id)a3;
-- (BOOL)isSendingVideoForAVChat:(id)a3;
-- (BOOL)startPreviewWithError:(id *)a3;
+- (BOOL)isMuteForAVChat:(id)chat;
+- (BOOL)isSendingAudioForAVChat:(id)chat;
+- (BOOL)isSendingVideoForAVChat:(id)chat;
+- (BOOL)startPreviewWithError:(id *)error;
 - (BOOL)stopPreview;
 - (IMAVConferenceInterface)init;
-- (id)_avChatForConference:(id)a3;
-- (id)_avChatForConference:(id)a3 callID:(int64_t)a4 errorString:(id)a5;
-- (id)_conferenceForAVChat:(id)a3;
+- (id)_avChatForConference:(id)conference;
+- (id)_avChatForConference:(id)conference callID:(int64_t)d errorString:(id)string;
+- (id)_conferenceForAVChat:(id)chat;
 - (id)_controller;
-- (id)_existingConferenceForAVChat:(id)a3;
-- (id)_existingConferenceForAVChatGUID:(id)a3;
+- (id)_existingConferenceForAVChat:(id)chat;
+- (id)_existingConferenceForAVChatGUID:(id)d;
 - (id)_faceTimeUUID;
-- (id)_imAVChatParticipantForConference:(id)a3 callID:(int64_t)a4 errorString:(id)a5;
-- (id)getNatIPFromICEData:(id)a3;
-- (id)natTypeForAVChat:(id)a3;
-- (int)_deviceRoleForAVChat:(id)a3;
-- (int)avChat:(id)a3 endConferenceForUserID:(id)a4;
-- (void)_avChatDealloc:(id)a3;
+- (id)_imAVChatParticipantForConference:(id)conference callID:(int64_t)d errorString:(id)string;
+- (id)getNatIPFromICEData:(id)data;
+- (id)natTypeForAVChat:(id)chat;
+- (int)_deviceRoleForAVChat:(id)chat;
+- (int)avChat:(id)chat endConferenceForUserID:(id)d;
+- (void)_avChatDealloc:(id)dealloc;
 - (void)_cleanupAVInterface;
-- (void)_conferenceEnded:(id)a3;
-- (void)_configureAVConference:(id)a3 forChat:(id)a4;
-- (void)_notifyAboutPotentialCallForChat:(id)a3;
-- (void)_queueAVConferenceForCleanup:(id)a3;
-- (void)avChat:(id)a3 prepareConnectionWithCallInfo:(id)a4;
-- (void)avChat:(id)a3 setLocalLandscapeAspectRatio:(CGSize)a4 localPortraitAspectRatio:(CGSize)a5;
-- (void)avChat:(id)a3 setSendingAudio:(BOOL)a4;
-- (void)avChat:(id)a3 setSendingVideo:(BOOL)a4;
-- (void)cancelConferenceForAVChat:(id)a3;
-- (void)chatRelayedStatusChanged:(id)a3;
+- (void)_conferenceEnded:(id)ended;
+- (void)_configureAVConference:(id)conference forChat:(id)chat;
+- (void)_notifyAboutPotentialCallForChat:(id)chat;
+- (void)_queueAVConferenceForCleanup:(id)cleanup;
+- (void)avChat:(id)chat prepareConnectionWithCallInfo:(id)info;
+- (void)avChat:(id)chat setLocalLandscapeAspectRatio:(CGSize)ratio localPortraitAspectRatio:(CGSize)aspectRatio;
+- (void)avChat:(id)chat setSendingAudio:(BOOL)audio;
+- (void)avChat:(id)chat setSendingVideo:(BOOL)video;
+- (void)cancelConferenceForAVChat:(id)chat;
+- (void)chatRelayedStatusChanged:(id)changed;
 - (void)chatStateUpdated;
-- (void)conference:(id)a3 cancelRelayRequest:(int64_t)a4 requestDict:(id)a5;
-- (void)conference:(id)a3 didChangeLocalVariablesForCallID:(int64_t)a4;
-- (void)conference:(id)a3 didStartSession:(BOOL)a4 withUserInfo:(id)a5;
-- (void)conference:(id)a3 didStopWithCallID:(int64_t)a4 error:(id)a5 callMetadata:(id)a6;
-- (void)conference:(id)a3 inititiateRelayRequest:(int64_t)a4 requestDict:(id)a5;
-- (void)conference:(id)a3 localIPChange:(id)a4 withCallID:(int64_t)a5;
-- (void)conference:(id)a3 receivedFirstRemoteFrameForCallID:(int64_t)a4;
-- (void)conference:(id)a3 reinitializeCallForCallID:(unsigned int)a4;
-- (void)conference:(id)a3 remoteAudioPaused:(BOOL)a4 callID:(int64_t)a5;
-- (void)conference:(id)a3 remoteScreenAttributesChanged:(id)a4 callID:(int64_t)a5;
-- (void)conference:(id)a3 remoteVideoAttributesChanged:(id)a4 callID:(int64_t)a5;
-- (void)conference:(id)a3 remoteVideoPaused:(BOOL)a4 callID:(int64_t)a5;
-- (void)conference:(id)a3 sendRelayUpdate:(int64_t)a4 updateDict:(id)a5;
-- (void)conference:(id)a3 updateInputFrequencyLevel:(id)a4;
-- (void)conference:(id)a3 updateOutputFrequencyLevel:(id)a4;
-- (void)conference:(id)a3 videoQualityNotificationForCallID:(int64_t)a4 isDegraded:(BOOL)a5 isRemote:(BOOL)a6;
-- (void)conference:(id)a3 withCallID:(int64_t)a4 didPauseAudio:(BOOL)a5 error:(id)a6;
-- (void)conference:(id)a3 withCallID:(int64_t)a4 networkHint:(BOOL)a5;
-- (void)conference:(id)a3 withCallID:(int64_t)a4 remoteMediaStalled:(BOOL)a5;
+- (void)conference:(id)conference cancelRelayRequest:(int64_t)request requestDict:(id)dict;
+- (void)conference:(id)conference didChangeLocalVariablesForCallID:(int64_t)d;
+- (void)conference:(id)conference didStartSession:(BOOL)session withUserInfo:(id)info;
+- (void)conference:(id)conference didStopWithCallID:(int64_t)d error:(id)error callMetadata:(id)metadata;
+- (void)conference:(id)conference inititiateRelayRequest:(int64_t)request requestDict:(id)dict;
+- (void)conference:(id)conference localIPChange:(id)change withCallID:(int64_t)d;
+- (void)conference:(id)conference receivedFirstRemoteFrameForCallID:(int64_t)d;
+- (void)conference:(id)conference reinitializeCallForCallID:(unsigned int)d;
+- (void)conference:(id)conference remoteAudioPaused:(BOOL)paused callID:(int64_t)d;
+- (void)conference:(id)conference remoteScreenAttributesChanged:(id)changed callID:(int64_t)d;
+- (void)conference:(id)conference remoteVideoAttributesChanged:(id)changed callID:(int64_t)d;
+- (void)conference:(id)conference remoteVideoPaused:(BOOL)paused callID:(int64_t)d;
+- (void)conference:(id)conference sendRelayUpdate:(int64_t)update updateDict:(id)dict;
+- (void)conference:(id)conference updateInputFrequencyLevel:(id)level;
+- (void)conference:(id)conference updateOutputFrequencyLevel:(id)level;
+- (void)conference:(id)conference videoQualityNotificationForCallID:(int64_t)d isDegraded:(BOOL)degraded isRemote:(BOOL)remote;
+- (void)conference:(id)conference withCallID:(int64_t)d didPauseAudio:(BOOL)audio error:(id)error;
+- (void)conference:(id)conference withCallID:(int64_t)d networkHint:(BOOL)hint;
+- (void)conference:(id)conference withCallID:(int64_t)d remoteMediaStalled:(BOOL)stalled;
 - (void)dealloc;
-- (void)endAVConferenceWithChat:(id)a3 callID:(int64_t)a4;
-- (void)handleRelayCancel:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5;
-- (void)handleRelayInitate:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5;
-- (void)handleRelayUpdate:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5;
+- (void)endAVConferenceWithChat:(id)chat callID:(int64_t)d;
+- (void)handleRelayCancel:(id)cancel fromParticipant:(id)participant callInfo:(id)info;
+- (void)handleRelayInitate:(id)initate fromParticipant:(id)participant callInfo:(id)info;
+- (void)handleRelayUpdate:(id)update fromParticipant:(id)participant callInfo:(id)info;
 - (void)initAVInterface;
 - (void)localVideoBackLayer;
 - (void)localVideoLayer;
-- (void)processRemoteIPChanged:(id)a3 fromParticipant:(id)a4;
-- (void)serverDiedForConference:(id)a3;
-- (void)setLocalVideoBackLayer:(void *)a3;
-- (void)setLocalVideoLayer:(void *)a3;
-- (void)setRemoteVideoPresentationSize:(CGSize)a3 forChat:(id)a4;
-- (void)setRemoteVideoPresentationState:(unsigned int)a3 forChat:(id)a4;
-- (void)updateAVChat:(id)a3 withCallMetadata:(id)a4 isFinalUpdate:(BOOL)a5;
+- (void)processRemoteIPChanged:(id)changed fromParticipant:(id)participant;
+- (void)serverDiedForConference:(id)conference;
+- (void)setLocalVideoBackLayer:(void *)layer;
+- (void)setLocalVideoLayer:(void *)layer;
+- (void)setRemoteVideoPresentationSize:(CGSize)size forChat:(id)chat;
+- (void)setRemoteVideoPresentationState:(unsigned int)state forChat:(id)chat;
+- (void)updateAVChat:(id)chat withCallMetadata:(id)metadata isFinalUpdate:(BOOL)update;
 @end
 
 @implementation IMAVConferenceInterface
@@ -795,14 +795,14 @@
   return v3;
 }
 
-- (void)_configureAVConference:(id)a3 forChat:(id)a4
+- (void)_configureAVConference:(id)conference forChat:(id)chat
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  conferenceCopy = conference;
   v10 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], v6, v7, v8, v9);
   v15 = objc_msgSend_nonWifiFaceTimeAvailable(v10, v11, v12, v13, v14);
 
-  objc_msgSend_setRequiresWifi_(v5, v16, v15 ^ 1u, v17, v18);
+  objc_msgSend_setRequiresWifi_(conferenceCopy, v16, v15 ^ 1u, v17, v18);
   v19 = sub_254761764();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -817,17 +817,17 @@
     _os_log_impl(&dword_254743000, v19, OS_LOG_TYPE_DEFAULT, "Requires wifi: %@", &v25, 0xCu);
   }
 
-  objc_msgSend_setDelegate_(v5, v21, self, v22, v23);
+  objc_msgSend_setDelegate_(conferenceCopy, v21, self, v22, v23);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasAVConferenceObjectsForChatsOtherThan:(id)a3
+- (BOOL)_hasAVConferenceObjectsForChatsOtherThan:(id)than
 {
   avConferencesLock = self->_avConferencesLock;
-  v5 = a3;
+  thanCopy = than;
   objc_msgSend_lock(avConferencesLock, v6, v7, v8, v9);
   avConferences = self->_avConferences;
-  v15 = objc_msgSend_GUID(v5, v11, v12, v13, v14);
+  v15 = objc_msgSend_GUID(thanCopy, v11, v12, v13, v14);
 
   v19 = objc_msgSend_objectForKey_(avConferences, v16, v15, v17, v18);
 
@@ -836,24 +836,24 @@
   return v24;
 }
 
-- (id)_existingConferenceForAVChat:(id)a3
+- (id)_existingConferenceForAVChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v9 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], v5, v6, v7, v8);
   v14 = objc_msgSend_faceTimeSupported(v9, v10, v11, v12, v13);
 
   v19 = 0;
-  if (v4)
+  if (chatCopy)
   {
     if (v14)
     {
-      v19 = objc_msgSend_GUID(v4, v15, v16, v17, v18);
+      v19 = objc_msgSend_GUID(chatCopy, v15, v16, v17, v18);
 
       if (v19)
       {
         objc_msgSend_lock(self->_avConferencesLock, v20, v21, v22, v23);
         avConferences = self->_avConferences;
-        v29 = objc_msgSend_GUID(v4, v25, v26, v27, v28);
+        v29 = objc_msgSend_GUID(chatCopy, v25, v26, v27, v28);
         v19 = objc_msgSend_objectForKey_(avConferences, v30, v29, v31, v32);
 
         objc_msgSend_unlock(self->_avConferencesLock, v33, v34, v35, v36);
@@ -864,16 +864,16 @@
   return v19;
 }
 
-- (id)_existingConferenceForAVChatGUID:(id)a3
+- (id)_existingConferenceForAVChatGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], v5, v6, v7, v8);
   v14 = objc_msgSend_faceTimeSupported(v9, v10, v11, v12, v13);
 
   if (v14)
   {
     objc_msgSend_lock(self->_avConferencesLock, v15, v16, v17, v18);
-    v22 = objc_msgSend_objectForKey_(self->_avConferences, v19, v4, v20, v21);
+    v22 = objc_msgSend_objectForKey_(self->_avConferences, v19, dCopy, v20, v21);
     objc_msgSend_unlock(self->_avConferencesLock, v23, v24, v25, v26);
   }
 
@@ -885,23 +885,23 @@
   return v22;
 }
 
-- (id)_conferenceForAVChat:(id)a3
+- (id)_conferenceForAVChat:(id)chat
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chatCopy = chat;
   v9 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], v5, v6, v7, v8);
   v14 = objc_msgSend_faceTimeSupported(v9, v10, v11, v12, v13);
 
   v19 = 0;
-  if (v4 && v14)
+  if (chatCopy && v14)
   {
-    v20 = objc_msgSend_GUID(v4, v15, v16, v17, v18);
+    v20 = objc_msgSend_GUID(chatCopy, v15, v16, v17, v18);
 
     if (v20)
     {
       objc_msgSend_lock(self->_avConferencesLock, v21, v22, v23, v24);
       avConferences = self->_avConferences;
-      v30 = objc_msgSend_GUID(v4, v26, v27, v28, v29);
+      v30 = objc_msgSend_GUID(chatCopy, v26, v27, v28, v29);
       v19 = objc_msgSend_objectForKey_(avConferences, v31, v30, v32, v33);
 
       objc_msgSend_unlock(self->_avConferencesLock, v34, v35, v36, v37);
@@ -926,13 +926,13 @@
           *buf = 138412546;
           v78 = v19;
           v79 = 2112;
-          v80 = v4;
+          v80 = chatCopy;
           _os_log_impl(&dword_254743000, v52, OS_LOG_TYPE_DEFAULT, "Created AVConference Instance: %@ for chat: %@", buf, 0x16u);
         }
 
         if (v19)
         {
-          objc_msgSend__configureAVConference_forChat_(self, v53, v19, v4, v54);
+          objc_msgSend__configureAVConference_forChat_(self, v53, v19, chatCopy, v54);
           objc_msgSend_lock(self->_avConferencesLock, v55, v56, v57, v58);
           v63 = self->_avConferences;
           if (!v63)
@@ -944,7 +944,7 @@
             v63 = self->_avConferences;
           }
 
-          v66 = objc_msgSend_GUID(v4, v59, v60, v61, v62);
+          v66 = objc_msgSend_GUID(chatCopy, v59, v60, v61, v62);
           objc_msgSend_setObject_forKey_(v63, v67, v19, v66, v68);
 
           objc_msgSend_unlock(self->_avConferencesLock, v69, v70, v71, v72);
@@ -956,7 +956,7 @@
           block[1] = 3221225472;
           block[2] = sub_25476BCFC;
           block[3] = &unk_279783738;
-          v76 = v4;
+          v76 = chatCopy;
           dispatch_async(MEMORY[0x277D85CD0], block);
         }
       }
@@ -973,14 +973,14 @@
   return v19;
 }
 
-- (id)_avChatForConference:(id)a3
+- (id)_avChatForConference:(id)conference
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conferenceCopy = conference;
   objc_msgSend_lock(self->_avConferencesLock, v5, v6, v7, v8);
-  v46 = self;
-  v47 = v4;
-  v12 = objc_msgSend_allKeysForObject_(self->_avConferences, v9, v4, v10, v11);
+  selfCopy = self;
+  v47 = conferenceCopy;
+  v12 = objc_msgSend_allKeysForObject_(self->_avConferences, v9, conferenceCopy, v10, v11);
   v50 = objc_msgSend__avChatArray(IMAVChat, v13, v14, v15, v16);
   v56 = 0u;
   v57 = 0u;
@@ -1046,26 +1046,26 @@
     while (v51);
   }
 
-  objc_msgSend_unlock(v46->_avConferencesLock, v39, v40, v41, v42);
+  objc_msgSend_unlock(selfCopy->_avConferencesLock, v39, v40, v41, v42);
   v43 = v18;
 
   v44 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (id)_imAVChatParticipantForConference:(id)a3 callID:(int64_t)a4 errorString:(id)a5
+- (id)_imAVChatParticipantForConference:(id)conference callID:(int64_t)d errorString:(id)string
 {
-  v6 = objc_msgSend__avChatForConference_callID_errorString_(self, a2, a3, a4, a5);
-  v10 = objc_msgSend_participantWithAVConferenceCallID_(v6, v7, a4, v8, v9);
+  v6 = objc_msgSend__avChatForConference_callID_errorString_(self, a2, conference, d, string);
+  v10 = objc_msgSend_participantWithAVConferenceCallID_(v6, v7, d, v8, v9);
 
   return v10;
 }
 
-- (id)_avChatForConference:(id)a3 callID:(int64_t)a4 errorString:(id)a5
+- (id)_avChatForConference:(id)conference callID:(int64_t)d errorString:(id)string
 {
   v85 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v16 = objc_msgSend__avChatForConference_(self, v9, a3, v10, v11);
+  stringCopy = string;
+  v16 = objc_msgSend__avChatForConference_(self, v9, conference, v10, v11);
   if (v16)
   {
     goto LABEL_27;
@@ -1093,7 +1093,7 @@
         }
 
         v33 = *(*(&v74 + 1) + 8 * i);
-        v34 = objc_msgSend_participantWithAVConferenceCallID_(v33, v28, a4, v29, v30);
+        v34 = objc_msgSend_participantWithAVConferenceCallID_(v33, v28, d, v29, v30);
 
         if (v34)
         {
@@ -1117,7 +1117,7 @@ LABEL_12:
   v39 = objc_msgSend__chatListLock(IMAVChat, v35, v36, v37, v38);
   objc_msgSend_unlock(v39, v40, v41, v42, v43);
 
-  if (a4)
+  if (d)
   {
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"alwaysFixCallIDs", @"com.apple.conference", 0);
     if (v16 || !AppBooleanValue)
@@ -1130,9 +1130,9 @@ LABEL_17:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v79 = v8;
+      v79 = stringCopy;
       v80 = 1024;
-      v81 = a4;
+      dCopy = d;
       _os_log_impl(&dword_254743000, v45, OS_LOG_TYPE_DEFAULT, "%@: Found no conference for CallID: %d  fixing this...", buf, 0x12u);
     }
 
@@ -1174,9 +1174,9 @@ LABEL_24:
     *buf = 138412802;
     v79 = v16;
     v80 = 1024;
-    v81 = v70;
+    dCopy = v70;
     v82 = 1024;
-    v83 = a4;
+    dCopy2 = d;
     _os_log_impl(&dword_254743000, v65, OS_LOG_TYPE_DEFAULT, "_avChatForConference Found chat: %@ (%d) for callID: %d", buf, 0x18u);
   }
 
@@ -1188,9 +1188,9 @@ LABEL_27:
   return v71;
 }
 
-- (int)_deviceRoleForAVChat:(id)a3
+- (int)_deviceRoleForAVChat:(id)chat
 {
-  if (objc_msgSend_isRelayed(a3, a2, a3, v3, v4))
+  if (objc_msgSend_isRelayed(chat, a2, chat, v3, v4))
   {
     return 3;
   }
@@ -1269,18 +1269,18 @@ LABEL_27:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queueAVConferenceForCleanup:(id)a3
+- (void)_queueAVConferenceForCleanup:(id)cleanup
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cleanupCopy = cleanup;
   v9 = objc_msgSend__useMultipleAVConference(IMAVConferenceInterface, v5, v6, v7, v8);
-  if (v4 && v9)
+  if (cleanupCopy && v9)
   {
     v10 = sub_254761764();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v49 = 138412290;
-      v50 = v4;
+      v50 = cleanupCopy;
       _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "Queue AVConference for cleanup: %@", &v49, 0xCu);
     }
 
@@ -1294,20 +1294,20 @@ LABEL_27:
       avConferencesToCleanup = self->_avConferencesToCleanup;
     }
 
-    objc_msgSend_addObject_(avConferencesToCleanup, v11, v4, v12, v13);
-    objc_msgSend_setDelegate_(v4, v17, 0, v18, v19);
+    objc_msgSend_addObject_(avConferencesToCleanup, v11, cleanupCopy, v12, v13);
+    objc_msgSend_setDelegate_(cleanupCopy, v17, 0, v18, v19);
     self->_pendingCleanup = 1;
     objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x277D82BB8], v20, self, sel__cleanupAVInterface, 0);
     objc_msgSend_performSelector_withObject_afterDelay_(self, v21, sel__cleanupAVInterface, 0, v22, 5.0);
     objc_msgSend_lock(self->_avConferencesLock, v23, v24, v25, v26);
-    v30 = objc_msgSend_allKeysForObject_(self->_avConferences, v27, v4, v28, v29);
+    v30 = objc_msgSend_allKeysForObject_(self->_avConferences, v27, cleanupCopy, v28, v29);
     if (objc_msgSend_count(v30, v31, v32, v33, v34))
     {
       v39 = sub_254761764();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         v49 = 138412290;
-        v50 = v4;
+        v50 = cleanupCopy;
         _os_log_impl(&dword_254743000, v39, OS_LOG_TYPE_DEFAULT, "Removing AVConference from available conference sets: %@", &v49, 0xCu);
       }
 
@@ -1371,33 +1371,33 @@ LABEL_27:
   return 1;
 }
 
-- (void)_conferenceEnded:(id)a3
+- (void)_conferenceEnded:(id)ended
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endedCopy = ended;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = endedCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "chat: %@", buf, 0xCu);
   }
 
-  objc_msgSend_avChat_endConferenceForUserID_(self, v6, v4, 0, v7);
+  objc_msgSend_avChat_endConferenceForUserID_(self, v6, endedCopy, 0, v7);
   v16.receiver = self;
   v16.super_class = IMAVConferenceInterface;
-  [(IMAVInterface *)&v16 _conferenceEnded:v4];
-  v11 = objc_msgSend__existingConferenceForAVChat_(self, v8, v4, v9, v10);
+  [(IMAVInterface *)&v16 _conferenceEnded:endedCopy];
+  v11 = objc_msgSend__existingConferenceForAVChat_(self, v8, endedCopy, v9, v10);
   objc_msgSend__queueAVConferenceForCleanup_(self, v12, v11, v13, v14);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isMuteForAVChat:(id)a3
+- (BOOL)isMuteForAVChat:(id)chat
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  chatCopy = chat;
+  v9 = chatCopy;
+  if (!chatCopy)
   {
     v24 = sub_254761764();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1409,7 +1409,7 @@ LABEL_27:
     goto LABEL_9;
   }
 
-  if (objc_msgSend__bustedCallID(v4, v5, v6, v7, v8) < 1)
+  if (objc_msgSend__bustedCallID(chatCopy, v5, v6, v7, v8) < 1)
   {
 LABEL_9:
     isMicrophoneMuted = 0;
@@ -1428,14 +1428,14 @@ LABEL_10:
   return isMicrophoneMuted;
 }
 
-- (BOOL)isSendingAudioForAVChat:(id)a3
+- (BOOL)isSendingAudioForAVChat:(id)chat
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  chatCopy = chat;
+  v9 = chatCopy;
+  if (chatCopy)
   {
-    if (objc_msgSend__bustedCallID(v4, v5, v6, v7, v8) < 1)
+    if (objc_msgSend__bustedCallID(chatCopy, v5, v6, v7, v8) < 1)
     {
       v34 = 1;
       goto LABEL_17;
@@ -1498,12 +1498,12 @@ LABEL_17:
   return v34 & 1;
 }
 
-- (void)avChat:(id)a3 setSendingAudio:(BOOL)a4
+- (void)avChat:(id)chat setSendingAudio:(BOOL)audio
 {
-  v4 = a4;
+  audioCopy = audio;
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (v10)
+  chatCopy = chat;
+  if (chatCopy)
   {
     if ((objc_msgSend_isAVInterfaceReady(self, v6, v7, v8, v9) & 1) == 0)
     {
@@ -1513,7 +1513,7 @@ LABEL_17:
     v15 = sub_254761764();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (audioCopy)
       {
         v20 = @"YES";
       }
@@ -1524,34 +1524,34 @@ LABEL_17:
       }
 
       *buf = 138412802;
-      v47 = v10;
+      v47 = chatCopy;
       v48 = 2112;
       v49 = v20;
       v50 = 1024;
-      v51 = objc_msgSend__bustedCallID(v10, v16, v17, v18, v19);
+      v51 = objc_msgSend__bustedCallID(chatCopy, v16, v17, v18, v19);
       _os_log_impl(&dword_254743000, v15, OS_LOG_TYPE_DEFAULT, "Setting %@ to sending audio: %@  callID: %d", buf, 0x1Cu);
     }
 
-    if (objc_msgSend_state(v10, v21, v22, v23, v24) >= 5)
+    if (objc_msgSend_state(chatCopy, v21, v22, v23, v24) >= 5)
     {
       objc_msgSend__conferenceForAVChat_(self, v25, 0, v26, v27);
     }
 
     else
     {
-      objc_msgSend__conferenceForAVChat_(self, v25, v10, v26, v27);
+      objc_msgSend__conferenceForAVChat_(self, v25, chatCopy, v26, v27);
     }
     v28 = ;
-    v33 = objc_msgSend__bustedCallID(v10, v29, v30, v31, v32);
+    v33 = objc_msgSend__bustedCallID(chatCopy, v29, v30, v31, v32);
     v45 = 0;
-    v35 = objc_msgSend_setPauseAudio_callID_error_(v28, v34, !v4, v33, &v45);
+    v35 = objc_msgSend_setPauseAudio_callID_error_(v28, v34, !audioCopy, v33, &v45);
     v36 = v45;
     if ((v35 & 1) == 0)
     {
       v37 = sub_254761764();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = objc_msgSend__bustedCallID(v10, v38, v39, v40, v41);
+        v42 = objc_msgSend__bustedCallID(chatCopy, v38, v39, v40, v41);
         *buf = 67109120;
         LODWORD(v47) = v42;
         _os_log_impl(&dword_254743000, v37, OS_LOG_TYPE_DEFAULT, "[WARN] Could not pause video for callID: %d", buf, 8u);
@@ -1583,12 +1583,12 @@ LABEL_17:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSendingVideoForAVChat:(id)a3
+- (BOOL)isSendingVideoForAVChat:(id)chat
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  chatCopy = chat;
+  v9 = chatCopy;
+  if (!chatCopy)
   {
     v30 = sub_254761764();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1601,7 +1601,7 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  if (objc_msgSend__bustedCallID(v4, v5, v6, v7, v8) < 1)
+  if (objc_msgSend__bustedCallID(chatCopy, v5, v6, v7, v8) < 1)
   {
     v39 = 1;
   }
@@ -1662,13 +1662,13 @@ LABEL_20:
   return v39 & 1;
 }
 
-- (void)avChat:(id)a3 setSendingVideo:(BOOL)a4
+- (void)avChat:(id)chat setSendingVideo:(BOOL)video
 {
-  v4 = a4;
+  videoCopy = video;
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v11 = v6;
-  if (!v6)
+  chatCopy = chat;
+  v11 = chatCopy;
+  if (!chatCopy)
   {
     v33 = sub_254761764();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -1680,7 +1680,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (objc_msgSend_isVideo(v6, v7, v8, v9, v10))
+  if (objc_msgSend_isVideo(chatCopy, v7, v8, v9, v10))
   {
     if ((objc_msgSend_isAVInterfaceReady(self, v12, v13, v14, v15) & 1) == 0)
     {
@@ -1690,7 +1690,7 @@ LABEL_20:
     v20 = sub_254761764();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (videoCopy)
       {
         v25 = @"YES";
       }
@@ -1721,7 +1721,7 @@ LABEL_20:
     v33 = ;
     if (objc_msgSend_state(v11, v34, v35, v36, v37) <= 3)
     {
-      if (v4)
+      if (videoCopy)
       {
         v42 = objc_msgSend_isSendingVideoExpected(self, v38, v39, v40, v41);
 
@@ -1747,16 +1747,16 @@ LABEL_20:
     }
 
     v51 = objc_msgSend__bustedCallID(v11, v38, v39, v40, v41);
-    objc_msgSend_conference_callID_setPauseVideo_(self, v52, v33, v51, !v4);
+    objc_msgSend_conference_callID_setPauseVideo_(self, v52, v33, v51, !videoCopy);
 LABEL_23:
   }
 
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startPreviewWithError:(id *)a3
+- (BOOL)startPreviewWithError:(id *)error
 {
-  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], a2, a3, v3, v4);
+  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D07DB0], a2, error, v3, v4);
   v11 = objc_msgSend_faceTimeSupported(v6, v7, v8, v9, v10);
 
   if (v11)
@@ -1781,22 +1781,22 @@ LABEL_23:
   return 1;
 }
 
-- (void)endAVConferenceWithChat:(id)a3 callID:(int64_t)a4
+- (void)endAVConferenceWithChat:(id)chat callID:(int64_t)d
 {
-  v7 = objc_msgSend_GUID(a3, a2, a3, a4, v4);
+  v7 = objc_msgSend_GUID(chat, a2, chat, d, v4);
   v14 = objc_msgSend__existingConferenceForAVChatGUID_(self, v8, v7, v9, v10);
 
-  objc_msgSend_stopCallID_(v14, v11, a4, v12, v13);
+  objc_msgSend_stopCallID_(v14, v11, d, v12, v13);
 }
 
-- (void)_avChatDealloc:(id)a3
+- (void)_avChatDealloc:(id)dealloc
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  deallocCopy = dealloc;
+  v9 = deallocCopy;
+  if (deallocCopy)
   {
-    v10 = objc_msgSend__conferenceQueue(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend__conferenceQueue(deallocCopy, v5, v6, v7, v8);
 
     if (v10)
     {
@@ -1888,12 +1888,12 @@ LABEL_23:
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (int)avChat:(id)a3 endConferenceForUserID:(id)a4
+- (int)avChat:(id)chat endConferenceForUserID:(id)d
 {
   v103 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v11 = a4;
-  if (!v6)
+  chatCopy = chat;
+  dCopy = d;
+  if (!chatCopy)
   {
     goto LABEL_25;
   }
@@ -1919,22 +1919,22 @@ LABEL_5:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v98 = v6;
+    v98 = chatCopy;
     v99 = 2112;
-    v100 = v11;
+    v100 = dCopy;
     _os_log_impl(&dword_254743000, v27, OS_LOG_TYPE_DEFAULT, "chat: %@  userID: %@", buf, 0x16u);
   }
 
-  v31 = objc_msgSend__existingConferenceForAVChat_(self, v28, v6, v29, v30);
+  v31 = objc_msgSend__existingConferenceForAVChat_(self, v28, chatCopy, v29, v30);
   if (v31)
   {
-    v85 = v11;
+    v85 = dCopy;
     v32 = sub_254761764();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = objc_msgSend_otherIMHandle(v6, v33, v34, v35, v36);
+      v37 = objc_msgSend_otherIMHandle(chatCopy, v33, v34, v35, v36);
       v42 = objc_msgSend_ID(v37, v38, v39, v40, v41);
-      v47 = objc_msgSend__bustedCallID(v6, v43, v44, v45, v46);
+      v47 = objc_msgSend__bustedCallID(chatCopy, v43, v44, v45, v46);
       *buf = 138412802;
       v98 = v42;
       v99 = 2112;
@@ -1944,13 +1944,13 @@ LABEL_5:
       _os_log_impl(&dword_254743000, v32, OS_LOG_TYPE_DEFAULT, "Stopping AVConference with: %@ (%@)  callID: %d", buf, 0x1Cu);
     }
 
-    objc_msgSend_updateAVChat_withCallMetadata_isFinalUpdate_(self, v48, v6, 0, 1);
+    objc_msgSend_updateAVChat_withCallMetadata_isFinalUpdate_(self, v48, chatCopy, 0, 1);
     v93 = 0u;
     v94 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v86 = v6;
-    v53 = objc_msgSend_remoteParticipants(v6, v49, v50, v51, v52);
+    v86 = chatCopy;
+    v53 = objc_msgSend_remoteParticipants(chatCopy, v49, v50, v51, v52);
     v55 = objc_msgSend_countByEnumeratingWithState_objects_count_(v53, v54, &v91, v96, 16);
     if (v55)
     {
@@ -2005,8 +2005,8 @@ LABEL_5:
     }
 
     v82 = 1;
-    v11 = v85;
-    v6 = v86;
+    dCopy = v85;
+    chatCopy = v86;
   }
 
   else
@@ -2019,35 +2019,35 @@ LABEL_28:
   return v82;
 }
 
-- (void)cancelConferenceForAVChat:(id)a3
+- (void)cancelConferenceForAVChat:(id)chat
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chatCopy = chat;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v92 = v4;
+    v92 = chatCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "chat: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (chatCopy)
   {
     v10 = objc_msgSend_sharedInstance(IMAVController, v6, v7, v8, v9);
     if (objc_msgSend__shouldRunConferences(v10, v11, v12, v13, v14))
     {
 
 LABEL_7:
-      v28 = objc_msgSend__existingConferenceForAVChat_(self, v19, v4, v20, v21);
+      v28 = objc_msgSend__existingConferenceForAVChat_(self, v19, chatCopy, v20, v21);
       v29 = sub_254761764();
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
       if (v28)
       {
         if (v30)
         {
-          v35 = objc_msgSend_otherIMHandle(v4, v31, v32, v33, v34);
+          v35 = objc_msgSend_otherIMHandle(chatCopy, v31, v32, v33, v34);
           v40 = objc_msgSend_ID(v35, v36, v37, v38, v39);
-          v45 = objc_msgSend__bustedCallID(v4, v41, v42, v43, v44);
+          v45 = objc_msgSend__bustedCallID(chatCopy, v41, v42, v43, v44);
           *buf = 138412802;
           v92 = v40;
           v93 = 2112;
@@ -2057,17 +2057,17 @@ LABEL_7:
           _os_log_impl(&dword_254743000, v29, OS_LOG_TYPE_DEFAULT, "Canceling AVConference with: %@ (%@)  callID: %d", buf, 0x1Cu);
         }
 
-        objc_msgSend_updateAVChat_withCallMetadata_isFinalUpdate_(self, v46, v4, 0, 1);
+        objc_msgSend_updateAVChat_withCallMetadata_isFinalUpdate_(self, v46, chatCopy, 0, 1);
         v87 = 0u;
         v88 = 0u;
         v85 = 0u;
         v86 = 0u;
-        v29 = objc_msgSend_remoteParticipants(v4, v47, v48, v49, v50);
+        v29 = objc_msgSend_remoteParticipants(chatCopy, v47, v48, v49, v50);
         v52 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v51, &v85, v90, 16);
         if (v52)
         {
           v57 = v52;
-          v80 = v4;
+          v80 = chatCopy;
           v58 = *v86;
           do
           {
@@ -2115,14 +2115,14 @@ LABEL_7:
           }
 
           while (v57);
-          v4 = v80;
+          chatCopy = v80;
         }
       }
 
       else if (v30)
       {
         *buf = 138412290;
-        v92 = v4;
+        v92 = chatCopy;
         _os_log_impl(&dword_254743000, v29, OS_LOG_TYPE_DEFAULT, "Not conference found to cancel for chat: %@", buf, 0xCu);
       }
 
@@ -2150,16 +2150,16 @@ LABEL_30:
   v79 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyAboutPotentialCallForChat:(id)a3
+- (void)_notifyAboutPotentialCallForChat:(id)chat
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chatCopy = chat;
   v15.receiver = self;
   v15.super_class = IMAVConferenceInterface;
-  [(IMAVInterface *)&v15 _notifyAboutPotentialCallForChat:v4];
-  if (v4)
+  [(IMAVInterface *)&v15 _notifyAboutPotentialCallForChat:chatCopy];
+  if (chatCopy)
   {
-    v8 = objc_msgSend__conferenceForAVChat_(self, v5, v4, v6, v7);
+    v8 = objc_msgSend__conferenceForAVChat_(self, v5, chatCopy, v6, v7);
     v9 = sub_254761764();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -2174,15 +2174,15 @@ LABEL_30:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getNatIPFromICEData:(id)a3
+- (id)getNatIPFromICEData:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412290;
-    v24 = v3;
+    v24 = dataCopy;
     _os_log_impl(&dword_254743000, v4, OS_LOG_TYPE_DEFAULT, "Data: %@", &v23, 0xCu);
   }
 
@@ -2190,9 +2190,9 @@ LABEL_30:
   v14 = objc_msgSend_faceTimeSupported(v9, v10, v11, v12, v13);
 
   v18 = 0;
-  if (v3 && v14)
+  if (dataCopy && v14)
   {
-    v18 = objc_msgSend_externalAddressForSelfConnectionBlob_(qword_28134A5C0, v15, v3, v16, v17);
+    v18 = objc_msgSend_externalAddressForSelfConnectionBlob_(qword_28134A5C0, v15, dataCopy, v16, v17);
     v19 = sub_254761764();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -2217,20 +2217,20 @@ LABEL_30:
   return v18;
 }
 
-- (id)natTypeForAVChat:(id)a3
+- (id)natTypeForAVChat:(id)chat
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  chatCopy = chat;
+  if (chatCopy)
   {
-    v12 = objc_msgSend__existingConferenceForAVChat_(self, v4, v7, v5, v6);
+    v12 = objc_msgSend__existingConferenceForAVChat_(self, v4, chatCopy, v5, v6);
     if (v12)
     {
-      v13 = objc_msgSend__timings(v7, v8, v9, v10, v11);
+      v13 = objc_msgSend__timings(chatCopy, v8, v9, v10, v11);
       objc_msgSend_startTimingForKey_(v13, v14, @"connection-data-nat-type-time", v15, v16);
 
       v21 = objc_msgSend_natType(v12, v17, v18, v19, v20);
-      v26 = objc_msgSend__timings(v7, v22, v23, v24, v25);
+      v26 = objc_msgSend__timings(chatCopy, v22, v23, v24, v25);
       objc_msgSend_stopTimingForKey_(v26, v27, @"connection-data-nat-type-time", v28, v29);
 
       v30 = sub_254761764();
@@ -2279,39 +2279,39 @@ LABEL_30:
   return v35;
 }
 
-- (void)avChat:(id)a3 prepareConnectionWithCallInfo:(id)a4
+- (void)avChat:(id)chat prepareConnectionWithCallInfo:(id)info
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  chatCopy = chat;
+  infoCopy = info;
   v8 = sub_254761764();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v57 = v6;
+    v57 = chatCopy;
     v58 = 2112;
-    v59 = v7;
+    v59 = infoCopy;
     _os_log_impl(&dword_254743000, v8, OS_LOG_TYPE_DEFAULT, "avChat: %@  callInfo: %@", buf, 0x16u);
   }
 
-  if (v6)
+  if (chatCopy)
   {
     v13 = objc_msgSend_sharedInstance(IMAVController, v9, v10, v11, v12);
     if (objc_msgSend__shouldRunConferences(v13, v14, v15, v16, v17))
     {
 
 LABEL_9:
-      v26 = objc_msgSend_otherIMHandle(v6, v22, v23, v24, v25);
-      v37 = objc_msgSend_participantMatchingIMHandle_(v6, v34, v26, v35, v36);
-      v41 = objc_msgSend__conferenceForAVChat_(self, v38, v6, v39, v40);
-      v46 = objc_msgSend__conferenceQueue(v6, v42, v43, v44, v45);
+      v26 = objc_msgSend_otherIMHandle(chatCopy, v22, v23, v24, v25);
+      v37 = objc_msgSend_participantMatchingIMHandle_(chatCopy, v34, v26, v35, v36);
+      v41 = objc_msgSend__conferenceForAVChat_(self, v38, chatCopy, v39, v40);
+      v46 = objc_msgSend__conferenceQueue(chatCopy, v42, v43, v44, v45);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_25476E930;
       block[3] = &unk_2797837B0;
-      v51 = v6;
-      v52 = self;
-      v53 = v7;
+      v51 = chatCopy;
+      selfCopy = self;
+      v53 = infoCopy;
       v54 = v41;
       v55 = v37;
       v47 = v37;
@@ -2355,14 +2355,14 @@ LABEL_13:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)avChat:(id)a3 generateCallInfoForID:(id)a4 service:(id)a5 usingRelay:(BOOL)a6 callInfo:(id)a7
+- (BOOL)avChat:(id)chat generateCallInfoForID:(id)d service:(id)service usingRelay:(BOOL)relay callInfo:(id)info
 {
   v78 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v18 = a7;
-  if (v11 && objc_msgSend_state(v11, v14, v15, v16, v17) != 5)
+  chatCopy = chat;
+  dCopy = d;
+  serviceCopy = service;
+  infoCopy = info;
+  if (chatCopy && objc_msgSend_state(chatCopy, v14, v15, v16, v17) != 5)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2376,26 +2376,26 @@ LABEL_13:
     v72[3] = sub_25476FD7C;
     v72[4] = sub_25476FD8C;
     v73 = 0;
-    v24 = objc_msgSend__conferenceForAVChat_(self, v19, v11, v20, v21);
-    v29 = objc_msgSend__timings(v11, v25, v26, v27, v28);
+    v24 = objc_msgSend__conferenceForAVChat_(self, v19, chatCopy, v20, v21);
+    v29 = objc_msgSend__timings(chatCopy, v25, v26, v27, v28);
     objc_msgSend_stopTimingForKey_(v29, v30, @"time-to-query-for-connection-data-gathering", v31, v32);
 
-    v37 = objc_msgSend__timings(v11, v33, v34, v35, v36);
+    v37 = objc_msgSend__timings(chatCopy, v33, v34, v35, v36);
     objc_msgSend_startTimingForKey_(v37, v38, @"full-connection-data-gather", v39, v40);
 
-    v45 = objc_msgSend__conferenceQueue(v11, v41, v42, v43, v44);
+    v45 = objc_msgSend__conferenceQueue(chatCopy, v41, v42, v43, v44);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_25476FD94;
     block[3] = &unk_279783800;
-    v46 = v11;
+    v46 = chatCopy;
     v65 = v46;
-    v66 = self;
+    selfCopy = self;
     v47 = v24;
     v67 = v47;
-    v48 = v18;
+    v48 = infoCopy;
     v68 = v48;
-    v69 = v12;
+    v69 = dCopy;
     v70 = buf;
     v71 = v72;
     dispatch_sync(v45, block);
@@ -2416,9 +2416,9 @@ LABEL_13:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = dCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v11;
+      *&buf[14] = chatCopy;
       _os_log_impl(&dword_254743000, v22, OS_LOG_TYPE_DEFAULT, "Tried to get connection data for: %@  in a dead call: %@   => returning nil", buf, 0x16u);
     }
 
@@ -2429,17 +2429,17 @@ LABEL_13:
   return v23;
 }
 
-- (void)conference:(id)a3 didStartSession:(BOOL)a4 withUserInfo:(id)a5
+- (void)conference:(id)conference didStartSession:(BOOL)session withUserInfo:(id)info
 {
-  v6 = a4;
+  sessionCopy = session;
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  conferenceCopy = conference;
+  infoCopy = info;
   v10 = sub_254761764();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v6)
+    if (sessionCopy)
     {
       v11 = @"YES";
     }
@@ -2454,28 +2454,28 @@ LABEL_13:
   v23[1] = 3221225472;
   v23[2] = sub_254770A54;
   v23[3] = &unk_279783828;
-  v27 = v6;
-  v24 = v8;
-  v25 = v9;
-  v26 = self;
-  v17 = v9;
-  v18 = v8;
+  v27 = sessionCopy;
+  v24 = conferenceCopy;
+  v25 = infoCopy;
+  selfCopy = self;
+  v17 = infoCopy;
+  v18 = conferenceCopy;
   objc_msgSend___im_performBlock_(v16, v19, v23, v20, v21);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 didStopWithCallID:(int64_t)a4 error:(id)a5 callMetadata:(id)a6
+- (void)conference:(id)conference didStopWithCallID:(int64_t)d error:(id)error callMetadata:(id)metadata
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  conferenceCopy = conference;
+  errorCopy = error;
+  metadataCopy = metadata;
   v13 = sub_254761764();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v33 = a4;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v13, OS_LOG_TYPE_DEFAULT, "Informed that conference did stop with callID: %ld", buf, 0xCu);
   }
 
@@ -2484,62 +2484,62 @@ LABEL_13:
   v26[1] = 3221225472;
   v26[2] = sub_2547711D8;
   v26[3] = &unk_279783850;
-  v30 = self;
-  v31 = a4;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
+  selfCopy = self;
+  dCopy2 = d;
+  v27 = conferenceCopy;
+  v28 = errorCopy;
+  v29 = metadataCopy;
+  v19 = metadataCopy;
+  v20 = errorCopy;
+  v21 = conferenceCopy;
   objc_msgSend___im_performBlock_(v18, v22, v26, v23, v24);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 updateInputFrequencyLevel:(id)a4
+- (void)conference:(id)conference updateInputFrequencyLevel:(id)level
 {
-  v6 = a3;
-  v7 = a4;
+  conferenceCopy = conference;
+  levelCopy = level;
   v12 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v8, v9, v10, v11);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_2547714D0;
   v18[3] = &unk_279783760;
   v18[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v13 = v7;
-  v14 = v6;
+  v19 = conferenceCopy;
+  v20 = levelCopy;
+  v13 = levelCopy;
+  v14 = conferenceCopy;
   objc_msgSend___im_performBlock_(v12, v15, v18, v16, v17);
 }
 
-- (void)conference:(id)a3 updateOutputFrequencyLevel:(id)a4
+- (void)conference:(id)conference updateOutputFrequencyLevel:(id)level
 {
-  v6 = a3;
-  v7 = a4;
+  conferenceCopy = conference;
+  levelCopy = level;
   v12 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v8, v9, v10, v11);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_254771620;
   v18[3] = &unk_279783760;
   v18[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v13 = v7;
-  v14 = v6;
+  v19 = conferenceCopy;
+  v20 = levelCopy;
+  v13 = levelCopy;
+  v14 = conferenceCopy;
   objc_msgSend___im_performBlock_(v12, v15, v18, v16, v17);
 }
 
-- (void)conference:(id)a3 receivedFirstRemoteFrameForCallID:(int64_t)a4
+- (void)conference:(id)conference receivedFirstRemoteFrameForCallID:(int64_t)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conferenceCopy = conference;
   v7 = sub_254761764();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v23 = a4;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v7, OS_LOG_TYPE_DEFAULT, "Informed about first remote frame for call ID: %d", buf, 8u);
   }
 
@@ -2548,217 +2548,217 @@ LABEL_13:
   v18[1] = 3221225472;
   v18[2] = sub_2547717D0;
   v18[3] = &unk_279783878;
-  v20 = self;
-  v21 = a4;
-  v19 = v6;
-  v13 = v6;
+  selfCopy = self;
+  dCopy2 = d;
+  v19 = conferenceCopy;
+  v13 = conferenceCopy;
   objc_msgSend___im_performBlock_(v12, v14, v18, v15, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_postParticipantMediaChangeNotification:(id)a3 cameraChanged:(BOOL)a4 orientationChanged:(BOOL)a5 aspectChanged:(BOOL)a6 contentRectChanged:(BOOL)a7 cameraWillSwitch:(BOOL)a8 camera:(unsigned int)a9 orentation:(unsigned int)a10 aspect:(CGSize)a11 contentRect:(CGRect)a12
++ (void)_postParticipantMediaChangeNotification:(id)notification cameraChanged:(BOOL)changed orientationChanged:(BOOL)orientationChanged aspectChanged:(BOOL)aspectChanged contentRectChanged:(BOOL)rectChanged cameraWillSwitch:(BOOL)switch camera:(unsigned int)camera orentation:(unsigned int)self0 aspect:(CGSize)self1 contentRect:(CGRect)self2
 {
-  height = a12.size.height;
-  width = a12.size.width;
-  y = a12.origin.y;
-  x = a12.origin.x;
-  v16 = a11.height;
-  v17 = a11.width;
-  v23 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v16 = aspect.height;
+  v17 = aspect.width;
+  notificationCopy = notification;
   v28 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v24, v25, v26, v27);
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = sub_254771B68;
   v33[3] = &unk_2797838A0;
-  v43 = a4;
-  v44 = a5;
-  v45 = a6;
-  v46 = a8;
-  v47 = a7;
+  changedCopy = changed;
+  orientationChangedCopy = orientationChanged;
+  aspectChangedCopy = aspectChanged;
+  switchCopy = switch;
+  rectChangedCopy = rectChanged;
   v35 = x;
   v36 = y;
   v37 = width;
   v38 = height;
-  v41 = a9;
-  v42 = a10;
+  cameraCopy = camera;
+  orentationCopy = orentation;
   v39 = v17;
   v40 = v16;
-  v34 = v23;
-  v29 = v23;
+  v34 = notificationCopy;
+  v29 = notificationCopy;
   objc_msgSend___im_performBlock_(v28, v30, v33, v31, v32);
 }
 
-+ (void)_postParticipantScreenAttributesChangeNotification:(id)a3 cameraChanged:(BOOL)a4 orientationChanged:(BOOL)a5 aspectChanged:(BOOL)a6 cameraWillSwitch:(BOOL)a7 camera:(unsigned int)a8 orentation:(unsigned int)a9 aspect:(CGSize)a10
++ (void)_postParticipantScreenAttributesChangeNotification:(id)notification cameraChanged:(BOOL)changed orientationChanged:(BOOL)orientationChanged aspectChanged:(BOOL)aspectChanged cameraWillSwitch:(BOOL)switch camera:(unsigned int)camera orentation:(unsigned int)orentation aspect:(CGSize)self0
 {
-  height = a10.height;
-  width = a10.width;
-  v16 = a3;
+  height = aspect.height;
+  width = aspect.width;
+  notificationCopy = notification;
   v21 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v17, v18, v19, v20);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_254771E60;
   v26[3] = &unk_2797838C8;
-  v31 = a4;
-  v32 = a5;
-  v33 = a6;
-  v34 = a7;
-  v30 = a9;
+  changedCopy = changed;
+  orientationChangedCopy = orientationChanged;
+  aspectChangedCopy = aspectChanged;
+  switchCopy = switch;
+  orentationCopy = orentation;
   v28 = width;
   v29 = height;
-  v27 = v16;
-  v22 = v16;
+  v27 = notificationCopy;
+  v22 = notificationCopy;
   objc_msgSend___im_performBlock_(v21, v23, v26, v24, v25);
 }
 
-- (void)conference:(id)a3 remoteScreenAttributesChanged:(id)a4 callID:(int64_t)a5
+- (void)conference:(id)conference remoteScreenAttributesChanged:(id)changed callID:(int64_t)d
 {
-  v8 = a3;
-  v9 = a4;
+  conferenceCopy = conference;
+  changedCopy = changed;
   v14 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_25477206C;
   v20[3] = &unk_2797838F0;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v24 = a5;
-  v15 = v9;
-  v16 = v8;
+  v21 = conferenceCopy;
+  v22 = changedCopy;
+  selfCopy = self;
+  dCopy = d;
+  v15 = changedCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v14, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 remoteVideoAttributesChanged:(id)a4 callID:(int64_t)a5
+- (void)conference:(id)conference remoteVideoAttributesChanged:(id)changed callID:(int64_t)d
 {
-  v8 = a3;
-  v9 = a4;
+  conferenceCopy = conference;
+  changedCopy = changed;
   v14 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254772620;
   v20[3] = &unk_2797838F0;
-  v21 = v8;
-  v22 = self;
-  v23 = v9;
-  v24 = a5;
-  v15 = v9;
-  v16 = v8;
+  v21 = conferenceCopy;
+  selfCopy = self;
+  v23 = changedCopy;
+  dCopy = d;
+  v15 = changedCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v14, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 inititiateRelayRequest:(int64_t)a4 requestDict:(id)a5
+- (void)conference:(id)conference inititiateRelayRequest:(int64_t)request requestDict:(id)dict
 {
-  v8 = a3;
-  v9 = a5;
+  conferenceCopy = conference;
+  dictCopy = dict;
   v14 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254772C14;
   v20[3] = &unk_2797838F0;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v24 = a4;
-  v15 = v9;
-  v16 = v8;
+  v21 = conferenceCopy;
+  v22 = dictCopy;
+  selfCopy = self;
+  requestCopy = request;
+  v15 = dictCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v14, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 sendRelayUpdate:(int64_t)a4 updateDict:(id)a5
+- (void)conference:(id)conference sendRelayUpdate:(int64_t)update updateDict:(id)dict
 {
-  v8 = a3;
-  v9 = a5;
+  conferenceCopy = conference;
+  dictCopy = dict;
   v14 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254773714;
   v20[3] = &unk_2797838F0;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v24 = a4;
-  v15 = v9;
-  v16 = v8;
+  v21 = conferenceCopy;
+  v22 = dictCopy;
+  selfCopy = self;
+  updateCopy = update;
+  v15 = dictCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v14, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 cancelRelayRequest:(int64_t)a4 requestDict:(id)a5
+- (void)conference:(id)conference cancelRelayRequest:(int64_t)request requestDict:(id)dict
 {
-  v8 = a3;
-  v9 = a5;
+  conferenceCopy = conference;
+  dictCopy = dict;
   v14 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254773A2C;
   v20[3] = &unk_2797838F0;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v24 = a4;
-  v15 = v9;
-  v16 = v8;
+  v21 = conferenceCopy;
+  v22 = dictCopy;
+  selfCopy = self;
+  requestCopy = request;
+  v15 = dictCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v14, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 withCallID:(int64_t)a4 networkHint:(BOOL)a5
+- (void)conference:(id)conference withCallID:(int64_t)d networkHint:(BOOL)hint
 {
-  v8 = a3;
+  conferenceCopy = conference;
   v13 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v9, v10, v11, v12);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_254773D2C;
   v18[3] = &unk_279783918;
-  v20 = self;
-  v21 = a4;
-  v22 = a5;
-  v19 = v8;
-  v14 = v8;
+  selfCopy = self;
+  dCopy = d;
+  hintCopy = hint;
+  v19 = conferenceCopy;
+  v14 = conferenceCopy;
   objc_msgSend___im_performBlock_(v13, v15, v18, v16, v17);
 }
 
-- (void)conference:(id)a3 videoQualityNotificationForCallID:(int64_t)a4 isDegraded:(BOOL)a5 isRemote:(BOOL)a6
+- (void)conference:(id)conference videoQualityNotificationForCallID:(int64_t)d isDegraded:(BOOL)degraded isRemote:(BOOL)remote
 {
-  v10 = a3;
+  conferenceCopy = conference;
   v15 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v11, v12, v13, v14);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_254773F00;
   v20[3] = &unk_279783940;
-  v22 = self;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v21 = v10;
-  v16 = v10;
+  selfCopy = self;
+  dCopy = d;
+  degradedCopy = degraded;
+  remoteCopy = remote;
+  v21 = conferenceCopy;
+  v16 = conferenceCopy;
   objc_msgSend___im_performBlock_(v15, v17, v20, v18, v19);
 }
 
-- (void)conference:(id)a3 withCallID:(int64_t)a4 remoteMediaStalled:(BOOL)a5
+- (void)conference:(id)conference withCallID:(int64_t)d remoteMediaStalled:(BOOL)stalled
 {
-  v8 = a3;
+  conferenceCopy = conference;
   v13 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v9, v10, v11, v12);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_254774198;
   v18[3] = &unk_279783918;
-  v20 = self;
-  v21 = a4;
-  v22 = a5;
-  v19 = v8;
-  v14 = v8;
+  selfCopy = self;
+  dCopy = d;
+  stalledCopy = stalled;
+  v19 = conferenceCopy;
+  v14 = conferenceCopy;
   objc_msgSend___im_performBlock_(v13, v15, v18, v16, v17);
 }
 
-- (void)conference:(id)a3 reinitializeCallForCallID:(unsigned int)a4
+- (void)conference:(id)conference reinitializeCallForCallID:(unsigned int)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conferenceCopy = conference;
   v7 = sub_254761764();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v22 = a4;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v7, OS_LOG_TYPE_DEFAULT, "Told to reinitialize call for callID %d", buf, 8u);
   }
 
@@ -2768,31 +2768,31 @@ LABEL_13:
   v18[2] = sub_254774490;
   v18[3] = &unk_279783968;
   v18[4] = self;
-  v19 = v6;
-  v20 = a4;
-  v13 = v6;
+  v19 = conferenceCopy;
+  dCopy2 = d;
+  v13 = conferenceCopy;
   objc_msgSend___im_performBlock_(v12, v14, v18, v15, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 withCallID:(int64_t)a4 didPauseAudio:(BOOL)a5 error:(id)a6
+- (void)conference:(id)conference withCallID:(int64_t)d didPauseAudio:(BOOL)audio error:(id)error
 {
-  v7 = a5;
+  audioCopy = audio;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  conferenceCopy = conference;
+  errorCopy = error;
   v12 = sub_254761764();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v28 = v10;
+    v28 = conferenceCopy;
     v29 = 1024;
-    v30 = v7;
+    v30 = audioCopy;
     v31 = 1024;
-    v32 = a4;
+    dCopy = d;
     v33 = 2112;
-    v34 = v11;
+    v34 = errorCopy;
     _os_log_impl(&dword_254743000, v12, OS_LOG_TYPE_DEFAULT, "vc: %@  didPauseAudio: %d callID: %d error: %@", buf, 0x22u);
   }
 
@@ -2802,40 +2802,40 @@ LABEL_13:
   v23[2] = sub_254774724;
   v23[3] = &unk_279783918;
   v23[4] = self;
-  v24 = v10;
-  v25 = a4;
-  v26 = v7;
-  v18 = v10;
+  v24 = conferenceCopy;
+  dCopy2 = d;
+  v26 = audioCopy;
+  v18 = conferenceCopy;
   objc_msgSend___im_performBlock_(v17, v19, v23, v20, v21);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 remoteAudioPaused:(BOOL)a4 callID:(int64_t)a5
+- (void)conference:(id)conference remoteAudioPaused:(BOOL)paused callID:(int64_t)d
 {
-  v6 = a4;
+  pausedCopy = paused;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  conferenceCopy = conference;
   v9 = sub_254761764();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v8;
+    v28 = conferenceCopy;
     v29 = 1024;
-    v30 = v6;
+    v30 = pausedCopy;
     v31 = 1024;
-    v32 = a5;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v9, OS_LOG_TYPE_DEFAULT, "vc: %@  remoteAudioPaused: %d callID: %d", buf, 0x18u);
   }
 
   v10 = sub_254761764();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (pausedCopy)
   {
     if (v11)
     {
       *buf = 67109120;
-      LODWORD(v28) = a5;
+      LODWORD(v28) = d;
       v12 = "Informed about remote audio muted for call ID: %d";
 LABEL_8:
       _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, v12, buf, 8u);
@@ -2845,7 +2845,7 @@ LABEL_8:
   else if (v11)
   {
     *buf = 67109120;
-    LODWORD(v28) = a5;
+    LODWORD(v28) = d;
     v12 = "Informed about remote audio unmuted for call ID: %d";
     goto LABEL_8;
   }
@@ -2856,40 +2856,40 @@ LABEL_8:
   v23[2] = sub_254774964;
   v23[3] = &unk_279783918;
   v23[4] = self;
-  v24 = v8;
-  v25 = a5;
-  v26 = v6;
-  v18 = v8;
+  v24 = conferenceCopy;
+  dCopy2 = d;
+  v26 = pausedCopy;
+  v18 = conferenceCopy;
   objc_msgSend___im_performBlock_(v17, v19, v23, v20, v21);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 remoteVideoPaused:(BOOL)a4 callID:(int64_t)a5
+- (void)conference:(id)conference remoteVideoPaused:(BOOL)paused callID:(int64_t)d
 {
-  v6 = a4;
+  pausedCopy = paused;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  conferenceCopy = conference;
   v9 = sub_254761764();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v8;
+    v28 = conferenceCopy;
     v29 = 1024;
-    v30 = v6;
+    v30 = pausedCopy;
     v31 = 1024;
-    v32 = a5;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v9, OS_LOG_TYPE_DEFAULT, "vc: %@  videoPaused: %d callID: %d", buf, 0x18u);
   }
 
   v10 = sub_254761764();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (pausedCopy)
   {
     if (v11)
     {
       *buf = 67109120;
-      LODWORD(v28) = a5;
+      LODWORD(v28) = d;
       v12 = "Informed about remote video paused for call ID: %d";
 LABEL_8:
       _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, v12, buf, 8u);
@@ -2899,7 +2899,7 @@ LABEL_8:
   else if (v11)
   {
     *buf = 67109120;
-    LODWORD(v28) = a5;
+    LODWORD(v28) = d;
     v12 = "Informed about remote video unpaused for call ID: %d";
     goto LABEL_8;
   }
@@ -2910,29 +2910,29 @@ LABEL_8:
   v23[2] = sub_254774C3C;
   v23[3] = &unk_279783918;
   v23[4] = self;
-  v24 = v8;
-  v25 = a5;
-  v26 = v6;
-  v18 = v8;
+  v24 = conferenceCopy;
+  dCopy2 = d;
+  v26 = pausedCopy;
+  v18 = conferenceCopy;
   objc_msgSend___im_performBlock_(v17, v19, v23, v20, v21);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 localIPChange:(id)a4 withCallID:(int64_t)a5
+- (void)conference:(id)conference localIPChange:(id)change withCallID:(int64_t)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  conferenceCopy = conference;
+  changeCopy = change;
   v10 = sub_254761764();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v8;
+    v28 = conferenceCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = changeCopy;
     v31 = 1024;
-    v32 = a5;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "vc: %@  newBlob: %@ callID: %d", buf, 0x1Cu);
   }
 
@@ -2940,7 +2940,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v28) = a5;
+    LODWORD(v28) = d;
     _os_log_impl(&dword_254743000, v11, OS_LOG_TYPE_DEFAULT, "Informed about local IP changing for call ID: %d", buf, 8u);
   }
 
@@ -2950,27 +2950,27 @@ LABEL_8:
   v23[2] = sub_254774F14;
   v23[3] = &unk_2797838F0;
   v23[4] = self;
-  v24 = v8;
-  v25 = v9;
-  v26 = a5;
-  v17 = v9;
-  v18 = v8;
+  v24 = conferenceCopy;
+  v25 = changeCopy;
+  dCopy2 = d;
+  v17 = changeCopy;
+  v18 = conferenceCopy;
   objc_msgSend___im_performBlock_(v16, v19, v23, v20, v21);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)conference:(id)a3 didChangeLocalVariablesForCallID:(int64_t)a4
+- (void)conference:(id)conference didChangeLocalVariablesForCallID:(int64_t)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  conferenceCopy = conference;
   v7 = sub_254761764();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v6;
+    v22 = conferenceCopy;
     v23 = 1024;
-    v24 = a4;
+    dCopy = d;
     _os_log_impl(&dword_254743000, v7, OS_LOG_TYPE_DEFAULT, "vc: %@  callID: %d", buf, 0x12u);
   }
 
@@ -2980,25 +2980,25 @@ LABEL_8:
   v18[2] = sub_254775104;
   v18[3] = &unk_279783878;
   v18[4] = self;
-  v19 = v6;
-  v20 = a4;
-  v13 = v6;
+  v19 = conferenceCopy;
+  dCopy2 = d;
+  v13 = conferenceCopy;
   objc_msgSend___im_performBlock_(v12, v14, v18, v15, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverDiedForConference:(id)a3
+- (void)serverDiedForConference:(id)conference
 {
-  v4 = a3;
+  conferenceCopy = conference;
   v9 = objc_msgSend_mainThread(MEMORY[0x277CCACC8], v5, v6, v7, v8);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_254775234;
   v14[3] = &unk_2797832F0;
-  v15 = v4;
-  v16 = self;
-  v10 = v4;
+  v15 = conferenceCopy;
+  selfCopy = self;
+  v10 = conferenceCopy;
   objc_msgSend___im_performBlock_(v9, v11, v14, v12, v13);
 }
 
@@ -3015,33 +3015,33 @@ LABEL_8:
   return v15;
 }
 
-- (void)setLocalVideoLayer:(void *)a3
+- (void)setLocalVideoLayer:(void *)layer
 {
-  if ((objc_msgSend_isAVInterfaceReady(self, a2, a3, v3, v4) & 1) == 0)
+  if ((objc_msgSend_isAVInterfaceReady(self, a2, layer, v3, v4) & 1) == 0)
   {
     objc_msgSend_initAVInterface(self, v7, v8, v9, v10);
   }
 
   v14 = objc_msgSend_sharedInstance(IMAVLocalPreviewClient, v7, v8, v9, v10);
-  objc_msgSend_setLocalVideoLayer_(v14, v11, a3, v12, v13);
+  objc_msgSend_setLocalVideoLayer_(v14, v11, layer, v12, v13);
 }
 
-- (void)setRemoteVideoPresentationSize:(CGSize)a3 forChat:(id)a4
+- (void)setRemoteVideoPresentationSize:(CGSize)size forChat:(id)chat
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (objc_msgSend_isVideo(v7, v8, v9, v10, v11))
+  chatCopy = chat;
+  if (objc_msgSend_isVideo(chatCopy, v8, v9, v10, v11))
   {
-    if (v7)
+    if (chatCopy)
     {
       if ((objc_msgSend_isAVInterfaceReady(self, v12, v13, v14, v15) & 1) == 0)
       {
         objc_msgSend_initAVInterface(self, v16, v17, v18, v19);
       }
 
-      v20 = objc_msgSend__existingConferenceForAVChat_(self, v16, v7, v18, v19);
+      v20 = objc_msgSend__existingConferenceForAVChat_(self, v16, chatCopy, v18, v19);
       if (v20)
       {
         v21 = sub_254761764();
@@ -3054,7 +3054,7 @@ LABEL_8:
           _os_log_impl(&dword_254743000, v21, OS_LOG_TYPE_DEFAULT, "Setting remote video presented size to %f, %f", &v31, 0x16u);
         }
 
-        v26 = objc_msgSend__bustedCallID(v7, v22, v23, v24, v25);
+        v26 = objc_msgSend__bustedCallID(chatCopy, v22, v23, v24, v25);
         objc_msgSend_setConferenceVisualRectangle_forCallID_(v20, v27, v26, v28, v29, 0.0, 0.0, width, height);
       }
     }
@@ -3073,41 +3073,41 @@ LABEL_8:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRemoteVideoPresentationState:(unsigned int)a3 forChat:(id)a4
+- (void)setRemoteVideoPresentationState:(unsigned int)state forChat:(id)chat
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (objc_msgSend_isVideo(v6, v7, v8, v9, v10))
+  chatCopy = chat;
+  if (objc_msgSend_isVideo(chatCopy, v7, v8, v9, v10))
   {
-    if (v6)
+    if (chatCopy)
     {
       if ((objc_msgSend_isAVInterfaceReady(self, v11, v12, v13, v14) & 1) == 0)
       {
         objc_msgSend_initAVInterface(self, v15, v16, v17, v18);
       }
 
-      v19 = objc_msgSend__existingConferenceForAVChat_(self, v15, v6, v17, v18);
+      v19 = objc_msgSend__existingConferenceForAVChat_(self, v15, chatCopy, v17, v18);
       if (v19)
       {
         v20 = sub_254761764();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v30[0] = 67109120;
-          v30[1] = a3;
+          v30[1] = state;
           _os_log_impl(&dword_254743000, v20, OS_LOG_TYPE_DEFAULT, "Setting remote video presentation state to %d", v30, 8u);
         }
 
-        if (a3 == 2)
+        if (state == 2)
         {
           v25 = 2;
         }
 
         else
         {
-          v25 = a3 == 1;
+          v25 = state == 1;
         }
 
-        v26 = objc_msgSend__bustedCallID(v6, v21, v22, v23, v24);
+        v26 = objc_msgSend__bustedCallID(chatCopy, v21, v22, v23, v24);
         objc_msgSend_setConferenceState_forCallID_(v19, v27, v25, v26, v28);
       }
     }
@@ -3139,23 +3139,23 @@ LABEL_8:
   return v15;
 }
 
-- (void)setLocalVideoBackLayer:(void *)a3
+- (void)setLocalVideoBackLayer:(void *)layer
 {
-  if ((objc_msgSend_isAVInterfaceReady(self, a2, a3, v3, v4) & 1) == 0)
+  if ((objc_msgSend_isAVInterfaceReady(self, a2, layer, v3, v4) & 1) == 0)
   {
     objc_msgSend_initAVInterface(self, v7, v8, v9, v10);
   }
 
   v14 = objc_msgSend_sharedInstance(IMAVLocalPreviewClient, v7, v8, v9, v10);
-  objc_msgSend_setLocalVideoBackLayer_(v14, v11, a3, v12, v13);
+  objc_msgSend_setLocalVideoBackLayer_(v14, v11, layer, v12, v13);
 }
 
-- (void)handleRelayInitate:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5
+- (void)handleRelayInitate:(id)initate fromParticipant:(id)participant callInfo:(id)info
 {
   v117 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  initateCopy = initate;
+  participantCopy = participant;
+  infoCopy = info;
   v15 = objc_msgSend_sharedInstance(IMAVController, v11, v12, v13, v14);
   if (objc_msgSend__shouldRunConferences(v15, v16, v17, v18, v19))
   {
@@ -3179,26 +3179,26 @@ LABEL_8:
     }
   }
 
-  v34 = objc_msgSend_avChat(v9, v24, v25, v26, v27);
+  v34 = objc_msgSend_avChat(participantCopy, v24, v25, v26, v27);
   v39 = objc_msgSend__conferenceQueue(v34, v35, v36, v37, v38);
 
   if (v39)
   {
-    v44 = objc_msgSend_avChat(v9, v40, v41, v42, v43);
+    v44 = objc_msgSend_avChat(participantCopy, v40, v41, v42, v43);
     v48 = objc_msgSend__existingConferenceForAVChat_(self, v45, v44, v46, v47);
 
     v49 = objc_alloc(MEMORY[0x277CBEB38]);
-    v53 = objc_msgSend_initWithDictionary_(v49, v50, v8, v51, v52);
+    v53 = objc_msgSend_initWithDictionary_(v49, v50, initateCopy, v51, v52);
     v54 = *MEMORY[0x277D18F98];
-    v62 = objc_msgSend_objectForKey_(v8, v55, *MEMORY[0x277D18F98], v56, v57);
+    v62 = objc_msgSend_objectForKey_(initateCopy, v55, *MEMORY[0x277D18F98], v56, v57);
     if (!v62)
     {
-      v63 = objc_msgSend_avChat(v9, v58, v59, v60, v61);
+      v63 = objc_msgSend_avChat(participantCopy, v58, v59, v60, v61);
       v68 = objc_msgSend__relayRemotePrimaryIdentifier(v63, v64, v65, v66, v67);
 
       if (v68)
       {
-        v73 = objc_msgSend_avChat(v9, v69, v70, v71, v72);
+        v73 = objc_msgSend_avChat(participantCopy, v69, v70, v71, v72);
         v78 = objc_msgSend__relayRemotePrimaryIdentifier(v73, v74, v75, v76, v77);
         objc_msgSend_setObject_forKey_(v53, v79, v78, v54, v80);
       }
@@ -3207,7 +3207,7 @@ LABEL_8:
     v81 = sub_254761764();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
     {
-      v86 = objc_msgSend_vcPartyID(v9, v82, v83, v84, v85);
+      v86 = objc_msgSend_vcPartyID(participantCopy, v82, v83, v84, v85);
       *buf = 138412290;
       v112 = v86;
       _os_log_impl(&dword_254743000, v81, OS_LOG_TYPE_DEFAULT, "Processing relay request response from: %@", buf, 0xCu);
@@ -3216,26 +3216,26 @@ LABEL_8:
     v87 = sub_254761764();
     if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
     {
-      v92 = objc_msgSend_avChat(v9, v88, v89, v90, v91);
+      v92 = objc_msgSend_avChat(participantCopy, v88, v89, v90, v91);
       *buf = 138412802;
       v112 = v92;
       v113 = 2112;
-      v114 = v9;
+      v114 = participantCopy;
       v115 = 2112;
-      v116 = v8;
+      v116 = initateCopy;
       _os_log_impl(&dword_254743000, v87, OS_LOG_TYPE_DEFAULT, "handleRelayInitate AVChat: %@    participant: %@    properties: %@", buf, 0x20u);
     }
 
-    v97 = objc_msgSend_avChat(v9, v93, v94, v95, v96);
+    v97 = objc_msgSend_avChat(participantCopy, v93, v94, v95, v96);
     v102 = objc_msgSend__conferenceQueue(v97, v98, v99, v100, v101);
     v106[0] = MEMORY[0x277D85DD0];
     v106[1] = 3221225472;
     v106[2] = sub_254775B90;
     v106[3] = &unk_279783990;
     v107 = v48;
-    v108 = v10;
+    v108 = infoCopy;
     v109 = v53;
-    v110 = v9;
+    v110 = participantCopy;
     v103 = v53;
     v104 = v48;
     dispatch_async(v102, v106);
@@ -3246,12 +3246,12 @@ LABEL_15:
   v105 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRelayUpdate:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5
+- (void)handleRelayUpdate:(id)update fromParticipant:(id)participant callInfo:(id)info
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  participantCopy = participant;
+  infoCopy = info;
   v15 = objc_msgSend_sharedInstance(IMAVController, v11, v12, v13, v14);
   if (objc_msgSend__shouldRunConferences(v15, v16, v17, v18, v19))
   {
@@ -3275,18 +3275,18 @@ LABEL_15:
     }
   }
 
-  v34 = objc_msgSend_avChat(v9, v24, v25, v26, v27);
+  v34 = objc_msgSend_avChat(participantCopy, v24, v25, v26, v27);
   v39 = objc_msgSend__conferenceQueue(v34, v35, v36, v37, v38);
 
   if (v39)
   {
-    v44 = objc_msgSend_avChat(v9, v40, v41, v42, v43);
+    v44 = objc_msgSend_avChat(participantCopy, v40, v41, v42, v43);
     v48 = objc_msgSend__existingConferenceForAVChat_(self, v45, v44, v46, v47);
 
     v49 = sub_254761764();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = objc_msgSend_vcPartyID(v9, v50, v51, v52, v53);
+      v54 = objc_msgSend_vcPartyID(participantCopy, v50, v51, v52, v53);
       *buf = 138412290;
       v79 = v54;
       _os_log_impl(&dword_254743000, v49, OS_LOG_TYPE_DEFAULT, "Processing relay update from: %@", buf, 0xCu);
@@ -3295,26 +3295,26 @@ LABEL_15:
     v55 = sub_254761764();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
     {
-      v60 = objc_msgSend_avChat(v9, v56, v57, v58, v59);
+      v60 = objc_msgSend_avChat(participantCopy, v56, v57, v58, v59);
       *buf = 138412802;
       v79 = v60;
       v80 = 2112;
-      v81 = v9;
+      v81 = participantCopy;
       v82 = 2112;
-      v83 = v8;
+      v83 = updateCopy;
       _os_log_impl(&dword_254743000, v55, OS_LOG_TYPE_DEFAULT, "handleRelayUpdate AVChat: %@    participant: %@    properties: %@", buf, 0x20u);
     }
 
-    v65 = objc_msgSend_avChat(v9, v61, v62, v63, v64);
+    v65 = objc_msgSend_avChat(participantCopy, v61, v62, v63, v64);
     v70 = objc_msgSend__conferenceQueue(v65, v66, v67, v68, v69);
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = sub_254775F18;
     v73[3] = &unk_279783990;
     v74 = v48;
-    v75 = v10;
-    v76 = v8;
-    v77 = v9;
+    v75 = infoCopy;
+    v76 = updateCopy;
+    v77 = participantCopy;
     v71 = v48;
     dispatch_async(v70, v73);
 
@@ -3324,12 +3324,12 @@ LABEL_12:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRelayCancel:(id)a3 fromParticipant:(id)a4 callInfo:(id)a5
+- (void)handleRelayCancel:(id)cancel fromParticipant:(id)participant callInfo:(id)info
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cancelCopy = cancel;
+  participantCopy = participant;
+  infoCopy = info;
   v15 = objc_msgSend_sharedInstance(IMAVController, v11, v12, v13, v14);
   if (objc_msgSend__shouldRunConferences(v15, v16, v17, v18, v19))
   {
@@ -3353,18 +3353,18 @@ LABEL_12:
     }
   }
 
-  v34 = objc_msgSend_avChat(v9, v24, v25, v26, v27);
+  v34 = objc_msgSend_avChat(participantCopy, v24, v25, v26, v27);
   v39 = objc_msgSend__conferenceQueue(v34, v35, v36, v37, v38);
 
   if (v39)
   {
-    v44 = objc_msgSend_avChat(v9, v40, v41, v42, v43);
+    v44 = objc_msgSend_avChat(participantCopy, v40, v41, v42, v43);
     v48 = objc_msgSend__existingConferenceForAVChat_(self, v45, v44, v46, v47);
 
     v49 = sub_254761764();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = objc_msgSend_vcPartyID(v9, v50, v51, v52, v53);
+      v54 = objc_msgSend_vcPartyID(participantCopy, v50, v51, v52, v53);
       *buf = 138412290;
       v79 = v54;
       _os_log_impl(&dword_254743000, v49, OS_LOG_TYPE_DEFAULT, "Processing relay cancel from: %@", buf, 0xCu);
@@ -3373,26 +3373,26 @@ LABEL_12:
     v55 = sub_254761764();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
     {
-      v60 = objc_msgSend_avChat(v9, v56, v57, v58, v59);
+      v60 = objc_msgSend_avChat(participantCopy, v56, v57, v58, v59);
       *buf = 138412802;
       v79 = v60;
       v80 = 2112;
-      v81 = v9;
+      v81 = participantCopy;
       v82 = 2112;
-      v83 = v8;
+      v83 = cancelCopy;
       _os_log_impl(&dword_254743000, v55, OS_LOG_TYPE_DEFAULT, "handleRelayCancel AVChat: %@    participant: %@    properties: %@", buf, 0x20u);
     }
 
-    v65 = objc_msgSend_avChat(v9, v61, v62, v63, v64);
+    v65 = objc_msgSend_avChat(participantCopy, v61, v62, v63, v64);
     v70 = objc_msgSend__conferenceQueue(v65, v66, v67, v68, v69);
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = sub_2547762A0;
     v73[3] = &unk_279783990;
     v74 = v48;
-    v75 = v10;
-    v76 = v8;
-    v77 = v9;
+    v75 = infoCopy;
+    v76 = cancelCopy;
+    v77 = participantCopy;
     v71 = v48;
     dispatch_async(v70, v73);
 
@@ -3402,43 +3402,43 @@ LABEL_12:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRemoteIPChanged:(id)a3 fromParticipant:(id)a4
+- (void)processRemoteIPChanged:(id)changed fromParticipant:(id)participant
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  participantCopy = participant;
   v8 = sub_254761764();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v61 = v7;
+    v61 = participantCopy;
     _os_log_impl(&dword_254743000, v8, OS_LOG_TYPE_DEFAULT, "Processing remote IP change from: %@", buf, 0xCu);
   }
 
   v9 = sub_254761764();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = objc_msgSend_avChat(v7, v10, v11, v12, v13);
+    v14 = objc_msgSend_avChat(participantCopy, v10, v11, v12, v13);
     *buf = 138412802;
     v61 = v14;
     v62 = 2112;
-    v63 = v7;
+    v63 = participantCopy;
     v64 = 2112;
-    v65 = v6;
+    v65 = changedCopy;
     _os_log_impl(&dword_254743000, v9, OS_LOG_TYPE_DEFAULT, "remoteIPChangedWithBlob AVChat: %@    participant: %@    properties: %@", buf, 0x20u);
   }
 
-  v19 = objc_msgSend_avChat(v7, v15, v16, v17, v18);
+  v19 = objc_msgSend_avChat(participantCopy, v15, v16, v17, v18);
   v24 = objc_msgSend__conferenceQueue(v19, v20, v21, v22, v23);
 
   if (v24)
   {
-    v29 = objc_msgSend_avChat(v7, v25, v26, v27, v28);
+    v29 = objc_msgSend_avChat(participantCopy, v25, v26, v27, v28);
     v33 = objc_msgSend__existingConferenceForAVChat_(self, v30, v29, v31, v32);
 
-    v37 = objc_msgSend_objectForKey_(v6, v34, @"LocalIPChangeNewBlob", v35, v36);
+    v37 = objc_msgSend_objectForKey_(changedCopy, v34, @"LocalIPChangeNewBlob", v35, v36);
     v42 = objc_msgSend__FTDataFromBase64String(v37, v38, v39, v40, v41);
-    v47 = objc_msgSend_avChat(v7, v43, v44, v45, v46);
+    v47 = objc_msgSend_avChat(participantCopy, v43, v44, v45, v46);
     v52 = objc_msgSend__conferenceQueue(v47, v48, v49, v50, v51);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -3446,7 +3446,7 @@ LABEL_12:
     block[3] = &unk_279783760;
     v57 = v33;
     v58 = v42;
-    v59 = v7;
+    v59 = participantCopy;
     v53 = v42;
     v54 = v33;
     dispatch_async(v52, block);
@@ -3484,34 +3484,34 @@ LABEL_12:
   [(IMAVInterface *)&v16 chatStateUpdated];
 }
 
-- (void)chatRelayedStatusChanged:(id)a3
+- (void)chatRelayedStatusChanged:(id)changed
 {
-  v4 = a3;
-  v12 = objc_msgSend__conferenceForAVChat_(self, v5, v4, v6, v7);
+  changedCopy = changed;
+  v12 = objc_msgSend__conferenceForAVChat_(self, v5, changedCopy, v6, v7);
   if (v12)
   {
-    v13 = objc_msgSend__conferenceQueue(v4, v8, v9, v10, v11);
+    v13 = objc_msgSend__conferenceQueue(changedCopy, v8, v9, v10, v11);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_2547767D0;
     block[3] = &unk_279783760;
     block[4] = self;
-    v15 = v4;
+    v15 = changedCopy;
     v16 = v12;
     dispatch_async(v13, block);
   }
 }
 
-- (void)avChat:(id)a3 setLocalLandscapeAspectRatio:(CGSize)a4 localPortraitAspectRatio:(CGSize)a5
+- (void)avChat:(id)chat setLocalLandscapeAspectRatio:(CGSize)ratio localPortraitAspectRatio:(CGSize)aspectRatio
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
+  height = aspectRatio.height;
+  width = aspectRatio.width;
+  v7 = ratio.height;
+  v8 = ratio.width;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v15 = v10;
-  if (!v10)
+  chatCopy = chat;
+  v15 = chatCopy;
+  if (!chatCopy)
   {
     v31 = sub_254761764();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -3526,7 +3526,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (objc_msgSend_isVideo(v10, v11, v12, v13, v14))
+  if (objc_msgSend_isVideo(chatCopy, v11, v12, v13, v14))
   {
     if ((objc_msgSend_isAVInterfaceReady(self, v16, v17, v18, v19) & 1) == 0)
     {
@@ -3590,18 +3590,18 @@ LABEL_20:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_submitLoggingInformation:(id)a3 forChat:(id)a4
+- (BOOL)_submitLoggingInformation:(id)information forChat:(id)chat
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  informationCopy = information;
+  chatCopy = chat;
   v7 = sub_254761764();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138412546;
-    v29 = v5;
+    v29 = informationCopy;
     v30 = 2112;
-    v31 = v6;
+    v31 = chatCopy;
     _os_log_impl(&dword_254743000, v7, OS_LOG_TYPE_DEFAULT, "Will submit logging info: %@   for chat: %@", &v28, 0x16u);
   }
 
@@ -3629,8 +3629,8 @@ LABEL_20:
       _os_log_impl(&dword_254743000, v11, OS_LOG_TYPE_DEFAULT, "%@ responds to %@", &v28, 0x16u);
     }
 
-    v18 = objc_msgSend__bustedCallID(v6, v14, v15, v16, v17);
-    v11 = objc_msgSend_descriptionInStringsFileFormat(v5, v19, v20, v21, v22);
+    v18 = objc_msgSend__bustedCallID(chatCopy, v14, v15, v16, v17);
+    v11 = objc_msgSend_descriptionInStringsFileFormat(informationCopy, v19, v20, v21, v22);
     objc_msgSend_setCallReport_withReport_(v8, v23, v18, v11, v24);
   }
 
@@ -3648,17 +3648,17 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)_submitEndCallMetric:(id)a3 forCallID:(int64_t)a4
+- (BOOL)_submitEndCallMetric:(id)metric forCallID:(int64_t)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  metricCopy = metric;
   v6 = sub_254761764();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v5;
+    v18 = metricCopy;
     v19 = 1024;
-    LODWORD(v20) = a4;
+    LODWORD(v20) = d;
     _os_log_impl(&dword_254743000, v6, OS_LOG_TYPE_DEFAULT, "Will submit end call metric: %@   for callID: %d", &v17, 0x12u);
   }
 
@@ -3686,7 +3686,7 @@ LABEL_20:
       _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "%@ responds to %@", &v17, 0x16u);
     }
 
-    objc_msgSend_sendProtobuf_withType_forCallID_(v7, v13, v5, 5312515, a4);
+    objc_msgSend_sendProtobuf_withType_forCallID_(v7, v13, metricCopy, 5312515, d);
   }
 
   else
@@ -3706,28 +3706,28 @@ LABEL_20:
   return 1;
 }
 
-- (void)updateAVChat:(id)a3 withCallMetadata:(id)a4 isFinalUpdate:(BOOL)a5
+- (void)updateAVChat:(id)chat withCallMetadata:(id)metadata isFinalUpdate:(BOOL)update
 {
-  v8 = a3;
-  v13 = a4;
-  if (v8)
+  chatCopy = chat;
+  metadataCopy = metadata;
+  if (chatCopy)
   {
-    v14 = objc_msgSend__conferenceQueue(v8, v9, v10, v11, v12);
+    v14 = objc_msgSend__conferenceQueue(chatCopy, v9, v10, v11, v12);
 
     if (v14)
     {
-      v19 = objc_msgSend__bustedCallID(v8, v15, v16, v17, v18);
-      v23 = objc_msgSend__existingConferenceForAVChat_(self, v20, v8, v21, v22);
-      v28 = objc_msgSend__conferenceQueue(v8, v24, v25, v26, v27);
+      v19 = objc_msgSend__bustedCallID(chatCopy, v15, v16, v17, v18);
+      v23 = objc_msgSend__existingConferenceForAVChat_(self, v20, chatCopy, v21, v22);
+      v28 = objc_msgSend__conferenceQueue(chatCopy, v24, v25, v26, v27);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_2547770D8;
       block[3] = &unk_2797839E0;
-      v31 = v13;
+      v31 = metadataCopy;
       v32 = v23;
       v34 = v19;
-      v33 = v8;
-      v35 = a5;
+      v33 = chatCopy;
+      updateCopy = update;
       v29 = v23;
       dispatch_async(v28, block);
     }

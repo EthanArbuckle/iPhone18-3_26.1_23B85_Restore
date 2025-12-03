@@ -8,17 +8,17 @@
 - (NSString)issuerName;
 - (NSString)subtitle;
 - (NSString)title;
-- (SFCertificateManager)initWithTrust:(__SecTrust *)a3;
-- (id)expirationDateForCertificate:(__SecCertificate *)a3;
-- (id)issuerNameForCertificate:(__SecCertificate *)a3;
-- (id)titleForCertificate:(__SecCertificate *)a3;
+- (SFCertificateManager)initWithTrust:(__SecTrust *)trust;
+- (id)expirationDateForCertificate:(__SecCertificate *)certificate;
+- (id)issuerNameForCertificate:(__SecCertificate *)certificate;
+- (id)titleForCertificate:(__SecCertificate *)certificate;
 - (void)dealloc;
 - (void)isValid;
 @end
 
 @implementation SFCertificateManager
 
-- (SFCertificateManager)initWithTrust:(__SecTrust *)a3
+- (SFCertificateManager)initWithTrust:(__SecTrust *)trust
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = SFLogSFCertificateManager();
@@ -33,9 +33,9 @@
   v10.super_class = SFCertificateManager;
   v6 = [(SFCertificateManager *)&v10 init];
   v7 = v6;
-  if (a3 && v6)
+  if (trust && v6)
   {
-    v6->_trust = CFRetain(a3);
+    v6->_trust = CFRetain(trust);
     [(SFCertificateManager *)v7 isValid];
   }
 
@@ -106,7 +106,7 @@ uint64_t __46__SFCertificateManager_isQwacStatementEnabled__block_invoke()
   return v6;
 }
 
-- (id)issuerNameForCertificate:(__SecCertificate *)a3
+- (id)issuerNameForCertificate:(__SecCertificate *)certificate
 {
   v3 = SecCertificateCopyIssuerSummary();
 
@@ -132,9 +132,9 @@ uint64_t __46__SFCertificateManager_isQwacStatementEnabled__block_invoke()
   return v6;
 }
 
-- (id)titleForCertificate:(__SecCertificate *)a3
+- (id)titleForCertificate:(__SecCertificate *)certificate
 {
-  v3 = SecCertificateCopySubjectSummary(a3);
+  v3 = SecCertificateCopySubjectSummary(certificate);
 
   return v3;
 }
@@ -204,7 +204,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)expirationDateForCertificate:(__SecCertificate *)a3
+- (id)expirationDateForCertificate:(__SecCertificate *)certificate
 {
   v3 = *MEMORY[0x277CBECE8];
   SecCertificateNotValidAfter();
@@ -292,9 +292,9 @@ LABEL_10:
 - (void)isValid
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v5 = 138412290;
-  v6 = v3;
+  v6 = localizedDescription;
   _os_log_error_impl(&dword_23AA9F000, a2, OS_LOG_TYPE_ERROR, "Certificate is not valid: %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

@@ -1,22 +1,22 @@
 @interface TSCELambdaFormulaNode
-- (TSCELambdaFormulaNode)initWithIdentifiers:(id)a3 firstSymbol:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCELambdaFormulaNode)initWithIdentifiers:(id)identifiers firstSymbol:(unsigned int)symbol;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCELambdaFormulaNode
 
-- (TSCELambdaFormulaNode)initWithIdentifiers:(id)a3 firstSymbol:(unsigned int)a4
+- (TSCELambdaFormulaNode)initWithIdentifiers:(id)identifiers firstSymbol:(unsigned int)symbol
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v18.receiver = self;
   v18.super_class = TSCELambdaFormulaNode;
   v7 = [(TSCEFormulaNode *)&v18 initWithNodeType:26];
   v12 = v7;
   if (v7)
   {
-    v7->_firstSymbol = a4;
-    v13 = objc_msgSend_copy(v6, v8, v9, v10, v11);
+    v7->_firstSymbol = symbol;
+    v13 = objc_msgSend_copy(identifiersCopy, v8, v9, v10, v11);
     identifiers = v12->_identifiers;
     v12->_identifiers = v13;
 
@@ -28,7 +28,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCELambdaFormulaNode;
@@ -41,20 +41,20 @@
   return v4;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
   v32 = *MEMORY[0x277D85DE8];
-  a6;
+  engine;
   v26 = objc_msgSend_children(self, v9, v10, v11, v12);
   objc_msgSend_lastObject(v26, v13, v14, v15, v16);
   objc_claimAutoreleasedReturnValue();
-  TSCESymbolTable::beginScope(a5);
+  TSCESymbolTable::beginScope(table);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
   v17 = self->_identifiers;
-  v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v27, v31, 16, 48, a4);
+  v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v27, v31, 16, 48, ref);
   if (v19)
   {
     v20 = 0;
@@ -72,7 +72,7 @@
         v23 = *(*(&v27 + 1) + 8 * v22);
         if (v23)
         {
-          Symbol = TSCESymbolTable::createSymbol(a5, v23);
+          Symbol = TSCESymbolTable::createSymbol(table, v23);
           if (!v20)
           {
             self->_firstSymbol = Symbol;

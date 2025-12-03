@@ -1,9 +1,9 @@
 @interface AEAPolicyStore
-- (BOOL)cleanUpPolicyStoreWithError:(id *)a3;
+- (BOOL)cleanUpPolicyStoreWithError:(id *)error;
 - (BOOL)exists;
 - (BOOL)hasPersistentData;
-- (id)readOnlyScratchpadForIdentifier:(id)a3;
-- (id)writeOnlyScratchpadForIdentifier:(id)a3;
+- (id)readOnlyScratchpadForIdentifier:(id)identifier;
+- (id)writeOnlyScratchpadForIdentifier:(id)identifier;
 @end
 
 @implementation AEAPolicyStore
@@ -26,7 +26,7 @@
   v9 = sub_100005A3C(self->fileSystem, *&self->fileSystem[24]);
   v10 = objc_opt_self();
 
-  v11 = [v10 assessmentAgentPolicyStoreDirectoryURL];
+  assessmentAgentPolicyStoreDirectoryURL = [v10 assessmentAgentPolicyStoreDirectoryURL];
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
   v12 = *v9;
@@ -38,7 +38,7 @@
   return v14 != 0;
 }
 
-- (id)writeOnlyScratchpadForIdentifier:(id)a3
+- (id)writeOnlyScratchpadForIdentifier:(id)identifier
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -48,7 +48,7 @@
   return v6;
 }
 
-- (id)readOnlyScratchpadForIdentifier:(id)a3
+- (id)readOnlyScratchpadForIdentifier:(id)identifier
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -58,7 +58,7 @@
   return v6;
 }
 
-- (BOOL)cleanUpPolicyStoreWithError:(id *)a3
+- (BOOL)cleanUpPolicyStoreWithError:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -68,7 +68,7 @@
   v10 = sub_100005A3C(self->fileSystem, *&self->fileSystem[24]);
   v11 = objc_opt_self();
 
-  v12 = [v11 assessmentAgentPolicyStoreDirectoryURL];
+  assessmentAgentPolicyStoreDirectoryURL = [v11 assessmentAgentPolicyStoreDirectoryURL];
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
   v13 = *v10;

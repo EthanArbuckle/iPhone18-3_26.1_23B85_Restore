@@ -1,16 +1,16 @@
 @interface AWDCoreRoutineHeroAppSuggestionInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInstalled:(BOOL)a3;
-- (void)setHasLat:(BOOL)a3;
-- (void)setHasLon:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasInstalled:(BOOL)installed;
+- (void)setHasLat:(BOOL)lat;
+- (void)setHasLon:(BOOL)lon;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineHeroAppSuggestionInstance
@@ -24,9 +24,9 @@
   [(AWDCoreRoutineHeroAppSuggestionInstance *)&v3 dealloc];
 }
 
-- (void)setHasLat:(BOOL)a3
+- (void)setHasLat:(BOOL)lat
 {
-  if (a3)
+  if (lat)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLon:(BOOL)a3
+- (void)setHasLon:(BOOL)lon
 {
-  if (a3)
+  if (lon)
   {
     v3 = 4;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInstalled:(BOOL)a3
+- (void)setHasInstalled:(BOOL)installed
 {
-  if (a3)
+  if (installed)
   {
     v3 = 8;
   }
@@ -78,22 +78,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   suggestionId = self->_suggestionId;
   if (suggestionId)
   {
-    [v3 setObject:suggestionId forKey:@"suggestionId"];
+    [dictionary setObject:suggestionId forKey:@"suggestionId"];
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   has = self->_has;
@@ -105,16 +105,16 @@
     }
 
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lon), @"lon"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lon), @"lon"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_10;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lat), @"lat"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_lat), @"lat"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -125,13 +125,13 @@ LABEL_9:
   if ((has & 8) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_installed), @"installed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_installed), @"installed"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -188,29 +188,29 @@ LABEL_13:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if (self->_suggestionId)
   {
-    [a3 setSuggestionId:?];
+    [to setSuggestionId:?];
   }
 
   if (self->_bundleId)
   {
-    [a3 setBundleId:?];
+    [to setBundleId:?];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 40) = self->_installed;
-    *(a3 + 44) |= 8u;
+    *(to + 40) = self->_installed;
+    *(to + 44) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -229,21 +229,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 6) = self->_lat;
-  *(a3 + 44) |= 2u;
+  *(to + 6) = self->_lat;
+  *(to + 44) |= 2u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_10:
-  *(a3 + 7) = self->_lon;
-  *(a3 + 44) |= 4u;
+  *(to + 7) = self->_lon;
+  *(to + 44) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -251,8 +251,8 @@ LABEL_10:
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_suggestionId copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_bundleId copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_suggestionId copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_bundleId copyWithZone:zone];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -291,39 +291,39 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 44);
+    v6 = *(equal + 44);
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_27;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_27;
     }
 
     suggestionId = self->_suggestionId;
-    if (!(suggestionId | *(a3 + 4)) || (v5 = [(NSString *)suggestionId isEqual:?]) != 0)
+    if (!(suggestionId | *(equal + 4)) || (v5 = [(NSString *)suggestionId isEqual:?]) != 0)
     {
       bundleId = self->_bundleId;
-      if (!(bundleId | *(a3 + 2)) || (v5 = [(NSString *)bundleId isEqual:?]) != 0)
+      if (!(bundleId | *(equal + 2)) || (v5 = [(NSString *)bundleId isEqual:?]) != 0)
       {
         if ((*&self->_has & 8) != 0)
         {
-          if ((*(a3 + 44) & 8) != 0)
+          if ((*(equal + 44) & 8) != 0)
           {
-            v9 = *(a3 + 40);
+            v9 = *(equal + 40);
             if (self->_installed)
             {
-              if ((*(a3 + 40) & 1) == 0)
+              if ((*(equal + 40) & 1) == 0)
               {
                 goto LABEL_27;
               }
@@ -331,26 +331,26 @@ LABEL_6:
               goto LABEL_13;
             }
 
-            if ((*(a3 + 40) & 1) == 0)
+            if ((*(equal + 40) & 1) == 0)
             {
 LABEL_13:
               if ((*&self->_has & 2) != 0)
               {
-                if ((*(a3 + 44) & 2) == 0 || self->_lat != *(a3 + 6))
+                if ((*(equal + 44) & 2) == 0 || self->_lat != *(equal + 6))
                 {
                   goto LABEL_27;
                 }
               }
 
-              else if ((*(a3 + 44) & 2) != 0)
+              else if ((*(equal + 44) & 2) != 0)
               {
                 goto LABEL_27;
               }
 
-              LOBYTE(v5) = (*(a3 + 44) & 4) == 0;
+              LOBYTE(v5) = (*(equal + 44) & 4) == 0;
               if ((*&self->_has & 4) != 0)
               {
-                if ((*(a3 + 44) & 4) == 0 || self->_lon != *(a3 + 7))
+                if ((*(equal + 44) & 4) == 0 || self->_lon != *(equal + 7))
                 {
                   goto LABEL_27;
                 }
@@ -363,7 +363,7 @@ LABEL_13:
           }
         }
 
-        else if ((*(a3 + 44) & 8) == 0)
+        else if ((*(equal + 44) & 8) == 0)
         {
           goto LABEL_13;
         }
@@ -429,30 +429,30 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDCoreRoutineHeroAppSuggestionInstance *)self setSuggestionId:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDCoreRoutineHeroAppSuggestionInstance *)self setBundleId:?];
   }
 
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 8) != 0)
   {
-    self->_installed = *(a3 + 40);
+    self->_installed = *(from + 40);
     *&self->_has |= 8u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -465,20 +465,20 @@ LABEL_9:
     }
   }
 
-  else if ((*(a3 + 44) & 2) == 0)
+  else if ((*(from + 44) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_lat = *(a3 + 6);
+  self->_lat = *(from + 6);
   *&self->_has |= 2u;
-  if ((*(a3 + 44) & 4) == 0)
+  if ((*(from + 44) & 4) == 0)
   {
     return;
   }
 
 LABEL_10:
-  self->_lon = *(a3 + 7);
+  self->_lon = *(from + 7);
   *&self->_has |= 4u;
 }
 

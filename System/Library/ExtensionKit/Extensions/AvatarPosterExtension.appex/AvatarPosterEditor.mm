@@ -1,41 +1,41 @@
 @interface AvatarPosterEditor
-- (id)leadingMenuElementsForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)trailingMenuElementsForEditor:(id)a3;
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5;
-- (void)combinedPickerViewControllerDidCancel:(id)a3;
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (id)leadingMenuElementsForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)trailingMenuElementsForEditor:(id)editor;
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration;
+- (void)combinedPickerViewControllerDidCancel:(id)cancel;
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation AvatarPosterEditor
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000FE1C(v6, a4);
+  selfCopy = self;
+  sub_10000FE1C(editorCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10001824C(a4, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10001824C(environment, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   sub_1000183C4();
   sub_100009C14(0, &unk_10002BB90);
@@ -44,25 +44,25 @@
   return v3.super.isa;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_1000186AC(a4);
+  lookCopy = look;
+  selfCopy = self;
+  sub_1000186AC(views);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(PREditor *)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(PREditor *)editor finalizeWithCompletion:(id)completion
 {
   v7 = sub_1000027DC(&qword_10002B750);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = editor;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_10001A4CC();
@@ -77,23 +77,23 @@
   v14[3] = 0;
   v14[4] = &unk_10001C340;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_1000170D4(0, 0, v9, &unk_10001C350, v14);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_100018AEC();
 }
 
-- (id)trailingMenuElementsForEditor:(id)a3
+- (id)trailingMenuElementsForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000123C0(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  v6 = sub_1000123C0(editorCopy);
 
   if (v6)
   {
@@ -109,13 +109,13 @@
   return v7.super.isa;
 }
 
-- (id)leadingMenuElementsForEditor:(id)a3
+- (id)leadingMenuElementsForEditor:(id)editor
 {
   sub_1000027DC(&unk_10002B860);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_10001C200;
-  v6 = a3;
-  v7 = self;
+  editorCopy = editor;
+  selfCopy = self;
   *(v5 + 32) = sub_100012710();
 
   sub_100009C14(0, &qword_10002BAA0);
@@ -124,21 +124,21 @@
   return v8.super.isa;
 }
 
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration
 {
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100018D30(a4, v9);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100018D30(record, configurationCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)combinedPickerViewControllerDidCancel:(id)a3
+- (void)combinedPickerViewControllerDidCancel:(id)cancel
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC21AvatarPosterExtension18AvatarPosterEditor_editor);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 dismissViewControllerAnimated:1 completion:0];
@@ -147,9 +147,9 @@
   sub_100012C5C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   sub_100012C5C();
 }
 

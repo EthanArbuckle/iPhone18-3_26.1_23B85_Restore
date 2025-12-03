@@ -37,10 +37,10 @@
 - (BOOL)isWidthOverridden;
 - (BOOL)isWidthTypeOverridden;
 - (WDDocument)document;
-- (WDTableProperties)initWithDocument:(id)a3;
+- (WDTableProperties)initWithDocument:(id)document;
 - (id)baseStyle;
 - (id)bottomBorder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)deletionDate;
 - (id)description;
 - (id)editDate;
@@ -90,35 +90,35 @@
 - (void)clearShading;
 - (void)clearTopBorder;
 - (void)moveOrignalToTracked;
-- (void)setAlignment:(int)a3;
-- (void)setBaseStyle:(id)a3;
-- (void)setBiDirectional:(BOOL)a3;
-- (void)setBottomDistanceFromText:(int64_t)a3;
-- (void)setCellSpacing:(signed __int16)a3;
-- (void)setCellSpacingType:(int)a3;
-- (void)setDeleted:(int)a3;
-- (void)setDeletionDate:(id)a3;
-- (void)setEditDate:(id)a3;
-- (void)setEdited:(int)a3;
-- (void)setFormattingChangeDate:(id)a3;
-- (void)setFormattingChanged:(int)a3;
-- (void)setHorizontalAnchor:(int)a3;
-- (void)setHorizontalPosition:(int64_t)a3;
-- (void)setIndent:(signed __int16)a3;
-- (void)setIndentType:(int)a3;
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3;
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3;
-- (void)setJustification:(int)a3;
-- (void)setLeftDistanceFromText:(int64_t)a3;
-- (void)setLook:(unsigned __int16)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setRightDistanceFromText:(int64_t)a3;
-- (void)setTopDistanceFromText:(int64_t)a3;
-- (void)setVerticalAnchor:(int)a3;
-- (void)setVerticalPosition:(int64_t)a3;
-- (void)setWidth:(int64_t)a3;
-- (void)setWidthType:(int)a3;
+- (void)setAlignment:(int)alignment;
+- (void)setBaseStyle:(id)style;
+- (void)setBiDirectional:(BOOL)directional;
+- (void)setBottomDistanceFromText:(int64_t)text;
+- (void)setCellSpacing:(signed __int16)spacing;
+- (void)setCellSpacingType:(int)type;
+- (void)setDeleted:(int)deleted;
+- (void)setDeletionDate:(id)date;
+- (void)setEditDate:(id)date;
+- (void)setEdited:(int)edited;
+- (void)setFormattingChangeDate:(id)date;
+- (void)setFormattingChanged:(int)changed;
+- (void)setHorizontalAnchor:(int)anchor;
+- (void)setHorizontalPosition:(int64_t)position;
+- (void)setIndent:(signed __int16)indent;
+- (void)setIndentType:(int)type;
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion;
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit;
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change;
+- (void)setJustification:(int)justification;
+- (void)setLeftDistanceFromText:(int64_t)text;
+- (void)setLook:(unsigned __int16)look;
+- (void)setResolveMode:(int)mode;
+- (void)setRightDistanceFromText:(int64_t)text;
+- (void)setTopDistanceFromText:(int64_t)text;
+- (void)setVerticalAnchor:(int)anchor;
+- (void)setVerticalPosition:(int64_t)position;
+- (void)setWidth:(int64_t)width;
+- (void)setWidthType:(int)type;
 @end
 
 @implementation WDTableProperties
@@ -127,10 +127,10 @@
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties topBorder];
+    topBorder = [(WDTablePropertiesValues *)self->mTrackedProperties topBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!topBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setTopBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -138,20 +138,20 @@
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties topBorder];
+    topBorder2 = [(WDTablePropertiesValues *)mTrackedProperties topBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    topBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties topBorder];
+  topBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties topBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (topBorder3)
   {
     goto LABEL_6;
   }
@@ -159,21 +159,21 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setTopBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setTopBorder:v7];
+  topBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setTopBorder:topBorder2];
 LABEL_10:
 
-  return v7;
+  return topBorder2;
 }
 
 - (id)mutableLeftBorder
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties leftBorder];
+    leftBorder = [(WDTablePropertiesValues *)self->mTrackedProperties leftBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!leftBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setLeftBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -181,20 +181,20 @@ LABEL_10:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties leftBorder];
+    leftBorder2 = [(WDTablePropertiesValues *)mTrackedProperties leftBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    leftBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties leftBorder];
+  leftBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties leftBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (leftBorder3)
   {
     goto LABEL_6;
   }
@@ -202,21 +202,21 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setLeftBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setLeftBorder:v7];
+  leftBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setLeftBorder:leftBorder2];
 LABEL_10:
 
-  return v7;
+  return leftBorder2;
 }
 
 - (id)mutableBottomBorder
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties bottomBorder];
+    bottomBorder = [(WDTablePropertiesValues *)self->mTrackedProperties bottomBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!bottomBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setBottomBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -224,20 +224,20 @@ LABEL_10:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties bottomBorder];
+    bottomBorder2 = [(WDTablePropertiesValues *)mTrackedProperties bottomBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    bottomBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties bottomBorder];
+  bottomBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties bottomBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (bottomBorder3)
   {
     goto LABEL_6;
   }
@@ -245,21 +245,21 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setBottomBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setBottomBorder:v7];
+  bottomBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setBottomBorder:bottomBorder2];
 LABEL_10:
 
-  return v7;
+  return bottomBorder2;
 }
 
 - (id)mutableRightBorder
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties rightBorder];
+    rightBorder = [(WDTablePropertiesValues *)self->mTrackedProperties rightBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!rightBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setRightBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -267,20 +267,20 @@ LABEL_10:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties rightBorder];
+    rightBorder2 = [(WDTablePropertiesValues *)mTrackedProperties rightBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    rightBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties rightBorder];
+  rightBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties rightBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (rightBorder3)
   {
     goto LABEL_6;
   }
@@ -288,21 +288,21 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setRightBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setRightBorder:v7];
+  rightBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setRightBorder:rightBorder2];
 LABEL_10:
 
-  return v7;
+  return rightBorder2;
 }
 
 - (id)mutableInsideHorizontalBorder
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties insideHorizontalBorder];
+    insideHorizontalBorder = [(WDTablePropertiesValues *)self->mTrackedProperties insideHorizontalBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!insideHorizontalBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setInsideHorizontalBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -310,20 +310,20 @@ LABEL_10:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties insideHorizontalBorder];
+    insideHorizontalBorder2 = [(WDTablePropertiesValues *)mTrackedProperties insideHorizontalBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    insideHorizontalBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties insideHorizontalBorder];
+  insideHorizontalBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties insideHorizontalBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (insideHorizontalBorder3)
   {
     goto LABEL_6;
   }
@@ -331,21 +331,21 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setInsideHorizontalBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setInsideHorizontalBorder:v7];
+  insideHorizontalBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setInsideHorizontalBorder:insideHorizontalBorder2];
 LABEL_10:
 
-  return v7;
+  return insideHorizontalBorder2;
 }
 
 - (id)mutableInsideVerticalBorder
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties insideVerticalBorder];
+    insideVerticalBorder = [(WDTablePropertiesValues *)self->mTrackedProperties insideVerticalBorder];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!insideVerticalBorder)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setInsideVerticalBorderOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -353,20 +353,20 @@ LABEL_10:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties insideVerticalBorder];
+    insideVerticalBorder2 = [(WDTablePropertiesValues *)mTrackedProperties insideVerticalBorder];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    insideVerticalBorder2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties insideVerticalBorder];
+  insideVerticalBorder3 = [(WDTablePropertiesValues *)self->mOriginalProperties insideVerticalBorder];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (insideVerticalBorder3)
   {
     goto LABEL_6;
   }
@@ -374,11 +374,11 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setInsideVerticalBorderOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDBorder);
-  [(WDTablePropertiesValues *)mOriginalProperties setInsideVerticalBorder:v7];
+  insideVerticalBorder2 = objc_alloc_init(WDBorder);
+  [(WDTablePropertiesValues *)mOriginalProperties setInsideVerticalBorder:insideVerticalBorder2];
 LABEL_10:
 
-  return v7;
+  return insideVerticalBorder2;
 }
 
 - (void)clearShading
@@ -458,19 +458,19 @@ LABEL_8:
 {
   if ([(WDTableProperties *)self isHorizontalAnchorOverridden]&& [(WDTableProperties *)self horizontalAnchor]|| [(WDTableProperties *)self isVerticalAnchorOverridden]&& [(WDTableProperties *)self verticalAnchor]!= 2 || [(WDTableProperties *)self isHorizontalPositionOverridden]&& [(WDTableProperties *)self horizontalPosition])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isVerticalPositionOverridden) = 1;
   }
 
   else
   {
-    v3 = [(WDTableProperties *)self isVerticalPositionOverridden];
-    if (v3)
+    isVerticalPositionOverridden = [(WDTableProperties *)self isVerticalPositionOverridden];
+    if (isVerticalPositionOverridden)
     {
-      LOBYTE(v3) = [(WDTableProperties *)self verticalPosition]!= 0;
+      LOBYTE(isVerticalPositionOverridden) = [(WDTableProperties *)self verticalPosition]!= 0;
     }
   }
 
-  return v3;
+  return isVerticalPositionOverridden;
 }
 
 - (BOOL)isHorizontalAnchorOverridden
@@ -642,7 +642,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties topBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties topBorder];
+      topBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties topBorder];
       goto LABEL_10;
     }
 
@@ -660,10 +660,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  topBorder = 0;
 LABEL_10:
 
-  return v7;
+  return topBorder;
 }
 
 - (BOOL)isLeftBorderOverridden
@@ -707,7 +707,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties leftBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties leftBorder];
+      leftBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties leftBorder];
       goto LABEL_10;
     }
 
@@ -725,10 +725,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  leftBorder = 0;
 LABEL_10:
 
-  return v7;
+  return leftBorder;
 }
 
 - (BOOL)isBottomBorderOverridden
@@ -772,7 +772,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties bottomBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties bottomBorder];
+      bottomBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties bottomBorder];
       goto LABEL_10;
     }
 
@@ -790,10 +790,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  bottomBorder = 0;
 LABEL_10:
 
-  return v7;
+  return bottomBorder;
 }
 
 - (BOOL)isRightBorderOverridden
@@ -837,7 +837,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties rightBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties rightBorder];
+      rightBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties rightBorder];
       goto LABEL_10;
     }
 
@@ -855,10 +855,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  rightBorder = 0;
 LABEL_10:
 
-  return v7;
+  return rightBorder;
 }
 
 - (BOOL)isInsideHorizontalBorderOverridden
@@ -902,7 +902,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties insideHorizontalBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties insideHorizontalBorder];
+      insideHorizontalBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties insideHorizontalBorder];
       goto LABEL_10;
     }
 
@@ -920,10 +920,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  insideHorizontalBorder = 0;
 LABEL_10:
 
-  return v7;
+  return insideHorizontalBorder;
 }
 
 - (BOOL)isInsideVerticalBorderOverridden
@@ -967,7 +967,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties insideVerticalBorderOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties insideVerticalBorder];
+      insideVerticalBorder = [(WDTablePropertiesValues *)*p_mTrackedProperties insideVerticalBorder];
       goto LABEL_10;
     }
 
@@ -985,10 +985,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  insideVerticalBorder = 0;
 LABEL_10:
 
-  return v7;
+  return insideVerticalBorder;
 }
 
 - (int64_t)horizontalPosition
@@ -1066,7 +1066,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties baseStyleOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties baseStyle];
+      baseStyle = [(WDTablePropertiesValues *)*p_mTrackedProperties baseStyle];
       goto LABEL_10;
     }
 
@@ -1084,10 +1084,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  baseStyle = 0;
 LABEL_10:
 
-  return v7;
+  return baseStyle;
 }
 
 - (int)horizontalAnchor
@@ -1193,10 +1193,10 @@ LABEL_8:
 {
   if ((*(self + 8) & 2) != 0)
   {
-    v6 = [(WDTablePropertiesValues *)self->mTrackedProperties shading];
+    shading = [(WDTablePropertiesValues *)self->mTrackedProperties shading];
 
     mTrackedProperties = self->mTrackedProperties;
-    if (!v6)
+    if (!shading)
     {
       [(WDTablePropertiesValues *)mTrackedProperties setShadingOverridden:1];
       mOriginalProperties = self->mTrackedProperties;
@@ -1204,20 +1204,20 @@ LABEL_8:
     }
 
 LABEL_6:
-    v7 = [(WDTablePropertiesValues *)mTrackedProperties shading];
+    shading2 = [(WDTablePropertiesValues *)mTrackedProperties shading];
     goto LABEL_10;
   }
 
   if ((*(self + 8) & 1) == 0)
   {
-    v7 = 0;
+    shading2 = 0;
     goto LABEL_10;
   }
 
-  v3 = [(WDTablePropertiesValues *)self->mOriginalProperties shading];
+  shading3 = [(WDTablePropertiesValues *)self->mOriginalProperties shading];
 
   mTrackedProperties = self->mOriginalProperties;
-  if (v3)
+  if (shading3)
   {
     goto LABEL_6;
   }
@@ -1225,23 +1225,23 @@ LABEL_6:
   [(WDTablePropertiesValues *)mTrackedProperties setShadingOverridden:1];
   mOriginalProperties = self->mOriginalProperties;
 LABEL_9:
-  v7 = objc_alloc_init(WDShading);
-  [(WDTablePropertiesValues *)mOriginalProperties setShading:v7];
+  shading2 = objc_alloc_init(WDShading);
+  [(WDTablePropertiesValues *)mOriginalProperties setShading:shading2];
 LABEL_10:
 
-  return v7;
+  return shading2;
 }
 
-- (WDTableProperties)initWithDocument:(id)a3
+- (WDTableProperties)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = WDTableProperties;
   v5 = [(WDTableProperties *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     *(v6 + 8) = *(v6 + 8) & 0xF8 | 1;
     v7 = objc_alloc_init(WDTablePropertiesValues);
     mOriginalProperties = v6->mOriginalProperties;
@@ -1279,10 +1279,10 @@ LABEL_10:
   }
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  v3 = (2 * (a3 == 1)) | (4 * (a3 == 2));
-  if (!a3)
+  v3 = (2 * (mode == 1)) | (4 * (mode == 2));
+  if (!mode)
   {
     ++v3;
   }
@@ -1290,15 +1290,15 @@ LABEL_10:
   *(self + 8) = v3 | *(self + 8) & 0xF8;
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v4 = a3;
-  v8 = v4;
+  styleCopy = style;
+  v8 = styleCopy;
   if ((*(self + 8) & 2) != 0)
   {
     mTrackedProperties = self->mTrackedProperties;
     p_mTrackedProperties = &self->mTrackedProperties;
-    [(WDTablePropertiesValues *)mTrackedProperties setBaseStyle:v4];
+    [(WDTablePropertiesValues *)mTrackedProperties setBaseStyle:styleCopy];
   }
 
   else
@@ -1310,7 +1310,7 @@ LABEL_10:
 
     mOriginalProperties = self->mOriginalProperties;
     p_mTrackedProperties = &self->mOriginalProperties;
-    [(WDTablePropertiesValues *)mOriginalProperties setBaseStyle:v4];
+    [(WDTablePropertiesValues *)mOriginalProperties setBaseStyle:styleCopy];
   }
 
   [(WDTablePropertiesValues *)*p_mTrackedProperties setBaseStyleOverridden:1];
@@ -1350,7 +1350,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 look];
 }
 
-- (void)setLook:(unsigned __int16)a3
+- (void)setLook:(unsigned __int16)look
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1367,7 +1367,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setLook:a3];
+  [*(&self->super.isa + v4) setLook:look];
   v5 = *(&self->super.isa + v4);
 
   [v5 setLookOverridden:1];
@@ -1414,7 +1414,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties shadingOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties shading];
+      shading = [(WDTablePropertiesValues *)*p_mTrackedProperties shading];
       goto LABEL_10;
     }
 
@@ -1432,10 +1432,10 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  shading = 0;
 LABEL_10:
 
-  return v7;
+  return shading;
 }
 
 - (BOOL)isShadingOverridden
@@ -1707,7 +1707,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 justification];
 }
 
-- (void)setJustification:(int)a3
+- (void)setJustification:(int)justification
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1724,7 +1724,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setJustification:*&a3];
+  [*(&self->super.isa + v4) setJustification:*&justification];
   v5 = *(&self->super.isa + v4);
 
   [v5 setJustificationOverridden:1];
@@ -1795,7 +1795,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 alignment];
 }
 
-- (void)setAlignment:(int)a3
+- (void)setAlignment:(int)alignment
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1812,7 +1812,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setAlignment:*&a3];
+  [*(&self->super.isa + v4) setAlignment:*&alignment];
   v5 = *(&self->super.isa + v4);
 
   [v5 setAlignmentOverridden:1];
@@ -1883,7 +1883,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 width];
 }
 
-- (void)setWidth:(int64_t)a3
+- (void)setWidth:(int64_t)width
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1900,7 +1900,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setWidth:a3];
+  [*(&self->super.isa + v4) setWidth:width];
   v5 = *(&self->super.isa + v4);
 
   [v5 setWidthOverridden:1];
@@ -1971,7 +1971,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 widthType];
 }
 
-- (void)setWidthType:(int)a3
+- (void)setWidthType:(int)type
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1988,7 +1988,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setWidthType:*&a3];
+  [*(&self->super.isa + v4) setWidthType:*&type];
   v5 = *(&self->super.isa + v4);
 
   [v5 setWidthTypeOverridden:1];
@@ -2059,7 +2059,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 indent];
 }
 
-- (void)setIndent:(signed __int16)a3
+- (void)setIndent:(signed __int16)indent
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2076,7 +2076,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setIndent:a3];
+  [*(&self->super.isa + v4) setIndent:indent];
   v5 = *(&self->super.isa + v4);
 
   [v5 setIndentOverridden:1];
@@ -2147,7 +2147,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 indentType];
 }
 
-- (void)setIndentType:(int)a3
+- (void)setIndentType:(int)type
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2164,7 +2164,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setIndentType:*&a3];
+  [*(&self->super.isa + v4) setIndentType:*&type];
   v5 = *(&self->super.isa + v4);
 
   [v5 setIndentTypeOverridden:1];
@@ -2235,7 +2235,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 cellSpacing];
 }
 
-- (void)setCellSpacing:(signed __int16)a3
+- (void)setCellSpacing:(signed __int16)spacing
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2252,7 +2252,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setCellSpacing:a3];
+  [*(&self->super.isa + v4) setCellSpacing:spacing];
   v5 = *(&self->super.isa + v4);
 
   [v5 setCellSpacingOverridden:1];
@@ -2323,7 +2323,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 cellSpacingType];
 }
 
-- (void)setCellSpacingType:(int)a3
+- (void)setCellSpacingType:(int)type
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2340,7 +2340,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setCellSpacingType:*&a3];
+  [*(&self->super.isa + v4) setCellSpacingType:*&type];
   v5 = *(&self->super.isa + v4);
 
   [v5 setCellSpacingTypeOverridden:1];
@@ -2378,7 +2378,7 @@ LABEL_8:
   return [v5 cellSpacingTypeOverridden];
 }
 
-- (void)setVerticalAnchor:(int)a3
+- (void)setVerticalAnchor:(int)anchor
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2395,13 +2395,13 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setVerticalAnchor:*&a3];
+  [*(&self->super.isa + v4) setVerticalAnchor:*&anchor];
   v5 = *(&self->super.isa + v4);
 
   [v5 setVerticalAnchorOverridden:1];
 }
 
-- (void)setHorizontalAnchor:(int)a3
+- (void)setHorizontalAnchor:(int)anchor
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2418,13 +2418,13 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setHorizontalAnchor:*&a3];
+  [*(&self->super.isa + v4) setHorizontalAnchor:*&anchor];
   v5 = *(&self->super.isa + v4);
 
   [v5 setHorizontalAnchorOverridden:1];
 }
 
-- (void)setVerticalPosition:(int64_t)a3
+- (void)setVerticalPosition:(int64_t)position
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2441,13 +2441,13 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setVerticalPosition:a3];
+  [*(&self->super.isa + v4) setVerticalPosition:position];
   v5 = *(&self->super.isa + v4);
 
   [v5 setVerticalPositionOverridden:1];
 }
 
-- (void)setHorizontalPosition:(int64_t)a3
+- (void)setHorizontalPosition:(int64_t)position
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2464,13 +2464,13 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setHorizontalPosition:a3];
+  [*(&self->super.isa + v4) setHorizontalPosition:position];
   v5 = *(&self->super.isa + v4);
 
   [v5 setHorizontalPositionOverridden:1];
 }
 
-- (void)setLeftDistanceFromText:(int64_t)a3
+- (void)setLeftDistanceFromText:(int64_t)text
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2487,7 +2487,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setLeftDistanceFromText:a3];
+  [*(&self->super.isa + v4) setLeftDistanceFromText:text];
   v5 = *(&self->super.isa + v4);
 
   [v5 setLeftDistanceFromTextOverridden:1];
@@ -2558,7 +2558,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 topDistanceFromText];
 }
 
-- (void)setTopDistanceFromText:(int64_t)a3
+- (void)setTopDistanceFromText:(int64_t)text
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2575,7 +2575,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setTopDistanceFromText:a3];
+  [*(&self->super.isa + v4) setTopDistanceFromText:text];
   v5 = *(&self->super.isa + v4);
 
   [v5 setTopDistanceFromTextOverridden:1];
@@ -2646,7 +2646,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 rightDistanceFromText];
 }
 
-- (void)setRightDistanceFromText:(int64_t)a3
+- (void)setRightDistanceFromText:(int64_t)text
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2663,7 +2663,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setRightDistanceFromText:a3];
+  [*(&self->super.isa + v4) setRightDistanceFromText:text];
   v5 = *(&self->super.isa + v4);
 
   [v5 setRightDistanceFromTextOverridden:1];
@@ -2734,7 +2734,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 bottomDistanceFromText];
 }
 
-- (void)setBottomDistanceFromText:(int64_t)a3
+- (void)setBottomDistanceFromText:(int64_t)text
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2751,7 +2751,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setBottomDistanceFromText:a3];
+  [*(&self->super.isa + v4) setBottomDistanceFromText:text];
   v5 = *(&self->super.isa + v4);
 
   [v5 setBottomDistanceFromTextOverridden:1];
@@ -2822,7 +2822,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 deleted];
 }
 
-- (void)setDeleted:(int)a3
+- (void)setDeleted:(int)deleted
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2839,7 +2839,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setDeleted:*&a3];
+  [*(&self->super.isa + v4) setDeleted:*&deleted];
   v5 = *(&self->super.isa + v4);
 
   [v5 setDeletedOverridden:1];
@@ -2910,7 +2910,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 edited];
 }
 
-- (void)setEdited:(int)a3
+- (void)setEdited:(int)edited
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2927,7 +2927,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setEdited:*&a3];
+  [*(&self->super.isa + v4) setEdited:*&edited];
   v5 = *(&self->super.isa + v4);
 
   [v5 setEditedOverridden:1];
@@ -2998,7 +2998,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 formattingChanged];
 }
 
-- (void)setFormattingChanged:(int)a3
+- (void)setFormattingChanged:(int)changed
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3015,7 +3015,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setFormattingChanged:*&a3];
+  [*(&self->super.isa + v4) setFormattingChanged:*&changed];
   v5 = *(&self->super.isa + v4);
 
   [v5 setFormattingChangedOverridden:1];
@@ -3086,7 +3086,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 biDirectional];
 }
 
-- (void)setBiDirectional:(BOOL)a3
+- (void)setBiDirectional:(BOOL)directional
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3103,7 +3103,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setBiDirectional:a3];
+  [*(&self->super.isa + v4) setBiDirectional:directional];
   v5 = *(&self->super.isa + v4);
 
   [v5 setBiDirectionalOverridden:1];
@@ -3174,7 +3174,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 indexToAuthorIDOfDeletion];
 }
 
-- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfDeletion:(unsigned __int16)deletion
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3191,7 +3191,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setIndexToAuthorIDOfDeletion:a3];
+  [*(&self->super.isa + v4) setIndexToAuthorIDOfDeletion:deletion];
   v5 = *(&self->super.isa + v4);
 
   [v5 setIndexToAuthorIDOfDeletionOverridden:1];
@@ -3262,7 +3262,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 indexToAuthorIDOfEdit];
 }
 
-- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfEdit:(unsigned __int16)edit
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3279,7 +3279,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setIndexToAuthorIDOfEdit:a3];
+  [*(&self->super.isa + v4) setIndexToAuthorIDOfEdit:edit];
   v5 = *(&self->super.isa + v4);
 
   [v5 setIndexToAuthorIDOfEditOverridden:1];
@@ -3350,7 +3350,7 @@ LABEL_8:
   return [(WDTablePropertiesValues *)v7 indexToAuthorIDOfFormattingChange];
 }
 
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3367,7 +3367,7 @@ LABEL_8:
     v4 = 16;
   }
 
-  [*(&self->super.isa + v4) setIndexToAuthorIDOfFormattingChange:a3];
+  [*(&self->super.isa + v4) setIndexToAuthorIDOfFormattingChange:change];
   v5 = *(&self->super.isa + v4);
 
   [v5 setIndexToAuthorIDOfFormattingChangeOverridden:1];
@@ -3414,7 +3414,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties deletionDateOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties deletionDate];
+      deletionDate = [(WDTablePropertiesValues *)*p_mTrackedProperties deletionDate];
       goto LABEL_10;
     }
 
@@ -3432,21 +3432,21 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  deletionDate = 0;
 LABEL_10:
 
-  return v7;
+  return deletionDate;
 }
 
-- (void)setDeletionDate:(id)a3
+- (void)setDeletionDate:(id)date
 {
-  v4 = a3;
-  v8 = v4;
+  dateCopy = date;
+  v8 = dateCopy;
   if ((*(self + 8) & 2) != 0)
   {
     mTrackedProperties = self->mTrackedProperties;
     p_mTrackedProperties = &self->mTrackedProperties;
-    [(WDTablePropertiesValues *)mTrackedProperties setDeletionDate:v4];
+    [(WDTablePropertiesValues *)mTrackedProperties setDeletionDate:dateCopy];
   }
 
   else
@@ -3458,7 +3458,7 @@ LABEL_10:
 
     mOriginalProperties = self->mOriginalProperties;
     p_mTrackedProperties = &self->mOriginalProperties;
-    [(WDTablePropertiesValues *)mOriginalProperties setDeletionDate:v4];
+    [(WDTablePropertiesValues *)mOriginalProperties setDeletionDate:dateCopy];
   }
 
   [(WDTablePropertiesValues *)*p_mTrackedProperties setDeletionDateOverridden:1];
@@ -3506,7 +3506,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties editDateOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties editDate];
+      editDate = [(WDTablePropertiesValues *)*p_mTrackedProperties editDate];
       goto LABEL_10;
     }
 
@@ -3524,21 +3524,21 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  editDate = 0;
 LABEL_10:
 
-  return v7;
+  return editDate;
 }
 
-- (void)setEditDate:(id)a3
+- (void)setEditDate:(id)date
 {
-  v4 = a3;
-  v8 = v4;
+  dateCopy = date;
+  v8 = dateCopy;
   if ((*(self + 8) & 2) != 0)
   {
     mTrackedProperties = self->mTrackedProperties;
     p_mTrackedProperties = &self->mTrackedProperties;
-    [(WDTablePropertiesValues *)mTrackedProperties setEditDate:v4];
+    [(WDTablePropertiesValues *)mTrackedProperties setEditDate:dateCopy];
   }
 
   else
@@ -3550,7 +3550,7 @@ LABEL_10:
 
     mOriginalProperties = self->mOriginalProperties;
     p_mTrackedProperties = &self->mOriginalProperties;
-    [(WDTablePropertiesValues *)mOriginalProperties setEditDate:v4];
+    [(WDTablePropertiesValues *)mOriginalProperties setEditDate:dateCopy];
   }
 
   [(WDTablePropertiesValues *)*p_mTrackedProperties setEditDateOverridden:1];
@@ -3598,7 +3598,7 @@ LABEL_8:
     if ([(WDTablePropertiesValues *)self->mTrackedProperties formattingChangeDateOverridden])
     {
 LABEL_8:
-      v7 = [(WDTablePropertiesValues *)*p_mTrackedProperties formattingChangeDate];
+      formattingChangeDate = [(WDTablePropertiesValues *)*p_mTrackedProperties formattingChangeDate];
       goto LABEL_10;
     }
 
@@ -3616,21 +3616,21 @@ LABEL_8:
     }
   }
 
-  v7 = 0;
+  formattingChangeDate = 0;
 LABEL_10:
 
-  return v7;
+  return formattingChangeDate;
 }
 
-- (void)setFormattingChangeDate:(id)a3
+- (void)setFormattingChangeDate:(id)date
 {
-  v4 = a3;
-  v8 = v4;
+  dateCopy = date;
+  v8 = dateCopy;
   if ((*(self + 8) & 2) != 0)
   {
     mTrackedProperties = self->mTrackedProperties;
     p_mTrackedProperties = &self->mTrackedProperties;
-    [(WDTablePropertiesValues *)mTrackedProperties setFormattingChangeDate:v4];
+    [(WDTablePropertiesValues *)mTrackedProperties setFormattingChangeDate:dateCopy];
   }
 
   else
@@ -3642,7 +3642,7 @@ LABEL_10:
 
     mOriginalProperties = self->mOriginalProperties;
     p_mTrackedProperties = &self->mOriginalProperties;
-    [(WDTablePropertiesValues *)mOriginalProperties setFormattingChangeDate:v4];
+    [(WDTablePropertiesValues *)mOriginalProperties setFormattingChangeDate:dateCopy];
   }
 
   [(WDTablePropertiesValues *)*p_mTrackedProperties setFormattingChangeDateOverridden:1];
@@ -3681,9 +3681,9 @@ LABEL_8:
   return [v5 formattingChangeDateOverridden];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WDTableProperties allocWithZone:a3];
+  v4 = [WDTableProperties allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->mDocument);
   v6 = [(WDTableProperties *)v4 initWithDocument:WeakRetained];
 

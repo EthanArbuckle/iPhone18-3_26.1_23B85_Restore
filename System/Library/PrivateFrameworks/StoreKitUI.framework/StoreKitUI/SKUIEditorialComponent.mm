@@ -1,24 +1,24 @@
 @interface SKUIEditorialComponent
 - (NSAttributedString)bodyAttributedText;
-- (SKUIEditorialComponent)initWithBrickRoomText:(id)a3;
-- (SKUIEditorialComponent)initWithCustomPageContext:(id)a3;
-- (SKUIEditorialComponent)initWithUberText:(id)a3;
-- (SKUIEditorialComponent)initWithViewElement:(id)a3;
+- (SKUIEditorialComponent)initWithBrickRoomText:(id)text;
+- (SKUIEditorialComponent)initWithCustomPageContext:(id)context;
+- (SKUIEditorialComponent)initWithUberText:(id)text;
+- (SKUIEditorialComponent)initWithViewElement:(id)element;
 - (SKUIEditorialStyle)editorialStyle;
-- (void)_setTitleText:(id)a3;
+- (void)_setTitleText:(id)text;
 @end
 
 @implementation SKUIEditorialComponent
 
-- (SKUIEditorialComponent)initWithBrickRoomText:(id)a3
+- (SKUIEditorialComponent)initWithBrickRoomText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = SKUIEditorialComponent;
   v5 = [(SKUIEditorialComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     bodyText = v5->_bodyText;
     v5->_bodyText = v6;
 
@@ -29,33 +29,33 @@
   return v5;
 }
 
-- (SKUIEditorialComponent)initWithCustomPageContext:(id)a3
+- (SKUIEditorialComponent)initWithCustomPageContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v38.receiver = self;
   v38.super_class = SKUIEditorialComponent;
-  v5 = [(SKUIPageComponent *)&v38 initWithCustomPageContext:v4];
+  v5 = [(SKUIPageComponent *)&v38 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    SKUIEditorialStyleForDictionary(v6, v36);
+    componentDictionary = [contextCopy componentDictionary];
+    SKUIEditorialStyleForDictionary(componentDictionary, v36);
     v7 = v36[1];
     *&v5->_style.alignment = v36[0];
     *&v5->_style.bodyFontSize = v7;
     *&v5->_style.titleFontSize = v37;
-    if (v5->_style.alignment == 3 && ![v4 layoutStyle])
+    if (v5->_style.alignment == 3 && ![contextCopy layoutStyle])
     {
       v5->_style.alignment = 1;
     }
 
-    v8 = [v6 objectForKey:@"maximumBodyLines"];
+    v8 = [componentDictionary objectForKey:@"maximumBodyLines"];
     if (objc_opt_respondsToSelector())
     {
       v5->_maximumBodyLines = [v8 integerValue];
     }
 
-    v9 = [v6 objectForKey:@"body"];
+    v9 = [componentDictionary objectForKey:@"body"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -65,7 +65,7 @@
       v5->_bodyText = v10;
     }
 
-    v12 = [v6 objectForKey:@"title"];
+    v12 = [componentDictionary objectForKey:@"title"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -75,21 +75,21 @@
       v5->_titleText = v13;
     }
 
-    v15 = [v6 objectForKey:@"useLockupTitle"];
+    v15 = [componentDictionary objectForKey:@"useLockupTitle"];
 
     if (objc_opt_respondsToSelector())
     {
       v5->_usesLockupTitle = [v15 BOOLValue];
     }
 
-    v16 = [v6 objectForKey:@"links"];
+    v16 = [componentDictionary objectForKey:@"links"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = v6;
+      v30 = componentDictionary;
       v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v31 = v4;
-      v18 = [v4 copy];
+      v31 = contextCopy;
+      v18 = [contextCopy copy];
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
@@ -133,8 +133,8 @@
       links = v5->_links;
       v5->_links = v26;
 
-      v6 = v30;
-      v4 = v31;
+      componentDictionary = v30;
+      contextCopy = v31;
       v16 = v29;
     }
   }
@@ -142,15 +142,15 @@
   return v5;
 }
 
-- (SKUIEditorialComponent)initWithUberText:(id)a3
+- (SKUIEditorialComponent)initWithUberText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = SKUIEditorialComponent;
   v5 = [(SKUIEditorialComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [textCopy copy];
     bodyText = v5->_bodyText;
     v5->_bodyText = v6;
 
@@ -161,22 +161,22 @@
   return v5;
 }
 
-- (SKUIEditorialComponent)initWithViewElement:(id)a3
+- (SKUIEditorialComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SKUIEditorialComponent;
-  v5 = [(SKUIPageComponent *)&v9 initWithViewElement:v4];
+  v5 = [(SKUIPageComponent *)&v9 initWithViewElement:elementCopy];
   if (v5)
   {
-    v6 = [v4 style];
-    v7 = [v6 maxTextLines];
-    if (!v6 || v7 == -1)
+    style = [elementCopy style];
+    maxTextLines = [style maxTextLines];
+    if (!style || maxTextLines == -1)
     {
-      v7 = [v4 numberOfLines];
+      maxTextLines = [elementCopy numberOfLines];
     }
 
-    v5->_maximumBodyLines = v7;
+    v5->_maximumBodyLines = maxTextLines;
   }
 
   return v5;
@@ -184,26 +184,26 @@
 
 - (NSAttributedString)bodyAttributedText
 {
-  v2 = [(SKUIPageComponent *)self viewElement];
-  v3 = v2;
-  if (v2)
+  viewElement = [(SKUIPageComponent *)self viewElement];
+  v3 = viewElement;
+  if (viewElement)
   {
-    v4 = [v2 style];
-    v5 = SKUIViewElementFontWithStyle(v4);
+    style = [viewElement style];
+    v5 = SKUIViewElementFontWithStyle(style);
     if (!v5)
     {
       v5 = SKUIFontPreferredFontForTextStyle(5);
     }
 
-    v6 = [v4 ikColor];
-    v7 = [v6 color];
+    ikColor = [style ikColor];
+    color = [ikColor color];
 
-    if (!v7)
+    if (!color)
     {
-      v7 = [MEMORY[0x277D75348] blackColor];
+      color = [MEMORY[0x277D75348] blackColor];
     }
 
-    v8 = SKUIViewElementAlignmentForStyle(v4);
+    v8 = SKUIViewElementAlignmentForStyle(style);
     if (v8)
     {
       v9 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v8);
@@ -214,8 +214,8 @@
       v9 = 0;
     }
 
-    v11 = [v3 text];
-    v12 = [v11 attributedStringWithDefaultFont:v5 foregroundColor:v7 textAlignment:v9 style:v4];
+    text = [v3 text];
+    v12 = [text attributedStringWithDefaultFont:v5 foregroundColor:color textAlignment:v9 style:style];
     v13 = [v12 mutableCopy];
 
     v14 = *MEMORY[0x277D74118];
@@ -244,11 +244,11 @@ void __44__SKUIEditorialComponent_bodyAttributedText__block_invoke(uint64_t a1, 
   [*(a1 + 32) addAttribute:*MEMORY[0x277D74118] value:v7 range:{a3, a4}];
 }
 
-- (void)_setTitleText:(id)a3
+- (void)_setTitleText:(id)text
 {
-  if (self->_titleText != a3)
+  if (self->_titleText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     titleText = self->_titleText;
     self->_titleText = v4;
 

@@ -1,6 +1,6 @@
 @interface CNContactAddStaticIdentityAction
 + (id)supportedPasteboardTypes;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactAddStaticIdentityAction
@@ -28,21 +28,21 @@ void __60__CNContactAddStaticIdentityAction_supportedPasteboardTypes__block_invo
   supportedPasteboardTypes_cn_once_object_1_51512 = v1;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v15 = [objc_opt_class() supportedPasteboardTypes];
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  if ([v4 containsPasteboardTypes:v15])
+  supportedPasteboardTypes = [objc_opt_class() supportedPasteboardTypes];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  if ([generalPasteboard containsPasteboardTypes:supportedPasteboardTypes])
   {
-    v5 = [v15 count];
+    v5 = [supportedPasteboardTypes count];
     if (v5)
     {
       v6 = v5;
       v7 = 0;
       while (1)
       {
-        v8 = [v15 objectAtIndexedSubscript:v7];
-        v9 = [v4 valueForPasteboardType:v8];
+        v8 = [supportedPasteboardTypes objectAtIndexedSubscript:v7];
+        v9 = [generalPasteboard valueForPasteboardType:v8];
 
         if (v9)
         {
@@ -102,8 +102,8 @@ LABEL_6:
 
   [(CNContactAddStaticIdentityAction *)self setChosenIdentity:@" "];
 LABEL_18:
-  v14 = [(CNContactAction *)self delegate];
-  [v14 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
 @end

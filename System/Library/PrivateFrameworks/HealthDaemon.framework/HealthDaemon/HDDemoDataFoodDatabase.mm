@@ -1,8 +1,8 @@
 @interface HDDemoDataFoodDatabase
 - (HDDemoDataFoodDatabase)init;
-- (double)dailyValueForDietaryNutrientIdentifier:(id)a3;
+- (double)dailyValueForDietaryNutrientIdentifier:(id)identifier;
 - (id)coffee;
-- (id)randomFoodForType:(int64_t)a3;
+- (id)randomFoodForType:(int64_t)type;
 @end
 
 @implementation HDDemoDataFoodDatabase
@@ -211,8 +211,8 @@
 
     v61 = [[HDDemoDataFoodObject alloc] initWithBrandName:@"Milk" genericName:@"Milk" foodType:5 nutritionFacts:v60];
     v686[3] = v61;
-    v62 = [(HDDemoDataFoodDatabase *)v2 coffee];
-    v686[4] = v62;
+    coffee = [(HDDemoDataFoodDatabase *)v2 coffee];
+    v686[4] = coffee;
     v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v686 count:5];
     beverages = v2->_beverages;
     v2->_beverages = v63;
@@ -1886,16 +1886,16 @@
   return v2;
 }
 
-- (id)randomFoodForType:(int64_t)a3
+- (id)randomFoodForType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v3 = *(&self->super.isa + qword_22916DC80[a3 - 1]);
+    v3 = *(&self->super.isa + qword_22916DC80[type - 1]);
     v4 = [v3 count];
     if (v4)
     {
@@ -1906,9 +1906,9 @@
   return v4;
 }
 
-- (double)dailyValueForDietaryNutrientIdentifier:(id)a3
+- (double)dailyValueForDietaryNutrientIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_dietaryNutrientDailyValues objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_dietaryNutrientDailyValues objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3)
   {

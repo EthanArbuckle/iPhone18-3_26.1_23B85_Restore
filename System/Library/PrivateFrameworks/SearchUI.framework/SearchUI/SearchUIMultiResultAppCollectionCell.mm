@@ -2,7 +2,7 @@
 - (CGSize)hoverHighlightMargins;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)updateWithResult:(id)a3;
+- (void)updateWithResult:(id)result;
 @end
 
 @implementation SearchUIMultiResultAppCollectionCell
@@ -17,40 +17,40 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  appIconView = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
+  [appIconView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
-  [v3 setAddRoundedKeyboardHighlight:0];
+  appIconView = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
+  [appIconView setAddRoundedKeyboardHighlight:0];
 
   v4.receiver = self;
   v4.super_class = SearchUIMultiResultAppCollectionCell;
   [(SearchUIMultiResultAppCollectionCell *)&v4 prepareForReuse];
 }
 
-- (void)updateWithResult:(id)a3
+- (void)updateWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   [(SearchUIMultiResultAppCollectionCell *)self setBackgroundConfiguration:0];
-  v5 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
+  appIconView = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
 
-  if (!v5)
+  if (!appIconView)
   {
     v6 = objc_opt_new();
     [(SearchUIMultiResultAppCollectionCell *)self setAppIconView:v6];
 
-    v7 = [(SearchUIMultiResultAppCollectionCell *)self contentView];
-    v8 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
-    [v7 addSubview:v8];
+    contentView = [(SearchUIMultiResultAppCollectionCell *)self contentView];
+    appIconView2 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
+    [contentView addSubview:appIconView2];
   }
 
-  v10 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
-  v9 = [[SearchUIRowModel alloc] initWithResult:v4 itemIdentifier:0];
+  appIconView3 = [(SearchUIMultiResultAppCollectionCell *)self appIconView];
+  v9 = [[SearchUIRowModel alloc] initWithResult:resultCopy itemIdentifier:0];
 
-  [v10 updateWithRowModel:v9];
+  [appIconView3 updateWithRowModel:v9];
 }
 
 - (CGSize)hoverHighlightMargins

@@ -6,10 +6,10 @@
 
 - (BOOL)isAwaitingFullSet
 {
-  v2 = [(CCSetDonation *)self priors];
-  v3 = [v2 isAwaitingFullSet];
+  priors = [(CCSetDonation *)self priors];
+  isAwaitingFullSet = [priors isAwaitingFullSet];
 
-  return v3;
+  return isAwaitingFullSet;
 }
 
 @end

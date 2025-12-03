@@ -7,9 +7,9 @@
 - (NSString)language;
 - (NSString)phoneSetVersion;
 - (NSString)version;
-- (_EARSpeechModelInfo)initWithConfig:(id)a3;
+- (_EARSpeechModelInfo)initWithConfig:(id)config;
 - (id).cxx_construct;
-- (id)_initWithSpeechModelInfo:(const void *)a3;
+- (id)_initWithSpeechModelInfo:(const void *)info;
 @end
 
 @implementation _EARSpeechModelInfo
@@ -17,7 +17,7 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
@@ -162,7 +162,7 @@
   return v3;
 }
 
-- (id)_initWithSpeechModelInfo:(const void *)a3
+- (id)_initWithSpeechModelInfo:(const void *)info
 {
   v7.receiver = self;
   v7.super_class = _EARSpeechModelInfo;
@@ -170,28 +170,28 @@
   v5 = v4;
   if (v4)
   {
-    quasar::SpeechModelInfo::operator=(&v4->_speechModelInfo, a3);
+    quasar::SpeechModelInfo::operator=(&v4->_speechModelInfo, info);
   }
 
   return v5;
 }
 
-- (_EARSpeechModelInfo)initWithConfig:(id)a3
+- (_EARSpeechModelInfo)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = _EARSpeechModelInfo;
   v5 = [(_EARSpeechModelInfo *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:configCopy];
 
     if (v7)
     {
-      if (v4)
+      if (configCopy)
       {
-        [v4 ear_toString];
+        [configCopy ear_toString];
       }
 
       quasar::SpeechRecognizer::GetSpeechModelInfo();

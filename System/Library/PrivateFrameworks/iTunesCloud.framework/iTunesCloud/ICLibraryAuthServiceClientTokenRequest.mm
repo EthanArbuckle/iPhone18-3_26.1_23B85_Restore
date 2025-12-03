@@ -1,7 +1,7 @@
 @interface ICLibraryAuthServiceClientTokenRequest
-- (ICLibraryAuthServiceClientTokenRequest)initWithStoreRequestContext:(id)a3;
+- (ICLibraryAuthServiceClientTokenRequest)initWithStoreRequestContext:(id)context;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICLibraryAuthServiceClientTokenRequest
@@ -198,29 +198,29 @@ void __49__ICLibraryAuthServiceClientTokenRequest_execute__block_invoke_11(uint6
   [*(a1 + 32) finishWithError:v6];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__ICLibraryAuthServiceClientTokenRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICLibraryAuthServiceClientTokenRequest)initWithStoreRequestContext:(id)a3
+- (ICLibraryAuthServiceClientTokenRequest)initWithStoreRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICLibraryAuthServiceClientTokenRequest;
   v6 = [(ICRequestOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeRequestContext, a3);
+    objc_storeStrong(&v6->_storeRequestContext, context);
   }
 
   return v7;

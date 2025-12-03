@@ -37,13 +37,13 @@ void __54__PUPhotoKitAirPlayActionPerformer__showAirPlayPicker__block_invoke(uin
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PUAssetActionPerformer *)self assets];
-  v5 = [v4 count];
+  assets = [(PUAssetActionPerformer *)self assets];
+  v5 = [assets count];
 
   if (v5 != 1)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1970 description:@"There can be only one asset when starting an AirPlay action"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1970 description:@"There can be only one asset when starting an AirPlay action"];
   }
 
   [(PUPhotoKitAirPlayActionPerformer *)self _showAirPlayPicker];

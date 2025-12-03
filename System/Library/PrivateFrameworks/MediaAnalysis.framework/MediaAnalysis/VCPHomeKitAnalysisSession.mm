@@ -1,22 +1,22 @@
 @interface VCPHomeKitAnalysisSession
-+ (id)sessionWithProperties:(id)a3 andResultsHandler:(id)a4;
-+ (id)sessionWithProperties:(id)a3 withResultsHandler:(id)a4 andInterruptionHandler:(id)a5;
-- (VCPHomeKitAnalysisSession)initWithProperties:(id)a3 withResultsHandler:(id)a4 andInterruptionHandler:(id)a5;
++ (id)sessionWithProperties:(id)properties andResultsHandler:(id)handler;
++ (id)sessionWithProperties:(id)properties withResultsHandler:(id)handler andInterruptionHandler:(id)interruptionHandler;
+- (VCPHomeKitAnalysisSession)initWithProperties:(id)properties withResultsHandler:(id)handler andInterruptionHandler:(id)interruptionHandler;
 - (id)connection;
-- (void)processMessageWithOptions:(id)a3 andCompletionHandler:(id)a4;
-- (void)processResults:(id)a3 withReply:(id)a4;
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andCompletionHandler:(id)a5;
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andErrorHandler:(id)a5;
+- (void)processMessageWithOptions:(id)options andCompletionHandler:(id)handler;
+- (void)processResults:(id)results withReply:(id)reply;
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andCompletionHandler:(id)handler;
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andErrorHandler:(id)handler;
 @end
 
 @implementation VCPHomeKitAnalysisSession
 
-- (VCPHomeKitAnalysisSession)initWithProperties:(id)a3 withResultsHandler:(id)a4 andInterruptionHandler:(id)a5
+- (VCPHomeKitAnalysisSession)initWithProperties:(id)properties withResultsHandler:(id)handler andInterruptionHandler:(id)interruptionHandler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  interruptionHandlerCopy = interruptionHandler;
   v41.receiver = self;
   v41.super_class = VCPHomeKitAnalysisSession;
   v11 = [(VCPHomeKitAnalysisSession *)&v41 init];
@@ -41,11 +41,11 @@
   connectionQueue = v12->_connectionQueue;
   v12->_connectionQueue = v18;
 
-  v20 = _Block_copy(v9);
+  v20 = _Block_copy(handlerCopy);
   resultsHandler = v12->_resultsHandler;
   v12->_resultsHandler = v20;
 
-  v22 = _Block_copy(v10);
+  v22 = _Block_copy(interruptionHandlerCopy);
   interruptionHander = v12->_interruptionHander;
   v12->_interruptionHander = v22;
 
@@ -59,21 +59,21 @@
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 1;
-  v24 = [(VCPHomeKitAnalysisSession *)v12 connection];
+  connection = [(VCPHomeKitAnalysisSession *)v12 connection];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __90__VCPHomeKitAnalysisSession_initWithProperties_withResultsHandler_andInterruptionHandler___block_invoke;
   v30[3] = &unk_1E834E0C0;
   v30[4] = &v31;
   v30[5] = &v35;
-  v25 = [v24 synchronousRemoteObjectProxyWithErrorHandler:v30];
+  v25 = [connection synchronousRemoteObjectProxyWithErrorHandler:v30];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __90__VCPHomeKitAnalysisSession_initWithProperties_withResultsHandler_andInterruptionHandler___block_invoke_191;
   v29[3] = &unk_1E834E0C0;
   v29[4] = &v31;
   v29[5] = &v35;
-  [v25 startSessionWithProperties:v8 andReply:v29];
+  [v25 startSessionWithProperties:propertiesCopy andReply:v29];
 
   if (v32[3])
   {
@@ -137,21 +137,21 @@ void __90__VCPHomeKitAnalysisSession_initWithProperties_withResultsHandler_andIn
   }
 }
 
-+ (id)sessionWithProperties:(id)a3 andResultsHandler:(id)a4
++ (id)sessionWithProperties:(id)properties andResultsHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithProperties:v5 withResultsHandler:v6 andInterruptionHandler:&__block_literal_global_36];
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  v7 = [objc_alloc(objc_opt_class()) initWithProperties:propertiesCopy withResultsHandler:handlerCopy andInterruptionHandler:&__block_literal_global_36];
 
   return v7;
 }
 
-+ (id)sessionWithProperties:(id)a3 withResultsHandler:(id)a4 andInterruptionHandler:(id)a5
++ (id)sessionWithProperties:(id)properties withResultsHandler:(id)handler andInterruptionHandler:(id)interruptionHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithProperties:v7 withResultsHandler:v8 andInterruptionHandler:v9];
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  interruptionHandlerCopy = interruptionHandler;
+  v10 = [objc_alloc(objc_opt_class()) initWithProperties:propertiesCopy withResultsHandler:handlerCopy andInterruptionHandler:interruptionHandlerCopy];
 
   return v10;
 }
@@ -324,23 +324,23 @@ uint64_t __39__VCPHomeKitAnalysisSession_connection__block_invoke_210(uint64_t r
   return result;
 }
 
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andErrorHandler:(id)a5
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andErrorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
   managementQueue = self->_managementQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__VCPHomeKitAnalysisSession_processVideoFragmentAssetData_withOptions_andErrorHandler___block_invoke;
   v15[3] = &unk_1E834E0E8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dataCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = dataCopy;
   dispatch_sync(managementQueue, v15);
 }
 
@@ -383,23 +383,23 @@ void __87__VCPHomeKitAnalysisSession_processVideoFragmentAssetData_withOptions_a
   dispatch_async(v5, v8);
 }
 
-- (void)processVideoFragmentAssetData:(id)a3 withOptions:(id)a4 andCompletionHandler:(id)a5
+- (void)processVideoFragmentAssetData:(id)data withOptions:(id)options andCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
   managementQueue = self->_managementQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __92__VCPHomeKitAnalysisSession_processVideoFragmentAssetData_withOptions_andCompletionHandler___block_invoke;
   v15[3] = &unk_1E834C7F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dataCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = dataCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, v15);
 }
 
@@ -471,20 +471,20 @@ void __92__VCPHomeKitAnalysisSession_processVideoFragmentAssetData_withOptions_a
   dispatch_async(v7, block);
 }
 
-- (void)processMessageWithOptions:(id)a3 andCompletionHandler:(id)a4
+- (void)processMessageWithOptions:(id)options andCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   managementQueue = self->_managementQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__VCPHomeKitAnalysisSession_processMessageWithOptions_andCompletionHandler___block_invoke;
   block[3] = &unk_1E834C700;
-  v12 = v6;
-  v13 = v7;
+  v12 = optionsCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = optionsCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, block);
 }
 
@@ -555,11 +555,11 @@ void __76__VCPHomeKitAnalysisSession_processMessageWithOptions_andCompletionHand
   dispatch_async(v7, block);
 }
 
-- (void)processResults:(id)a3 withReply:(id)a4
+- (void)processResults:(id)results withReply:(id)reply
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  replyCopy = reply;
   if (self->_resultsHandler)
   {
     handlerQueue = self->_handlerQueue;
@@ -568,9 +568,9 @@ void __76__VCPHomeKitAnalysisSession_processMessageWithOptions_andCompletionHand
     block[2] = __54__VCPHomeKitAnalysisSession_processResults_withReply___block_invoke;
     block[3] = &unk_1E834D238;
     block[4] = self;
-    v14 = v6;
+    v14 = resultsCopy;
     dispatch_async(handlerQueue, block);
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -581,7 +581,7 @@ void __76__VCPHomeKitAnalysisSession_processMessageWithOptions_andCompletionHand
     v16[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v12 = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v11];
-    (v7)[2](v7, v12);
+    (replyCopy)[2](replyCopy, v12);
   }
 }
 

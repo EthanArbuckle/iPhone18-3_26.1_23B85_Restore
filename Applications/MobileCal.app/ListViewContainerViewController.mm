@@ -1,24 +1,24 @@
 @interface ListViewContainerViewController
-- (Class)childViewControllerClassForTraits:(id)a3;
+- (Class)childViewControllerClassForTraits:(id)traits;
 - (id)childViewControllerForCompactWidthRegularHeight;
 - (id)currentChildViewController;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation ListViewContainerViewController
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v7.receiver = self;
   v7.super_class = ListViewContainerViewController;
-  [(ListViewContainerViewController *)&v7 viewIsAppearing:a3];
+  [(ListViewContainerViewController *)&v7 viewIsAppearing:appearing];
   if (CalSolariumEnabled())
   {
-    v4 = [(ListViewContainerViewController *)self navigationController];
-    v5 = [v4 navigationBar];
+    navigationController = [(ListViewContainerViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    v6 = [v5 standardAppearance];
-    [v5 setScrollEdgeAppearance:v6];
+    standardAppearance = [navigationBar standardAppearance];
+    [navigationBar setScrollEdgeAppearance:standardAppearance];
   }
 }
 
@@ -26,9 +26,9 @@
 {
   v4.receiver = self;
   v4.super_class = ListViewContainerViewController;
-  v2 = [(MainViewControllerContainer *)&v4 currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)&v4 currentChildViewController];
 
-  return v2;
+  return currentChildViewController;
 }
 
 - (id)childViewControllerForCompactWidthRegularHeight
@@ -37,9 +37,9 @@
   if (!v3)
   {
     v4 = [CompactListViewController alloc];
-    v5 = [(MainViewController *)self model];
-    v6 = [(MainViewController *)self window];
-    v7 = [(ListViewController *)v4 initWithModel:v5 window:v6];
+    model = [(MainViewController *)self model];
+    window = [(MainViewController *)self window];
+    v7 = [(ListViewController *)v4 initWithModel:model window:window];
     v8 = *(&self->super._animatingViewTransition + 1);
     *(&self->super._animatingViewTransition + 1) = v7;
 
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (Class)childViewControllerClassForTraits:(id)a3
+- (Class)childViewControllerClassForTraits:(id)traits
 {
-  [a3 horizontalSizeClass];
+  [traits horizontalSizeClass];
   v3 = objc_opt_class();
 
   return v3;

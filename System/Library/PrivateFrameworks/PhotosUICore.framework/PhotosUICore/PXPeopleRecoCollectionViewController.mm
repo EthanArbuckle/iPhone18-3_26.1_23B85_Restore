@@ -1,75 +1,75 @@
 @interface PXPeopleRecoCollectionViewController
-+ (id)recoControllerForPerson:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_initWithPerson:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_cancelTapped:(id)a3;
-- (void)_doneTapped:(id)a3;
-- (void)_reviewMoreTapped:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 frameDidChange:(CGRect)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)recoDataSourceDataChanged:(id)a3;
++ (id)recoControllerForPerson:(id)person;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_initWithPerson:(id)person;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_cancelTapped:(id)tapped;
+- (void)_doneTapped:(id)tapped;
+- (void)_reviewMoreTapped:(id)tapped;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view frameDidChange:(CGRect)change;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)recoDataSourceDataChanged:(id)changed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PXPeopleRecoCollectionViewController
 
-- (void)collectionView:(id)a3 frameDidChange:(CGRect)a4
+- (void)collectionView:(id)view frameDidChange:(CGRect)change
 {
-  v8 = a3;
+  viewCopy = view;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXPeopleRecoCollectionViewController.m" lineNumber:205 description:{@"%s must be called on the main thread", "-[PXPeopleRecoCollectionViewController collectionView:frameDidChange:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleRecoCollectionViewController.m" lineNumber:205 description:{@"%s must be called on the main thread", "-[PXPeopleRecoCollectionViewController collectionView:frameDidChange:]"}];
   }
 
-  v6 = [v8 collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionViewLayout = [viewCopy collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)recoDataSourceDataChanged:(id)a3
+- (void)recoDataSourceDataChanged:(id)changed
 {
-  v3 = [(PXPeopleRecoCollectionViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(PXPeopleRecoCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)_reviewMoreTapped:(id)a3
+- (void)_reviewMoreTapped:(id)tapped
 {
   v4 = [PXPeopleSplitConfirmationViewController alloc];
-  v5 = [(PXPeopleRecoCollectionViewController *)self dataSource];
-  v6 = [v5 person];
-  v9 = [(PXPeopleSplitConfirmationViewController *)v4 initWithPerson:v6];
+  dataSource = [(PXPeopleRecoCollectionViewController *)self dataSource];
+  person = [dataSource person];
+  v9 = [(PXPeopleSplitConfirmationViewController *)v4 initWithPerson:person];
 
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v9];
-  v8 = [(PXPeopleRecoCollectionViewController *)self navigationController];
-  [v8 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(PXPeopleRecoCollectionViewController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v3 = [(PXPeopleRecoCollectionViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PXPeopleRecoCollectionViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_doneTapped:(id)a3
+- (void)_doneTapped:(id)tapped
 {
-  v4 = [(PXPeopleRecoCollectionViewController *)self dataSource];
-  [v4 commitChanges];
+  dataSource = [(PXPeopleRecoCollectionViewController *)self dataSource];
+  [dataSource commitChanges];
 
-  v5 = [(PXPeopleRecoCollectionViewController *)self presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PXPeopleRecoCollectionViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v5 = [(PXPeopleRecoCollectionViewController *)self view:a3];
+  v5 = [(PXPeopleRecoCollectionViewController *)self view:view];
   [v5 bounds];
   v7 = v6;
 
@@ -80,26 +80,26 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPeopleRecoCollectionViewController *)self dataSource];
-  v9 = [v6 collectionViewLayout];
-  [v9 itemSize];
+  viewCopy = view;
+  pathsCopy = paths;
+  dataSource = [(PXPeopleRecoCollectionViewController *)self dataSource];
+  collectionViewLayout = [viewCopy collectionViewLayout];
+  [collectionViewLayout itemSize];
   v11 = v10;
   v13 = v12;
 
-  v14 = [v6 traitCollection];
-  [v14 displayScale];
+  traitCollection = [viewCopy traitCollection];
+  [traitCollection displayScale];
   v16 = v15;
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = v7;
+  v17 = pathsCopy;
   v18 = [v17 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v18)
   {
@@ -115,7 +115,7 @@
           objc_enumerationMutation(v17);
         }
 
-        [v8 requestImageForItemAtIndex:objc_msgSend(*(*(&v22 + 1) + 8 * v21++) targetSize:"item" displayScale:v22) imageBlock:{0, v11, v13, v16}];
+        [dataSource requestImageForItemAtIndex:objc_msgSend(*(*(&v22 + 1) + 8 * v21++) targetSize:"item" displayScale:v22) imageBlock:{0, v11, v13, v16}];
       }
 
       while (v19 != v21);
@@ -126,9 +126,9 @@
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [a3 frame];
+  [view frame];
 
   [PXPeopleGridSizer cellSizeForGridClass:0 width:v5];
   result.height = v7;
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
   [PXPeopleGridSizer marginForGridClass:0 width:v5];
   v7 = v6;
   v8 = v6;
@@ -150,69 +150,69 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v13 = [(PXPeopleRecoCollectionViewController *)self dataSource];
-  v8 = [v13 toggleRejectionForIndex:{objc_msgSend(v6, "item")}];
-  v9 = [v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(PXPeopleRecoCollectionViewController *)self dataSource];
+  v8 = [dataSource toggleRejectionForIndex:{objc_msgSend(pathCopy, "item")}];
+  v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   if ([v9 hasImageSet])
   {
     [v9 setIsRejected:v8];
-    v10 = [v13 shouldAllowCommitting];
-    v11 = [(PXPeopleRecoCollectionViewController *)self navigationItem];
-    v12 = [v11 rightBarButtonItem];
-    [v12 setEnabled:v10];
+    shouldAllowCommitting = [dataSource shouldAllowCommitting];
+    navigationItem = [(PXPeopleRecoCollectionViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:shouldAllowCommitting];
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(PXPeopleRecoCollectionViewController *)self headerRegistration];
-  v10 = [v8 dequeueConfiguredReusableSupplementaryViewWithRegistration:v9 forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  headerRegistration = [(PXPeopleRecoCollectionViewController *)self headerRegistration];
+  v10 = [viewCopy dequeueConfiguredReusableSupplementaryViewWithRegistration:headerRegistration forIndexPath:pathCopy];
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPeopleRecoCollectionViewController *)self cellRegistration];
-  v9 = [(PXPeopleRecoCollectionViewController *)self dataSource];
-  v10 = [v7 dequeueConfiguredReusableCellWithRegistration:v8 forIndexPath:v6 item:v9];
+  pathCopy = path;
+  viewCopy = view;
+  cellRegistration = [(PXPeopleRecoCollectionViewController *)self cellRegistration];
+  dataSource = [(PXPeopleRecoCollectionViewController *)self dataSource];
+  v10 = [viewCopy dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:pathCopy item:dataSource];
 
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PXPeopleRecoCollectionViewController *)self dataSource:a3];
-  v5 = [v4 numberOfItems];
+  v4 = [(PXPeopleRecoCollectionViewController *)self dataSource:view];
+  numberOfItems = [v4 numberOfItems];
 
-  return v5;
+  return numberOfItems;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PXPeopleRecoCollectionViewController;
-  [(PXPeopleRecoCollectionViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PXPeopleRecoCollectionViewController *)self navigationController];
-  [v4 setToolbarHidden:1 animated:1];
+  [(PXPeopleRecoCollectionViewController *)&v5 viewWillDisappear:disappear];
+  navigationController = [(PXPeopleRecoCollectionViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PXPeopleRecoCollectionViewController;
-  [(PXPeopleRecoCollectionViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PXPeopleRecoCollectionViewController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:1];
+  [(PXPeopleRecoCollectionViewController *)&v5 viewWillAppear:appear];
+  navigationController = [(PXPeopleRecoCollectionViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
 - (void)viewDidLoad
@@ -220,28 +220,28 @@
   v16.receiver = self;
   v16.super_class = PXPeopleRecoCollectionViewController;
   [(PXPeopleRecoCollectionViewController *)&v16 viewDidLoad];
-  v3 = [(PXPeopleRecoCollectionViewController *)self collectionView];
+  collectionView = [(PXPeopleRecoCollectionViewController *)self collectionView];
   v4 = [PXPeopleRecoCollectionView alloc];
-  [v3 frame];
+  [collectionView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v3 collectionViewLayout];
-  v14 = [(PXPeopleRecoCollectionView *)v4 initWithFrame:v13 collectionViewLayout:v6, v8, v10, v12];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  v14 = [(PXPeopleRecoCollectionView *)v4 initWithFrame:collectionViewLayout collectionViewLayout:v6, v8, v10, v12];
 
   [(PXPeopleRecoCollectionView *)v14 setRecoCollectionViewDelegate:self];
-  v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PXPeopleRecoCollectionView *)v14 setBackgroundColor:v15];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PXPeopleRecoCollectionView *)v14 setBackgroundColor:systemBackgroundColor];
 
   [(PXPeopleRecoCollectionView *)v14 setPrefetchDataSource:self];
   [(PXPeopleRecoCollectionView *)v14 setContentInsetAdjustmentBehavior:3];
   [(PXPeopleRecoCollectionViewController *)self setCollectionView:v14];
 }
 
-- (id)_initWithPerson:(id)a3
+- (id)_initWithPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = objc_alloc_init(MEMORY[0x1E69DC840]);
   v24.receiver = self;
   v24.super_class = PXPeopleRecoCollectionViewController;
@@ -249,7 +249,7 @@
 
   if (v6)
   {
-    v7 = [[PXPeopleRecoDataSource alloc] initWithPerson:v4 dataSourceDelegate:v6];
+    v7 = [[PXPeopleRecoDataSource alloc] initWithPerson:personCopy dataSourceDelegate:v6];
     dataSource = v6->_dataSource;
     v6->_dataSource = v7;
 
@@ -260,7 +260,7 @@
     v22[1] = 3221225472;
     v22[2] = __56__PXPeopleRecoCollectionViewController__initWithPerson___block_invoke;
     v22[3] = &unk_1E7735BA8;
-    v23 = v4;
+    v23 = personCopy;
     v12 = [v9 registrationWithSupplementaryClass:v10 elementKind:v11 configurationHandler:v22];
     headerRegistration = v6->_headerRegistration;
     v6->_headerRegistration = v12;
@@ -373,11 +373,11 @@ uint64_t __56__PXPeopleRecoCollectionViewController__initWithPerson___block_invo
   return result;
 }
 
-+ (id)recoControllerForPerson:(id)a3
++ (id)recoControllerForPerson:(id)person
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PXPeopleRecoCollectionViewController alloc] _initWithPerson:v3];
+  personCopy = person;
+  v4 = [[PXPeopleRecoCollectionViewController alloc] _initWithPerson:personCopy];
 
   v5 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v4];
   [v5 setToolbarHidden:0];
@@ -395,11 +395,11 @@ uint64_t __56__PXPeopleRecoCollectionViewController__initWithPerson___block_invo
 
   v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v4 action:sel__cancelTapped_];
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v4 action:sel__doneTapped_];
-  v14 = [v4 navigationItem];
-  [v14 setLeftBarButtonItem:v12];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem = [v4 navigationItem];
+  [navigationItem setLeftBarButtonItem:v12];
+  [navigationItem setRightBarButtonItem:v13];
   v15 = PXLocalizedStringFromTable(@"PXPeopleImproveRecoHeaderTitle", @"PhotosUICore");
-  [v14 setTitle:v15];
+  [navigationItem setTitle:v15];
 
   return v5;
 }

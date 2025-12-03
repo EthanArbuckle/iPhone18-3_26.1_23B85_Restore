@@ -4,7 +4,7 @@
 + (void)initializeMonitor;
 - (AXBGuidedAccessManager)init;
 - (void)_loadBackboardServerBundle;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation AXBGuidedAccessManager
@@ -31,16 +31,16 @@ uint64_t __43__AXBGuidedAccessManager_initializeMonitor__block_invoke()
   v2 = [(AXBGuidedAccessManager *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v4 = *MEMORY[0x29EDC8438];
-    v5 = [MEMORY[0x29EDBA088] mainQueue];
+    mainQueue = [MEMORY[0x29EDBA088] mainQueue];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = __30__AXBGuidedAccessManager_init__block_invoke;
     v12[3] = &unk_29F2A4E78;
     v6 = v2;
     v13 = v6;
-    v7 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v12];
+    v7 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v12];
     notificationToken = v6->_notificationToken;
     v6->_notificationToken = v7;
 
@@ -80,26 +80,26 @@ void __30__AXBGuidedAccessManager_init__block_invoke_3(uint64_t a1)
 
 + (BOOL)inGuidedAccess
 {
-  v2 = [SharedManager _guidedAccessServer];
-  v3 = [v2 safeValueForKey:@"isActive"];
+  _guidedAccessServer = [SharedManager _guidedAccessServer];
+  v3 = [_guidedAccessServer safeValueForKey:@"isActive"];
   if ([v3 BOOLValue])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = [v2 safeValueForKey:@"isInWorkspace"];
-    v4 = [v5 BOOLValue];
+    v5 = [_guidedAccessServer safeValueForKey:@"isInWorkspace"];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)allowsTripleClickSheet
 {
-  v2 = [SharedManager _guidedAccessServer];
-  v3 = [v2 safeBoolForKey:@"allowsTripleClickSheet"];
+  _guidedAccessServer = [SharedManager _guidedAccessServer];
+  v3 = [_guidedAccessServer safeBoolForKey:@"allowsTripleClickSheet"];
 
   return v3;
 }
@@ -171,10 +171,10 @@ void __52__AXBGuidedAccessManager__loadBackboardServerBundle__block_invoke(uint6
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = [MEMORY[0x29EDC58E0] sharedConnection];
-  [v4 effectiveBoolValueForSetting:*MEMORY[0x29EDC5878]];
+  mEMORY[0x29EDC58E0] = [MEMORY[0x29EDC58E0] sharedConnection];
+  [mEMORY[0x29EDC58E0] effectiveBoolValueForSetting:*MEMORY[0x29EDC5878]];
   _AXSSpeechSettingsSetDisabledByManagedConfiguration();
 }
 

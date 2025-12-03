@@ -1,11 +1,11 @@
 @interface BAADelegateImpl
 + (BOOL)isInternal;
-+ (int)confirmSigKey:(unsigned int)a3 status:(int)a4;
-+ (int)generateSigKey:(unsigned int)a3 keyData:(id *)a4 attestation:(id *)a5 pubKey:(id *)a6;
-+ (int)getBlessedUser:(unsigned int *)a3 keybagUUID:(unsigned __int8)a4[16];
-+ (int)getSigKeyCertificates:(unsigned int)a3 certificates:(id *)a4;
-+ (int)getSigKeyExpDate:(unsigned int)a3 expirationDate:(unint64_t *)a4;
-+ (int)setSigKey:(unsigned int)a3 expirationDate:(unint64_t)a4 keyData:(id)a5 certificates:(id)a6;
++ (int)confirmSigKey:(unsigned int)key status:(int)status;
++ (int)generateSigKey:(unsigned int)key keyData:(id *)data attestation:(id *)attestation pubKey:(id *)pubKey;
++ (int)getBlessedUser:(unsigned int *)user keybagUUID:(unsigned __int8)d[16];
++ (int)getSigKeyCertificates:(unsigned int)certificates certificates:(id *)a4;
++ (int)getSigKeyExpDate:(unsigned int)date expirationDate:(unint64_t *)expirationDate;
++ (int)setSigKey:(unsigned int)key expirationDate:(unint64_t)date keyData:(id)data certificates:(id)certificates;
 @end
 
 @implementation BAADelegateImpl
@@ -20,12 +20,12 @@
   return getMGAnswers_cachedIsInternal;
 }
 
-+ (int)generateSigKey:(unsigned int)a3 keyData:(id *)a4 attestation:(id *)a5 pubKey:(id *)a6
++ (int)generateSigKey:(unsigned int)key keyData:(id *)data attestation:(id *)attestation pubKey:(id *)pubKey
 {
-  v29 = 0;
+  keyCopy = 0;
   outputStructCnt = 0;
   inputStruct = 0;
-  if (!a4)
+  if (!data)
   {
     +[BAADelegateImpl generateSigKey:keyData:attestation:pubKey:];
 LABEL_19:
@@ -33,13 +33,13 @@ LABEL_19:
     goto LABEL_14;
   }
 
-  if (!a5)
+  if (!attestation)
   {
     +[BAADelegateImpl generateSigKey:keyData:attestation:pubKey:];
     goto LABEL_19;
   }
 
-  if (!a6)
+  if (!pubKey)
   {
     +[BAADelegateImpl generateSigKey:keyData:attestation:pubKey:];
     goto LABEL_19;
@@ -63,7 +63,7 @@ LABEL_25:
 
   LODWORD(inputStruct) = 1397966179;
   WORD2(inputStruct) = 18;
-  v29 = a3;
+  keyCopy = key;
   outputStructCnt = 0x4000;
   if (IOConnectCallStructMethod(_MergedGlobals_0, 0, &inputStruct, 0xCuLL, v11, &outputStructCnt))
   {
@@ -111,11 +111,11 @@ LABEL_28:
 
   v18 = v17;
   v19 = v13;
-  *a4 = v13;
+  *data = v13;
   v20 = v16;
-  *a5 = v16;
+  *attestation = v16;
   v21 = v18;
-  *a6 = v18;
+  *pubKey = v18;
 
   v22 = 0;
 LABEL_13:
@@ -125,13 +125,13 @@ LABEL_14:
   return v22;
 }
 
-+ (int)setSigKey:(unsigned int)a3 expirationDate:(unint64_t)a4 keyData:(id)a5 certificates:(id)a6
++ (int)setSigKey:(unsigned int)key expirationDate:(unint64_t)date keyData:(id)data certificates:(id)certificates
 {
   v38 = *MEMORY[0x29EDCA608];
-  v9 = a5;
-  v10 = a6;
-  v11 = v9;
-  v12 = v10;
+  dataCopy = data;
+  certificatesCopy = certificates;
+  v11 = dataCopy;
+  v12 = certificatesCopy;
   v13 = malloc_type_calloc(1uLL, 0x4000uLL, 0x1000040B13BED9EuLL);
   if (!v13)
   {
@@ -151,8 +151,8 @@ LABEL_31:
 
   *v14 = 1397966179;
   *(v14 + 2) = 19;
-  *(v14 + 2) = a3;
-  *(v14 + 12) = a4;
+  *(v14 + 2) = key;
+  *(v14 + 12) = date;
   v15 = v14 + 28;
   if (!v11)
   {
@@ -261,13 +261,13 @@ LABEL_27:
   return v25;
 }
 
-+ (int)getSigKeyExpDate:(unsigned int)a3 expirationDate:(unint64_t *)a4
++ (int)getSigKeyExpDate:(unsigned int)date expirationDate:(unint64_t *)expirationDate
 {
-  v14 = 0;
+  dateCopy = 0;
   outputStruct = 0;
   inputStruct = 0;
   v11 = 0;
-  if (!a4)
+  if (!expirationDate)
   {
     +[BAADelegateImpl getSigKeyExpDate:expirationDate:];
 LABEL_11:
@@ -283,7 +283,7 @@ LABEL_11:
 
   LODWORD(inputStruct) = 1397966179;
   WORD2(inputStruct) = 20;
-  v14 = a3;
+  dateCopy = date;
   v11 = 8;
   if (IOConnectCallStructMethod(_MergedGlobals_0, 0, &inputStruct, 0xCuLL, &outputStruct, &v11))
   {
@@ -298,15 +298,15 @@ LABEL_11:
   }
 
   v9 = 0;
-  *a4 = outputStruct;
+  *expirationDate = outputStruct;
 LABEL_6:
   logCmdCall("getSigKeyExpDate", v9, 0, 0, 0, v6, v7, v8);
   return v9;
 }
 
-+ (int)getSigKeyCertificates:(unsigned int)a3 certificates:(id *)a4
++ (int)getSigKeyCertificates:(unsigned int)certificates certificates:(id *)a4
 {
-  v18 = 0;
+  certificatesCopy = 0;
   outputStructCnt = 0;
   inputStruct = 0;
   v15 = 0;
@@ -336,7 +336,7 @@ LABEL_15:
 
   LODWORD(inputStruct) = 1397966179;
   WORD2(inputStruct) = 25;
-  v18 = a3;
+  certificatesCopy = certificates;
   outputStructCnt = 0x4000;
   if (IOConnectCallStructMethod(_MergedGlobals_0, 0, &inputStruct, 0xCuLL, v7, &outputStructCnt))
   {
@@ -361,7 +361,7 @@ LABEL_8:
   return v9;
 }
 
-+ (int)confirmSigKey:(unsigned int)a3 status:(int)a4
++ (int)confirmSigKey:(unsigned int)key status:(int)status
 {
   inputStruct = 0;
   v12 = 0;
@@ -375,7 +375,7 @@ LABEL_6:
 
   LODWORD(inputStruct) = 1397966179;
   WORD2(inputStruct) = 21;
-  v12 = __PAIR64__(a4, a3);
+  v12 = __PAIR64__(status, key);
   v9 = 0;
   if (IOConnectCallStructMethod(_MergedGlobals_0, 0, &inputStruct, 0x10uLL, 0, 0))
   {
@@ -388,13 +388,13 @@ LABEL_3:
   return v9;
 }
 
-+ (int)getBlessedUser:(unsigned int *)a3 keybagUUID:(unsigned __int8)a4[16]
++ (int)getBlessedUser:(unsigned int *)user keybagUUID:(unsigned __int8)d[16]
 {
   v16 = *MEMORY[0x29EDCA608];
   outputStructCnt = 0;
   inputStruct = 0;
   memset(outputStruct, 0, sizeof(outputStruct));
-  if (!a3)
+  if (!user)
   {
     +[BAADelegateImpl getBlessedUser:keybagUUID:];
 LABEL_13:
@@ -402,7 +402,7 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!d)
   {
     +[BAADelegateImpl getBlessedUser:keybagUUID:];
     goto LABEL_13;
@@ -430,8 +430,8 @@ LABEL_13:
   }
 
   v9 = 0;
-  *a3 = *outputStruct;
-  *a4 = *&outputStruct[4];
+  *user = *outputStruct;
+  *d = *&outputStruct[4];
 LABEL_7:
   logCmdCall("getBlessedUser", v9, 0, 0, 0, v6, v7, v8);
   v10 = *MEMORY[0x29EDCA608];

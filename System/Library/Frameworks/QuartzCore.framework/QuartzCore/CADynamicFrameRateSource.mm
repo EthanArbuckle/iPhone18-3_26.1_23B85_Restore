@@ -1,13 +1,13 @@
 @interface CADynamicFrameRateSource
-- (BOOL)shiftFramePhaseBy:(double)a3;
-- (CADynamicFrameRateSource)initWithDisplay:(id)a3;
+- (BOOL)shiftFramePhaseBy:(double)by;
+- (CADynamicFrameRateSource)initWithDisplay:(id)display;
 - (CAFrameRateRange)preferredFrameRateRange;
 - (double)commitDeadline;
-- (double)commitDeadlineAfterTimestamp:(double)a3;
+- (double)commitDeadlineAfterTimestamp:(double)timestamp;
 - (void)dealloc;
-- (void)setHighFrameRateReasons:(const unsigned int *)a3 count:(unint64_t)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3;
+- (void)setHighFrameRateReasons:(const unsigned int *)reasons count:(unint64_t)count;
+- (void)setPaused:(BOOL)paused;
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range;
 @end
 
 @implementation CADynamicFrameRateSource
@@ -64,27 +64,27 @@ LABEL_10:
   [(CADynamicFrameRateSource *)&v7 dealloc];
 }
 
-- (void)setHighFrameRateReasons:(const unsigned int *)a3 count:(unint64_t)a4
+- (void)setHighFrameRateReasons:(const unsigned int *)reasons count:(unint64_t)count
 {
   __dst[2] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  if (a4 >= 4)
+  if (count >= 4)
   {
-    v6 = 4;
+    countCopy = 4;
   }
 
   else
   {
-    v6 = a4;
+    countCopy = count;
   }
 
-  v7 = (4 * v6);
+  v7 = (4 * countCopy);
   __dst[0] = 0;
   __dst[1] = 0;
-  memcpy(__dst, a3, v7);
+  memcpy(__dst, reasons, v7);
   if (memcmp(impl->var8, __dst, v7))
   {
-    memmove(impl->var8, a3, v7);
+    memmove(impl->var8, reasons, v7);
     if (*(impl + 88))
     {
       CA::Display::DisplayTimingsControl::register_frame_interval_reasons(impl->var1, impl, impl->var8, 4u);
@@ -98,11 +98,11 @@ LABEL_10:
   }
 }
 
-- (BOOL)shiftFramePhaseBy:(double)a3
+- (BOOL)shiftFramePhaseBy:(double)by
 {
   v24 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  v4 = CAHostTimeWithTime(a3);
+  v4 = CAHostTimeWithTime(by);
   if (*(impl + 104))
   {
     return 0;
@@ -258,10 +258,10 @@ LABEL_26:
   return 1;
 }
 
-- (double)commitDeadlineAfterTimestamp:(double)a3
+- (double)commitDeadlineAfterTimestamp:(double)timestamp
 {
   impl = self->_impl;
-  v4 = CAHostTimeWithTime(a3);
+  v4 = CAHostTimeWithTime(timestamp);
   v5 = CA::DynamicFrameRateSource::commit_deadline(impl);
   if (v5 <= v4)
   {
@@ -278,14 +278,14 @@ LABEL_26:
   return CATimeWithHostTime(v2);
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   impl = self->_impl;
   v4 = *(impl + 104);
-  if ((v4 & 1) != a3)
+  if ((v4 & 1) != paused)
   {
-    *(impl + 104) = v4 & 0xFE | a3;
-    if (a3)
+    *(impl + 104) = v4 & 0xFE | paused;
+    if (paused)
     {
       if (*(impl + 88))
       {
@@ -318,15 +318,15 @@ LABEL_26:
   return result;
 }
 
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  if (!CAFrameRateRangeIsValid(a3.minimum, a3.maximum, a3.preferred))
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  if (!CAFrameRateRangeIsValid(range.minimum, range.maximum, range.preferred))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v11 userInfo:0]);
+    preferred = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:preferred userInfo:0]);
   }
 
   impl = self->_impl;
@@ -337,10 +337,10 @@ LABEL_26:
   CA::DynamicFrameRateSource::set_preferred_fps_range(impl, *&v8, 1);
 }
 
-- (CADynamicFrameRateSource)initWithDisplay:(id)a3
+- (CADynamicFrameRateSource)initWithDisplay:(id)display
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!display)
   {
     return 0;
   }

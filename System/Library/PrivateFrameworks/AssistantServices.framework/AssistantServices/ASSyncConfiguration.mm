@@ -1,6 +1,6 @@
 @interface ASSyncConfiguration
-- (ASSyncConfiguration)initWithConfigurationPlistForSyncKey:(id)a3;
-- (id)configurationInfoForKey:(id)a3;
+- (ASSyncConfiguration)initWithConfigurationPlistForSyncKey:(id)key;
+- (id)configurationInfoForKey:(id)key;
 - (void)_tryGettingPlistData;
 @end
 
@@ -14,9 +14,9 @@
     if (self->_syncKey)
     {
       v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 0x408uLL, 1);
-      v9 = [v3 firstObject];
+      firstObject = [v3 firstObject];
 
-      v4 = [v9 stringByAppendingPathComponent:@"Assistant/SyncConfiguration/"];
+      v4 = [firstObject stringByAppendingPathComponent:@"Assistant/SyncConfiguration/"];
       v5 = [NSString stringWithFormat:@"%@.plist", self->_syncKey];
       v6 = [v4 stringByAppendingPathComponent:v5];
 
@@ -30,11 +30,11 @@
   }
 }
 
-- (id)configurationInfoForKey:(id)a3
+- (id)configurationInfoForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(ASSyncConfiguration *)self _tryGettingPlistData];
-  if (v4 && self->_configPlistData)
+  if (keyCopy && self->_configPlistData)
   {
     _CFPropertyListCreateSingleValue();
   }
@@ -42,15 +42,15 @@
   return 0;
 }
 
-- (ASSyncConfiguration)initWithConfigurationPlistForSyncKey:(id)a3
+- (ASSyncConfiguration)initWithConfigurationPlistForSyncKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = ASSyncConfiguration;
   v5 = [(ASSyncConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keyCopy copy];
     syncKey = v5->_syncKey;
     v5->_syncKey = v6;
   }

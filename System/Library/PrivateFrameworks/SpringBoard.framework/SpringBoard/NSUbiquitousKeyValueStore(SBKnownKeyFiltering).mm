@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __54__NSUbiquitousKeyValueStore_SBKnownKeyFiltering__load__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (load_onceToken != -1)
   {
     dispatch_once(&load_onceToken, block);
@@ -22,9 +22,9 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CCAD80] defaultStore];
+  defaultStore = [MEMORY[0x277CCAD80] defaultStore];
 
-  if (v8 == a1)
+  if (defaultStore == self)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -33,7 +33,7 @@
     }
   }
 
-  [a1 sb_setObject:v6 forKey:v7];
+  [self sb_setObject:v6 forKey:v7];
 }
 
 - (void)sb_setObject:()SBKnownKeyFiltering forKey:.cold.1(uint64_t a1, NSObject *a2)

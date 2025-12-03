@@ -1,16 +1,16 @@
 @interface NLPLearnerCoreNLPShadowEvaluator
 + (void)initialize;
-- (BOOL)setMaxSequenceLengthForModelURL:(id)a3;
-- (id)evaluateModel:(CoreLanguageModelWithState *)a3 onSingleExample:(id)a4 tokenizer:(void *)a5;
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7;
-- (id)modelCreationOptionsForModelURL:(id)a3 options:(id)a4;
+- (BOOL)setMaxSequenceLengthForModelURL:(id)l;
+- (id)evaluateModel:(CoreLanguageModelWithState *)model onSingleExample:(id)example tokenizer:(void *)tokenizer;
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error;
+- (id)modelCreationOptionsForModelURL:(id)l options:(id)options;
 @end
 
 @implementation NLPLearnerCoreNLPShadowEvaluator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_3 = os_log_create("com.apple.NLPLearner", "NLPLearnerCoreNLPShadowEvaluator");
 
@@ -18,12 +18,12 @@
   }
 }
 
-- (id)modelCreationOptionsForModelURL:(id)a3 options:(id)a4
+- (id)modelCreationOptionsForModelURL:(id)l options:(id)options
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D00310];
-  v7 = a3;
-  v8 = [a4 objectForKeyedSubscript:v6];
+  lCopy = l;
+  v8 = [options objectForKeyedSubscript:v6];
   v9 = v8;
   v10 = *MEMORY[0x277D00318];
   if (v8)
@@ -33,13 +33,13 @@
 
   v11 = v10;
 
-  v21[0] = v7;
+  v21[0] = lCopy;
   v12 = *MEMORY[0x277D00330];
   v20[0] = @"kCoreLMURLKey";
   v20[1] = v12;
-  v13 = [(NLPLearnerShadowEvaluator *)self locale];
-  v14 = [v13 languageCode];
-  v21[1] = v14;
+  locale = [(NLPLearnerShadowEvaluator *)self locale];
+  languageCode = [locale languageCode];
+  v21[1] = languageCode;
   v21[2] = v11;
   v15 = *MEMORY[0x277D00360];
   v20[2] = v6;
@@ -55,11 +55,11 @@
   return v17;
 }
 
-- (BOOL)setMaxSequenceLengthForModelURL:(id)a3
+- (BOOL)setMaxSequenceLengthForModelURL:(id)l
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [a3 path];
-  v6 = [v5 stringByAppendingPathComponent:@"modelInfo.plist"];
+  path = [l path];
+  v6 = [path stringByAppendingPathComponent:@"modelInfo.plist"];
   v7 = [v4 fileURLWithPath:v6 isDirectory:0];
 
   v17 = 0;
@@ -102,24 +102,24 @@ LABEL_9:
   return v13;
 }
 
-- (id)evaluateModel:(id)a3 onRecords:(id)a4 options:(id)a5 completion:(id)a6 error:(id *)a7
+- (id)evaluateModel:(id)model onRecords:(id)records options:(id)options completion:(id)completion error:(id *)error
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v41 = a6;
-  if (v12)
+  modelCopy = model;
+  recordsCopy = records;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (modelCopy)
   {
-    v15 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:v13];
+    v15 = [(NLPLearnerShadowEvaluator *)self prepareDataFromRecords:recordsCopy];
     if ([v15 numSamples])
     {
       v63 = 0;
-      [(NLPLearnerCoreNLPShadowEvaluator *)self modelCreationOptionsForModelURL:v12 options:v14];
+      [(NLPLearnerCoreNLPShadowEvaluator *)self modelCreationOptionsForModelURL:modelCopy options:optionsCopy];
       v16 = CoreLMCreate();
-      if (v16 && [(NLPLearnerCoreNLPShadowEvaluator *)self setMaxSequenceLengthForModelURL:v12])
+      if (v16 && [(NLPLearnerCoreNLPShadowEvaluator *)self setMaxSequenceLengthForModelURL:modelCopy])
       {
-        v17 = [(NLPLearnerShadowEvaluator *)self locale];
+        locale = [(NLPLearnerShadowEvaluator *)self locale];
         v18 = LMStreamTokenizerCreate();
 
         v59 = 0;
@@ -142,7 +142,7 @@ LABEL_9:
         v44 = &v43;
         v45 = 0x2020000000;
         v46 = 0;
-        v19 = [v15 getSamples];
+        getSamples = [v15 getSamples];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __85__NLPLearnerCoreNLPShadowEvaluator_evaluateModel_onRecords_options_completion_error___block_invoke;
@@ -155,7 +155,7 @@ LABEL_9:
         v42[7] = &v51;
         v42[8] = &v47;
         v42[9] = &v43;
-        [v19 enumerateObjectsUsingBlock:v42];
+        [getSamples enumerateObjectsUsingBlock:v42];
 
         CFRelease(v16);
         if (v18)
@@ -191,7 +191,7 @@ LABEL_9:
         v64[3] = @"Samples";
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v44[3]];
         v65[3] = v28;
-        a7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:4];
+        error = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:4];
 
         _Block_object_dispose(&v43, 8);
         _Block_object_dispose(&v47, 8);
@@ -205,10 +205,10 @@ LABEL_9:
       v31 = sLog_3;
       if (os_log_type_enabled(sLog_3, OS_LOG_TYPE_ERROR))
       {
-        [NLPLearnerCoreNLPShadowEvaluator evaluateModel:v12 onRecords:v31 options:? completion:? error:?];
+        [NLPLearnerCoreNLPShadowEvaluator evaluateModel:modelCopy onRecords:v31 options:? completion:? error:?];
       }
 
-      if (a7)
+      if (error)
       {
         v32 = MEMORY[0x277CCA9B8];
         v66 = *MEMORY[0x277CCA450];
@@ -217,13 +217,13 @@ LABEL_9:
         v35 = [v33 stringWithFormat:@"error loading core lm model: %@", v34];
         v67 = v35;
         v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-        *a7 = [v32 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v36];
+        *error = [v32 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:6 userInfo:v36];
       }
     }
 
     else
     {
-      if (!a7)
+      if (!error)
       {
 LABEL_23:
 
@@ -234,10 +234,10 @@ LABEL_23:
       v68 = *MEMORY[0x277CCA450];
       v69[0] = @"missing evaluation data for PFL";
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:&v68 count:1];
-      *a7 = [v37 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:9 userInfo:v38];
+      *error = [v37 errorWithDomain:@"com.apple.NLPLearner.NLPShadowEvaluationErrorDomain" code:9 userInfo:v38];
     }
 
-    a7 = 0;
+    error = 0;
     goto LABEL_23;
   }
 
@@ -247,12 +247,12 @@ LABEL_23:
     [NLPLearnerMontrealShadowEvaluator evaluateModel:v29 onRecords:? options:? completion:? error:?];
   }
 
-  a7 = 0;
+  error = 0;
 LABEL_24:
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return a7;
+  return error;
 }
 
 void __85__NLPLearnerCoreNLPShadowEvaluator_evaluateModel_onRecords_options_completion_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -267,11 +267,11 @@ void __85__NLPLearnerCoreNLPShadowEvaluator_evaluateModel_onRecords_options_comp
   *(*(*(a1 + 72) + 8) + 24) += [v5 sentenceCount];
 }
 
-- (id)evaluateModel:(CoreLanguageModelWithState *)a3 onSingleExample:(id)a4 tokenizer:(void *)a5
+- (id)evaluateModel:(CoreLanguageModelWithState *)model onSingleExample:(id)example tokenizer:(void *)tokenizer
 {
-  v8 = a4;
+  exampleCopy = example;
   v9 = 0;
-  if (a3 && a5)
+  if (model && tokenizer)
   {
     if ([(NLPLearnerCoreNLPShadowEvaluator *)self maxSequenceLength])
     {
@@ -299,7 +299,7 @@ void __85__NLPLearnerCoreNLPShadowEvaluator_evaluateModel_onRecords_options_comp
       v13[1] = v13;
       v13[2] = 0x2020000000;
       v13[3] = 0;
-      strlen([v8 UTF8String]);
+      strlen([exampleCopy UTF8String]);
       LMStreamTokenizerPushBytes();
       v9 = objc_alloc_init(NLPLearnerEvaluationResultCoreLM);
       LODWORD(v10) = *(v31 + 6);

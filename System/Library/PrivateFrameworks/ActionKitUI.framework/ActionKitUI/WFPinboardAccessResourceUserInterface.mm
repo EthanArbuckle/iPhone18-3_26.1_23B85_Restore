@@ -1,24 +1,24 @@
 @interface WFPinboardAccessResourceUserInterface
-- (WFPinboardAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4;
-- (void)authorizeWithCompletionHandler:(id)a3;
+- (WFPinboardAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution;
+- (void)authorizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFPinboardAccessResourceUserInterface
 
-- (void)authorizeWithCompletionHandler:(id)a3
+- (void)authorizeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_23E350740(sub_23E34DE60, v5);
 }
 
-- (WFPinboardAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4
+- (WFPinboardAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_23E350DDC(v5, a4);
+  typeCopy = type;
+  attributionCopy = attribution;
+  return sub_23E350DDC(typeCopy, attribution);
 }
 
 @end

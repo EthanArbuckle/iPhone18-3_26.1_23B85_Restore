@@ -12,9 +12,9 @@
   v2 = [(TSDMPSImageConversionStorage *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     storage = v2->_storage;
-    v2->_storage = v3;
+    v2->_storage = strongToStrongObjectsMapTable;
   }
 
   return v2;
@@ -22,8 +22,8 @@
 
 - (void)removeAllObjects
 {
-  v2 = [(TSDMPSImageConversionStorage *)self storage];
-  [v2 removeAllObjects];
+  storage = [(TSDMPSImageConversionStorage *)self storage];
+  [storage removeAllObjects];
 }
 
 @end

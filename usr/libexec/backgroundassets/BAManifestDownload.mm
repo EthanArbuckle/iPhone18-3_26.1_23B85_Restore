@@ -1,21 +1,21 @@
 @interface BAManifestDownload
-- (BAManifestDownload)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BAManifestDownload)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BAManifestDownload
 
-- (BAManifestDownload)initWithCoder:(id)a3
+- (BAManifestDownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BAManifestDownload;
-  v5 = [(BAURLDownload *)&v7 initWithCoder:v4];
+  v5 = [(BAURLDownload *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_applicationEvent = [v4 decodeIntegerForKey:@"applicationEvent"];
+    v5->_applicationEvent = [coderCopy decodeIntegerForKey:@"applicationEvent"];
   }
 
   return v5;
@@ -31,7 +31,7 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -43,18 +43,18 @@
     applicationEvent = 0;
   }
 
-  v5 = a3;
-  [v5 encodeInteger:applicationEvent forKey:@"applicationEvent"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:applicationEvent forKey:@"applicationEvent"];
   v6.receiver = self;
   v6.super_class = BAManifestDownload;
-  [(BAURLDownload *)&v6 encodeWithCoder:v5];
+  [(BAURLDownload *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = BAManifestDownload;
-  result = [(BAURLDownload *)&v6 copyWithZone:a3];
+  result = [(BAURLDownload *)&v6 copyWithZone:zone];
   if (self)
   {
     applicationEvent = self->_applicationEvent;

@@ -1,30 +1,30 @@
 @interface _EXItemProviderSandboxedResource
-- (_EXItemProviderSandboxedResource)initWithCoder:(id)a3;
-- (_EXItemProviderSandboxedResource)initWithContentsOfURL:(id)a3 auditToken:(id *)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resolveURLAndReturnError:(id *)a3;
+- (_EXItemProviderSandboxedResource)initWithCoder:(id)coder;
+- (_EXItemProviderSandboxedResource)initWithContentsOfURL:(id)l auditToken:(id *)token error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resolveURLAndReturnError:(id *)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXItemProviderSandboxedResource
 
-- (_EXItemProviderSandboxedResource)initWithContentsOfURL:(id)a3 auditToken:(id *)a4 error:(id *)a5
+- (_EXItemProviderSandboxedResource)initWithContentsOfURL:(id)l auditToken:(id *)token error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  lCopy = l;
   v35.receiver = self;
   v35.super_class = _EXItemProviderSandboxedResource;
   v9 = [(_EXItemProviderSandboxedResource *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    [(_EXItemProviderSandboxedResource *)v9 setResourceURL:v8];
-    v11 = [(_EXItemProviderSandboxedResource *)v10 resourceURL];
-    v12 = *&a4->var0[4];
-    *v36.val = *a4->var0;
+    [(_EXItemProviderSandboxedResource *)v9 setResourceURL:lCopy];
+    resourceURL = [(_EXItemProviderSandboxedResource *)v10 resourceURL];
+    v12 = *&token->var0[4];
+    *v36.val = *token->var0;
     *&v36.val[4] = v12;
-    v13 = v11;
+    v13 = resourceURL;
     v14 = _EXLegacyLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -37,12 +37,12 @@
       *(&atoken.val[3] + 2) = pidp[0];
     }
 
-    v15 = [v13 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v13 startAccessingSecurityScopedResource];
     v16 = *MEMORY[0x1E69E9BA8];
     [v13 fileSystemRepresentation];
     atoken = v36;
     v17 = sandbox_extension_issue_file_to_process();
-    if (v15)
+    if (startAccessingSecurityScopedResource)
     {
       [v13 stopAccessingSecurityScopedResource];
     }
@@ -56,9 +56,9 @@
     else
     {
       v21 = MEMORY[0x1E696AEC0];
-      v22 = [v13 path];
+      path = [v13 path];
       v23 = __error();
-      v24 = [v21 stringWithFormat:@"Cannot issue a sandbox extension for file %@: %s", v22, strerror(*v23)];
+      v24 = [v21 stringWithFormat:@"Cannot issue a sandbox extension for file %@: %s", path, strerror(*v23)];
 
       v25 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A798];
@@ -87,11 +87,11 @@
         [_EXItemProviderSandboxedResource initWithContentsOfURL:v10 auditToken:v30 error:v31];
       }
 
-      if (a5)
+      if (error)
       {
         v32 = v30;
         v20 = 0;
-        *a5 = v30;
+        *error = v30;
       }
 
       else
@@ -124,14 +124,14 @@
   [(_EXItemProviderSandboxedResource *)&v3 dealloc];
 }
 
-- (_EXItemProviderSandboxedResource)initWithCoder:(id)a3
+- (_EXItemProviderSandboxedResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_EXItemProviderSandboxedResource *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceURL"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
     v8 = _EXLegacyLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -140,9 +140,9 @@
 
     MEMORY[0x1865F45E0](v6, v7);
     -[_EXItemProviderSandboxedResource setAccessingSecurityScopedResource:](v5, "setAccessingSecurityScopedResource:", [v6 startAccessingSecurityScopedResource]);
-    v9 = [(_EXItemProviderSandboxedResource *)v5 isAccessingSecurityScopedResource];
+    isAccessingSecurityScopedResource = [(_EXItemProviderSandboxedResource *)v5 isAccessingSecurityScopedResource];
     v10 = v6;
-    if (!v9)
+    if (!isAccessingSecurityScopedResource)
     {
       v11 = _EXLegacyLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -160,35 +160,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_EXItemProviderSandboxedResource *)self resourceURL];
-  v6 = [(_EXItemProviderSandboxedResource *)self sandboxExtensionToken];
+  coderCopy = coder;
+  resourceURL = [(_EXItemProviderSandboxedResource *)self resourceURL];
+  sandboxExtensionToken = [(_EXItemProviderSandboxedResource *)self sandboxExtensionToken];
   v7 = _EXLegacyLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [_EXItemProviderSandboxedResource encodeWithCoder:];
   }
 
-  [v4 encodeObject:v5 forKey:@"resourceURL"];
-  [v4 encodeObject:v6 forKey:@"sandboxExtensionToken"];
+  [coderCopy encodeObject:resourceURL forKey:@"resourceURL"];
+  [coderCopy encodeObject:sandboxExtensionToken forKey:@"sandboxExtensionToken"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(_EXItemProviderSandboxedResource *)self resourceURL];
-  v4 = [objc_alloc(objc_opt_class()) initWithContentsOfURL:v3];
+  resourceURL = [(_EXItemProviderSandboxedResource *)self resourceURL];
+  v4 = [objc_alloc(objc_opt_class()) initWithContentsOfURL:resourceURL];
 
   return v4;
 }
 
-- (id)resolveURLAndReturnError:(id *)a3
+- (id)resolveURLAndReturnError:(id *)error
 {
-  v3 = [(_EXItemProviderSandboxedResource *)self resourceURL];
-  if ([v3 startAccessingSecurityScopedResource])
+  resourceURL = [(_EXItemProviderSandboxedResource *)self resourceURL];
+  if ([resourceURL startAccessingSecurityScopedResource])
   {
-    v4 = v3;
+    v4 = resourceURL;
   }
 
   else

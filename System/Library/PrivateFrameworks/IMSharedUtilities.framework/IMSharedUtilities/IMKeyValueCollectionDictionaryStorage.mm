@@ -1,8 +1,8 @@
 @interface IMKeyValueCollectionDictionaryStorage
-- (IMKeyValueCollectionDictionaryStorage)initWithDictionary:(id)a3;
+- (IMKeyValueCollectionDictionaryStorage)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionary;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMKeyValueCollectionDictionaryStorage
@@ -14,15 +14,15 @@
   return v2;
 }
 
-- (IMKeyValueCollectionDictionaryStorage)initWithDictionary:(id)a3
+- (IMKeyValueCollectionDictionaryStorage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = IMKeyValueCollectionDictionaryStorage;
   v5 = [(IMKeyValueCollectionDictionaryStorage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }
@@ -30,7 +30,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dictionary = self->_dictionary;

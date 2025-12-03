@@ -1,32 +1,32 @@
 @interface ARUICountdownAnimator
-- (ARUICountdownAnimator)initWithTimeline:(id)a3;
+- (ARUICountdownAnimator)initWithTimeline:(id)timeline;
 - (ARUICountdownAnimatorDelegate)delegate;
 - (ARUICountdownView)countdownView;
-- (void)_applyAnimationAtIndex:(unint64_t)a3;
-- (void)_applyCancelAnimationAtIndex:(unint64_t)a3;
-- (void)_delegate_completedAnimation:(id)a3;
+- (void)_applyAnimationAtIndex:(unint64_t)index;
+- (void)_applyCancelAnimationAtIndex:(unint64_t)index;
+- (void)_delegate_completedAnimation:(id)animation;
 - (void)_delegate_didFinishAnimating;
-- (void)_delegate_performingAnimation:(id)a3 withDuration:(double)a4;
+- (void)_delegate_performingAnimation:(id)animation withDuration:(double)duration;
 - (void)_delegate_willBeginAnimating;
-- (void)_delegate_willBeginAnimation:(id)a3 afterDelay:(double)a4;
+- (void)_delegate_willBeginAnimation:(id)animation afterDelay:(double)delay;
 - (void)beginAnimations;
 - (void)cancelAnimations;
 - (void)prepareToAnimate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ARUICountdownAnimator
 
-- (ARUICountdownAnimator)initWithTimeline:(id)a3
+- (ARUICountdownAnimator)initWithTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v9.receiver = self;
   v9.super_class = ARUICountdownAnimator;
   v6 = [(ARUICountdownAnimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timeline, a3);
+    objc_storeStrong(&v6->_timeline, timeline);
     *&v7->_animating = 0;
   }
 
@@ -35,9 +35,9 @@
 
 - (void)prepareToAnimate
 {
-  v4 = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
+  prepareToAnimate = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
   WeakRetained = objc_loadWeakRetained(&self->_countdownView);
-  [v4 applyToCountdownView:WeakRetained completion:0];
+  [prepareToAnimate applyToCountdownView:WeakRetained completion:0];
 }
 
 - (void)beginAnimations
@@ -47,17 +47,17 @@
     [(ARUICountdownAnimator *)self _delegate_willBeginAnimating];
     *&self->_animating = 1;
     objc_initWeak(&location, self);
-    v3 = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
-    objc_storeWeak(&self->_currentAnimation, v3);
+    prepareToAnimate = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
+    objc_storeWeak(&self->_currentAnimation, prepareToAnimate);
 
-    v4 = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
+    prepareToAnimate2 = [(ARUICountdownTimeline *)self->_timeline prepareToAnimate];
     WeakRetained = objc_loadWeakRetained(&self->_countdownView);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__ARUICountdownAnimator_beginAnimations__block_invoke;
     v6[3] = &unk_1E83CE390;
     objc_copyWeak(&v7, &location);
-    [v4 applyToCountdownView:WeakRetained completion:v6];
+    [prepareToAnimate2 applyToCountdownView:WeakRetained completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -70,14 +70,14 @@ void __40__ARUICountdownAnimator_beginAnimations__block_invoke(uint64_t a1)
   [WeakRetained _applyAnimationAtIndex:0];
 }
 
-- (void)_applyAnimationAtIndex:(unint64_t)a3
+- (void)_applyAnimationAtIndex:(unint64_t)index
 {
   if (![(ARUICountdownAnimator *)self canceled]&& [(ARUICountdownAnimator *)self isAnimating])
   {
-    v5 = [(ARUICountdownTimeline *)self->_timeline animations];
-    v6 = [v5 count];
+    animations = [(ARUICountdownTimeline *)self->_timeline animations];
+    v6 = [animations count];
 
-    if (v6 <= a3)
+    if (v6 <= index)
     {
       *&self->_animating = 0;
 
@@ -86,8 +86,8 @@ void __40__ARUICountdownAnimator_beginAnimations__block_invoke(uint64_t a1)
 
     else
     {
-      v7 = [(ARUICountdownTimeline *)self->_timeline animations];
-      v8 = [v7 objectAtIndex:a3];
+      animations2 = [(ARUICountdownTimeline *)self->_timeline animations];
+      v8 = [animations2 objectAtIndex:index];
 
       objc_storeWeak(&self->_currentAnimation, v8);
       [v8 delay];
@@ -107,7 +107,7 @@ void __40__ARUICountdownAnimator_beginAnimations__block_invoke(uint64_t a1)
         objc_copyWeak(&v19, &location);
         objc_copyWeak(&v20, &from);
         objc_copyWeak(v21, &to);
-        v21[1] = a3;
+        v21[1] = index;
         dispatch_after(v12, MEMORY[0x1E69E96A0], block);
         objc_destroyWeak(v21);
         objc_destroyWeak(&v20);
@@ -126,7 +126,7 @@ void __40__ARUICountdownAnimator_beginAnimations__block_invoke(uint64_t a1)
         v15[3] = &unk_1E83CE3D8;
         objc_copyWeak(&v16, &location);
         objc_copyWeak(v17, &from);
-        v17[1] = a3;
+        v17[1] = index;
         [v8 applyToCountdownView:WeakRetained completion:v15];
 
         objc_destroyWeak(v17);
@@ -183,23 +183,23 @@ void __48__ARUICountdownAnimator__applyAnimationAtIndex___block_invoke_3(uint64_
   if (self->_animating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentAnimation);
-    v4 = [WeakRetained cancelable];
+    cancelable = [WeakRetained cancelable];
 
-    if (v4)
+    if (cancelable)
     {
       self->_canceled = 1;
       objc_initWeak(&location, self);
-      v5 = [(ARUICountdownTimeline *)self->_timeline prepareToCancel];
-      objc_storeWeak(&self->_currentAnimation, v5);
+      prepareToCancel = [(ARUICountdownTimeline *)self->_timeline prepareToCancel];
+      objc_storeWeak(&self->_currentAnimation, prepareToCancel);
 
-      v6 = [(ARUICountdownTimeline *)self->_timeline prepareToCancel];
+      prepareToCancel2 = [(ARUICountdownTimeline *)self->_timeline prepareToCancel];
       v7 = objc_loadWeakRetained(&self->_countdownView);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __41__ARUICountdownAnimator_cancelAnimations__block_invoke;
       v8[3] = &unk_1E83CE390;
       objc_copyWeak(&v9, &location);
-      [v6 applyToCountdownView:v7 completion:v8];
+      [prepareToCancel2 applyToCountdownView:v7 completion:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
@@ -213,12 +213,12 @@ void __41__ARUICountdownAnimator_cancelAnimations__block_invoke(uint64_t a1)
   [WeakRetained _applyCancelAnimationAtIndex:0];
 }
 
-- (void)_applyCancelAnimationAtIndex:(unint64_t)a3
+- (void)_applyCancelAnimationAtIndex:(unint64_t)index
 {
-  v5 = [(ARUICountdownTimeline *)self->_timeline cancelAnimations];
-  v6 = [v5 count];
+  cancelAnimations = [(ARUICountdownTimeline *)self->_timeline cancelAnimations];
+  v6 = [cancelAnimations count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     *&self->_animating = 0;
 
@@ -227,8 +227,8 @@ void __41__ARUICountdownAnimator_cancelAnimations__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(ARUICountdownTimeline *)self->_timeline cancelAnimations];
-    v8 = [v7 objectAtIndex:a3];
+    cancelAnimations2 = [(ARUICountdownTimeline *)self->_timeline cancelAnimations];
+    v8 = [cancelAnimations2 objectAtIndex:index];
 
     objc_storeWeak(&self->_currentAnimation, v8);
     [(ARUICountdownAnimator *)self _delegate_willBeginAnimation:v8 afterDelay:0.0];
@@ -243,7 +243,7 @@ void __41__ARUICountdownAnimator_cancelAnimations__block_invoke(uint64_t a1)
     v10[3] = &unk_1E83CE3D8;
     objc_copyWeak(&v11, &location);
     objc_copyWeak(v12, &from);
-    v12[1] = a3;
+    v12[1] = index;
     [v8 applyToCountdownView:WeakRetained completion:v10];
 
     objc_destroyWeak(v12);
@@ -270,33 +270,33 @@ void __54__ARUICountdownAnimator__applyCancelAnimationAtIndex___block_invoke(uin
   }
 }
 
-- (void)_delegate_willBeginAnimation:(id)a3 afterDelay:(double)a4
+- (void)_delegate_willBeginAnimation:(id)animation afterDelay:(double)delay
 {
   if (self->_delegateFlags.willBeginAnimation)
   {
-    v7 = a3;
+    animationCopy = animation;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained countdownAnimator:self willBeginAnimation:v7 afterDelay:a4];
+    [WeakRetained countdownAnimator:self willBeginAnimation:animationCopy afterDelay:delay];
   }
 }
 
-- (void)_delegate_performingAnimation:(id)a3 withDuration:(double)a4
+- (void)_delegate_performingAnimation:(id)animation withDuration:(double)duration
 {
   if (self->_delegateFlags.performingAnimation)
   {
-    v7 = a3;
+    animationCopy = animation;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained countdownAnimator:self performingAnimation:v7 withDuration:a4];
+    [WeakRetained countdownAnimator:self performingAnimation:animationCopy withDuration:duration];
   }
 }
 
-- (void)_delegate_completedAnimation:(id)a3
+- (void)_delegate_completedAnimation:(id)animation
 {
   if (self->_delegateFlags.completedAnimation)
   {
-    v5 = a3;
+    animationCopy = animation;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained countdownAnimator:self completedAnimation:v5];
+    [WeakRetained countdownAnimator:self completedAnimation:animationCopy];
   }
 }
 
@@ -309,9 +309,9 @@ void __54__ARUICountdownAnimator__applyCancelAnimationAtIndex___block_invoke(uin
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

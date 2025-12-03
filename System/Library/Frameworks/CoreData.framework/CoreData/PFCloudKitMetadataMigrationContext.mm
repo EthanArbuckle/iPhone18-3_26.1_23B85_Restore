@@ -1,6 +1,6 @@
 @interface PFCloudKitMetadataMigrationContext
 - (PFCloudKitMetadataMigrationContext)init;
-- (void)addSQLEntityToCreate:(uint64_t)a1;
+- (void)addSQLEntityToCreate:(uint64_t)create;
 - (void)dealloc;
 @end
 
@@ -45,13 +45,13 @@
   [(PFCloudKitMetadataMigrationContext *)&v3 dealloc];
 }
 
-- (void)addSQLEntityToCreate:(uint64_t)a1
+- (void)addSQLEntityToCreate:(uint64_t)create
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (create)
   {
-    [*(a1 + 16) addObject:a2];
-    *(a1 + 48) = 1;
+    [*(create + 16) addObject:a2];
+    *(create + 48) = 1;
     v4 = objc_alloc(MEMORY[0x1E695DFA8]);
     if (a2)
     {
@@ -115,7 +115,7 @@ LABEL_12:
       while (v13);
     }
 
-    [a1 addColumnNames:v8 forTableName:{objc_msgSend(a2, "tableName", v17)}];
+    [create addColumnNames:v8 forTableName:{objc_msgSend(a2, "tableName", v17)}];
   }
 
   v16 = *MEMORY[0x1E69E9840];

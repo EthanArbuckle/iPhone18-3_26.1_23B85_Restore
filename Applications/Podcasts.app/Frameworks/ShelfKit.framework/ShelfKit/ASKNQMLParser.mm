@@ -2,36 +2,36 @@
 + (void)initialize;
 - (ASKNQMLParser)delegate;
 - (ASKNQMLParser)init;
-- (ASKNQMLParser)initWithString:(id)a3;
+- (ASKNQMLParser)initWithString:(id)string;
 - (void)parse;
-- (void)reportErrorWithCode:(unint64_t)a3 userInfo:(id)a4;
-- (void)reportParseError:(_xmlError *)a3;
-- (void)set_parserContext:(_xmlParserCtxt *)a3;
+- (void)reportErrorWithCode:(unint64_t)code userInfo:(id)info;
+- (void)reportParseError:(_xmlError *)error;
+- (void)set_parserContext:(_xmlParserCtxt *)context;
 @end
 
 @implementation ASKNQMLParser
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     xmlInitParser();
   }
 
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ASKNQMLParser;
   objc_msgSendSuper2(&v3, "initialize");
 }
 
-- (ASKNQMLParser)initWithString:(id)a3
+- (ASKNQMLParser)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = ASKNQMLParser;
   v5 = [(ASKNQMLParser *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     string = v5->_string;
     v5->_string = v6;
   }
@@ -46,60 +46,60 @@
   return 0;
 }
 
-- (void)reportErrorWithCode:(unint64_t)a3 userInfo:(id)a4
+- (void)reportErrorWithCode:(unint64_t)code userInfo:(id)info
 {
-  v6 = [NSError errorWithDomain:@"ShelfKit.NqmlParser.errorDomain" code:a3 userInfo:a4];
-  v5 = [(ASKNQMLParser *)self delegate];
-  [v5 parser:self parseErrorOccurred:v6];
+  v6 = [NSError errorWithDomain:@"ShelfKit.NqmlParser.errorDomain" code:code userInfo:info];
+  delegate = [(ASKNQMLParser *)self delegate];
+  [delegate parser:self parseErrorOccurred:v6];
 }
 
-- (void)reportParseError:(_xmlError *)a3
+- (void)reportParseError:(_xmlError *)error
 {
-  if (a3->level == XML_ERR_FATAL)
+  if (error->level == XML_ERR_FATAL)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    v6 = [NSNumber numberWithInt:a3->line];
+    v6 = [NSNumber numberWithInt:error->line];
     [v9 setObject:v6 forKeyedSubscript:@"ShelfKit.NqmlParser.errorLineNumber"];
 
-    v7 = [NSNumber numberWithInt:a3->int2];
+    v7 = [NSNumber numberWithInt:error->int2];
     [v9 setObject:v7 forKeyedSubscript:@"ShelfKit.NqmlParser.errorColumn"];
 
-    v8 = [[NSString alloc] initWithUTF8String:a3->message];
+    v8 = [[NSString alloc] initWithUTF8String:error->message];
     if (v8)
     {
       [v9 setObject:v8 forKeyedSubscript:NSLocalizedDescriptionKey];
     }
 
-    [(ASKNQMLParser *)self reportErrorWithCode:a3->code userInfo:v9];
+    [(ASKNQMLParser *)self reportErrorWithCode:error->code userInfo:v9];
   }
 }
 
 - (void)parse
 {
-  v3 = [(ASKNQMLParser *)self delegate];
+  delegate = [(ASKNQMLParser *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     return;
   }
 
-  v4 = [(ASKNQMLParser *)self string];
-  v5 = [v4 UTF8String];
+  string = [(ASKNQMLParser *)self string];
+  uTF8String = [string UTF8String];
 
-  if (!v5 || (-[ASKNQMLParser string](self, "string"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lengthOfBytesUsingEncoding:4], v6, v7 >> 31))
+  if (!uTF8String || (-[ASKNQMLParser string](self, "string"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lengthOfBytesUsingEncoding:4], v6, v7 >> 31))
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = -101;
 LABEL_5:
 
-    [(ASKNQMLParser *)v8 reportErrorWithCode:v9 userInfo:0];
+    [(ASKNQMLParser *)selfCopy2 reportErrorWithCode:v9 userInfo:0];
     return;
   }
 
-  MemoryParserCtxt = htmlCreateMemoryParserCtxt(v5, v7);
+  MemoryParserCtxt = htmlCreateMemoryParserCtxt(uTF8String, v7);
   if (!MemoryParserCtxt)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = -100;
     goto LABEL_5;
   }
@@ -129,7 +129,7 @@ LABEL_5:
   [(ASKNQMLParser *)self set_parserContext:0];
 }
 
-- (void)set_parserContext:(_xmlParserCtxt *)a3
+- (void)set_parserContext:(_xmlParserCtxt *)context
 {
   parserContext = self->__parserContext;
   if (parserContext)
@@ -146,7 +146,7 @@ LABEL_5:
     htmlFreeParserCtxt(parserContext);
   }
 
-  self->__parserContext = a3;
+  self->__parserContext = context;
 }
 
 - (ASKNQMLParser)delegate

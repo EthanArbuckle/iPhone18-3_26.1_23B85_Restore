@@ -1,27 +1,27 @@
 @interface ArtworkLoader
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4;
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4;
+- (void)imageRequest:(id)request didFailWithError:(id)error;
+- (void)imageRequest:(id)request didLoadImage:(id)image;
 - (void)resourceLoaderDidBeginLoading;
 - (void)resourceLoaderDidIdle;
-- (void)resourceLoaderDidLoadAllForReason:(id)a3;
+- (void)resourceLoaderDidLoadAllForReason:(id)reason;
 @end
 
 @implementation ArtworkLoader
 
-- (void)imageRequest:(id)a3 didLoadImage:(id)a4
+- (void)imageRequest:(id)request didLoadImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  imageCopy = image;
 
-  sub_1E1AAF6C4(v5, a4, 0);
+  sub_1E1AAF6C4(requestCopy, image, 0);
 }
 
-- (void)imageRequest:(id)a3 didFailWithError:(id)a4
+- (void)imageRequest:(id)request didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
 
-  ArtworkLoader.imageRequest(_:didFailWithError:)(v5, v6);
+  ArtworkLoader.imageRequest(_:didFailWithError:)(requestCopy, errorCopy);
 }
 
 - (void)resourceLoaderDidBeginLoading
@@ -38,7 +38,7 @@
   }
 }
 
-- (void)resourceLoaderDidLoadAllForReason:(id)a3
+- (void)resourceLoaderDidLoadAllForReason:(id)reason
 {
   v4 = sub_1E1AEF55C();
   v5 = *(v4 - 8);

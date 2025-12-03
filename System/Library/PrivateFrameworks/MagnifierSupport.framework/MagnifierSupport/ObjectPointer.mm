@@ -1,11 +1,11 @@
 @interface ObjectPointer
 - (_TtC16MagnifierSupport13ObjectPointer)init;
-- (_TtC16MagnifierSupport13ObjectPointer)initWithCoder:(id)a3;
+- (_TtC16MagnifierSupport13ObjectPointer)initWithCoder:(id)coder;
 @end
 
 @implementation ObjectPointer
 
-- (_TtC16MagnifierSupport13ObjectPointer)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport13ObjectPointer)initWithCoder:(id)coder
 {
   result = sub_257ED0410();
   __break(1u);

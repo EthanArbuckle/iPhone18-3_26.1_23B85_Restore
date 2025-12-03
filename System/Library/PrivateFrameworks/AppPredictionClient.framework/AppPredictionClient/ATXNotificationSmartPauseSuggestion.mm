@@ -1,58 +1,58 @@
 @interface ATXNotificationSmartPauseSuggestion
-- (ATXNotificationSmartPauseSuggestion)initWithCoder:(id)a3;
-- (ATXNotificationSmartPauseSuggestion)initWithProto:(id)a3;
-- (ATXNotificationSmartPauseSuggestion)initWithProtoData:(id)a3;
-- (ATXNotificationSmartPauseSuggestion)initWithSuggestionExpiration:(id)a3 pauseDuration:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXNotificationSmartPauseSuggestion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXNotificationSmartPauseSuggestion)initWithCoder:(id)coder;
+- (ATXNotificationSmartPauseSuggestion)initWithProto:(id)proto;
+- (ATXNotificationSmartPauseSuggestion)initWithProtoData:(id)data;
+- (ATXNotificationSmartPauseSuggestion)initWithSuggestionExpiration:(id)expiration pauseDuration:(double)duration;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXNotificationSmartPauseSuggestion:(id)suggestion;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationSmartPauseSuggestion
 
-- (ATXNotificationSmartPauseSuggestion)initWithSuggestionExpiration:(id)a3 pauseDuration:(double)a4
+- (ATXNotificationSmartPauseSuggestion)initWithSuggestionExpiration:(id)expiration pauseDuration:(double)duration
 {
-  v7 = a3;
+  expirationCopy = expiration;
   v11.receiver = self;
   v11.super_class = ATXNotificationSmartPauseSuggestion;
   v8 = [(ATXNotificationSmartPauseSuggestion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_suggestionExpiration, a3);
-    v9->_suggestionDuration = a4;
+    objc_storeStrong(&v8->_suggestionExpiration, expiration);
+    v9->_suggestionDuration = duration;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationSmartPauseSuggestion *)self isEqualToATXNotificationSmartPauseSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationSmartPauseSuggestion *)self isEqualToATXNotificationSmartPauseSuggestion:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXNotificationSmartPauseSuggestion:(id)a3
+- (BOOL)isEqualToATXNotificationSmartPauseSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   [(NSDate *)self->_suggestionExpiration timeIntervalSinceReferenceDate];
   v6 = v5;
-  [v4[1] timeIntervalSinceReferenceDate];
+  [suggestionCopy[1] timeIntervalSinceReferenceDate];
   v8 = v6 - v7;
   v9 = -v8;
   if (v8 >= 0.0)
@@ -62,7 +62,7 @@
 
   if (v9 <= 300.0)
   {
-    v11 = self->_suggestionDuration - *(v4 + 2);
+    v11 = self->_suggestionDuration - *(suggestionCopy + 2);
     if (v11 < 0.0)
     {
       v11 = -v11;
@@ -86,9 +86,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXNotificationSmartPauseSuggestion allocWithZone:a3];
+  v4 = [ATXNotificationSmartPauseSuggestion allocWithZone:zone];
   suggestionExpiration = self->_suggestionExpiration;
   suggestionDuration = self->_suggestionDuration;
 
@@ -97,35 +97,35 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXNotificationSmartPauseSuggestion *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXNotificationSmartPauseSuggestion *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXNotificationSmartPauseSuggestion)initWithProtoData:(id)a3
+- (ATXNotificationSmartPauseSuggestion)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBNotificationSmartPauseSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBNotificationSmartPauseSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXNotificationSmartPauseSuggestion *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXNotificationSmartPauseSuggestion)initWithProto:(id)a3
+- (ATXNotificationSmartPauseSuggestion)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -136,11 +136,11 @@
         [ATXNotificationSmartPauseSuggestion initWithProto:];
       }
 
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_17;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     if (([v5 hasExpirationTimestamp]& 1) != 0)
     {
       v6 = MEMORY[0x1E695DF00];
@@ -150,7 +150,7 @@
       {
         [v5 pauseDuration];
         self = [(ATXNotificationSmartPauseSuggestion *)self initWithSuggestionExpiration:v7 pauseDuration:?];
-        v8 = self;
+        selfCopy = self;
 LABEL_16:
 
 LABEL_17:
@@ -173,14 +173,14 @@ LABEL_17:
       }
     }
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)proto
@@ -193,17 +193,17 @@ LABEL_18:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXNotificationSmartPauseSuggestion *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXNotificationSmartPauseSuggestion *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXNotificationSmartPauseSuggestion)initWithCoder:(id)a3
+- (ATXNotificationSmartPauseSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXNotificationSmartPauseSuggestion *)self initWithProtoData:v5];
   return v6;

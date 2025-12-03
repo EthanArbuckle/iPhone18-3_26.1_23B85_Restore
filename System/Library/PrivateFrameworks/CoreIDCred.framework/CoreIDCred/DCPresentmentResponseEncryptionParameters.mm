@@ -1,10 +1,10 @@
 @interface DCPresentmentResponseEncryptionParameters
 + (DCPresentmentResponseEncryptionParameters)sessionEncryption;
-+ (id)appleHPKEWithSessionTranscript:(id)a3 certificateChain:(id)a4;
-+ (id)webProposalHPKEWithSessionTranscript:(id)a3 rawEncryptionKey:(id)a4;
++ (id)appleHPKEWithSessionTranscript:(id)transcript certificateChain:(id)chain;
++ (id)webProposalHPKEWithSessionTranscript:(id)transcript rawEncryptionKey:(id)key;
 - (DCPresentmentResponseEncryptionParameters)init;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DCPresentmentResponseEncryptionParameters
@@ -27,10 +27,10 @@
   return v2;
 }
 
-+ (id)appleHPKEWithSessionTranscript:(id)a3 certificateChain:(id)a4
++ (id)appleHPKEWithSessionTranscript:(id)transcript certificateChain:(id)chain
 {
-  v5 = a3;
-  v6 = a4;
+  transcriptCopy = transcript;
+  chainCopy = chain;
   v7 = sub_24565BA74();
   v9 = v8;
 
@@ -51,10 +51,10 @@
   return v11;
 }
 
-+ (id)webProposalHPKEWithSessionTranscript:(id)a3 rawEncryptionKey:(id)a4
++ (id)webProposalHPKEWithSessionTranscript:(id)transcript rawEncryptionKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  transcriptCopy = transcript;
+  keyCopy = key;
   v7 = sub_24565BA74();
   v9 = v8;
 
@@ -78,19 +78,19 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2456506C0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2456506C0(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(DCPresentmentResponseEncryptionParameters);
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
-  v7 = (v5 + OBJC_IVAR___DCPresentmentResponseEncryptionParameters_storage);
+  v7 = (selfCopy + OBJC_IVAR___DCPresentmentResponseEncryptionParameters_storage);
   swift_beginAccess();
   v8 = *v7;
   v9 = v7[1];

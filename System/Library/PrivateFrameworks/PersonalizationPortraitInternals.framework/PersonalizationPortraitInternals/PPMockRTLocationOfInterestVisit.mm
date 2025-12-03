@@ -1,17 +1,17 @@
 @interface PPMockRTLocationOfInterestVisit
-+ (id)mockLocationOfInterestVisitWithEntryDate:(id)a3 exitDate:(id)a4;
++ (id)mockLocationOfInterestVisitWithEntryDate:(id)date exitDate:(id)exitDate;
 @end
 
 @implementation PPMockRTLocationOfInterestVisit
 
-+ (id)mockLocationOfInterestVisitWithEntryDate:(id)a3 exitDate:(id)a4
++ (id)mockLocationOfInterestVisitWithEntryDate:(id)date exitDate:(id)exitDate
 {
-  v5 = a4;
-  v6 = a3;
+  exitDateCopy = exitDate;
+  dateCopy = date;
   v7 = objc_opt_new();
-  [v7 setEntryDate:v6];
+  [v7 setEntryDate:dateCopy];
 
-  [v7 setExitDate:v5];
+  [v7 setExitDate:exitDateCopy];
 
   return v7;
 }

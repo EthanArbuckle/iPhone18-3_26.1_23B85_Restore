@@ -44,8 +44,8 @@
   v8 = [v5 safeArrayForKey:v7];
   if ([v8 count])
   {
-    v9 = [v8 firstObject];
-    [v9 doubleValue];
+    firstObject = [v8 firstObject];
+    [firstObject doubleValue];
     v11 = v10;
   }
 
@@ -142,8 +142,8 @@
   v10 = [v16 _accessibilityDescendantOfType:objc_opt_class()];
   if (v10)
   {
-    v11 = [v16 accessibilityTraits];
-    v12 = *MEMORY[0x29EDC7F70] | v11;
+    accessibilityTraits = [v16 accessibilityTraits];
+    v12 = *MEMORY[0x29EDC7F70] | accessibilityTraits;
     v13 = [v10 safeBoolForKey:@"isEnabled"];
     v14 = *MEMORY[0x29EDC7FA8] | v12;
     if (v13)

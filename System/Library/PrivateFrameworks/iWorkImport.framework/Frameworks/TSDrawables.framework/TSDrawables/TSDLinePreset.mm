@@ -1,45 +1,45 @@
 @interface TSDLinePreset
-+ (id)lineWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSDLinePreset)initWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5;
++ (id)lineWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd;
+- (BOOL)isEqual:(id)equal;
+- (TSDLinePreset)initWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd;
 - (unint64_t)hash;
 @end
 
 @implementation TSDLinePreset
 
-- (TSDLinePreset)initWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5
+- (TSDLinePreset)initWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  strokeCopy = stroke;
+  endCopy = end;
+  lineEndCopy = lineEnd;
   v15.receiver = self;
   v15.super_class = TSDLinePreset;
   v12 = [(TSDLinePreset *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_stroke, a3);
-    objc_storeStrong(&v13->_headLineEnd, a4);
-    objc_storeStrong(&v13->_tailLineEnd, a5);
+    objc_storeStrong(&v12->_stroke, stroke);
+    objc_storeStrong(&v13->_headLineEnd, end);
+    objc_storeStrong(&v13->_tailLineEnd, lineEnd);
   }
 
   return v13;
 }
 
-+ (id)lineWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5
++ (id)lineWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v13 = objc_msgSend_initWithStroke_headLineEnd_tailLineEnd_(v11, v12, v10, v9, v8);
+  lineEndCopy = lineEnd;
+  endCopy = end;
+  strokeCopy = stroke;
+  v11 = [self alloc];
+  v13 = objc_msgSend_initWithStroke_headLineEnd_tailLineEnd_(v11, v12, strokeCopy, endCopy, lineEndCopy);
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

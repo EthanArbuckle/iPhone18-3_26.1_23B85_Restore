@@ -1,12 +1,12 @@
 @interface HDCloudSyncStateUpdaterMedsListDelegate
 + (id)_medsListOrderingTerms;
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:;
-+ (uint64_t)_fetchPersistedMedsList:(void *)a3 profile:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (uint64_t)_persistCloudState:(void *)a3 profile:(uint64_t)a4 error:;
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6;
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:;
++ (uint64_t)_fetchPersistedMedsList:(void *)list profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (uint64_t)_persistCloudState:(void *)state profile:(uint64_t)profile error:;
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error;
 - (NSString)description;
-- (id)_mergeCloudList:(void *)a3 localList:;
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
+- (id)_mergeCloudList:(void *)list localList:;
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDCloudSyncStateUpdaterMedsListDelegate
@@ -15,18 +15,18 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDCloudSyncStateUpdaterMedsListDelegate *)self domain];
+  domain = [(HDCloudSyncStateUpdaterMedsListDelegate *)self domain];
   v6 = [(HDCloudSyncStateUpdaterMedsListDelegate *)self key];
-  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, domain, v6];
 
   return v7;
 }
 
-+ (uint64_t)_fetchPersistedMedsList:(void *)a3 profile:(void *)a4 transaction:(uint64_t)a5 error:
++ (uint64_t)_fetchPersistedMedsList:(void *)list profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  profileCopy = profile;
   v10 = objc_opt_self();
   v20 = 0;
   v21 = &v20;
@@ -43,7 +43,7 @@
   v19[2] = __93__HDCloudSyncStateUpdaterMedsListDelegate__fetchPersistedMedsList_profile_transaction_error___block_invoke;
   v19[3] = &unk_2796CD200;
   v19[4] = &v20;
-  v14 = [v11 enumerateCodableObjectsForPredicate:v12 limit:1 orderingTerms:v13 profile:v8 transaction:v9 error:a5 handler:v19];
+  v14 = [v11 enumerateCodableObjectsForPredicate:v12 limit:1 orderingTerms:v13 profile:listCopy transaction:profileCopy error:transaction handler:v19];
 
   if (v14)
   {
@@ -80,13 +80,13 @@
   return v14;
 }
 
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  stateCopy = state;
   v8 = objc_opt_self();
   v17 = 0;
-  v9 = [v7 decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v17 error:a5];
+  v9 = [stateCopy decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v17 error:profile];
 
   v10 = v17;
   v11 = 0;
@@ -122,12 +122,12 @@
   return v11;
 }
 
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  cloudStateCopy = cloudState;
+  localStateCopy = localState;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -142,13 +142,13 @@
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  v16 = v12;
-  v17 = v14;
-  v18 = v13;
+  v16 = cloudStateCopy;
+  v17 = profileCopy;
+  v18 = localStateCopy;
   HKWithAutoreleasePool();
-  if (a3)
+  if (state)
   {
-    *a3 = v22[5];
+    *state = v22[5];
   }
 
   if (v32[3])
@@ -244,30 +244,30 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  profileCopy = profile;
+  mergeStateCopy = mergeState;
+  stateCopy = state;
   _HKInitializeLogging();
   v12 = HKLogMedication();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set meds list in cloud state for state sync", &v15, 0xCu);
   }
 
-  [v11 setCodableObject:v10 version:0 profile:v9];
+  [stateCopy setCodableObject:mergeStateCopy version:0 profile:profileCopy];
   v13 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-+ (uint64_t)_persistCloudState:(void *)a3 profile:(uint64_t)a4 error:
++ (uint64_t)_persistCloudState:(void *)state profile:(uint64_t)profile error:
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v7 = a2;
   v8 = objc_opt_self();
   _HKInitializeLogging();
@@ -282,7 +282,7 @@ LABEL_11:
   v10 = MEMORY[0x277D10950];
   v15 = v7;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  v12 = [v10 receiveSyncObjects:v11 version:objc_msgSend(MEMORY[0x277D10950] syncProvenance:"supportedSyncVersionRange") profile:0 error:{v6, a4}];
+  v12 = [v10 receiveSyncObjects:v11 version:objc_msgSend(MEMORY[0x277D10950] syncProvenance:"supportedSyncVersionRange") profile:0 error:{stateCopy, profile}];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
@@ -302,19 +302,19 @@ LABEL_11:
   return v2;
 }
 
-- (id)_mergeCloudList:(void *)a3 localList:
+- (id)_mergeCloudList:(void *)list localList:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  listCopy = list;
+  if (self)
   {
     v7 = v5;
-    v8 = v6;
-    v9 = [v8 modificationDate];
-    [v9 timeIntervalSinceReferenceDate];
+    v8 = listCopy;
+    modificationDate = [v8 modificationDate];
+    [modificationDate timeIntervalSinceReferenceDate];
     v11 = v10;
-    v12 = [v7 modificationDate];
-    [v12 timeIntervalSinceReferenceDate];
+    modificationDate2 = [v7 modificationDate];
+    [modificationDate2 timeIntervalSinceReferenceDate];
     v14 = v13;
 
     if (v11 > v14)

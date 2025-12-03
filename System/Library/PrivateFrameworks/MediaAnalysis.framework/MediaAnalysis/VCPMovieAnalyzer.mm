@@ -1,41 +1,41 @@
 @interface VCPMovieAnalyzer
-+ (BOOL)canAnalyzeUndegraded:(id)a3 withResources:(id)a4;
++ (BOOL)canAnalyzeUndegraded:(id)undegraded withResources:(id)resources;
 + (BOOL)enableAudioVideoFusion;
 + (float)getMaximumHighlightInSec;
-+ (id)analyzerWithVCPAsset:(id)a3 withExistingAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5 withOptions:(id)a6;
++ (id)analyzerWithVCPAsset:(id)asset withExistingAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types withOptions:(id)options;
 + (void)getMaximumHighlightInSec;
-- (VCPMovieAnalyzer)initWithPHAsset:(id)a3 existingAnalysis:(id)a4 analysisTypes:(unint64_t)a5 downloadedData:(id)a6;
-- (VCPMovieAnalyzer)initWithPHAsset:(id)a3 withPausedAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5;
-- (VCPMovieAnalyzer)initWithVCPAsset:(id)a3 withExistingAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5 withOptions:(id)a6;
-- (id)analyzeAsset:(id)a3 streamed:(BOOL *)a4;
-- (id)createDecoderForTrack:(id)a3 timerange:(id *)a4 forAnalysisTypes:(unint64_t)a5 decodedFrameRate:(float *)a6;
-- (id)createVideoAnalyzerWithOrientation:(int)a3 preferredTransform:(CGAffineTransform *)a4 embeddings:(id)a5;
-- (id)processExistingAnalysisForTimeRange:(id *)a3 analysisTypes:(unint64_t *)a4;
+- (VCPMovieAnalyzer)initWithPHAsset:(id)asset existingAnalysis:(id)analysis analysisTypes:(unint64_t)types downloadedData:(id)data;
+- (VCPMovieAnalyzer)initWithPHAsset:(id)asset withPausedAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types;
+- (VCPMovieAnalyzer)initWithVCPAsset:(id)asset withExistingAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types withOptions:(id)options;
+- (id)analyzeAsset:(id)asset streamed:(BOOL *)streamed;
+- (id)createDecoderForTrack:(id)track timerange:(id *)timerange forAnalysisTypes:(unint64_t)types decodedFrameRate:(float *)rate;
+- (id)createVideoAnalyzerWithOrientation:(int)orientation preferredTransform:(CGAffineTransform *)transform embeddings:(id)embeddings;
+- (id)processExistingAnalysisForTimeRange:(id *)range analysisTypes:(unint64_t *)types;
 - (int)_waitForAsyncAudioResults;
-- (int)analyzeVideoSegment:(id)a3 timerange:(id *)a4 forAnalysisTypes:(unint64_t)a5 cancel:(id)a6;
-- (int)analyzeVideoTrack:(id)a3 start:(id *)a4 forAnalysisTypes:(unint64_t)a5 cancel:(id)a6;
-- (int)generateAndPersistVideoThumbnailResources:(id)a3 forPHAsset:(id)a4 withResults:(id)a5 cancelBlock:(id)a6;
-- (int)generateKeyFrameResource:(id)a3;
-- (int)performMetadataAnalysisOnAsset:(id)a3 withCancelBlock:(id)a4;
-- (int)postProcessAnimalResults:(id)a3;
-- (int)postProcessAutoPlayable:(id)a3;
-- (void)loadPropertiesForAsset:(id)a3;
+- (int)analyzeVideoSegment:(id)segment timerange:(id *)timerange forAnalysisTypes:(unint64_t)types cancel:(id)cancel;
+- (int)analyzeVideoTrack:(id)track start:(id *)start forAnalysisTypes:(unint64_t)types cancel:(id)cancel;
+- (int)generateAndPersistVideoThumbnailResources:(id)resources forPHAsset:(id)asset withResults:(id)results cancelBlock:(id)block;
+- (int)generateKeyFrameResource:(id)resource;
+- (int)performMetadataAnalysisOnAsset:(id)asset withCancelBlock:(id)block;
+- (int)postProcessAnimalResults:(id)results;
+- (int)postProcessAutoPlayable:(id)playable;
+- (void)loadPropertiesForAsset:(id)asset;
 @end
 
 @implementation VCPMovieAnalyzer
 
-+ (BOOL)canAnalyzeUndegraded:(id)a3 withResources:(id)a4
++ (BOOL)canAnalyzeUndegraded:(id)undegraded withResources:(id)resources
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 vcp_isVideoSlowmo])
+  undegradedCopy = undegraded;
+  resourcesCopy = resources;
+  if ([undegradedCopy vcp_isVideoSlowmo])
   {
-    v7 = [v6 vcp_hasLocalSlowmo:{objc_msgSend(v5, "vcp_hasAdjustments")}];
+    v7 = [resourcesCopy vcp_hasLocalSlowmo:{objc_msgSend(undegradedCopy, "vcp_hasAdjustments")}];
   }
 
   else
   {
-    v7 = [v6 vcp_hasLocalMovie:{objc_msgSend(v5, "hasAdjustments")}];
+    v7 = [resourcesCopy vcp_hasLocalMovie:{objc_msgSend(undegradedCopy, "hasAdjustments")}];
   }
 
   v8 = v7;
@@ -75,12 +75,12 @@
   return +[VCPMovieAnalyzer enableAudioVideoFusion]::enable;
 }
 
-- (VCPMovieAnalyzer)initWithVCPAsset:(id)a3 withExistingAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5 withOptions:(id)a6
+- (VCPMovieAnalyzer)initWithVCPAsset:(id)asset withExistingAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types withOptions:(id)options
 {
   v58 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  assetCopy = asset;
+  analysisCopy = analysis;
+  optionsCopy = options;
   v53.receiver = self;
   v53.super_class = VCPMovieAnalyzer;
   v14 = [(VCPMovieAnalyzer *)&v53 init];
@@ -90,8 +90,8 @@
     goto LABEL_47;
   }
 
-  v16 = [v11 modificationDate];
-  v17 = v16 == 0;
+  modificationDate = [assetCopy modificationDate];
+  v17 = modificationDate == 0;
 
   if (!v17)
   {
@@ -102,15 +102,15 @@
     *(v14 + 18) = 0;
     *(v14 + 19) = 0;
     *(v14 + 17) = 1;
-    *(v14 + 1) = a5;
-    objc_storeStrong(v14 + 4, a3);
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    *(v14 + 1) = types;
+    objc_storeStrong(v14 + 4, asset);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v20 = *(v14 + 2);
-    *(v14 + 2) = v19;
+    *(v14 + 2) = dictionary;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v22 = *(v14 + 3);
-    *(v14 + 3) = v21;
+    *(v14 + 3) = dictionary2;
 
     v14[56] = 0;
     if (SocType() < 247)
@@ -120,17 +120,17 @@
 
     else
     {
-      v23 = [v11 isLivePhoto] ^ 1;
+      v23 = [assetCopy isLivePhoto] ^ 1;
     }
 
     v14[40] = v23;
-    objc_storeStrong(v14 + 9, a6);
+    objc_storeStrong(v14 + 9, options);
     if (+[VCPMovieAnalyzer shouldProcessAudioAsync])
     {
       *(v14 + 26) = 0;
-      v25 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       v26 = *(v14 + 14);
-      *(v14 + 14) = v25;
+      *(v14 + 14) = dictionary3;
 
       *(v14 + 15) = 0;
       v27 = dispatch_queue_create("com.apple.mediaanalysisd.audioanalysis", 0);
@@ -146,10 +146,10 @@
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v31 = [*(v14 + 4) localIdentifier];
+      localIdentifier = [*(v14 + 4) localIdentifier];
       v32 = MediaAnalysisTypeShortDescription(*(v14 + 1));
       *buf = 138412546;
-      v55 = v31;
+      v55 = localIdentifier;
       v56 = 2112;
       v57 = v32;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer] Initialize to process (%@)", buf, 0x16u);
@@ -157,25 +157,25 @@
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v33 = [*(v14 + 4) localIdentifier];
-      v34 = [v12 vcp_analysisDescriptionWithResultDetails:1];
+      localIdentifier2 = [*(v14 + 4) localIdentifier];
+      v34 = [analysisCopy vcp_analysisDescriptionWithResultDetails:1];
       *buf = 138412546;
-      v55 = v33;
+      v55 = localIdentifier2;
       v56 = 2112;
       v57 = v34;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer] Initializing with existing analysis %@", buf, 0x16u);
     }
 
-    if (v12)
+    if (analysisCopy)
     {
-      v35 = [v12 vcp_version];
+      vcp_version = [analysisCopy vcp_version];
       v36 = 75;
-      if (v35 == 75)
+      if (vcp_version == 75)
       {
-        v37 = v12;
+        v37 = analysisCopy;
         v38 = *(v14 + 6);
         *(v14 + 6) = v37;
-        v36 = v35;
+        v36 = vcp_version;
         goto LABEL_22;
       }
     }
@@ -191,8 +191,8 @@ LABEL_22:
 
     [*(v14 + 2) vcp_setVersion:v36];
     v39 = *(v14 + 2);
-    v40 = [v11 modificationDate];
-    [v39 vcp_setDateModified:v40];
+    modificationDate2 = [assetCopy modificationDate];
+    [v39 vcp_setDateModified:modificationDate2];
 
     [*(v14 + 2) vcp_setStatsFlags:0];
     v41 = *(v14 + 1);
@@ -216,9 +216,9 @@ LABEL_22:
 
     if ((v41 & 0x80000000000) != 0)
     {
-      v43 = [objc_opt_class() enableAudioVideoFusion];
+      enableAudioVideoFusion = [objc_opt_class() enableAudioVideoFusion];
       v41 = *(v14 + 1);
-      if (v43)
+      if (enableAudioVideoFusion)
       {
         v41 |= 0x800000000000uLL;
         *(v14 + 1) = v41;
@@ -227,9 +227,9 @@ LABEL_22:
 
     if ((v41 & 0x200000000000) != 0)
     {
-      v44 = [v11 isLivePhoto];
+      isLivePhoto = [assetCopy isLivePhoto];
       v45 = 0x40000000;
-      if (!v44)
+      if (!isLivePhoto)
       {
         v45 = 0x80000000000;
       }
@@ -269,10 +269,10 @@ LABEL_22:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v48 = [*(v14 + 4) localIdentifier];
+      localIdentifier3 = [*(v14 + 4) localIdentifier];
       v49 = MediaAnalysisTypeShortDescription(*(v14 + 1));
       *buf = 138412546;
-      v55 = v48;
+      v55 = localIdentifier3;
       v56 = 2112;
       v57 = v49;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer] Initialized to process (%@)", buf, 0x16u);
@@ -293,10 +293,10 @@ LABEL_22:
 LABEL_47:
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v50 = [(VCPAsset *)v15->_asset localIdentifier];
+    localIdentifier4 = [(VCPAsset *)v15->_asset localIdentifier];
     v51 = [(NSMutableDictionary *)v15->_analysis vcp_analysisDescriptionWithResultDetails:1];
     *buf = 138412546;
-    v55 = v50;
+    v55 = localIdentifier4;
     v56 = 2112;
     v57 = v51;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer] Initialized analysis %@", buf, 0x16u);
@@ -305,79 +305,79 @@ LABEL_47:
   return v15;
 }
 
-+ (id)analyzerWithVCPAsset:(id)a3 withExistingAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5 withOptions:(id)a6
++ (id)analyzerWithVCPAsset:(id)asset withExistingAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types withOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [objc_alloc(objc_opt_class()) initWithVCPAsset:v9 withExistingAnalysis:v10 forAnalysisTypes:a5 withOptions:v11];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  optionsCopy = options;
+  v12 = [objc_alloc(objc_opt_class()) initWithVCPAsset:assetCopy withExistingAnalysis:analysisCopy forAnalysisTypes:types withOptions:optionsCopy];
 
   return v12;
 }
 
-- (VCPMovieAnalyzer)initWithPHAsset:(id)a3 withPausedAnalysis:(id)a4 forAnalysisTypes:(unint64_t)a5
+- (VCPMovieAnalyzer)initWithPHAsset:(id)asset withPausedAnalysis:(id)analysis forAnalysisTypes:(unint64_t)types
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_phAsset, a3);
+  assetCopy = asset;
+  analysisCopy = analysis;
+  objc_storeStrong(&self->_phAsset, asset);
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(VCPAsset *)self->_asset localIdentifier];
-    v12 = [v10 vcp_analysisDescriptionWithResultDetails:1];
+    localIdentifier = [(VCPAsset *)self->_asset localIdentifier];
+    v12 = [analysisCopy vcp_analysisDescriptionWithResultDetails:1];
     v28 = 138412546;
-    v29 = v11;
+    v29 = localIdentifier;
     v30 = 2112;
     v31 = v12;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer][Pause] Initializing with paused analysis %@", &v28, 0x16u);
   }
 
-  if (!v10)
+  if (!analysisCopy)
   {
     goto LABEL_14;
   }
 
-  if ([v10 vcp_version] != 75 || (objc_msgSend(v10, "vcp_dateModified"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "vcp_modificationDate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToDate:", v14), v14, v13, (v15 & 1) == 0))
+  if ([analysisCopy vcp_version] != 75 || (objc_msgSend(analysisCopy, "vcp_dateModified"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(assetCopy, "vcp_modificationDate"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToDate:", v14), v14, v13, (v15 & 1) == 0))
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v9 localIdentifier];
+      localIdentifier2 = [assetCopy localIdentifier];
       v28 = 138412290;
-      v29 = v25;
+      v29 = localIdentifier2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "  [%@] Existing analysis outdated; dropping", &v28, 0xCu);
     }
 
 LABEL_14:
-    v26 = [VCPPhotosAsset assetWithPHAsset:v9];
-    v17 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v26 withExistingAnalysis:0 forAnalysisTypes:a5 withOptions:0];
+    v26 = [VCPPhotosAsset assetWithPHAsset:assetCopy];
+    v17 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v26 withExistingAnalysis:0 forAnalysisTypes:types withOptions:0];
 
     goto LABEL_15;
   }
 
-  v16 = [VCPPhotosAsset assetWithPHAsset:v9];
-  v17 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v16 withExistingAnalysis:0 forAnalysisTypes:a5 withOptions:0];
+  v16 = [VCPPhotosAsset assetWithPHAsset:assetCopy];
+  v17 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v16 withExistingAnalysis:0 forAnalysisTypes:types withOptions:0];
 
   if (v17)
   {
-    v18 = [v10 vcp_types];
+    vcp_types = [analysisCopy vcp_types];
     analysis = v17->_analysis;
-    v17->_requestedAnalyses &= ~v18;
-    -[NSMutableDictionary vcp_setTypes:](analysis, "vcp_setTypes:", [v10 vcp_types]);
-    -[NSMutableDictionary vcp_setFlags:](v17->_analysis, "vcp_setFlags:", [v10 vcp_flags]);
-    -[NSMutableDictionary vcp_setStatsFlags:](v17->_analysis, "vcp_setStatsFlags:", [v10 vcp_statsFlags]);
+    v17->_requestedAnalyses &= ~vcp_types;
+    -[NSMutableDictionary vcp_setTypes:](analysis, "vcp_setTypes:", [analysisCopy vcp_types]);
+    -[NSMutableDictionary vcp_setFlags:](v17->_analysis, "vcp_setFlags:", [analysisCopy vcp_flags]);
+    -[NSMutableDictionary vcp_setStatsFlags:](v17->_analysis, "vcp_setStatsFlags:", [analysisCopy vcp_statsFlags]);
     v20 = v17->_analysis;
-    v21 = [v10 vcp_results];
-    [(NSMutableDictionary *)v20 vcp_addEntriesFromResults:v21];
+    vcp_results = [analysisCopy vcp_results];
+    [(NSMutableDictionary *)v20 vcp_addEntriesFromResults:vcp_results];
 
     v22 = v17->_analysis;
-    [v10 vcp_syncPoint];
+    [analysisCopy vcp_syncPoint];
     [(NSMutableDictionary *)v22 vcp_setSyncPoint:&v28];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(VCPAsset *)v17->_asset localIdentifier];
+      localIdentifier3 = [(VCPAsset *)v17->_asset localIdentifier];
       v24 = [(NSMutableDictionary *)v17->_analysis vcp_analysisDescriptionWithResultDetails:1];
       v28 = 138412546;
-      v29 = v23;
+      v29 = localIdentifier3;
       v30 = 2112;
       v31 = v24;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer][Pause] Initialized analysis %@", &v28, 0x16u);
@@ -389,51 +389,51 @@ LABEL_15:
   return v17;
 }
 
-- (VCPMovieAnalyzer)initWithPHAsset:(id)a3 existingAnalysis:(id)a4 analysisTypes:(unint64_t)a5 downloadedData:(id)a6
+- (VCPMovieAnalyzer)initWithPHAsset:(id)asset existingAnalysis:(id)analysis analysisTypes:(unint64_t)types downloadedData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  objc_storeStrong(&self->_phAsset, a3);
-  if (!v12)
+  assetCopy = asset;
+  analysisCopy = analysis;
+  dataCopy = data;
+  objc_storeStrong(&self->_phAsset, asset);
+  if (!analysisCopy)
   {
 LABEL_7:
-    v21 = [VCPPhotosAsset assetWithPHAsset:v11 downloadedData:v13];
-    v19 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v21 withExistingAnalysis:0 forAnalysisTypes:a5 withOptions:0];
+    v21 = [VCPPhotosAsset assetWithPHAsset:assetCopy downloadedData:dataCopy];
+    v19 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v21 withExistingAnalysis:0 forAnalysisTypes:types withOptions:0];
 
     goto LABEL_8;
   }
 
-  v14 = [v12 vcp_dateModified];
-  v15 = [v11 vcp_modificationDate];
-  v16 = [v14 isEqualToDate:v15];
+  vcp_dateModified = [analysisCopy vcp_dateModified];
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
+  v16 = [vcp_dateModified isEqualToDate:vcp_modificationDate];
 
   if ((v16 & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v11 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       v23 = 138412290;
-      v24 = v20;
+      v24 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "  [%@] Existing analysis outdated; dropping", &v23, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  v17 = [VCPPhotosAsset assetWithPHAsset:v11 downloadedData:v13];
-  v18 = MediaAnalysisStripOutdatedAnalysis(v11, v12);
-  v19 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v17 withExistingAnalysis:v18 forAnalysisTypes:a5 withOptions:0];
+  v17 = [VCPPhotosAsset assetWithPHAsset:assetCopy downloadedData:dataCopy];
+  v18 = MediaAnalysisStripOutdatedAnalysis(assetCopy, analysisCopy);
+  v19 = [(VCPMovieAnalyzer *)self initWithVCPAsset:v17 withExistingAnalysis:v18 forAnalysisTypes:types withOptions:0];
 
 LABEL_8:
   return v19;
 }
 
-- (void)loadPropertiesForAsset:(id)a3
+- (void)loadPropertiesForAsset:(id)asset
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = *MEMORY[0x1E69875D0];
   v17[0] = *MEMORY[0x1E69875A0];
   v17[1] = v4;
@@ -450,7 +450,7 @@ LABEL_8:
   v12[2] = __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke;
   v12[3] = &unk_1E834D048;
   v13 = v5;
-  v8 = v3;
+  v8 = assetCopy;
   v14 = v8;
   v15 = v7;
   v16 = v6;
@@ -518,10 +518,10 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)processExistingAnalysisForTimeRange:(id *)a3 analysisTypes:(unint64_t *)a4
+- (id)processExistingAnalysisForTimeRange:(id *)range analysisTypes:(unint64_t *)types
 {
   v52 = *MEMORY[0x1E69E9840];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   existingAnalysis = self->_existingAnalysis;
   if (existingAnalysis)
   {
@@ -529,16 +529,16 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
 
     if (v6)
     {
-      *a4 = self->_requestedAnalyses & [(NSDictionary *)self->_existingAnalysis vcp_types];
+      *types = self->_requestedAnalyses & [(NSDictionary *)self->_existingAnalysis vcp_types];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v7 = [(NSDictionary *)self->_existingAnalysis vcp_results];
-      v8 = [v7 allKeys];
+      vcp_results = [(NSDictionary *)self->_existingAnalysis vcp_results];
+      allKeys = [vcp_results allKeys];
 
-      obj = v8;
-      v9 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      obj = allKeys;
+      v9 = [allKeys countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v9)
       {
         v30 = *v47;
@@ -555,13 +555,13 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
             }
 
             v12 = *(*(&v46 + 1) + 8 * v11);
-            v13 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v44 = 0u;
             v45 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v14 = [(NSDictionary *)self->_existingAnalysis vcp_results];
-            v15 = [v14 objectForKeyedSubscript:v12];
+            vcp_results2 = [(NSDictionary *)self->_existingAnalysis vcp_results];
+            v15 = [vcp_results2 objectForKeyedSubscript:v12];
 
             v33 = v12;
             v16 = [v15 countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -581,9 +581,9 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
                   v19 = *(*(&v42 + 1) + 8 * v18);
                   memset(&v41, 0, sizeof(v41));
                   CMTimeRangeMakeFromDictionary(&v41, v19);
-                  if ((v41.start.flags & 1) == 0 || (v41.duration.flags & 1) == 0 || v41.duration.epoch || v41.duration.value < 0 || (range = v41, v20 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v20, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v40, &range, &otherRange), (v40.start.flags & 1) == 0) || (range = v41, v21 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v21, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v37, &range, &otherRange), (v37.duration.flags & 1) == 0) || (range = v41, v22 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v22, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v36, &range, &otherRange), v36.duration.epoch) || (range = v41, v23 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v23, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v35, &range, &otherRange), v35.duration.value < 0) || (range = v41, v24 = *&a3->var0.var3, *&otherRange.start.value = *&a3->var0.var0, *&otherRange.start.epoch = v24, *&otherRange.duration.timescale = *&a3->var1.var1, CMTimeRangeGetIntersection(&v34, &range, &otherRange), range.start = v34.duration, *&otherRange.start.value = *v10, otherRange.start.epoch = *(v10 + 16), CMTimeCompare(&range.start, &otherRange.start)))
+                  if ((v41.start.flags & 1) == 0 || (v41.duration.flags & 1) == 0 || v41.duration.epoch || v41.duration.value < 0 || (range = v41, v20 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v20, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v40, &range, &otherRange), (v40.start.flags & 1) == 0) || (range = v41, v21 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v21, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v37, &range, &otherRange), (v37.duration.flags & 1) == 0) || (range = v41, v22 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v22, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v36, &range, &otherRange), v36.duration.epoch) || (range = v41, v23 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v23, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v35, &range, &otherRange), v35.duration.value < 0) || (range = v41, v24 = *&range->var0.var3, *&otherRange.start.value = *&range->var0.var0, *&otherRange.start.epoch = v24, *&otherRange.duration.timescale = *&range->var1.var1, CMTimeRangeGetIntersection(&v34, &range, &otherRange), range.start = v34.duration, *&otherRange.start.value = *v10, otherRange.start.epoch = *(v10 + 16), CMTimeCompare(&range.start, &otherRange.start)))
                   {
-                    [v13 addObject:v19];
+                    [array addObject:v19];
                   }
 
                   ++v18;
@@ -597,21 +597,21 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
               while (v25);
             }
 
-            if ([v13 count])
+            if ([array count])
             {
-              [v29 setObject:v13 forKey:v33];
+              [dictionary setObject:array forKey:v33];
             }
 
             else
             {
-              *a4 &= ~MediaAnalysisResultsKeyToAnalysisType(v33);
+              *types &= ~MediaAnalysisResultsKeyToAnalysisType(v33);
             }
 
             ++v11;
           }
 
           while (v11 != v31);
-          v8 = obj;
+          allKeys = obj;
           v9 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
         }
 
@@ -620,13 +620,13 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
     }
   }
 
-  return v29;
+  return dictionary;
 }
 
-- (int)performMetadataAnalysisOnAsset:(id)a3 withCancelBlock:(id)a4
+- (int)performMetadataAnalysisOnAsset:(id)asset withCancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   v8 = VCPSignPostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -639,14 +639,14 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
   }
 
   requestedAnalyses = self->_requestedAnalyses;
-  v13 = [(NSMutableDictionary *)self->_analysis vcp_types];
+  vcp_types = [(NSMutableDictionary *)self->_analysis vcp_types];
   v14 = requestedAnalyses & 0x40 | (4 * ((requestedAnalyses & 0xC) == 4));
   if ((requestedAnalyses & 0x880) != 0)
   {
     v14 |= 0x80uLL;
   }
 
-  v15 = (v14 | requestedAnalyses & 0x4000014030000200) & ~v13;
+  v15 = (v14 | requestedAnalyses & 0x4000014030000200) & ~vcp_types;
   if (v15)
   {
     v16 = VCPSignPostLog();
@@ -661,14 +661,14 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "VCPMovieAnalyzer_Metadata_VCPLightVideoAnalyzer", "", buf, 2u);
     }
 
-    v21 = [[VCPLightVideoAnalyzer alloc] initWithAVAsset:v6 forAnalysisTypes:v15];
+    v21 = [[VCPLightVideoAnalyzer alloc] initWithAVAsset:assetCopy forAnalysisTypes:v15];
     [(VCPAsset *)self->_asset photoOffsetSeconds];
     [(VCPLightVideoAnalyzer *)v21 setPhotoOffset:?];
     if (v21)
     {
       spid = v17;
       *buf = 0;
-      v22 = [(VCPLightVideoAnalyzer *)v21 analyzeAsset:v7 flags:buf];
+      v22 = [(VCPLightVideoAnalyzer *)v21 analyzeAsset:blockCopy flags:buf];
       if (v22)
       {
         if (!self->_errorCode)
@@ -679,20 +679,20 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
 
       else
       {
-        v32 = v7;
-        v33 = v6;
+        v32 = blockCopy;
+        v33 = assetCopy;
         analysis = self->_analysis;
-        v24 = [(VCPLightVideoAnalyzer *)v21 publicResults];
-        [(NSMutableDictionary *)analysis vcp_addEntriesFromResults:v24];
+        publicResults = [(VCPLightVideoAnalyzer *)v21 publicResults];
+        [(NSMutableDictionary *)analysis vcp_addEntriesFromResults:publicResults];
 
         [(NSMutableDictionary *)self->_analysis vcp_addFlags:*buf];
         [(NSMutableDictionary *)self->_analysis vcp_addTypes:v15 & 0xBFFFFEFFCFFFFDFFLL];
         privateResults = self->_privateResults;
-        v26 = [(VCPLightVideoAnalyzer *)v21 privateResults];
-        [(NSMutableDictionary *)privateResults addEntriesFromDictionary:v26];
+        privateResults = [(VCPLightVideoAnalyzer *)v21 privateResults];
+        [(NSMutableDictionary *)privateResults addEntriesFromDictionary:privateResults];
 
-        v7 = v32;
-        v6 = v33;
+        blockCopy = v32;
+        assetCopy = v33;
         v27 = VCPSignPostLog();
         v28 = v27;
         if (v20 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
@@ -734,12 +734,12 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
   return v22;
 }
 
-- (id)createDecoderForTrack:(id)a3 timerange:(id *)a4 forAnalysisTypes:(unint64_t)a5 decodedFrameRate:(float *)a6
+- (id)createDecoderForTrack:(id)track timerange:(id *)timerange forAnalysisTypes:(unint64_t)types decodedFrameRate:(float *)rate
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if ((a5 & 0x4024000000) != 0)
+  trackCopy = track;
+  v11 = trackCopy;
+  if ((types & 0x4024000000) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:875704422];
     v26[0] = v12;
@@ -751,26 +751,26 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
     v25 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     [v11 nominalFrameRate];
-    *a6 = v16;
-    v17 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:v11 timerange:a4 withSettings:v15 applyTransform:0];
+    *rate = v16;
+    v17 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:v11 timerange:timerange withSettings:v15 applyTransform:0];
 
     goto LABEL_9;
   }
 
-  [v10 nominalFrameRate];
+  [trackCopy nominalFrameRate];
   time.epoch = 0;
   *&time.value = kSampleInterval;
   if (1.25 / CMTimeGetSeconds(&time) >= v18)
   {
     [v11 nominalFrameRate];
-    *a6 = v21;
+    *rate = v21;
     if ([(VCPAsset *)self->_asset isSlowmo])
     {
       v17 = 0;
       goto LABEL_9;
     }
 
-    v20 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:v11 timerange:a4];
+    v20 = [[VCPVideoTrackStandardDecoder alloc] initWithTrack:v11 timerange:timerange];
   }
 
   else
@@ -778,8 +778,8 @@ void __43__VCPMovieAnalyzer_loadPropertiesForAsset___block_invoke_2(uint64_t a1,
     time.epoch = 0;
     *&time.value = kSampleInterval;
     v19 = 1.0 / CMTimeGetSeconds(&time);
-    *a6 = v19;
-    v20 = [[VCPVideoTrackSubsamplingDecoder alloc] initWithTrack:v11 timerange:a4 atInterval:&kSampleInterval];
+    *rate = v19;
+    v20 = [[VCPVideoTrackSubsamplingDecoder alloc] initWithTrack:v11 timerange:timerange atInterval:&kSampleInterval];
   }
 
   v17 = v20;
@@ -788,19 +788,19 @@ LABEL_9:
   return v17;
 }
 
-- (id)createVideoAnalyzerWithOrientation:(int)a3 preferredTransform:(CGAffineTransform *)a4 embeddings:(id)a5
+- (id)createVideoAnalyzerWithOrientation:(int)orientation preferredTransform:(CGAffineTransform *)transform embeddings:(id)embeddings
 {
-  v6 = *&a3;
-  v8 = a5;
+  v6 = *&orientation;
+  embeddingsCopy = embeddings;
   v9 = [(NSMutableDictionary *)self->_privateResults objectForKey:@"OrientationResults"];
   v10 = [VCPFullVideoAnalyzer alloc];
-  v11 = *&a4->c;
-  v26[0] = *&a4->a;
+  v11 = *&transform->c;
+  v26[0] = *&transform->a;
   v26[1] = v11;
-  v26[2] = *&a4->tx;
+  v26[2] = *&transform->tx;
   privateResults = self->_privateResults;
-  v13 = [(VCPAsset *)self->_asset isTimelapse];
-  v14 = [(VCPAsset *)self->_asset isLivePhoto];
+  isTimelapse = [(VCPAsset *)self->_asset isTimelapse];
+  isLivePhoto = [(VCPAsset *)self->_asset isLivePhoto];
   [(VCPAsset *)self->_asset photoOffsetSeconds];
   v16 = v15;
   [(VCPAsset *)self->_asset exposureTimeSeconds];
@@ -808,10 +808,10 @@ LABEL_9:
   [(VCPAsset *)self->_asset slowmoRate];
   LODWORD(v20) = v19;
   BYTE1(v25) = self->_faceDominated;
-  LOBYTE(v25) = v14;
+  LOBYTE(v25) = isLivePhoto;
   LODWORD(v21) = v16;
   LODWORD(v22) = v18;
-  v23 = [(VCPFullVideoAnalyzer *)v10 initWithVideoOrientation:v6 preferredTransform:v26 metaOrientation:v9 privateResults:privateResults embeddings:v8 isTimelapse:v13 isIris:v21 irisPhotoOffsetSec:v22 irisPhotoExposureSec:v20 slowMoRate:v25 faceDominated:?];
+  v23 = [(VCPFullVideoAnalyzer *)v10 initWithVideoOrientation:v6 preferredTransform:v26 metaOrientation:v9 privateResults:privateResults embeddings:embeddingsCopy isTimelapse:isTimelapse isIris:v21 irisPhotoOffsetSec:v22 irisPhotoExposureSec:v20 slowMoRate:v25 faceDominated:?];
 
   return v23;
 }
@@ -838,11 +838,11 @@ LABEL_9:
   return result;
 }
 
-- (int)analyzeVideoSegment:(id)a3 timerange:(id *)a4 forAnalysisTypes:(unint64_t)a5 cancel:(id)a6
+- (int)analyzeVideoSegment:(id)segment timerange:(id *)timerange forAnalysisTypes:(unint64_t)types cancel:(id)cancel
 {
   v556 = *MEMORY[0x1E69E9840];
-  v485 = a3;
-  v475 = a6;
+  segmentCopy = segment;
+  cancelCopy = cancel;
   v8 = VCPSignPostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -857,21 +857,21 @@ LABEL_9:
   }
 
   v544 = 0;
-  v12 = *&a4->var0.var3;
-  *buf = *&a4->var0.var0;
+  v12 = *&timerange->var0.var3;
+  *buf = *&timerange->var0.var0;
   *&buf[16] = v12;
-  *&buf[32] = *&a4->var1.var1;
+  *&buf[32] = *&timerange->var1.var1;
   v13 = [(VCPMovieAnalyzer *)self processExistingAnalysisForTimeRange:buf analysisTypes:&v544];
   v14 = v544;
   v484 = v13;
   v15 = +[VCPAudioAnalyzer supportedAnalysisTypes];
   v16 = +[VCPAudioAnalyzer supportedAnalysisTypes];
   v17 = +[VCPAudioAnalyzer supportedAnalysisTypes];
-  v18 = [(NSDictionary *)self->_existingAnalysis vcp_types];
+  vcp_types = [(NSDictionary *)self->_existingAnalysis vcp_types];
   v19 = v14 & ~v15;
-  v490 = a5 & ~(v16 | v19);
-  v463 = v17 & a5;
-  v458 = +[VCPAudioAnalyzer supportedAnalysisTypes]& v18;
+  v490 = types & ~(v16 | v19);
+  v463 = v17 & types;
+  v458 = +[VCPAudioAnalyzer supportedAnalysisTypes]& vcp_types;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v20 = MEMORY[0x1E69E9C10];
@@ -946,8 +946,8 @@ LABEL_34:
 
   v41 = [VCPVideoInterpolator alloc];
   privateResults = self->_privateResults;
-  v43 = [(VCPAsset *)self->_asset localIdentifier];
-  v478 = [(VCPVideoInterpolator *)v41 initWithTimestamps:privateResults andIdentifier:v43 andTrack:v485];
+  localIdentifier = [(VCPAsset *)self->_asset localIdentifier];
+  v478 = [(VCPVideoInterpolator *)v41 initWithTimestamps:privateResults andIdentifier:localIdentifier andTrack:segmentCopy];
 
   v44 = v478;
   if (!v478)
@@ -977,7 +977,7 @@ LABEL_36:
       v482 = 0;
       v483 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
 LABEL_41:
       v50 = 10;
       goto LABEL_338;
@@ -989,9 +989,9 @@ LABEL_41:
 
   if (self->_requestedAnalyses == 0x20000000)
   {
-    v45 = [(VCPVideoInterpolator *)v478 processAborted];
+    processAborted = [(VCPVideoInterpolator *)v478 processAborted];
     v44 = v478;
-    if (v45)
+    if (processAborted)
     {
       context = 0;
       if (self->_errorCode)
@@ -1008,17 +1008,17 @@ LABEL_35:
   }
 
   [(VCPVideoInterpolator *)v44 adjustedTimeRange];
-  v29 = [(VCPMovieAnalyzer *)self createDecoderForTrack:v485 timerange:buf forAnalysisTypes:v490 decodedFrameRate:&v543];
+  v29 = [(VCPMovieAnalyzer *)self createDecoderForTrack:segmentCopy timerange:buf forAnalysisTypes:v490 decodedFrameRate:&v543];
 
 LABEL_13:
-  v30 = v485;
+  v30 = segmentCopy;
   if ((v490 & 0x8000000000000) != 0)
   {
-    v33 = [(NSMutableDictionary *)self->_analysis vcp_results];
-    v34 = [v33 objectForKeyedSubscript:@"VideoThumbnailResults"];
+    vcp_results = [(NSMutableDictionary *)self->_analysis vcp_results];
+    v34 = [vcp_results objectForKeyedSubscript:@"VideoThumbnailResults"];
 
     v471 = [[VCPVideoThumbnailAnalyzer alloc] initWithExistingThumbnails:v34];
-    v30 = v485;
+    v30 = segmentCopy;
   }
 
   else
@@ -1044,7 +1044,7 @@ LABEL_13:
   v38 = [v37 objectForKeyedSubscript:@"attributes"];
   v39 = [v38 objectForKeyedSubscript:@"stabilizationRecipe"];
 
-  v40 = [[VCPSettlingEffectAnalyzer alloc] initWithTimestamps:self->_privateResults andTrack:v485 andRecipe:v39 withOptions:self->_options];
+  v40 = [[VCPSettlingEffectAnalyzer alloc] initWithTimestamps:self->_privateResults andTrack:segmentCopy andRecipe:v39 withOptions:self->_options];
   if (!v40)
   {
     if (!self->_errorCode)
@@ -1067,7 +1067,7 @@ LABEL_13:
     v482 = 0;
     v483 = 0;
     v481 = 0;
-    v464 = 0;
+    flags = 0;
     context = -108;
     goto LABEL_41;
   }
@@ -1076,11 +1076,11 @@ LABEL_13:
 
   if (v29)
   {
-    v30 = v485;
+    v30 = segmentCopy;
     goto LABEL_48;
   }
 
-  v30 = v485;
+  v30 = segmentCopy;
   if (![(VCPSettlingEffectAnalyzer *)v474 processAborted])
   {
     [(VCPSettlingEffectAnalyzer *)v474 adjustedTimeRange];
@@ -1088,17 +1088,17 @@ LABEL_13:
   }
 
 LABEL_46:
-  v51 = *&a4->var0.var3;
-  *buf = *&a4->var0.var0;
+  v51 = *&timerange->var0.var3;
+  *buf = *&timerange->var0.var0;
   *&buf[16] = v51;
-  *&buf[32] = *&a4->var1.var1;
+  *&buf[32] = *&timerange->var1.var1;
 LABEL_47:
   v29 = [(VCPMovieAnalyzer *)self createDecoderForTrack:v30 timerange:buf forAnalysisTypes:v490 decodedFrameRate:&v543];
 LABEL_48:
   v462 = v29;
   if ((v490 & 0x880) != 0)
   {
-    v52 = [v30 vcp_orientation];
+    vcp_orientation = [v30 vcp_orientation];
     if (v30)
     {
       [v30 preferredTransform];
@@ -1109,10 +1109,10 @@ LABEL_48:
       memset(buf, 0, 48);
     }
 
-    v483 = [(VCPMovieAnalyzer *)self createVideoAnalyzerWithOrientation:v52 preferredTransform:buf embeddings:v479];
+    v483 = [(VCPMovieAnalyzer *)self createVideoAnalyzerWithOrientation:vcp_orientation preferredTransform:buf embeddings:v479];
     if (!v483)
     {
-      v67 = self;
+      selfCopy5 = self;
       if (self->_errorCode)
       {
         v472 = 0;
@@ -1144,10 +1144,10 @@ LABEL_48:
       v482 = 0;
       v483 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v81 = xmmword_1C9F62E70;
 LABEL_250:
-      *&v67->_errorCode = v81;
+      *&selfCopy5->_errorCode = v81;
       context = -108;
       v50 = 10;
       goto LABEL_337;
@@ -1161,14 +1161,14 @@ LABEL_250:
 
   if ((v490 & 8) != 0)
   {
-    v53 = [(NSMutableDictionary *)self->_analysis vcp_results];
-    v54 = [v53 objectForKeyedSubscript:@"FacePrintResults"];
+    vcp_results2 = [(NSMutableDictionary *)self->_analysis vcp_results];
+    v54 = [vcp_results2 objectForKeyedSubscript:@"FacePrintResults"];
 
     v55 = *(MEMORY[0x1E695EFD0] + 16);
     *buf = *MEMORY[0x1E695EFD0];
     *&buf[16] = v55;
     *&buf[32] = *(MEMORY[0x1E695EFD0] + 32);
-    v482 = [VCPVideoFaceDetector faceDetectorWithTransform:buf withExistingFaceprints:v54 tracking:[(VCPAsset *)self->_asset isLivePhoto]^ 1 faceDominated:self->_faceDominated cancel:v475];
+    v482 = [VCPVideoFaceDetector faceDetectorWithTransform:buf withExistingFaceprints:v54 tracking:[(VCPAsset *)self->_asset isLivePhoto]^ 1 faceDominated:self->_faceDominated cancel:cancelCopy];
     if (!v482)
     {
       if (!self->_errorCode)
@@ -1201,7 +1201,7 @@ LABEL_250:
     obj = objc_alloc_init(VCPVideoActivityAnalyzer);
     if (!obj)
     {
-      v67 = self;
+      selfCopy5 = self;
       if (self->_errorCode)
       {
         v472 = 0;
@@ -1229,7 +1229,7 @@ LABEL_250:
       v488 = 0;
       obj = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v81 = xmmword_1C9F62E90;
       goto LABEL_250;
     }
@@ -1245,7 +1245,7 @@ LABEL_250:
     v488 = objc_alloc_init(VCPVideoSceneClassifier);
     if (!v488)
     {
-      v67 = self;
+      selfCopy5 = self;
       if (self->_errorCode)
       {
         v472 = 0;
@@ -1271,7 +1271,7 @@ LABEL_250:
       v489 = 0;
       v488 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v81 = xmmword_1C9F62EA0;
       goto LABEL_250;
     }
@@ -1292,7 +1292,7 @@ LABEL_250:
     v489 = [(VCPVideoSaliencyAnalyzer *)v56 initWithTransform:buf];
     if (!v489)
     {
-      v67 = self;
+      selfCopy5 = self;
       if (self->_errorCode)
       {
         v472 = 0;
@@ -1316,7 +1316,7 @@ LABEL_250:
       v49 = 0;
       v489 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v81 = xmmword_1C9F62EB0;
       goto LABEL_250;
     }
@@ -1338,8 +1338,8 @@ LABEL_250:
     v49 = [(VCPVideoPetsAnalyzer *)v58 initWithTransform:buf];
     if (v49)
     {
-      v61 = [(NSMutableDictionary *)self->_analysis vcp_results];
-      v62 = [v61 objectForKeyedSubscript:@"AnimalPrintResults"];
+      vcp_results3 = [(NSMutableDictionary *)self->_analysis vcp_results];
+      v62 = [vcp_results3 objectForKeyedSubscript:@"AnimalPrintResults"];
 
       v63 = [VCPVideoAnimalDetector alloc];
       v64 = v59[1];
@@ -1368,13 +1368,13 @@ LABEL_250:
 LABEL_153:
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       context = -108;
       v50 = 10;
       goto LABEL_337;
     }
 
-    v67 = self;
+    selfCopy5 = self;
     if (self->_errorCode)
     {
       v472 = 0;
@@ -1396,7 +1396,7 @@ LABEL_153:
     v477 = 0;
     v49 = 0;
     v481 = 0;
-    v464 = 0;
+    flags = 0;
     v81 = xmmword_1C9F62ED0;
     goto LABEL_250;
   }
@@ -1409,7 +1409,7 @@ LABEL_74:
     v473 = [[VCPVideoPetsActionAnalyzer alloc] initWithTimeOfInterest:0];
     if (!v473)
     {
-      v65 = self;
+      selfCopy8 = self;
       if (self->_errorCode)
       {
         v473 = 0;
@@ -1421,7 +1421,7 @@ LABEL_133:
 LABEL_138:
         v477 = 0;
         v481 = 0;
-        v464 = 0;
+        flags = 0;
         context = -108;
         v50 = 10;
         goto LABEL_336;
@@ -1434,10 +1434,10 @@ LABEL_138:
       v48 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v108 = xmmword_1C9F62EE0;
 LABEL_248:
-      *&v65->_errorCode = v108;
+      *&selfCopy8->_errorCode = v108;
       context = -108;
       v50 = 10;
       v49 = v455;
@@ -1455,7 +1455,7 @@ LABEL_248:
     v68 = self->_privateResults;
     if (!v68 || (-[NSMutableDictionary objectForKeyedSubscript:](v68, "objectForKeyedSubscript:", @"MetaLensSwitchResults"), v69 = objc_claimAutoreleasedReturnValue(), v70 = [v69 count] == 0, v69, v68 = self->_privateResults, v70))
     {
-      v74 = 0;
+      bOOLValue = 0;
     }
 
     else
@@ -1463,7 +1463,7 @@ LABEL_248:
       v71 = [(NSMutableDictionary *)v68 objectForKeyedSubscript:@"MetaLensSwitchResults"];
       v72 = [v71 objectAtIndexedSubscript:0];
       v73 = [v72 objectForKeyedSubscript:@"quality"];
-      v74 = [v73 BOOLValue];
+      bOOLValue = [v73 BOOLValue];
 
       v68 = self->_privateResults;
     }
@@ -1471,13 +1471,13 @@ LABEL_248:
     v75 = [(NSMutableDictionary *)v68 objectForKeyedSubscript:@"MetaLensSwitchResults"];
     v76 = [v75 objectAtIndexedSubscript:0];
     v77 = [v76 objectForKeyedSubscript:@"ZoomChangeScore"];
-    v78 = [v77 BOOLValue];
+    bOOLValue2 = [v77 BOOLValue];
 
     v79 = [VCPMovieCurationAnalyzer alloc];
-    v80 = [(NSMutableDictionary *)self->_analysis vcp_types];
-    if (v485)
+    vcp_types2 = [(NSMutableDictionary *)self->_analysis vcp_types];
+    if (segmentCopy)
     {
-      [v485 preferredTransform];
+      [segmentCopy preferredTransform];
     }
 
     else
@@ -1485,16 +1485,16 @@ LABEL_248:
       memset(buf, 0, 48);
     }
 
-    v82 = *&a4->var0.var3;
-    *time = *&a4->var0.var0;
+    v82 = *&timerange->var0.var3;
+    *time = *&timerange->var0.var0;
     *&time[16] = v82;
-    v542 = *&a4->var1.var1;
-    v83 = [(VCPAsset *)self->_asset isLivePhoto];
+    v542 = *&timerange->var1.var1;
+    isLivePhoto = [(VCPAsset *)self->_asset isLivePhoto];
     [(VCPAsset *)self->_asset photoOffsetSeconds];
     v85 = v84;
-    v86 = [(VCPAsset *)self->_asset hadFlash];
+    hadFlash = [(VCPAsset *)self->_asset hadFlash];
     v87 = [v484 objectForKeyedSubscript:@"KeyFrameResults"];
-    v88 = [(VCPAsset *)self->_asset isTimelapse];
+    isTimelapse = [(VCPAsset *)self->_asset isTimelapse];
     asset = self->_asset;
     if (asset)
     {
@@ -1506,15 +1506,15 @@ LABEL_248:
       memset(v540, 0, sizeof(v540));
     }
 
-    v90 = [v485 asset];
-    LOBYTE(v424) = v88;
-    LOBYTE(v423) = v78;
+    asset = [segmentCopy asset];
+    LOBYTE(v424) = isTimelapse;
+    LOBYTE(v423) = bOOLValue2;
     LODWORD(v91) = v85;
-    v92 = [(VCPMovieCurationAnalyzer *)v79 initWithAnalysisTypes:v80 | v490 transform:buf timeRange:time isLivePhoto:v83 photoOffset:v86 hadFlash:v74 hadZoom:v91 settlingHadZoom:v423 keyFrameResults:v87 isTimelapse:v424 preferredTimeRange:v540 asset:v90];
+    v92 = [(VCPMovieCurationAnalyzer *)v79 initWithAnalysisTypes:vcp_types2 | v490 transform:buf timeRange:time isLivePhoto:isLivePhoto photoOffset:hadFlash hadFlash:bOOLValue hadZoom:v91 settlingHadZoom:v423 keyFrameResults:v87 isTimelapse:v424 preferredTimeRange:v540 asset:asset];
 
     if (!v92)
     {
-      v65 = self;
+      selfCopy8 = self;
       if (self->_errorCode)
       {
         goto LABEL_133;
@@ -1526,7 +1526,7 @@ LABEL_248:
       v472 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v108 = xmmword_1C9F62EF0;
       goto LABEL_248;
     }
@@ -1547,7 +1547,7 @@ LABEL_248:
     v94 = [VCPVideoStabilizer videoStabilizerforAnalysisType:0x4000000 withMetadata:0 sourceSize:*MEMORY[0x1E695F060] cropRect:*(MEMORY[0x1E695F060] + 8), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     if (!v94)
     {
-      v65 = self;
+      selfCopy8 = self;
       if (self->_errorCode)
       {
         v47 = 0;
@@ -1561,7 +1561,7 @@ LABEL_248:
       v48 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v108 = xmmword_1C9F62F00;
       goto LABEL_248;
     }
@@ -1590,13 +1590,13 @@ LABEL_248:
 
   if ([(VCPAsset *)self->_asset isLivePhoto])
   {
-    v96 = [(VCPAsset *)self->_asset faces];
+    faces = [(VCPAsset *)self->_asset faces];
     v97 = MEMORY[0x1E696AD98];
     [(VCPAsset *)self->_asset photoOffsetSeconds];
     [v97 numberWithFloat:?];
     v98 = 0;
     HasANE = 1;
-    v457 = v456 = v96;
+    v457 = v456 = faces;
     goto LABEL_123;
   }
 
@@ -1633,8 +1633,8 @@ LABEL_122:
   }
 
   v176 = [VCPPhotosQuickFaceDetectionManager alloc];
-  v177 = [(PHAsset *)self->_phAsset photoLibrary];
-  v178 = [(VCPPhotosQuickFaceDetectionManager *)v176 initWithPhotoLibrary:v177];
+  photoLibrary = [(PHAsset *)self->_phAsset photoLibrary];
+  v178 = [(VCPPhotosQuickFaceDetectionManager *)v176 initWithPhotoLibrary:photoLibrary];
 
   if (v178)
   {
@@ -1685,7 +1685,7 @@ LABEL_490:
     v48 = 0;
     v477 = 0;
     v481 = 0;
-    v464 = 0;
+    flags = 0;
 
     goto LABEL_335;
   }
@@ -1699,7 +1699,7 @@ LABEL_123:
     v100 = [[VCPVideoHumanActionAnalyzer alloc] initWithTimeOfInterest:v457 phFaces:v456];
     if (!v100)
     {
-      v107 = self;
+      selfCopy14 = self;
       if (!self->_errorCode)
       {
         v454 = 0;
@@ -1707,7 +1707,7 @@ LABEL_123:
         v48 = 0;
         v477 = 0;
         v481 = 0;
-        v464 = 0;
+        flags = 0;
         v157 = xmmword_1C9F62F30;
         goto LABEL_274;
       }
@@ -1728,9 +1728,9 @@ LABEL_123:
   {
     v101 = [VCPVideoCaptionAnalyzer alloc];
     v102 = v543;
-    if (v485)
+    if (segmentCopy)
     {
-      [v485 timeRange];
+      [segmentCopy timeRange];
     }
 
     else
@@ -1746,7 +1746,7 @@ LABEL_123:
       goto LABEL_157;
     }
 
-    v107 = self;
+    selfCopy14 = self;
     if (!self->_errorCode)
     {
       v48 = v100;
@@ -1754,7 +1754,7 @@ LABEL_123:
       v47 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v157 = xmmword_1C9F62F40;
       goto LABEL_274;
     }
@@ -1771,9 +1771,9 @@ LABEL_123:
 
   v104 = [VCPVideoCaptionAnalyzer alloc];
   v105 = v543;
-  if (v485)
+  if (segmentCopy)
   {
-    [v485 timeRange];
+    [segmentCopy timeRange];
   }
 
   else
@@ -1787,14 +1787,14 @@ LABEL_123:
   if (!v47)
   {
     v48 = v100;
-    v107 = self;
+    selfCopy14 = self;
     if (!self->_errorCode)
     {
       v454 = 0;
       v47 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v157 = xmmword_1C9F62F50;
       goto LABEL_274;
     }
@@ -1818,10 +1818,10 @@ LABEL_157:
 
   v111 = [VCPVideoCNNAnalyzer alloc];
   v112 = v543;
-  v113 = [(VCPAsset *)self->_asset isLivePhoto];
-  if (v485)
+  isLivePhoto2 = [(VCPAsset *)self->_asset isLivePhoto];
+  if (segmentCopy)
   {
-    [v485 timeRange];
+    [segmentCopy timeRange];
   }
 
   else
@@ -1832,17 +1832,17 @@ LABEL_157:
   [(VCPAsset *)self->_asset photoOffsetSeconds];
   LODWORD(v115) = v114;
   LODWORD(v116) = v112;
-  v110 = [(VCPVideoCNNAnalyzer *)v111 initWithTimeOfInteret:v457 frameRate:v113 isLivePhoto:v456 phFaces:buf timeRange:v479 withEmbeddings:v490 requestedAnalyses:v116 photoOffset:v115];
+  v110 = [(VCPVideoCNNAnalyzer *)v111 initWithTimeOfInteret:v457 frameRate:isLivePhoto2 isLivePhoto:v456 phFaces:buf timeRange:v479 withEmbeddings:v490 requestedAnalyses:v116 photoOffset:v115];
   if (!v110)
   {
     v48 = v100;
-    v107 = self;
+    selfCopy14 = self;
     if (!self->_errorCode)
     {
       v454 = 0;
       v477 = 0;
       v481 = 0;
-      v464 = 0;
+      flags = 0;
       v157 = xmmword_1C9F62F60;
       goto LABEL_274;
     }
@@ -1863,12 +1863,12 @@ LABEL_164:
     if (!v477)
     {
       v48 = v100;
-      v107 = self;
+      selfCopy14 = self;
       if (!self->_errorCode)
       {
         v454 = 0;
         v477 = 0;
-        v464 = 0;
+        flags = 0;
         v157 = xmmword_1C9F62F70;
         goto LABEL_274;
       }
@@ -1876,7 +1876,7 @@ LABEL_164:
       v454 = 0;
       v477 = 0;
 LABEL_241:
-      v464 = 0;
+      flags = 0;
       context = -108;
       v50 = 10;
       goto LABEL_334;
@@ -1889,19 +1889,19 @@ LABEL_241:
     v120 = v121;
     if (v121)
     {
-      *buf = *&a4->var1.var0;
-      *&buf[16] = a4->var1.var3;
+      *buf = *&timerange->var1.var0;
+      *&buf[16] = timerange->var1.var3;
       [(MADVideoSafetyClassifier *)v121 configureProcessTimeIntervalFrom:buf];
       v439 = v100;
       goto LABEL_176;
     }
 
     v48 = v100;
-    v107 = self;
+    selfCopy14 = self;
     if (self->_errorCode)
     {
       v454 = 0;
-      v464 = 0;
+      flags = 0;
 LABEL_275:
       context = -108;
       v50 = 10;
@@ -1909,10 +1909,10 @@ LABEL_275:
     }
 
     v454 = 0;
-    v464 = 0;
+    flags = 0;
     v157 = xmmword_1C9F62F80;
 LABEL_274:
-    *&v107->_errorCode = v157;
+    *&selfCopy14->_errorCode = v157;
     goto LABEL_275;
   }
 
@@ -1934,13 +1934,13 @@ LABEL_176:
   if (v110)
   {
     v123 = [VCPVideoCNNHighlightTimeRangePredictor alloc];
-    v124 = [(VCPVideoCNNAnalyzer *)v110 highlightEnabled];
-    v125 = [(VCPVideoCNNAnalyzer *)v110 postInference];
+    highlightEnabled = [(VCPVideoCNNAnalyzer *)v110 highlightEnabled];
+    postInference = [(VCPVideoCNNAnalyzer *)v110 postInference];
     [(VCPVideoCNNAnalyzer *)v110 minProcessingInterval];
     v127 = v126;
     [(VCPVideoCNNAnalyzer *)v110 timeStart];
     LODWORD(v128) = v127;
-    v129 = [(VCPVideoCNNHighlightTimeRangePredictor *)v123 initWithHightlightEnabled:v124 postInference:v125 minProcessingInterval:buf startTime:v128];
+    v129 = [(VCPVideoCNNHighlightTimeRangePredictor *)v123 initWithHightlightEnabled:highlightEnabled postInference:postInference minProcessingInterval:buf startTime:v128];
   }
 
   else
@@ -1952,7 +1952,7 @@ LABEL_176:
   aBlock[1] = 3221225472;
   aBlock[2] = __74__VCPMovieAnalyzer_analyzeVideoSegment_timerange_forAnalysisTypes_cancel___block_invoke;
   aBlock[3] = &unk_1E8350360;
-  v130 = v475;
+  v130 = cancelCopy;
   v539 = v130;
   aBlock[4] = self;
   v131 = v478;
@@ -1995,7 +1995,7 @@ LABEL_176:
   v523 = v133;
   v441 = v131;
   v515 = v441;
-  v516 = self;
+  selfCopy15 = self;
   v430 = obj;
   v517 = v430;
   v425 = v472;
@@ -2081,7 +2081,7 @@ LABEL_176:
   if ((v490 & 0x2C636446D888) == 0)
   {
     v50 = 0;
-    v464 = 0;
+    flags = 0;
     goto LABEL_297;
   }
 
@@ -2157,14 +2157,14 @@ LABEL_176:
         *&self->_errorCode = xmmword_1C9F62F90;
       }
 
-      v464 = 0;
+      flags = 0;
       v50 = 10;
       v445 = v148;
     }
 
     else
     {
-      v464 = [(VCPVideoAnalysisPipelineManager *)v147 flags];
+      flags = [(VCPVideoAnalysisPipelineManager *)v147 flags];
 LABEL_277:
 
       v168 = VCPSignPostLog();
@@ -2183,16 +2183,16 @@ LABEL_277:
 
   v147 = 0;
   v142 = 0;
-  v464 = 0;
+  flags = 0;
   while (1)
   {
-    v152 = [v462 copyNextSampleBuffer];
+    copyNextSampleBuffer = [v462 copyNextSampleBuffer];
     v153 = v147;
 
     v142 = v153;
-    if (v152)
+    if (copyNextSampleBuffer)
     {
-      v154 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:v152];
+      v154 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:copyNextSampleBuffer];
 
       v147 = v154;
     }
@@ -2278,7 +2278,7 @@ LABEL_293:
     }
 
     v155 = 0;
-    v464 |= [v142 frameFlags];
+    flags |= [v142 frameFlags];
 LABEL_229:
     if (v155)
     {
@@ -2360,14 +2360,14 @@ LABEL_313:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v196, OS_SIGNPOST_INTERVAL_BEGIN, v194, "VCPMovieAnalyzer_Video_VCPFullVideoAnalyzer", "", buf, 2u);
       }
 
-      v197 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v197 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v197;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [v458 finishAnalysisPass:buf];
       if (context)
       {
-        v188 = self;
+        selfCopy18 = self;
         if (self->_errorCode)
         {
           goto LABEL_332;
@@ -2375,16 +2375,16 @@ LABEL_313:
 
         v189 = xmmword_1C9F62FB0;
 LABEL_331:
-        *&v188->_errorCode = v189;
+        *&selfCopy18->_errorCode = v189;
         goto LABEL_332;
       }
 
-      v198 = [v458 results];
-      [v484 addEntriesFromDictionary:v198];
+      results = [v458 results];
+      [v484 addEntriesFromDictionary:results];
 
       v199 = self->_privateResults;
-      v200 = [v458 privateResults];
-      [(NSMutableDictionary *)v199 addEntriesFromDictionary:v200];
+      privateResults = [v458 privateResults];
+      [(NSMutableDictionary *)v199 addEntriesFromDictionary:privateResults];
 
       v201 = VCPSignPostLog();
       v202 = v201;
@@ -2414,14 +2414,14 @@ LABEL_331:
       v208 = [v484 objectForKeyedSubscript:@"QualityResults"];
       [(VCPVideoSceneClassifier *)v432 setQualityResults:v208];
 
-      v209 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v209 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v209;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoSceneClassifier *)v432 finishAnalysisPass:buf];
       if (context)
       {
-        v188 = self;
+        selfCopy18 = self;
         if (self->_errorCode)
         {
           goto LABEL_332;
@@ -2431,8 +2431,8 @@ LABEL_331:
         goto LABEL_331;
       }
 
-      v292 = [(VCPVideoSceneClassifier *)v432 results];
-      [v484 addEntriesFromDictionary:v292];
+      results2 = [(VCPVideoSceneClassifier *)v432 results];
+      [v484 addEntriesFromDictionary:results2];
 
       v293 = VCPSignPostLog();
       v294 = v293;
@@ -2456,9 +2456,9 @@ LABEL_331:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v298, OS_SIGNPOST_INTERVAL_BEGIN, v296, "VCPMovieAnalyzer_Video_VCPVideoActivityAnalyzer", "", buf, 2u);
       }
 
-      v299 = [(VCPAsset *)self->_asset isSlowmo];
+      isSlowmo = [(VCPAsset *)self->_asset isSlowmo];
       v300 = self->_asset;
-      if (v299)
+      if (isSlowmo)
       {
         [(VCPAsset *)v300 slowmoRate];
       }
@@ -2478,10 +2478,10 @@ LABEL_331:
       [v458 getSceneSwichFrequency];
       [(VCPVideoActivityAnalyzer *)v430 preProcessQualityResults:v303 interestingnessResults:v304 obstructionResults:v305 classificationResults:v306 fineActionResults:v307 faceResults:v308 sceneSwitchFrequency:?];
 
-      v309 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v309 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v309;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       LODWORD(v458) = [(VCPVideoActivityAnalyzer *)v430 finishAnalysisPass:buf fpsRate:COERCE_DOUBLE(__PAIR64__(*&buf[36], v302))];
       if (v458)
       {
@@ -2496,8 +2496,8 @@ LABEL_446:
         goto LABEL_333;
       }
 
-      v310 = [(VCPVideoActivityAnalyzer *)v430 results];
-      [v484 addEntriesFromDictionary:v310];
+      results3 = [(VCPVideoActivityAnalyzer *)v430 results];
+      [v484 addEntriesFromDictionary:results3];
 
       v311 = VCPSignPostLog();
       v312 = v311;
@@ -2521,10 +2521,10 @@ LABEL_446:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v316, OS_SIGNPOST_INTERVAL_BEGIN, v314, "VCPMovieAnalyzer_Video_VCPVideoSaliencyAnalyzer", "", buf, 2u);
       }
 
-      v317 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v317 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v317;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoSaliencyAnalyzer *)v429 finishAnalysisPass:buf];
       if (context)
       {
@@ -2540,8 +2540,8 @@ LABEL_612:
         goto LABEL_602;
       }
 
-      v319 = [(VCPVideoSaliencyAnalyzer *)v429 results];
-      [v484 addEntriesFromDictionary:v319];
+      results4 = [(VCPVideoSaliencyAnalyzer *)v429 results];
+      [v484 addEntriesFromDictionary:results4];
 
       v320 = VCPSignPostLog();
       v321 = v320;
@@ -2565,10 +2565,10 @@ LABEL_612:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v325, OS_SIGNPOST_INTERVAL_BEGIN, v323, "VCPMovieAnalyzer_Video_VCPVideoHumanActionAnalyzer", "", buf, 2u);
       }
 
-      v326 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v326 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v326;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoHumanActionAnalyzer *)v446 finishAnalysisPass:buf];
       if (context)
       {
@@ -2586,12 +2586,12 @@ LABEL_613:
         goto LABEL_333;
       }
 
-      v329 = [(VCPVideoHumanActionAnalyzer *)v446 results];
-      [v484 addEntriesFromDictionary:v329];
+      results5 = [(VCPVideoHumanActionAnalyzer *)v446 results];
+      [v484 addEntriesFromDictionary:results5];
 
       v330 = self->_privateResults;
-      v331 = [(VCPVideoHumanActionAnalyzer *)v446 privateResults];
-      [(NSMutableDictionary *)v330 addEntriesFromDictionary:v331];
+      privateResults2 = [(VCPVideoHumanActionAnalyzer *)v446 privateResults];
+      [(NSMutableDictionary *)v330 addEntriesFromDictionary:privateResults2];
 
       v332 = VCPSignPostLog();
       v333 = v332;
@@ -2615,10 +2615,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v337, OS_SIGNPOST_INTERVAL_BEGIN, v335, "VCPMovieAnalyzer_Video_videoCaptionAnalyzer", "", buf, 2u);
       }
 
-      v338 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v338 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v338;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoCaptionAnalyzer *)v444 finishAnalysisPass:buf];
       if (context)
       {
@@ -2632,8 +2632,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v339 = [(VCPVideoCaptionAnalyzer *)v444 results];
-      [v484 addEntriesFromDictionary:v339];
+      results6 = [(VCPVideoCaptionAnalyzer *)v444 results];
+      [v484 addEntriesFromDictionary:results6];
 
       v340 = VCPSignPostLog();
       v341 = v340;
@@ -2657,10 +2657,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v345, OS_SIGNPOST_INTERVAL_BEGIN, v343, "VCPMovieAnalyzer_Video_VCPVideoPetsAnalyzer", "", buf, 2u);
       }
 
-      v346 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v346 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v346;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoPetsAnalyzer *)v428 finishAnalysisPass:buf];
       if (context)
       {
@@ -2674,8 +2674,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v347 = [(VCPVideoPetsAnalyzer *)v428 results];
-      [v484 addEntriesFromDictionary:v347];
+      results7 = [(VCPVideoPetsAnalyzer *)v428 results];
+      [v484 addEntriesFromDictionary:results7];
 
       v348 = VCPSignPostLog();
       v349 = v348;
@@ -2699,10 +2699,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v353, OS_SIGNPOST_INTERVAL_BEGIN, v351, "VCPMovieAnalyzer_Video_VCPVideoPetActionAnalyzer", "", buf, 2u);
       }
 
-      v354 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v354 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v354;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoPetsActionAnalyzer *)v427 finishAnalysisPass:buf];
       if (context)
       {
@@ -2716,8 +2716,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v355 = [(VCPVideoPetsActionAnalyzer *)v427 results];
-      [v484 addEntriesFromDictionary:v355];
+      results8 = [(VCPVideoPetsActionAnalyzer *)v427 results];
+      [v484 addEntriesFromDictionary:results8];
 
       v356 = VCPSignPostLog();
       v357 = v356;
@@ -2741,10 +2741,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v361, OS_SIGNPOST_INTERVAL_BEGIN, v359, "VCPMovieAnalyzer_Video_VCPVideoAnimalAnalyzer", "", buf, 2u);
       }
 
-      v362 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v362 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v362;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoAnimalDetector *)v426 finishAnalysisPass:buf];
       if (context)
       {
@@ -2758,8 +2758,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v363 = [(VCPVideoAnimalDetector *)v426 results];
-      [v484 addEntriesFromDictionary:v363];
+      results9 = [(VCPVideoAnimalDetector *)v426 results];
+      [v484 addEntriesFromDictionary:results9];
 
       v364 = VCPSignPostLog();
       v365 = v364;
@@ -2796,12 +2796,12 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v369, OS_SIGNPOST_INTERVAL_BEGIN, v367, "VCPMovieAnalyzer_Video_VCPMovieCurationAnalyzer", "", buf, 2u);
       }
 
-      [v485 naturalSize];
+      [segmentCopy naturalSize];
       contextb = v370;
       v459 = v371;
-      if (v485)
+      if (segmentCopy)
       {
-        [v485 preferredTransform];
+        [segmentCopy preferredTransform];
         v372 = *&buf[16];
         v433 = *buf;
       }
@@ -2813,11 +2813,11 @@ LABEL_613:
       }
 
       v431 = v372;
-      v373 = [(NSMutableDictionary *)self->_analysis vcp_results];
-      v374 = [(NSMutableDictionary *)self->_analysis vcp_types];
-      v375 = [(VCPVideoCNNAnalyzer *)v440 privateResults];
-      v376 = [v436 faceRanges];
-      [(VCPMovieCurationAnalyzer *)v425 loadVideoAnalysisResults:v484 audioAnalysisResults:v373 resultTypes:v374 videoCNNResults:v375 andFaceRanges:v376 frameSize:vabsq_f64(vmlaq_n_f64(vmulq_n_f64(v431, v459), v433, contextb))];
+      vcp_results4 = [(NSMutableDictionary *)self->_analysis vcp_results];
+      vcp_types3 = [(NSMutableDictionary *)self->_analysis vcp_types];
+      privateResults3 = [(VCPVideoCNNAnalyzer *)v440 privateResults];
+      faceRanges = [v436 faceRanges];
+      [(VCPMovieCurationAnalyzer *)v425 loadVideoAnalysisResults:v484 audioAnalysisResults:vcp_results4 resultTypes:vcp_types3 videoCNNResults:privateResults3 andFaceRanges:faceRanges frameSize:vabsq_f64(vmlaq_n_f64(vmulq_n_f64(v431, v459), v433, contextb))];
 
       context = [(VCPMovieCurationAnalyzer *)v425 generateMovieCurations];
       if (context)
@@ -2832,8 +2832,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v377 = [(VCPMovieCurationAnalyzer *)v425 results];
-      [v484 addEntriesFromDictionary:v377];
+      results10 = [(VCPMovieCurationAnalyzer *)v425 results];
+      [v484 addEntriesFromDictionary:results10];
 
       v378 = VCPSignPostLog();
       v379 = v378;
@@ -2870,10 +2870,10 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v384 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v384 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v384;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [v443 finishAnalysisPass:buf];
       if (context)
       {
@@ -2887,8 +2887,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v385 = [v443 results];
-      [v484 addEntriesFromDictionary:v385];
+      results11 = [v443 results];
+      [v484 addEntriesFromDictionary:results11];
 
       v386 = VCPSignPostLog();
       v387 = v386;
@@ -2912,10 +2912,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v391, OS_SIGNPOST_INTERVAL_BEGIN, v389, "VCPMovieAnalyzer_Video_VCPVideoInterpolator", "", buf, 2u);
       }
 
-      v392 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v392 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v392;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(VCPVideoInterpolator *)v441 finishAnalysisPass:buf];
       if (context)
       {
@@ -2929,8 +2929,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v393 = [(VCPVideoInterpolator *)v441 results];
-      [v484 addEntriesFromDictionary:v393];
+      results12 = [(VCPVideoInterpolator *)v441 results];
+      [v484 addEntriesFromDictionary:results12];
 
       v394 = VCPSignPostLog();
       v395 = v394;
@@ -2956,7 +2956,7 @@ LABEL_613:
 
       if (![(VCPSettlingEffectAnalyzer *)v442 processAborted])
       {
-        [v485 vcp_fullFrameSize];
+        [segmentCopy vcp_fullFrameSize];
         v401 = v400;
         v403 = v402;
         v501 = 0;
@@ -2983,7 +2983,7 @@ LABEL_613:
 
         else
         {
-          v406 = [v485 asset];
+          asset2 = [segmentCopy asset];
           v407 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"LivePhotoKeyFrameTimestamp"];
           CMTimeMakeFromDictionary(buf, v407);
           if (v401 >= v403)
@@ -2996,7 +2996,7 @@ LABEL_613:
             v408 = v403;
           }
 
-          *&v540[0] = [v406 vcp_frameAtTimeStamp:buf withMaxDimension:v408];
+          *&v540[0] = [asset2 vcp_frameAtTimeStamp:buf withMaxDimension:v408];
           CF<__CVBuffer *>::operator=(time, v540);
           CF<__CVBuffer *>::~CF(v540);
         }
@@ -3017,8 +3017,8 @@ LABEL_613:
         CF<__CVBuffer *>::~CF(time);
       }
 
-      v410 = [(VCPSettlingEffectAnalyzer *)v442 results];
-      [v484 addEntriesFromDictionary:v410];
+      results13 = [(VCPSettlingEffectAnalyzer *)v442 results];
+      [v484 addEntriesFromDictionary:results13];
 
       v411 = VCPSignPostLog();
       v412 = v411;
@@ -3042,10 +3042,10 @@ LABEL_613:
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v416, OS_SIGNPOST_INTERVAL_BEGIN, v414, "VCPMovieAnalyzer_Video_MADVideoSafetyClassifier", "", buf, 2u);
       }
 
-      v417 = *&a4->var0.var3;
-      *buf = *&a4->var0.var0;
+      v417 = *&timerange->var0.var3;
+      *buf = *&timerange->var0.var0;
       *&buf[16] = v417;
-      *&buf[32] = *&a4->var1.var1;
+      *&buf[32] = *&timerange->var1.var1;
       context = [(MADVideoSafetyClassifier *)v454 finishAnalysisPass:buf];
       if (context)
       {
@@ -3059,8 +3059,8 @@ LABEL_613:
         goto LABEL_602;
       }
 
-      v418 = [(MADVideoSafetyClassifier *)v454 results];
-      [v484 addEntriesFromDictionary:v418];
+      results14 = [(MADVideoSafetyClassifier *)v454 results];
+      [v484 addEntriesFromDictionary:results14];
 
       v419 = VCPSignPostLog();
       v420 = v419;
@@ -3095,15 +3095,15 @@ LABEL_613:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v186, OS_SIGNPOST_INTERVAL_BEGIN, v184, "VCPMovieAnalyzer_Video_VCPVideoFaceDetector", "", buf, 2u);
   }
 
-  v187 = *&a4->var0.var3;
-  *buf = *&a4->var0.var0;
+  v187 = *&timerange->var0.var3;
+  *buf = *&timerange->var0.var0;
   *&buf[16] = v187;
-  *&buf[32] = *&a4->var1.var1;
+  *&buf[32] = *&timerange->var1.var1;
   context = [v436 finishAnalysisPass:buf];
   if (!context)
   {
-    v190 = [v436 results];
-    [v484 addEntriesFromDictionary:v190];
+    results15 = [v436 results];
+    [v484 addEntriesFromDictionary:results15];
 
     v191 = VCPSignPostLog();
     v192 = v191;
@@ -3116,7 +3116,7 @@ LABEL_613:
     goto LABEL_313;
   }
 
-  v188 = self;
+  selfCopy18 = self;
   if (!self->_errorCode)
   {
     v189 = xmmword_1C9F62FA0;
@@ -3143,7 +3143,7 @@ LABEL_338:
   if (v50)
   {
 LABEL_339:
-    v210 = context;
+    _waitForAsyncAudioResults = context;
     goto LABEL_393;
   }
 
@@ -3152,8 +3152,8 @@ LABEL_339:
     goto LABEL_363;
   }
 
-  v210 = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
-  if (!v210)
+  _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
+  if (!_waitForAsyncAudioResults)
   {
     v213 = VCPSignPostLog();
     v214 = os_signpost_id_generate(v213);
@@ -3177,13 +3177,13 @@ LABEL_339:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v220, OS_SIGNPOST_INTERVAL_BEGIN, v218, "VCPMovieAnalyzer_Video_VCPVideoCNNAnalyzer", "", buf, 2u);
     }
 
-    v221 = [(NSMutableDictionary *)self->_analysis vcp_results];
-    v222 = [v221 objectForKeyedSubscript:@"VoiceResults"];
-    v210 = [(VCPVideoCNNAnalyzer *)v481 loadAnalysisResults:v484 audioResults:v222];
+    vcp_results5 = [(NSMutableDictionary *)self->_analysis vcp_results];
+    v222 = [vcp_results5 objectForKeyedSubscript:@"VoiceResults"];
+    _waitForAsyncAudioResults = [(VCPVideoCNNAnalyzer *)v481 loadAnalysisResults:v484 audioResults:v222];
 
-    if (v210)
+    if (_waitForAsyncAudioResults)
     {
-      v211 = self;
+      selfCopy22 = self;
       if (self->_errorCode)
       {
         goto LABEL_392;
@@ -3191,18 +3191,18 @@ LABEL_339:
 
       v212 = xmmword_1C9F630C0;
 LABEL_391:
-      *&v211->_errorCode = v212;
+      *&selfCopy22->_errorCode = v212;
       goto LABEL_392;
     }
 
-    v223 = *&a4->var0.var3;
-    *buf = *&a4->var0.var0;
+    v223 = *&timerange->var0.var3;
+    *buf = *&timerange->var0.var0;
     *&buf[16] = v223;
-    *&buf[32] = *&a4->var1.var1;
-    v210 = [(VCPVideoCNNAnalyzer *)v481 finishAnalysisPass:buf];
-    if (v210)
+    *&buf[32] = *&timerange->var1.var1;
+    _waitForAsyncAudioResults = [(VCPVideoCNNAnalyzer *)v481 finishAnalysisPass:buf];
+    if (_waitForAsyncAudioResults)
     {
-      v211 = self;
+      selfCopy22 = self;
       if (self->_errorCode)
       {
         goto LABEL_392;
@@ -3212,12 +3212,12 @@ LABEL_391:
       goto LABEL_391;
     }
 
-    v224 = [(VCPVideoCNNAnalyzer *)v481 results];
-    [v484 addEntriesFromDictionary:v224];
+    results16 = [(VCPVideoCNNAnalyzer *)v481 results];
+    [v484 addEntriesFromDictionary:results16];
 
     v225 = self->_privateResults;
-    v226 = [(VCPVideoCNNAnalyzer *)v481 privateResults];
-    [(NSMutableDictionary *)v225 addEntriesFromDictionary:v226];
+    privateResults4 = [(VCPVideoCNNAnalyzer *)v481 privateResults];
+    [(NSMutableDictionary *)v225 addEntriesFromDictionary:privateResults4];
 
     v227 = VCPSignPostLog();
     v228 = v227;
@@ -3241,8 +3241,8 @@ LABEL_363:
       goto LABEL_387;
     }
 
-    v231 = [(VCPVideoCNNAnalyzer *)v481 results];
-    v232 = [v231 objectForKeyedSubscript:@"HumanActionClassificationResults"];
+    results17 = [(VCPVideoCNNAnalyzer *)v481 results];
+    v232 = [results17 objectForKeyedSubscript:@"HumanActionClassificationResults"];
     v233 = v232 == 0;
 
     v235 = 0.0;
@@ -3252,8 +3252,8 @@ LABEL_363:
       v500 = 0u;
       v497 = 0u;
       v498 = 0u;
-      v236 = [(VCPVideoCNNAnalyzer *)v481 results];
-      obja = [v236 objectForKeyedSubscript:@"HumanActionClassificationResults"];
+      results18 = [(VCPVideoCNNAnalyzer *)v481 results];
+      obja = [results18 objectForKeyedSubscript:@"HumanActionClassificationResults"];
 
       v237 = [obja countByEnumeratingWithState:&v497 objects:v553 count:16];
       if (v237)
@@ -3271,12 +3271,12 @@ LABEL_363:
             v239 = [*(*(&v497 + 1) + 8 * i) objectForKeyedSubscript:@"attributes"];
             v240 = [v239 objectForKeyedSubscript:@"humanActions"];
 
-            v241 = [v240 allKeys];
+            allKeys = [v240 allKeys];
             v495 = 0u;
             v496 = 0u;
             v493 = 0u;
             v494 = 0u;
-            v242 = v241;
+            v242 = allKeys;
             v243 = [v242 countByEnumeratingWithState:&v493 objects:v552 count:16];
             if (v243)
             {
@@ -3343,10 +3343,10 @@ LABEL_386:
 LABEL_387:
           if (v477)
           {
-            v210 = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
-            if (v210)
+            _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
+            if (_waitForAsyncAudioResults)
             {
-              v211 = self;
+              selfCopy22 = self;
               if (self->_errorCode)
               {
                 goto LABEL_392;
@@ -3367,8 +3367,8 @@ LABEL_387:
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, v266, OS_SIGNPOST_INTERVAL_BEGIN, v264, "VCPMovieAnalyzer_Video_VCPAudioVideoEmbeddingFuser", "", buf, 2u);
             }
 
-            v267 = [(NSMutableDictionary *)self->_analysis vcp_results];
-            v268 = [v267 objectForKeyedSubscript:@"AudioEmbeddingResults"];
+            vcp_results6 = [(NSMutableDictionary *)self->_analysis vcp_results];
+            v268 = [vcp_results6 objectForKeyedSubscript:@"AudioEmbeddingResults"];
             v269 = [v484 objectForKeyedSubscript:@"VideoEmbeddingResults"];
             v270 = [(VCPAudioVideoEmbeddingFuser *)v477 loadAudioEmbeddingResults:v268 andVideoEmbeddingResults:v269];
 
@@ -3380,12 +3380,12 @@ LABEL_387:
               }
 
               v50 = 1;
-              v210 = context;
+              _waitForAsyncAudioResults = context;
               LODWORD(v458) = v270;
               goto LABEL_393;
             }
 
-            v271 = [(VCPAudioVideoEmbeddingFuser *)v477 fuse:v475];
+            v271 = [(VCPAudioVideoEmbeddingFuser *)v477 fuse:cancelCopy];
             if (v271)
             {
               if (!self->_errorCode)
@@ -3394,13 +3394,13 @@ LABEL_387:
               }
 
               v50 = 1;
-              v210 = context;
+              _waitForAsyncAudioResults = context;
               LODWORD(v458) = v271;
               goto LABEL_393;
             }
 
-            v272 = [(VCPAudioVideoEmbeddingFuser *)v477 results];
-            [v484 addEntriesFromDictionary:v272];
+            results19 = [(VCPAudioVideoEmbeddingFuser *)v477 results];
+            [v484 addEntriesFromDictionary:results19];
 
             v273 = VCPSignPostLog();
             v274 = v273;
@@ -3425,12 +3425,12 @@ LABEL_387:
             }
 
             v279 = +[VCPMovieAnalyzer MaxNumThumbnailsPerVideo];
-            *buf = *&a4->var1.var0;
-            *&buf[16] = a4->var1.var3;
+            *buf = *&timerange->var1.var0;
+            *&buf[16] = timerange->var1.var3;
             Seconds = CMTimeGetSeconds(buf);
-            if (v485)
+            if (segmentCopy)
             {
-              [v485 timeRange];
+              [segmentCopy timeRange];
             }
 
             else
@@ -3441,8 +3441,8 @@ LABEL_387:
             *time = *&buf[24];
             *&time[16] = *&buf[40];
             v281 = CMTimeGetSeconds(time);
-            v282 = [(NSMutableDictionary *)self->_analysis vcp_results];
-            v283 = [v282 objectForKeyedSubscript:@"VideoThumbnailResults"];
+            vcp_results7 = [(NSMutableDictionary *)self->_analysis vcp_results];
+            v283 = [vcp_results7 objectForKeyedSubscript:@"VideoThumbnailResults"];
 
             v284 = [v283 count];
             v285 = vcvtpd_s64_f64(Seconds / v281 * v279);
@@ -3457,10 +3457,10 @@ LABEL_387:
             }
 
             v287 = self->_privateResults;
-            v288 = *&a4->var0.var3;
-            *buf = *&a4->var0.var0;
+            v288 = *&timerange->var0.var3;
+            *buf = *&timerange->var0.var0;
             *&buf[16] = v288;
-            *&buf[32] = *&a4->var1.var1;
+            *&buf[32] = *&timerange->var1.var1;
             v289 = [(VCPVideoThumbnailAnalyzer *)v471 addThumbnailToResults:v484 withPrivateResults:v287 videoRange:buf assetMaxNumThumbnails:v286];
 
             v290 = VCPSignPostLog();
@@ -3493,7 +3493,7 @@ LABEL_387:
     goto LABEL_386;
   }
 
-  v211 = self;
+  selfCopy22 = self;
   if (!self->_errorCode)
   {
     v212 = xmmword_1C9F630B0;
@@ -3509,14 +3509,14 @@ LABEL_393:
   if (v50 == 10)
   {
 LABEL_399:
-    v259 = v210;
+    v259 = _waitForAsyncAudioResults;
   }
 
   else if (!v50)
   {
     [(VCPMovieAnalyzer *)self postProcessAutoPlayable:v484];
     [(VCPMovieAnalyzer *)self postProcessAnimalResults:v484];
-    [(NSMutableDictionary *)self->_analysis vcp_addFlags:v464];
+    [(NSMutableDictionary *)self->_analysis vcp_addFlags:flags];
     [(NSMutableDictionary *)self->_analysis vcp_appendResults:v484];
     v260 = VCPSignPostLog();
     v261 = v260;
@@ -5229,14 +5229,14 @@ LABEL_36:
   return v8;
 }
 
-- (int)postProcessAnimalResults:(id)a3
+- (int)postProcessAnimalResults:(id)results
 {
   v76 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v3 = [v52 objectForKeyedSubscript:?];
+  resultsCopy = results;
+  v3 = [resultsCopy objectForKeyedSubscript:?];
   if (v3)
   {
-    v4 = [v52 objectForKeyedSubscript:@"AnimalPrintResults"];
+    v4 = [resultsCopy objectForKeyedSubscript:@"AnimalPrintResults"];
     v5 = [v4 count];
 
     if (v5 >= 6)
@@ -5246,7 +5246,7 @@ LABEL_36:
       v72 = 0u;
       v69 = 0u;
       v57 = v70 = 0u;
-      v6 = [v52 objectForKeyedSubscript:?];
+      v6 = [resultsCopy objectForKeyedSubscript:?];
       obj = v6;
       v7 = [v6 countByEnumeratingWithState:&v69 objects:v75 count:16];
       if (v7)
@@ -5271,17 +5271,17 @@ LABEL_36:
               height = v77.size.height;
 
               v15 = [v11 objectForKeyedSubscript:@"animalId"];
-              v16 = [v15 integerValue];
+              integerValue = [v15 integerValue];
 
-              v17 = [v57 allKeys];
-              v18 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
-              v19 = [v17 containsObject:v18];
+              allKeys = [v57 allKeys];
+              v18 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+              v19 = [allKeys containsObject:v18];
 
               v20 = MEMORY[0x1E696AD98];
               if (v19)
               {
-                v21 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
-                v22 = [v57 objectForKeyedSubscript:v21];
+                height = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+                v22 = [v57 objectForKeyedSubscript:height];
                 [v22 floatValue];
                 v24 = width * height;
                 if (*&v23 < v24)
@@ -5290,15 +5290,15 @@ LABEL_36:
                 }
 
                 v25 = [v20 numberWithFloat:v23];
-                v26 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
+                v26 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
                 [v57 setObject:v25 forKeyedSubscript:v26];
               }
 
               else
               {
-                v21 = [MEMORY[0x1E696AD98] numberWithDouble:width * height];
-                v22 = [MEMORY[0x1E696AD98] numberWithInteger:v16];
-                [v57 setObject:v21 forKeyedSubscript:v22];
+                height = [MEMORY[0x1E696AD98] numberWithDouble:width * height];
+                v22 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+                [v57 setObject:height forKeyedSubscript:v22];
               }
             }
           }
@@ -5310,15 +5310,15 @@ LABEL_36:
         while (v7);
       }
 
-      v27 = [v57 allKeys];
+      allKeys2 = [v57 allKeys];
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke;
       v67[3] = &unk_1E8350400;
       v49 = v57;
-      v50 = v27;
+      v50 = allKeys2;
       v68 = v49;
-      v51 = [v27 sortedArrayUsingComparator:v67];
+      v51 = [allKeys2 sortedArrayUsingComparator:v67];
       if ([v51 count] > 5)
       {
         v56 = [v51 subarrayWithRange:{0, 5}];
@@ -5340,7 +5340,7 @@ LABEL_36:
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v28 = [v52 objectForKeyedSubscript:@"AnimalPrintResults"];
+      v28 = [resultsCopy objectForKeyedSubscript:@"AnimalPrintResults"];
       v29 = [v28 countByEnumeratingWithState:&v62 objects:v74 count:16];
       if (v29)
       {
@@ -5360,9 +5360,9 @@ LABEL_36:
             if (v33)
             {
               v35 = [v33 objectForKeyedSubscript:@"animalId"];
-              v36 = [v35 integerValue];
+              integerValue2 = [v35 integerValue];
 
-              v37 = [MEMORY[0x1E696AD98] numberWithInteger:v36];
+              v37 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2];
               LODWORD(v35) = [v56 containsObject:v37];
 
               if (v35)
@@ -5378,13 +5378,13 @@ LABEL_36:
         while (v29);
       }
 
-      [v52 setObject:obja forKeyedSubscript:@"AnimalPrintResults"];
-      v53 = [MEMORY[0x1E695DF70] array];
+      [resultsCopy setObject:obja forKeyedSubscript:@"AnimalPrintResults"];
+      array = [MEMORY[0x1E695DF70] array];
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v38 = [v52 objectForKeyedSubscript:@"AnimalResults"];
+      v38 = [resultsCopy objectForKeyedSubscript:@"AnimalResults"];
       v39 = [v38 countByEnumeratingWithState:&v58 objects:v73 count:16];
       if (v39)
       {
@@ -5404,14 +5404,14 @@ LABEL_36:
             if (v43)
             {
               v45 = [v43 objectForKeyedSubscript:@"animalId"];
-              v46 = [v45 integerValue];
+              integerValue3 = [v45 integerValue];
 
-              v47 = [MEMORY[0x1E696AD98] numberWithInteger:v46];
-              LODWORD(v46) = [v56 containsObject:v47];
+              v47 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue3];
+              LODWORD(integerValue3) = [v56 containsObject:v47];
 
-              if (v46)
+              if (integerValue3)
               {
-                [v53 addObject:v42];
+                [array addObject:v42];
               }
             }
           }
@@ -5422,7 +5422,7 @@ LABEL_36:
         while (v39);
       }
 
-      [v52 setObject:v53 forKeyedSubscript:@"AnimalResults"];
+      [resultsCopy setObject:array forKeyedSubscript:@"AnimalResults"];
     }
   }
 
@@ -5463,15 +5463,15 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
   return v13;
 }
 
-- (int)postProcessAutoPlayable:(id)a3
+- (int)postProcessAutoPlayable:(id)playable
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"MovieSummaryResults"];
+  playableCopy = playable;
+  v4 = [playableCopy objectForKeyedSubscript:@"MovieSummaryResults"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"MovieSummaryResults"];
+    v5 = [playableCopy objectForKeyedSubscript:@"MovieSummaryResults"];
     v6 = [v5 objectAtIndexedSubscript:0];
     v7 = [v6 mutableCopy];
 
@@ -5491,7 +5491,7 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
 
         v25[0] = v7;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-        [v3 setObject:v15 forKeyedSubscript:@"MovieSummaryResults"];
+        [playableCopy setObject:v15 forKeyedSubscript:@"MovieSummaryResults"];
       }
     }
 
@@ -5501,12 +5501,12 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
 
     if (!+[VCPMovieAnalyzer isHeuristicStickerScoreEnabled])
     {
-      v16 = [v3 objectForKeyedSubscript:@"AnimatedStickerResults"];
+      v16 = [playableCopy objectForKeyedSubscript:@"AnimatedStickerResults"];
       v17 = v16 == 0;
 
       if (!v17)
       {
-        v18 = [v3 objectForKeyedSubscript:@"AnimatedStickerResults"];
+        v18 = [playableCopy objectForKeyedSubscript:@"AnimatedStickerResults"];
         v19 = [v18 objectAtIndexedSubscript:0];
         v20 = [v19 mutableCopy];
 
@@ -5515,7 +5515,7 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
 
         v24 = v20;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-        [v3 setObject:v22 forKeyedSubscript:@"AnimatedStickerResults"];
+        [playableCopy setObject:v22 forKeyedSubscript:@"AnimatedStickerResults"];
       }
     }
   }
@@ -5523,15 +5523,15 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
   return 0;
 }
 
-- (int)analyzeVideoTrack:(id)a3 start:(id *)a4 forAnalysisTypes:(unint64_t)a5 cancel:(id)a6
+- (int)analyzeVideoTrack:(id)track start:(id *)start forAnalysisTypes:(unint64_t)types cancel:(id)cancel
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v46 = v10;
-  if (v9)
+  trackCopy = track;
+  cancelCopy = cancel;
+  v46 = cancelCopy;
+  if (trackCopy)
   {
-    [v9 timeRange];
+    [trackCopy timeRange];
   }
 
   else
@@ -5539,8 +5539,8 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
     memset(range, 0, 48);
   }
 
-  *time = *&a4->var0;
-  *&time[16] = a4->var3;
+  *time = *&start->var0;
+  *&time[16] = start->var3;
   if (!CMTimeRangeContainsTime(range, time))
   {
     if (!self->_errorCode)
@@ -5552,15 +5552,15 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
     goto LABEL_65;
   }
 
-  v44 = self;
+  selfCopy = self;
   {
     CMTimeMake([VCPMovieAnalyzer analyzeVideoTrack:start:forAnalysisTypes:cancel:]::kMaxSegmentDuration, 300, 1);
   }
 
   memset(&time[48], 0, 24);
-  if (v9)
+  if (trackCopy)
   {
-    [v9 vcp_endTime];
+    [trackCopy vcp_endTime];
     p_maxAnalysisLength = &self->_maxAnalysisLength;
     maxAnalysisLength = self->_maxAnalysisLength;
     if (maxAnalysisLength <= 0.0)
@@ -5568,7 +5568,7 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
       goto LABEL_16;
     }
 
-    [v9 vcp_endTime];
+    [trackCopy vcp_endTime];
   }
 
   else
@@ -5591,9 +5591,9 @@ uint64_t __45__VCPMovieAnalyzer_postProcessAnimalResults___block_invoke(uint64_t
 
 LABEL_16:
   v48 = [(NSMutableDictionary *)self->_privateResults objectForKeyedSubscript:@"MetaSegmentResults"];
-  if (v9)
+  if (trackCopy)
   {
-    [v9 timeRange];
+    [trackCopy timeRange];
   }
 
   else
@@ -5607,12 +5607,12 @@ LABEL_16:
   if (CMTimeCompare(time, time2) < 1 && [v48 count] < 2)
   {
     v41 = 0;
-    v49 = a5;
+    typesCopy = types;
   }
 
   else
   {
-    v49 = a5 & 0xFFFFFBFFFFFFFFFFLL;
+    typesCopy = types & 0xFFFFFBFFFFFFFFFFLL;
     v41 = 1;
   }
 
@@ -5634,8 +5634,8 @@ LABEL_16:
   v43 = 0;
   while (1)
   {
-    *range = *&a4->var0;
-    *&range[16] = a4->var3;
+    *range = *&start->var0;
+    *&range[16] = start->var3;
     time2[0] = *&time[48];
     if ((CMTimeCompare(range, time2) & 0x80000000) == 0)
     {
@@ -5643,10 +5643,10 @@ LABEL_16:
     }
 
     memset(&time2[1], 0, sizeof(CMTime));
-    time2[0] = *a4;
+    time2[0] = *start;
     *range = *&time[48];
-    *&rhs.start.value = *&a4->var0;
-    rhs.start.epoch = a4->var3;
+    *&rhs.start.value = *&start->var0;
+    rhs.start.epoch = start->var3;
     CMTimeSubtract(&v51.start, range, &rhs.start);
     *range = *&v51.start.value;
     *&range[16] = v51.start.epoch;
@@ -5709,18 +5709,18 @@ LABEL_16:
         phAsset = self->_phAsset;
         if (phAsset)
         {
-          v24 = [(PHAsset *)self->_phAsset localIdentifier];
-          v47 = v24;
+          localIdentifier = [(PHAsset *)self->_phAsset localIdentifier];
+          v47 = localIdentifier;
         }
 
         else
         {
-          v24 = [(VCPAsset *)self->_asset mainFileURL];
-          v45 = v24;
+          localIdentifier = [(VCPAsset *)self->_asset mainFileURL];
+          v45 = localIdentifier;
         }
 
-        v25 = v9;
-        v26 = [v9 trackID];
+        v25 = trackCopy;
+        trackID = [trackCopy trackID];
         value = time2[0].value;
         timescale = time2[0].timescale;
         rhs.start = time2[0];
@@ -5730,9 +5730,9 @@ LABEL_16:
         rhs.start = v50;
         v32 = CMTimeGetSeconds(&rhs.start);
         *range = 138414082;
-        *&range[4] = v24;
+        *&range[4] = localIdentifier;
         *&range[12] = 1024;
-        *&range[14] = v26;
+        *&range[14] = trackID;
         *&range[18] = 2048;
         *&range[20] = value;
         *&range[28] = 1024;
@@ -5752,19 +5752,19 @@ LABEL_16:
           v33 = v45;
         }
 
-        v10 = v46;
-        self = v44;
-        v9 = v25;
+        cancelCopy = v46;
+        self = selfCopy;
+        trackCopy = v25;
       }
     }
 
-    if (v10 && (v10[2](v10) & 1) != 0)
+    if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
     {
       v13 = -128;
       goto LABEL_64;
     }
 
-    v13 = [(VCPMovieAnalyzer *)self analyzeVideoSegment:v9 timerange:time2 forAnalysisTypes:v49 cancel:v10];
+    v13 = [(VCPMovieAnalyzer *)self analyzeVideoSegment:trackCopy timerange:time2 forAnalysisTypes:typesCopy cancel:cancelCopy];
     if (v13)
     {
       if (!self->_errorCode)
@@ -5775,32 +5775,32 @@ LABEL_16:
       goto LABEL_64;
     }
 
-    *&rhs.start.value = *&a4->var0;
-    rhs.start.epoch = a4->var3;
+    *&rhs.start.value = *&start->var0;
+    rhs.start.epoch = start->var3;
     v51.start = time2[1];
     CMTimeAdd(range, &rhs.start, &v51.start);
-    *&a4->var0 = *range;
+    *&start->var0 = *range;
     v34 = *&range[16];
-    a4->var3 = *&range[16];
+    start->var3 = *&range[16];
     analysis = self->_analysis;
-    *range = *&a4->var0;
+    *range = *&start->var0;
     *&range[16] = v34;
     [(NSMutableDictionary *)analysis vcp_setSyncPoint:range];
   }
 
   v36 = v41 ^ 1;
-  if ((a5 & 0x40000000000) == 0)
+  if ((types & 0x40000000000) == 0)
   {
     v36 = 1;
   }
 
   if ((v36 & 1) == 0)
   {
-    v37 = [(VCPAsset *)self->_asset mainFileURL];
-    v38 = [(VCPAsset *)self->_asset localIdentifier];
-    if (v9)
+    mainFileURL = [(VCPAsset *)self->_asset mainFileURL];
+    localIdentifier2 = [(VCPAsset *)self->_asset localIdentifier];
+    if (trackCopy)
     {
-      [v9 timeRange];
+      [trackCopy timeRange];
     }
 
     else
@@ -5808,7 +5808,7 @@ LABEL_16:
       memset(range, 0, 48);
     }
 
-    v39 = [MADVideoSafetyClassifier analyzeVideoAssetOnDemandWithURL:v37 localIdentifier:v38 timeRange:range cancelBlock:v10 andProgressHandler:0];
+    v39 = [MADVideoSafetyClassifier analyzeVideoAssetOnDemandWithURL:mainFileURL localIdentifier:localIdentifier2 timeRange:range cancelBlock:cancelCopy andProgressHandler:0];
 
     [(NSMutableDictionary *)self->_analysis vcp_appendResults:v39];
   }
@@ -5825,13 +5825,13 @@ LABEL_65:
   return v13;
 }
 
-- (id)analyzeAsset:(id)a3 streamed:(BOOL *)a4
+- (id)analyzeAsset:(id)asset streamed:(BOOL *)streamed
 {
   v225[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a4)
+  assetCopy = asset;
+  if (streamed)
   {
-    *a4 = 0;
+    *streamed = 0;
   }
 
   if (self->_status != 1)
@@ -5854,7 +5854,7 @@ LABEL_65:
 
   requestedAnalyses = self->_requestedAnalyses;
   v13 = +[VCPAudioAnalyzer supportedAnalysisTypes];
-  if (v7 && (v7[2](v7) & 1) != 0)
+  if (assetCopy && (assetCopy[2](assetCopy) & 1) != 0)
   {
 LABEL_154:
     self->_status = 4;
@@ -5873,8 +5873,8 @@ LABEL_154:
   }
 
   v180 = objc_autoreleasePoolPush();
-  v14 = [(VCPAsset *)self->_asset movie];
-  if (!v14)
+  movie = [(VCPAsset *)self->_asset movie];
+  if (!movie)
   {
     if (![(VCPMovieAnalyzer *)self allowStreaming])
     {
@@ -5893,15 +5893,15 @@ LABEL_154:
     }
 
     [(NSMutableDictionary *)self->_analysis vcp_addFlags:0x20000000];
-    if (a4)
+    if (streamed)
     {
-      *a4 = 1;
+      *streamed = 1;
     }
 
-    v14 = [(VCPAsset *)self->_asset streamedMovie:[(VCPMovieAnalyzer *)self requiresOnDemandDownload]];
-    if (v14)
+    movie = [(VCPAsset *)self->_asset streamedMovie:[(VCPMovieAnalyzer *)self requiresOnDemandDownload]];
+    if (movie)
     {
-      [(VCPMovieAnalyzer *)self loadPropertiesForAsset:v14];
+      [(VCPMovieAnalyzer *)self loadPropertiesForAsset:movie];
     }
 
     v25 = VCPSignPostLog();
@@ -5912,10 +5912,10 @@ LABEL_154:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, audioGroup, OS_SIGNPOST_INTERVAL_END, v22, "VCPMovieAnalyzer_ResourceDownload", "", &buf, 2u);
     }
 
-    if (!v14)
+    if (!movie)
     {
 LABEL_28:
-      v14 = 0;
+      movie = 0;
       if (!self->_errorCode)
       {
         *&self->_errorCode = xmmword_1C9F631B0;
@@ -5927,7 +5927,7 @@ LABEL_28:
 
   if (![(VCPAsset *)self->_asset isMovie]|| ([(VCPAsset *)self->_asset duration], v15 >= 1.0))
   {
-    if (![v14 vcp_isMontage])
+    if (![movie vcp_isMontage])
     {
       if ([(VCPAsset *)self->_asset isMovie])
       {
@@ -5997,7 +5997,7 @@ LABEL_28:
         }
 
         v20 = 4;
-        v18 = -18;
+        _waitForAsyncAudioResults = -18;
         goto LABEL_64;
       }
 
@@ -6011,8 +6011,8 @@ LABEL_28:
         block[3] = &unk_1E8350428;
         block[4] = self;
         v187 = v37;
-        v188 = v14;
-        v189 = v7;
+        v188 = movie;
+        v189 = assetCopy;
         v190 = v28;
         v191 = v35;
         v192 = 0;
@@ -6022,10 +6022,10 @@ LABEL_28:
       else
       {
         v185 = 0;
-        v18 = [(VCPAudioAnalyzer *)v37 analyzeAsset:v14 cancel:v7 results:&v185];
+        _waitForAsyncAudioResults = [(VCPAudioAnalyzer *)v37 analyzeAsset:movie cancel:assetCopy results:&v185];
         v40 = v185;
         audioGroup = v40;
-        if (v18)
+        if (_waitForAsyncAudioResults)
         {
           if (!self->_errorCode)
           {
@@ -6048,7 +6048,7 @@ LABEL_28:
         }
       }
 
-      v18 = 0;
+      _waitForAsyncAudioResults = 0;
       v20 = 0;
       v39 = 1;
 LABEL_64:
@@ -6061,10 +6061,10 @@ LABEL_127:
         goto LABEL_128;
       }
 
-      v31 = v18;
+      v31 = _waitForAsyncAudioResults;
 LABEL_66:
-      v18 = [(VCPMovieAnalyzer *)self performMetadataAnalysisOnAsset:v14 withCancelBlock:v7];
-      if (v18)
+      _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self performMetadataAnalysisOnAsset:movie withCancelBlock:assetCopy];
+      if (_waitForAsyncAudioResults)
       {
         if (!self->_errorCode)
         {
@@ -6096,7 +6096,7 @@ LABEL_178:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, audioGroup, OS_SIGNPOST_INTERVAL_BEGIN, v117, "VCPMovieAnalyzer_Video", "", &buf, 2u);
         }
 
-        v119 = [v14 vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
+        v119 = [movie vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
         v120 = v119;
         if (v119)
         {
@@ -6123,7 +6123,7 @@ LABEL_178:
               time2.start = start;
               if (!CMTimeRangeContainsTime(&buf, &time2.start))
               {
-                v18 = -18;
+                _waitForAsyncAudioResults = -18;
                 if (!self->_errorCode)
                 {
                   v127 = 2090;
@@ -6147,8 +6147,8 @@ LABEL_224:
             if ((v137 & 0x4024000000) != 0)
             {
               buf.start = start;
-              v18 = [(VCPMovieAnalyzer *)self analyzeVideoTrack:v120 start:&buf forAnalysisTypes:v137 & 0x4024000000 cancel:v7];
-              if (v18)
+              _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self analyzeVideoTrack:v120 start:&buf forAnalysisTypes:v137 & 0x4024000000 cancel:assetCopy];
+              if (_waitForAsyncAudioResults)
               {
                 if (!self->_errorCode)
                 {
@@ -6169,8 +6169,8 @@ LABEL_226:
             if ((v137 & 0x82C234046D888) != 0)
             {
               buf.start = start;
-              v18 = [(VCPMovieAnalyzer *)self analyzeVideoTrack:v120 start:&buf forAnalysisTypes:v137 & 0xFFFFFFBFDBFFFFFFLL cancel:v7];
-              if (v18)
+              _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self analyzeVideoTrack:v120 start:&buf forAnalysisTypes:v137 & 0xFFFFFFBFDBFFFFFFLL cancel:assetCopy];
+              if (_waitForAsyncAudioResults)
               {
                 if (!self->_errorCode)
                 {
@@ -6202,8 +6202,8 @@ LABEL_226:
               [(NSMutableDictionary *)self->_analysis vcp_addTypes:0x40000];
               if (![(VCPAsset *)self->_asset isLivePhoto])
               {
-                v18 = [(VCPMovieAnalyzer *)self generateKeyFrameResource:v14];
-                if (v18)
+                _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self generateKeyFrameResource:movie];
+                if (_waitForAsyncAudioResults)
                 {
                   if (self->_errorCode)
                   {
@@ -6233,7 +6233,7 @@ LABEL_226:
               phAsset = self->_phAsset;
               if (!phAsset)
               {
-                v18 = -18;
+                _waitForAsyncAudioResults = -18;
                 if (self->_errorCode)
                 {
                   goto LABEL_225;
@@ -6243,11 +6243,11 @@ LABEL_226:
                 goto LABEL_224;
               }
 
-              v176 = [(NSMutableDictionary *)self->_analysis vcp_results];
-              audioGroup = [v176 objectForKeyedSubscript:@"VideoThumbnailResults"];
-              v18 = [(VCPMovieAnalyzer *)self generateAndPersistVideoThumbnailResources:v14 forPHAsset:phAsset withResults:audioGroup cancelBlock:v7];
+              vcp_results = [(NSMutableDictionary *)self->_analysis vcp_results];
+              audioGroup = [vcp_results objectForKeyedSubscript:@"VideoThumbnailResults"];
+              _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self generateAndPersistVideoThumbnailResources:movie forPHAsset:phAsset withResults:audioGroup cancelBlock:assetCopy];
 
-              if (v18)
+              if (_waitForAsyncAudioResults)
               {
                 if (self->_errorCode)
                 {
@@ -6280,11 +6280,11 @@ LABEL_226:
 
             v31 = v174;
 LABEL_192:
-            v18 = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
-            if (!v18)
+            _waitForAsyncAudioResults = [(VCPMovieAnalyzer *)self _waitForAsyncAudioResults];
+            if (!_waitForAsyncAudioResults)
             {
               v20 = 0;
-              v18 = v31;
+              _waitForAsyncAudioResults = v31;
               goto LABEL_128;
             }
 
@@ -6318,7 +6318,7 @@ LABEL_208:
 LABEL_41:
             v20 = 4;
             v19 = 1;
-            v18 = -18;
+            _waitForAsyncAudioResults = -18;
             goto LABEL_128;
           }
 
@@ -6334,16 +6334,16 @@ LABEL_41:
             audioGroup = 16;
             if (os_log_type_enabled(v128, OS_LOG_TYPE_ERROR))
             {
-              v130 = [(VCPAsset *)self->_asset localIdentifier];
-              v131 = [v14 tracks];
-              v132 = [v131 count];
-              v133 = [v14 tracks];
+              localIdentifier = [(VCPAsset *)self->_asset localIdentifier];
+              tracks = [movie tracks];
+              v132 = [tracks count];
+              tracks2 = [movie tracks];
               LODWORD(buf.start.value) = 138412802;
-              *(&buf.start.value + 4) = v130;
+              *(&buf.start.value + 4) = localIdentifier;
               LOWORD(buf.start.flags) = 2048;
               *(&buf.start.flags + 2) = v132;
               HIWORD(buf.start.epoch) = 2112;
-              buf.duration.value = v133;
+              buf.duration.value = tracks2;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "  [%@] Asset does not have valid video track; all %lu tracks: %@", &buf, 0x20u);
             }
           }
@@ -6417,7 +6417,7 @@ LABEL_41:
 
       if (v46)
       {
-        v53 = [v14 vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
+        v53 = [movie vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
         if (v53)
         {
           audioGroup = @"LivePhotoKeyFrameTimestamp";
@@ -6522,9 +6522,9 @@ LABEL_41:
                   v154 = MEMORY[0x1E69E9C10];
                   if (os_log_type_enabled(v153, OS_LOG_TYPE_DEBUG))
                   {
-                    v155 = [(VCPAsset *)self->_asset localIdentifier];
+                    localIdentifier2 = [(VCPAsset *)self->_asset localIdentifier];
                     LODWORD(time2.start.value) = 138412290;
-                    *(&time2.start.value + 4) = v155;
+                    *(&time2.start.value + 4) = localIdentifier2;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  [%@] Asset has invalid time range for path constraint stabilization", &time2, 0xCu);
                   }
                 }
@@ -6542,9 +6542,9 @@ LABEL_41:
                 v209 = v158;
                 v159 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v209 count:1];
                 v211 = v159;
-                v148 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v211 forKeys:&v210 count:1];
+                v147 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v211 forKeys:&v210 count:1];
 
-                [(NSMutableDictionary *)self->_analysis vcp_addEntriesFromResults:v148];
+                [(NSMutableDictionary *)self->_analysis vcp_addEntriesFromResults:v147];
                 [(NSMutableDictionary *)self->_analysis vcp_addTypes:0x10000000000];
                 v160 = self->_requestedAnalyses;
                 if ((v160 & 0x4000000000) != 0)
@@ -6584,11 +6584,11 @@ LABEL_294:
             v146 = v138.width / v58;
             v147 = v138.height / v59;
             time2 = buf;
-            v148 = [(VCPVideoGyroStabilizer *)v145 initWithMetadata:audioGroup sourceSize:v47 cropRect:&time2 stillImageMetadata:v138.width timeRange:v138.height, x * v146, y * v147, width * v146, height * v147];
+            v147 = [(VCPVideoGyroStabilizer *)v145 initWithMetadata:audioGroup sourceSize:v47 cropRect:&time2 stillImageMetadata:v138.width timeRange:v138.height, x * v146, y * v147, width * v146, height * v147];
 
-            if (!v148)
+            if (!v147)
             {
-              v18 = -108;
+              _waitForAsyncAudioResults = -108;
               if (!self->_errorCode)
               {
                 v149 = 2017;
@@ -6600,8 +6600,8 @@ LABEL_263:
               goto LABEL_125;
             }
 
-            v18 = [(VCPVideoGyroStabilizer *)v148 convertAnalysisResult];
-            if (v18)
+            _waitForAsyncAudioResults = [(VCPVideoGyroStabilizer *)v147 convertAnalysisResult];
+            if (_waitForAsyncAudioResults)
             {
               if (!self->_errorCode)
               {
@@ -6618,7 +6618,7 @@ LABEL_262:
             if ((self->_requestedAnalyses & 0x4000000000000000) != 0)
             {
               [v53 preferredTransform];
-              [(VCPVideoGyroStabilizer *)v148 storeAnalytics:&time2 isLivePhoto:[(VCPAsset *)self->_asset isLivePhoto]];
+              [(VCPVideoGyroStabilizer *)v147 storeAnalytics:&time2 isLivePhoto:[(VCPAsset *)self->_asset isLivePhoto]];
             }
 
             [(NSMutableDictionary *)self->_analysis vcp_addTypes:0x4000000000000000, v171];
@@ -6630,8 +6630,8 @@ LABEL_262:
               *&time2.start.value = *MEMORY[0x1E6960CA8];
               *&time2.start.epoch = v162;
               *&time2.duration.timescale = *(MEMORY[0x1E6960CA8] + 32);
-              v18 = [(VCPVideoStabilizer *)v148 finishAnalysisPass:&time2];
-              if (v18)
+              _waitForAsyncAudioResults = [(VCPVideoStabilizer *)v147 finishAnalysisPass:&time2];
+              if (_waitForAsyncAudioResults)
               {
                 if (self->_errorCode)
                 {
@@ -6643,7 +6643,7 @@ LABEL_262:
               }
 
               v165 = self->_analysis;
-              audioGroup = [(VCPVideoStabilizer *)v148 results];
+              audioGroup = [(VCPVideoStabilizer *)v147 results];
               [(NSMutableDictionary *)v165 vcp_addEntriesFromResults:audioGroup];
 
               [(NSMutableDictionary *)self->_analysis vcp_addTypes:335544320];
@@ -6656,8 +6656,8 @@ LABEL_262:
               *&time2.start.value = *MEMORY[0x1E6960CA8];
               *&time2.start.epoch = v168;
               *&time2.duration.timescale = *(MEMORY[0x1E6960CA8] + 32);
-              v18 = [(VCPVideoStabilizer *)v148 finishAnalysisPass:&time2];
-              if (v18)
+              _waitForAsyncAudioResults = [(VCPVideoStabilizer *)v147 finishAnalysisPass:&time2];
+              if (_waitForAsyncAudioResults)
               {
                 if (self->_errorCode)
                 {
@@ -6669,13 +6669,13 @@ LABEL_262:
               }
 
               v169 = self->_analysis;
-              v170 = [(VCPVideoStabilizer *)v148 results];
-              [(NSMutableDictionary *)v169 vcp_addEntriesFromResults:v170];
+              results = [(VCPVideoStabilizer *)v147 results];
+              [(NSMutableDictionary *)v169 vcp_addEntriesFromResults:results];
 
               [(NSMutableDictionary *)self->_analysis vcp_addTypes:0x10000000000];
               if ((self->_requestedAnalyses & 0x4000000000) != 0)
               {
-                if ([(VCPVideoStabilizer *)v148 stabilizationFaild])
+                if ([(VCPVideoStabilizer *)v147 stabilizationFaild])
                 {
                   self->_requestedAnalyses &= ~0x4000000000uLL;
                 }
@@ -6723,7 +6723,7 @@ LABEL_262:
           if (self->_errorCode)
           {
 LABEL_124:
-            v18 = -18;
+            _waitForAsyncAudioResults = -18;
 LABEL_125:
 
 LABEL_126:
@@ -6755,9 +6755,9 @@ LABEL_93:
           v69 = MEMORY[0x1E69E9C10];
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
           {
-            v70 = [(VCPAsset *)self->_asset localIdentifier];
+            localIdentifier3 = [(VCPAsset *)self->_asset localIdentifier];
             LODWORD(buf.start.value) = 138412290;
-            *(&buf.start.value + 4) = v70;
+            *(&buf.start.value + 4) = localIdentifier3;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  [%@] Asset doesn't have gyro metadata", &buf, 0xCu);
           }
         }
@@ -6777,9 +6777,9 @@ LABEL_93:
         v72 = MEMORY[0x1E69E9C10];
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
         {
-          v73 = [(VCPAsset *)self->_asset localIdentifier];
+          localIdentifier4 = [(VCPAsset *)self->_asset localIdentifier];
           LODWORD(buf.start.value) = 138412290;
-          *(&buf.start.value + 4) = v73;
+          *(&buf.start.value + 4) = localIdentifier4;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  [%@] Asset doesn't have gyro metadata", &buf, 0xCu);
         }
       }
@@ -6790,9 +6790,9 @@ LABEL_93:
         v75 = MEMORY[0x1E69E9C10];
         if (os_log_type_enabled(v74, OS_LOG_TYPE_DEBUG))
         {
-          v76 = [(VCPAsset *)self->_asset localIdentifier];
+          localIdentifier5 = [(VCPAsset *)self->_asset localIdentifier];
           LODWORD(buf.start.value) = 138412290;
-          *(&buf.start.value + 4) = v76;
+          *(&buf.start.value + 4) = localIdentifier5;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  [%@] Asset doesn't have still image metadata", &buf, 0xCu);
         }
       }
@@ -6839,8 +6839,8 @@ LABEL_174:
   }
 
   v16 = self->_analysis;
-  v17 = [MEMORY[0x1E695DF00] date];
-  [(NSMutableDictionary *)v16 vcp_setDateAnalyzed:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  [(NSMutableDictionary *)v16 vcp_setDateAnalyzed:date];
 
   [(NSMutableDictionary *)self->_analysis vcp_setFlags:0];
   [(NSMutableDictionary *)self->_analysis vcp_setQuality:0.0];
@@ -6853,7 +6853,7 @@ LABEL_174:
   }
 
   audioGroup = self->_analysis;
-  v18 = 0;
+  _waitForAsyncAudioResults = 0;
   v19 = 1;
   v20 = 1;
 LABEL_128:
@@ -6871,19 +6871,19 @@ LABEL_128:
 
   [(NSMutableDictionary *)self->_analysis vcp_removeSyncPoint];
   v84 = self->_analysis;
-  v85 = [MEMORY[0x1E695DF00] date];
-  [(NSMutableDictionary *)v84 vcp_setDateAnalyzed:v85];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [(NSMutableDictionary *)v84 vcp_setDateAnalyzed:date2];
 
-  v86 = [(NSMutableDictionary *)self->_analysis vcp_results];
-  v87 = [v86 objectForKey:@"QualityResults"];
+  vcp_results2 = [(NSMutableDictionary *)self->_analysis vcp_results];
+  v87 = [vcp_results2 objectForKey:@"QualityResults"];
   v88 = [v87 count] == 0;
 
   if (!v88)
   {
     v89 = objc_alloc_init(VCPVideoGlobalAnalyzer);
-    v90 = [(VCPAsset *)self->_asset isSlowmo];
+    isSlowmo = [(VCPAsset *)self->_asset isSlowmo];
     asset = self->_asset;
-    if (v90)
+    if (isSlowmo)
     {
       [(VCPAsset *)asset slowmoRate];
     }
@@ -6914,14 +6914,14 @@ LABEL_128:
 
   if (([(NSMutableDictionary *)self->_analysis vcp_types]& 0x80) != 0)
   {
-    v95 = [(NSMutableDictionary *)self->_analysis vcp_results];
-    v96 = v95 == 0;
+    vcp_results3 = [(NSMutableDictionary *)self->_analysis vcp_results];
+    v96 = vcp_results3 == 0;
 
     if (!v96)
     {
       v97 = objc_alloc_init(VCPVideoGlobalAnalyzer);
-      v98 = [(NSMutableDictionary *)self->_analysis vcp_results];
-      v99 = [(VCPVideoGlobalAnalyzer *)v97 setActivityLevel:v98];
+      vcp_results4 = [(NSMutableDictionary *)self->_analysis vcp_results];
+      v99 = [(VCPVideoGlobalAnalyzer *)v97 setActivityLevel:vcp_results4];
 
       if (v99)
       {
@@ -6930,7 +6930,7 @@ LABEL_128:
           *&self->_errorCode = xmmword_1C9F631C0;
         }
 
-        v18 = v99;
+        _waitForAsyncAudioResults = v99;
         goto LABEL_152;
       }
     }
@@ -6943,12 +6943,12 @@ LABEL_128:
 
   self->_status = 2;
 LABEL_152:
-  if (!v18)
+  if (!_waitForAsyncAudioResults)
   {
     goto LABEL_159;
   }
 
-  if (v18 == -128)
+  if (_waitForAsyncAudioResults == -128)
   {
     goto LABEL_154;
   }
@@ -6974,10 +6974,10 @@ LABEL_159:
     v106 = MEMORY[0x1E69E9C10];
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
     {
-      v107 = [(VCPAsset *)self->_asset localIdentifier];
+      localIdentifier6 = [(VCPAsset *)self->_asset localIdentifier];
       v108 = [(NSMutableDictionary *)self->_analysis vcp_analysisDescriptionWithResultDetails:1];
       LODWORD(buf.start.value) = 138412546;
-      *(&buf.start.value + 4) = v107;
+      *(&buf.start.value + 4) = localIdentifier6;
       LOWORD(buf.start.flags) = 2112;
       *(&buf.start.flags + 2) = v108;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][MovieAnalyzer] After analyzing %@", &buf, 0x16u);
@@ -7027,11 +7027,11 @@ void __42__VCPMovieAnalyzer_analyzeAsset_streamed___block_invoke(void *a1)
   }
 }
 
-- (int)generateKeyFrameResource:(id)a3
+- (int)generateKeyFrameResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_analysis vcp_results];
-  v6 = [v5 objectForKeyedSubscript:@"MovieSummaryResults"];
+  resourceCopy = resource;
+  vcp_results = [(NSMutableDictionary *)self->_analysis vcp_results];
+  v6 = [vcp_results objectForKeyedSubscript:@"MovieSummaryResults"];
 
   if (![v6 count])
   {
@@ -7056,7 +7056,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v4];
+  v9 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:resourceCopy];
   v10 = v9;
   if (!v9)
   {
@@ -7104,22 +7104,22 @@ LABEL_16:
   return v17;
 }
 
-- (int)generateAndPersistVideoThumbnailResources:(id)a3 forPHAsset:(id)a4 withResults:(id)a5 cancelBlock:(id)a6
+- (int)generateAndPersistVideoThumbnailResources:(id)resources forPHAsset:(id)asset withResults:(id)results cancelBlock:(id)block
 {
   v66 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v10 = a4;
-  v11 = a5;
-  v56 = a6;
-  v57 = v11;
-  v51 = v10;
-  if (!v11)
+  resourcesCopy = resources;
+  assetCopy = asset;
+  resultsCopy = results;
+  blockCopy = block;
+  v57 = resultsCopy;
+  v51 = assetCopy;
+  if (!resultsCopy)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v19 = [v10 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v19;
+      *&buf[4] = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MovieAnalyzer][%@] No video thumbnail results exist, skip generating resources", buf, 0xCu);
     }
 
@@ -7127,12 +7127,12 @@ LABEL_16:
     goto LABEL_60;
   }
 
-  v12 = [(VCPAsset *)self->_asset pixelWidth];
-  v13 = [(VCPAsset *)self->_asset pixelHeight];
-  v14 = [(VCPAsset *)self->_asset pixelWidth];
-  v15 = [(VCPAsset *)self->_asset pixelHeight];
-  v16 = v12 / v13;
-  if (v14 <= v15)
+  pixelWidth = [(VCPAsset *)self->_asset pixelWidth];
+  pixelHeight = [(VCPAsset *)self->_asset pixelHeight];
+  pixelWidth2 = [(VCPAsset *)self->_asset pixelWidth];
+  pixelHeight2 = [(VCPAsset *)self->_asset pixelHeight];
+  v16 = pixelWidth / pixelHeight;
+  if (pixelWidth2 <= pixelHeight2)
   {
     v18 = 360.0;
     v17 = 360.0 / v16;
@@ -7144,7 +7144,7 @@ LABEL_16:
     v18 = v16 * 360.0;
   }
 
-  v20 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v50];
+  v20 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:resourcesCopy];
   v53 = v20;
   if (!v20)
   {
@@ -7165,8 +7165,8 @@ LABEL_16:
   CMTimeMake(&v63, 30, 600);
   *buf = v63;
   [v53 setRequestedTimeToleranceBefore:buf];
-  v54 = self;
-  v52 = [MEMORY[0x1E695DF90] dictionary];
+  selfCopy = self;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v21 = 0;
   *(&v22 + 1) = 2269;
   *&v22 = 138412802;
@@ -7174,7 +7174,7 @@ LABEL_16:
   while (v21 < [v57 count])
   {
     v23 = objc_autoreleasePoolPush();
-    if (!v56 || (v56[2]() & 1) == 0)
+    if (!blockCopy || (blockCopy[2]() & 1) == 0)
     {
       v25 = [v57 objectAtIndexedSubscript:v21];
       v26 = [v25 objectForKeyedSubscript:@"attributes"];
@@ -7188,8 +7188,8 @@ LABEL_16:
 
         if ((v62.flags & 1) == 0)
         {
-          v29 = v54;
-          if (!v54->_errorCode)
+          v29 = selfCopy;
+          if (!selfCopy->_errorCode)
           {
             v24 = 0;
             v30 = xmmword_1C9F63220;
@@ -7209,19 +7209,19 @@ LABEL_51:
         v31 = [v53 copyCGImageAtTime:buf actualTime:0 error:0];
         if (v31)
         {
-          [v52 setObject:v31 forKeyedSubscript:v27];
+          [dictionary setObject:v31 forKeyedSubscript:v27];
 
-          if ([v52 count] != 5 && v21 != objc_msgSend(v57, "count") - 1)
+          if ([dictionary count] != 5 && v21 != objc_msgSend(v57, "count") - 1)
           {
             goto LABEL_46;
           }
 
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v32 = [v51 localIdentifier];
-            v33 = [v52 count];
+            localIdentifier2 = [v51 localIdentifier];
+            v33 = [dictionary count];
             *buf = 138412546;
-            *&buf[4] = v32;
+            *&buf[4] = localIdentifier2;
             *&buf[12] = 1024;
             *&buf[14] = v33;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MovieAnalyzer][%@] Persisting %d thumbnail resources to Photos", buf, 0x12u);
@@ -7239,17 +7239,17 @@ LABEL_51:
             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v37, OS_SIGNPOST_INTERVAL_BEGIN, v35, "VCPMovieAnalyzer_PersistVideoThumbnailResources", "", buf, 2u);
           }
 
-          v38 = [v51 photoLibrary];
+          photoLibrary = [v51 photoLibrary];
           v59[0] = MEMORY[0x1E69E9820];
           v59[1] = 3221225472;
           v59[2] = __97__VCPMovieAnalyzer_generateAndPersistVideoThumbnailResources_forPHAsset_withResults_cancelBlock___block_invoke;
           v59[3] = &unk_1E834D238;
           v39 = v51;
           v60 = v39;
-          v40 = v52;
+          v40 = dictionary;
           v61 = v40;
           v58 = 0;
-          v41 = [v38 performChangesAndWait:v59 error:&v58];
+          v41 = [photoLibrary performChangesAndWait:v59 error:&v58];
           v48 = v58;
 
           v42 = VCPSignPostLog();
@@ -7275,10 +7275,10 @@ LABEL_51:
           {
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v44 = [v39 localIdentifier];
+              localIdentifier3 = [v39 localIdentifier];
               v45 = [v40 count];
               *buf = v47;
-              *&buf[4] = v44;
+              *&buf[4] = localIdentifier3;
               *&buf[12] = 1024;
               *&buf[14] = v45;
               *&buf[18] = 2112;
@@ -7286,9 +7286,9 @@ LABEL_51:
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MovieAnalyzer][%@] Failed to persist %d thumbnail resources: %@", buf, 0x1Cu);
             }
 
-            if (!v54->_errorCode)
+            if (!selfCopy->_errorCode)
             {
-              *&v54->_errorCode = xmmword_1C9F63200;
+              *&selfCopy->_errorCode = xmmword_1C9F63200;
             }
 
             v55 = -18;
@@ -7308,8 +7308,8 @@ LABEL_46:
           goto LABEL_51;
         }
 
-        v29 = v54;
-        if (v54->_errorCode)
+        v29 = selfCopy;
+        if (selfCopy->_errorCode)
         {
           goto LABEL_38;
         }
@@ -7320,8 +7320,8 @@ LABEL_46:
 
       else
       {
-        v29 = v54;
-        if (v54->_errorCode)
+        v29 = selfCopy;
+        if (selfCopy->_errorCode)
         {
           goto LABEL_38;
         }

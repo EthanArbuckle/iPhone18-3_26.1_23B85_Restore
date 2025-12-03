@@ -2,8 +2,8 @@
 - (PXHUDVisualizationDelegate)delegate;
 - (UIColor)color;
 - (void)_notifyDelegateVisualizationDidChange;
-- (void)setColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXHUDVisualization
@@ -17,25 +17,25 @@
 
 - (void)_notifyDelegateVisualizationDidChange
 {
-  v3 = [(PXHUDVisualization *)self delegate];
+  delegate = [(PXHUDVisualization *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PXHUDVisualization *)self delegate];
-    [v5 visualizationDidChange:self];
+    delegate2 = [(PXHUDVisualization *)self delegate];
+    [delegate2 visualizationDidChange:self];
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_color, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_color, color);
     [(PXHUDVisualization *)self _notifyDelegateVisualizationDidChange];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -44,22 +44,22 @@
   color = self->_color;
   if (color)
   {
-    v3 = color;
+    whiteColor = color;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  return v3;
+  return whiteColor;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     title = self->_title;
     self->_title = v5;
 

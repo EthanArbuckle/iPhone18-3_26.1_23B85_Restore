@@ -1,24 +1,24 @@
 @interface ZWDockedLensChromeBorderView
-- (ZWDockedLensChromeBorderView)initWithFrame:(CGRect)a3;
-- (id)innerBorderPathForCurrentDockPositionForBounds:(CGRect)a3;
-- (id)outerBorderPathForCurrentDockPositionForBounds:(CGRect)a3;
+- (ZWDockedLensChromeBorderView)initWithFrame:(CGRect)frame;
+- (id)innerBorderPathForCurrentDockPositionForBounds:(CGRect)bounds;
+- (id)outerBorderPathForCurrentDockPositionForBounds:(CGRect)bounds;
 - (void)layoutSubviews;
 @end
 
 @implementation ZWDockedLensChromeBorderView
 
-- (ZWDockedLensChromeBorderView)initWithFrame:(CGRect)a3
+- (ZWDockedLensChromeBorderView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = ZWDockedLensChromeBorderView;
-  v3 = [(ZWDockedLensChromeBorderView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ZWDockedLensChromeBorderView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ZWDockedLensChromeBorderView *)v3 layer];
+    layer = [(ZWDockedLensChromeBorderView *)v3 layer];
     v6 = +[CAShapeLayer layer];
     [(ZWDockedLensChromeBorderView *)v4 setChromeInnerBorderLayer:v6];
-    [v5 addSublayer:v6];
+    [layer addSublayer:v6];
     v7 = +[UIColor clearColor];
     [v6 setFillColor:{objc_msgSend(v7, "CGColor")}];
 
@@ -31,7 +31,7 @@
 
     v10 = +[CAShapeLayer layer];
     [(ZWDockedLensChromeBorderView *)v4 setChromeOuterBorderLayer:v10];
-    [v5 addSublayer:v10];
+    [layer addSublayer:v10];
     v11 = +[UIColor clearColor];
     [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
 
@@ -54,8 +54,8 @@
     [v14 setFillColor:{objc_msgSend(v18, "CGColor")}];
 
     [v14 setLineWidth:ZWZoomLensBorderThicknessForTouches()];
-    v19 = [(ZWDockedLensChromeBorderView *)v4 layer];
-    [v19 addSublayer:v14];
+    layer2 = [(ZWDockedLensChromeBorderView *)v4 layer];
+    [layer2 addSublayer:v14];
   }
 
   return v4;
@@ -73,57 +73,57 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWDockedLensChromeBorderView *)self chromeInnerBorderLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  chromeInnerBorderLayer = [(ZWDockedLensChromeBorderView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer setFrame:{v4, v6, v8, v10}];
 
   [(ZWDockedLensChromeBorderView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(ZWDockedLensChromeBorderView *)self chromeOuterBorderLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  chromeOuterBorderLayer = [(ZWDockedLensChromeBorderView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer setFrame:{v13, v15, v17, v19}];
 
   [(ZWDockedLensChromeBorderView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(ZWDockedLensChromeBorderView *)self touchStealerShapeLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  touchStealerShapeLayer = [(ZWDockedLensChromeBorderView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer setFrame:{v22, v24, v26, v28}];
 
   [(ZWDockedLensChromeBorderView *)self bounds];
   v30 = [UIBezierPath bezierPathWithRect:?];
-  v31 = [v30 CGPath];
-  v32 = [(ZWDockedLensChromeBorderView *)self touchStealerShapeLayer];
-  [v32 setPath:v31];
+  cGPath = [v30 CGPath];
+  touchStealerShapeLayer2 = [(ZWDockedLensChromeBorderView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer2 setPath:cGPath];
 
   [(ZWDockedLensChromeBorderView *)self bounds];
   v33 = [(ZWDockedLensChromeBorderView *)self outerBorderPathForCurrentDockPositionForBounds:?];
   [(ZWDockedLensChromeBorderView *)self bounds];
   v34 = [(ZWDockedLensChromeBorderView *)self innerBorderPathForCurrentDockPositionForBounds:?];
-  v35 = [v33 CGPath];
-  v36 = [(ZWDockedLensChromeBorderView *)self chromeOuterBorderLayer];
-  [v36 setPath:v35];
+  cGPath2 = [v33 CGPath];
+  chromeOuterBorderLayer2 = [(ZWDockedLensChromeBorderView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer2 setPath:cGPath2];
 
-  v37 = [v34 CGPath];
-  v38 = [(ZWDockedLensChromeBorderView *)self chromeInnerBorderLayer];
-  [v38 setPath:v37];
+  cGPath3 = [v34 CGPath];
+  chromeInnerBorderLayer2 = [(ZWDockedLensChromeBorderView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer2 setPath:cGPath3];
 
   +[CATransaction commit];
 }
 
-- (id)innerBorderPathForCurrentDockPositionForBounds:(CGRect)a3
+- (id)innerBorderPathForCurrentDockPositionForBounds:(CGRect)bounds
 {
-  v4 = a3.origin.x + 2.0;
-  v5 = a3.origin.y + 2.0;
-  v6 = a3.size.width + -4.0;
-  v7 = a3.size.height + -4.0;
+  v4 = bounds.origin.x + 2.0;
+  v5 = bounds.origin.y + 2.0;
+  v6 = bounds.size.width + -4.0;
+  v7 = bounds.size.height + -4.0;
   v8 = objc_alloc_init(UIBezierPath);
-  v9 = [(ZWDockedLensChromeBorderView *)self dockPosition];
-  if (v9 > 1)
+  dockPosition = [(ZWDockedLensChromeBorderView *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v9 == 2)
+    if (dockPosition == 2)
     {
       v77.origin.x = v4;
       v77.origin.y = v5;
@@ -193,7 +193,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v9 != 3)
+    if (dockPosition != 3)
     {
       goto LABEL_13;
     }
@@ -262,9 +262,9 @@ LABEL_11:
 
   else
   {
-    if (v9)
+    if (dockPosition)
     {
-      if (v9 != 1)
+      if (dockPosition != 1)
       {
         goto LABEL_13;
       }
@@ -409,18 +409,18 @@ LABEL_13:
   return v8;
 }
 
-- (id)outerBorderPathForCurrentDockPositionForBounds:(CGRect)a3
+- (id)outerBorderPathForCurrentDockPositionForBounds:(CGRect)bounds
 {
-  [(ZWDockedLensChromeBorderView *)self bounds:a3.origin.x];
+  [(ZWDockedLensChromeBorderView *)self bounds:bounds.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v12 = +[UIBezierPath bezierPath];
-  v13 = [(ZWDockedLensChromeBorderView *)self dockPosition];
-  if (v13 > 1)
+  dockPosition = [(ZWDockedLensChromeBorderView *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v13 == 2)
+    if (dockPosition == 2)
     {
       v90.origin.x = v5;
       v90.origin.y = v7;
@@ -501,7 +501,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v13 != 3)
+    if (dockPosition != 3)
     {
       goto LABEL_13;
     }
@@ -580,9 +580,9 @@ LABEL_11:
 
   else
   {
-    if (v13)
+    if (dockPosition)
     {
-      if (v13 != 1)
+      if (dockPosition != 1)
       {
         goto LABEL_13;
       }

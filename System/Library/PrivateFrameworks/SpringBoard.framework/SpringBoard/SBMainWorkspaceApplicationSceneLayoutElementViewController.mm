@@ -4,60 +4,60 @@
 - (NSString)description;
 - (SBApplicationSceneBackgroundView)backgroundView;
 - (SBHomeGrabberView)homeGrabberView;
-- (SBMainWorkspaceApplicationSceneLayoutElementViewController)initWithDisplayIdentity:(id)a3;
+- (SBMainWorkspaceApplicationSceneLayoutElementViewController)initWithDisplayIdentity:(id)identity;
 - (double)blurViewIconScale;
 - (double)currentStatusBarHeight;
 - (id)_applicationSceneViewController;
-- (id)_applicationSceneViewControllerForSceneHandle:(id)a3;
+- (id)_applicationSceneViewControllerForSceneHandle:(id)handle;
 - (id)_deviceApplicationSceneViewController;
-- (id)_deviceApplicationSceneViewController:(id)a3;
+- (id)_deviceApplicationSceneViewController:(id)controller;
 - (id)_medusaDecoratedVC;
-- (id)_medusaDecoratedVC:(id)a3;
+- (id)_medusaDecoratedVC:(id)c;
 - (id)backgroundActivitiesToSuppress;
 - (id)containerViewForBlurContentView;
 - (id)currentStatusBarStyleAttributes;
 - (id)prepareForContentRotation;
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5;
-- (int64_t)_overrideStatusBarOrientationGivenFallbackOrientation:(int64_t)a3;
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3;
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden nubViewHidden:(int64_t)viewHidden atLevel:(unint64_t)level;
+- (int64_t)_overrideStatusBarOrientationGivenFallbackOrientation:(int64_t)orientation;
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation;
 - (int64_t)homeGrabberDisplayMode;
 - (int64_t)leadingStatusBarStyle;
 - (int64_t)trailingStatusBarStyle;
 - (unint64_t)supportedContentInterfaceOrientations;
-- (void)_beginRequiringSceneViewMatchMoveAnimationForReason:(id)a3;
-- (void)_configureViewController:(id)a3;
-- (void)_endRequiringSceneViewMatchMoveAnimationForReason:(id)a3;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4;
+- (void)_beginRequiringSceneViewMatchMoveAnimationForReason:(id)reason;
+- (void)_configureViewController:(id)controller;
+- (void)_endRequiringSceneViewMatchMoveAnimationForReason:(id)reason;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context;
 - (void)prepareForReuse;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)setBackgroundView:(id)a3;
-- (void)setBlurViewIconScale:(double)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setCornerRadiusConfiguration:(id)a3;
-- (void)setDarkenViewAlpha:(double)a3;
-- (void)setDropInteraction:(id)a3;
-- (void)setHomeGrabberDisplayMode:(int64_t)a3;
-- (void)setLiveContentBlurEnabled:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8;
-- (void)setMaskDisplayCorners:(BOOL)a3 forReason:(id)a4;
-- (void)setNubViewHidden:(BOOL)a3;
-- (void)setNubViewHighlighted:(BOOL)a3;
-- (void)setShadowOffset:(double)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)a3;
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)setBackgroundView:(id)view;
+- (void)setBlurViewIconScale:(double)scale;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setCornerRadiusConfiguration:(id)configuration;
+- (void)setDarkenViewAlpha:(double)alpha;
+- (void)setDropInteraction:(id)interaction;
+- (void)setHomeGrabberDisplayMode:(int64_t)mode;
+- (void)setLiveContentBlurEnabled:(BOOL)enabled duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion;
+- (void)setMaskDisplayCorners:(BOOL)corners forReason:(id)reason;
+- (void)setNubViewHidden:(BOOL)hidden;
+- (void)setNubViewHighlighted:(BOOL)highlighted;
+- (void)setShadowOffset:(double)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)orientation;
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation SBMainWorkspaceApplicationSceneLayoutElementViewController
 
-- (SBMainWorkspaceApplicationSceneLayoutElementViewController)initWithDisplayIdentity:(id)a3
+- (SBMainWorkspaceApplicationSceneLayoutElementViewController)initWithDisplayIdentity:(id)identity
 {
   v10.receiver = self;
   v10.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  v3 = [(SBAppContainerViewController *)&v10 initWithDisplayIdentity:a3];
+  v3 = [(SBAppContainerViewController *)&v10 initWithDisplayIdentity:identity];
   v4 = v3;
   if (v3)
   {
@@ -79,85 +79,85 @@
   return v4;
 }
 
-- (void)setLiveContentBlurEnabled:(BOOL)a3 duration:(double)a4 blurDelay:(double)a5 iconViewScale:(double)a6 began:(id)a7 completion:(id)a8
+- (void)setLiveContentBlurEnabled:(BOOL)enabled duration:(double)duration blurDelay:(double)delay iconViewScale:(double)scale began:(id)began completion:(id)completion
 {
-  v12 = a3;
-  v16 = a7;
-  v14 = a8;
-  v15 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  enabledCopy = enabled;
+  beganCopy = began;
+  completionCopy = completion;
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v15 setLiveContentBlurEnabled:v12 duration:v16 blurDelay:v14 iconViewScale:a4 began:a5 completion:a6];
+    [_applicationSceneViewController setLiveContentBlurEnabled:enabledCopy duration:beganCopy blurDelay:completionCopy iconViewScale:duration began:delay completion:scale];
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    v14[2](v14);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (double)blurViewIconScale
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
   objc_opt_class();
   v3 = 1.0;
   if (objc_opt_isKindOfClass())
   {
-    [v2 blurViewIconScale];
+    [_applicationSceneViewController blurViewIconScale];
     v3 = v4;
   }
 
   return v3;
 }
 
-- (void)setBlurViewIconScale:(double)a3
+- (void)setBlurViewIconScale:(double)scale
 {
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setBlurViewIconScale:a3];
+    [_applicationSceneViewController setBlurViewIconScale:scale];
   }
 }
 
 - (BOOL)isBlurred
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 isBlurred];
+    isBlurred = [_applicationSceneViewController isBlurred];
   }
 
   else
   {
-    v3 = 0;
+    isBlurred = 0;
   }
 
-  return v3;
+  return isBlurred;
 }
 
-- (void)_beginRequiringSceneViewMatchMoveAnimationForReason:(id)a3
+- (void)_beginRequiringSceneViewMatchMoveAnimationForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-  [v5 _beginRequiringSceneViewMatchMoveAnimationForReason:v4];
+  reasonCopy = reason;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  [_medusaDecoratedVC _beginRequiringSceneViewMatchMoveAnimationForReason:reasonCopy];
 }
 
-- (void)_endRequiringSceneViewMatchMoveAnimationForReason:(id)a3
+- (void)_endRequiringSceneViewMatchMoveAnimationForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-  [v5 _endRequiringSceneViewMatchMoveAnimationForReason:v4];
+  reasonCopy = reason;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  [_medusaDecoratedVC _endRequiringSceneViewMatchMoveAnimationForReason:reasonCopy];
 }
 
 - (NSString)description
 {
-  v3 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
   objc_opt_class();
   v4 = @"NO";
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 isBlurred])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [_applicationSceneViewController isBlurred])
   {
     v4 = @"YES";
   }
@@ -165,133 +165,133 @@
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(SBAppContainerViewController *)self sceneHandle];
-  v9 = [v8 sceneIdentifier];
-  v10 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v11 = [v5 stringWithFormat:@"<%@:%p (%@) - %@ - blurred=%@>", v7, self, v9, v10, v4];
+  sceneHandle = [(SBAppContainerViewController *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  _applicationSceneViewController2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  v11 = [v5 stringWithFormat:@"<%@:%p (%@) - %@ - blurred=%@>", v7, self, sceneIdentifier, _applicationSceneViewController2, v4];
 
   return v11;
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  if (self->_clipsToBounds != a3)
+  if (self->_clipsToBounds != bounds)
   {
-    self->_clipsToBounds = a3;
+    self->_clipsToBounds = bounds;
   }
 }
 
-- (void)setDarkenViewAlpha:(double)a3
+- (void)setDarkenViewAlpha:(double)alpha
 {
-  if (self->_darkenViewAlpha != a3)
+  if (self->_darkenViewAlpha != alpha)
   {
-    self->_darkenViewAlpha = a3;
-    v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-    [v4 setDarkenViewAlpha:a3];
+    self->_darkenViewAlpha = alpha;
+    _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+    [_medusaDecoratedVC setDarkenViewAlpha:alpha];
   }
 }
 
-- (void)setDropInteraction:(id)a3
+- (void)setDropInteraction:(id)interaction
 {
-  v5 = a3;
-  if (self->_dropInteraction != v5)
+  interactionCopy = interaction;
+  if (self->_dropInteraction != interactionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_dropInteraction, a3);
-    v6 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-    [v6 setDropInteraction:v7];
+    v7 = interactionCopy;
+    objc_storeStrong(&self->_dropInteraction, interaction);
+    _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+    [_medusaDecoratedVC setDropInteraction:v7];
 
-    v5 = v7;
+    interactionCopy = v7;
   }
 }
 
-- (void)setHomeGrabberDisplayMode:(int64_t)a3
+- (void)setHomeGrabberDisplayMode:(int64_t)mode
 {
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v4 setHomeGrabberDisplayMode:a3];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController setHomeGrabberDisplayMode:mode];
 }
 
 - (int64_t)homeGrabberDisplayMode
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 homeGrabberDisplayMode];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  homeGrabberDisplayMode = [_applicationSceneViewController homeGrabberDisplayMode];
 
-  return v3;
+  return homeGrabberDisplayMode;
 }
 
 - (id)prepareForContentRotation
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 prepareForContentRotation];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  prepareForContentRotation = [_applicationSceneViewController prepareForContentRotation];
 
-  return v3;
+  return prepareForContentRotation;
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  if (self->_shadowOpacity != a3)
+  if (self->_shadowOpacity != opacity)
   {
-    self->_shadowOpacity = a3;
+    self->_shadowOpacity = opacity;
   }
 }
 
-- (void)setShadowOffset:(double)a3
+- (void)setShadowOffset:(double)offset
 {
-  if (self->_shadowOffset != a3)
+  if (self->_shadowOffset != offset)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
   }
 }
 
-- (void)setCornerRadiusConfiguration:(id)a3
+- (void)setCornerRadiusConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if (([(BSCornerRadiusConfiguration *)self->_cornerRadiusConfiguration isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [configurationCopy copy];
     cornerRadiusConfiguration = self->_cornerRadiusConfiguration;
     self->_cornerRadiusConfiguration = v4;
   }
 }
 
-- (void)setMaskDisplayCorners:(BOOL)a3 forReason:(id)a4
+- (void)setMaskDisplayCorners:(BOOL)corners forReason:(id)reason
 {
   maskDisplayCornersReasons = self->_maskDisplayCornersReasons;
-  if (a3)
+  if (corners)
   {
-    [(NSMutableSet *)maskDisplayCornersReasons addObject:a4];
+    [(NSMutableSet *)maskDisplayCornersReasons addObject:reason];
   }
 
   else
   {
-    [(NSMutableSet *)maskDisplayCornersReasons removeObject:a4];
+    [(NSMutableSet *)maskDisplayCornersReasons removeObject:reason];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  v7 = a4;
-  [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController:v9.receiver];
-  [v8 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+  [v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 }
 
-- (int64_t)_overrideStatusBarOrientationGivenFallbackOrientation:(int64_t)a3
+- (int64_t)_overrideStatusBarOrientationGivenFallbackOrientation:(int64_t)orientation
 {
-  v5 = [(SBAppContainerViewController *)self sceneHandle];
-  v6 = [v5 currentInterfaceOrientation];
-  if (v6)
+  sceneHandle = [(SBAppContainerViewController *)self sceneHandle];
+  currentInterfaceOrientation = [sceneHandle currentInterfaceOrientation];
+  if (currentInterfaceOrientation)
   {
-    v7 = v6;
-    v8 = [(SBLayoutElementViewController *)self contentWrapperInterfaceOrientation];
-    if (v7 != v8)
+    v7 = currentInterfaceOrientation;
+    contentWrapperInterfaceOrientation = [(SBLayoutElementViewController *)self contentWrapperInterfaceOrientation];
+    if (v7 != contentWrapperInterfaceOrientation)
     {
-      v9 = v8;
-      if (![v5 isEffectivelyForeground])
+      v9 = contentWrapperInterfaceOrientation;
+      if (![sceneHandle isEffectivelyForeground])
       {
         v7 = v9;
       }
@@ -300,7 +300,7 @@
 
   else
   {
-    v7 = [v5 activationInterfaceOrientationForOrientation:a3];
+    v7 = [sceneHandle activationInterfaceOrientationForOrientation:orientation];
   }
 
   return v7;
@@ -328,26 +328,26 @@
 {
   v7.receiver = self;
   v7.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  v3 = [(SBLayoutElementViewController *)&v7 supportedContentInterfaceOrientations];
-  v4 = [(SBAppContainerViewController *)self sceneHandle];
-  v5 = v4;
-  if (v4)
+  supportedContentInterfaceOrientations = [(SBLayoutElementViewController *)&v7 supportedContentInterfaceOrientations];
+  sceneHandle = [(SBAppContainerViewController *)self sceneHandle];
+  v5 = sceneHandle;
+  if (sceneHandle)
   {
-    v3 = [v4 _mainSceneSupportedInterfaceOrientations];
+    supportedContentInterfaceOrientations = [sceneHandle _mainSceneSupportedInterfaceOrientations];
   }
 
-  return v3;
+  return supportedContentInterfaceOrientations;
 }
 
 - (BOOL)_shouldDisplayLayoutElementBecomeActive
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(SBAppContainerViewController *)self sceneHandle];
-  v4 = v3;
-  if (v3)
+  sceneHandle = [(SBAppContainerViewController *)self sceneHandle];
+  v4 = sceneHandle;
+  if (sceneHandle)
   {
-    v5 = [v3 sceneIfExists];
-    if (v5 && ![v4 isEffectivelyForeground])
+    sceneIfExists = [sceneHandle sceneIfExists];
+    if (sceneIfExists && ![v4 isEffectivelyForeground])
     {
       LOBYTE(v7) = 0;
     }
@@ -363,19 +363,19 @@
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v24 = [(SBLayoutElementViewController *)self layoutElement];
-      v17 = [v24 uniqueIdentifier];
+      layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+      uniqueIdentifier = [layoutElement uniqueIdentifier];
       v18 = NSStringFromBOOL();
       [v4 isEffectivelyForeground];
       v19 = NSStringFromBOOL();
       v20 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
       [v20 isSuspendedUnderLock];
       v21 = NSStringFromBOOL();
-      v22 = [v4 sceneIfExists];
+      sceneIfExists2 = [v4 sceneIfExists];
       *buf = 138544642;
       v26 = v16;
       v27 = 2114;
-      v28 = v17;
+      v28 = uniqueIdentifier;
       v29 = 2114;
       v30 = v18;
       v31 = 2114;
@@ -383,7 +383,7 @@
       v33 = 2114;
       v34 = v21;
       v35 = 2114;
-      v36 = v22;
+      v36 = sceneIfExists2;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@-%{public}@ shouldDisplayLayoutElementBecomeActive=%{public}@ because isEffectivelyForeground=%{public}@ isSuspendedUnderLock=%{public}@ sceneIfExists=%{public}@", buf, 0x3Eu);
     }
 
@@ -403,15 +403,15 @@
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [(SBLayoutElementViewController *)self layoutElement];
-      v12 = [v11 uniqueIdentifier];
-      v13 = [(SBLayoutElementViewController *)self layoutState];
+      layoutElement2 = [(SBLayoutElementViewController *)self layoutElement];
+      uniqueIdentifier2 = [layoutElement2 uniqueIdentifier];
+      layoutState = [(SBLayoutElementViewController *)self layoutState];
       *buf = 138543874;
       v26 = v10;
       v27 = 2114;
-      v28 = v12;
+      v28 = uniqueIdentifier2;
       v29 = 2114;
-      v30 = v13;
+      v30 = layoutState;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@-%{public}@ shouldDisplayLayoutElementBecomeActive=NO because there is no scene handle. layout state %{public}@", buf, 0x20u);
     }
 
@@ -425,42 +425,42 @@
 {
   v4.receiver = self;
   v4.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  v2 = [(SBAppContainerViewController *)&v4 _applicationSceneViewController];
+  _applicationSceneViewController = [(SBAppContainerViewController *)&v4 _applicationSceneViewController];
 
-  return v2;
+  return _applicationSceneViewController;
 }
 
-- (id)_applicationSceneViewControllerForSceneHandle:(id)a3
+- (id)_applicationSceneViewControllerForSceneHandle:(id)handle
 {
-  v5 = a3;
-  if (([v5 isDeviceApplicationSceneHandle] & 1) == 0)
+  handleCopy = handle;
+  if (([handleCopy isDeviceApplicationSceneHandle] & 1) == 0)
   {
     [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)a2 _applicationSceneViewControllerForSceneHandle:?];
   }
 
-  v6 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v7 = v6;
-  if (v6)
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  v7 = _applicationSceneViewController;
+  if (_applicationSceneViewController)
   {
-    v8 = v6;
+    v8 = _applicationSceneViewController;
   }
 
   else
   {
-    v9 = [(SBLayoutElementViewController *)self _sbWindowScene];
-    v10 = [v9 supportsMultitasking];
+    _sbWindowScene = [(SBLayoutElementViewController *)self _sbWindowScene];
+    supportsMultitasking = [_sbWindowScene supportsMultitasking];
 
-    if (v10)
+    if (supportsMultitasking)
     {
-      v11 = [(SBLayoutElementViewController *)self layoutElement];
-      v12 = [v11 layoutRole];
+      layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+      layoutRole = [layoutElement layoutRole];
 
-      v8 = [[SBMedusaDecoratedDeviceApplicationSceneViewController alloc] initWithDeviceApplicationSceneHandle:v5 layoutRole:v12];
+      v8 = [[SBMedusaDecoratedDeviceApplicationSceneViewController alloc] initWithDeviceApplicationSceneHandle:handleCopy layoutRole:layoutRole];
     }
 
     else
     {
-      v8 = [[SBDeviceApplicationSceneViewController alloc] initWithSceneHandle:v5];
+      v8 = [[SBDeviceApplicationSceneViewController alloc] initWithSceneHandle:handleCopy];
     }
   }
 
@@ -469,13 +469,13 @@
   return v13;
 }
 
-- (void)_configureViewController:(id)a3
+- (void)_configureViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  v4 = a3;
-  [(SBAppContainerViewController *)&v8 _configureViewController:v4];
-  v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC:v4, v8.receiver, v8.super_class];
+  controllerCopy = controller;
+  [(SBAppContainerViewController *)&v8 _configureViewController:controllerCopy];
+  v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC:controllerCopy, v8.receiver, v8.super_class];
 
   if (v5)
   {
@@ -483,39 +483,39 @@
     [v5 setNubViewHighlighted:{-[SBMainWorkspaceApplicationSceneLayoutElementViewController isNubViewHighlighted](self, "isNubViewHighlighted")}];
     [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self darkenViewAlpha];
     [v5 setDarkenViewAlpha:?];
-    v6 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self dropInteraction];
-    [v5 setDropInteraction:v6];
+    dropInteraction = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self dropInteraction];
+    [v5 setDropInteraction:dropInteraction];
 
-    v7 = [(SBLayoutElementViewController *)self layoutElement];
-    [v5 setLayoutRole:objc_msgSend(v7 spaceConfiguration:"layoutRole") floatingConfiguration:0 sizingPolicy:{0, 0}];
+    layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+    [v5 setLayoutRole:objc_msgSend(layoutElement spaceConfiguration:"layoutRole") floatingConfiguration:0 sizingPolicy:{0, 0}];
   }
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = SBMainWorkspaceApplicationSceneLayoutElementViewController;
-  [(SBAppContainerViewController *)&v5 sceneHandle:a3 didCreateScene:a4];
+  [(SBAppContainerViewController *)&v5 sceneHandle:handle didCreateScene:scene];
   [(SBLayoutElementViewController *)self _updateDisplayLayoutElementVisibility];
 }
 
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 nubViewHidden:(int64_t)a4 atLevel:(unint64_t)a5
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden nubViewHidden:(int64_t)viewHidden atLevel:(unint64_t)level
 {
-  v7 = a3;
-  v9 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-  v10 = v9;
-  if (v9)
+  hiddenCopy = hidden;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  v10 = _medusaDecoratedVC;
+  if (_medusaDecoratedVC)
   {
-    v11 = [v9 statusBarAssertionWithStatusBarHidden:v7 nubViewHidden:a4 atLevel:a5];
+    v11 = [_medusaDecoratedVC statusBarAssertionWithStatusBarHidden:hiddenCopy nubViewHidden:viewHidden atLevel:level];
   }
 
   else
   {
-    v12 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
-    v13 = v12;
-    if (v12)
+    _deviceApplicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
+    v13 = _deviceApplicationSceneViewController;
+    if (_deviceApplicationSceneViewController)
     {
-      v11 = [v12 statusBarAssertionWithStatusBarHidden:v7 atLevel:a5];
+      v11 = [_deviceApplicationSceneViewController statusBarAssertionWithStatusBarHidden:hiddenCopy atLevel:level];
     }
 
     else
@@ -527,126 +527,126 @@
   return v11;
 }
 
-- (void)setNubViewHidden:(BOOL)a3
+- (void)setNubViewHidden:(BOOL)hidden
 {
-  if (self->_nubViewHidden != a3)
+  if (self->_nubViewHidden != hidden)
   {
-    v4 = a3;
-    self->_nubViewHidden = a3;
-    v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-    [v5 setNubViewHidden:v4];
+    hiddenCopy = hidden;
+    self->_nubViewHidden = hidden;
+    _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+    [_medusaDecoratedVC setNubViewHidden:hiddenCopy];
   }
 }
 
-- (void)setNubViewHighlighted:(BOOL)a3
+- (void)setNubViewHighlighted:(BOOL)highlighted
 {
-  if (self->_nubViewHighlighted != a3)
+  if (self->_nubViewHighlighted != highlighted)
   {
-    v4 = a3;
-    self->_nubViewHighlighted = a3;
-    v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-    [v5 setNubViewHighlighted:v4];
+    highlightedCopy = highlighted;
+    self->_nubViewHighlighted = highlighted;
+    _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+    [_medusaDecoratedVC setNubViewHighlighted:highlightedCopy];
   }
 }
 
 - (SBHomeGrabberView)homeGrabberView
 {
-  v3 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
-  v4 = [v3 homeGrabberView];
-  v5 = v4;
-  if (v4)
+  _deviceApplicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
+  homeGrabberView = [_deviceApplicationSceneViewController homeGrabberView];
+  v5 = homeGrabberView;
+  if (homeGrabberView)
   {
-    v6 = v4;
+    homeGrabberView2 = homeGrabberView;
   }
 
   else
   {
-    v7 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-    v6 = [v7 homeGrabberView];
+    _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+    homeGrabberView2 = [_medusaDecoratedVC homeGrabberView];
   }
 
-  return v6;
+  return homeGrabberView2;
 }
 
-- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)a3
+- (int64_t)bestHomeAffordanceOrientationForOrientation:(int64_t)orientation
 {
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
-  v5 = [v4 bestHomeAffordanceOrientationForOrientation:a3];
+  _deviceApplicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController];
+  v5 = [_deviceApplicationSceneViewController bestHomeAffordanceOrientationForOrientation:orientation];
 
   return v5;
 }
 
 - (SBApplicationSceneBackgroundView)backgroundView
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 backgroundView];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  backgroundView = [_applicationSceneViewController backgroundView];
 
-  return v3;
+  return backgroundView;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v5 setBackgroundView:v4];
+  viewCopy = view;
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController setBackgroundView:viewCopy];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
   if (objc_opt_respondsToSelector())
   {
-    [v7 layoutStateTransitionCoordinator:v8 transitionDidBeginWithTransitionContext:v6];
+    [_medusaDecoratedVC layoutStateTransitionCoordinator:coordinatorCopy transitionDidBeginWithTransitionContext:contextCopy];
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionWillEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionWillEndWithTransitionContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
   if (objc_opt_respondsToSelector())
   {
-    [v7 layoutStateTransitionCoordinator:v8 transitionWillEndWithTransitionContext:v6];
+    [_medusaDecoratedVC layoutStateTransitionCoordinator:coordinatorCopy transitionWillEndWithTransitionContext:contextCopy];
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
   if (objc_opt_respondsToSelector())
   {
-    [v7 layoutStateTransitionCoordinator:v8 transitionDidEndWithTransitionContext:v6];
+    [_medusaDecoratedVC layoutStateTransitionCoordinator:coordinatorCopy transitionDidEndWithTransitionContext:contextCopy];
   }
 }
 
 - (id)containerViewForBlurContentView
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
-  v3 = [v2 _blurViewContainerView];
+  _medusaDecoratedVC = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC];
+  _blurViewContainerView = [_medusaDecoratedVC _blurViewContainerView];
 
-  return v3;
+  return _blurViewContainerView;
 }
 
 - (id)_medusaDecoratedVC
 {
-  v3 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC:v3];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _medusaDecoratedVC:_applicationSceneViewController];
 
   return v4;
 }
 
-- (id)_medusaDecoratedVC:(id)a3
+- (id)_medusaDecoratedVC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = cCopy;
   }
 
   else
@@ -659,19 +659,19 @@
 
 - (id)_deviceApplicationSceneViewController
 {
-  v3 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController:v3];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _deviceApplicationSceneViewController:_applicationSceneViewController];
 
   return v4;
 }
 
-- (id)_deviceApplicationSceneViewController:(id)a3
+- (id)_deviceApplicationSceneViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = controllerCopy;
   }
 
   else
@@ -684,32 +684,32 @@
 
 - (int64_t)leadingStatusBarStyle
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 leadingStatusBarStyle];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  leadingStatusBarStyle = [_applicationSceneViewController leadingStatusBarStyle];
 
-  return v3;
+  return leadingStatusBarStyle;
 }
 
 - (int64_t)trailingStatusBarStyle
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 trailingStatusBarStyle];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  trailingStatusBarStyle = [_applicationSceneViewController trailingStatusBarStyle];
 
-  return v3;
+  return trailingStatusBarStyle;
 }
 
 - (id)backgroundActivitiesToSuppress
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 backgroundActivitiesToSuppress];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  backgroundActivitiesToSuppress = [_applicationSceneViewController backgroundActivitiesToSuppress];
 
-  return v3;
+  return backgroundActivitiesToSuppress;
 }
 
 - (double)currentStatusBarHeight
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v2 currentStatusBarHeight];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController currentStatusBarHeight];
   v4 = v3;
 
   return v4;
@@ -717,30 +717,30 @@
 
 - (id)currentStatusBarStyleAttributes
 {
-  v2 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  v3 = [v2 currentStatusBarStyleAttributes];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  currentStatusBarStyleAttributes = [_applicationSceneViewController currentStatusBarStyleAttributes];
 
-  return v3;
+  return currentStatusBarStyleAttributes;
 }
 
-- (void)willRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 alongsideContainerView:(id)a5 animated:(BOOL)a6
+- (void)willRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation alongsideContainerView:(id)view animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v11 willRotateFromInterfaceOrientation:a3 toInterfaceOrientation:a4 alongsideContainerView:v10 animated:v6];
+  animatedCopy = animated;
+  viewCopy = view;
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController willRotateFromInterfaceOrientation:orientation toInterfaceOrientation:interfaceOrientation alongsideContainerView:viewCopy animated:animatedCopy];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
-  v6 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v6 didRotateFromInterfaceOrientation:a3 toInterfaceOrientation:a4];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController didRotateFromInterfaceOrientation:orientation toInterfaceOrientation:interfaceOrientation];
 }
 
-- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)a3
+- (void)willPerformNonAnimatedTransitionToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
-  [v4 willPerformNonAnimatedTransitionToInterfaceOrientation:a3];
+  _applicationSceneViewController = [(SBMainWorkspaceApplicationSceneLayoutElementViewController *)self _applicationSceneViewController];
+  [_applicationSceneViewController willPerformNonAnimatedTransitionToInterfaceOrientation:orientation];
 }
 
 - (void)_applicationSceneViewControllerForSceneHandle:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

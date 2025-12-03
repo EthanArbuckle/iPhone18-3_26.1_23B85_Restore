@@ -1,41 +1,41 @@
 @interface BMUAFAssetSetSubscription
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUAFAssetSetSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMUAFAssetSetSubscription)initWithSubscriptionName:(id)a3 assetSetIndices:(id)a4 assetSetUsages:(id)a5 usageAliases:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMUAFAssetSetSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMUAFAssetSetSubscription)initWithSubscriptionName:(id)name assetSetIndices:(id)indices assetSetUsages:(id)usages usageAliases:(id)aliases;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_assetSetIndicesJSONArray;
 - (id)_assetSetUsagesJSONArray;
 - (id)_usageAliasesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUAFAssetSetSubscription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUAFAssetSetSubscription *)self subscriptionName];
-    v7 = [v5 subscriptionName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    subscriptionName = [(BMUAFAssetSetSubscription *)self subscriptionName];
+    subscriptionName2 = [v5 subscriptionName];
+    v8 = subscriptionName2;
+    if (subscriptionName == subscriptionName2)
     {
     }
 
     else
     {
-      v9 = [(BMUAFAssetSetSubscription *)self subscriptionName];
-      v10 = [v5 subscriptionName];
-      v11 = [v9 isEqual:v10];
+      subscriptionName3 = [(BMUAFAssetSetSubscription *)self subscriptionName];
+      subscriptionName4 = [v5 subscriptionName];
+      v11 = [subscriptionName3 isEqual:subscriptionName4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMUAFAssetSetSubscription *)self assetSetIndices];
-    v14 = [v5 assetSetIndices];
-    v15 = v14;
-    if (v13 == v14)
+    assetSetIndices = [(BMUAFAssetSetSubscription *)self assetSetIndices];
+    assetSetIndices2 = [v5 assetSetIndices];
+    v15 = assetSetIndices2;
+    if (assetSetIndices == assetSetIndices2)
     {
     }
 
     else
     {
-      v16 = [(BMUAFAssetSetSubscription *)self assetSetIndices];
-      v17 = [v5 assetSetIndices];
-      v18 = [v16 isEqual:v17];
+      assetSetIndices3 = [(BMUAFAssetSetSubscription *)self assetSetIndices];
+      assetSetIndices4 = [v5 assetSetIndices];
+      v18 = [assetSetIndices3 isEqual:assetSetIndices4];
 
       if (!v18)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v19 = [(BMUAFAssetSetSubscription *)self assetSetUsages];
-    v20 = [v5 assetSetUsages];
-    v21 = v20;
-    if (v19 == v20)
+    assetSetUsages = [(BMUAFAssetSetSubscription *)self assetSetUsages];
+    assetSetUsages2 = [v5 assetSetUsages];
+    v21 = assetSetUsages2;
+    if (assetSetUsages == assetSetUsages2)
     {
     }
 
     else
     {
-      v22 = [(BMUAFAssetSetSubscription *)self assetSetUsages];
-      v23 = [v5 assetSetUsages];
-      v24 = [v22 isEqual:v23];
+      assetSetUsages3 = [(BMUAFAssetSetSubscription *)self assetSetUsages];
+      assetSetUsages4 = [v5 assetSetUsages];
+      v24 = [assetSetUsages3 isEqual:assetSetUsages4];
 
       if (!v24)
       {
@@ -85,18 +85,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMUAFAssetSetSubscription *)self usageAliases];
-    v26 = [v5 usageAliases];
-    if (v25 == v26)
+    usageAliases = [(BMUAFAssetSetSubscription *)self usageAliases];
+    usageAliases2 = [v5 usageAliases];
+    if (usageAliases == usageAliases2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMUAFAssetSetSubscription *)self usageAliases];
-      v28 = [v5 usageAliases];
-      v12 = [v27 isEqual:v28];
+      usageAliases3 = [(BMUAFAssetSetSubscription *)self usageAliases];
+      usageAliases4 = [v5 usageAliases];
+      v12 = [usageAliases3 isEqual:usageAliases4];
     }
 
     goto LABEL_19;
@@ -111,46 +111,46 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUAFAssetSetSubscription *)self subscriptionName];
-  v4 = [(BMUAFAssetSetSubscription *)self _assetSetIndicesJSONArray];
-  v5 = [(BMUAFAssetSetSubscription *)self _assetSetUsagesJSONArray];
-  v6 = [(BMUAFAssetSetSubscription *)self _usageAliasesJSONArray];
+  subscriptionName = [(BMUAFAssetSetSubscription *)self subscriptionName];
+  _assetSetIndicesJSONArray = [(BMUAFAssetSetSubscription *)self _assetSetIndicesJSONArray];
+  _assetSetUsagesJSONArray = [(BMUAFAssetSetSubscription *)self _assetSetUsagesJSONArray];
+  _usageAliasesJSONArray = [(BMUAFAssetSetSubscription *)self _usageAliasesJSONArray];
   v14[0] = @"subscriptionName";
-  v7 = v3;
-  if (!v3)
+  null = subscriptionName;
+  if (!subscriptionName)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"assetSetIndices";
-  v8 = v4;
-  if (!v4)
+  null2 = _assetSetIndicesJSONArray;
+  if (!_assetSetIndicesJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"assetSetUsages";
-  v9 = v5;
-  if (!v5)
+  null3 = _assetSetUsagesJSONArray;
+  if (!_assetSetUsagesJSONArray)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"usageAliases";
-  v10 = v6;
-  if (!v6)
+  null4 = _usageAliasesJSONArray;
+  if (!_usageAliasesJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (_usageAliasesJSONArray)
   {
-    if (v5)
+    if (_assetSetUsagesJSONArray)
     {
       goto LABEL_11;
     }
@@ -159,17 +159,17 @@ LABEL_20:
   else
   {
 
-    if (v5)
+    if (_assetSetUsagesJSONArray)
     {
 LABEL_11:
-      if (v4)
+      if (_assetSetIndicesJSONArray)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (subscriptionName)
       {
         goto LABEL_13;
       }
@@ -178,13 +178,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!_assetSetIndicesJSONArray)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (subscriptionName)
   {
     goto LABEL_13;
   }
@@ -205,8 +205,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMUAFAssetSetSubscription *)self usageAliases];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  usageAliases = [(BMUAFAssetSetSubscription *)self usageAliases];
+  v5 = [usageAliases countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -217,14 +217,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(usageAliases);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [usageAliases countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -243,8 +243,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMUAFAssetSetSubscription *)self assetSetUsages];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  assetSetUsages = [(BMUAFAssetSetSubscription *)self assetSetUsages];
+  v5 = [assetSetUsages countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -255,14 +255,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetSetUsages);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [assetSetUsages countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -281,8 +281,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMUAFAssetSetSubscription *)self assetSetIndices];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  assetSetIndices = [(BMUAFAssetSetSubscription *)self assetSetIndices];
+  v5 = [assetSetIndices countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -293,13 +293,13 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetSetIndices);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [assetSetIndices countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -310,17 +310,17 @@ LABEL_13:
   return v3;
 }
 
-- (BMUAFAssetSetSubscription)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMUAFAssetSetSubscription)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v129[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"subscriptionName"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionName"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -330,13 +330,13 @@ LABEL_13:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:&v128 count:1];
         v33 = [v31 initWithDomain:v32 code:2 userInfo:v10];
         v30 = 0;
-        v29 = 0;
-        *a4 = v33;
+        selfCopy4 = 0;
+        *error = v33;
         goto LABEL_93;
       }
 
       v30 = 0;
-      v29 = 0;
+      selfCopy4 = 0;
       goto LABEL_95;
     }
 
@@ -348,14 +348,14 @@ LABEL_13:
     v89 = 0;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"assetSetIndices"];
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = [v7 isEqual:v8];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"assetSetIndices"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = [v7 isEqual:null];
 
   if (v9)
   {
     v86 = v6;
-    v87 = self;
+    selfCopy2 = self;
 
     v7 = 0;
   }
@@ -367,9 +367,9 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v29 = 0;
+          selfCopy4 = 0;
           v30 = v89;
           goto LABEL_94;
         }
@@ -380,14 +380,14 @@ LABEL_13:
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"assetSetIndices"];
         v127 = v10;
         obj = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:1];
-        v29 = 0;
-        *a4 = [v46 initWithDomain:v47 code:2 userInfo:?];
+        selfCopy4 = 0;
+        *error = [v46 initWithDomain:v47 code:2 userInfo:?];
         goto LABEL_48;
       }
     }
 
     v86 = v6;
-    v87 = self;
+    selfCopy2 = self;
   }
 
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -406,7 +406,7 @@ LABEL_13:
   v13 = *v104;
   do
   {
-    v14 = v5;
+    v14 = dictionaryCopy;
     for (i = 0; i != v12; ++i)
     {
       if (*v104 != v13)
@@ -418,8 +418,8 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v21 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -431,22 +431,22 @@ LABEL_13:
           v25 = v22;
           v26 = v23;
 LABEL_26:
-          v5 = v14;
+          dictionaryCopy = v14;
           v6 = v86;
-          self = v87;
-          v29 = 0;
-          *v20 = [v24 initWithDomain:v25 code:2 userInfo:v23];
+          self = selfCopy2;
+          selfCopy4 = 0;
+          *errorCopy2 = [v24 initWithDomain:v25 code:2 userInfo:v23];
           obj = v7;
           goto LABEL_27;
         }
 
 LABEL_28:
-        v29 = 0;
+        selfCopy4 = 0;
         obj = v7;
-        v5 = v14;
+        dictionaryCopy = v14;
 LABEL_29:
         v6 = v86;
-        self = v87;
+        self = selfCopy2;
 LABEL_48:
         v30 = v89;
         goto LABEL_92;
@@ -455,8 +455,8 @@ LABEL_48:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v20 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -477,17 +477,17 @@ LABEL_48:
     }
 
     v12 = [v7 countByEnumeratingWithState:&v103 objects:v125 count:16];
-    v5 = v14;
+    dictionaryCopy = v14;
   }
 
   while (v12);
 LABEL_18:
 
-  v17 = [v5 objectForKeyedSubscript:@"assetSetUsages"];
-  v18 = [MEMORY[0x1E695DFB0] null];
-  v19 = [v17 isEqual:v18];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"assetSetUsages"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v19 = [v17 isEqual:null2];
 
-  v85 = v5;
+  v85 = dictionaryCopy;
   if (!v19)
   {
     if (!v17)
@@ -502,7 +502,7 @@ LABEL_18:
     }
 
     obj = v17;
-    if (a4)
+    if (error)
     {
       v65 = objc_alloc(MEMORY[0x1E696ABC0]);
       v66 = *MEMORY[0x1E698F240];
@@ -510,13 +510,13 @@ LABEL_18:
       v91 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"assetSetUsages"];
       v120 = v91;
       v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
-      v29 = 0;
-      *a4 = [v65 initWithDomain:v66 code:2 userInfo:v67];
+      selfCopy4 = 0;
+      *error = [v65 initWithDomain:v66 code:2 userInfo:v67];
       v26 = v67;
       goto LABEL_76;
     }
 
-    v29 = 0;
+    selfCopy4 = 0;
     goto LABEL_29;
   }
 
@@ -550,7 +550,7 @@ LABEL_34:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (a4)
+        if (error)
         {
           v48 = objc_alloc(MEMORY[0x1E696ABC0]);
           v49 = *MEMORY[0x1E698F240];
@@ -558,16 +558,16 @@ LABEL_34:
           v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type null for element of %@, must not be null", @"assetSetUsages"];
           v117 = v40;
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
-          *a4 = [v48 initWithDomain:v49 code:2 userInfo:v50];
+          *error = [v48 initWithDomain:v49 code:2 userInfo:v50];
 
           goto LABEL_55;
         }
 
 LABEL_75:
-        v29 = 0;
+        selfCopy4 = 0;
         v26 = obj;
 LABEL_76:
-        self = v87;
+        self = selfCopy2;
 LABEL_77:
         v6 = v86;
 LABEL_27:
@@ -578,7 +578,7 @@ LABEL_27:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_75;
         }
@@ -589,12 +589,12 @@ LABEL_27:
         v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"assetSetUsages"];
         v115 = v40;
         v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
-        *a4 = [v51 initWithDomain:v52 code:2 userInfo:v53];
+        *error = [v51 initWithDomain:v52 code:2 userInfo:v53];
 
 LABEL_55:
-        v29 = 0;
+        selfCopy4 = 0;
         v26 = obj;
-        self = v87;
+        self = selfCopy2;
         goto LABEL_56;
       }
 
@@ -607,15 +607,15 @@ LABEL_55:
       {
         v54 = v43;
         v6 = v86;
-        if (a4)
+        if (error)
         {
           v55 = v43;
-          *a4 = v54;
+          *error = v54;
         }
 
-        v29 = 0;
+        selfCopy4 = 0;
         v26 = obj;
-        self = v87;
+        self = selfCopy2;
         goto LABEL_89;
       }
 
@@ -629,27 +629,27 @@ LABEL_55:
   while (v36);
 LABEL_44:
 
-  v26 = [v5 objectForKeyedSubscript:@"usageAliases"];
-  v44 = [MEMORY[0x1E695DFB0] null];
-  v45 = [v26 isEqual:v44];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"usageAliases"];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v45 = [v26 isEqual:null3];
 
   if (v45)
   {
 
     v26 = 0;
-    self = v87;
+    self = selfCopy2;
     goto LABEL_62;
   }
 
-  self = v87;
+  self = selfCopy2;
   if (v26)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
-        v29 = 0;
+        selfCopy4 = 0;
         goto LABEL_77;
       }
 
@@ -662,9 +662,9 @@ LABEL_44:
       v82 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v113 forKeys:&v112 count:1];
       v83 = v81;
       v26 = v80;
-      *a4 = [v79 initWithDomain:v83 code:2 userInfo:v82];
+      *error = [v79 initWithDomain:v83 code:2 userInfo:v82];
 
-      v29 = 0;
+      selfCopy4 = 0;
 LABEL_56:
       v6 = v86;
 LABEL_89:
@@ -689,7 +689,7 @@ LABEL_62:
   v57 = v56;
   v58 = *v95;
   v84 = v26;
-  v88 = self;
+  selfCopy3 = self;
   while (2)
   {
     v59 = 0;
@@ -704,10 +704,10 @@ LABEL_62:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v85;
+        dictionaryCopy = v85;
         v6 = v86;
-        self = v88;
-        if (a4)
+        self = selfCopy3;
+        if (error)
         {
           v68 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = v86;
@@ -722,7 +722,7 @@ LABEL_83:
           v74 = [v71 dictionaryWithObjects:v72 forKeys:v73 count:1];
           v75 = v70;
           v6 = v69;
-          *a4 = [v68 initWithDomain:v75 code:2 userInfo:v74];
+          *error = [v68 initWithDomain:v75 code:2 userInfo:v74];
 LABEL_87:
 
           v26 = v84;
@@ -730,17 +730,17 @@ LABEL_87:
 
 LABEL_88:
 
-        v29 = 0;
+        selfCopy4 = 0;
         goto LABEL_89;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v5 = v85;
+        dictionaryCopy = v85;
         v6 = v86;
-        self = v88;
-        if (a4)
+        self = selfCopy3;
+        if (error)
         {
           v68 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = v86;
@@ -765,15 +765,15 @@ LABEL_88:
       if (v64)
       {
         v74 = v64;
-        if (a4)
+        if (error)
         {
           v76 = v64;
-          *a4 = v74;
+          *error = v74;
         }
 
-        v5 = v85;
+        dictionaryCopy = v85;
         v6 = v86;
-        self = v88;
+        self = selfCopy3;
         goto LABEL_87;
       }
 
@@ -790,7 +790,7 @@ LABEL_88:
     }
 
     v57 = [v84 countByEnumeratingWithState:&v94 objects:v111 count:16];
-    self = v88;
+    self = selfCopy3;
     if (v57)
     {
       continue;
@@ -803,8 +803,8 @@ LABEL_72:
 
   v30 = v89;
   self = [(BMUAFAssetSetSubscription *)self initWithSubscriptionName:v89 assetSetIndices:v10 assetSetUsages:v91 usageAliases:v40];
-  v29 = self;
-  v5 = v85;
+  selfCopy4 = self;
+  dictionaryCopy = v85;
   v6 = v86;
 LABEL_90:
 
@@ -816,22 +816,22 @@ LABEL_94:
 
 LABEL_95:
   v77 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMUAFAssetSetSubscription *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_subscriptionName)
   {
     PBDataWriterWriteStringField();
@@ -892,7 +892,7 @@ LABEL_95:
         v15 = *(*(&v28 + 1) + 8 * v14);
         v27 = 0;
         PBDataWriterPlaceMark();
-        [v15 writeTo:v4];
+        [v15 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v14;
       }
@@ -927,7 +927,7 @@ LABEL_95:
         v21 = *(*(&v23 + 1) + 8 * v20);
         v27 = 0;
         PBDataWriterPlaceMark();
-        [v21 writeTo:{v4, v23}];
+        [v21 writeTo:{toCopy, v23}];
         PBDataWriterRecallMark();
         ++v20;
       }
@@ -942,9 +942,9 @@ LABEL_95:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v44.receiver = self;
   v44.super_class = BMUAFAssetSetSubscription;
   v5 = [(BMEventBase *)&v44 init];
@@ -960,8 +960,8 @@ LABEL_49:
   v8 = objc_opt_new();
   while (1)
   {
-    v9 = [v4 position];
-    if (v9 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -972,18 +972,18 @@ LABEL_49:
     while (1)
     {
       LOBYTE(v45) = 0;
-      v13 = [v4 position] + 1;
-      if (v13 >= [v4 position] && (v14 = objc_msgSend(v4, "position") + 1, v14 <= objc_msgSend(v4, "length")))
+      v13 = [fromCopy position] + 1;
+      if (v13 >= [fromCopy position] && (v14 = objc_msgSend(fromCopy, "position") + 1, v14 <= objc_msgSend(fromCopy, "length")))
       {
-        v15 = [v4 data];
-        [v15 getBytes:&v45 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v12 |= (v45 & 0x7F) << v10;
@@ -1001,9 +1001,9 @@ LABEL_49:
       }
     }
 
-    v17 = [v4 hasError] ? 0 : v12;
+    v17 = [fromCopy hasError] ? 0 : v12;
 LABEL_17:
-    if (([v4 hasError] & 1) != 0 || (v17 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v17 & 7) == 4)
     {
       break;
     }
@@ -1020,7 +1020,7 @@ LABEL_17:
           goto LABEL_50;
         }
 
-        v32 = [[BMUAFAssetSetUsage alloc] initByReadFrom:v4];
+        v32 = [[BMUAFAssetSetUsage alloc] initByReadFrom:fromCopy];
         if (!v32)
         {
           goto LABEL_50;
@@ -1044,7 +1044,7 @@ LABEL_17:
           goto LABEL_50;
         }
 
-        v27 = [[BMUAFAssetUsageAlias alloc] initByReadFrom:v4];
+        v27 = [[BMUAFAssetUsageAlias alloc] initByReadFrom:fromCopy];
         if (!v27)
         {
           goto LABEL_50;
@@ -1074,18 +1074,18 @@ LABEL_17:
       while (1)
       {
         LOBYTE(v45) = 0;
-        v23 = [v4 position] + 1;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 1;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v25 = [v4 data];
-          [v25 getBytes:&v45 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v21 |= (v45 & 0x7F) << v19;
@@ -1103,7 +1103,7 @@ LABEL_17:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v26 = 0;
       }
@@ -1148,8 +1148,8 @@ LABEL_36:
   usageAliases = v5->_usageAliases;
   v5->_usageAliases = v39;
 
-  v41 = [v4 hasError];
-  if ((v41 & 1) == 0)
+  hasError = [fromCopy hasError];
+  if ((hasError & 1) == 0)
   {
     goto LABEL_49;
   }
@@ -1164,31 +1164,31 @@ LABEL_52:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMUAFAssetSetSubscription *)self subscriptionName];
-  v5 = [(BMUAFAssetSetSubscription *)self assetSetIndices];
-  v6 = [(BMUAFAssetSetSubscription *)self assetSetUsages];
-  v7 = [(BMUAFAssetSetSubscription *)self usageAliases];
-  v8 = [v3 initWithFormat:@"BMUAFAssetSetSubscription with subscriptionName: %@, assetSetIndices: %@, assetSetUsages: %@, usageAliases: %@", v4, v5, v6, v7];
+  subscriptionName = [(BMUAFAssetSetSubscription *)self subscriptionName];
+  assetSetIndices = [(BMUAFAssetSetSubscription *)self assetSetIndices];
+  assetSetUsages = [(BMUAFAssetSetSubscription *)self assetSetUsages];
+  usageAliases = [(BMUAFAssetSetSubscription *)self usageAliases];
+  v8 = [v3 initWithFormat:@"BMUAFAssetSetSubscription with subscriptionName: %@, assetSetIndices: %@, assetSetUsages: %@, usageAliases: %@", subscriptionName, assetSetIndices, assetSetUsages, usageAliases];
 
   return v8;
 }
 
-- (BMUAFAssetSetSubscription)initWithSubscriptionName:(id)a3 assetSetIndices:(id)a4 assetSetUsages:(id)a5 usageAliases:(id)a6
+- (BMUAFAssetSetSubscription)initWithSubscriptionName:(id)name assetSetIndices:(id)indices assetSetUsages:(id)usages usageAliases:(id)aliases
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  indicesCopy = indices;
+  usagesCopy = usages;
+  aliasesCopy = aliases;
   v17.receiver = self;
   v17.super_class = BMUAFAssetSetSubscription;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_subscriptionName, a3);
-    objc_storeStrong(&v15->_assetSetIndices, a4);
-    objc_storeStrong(&v15->_assetSetUsages, a5);
-    objc_storeStrong(&v15->_usageAliases, a6);
+    objc_storeStrong(&v15->_subscriptionName, name);
+    objc_storeStrong(&v15->_assetSetIndices, indices);
+    objc_storeStrong(&v15->_assetSetUsages, usages);
+    objc_storeStrong(&v15->_usageAliases, aliases);
   }
 
   return v15;
@@ -1257,9 +1257,9 @@ id __36__BMUAFAssetSetSubscription_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1267,8 +1267,8 @@ id __36__BMUAFAssetSetSubscription_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMUAFAssetSetSubscription alloc] initByReadFrom:v7];
     v4 = v8;

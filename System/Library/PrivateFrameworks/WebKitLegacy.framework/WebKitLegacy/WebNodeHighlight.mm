@@ -1,5 +1,5 @@
 @interface WebNodeHighlight
-- (WebNodeHighlight)initWithTargetView:(id)a3 inspectorController:(NakedPtr<WebCore::InspectorController>)a4;
+- (WebNodeHighlight)initWithTargetView:(id)view inspectorController:(NakedPtr<WebCore::InspectorController>)controller;
 - (void)attach;
 - (void)dealloc;
 - (void)detach;
@@ -8,17 +8,17 @@
 
 @implementation WebNodeHighlight
 
-- (WebNodeHighlight)initWithTargetView:(id)a3 inspectorController:(NakedPtr<WebCore::InspectorController>)a4
+- (WebNodeHighlight)initWithTargetView:(id)view inspectorController:(NakedPtr<WebCore::InspectorController>)controller
 {
   v9.receiver = self;
   v9.super_class = WebNodeHighlight;
   v6 = [(WebNodeHighlight *)&v9 init];
   if (v6)
   {
-    v6->_targetView = a3;
-    v6->_inspectorController.m_ptr = *a4.m_ptr;
+    v6->_targetView = view;
+    v6->_inspectorController.m_ptr = *controller.m_ptr;
     v6->_highlightView = [[WebNodeHighlightView alloc] initWithWebNodeHighlight:v6];
-    v7 = [[WebHighlightLayer alloc] initWithHighlightView:v6->_highlightView webView:a3];
+    v7 = [[WebHighlightLayer alloc] initWithHighlightView:v6->_highlightView webView:view];
     v6->_highlightLayer = v7;
     [-[WAKView window](v6->_targetView "window")];
     [(WebHighlightLayer *)v7 setContentsScale:?];

@@ -1,7 +1,7 @@
 @interface MCDBrowsableContentUtilities
 + (id)sharedInstance;
 - (NSArray)firstPartyAppBundleIDs;
-- (void)setNowPlayingIdentifiers:(id)a3;
+- (void)setNowPlayingIdentifiers:(id)identifiers;
 @end
 
 @implementation MCDBrowsableContentUtilities
@@ -25,14 +25,14 @@ uint64_t __46__MCDBrowsableContentUtilities_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setNowPlayingIdentifiers:(id)a3
+- (void)setNowPlayingIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   nowPlayingIdentifiers = self->_nowPlayingIdentifiers;
   p_nowPlayingIdentifiers = &self->_nowPlayingIdentifiers;
-  if (![(NSArray *)nowPlayingIdentifiers isEqualToArray:v5])
+  if (![(NSArray *)nowPlayingIdentifiers isEqualToArray:identifiersCopy])
   {
-    objc_storeStrong(p_nowPlayingIdentifiers, a3);
+    objc_storeStrong(p_nowPlayingIdentifiers, identifiers);
     v8 = MCDGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -40,8 +40,8 @@ uint64_t __46__MCDBrowsableContentUtilities_sharedInstance__block_invoke()
       _os_log_impl(&dword_25AD8E000, v8, OS_LOG_TYPE_DEFAULT, "Posting MCDBrowsableContentNowPlayingIdentifiersUpdatedNotification", v10, 2u);
     }
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 postNotificationName:@"MCDBrowsableContentNowPlayingIdentifiersUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"MCDBrowsableContentNowPlayingIdentifiersUpdatedNotification" object:0];
   }
 }
 

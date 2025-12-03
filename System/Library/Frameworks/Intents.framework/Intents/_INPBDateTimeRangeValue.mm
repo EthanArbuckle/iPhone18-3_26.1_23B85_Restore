@@ -1,63 +1,63 @@
 @interface _INPBDateTimeRangeValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBDateTimeRangeValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDateTimeRangeValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasEndCalendar:(BOOL)a3;
-- (void)setHasStartCalendar:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasEndCalendar:(BOOL)calendar;
+- (void)setHasStartCalendar:(BOOL)calendar;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDateTimeRangeValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDateTimeRangeValue *)self hasAllDay])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBDateTimeRangeValue allDay](self, "allDay")}];
-    [v3 setObject:v4 forKeyedSubscript:@"allDay"];
+    [dictionary setObject:v4 forKeyedSubscript:@"allDay"];
   }
 
   if ([(_INPBDateTimeRangeValue *)self hasEndCalendar])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBDateTimeRangeValue endCalendar](self, "endCalendar")}];
-    [v3 setObject:v5 forKeyedSubscript:@"endCalendar"];
+    [dictionary setObject:v5 forKeyedSubscript:@"endCalendar"];
   }
 
-  v6 = [(_INPBDateTimeRangeValue *)self endDateTime];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"endDateTime"];
+  endDateTime = [(_INPBDateTimeRangeValue *)self endDateTime];
+  dictionaryRepresentation = [endDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"endDateTime"];
 
   if (self->_name)
   {
-    v8 = [(_INPBDateTimeRangeValue *)self name];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"name"];
+    name = [(_INPBDateTimeRangeValue *)self name];
+    v9 = [name copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"name"];
   }
 
-  v10 = [(_INPBDateTimeRangeValue *)self recurrence];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"recurrence"];
+  recurrence = [(_INPBDateTimeRangeValue *)self recurrence];
+  dictionaryRepresentation2 = [recurrence dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"recurrence"];
 
   if ([(_INPBDateTimeRangeValue *)self hasStartCalendar])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBDateTimeRangeValue startCalendar](self, "startCalendar")}];
-    [v3 setObject:v12 forKeyedSubscript:@"startCalendar"];
+    [dictionary setObject:v12 forKeyedSubscript:@"startCalendar"];
   }
 
-  v13 = [(_INPBDateTimeRangeValue *)self startDateTime];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"startDateTime"];
+  startDateTime = [(_INPBDateTimeRangeValue *)self startDateTime];
+  dictionaryRepresentation3 = [startDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"startDateTime"];
 
-  v15 = [(_INPBDateTimeRangeValue *)self valueMetadata];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBDateTimeRangeValue *)self valueMetadata];
+  dictionaryRepresentation4 = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -100,64 +100,64 @@
   return v9 ^ v10 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
-  v5 = [(_INPBDateTimeRangeValue *)self hasAllDay];
-  if (v5 != [v4 hasAllDay])
+  hasAllDay = [(_INPBDateTimeRangeValue *)self hasAllDay];
+  if (hasAllDay != [equalCopy hasAllDay])
   {
     goto LABEL_39;
   }
 
   if ([(_INPBDateTimeRangeValue *)self hasAllDay])
   {
-    if ([v4 hasAllDay])
+    if ([equalCopy hasAllDay])
     {
       allDay = self->_allDay;
-      if (allDay != [v4 allDay])
+      if (allDay != [equalCopy allDay])
       {
         goto LABEL_39;
       }
     }
   }
 
-  v7 = [(_INPBDateTimeRangeValue *)self hasEndCalendar];
-  if (v7 != [v4 hasEndCalendar])
+  hasEndCalendar = [(_INPBDateTimeRangeValue *)self hasEndCalendar];
+  if (hasEndCalendar != [equalCopy hasEndCalendar])
   {
     goto LABEL_39;
   }
 
   if ([(_INPBDateTimeRangeValue *)self hasEndCalendar])
   {
-    if ([v4 hasEndCalendar])
+    if ([equalCopy hasEndCalendar])
     {
       endCalendar = self->_endCalendar;
-      if (endCalendar != [v4 endCalendar])
+      if (endCalendar != [equalCopy endCalendar])
       {
         goto LABEL_39;
       }
     }
   }
 
-  v9 = [(_INPBDateTimeRangeValue *)self endDateTime];
-  v10 = [v4 endDateTime];
-  if ((v9 != 0) == (v10 == 0))
+  endDateTime = [(_INPBDateTimeRangeValue *)self endDateTime];
+  endDateTime2 = [equalCopy endDateTime];
+  if ((endDateTime != 0) == (endDateTime2 == 0))
   {
     goto LABEL_38;
   }
 
-  v11 = [(_INPBDateTimeRangeValue *)self endDateTime];
-  if (v11)
+  endDateTime3 = [(_INPBDateTimeRangeValue *)self endDateTime];
+  if (endDateTime3)
   {
-    v12 = v11;
-    v13 = [(_INPBDateTimeRangeValue *)self endDateTime];
-    v14 = [v4 endDateTime];
-    v15 = [v13 isEqual:v14];
+    v12 = endDateTime3;
+    endDateTime4 = [(_INPBDateTimeRangeValue *)self endDateTime];
+    endDateTime5 = [equalCopy endDateTime];
+    v15 = [endDateTime4 isEqual:endDateTime5];
 
     if (!v15)
     {
@@ -169,20 +169,20 @@
   {
   }
 
-  v9 = [(_INPBDateTimeRangeValue *)self name];
-  v10 = [v4 name];
-  if ((v9 != 0) == (v10 == 0))
+  endDateTime = [(_INPBDateTimeRangeValue *)self name];
+  endDateTime2 = [equalCopy name];
+  if ((endDateTime != 0) == (endDateTime2 == 0))
   {
     goto LABEL_38;
   }
 
-  v16 = [(_INPBDateTimeRangeValue *)self name];
-  if (v16)
+  name = [(_INPBDateTimeRangeValue *)self name];
+  if (name)
   {
-    v17 = v16;
-    v18 = [(_INPBDateTimeRangeValue *)self name];
-    v19 = [v4 name];
-    v20 = [v18 isEqual:v19];
+    v17 = name;
+    name2 = [(_INPBDateTimeRangeValue *)self name];
+    name3 = [equalCopy name];
+    v20 = [name2 isEqual:name3];
 
     if (!v20)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v9 = [(_INPBDateTimeRangeValue *)self recurrence];
-  v10 = [v4 recurrence];
-  if ((v9 != 0) == (v10 == 0))
+  endDateTime = [(_INPBDateTimeRangeValue *)self recurrence];
+  endDateTime2 = [equalCopy recurrence];
+  if ((endDateTime != 0) == (endDateTime2 == 0))
   {
     goto LABEL_38;
   }
 
-  v21 = [(_INPBDateTimeRangeValue *)self recurrence];
-  if (v21)
+  recurrence = [(_INPBDateTimeRangeValue *)self recurrence];
+  if (recurrence)
   {
-    v22 = v21;
-    v23 = [(_INPBDateTimeRangeValue *)self recurrence];
-    v24 = [v4 recurrence];
-    v25 = [v23 isEqual:v24];
+    v22 = recurrence;
+    recurrence2 = [(_INPBDateTimeRangeValue *)self recurrence];
+    recurrence3 = [equalCopy recurrence];
+    v25 = [recurrence2 isEqual:recurrence3];
 
     if (!v25)
     {
@@ -219,38 +219,38 @@
   {
   }
 
-  v26 = [(_INPBDateTimeRangeValue *)self hasStartCalendar];
-  if (v26 != [v4 hasStartCalendar])
+  hasStartCalendar = [(_INPBDateTimeRangeValue *)self hasStartCalendar];
+  if (hasStartCalendar != [equalCopy hasStartCalendar])
   {
     goto LABEL_39;
   }
 
   if ([(_INPBDateTimeRangeValue *)self hasStartCalendar])
   {
-    if ([v4 hasStartCalendar])
+    if ([equalCopy hasStartCalendar])
     {
       startCalendar = self->_startCalendar;
-      if (startCalendar != [v4 startCalendar])
+      if (startCalendar != [equalCopy startCalendar])
       {
         goto LABEL_39;
       }
     }
   }
 
-  v9 = [(_INPBDateTimeRangeValue *)self startDateTime];
-  v10 = [v4 startDateTime];
-  if ((v9 != 0) == (v10 == 0))
+  endDateTime = [(_INPBDateTimeRangeValue *)self startDateTime];
+  endDateTime2 = [equalCopy startDateTime];
+  if ((endDateTime != 0) == (endDateTime2 == 0))
   {
     goto LABEL_38;
   }
 
-  v28 = [(_INPBDateTimeRangeValue *)self startDateTime];
-  if (v28)
+  startDateTime = [(_INPBDateTimeRangeValue *)self startDateTime];
+  if (startDateTime)
   {
-    v29 = v28;
-    v30 = [(_INPBDateTimeRangeValue *)self startDateTime];
-    v31 = [v4 startDateTime];
-    v32 = [v30 isEqual:v31];
+    v29 = startDateTime;
+    startDateTime2 = [(_INPBDateTimeRangeValue *)self startDateTime];
+    startDateTime3 = [equalCopy startDateTime];
+    v32 = [startDateTime2 isEqual:startDateTime3];
 
     if (!v32)
     {
@@ -262,12 +262,12 @@
   {
   }
 
-  v9 = [(_INPBDateTimeRangeValue *)self valueMetadata];
-  v10 = [v4 valueMetadata];
-  if ((v9 != 0) != (v10 == 0))
+  endDateTime = [(_INPBDateTimeRangeValue *)self valueMetadata];
+  endDateTime2 = [equalCopy valueMetadata];
+  if ((endDateTime != 0) != (endDateTime2 == 0))
   {
-    v33 = [(_INPBDateTimeRangeValue *)self valueMetadata];
-    if (!v33)
+    valueMetadata = [(_INPBDateTimeRangeValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_42:
@@ -275,10 +275,10 @@ LABEL_42:
       goto LABEL_40;
     }
 
-    v34 = v33;
-    v35 = [(_INPBDateTimeRangeValue *)self valueMetadata];
-    v36 = [v4 valueMetadata];
-    v37 = [v35 isEqual:v36];
+    v34 = valueMetadata;
+    valueMetadata2 = [(_INPBDateTimeRangeValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v37 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v37)
     {
@@ -298,7 +298,7 @@ LABEL_40:
   return v38;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDateTimeRangeValue allocWithZone:](_INPBDateTimeRangeValue init];
   if ([(_INPBDateTimeRangeValue *)self hasAllDay])
@@ -311,13 +311,13 @@ LABEL_40:
     [(_INPBDateTimeRangeValue *)v5 setEndCalendar:[(_INPBDateTimeRangeValue *)self endCalendar]];
   }
 
-  v6 = [(_INPBDateTime *)self->_endDateTime copyWithZone:a3];
+  v6 = [(_INPBDateTime *)self->_endDateTime copyWithZone:zone];
   [(_INPBDateTimeRangeValue *)v5 setEndDateTime:v6];
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   [(_INPBDateTimeRangeValue *)v5 setName:v7];
 
-  v8 = [(_INPBRecurrenceValue *)self->_recurrence copyWithZone:a3];
+  v8 = [(_INPBRecurrenceValue *)self->_recurrence copyWithZone:zone];
   [(_INPBDateTimeRangeValue *)v5 setRecurrence:v8];
 
   if ([(_INPBDateTimeRangeValue *)self hasStartCalendar])
@@ -325,42 +325,42 @@ LABEL_40:
     [(_INPBDateTimeRangeValue *)v5 setStartCalendar:[(_INPBDateTimeRangeValue *)self startCalendar]];
   }
 
-  v9 = [(_INPBDateTime *)self->_startDateTime copyWithZone:a3];
+  v9 = [(_INPBDateTime *)self->_startDateTime copyWithZone:zone];
   [(_INPBDateTimeRangeValue *)v5 setStartDateTime:v9];
 
-  v10 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v10 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBDateTimeRangeValue *)v5 setValueMetadata:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDateTimeRangeValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBDateTimeRangeValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDateTimeRangeValue)initWithCoder:(id)a3
+- (_INPBDateTimeRangeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDateTimeRangeValue *)self initWithData:v6];
+    self = [(_INPBDateTimeRangeValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   if ([(_INPBDateTimeRangeValue *)self hasAllDay])
   {
     allDay = self->_allDay;
@@ -373,27 +373,27 @@ LABEL_40:
     PBDataWriterWriteInt64Field();
   }
 
-  v6 = [(_INPBDateTimeRangeValue *)self endDateTime];
+  endDateTime = [(_INPBDateTimeRangeValue *)self endDateTime];
 
-  if (v6)
+  if (endDateTime)
   {
-    v7 = [(_INPBDateTimeRangeValue *)self endDateTime];
+    endDateTime2 = [(_INPBDateTimeRangeValue *)self endDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBDateTimeRangeValue *)self name];
+  name = [(_INPBDateTimeRangeValue *)self name];
 
-  if (v8)
+  if (name)
   {
     name = self->_name;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBDateTimeRangeValue *)self recurrence];
+  recurrence = [(_INPBDateTimeRangeValue *)self recurrence];
 
-  if (v10)
+  if (recurrence)
   {
-    v11 = [(_INPBDateTimeRangeValue *)self recurrence];
+    recurrence2 = [(_INPBDateTimeRangeValue *)self recurrence];
     PBDataWriterWriteSubmessage();
   }
 
@@ -403,29 +403,29 @@ LABEL_40:
     PBDataWriterWriteInt64Field();
   }
 
-  v13 = [(_INPBDateTimeRangeValue *)self startDateTime];
+  startDateTime = [(_INPBDateTimeRangeValue *)self startDateTime];
 
-  if (v13)
+  if (startDateTime)
   {
-    v14 = [(_INPBDateTimeRangeValue *)self startDateTime];
+    startDateTime2 = [(_INPBDateTimeRangeValue *)self startDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBDateTimeRangeValue *)self valueMetadata];
+  valueMetadata = [(_INPBDateTimeRangeValue *)self valueMetadata];
 
-  v16 = v18;
-  if (v15)
+  v16 = toCopy;
+  if (valueMetadata)
   {
-    v17 = [(_INPBDateTimeRangeValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBDateTimeRangeValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v16 = v18;
+    v16 = toCopy;
   }
 }
 
-- (void)setHasStartCalendar:(BOOL)a3
+- (void)setHasStartCalendar:(BOOL)calendar
 {
-  if (a3)
+  if (calendar)
   {
     v3 = 4;
   }
@@ -438,18 +438,18 @@ LABEL_40:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8](v4, name);
 }
 
-- (void)setHasEndCalendar:(BOOL)a3
+- (void)setHasEndCalendar:(BOOL)calendar
 {
-  if (a3)
+  if (calendar)
   {
     v3 = 2;
   }

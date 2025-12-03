@@ -1,11 +1,11 @@
 @interface GQDWrapPoint
-- (GQDWrapPoint)initWithX:(float)a3 y:(float)a4 flowType:(int)a5 drawable:(id)a6;
-- (int64_t)comparePoint:(id)a3;
+- (GQDWrapPoint)initWithX:(float)x y:(float)y flowType:(int)type drawable:(id)drawable;
+- (int64_t)comparePoint:(id)point;
 @end
 
 @implementation GQDWrapPoint
 
-- (GQDWrapPoint)initWithX:(float)a3 y:(float)a4 flowType:(int)a5 drawable:(id)a6
+- (GQDWrapPoint)initWithX:(float)x y:(float)y flowType:(int)type drawable:(id)drawable
 {
   v15.receiver = self;
   v15.super_class = GQDWrapPoint;
@@ -13,27 +13,27 @@
   v11 = v10;
   if (v10)
   {
-    v10->mPoint.x = a3;
-    v10->mPoint.y = a4;
+    v10->mPoint.x = x;
+    v10->mPoint.y = y;
     v10->mDistance = 0.0;
-    v10->mFlowType = a5;
-    v10->mDrawable = a6;
-    v12 = [a6 hasPagesOrder];
-    v13 = 0;
-    if (v12)
+    v10->mFlowType = type;
+    v10->mDrawable = drawable;
+    hasPagesOrder = [drawable hasPagesOrder];
+    pagesOrder = 0;
+    if (hasPagesOrder)
     {
-      v13 = [a6 pagesOrder];
+      pagesOrder = [drawable pagesOrder];
     }
 
-    v11->mZIndex = v13;
+    v11->mZIndex = pagesOrder;
   }
 
   return v11;
 }
 
-- (int64_t)comparePoint:(id)a3
+- (int64_t)comparePoint:(id)point
 {
-  v3 = *(a3 + 2);
+  v3 = *(point + 2);
   y = self->mPoint.y;
   if (v3 > y)
   {
@@ -45,7 +45,7 @@
     return 1;
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(point + 1);
   x = self->mPoint.x;
   if (v6 > x)
   {
@@ -57,7 +57,7 @@
     return 1;
   }
 
-  v8 = *(a3 + 10);
+  v8 = *(point + 10);
   mFlowType = self->mFlowType;
   v12 = __OFSUB__(v8, mFlowType);
   v10 = v8 == mFlowType;

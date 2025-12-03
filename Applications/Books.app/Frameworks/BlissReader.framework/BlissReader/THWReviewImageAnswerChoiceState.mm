@@ -1,22 +1,22 @@
 @interface THWReviewImageAnswerChoiceState
 - (NSString)choiceAccessibilityDescription;
-- (THWReviewImageAnswerChoiceState)initWithChoice:(id)a3 questionRep:(id)a4 questionHost:(id)a5;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
-- (int)buttonControlState:(id)a3;
+- (THWReviewImageAnswerChoiceState)initWithChoice:(id)choice questionRep:(id)rep questionHost:(id)host;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
+- (int)buttonControlState:(id)state;
 - (unint64_t)p_choiceIndex;
-- (void)buttonControl:(id)a3 addAdditionalChildLayersToArray:(id)a4;
-- (void)buttonControlHighlightedDidChange:(id)a3;
-- (void)buttonControlWasPressed:(id)a3;
+- (void)buttonControl:(id)control addAdditionalChildLayersToArray:(id)array;
+- (void)buttonControlHighlightedDidChange:(id)change;
+- (void)buttonControlWasPressed:(id)pressed;
 - (void)dealloc;
-- (void)p_setImagePressed:(BOOL)a3 forButton:(id)a4;
-- (void)setChoiceState:(int)a3;
-- (void)setRadioState:(int)a3;
+- (void)p_setImagePressed:(BOOL)pressed forButton:(id)button;
+- (void)setChoiceState:(int)state;
+- (void)setRadioState:(int)state;
 - (void)updateRadioState;
 @end
 
 @implementation THWReviewImageAnswerChoiceState
 
-- (THWReviewImageAnswerChoiceState)initWithChoice:(id)a3 questionRep:(id)a4 questionHost:(id)a5
+- (THWReviewImageAnswerChoiceState)initWithChoice:(id)choice questionRep:(id)rep questionHost:(id)host
 {
   v11.receiver = self;
   v11.super_class = THWReviewImageAnswerChoiceState;
@@ -24,9 +24,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_questionRep = a4;
-    v8->_questionHost = a5;
-    v8->_choice = a3;
+    v8->_questionRep = rep;
+    v8->_questionHost = host;
+    v8->_choice = choice;
     [(THWReviewImageAnswerChoiceState *)v9 updateRadioState];
   }
 
@@ -40,20 +40,20 @@
   [(THWReviewImageAnswerChoiceState *)&v3 dealloc];
 }
 
-- (void)setChoiceState:(int)a3
+- (void)setChoiceState:(int)state
 {
-  if (self->_choiceState != a3)
+  if (self->_choiceState != state)
   {
-    self->_choiceState = a3;
+    self->_choiceState = state;
     [(THWReviewQuestionHosting *)self->_questionHost reviewQuestionInvalidateLayers:self->_questionRep];
   }
 }
 
-- (void)setRadioState:(int)a3
+- (void)setRadioState:(int)state
 {
-  if (self->_radioState != a3)
+  if (self->_radioState != state)
   {
-    self->_radioState = a3;
+    self->_radioState = state;
     [(THWReviewQuestionHosting *)self->_questionHost reviewQuestionInvalidateLayers:self->_questionRep];
   }
 }
@@ -65,16 +65,16 @@
   [(THWReviewImageAnswerChoiceState *)self setRadioState:v3];
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
   questionRep = self->_questionRep;
   questionHost = self->_questionHost;
-  v5 = [(THWReviewImageAnswerChoiceState *)self p_choiceIndex];
+  p_choiceIndex = [(THWReviewImageAnswerChoiceState *)self p_choiceIndex];
 
-  [(THWReviewQuestionHosting *)questionHost reviewQuestion:questionRep selectChoice:v5];
+  [(THWReviewQuestionHosting *)questionHost reviewQuestion:questionRep selectChoice:p_choiceIndex];
 }
 
-- (int)buttonControlState:(id)a3
+- (int)buttonControlState:(id)state
 {
   if ([(THWReviewQuestionRep *)self->_questionRep questionState]== 6)
   {
@@ -87,9 +87,9 @@
   }
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  if ([objc_msgSend(a3 "layout")])
+  if ([objc_msgSend(control "layout")])
   {
     return 0;
   }
@@ -99,20 +99,20 @@
   return [(THWReviewChoice *)choice contentImage];
 }
 
-- (void)buttonControlHighlightedDidChange:(id)a3
+- (void)buttonControlHighlightedDidChange:(id)change
 {
-  self->_pressed = [a3 highlighted];
-  -[THWReviewImageAnswerChoiceState setRadioState:](self, "setRadioState:", -[THWReviewQuestionHosting reviewQuestion:radioStateForChoice:pressed:](self->_questionHost, "reviewQuestion:radioStateForChoice:pressed:", self->_questionRep, -[THWReviewImageAnswerChoiceState p_choiceIndex](self, "p_choiceIndex"), [a3 highlighted]));
+  self->_pressed = [change highlighted];
+  -[THWReviewImageAnswerChoiceState setRadioState:](self, "setRadioState:", -[THWReviewQuestionHosting reviewQuestion:radioStateForChoice:pressed:](self->_questionHost, "reviewQuestion:radioStateForChoice:pressed:", self->_questionRep, -[THWReviewImageAnswerChoiceState p_choiceIndex](self, "p_choiceIndex"), [change highlighted]));
   pressed = self->_pressed;
 
-  [(THWReviewImageAnswerChoiceState *)self p_setImagePressed:pressed forButton:a3];
+  [(THWReviewImageAnswerChoiceState *)self p_setImagePressed:pressed forButton:change];
 }
 
-- (void)p_setImagePressed:(BOOL)a3 forButton:(id)a4
+- (void)p_setImagePressed:(BOOL)pressed forButton:(id)button
 {
-  v4 = a3;
-  v6 = [objc_msgSend(a4 "interactiveCanvasController")];
-  if (v4)
+  pressedCopy = pressed;
+  v6 = [objc_msgSend(button "interactiveCanvasController")];
+  if (pressedCopy)
   {
     if (self->_radioState == 2)
     {
@@ -133,21 +133,21 @@
   }
 }
 
-- (void)buttonControl:(id)a3 addAdditionalChildLayersToArray:(id)a4
+- (void)buttonControl:(id)control addAdditionalChildLayersToArray:(id)array
 {
   if (!self->_radioButtonLayer)
   {
     self->_radioButtonLayer = +[TSDNoDefaultImplicitActionLayer layer];
-    -[CALayer setDelegate:](self->_radioButtonLayer, "setDelegate:", [a3 interactiveCanvasController]);
+    -[CALayer setDelegate:](self->_radioButtonLayer, "setDelegate:", [control interactiveCanvasController]);
     [(CALayer *)self->_radioButtonLayer setBounds:0.0, 0.0, 46.0, 46.0];
   }
 
-  [objc_msgSend(objc_msgSend(a3 "interactiveCanvasController")];
+  [objc_msgSend(objc_msgSend(control "interactiveCanvasController")];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [objc_msgSend(a3 "canvas")];
+  [objc_msgSend(control "canvas")];
   v16 = v15;
   v36.origin.x = v8;
   v36.origin.y = v10;
@@ -170,7 +170,7 @@
   v34 = v35;
   [(CALayer *)self->_radioButtonLayer setAffineTransform:&v34];
   v22 = [(THWReviewQuestionHosting *)self->_questionHost reviewQuestion:self->_questionRep cachedImageNamed:*(&off_45E7D8[4 * self->_choiceState] + self->_radioState)];
-  [objc_msgSend(a3 "canvas")];
+  [objc_msgSend(control "canvas")];
   v24 = v23;
   v25 = [v22 CGImageForContentsScale:?];
   if ([(CALayer *)self->_radioButtonLayer contents]!= v25)
@@ -189,7 +189,7 @@
     v32 = v31;
     TSDFloorForScale();
     [(CALayer *)self->_radioButtonLayer setFrame:v32, v33, v28, v30];
-    [a4 addObject:self->_radioButtonLayer];
+    [array addObject:self->_radioButtonLayer];
   }
 }
 
@@ -203,9 +203,9 @@
 
 - (NSString)choiceAccessibilityDescription
 {
-  v2 = [(THWReviewImageAnswerChoiceState *)self choice];
+  choice = [(THWReviewImageAnswerChoiceState *)self choice];
 
-  return [(THWReviewChoice *)v2 accessibilityDescription];
+  return [(THWReviewChoice *)choice accessibilityDescription];
 }
 
 @end

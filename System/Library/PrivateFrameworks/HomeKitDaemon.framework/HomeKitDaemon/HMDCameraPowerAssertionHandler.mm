@@ -2,24 +2,24 @@
 + (id)logCategory;
 + (id)sharedHandler;
 - (HMDCameraPowerAssertionHandler)init;
-- (void)deregisterRemoteRequestHandler:(id)a3;
-- (void)registerRemoteRequestHandler:(id)a3 forSessionID:(id)a4;
+- (void)deregisterRemoteRequestHandler:(id)handler;
+- (void)registerRemoteRequestHandler:(id)handler forSessionID:(id)d;
 @end
 
 @implementation HMDCameraPowerAssertionHandler
 
-- (void)deregisterRemoteRequestHandler:(id)a3
+- (void)deregisterRemoteRequestHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDCameraPowerAssertionHandler *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDCameraPowerAssertionHandler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMDCameraPowerAssertionHandler_deregisterRemoteRequestHandler___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __65__HMDCameraPowerAssertionHandler_deregisterRemoteRequestHandler___block_invoke(uint64_t a1)
@@ -121,21 +121,21 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerRemoteRequestHandler:(id)a3 forSessionID:(id)a4
+- (void)registerRemoteRequestHandler:(id)handler forSessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraPowerAssertionHandler *)self workQueue];
+  handlerCopy = handler;
+  dCopy = d;
+  workQueue = [(HMDCameraPowerAssertionHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HMDCameraPowerAssertionHandler_registerRemoteRequestHandler_forSessionID___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __76__HMDCameraPowerAssertionHandler_registerRemoteRequestHandler_forSessionID___block_invoke(uint64_t a1)
@@ -223,9 +223,9 @@ LABEL_9:
     v2->_currentRequestHandlerSessionIDs = v3;
 
     v5 = HMDispatchQueueNameString();
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     workQueue = v2->_workQueue;
     v2->_workQueue = v8;
   }

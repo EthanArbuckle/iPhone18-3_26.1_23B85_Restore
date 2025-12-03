@@ -1,35 +1,35 @@
 @interface SchemaXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
-- (void)set_schema:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)set_schema:(id)set_schema;
 @end
 
 @implementation SchemaXPCEnvelope
 
-- (void)set_schema:(id)a3
+- (void)set_schema:(id)set_schema
 {
-  v3 = a3;
-  if (a3)
+  set_schemaCopy = set_schema;
+  if (set_schema)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B5EA42E0();
+    selfCopy = self;
+    v5 = set_schemaCopy;
+    set_schemaCopy = sub_1B5EA42E0();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B5E369D4(v3, v7);
+  sub_1B5E369D4(set_schemaCopy, v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SchemaXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SchemaXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

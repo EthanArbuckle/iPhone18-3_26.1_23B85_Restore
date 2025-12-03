@@ -2,15 +2,15 @@
 + (BDSNBPinningManager)sharedManager;
 - (BDSNBPinningManager)init;
 - (BOOL)_isExplicitMaterialAllowed;
-- (BOOL)_shouldPinJaliscoItem:(id)a3 allowsExplicit:(BOOL)a4;
-- (BOOL)_shouldPinMediaItem:(id)a3 allowsExplicit:(BOOL)a4;
-- (id)_jaliscoAudiobookWithAssetId:(id)a3;
-- (id)updateWantToRead:(BOOL)a3 updateReadingNow:(BOOL)a4 updateManuallyPinned:(BOOL)a5 jaliscoUpdateSuccessful:(BOOL)a6 withCompletion:(id)a7;
-- (void)_prepareMediaItemForPinning:(id)a3 parentProgress:(id)a4 completion:(id)a5;
-- (void)_prepareMediaItemForPinningIfNeeded:(id)a3 parentProgress:(id)a4 completion:(id)a5;
-- (void)audiobookStoreEnabledWithCompletion:(id)a3;
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3;
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4;
+- (BOOL)_shouldPinJaliscoItem:(id)item allowsExplicit:(BOOL)explicit;
+- (BOOL)_shouldPinMediaItem:(id)item allowsExplicit:(BOOL)explicit;
+- (id)_jaliscoAudiobookWithAssetId:(id)id;
+- (id)updateWantToRead:(BOOL)read updateReadingNow:(BOOL)now updateManuallyPinned:(BOOL)pinned jaliscoUpdateSuccessful:(BOOL)successful withCompletion:(id)completion;
+- (void)_prepareMediaItemForPinning:(id)pinning parentProgress:(id)progress completion:(id)completion;
+- (void)_prepareMediaItemForPinningIfNeeded:(id)needed parentProgress:(id)progress completion:(id)completion;
+- (void)audiobookStoreEnabledWithCompletion:(id)completion;
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion;
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion;
 @end
 
 @implementation BDSNBPinningManager
@@ -49,26 +49,26 @@
   return v2;
 }
 
-- (void)_prepareMediaItemForPinningIfNeeded:(id)a3 parentProgress:(id)a4 completion:(id)a5
+- (void)_prepareMediaItemForPinningIfNeeded:(id)needed parentProgress:(id)progress completion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v13 && ![BLMediaItemUtils bitrateForItem:v13])
+  neededCopy = needed;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (neededCopy && ![BLMediaItemUtils bitrateForItem:neededCopy])
   {
-    [(BDSNBPinningManager *)self _prepareMediaItemForPinning:v13 parentProgress:v8 completion:v9];
+    [(BDSNBPinningManager *)self _prepareMediaItemForPinning:neededCopy parentProgress:progressCopy completion:completionCopy];
   }
 
   else
   {
-    if (v8)
+    if (progressCopy)
     {
       v10 = [NSProgress progressWithTotalUnitCount:1];
-      [v8 addChild:v10 withPendingUnitCount:1];
+      [progressCopy addChild:v10 withPendingUnitCount:1];
       [v10 setCompletedUnitCount:1];
     }
 
-    v11 = objc_retainBlock(v9);
+    v11 = objc_retainBlock(completionCopy);
     v12 = v11;
     if (v11)
     {
@@ -77,34 +77,34 @@
   }
 }
 
-- (void)_prepareMediaItemForPinning:(id)a3 parentProgress:(id)a4 completion:(id)a5
+- (void)_prepareMediaItemForPinning:(id)pinning parentProgress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pinningCopy = pinning;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = sub_10000DC90();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v8;
+    v26 = pinningCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "We want to update the bitrate so fetching master playlist for mediaItem: %@", buf, 0xCu);
   }
 
-  v12 = [v8 valueForProperty:MPMediaItemPropertyHLSPlaylistURL];
+  v12 = [pinningCopy valueForProperty:MPMediaItemPropertyHLSPlaylistURL];
   if ([v12 length])
   {
     v13 = [NSURL URLWithString:v12];
-    v14 = [(BDSNBPinningManager *)self audiobookFetcher];
+    audiobookFetcher = [(BDSNBPinningManager *)self audiobookFetcher];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_10005652C;
     v22 = &unk_1002414E0;
-    v23 = v8;
-    v24 = v10;
-    v15 = [v14 setupDownloadTaskForFetchingMasterPlaylistAndSelectingStreamFromMasterPlaylistURL:v13 completion:&v19];
+    v23 = pinningCopy;
+    v24 = completionCopy;
+    v15 = [audiobookFetcher setupDownloadTaskForFetchingMasterPlaylistAndSelectingStreamFromMasterPlaylistURL:v13 completion:&v19];
 
-    v16 = [v15 progress];
-    [v9 addChild:v16 withPendingUnitCount:1];
+    progress = [v15 progress];
+    [progressCopy addChild:progress withPendingUnitCount:1];
 
     [v15 resume];
     v17 = v23;
@@ -119,7 +119,7 @@ LABEL_9:
     sub_1001C15B0();
   }
 
-  v13 = objc_retainBlock(v10);
+  v13 = objc_retainBlock(completionCopy);
   if (v13)
   {
     v17 = [NSError errorWithDomain:@"BDSErrorDomain" code:1003 userInfo:0];
@@ -130,25 +130,25 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)_shouldPinMediaItem:(id)a3 allowsExplicit:(BOOL)a4
+- (BOOL)_shouldPinMediaItem:(id)item allowsExplicit:(BOOL)explicit
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5 && (a4 || ([v5 isExplicitItem] & 1) == 0);
+  itemCopy = item;
+  v6 = itemCopy;
+  v7 = itemCopy && (explicit || ([itemCopy isExplicitItem] & 1) == 0);
 
   return v7;
 }
 
-- (BOOL)_shouldPinJaliscoItem:(id)a3 allowsExplicit:(BOOL)a4
+- (BOOL)_shouldPinJaliscoItem:(id)item allowsExplicit:(BOOL)explicit
 {
-  v4 = a3 == 0;
-  if (a3 && !a4)
+  bOOLValue = item == 0;
+  if (item && !explicit)
   {
-    v5 = [a3 isExplicit];
-    v4 = [v5 BOOLValue];
+    isExplicit = [item isExplicit];
+    bOOLValue = [isExplicit BOOLValue];
   }
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (BOOL)_isExplicitMaterialAllowed
@@ -159,12 +159,12 @@ LABEL_10:
   return v3 != 2;
 }
 
-- (id)_jaliscoAudiobookWithAssetId:(id)a3
+- (id)_jaliscoAudiobookWithAssetId:(id)id
 {
-  v3 = a3;
-  if ([v3 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v4 = [NSSet setWithObject:v3];
+    v4 = [NSSet setWithObject:idCopy];
     v5 = +[BLJaliscoDAAPClient sharedClient];
     v6 = [v5 fetchItemsForStoreIDs:v4];
 
@@ -187,10 +187,10 @@ LABEL_10:
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 isAudiobook];
-          v13 = [v12 BOOLValue];
+          isAudiobook = [v11 isAudiobook];
+          bOOLValue = [isAudiobook BOOLValue];
 
-          if (v13)
+          if (bOOLValue)
           {
             v8 = v11;
             goto LABEL_12;
@@ -218,30 +218,30 @@ LABEL_12:
   return v8;
 }
 
-- (id)updateWantToRead:(BOOL)a3 updateReadingNow:(BOOL)a4 updateManuallyPinned:(BOOL)a5 jaliscoUpdateSuccessful:(BOOL)a6 withCompletion:(id)a7
+- (id)updateWantToRead:(BOOL)read updateReadingNow:(BOOL)now updateManuallyPinned:(BOOL)pinned jaliscoUpdateSuccessful:(BOOL)successful withCompletion:(id)completion
 {
-  v64 = a6;
-  v7 = a5;
-  LODWORD(v8) = a4;
-  v9 = a3;
-  v10 = a7;
+  successfulCopy = successful;
+  pinnedCopy = pinned;
+  LODWORD(v8) = now;
+  readCopy = read;
+  completionCopy = completion;
   v11 = sub_10000DC90();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    *v109 = v9;
+    *v109 = readCopy;
     *&v109[4] = 1024;
     *&v109[6] = v8;
     LOWORD(v110) = 1024;
-    *(&v110 + 2) = v7;
+    *(&v110 + 2) = pinnedCopy;
     HIWORD(v110) = 1024;
-    v111 = v64;
+    v111 = successfulCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating wantToRead:%d, readingNow:%d, manuallyPinned:%d jaliscoUpdateSuccessful:%d", buf, 0x1Au);
   }
 
   v12 = [NSProgress progressWithTotalUnitCount:100];
-  v13 = [(BDSNBPinningManager *)self _isExplicitMaterialAllowed];
-  v62 = [sub_100077BF0() sharedManager];
+  _isExplicitMaterialAllowed = [(BDSNBPinningManager *)self _isExplicitMaterialAllowed];
+  sharedManager = [sub_100077BF0() sharedManager];
   group = dispatch_group_create();
   v59 = +[NSMutableOrderedSet orderedSet];
   v60 = +[NSMutableOrderedSet orderedSet];
@@ -249,12 +249,12 @@ LABEL_12:
   [v12 addChild:? withPendingUnitCount:?];
   v14 = [NSProgress progressWithTotalUnitCount:3];
   [v12 addChild:v14 withPendingUnitCount:33];
-  v57 = v9;
-  if (v9)
+  v57 = readCopy;
+  if (readCopy)
   {
     dispatch_group_enter(group);
     v15 = +[BCCloudCollectionsManager sharedManager];
-    v16 = [v15 collectionMemberManagerInstance];
+    collectionMemberManagerInstance = [v15 collectionMemberManagerInstance];
     v100[0] = _NSConcreteStackBlock;
     v100[1] = 3221225472;
     v100[2] = sub_1000573D4;
@@ -262,21 +262,21 @@ LABEL_12:
     v101 = v12;
     v102 = group;
     v103 = v60;
-    v104 = self;
+    selfCopy = self;
     v105 = v58;
     v98[0] = _NSConcreteStackBlock;
     v98[1] = 3221225472;
     v98[2] = sub_10005766C;
     v98[3] = &unk_100241530;
     v99 = v102;
-    [v16 fetchCollectionMembersInCollectionID:@"Want_To_Read_Collection_ID" maximumResultCount:3 filter:v100 completion:v98];
+    [collectionMemberManagerInstance fetchCollectionMembersInCollectionID:@"Want_To_Read_Collection_ID" maximumResultCount:3 filter:v100 completion:v98];
   }
 
   if (v8)
   {
     dispatch_group_enter(group);
     v17 = +[BCCloudAssetManager sharedManager];
-    v18 = [v17 readingNowDetailManagerInstance];
+    readingNowDetailManagerInstance = [v17 readingNowDetailManagerInstance];
     v92[0] = _NSConcreteStackBlock;
     v92[1] = 3221225472;
     v92[2] = sub_100057674;
@@ -284,30 +284,30 @@ LABEL_12:
     v93 = v12;
     v94 = group;
     v95 = v59;
-    v96 = self;
+    selfCopy2 = self;
     v97 = v14;
     v90[0] = _NSConcreteStackBlock;
     v90[1] = 3221225472;
     v90[2] = sub_10005793C;
     v90[3] = &unk_100241530;
     v91 = v94;
-    [v18 trackedRreadingNowDetailsInDescendingOrderMaximumResultCount:3 filter:v92 completion:v90];
+    [readingNowDetailManagerInstance trackedRreadingNowDetailsInDescendingOrderMaximumResultCount:3 filter:v92 completion:v90];
   }
 
   v56 = v14;
   v61 = v12;
   v66 = +[NSMutableSet set];
-  if (v7)
+  if (pinnedCopy)
   {
     v55 = v8;
-    v54 = v10;
+    v54 = completionCopy;
     v63 = +[NSMutableSet set];
     v19 = sub_10000DC90();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v62 pinnedAudiobooks];
+      pinnedAudiobooks = [sharedManager pinnedAudiobooks];
       *buf = 138412290;
-      *v109 = v20;
+      *v109 = pinnedAudiobooks;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Checking for pinned audiobooks that need their bitrate set. Pinned books: %@", buf, 0xCu);
     }
 
@@ -315,13 +315,13 @@ LABEL_12:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    obj = [v62 pinnedAudiobooks];
+    obj = [sharedManager pinnedAudiobooks];
     v21 = [obj countByEnumeratingWithState:&v86 objects:v107 count:16];
     if (v21)
     {
       v22 = v21;
       v23 = *v87;
-      v65 = !v64;
+      v65 = !successfulCopy;
       do
       {
         v24 = 0;
@@ -341,8 +341,8 @@ LABEL_12:
             _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Checking %@", buf, 0xCu);
           }
 
-          v27 = [v25 stringValue];
-          v28 = [BDSMediaLibraryUtils representativeDAAPMediaItemsWithAssetId:v27];
+          stringValue = [v25 stringValue];
+          v28 = [BDSMediaLibraryUtils representativeDAAPMediaItemsWithAssetId:stringValue];
 
           if (v28)
           {
@@ -357,7 +357,7 @@ LABEL_12:
               _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Checking item %@ with bitrate %lu", buf, 0x16u);
             }
 
-            if ([(BDSNBPinningManager *)self _shouldPinMediaItem:v28 allowsExplicit:v13])
+            if ([(BDSNBPinningManager *)self _shouldPinMediaItem:v28 allowsExplicit:_isExplicitMaterialAllowed])
             {
               if ([BLMediaItemUtils bitrateForItem:v28])
               {
@@ -388,10 +388,10 @@ LABEL_12:
           else
           {
             [v25 stringValue];
-            v34 = v33 = v13;
+            v34 = v33 = _isExplicitMaterialAllowed;
             v35 = [(BDSNBPinningManager *)self _jaliscoAudiobookWithAssetId:v34];
 
-            v13 = v33;
+            _isExplicitMaterialAllowed = v33;
             if ((([(BDSNBPinningManager *)self _shouldPinJaliscoItem:v35 allowsExplicit:v33]| v65) & 1) == 0)
             {
               [v66 addObject:v25];
@@ -449,11 +449,11 @@ LABEL_30:
     }
 
     LOBYTE(v8) = v55;
-    LOBYTE(v9) = v57;
-    v10 = v54;
+    LOBYTE(readCopy) = v57;
+    completionCopy = v54;
   }
 
-  v43 = [(BDSNBPinningManager *)self notifyQueue];
+  notifyQueue = [(BDSNBPinningManager *)self notifyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100057A20;
@@ -462,19 +462,19 @@ LABEL_30:
   v72 = v58;
   v73 = v59;
   v74 = v56;
-  v78 = v9;
+  v78 = readCopy;
   v79 = v8;
-  v75 = v62;
+  v75 = sharedManager;
   v76 = v66;
-  v77 = v10;
-  v44 = v10;
+  v77 = completionCopy;
+  v44 = completionCopy;
   v45 = v66;
-  v46 = v62;
+  v46 = sharedManager;
   v47 = v56;
   v48 = v59;
   v49 = v58;
   v50 = v60;
-  dispatch_group_notify(group, v43, block);
+  dispatch_group_notify(group, notifyQueue, block);
 
   v51 = v77;
   v52 = v61;
@@ -482,9 +482,9 @@ LABEL_30:
   return v61;
 }
 
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -492,7 +492,7 @@ LABEL_30:
   v11[4] = sub_100057F28;
   v12 = 0;
   v4 = +[BCCloudAssetManager sharedManager];
-  v5 = [v4 readingNowDetailManagerInstance];
+  readingNowDetailManagerInstance = [v4 readingNowDetailManagerInstance];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100057F30;
@@ -503,47 +503,47 @@ LABEL_30:
   v7[2] = sub_100058084;
   v7[3] = &unk_1002415F8;
   v9 = v11;
-  v6 = v3;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 trackedRreadingNowDetailsInDescendingOrderMaximumResultCount:1 filter:v10 completion:v7];
+  [readingNowDetailManagerInstance trackedRreadingNowDetailsInDescendingOrderMaximumResultCount:1 filter:v10 completion:v7];
 
   _Block_object_dispose(v11, 8);
 }
 
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = sub_10000DC90();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "updating bitrate for item with adamID %@", buf, 0xCu);
   }
 
-  v9 = [v6 stringValue];
-  v10 = [BDSMediaLibraryUtils representativeDAAPMediaItemsWithAssetId:v9];
+  stringValue = [dCopy stringValue];
+  v10 = [BDSMediaLibraryUtils representativeDAAPMediaItemsWithAssetId:stringValue];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000582E4;
   v13[3] = &unk_100240438;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
   [(BDSNBPinningManager *)self _prepareMediaItemForPinning:v10 parentProgress:0 completion:v13];
 }
 
-- (void)audiobookStoreEnabledWithCompletion:(id)a3
+- (void)audiobookStoreEnabledWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100058480;
   v4[3] = &unk_100241620;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   [BUBag audiobookStoreIsAvailable:v4];
 }
 

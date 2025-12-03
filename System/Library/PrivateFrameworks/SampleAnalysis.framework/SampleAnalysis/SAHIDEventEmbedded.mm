@@ -1,5 +1,5 @@
 @interface SAHIDEventEmbedded
-+ (void)parseKTrace:(ktrace_session *)a3 findingHIDEvents:(id)a4;
++ (void)parseKTrace:(ktrace_session *)trace findingHIDEvents:(id)events;
 - (double)thresholdToGroupSameEventType;
 - (id)hidEventTypeString;
 @end
@@ -8,15 +8,15 @@
 
 - (id)hidEventTypeString
 {
-  v3 = [(SAHIDEvent *)self hidEventType];
-  if (v3 > 0x27)
+  hidEventType = [(SAHIDEvent *)self hidEventType];
+  if (hidEventType > 0x27)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"UNKNOWN(%d)", -[SAHIDEvent hidEventType](self, "hidEventType")];
   }
 
   else
   {
-    v4 = *(&off_1E86F8988 + v3);
+    v4 = *(&off_1E86F8988 + hidEventType);
   }
 
   return v4;
@@ -24,9 +24,9 @@
 
 - (double)thresholdToGroupSameEventType
 {
-  v2 = [(SAHIDEvent *)self hidEventType];
+  hidEventType = [(SAHIDEvent *)self hidEventType];
   result = 0.03;
-  if (v2 != 11)
+  if (hidEventType != 11)
   {
     return 0.0;
   }
@@ -34,14 +34,14 @@
   return result;
 }
 
-+ (void)parseKTrace:(ktrace_session *)a3 findingHIDEvents:(id)a4
++ (void)parseKTrace:(ktrace_session *)trace findingHIDEvents:(id)events
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__SAHIDEventEmbedded_parseKTrace_findingHIDEvents___block_invoke;
   v5[3] = &unk_1E86F8830;
-  v5[4] = a4;
-  v5[5] = a3;
+  v5[4] = events;
+  v5[5] = trace;
   v4 = MEMORY[0x1E12EBE50](v5, a2);
   ktrace_events_range();
 }

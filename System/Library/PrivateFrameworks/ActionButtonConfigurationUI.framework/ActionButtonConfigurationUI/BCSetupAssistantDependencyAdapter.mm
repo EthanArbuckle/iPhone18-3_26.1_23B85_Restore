@@ -1,21 +1,21 @@
 @interface BCSetupAssistantDependencyAdapter
-+ (id)viewControllerWithDismissHandler:(id)a3;
-+ (void)preloadResourcesWithCompletion:(id)a3;
++ (id)viewControllerWithDismissHandler:(id)handler;
++ (void)preloadResourcesWithCompletion:(id)completion;
 @end
 
 @implementation BCSetupAssistantDependencyAdapter
 
-+ (void)preloadResourcesWithCompletion:(id)a3
++ (void)preloadResourcesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BCPreloader shared];
-  [v4 preloadResourcesWithCompletion:v3];
+  [v4 preloadResourcesWithCompletion:completionCopy];
 }
 
-+ (id)viewControllerWithDismissHandler:(id)a3
++ (id)viewControllerWithDismissHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [[BCConfigurationViewController alloc] initWithMode:0 dismissHandler:v3];
+  handlerCopy = handler;
+  v4 = [[BCConfigurationViewController alloc] initWithMode:0 dismissHandler:handlerCopy];
 
   return v4;
 }

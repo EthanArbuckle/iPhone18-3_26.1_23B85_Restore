@@ -1,22 +1,22 @@
 @interface SearchUIAsyncSectionLoader
-+ (id)asyncLoaderSupportingSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5;
-- (SearchUIAsyncSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5;
++ (id)asyncLoaderSupportingSectionModel:(id)model result:(id)result queryId:(unint64_t)id;
+- (SearchUIAsyncSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id;
 - (SearchUIAsyncSectionLoaderDelegate)delegate;
 - (id)cachedValue;
 - (id)cardSections;
 - (void)clearLocalCache;
 - (void)preloadIfNecessary;
-- (void)reloadWithCardSections:(id)a3 animated:(BOOL)a4 reconfigureExisting:(BOOL)a5;
+- (void)reloadWithCardSections:(id)sections animated:(BOOL)animated reconfigureExisting:(BOOL)existing;
 - (void)start;
 @end
 
 @implementation SearchUIAsyncSectionLoader
 
-+ (id)asyncLoaderSupportingSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5
++ (id)asyncLoaderSupportingSectionModel:(id)model result:(id)result queryId:(unint64_t)id
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  resultCopy = result;
   v9 = asyncLoaderSupportingSectionModel_result_queryId__classes;
   if (!asyncLoaderSupportingSectionModel_result_queryId__classes)
   {
@@ -51,9 +51,9 @@
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        if (([(objc_class *)v17 supportsSectionModel:v7, v20]& 1) != 0)
+        if (([(objc_class *)v17 supportsSectionModel:modelCopy, v20]& 1) != 0)
         {
-          v18 = [[v17 alloc] initWithSectionModel:v7 result:v8 queryId:a5];
+          v18 = [[v17 alloc] initWithSectionModel:modelCopy result:resultCopy queryId:id];
           goto LABEL_13;
         }
       }
@@ -74,20 +74,20 @@ LABEL_13:
   return v18;
 }
 
-- (SearchUIAsyncSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5
+- (SearchUIAsyncSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id
 {
-  v8 = a3;
-  v9 = a4;
+  modelCopy = model;
+  resultCopy = result;
   v10 = [(SearchUIAsyncSectionLoader *)self init];
   if (v10)
   {
-    v11 = [v8 section];
-    v12 = [v11 sectionIdentifier];
+    section = [modelCopy section];
+    sectionIdentifier = [section sectionIdentifier];
     sectionIdentifier = v10->_sectionIdentifier;
-    v10->_sectionIdentifier = v12;
+    v10->_sectionIdentifier = sectionIdentifier;
 
-    objc_storeStrong(&v10->_searchResult, a4);
-    v10->_queryId = a5;
+    objc_storeStrong(&v10->_searchResult, result);
+    v10->_queryId = id;
     if (initWithSectionModel_result_queryId__onceToken != -1)
     {
       [SearchUIAsyncSectionLoader initWithSectionModel:result:queryId:];
@@ -106,19 +106,19 @@ uint64_t __66__SearchUIAsyncSectionLoader_initWithSectionModel_result_queryId___
 
 - (id)cardSections
 {
-  v3 = [(SearchUIAsyncSectionLoader *)self cachedValue];
-  v4 = v3;
-  if (v3)
+  cachedValue = [(SearchUIAsyncSectionLoader *)self cachedValue];
+  v4 = cachedValue;
+  if (cachedValue)
   {
-    v5 = v3;
+    placeholderCardSections = cachedValue;
   }
 
   else
   {
-    v5 = [(SearchUIAsyncSectionLoader *)self placeholderCardSections];
+    placeholderCardSections = [(SearchUIAsyncSectionLoader *)self placeholderCardSections];
   }
 
-  v6 = v5;
+  v6 = placeholderCardSections;
 
   return v6;
 }
@@ -134,9 +134,9 @@ uint64_t __66__SearchUIAsyncSectionLoader_initWithSectionModel_result_queryId___
 
 - (void)start
 {
-  v3 = [(SearchUIAsyncSectionLoader *)self cachedValue];
+  cachedValue = [(SearchUIAsyncSectionLoader *)self cachedValue];
 
-  if (!v3)
+  if (!cachedValue)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -151,11 +151,11 @@ uint64_t __66__SearchUIAsyncSectionLoader_initWithSectionModel_result_queryId___
     v8[3] = &unk_1E85B42E8;
     objc_copyWeak(&v9, &location);
     v5 = _Block_copy(v8);
-    v6 = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
-    if (v6)
+    cacheIdentifier = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
+    if (cacheIdentifier)
     {
       v7 = objc_opt_new();
-      [v7 setIdentifier:v6];
+      [v7 setIdentifier:cacheIdentifier];
       [v7 setComputeBlock:v5];
       [computeCache getObjectForKey:v7 completionHandler:v4];
     }
@@ -209,10 +209,10 @@ void __35__SearchUIAsyncSectionLoader_start__block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)reloadWithCardSections:(id)a3 animated:(BOOL)a4 reconfigureExisting:(BOOL)a5
+- (void)reloadWithCardSections:(id)sections animated:(BOOL)animated reconfigureExisting:(BOOL)existing
 {
-  v8 = a3;
-  if (v8)
+  sectionsCopy = sections;
+  if (sectionsCopy)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -220,9 +220,9 @@ void __35__SearchUIAsyncSectionLoader_start__block_invoke_2(uint64_t a1, void *a
     v9[2] = __82__SearchUIAsyncSectionLoader_reloadWithCardSections_animated_reconfigureExisting___block_invoke;
     v9[3] = &unk_1E85B2D10;
     objc_copyWeak(&v11, &location);
-    v10 = v8;
-    v12 = a4;
-    v13 = a5;
+    v10 = sectionsCopy;
+    animatedCopy = animated;
+    existingCopy = existing;
     [SearchUIUtilities dispatchMainIfNecessary:v9];
 
     objc_destroyWeak(&v11);
@@ -241,24 +241,24 @@ void __82__SearchUIAsyncSectionLoader_reloadWithCardSections_animated_reconfigur
 
 - (id)cachedValue
 {
-  v3 = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
+  cacheIdentifier = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
 
-  if (v3)
+  if (cacheIdentifier)
   {
     v4 = objc_opt_new();
-    v5 = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
-    [v4 setIdentifier:v5];
+    cacheIdentifier2 = [(SearchUIAsyncSectionLoader *)self cacheIdentifier];
+    [v4 setIdentifier:cacheIdentifier2];
 
     v6 = [computeCache getCachedObjectIfAvailableForKey:v4];
-    v7 = [v6 cardSection];
+    cardSection = [v6 cardSection];
   }
 
   else
   {
-    v7 = [(SearchUIAsyncSectionLoader *)self objectCache];
+    cardSection = [(SearchUIAsyncSectionLoader *)self objectCache];
   }
 
-  return v7;
+  return cardSection;
 }
 
 - (void)clearLocalCache

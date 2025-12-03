@@ -1,21 +1,21 @@
 @interface HUHomeTheaterSimpleSetupViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeTheaterSimpleSetupViewController)initWithAppleTVAccessory:(id)a3 destination:(id)a4 inHome:(id)a5;
-- (HUHomeTheaterSimpleSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6;
-- (void)_confirm:(id)a3;
-- (void)_skip:(id)a3;
+- (HUHomeTheaterSimpleSetupViewController)initWithAppleTVAccessory:(id)accessory destination:(id)destination inHome:(id)home;
+- (HUHomeTheaterSimpleSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image;
+- (void)_confirm:(id)_confirm;
+- (void)_skip:(id)_skip;
 - (void)viewDidLoad;
 @end
 
 @implementation HUHomeTheaterSimpleSetupViewController
 
-- (HUHomeTheaterSimpleSetupViewController)initWithAppleTVAccessory:(id)a3 destination:(id)a4 inHome:(id)a5
+- (HUHomeTheaterSimpleSetupViewController)initWithAppleTVAccessory:(id)accessory destination:(id)destination inHome:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 hf_displayName];
-  v19 = HULocalizedStringWithFormat(@"HUHomeTheaterSetup_Title", @"%@", v13, v14, v15, v16, v17, v18, v12);
+  accessoryCopy = accessory;
+  destinationCopy = destination;
+  homeCopy = home;
+  hf_displayName = [accessoryCopy hf_displayName];
+  v19 = HULocalizedStringWithFormat(@"HUHomeTheaterSetup_Title", @"%@", v13, v14, v15, v16, v17, v18, hf_displayName);
 
   v20 = _HULocalizedStringWithDefaultValue(@"HUHomeTheaterSetup_Detail", @"HUHomeTheaterSetup_Detail", 1);
   v21 = HUImageNamed(@"Onboarding-HomeTheater");
@@ -25,19 +25,19 @@
 
   if (v22)
   {
-    objc_storeStrong(&v22->_accessory, a3);
-    objc_storeStrong(&v22->_home, a5);
-    objc_storeStrong(&v22->_destination, a4);
+    objc_storeStrong(&v22->_accessory, accessory);
+    objc_storeStrong(&v22->_home, home);
+    objc_storeStrong(&v22->_destination, destination);
   }
 
   return v22;
 }
 
-- (HUHomeTheaterSimpleSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentImage:(id)a6
+- (HUHomeTheaterSimpleSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentImage:(id)image
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithAppleTVAccessory_destination_inHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSimpleSetupViewController.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSimpleSetupViewController initWithTitle:detailText:icon:contentImage:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSimpleSetupViewController.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSimpleSetupViewController initWithTitle:detailText:icon:contentImage:]", v9}];
 
   return 0;
 }
@@ -47,13 +47,13 @@
   v15.receiver = self;
   v15.super_class = HUHomeTheaterSimpleSetupViewController;
   [(HUImageOBWelcomeController *)&v15 viewDidLoad];
-  v3 = [(HUHomeTheaterSimpleSetupViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_282493288];
+  headerView = [(HUHomeTheaterSimpleSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493288];
 
-  v5 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   confirmButton = self->_confirmButton;
-  self->_confirmButton = v5;
+  self->_confirmButton = boldButton;
 
   [(OBTrayButton *)self->_confirmButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = self->_confirmButton;
@@ -62,12 +62,12 @@
 
   [(OBTrayButton *)self->_confirmButton setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.UseHomeTheaterButton"];
   [(OBTrayButton *)self->_confirmButton addTarget:self action:sel__confirm_ forControlEvents:64];
-  v9 = [(HUHomeTheaterSimpleSetupViewController *)self buttonTray];
-  [v9 addButton:self->_confirmButton];
+  buttonTray = [(HUHomeTheaterSimpleSetupViewController *)self buttonTray];
+  [buttonTray addButton:self->_confirmButton];
 
-  v10 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   skipButton = self->_skipButton;
-  self->_skipButton = v10;
+  self->_skipButton = linkButton;
 
   [(OBLinkTrayButton *)self->_skipButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = self->_skipButton;
@@ -76,25 +76,25 @@
 
   [(OBLinkTrayButton *)self->_skipButton setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.NotNowButton"];
   [(OBLinkTrayButton *)self->_skipButton addTarget:self action:sel__skip_ forControlEvents:64];
-  v14 = [(HUHomeTheaterSimpleSetupViewController *)self buttonTray];
-  [v14 addButton:self->_skipButton];
+  buttonTray2 = [(HUHomeTheaterSimpleSetupViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_skipButton];
 }
 
-- (void)_confirm:(id)a3
+- (void)_confirm:(id)_confirm
 {
-  v5 = a3;
+  _confirmCopy = _confirm;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __51__HUHomeTheaterSimpleSetupViewController__confirm___block_invoke;
   v19[3] = &unk_277DB7508;
   v19[4] = self;
   v6 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v19];
-  v7 = [(HUHomeTheaterSimpleSetupViewController *)self confirmButton];
-  v8 = [v7 activityIndicator];
-  [v8 startAnimating];
+  confirmButton = [(HUHomeTheaterSimpleSetupViewController *)self confirmButton];
+  activityIndicator = [confirmButton activityIndicator];
+  [activityIndicator startAnimating];
 
-  v9 = [(HUHomeTheaterSimpleSetupViewController *)self confirmButton];
-  [v9 setEnabled:0];
+  confirmButton2 = [(HUHomeTheaterSimpleSetupViewController *)self confirmButton];
+  [confirmButton2 setEnabled:0];
 
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
@@ -110,7 +110,7 @@
   v13[3] = &unk_277DC4EF8;
   objc_copyWeak(v15, &location);
   v15[1] = a2;
-  v11 = v5;
+  v11 = _confirmCopy;
   v14 = v11;
   v12 = [v10 addFailureBlock:v13];
 
@@ -193,20 +193,20 @@ void __51__HUHomeTheaterSimpleSetupViewController__confirm___block_invoke_61(uin
   [v9 handleError:v3];
 }
 
-- (void)_skip:(id)a3
+- (void)_skip:(id)_skip
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB38];
   v10[0] = &unk_282492798;
   v9[0] = @"HUHomeTheaterOnboardingKey_UserInput";
   v9[1] = @"HUHomeTheaterOnboardingKey_Accessory";
-  v5 = [(HUHomeTheaterSimpleSetupViewController *)self accessory];
-  v10[1] = v5;
+  accessory = [(HUHomeTheaterSimpleSetupViewController *)self accessory];
+  v10[1] = accessory;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v7 = [v4 dictionaryWithDictionary:v6];
 
-  v8 = [(HUHomeTheaterSimpleSetupViewController *)self delegate];
-  [v8 viewController:self didFinishWithConfigurationResults:v7];
+  delegate = [(HUHomeTheaterSimpleSetupViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:v7];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

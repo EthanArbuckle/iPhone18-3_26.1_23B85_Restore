@@ -1,21 +1,21 @@
 @interface PHEmergencyHandsetDialerView
-- (PHEmergencyHandsetDialerView)initWithFrame:(CGRect)a3;
+- (PHEmergencyHandsetDialerView)initWithFrame:(CGRect)frame;
 - (PHTextCycleLabel)emergencyTitleLabel;
 - (id)deleteButtonXImageView;
 - (id)newCallButton;
 - (id)newDeleteButton;
-- (id)newLCDView:(int64_t)a3 enableSmartDialer:(BOOL)a4 enableSmartDialerExpandedSearch:(BOOL)a5;
-- (id)numberPadButtonsForCharacters:(id)a3;
+- (id)newLCDView:(int64_t)view enableSmartDialer:(BOOL)dialer enableSmartDialerExpandedSearch:(BOOL)search;
+- (id)numberPadButtonsForCharacters:(id)characters;
 - (int64_t)numberOfLinesInEmergencyTitleLabel;
 @end
 
 @implementation PHEmergencyHandsetDialerView
 
-- (PHEmergencyHandsetDialerView)initWithFrame:(CGRect)a3
+- (PHEmergencyHandsetDialerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHEmergencyHandsetDialerView;
-  v3 = [(PHEmergencyHandsetDialerView *)&v6 initWithFrame:2 appType:0 enableSmartDialer:0 enableSmartDialerExpandedSearch:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHEmergencyHandsetDialerView *)&v6 initWithFrame:2 appType:0 enableSmartDialer:0 enableSmartDialerExpandedSearch:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -27,20 +27,20 @@
 
 - (PHTextCycleLabel)emergencyTitleLabel
 {
-  v2 = [(PHEmergencyHandsetDialerView *)self lcdView];
-  v3 = [v2 emergencyTitleLabel];
+  lcdView = [(PHEmergencyHandsetDialerView *)self lcdView];
+  emergencyTitleLabel = [lcdView emergencyTitleLabel];
 
-  return v3;
+  return emergencyTitleLabel;
 }
 
-- (id)newLCDView:(int64_t)a3 enableSmartDialer:(BOOL)a4 enableSmartDialerExpandedSearch:(BOOL)a5
+- (id)newLCDView:(int64_t)view enableSmartDialer:(BOOL)dialer enableSmartDialerExpandedSearch:(BOOL)search
 {
   v6 = [PHEmergencyHandsetDialerLCDView alloc];
   [(PHEmergencyHandsetDialerView *)self bounds];
   v7 = [(PHEmergencyHandsetDialerLCDView *)v6 initWithFrame:0 forDialerType:2 appType:0.0, 0.0];
   [(PHEmergencyHandsetDialerLCDView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(PHEmergencyHandsetDialerLCDView *)v7 addContactButton];
-  [(PHEmergencyHandsetDialerView *)self setAddContactButton:v8];
+  addContactButton = [(PHEmergencyHandsetDialerLCDView *)v7 addContactButton];
+  [(PHEmergencyHandsetDialerView *)self setAddContactButton:addContactButton];
 
   return v7;
 }
@@ -49,22 +49,22 @@
 {
   v5.receiver = self;
   v5.super_class = PHEmergencyHandsetDialerView;
-  v2 = [(PHEmergencyHandsetDialerView *)&v5 deleteButtonXImageView];
+  deleteButtonXImageView = [(PHEmergencyHandsetDialerView *)&v5 deleteButtonXImageView];
   v3 = +[UIColor blackColor];
-  [v2 setTintColor:v3];
+  [deleteButtonXImageView setTintColor:v3];
 
-  return v2;
+  return deleteButtonXImageView;
 }
 
 - (id)newDeleteButton
 {
   v5.receiver = self;
   v5.super_class = PHEmergencyHandsetDialerView;
-  v2 = [(PHEmergencyHandsetDialerView *)&v5 newDeleteButton];
+  newDeleteButton = [(PHEmergencyHandsetDialerView *)&v5 newDeleteButton];
   v3 = +[UIColor blackColor];
-  [v2 setTintColor:v3];
+  [newDeleteButton setTintColor:v3];
 
-  return v2;
+  return newDeleteButton;
 }
 
 - (id)newCallButton
@@ -97,17 +97,17 @@
   return v8;
 }
 
-- (id)numberPadButtonsForCharacters:(id)a3
+- (id)numberPadButtonsForCharacters:(id)characters
 {
-  v4 = a3;
+  charactersCopy = characters;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100063DF8;
   v9[3] = &unk_1003573C8;
   v9[4] = self;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(charactersCopy, "count")}];
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [charactersCopy enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -117,7 +117,7 @@
 
 - (int64_t)numberOfLinesInEmergencyTitleLabel
 {
-  v3 = [(PHEmergencyHandsetDialerView *)self lcdView];
+  lcdView = [(PHEmergencyHandsetDialerView *)self lcdView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -126,10 +126,10 @@
     return -1;
   }
 
-  v5 = [(PHEmergencyHandsetDialerView *)self lcdView];
-  v6 = [v5 numberOfLinesInEmergencyTitleLabel];
+  lcdView2 = [(PHEmergencyHandsetDialerView *)self lcdView];
+  numberOfLinesInEmergencyTitleLabel = [lcdView2 numberOfLinesInEmergencyTitleLabel];
 
-  return v6;
+  return numberOfLinesInEmergencyTitleLabel;
 }
 
 @end

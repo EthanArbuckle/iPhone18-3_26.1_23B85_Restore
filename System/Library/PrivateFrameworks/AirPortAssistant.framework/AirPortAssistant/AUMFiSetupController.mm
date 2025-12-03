@@ -3,35 +3,35 @@
 - (AUMFiSetupController)init;
 - (id)targetBaseInfoDict;
 - (int)cancelSetup;
-- (int)endSetup:(int)a3;
+- (int)endSetup:(int)setup;
 - (int)joinTargetSWAP;
-- (int)sendProgressToUI:(int)a3 withParamDict:(id)a4;
-- (int)sendSetupCompleteToUIWithResult:(int)a3;
+- (int)sendProgressToUI:(int)i withParamDict:(id)dict;
+- (int)sendSetupCompleteToUIWithResult:(int)result;
 - (int)sendiAPOverWiFiDeviceConfiguredXPCMessage;
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4;
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options;
 - (int)updateSettingsAsync;
 - (void)_startEasyConfigWhenReady;
 - (void)acquireDestinationNetworkPassword;
-- (void)askUserForNetworkPassword:(id)a3;
-- (void)askUserForSetupCodeWithRetryStatus:(BOOL)a3;
+- (void)askUserForNetworkPassword:(id)password;
+- (void)askUserForSetupCodeWithRetryStatus:(BOOL)status;
 - (void)askUserForUncertified;
-- (void)callbackAskUserForPasswordResult:(int)a3 password:(id)a4 remember:(int)a5;
-- (void)callbackAskUserForSetupCodeResult:(int)a3 password:(id)a4;
-- (void)callbackAskUserForUncertifiedResult:(int)a3;
+- (void)callbackAskUserForPasswordResult:(int)result password:(id)password remember:(int)remember;
+- (void)callbackAskUserForSetupCodeResult:(int)result password:(id)password;
+- (void)callbackAskUserForUncertifiedResult:(int)result;
 - (void)createEasyConfigDeviceConfiguration;
 - (void)dealloc;
-- (void)handleEasyConfigProgress:(id)a3;
-- (void)handleEasyConfigProgressAppliedConfigurationToDevice:(id)a3;
-- (void)handleEasyConfigProgressSearchingForPostConfigDevice:(id)a3;
-- (void)handleEasyConfigStopped:(id)a3;
+- (void)handleEasyConfigProgress:(id)progress;
+- (void)handleEasyConfigProgressAppliedConfigurationToDevice:(id)device;
+- (void)handleEasyConfigProgressSearchingForPostConfigDevice:(id)device;
+- (void)handleEasyConfigStopped:(id)stopped;
 - (void)invalidateLinkUpOnDestinationNetworkTimer;
-- (void)joinDestinationAPDone:(id)a3;
-- (void)joinDestinationNetworkTimeoutFired:(id)a3;
-- (void)joinSWAPDone:(id)a3;
-- (void)linkChangeNotification:(id)a3;
-- (void)linkUpOnDestinationAP:(id)a3;
-- (void)linkUpOnSWAP:(id)a3;
-- (void)logCompletionStatus:(int)a3;
+- (void)joinDestinationAPDone:(id)done;
+- (void)joinDestinationNetworkTimeoutFired:(id)fired;
+- (void)joinSWAPDone:(id)done;
+- (void)linkChangeNotification:(id)notification;
+- (void)linkUpOnDestinationAP:(id)p;
+- (void)linkUpOnSWAP:(id)p;
+- (void)logCompletionStatus:(int)status;
 - (void)startEasyConfigWhenReady;
 - (void)startListeningForEasyConfigDeviceStatusNotifications;
 - (void)stopListeningToAllNotifications;
@@ -124,29 +124,29 @@
 {
   v6.receiver = self;
   v6.super_class = AUMFiSetupController;
-  v3 = [(AUSetupController *)&v6 cancelSetup];
+  cancelSetup = [(AUSetupController *)&v6 cancelSetup];
   linkUpOnTargetSWAPSemaphore = self->_linkUpOnTargetSWAPSemaphore;
   if (linkUpOnTargetSWAPSemaphore)
   {
     dispatch_semaphore_signal(linkUpOnTargetSWAPSemaphore);
   }
 
-  if (v3 == -6771)
+  if (cancelSetup == -6771)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return cancelSetup;
   }
 }
 
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options
 {
   self->_easyConfigPreConfigMetrics.startTime = CFAbsoluteTimeGetCurrent();
-  self->_autoGuessRecommendationDict = a3;
-  setupOptionsDict = a4;
+  self->_autoGuessRecommendationDict = recommendation;
+  setupOptionsDict = options;
   self->_setupOptionsDict = setupOptionsDict;
   if (self->_autoGuessRecommendationDict)
   {
@@ -240,9 +240,9 @@
   return 0;
 }
 
-- (void)linkChangeNotification:(id)a3
+- (void)linkChangeNotification:(id)notification
 {
-  if (!self->_waitingForLinkState || (v8 = objc_msgSend_userInfo(a3, a2, a3)) == 0)
+  if (!self->_waitingForLinkState || (v8 = objc_msgSend_userInfo(notification, a2, notification)) == 0)
   {
     v24 = 0;
 LABEL_22:
@@ -358,12 +358,12 @@ LABEL_41:
   }
 }
 
-- (void)linkUpOnSWAP:(id)a3
+- (void)linkUpOnSWAP:(id)p
 {
   self->_easyConfigPreConfigMetrics.secondsToGetLinkUpOnSWAP = CFAbsoluteTimeGetCurrent() - self->_timeSWAPJoinStarted;
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
-    sub_23EB75374(&dword_27E383310, "[AUMFiSetupController linkUpOnSWAP:]", 800, "SSID: %@\n", v5, v6, v7, v8, a3);
+    sub_23EB75374(&dword_27E383310, "[AUMFiSetupController linkUpOnSWAP:]", 800, "SSID: %@\n", v5, v6, v7, v8, p);
   }
 
   dispatch_semaphore_signal(self->_linkUpOnTargetSWAPSemaphore);
@@ -371,7 +371,7 @@ LABEL_41:
   self->_waitingForLinkState = 0;
 }
 
-- (void)linkUpOnDestinationAP:(id)a3
+- (void)linkUpOnDestinationAP:(id)p
 {
   self->_easyConfigPostConfigMetrics.secondsToGetLinkUpOnDestination = CFAbsoluteTimeGetCurrent() - self->_timeDestinationAPJoinStarted;
   objc_msgSend_invalidateLinkUpOnDestinationNetworkTimer(self, v5, v6);
@@ -380,7 +380,7 @@ LABEL_41:
   objc_msgSend_resumePostConfig(self->_easyConfigDevice, v11, v12);
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
-    sub_23EB75374(&dword_27E383310, "[AUMFiSetupController linkUpOnDestinationAP:]", 800, "SSID: %@\n", v13, v14, v15, v16, a3);
+    sub_23EB75374(&dword_27E383310, "[AUMFiSetupController linkUpOnDestinationAP:]", 800, "SSID: %@\n", v13, v14, v15, v16, p);
   }
 
   self->_successfullyEstablishedLinkOnDestinationAP = 1;
@@ -405,12 +405,12 @@ LABEL_41:
   return objc_msgSend_joinNetworkWithScanInfoAsync_password_rememberChoice_(v14, v15, targetMFiDeviceScanRecord, 0, 1);
 }
 
-- (void)joinDestinationNetworkTimeoutFired:(id)a3
+- (void)joinDestinationNetworkTimeoutFired:(id)fired
 {
   linkUpOnDestinationNetworkTimer = self->_linkUpOnDestinationNetworkTimer;
   if (linkUpOnDestinationNetworkTimer)
   {
-    if (objc_msgSend_isValid(linkUpOnDestinationNetworkTimer, a2, a3))
+    if (objc_msgSend_isValid(linkUpOnDestinationNetworkTimer, a2, fired))
     {
       objc_msgSend_invalidateLinkUpOnDestinationNetworkTimer(self, v5, v6);
       if (!self->_successfullyEstablishedLinkOnDestinationAP)
@@ -429,11 +429,11 @@ LABEL_41:
   }
 }
 
-- (void)joinDestinationAPDone:(id)a3
+- (void)joinDestinationAPDone:(id)done
 {
-  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, a3);
+  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, done);
   objc_msgSend_removeObserver_name_object_(v5, v6, self, @"com.apple.WiFiUtils.Join.Complete", 0);
-  v9 = objc_msgSend_userInfo(a3, v7, v8);
+  v9 = objc_msgSend_userInfo(done, v7, v8);
   v11 = objc_msgSend_objectForKey_(v9, v10, @"WiFiUtils_OSStatus");
   if (v11)
   {
@@ -472,11 +472,11 @@ LABEL_41:
   self->_easyConfigPostConfigMetrics.wifiJoinDestinationAPError = v20;
 }
 
-- (void)joinSWAPDone:(id)a3
+- (void)joinSWAPDone:(id)done
 {
-  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, a3);
+  v5 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, done);
   objc_msgSend_removeObserver_name_object_(v5, v6, self, @"com.apple.WiFiUtils.Join.Complete", 0);
-  v9 = objc_msgSend_userInfo(a3, v7, v8);
+  v9 = objc_msgSend_userInfo(done, v7, v8);
   v11 = objc_msgSend_objectForKey_(v9, v10, @"WiFiUtils_OSStatus");
   if (v11)
   {
@@ -581,10 +581,10 @@ LABEL_12:
   objc_msgSend_removeObserver_name_object_(v12, v13, self, v14, 0);
 }
 
-- (void)handleEasyConfigProgress:(id)a3
+- (void)handleEasyConfigProgress:(id)progress
 {
   lastHeardEasyConfigProgressNotification = self->_lastHeardEasyConfigProgressNotification;
-  v6 = objc_msgSend_userInfo(a3, a2, a3);
+  v6 = objc_msgSend_userInfo(progress, a2, progress);
   v8 = objc_msgSend_objectForKey_(v6, v7, *MEMORY[0x277D06B40]);
   v11 = objc_msgSend_integerValue(v8, v9, v10);
   self->_lastHeardEasyConfigProgressNotification = v11;
@@ -702,7 +702,7 @@ LABEL_60:
     if (lastHeardEasyConfigProgressNotification <= 0x27)
     {
 
-      MEMORY[0x2821F9670](self, sel_handleEasyConfigProgressAppliedConfigurationToDevice_, a3);
+      MEMORY[0x2821F9670](self, sel_handleEasyConfigProgressAppliedConfigurationToDevice_, progress);
       return;
     }
 
@@ -805,10 +805,10 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  MEMORY[0x2821F9670](self, sel_handleEasyConfigProgressSearchingForPostConfigDevice_, a3);
+  MEMORY[0x2821F9670](self, sel_handleEasyConfigProgressSearchingForPostConfigDevice_, progress);
 }
 
-- (void)handleEasyConfigProgressAppliedConfigurationToDevice:(id)a3
+- (void)handleEasyConfigProgressAppliedConfigurationToDevice:(id)device
 {
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
@@ -816,7 +816,7 @@ LABEL_32:
   }
 
   self->_waitingForLinkState = 2;
-  v9 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, a3);
+  v9 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], a2, device);
   objc_msgSend_addObserver_selector_name_object_(v9, v10, self, sel_joinDestinationAPDone_, @"com.apple.WiFiUtils.Join.Complete", 0);
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
@@ -828,11 +828,11 @@ LABEL_32:
   objc_msgSend_joinNetworkWithScanInfoAsync_password_rememberChoice_(v17, v18, self->_destinationNetworkScanRecord, self->_destinationNetworkPassword, 2);
   v20 = objc_msgSend_scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x277CBEBB8], v19, self, sel_joinDestinationNetworkTimeoutFired_, 0, 0, 60.0);
   objc_msgSend_setLinkUpOnDestinationNetworkTimer_(self, v21, v20);
-  v24 = objc_msgSend_userInfo(a3, v22, v23);
+  v24 = objc_msgSend_userInfo(device, v22, v23);
   self->_accessoryResponseDict = objc_msgSend_objectForKey_(v24, v25, *MEMORY[0x277D06B50]);
 }
 
-- (void)handleEasyConfigProgressSearchingForPostConfigDevice:(id)a3
+- (void)handleEasyConfigProgressSearchingForPostConfigDevice:(id)device
 {
   v4 = MEMORY[0x277CBEAC0];
   v5 = objc_msgSend_objectForKey_(self->_setupOptionsDict, a2, @"kBSAutoGuessSetupOptionKey_BaseName");
@@ -841,9 +841,9 @@ LABEL_32:
   objc_msgSend_sendProgressToUI_withParamDict_(self, v7, 7, v8);
 }
 
-- (void)handleEasyConfigStopped:(id)a3
+- (void)handleEasyConfigStopped:(id)stopped
 {
-  v4 = objc_msgSend_userInfo(a3, a2, a3);
+  v4 = objc_msgSend_userInfo(stopped, a2, stopped);
   v6 = objc_msgSend_objectForKey_(v4, v5, *MEMORY[0x277D06B48]);
   v10 = objc_msgSend_code(v6, v7, v8);
 
@@ -990,9 +990,9 @@ LABEL_32:
   MEMORY[0x2821F9670](uiDelegate, sel_callbackAskUserForUncertifiedForController_, self);
 }
 
-- (void)callbackAskUserForUncertifiedResult:(int)a3
+- (void)callbackAskUserForUncertifiedResult:(int)result
 {
-  if (a3)
+  if (result)
   {
     if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
     {
@@ -1013,7 +1013,7 @@ LABEL_32:
   }
 }
 
-- (void)askUserForSetupCodeWithRetryStatus:(BOOL)a3
+- (void)askUserForSetupCodeWithRetryStatus:(BOOL)status
 {
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
@@ -1025,9 +1025,9 @@ LABEL_32:
   MEMORY[0x2821F9670](uiDelegate, sel_callbackAskUserForSetupCode_isRetry_forController_, 2);
 }
 
-- (void)callbackAskUserForSetupCodeResult:(int)a3 password:(id)a4
+- (void)callbackAskUserForSetupCodeResult:(int)result password:(id)password
 {
-  if (a3)
+  if (result)
   {
     if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
     {
@@ -1036,7 +1036,7 @@ LABEL_32:
 
     easyConfigDevice = self->_easyConfigDevice;
 
-    objc_msgSend_stop(easyConfigDevice, a2, *&a3);
+    objc_msgSend_stop(easyConfigDevice, a2, *&result);
   }
 
   else
@@ -1048,11 +1048,11 @@ LABEL_32:
 
     v11 = self->_easyConfigDevice;
 
-    MEMORY[0x2821F9670](v11, sel_trySetupCode_, a4);
+    MEMORY[0x2821F9670](v11, sel_trySetupCode_, password);
   }
 }
 
-- (void)askUserForNetworkPassword:(id)a3
+- (void)askUserForNetworkPassword:(id)password
 {
   self->_promptedUserForDestinationWiFiPSK = 1;
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
@@ -1062,24 +1062,24 @@ LABEL_32:
 
   uiDelegate = self->super.super._uiDelegate;
 
-  objc_msgSend_callbackAskUserForPassword_param_forController_(uiDelegate, a2, 1, a3, self);
+  objc_msgSend_callbackAskUserForPassword_param_forController_(uiDelegate, a2, 1, password, self);
 }
 
-- (void)callbackAskUserForPasswordResult:(int)a3 password:(id)a4 remember:(int)a5
+- (void)callbackAskUserForPasswordResult:(int)result password:(id)password remember:(int)remember
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (result)
   {
     if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
     {
-      sub_23EB75374(&dword_27E383310, "[AUMFiSetupController callbackAskUserForPasswordResult:password:remember:]", 800, "Did NOT get destination network password from user\n", *&a5, v5, v6, v7, v22);
+      sub_23EB75374(&dword_27E383310, "[AUMFiSetupController callbackAskUserForPasswordResult:password:remember:]", 800, "Did NOT get destination network password from user\n", *&remember, v5, v6, v7, v22);
     }
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = objc_msgSend_copy(self->_mfiSetupDelegates, a2, *&a3, 0);
+    v9 = objc_msgSend_copy(self->_mfiSetupDelegates, a2, *&result, 0);
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v22, v26, 16);
     if (v11)
     {
@@ -1113,17 +1113,17 @@ LABEL_32:
   {
     if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
     {
-      sub_23EB75374(&dword_27E383310, "[AUMFiSetupController callbackAskUserForPasswordResult:password:remember:]", 800, "Successfully obtained destination network password from user.\n", *&a5, v5, v6, v7, v22);
+      sub_23EB75374(&dword_27E383310, "[AUMFiSetupController callbackAskUserForPasswordResult:password:remember:]", 800, "Successfully obtained destination network password from user.\n", *&remember, v5, v6, v7, v22);
     }
 
-    objc_msgSend_setDestinationNetworkPassword_(self, a2, a4);
+    objc_msgSend_setDestinationNetworkPassword_(self, a2, password);
     askUserForPasswordSemaphore = self->_askUserForPasswordSemaphore;
 
     dispatch_semaphore_signal(askUserForPasswordSemaphore);
   }
 }
 
-- (int)sendProgressToUI:(int)a3 withParamDict:(id)a4
+- (int)sendProgressToUI:(int)i withParamDict:(id)dict
 {
   v23 = *MEMORY[0x277D85DE8];
   mfiSetupDelegates = self->_mfiSetupDelegates;
@@ -1132,12 +1132,12 @@ LABEL_32:
     return -6762;
   }
 
-  v7 = *&a3;
+  v7 = *&i;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = objc_msgSend_copy(mfiSetupDelegates, a2, *&a3, 0);
+  v8 = objc_msgSend_copy(mfiSetupDelegates, a2, *&i, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v18, v22, 16);
   if (!v10)
   {
@@ -1159,7 +1159,7 @@ LABEL_32:
       v15 = *(*(&v18 + 1) + 8 * i);
       if (objc_opt_respondsToSelector())
       {
-        objc_msgSend_setupProgressUpdated_status_paramDict_forController_(v15, v16, v7, 0, a4, self);
+        objc_msgSend_setupProgressUpdated_status_paramDict_forController_(v15, v16, v7, 0, dict, self);
         v13 = 0;
       }
     }
@@ -1171,9 +1171,9 @@ LABEL_32:
   return v13;
 }
 
-- (int)sendSetupCompleteToUIWithResult:(int)a3
+- (int)sendSetupCompleteToUIWithResult:(int)result
 {
-  v7 = *&a3;
+  v7 = *&result;
   v28 = *MEMORY[0x277D85DE8];
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
@@ -1190,7 +1190,7 @@ LABEL_32:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = objc_msgSend_copy(mfiSetupDelegates, a2, *&a3);
+  v10 = objc_msgSend_copy(mfiSetupDelegates, a2, *&result);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v23, v27, 16);
   if (!v12)
   {
@@ -1270,15 +1270,15 @@ LABEL_32:
   return v22;
 }
 
-- (int)endSetup:(int)a3
+- (int)endSetup:(int)setup
 {
-  v7 = *&a3;
+  v7 = *&setup;
   if (dword_27E383310 <= 800 && (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u)))
   {
     sub_23EB75374(&dword_27E383310, "[AUMFiSetupController endSetup:]", 800, "%#m\n", v3, v4, v5, v6, v7);
   }
 
-  objc_msgSend_stopListeningToAllNotifications(self, a2, *&a3);
+  objc_msgSend_stopListeningToAllNotifications(self, a2, *&setup);
   if (self->_setupEnded)
   {
     v11 = 0;
@@ -1335,9 +1335,9 @@ LABEL_32:
   objc_msgSend_removeObserver_name_object_(v10, v11, self, @"com.apple.WiFiUtils.Join.Complete", 0);
 }
 
-- (void)logCompletionStatus:(int)a3
+- (void)logCompletionStatus:(int)status
 {
-  v7 = *&a3;
+  v7 = *&status;
   if (dword_27E383310 <= 800)
   {
     if (dword_27E383310 != -1 || sub_23EB74AC8(&dword_27E383310, 0x320u))

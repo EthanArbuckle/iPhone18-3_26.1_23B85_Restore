@@ -1,37 +1,37 @@
 @interface PXPhotoKitAssetCollectionFavoritePersonActionPerformer
-+ (BOOL)canPerformOn:(id)a3;
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)systemImageNameForPerson:(id)a3;
++ (BOOL)canPerformOn:(id)on;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForPerson:(id)person;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionFavoritePersonActionPerformer
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = [a4 people];
-  v6 = [v5 firstObject];
+  people = [inputs people];
+  firstObject = [people firstObject];
 
-  v7 = [a1 systemImageNameForPerson:v6];
+  v7 = [self systemImageNameForPerson:firstObject];
 
   return v7;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 people];
-  v12 = [v11 firstObject];
+  referenceCopy = reference;
+  inputsCopy = inputs;
+  people = [inputsCopy people];
+  firstObject = [people firstObject];
 
-  if (a3 - 1 >= 2)
+  if (case - 1 >= 2)
   {
-    if (!a3)
+    if (!case)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionFavoritePersonActionPerformer.m" lineNumber:65 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionFavoritePersonActionPerformer.m" lineNumber:65 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -41,28 +41,28 @@
 
   else
   {
-    v13 = [a1 localizedTitleForPerson:v12];
+    v13 = [self localizedTitleForPerson:firstObject];
   }
 
   return v13;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = a4;
+  inputsCopy = inputs;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 people];
+    people = [inputsCopy people];
   }
 
   else
   {
-    v6 = 0;
+    people = 0;
   }
 
-  if ([v6 count] == 1)
+  if ([people count] == 1)
   {
-    v7 = [a1 canPerformOn:v6];
+    v7 = [self canPerformOn:people];
   }
 
   else
@@ -73,9 +73,9 @@
   return v7;
 }
 
-+ (id)systemImageNameForPerson:(id)a3
++ (id)systemImageNameForPerson:(id)person
 {
-  if ([a3 type] == 1)
+  if ([person type] == 1)
   {
     v3 = @"heart.slash";
   }
@@ -88,10 +88,10 @@
   return v3;
 }
 
-+ (BOOL)canPerformOn:(id)a3
++ (BOOL)canPerformOn:(id)on
 {
-  v3 = [a3 firstObject];
-  v4 = [PXPeopleUtilities isPersonHiddenFromPeopleHome:v3];
+  firstObject = [on firstObject];
+  v4 = [PXPeopleUtilities isPersonHiddenFromPeopleHome:firstObject];
 
   return !v4;
 }
@@ -99,14 +99,14 @@
 - (void)performUserInteractionTask
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v4 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 localIdentifier];
-    v6 = [v4 photoLibrary];
-    v7 = [PXPeopleUtilities personWithLocalIdentifier:v5 photoLibrary:v6];
+    localIdentifier = [firstObject localIdentifier];
+    photoLibrary = [firstObject photoLibrary];
+    v7 = [PXPeopleUtilities personWithLocalIdentifier:localIdentifier photoLibrary:photoLibrary];
 
     objc_initWeak(&location, self);
     v8 = [v7 type] != 1;
@@ -115,13 +115,13 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v11 = [(PXChangePeopleTypeAction *)v9 initWithPeople:v10 type:v8];
 
-    v12 = [(PXActionPerformer *)self undoManager];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __84__PXPhotoKitAssetCollectionFavoritePersonActionPerformer_performUserInteractionTask__block_invoke;
     v13[3] = &unk_1E7749D00;
     objc_copyWeak(&v14, &location);
-    [(PXAction *)v11 executeWithUndoManager:v12 completionHandler:v13];
+    [(PXAction *)v11 executeWithUndoManager:undoManager completionHandler:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);

@@ -1,20 +1,20 @@
 @interface TPPageGroupInfo
-- (TPPageGroupInfo)initWithPageIndex:(unsigned int)a3 bgCount:(int)a4 fgCount:(int)a5 drawableCount:(int)a6;
+- (TPPageGroupInfo)initWithPageIndex:(unsigned int)index bgCount:(int)count fgCount:(int)fgCount drawableCount:(int)drawableCount;
 @end
 
 @implementation TPPageGroupInfo
 
-- (TPPageGroupInfo)initWithPageIndex:(unsigned int)a3 bgCount:(int)a4 fgCount:(int)a5 drawableCount:(int)a6
+- (TPPageGroupInfo)initWithPageIndex:(unsigned int)index bgCount:(int)count fgCount:(int)fgCount drawableCount:(int)drawableCount
 {
   v11.receiver = self;
   v11.super_class = TPPageGroupInfo;
   result = [(TPPageGroupInfo *)&v11 init];
   if (result)
   {
-    result->_pageIndex = a3;
-    result->_bgCount = a4;
-    result->_fgCount = a5;
-    result->_drawableCount = a6;
+    result->_pageIndex = index;
+    result->_bgCount = count;
+    result->_fgCount = fgCount;
+    result->_drawableCount = drawableCount;
   }
 
   return result;

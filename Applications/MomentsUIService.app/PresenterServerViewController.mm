@@ -1,15 +1,15 @@
 @interface PresenterServerViewController
-- (_TtC16MomentsUIService29PresenterServerViewController)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService29PresenterServerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MomentsUIService29PresenterServerViewController)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService29PresenterServerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
+- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)button;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
 @implementation PresenterServerViewController
 
-- (_TtC16MomentsUIService29PresenterServerViewController)initWithCoder:(id)a3
+- (_TtC16MomentsUIService29PresenterServerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService29PresenterServerViewController_presentedSheetController) = 0;
   v4 = OBJC_IVAR____TtC16MomentsUIService29PresenterServerViewController_currentClient;
@@ -25,9 +25,9 @@
 - (void)dealloc
 {
   type metadata accessor for MomentsUIManager();
-  v3 = self;
+  selfCopy = self;
   static MomentsUIManager.dismissWithoutCleanup.setter();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PresenterServerViewController();
   [(PresenterServerViewController *)&v4 dealloc];
 }
@@ -39,25 +39,25 @@
   [(PresenterServerViewController *)&v2 viewDidLoad];
 }
 
-- (_TtC16MomentsUIService29PresenterServerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MomentsUIService29PresenterServerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  PresenterServerViewController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  PresenterServerViewController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(identifierCopy);
 }
 
-- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)a3
+- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  specialized PresenterServerViewController.onboardingSettingsViewControllerDidTapDoneButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  specialized PresenterServerViewController.onboardingSettingsViewControllerDidTapDoneButton(_:)(buttonCopy);
 }
 
 @end

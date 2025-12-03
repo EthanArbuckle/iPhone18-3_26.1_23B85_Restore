@@ -1,22 +1,22 @@
 @interface MIPPodcast
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPPodcast
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   artist = self->_artist;
-  v9 = v4;
-  v6 = v4[1];
+  v9 = fromCopy;
+  v6 = fromCopy[1];
   if (artist)
   {
     if (v6)
@@ -64,13 +64,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_feedUrl hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((artist = self->_artist, !(artist | v4[1])) || -[MIPArtist isEqual:](artist, "isEqual:")) && ((series = self->_series, !(series | v4[4])) || -[MIPSeries isEqual:](series, "isEqual:")) && ((externalGuid = self->_externalGuid, !(externalGuid | v4[2])) || -[NSString isEqual:](externalGuid, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((artist = self->_artist, !(artist | equalCopy[1])) || -[MIPArtist isEqual:](artist, "isEqual:")) && ((series = self->_series, !(series | equalCopy[4])) || -[MIPSeries isEqual:](series, "isEqual:")) && ((externalGuid = self->_externalGuid, !(externalGuid | equalCopy[2])) || -[NSString isEqual:](externalGuid, "isEqual:")))
   {
     feedUrl = self->_feedUrl;
-    if (feedUrl | v4[3])
+    if (feedUrl | equalCopy[3])
     {
       v9 = [(NSString *)feedUrl isEqual:?];
     }
@@ -89,116 +89,116 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MIPArtist *)self->_artist copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MIPArtist *)self->_artist copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(MIPSeries *)self->_series copyWithZone:a3];
+  v8 = [(MIPSeries *)self->_series copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_externalGuid copyWithZone:a3];
+  v10 = [(NSString *)self->_externalGuid copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_feedUrl copyWithZone:a3];
+  v12 = [(NSString *)self->_feedUrl copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_artist)
   {
-    [v4 setArtist:?];
-    v4 = v5;
+    [toCopy setArtist:?];
+    toCopy = v5;
   }
 
   if (self->_series)
   {
     [v5 setSeries:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_externalGuid)
   {
     [v5 setExternalGuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_feedUrl)
   {
     [v5 setFeedUrl:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_artist)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_series)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_externalGuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_feedUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   artist = self->_artist;
   if (artist)
   {
-    v5 = [(MIPArtist *)artist dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"artist"];
+    dictionaryRepresentation = [(MIPArtist *)artist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"artist"];
   }
 
   series = self->_series;
   if (series)
   {
-    v7 = [(MIPSeries *)series dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"series"];
+    dictionaryRepresentation2 = [(MIPSeries *)series dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"series"];
   }
 
   externalGuid = self->_externalGuid;
   if (externalGuid)
   {
-    [v3 setObject:externalGuid forKey:@"externalGuid"];
+    [dictionary setObject:externalGuid forKey:@"externalGuid"];
   }
 
   feedUrl = self->_feedUrl;
   if (feedUrl)
   {
-    [v3 setObject:feedUrl forKey:@"feedUrl"];
+    [dictionary setObject:feedUrl forKey:@"feedUrl"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -207,8 +207,8 @@
   v8.receiver = self;
   v8.super_class = MIPPodcast;
   v4 = [(MIPPodcast *)&v8 description];
-  v5 = [(MIPPodcast *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPPodcast *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

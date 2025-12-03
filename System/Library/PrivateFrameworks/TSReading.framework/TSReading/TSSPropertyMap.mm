@@ -1,45 +1,45 @@
 @interface TSSPropertyMap
 + (id)propertyMap;
-+ (id)propertyMapWithPropertyMap:(id)a3;
-- (BOOL)containsAnyPropertyInProperties:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)propertyMapWithPropertyMap:(id)map;
+- (BOOL)containsAnyPropertyInProperties:(id)properties;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (TSSPropertyMap)init;
-- (TSSPropertyMap)initWithFirstKey:(int)a3 andArgumentList:(char *)a4;
-- (TSSPropertyMap)initWithPropertyMap:(id)a3;
-- (TSSPropertyMap)propertyMapWithProperties:(id)a3;
+- (TSSPropertyMap)initWithFirstKey:(int)key andArgumentList:(char *)list;
+- (TSSPropertyMap)initWithPropertyMap:(id)map;
+- (TSSPropertyMap)propertyMapWithProperties:(id)properties;
 - (id)allKeys;
 - (id)allProperties;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)diff:(id)a3;
-- (id)diffOnlyDifferences:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)diff:(id)diff;
+- (id)diffOnlyDifferences:(id)differences;
 - (id)old_description;
-- (id)propertyMapByAddingValuesFromPropertyMap:(id)a3;
-- (id)propertyMapByRemovingValuesForProperties:(id)a3;
-- (id)propertyMapByRemovingValuesFromPropertyMap:(id)a3;
-- (void)addValuesFromPropertyMap:(id)a3;
+- (id)propertyMapByAddingValuesFromPropertyMap:(id)map;
+- (id)propertyMapByRemovingValuesForProperties:(id)properties;
+- (id)propertyMapByRemovingValuesFromPropertyMap:(id)map;
+- (void)addValuesFromPropertyMap:(id)map;
 - (void)dealloc;
-- (void)enumeratePropertiesAndObjectsUsingBlock:(id)a3;
-- (void)filterWithProperties:(id)a3;
-- (void)minusPropertyMap:(id)a3;
-- (void)pSetArrayOfFloats:(double)a3[9] forProperty:(int)a4;
-- (void)pSetArrayOfObjects:(id)a3[9] forProperty:(int)a4;
-- (void)removeValuesForProperties:(id)a3;
-- (void)removeValuesFromPropertyMap:(id)a3;
+- (void)enumeratePropertiesAndObjectsUsingBlock:(id)block;
+- (void)filterWithProperties:(id)properties;
+- (void)minusPropertyMap:(id)map;
+- (void)pSetArrayOfFloats:(double)floats[9] forProperty:(int)property;
+- (void)pSetArrayOfObjects:(id)objects[9] forProperty:(int)property;
+- (void)removeValuesForProperties:(id)properties;
+- (void)removeValuesFromPropertyMap:(id)map;
 @end
 
 @implementation TSSPropertyMap
 
 + (id)propertyMap
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)propertyMapWithPropertyMap:(id)a3
++ (id)propertyMapWithPropertyMap:(id)map
 {
-  v3 = [a3 copy];
+  v3 = [map copy];
 
   return v3;
 }
@@ -57,16 +57,16 @@
   return v2;
 }
 
-- (TSSPropertyMap)initWithPropertyMap:(id)a3
+- (TSSPropertyMap)initWithPropertyMap:(id)map
 {
   v7.receiver = self;
   v7.super_class = TSSPropertyMap;
   v4 = [(TSSPropertyMap *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (map)
     {
-      v5 = String(*(a3 + 1));
+      v5 = String(*(map + 1));
       v4->mStore = v5;
       if (!v5)
       {
@@ -84,15 +84,15 @@
   return v4;
 }
 
-- (TSSPropertyMap)initWithFirstKey:(int)a3 andArgumentList:(char *)a4
+- (TSSPropertyMap)initWithFirstKey:(int)key andArgumentList:(char *)list
 {
-  v5 = *&a3;
+  v5 = *&key;
   v9.receiver = self;
   v9.super_class = TSSPropertyMap;
   v6 = [(TSSPropertyMap *)&v9 init];
   if (v6)
   {
-    PropertyAndArgumentList = i_TSSPropertyStoreCreateWithFirstPropertyAndArgumentList(v5, a4);
+    PropertyAndArgumentList = i_TSSPropertyStoreCreateWithFirstPropertyAndArgumentList(v5, list);
     v6->mStore = PropertyAndArgumentList;
     if (!PropertyAndArgumentList)
     {
@@ -112,9 +112,9 @@
   [(TSSPropertyMap *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   if (v4)
   {
     v4[1] = String(self->mStore);
@@ -128,7 +128,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -201,16 +201,16 @@
   return [v3 stringWithFormat:@"(%@*)%p {\n%@\n}", v5, self, objc_msgSend(MEMORY[0x277CCACA8], "tsu_stringByIndentingString:", String(self->mStore))];
 }
 
-- (void)enumeratePropertiesAndObjectsUsingBlock:(id)a3
+- (void)enumeratePropertiesAndObjectsUsingBlock:(id)block
 {
-  v5 = [(TSSPropertyMap *)self allProperties];
+  allProperties = [(TSSPropertyMap *)self allProperties];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__TSSPropertyMap_enumeratePropertiesAndObjectsUsingBlock___block_invoke;
   v6[3] = &unk_279D47E48;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 enumeratePropertiesUsingBlock:v6];
+  v6[5] = block;
+  [allProperties enumeratePropertiesUsingBlock:v6];
 }
 
 uint64_t __58__TSSPropertyMap_enumeratePropertiesAndObjectsUsingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -230,15 +230,15 @@ uint64_t __58__TSSPropertyMap_enumeratePropertiesAndObjectsUsingBlock___block_in
     return &stru_287D36338;
   }
 
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __29__TSSPropertyMap_description__block_invoke;
   v5[3] = &unk_279D47E70;
-  v5[4] = v3;
+  v5[4] = array;
   [(TSSPropertyMap *)self enumeratePropertiesAndObjectsUsingBlock:v5];
-  [v3 sortUsingComparator:&__block_literal_global_19];
-  return [objc_msgSend(v3 componentsJoinedByString:{@"$", "tsu_stringByExpandingTableFormatting"}];
+  [array sortUsingComparator:&__block_literal_global_19];
+  return [objc_msgSend(array componentsJoinedByString:{@"$", "tsu_stringByExpandingTableFormatting"}];
 }
 
 uint64_t __29__TSSPropertyMap_description__block_invoke(uint64_t a1, uint64_t a2, int a3, void *a4)
@@ -252,23 +252,23 @@ uint64_t __29__TSSPropertyMap_description__block_invoke(uint64_t a1, uint64_t a2
   return [v6 addObject:v10];
 }
 
-- (void)addValuesFromPropertyMap:(id)a3
+- (void)addValuesFromPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    String(self->mStore, *(a3 + 1));
+    String(self->mStore, *(map + 1));
   }
 }
 
-- (void)removeValuesFromPropertyMap:(id)a3
+- (void)removeValuesFromPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    String(self->mStore, *(a3 + 1), v3);
+    String(self->mStore, *(map + 1), v3);
   }
 }
 
-- (BOOL)containsAnyPropertyInProperties:(id)a3
+- (BOOL)containsAnyPropertyInProperties:(id)properties
 {
   v6 = 0;
   v7 = &v6;
@@ -280,7 +280,7 @@ uint64_t __29__TSSPropertyMap_description__block_invoke(uint64_t a1, uint64_t a2
   v5[3] = &unk_279D47E98;
   v5[4] = self;
   v5[5] = &v6;
-  [a3 enumeratePropertiesUsingBlock:v5];
+  [properties enumeratePropertiesUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -294,10 +294,10 @@ BOOL __50__TSSPropertyMap_containsAnyPropertyInProperties___block_invoke(uint64_
   return result;
 }
 
-- (void)removeValuesForProperties:(id)a3
+- (void)removeValuesForProperties:(id)properties
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a3 count];
+  v5 = [properties count];
   if (v5)
   {
     v6 = v5;
@@ -325,7 +325,7 @@ BOOL __50__TSSPropertyMap_containsAnyPropertyInProperties___block_invoke(uint64_
     v8[3] = &unk_279D47EC0;
     v8[4] = v9;
     v8[5] = v7;
-    [a3 enumeratePropertiesUsingBlock:v8];
+    [properties enumeratePropertiesUsingBlock:v8];
     String(self->mStore, v7, v6);
     if (v7 != v10)
     {
@@ -346,17 +346,17 @@ uint64_t __44__TSSPropertyMap_removeValuesForProperties___block_invoke(uint64_t 
   return result;
 }
 
-- (void)filterWithProperties:(id)a3
+- (void)filterWithProperties:(id)properties
 {
   v5 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v6 = [(TSSPropertyMap *)self allProperties];
+  allProperties = [(TSSPropertyMap *)self allProperties];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__TSSPropertyMap_filterWithProperties___block_invoke;
   v7[3] = &unk_279D47EE8;
-  v7[4] = a3;
+  v7[4] = properties;
   v7[5] = self;
-  [v6 enumeratePropertiesUsingBlock:v7];
+  [allProperties enumeratePropertiesUsingBlock:v7];
 }
 
 void __39__TSSPropertyMap_filterWithProperties___block_invoke(uint64_t a1, uint64_t a2)
@@ -370,93 +370,93 @@ void __39__TSSPropertyMap_filterWithProperties___block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)minusPropertyMap:(id)a3
+- (void)minusPropertyMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    String(self->mStore, *(a3 + 1), v3);
+    String(self->mStore, *(map + 1), v3);
   }
 }
 
-- (id)diff:(id)a3
+- (id)diff:(id)diff
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = TSUObjectReferenceDescription();
   v7 = TSUObjectReferenceDescription();
-  return [v5 stringWithFormat:@"\nDiff %@ vs. %@:\n%@\n", v6, v7, String(self->mStore, *(a3 + 1), 1)];
+  return [v5 stringWithFormat:@"\nDiff %@ vs. %@:\n%@\n", v6, v7, String(self->mStore, *(diff + 1), 1)];
 }
 
-- (id)diffOnlyDifferences:(id)a3
+- (id)diffOnlyDifferences:(id)differences
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = TSUObjectReferenceDescription();
   v7 = TSUObjectReferenceDescription();
-  return [v5 stringWithFormat:@"\nDiff %@ vs. %@:\n%@\n", v6, v7, String(self->mStore, *(a3 + 1), 0)];
+  return [v5 stringWithFormat:@"\nDiff %@ vs. %@:\n%@\n", v6, v7, String(self->mStore, *(differences + 1), 0)];
 }
 
-- (id)propertyMapByAddingValuesFromPropertyMap:(id)a3
+- (id)propertyMapByAddingValuesFromPropertyMap:(id)map
 {
   v4 = [(TSSPropertyMap *)self copy];
   v5 = v4;
-  if (a3)
+  if (map)
   {
-    [v4 addValuesFromPropertyMap:a3];
+    [v4 addValuesFromPropertyMap:map];
   }
 
   return v5;
 }
 
-- (id)propertyMapByRemovingValuesFromPropertyMap:(id)a3
+- (id)propertyMapByRemovingValuesFromPropertyMap:(id)map
 {
   v4 = [(TSSPropertyMap *)self copy];
   v5 = v4;
-  if (a3)
+  if (map)
   {
-    [v4 removeValuesFromPropertyMap:a3];
+    [v4 removeValuesFromPropertyMap:map];
   }
 
   return v5;
 }
 
-- (id)propertyMapByRemovingValuesForProperties:(id)a3
+- (id)propertyMapByRemovingValuesForProperties:(id)properties
 {
   v4 = [(TSSPropertyMap *)self copy];
   v5 = v4;
-  if (a3)
+  if (properties)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __59__TSSPropertyMap_propertyMapByRemovingValuesForProperties___block_invoke;
     v7[3] = &unk_279D47F10;
     v7[4] = v4;
-    [a3 enumeratePropertiesUsingBlock:v7];
+    [properties enumeratePropertiesUsingBlock:v7];
   }
 
   return v5;
 }
 
-- (TSSPropertyMap)propertyMapWithProperties:(id)a3
+- (TSSPropertyMap)propertyMapWithProperties:(id)properties
 {
   v4 = [(TSSPropertyMap *)self copy];
-  [(TSSPropertyMap *)v4 filterWithProperties:a3];
+  [(TSSPropertyMap *)v4 filterWithProperties:properties];
   return v4;
 }
 
-- (void)pSetArrayOfObjects:(id)a3[9] forProperty:(int)a4
+- (void)pSetArrayOfObjects:(id)objects[9] forProperty:(int)property
 {
-  v4 = *&a4;
-  v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:a3 count:9];
+  v4 = *&property;
+  v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:objects count:9];
   [(TSSPropertyMap *)self setObject:v6 forProperty:v4];
 }
 
-- (void)pSetArrayOfFloats:(double)a3[9] forProperty:(int)a4
+- (void)pSetArrayOfFloats:(double)floats[9] forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v7 = 0;
   v9 = *MEMORY[0x277D85DE8];
   do
   {
-    *&v8[v7 * 8] = [MEMORY[0x277CCABB0] numberWithDouble:a3[v7]];
+    *&v8[v7 * 8] = [MEMORY[0x277CCABB0] numberWithDouble:floats[v7]];
     ++v7;
   }
 

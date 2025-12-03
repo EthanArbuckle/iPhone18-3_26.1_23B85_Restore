@@ -1,15 +1,15 @@
 @interface SearchUILayoutFooterView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
+- (void)setFooterView:(id)view;
 @end
 
 @implementation SearchUILayoutFooterView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = [(SearchUILayoutFooterView *)self footerView:a3.width];
+  width = size.width;
+  v6 = [(SearchUILayoutFooterView *)self footerView:size.width];
   [v6 systemLayoutSizeFittingSize:{width, 0.0}];
   v8 = v7;
 
@@ -20,16 +20,16 @@
   return result;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  if (footerView != v5)
+  if (footerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)footerView removeFromSuperview];
     [(SearchUILayoutFooterView *)self addSubview:v7];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -45,8 +45,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SearchUILayoutFooterView *)self footerView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  footerView = [(SearchUILayoutFooterView *)self footerView];
+  [footerView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

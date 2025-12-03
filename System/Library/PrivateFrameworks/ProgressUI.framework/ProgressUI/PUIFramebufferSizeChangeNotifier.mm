@@ -1,8 +1,8 @@
 @interface PUIFramebufferSizeChangeNotifier
 + (id)sharedInstance;
-- (id)addListener:(id)a3;
+- (id)addListener:(id)listener;
 - (void)_onMainQueue_notifyListeners;
-- (void)removeListener:(id)a3;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation PUIFramebufferSizeChangeNotifier
@@ -41,34 +41,34 @@ void __50__PUIFramebufferSizeChangeNotifier_sharedInstance__block_invoke()
   }
 }
 
-- (id)addListener:(id)a3
+- (id)addListener:(id)listener
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = self->_listeners;
   objc_sync_enter(v5);
   listeners = self->_listeners;
-  v7 = MEMORY[0x2666F2750](v4);
+  v7 = MEMORY[0x2666F2750](listenerCopy);
   v12[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   [(NSMutableArray *)listeners addObject:v8];
 
-  v9 = [(NSMutableArray *)self->_listeners lastObject];
-  NSLog(&cfstr_DidAddNewFrame.isa, v9);
+  lastObject = [(NSMutableArray *)self->_listeners lastObject];
+  NSLog(&cfstr_DidAddNewFrame.isa, lastObject);
   objc_sync_exit(v5);
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return lastObject;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_listeners;
   objc_sync_enter(v4);
-  NSLog(&cfstr_WillRemoveFram.isa, v5);
-  [(NSMutableArray *)self->_listeners removeObject:v5];
+  NSLog(&cfstr_WillRemoveFram.isa, listenerCopy);
+  [(NSMutableArray *)self->_listeners removeObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
@@ -77,9 +77,9 @@ void __50__PUIFramebufferSizeChangeNotifier_sharedInstance__block_invoke()
   v25 = *MEMORY[0x277D85DE8];
   v3 = self->_listeners;
   objc_sync_enter(v3);
-  v4 = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
-  v5 = [v4 currentMode];
-  [v5 pixelSize];
+  mainConfiguration = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
+  currentMode = [mainConfiguration currentMode];
+  [currentMode pixelSize];
   v7 = v6;
   v9 = v8;
 
@@ -109,8 +109,8 @@ void __50__PUIFramebufferSizeChangeNotifier_sharedInstance__block_invoke()
         v17 = *(*(&v20 + 1) + 8 * i);
         if ([(NSMutableArray *)self->_listeners containsObject:v17])
         {
-          v18 = [v17 firstObject];
-          v18[2](v7, v9);
+          firstObject = [v17 firstObject];
+          firstObject[2](v7, v9);
         }
 
         else

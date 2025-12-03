@@ -1,39 +1,39 @@
 @interface CSVoiceTriggerRejectReporter
 + (id)sharedInstance;
 - (CSVoiceTriggerRejectReporter)init;
-- (id)_checkForRejectWithScore:(id)a3 threshold:(id)a4 eventType:(unint64_t)a5 deltaTime:(double)a6;
-- (id)_constructVTRejectEventFrom:(id)a3 withMhid:(id)a4;
-- (id)_extractMetaDataEventFromEntry:(id)a3 currentTime:(double)a4;
+- (id)_checkForRejectWithScore:(id)score threshold:(id)threshold eventType:(unint64_t)type deltaTime:(double)time;
+- (id)_constructVTRejectEventFrom:(id)from withMhid:(id)mhid;
+- (id)_extractMetaDataEventFromEntry:(id)entry currentTime:(double)time;
 - (id)_readEventFromBiome;
-- (id)constructSELFEventFromEvents:(id)a3 withMhid:(id)a4;
+- (id)constructSELFEventFromEvents:(id)events withMhid:(id)mhid;
 - (void)_deleteAllEventsFromBiome;
-- (void)_emitEvent:(id)a3;
-- (void)reportVTRejectIfNeededForMHId:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
+- (void)_emitEvent:(id)event;
+- (void)reportVTRejectIfNeededForMHId:(id)id;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
 @end
 
 @implementation CSVoiceTriggerRejectReporter
 
-- (id)_extractMetaDataEventFromEntry:(id)a3 currentTime:(double)a4
+- (id)_extractMetaDataEventFromEntry:(id)entry currentTime:(double)time
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"absoluteTimestamp"];
+  entryCopy = entry;
+  v7 = [entryCopy objectForKey:@"absoluteTimestamp"];
   v8 = v7;
-  if (!v7 || (v9 = (a4 - [v7 unsignedLongLongValue]), v9 > 0x3C))
+  if (!v7 || (v9 = (time - [v7 unsignedLongLongValue]), v9 > 0x3C))
   {
     v10 = 0;
     goto LABEL_19;
   }
 
-  v11 = [v6 objectForKey:@"invocationTypeID"];
+  v11 = [entryCopy objectForKey:@"invocationTypeID"];
   if (v11)
   {
-    v12 = [v6 objectForKey:@"tdSpeakerRecognizerCombinedScore"];
+    v12 = [entryCopy objectForKey:@"tdSpeakerRecognizerCombinedScore"];
     if ([v11 isEqualToNumber:&off_10025E7E0])
     {
-      v13 = [v6 objectForKey:@"triggerScoreHS"];
-      v14 = [v6 objectForKey:@"keywordThresholdHS"];
-      v15 = [v6 objectForKey:@"tdSpeakerRecognizerCombinedThresholdHS"];
+      v13 = [entryCopy objectForKey:@"triggerScoreHS"];
+      v14 = [entryCopy objectForKey:@"keywordThresholdHS"];
+      v15 = [entryCopy objectForKey:@"tdSpeakerRecognizerCombinedThresholdHS"];
       v16 = v9;
       v17 = [(CSVoiceTriggerRejectReporter *)self _checkForRejectWithScore:v13 threshold:v14 eventType:0 deltaTime:v9];
       v18 = v17;
@@ -62,9 +62,9 @@
 
     else if ([v11 isEqualToNumber:&off_10025E7F8])
     {
-      v20 = [v6 objectForKey:@"triggerScoreJS"];
-      v21 = [v6 objectForKey:@"keywordThresholdJS"];
-      v22 = [v6 objectForKey:@"tdSpeakerRecognizerCombinedThresholdJS"];
+      v20 = [entryCopy objectForKey:@"triggerScoreJS"];
+      v21 = [entryCopy objectForKey:@"keywordThresholdJS"];
+      v22 = [entryCopy objectForKey:@"tdSpeakerRecognizerCombinedThresholdJS"];
       v23 = v9;
       v24 = [(CSVoiceTriggerRejectReporter *)self _checkForRejectWithScore:v20 threshold:v21 eventType:1 deltaTime:v9];
       v25 = v24;
@@ -105,15 +105,15 @@ LABEL_19:
   return v10;
 }
 
-- (id)_checkForRejectWithScore:(id)a3 threshold:(id)a4 eventType:(unint64_t)a5 deltaTime:(double)a6
+- (id)_checkForRejectWithScore:(id)score threshold:(id)threshold eventType:(unint64_t)type deltaTime:(double)time
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  scoreCopy = score;
+  thresholdCopy = threshold;
+  v11 = thresholdCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (scoreCopy && thresholdCopy)
   {
-    [v9 floatValue];
+    [scoreCopy floatValue];
     v14 = v13;
     [v11 floatValue];
     if (v14 >= v15)
@@ -124,22 +124,22 @@ LABEL_19:
     else
     {
       v16 = [CSVTRejectEventMetadata alloc];
-      [v9 floatValue];
+      [scoreCopy floatValue];
       v18 = v17;
       [v11 floatValue];
       LODWORD(v20) = v19;
-      v12 = [(CSVTRejectEventMetadata *)v16 initWithEventType:a5 score:COERCE_DOUBLE(v18 | 0x41CDCD6500000000) threshold:v20 deltaTime:a6 * 1000000000.0];
+      v12 = [(CSVTRejectEventMetadata *)v16 initWithEventType:type score:COERCE_DOUBLE(v18 | 0x41CDCD6500000000) threshold:v20 deltaTime:time * 1000000000.0];
     }
   }
 
   return v12;
 }
 
-- (void)_emitEvent:(id)a3
+- (void)_emitEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[AssistantSiriAnalytics sharedStream];
-  [v4 emitMessage:v3];
+  [v4 emitMessage:eventCopy];
 
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -150,64 +150,64 @@ LABEL_19:
   }
 }
 
-- (id)_constructVTRejectEventFrom:(id)a3 withMhid:(id)a4
+- (id)_constructVTRejectEventFrom:(id)from withMhid:(id)mhid
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  mhidCopy = mhid;
   v7 = objc_alloc_init(MHSchemaMHVoiceTriggerRejectDetected);
-  [v7 setPhsRejectBeforeActivationCount:{objc_msgSend(v5, "spkrIdRejectCount")}];
-  [v7 setCheckerHSRejectBeforeActivationCount:{objc_msgSend(v5, "hsRejectCount")}];
-  [v7 setCheckerJSRejectBeforeActivationCount:{objc_msgSend(v5, "jsRejectCount")}];
-  v8 = [v5 spkrIdScores];
-  v9 = [v8 count];
+  [v7 setPhsRejectBeforeActivationCount:{objc_msgSend(fromCopy, "spkrIdRejectCount")}];
+  [v7 setCheckerHSRejectBeforeActivationCount:{objc_msgSend(fromCopy, "hsRejectCount")}];
+  [v7 setCheckerJSRejectBeforeActivationCount:{objc_msgSend(fromCopy, "jsRejectCount")}];
+  spkrIdScores = [fromCopy spkrIdScores];
+  v9 = [spkrIdScores count];
 
   if (v9)
   {
-    v10 = [v5 spkrIdScores];
-    [v7 setPhsRejectBeforeActivationScores:v10];
+    spkrIdScores2 = [fromCopy spkrIdScores];
+    [v7 setPhsRejectBeforeActivationScores:spkrIdScores2];
 
-    v11 = [v5 spkrIdTimeDelta];
-    [v7 setPhsRejectBeforeActivationTimeDiffInNs:v11];
+    spkrIdTimeDelta = [fromCopy spkrIdTimeDelta];
+    [v7 setPhsRejectBeforeActivationTimeDiffInNs:spkrIdTimeDelta];
 
-    [v5 phsThreshold];
+    [fromCopy phsThreshold];
     [v7 setPhsThreshold:?];
-    [v5 pjsThreshold];
+    [fromCopy pjsThreshold];
     [v7 setPjsThreshold:?];
   }
 
-  v12 = [v5 hsScores];
-  v13 = [v12 count];
+  hsScores = [fromCopy hsScores];
+  v13 = [hsScores count];
 
   if (v13)
   {
-    v14 = [v5 hsScores];
-    [v7 setCheckerHSRejectBeforeActivationScores:v14];
+    hsScores2 = [fromCopy hsScores];
+    [v7 setCheckerHSRejectBeforeActivationScores:hsScores2];
 
-    v15 = [v5 hsTimeDelta];
-    [v7 setCheckerHSRejectBeforeActivationTimeDiffInNs:v15];
+    hsTimeDelta = [fromCopy hsTimeDelta];
+    [v7 setCheckerHSRejectBeforeActivationTimeDiffInNs:hsTimeDelta];
 
-    [v5 hsThreshold];
+    [fromCopy hsThreshold];
     [v7 setCheckerHSThreshold:?];
   }
 
-  v16 = [v5 jsScores];
-  v17 = [v16 count];
+  jsScores = [fromCopy jsScores];
+  v17 = [jsScores count];
 
   if (v17)
   {
-    v18 = [v5 jsScores];
-    [v7 setCheckerJSRejectBeforeActivationScores:v18];
+    jsScores2 = [fromCopy jsScores];
+    [v7 setCheckerJSRejectBeforeActivationScores:jsScores2];
 
-    v19 = [v5 jsTimeDelta];
-    [v7 setCheckerJSRejectBeforeActivationTimeDiffInNs:v19];
+    jsTimeDelta = [fromCopy jsTimeDelta];
+    [v7 setCheckerJSRejectBeforeActivationTimeDiffInNs:jsTimeDelta];
 
-    [v5 jsThreshold];
+    [fromCopy jsThreshold];
     [v7 setCheckerJSThreshold:?];
   }
 
   v20 = objc_alloc_init(MHSchemaMHClientEventMetadata);
   v21 = [SISchemaUUID alloc];
-  v22 = [[NSUUID alloc] initWithUUIDString:v6];
+  v22 = [[NSUUID alloc] initWithUUIDString:mhidCopy];
 
   v23 = [v21 initWithNSUUID:v22];
   [v20 setMhId:v23];
@@ -222,20 +222,20 @@ LABEL_19:
 - (void)_deleteAllEventsFromBiome
 {
   v2 = BiomeLibrary();
-  v3 = [v2 Siri];
-  v4 = [v3 VoiceTriggerStatistics];
+  siri = [v2 Siri];
+  voiceTriggerStatistics = [siri VoiceTriggerStatistics];
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [v4 pruner];
+  pruner = [voiceTriggerStatistics pruner];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001422CC;
   v8[3] = &unk_100252808;
   v8[4] = &v9;
-  [v5 deleteWithPolicy:@"Delete all VT stats" eventsPassingTest:v8];
+  [pruner deleteWithPolicy:@"Delete all VT stats" eventsPassingTest:v8];
 
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -293,14 +293,14 @@ LABEL_19:
   return v2;
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v9)
+  successfullyCopy = successfully;
+  monitorCopy = monitor;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
+  if (successfullyCopy)
   {
     v16 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
@@ -310,15 +310,15 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s ", &v18, 0xCu);
     }
 
-    v17 = [v14 requestMHUUID];
-    [(CSVoiceTriggerRejectReporter *)self reportVTRejectIfNeededForMHId:v17];
+    requestMHUUID = [optionCopy requestMHUUID];
+    [(CSVoiceTriggerRejectReporter *)self reportVTRejectIfNeededForMHId:requestMHUUID];
   }
 }
 
-- (id)constructSELFEventFromEvents:(id)a3 withMhid:(id)a4
+- (id)constructSELFEventFromEvents:(id)events withMhid:(id)mhid
 {
-  v6 = a3;
-  v27 = a4;
+  eventsCopy = events;
+  mhidCopy = mhid;
   v7 = objc_alloc_init(CSVTRejectDetectDataExtractor);
   v8 = +[NSDate date];
   [v8 timeIntervalSince1970];
@@ -328,7 +328,7 @@ LABEL_19:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = v6;
+  v11 = eventsCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v12)
   {
@@ -375,38 +375,38 @@ LABEL_19:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v22 = v21;
-      v23 = [(CSVTRejectDetectDataExtractor *)v7 totalEventCount];
+      totalEventCount = [(CSVTRejectDetectDataExtractor *)v7 totalEventCount];
       *buf = 136315394;
       v33 = "[CSVoiceTriggerRejectReporter constructSELFEventFromEvents:withMhid:]";
       v34 = 2048;
-      v35 = v23;
+      v35 = totalEventCount;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s Count of VT reject events detected: %lu", buf, 0x16u);
     }
 
-    v24 = v27;
-    v25 = [(CSVoiceTriggerRejectReporter *)self _constructVTRejectEventFrom:v7 withMhid:v27];
+    v24 = mhidCopy;
+    v25 = [(CSVoiceTriggerRejectReporter *)self _constructVTRejectEventFrom:v7 withMhid:mhidCopy];
   }
 
   else
   {
     v25 = 0;
-    v24 = v27;
+    v24 = mhidCopy;
   }
 
   return v25;
 }
 
-- (void)reportVTRejectIfNeededForMHId:(id)a3
+- (void)reportVTRejectIfNeededForMHId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014293C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -414,7 +414,7 @@ LABEL_19:
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -433,10 +433,10 @@ LABEL_19:
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

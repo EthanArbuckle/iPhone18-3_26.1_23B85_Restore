@@ -7,9 +7,9 @@
 - (id)bestMoveForPlayer:(id)player;
 - (id)randomMoveForPlayer:(id)player fromNumberOfBestMoves:(NSInteger)numMovesToConsider;
 - (void)dealloc;
-- (void)setGameModel:(id)a3;
+- (void)setGameModel:(id)model;
 - (void)setMaxLookAheadDepth:(NSInteger)maxLookAheadDepth;
-- (void)setRandomSource:(id)a3;
+- (void)setRandomSource:(id)source;
 @end
 
 @implementation GKMinmaxStrategist
@@ -53,15 +53,15 @@
   return v4;
 }
 
-- (void)setGameModel:(id)a3
+- (void)setGameModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   cppMinmax = self->_cppMinmax;
   if (cppMinmax)
   {
-    v7 = v5;
-    objc_storeStrong(cppMinmax + 9, a3);
-    v5 = v7;
+    v7 = modelCopy;
+    objc_storeStrong(cppMinmax + 9, model);
+    modelCopy = v7;
   }
 }
 
@@ -81,15 +81,15 @@
   return v4;
 }
 
-- (void)setRandomSource:(id)a3
+- (void)setRandomSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   cppMinmax = self->_cppMinmax;
   if (cppMinmax)
   {
-    v7 = v5;
-    objc_storeStrong(cppMinmax + 11, a3);
-    v5 = v7;
+    v7 = sourceCopy;
+    objc_storeStrong(cppMinmax + 11, source);
+    sourceCopy = v7;
   }
 }
 
@@ -124,46 +124,46 @@
 {
   if (!self->_cppMinmax)
   {
-    v3 = 0;
+    gameModel = 0;
 LABEL_7:
 
-    return v3;
+    return gameModel;
   }
 
-  v3 = [(GKMinmaxStrategist *)self gameModel];
-  if (!v3)
+  gameModel = [(GKMinmaxStrategist *)self gameModel];
+  if (!gameModel)
   {
     goto LABEL_7;
   }
 
-  v4 = v3;
-  v5 = [(GKMinmaxStrategist *)self gameModel];
-  v6 = [v5 activePlayer];
-  if (!v6)
+  gameModel4 = gameModel;
+  gameModel2 = [(GKMinmaxStrategist *)self gameModel];
+  activePlayer = [gameModel2 activePlayer];
+  if (!activePlayer)
   {
     v10 = 0;
 LABEL_11:
 
-    v3 = v10;
+    gameModel = v10;
 
-    return v3;
+    return gameModel;
   }
 
-  v7 = [(GKMinmaxStrategist *)self gameModel];
+  gameModel3 = [(GKMinmaxStrategist *)self gameModel];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     cppMinmax = self->_cppMinmax;
-    v4 = [(GKMinmaxStrategist *)self gameModel];
-    v5 = [v4 activePlayer];
-    v10 = GKCMinmaxStrategist::findBestMoveForPlayer(cppMinmax, v5, 0);
+    gameModel4 = [(GKMinmaxStrategist *)self gameModel];
+    gameModel2 = [gameModel4 activePlayer];
+    v10 = GKCMinmaxStrategist::findBestMoveForPlayer(cppMinmax, gameModel2, 0);
     goto LABEL_11;
   }
 
-  v3 = 0;
+  gameModel = 0;
 
-  return v3;
+  return gameModel;
 }
 
 - (id)bestMoveForPlayer:(id)player
@@ -174,29 +174,29 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v5 = [(GKMinmaxStrategist *)self gameModel];
-  if (!v5)
+  gameModel = [(GKMinmaxStrategist *)self gameModel];
+  if (!gameModel)
   {
     goto LABEL_6;
   }
 
-  v6 = [(GKMinmaxStrategist *)self gameModel];
+  gameModel2 = [(GKMinmaxStrategist *)self gameModel];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v5 = GKCMinmaxStrategist::findBestMoveForPlayer(self->_cppMinmax, v4, 0);
+    gameModel = GKCMinmaxStrategist::findBestMoveForPlayer(self->_cppMinmax, v4, 0);
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    gameModel = 0;
   }
 
 LABEL_6:
 
-  return v5;
+  return gameModel;
 }
 
 - (id)randomMoveForPlayer:(id)player fromNumberOfBestMoves:(NSInteger)numMovesToConsider

@@ -5,8 +5,8 @@
 - (UIFont)weekAllDayLabelFontRegular;
 - (UIFont)weekAllDayTodayLabelFontCompact;
 - (id)inboxDisclosureImage;
-- (id)statusGlyphForStatusType:(int64_t)a3;
-- (int64_t)_participantStatusFromDetailAttendeesStatus:(int64_t)a3;
+- (id)statusGlyphForStatusType:(int64_t)type;
+- (int64_t)_participantStatusFromDetailAttendeesStatus:(int64_t)status;
 - (void)updateMetrics;
 @end
 
@@ -38,14 +38,14 @@ void __39__EKUISemiConstantCache_sharedInstance__block_invoke()
   v2 = [(EKUISemiConstantCache *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contentCategorySizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E6993308] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E6993308] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__orientationChanged_ name:*MEMORY[0x1E69DDCB8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__orientationChanged_ name:*MEMORY[0x1E69DDCB8] object:0];
 
     [(EKUISemiConstantCache *)v2 updateMetrics];
   }
@@ -74,25 +74,25 @@ void __39__EKUISemiConstantCache_sharedInstance__block_invoke()
   self->_minYearMonthHeaderFontSizeUsed = 0.0;
 }
 
-- (id)statusGlyphForStatusType:(int64_t)a3
+- (id)statusGlyphForStatusType:(int64_t)type
 {
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-  [(EKUISemiConstantCache *)self _participantStatusFromDetailAttendeesStatus:a3];
+  [(EKUISemiConstantCache *)self _participantStatusFromDetailAttendeesStatus:type];
   v6 = attributedStatusGlyph();
 
   return v6;
 }
 
-- (int64_t)_participantStatusFromDetailAttendeesStatus:(int64_t)a3
+- (int64_t)_participantStatusFromDetailAttendeesStatus:(int64_t)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D3600308[a3];
+    return qword_1D3600308[status];
   }
 }
 

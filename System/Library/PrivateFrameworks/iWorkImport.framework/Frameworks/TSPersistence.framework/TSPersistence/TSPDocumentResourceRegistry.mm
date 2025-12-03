@@ -1,21 +1,21 @@
 @interface TSPDocumentResourceRegistry
 + (id)sharedRegistry;
-+ (void)setSharedRegistryMetadataURL:(id)a3;
++ (void)setSharedRegistryMetadataURL:(id)l;
 - (TSPDocumentResourceRegistry)init;
-- (TSPDocumentResourceRegistry)initWithMetadataDictionary:(id)a3;
-- (TSPDocumentResourceRegistry)initWithMetadataURL:(id)a3;
-- (id)documentResourceInfoForDigestString:(id)a3 locator:(id)a4;
-- (id)documentResourceInfosForTags:(id)a3;
-- (id)localStrategyProviderForDocumentResourceInfos:(id)a3;
+- (TSPDocumentResourceRegistry)initWithMetadataDictionary:(id)dictionary;
+- (TSPDocumentResourceRegistry)initWithMetadataURL:(id)l;
+- (id)documentResourceInfoForDigestString:(id)string locator:(id)locator;
+- (id)documentResourceInfosForTags:(id)tags;
+- (id)localStrategyProviderForDocumentResourceInfos:(id)infos;
 @end
 
 @implementation TSPDocumentResourceRegistry
 
-+ (void)setSharedRegistryMetadataURL:(id)a3
++ (void)setSharedRegistryMetadataURL:(id)l
 {
-  if (qword_280A529E8 != a3)
+  if (qword_280A529E8 != l)
   {
-    v3 = objc_msgSend_copy(a3, a2, a3);
+    v3 = objc_msgSend_copy(l, a2, l);
     v4 = qword_280A529E8;
     qword_280A529E8 = v3;
   }
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_276B01540;
   block[3] = &unk_27A6E4768;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A530B8 != -1)
   {
     dispatch_once(&qword_280A530B8, block);
@@ -57,10 +57,10 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDocumentResourceRegistry)initWithMetadataURL:(id)a3
+- (TSPDocumentResourceRegistry)initWithMetadataURL:(id)l
 {
   v8 = 0;
-  v5 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], a2, a3, 0, &v8);
+  v5 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], a2, l, 0, &v8);
   if (v8)
   {
     if (UnsafePointer != -1)
@@ -68,50 +68,50 @@
       sub_276BD7064();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = objc_msgSend_initWithMetadataDictionary_(self, v4, v5);
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (TSPDocumentResourceRegistry)initWithMetadataDictionary:(id)a3
+- (TSPDocumentResourceRegistry)initWithMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  dictionaryCopy = dictionary;
+  if (objc_msgSend_count(dictionaryCopy, v5, v6))
   {
     v14.receiver = self;
     v14.super_class = TSPDocumentResourceRegistry;
     v9 = [(TSPDocumentResourceRegistry *)&v14 init];
     if (v9)
     {
-      v10 = objc_msgSend_copy(v4, v7, v8);
+      v10 = objc_msgSend_copy(dictionaryCopy, v7, v8);
       metadataDictionary = v9->_metadataDictionary;
       v9->_metadataDictionary = v10;
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)documentResourceInfoForDigestString:(id)a3 locator:(id)a4
+- (id)documentResourceInfoForDigestString:(id)string locator:(id)locator
 {
   v187 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  locatorCopy = locator;
   v8 = 0x277CBE000uLL;
   objc_opt_class();
   v10 = objc_msgSend_objectForKeyedSubscript_(self->_metadataDictionary, v9, @"Locators");
@@ -129,7 +129,7 @@
     goto LABEL_83;
   }
 
-  v14 = v6;
+  v14 = stringCopy;
   if (v14)
   {
     v15 = objc_msgSend_objectForKeyedSubscript_(v11, v13, v14);
@@ -155,7 +155,7 @@
       v17 = 0;
     }
 
-    if (!v7)
+    if (!locatorCopy)
     {
 LABEL_27:
       v25 = 0;
@@ -190,7 +190,7 @@ LABEL_81:
       objc_opt_class();
       v173 = v17;
       v174 = v78;
-      v180 = v7;
+      v180 = locatorCopy;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         if (v78)
@@ -221,7 +221,7 @@ LABEL_76:
           v25 = objc_msgSend_initWithDigestString_locator_fileExtension_fileSize_tags_pixelSize_fallbackColor_(v154, v155, v181, v17, v78, v100, v99, v127, v76, v77);
 
 LABEL_80:
-          v7 = v180;
+          locatorCopy = v180;
           goto LABEL_81;
         }
 
@@ -295,7 +295,7 @@ LABEL_39:
       if (v101)
       {
         v168 = v100;
-        v176 = v6;
+        v176 = stringCopy;
         v178 = v11;
         v184 = 0u;
         v185 = 0u;
@@ -354,7 +354,7 @@ LABEL_39:
           v99 = 0;
         }
 
-        v6 = v176;
+        stringCopy = v176;
         v11 = v178;
         v100 = v168;
         v78 = v174;
@@ -437,7 +437,7 @@ LABEL_39:
   else
   {
     v17 = 0;
-    if (!v7)
+    if (!locatorCopy)
     {
       goto LABEL_27;
     }
@@ -455,10 +455,10 @@ LABEL_39:
 
   if (v25)
   {
-    v175 = v6;
+    v175 = stringCopy;
     v177 = v11;
-    v179 = v7;
-    v38 = objc_msgSend_lowercaseString(v7, v36, v37);
+    v179 = locatorCopy;
+    v38 = objc_msgSend_lowercaseString(locatorCopy, v36, v37);
     v40 = objc_msgSend_objectForKeyedSubscript_(v25, v39, v38);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -470,7 +470,7 @@ LABEL_39:
         v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v41, "[TSPDocumentResourceRegistry documentResourceInfoForDigestString:locator:]");
         objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v57, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentResourceRegistry.m");
         v59 = v58 = v8;
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v60, v56, v59, 143, 0, "Invalid digest value for locator %{public}@: Digest must be a string", v7);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v60, v56, v59, 143, 0, "Invalid digest value for locator %{public}@: Digest must be a string", locatorCopy);
 
         v8 = v58;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v61, v62);
@@ -498,12 +498,12 @@ LABEL_39:
       {
 LABEL_24:
 
-        v7 = v179;
+        locatorCopy = v179;
         v17 = v46;
 LABEL_26:
 
         v14 = v42;
-        v6 = v175;
+        stringCopy = v175;
         v11 = v177;
         goto LABEL_27;
       }
@@ -540,14 +540,14 @@ LABEL_83:
   return v25;
 }
 
-- (id)documentResourceInfosForTags:(id)a3
+- (id)documentResourceInfosForTags:(id)tags
 {
   v122 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  tagsCopy = tags;
+  if (objc_msgSend_count(tagsCopy, v5, v6))
   {
     objc_opt_class();
-    v96 = self;
+    selfCopy = self;
     v8 = objc_msgSend_objectForKeyedSubscript_(self->_metadataDictionary, v7, @"Tags");
     v9 = TSUDynamicCast();
 
@@ -558,8 +558,8 @@ LABEL_83:
       v118 = 0u;
       v115 = 0u;
       v116 = 0u;
-      v94 = v4;
-      v12 = v4;
+      v94 = tagsCopy;
+      v12 = tagsCopy;
       v98 = v9;
       v102 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v115, v121, 16);
       v15 = 0;
@@ -711,7 +711,7 @@ LABEL_83:
         v66 = v64;
         v67 = 0;
         v68 = *v108;
-        v69 = v96;
+        v69 = selfCopy;
         do
         {
           for (k = 0; k != v66; ++k)
@@ -742,7 +742,7 @@ LABEL_83:
               v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v72, "[TSPDocumentResourceRegistry documentResourceInfosForTags:]");
               v77 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v76, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentResourceRegistry.m");
               v78 = v74;
-              v69 = v96;
+              v69 = selfCopy;
               objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v79, v75, v77, 281, 0, "Invalid locator %{public}@", v71);
 
               objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v80, v81);
@@ -761,7 +761,7 @@ LABEL_83:
       }
 
       v82 = objc_msgSend_copy(v67, v90, v91);
-      v4 = v94;
+      tagsCopy = v94;
       v11 = v98;
     }
 
@@ -787,11 +787,11 @@ LABEL_83:
   return v82;
 }
 
-- (id)localStrategyProviderForDocumentResourceInfos:(id)a3
+- (id)localStrategyProviderForDocumentResourceInfos:(id)infos
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_count(v4, v5, v6);
+  infosCopy = infos;
+  v7 = objc_msgSend_count(infosCopy, v5, v6);
   if (v7)
   {
     v44 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x277CBEB38], v8, v7);
@@ -800,8 +800,8 @@ LABEL_83:
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v41 = v4;
-    obj = v4;
+    v41 = infosCopy;
+    obj = infosCopy;
     v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v52, v57, 16);
     if (v45)
     {
@@ -883,7 +883,7 @@ LABEL_9:
     }
 
     v38 = objc_msgSend_copy(v44, v36, v37);
-    v4 = v41;
+    infosCopy = v41;
   }
 
   else

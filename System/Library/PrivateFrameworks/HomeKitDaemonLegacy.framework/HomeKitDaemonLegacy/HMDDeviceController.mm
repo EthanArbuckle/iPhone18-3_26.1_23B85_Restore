@@ -1,15 +1,15 @@
 @interface HMDDeviceController
 + (id)deviceControllerForCurrentDevice;
-+ (id)deviceControllerForDevice:(id)a3;
-+ (id)deviceControllerForDevice:(id)a3 accountRegistry:(id)a4;
++ (id)deviceControllerForDevice:(id)device;
++ (id)deviceControllerForDevice:(id)device accountRegistry:(id)registry;
 + (id)logCategory;
-+ (id)placeholderDeviceControllerWithIdentifier:(id)a3;
++ (id)placeholderDeviceControllerWithIdentifier:(id)identifier;
 - (HMDDevice)device;
-- (HMDDeviceController)initWithDevice:(id)a3 identifier:(id)a4;
+- (HMDDeviceController)initWithDevice:(id)device identifier:(id)identifier;
 - (HMDDeviceControllerDelegate)delegate;
 - (id)attributeDescriptions;
 - (void)dealloc;
-- (void)updateWithDevice:(id)a3 completionHandler:(id)a4;
+- (void)updateWithDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation HMDDeviceController
@@ -34,12 +34,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDDeviceController *)self identifier];
-  v5 = [v3 initWithName:@"Identifier" value:v4];
+  identifier = [(HMDDeviceController *)self identifier];
+  v5 = [v3 initWithName:@"Identifier" value:identifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDDeviceController *)self device];
-  v8 = [v6 initWithName:@"Device" value:v7 options:1 formatter:0];
+  device = [(HMDDeviceController *)self device];
+  v8 = [v6 initWithName:@"Device" value:device options:1 formatter:0];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -50,18 +50,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HMDDeviceController;
   [(HMDDeviceController *)&v4 dealloc];
 }
 
-- (HMDDeviceController)initWithDevice:(id)a3 identifier:(id)a4
+- (HMDDeviceController)initWithDevice:(id)device identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMDDeviceController;
   v9 = [(HMDDeviceController *)&v14 init];
@@ -69,20 +69,20 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    objc_storeStrong(&v10->_device, a3);
+    objc_storeStrong(&v10->_device, device);
   }
 
   return v10;
 }
 
-- (void)updateWithDevice:(id)a3 completionHandler:(id)a4
+- (void)updateWithDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -116,11 +116,11 @@ uint64_t __34__HMDDeviceController_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)deviceControllerForDevice:(id)a3 accountRegistry:(id)a4
++ (id)deviceControllerForDevice:(id)device accountRegistry:(id)registry
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[__HMDDeviceController alloc] initWithDevice:v6 accountRegistry:v5];
+  registryCopy = registry;
+  deviceCopy = device;
+  v7 = [[__HMDDeviceController alloc] initWithDevice:deviceCopy accountRegistry:registryCopy];
 
   return v7;
 }
@@ -134,22 +134,22 @@ uint64_t __46____HMDDeviceController___handleAddedAccount___block_invoke(uint64_
   return v5;
 }
 
-+ (id)deviceControllerForDevice:(id)a3
++ (id)deviceControllerForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[HMDAccountRegistry sharedRegistry];
-  v5 = [HMDDeviceController deviceControllerForDevice:v3 accountRegistry:v4];
+  v5 = [HMDDeviceController deviceControllerForDevice:deviceCopy accountRegistry:v4];
 
   return v5;
 }
 
-+ (id)placeholderDeviceControllerWithIdentifier:(id)a3
++ (id)placeholderDeviceControllerWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = a3;
+    identifierCopy = identifier;
     v4 = [HMDDevice alloc];
-    v5 = [(HMDDevice *)v4 initWithIdentifier:v3 handles:MEMORY[0x277CBEBF8] name:0 productInfo:0 version:0 capabilities:0];
+    v5 = [(HMDDevice *)v4 initWithIdentifier:identifierCopy handles:MEMORY[0x277CBEBF8] name:0 productInfo:0 version:0 capabilities:0];
 
     v6 = [HMDDeviceController deviceControllerForDevice:v5];
   }

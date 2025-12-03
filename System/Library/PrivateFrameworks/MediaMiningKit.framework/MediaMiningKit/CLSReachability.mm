@@ -1,11 +1,11 @@
 @interface CLSReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 - (BOOL)startNotifier;
-- (CLSReachability)initWithNetworkReachability:(__SCNetworkReachability *)a3;
-- (int64_t)_networkStatusForFlags:(unsigned int)a3;
+- (CLSReachability)initWithNetworkReachability:(__SCNetworkReachability *)reachability;
+- (int64_t)_networkStatusForFlags:(unsigned int)flags;
 - (int64_t)currentNetworkStatus;
 - (void)dealloc;
 - (void)stopNotifier;
@@ -29,20 +29,20 @@
   return [(CLSReachability *)self _networkStatusForFlags:flags];
 }
 
-- (int64_t)_networkStatusForFlags:(unsigned int)a3
+- (int64_t)_networkStatusForFlags:(unsigned int)flags
 {
   v3 = 2;
-  if ((a3 & 0x10) != 0 || (a3 & 0x28) == 0)
+  if ((flags & 0x10) != 0 || (flags & 0x28) == 0)
   {
-    v3 = ~(a3 >> 1) & 2;
+    v3 = ~(flags >> 1) & 2;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     v3 = 1;
   }
 
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     return v3;
   }
@@ -96,16 +96,16 @@
   [(CLSReachability *)&v4 dealloc];
 }
 
-- (CLSReachability)initWithNetworkReachability:(__SCNetworkReachability *)a3
+- (CLSReachability)initWithNetworkReachability:(__SCNetworkReachability *)reachability
 {
   v6.receiver = self;
   v6.super_class = CLSReachability;
   v4 = [(CLSReachability *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (reachability)
     {
-      v4->_reachabilityRef = CFRetain(a3);
+      v4->_reachabilityRef = CFRetain(reachability);
     }
 
     v4->_localWiFiRef = 0;
@@ -136,9 +136,9 @@
   return [CLSReachability reachabilityWithAddress:v3];
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
-  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], a3);
+  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], address);
   if (v3)
   {
     v4 = v3;
@@ -154,9 +154,9 @@
   return v5;
 }
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v3 = SCNetworkReachabilityCreateWithName(0, [a3 UTF8String]);
+  v3 = SCNetworkReachabilityCreateWithName(0, [name UTF8String]);
   if (v3)
   {
     v4 = v3;

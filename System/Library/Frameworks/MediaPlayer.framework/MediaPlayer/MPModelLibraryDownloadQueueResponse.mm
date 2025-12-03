@@ -1,25 +1,25 @@
 @interface MPModelLibraryDownloadQueueResponse
-- (MPModelLibraryDownloadQueueResponse)initWithRequest:(id)a3;
+- (MPModelLibraryDownloadQueueResponse)initWithRequest:(id)request;
 - (void)dealloc;
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4;
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion;
 @end
 
 @implementation MPModelLibraryDownloadQueueResponse
 
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  responseCopy = response;
+  completionCopy = completion;
+  if (responseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __87__MPModelLibraryDownloadQueueResponse_getChangeDetailsFromPreviousResponse_completion___block_invoke;
     block[3] = &unk_1E7681568;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = responseCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(v8, block);
   }
 
@@ -27,7 +27,7 @@
   {
     v13.receiver = self;
     v13.super_class = MPModelLibraryDownloadQueueResponse;
-    [(MPModelResponse *)&v13 getChangeDetailsFromPreviousResponse:v6 completion:v7];
+    [(MPModelResponse *)&v13 getChangeDetailsFromPreviousResponse:responseCopy completion:completionCopy];
   }
 }
 
@@ -85,12 +85,12 @@ uint64_t __87__MPModelLibraryDownloadQueueResponse_getChangeDetailsFromPreviousR
   [(MPModelLibraryDownloadQueueResponse *)&v4 dealloc];
 }
 
-- (MPModelLibraryDownloadQueueResponse)initWithRequest:(id)a3
+- (MPModelLibraryDownloadQueueResponse)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = MPModelLibraryDownloadQueueResponse;
-  v5 = [(MPModelResponse *)&v8 initWithRequest:v4];
+  v5 = [(MPModelResponse *)&v8 initWithRequest:requestCopy];
   if (v5)
   {
     v6 = +[MPMediaDownloadManager sharedManager];

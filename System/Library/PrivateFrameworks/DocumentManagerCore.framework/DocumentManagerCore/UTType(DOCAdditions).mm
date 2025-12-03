@@ -41,12 +41,12 @@
 {
   v3 = MEMORY[0x277CBEB18];
   v4 = a3;
-  v5 = [v3 array];
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__UTType_DOCAdditions__doc_identifiersForContentTypes___block_invoke;
   v8[3] = &unk_278F9B978;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
   [v4 enumerateObjectsUsingBlock:v8];
 
@@ -76,7 +76,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([a1 conformsToType:{*(*(&v12 + 1) + 8 * v8), v12}])
+        if ([self conformsToType:{*(*(&v12 + 1) + 8 * v8), v12}])
         {
           v9 = 1;
           goto LABEL_11;

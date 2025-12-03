@@ -1,32 +1,32 @@
 @interface PKPaymentMethod
-+ (PKPaymentMethod)paymentMethodWithProtobuf:(id)a3;
-- (PKPaymentMethod)initWithBankAccount:(id)a3;
-- (PKPaymentMethod)initWithBindToken:(id)a3;
-- (PKPaymentMethod)initWithCoder:(id)a3;
-- (PKPaymentMethod)initWithPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5 obfuscateNetworks:(BOOL)a6;
-- (PKPaymentMethod)initWithPeerPaymentQuote:(id)a3;
-- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)a3;
-- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PKPaymentMethod)paymentMethodWithProtobuf:(id)protobuf;
+- (PKPaymentMethod)initWithBankAccount:(id)account;
+- (PKPaymentMethod)initWithBindToken:(id)token;
+- (PKPaymentMethod)initWithCoder:(id)coder;
+- (PKPaymentMethod)initWithPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential obfuscateNetworks:(BOOL)networks;
+- (PKPaymentMethod)initWithPeerPaymentQuote:(id)quote;
+- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)instrument;
+- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)instrument paymentApplication:(id)application;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)protobuf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentMethod
 
-+ (PKPaymentMethod)paymentMethodWithProtobuf:(id)a3
++ (PKPaymentMethod)paymentMethodWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKPaymentMethod);
-  v5 = [v3 network];
-  [(PKPaymentMethod *)v4 setNetwork:v5];
+  network = [protobufCopy network];
+  [(PKPaymentMethod *)v4 setNetwork:network];
 
-  v6 = [v3 displayName];
-  [(PKPaymentMethod *)v4 setDisplayName:v6];
+  displayName = [protobufCopy displayName];
+  [(PKPaymentMethod *)v4 setDisplayName:displayName];
 
-  LODWORD(v6) = [v3 type];
-  [(PKPaymentMethod *)v4 setType:v6];
+  LODWORD(displayName) = [protobufCopy type];
+  [(PKPaymentMethod *)v4 setType:displayName];
 
   return v4;
 }
@@ -34,46 +34,46 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufPaymentMethod);
-  v4 = [(PKPaymentMethod *)self displayName];
-  [(PKProtobufPaymentMethod *)v3 setDisplayName:v4];
+  displayName = [(PKPaymentMethod *)self displayName];
+  [(PKProtobufPaymentMethod *)v3 setDisplayName:displayName];
 
-  v5 = [(PKPaymentMethod *)self network];
-  [(PKProtobufPaymentMethod *)v3 setNetwork:v5];
+  network = [(PKPaymentMethod *)self network];
+  [(PKProtobufPaymentMethod *)v3 setNetwork:network];
 
   [(PKProtobufPaymentMethod *)v3 setType:[(PKPaymentMethod *)self type]];
 
   return v3;
 }
 
-- (PKPaymentMethod)initWithPaymentPass:(id)a3 paymentApplication:(id)a4 subCredential:(id)a5 obfuscateNetworks:(BOOL)a6
+- (PKPaymentMethod)initWithPaymentPass:(id)pass paymentApplication:(id)application subCredential:(id)credential obfuscateNetworks:(BOOL)networks
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  passCopy = pass;
+  applicationCopy = application;
+  credentialCopy = credential;
   v25.receiver = self;
   v25.super_class = PKPaymentMethod;
   v14 = [(PKPaymentMethod *)&v25 init];
   if (v14)
   {
-    if (v12)
+    if (applicationCopy)
     {
-      v15 = v12;
+      devicePrimaryInAppPaymentApplication = applicationCopy;
     }
 
     else
     {
-      v15 = [v11 devicePrimaryInAppPaymentApplication];
+      devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
     }
 
-    v16 = v15;
-    v14->_type = [v15 paymentType];
-    if (v13)
+    v16 = devicePrimaryInAppPaymentApplication;
+    v14->_type = [devicePrimaryInAppPaymentApplication paymentType];
+    if (credentialCopy)
     {
-      objc_storeStrong(&v14->_subCredential, a5);
-      objc_storeStrong(&v14->_secureElementPass, a3);
+      objc_storeStrong(&v14->_subCredential, credential);
+      objc_storeStrong(&v14->_secureElementPass, pass);
     }
 
-    if (a6)
+    if (networks)
     {
       goto LABEL_14;
     }
@@ -82,23 +82,23 @@
     network = v14->_network;
     v14->_network = v17;
 
-    v19 = [v11 primaryAccountNumberSuffix];
-    v20 = [v12 dpanSuffix];
-    v21 = v20;
-    if (v19)
+    primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
+    dpanSuffix = [applicationCopy dpanSuffix];
+    v21 = dpanSuffix;
+    if (primaryAccountNumberSuffix)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14->_network, v19];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14->_network, primaryAccountNumberSuffix];
     }
 
     else
     {
-      if (!v20)
+      if (!dpanSuffix)
       {
         v22 = v14->_network;
         goto LABEL_13;
       }
 
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14->_network, v20];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14->_network, dpanSuffix];
     }
     v22 = ;
 LABEL_13:
@@ -111,54 +111,54 @@ LABEL_14:
   return v14;
 }
 
-- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)a3
+- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)instrument
 {
-  v4 = a3;
-  v5 = [v4 primaryPaymentApplication];
-  v6 = [(PKPaymentMethod *)self initWithRemotePaymentInstrument:v4 paymentApplication:v5];
+  instrumentCopy = instrument;
+  primaryPaymentApplication = [instrumentCopy primaryPaymentApplication];
+  v6 = [(PKPaymentMethod *)self initWithRemotePaymentInstrument:instrumentCopy paymentApplication:primaryPaymentApplication];
 
   return v6;
 }
 
-- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)a3 paymentApplication:(id)a4
+- (PKPaymentMethod)initWithRemotePaymentInstrument:(id)instrument paymentApplication:(id)application
 {
-  v5 = a4;
+  applicationCopy = application;
   v8.receiver = self;
   v8.super_class = PKPaymentMethod;
   v6 = [(PKPaymentMethod *)&v8 init];
   if (v6)
   {
-    v6->_type = [v5 paymentType];
+    v6->_type = [applicationCopy paymentType];
   }
 
   return v6;
 }
 
-- (PKPaymentMethod)initWithPeerPaymentQuote:(id)a3
+- (PKPaymentMethod)initWithPeerPaymentQuote:(id)quote
 {
-  v4 = a3;
+  quoteCopy = quote;
   v9.receiver = self;
   v9.super_class = PKPaymentMethod;
   v5 = [(PKPaymentMethod *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [quoteCopy identifier];
     peerPaymentQuoteIdentifier = v5->_peerPaymentQuoteIdentifier;
-    v5->_peerPaymentQuoteIdentifier = v6;
+    v5->_peerPaymentQuoteIdentifier = identifier;
   }
 
   return v5;
 }
 
-- (PKPaymentMethod)initWithBindToken:(id)a3
+- (PKPaymentMethod)initWithBindToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = PKPaymentMethod;
   v5 = [(PKPaymentMethod *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tokenCopy copy];
     bindToken = v5->_bindToken;
     v5->_bindToken = v6;
   }
@@ -166,72 +166,72 @@ LABEL_14:
   return v5;
 }
 
-- (PKPaymentMethod)initWithBankAccount:(id)a3
+- (PKPaymentMethod)initWithBankAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = PKPaymentMethod;
   v6 = [(PKPaymentMethod *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bankAccount, a3);
+    objc_storeStrong(&v6->_bankAccount, account);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[PKPaymentMethod type](self, "type")}];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
-  v7 = [(PKPaymentMethod *)self displayName];
-  [v5 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(PKPaymentMethod *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(PKPaymentMethod *)self network];
-  [v5 encodeObject:v8 forKey:@"network"];
+  network = [(PKPaymentMethod *)self network];
+  [coderCopy encodeObject:network forKey:@"network"];
 
-  v9 = [(PKPaymentMethod *)self secureElementPass];
-  [v5 encodeObject:v9 forKey:@"paymentPass"];
+  secureElementPass = [(PKPaymentMethod *)self secureElementPass];
+  [coderCopy encodeObject:secureElementPass forKey:@"paymentPass"];
 
-  v10 = [(PKPaymentMethod *)self remoteInstrument];
-  [v5 encodeObject:v10 forKey:@"remoteInstrument"];
+  remoteInstrument = [(PKPaymentMethod *)self remoteInstrument];
+  [coderCopy encodeObject:remoteInstrument forKey:@"remoteInstrument"];
 
-  v11 = [(PKPaymentMethod *)self peerPaymentQuoteIdentifier];
-  [v5 encodeObject:v11 forKey:@"peerPaymentQuoteIdentifier"];
+  peerPaymentQuoteIdentifier = [(PKPaymentMethod *)self peerPaymentQuoteIdentifier];
+  [coderCopy encodeObject:peerPaymentQuoteIdentifier forKey:@"peerPaymentQuoteIdentifier"];
 
-  v12 = [(PKPaymentMethod *)self billingAddress];
-  [v5 encodeObject:v12 forKey:@"billingAddress"];
+  billingAddress = [(PKPaymentMethod *)self billingAddress];
+  [coderCopy encodeObject:billingAddress forKey:@"billingAddress"];
 
-  v13 = [(PKPaymentMethod *)self bindToken];
-  [v5 encodeObject:v13 forKey:@"installmentBindToken"];
+  bindToken = [(PKPaymentMethod *)self bindToken];
+  [coderCopy encodeObject:bindToken forKey:@"installmentBindToken"];
 
-  v14 = [(PKPaymentMethod *)self bankAccount];
-  [v5 encodeObject:v14 forKey:@"bankAccount"];
+  bankAccount = [(PKPaymentMethod *)self bankAccount];
+  [coderCopy encodeObject:bankAccount forKey:@"bankAccount"];
 
-  [v5 encodeBool:-[PKPaymentMethod usePeerPaymentBalance](self forKey:{"usePeerPaymentBalance"), @"usePeerPaymentBalance"}];
-  v15 = [(PKPaymentMethod *)self subCredential];
-  [v5 encodeObject:v15 forKey:@"subCredential"];
+  [coderCopy encodeBool:-[PKPaymentMethod usePeerPaymentBalance](self forKey:{"usePeerPaymentBalance"), @"usePeerPaymentBalance"}];
+  subCredential = [(PKPaymentMethod *)self subCredential];
+  [coderCopy encodeObject:subCredential forKey:@"subCredential"];
 }
 
-- (PKPaymentMethod)initWithCoder:(id)a3
+- (PKPaymentMethod)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKPaymentMethod;
   v5 = [(PKPaymentMethod *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     -[PKPaymentMethod setType:](v5, "setType:", [v6 unsignedIntegerValue]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(PKPaymentMethod *)v5 setDisplayName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"network"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"network"];
     [(PKPaymentMethod *)v5 setNetwork:v8];
 
     v9 = MEMORY[0x1E695DFD8];
@@ -239,41 +239,41 @@ LABEL_14:
     v21[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"paymentPass"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"paymentPass"];
     [(PKPaymentMethod *)v5 setSecureElementPass:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteInstrument"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteInstrument"];
     [(PKPaymentMethod *)v5 setRemoteInstrument:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuoteIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuoteIdentifier"];
     [(PKPaymentMethod *)v5 setPeerPaymentQuoteIdentifier:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
     [(PKPaymentMethod *)v5 setBillingAddress:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentBindToken"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentBindToken"];
     [(PKPaymentMethod *)v5 setBindToken:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankAccount"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankAccount"];
     [(PKPaymentMethod *)v5 setBankAccount:v17];
 
-    -[PKPaymentMethod setUsePeerPaymentBalance:](v5, "setUsePeerPaymentBalance:", [v4 decodeBoolForKey:@"usePeerPaymentBalance"]);
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCredential"];
+    -[PKPaymentMethod setUsePeerPaymentBalance:](v5, "setUsePeerPaymentBalance:", [coderCopy decodeBoolForKey:@"usePeerPaymentBalance"]);
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCredential"];
     [(PKPaymentMethod *)v5 setSubCredential:v18];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentMethod allocWithZone:](PKPaymentMethod init];
   v5->_type = self->_type;
-  v6 = [(NSString *)self->_network copyWithZone:a3];
+  v6 = [(NSString *)self->_network copyWithZone:zone];
   network = v5->_network;
   v5->_network = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v8;
 
@@ -300,8 +300,8 @@ LABEL_14:
   secureElementPass = self->_secureElementPass;
   if (secureElementPass)
   {
-    v8 = [(PKSecureElementPass *)secureElementPass dictionaryWithValuesForKeys:&unk_1F23B4898];
-    [v4 setObject:v8 forKeyedSubscript:@"paymentPass"];
+    primaryAccountIdentifier = [(PKSecureElementPass *)secureElementPass dictionaryWithValuesForKeys:&unk_1F23B4898];
+    [v4 setObject:primaryAccountIdentifier forKeyedSubscript:@"paymentPass"];
 LABEL_9:
 
     goto LABEL_10;
@@ -311,19 +311,19 @@ LABEL_9:
   if (remoteInstrument)
   {
     v20[0] = @"primaryAccountIdentifier";
-    v8 = [(PKRemotePaymentInstrument *)remoteInstrument primaryAccountIdentifier];
-    v21[0] = v8;
+    primaryAccountIdentifier = [(PKRemotePaymentInstrument *)remoteInstrument primaryAccountIdentifier];
+    v21[0] = primaryAccountIdentifier;
     v20[1] = @"primaryAccountNumberSuffix";
-    v10 = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryAccountNumberSuffix];
-    v21[1] = v10;
+    primaryAccountNumberSuffix = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryAccountNumberSuffix];
+    v21[1] = primaryAccountNumberSuffix;
     v20[2] = @"deviceAccountIdentifier";
-    v11 = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryPaymentApplication];
-    v12 = [v11 dpanIdentifier];
-    v21[2] = v12;
+    primaryPaymentApplication = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryPaymentApplication];
+    dpanIdentifier = [primaryPaymentApplication dpanIdentifier];
+    v21[2] = dpanIdentifier;
     v20[3] = @"deviceAccountNumberSuffix";
-    v13 = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryPaymentApplication];
-    v14 = [v13 dpanSuffix];
-    v21[3] = v14;
+    primaryPaymentApplication2 = [(PKRemotePaymentInstrument *)self->_remoteInstrument primaryPaymentApplication];
+    dpanSuffix = [primaryPaymentApplication2 dpanSuffix];
+    v21[3] = dpanSuffix;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
     [v4 setObject:v15 forKeyedSubscript:@"paymentPass"];
 

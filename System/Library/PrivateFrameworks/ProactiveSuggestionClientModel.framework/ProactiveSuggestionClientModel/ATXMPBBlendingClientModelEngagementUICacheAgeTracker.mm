@@ -1,14 +1,14 @@
 @interface ATXMPBBlendingClientModelEngagementUICacheAgeTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOutcomeType:(id)a3;
+- (int)StringAsOutcomeType:(id)type;
 - (int)outcomeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingClientModelEngagementUICacheAgeTracker
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsOutcomeType:(id)a3
+- (int)StringAsOutcomeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Conversion"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Conversion"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Rejection"])
+  else if ([typeCopy isEqualToString:@"Rejection"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Abandon"])
+  else if ([typeCopy isEqualToString:@"Abandon"])
   {
     v4 = 3;
   }
@@ -58,15 +58,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingClientModelEngagementUICacheAgeTracker;
   v4 = [(ATXMPBBlendingClientModelEngagementUICacheAgeTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingClientModelEngagementUICacheAgeTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingClientModelEngagementUICacheAgeTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = self->_outcomeType - 1;
@@ -80,74 +80,74 @@
       v5 = off_1E86A4F90[v4];
     }
 
-    [v3 setObject:v5 forKey:@"outcomeType"];
+    [dictionary setObject:v5 forKey:@"outcomeType"];
   }
 
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     outcomeType = self->_outcomeType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_outcomeType;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_outcomeType;
+    *(toCopy + 28) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_consumerSubType)
   {
-    [v4 setConsumerSubType:?];
-    v4 = v5;
+    [toCopy setConsumerSubType:?];
+    toCopy = v5;
   }
 
   if (self->_abGroup)
   {
     [v5 setAbGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -155,35 +155,35 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v7 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v9 = [(NSString *)self->_abGroup copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_outcomeType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_outcomeType != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -191,13 +191,13 @@ LABEL_11:
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 2) && ![(NSString *)consumerSubType isEqual:?])
+  if (consumerSubType | *(equalCopy + 2) && ![(NSString *)consumerSubType isEqual:?])
   {
     goto LABEL_11;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     v8 = [(NSString *)abGroup isEqual:?];
   }
@@ -228,26 +228,26 @@ LABEL_12:
   return v4 ^ [(NSString *)self->_abGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[7])
+  fromCopy = from;
+  if (fromCopy[7])
   {
-    self->_outcomeType = v4[6];
+    self->_outcomeType = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ATXMPBBlendingClientModelEngagementUICacheAgeTracker *)self setConsumerSubType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBBlendingClientModelEngagementUICacheAgeTracker *)self setAbGroup:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

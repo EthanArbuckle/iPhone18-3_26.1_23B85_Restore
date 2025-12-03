@@ -1,17 +1,17 @@
 @interface SKDownload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SKDownload)init;
-- (SKDownload)initWithXPCEncoding:(id)a3;
+- (SKDownload)initWithXPCEncoding:(id)encoding;
 - (SKPaymentTransaction)transaction;
 - (id)copyXPCEncoding;
-- (void)_applyChangeset:(id)a3;
-- (void)_setContentIdentifier:(id)a3;
-- (void)_setContentLength:(id)a3;
-- (void)_setContentURL:(id)a3;
-- (void)_setDownloadID:(id)a3;
-- (void)_setError:(id)a3;
-- (void)_setTransaction:(id)a3;
-- (void)_setVersion:(id)a3;
+- (void)_applyChangeset:(id)changeset;
+- (void)_setContentIdentifier:(id)identifier;
+- (void)_setContentLength:(id)length;
+- (void)_setContentURL:(id)l;
+- (void)_setDownloadID:(id)d;
+- (void)_setError:(id)error;
+- (void)_setTransaction:(id)transaction;
+- (void)_setVersion:(id)version;
 @end
 
 @implementation SKDownload
@@ -40,119 +40,119 @@
   return WeakRetained;
 }
 
-- (void)_applyChangeset:(id)a3
+- (void)_applyChangeset:(id)changeset
 {
-  v10 = a3;
-  v4 = [v10 contentLength];
-  if (v4)
+  changesetCopy = changeset;
+  contentLength = [changesetCopy contentLength];
+  if (contentLength)
   {
-    [(SKDownload *)self _setContentLength:v4];
+    [(SKDownload *)self _setContentLength:contentLength];
   }
 
-  v5 = [v10 contentURL];
+  contentURL = [changesetCopy contentURL];
 
-  if (v5)
+  if (contentURL)
   {
-    [(SKDownload *)self _setContentURL:v5];
+    [(SKDownload *)self _setContentURL:contentURL];
   }
 
-  v6 = [v10 downloadState];
+  downloadState = [changesetCopy downloadState];
 
-  if (v6)
+  if (downloadState)
   {
-    -[SKDownload _setDownloadState:](self, "_setDownloadState:", [v6 integerValue]);
+    -[SKDownload _setDownloadState:](self, "_setDownloadState:", [downloadState integerValue]);
   }
 
-  v7 = [v10 error];
+  error = [changesetCopy error];
 
-  if (v7)
+  if (error)
   {
-    [(SKDownload *)self _setError:v7];
+    [(SKDownload *)self _setError:error];
   }
 
-  v8 = [v10 progress];
+  progress = [changesetCopy progress];
 
-  if (v8)
+  if (progress)
   {
-    [v8 floatValue];
+    [progress floatValue];
     [(SKDownload *)self _setProgress:?];
   }
 
-  v9 = [v10 timeRemaining];
+  timeRemaining = [changesetCopy timeRemaining];
 
-  if (v9)
+  if (timeRemaining)
   {
-    [v9 doubleValue];
+    [timeRemaining doubleValue];
     [(SKDownload *)self _setTimeRemaining:?];
   }
 }
 
-- (void)_setDownloadID:(id)a3
+- (void)_setDownloadID:(id)d
 {
-  *(self->_internal + 1) = [a3 copy];
+  *(self->_internal + 1) = [d copy];
 
   _objc_release_x1();
 }
 
-- (void)_setContentIdentifier:(id)a3
+- (void)_setContentIdentifier:(id)identifier
 {
-  *(self->_internal + 2) = [a3 copy];
+  *(self->_internal + 2) = [identifier copy];
 
   _objc_release_x1();
 }
 
-- (void)_setContentLength:(id)a3
+- (void)_setContentLength:(id)length
 {
-  objc_storeStrong(self->_internal + 8, a3);
-  v4 = a3;
+  objc_storeStrong(self->_internal + 8, length);
+  lengthCopy = length;
 }
 
-- (void)_setContentURL:(id)a3
+- (void)_setContentURL:(id)l
 {
-  *(self->_internal + 6) = [a3 copy];
+  *(self->_internal + 6) = [l copy];
 
   _objc_release_x1();
 }
 
-- (void)_setError:(id)a3
+- (void)_setError:(id)error
 {
-  *(self->_internal + 5) = [a3 copy];
+  *(self->_internal + 5) = [error copy];
 
   _objc_release_x1();
 }
 
-- (void)_setTransaction:(id)a3
+- (void)_setTransaction:(id)transaction
 {
   internal = self->_internal;
-  v5 = a3;
-  objc_storeWeak(internal + 10, v5);
-  v7 = [v5 payment];
+  transactionCopy = transaction;
+  objc_storeWeak(internal + 10, transactionCopy);
+  payment = [transactionCopy payment];
 
-  v6 = [v7 productIdentifier];
-  [(SKDownload *)self _setContentIdentifier:v6];
+  productIdentifier = [payment productIdentifier];
+  [(SKDownload *)self _setContentIdentifier:productIdentifier];
 }
 
-- (void)_setVersion:(id)a3
+- (void)_setVersion:(id)version
 {
-  *(self->_internal + 9) = [a3 copy];
+  *(self->_internal + 9) = [version copy];
 
   _objc_release_x1();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKDownload *)self _downloadID];
-    v7 = [v5 _downloadID];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    _downloadID = [(SKDownload *)self _downloadID];
+    _downloadID2 = [v5 _downloadID];
+    if ([_downloadID isEqual:_downloadID2])
     {
-      v8 = [(SKDownload *)self contentIdentifier];
-      v9 = [v5 contentIdentifier];
-      v10 = [v8 isEqual:v9];
+      contentIdentifier = [(SKDownload *)self contentIdentifier];
+      contentIdentifier2 = [v5 contentIdentifier];
+      v10 = [contentIdentifier isEqual:contentIdentifier2];
     }
 
     else
@@ -169,11 +169,11 @@
   return v10;
 }
 
-- (SKDownload)initWithXPCEncoding:(id)a3
+- (SKDownload)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v6 = [(SKDownload *)self init];
     if (!v6)

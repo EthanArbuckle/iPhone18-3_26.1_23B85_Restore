@@ -1,23 +1,23 @@
 @interface LBFBucket
-- (LBFBucket)initWithInterval:(id)a3 endTimestamp:(id)a4 index:(unint64_t)a5;
+- (LBFBucket)initWithInterval:(id)interval endTimestamp:(id)timestamp index:(unint64_t)index;
 - (id)flattenEvents;
 @end
 
 @implementation LBFBucket
 
-- (LBFBucket)initWithInterval:(id)a3 endTimestamp:(id)a4 index:(unint64_t)a5
+- (LBFBucket)initWithInterval:(id)interval endTimestamp:(id)timestamp index:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
+  intervalCopy = interval;
+  timestampCopy = timestamp;
   v16.receiver = self;
   v16.super_class = LBFBucket;
   v11 = [(LBFBucket *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startTime, a3);
-    objc_storeStrong(&v12->_endTime, a4);
-    v12->_bucketIndex = a5;
+    objc_storeStrong(&v11->_startTime, interval);
+    objc_storeStrong(&v12->_endTime, timestamp);
+    v12->_bucketIndex = index;
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     eventTree = v12->_eventTree;
     v12->_eventTree = v13;

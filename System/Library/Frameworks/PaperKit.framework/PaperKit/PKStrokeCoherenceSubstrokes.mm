@@ -4,10 +4,10 @@
 - (CGRect)_bounds;
 - (PKInk)ink;
 - (PKStrokeCoherenceSubstrokes)init;
-- (id)_substrokesInDrawing:(id)a3;
-- (id)descriptionAtDepth:(int64_t)a3;
-- (void)_setStrokeUUID:(id)a3;
-- (void)setInk:(id)a3;
+- (id)_substrokesInDrawing:(id)drawing;
+- (id)descriptionAtDepth:(int64_t)depth;
+- (void)_setStrokeUUID:(id)d;
+- (void)setInk:(id)ink;
 @end
 
 @implementation PKStrokeCoherenceSubstrokes
@@ -26,11 +26,11 @@
   return v3.super.isa;
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
   v4 = type metadata accessor for PKInk();
   MEMORY[0x1EEE9AC00](v4 - 8);
-  v5 = a3;
+  inkCopy = ink;
   static PKInk._unconditionallyBridgeFromObjectiveC(_:)();
 
   _assertionFailure(_:_:file:line:flags:)();
@@ -70,7 +70,7 @@
   return v8 > 0;
 }
 
-- (void)_setStrokeUUID:(id)a3
+- (void)_setStrokeUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -80,19 +80,19 @@
   v8 = OBJC_IVAR___PKStrokeCoherenceBase_identity;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
 
-- (id)_substrokesInDrawing:(id)a3
+- (id)_substrokesInDrawing:(id)drawing
 {
   v5 = type metadata accessor for PKDrawing();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  drawingCopy = drawing;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   PKStrokeCoherenceSubstrokes._substrokes(in:)(v8);
@@ -103,10 +103,10 @@
   return v11.super.isa;
 }
 
-- (id)descriptionAtDepth:(int64_t)a3
+- (id)descriptionAtDepth:(int64_t)depth
 {
-  v4 = self;
-  v5 = PKStrokeCoherenceSubstrokes.description(atDepth:)(a3);
+  selfCopy = self;
+  v5 = PKStrokeCoherenceSubstrokes.description(atDepth:)(depth);
 
   v6 = MEMORY[0x1DA6CCED0](v5._countAndFlagsBits, v5._object);
 

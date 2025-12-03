@@ -1,21 +1,21 @@
 @interface TPSCarrierBundleController
-- (id)localizedStringForKey:(id)a3 subscriptionContext:(id)a4;
-- (id)localizedStringForKey:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)objectForKey:(id)a3 subscriptionContext:(id)a4;
-- (id)objectForKey:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (void)carrierBundleChange:(id)a3;
-- (void)operatorBundleChange:(id)a3;
+- (id)localizedStringForKey:(id)key subscriptionContext:(id)context;
+- (id)localizedStringForKey:(id)key subscriptionContext:(id)context error:(id *)error;
+- (id)objectForKey:(id)key subscriptionContext:(id)context;
+- (id)objectForKey:(id)key subscriptionContext:(id)context error:(id *)error;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (void)carrierBundleChange:(id)change;
+- (void)operatorBundleChange:(id)change;
 @end
 
 @implementation TPSCarrierBundleController
 
-- (id)localizedStringForKey:(id)a3 subscriptionContext:(id)a4
+- (id)localizedStringForKey:(id)key subscriptionContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v5 = [(TPSCarrierBundleController *)self localizedStringForKey:a3 subscriptionContext:a4 error:&v14];
+  v5 = [(TPSCarrierBundleController *)self localizedStringForKey:key subscriptionContext:context error:&v14];
   v6 = v14;
   if (v6)
   {
@@ -47,21 +47,21 @@
   return v8;
 }
 
-- (id)localizedStringForKey:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)localizedStringForKey:(id)key subscriptionContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TPSTelephonyController *)self telephonyClient];
-  v11 = [v10 localizedCarrierBundleStringForKey:v9 subscription:v8 error:a5];
+  contextCopy = context;
+  keyCopy = key;
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  v11 = [telephonyClient localizedCarrierBundleStringForKey:keyCopy subscription:contextCopy error:error];
 
   return v11;
 }
 
-- (id)objectForKey:(id)a3 subscriptionContext:(id)a4
+- (id)objectForKey:(id)key subscriptionContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v5 = [(TPSCarrierBundleController *)self objectForKey:a3 subscriptionContext:a4 error:&v14];
+  v5 = [(TPSCarrierBundleController *)self objectForKey:key subscriptionContext:context error:&v14];
   v6 = v14;
   if (v6)
   {
@@ -93,23 +93,23 @@
   return v8;
 }
 
-- (id)objectForKey:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKey:(id)key subscriptionContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CC3620];
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  keyCopy = key;
   v11 = [[v8 alloc] initWithBundleType:1];
-  v12 = [(TPSTelephonyController *)self telephonyClient];
-  v13 = [v12 copyCarrierBundleValue:v9 key:v10 bundleType:v11 error:a5];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  v13 = [telephonyClient copyCarrierBundleValue:contextCopy key:keyCopy bundleType:v11 error:error];
 
   return v13;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v5 = [(TPSCarrierBundleController *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:&v14];
+  v5 = [(TPSCarrierBundleController *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:&v14];
   v6 = v14;
   if (v6)
   {
@@ -141,27 +141,27 @@
   return v8;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CC3620];
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v11 = [[v8 alloc] initWithBundleType:1];
-  v12 = [(TPSTelephonyController *)self telephonyClient];
-  v13 = [v12 copyCarrierBundleValueWithDefault:v9 keyHierarchy:v10 bundleType:v11 error:a5];
+  telephonyClient = [(TPSTelephonyController *)self telephonyClient];
+  v13 = [telephonyClient copyCarrierBundleValueWithDefault:contextCopy keyHierarchy:hierarchyCopy bundleType:v11 error:error];
 
   return v13;
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = changeCopy;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed for subscription context %@.", buf, 0xCu);
   }
 
@@ -170,8 +170,8 @@
   v8[2] = __50__TPSCarrierBundleController_carrierBundleChange___block_invoke;
   v8[3] = &unk_2782E39D0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = changeCopy;
+  v6 = changeCopy;
   [(TPSController *)self performAtomicDelegateBlock:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -231,15 +231,15 @@ void __50__TPSCarrierBundleController_carrierBundleChange___block_invoke(uint64_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = changeCopy;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "Operator bundle changed for subscription context %@.", buf, 0xCu);
   }
 
@@ -248,8 +248,8 @@ void __50__TPSCarrierBundleController_carrierBundleChange___block_invoke(uint64_
   v8[2] = __51__TPSCarrierBundleController_operatorBundleChange___block_invoke;
   v8[3] = &unk_2782E39D0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = changeCopy;
+  v6 = changeCopy;
   [(TPSController *)self performAtomicDelegateBlock:v8];
 
   v7 = *MEMORY[0x277D85DE8];

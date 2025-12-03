@@ -1,9 +1,9 @@
 @interface MBDeviceTransferProgress
 - (MBDeviceTransferProgress)init;
-- (MBDeviceTransferProgress)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MBDeviceTransferProgress)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MBDeviceTransferProgress
@@ -27,74 +27,74 @@
   return v3;
 }
 
-- (MBDeviceTransferProgress)initWithCoder:(id)a3
+- (MBDeviceTransferProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MBDeviceTransferProgress;
   v5 = [(MBDeviceTransferProgress *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phaseDescription"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phaseDescription"];
     [(MBDeviceTransferProgress *)v5 setPhaseDescription:v6];
 
-    -[MBDeviceTransferProgress setPhase:](v5, "setPhase:", [v4 decodeIntegerForKey:@"phase"]);
-    [v4 decodeDoubleForKey:@"progress"];
+    -[MBDeviceTransferProgress setPhase:](v5, "setPhase:", [coderCopy decodeIntegerForKey:@"phase"]);
+    [coderCopy decodeDoubleForKey:@"progress"];
     [(MBDeviceTransferProgress *)v5 setProgress:?];
-    -[MBDeviceTransferProgress setMinutesRemaining:](v5, "setMinutesRemaining:", [v4 decodeIntegerForKey:@"minutesRemaining"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileTransferStartDate"];
+    -[MBDeviceTransferProgress setMinutesRemaining:](v5, "setMinutesRemaining:", [coderCopy decodeIntegerForKey:@"minutesRemaining"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileTransferStartDate"];
     [(MBDeviceTransferProgress *)v5 setFileTransferStartDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restoreStartDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restoreStartDate"];
     [(MBDeviceTransferProgress *)v5 setRestoreStartDate:v8];
 
-    -[MBDeviceTransferProgress setFilesTransferred:](v5, "setFilesTransferred:", [v4 decodeInt64ForKey:@"filesTransferred"]);
-    -[MBDeviceTransferProgress setBytesTransferred:](v5, "setBytesTransferred:", [v4 decodeInt64ForKey:@"bytesTransferred"]);
-    -[MBDeviceTransferProgress setTotalByteCount:](v5, "setTotalByteCount:", [v4 decodeInt64ForKey:@"totalByteCount"]);
-    -[MBDeviceTransferProgress setTotalFileCount:](v5, "setTotalFileCount:", [v4 decodeInt64ForKey:@"totalFileCount"]);
+    -[MBDeviceTransferProgress setFilesTransferred:](v5, "setFilesTransferred:", [coderCopy decodeInt64ForKey:@"filesTransferred"]);
+    -[MBDeviceTransferProgress setBytesTransferred:](v5, "setBytesTransferred:", [coderCopy decodeInt64ForKey:@"bytesTransferred"]);
+    -[MBDeviceTransferProgress setTotalByteCount:](v5, "setTotalByteCount:", [coderCopy decodeInt64ForKey:@"totalByteCount"]);
+    -[MBDeviceTransferProgress setTotalFileCount:](v5, "setTotalFileCount:", [coderCopy decodeInt64ForKey:@"totalFileCount"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MBDeviceTransferProgress *)self phaseDescription];
-  [v7 encodeObject:v4 forKey:@"phaseDescription"];
+  coderCopy = coder;
+  phaseDescription = [(MBDeviceTransferProgress *)self phaseDescription];
+  [coderCopy encodeObject:phaseDescription forKey:@"phaseDescription"];
 
-  [v7 encodeInteger:-[MBDeviceTransferProgress phase](self forKey:{"phase"), @"phase"}];
+  [coderCopy encodeInteger:-[MBDeviceTransferProgress phase](self forKey:{"phase"), @"phase"}];
   [(MBDeviceTransferProgress *)self progress];
-  [v7 encodeDouble:@"progress" forKey:?];
-  [v7 encodeInteger:-[MBDeviceTransferProgress minutesRemaining](self forKey:{"minutesRemaining"), @"minutesRemaining"}];
-  v5 = [(MBDeviceTransferProgress *)self fileTransferStartDate];
-  [v7 encodeObject:v5 forKey:@"fileTransferStartDate"];
+  [coderCopy encodeDouble:@"progress" forKey:?];
+  [coderCopy encodeInteger:-[MBDeviceTransferProgress minutesRemaining](self forKey:{"minutesRemaining"), @"minutesRemaining"}];
+  fileTransferStartDate = [(MBDeviceTransferProgress *)self fileTransferStartDate];
+  [coderCopy encodeObject:fileTransferStartDate forKey:@"fileTransferStartDate"];
 
-  v6 = [(MBDeviceTransferProgress *)self restoreStartDate];
-  [v7 encodeObject:v6 forKey:@"restoreStartDate"];
+  restoreStartDate = [(MBDeviceTransferProgress *)self restoreStartDate];
+  [coderCopy encodeObject:restoreStartDate forKey:@"restoreStartDate"];
 
-  [v7 encodeInt64:-[MBDeviceTransferProgress filesTransferred](self forKey:{"filesTransferred"), @"filesTransferred"}];
-  [v7 encodeInt64:-[MBDeviceTransferProgress bytesTransferred](self forKey:{"bytesTransferred"), @"bytesTransferred"}];
-  [v7 encodeInt64:-[MBDeviceTransferProgress totalByteCount](self forKey:{"totalByteCount"), @"totalByteCount"}];
-  [v7 encodeInt64:-[MBDeviceTransferProgress totalFileCount](self forKey:{"totalFileCount"), @"totalFileCount"}];
+  [coderCopy encodeInt64:-[MBDeviceTransferProgress filesTransferred](self forKey:{"filesTransferred"), @"filesTransferred"}];
+  [coderCopy encodeInt64:-[MBDeviceTransferProgress bytesTransferred](self forKey:{"bytesTransferred"), @"bytesTransferred"}];
+  [coderCopy encodeInt64:-[MBDeviceTransferProgress totalByteCount](self forKey:{"totalByteCount"), @"totalByteCount"}];
+  [coderCopy encodeInt64:-[MBDeviceTransferProgress totalFileCount](self forKey:{"totalFileCount"), @"totalFileCount"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MBDeviceTransferProgress *)self phaseDescription];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  phaseDescription = [(MBDeviceTransferProgress *)self phaseDescription];
+  v6 = [phaseDescription copy];
   [v4 setPhaseDescription:v6];
 
   [v4 setPhase:{-[MBDeviceTransferProgress phase](self, "phase")}];
   [(MBDeviceTransferProgress *)self progress];
   [v4 setProgress:?];
   [v4 setMinutesRemaining:{-[MBDeviceTransferProgress minutesRemaining](self, "minutesRemaining")}];
-  v7 = [(MBDeviceTransferProgress *)self fileTransferStartDate];
-  [v4 setFileTransferStartDate:v7];
+  fileTransferStartDate = [(MBDeviceTransferProgress *)self fileTransferStartDate];
+  [v4 setFileTransferStartDate:fileTransferStartDate];
 
-  v8 = [(MBDeviceTransferProgress *)self restoreStartDate];
-  [v4 setRestoreStartDate:v8];
+  restoreStartDate = [(MBDeviceTransferProgress *)self restoreStartDate];
+  [v4 setRestoreStartDate:restoreStartDate];
 
   [v4 setFilesTransferred:{-[MBDeviceTransferProgress filesTransferred](self, "filesTransferred")}];
   [v4 setBytesTransferred:{-[MBDeviceTransferProgress bytesTransferred](self, "bytesTransferred")}];
@@ -110,13 +110,13 @@
   Name = class_getName(v4);
   [(MBDeviceTransferProgress *)self progress];
   v7 = v6;
-  v8 = [(MBDeviceTransferProgress *)self minutesRemaining];
-  v9 = [(MBDeviceTransferProgress *)self filesTransferred];
-  v10 = [(MBDeviceTransferProgress *)self bytesTransferred];
-  v11 = [(MBDeviceTransferProgress *)self totalByteCount];
-  v12 = [(MBDeviceTransferProgress *)self totalFileCount];
-  v13 = [(MBDeviceTransferProgress *)self phaseDescription];
-  v14 = [v3 stringWithFormat:@"<%s: %p progress=%.2f, minutesRemaining=%ld, filesTransferred=%llu, bytesTransferred=%llu, totalByteCount=%llu, totalFileCount=%llu, phase=%@>", Name, self, v7, v8, v9, v10, v11, v12, v13];;
+  minutesRemaining = [(MBDeviceTransferProgress *)self minutesRemaining];
+  filesTransferred = [(MBDeviceTransferProgress *)self filesTransferred];
+  bytesTransferred = [(MBDeviceTransferProgress *)self bytesTransferred];
+  totalByteCount = [(MBDeviceTransferProgress *)self totalByteCount];
+  totalFileCount = [(MBDeviceTransferProgress *)self totalFileCount];
+  phaseDescription = [(MBDeviceTransferProgress *)self phaseDescription];
+  v14 = [v3 stringWithFormat:@"<%s: %p progress=%.2f, minutesRemaining=%ld, filesTransferred=%llu, bytesTransferred=%llu, totalByteCount=%llu, totalFileCount=%llu, phase=%@>", Name, self, v7, minutesRemaining, filesTransferred, bytesTransferred, totalByteCount, totalFileCount, phaseDescription];;
 
   return v14;
 }

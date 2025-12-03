@@ -5,8 +5,8 @@
 + (BOOL)isDeviceLargeScreen;
 + (BOOL)isDisplayPortrait;
 + (BOOL)isExternalCameraSupported;
-+ (BOOL)isHEVCDecodeSupportedForHardwareSettingsMode:(unsigned __int8)a3;
-+ (BOOL)isHEVCEncodeSupportedForHardwareSettingsMode:(unsigned __int8)a3;
++ (BOOL)isHEVCDecodeSupportedForHardwareSettingsMode:(unsigned __int8)mode;
++ (BOOL)isHEVCEncodeSupportedForHardwareSettingsMode:(unsigned __int8)mode;
 + (BOOL)isMLEnhanceOneToOneSupported;
 + (BOOL)isMediaRecordingSupported;
 + (BOOL)isRemoteCameraSenderSupported;
@@ -45,9 +45,9 @@
 + (BOOL)supportsSystemAudioTap;
 + (BOOL)supportsVideoStabilization;
 + (double)previewPreferredAspectRatio;
-+ (id)featureListStringForPayload:(int)a3 hardwareSettingsMode:(unsigned __int8)a4 version:(int64_t)a5;
++ (id)featureListStringForPayload:(int)payload hardwareSettingsMode:(unsigned __int8)mode version:(int64_t)version;
 + (id)supportedVideoPayloads;
-+ (id)virtualHardwareSettings:(id)a3;
++ (id)virtualHardwareSettings:(id)settings;
 + (int64_t)screenShareCapabilities;
 + (unint64_t)maxScreenEncodingSizeSupported;
 + (unsigned)builtinMicCount;
@@ -62,16 +62,16 @@
 + (unsigned)maxOneToOneFramerateSupported;
 + (unsigned)maxRemoteParticipants30fps;
 + (unsigned)screenHeight;
-+ (unsigned)screenHeightForDisplayID:(unsigned int)a3;
++ (unsigned)screenHeightForDisplayID:(unsigned int)d;
 + (unsigned)screenWidth;
-+ (unsigned)screenWidthForDisplayID:(unsigned int)a3;
-+ (unsigned)tilesPerVideoFrameForHardwareSettingsMode:(unsigned __int8)a3 hdrMode:(unint64_t)a4;
++ (unsigned)screenWidthForDisplayID:(unsigned int)d;
++ (unsigned)tilesPerVideoFrameForHardwareSettingsMode:(unsigned __int8)mode hdrMode:(unint64_t)hdrMode;
 - (BOOL)storeHardwareSettingsForAllOperatingModes;
 - (BOOL)supportHEVC;
 - (BOOL)vcpSupportsHEVCEncoder;
 - (VCHardwareSettings)init;
-- (id)featureListStringForPayload:(int)a3 hardwareSettingsMode:(unsigned __int8)a4 version:(int64_t)a5;
-- (unsigned)maxNetworkBitrateMultiwayAudioOnWifi:(BOOL)a3 isLowLatencyAudio:(BOOL)a4;
+- (id)featureListStringForPayload:(int)payload hardwareSettingsMode:(unsigned __int8)mode version:(int64_t)version;
+- (unsigned)maxNetworkBitrateMultiwayAudioOnWifi:(BOOL)wifi isLowLatencyAudio:(BOOL)audio;
 - (void)dealloc;
 - (void)init;
 - (void)storeHardwareSettingsForAllOperatingModes;
@@ -79,9 +79,9 @@
 
 @implementation VCHardwareSettings
 
-+ (id)virtualHardwareSettings:(id)a3
++ (id)virtualHardwareSettings:(id)settings
 {
-  v4 = VCVirtualHardwareConfigurations_DevicePlatform(a3);
+  v4 = VCVirtualHardwareConfigurations_DevicePlatform(settings);
   switch(v4)
   {
     case 2:
@@ -97,10 +97,10 @@
       break;
     case 1:
       v5 = VCHardwareSettingsMac;
-      return [(__objc2_class *)v5 virtualHardwareSettings:a3];
+      return [(__objc2_class *)v5 virtualHardwareSettings:settings];
     case 0:
       v5 = VCHardwareSettingsEmbedded;
-      return [(__objc2_class *)v5 virtualHardwareSettings:a3];
+      return [(__objc2_class *)v5 virtualHardwareSettings:settings];
   }
 
   return 0;
@@ -157,21 +157,21 @@ LABEL_9:
   [(VCHardwareSettings *)&v3 dealloc];
 }
 
-+ (id)featureListStringForPayload:(int)a3 hardwareSettingsMode:(unsigned __int8)a4 version:(int64_t)a5
++ (id)featureListStringForPayload:(int)payload hardwareSettingsMode:(unsigned __int8)mode version:(int64_t)version
 {
-  v6 = a4;
-  v7 = *&a3;
+  modeCopy = mode;
+  v7 = *&payload;
   v8 = +[VCHardwareSettingsEmbedded sharedInstance];
 
-  return [(VCHardwareSettings *)v8 featureListStringForPayload:v7 hardwareSettingsMode:v6 version:a5];
+  return [(VCHardwareSettings *)v8 featureListStringForPayload:v7 hardwareSettingsMode:modeCopy version:version];
 }
 
-- (id)featureListStringForPayload:(int)a3 hardwareSettingsMode:(unsigned __int8)a4 version:(int64_t)a5
+- (id)featureListStringForPayload:(int)payload hardwareSettingsMode:(unsigned __int8)mode version:(int64_t)version
 {
-  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_hardwareUsageModeSettings, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:a4]);
-  if (a3 == 126 || a3 == 123)
+  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_hardwareUsageModeSettings, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedChar:mode]);
+  if (payload == 126 || payload == 123)
   {
-    if (a5 == 2)
+    if (version == 2)
     {
 
       return [v7 featureListStringFixedPositionH264];
@@ -184,9 +184,9 @@ LABEL_9:
     }
   }
 
-  else if (a3 == 100)
+  else if (payload == 100)
   {
-    if (a5 == 2)
+    if (version == 2)
     {
 
       return [v7 featureListStringFixedPositionHEVC];
@@ -238,49 +238,49 @@ LABEL_9:
   return result;
 }
 
-+ (BOOL)isHEVCEncodeSupportedForHardwareSettingsMode:(unsigned __int8)a3
++ (BOOL)isHEVCEncodeSupportedForHardwareSettingsMode:(unsigned __int8)mode
 {
-  v3 = a3;
-  v4 = [a1 sharedInstance];
-  if (v4)
+  modeCopy = mode;
+  sharedInstance = [self sharedInstance];
+  if (sharedInstance)
   {
-    v5 = [v4 hardwareUsageModeSettings];
-    v6 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", v3)}];
+    hardwareUsageModeSettings = [sharedInstance hardwareUsageModeSettings];
+    v6 = [hardwareUsageModeSettings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", modeCopy)}];
 
-    LOBYTE(v4) = [v6 vcpSupportsHEVCEncoder];
+    LOBYTE(sharedInstance) = [v6 vcpSupportsHEVCEncoder];
   }
 
-  return v4;
+  return sharedInstance;
 }
 
-+ (BOOL)isHEVCDecodeSupportedForHardwareSettingsMode:(unsigned __int8)a3
++ (BOOL)isHEVCDecodeSupportedForHardwareSettingsMode:(unsigned __int8)mode
 {
-  v3 = a3;
-  v4 = [a1 sharedInstance];
-  if (v4)
+  modeCopy = mode;
+  sharedInstance = [self sharedInstance];
+  if (sharedInstance)
   {
-    v5 = [v4 hardwareUsageModeSettings];
-    v6 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", v3)}];
+    hardwareUsageModeSettings = [sharedInstance hardwareUsageModeSettings];
+    v6 = [hardwareUsageModeSettings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", modeCopy)}];
 
-    LOBYTE(v4) = [v6 vcpSupportsHEVCDecoder];
+    LOBYTE(sharedInstance) = [v6 vcpSupportsHEVCDecoder];
   }
 
-  return v4;
+  return sharedInstance;
 }
 
-+ (unsigned)tilesPerVideoFrameForHardwareSettingsMode:(unsigned __int8)a3 hdrMode:(unint64_t)a4
++ (unsigned)tilesPerVideoFrameForHardwareSettingsMode:(unsigned __int8)mode hdrMode:(unint64_t)hdrMode
 {
-  v5 = a3;
-  v6 = [a1 sharedInstance];
-  if (!v6)
+  modeCopy = mode;
+  sharedInstance = [self sharedInstance];
+  if (!sharedInstance)
   {
     return -1;
   }
 
-  v7 = [v6 hardwareUsageModeSettings];
-  v8 = [v7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", v5)}];
+  hardwareUsageModeSettings = [sharedInstance hardwareUsageModeSettings];
+  v8 = [hardwareUsageModeSettings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedChar:", modeCopy)}];
 
-  return [v8 numTilesPerVideoFrameForHDRMode:a4];
+  return [v8 numTilesPerVideoFrameForHDRMode:hdrMode];
 }
 
 - (BOOL)storeHardwareSettingsForAllOperatingModes
@@ -328,15 +328,15 @@ LABEL_9:
   return v7;
 }
 
-- (unsigned)maxNetworkBitrateMultiwayAudioOnWifi:(BOOL)a3 isLowLatencyAudio:(BOOL)a4
+- (unsigned)maxNetworkBitrateMultiwayAudioOnWifi:(BOOL)wifi isLowLatencyAudio:(BOOL)audio
 {
-  v4 = a4;
-  v5 = a3;
+  audioCopy = audio;
+  wifiCopy = wifi;
   v6 = +[VCDefaults sharedInstance];
-  if (v5)
+  if (wifiCopy)
   {
     result = [(VCDefaults *)v6 multiwayAudioNetworkBitrateCapWifi];
-    if (v4)
+    if (audioCopy)
     {
       v8 = 165600;
     }
@@ -389,9 +389,9 @@ LABEL_9:
 
 + (unsigned)maxFpsCameraCaptureDuringSharing
 {
-  v2 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxFpsCameraCaptureDuringSharing];
+  maxFpsCameraCaptureDuringSharing = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxFpsCameraCaptureDuringSharing];
 
-  return VCDefaults_GetIntValueForKey(@"maxCameraFrameRateWhenScreenIsEnabled", v2);
+  return VCDefaults_GetIntValueForKey(@"maxCameraFrameRateWhenScreenIsEnabled", maxFpsCameraCaptureDuringSharing);
 }
 
 + (unsigned)screenWidth
@@ -408,17 +408,17 @@ LABEL_9:
   return [(VCHardwareSettingsEmbedded *)v2 screenHeight];
 }
 
-+ (unsigned)screenWidthForDisplayID:(unsigned int)a3
++ (unsigned)screenWidthForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[VCHardwareSettingsEmbedded sharedInstance];
 
   return [(VCHardwareSettingsEmbedded *)v4 screenWidthForDisplayID:v3];
 }
 
-+ (unsigned)screenHeightForDisplayID:(unsigned int)a3
++ (unsigned)screenHeightForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[VCHardwareSettingsEmbedded sharedInstance];
 
   return [(VCHardwareSettingsEmbedded *)v4 screenHeightForDisplayID:v3];
@@ -601,9 +601,9 @@ LABEL_9:
 
 + (BOOL)supportsDecodingSquareCameraVideo
 {
-  v2 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded supportsDecodingSquareCameraVideo];
+  supportsDecodingSquareCameraVideo = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded supportsDecodingSquareCameraVideo];
 
-  return [VCDefaults BOOLeanValueForKey:@"preferDecodingSquareCameraVideo" defaultValue:v2];
+  return [VCDefaults BOOLeanValueForKey:@"preferDecodingSquareCameraVideo" defaultValue:supportsDecodingSquareCameraVideo];
 }
 
 + (unsigned)maxOneToOneFramerateSupported
@@ -872,10 +872,10 @@ void __VCHardwareSettings_FrontCameraOffsetFromDisplayCenter_block_invoke()
 
   v3 = v2;
   v4 = CFEqual(v2, *MEMORY[0x1E695E4D0]);
-  v5 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded isVCRateControlMLSupported];
+  isVCRateControlMLSupported = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded isVCRateControlMLSupported];
   if (v4)
   {
-    v6 = v5;
+    v6 = isVCRateControlMLSupported;
   }
 
   else
@@ -896,9 +896,9 @@ void __VCHardwareSettings_FrontCameraOffsetFromDisplayCenter_block_invoke()
 
 + (unsigned)maxHighTierMLEnhanceParticipants
 {
-  v2 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxHighTierMLEnhanceParticipants];
+  maxHighTierMLEnhanceParticipants = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxHighTierMLEnhanceParticipants];
 
-  return VCDefaults_GetIntValueForKey(@"mlEnhanceNumberMLEnhancedParticipants", v2);
+  return VCDefaults_GetIntValueForKey(@"mlEnhanceNumberMLEnhancedParticipants", maxHighTierMLEnhanceParticipants);
 }
 
 + (BOOL)supportsOutOfProcessVideoDecoding

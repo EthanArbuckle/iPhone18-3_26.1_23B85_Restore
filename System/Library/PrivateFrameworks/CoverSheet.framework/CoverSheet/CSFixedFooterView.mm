@@ -1,6 +1,6 @@
 @interface CSFixedFooterView
 - (CGPoint)statusTextViewOffset;
-- (CSFixedFooterView)initWithFrame:(CGRect)a3;
+- (CSFixedFooterView)initWithFrame:(CGRect)frame;
 - (SBFPagedScrollView)trackingScrollViewForPageControl;
 - (id)presentationRegions;
 - (void)_addPageControl;
@@ -10,23 +10,23 @@
 - (void)_layoutStatusTextView;
 - (void)_updateViewsForLegibilitySettings;
 - (void)layoutSubviews;
-- (void)setCallToActionLabel:(id)a3;
-- (void)setStatusTextView:(id)a3;
-- (void)setStatusTextViewOffset:(CGPoint)a3;
-- (void)setStatusTextViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setStatusTextViewScale:(double)a3;
-- (void)setTrackingScrollViewForPageControl:(id)a3;
-- (void)updateForLegibilitySettings:(id)a3;
+- (void)setCallToActionLabel:(id)label;
+- (void)setStatusTextView:(id)view;
+- (void)setStatusTextViewOffset:(CGPoint)offset;
+- (void)setStatusTextViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setStatusTextViewScale:(double)scale;
+- (void)setTrackingScrollViewForPageControl:(id)control;
+- (void)updateForLegibilitySettings:(id)settings;
 - (void)updatePageControl;
 @end
 
 @implementation CSFixedFooterView
 
-- (CSFixedFooterView)initWithFrame:(CGRect)a3
+- (CSFixedFooterView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CSFixedFooterView;
-  v3 = [(CSFixedFooterView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSFixedFooterView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (SBFEffectiveHomeButtonType() != 2)
@@ -43,30 +43,30 @@
 
 - (id)presentationRegions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [CSRegion regionForCoordinateSpace:self->_callToActionShakeView];
   v5 = [v4 role:1];
 
-  [v3 addObject:v5];
+  [array addObject:v5];
   if (self->_statusTextView)
   {
     v6 = [CSRegion regionForCoordinateSpace:?];
     v7 = [v6 role:1];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setStatusTextView:(id)a3
+- (void)setStatusTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   statusTextView = self->_statusTextView;
-  if (statusTextView != v5)
+  if (statusTextView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(SBUILegibility *)statusTextView removeFromSuperview];
-    objc_storeStrong(&self->_statusTextView, a3);
+    objc_storeStrong(&self->_statusTextView, view);
     v7 = self->_statusTextView;
     if (v7)
     {
@@ -76,34 +76,34 @@
     }
 
     statusTextView = [(CSFixedFooterView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](statusTextView, v5);
+  MEMORY[0x2821F96F8](statusTextView, viewCopy);
 }
 
-- (void)setStatusTextViewOffset:(CGPoint)a3
+- (void)setStatusTextViewOffset:(CGPoint)offset
 {
-  if (self->_statusTextViewOffset.x != a3.x || self->_statusTextViewOffset.y != a3.y)
+  if (self->_statusTextViewOffset.x != offset.x || self->_statusTextViewOffset.y != offset.y)
   {
-    self->_statusTextViewOffset = a3;
+    self->_statusTextViewOffset = offset;
     [(CSFixedFooterView *)self _layoutStatusTextView];
   }
 }
 
-- (void)setStatusTextViewScale:(double)a3
+- (void)setStatusTextViewScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_statusTextViewScale = a3;
+    self->_statusTextViewScale = scale;
 
     [(CSFixedFooterView *)self _layoutStatusTextView];
   }
 }
 
-- (void)setStatusTextViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setStatusTextViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_statusTextViewOffset.x == a3.x && self->_statusTextViewOffset.y == a3.y)
+  if (self->_statusTextViewOffset.x == offset.x && self->_statusTextViewOffset.y == offset.y)
   {
     p_statusTextViewScale = &self->_statusTextViewScale;
     if (BSFloatEqualToFloat())
@@ -114,7 +114,7 @@
 
   else
   {
-    self->_statusTextViewOffset = a3;
+    self->_statusTextViewOffset = offset;
     p_statusTextViewScale = &self->_statusTextViewScale;
     if (BSFloatEqualToFloat())
     {
@@ -122,41 +122,41 @@
     }
   }
 
-  *p_statusTextViewScale = a4;
+  *p_statusTextViewScale = scale;
 LABEL_9:
 
   [(CSFixedFooterView *)self _layoutStatusTextView];
 }
 
-- (void)setCallToActionLabel:(id)a3
+- (void)setCallToActionLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   callToActionLabel = self->_callToActionLabel;
-  if (callToActionLabel != v5)
+  if (callToActionLabel != labelCopy)
   {
-    v9 = v5;
+    v9 = labelCopy;
     [(SBUICallToActionLabel *)callToActionLabel removeFromSuperview];
-    objc_storeStrong(&self->_callToActionLabel, a3);
+    objc_storeStrong(&self->_callToActionLabel, label);
     v7 = self->_callToActionLabel;
     if (v7)
     {
       [(SBUICallToActionLabel *)v7 bs_setHitTestingDisabled:1];
-      v8 = [(CSShakableView *)self->_callToActionShakeView containerView];
-      [v8 addSubview:self->_callToActionLabel];
+      containerView = [(CSShakableView *)self->_callToActionShakeView containerView];
+      [containerView addSubview:self->_callToActionLabel];
 
       [(CSFixedFooterView *)self _updateViewsForLegibilitySettings];
     }
 
     callToActionLabel = [(CSFixedFooterView *)self setNeedsLayout];
-    v5 = v9;
+    labelCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](callToActionLabel, v5);
+  MEMORY[0x2821F96F8](callToActionLabel, labelCopy);
 }
 
-- (void)setTrackingScrollViewForPageControl:(id)a3
+- (void)setTrackingScrollViewForPageControl:(id)control
 {
-  obj = a3;
+  obj = control;
   WeakRetained = objc_loadWeakRetained(&self->_trackingScrollViewForPageControl);
 
   v5 = obj;
@@ -168,12 +168,12 @@ LABEL_9:
   }
 }
 
-- (void)updateForLegibilitySettings:(id)a3
+- (void)updateForLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(CSFixedFooterView *)self _updateViewsForLegibilitySettings];
   }
 }
@@ -282,20 +282,20 @@ LABEL_9:
 
 - (void)updatePageControl
 {
-  v3 = [(CSFixedFooterView *)self trackingScrollViewForPageControl];
-  if (v3)
+  trackingScrollViewForPageControl = [(CSFixedFooterView *)self trackingScrollViewForPageControl];
+  if (trackingScrollViewForPageControl)
   {
-    v8 = v3;
-    v4 = [v3 visiblePageRange];
-    v3 = v8;
+    v8 = trackingScrollViewForPageControl;
+    visiblePageRange = [trackingScrollViewForPageControl visiblePageRange];
+    trackingScrollViewForPageControl = v8;
     if (v5 == 1)
     {
       pageControl = self->_pageControl;
-      v7 = [v8 pageViews];
-      -[UIPageControl setNumberOfPages:](pageControl, "setNumberOfPages:", [v7 count]);
+      pageViews = [v8 pageViews];
+      -[UIPageControl setNumberOfPages:](pageControl, "setNumberOfPages:", [pageViews count]);
 
-      [(UIPageControl *)self->_pageControl setCurrentPage:v4];
-      v3 = v8;
+      [(UIPageControl *)self->_pageControl setCurrentPage:visiblePageRange];
+      trackingScrollViewForPageControl = v8;
     }
   }
 }

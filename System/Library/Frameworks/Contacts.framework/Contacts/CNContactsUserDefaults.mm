@@ -11,12 +11,12 @@
 - (int64_t)lastIgnoredNewDuplicatesCount;
 - (int64_t)newContactDisplayNameOrder;
 - (int64_t)shortNameFormat;
-- (void)setDisplayNameOrder:(int64_t)a3;
-- (void)setFilteredGroupAndContainerIDs:(id)a3;
-- (void)setLastIgnoredNewDuplicatesCount:(int64_t)a3;
-- (void)setShortNameFormat:(int64_t)a3;
-- (void)setShortNameFormatEnabled:(BOOL)a3;
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3;
+- (void)setDisplayNameOrder:(int64_t)order;
+- (void)setFilteredGroupAndContainerIDs:(id)ds;
+- (void)setLastIgnoredNewDuplicatesCount:(int64_t)count;
+- (void)setShortNameFormat:(int64_t)format;
+- (void)setShortNameFormatEnabled:(BOOL)enabled;
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames;
 @end
 
 @implementation CNContactsUserDefaults
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __40__CNContactsUserDefaults_sharedDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (s_onceToken != -1)
   {
     dispatch_once(&s_onceToken, block);
@@ -77,106 +77,106 @@ uint64_t __40__CNContactsUserDefaults_sharedDefaults__block_invoke(uint64_t a1)
 
 - (int64_t)displayNameOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (int64_t)newContactDisplayNameOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setDisplayNameOrder:(int64_t)a3
+- (void)setDisplayNameOrder:(int64_t)order
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }
 
 - (CNContactSortOrder)sortOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (NSString)countryCode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setShortNameFormat:(int64_t)a3
+- (void)setShortNameFormat:(int64_t)format
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }
 
 - (int64_t)shortNameFormat
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setShortNameFormatEnabled:(BOOL)a3
+- (void)setShortNameFormatEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }
 
 - (BOOL)isShortNameFormatEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }
 
 - (BOOL)shortNameFormatPrefersNicknames
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)filteredGroupAndContainerIDs
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setFilteredGroupAndContainerIDs:(id)a3
+- (void)setFilteredGroupAndContainerIDs:(id)ds
 {
-  v4 = a3;
-  v5 = self;
+  dsCopy = ds;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
 
 - (int64_t)lastIgnoredNewDuplicatesCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)setLastIgnoredNewDuplicatesCount:(int64_t)a3
+- (void)setLastIgnoredNewDuplicatesCount:(int64_t)count
 {
-  v3 = self;
+  selfCopy = self;
   v4 = CNAbstractMethodException();
   objc_exception_throw(v4);
 }

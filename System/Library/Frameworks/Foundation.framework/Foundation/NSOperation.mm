@@ -1,5 +1,5 @@
 @interface NSOperation
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)currentOperation;
 - (BOOL)isAsynchronous;
 - (BOOL)isConcurrent;
@@ -9,26 +9,26 @@
 - (NSOperationQueuePriority)queuePriority;
 - (NSQualityOfService)qualityOfService;
 - (NSString)name;
-- (id)__graphDescription:(unint64_t)a3;
+- (id)__graphDescription:(unint64_t)description;
 - (id)_copyCompletionBlock;
 - (id)_implicitObservationInfo;
 - (id)debugDescription;
 - (id)description;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)cancel;
 - (void)completionBlock;
 - (void)dealloc;
 - (void)removeDependency:(NSOperation *)op;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
 - (void)setCompletionBlock:(void *)completionBlock;
 - (void)setName:(NSString *)name;
-- (void)setObservationInfo:(void *)a3;
+- (void)setObservationInfo:(void *)info;
 - (void)setQualityOfService:(NSQualityOfService)qualityOfService;
 - (void)setQueuePriority:(NSOperationQueuePriority)queuePriority;
 - (void)setThreadPriority:(double)threadPriority;
 - (void)start;
 - (void)waitUntilFinished;
-- (void)waitUntilFinishedOrTimeout:(double)a3;
+- (void)waitUntilFinishedOrTimeout:(double)timeout;
 @end
 
 @implementation NSOperation
@@ -447,7 +447,7 @@ CFMutableArrayRef __19__NSOperation_init__block_invoke()
 
   os_unfair_lock_lock(&self->_iop.__lock);
   v6 = [(NSMutableArray *)self->_iop.__dependencies copy];
-  v18 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_iop.__lock);
   v23 = 0u;
   v24 = 0u;
@@ -482,7 +482,7 @@ CFMutableArrayRef __19__NSOperation_init__block_invoke()
               v14 = v13;
               for (j = 0; j != v14; ++j)
               {
-                v16 = [*(v12 + 19) pointerAtIndex:{j, v18}];
+                v16 = [*(v12 + 19) pointerAtIndex:{j, selfCopy}];
                 if (!NSMapMember(v5, v16, 0, 0))
                 {
                   started = pthread_override_qos_class_start_np(v16, v4, 0);
@@ -502,18 +502,18 @@ CFMutableArrayRef __19__NSOperation_init__block_invoke()
     while (v8);
   }
 
-  pthread_mutex_lock(&v18->_iop.__wait_mutex);
-  if (![(NSOperation *)v18 isFinished])
+  pthread_mutex_lock(&selfCopy->_iop.__wait_mutex);
+  if (![(NSOperation *)selfCopy isFinished])
   {
     do
     {
-      pthread_cond_wait(&v18->_iop.__wait_cond, &v18->_iop.__wait_mutex);
+      pthread_cond_wait(&selfCopy->_iop.__wait_cond, &selfCopy->_iop.__wait_mutex);
     }
 
-    while (![(NSOperation *)v18 isFinished]);
+    while (![(NSOperation *)selfCopy isFinished]);
   }
 
-  pthread_mutex_unlock(&v18->_iop.__wait_mutex);
+  pthread_mutex_unlock(&selfCopy->_iop.__wait_mutex);
   if (v5)
   {
     oq_end_waiting(v5);
@@ -523,12 +523,12 @@ CFMutableArrayRef __19__NSOperation_init__block_invoke()
 - (id)description
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(NSOperation *)self name];
-  if (v3)
+  name = [(NSOperation *)self name];
+  if (name)
   {
     v6.receiver = self;
     v6.super_class = NSOperation;
-    return [NSString stringWithFormat:@"%@{name = '%@'}", [(NSOperation *)&v6 description], v3];
+    return [NSString stringWithFormat:@"%@{name = '%@'}", [(NSOperation *)&v6 description], name];
   }
 
   else
@@ -665,27 +665,27 @@ CFMutableArrayRef __19__NSOperation_init__block_invoke()
   return [(NSOperation *)self isConcurrent];
 }
 
-- (void)setObservationInfo:(void *)a3
+- (void)setObservationInfo:(void *)info
 {
   obsInfo = self->_iop.__obsInfo;
-  if (obsInfo != a3)
+  if (obsInfo != info)
   {
     v5 = obsInfo;
-    self->_iop.__obsInfo = a3;
+    self->_iop.__obsInfo = info;
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"finished") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"isReady") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ready") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"isExecuting") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"executing") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"isCancelled") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"cancelled") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"dependencies") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"queuePriority") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"isAsynchronous") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"name") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"qualityOfService") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"completionBlock"))
+  if ([key isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"finished") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"isReady") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"ready") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"isExecuting") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"executing") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"isCancelled") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"cancelled") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"dependencies") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"queuePriority") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"isAsynchronous") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"name") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"qualityOfService") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"completionBlock"))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___NSOperation;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
 + (id)currentOperation
@@ -885,10 +885,10 @@ LABEL_11:
   return result;
 }
 
-- (void)waitUntilFinishedOrTimeout:(double)a3
+- (void)waitUntilFinishedOrTimeout:(double)timeout
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = CFAbsoluteTimeGetCurrent() + a3;
+  v4 = CFAbsoluteTimeGetCurrent() + timeout;
   os_unfair_lock_lock(&self->_iop.__lock);
   v5 = self->_iop.__queue;
   os_unfair_lock_unlock(&self->_iop.__lock);
@@ -928,14 +928,14 @@ LABEL_11:
   v27 = *MEMORY[0x1E69E9840];
   p_iop = &self->_iop;
   v6 = op;
-  v7 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = 0;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v22 = __iop_removeDependency_block_invoke;
   v23 = &unk_1E69F51C0;
-  v25 = self;
+  selfCopy2 = self;
   v26 = p_iop;
   v24 = op;
   LOBYTE(v10) = 1;
@@ -1036,10 +1036,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:@"isReady"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"ready"))
+  if ([path isEqualToString:@"isReady"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"ready"))
   {
     if (atomic_fetch_add(&self->_iop.__isReadyObserverCount, 1u) != 255)
     {
@@ -1053,7 +1053,7 @@ LABEL_18:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v12 userInfo:0]);
   }
 
-  if ([a4 isEqualToString:@"isExecuting"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"executing"))
+  if ([path isEqualToString:@"isExecuting"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"executing"))
   {
     if (atomic_fetch_add(&self->_iop.__isExecutingObserverCount, 1u) != 255)
     {
@@ -1065,7 +1065,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([a4 isEqualToString:@"isCancelled"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"cancelled"))
+  if ([path isEqualToString:@"isCancelled"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"cancelled"))
   {
     if (atomic_fetch_add(&self->_iop.__isCancelledObserverCount, 1u) != 255)
     {
@@ -1077,7 +1077,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (([a4 isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"finished")) && atomic_fetch_add(&self->_iop.__isFinishedObserverCount, 1u) == 255)
+  if (([path isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"finished")) && atomic_fetch_add(&self->_iop.__isFinishedObserverCount, 1u) == 255)
   {
     atomic_store(0xFFu, &self->_iop.__isFinishedObserverCount);
     v11 = @"isFinished";
@@ -1087,16 +1087,16 @@ LABEL_18:
 LABEL_4:
   v13.receiver = self;
   v13.super_class = NSOperation;
-  [(NSOperation *)&v13 addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+  [(NSOperation *)&v13 addObserver:observer forKeyPath:path options:options context:context];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSOperation;
-  [(NSOperation *)&v7 removeObserver:a3 forKeyPath:?];
-  if ([a4 isEqualToString:@"isReady"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"ready"))
+  [(NSOperation *)&v7 removeObserver:observer forKeyPath:?];
+  if ([path isEqualToString:@"isReady"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"ready"))
   {
     v6 = 244;
 LABEL_4:
@@ -1104,19 +1104,19 @@ LABEL_4:
     return;
   }
 
-  if ([a4 isEqualToString:@"isExecuting"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"executing"))
+  if ([path isEqualToString:@"isExecuting"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"executing"))
   {
     v6 = 242;
     goto LABEL_4;
   }
 
-  if ([a4 isEqualToString:@"isCancelled"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"cancelled"))
+  if ([path isEqualToString:@"isCancelled"] & 1) != 0 || (objc_msgSend(path, "isEqualToString:", @"cancelled"))
   {
     v6 = 245;
     goto LABEL_4;
   }
 
-  if (([a4 isEqualToString:@"isFinished"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"finished"))
+  if (([path isEqualToString:@"isFinished"] & 1) != 0 || objc_msgSend(path, "isEqualToString:", @"finished"))
   {
     v6 = 243;
     goto LABEL_4;
@@ -1125,13 +1125,13 @@ LABEL_4:
 
 - (id)debugDescription
 {
-  v3 = [(NSOperation *)self isFinished];
-  v4 = [(NSOperation *)self isReady];
-  v5 = [(NSOperation *)self isCancelled];
-  v6 = [(NSOperation *)self isExecuting];
+  isFinished = [(NSOperation *)self isFinished];
+  isReady = [(NSOperation *)self isReady];
+  isCancelled = [(NSOperation *)self isCancelled];
+  isExecuting = [(NSOperation *)self isExecuting];
   v7 = objc_opt_class();
   v8 = @"NO";
-  if (v3)
+  if (isFinished)
   {
     v9 = @"YES";
   }
@@ -1141,7 +1141,7 @@ LABEL_4:
     v9 = @"NO";
   }
 
-  if (v4)
+  if (isReady)
   {
     v10 = @"YES";
   }
@@ -1151,7 +1151,7 @@ LABEL_4:
     v10 = @"NO";
   }
 
-  if (v5)
+  if (isCancelled)
   {
     v11 = @"YES";
   }
@@ -1161,7 +1161,7 @@ LABEL_4:
     v11 = @"NO";
   }
 
-  if (v6)
+  if (isExecuting)
   {
     v8 = @"YES";
   }
@@ -1169,20 +1169,20 @@ LABEL_4:
   return [NSString stringWithFormat:@"<%@ %p isFinished=%@ isReady=%@ isCancelled=%@ isExecuting=%@>", v7, self, v9, v10, v11, v8];
 }
 
-- (id)__graphDescription:(unint64_t)a3
+- (id)__graphDescription:(unint64_t)description
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = [&stru_1EEEFDF90 mutableCopy];
-  if (a3)
+  if (description)
   {
-    v6 = a3;
+    descriptionCopy = description;
     do
     {
       [v5 appendString:@"  "];
-      --v6;
+      --descriptionCopy;
     }
 
-    while (v6);
+    while (descriptionCopy);
   }
 
   [v5 appendString:{-[NSOperation debugDescription](self, "debugDescription")}];
@@ -1257,8 +1257,8 @@ LABEL_24:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NSOperation *)self dependencies];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  dependencies = [(NSOperation *)self dependencies];
+  v10 = [(NSArray *)dependencies countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1270,14 +1270,14 @@ LABEL_24:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(dependencies);
         }
 
-        [v5 appendString:{objc_msgSend(*(*(&v16 + 1) + 8 * v13++), "__graphDescription:", a3 + 1)}];
+        [v5 appendString:{objc_msgSend(*(*(&v16 + 1) + 8 * v13++), "__graphDescription:", description + 1)}];
       }
 
       while (v11 != v13);
-      v11 = [(NSArray *)v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v11 = [(NSArray *)dependencies countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v11);

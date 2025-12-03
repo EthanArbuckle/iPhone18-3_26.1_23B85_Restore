@@ -1,10 +1,10 @@
 @interface CTKAssets
 + (void)initialize;
 - (CTKAssets)init;
-- (id)_getPlistFromPath:(id)a3;
-- (id)_getPlistWithAsset:(id)a3 resourceName:(id)a4;
-- (id)_loadIndexAsset:(id)a3 isFallback:(BOOL)a4;
-- (id)_loadMetadataPlist:(id)a3;
+- (id)_getPlistFromPath:(id)path;
+- (id)_getPlistWithAsset:(id)asset resourceName:(id)name;
+- (id)_loadIndexAsset:(id)asset isFallback:(BOOL)fallback;
+- (id)_loadMetadataPlist:(id)plist;
 - (id)expectedIndexAssetLanguageCodes;
 - (id)index;
 - (void)_invokeIndexChangeHandler;
@@ -12,14 +12,14 @@
 - (void)_loadFallbackAsset;
 - (void)_reloadPlists;
 - (void)dealloc;
-- (void)registerIndexChangeHandler:(id)a3;
+- (void)registerIndexChangeHandler:(id)handler;
 @end
 
 @implementation CTKAssets
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.siri.context.service", "Assets");
     v3 = qword_100557208;
@@ -162,11 +162,11 @@
   return v3;
 }
 
-- (void)registerIndexChangeHandler:(id)a3
+- (void)registerIndexChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_indexAssetLock);
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(handlerCopy);
 
   indexChangeHandler = self->_indexChangeHandler;
   self->_indexChangeHandler = v5;
@@ -193,36 +193,36 @@
         v10 = objc_opt_new();
         v6 = v10;
         [v5 enumerateKeysAndObjectsUsingBlock:v9];
-        v7 = [v6 allObjects];
+        allObjects = [v6 allObjects];
       }
 
       else
       {
-        v7 = 0;
+        allObjects = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      allObjects = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    allObjects = 0;
   }
 
-  return v7;
+  return allObjects;
 }
 
-- (id)_getPlistWithAsset:(id)a3 resourceName:(id)a4
+- (id)_getPlistWithAsset:(id)asset resourceName:(id)name
 {
-  if (a3)
+  if (asset)
   {
-    v6 = a3;
-    v7 = [NSString stringWithFormat:@"%@.plist", a4];
-    v8 = [v6 filesystemPathForAssetDataRelativePath:v7];
+    assetCopy = asset;
+    name = [NSString stringWithFormat:@"%@.plist", name];
+    v8 = [assetCopy filesystemPathForAssetDataRelativePath:name];
 
     if (v8)
     {
@@ -250,11 +250,11 @@
   return v9;
 }
 
-- (id)_getPlistFromPath:(id)a3
+- (id)_getPlistFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v13 = 0;
-  v4 = [NSData dataWithContentsOfFile:v3 options:0 error:&v13];
+  v4 = [NSData dataWithContentsOfFile:pathCopy options:0 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -263,7 +263,7 @@
     if (os_log_type_enabled(qword_100557208, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v3;
+      v15 = pathCopy;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Warning] Failed to read plist at %@: %@", buf, 0x16u);
@@ -283,7 +283,7 @@
       if (os_log_type_enabled(qword_100557208, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v3;
+        v15 = pathCopy;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[Warning] Failed to decode plist at %@: %@", buf, 0x16u);
@@ -306,9 +306,9 @@
   return v8;
 }
 
-- (id)_loadMetadataPlist:(id)a3
+- (id)_loadMetadataPlist:(id)plist
 {
-  v3 = [(CTKAssets *)self _getPlistWithAsset:a3 resourceName:@"IndexMetadata"];
+  v3 = [(CTKAssets *)self _getPlistWithAsset:plist resourceName:@"IndexMetadata"];
   v4 = v3;
   if (v3)
   {
@@ -351,7 +351,7 @@
   v3 = [(CTKAssets *)self _loadMetadataPlist:self->_commonAsset];
   if (v3)
   {
-    v29 = self;
+    selfCopy = self;
     v4 = +[NSLocale preferredLanguages];
     v5 = objc_opt_new();
     v34 = 0u;
@@ -472,8 +472,8 @@
     v26 = v24;
 LABEL_33:
 
-    v28 = [(CTKAssets *)v29 _loadIndexAsset:v26 isFallback:v25];
-    [(CTKAssets *)v29 _reloadPlists];
+    v28 = [(CTKAssets *)selfCopy _loadIndexAsset:v26 isFallback:v25];
+    [(CTKAssets *)selfCopy _reloadPlists];
   }
 }
 
@@ -515,11 +515,11 @@ LABEL_33:
   pthread_mutex_unlock(&self->_indexAssetLock);
 }
 
-- (id)_loadIndexAsset:(id)a3 isFallback:(BOOL)a4
+- (id)_loadIndexAsset:(id)asset isFallback:(BOOL)fallback
 {
-  v6 = a3;
+  assetCopy = asset;
   pthread_mutex_lock(&self->_indexAssetLock);
-  if (a4)
+  if (fallback)
   {
     v7 = 0;
     v8 = @"fallback";
@@ -527,7 +527,7 @@ LABEL_33:
 
   else
   {
-    v8 = [v6 copy];
+    v8 = [assetCopy copy];
     if (v8)
     {
       v7 = 0;
@@ -593,7 +593,7 @@ LABEL_8:
     v21 = [_PASAsset2 alloc];
     v22 = +[CTKPaths assetTypeDescriptor];
     v36 = @"CTKAssetIdentifier";
-    v37 = v6;
+    v37 = assetCopy;
     v23 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     LOBYTE(v33) = 1;
     v24 = [v21 initWithAssetTypeDescriptorPath:v22 defaultBundlePath:0 matchingKeysAndValues:v23 notificationQueue:self->_queue logHandle:&_os_log_default enableAssetUpdates:1 purgeObsoleteInstalledAssets:v33];
@@ -610,7 +610,7 @@ LABEL_8:
     v28 = self->indexNotificationToken;
     self->indexNotificationToken = v27;
 
-    if (!a4)
+    if (!fallback)
     {
       v29 = [(_PASAsset2 *)self->_indexAsset filesystemPathForAssetDataRelativePath:@"lucene.tagged.53.idx"];
       if (!v29)

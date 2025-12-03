@@ -1,20 +1,20 @@
 @interface NTKNumeralsHourView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_hourColorForDevice:(id)a3 faceColorPalette:(id)a4 colorSchemeUnits:(unint64_t)a5;
-- (id)_imageNameForStyle:(unint64_t)a3 hour:(int64_t)a4;
-- (id)initForHour:(int64_t)a3 style:(unint64_t)a4 faceConfiguration:(id)a5;
-- (id)initUnloadedHourViewForHour:(int64_t)a3 style:(unint64_t)a4 faceConfiguration:(id)a5;
-- (void)_applyTintColor:(id)a3;
-- (void)applyFaceColorFromFaceConfiguration:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 faceConfiguration:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_hourColorForDevice:(id)device faceColorPalette:(id)palette colorSchemeUnits:(unint64_t)units;
+- (id)_imageNameForStyle:(unint64_t)style hour:(int64_t)hour;
+- (id)initForHour:(int64_t)hour style:(unint64_t)style faceConfiguration:(id)configuration;
+- (id)initUnloadedHourViewForHour:(int64_t)hour style:(unint64_t)style faceConfiguration:(id)configuration;
+- (void)_applyTintColor:(id)color;
+- (void)applyFaceColorFromFaceConfiguration:(id)configuration;
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette faceConfiguration:(id)configuration;
 - (void)load;
 @end
 
 @implementation NTKNumeralsHourView
 
-- (id)initForHour:(int64_t)a3 style:(unint64_t)a4 faceConfiguration:(id)a5
+- (id)initForHour:(int64_t)hour style:(unint64_t)style faceConfiguration:(id)configuration
 {
-  v5 = [(NTKNumeralsHourView *)self initUnloadedHourViewForHour:a3 style:a4 faceConfiguration:a5];
+  v5 = [(NTKNumeralsHourView *)self initUnloadedHourViewForHour:hour style:style faceConfiguration:configuration];
   v6 = v5;
   if (v5)
   {
@@ -24,18 +24,18 @@
   return v6;
 }
 
-- (id)initUnloadedHourViewForHour:(int64_t)a3 style:(unint64_t)a4 faceConfiguration:(id)a5
+- (id)initUnloadedHourViewForHour:(int64_t)hour style:(unint64_t)style faceConfiguration:(id)configuration
 {
-  v9 = a5;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = NTKNumeralsHourView;
   v10 = [(NTKNumeralsHourView *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_hour = a3;
-    v10->_style = a4;
-    objc_storeStrong(&v10->_faceConfiguration, a5);
+    v10->_hour = hour;
+    v10->_style = style;
+    objc_storeStrong(&v10->_faceConfiguration, configuration);
   }
 
   return v11;
@@ -49,19 +49,19 @@
     v4 = [NTKNumeralsAnalogFaceBundle imageWithName:v3];
     v5 = [v4 imageWithRenderingMode:2];
 
-    v6 = [v5 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v5 _imageThatSuppressesAccessibilityHairlineThickening];
 
-    [(NTKNumeralsHourView *)self setImage:v6];
+    [(NTKNumeralsHourView *)self setImage:_imageThatSuppressesAccessibilityHairlineThickening];
     [(NTKNumeralsHourView *)self applyFaceColorFromFaceConfiguration:self->_faceConfiguration];
   }
 
   self->_isLoaded = 1;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = +[CLKDevice currentDevice];
   if ([v6 deviceCategory] == &dword_0 + 1)
   {
@@ -87,63 +87,63 @@
   return result;
 }
 
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 faceConfiguration:(id)a6
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette faceConfiguration:(id)configuration
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 device];
-  v17 = -[NTKNumeralsHourView _hourColorForDevice:faceColorPalette:colorSchemeUnits:](self, "_hourColorForDevice:faceColorPalette:colorSchemeUnits:", v12, v11, [v9 colorSchemeUnits]);
+  configurationCopy = configuration;
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  device = [configurationCopy device];
+  v17 = -[NTKNumeralsHourView _hourColorForDevice:faceColorPalette:colorSchemeUnits:](self, "_hourColorForDevice:faceColorPalette:colorSchemeUnits:", device, paletteCopy, [configurationCopy colorSchemeUnits]);
 
-  v13 = [v9 device];
-  v14 = [v9 colorSchemeUnits];
+  device2 = [configurationCopy device];
+  colorSchemeUnits = [configurationCopy colorSchemeUnits];
 
-  v15 = [(NTKNumeralsHourView *)self _hourColorForDevice:v13 faceColorPalette:v10 colorSchemeUnits:v14];
+  v15 = [(NTKNumeralsHourView *)self _hourColorForDevice:device2 faceColorPalette:colorPaletteCopy colorSchemeUnits:colorSchemeUnits];
 
   v16 = NTKInterpolateBetweenColors();
   [(NTKNumeralsHourView *)self _applyTintColor:v16];
 }
 
-- (void)applyFaceColorFromFaceConfiguration:(id)a3
+- (void)applyFaceColorFromFaceConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 device];
-  v6 = [v4 faceColorPalette];
-  v7 = [v4 colorSchemeUnits];
+  configurationCopy = configuration;
+  device = [configurationCopy device];
+  faceColorPalette = [configurationCopy faceColorPalette];
+  colorSchemeUnits = [configurationCopy colorSchemeUnits];
 
-  v8 = [(NTKNumeralsHourView *)self _hourColorForDevice:v5 faceColorPalette:v6 colorSchemeUnits:v7];
+  v8 = [(NTKNumeralsHourView *)self _hourColorForDevice:device faceColorPalette:faceColorPalette colorSchemeUnits:colorSchemeUnits];
 
   [(NTKNumeralsHourView *)self _applyTintColor:v8];
 }
 
-- (id)_hourColorForDevice:(id)a3 faceColorPalette:(id)a4 colorSchemeUnits:(unint64_t)a5
+- (id)_hourColorForDevice:(id)device faceColorPalette:(id)palette colorSchemeUnits:(unint64_t)units
 {
-  v5 = [NTKFaceColorScheme colorSchemeForDevice:a3 withFaceColorPalette:a4 units:a5];
-  v6 = [v5 foregroundColor];
-  v7 = [v6 colorWithAlphaComponent:1.0];
+  v5 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:palette units:units];
+  foregroundColor = [v5 foregroundColor];
+  v7 = [foregroundColor colorWithAlphaComponent:1.0];
 
   return v7;
 }
 
-- (void)_applyTintColor:(id)a3
+- (void)_applyTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_appliedColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_appliedColor, a3);
+    objc_storeStrong(&self->_appliedColor, color);
     [(NTKNumeralsHourView *)self setTintColor:self->_appliedColor];
   }
 }
 
-- (id)_imageNameForStyle:(unint64_t)a3 hour:(int64_t)a4
+- (id)_imageNameForStyle:(unint64_t)style hour:(int64_t)hour
 {
   v4 = @"numerals_analog_latn_alt%lu_%lu";
-  if (a3 == 8)
+  if (style == 8)
   {
     v4 = @"numerals-analog_deva_alt%lu_%lu";
   }
 
-  if (a3 == 7)
+  if (style == 7)
   {
     v4 = @"numerals-analog_arab_alt%lu_%lu";
     v5 = 1;
@@ -151,15 +151,15 @@
 
   else
   {
-    v5 = a3 - 7;
+    v5 = style - 7;
   }
 
-  if (a3 < 7)
+  if (style < 7)
   {
-    v5 = a3 + 1;
+    v5 = style + 1;
   }
 
-  return [NSString stringWithFormat:v4, v5, a4];
+  return [NSString stringWithFormat:v4, v5, hour];
 }
 
 @end

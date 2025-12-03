@@ -1,20 +1,20 @@
 @interface _UITouchesObservingGestureRecognizer
-- (BOOL)_allTouchesAreEndedOrCancelled:(id)a3;
-- (_UITouchesObservingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_updateTouchesFromEvent:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (BOOL)_allTouchesAreEndedOrCancelled:(id)cancelled;
+- (_UITouchesObservingGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_updateTouchesFromEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UITouchesObservingGestureRecognizer
 
-- (_UITouchesObservingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITouchesObservingGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UITouchesObservingGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -25,33 +25,33 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self setState:1];
   }
 
-  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:v5];
+  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self setState:1];
   }
 
-  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:v5];
+  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:v5];
-  v6 = [(_UITouchesObservingGestureRecognizer *)self _allTouchesAreEndedOrCancelled:v5];
+  eventCopy = event;
+  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:eventCopy];
+  v6 = [(_UITouchesObservingGestureRecognizer *)self _allTouchesAreEndedOrCancelled:eventCopy];
 
   if (v6)
   {
@@ -60,11 +60,11 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a4;
-  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:v5];
-  v6 = [(_UITouchesObservingGestureRecognizer *)self _allTouchesAreEndedOrCancelled:v5];
+  eventCopy = event;
+  [(_UITouchesObservingGestureRecognizer *)self _updateTouchesFromEvent:eventCopy];
+  v6 = [(_UITouchesObservingGestureRecognizer *)self _allTouchesAreEndedOrCancelled:eventCopy];
 
   if (v6)
   {
@@ -73,14 +73,14 @@
   }
 }
 
-- (BOOL)_allTouchesAreEndedOrCancelled:(id)a3
+- (BOOL)_allTouchesAreEndedOrCancelled:(id)cancelled
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 touchesForGestureRecognizer:{self, 0}];
+  v3 = [cancelled touchesForGestureRecognizer:{self, 0}];
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
@@ -119,9 +119,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)_updateTouchesFromEvent:(id)a3
+- (void)_updateTouchesFromEvent:(id)event
 {
-  v4 = [a3 touchesForGestureRecognizer:self];
+  v4 = [event touchesForGestureRecognizer:self];
   [(_UITouchesObservingGestureRecognizer *)self setTouches:v4];
 }
 

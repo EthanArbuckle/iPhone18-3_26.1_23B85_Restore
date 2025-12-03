@@ -26,7 +26,7 @@
       v6 = v12;
     }
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -60,8 +60,8 @@
           v24 = [v19 fileURLWithPathComponents:v23];
 
           v31 = 0;
-          v25 = [v24 path];
-          LODWORD(v21) = [v13 fileExistsAtPath:v25 isDirectory:&v31];
+          path = [v24 path];
+          LODWORD(v21) = [defaultManager fileExistsAtPath:path isDirectory:&v31];
           v26 = v31;
 
           if (v21 && (v26 & 1) != 0)
@@ -90,7 +90,7 @@ LABEL_15:
 
   else
   {
-    [(NSBundle(UserNotifications) *)a2 userNotificationsBundleWithIdentifier:a1];
+    [(NSBundle(UserNotifications) *)a2 userNotificationsBundleWithIdentifier:self];
     v27 = 0;
   }
 

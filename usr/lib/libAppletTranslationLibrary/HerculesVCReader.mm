@@ -1,26 +1,26 @@
 @interface HerculesVCReader
-+ (id)getCurrentTransitSummary:(id)a3 withError:(id *)a4;
-+ (id)readBalancesFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5;
++ (id)getCurrentTransitSummary:(id)summary withError:(id *)error;
++ (id)readBalancesFromVC:(id)c forCity:(id)city withError:(id *)error;
 @end
 
 @implementation HerculesVCReader
 
-+ (id)readBalancesFromVC:(id)a3 forCity:(id)a4 withError:(id *)a5
++ (id)readBalancesFromVC:(id)c forCity:(id)city withError:(id *)error
 {
   v85 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  cCopy = c;
+  cityCopy = city;
   v70 = 0;
-  v9 = [MifareUtils getMcmDataDal:21071 withTransceiver:v7 withError:&v70];
+  v9 = [MifareUtils getMcmDataDal:21071 withTransceiver:cCopy withError:&v70];
   v10 = v70;
   if (v10)
   {
     v11 = v10;
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
       goto LABEL_53;
     }
 
@@ -40,11 +40,11 @@
 
     v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected RTA Data length %lu", objc_msgSend(v9, "length")];
     v20 = v19;
-    if (a5)
+    if (error)
     {
-      v21 = *a5;
+      v21 = *error;
       v22 = MEMORY[0x277CCA9B8];
-      if (*a5)
+      if (*error)
       {
         v23 = *MEMORY[0x277CCA7E8];
         v79[0] = *MEMORY[0x277CCA450];
@@ -68,7 +68,7 @@
       }
 
       v31 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:v27];
-      *a5 = [v22 errorWithDomain:@"ATL" code:3 userInfo:v31];
+      *error = [v22 errorWithDomain:@"ATL" code:3 userInfo:v31];
     }
 
     v11 = 0;
@@ -78,16 +78,16 @@ LABEL_20:
   }
 
   v69 = 0;
-  v14 = [MifareUtils getMcmDataDal:21327 withTransceiver:v7 withError:&v69];
+  v14 = [MifareUtils getMcmDataDal:21327 withTransceiver:cCopy withError:&v69];
   v15 = v69;
   if (v15)
   {
     v11 = v15;
-    if (a5)
+    if (error)
     {
       v16 = v15;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -104,11 +104,11 @@ LABEL_20:
     if (v29)
     {
       v11 = v29;
-      if (a5)
+      if (error)
       {
         v30 = v29;
         v13 = 0;
-        *a5 = v11;
+        *error = v11;
       }
 
       else
@@ -134,7 +134,7 @@ LABEL_20:
           while (1)
           {
             v67 = 0;
-            v37 = [HerculesVCReader getBalanceForPass:v36 withRiderClass:v35 withTransitSummary:v66 withRTAData:v9 forCity:v8 withError:&v67];
+            v37 = [HerculesVCReader getBalanceForPass:v36 withRiderClass:v35 withTransitSummary:v66 withRTAData:v9 forCity:cityCopy withError:&v67];
             v38 = v67;
             v11 = v38;
             if (v38)
@@ -155,10 +155,10 @@ LABEL_20:
             }
           }
 
-          if (a5)
+          if (error)
           {
             v59 = v38;
-            *a5 = v11;
+            *error = v11;
           }
         }
 
@@ -173,12 +173,12 @@ LABEL_20:
           }
 
           v65 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Issue Object data format %hhu", v34, v64];
-          if (a5)
+          if (error)
           {
-            v51 = *a5;
+            v51 = *error;
             v52 = MEMORY[0x277CCA9B8];
             v53 = *MEMORY[0x277CCA450];
-            if (*a5)
+            if (*error)
             {
               v54 = *MEMORY[0x277CCA7E8];
               v71[0] = *MEMORY[0x277CCA450];
@@ -202,7 +202,7 @@ LABEL_20:
             }
 
             v61 = [v55 dictionaryWithObjects:v56 forKeys:v57 count:v58];
-            *a5 = [v52 errorWithDomain:@"ATL" code:3 userInfo:v61];
+            *error = [v52 errorWithDomain:@"ATL" code:3 userInfo:v61];
           }
 
           v11 = 0;
@@ -225,12 +225,12 @@ LABEL_50:
 
         v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Transit Summary data format %hhu", v32];
         v41 = v40;
-        if (a5)
+        if (error)
         {
-          v42 = *a5;
+          v42 = *error;
           v43 = MEMORY[0x277CCA9B8];
           v44 = *MEMORY[0x277CCA450];
-          if (*a5)
+          if (*error)
           {
             v45 = *MEMORY[0x277CCA7E8];
             v75[0] = *MEMORY[0x277CCA450];
@@ -254,7 +254,7 @@ LABEL_50:
           }
 
           v60 = [v46 dictionaryWithObjects:v47 forKeys:v48 count:v49];
-          *a5 = [v43 errorWithDomain:@"ATL" code:3 userInfo:v60];
+          *error = [v43 errorWithDomain:@"ATL" code:3 userInfo:v60];
         }
 
         v11 = 0;
@@ -270,15 +270,15 @@ LABEL_53:
   return v13;
 }
 
-+ (id)getCurrentTransitSummary:(id)a3 withError:(id *)a4
++ (id)getCurrentTransitSummary:(id)summary withError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 length] == 32)
+  summaryCopy = summary;
+  if ([summaryCopy length] == 32)
   {
-    v6 = *([v5 bytes] + 13);
+    v6 = *([summaryCopy bytes] + 13);
     v7 = v6 >> 4;
-    v8 = *([v5 bytes] + 29);
+    v8 = *([summaryCopy bytes] + 29);
     v9 = v8 >> 4;
     if (v6 >> 4 <= v8 >> 4)
     {
@@ -301,8 +301,8 @@ LABEL_53:
     }
 
     v12 = MEMORY[0x277CBEA90];
-    v13 = [v5 bytes];
-    v14 = v13;
+    bytes = [summaryCopy bytes];
+    v14 = bytes;
     if (v11)
     {
       v15 = 0;
@@ -328,7 +328,7 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v14 = v13 + 16;
+    v14 = bytes + 16;
     goto LABEL_21;
   }
 
@@ -336,18 +336,18 @@ LABEL_21:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v36 = [v5 length];
+    v36 = [summaryCopy length];
     _os_log_impl(&dword_22EEF5000, v16, OS_LOG_TYPE_ERROR, "Unexpected Transit Summary length %lu", buf, 0xCu);
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Transit Summary length %lu", objc_msgSend(v5, "length")];
+  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Transit Summary length %lu", objc_msgSend(summaryCopy, "length")];
   v18 = v17;
-  if (a4)
+  if (error)
   {
-    v19 = *a4;
+    v19 = *error;
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CCA450];
-    if (*a4)
+    if (*error)
     {
       v22 = *MEMORY[0x277CCA7E8];
       v31[0] = *MEMORY[0x277CCA450];
@@ -371,7 +371,7 @@ LABEL_21:
     }
 
     v28 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v26];
-    *a4 = [v20 errorWithDomain:@"ATL" code:3 userInfo:v28];
+    *error = [v20 errorWithDomain:@"ATL" code:3 userInfo:v28];
   }
 
   v27 = 0;

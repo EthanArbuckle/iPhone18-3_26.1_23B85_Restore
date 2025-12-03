@@ -1,27 +1,27 @@
 @interface PFWallpaperCompoundDeviceConfiguration
 + (BOOL)deviceSupportsLandscapeConfiguration;
-+ (PFWallpaperCompoundDeviceConfiguration)configurationWithDeviceName:(id)a3;
-+ (id)bestConfigurationForScreenSize:(CGSize)a3 screenScale:(double)a4;
-+ (id)callServicesConfigurationWithScreenSize:(CGSize)a3 titleBounds:(CGRect)a4 parallaxPadding:(CGSize)a5;
-+ (id)compoundDeviceConfigurationFromDictionary:(id)a3 error:(id *)a4;
++ (PFWallpaperCompoundDeviceConfiguration)configurationWithDeviceName:(id)name;
++ (id)bestConfigurationForScreenSize:(CGSize)size screenScale:(double)scale;
++ (id)callServicesConfigurationWithScreenSize:(CGSize)size titleBounds:(CGRect)bounds parallaxPadding:(CGSize)padding;
++ (id)compoundDeviceConfigurationFromDictionary:(id)dictionary error:(id *)error;
 + (id)deviceBackdropRoleConfiguration;
-+ (id)deviceCallServicesConfigurationWithTitleBounds:(CGRect)a3;
++ (id)deviceCallServicesConfigurationWithTitleBounds:(CGRect)bounds;
 + (id)deviceConfiguration;
-+ (id)genericBackdropConfigurationWithTitleBounds:(CGRect)a3;
-+ (id)genericCallServicesConfigurationWithTitleBounds:(CGRect)a3;
++ (id)genericBackdropConfigurationWithTitleBounds:(CGRect)bounds;
++ (id)genericCallServicesConfigurationWithTitleBounds:(CGRect)bounds;
 + (id)genericConfiguration;
 + (id)genericPadConfiguration;
 + (id)knownDeviceConfigurations;
-+ (id)specificConfigurationWithPortraitTitleBounds:(CGRect)a3 portraitScreenSize:(CGSize)a4 landscapeScreenSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutConfiguration:(id)a3;
++ (id)specificConfigurationWithPortraitTitleBounds:(CGRect)bounds portraitScreenSize:(CGSize)size landscapeScreenSize:(CGSize)screenSize;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration;
 - (CGSize)deviceSize;
-- (PFWallpaperCompoundDeviceConfiguration)initWithCoder:(id)a3;
-- (PFWallpaperCompoundDeviceConfiguration)initWithPortraitConfiguration:(id)a3 landscapeConfiguration:(id)a4;
+- (PFWallpaperCompoundDeviceConfiguration)initWithCoder:(id)coder;
+- (PFWallpaperCompoundDeviceConfiguration)initWithPortraitConfiguration:(id)configuration landscapeConfiguration:(id)landscapeConfiguration;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFWallpaperCompoundDeviceConfiguration
@@ -35,24 +35,24 @@
   return result;
 }
 
-- (PFWallpaperCompoundDeviceConfiguration)initWithCoder:(id)a3
+- (PFWallpaperCompoundDeviceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"portrait"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"landscape"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"portrait"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"landscape"];
 
   v7 = [(PFWallpaperCompoundDeviceConfiguration *)self initWithPortraitConfiguration:v5 landscapeConfiguration:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFWallpaperCompoundDeviceConfiguration *)self portraitConfiguration];
-  [v4 encodeObject:v5 forKey:@"portrait"];
+  coderCopy = coder;
+  portraitConfiguration = [(PFWallpaperCompoundDeviceConfiguration *)self portraitConfiguration];
+  [coderCopy encodeObject:portraitConfiguration forKey:@"portrait"];
 
-  v6 = [(PFWallpaperCompoundDeviceConfiguration *)self landscapeConfiguration];
-  [v4 encodeObject:v6 forKey:@"landscape"];
+  landscapeConfiguration = [(PFWallpaperCompoundDeviceConfiguration *)self landscapeConfiguration];
+  [coderCopy encodeObject:landscapeConfiguration forKey:@"landscape"];
 }
 
 - (id)debugDescription
@@ -81,36 +81,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(PFParallaxLayoutConfiguration *)self->_portraitConfiguration dictionaryRepresentation];
-  v4 = [(PFParallaxLayoutConfiguration *)self->_landscapeConfiguration dictionaryRepresentation];
+  dictionaryRepresentation = [(PFParallaxLayoutConfiguration *)self->_portraitConfiguration dictionaryRepresentation];
+  dictionaryRepresentation2 = [(PFParallaxLayoutConfiguration *)self->_landscapeConfiguration dictionaryRepresentation];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:&unk_1F2AABD48];
   v6 = v5;
-  if (v3)
+  if (dictionaryRepresentation)
   {
-    [v5 setObject:v3 forKeyedSubscript:@"portrait"];
+    [v5 setObject:dictionaryRepresentation forKeyedSubscript:@"portrait"];
   }
 
-  if (v4)
+  if (dictionaryRepresentation2)
   {
-    [v6 setObject:v4 forKeyedSubscript:@"landscape"];
+    [v6 setObject:dictionaryRepresentation2 forKeyedSubscript:@"landscape"];
   }
 
   return v6;
 }
 
-- (PFWallpaperCompoundDeviceConfiguration)initWithPortraitConfiguration:(id)a3 landscapeConfiguration:(id)a4
+- (PFWallpaperCompoundDeviceConfiguration)initWithPortraitConfiguration:(id)configuration landscapeConfiguration:(id)landscapeConfiguration
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  configurationCopy = configuration;
+  landscapeConfigurationCopy = landscapeConfiguration;
+  if (configurationCopy)
   {
-    v8 = v7;
+    v8 = landscapeConfigurationCopy;
     v17.receiver = self;
     v17.super_class = PFWallpaperCompoundDeviceConfiguration;
     v9 = [(PFWallpaperCompoundDeviceConfiguration *)&v17 init];
     portraitConfiguration = v9->_portraitConfiguration;
-    v9->_portraitConfiguration = v6;
-    v11 = v6;
+    v9->_portraitConfiguration = configurationCopy;
+    v11 = configurationCopy;
 
     landscapeConfiguration = v9->_landscapeConfiguration;
     v9->_landscapeConfiguration = v8;
@@ -125,24 +125,24 @@
   }
 }
 
-- (BOOL)isEqualToLayoutConfiguration:(id)a3
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
     if (self->_landscapeConfiguration)
     {
       goto LABEL_3;
     }
 
-    v12 = [v4 landscapeConfiguration];
+    landscapeConfiguration = [configurationCopy landscapeConfiguration];
 
-    if (!v12)
+    if (!landscapeConfiguration)
     {
       portraitConfiguration = self->_portraitConfiguration;
-      v8 = [v5 portraitConfiguration];
-      v11 = [(PFParallaxLayoutConfiguration *)portraitConfiguration isEqualToLayoutConfiguration:v8];
+      portraitConfiguration = [v5 portraitConfiguration];
+      v11 = [(PFParallaxLayoutConfiguration *)portraitConfiguration isEqualToLayoutConfiguration:portraitConfiguration];
 LABEL_11:
 
       goto LABEL_12;
@@ -151,17 +151,17 @@ LABEL_11:
     if (self->_landscapeConfiguration)
     {
 LABEL_3:
-      v6 = [v5 landscapeConfiguration];
+      landscapeConfiguration2 = [v5 landscapeConfiguration];
 
-      if (v6)
+      if (landscapeConfiguration2)
       {
         v7 = self->_portraitConfiguration;
-        v8 = [v5 portraitConfiguration];
-        if ([(PFParallaxLayoutConfiguration *)v7 isEqualToLayoutConfiguration:v8])
+        portraitConfiguration = [v5 portraitConfiguration];
+        if ([(PFParallaxLayoutConfiguration *)v7 isEqualToLayoutConfiguration:portraitConfiguration])
         {
           landscapeConfiguration = self->_landscapeConfiguration;
-          v10 = [v5 landscapeConfiguration];
-          v11 = [(PFParallaxLayoutConfiguration *)landscapeConfiguration isEqualToLayoutConfiguration:v10];
+          landscapeConfiguration3 = [v5 landscapeConfiguration];
+          v11 = [(PFParallaxLayoutConfiguration *)landscapeConfiguration isEqualToLayoutConfiguration:landscapeConfiguration3];
         }
 
         else
@@ -180,10 +180,10 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -191,7 +191,7 @@ LABEL_12:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFWallpaperCompoundDeviceConfiguration *)self isEqualToLayoutConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFWallpaperCompoundDeviceConfiguration *)self isEqualToLayoutConfiguration:equalCopy];
   }
 
   return v5;
@@ -302,21 +302,21 @@ void __67__PFWallpaperCompoundDeviceConfiguration_knownDeviceConfigurations__blo
   knownDeviceConfigurations_namedConfigs = v15;
 }
 
-+ (id)compoundDeviceConfigurationFromDictionary:(id)a3 error:(id *)a4
++ (id)compoundDeviceConfigurationFromDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"version"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 objectForKeyedSubscript:@"portrait"];
-    v8 = [PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:v7 error:a4];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"portrait"];
+    v8 = [PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:v7 error:error];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:@"landscape"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"landscape"];
 
-      if (!v9 || ([v5 objectForKeyedSubscript:@"landscape"], v10 = objc_claimAutoreleasedReturnValue(), +[PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:error:](PFParallaxLayoutConfiguration, "layoutConfigurationFromDictionary:error:", v10, a4), v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
+      if (!v9 || ([dictionaryCopy objectForKeyedSubscript:@"landscape"], v10 = objc_claimAutoreleasedReturnValue(), +[PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:error:](PFParallaxLayoutConfiguration, "layoutConfigurationFromDictionary:error:", v10, error), v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
       {
         v11 = [[PFWallpaperCompoundDeviceConfiguration alloc] initWithPortraitConfiguration:v8 landscapeConfiguration:v9];
 
@@ -327,7 +327,7 @@ void __67__PFWallpaperCompoundDeviceConfiguration_knownDeviceConfigurations__blo
 
   else
   {
-    v8 = [PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:v5 error:a4];
+    v8 = [PFParallaxLayoutConfiguration layoutConfigurationFromDictionary:dictionaryCopy error:error];
     if (v8)
     {
       v11 = [[PFWallpaperCompoundDeviceConfiguration alloc] initWithPortraitConfiguration:v8 landscapeConfiguration:0];
@@ -341,11 +341,11 @@ LABEL_9:
   return v11;
 }
 
-+ (PFWallpaperCompoundDeviceConfiguration)configurationWithDeviceName:(id)a3
++ (PFWallpaperCompoundDeviceConfiguration)configurationWithDeviceName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 knownDeviceConfigurations];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  knownDeviceConfigurations = [self knownDeviceConfigurations];
+  v6 = [knownDeviceConfigurations objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
@@ -387,7 +387,7 @@ void __78__PFWallpaperCompoundDeviceConfiguration_deviceSupportsLandscapeConfigu
   block[1] = 3221225472;
   block[2] = __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceConfiguration_onceToken[0] != -1)
   {
     dispatch_once(deviceConfiguration_onceToken, block);
@@ -537,45 +537,45 @@ void __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_inv
   return v4;
 }
 
-+ (id)deviceCallServicesConfigurationWithTitleBounds:(CGRect)a3
++ (id)deviceCallServicesConfigurationWithTitleBounds:(CGRect)bounds
 {
   v4 = PFDeviceScreenSize();
 
-  return [a1 callServicesConfigurationWithScreenSize:v4 titleBounds:? parallaxPadding:?];
+  return [self callServicesConfigurationWithScreenSize:v4 titleBounds:? parallaxPadding:?];
 }
 
-+ (id)specificConfigurationWithPortraitTitleBounds:(CGRect)a3 portraitScreenSize:(CGSize)a4 landscapeScreenSize:(CGSize)a5
++ (id)specificConfigurationWithPortraitTitleBounds:(CGRect)bounds portraitScreenSize:(CGSize)size landscapeScreenSize:(CGSize)screenSize
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = a4.width * 3.0;
-  v8 = a4.height * 3.0;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = size.width * 3.0;
+  v8 = size.height * 3.0;
   v9 = 0.0;
   v10 = 0.0;
   v11 = x;
-  if (a4.width * 3.0 != 0.0)
+  if (size.width * 3.0 != 0.0)
   {
     v11 = x / v7;
-    v10 = a3.size.width / v7;
+    v10 = bounds.size.width / v7;
   }
 
   v12 = y;
   if (v8 != 0.0)
   {
     v12 = y / v8;
-    v9 = a3.size.height / v8;
+    v9 = bounds.size.height / v8;
   }
 
-  v32 = a5.width * 3.0;
-  v33 = a5.height * 3.0;
-  v13 = v11 * (a5.width * 3.0) + 0.0;
-  v14 = v12 * (a5.height * 3.0) + 0.0;
+  v32 = screenSize.width * 3.0;
+  v33 = screenSize.height * 3.0;
+  v13 = v11 * (screenSize.width * 3.0) + 0.0;
+  v14 = v12 * (screenSize.height * 3.0) + 0.0;
   v30 = v14;
   v31 = v13;
-  v15 = a5.width * 3.0 * v10;
-  v16 = a5.height * 3.0 * v9;
-  width = a3.size.width;
-  height = a3.size.height;
+  v15 = screenSize.width * 3.0 * v10;
+  v16 = screenSize.height * 3.0 * v9;
+  width = bounds.size.width;
+  height = bounds.size.height;
   v17 = [PFParallaxLayoutConfiguration _timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:1 orientation:x, y];
   v18 = s_timeRectCollectionPortrait;
   s_timeRectCollectionPortrait = v17;
@@ -594,20 +594,20 @@ void __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_inv
   return v26;
 }
 
-+ (id)genericBackdropConfigurationWithTitleBounds:(CGRect)a3
++ (id)genericBackdropConfigurationWithTitleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v7 = PFDeviceScreenSize();
   v9 = v8;
   v10 = *MEMORY[0x1E695F060];
   v11 = *(MEMORY[0x1E695F060] + 8);
   v12 = y + 0.0500000007;
-  v13 = [PFParallaxLayoutConfiguration _timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:1 orientation:x, v12, width, height];
+  height = [PFParallaxLayoutConfiguration _timeRectCollectionOverrideForYDownNormalizedEffectiveBounds:1 orientation:x, v12, width, height];
   v14 = s_timeRectCollectionPortrait;
-  s_timeRectCollectionPortrait = v13;
+  s_timeRectCollectionPortrait = height;
 
   v15 = [[PFParallaxLayoutConfiguration alloc] initWithScreenSize:v7 screenScale:v9 normalizedYDownTimeRect:3.0 parallaxPadding:x, v12, width, height, v10, v11];
   v16 = [[PFWallpaperCompoundDeviceConfiguration alloc] initWithPortraitConfiguration:v15 landscapeConfiguration:0];
@@ -615,24 +615,24 @@ void __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_inv
   return v16;
 }
 
-+ (id)genericCallServicesConfigurationWithTitleBounds:(CGRect)a3
++ (id)genericCallServicesConfigurationWithTitleBounds:(CGRect)bounds
 {
   v4 = PFDeviceScreenSize();
 
-  return [a1 callServicesConfigurationWithScreenSize:v4 titleBounds:? parallaxPadding:?];
+  return [self callServicesConfigurationWithScreenSize:v4 titleBounds:? parallaxPadding:?];
 }
 
-+ (id)callServicesConfigurationWithScreenSize:(CGSize)a3 titleBounds:(CGRect)a4 parallaxPadding:(CGSize)a5
++ (id)callServicesConfigurationWithScreenSize:(CGSize)size titleBounds:(CGRect)bounds parallaxPadding:(CGSize)padding
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.height;
-  v12 = a3.width;
-  if (CGRectIsEmpty(a4))
+  height = padding.height;
+  width = padding.width;
+  v7 = bounds.size.height;
+  v8 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = size.height;
+  v12 = size.width;
+  if (CGRectIsEmpty(bounds))
   {
     v31 = _PFAssertFailHandler();
     return +[(PFWallpaperCompoundDeviceConfiguration *)v31];
@@ -650,14 +650,14 @@ void __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_inv
       v33 = height;
       v13 = width;
       v14 = +[PFWallpaperCompoundDeviceConfiguration genericPadConfiguration];
-      v15 = [v14 portraitConfiguration];
-      [v15 timeRect];
+      portraitConfiguration = [v14 portraitConfiguration];
+      [portraitConfiguration timeRect];
       x = v16;
       y = v17;
       v19 = v18;
       v21 = v20;
-      v22 = [v14 portraitConfiguration];
-      [v22 screenSize];
+      portraitConfiguration2 = [v14 portraitConfiguration];
+      [portraitConfiguration2 screenSize];
       v7 = 0.0;
       v8 = 0.0;
       if (v23 != 0.0)
@@ -717,14 +717,14 @@ void __61__PFWallpaperCompoundDeviceConfiguration_deviceConfiguration__block_inv
   return v5;
 }
 
-+ (id)bestConfigurationForScreenSize:(CGSize)a3 screenScale:(double)a4
++ (id)bestConfigurationForScreenSize:(CGSize)size screenScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = [PFWallpaperCompoundDeviceConfiguration alloc];
-  v8 = [PFParallaxLayoutConfiguration bestConfigurationForScreenSize:1 screenScale:width orientation:height, a4];
-  v9 = [PFParallaxLayoutConfiguration bestConfigurationForScreenSize:2 screenScale:width orientation:height, a4];
-  v10 = [(PFWallpaperCompoundDeviceConfiguration *)v7 initWithPortraitConfiguration:v8 landscapeConfiguration:v9];
+  scale = [PFParallaxLayoutConfiguration bestConfigurationForScreenSize:1 screenScale:width orientation:height, scale];
+  scale2 = [PFParallaxLayoutConfiguration bestConfigurationForScreenSize:2 screenScale:width orientation:height, scale];
+  v10 = [(PFWallpaperCompoundDeviceConfiguration *)v7 initWithPortraitConfiguration:scale landscapeConfiguration:scale2];
 
   return v10;
 }

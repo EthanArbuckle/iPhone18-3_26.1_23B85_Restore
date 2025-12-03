@@ -1,20 +1,20 @@
 @interface RMSPairingCredentials
-- (RMSPairingCredentials)initWithProtobuf:(id)a3;
+- (RMSPairingCredentials)initWithProtobuf:(id)protobuf;
 - (id)protobuf;
 @end
 
 @implementation RMSPairingCredentials
 
-- (RMSPairingCredentials)initWithProtobuf:(id)a3
+- (RMSPairingCredentials)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v7.receiver = self;
   v7.super_class = RMSPairingCredentials;
   v5 = [(RMSPairingCredentials *)&v7 init];
   if (v5)
   {
-    v5->_requirementType = [v4 requirementType];
-    v5->_characterCount = [v4 characterCount];
+    v5->_requirementType = [protobufCopy requirementType];
+    v5->_characterCount = [protobufCopy characterCount];
   }
 
   return v5;

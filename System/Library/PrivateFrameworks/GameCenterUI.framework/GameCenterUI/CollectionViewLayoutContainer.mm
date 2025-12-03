@@ -17,7 +17,7 @@
 
 - (CGSize)effectiveContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E12AF54();
   v4 = v3;
   v6 = v5;

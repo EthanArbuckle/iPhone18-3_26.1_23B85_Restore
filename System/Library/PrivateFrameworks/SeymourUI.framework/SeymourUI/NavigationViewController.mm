@@ -1,11 +1,11 @@
 @interface NavigationViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (_TtC9SeymourUI24NavigationViewController)init;
-- (_TtC9SeymourUI24NavigationViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI24NavigationViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9SeymourUI24NavigationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI24NavigationViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI24NavigationViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9SeymourUI24NavigationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)menuButtonTapped;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (_TtC9SeymourUI24NavigationViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI24NavigationViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI24NavigationViewController_onShouldBeginRecognizing);
   *v3 = 0;
@@ -39,11 +39,11 @@
   v5.super_class = type metadata accessor for NavigationViewController();
   v2 = v5.receiver;
   [(NavigationViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addGestureRecognizer_];
+    v4 = view;
+    [view addGestureRecognizer_];
   }
 
   else
@@ -57,7 +57,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI24NavigationViewController_onMenuTapped);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_20B584050(v2);
     v2(v4);
 
@@ -65,29 +65,29 @@
   }
 }
 
-- (_TtC9SeymourUI24NavigationViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9SeymourUI24NavigationViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI24NavigationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI24NavigationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI24NavigationViewController_onShouldBeginRecognizing);
   if (v3)
   {
-    v5 = a3;
-    v6 = self;
+    beginCopy = begin;
+    selfCopy = self;
     sub_20B584050(v3);
-    v7 = v3(v6, v5);
+    v7 = v3(selfCopy, beginCopy);
 
     sub_20B583ECC(v3);
   }
@@ -100,12 +100,12 @@
   return v7 & 1;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_20B8A3D78(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_20B8A3D78(viewControllerCopy);
 }
 
 @end

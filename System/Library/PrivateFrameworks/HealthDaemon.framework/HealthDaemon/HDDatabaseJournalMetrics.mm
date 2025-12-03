@@ -1,14 +1,14 @@
 @interface HDDatabaseJournalMetrics
 - (HDDatabaseJournalMetrics)init;
 - (NSString)loggingDescription;
-- (void)addWithClassName:(id)a3 size:(int64_t)a4 duration:(double)a5;
+- (void)addWithClassName:(id)name size:(int64_t)size duration:(double)duration;
 @end
 
 @implementation HDDatabaseJournalMetrics
 
 - (NSString)loggingDescription
 {
-  v2 = self;
+  selfCopy = self;
   DatabaseJournalMetrics.loggingDescription.getter();
 
   v3 = sub_22911C34C();
@@ -16,14 +16,14 @@
   return v3;
 }
 
-- (void)addWithClassName:(id)a3 size:(int64_t)a4 duration:(double)a5
+- (void)addWithClassName:(id)name size:(int64_t)size duration:(double)duration
 {
   v8 = sub_22911C35C();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v8;
   v12._object = v10;
-  DatabaseJournalMetrics.add(className:size:duration:)(v12, a4, a5);
+  DatabaseJournalMetrics.add(className:size:duration:)(v12, size, duration);
 }
 
 - (HDDatabaseJournalMetrics)init

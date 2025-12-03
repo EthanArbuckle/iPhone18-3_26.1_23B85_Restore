@@ -1,62 +1,62 @@
 @interface MTSSystemCommissionerPairingManager
 + (id)logCategory;
 - (MTSSystemCommissionerPairingManager)init;
-- (MTSSystemCommissionerPairingManager)initWithServerProxy:(id)a3;
+- (MTSSystemCommissionerPairingManager)initWithServerProxy:(id)proxy;
 - (void)dealloc;
-- (void)fetchPairingsWithCompletionHandler:(id)a3;
-- (void)removePairingWithUUID:(id)a3 completionHandler:(id)a4;
+- (void)fetchPairingsWithCompletionHandler:(id)handler;
+- (void)removePairingWithUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation MTSSystemCommissionerPairingManager
 
-- (void)removePairingWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removePairingWithUUID:(id)d completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
   v9 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Remove system commissioner pairing"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v24 = v13;
     v25 = 2114;
-    v26 = v15;
+    v26 = shortDescription;
     v27 = 2112;
-    v28 = v6;
+    v28 = dCopy;
     _os_log_impl(&dword_239824000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing system commissioner pairing with UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v16 = [(MTSSystemCommissionerPairingManager *)v11 serverProxy];
+  serverProxy = [(MTSSystemCommissionerPairingManager *)selfCopy serverProxy];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__MTSSystemCommissionerPairingManager_removePairingWithUUID_completionHandler___block_invoke;
   v20[3] = &unk_278AA1928;
-  v20[4] = v11;
+  v20[4] = selfCopy;
   v21 = v9;
   v22 = v8;
   v17 = v8;
   v18 = v9;
-  [v16 removeSystemCommissionerPairingWithUUID:v6 completionHandler:v20];
+  [serverProxy removeSystemCommissionerPairingWithUUID:dCopy completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -113,44 +113,44 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPairingsWithCompletionHandler:(id)a3
+- (void)fetchPairingsWithCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Fetch system commissioner pairings"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v21 = v10;
     v22 = 2114;
-    v23 = v12;
+    v23 = shortDescription;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching system commissioner pairings", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(MTSSystemCommissionerPairingManager *)v8 serverProxy];
+  serverProxy = [(MTSSystemCommissionerPairingManager *)selfCopy serverProxy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __74__MTSSystemCommissionerPairingManager_fetchPairingsWithCompletionHandler___block_invoke;
   v17[3] = &unk_278AA1900;
-  v17[4] = v8;
+  v17[4] = selfCopy;
   v18 = v6;
   v19 = v5;
   v14 = v5;
   v15 = v6;
-  [v13 fetchSystemCommissionerPairingsWithCompletionHandler:v17];
+  [serverProxy fetchSystemCommissionerPairingsWithCompletionHandler:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -216,19 +216,19 @@ LABEL_6:
   [(MTSSystemCommissionerPairingManager *)&v3 dealloc];
 }
 
-- (MTSSystemCommissionerPairingManager)initWithServerProxy:(id)a3
+- (MTSSystemCommissionerPairingManager)initWithServerProxy:(id)proxy
 {
-  v5 = a3;
-  if (v5)
+  proxyCopy = proxy;
+  if (proxyCopy)
   {
-    v6 = v5;
+    v6 = proxyCopy;
     v12.receiver = self;
     v12.super_class = MTSSystemCommissionerPairingManager;
     v7 = [(MTSSystemCommissionerPairingManager *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_serverProxy, a3);
+      objc_storeStrong(&v7->_serverProxy, proxy);
     }
 
     return v8;

@@ -1,10 +1,10 @@
 @interface TSDKextNotifier
 - (TSDKextNotifier)init;
 - (void)dealloc;
-- (void)notifyWhenServiceIsAvailable:(id)a3;
-- (void)notifyWhenServiceIsUnavailable:(id)a3;
-- (void)serviceMatched:(id)a3;
-- (void)serviceTerminated:(id)a3;
+- (void)notifyWhenServiceIsAvailable:(id)available;
+- (void)notifyWhenServiceIsUnavailable:(id)unavailable;
+- (void)serviceMatched:(id)matched;
+- (void)serviceTerminated:(id)terminated;
 @end
 
 @implementation TSDKextNotifier
@@ -45,16 +45,16 @@
   return v2;
 }
 
-- (void)serviceMatched:(id)a3
+- (void)serviceMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   v5 = objc_autoreleasePoolPush();
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSString *)self->super._identifier UTF8String];
+    uTF8String = [(NSString *)self->super._identifier UTF8String];
     v7 = [(NSMutableArray *)self->_matchNotificationsArray count];
     *buf = 136315394;
-    v19 = v6;
+    v19 = uTF8String;
     v20 = 1024;
     v21 = v7;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "TSDKextNotifier serviceMatched %s matchedCount dispatching notifications to %d registered", buf, 0x12u);
@@ -95,17 +95,17 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)serviceTerminated:(id)a3
+- (void)serviceTerminated:(id)terminated
 {
-  v4 = a3;
+  terminatedCopy = terminated;
   if ([(TSDIOKServiceMatcher *)self getMatchedCount]<= 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSString *)self->super._identifier UTF8String];
+      uTF8String = [(NSString *)self->super._identifier UTF8String];
       v6 = [(NSMutableArray *)self->_terminateNotificationsArray count];
       *buf = 136315394;
-      v19 = v5;
+      v19 = uTF8String;
       v20 = 1024;
       v21 = v6;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "TSDKextNotifier serviceTerminated %s, dispatching notifications to %d registered", buf, 0x12u);
@@ -148,10 +148,10 @@
   }
 }
 
-- (void)notifyWhenServiceIsAvailable:(id)a3
+- (void)notifyWhenServiceIsAvailable:(id)available
 {
-  v4 = a3;
-  v5 = v4;
+  availableCopy = available;
+  v5 = availableCopy;
   v6 = qword_100058818;
   if (qword_100058818)
   {
@@ -160,7 +160,7 @@
     v7[2] = sub_1000084BC;
     v7[3] = &unk_10004C7E0;
     v7[4] = self;
-    v8 = v4;
+    v8 = availableCopy;
     dispatch_async(v6, v7);
   }
 
@@ -170,10 +170,10 @@
   }
 }
 
-- (void)notifyWhenServiceIsUnavailable:(id)a3
+- (void)notifyWhenServiceIsUnavailable:(id)unavailable
 {
-  v4 = a3;
-  v5 = v4;
+  unavailableCopy = unavailable;
+  v5 = unavailableCopy;
   v6 = qword_100058818;
   if (qword_100058818)
   {
@@ -182,7 +182,7 @@
     v7[2] = sub_1000086F4;
     v7[3] = &unk_10004C7E0;
     v7[4] = self;
-    v8 = v4;
+    v8 = unavailableCopy;
     dispatch_async(v6, v7);
   }
 

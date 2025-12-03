@@ -1,15 +1,15 @@
 @interface PKPagedTransactionListDataSource
-- (BOOL)isListLayoutForSection:(unint64_t)a3;
+- (BOOL)isListLayoutForSection:(unint64_t)section;
 - (PKPagedTransactionListDataSource)init;
 - (PKTransactionHistoryDataSourceDelegate)customDelegate;
-- (id)itemAtIndexPath:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)itemAtIndexPath:(id)path;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (unint64_t)transactionHistoryItemsCount;
-- (void)_loadWithLimit:(unint64_t)a3;
+- (void)_loadWithLimit:(unint64_t)limit;
 - (void)loadTransactionsIfNeeded;
-- (void)willDisplayItemAtIndexPath:(id)a3;
+- (void)willDisplayItemAtIndexPath:(id)path;
 @end
 
 @implementation PKPagedTransactionListDataSource
@@ -37,9 +37,9 @@
     memset(v14, 0, sizeof(v14));
     __copy_assignment_8_8_S_s0_s8_t16w1_s24(&v2->_walletPagingState, v14);
     __copy_assignment_8_8_S_s0_s8_t16w1_s24(&v2->_bankConnectPagingState, v14);
-    v9 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentDataProvider = v2->_paymentDataProvider;
-    v2->_paymentDataProvider = v9;
+    v2->_paymentDataProvider = defaultDataProvider;
 
     v11 = objc_alloc_init(_TtC9PassKitUI40PKPagedTransactionListBankConnectFetcher);
     bankConnectFetcher = v2->_bankConnectFetcher;
@@ -67,21 +67,21 @@
   }
 }
 
-- (void)willDisplayItemAtIndexPath:(id)a3
+- (void)willDisplayItemAtIndexPath:(id)path
 {
-  v13 = a3;
-  v4 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v5 = [v4 objectAtIndex:{objc_msgSend(v13, "section")}];
+  pathCopy = path;
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v5 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v6 = [v5 identifier];
-  v7 = [v6 isEqual:@"transactions"];
+  identifier = [v5 identifier];
+  v7 = [identifier isEqual:@"transactions"];
 
   if (v7 && (!self->_walletPagingState.endReached || !self->_bankConnectPagingState.endReached) && !self->_loading)
   {
     data = self->_data;
     v9 = data ? data->_transactions : 0;
     v10 = [(NSArray *)v9 count];
-    if ([v13 item] >= v10 >> 1)
+    if ([pathCopy item] >= v10 >> 1)
     {
       v11 = 20;
       if (v10 > 0x14)
@@ -104,7 +104,7 @@
   }
 }
 
-- (void)_loadWithLimit:(unint64_t)a3
+- (void)_loadWithLimit:(unint64_t)limit
 {
   self->_loading = 1;
   v165 = 0;
@@ -453,7 +453,7 @@
     v91[4] = self;
     v94 = v127;
     v95 = v153;
-    v96 = a3;
+    limitCopy = limit;
     v92 = v49;
     v54 = _Block_copy(v91);
     v55 = v54;
@@ -489,7 +489,7 @@
     v86 = v123;
     v87 = v121;
     v84 = v49;
-    [(PKPagedTransactionListBankConnectFetcher *)v59 fetchTransactionsWithLimit:a3 before:v58 completionHandler:v83];
+    [(PKPagedTransactionListBankConnectFetcher *)v59 fetchTransactionsWithLimit:limit before:v58 completionHandler:v83];
   }
 
   v60 = self->_queue;
@@ -497,7 +497,7 @@
   v63[1] = 3221225472;
   v63[2] = __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_10;
   v63[3] = &unk_1E801FFE0;
-  v82 = a3;
+  limitCopy2 = limit;
   v68 = v127;
   v69 = &v131;
   v70 = v125;
@@ -514,7 +514,7 @@
   v81 = v153;
   v64 = v18;
   v65 = v39;
-  v66 = self;
+  selfCopy = self;
   v67 = &v139;
   v61 = v39;
   v62 = v18;
@@ -1313,13 +1313,13 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
   }
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v4 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v5 = [v4 objectAtIndex:a3];
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v5 = [sections objectAtIndex:section];
 
-  v6 = [v5 identifier];
-  v7 = [v6 isEqual:@"header"];
+  identifier = [v5 identifier];
+  v7 = [identifier isEqual:@"header"];
 
   if ((v7 & 1) != 0 || ([v5 identifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqual:", @"transactions"), v8, !v9))
   {
@@ -1335,13 +1335,13 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
   return v11;
 }
 
-- (BOOL)isListLayoutForSection:(unint64_t)a3
+- (BOOL)isListLayoutForSection:(unint64_t)section
 {
-  v4 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v5 = [v4 objectAtIndex:a3];
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v5 = [sections objectAtIndex:section];
 
-  v6 = [v5 identifier];
-  v7 = [v6 isEqual:@"header"];
+  identifier = [v5 identifier];
+  v7 = [identifier isEqual:@"header"];
 
   if (v7)
   {
@@ -1350,8 +1350,8 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
 
   else
   {
-    v9 = [v5 identifier];
-    v8 = [v9 isEqual:@"transactions"];
+    identifier2 = [v5 identifier];
+    v8 = [identifier2 isEqual:@"transactions"];
   }
 
   return v8;
@@ -1359,34 +1359,34 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
 
 - (unint64_t)numberOfSections
 {
-  v2 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v3 = [v2 count];
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v3 = [sections count];
 
   return v3;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  v4 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v5 = [v4 objectAtIndex:a3];
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v5 = [sections objectAtIndex:section];
 
-  v6 = [v5 items];
-  v7 = [v6 count];
+  items = [v5 items];
+  v7 = [items count];
 
   return v7;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   itemsState = self->_itemsState;
-  v4 = a3;
-  v5 = [(PKDashboardItemsState *)itemsState sections];
-  v6 = [v5 objectAtIndex:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(PKDashboardItemsState *)itemsState sections];
+  v6 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v6 items];
-  v8 = [v4 item];
+  items = [v6 items];
+  item = [pathCopy item];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [items objectAtIndex:item];
 
   return v9;
 }
@@ -1398,8 +1398,8 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(PKDashboardItemsState *)self->_itemsState sections];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sections = [(PKDashboardItemsState *)self->_itemsState sections];
+  v3 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1410,23 +1410,23 @@ void __51__PKPagedTransactionListDataSource__loadWithLimit___block_invoke_17(uin
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(sections);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = [v8 isEqual:@"transactions"];
+        identifier = [v7 identifier];
+        v9 = [identifier isEqual:@"transactions"];
 
         if (v9)
         {
-          v11 = [v7 items];
-          v10 = [v11 count];
+          items = [v7 items];
+          v10 = [items count];
 
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;

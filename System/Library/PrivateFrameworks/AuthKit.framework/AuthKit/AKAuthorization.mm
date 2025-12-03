@@ -1,43 +1,43 @@
 @interface AKAuthorization
-- (AKAuthorization)initWithCoder:(id)a3;
+- (AKAuthorization)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAuthorizedRequest:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAuthorizedRequest:(id)request;
 @end
 
 @implementation AKAuthorization
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  v4 = [(AKAuthorization *)v8 authorizedRequest];
+  authorizedRequest = [(AKAuthorization *)selfCopy authorizedRequest];
   [v3 encodeObject:? forKey:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](authorizedRequest);
   v5 = location[0];
-  v6 = [(AKAuthorization *)v8 credential];
+  credential = [(AKAuthorization *)selfCopy credential];
   [v5 encodeObject:? forKey:?];
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](credential);
   objc_storeStrong(location, 0);
 }
 
-- (AKAuthorization)initWithCoder:(id)a3
+- (AKAuthorization)initWithCoder:(id)coder
 {
-  v29 = &v34;
-  v34 = self;
+  v29 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v34;
-  v34 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v32.receiver = v3;
   v32.super_class = AKAuthorization;
   v30 = [(AKAuthorization *)&v32 init];
-  v34 = v30;
-  objc_storeStrong(&v34, v30);
+  selfCopy = v30;
+  objc_storeStrong(&selfCopy, v30);
   if (v30)
   {
     v25 = MEMORY[0x1E695DFD8];
@@ -58,40 +58,40 @@
     v27 = &v31;
     v31 = v4;
     v5 = [location[0] decodeObjectOfClasses:v4 forKey:@"_authorizedRequest"];
-    authorizedRequest = v34->_authorizedRequest;
-    v34->_authorizedRequest = v5;
+    authorizedRequest = selfCopy->_authorizedRequest;
+    selfCopy->_authorizedRequest = v5;
     MEMORY[0x1E69E5920](authorizedRequest);
     v7 = [location[0] decodeObjectOfClasses:v31 forKey:@"_credential"];
-    credential = v34->_credential;
-    v34->_credential = v7;
+    credential = selfCopy->_credential;
+    selfCopy->_credential = v7;
     MEMORY[0x1E69E5920](credential);
     objc_storeStrong(v27, v28);
   }
 
-  v11 = &v34;
-  v13 = MEMORY[0x1E69E5928](v34);
+  v11 = &selfCopy;
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v11, obj);
   return v13;
 }
 
-- (void)setAuthorizedRequest:(id)a3
+- (void)setAuthorizedRequest:(id)request
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [location[0] _sanitizedCopy];
+    _sanitizedCopy = [location[0] _sanitizedCopy];
     v4 = location[0];
-    location[0] = v3;
+    location[0] = _sanitizedCopy;
     MEMORY[0x1E69E5920](v4);
   }
 
-  objc_storeStrong(&v6->_authorizedRequest, location[0]);
+  objc_storeStrong(&selfCopy->_authorizedRequest, location[0]);
   objc_storeStrong(location, 0);
 }
 

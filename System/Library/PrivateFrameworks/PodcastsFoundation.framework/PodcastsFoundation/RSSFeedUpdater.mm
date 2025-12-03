@@ -1,15 +1,15 @@
 @interface RSSFeedUpdater
 - (_TtC18PodcastsFoundation14RSSFeedUpdater)init;
 - (id)sessionCompletionHandler;
-- (void)didDownloadFeedWithError:(id)a3 data:(id)a4 task:(id)a5 requestedUrl:(id)a6 useBackgroundFetch:(BOOL)a7;
-- (void)didRestoreFeedUrlTask:(id)a3;
-- (void)performOnFeedProcessingQueue:(id)a3;
-- (void)setSessionCompletionHandler:(id)a3;
+- (void)didDownloadFeedWithError:(id)error data:(id)data task:(id)task requestedUrl:(id)url useBackgroundFetch:(BOOL)fetch;
+- (void)didRestoreFeedUrlTask:(id)task;
+- (void)performOnFeedProcessingQueue:(id)queue;
+- (void)setSessionCompletionHandler:(id)handler;
 @end
 
 @implementation RSSFeedUpdater
 
-- (void)didRestoreFeedUrlTask:(id)a3
+- (void)didRestoreFeedUrlTask:(id)task
 {
   v4 = sub_1D9176C2C();
   v5 = *(v4 - 8);
@@ -17,26 +17,26 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D9176B9C();
-  v9 = self;
+  selfCopy = self;
   RSSFeedUpdater.didRestoreFeedUrlTask(_:)(v8);
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)didDownloadFeedWithError:(id)a3 data:(id)a4 task:(id)a5 requestedUrl:(id)a6 useBackgroundFetch:(BOOL)a7
+- (void)didDownloadFeedWithError:(id)error data:(id)data task:(id)task requestedUrl:(id)url useBackgroundFetch:(BOOL)fetch
 {
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECAB5910, &qword_1D9188C90);
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x1EEE9AC00](v12 - 8);
   v15 = &v29 - v14;
-  if (!a4)
+  if (!data)
   {
-    v24 = a5;
-    v25 = a6;
-    v26 = self;
-    v27 = a3;
+    taskCopy = task;
+    urlCopy = url;
+    selfCopy = self;
+    errorCopy = error;
     v22 = 0xF000000000000000;
-    if (a6)
+    if (url)
     {
       goto LABEL_3;
     }
@@ -47,15 +47,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  v20 = a3;
-  a4 = sub_1D9176C8C();
+  dataCopy = data;
+  taskCopy2 = task;
+  urlCopy2 = url;
+  selfCopy2 = self;
+  errorCopy2 = error;
+  data = sub_1D9176C8C();
   v22 = v21;
 
-  if (!a6)
+  if (!url)
   {
     goto LABEL_5;
   }
@@ -66,8 +66,8 @@ LABEL_3:
   v23 = sub_1D9176C2C();
   (*(*(v23 - 8) + 56))(v15, 0, 1, v23);
 LABEL_6:
-  _s18PodcastsFoundation14RSSFeedUpdaterC24didDownloadFeedWithError_4data4task12requestedUrl18useBackgroundFetchys0I0_pSg_0B04DataVSgSo16NSURLSessionTaskCSgAK3URLVSgSbtF_0(a3, a4, v22, a5, v15);
-  sub_1D8D75668(a4, v22);
+  _s18PodcastsFoundation14RSSFeedUpdaterC24didDownloadFeedWithError_4data4task12requestedUrl18useBackgroundFetchys0I0_pSg_0B04DataVSgSo16NSURLSessionTaskCSgAK3URLVSgSbtF_0(error, data, v22, task, v15);
+  sub_1D8D75668(data, v22);
 
   sub_1D8D08A50(v15, &unk_1ECAB5910, &qword_1D9188C90);
 }
@@ -79,37 +79,37 @@ LABEL_6:
   return result;
 }
 
-- (void)performOnFeedProcessingQueue:(id)a3
+- (void)performOnFeedProcessingQueue:(id)queue
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(queue);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   RSSFeedUpdater.perform(onFeedProcessingQueue:)(sub_1D8D99DAC, v5);
 }
 
 - (id)sessionCompletionHandler
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC18PodcastsFoundation14RSSFeedUpdater_externalFeedDownloader) sessionCompletionHandler];
-  if (v2)
+  sessionCompletionHandler = [*(&self->super.isa + OBJC_IVAR____TtC18PodcastsFoundation14RSSFeedUpdater_externalFeedDownloader) sessionCompletionHandler];
+  if (sessionCompletionHandler)
   {
     v3 = swift_allocObject();
-    *(v3 + 16) = v2;
+    *(v3 + 16) = sessionCompletionHandler;
     v5[4] = sub_1D8D99DAC;
     v5[5] = v3;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 1107296256;
     v5[2] = sub_1D8CF5F60;
     v5[3] = &block_descriptor_56;
-    v2 = _Block_copy(v5);
+    sessionCompletionHandler = _Block_copy(v5);
   }
 
-  return v2;
+  return sessionCompletionHandler;
 }
 
-- (void)setSessionCompletionHandler:(id)a3
+- (void)setSessionCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -124,7 +124,7 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D8F59D38(v7, v6);
   sub_1D8D15664(v7);
 }

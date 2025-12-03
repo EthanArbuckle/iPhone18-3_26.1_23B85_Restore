@@ -1,15 +1,15 @@
 @interface STStorageContainerDetailController
-- (id)dataSize:(id)a3;
+- (id)dataSize:(id)size;
 - (id)specifiers;
 @end
 
 @implementation STStorageContainerDetailController
 
-- (id)dataSize:(id)a3
+- (id)dataSize:(id)size
 {
   v3 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:STStorageAppKey];
-  v4 = [v3 appSize];
-  [v4 userTotal];
+  appSize = [v3 appSize];
+  [appSize userTotal];
 
   v5 = STFormattedSize();
 

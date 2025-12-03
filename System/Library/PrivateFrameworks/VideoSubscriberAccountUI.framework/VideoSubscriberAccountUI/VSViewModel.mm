@@ -1,6 +1,6 @@
 @interface VSViewModel
 - (VSViewModel)init;
-- (void)configureWithRequest:(id)a3;
+- (void)configureWithRequest:(id)request;
 @end
 
 @implementation VSViewModel
@@ -12,17 +12,17 @@
   v2 = [(VSViewModel *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v2->_userInterfaceStyle = [v3 userInterfaceStyle];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    v2->_userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
   }
 
   return v2;
 }
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
-  v4 = [a3 accountProviderAuthenticationToken];
-  [(VSViewModel *)self setAuthenticationShare:v4 != 0];
+  accountProviderAuthenticationToken = [request accountProviderAuthenticationToken];
+  [(VSViewModel *)self setAuthenticationShare:accountProviderAuthenticationToken != 0];
 }
 
 @end

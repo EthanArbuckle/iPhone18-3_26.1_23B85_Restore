@@ -1,76 +1,76 @@
 @interface STYScenarioReport
-+ (id)reportFromSignpostEvent:(id)a3 error:(id *)a4;
-+ (id)reportFromSignpostInterval:(id)a3 error:(id *)a4;
-- (STYScenarioReport)initWithScenario:(id)a3;
-- (STYScenarioReport)initWithSignpostEvent:(id)a3 scenario:(id)a4 error:(id *)a5;
-- (STYScenarioReport)initWithSignpostInterval:(id)a3 scenario:(id)a4 error:(id *)a5;
-- (id)convertDictionaryToString:(id)a3;
++ (id)reportFromSignpostEvent:(id)event error:(id *)error;
++ (id)reportFromSignpostInterval:(id)interval error:(id *)error;
+- (STYScenarioReport)initWithScenario:(id)scenario;
+- (STYScenarioReport)initWithSignpostEvent:(id)event scenario:(id)scenario error:(id *)error;
+- (STYScenarioReport)initWithSignpostInterval:(id)interval scenario:(id)scenario error:(id *)error;
+- (id)convertDictionaryToString:(id)string;
 @end
 
 @implementation STYScenarioReport
 
-- (STYScenarioReport)initWithScenario:(id)a3
+- (STYScenarioReport)initWithScenario:(id)scenario
 {
-  v5 = a3;
+  scenarioCopy = scenario;
   v10.receiver = self;
   v10.super_class = STYScenarioReport;
   v6 = [(STYScenarioReport *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scenario, a3);
+    objc_storeStrong(&v6->_scenario, scenario);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (STYScenarioReport)initWithSignpostInterval:(id)a3 scenario:(id)a4 error:(id *)a5
+- (STYScenarioReport)initWithSignpostInterval:(id)interval scenario:(id)scenario error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  intervalCopy = interval;
+  scenarioCopy = scenario;
   v42.receiver = self;
   v42.super_class = STYScenarioReport;
   v10 = [(STYScenarioReport *)&v42 init];
   if (v10)
   {
-    v11 = machCtsTimeToMs([v8 durationMachContinuousTime]);
-    objc_storeStrong(v10 + 6, a4);
+    v11 = machCtsTimeToMs([intervalCopy durationMachContinuousTime]);
+    objc_storeStrong(v10 + 6, scenario);
     *(v10 + 2) = v11;
-    *(v10 + 3) = [v8 startMachContinuousTime];
-    *(v10 + 4) = [v8 endMachContinuousTime];
+    *(v10 + 3) = [intervalCopy startMachContinuousTime];
+    *(v10 + 4) = [intervalCopy endMachContinuousTime];
     mach_get_times();
     *(v10 + 24) = vaddq_s64(vdupq_n_s64(0), *(v10 + 24));
     v12 = +[STYUserScenarioCache sharedCache];
-    [v12 latencyGoalsForSignpostInterval:v8];
+    [v12 latencyGoalsForSignpostInterval:intervalCopy];
     *(v10 + 3) = v13;
     v14 = (v10 + 12);
 
     v15 = +[STYUserScenarioCache sharedCache];
-    v16 = [v15 issueCategoryForSignpostInterval:v8];
+    v16 = [v15 issueCategoryForSignpostInterval:intervalCopy];
     v17 = *(v10 + 5);
     *(v10 + 5) = v16;
 
     if (!+[STYDeviceInfo isMemoryConstrained])
     {
-      v18 = [v8 subsystem];
-      if ([v18 isEqualToString:@"com.apple.SpringBoard"])
+      subsystem = [intervalCopy subsystem];
+      if ([subsystem isEqualToString:@"com.apple.SpringBoard"])
       {
       }
 
       else
       {
-        v19 = [v8 subsystem];
-        v20 = [v19 isEqualToString:@"com.apple.app_launch_measurement"];
+        subsystem2 = [intervalCopy subsystem];
+        v20 = [subsystem2 isEqualToString:@"com.apple.app_launch_measurement"];
 
         if ((v20 & 1) == 0)
         {
           v21 = +[STYFrameworkHelper sharedHelper];
-          v22 = [v21 logHandle];
+          logHandle = [v21 logHandle];
 
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            [STYScenarioReport initWithSignpostInterval:v22 scenario:? error:?];
+            [STYScenarioReport initWithSignpostInterval:logHandle scenario:? error:?];
           }
 
           v23 = *v14 / 1.6;
@@ -80,24 +80,24 @@
     }
 
     v24 = [STYFrameworkHelper sharedHelper:0];
-    v25 = [v24 logHandle];
+    logHandle2 = [v24 logHandle];
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
-      [STYScenarioReport initWithSignpostInterval:v9 scenario:v25 error:?];
+      [STYScenarioReport initWithSignpostInterval:scenarioCopy scenario:logHandle2 error:?];
     }
 
     v26 = +[STYFrameworkHelper sharedHelper];
-    v27 = [v26 logHandle];
+    logHandle3 = [v26 logHandle];
 
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
     {
-      [STYScenarioReport initWithSignpostInterval:v9 scenario:v10 + 3 error:v27];
+      [STYScenarioReport initWithSignpostInterval:scenarioCopy scenario:v10 + 3 error:logHandle3];
     }
 
-    if ([v9 kpi] == -1001)
+    if ([scenarioCopy kpi] == -1001)
     {
-      v28 = v8;
+      v28 = intervalCopy;
       [v28 frameRate];
       *(v10 + 4) = v29;
       v30 = +[STYUserScenarioCache sharedCache];
@@ -114,8 +114,8 @@
       *(v10 + 2) = _D0;
     }
 
-    objc_storeStrong(v10 + 8, a3);
-    v38 = symptomsSignatureForInterval(v8);
+    objc_storeStrong(v10 + 8, interval);
+    v38 = symptomsSignatureForInterval(intervalCopy);
     v39 = *(v10 + 9);
     *(v10 + 9) = v38;
 
@@ -125,23 +125,23 @@
   return v10;
 }
 
-- (STYScenarioReport)initWithSignpostEvent:(id)a3 scenario:(id)a4 error:(id *)a5
+- (STYScenarioReport)initWithSignpostEvent:(id)event scenario:(id)scenario error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  scenarioCopy = scenario;
   v20.receiver = self;
   v20.super_class = STYScenarioReport;
   v9 = [(STYScenarioReport *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scenario, a4);
+    objc_storeStrong(&v9->_scenario, scenario);
     v10->_scenarioStartTime = 0;
     v10->_scenarioEndTime = mach_absolute_time();
     __asm { FMOV            V0.2S, #-1.0 }
 
     *&v10->_observedFps = _D0;
-    v16 = symptomsSignatureForEvent(v7);
+    v16 = symptomsSignatureForEvent(eventCopy);
     symptomsSignature = v10->_symptomsSignature;
     v10->_symptomsSignature = v16;
 
@@ -151,22 +151,22 @@
   return v10;
 }
 
-- (id)convertDictionaryToString:(id)a3
+- (id)convertDictionaryToString:(id)string
 {
   v6 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:&v6];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:string options:0 error:&v6];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
 
   return v4;
 }
 
-+ (id)reportFromSignpostEvent:(id)a3 error:(id *)a4
++ (id)reportFromSignpostEvent:(id)event error:(id *)error
 {
-  v5 = a3;
-  v6 = [STYUserScenario scenarioFromSignpostEvent:v5 error:a4];
+  eventCopy = event;
+  v6 = [STYUserScenario scenarioFromSignpostEvent:eventCopy error:error];
   if (v6)
   {
-    v7 = [[STYScenarioReport alloc] initWithSignpostEvent:v5 scenario:v6 error:a4];
+    v7 = [[STYScenarioReport alloc] initWithSignpostEvent:eventCopy scenario:v6 error:error];
   }
 
   else
@@ -177,13 +177,13 @@
   return v7;
 }
 
-+ (id)reportFromSignpostInterval:(id)a3 error:(id *)a4
++ (id)reportFromSignpostInterval:(id)interval error:(id *)error
 {
-  v5 = a3;
-  v6 = [STYUserScenario scenarioFromSignpostInterval:v5 error:a4];
+  intervalCopy = interval;
+  v6 = [STYUserScenario scenarioFromSignpostInterval:intervalCopy error:error];
   if (v6)
   {
-    v7 = [[STYScenarioReport alloc] initWithSignpostInterval:v5 scenario:v6 error:a4];
+    v7 = [[STYScenarioReport alloc] initWithSignpostInterval:intervalCopy scenario:v6 error:error];
   }
 
   else

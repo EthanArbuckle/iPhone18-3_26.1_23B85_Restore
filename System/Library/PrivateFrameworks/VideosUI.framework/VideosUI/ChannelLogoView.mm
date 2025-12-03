@@ -1,13 +1,13 @@
 @interface ChannelLogoView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation ChannelLogoView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
-  v6 = sub_1E38F0F2C(a4);
+  selfCopy = self;
+  v6 = sub_1E38F0F2C(only);
   v8 = v7;
 
   v9 = v6;

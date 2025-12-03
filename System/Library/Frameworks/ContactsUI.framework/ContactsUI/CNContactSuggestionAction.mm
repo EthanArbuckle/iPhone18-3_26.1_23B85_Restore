@@ -1,36 +1,36 @@
 @interface CNContactSuggestionAction
-- (BOOL)_confirmOrReject:(BOOL)a3;
-- (void)performActionWithSender:(id)a3;
+- (BOOL)_confirmOrReject:(BOOL)reject;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactSuggestionAction
 
-- (BOOL)_confirmOrReject:(BOOL)a3
+- (BOOL)_confirmOrReject:(BOOL)reject
 {
-  v3 = a3;
-  v5 = [(CNContactAction *)self delegate];
-  v6 = [v5 contactViewCache];
-  v7 = [v6 contactStore];
+  rejectCopy = reject;
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v8 = objc_alloc_init(MEMORY[0x1E695CFA8]);
   [v8 setSuppressChangeNotifications:1];
-  v9 = [(CNContactAction *)self contact];
-  if (v3)
+  contact = [(CNContactAction *)self contact];
+  if (rejectCopy)
   {
-    [v8 confirmSuggestion:v9];
+    [v8 confirmSuggestion:contact];
   }
 
   else
   {
-    [v8 rejectSuggestion:v9];
+    [v8 rejectSuggestion:contact];
   }
 
   v18 = 0;
-  [v7 executeSaveRequest:v8 error:&v18];
+  [contactStore executeSaveRequest:v8 error:&v18];
   v10 = v18;
   if (v10)
   {
-    if (v3)
+    if (rejectCopy)
     {
       v11 = @"confirm";
     }
@@ -40,16 +40,16 @@
       v11 = @"reject";
     }
 
-    v17 = [(CNContactAction *)self contact];
+    contact2 = [(CNContactAction *)self contact];
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactSuggestionAction.m", 60, 3, @"Could not %@ suggestion for contact %@, error: %@", v12, v13, v14, v15, v11);
   }
 
   return v10 == 0;
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"SUGGESTION_IGNORE" value:&stru_1F0CE7398 table:@"Localized"];
 
@@ -77,8 +77,8 @@
   v14 = [v11 actionWithTitle:v13 style:1 handler:v16];
   [v7 addAction:v14];
 
-  v15 = [(CNContactAction *)self delegate];
-  [v15 action:self presentViewController:v7 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v7 sender:senderCopy];
 }
 
 void __53__CNContactSuggestionAction_performActionWithSender___block_invoke(uint64_t a1)

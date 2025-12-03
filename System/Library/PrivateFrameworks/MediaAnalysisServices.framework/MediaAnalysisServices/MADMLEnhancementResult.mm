@@ -1,39 +1,39 @@
 @interface MADMLEnhancementResult
 - (CGImage)image;
-- (MADMLEnhancementResult)initWithCoder:(id)a3;
-- (MADMLEnhancementResult)initWithSurface:(id)a3;
+- (MADMLEnhancementResult)initWithCoder:(id)coder;
+- (MADMLEnhancementResult)initWithSurface:(id)surface;
 - (__CVBuffer)pixelBuffer;
 - (id).cxx_construct;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADMLEnhancementResult
 
-- (MADMLEnhancementResult)initWithSurface:(id)a3
+- (MADMLEnhancementResult)initWithSurface:(id)surface
 {
-  v5 = a3;
+  surfaceCopy = surface;
   v9.receiver = self;
   v9.super_class = MADMLEnhancementResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_surface, a3);
+    objc_storeStrong(&v6->_surface, surface);
   }
 
   return v7;
 }
 
-- (MADMLEnhancementResult)initWithCoder:(id)a3
+- (MADMLEnhancementResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MADMLEnhancementResult;
-  v5 = [(MADResult *)&v9 initWithCoder:v4];
+  v5 = [(MADResult *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
     surface = v5->_surface;
     v5->_surface = v6;
   }
@@ -41,25 +41,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADMLEnhancementResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_surface forKey:@"Surface"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_surface forKey:@"Surface"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"surface: %@>", self->_surface];
+  [string appendFormat:@"surface: %@>", self->_surface];
 
-  return v3;
+  return string;
 }
 
 - (__CVBuffer)pixelBuffer
@@ -103,8 +103,8 @@
 
     else if ([(IOSurface *)self->_surface pixelFormat]== 1278226534 || [(IOSurface *)self->_surface pixelFormat]== 1278226488)
     {
-      v4 = [(IOSurface *)self->_surface pixelFormat];
-      if (v4 == 1278226488)
+      pixelFormat = [(IOSurface *)self->_surface pixelFormat];
+      if (pixelFormat == 1278226488)
       {
         v5 = 0;
       }
@@ -114,7 +114,7 @@
         v5 = 8448;
       }
 
-      if (v4 == 1278226488)
+      if (pixelFormat == 1278226488)
       {
         v6 = 8;
       }
@@ -131,10 +131,10 @@
       {
         CFRetain(surface);
         space = CGColorSpaceCreateDeviceGray();
-        v8 = [(IOSurface *)self->_surface width];
-        v9 = [(IOSurface *)self->_surface height];
-        v10 = [(IOSurface *)self->_surface bytesPerRow];
-        v27 = CGImageCreate(v8, v9, v6, v6, v10, space, v5, v30, 0, 1, kCGRenderingIntentDefault);
+        width = [(IOSurface *)self->_surface width];
+        height = [(IOSurface *)self->_surface height];
+        bytesPerRow = [(IOSurface *)self->_surface bytesPerRow];
+        v27 = CGImageCreate(width, height, v6, v6, bytesPerRow, space, v5, v30, 0, 1, kCGRenderingIntentDefault);
         CF<CGImage *>::operator=(&self->_image.value_, &v27);
         CF<CGColorSpace *>::~CF(&v27);
         CF<CGColorSpace *>::~CF(&space);

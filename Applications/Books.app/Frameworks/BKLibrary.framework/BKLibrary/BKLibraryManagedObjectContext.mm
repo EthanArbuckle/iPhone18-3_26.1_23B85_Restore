@@ -12,8 +12,8 @@
     [(BKLibraryManagedObjectContext *)self setSaveContext:2];
   }
 
-  v3 = [(BKLibraryManagedObjectContext *)self libraryManager];
-  [v3 saveManagedObjectContext:self];
+  libraryManager = [(BKLibraryManagedObjectContext *)self libraryManager];
+  [libraryManager saveManagedObjectContext:self];
 }
 
 - (BKLibraryManager)libraryManager

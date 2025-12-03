@@ -1,20 +1,20 @@
 @interface WFWorkflowCreationOptions
-- (WFWorkflowCreationOptions)initWithRecord:(id)a3;
+- (WFWorkflowCreationOptions)initWithRecord:(id)record;
 @end
 
 @implementation WFWorkflowCreationOptions
 
-- (WFWorkflowCreationOptions)initWithRecord:(id)a3
+- (WFWorkflowCreationOptions)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v10.receiver = self;
   v10.super_class = WFWorkflowCreationOptions;
   v5 = [(WFWorkflowCreationOptions *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (recordCopy)
     {
-      v6 = v4;
+      v6 = recordCopy;
     }
 
     else

@@ -1,10 +1,10 @@
 @interface LPSubtitleButtonView
-- (CGSize)_layoutButtonForSize:(CGSize)a3 applyingLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPSubtitleButtonView)initWithHost:(id)a3 buttonProperties:(id)a4 style:(id)a5;
+- (CGSize)_layoutButtonForSize:(CGSize)size applyingLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPSubtitleButtonView)initWithHost:(id)host buttonProperties:(id)properties style:(id)style;
 - (void)_buildSubviewsIfNeeded;
 - (void)_updateAttributedTitle;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)layoutComponentView;
 - (void)sizeToFit;
 - (void)updateIndicator;
@@ -12,18 +12,18 @@
 
 @implementation LPSubtitleButtonView
 
-- (LPSubtitleButtonView)initWithHost:(id)a3 buttonProperties:(id)a4 style:(id)a5
+- (LPSubtitleButtonView)initWithHost:(id)host buttonProperties:(id)properties style:(id)style
 {
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  styleCopy = style;
   v15.receiver = self;
   v15.super_class = LPSubtitleButtonView;
-  v11 = [(LPComponentView *)&v15 initWithHost:a3];
+  v11 = [(LPComponentView *)&v15 initWithHost:host];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_buttonProperties, a4);
-    objc_storeStrong(&v12->_style, a5);
+    objc_storeStrong(&v11->_buttonProperties, properties);
+    objc_storeStrong(&v12->_style, style);
     v13 = v12;
   }
 
@@ -33,35 +33,35 @@
 - (void)_updateAttributedTitle
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties attributedText];
+  attributedText = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties attributedText];
 
-  if (v3)
+  if (attributedText)
   {
     button = self->_button;
-    v29 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties attributedText];
-    [(UIButton *)button setAttributedTitle:v29 forState:0];
+    attributedText2 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties attributedText];
+    [(UIButton *)button setAttributedTitle:attributedText2 forState:0];
   }
 
   else
   {
     v5 = objc_alloc(MEMORY[0x1E696AD40]);
-    v6 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties text];
-    v7 = [v5 initWithString:v6];
+    text = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties text];
+    v7 = [v5 initWithString:text];
 
     if (![(LPCaptionButtonPresentationProperties *)self->_buttonProperties type]|| [(LPCaptionButtonPresentationProperties *)self->_buttonProperties type]== 2)
     {
-      v8 = [(LPTextViewStyle *)self->_style font];
-      v30 = [(LPComponentView *)self host];
-      v9 = [v30 showingDisclosureViewForComponentView:self];
+      font = [(LPTextViewStyle *)self->_style font];
+      host = [(LPComponentView *)self host];
+      v9 = [host showingDisclosureViewForComponentView:self];
       v10 = v7;
-      v11 = v8;
-      v28 = [v11 fontDescriptor];
-      v27 = [v28 objectForKey:*MEMORY[0x1E69DB8F0]];
-      v12 = [v27 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
-      v26 = v12;
-      if (v12)
+      v11 = font;
+      fontDescriptor = [v11 fontDescriptor];
+      v27 = [fontDescriptor objectForKey:*MEMORY[0x1E69DB8F0]];
+      doubleValue = [v27 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
+      v26 = doubleValue;
+      if (doubleValue)
       {
-        v12 = [v12 doubleValue];
+        doubleValue = [doubleValue doubleValue];
       }
 
       else
@@ -69,22 +69,22 @@
         v13.n128_u64[0] = *MEMORY[0x1E69DB978];
       }
 
-      v14 = MEMORY[0x1B270A7C0](v12, v13);
+      v14 = MEMORY[0x1B270A7C0](doubleValue, v13);
       v15 = MEMORY[0x1E69DCAD8];
       [v11 pointSize];
       v16 = [v15 configurationWithPointSize:v14 weight:1 scale:?];
       if (v9)
       {
-        v17 = [MEMORY[0x1E69DCAB8] _lp_systemImageNamed:@"chevron.down"];
+        platformImage = [MEMORY[0x1E69DCAB8] _lp_systemImageNamed:@"chevron.down"];
       }
 
       else
       {
         v18 = +[LPResources chevron];
-        v17 = [v18 platformImage];
+        platformImage = [v18 platformImage];
       }
 
-      v19 = [v17 _lp_imageByApplyingSymbolConfiguration:v16];
+      v19 = [platformImage _lp_imageByApplyingSymbolConfiguration:v16];
 
       v20 = [v19 imageWithRenderingMode:2];
 
@@ -98,8 +98,8 @@
     }
 
     v31 = *MEMORY[0x1E69DB648];
-    v24 = [(LPTextViewStyle *)self->_style font];
-    v32[0] = v24;
+    font2 = [(LPTextViewStyle *)self->_style font];
+    v32[0] = font2;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     [v7 addAttributes:v25 range:{0, objc_msgSend(v7, "length")}];
 
@@ -115,19 +115,19 @@
     button = self->_button;
     self->_button = v3;
 
-    v5 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties foregroundColor];
+    foregroundColor = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties foregroundColor];
 
-    if (v5)
+    if (foregroundColor)
     {
       v6 = self->_button;
-      v7 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties foregroundColor];
-      [(UIButton *)v6 setTitleColor:v7 forState:0];
+      foregroundColor2 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties foregroundColor];
+      [(UIButton *)v6 setTitleColor:foregroundColor2 forState:0];
     }
 
     [(UIButton *)self->_button _setDisableAutomaticTitleAnimations:1];
     [(LPSubtitleButtonView *)self _updateAttributedTitle];
-    v8 = [(UIButton *)self->_button titleLabel];
-    [v8 setBaselineAdjustment:2];
+    titleLabel = [(UIButton *)self->_button titleLabel];
+    [titleLabel setBaselineAdjustment:2];
 
     [(UIButton *)self->_button addTarget:self action:sel_buttonPressed_ forControlEvents:64];
     v9 = self->_button;
@@ -144,10 +144,10 @@
   [(LPSubtitleButtonView *)self _layoutButtonForSize:1 applyingLayout:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(LPSubtitleButtonView *)self _buildSubviewsIfNeeded];
 
   [(LPSubtitleButtonView *)self _layoutButtonForSize:0 applyingLayout:width, height];
@@ -156,13 +156,13 @@
   return result;
 }
 
-- (CGSize)_layoutButtonForSize:(CGSize)a3 applyingLayout:(BOOL)a4
+- (CGSize)_layoutButtonForSize:(CGSize)size applyingLayout:(BOOL)layout
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  if (layout)
   {
-    [(UIButton *)self->_button setFrame:0.0, 0.0, a3.width, a3.height];
+    [(UIButton *)self->_button setFrame:0.0, 0.0, size.width, size.height];
   }
 
   button = self->_button;
@@ -180,25 +180,25 @@
   [(LPSubtitleButtonView *)self setFrame:0.0, 0.0, v3, v4];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v5 = [(LPComponentView *)self host];
-  [v5 componentViewDidTapCaptionButton:self buttonType:{-[LPCaptionButtonPresentationProperties type](self->_buttonProperties, "type")}];
+  host = [(LPComponentView *)self host];
+  [host componentViewDidTapCaptionButton:self buttonType:{-[LPCaptionButtonPresentationProperties type](self->_buttonProperties, "type")}];
 
-  v4 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties callback];
+  callback = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties callback];
 
-  if (v4)
+  if (callback)
   {
-    v6 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties callback];
-    v6[2]();
+    callback2 = [(LPCaptionButtonPresentationProperties *)self->_buttonProperties callback];
+    callback2[2]();
   }
 }
 
 - (void)updateIndicator
 {
   [(LPSubtitleButtonView *)self _updateAttributedTitle];
-  v3 = [(LPComponentView *)self host];
-  [v3 componentViewDidChangeIntrinsicContentSize:self];
+  host = [(LPComponentView *)self host];
+  [host componentViewDidChangeIntrinsicContentSize:self];
 }
 
 @end

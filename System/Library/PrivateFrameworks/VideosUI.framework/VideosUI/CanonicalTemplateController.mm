@@ -1,52 +1,52 @@
 @interface CanonicalTemplateController
-- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)a3 in:(id)a4 at:(id)a5;
-- (void)vuiScrollViewDidEndDecelerating:(id)a3;
-- (void)vuiScrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)vuiScrollViewDidScroll:(id)a3;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)category in:(id)in at:(id)at;
+- (void)vuiScrollViewDidEndDecelerating:(id)decelerating;
+- (void)vuiScrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)vuiScrollViewDidScroll:(id)scroll;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CanonicalTemplateController
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3FED6AC(a3);
+  sub_1E3FED6AC(appear);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3FED794(a3);
+  sub_1E3FED794(disappear);
 }
 
-- (void)vuiScrollViewDidScroll:(id)a3
+- (void)vuiScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3FEE68C();
 }
 
-- (void)vuiScrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)vuiScrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E3FEEDB4(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1E3FEEDB4(draggingCopy, decelerate);
 }
 
-- (void)vuiScrollViewDidEndDecelerating:(id)a3
+- (void)vuiScrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E3FEEFA8(v4);
+  sub_1E3FEEFA8(deceleratingCopy);
 }
 
-- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)a3 in:(id)a4 at:(id)a5
+- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)category in:(id)in at:(id)at
 {
   v8 = sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -55,12 +55,12 @@
   OUTLINED_FUNCTION_5();
   v14 = v13 - v12;
   sub_1E41FE804();
-  v15 = a4;
-  v16 = self;
-  LOBYTE(a3) = sub_1E3FEF39C(a3, v15);
+  inCopy = in;
+  selfCopy = self;
+  LOBYTE(category) = sub_1E3FEF39C(category, inCopy);
 
   (*(v10 + 8))(v14, v8);
-  return a3 & 1;
+  return category & 1;
 }
 
 @end

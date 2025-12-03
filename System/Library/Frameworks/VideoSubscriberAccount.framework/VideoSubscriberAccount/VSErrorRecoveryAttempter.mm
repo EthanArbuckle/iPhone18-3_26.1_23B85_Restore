@@ -1,7 +1,7 @@
 @interface VSErrorRecoveryAttempter
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
 - (VSErrorRecoveryAttempter)init;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info;
 @end
 
 @implementation VSErrorRecoveryAttempter
@@ -17,32 +17,32 @@
     options = v2->_options;
     v2->_options = MEMORY[0x277CBEBF8];
 
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     recoveryAttemptingQueue = v3->_recoveryAttemptingQueue;
-    v3->_recoveryAttemptingQueue = v5;
+    v3->_recoveryAttemptingQueue = mainQueue;
   }
 
   return v3;
 }
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 delegate:(id)a5 didRecoverSelector:(SEL)a6 contextInfo:(void *)a7
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index delegate:(id)delegate didRecoverSelector:(SEL)selector contextInfo:(void *)info
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [(VSErrorRecoveryAttempter *)self recoveryAttemptingQueue];
+  errorCopy = error;
+  delegateCopy = delegate;
+  recoveryAttemptingQueue = [(VSErrorRecoveryAttempter *)self recoveryAttemptingQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __105__VSErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo___block_invoke;
   v17[3] = &unk_278B74E60;
   v17[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v15 = v13;
-  v16 = v12;
-  [v14 addOperationWithBlock:v17];
+  v18 = errorCopy;
+  v19 = delegateCopy;
+  indexCopy = index;
+  selectorCopy = selector;
+  infoCopy = info;
+  v15 = delegateCopy;
+  v16 = errorCopy;
+  [recoveryAttemptingQueue addOperationWithBlock:v17];
 }
 
 id __105__VSErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate_didRecoverSelector_contextInfo___block_invoke(uint64_t a1)
@@ -63,17 +63,17 @@ id __105__VSErrorRecoveryAttempter_attemptRecoveryFromError_optionIndex_delegate
   return result;
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(VSErrorRecoveryAttempter *)self options];
-  v8 = [v7 objectAtIndex:a4];
+  errorCopy = error;
+  options = [(VSErrorRecoveryAttempter *)self options];
+  v8 = [options objectAtIndex:index];
 
-  v9 = [v8 attemptHandler];
-  v10 = v9;
-  if (v9)
+  attemptHandler = [v8 attemptHandler];
+  v10 = attemptHandler;
+  if (attemptHandler)
   {
-    v11 = (*(v9 + 16))(v9, v6);
+    v11 = (*(attemptHandler + 16))(attemptHandler, errorCopy);
   }
 
   else

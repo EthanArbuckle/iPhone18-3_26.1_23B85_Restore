@@ -9,11 +9,11 @@
 {
   v17[6] = *MEMORY[0x1E69E9840];
   v16[0] = @"sessionID";
-  v3 = [(SFShareSheetCompletedEvent *)self sessionID];
-  v4 = v3;
-  if (v3)
+  sessionID = [(SFShareSheetCompletedEvent *)self sessionID];
+  v4 = sessionID;
+  if (sessionID)
   {
-    v5 = v3;
+    v5 = sessionID;
   }
 
   else
@@ -32,11 +32,11 @@
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[SFShareSheetCompletedEvent success](self, "success")}];
   v17[3] = v8;
   v16[4] = @"activityType";
-  v9 = [(SFShareSheetCompletedEvent *)self activityType];
-  v10 = v9;
-  if (v9)
+  activityType = [(SFShareSheetCompletedEvent *)self activityType];
+  v10 = activityType;
+  if (activityType)
   {
-    v11 = v9;
+    v11 = activityType;
   }
 
   else
@@ -58,8 +58,8 @@
 - (void)submitEvent
 {
   v4 = +[SFShareSheetCompletedEvent eventName];
-  v3 = [(SFShareSheetCompletedEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFShareSheetCompletedEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

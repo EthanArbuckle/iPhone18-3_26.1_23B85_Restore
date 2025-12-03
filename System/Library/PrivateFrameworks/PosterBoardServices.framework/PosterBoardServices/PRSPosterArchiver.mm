@@ -1,20 +1,20 @@
 @interface PRSPosterArchiver
-+ (id)archiveConfiguration:(id)a3 format:(int64_t)a4 error:(id *)a5;
-+ (id)unarchiveConfigurationAtURL:(id)a3 format:(int64_t)a4 error:(id *)a5;
-+ (id)unarchiveConfigurationFromData:(id)a3 format:(int64_t)a4 error:(id *)a5;
-+ (int64_t)formatForDataAtURL:(id)a3;
++ (id)archiveConfiguration:(id)configuration format:(int64_t)format error:(id *)error;
++ (id)unarchiveConfigurationAtURL:(id)l format:(int64_t)format error:(id *)error;
++ (id)unarchiveConfigurationFromData:(id)data format:(int64_t)format error:(id *)error;
++ (int64_t)formatForDataAtURL:(id)l;
 - (PRSPosterArchiver)init;
-- (PRSPosterArchiver)initWithFileManager:(id)a3 processHandle:(id)a4 unarchivingContainerURL:(id)a5;
-- (id)archiveConfiguration:(id)a3 format:(int64_t)a4 error:(id *)a5;
-- (id)unarchiveConfigurationAtURL:(id)a3 format:(int64_t)a4 error:(id *)a5;
-- (id)unarchiveConfigurationFromData:(id)a3 format:(int64_t)a4 error:(id *)a5;
+- (PRSPosterArchiver)initWithFileManager:(id)manager processHandle:(id)handle unarchivingContainerURL:(id)l;
+- (id)archiveConfiguration:(id)configuration format:(int64_t)format error:(id *)error;
+- (id)unarchiveConfigurationAtURL:(id)l format:(int64_t)format error:(id *)error;
+- (id)unarchiveConfigurationFromData:(id)data format:(int64_t)format error:(id *)error;
 @end
 
 @implementation PRSPosterArchiver
 
-+ (int64_t)formatForDataAtURL:(id)a3
++ (int64_t)formatForDataAtURL:(id)l
 {
-  v3 = [MEMORY[0x1E69C5150] formatForDataAtURL:a3];
+  v3 = [MEMORY[0x1E69C5150] formatForDataAtURL:l];
   if (v3)
   {
     v4 = -1;
@@ -36,52 +36,52 @@
   }
 }
 
-+ (id)archiveConfiguration:(id)a3 format:(int64_t)a4 error:(id *)a5
++ (id)archiveConfiguration:(id)configuration format:(int64_t)format error:(id *)error
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(PRSPosterArchiver);
-  v9 = [(PRSPosterArchiver *)v8 archiveConfiguration:v7 format:a4 error:a5];
+  v9 = [(PRSPosterArchiver *)v8 archiveConfiguration:configurationCopy format:format error:error];
 
   return v9;
 }
 
-+ (id)unarchiveConfigurationAtURL:(id)a3 format:(int64_t)a4 error:(id *)a5
++ (id)unarchiveConfigurationAtURL:(id)l format:(int64_t)format error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v8 = objc_alloc_init(PRSPosterArchiver);
-  v9 = [(PRSPosterArchiver *)v8 unarchiveConfigurationAtURL:v7 format:a4 error:a5];
+  v9 = [(PRSPosterArchiver *)v8 unarchiveConfigurationAtURL:lCopy format:format error:error];
 
   return v9;
 }
 
-+ (id)unarchiveConfigurationFromData:(id)a3 format:(int64_t)a4 error:(id *)a5
++ (id)unarchiveConfigurationFromData:(id)data format:(int64_t)format error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = objc_alloc_init(PRSPosterArchiver);
-  v9 = [(PRSPosterArchiver *)v8 unarchiveConfigurationFromData:v7 format:a4 error:a5];
+  v9 = [(PRSPosterArchiver *)v8 unarchiveConfigurationFromData:dataCopy format:format error:error];
 
   return v9;
 }
 
 - (PRSPosterArchiver)init
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PRSPosterArchiver *)self initWithFileManager:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [(PRSPosterArchiver *)self initWithFileManager:defaultManager];
 
   return v4;
 }
 
-- (PRSPosterArchiver)initWithFileManager:(id)a3 processHandle:(id)a4 unarchivingContainerURL:(id)a5
+- (PRSPosterArchiver)initWithFileManager:(id)manager processHandle:(id)handle unarchivingContainerURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  handleCopy = handle;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = PRSPosterArchiver;
   v11 = [(PRSPosterArchiver *)&v15 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x1E69C5150]) initWithFileManager:v8 processHandle:v9 unarchivingContainerURL:v10];
+    v12 = [objc_alloc(MEMORY[0x1E69C5150]) initWithFileManager:managerCopy processHandle:handleCopy unarchivingContainerURL:lCopy];
     underlyingArchiver = v11->_underlyingArchiver;
     v11->_underlyingArchiver = v12;
   }
@@ -89,10 +89,10 @@
   return v11;
 }
 
-- (id)archiveConfiguration:(id)a3 format:(int64_t)a4 error:(id *)a5
+- (id)archiveConfiguration:(id)configuration format:(int64_t)format error:(id *)error
 {
-  v8 = [a3 _path];
-  if (a4)
+  _path = [configuration _path];
+  if (format)
   {
     v9 = -1;
   }
@@ -102,7 +102,7 @@
     v9 = 0;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
     v10 = 1;
   }
@@ -112,16 +112,16 @@
     v10 = v9;
   }
 
-  v11 = [(PFPosterArchiver *)self->_underlyingArchiver archivePath:v8 format:v10 error:a5];
+  v11 = [(PFPosterArchiver *)self->_underlyingArchiver archivePath:_path format:v10 error:error];
 
   return v11;
 }
 
-- (id)unarchiveConfigurationAtURL:(id)a3 format:(int64_t)a4 error:(id *)a5
+- (id)unarchiveConfigurationAtURL:(id)l format:(int64_t)format error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   underlyingArchiver = self->_underlyingArchiver;
-  if (a4)
+  if (format)
   {
     v10 = -1;
   }
@@ -131,7 +131,7 @@
     v10 = 0;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
     v11 = 1;
   }
@@ -142,7 +142,7 @@
   }
 
   v21 = 0;
-  v12 = [(PFPosterArchiver *)underlyingArchiver unarchivePathAtURL:v8 format:v11 error:&v21];
+  v12 = [(PFPosterArchiver *)underlyingArchiver unarchivePathAtURL:lCopy format:v11 error:&v21];
   v13 = v21;
   v14 = v13;
   if (v12)
@@ -154,7 +154,7 @@
   {
     if (!v13)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed unarchive PFPosterPath from URL: %@", v8];
+      lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed unarchive PFPosterPath from URL: %@", lCopy];
       v17 = PFFunctionNameForAddress();
       v14 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
@@ -166,22 +166,22 @@
     }
 
     v15 = 0;
-    if (a5 && v14)
+    if (error && v14)
     {
       v19 = v14;
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
   return v15;
 }
 
-- (id)unarchiveConfigurationFromData:(id)a3 format:(int64_t)a4 error:(id *)a5
+- (id)unarchiveConfigurationFromData:(id)data format:(int64_t)format error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   underlyingArchiver = self->_underlyingArchiver;
-  if (a4)
+  if (format)
   {
     v10 = -1;
   }
@@ -191,7 +191,7 @@
     v10 = 0;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
     v11 = 1;
   }
@@ -202,7 +202,7 @@
   }
 
   v21 = 0;
-  v12 = [(PFPosterArchiver *)underlyingArchiver unarchivePathFromData:v8 format:v11 error:&v21];
+  v12 = [(PFPosterArchiver *)underlyingArchiver unarchivePathFromData:dataCopy format:v11 error:&v21];
   v13 = v21;
   v14 = v13;
   if (v12)
@@ -214,7 +214,7 @@
   {
     if (!v13)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed unarchive PFPosterPath from archiveData: %@", v8];
+      dataCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed unarchive PFPosterPath from archiveData: %@", dataCopy];
       v17 = PFFunctionNameForAddress();
       v14 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
@@ -226,11 +226,11 @@
     }
 
     v15 = 0;
-    if (a5 && v14)
+    if (error && v14)
     {
       v19 = v14;
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
     }
   }
 

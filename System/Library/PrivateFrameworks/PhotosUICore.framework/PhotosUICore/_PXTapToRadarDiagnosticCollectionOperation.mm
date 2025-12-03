@@ -1,32 +1,32 @@
 @interface _PXTapToRadarDiagnosticCollectionOperation
-- (_PXTapToRadarDiagnosticCollectionOperation)initWithName:(id)a3 timeout:(double)a4;
+- (_PXTapToRadarDiagnosticCollectionOperation)initWithName:(id)name timeout:(double)timeout;
 - (void)_timedOut;
-- (void)endWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)installCompletionHandler:(id)a3;
+- (void)endWithSuccess:(BOOL)success error:(id)error;
+- (void)installCompletionHandler:(id)handler;
 @end
 
 @implementation _PXTapToRadarDiagnosticCollectionOperation
 
-- (void)endWithSuccess:(BOOL)a3 error:(id)a4
+- (void)endWithSuccess:(BOOL)success error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_ended)
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_ended)
   {
     PXAssertGetLog();
   }
 
-  v8->_ended = 1;
-  if (!v8->_timedOut)
+  selfCopy->_ended = 1;
+  if (!selfCopy->_timedOut)
   {
-    v8->_success = a3;
-    objc_storeStrong(&v8->_error, a4);
-    dispatch_group_leave(v8->_completionGroup);
+    selfCopy->_success = success;
+    objc_storeStrong(&selfCopy->_error, error);
+    dispatch_group_leave(selfCopy->_completionGroup);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_timedOut
@@ -47,29 +47,29 @@
   objc_sync_exit(obj);
 }
 
-- (void)installCompletionHandler:(id)a3
+- (void)installCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completionGroup = self->_completionGroup;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71___PXTapToRadarDiagnosticCollectionOperation_installCompletionHandler___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_group_notify(completionGroup, MEMORY[0x1E69E96A0], v7);
 }
 
-- (_PXTapToRadarDiagnosticCollectionOperation)initWithName:(id)a3 timeout:(double)a4
+- (_PXTapToRadarDiagnosticCollectionOperation)initWithName:(id)name timeout:(double)timeout
 {
-  v6 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = _PXTapToRadarDiagnosticCollectionOperation;
   v7 = [(_PXTapToRadarDiagnosticCollectionOperation *)&v17 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     v9 = *(v7 + 4);
     *(v7 + 4) = v8;
 
@@ -79,7 +79,7 @@
 
     dispatch_group_enter(*(v7 + 1));
     objc_initWeak(&location, v7);
-    v12 = dispatch_time(0, (a4 * 1000000000.0));
+    v12 = dispatch_time(0, (timeout * 1000000000.0));
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __67___PXTapToRadarDiagnosticCollectionOperation_initWithName_timeout___block_invoke;

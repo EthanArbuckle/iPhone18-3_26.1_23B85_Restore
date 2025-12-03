@@ -1,18 +1,18 @@
 @interface GameSaveXPCClient
-- (id)getSyncedDirectoryWithRequest:(id)a3 completion:(id)a4;
+- (id)getSyncedDirectoryWithRequest:(id)request completion:(id)completion;
 - (id)openICloudDriveSettingsPage;
 @end
 
 @implementation GameSaveXPCClient
 
-- (id)getSyncedDirectoryWithRequest:(id)a3 completion:(id)a4
+- (id)getSyncedDirectoryWithRequest:(id)request completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
+  requestCopy = request;
 
-  v8 = sub_100015888(v7, sub_100016D28, v6);
+  v8 = sub_100015888(requestCopy, sub_100016D28, v6);
 
   return v8;
 }

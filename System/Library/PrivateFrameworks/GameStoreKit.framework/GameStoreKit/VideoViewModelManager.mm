@@ -1,10 +1,10 @@
 @interface VideoViewModelManager
-- (void)videoDecodersUnavailable:(id)a3;
+- (void)videoDecodersUnavailable:(id)unavailable;
 @end
 
 @implementation VideoViewModelManager
 
-- (void)videoDecodersUnavailable:(id)a3
+- (void)videoDecodersUnavailable:(id)unavailable
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

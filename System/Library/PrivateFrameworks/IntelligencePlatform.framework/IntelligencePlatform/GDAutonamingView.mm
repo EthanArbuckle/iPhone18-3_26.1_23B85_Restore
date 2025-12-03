@@ -1,40 +1,40 @@
 @interface GDAutonamingView
-- (GDAutonamingView)initWithInner:(id)a3;
-- (GDAutonamingView)initWithViewName:(id)a3 error:(id *)a4;
+- (GDAutonamingView)initWithInner:(id)inner;
+- (GDAutonamingView)initWithViewName:(id)name error:(id *)error;
 @end
 
 @implementation GDAutonamingView
 
-- (GDAutonamingView)initWithViewName:(id)a3 error:(id *)a4
+- (GDAutonamingView)initWithViewName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = +[GDSwiftViewService clientService];
-  v8 = [v7 autonamingViewWithViewName:v6 error:a4];
+  v8 = [v7 autonamingViewWithViewName:nameCopy error:error];
 
   if (v8)
   {
     self = [(GDAutonamingView *)self initWithInner:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (GDAutonamingView)initWithInner:(id)a3
+- (GDAutonamingView)initWithInner:(id)inner
 {
-  v5 = a3;
+  innerCopy = inner;
   v9.receiver = self;
   v9.super_class = GDAutonamingView;
   v6 = [(GDAutonamingView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inner, a3);
+    objc_storeStrong(&v6->_inner, inner);
   }
 
   return v7;

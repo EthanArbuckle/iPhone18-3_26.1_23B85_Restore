@@ -1,6 +1,6 @@
 @interface MRCAMLTextLayer
 - (void)dealloc;
-- (void)setTextImage:(id)a3;
+- (void)setTextImage:(id)image;
 @end
 
 @implementation MRCAMLTextLayer
@@ -15,13 +15,13 @@
   [(MRCAMLLayer *)&v3 dealloc];
 }
 
-- (void)setTextImage:(id)a3
+- (void)setTextImage:(id)image
 {
   textImage = self->textImage;
-  if (textImage != a3)
+  if (textImage != image)
   {
     [(MRImage *)textImage releaseByUser];
-    self->textImage = [a3 retainByUser];
+    self->textImage = [image retainByUser];
   }
 }
 

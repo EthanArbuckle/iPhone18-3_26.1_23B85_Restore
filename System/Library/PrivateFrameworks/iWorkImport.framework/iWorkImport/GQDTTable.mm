@@ -1,9 +1,9 @@
 @interface GQDTTable
-- (id)defaultVectorStyleForVectorType:(int)a3;
-- (int)walkTableWithGenerator:(Class)a3 state:(id)a4;
+- (id)defaultVectorStyleForVectorType:(int)type;
+- (int)walkTableWithGenerator:(Class)generator state:(id)state;
 - (void)dealloc;
-- (void)setModel:(id)a3;
-- (void)setTableStyle:(id)a3;
+- (void)setModel:(id)model;
+- (void)setTableStyle:(id)style;
 @end
 
 @implementation GQDTTable
@@ -15,30 +15,30 @@
   [(GQDGraphic *)&v3 dealloc];
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
 
-  self->mModel = a3;
+  self->mModel = model;
 }
 
-- (void)setTableStyle:(id)a3
+- (void)setTableStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
 
-  self->mStyle = a3;
+  self->mStyle = style;
 }
 
-- (id)defaultVectorStyleForVectorType:(int)a3
+- (id)defaultVectorStyleForVectorType:(int)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     v5 = 100;
   }
 
   else
   {
-    v5 = dword_5EA5C[a3];
+    v5 = dword_5EA5C[type];
   }
 
   v7[1] = v3;
@@ -55,17 +55,17 @@
   }
 }
 
-- (int)walkTableWithGenerator:(Class)a3 state:(id)a4
+- (int)walkTableWithGenerator:(Class)generator state:(id)state
 {
   if (self->mIsStreamed)
   {
     return 1;
   }
 
-  result = [(objc_class *)a3 beginTable:self state:?];
+  result = [(objc_class *)generator beginTable:self state:?];
   if (result == 1)
   {
-    result = [(objc_class *)a3 beginCells:self state:a4];
+    result = [(objc_class *)generator beginCells:self state:state];
     if (result == 1)
     {
       v8 = [-[GQDTTable model](self "model")];
@@ -79,18 +79,18 @@
       v11 = 0;
       do
       {
-        result = [(objc_class *)a3 handleCell:CFArrayGetValueAtIndex(v8 state:v11++), a4];
+        result = [(objc_class *)generator handleCell:CFArrayGetValueAtIndex(v8 state:v11++), state];
       }
 
       while (v11 < v10 && result == 1);
       if (result == 1)
       {
 LABEL_10:
-        result = [(objc_class *)a3 endCells:self state:a4];
+        result = [(objc_class *)generator endCells:self state:state];
         if (result == 1)
         {
-          v12 = [(objc_class *)a3 endTable:self state:a4];
-          [a4 setCurrentTableGenerator:0];
+          v12 = [(objc_class *)generator endTable:self state:state];
+          [state setCurrentTableGenerator:0];
           return v12;
         }
       }

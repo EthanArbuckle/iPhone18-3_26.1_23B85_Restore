@@ -6,8 +6,8 @@
 
 - (id)_intents_stringRepresentation
 {
-  v2 = [MEMORY[0x1E696B078] metersPerSecond];
-  v3 = [a1 isEqual:v2];
+  metersPerSecond = [MEMORY[0x1E696B078] metersPerSecond];
+  v3 = [self isEqual:metersPerSecond];
 
   if (v3)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696B078] kilometersPerHour];
-    v6 = [a1 isEqual:v5];
+    kilometersPerHour = [MEMORY[0x1E696B078] kilometersPerHour];
+    v6 = [self isEqual:kilometersPerHour];
 
     if (v6)
     {
@@ -26,8 +26,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E696B078] milesPerHour];
-      v8 = [a1 isEqual:v7];
+      milesPerHour = [MEMORY[0x1E696B078] milesPerHour];
+      v8 = [self isEqual:milesPerHour];
 
       if (v8)
       {
@@ -36,14 +36,14 @@
 
       else
       {
-        v9 = [MEMORY[0x1E696B078] knots];
-        v10 = [a1 isEqual:v9];
+        knots = [MEMORY[0x1E696B078] knots];
+        v10 = [self isEqual:knots];
 
         if ((v10 & 1) == 0)
         {
           v13 = MEMORY[0x1E695DF30];
           v14 = *MEMORY[0x1E695D930];
-          v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", a1];
+          v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", self];
           v16 = [v13 exceptionWithName:v14 reason:v15 userInfo:0];
           v17 = v16;
 
@@ -55,9 +55,9 @@
     }
   }
 
-  v11 = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
+  if_ASCIIStringByUppercasingFirstCharacter = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
 
-  return v11;
+  return if_ASCIIStringByUppercasingFirstCharacter;
 }
 
 @end

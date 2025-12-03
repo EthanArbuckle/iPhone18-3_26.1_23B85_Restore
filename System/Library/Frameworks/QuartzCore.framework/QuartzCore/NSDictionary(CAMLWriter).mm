@@ -6,7 +6,7 @@
 
 - (uint64_t)encodeWithCAMLWriter:()CAMLWriter
 {
-  v5 = [objc_msgSend(a1 "allKeys")];
+  v5 = [objc_msgSend(self "allKeys")];
   result = [v5 count];
   if (result)
   {
@@ -14,7 +14,7 @@
     for (i = 0; i != v7; ++i)
     {
       v9 = [v5 objectAtIndex:i];
-      v10 = [a1 objectForKey:v9];
+      v10 = [self objectForKey:v9];
       [a3 beginPropertyElement:v9];
       [a3 encodeObject:v10];
       result = [a3 endElement];

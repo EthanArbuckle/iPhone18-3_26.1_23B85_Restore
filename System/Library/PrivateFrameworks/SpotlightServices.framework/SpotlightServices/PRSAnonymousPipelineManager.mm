@@ -1,37 +1,37 @@
 @interface PRSAnonymousPipelineManager
-+ (BOOL)_dataCollectionAllowedForBundle:(id)a3;
++ (BOOL)_dataCollectionAllowedForBundle:(id)bundle;
 + (id)allowedBundles;
 + (id)candidateLogsBasePath;
-+ (id)candidateLogsURLForBundle:(id)a3;
++ (id)candidateLogsURLForBundle:(id)bundle;
 + (id)dateFormatter;
-+ (id)dateFromFileURL:(id)a3;
-+ (id)logURLForCurrentTimeAndBundle:(id)a3 forEngagement:(BOOL)a4;
++ (id)dateFromFileURL:(id)l;
++ (id)logURLForCurrentTimeAndBundle:(id)bundle forEngagement:(BOOL)engagement;
 + (id)sharedManager;
 + (id)submittedLogsURL;
-+ (id)submittedLogsURLForUser:(id)a3;
-+ (id)submitttedSpotlightReportsError:(id *)a3;
-- (BOOL)_shouldDataCollectForEngagementReservoirSamplingForClientBundle:(id)a3;
-- (BOOL)_shouldDataCollectWithEngagedBundle:(id)a3 withQueryId:(id)a4 forClientBundle:(id)a5;
-- (BOOL)dateIsExpired:(id)a3;
++ (id)submittedLogsURLForUser:(id)user;
++ (id)submitttedSpotlightReportsError:(id *)error;
+- (BOOL)_shouldDataCollectForEngagementReservoirSamplingForClientBundle:(id)bundle;
+- (BOOL)_shouldDataCollectWithEngagedBundle:(id)bundle withQueryId:(id)id forClientBundle:(id)clientBundle;
+- (BOOL)dateIsExpired:(id)expired;
 - (PRSAnonymousPipelineManager)init;
-- (id)_abandonedItemsFromItems:(id)a3 withIndexOfEngagedItem:(unint64_t)a4;
-- (id)_relativePositionForItem:(id)a3 inItems:(id)a4 withIndexOfEngagedItem:(int64_t)a5 forClientBundle:(id)a6;
-- (id)retrieveFeedbackURLToSendInDirectory:(id)a3;
-- (void)_addQueryInfoToJSONWriter:(json_writer *)a3 withQuery:(id)a4 cepData:(id)a5 forClient:(id)a6 debugInfoAllowed:(BOOL)a7 keyboardPrimaryLanguage:(id)a8;
-- (void)_addRelativePositionToFeatureDict:(id)a3 relativePosition:(id)a4 forItem:(id)a5 debugInfoEnabled:(BOOL)a6;
-- (void)_extractTrainingSamplesForQuery:(id)a3 withIndexOfEngagedItem:(unint64_t)a4 withItems:(id)a5 withRanker:(id)a6 withCEPData:(id)a7 forClientBundle:(id)a8 debugInfoEnabled:(BOOL)a9 keyboardPrimaryLanguage:(id)a10;
-- (void)_increaseUserDefaultsEngagementCountForBundle:(id)a3;
-- (void)_increaseUserDefaultsEngagementCountForDateWithClientBundle:(id)a3;
-- (void)_updateUserDefaultsWithEngagedBundle:(id)a3 andQueryID:(id)a4 forClientBundle:(id)a5;
-- (void)_writeResult:(json_writer *)a3 item:(id)a4;
+- (id)_abandonedItemsFromItems:(id)items withIndexOfEngagedItem:(unint64_t)item;
+- (id)_relativePositionForItem:(id)item inItems:(id)items withIndexOfEngagedItem:(int64_t)engagedItem forClientBundle:(id)bundle;
+- (id)retrieveFeedbackURLToSendInDirectory:(id)directory;
+- (void)_addQueryInfoToJSONWriter:(json_writer *)writer withQuery:(id)query cepData:(id)data forClient:(id)client debugInfoAllowed:(BOOL)allowed keyboardPrimaryLanguage:(id)language;
+- (void)_addRelativePositionToFeatureDict:(id)dict relativePosition:(id)position forItem:(id)item debugInfoEnabled:(BOOL)enabled;
+- (void)_extractTrainingSamplesForQuery:(id)query withIndexOfEngagedItem:(unint64_t)item withItems:(id)items withRanker:(id)ranker withCEPData:(id)data forClientBundle:(id)bundle debugInfoEnabled:(BOOL)enabled keyboardPrimaryLanguage:(id)self0;
+- (void)_increaseUserDefaultsEngagementCountForBundle:(id)bundle;
+- (void)_increaseUserDefaultsEngagementCountForDateWithClientBundle:(id)bundle;
+- (void)_updateUserDefaultsWithEngagedBundle:(id)bundle andQueryID:(id)d forClientBundle:(id)clientBundle;
+- (void)_writeResult:(json_writer *)result item:(id)item;
 - (void)cleanUp;
 - (void)deleteCandidateLogs;
 - (void)deleteExpiredSubmittedLogs;
-- (void)extractTrainingDataWithItemAtIndex:(unint64_t)a3 withItems:(id)a4 withRanker:(id)a5 forQuery:(id)a6 dataCollectAllowed:(BOOL)a7 queryID:(id)a8 withCEPData:(id)a9 forClientBundle:(id)a10 debugInfoEnabled:(BOOL)a11 keyboardPrimaryLanguage:(id)a12 clientID:(id)a13;
-- (void)queryWillFinishWithItems:(id)a3 forClient:(id)a4 forQuery:(id)a5 anonymousDataCollectionAllowed:(BOOL)a6;
+- (void)extractTrainingDataWithItemAtIndex:(unint64_t)index withItems:(id)items withRanker:(id)ranker forQuery:(id)query dataCollectAllowed:(BOOL)allowed queryID:(id)d withCEPData:(id)data forClientBundle:(id)self0 debugInfoEnabled:(BOOL)self1 keyboardPrimaryLanguage:(id)self2 clientID:(id)self3;
+- (void)queryWillFinishWithItems:(id)items forClient:(id)client forQuery:(id)query anonymousDataCollectionAllowed:(BOOL)allowed;
 - (void)registerXPCActivity;
-- (void)sendMLFeedbackActivity:(id)a3 clientID:(id)a4;
-- (void)userEngagedItemWithIdentifier:(id)a3 forBundle:(id)a4 forQuery:(id)a5;
+- (void)sendMLFeedbackActivity:(id)activity clientID:(id)d;
+- (void)userEngagedItemWithIdentifier:(id)identifier forBundle:(id)bundle forQuery:(id)query;
 @end
 
 @implementation PRSAnonymousPipelineManager
@@ -192,22 +192,22 @@ void __44__PRSAnonymousPipelineManager_sharedManager__block_invoke()
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)logURLForCurrentTimeAndBundle:(id)a3 forEngagement:(BOOL)a4
++ (id)logURLForCurrentTimeAndBundle:(id)bundle forEngagement:(BOOL)engagement
 {
-  v4 = a3;
-  v5 = [PRSAnonymousPipelineManager candidateLogsURLForBundle:v4];
-  v6 = [(__CFString *)v4 length];
+  bundleCopy = bundle;
+  v5 = [PRSAnonymousPipelineManager candidateLogsURLForBundle:bundleCopy];
+  v6 = [(__CFString *)bundleCopy length];
   v7 = @"searchd";
   if (v6)
   {
-    v7 = v4;
+    v7 = bundleCopy;
   }
 
   v8 = MEMORY[0x1E696AEC0];
   v9 = v7;
   v10 = +[PRSAnonymousPipelineManager dateFormatter];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [v10 stringFromDate:v11];
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = [v10 stringFromDate:date];
   v13 = [v8 stringWithFormat:@"%@-%@", v9, v12];
 
   v14 = [v5 URLByAppendingPathComponent:v13];
@@ -216,9 +216,9 @@ void __44__PRSAnonymousPipelineManager_sharedManager__block_invoke()
   return v15;
 }
 
-+ (id)submittedLogsURLForUser:(id)a3
++ (id)submittedLogsURLForUser:(id)user
 {
-  v3 = NSHomeDirectoryForUser(a3);
+  v3 = NSHomeDirectoryForUser(user);
   v4 = [v3 stringByAppendingString:@"/Library/Spotlight/Diagnostics/SubmittedReports"];
 
   block[0] = MEMORY[0x1E69E9820];
@@ -263,13 +263,13 @@ void __55__PRSAnonymousPipelineManager_submittedLogsURLForUser___block_invoke(ui
   return v3;
 }
 
-+ (id)candidateLogsURLForBundle:(id)a3
++ (id)candidateLogsURLForBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = +[PRSAnonymousPipelineManager candidateLogsBasePath];
-  if ([(__CFString *)v3 length])
+  if ([(__CFString *)bundleCopy length])
   {
-    v5 = v3;
+    v5 = bundleCopy;
   }
 
   else
@@ -278,10 +278,10 @@ void __55__PRSAnonymousPipelineManager_submittedLogsURLForUser___block_invoke(ui
   }
 
   v6 = [v4 stringByAppendingPathComponent:v5];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v7 fileExistsAtPath:v6] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v6] & 1) == 0)
   {
-    [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:1 relativeToURL:0];
@@ -299,44 +299,44 @@ void __55__PRSAnonymousPipelineManager_submittedLogsURLForUser___block_invoke(ui
   return v2;
 }
 
-+ (id)dateFromFileURL:(id)a3
++ (id)dateFromFileURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
+  lastPathComponent = [l lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  [v4 rangeOfString:@"com.apple.searchd.suggestions"];
-  if (v5 || ([v4 rangeOfString:@"com.apple.searchd"], v5))
+  [stringByDeletingPathExtension rangeOfString:@"com.apple.searchd.suggestions"];
+  if (v5 || ([stringByDeletingPathExtension rangeOfString:@"com.apple.searchd"], v5))
   {
     v6 = v5 + 1;
-    if (v5 + 1 < [v4 length])
+    if (v5 + 1 < [stringByDeletingPathExtension length])
     {
-      v7 = [v4 substringFromIndex:v6];
+      v7 = [stringByDeletingPathExtension substringFromIndex:v6];
 
       if (v7)
       {
 LABEL_9:
-        v4 = v7;
+        stringByDeletingPathExtension = v7;
         v10 = +[PRSAnonymousPipelineManager dateFormatter];
         v7 = [v10 dateFromString:v7];
 
         goto LABEL_11;
       }
 
-      v4 = 0;
+      stringByDeletingPathExtension = 0;
     }
   }
 
-  [v4 rangeOfString:@"com.apple.mobilemail"];
-  if (v8 && (v9 = v8 + 1, v8 + 1 < [v4 length]))
+  [stringByDeletingPathExtension rangeOfString:@"com.apple.mobilemail"];
+  if (v8 && (v9 = v8 + 1, v8 + 1 < [stringByDeletingPathExtension length]))
   {
-    v7 = [v4 substringFromIndex:v9];
+    v7 = [stringByDeletingPathExtension substringFromIndex:v9];
 
     if (v7)
     {
       goto LABEL_9;
     }
 
-    v4 = 0;
+    stringByDeletingPathExtension = 0;
   }
 
   else
@@ -361,11 +361,11 @@ LABEL_11:
   return v2;
 }
 
-+ (BOOL)_dataCollectionAllowedForBundle:(id)a3
++ (BOOL)_dataCollectionAllowedForBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = +[PRSAnonymousPipelineManager allowedBundles];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:bundleCopy];
 
   return v5;
 }
@@ -392,26 +392,26 @@ LABEL_11:
   return v2;
 }
 
-- (void)sendMLFeedbackActivity:(id)a3 clientID:(id)a4
+- (void)sendMLFeedbackActivity:(id)activity clientID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  dCopy = d;
   if ([(PRSAnonymousPipelineManager *)self submissionEnabled])
   {
-    if (v6)
+    if (activityCopy)
     {
-      dispatch_group_enter(v6);
+      dispatch_group_enter(activityCopy);
     }
 
-    v8 = [(PRSAnonymousPipelineManager *)self queue];
+    queue = [(PRSAnonymousPipelineManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__PRSAnonymousPipelineManager_sendMLFeedbackActivity_clientID___block_invoke;
     block[3] = &unk_1E85957A0;
     block[4] = self;
-    v10 = v7;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v10 = dCopy;
+    v11 = activityCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -640,65 +640,65 @@ void __50__PRSAnonymousPipelineManager_registerXPCActivity__block_invoke_187(uin
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_abandonedItemsFromItems:(id)a3 withIndexOfEngagedItem:(unint64_t)a4
+- (id)_abandonedItemsFromItems:(id)items withIndexOfEngagedItem:(unint64_t)item
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_opt_new();
-  if (a4)
+  if (item)
   {
-    v7 = a4 - 48;
-    if (a4 > 0x30)
+    v7 = item - 48;
+    if (item > 0x30)
     {
-      if (a4 == 49)
+      if (item == 49)
       {
         goto LABEL_29;
       }
 
-      v25 = [v5 objectAtIndexedSubscript:0];
+      v25 = [itemsCopy objectAtIndexedSubscript:0];
       [v6 addObject:v25];
 
-      v8 = v5;
+      v8 = itemsCopy;
       v9 = v7;
-      v10 = 48;
+      itemCopy = 48;
     }
 
     else
     {
-      v8 = v5;
+      v8 = itemsCopy;
       v9 = 0;
-      v10 = a4;
+      itemCopy = item;
     }
 
     goto LABEL_24;
   }
 
-  if ([v5 count] < 0x33)
+  if ([itemsCopy count] < 0x33)
   {
-    if ([v5 count] < 2)
+    if ([itemsCopy count] < 2)
     {
       goto LABEL_29;
     }
 
-    v10 = [v5 count] - 1;
-    v8 = v5;
+    itemCopy = [itemsCopy count] - 1;
+    v8 = itemsCopy;
     v9 = 1;
 LABEL_24:
-    v12 = [v8 subarrayWithRange:{v9, v10}];
-    [v6 addObjectsFromArray:v12];
+    dataCollectionBundle = [v8 subarrayWithRange:{v9, itemCopy}];
+    [v6 addObjectsFromArray:dataCollectionBundle];
     goto LABEL_28;
   }
 
-  v11 = [v5 objectAtIndexedSubscript:0];
-  v12 = [v11 dataCollectionBundle];
+  v11 = [itemsCopy objectAtIndexedSubscript:0];
+  dataCollectionBundle = [v11 dataCollectionBundle];
 
   v13 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = v5;
-  v14 = v5;
+  v32 = itemsCopy;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (!v15)
   {
@@ -717,8 +717,8 @@ LABEL_24:
       }
 
       v19 = *(*(&v33 + 1) + 8 * i);
-      v20 = [v19 dataCollectionBundle];
-      if (![v20 isEqualToString:v12])
+      dataCollectionBundle2 = [v19 dataCollectionBundle];
+      if (![dataCollectionBundle2 isEqualToString:dataCollectionBundle])
       {
 
 LABEL_14:
@@ -758,7 +758,7 @@ LABEL_18:
     v28 = [v13 subarrayWithRange:{0, v27}];
     [v6 replaceObjectsInRange:v26 withObjectsFromArray:{v27, v28}];
 
-    v5 = v32;
+    itemsCopy = v32;
     if ([v13 count] > v27)
     {
       v29 = [v13 subarrayWithRange:{v27, objc_msgSend(v13, "count") - v27}];
@@ -769,7 +769,7 @@ LABEL_18:
   else
   {
     [v6 addObjectsFromArray:v13];
-    v5 = v32;
+    itemsCopy = v32;
   }
 
 LABEL_28:
@@ -780,11 +780,11 @@ LABEL_29:
   return v6;
 }
 
-- (id)_relativePositionForItem:(id)a3 inItems:(id)a4 withIndexOfEngagedItem:(int64_t)a5 forClientBundle:(id)a6
+- (id)_relativePositionForItem:(id)item inItems:(id)items withIndexOfEngagedItem:(int64_t)engagedItem forClientBundle:(id)bundle
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [v9 indexOfObject:a3];
+  itemsCopy = items;
+  bundleCopy = bundle;
+  v11 = [itemsCopy indexOfObject:item];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = sNSNotFound;
@@ -793,34 +793,34 @@ LABEL_29:
   else
   {
     v13 = v11;
-    if ([v10 isEqualToString:@"com.apple.searchd.suggestions"])
+    if ([bundleCopy isEqualToString:@"com.apple.searchd.suggestions"])
     {
       v14 = 0;
     }
 
     else
     {
-      if (v13 >= a5)
+      if (v13 >= engagedItem)
       {
-        v15 = a5;
+        engagedItemCopy = engagedItem;
       }
 
       else
       {
-        v15 = v13;
+        engagedItemCopy = v13;
       }
 
-      if (v13 <= a5)
+      if (v13 <= engagedItem)
       {
-        v16 = a5;
+        engagedItemCopy2 = engagedItem;
       }
 
       else
       {
-        v16 = v13;
+        engagedItemCopy2 = v13;
       }
 
-      if (v15 >= v16)
+      if (engagedItemCopy >= engagedItemCopy2)
       {
         v17 = 0;
       }
@@ -830,16 +830,16 @@ LABEL_29:
         v17 = 0;
         do
         {
-          v18 = [v9 objectAtIndex:v15];
+          v18 = [itemsCopy objectAtIndex:engagedItemCopy];
           v17 += ([v18 bundleIDType] >> 19) & 1;
 
-          ++v15;
+          ++engagedItemCopy;
         }
 
-        while (v16 != v15);
+        while (engagedItemCopy2 != engagedItemCopy);
       }
 
-      if (v13 < a5)
+      if (v13 < engagedItem)
       {
         v14 = v17;
       }
@@ -850,7 +850,7 @@ LABEL_29:
       }
     }
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:v13 - a5 + v14];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:v13 - engagedItem + v14];
   }
 
   v19 = v12;
@@ -858,26 +858,26 @@ LABEL_29:
   return v19;
 }
 
-- (void)_addRelativePositionToFeatureDict:(id)a3 relativePosition:(id)a4 forItem:(id)a5 debugInfoEnabled:(BOOL)a6
+- (void)_addRelativePositionToFeatureDict:(id)dict relativePosition:(id)position forItem:(id)item debugInfoEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v13 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() relativePositionKey];
-  [v13 setObject:v10 forKeyedSubscript:v11];
+  enabledCopy = enabled;
+  dictCopy = dict;
+  itemCopy = item;
+  positionCopy = position;
+  relativePositionKey = [objc_opt_class() relativePositionKey];
+  [dictCopy setObject:positionCopy forKeyedSubscript:relativePositionKey];
 
-  if (v6)
+  if (enabledCopy)
   {
-    v12 = [v9 identifier];
-    [v13 setObject:v12 forKeyedSubscript:@"identifier"];
+    identifier = [itemCopy identifier];
+    [dictCopy setObject:identifier forKeyedSubscript:@"identifier"];
   }
 }
 
-- (void)_addQueryInfoToJSONWriter:(json_writer *)a3 withQuery:(id)a4 cepData:(id)a5 forClient:(id)a6 debugInfoAllowed:(BOOL)a7 keyboardPrimaryLanguage:(id)a8
+- (void)_addQueryInfoToJSONWriter:(json_writer *)writer withQuery:(id)query cepData:(id)data forClient:(id)client debugInfoAllowed:(BOOL)allowed keyboardPrimaryLanguage:(id)language
 {
-  v8 = a7;
-  v11 = a4;
+  allowedCopy = allowed;
+  queryCopy = query;
   v12 = PRSLogCategoryAnonymousPipeline();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -885,25 +885,25 @@ LABEL_29:
     _os_log_impl(&dword_1D9F69000, v12, OS_LOG_TYPE_DEFAULT, "[Logging] Writing query info to json writer.", v27, 2u);
   }
 
-  if (v8)
+  if (allowedCopy)
   {
-    json_writer_add_key(a3, "query", 5uLL, 1);
-    json_writer_add_string(a3, [v11 UTF8String], 0xFFFFFFFFFFFFFFFFLL, 0);
+    json_writer_add_key(writer, "query", 5uLL, 1);
+    json_writer_add_string(writer, [queryCopy UTF8String], 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  if (!v13)
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  if (!currentLocale)
   {
-    v13 = [MEMORY[0x1E695DF58] systemLocale];
+    currentLocale = [MEMORY[0x1E695DF58] systemLocale];
   }
 
-  v14 = [v13 countryCode];
-  v15 = [v13 languageCode];
-  json_writer_add_key(a3, "country_code", 0xCuLL, 1);
-  v16 = [v14 UTF8String];
-  if (v16)
+  countryCode = [currentLocale countryCode];
+  languageCode = [currentLocale languageCode];
+  json_writer_add_key(writer, "country_code", 0xCuLL, 1);
+  uTF8String = [countryCode UTF8String];
+  if (uTF8String)
   {
-    v17 = v16;
+    v17 = uTF8String;
   }
 
   else
@@ -911,12 +911,12 @@ LABEL_29:
     v17 = "";
   }
 
-  json_writer_add_string(a3, v17, 0xFFFFFFFFFFFFFFFFLL, 0);
-  json_writer_add_key(a3, "language_code", 0xDuLL, 1);
-  v18 = [v15 UTF8String];
-  if (v18)
+  json_writer_add_string(writer, v17, 0xFFFFFFFFFFFFFFFFLL, 0);
+  json_writer_add_key(writer, "language_code", 0xDuLL, 1);
+  uTF8String2 = [languageCode UTF8String];
+  if (uTF8String2)
   {
-    v19 = v18;
+    v19 = uTF8String2;
   }
 
   else
@@ -924,8 +924,8 @@ LABEL_29:
     v19 = "";
   }
 
-  json_writer_add_string(a3, v19, 0xFFFFFFFFFFFFFFFFLL, 0);
-  json_writer_add_key(a3, "is_internal", 0xBuLL, 1);
+  json_writer_add_string(writer, v19, 0xFFFFFFFFFFFFFFFFLL, 0);
+  json_writer_add_key(writer, "is_internal", 0xBuLL, 1);
   if ([(PRSAnonymousPipelineManager *)self isInternalDevice])
   {
     v20 = "1";
@@ -936,14 +936,14 @@ LABEL_29:
     v20 = "0";
   }
 
-  json_writer_add_raw_value(a3, v20, 1uLL);
+  json_writer_add_raw_value(writer, v20, 1uLL);
   v21 = MGCopyAnswer();
   v22 = MGCopyAnswer();
-  json_writer_add_key(a3, "device_type", 0xBuLL, 1);
-  v23 = [v21 UTF8String];
-  if (v23)
+  json_writer_add_key(writer, "device_type", 0xBuLL, 1);
+  uTF8String3 = [v21 UTF8String];
+  if (uTF8String3)
   {
-    v24 = v23;
+    v24 = uTF8String3;
   }
 
   else
@@ -951,12 +951,12 @@ LABEL_29:
     v24 = "";
   }
 
-  json_writer_add_string(a3, v24, 0xFFFFFFFFFFFFFFFFLL, 0);
-  json_writer_add_key(a3, "device_build_number", 0x13uLL, 1);
-  v25 = [v22 UTF8String];
-  if (v25)
+  json_writer_add_string(writer, v24, 0xFFFFFFFFFFFFFFFFLL, 0);
+  json_writer_add_key(writer, "device_build_number", 0x13uLL, 1);
+  uTF8String4 = [v22 UTF8String];
+  if (uTF8String4)
   {
-    v26 = v25;
+    v26 = uTF8String4;
   }
 
   else
@@ -964,16 +964,16 @@ LABEL_29:
     v26 = "";
   }
 
-  json_writer_add_string(a3, v26, 0xFFFFFFFFFFFFFFFFLL, 0);
+  json_writer_add_string(writer, v26, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
-- (void)_increaseUserDefaultsEngagementCountForBundle:(id)a3
+- (void)_increaseUserDefaultsEngagementCountForBundle:(id)bundle
 {
-  v4 = a3;
-  v12 = [(PRSAnonymousPipelineManager *)self userDefaults];
-  v5 = [PRSAnonymousPipelineManager engagementCountKeyForBundle:v4];
+  bundleCopy = bundle;
+  userDefaults = [(PRSAnonymousPipelineManager *)self userDefaults];
+  v5 = [PRSAnonymousPipelineManager engagementCountKeyForBundle:bundleCopy];
 
-  v6 = [v12 objectForKey:v5];
+  v6 = [userDefaults objectForKey:v5];
   v7 = v6;
   v8 = &unk_1F55B3BB8;
   if (v6)
@@ -983,39 +983,39 @@ LABEL_29:
 
   v9 = v8;
 
-  v10 = [v9 integerValue];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10 + 1];
-  [v12 setObject:v11 forKey:v5];
+  integerValue = [v9 integerValue];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+  [userDefaults setObject:v11 forKey:v5];
 }
 
-- (void)_updateUserDefaultsWithEngagedBundle:(id)a3 andQueryID:(id)a4 forClientBundle:(id)a5
+- (void)_updateUserDefaultsWithEngagedBundle:(id)bundle andQueryID:(id)d forClientBundle:(id)clientBundle
 {
-  v9 = a3;
-  v7 = a4;
-  if ([a5 isEqualToString:@"com.apple.searchd"])
+  bundleCopy = bundle;
+  dCopy = d;
+  if ([clientBundle isEqualToString:@"com.apple.searchd"])
   {
     v8 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.searchd"];
-    [v8 setObject:v9 forKey:@"collectedBundleID"];
-    if ([v7 integerValue] != -1)
+    [v8 setObject:bundleCopy forKey:@"collectedBundleID"];
+    if ([dCopy integerValue] != -1)
     {
-      [v8 setObject:v7 forKey:@"lastQueryID"];
+      [v8 setObject:dCopy forKey:@"lastQueryID"];
     }
   }
 }
 
-- (void)_increaseUserDefaultsEngagementCountForDateWithClientBundle:(id)a3
+- (void)_increaseUserDefaultsEngagementCountForDateWithClientBundle:(id)bundle
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PRSAnonymousPipelineManager *)self userDefaults];
-  v6 = [PRSAnonymousPipelineManager engagementCountForDateKeyForBundle:v4];
-  v7 = [PRSAnonymousPipelineManager engagementDateKeyForBundle:v4];
+  bundleCopy = bundle;
+  userDefaults = [(PRSAnonymousPipelineManager *)self userDefaults];
+  v6 = [PRSAnonymousPipelineManager engagementCountForDateKeyForBundle:bundleCopy];
+  v7 = [PRSAnonymousPipelineManager engagementDateKeyForBundle:bundleCopy];
 
-  v8 = [v5 objectForKey:v6];
-  v9 = [v5 objectForKey:v7];
+  v8 = [userDefaults objectForKey:v6];
+  v9 = [userDefaults objectForKey:v7];
   v10 = +[PRSAnonymousPipelineManager dateFormatter];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [v10 stringFromDate:v11];
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = [v10 stringFromDate:date];
 
   if (v9 && [v9 isEqualToString:v12])
   {
@@ -1027,15 +1027,15 @@ LABEL_29:
     v13 = 1;
   }
 
-  [v5 setObject:v12 forKey:v7];
+  [userDefaults setObject:v12 forKey:v7];
   v14 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
-  [v5 setObject:v14 forKey:v6];
+  [userDefaults setObject:v14 forKey:v6];
 
   v15 = PRSLogCategoryAnonymousPipeline();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134218754;
-    v18 = [v8 integerValue];
+    integerValue = [v8 integerValue];
     v19 = 2112;
     v20 = v9;
     v21 = 2048;
@@ -1048,17 +1048,17 @@ LABEL_29:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldDataCollectForEngagementReservoirSamplingForClientBundle:(id)a3
+- (BOOL)_shouldDataCollectForEngagementReservoirSamplingForClientBundle:(id)bundle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.searchd"])
+  bundleCopy = bundle;
+  if ([bundleCopy isEqualToString:@"com.apple.searchd"])
   {
-    v5 = [(PRSAnonymousPipelineManager *)self userDefaults];
-    v6 = [PRSAnonymousPipelineManager engagementCountForDateKeyForBundle:v4];
-    v7 = [PRSAnonymousPipelineManager engagementDateKeyForBundle:v4];
-    v8 = [v5 objectForKey:v6];
-    v9 = [v5 objectForKey:v7];
+    userDefaults = [(PRSAnonymousPipelineManager *)self userDefaults];
+    v6 = [PRSAnonymousPipelineManager engagementCountForDateKeyForBundle:bundleCopy];
+    v7 = [PRSAnonymousPipelineManager engagementDateKeyForBundle:bundleCopy];
+    v8 = [userDefaults objectForKey:v6];
+    v9 = [userDefaults objectForKey:v7];
     if ([v8 integerValue] < 1)
     {
       v11 = 0;
@@ -1075,7 +1075,7 @@ LABEL_29:
         if (v13)
         {
           v16 = 134218498;
-          v17 = [v8 integerValue];
+          integerValue = [v8 integerValue];
           v18 = 2048;
           v19 = v10;
           v20 = 2112;
@@ -1100,41 +1100,41 @@ LABEL_29:
   return v11;
 }
 
-- (BOOL)_shouldDataCollectWithEngagedBundle:(id)a3 withQueryId:(id)a4 forClientBundle:(id)a5
+- (BOOL)_shouldDataCollectWithEngagedBundle:(id)bundle withQueryId:(id)id forClientBundle:(id)clientBundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isEqualToString:@"com.apple.searchd"])
+  bundleCopy = bundle;
+  idCopy = id;
+  clientBundleCopy = clientBundle;
+  if ([clientBundleCopy isEqualToString:@"com.apple.searchd"])
   {
     v10 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.searchd"];
-    v11 = [PRSAnonymousPipelineManager engagementCountKeyForBundle:v9];
+    v11 = [PRSAnonymousPipelineManager engagementCountKeyForBundle:clientBundleCopy];
     v12 = [v10 objectForKey:v11];
 
     v13 = [v10 objectForKey:@"lastQueryID"];
-    if ([v8 integerValue] == -1 || (v14 = objc_msgSend(v13, "unsignedLongLongValue"), v14 != objc_msgSend(v8, "unsignedLongLongValue")))
+    if ([idCopy integerValue] == -1 || (v14 = objc_msgSend(v13, "unsignedLongLongValue"), v14 != objc_msgSend(idCopy, "unsignedLongLongValue")))
     {
       v25 = v12;
-      v16 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       v17 = [v10 objectForKey:@"collectedBundleID"];
       v18 = +[PRSBagHandler sharedHandler];
-      v19 = [v18 anonymousMetadataUndesiredBundleIDs];
-      v20 = [v19 copy];
+      anonymousMetadataUndesiredBundleIDs = [v18 anonymousMetadataUndesiredBundleIDs];
+      v20 = [anonymousMetadataUndesiredBundleIDs copy];
 
       v21 = [v20 containsObject:v17];
-      v22 = [v20 containsObject:v7];
+      v22 = [v20 containsObject:bundleCopy];
       v23 = v22;
       if (!v21 || !v22)
       {
         goto LABEL_12;
       }
 
-      if (v16 <= 2)
+      if (integerValue <= 2)
       {
-        v16 = 2;
+        integerValue = 2;
       }
 
-      if (arc4random() % v16)
+      if (arc4random() % integerValue)
       {
         v15 = 0;
       }
@@ -1162,42 +1162,42 @@ LABEL_12:
   return v15 & 1;
 }
 
-- (void)extractTrainingDataWithItemAtIndex:(unint64_t)a3 withItems:(id)a4 withRanker:(id)a5 forQuery:(id)a6 dataCollectAllowed:(BOOL)a7 queryID:(id)a8 withCEPData:(id)a9 forClientBundle:(id)a10 debugInfoEnabled:(BOOL)a11 keyboardPrimaryLanguage:(id)a12 clientID:(id)a13
+- (void)extractTrainingDataWithItemAtIndex:(unint64_t)index withItems:(id)items withRanker:(id)ranker forQuery:(id)query dataCollectAllowed:(BOOL)allowed queryID:(id)d withCEPData:(id)data forClientBundle:(id)self0 debugInfoEnabled:(BOOL)self1 keyboardPrimaryLanguage:(id)self2 clientID:(id)self3
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a12;
-  v24 = a13;
-  v25 = [(PRSAnonymousPipelineManager *)self queue];
+  itemsCopy = items;
+  rankerCopy = ranker;
+  queryCopy = query;
+  dCopy = d;
+  dataCopy = data;
+  bundleCopy = bundle;
+  languageCopy = language;
+  iDCopy = iD;
+  queue = [(PRSAnonymousPipelineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __201__PRSAnonymousPipelineManager_extractTrainingDataWithItemAtIndex_withItems_withRanker_forQuery_dataCollectAllowed_queryID_withCEPData_forClientBundle_debugInfoEnabled_keyboardPrimaryLanguage_clientID___block_invoke;
   block[3] = &unk_1E8595ED0;
   block[4] = self;
-  v37 = v22;
-  v46 = a7;
-  v38 = v17;
-  v39 = v19;
-  v40 = v18;
-  v41 = v21;
-  v47 = a11;
-  v42 = v23;
-  v43 = v20;
-  v44 = v24;
-  v45 = a3;
-  v35 = v24;
-  v26 = v20;
-  v27 = v23;
-  v28 = v21;
-  v29 = v18;
-  v30 = v19;
-  v31 = v17;
-  v32 = v22;
-  dispatch_async(v25, block);
+  v37 = bundleCopy;
+  allowedCopy = allowed;
+  v38 = itemsCopy;
+  v39 = queryCopy;
+  v40 = rankerCopy;
+  v41 = dataCopy;
+  enabledCopy = enabled;
+  v42 = languageCopy;
+  v43 = dCopy;
+  v44 = iDCopy;
+  indexCopy = index;
+  v35 = iDCopy;
+  v26 = dCopy;
+  v27 = languageCopy;
+  v28 = dataCopy;
+  v29 = rankerCopy;
+  v30 = queryCopy;
+  v31 = itemsCopy;
+  v32 = bundleCopy;
+  dispatch_async(queue, block);
 }
 
 void __201__PRSAnonymousPipelineManager_extractTrainingDataWithItemAtIndex_withItems_withRanker_forQuery_dataCollectAllowed_queryID_withCEPData_forClientBundle_debugInfoEnabled_keyboardPrimaryLanguage_clientID___block_invoke(uint64_t a1)
@@ -1247,12 +1247,12 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeResult:(json_writer *)a3 item:(id)a4
+- (void)_writeResult:(json_writer *)result item:(id)item
 {
-  object = a4;
-  json_writer_add_key(a3, "_identifier", 0xBuLL, 1);
-  v5 = [object identifier];
-  json_writer_add_string(a3, [v5 UTF8String], 0xFFFFFFFFFFFFFFFFLL, 0);
+  object = item;
+  json_writer_add_key(result, "_identifier", 0xBuLL, 1);
+  identifier = [object identifier];
+  json_writer_add_string(result, [identifier UTF8String], 0xFFFFFFFFFFFFFFFFLL, 0);
 
   v6 = PRSModelManagerAssociatedObjectKeyForType(1);
   v7 = PRSModelManagerAssociatedObjectKeyForType(2);
@@ -1260,25 +1260,25 @@ LABEL_12:
   v9 = objc_getAssociatedObject(object, v6);
   v10 = objc_getAssociatedObject(object, v7);
   v11 = objc_getAssociatedObject(object, v8);
-  json_writer_add_key(a3, "_l2_score", 9uLL, 1);
+  json_writer_add_key(result, "_l2_score", 9uLL, 1);
   v66 = v11;
   [v11 doubleValue];
-  json_writer_add_double(a3, v12);
-  json_writer_add_key(a3, "_l2_inputs", 0xAuLL, 1);
-  json_writer_begin_dictionary(a3);
+  json_writer_add_double(result, v12);
+  json_writer_add_key(result, "_l2_inputs", 0xAuLL, 1);
+  json_writer_begin_dictionary(result);
   if ([v10 unsignedIntegerValue])
   {
     v13 = 0;
     do
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", v13];
-      v15 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
 
-      v16 = strlen(v15);
-      json_writer_add_key(a3, v15, v16, 1);
+      v16 = strlen(uTF8String);
+      json_writer_add_key(result, uTF8String, v16, 1);
       v17 = [v9 objectAtIndexedSubscript:v13];
       [v17 floatValue];
-      json_writer_add_double(a3, v18);
+      json_writer_add_double(result, v18);
 
       ++v13;
     }
@@ -1286,32 +1286,32 @@ LABEL_12:
     while (v13 < [v10 unsignedIntegerValue]);
   }
 
-  json_writer_end_dictionary(a3);
+  json_writer_end_dictionary(result);
   v19 = PRSModelManagerAssociatedObjectKeyForType(4);
   v20 = PRSModelManagerAssociatedObjectKeyForType(5);
   v21 = PRSModelManagerAssociatedObjectKeyForType(6);
   v22 = objc_getAssociatedObject(object, v19);
   v23 = objc_getAssociatedObject(object, v20);
   v24 = objc_getAssociatedObject(object, v21);
-  json_writer_add_key(a3, "_l2e_score", 0xAuLL, 1);
+  json_writer_add_key(result, "_l2e_score", 0xAuLL, 1);
   v65 = v24;
   [v24 doubleValue];
-  json_writer_add_double(a3, v25);
-  json_writer_add_key(a3, "_l2e_inputs", 0xBuLL, 1);
-  json_writer_begin_dictionary(a3);
+  json_writer_add_double(result, v25);
+  json_writer_add_key(result, "_l2e_inputs", 0xBuLL, 1);
+  json_writer_begin_dictionary(result);
   if ([v23 unsignedIntegerValue])
   {
     v26 = 0;
     do
     {
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", v26];
-      v28 = [v27 UTF8String];
+      uTF8String2 = [v27 UTF8String];
 
-      v29 = strlen(v28);
-      json_writer_add_key(a3, v28, v29, 1);
+      v29 = strlen(uTF8String2);
+      json_writer_add_key(result, uTF8String2, v29, 1);
       v30 = [v22 objectAtIndexedSubscript:v26];
       [v30 floatValue];
-      json_writer_add_double(a3, v31);
+      json_writer_add_double(result, v31);
 
       ++v26;
     }
@@ -1319,11 +1319,11 @@ LABEL_12:
     while (v26 < [v23 unsignedIntegerValue]);
   }
 
-  json_writer_end_dictionary(a3);
-  v32 = [object sectionBundleIdentifier];
-  if ([v32 isEqualToString:@"com.apple.mobilemail"])
+  json_writer_end_dictionary(result);
+  sectionBundleIdentifier = [object sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:@"com.apple.mobilemail"])
   {
-    v62 = v32;
+    v62 = sectionBundleIdentifier;
     v63 = v10;
     v64 = v9;
     v33 = PRSModelManagerAssociatedObjectKeyForType(7);
@@ -1332,25 +1332,25 @@ LABEL_12:
     v36 = objc_getAssociatedObject(object, v33);
     v37 = objc_getAssociatedObject(object, v34);
     v38 = objc_getAssociatedObject(object, v35);
-    json_writer_add_key(a3, "_within_bundle_l2_score", 0x17uLL, 1);
+    json_writer_add_key(result, "_within_bundle_l2_score", 0x17uLL, 1);
     v59 = v38;
     [v38 doubleValue];
-    json_writer_add_double(a3, v39);
-    json_writer_add_key(a3, "_within_bundle_l2_inputs", 0x18uLL, 1);
-    json_writer_begin_dictionary(a3);
+    json_writer_add_double(result, v39);
+    json_writer_add_key(result, "_within_bundle_l2_inputs", 0x18uLL, 1);
+    json_writer_begin_dictionary(result);
     if ([v37 unsignedIntegerValue])
     {
       v40 = 0;
       do
       {
         v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", v40];
-        v42 = [v41 UTF8String];
+        uTF8String3 = [v41 UTF8String];
 
-        v43 = strlen(v42);
-        json_writer_add_key(a3, v42, v43, 1);
+        v43 = strlen(uTF8String3);
+        json_writer_add_key(result, uTF8String3, v43, 1);
         v44 = [v36 objectAtIndexedSubscript:v40];
         [v44 floatValue];
-        json_writer_add_double(a3, v45);
+        json_writer_add_double(result, v45);
 
         ++v40;
       }
@@ -1360,31 +1360,31 @@ LABEL_12:
 
     v60 = v37;
     v61 = v36;
-    json_writer_end_dictionary(a3);
+    json_writer_end_dictionary(result);
     v46 = PRSModelManagerAssociatedObjectKeyForType(10);
     v47 = PRSModelManagerAssociatedObjectKeyForType(11);
     v48 = PRSModelManagerAssociatedObjectKeyForType(12);
     v49 = objc_getAssociatedObject(object, v46);
     v50 = objc_getAssociatedObject(object, v47);
     v51 = objc_getAssociatedObject(object, v48);
-    json_writer_add_key(a3, "_within_bundle_l2e_score", 0x18uLL, 1);
+    json_writer_add_key(result, "_within_bundle_l2e_score", 0x18uLL, 1);
     [v51 doubleValue];
-    json_writer_add_double(a3, v52);
-    json_writer_add_key(a3, "_within_bundle_l2e_inputs", 0x19uLL, 1);
-    json_writer_begin_dictionary(a3);
+    json_writer_add_double(result, v52);
+    json_writer_add_key(result, "_within_bundle_l2e_inputs", 0x19uLL, 1);
+    json_writer_begin_dictionary(result);
     if ([v50 unsignedIntegerValue])
     {
       v53 = 0;
       do
       {
         v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%li", v53];
-        v55 = [v54 UTF8String];
+        uTF8String4 = [v54 UTF8String];
 
-        v56 = strlen(v55);
-        json_writer_add_key(a3, v55, v56, 1);
+        v56 = strlen(uTF8String4);
+        json_writer_add_key(result, uTF8String4, v56, 1);
         v57 = [v49 objectAtIndexedSubscript:v53];
         [v57 floatValue];
-        json_writer_add_double(a3, v58);
+        json_writer_add_double(result, v58);
 
         ++v53;
       }
@@ -1392,44 +1392,44 @@ LABEL_12:
       while (v53 < [v50 unsignedIntegerValue]);
     }
 
-    json_writer_end_dictionary(a3);
+    json_writer_end_dictionary(result);
 
     v10 = v63;
     v9 = v64;
-    v32 = v62;
+    sectionBundleIdentifier = v62;
   }
 }
 
-- (void)_extractTrainingSamplesForQuery:(id)a3 withIndexOfEngagedItem:(unint64_t)a4 withItems:(id)a5 withRanker:(id)a6 withCEPData:(id)a7 forClientBundle:(id)a8 debugInfoEnabled:(BOOL)a9 keyboardPrimaryLanguage:(id)a10
+- (void)_extractTrainingSamplesForQuery:(id)query withIndexOfEngagedItem:(unint64_t)item withItems:(id)items withRanker:(id)ranker withCEPData:(id)data forClientBundle:(id)bundle debugInfoEnabled:(BOOL)enabled keyboardPrimaryLanguage:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  queryCopy = query;
+  itemsCopy = items;
+  rankerCopy = ranker;
+  dataCopy = data;
+  bundleCopy = bundle;
+  languageCopy = language;
   PRSRankingSDEnabledFlagState();
-  v22 = [(PRSAnonymousPipelineManager *)self queue];
+  queue = [(PRSAnonymousPipelineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __176__PRSAnonymousPipelineManager__extractTrainingSamplesForQuery_withIndexOfEngagedItem_withItems_withRanker_withCEPData_forClientBundle_debugInfoEnabled_keyboardPrimaryLanguage___block_invoke;
   block[3] = &unk_1E8595EF8;
-  v30 = v17;
-  v31 = self;
-  v32 = v20;
-  v33 = v18;
-  v34 = v16;
-  v35 = v19;
-  v38 = a9;
-  v36 = v21;
-  v37 = a4;
-  v23 = v21;
-  v24 = v19;
-  v25 = v16;
-  v26 = v18;
-  v27 = v20;
-  v28 = v17;
-  dispatch_async(v22, block);
+  v30 = itemsCopy;
+  selfCopy = self;
+  v32 = bundleCopy;
+  v33 = rankerCopy;
+  v34 = queryCopy;
+  v35 = dataCopy;
+  enabledCopy = enabled;
+  v36 = languageCopy;
+  itemCopy = item;
+  v23 = languageCopy;
+  v24 = dataCopy;
+  v25 = queryCopy;
+  v26 = rankerCopy;
+  v27 = bundleCopy;
+  v28 = itemsCopy;
+  dispatch_async(queue, block);
 }
 
 void __176__PRSAnonymousPipelineManager__extractTrainingSamplesForQuery_withIndexOfEngagedItem_withItems_withRanker_withCEPData_forClientBundle_debugInfoEnabled_keyboardPrimaryLanguage___block_invoke(uint64_t a1)
@@ -1654,33 +1654,33 @@ void __176__PRSAnonymousPipelineManager__extractTrainingSamplesForQuery_withInde
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dateIsExpired:(id)a3
+- (BOOL)dateIsExpired:(id)expired
 {
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
+  expiredCopy = expired;
   v5 = [v3 dateWithTimeIntervalSinceNow:-604800.0];
-  v6 = [v4 earlierDate:v5];
+  v6 = [expiredCopy earlierDate:v5];
 
-  return v6 == v4;
+  return v6 == expiredCopy;
 }
 
 - (void)deleteCandidateLogs
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v2 = +[PRSAnonymousPipelineManager candidateLogsBasePath];
-  [v3 removeItemAtPath:v2 error:0];
+  [defaultManager removeItemAtPath:v2 error:0];
 }
 
 - (void)deleteExpiredSubmittedLogs
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[PRSAnonymousPipelineManager submittedLogsURL];
   v25[0] = *MEMORY[0x1E695EBE8];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v23 = 0;
   v17 = v4;
-  v6 = [v3 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v5 options:0 error:&v23];
+  v6 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v5 options:0 error:&v23];
   v7 = v23;
 
   v21 = 0u;
@@ -1707,7 +1707,7 @@ void __176__PRSAnonymousPipelineManager__extractTrainingSamplesForQuery_withInde
         if ([(PRSAnonymousPipelineManager *)self dateIsExpired:v14])
         {
           v18 = v7;
-          [v3 removeItemAtURL:v13 error:&v18];
+          [defaultManager removeItemAtURL:v13 error:&v18];
           v15 = v18;
 
           v7 = v15;
@@ -1723,15 +1723,15 @@ void __176__PRSAnonymousPipelineManager__extractTrainingSamplesForQuery_withInde
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)retrieveFeedbackURLToSendInDirectory:(id)a3
+- (id)retrieveFeedbackURLToSendInDirectory:(id)directory
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v31[0] = *MEMORY[0x1E695EBE8];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   v29 = 0;
-  v6 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:v5 options:0 error:&v29];
+  v6 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v5 options:0 error:&v29];
   v7 = v29;
 
   if (v7)
@@ -1759,7 +1759,7 @@ LABEL_4:
   }
 
   v17 = v16;
-  v24 = v3;
+  v24 = directoryCopy;
   v18 = *v26;
   while (2)
   {
@@ -1771,8 +1771,8 @@ LABEL_4:
       }
 
       v20 = *(*(&v25 + 1) + 8 * i);
-      v21 = [v20 path];
-      if ([v21 hasSuffix:@".json"])
+      path = [v20 path];
+      if ([path hasSuffix:@".json"])
       {
         v15 = v20;
 
@@ -1791,7 +1791,7 @@ LABEL_4:
 
   v15 = 0;
 LABEL_15:
-  v3 = v24;
+  directoryCopy = v24;
 LABEL_16:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1802,7 +1802,7 @@ LABEL_16:
 - (void)cleanUp
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PRSAnonymousPipelineManager *)self userDefaults];
+  userDefaults = [(PRSAnonymousPipelineManager *)self userDefaults];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1824,7 +1824,7 @@ LABEL_16:
         }
 
         v9 = [PRSAnonymousPipelineManager engagementCountKeyForBundle:*(*(&v11 + 1) + 8 * v8)];
-        [v3 setObject:&unk_1F55B3BB8 forKey:v9];
+        [userDefaults setObject:&unk_1F55B3BB8 forKey:v9];
 
         ++v8;
       }
@@ -1836,29 +1836,29 @@ LABEL_16:
     while (v6);
   }
 
-  [v3 removeObjectForKey:@"collectedBundleID"];
-  [v3 removeObjectForKey:@"lastQueryID"];
+  [userDefaults removeObjectForKey:@"collectedBundleID"];
+  [userDefaults removeObjectForKey:@"lastQueryID"];
   [(PRSAnonymousPipelineManager *)self deleteCandidateLogs];
   [(PRSAnonymousPipelineManager *)self deleteExpiredSubmittedLogs];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)submitttedSpotlightReportsError:(id *)a3
++ (id)submitttedSpotlightReportsError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = +[PRSAnonymousPipelineManager submittedLogsURL];
   v13[0] = *MEMORY[0x1E695EBE8];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v12 = 0;
-  v7 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:&v12];
+  v7 = [defaultManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:&v12];
   v8 = v12;
 
-  if (a3 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1866,25 +1866,25 @@ LABEL_16:
   return v7;
 }
 
-- (void)queryWillFinishWithItems:(id)a3 forClient:(id)a4 forQuery:(id)a5 anonymousDataCollectionAllowed:(BOOL)a6
+- (void)queryWillFinishWithItems:(id)items forClient:(id)client forQuery:(id)query anonymousDataCollectionAllowed:(BOOL)allowed
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(PRSAnonymousPipelineManager *)self queue];
+  itemsCopy = items;
+  clientCopy = client;
+  queryCopy = query;
+  queue = [(PRSAnonymousPipelineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__PRSAnonymousPipelineManager_queryWillFinishWithItems_forClient_forQuery_anonymousDataCollectionAllowed___block_invoke;
   block[3] = &unk_1E8595F20;
   block[4] = self;
-  v18 = v11;
-  v21 = a6;
-  v19 = v10;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = clientCopy;
+  allowedCopy = allowed;
+  v19 = itemsCopy;
+  v20 = queryCopy;
+  v14 = queryCopy;
+  v15 = itemsCopy;
+  v16 = clientCopy;
+  dispatch_async(queue, block);
 }
 
 void __106__PRSAnonymousPipelineManager_queryWillFinishWithItems_forClient_forQuery_anonymousDataCollectionAllowed___block_invoke(uint64_t a1)
@@ -1943,26 +1943,26 @@ uint64_t __106__PRSAnonymousPipelineManager_queryWillFinishWithItems_forClient_f
   return [v2 setLastTopHitQueryString:0];
 }
 
-- (void)userEngagedItemWithIdentifier:(id)a3 forBundle:(id)a4 forQuery:(id)a5
+- (void)userEngagedItemWithIdentifier:(id)identifier forBundle:(id)bundle forQuery:(id)query
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  queryCopy = query;
   v11 = PRSLogCategoryAnonymousPipeline();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v24 = v8;
+    v24 = identifierCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = bundleCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = queryCopy;
     _os_log_impl(&dword_1D9F69000, v11, OS_LOG_TYPE_DEFAULT, "UserEngagedItem id:%@ bundle:%@ query:%@", buf, 0x20u);
   }
 
-  v12 = v10;
-  v13 = [(PRSAnonymousPipelineManager *)self queue];
+  v12 = queryCopy;
+  queue = [(PRSAnonymousPipelineManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__PRSAnonymousPipelineManager_userEngagedItemWithIdentifier_forBundle_forQuery___block_invoke;
@@ -1970,12 +1970,12 @@ uint64_t __106__PRSAnonymousPipelineManager_queryWillFinishWithItems_forClient_f
   block[4] = self;
   v14 = v12;
   v19 = v14;
-  v20 = v9;
-  v21 = v8;
+  v20 = bundleCopy;
+  v21 = identifierCopy;
   v22 = v14;
-  v15 = v8;
-  v16 = v9;
-  dispatch_async(v13, block);
+  v15 = identifierCopy;
+  v16 = bundleCopy;
+  dispatch_async(queue, block);
 
   v17 = *MEMORY[0x1E69E9840];
 }

@@ -1,81 +1,81 @@
 @interface WFBluetoothTriggerConfigurationViewController
-- (WFBluetoothTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFBluetoothTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5;
-- (void)finishWithDevices:(id)a3;
-- (void)presentNavControllerWithRootViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected;
+- (void)finishWithDevices:(id)devices;
+- (void)presentNavControllerWithRootViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFBluetoothTriggerConfigurationViewController
 
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setOnConnect:v6];
+  viewSelectedCopy = viewSelected;
+  selectedCopy = selected;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setOnConnect:selectedCopy];
 
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v9 setOnDisconnect:v5];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setOnDisconnect:viewSelectedCopy];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options
 {
-  v5 = a4;
-  v14 = a5;
-  v8 = a3;
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  v10 = v9;
-  if (v5)
+  selectedCopy = selected;
+  optionsCopy = options;
+  controllerCopy = controller;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v10 = trigger;
+  if (selectedCopy)
   {
-    [v9 setSelection:0];
+    [trigger setSelection:0];
 
-    v11 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v11 setSelectedDevices:MEMORY[0x277CBEBF8]];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger2 setSelectedDevices:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    [v9 setSelection:1];
+    [trigger setSelection:1];
 
-    v11 = [v14 if_map:&__block_literal_global_13371];
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedDevices:v11];
+    trigger2 = [optionsCopy if_map:&__block_literal_global_13371];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger3 setSelectedDevices:trigger2];
   }
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
-  v13 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v13 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)presentNavControllerWithRootViewController:(id)a3
+- (void)presentNavControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [(WFBluetoothTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFBluetoothTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFBluetoothTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"chooseDevice"];
 
@@ -91,20 +91,20 @@
       _os_log_impl(&dword_274719000, v10, OS_LOG_TYPE_DEBUG, "%s didselect section: %{public}@", buf, 0x16u);
     }
 
-    v11 = [(WFBluetoothTriggerConfigurationViewController *)self allDevices];
+    allDevices = [(WFBluetoothTriggerConfigurationViewController *)self allDevices];
 
-    if (v11)
+    if (allDevices)
     {
-      v12 = [(WFBluetoothTriggerConfigurationViewController *)self allDevices];
+      allDevices2 = [(WFBluetoothTriggerConfigurationViewController *)self allDevices];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __83__WFBluetoothTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v22[3] = &unk_279EE8028;
       v22[4] = self;
-      v13 = [v12 if_map:v22];
+      v13 = [allDevices2 if_map:v22];
 
-      v14 = [(WFTriggerConfigurationViewController *)self trigger];
-      v15 = [v14 selection] == 0;
+      trigger = [(WFTriggerConfigurationViewController *)self trigger];
+      v15 = [trigger selection] == 0;
 
       v16 = [WFTriggerTableViewController alloc];
       v17 = WFLocalizedStringWithKey(@"Any Device (bluetooth trigger)", @"Any Device");
@@ -130,9 +130,9 @@
     }
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v21 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v21 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 WFSelectableListOption *__83__WFBluetoothTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -148,21 +148,21 @@ WFSelectableListOption *__83__WFBluetoothTriggerConfigurationViewController_tabl
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFBluetoothTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFBluetoothTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFBluetoothTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFBluetoothTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -182,38 +182,38 @@ WFSelectableListOption *__83__WFBluetoothTriggerConfigurationViewController_tabl
   {
     v15 = v10;
     v16 = WFLocalizedString(@"Device");
-    v17 = [v15 textLabel];
-    [v17 setText:v16];
+    textLabel = [v15 textLabel];
+    [textLabel setText:v16];
 
-    v18 = [(WFTriggerConfigurationViewController *)self trigger];
-    v19 = [v18 selection];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selection = [trigger selection];
 
-    if (v19 == 1)
+    if (selection == 1)
     {
-      v25 = [(WFTriggerConfigurationViewController *)self trigger];
-      v26 = [v25 selectedDevices];
-      v27 = [v26 count];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedDevices = [trigger2 selectedDevices];
+      v27 = [selectedDevices count];
 
       if (v27)
       {
-        v28 = [(WFTriggerConfigurationViewController *)self trigger];
-        v29 = [v28 selectedDevices];
-        v30 = [v29 count];
+        trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedDevices2 = [trigger3 selectedDevices];
+        v30 = [selectedDevices2 count];
 
         if (v30 == 1)
         {
-          v31 = [(WFTriggerConfigurationViewController *)self trigger];
-          v32 = [v31 selectedDevices];
-          v33 = [v32 objectAtIndex:0];
+          trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+          selectedDevices3 = [trigger4 selectedDevices];
+          v33 = [selectedDevices3 objectAtIndex:0];
         }
 
         else
         {
           v42 = MEMORY[0x277CCACA8];
-          v31 = WFLocalizedString(@"Any of %lu Devices");
-          v32 = [(WFTriggerConfigurationViewController *)self trigger];
-          v43 = [v32 selectedDevices];
-          v33 = [v42 localizedStringWithFormat:v31, objc_msgSend(v43, "count")];
+          trigger4 = WFLocalizedString(@"Any of %lu Devices");
+          selectedDevices3 = [(WFTriggerConfigurationViewController *)self trigger];
+          v32SelectedDevices = [selectedDevices3 selectedDevices];
+          v33 = [v42 localizedStringWithFormat:trigger4, objc_msgSend(v32SelectedDevices, "count")];
         }
 
         goto LABEL_22;
@@ -224,12 +224,12 @@ WFSelectableListOption *__83__WFBluetoothTriggerConfigurationViewController_tabl
 
     else
     {
-      if (v19)
+      if (selection)
       {
         v33 = 0;
 LABEL_22:
-        v44 = [v15 detailTextLabel];
-        [v44 setText:v33];
+        detailTextLabel = [v15 detailTextLabel];
+        [detailTextLabel setText:v33];
 
         goto LABEL_23;
       }
@@ -270,73 +270,73 @@ LABEL_22:
 
     v54 = v24;
 
-    v52 = [(WFTriggerConfigurationViewController *)self trigger];
-    v53 = [objc_opt_class() onIcon];
-    v51 = [(WFTriggerConfigurationViewController *)self trigger];
-    v34 = [objc_opt_class() onLabel];
-    v49 = [(WFTriggerConfigurationViewController *)self trigger];
-    v35 = [objc_opt_class() onIconTintColor];
-    v48 = [(WFTriggerConfigurationViewController *)self trigger];
-    v36 = [objc_opt_class() offIcon];
-    v47 = [(WFTriggerConfigurationViewController *)self trigger];
-    v37 = [objc_opt_class() offLabel];
-    v38 = [(WFTriggerConfigurationViewController *)self trigger];
-    v39 = [objc_opt_class() offIconTintColor];
-    [v54 configureWithLeftGlyph:v53 leftTitle:v34 leftTintColor:v35 rightGlyph:v36 rightTitle:v37 rightTintColor:v39];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    onIcon = [objc_opt_class() onIcon];
+    trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+    onLabel = [objc_opt_class() onLabel];
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    onIconTintColor = [objc_opt_class() onIconTintColor];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIcon = [objc_opt_class() offIcon];
+    trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+    offLabel = [objc_opt_class() offLabel];
+    trigger10 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIconTintColor = [objc_opt_class() offIconTintColor];
+    [v54 configureWithLeftGlyph:onIcon leftTitle:onLabel leftTintColor:onIconTintColor rightGlyph:offIcon rightTitle:offLabel rightTintColor:offIconTintColor];
 
-    v40 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v54 setLeftViewSelected:{objc_msgSend(v40, "onConnect")}];
+    trigger11 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v54 setLeftViewSelected:{objc_msgSend(trigger11, "onConnect")}];
 
-    v41 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v54 setRightViewSelected:{objc_msgSend(v41, "onDisconnect")}];
+    trigger12 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v54 setRightViewSelected:{objc_msgSend(trigger12, "onDisconnect")}];
 
     [v54 setDelegate:self];
     v9 = v50;
   }
 
 LABEL_23:
-  v45 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v45 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v45;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFBluetoothTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFBluetoothTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFBluetoothTriggerConfigurationViewController;
-  [(WFBluetoothTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFBluetoothTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)finishWithDevices:(id)a3
+- (void)finishWithDevices:(id)devices
 {
-  v4 = [a3 array];
-  [(WFBluetoothTriggerConfigurationViewController *)self setAllDevices:v4];
+  array = [devices array];
+  [(WFBluetoothTriggerConfigurationViewController *)self setAllDevices:array];
 }
 
 - (id)customSections
@@ -376,19 +376,19 @@ LABEL_23:
   return v4;
 }
 
-- (WFBluetoothTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFBluetoothTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFBluetoothTriggerConfigurationViewController.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFBluetoothTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFBluetoothTriggerConfigurationViewController.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFBluetoothTrigger class]]"}];
   }
 
   v16.receiver = self;
   v16.super_class = WFBluetoothTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v16 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v16 initWithTrigger:triggerCopy mode:mode];
   if (v8)
   {
     v9 = dispatch_get_global_queue(25, 0);

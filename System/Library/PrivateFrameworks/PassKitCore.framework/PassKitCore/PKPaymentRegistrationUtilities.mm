@@ -1,20 +1,20 @@
 @interface PKPaymentRegistrationUtilities
-+ (void)_shouldShowAddCardFlowForWebService:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-+ (void)configureWebServiceIfNecessary:(id)a3 completion:(id)a4;
-+ (void)registrationIsSupportedInCurrentRegionWithWebService:(id)a3 completion:(id)a4;
-+ (void)shouldShowPasscodeAccessibilityOverride:(id)a3 completion:(id)a4;
-+ (void)shouldShowWalletInBuddy:(id)a3 completion:(id)a4;
-+ (void)shouldShowWalletInDigitalSeparation:(id)a3 withDeviceSpecificCompletion:(id)a4;
-+ (void)shouldShowWalletInSettings:(id)a3 completion:(id)a4;
-+ (void)shouldShowWalletInSettingsWithApplePaySupportInformation:(id)a3 completion:(id)a4;
++ (void)_shouldShowAddCardFlowForWebService:(id)service options:(unint64_t)options completion:(id)completion;
++ (void)configureWebServiceIfNecessary:(id)necessary completion:(id)completion;
++ (void)registrationIsSupportedInCurrentRegionWithWebService:(id)service completion:(id)completion;
++ (void)shouldShowPasscodeAccessibilityOverride:(id)override completion:(id)completion;
++ (void)shouldShowWalletInBuddy:(id)buddy completion:(id)completion;
++ (void)shouldShowWalletInDigitalSeparation:(id)separation withDeviceSpecificCompletion:(id)completion;
++ (void)shouldShowWalletInSettings:(id)settings completion:(id)completion;
++ (void)shouldShowWalletInSettingsWithApplePaySupportInformation:(id)information completion:(id)completion;
 @end
 
 @implementation PKPaymentRegistrationUtilities
 
-+ (void)shouldShowWalletInBuddy:(id)a3 completion:(id)a4
++ (void)shouldShowWalletInBuddy:(id)buddy completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  buddyCopy = buddy;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,38 +22,38 @@
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "shouldShowWalletInBuddy supported", v8, 2u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-+ (void)shouldShowWalletInSettings:(id)a3 completion:(id)a4
++ (void)shouldShowWalletInSettings:(id)settings completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PKPaymentRegistrationUtilities_shouldShowWalletInSettings_completion___block_invoke;
   v8[3] = &unk_1E79C8DF0;
-  v9 = v6;
-  v7 = v6;
-  [a1 shouldShowWalletInSettingsWithApplePaySupportInformation:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self shouldShowWalletInSettingsWithApplePaySupportInformation:settings completion:v8];
 }
 
-+ (void)shouldShowWalletInSettingsWithApplePaySupportInformation:(id)a3 completion:(id)a4
++ (void)shouldShowWalletInSettingsWithApplePaySupportInformation:(id)information completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __102__PKPaymentRegistrationUtilities_shouldShowWalletInSettingsWithApplePaySupportInformation_completion___block_invoke;
   v10[3] = &unk_1E79C8E18;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
-  [a1 configureWebServiceIfNecessary:v9 completion:v10];
+  v12 = completionCopy;
+  selfCopy = self;
+  v11 = informationCopy;
+  v8 = completionCopy;
+  v9 = informationCopy;
+  [self configureWebServiceIfNecessary:v9 completion:v10];
 }
 
 void __102__PKPaymentRegistrationUtilities_shouldShowWalletInSettingsWithApplePaySupportInformation_completion___block_invoke(uint64_t a1, void *a2)
@@ -171,20 +171,20 @@ LABEL_9:
   }
 }
 
-+ (void)shouldShowWalletInDigitalSeparation:(id)a3 withDeviceSpecificCompletion:(id)a4
++ (void)shouldShowWalletInDigitalSeparation:(id)separation withDeviceSpecificCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  separationCopy = separation;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __99__PKPaymentRegistrationUtilities_shouldShowWalletInDigitalSeparation_withDeviceSpecificCompletion___block_invoke;
     v9[3] = &unk_1E79C4C70;
-    v10 = v6;
-    v11 = v7;
-    [a1 configureWebServiceIfNecessary:v10 completion:v9];
+    v10 = separationCopy;
+    v11 = completionCopy;
+    [self configureWebServiceIfNecessary:v10 completion:v9];
 
     v8 = v10;
   }
@@ -295,19 +295,19 @@ uint64_t __99__PKPaymentRegistrationUtilities_shouldShowWalletInDigitalSeparatio
   return (*(a1[5] + 16))();
 }
 
-+ (void)shouldShowPasscodeAccessibilityOverride:(id)a3 completion:(id)a4
++ (void)shouldShowPasscodeAccessibilityOverride:(id)override completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PKPaymentRegistrationUtilities_shouldShowPasscodeAccessibilityOverride_completion___block_invoke;
   v10[3] = &unk_1E79C4C70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
-  [a1 configureWebServiceIfNecessary:v9 completion:v10];
+  v11 = overrideCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = overrideCopy;
+  [self configureWebServiceIfNecessary:v9 completion:v10];
 }
 
 void __85__PKPaymentRegistrationUtilities_shouldShowPasscodeAccessibilityOverride_completion___block_invoke(uint64_t a1, void *a2)
@@ -373,32 +373,32 @@ void __85__PKPaymentRegistrationUtilities_shouldShowPasscodeAccessibilityOverrid
   }
 }
 
-+ (void)configureWebServiceIfNecessary:(id)a3 completion:(id)a4
++ (void)configureWebServiceIfNecessary:(id)necessary completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 needsConfiguration])
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  if ([necessaryCopy needsConfiguration])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __76__PKPaymentRegistrationUtilities_configureWebServiceIfNecessary_completion___block_invoke;
     v10[3] = &unk_1E79C8E90;
     v7 = &v11;
-    v11 = v6;
-    [v5 configurePaymentServiceWithCompletion:v10];
+    v11 = completionCopy;
+    [necessaryCopy configurePaymentServiceWithCompletion:v10];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __76__PKPaymentRegistrationUtilities_configureWebServiceIfNecessary_completion___block_invoke_3;
     v8[3] = &unk_1E79C4428;
     v7 = &v9;
-    v9 = v6;
+    v9 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
     goto LABEL_5;
   }
@@ -422,24 +422,24 @@ void __76__PKPaymentRegistrationUtilities_configureWebServiceIfNecessary_complet
   }
 }
 
-+ (void)_shouldShowAddCardFlowForWebService:(id)a3 options:(unint64_t)a4 completion:(id)a5
++ (void)_shouldShowAddCardFlowForWebService:(id)service options:(unint64_t)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  serviceCopy = service;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__PKPaymentRegistrationUtilities__shouldShowAddCardFlowForWebService_options_completion___block_invoke;
     aBlock[3] = &unk_1E79C5268;
-    v17 = v8;
+    v17 = completionCopy;
     v10 = _Block_copy(aBlock);
-    if (a4)
+    if (options)
     {
-      if ((a4 & 1) == 0 || [PKPaymentRegistrationUtilities _isPaymentSetupSupportedForWebService:v7])
+      if ((options & 1) == 0 || [PKPaymentRegistrationUtilities _isPaymentSetupSupportedForWebService:serviceCopy])
       {
-        if ((a4 & 2) != 0)
+        if ((options & 2) != 0)
         {
           v11 = +[PKPaymentService paymentService];
           v14[0] = MEMORY[0x1E69E9820];
@@ -539,20 +539,20 @@ LABEL_3:
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)registrationIsSupportedInCurrentRegionWithWebService:(id)a3 completion:(id)a4
++ (void)registrationIsSupportedInCurrentRegionWithWebService:(id)service completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__PKPaymentRegistrationUtilities_registrationIsSupportedInCurrentRegionWithWebService_completion___block_invoke;
   v10[3] = &unk_1E79C8E18;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
-  [a1 configureWebServiceIfNecessary:v9 completion:v10];
+  v12 = completionCopy;
+  selfCopy = self;
+  v11 = serviceCopy;
+  v8 = completionCopy;
+  v9 = serviceCopy;
+  [self configureWebServiceIfNecessary:v9 completion:v10];
 }
 
 void __98__PKPaymentRegistrationUtilities_registrationIsSupportedInCurrentRegionWithWebService_completion___block_invoke(uint64_t a1, void *a2)

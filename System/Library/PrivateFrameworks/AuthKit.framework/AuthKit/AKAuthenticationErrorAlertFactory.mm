@@ -1,13 +1,13 @@
 @interface AKAuthenticationErrorAlertFactory
 - (AKAuthenticationErrorAlertFactory)init;
-- (id)createAlertDetailsWithError:(id)a3 username:(id)a4;
+- (id)createAlertDetailsWithError:(id)error username:(id)username;
 @end
 
 @implementation AKAuthenticationErrorAlertFactory
 
-- (id)createAlertDetailsWithError:(id)a3 username:(id)a4
+- (id)createAlertDetailsWithError:(id)error username:(id)username
 {
-  if (a4)
+  if (username)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -19,9 +19,9 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  v11 = sub_1002289E0(v9, v6, v8);
+  errorCopy = error;
+  selfCopy = self;
+  v11 = sub_1002289E0(errorCopy, v6, v8);
 
   return v11;
 }

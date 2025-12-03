@@ -1,26 +1,26 @@
 @interface ACCNavigationServer
 + (id)sharedServer;
-- (ACCNavigationServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)accessoryNavigationAttached:(id)a3 componentList:(id)a4;
-- (void)accessoryNavigationDetached:(id)a3;
-- (void)accessoryNavigationObjectDetectionUpdateInfo:(id)a3 componentIdList:(id)a4 updateInfo:(id)a5;
-- (void)accessoryNavigationStartRouteGuidance:(id)a3 componentIdList:(id)a4 options:(unint64_t)a5;
-- (void)accessoryNavigationStopRouteGuidance:(id)a3 componentIdList:(id)a4;
+- (ACCNavigationServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)accessoryNavigationAttached:(id)attached componentList:(id)list;
+- (void)accessoryNavigationDetached:(id)detached;
+- (void)accessoryNavigationObjectDetectionUpdateInfo:(id)info componentIdList:(id)list updateInfo:(id)updateInfo;
+- (void)accessoryNavigationStartRouteGuidance:(id)guidance componentIdList:(id)list options:(unint64_t)options;
+- (void)accessoryNavigationStopRouteGuidance:(id)guidance componentIdList:(id)list;
 - (void)dealloc;
-- (void)iterateAttachedConnectionsSync:(id)a3;
-- (void)iterateNavigationProviderListSync:(id)a3;
-- (void)notifyOfProvider:(id)a3 connection:(id)a4;
+- (void)iterateAttachedConnectionsSync:(id)sync;
+- (void)iterateNavigationProviderListSync:(id)sync;
+- (void)notifyOfProvider:(id)provider connection:(id)connection;
 @end
 
 @implementation ACCNavigationServer
 
-- (ACCNavigationServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCNavigationServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ACCNavigationServer;
-  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -50,9 +50,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v20 = v6;
+    v20 = nameCopy;
     v21 = 2080;
-    v22 = a4;
+    notificationCopy = notification;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -107,7 +107,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[#Navigation] dealloc: self=%@", buf, 0xCu);
   }
 
@@ -125,15 +125,15 @@
   [(ACCFeatureServer *)&v9 dealloc];
 }
 
-- (void)iterateNavigationProviderListSync:(id)a3
+- (void)iterateNavigationProviderListSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_navigationProviderInfoList allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_navigationProviderInfoList allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -144,12 +144,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 1;
-      v4[2](v4, v10, &v11);
+      syncCopy[2](syncCopy, v10, &v11);
       if (v11 != 1)
       {
         break;
@@ -157,7 +157,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -169,15 +169,15 @@ LABEL_3:
   }
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -188,13 +188,13 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 1;
-      v11 = [v10 accessoryUID];
-      v4[2](v4, v11, &v12);
+      accessoryUID = [v10 accessoryUID];
+      syncCopy[2](syncCopy, accessoryUID, &v12);
 
       if (v12 != 1)
       {
@@ -203,7 +203,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -215,10 +215,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -254,29 +254,29 @@ LABEL_3:
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCNavigationXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCNavigationServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCNavigationServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCNavigationXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __58__ACCNavigationServer_listener_shouldAcceptNewConnection___block_invoke;
   v24[3] = &unk_100227718;
   objc_copyWeak(&v25, &from);
   objc_copyWeak(&v26, &location);
-  [v7 setInvalidationHandler:v24];
+  [connectionCopy setInvalidationHandler:v24];
   v15 = objc_alloc_init(_ACCNavigationProviderInfo);
-  [(_ACCNavigationProviderInfo *)v15 setConnection:v7];
+  [(_ACCNavigationProviderInfo *)v15 setConnection:connectionCopy];
   [(_ACCNavigationProviderInfo *)v15 setServerRemote:v13];
-  v16 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_40];
+  v16 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_40];
   [(_ACCNavigationProviderInfo *)v15 setRemoteObject:v16];
 
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 hash]);
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [connectionCopy hash]);
   [(NSMutableDictionary *)self->_navigationProviderInfoList setObject:v15 forKey:v17];
   objc_storeStrong(&self->_navigationProviderInfo, v15);
   if (gLogObjects && gNumLogObjects >= 5)
@@ -303,7 +303,7 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[#Navigation] providerInfo=%@", buf, 0xCu);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   v21 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -625,10 +625,10 @@ LABEL_27:
   *a3 = 1;
 }
 
-- (void)accessoryNavigationAttached:(id)a3 componentList:(id)a4
+- (void)accessoryNavigationAttached:(id)attached componentList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  attachedCopy = attached;
+  listCopy = list;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -658,13 +658,13 @@ LABEL_27:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = attachedCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = listCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] Navigation server, accessoryNavigationAttached: %@, componentList=%@", buf, 0x16u);
   }
 
-  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:attachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v12 = *(gLogObjects + 32);
@@ -685,7 +685,7 @@ LABEL_27:
   {
     navigationProviderInfo = self->_navigationProviderInfo;
     *buf = 138412802;
-    v19 = v6;
+    v19 = attachedCopy;
     v20 = 2112;
     v21 = v11;
     v22 = 2112;
@@ -693,14 +693,14 @@ LABEL_27:
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[#Navigation] Navigation server, accessoryNavigationAttached: %@, accessory=%@ _navigationProviderInfo=%@", buf, 0x20u);
   }
 
-  if (v11 || (v11 = [[_ACCNavigationAccessoryInfo alloc] initWithUID:v6 componentList:v7], [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v11 forKey:v6], v11))
+  if (v11 || (v11 = [[_ACCNavigationAccessoryInfo alloc] initWithUID:attachedCopy componentList:listCopy], [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v11 forKey:attachedCopy], v11))
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __65__ACCNavigationServer_accessoryNavigationAttached_componentList___block_invoke;
     v15[3] = &unk_10022A240;
-    v16 = v6;
-    v17 = v7;
+    v16 = attachedCopy;
+    v17 = listCopy;
     [(ACCNavigationServer *)self iterateNavigationProviderListSync:v15];
   }
 }
@@ -725,9 +725,9 @@ void __65__ACCNavigationServer_accessoryNavigationAttached_componentList___block
   *a3 = 1;
 }
 
-- (void)accessoryNavigationDetached:(id)a3
+- (void)accessoryNavigationDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -757,11 +757,11 @@ void __65__ACCNavigationServer_accessoryNavigationAttached_componentList___block
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#Navigation] Navigation server, accessoryNavigationDetached: %@", buf, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -782,7 +782,7 @@ void __65__ACCNavigationServer_accessoryNavigationAttached_componentList___block
   {
     navigationProviderInfo = self->_navigationProviderInfo;
     *buf = 138412802;
-    v16 = v4;
+    v16 = detachedCopy;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
@@ -792,15 +792,15 @@ void __65__ACCNavigationServer_accessoryNavigationAttached_componentList___block
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke;
   v13[3] = &unk_10022A218;
-  v14 = v4;
-  v11 = v4;
+  v14 = detachedCopy;
+  v11 = detachedCopy;
   [(ACCNavigationServer *)self iterateNavigationProviderListSync:v13];
 }
 
@@ -824,10 +824,10 @@ void __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke(uint64
   *a3 = 1;
 }
 
-- (void)accessoryNavigationStartRouteGuidance:(id)a3 componentIdList:(id)a4 options:(unint64_t)a5
+- (void)accessoryNavigationStartRouteGuidance:(id)guidance componentIdList:(id)list options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  guidanceCopy = guidance;
+  listCopy = list;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 5;
@@ -857,15 +857,15 @@ void __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke(uint64
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v37 = v8;
+    v37 = guidanceCopy;
     v38 = 2112;
-    v39 = v9;
+    v39 = listCopy;
     v40 = 2048;
-    v41 = a5;
+    optionsCopy = options;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[#Navigation] Navigation server, accessoryNavigationStartRouteGuidance: %@, componentIdList=%@, options=%llxh", buf, 0x20u);
   }
 
-  v13 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v8];
+  v13 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:guidanceCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v14 = *(gLogObjects + 32);
@@ -886,29 +886,29 @@ void __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke(uint64
   {
     navigationProviderInfo = self->_navigationProviderInfo;
     *buf = 138412802;
-    v37 = v8;
+    v37 = guidanceCopy;
     v38 = 2112;
     v39 = v13;
     v40 = 2112;
-    v41 = navigationProviderInfo;
+    optionsCopy = navigationProviderInfo;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[#Navigation] Navigation server, accessoryNavigationStartRouteGuidance: %@, accessory=%@ _navigationProviderInfo=%@", buf, 0x20u);
   }
 
   if (v13)
   {
-    v25 = self;
-    v16 = v9;
-    v17 = v16;
-    if (!v16)
+    selfCopy = self;
+    componentIdList = listCopy;
+    v17 = componentIdList;
+    if (!componentIdList)
     {
-      v16 = [v13 componentIdList];
+      componentIdList = [v13 componentIdList];
     }
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v18 = v16;
+    v18 = componentIdList;
     v19 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v19)
     {
@@ -924,7 +924,7 @@ void __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke(uint64
           }
 
           v23 = *(*(&v31 + 1) + 8 * i);
-          [v13 setComponent:v23 options:a5];
+          [v13 setComponent:v23 options:options];
           [v13 setComponent:v23 started:1];
         }
 
@@ -938,11 +938,11 @@ void __51__ACCNavigationServer_accessoryNavigationDetached___block_invoke(uint64
     v26[1] = 3221225472;
     v26[2] = __85__ACCNavigationServer_accessoryNavigationStartRouteGuidance_componentIdList_options___block_invoke;
     v26[3] = &unk_10022A268;
-    v27 = v8;
+    v27 = guidanceCopy;
     v28 = v17;
-    v30 = a5;
+    optionsCopy2 = options;
     v29 = v13;
-    [(ACCNavigationServer *)v25 iterateNavigationProviderListSync:v26];
+    [(ACCNavigationServer *)selfCopy iterateNavigationProviderListSync:v26];
   }
 }
 
@@ -990,10 +990,10 @@ void __85__ACCNavigationServer_accessoryNavigationStartRouteGuidance_componentId
   *a3 = 1;
 }
 
-- (void)accessoryNavigationStopRouteGuidance:(id)a3 componentIdList:(id)a4
+- (void)accessoryNavigationStopRouteGuidance:(id)guidance componentIdList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  guidanceCopy = guidance;
+  listCopy = list;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1023,27 +1023,27 @@ void __85__ACCNavigationServer_accessoryNavigationStartRouteGuidance_componentId
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v6;
+    v29 = guidanceCopy;
     v30 = 2112;
-    v31 = v7;
+    v31 = listCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] Navigation server, accessoryNavigationStopRouteGuidance: %@, componentIdList=%@", buf, 0x16u);
   }
 
-  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:guidanceCopy];
   if (v11)
   {
-    v12 = v7;
-    v13 = v12;
-    if (!v12)
+    componentIdList = listCopy;
+    v13 = componentIdList;
+    if (!componentIdList)
     {
-      v12 = [v11 componentIdList];
+      componentIdList = [v11 componentIdList];
     }
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v12;
+    v14 = componentIdList;
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
@@ -1071,7 +1071,7 @@ void __85__ACCNavigationServer_accessoryNavigationStartRouteGuidance_componentId
     v19[1] = 3221225472;
     v19[2] = __76__ACCNavigationServer_accessoryNavigationStopRouteGuidance_componentIdList___block_invoke;
     v19[3] = &unk_10022A290;
-    v20 = v6;
+    v20 = guidanceCopy;
     v21 = v13;
     v22 = v11;
     [(ACCNavigationServer *)self iterateNavigationProviderListSync:v19];
@@ -1125,11 +1125,11 @@ void __76__ACCNavigationServer_accessoryNavigationStopRouteGuidance_componentIdL
   *a3 = 1;
 }
 
-- (void)accessoryNavigationObjectDetectionUpdateInfo:(id)a3 componentIdList:(id)a4 updateInfo:(id)a5
+- (void)accessoryNavigationObjectDetectionUpdateInfo:(id)info componentIdList:(id)list updateInfo:(id)updateInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  listCopy = list;
+  updateInfoCopy = updateInfo;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 5;
@@ -1159,24 +1159,24 @@ void __76__ACCNavigationServer_accessoryNavigationStopRouteGuidance_componentIdL
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v21 = v8;
+    v21 = infoCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = listCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = updateInfoCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[#Navigation] Navigation server, accessoryNavigationObjectDetectionUpdateInfo: %@, componentIdList=%@, updateInfo=%@", buf, 0x20u);
   }
 
-  v14 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v8];
+  v14 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:infoCopy];
   if (v14)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __95__ACCNavigationServer_accessoryNavigationObjectDetectionUpdateInfo_componentIdList_updateInfo___block_invoke;
     v15[3] = &unk_10022A2B8;
-    v16 = v8;
-    v17 = v9;
-    v18 = v10;
+    v16 = infoCopy;
+    v17 = listCopy;
+    v18 = updateInfoCopy;
     v19 = v14;
     [(ACCNavigationServer *)self iterateNavigationProviderListSync:v15];
   }
@@ -1229,10 +1229,10 @@ void __95__ACCNavigationServer_accessoryNavigationObjectDetectionUpdateInfo_comp
   *a3 = 1;
 }
 
-- (void)notifyOfProvider:(id)a3 connection:(id)a4
+- (void)notifyOfProvider:(id)provider connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1263,25 +1263,25 @@ void __95__ACCNavigationServer_accessoryNavigationObjectDetectionUpdateInfo_comp
   {
     navigationProviderInfo = self->_navigationProviderInfo;
     v17 = 138412802;
-    v18 = v6;
+    v18 = providerCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = connectionCopy;
     v21 = 2112;
     v22 = navigationProviderInfo;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#Navigation] Navigation server, notifyOfProvider: %@ connection: %@, _navigationProviderInfo=%@", &v17, 0x20u);
   }
 
-  v12 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v7 hash]);
+  v12 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [connectionCopy hash]);
   v13 = [(NSMutableDictionary *)self->_navigationProviderInfoList objectForKey:v12];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 connection];
-    v16 = [v15 isEqual:v7];
+    connection = [v13 connection];
+    v16 = [connection isEqual:connectionCopy];
 
     if (v16)
     {
-      [v14 setProviderUID:v6];
+      [v14 setProviderUID:providerCopy];
     }
   }
 }
@@ -1292,7 +1292,7 @@ void __95__ACCNavigationServer_accessoryNavigationObjectDetectionUpdateInfo_comp
   block[1] = 3221225472;
   block[2] = __35__ACCNavigationServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_11 != -1)
   {
     dispatch_once(&sharedServer_once_11, block);

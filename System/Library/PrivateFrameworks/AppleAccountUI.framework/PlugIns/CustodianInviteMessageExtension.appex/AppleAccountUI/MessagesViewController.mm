@@ -1,11 +1,11 @@
 @interface MessagesViewController
 - (CGSize)contentSizeThatFits:(CGSize)result;
 - (UIActivityIndicatorView)spinner;
-- (_TtC31CustodianInviteMessageExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC31CustodianInviteMessageExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleRecoveryContactDidUpdate;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation MessagesViewController
@@ -24,34 +24,34 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100001648(a3);
+  selfCopy = self;
+  sub_100001648(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100001854(a3);
+  selfCopy = self;
+  sub_100001854(disappear);
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_100001A58(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_100001A58(conversationCopy);
 }
 
 - (void)handleRecoveryContactDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100003414();
 }
 
-- (_TtC31CustodianInviteMessageExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC31CustodianInviteMessageExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000052B0();
     v7 = v6;
@@ -63,8 +63,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100003B7C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100003B7C(v5, v7, bundle);
 }
 
 @end

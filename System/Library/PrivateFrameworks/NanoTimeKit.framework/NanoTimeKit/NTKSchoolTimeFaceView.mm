@@ -1,12 +1,12 @@
 @interface NTKSchoolTimeFaceView
 + (id)schoolTimeColor;
 + (id)secondHandColor;
-- (NTKSchoolTimeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKSchoolTimeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
 - (void)_handleChangeNotification;
 - (void)_layoutCurvedNameLabel;
-- (void)_setDate:(id)a3;
+- (void)_setDate:(id)date;
 - (void)_setupNameLabel;
 - (void)_setupNotifications;
 - (void)_startClockUpdates;
@@ -15,20 +15,20 @@
 - (void)_stopObserving;
 - (void)_tearDownUI;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateTimeAndDate:(id)a3 animated:(BOOL)a4;
+- (void)_updateTimeAndDate:(id)date animated:(BOOL)animated;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 - (void)setupUI;
 @end
 
 @implementation NTKSchoolTimeFaceView
 
-- (NTKSchoolTimeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSchoolTimeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = NTKSchoolTimeFaceView;
-  v5 = [(NTKFaceView *)&v8 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKFaceView *)&v8 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
@@ -69,16 +69,16 @@
   v63 = 0u;
   v64 = 0u;
   memset(v62, 0, sizeof(v62));
-  v3 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_10(v3, v62);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_10(device, v62);
 
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [(NTKSchoolTimeFaceView *)self setBackgroundColor:v4];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(NTKSchoolTimeFaceView *)self setBackgroundColor:blackColor];
 
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
-  v7 = [(NTKFaceView *)self device];
-  [NTKAnalogUtilities dialSizeForDevice:v7];
+  device2 = [(NTKFaceView *)self device];
+  [NTKAnalogUtilities dialSizeForDevice:device2];
   v9 = v8;
   v11 = v10;
 
@@ -87,12 +87,12 @@
   dialView = self->_dialView;
   self->_dialView = v13;
 
-  v15 = [(NTKFaceView *)self contentView];
-  [v15 addSubview:self->_dialView];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView addSubview:self->_dialView];
 
   v16 = [NTKAnalogHandsView alloc];
-  v17 = [(NTKFaceView *)self device];
-  v18 = [(NTKAnalogHandsView *)v16 initForDevice:v17];
+  device3 = [(NTKFaceView *)self device];
+  v18 = [(NTKAnalogHandsView *)v16 initForDevice:device3];
   handsView = self->_handsView;
   self->_handsView = v18;
 
@@ -103,12 +103,12 @@
   v22 = +[NTKSchoolTimeFaceView schoolTimeColor];
   [(CLKUIAnalogHandsView *)v21 setInlayColor:v22];
 
-  v23 = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
+  secondHandView = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
   v24 = +[NTKSchoolTimeFaceView secondHandColor];
-  [v23 setColor:v24];
+  [secondHandView setColor:v24];
 
-  v25 = [(NTKFaceView *)self contentView];
-  [v25 addSubview:self->_handsView];
+  contentView2 = [(NTKFaceView *)self contentView];
+  [contentView2 addSubview:self->_handsView];
 
   [(NTKFaceView *)self setTimeView:self->_handsView];
   v26 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -116,12 +116,12 @@
   self->_formatter = v26;
 
   v28 = self->_formatter;
-  v29 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [(NSDateFormatter *)v28 setTimeZone:v29];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [(NSDateFormatter *)v28 setTimeZone:systemTimeZone];
 
   v30 = self->_formatter;
-  v31 = [MEMORY[0x277CBEAF8] currentLocale];
-  [(NSDateFormatter *)v30 setLocale:v31];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [(NSDateFormatter *)v30 setLocale:currentLocale];
 
   [(NSDateFormatter *)self->_formatter setDateFormat:@"EEE d"];
   v32 = objc_alloc(MEMORY[0x277D756B8]);
@@ -140,11 +140,11 @@
 
   [(UILabel *)self->_dateLabel setTextAlignment:1];
   v42 = self->_dateLabel;
-  v43 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v42 setTextColor:v43];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v42 setTextColor:whiteColor];
 
-  v44 = [(NTKFaceView *)self contentView];
-  [v44 addSubview:self->_dateLabel];
+  contentView3 = [(NTKFaceView *)self contentView];
+  [contentView3 addSubview:self->_dateLabel];
 
   v45 = [objc_alloc(MEMORY[0x277CBB700]) initWithIdentifier:@"SchoolTime"];
   clockTimer = self->_clockTimer;
@@ -152,22 +152,22 @@
 
   [(CLKClockTimer *)self->_clockTimer pause];
   v61 = [MEMORY[0x277CBBB08] systemFontOfSize:*&v63 weight:v40];
-  v47 = [(NTKFaceView *)self device];
-  v48 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v61 applyAdvanceFudge:v47 withBaselineY:v33 withFont:v34 forDevice:v35, v36, 0.0, 0.0];
+  device4 = [(NTKFaceView *)self device];
+  v48 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v61 applyAdvanceFudge:device4 withBaselineY:v33 withFont:v34 forDevice:v35, v36, 0.0, 0.0];
 
   v49 = [MEMORY[0x277CBBB08] systemFontOfSize:*(&v63 + 1) weight:v40];
   [v48 setDesignatorFont:v49];
 
   v50 = [NTKDigitalTimeLabel alloc];
-  v51 = [(NTKFaceView *)self device];
-  v52 = [(CLKUITimeLabel *)v50 initWithTimeLabelOptions:1 forDevice:v51 clockTimer:self->_clockTimer];
+  device5 = [(NTKFaceView *)self device];
+  v52 = [(CLKUITimeLabel *)v50 initWithTimeLabelOptions:1 forDevice:device5 clockTimer:self->_clockTimer];
   digitalTimeLabel = self->_digitalTimeLabel;
   self->_digitalTimeLabel = v52;
 
   [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setStyle:v48];
   v54 = self->_digitalTimeLabel;
-  v55 = [MEMORY[0x277D75348] whiteColor];
-  [(NTKDigitalTimeLabel *)v54 setColor:v55];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [(NTKDigitalTimeLabel *)v54 setColor:whiteColor2];
 
   [(CLKUITimeLabel *)self->_digitalTimeLabel setShowsDesignator:1];
   v56 = self->_digitalTimeLabel;
@@ -175,11 +175,11 @@
   [v57 timeOffset];
   [(NTKDigitalTimeLabel *)v56 setTimeOffset:?];
 
-  v58 = [(CLKUITimeLabel *)self->_digitalTimeLabel timeFormatter];
-  [v58 setSuppressesDesignatorWhitespace:1];
+  timeFormatter = [(CLKUITimeLabel *)self->_digitalTimeLabel timeFormatter];
+  [timeFormatter setSuppressesDesignatorWhitespace:1];
 
-  v59 = [(NTKFaceView *)self contentView];
-  [v59 insertSubview:self->_digitalTimeLabel belowSubview:self->_handsView];
+  contentView4 = [(NTKFaceView *)self contentView];
+  [contentView4 insertSubview:self->_digitalTimeLabel belowSubview:self->_handsView];
 
   [(NTKSchoolTimeFaceView *)self _setupNameLabel];
   v60 = +[NTKDate faceDate];
@@ -190,14 +190,14 @@
 
 - (void)_setupNameLabel
 {
-  v15 = [(NTKFaceView *)self device];
+  device = [(NTKFaceView *)self device];
   v19 = 0;
   v17 = 0u;
   v18 = 0u;
   memset(v16, 0, sizeof(v16));
-  ___LayoutConstants_block_invoke_10(v15, v16);
+  ___LayoutConstants_block_invoke_10(device, v16);
   v3 = [MEMORY[0x277CBBB08] systemFontOfSize:*&v17 weight:*MEMORY[0x277D74410]];
-  if ([v15 deviceCategory] == 1)
+  if ([device deviceCategory] == 1)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -207,8 +207,8 @@
 
     [(UILabel *)self->_nameLabel setTextAlignment:1];
     v8 = self->_nameLabel;
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v8 setTextColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v8 setTextColor:whiteColor];
 
     [(UILabel *)self->_nameLabel setFont:v3];
   }
@@ -224,8 +224,8 @@
     [(CLKUICurvedColoringLabel *)self->_curvedNameLabel setCenterAngle:0.0];
     [(CLKUICurvedColoringLabel *)self->_curvedNameLabel setCircleRadius:*&v18 * 0.5];
     v12 = self->_curvedNameLabel;
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUICurvedColoringLabel *)v12 setColor:v13];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUICurvedColoringLabel *)v12 setColor:whiteColor2];
 
     [(CLKUICurvedColoringLabel *)self->_curvedNameLabel setFont:v3];
     [(CLKUICurvedColoringLabel *)self->_curvedNameLabel setInterior:1];
@@ -235,14 +235,14 @@
     [(CLKUICurvedColoringLabel *)self->_curvedNameLabel setUsesLegibility:0];
   }
 
-  v14 = [(NTKFaceView *)self contentView];
-  [v14 addSubview:*p_nameLabel];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView addSubview:*p_nameLabel];
 }
 
 - (void)_layoutCurvedNameLabel
 {
-  v3 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_10(v3, v11);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_10(device, v11);
   v4 = v12;
 
   [(CLKUICurvedColoringLabel *)self->_curvedNameLabel sizeToFit];
@@ -280,8 +280,8 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(NTKFaceView *)self device];
-  ___LayoutConstants_block_invoke_10(v3, &v28);
+  device = [(NTKFaceView *)self device];
+  ___LayoutConstants_block_invoke_10(device, &v28);
 
   v4 = MEMORY[0x2318D8E70]([(NTKSchoolTimeFaceView *)self bounds]);
   v6 = v5;
@@ -296,8 +296,8 @@
   dateLabel = self->_dateLabel;
   if (dateLabel)
   {
-    v14 = [(UILabel *)dateLabel font];
-    v15 = NTKSingleLineHeight(v14, 0);
+    font = [(UILabel *)dateLabel font];
+    v15 = NTKSingleLineHeight(font, 0);
 
     [(UILabel *)self->_dateLabel setFrame:v12, *&v29 + MinY + *&v28 - v15, v11, v15];
   }
@@ -305,16 +305,16 @@
   digitalTimeLabel = self->_digitalTimeLabel;
   if (digitalTimeLabel)
   {
-    v17 = [(CLKUITimeLabel *)digitalTimeLabel font];
-    v18 = NTKSingleLineHeight(v17, 0);
+    font2 = [(CLKUITimeLabel *)digitalTimeLabel font];
+    v18 = NTKSingleLineHeight(font2, 0);
 
     [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setFrame:v12, *&v31 + MinY + *(&v29 + 1) - v18, v11, v18];
   }
 
-  v19 = [(NTKFaceView *)self device];
-  v20 = [v19 deviceCategory];
+  device2 = [(NTKFaceView *)self device];
+  deviceCategory = [device2 deviceCategory];
 
-  if (v20 == 1)
+  if (deviceCategory == 1)
   {
     [(NTKSchoolTimeDialView *)self->_dialView frame];
     MaxY = CGRectGetMaxY(v37);
@@ -334,8 +334,8 @@
   handsView = self->_handsView;
   [(NTKSchoolTimeFaceView *)self bounds];
   [(UIView *)handsView ntk_setBoundsAndPositionFromFrame:?];
-  v27 = [(NTKFaceView *)self contentView];
-  [v27 bringSubviewToFront:self->_handsView];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView bringSubviewToFront:self->_handsView];
 }
 
 - (void)_applyDataMode
@@ -343,8 +343,8 @@
   v5.receiver = self;
   v5.super_class = NTKSchoolTimeFaceView;
   [(NTKFaceView *)&v5 _applyDataMode];
-  v3 = [(NTKFaceView *)self dataMode];
-  switch(v3)
+  dataMode = [(NTKFaceView *)self dataMode];
+  switch(dataMode)
   {
     case 1:
       [(NTKFaceView *)self setOverrideDate:0 duration:0.0];
@@ -367,45 +367,45 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = NTKSchoolTimeFaceView;
   [(NTKFaceView *)&v4 _applyFrozen];
-  v3 = [(NTKFaceView *)self isFrozen];
-  [(CLKUIAnalogHandsView *)self->_handsView setFrozen:v3];
-  [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setFrozen:v3];
+  isFrozen = [(NTKFaceView *)self isFrozen];
+  [(CLKUIAnalogHandsView *)self->_handsView setFrozen:isFrozen];
+  [(NTKDigitalTimeLabel *)self->_digitalTimeLabel setFrozen:isFrozen];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = MEMORY[0x277CBBAE8];
-  v5 = a3;
-  v6 = [v4 currentDevice];
-  v7 = [v6 deviceCategory];
+  nameCopy = name;
+  currentDevice = [v4 currentDevice];
+  deviceCategory = [currentDevice deviceCategory];
 
-  if (v7 == 1)
+  if (deviceCategory == 1)
   {
     nameLabel = self->_nameLabel;
-    v13 = [v5 uppercaseString];
+    uppercaseString = [nameCopy uppercaseString];
 
-    [(UILabel *)nameLabel setText:v13];
+    [(UILabel *)nameLabel setText:uppercaseString];
   }
 
   else
   {
     curvedNameLabel = self->_curvedNameLabel;
     v10 = MEMORY[0x277CBBB88];
-    v11 = [v5 uppercaseString];
+    uppercaseString2 = [nameCopy uppercaseString];
 
-    v12 = [v10 textProviderWithText:v11];
+    v12 = [v10 textProviderWithText:uppercaseString2];
     [(CLKUICurvedColoringLabel *)curvedNameLabel setTextProvider:v12];
 
     [(NTKSchoolTimeFaceView *)self _layoutCurvedNameLabel];
   }
 }
 
-- (void)_setDate:(id)a3
+- (void)_setDate:(id)date
 {
   dateLabel = self->_dateLabel;
-  v5 = [(NSDateFormatter *)self->_formatter stringFromDate:a3];
-  v4 = [v5 localizedUppercaseString];
-  [(UILabel *)dateLabel setText:v4];
+  v5 = [(NSDateFormatter *)self->_formatter stringFromDate:date];
+  localizedUppercaseString = [v5 localizedUppercaseString];
+  [(UILabel *)dateLabel setText:localizedUppercaseString];
 }
 
 - (void)_startClockUpdates
@@ -458,43 +458,43 @@ void __43__NTKSchoolTimeFaceView__startClockUpdates__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_updateTimeAndDate:(id)a3 animated:(BOOL)a4
+- (void)_updateTimeAndDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   dialView = self->_dialView;
-  v7 = a3;
-  [(NTKSchoolTimeDialView *)dialView setActiveHour:NTKDateHourIn12HourTime(v7) animated:v4];
-  [(NTKSchoolTimeFaceView *)self _setDate:v7];
+  dateCopy = date;
+  [(NTKSchoolTimeDialView *)dialView setActiveHour:NTKDateHourIn12HourTime(dateCopy) animated:animatedCopy];
+  [(NTKSchoolTimeFaceView *)self _setDate:dateCopy];
 }
 
 - (void)_startObserving
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277CBE620] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277D766F0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277D766F0] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__handleChangeNotification name:@"NTKTimeOffsetChangedNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleChangeNotification name:@"NTKTimeOffsetChangedNotification" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__handleChangeNotification name:*MEMORY[0x277CBE580] object:0];
 }
 
 - (void)_stopObserving
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D766F0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D766F0] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"NTKTimeOffsetChangedNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"NTKTimeOffsetChangedNotification" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
 }
 
 - (void)_handleChangeNotification

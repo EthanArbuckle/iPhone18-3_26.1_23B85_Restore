@@ -2,8 +2,8 @@
 + (id)info;
 - (MSAlertManager)owner;
 - (void)dealloc;
-- (void)setRunLoopSource:(__CFRunLoopSource *)a3;
-- (void)setUserNotification:(__CFUserNotification *)a3;
+- (void)setRunLoopSource:(__CFRunLoopSource *)source;
+- (void)setUserNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation MSAMNotificationInfo
@@ -25,9 +25,9 @@
 
   if (self->_runLoopSource)
   {
-    v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v5 = [v4 getCFRunLoop];
-    CFRunLoopRemoveSource(v5, self->_runLoopSource, *MEMORY[0x277CBF058]);
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    getCFRunLoop = [currentRunLoop getCFRunLoop];
+    CFRunLoopRemoveSource(getCFRunLoop, self->_runLoopSource, *MEMORY[0x277CBF058]);
 
     CFRelease(self->_runLoopSource);
   }
@@ -37,11 +37,11 @@
   [(MSAMNotificationInfo *)&v6 dealloc];
 }
 
-- (void)setUserNotification:(__CFUserNotification *)a3
+- (void)setUserNotification:(__CFUserNotification *)notification
 {
-  if (a3)
+  if (notification)
   {
-    CFRetain(a3);
+    CFRetain(notification);
   }
 
   userNotification = self->_userNotification;
@@ -50,31 +50,31 @@
     CFRelease(userNotification);
   }
 
-  self->_userNotification = a3;
+  self->_userNotification = notification;
 }
 
-- (void)setRunLoopSource:(__CFRunLoopSource *)a3
+- (void)setRunLoopSource:(__CFRunLoopSource *)source
 {
-  if (a3)
+  if (source)
   {
-    CFRetain(a3);
+    CFRetain(source);
   }
 
   if (self->_runLoopSource)
   {
-    v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v6 = [v5 getCFRunLoop];
-    CFRunLoopRemoveSource(v6, self->_runLoopSource, *MEMORY[0x277CBF058]);
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    getCFRunLoop = [currentRunLoop getCFRunLoop];
+    CFRunLoopRemoveSource(getCFRunLoop, self->_runLoopSource, *MEMORY[0x277CBF058]);
 
     CFRelease(self->_runLoopSource);
   }
 
-  self->_runLoopSource = a3;
+  self->_runLoopSource = source;
 }
 
 + (id)info
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

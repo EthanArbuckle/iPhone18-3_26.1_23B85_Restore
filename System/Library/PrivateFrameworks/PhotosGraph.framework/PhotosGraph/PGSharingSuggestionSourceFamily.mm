@@ -1,20 +1,20 @@
 @interface PGSharingSuggestionSourceFamily
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceFamily
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
-  v27 = v5;
-  v26 = [v5 momentNodes];
-  v28 = [v5 graph];
-  v6 = [v28 familyMembers];
-  v7 = [v28 partners];
-  v8 = [v6 setByAddingObjectsFromSet:v7];
+  inputCopy = input;
+  optionsCopy = options;
+  v27 = inputCopy;
+  momentNodes = [inputCopy momentNodes];
+  graph = [inputCopy graph];
+  familyMembers = [graph familyMembers];
+  partners = [graph partners];
+  v8 = [familyMembers setByAddingObjectsFromSet:partners];
 
   if ([v8 count])
   {
@@ -23,7 +23,7 @@
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = v26;
+    obj = momentNodes;
     v9 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v9)
     {
@@ -38,10 +38,10 @@
           }
 
           v12 = *(*(&v48 + 1) + 8 * i);
-          v13 = [v12 collection];
-          v14 = [v13 birthdayPersonNodes];
+          collection = [v12 collection];
+          birthdayPersonNodes = [collection birthdayPersonNodes];
 
-          if ([v14 count] && (objc_msgSend(v14, "temporarySet"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intersectsSet:", v8), v15, v16))
+          if ([birthdayPersonNodes count] && (objc_msgSend(birthdayPersonNodes, "temporarySet"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intersectsSet:", v8), v15, v16))
           {
             [v29 addObject:v12];
           }

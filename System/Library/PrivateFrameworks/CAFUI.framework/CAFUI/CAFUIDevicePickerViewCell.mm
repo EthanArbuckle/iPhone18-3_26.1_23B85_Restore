@@ -1,17 +1,17 @@
 @interface CAFUIDevicePickerViewCell
 - (BOOL)isSelected;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setSelected:(BOOL)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CAFUIDevicePickerViewCell
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFUIDevicePickerViewCell.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  CAFUIDevicePickerViewCell.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
 - (BOOL)isSelected
@@ -21,17 +21,17 @@
   return [(CAFUIDevicePickerViewCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CAFUIDevicePickerViewCell();
   v4 = v8.receiver;
-  [(CAFUIDevicePickerViewCell *)&v8 setSelected:v3];
+  [(CAFUIDevicePickerViewCell *)&v8 setSelected:selectedCopy];
   v5 = *&v4[OBJC_IVAR____TtC5CAFUI25CAFUIDevicePickerViewCell_avatarView];
-  v6 = [v4 isSelected];
+  isSelected = [v4 isSelected];
   v7 = 1.0;
-  if (v6)
+  if (isSelected)
   {
     v7 = 0.25;
   }

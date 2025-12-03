@@ -6,20 +6,20 @@
 
 - (NSString)billingAgreement
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentRequest];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
 
-  v4 = [v3 recurringPaymentRequest];
-  v5 = [v3 automaticReloadPaymentRequest];
-  v6 = v5;
-  if (v4)
+  recurringPaymentRequest = [paymentRequest recurringPaymentRequest];
+  automaticReloadPaymentRequest = [paymentRequest automaticReloadPaymentRequest];
+  v6 = automaticReloadPaymentRequest;
+  if (recurringPaymentRequest)
   {
-    v5 = v4;
+    automaticReloadPaymentRequest = recurringPaymentRequest;
   }
 
-  v7 = [v5 billingAgreement];
+  billingAgreement = [automaticReloadPaymentRequest billingAgreement];
 
-  return v7;
+  return billingAgreement;
 }
 
 @end

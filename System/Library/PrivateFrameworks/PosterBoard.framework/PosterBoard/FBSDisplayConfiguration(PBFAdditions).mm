@@ -8,13 +8,13 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [MEMORY[0x277D0AD38] pui_sharedDisplayMonitor];
+  pui_sharedDisplayMonitor = [MEMORY[0x277D0AD38] pui_sharedDisplayMonitor];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 connectedIdentities];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  connectedIdentities = [pui_sharedDisplayMonitor connectedIdentities];
+  v6 = [connectedIdentities countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,10 +25,10 @@ LABEL_3:
     {
       if (*v25 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(connectedIdentities);
       }
 
-      v10 = [v4 configurationForIdentity:*(*(&v24 + 1) + 8 * v9)];
+      v10 = [pui_sharedDisplayMonitor configurationForIdentity:*(*(&v24 + 1) + 8 * v9)];
       [v10 bounds];
       v12 = v11;
       v14 = v13;
@@ -55,7 +55,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v7 = [connectedIdentities countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v7)
         {
           goto LABEL_3;

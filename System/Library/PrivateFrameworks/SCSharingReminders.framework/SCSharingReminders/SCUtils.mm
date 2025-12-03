@@ -1,38 +1,38 @@
 @interface SCUtils
-+ (void)registerDarwinNotification:(id)a3;
-+ (void)registerNeededNotificationsForManager:(id)a3 completionHandler:(id)a4;
-+ (void)submitTaskRequest:(id)a3 completion:(id)a4;
-+ (void)unregisterDarwinNotification:(id)a3;
++ (void)registerDarwinNotification:(id)notification;
++ (void)registerNeededNotificationsForManager:(id)manager completionHandler:(id)handler;
++ (void)submitTaskRequest:(id)request completion:(id)completion;
++ (void)unregisterDarwinNotification:(id)notification;
 @end
 
 @implementation SCUtils
 
-+ (void)registerDarwinNotification:(id)a3
++ (void)registerDarwinNotification:(id)notification
 {
-  v3 = [a3 cStringUsingEncoding:4];
+  v3 = [notification cStringUsingEncoding:4];
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v4, "Notification", v3);
   xpc_set_event();
 }
 
-+ (void)unregisterDarwinNotification:(id)a3
++ (void)unregisterDarwinNotification:(id)notification
 {
-  [a3 cStringUsingEncoding:4];
+  [notification cStringUsingEncoding:4];
 
   xpc_set_event();
 }
 
-+ (void)registerNeededNotificationsForManager:(id)a3 completionHandler:(id)a4
++ (void)registerNeededNotificationsForManager:(id)manager completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__SCUtils_registerNeededNotificationsForManager_completionHandler___block_invoke;
   v8[3] = &unk_279B39968;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 getNeededNotificationsWithCompletion:v8];
+  v9 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
+  [manager getNeededNotificationsWithCompletion:v8];
 }
 
 void __67__SCUtils_registerNeededNotificationsForManager_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -84,14 +84,14 @@ void __67__SCUtils_registerNeededNotificationsForManager_completionHandler___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)submitTaskRequest:(id)a3 completion:(id)a4
++ (void)submitTaskRequest:(id)request completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CF0810] sharedScheduler];
-  v8 = [v5 identifier];
-  v9 = [v7 taskRequestForIdentifier:v8];
+  requestCopy = request;
+  completionCopy = completion;
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+  identifier = [requestCopy identifier];
+  v9 = [mEMORY[0x277CF0810] taskRequestForIdentifier:identifier];
 
   if (v9)
   {
@@ -99,18 +99,18 @@ void __67__SCUtils_registerNeededNotificationsForManager_completionHandler___blo
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = requestCopy;
       _os_log_impl(&dword_262556000, v10, OS_LOG_TYPE_DEFAULT, "Not submitting task request %@ because one already exists", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
-    v11 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
     v16 = 0;
-    v12 = [v11 submitTaskRequest:v5 error:&v16];
+    v12 = [mEMORY[0x277CF0810]2 submitTaskRequest:requestCopy error:&v16];
     v13 = v16;
 
     if ((v12 & 1) == 0)
@@ -122,7 +122,7 @@ void __67__SCUtils_registerNeededNotificationsForManager_completionHandler___blo
       }
     }
 
-    (*(v6 + 2))(v6, v12, v13);
+    (*(completionCopy + 2))(completionCopy, v12, v13);
   }
 
   v15 = *MEMORY[0x277D85DE8];

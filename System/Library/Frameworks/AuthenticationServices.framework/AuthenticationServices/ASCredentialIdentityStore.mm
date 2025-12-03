@@ -1,7 +1,7 @@
 @interface ASCredentialIdentityStore
 + (ASCredentialIdentityStore)sharedStore;
 - (id)_initCredentialIdentityStore;
-- (void)getCredentialIdentitiesForService:(id)a3 credentialIdentityTypes:(unint64_t)a4 completionHandler:(id)a5;
+- (void)getCredentialIdentitiesForService:(id)service credentialIdentityTypes:(unint64_t)types completionHandler:(id)handler;
 - (void)getCredentialIdentityStoreStateWithCompletion:(void *)completion;
 - (void)removeAllCredentialIdentitiesWithCompletion:(void *)completion;
 - (void)removeCredentialIdentityEntries:(NSArray *)credentialIdentities completion:(void *)completion;
@@ -242,13 +242,13 @@ void __73__ASCredentialIdentityStore_replaceCredentialIdentityEntries_completion
   }
 }
 
-- (void)getCredentialIdentitiesForService:(id)a3 credentialIdentityTypes:(unint64_t)a4 completionHandler:(id)a5
+- (void)getCredentialIdentitiesForService:(id)service credentialIdentityTypes:(unint64_t)types completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a5;
-  if (v13)
+  serviceCopy = service;
+  handlerCopy = handler;
+  if (serviceCopy)
   {
-    v9 = [v13 type] == 1;
+    v9 = [serviceCopy type] == 1;
   }
 
   else
@@ -256,9 +256,9 @@ void __73__ASCredentialIdentityStore_replaceCredentialIdentityEntries_completion
     v9 = 0;
   }
 
-  if (a4)
+  if (types)
   {
-    v10 = a4 & 7;
+    v10 = types & 7;
   }
 
   else
@@ -267,8 +267,8 @@ void __73__ASCredentialIdentityStore_replaceCredentialIdentityEntries_completion
   }
 
   helperProxy = self->_helperProxy;
-  v12 = [v13 identifier];
-  [(SFCredentialProviderExtensionHelperProxy *)helperProxy fetchCredentialIdentitiesForService:v12 serviceIdentifierType:v9 credentialIdentityTypes:v10 completion:v8];
+  identifier = [serviceCopy identifier];
+  [(SFCredentialProviderExtensionHelperProxy *)helperProxy fetchCredentialIdentitiesForService:identifier serviceIdentifierType:v9 credentialIdentityTypes:v10 completion:handlerCopy];
 }
 
 @end

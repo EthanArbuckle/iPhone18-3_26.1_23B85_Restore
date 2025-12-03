@@ -1,12 +1,12 @@
 @interface OKActionBindingTap
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingTap)init;
-- (OKActionBindingTap)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingTap)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleTap:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleTap:(id)tap;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -26,20 +26,20 @@
   return result;
 }
 
-- (OKActionBindingTap)initWithSettings:(id)a3
+- (OKActionBindingTap)initWithSettings:(id)settings
 {
   v8.receiver = self;
   v8.super_class = OKActionBindingTap;
   v4 = [(OKActionBinding *)&v8 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"numberOfTapsRequired"];
+    v5 = [settings objectForKey:@"numberOfTapsRequired"];
     if (v5)
     {
       v4->_numberOfTapsRequired = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"numberOfTouchesRequired"];
+    v6 = [settings objectForKey:@"numberOfTouchesRequired"];
     if (v6)
     {
       v4->_numberOfTouchesRequired = [v6 unsignedIntegerValue];
@@ -64,11 +64,11 @@
   [(OKActionBinding *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingTap;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -82,7 +82,7 @@
 + (id)supportedSettings
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingTap;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v9[0] = @"numberOfTapsRequired";
@@ -101,17 +101,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingTap;
-  [(OKActionBindingProxy *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v9 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTap_];
       self->_tapGestureRecognizer = v8;
       [(UITapGestureRecognizer *)v8 setDelegate:self];
@@ -137,20 +137,20 @@
   [(OKActionBindingProxy *)&v4 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
-  result = ([a3 scope] & v7) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (a4 || objc_msgSend(a3, "touchCount") == self->_numberOfTouchesRequired) && objc_msgSend(a3, "tapCount") == self->_numberOfTapsRequired;
+  scope = [(OKActionBindingProxy *)self scope];
+  result = ([action scope] & scope) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (agnostic || objc_msgSend(action, "touchCount") == self->_numberOfTouchesRequired) && objc_msgSend(action, "tapCount") == self->_numberOfTapsRequired;
   return result;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
-    -[OKActionBindingProxy performAction:](self, "performAction:", +[OKActionTap tapActionWithLocation:tapCount:touchCount:context:](OKActionTap, "tapActionWithLocation:tapCount:touchCount:context:", [a3 numberOfTapsRequired], objc_msgSend(a3, "numberOfTouches"), v7, v5, v6));
+    [(OKActionBindingProxy *)self locationForActionFromGesture:tap];
+    -[OKActionBindingProxy performAction:](self, "performAction:", +[OKActionTap tapActionWithLocation:tapCount:touchCount:context:](OKActionTap, "tapActionWithLocation:tapCount:touchCount:context:", [tap numberOfTapsRequired], objc_msgSend(tap, "numberOfTouches"), v7, v5, v6));
   }
 }
 

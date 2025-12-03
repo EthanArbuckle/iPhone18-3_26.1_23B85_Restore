@@ -1,9 +1,9 @@
 @interface PhotosApplication
-+ (id)_appIntentsActionManagerForAssets:(id)a3;
-+ (id)_appIntentsErrorForError:(id)a3;
++ (id)_appIntentsActionManagerForAssets:(id)assets;
++ (id)_appIntentsErrorForError:(id)error;
 + (void)_donateTipsAppPhotosSignals;
-+ (void)_performActionType:(id)a3 assets:(id)a4 completionHandler:(id)a5;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (void)_performActionType:(id)type assets:(id)assets completionHandler:(id)handler;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSUndoManager)fallbackUndoManager;
 - (PUTabbedLibraryViewController)keyTabbedLibraryViewController;
 - (PXActionManager)assetActionManager;
@@ -13,76 +13,76 @@
 - (UIViewController)contentViewController;
 - (UIViewController)keyRootViewController;
 - (double)displayScale;
-- (id)_currentlyOpenEditSessionControllerForAsset:(id)a3;
+- (id)_currentlyOpenEditSessionControllerForAsset:(id)asset;
 - (id)_newImportViewController;
-- (id)detailTextForGuidedAccessRestrictionWithIdentifier:(id)a3;
+- (id)detailTextForGuidedAccessRestrictionWithIdentifier:(id)identifier;
 - (id)importViewControllerInstanceHost;
 - (id)keySpec;
 - (id)photosWindowSceneDelegate;
 - (id)provideNavigationDestination;
 - (id)px_photoLibrary;
 - (id)stateCaptureDictionary;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)textForGuidedAccessRestrictionWithIdentifier:(id)a3;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)textForGuidedAccessRestrictionWithIdentifier:(id)identifier;
 - (void)_beginUndoActionsInvalidator;
 - (void)_dequeueNextImportDevice;
 - (void)_displayAndRemovePhoneInvitationFailures;
-- (void)_navigateToDestination:(id)a3 debugDescription:(id)a4 completionHandler:(id)a5;
+- (void)_navigateToDestination:(id)destination debugDescription:(id)description completionHandler:(id)handler;
 - (void)_satisfyAppIntentsURLNavigationPerformerRequestsIfNecessary;
-- (void)_showAppleMusicPromptsIfNecessaryWithCompletion:(id)a3;
+- (void)_showAppleMusicPromptsIfNecessaryWithCompletion:(id)completion;
 - (void)_showCloudPhotoLibraryExitPromptIfNecessary;
-- (void)_showUserNotificationsPromptIfNecessaryWithCompletion:(id)a3;
-- (void)_showWelcomeViewControllersIfNecessaryWithCompletion:(id)a3;
+- (void)_showUserNotificationsPromptIfNecessaryWithCompletion:(id)completion;
+- (void)_showWelcomeViewControllersIfNecessaryWithCompletion:(id)completion;
 - (void)_tearDownImportViewController;
-- (void)_userDidTakeScreenshot:(id)a3;
-- (void)addAssetsToAlbum:(id)a3;
-- (void)addAssetsToLastUsedAlbum:(id)a3;
-- (void)addAssetsToSharedCollection:(id)a3;
-- (void)adjustDateTime:(id)a3;
-- (void)adjustLocation:(id)a3;
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)canPerformEditRequestWithAssets:(id)a3 adjustments:(id)a4 completionHandler:(id)a5;
-- (void)copy:(id)a3;
-- (void)copyAdjustments:(id)a3;
-- (void)copyEditsFromAsset:(id)a3 completionHandler:(id)a4;
-- (void)duplicateAssets:(id)a3;
-- (void)favoriteAssets:(id)a3;
-- (void)find:(id)a3;
-- (void)handleOAuthRedirectURL:(id)a3;
-- (void)hideAssets:(id)a3;
-- (void)importController:(id)a3 addedImportSource:(id)a4;
-- (void)importController:(id)a3 removedImportSource:(id)a4;
-- (void)makeKeyPhoto:(id)a3;
-- (void)mergeDuplicates:(id)a3;
-- (void)mergeDuplicatesWithoutConfirmation:(id)a3;
-- (void)navigateToURLDestination:(id)a3 completionHandler:(id)a4;
-- (void)newMemoryMovie:(id)a3;
-- (void)noteSceneWillEnterForeground:(id)a3;
-- (void)pasteAdjustments:(id)a3;
-- (void)pasteEditsToAssets:(id)a3 completionHandler:(id)a4;
-- (void)performEditRequestWithAssets:(id)a3 adjustments:(id)a4 completionHandler:(id)a5;
-- (void)performNebuladCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)a3;
-- (void)performSearchWithDecoratedQuery:(id)a3 completionHandler:(id)a4;
-- (void)performSearchWithQuery:(id)a3 completionHandler:(id)a4;
+- (void)_userDidTakeScreenshot:(id)screenshot;
+- (void)addAssetsToAlbum:(id)album;
+- (void)addAssetsToLastUsedAlbum:(id)album;
+- (void)addAssetsToSharedCollection:(id)collection;
+- (void)adjustDateTime:(id)time;
+- (void)adjustLocation:(id)location;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)canPerformEditRequestWithAssets:(id)assets adjustments:(id)adjustments completionHandler:(id)handler;
+- (void)copy:(id)copy;
+- (void)copyAdjustments:(id)adjustments;
+- (void)copyEditsFromAsset:(id)asset completionHandler:(id)handler;
+- (void)duplicateAssets:(id)assets;
+- (void)favoriteAssets:(id)assets;
+- (void)find:(id)find;
+- (void)handleOAuthRedirectURL:(id)l;
+- (void)hideAssets:(id)assets;
+- (void)importController:(id)controller addedImportSource:(id)source;
+- (void)importController:(id)controller removedImportSource:(id)source;
+- (void)makeKeyPhoto:(id)photo;
+- (void)mergeDuplicates:(id)duplicates;
+- (void)mergeDuplicatesWithoutConfirmation:(id)confirmation;
+- (void)navigateToURLDestination:(id)destination completionHandler:(id)handler;
+- (void)newMemoryMovie:(id)movie;
+- (void)noteSceneWillEnterForeground:(id)foreground;
+- (void)pasteAdjustments:(id)adjustments;
+- (void)pasteEditsToAssets:(id)assets completionHandler:(id)handler;
+- (void)performEditRequestWithAssets:(id)assets adjustments:(id)adjustments completionHandler:(id)handler;
+- (void)performNebuladCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)session;
+- (void)performSearchWithDecoratedQuery:(id)query completionHandler:(id)handler;
+- (void)performSearchWithQuery:(id)query completionHandler:(id)handler;
 - (void)photosPreferencesChanged;
 - (void)prepareForApplicationDidBecomeActive;
 - (void)prepareForApplicationDidEnterBackground;
 - (void)prepareForApplicationWillEnterForeground;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)print:(id)a3;
-- (void)providePhotoLibrary:(id)a3;
-- (void)redo:(id)a3;
-- (void)revertAdjustments:(id)a3;
-- (void)shareAssets:(id)a3;
-- (void)toggleLibraryFilter:(id)a3;
-- (void)trashAssets:(id)a3;
-- (void)trashAssetsWithoutConfirmation:(id)a3;
-- (void)undo:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)print:(id)print;
+- (void)providePhotoLibrary:(id)library;
+- (void)redo:(id)redo;
+- (void)revertAdjustments:(id)adjustments;
+- (void)shareAssets:(id)assets;
+- (void)toggleLibraryFilter:(id)filter;
+- (void)trashAssets:(id)assets;
+- (void)trashAssetsWithoutConfirmation:(id)confirmation;
+- (void)undo:(id)undo;
 - (void)updateShowHiddenAlbumCachedValue;
 - (void)updateShowRecentlyViewedAndSharedAlbumCachedValue;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
-- (void)validateCommand:(id)a3;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation PhotosApplication
@@ -108,9 +108,9 @@
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v7 = +[NSBundle mainBundle];
-          v8 = [v7 bundleIdentifier];
+          bundleIdentifier = [v7 bundleIdentifier];
           *buf = 138412546;
-          v15 = v8;
+          v15 = bundleIdentifier;
           v16 = 2112;
           v17 = v1;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "created test photo library for %@ at %@", buf, 0x16u);
@@ -141,8 +141,8 @@
   v11.receiver = self;
   v11.super_class = PhotosApplication;
   [(PhotosApplication *)&v11 prepareForApplicationWillEnterForeground];
-  v3 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v4 = [v3 activationOptions];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  activationOptions = [photosWindowSceneDelegate activationOptions];
 
   v5 = dispatch_time(0, 500000000);
   block[0] = _NSConcreteStackBlock;
@@ -150,25 +150,25 @@
   block[2] = sub_10001B344;
   block[3] = &unk_10005A120;
   block[4] = self;
-  block[5] = v4;
+  block[5] = activationOptions;
   dispatch_after(v5, &_dispatch_main_q, block);
   px_dispatch_on_main_queue_when_idle_after_delay();
-  v6 = [(PUImportViewController *)self->_importViewController importSource];
+  importSource = [(PUImportViewController *)self->_importViewController importSource];
 
-  if (v6)
+  if (importSource)
   {
-    v7 = [(PhotosApplication *)self importViewControllerInstanceHost];
+    importViewControllerInstanceHost = [(PhotosApplication *)self importViewControllerInstanceHost];
     importViewController = self->_importViewController;
-    v9 = [(PUImportViewController *)importViewController importSource];
-    [v7 setImportViewController:importViewController forImportSource:v9];
+    importSource2 = [(PUImportViewController *)importViewController importSource];
+    [importViewControllerInstanceHost setImportViewController:importViewController forImportSource:importSource2];
   }
 }
 
 - (id)photosWindowSceneDelegate
 {
-  v4 = [(PhotosApplication *)self applicationScene];
-  v5 = [v4 delegate];
-  if (v5)
+  applicationScene = [(PhotosApplication *)self applicationScene];
+  delegate = [applicationScene delegate];
+  if (delegate)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -176,8 +176,8 @@
       v6 = +[NSAssertionHandler currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v5 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:910 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"scene.delegate", v8, v9}];
+      px_descriptionForAssertionMessage = [delegate px_descriptionForAssertionMessage];
+      [v6 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:910 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"scene.delegate", v8, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -186,14 +186,14 @@
     v10 = PLUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PhotosApplication *)self connectedScenes];
+      connectedScenes = [(PhotosApplication *)self connectedScenes];
       *buf = 134217984;
-      v14 = [v11 count];
+      v14 = [connectedScenes count];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "photosWindowSceneDelegate is nil as no application scene with appropriate delegate was found out of %tu scene(s)", buf, 0xCu);
     }
   }
 
-  return v5;
+  return delegate;
 }
 
 - (UIScene)applicationScene
@@ -218,13 +218,13 @@
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 session];
-        v9 = [v8 role];
-        v10 = [v9 isEqualToString:UIWindowSceneSessionRoleApplication];
+        session = [v7 session];
+        role = [session role];
+        v10 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
         if (v10)
         {
-          v11 = [v7 delegate];
+          delegate = [v7 delegate];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -274,14 +274,14 @@ LABEL_12:
   }
 }
 
-- (id)detailTextForGuidedAccessRestrictionWithIdentifier:(id)a3
+- (id)detailTextForGuidedAccessRestrictionWithIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames objectForKey:a3];
-  v4 = [v3 detailText];
+  v3 = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames objectForKey:identifier];
+  detailText = [v3 detailText];
 
-  if (v4)
+  if (detailText)
   {
-    v5 = v4;
+    v5 = detailText;
   }
 
   else
@@ -294,14 +294,14 @@ LABEL_12:
   return v6;
 }
 
-- (id)textForGuidedAccessRestrictionWithIdentifier:(id)a3
+- (id)textForGuidedAccessRestrictionWithIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames objectForKey:a3];
-  v4 = [v3 primaryText];
+  v3 = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames objectForKey:identifier];
+  primaryText = [v3 primaryText];
 
-  if (v4)
+  if (primaryText)
   {
-    v5 = v4;
+    v5 = primaryText;
   }
 
   else
@@ -314,16 +314,16 @@ LABEL_12:
   return v6;
 }
 
-- (void)pasteEditsToAssets:(id)a3 completionHandler:(id)a4
+- (void)pasteEditsToAssets:(id)assets completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  assetsCopy = assets;
+  handlerCopy = handler;
+  if (![assetsCopy count])
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1316 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
 
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -335,13 +335,13 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if ([v7 count] == 1 && (objc_msgSend(v7, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), -[PhotosApplication _currentlyOpenEditSessionControllerForAsset:](self, "_currentlyOpenEditSessionControllerForAsset:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
+  if ([assetsCopy count] == 1 && (objc_msgSend(assetsCopy, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), -[PhotosApplication _currentlyOpenEditSessionControllerForAsset:](self, "_currentlyOpenEditSessionControllerForAsset:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
   {
     v11 = PLAppIntentsGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -350,7 +350,7 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Paste adjustments in the current edit session", buf, 2u);
     }
 
-    [v10 pasteEditsWithCompletionHandler:v8];
+    [v10 pasteEditsWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -362,18 +362,18 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Paste adjustments on the provided assets", v15, 2u);
     }
 
-    [objc_opt_class() _performActionType:PXAssetActionTypePasteAdjustments assets:v7 completionHandler:v8];
+    [objc_opt_class() _performActionType:PXAssetActionTypePasteAdjustments assets:assetsCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)copyEditsFromAsset:(id)a3 completionHandler:(id)a4
+- (void)copyEditsFromAsset:(id)asset completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  assetCopy = asset;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (assetCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -394,7 +394,7 @@ LABEL_3:
   [v20 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1281 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v10 = [(PhotosApplication *)self _currentlyOpenEditSessionControllerForAsset:v7];
+  v10 = [(PhotosApplication *)self _currentlyOpenEditSessionControllerForAsset:assetCopy];
   v11 = PLAppIntentsGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
   if (v10)
@@ -442,7 +442,7 @@ LABEL_3:
 
     v14 = objc_opt_class();
     v15 = PXAssetActionTypeCopyAdjustmentsSkippingOptions;
-    v24 = v7;
+    v24 = assetCopy;
     v16 = [NSArray arrayWithObjects:&v24 count:1];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -453,12 +453,12 @@ LABEL_3:
   }
 }
 
-- (id)_currentlyOpenEditSessionControllerForAsset:(id)a3
+- (id)_currentlyOpenEditSessionControllerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PhotosApplication *)self keyRootViewController];
-  v6 = [v5 px_descendantViewControllerWithClass:objc_opt_class()];
-  v7 = [v6 photo];
+  assetCopy = asset;
+  keyRootViewController = [(PhotosApplication *)self keyRootViewController];
+  v6 = [keyRootViewController px_descendantViewControllerWithClass:objc_opt_class()];
+  photo = [v6 photo];
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -468,16 +468,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = v7;
+  v8 = photo;
 
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 uuid];
-  v10 = [v4 uuid];
-  v11 = [v9 isEqualToString:v10];
+  uuid = [v8 uuid];
+  uuid2 = [assetCopy uuid];
+  v11 = [uuid isEqualToString:uuid2];
 
   if (!v11)
   {
@@ -491,14 +491,14 @@ LABEL_8:
   return v12;
 }
 
-- (void)performEditRequestWithAssets:(id)a3 adjustments:(id)a4 completionHandler:(id)a5
+- (void)performEditRequestWithAssets:(id)assets adjustments:(id)adjustments completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  assetsCopy = assets;
+  adjustmentsCopy = adjustments;
+  handlerCopy = handler;
+  if (assetsCopy)
   {
-    if (v10)
+    if (adjustmentsCopy)
     {
       goto LABEL_3;
     }
@@ -507,7 +507,7 @@ LABEL_23:
     v21 = +[NSAssertionHandler currentHandler];
     [v21 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1186 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -518,13 +518,13 @@ LABEL_23:
   v20 = +[NSAssertionHandler currentHandler];
   [v20 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1185 description:{@"Invalid parameter not satisfying: %@", @"assets"}];
 
-  if (!v10)
+  if (!adjustmentsCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -534,82 +534,82 @@ LABEL_24:
   [v22 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1187 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v12 = [(PhotosApplication *)self keyRootViewController];
-  if (![PUPhotoEditPendingEditsRequest canPerformEditsWithRootViewController:v12])
+  keyRootViewController = [(PhotosApplication *)self keyRootViewController];
+  if (![PUPhotoEditPendingEditsRequest canPerformEditsWithRootViewController:keyRootViewController])
   {
-    v14 = [v10 firstObject];
-    if (!v14)
+    firstObject = [adjustmentsCopy firstObject];
+    if (!firstObject)
     {
       v23 = +[NSAssertionHandler currentHandler];
       [v23 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1206 description:{@"Invalid parameter not satisfying: %@", @"adjustment"}];
     }
 
-    v15 = [v14 category];
-    if (v15 == 8)
+    category = [firstObject category];
+    if (category == 8)
     {
-      if (![v9 count])
+      if (![assetsCopy count])
       {
         v25 = +[NSAssertionHandler currentHandler];
         [v25 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1218 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
       }
 
-      v16 = [v14 clockwise];
+      clockwise = [firstObject clockwise];
       v17 = &PXAssetActionTypeEditRotateRight;
       v18 = &PXAssetActionTypeEditRotateLeft;
     }
 
     else
     {
-      if (v15)
+      if (category)
       {
-        v19 = [NSError px_errorWithDomain:PXAppIntentsNSErrorDomain code:-1003 debugDescription:@"Unsupported category: %ld", v15];
-        v11[2](v11, 0, v19);
+        v19 = [NSError px_errorWithDomain:PXAppIntentsNSErrorDomain code:-1003 debugDescription:@"Unsupported category: %ld", category];
+        handlerCopy[2](handlerCopy, 0, v19);
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      if (![v9 count])
+      if (![assetsCopy count])
       {
         v24 = +[NSAssertionHandler currentHandler];
         [v24 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1210 description:{@"Invalid parameter not satisfying: %@", @"assets.count"}];
       }
 
-      v16 = [v14 enabled];
+      clockwise = [firstObject enabled];
       v17 = &PXAssetActionTypeEditEnableAutoEnhance;
       v18 = &PXAssetActionTypeEditDisableAutoEnhance;
     }
 
-    if (!v16)
+    if (!clockwise)
     {
       v17 = v18;
     }
 
     v19 = *v17;
-    [objc_opt_class() _performActionType:v19 assets:v9 completionHandler:v11];
+    [objc_opt_class() _performActionType:v19 assets:assetsCopy completionHandler:handlerCopy];
     goto LABEL_20;
   }
 
-  v13 = [[PUPhotoEditPendingEditsRequest alloc] initWithAdjustments:v10 rootViewController:v12];
+  v13 = [[PUPhotoEditPendingEditsRequest alloc] initWithAdjustments:adjustmentsCopy rootViewController:keyRootViewController];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10001718C;
   v26[3] = &unk_10005A340;
   v26[4] = self;
-  v27 = v11;
+  v27 = handlerCopy;
   [v13 submitWithCompletionHandler:v26];
 
 LABEL_21:
 }
 
-- (void)canPerformEditRequestWithAssets:(id)a3 adjustments:(id)a4 completionHandler:(id)a5
+- (void)canPerformEditRequestWithAssets:(id)assets adjustments:(id)adjustments completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  assetsCopy = assets;
+  adjustmentsCopy = adjustments;
+  handlerCopy = handler;
+  if (assetsCopy)
   {
-    if (v10)
+    if (adjustmentsCopy)
     {
       goto LABEL_3;
     }
@@ -618,7 +618,7 @@ LABEL_8:
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1173 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -629,13 +629,13 @@ LABEL_8:
   v15 = +[NSAssertionHandler currentHandler];
   [v15 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1172 description:{@"Invalid parameter not satisfying: %@", @"assets"}];
 
-  if (!v10)
+  if (!adjustmentsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -646,7 +646,7 @@ LABEL_9:
 
 LABEL_4:
   v18 = 0;
-  v12 = [PUPhotoEditPendingEditsRequest canPerformEditsWithAssets:v9 adjustments:v10 error:&v18];
+  v12 = [PUPhotoEditPendingEditsRequest canPerformEditsWithAssets:assetsCopy adjustments:adjustmentsCopy error:&v18];
   v13 = v18;
   if ((v12 & 1) == 0)
   {
@@ -655,17 +655,17 @@ LABEL_4:
     v13 = v14;
   }
 
-  v11[2](v11, v12, v13);
+  handlerCopy[2](handlerCopy, v12, v13);
 }
 
-- (void)performSearchWithDecoratedQuery:(id)a3 completionHandler:(id)a4
+- (void)performSearchWithDecoratedQuery:(id)query completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  queryCopy = query;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v8)
+  if (queryCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -676,7 +676,7 @@ LABEL_4:
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1162 description:{@"Invalid parameter not satisfying: %@", @"decoratedQuery"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -686,19 +686,19 @@ LABEL_4:
   [v10 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1163 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v11 = [[PXProgrammaticNavigationDestination alloc] initWithDecoratedSearchQuery:v8];
+  v11 = [[PXProgrammaticNavigationDestination alloc] initWithDecoratedSearchQuery:queryCopy];
 
-  [(PhotosApplication *)self _navigateToDestination:v11 debugDescription:@"Search" completionHandler:v7];
+  [(PhotosApplication *)self _navigateToDestination:v11 debugDescription:@"Search" completionHandler:handlerCopy];
 }
 
-- (void)performSearchWithQuery:(id)a3 completionHandler:(id)a4
+- (void)performSearchWithQuery:(id)query completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  queryCopy = query;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v8)
+  if (queryCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -709,7 +709,7 @@ LABEL_3:
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1153 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -719,15 +719,15 @@ LABEL_3:
   [v10 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v11 = [[PXProgrammaticNavigationDestination alloc] initWithSearchText:v8];
+  v11 = [[PXProgrammaticNavigationDestination alloc] initWithSearchText:queryCopy];
 
-  [(PhotosApplication *)self _navigateToDestination:v11 debugDescription:@"Search" completionHandler:v7];
+  [(PhotosApplication *)self _navigateToDestination:v11 debugDescription:@"Search" completionHandler:handlerCopy];
 }
 
 - (double)displayScale
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  [v2 screenScale];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  [photosWindowSceneDelegate screenScale];
   v4 = v3;
 
   return v4;
@@ -736,15 +736,15 @@ LABEL_3:
 - (id)provideNavigationDestination
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(PhotosApplication *)self keyRootViewController];
-  v4 = [v3 px_descendantViewControllerWithClass:objc_opt_class()];
+  keyRootViewController = [(PhotosApplication *)self keyRootViewController];
+  v4 = [keyRootViewController px_descendantViewControllerWithClass:objc_opt_class()];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 photo];
+    photo = [v4 photo];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v7 = v6;
+      v7 = photo;
 
       if (v7)
       {
@@ -762,7 +762,7 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  v9 = [v3 px_descendantViewControllerWithClass:objc_opt_class()];
+  v9 = [keyRootViewController px_descendantViewControllerWithClass:objc_opt_class()];
   v7 = v9;
   if (!v9)
   {
@@ -771,12 +771,12 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v10 = [v9 browsingSession];
-  v11 = [v10 viewModel];
-  v12 = [v11 currentAssetReference];
-  v13 = [v12 asset];
+  browsingSession = [v9 browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  v14 = v13;
+  v14 = asset;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -832,7 +832,7 @@ LABEL_16:
   }
 }
 
-- (void)noteSceneWillEnterForeground:(id)a3
+- (void)noteSceneWillEnterForeground:(id)foreground
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (!self->_canSatisfyAppIntentsURLNavigationRequests)
@@ -853,20 +853,20 @@ LABEL_16:
   }
 }
 
-- (void)_navigateToDestination:(id)a3 debugDescription:(id)a4 completionHandler:(id)a5
+- (void)_navigateToDestination:(id)destination debugDescription:(id)description completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  destinationCopy = destination;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  if (!destinationCopy)
   {
     v22 = +[NSAssertionHandler currentHandler];
     [v22 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1027 description:{@"Invalid parameter not satisfying: %@", @"destination"}];
   }
 
-  if ([v10 length])
+  if ([descriptionCopy length])
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
@@ -877,7 +877,7 @@ LABEL_16:
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1028 description:{@"Invalid parameter not satisfying: %@", @"debugDescription.length"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
@@ -891,13 +891,13 @@ LABEL_5:
   v25[1] = 3221225472;
   v25[2] = sub_100017E1C;
   v25[3] = &unk_10005A2D8;
-  v12 = v9;
+  v12 = destinationCopy;
   v26 = v12;
-  v27 = self;
+  selfCopy = self;
   v30 = a2;
-  v13 = v10;
+  v13 = descriptionCopy;
   v28 = v13;
-  v14 = v11;
+  v14 = handlerCopy;
   v29 = v14;
   v15 = objc_retainBlock(v25);
   v16 = v15;
@@ -931,14 +931,14 @@ LABEL_5:
   }
 }
 
-- (void)navigateToURLDestination:(id)a3 completionHandler:(id)a4
+- (void)navigateToURLDestination:(id)destination completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  destinationCopy = destination;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v8)
+  if (destinationCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -949,7 +949,7 @@ LABEL_5:
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1012 description:{@"Invalid parameter not satisfying: %@", @"urlDestination"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -959,11 +959,11 @@ LABEL_5:
   [v13 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1013 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v9 = [[PXProgrammaticNavigationDestination alloc] initWithURL:v8];
+  v9 = [[PXProgrammaticNavigationDestination alloc] initWithURL:destinationCopy];
 
   if ([v9 type])
   {
-    [(PhotosApplication *)self _navigateToDestination:v9 debugDescription:@"URL" completionHandler:v7];
+    [(PhotosApplication *)self _navigateToDestination:v9 debugDescription:@"URL" completionHandler:handlerCopy];
   }
 
   else
@@ -977,73 +977,73 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to perform App Intents URL navigation request: %@", buf, 0xCu);
     }
 
-    v7[2](v7, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 }
 
-- (void)providePhotoLibrary:(id)a3
+- (void)providePhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (!v5)
+  if (!libraryCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"PhotosApplication.m" lineNumber:1002 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v7 = [PhotosApplication px_photoLibrary]_0();
-  v5[2](v5, v7);
+  libraryCopy[2](libraryCopy, v7);
 }
 
 - (PXCollectionActionReceiver)keyCollectionActionReceiver
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 collectionActionReceiver];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  collectionActionReceiver = [photosWindowSceneDelegate collectionActionReceiver];
 
-  return v3;
+  return collectionActionReceiver;
 }
 
 - (PXLibraryActionReceiver)libraryActionReceiver
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 libraryActionReceiver];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  libraryActionReceiver = [photosWindowSceneDelegate libraryActionReceiver];
 
-  return v3;
+  return libraryActionReceiver;
 }
 
 - (id)importViewControllerInstanceHost
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 importViewControllerInstanceHost];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  importViewControllerInstanceHost = [photosWindowSceneDelegate importViewControllerInstanceHost];
 
-  return v3;
+  return importViewControllerInstanceHost;
 }
 
 - (UIViewController)keyRootViewController
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 rootViewController];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  rootViewController = [photosWindowSceneDelegate rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (PUTabbedLibraryViewController)keyTabbedLibraryViewController
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 tabbedLibraryViewController];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  tabbedLibraryViewController = [photosWindowSceneDelegate tabbedLibraryViewController];
 
-  return v3;
+  return tabbedLibraryViewController;
 }
 
 - (id)keySpec
 {
-  v2 = [(PhotosApplication *)self photosWindowSceneDelegate];
-  v3 = [v2 spec];
+  photosWindowSceneDelegate = [(PhotosApplication *)self photosWindowSceneDelegate];
+  spec = [photosWindowSceneDelegate spec];
 
-  return v3;
+  return spec;
 }
 
-- (void)performNebuladCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)a3
+- (void)performNebuladCrashRecoveryIfNeededForceEndLastTimelapseSession:(BOOL)session
 {
   if (qword_100066600 != -1)
   {
@@ -1057,15 +1057,15 @@ LABEL_3:
   block[2] = sub_100018808;
   block[3] = &unk_10005A2B0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  sessionCopy = session;
   dispatch_async(v5, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)importController:(id)a3 removedImportSource:(id)a4
+- (void)importController:(id)controller removedImportSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = PLCameraConnectionKitGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1073,11 +1073,11 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "_importDeviceRemoved", buf, 2u);
   }
 
-  v7 = [v5 uuid];
-  v8 = [(PUImportViewController *)self->_importViewController importSource];
-  v9 = [v8 uuid];
+  uuid = [sourceCopy uuid];
+  importSource = [(PUImportViewController *)self->_importViewController importSource];
+  uuid2 = [importSource uuid];
 
-  if ([v7 isEqualToString:v9])
+  if ([uuid isEqualToString:uuid2])
   {
     [(PhotosApplication *)self _dequeueNextImportDevice];
   }
@@ -1104,8 +1104,8 @@ LABEL_7:
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [v15 uuid];
-        if ([v16 isEqualToString:v7])
+        uuid3 = [v15 uuid];
+        if ([uuid3 isEqualToString:uuid])
         {
           break;
         }
@@ -1139,9 +1139,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)importController:(id)a3 addedImportSource:(id)a4
+- (void)importController:(id)controller addedImportSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = PLCameraConnectionKitGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1149,7 +1149,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "_importDeviceAdded", buf, 2u);
   }
 
-  v7 = [v5 uuid];
+  uuid = [sourceCopy uuid];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1170,8 +1170,8 @@ LABEL_17:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) uuid];
-        v14 = [v13 isEqualToString:v7];
+        uuid2 = [*(*(&v19 + 1) + 8 * v12) uuid];
+        v14 = [uuid2 isEqualToString:uuid];
 
         if (v14)
         {
@@ -1203,10 +1203,10 @@ LABEL_17:
     importDeviceQueue = self->_importDeviceQueue;
   }
 
-  [(NSMutableArray *)importDeviceQueue addObject:v5, v19];
-  v18 = [(PUImportViewController *)self->_importViewController importSource];
+  [(NSMutableArray *)importDeviceQueue addObject:sourceCopy, v19];
+  importSource = [(PUImportViewController *)self->_importViewController importSource];
 
-  if (!v18)
+  if (!importSource)
   {
     [(PhotosApplication *)self _dequeueNextImportDevice];
   }
@@ -1214,36 +1214,36 @@ LABEL_17:
 LABEL_16:
 }
 
-- (void)_showAppleMusicPromptsIfNecessaryWithCompletion:(id)a3
+- (void)_showAppleMusicPromptsIfNecessaryWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v3 = +[PXStorySettings sharedInstance];
-  v4 = [v3 appleMusicPromptTrigger];
+  appleMusicPromptTrigger = [v3 appleMusicPromptTrigger];
 
-  if (v4)
+  if (appleMusicPromptTrigger)
   {
-    v5[2]();
+    completionCopy[2]();
   }
 
   else
   {
-    [PXAppleMusicPrompter showPromptsIfNeededWithCompletion:v5];
+    [PXAppleMusicPrompter showPromptsIfNeededWithCompletion:completionCopy];
   }
 }
 
-- (void)_showWelcomeViewControllersIfNecessaryWithCompletion:(id)a3
+- (void)_showWelcomeViewControllersIfNecessaryWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   if ([(PhotosApplication *)self launchedToTest])
   {
-    v6[2]();
+    completionCopy[2]();
   }
 
   else
   {
-    v4 = [(PhotosApplication *)self keyRootViewController];
+    keyRootViewController = [(PhotosApplication *)self keyRootViewController];
     v5 = +[PUWelcomeViewControllersManager defaultManager];
-    [v5 presentWelcomeViewControllersIfNecessaryFromViewController:v4 completion:v6];
+    [v5 presentWelcomeViewControllersIfNecessaryFromViewController:keyRootViewController completion:completionCopy];
   }
 }
 
@@ -1251,18 +1251,18 @@ LABEL_16:
 {
   if ((PXCPLIsInTestReadonlyMode() & 1) == 0)
   {
-    v3 = [(PhotosApplication *)self px_photoLibrary];
-    v4 = [v3 cplStatus];
-    v5 = [v4 exitDeleteTime];
-    v6 = v5;
-    if (!v5)
+    px_photoLibrary = [(PhotosApplication *)self px_photoLibrary];
+    cplStatus = [px_photoLibrary cplStatus];
+    exitDeleteTime = [cplStatus exitDeleteTime];
+    v6 = exitDeleteTime;
+    if (!exitDeleteTime)
     {
 LABEL_14:
 
       return;
     }
 
-    [v5 timeIntervalSince1970];
+    [exitDeleteTime timeIntervalSince1970];
     v8 = [NSString stringWithFormat:@"CPLExitWarningPromptShownforExitDate:%f", v7];
     v9 = +[NSUserDefaults standardUserDefaults];
     v10 = [v9 dictionaryForKey:v8];
@@ -1337,17 +1337,17 @@ LABEL_13:
       v23 = [UIAlertAction actionWithTitle:v26 style:0 handler:v31];
       [v19 addAction:v23];
 
-      v24 = [(PhotosApplication *)self px_firstKeyWindow];
-      [v24 pl_presentViewController:v19 animated:1];
+      px_firstKeyWindow = [(PhotosApplication *)self px_firstKeyWindow];
+      [px_firstKeyWindow pl_presentViewController:v19 animated:1];
     }
 
     goto LABEL_13;
   }
 }
 
-- (void)handleOAuthRedirectURL:(id)a3
+- (void)handleOAuthRedirectURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -1366,59 +1366,59 @@ LABEL_13:
 
   v5 = v4;
   _Block_object_dispose(&v14, 8);
-  v6 = [v4 sharedInstance];
-  v7 = [v6 handleOAuthRedirectURL:v3];
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance handleOAuthRedirectURL:lCopy];
   v8 = PLUIGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
   {
     if (v9)
     {
-      v10 = [v3 scheme];
-      v11 = [v3 path];
+      scheme = [lCopy scheme];
+      path = [lCopy path];
       *buf = 138412546;
-      *&buf[4] = v10;
+      *&buf[4] = scheme;
       *&buf[12] = 2112;
-      *&buf[14] = v11;
+      *&buf[14] = path;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handled OAuth Redirect url %@:%@", buf, 0x16u);
     }
   }
 
   else if (v9)
   {
-    v12 = [v3 scheme];
-    v13 = [v3 path];
+    scheme2 = [lCopy scheme];
+    path2 = [lCopy path];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = scheme2;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = path2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unable to handle OAuth Redirect url %@:%@", buf, 0x16u);
   }
 }
 
 - (void)_tearDownImportViewController
 {
-  v5 = [(PUImportViewController *)self->_importViewController importSource];
+  importSource = [(PUImportViewController *)self->_importViewController importSource];
   [(PUImportViewController *)self->_importViewController setImportSource:0];
   importViewController = self->_importViewController;
   self->_importViewController = 0;
 
-  v4 = [(PhotosApplication *)self importViewControllerInstanceHost];
-  [v4 setImportViewController:0 forImportSource:v5];
+  importViewControllerInstanceHost = [(PhotosApplication *)self importViewControllerInstanceHost];
+  [importViewControllerInstanceHost setImportViewController:0 forImportSource:importSource];
 }
 
 - (void)_dequeueNextImportDevice
 {
-  v3 = [(NSMutableArray *)self->_importDeviceQueue firstObject];
+  firstObject = [(NSMutableArray *)self->_importDeviceQueue firstObject];
   v4 = PLCameraConnectionKitGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = firstObject;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "_dequeueNextImportDevice: %@", &v8, 0xCu);
   }
 
-  if (v3)
+  if (firstObject)
   {
     [(NSMutableArray *)self->_importDeviceQueue removeObjectAtIndex:0];
     if (self->_importViewController)
@@ -1426,13 +1426,13 @@ LABEL_13:
       [(PhotosApplication *)self _tearDownImportViewController];
     }
 
-    v5 = [(PhotosApplication *)self _newImportViewController];
+    _newImportViewController = [(PhotosApplication *)self _newImportViewController];
     importViewController = self->_importViewController;
-    self->_importViewController = v5;
+    self->_importViewController = _newImportViewController;
 
-    [(PUImportViewController *)self->_importViewController setImportSource:v3];
-    v7 = [(PhotosApplication *)self importViewControllerInstanceHost];
-    [v7 setImportViewController:self->_importViewController forImportSource:v3];
+    [(PUImportViewController *)self->_importViewController setImportSource:firstObject];
+    importViewControllerInstanceHost = [(PhotosApplication *)self importViewControllerInstanceHost];
+    [importViewControllerInstanceHost setImportViewController:self->_importViewController forImportSource:firstObject];
   }
 
   else
@@ -1443,8 +1443,8 @@ LABEL_13:
 
 - (id)_newImportViewController
 {
-  v3 = [(PhotosApplication *)self keySpec];
-  if (!v3)
+  keySpec = [(PhotosApplication *)self keySpec];
+  if (!keySpec)
   {
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1454,13 +1454,13 @@ LABEL_13:
     }
 
     v5 = +[UIDevice currentDevice];
-    v3 = +[PhotosAppSpec specForIdiom:](PhotosAppSpec, "specForIdiom:", [v5 userInterfaceIdiom]);
+    keySpec = +[PhotosAppSpec specForIdiom:](PhotosAppSpec, "specForIdiom:", [v5 userInterfaceIdiom]);
   }
 
   v6 = [PUImportViewController alloc];
-  v7 = [v3 importViewControllerSpec];
-  v8 = [(PhotosApplication *)self px_photoLibrary];
-  v9 = [v6 initWithSpec:v7 photoLibrary:v8];
+  importViewControllerSpec = [keySpec importViewControllerSpec];
+  px_photoLibrary = [(PhotosApplication *)self px_photoLibrary];
+  v9 = [v6 initWithSpec:importViewControllerSpec photoLibrary:px_photoLibrary];
 
   return v9;
 }
@@ -1470,10 +1470,10 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = PhotosApplication;
   [(PhotosApplication *)&v7 photosPreferencesChanged];
-  v3 = [(PhotosApplication *)self hiddenAlbumIsVisible];
+  hiddenAlbumIsVisible = [(PhotosApplication *)self hiddenAlbumIsVisible];
   [(PhotosApplication *)self updateShowHiddenAlbumCachedValue];
   [(PhotosApplication *)self updateShowRecentlyViewedAndSharedAlbumCachedValue];
-  if (![(PhotosApplication *)self hiddenAlbumIsVisible]&& v3)
+  if (![(PhotosApplication *)self hiddenAlbumIsVisible]&& hiddenAlbumIsVisible)
   {
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1482,8 +1482,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Preferences 'HiddenAlbumVisible' changed to NO in Photos. Forcing navigation to root view controller in current navigation controller.", v6, 2u);
     }
 
-    v5 = [(PhotosApplication *)self keyTabbedLibraryViewController];
-    [v5 navigateToCollectionsTabRoot];
+    keyTabbedLibraryViewController = [(PhotosApplication *)self keyTabbedLibraryViewController];
+    [keyTabbedLibraryViewController navigateToCollectionsTabRoot];
   }
 }
 
@@ -1503,16 +1503,16 @@ LABEL_13:
 
 - (void)_beginUndoActionsInvalidator
 {
-  v2 = [(PhotosApplication *)self px_photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
-  v4 = [PHAssetCollection fetchAssetCollectionsWithType:2 subtype:1000000201 options:v3];
-  v5 = [v4 firstObject];
+  px_photoLibrary = [(PhotosApplication *)self px_photoLibrary];
+  librarySpecificFetchOptions = [px_photoLibrary librarySpecificFetchOptions];
+  v4 = [PHAssetCollection fetchAssetCollectionsWithType:2 subtype:1000000201 options:librarySpecificFetchOptions];
+  firstObject = [v4 firstObject];
 
-  v6 = v5;
+  v6 = firstObject;
   px_dispatch_on_main_queue();
 }
 
-- (void)_userDidTakeScreenshot:(id)a3
+- (void)_userDidTakeScreenshot:(id)screenshot
 {
   if (![(PhotosApplication *)self applicationState])
   {
@@ -1566,14 +1566,14 @@ LABEL_13:
   return v3;
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 request];
-  v10 = [v9 content];
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKeyedSubscript:kNotificationKeySuppresionContexts];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v12 = [userInfo objectForKeyedSubscript:kNotificationKeySuppresionContexts];
 
   if ([v12 count])
   {
@@ -1585,8 +1585,8 @@ LABEL_13:
     +[NSSet set];
   }
   v13 = ;
-  v14 = [(PhotosApplication *)self notificationSuppressionContexts];
-  v15 = [v14 intersectsSet:v13];
+  notificationSuppressionContexts = [(PhotosApplication *)self notificationSuppressionContexts];
+  v15 = [notificationSuppressionContexts intersectsSet:v13];
 
   if (v15)
   {
@@ -1594,37 +1594,37 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Suppressing notification: %@", &v17, 0xCu);
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v8[2](v8, 27);
+    handlerCopy[2](handlerCopy, 27);
   }
 }
 
-- (void)_showUserNotificationsPromptIfNecessaryWithCompletion:(id)a3
+- (void)_showUserNotificationsPromptIfNecessaryWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[UNUserNotificationCenter currentNotificationCenter];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001A744;
   v6[3] = &unk_10005A5A8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 requestAuthorizationWithOptions:7 completionHandler:v6];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = PhotosApplication;
-  [(PhotosApplication *)&v5 pressesBegan:a3 withEvent:a4];
+  [(PhotosApplication *)&v5 pressesBegan:began withEvent:event];
   [(PhotosApplication *)self invalidateActionManagerProvider];
 }
 
@@ -1636,11 +1636,11 @@ LABEL_13:
   +[_TtC9PhotosApp33PhotosAppShortcutsProviderWrapper updateAppShortcutParameters];
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   v29.receiver = self;
   v29.super_class = PhotosApplication;
-  [(PhotosApplication *)&v29 applicationDidFinishLaunching:a3];
+  [(PhotosApplication *)&v29 applicationDidFinishLaunching:launching];
   v30 = PXGuidedAccessDeletionAllowedRestrictionIdentifier;
   v4 = [[_PXGuidedAccessStringTuple alloc] initWithPrimaryText:@"LemonadeGuidedAccessNoDeleteName" detailText:@"LemonadeGuidedAccessNoDeleteDetailName"];
   v31 = v4;
@@ -1649,13 +1649,13 @@ LABEL_13:
   self->_photosGuidedAccessIdentifiersToNames = v5;
 
   v7 = +[PURootSettings sharedInstance];
-  v8 = [v7 allowGuidedAccessRestrictions];
+  allowGuidedAccessRestrictions = [v7 allowGuidedAccessRestrictions];
 
-  if (v8)
+  if (allowGuidedAccessRestrictions)
   {
-    v9 = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames allKeys];
+    allKeys = [(NSDictionary *)self->_photosGuidedAccessIdentifiersToNames allKeys];
     guidedAccessRestrictionIdentifiers = self->_guidedAccessRestrictionIdentifiers;
-    self->_guidedAccessRestrictionIdentifiers = v9;
+    self->_guidedAccessRestrictionIdentifiers = allKeys;
   }
 
   PXAppIntentsAddDisplayScaleProviderDependency();
@@ -1694,8 +1694,8 @@ LABEL_13:
   v21 = +[NSBundle mainBundle];
   [CPAnalytics setupWithConfigurationFilename:@"CPAnalyticsConfig-Photos" inBundle:v21];
 
-  v22 = [(PhotosApplication *)self px_photoLibrary];
-  [CPAnalytics setupSystemPropertyProvidersForLibrary:v22];
+  px_photoLibrary = [(PhotosApplication *)self px_photoLibrary];
+  [CPAnalytics setupSystemPropertyProvidersForLibrary:px_photoLibrary];
 
   +[CPAnalytics startAppTracking];
   +[CPAnalytics startViewTracking];
@@ -1725,7 +1725,7 @@ LABEL_13:
 
 - (PXActionManager)assetActionManager
 {
-  v3 = [(PhotosApplication *)self contentViewController];
+  contentViewController = [(PhotosApplication *)self contentViewController];
   WeakRetained = objc_loadWeakRetained(&self->_actionManagerProvider);
 
   if (WeakRetained)
@@ -1735,33 +1735,33 @@ LABEL_13:
 
   else
   {
-    v5 = v3 == 0;
+    v5 = contentViewController == 0;
   }
 
   if (!v5)
   {
-    v6 = [v3 view];
-    v7 = [v6 window];
-    v8 = [v7 _responderForKeyEvents];
+    view = [contentViewController view];
+    window = [view window];
+    _responderForKeyEvents = [window _responderForKeyEvents];
 
-    if (v8)
+    if (_responderForKeyEvents)
     {
       while ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        v9 = [v8 nextResponder];
+        nextResponder = [_responderForKeyEvents nextResponder];
 
-        v8 = v9;
-        if (!v9)
+        _responderForKeyEvents = nextResponder;
+        if (!nextResponder)
         {
           goto LABEL_10;
         }
       }
 
-      v8 = v8;
+      _responderForKeyEvents = _responderForKeyEvents;
     }
 
 LABEL_10:
-    objc_storeWeak(&self->_actionManagerProvider, v8);
+    objc_storeWeak(&self->_actionManagerProvider, _responderForKeyEvents);
   }
 
   v10 = objc_loadWeakRetained(&self->_actionManagerProvider);
@@ -1770,45 +1770,45 @@ LABEL_10:
     v11 = objc_loadWeakRetained(&self->_actionManagerProvider);
     if (v11 == self)
     {
-      v13 = 0;
+      assetActionManager = 0;
     }
 
     else
     {
       v12 = objc_loadWeakRetained(&self->_actionManagerProvider);
-      v13 = [v12 assetActionManager];
+      assetActionManager = [v12 assetActionManager];
     }
   }
 
   else
   {
-    v13 = 0;
+    assetActionManager = 0;
   }
 
-  return v13;
+  return assetActionManager;
 }
 
 - (NSUndoManager)fallbackUndoManager
 {
-  v2 = [(PhotosApplication *)self contentViewController];
-  v3 = [v2 undoManager];
+  contentViewController = [(PhotosApplication *)self contentViewController];
+  undoManager = [contentViewController undoManager];
 
-  return v3;
+  return undoManager;
 }
 
 - (UIViewController)contentViewController
 {
-  v3 = [(PhotosApplication *)self keyTabbedLibraryViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  keyTabbedLibraryViewController = [(PhotosApplication *)self keyTabbedLibraryViewController];
+  view = [keyTabbedLibraryViewController view];
+  window = [view window];
 
-  if (!v5)
+  if (!window)
   {
-    v6 = [(PhotosApplication *)self keyRootViewController];
+    keyRootViewController = [(PhotosApplication *)self keyRootViewController];
 
-    v7 = [v6 view];
-    v8 = [v7 window];
-    if (v8)
+    view2 = [keyRootViewController view];
+    window2 = [view2 window];
+    if (window2)
     {
 LABEL_8:
     }
@@ -1817,57 +1817,57 @@ LABEL_8:
     {
       while (1)
       {
-        v10 = [v6 presentedViewController];
+        presentedViewController = [keyRootViewController presentedViewController];
 
-        if (!v10)
+        if (!presentedViewController)
         {
           break;
         }
 
-        v9 = [v6 presentedViewController];
+        presentedViewController2 = [keyRootViewController presentedViewController];
 
-        v7 = [v9 view];
-        v8 = [v7 window];
-        v6 = v9;
-        if (v8)
+        view2 = [presentedViewController2 view];
+        window2 = [view2 window];
+        keyRootViewController = presentedViewController2;
+        if (window2)
         {
-          v6 = v9;
+          keyRootViewController = presentedViewController2;
           goto LABEL_8;
         }
       }
     }
 
-    v3 = v6;
+    keyTabbedLibraryViewController = keyRootViewController;
   }
 
-  return v3;
+  return keyTabbedLibraryViewController;
 }
 
-+ (void)_performActionType:(id)a3 assets:(id)a4 completionHandler:(id)a5
++ (void)_performActionType:(id)type assets:(id)assets completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _appIntentsActionManagerForAssets:a4];
+  typeCopy = type;
+  handlerCopy = handler;
+  v10 = [self _appIntentsActionManagerForAssets:assets];
   v12 = 0;
-  if ([v10 canPerformActionType:v8 error:&v12])
+  if ([v10 canPerformActionType:typeCopy error:&v12])
   {
-    v11 = [v10 actionPerformerForActionType:v8];
-    [v11 performActionWithCompletionHandler:v9];
+    v11 = [v10 actionPerformerForActionType:typeCopy];
+    [v11 performActionWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v9[2](v9, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 }
 
-+ (id)_appIntentsActionManagerForAssets:(id)a3
++ (id)_appIntentsActionManagerForAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = [PHManualFetchResult alloc];
-  v5 = [v3 firstObject];
-  v6 = [v5 photoLibrary];
-  v7 = [v4 initWithObjects:v3 photoLibrary:v6 fetchType:PHFetchTypeAsset fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v7 = [v4 initWithObjects:assetsCopy photoLibrary:photoLibrary fetchType:PHFetchTypeAsset fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   v8 = [PXPhotoKitAssetsDataSourceManager dataSourceManagerWithAssets:v7];
   v9 = [[PXSectionedSelectionManager alloc] initWithDataSourceManager:v8];
@@ -1877,13 +1877,13 @@ LABEL_8:
   return v10;
 }
 
-+ (id)_appIntentsErrorForError:(id)a3
++ (id)_appIntentsErrorForError:(id)error
 {
-  v3 = a3;
-  if ([v3 px_isDomain:PUPhotoEditPendingEditsRequestErrorDomain code:2])
+  errorCopy = error;
+  if ([errorCopy px_isDomain:PUPhotoEditPendingEditsRequestErrorDomain code:2])
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 objectForKeyedSubscript:PUAssetMediaTypeErrorKey];
+    userInfo = [errorCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:PUAssetMediaTypeErrorKey];
 
     if (v5)
     {
@@ -1901,15 +1901,15 @@ LABEL_8:
     v11 = @"Cannot perform adjustments";
     v12 = -1000;
 LABEL_17:
-    v8 = [NSError px_errorWithDomain:v10 code:v12 underlyingError:v3 userInfo:v6 debugDescription:v11];
+    v8 = [NSError px_errorWithDomain:v10 code:v12 underlyingError:errorCopy userInfo:v6 debugDescription:v11];
 
     goto LABEL_18;
   }
 
-  if ([v3 px_isDomain:PEAdjustmentFilterErrorDomain code:1])
+  if ([errorCopy px_isDomain:PEAdjustmentFilterErrorDomain code:1])
   {
-    v7 = [v3 userInfo];
-    v5 = [v7 objectForKeyedSubscript:PEAdjustmentFilterMediaTypeErrorKey];
+    userInfo2 = [errorCopy userInfo];
+    v5 = [userInfo2 objectForKeyedSubscript:PEAdjustmentFilterMediaTypeErrorKey];
 
     if (v5)
     {
@@ -1929,10 +1929,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (([v3 px_isDomain:PEAdjustmentApertureErrorDomain code:2] & 1) != 0 || (v8 = v3, objc_msgSend(v3, "px_isDomain:code:", PEAdjustmentDepthErrorDomain, 2)))
+  if (([errorCopy px_isDomain:PEAdjustmentApertureErrorDomain code:2] & 1) != 0 || (v8 = errorCopy, objc_msgSend(errorCopy, "px_isDomain:code:", PEAdjustmentDepthErrorDomain, 2)))
   {
-    v9 = [v3 userInfo];
-    v5 = [v9 objectForKeyedSubscript:PEAdjustmentApertureMediaTypeErrorKey];
+    userInfo3 = [errorCopy userInfo];
+    v5 = [userInfo3 objectForKeyedSubscript:PEAdjustmentApertureMediaTypeErrorKey];
 
     if (v5)
     {
@@ -1960,9 +1960,9 @@ LABEL_18:
 + (void)_donateTipsAppPhotosSignals
 {
   v2 = +[PHPhotoLibrary px_systemPhotoLibrary];
-  v7 = [v2 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [v2 librarySpecificFetchOptions];
 
-  v3 = [PHCollection fetchTopLevelUserCollectionsWithOptions:v7];
+  v3 = [PHCollection fetchTopLevelUserCollectionsWithOptions:librarySpecificFetchOptions];
   v4 = [v3 count];
 
   if (v4)
@@ -1989,74 +1989,74 @@ LABEL_18:
   [PXTipsAppDonation donateSignalForEvent:v6];
 }
 
-- (void)toggleLibraryFilter:(id)a3
+- (void)toggleLibraryFilter:(id)filter
 {
   v4 = PXNumberPropertyFromCommand();
   v5 = PXMenuItemIndexFromNumber();
 
-  v6 = [(PhotosApplication *)self libraryActionReceiver];
-  [v6 performLibraryFilterMenuActionForItemAtIndex:v5];
+  libraryActionReceiver = [(PhotosApplication *)self libraryActionReceiver];
+  [libraryActionReceiver performLibraryFilterMenuActionForItemAtIndex:v5];
 }
 
-- (void)adjustLocation:(id)a3
+- (void)adjustLocation:(id)location
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeEditLocation];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeEditLocation];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)adjustDateTime:(id)a3
+- (void)adjustDateTime:(id)time
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeEditDateTime];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeEditDateTime];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)revertAdjustments:(id)a3
+- (void)revertAdjustments:(id)adjustments
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeRevertAdjustments];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeRevertAdjustments];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)pasteAdjustments:(id)a3
+- (void)pasteAdjustments:(id)adjustments
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypePasteAdjustments];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypePasteAdjustments];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)copyAdjustments:(id)a3
+- (void)copyAdjustments:(id)adjustments
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeCopyAdjustments];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeCopyAdjustments];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)mergeDuplicatesWithoutConfirmation:(id)a3
+- (void)mergeDuplicatesWithoutConfirmation:(id)confirmation
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeMergeDuplicatesWithoutConfirmation];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeMergeDuplicatesWithoutConfirmation];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)mergeDuplicates:(id)a3
+- (void)mergeDuplicates:(id)duplicates
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeMergeDuplicates];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeMergeDuplicates];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)trashAssetsWithoutConfirmation:(id)a3
+- (void)trashAssetsWithoutConfirmation:(id)confirmation
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
   v4 = PLUIActionsGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2065,283 +2065,283 @@ LABEL_18:
   }
 
   v5 = PXAssetActionTypeTrashNoConfirm;
-  if (([v3 canPerformActionType:PXAssetActionTypeTrashNoConfirm] & 1) != 0 || (v5 = PXAssetActionTypeDelete, objc_msgSend(v3, "canPerformActionType:", PXAssetActionTypeDelete)))
+  if (([assetActionManager canPerformActionType:PXAssetActionTypeTrashNoConfirm] & 1) != 0 || (v5 = PXAssetActionTypeDelete, objc_msgSend(assetActionManager, "canPerformActionType:", PXAssetActionTypeDelete)))
   {
-    v6 = [v3 actionPerformerForActionType:v5];
+    v6 = [assetActionManager actionPerformerForActionType:v5];
     [v6 performActionWithCompletionHandler:0];
   }
 }
 
-- (void)trashAssets:(id)a3
+- (void)trashAssets:(id)assets
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
   v4 = PXAssetActionTypeRemove;
-  v6 = v3;
-  if ([v3 canPerformActionType:PXAssetActionTypeRemove] & 1) != 0 || (v4 = PXAssetActionTypeTrash, (objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeTrash)) || (v4 = PXAssetActionTypeDelete, objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeDelete)))
+  v6 = assetActionManager;
+  if ([assetActionManager canPerformActionType:PXAssetActionTypeRemove] & 1) != 0 || (v4 = PXAssetActionTypeTrash, (objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeTrash)) || (v4 = PXAssetActionTypeDelete, objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeDelete)))
   {
     v5 = [v6 actionPerformerForActionType:v4];
     [v5 performActionWithCompletionHandler:0];
   }
 }
 
-- (void)makeKeyPhoto:(id)a3
+- (void)makeKeyPhoto:(id)photo
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
   v4 = PXAssetActionTypeAlbumMakeKeyPhoto;
-  v6 = v3;
-  if ([v3 canPerformActionType:PXAssetActionTypeAlbumMakeKeyPhoto] & 1) != 0 || (v4 = PXAssetActionTypePersonMakeKeyPhoto, (objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypePersonMakeKeyPhoto)) || (v4 = PXAssetActionTypeStoryMakeKeyPhoto, objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeStoryMakeKeyPhoto)))
+  v6 = assetActionManager;
+  if ([assetActionManager canPerformActionType:PXAssetActionTypeAlbumMakeKeyPhoto] & 1) != 0 || (v4 = PXAssetActionTypePersonMakeKeyPhoto, (objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypePersonMakeKeyPhoto)) || (v4 = PXAssetActionTypeStoryMakeKeyPhoto, objc_msgSend(v6, "canPerformActionType:", PXAssetActionTypeStoryMakeKeyPhoto)))
   {
     v5 = [v6 actionPerformerForActionType:v4];
     [v5 performActionWithCompletionHandler:0];
   }
 }
 
-- (void)favoriteAssets:(id)a3
+- (void)favoriteAssets:(id)assets
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeToggleFavorite];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeToggleFavorite];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)hideAssets:(id)a3
+- (void)hideAssets:(id)assets
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeHide];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeHide];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)duplicateAssets:(id)a3
+- (void)duplicateAssets:(id)assets
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeDuplicate];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeDuplicate];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)addAssetsToSharedCollection:(id)a3
+- (void)addAssetsToSharedCollection:(id)collection
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeAddToSharedCollection];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeAddToSharedCollection];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)addAssetsToLastUsedAlbum:(id)a3
+- (void)addAssetsToLastUsedAlbum:(id)album
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeAddToLastUsedAlbum];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeAddToLastUsedAlbum];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)addAssetsToAlbum:(id)a3
+- (void)addAssetsToAlbum:(id)album
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeAddToAlbum];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeAddToAlbum];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)shareAssets:(id)a3
+- (void)shareAssets:(id)assets
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeShare];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeShare];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)print:(id)a3
+- (void)print:(id)print
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypePrint];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypePrint];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)newMemoryMovie:(id)a3
+- (void)newMemoryMovie:(id)movie
 {
   v6 = [PXProgrammaticNavigationDestination memoryCreationDestinationWithPrompt:0];
   v4 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:v6 options:0 completionHandler:0];
-  v5 = [(PhotosApplication *)self keyRootViewController];
+  keyRootViewController = [(PhotosApplication *)self keyRootViewController];
   PXProgrammaticNavigationRequestExecute();
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(PhotosApplication *)self assetActionManager];
-  v4 = [v3 actionPerformerForActionType:PXAssetActionTypeCopy];
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v4 = [assetActionManager actionPerformerForActionType:PXAssetActionTypeCopy];
 
   [v4 performActionWithCompletionHandler:0];
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
-  v3 = [(PhotosApplication *)self fallbackUndoManager];
-  [v3 redo];
+  fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+  [fallbackUndoManager redo];
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v3 = [(PhotosApplication *)self fallbackUndoManager];
-  [v3 undo];
+  fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+  [fallbackUndoManager undo];
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
   v6 = [[PXProgrammaticNavigationDestination alloc] initWithType:14 revealMode:1];
   v4 = [[PXProgrammaticNavigationRequest alloc] initWithDestination:v6 options:0 completionHandler:0];
-  v5 = [(PhotosApplication *)self keyRootViewController];
+  keyRootViewController = [(PhotosApplication *)self keyRootViewController];
   PXProgrammaticNavigationRequestExecute();
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v17 = a3;
-  if ([v17 action] == "undo:")
+  commandCopy = command;
+  if ([commandCopy action] == "undo:")
   {
-    v12 = [(PhotosApplication *)self fallbackUndoManager];
-    v13 = [v12 undoMenuItemTitle];
+    fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+    undoMenuItemTitle = [fallbackUndoManager undoMenuItemTitle];
 LABEL_21:
-    v16 = v13;
-    [v17 setTitle:v13];
+    v16 = undoMenuItemTitle;
+    [commandCopy setTitle:undoMenuItemTitle];
 
     goto LABEL_22;
   }
 
-  if ([v17 action] == "redo:")
+  if ([commandCopy action] == "redo:")
   {
-    v12 = [(PhotosApplication *)self fallbackUndoManager];
-    v13 = [v12 redoMenuItemTitle];
+    fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+    undoMenuItemTitle = [fallbackUndoManager redoMenuItemTitle];
     goto LABEL_21;
   }
 
-  if ([v17 action] == "hideAssets:")
+  if ([commandCopy action] == "hideAssets:")
   {
-    v14 = [(PhotosApplication *)self assetActionManager];
-    v12 = v14;
+    assetActionManager = [(PhotosApplication *)self assetActionManager];
+    fallbackUndoManager = assetActionManager;
     v15 = &PXAssetActionTypeHide;
 LABEL_20:
-    v13 = [v14 localizedTitleForActionType:*v15 useCase:1];
+    undoMenuItemTitle = [assetActionManager localizedTitleForActionType:*v15 useCase:1];
     goto LABEL_21;
   }
 
-  if ([v17 action] == "favoriteAssets:")
+  if ([commandCopy action] == "favoriteAssets:")
   {
-    v14 = [(PhotosApplication *)self assetActionManager];
-    v12 = v14;
+    assetActionManager = [(PhotosApplication *)self assetActionManager];
+    fallbackUndoManager = assetActionManager;
     v15 = &PXAssetActionTypeToggleFavorite;
     goto LABEL_20;
   }
 
-  if ([v17 action] == "addAssetsToLastUsedAlbum:")
+  if ([commandCopy action] == "addAssetsToLastUsedAlbum:")
   {
-    v14 = [(PhotosApplication *)self assetActionManager];
-    v12 = v14;
+    assetActionManager = [(PhotosApplication *)self assetActionManager];
+    fallbackUndoManager = assetActionManager;
     v15 = &PXAssetActionTypeAddToLastUsedAlbum;
     goto LABEL_20;
   }
 
-  if ([v17 action] == "navigateToSegment:" || objc_msgSend(v17, "action") == "navigateToPreviousTab:" || objc_msgSend(v17, "action") == "navigateToNextTab:" || objc_msgSend(v17, "action") == "toggleSortOrder:" || objc_msgSend(v17, "action") == "toggleFilter:")
+  if ([commandCopy action] == "navigateToSegment:" || objc_msgSend(commandCopy, "action") == "navigateToPreviousTab:" || objc_msgSend(commandCopy, "action") == "navigateToNextTab:" || objc_msgSend(commandCopy, "action") == "toggleSortOrder:" || objc_msgSend(commandCopy, "action") == "toggleFilter:")
   {
-    [v17 setAttributes:{objc_msgSend(v17, "attributes") | 4}];
+    [commandCopy setAttributes:{objc_msgSend(commandCopy, "attributes") | 4}];
   }
 
-  else if ([v17 action] == "toggleLibraryFilter:")
+  else if ([commandCopy action] == "toggleLibraryFilter:")
   {
     v4 = PXNumberPropertyFromCommand();
     v5 = PXMenuItemIndexFromNumber();
 
-    v6 = [(PhotosApplication *)self libraryActionReceiver];
-    v7 = [v6 libraryFilterMenuActionTitleForItemIndex:v5];
+    libraryActionReceiver = [(PhotosApplication *)self libraryActionReceiver];
+    v7 = [libraryActionReceiver libraryFilterMenuActionTitleForItemIndex:v5];
 
     if (v7)
     {
-      [v17 setTitle:v7];
-      v8 = [(PhotosApplication *)self libraryActionReceiver];
-      v9 = [v8 libraryFilterMenuActionImageNameForItemIndex:v5];
+      [commandCopy setTitle:v7];
+      libraryActionReceiver2 = [(PhotosApplication *)self libraryActionReceiver];
+      v9 = [libraryActionReceiver2 libraryFilterMenuActionImageNameForItemIndex:v5];
       v10 = [UIImage systemImageNamed:v9];
-      [v17 setImage:v10];
+      [commandCopy setImage:v10];
 
-      v11 = [(PhotosApplication *)self libraryActionReceiver];
-      [v11 libraryFilterMenuActionStateForItemIndex:v5];
-      [v17 setState:UIMenuElementStateFromPXMenuActionState()];
+      libraryActionReceiver3 = [(PhotosApplication *)self libraryActionReceiver];
+      [libraryActionReceiver3 libraryFilterMenuActionStateForItemIndex:v5];
+      [commandCopy setState:UIMenuElementStateFromPXMenuActionState()];
     }
 
     else
     {
-      [v17 setAttributes:{objc_msgSend(v17, "attributes") | 4}];
+      [commandCopy setAttributes:{objc_msgSend(commandCopy, "attributes") | 4}];
     }
   }
 
 LABEL_22:
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if ("newAlbum:" == a3 || "newSharedAlbum:" == a3 || "newSmartAlbum:" == a3 || "newFolder:" == a3)
+  if ("newAlbum:" == action || "newSharedAlbum:" == action || "newSmartAlbum:" == action || "newFolder:" == action)
   {
-    v7 = [(PhotosApplication *)self keyCollectionActionReceiver];
+    keyCollectionActionReceiver = [(PhotosApplication *)self keyCollectionActionReceiver];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PhotosApplication;
-    v7 = [PhotosApplication targetForAction:"targetForAction:withSender:" withSender:?];
+    keyCollectionActionReceiver = [PhotosApplication targetForAction:"targetForAction:withSender:" withSender:?];
   }
 
-  return v7;
+  return keyCollectionActionReceiver;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(PhotosApplication *)self assetActionManager];
-  v8 = v7;
-  if ("undo:" == a3)
+  senderCopy = sender;
+  assetActionManager = [(PhotosApplication *)self assetActionManager];
+  v8 = assetActionManager;
+  if ("undo:" == action)
   {
-    v10 = [(PhotosApplication *)self fallbackUndoManager];
-    v11 = [v10 canUndo];
+    fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+    canUndo = [fallbackUndoManager canUndo];
 LABEL_24:
-    v12 = v11;
+    v12 = canUndo;
 LABEL_25:
 
     goto LABEL_51;
   }
 
-  if ("redo:" == a3)
+  if ("redo:" == action)
   {
-    v10 = [(PhotosApplication *)self fallbackUndoManager];
-    v11 = [v10 canRedo];
+    fallbackUndoManager = [(PhotosApplication *)self fallbackUndoManager];
+    canUndo = [fallbackUndoManager canRedo];
     goto LABEL_24;
   }
 
-  if ("newMemoryMovie:" == a3)
+  if ("newMemoryMovie:" == action)
   {
-    v10 = [(PhotosApplication *)self keyRootViewController];
+    fallbackUndoManager = [(PhotosApplication *)self keyRootViewController];
     v13 = [PXProgrammaticNavigationDestination memoryCreationDestinationWithPrompt:0];
-    v12 = [v10 routingOptionsForDestination:v13] != 0;
+    v12 = [fallbackUndoManager routingOptionsForDestination:v13] != 0;
 
     goto LABEL_25;
   }
 
-  if ("copy:" == a3)
+  if ("copy:" == action)
   {
     v14 = &PXAssetActionTypeCopy;
     goto LABEL_49;
   }
 
-  if ("print:" == a3)
+  if ("print:" == action)
   {
     v14 = &PXAssetActionTypePrint;
     goto LABEL_49;
   }
 
-  if ("makeKeyPhoto:" == a3)
+  if ("makeKeyPhoto:" == action)
   {
-    if (([v7 canPerformActionType:PXAssetActionTypeAlbumMakeKeyPhoto] & 1) == 0 && (objc_msgSend(v8, "canPerformActionType:", PXAssetActionTypePersonMakeKeyPhoto) & 1) == 0)
+    if (([assetActionManager canPerformActionType:PXAssetActionTypeAlbumMakeKeyPhoto] & 1) == 0 && (objc_msgSend(v8, "canPerformActionType:", PXAssetActionTypePersonMakeKeyPhoto) & 1) == 0)
     {
       v14 = &PXAssetActionTypeStoryMakeKeyPhoto;
       goto LABEL_49;
@@ -2350,82 +2350,82 @@ LABEL_25:
 
   else
   {
-    if ("shareAssets:" == a3)
+    if ("shareAssets:" == action)
     {
       v14 = &PXAssetActionTypeShare;
       goto LABEL_49;
     }
 
-    if ("addAssetsToAlbum:" == a3)
+    if ("addAssetsToAlbum:" == action)
     {
       v14 = &PXAssetActionTypeAddToAlbum;
       goto LABEL_49;
     }
 
-    if ("addAssetsToLastUsedAlbum:" == a3)
+    if ("addAssetsToLastUsedAlbum:" == action)
     {
       v14 = &PXAssetActionTypeAddToLastUsedAlbum;
       goto LABEL_49;
     }
 
-    if ("addAssetsToSharedCollection:" == a3)
+    if ("addAssetsToSharedCollection:" == action)
     {
       v14 = &PXAssetActionTypeAddToSharedCollection;
       goto LABEL_49;
     }
 
-    if ("duplicateAssets:" == a3)
+    if ("duplicateAssets:" == action)
     {
       v14 = &PXAssetActionTypeDuplicate;
       goto LABEL_49;
     }
 
-    if ("hideAssets:" == a3)
+    if ("hideAssets:" == action)
     {
       v14 = &PXAssetActionTypeHide;
       goto LABEL_49;
     }
 
-    if ("favoriteAssets:" == a3)
+    if ("favoriteAssets:" == action)
     {
       v14 = &PXAssetActionTypeToggleFavorite;
       goto LABEL_49;
     }
 
-    if ("trashAssets:" != a3)
+    if ("trashAssets:" != action)
     {
-      if ("adjustDateTime:" == a3)
+      if ("adjustDateTime:" == action)
       {
         v14 = &PXAssetActionTypeEditDateTime;
       }
 
-      else if ("adjustLocation:" == a3)
+      else if ("adjustLocation:" == action)
       {
         v14 = &PXAssetActionTypeEditLocation;
       }
 
-      else if ("copyAdjustments:" == a3)
+      else if ("copyAdjustments:" == action)
       {
         v14 = &PXAssetActionTypeCopyAdjustments;
       }
 
-      else if ("pasteAdjustments:" == a3)
+      else if ("pasteAdjustments:" == action)
       {
         v14 = &PXAssetActionTypePasteAdjustments;
       }
 
-      else if ("revertAdjustments:" == a3)
+      else if ("revertAdjustments:" == action)
       {
         v14 = &PXAssetActionTypeRevertAdjustments;
       }
 
       else
       {
-        if ("mergeDuplicates:" != a3)
+        if ("mergeDuplicates:" != action)
         {
           v16.receiver = self;
           v16.super_class = PhotosApplication;
-          v9 = [(PhotosApplication *)&v16 canPerformAction:a3 withSender:v6];
+          v9 = [(PhotosApplication *)&v16 canPerformAction:action withSender:senderCopy];
 LABEL_50:
           v12 = v9;
           goto LABEL_51;
@@ -2439,7 +2439,7 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if (([v7 canPerformActionType:PXAssetActionTypeRemove] & 1) == 0 && (objc_msgSend(v8, "canPerformActionType:", PXAssetActionTypeTrash) & 1) == 0)
+    if (([assetActionManager canPerformActionType:PXAssetActionTypeRemove] & 1) == 0 && (objc_msgSend(v8, "canPerformActionType:", PXAssetActionTypeTrash) & 1) == 0)
     {
       v14 = &PXAssetActionTypeDelete;
       goto LABEL_49;
@@ -2452,25 +2452,25 @@ LABEL_51:
   return v12;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [v3 system];
+  builderCopy = builder;
+  system = [builderCopy system];
   v5 = +[UIMenuSystem mainSystem];
 
-  if (v4 == v5)
+  if (system == v5)
   {
     v91[0] = _NSConcreteStackBlock;
     v91[1] = 3221225472;
     v91[2] = sub_10001E638;
     v91[3] = &unk_10005A478;
     v92 = &stru_10005A3F0;
-    [v3 replaceChildrenOfMenuForIdentifier:UIMenuNewItem fromChildrenBlock:v91];
-    [v3 removeMenuForIdentifier:UIMenuTextStyle];
+    [builderCopy replaceChildrenOfMenuForIdentifier:UIMenuNewItem fromChildrenBlock:v91];
+    [builderCopy removeMenuForIdentifier:UIMenuTextStyle];
     v6 = PXLocalizedString();
     v7 = [UIImage _systemImageNamed:@"info.circle"];
     [UIKeyCommand commandWithTitle:v6 image:v7 action:"toggleInspector:" input:@"i" modifierFlags:0x100000 propertyList:0];
-    v9 = v8 = v3;
+    v9 = v8 = builderCopy;
     v97[0] = v9;
     v10 = PXLocalizedString();
     v11 = [UIImage _systemImageNamed:@"square.and.arrow.up"];
@@ -2513,13 +2513,13 @@ LABEL_51:
     do
     {
       v24 = [NSNumber numberWithInteger:v22];
-      v25 = [v24 stringValue];
+      stringValue = [v24 stringValue];
       v26 = v17[397];
       PULocalizedString();
       v28 = v27 = v17;
-      v29 = [v26 stringWithFormat:@"%@ %@", v28, v25];
+      v29 = [v26 stringWithFormat:@"%@ %@", v28, stringValue];
 
-      v30 = [UIKeyCommand commandWithTitle:v29 image:0 action:"navigateToSegment:" input:v25 modifierFlags:0x100000 propertyList:v24];
+      v30 = [UIKeyCommand commandWithTitle:v29 image:0 action:"navigateToSegment:" input:stringValue modifierFlags:0x100000 propertyList:v24];
       [v23 addObject:v30];
 
       v17 = v27;
@@ -2569,27 +2569,27 @@ LABEL_51:
     for (i = 0; i != 10; ++i)
     {
       v50 = [v39[393] numberWithInteger:i];
-      v51 = [v50 stringValue];
+      stringValue2 = [v50 stringValue];
       v52 = v39;
       v53 = v40[397];
       v54 = PULocalizedString();
-      v55 = [v53 stringWithFormat:@"%@ %@", v54, v51];
+      v55 = [v53 stringWithFormat:@"%@ %@", v54, stringValue2];
 
-      v56 = [UIKeyCommand commandWithTitle:v55 image:0 action:"toggleFilter:" input:v51 modifierFlags:1572864 propertyList:v50];
+      v56 = [UIKeyCommand commandWithTitle:v55 image:0 action:"toggleFilter:" input:stringValue2 modifierFlags:1572864 propertyList:v50];
       [v48 addObject:v56];
 
       v39 = v52;
     }
 
     v57 = PULocalizedString();
-    v58 = [v48 px_popFirst];
-    v95[0] = v58;
+    px_popFirst = [v48 px_popFirst];
+    v95[0] = px_popFirst;
     v59 = [UIMenu menuWithTitle:&stru_10005C9B8 image:0 identifier:0 options:1 children:v48];
     v95[1] = v59;
     v60 = [NSArray arrayWithObjects:v95 count:2];
     v61 = [UIMenu menuWithTitle:v57 image:0 identifier:0 options:0 children:v60];
 
-    v3 = v87;
+    builderCopy = v87;
     v79 = v61;
     [v87 insertSiblingMenu:v61 beforeMenuForIdentifier:UIMenuSidebar];
     [v87 removeMenuForIdentifier:UIMenuTextSize];

@@ -1,12 +1,12 @@
 @interface CNUIFavoritesEntryPicker
 + (id)descriptorForRequiredKeys;
 + (id)log;
-- (CNUIFavoritesEntryPicker)initWithContact:(id)a3;
+- (CNUIFavoritesEntryPicker)initWithContact:(id)contact;
 - (CNUIFavoritesEntryPickerDelegate)delegate;
-- (id)menuProviderForContextMenuInteraction:(id)a3;
+- (id)menuProviderForContextMenuInteraction:(id)interaction;
 - (id)viewController;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)didSelectActionItem:(id)a3 dismissController:(BOOL)a4;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)didSelectActionItem:(id)item dismissController:(BOOL)controller;
 - (void)setUpActionsController;
 @end
 
@@ -19,39 +19,39 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
-  v9 = a4;
-  v5 = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
-  v6 = [(CNUIFavoritesEntryPicker *)self contextMenuInteraction];
-  [v5 updateWithMenuItems:v9 contextMenuInteraction:v6];
+  menuCopy = menu;
+  actionMenuHelper = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
+  contextMenuInteraction = [(CNUIFavoritesEntryPicker *)self contextMenuInteraction];
+  [actionMenuHelper updateWithMenuItems:menuCopy contextMenuInteraction:contextMenuInteraction];
 
-  v7 = [(CNUIFavoritesEntryPicker *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(CNUIFavoritesEntryPicker *)self delegate];
+  LOBYTE(contextMenuInteraction) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (contextMenuInteraction)
   {
-    v8 = [(CNUIFavoritesEntryPicker *)self delegate];
-    [v8 favoritesEntryPicker:self didUpdateWithMenu:v9];
+    delegate2 = [(CNUIFavoritesEntryPicker *)self delegate];
+    [delegate2 favoritesEntryPicker:self didUpdateWithMenu:menuCopy];
   }
 }
 
-- (void)didSelectActionItem:(id)a3 dismissController:(BOOL)a4
+- (void)didSelectActionItem:(id)item dismissController:(BOOL)controller
 {
-  v4 = a4;
+  controllerCopy = controller;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNUIFavoritesEntryPicker *)self alertController];
+  itemCopy = item;
+  alertController = [(CNUIFavoritesEntryPicker *)self alertController];
 
-  if (v7)
+  if (alertController)
   {
-    v8 = [(CNUIFavoritesEntryPicker *)self alertController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    alertController2 = [(CNUIFavoritesEntryPicker *)self alertController];
+    [alertController2 dismissViewControllerAnimated:1 completion:0];
 
     [(CNUIFavoritesEntryPicker *)self setAlertController:0];
   }
 
-  v9 = v6;
+  v9 = itemCopy;
   v10 = v9;
   if (![v9 isSuggested])
   {
@@ -60,8 +60,8 @@
 
   v10 = objc_alloc_init(MEMORY[0x1E6996BD0]);
   v11 = MEMORY[0x1E695CE98];
-  v12 = [v9 contactProperty];
-  v13 = [v12 key];
+  contactProperty = [v9 contactProperty];
+  v13 = [contactProperty key];
   v14 = [v11 descriptorsForRequiredKeysForPropertyKey:v13];
   v15 = [v9 curateActionWithContext:v10 withKeysToFetch:v14];
 
@@ -74,30 +74,30 @@ LABEL_6:
     v17 = [objc_opt_class() log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v16 contactProperty];
+      contactProperty2 = [v16 contactProperty];
       v24 = 138412546;
-      v25 = v18;
+      v25 = contactProperty2;
       v26 = 2112;
       v27 = v10;
       _os_log_impl(&dword_199A75000, v17, OS_LOG_TYPE_INFO, "Did select favorites entry with contact property %@ with action item %@", &v24, 0x16u);
     }
 
-    v19 = [(CNUIFavoritesEntryPicker *)self delegate];
+    delegate = [(CNUIFavoritesEntryPicker *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
-    v21 = [(CNUIFavoritesEntryPicker *)self delegate];
-    v22 = v21;
+    delegate2 = [(CNUIFavoritesEntryPicker *)self delegate];
+    v22 = delegate2;
     if (v20)
     {
-      [v21 favoritesEntryPicker:self didPickEntry:v16 dismissPicker:v4];
+      [delegate2 favoritesEntryPicker:self didPickEntry:v16 dismissPicker:controllerCopy];
     }
 
     else
     {
-      [v21 favoritesEntryPicker:self didPickEntry:v16];
+      [delegate2 favoritesEntryPicker:self didPickEntry:v16];
     }
 
-    if (v4)
+    if (controllerCopy)
     {
       [(CNUIFavoritesEntryPicker *)self setActionsController:0];
       [(CNUIFavoritesEntryPicker *)self setActionMenuHelper:0];
@@ -114,7 +114,7 @@ LABEL_6:
     _os_log_error_impl(&dword_199A75000, v23, OS_LOG_TYPE_ERROR, "Failed to curate suggestion for action item %@", &v24, 0xCu);
   }
 
-  if (v4)
+  if (controllerCopy)
   {
     [(CNUIFavoritesEntryPicker *)self setActionsController:0];
     [(CNUIFavoritesEntryPicker *)self setActionMenuHelper:0];
@@ -127,7 +127,7 @@ LABEL_14:
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v3 = [CNContactActionsController alloc];
-  v4 = [(CNUIFavoritesEntryPicker *)self contact];
+  contact = [(CNUIFavoritesEntryPicker *)self contact];
   v5 = *MEMORY[0x1E695C150];
   v15[0] = *MEMORY[0x1E695C178];
   v15[1] = v5;
@@ -135,42 +135,42 @@ LABEL_14:
   v15[2] = *MEMORY[0x1E695C1B8];
   v15[3] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:4];
-  v8 = [(CNContactActionsController *)v3 initWithContact:v4 actionTypes:v7];
+  v8 = [(CNContactActionsController *)v3 initWithContact:contact actionTypes:v7];
   [(CNUIFavoritesEntryPicker *)self setActionsController:v8];
 
-  v9 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v9 setShouldUseOutlinedActionGlyphStyle:1];
+  actionsController = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController setShouldUseOutlinedActionGlyphStyle:1];
 
-  v10 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v10 setDisplayMenuIconAtTopLevel:1];
+  actionsController2 = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController2 setDisplayMenuIconAtTopLevel:1];
 
-  v11 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v11 setGenerateFavoritesListItemsOnly:1];
+  actionsController3 = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController3 setGenerateFavoritesListItemsOnly:1];
 
-  v12 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v12 setDisplayDefaultAppsSectionedMenus:0];
+  actionsController4 = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController4 setDisplayDefaultAppsSectionedMenus:0];
 
-  v13 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v13 setDelegate:self];
+  actionsController5 = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController5 setDelegate:self];
 
-  v14 = [(CNUIFavoritesEntryPicker *)self actionsController];
-  [v14 retrieveModels];
+  actionsController6 = [(CNUIFavoritesEntryPicker *)self actionsController];
+  [actionsController6 retrieveModels];
 }
 
-- (id)menuProviderForContextMenuInteraction:(id)a3
+- (id)menuProviderForContextMenuInteraction:(id)interaction
 {
-  [(CNUIFavoritesEntryPicker *)self setContextMenuInteraction:a3];
+  [(CNUIFavoritesEntryPicker *)self setContextMenuInteraction:interaction];
   v4 = objc_alloc_init(CNActionMenuHelper);
   [(CNUIFavoritesEntryPicker *)self setActionMenuHelper:v4];
 
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"PHONE_ACTION_ADD_TO_FAVORITES" value:&stru_1F0CE7398 table:@"Localized"];
-  v7 = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
-  [v7 setMenuTitle:v6];
+  actionMenuHelper = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
+  [actionMenuHelper setMenuTitle:v6];
 
   [(CNUIFavoritesEntryPicker *)self setUpActionsController];
-  v8 = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
-  v9 = [v8 menuProviderWithActionBlock:&__block_literal_global_25_40877];
+  actionMenuHelper2 = [(CNUIFavoritesEntryPicker *)self actionMenuHelper];
+  v9 = [actionMenuHelper2 menuProviderWithActionBlock:&__block_literal_global_25_40877];
 
   return v9;
 }
@@ -178,11 +178,11 @@ LABEL_14:
 - (id)viewController
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUIFavoritesEntryPicker *)self alertController];
+  alertController = [(CNUIFavoritesEntryPicker *)self alertController];
 
-  if (v3)
+  if (alertController)
   {
-    v4 = [(CNUIFavoritesEntryPicker *)self alertController];
+    alertController2 = [(CNUIFavoritesEntryPicker *)self alertController];
   }
 
   else
@@ -194,39 +194,39 @@ LABEL_14:
     v31[2] = *MEMORY[0x1E695C1B8];
     v31[3] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
-    v8 = [(CNUIFavoritesEntryPicker *)self delegate];
+    delegate = [(CNUIFavoritesEntryPicker *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(CNUIFavoritesEntryPicker *)self delegate];
-      v11 = [v10 actionTypesForFavoritesEntryPicker:self];
+      delegate2 = [(CNUIFavoritesEntryPicker *)self delegate];
+      v11 = [delegate2 actionTypesForFavoritesEntryPicker:self];
 
       v7 = v11;
     }
 
     v12 = [CNContactActionsController alloc];
-    v13 = [(CNUIFavoritesEntryPicker *)self contact];
-    v14 = [(CNContactActionsController *)v12 initWithContact:v13 actionTypes:v7];
+    contact = [(CNUIFavoritesEntryPicker *)self contact];
+    v14 = [(CNContactActionsController *)v12 initWithContact:contact actionTypes:v7];
     [(CNUIFavoritesEntryPicker *)self setActionsController:v14];
 
-    v15 = [(CNUIFavoritesEntryPicker *)self actionsController];
-    [v15 setDelegate:self];
+    actionsController = [(CNUIFavoritesEntryPicker *)self actionsController];
+    [actionsController setDelegate:self];
 
-    v16 = [(CNUIFavoritesEntryPicker *)self actionsController];
-    [v16 setGenerateFavoritesListItemsOnly:1];
+    actionsController2 = [(CNUIFavoritesEntryPicker *)self actionsController];
+    [actionsController2 setGenerateFavoritesListItemsOnly:1];
 
-    v17 = [(CNUIFavoritesEntryPicker *)self actionsController];
-    [v17 setDisplayDefaultAppsSectionedMenus:0];
+    actionsController3 = [(CNUIFavoritesEntryPicker *)self actionsController];
+    [actionsController3 setDisplayDefaultAppsSectionedMenus:0];
 
     v18 = MEMORY[0x1E69DC650];
     v19 = CNContactsUIBundle();
     v20 = [v19 localizedStringForKey:@"PHONE_ACTION_ADD_TO_FAVORITES" value:&stru_1F0CE7398 table:@"Localized"];
-    v4 = [v18 alertControllerWithTitle:v20 message:0 preferredStyle:0];
+    alertController2 = [v18 alertControllerWithTitle:v20 message:0 preferredStyle:0];
 
-    v21 = [(CNUIFavoritesEntryPicker *)self actionsController];
-    v22 = [v21 viewController];
-    [v4 setContentViewController:v22];
+    actionsController4 = [(CNUIFavoritesEntryPicker *)self actionsController];
+    viewController = [actionsController4 viewController];
+    [alertController2 setContentViewController:viewController];
 
     objc_initWeak(&location, self);
     v23 = MEMORY[0x1E69DC648];
@@ -238,14 +238,14 @@ LABEL_14:
     v28[3] = &unk_1E74E4B28;
     objc_copyWeak(&v29, &location);
     v26 = [v23 actionWithTitle:v25 style:1 handler:v28];
-    [v4 addAction:v26];
+    [alertController2 addAction:v26];
 
-    [(CNUIFavoritesEntryPicker *)self setAlertController:v4];
+    [(CNUIFavoritesEntryPicker *)self setAlertController:alertController2];
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
   }
 
-  return v4;
+  return alertController2;
 }
 
 void __42__CNUIFavoritesEntryPicker_viewController__block_invoke(uint64_t a1)
@@ -254,16 +254,16 @@ void __42__CNUIFavoritesEntryPicker_viewController__block_invoke(uint64_t a1)
   [WeakRetained setAlertController:0];
 }
 
-- (CNUIFavoritesEntryPicker)initWithContact:(id)a3
+- (CNUIFavoritesEntryPicker)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = CNUIFavoritesEntryPicker;
   v6 = [(CNUIFavoritesEntryPicker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
   }
 
   return v7;
@@ -292,16 +292,16 @@ uint64_t __31__CNUIFavoritesEntryPicker_log__block_invoke()
 
 + (id)descriptorForRequiredKeys
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[CNContactActionsController descriptorForRequiredKeys];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = [MEMORY[0x1E695CE98] descriptorsForRequiredKeysForPropertyKey:0];
-  [v2 addObjectsFromArray:v4];
+  [array addObjectsFromArray:v4];
 
   v5 = MEMORY[0x1E695CD58];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNUIFavoritesEntryPicker descriptorForRequiredKeys]"];
-  v7 = [v5 descriptorWithKeyDescriptors:v2 description:v6];
+  v7 = [v5 descriptorWithKeyDescriptors:array description:v6];
 
   return v7;
 }

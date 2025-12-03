@@ -1,11 +1,11 @@
 @interface ObservedRectangleView
-- (_TtC18CosmeticAssessmentP33_F62C5A70733B7900E7776736B1AB030221ObservedRectangleView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC18CosmeticAssessmentP33_F62C5A70733B7900E7776736B1AB030221ObservedRectangleView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ObservedRectangleView
 
-- (_TtC18CosmeticAssessmentP33_F62C5A70733B7900E7776736B1AB030221ObservedRectangleView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessmentP33_F62C5A70733B7900E7776736B1AB030221ObservedRectangleView)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -32,7 +32,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_247C83908();
 }
 

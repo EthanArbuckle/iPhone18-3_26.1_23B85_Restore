@@ -1,21 +1,21 @@
 @interface PHAmbientButtonPart
-+ (id)partWithView:(id)a3 type:(int64_t)a4;
-- (PHAmbientButtonPart)initWithView:(id)a3 type:(int64_t)a4;
++ (id)partWithView:(id)view type:(int64_t)type;
+- (PHAmbientButtonPart)initWithView:(id)view type:(int64_t)type;
 @end
 
 @implementation PHAmbientButtonPart
 
-- (PHAmbientButtonPart)initWithView:(id)a3 type:(int64_t)a4
+- (PHAmbientButtonPart)initWithView:(id)view type:(int64_t)type
 {
-  objc_storeStrong(&self->_view, a3);
-  self->_type = a4;
+  objc_storeStrong(&self->_view, view);
+  self->_type = type;
   return self;
 }
 
-+ (id)partWithView:(id)a3 type:(int64_t)a4
++ (id)partWithView:(id)view type:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[PHAmbientButtonPart alloc] initWithView:v5 type:a4];
+  viewCopy = view;
+  v6 = [[PHAmbientButtonPart alloc] initWithView:viewCopy type:type];
 
   return v6;
 }

@@ -1,20 +1,20 @@
 @interface _DKEventTypeStatsTimerCounter
-+ (id)counterInCollection:(void *)a3 withEventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:;
++ (id)counterInCollection:(void *)collection withEventName:(void *)name eventType:(void *)type eventTypePossibleValues:;
 - (id)eventName;
-- (void)addTimingWithStartDate:(void *)a3 endDate:(void *)a4 typeValue:;
-- (void)addTimingWithTimeInterval:(double)a3 typeValue:;
+- (void)addTimingWithStartDate:(void *)date endDate:(void *)endDate typeValue:;
+- (void)addTimingWithTimeInterval:(double)interval typeValue:;
 @end
 
 @implementation _DKEventTypeStatsTimerCounter
 
-+ (id)counterInCollection:(void *)a3 withEventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:
++ (id)counterInCollection:(void *)collection withEventName:(void *)name eventType:(void *)type eventTypePossibleValues:
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  typeCopy = type;
+  nameCopy = name;
+  collectionCopy = collection;
   v11 = a2;
   v12 = objc_opt_self();
-  v13 = [_DKEventStatsCollection counterWithClass:v12 collectionName:v11 eventName:v10 eventType:v9 eventTypePossibleValues:v8 hasResult:0 scalar:0];
+  v13 = [_DKEventStatsCollection counterWithClass:v12 collectionName:v11 eventName:collectionCopy eventType:nameCopy eventTypePossibleValues:typeCopy hasResult:0 scalar:0];
 
   return v13;
 }
@@ -33,17 +33,17 @@
   }
 }
 
-- (void)addTimingWithTimeInterval:(double)a3 typeValue:
+- (void)addTimingWithTimeInterval:(double)interval typeValue:
 {
   v16 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_10_8();
     OUTLINED_FUNCTION_3_16();
     if ((v7 & 1) == 0)
     {
-      Property = *(a1 + 8);
+      Property = *(self + 8);
       if (Property)
       {
         OUTLINED_FUNCTION_8_8();
@@ -54,20 +54,20 @@
       v14 = Property;
       [OUTLINED_FUNCTION_4_14() arrayWithObjects:v6 count:?];
       objc_claimAutoreleasedReturnValue();
-      [OUTLINED_FUNCTION_5_11() trackEventWithPropertyValues:a3 value:?];
+      [OUTLINED_FUNCTION_5_11() trackEventWithPropertyValues:interval value:?];
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTimingWithStartDate:(void *)a3 endDate:(void *)a4 typeValue:
+- (void)addTimingWithStartDate:(void *)date endDate:(void *)endDate typeValue:
 {
-  if (a1)
+  if (self)
   {
-    v8 = a4;
-    [a3 timeIntervalSinceDate:a2];
-    [(_DKEventTypeStatsTimerCounter *)a1 addTimingWithTimeInterval:v8 typeValue:v7];
+    endDateCopy = endDate;
+    [date timeIntervalSinceDate:a2];
+    [(_DKEventTypeStatsTimerCounter *)self addTimingWithTimeInterval:endDateCopy typeValue:v7];
   }
 }
 

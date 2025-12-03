@@ -7,10 +7,10 @@
 - (CGRect)px_backdropPrimaryOcclusionRect;
 - (CGRect)px_callServicesOcclusionRect;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
 - (NSURL)px_assetDirectory;
 - (UITraitCollection)px_traitCollection;
 - (double)px_backlightProgress;
@@ -19,7 +19,7 @@
 - (int64_t)px_contentsType;
 - (int64_t)px_significantEventsCounter;
 - (unint64_t)effectiveMotionEffectsMode;
-- (void)setPx_traitCollection:(id)a3;
+- (void)setPx_traitCollection:(id)collection;
 @end
 
 @implementation RenderingEnvironment
@@ -31,16 +31,16 @@
   return v2;
 }
 
-- (void)setPx_traitCollection:(id)a3
+- (void)setPx_traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000433C(a3);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_10000433C(collection);
 }
 
 - (BOOL)px_isSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004504();
 
   return v3 & 1;
@@ -48,7 +48,7 @@
 
 - (BOOL)px_isPreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004564();
 
   return v3 & 1;
@@ -56,7 +56,7 @@
 
 - (BOOL)px_isCallServices
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000045D4();
 
   return v3 & 1;
@@ -64,7 +64,7 @@
 
 - (int64_t)px_boundingShape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004748();
 
   return v3;
@@ -75,7 +75,7 @@
   v3 = (*(*(sub_10000597C(&qword_100023958, qword_100012A78) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v5 = &v12 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000485C(v5);
 
   v7 = sub_100010484();
@@ -92,7 +92,7 @@
 
 - (int64_t)px_significantEventsCounter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004A30();
 
   return v3;
@@ -100,7 +100,7 @@
 
 - (int64_t)px_contentsType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004A7C();
 
   return v3;
@@ -108,7 +108,7 @@
 
 - (CGRect)px_floatingObscurableBounds
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004C24();
   v4 = v3;
   v6 = v5;
@@ -126,7 +126,7 @@
   return result;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -139,7 +139,7 @@
   return result;
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -152,7 +152,7 @@
   return result;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -167,7 +167,7 @@
 
 - (unint64_t)effectiveMotionEffectsMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100004D04();
 
   return v3;
@@ -176,7 +176,7 @@
 - ($D63DA504A8ACE1B9904210608313F5EB)deviceAttitude
 {
   v3 = v2;
-  v4 = self;
+  selfCopy = self;
   *&v5 = sub_100004D8C();
   v10 = v6;
   v11 = v5;
@@ -190,7 +190,7 @@
 
 - (double)px_unlockProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004DFC();
   v4 = v3;
 
@@ -199,7 +199,7 @@
 
 - (double)px_backlightProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004E50();
   v4 = v3;
 

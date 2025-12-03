@@ -1,24 +1,24 @@
 @interface _UIOPrototypeMenuBarSummonButtonWindow
 - (BOOL)isMenuBarPresented;
-- (_UIOPrototypeMenuBarSummonButtonWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setMenuBarPresented:(BOOL)a3;
+- (_UIOPrototypeMenuBarSummonButtonWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setMenuBarPresented:(BOOL)presented;
 @end
 
 @implementation _UIOPrototypeMenuBarSummonButtonWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIWindow *)self rootViewController];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  rootViewController = [(UIWindow *)self rootViewController];
   v14.receiver = self;
   v14.super_class = _UIOPrototypeMenuBarSummonButtonWindow;
-  v9 = [(UIView *)&v14 hitTest:v7 withEvent:x, y];
+  v9 = [(UIView *)&v14 hitTest:eventCopy withEvent:x, y];
 
-  v10 = [v8 button];
-  v11 = [v9 isDescendantOfView:v10];
+  button = [rootViewController button];
+  v11 = [v9 isDescendantOfView:button];
 
   if (v11)
   {
@@ -33,11 +33,11 @@
   return v12;
 }
 
-- (_UIOPrototypeMenuBarSummonButtonWindow)initWithWindowScene:(id)a3
+- (_UIOPrototypeMenuBarSummonButtonWindow)initWithWindowScene:(id)scene
 {
   v8.receiver = self;
   v8.super_class = _UIOPrototypeMenuBarSummonButtonWindow;
-  v3 = [(UIWindow *)&v8 initWithWindowScene:a3];
+  v3 = [(UIWindow *)&v8 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -55,17 +55,17 @@
 
 - (BOOL)isMenuBarPresented
 {
-  v2 = [(UIWindow *)self rootViewController];
-  v3 = [v2 isMenuBarPresented];
+  rootViewController = [(UIWindow *)self rootViewController];
+  isMenuBarPresented = [rootViewController isMenuBarPresented];
 
-  return v3;
+  return isMenuBarPresented;
 }
 
-- (void)setMenuBarPresented:(BOOL)a3
+- (void)setMenuBarPresented:(BOOL)presented
 {
-  v3 = a3;
-  v4 = [(UIWindow *)self rootViewController];
-  [v4 setMenuBarPresented:v3];
+  presentedCopy = presented;
+  rootViewController = [(UIWindow *)self rootViewController];
+  [rootViewController setMenuBarPresented:presentedCopy];
 }
 
 @end

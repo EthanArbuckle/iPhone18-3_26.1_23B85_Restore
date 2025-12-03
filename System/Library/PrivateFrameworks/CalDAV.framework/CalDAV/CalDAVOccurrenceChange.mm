@@ -1,14 +1,14 @@
 @interface CalDAVOccurrenceChange
-+ (id)changeWithItem:(id)a3;
-+ (id)changeWithOccurrenceID:(id)a3;
++ (id)changeWithItem:(id)item;
++ (id)changeWithOccurrenceID:(id)d;
 - (BOOL)dateTimeChanged;
-- (BOOL)didParameterChange:(id)a3 onProperty:(id)a4;
-- (BOOL)didPropertyChange:(id)a3;
+- (BOOL)didParameterChange:(id)change onProperty:(id)property;
+- (BOOL)didPropertyChange:(id)change;
 - (BOOL)timeZoneChanged;
 - (CalDAVOccurrenceChange)init;
-- (CalDAVOccurrenceChange)initWithOccurrenceID:(id)a3;
-- (void)addChangedParameter:(id)a3 ofProperty:(id)a4;
-- (void)addChangedProperty:(id)a3;
+- (CalDAVOccurrenceChange)initWithOccurrenceID:(id)d;
+- (void)addChangedParameter:(id)parameter ofProperty:(id)property;
+- (void)addChangedProperty:(id)property;
 @end
 
 @implementation CalDAVOccurrenceChange
@@ -22,23 +22,23 @@
   if (v2)
   {
     [(CalDAVOccurrenceChange *)v2 setIsMaster:0];
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(CalDAVOccurrenceChange *)v3 setChanges:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(CalDAVOccurrenceChange *)v3 setChanges:dictionary];
   }
 
   return v3;
 }
 
-- (CalDAVOccurrenceChange)initWithOccurrenceID:(id)a3
+- (CalDAVOccurrenceChange)initWithOccurrenceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(CalDAVOccurrenceChange *)self init];
   if (v5)
   {
-    if ([v4 length])
+    if ([dCopy length])
     {
       v6 = objc_alloc(MEMORY[0x277D7F0E8]);
-      v7 = [MEMORY[0x277D7F100] dateFromICSString:v4];
+      v7 = [MEMORY[0x277D7F100] dateFromICSString:dCopy];
       v8 = [v6 initWithValue:v7];
       [(CalDAVOccurrenceChange *)v5 setRecurrenceID:v8];
     }
@@ -52,41 +52,41 @@
   return v5;
 }
 
-+ (id)changeWithOccurrenceID:(id)a3
++ (id)changeWithOccurrenceID:(id)d
 {
-  v3 = a3;
-  v4 = [[CalDAVOccurrenceChange alloc] initWithOccurrenceID:v3];
+  dCopy = d;
+  v4 = [[CalDAVOccurrenceChange alloc] initWithOccurrenceID:dCopy];
 
   return v4;
 }
 
-+ (id)changeWithItem:(id)a3
++ (id)changeWithItem:(id)item
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isMaster])
+  itemCopy = item;
+  if ([itemCopy isMaster])
   {
-    v4 = 0;
+    trimWhiteSpace = 0;
   }
 
   else
   {
-    v5 = [v3 recurrenceID];
-    v6 = [v5 payloadAsString];
-    v4 = [v6 trimWhiteSpace];
+    recurrenceID = [itemCopy recurrenceID];
+    payloadAsString = [recurrenceID payloadAsString];
+    trimWhiteSpace = [payloadAsString trimWhiteSpace];
   }
 
-  if (([v3 isMaster] & 1) != 0 || objc_msgSend(v4, "length"))
+  if (([itemCopy isMaster] & 1) != 0 || objc_msgSend(trimWhiteSpace, "length"))
   {
-    v27 = v4;
-    if ([v3 isMaster])
+    v27 = trimWhiteSpace;
+    if ([itemCopy isMaster])
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v4;
+      v7 = trimWhiteSpace;
     }
 
     v8 = [CalDAVOccurrenceChange changeWithOccurrenceID:v7];
@@ -96,15 +96,15 @@
       [(CalDAVOccurrenceChange *)v8 changeWithItem:v9];
     }
 
-    v28 = v3;
-    v10 = [v3 changes];
-    v11 = [v10 changedProperties];
+    v28 = itemCopy;
+    changes = [itemCopy changes];
+    changedProperties = [changes changedProperties];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v11;
+    obj = changedProperties;
     v12 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v12)
     {
@@ -120,14 +120,14 @@
           }
 
           v16 = *(*(&v34 + 1) + 8 * i);
-          v17 = [v16 nameAttribute];
-          [v8 addChangedProperty:v17];
+          nameAttribute = [v16 nameAttribute];
+          [v8 addChangedProperty:nameAttribute];
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v18 = [v16 changedParameters];
-          v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          changedParameters = [v16 changedParameters];
+          v19 = [changedParameters countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v19)
           {
             v20 = v19;
@@ -138,14 +138,14 @@
               {
                 if (*v31 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(changedParameters);
                 }
 
-                v23 = [*(*(&v30 + 1) + 8 * j) nameAttribute];
-                [v8 addChangedParameter:v23 ofProperty:v17];
+                nameAttribute2 = [*(*(&v30 + 1) + 8 * j) nameAttribute];
+                [v8 addChangedParameter:nameAttribute2 ofProperty:nameAttribute];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v20 = [changedParameters countByEnumeratingWithState:&v30 objects:v38 count:16];
             }
 
             while (v20);
@@ -160,8 +160,8 @@
 
     v24 = obj;
 
-    v4 = v27;
-    v3 = v28;
+    trimWhiteSpace = v27;
+    itemCopy = v28;
   }
 
   else
@@ -180,80 +180,80 @@
   return v8;
 }
 
-- (void)addChangedProperty:(id)a3
+- (void)addChangedProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 length] && !-[CalDAVOccurrenceChange didPropertyChange:](self, "didPropertyChange:", v4))
+  propertyCopy = property;
+  if ([propertyCopy length] && !-[CalDAVOccurrenceChange didPropertyChange:](self, "didPropertyChange:", propertyCopy))
   {
     v5 = scheduleChangesLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(CalDAVOccurrenceChange *)v4 addChangedProperty:v5];
+      [(CalDAVOccurrenceChange *)propertyCopy addChangedProperty:v5];
     }
 
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [(CalDAVOccurrenceChange *)self changes];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    null = [MEMORY[0x277CBEB68] null];
+    changes = [(CalDAVOccurrenceChange *)self changes];
+    [changes setObject:null forKeyedSubscript:propertyCopy];
   }
 }
 
-- (void)addChangedParameter:(id)a3 ofProperty:(id)a4
+- (void)addChangedParameter:(id)parameter ofProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  parameterCopy = parameter;
+  propertyCopy = property;
+  if ([parameterCopy length] && objc_msgSend(propertyCopy, "length"))
   {
-    v8 = [(CalDAVOccurrenceChange *)self changes];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    changes = [(CalDAVOccurrenceChange *)self changes];
+    v9 = [changes objectForKeyedSubscript:propertyCopy];
 
     if (!v9 || ([MEMORY[0x277CBEB68] null], v10 = objc_claimAutoreleasedReturnValue(), v10, v9 == v10))
     {
-      v11 = [MEMORY[0x277CBEB18] arrayWithObject:v6];
-      v12 = [(CalDAVOccurrenceChange *)self changes];
-      [v12 setObject:v11 forKeyedSubscript:v7];
+      v11 = [MEMORY[0x277CBEB18] arrayWithObject:parameterCopy];
+      changes2 = [(CalDAVOccurrenceChange *)self changes];
+      [changes2 setObject:v11 forKeyedSubscript:propertyCopy];
     }
 
     else
     {
-      [v9 addObject:v6];
+      [v9 addObject:parameterCopy];
     }
 
     v13 = scheduleChangesLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(CalDAVOccurrenceChange *)v6 addChangedParameter:v7 ofProperty:v13];
+      [(CalDAVOccurrenceChange *)parameterCopy addChangedParameter:propertyCopy ofProperty:v13];
     }
   }
 }
 
-- (BOOL)didPropertyChange:(id)a3
+- (BOOL)didPropertyChange:(id)change
 {
-  if (!a3)
+  if (!change)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(CalDAVOccurrenceChange *)self changes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  changeCopy = change;
+  changes = [(CalDAVOccurrenceChange *)self changes];
+  v6 = [changes objectForKeyedSubscript:changeCopy];
 
   v7 = v6 != 0;
   return v7;
 }
 
-- (BOOL)didParameterChange:(id)a3 onProperty:(id)a4
+- (BOOL)didParameterChange:(id)change onProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  changeCopy = change;
+  propertyCopy = property;
+  if ([changeCopy length] && objc_msgSend(propertyCopy, "length"))
   {
-    v8 = [(CalDAVOccurrenceChange *)self changes];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    changes = [(CalDAVOccurrenceChange *)self changes];
+    v9 = [changes objectForKeyedSubscript:propertyCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 containsObject:v6];
+      v10 = [v9 containsObject:changeCopy];
     }
 
     else

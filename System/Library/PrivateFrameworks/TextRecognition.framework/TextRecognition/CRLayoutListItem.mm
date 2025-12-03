@@ -1,17 +1,17 @@
 @interface CRLayoutListItem
-- (BOOL)canBeSucceededByListItem:(id)a3;
-- (CRLayoutListItem)initWithGroup:(id)a3;
+- (BOOL)canBeSucceededByListItem:(id)item;
+- (CRLayoutListItem)initWithGroup:(id)group;
 - (_NSRange)markerRange;
 - (int64_t)markerType;
-- (void)appendGroup:(id)a3;
+- (void)appendGroup:(id)group;
 @end
 
 @implementation CRLayoutListItem
 
-- (CRLayoutListItem)initWithGroup:(id)a3
+- (CRLayoutListItem)initWithGroup:(id)group
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = CRLayoutListItem;
   v5 = [(CRLayoutListItem *)&v12 init];
@@ -20,43 +20,43 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 text];
-  v7 = [CRListItemMarker listItemMarkerForText:v6 requiresAdjacentText:1];
+  text = [groupCopy text];
+  v7 = [CRListItemMarker listItemMarkerForText:text requiresAdjacentText:1];
   [(CRLayoutListItem *)v5 setMarker:v7];
 
-  v8 = [(CRLayoutListItem *)v5 marker];
+  marker = [(CRLayoutListItem *)v5 marker];
 
-  if (v8)
+  if (marker)
   {
-    v13[0] = v4;
+    v13[0] = groupCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [(CRLayoutListItem *)v5 setGroups:v9];
 
-    v10 = [v4 boundingQuad];
-    [(CRLayoutListItem *)v5 setUnionBoundingQuad:v10];
+    boundingQuad = [groupCopy boundingQuad];
+    [(CRLayoutListItem *)v5 setUnionBoundingQuad:boundingQuad];
 
 LABEL_4:
-    v8 = v5;
+    marker = v5;
   }
 
-  return v8;
+  return marker;
 }
 
-- (void)appendGroup:(id)a3
+- (void)appendGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CRLayoutListItem *)self groups];
-  v6 = [v5 arrayByAddingObject:v4];
+  groupCopy = group;
+  groups = [(CRLayoutListItem *)self groups];
+  v6 = [groups arrayByAddingObject:groupCopy];
   [(CRLayoutListItem *)self setGroups:v6];
 
-  v7 = [(CRLayoutListItem *)self unionBoundingQuad];
-  [v7 baselineAngle];
+  unionBoundingQuad = [(CRLayoutListItem *)self unionBoundingQuad];
+  [unionBoundingQuad baselineAngle];
   v9 = v8;
-  v10 = [v4 boundingQuad];
-  [v10 baselineAngle];
+  boundingQuad = [groupCopy boundingQuad];
+  [boundingQuad baselineAngle];
   v12 = v11;
-  v13 = [(CRLayoutListItem *)self groups];
-  v14 = [v13 count];
+  groups2 = [(CRLayoutListItem *)self groups];
+  v14 = [groups2 count];
   v15 = v9 - v12;
   if (v9 - v12 <= 3.14159265)
   {
@@ -94,31 +94,31 @@ LABEL_6:
   v17 = v17 + v18;
 LABEL_11:
 
-  v22 = [(CRLayoutListItem *)self unionBoundingQuad];
-  v19 = [v4 boundingQuad];
+  unionBoundingQuad2 = [(CRLayoutListItem *)self unionBoundingQuad];
+  boundingQuad2 = [groupCopy boundingQuad];
 
   *&v20 = v17;
-  v21 = [v22 unionWithNormalizedQuad:v19 baselineAngle:v20];
+  v21 = [unionBoundingQuad2 unionWithNormalizedQuad:boundingQuad2 baselineAngle:v20];
   [(CRLayoutListItem *)self setUnionBoundingQuad:v21];
 }
 
-- (BOOL)canBeSucceededByListItem:(id)a3
+- (BOOL)canBeSucceededByListItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CRLayoutListItem *)self marker];
-  v6 = [v4 marker];
+  itemCopy = item;
+  marker = [(CRLayoutListItem *)self marker];
+  marker2 = [itemCopy marker];
 
-  LOBYTE(v4) = [v5 canBeSucceededByMarker:v6];
-  return v4;
+  LOBYTE(itemCopy) = [marker canBeSucceededByMarker:marker2];
+  return itemCopy;
 }
 
 - (_NSRange)markerRange
 {
-  v2 = [(CRLayoutListItem *)self marker];
-  v3 = [v2 range];
+  marker = [(CRLayoutListItem *)self marker];
+  range = [marker range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -127,10 +127,10 @@ LABEL_11:
 
 - (int64_t)markerType
 {
-  v2 = [(CRLayoutListItem *)self marker];
-  v3 = [v2 type];
+  marker = [(CRLayoutListItem *)self marker];
+  type = [marker type];
 
-  return v3;
+  return type;
 }
 
 @end

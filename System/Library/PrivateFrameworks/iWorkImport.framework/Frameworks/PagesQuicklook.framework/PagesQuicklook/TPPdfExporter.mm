@@ -1,6 +1,6 @@
 @interface TPPdfExporter
 - (id)p_renderingExporterDelegate;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation TPPdfExporter
@@ -13,13 +13,13 @@
   return v9;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v87.receiver = self;
   v87.super_class = TPPdfExporter;
-  v4 = a3;
-  [(TPRenderingExporter *)&v87 setOptions:v4];
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, v6, v7, v8, v9, *MEMORY[0x277D80780], v87.receiver, v87.super_class);
+  optionsCopy = options;
+  [(TPRenderingExporter *)&v87 setOptions:optionsCopy];
+  v10 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v5, v6, v7, v8, v9, *MEMORY[0x277D80780], v87.receiver, v87.super_class);
 
   if (v10)
   {

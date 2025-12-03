@@ -1,7 +1,7 @@
 @interface GKScoreSubmissionBulletin
 + (NSDateFormatter)timeFormatter;
-+ (void)presentForScores:(id)a3 leaderboards:(id)a4;
-- (GKScoreSubmissionBulletin)initWithPushNotification:(id)a3;
++ (void)presentForScores:(id)scores leaderboards:(id)leaderboards;
+- (GKScoreSubmissionBulletin)initWithPushNotification:(id)notification;
 @end
 
 @implementation GKScoreSubmissionBulletin
@@ -13,7 +13,7 @@
   return v2;
 }
 
-+ (void)presentForScores:(id)a3 leaderboards:(id)a4
++ (void)presentForScores:(id)scores leaderboards:(id)leaderboards
 {
   sub_1001A7B44(0, &qword_1003B5A68);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -22,9 +22,9 @@
   sub_1001AD150(v4, v5);
 }
 
-- (GKScoreSubmissionBulletin)initWithPushNotification:(id)a3
+- (GKScoreSubmissionBulletin)initWithPushNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

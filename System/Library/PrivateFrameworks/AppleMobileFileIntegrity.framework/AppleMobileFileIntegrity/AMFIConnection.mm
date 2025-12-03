@@ -1,14 +1,14 @@
 @interface AMFIConnection
-- ($42C382FA7217128787D761316B161BF9)getSEPStateWithError:(SEL)a3;
+- ($42C382FA7217128787D761316B161BF9)getSEPStateWithError:(SEL)error;
 - (AMFIConnection)init;
-- (id)commitProfileForUuid:(id)a3;
-- (id)getStagedProfileWithError:(id *)a3;
+- (id)commitProfileForUuid:(id)uuid;
+- (id)getStagedProfileWithError:(id *)error;
 - (id)initiateDataMigration;
 - (id)initiateDeveloperModeDaemons;
 - (id)removeManagedState;
-- (id)removeTrustforTeamID:(id)a3;
-- (id)setManagedState:(id)a3;
-- (id)stageProfileForUuid:(id)a3;
+- (id)removeTrustforTeamID:(id)d;
+- (id)setManagedState:(id)state;
+- (id)stageProfileForUuid:(id)uuid;
 - (void)dealloc;
 @end
 
@@ -163,7 +163,7 @@ void __46__AMFIConnection_initiateDeveloperModeDaemons__block_invoke_33(uint64_t
   *(v5 + 40) = v3;
 }
 
-- ($42C382FA7217128787D761316B161BF9)getSEPStateWithError:(SEL)a3
+- ($42C382FA7217128787D761316B161BF9)getSEPStateWithError:(SEL)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -269,9 +269,9 @@ void __66__AMFIConnection_signTeamID_withSignType_withLAContext_withError___bloc
   *(v9 + 40) = v6;
 }
 
-- (id)stageProfileForUuid:(id)a3
+- (id)stageProfileForUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -290,7 +290,7 @@ void __66__AMFIConnection_signTeamID_withSignType_withLAContext_withError___bloc
   v9[2] = __38__AMFIConnection_stageProfileForUuid___block_invoke_39;
   v9[3] = &unk_278CBBE08;
   v9[4] = &v11;
-  [v6 stageProfileForUuid:v4 withReply:v9];
+  [v6 stageProfileForUuid:uuidCopy withReply:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -312,7 +312,7 @@ void __38__AMFIConnection_stageProfileForUuid___block_invoke(uint64_t a1, void *
   *(v5 + 40) = v3;
 }
 
-- (id)getStagedProfileWithError:(id *)a3
+- (id)getStagedProfileWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -341,9 +341,9 @@ void __38__AMFIConnection_stageProfileForUuid___block_invoke(uint64_t a1, void *
   v8[5] = &v16;
   [v5 getStagedProfileWithReply:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v6 = v11[5];
@@ -382,9 +382,9 @@ void __44__AMFIConnection_getStagedProfileWithError___block_invoke_40(uint64_t a
   *(v9 + 40) = v6;
 }
 
-- (id)commitProfileForUuid:(id)a3
+- (id)commitProfileForUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -403,7 +403,7 @@ void __44__AMFIConnection_getStagedProfileWithError___block_invoke_40(uint64_t a
   v9[2] = __39__AMFIConnection_commitProfileForUuid___block_invoke_42;
   v9[3] = &unk_278CBBE08;
   v9[4] = &v11;
-  [v6 commitProfileForUuid:v4 withReply:v9];
+  [v6 commitProfileForUuid:uuidCopy withReply:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -439,9 +439,9 @@ void __63__AMFIConnection_setTrustForTeamID_withSignature_withSignType___block_i
   *(v5 + 40) = v3;
 }
 
-- (id)removeTrustforTeamID:(id)a3
+- (id)removeTrustforTeamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -460,7 +460,7 @@ void __63__AMFIConnection_setTrustForTeamID_withSignature_withSignType___block_i
   v9[2] = __39__AMFIConnection_removeTrustforTeamID___block_invoke_44;
   v9[3] = &unk_278CBBE08;
   v9[4] = &v11;
-  [v6 removeTrustforTeamID:v4 withReply:v9];
+  [v6 removeTrustforTeamID:dCopy withReply:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -510,9 +510,9 @@ void __31__AMFIConnection_setDemoState___block_invoke(uint64_t a1, void *a2)
   *(v5 + 40) = v3;
 }
 
-- (id)setManagedState:(id)a3
+- (id)setManagedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -531,7 +531,7 @@ void __31__AMFIConnection_setDemoState___block_invoke(uint64_t a1, void *a2)
   v9[2] = __34__AMFIConnection_setManagedState___block_invoke_47;
   v9[3] = &unk_278CBBE08;
   v9[4] = &v11;
-  [v6 setManagedState:v4 withReply:v9];
+  [v6 setManagedState:stateCopy withReply:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);

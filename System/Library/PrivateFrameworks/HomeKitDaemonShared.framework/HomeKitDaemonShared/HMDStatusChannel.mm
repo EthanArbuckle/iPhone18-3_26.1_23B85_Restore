@@ -1,40 +1,40 @@
 @interface HMDStatusChannel
 + (id)logCategory;
-- (HMDStatusChannel)initWithChannelPrefix:(id)a3 identifier:(id)a4 queue:(id)a5 logEventSubmitter:(id)a6 idsIdentifierProvider:(id)a7;
-- (HMDStatusChannel)initWithChannelPrefix:(id)a3 identifier:(id)a4 queue:(id)a5 netMonitor:(id)a6 timerProvider:(id)a7 presenceProvider:(id)a8 logEventSubmitter:(id)a9 idsIdentifierProvider:(id)a10;
-- (id)_createBackoffTimerWithMinimumTimeInterval:(double)a3 maximumTimeInterval:(double)a4;
-- (id)_createTimerWithTimeout:(double)a3;
-- (id)_recordsFromPresence:(id)a3;
-- (id)_urisFromSKHandles:(id)a3;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (HMDStatusChannel)initWithChannelPrefix:(id)prefix identifier:(id)identifier queue:(id)queue logEventSubmitter:(id)submitter idsIdentifierProvider:(id)provider;
+- (HMDStatusChannel)initWithChannelPrefix:(id)prefix identifier:(id)identifier queue:(id)queue netMonitor:(id)monitor timerProvider:(id)provider presenceProvider:(id)presenceProvider logEventSubmitter:(id)submitter idsIdentifierProvider:(id)self0;
+- (id)_createBackoffTimerWithMinimumTimeInterval:(double)interval maximumTimeInterval:(double)timeInterval;
+- (id)_createTimerWithTimeout:(double)timeout;
+- (id)_recordsFromPresence:(id)presence;
+- (id)_urisFromSKHandles:(id)handles;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)invitedURIs;
 - (id)presencePayload;
-- (void)_addDelegate:(id)a3;
-- (void)_assertPresenceWithIsRetry:(BOOL)a3;
+- (void)_addDelegate:(id)delegate;
+- (void)_assertPresenceWithIsRetry:(BOOL)retry;
 - (void)_checkForInitialStatusKitCloudKitImportAndSubscribe;
-- (void)_deassertPresenceWithIsRetry:(BOOL)a3;
+- (void)_deassertPresenceWithIsRetry:(BOOL)retry;
 - (void)_handleAssertionLogTimerFired;
-- (void)_handlePresentDevicesChangedForPresence:(id)a3;
-- (void)_requestPublishShouldDebounce:(BOOL)a3;
-- (void)_setInvitedUsers:(id)a3 withCompletion:(id)a4;
+- (void)_handlePresentDevicesChangedForPresence:(id)presence;
+- (void)_requestPublishShouldDebounce:(BOOL)debounce;
+- (void)_setInvitedUsers:(id)users withCompletion:(id)completion;
 - (void)_startAssertionLogTimer;
 - (void)_stopAssertionLogTimer;
 - (void)_stopPostRegainNetworkConnectivityTimer;
 - (void)_stopPublishing;
-- (void)_subscribeToStatusKitWithIsRetry:(BOOL)a3;
-- (void)_unsubscribeFromStatusKitWithIsRetry:(BOOL)a3;
-- (void)addDelegate:(id)a3 withCompletion:(id)a4;
+- (void)_subscribeToStatusKitWithIsRetry:(BOOL)retry;
+- (void)_unsubscribeFromStatusKitWithIsRetry:(BOOL)retry;
+- (void)addDelegate:(id)delegate withCompletion:(id)completion;
 - (void)dealloc;
-- (void)initialCloudKitImportReceived:(id)a3;
-- (void)networkMonitorIsReachable:(id)a3;
-- (void)networkMonitorIsUnreachable:(id)a3;
-- (void)presentDevicesChangedForPresence:(id)a3;
-- (void)publishRecordWithPayload:(id)a3 shouldDebounce:(BOOL)a4 withCompletion:(id)a5;
-- (void)setInvitedUsers:(id)a3 withCompletion:(id)a4;
-- (void)startWithCompletion:(id)a3;
-- (void)stopPublishingWithCompletion:(id)a3;
-- (void)stopWithCompletion:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)initialCloudKitImportReceived:(id)received;
+- (void)networkMonitorIsReachable:(id)reachable;
+- (void)networkMonitorIsUnreachable:(id)unreachable;
+- (void)presentDevicesChangedForPresence:(id)presence;
+- (void)publishRecordWithPayload:(id)payload shouldDebounce:(BOOL)debounce withCompletion:(id)completion;
+- (void)setInvitedUsers:(id)users withCompletion:(id)completion;
+- (void)startWithCompletion:(id)completion;
+- (void)stopPublishingWithCompletion:(id)completion;
+- (void)stopWithCompletion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDStatusChannel
@@ -42,54 +42,54 @@
 - (void)_handleAssertionLogTimerFired
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDStatusChannel *)self idsIdentifierProvider];
-  v4 = [v3 getCurrentDeviceId];
+  idsIdentifierProvider = [(HMDStatusChannel *)self idsIdentifierProvider];
+  getCurrentDeviceId = [idsIdentifierProvider getCurrentDeviceId];
 
-  v5 = [(HMDStatusChannel *)self presenceChannel];
-  v6 = [v5 presentDevices];
+  presenceChannel = [(HMDStatusChannel *)self presenceChannel];
+  presentDevices = [presenceChannel presentDevices];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __49__HMDStatusChannel__handleAssertionLogTimerFired__block_invoke;
   v24[3] = &unk_27976FB48;
-  v7 = v4;
+  v7 = getCurrentDeviceId;
   v25 = v7;
-  [v6 na_any:v24];
+  [presentDevices na_any:v24];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v21 = [(HMDStatusChannel *)v9 localPayload];
+    localPayload = [(HMDStatusChannel *)selfCopy localPayload];
     HMFBooleanToString();
     v12 = v22 = v7;
-    v13 = [(HMDStatusChannel *)v9 lastPublishTimestamp];
-    [(HMDStatusChannel *)v9 lastStopPublishTimestamp];
+    lastPublishTimestamp = [(HMDStatusChannel *)selfCopy lastPublishTimestamp];
+    [(HMDStatusChannel *)selfCopy lastStopPublishTimestamp];
     v14 = v23 = v8;
     v15 = HMFBooleanToString();
-    v20 = v6;
-    v16 = [v6 count];
-    [(HMDStatusChannel *)v9 isConnected];
+    v20 = presentDevices;
+    v16 = [presentDevices count];
+    [(HMDStatusChannel *)selfCopy isConnected];
     v17 = HMFBooleanToString();
-    v18 = [(HMDStatusChannel *)v9 lastConnectivityChangeTimestamp];
+    lastConnectivityChangeTimestamp = [(HMDStatusChannel *)selfCopy lastConnectivityChangeTimestamp];
     *buf = 138545154;
     v27 = v11;
     v28 = 2112;
     v29 = v12;
     v30 = 2112;
-    v31 = v13;
+    v31 = lastPublishTimestamp;
     v32 = 2112;
     v33 = v14;
     v34 = 2112;
     v35 = v15;
     v36 = 2048;
     v37 = v16;
-    v6 = v20;
+    presentDevices = v20;
     v38 = 2112;
     v39 = v17;
     v40 = 2112;
-    v41 = v18;
+    v41 = lastConnectivityChangeTimestamp;
     _os_log_impl(&dword_2540F2000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Asserting: %@, last assertion: %@, last de-assertion: %@, assertion in channel: %@ (%lu), connected: %@, last connection change: %@", buf, 0x52u);
 
     v8 = v23;
@@ -113,44 +113,44 @@ uint64_t __49__HMDStatusChannel__handleAssertionLogTimerFired__block_invoke(uint
 
 - (void)_stopAssertionLogTimer
 {
-  v3 = [(HMDStatusChannel *)self assertionLogTimer];
-  [v3 cancel];
+  assertionLogTimer = [(HMDStatusChannel *)self assertionLogTimer];
+  [assertionLogTimer cancel];
 
   [(HMDStatusChannel *)self setAssertionLogTimer:0];
 }
 
 - (void)_startAssertionLogTimer
 {
-  v3 = [(HMDStatusChannel *)self assertionLogTimer];
+  assertionLogTimer = [(HMDStatusChannel *)self assertionLogTimer];
 
-  if (!v3)
+  if (!assertionLogTimer)
   {
-    v4 = [(HMDStatusChannel *)self timerProvider];
-    v5 = [v4 timerWithTimeInterval:4 options:600.0];
+    timerProvider = [(HMDStatusChannel *)self timerProvider];
+    v5 = [timerProvider timerWithTimeInterval:4 options:600.0];
     [(HMDStatusChannel *)self setAssertionLogTimer:v5];
 
-    v6 = [(HMDStatusChannel *)self assertionLogTimer];
-    [v6 setDelegate:self];
+    assertionLogTimer2 = [(HMDStatusChannel *)self assertionLogTimer];
+    [assertionLogTimer2 setDelegate:self];
 
     queue = self->_queue;
-    v8 = [(HMDStatusChannel *)self assertionLogTimer];
-    [v8 setDelegateQueue:queue];
+    assertionLogTimer3 = [(HMDStatusChannel *)self assertionLogTimer];
+    [assertionLogTimer3 setDelegateQueue:queue];
 
-    v9 = [(HMDStatusChannel *)self assertionLogTimer];
-    [v9 resume];
+    assertionLogTimer4 = [(HMDStatusChannel *)self assertionLogTimer];
+    [assertionLogTimer4 resume];
   }
 }
 
-- (id)_createBackoffTimerWithMinimumTimeInterval:(double)a3 maximumTimeInterval:(double)a4
+- (id)_createBackoffTimerWithMinimumTimeInterval:(double)interval maximumTimeInterval:(double)timeInterval
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [(HMDStatusChannel *)self timerProvider];
+  timerProvider = [(HMDStatusChannel *)self timerProvider];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(HMDStatusChannel *)self timerProvider];
-    v10 = [v9 backoffTimerWithMinimumTimeInterval:2 maximumTimeInterval:0 exponentialFactor:a3 options:a4];
+    timerProvider2 = [(HMDStatusChannel *)self timerProvider];
+    v10 = [timerProvider2 backoffTimerWithMinimumTimeInterval:2 maximumTimeInterval:0 exponentialFactor:interval options:timeInterval];
 
     [v10 setDelegate:self];
     [v10 setDelegateQueue:self->_queue];
@@ -159,7 +159,7 @@ uint64_t __49__HMDStatusChannel__handleAssertionLogTimerFired__block_invoke(uint
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -178,10 +178,10 @@ uint64_t __49__HMDStatusChannel__handleAssertionLogTimerFired__block_invoke(uint
   return v10;
 }
 
-- (id)_createTimerWithTimeout:(double)a3
+- (id)_createTimerWithTimeout:(double)timeout
 {
-  v5 = [(HMDStatusChannel *)self timerProvider];
-  v6 = [v5 timerWithTimeInterval:0 options:a3];
+  timerProvider = [(HMDStatusChannel *)self timerProvider];
+  v6 = [timerProvider timerWithTimeInterval:0 options:timeout];
 
   [v6 setDelegate:self];
   [v6 setDelegateQueue:self->_queue];
@@ -190,10 +190,10 @@ uint64_t __49__HMDStatusChannel__handleAssertionLogTimerFired__block_invoke(uint
   return v6;
 }
 
-- (id)_urisFromSKHandles:(id)a3
+- (id)_urisFromSKHandles:(id)handles
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [a3 na_map:&__block_literal_global_122];
+  v4 = [handles na_map:&__block_literal_global_122];
   v5 = [v3 setWithArray:v4];
 
   return v5;
@@ -220,27 +220,27 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (void)_setInvitedUsers:(id)a3 withCompletion:(id)a4
+- (void)_setInvitedUsers:(id)users withCompletion:(id)completion
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v44 = a4;
+  usersCopy = users;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(HMDStatusChannel *)self presenceChannel];
-  v8 = [v7 invitedHandles];
-  v9 = [(HMDStatusChannel *)self _urisFromSKHandles:v8];
+  presenceChannel = [(HMDStatusChannel *)self presenceChannel];
+  invitedHandles = [presenceChannel invitedHandles];
+  v9 = [(HMDStatusChannel *)self _urisFromSKHandles:invitedHandles];
 
-  v10 = [v9 allObjects];
-  v45 = [v10 mutableCopy];
+  allObjects = [v9 allObjects];
+  v45 = [allObjects mutableCopy];
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v12 = v6;
+  v12 = usersCopy;
   v13 = [v12 countByEnumeratingWithState:&v55 objects:v63 count:16];
-  v14 = self;
+  selfCopy = self;
   if (v13)
   {
     v15 = v13;
@@ -255,21 +255,21 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
         }
 
         v18 = *(*(&v55 + 1) + 8 * i);
-        v19 = [v18 userID];
-        v20 = [v9 containsObject:v19];
+        userID = [v18 userID];
+        v20 = [v9 containsObject:userID];
 
-        v21 = [v18 userID];
+        userID2 = [v18 userID];
         if (v20)
         {
-          [v45 removeObject:v21];
+          [v45 removeObject:userID2];
         }
 
         else
         {
-          [v11 addObject:v21];
+          [array addObject:userID2];
         }
 
-        self = v14;
+        self = selfCopy;
       }
 
       v15 = [v12 countByEnumeratingWithState:&v55 objects:v63 count:16];
@@ -278,9 +278,9 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
     while (v15);
   }
 
-  if ([v11 count] || objc_msgSend(v45, "count"))
+  if ([array count] || objc_msgSend(v45, "count"))
   {
-    v41 = [(HMDStatusChannel *)self _skHandlesFromUserIDs:v11];
+    v41 = [(HMDStatusChannel *)self _skHandlesFromUserIDs:array];
     v40 = [(HMDStatusChannel *)self _skHandlesFromUserIDs:v45];
     *buf = 0;
     v54 = 0;
@@ -299,11 +299,11 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
     v52[1] = 3221225472;
     v52[2] = __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke;
     v52[3] = &unk_27976FA98;
-    v53 = v44;
+    v53 = completionCopy;
     v28 = [v27 inContext:v24 then:v52];
     if ([v40 count])
     {
-      v29 = [(HMDStatusChannel *)self presenceChannel];
+      presenceChannel2 = [(HMDStatusChannel *)self presenceChannel];
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_2;
@@ -311,7 +311,7 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
       v49[4] = self;
       v50 = v12;
       v51 = *buf;
-      [v29 removeInvitedHandles:v40 completion:v49];
+      [presenceChannel2 removeInvitedHandles:v40 completion:v49];
     }
 
     else
@@ -322,15 +322,15 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
     v30 = v41;
     if ([v41 count])
     {
-      v31 = [(HMDStatusChannel *)v14 presenceChannel];
+      presenceChannel3 = [(HMDStatusChannel *)selfCopy presenceChannel];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112;
       v46[3] = &unk_27976FAC0;
-      v46[4] = v14;
+      v46[4] = selfCopy;
       v47 = v12;
       v48 = v54;
-      [v31 inviteHandlesFromPrimaryAccountHandle:v41 completion:v46];
+      [presenceChannel3 inviteHandlesFromPrimaryAccountHandle:v41 completion:v46];
     }
 
     else
@@ -338,28 +338,28 @@ id __40__HMDStatusChannel__skHandlesFromUsers___block_invoke(uint64_t a1, void *
       [v54 fulfillWithNoValue];
     }
 
-    v32 = v44;
+    v32 = completionCopy;
   }
 
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy2 = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [(HMDStatusChannel *)v35 channelName];
+      channelName = [(HMDStatusChannel *)selfCopy2 channelName];
       *buf = 138543618;
       *&buf[4] = v37;
       v61 = 2112;
-      v62 = v38;
+      v62 = channelName;
       _os_log_impl(&dword_2540F2000, v36, OS_LOG_TYPE_INFO, "%{public}@No users detected to add or remove from channel %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v34);
-    v32 = v44;
-    v39 = MEMORY[0x259C04830](v44);
+    v32 = completionCopy;
+    v39 = MEMORY[0x259C04830](completionCopy);
     v30 = v39;
     if (v39)
     {
@@ -515,20 +515,20 @@ void __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addDelegate:(id)a3
+- (void)_addDelegate:(id)delegate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStatusChannel *)self statusDelegates];
-  [v5 addObject:v4];
+  statusDelegates = [(HMDStatusChannel *)self statusDelegates];
+  [statusDelegates addObject:delegateCopy];
 
   if ([(HMDStatusChannel *)self subscribed])
   {
     if (self->_isConnected && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -543,14 +543,14 @@ void __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112(u
       }
 
       objc_autoreleasePoolPop(v6);
-      v12 = [(HMDStatusChannel *)v7 currentRecords];
-      [v4 channel:v7 didObserveRecordUpdate:v12];
+      currentRecords = [(HMDStatusChannel *)selfCopy currentRecords];
+      [delegateCopy channel:selfCopy didObserveRecordUpdate:currentRecords];
     }
 
     if (objc_opt_respondsToSelector())
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -561,7 +561,7 @@ void __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112(u
       }
 
       objc_autoreleasePoolPop(v13);
-      [v4 channel:v14 didObserveConnectionChange:{-[HMDStatusChannel isConnected](v14, "isConnected")}];
+      [delegateCopy channel:selfCopy2 didObserveConnectionChange:{-[HMDStatusChannel isConnected](selfCopy2, "isConnected")}];
     }
   }
 
@@ -570,18 +570,18 @@ void __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112(u
 
 - (void)_stopPostRegainNetworkConnectivityTimer
 {
-  v3 = [(HMDStatusChannel *)self postRegainNetworkConnectivityTimer];
-  [v3 cancel];
+  postRegainNetworkConnectivityTimer = [(HMDStatusChannel *)self postRegainNetworkConnectivityTimer];
+  [postRegainNetworkConnectivityTimer cancel];
 
   [(HMDStatusChannel *)self setPostRegainNetworkConnectivityTimer:0];
 }
 
-- (void)_unsubscribeFromStatusKitWithIsRetry:(BOOL)a3
+- (void)_unsubscribeFromStatusKitWithIsRetry:(BOOL)retry
 {
   v18 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -595,14 +595,14 @@ void __52__HMDStatusChannel__setInvitedUsers_withCompletion___block_invoke_112(u
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDStatusChannel *)v6 presenceChannel];
+  presenceChannel = [(HMDStatusChannel *)selfCopy presenceChannel];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__HMDStatusChannel__unsubscribeFromStatusKitWithIsRetry___block_invoke;
   v12[3] = &unk_27976FA20;
-  v12[4] = v6;
-  v13 = a3;
-  [v10 releaseTransientSubscriptionAssertionWithCompletion:v12];
+  v12[4] = selfCopy;
+  retryCopy = retry;
+  [presenceChannel releaseTransientSubscriptionAssertionWithCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -701,12 +701,12 @@ void __57__HMDStatusChannel__unsubscribeFromStatusKitWithIsRetry___block_invoke_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeToStatusKitWithIsRetry:(BOOL)a3
+- (void)_subscribeToStatusKitWithIsRetry:(BOOL)retry
 {
   v18 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -720,14 +720,14 @@ void __57__HMDStatusChannel__unsubscribeFromStatusKitWithIsRetry___block_invoke_
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDStatusChannel *)v6 presenceChannel];
+  presenceChannel = [(HMDStatusChannel *)selfCopy presenceChannel];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__HMDStatusChannel__subscribeToStatusKitWithIsRetry___block_invoke;
   v12[3] = &unk_27976FA20;
-  v12[4] = v6;
-  v13 = a3;
-  [v10 retainTransientSubscriptionAssertionWithCompletion:v12];
+  v12[4] = selfCopy;
+  retryCopy = retry;
+  [presenceChannel retainTransientSubscriptionAssertionWithCompletion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -849,7 +849,7 @@ void __53__HMDStatusChannel__subscribeToStatusKitWithIsRetry___block_invoke_2(ui
   if ([(HMDStatusChannel *)self initialStatusKitCloudKitImportOccurred])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -860,18 +860,18 @@ void __53__HMDStatusChannel__subscribeToStatusKitWithIsRetry___block_invoke_2(ui
     }
 
     objc_autoreleasePoolPop(v3);
-    [(HMDStatusChannel *)v4 _subscribeToStatusKitWithIsRetry:0];
+    [(HMDStatusChannel *)selfCopy _subscribeToStatusKitWithIsRetry:0];
   }
 
   else
   {
-    v7 = [(HMDStatusChannel *)self presenceChannel];
+    presenceChannel = [(HMDStatusChannel *)self presenceChannel];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe__block_invoke;
     v9[3] = &unk_27976FA70;
     v9[4] = self;
-    [v7 hasInitialCloudKitImportOccurredWithCompletion:v9];
+    [presenceChannel hasInitialCloudKitImportOccurredWithCompletion:v9];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -943,18 +943,18 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_recordsFromPresence:(id)a3
+- (id)_recordsFromPresence:(id)presence
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presenceCopy = presence;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 presentDevices];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  presentDevices = [presenceCopy presentDevices];
+  v7 = [presentDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -965,7 +965,7 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(presentDevices);
         }
 
         v11 = [[HMDStatusChannelRecord alloc] initWithPresentDevice:*(*(&v14 + 1) + 8 * i)];
@@ -975,7 +975,7 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [presentDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -991,7 +991,7 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
   v11 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1002,28 +1002,28 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
   }
 
   objc_autoreleasePoolPop(v3);
-  localPayload = v4->_localPayload;
-  v4->_localPayload = 0;
+  localPayload = selfCopy->_localPayload;
+  selfCopy->_localPayload = 0;
 
-  [(HMDStatusChannel *)v4 _deassertPresenceWithIsRetry:0];
+  [(HMDStatusChannel *)selfCopy _deassertPresenceWithIsRetry:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestPublishShouldDebounce:(BOOL)a3
+- (void)_requestPublishShouldDebounce:(BOOL)debounce
 {
-  v3 = a3;
+  debounceCopy = debounce;
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (debounceCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HMDStatusChannel *)v6 publishDebounceTimer];
-      [v9 isRunning];
+      publishDebounceTimer = [(HMDStatusChannel *)selfCopy publishDebounceTimer];
+      [publishDebounceTimer isRunning];
       v10 = HMFBooleanToString();
       v19 = 138543618;
       v20 = v8;
@@ -1033,23 +1033,23 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
     }
 
     objc_autoreleasePoolPop(v5);
-    v11 = [(HMDStatusChannel *)v6 publishDebounceTimer];
+    publishDebounceTimer2 = [(HMDStatusChannel *)selfCopy publishDebounceTimer];
 
-    if (!v11)
+    if (!publishDebounceTimer2)
     {
-      v12 = [(HMDStatusChannel *)v6 _createTimerWithTimeout:5.0];
-      [(HMDStatusChannel *)v6 setPublishDebounceTimer:v12];
+      v12 = [(HMDStatusChannel *)selfCopy _createTimerWithTimeout:5.0];
+      [(HMDStatusChannel *)selfCopy setPublishDebounceTimer:v12];
     }
   }
 
   else
   {
-    v13 = [(HMDStatusChannel *)self publishDebounceTimer];
-    [v13 cancel];
+    publishDebounceTimer3 = [(HMDStatusChannel *)self publishDebounceTimer];
+    [publishDebounceTimer3 cancel];
 
     [(HMDStatusChannel *)self setPublishDebounceTimer:0];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -1060,23 +1060,23 @@ void __71__HMDStatusChannel__checkForInitialStatusKitCloudKitImportAndSubscribe_
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMDStatusChannel *)v15 _assertPresenceWithIsRetry:0];
+    [(HMDStatusChannel *)selfCopy2 _assertPresenceWithIsRetry:0];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deassertPresenceWithIsRetry:(BOOL)a3
+- (void)_deassertPresenceWithIsRetry:(BOOL)retry
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStatusChannel *)self presenceChannel];
+  presenceChannel = [(HMDStatusChannel *)self presenceChannel];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__HMDStatusChannel__deassertPresenceWithIsRetry___block_invoke;
   v6[3] = &unk_27976FA20;
   v6[4] = self;
-  v7 = a3;
-  [v5 releasePresenceWithCompletion:v6];
+  retryCopy = retry;
+  [presenceChannel releasePresenceWithCompletion:v6];
 }
 
 void __49__HMDStatusChannel__deassertPresenceWithIsRetry___block_invoke(uint64_t a1, void *a2)
@@ -1171,16 +1171,16 @@ void __49__HMDStatusChannel__deassertPresenceWithIsRetry___block_invoke_2(uint64
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_assertPresenceWithIsRetry:(BOOL)a3
+- (void)_assertPresenceWithIsRetry:(BOOL)retry
 {
   v28 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStatusChannel *)self presencePayload];
-  if (v5)
+  presencePayload = [(HMDStatusChannel *)self presencePayload];
+  if (presencePayload)
   {
     v6 = HMFRandomUInt32();
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1188,38 +1188,38 @@ void __49__HMDStatusChannel__deassertPresenceWithIsRetry___block_invoke_2(uint64
       *buf = 138543874;
       v23 = v10;
       v24 = 2112;
-      v25 = v5;
+      v25 = presencePayload;
       v26 = 1024;
       v27 = v6;
       _os_log_impl(&dword_2540F2000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Asserting presence with payload: %@ and identifier: %u", buf, 0x1Cu);
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [(HMDStatusChannel *)v8 presenceChannel];
+    presenceChannel = [(HMDStatusChannel *)selfCopy presenceChannel];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke;
     v18[3] = &unk_27976F9D0;
-    v18[4] = v8;
-    v19 = v5;
+    v18[4] = selfCopy;
+    v19 = presencePayload;
     v20 = v6;
-    v21 = a3;
-    [v11 assertPresenceWithPresencePayload:v19 completion:v18];
+    retryCopy = retry;
+    [presenceChannel assertPresenceWithPresencePayload:v19 completion:v18];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMDStatusChannel *)v13 localPayload];
+      localPayload = [(HMDStatusChannel *)selfCopy2 localPayload];
       *buf = 138543618;
       v23 = v15;
       v24 = 2112;
-      v25 = v16;
+      v25 = localPayload;
       _os_log_impl(&dword_2540F2000, v14, OS_LOG_TYPE_ERROR, "%{public}@Nil presence payload, local payload: %@", buf, 0x16u);
     }
 
@@ -1332,12 +1332,12 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePresentDevicesChangedForPresence:(id)a3
+- (void)_handlePresentDevicesChangedForPresence:(id)presence
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presenceCopy = presence;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStatusChannel *)self _recordsFromPresence:v4];
+  v5 = [(HMDStatusChannel *)self _recordsFromPresence:presenceCopy];
   currentRecords = self->_currentRecords;
   self->_currentRecords = v5;
 
@@ -1345,16 +1345,16 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
   [(HMDStatusChannel *)self setLastObserveTimestamp:v7];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HMDStatusChannel *)self currentRecords];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+  currentRecords = [(HMDStatusChannel *)self currentRecords];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(currentRecords, "count")}];
   [(HMDStatusChannel *)self setLastObserveDeviceCount:v10];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(HMDStatusChannel *)self statusDelegates];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  statusDelegates = [(HMDStatusChannel *)self statusDelegates];
+  v12 = [statusDelegates countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1366,21 +1366,21 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(statusDelegates);
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          v17 = [(HMDStatusChannel *)self currentRecords];
-          [v16 channel:self didObserveRecordUpdate:v17];
+          currentRecords2 = [(HMDStatusChannel *)self currentRecords];
+          [v16 channel:self didObserveRecordUpdate:currentRecords2];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [statusDelegates countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
@@ -1392,22 +1392,22 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
 - (id)presencePayload
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDStatusChannel *)self idsIdentifierProvider];
-  v4 = [v3 getCurrentDeviceId];
+  idsIdentifierProvider = [(HMDStatusChannel *)self idsIdentifierProvider];
+  getCurrentDeviceId = [idsIdentifierProvider getCurrentDeviceId];
 
-  if (v4)
+  if (getCurrentDeviceId)
   {
     v5 = MEMORY[0x277CBEB38];
-    v6 = [v4 UUIDString];
+    uUIDString = [getCurrentDeviceId UUIDString];
     v20[1] = @"SC.ck.pt";
-    v21[0] = v6;
+    v21[0] = uUIDString;
     v7 = [MEMORY[0x277CBEAA8] now];
     v21[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
     v9 = [v5 dictionaryWithDictionary:v8];
 
-    v10 = [(HMDStatusChannel *)self localPayload];
-    [v9 addEntriesFromDictionary:v10];
+    localPayload = [(HMDStatusChannel *)self localPayload];
+    [v9 addEntriesFromDictionary:localPayload];
 
     v11 = objc_alloc(MEMORY[0x277D68108]);
     v12 = [v9 copy];
@@ -1417,7 +1417,7 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -1436,17 +1436,17 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
   return v13;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStatusChannel *)self publishRetryTimer];
+  publishRetryTimer = [(HMDStatusChannel *)self publishRetryTimer];
 
-  if (v5 == v4)
+  if (publishRetryTimer == fireCopy)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -1457,20 +1457,20 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
     }
 
     objc_autoreleasePoolPop(v13);
-    v17 = [(HMDStatusChannel *)v14 publishRetryTimer];
-    [v17 suspend];
+    publishRetryTimer2 = [(HMDStatusChannel *)selfCopy publishRetryTimer];
+    [publishRetryTimer2 suspend];
 
-    v18 = v14;
+    v18 = selfCopy;
     v19 = 1;
     goto LABEL_13;
   }
 
-  v6 = [(HMDStatusChannel *)self stopPublishRetryTimer];
+  stopPublishRetryTimer = [(HMDStatusChannel *)self stopPublishRetryTimer];
 
-  if (v6 == v4)
+  if (stopPublishRetryTimer == fireCopy)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -1481,19 +1481,19 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
     }
 
     objc_autoreleasePoolPop(v20);
-    v24 = [(HMDStatusChannel *)v21 stopPublishRetryTimer];
-    [v24 suspend];
+    stopPublishRetryTimer2 = [(HMDStatusChannel *)selfCopy2 stopPublishRetryTimer];
+    [stopPublishRetryTimer2 suspend];
 
-    [(HMDStatusChannel *)v21 _deassertPresenceWithIsRetry:1];
+    [(HMDStatusChannel *)selfCopy2 _deassertPresenceWithIsRetry:1];
     goto LABEL_24;
   }
 
-  v7 = [(HMDStatusChannel *)self subscribeRetryTimer];
+  subscribeRetryTimer = [(HMDStatusChannel *)self subscribeRetryTimer];
 
-  if (v7 == v4)
+  if (subscribeRetryTimer == fireCopy)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -1504,20 +1504,20 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
     }
 
     objc_autoreleasePoolPop(v25);
-    v29 = [(HMDStatusChannel *)v26 subscribeRetryTimer];
-    [v29 suspend];
+    subscribeRetryTimer2 = [(HMDStatusChannel *)selfCopy3 subscribeRetryTimer];
+    [subscribeRetryTimer2 suspend];
 
-    v30 = v26;
+    v30 = selfCopy3;
     v31 = 1;
     goto LABEL_20;
   }
 
-  v8 = [(HMDStatusChannel *)self unsubscribeRetryTimer];
+  unsubscribeRetryTimer = [(HMDStatusChannel *)self unsubscribeRetryTimer];
 
-  if (v8 == v4)
+  if (unsubscribeRetryTimer == fireCopy)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy4 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
@@ -1528,20 +1528,20 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
     }
 
     objc_autoreleasePoolPop(v32);
-    v36 = [(HMDStatusChannel *)v33 unsubscribeRetryTimer];
-    [v36 suspend];
+    unsubscribeRetryTimer2 = [(HMDStatusChannel *)selfCopy4 unsubscribeRetryTimer];
+    [unsubscribeRetryTimer2 suspend];
 
-    [(HMDStatusChannel *)v33 _unsubscribeFromStatusKitWithIsRetry:1];
+    [(HMDStatusChannel *)selfCopy4 _unsubscribeFromStatusKitWithIsRetry:1];
     goto LABEL_24;
   }
 
-  v9 = [(HMDStatusChannel *)self publishDebounceTimer];
+  publishDebounceTimer = [(HMDStatusChannel *)self publishDebounceTimer];
 
-  if (v9 == v4)
+  if (publishDebounceTimer == fireCopy)
   {
     [(HMDStatusChannel *)self setPublishDebounceTimer:0];
     v38 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy5 = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
@@ -1552,23 +1552,23 @@ void __47__HMDStatusChannel__assertPresenceWithIsRetry___block_invoke_2(uint64_t
     }
 
     objc_autoreleasePoolPop(v38);
-    v18 = v39;
+    v18 = selfCopy5;
     v19 = 0;
 LABEL_13:
     [(HMDStatusChannel *)v18 _assertPresenceWithIsRetry:v19];
     goto LABEL_24;
   }
 
-  v10 = [(HMDStatusChannel *)self initialStatusKitCloudKitImportTimer];
+  initialStatusKitCloudKitImportTimer = [(HMDStatusChannel *)self initialStatusKitCloudKitImportTimer];
 
-  if (v10 != v4)
+  if (initialStatusKitCloudKitImportTimer != fireCopy)
   {
-    v11 = [(HMDStatusChannel *)self postRegainNetworkConnectivityTimer];
+    postRegainNetworkConnectivityTimer = [(HMDStatusChannel *)self postRegainNetworkConnectivityTimer];
 
-    if (v11 == v4)
+    if (postRegainNetworkConnectivityTimer == fireCopy)
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = self;
+      selfCopy6 = self;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
@@ -1579,21 +1579,21 @@ LABEL_13:
       }
 
       objc_autoreleasePoolPop(v50);
-      [(HMDStatusChannel *)v51 _stopPostRegainNetworkConnectivityTimer];
-      v51->_isConnected = 1;
+      [(HMDStatusChannel *)selfCopy6 _stopPostRegainNetworkConnectivityTimer];
+      selfCopy6->_isConnected = 1;
       v54 = [MEMORY[0x277CBEAA8] now];
-      lastConnectivityChangeTimestamp = v51->_lastConnectivityChangeTimestamp;
-      v51->_lastConnectivityChangeTimestamp = v54;
+      lastConnectivityChangeTimestamp = selfCopy6->_lastConnectivityChangeTimestamp;
+      selfCopy6->_lastConnectivityChangeTimestamp = v54;
 
-      v56 = [(HMDStatusChannel *)v51 presenceChannel];
-      [(HMDStatusChannel *)v51 _handlePresentDevicesChangedForPresence:v56];
+      presenceChannel = [(HMDStatusChannel *)selfCopy6 presenceChannel];
+      [(HMDStatusChannel *)selfCopy6 _handlePresentDevicesChangedForPresence:presenceChannel];
     }
 
     else
     {
-      v12 = [(HMDStatusChannel *)self assertionLogTimer];
+      assertionLogTimer = [(HMDStatusChannel *)self assertionLogTimer];
 
-      if (v12 == v4)
+      if (assertionLogTimer == fireCopy)
       {
         [(HMDStatusChannel *)self _handleAssertionLogTimerFired];
       }
@@ -1604,7 +1604,7 @@ LABEL_13:
 
   [(HMDStatusChannel *)self setInitialStatusKitCloudKitImportTimer:0];
   v42 = objc_autoreleasePoolPush();
-  v43 = self;
+  selfCopy7 = self;
   v44 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
@@ -1615,10 +1615,10 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v42);
-  if (![(HMDStatusChannel *)v43 initialStatusKitCloudKitImportOccurred])
+  if (![(HMDStatusChannel *)selfCopy7 initialStatusKitCloudKitImportOccurred])
   {
     v46 = objc_autoreleasePoolPush();
-    v47 = v43;
+    v47 = selfCopy7;
     v48 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
@@ -1644,7 +1644,7 @@ LABEL_24:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkMonitorIsUnreachable:(id)a3
+- (void)networkMonitorIsUnreachable:(id)unreachable
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1705,7 +1705,7 @@ uint64_t __48__HMDStatusChannel_networkMonitorIsUnreachable___block_invoke(uint6
   return result;
 }
 
-- (void)networkMonitorIsReachable:(id)a3
+- (void)networkMonitorIsReachable:(id)reachable
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1777,13 +1777,13 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initialCloudKitImportReceived:(id)a3
+- (void)initialCloudKitImportReceived:(id)received
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  receivedCopy = received;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1794,35 +1794,35 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDStatusChannel *)v6 initialStatusKitCloudKitImportTimer];
+  initialStatusKitCloudKitImportTimer = [(HMDStatusChannel *)selfCopy initialStatusKitCloudKitImportTimer];
 
-  if (v9)
+  if (initialStatusKitCloudKitImportTimer)
   {
-    v10 = [(HMDStatusChannel *)v6 initialStatusKitCloudKitImportTimer];
-    [v10 cancel];
+    initialStatusKitCloudKitImportTimer2 = [(HMDStatusChannel *)selfCopy initialStatusKitCloudKitImportTimer];
+    [initialStatusKitCloudKitImportTimer2 cancel];
 
-    [(HMDStatusChannel *)v6 setInitialStatusKitCloudKitImportTimer:0];
+    [(HMDStatusChannel *)selfCopy setInitialStatusKitCloudKitImportTimer:0];
   }
 
-  if (![(HMDStatusChannel *)v6 initialStatusKitCloudKitImportOccurred])
+  if (![(HMDStatusChannel *)selfCopy initialStatusKitCloudKitImportOccurred])
   {
-    [(HMDStatusChannel *)v6 setInitialStatusKitCloudKitImportOccurred:1];
-    if ([(HMDStatusChannel *)v6 started])
+    [(HMDStatusChannel *)selfCopy setInitialStatusKitCloudKitImportOccurred:1];
+    if ([(HMDStatusChannel *)selfCopy started])
     {
-      [(HMDStatusChannel *)v6 _subscribeToStatusKitWithIsRetry:0];
+      [(HMDStatusChannel *)selfCopy _subscribeToStatusKitWithIsRetry:0];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentDevicesChangedForPresence:(id)a3
+- (void)presentDevicesChangedForPresence:(id)presence
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presenceCopy = presence;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1833,15 +1833,15 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
   }
 
   objc_autoreleasePoolPop(v5);
-  v6->_isConnected = 1;
+  selfCopy->_isConnected = 1;
   v9 = [MEMORY[0x277CBEAA8] now];
-  lastConnectivityChangeTimestamp = v6->_lastConnectivityChangeTimestamp;
-  v6->_lastConnectivityChangeTimestamp = v9;
+  lastConnectivityChangeTimestamp = selfCopy->_lastConnectivityChangeTimestamp;
+  selfCopy->_lastConnectivityChangeTimestamp = v9;
 
-  if (![(HMDStatusChannel *)v6 receivedInitialChannelState])
+  if (![(HMDStatusChannel *)selfCopy receivedInitialChannelState])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -1855,12 +1855,12 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
     [(HMDStatusChannel *)v12 setReceivedInitialChannelState:1];
   }
 
-  v15 = [(HMDStatusChannel *)v6 postRegainNetworkConnectivityTimer];
+  postRegainNetworkConnectivityTimer = [(HMDStatusChannel *)selfCopy postRegainNetworkConnectivityTimer];
 
-  if (v15)
+  if (postRegainNetworkConnectivityTimer)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v6;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -1875,32 +1875,32 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
   }
 
   v20 = [HMDStatusChannelObserveLogEvent alloc];
-  v21 = [(HMDStatusChannel *)v6 channelPrefix];
-  v22 = [(HMDStatusChannelObserveLogEvent *)v20 initWithChannelPrefix:v21];
+  channelPrefix = [(HMDStatusChannel *)selfCopy channelPrefix];
+  v22 = [(HMDStatusChannelObserveLogEvent *)v20 initWithChannelPrefix:channelPrefix];
 
-  v23 = [(HMDStatusChannel *)v6 logEventSubmitter];
-  [v23 submitLogEvent:v22];
+  logEventSubmitter = [(HMDStatusChannel *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v22];
 
-  [(HMDStatusChannel *)v6 _handlePresentDevicesChangedForPresence:v4];
+  [(HMDStatusChannel *)selfCopy _handlePresentDevicesChangedForPresence:presenceCopy];
   v24 = *MEMORY[0x277D85DE8];
 }
 
 - (id)invitedURIs
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDStatusChannel *)self presenceChannel];
+  presenceChannel = [(HMDStatusChannel *)self presenceChannel];
 
-  if (v3)
+  if (presenceChannel)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(HMDStatusChannel *)self presenceChannel];
-    v6 = [v5 invitedHandles];
+    presenceChannel2 = [(HMDStatusChannel *)self presenceChannel];
+    invitedHandles = [presenceChannel2 invitedHandles];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [invitedHandles countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1911,20 +1911,20 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(invitedHandles);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) handleString];
-          [v4 addObject:v11];
+          handleString = [*(*(&v15 + 1) + 8 * i) handleString];
+          [array addObject:handleString];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [invitedHandles countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    v12 = [v4 copy];
+    v12 = [array copy];
   }
 
   else
@@ -1937,37 +1937,37 @@ void __46__HMDStatusChannel_networkMonitorIsReachable___block_invoke(uint64_t a1
   return v12;
 }
 
-- (void)setInvitedUsers:(id)a3 withCompletion:(id)a4
+- (void)setInvitedUsers:(id)users withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  usersCopy = users;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HMDStatusChannel_setInvitedUsers_withCompletion___block_invoke;
   block[3] = &unk_27976F938;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = usersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = usersCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addDelegate:(id)a3 withCompletion:(id)a4
+- (void)addDelegate:(id)delegate withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke;
   block[3] = &unk_27976F938;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = delegateCopy;
   dispatch_async(queue, block);
 }
 
@@ -1985,16 +1985,16 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
   return result;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v31[7] = *MEMORY[0x277D85DE8];
   v30[0] = @"Last Observe Timestamp";
-  v29 = [(HMDStatusChannel *)self lastObserveTimestamp];
-  v4 = [v29 localTimeDescription];
-  v5 = v4;
-  if (v4)
+  lastObserveTimestamp = [(HMDStatusChannel *)self lastObserveTimestamp];
+  localTimeDescription = [lastObserveTimestamp localTimeDescription];
+  v5 = localTimeDescription;
+  if (localTimeDescription)
   {
-    v6 = v4;
+    v6 = localTimeDescription;
   }
 
   else
@@ -2004,11 +2004,11 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
 
   v31[0] = v6;
   v30[1] = @"Last Observe Device Count";
-  v7 = [(HMDStatusChannel *)self lastObserveDeviceCount];
-  v8 = v7;
-  if (v7)
+  lastObserveDeviceCount = [(HMDStatusChannel *)self lastObserveDeviceCount];
+  v8 = lastObserveDeviceCount;
+  if (lastObserveDeviceCount)
   {
-    v9 = v7;
+    v9 = lastObserveDeviceCount;
   }
 
   else
@@ -2018,12 +2018,12 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
 
   v31[1] = v9;
   v30[2] = @"Last Publish Timestamp";
-  v28 = [(HMDStatusChannel *)self lastPublishTimestamp];
-  v10 = [v28 localTimeDescription];
-  v11 = v10;
-  if (v10)
+  lastPublishTimestamp = [(HMDStatusChannel *)self lastPublishTimestamp];
+  localTimeDescription2 = [lastPublishTimestamp localTimeDescription];
+  v11 = localTimeDescription2;
+  if (localTimeDescription2)
   {
-    v12 = v10;
+    v12 = localTimeDescription2;
   }
 
   else
@@ -2033,11 +2033,11 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
 
   v31[2] = v12;
   v30[3] = @"Last Publish Payload";
-  v13 = [(HMDStatusChannel *)self localPayload];
-  v14 = v13;
-  if (v13)
+  localPayload = [(HMDStatusChannel *)self localPayload];
+  v14 = localPayload;
+  if (localPayload)
   {
-    v15 = v13;
+    v15 = localPayload;
   }
 
   else
@@ -2047,12 +2047,12 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
 
   v31[3] = v15;
   v30[4] = @"Last Stop Publish Timestamp";
-  v16 = [(HMDStatusChannel *)self lastStopPublishTimestamp];
-  v17 = [v16 localTimeDescription];
-  v18 = v17;
-  if (v17)
+  lastStopPublishTimestamp = [(HMDStatusChannel *)self lastStopPublishTimestamp];
+  localTimeDescription3 = [lastStopPublishTimestamp localTimeDescription];
+  v18 = localTimeDescription3;
+  if (localTimeDescription3)
   {
-    v19 = v17;
+    v19 = localTimeDescription3;
   }
 
   else
@@ -2062,12 +2062,12 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
 
   v31[4] = v19;
   v30[5] = @"Last Connectivity Change Timestamp";
-  v20 = [(HMDStatusChannel *)self lastConnectivityChangeTimestamp];
-  v21 = [v20 localTimeDescription];
-  v22 = v21;
-  if (v21)
+  lastConnectivityChangeTimestamp = [(HMDStatusChannel *)self lastConnectivityChangeTimestamp];
+  localTimeDescription4 = [lastConnectivityChangeTimestamp localTimeDescription];
+  v22 = localTimeDescription4;
+  if (localTimeDescription4)
   {
-    v23 = v21;
+    v23 = localTimeDescription4;
   }
 
   else
@@ -2087,17 +2087,17 @@ uint64_t __47__HMDStatusChannel_addDelegate_withCompletion___block_invoke(uint64
   return v25;
 }
 
-- (void)stopPublishingWithCompletion:(id)a3
+- (void)stopPublishingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__HMDStatusChannel_stopPublishingWithCompletion___block_invoke;
   v7[3] = &unk_27976F8E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2115,21 +2115,21 @@ uint64_t __49__HMDStatusChannel_stopPublishingWithCompletion___block_invoke(uint
   return result;
 }
 
-- (void)publishRecordWithPayload:(id)a3 shouldDebounce:(BOOL)a4 withCompletion:(id)a5
+- (void)publishRecordWithPayload:(id)payload shouldDebounce:(BOOL)debounce withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  payloadCopy = payload;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__HMDStatusChannel_publishRecordWithPayload_shouldDebounce_withCompletion___block_invoke;
   v13[3] = &unk_27976F910;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = payloadCopy;
+  debounceCopy = debounce;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = payloadCopy;
   dispatch_async(queue, v13);
 }
 
@@ -2147,17 +2147,17 @@ uint64_t __75__HMDStatusChannel_publishRecordWithPayload_shouldDebounce_withComp
   return result;
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__HMDStatusChannel_stopWithCompletion___block_invoke;
   v7[3] = &unk_27976F8E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2237,17 +2237,17 @@ uint64_t __39__HMDStatusChannel_stopWithCompletion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HMDStatusChannel_startWithCompletion___block_invoke;
   v7[3] = &unk_27976F8E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2327,12 +2327,12 @@ uint64_t __40__HMDStatusChannel_startWithCompletion___block_invoke(uint64_t a1)
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDStatusChannel *)self presenceChannel];
+  presenceChannel = [(HMDStatusChannel *)self presenceChannel];
 
-  if (v3)
+  if (presenceChannel)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -2343,14 +2343,14 @@ uint64_t __40__HMDStatusChannel_startWithCompletion___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDStatusChannel *)v5 presenceChannel];
-    [v8 removeDelegate:v5];
+    presenceChannel2 = [(HMDStatusChannel *)selfCopy presenceChannel];
+    [presenceChannel2 removeDelegate:selfCopy];
 
-    v9 = [(HMDStatusChannel *)v5 presenceChannel];
-    [v9 releaseTransientSubscriptionAssertionWithCompletion:&__block_literal_global];
+    presenceChannel3 = [(HMDStatusChannel *)selfCopy presenceChannel];
+    [presenceChannel3 releaseTransientSubscriptionAssertionWithCompletion:&__block_literal_global];
 
-    presenceChannel = v5->_presenceChannel;
-    v5->_presenceChannel = 0;
+    presenceChannel = selfCopy->_presenceChannel;
+    selfCopy->_presenceChannel = 0;
   }
 
   v12.receiver = self;
@@ -2377,59 +2377,59 @@ void __27__HMDStatusChannel_dealloc__block_invoke(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDStatusChannel)initWithChannelPrefix:(id)a3 identifier:(id)a4 queue:(id)a5 logEventSubmitter:(id)a6 idsIdentifierProvider:(id)a7
+- (HMDStatusChannel)initWithChannelPrefix:(id)prefix identifier:(id)identifier queue:(id)queue logEventSubmitter:(id)submitter idsIdentifierProvider:(id)provider
 {
   v12 = MEMORY[0x277D0F868];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  providerCopy = provider;
+  submitterCopy = submitter;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  prefixCopy = prefix;
   v18 = [[v12 alloc] initWithNetAddress:0];
   v19 = objc_opt_new();
   v20 = objc_alloc_init(HMDSKPresenceProvider);
-  v21 = [(HMDStatusChannel *)self initWithChannelPrefix:v17 identifier:v16 queue:v15 netMonitor:v18 timerProvider:v19 presenceProvider:v20 logEventSubmitter:v14 idsIdentifierProvider:v13];
+  v21 = [(HMDStatusChannel *)self initWithChannelPrefix:prefixCopy identifier:identifierCopy queue:queueCopy netMonitor:v18 timerProvider:v19 presenceProvider:v20 logEventSubmitter:submitterCopy idsIdentifierProvider:providerCopy];
 
   return v21;
 }
 
-- (HMDStatusChannel)initWithChannelPrefix:(id)a3 identifier:(id)a4 queue:(id)a5 netMonitor:(id)a6 timerProvider:(id)a7 presenceProvider:(id)a8 logEventSubmitter:(id)a9 idsIdentifierProvider:(id)a10
+- (HMDStatusChannel)initWithChannelPrefix:(id)prefix identifier:(id)identifier queue:(id)queue netMonitor:(id)monitor timerProvider:(id)provider presenceProvider:(id)presenceProvider logEventSubmitter:(id)submitter idsIdentifierProvider:(id)self0
 {
-  v33 = a3;
-  v16 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v29 = a8;
-  v17 = a9;
-  v18 = a10;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  monitorCopy = monitor;
+  providerCopy = provider;
+  presenceProviderCopy = presenceProvider;
+  submitterCopy = submitter;
+  identifierProviderCopy = identifierProvider;
   v34.receiver = self;
   v34.super_class = HMDStatusChannel;
   v19 = [(HMDStatusChannel *)&v34 init];
   if (v19)
   {
-    v20 = [v33 copy];
+    v20 = [prefixCopy copy];
     v21 = *(v19 + 7);
     *(v19 + 7) = v20;
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", *(v19 + 7), v16];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", *(v19 + 7), identifierCopy];
     v23 = *(v19 + 6);
-    *(v19 + 6) = v22;
+    *(v19 + 6) = identifierCopy;
 
-    objc_storeStrong(v19 + 1, a5);
-    v24 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(v19 + 1, queue);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v25 = *(v19 + 8);
-    *(v19 + 8) = v24;
+    *(v19 + 8) = weakObjectsHashTable;
 
     v26 = [MEMORY[0x277CBEB98] set];
     v27 = *(v19 + 3);
     *(v19 + 3) = v26;
 
-    objc_storeStrong(v19 + 9, a6);
-    objc_storeStrong(v19 + 10, a10);
-    objc_storeStrong(v19 + 11, a7);
-    objc_storeStrong(v19 + 12, a8);
-    objc_storeStrong(v19 + 21, a9);
+    objc_storeStrong(v19 + 9, monitor);
+    objc_storeStrong(v19 + 10, identifierProvider);
+    objc_storeStrong(v19 + 11, provider);
+    objc_storeStrong(v19 + 12, presenceProvider);
+    objc_storeStrong(v19 + 21, submitter);
     [*(v19 + 9) setDelegate:v19];
     *(v19 + 17) = 0;
   }

@@ -1,27 +1,27 @@
 @interface _SBIconListViewDataDraggingContext
-- (_SBIconListViewDataDraggingContext)initWithIconView:(id)a3 bestUTI:(id)a4 allowsMoveOperation:(BOOL)a5 fileOptions:(int64_t)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBIconListViewDataDraggingContext)initWithIconView:(id)view bestUTI:(id)i allowsMoveOperation:(BOOL)operation fileOptions:(int64_t)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation _SBIconListViewDataDraggingContext
 
-- (_SBIconListViewDataDraggingContext)initWithIconView:(id)a3 bestUTI:(id)a4 allowsMoveOperation:(BOOL)a5 fileOptions:(int64_t)a6
+- (_SBIconListViewDataDraggingContext)initWithIconView:(id)view bestUTI:(id)i allowsMoveOperation:(BOOL)operation fileOptions:(int64_t)options
 {
-  v11 = a3;
-  v12 = a4;
+  viewCopy = view;
+  iCopy = i;
   v16.receiver = self;
   v16.super_class = _SBIconListViewDataDraggingContext;
   v13 = [(_SBIconListViewDataDraggingContext *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_iconView, a3);
-    objc_storeStrong(&v14->_bestAvailableUTI, a4);
-    v14->_allowsMoveOperation = a5;
-    v14->_fileOptions = a6;
+    objc_storeStrong(&v13->_iconView, view);
+    objc_storeStrong(&v14->_bestAvailableUTI, i);
+    v14->_allowsMoveOperation = operation;
+    v14->_fileOptions = options;
   }
 
   return v14;
@@ -29,10 +29,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_SBIconListViewDataDraggingContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBIconListViewDataDraggingContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -43,22 +43,22 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBIconListViewDataDraggingContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBIconListViewDataDraggingContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBIconListViewDataDraggingContext *)self succinctDescriptionBuilder];
-  [v4 appendString:self->_bestAvailableUTI withName:@"bestAvailableUTI"];
-  v5 = [v4 appendBool:self->_allowsMoveOperation withName:@"allowsMoveOperation"];
-  v6 = [v4 appendInteger:self->_fileOptions withName:@"fileOptions"];
+  succinctDescriptionBuilder = [(_SBIconListViewDataDraggingContext *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_bestAvailableUTI withName:@"bestAvailableUTI"];
+  v5 = [succinctDescriptionBuilder appendBool:self->_allowsMoveOperation withName:@"allowsMoveOperation"];
+  v6 = [succinctDescriptionBuilder appendInteger:self->_fileOptions withName:@"fileOptions"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

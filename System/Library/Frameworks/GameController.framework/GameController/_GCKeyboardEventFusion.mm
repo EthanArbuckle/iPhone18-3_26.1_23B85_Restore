@@ -1,27 +1,27 @@
 @interface _GCKeyboardEventFusion
 - (_GCKeyboardEventFusion)init;
-- (_GCKeyboardEventFusion)initWithSources:(id)a3;
-- (id)observeKeyboardEvents:(id)a3;
+- (_GCKeyboardEventFusion)initWithSources:(id)sources;
+- (id)observeKeyboardEvents:(id)events;
 - (void)dealloc;
 @end
 
 @implementation _GCKeyboardEventFusion
 
-- (_GCKeyboardEventFusion)initWithSources:(id)a3
+- (_GCKeyboardEventFusion)initWithSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v16.receiver = self;
   v16.super_class = _GCKeyboardEventFusion;
   v5 = [(_GCKeyboardEventFusion *)&v16 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-    if ([v4 count])
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
+    if ([sourcesCopy count])
     {
       v7 = 0;
       do
       {
-        v8 = [v4 objectAtIndexedSubscript:v7];
+        v8 = [sourcesCopy objectAtIndexedSubscript:v7];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __42___GCKeyboardEventFusion_initWithSources___block_invoke;
@@ -33,7 +33,7 @@
         ++v7;
       }
 
-      while (v7 < [v4 count]);
+      while (v7 < [sourcesCopy count]);
     }
 
     v10 = [v6 copy];
@@ -65,27 +65,27 @@
   [(_GCKeyboardEventFusion *)&v4 dealloc];
 }
 
-- (id)observeKeyboardEvents:(id)a3
+- (id)observeKeyboardEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardEventFusion *)self observers];
+  v4 = [events copy];
+  observers = [(_GCKeyboardEventFusion *)self observers];
   v6 = _Block_copy(v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [observers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardEventFusion *)self observers];
-      v9 = [v8 mutableCopy];
+      observers2 = [(_GCKeyboardEventFusion *)self observers];
+      v9 = [observers2 mutableCopy];
 
       v10 = _Block_copy(v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardEventFusion *)self setObservers:v9];
-      v11 = [(_GCKeyboardEventFusion *)self observers];
+      observers3 = [(_GCKeyboardEventFusion *)self observers];
       v12 = _Block_copy(v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [observers3 containsObject:v12];
     }
 
     while (!v13);

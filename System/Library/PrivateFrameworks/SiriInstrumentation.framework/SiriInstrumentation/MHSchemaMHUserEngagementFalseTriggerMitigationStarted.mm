@@ -1,26 +1,26 @@
 @interface MHSchemaMHUserEngagementFalseTriggerMitigationStarted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithDictionary:(id)a3;
-- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHUserEngagementFalseTriggerMitigationStarted
 
-- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithDictionary:(id)a3
+- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHUserEngagementFalseTriggerMitigationStarted;
   v5 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)v5 setModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"uiWaitTimeInSeconds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"uiWaitTimeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)v5 setUiWaitTimeInSeconds:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"accumulatedAggregationStats"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"accumulatedAggregationStats"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithJSON:(id)a3
+- (MHSchemaMHUserEngagementFalseTriggerMitigationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,28 +86,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accumulatedAggregationStats)
   {
-    v4 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    accumulatedAggregationStats = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+    dictionaryRepresentation = [accumulatedAggregationStats dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"accumulatedAggregationStats"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accumulatedAggregationStats"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"accumulatedAggregationStats"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"accumulatedAggregationStats"];
     }
   }
 
   if (self->_modelVersion)
   {
-    v7 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
+    v8 = [modelVersion copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelVersion"];
   }
 
   if (*&self->_has)
@@ -115,12 +115,12 @@
     v9 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self uiWaitTimeInSeconds];
     v10 = [v9 numberWithDouble:?];
-    [v3 setObject:v10 forKeyedSubscript:@"uiWaitTimeInSeconds"];
+    [dictionary setObject:v10 forKeyedSubscript:@"uiWaitTimeInSeconds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,28 +162,28 @@
   return v6 ^ v3 ^ [(MHSchemaMHUserEngagementAccumulatedAggregationStats *)self->_accumulatedAggregationStats hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
+  modelVersion2 = [equalCopy modelVersion];
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
-  if (v7)
+  modelVersion3 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
+  if (modelVersion3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
-    v10 = [v4 modelVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = modelVersion3;
+    modelVersion4 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
+    modelVersion5 = [equalCopy modelVersion];
+    v11 = [modelVersion4 isEqual:modelVersion5];
 
     if (!v11)
     {
@@ -195,7 +195,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -203,19 +203,19 @@
   if (*&self->_has)
   {
     uiWaitTimeInSeconds = self->_uiWaitTimeInSeconds;
-    [v4 uiWaitTimeInSeconds];
+    [equalCopy uiWaitTimeInSeconds];
     if (uiWaitTimeInSeconds != v13)
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
-  v6 = [v4 accumulatedAggregationStats];
-  if ((v5 != 0) != (v6 == 0))
+  modelVersion = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+  modelVersion2 = [equalCopy accumulatedAggregationStats];
+  if ((modelVersion != 0) != (modelVersion2 == 0))
   {
-    v14 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
-    if (!v14)
+    accumulatedAggregationStats = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+    if (!accumulatedAggregationStats)
     {
 
 LABEL_18:
@@ -223,10 +223,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v15 = v14;
-    v16 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
-    v17 = [v4 accumulatedAggregationStats];
-    v18 = [v16 isEqual:v17];
+    v15 = accumulatedAggregationStats;
+    accumulatedAggregationStats2 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+    accumulatedAggregationStats3 = [equalCopy accumulatedAggregationStats];
+    v18 = [accumulatedAggregationStats2 isEqual:accumulatedAggregationStats3];
 
     if (v18)
     {
@@ -246,12 +246,12 @@ LABEL_16:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
+  toCopy = to;
+  modelVersion = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self modelVersion];
 
-  if (v4)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -261,29 +261,29 @@ LABEL_16:
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+  accumulatedAggregationStats = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (accumulatedAggregationStats)
   {
-    v7 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
+    accumulatedAggregationStats2 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHUserEngagementFalseTriggerMitigationStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self accumulatedAggregationStats:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MHSchemaMHUserEngagementFalseTriggerMitigationStarted *)self deleteAccumulatedAggregationStats];
   }

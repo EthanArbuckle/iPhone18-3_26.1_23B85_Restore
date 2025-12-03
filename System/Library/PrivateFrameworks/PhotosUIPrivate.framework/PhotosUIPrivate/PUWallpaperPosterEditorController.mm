@@ -1,7 +1,7 @@
 @interface PUWallpaperPosterEditorController
-+ (id)availableStylesForItem:(id)a3 posterConfiguration:(id)a4;
-+ (id)posterConfigurationFromPosterDescriptor:(id)a3;
-+ (int64_t)posterConfigurationTypeForPosterType:(int64_t)a3;
++ (id)availableStylesForItem:(id)item posterConfiguration:(id)configuration;
++ (id)posterConfigurationFromPosterDescriptor:(id)descriptor;
++ (int64_t)posterConfigurationTypeForPosterType:(int64_t)type;
 - (BOOL)_areStylesAvailable;
 - (BOOL)_attemptedSettlingEffect;
 - (BOOL)_canEnableDepthEffect;
@@ -27,121 +27,121 @@
 - (BOOL)_posterWantsUserTransformDisabled;
 - (BOOL)_shouldEnableAdaptiveLayout;
 - (BOOL)_spatialPhotoFailedUnexpectedly;
-- (BOOL)_tryLoadAssetUUID:(id)a3 fromWallpaperURL:(id)a4;
-- (BOOL)_updateViewForLayerID:(id)a3 usingViewManager:(id)a4 containerView:(id)a5;
+- (BOOL)_tryLoadAssetUUID:(id)d fromWallpaperURL:(id)l;
+- (BOOL)_updateViewForLayerID:(id)d usingViewManager:(id)manager containerView:(id)view;
 - (BOOL)_wantsSpatialPhotoBackfill;
-- (BOOL)editorShouldBeginFinalization:(id)a3;
+- (BOOL)editorShouldBeginFinalization:(id)finalization;
 - (BOOL)wantsLowLuminanceContent;
 - (PFPosterEditConfiguration)currentEditConfiguration;
-- (PUWallpaperPosterEditorController)initWithWallpaperEditor:(id)a3 photoLibrary:(id)a4;
+- (PUWallpaperPosterEditorController)initWithWallpaperEditor:(id)editor photoLibrary:(id)library;
 - (double)_hintLabelBottomAnchorDistance;
-- (double)editor:(id)a3 luminanceForLook:(id)a4 inRect:(CGRect)a5;
+- (double)editor:(id)editor luminanceForLook:(id)look inRect:(CGRect)rect;
 - (id)_actionsMenu;
-- (id)_adjustedCompoundLayerStackForAdaptiveLayout:(id)a3;
+- (id)_adjustedCompoundLayerStackForAdaptiveLayout:(id)layout;
 - (id)_colorPickerAction;
 - (id)_fetchMePerson;
 - (id)_headroomToggleMenuElement;
-- (id)_initialLayerStyleForSegmentationItem:(id)a3;
+- (id)_initialLayerStyleForSegmentationItem:(id)item;
 - (id)_leadingActionsMenu;
 - (id)_photoPickerAction;
-- (id)_sanitizeCompoundLayerStack:(id)a3 forSegmentationItem:(id)a4;
+- (id)_sanitizeCompoundLayerStack:(id)stack forSegmentationItem:(id)item;
 - (id)_shuffleFrequencyMenu;
 - (id)_toggleHighKeyLowKeyAction;
 - (id)_toggleSettlingEffectAction;
 - (id)_toggleSpatialPhotoEffectAction;
 - (id)centerSuggestionMedia;
-- (id)initialColorsForEditor:(id)a3;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)leadingMenuElementsForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)presentationControllerForTipID:(id)a3;
-- (id)solidColorHomeScreenColorPickerConfigurationForEditor:(id)a3;
-- (id)sourceItemForTipID:(id)a3;
-- (id)trailingMenuElementsForEditor:(id)a3;
+- (id)initialColorsForEditor:(id)editor;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)leadingMenuElementsForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)presentationControllerForTipID:(id)d;
+- (id)solidColorHomeScreenColorPickerConfigurationForEditor:(id)editor;
+- (id)sourceItemForTipID:(id)d;
+- (id)trailingMenuElementsForEditor:(id)editor;
 - (int64_t)_defaultHint;
 - (int64_t)_effectivePinchToZoomHint;
 - (int64_t)_shuffleType;
-- (void)_animateScrollToStyleKind:(id)a3 completion:(id)a4;
+- (void)_animateScrollToStyleKind:(id)kind completion:(id)completion;
 - (void)_animateScrollToStyleKindAnimatorUpdated;
 - (void)_applyPosterEditConfigurationForShuffleAsset;
 - (void)_beginListeningForExtensionHostResignationNotification;
 - (void)_beginLoadingShuffleResources;
 - (void)_createShuffleResourceManager;
-- (void)_didDismissLoadingErrorAlertShouldCancel:(BOOL)a3;
-- (void)_didFinishCreatingEditViewModel:(id)a3 forAsset:(id)a4 error:(id)a5;
-- (void)_didLoadMediaFromPhotoPickerWithAssetUUID:(id)a3 succeeded:(BOOL)a4 error:(id)a5;
-- (void)_didLoadMediaFromShuffleConfigurationViewController:(id)a3 succeeded:(BOOL)a4;
+- (void)_didDismissLoadingErrorAlertShouldCancel:(BOOL)cancel;
+- (void)_didFinishCreatingEditViewModel:(id)model forAsset:(id)asset error:(id)error;
+- (void)_didLoadMediaFromPhotoPickerWithAssetUUID:(id)d succeeded:(BOOL)succeeded error:(id)error;
+- (void)_didLoadMediaFromShuffleConfigurationViewController:(id)controller succeeded:(BOOL)succeeded;
 - (void)_disableSettlingEffect;
 - (void)_dismissPinchToZoomHint;
 - (void)_dismissPosterConfigurationViewControllerAndCancelEditor;
-- (void)_dismissPosterConfigurationViewControllerWithCompletion:(id)a3;
+- (void)_dismissPosterConfigurationViewControllerWithCompletion:(id)completion;
 - (void)_displayDefaultHint;
 - (void)_displayNextHint;
 - (void)_enableSettlingEffect;
-- (void)_extensionWillResignNotification:(id)a3;
+- (void)_extensionWillResignNotification:(id)notification;
 - (void)_fadeInViews;
-- (void)_handleAsyncPhotoEffectLoadedWithSegmentationItem:(id)a3;
-- (void)_handleLoadedCompoundLayerStack:(id)a3 error:(id)a4 segmentationItem:(id)a5 style:(id)a6 completion:(id)a7;
-- (void)_handlePhotoEffectsLoadedWithSegmentationItem:(id)a3 layerStack:(id)a4;
-- (void)_handlePhotoPickerResults:(id)a3;
-- (void)_handlePosterSaved:(BOOL)a3 error:(id)a4;
-- (void)_handleSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 forAsset:(id)a6 error:(id)a7;
-- (void)_handleShuffleSegmentationItem:(id)a3 compoundLayerStack:(id)a4 editConfiguration:(id)a5 forPosterMedia:(id)a6 error:(id)a7;
-- (void)_handleTapToShuffle:(id)a3;
+- (void)_handleAsyncPhotoEffectLoadedWithSegmentationItem:(id)item;
+- (void)_handleLoadedCompoundLayerStack:(id)stack error:(id)error segmentationItem:(id)item style:(id)style completion:(id)completion;
+- (void)_handlePhotoEffectsLoadedWithSegmentationItem:(id)item layerStack:(id)stack;
+- (void)_handlePhotoPickerResults:(id)results;
+- (void)_handlePosterSaved:(BOOL)saved error:(id)error;
+- (void)_handleSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style forAsset:(id)asset error:(id)error;
+- (void)_handleShuffleSegmentationItem:(id)item compoundLayerStack:(id)stack editConfiguration:(id)configuration forPosterMedia:(id)media error:(id)error;
+- (void)_handleTapToShuffle:(id)shuffle;
 - (void)_handleToggleSpatialPhotoAction;
-- (void)_handleUpdatedConfiguration:(id)a3 segmentationItem:(id)a4 compoundLayerStack:(id)a5 error:(id)a6;
-- (void)_hideHintAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_hideLoadingIndicatorForReason:(id)a3;
+- (void)_handleUpdatedConfiguration:(id)configuration segmentationItem:(id)item compoundLayerStack:(id)stack error:(id)error;
+- (void)_hideHintAnimated:(BOOL)animated completion:(id)completion;
+- (void)_hideLoadingIndicatorForReason:(id)reason;
 - (void)_hideProgressIndicator;
 - (void)_loadAssetFromPosterConfiguration;
-- (void)_loadAssetPosterMedia:(id)a3;
-- (void)_loadAssetUUID:(id)a3 fromWallpaperURL:(id)a4;
-- (void)_loadAssetWithUUID:(id)a3;
+- (void)_loadAssetPosterMedia:(id)media;
+- (void)_loadAssetUUID:(id)d fromWallpaperURL:(id)l;
+- (void)_loadAssetWithUUID:(id)d;
 - (void)_loadContentForCurrentPosterMedia;
-- (void)_loadEditViewModelAndUpdateLooks:(BOOL)a3;
-- (void)_loadEditViewModelWithSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 completion:(id)a6;
-- (void)_loadImagePosterMedia:(id)a3;
-- (void)_loadParallaxAsset:(id)a3;
+- (void)_loadEditViewModelAndUpdateLooks:(BOOL)looks;
+- (void)_loadEditViewModelWithSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style completion:(id)completion;
+- (void)_loadImagePosterMedia:(id)media;
+- (void)_loadParallaxAsset:(id)asset;
 - (void)_loadPosterDescriptor;
-- (void)_loadSettlingEffectLayerStackForSegmentationItem:(id)a3 completion:(id)a4;
+- (void)_loadSettlingEffectLayerStackForSegmentationItem:(id)item completion:(id)completion;
 - (void)_loadSourcePosterConfiguration;
 - (void)_observeCurrentPlayerItem;
 - (void)_pickAssets;
-- (void)_playerItemDidFinish:(id)a3;
+- (void)_playerItemDidFinish:(id)finish;
 - (void)_presentAuthenticatedShuffleConfigurationEditor;
-- (void)_presentLoadingError:(id)a3;
-- (void)_presentLoadingError:(id)a3 forAsset:(id)a4;
-- (void)_presentLoadingErrorAlertController:(id)a3;
+- (void)_presentLoadingError:(id)error;
+- (void)_presentLoadingError:(id)error forAsset:(id)asset;
+- (void)_presentLoadingErrorAlertController:(id)controller;
 - (void)_presentManualShuffleAssetEditor;
 - (void)_presentPhotoPicker;
-- (void)_presentPosterConfigurationViewController:(id)a3;
-- (void)_presentSettlingEffectDebugView:(id)a3;
+- (void)_presentPosterConfigurationViewController:(id)controller;
+- (void)_presentSettlingEffectDebugView:(id)view;
 - (void)_presentShuffleConfigurationEditor;
 - (void)_presentSmartAlbumShuffleEditor;
 - (void)_presentSpatialPhotoErrorDiagnosticsAlert;
-- (void)_presentSpatialPhotoModelDownloadProgress:(double)a3 producer:(id)a4 downloadTask:(id)a5;
+- (void)_presentSpatialPhotoModelDownloadProgress:(double)progress producer:(id)producer downloadTask:(id)task;
 - (void)_presentStyleColorPicker;
 - (void)_presentUserAlbumShuffleEditor;
 - (void)_prewarmSpatialPhotoModel;
 - (void)_rejectSuggestionsForCurrentAsset;
-- (void)_reloadAssetUUID:(id)a3 fromWallpaperURL:(id)a4;
-- (void)_reloadSmartAlbumPreviewAssetsWithCompletionHandler:(id)a3;
-- (void)_removeViewsFromLayerStackViewModel:(id)a3;
+- (void)_reloadAssetUUID:(id)d fromWallpaperURL:(id)l;
+- (void)_reloadSmartAlbumPreviewAssetsWithCompletionHandler:(id)handler;
+- (void)_removeViewsFromLayerStackViewModel:(id)model;
 - (void)_renderAfterStyleChange;
-- (void)_renderInitialLayerStack:(id)a3 style:(id)a4 completion:(id)a5;
+- (void)_renderInitialLayerStack:(id)stack style:(id)style completion:(id)completion;
 - (void)_resumeSavingAfterLoadingSpatialPhoto;
 - (void)_savePosterEditConfigurationForCurrentPosterMedia;
-- (void)_savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:(id)a3;
-- (void)_saveWithCompletionHandler:(id)a3;
-- (void)_sendSettlingEffectGatingAnalyticsWithSegmentationItem:(id)a3;
-- (void)_setCurrentStyleIsHighKey:(BOOL)a3;
-- (void)_setShuffleEffect:(unint64_t)a3 enabled:(BOOL)a4;
-- (void)_setShuffleEffect:(unint64_t)a3 supported:(BOOL)a4;
+- (void)_savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:(id)environment;
+- (void)_saveWithCompletionHandler:(id)handler;
+- (void)_sendSettlingEffectGatingAnalyticsWithSegmentationItem:(id)item;
+- (void)_setCurrentStyleIsHighKey:(BOOL)key;
+- (void)_setShuffleEffect:(unint64_t)effect enabled:(BOOL)enabled;
+- (void)_setShuffleEffect:(unint64_t)effect supported:(BOOL)supported;
 - (void)_setupUserTransformView;
-- (void)_showHintAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_showLoadingIndicatorForReason:(id)a3;
+- (void)_showHintAnimated:(BOOL)animated completion:(id)completion;
+- (void)_showLoadingIndicatorForReason:(id)reason;
 - (void)_showPhotoInLibrary;
-- (void)_showProgressIndicator:(id)a3 determinate:(BOOL)a4;
+- (void)_showProgressIndicator:(id)indicator determinate:(BOOL)determinate;
 - (void)_showSettlingEffectUnavailableTip;
 - (void)_showSpatialPhotoDisabledLowerPowerModeTipIfNeeded;
 - (void)_showTrySettlingEffectTip;
@@ -150,92 +150,92 @@
 - (void)_startSettlingEffectPreviewAfterDelay;
 - (void)_stopListeningForExtensionHostResignationNotification;
 - (void)_stopObservingPlayerItem;
-- (void)_stopSettlingEffectPreview:(id)a3;
-- (void)_tapToRadarWithComponent:(int64_t)a3 asset:(id)a4 suggestion:(id)a5 error:(id)a6;
-- (void)_tapToRadarWithComponent:(int64_t)a3 error:(id)a4;
+- (void)_stopSettlingEffectPreview:(id)preview;
+- (void)_tapToRadarWithComponent:(int64_t)component asset:(id)asset suggestion:(id)suggestion error:(id)error;
+- (void)_tapToRadarWithComponent:(int64_t)component error:(id)error;
 - (void)_toggleDepth;
 - (void)_toggleHeadroom;
 - (void)_toggleSettlingEffectEnabled;
 - (void)_toggleStyleBackground;
-- (void)_transferSubviewsFrom:(id)a3 to:(id)a4;
+- (void)_transferSubviewsFrom:(id)from to:(id)to;
 - (void)_updateContainerFrame;
 - (void)_updateContentOverlayContainerView;
 - (void)_updateCurrentLayerStackViewModel;
 - (void)_updateCurrentStyle;
-- (void)_updateCurrentStyleColor:(id)a3;
+- (void)_updateCurrentStyleColor:(id)color;
 - (void)_updateDebugRectViews;
 - (void)_updateDeviceOrientation;
 - (void)_updateEditToolbar;
 - (void)_updateEditViewModelPropertiesFromPosterConfiguration;
 - (void)_updateEditorPreferences;
-- (void)_updateHintLabelAnimated:(BOOL)a3;
-- (void)_updateLayerStackOrderingForViewModel:(id)a3;
+- (void)_updateHintLabelAnimated:(BOOL)animated;
+- (void)_updateLayerStackOrderingForViewModel:(id)model;
 - (void)_updateMotionEffectsEnabled;
 - (void)_updateOverlayContentConstraints;
-- (void)_updatePosterConfigurationForCallServices:(id)a3;
+- (void)_updatePosterConfigurationForCallServices:(id)services;
 - (void)_updatePreferredTitleBounds;
-- (void)_updateProgressIndicator:(double)a3;
-- (void)_updateShuffleSuggestionFeaturedStateIfNeededForConfiguration:(id)a3;
+- (void)_updateProgressIndicator:(double)indicator;
+- (void)_updateShuffleSuggestionFeaturedStateIfNeededForConfiguration:(id)configuration;
 - (void)_updateShuffleView;
 - (void)_updateSmartAlbumAvailability;
 - (void)_updateSpatialPhotoGyro;
-- (void)_updateSpatialPhotoGyroForLayerStackViewModel:(id)a3;
+- (void)_updateSpatialPhotoGyroForLayerStackViewModel:(id)model;
 - (void)_updateTitleHeightProperties;
 - (void)_updateUserTransformIsDisabled;
 - (void)_updateUserTransformView;
 - (void)_updateVisibleLayerStackViewModels;
-- (void)_updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:(id)a3;
+- (void)_updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:(id)models;
 - (void)dealloc;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didTransitionToLook:(id)a4 progress:(double)a5;
-- (void)editor:(id)a3 didUpdateColors:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setCurrentLayerStackViewModel:(id)a3;
-- (void)setCurrentPosterMedia:(id)a3;
-- (void)setEditViewModel:(id)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setFinalizationState:(unint64_t)a3;
-- (void)setFloatingView:(id)a3;
-- (void)setForegroundView:(id)a3;
-- (void)setHint:(int64_t)a3;
-- (void)setIsCancellingMediaLoading:(BOOL)a3;
-- (void)setIsLoading:(BOOL)a3;
-- (void)setIsUserTransformDisabled:(BOOL)a3;
-- (void)setLoadingSettlingEffect:(BOOL)a3;
-- (void)setPosterConfiguration:(id)a3;
-- (void)setShuffleAssetIndex:(int64_t)a3;
-- (void)setVisibleLayerStackViewModels:(id)a3;
-- (void)spatialPhotoProducer:(id)a3 downloadTask:(id)a4 didUpdateProgress:(double)a5;
-- (void)spatialPhotoProducer:(id)a3 downloadTaskDidEnd:(id)a4 success:(BOOL)a5 error:(id)a6;
-- (void)spatialPhotoProducer:(id)a3 downloadTaskDidStart:(id)a4;
-- (void)tipPopoverDidDismissWithTipID:(id)a3;
-- (void)transitionBetweenStyleWithKind:(id)a3 andKind:(id)a4 progress:(double)a5;
-- (void)userTransformView:(id)a3 didChangeIsUserInteracting:(BOOL)a4;
-- (void)userTransformView:(id)a3 didChangeUserAffineTransform:(CGAffineTransform *)a4 isUserInteracting:(BOOL)a5;
-- (void)wallpaperPosterShuffleGridViewController:(id)a3 didFinishWithChange:(id)a4 selectedPosterMedia:(id)a5;
-- (void)wallpaperShuffleConfigurationViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4;
-- (void)wallpaperShuffleConfigurationViewControllerDidCancelManuallySelectingPhotos:(id)a3;
-- (void)wallpaperShuffleConfigurationViewControllerDidDismiss:(id)a3;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didTransitionToLook:(id)look progress:(double)progress;
+- (void)editor:(id)editor didUpdateColors:(id)colors;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareTipPopover:(id)popover tipID:(id)d;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setBackgroundView:(id)view;
+- (void)setCurrentLayerStackViewModel:(id)model;
+- (void)setCurrentPosterMedia:(id)media;
+- (void)setEditViewModel:(id)model;
+- (void)setEnvironment:(id)environment;
+- (void)setFinalizationState:(unint64_t)state;
+- (void)setFloatingView:(id)view;
+- (void)setForegroundView:(id)view;
+- (void)setHint:(int64_t)hint;
+- (void)setIsCancellingMediaLoading:(BOOL)loading;
+- (void)setIsLoading:(BOOL)loading;
+- (void)setIsUserTransformDisabled:(BOOL)disabled;
+- (void)setLoadingSettlingEffect:(BOOL)effect;
+- (void)setPosterConfiguration:(id)configuration;
+- (void)setShuffleAssetIndex:(int64_t)index;
+- (void)setVisibleLayerStackViewModels:(id)models;
+- (void)spatialPhotoProducer:(id)producer downloadTask:(id)task didUpdateProgress:(double)progress;
+- (void)spatialPhotoProducer:(id)producer downloadTaskDidEnd:(id)end success:(BOOL)success error:(id)error;
+- (void)spatialPhotoProducer:(id)producer downloadTaskDidStart:(id)start;
+- (void)tipPopoverDidDismissWithTipID:(id)d;
+- (void)transitionBetweenStyleWithKind:(id)kind andKind:(id)andKind progress:(double)progress;
+- (void)userTransformView:(id)view didChangeIsUserInteracting:(BOOL)interacting;
+- (void)userTransformView:(id)view didChangeUserAffineTransform:(CGAffineTransform *)transform isUserInteracting:(BOOL)interacting;
+- (void)wallpaperPosterShuffleGridViewController:(id)controller didFinishWithChange:(id)change selectedPosterMedia:(id)media;
+- (void)wallpaperShuffleConfigurationViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration;
+- (void)wallpaperShuffleConfigurationViewControllerDidCancelManuallySelectingPhotos:(id)photos;
+- (void)wallpaperShuffleConfigurationViewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation PUWallpaperPosterEditorController
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 transitionCoordinator];
-    if ([v6 initiallyInteractive])
+    transitionCoordinator = [presentedViewController transitionCoordinator];
+    if ([transitionCoordinator initiallyInteractive])
     {
       objc_initWeak(&location, self);
       v7 = MEMORY[0x1E69E9820];
@@ -243,7 +243,7 @@
       v9 = __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss___block_invoke;
       v10 = &unk_1E7B7E238;
       objc_copyWeak(&v11, &location);
-      [v6 notifyWhenInteractionChangesUsingBlock:&v7];
+      [transitionCoordinator notifyWhenInteractionChangesUsingBlock:&v7];
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
     }
@@ -266,32 +266,32 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
-  v14 = v13;
-  if (BackgroundViewObservationContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  observedPlayerItem = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
+  v14 = observedPlayerItem;
+  if (BackgroundViewObservationContext == context)
   {
     [(PUWallpaperPosterEditorController *)self _updateContainerFrame];
   }
 
-  else if (PlayerItemObservationContext == a6)
+  else if (PlayerItemObservationContext == context)
   {
-    if (v13 == v11)
+    if (observedPlayerItem == objectCopy)
     {
-      v15 = [v13 status];
-      if (v15 == 1)
+      status = [observedPlayerItem status];
+      if (status == 1)
       {
-        v18 = [MEMORY[0x1E69BDE40] globalSettings];
-        v19 = [v18 disableMADForSettlingEffect];
+        globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+        disableMADForSettlingEffect = [globalSettings disableMADForSettlingEffect];
 
-        if (v19)
+        if (disableMADForSettlingEffect)
         {
-          if (v11)
+          if (objectCopy)
           {
             [v14 duration];
           }
@@ -307,14 +307,14 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
         }
       }
 
-      else if (v15 == 2)
+      else if (status == 2)
       {
         v16 = PLWallpaperGetLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v17 = [v14 error];
+          error = [v14 error];
           LODWORD(buf.value) = 138412290;
-          *(&buf.value + 4) = v17;
+          *(&buf.value + 4) = error;
           _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_ERROR, "Settling effect preview video failed to load: %@", &buf, 0xCu);
         }
       }
@@ -325,16 +325,16 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
   {
     v20.receiver = self;
     v20.super_class = PUWallpaperPosterEditorController;
-    [(PUWallpaperPosterEditorController *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PUWallpaperPosterEditorController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_updatePosterConfigurationForCallServices:(id)a3
+- (void)_updatePosterConfigurationForCallServices:(id)services
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 mutableCopy];
+  servicesCopy = services;
+  userInfo = [servicesCopy userInfo];
+  v6 = [userInfo mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -348,16 +348,16 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
 
   v9 = v8;
 
-  v10 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v11 = [v10 assetUUID];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  assetUUID = [currentPosterMedia assetUUID];
 
-  v12 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v13 = [v12 segmentationItem];
-  v14 = [v13 regions];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  segmentationItem = [editViewModel segmentationItem];
+  regions = [segmentationItem regions];
 
-  if (v14)
+  if (regions)
   {
-    v15 = [MEMORY[0x1E69BDF38] dictionaryFromRegions:v14];
+    v15 = [MEMORY[0x1E69BDF38] dictionaryFromRegions:regions];
     [v9 setObject:v15 forKeyedSubscript:@"regions"];
   }
 
@@ -366,24 +366,24 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
     [v9 setObject:0 forKeyedSubscript:@"regions"];
   }
 
-  v16 = [(PUWallpaperPosterEditorController *)self _fetchMePerson];
-  if (v16)
+  _fetchMePerson = [(PUWallpaperPosterEditorController *)self _fetchMePerson];
+  if (_fetchMePerson)
   {
-    v33 = v4;
+    v33 = servicesCopy;
     v17 = MEMORY[0x1E6978630];
-    v39[0] = v11;
+    v39[0] = assetUUID;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-    v19 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-    v20 = [v19 librarySpecificFetchOptions];
-    v21 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:v20];
-    v22 = [v21 firstObject];
+    photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v21 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:librarySpecificFetchOptions];
+    firstObject = [v21 firstObject];
 
-    if (v22)
+    if (firstObject)
     {
       v23 = MEMORY[0x1E69C3790];
-      v38 = v22;
+      v38 = firstObject;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
-      v25 = [v23 facesForPerson:v16 inAssets:v24];
+      v25 = [v23 facesForPerson:_fetchMePerson inAssets:v24];
 
       v26 = [v25 count];
       v27 = v26 != 0;
@@ -414,14 +414,14 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v35 = v11;
+        v35 = assetUUID;
         _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_ERROR, "Could not find asset for %@, not setting representsDeviceOwner flag", buf, 0xCu);
       }
 
       v27 = 0;
     }
 
-    v4 = v33;
+    servicesCopy = v33;
   }
 
   else
@@ -432,9 +432,9 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
   v30 = [MEMORY[0x1E696AD98] numberWithBool:v27];
   [v9 setObject:v30 forKeyedSubscript:*MEMORY[0x1E69C0C50]];
 
-  if (v11)
+  if (assetUUID)
   {
-    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[__CFString hash](v11, "hash")}];
+    v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[__CFString hash](assetUUID, "hash")}];
     [v9 setObject:v31 forKeyedSubscript:@"hashedAssetIdentifier"];
   }
 
@@ -443,17 +443,17 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
     [v9 setObject:0 forKeyedSubscript:@"hashedAssetIdentifier"];
   }
 
-  [v9 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69C0C48]];
+  [v9 setObject:assetUUID forKeyedSubscript:*MEMORY[0x1E69C0C48]];
   v32 = [v9 copy];
-  [v4 setUserInfo:v32];
+  [servicesCopy setUserInfo:v32];
 }
 
 - (id)_fetchMePerson
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
   v26 = 0;
-  v4 = [v3 suggestedMePersonIdentifierWithError:&v26];
+  v4 = [photoLibrary suggestedMePersonIdentifierWithError:&v26];
   v5 = v26;
 
   if (!v4)
@@ -473,8 +473,8 @@ void __71__PUWallpaperPosterEditorController_presentationControllerWillDismiss__
   }
 
   v6 = MEMORY[0x1E69C3790];
-  v7 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v8 = [v6 personWithLocalIdentifier:v4 photoLibrary:v7];
+  photoLibrary2 = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  v8 = [v6 personWithLocalIdentifier:v4 photoLibrary:photoLibrary2];
 
   v9 = PLWallpaperGetLog();
   v10 = v9;
@@ -494,14 +494,14 @@ LABEL_9:
     _os_log_impl(&dword_1B36F3000, v12, v13, v11, buf, 0xCu);
 LABEL_10:
 
-    v14 = [MEMORY[0x1E69C3790] fetchMeContact];
-    v10 = v14;
-    if (v14)
+    fetchMeContact = [MEMORY[0x1E69C3790] fetchMeContact];
+    v10 = fetchMeContact;
+    if (fetchMeContact)
     {
       v15 = MEMORY[0x1E69C3790];
-      v16 = [v14 identifier];
-      v17 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-      v8 = [v15 personWithPersonUri:v16 photoLibrary:v17];
+      identifier = [fetchMeContact identifier];
+      photoLibrary3 = [(PUWallpaperPosterEditorController *)self photoLibrary];
+      v8 = [v15 personWithPersonUri:identifier photoLibrary:photoLibrary3];
 
       v18 = PLWallpaperGetLog();
       v19 = v18;
@@ -567,10 +567,10 @@ LABEL_21:
   return v8;
 }
 
-- (void)_saveWithCompletionHandler:(id)a3
+- (void)_saveWithCompletionHandler:(id)handler
 {
   v112 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(PUWallpaperPosterEditorController *)self setFinalizationState:1];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -578,27 +578,27 @@ LABEL_21:
   aBlock[2] = __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_1E7B7C428;
   objc_copyWeak(&v109, &location);
-  v83 = v4;
+  v83 = handlerCopy;
   v108 = v83;
   v84 = _Block_copy(aBlock);
-  v5 = [(PUWallpaperPosterEditorController *)self environment];
-  v85 = [v5 pu_targetAssetDirectory];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_targetAssetDirectory = [environment pu_targetAssetDirectory];
 
-  if (v85)
+  if (pu_targetAssetDirectory)
   {
     v6 = PLWallpaperGetLog();
-    v7 = [(PUWallpaperPosterEditorController *)self signpost];
-    if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+    signpost = [(PUWallpaperPosterEditorController *)self signpost];
+    if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
     {
       LOWORD(buf) = 0;
-      _os_signpost_emit_with_name_impl(&dword_1B36F3000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PUWallpaperPosterEditorController.Saving", "", &buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1B36F3000, v6, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "PUWallpaperPosterEditorController.Saving", "", &buf, 2u);
     }
 
     v8 = PULocalizedString(@"PHOTOS_WALLPAPER_SAVING_PROGRESS_INDICATOR_TITLE");
     [(PUWallpaperPosterEditorController *)self _showProgressIndicator:v8 determinate:[(PUWallpaperPosterEditorController *)self _isShuffle]];
 
-    v9 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    LODWORD(v8) = [v9 isLoadingSpatialPhoto];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    LODWORD(v8) = [currentLayerStackViewModel isLoadingSpatialPhoto];
 
     if (v8)
     {
@@ -615,24 +615,24 @@ LABEL_21:
 
     else
     {
-      v11 = [(PUWallpaperPosterEditorController *)self environment];
-      v12 = [v11 px_isBackdrop];
+      environment2 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isBackdrop = [environment2 px_isBackdrop];
 
-      v13 = [(PUWallpaperPosterEditorController *)self environment];
-      v14 = [v13 px_isCallServices];
+      environment3 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isCallServices = [environment3 px_isCallServices];
 
-      v15 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-      v86 = [v15 copy];
+      posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+      v86 = [posterConfiguration copy];
 
-      LODWORD(v15) = [(PUWallpaperPosterEditorController *)self wantsLowLuminanceContent];
-      v16 = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
+      LODWORD(posterConfiguration) = [(PUWallpaperPosterEditorController *)self wantsLowLuminanceContent];
+      deviceSupportsLandscapeConfiguration = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
       v17 = 5;
-      if (!v15)
+      if (!posterConfiguration)
       {
         v17 = 1;
       }
 
-      if (v16)
+      if (deviceSupportsLandscapeConfiguration)
       {
         v18 = v17 | 0x22;
       }
@@ -642,20 +642,20 @@ LABEL_21:
         v18 = v17;
       }
 
-      v19 = [(PUWallpaperPosterEditorController *)self environment];
-      v20 = [v19 px_isCallServices];
+      environment4 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isCallServices2 = [environment4 px_isCallServices];
 
       v21 = v18 | 2;
-      if (!v20)
+      if (!px_isCallServices2)
       {
         v21 = v18;
       }
 
       if ([(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled])
       {
-        v22 = [(PUWallpaperPosterEditorController *)self _wantsSpatialPhotoBackfill];
+        _wantsSpatialPhotoBackfill = [(PUWallpaperPosterEditorController *)self _wantsSpatialPhotoBackfill];
         v23 = 256;
-        if (v22)
+        if (_wantsSpatialPhotoBackfill)
         {
           v23 = 1280;
         }
@@ -663,12 +663,12 @@ LABEL_21:
         v79 |= v23;
       }
 
-      if (!(((v79 & 4) == 0) | v12 & 1))
+      if (!(((v79 & 4) == 0) | px_isBackdrop & 1))
       {
         [v86 setOptions:{objc_msgSend(v86, "options") | 4}];
       }
 
-      if (!(v12 & 1 | ((PFPosterIsAdaptiveLayoutEnabled() & 1) == 0) | v14 & 1) && (-[PUWallpaperPosterEditorController _shouldEnableAdaptiveLayout](self, "_shouldEnableAdaptiveLayout") || (-[PUWallpaperPosterEditorController editViewModel](self, "editViewModel"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 userHasAdjustedLayout], v25, v26)))
+      if (!(px_isBackdrop & 1 | ((PFPosterIsAdaptiveLayoutEnabled() & 1) == 0) | px_isCallServices & 1) && (-[PUWallpaperPosterEditorController _shouldEnableAdaptiveLayout](self, "_shouldEnableAdaptiveLayout") || (-[PUWallpaperPosterEditorController editViewModel](self, "editViewModel"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 userHasAdjustedLayout], v25, v26)))
       {
         v24 = 3;
       }
@@ -679,11 +679,11 @@ LABEL_21:
       }
 
       [v86 setAllowedLayoutStrategies:{v24, v79}];
-      v27 = [(PUWallpaperPosterEditorController *)self editor];
-      v28 = [v27 pu_isDepthEffectDisallowed];
+      editor = [(PUWallpaperPosterEditorController *)self editor];
+      pu_isDepthEffectDisallowed = [editor pu_isDepthEffectDisallowed];
 
-      v29 = [(PUWallpaperPosterEditorController *)self environment];
-      v30 = [v29 px_isDepthEffectDisabled];
+      environment5 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isDepthEffectDisabled = [environment5 px_isDepthEffectDisabled];
 
       v82 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUWallpaperPosterEditorController isAnySmartAlbumAvailable](self, "isAnySmartAlbumAvailable")}];
@@ -692,55 +692,55 @@ LABEL_21:
       v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUWallpaperPosterEditorController isInitialSave](self, "isInitialSave")}];
       [v82 setObject:v32 forKeyedSubscript:@"is_initial_save"];
 
-      v33 = [(PUWallpaperPosterEditorController *)self environment];
-      v34 = [v33 pu_role];
-      [v82 setObject:v34 forKeyedSubscript:@"configuration_role"];
+      environment6 = [(PUWallpaperPosterEditorController *)self environment];
+      pu_role = [environment6 pu_role];
+      [v82 setObject:pu_role forKeyedSubscript:@"configuration_role"];
 
-      v35 = v28 | v12;
+      v35 = pu_isDepthEffectDisallowed | px_isBackdrop;
       if ([(PUWallpaperPosterEditorController *)self _isShuffle])
       {
-        v36 = [(PUWallpaperPosterEditorController *)self editModel];
-        [v36 performChanges:&__block_literal_global_950];
+        editModel = [(PUWallpaperPosterEditorController *)self editModel];
+        [editModel performChanges:&__block_literal_global_950];
 
         [(PUWallpaperPosterEditorController *)self _savePosterEditConfigurationForCurrentPosterMedia];
-        v81 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+        shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
         v37 = objc_alloc_init(MEMORY[0x1E69C07F8]);
-        v38 = [v81 style];
-        v39 = [v38 bakedStyle];
-        [v37 setStyle:v39];
+        style = [shuffleResourceManager style];
+        bakedStyle = [style bakedStyle];
+        [v37 setStyle:bakedStyle];
 
         [v37 setIsDepthAvailable:(v35 & 1) == 0];
         if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalDepth])
         {
-          v40 = [v81 enabledEffects] & ((v35 | v30) ^ 1);
+          v40 = [shuffleResourceManager enabledEffects] & ((v35 | px_isDepthEffectDisabled) ^ 1);
           [v37 setIsDepthEnabled:v40 & 1];
           [v37 setIsLandscapeDepthEnabled:v40 & 1];
         }
 
         if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalSpatialPhoto])
         {
-          [v37 setIsSpatialPhotoEnabled:{(objc_msgSend(v81, "enabledEffects") >> 1) & 1}];
+          [v37 setIsSpatialPhotoEnabled:{(objc_msgSend(shuffleResourceManager, "enabledEffects") >> 1) & 1}];
         }
 
         [v37 setNormalizedVisibleFrame:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
         [v86 setEditConfiguration:v37];
-        v41 = [(PUWallpaperPosterEditorController *)self environment];
-        v42 = [v41 px_significantEventsCounter];
+        environment7 = [(PUWallpaperPosterEditorController *)self environment];
+        px_significantEventsCounter = [environment7 px_significantEventsCounter];
 
-        v43 = [v86 media];
-        v44 = +[PUPosterUtilities mediaIndexWithSeed:mediaCount:](PUPosterUtilities, "mediaIndexWithSeed:mediaCount:", v42, [v43 count]);
+        media = [v86 media];
+        v44 = +[PUPosterUtilities mediaIndexWithSeed:mediaCount:](PUPosterUtilities, "mediaIndexWithSeed:mediaCount:", px_significantEventsCounter, [media count]);
 
-        v45 = [(PUWallpaperPosterEditorController *)self shuffleAssetIndex];
-        v46 = [v86 media];
-        v47 = [v46 count];
+        shuffleAssetIndex = [(PUWallpaperPosterEditorController *)self shuffleAssetIndex];
+        media2 = [v86 media];
+        v47 = [media2 count];
 
-        if ((v45 % v47) < v44)
+        if ((shuffleAssetIndex % v47) < v44)
         {
-          v48 = [v86 media];
-          [v48 count];
+          media3 = [v86 media];
+          [media3 count];
         }
 
-        v49 = [v86 media];
+        media4 = [v86 media];
         v50 = PXArrayRotate();
         [v86 setMedia:v50];
 
@@ -748,8 +748,8 @@ LABEL_21:
         v106 = 0u;
         v103 = 0u;
         v104 = 0u;
-        v51 = [v86 media];
-        v52 = [v51 countByEnumeratingWithState:&v103 objects:v111 count:16];
+        media5 = [v86 media];
+        v52 = [media5 countByEnumeratingWithState:&v103 objects:v111 count:16];
         if (v52)
         {
           v53 = *v104;
@@ -759,45 +759,45 @@ LABEL_21:
             {
               if (*v104 != v53)
               {
-                objc_enumerationMutation(v51);
+                objc_enumerationMutation(media5);
               }
 
               v55 = *(*(&v103 + 1) + 8 * i);
-              v56 = [v37 style];
-              v57 = [v55 editConfiguration];
-              [v57 setStyle:v56];
+              style2 = [v37 style];
+              editConfiguration = [v55 editConfiguration];
+              [editConfiguration setStyle:style2];
 
-              if (v30)
+              if (px_isDepthEffectDisabled)
               {
-                v58 = [v55 editConfiguration];
-                [v58 setIsDepthEnabled:0];
+                editConfiguration2 = [v55 editConfiguration];
+                [editConfiguration2 setIsDepthEnabled:0];
 
-                v59 = [v55 editConfiguration];
-                [v59 setIsLandscapeDepthEnabled:0];
+                editConfiguration3 = [v55 editConfiguration];
+                [editConfiguration3 setIsLandscapeDepthEnabled:0];
               }
             }
 
-            v52 = [v51 countByEnumeratingWithState:&v103 objects:v111 count:16];
+            v52 = [media5 countByEnumeratingWithState:&v103 objects:v111 count:16];
           }
 
           while (v52);
         }
 
-        v60 = [v86 layoutConfiguration];
-        v61 = v60 == 0;
+        layoutConfiguration = [v86 layoutConfiguration];
+        v61 = layoutConfiguration == 0;
 
         if (v61)
         {
-          v62 = [(PUWallpaperPosterEditorController *)self editViewModel];
-          v63 = [v62 layoutConfiguration];
-          [v86 setLayoutConfiguration:v63];
+          editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+          layoutConfiguration2 = [editViewModel layoutConfiguration];
+          [v86 setLayoutConfiguration:layoutConfiguration2];
         }
 
-        v64 = [v86 analyticsPayload];
-        [v82 addEntriesFromDictionary:v64];
+        analyticsPayload = [v86 analyticsPayload];
+        [v82 addEntriesFromDictionary:analyticsPayload];
 
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.wallpaper.editorSaved" withPayload:v82];
-        v65 = [v86 media];
+        media6 = [v86 media];
         v101[0] = MEMORY[0x1E69E9820];
         v101[1] = 3221225472;
         v101[2] = __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_invoke_2_955;
@@ -808,38 +808,38 @@ LABEL_21:
         v96[2] = __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_invoke_4;
         v96[3] = &unk_1E7B78950;
         v97 = v86;
-        v66 = v85;
+        v66 = pu_targetAssetDirectory;
         v98 = v66;
-        v99 = self;
+        selfCopy = self;
         v100 = v84;
-        [v81 exportResourcesForFinalPosterMedia:v65 options:v80 assetDirectory:v66 progressHandler:v101 completion:v96];
+        [shuffleResourceManager exportResourcesForFinalPosterMedia:media6 options:v80 assetDirectory:v66 progressHandler:v101 completion:v96];
 
         objc_destroyWeak(&v102);
       }
 
       else
       {
-        v67 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v81 = [v67 posterEditConfigurationRepresentation];
-        [v81 setIsDepthAvailable:{objc_msgSend(v81, "isDepthAvailable") & (v35 ^ 1)}];
-        [v86 setEditConfiguration:v81];
-        v68 = [v67 layoutConfiguration];
-        [v86 setLayoutConfiguration:v68];
+        editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+        shuffleResourceManager = [editViewModel2 posterEditConfigurationRepresentation];
+        [shuffleResourceManager setIsDepthAvailable:{objc_msgSend(shuffleResourceManager, "isDepthAvailable") & (v35 ^ 1)}];
+        [v86 setEditConfiguration:shuffleResourceManager];
+        layoutConfiguration3 = [editViewModel2 layoutConfiguration];
+        [v86 setLayoutConfiguration:layoutConfiguration3];
 
-        v69 = [v86 analyticsPayload];
-        [v82 addEntriesFromDictionary:v69];
+        analyticsPayload2 = [v86 analyticsPayload];
+        [v82 addEntriesFromDictionary:analyticsPayload2];
 
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.wallpaper.editorSaved" withPayload:v82];
         [v86 setOptions:{objc_msgSend(v86, "options") & 0xFFFFFFFFFFFFFFFDLL}];
         [v86 setOptions:{objc_msgSend(v86, "options") & 0xFFFFFFFFFFFFFFFELL}];
-        v70 = [v67 settlingEffectEnabled];
+        settlingEffectEnabled = [editViewModel2 settlingEffectEnabled];
         v71 = v80 | 0x40;
-        if (!v70)
+        if (!settlingEffectEnabled)
         {
           v71 = v80;
         }
 
-        if (v12)
+        if (px_isBackdrop)
         {
           v72 = (v71 | 0x200);
         }
@@ -849,7 +849,7 @@ LABEL_21:
           v72 = v71;
         }
 
-        if ([v67 settlingEffectEnabled])
+        if ([editViewModel2 settlingEffectEnabled])
         {
           v73 = @"PHOTOS_WALLPAPER_SWITCHER_TITLE_LIVE_PHOTO";
         }
@@ -859,30 +859,30 @@ LABEL_21:
           v73 = @"PHOTOS_WALLPAPER_SWITCHER_TITLE_PHOTOS";
         }
 
-        v74 = [(PUWallpaperPosterEditorController *)self environment];
-        v75 = [v74 pu_targetConfiguration];
-        [v75 setPu_displayNameLocalizationKey:v73];
+        environment8 = [(PUWallpaperPosterEditorController *)self environment];
+        pu_targetConfiguration = [environment8 pu_targetConfiguration];
+        [pu_targetConfiguration setPu_displayNameLocalizationKey:v73];
 
-        v76 = [(PUWallpaperPosterEditorController *)self environment];
-        LOBYTE(v75) = [v76 px_isCallServices];
+        environment9 = [(PUWallpaperPosterEditorController *)self environment];
+        LOBYTE(pu_targetConfiguration) = [environment9 px_isCallServices];
 
         objc_initWeak(&buf, self);
-        v77 = [(PUWallpaperPosterEditorController *)self queue];
+        queue = [(PUWallpaperPosterEditorController *)self queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_invoke_963;
         block[3] = &unk_1E7B78978;
-        v88 = v67;
+        v88 = editViewModel2;
         v92 = v84;
-        v94 = v75;
-        v78 = v67;
+        v94 = pu_targetConfiguration;
+        v78 = editViewModel2;
         objc_copyWeak(v93, &buf);
         v89 = v86;
-        v90 = v85;
-        v91 = self;
+        v90 = pu_targetAssetDirectory;
+        selfCopy2 = self;
         v93[1] = v24;
         v93[2] = v72;
-        dispatch_async(v77, block);
+        dispatch_async(queue, block);
 
         objc_destroyWeak(v93);
         objc_destroyWeak(&buf);
@@ -1134,8 +1134,8 @@ void __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_
 
 - (void)_prewarmSpatialPhotoModel
 {
-  v2 = [MEMORY[0x1E69C4598] sharedScheduler];
-  [v2 scheduleTaskWithQoS:1 block:&__block_literal_global_934];
+  mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
+  [mEMORY[0x1E69C4598] scheduleTaskWithQoS:1 block:&__block_literal_global_934];
 }
 
 - (void)_resumeSavingAfterLoadingSpatialPhoto
@@ -1143,10 +1143,10 @@ void __64__PUWallpaperPosterEditorController__saveWithCompletionHandler___block_
   if ([(PUWallpaperPosterEditorController *)self isWaitingForSpatialPhotoToLoadBeforeSaving])
   {
     [(PUWallpaperPosterEditorController *)self setIsWaitingForSpatialPhotoToLoadBeforeSaving:0];
-    v3 = [(PUWallpaperPosterEditorController *)self onSaveCompletionHandler];
-    if (v3)
+    onSaveCompletionHandler = [(PUWallpaperPosterEditorController *)self onSaveCompletionHandler];
+    if (onSaveCompletionHandler)
     {
-      v4 = v3;
+      v4 = onSaveCompletionHandler;
       [(PUWallpaperPosterEditorController *)self setOnSaveCompletionHandler:0];
       v5 = PLWallpaperGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1199,11 +1199,11 @@ void __74__PUWallpaperPosterEditorController__resumeSavingAfterLoadingSpatialPho
   [WeakRetained _saveWithCompletionHandler:*(a1 + 32)];
 }
 
-- (void)_handlePosterSaved:(BOOL)a3 error:(id)a4
+- (void)_handlePosterSaved:(BOOL)saved error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  savedCopy = saved;
+  errorCopy = error;
+  if (savedCopy)
   {
     v7 = 2;
   }
@@ -1216,14 +1216,14 @@ void __74__PUWallpaperPosterEditorController__resumeSavingAfterLoadingSpatialPho
   [(PUWallpaperPosterEditorController *)self setFinalizationState:v7];
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v8 = [(PUWallpaperPosterEditorController *)self editModel];
-    [v8 performChanges:&__block_literal_global_913];
+    editModel = [(PUWallpaperPosterEditorController *)self editModel];
+    [editModel performChanges:&__block_literal_global_913];
   }
 
-  if (v4)
+  if (savedCopy)
   {
-    v9 = [(PUWallpaperPosterEditorController *)self editor];
-    [v9 pu_requestDismissalWithAction:1];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor pu_requestDismissalWithAction:1];
   }
 
   else
@@ -1233,9 +1233,9 @@ void __74__PUWallpaperPosterEditorController__resumeSavingAfterLoadingSpatialPho
       [(PUWallpaperPosterEditorController *)self _createShuffleResourceManager];
     }
 
-    v10 = [(PUWallpaperPosterEditorController *)self _isShuffle];
+    _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
     v11 = &stru_1F2AC6818;
-    if (v10)
+    if (_isShuffle)
     {
       v11 = @"SHUFFLE_";
     }
@@ -1244,15 +1244,15 @@ void __74__PUWallpaperPosterEditorController__resumeSavingAfterLoadingSpatialPho
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PHOTOS_WALLPAPER_EDITOR_SAVING_%@FAILED_TITLE", v32];
     v13 = PULocalizedString(v12);
 
-    v14 = v6;
+    v14 = errorCopy;
     v15 = *MEMORY[0x1E696AA08];
     v31 = v14;
     do
     {
       v16 = v14;
       v17 = [PUErrorPresentationController isNetworkRelatedError:v14];
-      v18 = [v14 userInfo];
-      v14 = [v18 objectForKeyedSubscript:v15];
+      userInfo = [v14 userInfo];
+      v14 = [userInfo objectForKeyedSubscript:v15];
     }
 
     while (!v17 && v14);
@@ -1301,8 +1301,8 @@ void __74__PUWallpaperPosterEditorController__resumeSavingAfterLoadingSpatialPho
       [v24 addAction:v29];
     }
 
-    v30 = [(PUWallpaperPosterEditorController *)self editor];
-    [v30 presentViewController:v24 animated:1 completion:0];
+    editor2 = [(PUWallpaperPosterEditorController *)self editor];
+    [editor2 presentViewController:v24 animated:1 completion:0];
   }
 }
 
@@ -1316,16 +1316,16 @@ void __62__PUWallpaperPosterEditorController__handlePosterSaved_error___block_in
 {
   if (PFPosterWantsLowLuminanceContent())
   {
-    v3 = [(PUWallpaperPosterEditorController *)self environment];
-    if ([v3 px_isCallServices])
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    if ([environment px_isCallServices])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v5 = [(PUWallpaperPosterEditorController *)self environment];
-      v4 = [v5 px_isBackdrop] ^ 1;
+      environment2 = [(PUWallpaperPosterEditorController *)self environment];
+      v4 = [environment2 px_isBackdrop] ^ 1;
     }
   }
 
@@ -1337,16 +1337,16 @@ void __62__PUWallpaperPosterEditorController__handlePosterSaved_error___block_in
   return v4;
 }
 
-- (void)_presentSpatialPhotoModelDownloadProgress:(double)a3 producer:(id)a4 downloadTask:(id)a5
+- (void)_presentSpatialPhotoModelDownloadProgress:(double)progress producer:(id)producer downloadTask:(id)task
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  v11 = [v10 px_firstKeyWindow];
+  producerCopy = producer;
+  taskCopy = task;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
 
-  v12 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
+  spatialModelDownloadProgressToast = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
 
-  if (!v12 && v11)
+  if (!spatialModelDownloadProgressToast && px_firstKeyWindow)
   {
     v13 = objc_alloc_init(MEMORY[0x1E696AE38]);
     [v13 setTotalUnitCount:100];
@@ -1359,8 +1359,8 @@ void __62__PUWallpaperPosterEditorController__handlePosterSaved_error___block_in
     v21 = __101__PUWallpaperPosterEditorController__presentSpatialPhotoModelDownloadProgress_producer_downloadTask___block_invoke;
     v22 = &unk_1E7B7F820;
     objc_copyWeak(&v25, &location);
-    v23 = v8;
-    v24 = v9;
+    v23 = producerCopy;
+    v24 = taskCopy;
     [v14 setCloseButtonAction:&v19];
     v15 = PULocalizedString(@"PHOTOS_WALLPAPER_EDITOR_SPATIAL_TOAST_SECONDARY_TEXT");
     [v14 setCustomSubtitleText:{v15, v19, v20, v21, v22}];
@@ -1372,14 +1372,14 @@ void __62__PUWallpaperPosterEditorController__handlePosterSaved_error___block_in
     objc_destroyWeak(&location);
   }
 
-  v16 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
-  v17 = [v16 progress];
-  [v17 setCompletedUnitCount:a3];
+  spatialModelDownloadProgressToast2 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
+  progress = [spatialModelDownloadProgressToast2 progress];
+  [progress setCompletedUnitCount:progress];
 
-  if (a3 == 100.0)
+  if (progress == 100.0)
   {
-    v18 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
-    [v18 finishProgressMarkingAsComplete:1];
+    spatialModelDownloadProgressToast3 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
+    [spatialModelDownloadProgressToast3 finishProgressMarkingAsComplete:1];
   }
 }
 
@@ -1393,80 +1393,80 @@ void __101__PUWallpaperPosterEditorController__presentSpatialPhotoModelDownloadP
   [v4 spatialPhotoProducer:*(a1 + 32) downloadTaskDidEnd:*(a1 + 40) success:0 error:0];
 }
 
-- (void)spatialPhotoProducer:(id)a3 downloadTaskDidEnd:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)spatialPhotoProducer:(id)producer downloadTaskDidEnd:(id)end success:(BOOL)success error:(id)error
 {
-  v12 = a6;
-  v9 = a4;
-  v10 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
+  errorCopy = error;
+  endCopy = end;
+  spatialModelDownloadTask = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
 
-  if (v10 == v9)
+  if (spatialModelDownloadTask == endCopy)
   {
-    v11 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
-    [v11 dismissAnimated:1];
+    spatialModelDownloadProgressToast = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
+    [spatialModelDownloadProgressToast dismissAnimated:1];
 
     [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadProgressToast:0];
-    if (v12)
+    if (errorCopy)
     {
-      if (!a5)
+      if (!success)
       {
-        [(PUWallpaperPosterEditorController *)self _presentLoadingError:v12];
+        [(PUWallpaperPosterEditorController *)self _presentLoadingError:errorCopy];
       }
     }
   }
 }
 
-- (void)spatialPhotoProducer:(id)a3 downloadTask:(id)a4 didUpdateProgress:(double)a5
+- (void)spatialPhotoProducer:(id)producer downloadTask:(id)task didUpdateProgress:(double)progress
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
+  producerCopy = producer;
+  taskCopy = task;
+  spatialModelDownloadTask = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
 
-  if (!v9)
+  if (!spatialModelDownloadTask)
   {
-    [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadTask:v8];
+    [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadTask:taskCopy];
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
+  spatialModelDownloadTask2 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadTask];
 
-  if (v10 == v8)
+  if (spatialModelDownloadTask2 == taskCopy)
   {
-    [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoModelDownloadProgress:v11 producer:v8 downloadTask:a5];
+    [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoModelDownloadProgress:producerCopy producer:taskCopy downloadTask:progress];
   }
 }
 
-- (void)spatialPhotoProducer:(id)a3 downloadTaskDidStart:(id)a4
+- (void)spatialPhotoProducer:(id)producer downloadTaskDidStart:(id)start
 {
-  v6 = a4;
-  v8 = a3;
-  [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadTask:v6];
-  v7 = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
-  [v7 dismissAnimated:0];
+  startCopy = start;
+  producerCopy = producer;
+  [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadTask:startCopy];
+  spatialModelDownloadProgressToast = [(PUWallpaperPosterEditorController *)self spatialModelDownloadProgressToast];
+  [spatialModelDownloadProgressToast dismissAnimated:0];
 
   [(PUWallpaperPosterEditorController *)self setSpatialModelDownloadProgressToast:0];
-  [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoModelDownloadProgress:v8 producer:v6 downloadTask:0.0];
+  [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoModelDownloadProgress:producerCopy producer:startCopy downloadTask:0.0];
 }
 
-- (id)solidColorHomeScreenColorPickerConfigurationForEditor:(id)a3
+- (id)solidColorHomeScreenColorPickerConfigurationForEditor:(id)editor
 {
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v5 = [v4 segmentationItem];
-  v6 = [v5 colorAnalysis];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  segmentationItem = [editViewModel segmentationItem];
+  colorAnalysis = [segmentationItem colorAnalysis];
 
-  v7 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v8 = [v7 currentLayerStackViewModel];
-  v9 = [v8 style];
+  editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModel = [editViewModel2 currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  v10 = [v9 defaultDominantColorWithAnalysis:v6];
-  v11 = [v10 pu_UIColor];
+  v10 = [style defaultDominantColorWithAnalysis:colorAnalysis];
+  pu_UIColor = [v10 pu_UIColor];
   v12 = objc_alloc_init(getPREditorColorPickerConfigurationClass());
-  [v12 setSelectedColor:v11];
+  [v12 setSelectedColor:pu_UIColor];
 
   return v12;
 }
 
-- (double)editor:(id)a3 luminanceForLook:(id)a4 inRect:(CGRect)a5
+- (double)editor:(id)editor luminanceForLook:(id)look inRect:(CGRect)rect
 {
-  v6 = a4;
+  lookCopy = look;
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
     v7 = *MEMORY[0x1E69C0AD0];
@@ -1474,136 +1474,136 @@ void __101__PUWallpaperPosterEditorController__presentSpatialPhotoModelDownloadP
 
   else
   {
-    v8 = [v6 identifier];
-    v9 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    [v9 currentClockAreaLuminanceForStyleKind:v8];
+    identifier = [lookCopy identifier];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    [editViewModel currentClockAreaLuminanceForStyleKind:identifier];
     v7 = v10;
   }
 
   return v7;
 }
 
-- (id)trailingMenuElementsForEditor:(id)a3
+- (id)trailingMenuElementsForEditor:(id)editor
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PUWallpaperPosterEditorController *)self _colorPickerAction];
-  v6 = [(PUWallpaperPosterEditorController *)self _toggleHighKeyLowKeyAction];
-  v7 = [(PUWallpaperPosterEditorController *)self _toggleSpatialPhotoEffectAction];
-  v8 = [(PUWallpaperPosterEditorController *)self environment];
-  v9 = [v8 px_isBackdrop];
+  _colorPickerAction = [(PUWallpaperPosterEditorController *)self _colorPickerAction];
+  _toggleHighKeyLowKeyAction = [(PUWallpaperPosterEditorController *)self _toggleHighKeyLowKeyAction];
+  _toggleSpatialPhotoEffectAction = [(PUWallpaperPosterEditorController *)self _toggleSpatialPhotoEffectAction];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment px_isBackdrop];
 
-  if ((v9 & 1) == 0)
+  if ((px_isBackdrop & 1) == 0)
   {
-    v10 = v5;
-    if (v5 || (v10 = v6) != 0)
+    v10 = _colorPickerAction;
+    if (_colorPickerAction || (v10 = _toggleHighKeyLowKeyAction) != 0)
     {
       [v4 addObject:v10];
     }
   }
 
-  if (v7)
+  if (_toggleSpatialPhotoEffectAction)
   {
-    [v4 addObject:v7];
+    [v4 addObject:_toggleSpatialPhotoEffectAction];
   }
 
-  v11 = [(PUWallpaperPosterEditorController *)self _actionsMenu];
-  if (v11)
+  _actionsMenu = [(PUWallpaperPosterEditorController *)self _actionsMenu];
+  if (_actionsMenu)
   {
-    [v4 addObject:v11];
+    [v4 addObject:_actionsMenu];
   }
 
   return v4;
 }
 
-- (id)leadingMenuElementsForEditor:(id)a3
+- (id)leadingMenuElementsForEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   if ([(PUWallpaperPosterEditorController *)self _attemptedSettlingEffect])
   {
-    v5 = [(PUWallpaperPosterEditorController *)self loadingSettlingEffect];
+    loadingSettlingEffect = [(PUWallpaperPosterEditorController *)self loadingSettlingEffect];
   }
 
   else
   {
-    v5 = 0;
+    loadingSettlingEffect = 0;
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PUWallpaperPosterEditorController *)self _leadingActionsMenu];
-  if (v7)
+  _leadingActionsMenu = [(PUWallpaperPosterEditorController *)self _leadingActionsMenu];
+  if (_leadingActionsMenu)
   {
-    [v6 addObject:v7];
+    [v6 addObject:_leadingActionsMenu];
   }
 
-  v8 = [(PUWallpaperPosterEditorController *)self environment];
-  v9 = [v8 px_isBackdrop];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment px_isBackdrop];
 
-  if (v9)
+  if (px_isBackdrop)
   {
-    v10 = [(PUWallpaperPosterEditorController *)self _colorPickerAction];
-    v11 = [(PUWallpaperPosterEditorController *)self _toggleHighKeyLowKeyAction];
-    if (v10)
+    _colorPickerAction = [(PUWallpaperPosterEditorController *)self _colorPickerAction];
+    _toggleHighKeyLowKeyAction = [(PUWallpaperPosterEditorController *)self _toggleHighKeyLowKeyAction];
+    if (_colorPickerAction)
     {
-      [v6 addObject:v10];
+      [v6 addObject:_colorPickerAction];
     }
 
-    if (v11)
+    if (_toggleHighKeyLowKeyAction)
     {
-      [v6 addObject:v11];
+      [v6 addObject:_toggleHighKeyLowKeyAction];
     }
   }
 
-  v12 = [(PUWallpaperPosterEditorController *)self _toggleSettlingEffectAction];
-  v13 = v12;
-  if (v5)
+  _toggleSettlingEffectAction = [(PUWallpaperPosterEditorController *)self _toggleSettlingEffectAction];
+  v13 = _toggleSettlingEffectAction;
+  if (loadingSettlingEffect)
   {
-    v14 = [v4 pu_placeholderAction];
-    [v6 addObject:v14];
+    pu_placeholderAction = [editorCopy pu_placeholderAction];
+    [v6 addObject:pu_placeholderAction];
   }
 
-  else if (v12)
+  else if (_toggleSettlingEffectAction)
   {
-    [v6 addObject:v12];
+    [v6 addObject:_toggleSettlingEffectAction];
   }
 
   return v6;
 }
 
-- (void)editor:(id)a3 didTransitionToLook:(id)a4 progress:(double)a5
+- (void)editor:(id)editor didTransitionToLook:(id)look progress:(double)progress
 {
-  v8 = a4;
-  v9 = [a3 pu_currentLook];
-  v11 = [v9 identifier];
+  lookCopy = look;
+  pu_currentLook = [editor pu_currentLook];
+  identifier = [pu_currentLook identifier];
 
-  v10 = [v8 identifier];
+  identifier2 = [lookCopy identifier];
 
-  [(PUWallpaperPosterEditorController *)self transitionBetweenStyleWithKind:v11 andKind:v10 progress:a5];
+  [(PUWallpaperPosterEditorController *)self transitionBetweenStyleWithKind:identifier andKind:identifier2 progress:progress];
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  if (v5 && [(PUWallpaperPosterEditorController *)self _areStylesAvailable])
+  editorCopy = editor;
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  if (editViewModel && [(PUWallpaperPosterEditorController *)self _areStylesAvailable])
   {
-    v6 = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
-    v7 = [v5 currentLayerStackViewModel];
-    v8 = [v7 style];
-    v9 = [v8 kind];
-    v10 = v9;
-    if (v9)
+    currentEditConfiguration = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
+    currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+    style = [currentLayerStackViewModel style];
+    kind = [style kind];
+    v10 = kind;
+    if (kind)
     {
-      v11 = v9;
+      kind2 = kind;
     }
 
     else
     {
-      v13 = [v6 style];
-      v11 = [v13 kind];
+      style2 = [currentEditConfiguration style];
+      kind2 = [style2 kind];
     }
 
-    if (!v11)
+    if (!kind2)
     {
       v14 = PLWallpaperGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1612,26 +1612,26 @@ void __101__PUWallpaperPosterEditorController__presentSpatialPhotoModelDownloadP
         _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_ERROR, "Cannot determine current style from either edit configuration or layer stack, using Original as fallback", buf, 2u);
       }
 
-      v11 = *MEMORY[0x1E69C0B28];
+      kind2 = *MEMORY[0x1E69C0B28];
     }
 
-    v15 = [v5 currentStyleKinds];
-    if ([v15 count] && objc_msgSend(v15, "indexOfObject:", v11) == 0x7FFFFFFFFFFFFFFFLL)
+    currentStyleKinds = [editViewModel currentStyleKinds];
+    if ([currentStyleKinds count] && objc_msgSend(currentStyleKinds, "indexOfObject:", kind2) == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = PLWallpaperGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v29 = v11;
+        v29 = kind2;
         _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_ERROR, "Initial look styleKind %@ not found in availableStyles", buf, 0xCu);
       }
 
       v17 = *MEMORY[0x1E69C0B28];
-      v11 = v17;
+      kind2 = v17;
     }
 
-    v18 = [(PUWallpaperPosterEditorController *)self looksForEditor:v4];
-    v19 = v11;
+    v18 = [(PUWallpaperPosterEditorController *)self looksForEditor:editorCopy];
+    v19 = kind2;
     v27 = v19;
     if (PXExists())
     {
@@ -1640,13 +1640,13 @@ void __101__PUWallpaperPosterEditorController__presentSpatialPhotoModelDownloadP
 
     else
     {
-      v20 = [v18 firstObject];
-      v21 = [v20 identifier];
-      v22 = v21;
+      firstObject = [v18 firstObject];
+      identifier = [firstObject identifier];
+      v22 = identifier;
       v23 = *MEMORY[0x1E69C0B28];
-      if (v21)
+      if (identifier)
       {
-        v23 = v21;
+        v23 = identifier;
       }
 
       v12 = v23;
@@ -1683,34 +1683,34 @@ uint64_t __68__PUWallpaperPosterEditorController_initialLookIdentifierForEditor_
   return v4;
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v5 = [v4 currentStyles];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentStyles = [editViewModel currentStyles];
   if (![(PUWallpaperPosterEditorController *)self _areStylesAvailable])
   {
-    v6 = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
+    _isSpatialPhotoEnabled = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
     v7 = MEMORY[0x1E69C0B28];
-    if (v6 && ([v5 firstObject], (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_msgSend(v5, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "kind"), v11 = objc_claimAutoreleasedReturnValue(), v12 = *v7, v11, v10, v9, v11 == v12))
+    if (_isSpatialPhotoEnabled && ([currentStyles firstObject], (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_msgSend(currentStyles, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "kind"), v11 = objc_claimAutoreleasedReturnValue(), v12 = *v7, v11, v10, v9, v11 == v12))
     {
-      v14 = [v5 firstObject];
-      v20[0] = v14;
+      firstObject = [currentStyles firstObject];
+      v20[0] = firstObject;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     }
 
     else
     {
       v13 = objc_alloc(MEMORY[0x1E69C0788]);
-      v14 = [v13 initWithKind:*v7 parameters:MEMORY[0x1E695E0F8] colorSuggestions:MEMORY[0x1E695E0F0]];
-      v15 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v14];
+      firstObject = [v13 initWithKind:*v7 parameters:MEMORY[0x1E695E0F8] colorSuggestions:MEMORY[0x1E695E0F0]];
+      v15 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:firstObject];
       v19 = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
 
-      v5 = v15;
+      currentStyles = v15;
     }
 
-    v5 = v16;
+    currentStyles = v16;
   }
 
   v17 = PXMap();
@@ -1761,9 +1761,9 @@ _PUPosterEditingLook *__52__PUWallpaperPosterEditorController_looksForEditor___b
 
 - (BOOL)_areStylesAvailable
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 currentStyles];
-  if ([v4 count] && (objc_msgSend(v3, "settlingEffectEnabled") & 1) == 0)
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentStyles = [editViewModel currentStyles];
+  if ([currentStyles count] && (objc_msgSend(editViewModel, "settlingEffectEnabled") & 1) == 0)
   {
     v5 = ![(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
   }
@@ -1776,16 +1776,16 @@ _PUPosterEditingLook *__52__PUWallpaperPosterEditorController_looksForEditor___b
   return v5;
 }
 
-- (void)_transferSubviewsFrom:(id)a3 to:(id)a4
+- (void)_transferSubviewsFrom:(id)from to:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [from subviews];
+  v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1797,185 +1797,185 @@ _PUPosterEditingLook *__52__PUWallpaperPosterEditorController_looksForEditor___b
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
-        [v5 addSubview:*(*(&v11 + 1) + 8 * v10++)];
+        [toCopy addSubview:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setFloatingView:(id)a3
+- (void)setFloatingView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   v4 = self->_floatingView;
   floatingView = v4;
-  if (v4 != v10)
+  if (v4 != viewCopy)
   {
-    v6 = [(UIView *)v4 isEqual:v10];
+    v6 = [(UIView *)v4 isEqual:viewCopy];
 
-    v8 = v10;
+    v8 = viewCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_floatingView to:v10];
-    v9 = v10;
+    [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_floatingView to:viewCopy];
+    v9 = viewCopy;
     floatingView = self->_floatingView;
     self->_floatingView = v9;
   }
 
-  v8 = v10;
+  v8 = viewCopy;
 LABEL_5:
 
   MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (void)setForegroundView:(id)a3
+- (void)setForegroundView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   v4 = self->_foregroundView;
   foregroundView = v4;
-  if (v4 != v10)
+  if (v4 != viewCopy)
   {
-    v6 = [(UIView *)v4 isEqual:v10];
+    v6 = [(UIView *)v4 isEqual:viewCopy];
 
-    v8 = v10;
+    v8 = viewCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_foregroundView to:v10];
-    v9 = v10;
+    [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_foregroundView to:viewCopy];
+    v9 = viewCopy;
     foregroundView = self->_foregroundView;
     self->_foregroundView = v9;
   }
 
-  v8 = v10;
+  v8 = viewCopy;
 LABEL_5:
 
   MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   v5 = self->_backgroundView;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == viewCopy)
   {
   }
 
   else
   {
-    v7 = [(UIView *)v5 isEqual:v8];
+    v7 = [(UIView *)v5 isEqual:viewCopy];
 
     if ((v7 & 1) == 0)
     {
-      [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_backgroundView to:v8];
+      [(PUWallpaperPosterEditorController *)self _transferSubviewsFrom:self->_backgroundView to:viewCopy];
       [(UIView *)self->_backgroundView removeObserver:self forKeyPath:@"layer.bounds" context:&BackgroundViewObservationContext];
-      objc_storeStrong(&self->_backgroundView, a3);
+      objc_storeStrong(&self->_backgroundView, view);
       [(UIView *)self->_backgroundView addObserver:self forKeyPath:@"layer.bounds" options:0 context:&BackgroundViewObservationContext];
     }
   }
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v6 = a4;
-  v7 = [(PUWallpaperPosterEditorController *)self backgroundView];
+  viewsCopy = views;
+  backgroundView = [(PUWallpaperPosterEditorController *)self backgroundView];
 
-  v8 = [v6 backgroundView];
-  [(PUWallpaperPosterEditorController *)self setBackgroundView:v8];
+  backgroundView2 = [viewsCopy backgroundView];
+  [(PUWallpaperPosterEditorController *)self setBackgroundView:backgroundView2];
 
-  v9 = [v6 foregroundView];
-  [(PUWallpaperPosterEditorController *)self setForegroundView:v9];
+  foregroundView = [viewsCopy foregroundView];
+  [(PUWallpaperPosterEditorController *)self setForegroundView:foregroundView];
 
-  v10 = [v6 floatingView];
+  floatingView = [viewsCopy floatingView];
 
-  [(PUWallpaperPosterEditorController *)self setFloatingView:v10];
+  [(PUWallpaperPosterEditorController *)self setFloatingView:floatingView];
   [(PUWallpaperPosterEditorController *)self _updateContainerFrame];
-  if (![(PUWallpaperPosterEditorController *)self isPreviewingSettlingEffect]|| !v7)
+  if (![(PUWallpaperPosterEditorController *)self isPreviewingSettlingEffect]|| !backgroundView)
   {
     [(PUWallpaperPosterEditorController *)self _updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:MEMORY[0x1E695E0F0]];
   }
 
   if (PXPreferencesGetBool())
   {
-    v14 = [(PUWallpaperPosterEditorController *)self floatingView];
-    v11 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v12 = [v11 viewManager];
-    v13 = [v12 debugRectsView];
-    [v14 addSubview:v13];
+    floatingView2 = [(PUWallpaperPosterEditorController *)self floatingView];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    viewManager = [currentLayerStackViewModel viewManager];
+    debugRectsView = [viewManager debugRectsView];
+    [floatingView2 addSubview:debugRectsView];
   }
 
   else
   {
-    v14 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v11 = [v14 viewManager];
-    v12 = [v11 debugRectsViewIfLoaded];
-    [v12 removeFromSuperview];
+    floatingView2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel = [floatingView2 viewManager];
+    viewManager = [currentLayerStackViewModel debugRectsViewIfLoaded];
+    [viewManager removeFromSuperview];
   }
 }
 
 - (void)_updateDebugRectViews
 {
   Bool = PXPreferencesGetBool();
-  v29 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v4 = [v29 viewManager];
-  v5 = v4;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  viewManager = [currentLayerStackViewModel viewManager];
+  redColor = viewManager;
   if (Bool)
   {
-    v6 = [v4 debugRectsView];
+    debugRectsView = [viewManager debugRectsView];
 
-    v7 = [(PUWallpaperPosterEditorController *)self editor];
-    v8 = [v7 pu_preferences];
-    [v8 pu_preferredSalientContentRectangle];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    pu_preferences = [editor pu_preferences];
+    [pu_preferences pu_preferredSalientContentRectangle];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [MEMORY[0x1E69DC888] greenColor];
-    [v6 setDebugRect:@"preferred" forIdentifier:v17 color:v10 borderWidth:{v12, v14, v16, 4.0}];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [debugRectsView setDebugRect:@"preferred" forIdentifier:greenColor color:v10 borderWidth:{v12, v14, v16, 4.0}];
 
-    v18 = [(PUWallpaperPosterEditorController *)self editor];
-    v19 = [v18 pu_environment];
-    PUAdjustedSalientContentRectangleFromEnvironment(v19);
+    editor2 = [(PUWallpaperPosterEditorController *)self editor];
+    pu_environment = [editor2 pu_environment];
+    PUAdjustedSalientContentRectangleFromEnvironment(pu_environment);
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
 
-    v5 = [MEMORY[0x1E69DC888] redColor];
-    [v6 setDebugRect:@"current" forIdentifier:v5 color:v21 borderWidth:{v23, v25, v27, 3.0}];
-    v29 = v6;
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [debugRectsView setDebugRect:@"current" forIdentifier:redColor color:v21 borderWidth:{v23, v25, v27, 3.0}];
+    currentLayerStackViewModel = debugRectsView;
   }
 
   else
   {
-    v28 = [v4 debugRectsViewIfLoaded];
-    [v28 removeAllDebugRects];
+    debugRectsViewIfLoaded = [viewManager debugRectsViewIfLoaded];
+    [debugRectsViewIfLoaded removeAllDebugRects];
   }
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = self->_environment;
-  objc_storeStrong(&self->_environment, a3);
+  objc_storeStrong(&self->_environment, environment);
   if (self->_environment)
   {
-    v7 = [(PUPosterEditingEnvironment *)v6 pu_deviceOrientation];
-    if (v7 != [v5 pu_deviceOrientation])
+    pu_deviceOrientation = [(PUPosterEditingEnvironment *)v6 pu_deviceOrientation];
+    if (pu_deviceOrientation != [environmentCopy pu_deviceOrientation])
     {
       [(PUWallpaperPosterEditorController *)self _savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:v6];
       [(PUWallpaperPosterEditorController *)self _updateTitleHeightProperties];
@@ -1985,28 +1985,28 @@ LABEL_5:
     [(PUWallpaperPosterEditorController *)self _updateSpatialPhotoGyro];
     [(PUWallpaperPosterEditorController *)self _updateOverlayContentConstraints];
     [(PUWallpaperPosterEditorController *)self _updatePreferredTitleBounds];
-    if ([v5 px_isCallServices])
+    if ([environmentCopy px_isCallServices])
     {
-      v8 = [MEMORY[0x1E69C07A0] standardAlphabeticTextParameters];
-      [MEMORY[0x1E69C07A0] setSystemParameters:v8];
+      standardAlphabeticTextParameters = [MEMORY[0x1E69C07A0] standardAlphabeticTextParameters];
+      [MEMORY[0x1E69C07A0] setSystemParameters:standardAlphabeticTextParameters];
     }
 
-    v9 = [(PUPosterEditingEnvironment *)v6 px_isDepthEffectDisabled];
-    if (v9 != [v5 px_isDepthEffectDisabled])
+    px_isDepthEffectDisabled = [(PUPosterEditingEnvironment *)v6 px_isDepthEffectDisabled];
+    if (px_isDepthEffectDisabled != [environmentCopy px_isDepthEffectDisabled])
     {
-      v10 = [(PUWallpaperPosterEditorController *)self editModel];
+      editModel = [(PUWallpaperPosterEditorController *)self editModel];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __52__PUWallpaperPosterEditorController_setEnvironment___block_invoke;
       v13[3] = &unk_1E7B78890;
-      v11 = v5;
+      v11 = environmentCopy;
       v14 = v11;
-      [v10 performChanges:v13];
+      [editModel performChanges:v13];
 
       if ([v11 px_isDepthEffectDisabled])
       {
-        v12 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        [v12 performChanges:&__block_literal_global_893];
+        editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+        [editViewModel performChanges:&__block_literal_global_893];
 
         if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalDepth])
         {
@@ -2027,15 +2027,15 @@ void __52__PUWallpaperPosterEditorController_setEnvironment___block_invoke(uint6
   [v3 setDepthEffectDisabled:{objc_msgSend(v2, "px_isDepthEffectDisabled")}];
 }
 
-- (BOOL)editorShouldBeginFinalization:(id)a3
+- (BOOL)editorShouldBeginFinalization:(id)finalization
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  if ([v5 isLoadingSpatialPhoto])
+  finalizationCopy = finalization;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  if ([currentLayerStackViewModel isLoadingSpatialPhoto])
   {
-    v6 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    progressIndicator = [(PUWallpaperPosterEditorController *)self progressIndicator];
 
-    if (v6)
+    if (progressIndicator)
     {
       v7 = 0;
       goto LABEL_8;
@@ -2046,8 +2046,8 @@ void __52__PUWallpaperPosterEditorController_setEnvironment___block_invoke(uint6
   {
   }
 
-  v8 = [(PUWallpaperPosterEditorController *)self finalizationState];
-  if (!v8)
+  finalizationState = [(PUWallpaperPosterEditorController *)self finalizationState];
+  if (!finalizationState)
   {
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -2060,7 +2060,7 @@ void __52__PUWallpaperPosterEditorController_setEnvironment___block_invoke(uint6
     objc_destroyWeak(&location);
   }
 
-  v7 = v8 == 2;
+  v7 = finalizationState == 2;
 LABEL_8:
 
   return v7;
@@ -2088,9 +2088,9 @@ void __67__PUWallpaperPosterEditorController_editorShouldBeginFinalization___blo
   [WeakRetained _handlePosterSaved:*(a1 + 48) error:*(a1 + 32)];
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v6 = a4;
+  environmentCopy = environment;
   v7 = PLWallpaperGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2098,10 +2098,10 @@ void __67__PUWallpaperPosterEditorController_editorShouldBeginFinalization___blo
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_INFO, "editor update", v8, 2u);
   }
 
-  [(PUWallpaperPosterEditorController *)self setEnvironment:v6];
+  [(PUWallpaperPosterEditorController *)self setEnvironment:environmentCopy];
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
   v40 = *MEMORY[0x1E69E9840];
   v4 = PLWallpaperGetLog();
@@ -2127,23 +2127,23 @@ void __67__PUWallpaperPosterEditorController_editorShouldBeginFinalization___blo
   [(PUWallpaperPosterEditorController *)self cancelPendingHint];
   [MEMORY[0x1E69C3CA0] removeAllPresentationDelegates];
   [(PUWallpaperPosterEditorController *)self _stopObservingPlayerItem];
-  v10 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  [v10 shutdownWithTimeout:10.0];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  [editViewModel shutdownWithTimeout:10.0];
 
-  v11 = [(PUWallpaperPosterEditorController *)self segmentationLoading];
-  [v11 cancel];
+  segmentationLoading = [(PUWallpaperPosterEditorController *)self segmentationLoading];
+  [segmentationLoading cancel];
 
-  v12 = [(PUWallpaperPosterEditorController *)self layerStackRequest];
-  v13 = [v12 renderContext];
-  [v13 cancelAllRequests];
+  layerStackRequest = [(PUWallpaperPosterEditorController *)self layerStackRequest];
+  renderContext = [layerStackRequest renderContext];
+  [renderContext cancelAllRequests];
 
-  v14 = [(PUWallpaperPosterEditorController *)self settlingEffectRequest];
-  v15 = [v14 renderContext];
-  [v15 cancelAllRequests];
+  settlingEffectRequest = [(PUWallpaperPosterEditorController *)self settlingEffectRequest];
+  renderContext2 = [settlingEffectRequest renderContext];
+  [renderContext2 cancelAllRequests];
 
-  v16 = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
+  segmentationLoadingGroup = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
   v17 = dispatch_time(0, 10000000000);
-  v18 = dispatch_group_wait(v16, v17);
+  v18 = dispatch_group_wait(segmentationLoadingGroup, v17);
 
   if (v18)
   {
@@ -2157,31 +2157,31 @@ void __67__PUWallpaperPosterEditorController_editorShouldBeginFinalization___blo
 
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v20 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    [v20 stopPreloadingResources];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    [shuffleResourceManager stopPreloadingResources];
 
     [(PUWallpaperPosterEditorController *)self setShuffleResourceManager:0];
   }
 
-  v21 = [(PUWallpaperPosterEditorController *)self _isShuffle];
-  v22 = [(PUWallpaperPosterEditorController *)self isLoading];
+  _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
+  isLoading = [(PUWallpaperPosterEditorController *)self isLoading];
   v23 = [(PUWallpaperPosterEditorController *)self finalizationState]== 1;
-  v24 = [(PUWallpaperPosterEditorController *)self editModel];
+  editModel = [(PUWallpaperPosterEditorController *)self editModel];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke;
   v31[3] = &__block_descriptor_35_e45_v16__0___PUWallpaperPosterMutableEditModel__8l;
-  v32 = v21;
+  v32 = _isShuffle;
   v33 = v23;
-  v34 = v22;
-  [v24 performChanges:v31];
+  v34 = isLoading;
+  [editModel performChanges:v31];
 
   [(PUWallpaperPosterEditorController *)self setPosterConfiguration:0];
   [(PUWallpaperPosterEditorController *)self setEnvironment:0];
   [(PUWallpaperPosterEditorController *)self setPhotoPickerViewController:0];
   [(PUWallpaperPosterEditorController *)self setEditModel:0];
-  v25 = [(PUWallpaperPosterEditorController *)self editor];
-  [v25 dismissViewControllerAnimated:0 completion:0];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  [editor dismissViewControllerAnimated:0 completion:0];
 
   [MEMORY[0x1E69BDF28] freeResources];
   v26 = mach_absolute_time();
@@ -2223,11 +2223,11 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
   }
 }
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  editorCopy = editor;
+  environmentCopy = environment;
   v8 = PLWallpaperGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2237,10 +2237,10 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
 
   [MEMORY[0x1E69C3CA0] startObservingTips];
   [MEMORY[0x1E69BDF28] ensureResources];
-  v9 = [(PUWallpaperPosterEditorController *)self editor];
-  [v9 pu_updatePreferences:&__block_literal_global_880];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  [editor pu_updatePreferences:&__block_literal_global_880];
 
-  v10 = [[PUWallpaperPosterEditModel alloc] initWithEditor:v6];
+  v10 = [[PUWallpaperPosterEditModel alloc] initWithEditor:editorCopy];
   [(PUWallpaperPosterEditorController *)self setEditModel:v10];
 
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -2249,35 +2249,35 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
   v14 = *(MEMORY[0x1E695F058] + 16);
   v15 = *(MEMORY[0x1E695F058] + 24);
   v16 = [v11 initWithFrame:{*MEMORY[0x1E695F058], v13, v14, v15}];
-  v35 = v6;
-  v17 = [v6 contentOverlayView];
-  [v17 addSubview:v16];
+  v35 = editorCopy;
+  contentOverlayView = [editorCopy contentOverlayView];
+  [contentOverlayView addSubview:v16];
 
   [(PUWallpaperPosterEditorController *)self setContentOverlayContainerView:v16];
   v18 = [[_TtC15PhotosUIPrivate19PUPosterLoadingView alloc] initWithFrame:v12, v13, v14, v15];
   [v16 addSubview:v18];
   [(PUWallpaperPosterEditorController *)self setLoadingView:v18];
-  v19 = [v16 bottomAnchor];
-  v20 = [(PUPosterLoadingView *)v18 bottomAnchor];
+  bottomAnchor = [v16 bottomAnchor];
+  bottomAnchor2 = [(PUPosterLoadingView *)v18 bottomAnchor];
   [(PUWallpaperPosterEditorController *)self _hintLabelBottomAnchorDistance];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:?];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
   [(PUWallpaperPosterEditorController *)self setLoadingViewBottomConstraint:v21];
 
   v22 = MEMORY[0x1E696ACD8];
-  v23 = [(PUPosterLoadingView *)v18 centerXAnchor];
-  v24 = [v16 centerXAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  centerXAnchor = [(PUPosterLoadingView *)v18 centerXAnchor];
+  centerXAnchor2 = [v16 centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v37[0] = v25;
-  v26 = [(PUWallpaperPosterEditorController *)self loadingViewBottomConstraint];
-  v37[1] = v26;
+  loadingViewBottomConstraint = [(PUWallpaperPosterEditorController *)self loadingViewBottomConstraint];
+  v37[1] = loadingViewBottomConstraint;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
   [v22 activateConstraints:v27];
 
   [(PUWallpaperPosterEditorController *)self _setupUserTransformView];
-  [(PUWallpaperPosterEditorController *)self setEnvironment:v7];
-  v28 = [v7 pu_posterDescriptor];
+  [(PUWallpaperPosterEditorController *)self setEnvironment:environmentCopy];
+  pu_posterDescriptor = [environmentCopy pu_posterDescriptor];
 
-  if (v28)
+  if (pu_posterDescriptor)
   {
     [(PUWallpaperPosterEditorController *)self setIsInitialSave:1];
     [(PUWallpaperPosterEditorController *)self _loadPosterDescriptor];
@@ -2285,16 +2285,16 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
 
   else
   {
-    v29 = [v7 pu_sourcePosterConfiguration];
+    pu_sourcePosterConfiguration = [environmentCopy pu_sourcePosterConfiguration];
 
-    if (v29)
+    if (pu_sourcePosterConfiguration)
     {
-      v30 = [v7 pu_sourcePosterConfiguration];
-      if ([v30 options])
+      pu_sourcePosterConfiguration2 = [environmentCopy pu_sourcePosterConfiguration];
+      if ([pu_sourcePosterConfiguration2 options])
       {
-        v32 = [v7 px_isCallServices];
+        px_isCallServices = [environmentCopy px_isCallServices];
 
-        if ((v32 & 1) == 0)
+        if ((px_isCallServices & 1) == 0)
         {
           [(PUWallpaperPosterEditorController *)self setFadeInInitialLoad:1];
           [(PUWallpaperPosterEditorController *)self setIsInitialSave:1];
@@ -2310,12 +2310,12 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
 
     else
     {
-      v31 = [(PUWallpaperPosterEditorController *)self editViewModel];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
 
-      if (!v31)
+      if (!editViewModel)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v33 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:4436 description:@"asset not found"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:4436 description:@"asset not found"];
 
         abort();
       }
@@ -2325,41 +2325,41 @@ void __57__PUWallpaperPosterEditorController_editorDidInvalidate___block_invoke(
   }
 }
 
-- (void)transitionBetweenStyleWithKind:(id)a3 andKind:(id)a4 progress:(double)a5
+- (void)transitionBetweenStyleWithKind:(id)kind andKind:(id)andKind progress:(double)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 isEqualToString:v9];
+  kindCopy = kind;
+  andKindCopy = andKind;
+  v10 = [kindCopy isEqualToString:andKindCopy];
   if (v10)
   {
-    v11 = v9;
+    v11 = andKindCopy;
   }
 
   else
   {
-    v11 = v8;
+    v11 = kindCopy;
   }
 
   if (v10)
   {
-    a5 = 0.0;
+    progress = 0.0;
     v12 = *MEMORY[0x1E69C0B38];
   }
 
   else
   {
-    v12 = v9;
+    v12 = andKindCopy;
   }
 
-  v13 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_andKind_progress___block_invoke;
   v14[3] = &__block_descriptor_56_e49_v16__0___PUWallpaperPosterMutableEditViewModel__8lu32l8u48l8;
   v14[4] = v11;
-  *&v14[5] = a5;
+  *&v14[5] = progress;
   v14[6] = v12;
-  [v13 performChanges:v14];
+  [editViewModel performChanges:v14];
 }
 
 uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_andKind_progress___block_invoke(uint64_t a1, void *a2)
@@ -2369,35 +2369,35 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
   return [a2 scrollToPosition:&v3];
 }
 
-- (void)_tapToRadarWithComponent:(int64_t)a3 asset:(id)a4 suggestion:(id)a5 error:(id)a6
+- (void)_tapToRadarWithComponent:(int64_t)component asset:(id)asset suggestion:(id)suggestion error:(id)error
 {
-  v25 = a6;
-  v26 = a3 != 8;
-  v10 = a5;
-  v11 = a4;
+  errorCopy = error;
+  v26 = component != 8;
+  suggestionCopy = suggestion;
+  assetCopy = asset;
   [(PUWallpaperPosterEditorController *)self _showProgressIndicator:@"Preparing Attachments…" determinate:0];
-  v12 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v13 = [v12 currentLayerStackViewModel];
-  v14 = [v13 compoundLayerStack];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+  compoundLayerStack = [currentLayerStackViewModel compoundLayerStack];
 
-  v27 = v12;
-  v15 = [v12 segmentationItem];
-  v16 = [(PUWallpaperPosterEditorController *)self environment];
-  v17 = [v16 pu_posterDescriptor];
-  v18 = [(PUWallpaperPosterEditorController *)self environment];
-  v19 = [v18 pu_sourcePosterConfiguration];
-  v24 = a3;
-  v29 = v14;
-  v20 = v14;
-  v21 = v15;
-  v22 = [PUWallpaperRadarAttachmentProvider radarConfigurationForAsset:v11 suggestion:v10 compoundLayerStack:v20 segmentationItem:v15 posterDescriptor:v17 posterConfiguration:v19 component:v24 completionHandler:0];
+  v27 = editViewModel;
+  segmentationItem = [editViewModel segmentationItem];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment pu_posterDescriptor];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourcePosterConfiguration = [environment2 pu_sourcePosterConfiguration];
+  componentCopy = component;
+  v29 = compoundLayerStack;
+  v20 = compoundLayerStack;
+  v21 = segmentationItem;
+  v22 = [PUWallpaperRadarAttachmentProvider radarConfigurationForAsset:assetCopy suggestion:suggestionCopy compoundLayerStack:v20 segmentationItem:segmentationItem posterDescriptor:pu_posterDescriptor posterConfiguration:pu_sourcePosterConfiguration component:componentCopy completionHandler:0];
 
   [v22 setWantsSystemDiagnostics:v26];
   [v22 setWantsPhotosDiagnostics:v26];
-  if (v25)
+  if (errorCopy)
   {
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error encountered with this wallpaper:\n%@", v25];
-    [v22 setDescription:v23];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error encountered with this wallpaper:\n%@", errorCopy];
+    [v22 setDescription:errorCopy];
   }
 
   v30[0] = MEMORY[0x1E69E9820];
@@ -2409,56 +2409,56 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
   PXFileRadarWithConfiguration();
 }
 
-- (void)_tapToRadarWithComponent:(int64_t)a3 error:(id)a4
+- (void)_tapToRadarWithComponent:(int64_t)component error:(id)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v8 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v9 = [v8 assetUUID];
+  errorCopy = error;
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  assetUUID = [currentPosterMedia assetUUID];
 
-  if (v9)
+  if (assetUUID)
   {
     v10 = MEMORY[0x1E6978630];
-    v77[0] = v9;
+    v77[0] = assetUUID;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:1];
-    v12 = [v7 librarySpecificFetchOptions];
-    v13 = [v10 fetchAssetsWithUUIDs:v11 options:v12];
-    v14 = [v13 firstObject];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v13 = [v10 fetchAssetsWithUUIDs:v11 options:librarySpecificFetchOptions];
+    firstObject = [v13 firstObject];
 
-    v15 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+    currentPosterMedia2 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
     objc_opt_class();
-    LOBYTE(v12) = objc_opt_isKindOfClass();
+    LOBYTE(librarySpecificFetchOptions) = objc_opt_isKindOfClass();
 
-    if (v12)
+    if (librarySpecificFetchOptions)
     {
-      v56 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-      v16 = [v56 suggestionUUID];
-      v17 = [v7 librarySpecificFetchOptions];
-      [v17 setFetchLimit:1];
-      v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v16];
-      [v17 setPredicate:v18];
+      currentPosterMedia3 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+      suggestionUUID = [currentPosterMedia3 suggestionUUID];
+      librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+      [librarySpecificFetchOptions2 setFetchLimit:1];
+      v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", suggestionUUID];
+      [librarySpecificFetchOptions2 setPredicate:v18];
 
-      [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v17];
-      v19 = self;
-      v20 = a3;
-      v21 = v14;
-      v22 = v9;
-      v23 = v7;
-      v25 = v24 = v6;
-      v26 = [v25 firstObject];
+      [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:librarySpecificFetchOptions2];
+      selfCopy = self;
+      componentCopy = component;
+      v21 = firstObject;
+      v22 = assetUUID;
+      v23 = photoLibrary;
+      v25 = v24 = errorCopy;
+      firstObject2 = [v25 firstObject];
 
-      v6 = v24;
-      v7 = v23;
-      v9 = v22;
-      v14 = v21;
-      a3 = v20;
-      self = v19;
+      errorCopy = v24;
+      photoLibrary = v23;
+      assetUUID = v22;
+      firstObject = v21;
+      component = componentCopy;
+      self = selfCopy;
     }
 
     else
     {
-      v26 = 0;
+      firstObject2 = 0;
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -2466,21 +2466,21 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
     aBlock[2] = __68__PUWallpaperPosterEditorController__tapToRadarWithComponent_error___block_invoke;
     aBlock[3] = &unk_1E7B78828;
     aBlock[4] = self;
-    v27 = v14;
+    v27 = firstObject;
     v74 = v27;
-    v28 = v26;
+    v28 = firstObject2;
     v75 = v28;
-    v29 = v6;
+    v29 = errorCopy;
     v76 = v29;
     v30 = _Block_copy(aBlock);
-    if (a3)
+    if (component)
     {
-      [(PUWallpaperPosterEditorController *)self _tapToRadarWithComponent:a3 asset:v27 suggestion:v28 error:v29];
+      [(PUWallpaperPosterEditorController *)self _tapToRadarWithComponent:component asset:v27 suggestion:v28 error:v29];
     }
 
     else
     {
-      v57 = v6;
+      v57 = errorCopy;
       v31 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Tap to Radar" message:@"Please choose the issue you are observing:" preferredStyle:1];
       v32 = MEMORY[0x1E69DC648];
       v71[0] = MEMORY[0x1E69E9820];
@@ -2525,10 +2525,10 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
         [v31 addAction:v42];
       }
 
-      v43 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v44 = [v43 spatialPhotoEnabled];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+      spatialPhotoEnabled = [editViewModel spatialPhotoEnabled];
 
-      if (v44)
+      if (spatialPhotoEnabled)
       {
         v45 = MEMORY[0x1E69DC648];
         v63[0] = MEMORY[0x1E69E9820];
@@ -2540,10 +2540,10 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
         [v31 addAction:v46];
       }
 
-      v47 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v48 = [v47 settlingEffectEnabled];
+      editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+      settlingEffectEnabled = [editViewModel2 settlingEffectEnabled];
 
-      if (v48)
+      if (settlingEffectEnabled)
       {
         v49 = MEMORY[0x1E69DC648];
         v61[0] = MEMORY[0x1E69E9820];
@@ -2572,11 +2572,11 @@ uint64_t __85__PUWallpaperPosterEditorController_transitionBetweenStyleWithKind_
       v53 = [MEMORY[0x1E69DC648] actionWithTitle:@"Dismiss" style:1 handler:v58];
       [v31 addAction:v53];
 
-      v54 = [(PUWallpaperPosterEditorController *)self editor];
-      [v54 presentViewController:v31 animated:1 completion:0];
+      editor = [(PUWallpaperPosterEditorController *)self editor];
+      [editor presentViewController:v31 animated:1 completion:0];
 
       v30 = v55;
-      v6 = v57;
+      errorCopy = v57;
     }
   }
 }
@@ -2600,34 +2600,34 @@ void __68__PUWallpaperPosterEditorController__tapToRadarWithComponent_error___bl
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tipPopoverDidDismissWithTipID:(id)a3
+- (void)tipPopoverDidDismissWithTipID:(id)d
 {
-  v4 = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  tipContainerViewController = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
+  view = [tipContainerViewController view];
+  [view removeFromSuperview];
 }
 
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4
+- (void)prepareTipPopover:(id)popover tipID:(id)d
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  v9 = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
-  v10 = [v9 view];
+  popoverCopy = popover;
+  dCopy = d;
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  tipContainerViewController = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
+  view = [tipContainerViewController view];
 
-  [v8 bounds];
-  [v10 setFrame:?];
-  [v8 addSubview:v10];
-  [v6 setSourceView:v10];
-  v11 = [MEMORY[0x1E69C3CA0] spatialPhotoDisabledLowPowerModeTipIdentifier];
-  v12 = [v7 isEqualToString:v11];
+  [contentOverlayContainerView bounds];
+  [view setFrame:?];
+  [contentOverlayContainerView addSubview:view];
+  [popoverCopy setSourceView:view];
+  spatialPhotoDisabledLowPowerModeTipIdentifier = [MEMORY[0x1E69C3CA0] spatialPhotoDisabledLowPowerModeTipIdentifier];
+  v12 = [dCopy isEqualToString:spatialPhotoDisabledLowPowerModeTipIdentifier];
 
-  v13 = [(PUWallpaperPosterEditorController *)self editor];
-  v14 = v13;
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  v14 = editor;
   if (v12)
   {
-    v15 = [v13 pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierSpatialPhoto"];
+    v15 = [editor pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierSpatialPhoto"];
 
     if (!v15)
     {
@@ -2637,31 +2637,31 @@ void __68__PUWallpaperPosterEditorController__tapToRadarWithComponent_error___bl
     goto LABEL_6;
   }
 
-  v15 = [v13 pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierSettlingEffect"];
+  v15 = [editor pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierSettlingEffect"];
 
   if (v15)
   {
     v17[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    [v6 setPassthroughViews:v16];
+    [popoverCopy setPassthroughViews:v16];
 
 LABEL_6:
     [v15 frame];
-    [v6 setSourceRect:?];
+    [popoverCopy setSourceRect:?];
   }
 
 LABEL_7:
 }
 
-- (id)sourceItemForTipID:(id)a3
+- (id)sourceItemForTipID:(id)d
 {
-  v3 = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
-  v4 = [v3 view];
+  tipContainerViewController = [(PUWallpaperPosterEditorController *)self tipContainerViewController];
+  view = [tipContainerViewController view];
 
-  return v4;
+  return view;
 }
 
-- (id)presentationControllerForTipID:(id)a3
+- (id)presentationControllerForTipID:(id)d
 {
   tipContainerViewController = self->_tipContainerViewController;
   if (!tipContainerViewController)
@@ -2670,12 +2670,12 @@ LABEL_7:
     v6 = self->_tipContainerViewController;
     self->_tipContainerViewController = v5;
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [(UIViewController *)self->_tipContainerViewController view];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    view = [(UIViewController *)self->_tipContainerViewController view];
+    [view setBackgroundColor:clearColor];
 
-    v9 = [(UIViewController *)self->_tipContainerViewController view];
-    [v9 setAutoresizingMask:45];
+    view2 = [(UIViewController *)self->_tipContainerViewController view];
+    [view2 setAutoresizingMask:45];
 
     tipContainerViewController = self->_tipContainerViewController;
   }
@@ -2683,20 +2683,20 @@ LABEL_7:
   return tipContainerViewController;
 }
 
-- (void)_presentSettlingEffectDebugView:(id)a3
+- (void)_presentSettlingEffectDebugView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (PFOSVariantHasInternalUI())
   {
-    v5 = [(PUWallpaperPosterEditorController *)self environment];
-    v6 = [v5 px_isCallServices];
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    px_isCallServices = [environment px_isCallServices];
 
-    if ((v6 & 1) == 0)
+    if ((px_isCallServices & 1) == 0)
     {
-      v7 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-      if (v7)
+      contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+      if (contentOverlayContainerView)
       {
-        v8 = [[PUWallpaperSettlingEffectDebugView alloc] initWithSegmentationItem:v4];
+        v8 = [[PUWallpaperSettlingEffectDebugView alloc] initWithSegmentationItem:viewCopy];
         objc_initWeak(&location, self);
         v9 = MEMORY[0x1E69E9820];
         v10 = 3221225472;
@@ -2704,8 +2704,8 @@ LABEL_7:
         v12 = &unk_1E7B80638;
         objc_copyWeak(&v13, &location);
         [(PUWallpaperSettlingEffectDebugView *)v8 setOnFileRadar:&v9];
-        [v7 addSubview:{v8, v9, v10, v11, v12}];
-        [v7 bounds];
+        [contentOverlayContainerView addSubview:{v8, v9, v10, v11, v12}];
+        [contentOverlayContainerView bounds];
         v16 = CGRectInset(v15, 40.0, 200.0);
         [(PUWallpaperSettlingEffectDebugView *)v8 setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
         objc_destroyWeak(&v13);
@@ -2721,37 +2721,37 @@ void __69__PUWallpaperPosterEditorController__presentSettlingEffectDebugView___b
   [WeakRetained _tapToRadarWithComponent:9 error:0];
 }
 
-- (void)setLoadingSettlingEffect:(BOOL)a3
+- (void)setLoadingSettlingEffect:(BOOL)effect
 {
-  if (self->_loadingSettlingEffect != a3)
+  if (self->_loadingSettlingEffect != effect)
   {
-    self->_loadingSettlingEffect = a3;
+    self->_loadingSettlingEffect = effect;
     [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
   }
 }
 
 - (void)_animateScrollToStyleKindAnimatorUpdated
 {
-  v3 = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindStartingKind];
-  v4 = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindAnimator];
-  [v4 presentationValue];
+  animateScrollToStyleKindStartingKind = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindStartingKind];
+  animateScrollToStyleKindAnimator = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindAnimator];
+  [animateScrollToStyleKindAnimator presentationValue];
   v6 = v5;
 
-  v7 = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindEndingKind];
-  v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  animateScrollToStyleKindEndingKind = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindEndingKind];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__PUWallpaperPosterEditorController__animateScrollToStyleKindAnimatorUpdated__block_invoke;
   v10[3] = &__block_descriptor_56_e49_v16__0___PUWallpaperPosterMutableEditViewModel__8lu32l8u48l8;
-  v10[4] = v3;
+  v10[4] = animateScrollToStyleKindStartingKind;
   *&v10[5] = v6;
-  v10[6] = v7;
-  [v8 performChanges:v10];
+  v10[6] = animateScrollToStyleKindEndingKind;
+  [editViewModel performChanges:v10];
 
   if (v6 == 1.0)
   {
-    v9 = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindCompletion];
-    v9[2]();
+    animateScrollToStyleKindCompletion = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindCompletion];
+    animateScrollToStyleKindCompletion[2]();
   }
 }
 
@@ -2762,46 +2762,46 @@ uint64_t __77__PUWallpaperPosterEditorController__animateScrollToStyleKindAnimat
   return [a2 scrollToPosition:&v3];
 }
 
-- (void)_animateScrollToStyleKind:(id)a3 completion:(id)a4
+- (void)_animateScrollToStyleKind:(id)kind completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v9 = [v8 style];
-  v10 = [v9 kind];
-  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindStartingKind:v10];
+  completionCopy = completion;
+  kindCopy = kind;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
+  kind = [style kind];
+  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindStartingKind:kind];
 
-  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindEndingKind:v7];
-  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindCompletion:v6];
+  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindEndingKind:kindCopy];
+  [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindCompletion:completionCopy];
 
-  v11 = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindAnimator];
-  if (!v11)
+  animateScrollToStyleKindAnimator = [(PUWallpaperPosterEditorController *)self animateScrollToStyleKindAnimator];
+  if (!animateScrollToStyleKindAnimator)
   {
     v12 = [objc_alloc(MEMORY[0x1E69C4588]) initWithValue:0.0];
     [v12 registerChangeObserver:self context:"AnimateScrollToStyleKindAnimatorObservationContext"];
     [v12 setLabel:@"AnimateScrollToStyleKindAnimator"];
     [v12 setHighFrameRateReason:2228225];
     [(PUWallpaperPosterEditorController *)self setAnimateScrollToStyleKindAnimator:v12];
-    v11 = v12;
+    animateScrollToStyleKindAnimator = v12;
   }
 
-  v13 = v11;
-  [v11 performChangesWithoutAnimation:&__block_literal_global_837];
+  v13 = animateScrollToStyleKindAnimator;
+  [animateScrollToStyleKindAnimator performChangesWithoutAnimation:&__block_literal_global_837];
   [v13 performChangesWithDuration:4 curve:&__block_literal_global_839 changes:0.3];
 }
 
 - (void)_enableSettlingEffect
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
   objc_initWeak(&location, self);
-  if (([v3 settlingEffectEnabled] & 1) == 0)
+  if (([editViewModel settlingEffectEnabled] & 1) == 0)
   {
-    v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v6 = [v5 originalLayerStackViewModel];
-    v7 = [v6 canEnableSettlingEffect];
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    originalLayerStackViewModel = [editViewModel2 originalLayerStackViewModel];
+    canEnableSettlingEffect = [originalLayerStackViewModel canEnableSettlingEffect];
 
-    if (v7)
+    if (canEnableSettlingEffect)
     {
       if (![(PUWallpaperPosterEditorController *)self settlingEffectToggleInProgress])
       {
@@ -2810,18 +2810,18 @@ uint64_t __77__PUWallpaperPosterEditorController__animateScrollToStyleKindAnimat
         aBlock[1] = 3221225472;
         aBlock[2] = __58__PUWallpaperPosterEditorController__enableSettlingEffect__block_invoke;
         aBlock[3] = &unk_1E7B80610;
-        v8 = v3;
+        v8 = editViewModel;
         v20 = v8;
         objc_copyWeak(&v21, &location);
         v9 = _Block_copy(aBlock);
-        v10 = [v4 style];
-        v11 = [v10 kind];
+        style = [currentLayerStackViewModel style];
+        kind = [style kind];
 
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __58__PUWallpaperPosterEditorController__enableSettlingEffect__block_invoke_6;
         v17 = &unk_1E7B78288;
-        v12 = v11;
+        v12 = kind;
         v18 = v12;
         [v8 performChanges:&v14];
         v13 = *MEMORY[0x1E69C0B28];
@@ -2895,18 +2895,18 @@ void __58__PUWallpaperPosterEditorController__enableSettlingEffect__block_invoke
 
 - (void)_disableSettlingEffect
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   objc_initWeak(&location, self);
-  if (([v3 settlingEffectEnabled] & 1) != 0 && !-[PUWallpaperPosterEditorController settlingEffectToggleInProgress](self, "settlingEffectToggleInProgress"))
+  if (([editViewModel settlingEffectEnabled] & 1) != 0 && !-[PUWallpaperPosterEditorController settlingEffectToggleInProgress](self, "settlingEffectToggleInProgress"))
   {
     [(PUWallpaperPosterEditorController *)self setSettlingEffectToggleInProgress:1];
-    [v3 performChanges:&__block_literal_global_827];
+    [editViewModel performChanges:&__block_literal_global_827];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __59__PUWallpaperPosterEditorController__disableSettlingEffect__block_invoke_2;
     v4[3] = &unk_1E7B80610;
     objc_copyWeak(&v6, &location);
-    v5 = v3;
+    v5 = editViewModel;
     [(PUWallpaperPosterEditorController *)self _stopSettlingEffectPreview:v4];
 
     objc_destroyWeak(&v6);
@@ -2982,16 +2982,16 @@ uint64_t __59__PUWallpaperPosterEditorController__disableSettlingEffect__block_i
 - (void)_showTrySettlingEffectTip
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  if (!-[PUWallpaperPosterEditorController loadingSettlingEffect](self, "loadingSettlingEffect") && ([v3 settlingEffectEnabled] & 1) == 0)
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  if (!-[PUWallpaperPosterEditorController loadingSettlingEffect](self, "loadingSettlingEffect") && ([editViewModel settlingEffectEnabled] & 1) == 0)
   {
-    v4 = [v3 originalLayerStackViewModel];
-    if ([v4 canEnableSettlingEffect])
+    originalLayerStackViewModel = [editViewModel originalLayerStackViewModel];
+    if ([originalLayerStackViewModel canEnableSettlingEffect])
     {
-      v5 = [v3 segmentationItem];
-      v6 = [v5 settlingEffectHasInterestingMotion];
+      segmentationItem = [editViewModel segmentationItem];
+      settlingEffectHasInterestingMotion = [segmentationItem settlingEffectHasInterestingMotion];
 
-      if (v6)
+      if (settlingEffectHasInterestingMotion)
       {
         [MEMORY[0x1E69C3CA0] presentTrySettlingEffectTip:self];
         goto LABEL_22;
@@ -3016,7 +3016,7 @@ uint64_t __59__PUWallpaperPosterEditorController__disableSettlingEffect__block_i
       v8 = @"NO";
     }
 
-    if ([v3 settlingEffectEnabled])
+    if ([editViewModel settlingEffectEnabled])
     {
       v9 = @"YES";
     }
@@ -3026,8 +3026,8 @@ uint64_t __59__PUWallpaperPosterEditorController__disableSettlingEffect__block_i
       v9 = @"NO";
     }
 
-    v10 = [v3 originalLayerStackViewModel];
-    if ([v10 canEnableSettlingEffect])
+    originalLayerStackViewModel2 = [editViewModel originalLayerStackViewModel];
+    if ([originalLayerStackViewModel2 canEnableSettlingEffect])
     {
       v11 = @"YES";
     }
@@ -3037,9 +3037,9 @@ uint64_t __59__PUWallpaperPosterEditorController__disableSettlingEffect__block_i
       v11 = @"NO";
     }
 
-    v12 = [v3 segmentationItem];
+    segmentationItem2 = [editViewModel segmentationItem];
     v14 = 138413058;
-    if ([v12 settlingEffectHasInterestingMotion])
+    if ([segmentationItem2 settlingEffectHasInterestingMotion])
     {
       v13 = @"YES";
     }
@@ -3065,8 +3065,8 @@ LABEL_22:
 - (void)_showSettlingEffectUnavailableTip
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  if (-[PUWallpaperPosterEditorController loadingSettlingEffect](self, "loadingSettlingEffect") || ([v3 settlingEffectEnabled] & 1) != 0 || (objc_msgSend(v3, "originalLayerStackViewModel"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "canEnableSettlingEffect"), v4, v5))
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  if (-[PUWallpaperPosterEditorController loadingSettlingEffect](self, "loadingSettlingEffect") || ([editViewModel settlingEffectEnabled] & 1) != 0 || (objc_msgSend(editViewModel, "originalLayerStackViewModel"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "canEnableSettlingEffect"), v4, v5))
   {
     v6 = PLWallpaperGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -3081,7 +3081,7 @@ LABEL_22:
         v7 = @"NO";
       }
 
-      if ([v3 settlingEffectEnabled])
+      if ([editViewModel settlingEffectEnabled])
       {
         v8 = @"YES";
       }
@@ -3091,9 +3091,9 @@ LABEL_22:
         v8 = @"NO";
       }
 
-      v9 = [v3 originalLayerStackViewModel];
+      originalLayerStackViewModel = [editViewModel originalLayerStackViewModel];
       v11 = 138412802;
-      if ([v9 canEnableSettlingEffect])
+      if ([originalLayerStackViewModel canEnableSettlingEffect])
       {
         v10 = @"YES";
       }
@@ -3120,10 +3120,10 @@ LABEL_22:
 
 - (void)_toggleSettlingEffectEnabled
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 settlingEffectEnabled];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  settlingEffectEnabled = [editViewModel settlingEffectEnabled];
 
-  if (v4)
+  if (settlingEffectEnabled)
   {
 
     [(PUWallpaperPosterEditorController *)self _disableSettlingEffect];
@@ -3144,8 +3144,8 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v3 px_isCallServices])
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment px_isCallServices])
   {
 
 LABEL_11:
@@ -3153,41 +3153,41 @@ LABEL_11:
     return v11;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self environment];
-  v5 = [v4 px_isBackdrop];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment2 px_isBackdrop];
 
-  if ((v5 & 1) != 0 || !PFPosterEnableSettlingEffect() || ![MEMORY[0x1E69BDF40] currentDeviceSupportsSettlingEffect])
+  if ((px_isBackdrop & 1) != 0 || !PFPosterEnableSettlingEffect() || ![MEMORY[0x1E69BDF40] currentDeviceSupportsSettlingEffect])
   {
     goto LABEL_11;
   }
 
-  v6 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  if (v6)
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  if (photoLibrary)
   {
-    v7 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-    v8 = [v7 assetUUID];
+    currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+    assetUUID = [currentPosterMedia assetUUID];
 
-    if (v8)
+    if (assetUUID)
     {
-      v9 = [(PUWallpaperPosterEditorController *)self currentPosterMediaIsLivePhoto];
+      currentPosterMediaIsLivePhoto = [(PUWallpaperPosterEditorController *)self currentPosterMediaIsLivePhoto];
 
-      if (v9)
+      if (currentPosterMediaIsLivePhoto)
       {
-        v10 = [(PUWallpaperPosterEditorController *)self currentPosterMediaIsLivePhoto];
-        LOBYTE(v11) = [v10 BOOLValue];
+        currentPosterMediaIsLivePhoto2 = [(PUWallpaperPosterEditorController *)self currentPosterMediaIsLivePhoto];
+        LOBYTE(v11) = [currentPosterMediaIsLivePhoto2 BOOLValue];
       }
 
       else
       {
-        v13 = [v6 librarySpecificFetchOptions];
-        [v13 setIncludeGuestAssets:1];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+        [librarySpecificFetchOptions setIncludeGuestAssets:1];
         v14 = MEMORY[0x1E6978630];
-        v19[0] = v8;
+        v19[0] = assetUUID;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-        v16 = [v14 fetchAssetsWithUUIDs:v15 options:v13];
-        v17 = [v16 firstObject];
+        v16 = [v14 fetchAssetsWithUUIDs:v15 options:librarySpecificFetchOptions];
+        firstObject = [v16 firstObject];
 
-        v11 = ([v17 mediaSubtypes] >> 3) & 1;
+        v11 = ([firstObject mediaSubtypes] >> 3) & 1;
         v18 = [MEMORY[0x1E696AD98] numberWithBool:v11];
         [(PUWallpaperPosterEditorController *)self setCurrentPosterMediaIsLivePhoto:v18];
       }
@@ -3209,52 +3209,52 @@ LABEL_11:
 
 - (void)_stopObservingPlayerItem
 {
-  v3 = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
-  if (v3)
+  observedPlayerItem = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
+  if (observedPlayerItem)
   {
-    v5 = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E6987A10] object:v5];
+    v5 = observedPlayerItem;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A10] object:v5];
 
     [v5 removeObserver:self forKeyPath:@"status" context:&PlayerItemObservationContext];
     [(PUWallpaperPosterEditorController *)self setObservedPlayerItem:0];
-    v3 = v5;
+    observedPlayerItem = v5;
   }
 }
 
 - (void)_observeCurrentPlayerItem
 {
-  v11 = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
-  v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v4 = [v3 viewManager];
-  v5 = [v4 videoLayerView];
-  v6 = [v5 player];
-  v7 = [v6 currentItem];
+  observedPlayerItem = [(PUWallpaperPosterEditorController *)self observedPlayerItem];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  viewManager = [currentLayerStackViewModel viewManager];
+  videoLayerView = [viewManager videoLayerView];
+  player = [videoLayerView player];
+  currentItem = [player currentItem];
 
-  if (v11 != v7)
+  if (observedPlayerItem != currentItem)
   {
     v8 = MEMORY[0x1E6987A10];
-    if (v11)
+    if (observedPlayerItem)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 removeObserver:self name:*v8 object:v11];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*v8 object:observedPlayerItem];
 
-      [v11 removeObserver:self forKeyPath:@"status" context:&PlayerItemObservationContext];
+      [observedPlayerItem removeObserver:self forKeyPath:@"status" context:&PlayerItemObservationContext];
     }
 
-    if (v7)
+    if (currentItem)
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel__playerItemDidFinish_ name:*v8 object:v7];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__playerItemDidFinish_ name:*v8 object:currentItem];
 
-      [v7 addObserver:self forKeyPath:@"status" options:0 context:&PlayerItemObservationContext];
+      [currentItem addObserver:self forKeyPath:@"status" options:0 context:&PlayerItemObservationContext];
     }
 
-    [(PUWallpaperPosterEditorController *)self setObservedPlayerItem:v7];
+    [(PUWallpaperPosterEditorController *)self setObservedPlayerItem:currentItem];
   }
 }
 
-- (void)_playerItemDidFinish:(id)a3
+- (void)_playerItemDidFinish:(id)finish
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3266,10 +3266,10 @@ LABEL_11:
 
 - (void)_updateMotionEffectsEnabled
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  if (UIAccessibilityIsReduceMotionEnabled() && (([v3 settlingEffectEnabled] & 1) != 0 || -[PUWallpaperPosterEditorController _isSpatialPhotoEnabled](self, "_isSpatialPhotoEnabled")))
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  if (UIAccessibilityIsReduceMotionEnabled() && (([editViewModel settlingEffectEnabled] & 1) != 0 || -[PUWallpaperPosterEditorController _isSpatialPhotoEnabled](self, "_isSpatialPhotoEnabled")))
   {
-    [v3 performChanges:&__block_literal_global_819];
+    [editViewModel performChanges:&__block_literal_global_819];
   }
 }
 
@@ -3280,26 +3280,26 @@ void __64__PUWallpaperPosterEditorController__updateMotionEffectsEnabled__block_
   [v2 setSpatialPhotoEnabled:0];
 }
 
-- (void)_stopSettlingEffectPreview:(id)a3
+- (void)_stopSettlingEffectPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v6 = [v5 viewManager];
-  v7 = [v5 currentLayerStack];
-  v8 = [v7 foregroundLayer];
-  v9 = [v6 viewForLayer:v8];
+  previewCopy = preview;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  viewManager = [currentLayerStackViewModel viewManager];
+  currentLayerStack = [currentLayerStackViewModel currentLayerStack];
+  foregroundLayer = [currentLayerStack foregroundLayer];
+  v9 = [viewManager viewForLayer:foregroundLayer];
 
-  v10 = [v6 videoLayerView];
-  v11 = [v10 player];
+  videoLayerView = [viewManager videoLayerView];
+  player = [videoLayerView player];
   if ([(PUWallpaperPosterEditorController *)self isPreviewingSettlingEffect])
   {
     [(PUWallpaperPosterEditorController *)self setPreviewingSettlingEffect:0];
-    v12 = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
-    [v12 invalidate];
+    settlingEffectPreviewDelayTimer = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
+    [settlingEffectPreviewDelayTimer invalidate];
 
-    [v11 pause];
-    v13 = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewAnimator];
-    [v13 stopAnimation:1];
+    [player pause];
+    settlingEffectPreviewAnimator = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewAnimator];
+    [settlingEffectPreviewAnimator stopAnimation:1];
 
     v14 = objc_alloc(MEMORY[0x1E69DD278]);
     v25[0] = MEMORY[0x1E69E9820];
@@ -3307,25 +3307,25 @@ void __64__PUWallpaperPosterEditorController__updateMotionEffectsEnabled__block_
     v25[2] = __64__PUWallpaperPosterEditorController__stopSettlingEffectPreview___block_invoke;
     v25[3] = &unk_1E7B80C38;
     v26 = v9;
-    v15 = v10;
+    v15 = videoLayerView;
     v27 = v15;
     v16 = [v14 initWithDuration:0 curve:v25 animations:0.5];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __64__PUWallpaperPosterEditorController__stopSettlingEffectPreview___block_invoke_2;
     v20 = &unk_1E7B78798;
-    v21 = v11;
+    v21 = player;
     v22 = v15;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = previewCopy;
     [v16 addCompletion:&v17];
     [v16 startAnimation];
     [(PUWallpaperPosterEditorController *)self setSettlingEffectPreviewAnimator:v16];
   }
 
-  else if (v4)
+  else if (previewCopy)
   {
-    v4[2](v4);
+    previewCopy[2](previewCopy);
   }
 }
 
@@ -3356,24 +3356,24 @@ uint64_t __64__PUWallpaperPosterEditorController__stopSettlingEffectPreview___bl
 
 - (void)_startSettlingEffectPreview
 {
-  v3 = [(PUWallpaperPosterEditorController *)self backgroundView];
-  if (v3)
+  backgroundView = [(PUWallpaperPosterEditorController *)self backgroundView];
+  if (backgroundView)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v5 = [v4 viewManager];
-    v6 = [v4 currentLayerStack];
-    if (![v6 settlingEffectEnabled])
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    viewManager = [currentLayerStackViewModel viewManager];
+    currentLayerStack = [currentLayerStackViewModel currentLayerStack];
+    if (![currentLayerStack settlingEffectEnabled])
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v7 = [v6 foregroundLayer];
-    v8 = [v5 viewForLayer:v7];
+    foregroundLayer = [currentLayerStack foregroundLayer];
+    v8 = [viewManager viewForLayer:foregroundLayer];
 
-    v9 = [v5 videoLayerView];
-    if (v9)
+    videoLayerView = [viewManager videoLayerView];
+    if (videoLayerView)
     {
       if ([(PUWallpaperPosterEditorController *)self isPreviewingSettlingEffect])
       {
@@ -3383,13 +3383,13 @@ LABEL_9:
       }
 
       [(PUWallpaperPosterEditorController *)self setPreviewingSettlingEffect:1];
-      v10 = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
-      [v10 invalidate];
+      settlingEffectPreviewDelayTimer = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
+      [settlingEffectPreviewDelayTimer invalidate];
 
-      [v9 setAlpha:0.0];
-      [v3 addSubview:v9];
-      v11 = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewAnimator];
-      [v11 stopAnimation:1];
+      [videoLayerView setAlpha:0.0];
+      [backgroundView addSubview:videoLayerView];
+      settlingEffectPreviewAnimator = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewAnimator];
+      [settlingEffectPreviewAnimator stopAnimation:1];
 
       v12 = objc_alloc(MEMORY[0x1E69DD278]);
       v19[0] = MEMORY[0x1E69E9820];
@@ -3397,17 +3397,17 @@ LABEL_9:
       v19[2] = __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__block_invoke;
       v19[3] = &unk_1E7B80C38;
       v20 = v8;
-      v13 = v9;
+      v13 = videoLayerView;
       v21 = v13;
       v14 = [v12 initWithDuration:0 curve:v19 animations:0.5];
       [v14 startAnimation];
       [(PUWallpaperPosterEditorController *)self setSettlingEffectPreviewAnimator:v14];
       [(PUWallpaperPosterEditorController *)self _observeCurrentPlayerItem];
-      v15 = [v13 player];
+      player = [v13 player];
       v17 = *MEMORY[0x1E6960CC0];
       v18 = *(MEMORY[0x1E6960CC0] + 16);
-      [v15 seekToTime:&v17];
-      [v15 play];
+      [player seekToTime:&v17];
+      [player play];
 
       v16 = v20;
     }
@@ -3438,10 +3438,10 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
 
 - (void)_startSettlingEffectPreviewAfterDelay
 {
-  v3 = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
-  v4 = [v3 isValid];
+  settlingEffectPreviewDelayTimer = [(PUWallpaperPosterEditorController *)self settlingEffectPreviewDelayTimer];
+  isValid = [settlingEffectPreviewDelayTimer isValid];
 
-  if ((v4 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__startSettlingEffectPreview selector:0 userInfo:0 repeats:0.2];
     [(PUWallpaperPosterEditorController *)self setSettlingEffectPreviewDelayTimer:v5];
@@ -3450,25 +3450,25 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
 
 - (void)_toggleStyleBackground
 {
-  v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v4 = [v3 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  if ([v4 hasBackgroundParameter])
+  if ([style hasBackgroundParameter])
   {
-    v5 = [v4 showsBackground];
+    showsBackground = [style showsBackground];
     v6 = MEMORY[0x1E69BDEE0];
-    v7 = [v4 bakedStyle];
-    v8 = [v6 styleWithBakedStyle:v7];
+    bakedStyle = [style bakedStyle];
+    v8 = [v6 styleWithBakedStyle:bakedStyle];
 
-    [v8 setShowsBackground:v5 ^ 1u];
-    v9 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    [v8 setShowsBackground:showsBackground ^ 1u];
+    currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__PUWallpaperPosterEditorController__toggleStyleBackground__block_invoke;
     v11[3] = &unk_1E7B80328;
     v12 = v8;
     v10 = v8;
-    [v9 performChanges:v11];
+    [currentLayerStackViewModel2 performChanges:v11];
 
     [(PUWallpaperPosterEditorController *)self _renderAfterStyleChange];
   }
@@ -3476,44 +3476,44 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
 
 - (BOOL)_currentStyleShowsBackground
 {
-  v2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v3 = [v2 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  if ([v3 hasBackgroundParameter])
+  if ([style hasBackgroundParameter])
   {
-    v4 = [v3 showsBackground];
+    showsBackground = [style showsBackground];
   }
 
   else
   {
-    v4 = 1;
+    showsBackground = 1;
   }
 
-  return v4;
+  return showsBackground;
 }
 
 - (BOOL)_currentStyleSupportsToggleBackground
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 segmentationItem];
-  v5 = [v4 supportsBackgroundlessStyles];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  segmentationItem = [editViewModel segmentationItem];
+  supportsBackgroundlessStyles = [segmentationItem supportsBackgroundlessStyles];
 
-  v6 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v7 = [v6 style];
-  LOBYTE(v4) = [v7 hasBackgroundParameter];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
+  LOBYTE(segmentationItem) = [style hasBackgroundParameter];
 
-  return v5 & v4;
+  return supportsBackgroundlessStyles & segmentationItem;
 }
 
 - (void)_showPhotoInLibrary
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v3 = [v2 assetUUID];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  assetUUID = [currentPosterMedia assetUUID];
 
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://contentmode?id=photos&assetuuid=%@&oneUp=1", v3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://contentmode?id=photos&assetuuid=%@&oneUp=1", assetUUID];
   v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
-  v6 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v7 = *MEMORY[0x1E699F970];
   v17[0] = *MEMORY[0x1E699F990];
   v17[1] = v7;
@@ -3521,7 +3521,7 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
   v18[1] = MEMORY[0x1E695E118];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v12 = 0;
-  v9 = [v6 openSensitiveURL:v5 withOptions:v8 error:&v12];
+  v9 = [defaultWorkspace openSensitiveURL:v5 withOptions:v8 error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
@@ -3540,22 +3540,22 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
 
 - (id)_headroomToggleMenuElement
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v4 = [(PUWallpaperPosterEditorController *)self _isManualShuffle];
+    _isManualShuffle = [(PUWallpaperPosterEditorController *)self _isManualShuffle];
   }
 
   else
   {
-    v4 = 1;
+    _isManualShuffle = 1;
   }
 
   v5 = 0;
-  if ([v3 canApplyHeadroom] && v4)
+  if ([editViewModel canApplyHeadroom] && _isManualShuffle)
   {
-    v6 = [(PUWallpaperPosterEditorController *)self environment];
-    if ([v6 px_isCallServices])
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    if ([environment px_isCallServices])
     {
       v7 = @"PHOTOS_WALLPAPER_EXTEND_POSTER_MENU_ITEM_TITLE";
     }
@@ -3577,8 +3577,8 @@ uint64_t __64__PUWallpaperPosterEditorController__startSettlingEffectPreview__bl
     objc_copyWeak(&v16, &location);
     v5 = [v9 actionWithTitle:v8 image:v10 identifier:0 handler:&v12];
 
-    [v5 setState:{objc_msgSend(v3, "isUsingHeadroom", v12, v13, v14, v15)}];
-    if (([v3 isUsingHeadroom] & 1) == 0 && (objc_msgSend(v3, "headroomLayoutUsesHeadroomArea") & 1) == 0 && (!-[PUWallpaperPosterEditorController _isSpatialPhotoEnabled](self, "_isSpatialPhotoEnabled") || (objc_msgSend(v3, "headroomLayoutCanApplyHeadroom") & 1) == 0))
+    [v5 setState:{objc_msgSend(editViewModel, "isUsingHeadroom", v12, v13, v14, v15)}];
+    if (([editViewModel isUsingHeadroom] & 1) == 0 && (objc_msgSend(editViewModel, "headroomLayoutUsesHeadroomArea") & 1) == 0 && (!-[PUWallpaperPosterEditorController _isSpatialPhotoEnabled](self, "_isSpatialPhotoEnabled") || (objc_msgSend(editViewModel, "headroomLayoutCanApplyHeadroom") & 1) == 0))
     {
       [v5 setAttributes:1];
     }
@@ -3620,8 +3620,8 @@ void __63__PUWallpaperPosterEditorController__headroomToggleMenuElement__block_i
 
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v8 = [(PUWallpaperPosterEditorController *)self _shuffleFrequencyMenu];
-    [v3 addObject:v8];
+    _shuffleFrequencyMenu = [(PUWallpaperPosterEditorController *)self _shuffleFrequencyMenu];
+    [v3 addObject:_shuffleFrequencyMenu];
   }
 
   if ([(PUWallpaperPosterEditorController *)self _isDepthEffectPossible])
@@ -3687,8 +3687,8 @@ void __63__PUWallpaperPosterEditorController__headroomToggleMenuElement__block_i
       v22 = [v20 actionWithTitle:@"Show Internal Settings" image:v21 identifier:0 handler:v62];
       [v16 addObject:v22];
 
-      v23 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v24 = [v23 currentLayerStackViewModel];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+      currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
       Bool = PXPreferencesGetBool();
       v26 = MEMORY[0x1E69DC628];
       v27 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:@"gauge.with.dots.needle.100percent"];
@@ -3698,11 +3698,11 @@ void __63__PUWallpaperPosterEditorController__headroomToggleMenuElement__block_i
       v58[3] = &unk_1E7B78770;
       v61 = Bool;
       objc_copyWeak(&v60, location);
-      v28 = v24;
+      v28 = currentLayerStackViewModel;
       v59 = v28;
       v29 = [v26 actionWithTitle:@"Toggle Debug HUD" image:v27 identifier:0 handler:v58];
       [v16 addObject:v29];
-      v47 = v23;
+      v47 = editViewModel;
 
       v30 = PXPreferencesGetBool();
       v31 = MEMORY[0x1E69DC628];
@@ -3721,10 +3721,10 @@ void __63__PUWallpaperPosterEditorController__headroomToggleMenuElement__block_i
       v15 = 0x1E69DC000;
       if (PFPosterEnableSettlingEffect())
       {
-        v35 = [(PUWallpaperPosterEditorController *)self environment];
-        v36 = [v35 px_isCallServices];
+        environment = [(PUWallpaperPosterEditorController *)self environment];
+        px_isCallServices = [environment px_isCallServices];
 
-        if ((v36 & 1) == 0)
+        if ((px_isCallServices & 1) == 0)
         {
           v37 = MEMORY[0x1E69DC628];
           v38 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"livephoto"];
@@ -3732,7 +3732,7 @@ void __63__PUWallpaperPosterEditorController__headroomToggleMenuElement__block_i
           v49 = 3221225472;
           v50 = __49__PUWallpaperPosterEditorController__actionsMenu__block_invoke_8;
           v51 = &unk_1E7B7F4F0;
-          v52 = v23;
+          v52 = editViewModel;
           objc_copyWeak(&v53, location);
           v39 = [v37 actionWithTitle:@"Settling Effect Debug" image:v38 identifier:0 handler:&v48];
           [v16 addObject:v39];
@@ -3866,25 +3866,25 @@ void __49__PUWallpaperPosterEditorController__actionsMenu__block_invoke_8(uint64
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PUWallpaperPosterEditorController *)self _photoPickerAction];
-  if (v4)
+  _photoPickerAction = [(PUWallpaperPosterEditorController *)self _photoPickerAction];
+  if (_photoPickerAction)
   {
-    v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v6 = [v5 previewThumbnail];
-    v7 = v6;
-    if (v6)
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    previewThumbnail = [editViewModel previewThumbnail];
+    v7 = previewThumbnail;
+    if (previewThumbnail)
     {
-      v8 = v6;
+      image = previewThumbnail;
     }
 
     else
     {
-      v8 = [v4 image];
+      image = [_photoPickerAction image];
     }
 
-    v9 = v8;
+    v9 = image;
 
-    [v3 addObject:v4];
+    [v3 addObject:_photoPickerAction];
   }
 
   else
@@ -3892,16 +3892,16 @@ void __49__PUWallpaperPosterEditorController__actionsMenu__block_invoke_8(uint64
     v9 = 0;
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v11 = [v10 shuffleConfiguration];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
 
-  if (v11)
+  if (shuffleConfiguration)
   {
-    if (![v11 shuffleType])
+    if (![shuffleConfiguration shuffleType])
     {
-      v12 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+      currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
 
-      if (v12)
+      if (currentPosterMedia)
       {
         v13 = MEMORY[0x1E69DC628];
         v14 = PULocalizedString(@"PHOTOS_WALLPAPER_DONT_FEATURE_PHOTO_MENU_ITEM_TITLE");
@@ -3921,19 +3921,19 @@ void __49__PUWallpaperPosterEditorController__actionsMenu__block_invoke_8(uint64
     }
   }
 
-  v17 = [(PUWallpaperPosterEditorController *)self environment];
-  v18 = [v17 pu_sourcePosterConfiguration];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourcePosterConfiguration = [environment pu_sourcePosterConfiguration];
 
-  if (v18)
+  if (pu_sourcePosterConfiguration)
   {
-    v19 = [v18 options];
-    if (([v18 options] & 0x20) != 0)
+    options = [pu_sourcePosterConfiguration options];
+    if (([pu_sourcePosterConfiguration options] & 0x20) != 0)
     {
       v23 = 1;
       goto LABEL_17;
     }
 
-    v20 = v19 & 1;
+    v20 = options & 1;
   }
 
   else
@@ -3941,10 +3941,10 @@ void __49__PUWallpaperPosterEditorController__actionsMenu__block_invoke_8(uint64
     v20 = 0;
   }
 
-  v21 = [(PUWallpaperPosterEditorController *)self environment];
-  v22 = [v21 px_isBackdrop];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment2 px_isBackdrop];
 
-  v23 = v20 | v22;
+  v23 = v20 | px_isBackdrop;
 LABEL_17:
   v24 = [MEMORY[0x1E69C3348] isAppInstalled:1];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -4041,8 +4041,8 @@ void __56__PUWallpaperPosterEditorController__leadingActionsMenu__block_invoke_3
     goto LABEL_5;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v3 px_isBackdrop])
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment px_isBackdrop])
   {
 
 LABEL_5:
@@ -4050,26 +4050,26 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self environment];
-  v5 = [v4 px_isCallServices];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isCallServices = [environment2 px_isCallServices];
 
-  if ((v5 & 1) != 0 || ![(PUWallpaperPosterEditorController *)self _canEnableSpatialPhotoEffect]&& (!PFOSVariantHasInternalUI() || ![(PUWallpaperPosterEditorController *)self _spatialPhotoFailedUnexpectedly]))
+  if ((px_isCallServices & 1) != 0 || ![(PUWallpaperPosterEditorController *)self _canEnableSpatialPhotoEffect]&& (!PFOSVariantHasInternalUI() || ![(PUWallpaperPosterEditorController *)self _spatialPhotoFailedUnexpectedly]))
   {
     goto LABEL_5;
   }
 
-  v8 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-  if (!v8)
+  if (!currentLayerStackViewModel)
   {
     goto LABEL_5;
   }
 
   if ([(PUWallpaperPosterEditorController *)self _canEnableSpatialPhotoEffect])
   {
-    v9 = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
+    _isSpatialPhotoEnabled = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
     v10 = @"spatial.capture.slash";
-    if (v9)
+    if (_isSpatialPhotoEnabled)
     {
       v10 = @"spatial.capture";
     }
@@ -4113,7 +4113,7 @@ void __68__PUWallpaperPosterEditorController__toggleSpatialPhotoEffectAction__bl
 {
   if ([(PUWallpaperPosterEditorController *)self _currentStyleSupportsHighAndLowKeyModes])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self _currentStyleIsHighKey];
+    _currentStyleIsHighKey = [(PUWallpaperPosterEditorController *)self _currentStyleIsHighKey];
     v4 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{33.5, 33.5}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -4121,10 +4121,10 @@ void __68__PUWallpaperPosterEditorController__toggleSpatialPhotoEffectAction__bl
     v16[3] = &__block_descriptor_57_e40_v16__0__UIGraphicsImageRendererContext_8l;
     v17 = vdupq_n_s64(0x4040C00000000000uLL);
     v18 = 0x403B800000000000;
-    v19 = v3;
+    v19 = _currentStyleIsHighKey;
     v5 = [v4 imageWithActions:v16];
     v6 = @"PHOTOS_WALLPAPER_EDITOR_HIGH_KEY_MENU_TITLE";
-    if (v3)
+    if (_currentStyleIsHighKey)
     {
       v6 = @"PHOTOS_WALLPAPER_EDITOR_LOW_KEY_MENU_TITLE";
     }
@@ -4138,7 +4138,7 @@ void __68__PUWallpaperPosterEditorController__toggleSpatialPhotoEffectAction__bl
     v12[2] = __63__PUWallpaperPosterEditorController__toggleHighKeyLowKeyAction__block_invoke_2;
     v12[3] = &unk_1E7B808B8;
     objc_copyWeak(&v13, &location);
-    v14 = v3;
+    v14 = _currentStyleIsHighKey;
     v10 = [v8 actionWithTitle:v9 image:v5 identifier:0 handler:v12];
 
     objc_destroyWeak(&v13);
@@ -4188,25 +4188,25 @@ void __63__PUWallpaperPosterEditorController__toggleHighKeyLowKeyAction__block_i
 {
   if ([(PUWallpaperPosterEditorController *)self _currentStyleSupportsColorPicker])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v4 = [v3 style];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    style = [currentLayerStackViewModel style];
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 color];
-      v6 = [v5 CGColor];
+      color = [style color];
+      cGColor = [color CGColor];
 
       v7 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{35.0, 35.0}];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __55__PUWallpaperPosterEditorController__colorPickerAction__block_invoke;
       v19[3] = &__block_descriptor_56_e40_v16__0__UIGraphicsImageRendererContext_8l;
-      v19[4] = v6;
+      v19[4] = cGColor;
       v20 = xmmword_1B3D0CEE0;
       v8 = [v7 imageWithActions:v19];
-      v9 = [v4 kind];
+      kind = [style kind];
       v10 = @"PHOTOS_WALLPAPER_EDITOR_STYLE_COLOR_MENU_TITLE";
-      if (([v9 isEqualToString:*MEMORY[0x1E69C0B00]] & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69C0AF8]))
+      if (([kind isEqualToString:*MEMORY[0x1E69C0B00]] & 1) == 0 && !objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0AF8]))
       {
         v10 = @"PHOTOS_WALLPAPER_EDITOR_BACKGROUND_COLOR_MENU_TITLE";
       }
@@ -4275,10 +4275,10 @@ void __55__PUWallpaperPosterEditorController__colorPickerAction__block_invoke_2(
 
     else
     {
-      v9 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v10 = [v9 settlingEffectEnabled];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+      settlingEffectEnabled = [editViewModel settlingEffectEnabled];
 
-      if (v10)
+      if (settlingEffectEnabled)
       {
         v11 = @"livephoto.play";
       }
@@ -4320,42 +4320,42 @@ void __64__PUWallpaperPosterEditorController__toggleSettlingEffectAction__block_
 
 - (BOOL)_isSettlingEffectPossible
 {
-  v2 = [(PUWallpaperPosterEditorController *)self environment];
-  v3 = [v2 editingVariant] != 2;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  v3 = [environment editingVariant] != 2;
 
   return v3;
 }
 
 - (id)_photoPickerAction
 {
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  v4 = [v3 px_isBackdrop];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment px_isBackdrop];
 
-  if (v4)
+  if (px_isBackdrop)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v7 = [v6 configurationType];
-    if (v7 == 1)
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    configurationType = [posterConfiguration configurationType];
+    if (configurationType == 1)
     {
       v8 = PULocalizedString(@"PHOTOS_WALLPAPER_EDITOR_PICK_SHUFFLE_PHOTOS_BUTTON_TITLE");
-      v11 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-      v12 = [v11 shuffleConfiguration];
-      v13 = [v12 shuffleType];
+      posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+      shuffleConfiguration = [posterConfiguration2 shuffleConfiguration];
+      shuffleType = [shuffleConfiguration shuffleType];
 
       v14 = @"rectangle.grid.3x2.fill";
       v15 = @"sparkles.rectangle.stack.fill";
-      v16 = v13 != 0;
-      if (v13)
+      v16 = shuffleType != 0;
+      if (shuffleType)
       {
         v15 = 0;
       }
 
-      if (v13 == 1)
+      if (shuffleType == 1)
       {
         v16 = 0;
       }
@@ -4365,8 +4365,8 @@ void __64__PUWallpaperPosterEditorController__toggleSettlingEffectAction__block_
         v14 = v15;
       }
 
-      v17 = v13 == 2;
-      v9 = v13 != 2 && v16;
+      v17 = shuffleType == 2;
+      v9 = shuffleType != 2 && v16;
       if (v17)
       {
         v10 = @"rectangle.stack.fill";
@@ -4378,7 +4378,7 @@ void __64__PUWallpaperPosterEditorController__toggleSettlingEffectAction__block_
       }
     }
 
-    else if (v7)
+    else if (configurationType)
     {
       v10 = 0;
       v8 = 0;
@@ -4393,7 +4393,7 @@ void __64__PUWallpaperPosterEditorController__toggleSettlingEffectAction__block_
     }
 
     v5 = 0;
-    if (([v6 options] & 0x13) == 0 && (v9 & 1) == 0)
+    if (([posterConfiguration options] & 0x13) == 0 && (v9 & 1) == 0)
     {
       v18 = PULocalizedString(@"PHOTOS_WALLPAPER_EDITOR_PICK_A_PHOTO_BUTTON_TITLE");
       objc_initWeak(&location, self);
@@ -4423,120 +4423,120 @@ void __55__PUWallpaperPosterEditorController__photoPickerAction__block_invoke(ui
 
 - (void)_updateEditToolbar
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 isUserPanningOrZooming];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  isUserPanningOrZooming = [editViewModel isUserPanningOrZooming];
 
-  if ((v4 & 1) == 0)
+  if ((isUserPanningOrZooming & 1) == 0)
   {
-    v5 = [(PUWallpaperPosterEditorController *)self editor];
-    [v5 updateActions];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor updateActions];
   }
 }
 
-- (void)editor:(id)a3 didUpdateColors:(id)a4
+- (void)editor:(id)editor didUpdateColors:(id)colors
 {
-  v5 = [a4 firstObject];
-  v6 = v5;
-  if (v5)
+  firstObject = [colors firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
-    v5 = [(PUWallpaperPosterEditorController *)self _updateCurrentStyleColor:v5];
+    v7 = firstObject;
+    firstObject = [(PUWallpaperPosterEditorController *)self _updateCurrentStyleColor:firstObject];
     v6 = v7;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](firstObject, v6);
 }
 
-- (id)initialColorsForEditor:(id)a3
+- (id)initialColorsForEditor:(id)editor
 {
-  v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v4 = [v3 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  v5 = [v4 kind];
-  v6 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:v5];
-  v7 = [v6 primaryColors];
-  v8 = [v7 firstObject];
-  v9 = [v8 pu_UIColor];
+  kind = [style kind];
+  v6 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:kind];
+  primaryColors = [v6 primaryColors];
+  firstObject = [primaryColors firstObject];
+  pu_UIColor = [firstObject pu_UIColor];
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v9, 0}];
+  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{pu_UIColor, 0}];
 
   return v10;
 }
 
-- (void)_updateCurrentStyleColor:(id)a3
+- (void)_updateCurrentStyleColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v6 = [v5 style];
+  colorCopy = color;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  v7 = [v6 kind];
-  v8 = [MEMORY[0x1E69C0750] pu_parallaxColorWithUIColor:v4];
+  kind = [style kind];
+  v8 = [MEMORY[0x1E69C0750] pu_parallaxColorWithUIColor:colorCopy];
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69C0AF0]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0AF0]])
   {
     v9 = MEMORY[0x1E69BDEE0];
-    v10 = [v6 bakedStyle];
-    v11 = [v9 styleWithBakedStyle:v10];
+    bakedStyle = [style bakedStyle];
+    v11 = [v9 styleWithBakedStyle:bakedStyle];
 
     [v11 setColor:v8];
-    v12 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __62__PUWallpaperPosterEditorController__updateCurrentStyleColor___block_invoke;
     v30[3] = &unk_1E7B80328;
     v31 = v11;
     v13 = v11;
-    [v12 performChanges:v30];
+    [currentLayerStackViewModel2 performChanges:v30];
 
     v14 = v31;
   }
 
-  else if (([v7 isEqualToString:*MEMORY[0x1E69C0B00]] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69C0B08]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69C0B10]) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69C0B18]))
+  else if (([kind isEqualToString:*MEMORY[0x1E69C0B00]] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B08]) & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B10]) & 1) != 0 || objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B18]))
   {
     v15 = MEMORY[0x1E69BDEE0];
-    v16 = [v6 bakedStyle];
-    v17 = [v15 styleWithBakedStyle:v16];
+    bakedStyle2 = [style bakedStyle];
+    v17 = [v15 styleWithBakedStyle:bakedStyle2];
 
     [v17 setColor:v8];
-    v18 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __62__PUWallpaperPosterEditorController__updateCurrentStyleColor___block_invoke_2;
     v28[3] = &unk_1E7B80328;
     v29 = v17;
     v13 = v17;
-    [v18 performChanges:v28];
+    [currentLayerStackViewModel3 performChanges:v28];
 
     v14 = v29;
   }
 
   else
   {
-    if (![v7 isEqualToString:*MEMORY[0x1E69C0AF8]])
+    if (![kind isEqualToString:*MEMORY[0x1E69C0AF8]])
     {
       goto LABEL_10;
     }
 
-    v13 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:v7];
+    v13 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:kind];
     v14 = [v13 suggestionAtIndex:{objc_msgSend(v13, "indexOfColor:", v8)}];
     v19 = MEMORY[0x1E69BDEE0];
-    v20 = [v6 bakedStyle];
-    v21 = [v19 styleWithBakedStyle:v20];
+    bakedStyle3 = [style bakedStyle];
+    v21 = [v19 styleWithBakedStyle:bakedStyle3];
 
-    v22 = [v14 primaryColor];
-    [v21 setPrimaryColor:v22];
+    primaryColor = [v14 primaryColor];
+    [v21 setPrimaryColor:primaryColor];
 
-    v23 = [v14 secondaryColor];
-    [v21 setSecondaryColor:v23];
+    secondaryColor = [v14 secondaryColor];
+    [v21 setSecondaryColor:secondaryColor];
 
-    v24 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __62__PUWallpaperPosterEditorController__updateCurrentStyleColor___block_invoke_3;
     v26[3] = &unk_1E7B80328;
     v27 = v21;
     v25 = v21;
-    [v24 performChanges:v26];
+    [currentLayerStackViewModel4 performChanges:v26];
   }
 
 LABEL_10:
@@ -4546,51 +4546,51 @@ LABEL_10:
 - (void)_presentStyleColorPicker
 {
   v82 = *MEMORY[0x1E69E9840];
-  v2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v60 = [v2 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  v62 = [v60 kind];
+  kind = [style kind];
   v63 = objc_alloc_init(getPREditorColorPickerConfigurationClass());
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v5 = [v4 assetUUID];
-  v6 = [v3 stringWithFormat:@"%@-%@", v5, v62];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  assetUUID = [currentPosterMedia assetUUID];
+  v6 = [v3 stringWithFormat:@"%@-%@", assetUUID, kind];
   v7 = v63;
   [v63 setIdentifier:v6];
 
   v8 = *MEMORY[0x1E69C0AF0];
-  if (([v62 isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B08]) & 1) != 0 || (objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B18]))
+  if (([kind isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B08]) & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B18]))
   {
-    v9 = [v60 color];
+    color = [style color];
     v10 = @"PHOTOS_WALLPAPER_EDITOR_BACKGROUND_COLOR_PICKER_PROMPT";
 LABEL_6:
     v11 = 1;
     goto LABEL_7;
   }
 
-  if ([v62 isEqualToString:*MEMORY[0x1E69C0B00]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B00]])
   {
-    v50 = [v60 color];
+    color2 = [style color];
   }
 
   else
   {
-    if (![v62 isEqualToString:*MEMORY[0x1E69C0AF8]])
+    if (![kind isEqualToString:*MEMORY[0x1E69C0AF8]])
     {
-      if (![v62 isEqualToString:*MEMORY[0x1E69C0B10]])
+      if (![kind isEqualToString:*MEMORY[0x1E69C0B10]])
       {
         goto LABEL_42;
       }
 
-      v9 = [v60 color];
+      color = [style color];
       v10 = @"PHOTOS_WALLPAPER_EDITOR_STYLE_COLOR_PICKER_PROMPT";
       goto LABEL_6;
     }
 
-    v50 = [v60 primaryColor];
+    color2 = [style primaryColor];
   }
 
-  v9 = v50;
+  color = color2;
   v11 = 0;
   v10 = @"PHOTOS_WALLPAPER_EDITOR_STYLE_COLOR_PICKER_PROMPT";
 LABEL_7:
@@ -4598,15 +4598,15 @@ LABEL_7:
   v12 = PULocalizedString(v10);
   [v63 setPrompt:v12];
 
-  v13 = [v9 pu_UIColor];
-  [v63 setSelectedColor:v13];
+  pu_UIColor = [color pu_UIColor];
+  [v63 setSelectedColor:pu_UIColor];
 
-  v59 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:v62];
-  v14 = [v59 primaryColors];
-  v15 = v14;
-  if ([v14 count] >= 0xD)
+  v59 = [MEMORY[0x1E69BDEE0] colorPaletteWithStyleKind:kind];
+  primaryColors = [v59 primaryColors];
+  v15 = primaryColors;
+  if ([primaryColors count] >= 0xD)
   {
-    v15 = [v14 subarrayWithRange:{0, 12}];
+    v15 = [primaryColors subarrayWithRange:{0, 12}];
   }
 
   v58 = v15;
@@ -4621,7 +4621,7 @@ LABEL_7:
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v62 isEqualToString:v8])
+  if ([kind isEqualToString:v8])
   {
     v78 = 0u;
     v79 = 0u;
@@ -4647,10 +4647,10 @@ LABEL_7:
           v23 = v22;
           [v21 hue];
           v25 = v24;
-          [v9 hue];
+          [color hue];
           if (PXFloatEqualToFloatWithTolerance())
           {
-            [v9 pu_toneVariation];
+            [color pu_toneVariation];
             v23 = v26;
           }
 
@@ -4673,15 +4673,15 @@ LABEL_7:
 
   else
   {
-    if (([v62 isEqualToString:*MEMORY[0x1E69C0B08]] & 1) == 0 && (objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) == 0 && !objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B18]))
+    if (([kind isEqualToString:*MEMORY[0x1E69C0B08]] & 1) == 0 && (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) == 0 && !objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B18]))
     {
-      if ([v62 isEqualToString:*MEMORY[0x1E69C0B10]])
+      if ([kind isEqualToString:*MEMORY[0x1E69C0B10]])
       {
-        [v9 hue];
+        [color hue];
         v52 = v51;
-        [v9 chroma];
+        [color chroma];
         v54 = v53;
-        [v9 pu_lumaVariation];
+        [color pu_lumaVariation];
         v56 = v55;
         v57 = objc_alloc(getPREditorColorPickerCustomColorClass());
         v69[0] = MEMORY[0x1E69E9820];
@@ -4723,13 +4723,13 @@ LABEL_7:
           v40 = v39;
           [v36 chroma];
           v42 = v41;
-          [v9 hue];
+          [color hue];
           if (PXFloatEqualToFloatWithTolerance())
           {
-            [v9 chroma];
+            [color chroma];
             if (PXFloatEqualToFloatWithTolerance())
             {
-              [v9 pu_lumaVariation];
+              [color pu_lumaVariation];
               v38 = v43;
             }
           }
@@ -4759,23 +4759,23 @@ LABEL_36:
   v31 = v63;
 LABEL_37:
   [v31 setColorWellDisplayMode:0];
-  if (([v62 isEqualToString:*MEMORY[0x1E69C0B08]] & 1) != 0 || (objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || objc_msgSend(v62, "isEqualToString:", *MEMORY[0x1E69C0B18]))
+  if (([kind isEqualToString:*MEMORY[0x1E69C0B08]] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B20]) & 1) != 0 || objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0B18]))
   {
     [v63 setColorWellDisplayMode:2];
   }
 
-  v47 = [(PUWallpaperPosterEditorController *)self editor];
-  v48 = [v47 pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierColorPicker"];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  v48 = [editor pu_viewForMenuElementIdentifier:@"PUPosterEditorActionIdentifierColorPicker"];
 
   [v63 setColorPickerSourceItem:v48];
   objc_initWeak(&location, self);
-  v49 = [(PUWallpaperPosterEditorController *)self editor];
+  editor2 = [(PUWallpaperPosterEditorController *)self editor];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invoke_5;
   v66[3] = &unk_1E7B78708;
   objc_copyWeak(&v67, &location);
-  [v49 presentColorPickerWithConfiguration:v63 changeHandler:v66];
+  [editor2 presentColorPickerWithConfiguration:v63 changeHandler:v66];
 
   objc_destroyWeak(&v67);
   objc_destroyWeak(&location);
@@ -4844,26 +4844,26 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
 
 - (BOOL)_currentStyleSupportsColorPicker
 {
-  v2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v3 = [v2 style];
-  v4 = [v3 hasColorParameter];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
+  hasColorParameter = [style hasColorParameter];
 
-  return v4;
+  return hasColorParameter;
 }
 
-- (void)_setCurrentStyleIsHighKey:(BOOL)a3
+- (void)_setCurrentStyleIsHighKey:(BOOL)key
 {
-  v3 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v6 = [v5 style];
+  keyCopy = key;
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  if ([v6 hasTonalityMode])
+  if ([style hasTonalityMode])
   {
     v7 = MEMORY[0x1E69BDEE0];
-    v8 = [v6 bakedStyle];
-    v9 = [v7 styleWithBakedStyle:v8];
+    bakedStyle = [style bakedStyle];
+    v9 = [v7 styleWithBakedStyle:bakedStyle];
 
-    if (v3)
+    if (keyCopy)
     {
       v10 = 3;
     }
@@ -4874,14 +4874,14 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
     }
 
     [v9 setTonality:v10];
-    v11 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__PUWallpaperPosterEditorController__setCurrentStyleIsHighKey___block_invoke;
     v13[3] = &unk_1E7B80328;
     v14 = v9;
     v12 = v9;
-    [v11 performChanges:v13];
+    [currentLayerStackViewModel2 performChanges:v13];
 
     [(PUWallpaperPosterEditorController *)self _renderAfterStyleChange];
   }
@@ -4889,12 +4889,12 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
 
 - (BOOL)_currentStyleIsHighKey
 {
-  v2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v3 = [v2 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
 
-  if ([v3 hasTonalityMode])
+  if ([style hasTonalityMode])
   {
-    v4 = [v3 tonality] == 3;
+    v4 = [style tonality] == 3;
   }
 
   else
@@ -4907,34 +4907,34 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
 
 - (BOOL)_currentStyleSupportsHighAndLowKeyModes
 {
-  v2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v3 = [v2 style];
-  v4 = [v3 hasTonalityMode];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  style = [currentLayerStackViewModel style];
+  hasTonalityMode = [style hasTonalityMode];
 
-  return v4;
+  return hasTonalityMode;
 }
 
 - (void)_renderAfterStyleChange
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v5 = [v3 currentLayerStackViewModelUpdater];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModelUpdater = [editViewModel currentLayerStackViewModelUpdater];
 
-  v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  [v5 renderOnscreenModelAfterStyleChange:v4];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  [currentLayerStackViewModelUpdater renderOnscreenModelAfterStyleChange:currentLayerStackViewModel];
 }
 
 - (void)_toggleHeadroom
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 isUsingHeadroom];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  isUsingHeadroom = [editViewModel isUsingHeadroom];
 
-  v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PUWallpaperPosterEditorController__toggleHeadroom__block_invoke;
   v6[3] = &__block_descriptor_33_e49_v16__0___PUWallpaperPosterMutableEditViewModel__8l;
-  v7 = v4;
-  [v5 performChanges:v6];
+  v7 = isUsingHeadroom;
+  [editViewModel2 performChanges:v6];
 
   [(PUWallpaperPosterEditorController *)self _updateUserTransformView];
 }
@@ -4944,19 +4944,19 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
   v20 = *MEMORY[0x1E69E9840];
   if (PFOSVariantHasInternalUI())
   {
-    v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v4 = [v3 spatialPhotoFailuresDiagnosticDescription];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    spatialPhotoFailuresDiagnosticDescription = [currentLayerStackViewModel spatialPhotoFailuresDiagnosticDescription];
 
-    v5 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"%@", v4}];
+    v5 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"%@", spatialPhotoFailuresDiagnosticDescription}];
     v6 = PLWallpaperGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = spatialPhotoFailuresDiagnosticDescription;
       _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_ERROR, "Presenting spatial diagnostics alert with error: %@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"3D Effect Error (Internal Only)" message:v4 preferredStyle:1];
+    v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"3D Effect Error (Internal Only)" message:spatialPhotoFailuresDiagnosticDescription preferredStyle:1];
     v8 = MEMORY[0x1E69DC648];
     v9 = PXLocalizedString();
     v17[0] = MEMORY[0x1E69E9820];
@@ -4978,8 +4978,8 @@ id __61__PUWallpaperPosterEditorController__presentStyleColorPicker__block_invok
     v13 = [v11 actionWithTitle:@"Tap to Radar" style:0 handler:v15];
     [v7 addAction:v13];
 
-    v14 = [(PUWallpaperPosterEditorController *)self editor];
-    [v14 presentViewController:v7 animated:1 completion:0];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor presentViewController:v7 animated:1 completion:0];
   }
 }
 
@@ -5006,9 +5006,9 @@ uint64_t __78__PUWallpaperPosterEditorController__presentSpatialPhotoErrorDiagno
   {
     if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalSpatialPhoto])
     {
-      v3 = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
-      v4 = v3;
-      [(PUWallpaperPosterEditorController *)self _setShuffleEffect:2 enabled:!v3];
+      _isSpatialPhotoEnabled = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled];
+      v4 = _isSpatialPhotoEnabled;
+      [(PUWallpaperPosterEditorController *)self _setShuffleEffect:2 enabled:!_isSpatialPhotoEnabled];
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       if (v4)
       {
@@ -5028,20 +5028,20 @@ LABEL_12:
 
     else
     {
-      v6 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v7 = [v6 spatialPhotoEnabled];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+      spatialPhotoEnabled = [editViewModel spatialPhotoEnabled];
 
-      if (v7)
+      if (spatialPhotoEnabled)
       {
         goto LABEL_4;
       }
     }
 
-    v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v9 = [v8 currentLayerStackViewModel];
-    v10 = [v9 debugSpatialPhotoGenerationError];
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    currentLayerStackViewModel = [editViewModel2 currentLayerStackViewModel];
+    debugSpatialPhotoGenerationError = [currentLayerStackViewModel debugSpatialPhotoGenerationError];
 
-    if (v10)
+    if (debugSpatialPhotoGenerationError)
     {
       [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoErrorDiagnosticsAlert];
     }
@@ -5071,10 +5071,10 @@ void __68__PUWallpaperPosterEditorController__handleToggleSpatialPhotoAction__bl
     return 0;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v5 = [v4 spatialPhotoFailedUnexpectedly];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  spatialPhotoFailedUnexpectedly = [currentLayerStackViewModel spatialPhotoFailedUnexpectedly];
 
-  return v5;
+  return spatialPhotoFailedUnexpectedly;
 }
 
 - (BOOL)_canEnableSpatialPhotoEffect
@@ -5084,10 +5084,10 @@ void __68__PUWallpaperPosterEditorController__handleToggleSpatialPhotoAction__bl
     return 1;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v5 = [v4 canEnableSpatialPhoto];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  canEnableSpatialPhoto = [currentLayerStackViewModel canEnableSpatialPhoto];
 
-  return v5;
+  return canEnableSpatialPhoto;
 }
 
 - (BOOL)_isSpatialPhotoPossible
@@ -5097,28 +5097,28 @@ void __68__PUWallpaperPosterEditorController__handleToggleSpatialPhotoAction__bl
     goto LABEL_8;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v3 px_isBackdrop])
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment px_isBackdrop])
   {
     goto LABEL_4;
   }
 
-  v5 = [(PUWallpaperPosterEditorController *)self environment];
-  v6 = [v5 px_isCallServices];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isCallServices = [environment2 px_isCallServices];
 
-  if ((v6 & 1) != 0 || (-[PUWallpaperPosterEditorController environment](self, "environment"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 editingVariant], v7, v8 == 2))
+  if ((px_isCallServices & 1) != 0 || (-[PUWallpaperPosterEditorController environment](self, "environment"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 editingVariant], v7, v8 == 2))
   {
 LABEL_8:
     LOBYTE(v4) = 0;
     return v4;
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v3 = [v10 style];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  environment = [currentLayerStackViewModel style];
 
-  if (([v3 hasColorParameter] & 1) == 0)
+  if (([environment hasColorParameter] & 1) == 0)
   {
-    v4 = [v3 hasTonalityMode] ^ 1;
+    v4 = [environment hasTonalityMode] ^ 1;
     goto LABEL_5;
   }
 
@@ -5133,14 +5133,14 @@ LABEL_5:
 {
   if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalSpatialPhoto])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    v4 = ([v3 enabledEffects] >> 1) & 1;
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    v4 = ([shuffleResourceManager enabledEffects] >> 1) & 1;
   }
 
   else
   {
-    v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    LOBYTE(v4) = [v3 spatialPhotoEnabled];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self editViewModel];
+    LOBYTE(v4) = [shuffleResourceManager spatialPhotoEnabled];
   }
 
   return v4;
@@ -5148,10 +5148,10 @@ LABEL_5:
 
 - (BOOL)_canEnableDepthEffect
 {
-  v3 = [(PUWallpaperPosterEditorController *)self editor];
-  v4 = [v3 pu_isDepthEffectDisallowed];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  pu_isDepthEffectDisallowed = [editor pu_isDepthEffectDisallowed];
 
-  if (v4)
+  if (pu_isDepthEffectDisallowed)
   {
     return 0;
   }
@@ -5161,18 +5161,18 @@ LABEL_5:
     return 1;
   }
 
-  v6 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v7 = [v6 canEnableDepthEffect];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  canEnableDepthEffect = [currentLayerStackViewModel canEnableDepthEffect];
 
-  return v7;
+  return canEnableDepthEffect;
 }
 
 - (BOOL)_isDepthEffectPossible
 {
-  v3 = [MEMORY[0x1E69BDE40] globalSettings];
-  v4 = [v3 forceEnableSegmentation];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  forceEnableSegmentation = [globalSettings forceEnableSegmentation];
 
-  if ((v4 & 1) == 0)
+  if ((forceEnableSegmentation & 1) == 0)
   {
     v5 = PFPosterDeviceSupportsSegmentation();
     if (!v5)
@@ -5180,10 +5180,10 @@ LABEL_5:
       return v5;
     }
 
-    v6 = [MEMORY[0x1E69BDE40] globalSettings];
-    v7 = [v6 disableSegmentation];
+    globalSettings2 = [MEMORY[0x1E69BDE40] globalSettings];
+    disableSegmentation = [globalSettings2 disableSegmentation];
 
-    if (v7)
+    if (disableSegmentation)
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -5196,18 +5196,18 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v8 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  v9 = [v8 settlingEffectEnabled];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  settlingEffectEnabled = [currentLayerStackViewModel settlingEffectEnabled];
 
-  if (v9)
+  if (settlingEffectEnabled)
   {
     goto LABEL_9;
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self environment];
-  v11 = [v10 px_isBackdrop];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  px_isBackdrop = [environment px_isBackdrop];
 
-  if (v11)
+  if (px_isBackdrop)
   {
     goto LABEL_9;
   }
@@ -5220,46 +5220,46 @@ LABEL_3:
 
   else
   {
-    v12 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v13 = [v12 hasMatte];
+    currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    hasMatte = [currentLayerStackViewModel2 hasMatte];
 
-    LOBYTE(v5) = v13;
+    LOBYTE(v5) = hasMatte;
   }
 
   return v5;
 }
 
-- (void)_setShuffleEffect:(unint64_t)a3 supported:(BOOL)a4
+- (void)_setShuffleEffect:(unint64_t)effect supported:(BOOL)supported
 {
-  v4 = a4;
-  v6 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v8 = v6;
-  if (v4)
+  supportedCopy = supported;
+  shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  v8 = shuffleResourceManager;
+  if (supportedCopy)
   {
-    v7 = [v6 supportedEffects] | a3;
+    v7 = [shuffleResourceManager supportedEffects] | effect;
   }
 
   else
   {
-    v7 = [v6 supportedEffects] & ~a3;
+    v7 = [shuffleResourceManager supportedEffects] & ~effect;
   }
 
   [v8 setSupportedEffects:v7];
 }
 
-- (void)_setShuffleEffect:(unint64_t)a3 enabled:(BOOL)a4
+- (void)_setShuffleEffect:(unint64_t)effect enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v8 = v6;
-  if (v4)
+  enabledCopy = enabled;
+  shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  v8 = shuffleResourceManager;
+  if (enabledCopy)
   {
-    v7 = [v6 enabledEffects] | a3;
+    v7 = [shuffleResourceManager enabledEffects] | effect;
   }
 
   else
   {
-    v7 = [v6 enabledEffects] & ~a3;
+    v7 = [shuffleResourceManager enabledEffects] & ~effect;
   }
 
   [v8 setEnabledEffects:v7];
@@ -5276,17 +5276,17 @@ LABEL_3:
 
   else
   {
-    v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    LOBYTE(v3) = [v4 depthEnabled] ^ 1;
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    LOBYTE(v3) = [editViewModel depthEnabled] ^ 1;
   }
 
-  v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__PUWallpaperPosterEditorController__toggleDepth__block_invoke;
   v6[3] = &__block_descriptor_33_e49_v16__0___PUWallpaperPosterMutableEditViewModel__8l;
   v7 = v3;
-  [v5 performChanges:v6];
+  [editViewModel2 performChanges:v6];
 }
 
 - (BOOL)_isDepthEnabledInAnyOrientation
@@ -5296,51 +5296,51 @@ LABEL_3:
     return 1;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v5 = [v4 depthEnabledInAnyOrientation];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  depthEnabledInAnyOrientation = [editViewModel depthEnabledInAnyOrientation];
 
-  return v5;
+  return depthEnabledInAnyOrientation;
 }
 
 - (BOOL)_isDepthEnabled
 {
   if ([(PUWallpaperPosterEditorController *)self _isShuffleModeWithGlobalDepth])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    v4 = [v3 enabledEffects] & 1;
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    v4 = [shuffleResourceManager enabledEffects] & 1;
   }
 
   else
   {
-    v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    LOBYTE(v4) = [v3 depthEnabled];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self editViewModel];
+    LOBYTE(v4) = [shuffleResourceManager depthEnabled];
   }
 
   return v4;
 }
 
-- (void)userTransformView:(id)a3 didChangeIsUserInteracting:(BOOL)a4
+- (void)userTransformView:(id)view didChangeIsUserInteracting:(BOOL)interacting
 {
-  v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__PUWallpaperPosterEditorController_userTransformView_didChangeIsUserInteracting___block_invoke;
   v6[3] = &__block_descriptor_33_e49_v16__0___PUWallpaperPosterMutableEditViewModel__8l;
-  v7 = a4;
-  [v5 performChanges:v6];
+  interactingCopy = interacting;
+  [editViewModel performChanges:v6];
 }
 
-- (void)userTransformView:(id)a3 didChangeUserAffineTransform:(CGAffineTransform *)a4 isUserInteracting:(BOOL)a5
+- (void)userTransformView:(id)view didChangeUserAffineTransform:(CGAffineTransform *)transform isUserInteracting:(BOOL)interacting
 {
-  if (a5)
+  if (interacting)
   {
-    v6 = a3;
-    [v6 visibleRect];
+    viewCopy = view;
+    [viewCopy visibleRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v6 untransformedContentFrame];
+    [viewCopy untransformedContentFrame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -5363,13 +5363,13 @@ LABEL_3:
     }
 
     v43 = v24;
-    v27 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    [v27 contentRect];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    [currentLayerStackViewModel contentRect];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    [v27 imageSize];
+    [currentLayerStackViewModel imageSize];
     v38 = v29 + v23 * v33;
     v39 = 0.0;
     v40 = 0.0;
@@ -5386,7 +5386,7 @@ LABEL_3:
       v39 = v43 * v35 / v37;
     }
 
-    v42 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __102__PUWallpaperPosterEditorController_userTransformView_didChangeUserAffineTransform_isUserInteracting___block_invoke;
@@ -5395,54 +5395,54 @@ LABEL_3:
     *&v44[5] = v41;
     *&v44[6] = v40;
     *&v44[7] = v39;
-    [v42 performChanges:v44];
+    [editViewModel performChanges:v44];
   }
 }
 
-- (void)setIsUserTransformDisabled:(BOOL)a3
+- (void)setIsUserTransformDisabled:(BOOL)disabled
 {
-  if (self->_isUserTransformDisabled != a3)
+  if (self->_isUserTransformDisabled != disabled)
   {
-    v4 = a3;
-    self->_isUserTransformDisabled = a3;
-    v5 = [(PUWallpaperPosterEditorController *)self userTransformView];
-    [v5 setUserInteractionEnabled:!v4];
+    disabledCopy = disabled;
+    self->_isUserTransformDisabled = disabled;
+    userTransformView = [(PUWallpaperPosterEditorController *)self userTransformView];
+    [userTransformView setUserInteractionEnabled:!disabledCopy];
   }
 }
 
 - (void)_updateUserTransformIsDisabled
 {
-  v3 = [(PUWallpaperPosterEditorController *)self _posterWantsUserTransformDisabled];
+  _posterWantsUserTransformDisabled = [(PUWallpaperPosterEditorController *)self _posterWantsUserTransformDisabled];
 
-  [(PUWallpaperPosterEditorController *)self setIsUserTransformDisabled:v3];
+  [(PUWallpaperPosterEditorController *)self setIsUserTransformDisabled:_posterWantsUserTransformDisabled];
 }
 
 - (BOOL)_posterWantsUserTransformDisabled
 {
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v4 = [v3 configurationType];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  configurationType = [posterConfiguration configurationType];
 
-  if (v4 != 1)
+  if (configurationType != 1)
   {
     return 0;
   }
 
-  v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v6 = [v5 shuffleConfiguration];
+  posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration2 shuffleConfiguration];
 
-  v7 = [v6 shuffleType] != 1;
+  v7 = [shuffleConfiguration shuffleType] != 1;
   return v7;
 }
 
 - (void)_updateUserTransformView
 {
-  v4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-  if (v4)
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  if (currentLayerStackViewModel)
   {
-    v5 = [(PUWallpaperPosterEditorController *)self environment];
-    v6 = [v5 px_isCallServices];
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    px_isCallServices = [environment px_isCallServices];
 
-    if (v6)
+    if (px_isCallServices)
     {
       [(PUWallpaperPosterEditorController *)self backgroundView];
     }
@@ -5457,12 +5457,12 @@ LABEL_3:
     v45 = v9;
     v46 = v10;
     v12 = v11;
-    [v4 contentRect];
+    [currentLayerStackViewModel contentRect];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [v4 visibleFrame];
+    [currentLayerStackViewModel visibleFrame];
     v22 = v21;
     v43 = v23;
     v25 = v24;
@@ -5473,8 +5473,8 @@ LABEL_3:
     v51.size.height = v20;
     if (CGRectIsEmpty(v51))
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2935 description:@"Layout rect must be valid"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2935 description:@"Layout rect must be valid"];
     }
 
     v28 = v14 - v22;
@@ -5497,8 +5497,8 @@ LABEL_3:
     v33 = v46 + v31 * v12;
     v34 = v45 * v30;
     v35 = v12 * v29;
-    v36 = [(PUWallpaperPosterEditorController *)self userTransformView];
-    [v36 setContentPixelSize:{v18, v20}];
+    userTransformView = [(PUWallpaperPosterEditorController *)self userTransformView];
+    [userTransformView setContentPixelSize:{v18, v20}];
     v37 = 0.0;
     if ((v18 != -1.79769313e308 || v20 != -1.79769313e308) && (v18 != *MEMORY[0x1E695F060] || v20 != *(MEMORY[0x1E695F060] + 8)))
     {
@@ -5508,7 +5508,7 @@ LABEL_3:
     PURectWithAspectRatioFillingRect(v37, v44, v46, v45, v12);
     v39 = v38;
     v41 = v40;
-    [v36 setUntransformedContentFrame:{0.0, 0.0}];
+    [userTransformView setUntransformedContentFrame:{0.0, 0.0}];
     v49 = 0u;
     v50 = 0u;
     v48 = 0u;
@@ -5516,48 +5516,48 @@ LABEL_3:
     v47[0] = v48;
     v47[1] = v49;
     v47[2] = v50;
-    [v36 setUserAffineTransform:v47];
-    [v36 setRequireTwoTouchesForPan:1];
+    [userTransformView setUserAffineTransform:v47];
+    [userTransformView setRequireTwoTouchesForPan:1];
   }
 }
 
 - (void)_setupUserTransformView
 {
-  v3 = [(PUWallpaperPosterEditorController *)self userTransformView];
+  userTransformView = [(PUWallpaperPosterEditorController *)self userTransformView];
 
-  if (v3)
+  if (userTransformView)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self userTransformView];
-    [v4 removeFromSuperview];
+    userTransformView2 = [(PUWallpaperPosterEditorController *)self userTransformView];
+    [userTransformView2 removeFromSuperview];
 
     [(PUWallpaperPosterEditorController *)self setUserTransformView:0];
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  [v10 bounds];
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  [contentOverlayContainerView bounds];
   PXRectWithOriginAndSize();
   v9 = [[PUUserTransformView alloc] initWithFrame:v5, v6, v7, v8];
   [(PUUserTransformView *)v9 setDelegate:self];
   [(PUUserTransformView *)v9 setAutoresizingMask:18];
-  [v10 addSubview:v9];
+  [contentOverlayContainerView addSubview:v9];
   [(PUWallpaperPosterEditorController *)self setUserTransformView:v9];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (a5 == "EditModelObservationContext")
+  changeCopy = change;
+  observableCopy = observable;
+  v10 = observableCopy;
+  if (context == "EditModelObservationContext")
   {
-    if (v6)
+    if (changeCopy)
     {
-      v12 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v11 = [v12 currentLayerStackViewModel];
+      editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+      currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
 
-      if ([v11 showsDebugHUD])
+      if ([currentLayerStackViewModel showsDebugHUD])
       {
-        [(PUWallpaperPosterEditorController *)self _updateLayerStackViewModelProperties:v11];
+        [(PUWallpaperPosterEditorController *)self _updateLayerStackViewModelProperties:currentLayerStackViewModel];
       }
 
       goto LABEL_13;
@@ -5566,9 +5566,9 @@ LABEL_3:
     goto LABEL_105;
   }
 
-  if (a5 == "LayerStackViewModelObservationContext")
+  if (context == "LayerStackViewModelObservationContext")
   {
-    v13 = v9;
+    v13 = observableCopy;
     if (v13)
     {
       objc_opt_class();
@@ -5577,25 +5577,25 @@ LABEL_3:
         goto LABEL_16;
       }
 
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v53 = objc_opt_class();
       v52 = NSStringFromClass(v53);
-      v54 = [v13 px_descriptionForAssertionMessage];
-      [v50 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2707 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v52, v54}];
+      px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2707 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v52, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
-      [v50 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2707 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v52}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2707 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v52}];
     }
 
 LABEL_16:
-    v14 = [v13 currentLayerStackPropertiesChange];
-    v15 = [v13 stylePropertiesChange];
-    if ((v6 & 2) != 0)
+    currentLayerStackPropertiesChange = [v13 currentLayerStackPropertiesChange];
+    stylePropertiesChange = [v13 stylePropertiesChange];
+    if ((changeCopy & 2) != 0)
     {
       [(PUWallpaperPosterEditorController *)self _updateLayerStackViewModelProperties:v13];
       [(PUWallpaperPosterEditorController *)self _updateContentOverlayContainerView];
@@ -5604,12 +5604,12 @@ LABEL_16:
       [(PUWallpaperPosterEditorController *)self _updatePreferredTitleBounds];
     }
 
-    if ((*&v6 & 0x800200) != 0)
+    if ((*&changeCopy & 0x800200) != 0)
     {
       [(PUWallpaperPosterEditorController *)self _updatePreferredTitleBounds];
     }
 
-    if ((v6 & 0x800000) != 0)
+    if ((changeCopy & 0x800000) != 0)
     {
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
@@ -5619,28 +5619,28 @@ LABEL_16:
       [MEMORY[0x1E69DD250] animateWithDuration:v68 animations:0.3];
     }
 
-    if (v14 & 0x55 | *&v6 & 0x81000)
+    if (currentLayerStackPropertiesChange & 0x55 | *&changeCopy & 0x81000)
     {
       [(PUWallpaperPosterEditorController *)self _updateLayerStackViewModelProperties:v13];
-      v16 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-      if (v16 == v13)
+      if (currentLayerStackViewModel2 == v13)
       {
         [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       }
     }
 
-    if ((v6 & 0x4000008) != 0)
+    if ((changeCopy & 0x4000008) != 0)
     {
-      v17 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-      if (v17 == v13)
+      if (currentLayerStackViewModel3 == v13)
       {
         [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       }
     }
 
-    if ((v14 & 0x40) != 0)
+    if ((currentLayerStackPropertiesChange & 0x40) != 0)
     {
       [(PUWallpaperPosterEditorController *)self _updateUserTransformView];
       [(PUWallpaperPosterEditorController *)self _dismissPinchToZoomHint];
@@ -5652,74 +5652,74 @@ LABEL_16:
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
-    if (v15 & 0xB | (v6 & 0x100) | v14 & 8)
+    if (stylePropertiesChange & 0xB | (changeCopy & 0x100) | currentLayerStackPropertiesChange & 8)
     {
-      v18 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel4 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-      if (v18 == v13)
+      if (currentLayerStackViewModel4 == v13)
       {
         [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       }
     }
 
-    if ((v15 & 0xE) != 0)
+    if ((stylePropertiesChange & 0xE) != 0)
     {
-      v19 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel5 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-      if (v19 == v13)
+      if (currentLayerStackViewModel5 == v13)
       {
         [(PUWallpaperPosterEditorController *)self _updateCurrentStyle];
       }
     }
 
-    if ((v14 & 8) != 0)
+    if ((currentLayerStackPropertiesChange & 8) != 0)
     {
-      v20 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel6 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-      if (v20 == v13)
+      if (currentLayerStackViewModel6 == v13)
       {
         [(PUWallpaperPosterEditorController *)self _displayNextHint];
       }
     }
 
-    if ((v14 & 2) == 0)
+    if ((currentLayerStackPropertiesChange & 2) == 0)
     {
       goto LABEL_59;
     }
 
-    v21 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel7 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
 
-    if (v21 != v13)
+    if (currentLayerStackViewModel7 != v13)
     {
       goto LABEL_59;
     }
 
-    v22 = [v13 currentLayerStack];
-    v23 = [v22 settlingEffectLayer];
+    currentLayerStack = [v13 currentLayerStack];
+    settlingEffectLayer = [currentLayerStack settlingEffectLayer];
 
-    if (v23)
+    if (settlingEffectLayer)
     {
-      v24 = [v13 currentLayerStack];
-      v25 = [v24 settlingEffectEnabled];
+      currentLayerStack2 = [v13 currentLayerStack];
+      settlingEffectEnabled = [currentLayerStack2 settlingEffectEnabled];
 
-      if (v25)
+      if (settlingEffectEnabled)
       {
         [(PUWallpaperPosterEditorController *)self _startSettlingEffectPreviewAfterDelay];
       }
     }
 
-    v26 = [v13 currentLayerStack];
-    v27 = [v26 spatialPhotoBackgroundLayer];
-    if (v27)
+    currentLayerStack3 = [v13 currentLayerStack];
+    spatialPhotoBackgroundLayer = [currentLayerStack3 spatialPhotoBackgroundLayer];
+    if (spatialPhotoBackgroundLayer)
     {
     }
 
     else
     {
-      v35 = [v13 currentLayerStack];
-      v36 = [v35 spatialPhotoBackgroundBackfillLayer];
+      currentLayerStack4 = [v13 currentLayerStack];
+      spatialPhotoBackgroundBackfillLayer = [currentLayerStack4 spatialPhotoBackgroundBackfillLayer];
 
-      if (!v36)
+      if (!spatialPhotoBackgroundBackfillLayer)
       {
         goto LABEL_59;
       }
@@ -5728,18 +5728,18 @@ LABEL_16:
     [(PUWallpaperPosterEditorController *)self _updateLayerStackViewModelProperties:v13];
     [(PUWallpaperPosterEditorController *)self _updateUserTransformView];
 LABEL_59:
-    if ((v6 & 0x2000000) != 0)
+    if ((changeCopy & 0x2000000) != 0)
     {
-      v37 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v38 = [v37 spatialPhotoEnabled];
+      editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+      spatialPhotoEnabled = [editViewModel2 spatialPhotoEnabled];
 
-      if (v38)
+      if (spatialPhotoEnabled)
       {
         [(PUWallpaperPosterEditorController *)self _presentSpatialPhotoErrorDiagnosticsAlert];
       }
     }
 
-    if ((v6 & 0x8000000) != 0)
+    if ((changeCopy & 0x8000000) != 0)
     {
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       if ([v13 isLoadingSpatialPhoto])
@@ -5758,7 +5758,7 @@ LABEL_59:
       }
     }
 
-    if ((v6 & 0x10000000) != 0)
+    if ((changeCopy & 0x10000000) != 0)
     {
       [v13 spatialPhotoLoadingProgress];
       [(PUWallpaperPosterEditorController *)self _updateProgressIndicator:?];
@@ -5767,60 +5767,60 @@ LABEL_59:
     goto LABEL_105;
   }
 
-  if (a5 == "EditViewModelObservationContext")
+  if (context == "EditViewModelObservationContext")
   {
-    if (v6)
+    if (changeCopy)
     {
       [(PUWallpaperPosterEditorController *)self _updateCurrentLayerStackViewModel];
       [(PUWallpaperPosterEditorController *)self _updateCurrentStyle];
     }
 
-    if ((v6 & 2) == 0)
+    if ((changeCopy & 2) == 0)
     {
 LABEL_72:
-      if ((v6 & 4) != 0)
+      if ((changeCopy & 4) != 0)
       {
         [(PUWallpaperPosterEditorController *)self _updateVisibleLayerStackViewModels];
       }
 
-      if ((v6 & 0x200) != 0)
+      if ((changeCopy & 0x200) != 0)
       {
-        v40 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v41 = [v40 stylesChange];
+        editViewModel3 = [(PUWallpaperPosterEditorController *)self editViewModel];
+        stylesChange = [editViewModel3 stylesChange];
 
-        if ((v41 & 2) != 0)
+        if ((stylesChange & 2) != 0)
         {
-          v42 = [(PUWallpaperPosterEditorController *)self editor];
-          [v42 pu_updateLooks];
+          editor = [(PUWallpaperPosterEditorController *)self editor];
+          [editor pu_updateLooks];
           goto LABEL_81;
         }
 
-        if (v41)
+        if (stylesChange)
         {
           [(PUWallpaperPosterEditorController *)self _updateCurrentStyle];
         }
 
-        if ((v41 & 4) != 0)
+        if ((stylesChange & 4) != 0)
         {
-          v42 = [(PUWallpaperPosterEditorController *)self editor];
-          [v42 pu_updateLuminanceValuesForLooks];
+          editor = [(PUWallpaperPosterEditorController *)self editor];
+          [editor pu_updateLuminanceValuesForLooks];
 LABEL_81:
         }
       }
 
-      if ((v6 & 0x102) != 0 && [(PUWallpaperPosterEditorController *)self hint]== 2)
+      if ((changeCopy & 0x102) != 0 && [(PUWallpaperPosterEditorController *)self hint]== 2)
       {
         [(PUWallpaperPosterEditorController *)self _dismissPinchToZoomHint];
       }
 
-      if ((v6 & 0x10000) != 0)
+      if ((changeCopy & 0x10000) != 0)
       {
         [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
         [(PUWallpaperPosterEditorController *)self _showTrySettlingEffectTip];
-        if ((v6 & 0x1000) == 0)
+        if ((changeCopy & 0x1000) == 0)
         {
 LABEL_87:
-          if ((v6 & 0x4000) == 0)
+          if ((changeCopy & 0x4000) == 0)
           {
             goto LABEL_88;
           }
@@ -5829,17 +5829,17 @@ LABEL_87:
         }
       }
 
-      else if ((v6 & 0x1000) == 0)
+      else if ((changeCopy & 0x1000) == 0)
       {
         goto LABEL_87;
       }
 
-      v43 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v44 = [v43 isUsingHeadroom];
-      v45 = [(PUWallpaperPosterEditorController *)self hint];
-      if (v44)
+      editViewModel4 = [(PUWallpaperPosterEditorController *)self editViewModel];
+      isUsingHeadroom = [editViewModel4 isUsingHeadroom];
+      hint = [(PUWallpaperPosterEditorController *)self hint];
+      if (isUsingHeadroom)
       {
-        if (v45 == 3)
+        if (hint == 3)
         {
           [(PUWallpaperPosterEditorController *)self _showHintAnimated:1 completion:0];
         }
@@ -5850,17 +5850,17 @@ LABEL_87:
         }
       }
 
-      else if (v45 == 3)
+      else if (hint == 3)
       {
         [(PUWallpaperPosterEditorController *)self _hideHintAnimated:1 completion:0];
       }
 
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
 
-      if ((v6 & 0x4000) == 0)
+      if ((changeCopy & 0x4000) == 0)
       {
 LABEL_88:
-        if ((v6 & 0x80) == 0)
+        if ((changeCopy & 0x80) == 0)
         {
           goto LABEL_89;
         }
@@ -5872,10 +5872,10 @@ LABEL_100:
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       [(PUWallpaperPosterEditorController *)self _updateEditorPreferences];
       [(PUWallpaperPosterEditorController *)self _updateUserTransformIsDisabled];
-      if ((v6 & 0x80) == 0)
+      if ((changeCopy & 0x80) == 0)
       {
 LABEL_89:
-        if ((v6 & 0x8000) == 0)
+        if ((changeCopy & 0x8000) == 0)
         {
           goto LABEL_90;
         }
@@ -5884,28 +5884,28 @@ LABEL_89:
       }
 
 LABEL_101:
-      v46 = [(PUWallpaperPosterEditorController *)self _isDepthEnabledInAnyOrientation];
-      v47 = [(PUWallpaperPosterEditorController *)self editor];
+      _isDepthEnabledInAnyOrientation = [(PUWallpaperPosterEditorController *)self _isDepthEnabledInAnyOrientation];
+      editor2 = [(PUWallpaperPosterEditorController *)self editor];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __66__PUWallpaperPosterEditorController_observable_didChange_context___block_invoke_5;
       v60[3] = &__block_descriptor_33_e69_v24__0___PUMutablePosterEditorPreferences__8___PXPosterTransition__16l;
-      v61 = v46;
-      [v47 pu_updatePreferences:v60];
+      v61 = _isDepthEnabledInAnyOrientation;
+      [editor2 pu_updatePreferences:v60];
 
-      if ((v6 & 0x8000) == 0)
+      if ((changeCopy & 0x8000) == 0)
       {
 LABEL_90:
-        if ((v6 & 8) == 0)
+        if ((changeCopy & 8) == 0)
         {
           goto LABEL_105;
         }
 
 LABEL_103:
-        v48 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v49 = [v48 isUserPanningOrZooming];
+        editViewModel5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+        isUserPanningOrZooming = [editViewModel5 isUserPanningOrZooming];
 
-        if ((v49 & 1) == 0)
+        if ((isUserPanningOrZooming & 1) == 0)
         {
           [(PUWallpaperPosterEditorController *)self _updateUserTransformView];
         }
@@ -5915,7 +5915,7 @@ LABEL_103:
 
 LABEL_102:
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
-      if ((v6 & 8) == 0)
+      if ((changeCopy & 8) == 0)
       {
         goto LABEL_105;
       }
@@ -5923,13 +5923,13 @@ LABEL_102:
       goto LABEL_103;
     }
 
-    v28 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v29 = [v28 isUserPanningOrZooming];
+    editViewModel6 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    isUserPanningOrZooming2 = [editViewModel6 isUserPanningOrZooming];
 
-    v30 = [(PUWallpaperPosterEditorController *)self hint];
-    if (v29)
+    hint2 = [(PUWallpaperPosterEditorController *)self hint];
+    if (isUserPanningOrZooming2)
     {
-      if (v30 == 2)
+      if (hint2 == 2)
       {
         [(PUWallpaperPosterEditorController *)self _hideHintAnimated:1 completion:0];
       }
@@ -5937,7 +5937,7 @@ LABEL_102:
       goto LABEL_72;
     }
 
-    if (v30 == 3)
+    if (hint2 == 3)
     {
       [(PUWallpaperPosterEditorController *)self cancelPendingHint];
       objc_initWeak(&location, self);
@@ -5980,10 +5980,10 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if (a5 == "AnimateScrollToStyleKindAnimatorObservationContext" && (v6 & 2) != 0)
+  if (context == "AnimateScrollToStyleKindAnimatorObservationContext" && (changeCopy & 2) != 0)
   {
-    v11 = v9;
-    if (v11)
+    currentLayerStackViewModel = observableCopy;
+    if (currentLayerStackViewModel)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -5991,23 +5991,23 @@ LABEL_71:
         goto LABEL_8;
       }
 
-      v55 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v58 = objc_opt_class();
       v57 = NSStringFromClass(v58);
-      v59 = [v11 px_descriptionForAssertionMessage];
-      [v55 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2893 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v57, v59}];
+      px_descriptionForAssertionMessage2 = [currentLayerStackViewModel px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2893 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v57, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v55 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v56 = objc_opt_class();
       v57 = NSStringFromClass(v56);
-      [v55 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2893 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v57}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2893 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v57}];
     }
 
 LABEL_8:
-    if (([v11 isBeingMutated] & 1) == 0)
+    if (([currentLayerStackViewModel isBeingMutated] & 1) == 0)
     {
       [(PUWallpaperPosterEditorController *)self _animateScrollToStyleKindAnimatorUpdated];
     }
@@ -6095,69 +6095,69 @@ void __65__PUWallpaperPosterEditorController__startPinchToZoomHintTimeout__block
 - (void)_displayNextHint
 {
   [(PUWallpaperPosterEditorController *)self cancelPendingHint];
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 settlingEffectEnabled];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  settlingEffectEnabled = [editViewModel settlingEffectEnabled];
 
-  if (v4)
+  if (settlingEffectEnabled)
   {
     goto LABEL_2;
   }
 
-  v6 = [(PUWallpaperPosterEditorController *)self hint];
-  if (v6 == 3)
+  hint = [(PUWallpaperPosterEditorController *)self hint];
+  if (hint == 3)
   {
     if ([(PUWallpaperPosterEditorController *)self _isShuffle])
     {
       [(PUWallpaperPosterEditorController *)self displayNextHintAfterDelay];
-      v5 = 1;
+      _effectivePinchToZoomHint = 1;
       goto LABEL_13;
     }
 
     goto LABEL_12;
   }
 
-  if (v6 == 1)
+  if (hint == 1)
   {
 LABEL_12:
-    v5 = [(PUWallpaperPosterEditorController *)self _effectivePinchToZoomHint];
+    _effectivePinchToZoomHint = [(PUWallpaperPosterEditorController *)self _effectivePinchToZoomHint];
     goto LABEL_13;
   }
 
-  if (v6)
+  if (hint)
   {
 LABEL_2:
-    v5 = 0;
+    _effectivePinchToZoomHint = 0;
     goto LABEL_13;
   }
 
-  v5 = [(PUWallpaperPosterEditorController *)self _defaultHint];
-  if (v5 == 2)
+  _effectivePinchToZoomHint = [(PUWallpaperPosterEditorController *)self _defaultHint];
+  if (_effectivePinchToZoomHint == 2)
   {
-    v7 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v8 = [v7 userAdjustedVisibleFrame];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    userAdjustedVisibleFrame = [currentLayerStackViewModel userAdjustedVisibleFrame];
 
-    if (v8)
+    if (userAdjustedVisibleFrame)
     {
-      v5 = 0;
+      _effectivePinchToZoomHint = 0;
     }
 
     else
     {
-      v5 = 2;
+      _effectivePinchToZoomHint = 2;
     }
   }
 
 LABEL_13:
 
-  [(PUWallpaperPosterEditorController *)self setHint:v5];
+  [(PUWallpaperPosterEditorController *)self setHint:_effectivePinchToZoomHint];
 }
 
 - (void)_displayDefaultHint
 {
   [(PUWallpaperPosterEditorController *)self cancelPendingHint];
   [(PUWallpaperPosterEditorController *)self setPinchToZoomHintDismissed:0];
-  v3 = [(PUWallpaperPosterEditorController *)self _defaultHint];
-  if (![(PUWallpaperPosterEditorController *)self hint]&& v3 == 2 || ([(PUWallpaperPosterEditorController *)self setHint:v3], [(PUWallpaperPosterEditorController *)self hint]== 1))
+  _defaultHint = [(PUWallpaperPosterEditorController *)self _defaultHint];
+  if (![(PUWallpaperPosterEditorController *)self hint]&& _defaultHint == 2 || ([(PUWallpaperPosterEditorController *)self setHint:_defaultHint], [(PUWallpaperPosterEditorController *)self hint]== 1))
   {
 
     [(PUWallpaperPosterEditorController *)self displayNextHintAfterDelay];
@@ -6197,27 +6197,27 @@ LABEL_13:
   return 2;
 }
 
-- (void)_showHintAnimated:(BOOL)a3 completion:(id)a4
+- (void)_showHintAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(PUWallpaperPosterEditorController *)self hint]&& [(PUWallpaperPosterEditorController *)self _createHintLabelIfNeeded])
   {
-    v8 = [(PUWallpaperPosterEditorController *)self hintLabel];
-    if (!v8)
+    hintLabel = [(PUWallpaperPosterEditorController *)self hintLabel];
+    if (!hintLabel)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2590 description:@"expected hintLabel"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2590 description:@"expected hintLabel"];
     }
 
-    [v8 setHintLabelKind:{-[PUWallpaperPosterEditorController hint](self, "hint")}];
-    v9 = [(PUWallpaperPosterEditorController *)self hintLabel];
+    [hintLabel setHintLabelKind:{-[PUWallpaperPosterEditorController hint](self, "hint")}];
+    hintLabel2 = [(PUWallpaperPosterEditorController *)self hintLabel];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __66__PUWallpaperPosterEditorController__showHintAnimated_completion___block_invoke;
     v11[3] = &unk_1E7B80C88;
-    v12 = v7;
-    [v9 setVisible:1 animated:v4 completion:v11];
+    v12 = completionCopy;
+    [hintLabel2 setVisible:1 animated:animatedCopy completion:v11];
 
     [(PUWallpaperPosterEditorController *)self displayNextHintAfterDelay];
   }
@@ -6234,26 +6234,26 @@ uint64_t __66__PUWallpaperPosterEditorController__showHintAnimated_completion___
   return result;
 }
 
-- (void)_hideHintAnimated:(BOOL)a3 completion:(id)a4
+- (void)_hideHintAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PUWallpaperPosterEditorController *)self hintLabel];
+  animatedCopy = animated;
+  completionCopy = completion;
+  hintLabel = [(PUWallpaperPosterEditorController *)self hintLabel];
 
-  if (v7)
+  if (hintLabel)
   {
-    v8 = [(PUWallpaperPosterEditorController *)self hintLabel];
+    hintLabel2 = [(PUWallpaperPosterEditorController *)self hintLabel];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__PUWallpaperPosterEditorController__hideHintAnimated_completion___block_invoke;
     v9[3] = &unk_1E7B80C88;
-    v10 = v6;
-    [v8 setVisible:0 animated:v4 completion:v9];
+    v10 = completionCopy;
+    [hintLabel2 setVisible:0 animated:animatedCopy completion:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -6270,8 +6270,8 @@ uint64_t __66__PUWallpaperPosterEditorController__hideHintAnimated_completion___
 
 - (double)_hintLabelBottomAnchorDistance
 {
-  v2 = [(PUWallpaperPosterEditorController *)self editor];
-  [v2 pu_editingChromeDodgingInsets];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  [editor pu_editingChromeDodgingInsets];
   v4 = v3 + 40.0;
 
   return v4;
@@ -6281,38 +6281,38 @@ uint64_t __66__PUWallpaperPosterEditorController__hideHintAnimated_completion___
 {
   [(PUWallpaperPosterEditorController *)self _hintLabelBottomAnchorDistance];
   v4 = v3;
-  v5 = [(PUWallpaperPosterEditorController *)self loadingViewBottomConstraint];
-  [v5 setConstant:v4];
+  loadingViewBottomConstraint = [(PUWallpaperPosterEditorController *)self loadingViewBottomConstraint];
+  [loadingViewBottomConstraint setConstant:v4];
 
-  v6 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
-  if (!v6)
+  hintLabelBottomConstraint = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
+  if (!hintLabelBottomConstraint)
   {
     return;
   }
 
-  v7 = v6;
-  v8 = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
+  v7 = hintLabelBottomConstraint;
+  hintLabelCenterConstraint = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
 
-  if (!v8)
+  if (!hintLabelCenterConstraint)
   {
     return;
   }
 
-  v9 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v10 = [v9 currentLayerStackViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
 
-  if (v10)
+  if (currentLayerStackViewModel)
   {
-    v11 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v12 = [v11 currentLayerStackViewModel];
-    [v12 additionalViewTitleHeight];
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    currentLayerStackViewModel2 = [editViewModel2 currentLayerStackViewModel];
+    [currentLayerStackViewModel2 additionalViewTitleHeight];
     v14 = v13;
 
     if ([(PUWallpaperPosterEditorController *)self _isShuffle])
     {
-      v15 = [(PUWallpaperPosterEditorController *)self editViewModel];
-      v16 = [v15 currentLayerStackViewModel];
-      v14 = PUUserAdjustedAdditionalViewTitleHeightForViewModel(v16);
+      editViewModel3 = [(PUWallpaperPosterEditorController *)self editViewModel];
+      currentLayerStackViewModel3 = [editViewModel3 currentLayerStackViewModel];
+      v14 = PUUserAdjustedAdditionalViewTitleHeightForViewModel(currentLayerStackViewModel3);
     }
   }
 
@@ -6321,78 +6321,78 @@ uint64_t __66__PUWallpaperPosterEditorController__hideHintAnimated_completion___
     v14 = 0.0;
   }
 
-  v17 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  [v17 frame];
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  [contentOverlayContainerView frame];
   if (v14 > v18 / 5.0)
   {
     goto LABEL_11;
   }
 
-  v19 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v19 px_isBackdrop])
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment px_isBackdrop])
   {
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v23 = [(PUWallpaperPosterEditorController *)self environment];
-  v24 = [v23 px_isCallServices];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isCallServices = [environment2 px_isCallServices];
 
-  if ((v24 & 1) == 0)
+  if ((px_isCallServices & 1) == 0)
   {
-    v25 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
-    [v25 setActive:0];
+    hintLabelBottomConstraint2 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
+    [hintLabelBottomConstraint2 setActive:0];
 
-    v22 = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
+    hintLabelCenterConstraint2 = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
     goto LABEL_13;
   }
 
 LABEL_12:
-  v20 = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
-  [v20 setActive:0];
+  hintLabelCenterConstraint3 = [(PUWallpaperPosterEditorController *)self hintLabelCenterConstraint];
+  [hintLabelCenterConstraint3 setActive:0];
 
-  v21 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
-  [v21 setConstant:v4];
+  hintLabelBottomConstraint3 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
+  [hintLabelBottomConstraint3 setConstant:v4];
 
-  v22 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
+  hintLabelCenterConstraint2 = [(PUWallpaperPosterEditorController *)self hintLabelBottomConstraint];
 LABEL_13:
-  v26 = v22;
-  [v22 setActive:1];
+  v26 = hintLabelCenterConstraint2;
+  [hintLabelCenterConstraint2 setActive:1];
 }
 
 - (BOOL)_createHintLabelIfNeeded
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  if (v3)
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  if (contentOverlayContainerView)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self hintLabel];
+    hintLabel = [(PUWallpaperPosterEditorController *)self hintLabel];
 
-    if (!v4)
+    if (!hintLabel)
     {
       v5 = [_TtC15PhotosUIPrivate25PUPosterAnimatedHintLabel alloc];
       v6 = [(PUPosterAnimatedHintLabel *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       [(PUPosterAnimatedHintLabel *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v7 = [(PUWallpaperPosterEditorController *)self environment];
-      -[PUPosterAnimatedHintLabel setIsCallServicesEnvironment:](v6, "setIsCallServicesEnvironment:", [v7 px_isCallServices]);
+      environment = [(PUWallpaperPosterEditorController *)self environment];
+      -[PUPosterAnimatedHintLabel setIsCallServicesEnvironment:](v6, "setIsCallServicesEnvironment:", [environment px_isCallServices]);
 
-      [v3 addSubview:v6];
-      v8 = [v3 bottomAnchor];
-      v9 = [(PUPosterAnimatedHintLabel *)v6 bottomAnchor];
+      [contentOverlayContainerView addSubview:v6];
+      bottomAnchor = [contentOverlayContainerView bottomAnchor];
+      bottomAnchor2 = [(PUPosterAnimatedHintLabel *)v6 bottomAnchor];
       [(PUWallpaperPosterEditorController *)self _hintLabelBottomAnchorDistance];
-      v10 = [v8 constraintEqualToAnchor:v9 constant:?];
+      v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
       [(PUWallpaperPosterEditorController *)self setHintLabelBottomConstraint:v10];
 
-      v11 = [(PUPosterAnimatedHintLabel *)v6 centerYAnchor];
-      v12 = [v3 centerYAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      centerYAnchor = [(PUPosterAnimatedHintLabel *)v6 centerYAnchor];
+      centerYAnchor2 = [contentOverlayContainerView centerYAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [(PUWallpaperPosterEditorController *)self setHintLabelCenterConstraint:v13];
 
       v14 = MEMORY[0x1E696ACD8];
-      v15 = [(PUPosterAnimatedHintLabel *)v6 centerXAnchor];
-      v16 = [v3 centerXAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      centerXAnchor = [(PUPosterAnimatedHintLabel *)v6 centerXAnchor];
+      centerXAnchor2 = [contentOverlayContainerView centerXAnchor];
+      v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v20[0] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       [v14 activateConstraints:v18];
@@ -6402,20 +6402,20 @@ LABEL_13:
     }
   }
 
-  return v3 != 0;
+  return contentOverlayContainerView != 0;
 }
 
-- (void)_updateHintLabelAnimated:(BOOL)a3
+- (void)_updateHintLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_invoke;
   v5[3] = &unk_1E7B7FA08;
   objc_copyWeak(&v6, &location);
-  v7 = v3;
-  [(PUWallpaperPosterEditorController *)self _hideHintAnimated:v3 completion:v5];
+  v7 = animatedCopy;
+  [(PUWallpaperPosterEditorController *)self _hideHintAnimated:animatedCopy completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -6426,15 +6426,15 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
   [WeakRetained _showHintAnimated:*(a1 + 40) completion:0];
 }
 
-- (void)setHint:(int64_t)a3
+- (void)setHint:(int64_t)hint
 {
   hint = self->_hint;
-  if (hint != a3)
+  if (hint != hint)
   {
-    if (a3 == 2 || hint != 2)
+    if (hint == 2 || hint != 2)
     {
-      self->_hint = a3;
-      if (a3 == 2)
+      self->_hint = hint;
+      if (hint == 2)
       {
         [(PUWallpaperPosterEditorController *)self _startPinchToZoomHintTimeout];
       }
@@ -6443,31 +6443,31 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
     else
     {
       [(PUWallpaperPosterEditorController *)self setPinchToZoomHintDismissed:1];
-      self->_hint = a3;
+      self->_hint = hint;
     }
 
-    v7 = a3 != 1 || hint != 0;
+    v7 = hint != 1 || hint != 0;
 
     [(PUWallpaperPosterEditorController *)self _updateHintLabelAnimated:v7];
   }
 }
 
-- (void)_updateShuffleSuggestionFeaturedStateIfNeededForConfiguration:(id)a3
+- (void)_updateShuffleSuggestionFeaturedStateIfNeededForConfiguration:(id)configuration
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 shuffleConfiguration];
-  v6 = v5;
-  if (v5 && ![v5 shuffleType])
+  configurationCopy = configuration;
+  shuffleConfiguration = [configurationCopy shuffleConfiguration];
+  v6 = shuffleConfiguration;
+  if (shuffleConfiguration && ![shuffleConfiguration shuffleType])
   {
-    v37 = self;
+    selfCopy = self;
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [v4 media];
+    media = [configurationCopy media];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v48 count:16];
+    v9 = [media countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v9)
     {
       v10 = v9;
@@ -6478,31 +6478,31 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
         {
           if (*v42 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(media);
           }
 
           v13 = *(*(&v41 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 suggestionUUID];
+            suggestionUUID = [v13 suggestionUUID];
 
-            if (v14)
+            if (suggestionUUID)
             {
-              v15 = [v13 suggestionUUID];
-              [v7 addObject:v15];
+              suggestionUUID2 = [v13 suggestionUUID];
+              [v7 addObject:suggestionUUID2];
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v41 objects:v48 count:16];
+        v10 = [media countByEnumeratingWithState:&v41 objects:v48 count:16];
       }
 
       while (v10);
     }
 
-    v16 = [(PUWallpaperPosterEditorController *)v37 photoLibrary];
-    v17 = [v16 librarySpecificFetchOptions];
+    photoLibrary = [(PUWallpaperPosterEditorController *)selfCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v18 = MEMORY[0x1E696AB28];
     v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"state", 4];
@@ -6511,16 +6511,16 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
     v47[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
     v22 = [v18 andPredicateWithSubpredicates:v21];
-    [v17 setPredicate:v22];
+    [librarySpecificFetchOptions setPredicate:v22];
 
-    v23 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v17];
+    v23 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
     v24 = [v23 count];
-    if (v24 != [v8 count])
+    if (v24 != [media count])
     {
       v25 = PLWallpaperGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v8 count];
+        v26 = [media count];
         v27 = [v23 count];
         *buf = 67109376;
         *v46 = v26;
@@ -6530,7 +6530,7 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
       }
     }
 
-    v28 = [(PUWallpaperPosterEditorController *)v37 photoLibrary];
+    photoLibrary2 = [(PUWallpaperPosterEditorController *)selfCopy photoLibrary];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __99__PUWallpaperPosterEditorController__updateShuffleSuggestionFeaturedStateIfNeededForConfiguration___block_invoke;
@@ -6538,7 +6538,7 @@ void __62__PUWallpaperPosterEditorController__updateHintLabelAnimated___block_in
     v29 = v23;
     v40 = v29;
     v38 = 0;
-    v30 = [v28 performChangesAndWait:v39 error:&v38];
+    v30 = [photoLibrary2 performChangesAndWait:v39 error:&v38];
     v31 = v38;
 
     v32 = PLWallpaperGetLog();
@@ -6606,22 +6606,22 @@ void __99__PUWallpaperPosterEditorController__updateShuffleSuggestionFeaturedSta
   }
 }
 
-- (void)_savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:(id)a3
+- (void)_savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v6 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v7 = [v6 posterEditConfigurationRepresentation];
+  environmentCopy = environment;
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  posterEditConfigurationRepresentation = [editViewModel posterEditConfigurationRepresentation];
 
-  v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  [v8 containerFrame];
+  editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  [editViewModel2 containerFrame];
   PXRectWithSize();
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [v4 pu_deviceOrientation] - 3;
+  v17 = [environmentCopy pu_deviceOrientation] - 3;
   if (v17 <= 1)
   {
     PXRectTransposed();
@@ -6631,13 +6631,13 @@ void __99__PUWallpaperPosterEditorController__updateShuffleSuggestionFeaturedSta
     v16 = v21;
   }
 
-  [v4 px_minimumTitleBoundsForLayout:0];
+  [environmentCopy px_minimumTitleBoundsForLayout:0];
   PXRectDenormalize();
   recta.origin.x = v22;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  PUAdjustedSalientContentRectangleFromEnvironment(v4);
+  PUAdjustedSalientContentRectangleFromEnvironment(environmentCopy);
   CGRectGetMinY(v35);
   v36.origin.x = recta.origin.x;
   v36.origin.y = v24;
@@ -6652,24 +6652,24 @@ void __99__PUWallpaperPosterEditorController__updateShuffleSuggestionFeaturedSta
   PXClamp();
   if (v17 > 1)
   {
-    [v7 setAdditionalTitleLabelHeight:?];
+    [posterEditConfigurationRepresentation setAdditionalTitleLabelHeight:?];
   }
 
   else
   {
-    [v7 setLandscapeAdditionalTitleLabelHeight:?];
+    [posterEditConfigurationRepresentation setLandscapeAdditionalTitleLabelHeight:?];
   }
 
-  [v5 setEditConfiguration:v7];
-  v29 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+  [currentPosterMedia setEditConfiguration:posterEditConfigurationRepresentation];
+  currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
   *&recta.origin.y = MEMORY[0x1E69E9820];
   *&recta.size.width = 3221225472;
   *&recta.size.height = __102__PUWallpaperPosterEditorController__savePosterEditConfigurationForCurrentPosterMediaWithEnvironment___block_invoke;
   v32 = &unk_1E7B78640;
   v34 = v17 < 2;
-  v33 = v7;
-  v30 = v7;
-  [v29 performChanges:&recta.origin.y];
+  v33 = posterEditConfigurationRepresentation;
+  v30 = posterEditConfigurationRepresentation;
+  [currentLayerStackViewModel performChanges:&recta.origin.y];
 }
 
 void __102__PUWallpaperPosterEditorController__savePosterEditConfigurationForCurrentPosterMediaWithEnvironment___block_invoke(uint64_t a1, void *a2)
@@ -6696,40 +6696,40 @@ void __102__PUWallpaperPosterEditorController__savePosterEditConfigurationForCur
 
 - (void)_savePosterEditConfigurationForCurrentPosterMedia
 {
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  [(PUWallpaperPosterEditorController *)self _savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:v3];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  [(PUWallpaperPosterEditorController *)self _savePosterEditConfigurationForCurrentPosterMediaWithEnvironment:environment];
 }
 
 - (void)_applyPosterEditConfigurationForShuffleAsset
 {
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v8 = [v3 editConfiguration];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  editConfiguration = [posterConfiguration editConfiguration];
 
-  v4 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v5 = [v4 editConfiguration];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  editConfiguration2 = [currentPosterMedia editConfiguration];
 
-  if (v5)
+  if (editConfiguration2)
   {
-    v6 = v5;
+    v6 = editConfiguration2;
 
-    v8 = v6;
+    editConfiguration = v6;
 LABEL_4:
-    v7 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    [v7 applyChangesFromPosterEditConfiguration:v8];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    [editViewModel applyChangesFromPosterEditConfiguration:editConfiguration];
 
     goto LABEL_5;
   }
 
-  if (v8)
+  if (editConfiguration)
   {
     goto LABEL_4;
   }
 
-  v8 = 0;
+  editConfiguration = 0;
 LABEL_5:
 }
 
-- (void)_handleTapToShuffle:(id)a3
+- (void)_handleTapToShuffle:(id)shuffle
 {
   if ([(PUWallpaperPosterEditorController *)self isLoading])
   {
@@ -6751,29 +6751,29 @@ LABEL_5:
 
 - (void)_updateShuffleView
 {
-  v6 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  v4 = [v3 pu_posterType];
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterType = [environment pu_posterType];
 
-  if (v4 == 2)
+  if (pu_posterType == 2)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapToShuffle_];
-    [v6 addGestureRecognizer:v5];
-    [(PUWallpaperPosterEditorController *)self setTapToShuffleGestureRecognizer:v5];
+    tapToShuffleGestureRecognizer = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapToShuffle_];
+    [contentOverlayContainerView addGestureRecognizer:tapToShuffleGestureRecognizer];
+    [(PUWallpaperPosterEditorController *)self setTapToShuffleGestureRecognizer:tapToShuffleGestureRecognizer];
   }
 
   else
   {
-    v5 = [(PUWallpaperPosterEditorController *)self tapToShuffleGestureRecognizer];
-    [v6 removeGestureRecognizer:v5];
+    tapToShuffleGestureRecognizer = [(PUWallpaperPosterEditorController *)self tapToShuffleGestureRecognizer];
+    [contentOverlayContainerView removeGestureRecognizer:tapToShuffleGestureRecognizer];
   }
 }
 
-- (void)setShuffleAssetIndex:(int64_t)a3
+- (void)setShuffleAssetIndex:(int64_t)index
 {
-  if (self->_shuffleAssetIndex != a3)
+  if (self->_shuffleAssetIndex != index)
   {
-    self->_shuffleAssetIndex = a3;
+    self->_shuffleAssetIndex = index;
     if ([(PUWallpaperPosterEditorController *)self hint]== 1)
     {
       [(PUWallpaperPosterEditorController *)self cancelPendingHint];
@@ -6798,32 +6798,32 @@ LABEL_5:
 
 - (BOOL)_isShuffleModeWithGlobalSpatialPhoto
 {
-  v3 = [(PUWallpaperPosterEditorController *)self _isShuffle];
-  if (v3)
+  _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
+  if (_isShuffle)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v5 = [v4 shuffleConfiguration];
-    v6 = [v5 shuffleType];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+    shuffleType = [shuffleConfiguration shuffleType];
 
-    LOBYTE(v3) = (v6 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    LOBYTE(_isShuffle) = (shuffleType & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
-  return v3;
+  return _isShuffle;
 }
 
 - (BOOL)_isShuffleModeWithGlobalDepth
 {
-  v3 = [(PUWallpaperPosterEditorController *)self _isShuffle];
-  if (v3)
+  _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
+  if (_isShuffle)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v5 = [v4 shuffleConfiguration];
-    v6 = [v5 shuffleType];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+    shuffleType = [shuffleConfiguration shuffleType];
 
-    LOBYTE(v3) = (v6 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    LOBYTE(_isShuffle) = (shuffleType & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
-  return v3;
+  return _isShuffle;
 }
 
 - (BOOL)_isManualShuffle
@@ -6833,9 +6833,9 @@ LABEL_5:
     return 0;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v4 = [v3 shuffleConfiguration];
-  v5 = [v4 shuffleType] == 1;
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+  v5 = [shuffleConfiguration shuffleType] == 1;
 
   return v5;
 }
@@ -6847,9 +6847,9 @@ LABEL_5:
     return 0;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v4 = [v3 shuffleConfiguration];
-  v5 = [v4 shuffleType] == 2;
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+  v5 = [shuffleConfiguration shuffleType] == 2;
 
   return v5;
 }
@@ -6861,68 +6861,68 @@ LABEL_5:
     return 0;
   }
 
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v4 = [v3 shuffleConfiguration];
-  v5 = [v4 shuffleType] == 0;
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+  v5 = [shuffleConfiguration shuffleType] == 0;
 
   return v5;
 }
 
 - (int64_t)_shuffleType
 {
-  v4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v5 = [v4 shuffleConfiguration];
-  if (!v5)
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+  if (!shuffleConfiguration)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2276 description:@"Expected shuffle configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2276 description:@"Expected shuffle configuration"];
   }
 
-  v6 = [v5 shuffleType];
+  shuffleType = [shuffleConfiguration shuffleType];
 
-  return v6;
+  return shuffleType;
 }
 
 - (BOOL)_isShuffle
 {
-  v2 = [(PUWallpaperPosterEditorController *)self environment];
-  v3 = [v2 pu_posterType] == 2;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  v3 = [environment pu_posterType] == 2;
 
   return v3;
 }
 
-- (void)wallpaperPosterShuffleGridViewController:(id)a3 didFinishWithChange:(id)a4 selectedPosterMedia:(id)a5
+- (void)wallpaperPosterShuffleGridViewController:(id)controller didFinishWithChange:(id)change selectedPosterMedia:(id)media
 {
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  mediaCopy = media;
   [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewController];
-  if ([v7 hasChanges])
+  if ([changeCopy hasChanges])
   {
-    v9 = [v7 differenceByTransformingChangesWithBlock:&__block_literal_global_600];
-    v10 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v11 = [v10 media];
-    v12 = [v11 arrayByApplyingDifference:v9];
+    v9 = [changeCopy differenceByTransformingChangesWithBlock:&__block_literal_global_600];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    media = [posterConfiguration media];
+    v12 = [media arrayByApplyingDifference:v9];
 
-    v13 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    [v13 setMedia:v12];
+    posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    [posterConfiguration2 setMedia:v12];
 
-    v14 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    [v14 startPreloadingResourcesForPosterMedia:v12];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    [shuffleResourceManager startPreloadingResourcesForPosterMedia:v12];
 
     [(PUWallpaperPosterEditorController *)self _loadAssetFromPosterConfiguration];
   }
 
-  if (v8)
+  if (mediaCopy)
   {
-    v15 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v16 = [v15 media];
+    posterConfiguration3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    media2 = [posterConfiguration3 media];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __118__PUWallpaperPosterEditorController_wallpaperPosterShuffleGridViewController_didFinishWithChange_selectedPosterMedia___block_invoke_2;
     v18[3] = &unk_1E7B78618;
-    v19 = v8;
-    v17 = [v16 indexOfObjectPassingTest:v18];
+    v19 = mediaCopy;
+    v17 = [media2 indexOfObjectPassingTest:v18];
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(PUWallpaperPosterEditorController *)self setShuffleAssetIndex:v17];
@@ -6958,49 +6958,49 @@ id __118__PUWallpaperPosterEditorController_wallpaperPosterShuffleGridViewContro
   return v12;
 }
 
-- (void)_didLoadMediaFromShuffleConfigurationViewController:(id)a3 succeeded:(BOOL)a4
+- (void)_didLoadMediaFromShuffleConfigurationViewController:(id)controller succeeded:(BOOL)succeeded
 {
-  v4 = a4;
-  v7 = a3;
+  succeededCopy = succeeded;
+  controllerCopy = controller;
   [(PUWallpaperPosterEditorController *)self setMediaLoadedCompletionHandler:0];
   if ([(PUWallpaperPosterEditorController *)self isCancellingMediaLoading])
   {
-    v6 = [(PUWallpaperPosterEditorController *)self oldPosterConfiguration];
-    [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v6];
+    oldPosterConfiguration = [(PUWallpaperPosterEditorController *)self oldPosterConfiguration];
+    [(PUWallpaperPosterEditorController *)self setPosterConfiguration:oldPosterConfiguration];
 
     [(PUWallpaperPosterEditorController *)self setIsCancellingMediaLoading:0];
   }
 
-  else if (v4)
+  else if (succeededCopy)
   {
     [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewController];
   }
 
   else
   {
-    [v7 didFailFinishingWithPosterConfiguration];
+    [controllerCopy didFailFinishingWithPosterConfiguration];
   }
 }
 
-- (void)wallpaperShuffleConfigurationViewControllerDidCancelManuallySelectingPhotos:(id)a3
+- (void)wallpaperShuffleConfigurationViewControllerDidCancelManuallySelectingPhotos:(id)photos
 {
-  v4 = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
+  mediaLoadedCompletionHandler = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
 
-  if (v4)
+  if (mediaLoadedCompletionHandler)
   {
 
     [(PUWallpaperPosterEditorController *)self setIsCancellingMediaLoading:1];
   }
 }
 
-- (void)wallpaperShuffleConfigurationViewController:(id)a3 didFinishWithPosterConfiguration:(id)a4
+- (void)wallpaperShuffleConfigurationViewController:(id)controller didFinishWithPosterConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
-  v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
 
-  if (v8)
+  if (editViewModel)
   {
     [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewController];
   }
@@ -7012,30 +7012,30 @@ id __118__PUWallpaperPosterEditorController_wallpaperPosterShuffleGridViewContro
     v13[2] = __114__PUWallpaperPosterEditorController_wallpaperShuffleConfigurationViewController_didFinishWithPosterConfiguration___block_invoke;
     v13[3] = &unk_1E7B785D0;
     objc_copyWeak(&v15, &location);
-    v14 = v6;
+    v14 = controllerCopy;
     [(PUWallpaperPosterEditorController *)self setMediaLoadedCompletionHandler:v13];
 
     objc_destroyWeak(&v15);
   }
 
-  v9 = [v7 media];
-  if ([v9 count])
+  media = [configurationCopy media];
+  if ([media count])
   {
     goto LABEL_7;
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v11 = [v10 media];
-  v12 = [v11 count];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  media2 = [posterConfiguration media];
+  v12 = [media2 count];
 
   if (v12)
   {
     [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v7 = v9 = v7;
+    configurationCopy = media = configurationCopy;
 LABEL_7:
   }
 
-  [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v7];
+  [(PUWallpaperPosterEditorController *)self setPosterConfiguration:configurationCopy];
   objc_destroyWeak(&location);
 }
 
@@ -7045,33 +7045,33 @@ void __114__PUWallpaperPosterEditorController_wallpaperShuffleConfigurationViewC
   [WeakRetained _didLoadMediaFromShuffleConfigurationViewController:*(a1 + 32) succeeded:a2];
 }
 
-- (void)wallpaperShuffleConfigurationViewControllerDidDismiss:(id)a3
+- (void)wallpaperShuffleConfigurationViewControllerDidDismiss:(id)dismiss
 {
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
 
-  if (!v4)
+  if (!editViewModel)
   {
 
     [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewControllerAndCancelEditor];
   }
 }
 
-- (void)_reloadSmartAlbumPreviewAssetsWithCompletionHandler:(id)a3
+- (void)_reloadSmartAlbumPreviewAssetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = [_PUWallpaperSmartAlbumPreviewReloadRequest alloc];
-  v6 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v7 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v8 = [v7 shuffleConfiguration];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__PUWallpaperPosterEditorController__reloadSmartAlbumPreviewAssetsWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7B785A8;
   objc_copyWeak(&v13, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v12 = v9;
-  v10 = [(_PUWallpaperSmartAlbumPreviewReloadRequest *)v5 initWithPhotoLibrary:v6 shuffleConfiguration:v8 completion:v11];
+  v10 = [(_PUWallpaperSmartAlbumPreviewReloadRequest *)v5 initWithPhotoLibrary:photoLibrary shuffleConfiguration:shuffleConfiguration completion:v11];
   [(PUWallpaperPosterEditorController *)self setSmartAlbumPreviewReloadRequest:v10];
 
   objc_destroyWeak(&v13);
@@ -7094,13 +7094,13 @@ void __89__PUWallpaperPosterEditorController__reloadSmartAlbumPreviewAssetsWithC
 - (void)_rejectSuggestionsForCurrentAsset
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v4 = [v3 assetUUID];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  assetUUID = [currentPosterMedia assetUUID];
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v3;
+    v26 = currentPosterMedia;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "User rejected poster media %@", buf, 0xCu);
   }
 
@@ -7110,20 +7110,20 @@ void __89__PUWallpaperPosterEditorController__reloadSmartAlbumPreviewAssetsWithC
   aBlock[2] = __70__PUWallpaperPosterEditorController__rejectSuggestionsForCurrentAsset__block_invoke;
   aBlock[3] = &unk_1E7B7F820;
   objc_copyWeak(&v22, &location);
-  v6 = v3;
+  v6 = currentPosterMedia;
   v20 = v6;
-  v7 = v4;
+  v7 = assetUUID;
   v21 = v7;
   v8 = _Block_copy(aBlock);
   v9 = MEMORY[0x1E6978630];
   v24 = v7;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-  v11 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v12 = [v11 librarySpecificFetchOptions];
-  v13 = [v9 fetchAssetsWithUUIDs:v10 options:v12];
-  v14 = [v13 firstObject];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v13 = [v9 fetchAssetsWithUUIDs:v10 options:librarySpecificFetchOptions];
+  firstObject = [v13 firstObject];
 
-  if (v14)
+  if (firstObject)
   {
     v15 = MEMORY[0x1E69C15B0];
     v17[0] = MEMORY[0x1E69E9820];
@@ -7131,7 +7131,7 @@ void __89__PUWallpaperPosterEditorController__reloadSmartAlbumPreviewAssetsWithC
     v17[2] = __70__PUWallpaperPosterEditorController__rejectSuggestionsForCurrentAsset__block_invoke_596;
     v17[3] = &unk_1E7B7C940;
     v18 = v8;
-    [v15 rejectWallpaperSuggestionsUsingAsset:v14 completionHandler:v17];
+    [v15 rejectWallpaperSuggestionsUsingAsset:firstObject completionHandler:v17];
   }
 
   else
@@ -7254,9 +7254,9 @@ void __70__PUWallpaperPosterEditorController__rejectSuggestionsForCurrentAsset__
   v34[3] = v6;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:4];
 
-  v7 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v8 = [v7 shuffleConfiguration];
-  v9 = [v8 shuffleFrequency];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+  shuffleFrequency = [shuffleConfiguration shuffleFrequency];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_initWeak(&location, self);
@@ -7278,7 +7278,7 @@ void __70__PUWallpaperPosterEditorController__rejectSuggestionsForCurrentAsset__
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [v14 integerValue];
+        integerValue = [v14 integerValue];
         v16 = [v24 objectForKeyedSubscript:v14];
         v17 = MEMORY[0x1E69DC628];
         v25[0] = MEMORY[0x1E69E9820];
@@ -7286,10 +7286,10 @@ void __70__PUWallpaperPosterEditorController__rejectSuggestionsForCurrentAsset__
         v25[2] = __58__PUWallpaperPosterEditorController__shuffleFrequencyMenu__block_invoke;
         v25[3] = &unk_1E7B808E0;
         objc_copyWeak(v26, &location);
-        v26[1] = v15;
+        v26[1] = integerValue;
         v18 = [v17 actionWithTitle:v16 image:0 identifier:0 handler:v25];
         v19 = v18;
-        if (v15 == v9)
+        if (integerValue == shuffleFrequency)
         {
           [v18 setState:1];
         }
@@ -7327,10 +7327,10 @@ void __58__PUWallpaperPosterEditorController__shuffleFrequencyMenu__block_invoke
 {
   [(PUWallpaperPosterEditorController *)self _savePosterEditConfigurationForCurrentPosterMedia];
   v3 = [PUWallpaperPosterShuffleGridViewController alloc];
-  v4 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v6 = [v5 media];
-  v8 = [(PUWallpaperPosterShuffleGridViewController *)v3 initWithResourceManager:v4 posterMedia:v6];
+  shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  media = [posterConfiguration media];
+  v8 = [(PUWallpaperPosterShuffleGridViewController *)v3 initWithResourceManager:shuffleResourceManager posterMedia:media];
 
   [(PUWallpaperPosterShuffleGridViewController *)v8 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v8];
@@ -7341,14 +7341,14 @@ void __58__PUWallpaperPosterEditorController__shuffleFrequencyMenu__block_invoke
 - (void)_updateSmartAlbumAvailability
 {
   objc_initWeak(&location, self);
-  v3 = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
   v4 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PUWallpaperPosterEditorController__updateSmartAlbumAvailability__block_invoke;
   block[3] = &unk_1E7B80610;
-  v7 = v3;
-  v5 = v3;
+  v7 = photoLibrary;
+  v5 = photoLibrary;
   objc_copyWeak(&v8, &location);
   dispatch_async(v4, block);
 
@@ -7380,11 +7380,11 @@ void __66__PUWallpaperPosterEditorController__updateSmartAlbumAvailability__bloc
 {
   if ([(PUWallpaperPosterEditorController *)self isAnySmartAlbumAvailable])
   {
-    v14 = [(PUWallpaperPosterEditorController *)self centerSuggestionMedia];
+    centerSuggestionMedia = [(PUWallpaperPosterEditorController *)self centerSuggestionMedia];
     v3 = [_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController alloc];
-    v4 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-    v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v6 = [(PUWallpaperShuffleConfigurationViewController *)v3 initWithPhotoLibrary:v4 style:1 posterConfiguration:v5 centerMedia:v14];
+    photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    v6 = [(PUWallpaperShuffleConfigurationViewController *)v3 initWithPhotoLibrary:photoLibrary style:1 posterConfiguration:posterConfiguration centerMedia:centerSuggestionMedia];
 
     [(PUWallpaperShuffleConfigurationViewController *)v6 setDelegate:self];
     [(PUWallpaperPosterEditorController *)self _presentPosterConfigurationViewController:v6];
@@ -7405,8 +7405,8 @@ void __66__PUWallpaperPosterEditorController__updateSmartAlbumAvailability__bloc
     v12 = [v10 actionWithTitle:v11 style:1 handler:v15];
     [v9 addAction:v12];
 
-    v13 = [(PUWallpaperPosterEditorController *)self editor];
-    [v13 presentViewController:v9 animated:1 completion:0];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor presentViewController:v9 animated:1 completion:0];
   }
 }
 
@@ -7419,9 +7419,9 @@ void __68__PUWallpaperPosterEditorController__presentSmartAlbumShuffleEditor__bl
 - (void)_presentUserAlbumShuffleEditor
 {
   v3 = [_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController alloc];
-  v4 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v6 = [(PUWallpaperShuffleConfigurationViewController *)v3 initWithPhotoLibrary:v4 style:2 posterConfiguration:v5 centerMedia:0];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  v6 = [(PUWallpaperShuffleConfigurationViewController *)v3 initWithPhotoLibrary:photoLibrary style:2 posterConfiguration:posterConfiguration centerMedia:0];
 
   [(PUWallpaperShuffleConfigurationViewController *)v6 setDelegate:self];
   [(PUWallpaperPosterEditorController *)self _presentPosterConfigurationViewController:v6];
@@ -7429,31 +7429,31 @@ void __68__PUWallpaperPosterEditorController__presentSmartAlbumShuffleEditor__bl
 
 - (void)_presentAuthenticatedShuffleConfigurationEditor
 {
-  v4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
 
-  if (v4)
+  if (posterConfiguration)
   {
-    v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v21 = [v5 shuffleConfiguration];
+    posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    shuffleConfiguration = [posterConfiguration2 shuffleConfiguration];
 
-    v6 = v21;
-    if (!v21)
+    v6 = shuffleConfiguration;
+    if (!shuffleConfiguration)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2041 description:{@"Invalid parameter not satisfying: %@", @"shuffleConfiguration"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:2041 description:{@"Invalid parameter not satisfying: %@", @"shuffleConfiguration"}];
 
       v6 = 0;
     }
 
-    v7 = [v6 shuffleType];
-    if (v7)
+    shuffleType = [v6 shuffleType];
+    if (shuffleType)
     {
-      if (v7 == 2)
+      if (shuffleType == 2)
       {
         [(PUWallpaperPosterEditorController *)self _presentUserAlbumShuffleEditor];
       }
 
-      else if (v7 == 1)
+      else if (shuffleType == 1)
       {
         [(PUWallpaperPosterEditorController *)self _presentManualShuffleAssetEditor];
       }
@@ -7467,33 +7467,33 @@ void __68__PUWallpaperPosterEditorController__presentSmartAlbumShuffleEditor__bl
 
   else
   {
-    v8 = [(PUWallpaperPosterEditorController *)self environment];
-    v9 = [v8 pu_posterDescriptor];
-    v10 = [v9 shuffleConfiguration];
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    pu_posterDescriptor = [environment pu_posterDescriptor];
+    shuffleConfiguration2 = [pu_posterDescriptor shuffleConfiguration];
 
-    if (v10)
+    if (shuffleConfiguration2)
     {
       v11 = objc_opt_class();
-      v12 = [(PUWallpaperPosterEditorController *)self environment];
-      v13 = [v12 pu_posterDescriptor];
-      v21 = [v11 posterConfigurationFromPosterDescriptor:v13];
+      environment2 = [(PUWallpaperPosterEditorController *)self environment];
+      pu_posterDescriptor2 = [environment2 pu_posterDescriptor];
+      shuffleConfiguration = [v11 posterConfigurationFromPosterDescriptor:pu_posterDescriptor2];
     }
 
     else
     {
-      v21 = 0;
+      shuffleConfiguration = 0;
     }
 
-    v14 = [(PUWallpaperPosterEditorController *)self centerSuggestionMedia];
+    centerSuggestionMedia = [(PUWallpaperPosterEditorController *)self centerSuggestionMedia];
     v15 = [_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController alloc];
-    v16 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-    v17 = [(PUWallpaperShuffleConfigurationViewController *)v15 initWithPhotoLibrary:v16 style:0 posterConfiguration:v21 centerMedia:v14];
+    photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+    v17 = [(PUWallpaperShuffleConfigurationViewController *)v15 initWithPhotoLibrary:photoLibrary style:0 posterConfiguration:shuffleConfiguration centerMedia:centerSuggestionMedia];
 
     [(PUWallpaperShuffleConfigurationViewController *)v17 setDelegate:self];
-    v18 = [MEMORY[0x1E69DC938] currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v19 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(PUWallpaperShuffleConfigurationViewController *)v17 setPreferredContentSize:580.0, 820.0];
     }
@@ -7505,13 +7505,13 @@ void __68__PUWallpaperPosterEditorController__presentSmartAlbumShuffleEditor__bl
 - (void)_presentShuffleConfigurationEditor
 {
   v3 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:@"com.apple.mobileslideshow"];
-  v4 = [MEMORY[0x1E698B0D8] sharedGuard];
+  mEMORY[0x1E698B0D8] = [MEMORY[0x1E698B0D8] sharedGuard];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor__block_invoke;
   v5[3] = &unk_1E7B80280;
   v5[4] = self;
-  [v4 authenticateForSubject:v3 completion:v5];
+  [mEMORY[0x1E698B0D8] authenticateForSubject:v3 completion:v5];
 }
 
 void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor__block_invoke(uint64_t a1, char a2, void *a3)
@@ -7556,22 +7556,22 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
 
 - (id)centerSuggestionMedia
 {
-  v2 = [(PUWallpaperPosterEditorController *)self environment];
-  v3 = [v2 pu_posterDescriptor];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment pu_posterDescriptor];
 
-  if (v3)
+  if (pu_posterDescriptor)
   {
-    v4 = [v3 media];
-    v5 = [v4 count];
+    media = [pu_posterDescriptor media];
+    v5 = [media count];
 
     if (v5)
     {
-      v6 = [v3 media];
-      v7 = [v6 firstObject];
+      media2 = [pu_posterDescriptor media];
+      firstObject = [media2 firstObject];
 
-      if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (firstObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v5 = v7;
+        v5 = firstObject;
       }
 
       else
@@ -7589,42 +7589,42 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
   return v5;
 }
 
-- (void)_didLoadMediaFromPhotoPickerWithAssetUUID:(id)a3 succeeded:(BOOL)a4 error:(id)a5
+- (void)_didLoadMediaFromPhotoPickerWithAssetUUID:(id)d succeeded:(BOOL)succeeded error:(id)error
 {
-  v5 = a4;
+  succeededCopy = succeeded;
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   [(PUWallpaperPosterEditorController *)self setMediaLoadedCompletionHandler:0];
   if ([(PUWallpaperPosterEditorController *)self isCancellingMediaLoading])
   {
-    v8 = [(PUWallpaperPosterEditorController *)self oldPosterConfiguration];
-    [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v8];
+    oldPosterConfiguration = [(PUWallpaperPosterEditorController *)self oldPosterConfiguration];
+    [(PUWallpaperPosterEditorController *)self setPosterConfiguration:oldPosterConfiguration];
   }
 
-  if (v5 || [(PUWallpaperPosterEditorController *)self isCancellingMediaLoading])
+  if (succeededCopy || [(PUWallpaperPosterEditorController *)self isCancellingMediaLoading])
   {
     [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewController];
   }
 
   [(PUWallpaperPosterEditorController *)self setIsCancellingMediaLoading:0];
-  if (v7)
+  if (dCopy)
   {
-    v9 = [MEMORY[0x1E6978630] localIdentifierWithUUID:v7];
-    v10 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+    v9 = [MEMORY[0x1E6978630] localIdentifierWithUUID:dCopy];
+    photoPickerViewController = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
     v15[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    [v10 _stopActivityIndicatorsForAssetsWithIdentifiers:v11];
+    [photoPickerViewController _stopActivityIndicatorsForAssetsWithIdentifiers:v11];
 
-    if (!v5)
+    if (!succeededCopy)
     {
-      v12 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+      photoPickerViewController2 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
       v14 = v9;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
-      [v12 deselectAssetsWithIdentifiers:v13];
+      [photoPickerViewController2 deselectAssetsWithIdentifiers:v13];
     }
   }
 
-  if (v5 && [(PUWallpaperPosterEditorController *)self shouldEnableSpatialPhotoEffectAfterMediaLoad])
+  if (succeededCopy && [(PUWallpaperPosterEditorController *)self shouldEnableSpatialPhotoEffectAfterMediaLoad])
   {
     if (![(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled])
     {
@@ -7635,11 +7635,11 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
   }
 }
 
-- (void)_extensionWillResignNotification:(id)a3
+- (void)_extensionWillResignNotification:(id)notification
 {
-  v4 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+  photoPickerViewController = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
 
-  if (v4)
+  if (photoPickerViewController)
   {
     v5 = PLWallpaperGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -7648,37 +7648,37 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "Host extension will resign notification while photos picker is shown. Forwarding to Photos picker.", v7, 2u);
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"_UIViewServiceHostWillResignActiveNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIViewServiceHostWillResignActiveNotification" object:self];
   }
 }
 
 - (void)_stopListeningForExtensionHostResignationNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 }
 
 - (void)_beginListeningForExtensionHostResignationNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__extensionWillResignNotification_ name:*MEMORY[0x1E696A2D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__extensionWillResignNotification_ name:*MEMORY[0x1E696A2D8] object:0];
 }
 
-- (void)_handlePhotoPickerResults:(id)a3
+- (void)_handlePhotoPickerResults:(id)results
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 assetIdentifier];
-  v7 = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
+  resultsCopy = results;
+  firstObject = [resultsCopy firstObject];
+  assetIdentifier = [firstObject assetIdentifier];
+  mediaLoadedCompletionHandler = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
 
   if ([(PUWallpaperPosterEditorController *)self _isSpatialPhotoPossible])
   {
-    v8 = [v5 itemProvider];
-    v9 = [v8 registeredTypeIdentifiers];
+    itemProvider = [firstObject itemProvider];
+    registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
     v10 = PXPhotosFileProviderTypeIdentifierSpatialWallpaperPrivate();
-    v11 = [v9 containsObject:v10];
+    v11 = [registeredTypeIdentifiers containsObject:v10];
   }
 
   else
@@ -7688,10 +7688,10 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
 
   if ([(PUWallpaperPosterEditorController *)self _isSettlingEffectPossible])
   {
-    v12 = [v5 itemProvider];
-    v13 = [v12 registeredTypeIdentifiers];
+    itemProvider2 = [firstObject itemProvider];
+    registeredTypeIdentifiers2 = [itemProvider2 registeredTypeIdentifiers];
     v14 = PXPhotosFileProviderTypeIdentifierLiveWallpaperPrivate();
-    -[PUWallpaperPosterEditorController setShouldLoadSettlingEffectSynchronously:](self, "setShouldLoadSettlingEffectSynchronously:", [v13 containsObject:v14] & (v11 ^ 1));
+    -[PUWallpaperPosterEditorController setShouldLoadSettlingEffectSynchronously:](self, "setShouldLoadSettlingEffectSynchronously:", [registeredTypeIdentifiers2 containsObject:v14] & (v11 ^ 1));
   }
 
   else
@@ -7720,24 +7720,24 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
     }
   }
 
-  if (v6)
+  if (assetIdentifier)
   {
-    if (!v7)
+    if (!mediaLoadedCompletionHandler)
     {
       v17 = MEMORY[0x1E6978630];
-      v49[0] = v6;
+      v49[0] = assetIdentifier;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
-      v19 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-      v20 = [v19 librarySpecificFetchOptions];
-      v21 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:v20];
-      v22 = [v21 firstObject];
+      photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+      v21 = [v17 fetchAssetsWithLocalIdentifiers:v18 options:librarySpecificFetchOptions];
+      firstObject2 = [v21 firstObject];
 
-      if (v22)
+      if (firstObject2)
       {
-        v23 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
-        v48 = v6;
+        photoPickerViewController = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+        v48 = assetIdentifier;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-        [v23 _startActivityIndicatorsForAssetsWithIdentifiers:v24];
+        [photoPickerViewController _startActivityIndicatorsForAssetsWithIdentifiers:v24];
 
         objc_initWeak(buf, self);
         v44[0] = MEMORY[0x1E69E9820];
@@ -7746,15 +7746,15 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
         v44[3] = &unk_1E7B78560;
         objc_copyWeak(&v45, buf);
         [(PUWallpaperPosterEditorController *)self setMediaLoadedCompletionHandler:v44];
-        v25 = [v22 uuid];
-        v26 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-        v27 = [v26 assetUUID];
-        v28 = [v25 isEqualToString:v27];
+        uuid = [firstObject2 uuid];
+        currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+        assetUUID = [currentPosterMedia assetUUID];
+        v28 = [uuid isEqualToString:assetUUID];
 
         if (v28)
         {
-          v29 = [(PUWallpaperPosterEditorController *)self editViewModel];
-          v30 = v29 == 0;
+          editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+          v30 = editViewModel == 0;
 
           if (v30)
           {
@@ -7763,27 +7763,27 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
 
           else
           {
-            [(PUWallpaperPosterEditorController *)self _didLoadMediaFromPhotoPickerWithAssetUUID:v25 succeeded:1 error:0];
+            [(PUWallpaperPosterEditorController *)self _didLoadMediaFromPhotoPickerWithAssetUUID:uuid succeeded:1 error:0];
           }
         }
 
         else
         {
-          v33 = [(PUWallpaperPosterEditorController *)self environment];
-          v34 = [v33 pu_posterType];
+          environment = [(PUWallpaperPosterEditorController *)self environment];
+          pu_posterType = [environment pu_posterType];
 
-          v35 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:{objc_msgSend(objc_opt_class(), "posterConfigurationTypeForPosterType:", v34)}];
-          v36 = [objc_alloc(MEMORY[0x1E69C0808]) initWithAssetUUID:v25];
+          v35 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:{objc_msgSend(objc_opt_class(), "posterConfigurationTypeForPosterType:", pu_posterType)}];
+          v36 = [objc_alloc(MEMORY[0x1E69C0808]) initWithAssetUUID:uuid];
           v47 = v36;
           v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
           [v35 setMedia:v37];
 
-          v38 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-          v39 = [(PUWallpaperPosterEditorController *)self environment];
-          v40 = [v39 px_isCallServices];
-          if (v38)
+          posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+          environment2 = [(PUWallpaperPosterEditorController *)self environment];
+          px_isCallServices = [environment2 px_isCallServices];
+          if (posterConfiguration)
           {
-            v41 = v40;
+            v41 = px_isCallServices;
           }
 
           else
@@ -7793,9 +7793,9 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
 
           if (v41)
           {
-            [v35 setOptions:{objc_msgSend(v38, "options")}];
-            v42 = [v38 userInfo];
-            v43 = [v42 copy];
+            [v35 setOptions:{objc_msgSend(posterConfiguration, "options")}];
+            userInfo = [posterConfiguration userInfo];
+            v43 = [userInfo copy];
             [v35 setUserInfo:v43];
           }
 
@@ -7810,15 +7810,15 @@ void __71__PUWallpaperPosterEditorController__presentShuffleConfigurationEditor_
 
   else
   {
-    v31 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v32 = v31 == 0;
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    v32 = editViewModel2 == 0;
 
     if (v32)
     {
       [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewControllerAndCancelEditor];
     }
 
-    else if (v7)
+    else if (mediaLoadedCompletionHandler)
     {
       [(PUWallpaperPosterEditorController *)self setIsCancellingMediaLoading:1];
     }
@@ -7841,11 +7841,11 @@ void __63__PUWallpaperPosterEditorController__handlePhotoPickerResults___block_i
 - (void)_presentPhotoPicker
 {
   v3 = objc_alloc(MEMORY[0x1E69790E0]);
-  v4 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v30 = [v3 initWithPhotoLibrary:v4];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  v30 = [v3 initWithPhotoLibrary:photoLibrary];
 
-  v5 = [MEMORY[0x1E69790E8] imagesFilter];
-  [v30 setFilter:v5];
+  imagesFilter = [MEMORY[0x1E69790E8] imagesFilter];
+  [v30 setFilter:imagesFilter];
 
   [v30 setDisabledCapabilities:2];
   if ((PHSensitiveContentAnalysisAvailable() & 1) == 0)
@@ -7853,10 +7853,10 @@ void __63__PUWallpaperPosterEditorController__handlePhotoPickerResults___block_i
     [v30 setDisabledCapabilities:{objc_msgSend(v30, "disabledCapabilities") | 0x10}];
   }
 
-  v6 = [(PUWallpaperPosterEditorController *)self environment];
-  v7 = [v6 px_isCallServices];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  px_isCallServices = [environment px_isCallServices];
 
-  if (v7)
+  if (px_isCallServices)
   {
     v8 = 268;
   }
@@ -7867,20 +7867,20 @@ void __63__PUWallpaperPosterEditorController__handlePhotoPickerResults___block_i
   }
 
   [v30 _setDisabledPrivateCapabilities:v8];
-  v9 = [(PUWallpaperPosterEditorController *)self environment];
-  v10 = [v9 pu_posterDescriptor];
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment2 pu_posterDescriptor];
 
-  v11 = [(PUWallpaperPosterEditorController *)self environment];
-  v12 = [v11 px_isCallServices];
+  environment3 = [(PUWallpaperPosterEditorController *)self environment];
+  px_isCallServices2 = [environment3 px_isCallServices];
 
-  if (v12)
+  if (px_isCallServices2)
   {
-    v13 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v14 = [v13 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"preferPhotosSuggestionsForDeviceOwner"];
-    v16 = [v15 BOOLValue];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    userInfo = [posterConfiguration userInfo];
+    v15 = [userInfo objectForKeyedSubscript:@"preferPhotosSuggestionsForDeviceOwner"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       [MEMORY[0x1E6979178] deviceOwnerSuggestionGroup];
     }
@@ -7889,176 +7889,176 @@ void __63__PUWallpaperPosterEditorController__handlePhotoPickerResults___block_i
     {
       [MEMORY[0x1E6979178] wallpaperLikeSuggestionGroup];
     }
-    v17 = ;
+    backdropWallpaperSuggestionGroup = ;
   }
 
   else
   {
-    v18 = [(PUWallpaperPosterEditorController *)self environment];
-    v19 = [v18 px_isBackdrop];
+    environment4 = [(PUWallpaperPosterEditorController *)self environment];
+    px_isBackdrop = [environment4 px_isBackdrop];
 
-    if (v19)
+    if (px_isBackdrop)
     {
-      v17 = [MEMORY[0x1E6979178] backdropWallpaperSuggestionGroup];
+      backdropWallpaperSuggestionGroup = [MEMORY[0x1E6979178] backdropWallpaperSuggestionGroup];
       goto LABEL_22;
     }
 
-    v20 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    if (v20)
+    posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    if (posterConfiguration2)
     {
     }
 
-    else if ([v10 descriptorType] == 103)
+    else if ([pu_posterDescriptor descriptorType] == 103)
     {
-      v17 = [MEMORY[0x1E6979178] portraitWallpaperSuggestionGroup];
+      backdropWallpaperSuggestionGroup = [MEMORY[0x1E6979178] portraitWallpaperSuggestionGroup];
       goto LABEL_22;
     }
 
-    v21 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    if (!v21 && [v10 descriptorType] == 104 || (-[PUWallpaperPosterEditorController editViewModel](self, "editViewModel"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "settlingEffectEnabled"), v22, v21, v23))
+    posterConfiguration3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    if (!posterConfiguration3 && [pu_posterDescriptor descriptorType] == 104 || (-[PUWallpaperPosterEditorController editViewModel](self, "editViewModel"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "settlingEffectEnabled"), v22, posterConfiguration3, v23))
     {
-      v17 = [MEMORY[0x1E6979178] livePhotoWallpaperSuggestionGroup];
+      backdropWallpaperSuggestionGroup = [MEMORY[0x1E6979178] livePhotoWallpaperSuggestionGroup];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E6979178] wallpaperSuggestionGroup];
+      backdropWallpaperSuggestionGroup = [MEMORY[0x1E6979178] wallpaperSuggestionGroup];
     }
   }
 
 LABEL_22:
-  v24 = v17;
-  [v30 set_suggestionGroup:v17];
+  v24 = backdropWallpaperSuggestionGroup;
+  [v30 set_suggestionGroup:backdropWallpaperSuggestionGroup];
 
-  v25 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  posterConfiguration4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
 
-  if (!v25)
+  if (!posterConfiguration4)
   {
     [v30 _setAlwaysShowLoadingPlaceholder:1];
   }
 
-  v26 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+  photoPickerViewController = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
 
-  if (!v26)
+  if (!photoPickerViewController)
   {
     v27 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v30];
     [v27 setDelegate:self];
-    v28 = [v27 presentationController];
-    [v28 setDelegate:self];
+    presentationController = [v27 presentationController];
+    [presentationController setDelegate:self];
 
     [(PUWallpaperPosterEditorController *)self setPhotoPickerViewController:v27];
   }
 
-  v29 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
-  [(PUWallpaperPosterEditorController *)self _presentPosterConfigurationViewController:v29];
+  photoPickerViewController2 = [(PUWallpaperPosterEditorController *)self photoPickerViewController];
+  [(PUWallpaperPosterEditorController *)self _presentPosterConfigurationViewController:photoPickerViewController2];
 
   [(PUWallpaperPosterEditorController *)self _beginListeningForExtensionHostResignationNotification];
 }
 
-- (void)_updateProgressIndicator:(double)a3
+- (void)_updateProgressIndicator:(double)indicator
 {
-  v5 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-  [v5 currentProgress];
+  progressIndicator = [(PUWallpaperPosterEditorController *)self progressIndicator];
+  [progressIndicator currentProgress];
   v7 = v6;
 
-  if (v7 < a3)
+  if (v7 < indicator)
   {
-    v8 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v8 setCurrentProgress:a3];
+    progressIndicator2 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator2 setCurrentProgress:indicator];
   }
 }
 
 - (void)_hideProgressIndicator
 {
-  v3 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+  progressIndicator = [(PUWallpaperPosterEditorController *)self progressIndicator];
   [(PUWallpaperPosterEditorController *)self setProgressIndicator:0];
-  if ([v3 isShowingProgress])
+  if ([progressIndicator isShowingProgress])
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __59__PUWallpaperPosterEditorController__hideProgressIndicator__block_invoke;
     v4[3] = &unk_1E7B80DD0;
-    v5 = v3;
+    v5 = progressIndicator;
     [v5 endShowingProgressImmediately:1 animated:1 withCompletionHandler:v4];
   }
 }
 
-- (void)_showProgressIndicator:(id)a3 determinate:(BOOL)a4
+- (void)_showProgressIndicator:(id)indicator determinate:(BOOL)determinate
 {
-  v4 = a4;
+  determinateCopy = determinate;
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  v8 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+  indicatorCopy = indicator;
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  progressIndicator = [(PUWallpaperPosterEditorController *)self progressIndicator];
 
-  if (!v8)
+  if (!progressIndicator)
   {
     v9 = [[PUProgressIndicatorView alloc] initWithStyle:0];
     [(PUWallpaperPosterEditorController *)self setProgressIndicator:v9];
 
-    v10 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v10 setLocalizedMessage:v6];
+    progressIndicator2 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator2 setLocalizedMessage:indicatorCopy];
 
-    v11 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v11 setDeterminate:v4];
+    progressIndicator3 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator3 setDeterminate:determinateCopy];
 
-    v12 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v12 setShowsBackground:1];
+    progressIndicator4 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator4 setShowsBackground:1];
 
-    v13 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    progressIndicator5 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v14 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v14 beginShowingProgressImmediately:1 animated:1];
+    progressIndicator6 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [progressIndicator6 beginShowingProgressImmediately:1 animated:1];
 
-    v15 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    [v7 addSubview:v15];
+    progressIndicator7 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    [contentOverlayContainerView addSubview:progressIndicator7];
 
     v25 = MEMORY[0x1E696ACD8];
-    v26 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    v16 = [v26 centerXAnchor];
-    v17 = [v7 centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    progressIndicator8 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    centerXAnchor = [progressIndicator8 centerXAnchor];
+    centerXAnchor2 = [contentOverlayContainerView centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v27[0] = v18;
-    v19 = [(PUWallpaperPosterEditorController *)self progressIndicator];
-    v20 = [v19 centerYAnchor];
-    v21 = [v7 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    progressIndicator9 = [(PUWallpaperPosterEditorController *)self progressIndicator];
+    centerYAnchor = [progressIndicator9 centerYAnchor];
+    centerYAnchor2 = [contentOverlayContainerView centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v27[1] = v22;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-    v24 = v23 = v6;
+    v24 = v23 = indicatorCopy;
     [v25 activateConstraints:v24];
 
-    v6 = v23;
+    indicatorCopy = v23;
   }
 }
 
-- (void)_hideLoadingIndicatorForReason:(id)a3
+- (void)_hideLoadingIndicatorForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = reasonCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "hideLoadingIndicatorForReason:%{public}@", &v11, 0xCu);
   }
 
   if ([(PUWallpaperPosterEditorController *)self isLoading])
   {
     [(PUWallpaperPosterEditorController *)self setIsLoading:0];
-    v6 = [(PUWallpaperPosterEditorController *)self loadingView];
-    [v6 setIsVisible:0];
+    loadingView = [(PUWallpaperPosterEditorController *)self loadingView];
+    [loadingView setIsVisible:0];
 
-    v7 = [(PUWallpaperPosterEditorController *)self editModel];
-    [v7 performChanges:&__block_literal_global_519];
+    editModel = [(PUWallpaperPosterEditorController *)self editModel];
+    [editModel performChanges:&__block_literal_global_519];
 
     v8 = PLWallpaperGetLog();
-    v9 = [(PUWallpaperPosterEditorController *)self signpost];
-    if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpost = [(PUWallpaperPosterEditorController *)self signpost];
+    if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v10 = v9;
+      v10 = signpost;
       if (os_signpost_enabled(v8))
       {
         LOWORD(v11) = 0;
@@ -8068,15 +8068,15 @@ LABEL_22:
   }
 }
 
-- (void)_showLoadingIndicatorForReason:(id)a3
+- (void)_showLoadingIndicatorForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = PLWallpaperGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = reasonCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "showLoadingIndicatorForReason:%{public}@", &v11, 0xCu);
   }
 
@@ -8084,10 +8084,10 @@ LABEL_22:
   {
     [(PUWallpaperPosterEditorController *)self setIsLoading:1];
     v6 = PLWallpaperGetLog();
-    v7 = [(PUWallpaperPosterEditorController *)self signpost];
-    if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpost = [(PUWallpaperPosterEditorController *)self signpost];
+    if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v8 = v7;
+      v8 = signpost;
       if (os_signpost_enabled(v6))
       {
         LOWORD(v11) = 0;
@@ -8095,59 +8095,59 @@ LABEL_22:
       }
     }
 
-    v9 = [(PUWallpaperPosterEditorController *)self editModel];
-    [v9 performChanges:&__block_literal_global_514];
+    editModel = [(PUWallpaperPosterEditorController *)self editModel];
+    [editModel performChanges:&__block_literal_global_514];
 
-    v10 = [(PUWallpaperPosterEditorController *)self loadingView];
-    [v10 setIsVisible:1];
+    loadingView = [(PUWallpaperPosterEditorController *)self loadingView];
+    [loadingView setIsVisible:1];
   }
 }
 
-- (void)_didDismissLoadingErrorAlertShouldCancel:(BOOL)a3
+- (void)_didDismissLoadingErrorAlertShouldCancel:(BOOL)cancel
 {
-  if (a3)
+  if (cancel)
   {
-    v4 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+    presentedPosterConfigurationViewController = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
 
-    if (v4)
+    if (presentedPosterConfigurationViewController)
     {
       return;
     }
 
-    v5 = [(PUWallpaperPosterEditorController *)self editor];
-    [v5 pu_requestDismissalWithAction:0];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor pu_requestDismissalWithAction:0];
   }
 
   else
   {
-    v5 = [(PUWallpaperPosterEditorController *)self editor];
-    [v5 pu_updateLooks];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor pu_updateLooks];
   }
 }
 
-- (void)_presentLoadingErrorAlertController:(id)a3
+- (void)_presentLoadingErrorAlertController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+  controllerCopy = controller;
+  presentedPosterConfigurationViewController = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
 
-  if (v5)
+  if (presentedPosterConfigurationViewController)
   {
-    v6 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
-    [v6 px_presentOverTopmostPresentedViewController:v4 animated:1 completion:0];
+    presentedPosterConfigurationViewController2 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+    [presentedPosterConfigurationViewController2 px_presentOverTopmostPresentedViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    v6 = [(PUWallpaperPosterEditorController *)self editor];
-    [v6 presentViewController:v4 animated:1 completion:0];
+    presentedPosterConfigurationViewController2 = [(PUWallpaperPosterEditorController *)self editor];
+    [presentedPosterConfigurationViewController2 presentViewController:controllerCopy animated:1 completion:0];
   }
 }
 
 - (void)_dismissPosterConfigurationViewControllerAndCancelEditor
 {
-  v3 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+  presentedPosterConfigurationViewController = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
 
-  if (!v3)
+  if (!presentedPosterConfigurationViewController)
   {
     v4 = PXAssertGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -8158,34 +8158,34 @@ LABEL_22:
   }
 
   [(PUWallpaperPosterEditorController *)self setPresentedPosterConfigurationViewController:0];
-  v5 = [(PUWallpaperPosterEditorController *)self editor];
-  [v5 pu_requestDismissalWithAction:0];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  [editor pu_requestDismissalWithAction:0];
 }
 
-- (void)_dismissPosterConfigurationViewControllerWithCompletion:(id)a3
+- (void)_dismissPosterConfigurationViewControllerWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+  completionCopy = completion;
+  presentedPosterConfigurationViewController = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
 
-  if (v4)
+  if (presentedPosterConfigurationViewController)
   {
     [(PUWallpaperPosterEditorController *)self setPresentedPosterConfigurationViewController:0];
-    v5 = [(PUWallpaperPosterEditorController *)self editor];
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_presentPosterConfigurationViewController:(id)a3
+- (void)_presentPosterConfigurationViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
+  controllerCopy = controller;
+  presentedPosterConfigurationViewController = [(PUWallpaperPosterEditorController *)self presentedPosterConfigurationViewController];
 
-  if (v5)
+  if (presentedPosterConfigurationViewController)
   {
     v6 = PXAssertGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -8195,16 +8195,16 @@ LABEL_22:
     }
   }
 
-  v7 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  [(PUWallpaperPosterEditorController *)self setOldPosterConfiguration:v7];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  [(PUWallpaperPosterEditorController *)self setOldPosterConfiguration:posterConfiguration];
 
-  [(PUWallpaperPosterEditorController *)self setPresentedPosterConfigurationViewController:v4];
-  v8 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  [(PUWallpaperPosterEditorController *)self setPresentedPosterConfigurationViewController:controllerCopy];
+  posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
 
-  if (v8)
+  if (posterConfiguration2)
   {
-    v9 = [(PUWallpaperPosterEditorController *)self editor];
-    [v9 presentViewController:v4 animated:1 completion:0];
+    editor = [(PUWallpaperPosterEditorController *)self editor];
+    [editor presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
@@ -8215,7 +8215,7 @@ LABEL_22:
     v11[2] = __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewController___block_invoke;
     v11[3] = &unk_1E7B80C38;
     v11[4] = self;
-    v12 = v4;
+    v12 = controllerCopy;
     [v10 _performWithoutDeferringTransitions:v11];
   }
 }
@@ -8228,53 +8228,53 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
 
 - (void)_pickAssets
 {
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  v4 = [v3 pu_posterType];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterType = [environment pu_posterType];
 
-  if (v4 == 2)
+  if (pu_posterType == 2)
   {
 
     [(PUWallpaperPosterEditorController *)self _presentShuffleConfigurationEditor];
   }
 
-  else if (v4 == 1)
+  else if (pu_posterType == 1)
   {
 
     [(PUWallpaperPosterEditorController *)self _presentPhotoPicker];
   }
 }
 
-- (id)_initialLayerStyleForSegmentationItem:(id)a3
+- (id)_initialLayerStyleForSegmentationItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self environment];
-  v6 = [v5 pu_posterDescriptor];
-  v7 = [v6 styleCategory];
+  itemCopy = item;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment pu_posterDescriptor];
+  styleCategory = [pu_posterDescriptor styleCategory];
 
-  if (v7)
+  if (styleCategory)
   {
-    [v4 suggestedStyleForCategory:v7];
+    [itemCopy suggestedStyleForCategory:styleCategory];
   }
 
   else
   {
-    [v4 originalStyle];
+    [itemCopy originalStyle];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)_presentLoadingError:(id)a3
+- (void)_presentLoadingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = PULocalizedString(@"PHOTOS_WALLPAPER_EDITOR_ASSET_LOADING_FAILED_TITLE");
-  v6 = [v4 domain];
-  if ([v6 isEqualToString:*MEMORY[0x1E696A978]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A978]])
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 == -1009)
+    if (code == -1009)
     {
       v8 = 1;
       v9 = @"PHOTOS_WALLPAPER_EDITOR_ASSET_LOADING_FAILED_MESSAGE_CONNECTION";
@@ -8286,8 +8286,8 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
   {
   }
 
-  v10 = [v4 domain];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69C0BC8]];
+  domain2 = [errorCopy domain];
+  v11 = [domain2 isEqualToString:*MEMORY[0x1E69C0BC8]];
 
   if (!v11)
   {
@@ -8298,13 +8298,13 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
 
   v12 = PULocalizedString(@"PHOTOS_WALLPAPER_EDITOR_SPATIAL_FAILED_TITLE");
 
-  v13 = [v4 code];
+  code2 = [errorCopy code];
   v8 = 0;
-  if (v13 > 1002)
+  if (code2 > 1002)
   {
-    if (v13 > 1004)
+    if (code2 > 1004)
     {
-      if (v13 == 1005)
+      if (code2 == 1005)
       {
         v8 = 0;
         v9 = @"PHOTOS_WALLPAPER_EDITOR_SPATIAL_MODEL_LOADING_FAILED_NETWORK_ERROR";
@@ -8312,7 +8312,7 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
 
       else
       {
-        if (v13 != 1006)
+        if (code2 != 1006)
         {
           goto LABEL_24;
         }
@@ -8325,7 +8325,7 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
     else
     {
       v8 = 0;
-      if (v13 == 1003)
+      if (code2 == 1003)
       {
         v9 = @"PHOTOS_WALLPAPER_EDITOR_SPATIAL_MODEL_LOADING_FAILED_DISABLED";
       }
@@ -8339,7 +8339,7 @@ void __79__PUWallpaperPosterEditorController__presentPosterConfigurationViewCont
     goto LABEL_22;
   }
 
-  if (v13 == 1000)
+  if (code2 == 1000)
   {
     v9 = @"PHOTOS_WALLPAPER_EDITOR_SPATIAL_FAILED_NOT_SUPPORTED";
 LABEL_22:
@@ -8373,14 +8373,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v13 == 1001)
+  if (code2 == 1001)
   {
     v8 = 0;
     v9 = @"PHOTOS_WALLPAPER_EDITOR_SPATIAL_FAILED_GENERIC";
     goto LABEL_22;
   }
 
-  if (v13 != 1002)
+  if (code2 != 1002)
   {
     goto LABEL_24;
   }
@@ -8388,18 +8388,18 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)_presentLoadingError:(id)a3 forAsset:(id)a4
+- (void)_presentLoadingError:(id)error forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUWallpaperPosterEditorController *)self environment];
+  errorCopy = error;
+  assetCopy = asset;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
 
-  if (v8)
+  if (environment)
   {
-    v9 = v7;
-    if (v6)
+    v9 = assetCopy;
+    if (errorCopy)
     {
-      v10 = v6;
+      v10 = errorCopy;
     }
 
     else
@@ -8450,34 +8450,34 @@ void __49__PUWallpaperPosterEditorController__fadeInViews__block_invoke(uint64_t
   [v6 setAlpha:a2];
 }
 
-- (void)_didFinishCreatingEditViewModel:(id)a3 forAsset:(id)a4 error:(id)a5
+- (void)_didFinishCreatingEditViewModel:(id)model forAsset:(id)asset error:(id)error
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PUWallpaperPosterEditorController *)self environment];
+  modelCopy = model;
+  assetCopy = asset;
+  errorCopy = error;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
 
-  if (!v10)
+  if (!environment)
   {
     goto LABEL_17;
   }
 
-  [(PUWallpaperPosterEditorController *)self setEditViewModel:v17];
-  if (!v17)
+  [(PUWallpaperPosterEditorController *)self setEditViewModel:modelCopy];
+  if (!modelCopy)
   {
     if ([(PUWallpaperPosterEditorController *)self isCancellingMediaLoading])
     {
-      if (!v9)
+      if (!errorCopy)
       {
         goto LABEL_12;
       }
 
-      v11 = [v9 domain];
-      if ([v11 isEqualToString:*MEMORY[0x1E696A250]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A250]])
       {
-        v12 = [v9 code];
+        code = [errorCopy code];
 
-        if (v12 == 3072)
+        if (code == 3072)
         {
           goto LABEL_12;
         }
@@ -8488,14 +8488,14 @@ void __49__PUWallpaperPosterEditorController__fadeInViews__block_invoke(uint64_t
       }
     }
 
-    if (v8)
+    if (assetCopy)
     {
-      [(PUWallpaperPosterEditorController *)self _presentLoadingError:v9 forAsset:v8];
+      [(PUWallpaperPosterEditorController *)self _presentLoadingError:errorCopy forAsset:assetCopy];
     }
 
     else
     {
-      [(PUWallpaperPosterEditorController *)self _presentLoadingError:v9];
+      [(PUWallpaperPosterEditorController *)self _presentLoadingError:errorCopy];
     }
   }
 
@@ -8507,44 +8507,44 @@ LABEL_12:
   }
 
   [(PUWallpaperPosterEditorController *)self setPerformingInitialLoad:0];
-  v13 = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
+  mediaLoadedCompletionHandler = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
 
-  if (v13)
+  if (mediaLoadedCompletionHandler)
   {
-    v14 = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
-    v15 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-    v16 = [v15 assetUUID];
-    (v14)[2](v14, v17 != 0, v16, v9);
+    mediaLoadedCompletionHandler2 = [(PUWallpaperPosterEditorController *)self mediaLoadedCompletionHandler];
+    currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+    assetUUID = [currentPosterMedia assetUUID];
+    (mediaLoadedCompletionHandler2)[2](mediaLoadedCompletionHandler2, modelCopy != 0, assetUUID, errorCopy);
   }
 
 LABEL_17:
 }
 
-- (void)_handlePhotoEffectsLoadedWithSegmentationItem:(id)a3 layerStack:(id)a4
+- (void)_handlePhotoEffectsLoadedWithSegmentationItem:(id)item layerStack:(id)stack
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  itemCopy = item;
+  stackCopy = stack;
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
 
-  if (v6 && v8)
+  if (itemCopy && editViewModel)
   {
-    v9 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __94__PUWallpaperPosterEditorController__handlePhotoEffectsLoadedWithSegmentationItem_layerStack___block_invoke;
     v10[3] = &unk_1E7B784F0;
-    v11 = v6;
-    v12 = v7;
-    [v9 performChanges:v10];
+    v11 = itemCopy;
+    v12 = stackCopy;
+    [editViewModel2 performChanges:v10];
   }
 }
 
-- (void)_loadSettlingEffectLayerStackForSegmentationItem:(id)a3 completion:(id)a4
+- (void)_loadSettlingEffectLayerStackForSegmentationItem:(id)item completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69BDEB8];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithSegmentationItem:v8];
+  itemCopy = item;
+  v9 = [[v7 alloc] initWithSegmentationItem:itemCopy];
 
   [v9 setResponseQueue:MEMORY[0x1E69E96A0]];
   v10 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:1];
@@ -8552,26 +8552,26 @@ LABEL_17:
 
   [v9 setLayerStackMode:7];
   [v9 setSettlingEffectEnabled:0];
-  v11 = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
-  dispatch_group_enter(v11);
+  segmentationLoadingGroup = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
+  dispatch_group_enter(segmentationLoadingGroup);
   [MEMORY[0x1E69B3C60] begin];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSegmentationItem_completion___block_invoke;
   v18[3] = &unk_1E7B805C0;
-  v19 = v6;
-  v12 = v6;
+  v19 = completionCopy;
+  v12 = completionCopy;
   [v9 submit:v18];
   [(PUWallpaperPosterEditorController *)self setSettlingEffectRequest:v9];
   v13 = MEMORY[0x1E69B3C60];
-  v14 = [(PUWallpaperPosterEditorController *)self queue];
+  queue = [(PUWallpaperPosterEditorController *)self queue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSegmentationItem_completion___block_invoke_465;
   v16[3] = &unk_1E7B80DD0;
-  v17 = v11;
-  v15 = v11;
-  [v13 commitAndNotifyOnQueue:v14 withBlock:v16];
+  v17 = segmentationLoadingGroup;
+  v15 = segmentationLoadingGroup;
+  [v13 commitAndNotifyOnQueue:queue withBlock:v16];
 }
 
 void __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSegmentationItem_completion___block_invoke(uint64_t a1, void *a2)
@@ -8610,15 +8610,15 @@ void __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSeg
   }
 }
 
-- (void)_sendSettlingEffectGatingAnalyticsWithSegmentationItem:(id)a3
+- (void)_sendSettlingEffectGatingAnalyticsWithSegmentationItem:(id)item
 {
   v13 = 0;
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
   v3 = MEMORY[0x1E69BDF28];
-  v4 = [a3 scores];
-  [v3 settlingEffectGatingStatisticsFromScores:v4];
+  scores = [item scores];
+  [v3 settlingEffectGatingStatisticsFromScores:scores];
 
   v6 = v10;
   v7 = v11;
@@ -8628,15 +8628,15 @@ void __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSeg
   [MEMORY[0x1E6991F28] sendEvent:*MEMORY[0x1E69C0D68] withPayload:{v5, v6, v7, v8, v9}];
 }
 
-- (void)_handleAsyncPhotoEffectLoadedWithSegmentationItem:(id)a3
+- (void)_handleAsyncPhotoEffectLoadedWithSegmentationItem:(id)item
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  itemCopy = item;
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
 
-  if (v5)
+  if (editViewModel)
   {
-    if ([v4 isSettlingEffectAvailable])
+    if ([itemCopy isSettlingEffectAvailable])
     {
       objc_initWeak(location, self);
       v8 = MEMORY[0x1E69E9820];
@@ -8644,7 +8644,7 @@ void __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSeg
       v10 = __87__PUWallpaperPosterEditorController__handleAsyncPhotoEffectLoadedWithSegmentationItem___block_invoke;
       v11 = &unk_1E7B784C8;
       objc_copyWeak(&v13, location);
-      v12 = v4;
+      v12 = itemCopy;
       [(PUWallpaperPosterEditorController *)self _loadSettlingEffectLayerStackForSegmentationItem:v12 completion:&v8];
 
       objc_destroyWeak(&v13);
@@ -8653,23 +8653,23 @@ void __97__PUWallpaperPosterEditorController__loadSettlingEffectLayerStackForSeg
 
     else
     {
-      [(PUWallpaperPosterEditorController *)self _handlePhotoEffectsLoadedWithSegmentationItem:v4 layerStack:0];
+      [(PUWallpaperPosterEditorController *)self _handlePhotoEffectsLoadedWithSegmentationItem:itemCopy layerStack:0];
     }
 
-    if ([v4 settlingEffectFailedAnyGating])
+    if ([itemCopy settlingEffectFailedAnyGating])
     {
       v6 = PLWallpaperGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v4 settlingEffectGatingDiagnostics];
+        settlingEffectGatingDiagnostics = [itemCopy settlingEffectGatingDiagnostics];
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = v7;
+        *(location + 4) = settlingEffectGatingDiagnostics;
         _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_INFO, "Settling effect diagnostics: %@", location, 0xCu);
       }
 
-      if ([v4 settlingEffectFailedUnexpectedly])
+      if ([itemCopy settlingEffectFailedUnexpectedly])
       {
-        [(PUWallpaperPosterEditorController *)self _presentSettlingEffectDebugView:v4];
+        [(PUWallpaperPosterEditorController *)self _presentSettlingEffectDebugView:itemCopy];
       }
     }
   }
@@ -8695,34 +8695,34 @@ void __87__PUWallpaperPosterEditorController__handleAsyncPhotoEffectLoadedWithSe
   [WeakRetained _handlePhotoEffectsLoadedWithSegmentationItem:*(a1 + 32) layerStack:v5];
 }
 
-- (void)_renderInitialLayerStack:(id)a3 style:(id)a4 completion:(id)a5
+- (void)_renderInitialLayerStack:(id)stack style:(id)style completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  styleCopy = style;
+  completionCopy = completion;
   v10 = MEMORY[0x1E69BDEA0];
-  v11 = a3;
-  v12 = [[v10 alloc] initWithSegmentationItem:v11];
+  stackCopy = stack;
+  v12 = [[v10 alloc] initWithSegmentationItem:stackCopy];
   [v12 setResponseQueue:MEMORY[0x1E69E96A0]];
   v13 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
   [v12 setPriority:v13];
 
-  [v12 setSettlingEffectEnabled:{objc_msgSend(v11, "isSettlingEffectAvailable")}];
-  [v12 setSpatialPhotoEnabled:{objc_msgSend(v11, "spatialPhotoStatus") == 5}];
-  v14 = [v11 spatialPhotoStatus];
+  [v12 setSettlingEffectEnabled:{objc_msgSend(stackCopy, "isSettlingEffectAvailable")}];
+  [v12 setSpatialPhotoEnabled:{objc_msgSend(stackCopy, "spatialPhotoStatus") == 5}];
+  spatialPhotoStatus = [stackCopy spatialPhotoStatus];
 
-  if (v14 >= 3)
+  if (spatialPhotoStatus >= 3)
   {
-    v15 = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
-    v16 = [v15 isSpatialPhotoEnabled];
+    currentEditConfiguration = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
+    isSpatialPhotoEnabled = [currentEditConfiguration isSpatialPhotoEnabled];
 
-    if (v16)
+    if (isSpatialPhotoEnabled)
     {
       [v12 setSpatialPhotoEnabled:1];
     }
   }
 
-  v17 = [(PUWallpaperPosterEditorController *)self environment];
-  [v12 setFullPhotoLuminanceCalculationEnabled:{objc_msgSend(v17, "px_isBackdrop")}];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  [v12 setFullPhotoLuminanceCalculationEnabled:{objc_msgSend(environment, "px_isBackdrop")}];
 
   if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
   {
@@ -8753,13 +8753,13 @@ void __87__PUWallpaperPosterEditorController__handleAsyncPhotoEffectLoadedWithSe
   }
 
   [v12 setLayerStackOptions:v18];
-  if (v8)
+  if (styleCopy)
   {
-    v19 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v8];
+    v19 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:styleCopy];
     [v12 setStyle:v19];
 
-    v20 = [v8 kind];
-    v21 = [v20 isEqualToString:*MEMORY[0x1E69C0B28]];
+    kind = [styleCopy kind];
+    v21 = [kind isEqualToString:*MEMORY[0x1E69C0B28]];
 
     if ((v21 & 1) == 0)
     {
@@ -8779,26 +8779,26 @@ void __87__PUWallpaperPosterEditorController__handleAsyncPhotoEffectLoadedWithSe
   }
 
   [v12 setAllowedLayoutStrategies:v22];
-  v23 = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
-  dispatch_group_enter(v23);
+  segmentationLoadingGroup = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
+  dispatch_group_enter(segmentationLoadingGroup);
   [MEMORY[0x1E69B3C60] begin];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __79__PUWallpaperPosterEditorController__renderInitialLayerStack_style_completion___block_invoke;
   v30[3] = &unk_1E7B805C0;
-  v31 = v9;
-  v24 = v9;
+  v31 = completionCopy;
+  v24 = completionCopy;
   [v12 submit:v30];
   [(PUWallpaperPosterEditorController *)self setLayerStackRequest:v12];
   v25 = MEMORY[0x1E69B3C60];
-  v26 = [(PUWallpaperPosterEditorController *)self queue];
+  queue = [(PUWallpaperPosterEditorController *)self queue];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __79__PUWallpaperPosterEditorController__renderInitialLayerStack_style_completion___block_invoke_461;
   v28[3] = &unk_1E7B80DD0;
-  v29 = v23;
-  v27 = v23;
-  [v25 commitAndNotifyOnQueue:v26 withBlock:v28];
+  v29 = segmentationLoadingGroup;
+  v27 = segmentationLoadingGroup;
+  [v25 commitAndNotifyOnQueue:queue withBlock:v28];
 }
 
 void __79__PUWallpaperPosterEditorController__renderInitialLayerStack_style_completion___block_invoke(uint64_t a1, void *a2)
@@ -8844,13 +8844,13 @@ void __79__PUWallpaperPosterEditorController__renderInitialLayerStack_style_comp
     return 0;
   }
 
-  v5 = [(PUWallpaperPosterEditorController *)self _isShuffle];
-  if (v5)
+  _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
+  if (_isShuffle)
   {
-    v2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v3 = [v2 shuffleConfiguration];
-    v6 = [v3 shuffleType];
-    if (v6 <= 2 && (v6 & 1) == 0)
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    shuffleConfiguration = [posterConfiguration shuffleConfiguration];
+    shuffleType = [shuffleConfiguration shuffleType];
+    if (shuffleType <= 2 && (shuffleType & 1) == 0)
     {
       v7 = 1;
 LABEL_8:
@@ -8859,10 +8859,10 @@ LABEL_8:
     }
   }
 
-  v8 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-  v7 = [v8 mediaType] == 2;
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  v7 = [currentPosterMedia mediaType] == 2;
 
-  if (v5)
+  if (_isShuffle)
   {
     goto LABEL_8;
   }
@@ -8870,28 +8870,28 @@ LABEL_8:
   return v7;
 }
 
-- (id)_adjustedCompoundLayerStackForAdaptiveLayout:(id)a3
+- (id)_adjustedCompoundLayerStackForAdaptiveLayout:(id)layout
 {
-  v3 = a3;
-  if (v3)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     v4 = +[PUPosterSettings sharedInstance];
-    v5 = [v4 recalculateLayoutProperties];
+    recalculateLayoutProperties = [v4 recalculateLayoutProperties];
 
-    if (v5)
+    if (recalculateLayoutProperties)
     {
-      v6 = [v3 portraitLayerStack];
-      v7 = [v3 landscapeLayerStack];
-      v8 = __82__PUWallpaperPosterEditorController__adjustedCompoundLayerStackForAdaptiveLayout___block_invoke(v6);
+      portraitLayerStack = [layoutCopy portraitLayerStack];
+      landscapeLayerStack = [layoutCopy landscapeLayerStack];
+      v8 = __82__PUWallpaperPosterEditorController__adjustedCompoundLayerStackForAdaptiveLayout___block_invoke(portraitLayerStack);
 
-      v9 = __82__PUWallpaperPosterEditorController__adjustedCompoundLayerStackForAdaptiveLayout___block_invoke(v7);
+      v9 = __82__PUWallpaperPosterEditorController__adjustedCompoundLayerStackForAdaptiveLayout___block_invoke(landscapeLayerStack);
 
       v10 = [objc_alloc(MEMORY[0x1E69C0940]) initWithPortraitLayerStack:v8 landscapeLayerStack:v9];
     }
 
     else
     {
-      v10 = v3;
+      v10 = layoutCopy;
     }
   }
 
@@ -8934,33 +8934,33 @@ id __82__PUWallpaperPosterEditorController__adjustedCompoundLayerStackForAdaptiv
   return v15;
 }
 
-- (void)_handleLoadedCompoundLayerStack:(id)a3 error:(id)a4 segmentationItem:(id)a5 style:(id)a6 completion:(id)a7
+- (void)_handleLoadedCompoundLayerStack:(id)stack error:(id)error segmentationItem:(id)item style:(id)style completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v14)
+  stackCopy = stack;
+  errorCopy = error;
+  itemCopy = item;
+  styleCopy = style;
+  completionCopy = completion;
+  if (itemCopy)
   {
-    v17 = [v12 portraitLayerStack];
+    portraitLayerStack = [stackCopy portraitLayerStack];
 
-    if (v17)
+    if (portraitLayerStack)
     {
       v18 = objc_opt_class();
-      v19 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-      v39 = [v18 availableStylesForItem:v14 posterConfiguration:v19];
+      posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+      v39 = [v18 availableStylesForItem:itemCopy posterConfiguration:posterConfiguration];
 
-      v38 = [(PUWallpaperPosterEditorController *)self _adjustedCompoundLayerStackForAdaptiveLayout:v12];
+      v38 = [(PUWallpaperPosterEditorController *)self _adjustedCompoundLayerStackForAdaptiveLayout:stackCopy];
       if (![(PUWallpaperPosterEditorController *)self _isSmartShuffle])
       {
-        v20 = [(PUWallpaperPosterEditorController *)self environment];
-        if (![v20 px_isBackdrop])
+        environment = [(PUWallpaperPosterEditorController *)self environment];
+        if (![environment px_isBackdrop])
         {
-          v24 = [(PUWallpaperPosterEditorController *)self environment];
-          v25 = [v24 px_isCallServices];
+          environment2 = [(PUWallpaperPosterEditorController *)self environment];
+          px_isCallServices = [environment2 px_isCallServices];
 
-          if (v25)
+          if (px_isCallServices)
           {
             v21 = 0;
           }
@@ -8981,18 +8981,18 @@ LABEL_15:
             v26 = v21 | 0x200;
           }
 
-          v27 = [(PUWallpaperPosterEditorController *)self environment];
-          v28 = [v27 px_isBackdrop];
+          environment3 = [(PUWallpaperPosterEditorController *)self environment];
+          px_isBackdrop = [environment3 px_isBackdrop];
 
-          if (v28)
+          if (px_isBackdrop)
           {
             v26 |= 0x58uLL;
           }
 
-          v29 = [(PUWallpaperPosterEditorController *)self environment];
-          v30 = [v29 px_isCallServices];
+          environment4 = [(PUWallpaperPosterEditorController *)self environment];
+          px_isCallServices2 = [environment4 px_isCallServices];
 
-          if (v30)
+          if (px_isCallServices2)
           {
             v31 = v26 | 4;
           }
@@ -9003,14 +9003,14 @@ LABEL_15:
           }
 
           v32 = [PUParallaxLayerStackViewModel alloc];
-          v33 = [(PUWallpaperPosterEditorController *)self environment];
-          v34 = -[PUParallaxLayerStackViewModel initWithSegmentationItem:initialStyle:compoundLayerStack:deviceOrientation:allowedBehaviors:](v32, "initWithSegmentationItem:initialStyle:compoundLayerStack:deviceOrientation:allowedBehaviors:", v14, v15, v38, [v33 pu_deviceOrientation], v31);
+          environment5 = [(PUWallpaperPosterEditorController *)self environment];
+          v34 = -[PUParallaxLayerStackViewModel initWithSegmentationItem:initialStyle:compoundLayerStack:deviceOrientation:allowedBehaviors:](v32, "initWithSegmentationItem:initialStyle:compoundLayerStack:deviceOrientation:allowedBehaviors:", itemCopy, styleCopy, v38, [environment5 pu_deviceOrientation], v31);
 
           v35 = [PUWallpaperPosterEditViewModel alloc];
-          v36 = [(PUWallpaperPosterEditorController *)self environment];
-          v37 = -[PUWallpaperPosterEditViewModel initWithInitialLayerStackViewModel:availableStyles:environmentIsBackdrop:isUserTransformDisabled:](v35, "initWithInitialLayerStackViewModel:availableStyles:environmentIsBackdrop:isUserTransformDisabled:", v34, v39, [v36 px_isBackdrop], -[PUWallpaperPosterEditorController _posterWantsUserTransformDisabled](self, "_posterWantsUserTransformDisabled"));
+          environment6 = [(PUWallpaperPosterEditorController *)self environment];
+          v37 = -[PUWallpaperPosterEditViewModel initWithInitialLayerStackViewModel:availableStyles:environmentIsBackdrop:isUserTransformDisabled:](v35, "initWithInitialLayerStackViewModel:availableStyles:environmentIsBackdrop:isUserTransformDisabled:", v34, v39, [environment6 px_isBackdrop], -[PUWallpaperPosterEditorController _posterWantsUserTransformDisabled](self, "_posterWantsUserTransformDisabled"));
 
-          v16[2](v16, v37, 0);
+          completionCopy[2](completionCopy, v37, 0);
           goto LABEL_24;
         }
       }
@@ -9020,9 +9020,9 @@ LABEL_15:
     }
   }
 
-  v22 = [v12 portraitLayerStack];
+  portraitLayerStack2 = [stackCopy portraitLayerStack];
 
-  if (!v22)
+  if (!portraitLayerStack2)
   {
     v23 = PLWallpaperGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -9032,22 +9032,22 @@ LABEL_15:
     }
   }
 
-  (v16)[2](v16, 0, v13);
+  (completionCopy)[2](completionCopy, 0, errorCopy);
 LABEL_24:
 }
 
-- (void)_loadEditViewModelWithSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 completion:(id)a6
+- (void)_loadEditViewModelWithSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  itemCopy = item;
+  stackCopy = stack;
+  styleCopy = style;
+  completionCopy = completion;
+  if (!styleCopy)
   {
-    v12 = [(PUWallpaperPosterEditorController *)self _initialLayerStyleForSegmentationItem:v10];
+    styleCopy = [(PUWallpaperPosterEditorController *)self _initialLayerStyleForSegmentationItem:itemCopy];
   }
 
-  v14 = [(PUWallpaperPosterEditorController *)self _sanitizeCompoundLayerStack:v11 forSegmentationItem:v10];
+  v14 = [(PUWallpaperPosterEditorController *)self _sanitizeCompoundLayerStack:stackCopy forSegmentationItem:itemCopy];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -9055,11 +9055,11 @@ LABEL_24:
   aBlock[2] = __112__PUWallpaperPosterEditorController__loadEditViewModelWithSegmentationItem_compoundLayerStack_style_completion___block_invoke;
   aBlock[3] = &unk_1E7B784A0;
   objc_copyWeak(&v24, &location);
-  v15 = v10;
+  v15 = itemCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = styleCopy;
   v22 = v16;
-  v17 = v13;
+  v17 = completionCopy;
   v23 = v17;
   v18 = _Block_copy(aBlock);
   v19 = v18;
@@ -9094,18 +9094,18 @@ void __112__PUWallpaperPosterEditorController__loadEditViewModelWithSegmentation
   }
 }
 
-- (void)_handleSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 forAsset:(id)a6 error:(id)a7
+- (void)_handleSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style forAsset:(id)asset error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PUWallpaperPosterEditorController *)self environment];
+  itemCopy = item;
+  stackCopy = stack;
+  styleCopy = style;
+  assetCopy = asset;
+  errorCopy = error;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
 
-  if (v17)
+  if (environment)
   {
-    if (v12)
+    if (itemCopy)
     {
       objc_initWeak(&location, self);
       v18[0] = MEMORY[0x1E69E9820];
@@ -9113,8 +9113,8 @@ void __112__PUWallpaperPosterEditorController__loadEditViewModelWithSegmentation
       v18[2] = __101__PUWallpaperPosterEditorController__handleSegmentationItem_compoundLayerStack_style_forAsset_error___block_invoke;
       v18[3] = &unk_1E7B78478;
       objc_copyWeak(&v20, &location);
-      v19 = v15;
-      [(PUWallpaperPosterEditorController *)self _loadEditViewModelWithSegmentationItem:v12 compoundLayerStack:v13 style:v14 completion:v18];
+      v19 = assetCopy;
+      [(PUWallpaperPosterEditorController *)self _loadEditViewModelWithSegmentationItem:itemCopy compoundLayerStack:stackCopy style:styleCopy completion:v18];
 
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
@@ -9122,7 +9122,7 @@ void __112__PUWallpaperPosterEditorController__loadEditViewModelWithSegmentation
 
     else
     {
-      [(PUWallpaperPosterEditorController *)self _didFinishCreatingEditViewModel:0 forAsset:v15 error:v16];
+      [(PUWallpaperPosterEditorController *)self _didFinishCreatingEditViewModel:0 forAsset:assetCopy error:errorCopy];
     }
   }
 }
@@ -9135,33 +9135,33 @@ void __101__PUWallpaperPosterEditorController__handleSegmentationItem_compoundLa
   [WeakRetained _didFinishCreatingEditViewModel:v6 forAsset:*(a1 + 32) error:v5];
 }
 
-- (id)_sanitizeCompoundLayerStack:(id)a3 forSegmentationItem:(id)a4
+- (id)_sanitizeCompoundLayerStack:(id)stack forSegmentationItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  stackCopy = stack;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (!stackCopy || !itemCopy)
   {
     goto LABEL_15;
   }
 
-  if (![v7 isSettlingEffectAvailable] || (objc_msgSend(v8, "settlingEffectNormalizedBounds"), CGRectIsEmpty(v19)))
+  if (![itemCopy isSettlingEffectAvailable] || (objc_msgSend(v8, "settlingEffectNormalizedBounds"), CGRectIsEmpty(v19)))
   {
-    v9 = [v6 compoundLayerStackByUpdatingSettlingEffectEnabled:0];
+    v9 = [stackCopy compoundLayerStackByUpdatingSettlingEffectEnabled:0];
 
-    v6 = v9;
+    stackCopy = v9;
   }
 
-  v10 = [v8 originalLayout];
-  if ([v10 supportsBothOrientations])
+  originalLayout = [v8 originalLayout];
+  if ([originalLayout supportsBothOrientations])
   {
-    v11 = [v6 portraitLayerStack];
-    if (v11)
+    portraitLayerStack = [stackCopy portraitLayerStack];
+    if (portraitLayerStack)
     {
-      v12 = v11;
-      v13 = [v6 landscapeLayerStack];
+      v12 = portraitLayerStack;
+      landscapeLayerStack = [stackCopy landscapeLayerStack];
 
-      if (v13)
+      if (landscapeLayerStack)
       {
         goto LABEL_13;
       }
@@ -9171,59 +9171,59 @@ void __101__PUWallpaperPosterEditorController__handleSegmentationItem_compoundLa
     {
     }
 
-    v10 = v6;
-    v6 = 0;
+    originalLayout = stackCopy;
+    stackCopy = 0;
   }
 
 LABEL_13:
-  v14 = [(PUWallpaperPosterEditorController *)self editModel];
-  v15 = [v14 depthEffectDisabled];
+  editModel = [(PUWallpaperPosterEditorController *)self editModel];
+  depthEffectDisabled = [editModel depthEffectDisabled];
 
-  if (v15)
+  if (depthEffectDisabled)
   {
-    v16 = [v6 compoundLayerStackByUpdatingPortraitDepthEnabled:0 landscapeDepthEnabled:0];
+    v16 = [stackCopy compoundLayerStackByUpdatingPortraitDepthEnabled:0 landscapeDepthEnabled:0];
 
-    v6 = v16;
+    stackCopy = v16;
   }
 
 LABEL_15:
 
-  return v6;
+  return stackCopy;
 }
 
-- (void)_handleShuffleSegmentationItem:(id)a3 compoundLayerStack:(id)a4 editConfiguration:(id)a5 forPosterMedia:(id)a6 error:(id)a7
+- (void)_handleShuffleSegmentationItem:(id)item compoundLayerStack:(id)stack editConfiguration:(id)configuration forPosterMedia:(id)media error:(id)error
 {
-  v24 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(PUWallpaperPosterEditorController *)self environment];
+  itemCopy = item;
+  stackCopy = stack;
+  configurationCopy = configuration;
+  mediaCopy = media;
+  errorCopy = error;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
 
-  if (v16)
+  if (environment)
   {
-    v17 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+    currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
 
-    if (v17 == v14)
+    if (currentPosterMedia == mediaCopy)
     {
-      if (v13)
+      if (configurationCopy)
       {
-        v18 = [v13 copy];
-        v19 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-        [v19 setEditConfiguration:v18];
+        v18 = [configurationCopy copy];
+        currentPosterMedia2 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+        [currentPosterMedia2 setEditConfiguration:v18];
       }
 
-      v20 = [v13 style];
-      if (!v20)
+      style = [configurationCopy style];
+      if (!style)
       {
-        v21 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v22 = [v21 currentLayerStackViewModel];
-        v23 = [v22 style];
-        v20 = [v23 bakedStyle];
+        editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+        currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+        style2 = [currentLayerStackViewModel style];
+        style = [style2 bakedStyle];
       }
 
-      [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:v24 compoundLayerStack:v12 style:v20 forAsset:0 error:v15];
-      if (!v24)
+      [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:itemCopy compoundLayerStack:stackCopy style:style forAsset:0 error:errorCopy];
+      if (!itemCopy)
       {
         [(PUWallpaperPosterEditorController *)self setCurrentPosterMedia:0];
       }
@@ -9231,15 +9231,15 @@ LABEL_15:
   }
 }
 
-- (void)_loadParallaxAsset:(id)a3
+- (void)_loadParallaxAsset:(id)asset
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PUWallpaperPosterEditorController *)self shouldLoadSettlingEffectSynchronously];
+  assetCopy = asset;
+  shouldLoadSettlingEffectSynchronously = [(PUWallpaperPosterEditorController *)self shouldLoadSettlingEffectSynchronously];
   v7 = PLWallpaperGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (v6)
+    if (shouldLoadSettlingEffectSynchronously)
     {
       v8 = @"synchronous";
     }
@@ -9249,20 +9249,20 @@ LABEL_15:
       v8 = @"asynchronous";
     }
 
-    v9 = [v5 localIdentifier];
+    localIdentifier = [assetCopy localIdentifier];
     *buf = 138412546;
     *&buf[4] = v8;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = localIdentifier;
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_INFO, "Segmenting asset, %@ settling effect: %{public}@", buf, 0x16u);
   }
 
   objc_initWeak(&location, self);
-  v10 = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
-  dispatch_group_enter(v10);
-  v11 = [objc_alloc(MEMORY[0x1E69BDF40]) initWithParallaxAsset:v5];
-  v12 = [(PUWallpaperPosterEditorController *)self environment];
-  [v12 px_titleBoundsForLayout:0];
+  segmentationLoadingGroup = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
+  dispatch_group_enter(segmentationLoadingGroup);
+  v11 = [objc_alloc(MEMORY[0x1E69BDF40]) initWithParallaxAsset:assetCopy];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  [environment px_titleBoundsForLayout:0];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -9284,9 +9284,9 @@ LABEL_15:
   {
     if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
     {
-      v24 = [(PUWallpaperPosterEditorController *)self editor];
-      v25 = [v24 contentOverlayView];
-      [v25 frame];
+      editor = [(PUWallpaperPosterEditorController *)self editor];
+      contentOverlayView = [editor contentOverlayView];
+      [contentOverlayView frame];
       v27 = v26;
       v29 = v28;
 
@@ -9309,9 +9309,9 @@ LABEL_15:
   {
     if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
     {
-      v31 = [(PUWallpaperPosterEditorController *)self editor];
-      v32 = [v31 contentOverlayView];
-      [v32 frame];
+      editor2 = [(PUWallpaperPosterEditorController *)self editor];
+      contentOverlayView2 = [editor2 contentOverlayView];
+      [contentOverlayView2 frame];
       v34 = v33;
       v36 = v35;
 
@@ -9334,8 +9334,8 @@ LABEL_15:
 
   else
   {
-    v38 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-    v39 = v38 == 0;
+    currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+    v39 = currentPosterMedia == 0;
 
     if (!v39)
     {
@@ -9360,7 +9360,7 @@ LABEL_15:
   v41 = MEMORY[0x1E69E96A0];
   [v11 setLoadingHandlerQueue:v40];
 
-  if (!v6)
+  if (!shouldLoadSettlingEffectSynchronously)
   {
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
@@ -9378,14 +9378,14 @@ LABEL_15:
   v43[1] = 3221225472;
   v43[2] = __56__PUWallpaperPosterEditorController__loadParallaxAsset___block_invoke_447;
   v43[3] = &unk_1E7B78450;
-  v49 = v6;
+  v49 = shouldLoadSettlingEffectSynchronously;
   v48[1] = a2;
   v45 = buf;
   v43[4] = self;
   objc_copyWeak(v48, &location);
   v46 = v53;
   v47 = v52;
-  v42 = v10;
+  v42 = segmentationLoadingGroup;
   v44 = v42;
   [v11 loadSegmentationItemWithCompletion:v43];
 
@@ -9475,23 +9475,23 @@ void __56__PUWallpaperPosterEditorController__loadParallaxAsset___block_invoke_2
   [WeakRetained setLoadingSettlingEffect:0];
 }
 
-- (void)_loadAssetWithUUID:(id)a3
+- (void)_loadAssetWithUUID:(id)d
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  dCopy = d;
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v6 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v7 = MEMORY[0x1E6978630];
-  v17[0] = v4;
+  v17[0] = dCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v9 = [v7 fetchAssetsWithUUIDs:v8 options:v6];
-  v10 = [v9 firstObject];
+  v9 = [v7 fetchAssetsWithUUIDs:v8 options:librarySpecificFetchOptions];
+  firstObject = [v9 firstObject];
 
-  if (v10)
+  if (firstObject)
   {
-    v11 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:v10];
+    v11 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:firstObject];
     [(PUWallpaperPosterEditorController *)self _loadParallaxAsset:v11];
   }
 
@@ -9501,7 +9501,7 @@ void __56__PUWallpaperPosterEditorController__loadParallaxAsset___block_invoke_2
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch asset: %{public}@", buf, 0xCu);
     }
 
@@ -9523,36 +9523,36 @@ void __56__PUWallpaperPosterEditorController__loadAssetWithUUID___block_invoke(u
   [WeakRetained _handleSegmentationItem:0 compoundLayerStack:0 style:0 forAsset:0 error:0];
 }
 
-- (void)_reloadAssetUUID:(id)a3 fromWallpaperURL:(id)a4
+- (void)_reloadAssetUUID:(id)d fromWallpaperURL:(id)l
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E6978630];
-  v31[0] = v6;
+  v31[0] = dCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v10 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v11 = [v10 librarySpecificFetchOptions];
-  v12 = [v8 fetchAssetsWithUUIDs:v9 options:v11];
-  v13 = [v12 firstObject];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v12 = [v8 fetchAssetsWithUUIDs:v9 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    v14 = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
-    dispatch_group_enter(v14);
-    v15 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:v13];
+    segmentationLoadingGroup = [(PUWallpaperPosterEditorController *)self segmentationLoadingGroup];
+    dispatch_group_enter(segmentationLoadingGroup);
+    v15 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:firstObject];
     v16 = MEMORY[0x1E69BDF40];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL___block_invoke;
     v23[3] = &unk_1E7B78400;
-    v17 = v14;
+    v17 = segmentationLoadingGroup;
     v24 = v17;
     objc_copyWeak(&v27, &location);
-    v25 = v6;
-    v26 = self;
-    v18 = [v16 reloadSegmentationItemFromWallpaperURL:v7 asset:v15 completion:v23];
+    v25 = dCopy;
+    selfCopy = self;
+    v18 = [v16 reloadSegmentationItemFromWallpaperURL:lCopy asset:v15 completion:v23];
     [(PUWallpaperPosterEditorController *)self setSegmentationLoading:v18];
 
     objc_destroyWeak(&v27);
@@ -9564,7 +9564,7 @@ void __56__PUWallpaperPosterEditorController__loadAssetWithUUID___block_invoke(u
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v30 = v6;
+      v30 = dCopy;
       _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "Failed to fetch cold-start asset: %{public}@", buf, 0xCu);
     }
 
@@ -9659,31 +9659,31 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
   [WeakRetained _loadAssetWithUUID:*(a1 + 32)];
 }
 
-- (BOOL)_tryLoadAssetUUID:(id)a3 fromWallpaperURL:(id)a4
+- (BOOL)_tryLoadAssetUUID:(id)d fromWallpaperURL:(id)l
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v37 = 0;
-  v8 = [MEMORY[0x1E69BDF40] loadCompoundLayerStackFromWallpaperURL:v7 options:1347 error:&v37];
+  v8 = [MEMORY[0x1E69BDF40] loadCompoundLayerStackFromWallpaperURL:lCopy options:1347 error:&v37];
   v9 = v37;
   if (v8)
   {
-    v10 = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
-    v11 = [v10 style];
+    currentEditConfiguration = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
+    style = [currentEditConfiguration style];
 
-    if (!v11)
+    if (!style)
     {
       v36 = 0;
-      v11 = [MEMORY[0x1E69BDF40] loadStyleFromWallpaperURL:v7 error:&v36];
+      style = [MEMORY[0x1E69BDF40] loadStyleFromWallpaperURL:lCopy error:&v36];
       v12 = v36;
-      if (!v11)
+      if (!style)
       {
         v13 = PLWallpaperGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v40 = v6;
+          v40 = dCopy;
           v41 = 2114;
           v42 = v12;
           _os_log_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_ERROR, "Failed to load style for asset: %{public}@, error: %{public}@", buf, 0x16u);
@@ -9692,7 +9692,7 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
     }
 
     v35 = v9;
-    v14 = [MEMORY[0x1E69BDF40] loadSegmentationItemFromWallpaperURL:v7 error:&v35];
+    v14 = [MEMORY[0x1E69BDF40] loadSegmentationItemFromWallpaperURL:lCopy error:&v35];
     v15 = v35;
 
     v16 = v14 != 0;
@@ -9700,7 +9700,7 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
     {
       if ([v14 spatialPhotoStatus] || !-[PUWallpaperPosterEditorController _isSpatialPhotoPossible](self, "_isSpatialPhotoPossible"))
       {
-        [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:v14 compoundLayerStack:v8 style:v11 forAsset:0 error:v15];
+        [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:v14 compoundLayerStack:v8 style:style forAsset:0 error:v15];
       }
 
       else
@@ -9709,12 +9709,12 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v40 = v6;
+          v40 = dCopy;
           _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_DEFAULT, "Loading spatial status for asset: %{public}@", buf, 0xCu);
         }
 
         [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"reloadSegmentationItemSpatial"];
-        if (v6 && (v18 = MEMORY[0x1E6978630], v38 = v6, [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1], v24 = objc_claimAutoreleasedReturnValue(), -[PUWallpaperPosterEditorController photoLibrary](self, "photoLibrary"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "librarySpecificFetchOptions"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "fetchAssetsWithUUIDs:options:", v24, v23), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "firstObject"), v27 = objc_claimAutoreleasedReturnValue(), v19, v23, v25, v24, v27))
+        if (dCopy && (v18 = MEMORY[0x1E6978630], v38 = dCopy, [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1], v24 = objc_claimAutoreleasedReturnValue(), -[PUWallpaperPosterEditorController photoLibrary](self, "photoLibrary"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "librarySpecificFetchOptions"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "fetchAssetsWithUUIDs:options:", v24, v23), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "firstObject"), v27 = objc_claimAutoreleasedReturnValue(), v19, v23, v25, v24, v27))
         {
           v26 = [objc_alloc(MEMORY[0x1E6978B20]) initWithPhotoAsset:v27];
         }
@@ -9731,11 +9731,11 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
         v28[1] = 3221225472;
         v28[2] = __72__PUWallpaperPosterEditorController__tryLoadAssetUUID_fromWallpaperURL___block_invoke;
         v28[3] = &unk_1E7B783D8;
-        v29 = v6;
+        v29 = dCopy;
         v30 = v14;
         objc_copyWeak(&v34, buf);
         v31 = v8;
-        v32 = v11;
+        v32 = style;
         v33 = v15;
         [v21 loadSpatialPhotoForSegmentationItem:v30 asset:v26 completion:v28];
 
@@ -9750,7 +9750,7 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v40 = v6;
+        v40 = dCopy;
         v41 = 2114;
         v42 = v15;
         _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_ERROR, "Failed to load segmentation item for asset: %{public}@, error: %{public}@", buf, 0x16u);
@@ -9762,14 +9762,14 @@ void __71__PUWallpaperPosterEditorController__reloadAssetUUID_fromWallpaperURL__
 
   else
   {
-    v11 = PLWallpaperGetLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    style = PLWallpaperGetLog();
+    if (os_log_type_enabled(style, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v40 = v6;
+      v40 = dCopy;
       v41 = 2114;
       v42 = v9;
-      _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_INFO, "Failed to load layer stack for asset: %{public}@, error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_1B36F3000, style, OS_LOG_TYPE_INFO, "Failed to load layer stack for asset: %{public}@, error: %{public}@", buf, 0x16u);
     }
 
     v16 = 0;
@@ -9846,37 +9846,37 @@ void __72__PUWallpaperPosterEditorController__tryLoadAssetUUID_fromWallpaperURL_
   [WeakRetained _handleSegmentationItem:*(a1 + 32) compoundLayerStack:*(a1 + 40) style:*(a1 + 48) forAsset:0 error:*(a1 + 56)];
 }
 
-- (void)_loadAssetUUID:(id)a3 fromWallpaperURL:(id)a4
+- (void)_loadAssetUUID:(id)d fromWallpaperURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v8 = PLWallpaperGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = v7;
+    v20 = lCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_INFO, "Attempt to load wallpaper for editing from poster url: %{public}@", buf, 0xCu);
   }
 
-  if (![(PUWallpaperPosterEditorController *)self _tryLoadAssetUUID:v6 fromWallpaperURL:v7])
+  if (![(PUWallpaperPosterEditorController *)self _tryLoadAssetUUID:dCopy fromWallpaperURL:lCopy])
   {
-    v9 = [(PUWallpaperPosterEditorController *)self environment];
-    v10 = [v9 px_isCallServices];
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    px_isCallServices = [environment px_isCallServices];
 
-    if ((v10 & 1) != 0 || (PUWallpaperCacheDirectoryURL(), v11 = objc_claimAutoreleasedReturnValue(), [v7 lastPathComponent], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "URLByAppendingPathComponent:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v11, LOBYTE(v11) = -[PUWallpaperPosterEditorController _tryLoadAssetUUID:fromWallpaperURL:](self, "_tryLoadAssetUUID:fromWallpaperURL:", v6, v13), v13, (v11 & 1) == 0))
+    if ((px_isCallServices & 1) != 0 || (PUWallpaperCacheDirectoryURL(), v11 = objc_claimAutoreleasedReturnValue(), [lCopy lastPathComponent], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "URLByAppendingPathComponent:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v11, LOBYTE(v11) = -[PUWallpaperPosterEditorController _tryLoadAssetUUID:fromWallpaperURL:](self, "_tryLoadAssetUUID:fromWallpaperURL:", dCopy, v13), v13, (v11 & 1) == 0))
     {
       [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"loadAssetUUID"];
       objc_initWeak(buf, self);
-      v14 = [(PUWallpaperPosterEditorController *)self queue];
+      queue = [(PUWallpaperPosterEditorController *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__PUWallpaperPosterEditorController__loadAssetUUID_fromWallpaperURL___block_invoke;
       block[3] = &unk_1E7B7F820;
       objc_copyWeak(&v18, buf);
-      v16 = v6;
-      v17 = v7;
-      dispatch_async(v14, block);
+      v16 = dCopy;
+      v17 = lCopy;
+      dispatch_async(queue, block);
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(buf);
@@ -9890,24 +9890,24 @@ void __69__PUWallpaperPosterEditorController__loadAssetUUID_fromWallpaperURL___b
   [WeakRetained _reloadAssetUUID:*(a1 + 32) fromWallpaperURL:*(a1 + 40)];
 }
 
-- (void)_loadImagePosterMedia:(id)a3
+- (void)_loadImagePosterMedia:(id)media
 {
-  v16 = a3;
-  v4 = [(PUWallpaperPosterEditorController *)self environment];
-  v5 = [v4 pu_sourceAssetDirectory];
+  mediaCopy = media;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourceAssetDirectory = [environment pu_sourceAssetDirectory];
 
-  v6 = [v16 assetUUID];
-  if (!v5)
+  assetUUID = [mediaCopy assetUUID];
+  if (!pu_sourceAssetDirectory)
   {
     goto LABEL_6;
   }
 
-  v7 = [v16 subpath];
-  v8 = [v5 URLByAppendingPathComponent:v7];
+  subpath = [mediaCopy subpath];
+  v8 = [pu_sourceAssetDirectory URLByAppendingPathComponent:subpath];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v8 path];
+  v11 = [defaultManager fileExistsAtPath:path];
 
   if (!v11)
   {
@@ -9915,58 +9915,58 @@ void __69__PUWallpaperPosterEditorController__loadAssetUUID_fromWallpaperURL___b
     goto LABEL_6;
   }
 
-  v12 = [(PUWallpaperPosterEditorController *)self _tryLoadAssetUUID:v6 fromWallpaperURL:v8];
+  v12 = [(PUWallpaperPosterEditorController *)self _tryLoadAssetUUID:assetUUID fromWallpaperURL:v8];
 
   if (!v12)
   {
 LABEL_6:
     v13 = objc_alloc(MEMORY[0x1E69BDE78]);
-    v14 = [v16 imageURL];
-    v15 = [v13 initWithFileURL:v14];
+    imageURL = [mediaCopy imageURL];
+    v15 = [v13 initWithFileURL:imageURL];
 
     [(PUWallpaperPosterEditorController *)self _loadParallaxAsset:v15];
   }
 }
 
-- (void)_loadAssetPosterMedia:(id)a3
+- (void)_loadAssetPosterMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPosterEditorController *)self environment];
-  v6 = [v5 pu_sourceAssetDirectory];
+  mediaCopy = media;
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourceAssetDirectory = [environment pu_sourceAssetDirectory];
 
-  v7 = [v4 assetUUID];
-  if (!v6)
+  assetUUID = [mediaCopy assetUUID];
+  if (!pu_sourceAssetDirectory)
   {
     goto LABEL_5;
   }
 
-  v8 = [v4 subpath];
-  v9 = [v6 URLByAppendingPathComponent:v8];
+  subpath = [mediaCopy subpath];
+  v9 = [pu_sourceAssetDirectory URLByAppendingPathComponent:subpath];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v9 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v9 path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if (v12)
   {
-    [(PUWallpaperPosterEditorController *)self _loadAssetUUID:v7 fromWallpaperURL:v9];
+    [(PUWallpaperPosterEditorController *)self _loadAssetUUID:assetUUID fromWallpaperURL:v9];
   }
 
   if (v12 != 1)
   {
 LABEL_5:
-    if (v7)
+    if (assetUUID)
     {
       [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"loadAssetPosterMedia"];
       objc_initWeak(&location, self);
-      v13 = [(PUWallpaperPosterEditorController *)self queue];
+      queue = [(PUWallpaperPosterEditorController *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __59__PUWallpaperPosterEditorController__loadAssetPosterMedia___block_invoke;
       block[3] = &unk_1E7B80610;
       objc_copyWeak(&v16, &location);
-      v15 = v7;
-      dispatch_async(v13, block);
+      v15 = assetUUID;
+      dispatch_async(queue, block);
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -9982,9 +9982,9 @@ void __59__PUWallpaperPosterEditorController__loadAssetPosterMedia___block_invok
 
 - (void)_loadContentForCurrentPosterMedia
 {
-  v4 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+  currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
   [(PUWallpaperPosterEditorController *)self setLoadingSettlingEffect:0];
-  if (!v4)
+  if (!currentPosterMedia)
   {
     [(PUWallpaperPosterEditorController *)self setEditViewModel:0];
     goto LABEL_16;
@@ -9997,32 +9997,32 @@ void __59__PUWallpaperPosterEditorController__loadAssetPosterMedia___block_invok
     v26 = &v25;
     v27 = 0x2020000000;
     v28 = 0;
-    v5 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __70__PUWallpaperPosterEditorController__loadContentForCurrentPosterMedia__block_invoke;
     v21[3] = &unk_1E7B78388;
     objc_copyWeak(&v24, &location);
-    v22 = v4;
+    v22 = currentPosterMedia;
     v23 = &v25;
-    [v5 requestResourceForPosterMedia:v22 completion:v21];
+    [shuffleResourceManager requestResourceForPosterMedia:v22 completion:v21];
 
     if ((v26[3] & 1) == 0 && ![(PUWallpaperPosterEditorController *)self isPerformingInitialLoad])
     {
       [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"loadContentForCurrentPosterMedia"];
     }
 
-    v6 = [(PUWallpaperPosterEditorController *)self shuffleAssetIndex];
-    v7 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v8 = [v7 media];
-    v9 = [v8 count];
+    shuffleAssetIndex = [(PUWallpaperPosterEditorController *)self shuffleAssetIndex];
+    posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    media = [posterConfiguration media];
+    v9 = [media count];
 
-    v10 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-    v11 = [v10 media];
-    v12 = [v11 objectAtIndexedSubscript:(v6 + 1) % v9];
+    posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+    media2 = [posterConfiguration2 media];
+    v12 = [media2 objectAtIndexedSubscript:(shuffleAssetIndex + 1) % v9];
 
-    v13 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    [v13 preloadResourceForPosterMedia:v12];
+    shuffleResourceManager2 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    [shuffleResourceManager2 preloadResourceForPosterMedia:v12];
 
     objc_destroyWeak(&v24);
     _Block_object_dispose(&v25, 8);
@@ -10030,30 +10030,30 @@ void __59__PUWallpaperPosterEditorController__loadAssetPosterMedia___block_invok
     goto LABEL_16;
   }
 
-  v14 = [v4 mediaType];
-  if (v14 <= 2)
+  mediaType = [currentPosterMedia mediaType];
+  if (mediaType <= 2)
   {
-    if ((v14 - 1) < 2)
+    if ((mediaType - 1) < 2)
     {
-      [(PUWallpaperPosterEditorController *)self _loadAssetPosterMedia:v4];
+      [(PUWallpaperPosterEditorController *)self _loadAssetPosterMedia:currentPosterMedia];
       goto LABEL_16;
     }
 
-    if (v14)
+    if (mediaType)
     {
       goto LABEL_16;
     }
 
 LABEL_18:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:1011 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:1011 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v14 != 4)
+  if (mediaType != 4)
   {
-    if (v14 != 3)
+    if (mediaType != 3)
     {
       goto LABEL_16;
     }
@@ -10061,15 +10061,15 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v15 = v4;
+  v15 = currentPosterMedia;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v15 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:1005 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"currentPosterMedia", v19, v20}];
+    px_descriptionForAssertionMessage = [v15 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:1005 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"currentPosterMedia", v19, px_descriptionForAssertionMessage}];
   }
 
   [(PUWallpaperPosterEditorController *)self _loadImagePosterMedia:v15];
@@ -10089,18 +10089,18 @@ void __70__PUWallpaperPosterEditorController__loadContentForCurrentPosterMedia__
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
-    v3 = a3;
-    self->_isLoading = a3;
+    loadingCopy = loading;
+    self->_isLoading = loading;
     v5 = PLWallpaperGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (loadingCopy)
       {
         v6 = @"YES";
       }
@@ -10115,88 +10115,88 @@ void __70__PUWallpaperPosterEditorController__loadContentForCurrentPosterMedia__
   }
 }
 
-- (void)setFinalizationState:(unint64_t)a3
+- (void)setFinalizationState:(unint64_t)state
 {
-  if (self->_finalizationState != a3)
+  if (self->_finalizationState != state)
   {
-    self->_finalizationState = a3;
+    self->_finalizationState = state;
     [(PUWallpaperPosterEditorController *)self _updateSpatialPhotoGyro];
   }
 }
 
-- (void)setIsCancellingMediaLoading:(BOOL)a3
+- (void)setIsCancellingMediaLoading:(BOOL)loading
 {
-  if (self->_isCancellingMediaLoading != a3)
+  if (self->_isCancellingMediaLoading != loading)
   {
-    self->_isCancellingMediaLoading = a3;
-    if (a3)
+    self->_isCancellingMediaLoading = loading;
+    if (loading)
     {
-      v4 = [(PUWallpaperPosterEditorController *)self segmentationLoading];
-      [v4 cancel];
+      segmentationLoading = [(PUWallpaperPosterEditorController *)self segmentationLoading];
+      [segmentationLoading cancel];
 
-      v5 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-      [v5 stopPreloadingResources];
+      shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+      [shuffleResourceManager stopPreloadingResources];
     }
   }
 }
 
-- (void)setCurrentPosterMedia:(id)a3
+- (void)setCurrentPosterMedia:(id)media
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentPosterMedia != v5)
+  mediaCopy = media;
+  v6 = mediaCopy;
+  if (self->_currentPosterMedia != mediaCopy)
   {
-    v8 = v5;
-    v5 = [v5 isEqual:?];
+    v8 = mediaCopy;
+    mediaCopy = [mediaCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((mediaCopy & 1) == 0)
     {
       currentPosterMedia = self->_currentPosterMedia;
-      objc_storeStrong(&self->_currentPosterMedia, a3);
+      objc_storeStrong(&self->_currentPosterMedia, media);
       [(PUWallpaperPosterEditorController *)self setCurrentPosterMediaIsLivePhoto:0];
       if (!currentPosterMedia || !self->_currentPosterMedia)
       {
         [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       }
 
-      v5 = [(PUWallpaperPosterEditorController *)self _loadContentForCurrentPosterMedia];
+      mediaCopy = [(PUWallpaperPosterEditorController *)self _loadContentForCurrentPosterMedia];
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](mediaCopy, v6);
 }
 
-- (void)_handleUpdatedConfiguration:(id)a3 segmentationItem:(id)a4 compoundLayerStack:(id)a5 error:(id)a6
+- (void)_handleUpdatedConfiguration:(id)configuration segmentationItem:(id)item compoundLayerStack:(id)stack error:(id)error
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = a4;
-  v12 = a3;
+  errorCopy = error;
+  stackCopy = stack;
+  itemCopy = item;
+  configurationCopy = configuration;
   [(PUWallpaperPosterEditorController *)self _hideLoadingIndicatorForReason:@"handleUpdatedConfiguration"];
-  v13 = [v12 copy];
+  v13 = [configurationCopy copy];
 
   [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v13];
-  [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:v14 compoundLayerStack:v11 style:0 forAsset:0 error:v10];
+  [(PUWallpaperPosterEditorController *)self _handleSegmentationItem:itemCopy compoundLayerStack:stackCopy style:0 forAsset:0 error:errorCopy];
 }
 
 - (void)_loadSourcePosterConfiguration
 {
-  v4 = [(PUWallpaperPosterEditorController *)self environment];
-  v5 = [v4 pu_sourcePosterConfiguration];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourcePosterConfiguration = [environment pu_sourcePosterConfiguration];
 
-  if (([v5 options] & 8) != 0)
+  if (([pu_sourcePosterConfiguration options] & 8) != 0)
   {
     [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"loadSourcePosterConfiguration"];
     v11 = [PUWallpaperConfigurationUpdater alloc];
-    v12 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-    v13 = [(PUWallpaperPosterEditorController *)self environment];
-    v14 = [v13 pu_sourcePosterConfiguration];
-    v15 = [(PUWallpaperPosterEditorController *)self environment];
-    v16 = [v15 pu_targetAssetDirectory];
-    v17 = [(PUWallpaperPosterEditorController *)self environment];
-    v18 = [v17 pu_overrideConfiguration];
-    v10 = [(PUWallpaperConfigurationUpdater *)v11 initWithPhotoLibrary:v12 sourceConfiguration:v14 targetAssetDirectory:v16 overrideConfiguration:v18];
+    photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+    environment2 = [(PUWallpaperPosterEditorController *)self environment];
+    pu_sourcePosterConfiguration2 = [environment2 pu_sourcePosterConfiguration];
+    environment3 = [(PUWallpaperPosterEditorController *)self environment];
+    pu_targetAssetDirectory = [environment3 pu_targetAssetDirectory];
+    environment4 = [(PUWallpaperPosterEditorController *)self environment];
+    pu_overrideConfiguration = [environment4 pu_overrideConfiguration];
+    v10 = [(PUWallpaperConfigurationUpdater *)v11 initWithPhotoLibrary:photoLibrary sourceConfiguration:pu_sourcePosterConfiguration2 targetAssetDirectory:pu_targetAssetDirectory overrideConfiguration:pu_overrideConfiguration];
 
     objc_initWeak(&location, self);
     v21 = MEMORY[0x1E69E9820];
@@ -10212,30 +10212,30 @@ void __70__PUWallpaperPosterEditorController__loadContentForCurrentPosterMedia__
 
   else
   {
-    if (!v5)
+    if (!pu_sourcePosterConfiguration)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:910 description:@"Missing source poster configuration"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:910 description:@"Missing source poster configuration"];
     }
 
     if ([(PUWallpaperPosterEditorController *)self _isShuffle])
     {
-      v6 = [v5 shuffleConfiguration];
+      shuffleConfiguration = [pu_sourcePosterConfiguration shuffleConfiguration];
 
-      if (!v6)
+      if (!shuffleConfiguration)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:912 description:@"Missing source poster shuffle configuration"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:912 description:@"Missing source poster shuffle configuration"];
       }
 
-      v7 = [v5 media];
-      v8 = [(PUWallpaperPosterEditorController *)self environment];
-      v9 = [v8 px_significantEventsCounter];
+      media = [pu_sourcePosterConfiguration media];
+      environment5 = [(PUWallpaperPosterEditorController *)self environment];
+      px_significantEventsCounter = [environment5 px_significantEventsCounter];
 
-      self->_shuffleAssetIndex = +[PUPosterUtilities mediaIndexWithSeed:mediaCount:](PUPosterUtilities, "mediaIndexWithSeed:mediaCount:", v9, [v7 count]);
+      self->_shuffleAssetIndex = +[PUPosterUtilities mediaIndexWithSeed:mediaCount:](PUPosterUtilities, "mediaIndexWithSeed:mediaCount:", px_significantEventsCounter, [media count]);
     }
 
-    v10 = [v5 copy];
+    v10 = [pu_sourcePosterConfiguration copy];
     [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v10];
   }
 }
@@ -10252,45 +10252,45 @@ void __67__PUWallpaperPosterEditorController__loadSourcePosterConfiguration__blo
 
 - (void)_loadPosterDescriptor
 {
-  v4 = [(PUWallpaperPosterEditorController *)self environment];
-  v12 = [v4 pu_posterDescriptor];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment pu_posterDescriptor];
 
-  v5 = v12;
-  if (!v12)
+  v5 = pu_posterDescriptor;
+  if (!pu_posterDescriptor)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"posterDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"posterDescriptor"}];
 
     v5 = 0;
   }
 
-  if (([v5 isBlankTemplate] & 1) != 0 || objc_msgSend(v12, "descriptorType") == 2)
+  if (([v5 isBlankTemplate] & 1) != 0 || objc_msgSend(pu_posterDescriptor, "descriptorType") == 2)
   {
     [(PUWallpaperPosterEditorController *)self _pickAssets];
   }
 
   else
   {
-    v6 = [objc_opt_class() posterConfigurationFromPosterDescriptor:v12];
+    v6 = [objc_opt_class() posterConfigurationFromPosterDescriptor:pu_posterDescriptor];
     if (!v6)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:838 description:@"Missing poster configuration"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:838 description:@"Missing poster configuration"];
     }
 
     if ([(PUWallpaperPosterEditorController *)self _isShuffle])
     {
-      v7 = [v6 shuffleConfiguration];
+      shuffleConfiguration = [v6 shuffleConfiguration];
 
-      if (!v7)
+      if (!shuffleConfiguration)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:840 description:@"Missing poster shuffle configuration"];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:840 description:@"Missing poster shuffle configuration"];
       }
     }
 
-    v8 = [v12 media];
-    [v6 setMedia:v8];
+    media = [pu_posterDescriptor media];
+    [v6 setMedia:media];
 
     [(PUWallpaperPosterEditorController *)self setPosterConfiguration:v6];
   }
@@ -10299,10 +10299,10 @@ void __67__PUWallpaperPosterEditorController__loadSourcePosterConfiguration__blo
 - (void)_beginLoadingShuffleResources
 {
   [(PUWallpaperPosterEditorController *)self _createShuffleResourceManager];
-  v5 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v3 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v4 = [v5 media];
-  [v3 startPreloadingResourcesForPosterMedia:v4];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  media = [posterConfiguration media];
+  [shuffleResourceManager startPreloadingResourcesForPosterMedia:media];
 
   if (![(PUWallpaperPosterEditorController *)self isAnySmartAlbumAvailable])
   {
@@ -10312,42 +10312,42 @@ void __67__PUWallpaperPosterEditorController__loadSourcePosterConfiguration__blo
 
 - (void)_createShuffleResourceManager
 {
-  v3 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  [v3 stopPreloadingResources];
+  shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  [shuffleResourceManager stopPreloadingResources];
 
-  v27 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v4 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v5 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-  v6 = [v5 style];
+  shuffleResourceManager2 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  shuffleResourceManager3 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+  style = [shuffleResourceManager3 style];
 
-  if (v6)
+  if (style)
   {
-    v7 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    v8 = [v7 style];
+    shuffleResourceManager4 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    style2 = [shuffleResourceManager4 style];
 LABEL_5:
-    v28 = v8;
+    v28 = style2;
     goto LABEL_6;
   }
 
-  v9 = [v4 editConfiguration];
-  v7 = [v9 style];
+  editConfiguration = [posterConfiguration editConfiguration];
+  shuffleResourceManager4 = [editConfiguration style];
 
-  if (v7)
+  if (shuffleResourceManager4)
   {
-    v8 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v7];
+    style2 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:shuffleResourceManager4];
     goto LABEL_5;
   }
 
   v28 = 0;
 LABEL_6:
 
-  v10 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v11 = [v10 editConfiguration];
-  v12 = [v11 style];
+  posterConfiguration2 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  editConfiguration2 = [posterConfiguration2 editConfiguration];
+  style3 = [editConfiguration2 style];
 
-  if (v12)
+  if (style3)
   {
-    v13 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:v12];
+    v13 = [MEMORY[0x1E69BDEE0] styleWithBakedStyle:style3];
   }
 
   else
@@ -10355,69 +10355,69 @@ LABEL_6:
     v13 = 0;
   }
 
-  v14 = [(PUWallpaperPosterEditorController *)self _shuffleType];
+  _shuffleType = [(PUWallpaperPosterEditorController *)self _shuffleType];
   v15 = [PUWallpaperShuffleResourceManager alloc];
-  v16 = [v4 media];
-  v17 = [(PUWallpaperPosterEditorController *)self environment];
-  v18 = [v17 pu_sourceAssetDirectory];
-  v19 = [(PUWallpaperPosterEditorController *)self photoLibrary];
-  v20 = [(PUWallpaperShuffleResourceManager *)v15 initWithPosterMedia:v16 style:v28 assetDirectory:v18 persistedStyle:v13 photoLibrary:v19 shuffleType:v14];
+  media = [posterConfiguration media];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_sourceAssetDirectory = [environment pu_sourceAssetDirectory];
+  photoLibrary = [(PUWallpaperPosterEditorController *)self photoLibrary];
+  v20 = [(PUWallpaperShuffleResourceManager *)v15 initWithPosterMedia:media style:v28 assetDirectory:pu_sourceAssetDirectory persistedStyle:v13 photoLibrary:photoLibrary shuffleType:_shuffleType];
   [(PUWallpaperPosterEditorController *)self setShuffleResourceManager:v20];
 
   [(PUWallpaperPosterEditorController *)self _setShuffleEffect:2 supported:[(PUWallpaperPosterEditorController *)self _isSpatialPhotoPossible]];
-  if (v14 != 1)
+  if (_shuffleType != 1)
   {
-    if (v27)
+    if (shuffleResourceManager2)
     {
-      -[PUWallpaperPosterEditorController _setShuffleEffect:enabled:](self, "_setShuffleEffect:enabled:", 1, [v27 enabledEffects] & 1);
-      v21 = ([v27 enabledEffects] >> 1) & 1;
+      -[PUWallpaperPosterEditorController _setShuffleEffect:enabled:](self, "_setShuffleEffect:enabled:", 1, [shuffleResourceManager2 enabledEffects] & 1);
+      isSpatialPhotoEnabled = ([shuffleResourceManager2 enabledEffects] >> 1) & 1;
     }
 
     else
     {
-      v22 = [v4 editConfiguration];
+      editConfiguration3 = [posterConfiguration editConfiguration];
 
-      if (v22)
+      if (editConfiguration3)
       {
-        v23 = [v4 editConfiguration];
-        v24 = [v23 isDepthEnabled];
+        editConfiguration4 = [posterConfiguration editConfiguration];
+        isDepthEnabled = [editConfiguration4 isDepthEnabled];
       }
 
       else
       {
-        v24 = 1;
+        isDepthEnabled = 1;
       }
 
-      [(PUWallpaperPosterEditorController *)self _setShuffleEffect:1 enabled:v24];
-      v25 = [v4 editConfiguration];
+      [(PUWallpaperPosterEditorController *)self _setShuffleEffect:1 enabled:isDepthEnabled];
+      editConfiguration5 = [posterConfiguration editConfiguration];
 
-      if (v25)
+      if (editConfiguration5)
       {
-        v26 = [v4 editConfiguration];
-        v21 = [v26 isSpatialPhotoEnabled];
+        editConfiguration6 = [posterConfiguration editConfiguration];
+        isSpatialPhotoEnabled = [editConfiguration6 isSpatialPhotoEnabled];
       }
 
       else
       {
-        v21 = 0;
+        isSpatialPhotoEnabled = 0;
       }
     }
 
-    [(PUWallpaperPosterEditorController *)self _setShuffleEffect:2 enabled:v21];
+    [(PUWallpaperPosterEditorController *)self _setShuffleEffect:2 enabled:isSpatialPhotoEnabled];
   }
 }
 
 - (void)_loadAssetFromPosterConfiguration
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  if (([v3 options] & 2) != 0)
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  if (([posterConfiguration options] & 2) != 0)
   {
     v6 = [PUWallpaperPosterMigrator alloc];
-    v7 = [(PUWallpaperPosterEditorController *)self environment];
-    v8 = [v7 pu_sourceAssetDirectory];
-    v9 = [(PUWallpaperPosterEditorController *)self environment];
-    v4 = -[PUWallpaperPosterMigrator initWithAssetDirectory:configurationType:](v6, "initWithAssetDirectory:configurationType:", v8, [v9 pu_legacyConfigurationType]);
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    pu_sourceAssetDirectory = [environment pu_sourceAssetDirectory];
+    environment2 = [(PUWallpaperPosterEditorController *)self environment];
+    media = -[PUWallpaperPosterMigrator initWithAssetDirectory:configurationType:](v6, "initWithAssetDirectory:configurationType:", pu_sourceAssetDirectory, [environment2 pu_legacyConfigurationType]);
 
     [(PUWallpaperPosterEditorController *)self _showLoadingIndicatorForReason:@"loadAssetFromPosterConfiguration"];
     objc_initWeak(location, self);
@@ -10426,8 +10426,8 @@ LABEL_6:
     v13[2] = __70__PUWallpaperPosterEditorController__loadAssetFromPosterConfiguration__block_invoke;
     v13[3] = &unk_1E7B78338;
     objc_copyWeak(&v14, location);
-    [v4 attemptMigrationWithCompletionBlock:v13];
-    [(PUWallpaperPosterEditorController *)self setMigrator:v4];
+    [media attemptMigrationWithCompletionBlock:v13];
+    [(PUWallpaperPosterEditorController *)self setMigrator:media];
     objc_destroyWeak(&v14);
     objc_destroyWeak(location);
 LABEL_9:
@@ -10435,34 +10435,34 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v3 options] & 8) != 0)
+  if (([posterConfiguration options] & 8) != 0)
   {
-    v4 = PLWallpaperGetLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    media = PLWallpaperGetLog();
+    if (os_log_type_enabled(media, OS_LOG_TYPE_INFO))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v3;
-      _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_INFO, "Ignore current configuration as it's marked as needing update: %@", location, 0xCu);
+      *(location + 4) = posterConfiguration;
+      _os_log_impl(&dword_1B36F3000, media, OS_LOG_TYPE_INFO, "Ignore current configuration as it's marked as needing update: %@", location, 0xCu);
     }
 
     goto LABEL_9;
   }
 
-  if (v3)
+  if (posterConfiguration)
   {
-    v4 = [v3 media];
-    if ([v4 count])
+    media = [posterConfiguration media];
+    if ([media count])
     {
-      v5 = [v4 objectAtIndexedSubscript:[(PUWallpaperPosterEditorController *)self shuffleAssetIndex]% [v4 count]];
+      v5 = [media objectAtIndexedSubscript:[(PUWallpaperPosterEditorController *)self shuffleAssetIndex]% [media count]];
       [(PUWallpaperPosterEditorController *)self setCurrentPosterMedia:v5];
     }
 
     else
     {
-      v10 = [(PUWallpaperPosterEditorController *)self environment];
-      v11 = [v10 px_isCallServices];
+      environment3 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isCallServices = [environment3 px_isCallServices];
 
-      if (v11)
+      if (px_isCallServices)
       {
         [(PUWallpaperPosterEditorController *)self _pickAssets];
       }
@@ -10473,7 +10473,7 @@ LABEL_9:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           LODWORD(location[0]) = 138412290;
-          *(location + 4) = v3;
+          *(location + 4) = posterConfiguration;
           _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Current poster configuration has no media: %@", location, 0xCu);
         }
 
@@ -10526,19 +10526,19 @@ void __70__PUWallpaperPosterEditorController__loadAssetFromPosterConfiguration__
     [(PUWallpaperPosterEditorController *)self posterConfiguration];
   }
   v3 = ;
-  v4 = [v3 editConfiguration];
+  editConfiguration = [v3 editConfiguration];
 
-  return v4;
+  return editConfiguration;
 }
 
-- (void)setPosterConfiguration:(id)a3
+- (void)setPosterConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_posterConfiguration != v5 && ([(PFPosterConfiguration *)v5 isEqual:?]& 1) == 0)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (self->_posterConfiguration != configurationCopy && ([(PFPosterConfiguration *)configurationCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_posterConfiguration, a3);
+    objc_storeStrong(&self->_posterConfiguration, configuration);
     v7 = PLWallpaperGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -10565,24 +10565,24 @@ void __70__PUWallpaperPosterEditorController__loadAssetFromPosterConfiguration__
 {
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v4 = [v3 style];
-    v5 = [v4 kind];
-    v6 = [v5 isEqual:*MEMORY[0x1E69C0B28]];
+    currentLayerStackViewModel = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    style = [currentLayerStackViewModel style];
+    kind = [style kind];
+    v6 = [kind isEqual:*MEMORY[0x1E69C0B28]];
 
     if (v6)
     {
-      v7 = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
-      v8 = [v7 editConfiguration];
+      currentPosterMedia = [(PUWallpaperPosterEditorController *)self currentPosterMedia];
+      editConfiguration = [currentPosterMedia editConfiguration];
 
-      v9 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+      currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block_invoke;
       v11[3] = &unk_1E7B80328;
-      v12 = v8;
-      v10 = v8;
-      [v9 performChanges:v11];
+      v12 = editConfiguration;
+      v10 = editConfiguration;
+      [currentLayerStackViewModel2 performChanges:v11];
     }
   }
 }
@@ -10605,31 +10605,31 @@ void __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block
 {
   if (PFPosterIsAdaptiveLayoutEnabled())
   {
-    v36 = [(PUWallpaperPosterEditorController *)self environment];
-    if ([v36 px_isBackdrop])
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    if ([environment px_isBackdrop])
     {
     }
 
     else
     {
-      v3 = [(PUWallpaperPosterEditorController *)self environment];
-      v4 = [v3 px_isCallServices];
+      environment2 = [(PUWallpaperPosterEditorController *)self environment];
+      px_isCallServices = [environment2 px_isCallServices];
 
-      if ((v4 & 1) == 0)
+      if ((px_isCallServices & 1) == 0)
       {
-        v5 = [(PUWallpaperPosterEditorController *)self _isShuffle];
-        v6 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v7 = [v6 currentLayerStackViewModel];
-        [v7 containerFrame];
+        _isShuffle = [(PUWallpaperPosterEditorController *)self _isShuffle];
+        editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+        currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+        [currentLayerStackViewModel containerFrame];
         PXRectWithSize();
         v9 = v8;
         v11 = v10;
         v13 = v12;
         v15 = v14;
-        v16 = [(PUWallpaperPosterEditorController *)self editViewModel];
-        v17 = [v16 deviceOrientation];
+        editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+        deviceOrientation = [editViewModel2 deviceOrientation];
 
-        if ((v17 - 3) <= 1)
+        if ((deviceOrientation - 3) <= 1)
         {
           PXRectTransposed();
           v9 = v18;
@@ -10638,8 +10638,8 @@ void __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block
           v15 = v21;
         }
 
-        v22 = [(PUWallpaperPosterEditorController *)self environment];
-        [v22 px_minimumTitleBoundsForLayout:0];
+        environment3 = [(PUWallpaperPosterEditorController *)self environment];
+        [environment3 px_minimumTitleBoundsForLayout:0];
 
         v37 = v15;
         PXRectDenormalize();
@@ -10647,10 +10647,10 @@ void __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        [v7 additionalViewTitleHeight];
-        if (v5)
+        [currentLayerStackViewModel additionalViewTitleHeight];
+        if (_isShuffle)
         {
-          v31 = PUUserAdjustedAdditionalViewTitleHeightForViewModel(v7);
+          v31 = PUUserAdjustedAdditionalViewTitleHeightForViewModel(currentLayerStackViewModel);
         }
 
         v32 = v31;
@@ -10659,7 +10659,7 @@ void __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block
         v43.size.width = v28;
         v43.size.height = v30;
         v33 = v32 + CGRectGetMaxY(v43);
-        v34 = [(PUWallpaperPosterEditorController *)self editor];
+        editor = [(PUWallpaperPosterEditorController *)self editor];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __64__PUWallpaperPosterEditorController__updatePreferredTitleBounds__block_invoke;
@@ -10669,22 +10669,22 @@ void __65__PUWallpaperPosterEditorController__updateTitleHeightProperties__block
         v41[6] = v11;
         v41[7] = v13;
         v41[8] = v37;
-        [v34 pu_updatePreferences:v41];
+        [editor pu_updatePreferences:v41];
 
-        v35 = [(PUWallpaperPosterEditorController *)self editor];
+        editor2 = [(PUWallpaperPosterEditorController *)self editor];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __64__PUWallpaperPosterEditorController__updatePreferredTitleBounds__block_invoke_2;
         v39[3] = &__block_descriptor_33_e63_v24__0___PXPosterMutablePreferences__8___PXPosterTransition__16l;
-        v40 = v5;
-        [v35 px_updatePreferences:v39];
+        v40 = _isShuffle;
+        [editor2 px_updatePreferences:v39];
 
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __64__PUWallpaperPosterEditorController__updatePreferredTitleBounds__block_invoke_3;
         v38[3] = &unk_1E7B78288;
         v38[4] = self;
-        [v6 performChanges:v38];
+        [editViewModel performChanges:v38];
       }
     }
   }
@@ -10733,23 +10733,23 @@ void __64__PUWallpaperPosterEditorController__updatePreferredTitleBounds__block_
 
 - (void)_updateContentOverlayContainerView
 {
-  v3 = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
-  v4 = [(PUWallpaperPosterEditorController *)self editor];
-  v5 = [v4 contentOverlayView];
+  contentOverlayContainerView = [(PUWallpaperPosterEditorController *)self contentOverlayContainerView];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
+  contentOverlayView = [editor contentOverlayView];
 
-  [v5 bounds];
+  [contentOverlayView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PUWallpaperPosterEditorController *)self environment];
-  v15 = [v14 pu_deviceOrientation];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_deviceOrientation = [environment pu_deviceOrientation];
 
   v16 = v7;
   v17 = v9;
   v18 = v11;
   v19 = v13;
-  if (&v15[-1].ty + 5 <= 1)
+  if (&pu_deviceOrientation[-1].ty + 5 <= 1)
   {
     PXRectTransposed();
     v16 = v20;
@@ -10759,29 +10759,29 @@ void __64__PUWallpaperPosterEditorController__updatePreferredTitleBounds__block_
   }
 
   PXRectGetCenter();
-  [v3 setCenter:?];
-  [v3 setBounds:{v16, v17, v18, v19}];
-  PUPosterAdditionalTransformForDeviceOrientation(v15, v24);
-  [v3 setTransform:v24];
+  [contentOverlayContainerView setCenter:?];
+  [contentOverlayContainerView setBounds:{v16, v17, v18, v19}];
+  PUPosterAdditionalTransformForDeviceOrientation(pu_deviceOrientation, v24);
+  [contentOverlayContainerView setTransform:v24];
 }
 
-- (void)_updateLayerStackOrderingForViewModel:(id)a3
+- (void)_updateLayerStackOrderingForViewModel:(id)model
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 viewManager];
-  v6 = [(PUWallpaperPosterEditorController *)self backgroundView];
+  modelCopy = model;
+  viewManager = [modelCopy viewManager];
+  backgroundView = [(PUWallpaperPosterEditorController *)self backgroundView];
   v7 = *MEMORY[0x1E69C0A70];
-  [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:*MEMORY[0x1E69C0A70] usingViewManager:v5 containerView:v6];
-  v8 = [(PUWallpaperPosterEditorController *)self _wantsSpatialPhotoBackfill];
-  v9 = [v4 spatialPhotoEnabled];
-  if (v8)
+  [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:*MEMORY[0x1E69C0A70] usingViewManager:viewManager containerView:backgroundView];
+  _wantsSpatialPhotoBackfill = [(PUWallpaperPosterEditorController *)self _wantsSpatialPhotoBackfill];
+  spatialPhotoEnabled = [modelCopy spatialPhotoEnabled];
+  if (_wantsSpatialPhotoBackfill)
   {
     v10 = MEMORY[0x1E69C0AC0];
     v11 = MEMORY[0x1E69C0AB0];
-    if (v9)
+    if (spatialPhotoEnabled)
     {
-      v12 = [v5 spatialPhotoBackgroundBackfillLayerView];
+      spatialPhotoBackgroundBackfillLayerView = [viewManager spatialPhotoBackgroundBackfillLayerView];
       goto LABEL_6;
     }
 
@@ -10793,36 +10793,36 @@ LABEL_14:
 
   v10 = MEMORY[0x1E69C0AB8];
   v11 = MEMORY[0x1E69C0AA8];
-  if (!v9)
+  if (!spatialPhotoEnabled)
   {
     goto LABEL_14;
   }
 
-  v12 = [v5 spatialPhotoBackgroundLayerView];
+  spatialPhotoBackgroundBackfillLayerView = [viewManager spatialPhotoBackgroundLayerView];
 LABEL_6:
-  v13 = v12;
+  v13 = spatialPhotoBackgroundBackfillLayerView;
 
   v14 = *v11;
   v15 = *v10;
   if (v13)
   {
-    v16 = [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:v14 usingViewManager:v5 containerView:v6];
-    v17 = [(PUWallpaperPosterEditorController *)self floatingView];
-    [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:v15 usingViewManager:v5 containerView:v17];
+    v16 = [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:v14 usingViewManager:viewManager containerView:backgroundView];
+    floatingView = [(PUWallpaperPosterEditorController *)self floatingView];
+    [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:v15 usingViewManager:viewManager containerView:floatingView];
 
-    [(PUWallpaperPosterEditorController *)self _updateSpatialPhotoGyroForLayerStackViewModel:v4];
-    v18 = [v5 existingViewForLayerID:*MEMORY[0x1E69C0A80]];
-    v19 = [v18 superview];
+    [(PUWallpaperPosterEditorController *)self _updateSpatialPhotoGyroForLayerStackViewModel:modelCopy];
+    v18 = [viewManager existingViewForLayerID:*MEMORY[0x1E69C0A80]];
+    superview = [v18 superview];
 
-    if (v19)
+    if (superview)
     {
       [v18 removeFromSuperview];
     }
 
-    v20 = [v5 existingViewForLayerID:v7];
-    v21 = [v20 superview];
+    v20 = [viewManager existingViewForLayerID:v7];
+    superview2 = [v20 superview];
 
-    if (v21)
+    if (superview2)
     {
       [v20 removeFromSuperview];
     }
@@ -10832,31 +10832,31 @@ LABEL_6:
       [(PUWallpaperPosterEditorController *)self _showSpatialPhotoDisabledLowerPowerModeTipIfNeeded];
     }
 
-    [v4 hasMatte];
+    [modelCopy hasMatte];
     goto LABEL_24;
   }
 
 LABEL_15:
-  v22 = [v5 existingViewForLayerID:v14];
-  v23 = [v22 superview];
+  v22 = [viewManager existingViewForLayerID:v14];
+  superview3 = [v22 superview];
 
-  if (v23)
+  if (superview3)
   {
     [v22 removeFromSuperview];
   }
 
-  v24 = [v5 existingViewForLayerID:v15];
+  v24 = [viewManager existingViewForLayerID:v15];
 
-  v25 = [v24 superview];
+  superview4 = [v24 superview];
 
-  if (v25)
+  if (superview4)
   {
     [v24 removeFromSuperview];
   }
 
-  if ([v4 hasMatte])
+  if ([modelCopy hasMatte])
   {
-    if ([v4 clockAppearsAboveForeground])
+    if ([modelCopy clockAppearsAboveForeground])
     {
       [(PUWallpaperPosterEditorController *)self foregroundView];
     }
@@ -10866,68 +10866,68 @@ LABEL_15:
       [(PUWallpaperPosterEditorController *)self floatingView];
     }
     v26 = ;
-    [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:*MEMORY[0x1E69C0A80] usingViewManager:v5 containerView:v26];
+    [(PUWallpaperPosterEditorController *)self _updateViewForLayerID:*MEMORY[0x1E69C0A80] usingViewManager:viewManager containerView:v26];
   }
 
 LABEL_24:
-  if ([v4 showsDebugHUD])
+  if ([modelCopy showsDebugHUD])
   {
-    v27 = [(PUWallpaperPosterEditorController *)self floatingView];
-    v28 = [v5 debugInfoView];
-    [v27 addSubview:v28];
+    floatingView2 = [(PUWallpaperPosterEditorController *)self floatingView];
+    debugInfoView = [viewManager debugInfoView];
+    [floatingView2 addSubview:debugInfoView];
 
-    v29 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v30 = [v29 currentLayerStackViewModel];
-    v31 = [v30 viewManager];
-    v32 = [v31 debugInfoView];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+    viewManager2 = [currentLayerStackViewModel viewManager];
+    debugInfoView2 = [viewManager2 debugInfoView];
 
     v41 = @"Idle Timer Disabled";
-    v33 = [(PUWallpaperPosterEditorController *)self editModel];
-    v34 = [v33 idleTimerDisabled];
+    editModel = [(PUWallpaperPosterEditorController *)self editModel];
+    idleTimerDisabled = [editModel idleTimerDisabled];
     v35 = @"NO";
-    if (v34)
+    if (idleTimerDisabled)
     {
       v35 = @"YES";
     }
 
     v42[0] = v35;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    [v32 displayAdditionalDebugInfo:v36];
+    [debugInfoView2 displayAdditionalDebugInfo:v36];
   }
 
   else
   {
-    v32 = [v5 debugInfoViewIfLoaded];
-    [v32 removeFromSuperview];
+    debugInfoView2 = [viewManager debugInfoViewIfLoaded];
+    [debugInfoView2 removeFromSuperview];
   }
 
   if (PXPreferencesGetBool())
   {
-    v37 = [(PUWallpaperPosterEditorController *)self floatingView];
-    v38 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v39 = [v38 viewManager];
-    v40 = [v39 debugRectsView];
-    [v37 addSubview:v40];
+    floatingView3 = [(PUWallpaperPosterEditorController *)self floatingView];
+    currentLayerStackViewModel2 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    viewManager3 = [currentLayerStackViewModel2 viewManager];
+    debugRectsView = [viewManager3 debugRectsView];
+    [floatingView3 addSubview:debugRectsView];
   }
 
   else
   {
-    v37 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
-    v38 = [v37 viewManager];
-    v39 = [v38 debugRectsViewIfLoaded];
-    [v39 removeFromSuperview];
+    floatingView3 = [(PUWallpaperPosterEditorController *)self currentLayerStackViewModel];
+    currentLayerStackViewModel2 = [floatingView3 viewManager];
+    viewManager3 = [currentLayerStackViewModel2 debugRectsViewIfLoaded];
+    [viewManager3 removeFromSuperview];
   }
 }
 
-- (void)_updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:(id)a3
+- (void)_updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:(id)models
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelsCopy = models;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [modelsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -10938,7 +10938,7 @@ LABEL_24:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modelsCopy);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -10946,19 +10946,19 @@ LABEL_24:
         [(PUWallpaperPosterEditorController *)self _removeViewsFromLayerStackViewModel:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [modelsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v11 = [v10 visibleLayerStackViewModels];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  visibleLayerStackViewModels = [editViewModel visibleLayerStackViewModels];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v12 = [visibleLayerStackViewModels countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -10969,7 +10969,7 @@ LABEL_24:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(visibleLayerStackViewModels);
         }
 
         v16 = *(*(&v17 + 1) + 8 * j);
@@ -10977,19 +10977,19 @@ LABEL_24:
         [v16 registerChangeObserver:self context:"LayerStackViewModelObservationContext"];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v13 = [visibleLayerStackViewModels countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v13);
   }
 }
 
-- (BOOL)_updateViewForLayerID:(id)a3 usingViewManager:(id)a4 containerView:(id)a5
+- (BOOL)_updateViewForLayerID:(id)d usingViewManager:(id)manager containerView:(id)view
 {
-  v7 = a5;
-  v8 = [a4 viewForLayerID:a3];
+  viewCopy = view;
+  v8 = [manager viewForLayerID:d];
   v9 = v8;
-  if (!v8 || ([v8 superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v7))
+  if (!v8 || ([v8 superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == viewCopy))
   {
     v12 = 0;
   }
@@ -11001,7 +11001,7 @@ LABEL_24:
     v14[1] = 3221225472;
     v14[2] = __90__PUWallpaperPosterEditorController__updateViewForLayerID_usingViewManager_containerView___block_invoke;
     v14[3] = &unk_1E7B80C38;
-    v15 = v7;
+    v15 = viewCopy;
     v16 = v9;
     [v11 performWithoutAnimation:v14];
 
@@ -11011,17 +11011,17 @@ LABEL_24:
   return v12;
 }
 
-- (void)_removeViewsFromLayerStackViewModel:(id)a3
+- (void)_removeViewsFromLayerStackViewModel:(id)model
 {
-  v3 = [a3 viewManager];
-  v4 = [v3 createdLayerViews];
+  viewManager = [model viewManager];
+  createdLayerViews = [viewManager createdLayerViews];
   v5 = MEMORY[0x1E69DD250];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PUWallpaperPosterEditorController__removeViewsFromLayerStackViewModel___block_invoke;
   v7[3] = &unk_1E7B80DD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = createdLayerViews;
+  v6 = createdLayerViews;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -11059,20 +11059,20 @@ void __73__PUWallpaperPosterEditorController__removeViewsFromLayerStackViewModel
   }
 }
 
-- (void)_updateSpatialPhotoGyroForLayerStackViewModel:(id)a3
+- (void)_updateSpatialPhotoGyroForLayerStackViewModel:(id)model
 {
-  v4 = [a3 viewManager];
+  viewManager = [model viewManager];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PUWallpaperPosterEditorController__updateSpatialPhotoGyroForLayerStackViewModel___block_invoke;
   aBlock[3] = &unk_1E7B782D0;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 spatialPhotoBackgroundLayerView];
-  v5[2](v5, v6);
+  spatialPhotoBackgroundLayerView = [viewManager spatialPhotoBackgroundLayerView];
+  v5[2](v5, spatialPhotoBackgroundLayerView);
 
-  v7 = [v4 spatialPhotoBackgroundBackfillLayerView];
-  v5[2](v5, v7);
+  spatialPhotoBackgroundBackfillLayerView = [viewManager spatialPhotoBackgroundBackfillLayerView];
+  v5[2](v5, spatialPhotoBackgroundBackfillLayerView);
 }
 
 void __83__PUWallpaperPosterEditorController__updateSpatialPhotoGyroForLayerStackViewModel___block_invoke(uint64_t a1, void *a2)
@@ -11141,13 +11141,13 @@ void __83__PUWallpaperPosterEditorController__updateSpatialPhotoGyroForLayerStac
 - (void)_updateSpatialPhotoGyro
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v4 = [v3 visibleLayerStackViewModels];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  visibleLayerStackViewModels = [editViewModel visibleLayerStackViewModels];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleLayerStackViewModels countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -11159,14 +11159,14 @@ void __83__PUWallpaperPosterEditorController__updateSpatialPhotoGyroForLayerStac
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleLayerStackViewModels);
         }
 
         [(PUWallpaperPosterEditorController *)self _updateSpatialPhotoGyroForLayerStackViewModel:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleLayerStackViewModels countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -11175,10 +11175,10 @@ void __83__PUWallpaperPosterEditorController__updateSpatialPhotoGyroForLayerStac
 
 - (void)_showSpatialPhotoDisabledLowerPowerModeTipIfNeeded
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v4)
+  if (isLowPowerModeEnabled)
   {
     objc_initWeak(&location, self);
     v5 = dispatch_time(0, 500000000);
@@ -11212,23 +11212,23 @@ uint64_t __87__PUWallpaperPosterEditorController__showSpatialPhotoDisabledLowerP
   v17 = *MEMORY[0x1E69E9840];
   if ([(PUWallpaperPosterEditorController *)self _isSpatialPhotoEnabled])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoPossible];
+    _isSpatialPhotoPossible = [(PUWallpaperPosterEditorController *)self _isSpatialPhotoPossible];
   }
 
   else
   {
-    v3 = 0;
+    _isSpatialPhotoPossible = 0;
   }
 
-  v4 = [(PUWallpaperPosterEditorController *)self _isDepthEnabledInAnyOrientation];
-  v5 = [(PUWallpaperPosterEditorController *)self editModel];
-  v6 = [v5 depthEffectDisabled];
+  _isDepthEnabledInAnyOrientation = [(PUWallpaperPosterEditorController *)self _isDepthEnabledInAnyOrientation];
+  editModel = [(PUWallpaperPosterEditorController *)self editModel];
+  depthEffectDisabled = [editModel depthEffectDisabled];
 
   v7 = PLWallpaperGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = @"NO";
-    if (v3)
+    if (_isSpatialPhotoPossible)
     {
       v8 = @"YES";
     }
@@ -11239,15 +11239,15 @@ uint64_t __87__PUWallpaperPosterEditorController__showSpatialPhotoDisabledLowerP
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_INFO, "Updating render preferences with hasSpatialPhoto:%@", buf, 0xCu);
   }
 
-  v10 = [(PUWallpaperPosterEditorController *)self editor];
+  editor = [(PUWallpaperPosterEditorController *)self editor];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__PUWallpaperPosterEditorController__updateEditorPreferences__block_invoke;
   v11[3] = &__block_descriptor_35_e69_v24__0___PUMutablePosterEditorPreferences__8___PXPosterTransition__16l;
-  v12 = v3;
-  v13 = v4;
-  v14 = v6;
-  [v10 pu_updatePreferences:v11];
+  v12 = _isSpatialPhotoPossible;
+  v13 = _isDepthEnabledInAnyOrientation;
+  v14 = depthEffectDisabled;
+  [editor pu_updatePreferences:v11];
 }
 
 void __61__PUWallpaperPosterEditorController__updateEditorPreferences__block_invoke(_BYTE *a1, void *a2)
@@ -11291,25 +11291,25 @@ void __61__PUWallpaperPosterEditorController__updateEditorPreferences__block_inv
 
 - (void)_updateDeviceOrientation
 {
-  v3 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v3 px_isBackdrop])
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment px_isBackdrop])
   {
 
 LABEL_4:
-    v5 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_invoke;
     v6[3] = &unk_1E7B78288;
     v6[4] = self;
-    [v5 performChanges:v6];
+    [editViewModel performChanges:v6];
 
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
+  deviceSupportsLandscapeConfiguration = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
 
-  if (v4)
+  if (deviceSupportsLandscapeConfiguration)
   {
     goto LABEL_4;
   }
@@ -11328,8 +11328,8 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
 
 - (void)_updateContainerFrame
 {
-  v3 = [(PUWallpaperPosterEditorController *)self backgroundView];
-  [v3 bounds];
+  backgroundView = [(PUWallpaperPosterEditorController *)self backgroundView];
+  [backgroundView bounds];
   PXRectWithOriginAndSize();
   v5 = v4;
   v7 = v6;
@@ -11338,10 +11338,10 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
 
   if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
   {
-    v12 = [(PUWallpaperPosterEditorController *)self environment];
-    v13 = [v12 px_isBackdrop];
+    environment = [(PUWallpaperPosterEditorController *)self environment];
+    px_isBackdrop = [environment px_isBackdrop];
 
-    if ((v13 & 1) == 0)
+    if ((px_isBackdrop & 1) == 0)
     {
       v23.origin.x = v5;
       v23.origin.y = v7;
@@ -11361,7 +11361,7 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
     }
   }
 
-  v18 = [(PUWallpaperPosterEditorController *)self editViewModel];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __58__PUWallpaperPosterEditorController__updateContainerFrame__block_invoke;
@@ -11370,19 +11370,19 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
   *&v22[5] = v7;
   *&v22[6] = v9;
   *&v22[7] = v11;
-  [v18 performChanges:v22];
+  [editViewModel performChanges:v22];
 
-  v19 = [(PUWallpaperPosterEditorController *)self environment];
-  if ([v19 px_isBackdrop])
+  environment2 = [(PUWallpaperPosterEditorController *)self environment];
+  if ([environment2 px_isBackdrop])
   {
   }
 
   else
   {
-    v20 = [(PUWallpaperPosterEditorController *)self environment];
-    v21 = [v20 px_isCallServices];
+    environment3 = [(PUWallpaperPosterEditorController *)self environment];
+    px_isCallServices = [environment3 px_isCallServices];
 
-    if (!v21)
+    if (!px_isCallServices)
     {
       return;
     }
@@ -11392,15 +11392,15 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
   [(PUWallpaperPosterEditorController *)self _updateUserTransformView];
 }
 
-- (void)setVisibleLayerStackViewModels:(id)a3
+- (void)setVisibleLayerStackViewModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   visibleLayerStackViewModels = self->_visibleLayerStackViewModels;
-  if (visibleLayerStackViewModels != v4)
+  if (visibleLayerStackViewModels != modelsCopy)
   {
-    v9 = v4;
-    visibleLayerStackViewModels = [(NSArray *)visibleLayerStackViewModels isEqual:v4];
-    v4 = v9;
+    v9 = modelsCopy;
+    visibleLayerStackViewModels = [(NSArray *)visibleLayerStackViewModels isEqual:modelsCopy];
+    modelsCopy = v9;
     if ((visibleLayerStackViewModels & 1) == 0)
     {
       v6 = self->_visibleLayerStackViewModels;
@@ -11409,19 +11409,19 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
       self->_visibleLayerStackViewModels = v7;
 
       [(PUWallpaperPosterEditorController *)self _updateVisibleLayerStackViewsWithPreviouslyVisibleStackViewModels:v6];
-      v4 = v9;
+      modelsCopy = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](visibleLayerStackViewModels, v4);
+  MEMORY[0x1EEE66BB8](visibleLayerStackViewModels, modelsCopy);
 }
 
-- (void)setCurrentLayerStackViewModel:(id)a3
+- (void)setCurrentLayerStackViewModel:(id)model
 {
-  v8 = a3;
+  modelCopy = model;
   v5 = self->_currentLayerStackViewModel;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == modelCopy)
   {
   }
 
@@ -11431,7 +11431,7 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentLayerStackViewModel, a3);
+      objc_storeStrong(&self->_currentLayerStackViewModel, model);
       [(PUWallpaperPosterEditorController *)self _updateMotionEffectsEnabled];
       [(PUWallpaperPosterEditorController *)self _updateEditToolbar];
       [(PUWallpaperPosterEditorController *)self _updateTitleHeightProperties];
@@ -11442,39 +11442,39 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
 
 - (void)_updateVisibleLayerStackViewModels
 {
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v3 = [v4 visibleLayerStackViewModels];
-  [(PUWallpaperPosterEditorController *)self setVisibleLayerStackViewModels:v3];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  visibleLayerStackViewModels = [editViewModel visibleLayerStackViewModels];
+  [(PUWallpaperPosterEditorController *)self setVisibleLayerStackViewModels:visibleLayerStackViewModels];
 }
 
 - (void)_updateCurrentLayerStackViewModel
 {
-  v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-  v3 = [v4 currentLayerStackViewModel];
-  [(PUWallpaperPosterEditorController *)self setCurrentLayerStackViewModel:v3];
+  editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+  currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+  [(PUWallpaperPosterEditorController *)self setCurrentLayerStackViewModel:currentLayerStackViewModel];
 }
 
 - (void)_updateCurrentStyle
 {
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
-    v3 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    v4 = [v3 currentLayerStackViewModel];
-    v8 = [v4 style];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    currentLayerStackViewModel = [editViewModel currentLayerStackViewModel];
+    style = [currentLayerStackViewModel style];
 
-    v5 = [v8 bakedStyle];
-    v6 = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
-    [v6 setStyle:v5];
+    bakedStyle = [style bakedStyle];
+    currentEditConfiguration = [(PUWallpaperPosterEditorController *)self currentEditConfiguration];
+    [currentEditConfiguration setStyle:bakedStyle];
 
-    v7 = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
-    [v7 setStyle:v8];
+    shuffleResourceManager = [(PUWallpaperPosterEditorController *)self shuffleResourceManager];
+    [shuffleResourceManager setStyle:style];
   }
 }
 
 - (void)_updateEditViewModelPropertiesFromPosterConfiguration
 {
-  v3 = [(PUWallpaperPosterEditorController *)self posterConfiguration];
-  v9 = [v3 editConfiguration];
+  posterConfiguration = [(PUWallpaperPosterEditorController *)self posterConfiguration];
+  editConfiguration = [posterConfiguration editConfiguration];
 
   if ([(PUWallpaperPosterEditorController *)self _isShuffle])
   {
@@ -11484,34 +11484,34 @@ void __61__PUWallpaperPosterEditorController__updateDeviceOrientation__block_inv
       goto LABEL_7;
     }
 
-    v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    [v4 performChanges:&__block_literal_global_334_37037];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    [editViewModel performChanges:&__block_literal_global_334_37037];
   }
 
   else
   {
-    if (!v9)
+    if (!editConfiguration)
     {
       goto LABEL_7;
     }
 
-    v4 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    [v4 applyChangesFromPosterEditConfiguration:v9];
+    editViewModel = [(PUWallpaperPosterEditorController *)self editViewModel];
+    [editViewModel applyChangesFromPosterEditConfiguration:editConfiguration];
   }
 
 LABEL_7:
-  v5 = [(PUWallpaperPosterEditorController *)self environment];
-  v6 = [v5 pu_posterDescriptor];
-  v7 = [v6 descriptorType];
+  environment = [(PUWallpaperPosterEditorController *)self environment];
+  pu_posterDescriptor = [environment pu_posterDescriptor];
+  descriptorType = [pu_posterDescriptor descriptorType];
 
-  if (v7 == 5)
+  if (descriptorType == 5)
   {
-    v8 = [(PUWallpaperPosterEditorController *)self editViewModel];
-    [v8 performChanges:&__block_literal_global_336];
+    editViewModel2 = [(PUWallpaperPosterEditorController *)self editViewModel];
+    [editViewModel2 performChanges:&__block_literal_global_336];
   }
 }
 
-- (void)_loadEditViewModelAndUpdateLooks:(BOOL)a3
+- (void)_loadEditViewModelAndUpdateLooks:(BOOL)looks
 {
   [(PUWallpaperPosterEditorController *)self _stopSettlingEffectPreview];
   [(PUWallpaperPosterEditorController *)self _updateContainerFrame];
@@ -11528,7 +11528,7 @@ LABEL_7:
   v5[1] = 3221225472;
   v5[2] = __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___block_invoke;
   v5[3] = &unk_1E7B7FA08;
-  v7 = a3;
+  looksCopy = looks;
   objc_copyWeak(&v6, &location);
   [(PUWallpaperPosterEditorController *)self _dismissPosterConfigurationViewControllerWithCompletion:v5];
   objc_destroyWeak(&v6);
@@ -11545,12 +11545,12 @@ void __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___
   }
 }
 
-- (void)setEditViewModel:(id)a3
+- (void)setEditViewModel:(id)model
 {
-  v10 = a3;
+  modelCopy = model;
   v5 = self->_editViewModel;
   v6 = v5;
-  if (v5 == v10)
+  if (v5 == modelCopy)
   {
   }
 
@@ -11562,7 +11562,7 @@ void __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___
     {
       v8 = self->_editViewModel;
       [(PUWallpaperPosterEditViewModel *)v8 unregisterChangeObserver:self context:"EditViewModelObservationContext"];
-      objc_storeStrong(&self->_editViewModel, a3);
+      objc_storeStrong(&self->_editViewModel, model);
       [(PUWallpaperPosterEditViewModel *)self->_editViewModel registerChangeObserver:self context:"EditViewModelObservationContext"];
 
       if (v8)
@@ -11583,11 +11583,11 @@ void __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___
 
 - (void)dealloc
 {
-  v3 = [(PUWallpaperPosterEditorController *)self backgroundView];
-  [v3 removeObserver:self forKeyPath:@"layer.bounds" context:&BackgroundViewObservationContext];
+  backgroundView = [(PUWallpaperPosterEditorController *)self backgroundView];
+  [backgroundView removeObserver:self forKeyPath:@"layer.bounds" context:&BackgroundViewObservationContext];
 
-  v4 = [(PUWallpaperPosterEditorController *)self editModel];
-  [v4 unregisterChangeObserver:self context:"EditModelObservationContext"];
+  editModel = [(PUWallpaperPosterEditorController *)self editModel];
+  [editModel unregisterChangeObserver:self context:"EditModelObservationContext"];
 
   [(PUWallpaperPosterEditorController *)self _stopObservingPlayerItem];
   v5.receiver = self;
@@ -11595,18 +11595,18 @@ void __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___
   [(PUWallpaperPosterEditorController *)&v5 dealloc];
 }
 
-- (PUWallpaperPosterEditorController)initWithWallpaperEditor:(id)a3 photoLibrary:(id)a4
+- (PUWallpaperPosterEditorController)initWithWallpaperEditor:(id)editor photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  editorCopy = editor;
+  libraryCopy = library;
   v21.receiver = self;
   v21.super_class = PUWallpaperPosterEditorController;
   v9 = [(PUWallpaperPosterEditorController *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_editor, a3);
-    objc_storeStrong(&v10->_photoLibrary, a4);
+    objc_storeStrong(&v9->_editor, editor);
+    objc_storeStrong(&v10->_photoLibrary, library);
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v12 = dispatch_queue_create("com.apple.photos.poster-editor-loading", v11);
     queue = v10->_queue;
@@ -11625,14 +11625,14 @@ void __70__PUWallpaperPosterEditorController__loadEditViewModelAndUpdateLooks___
     block[1] = 3221225472;
     block[2] = __74__PUWallpaperPosterEditorController_initWithWallpaperEditor_photoLibrary___block_invoke;
     block[3] = &unk_1E7B80DD0;
-    v20 = v8;
+    v20 = libraryCopy;
     if (initWithWallpaperEditor_photoLibrary__onceToken != -1)
     {
       dispatch_once(&initWithWallpaperEditor_photoLibrary__onceToken, block);
     }
 
-    v17 = [MEMORY[0x1E69C4598] sharedScheduler];
-    [v17 scheduleDeferredTaskWithQoS:1 block:&__block_literal_global_37041];
+    mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
+    [mEMORY[0x1E69C4598] scheduleDeferredTaskWithQoS:1 block:&__block_literal_global_37041];
 
     [MEMORY[0x1E69C1570] enableInMemoryCache];
     PFParallaxSpatialPhotoProducerSetDownloadHandler();
@@ -11655,27 +11655,27 @@ uint64_t __74__PUWallpaperPosterEditorController_initWithWallpaperEditor_photoLi
   return [v4 pu_prepareCPAnalytics];
 }
 
-+ (id)availableStylesForItem:(id)a3 posterConfiguration:(id)a4
++ (id)availableStylesForItem:(id)item posterConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  configurationCopy = configuration;
+  v9 = configurationCopy;
+  if (itemCopy)
   {
-    if (!v8)
+    if (!configurationCopy)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:a1 file:@"PUWallpaperPosterEditorController.m" lineNumber:1664 description:{@"Invalid parameter not satisfying: %@", @"posterConfiguration"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:1664 description:{@"Invalid parameter not satisfying: %@", @"posterConfiguration"}];
     }
 
     if ([v9 posterType] == 2)
     {
-      [v7 defaultStyles];
+      [itemCopy defaultStyles];
     }
 
     else
     {
-      [v7 availableStyles];
+      [itemCopy availableStyles];
     }
     v10 = ;
   }
@@ -11688,19 +11688,19 @@ uint64_t __74__PUWallpaperPosterEditorController_initWithWallpaperEditor_photoLi
   return v10;
 }
 
-+ (int64_t)posterConfigurationTypeForPosterType:(int64_t)a3
++ (int64_t)posterConfigurationTypeForPosterType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!type)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PUWallpaperPosterEditorController.m" lineNumber:890 description:@"Unexpected poster descriptor type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperPosterEditorController.m" lineNumber:890 description:@"Unexpected poster descriptor type"];
 
     abort();
   }
@@ -11708,21 +11708,21 @@ uint64_t __74__PUWallpaperPosterEditorController_initWithWallpaperEditor_photoLi
   return 0;
 }
 
-+ (id)posterConfigurationFromPosterDescriptor:(id)a3
++ (id)posterConfigurationFromPosterDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:{objc_msgSend(objc_opt_class(), "posterConfigurationTypeForPosterType:", objc_msgSend(v3, "posterType"))}];
-  if ([v3 descriptorType] == 2)
+  descriptorCopy = descriptor;
+  v4 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:{objc_msgSend(objc_opt_class(), "posterConfigurationTypeForPosterType:", objc_msgSend(descriptorCopy, "posterType"))}];
+  if ([descriptorCopy descriptorType] == 2)
   {
-    v5 = [v3 shuffleConfiguration];
-    if (!v5)
+    shuffleConfiguration = [descriptorCopy shuffleConfiguration];
+    if (!shuffleConfiguration)
     {
-      v5 = [objc_alloc(MEMORY[0x1E69C0830]) initWithShuffleType:0];
-      [v5 setShuffleFrequency:*MEMORY[0x1E69C0C58]];
-      [v5 setShuffleSmartAlbums:{objc_msgSend(MEMORY[0x1E69C3C90], "supportedTypes")}];
+      shuffleConfiguration = [objc_alloc(MEMORY[0x1E69C0830]) initWithShuffleType:0];
+      [shuffleConfiguration setShuffleFrequency:*MEMORY[0x1E69C0C58]];
+      [shuffleConfiguration setShuffleSmartAlbums:{objc_msgSend(MEMORY[0x1E69C3C90], "supportedTypes")}];
     }
 
-    [v4 setShuffleConfiguration:v5];
+    [v4 setShuffleConfiguration:shuffleConfiguration];
   }
 
   return v4;

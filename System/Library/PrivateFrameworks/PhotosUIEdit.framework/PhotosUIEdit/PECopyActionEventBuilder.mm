@@ -8,16 +8,16 @@
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(PECopyActionEventBuilder *)self asset];
+  asset = [(PECopyActionEventBuilder *)self asset];
 
-  if (v4)
+  if (asset)
   {
-    v5 = [(PECopyActionEventBuilder *)self asset];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CF6E18]];
+    asset2 = [(PECopyActionEventBuilder *)self asset];
+    [v3 setObject:asset2 forKeyedSubscript:*MEMORY[0x277CF6E18]];
   }
 
-  v6 = [(PECopyActionEventBuilder *)self asset];
-  v7 = [PEAnalyticsUtility semanticStylesIdentifierForItem:v6];
+  asset3 = [(PECopyActionEventBuilder *)self asset];
+  v7 = [PEAnalyticsUtility semanticStylesIdentifierForItem:asset3];
 
   if (v7 && [v7 length])
   {
@@ -27,22 +27,22 @@
     [v3 addEntriesFromDictionary:v8];
   }
 
-  v9 = [(PECopyActionEventBuilder *)self copiedCompositionController];
+  copiedCompositionController = [(PECopyActionEventBuilder *)self copiedCompositionController];
 
-  if (v9)
+  if (copiedCompositionController)
   {
-    v10 = [(PECopyActionEventBuilder *)self copiedCompositionController];
-    v11 = [PEAnalyticsUtility analyticPayloadForCompositionController:v10];
+    copiedCompositionController2 = [(PECopyActionEventBuilder *)self copiedCompositionController];
+    v11 = [PEAnalyticsUtility analyticPayloadForCompositionController:copiedCompositionController2];
 
     [v3 addEntriesFromDictionary:v11];
   }
 
-  v12 = [(PECopyActionEventBuilder *)self configurationAnalyticsPayload];
+  configurationAnalyticsPayload = [(PECopyActionEventBuilder *)self configurationAnalyticsPayload];
 
-  if (v12)
+  if (configurationAnalyticsPayload)
   {
-    v13 = [(PECopyActionEventBuilder *)self configurationAnalyticsPayload];
-    [v3 addEntriesFromDictionary:v13];
+    configurationAnalyticsPayload2 = [(PECopyActionEventBuilder *)self configurationAnalyticsPayload];
+    [v3 addEntriesFromDictionary:configurationAnalyticsPayload2];
   }
 
   return v3;

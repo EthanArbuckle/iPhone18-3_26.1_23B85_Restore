@@ -1,36 +1,36 @@
 @interface RAPRouteListViewController
-- (RAPRouteListViewController)initWithReport:(id)a3 delegate:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (RAPRouteListViewController)initWithReport:(id)report delegate:(id)delegate;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_dismiss;
 - (void)_displayEmptyState;
 - (void)_setupViews;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RAPRouteListViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   tableView = self->_tableView;
-  v6 = a4;
-  [(UITableView *)tableView deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [(UITableView *)tableView deselectRowAtIndexPath:pathCopy animated:1];
   requests = self->_requests;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v10 = [(NSArray *)requests objectAtIndexedSubscript:v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained rapRouteListViewController:self didSelectRequest:v10];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"kRAPRouteCellReuseIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"kRAPRouteCellReuseIdentifier" forIndexPath:pathCopy];
   requests = self->_requests;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)requests objectAtIndexedSubscript:v9];
   [v7 configureWithRequest:v10];
@@ -63,12 +63,12 @@
 
   [(ErrorModeView *)self->_errorModeView setTitleLabelFontProvider:&stru_10165DA28];
   [(ErrorModeView *)self->_errorModeView setMessageLabelFontProvider:&stru_10165DAE8];
-  v10 = [(RAPRouteListViewController *)self view];
-  [v10 insertSubview:self->_errorModeView aboveSubview:self->_tableView];
+  view = [(RAPRouteListViewController *)self view];
+  [view insertSubview:self->_errorModeView aboveSubview:self->_tableView];
 
   v11 = self->_errorModeView;
-  v13 = [(RAPRouteListViewController *)self view];
-  v12 = [(ErrorModeView *)v11 _maps_constraintsForCenteringInView:v13];
+  view2 = [(RAPRouteListViewController *)self view];
+  v12 = [(ErrorModeView *)v11 _maps_constraintsForCenteringInView:view2];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
@@ -91,55 +91,55 @@
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kRAPRouteCellReuseIdentifier"];
-  v8 = [(RAPRouteListViewController *)self view];
-  [v8 addSubview:self->_tableView];
+  view = [(RAPRouteListViewController *)self view];
+  [view addSubview:self->_tableView];
 
   v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_onCancelPressed:"];
-  v10 = [(RAPRouteListViewController *)self navigationItem];
-  [v10 setLeftBarButtonItem:v9];
+  navigationItem = [(RAPRouteListViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v9];
 
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"[RAP Web UI] Report an Issue" value:@"localized string not found" table:0];
-  v13 = [(RAPRouteListViewController *)self navigationItem];
-  [v13 setTitle:v12];
+  navigationItem2 = [(RAPRouteListViewController *)self navigationItem];
+  [navigationItem2 setTitle:v12];
 
   v14 = self->_tableView;
-  v15 = [(RAPRouteListViewController *)self view];
-  v16 = [(UITableView *)v14 _maps_constraintsForCenteringInView:v15];
+  view2 = [(RAPRouteListViewController *)self view];
+  v16 = [(UITableView *)v14 _maps_constraintsForCenteringInView:view2];
   [NSLayoutConstraint activateConstraints:v16];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = RAPRouteListViewController;
-  [(RAPRouteListViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(RAPRouteListViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(RAPRouteListViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(RAPRouteListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = RAPRouteListViewController;
   [(RAPRouteListViewController *)&v9 viewWillAppear:?];
-  v5 = [(RAPRouteListViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(RAPRouteListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 
   if (![(NSArray *)self->_requests count])
@@ -156,21 +156,21 @@
   [(RAPRouteListViewController *)self _setupViews];
 }
 
-- (RAPRouteListViewController)initWithReport:(id)a3 delegate:(id)a4
+- (RAPRouteListViewController)initWithReport:(id)report delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  reportCopy = report;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = RAPRouteListViewController;
   v9 = [(RAPRouteListViewController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_report, a3);
-    v11 = [(RAPReport *)v10->_report _context];
-    v12 = [v11 directionsHistory];
-    v13 = sub_1000282CC(v12, &stru_10162D898);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_report, report);
+    _context = [(RAPReport *)v10->_report _context];
+    directionsHistory = [_context directionsHistory];
+    v13 = sub_1000282CC(directionsHistory, &stru_10162D898);
     requests = v10->_requests;
     v10->_requests = v13;
   }

@@ -1,24 +1,24 @@
 @interface PKPeerPaymentBubbleView
 + (CGSize)referenceSize;
-+ (CGSize)referenceSizeForPeerPaymentStatusResponse:(id)a3 context:(unint64_t)a4;
-+ (CGSize)referenceSizeForState:(unint64_t)a3 action:(unint64_t)a4 context:(unint64_t)a5;
++ (CGSize)referenceSizeForPeerPaymentStatusResponse:(id)response context:(unint64_t)context;
++ (CGSize)referenceSizeForState:(unint64_t)state action:(unint64_t)action context:(unint64_t)context;
 + (id)applePayLogo;
-+ (id)generatedSnapshotForDataURL:(id)a3 contentInset:(UIEdgeInsets)a4 isFromMe:(BOOL)a5;
-+ (id)referenceBackgroundColorForState:(unint64_t)a3;
++ (id)generatedSnapshotForDataURL:(id)l contentInset:(UIEdgeInsets)inset isFromMe:(BOOL)me;
++ (id)referenceBackgroundColorForState:(unint64_t)state;
 - (CGRect)referenceBounds;
 - (CGSize)referenceSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPeerPaymentBubbleView)init;
-- (PKPeerPaymentBubbleView)initWithAmount:(id)a3 currency:(id)a4 state:(unint64_t)a5;
-- (PKPeerPaymentBubbleView)initWithCoder:(id)a3;
-- (PKPeerPaymentBubbleView)initWithCurrencyAmount:(id)a3 state:(unint64_t)a4;
-- (PKPeerPaymentBubbleView)initWithFrame:(CGRect)a3;
+- (PKPeerPaymentBubbleView)initWithAmount:(id)amount currency:(id)currency state:(unint64_t)state;
+- (PKPeerPaymentBubbleView)initWithCoder:(id)coder;
+- (PKPeerPaymentBubbleView)initWithCurrencyAmount:(id)amount state:(unint64_t)state;
+- (PKPeerPaymentBubbleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (double)_messageAlpha;
 - (double)_statusAlpha;
 - (id)_actionTitle;
 - (id)_backgroundColor;
-- (id)_displayNameWithRawAddress:(id)a3;
+- (id)_displayNameWithRawAddress:(id)address;
 - (id)_groupLabelText;
 - (id)_imageLabelBackgroundColor;
 - (id)_messageText;
@@ -27,30 +27,30 @@
 - (id)generatedSnapshot;
 - (id)initForSnapshotting;
 - (id)interactiveViews;
-- (void)_actionButtonTapped:(id)a3;
+- (void)_actionButtonTapped:(id)tapped;
 - (void)_commonInit;
 - (void)_updateContent;
 - (void)awakeFromNib;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)performPostRender:(id)a3;
-- (void)setAction:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setAmount:(id)a3;
-- (void)setContext:(unint64_t)a3;
-- (void)setCurrency:(id)a3;
-- (void)setDisplaysCashLogo:(BOOL)a3;
-- (void)setLiveRenderingEnabled:(BOOL)a3;
-- (void)setOutOfTranscript:(BOOL)a3;
-- (void)setPaymentSignature:(id)a3;
-- (void)setRecipientAddress:(id)a3;
-- (void)setRecurringMemo:(id)a3 startDate:(id)a4 frequency:(unint64_t)a5;
-- (void)setShowsActionSpinner:(BOOL)a3;
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setTestTransition:(BOOL)a3;
-- (void)updateWithPaymentTransaction:(id)a3 animated:(BOOL)a4;
-- (void)updateWithPeerPaymentMessage:(id)a3 animated:(BOOL)a4;
-- (void)updateWithPeerPaymentStatus:(int64_t)a3 animated:(BOOL)a4;
-- (void)updateWithPeerPaymentStatusResponse:(id)a3 animated:(BOOL)a4;
+- (void)performPostRender:(id)render;
+- (void)setAction:(unint64_t)action animated:(BOOL)animated;
+- (void)setAmount:(id)amount;
+- (void)setContext:(unint64_t)context;
+- (void)setCurrency:(id)currency;
+- (void)setDisplaysCashLogo:(BOOL)logo;
+- (void)setLiveRenderingEnabled:(BOOL)enabled;
+- (void)setOutOfTranscript:(BOOL)transcript;
+- (void)setPaymentSignature:(id)signature;
+- (void)setRecipientAddress:(id)address;
+- (void)setRecurringMemo:(id)memo startDate:(id)date frequency:(unint64_t)frequency;
+- (void)setShowsActionSpinner:(BOOL)spinner;
+- (void)setState:(unint64_t)state animated:(BOOL)animated;
+- (void)setTestTransition:(BOOL)transition;
+- (void)updateWithPaymentTransaction:(id)transaction animated:(BOOL)animated;
+- (void)updateWithPeerPaymentMessage:(id)message animated:(BOOL)animated;
+- (void)updateWithPeerPaymentStatus:(int64_t)status animated:(BOOL)animated;
+- (void)updateWithPeerPaymentStatusResponse:(id)response animated:(BOOL)animated;
 @end
 
 @implementation PKPeerPaymentBubbleView
@@ -78,35 +78,35 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
 
 + (CGSize)referenceSize
 {
-  [a1 referenceSizeForState:4 action:0 context:1];
+  [self referenceSizeForState:4 action:0 context:1];
   result.height = v3;
   result.width = v2;
   return result;
 }
 
-+ (CGSize)referenceSizeForState:(unint64_t)a3 action:(unint64_t)a4 context:(unint64_t)a5
++ (CGSize)referenceSizeForState:(unint64_t)state action:(unint64_t)action context:(unint64_t)context
 {
   v5 = 186.0;
-  if (a3 == 12 && a5 == 2)
+  if (state == 12 && context == 2)
   {
     v6 = 52.0;
   }
 
   else
   {
-    v7 = a4 == 1 && a3 == 1;
+    v7 = action == 1 && state == 1;
     v6 = 174.0;
     if (v7)
     {
       v6 = 157.0;
     }
 
-    if (!a4)
+    if (!action)
     {
       v6 = 130.0;
     }
 
-    if (a5 == 2 && (a3 > 0xD || ((1 << a3) & 0x3002) == 0))
+    if (context == 2 && (state > 0xD || ((1 << state) & 0x3002) == 0))
     {
       v6 = v6 + 20.0;
     }
@@ -117,13 +117,13 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   return result;
 }
 
-+ (CGSize)referenceSizeForPeerPaymentStatusResponse:(id)a3 context:(unint64_t)a4
++ (CGSize)referenceSizeForPeerPaymentStatusResponse:(id)response context:(unint64_t)context
 {
-  v6 = a3;
-  v7 = PKPeerPaymentBubbleViewStateForPeerPaymentStatus([v6 status]);
-  v8 = [v6 actions];
+  responseCopy = response;
+  v7 = PKPeerPaymentBubbleViewStateForPeerPaymentStatus([responseCopy status]);
+  actions = [responseCopy actions];
 
-  if ([v8 containsObject:*MEMORY[0x1E69BC308]])
+  if ([actions containsObject:*MEMORY[0x1E69BC308]])
   {
     v9 = 2;
   }
@@ -133,15 +133,15 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
     v9 = 0;
   }
 
-  [a1 referenceSizeForState:v7 action:v9 context:a4];
+  [self referenceSizeForState:v7 action:v9 context:context];
   result.height = v11;
   result.width = v10;
   return result;
 }
 
-+ (id)referenceBackgroundColorForState:(unint64_t)a3
++ (id)referenceBackgroundColorForState:(unint64_t)state
 {
-  if (a3 - 6 > 3)
+  if (state - 6 > 3)
   {
     +[PKPeerPaymentTheme bubbleBackgroundColor];
   }
@@ -170,31 +170,31 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   return result;
 }
 
-- (PKPeerPaymentBubbleView)initWithCurrencyAmount:(id)a3 state:(unint64_t)a4
+- (PKPeerPaymentBubbleView)initWithCurrencyAmount:(id)amount state:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [v6 amount];
-  v8 = [v6 currency];
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  currency = [amountCopy currency];
 
-  v9 = [(PKPeerPaymentBubbleView *)self initWithAmount:v7 currency:v8 state:a4];
+  v9 = [(PKPeerPaymentBubbleView *)self initWithAmount:amount currency:currency state:state];
   return v9;
 }
 
-- (PKPeerPaymentBubbleView)initWithAmount:(id)a3 currency:(id)a4 state:(unint64_t)a5
+- (PKPeerPaymentBubbleView)initWithAmount:(id)amount currency:(id)currency state:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
-  [objc_opt_class() referenceSizeForState:a5 action:0 context:1];
+  amountCopy = amount;
+  currencyCopy = currency;
+  [objc_opt_class() referenceSizeForState:state action:0 context:1];
   v12 = [(PKPeerPaymentBubbleView *)self initWithFrame:0.0, 0.0, v10, v11];
   v13 = v12;
   if (v12)
   {
-    v12->_state = a5;
-    v14 = [v8 copy];
+    v12->_state = state;
+    v14 = [amountCopy copy];
     amount = v13->_amount;
     v13->_amount = v14;
 
-    v16 = [v9 copy];
+    v16 = [currencyCopy copy];
     currency = v13->_currency;
     v13->_currency = v16;
 
@@ -204,11 +204,11 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   return v13;
 }
 
-- (PKPeerPaymentBubbleView)initWithFrame:(CGRect)a3
+- (PKPeerPaymentBubbleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPeerPaymentBubbleView;
-  v3 = [(PKPeerPaymentBubbleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPeerPaymentBubbleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -218,11 +218,11 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   return v4;
 }
 
-- (PKPeerPaymentBubbleView)initWithCoder:(id)a3
+- (PKPeerPaymentBubbleView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKPeerPaymentBubbleView;
-  v3 = [(PKPeerPaymentBubbleView *)&v6 initWithCoder:a3];
+  v3 = [(PKPeerPaymentBubbleView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -243,8 +243,8 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
 
 - (void)_commonInit
 {
-  v3 = [(PKPeerPaymentBubbleView *)self _backgroundColor];
-  [(PKPeerPaymentBubbleView *)self setBackgroundColor:v3];
+  _backgroundColor = [(PKPeerPaymentBubbleView *)self _backgroundColor];
+  [(PKPeerPaymentBubbleView *)self setBackgroundColor:_backgroundColor];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   messageLabel = self->_messageLabel;
@@ -304,19 +304,19 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
 
   [(PKContinuousButton *)self->_actionButton addTarget:self action:sel__actionButtonTapped_ forControlEvents:64];
   v24 = self->_actionButton;
-  v25 = [MEMORY[0x1E69DC888] blackColor];
-  [(PKContinuousButton *)v24 updateTitleColorWithColor:v25];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(PKContinuousButton *)v24 updateTitleColorWithColor:blackColor];
 
   v26 = self->_actionButton;
   v27 = +[PKPeerPaymentTheme primaryTextColor];
   [(PKContinuousButton *)v26 setTintColor:v27];
 
   [(PKContinuousButton *)self->_actionButton setContentEdgeInsets:0.0, 26.5, 0.0, 26.5];
-  v28 = [(PKContinuousButton *)self->_actionButton titleLabel];
-  [v28 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(PKContinuousButton *)self->_actionButton titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-  v29 = [(PKContinuousButton *)self->_actionButton titleLabel];
-  [v29 setMinimumScaleFactor:0.5];
+  titleLabel2 = [(PKContinuousButton *)self->_actionButton titleLabel];
+  [titleLabel2 setMinimumScaleFactor:0.5];
 
   [(PKContinuousButton *)self->_actionButton setAccessibilityIdentifier:*MEMORY[0x1E69B93D0]];
   [(PKPeerPaymentBubbleView *)self addSubview:self->_actionButton];
@@ -372,7 +372,7 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   }
 
   v17 = v12 - v16;
-  v18 = [(PKPeerPaymentBubbleView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPeerPaymentBubbleView *)self _shouldReverseLayoutDirection];
   [(PKPeerPaymentBubbleView *)self referenceBounds];
   v19 = self->_contentInset.left;
   v120 = v20 + v19;
@@ -481,7 +481,7 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
     v51 = v14;
     v52 = v15;
     v53 = v17;
-    if (v18)
+    if (_shouldReverseLayoutDirection)
     {
       v54 = CGRectGetMaxX(*&v50) - v48;
     }
@@ -510,8 +510,8 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   v134.size.height = v17;
   v112 = v56;
   v110 = v58 + (CGRectGetWidth(v134) - v56) * 0.5 + -1.0;
-  v59 = [(PKPeerPaymentBubbleView *)self _actionTitle];
-  if (v59 && (v60 = v59, [(PKPeerPaymentBubbleView *)self bounds], v62 = v61, v64 = v63, v66 = v65, v68 = v67, [(PKPeerPaymentBubbleView *)self referenceBounds], v144.origin.x = v69, v144.origin.y = v70, v144.size.width = v71, v144.size.height = v72, v135.origin.x = v62, v135.origin.y = v64, v135.size.width = v66, v135.size.height = v68, v73 = CGRectEqualToRect(v135, v144), v60, v73))
+  _actionTitle = [(PKPeerPaymentBubbleView *)self _actionTitle];
+  if (_actionTitle && (v60 = _actionTitle, [(PKPeerPaymentBubbleView *)self bounds], v62 = v61, v64 = v63, v66 = v65, v68 = v67, [(PKPeerPaymentBubbleView *)self referenceBounds], v144.origin.x = v69, v144.origin.y = v70, v144.size.width = v71, v144.size.height = v72, v135.origin.x = v62, v135.origin.y = v64, v135.size.width = v66, v135.size.height = v68, v73 = CGRectEqualToRect(v135, v144), v60, v73))
   {
     v136.origin.x = v13;
     v136.origin.y = v14;
@@ -623,7 +623,7 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   [recurringContentView setFrame:{v107, v106, v108, v105}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = objc_opt_class();
   state = self->_state;
@@ -636,16 +636,16 @@ void __39__PKPeerPaymentBubbleView_applePayLogo__block_invoke()
   return result;
 }
 
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_state = a3;
+    animatedCopy = animated;
+    self->_state = state;
     [(PKPeerPaymentBubbleView *)self _updateContent];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -663,16 +663,16 @@ void __45__PKPeerPaymentBubbleView_setState_animated___block_invoke(uint64_t a1)
   [v1 displayIfNeeded];
 }
 
-- (void)setAction:(unint64_t)a3 animated:(BOOL)a4
+- (void)setAction:(unint64_t)action animated:(BOOL)animated
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_action = a3;
+    animatedCopy = animated;
+    self->_action = action;
     [(PKPeerPaymentBubbleView *)self _updateContent];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -690,11 +690,11 @@ void __46__PKPeerPaymentBubbleView_setAction_animated___block_invoke(uint64_t a1
   [v1 displayIfNeeded];
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  if (self->_amount != a3)
+  if (self->_amount != amount)
   {
-    v4 = [a3 copy];
+    v4 = [amount copy];
     amount = self->_amount;
     self->_amount = v4;
 
@@ -702,11 +702,11 @@ void __46__PKPeerPaymentBubbleView_setAction_animated___block_invoke(uint64_t a1
   }
 }
 
-- (void)setCurrency:(id)a3
+- (void)setCurrency:(id)currency
 {
-  v4 = a3;
+  currencyCopy = currency;
   v5 = self->_currency;
-  v6 = v4;
+  v6 = currencyCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -735,11 +735,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setPaymentSignature:(id)a3
+- (void)setPaymentSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v5 = self->_paymentSignature;
-  v6 = v4;
+  v6 = signatureCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -768,11 +768,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setRecipientAddress:(id)a3
+- (void)setRecipientAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = self->_recipientAddress;
-  v6 = v4;
+  v6 = addressCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -801,23 +801,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setRecurringMemo:(id)a3 startDate:(id)a4 frequency:(unint64_t)a5
+- (void)setRecurringMemo:(id)memo startDate:(id)date frequency:(unint64_t)frequency
 {
-  v14 = a3;
-  v9 = a4;
-  if (self->_recurringPaymentMemo != v14)
+  memoCopy = memo;
+  dateCopy = date;
+  if (self->_recurringPaymentMemo != memoCopy)
   {
-    objc_storeStrong(&self->_recurringPaymentMemo, a3);
+    objc_storeStrong(&self->_recurringPaymentMemo, memo);
   }
 
-  if (self->_recurringPaymentStartDate != v9)
+  if (self->_recurringPaymentStartDate != dateCopy)
   {
-    objc_storeStrong(&self->_recurringPaymentStartDate, a4);
+    objc_storeStrong(&self->_recurringPaymentStartDate, date);
   }
 
-  if (self->_recurringPaymentFrequency != a5)
+  if (self->_recurringPaymentFrequency != frequency)
   {
-    self->_recurringPaymentFrequency = a5;
+    self->_recurringPaymentFrequency = frequency;
   }
 
   if (!self->_recurringContentView)
@@ -825,9 +825,9 @@ LABEL_9:
     v10 = PKCurrencyAmountMake();
     v11 = [PKPeerPaymentRecurringBubbleContentViewProvider recurringBubbleViewControllerWithCurrencyAmount:v10 memo:self->_recurringPaymentMemo startDate:self->_recurringPaymentStartDate frequency:self->_recurringPaymentFrequency];
 
-    v12 = [v11 view];
+    view = [v11 view];
     recurringContentView = self->_recurringContentView;
-    self->_recurringContentView = v12;
+    self->_recurringContentView = view;
 
     [(PKPeerPaymentBubbleView *)self addSubview:self->_recurringContentView];
   }
@@ -836,16 +836,16 @@ LABEL_9:
   [(PKPeerPaymentBubbleView *)self setNeedsLayout];
 }
 
-- (void)setDisplaysCashLogo:(BOOL)a3
+- (void)setDisplaysCashLogo:(BOOL)logo
 {
-  if (self->_displaysCashLogo != a3)
+  if (self->_displaysCashLogo != logo)
   {
-    self->_displaysCashLogo = a3;
-    if (a3)
+    self->_displaysCashLogo = logo;
+    if (logo)
     {
       v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      v6 = [objc_opt_class() applePayLogo];
-      v7 = [v5 initWithImage:v6];
+      applePayLogo = [objc_opt_class() applePayLogo];
+      v7 = [v5 initWithImage:applePayLogo];
       logoImageView = self->_logoImageView;
       self->_logoImageView = v7;
 
@@ -864,29 +864,29 @@ LABEL_9:
   }
 }
 
-- (void)setLiveRenderingEnabled:(BOOL)a3
+- (void)setLiveRenderingEnabled:(BOOL)enabled
 {
-  if (self->_liveRenderingEnabled != a3)
+  if (self->_liveRenderingEnabled != enabled)
   {
-    self->_liveRenderingEnabled = a3;
+    self->_liveRenderingEnabled = enabled;
     [(PKPeerPaymentBubbleView *)self _updateContent];
   }
 }
 
-- (void)setContext:(unint64_t)a3
+- (void)setContext:(unint64_t)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    self->_context = a3;
+    self->_context = context;
     [(PKPeerPaymentBubbleView *)self _updateContent];
   }
 }
 
-- (void)setShowsActionSpinner:(BOOL)a3
+- (void)setShowsActionSpinner:(BOOL)spinner
 {
-  if (self->_showsActionSpinner != a3)
+  if (self->_showsActionSpinner != spinner)
   {
-    self->_showsActionSpinner = a3;
+    self->_showsActionSpinner = spinner;
     [(PKPeerPaymentBubbleView *)self _updateContent];
   }
 }
@@ -918,9 +918,9 @@ LABEL_9:
   return result;
 }
 
-- (void)setTestTransition:(BOOL)a3
+- (void)setTestTransition:(BOOL)transition
 {
-  if (a3)
+  if (transition)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -960,15 +960,15 @@ uint64_t __45__PKPeerPaymentBubbleView_setTestTransition___block_invoke(uint64_t
 - (void)_updateContent
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentBubbleView *)self _backgroundColor];
-  [(PKPeerPaymentBubbleView *)self setBackgroundColor:v3];
+  _backgroundColor = [(PKPeerPaymentBubbleView *)self _backgroundColor];
+  [(PKPeerPaymentBubbleView *)self setBackgroundColor:_backgroundColor];
 
-  v4 = [(PKPeerPaymentBubbleView *)self _messageText];
-  v5 = v4;
+  _messageText = [(PKPeerPaymentBubbleView *)self _messageText];
+  v5 = _messageText;
   v6 = &stru_1F3BD7330;
-  if (v4)
+  if (_messageText)
   {
-    v6 = v4;
+    v6 = _messageText;
   }
 
   v7 = v6;
@@ -978,9 +978,9 @@ uint64_t __45__PKPeerPaymentBubbleView_setTestTransition___block_invoke(uint64_t
     goto LABEL_18;
   }
 
-  v8 = [(PKPeerPaymentBubbleView *)self window];
-  v9 = v8;
-  if (!v8 && !self->_snapshotInProgress && !self->_usedForSnapshotting || self->_state != 5)
+  window = [(PKPeerPaymentBubbleView *)self window];
+  v9 = window;
+  if (!window && !self->_snapshotInProgress && !self->_usedForSnapshotting || self->_state != 5)
   {
 
     goto LABEL_18;
@@ -1026,7 +1026,7 @@ LABEL_20:
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       v48 = 138412290;
-      v49 = v7;
+      selfCopy = v7;
       _os_log_impl(&dword_1BD026000, v47, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentBubbleView: Render View unable to display text: '%@'. Falling back to regular label.", &v48, 0xCu);
     }
 
@@ -1042,7 +1042,7 @@ LABEL_20:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v48 = 134217984;
-      v49 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentBubbleView %p: Bubble views render view had been removed due to loss of window. Recreated render view.", &v48, 0xCu);
     }
 
@@ -1060,13 +1060,13 @@ LABEL_20:
   self->_renderViewRemovedByLossOfWindow = 0;
   v20 = 1;
 LABEL_22:
-  v21 = [(PKPeerPaymentBubbleView *)self _groupLabelText];
-  v22 = [v21 length];
+  _groupLabelText = [(PKPeerPaymentBubbleView *)self _groupLabelText];
+  v22 = [_groupLabelText length];
   groupLabel = self->_groupLabel;
   if (v22)
   {
-    v24 = [(PKPeerPaymentBubbleView *)self _groupLabelText];
-    [(UILabel *)groupLabel setText:v24];
+    _groupLabelText2 = [(PKPeerPaymentBubbleView *)self _groupLabelText];
+    [(UILabel *)groupLabel setText:_groupLabelText2];
 
     v25 = self->_groupLabel;
     v26 = 0;
@@ -1120,8 +1120,8 @@ LABEL_22:
   {
     [(UILabel *)messageLabel setHidden:0];
     v34 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v35 = [(PKPeerPaymentBubbleView *)self _messageTextAttributes];
-    v36 = [v34 initWithString:v7 attributes:v35];
+    _messageTextAttributes = [(PKPeerPaymentBubbleView *)self _messageTextAttributes];
+    v36 = [v34 initWithString:v7 attributes:_messageTextAttributes];
 
     [(UILabel *)self->_messageLabel setAttributedText:v36];
     v37 = self->_messageLabel;
@@ -1129,13 +1129,13 @@ LABEL_22:
     [(UILabel *)v37 setAlpha:?];
   }
 
-  v38 = [(PKPeerPaymentBubbleView *)self _statusText];
-  v39 = [v38 length];
+  _statusText = [(PKPeerPaymentBubbleView *)self _statusText];
+  v39 = [_statusText length];
   statusLabel = self->_statusLabel;
   if (v39)
   {
     [(UILabel *)statusLabel setHidden:0];
-    [(UILabel *)self->_statusLabel setText:v38];
+    [(UILabel *)self->_statusLabel setText:_statusText];
     v41 = self->_statusLabel;
     [(PKPeerPaymentBubbleView *)self _statusAlpha];
     [(UILabel *)v41 setAlpha:?];
@@ -1147,11 +1147,11 @@ LABEL_22:
     [(UILabel *)self->_statusLabel setText:&stru_1F3BD7330];
   }
 
-  v42 = [(PKPeerPaymentBubbleView *)self _actionTitle];
+  _actionTitle = [(PKPeerPaymentBubbleView *)self _actionTitle];
   actionButton = self->_actionButton;
-  if (v42)
+  if (_actionTitle)
   {
-    [(PKContinuousButton *)actionButton setTitle:v42 forState:0];
+    [(PKContinuousButton *)actionButton setTitle:_actionTitle forState:0];
     actionSpinner = self->_actionSpinner;
     if (self->_showsActionSpinner)
     {
@@ -1184,24 +1184,24 @@ LABEL_22:
 {
   if (_UISolariumEnabled() && !self->_outOfTranscript)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v3 = [objc_opt_class() referenceWatchBackgroundColorForState:self->_state];
+    clearColor = [objc_opt_class() referenceWatchBackgroundColorForState:self->_state];
   }
 
-  return v3;
+  return clearColor;
 }
 
-- (void)setOutOfTranscript:(BOOL)a3
+- (void)setOutOfTranscript:(BOOL)transcript
 {
-  if (self->_outOfTranscript == !a3)
+  if (self->_outOfTranscript == !transcript)
   {
-    self->_outOfTranscript = a3;
-    v5 = [(PKPeerPaymentBubbleView *)self _backgroundColor];
-    [(PKPeerPaymentBubbleView *)self setBackgroundColor:v5];
+    self->_outOfTranscript = transcript;
+    _backgroundColor = [(PKPeerPaymentBubbleView *)self _backgroundColor];
+    [(PKPeerPaymentBubbleView *)self setBackgroundColor:_backgroundColor];
 
     [(PKPeerPaymentBubbleView *)self _updateContent];
   }
@@ -1209,9 +1209,9 @@ LABEL_22:
 
 - (id)_imageLabelBackgroundColor
 {
-  v2 = [(PKPeerPaymentRecurringPaymentMemo *)self->_recurringPaymentMemo color];
+  color = [(PKPeerPaymentRecurringPaymentMemo *)self->_recurringPaymentMemo color];
 
-  return PKPeerPaymentMessageColorFromSemanticColor(v2);
+  return PKPeerPaymentMessageColorFromSemanticColor(color);
 }
 
 - (double)_messageAlpha
@@ -1245,27 +1245,27 @@ LABEL_22:
     if (state == 13 || state == 1)
     {
       amount = self->_amount;
-      v7 = [MEMORY[0x1E696AB90] zero];
-      LODWORD(amount) = [(NSDecimalNumber *)amount pk_isEqualToDecimalNumber:v7];
+      zero = [MEMORY[0x1E696AB90] zero];
+      LODWORD(amount) = [(NSDecimalNumber *)amount pk_isEqualToDecimalNumber:zero];
 
       if (amount)
       {
-        v10 = [(PKPeerPaymentBubbleView *)self _displayNameWithRawAddress:self->_senderAddress];
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBub_1.isa, &stru_1F3BD5BF0.isa, v10);
+        minimalFormattedStringValue = [(PKPeerPaymentBubbleView *)self _displayNameWithRawAddress:self->_senderAddress];
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBub_1.isa, &stru_1F3BD5BF0.isa, minimalFormattedStringValue);
       }
 
       else
       {
-        v10 = [v3 minimalFormattedStringValue];
-        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBub_2.isa, &stru_1F3BD5BF0.isa, v10);
+        minimalFormattedStringValue = [v3 minimalFormattedStringValue];
+        PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBub_2.isa, &stru_1F3BD5BF0.isa, minimalFormattedStringValue);
       }
       v11 = ;
     }
 
     else
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US"];
-      v11 = [v3 minimalFormattedStringValueInLocale:v10];
+      minimalFormattedStringValue = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US"];
+      v11 = [v3 minimalFormattedStringValueInLocale:minimalFormattedStringValue];
     }
 
     v8 = v11;
@@ -1281,9 +1281,9 @@ LABEL_22:
 
 - (id)_messageTextAttributes
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = +[PKPeerPaymentTheme primaryTextColor];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   state = self->_state;
   if (state == 13 || state == 1)
@@ -1296,9 +1296,9 @@ LABEL_22:
     [MEMORY[0x1E69DB878] pk_peerPaymentChiseledCashFontOfSize:69.0];
   }
   v7 = ;
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
@@ -1344,8 +1344,8 @@ LABEL_19:
   }
 
   amount = self->_amount;
-  v7 = [MEMORY[0x1E696AB90] zero];
-  LOBYTE(amount) = [(NSDecimalNumber *)amount pk_isEqualToDecimalNumber:v7];
+  zero = [MEMORY[0x1E696AB90] zero];
+  LOBYTE(amount) = [(NSDecimalNumber *)amount pk_isEqualToDecimalNumber:zero];
 
   if ((amount & 1) == 0)
   {
@@ -1380,15 +1380,15 @@ LABEL_21:
   return v3;
 }
 
-- (id)_displayNameWithRawAddress:(id)a3
+- (id)_displayNameWithRawAddress:(id)address
 {
   usedForSnapshotting = self->_usedForSnapshotting;
-  v4 = a3;
+  addressCopy = address;
   v5 = PKIDSSanitizedAddress();
   if (!usedForSnapshotting)
   {
-    v6 = [MEMORY[0x1E69B8740] defaultContactResolver];
-    v7 = [v6 contactForHandle:v5];
+    defaultContactResolver = [MEMORY[0x1E69B8740] defaultContactResolver];
+    v7 = [defaultContactResolver contactForHandle:v5];
     v8 = [MEMORY[0x1E69B8F30] displayNameForCounterpartHandle:v5 contact:v7];
     v9 = v8;
     if (v8)
@@ -1398,12 +1398,12 @@ LABEL_21:
 
     else
     {
-      v10 = v4;
+      v10 = addressCopy;
     }
 
     v11 = v10;
 
-    v4 = v5;
+    addressCopy = v5;
     v5 = v11;
   }
 
@@ -1459,8 +1459,8 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v6 isDateInToday:self->_recurringPaymentStartDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [currentCalendar isDateInToday:self->_recurringPaymentStartDate];
 
   if (v7)
   {
@@ -1504,9 +1504,9 @@ LABEL_8:
   return v5;
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   actionHandler = self->_actionHandler;
   if (actionHandler)
   {
@@ -1524,10 +1524,10 @@ LABEL_8:
   }
 }
 
-- (void)updateWithPeerPaymentStatus:(int64_t)a3 animated:(BOOL)a4
+- (void)updateWithPeerPaymentStatus:(int64_t)status animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = PKPeerPaymentBubbleViewStateForPeerPaymentStatus(a3);
+  animatedCopy = animated;
+  v6 = PKPeerPaymentBubbleViewStateForPeerPaymentStatus(status);
   if (v6 != self->_state)
   {
     v7 = v6;
@@ -1535,89 +1535,89 @@ LABEL_8:
     if (v7)
     {
 
-      [(PKPeerPaymentBubbleView *)self setState:v7 animated:v4];
+      [(PKPeerPaymentBubbleView *)self setState:v7 animated:animatedCopy];
     }
   }
 }
 
-- (void)updateWithPeerPaymentStatusResponse:(id)a3 animated:(BOOL)a4
+- (void)updateWithPeerPaymentStatusResponse:(id)response animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  responseCopy = response;
+  v7 = responseCopy;
+  if (responseCopy)
   {
-    v12 = v6;
-    -[PKPeerPaymentBubbleView updateWithPeerPaymentStatus:animated:](self, "updateWithPeerPaymentStatus:animated:", [v6 status], v4);
-    v8 = [v12 actions];
-    v9 = [v8 containsObject:*MEMORY[0x1E69BC308]];
+    v12 = responseCopy;
+    -[PKPeerPaymentBubbleView updateWithPeerPaymentStatus:animated:](self, "updateWithPeerPaymentStatus:animated:", [responseCopy status], animatedCopy);
+    actions = [v12 actions];
+    v9 = [actions containsObject:*MEMORY[0x1E69BC308]];
 
     v10 = v9 ? 2 : 0;
-    [(PKPeerPaymentBubbleView *)self setAction:v10 animated:v4];
+    [(PKPeerPaymentBubbleView *)self setAction:v10 animated:animatedCopy];
     v11 = [v12 amountHashIsValidForAmount:self->_amount andCurrency:self->_currency];
     v7 = v12;
     if ((v11 & 1) == 0)
     {
-      [(PKPeerPaymentBubbleView *)self setState:9 animated:v4];
+      [(PKPeerPaymentBubbleView *)self setState:9 animated:animatedCopy];
       v7 = v12;
     }
   }
 }
 
-- (void)updateWithPaymentTransaction:(id)a3 animated:(BOOL)a4
+- (void)updateWithPaymentTransaction:(id)transaction animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  transactionCopy = transaction;
+  if (transactionCopy)
   {
-    v12 = v6;
-    v7 = [v6 currencyCode];
-    v8 = [v12 amount];
+    v12 = transactionCopy;
+    currencyCode = [transactionCopy currencyCode];
+    amount = [v12 amount];
     if ([v12 transactionType] == 3)
     {
-      v9 = [v12 subtotalAmount];
+      subtotalAmount = [v12 subtotalAmount];
 
-      if (v9)
+      if (subtotalAmount)
       {
-        v10 = [v12 subtotalAmount];
+        subtotalAmount2 = [v12 subtotalAmount];
 
-        v8 = v10;
+        amount = subtotalAmount2;
       }
     }
 
-    if (v7 && v8)
+    if (currencyCode && amount)
     {
-      [(PKPeerPaymentBubbleView *)self setAmount:v8];
-      [(PKPeerPaymentBubbleView *)self setCurrency:v7];
+      [(PKPeerPaymentBubbleView *)self setAmount:amount];
+      [(PKPeerPaymentBubbleView *)self setCurrency:currencyCode];
     }
 
-    v11 = [v12 peerPaymentStatus];
-    if (v11 != -1)
+    peerPaymentStatus = [v12 peerPaymentStatus];
+    if (peerPaymentStatus != -1)
     {
-      [(PKPeerPaymentBubbleView *)self updateWithPeerPaymentStatus:v11 animated:v4];
+      [(PKPeerPaymentBubbleView *)self updateWithPeerPaymentStatus:peerPaymentStatus animated:animatedCopy];
     }
 
-    v6 = v12;
+    transactionCopy = v12;
   }
 }
 
-- (void)updateWithPeerPaymentMessage:(id)a3 animated:(BOOL)a4
+- (void)updateWithPeerPaymentMessage:(id)message animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  messageCopy = message;
+  if (messageCopy)
   {
-    v20 = v6;
-    if ([v6 isObserver])
+    v20 = messageCopy;
+    if ([messageCopy isObserver])
     {
       v7 = MEMORY[0x1E69B99A0];
     }
 
     else
     {
-      v8 = [v20 isFromMe];
+      isFromMe = [v20 isFromMe];
       v7 = MEMORY[0x1E69B9B10];
-      if (v8)
+      if (isFromMe)
       {
         v7 = MEMORY[0x1E69B9C20];
       }
@@ -1626,19 +1626,19 @@ LABEL_8:
     v9 = *v7;
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", *MEMORY[0x1E69B9458], v9];
     [(PKPeerPaymentBubbleView *)self setAccessibilityIdentifier:v10];
-    v11 = [v20 amount];
-    [(PKPeerPaymentBubbleView *)self setAmount:v11];
+    amount = [v20 amount];
+    [(PKPeerPaymentBubbleView *)self setAmount:amount];
 
-    v12 = [v20 currency];
-    [(PKPeerPaymentBubbleView *)self setCurrency:v12];
+    currency = [v20 currency];
+    [(PKPeerPaymentBubbleView *)self setCurrency:currency];
 
-    v13 = [v20 type];
-    if (v13 == 1)
+    type = [v20 type];
+    if (type == 1)
     {
       if ([v20 hasBeenSent])
       {
-        v16 = [v20 transactionIdentifier];
-        if (v16 && (v17 = v16, [v20 paymentIdentifier], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+        transactionIdentifier = [v20 transactionIdentifier];
+        if (transactionIdentifier && (v17 = transactionIdentifier, [v20 paymentIdentifier], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
         {
           v19 = 3;
         }
@@ -1654,7 +1654,7 @@ LABEL_8:
         v19 = 2;
       }
 
-      [(PKPeerPaymentBubbleView *)self setState:v19 animated:v4];
+      [(PKPeerPaymentBubbleView *)self setState:v19 animated:animatedCopy];
       if ([v20 context] != 2)
       {
         goto LABEL_22;
@@ -1665,32 +1665,32 @@ LABEL_8:
         [(PKPeerPaymentBubbleView *)self setState:12];
       }
 
-      v14 = [v20 recipientAddress];
-      [(PKPeerPaymentBubbleView *)self setRecipientAddress:v14];
+      recipientAddress = [v20 recipientAddress];
+      [(PKPeerPaymentBubbleView *)self setRecipientAddress:recipientAddress];
     }
 
     else
     {
-      if (v13 != 3)
+      if (type != 3)
       {
-        if (v13 == 2)
+        if (type == 2)
         {
-          [(PKPeerPaymentBubbleView *)self setState:1 animated:v4];
+          [(PKPeerPaymentBubbleView *)self setState:1 animated:animatedCopy];
         }
 
         goto LABEL_22;
       }
 
-      [(PKPeerPaymentBubbleView *)self setState:11 animated:v4];
-      v14 = [v20 recurringPaymentMemo];
-      v15 = [v20 recurringPaymentStartDate];
-      -[PKPeerPaymentBubbleView setRecurringMemo:startDate:frequency:](self, "setRecurringMemo:startDate:frequency:", v14, v15, [v20 recurringPaymentFrequency]);
+      [(PKPeerPaymentBubbleView *)self setState:11 animated:animatedCopy];
+      recipientAddress = [v20 recurringPaymentMemo];
+      recurringPaymentStartDate = [v20 recurringPaymentStartDate];
+      -[PKPeerPaymentBubbleView setRecurringMemo:startDate:frequency:](self, "setRecurringMemo:startDate:frequency:", recipientAddress, recurringPaymentStartDate, [v20 recurringPaymentFrequency]);
     }
 
 LABEL_22:
     -[PKPeerPaymentBubbleView setContext:](self, "setContext:", [v20 context]);
 
-    v6 = v20;
+    messageCopy = v20;
   }
 }
 
@@ -1698,9 +1698,9 @@ LABEL_22:
 {
   self->_snapshotInProgress = 1;
   [(PKPeerPaymentBubbleView *)self _updateContent];
-  v3 = [(PKContinuousButton *)self->_actionButton isEnabled];
+  isEnabled = [(PKContinuousButton *)self->_actionButton isEnabled];
   [(PKContinuousButton *)self->_actionButton setEnabled:0];
-  v4 = [(UILabel *)self->_statusLabel isHidden];
+  isHidden = [(UILabel *)self->_statusLabel isHidden];
   if (self->_state - 3 < 2)
   {
     v5 = 1;
@@ -1708,7 +1708,7 @@ LABEL_22:
 
   else
   {
-    v5 = v4;
+    v5 = isHidden;
   }
 
   [(UILabel *)self->_statusLabel setHidden:v5];
@@ -1718,33 +1718,33 @@ LABEL_22:
   v13.width = v6;
   v13.height = v7;
   UIGraphicsBeginImageContextWithOptions(v13, 1, 0.0);
-  v8 = [(PKPeerPaymentBubbleView *)self layer];
-  [v8 renderInContext:UIGraphicsGetCurrentContext()];
+  layer = [(PKPeerPaymentBubbleView *)self layer];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
 
-  v9 = [(PKPeerPayment3DTextView *)self->_renderView generatedSnapshot];
+  generatedSnapshot = [(PKPeerPayment3DTextView *)self->_renderView generatedSnapshot];
   [(PKPeerPayment3DTextView *)self->_renderView frame];
-  [v9 drawInRect:?];
+  [generatedSnapshot drawInRect:?];
 
   v10 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  [(PKContinuousButton *)self->_actionButton setEnabled:v3];
-  [(UILabel *)self->_statusLabel setHidden:v4];
+  [(PKContinuousButton *)self->_actionButton setEnabled:isEnabled];
+  [(UILabel *)self->_statusLabel setHidden:isHidden];
   self->_snapshotInProgress = 0;
   [(PKPeerPaymentBubbleView *)self _updateContent];
 
   return v10;
 }
 
-+ (id)generatedSnapshotForDataURL:(id)a3 contentInset:(UIEdgeInsets)a4 isFromMe:(BOOL)a5
++ (id)generatedSnapshotForDataURL:(id)l contentInset:(UIEdgeInsets)inset isFromMe:(BOOL)me
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
-  if (!v10)
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  lCopy = l;
+  if (!lCopy)
   {
-    v22 = 0;
+    generatedSnapshot = 0;
     goto LABEL_25;
   }
 
@@ -1754,42 +1754,42 @@ LABEL_22:
   if (v12)
   {
     v14 = v13;
-    v15 = [v12 currency];
-    if (v15)
+    currency = [v12 currency];
+    if (currency)
     {
-      v16 = v15;
-      v17 = [v12 currency];
-      if ([v17 length] != 3)
+      initForSnapshotting = currency;
+      currency2 = [v12 currency];
+      if ([currency2 length] != 3)
       {
 
-        v22 = 0;
+        generatedSnapshot = 0;
 LABEL_23:
 
         goto LABEL_24;
       }
 
-      v18 = [v12 amount];
+      amount = [v12 amount];
 
-      if (v18)
+      if (amount)
       {
-        v16 = [[PKPeerPaymentBubbleView alloc] initForSnapshotting];
-        [v16 setDisplaysCashLogo:1];
-        [v16 setContentInset:{top, left, bottom, right}];
-        v19 = [v12 currency];
-        [v16 setCurrency:v19];
+        initForSnapshotting = [[PKPeerPaymentBubbleView alloc] initForSnapshotting];
+        [initForSnapshotting setDisplaysCashLogo:1];
+        [initForSnapshotting setContentInset:{top, left, bottom, right}];
+        currency3 = [v12 currency];
+        [initForSnapshotting setCurrency:currency3];
 
-        v20 = [v12 amount];
-        [v16 setAmount:v20];
+        amount2 = [v12 amount];
+        [initForSnapshotting setAmount:amount2];
 
-        [v16 setContext:v14];
+        [initForSnapshotting setContext:v14];
         v21 = PKPeerPaymentMessageTypeFromProtobuf();
         switch(v21)
         {
           case 1:
-            [v16 setState:5 animated:0];
+            [initForSnapshotting setState:5 animated:0];
             break;
           case 3:
-            [v16 setState:11 animated:0];
+            [initForSnapshotting setState:11 animated:0];
             v23 = PKPeerPaymentMessageMemoFromDataURL();
             v24 = PKPeerPaymentMessageRecurringPaymentEmojiFromProtobuf();
             v25 = PKPeerPaymentMessageRecurringPaymentColorFromProtobuf();
@@ -1801,15 +1801,15 @@ LABEL_23:
               [v27 setEmoji:v24];
               [v27 setColor:v26];
               v28 = PKPeerPaymentMessageRecurringPaymentStartDateFromProtobuf();
-              [v16 setRecurringMemo:v27 startDate:v28 frequency:PKPeerPaymentMessageRecurringPaymentFrequencyFromProtobuf()];
+              [initForSnapshotting setRecurringMemo:v27 startDate:v28 frequency:PKPeerPaymentMessageRecurringPaymentFrequencyFromProtobuf()];
             }
 
             break;
           case 2:
-            [v16 setState:1 animated:0];
-            if (!a5)
+            [initForSnapshotting setState:1 animated:0];
+            if (!me)
             {
-              [v16 setAction:1 animated:0];
+              [initForSnapshotting setAction:1 animated:0];
             }
 
             break;
@@ -1818,35 +1818,35 @@ LABEL_23:
         if (v14 == 2)
         {
           v29 = PKPeerPaymentMessageRecipientAddressFromDataURL();
-          [v16 setRecipientAddress:v29];
+          [initForSnapshotting setRecipientAddress:v29];
 
           v30 = PKPeerPaymentMessageSenderAddressFromDataURL();
-          [v16 setSenderAddress:v30];
+          [initForSnapshotting setSenderAddress:v30];
         }
 
-        [v16 setLiveRenderingEnabled:v14 != 2];
-        [v16 sizeToFit];
-        v22 = [v16 generatedSnapshot];
+        [initForSnapshotting setLiveRenderingEnabled:v14 != 2];
+        [initForSnapshotting sizeToFit];
+        generatedSnapshot = [initForSnapshotting generatedSnapshot];
         goto LABEL_23;
       }
     }
   }
 
-  v22 = 0;
+  generatedSnapshot = 0;
 LABEL_24:
 
 LABEL_25:
 
-  return v22;
+  return generatedSnapshot;
 }
 
-- (void)performPostRender:(id)a3
+- (void)performPostRender:(id)render
 {
-  v4 = a3;
+  renderCopy = render;
   renderView = self->_renderView;
   if (renderView)
   {
-    [(PKPeerPayment3DTextView *)renderView performPostRender:v4];
+    [(PKPeerPayment3DTextView *)renderView performPostRender:renderCopy];
   }
 
   else
@@ -1856,7 +1856,7 @@ LABEL_25:
     block[1] = 3221225472;
     block[2] = __45__PKPeerPaymentBubbleView_performPostRender___block_invoke;
     block[3] = &unk_1E8010B50;
-    v7 = v4;
+    v7 = renderCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -1866,9 +1866,9 @@ LABEL_25:
   v7.receiver = self;
   v7.super_class = PKPeerPaymentBubbleView;
   [(PKPeerPaymentBubbleView *)&v7 didMoveToWindow];
-  v3 = [(PKPeerPaymentBubbleView *)self window];
+  window = [(PKPeerPaymentBubbleView *)self window];
 
-  if (v3)
+  if (window)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1928,11 +1928,11 @@ uint64_t __42__PKPeerPaymentBubbleView_didMoveToWindow__block_invoke_2(uint64_t 
 - (id)interactiveViews
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPeerPaymentBubbleView *)self actionButton];
-  v3 = v2;
-  if (v2)
+  actionButton = [(PKPeerPaymentBubbleView *)self actionButton];
+  v3 = actionButton;
+  if (actionButton)
   {
-    v6[0] = v2;
+    v6[0] = actionButton;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 

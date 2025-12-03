@@ -1,10 +1,10 @@
 @interface PFParallaxSpatialPhotoLayer
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
+- (BOOL)saveToURL:(id)l error:(id *)error;
 - (CGSize)pixelSize;
 - (NSData)dataRepresentation;
-- (PFParallaxSpatialPhotoLayer)initWithSceneData:(id)a3 scene:(id)a4 frame:(CGRect)a5 zPosition:(double)a6 identifier:(id)a7;
+- (PFParallaxSpatialPhotoLayer)initWithSceneData:(id)data scene:(id)scene frame:(CGRect)frame zPosition:(double)position identifier:(id)identifier;
 - (id)fileExtension;
-- (id)layerByUpdatingFrame:(CGRect)a3;
+- (id)layerByUpdatingFrame:(CGRect)frame;
 - (id)sharedScene;
 @end
 
@@ -17,13 +17,13 @@
   return [v2 fileExtension];
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PFParallaxSpatialPhotoLayer *)self dataRepresentation];
-  LOBYTE(a4) = [v7 writeToURL:v6 options:1 error:a4];
+  lCopy = l;
+  dataRepresentation = [(PFParallaxSpatialPhotoLayer *)self dataRepresentation];
+  LOBYTE(error) = [dataRepresentation writeToURL:lCopy options:1 error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)sharedScene
@@ -35,19 +35,19 @@
 
 - (NSData)dataRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sceneData = v2->_sceneData;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sceneData = selfCopy->_sceneData;
   if (!sceneData)
   {
-    scene = v2->_scene;
+    scene = selfCopy->_scene;
     if (scene)
     {
-      v5 = [(PFParallaxSpatialPhotoScene *)scene dataRepresentation];
-      v6 = v2->_sceneData;
-      v2->_sceneData = v5;
+      dataRepresentation = [(PFParallaxSpatialPhotoScene *)scene dataRepresentation];
+      v6 = selfCopy->_sceneData;
+      selfCopy->_sceneData = dataRepresentation;
 
-      sceneData = v2->_sceneData;
+      sceneData = selfCopy->_sceneData;
     }
 
     else
@@ -57,7 +57,7 @@
   }
 
   v7 = sceneData;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -72,46 +72,46 @@
   return result;
 }
 
-- (id)layerByUpdatingFrame:(CGRect)a3
+- (id)layerByUpdatingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [PFParallaxSpatialPhotoLayer alloc];
-  v9 = [(PFParallaxSpatialPhotoLayer *)self sceneData];
-  v10 = [(PFParallaxSpatialPhotoLayer *)self scene];
+  sceneData = [(PFParallaxSpatialPhotoLayer *)self sceneData];
+  scene = [(PFParallaxSpatialPhotoLayer *)self scene];
   [(PFParallaxLayer *)self zPosition];
   v12 = v11;
-  v13 = [(PFParallaxLayer *)self identifier];
-  v14 = [(PFParallaxSpatialPhotoLayer *)v8 initWithSceneData:v9 scene:v10 frame:v13 zPosition:x identifier:y, width, height, v12];
+  identifier = [(PFParallaxLayer *)self identifier];
+  v14 = [(PFParallaxSpatialPhotoLayer *)v8 initWithSceneData:sceneData scene:scene frame:identifier zPosition:x identifier:y, width, height, v12];
 
   return v14;
 }
 
-- (PFParallaxSpatialPhotoLayer)initWithSceneData:(id)a3 scene:(id)a4 frame:(CGRect)a5 zPosition:(double)a6 identifier:(id)a7
+- (PFParallaxSpatialPhotoLayer)initWithSceneData:(id)data scene:(id)scene frame:(CGRect)frame zPosition:(double)position identifier:(id)identifier
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v16 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  dataCopy = data;
+  sceneCopy = scene;
   v24.receiver = self;
   v24.super_class = PFParallaxSpatialPhotoLayer;
-  v17 = [(PFParallaxLayer *)&v24 initWithFrame:a7 zPosition:x identifier:y, width, height, a6];
-  sceneData = v17->_sceneData;
-  v17->_sceneData = v15;
-  v19 = v15;
+  position = [(PFParallaxLayer *)&v24 initWithFrame:identifier zPosition:x identifier:y, width, height, position];
+  sceneData = position->_sceneData;
+  position->_sceneData = dataCopy;
+  v19 = dataCopy;
 
-  scene = v17->_scene;
-  v17->_scene = v16;
-  v21 = v16;
+  scene = position->_scene;
+  position->_scene = sceneCopy;
+  v21 = sceneCopy;
 
-  v22 = [(PFParallaxSpatialPhotoScene *)v21 spatialPhotoScene];
+  spatialPhotoScene = [(PFParallaxSpatialPhotoScene *)v21 spatialPhotoScene];
 
-  objc_storeWeak(&v17->_sharedScene, v22);
-  return v17;
+  objc_storeWeak(&position->_sharedScene, spatialPhotoScene);
+  return position;
 }
 
 @end

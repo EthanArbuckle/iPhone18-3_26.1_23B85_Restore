@@ -1,12 +1,12 @@
 @interface _INPBGeographicalFeature
-- (BOOL)isEqual:(id)a3;
-- (_INPBGeographicalFeature)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGeographicalFeature)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addGeographicalFeatureDescriptors:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGeographicalFeatureDescriptors:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addGeographicalFeatureDescriptors:(id)descriptors;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGeographicalFeatureDescriptors:(id)descriptors;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGeographicalFeature
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_geographicalFeatureDescriptors count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -47,40 +47,40 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"geographicalFeatureDescriptors"];
+    [dictionary setObject:array forKeyedSubscript:@"geographicalFeatureDescriptors"];
   }
 
-  v11 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"geographicalFeatureType"];
+  geographicalFeatureType = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+  dictionaryRepresentation2 = [geographicalFeatureType dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"geographicalFeatureType"];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
-  v6 = [v4 geographicalFeatureDescriptors];
-  if ((v5 != 0) == (v6 == 0))
+  geographicalFeatureDescriptors = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
+  geographicalFeatureDescriptors2 = [equalCopy geographicalFeatureDescriptors];
+  if ((geographicalFeatureDescriptors != 0) == (geographicalFeatureDescriptors2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
-  if (v7)
+  geographicalFeatureDescriptors3 = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
+  if (geographicalFeatureDescriptors3)
   {
-    v8 = v7;
-    v9 = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
-    v10 = [v4 geographicalFeatureDescriptors];
-    v11 = [v9 isEqual:v10];
+    v8 = geographicalFeatureDescriptors3;
+    geographicalFeatureDescriptors4 = [(_INPBGeographicalFeature *)self geographicalFeatureDescriptors];
+    geographicalFeatureDescriptors5 = [equalCopy geographicalFeatureDescriptors];
+    v11 = [geographicalFeatureDescriptors4 isEqual:geographicalFeatureDescriptors5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
-  v6 = [v4 geographicalFeatureType];
-  if ((v5 != 0) != (v6 == 0))
+  geographicalFeatureDescriptors = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+  geographicalFeatureDescriptors2 = [equalCopy geographicalFeatureType];
+  if ((geographicalFeatureDescriptors != 0) != (geographicalFeatureDescriptors2 == 0))
   {
-    v12 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
-    if (!v12)
+    geographicalFeatureType = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+    if (!geographicalFeatureType)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
-    v15 = [v4 geographicalFeatureType];
-    v16 = [v14 isEqual:v15];
+    v13 = geographicalFeatureType;
+    geographicalFeatureType2 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+    geographicalFeatureType3 = [equalCopy geographicalFeatureType];
+    v16 = [geographicalFeatureType2 isEqual:geographicalFeatureType3];
 
     if (v16)
     {
@@ -128,46 +128,46 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGeographicalFeature allocWithZone:](_INPBGeographicalFeature init];
-  v6 = [(NSArray *)self->_geographicalFeatureDescriptors copyWithZone:a3];
+  v6 = [(NSArray *)self->_geographicalFeatureDescriptors copyWithZone:zone];
   [(_INPBGeographicalFeature *)v5 setGeographicalFeatureDescriptors:v6];
 
-  v7 = [(_INPBString *)self->_geographicalFeatureType copyWithZone:a3];
+  v7 = [(_INPBString *)self->_geographicalFeatureType copyWithZone:zone];
   [(_INPBGeographicalFeature *)v5 setGeographicalFeatureType:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGeographicalFeature *)self data];
+  coderCopy = coder;
+  data = [(_INPBGeographicalFeature *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGeographicalFeature)initWithCoder:(id)a3
+- (_INPBGeographicalFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGeographicalFeature *)self initWithData:v6];
+    self = [(_INPBGeographicalFeature *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -200,38 +200,38 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+  geographicalFeatureType = [(_INPBGeographicalFeature *)self geographicalFeatureType];
 
-  if (v11)
+  if (geographicalFeatureType)
   {
-    v12 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
+    geographicalFeatureType2 = [(_INPBGeographicalFeature *)self geographicalFeatureType];
     PBDataWriterWriteSubmessage();
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addGeographicalFeatureDescriptors:(id)a3
+- (void)addGeographicalFeatureDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   geographicalFeatureDescriptors = self->_geographicalFeatureDescriptors;
-  v8 = v4;
+  v8 = descriptorsCopy;
   if (!geographicalFeatureDescriptors)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_geographicalFeatureDescriptors;
-    self->_geographicalFeatureDescriptors = v6;
+    self->_geographicalFeatureDescriptors = array;
 
-    v4 = v8;
+    descriptorsCopy = v8;
     geographicalFeatureDescriptors = self->_geographicalFeatureDescriptors;
   }
 
-  [(NSArray *)geographicalFeatureDescriptors addObject:v4];
+  [(NSArray *)geographicalFeatureDescriptors addObject:descriptorsCopy];
 }
 
-- (void)setGeographicalFeatureDescriptors:(id)a3
+- (void)setGeographicalFeatureDescriptors:(id)descriptors
 {
-  v4 = [a3 mutableCopy];
+  v4 = [descriptors mutableCopy];
   geographicalFeatureDescriptors = self->_geographicalFeatureDescriptors;
   self->_geographicalFeatureDescriptors = v4;
 

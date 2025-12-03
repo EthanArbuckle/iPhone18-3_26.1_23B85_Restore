@@ -4,27 +4,27 @@
 + (void)initMobileActivation;
 + (void)initSetupAssistant;
 + (void)initSpringBoardServices;
-+ (void)loadBundleAtURL:(id)a3 completionBlock:(id)a4;
-+ (void)loadNSBundleAtURL:(id)a3 completionBlock:(id)a4;
++ (void)loadBundleAtURL:(id)l completionBlock:(id)block;
++ (void)loadNSBundleAtURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation DMCLazyInitializationUtilities
 
-+ (void)loadBundleAtURL:(id)a3 completionBlock:(id)a4
++ (void)loadBundleAtURL:(id)l completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 lastPathComponent];
+  blockCopy = block;
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
   v8 = *DMCLogObjects();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v16 = v7;
+    v16 = lastPathComponent;
     _os_log_impl(&dword_1B1630000, v8, OS_LOG_TYPE_INFO, "Lazy loading %{public}@", buf, 0xCu);
   }
 
-  v9 = CFBundleCreate(0, v6);
+  v9 = CFBundleCreate(0, lCopy);
 
   if (v9)
   {
@@ -36,13 +36,13 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v16 = v7;
+        v16 = lastPathComponent;
         _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_DEFAULT, "Loaded %{public}@", buf, 0xCu);
       }
 
-      if (v5)
+      if (blockCopy)
       {
-        v5[2](v5, 1, v9);
+        blockCopy[2](blockCopy, 1, v9);
       }
     }
 
@@ -51,15 +51,15 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v16 = v7;
+        v16 = lastPathComponent;
         v17 = 2114;
         v18 = error;
         _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_ERROR, "Could not load %{public}@: %{public}@", buf, 0x16u);
       }
 
-      if (v5)
+      if (blockCopy)
       {
-        v5[2](v5, 0, 0);
+        blockCopy[2](blockCopy, 0, 0);
       }
     }
 
@@ -76,34 +76,34 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v16 = v7;
+      v16 = lastPathComponent;
       _os_log_impl(&dword_1B1630000, v12, OS_LOG_TYPE_ERROR, "Could not load %{public}@", buf, 0xCu);
     }
 
-    if (v5)
+    if (blockCopy)
     {
-      v5[2](v5, 0, 0);
+      blockCopy[2](blockCopy, 0, 0);
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)loadNSBundleAtURL:(id)a3 completionBlock:(id)a4
++ (void)loadNSBundleAtURL:(id)l completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 lastPathComponent];
+  blockCopy = block;
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
   v8 = *DMCLogObjects();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = v7;
+    v20 = lastPathComponent;
     _os_log_impl(&dword_1B1630000, v8, OS_LOG_TYPE_INFO, "Lazy loading NSBundle %{public}@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
+  v9 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
 
   v18 = 0;
   v10 = [v9 loadAndReturnError:&v18];
@@ -117,7 +117,7 @@
     }
 
     *buf = 138543362;
-    v20 = v7;
+    v20 = lastPathComponent;
     v13 = "Loaded %{public}@";
     v14 = v12;
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -132,7 +132,7 @@
     }
 
     *buf = 138543618;
-    v20 = v7;
+    v20 = lastPathComponent;
     v21 = 2114;
     v22 = v11;
     v13 = "Could not load %{public}@: %{public}@";
@@ -143,9 +143,9 @@
 
   _os_log_impl(&dword_1B1630000, v14, v15, v13, buf, v16);
 LABEL_9:
-  if (v5)
+  if (blockCopy)
   {
-    v5[2](v5, v10, v9);
+    blockCopy[2](blockCopy, v10, v9);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -157,7 +157,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __57__DMCLazyInitializationUtilities_initSpringBoardServices__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initSpringBoardServices_onceToken != -1)
   {
     dispatch_once(&initSpringBoardServices_onceToken, block);
@@ -186,7 +186,7 @@ void __57__DMCLazyInitializationUtilities_initSpringBoardServices__block_invoke_
   block[1] = 3221225472;
   block[2] = __52__DMCLazyInitializationUtilities_initSetupAssistant__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initSetupAssistant_onceToken != -1)
   {
     dispatch_once(&initSetupAssistant_onceToken, block);
@@ -217,7 +217,7 @@ void __52__DMCLazyInitializationUtilities_initSetupAssistant__block_invoke_2(int
   block[1] = 3221225472;
   block[2] = __45__DMCLazyInitializationUtilities_initAuthKit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initAuthKit_onceToken != -1)
   {
     dispatch_once(&initAuthKit_onceToken, block);
@@ -255,7 +255,7 @@ void __45__DMCLazyInitializationUtilities_initAuthKit__block_invoke_2(int a1, in
   block[1] = 3221225472;
   block[2] = __62__DMCLazyInitializationUtilities_initAppleIDSSOAuthentication__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initAppleIDSSOAuthentication_onceToken != -1)
   {
     dispatch_once(&initAppleIDSSOAuthentication_onceToken, block);
@@ -293,7 +293,7 @@ void __62__DMCLazyInitializationUtilities_initAppleIDSSOAuthentication__block_in
   block[1] = 3221225472;
   block[2] = __54__DMCLazyInitializationUtilities_initMobileActivation__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initMobileActivation_onceToken != -1)
   {
     dispatch_once(&initMobileActivation_onceToken, block);

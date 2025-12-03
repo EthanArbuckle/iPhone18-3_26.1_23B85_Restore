@@ -1,14 +1,14 @@
 @interface AlarmComplicationView
 - (UIColor)tintColor;
-- (_TtC11ClockPoster21AlarmComplicationView)initWithCoder:(id)a3;
-- (_TtC11ClockPoster21AlarmComplicationView)initWithFrame:(CGRect)a3;
+- (_TtC11ClockPoster21AlarmComplicationView)initWithCoder:(id)coder;
+- (_TtC11ClockPoster21AlarmComplicationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AlarmComplicationView
 
-- (_TtC11ClockPoster21AlarmComplicationView)initWithCoder:(id)a3
+- (_TtC11ClockPoster21AlarmComplicationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster21AlarmComplicationView_alarmTimeLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster21AlarmComplicationView_alarmIcon) = 0;
@@ -21,25 +21,25 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AlarmComplicationView();
-  v2 = [(AlarmComplicationView *)&v4 tintColor];
+  tintColor = [(AlarmComplicationView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E4994C60(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1E4994C60(color);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4994F40();
 }
 
-- (_TtC11ClockPoster21AlarmComplicationView)initWithFrame:(CGRect)a3
+- (_TtC11ClockPoster21AlarmComplicationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

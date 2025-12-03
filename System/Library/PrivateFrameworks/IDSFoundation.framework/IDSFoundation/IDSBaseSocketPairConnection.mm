@@ -1,41 +1,41 @@
 @interface IDSBaseSocketPairConnection
-- (BOOL)sendData:(id)a3;
-- (IDSBaseSocketPairConnection)initWithQueue:(id)a3 delegate:(id)a4;
-- (IDSBaseSocketPairConnection)initWithSocket:(int)a3 queue:(id)a4 delegate:(id)a5 start:(BOOL)a6;
-- (void)_callDelegatesWithBlock:(id)a3;
+- (BOOL)sendData:(id)data;
+- (IDSBaseSocketPairConnection)initWithQueue:(id)queue delegate:(id)delegate;
+- (IDSBaseSocketPairConnection)initWithSocket:(int)socket queue:(id)queue delegate:(id)delegate start:(BOOL)start;
+- (void)_callDelegatesWithBlock:(id)block;
 - (void)_processBytesAvailable;
 - (void)_sendToConnectedSocket;
 - (void)_setupWriteSource;
 - (void)dealloc;
 - (void)endSession;
-- (void)setDestination:(id)a3;
+- (void)setDestination:(id)destination;
 - (void)start;
 @end
 
 @implementation IDSBaseSocketPairConnection
 
-- (IDSBaseSocketPairConnection)initWithQueue:(id)a3 delegate:(id)a4
+- (IDSBaseSocketPairConnection)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = IDSBaseSocketPairConnection;
   v9 = [(IDSBaseSocketPairConnection *)&v24 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E69A61A0] weakRefWithObject:v8];
+    v10 = [MEMORY[0x1E69A61A0] weakRefWithObject:delegateCopy];
     delegate = v9->_delegate;
     v9->_delegate = v10;
 
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v13 = [MEMORY[0x1E696AEC0] stringGUID];
-    v14 = [v12 initWithFormat:@"com.apple.identityservices.socketConnection-%@", v13];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v14 = [v12 initWithFormat:@"com.apple.identityservices.socketConnection-%@", stringGUID];
 
-    LOBYTE(v13) = IMGetDomainBoolForKey();
+    LOBYTE(stringGUID) = IMGetDomainBoolForKey();
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = v15;
-    if (v13)
+    if (stringGUID)
     {
       v17 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_USER_INTERACTIVE, 0);
     }
@@ -59,15 +59,15 @@
   return v9;
 }
 
-- (IDSBaseSocketPairConnection)initWithSocket:(int)a3 queue:(id)a4 delegate:(id)a5 start:(BOOL)a6
+- (IDSBaseSocketPairConnection)initWithSocket:(int)socket queue:(id)queue delegate:(id)delegate start:(BOOL)start
 {
-  v6 = a6;
-  v8 = [(IDSBaseSocketPairConnection *)self initWithQueue:a4 delegate:a5];
+  startCopy = start;
+  v8 = [(IDSBaseSocketPairConnection *)self initWithQueue:queue delegate:delegate];
   v9 = v8;
   if (v8)
   {
-    v8->_connectedSocket = a3;
-    if (v6)
+    v8->_connectedSocket = socket;
+    if (startCopy)
     {
       [(IDSBaseSocketPairConnection *)v8 start];
     }
@@ -128,32 +128,32 @@
   }
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v4 = a3;
-  if (v4)
+  destinationCopy = destination;
+  if (destinationCopy)
   {
     connectedSocket = self->_connectedSocket;
     if ((connectedSocket & 0x80000000) == 0)
     {
-      v6 = v4;
-      connect(connectedSocket, [v4 sa], *objc_msgSend(v4, "sa"));
-      v4 = v6;
+      v6 = destinationCopy;
+      connect(connectedSocket, [destinationCopy sa], *objc_msgSend(destinationCopy, "sa"));
+      destinationCopy = v6;
     }
   }
 }
 
-- (void)_callDelegatesWithBlock:(id)a3
+- (void)_callDelegatesWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(IMWeakReference *)self->_delegate object];
-    v6 = v5;
+    object = [(IMWeakReference *)self->_delegate object];
+    v6 = object;
     queue = self->_queue;
     if (queue)
     {
-      v8 = v5 == 0;
+      v8 = object == 0;
     }
 
     else
@@ -167,7 +167,7 @@
       v9[1] = 3221225472;
       v9[2] = sub_1A7B67950;
       v9[3] = &unk_1E77DD0F0;
-      v11 = v4;
+      v11 = blockCopy;
       v10 = v6;
       dispatch_async(queue, v9);
     }
@@ -393,8 +393,8 @@
 
   else if ([(NSMutableArray *)self->_outgoingDataArray count])
   {
-    v3 = [(NSMutableArray *)self->_outgoingDataArray firstObject];
-    if (send(self->_connectedSocket, [v3 bytes], objc_msgSend(v3, "length"), 0) < 0)
+    firstObject = [(NSMutableArray *)self->_outgoingDataArray firstObject];
+    if (send(self->_connectedSocket, [firstObject bytes], objc_msgSend(firstObject, "length"), 0) < 0)
     {
       if (*__error() == 35)
       {
@@ -501,7 +501,7 @@
           v40 = 2080;
           v41 = v20;
           v42 = 2048;
-          v43 = [v3 length];
+          v43 = [firstObject length];
           _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "send error %d (%s) trying to send data of size %lu, dropping packets to send...", buf, 0x1Cu);
         }
 
@@ -512,7 +512,7 @@
             v21 = *__error();
             v22 = __error();
             v34 = strerror(*v22);
-            v35 = [v3 length];
+            v35 = [firstObject length];
             v33 = v21;
             MarcoLog();
           }
@@ -522,7 +522,7 @@
             v23 = *__error();
             v24 = __error();
             v34 = strerror(*v24);
-            v35 = [v3 length];
+            v35 = [firstObject length];
             v33 = v23;
             IMLogString();
           }
@@ -544,7 +544,7 @@
           v40 = 2080;
           v41 = v28;
           v42 = 2048;
-          v43 = [v3 length];
+          v43 = [firstObject length];
           _os_log_impl(&dword_1A7AD9000, v25, OS_LOG_TYPE_DEFAULT, "send error %d (%s) trying to send data of size %lu, cleaning up...", buf, 0x1Cu);
         }
 
@@ -555,7 +555,7 @@
             v29 = *__error();
             v30 = __error();
             v34 = strerror(*v30);
-            v35 = [v3 length];
+            v35 = [firstObject length];
             v33 = v29;
             MarcoLog();
           }
@@ -565,7 +565,7 @@
             v31 = *__error();
             v32 = __error();
             v34 = strerror(*v32);
-            v35 = [v3 length];
+            v35 = [firstObject length];
             v33 = v31;
             IMLogString();
           }
@@ -626,12 +626,12 @@
   }
 }
 
-- (BOOL)sendData:(id)a3
+- (BOOL)sendData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   v6 = 1;
-  if (v4)
+  if (dataCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -645,7 +645,7 @@
       block[2] = sub_1A7B68DD4;
       block[3] = &unk_1E77E0AF8;
       block[4] = self;
-      v10 = v4;
+      v10 = dataCopy;
       v11 = &v12;
       dispatch_sync(readQueue, block);
 

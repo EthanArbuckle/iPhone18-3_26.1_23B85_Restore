@@ -1,57 +1,57 @@
 @interface OITSUNumberFormat
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10;
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 formatName:(id)a18;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0;
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 formatName:(id)self8;
 - (BOOL)customFormatShouldAutoInsertPercentSymbol;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
 - (BOOL)usesTabs;
 - (NSString)description;
 - (OITSUNumberFormat)init;
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10;
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13;
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 isCustom:(BOOL)a13;
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 interstitialStrings:(id)a18 interstitialStringInsertionIndexes:(id)a19 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a20 minimumIntegerWidth:(unsigned __int8)a21 decimalWidth:(unsigned __int8)a22 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a23 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a24 isTextFormat:(BOOL)a25 formatName:(id)a26 customFormatKey:(id)a27;
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initCustomFormatWithFormatString:(id)a3 currencyCode:(id)a4 showThousandsSeparator:(BOOL)a5 fractionAccuracy:(int)a6 scaleFactor:(double)a7 interstitialStrings:(id)a8 interstitialStringInsertionIndexes:(id)a9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a10 minimumIntegerWidth:(unsigned __int8)a11 decimalWidth:(unsigned __int8)a12 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a13 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a14 isTextFormat:(BOOL)a15 formatName:(id)a16;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)numberFormatBySettingNegativeStyle:(int)a3;
-- (id)numberFormatBySettingUseAccountingStyle:(BOOL)a3;
-- (id)stringFromDouble:(double)a3 locale:(id)a4;
-- (id)stringFromDouble:(double)a3 locale:(id)a4 decimalPlaces:(unsigned __int16)a5 minimumDecimalPlaces:(unsigned __int16)a6 forceSuppressMinusSign:(BOOL)a7;
-- (id)stringFromDouble:(double)a3 locale:(id)a4 forceSuppressMinusSign:(BOOL)a5;
-- (id)stringFromDouble:(double)a3 locale:(id)a4 minimumDecimalPlaces:(unsigned __int16)a5;
-- (id)stringFromDouble:(double)a3 locale:(id)a4 minimumDecimalPlaces:(unsigned __int16)a5 forceSuppressMinusSign:(BOOL)a6;
-- (id)stringFromString:(id)a3;
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0;
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3;
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 isCustom:(BOOL)self3;
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 interstitialStrings:(id)self8 interstitialStringInsertionIndexes:(id)self9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)placeholder minimumIntegerWidth:(unsigned __int8)width decimalWidth:(unsigned __int8)decimalWidth numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)digits numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)placeholderDigits isTextFormat:(BOOL)format formatName:(id)name customFormatKey:(id)key;
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initCustomFormatWithFormatString:(id)string currencyCode:(id)code showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)accuracy scaleFactor:(double)factor interstitialStrings:(id)strings interstitialStringInsertionIndexes:(id)indexes indexFromRightOfLastDigitPlaceholder:(unsigned __int16)self0 minimumIntegerWidth:(unsigned __int8)self1 decimalWidth:(unsigned __int8)self2 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)self3 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)self4 isTextFormat:(BOOL)self5 formatName:(id)self6;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)numberFormatBySettingNegativeStyle:(int)style;
+- (id)numberFormatBySettingUseAccountingStyle:(BOOL)style;
+- (id)stringFromDouble:(double)double locale:(id)locale;
+- (id)stringFromDouble:(double)double locale:(id)locale decimalPlaces:(unsigned __int16)places minimumDecimalPlaces:(unsigned __int16)decimalPlaces forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromDouble:(double)double locale:(id)locale forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromDouble:(double)double locale:(id)locale minimumDecimalPlaces:(unsigned __int16)places;
+- (id)stringFromDouble:(double)double locale:(id)locale minimumDecimalPlaces:(unsigned __int16)places forceSuppressMinusSign:(BOOL)sign;
+- (id)stringFromString:(id)string;
 - (unint64_t)hash;
 - (unsigned)decimalPlaces;
 - (void)dealloc;
-- (void)setFormatName:(id)a3;
+- (void)setFormatName:(id)name;
 @end
 
 @implementation OITSUNumberFormat
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0
 {
-  HIDWORD(v12) = a10;
-  LOBYTE(v12) = a9;
-  v10 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:*&a8 showThousandsSeparator:v12 fractionAccuracy:?];
+  HIDWORD(v12) = accuracy;
+  LOBYTE(v12) = separator;
+  v10 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:*&negativeStyle showThousandsSeparator:v12 fractionAccuracy:?];
 
   return v10;
 }
 
-+ (id)numberFormatWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 formatName:(id)a18
++ (id)numberFormatWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 formatName:(id)self8
 {
   BYTE6(v22) = 0;
   *(&v22 + 2) = 0;
   LOWORD(v22) = 0;
-  BYTE5(v21) = a17;
-  BYTE4(v21) = a16;
-  WORD1(v21) = a15;
-  LOBYTE(v21) = a14;
-  HIDWORD(v20) = a10;
-  LOBYTE(v20) = a9;
-  v18 = [[a1 alloc] initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:a8 showThousandsSeparator:a13 fractionAccuracy:v20 prefixString:a11 suffixString:a12 scaleFactor:v21 base:0 basePlaces:0 baseUseMinusSign:v22 isCustom:a18 interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
+  BYTE5(v21) = custom;
+  BYTE4(v21) = sign;
+  WORD1(v21) = basePlaces;
+  LOBYTE(v21) = base;
+  HIDWORD(v20) = accuracy;
+  LOBYTE(v20) = separator;
+  v18 = [[self alloc] initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:negativeStyle showThousandsSeparator:factor fractionAccuracy:v20 prefixString:prefixString suffixString:suffixString scaleFactor:v21 base:0 basePlaces:0 baseUseMinusSign:v22 isCustom:name interstitialStrings:0 interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
 
   return v18;
 }
@@ -63,69 +63,69 @@
   return [(OITSUNumberFormat *)self initWithValueType:0 formatString:0 decimalPlaces:2 currencyCode:+[OITSUNumberFormatter useAccountingStyle:"currentLocaleCurrencyCode"]negativeStyle:0 showThousandsSeparator:0 fractionAccuracy:v3];
 }
 
-- (id)initCustomFormatWithFormatString:(id)a3 currencyCode:(id)a4 showThousandsSeparator:(BOOL)a5 fractionAccuracy:(int)a6 scaleFactor:(double)a7 interstitialStrings:(id)a8 interstitialStringInsertionIndexes:(id)a9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a10 minimumIntegerWidth:(unsigned __int8)a11 decimalWidth:(unsigned __int8)a12 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a13 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a14 isTextFormat:(BOOL)a15 formatName:(id)a16
+- (id)initCustomFormatWithFormatString:(id)string currencyCode:(id)code showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)accuracy scaleFactor:(double)factor interstitialStrings:(id)strings interstitialStringInsertionIndexes:(id)indexes indexFromRightOfLastDigitPlaceholder:(unsigned __int16)self0 minimumIntegerWidth:(unsigned __int8)self1 decimalWidth:(unsigned __int8)self2 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)self3 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)self4 isTextFormat:(BOOL)self5 formatName:(id)self6
 {
-  *(&v19 + 5) = __PAIR16__(a15, a14);
-  *(&v19 + 3) = __PAIR16__(a13, a12);
-  BYTE2(v19) = a11;
-  LOWORD(v19) = a10;
+  *(&v19 + 5) = __PAIR16__(format, placeholderDigits);
+  *(&v19 + 3) = __PAIR16__(digits, decimalWidth);
+  BYTE2(v19) = width;
+  LOWORD(v19) = placeholder;
   *(&v18 + 2) = 16842752;
   LOBYTE(v18) = 10;
-  HIDWORD(v17) = a6;
-  LOBYTE(v17) = a5;
-  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:0 decimalPlaces:a3 currencyCode:0 useAccountingStyle:a4 negativeStyle:0 showThousandsSeparator:0 fractionAccuracy:a7 prefixString:v17 suffixString:0 scaleFactor:0 base:v18 basePlaces:a8 baseUseMinusSign:a9 isCustom:v19 interstitialStrings:a16 interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
+  HIDWORD(v17) = accuracy;
+  LOBYTE(v17) = separator;
+  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:0 decimalPlaces:string currencyCode:0 useAccountingStyle:code negativeStyle:0 showThousandsSeparator:0 fractionAccuracy:factor prefixString:v17 suffixString:0 scaleFactor:0 base:v18 basePlaces:strings baseUseMinusSign:indexes isCustom:v19 interstitialStrings:name interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
 }
 
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0
 {
   BYTE4(v12) = 1;
   WORD1(v12) = 0;
   LOBYTE(v12) = 10;
-  HIDWORD(v11) = a10;
-  LOBYTE(v11) = a9;
-  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:base:basePlaces:baseUseMinusSign:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:v11 base:v12 basePlaces:? baseUseMinusSign:?];
+  HIDWORD(v11) = accuracy;
+  LOBYTE(v11) = separator;
+  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:base:basePlaces:baseUseMinusSign:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:v11 base:v12 basePlaces:? baseUseMinusSign:?];
 }
 
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 base:(unsigned __int8)a11 basePlaces:(unsigned __int16)a12 baseUseMinusSign:(BOOL)a13
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 base:(unsigned __int8)self1 basePlaces:(unsigned __int16)self2 baseUseMinusSign:(BOOL)self3
 {
   BYTE6(v16) = 0;
   *(&v16 + 2) = 0;
   LOWORD(v16) = 0;
   BYTE5(v15) = 0;
-  BYTE4(v15) = a13;
-  WORD1(v15) = a12;
-  LOBYTE(v15) = a11;
-  HIDWORD(v14) = a10;
-  LOBYTE(v14) = a9;
-  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:1.0 prefixString:v14 suffixString:0 scaleFactor:0 base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
+  BYTE4(v15) = sign;
+  WORD1(v15) = basePlaces;
+  LOBYTE(v15) = base;
+  HIDWORD(v14) = accuracy;
+  LOBYTE(v14) = separator;
+  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:1.0 prefixString:v14 suffixString:0 scaleFactor:0 base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
 }
 
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 isCustom:(BOOL)a13
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 isCustom:(BOOL)self3
 {
   BYTE6(v16) = 0;
   *(&v16 + 2) = 0;
   LOWORD(v16) = 0;
-  BYTE5(v15) = a13;
+  BYTE5(v15) = custom;
   BYTE4(v15) = 1;
   WORD1(v15) = 0;
   LOBYTE(v15) = 10;
-  HIDWORD(v14) = a10;
-  LOBYTE(v14) = a9;
-  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:*&a3 decimalPlaces:a4 currencyCode:a5 useAccountingStyle:a6 negativeStyle:a7 showThousandsSeparator:*&a8 fractionAccuracy:1.0 prefixString:v14 suffixString:a11 scaleFactor:a12 base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
+  HIDWORD(v14) = accuracy;
+  LOBYTE(v14) = separator;
+  return [OITSUNumberFormat initWithValueType:"initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:" formatString:*&type decimalPlaces:string currencyCode:places useAccountingStyle:code negativeStyle:style showThousandsSeparator:*&negativeStyle fractionAccuracy:1.0 prefixString:v14 suffixString:prefixString scaleFactor:suffixString base:v15 basePlaces:0 baseUseMinusSign:0 isCustom:v16 interstitialStrings:0 interstitialStringInsertionIndexes:0 indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
 }
 
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 suffixString:(id)a11
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 suffixString:(id)self1
 {
   LOBYTE(v13) = 0;
-  HIDWORD(v12) = a10;
-  LOBYTE(v12) = a9;
-  return [(OITSUNumberFormat *)self initWithValueType:*&a3 formatString:a4 decimalPlaces:a5 currencyCode:a6 useAccountingStyle:a7 negativeStyle:*&a8 showThousandsSeparator:v12 fractionAccuracy:0 prefixString:a11 suffixString:v13 isCustom:?];
+  HIDWORD(v12) = accuracy;
+  LOBYTE(v12) = separator;
+  return [(OITSUNumberFormat *)self initWithValueType:*&type formatString:string decimalPlaces:places currencyCode:code useAccountingStyle:style negativeStyle:*&negativeStyle showThousandsSeparator:v12 fractionAccuracy:0 prefixString:suffixString suffixString:v13 isCustom:?];
 }
 
-- (OITSUNumberFormat)initWithValueType:(int)a3 formatString:(id)a4 decimalPlaces:(unsigned __int16)a5 currencyCode:(id)a6 useAccountingStyle:(BOOL)a7 negativeStyle:(int)a8 showThousandsSeparator:(BOOL)a9 fractionAccuracy:(int)a10 prefixString:(id)a11 suffixString:(id)a12 scaleFactor:(double)a13 base:(unsigned __int8)a14 basePlaces:(unsigned __int16)a15 baseUseMinusSign:(BOOL)a16 isCustom:(BOOL)a17 interstitialStrings:(id)a18 interstitialStringInsertionIndexes:(id)a19 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)a20 minimumIntegerWidth:(unsigned __int8)a21 decimalWidth:(unsigned __int8)a22 numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)a23 numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)a24 isTextFormat:(BOOL)a25 formatName:(id)a26 customFormatKey:(id)a27
+- (OITSUNumberFormat)initWithValueType:(int)type formatString:(id)string decimalPlaces:(unsigned __int16)places currencyCode:(id)code useAccountingStyle:(BOOL)style negativeStyle:(int)negativeStyle showThousandsSeparator:(BOOL)separator fractionAccuracy:(int)self0 prefixString:(id)self1 suffixString:(id)self2 scaleFactor:(double)self3 base:(unsigned __int8)self4 basePlaces:(unsigned __int16)self5 baseUseMinusSign:(BOOL)self6 isCustom:(BOOL)self7 interstitialStrings:(id)self8 interstitialStringInsertionIndexes:(id)self9 indexFromRightOfLastDigitPlaceholder:(unsigned __int16)placeholder minimumIntegerWidth:(unsigned __int8)width decimalWidth:(unsigned __int8)decimalWidth numberOfNonSpaceIntegerPlaceholderDigits:(unsigned __int8)digits numberOfNonSpaceDecimalPlaceholderDigits:(unsigned __int8)placeholderDigits isTextFormat:(BOOL)format formatName:(id)name customFormatKey:(id)key
 {
-  v29 = a7;
-  v33 = *&a3;
+  styleCopy = style;
+  v33 = *&type;
   v53.receiver = self;
   v53.super_class = OITSUNumberFormat;
   v34 = [(OITSUNumberFormat *)&v53 init];
@@ -133,25 +133,25 @@
   if (v34)
   {
     v34->mFormatStringContainsTabCharacter = 0;
-    v52 = v29;
-    if (a17)
+    v52 = styleCopy;
+    if (custom)
     {
-      if (!a4)
+      if (!string)
       {
         v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormat initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:]"];
         +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v36, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUNumberFormat.m"], 310, 0, "Passed a nil format string while creating a custom format!");
         +[OITSUAssertionHandler logBacktraceThrottled];
       }
 
-      v35->mFormatString = a4;
+      v35->mFormatString = string;
       v35->mFormatStringRequiresSuppressionOfMinusSign = 0;
-      v37 = [a4 length];
+      v37 = [string length];
       if (v37)
       {
         v38 = v37;
         for (i = 0; i != v38; ++i)
         {
-          v40 = [a4 characterAtIndex:i];
+          v40 = [string characterAtIndex:i];
           p_mFormatStringContainsTabCharacter = &v35->mFormatStringContainsTabCharacter;
           if (v40 != 9)
           {
@@ -169,19 +169,19 @@
 
     else
     {
-      if (v29)
+      if (styleCopy)
       {
-        v42 = 2;
+        negativeStyleCopy2 = 2;
       }
 
       else
       {
-        v42 = a8;
+        negativeStyleCopy2 = negativeStyle;
       }
 
       if (v33 != 1)
       {
-        v42 = a8;
+        negativeStyleCopy2 = negativeStyle;
       }
 
       if (v33 == 3)
@@ -191,12 +191,12 @@
 
       else
       {
-        v43 = v42;
+        v43 = negativeStyleCopy2;
       }
 
-      if (a4)
+      if (string)
       {
-        v44 = [OITSUNumberFormatter formatString:a4 transformedForNegativeStyle:v43];
+        v44 = [OITSUNumberFormatter formatString:string transformedForNegativeStyle:v43];
       }
 
       else
@@ -205,13 +205,13 @@
       }
 
       v35->mFormatString = v44;
-      v35->mFormatStringRequiresSuppressionOfMinusSign = a8 == 1;
+      v35->mFormatStringRequiresSuppressionOfMinusSign = negativeStyle == 1;
     }
 
-    v45 = a24;
-    if (a6)
+    placeholderDigitsCopy2 = placeholderDigits;
+    if (code)
     {
-      v46 = a6;
+      codeCopy = code;
     }
 
     else
@@ -219,40 +219,40 @@
       v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormat initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:]"];
       v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUNumberFormat.m"];
       v49 = v47;
-      v45 = a24;
+      placeholderDigitsCopy2 = placeholderDigits;
       [OITSUAssertionHandler handleFailureInFunction:v49 file:v48 lineNumber:352 isFatal:0 description:"We require the currencyCode from the locale you are using, don't pass in nil."];
       +[OITSUAssertionHandler logBacktraceThrottled];
       v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUNumberFormat initWithValueType:formatString:decimalPlaces:currencyCode:useAccountingStyle:negativeStyle:showThousandsSeparator:fractionAccuracy:prefixString:suffixString:scaleFactor:base:basePlaces:baseUseMinusSign:isCustom:interstitialStrings:interstitialStringInsertionIndexes:indexFromRightOfLastDigitPlaceholder:minimumIntegerWidth:decimalWidth:numberOfNonSpaceIntegerPlaceholderDigits:numberOfNonSpaceDecimalPlaceholderDigits:isTextFormat:formatName:customFormatKey:]"];
       +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v50, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUNumberFormat.m"], 353, 0, "No locale passed in, falling to back current locale.");
       +[OITSUAssertionHandler logBacktraceThrottled];
-      v46 = [+[OITSULocale currentLocale](OITSULocale "currentLocale")];
+      codeCopy = [+[OITSULocale currentLocale](OITSULocale "currentLocale")];
     }
 
-    v35->mCurrencyCode = v46;
+    v35->mCurrencyCode = codeCopy;
     v35->mValueType = v33;
-    v35->mDecimalPlaces = a5;
-    v35->mNegativeStyle = a8;
-    v35->mShowThousandsSeparator = a9;
+    v35->mDecimalPlaces = places;
+    v35->mNegativeStyle = negativeStyle;
+    v35->mShowThousandsSeparator = separator;
     v35->mUseAccountingStyle = v52;
-    v35->mFractionAccuracy = a10;
-    v35->mScaleFactor = a13;
-    v35->mIsCustom = a17;
-    v35->mCustomFormatKey = a27;
-    v35->mInterstitialStrings = a18;
-    v35->mInterstitialStringInsertionIndexes = a19;
-    v35->mIsTextFormat = a25;
-    v35->mIndexFromRightOfLastDigitPlaceholder = a20;
-    v35->mMinimumIntegerWidth = a21;
-    v35->mDecimalWidth = a22;
-    v35->mNumberOfNonSpaceIntegerPlaceholderDigits = a23;
-    v35->mNumberOfNonSpaceDecimalPlaceholderDigits = v45;
-    v35->mFormatName = a26;
-    v35->mBase = a14;
-    v35->mBasePlaces = a15;
-    v35->mBaseUseMinusSign = a16;
-    v35->mSuffixString = [a12 copy];
-    v35->mPrefixString = [a11 copy];
-    if (a17)
+    v35->mFractionAccuracy = accuracy;
+    v35->mScaleFactor = factor;
+    v35->mIsCustom = custom;
+    v35->mCustomFormatKey = key;
+    v35->mInterstitialStrings = strings;
+    v35->mInterstitialStringInsertionIndexes = indexes;
+    v35->mIsTextFormat = format;
+    v35->mIndexFromRightOfLastDigitPlaceholder = placeholder;
+    v35->mMinimumIntegerWidth = width;
+    v35->mDecimalWidth = decimalWidth;
+    v35->mNumberOfNonSpaceIntegerPlaceholderDigits = digits;
+    v35->mNumberOfNonSpaceDecimalPlaceholderDigits = placeholderDigitsCopy2;
+    v35->mFormatName = name;
+    v35->mBase = base;
+    v35->mBasePlaces = basePlaces;
+    v35->mBaseUseMinusSign = sign;
+    v35->mSuffixString = [suffixString copy];
+    v35->mPrefixString = [prefixString copy];
+    if (custom)
     {
       v35->mFormatContainsSpecialTokens = 0;
     }
@@ -261,40 +261,40 @@
   return v35;
 }
 
-- (id)numberFormatBySettingNegativeStyle:(int)a3
+- (id)numberFormatBySettingNegativeStyle:(int)style
 {
-  v3 = *&a3;
+  v3 = *&style;
   v5 = objc_opt_class();
-  v6 = [(OITSUNumberFormat *)self valueType];
-  v7 = [(OITSUNumberFormat *)self formatString];
-  v8 = [(OITSUNumberFormat *)self decimalPlaces];
-  v9 = [(OITSUNumberFormat *)self currencyCode];
-  v10 = [(OITSUNumberFormat *)self usesAccountingStyle];
-  v11 = [(OITSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(OITSUNumberFormat *)self fractionAccuracy];
+  valueType = [(OITSUNumberFormat *)self valueType];
+  formatString = [(OITSUNumberFormat *)self formatString];
+  decimalPlaces = [(OITSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(OITSUNumberFormat *)self currencyCode];
+  usesAccountingStyle = [(OITSUNumberFormat *)self usesAccountingStyle];
+  showThousandsSeparator = [(OITSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(OITSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v10 negativeStyle:v3 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:usesAccountingStyle negativeStyle:v3 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
-- (id)numberFormatBySettingUseAccountingStyle:(BOOL)a3
+- (id)numberFormatBySettingUseAccountingStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
-  v6 = [(OITSUNumberFormat *)self valueType];
-  v7 = [(OITSUNumberFormat *)self formatString];
-  v8 = [(OITSUNumberFormat *)self decimalPlaces];
-  v9 = [(OITSUNumberFormat *)self currencyCode];
-  v10 = [(OITSUNumberFormat *)self negativeStyle];
-  v11 = [(OITSUNumberFormat *)self showThousandsSeparator];
-  v12 = [(OITSUNumberFormat *)self fractionAccuracy];
+  valueType = [(OITSUNumberFormat *)self valueType];
+  formatString = [(OITSUNumberFormat *)self formatString];
+  decimalPlaces = [(OITSUNumberFormat *)self decimalPlaces];
+  currencyCode = [(OITSUNumberFormat *)self currencyCode];
+  negativeStyle = [(OITSUNumberFormat *)self negativeStyle];
+  showThousandsSeparator = [(OITSUNumberFormat *)self showThousandsSeparator];
+  fractionAccuracy = [(OITSUNumberFormat *)self fractionAccuracy];
   *(&v15 + 2) = *&self->mBasePlaces;
   LOBYTE(v15) = self->mBase;
-  HIDWORD(v14) = v12;
-  LOBYTE(v14) = v11;
-  return [v5 numberFormatWithValueType:v6 formatString:v7 decimalPlaces:v8 currencyCode:v9 useAccountingStyle:v3 negativeStyle:v10 showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
+  HIDWORD(v14) = fractionAccuracy;
+  LOBYTE(v14) = showThousandsSeparator;
+  return [v5 numberFormatWithValueType:valueType formatString:formatString decimalPlaces:decimalPlaces currencyCode:currencyCode useAccountingStyle:styleCopy negativeStyle:negativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v14 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v15 base:self->mFormatName basePlaces:? baseUseMinusSign:? isCustom:? formatName:?];
 }
 
 - (void)dealloc
@@ -316,11 +316,11 @@
   [(OITSUNumberFormat *)&v3 dealloc];
 }
 
-- (void)setFormatName:(id)a3
+- (void)setFormatName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
 
-  self->mFormatName = a3;
+  self->mFormatName = name;
 }
 
 - (unsigned)decimalPlaces
@@ -362,43 +362,43 @@
   }
 }
 
-- (id)stringFromDouble:(double)a3 locale:(id)a4 forceSuppressMinusSign:(BOOL)a5
+- (id)stringFromDouble:(double)double locale:(id)locale forceSuppressMinusSign:(BOOL)sign
 {
   [(OITSUNumberFormat *)self decimalPlaces];
 
-  return [OITSUNumberFormat stringFromDouble:"stringFromDouble:locale:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" locale:a4 decimalPlaces:a3 minimumDecimalPlaces:? forceSuppressMinusSign:?];
+  return [OITSUNumberFormat stringFromDouble:"stringFromDouble:locale:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" locale:locale decimalPlaces:double minimumDecimalPlaces:? forceSuppressMinusSign:?];
 }
 
-- (id)stringFromDouble:(double)a3 locale:(id)a4
+- (id)stringFromDouble:(double)double locale:(id)locale
 {
   [(OITSUNumberFormat *)self decimalPlaces];
 
-  return [OITSUNumberFormat stringFromDouble:"stringFromDouble:locale:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" locale:a4 decimalPlaces:a3 minimumDecimalPlaces:? forceSuppressMinusSign:?];
+  return [OITSUNumberFormat stringFromDouble:"stringFromDouble:locale:decimalPlaces:minimumDecimalPlaces:forceSuppressMinusSign:" locale:locale decimalPlaces:double minimumDecimalPlaces:? forceSuppressMinusSign:?];
 }
 
-- (id)stringFromDouble:(double)a3 locale:(id)a4 minimumDecimalPlaces:(unsigned __int16)a5 forceSuppressMinusSign:(BOOL)a6
+- (id)stringFromDouble:(double)double locale:(id)locale minimumDecimalPlaces:(unsigned __int16)places forceSuppressMinusSign:(BOOL)sign
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = [(OITSUNumberFormat *)self decimalPlaces];
+  signCopy = sign;
+  placesCopy = places;
+  decimalPlaces = [(OITSUNumberFormat *)self decimalPlaces];
 
-  return [(OITSUNumberFormat *)self stringFromDouble:a4 locale:v11 decimalPlaces:v7 minimumDecimalPlaces:v6 forceSuppressMinusSign:a3];
+  return [(OITSUNumberFormat *)self stringFromDouble:locale locale:decimalPlaces decimalPlaces:placesCopy minimumDecimalPlaces:signCopy forceSuppressMinusSign:double];
 }
 
-- (id)stringFromDouble:(double)a3 locale:(id)a4 minimumDecimalPlaces:(unsigned __int16)a5
+- (id)stringFromDouble:(double)double locale:(id)locale minimumDecimalPlaces:(unsigned __int16)places
 {
-  v5 = a5;
-  v9 = [(OITSUNumberFormat *)self decimalPlaces];
+  placesCopy = places;
+  decimalPlaces = [(OITSUNumberFormat *)self decimalPlaces];
 
-  return [(OITSUNumberFormat *)self stringFromDouble:a4 locale:v9 decimalPlaces:v5 minimumDecimalPlaces:0 forceSuppressMinusSign:a3];
+  return [(OITSUNumberFormat *)self stringFromDouble:locale locale:decimalPlaces decimalPlaces:placesCopy minimumDecimalPlaces:0 forceSuppressMinusSign:double];
 }
 
-- (id)stringFromDouble:(double)a3 locale:(id)a4 decimalPlaces:(unsigned __int16)a5 minimumDecimalPlaces:(unsigned __int16)a6 forceSuppressMinusSign:(BOOL)a7
+- (id)stringFromDouble:(double)double locale:(id)locale decimalPlaces:(unsigned __int16)places minimumDecimalPlaces:(unsigned __int16)decimalPlaces forceSuppressMinusSign:(BOOL)sign
 {
   mValueType = self->mValueType;
-  v17 = [(OITSUNumberFormat *)self formatString];
-  v16 = [(OITSUNumberFormat *)self currencyCode];
-  v14 = [(OITSUNumberFormat *)self hasValidDecimalPlaces];
+  formatString = [(OITSUNumberFormat *)self formatString];
+  currencyCode = [(OITSUNumberFormat *)self currencyCode];
+  hasValidDecimalPlaces = [(OITSUNumberFormat *)self hasValidDecimalPlaces];
   HIBYTE(v12) = self->mRequiresFractionReplacement;
   LOBYTE(v12) = self->mFormatContainsIntegerToken;
   HIBYTE(v11) = self->mFormatContainsSpecialTokens;
@@ -406,10 +406,10 @@
   HIWORD(v10) = self->mIndexFromRightOfLastDigitPlaceholder;
   WORD2(v10) = *&self->mNumberOfHashDecimalPlaceholders;
   LODWORD(v10) = *&self->mMinimumIntegerWidth;
-  return TSUNumberFormatStringFromDouble(mValueType, a5, a6, a7, v17, v16, v14, self->mInterstitialStrings, a3, self->mScaleFactor, self->mInterstitialStringInsertionIndexes, v10, self->mFormatStringRequiresSuppressionOfMinusSign, self->mIsTextFormat, v11, v12, [(OITSUNumberFormat *)self showThousandsSeparator], self->mUseAccountingStyle, *&self->mUseScientificFormattingAutomatically, self->mBase, self->mBasePlaces, self->mBaseUseMinusSign, self->mFractionAccuracy, a4);
+  return TSUNumberFormatStringFromDouble(mValueType, places, decimalPlaces, sign, formatString, currencyCode, hasValidDecimalPlaces, self->mInterstitialStrings, double, self->mScaleFactor, self->mInterstitialStringInsertionIndexes, v10, self->mFormatStringRequiresSuppressionOfMinusSign, self->mIsTextFormat, v11, v12, [(OITSUNumberFormat *)self showThousandsSeparator], self->mUseAccountingStyle, *&self->mUseScientificFormattingAutomatically, self->mBase, self->mBasePlaces, self->mBaseUseMinusSign, self->mFractionAccuracy, locale);
 }
 
-- (id)stringFromString:(id)a3
+- (id)stringFromString:(id)string
 {
   if (!self->mIsTextFormat)
   {
@@ -419,11 +419,11 @@
   }
 
   v6 = [MEMORY[0x277CCAB68] stringWithString:self->mFormatString];
-  [v6 replaceOccurrencesOfString:objc_msgSend(MEMORY[0x277CCACA8] withString:"stringWithFormat:" options:@"%C" range:{TSUCustomNumberFormatTextReplacementCharacter), a3, 0, 0, objc_msgSend(v6, "length")}];
+  [v6 replaceOccurrencesOfString:objc_msgSend(MEMORY[0x277CCACA8] withString:"stringWithFormat:" options:@"%C" range:{TSUCustomNumberFormatTextReplacementCharacter), string, 0, 0, objc_msgSend(v6, "length")}];
   return v6;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -432,7 +432,7 @@
   }
 
   mValueType = self->mValueType;
-  if (mValueType != *(a3 + 2))
+  if (mValueType != *(equivalent + 2))
   {
     goto LABEL_26;
   }
@@ -443,17 +443,17 @@
     {
       case 3:
         mDecimalPlaces = self->mDecimalPlaces;
-        v7 = *(a3 + 12);
+        v7 = *(equivalent + 12);
         goto LABEL_29;
       case 4:
         mDecimalPlaces = self->mFractionAccuracy;
-        v7 = *(a3 + 13);
+        v7 = *(equivalent + 13);
         goto LABEL_29;
       case 5:
-        if (self->mBase == *(a3 + 80) && self->mBasePlaces == *(a3 + 41))
+        if (self->mBase == *(equivalent + 80) && self->mBasePlaces == *(equivalent + 41))
         {
           mDecimalPlaces = self->mBaseUseMinusSign;
-          v7 = *(a3 + 84);
+          v7 = *(equivalent + 84);
           goto LABEL_29;
         }
 
@@ -464,17 +464,17 @@ LABEL_26:
 
 LABEL_17:
 
-    LOBYTE(v8) = [(OITSUNumberFormat *)self isEqual:a3];
+    LOBYTE(v8) = [(OITSUNumberFormat *)self isEqual:equivalent];
     return v8;
   }
 
   if (!mValueType)
   {
 LABEL_7:
-    if (self->mDecimalPlaces == *(a3 + 12) && self->mNegativeStyle == *(a3 + 11))
+    if (self->mDecimalPlaces == *(equivalent + 12) && self->mNegativeStyle == *(equivalent + 11))
     {
       mDecimalPlaces = self->mShowThousandsSeparator;
-      v7 = *(a3 + 48);
+      v7 = *(equivalent + 48);
 LABEL_29:
       LOBYTE(v8) = mDecimalPlaces == v7;
       return v8;
@@ -493,18 +493,18 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  if (self->mDecimalPlaces != *(a3 + 12))
+  if (self->mDecimalPlaces != *(equivalent + 12))
   {
     goto LABEL_26;
   }
 
   mCurrencyCode = self->mCurrencyCode;
-  if (!(mCurrencyCode | *(a3 + 4)) || (v8 = [(NSString *)mCurrencyCode isEqualToString:?]))
+  if (!(mCurrencyCode | *(equivalent + 4)) || (v8 = [(NSString *)mCurrencyCode isEqualToString:?]))
   {
-    if (self->mNegativeStyle == *(a3 + 11) && self->mShowThousandsSeparator == *(a3 + 48))
+    if (self->mNegativeStyle == *(equivalent + 11) && self->mShowThousandsSeparator == *(equivalent + 48))
     {
       mDecimalPlaces = self->mUseAccountingStyle;
-      v7 = *(a3 + 40);
+      v7 = *(equivalent + 40);
       goto LABEL_29;
     }
 
@@ -543,16 +543,16 @@ LABEL_29:
   return v27 + v24 + v26 + mUseAccountingStyle + mNegativeStyle + mShowThousandsSeparator + mFractionAccuracy + mFormatStringRequiresSuppressionOfMinusSign + mIsCustom + v18 + mScaleFactor + mFormatStringContainsTabCharacter + mRequiresFractionReplacement + v14 + v4 + mIndexFromRightOfLastDigitPlaceholder + mIsTextFormat + mMinimumIntegerWidth + mDecimalWidth + mNumberOfNonSpaceIntegerPlaceholderDigits + mNumberOfNonSpaceDecimalPlaceholderDigits + v11 + v12 + [(NSString *)self->mPrefixString hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->mValueType != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->mValueType != *(equal + 2))
   {
     goto LABEL_38;
   }
 
   mFormatString = self->mFormatString;
-  if (mFormatString | *(a3 + 2))
+  if (mFormatString | *(equal + 2))
   {
     v6 = [(NSString *)mFormatString isEqualToString:?];
     if (!v6)
@@ -561,13 +561,13 @@ LABEL_29:
     }
   }
 
-  if (self->mDecimalPlaces != *(a3 + 12))
+  if (self->mDecimalPlaces != *(equal + 12))
   {
     goto LABEL_38;
   }
 
   mCurrencyCode = self->mCurrencyCode;
-  if (mCurrencyCode | *(a3 + 4))
+  if (mCurrencyCode | *(equal + 4))
   {
     v6 = [(NSString *)mCurrencyCode isEqualToString:?];
     if (!v6)
@@ -576,13 +576,13 @@ LABEL_29:
     }
   }
 
-  if (self->mUseAccountingStyle != *(a3 + 40) || self->mNegativeStyle != *(a3 + 11) || self->mShowThousandsSeparator != *(a3 + 48) || self->mFractionAccuracy != *(a3 + 13) || self->mFormatStringRequiresSuppressionOfMinusSign != *(a3 + 56) || self->mIsCustom != *(a3 + 85))
+  if (self->mUseAccountingStyle != *(equal + 40) || self->mNegativeStyle != *(equal + 11) || self->mShowThousandsSeparator != *(equal + 48) || self->mFractionAccuracy != *(equal + 13) || self->mFormatStringRequiresSuppressionOfMinusSign != *(equal + 56) || self->mIsCustom != *(equal + 85))
   {
     goto LABEL_38;
   }
 
   mCustomFormatKey = self->mCustomFormatKey;
-  if (mCustomFormatKey | *(a3 + 17))
+  if (mCustomFormatKey | *(equal + 17))
   {
     v6 = [(NSUUID *)mCustomFormatKey isEqual:?];
     if (!v6)
@@ -591,13 +591,13 @@ LABEL_29:
     }
   }
 
-  if (self->mScaleFactor != *(a3 + 11) || self->mFormatStringContainsTabCharacter != *(a3 + 96) || self->mRequiresFractionReplacement != *(a3 + 101))
+  if (self->mScaleFactor != *(equal + 11) || self->mFormatStringContainsTabCharacter != *(equal + 96) || self->mRequiresFractionReplacement != *(equal + 101))
   {
     goto LABEL_38;
   }
 
   mInterstitialStrings = self->mInterstitialStrings;
-  if (mInterstitialStrings | *(a3 + 13))
+  if (mInterstitialStrings | *(equal + 13))
   {
     v6 = [(NSArray *)mInterstitialStrings isEqual:?];
     if (!v6)
@@ -607,7 +607,7 @@ LABEL_29:
   }
 
   mInterstitialStringInsertionIndexes = self->mInterstitialStringInsertionIndexes;
-  if (mInterstitialStringInsertionIndexes | *(a3 + 14))
+  if (mInterstitialStringInsertionIndexes | *(equal + 14))
   {
     v6 = [(NSIndexSet *)mInterstitialStringInsertionIndexes isEqual:?];
     if (!v6)
@@ -616,13 +616,13 @@ LABEL_29:
     }
   }
 
-  if (self->mIndexFromRightOfLastDigitPlaceholder != *(a3 + 60) || self->mIsTextFormat != *(a3 + 122) || self->mMinimumIntegerWidth != *(a3 + 123) || self->mDecimalWidth != *(a3 + 124) || self->mNumberOfNonSpaceIntegerPlaceholderDigits != *(a3 + 125) || self->mNumberOfNonSpaceDecimalPlaceholderDigits != *(a3 + 126))
+  if (self->mIndexFromRightOfLastDigitPlaceholder != *(equal + 60) || self->mIsTextFormat != *(equal + 122) || self->mMinimumIntegerWidth != *(equal + 123) || self->mDecimalWidth != *(equal + 124) || self->mNumberOfNonSpaceIntegerPlaceholderDigits != *(equal + 125) || self->mNumberOfNonSpaceDecimalPlaceholderDigits != *(equal + 126))
   {
     goto LABEL_38;
   }
 
   mFormatName = self->mFormatName;
-  if (mFormatName | *(a3 + 16))
+  if (mFormatName | *(equal + 16))
   {
     v6 = [(NSString *)mFormatName isEqual:?];
     if (!v6)
@@ -631,7 +631,7 @@ LABEL_29:
     }
   }
 
-  if (self->mBase != *(a3 + 80) || self->mBasePlaces != *(a3 + 41) || self->mBaseUseMinusSign != *(a3 + 84))
+  if (self->mBase != *(equal + 80) || self->mBasePlaces != *(equal + 41) || self->mBaseUseMinusSign != *(equal + 84))
   {
 LABEL_38:
     LOBYTE(v6) = 0;
@@ -639,10 +639,10 @@ LABEL_38:
   }
 
   mSuffixString = self->mSuffixString;
-  if (!(mSuffixString | *(a3 + 9)) || (v6 = [(NSString *)mSuffixString isEqual:?]) != 0)
+  if (!(mSuffixString | *(equal + 9)) || (v6 = [(NSString *)mSuffixString isEqual:?]) != 0)
   {
     mPrefixString = self->mPrefixString;
-    if (mPrefixString | *(a3 + 8))
+    if (mPrefixString | *(equal + 8))
     {
 
       LOBYTE(v6) = [(NSString *)mPrefixString isEqual:?];
@@ -704,9 +704,9 @@ LABEL_38:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   BYTE6(v8) = self->mIsTextFormat;
   *(&v8 + 2) = *&self->mMinimumIntegerWidth;
   LOWORD(v8) = self->mIndexFromRightOfLastDigitPlaceholder;
@@ -717,9 +717,9 @@ LABEL_38:
   return [v4 initWithValueType:self->mValueType formatString:self->mFormatString decimalPlaces:self->mDecimalPlaces currencyCode:self->mCurrencyCode useAccountingStyle:self->mUseAccountingStyle negativeStyle:self->mNegativeStyle showThousandsSeparator:self->mScaleFactor fractionAccuracy:v6 prefixString:self->mPrefixString suffixString:self->mSuffixString scaleFactor:v7 base:self->mInterstitialStrings basePlaces:self->mInterstitialStringInsertionIndexes baseUseMinusSign:v8 isCustom:self->mFormatName interstitialStrings:self->mCustomFormatKey interstitialStringInsertionIndexes:? indexFromRightOfLastDigitPlaceholder:? minimumIntegerWidth:? decimalWidth:? numberOfNonSpaceIntegerPlaceholderDigits:? numberOfNonSpaceDecimalPlaceholderDigits:? isTextFormat:? formatName:? customFormatKey:?];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [OITSUMutableNumberFormat allocWithZone:a3];
+  v4 = [OITSUMutableNumberFormat allocWithZone:zone];
   BYTE6(v8) = self->mIsTextFormat;
   *(&v8 + 2) = *&self->mMinimumIntegerWidth;
   LOWORD(v8) = self->mIndexFromRightOfLastDigitPlaceholder;

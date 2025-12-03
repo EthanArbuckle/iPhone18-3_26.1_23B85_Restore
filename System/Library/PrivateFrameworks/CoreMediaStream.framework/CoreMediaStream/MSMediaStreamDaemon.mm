@@ -1,34 +1,34 @@
 @interface MSMediaStreamDaemon
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 outError:(id *)a5;
-- (BOOL)enqueueAssetCollection:(id)a3 personID:(id)a4 outError:(id *)a5;
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d outError:(id *)error;
+- (BOOL)enqueueAssetCollection:(id)collection personID:(id)d outError:(id *)error;
 - (BOOL)hasOutstandingActivity;
 - (BOOL)isInRetryState;
-- (BOOL)personIDHasOutstandingPublications:(id)a3;
+- (BOOL)personIDHasOutstandingPublications:(id)publications;
 - (MSMediaStreamDaemon)init;
-- (id)_boundDeleterForPersonID:(id)a3;
-- (id)_boundPublisherForPersonID:(id)a3;
-- (id)_boundServerSideConfigManagerForPersonID:(id)a3;
-- (id)_boundSubscriberForPersonID:(id)a3;
+- (id)_boundDeleterForPersonID:(id)d;
+- (id)_boundPublisherForPersonID:(id)d;
+- (id)_boundServerSideConfigManagerForPersonID:(id)d;
+- (id)_boundSubscriberForPersonID:(id)d;
 - (id)nextActivityDate;
-- (id)ownSubscribedStreamForPersonID:(id)a3;
-- (id)serverSideConfigurationForPersonID:(id)a3;
-- (id)subscribedStreamsForPersonID:(id)a3;
-- (void)abortAllActivityForPersonID:(id)a3;
-- (void)computeHashForAsset:(id)a3 personID:(id)a4;
-- (void)deleteAssetCollections:(id)a3 forPersonID:(id)a4;
-- (void)didExceedPublishQuotaForPersonID:(id)a3 retryDate:(id)a4;
+- (id)ownSubscribedStreamForPersonID:(id)d;
+- (id)serverSideConfigurationForPersonID:(id)d;
+- (id)subscribedStreamsForPersonID:(id)d;
+- (void)abortAllActivityForPersonID:(id)d;
+- (void)computeHashForAsset:(id)asset personID:(id)d;
+- (void)deleteAssetCollections:(id)collections forPersonID:(id)d;
+- (void)didExceedPublishQuotaForPersonID:(id)d retryDate:(id)date;
 - (void)didIdle;
-- (void)didReceiveAuthenticationFailureForPersonID:(id)a3;
-- (void)didReceiveAuthenticationSuccessForPersonID:(id)a3;
-- (void)didReceiveNewServerSideConfigurationForPersonID:(id)a3;
-- (void)didReceiveServerSideConfigurationVersion:(id)a3 forPersonID:(id)a4;
+- (void)didReceiveAuthenticationFailureForPersonID:(id)d;
+- (void)didReceiveAuthenticationSuccessForPersonID:(id)d;
+- (void)didReceiveNewServerSideConfigurationForPersonID:(id)d;
+- (void)didReceiveServerSideConfigurationVersion:(id)version forPersonID:(id)d;
 - (void)didUnidle;
-- (void)forgetPersonID:(id)a3;
-- (void)pollForSubscriptionUpdatesForPersonID:(id)a3;
-- (void)pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:(id)a3;
-- (void)reenqueueQuarantinedActivitiesWithReason:(id)a3;
-- (void)refreshServerSideConfigurationForPersonID:(id)a3;
-- (void)resetSubscriberSyncForPersonID:(id)a3;
+- (void)forgetPersonID:(id)d;
+- (void)pollForSubscriptionUpdatesForPersonID:(id)d;
+- (void)pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:(id)d;
+- (void)reenqueueQuarantinedActivitiesWithReason:(id)reason;
+- (void)refreshServerSideConfigurationForPersonID:(id)d;
+- (void)resetSubscriberSyncForPersonID:(id)d;
 - (void)retryOutstandingActivities;
 - (void)start;
 - (void)stop;
@@ -37,41 +37,41 @@
 
 @implementation MSMediaStreamDaemon
 
-- (void)didExceedPublishQuotaForPersonID:(id)a3 retryDate:(id)a4
+- (void)didExceedPublishQuotaForPersonID:(id)d retryDate:(id)date
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v7 = 138412546;
-    v8 = a3;
+    dCopy = d;
     v9 = 2114;
-    v10 = a4;
+    dateCopy = date;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Received quota excess failure for person ID %@. Next retry date: %{public}@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveAuthenticationSuccessForPersonID:(id)a3
+- (void)didReceiveAuthenticationSuccessForPersonID:(id)d
 {
   v7 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
-    v6 = a3;
+    dCopy = d;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Successfully authenticated person ID %@", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveAuthenticationFailureForPersonID:(id)a3
+- (void)didReceiveAuthenticationFailureForPersonID:(id)d
 {
   v7 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = 138412290;
-    v6 = a3;
+    dCopy = d;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Received authentication failure for person ID %@", &v5, 0xCu);
   }
 
@@ -110,16 +110,16 @@
         }
 
         v8 = [v3 objectForKey:*(*(&v23 + 1) + 8 * v7)];
-        v9 = [v8 delegate];
-        if (v9)
+        delegate = [v8 delegate];
+        if (delegate)
         {
           if (objc_opt_respondsToSelector())
           {
-            [v9 publisherWillDeassignPluginAsDelegateOfPublisher:v8];
+            [delegate publisherWillDeassignPluginAsDelegateOfPublisher:v8];
           }
 
           [v8 setDelegate:0];
-          [(NSCountedSet *)self->_retainedObjects removeObject:v9];
+          [(NSCountedSet *)self->_retainedObjects removeObject:delegate];
         }
 
         [v8 deactivate];
@@ -155,16 +155,16 @@
         }
 
         v15 = [v10 objectForKey:*(*(&v19 + 1) + 8 * v14)];
-        v16 = [v15 delegate];
-        if (v16)
+        delegate2 = [v15 delegate];
+        if (delegate2)
         {
           if (objc_opt_respondsToSelector())
           {
-            [v16 subscriberWillDeassignPluginAsDelegateOfSubscriber:v15];
+            [delegate2 subscriberWillDeassignPluginAsDelegateOfSubscriber:v15];
           }
 
           [v15 setDelegate:0];
-          [(NSCountedSet *)self->_retainedObjects removeObject:v16];
+          [(NSCountedSet *)self->_retainedObjects removeObject:delegate2];
         }
 
         [v15 deactivate];
@@ -216,54 +216,54 @@ void __28__MSMediaStreamDaemon_start__block_invoke(uint64_t a1)
   }
 }
 
-- (void)deleteAssetCollections:(id)a3 forPersonID:(id)a4
+- (void)deleteAssetCollections:(id)collections forPersonID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  collectionsCopy = collections;
   [(MSDaemon *)self retainBusy];
-  v8 = [(MSMediaStreamDaemon *)self _boundDeleterForPersonID:v6];
+  v8 = [(MSMediaStreamDaemon *)self _boundDeleterForPersonID:dCopy];
 
-  [v8 deleteAssetCollections:v7];
+  [v8 deleteAssetCollections:collectionsCopy];
   [(MSDaemon *)self releaseBusy];
 }
 
-- (void)didReceiveNewServerSideConfigurationForPersonID:(id)a3
+- (void)didReceiveNewServerSideConfigurationForPersonID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Sending local notification about new server-side configuration for %@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v4, @"personID", 0}];
-  [v5 postNotificationName:@"MSMSDServerSideConfigurationDidChangeNotification" object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{dCopy, @"personID", 0}];
+  [defaultCenter postNotificationName:@"MSMSDServerSideConfigurationDidChangeNotification" object:self userInfo:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshServerSideConfigurationForPersonID:(id)a3
+- (void)refreshServerSideConfigurationForPersonID:(id)d
 {
-  v3 = [(MSMediaStreamDaemon *)self _boundServerSideConfigManagerForPersonID:a3];
+  v3 = [(MSMediaStreamDaemon *)self _boundServerSideConfigManagerForPersonID:d];
   [v3 refreshConfiguration];
 }
 
-- (void)didReceiveServerSideConfigurationVersion:(id)a3 forPersonID:(id)a4
+- (void)didReceiveServerSideConfigurationVersion:(id)version forPersonID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSMediaStreamDaemon *)self serverSideConfigurationForPersonID:v7];
+  versionCopy = version;
+  dCopy = d;
+  v8 = [(MSMediaStreamDaemon *)self serverSideConfigurationForPersonID:dCopy];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 objectForKey:@"mme.streams.application.configVersion"];
     v11 = v10;
-    if (v6)
+    if (versionCopy)
     {
-      v12 = [v6 isEqualToString:v10];
+      v12 = [versionCopy isEqualToString:v10];
 
       if (v12)
       {
@@ -293,81 +293,81 @@ void __28__MSMediaStreamDaemon_start__block_invoke(uint64_t a1)
   v13[2] = __76__MSMediaStreamDaemon_didReceiveServerSideConfigurationVersion_forPersonID___block_invoke;
   v13[3] = &unk_278E927C8;
   v13[4] = self;
-  v14 = v7;
+  v14 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v13);
 
 LABEL_10:
 }
 
-- (id)serverSideConfigurationForPersonID:(id)a3
+- (id)serverSideConfigurationForPersonID:(id)d
 {
-  v3 = [(MSMediaStreamDaemon *)self _boundServerSideConfigManagerForPersonID:a3];
-  v4 = [v3 config];
+  v3 = [(MSMediaStreamDaemon *)self _boundServerSideConfigManagerForPersonID:d];
+  config = [v3 config];
 
-  return v4;
+  return config;
 }
 
-- (id)ownSubscribedStreamForPersonID:(id)a3
+- (id)ownSubscribedStreamForPersonID:(id)d
 {
-  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:a3];
-  v4 = [v3 ownSubscribedStream];
+  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:d];
+  ownSubscribedStream = [v3 ownSubscribedStream];
 
-  return v4;
+  return ownSubscribedStream;
 }
 
-- (id)subscribedStreamsForPersonID:(id)a3
+- (id)subscribedStreamsForPersonID:(id)d
 {
-  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:a3];
-  v4 = [v3 subscribedStreams];
+  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:d];
+  subscribedStreams = [v3 subscribedStreams];
 
-  return v4;
+  return subscribedStreams;
 }
 
-- (void)computeHashForAsset:(id)a3 personID:(id)a4
+- (void)computeHashForAsset:(id)asset personID:(id)d
 {
-  v6 = a3;
-  v7 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:a4];
-  [v7 computeHashForAsset:v6];
+  assetCopy = asset;
+  v7 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:d];
+  [v7 computeHashForAsset:assetCopy];
 }
 
-- (void)resetSubscriberSyncForPersonID:(id)a3
+- (void)resetSubscriberSyncForPersonID:(id)d
 {
-  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:a3];
+  v3 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:d];
   [v3 resetSync];
 }
 
-- (void)pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:(id)a3
+- (void)pollForSubscriptionUpdatesTriggeredByPushNotificationForPersonID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(MSDaemon *)self retainBusy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Push notification received for My Photo Stream with targetPersonID %@.", &v10, 0x16u);
   }
 
   v5 = MSPlatform();
-  v6 = [v5 subscriberPluginClass];
+  subscriberPluginClass = [v5 subscriberPluginClass];
 
-  v7 = [v6 personIDForPollingTriggeredByPushNotification];
-  if ([v7 length])
+  personIDForPollingTriggeredByPushNotification = [subscriberPluginClass personIDForPollingTriggeredByPushNotification];
+  if ([personIDForPollingTriggeredByPushNotification length])
   {
-    v8 = [v7 isEqualToString:v4];
-    if (!v4 || v8)
+    v8 = [personIDForPollingTriggeredByPushNotification isEqualToString:dCopy];
+    if (!dCopy || v8)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v10 = 138543362;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Serving push notification", &v10, 0xCu);
       }
 
-      [(MSMediaStreamDaemon *)self didReceivePushNotificationForPersonID:v7];
-      [(MSMediaStreamDaemon *)self pollForSubscriptionUpdatesForPersonID:v7];
+      [(MSMediaStreamDaemon *)self didReceivePushNotificationForPersonID:personIDForPollingTriggeredByPushNotification];
+      [(MSMediaStreamDaemon *)self pollForSubscriptionUpdatesForPersonID:personIDForPollingTriggeredByPushNotification];
     }
   }
 
@@ -382,11 +382,11 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pollForSubscriptionUpdatesForPersonID:(id)a3
+- (void)pollForSubscriptionUpdatesForPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MSDaemon *)self retainBusy];
-  v5 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:v4];
+  v5 = [(MSMediaStreamDaemon *)self _boundSubscriberForPersonID:dCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -398,38 +398,38 @@ LABEL_10:
   [(MSDaemon *)self releaseBusy];
 }
 
-- (BOOL)dequeueAssetCollectionWithGUIDs:(id)a3 personID:(id)a4 outError:(id *)a5
+- (BOOL)dequeueAssetCollectionWithGUIDs:(id)ds personID:(id)d outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  dCopy = d;
   [(MSDaemon *)self retainBusy];
-  v10 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:v9];
+  v10 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:dCopy];
 
   if (v10)
   {
-    LOBYTE(a5) = [v10 dequeueAssetCollectionWithGUIDs:v8 outError:a5];
+    LOBYTE(error) = [v10 dequeueAssetCollectionWithGUIDs:dsCopy outError:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = MSCFCopyLocalizedString(@"ERROR_PUBLISHER_MISSING");
-    *a5 = [v11 MSErrorWithDomain:@"MSPublisherErrorDomain" code:9 description:v12];
+    *error = [v11 MSErrorWithDomain:@"MSPublisherErrorDomain" code:9 description:v12];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   [(MSDaemon *)self releaseBusy];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)enqueueAssetCollection:(id)a3 personID:(id)a4 outError:(id *)a5
+- (BOOL)enqueueAssetCollection:(id)collection personID:(id)d outError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  collectionCopy = collection;
   [(MSDaemon *)self retainBusy];
-  v10 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:v8];
+  v10 = [(MSMediaStreamDaemon *)self _boundPublisherForPersonID:dCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -438,53 +438,53 @@ LABEL_10:
   v14 = v10;
   v11 = v10;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  LOBYTE(a5) = [v11 enqueueAssetCollections:v9 outError:a5];
+  LOBYTE(error) = [v11 enqueueAssetCollections:collectionCopy outError:error];
 
   [(MSDaemon *)self releaseBusy];
-  return a5;
+  return error;
 }
 
-- (void)forgetPersonID:(id)a3
+- (void)forgetPersonID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v3;
+    v14 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Forgetting everything about person ID %@...", &v13, 0xCu);
   }
 
-  [MSPublisher forgetPersonID:v3];
-  [MSSubscriber forgetPersonID:v3];
-  [MSDeleter forgetPersonID:v3];
-  [MSServerSideConfigManager forgetPersonID:v3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = MSPathPublishDirForPersonID(v3);
-  [v4 removeItemAtPath:v5 error:0];
+  [MSPublisher forgetPersonID:dCopy];
+  [MSSubscriber forgetPersonID:dCopy];
+  [MSDeleter forgetPersonID:dCopy];
+  [MSServerSideConfigManager forgetPersonID:dCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = MSPathPublishDirForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v5 error:0];
 
-  v6 = MSPathPublishMMCSLibraryForPersonID(v3);
-  [v4 removeItemAtPath:v6 error:0];
+  v6 = MSPathPublishMMCSLibraryForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v6 error:0];
 
-  v7 = MSPathSubscribeDirForPersonID(v3);
-  [v4 removeItemAtPath:v7 error:0];
+  v7 = MSPathSubscribeDirForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v7 error:0];
 
-  v8 = MSPathSubscribeMMCSLibraryForPersonID(v3);
-  [v4 removeItemAtPath:v8 error:0];
+  v8 = MSPathSubscribeMMCSLibraryForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v8 error:0];
 
-  v9 = MSPathShareDirForPersonID(v3);
-  [v4 removeItemAtPath:v9 error:0];
+  v9 = MSPathShareDirForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v9 error:0];
 
-  v10 = MSPathDeleteDirForPersonID(v3);
-  [v4 removeItemAtPath:v10 error:0];
+  v10 = MSPathDeleteDirForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v10 error:0];
 
-  v11 = MSPathConfigDirForPersonID(v3);
-  [v4 removeItemAtPath:v11 error:0];
+  v11 = MSPathConfigDirForPersonID(dCopy);
+  [defaultManager removeItemAtPath:v11 error:0];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v3;
+    v14 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Person ID %@ forgotten.", &v13, 0xCu);
   }
 
@@ -500,43 +500,43 @@ LABEL_10:
   +[MSServerSideConfigManager abortAllActivities];
 }
 
-- (void)abortAllActivityForPersonID:(id)a3
+- (void)abortAllActivityForPersonID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = dCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Aborting all activities for person ID %@.", &v9, 0xCu);
   }
 
-  v4 = [MSPublisher existingPublisherForPersonID:v3];
+  v4 = [MSPublisher existingPublisherForPersonID:dCopy];
   [v4 abort];
 
-  v5 = [MSSubscriber existingSubscriberForPersonID:v3];
+  v5 = [MSSubscriber existingSubscriberForPersonID:dCopy];
   [v5 abort];
 
-  v6 = [MSDeleter existingDeleterForPersonID:v3];
+  v6 = [MSDeleter existingDeleterForPersonID:dCopy];
   [v6 abort];
 
-  v7 = [MSServerSideConfigManager existingConfigManagerForPersonID:v3];
+  v7 = [MSServerSideConfigManager existingConfigManagerForPersonID:dCopy];
   [v7 abort];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reenqueueQuarantinedActivitiesWithReason:(id)a3
+- (void)reenqueueQuarantinedActivitiesWithReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   [(MSDaemon *)self retainBusy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v4;
+    v20 = reasonCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Reenqueuing quarantined activities. Reason: %{public}@.", buf, 0x16u);
   }
 
@@ -705,22 +705,22 @@ LABEL_10:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_boundServerSideConfigManagerForPersonID:(id)a3
+- (id)_boundServerSideConfigManagerForPersonID:(id)d
 {
-  v4 = [MSServerSideConfigManager configManagerForPersonID:a3];
+  v4 = [MSServerSideConfigManager configManagerForPersonID:d];
   [v4 setDaemon:self];
 
   return v4;
 }
 
-- (id)_boundDeleterForPersonID:(id)a3
+- (id)_boundDeleterForPersonID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MSDeleter deleterForPersonID:v4];
-  v6 = [v5 delegate];
+  dCopy = d;
+  v5 = [MSDeleter deleterForPersonID:dCopy];
+  delegate = [v5 delegate];
 
-  if (v6)
+  if (delegate)
   {
 LABEL_2:
     v7 = v5;
@@ -733,9 +733,9 @@ LABEL_2:
   if (v9)
   {
     v10 = MSPlatform();
-    v11 = [v10 deletePluginClass];
+    deletePluginClass = [v10 deletePluginClass];
 
-    v12 = [v11 deleterPluginForPersonID:v4];
+    v12 = [deletePluginClass deleterPluginForPersonID:dCopy];
     if (v12)
     {
       v13 = v12;
@@ -754,9 +754,9 @@ LABEL_2:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v16 = 134218242;
-      v17 = v4;
+      v17 = dCopy;
       v18 = 2114;
-      v19 = v11;
+      v19 = deletePluginClass;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to get deleter plugin, person id %p, plugin class %{public}@", &v16, 0x16u);
     }
   }
@@ -769,14 +769,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)_boundSubscriberForPersonID:(id)a3
+- (id)_boundSubscriberForPersonID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MSSubscriber subscriberForPersonID:v4];
-  v6 = [v5 delegate];
+  dCopy = d;
+  v5 = [MSSubscriber subscriberForPersonID:dCopy];
+  delegate = [v5 delegate];
 
-  if (v6)
+  if (delegate)
   {
 LABEL_6:
     v11 = v5;
@@ -784,9 +784,9 @@ LABEL_6:
   }
 
   v7 = MSPlatform();
-  v8 = [v7 subscriberPluginClass];
+  subscriberPluginClass = [v7 subscriberPluginClass];
 
-  v9 = [v8 subscriberPluginForPersonID:v4];
+  v9 = [subscriberPluginClass subscriberPluginForPersonID:dCopy];
   if (v9)
   {
     v10 = v9;
@@ -805,9 +805,9 @@ LABEL_6:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v14 = 134218242;
-    v15 = v4;
+    v15 = dCopy;
     v16 = 2114;
-    v17 = v8;
+    v17 = subscriberPluginClass;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to get subscriber plugin, person id %p, plugin class %{public}@", &v14, 0x16u);
   }
 
@@ -819,22 +819,22 @@ LABEL_7:
   return v11;
 }
 
-- (id)_boundPublisherForPersonID:(id)a3
+- (id)_boundPublisherForPersonID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MSPublisher publisherForPersonID:v4];
-  v6 = [v5 delegate];
+  dCopy = d;
+  v5 = [MSPublisher publisherForPersonID:dCopy];
+  delegate = [v5 delegate];
 
-  if (v6)
+  if (delegate)
   {
     goto LABEL_4;
   }
 
   v7 = MSPlatform();
-  v8 = [v7 publisherPluginClass];
+  publisherPluginClass = [v7 publisherPluginClass];
 
-  v9 = [v8 publisherPluginForPersonID:v4];
+  v9 = [publisherPluginClass publisherPluginForPersonID:dCopy];
   if (v9)
   {
     v10 = v9;
@@ -851,9 +851,9 @@ LABEL_4:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v14 = 134218242;
-    v15 = v4;
+    v15 = dCopy;
     v16 = 2114;
-    v17 = v8;
+    v17 = publisherPluginClass;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to get publisher plugin, person id %p, plugin class %{public}@", &v14, 0x16u);
   }
 
@@ -867,14 +867,14 @@ LABEL_5:
 
 - (void)didUnidle
 {
-  v3 = [(MSMediaStreamDaemon *)self delegate];
-  [v3 mediaStreamDaemonDidUnidle:self];
+  delegate = [(MSMediaStreamDaemon *)self delegate];
+  [delegate mediaStreamDaemonDidUnidle:self];
 }
 
 - (void)didIdle
 {
-  v3 = [(MSMediaStreamDaemon *)self delegate];
-  [v3 mediaStreamDaemonDidIdle:self];
+  delegate = [(MSMediaStreamDaemon *)self delegate];
+  [delegate mediaStreamDaemonDidIdle:self];
 }
 
 - (BOOL)isInRetryState
@@ -887,19 +887,19 @@ LABEL_5:
   return +[MSDeleter isInRetryState];
 }
 
-- (BOOL)personIDHasOutstandingPublications:(id)a3
+- (BOOL)personIDHasOutstandingPublications:(id)publications
 {
-  v3 = a3;
+  publicationsCopy = publications;
   v4 = +[MSPublisher personIDsWithOutstandingActivities];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:publicationsCopy];
 
   return v5;
 }
 
 - (BOOL)hasOutstandingActivity
 {
-  v2 = [(MSMediaStreamDaemon *)self nextActivityDate];
-  v3 = v2 != 0;
+  nextActivityDate = [(MSMediaStreamDaemon *)self nextActivityDate];
+  v3 = nextActivityDate != 0;
 
   return v3;
 }

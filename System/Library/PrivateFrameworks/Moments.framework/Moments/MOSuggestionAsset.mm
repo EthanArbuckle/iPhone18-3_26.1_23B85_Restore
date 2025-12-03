@@ -1,27 +1,27 @@
 @interface MOSuggestionAsset
-- (MOSuggestionAsset)initWithCoder:(id)a3;
+- (MOSuggestionAsset)initWithCoder:(id)coder;
 - (id)debugDescription;
-- (id)init:(id)a3 type:(id)a4 contentClassType:(Class)a5;
-- (void)addIdentifier:(id)a3;
-- (void)addMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)init:(id)init type:(id)type contentClassType:(Class)classType;
+- (void)addIdentifier:(id)identifier;
+- (void)addMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAsset
 
-- (id)init:(id)a3 type:(id)a4 contentClassType:(Class)a5
+- (id)init:(id)init type:(id)type contentClassType:(Class)classType
 {
-  v9 = a3;
-  v10 = a4;
+  initCopy = init;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = MOSuggestionAsset;
   v11 = [(MOSuggestionAsset *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_content, a3);
-    objc_storeStrong(&v12->_assetType, a4);
-    objc_storeStrong(&v12->_contentClassType, a5);
+    objc_storeStrong(&v11->_content, init);
+    objc_storeStrong(&v12->_assetType, type);
+    objc_storeStrong(&v12->_contentClassType, classType);
     identifier = v12->_identifier;
     v12->_identifier = &stru_2840EECB0;
   }
@@ -29,19 +29,19 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   content = self->_content;
-  v5 = a3;
-  [v5 encodeObject:content forKey:@"coderKeyMOSuggestionAssetContent"];
-  [v5 encodeObject:self->_assetType forKey:@"coderKeyMOSuggestionAssetType"];
-  [v5 encodeObject:self->_metadata forKey:@"coderKeyMOSuggestionAssetMetadata"];
-  [v5 encodeObject:self->_identifier forKey:@"coderKeyMOSuggestionAssetIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:content forKey:@"coderKeyMOSuggestionAssetContent"];
+  [coderCopy encodeObject:self->_assetType forKey:@"coderKeyMOSuggestionAssetType"];
+  [coderCopy encodeObject:self->_metadata forKey:@"coderKeyMOSuggestionAssetMetadata"];
+  [coderCopy encodeObject:self->_identifier forKey:@"coderKeyMOSuggestionAssetIdentifier"];
 }
 
-- (MOSuggestionAsset)initWithCoder:(id)a3
+- (MOSuggestionAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = MOSuggestionAsset;
   v5 = [(MOSuggestionAsset *)&v44 init];
@@ -62,11 +62,11 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v42 setWithObjects:{v40, v38, v36, v34, v33, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"coderKeyMOSuggestionAssetContent"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"coderKeyMOSuggestionAssetContent"];
     content = v5->_content;
     v5->_content = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetType"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetType"];
     assetType = v5->_assetType;
     v5->_assetType = v17;
 
@@ -84,11 +84,11 @@
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v43 setWithObjects:{v41, v39, v37, v35, v19, v20, v21, v22, v23, v24, v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"coderKeyMOSuggestionAssetMetadata"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"coderKeyMOSuggestionAssetMetadata"];
     metadata = v5->_metadata;
     v5->_metadata = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetIdentifier"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v30;
   }
@@ -148,15 +148,15 @@
   return v12;
 }
 
-- (void)addMetadata:(id)a3
+- (void)addMetadata:(id)metadata
 {
-  v4 = [a3 copy];
+  v4 = [metadata copy];
   [(MOSuggestionAsset *)self setMetadata:v4];
 }
 
-- (void)addIdentifier:(id)a3
+- (void)addIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   [(MOSuggestionAsset *)self setIdentifier:v4];
 }
 

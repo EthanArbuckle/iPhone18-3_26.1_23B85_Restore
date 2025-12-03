@@ -1,32 +1,32 @@
 @interface ATXTripDuetDataProvider
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7;
-- (id)groupTripsFromPublisher:(id)a3 startTimestamp:(double)a4 endTimestamp:(double)a5;
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending;
+- (id)groupTripsFromPublisher:(id)publisher startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp;
 @end
 
 @implementation ATXTripDuetDataProvider
 
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending
 {
-  v9 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  endDateCopy = endDate;
+  [date timeIntervalSinceReferenceDate];
   v11 = v10;
-  [v9 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
 
   v14 = BiomeLibrary();
-  v15 = [v14 Location];
-  v16 = [v15 Semantic];
+  location = [v14 Location];
+  semantic = [location Semantic];
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-  v18 = [v16 atx_publisherFromStartTime:v17];
+  v18 = [semantic atx_publisherFromStartTime:v17];
 
   v19 = [(ATXTripDuetDataProvider *)self groupTripsFromPublisher:v18 startTimestamp:v11 endTimestamp:v13];
 
   return v19;
 }
 
-- (id)groupTripsFromPublisher:(id)a3 startTimestamp:(double)a4 endTimestamp:(double)a5
+- (id)groupTripsFromPublisher:(id)publisher startTimestamp:(double)timestamp endTimestamp:(double)endTimestamp
 {
-  v7 = a3;
+  publisherCopy = publisher;
   v8 = objc_opt_new();
   v9 = [MEMORY[0x277D42648] tupleWithFirst:0 second:0];
   v29[0] = 0;
@@ -39,9 +39,9 @@
   v28[1] = 3221225472;
   v28[2] = __79__ATXTripDuetDataProvider_groupTripsFromPublisher_startTimestamp_endTimestamp___block_invoke;
   v28[3] = &__block_descriptor_48_e22_B16__0__BMStoreEvent_8l;
-  *&v28[4] = a4;
-  *&v28[5] = a5;
-  v10 = [v7 filterWithIsIncluded:v28];
+  *&v28[4] = timestamp;
+  *&v28[5] = endTimestamp;
+  v10 = [publisherCopy filterWithIsIncluded:v28];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __79__ATXTripDuetDataProvider_groupTripsFromPublisher_startTimestamp_endTimestamp___block_invoke_2;
@@ -65,8 +65,8 @@
   v21[2] = __79__ATXTripDuetDataProvider_groupTripsFromPublisher_startTimestamp_endTimestamp___block_invoke_5;
   v21[3] = &unk_27859FF18;
   v22 = v8;
-  v23 = a4;
-  v24 = a5;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__ATXTripDuetDataProvider_groupTripsFromPublisher_startTimestamp_endTimestamp___block_invoke_19;

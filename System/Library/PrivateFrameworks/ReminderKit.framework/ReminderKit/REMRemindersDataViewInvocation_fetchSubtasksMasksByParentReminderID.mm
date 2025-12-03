@@ -1,85 +1,85 @@
 @interface REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithParentReminderID:(id)a3 includingConcealed:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithParentReminderID:(id)d includingConcealed:(BOOL)concealed;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID
 
-- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithParentReminderID:(id)a3 includingConcealed:(BOOL)a4
+- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithParentReminderID:(id)d includingConcealed:(BOOL)concealed
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID;
   v8 = [(REMStoreInvocationValueStorage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parentReminderID, a3);
-    v9->_includingConcealed = a4;
+    objc_storeStrong(&v8->_parentReminderID, d);
+    v9->_includingConcealed = concealed;
   }
 
   return v9;
 }
 
-- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
-  v6 = [v4 decodeBoolForKey:@"includingConcealed"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
+  v6 = [coderCopy decodeBoolForKey:@"includingConcealed"];
 
   if (v5)
   {
     self = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self initWithParentReminderID:v5 includingConcealed:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
-  [v5 encodeObject:v4 forKey:@"parentReminderID"];
+  coderCopy = coder;
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
+  [coderCopy encodeObject:parentReminderID forKey:@"parentReminderID"];
 
-  [v5 encodeBool:-[REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID includingConcealed](self forKey:{"includingConcealed"), @"includingConcealed"}];
+  [coderCopy encodeBool:-[REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID includingConcealed](self forKey:{"includingConcealed"), @"includingConcealed"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
-  v6 = [v4 parentReminderID];
-  v7 = v6;
-  if (v5 == v6)
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
+  parentReminderID2 = [equalCopy parentReminderID];
+  v7 = parentReminderID2;
+  if (parentReminderID == parentReminderID2)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
-  v9 = [v4 parentReminderID];
-  v10 = [v8 isEqual:v9];
+  parentReminderID3 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
+  parentReminderID4 = [equalCopy parentReminderID];
+  v10 = [parentReminderID3 isEqual:parentReminderID4];
 
   if (v10)
   {
 LABEL_6:
-    v12 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self includingConcealed];
-    v11 = v12 ^ [v4 includingConcealed] ^ 1;
+    includingConcealed = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self includingConcealed];
+    v11 = includingConcealed ^ [equalCopy includingConcealed] ^ 1;
     goto LABEL_7;
   }
 
@@ -92,8 +92,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
-  v4 = [v3 hash];
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self parentReminderID];
+  v4 = [parentReminderID hash];
   v5 = v4 + [(REMRemindersDataViewInvocation_fetchSubtasksMasksByParentReminderID *)self includingConcealed];
 
   return v5;

@@ -1,5 +1,5 @@
 @interface CalWellKnownPaths
-+ (BOOL)checkOrCreatePath:(id)a3;
++ (BOOL)checkOrCreatePath:(id)path;
 + (id)realHomeDirectoryPath;
 @end
 
@@ -22,15 +22,15 @@
   return v4;
 }
 
-+ (BOOL)checkOrCreatePath:(id)a3
++ (BOOL)checkOrCreatePath:(id)path
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 stringByExpandingTildeToNonSandboxHome];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  stringByExpandingTildeToNonSandboxHome = [pathCopy stringByExpandingTildeToNonSandboxHome];
 
   v13 = 0;
-  if ([v5 fileExistsAtPath:v6 isDirectory:&v13] && (v13 & 1) != 0)
+  if ([defaultManager fileExistsAtPath:stringByExpandingTildeToNonSandboxHome isDirectory:&v13] && (v13 & 1) != 0)
   {
     v7 = 1;
   }
@@ -38,13 +38,13 @@
   else
   {
     v12 = 0;
-    v7 = [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
+    v7 = [defaultManager createDirectoryAtPath:stringByExpandingTildeToNonSandboxHome withIntermediateDirectories:1 attributes:0 error:&v12];
     v8 = v12;
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 localizedDescription];
-      NSLog(&cfstr_UnableToCreate_0.isa, v6, v10);
+      localizedDescription = [v8 localizedDescription];
+      NSLog(&cfstr_UnableToCreate_0.isa, stringByExpandingTildeToNonSandboxHome, localizedDescription);
     }
   }
 

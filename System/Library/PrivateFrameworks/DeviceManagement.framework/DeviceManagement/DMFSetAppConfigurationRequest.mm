@@ -1,16 +1,16 @@
 @interface DMFSetAppConfigurationRequest
-- (DMFSetAppConfigurationRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFSetAppConfigurationRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFSetAppConfigurationRequest
 
-- (DMFSetAppConfigurationRequest)initWithCoder:(id)a3
+- (DMFSetAppConfigurationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = DMFSetAppConfigurationRequest;
-  v5 = [(DMFAppRequest *)&v21 initWithCoder:v4];
+  v5 = [(DMFAppRequest *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v20 = MEMORY[0x1E695DFD8];
@@ -25,7 +25,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"configuration"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v15;
   }
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFSetAppConfigurationRequest;
-  v4 = a3;
-  [(DMFAppRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DMFAppRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFSetAppConfigurationRequest *)self configuration:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"configuration"];
+  [coderCopy encodeObject:v5 forKey:@"configuration"];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface TSCEReferenceSetWrapper
-- (TSCEReferenceSetWrapper)initWithDependencyTracker:(id)a3;
-- (TSCEReferenceSetWrapper)initWithReferenceSet:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCEReferenceSetWrapper)initWithDependencyTracker:(id)tracker;
+- (TSCEReferenceSetWrapper)initWithReferenceSet:(const void *)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)insertRefs:(id)a3;
+- (void)insertRefs:(id)refs;
 @end
 
 @implementation TSCEReferenceSetWrapper
 
-- (TSCEReferenceSetWrapper)initWithDependencyTracker:(id)a3
+- (TSCEReferenceSetWrapper)initWithDependencyTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v6.receiver = self;
   v6.super_class = TSCEReferenceSetWrapper;
   if ([(TSCEReferenceSetWrapper *)&v6 init])
@@ -21,7 +21,7 @@
   return 0;
 }
 
-- (TSCEReferenceSetWrapper)initWithReferenceSet:(const void *)a3
+- (TSCEReferenceSetWrapper)initWithReferenceSet:(const void *)set
 {
   v4.receiver = self;
   v4.super_class = TSCEReferenceSetWrapper;
@@ -46,7 +46,7 @@
   [(TSCEReferenceSetWrapper *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCEReferenceSetWrapper alloc];
   referenceSet = self->_referenceSet;
@@ -54,13 +54,13 @@
   return objc_msgSend_initWithReferenceSet_(v4, v5, referenceSet, v6, v7);
 }
 
-- (void)insertRefs:(id)a3
+- (void)insertRefs:(id)refs
 {
-  v10 = a3;
-  if (v10)
+  refsCopy = refs;
+  if (refsCopy)
   {
     referenceSet = self->_referenceSet;
-    v9 = objc_msgSend_referenceSet(v10, v4, v5, v6, v7);
+    v9 = objc_msgSend_referenceSet(refsCopy, v4, v5, v6, v7);
     TSCEReferenceSet::insertRefs(referenceSet, v9);
   }
 }

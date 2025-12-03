@@ -1,26 +1,26 @@
 @interface TransceiverWrapper
-+ (id)withTransceiver:(id)a3;
-- (BOOL)applyScript:(id)a3 ignoreSW:(BOOL)a4 error:(id *)a5;
-- (TransceiverWrapper)initWithTransceiver:(id)a3;
-- (id)transceive:(id)a3 error:(id *)a4;
-- (id)transceiveAndCheckSW:(id)a3 inArray:(id)a4 keepingSW:(BOOL)a5 error:(id *)a6;
-- (id)transceiveBytesAndCheckSW:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (id)transceiveBytesAndCheckSW:(const char *)a3 length:(unint64_t)a4 inArray:(id)a5 error:(id *)a6;
-- (void)dumpAPDUs:(id)a3;
++ (id)withTransceiver:(id)transceiver;
+- (BOOL)applyScript:(id)script ignoreSW:(BOOL)w error:(id *)error;
+- (TransceiverWrapper)initWithTransceiver:(id)transceiver;
+- (id)transceive:(id)transceive error:(id *)error;
+- (id)transceiveAndCheckSW:(id)w inArray:(id)array keepingSW:(BOOL)sW error:(id *)error;
+- (id)transceiveBytesAndCheckSW:(const char *)w length:(unint64_t)length error:(id *)error;
+- (id)transceiveBytesAndCheckSW:(const char *)w length:(unint64_t)length inArray:(id)array error:(id *)error;
+- (void)dumpAPDUs:(id)us;
 @end
 
 @implementation TransceiverWrapper
 
-- (TransceiverWrapper)initWithTransceiver:(id)a3
+- (TransceiverWrapper)initWithTransceiver:(id)transceiver
 {
-  v5 = a3;
+  transceiverCopy = transceiver;
   v9.receiver = self;
   v9.super_class = TransceiverWrapper;
   v6 = [(TransceiverWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transceiver, a3);
+    objc_storeStrong(&v6->_transceiver, transceiver);
     v7->_circbuff = CircularBufferInit(v7->_circBuffStorage, 0x1000uLL);
     v7->_isMultiOS = objc_opt_respondsToSelector() & 1;
   }
@@ -28,25 +28,25 @@
   return v7;
 }
 
-+ (id)withTransceiver:(id)a3
++ (id)withTransceiver:(id)transceiver
 {
-  v3 = a3;
-  v4 = [[TransceiverWrapper alloc] initWithTransceiver:v3];
+  transceiverCopy = transceiver;
+  v4 = [[TransceiverWrapper alloc] initWithTransceiver:transceiverCopy];
 
   return v4;
 }
 
-- (id)transceive:(id)a3 error:(id *)a4
+- (id)transceive:(id)transceive error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transceiveCopy = transceive;
   v13 = 62;
   v14 = &v13;
   v15 = 1;
-  v16 = [v6 bytes];
-  if ([v6 length] <= 0x300)
+  bytes = [transceiveCopy bytes];
+  if ([transceiveCopy length] <= 0x300)
   {
-    v7 = [v6 length];
+    v7 = [transceiveCopy length];
   }
 
   else
@@ -59,12 +59,12 @@
   transceiver = self->_transceiver;
   if (self->_isMultiOS)
   {
-    [(SETransceiver *)transceiver transceive:v6 toOS:0 error:a4];
+    [(SETransceiver *)transceiver transceive:transceiveCopy toOS:0 error:error];
   }
 
   else
   {
-    [(SETransceiver *)transceiver transceive:v6 error:a4];
+    [(SETransceiver *)transceiver transceive:transceiveCopy error:error];
   }
   v9 = ;
   v10 = v9;
@@ -73,7 +73,7 @@
     v13 = 60;
     v14 = &v13;
     v15 = 1;
-    v16 = [v9 bytes];
+    bytes = [v9 bytes];
     v17 = [v10 length];
     CircularBufferAddScattered(&self->_circbuff->var0, &v14, 2);
   }
@@ -83,16 +83,16 @@
   return v10;
 }
 
-- (void)dumpAPDUs:(id)a3
+- (void)dumpAPDUs:(id)us
 {
-  v4 = a3;
+  usCopy = us;
   circbuff = self->_circbuff;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__TransceiverWrapper_dumpAPDUs___block_invoke;
   v7[3] = &unk_278875210;
-  v8 = v4;
-  v6 = v4;
+  v8 = usCopy;
+  v6 = usCopy;
   CircularBufferDump(&circbuff->var0, v7);
 }
 
@@ -107,30 +107,30 @@ uint64_t __32__TransceiverWrapper_dumpAPDUs___block_invoke(uint64_t result, int 
   return result;
 }
 
-- (id)transceiveBytesAndCheckSW:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (id)transceiveBytesAndCheckSW:(const char *)w length:(unint64_t)length error:(id *)error
 {
-  v7 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
-  v8 = [(TransceiverWrapper *)self transceiveAndCheckSW:v7 inArray:&unk_2843C73D0 keepingSW:0 error:a5];
+  v7 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:w length:length freeWhenDone:0];
+  v8 = [(TransceiverWrapper *)self transceiveAndCheckSW:v7 inArray:&unk_2843C73D0 keepingSW:0 error:error];
 
   return v8;
 }
 
-- (id)transceiveBytesAndCheckSW:(const char *)a3 length:(unint64_t)a4 inArray:(id)a5 error:(id *)a6
+- (id)transceiveBytesAndCheckSW:(const char *)w length:(unint64_t)length inArray:(id)array error:(id *)error
 {
   v10 = MEMORY[0x277CBEA90];
-  v11 = a5;
-  v12 = [v10 dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
-  v13 = [(TransceiverWrapper *)self transceiveAndCheckSW:v12 inArray:v11 keepingSW:0 error:a6];
+  arrayCopy = array;
+  v12 = [v10 dataWithBytesNoCopy:w length:length freeWhenDone:0];
+  v13 = [(TransceiverWrapper *)self transceiveAndCheckSW:v12 inArray:arrayCopy keepingSW:0 error:error];
 
   return v13;
 }
 
-- (id)transceiveAndCheckSW:(id)a3 inArray:(id)a4 keepingSW:(BOOL)a5 error:(id *)a6
+- (id)transceiveAndCheckSW:(id)w inArray:(id)array keepingSW:(BOOL)sW error:(id *)error
 {
-  v7 = a5;
+  sWCopy = sW;
   v51[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = [(TransceiverWrapper *)self transceive:a3 error:a6];
+  arrayCopy = array;
+  v11 = [(TransceiverWrapper *)self transceive:w error:error];
   v12 = v11;
   if (!v11)
   {
@@ -143,14 +143,14 @@ uint64_t __32__TransceiverWrapper_dumpAPDUs___block_invoke(uint64_t result, int 
 
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"nil response"];
     v18 = v17;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_22;
     }
 
-    v19 = *a6;
+    v19 = *error;
     v20 = MEMORY[0x277CCA9B8];
-    if (*a6)
+    if (*error)
     {
       v21 = *MEMORY[0x277CCA7E8];
       v48[0] = *MEMORY[0x277CCA450];
@@ -180,11 +180,11 @@ uint64_t __32__TransceiverWrapper_dumpAPDUs___block_invoke(uint64_t result, int 
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:GetSW(v11)];
-  v14 = [v10 containsObject:v13];
+  v14 = [arrayCopy containsObject:v13];
 
   if (v14)
   {
-    if (v7)
+    if (sWCopy)
     {
       v15 = v12;
     }
@@ -208,12 +208,12 @@ uint64_t __32__TransceiverWrapper_dumpAPDUs___block_invoke(uint64_t result, int 
 
   v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected SW %@", v12];
   v18 = v27;
-  if (a6)
+  if (error)
   {
-    v28 = *a6;
+    v28 = *error;
     v29 = MEMORY[0x277CCA9B8];
     v30 = *MEMORY[0x277CCA450];
-    if (*a6)
+    if (*error)
     {
       v31 = *MEMORY[0x277CCA7E8];
       v42[0] = *MEMORY[0x277CCA450];
@@ -240,7 +240,7 @@ uint64_t __32__TransceiverWrapper_dumpAPDUs___block_invoke(uint64_t result, int 
     v38 = v29;
     v39 = 5;
 LABEL_21:
-    *a6 = [v38 errorWithDomain:@"ATL" code:v39 userInfo:v37];
+    *error = [v38 errorWithDomain:@"ATL" code:v39 userInfo:v37];
   }
 
 LABEL_22:
@@ -253,16 +253,16 @@ LABEL_23:
   return v36;
 }
 
-- (BOOL)applyScript:(id)a3 ignoreSW:(BOOL)a4 error:(id *)a5
+- (BOOL)applyScript:(id)script ignoreSW:(BOOL)w error:(id *)error
 {
-  v6 = a4;
+  wCopy = w;
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  scriptCopy = script;
+  v9 = [scriptCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -273,18 +273,18 @@ LABEL_23:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(scriptCopy);
         }
 
         v13 = [MEMORY[0x277CBEA90] dataWithHexString:{*(*(&v19 + 1) + 8 * i), v19}];
-        if (v6)
+        if (wCopy)
         {
           v14 = [(TransceiverWrapper *)self transceive:v13 error:0];
         }
 
         else
         {
-          v15 = [(TransceiverWrapper *)self transceiveAndCheckSW:v13 error:a5];
+          v15 = [(TransceiverWrapper *)self transceiveAndCheckSW:v13 error:error];
 
           if (!v15)
           {
@@ -294,7 +294,7 @@ LABEL_23:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [scriptCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;

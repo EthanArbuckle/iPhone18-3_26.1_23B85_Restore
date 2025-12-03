@@ -2,9 +2,9 @@
 + (BOOL)isTempestActive;
 - (RMAudioAccessoryManager)init;
 - (void)dealloc;
-- (void)startActivityUpdatesWithHandler:(id)a3;
-- (void)startDeviceMotionUpdatesWithHandler:(id)a3;
-- (void)startStatusUpdatesWithHandler:(id)a3;
+- (void)startActivityUpdatesWithHandler:(id)handler;
+- (void)startDeviceMotionUpdatesWithHandler:(id)handler;
+- (void)startStatusUpdatesWithHandler:(id)handler;
 - (void)stopActivityUpdates;
 - (void)stopDeviceMotionUpdates;
 - (void)stopStatusUpdates;
@@ -19,12 +19,12 @@
   v2 = [(RMAudioAccessoryManager *)&v10 init];
   if (v2)
   {
-    v3 = [objc_opt_class() internal];
-    objc_sync_enter(v3);
+    internal = [objc_opt_class() internal];
+    objc_sync_enter(internal);
     [(RMAudioAccessoryManager *)v2 setSubscribedToStatus:0];
-    v4 = [objc_opt_class() internal];
-    v5 = [v4 managers];
-    [v5 addObject:v2];
+    internal2 = [objc_opt_class() internal];
+    managers = [internal2 managers];
+    [managers addObject:v2];
 
     if (qword_10002C0C8 != -1)
     {
@@ -34,16 +34,16 @@
     v6 = qword_10002C0D0;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [objc_opt_class() internal];
-      v8 = [v7 managers];
+      internal3 = [objc_opt_class() internal];
+      managers2 = [internal3 managers];
       *buf = 134283779;
       v12 = v2;
       v13 = 2113;
-      v14 = v8;
+      v14 = managers2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[RMAudioAccessoryManager] %{private}p.init managers: %{private}@", buf, 0x16u);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(internal);
   }
 
   return v2;
@@ -51,12 +51,12 @@
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() internal];
-  objc_sync_enter(v3);
+  internal = [objc_opt_class() internal];
+  objc_sync_enter(internal);
   [(RMAudioAccessoryManager *)self stopDeviceMotionUpdates];
-  v4 = [objc_opt_class() internal];
-  v5 = [v4 managers];
-  [v5 removeObject:self];
+  internal2 = [objc_opt_class() internal];
+  managers = [internal2 managers];
+  [managers removeObject:self];
 
   if (qword_10002C0C8 != -1)
   {
@@ -66,31 +66,31 @@
   v6 = qword_10002C0D0;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [objc_opt_class() internal];
-    v8 = [v7 managers];
+    internal3 = [objc_opt_class() internal];
+    managers2 = [internal3 managers];
     *buf = 134283779;
-    v11 = self;
+    selfCopy = self;
     v12 = 2113;
-    v13 = v8;
+    v13 = managers2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[RMAudioAccessoryManager] %{private}p.dealloc managers: %{private}@", buf, 0x16u);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(internal);
   v9.receiver = self;
   v9.super_class = RMAudioAccessoryManager;
   [(RMAudioAccessoryManager *)&v9 dealloc];
 }
 
-- (void)startDeviceMotionUpdatesWithHandler:(id)a3
+- (void)startDeviceMotionUpdatesWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [objc_opt_class() internal];
-  objc_sync_enter(v4);
-  [(RMAudioAccessoryManager *)self setDeviceMotionHandler:v6];
-  v5 = [objc_opt_class() internal];
-  [v5 startOrStopDeviceMotionUpdates];
+  handlerCopy = handler;
+  internal = [objc_opt_class() internal];
+  objc_sync_enter(internal);
+  [(RMAudioAccessoryManager *)self setDeviceMotionHandler:handlerCopy];
+  internal2 = [objc_opt_class() internal];
+  [internal2 startOrStopDeviceMotionUpdates];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(internal);
 }
 
 - (void)stopDeviceMotionUpdates
@@ -102,31 +102,31 @@
     [(RMAudioAccessoryManager *)self setDeviceMotionStatusHandler:0];
   }
 
-  v3 = [objc_opt_class() internal];
-  [v3 startOrStopStatusUpdates];
+  internal = [objc_opt_class() internal];
+  [internal startOrStopStatusUpdates];
 
   [(RMAudioAccessoryManager *)self setDeviceMotionHandler:0];
-  v4 = [objc_opt_class() internal];
-  [v4 startOrStopDeviceMotionUpdates];
+  internal2 = [objc_opt_class() internal];
+  [internal2 startOrStopDeviceMotionUpdates];
 
   objc_sync_exit(obj);
 }
 
-- (void)startStatusUpdatesWithHandler:(id)a3
+- (void)startStatusUpdatesWithHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [objc_opt_class() internal];
-  objc_sync_enter(v4);
+  handlerCopy = handler;
+  internal = [objc_opt_class() internal];
+  objc_sync_enter(internal);
   [(RMAudioAccessoryManager *)self setSubscribedToStatus:1];
-  [(RMAudioAccessoryManager *)self setDeviceMotionStatusHandler:v8];
-  v5 = [(RMAudioAccessoryManager *)self deviceMotionStatusHandler];
-  v6 = [objc_opt_class() internal];
-  (v5)[2](v5, [v6 lastDeviceStatus], 0);
+  [(RMAudioAccessoryManager *)self setDeviceMotionStatusHandler:handlerCopy];
+  deviceMotionStatusHandler = [(RMAudioAccessoryManager *)self deviceMotionStatusHandler];
+  internal2 = [objc_opt_class() internal];
+  (deviceMotionStatusHandler)[2](deviceMotionStatusHandler, [internal2 lastDeviceStatus], 0);
 
-  v7 = [objc_opt_class() internal];
-  [v7 startOrStopStatusUpdates];
+  internal3 = [objc_opt_class() internal];
+  [internal3 startOrStopStatusUpdates];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(internal);
 }
 
 - (void)stopStatusUpdates
@@ -135,22 +135,22 @@
   objc_sync_enter(obj);
   [(RMAudioAccessoryManager *)self setDeviceMotionStatusHandler:0];
   [(RMAudioAccessoryManager *)self setSubscribedToStatus:0];
-  v3 = [objc_opt_class() internal];
-  [v3 startOrStopStatusUpdates];
+  internal = [objc_opt_class() internal];
+  [internal startOrStopStatusUpdates];
 
   objc_sync_exit(obj);
 }
 
-- (void)startActivityUpdatesWithHandler:(id)a3
+- (void)startActivityUpdatesWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [objc_opt_class() internal];
-  objc_sync_enter(v4);
-  [(RMAudioAccessoryManager *)self setActivityHandler:v6];
-  v5 = [objc_opt_class() internal];
-  [v5 startOrStopActivityUpdates];
+  handlerCopy = handler;
+  internal = [objc_opt_class() internal];
+  objc_sync_enter(internal);
+  [(RMAudioAccessoryManager *)self setActivityHandler:handlerCopy];
+  internal2 = [objc_opt_class() internal];
+  [internal2 startOrStopActivityUpdates];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(internal);
 }
 
 - (void)stopActivityUpdates
@@ -158,18 +158,18 @@
   obj = [objc_opt_class() internal];
   objc_sync_enter(obj);
   [(RMAudioAccessoryManager *)self setActivityHandler:0];
-  v3 = [objc_opt_class() internal];
-  [v3 startOrStopActivityUpdates];
+  internal = [objc_opt_class() internal];
+  [internal startOrStopActivityUpdates];
 
   objc_sync_exit(obj);
 }
 
 + (BOOL)isTempestActive
 {
-  v2 = [a1 internal];
-  v3 = [v2 isTempestActive];
+  internal = [self internal];
+  isTempestActive = [internal isTempestActive];
 
-  return v3;
+  return isTempestActive;
 }
 
 @end

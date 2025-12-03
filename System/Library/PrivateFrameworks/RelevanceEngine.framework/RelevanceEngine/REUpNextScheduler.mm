@@ -1,10 +1,10 @@
 @interface REUpNextScheduler
-+ (REUpNextScheduler)schedulerWithQueue:(id)a3 delay:(double)a4 updateBlock:(id)a5;
-+ (REUpNextScheduler)schedulerWithQueue:(id)a3 updateBlock:(id)a4;
-+ (REUpNextScheduler)schedulerWithTransaction:(id)a3 queue:(id)a4 delay:(double)a5 updateBlock:(id)a6;
++ (REUpNextScheduler)schedulerWithQueue:(id)queue delay:(double)delay updateBlock:(id)block;
++ (REUpNextScheduler)schedulerWithQueue:(id)queue updateBlock:(id)block;
++ (REUpNextScheduler)schedulerWithTransaction:(id)transaction queue:(id)queue delay:(double)delay updateBlock:(id)block;
 - (BOOL)isScheduled;
 - (BOOL)performImmediately;
-- (REUpNextScheduler)initWithTransaction:(id)a3 queue:(id)a4 delay:(double)a5 updateBlock:(id)a6;
+- (REUpNextScheduler)initWithTransaction:(id)transaction queue:(id)queue delay:(double)delay updateBlock:(id)block;
 - (void)_queue_performUpdate;
 - (void)dealloc;
 - (void)schedule;
@@ -12,39 +12,39 @@
 
 @implementation REUpNextScheduler
 
-+ (REUpNextScheduler)schedulerWithQueue:(id)a3 updateBlock:(id)a4
++ (REUpNextScheduler)schedulerWithQueue:(id)queue updateBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REUpNextScheduler alloc] initWithTransaction:0 queue:v6 delay:v5 updateBlock:0.0];
+  blockCopy = block;
+  queueCopy = queue;
+  v7 = [[REUpNextScheduler alloc] initWithTransaction:0 queue:queueCopy delay:blockCopy updateBlock:0.0];
 
   return v7;
 }
 
-+ (REUpNextScheduler)schedulerWithQueue:(id)a3 delay:(double)a4 updateBlock:(id)a5
++ (REUpNextScheduler)schedulerWithQueue:(id)queue delay:(double)delay updateBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[REUpNextScheduler alloc] initWithTransaction:0 queue:v8 delay:v7 updateBlock:a4];
+  blockCopy = block;
+  queueCopy = queue;
+  v9 = [[REUpNextScheduler alloc] initWithTransaction:0 queue:queueCopy delay:blockCopy updateBlock:delay];
 
   return v9;
 }
 
-+ (REUpNextScheduler)schedulerWithTransaction:(id)a3 queue:(id)a4 delay:(double)a5 updateBlock:(id)a6
++ (REUpNextScheduler)schedulerWithTransaction:(id)transaction queue:(id)queue delay:(double)delay updateBlock:(id)block
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[REUpNextScheduler alloc] initWithTransaction:v11 queue:v10 delay:v9 updateBlock:a5];
+  blockCopy = block;
+  queueCopy = queue;
+  transactionCopy = transaction;
+  v12 = [[REUpNextScheduler alloc] initWithTransaction:transactionCopy queue:queueCopy delay:blockCopy updateBlock:delay];
 
   return v12;
 }
 
-- (REUpNextScheduler)initWithTransaction:(id)a3 queue:(id)a4 delay:(double)a5 updateBlock:(id)a6
+- (REUpNextScheduler)initWithTransaction:(id)transaction queue:(id)queue delay:(double)delay updateBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  transactionCopy = transaction;
+  queueCopy = queue;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = REUpNextScheduler;
   v13 = [(REUpNextScheduler *)&v23 init];
@@ -53,19 +53,19 @@
   {
     v13->_scheduledLock._os_unfair_lock_opaque = 0;
     v13->_updateScheduled = 0;
-    v15 = [v10 copy];
+    v15 = [transactionCopy copy];
     transaction = v14->_transaction;
     v14->_transaction = v15;
 
-    dispatch_queue_set_specific(v11, v14, v14, 0);
-    objc_storeStrong(&v14->_originalQueue, a4);
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.REScheduler", dispatch_queue_get_label(v11)];
-    v18 = dispatch_queue_create_with_target_V2([v17 UTF8String], 0, v11);
+    dispatch_queue_set_specific(queueCopy, v14, v14, 0);
+    objc_storeStrong(&v14->_originalQueue, queue);
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.REScheduler", dispatch_queue_get_label(queueCopy)];
+    v18 = dispatch_queue_create_with_target_V2([v17 UTF8String], 0, queueCopy);
     queue = v14->_queue;
     v14->_queue = v18;
 
-    v14->_delay = a5;
-    v20 = [v12 copy];
+    v14->_delay = delay;
+    v20 = [blockCopy copy];
     updateBlock = v14->_updateBlock;
     v14->_updateBlock = v20;
   }

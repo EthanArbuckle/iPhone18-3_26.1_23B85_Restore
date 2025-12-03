@@ -1,6 +1,6 @@
 @interface SUTextContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityPlaceholderValue:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityPlaceholderValue:(BOOL)value;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -8,22 +8,22 @@
 
 @implementation SUTextContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUTextContentView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SUTextContentView" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
-  [v3 validateClass:@"SUTextContentView" hasInstanceMethod:@"placeholder" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUTextContentView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SUTextContentView" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SUTextContentView" hasInstanceMethod:@"placeholder" withFullSignature:{"@", 0}];
 }
 
-- (id)_accessibilityPlaceholderValue:(BOOL)a3
+- (id)_accessibilityPlaceholderValue:(BOOL)value
 {
   objc_opt_class();
   v5 = [(SUTextContentViewAccessibility *)self safeValueForKey:@"_placeholderLabel"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 superview];
-  if (v7)
+  superview = [v6 superview];
+  if (superview)
   {
     if (([v6 isHidden] & 1) == 0)
     {
@@ -32,8 +32,8 @@
       {
 
 LABEL_6:
-        v9 = [v6 accessibilityLabel];
-        v10 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v9];
+        accessibilityLabel = [v6 accessibilityLabel];
+        v10 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel];
 
         [v10 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD970]];
         goto LABEL_8;
@@ -41,7 +41,7 @@ LABEL_6:
     }
   }
 
-  if (a3)
+  if (value)
   {
     goto LABEL_6;
   }
@@ -74,10 +74,10 @@ LABEL_8:
   [(SUTextContentViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v7.receiver = self;
   v7.super_class = SUTextContentViewAccessibility;
-  v3 = [(SUTextContentViewAccessibility *)&v7 accessibilityValue];
-  if ([v3 length])
+  accessibilityValue = [(SUTextContentViewAccessibility *)&v7 accessibilityValue];
+  if ([accessibilityValue length])
   {
-    v4 = v3;
+    v4 = accessibilityValue;
   }
 
   else

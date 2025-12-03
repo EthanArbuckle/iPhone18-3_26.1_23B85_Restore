@@ -12,8 +12,8 @@
 
 - (uint64_t)hd_messageID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -30,8 +30,8 @@
 
 - (void)hd_messageSent
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -50,8 +50,8 @@
 
 - (void)hd_messageIDSIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -70,8 +70,8 @@
 
 - (void)hd_messageIDSDeviceIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -90,8 +90,8 @@
 
 - (void)hd_persistentUserInfo
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -110,8 +110,8 @@
 
 - (uint64_t)hd_isFromRequest
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"HDIDSContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"HDIDSContext"];
 
   if (v2)
   {
@@ -128,10 +128,10 @@
 
 - (BOOL)hd_isResponseTimeout
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"HDIDSErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"HDIDSErrorDomain"])
   {
-    v3 = [a1 code] == 2;
+    v3 = [self code] == 2;
   }
 
   else

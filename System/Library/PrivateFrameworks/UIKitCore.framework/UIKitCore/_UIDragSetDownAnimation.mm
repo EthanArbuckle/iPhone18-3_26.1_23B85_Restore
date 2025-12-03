@@ -1,41 +1,41 @@
 @interface _UIDragSetDownAnimation
-+ (BOOL)canAnimateItems:(id)a3 forSource:(BOOL)a4 policyDriven:(BOOL)a5;
-+ (id)defaultDropAnimationForPlatterView:(id)a3;
-+ (id)defaultMultiItemAnimationForPlatterView:(id)a3;
++ (BOOL)canAnimateItems:(id)items forSource:(BOOL)source policyDriven:(BOOL)driven;
++ (id)defaultDropAnimationForPlatterView:(id)view;
++ (id)defaultMultiItemAnimationForPlatterView:(id)view;
 + (id)defaultSetDownPropertyAnimator;
-+ (id)defaultSingleItemAnimationForPlatterView:(id)a3;
-- (_UIDragSetDownAnimation)initWithVisibleDroppedItems:(id)a3 items:(id)a4 forSource:(BOOL)a5 policyDriven:(BOOL)a6 completion:(id)a7;
++ (id)defaultSingleItemAnimationForPlatterView:(id)view;
+- (_UIDragSetDownAnimation)initWithVisibleDroppedItems:(id)items items:(id)a4 forSource:(BOOL)source policyDriven:(BOOL)driven completion:(id)completion;
 - (id)_targetLayerDescriptor;
 - (void)_allItemAnimationsCompleted;
-- (void)addCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
 - (void)begin;
-- (void)dirtyTargetedDragPreviewForDragItem:(id)a3;
-- (void)itemAnimationCompleted:(id)a3;
-- (void)itemAnimationReachedTarget:(id)a3;
-- (void)previewContainerAnimationDidCompleteForDragItem:(id)a3;
-- (void)updateInFlightAnimationTick:(id)a3;
-- (void)updateTargetedDragPreview:(id)a3 forDragItem:(id)a4;
-- (void)updateVisibleDroppedItems:(id)a3;
+- (void)dirtyTargetedDragPreviewForDragItem:(id)item;
+- (void)itemAnimationCompleted:(id)completed;
+- (void)itemAnimationReachedTarget:(id)target;
+- (void)previewContainerAnimationDidCompleteForDragItem:(id)item;
+- (void)updateInFlightAnimationTick:(id)tick;
+- (void)updateTargetedDragPreview:(id)preview forDragItem:(id)item;
+- (void)updateVisibleDroppedItems:(id)items;
 @end
 
 @implementation _UIDragSetDownAnimation
 
-+ (BOOL)canAnimateItems:(id)a3 forSource:(BOOL)a4 policyDriven:(BOOL)a5
++ (BOOL)canAnimateItems:(id)items forSource:(BOOL)source policyDriven:(BOOL)driven
 {
-  v5 = windowSceneForItems(a3, a4, a5);
+  v5 = windowSceneForItems(items, source, driven);
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (_UIDragSetDownAnimation)initWithVisibleDroppedItems:(id)a3 items:(id)a4 forSource:(BOOL)a5 policyDriven:(BOOL)a6 completion:(id)a7
+- (_UIDragSetDownAnimation)initWithVisibleDroppedItems:(id)items items:(id)a4 forSource:(BOOL)source policyDriven:(BOOL)driven completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  drivenCopy = driven;
+  sourceCopy = source;
   v95 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  itemsCopy = items;
   v13 = a4;
-  v14 = a7;
+  completionCopy = completion;
   v91.receiver = self;
   v91.super_class = _UIDragSetDownAnimation;
   v15 = [(_UIDragSetDownAnimation *)&v91 init];
@@ -48,11 +48,11 @@
   groupCompletion = v15->_groupCompletion;
   v15->_groupCompletion = v16;
 
-  [(_UIGroupCompletion *)v15->_groupCompletion addCompletion:v14];
-  v18 = windowForItems(v13, v9);
-  v19 = windowSceneForItems(v13, v9, v8);
+  [(_UIGroupCompletion *)v15->_groupCompletion addCompletion:completionCopy];
+  v18 = windowForItems(v13, sourceCopy);
+  v19 = windowSceneForItems(v13, sourceCopy, drivenCopy);
   v73 = v13;
-  v77 = v9;
+  v77 = sourceCopy;
   if (os_variant_has_internal_diagnostics())
   {
     if (v19)
@@ -83,13 +83,13 @@
     }
   }
 
-  v63 = [objc_opt_self() mainScreen];
-  v64 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:v63];
+  mainScreen = [objc_opt_self() mainScreen];
+  v64 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:mainScreen];
 
   v19 = v64;
-  v65 = [v64 keyWindow];
+  keyWindow = [v64 keyWindow];
 
-  v18 = v65;
+  v18 = keyWindow;
 LABEL_4:
   if ([v18 _isHostedInAnotherProcess] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -98,8 +98,8 @@ LABEL_4:
     v21 = [(UIView *)v20 initWithFrame:?];
     [(UIView *)v21 setAutoresizingMask:18];
     [(UIView *)v21 setUserInteractionEnabled:0];
-    v22 = [(UIView *)v21 layer];
-    [v22 setAllowsHitTesting:0];
+    layer = [(UIView *)v21 layer];
+    [layer setAllowsHitTesting:0];
 
     [(UIWindow *)v21 setHidden:1];
     [v18 addSubview:v21];
@@ -109,8 +109,8 @@ LABEL_4:
   {
     v21 = [(UIWindow *)[_UIDragSetDownAnimationWindow alloc] initWithWindowScene:v19];
     [(UIWindow *)v21 setBecomeKeyOnOrderFront:0];
-    v23 = [(UIView *)v21 layer];
-    [v23 setAllowsHitTesting:0];
+    layer2 = [(UIView *)v21 layer];
+    [layer2 setAllowsHitTesting:0];
 
     [(UIView *)v21 setUserInteractionEnabled:0];
     [(UIView *)v21 setBackgroundColor:0];
@@ -130,7 +130,7 @@ LABEL_4:
 
   v25 = _UIInternalPreferencesRevisionVar;
   v67 = v18;
-  v68 = v14;
+  v68 = completionCopy;
   v66 = v19;
   v74 = v21;
   if (_UIInternalPreferencesRevisionVar < 1 || (v61 = _UIInternalPreference_DNDSetDownItemLimit, _UIInternalPreferencesRevisionVar == _UIInternalPreference_DNDSetDownItemLimit))
@@ -157,18 +157,18 @@ LABEL_4:
 LABEL_12:
   v76 = objc_opt_new();
   v70 = [v13 mutableCopy];
-  v75 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v69 = v12;
-  v26 = [v12 reverseObjectEnumerator];
-  v27 = [v26 countByEnumeratingWithState:&v86 objects:v94 count:16];
+  v69 = itemsCopy;
+  reverseObjectEnumerator = [itemsCopy reverseObjectEnumerator];
+  v27 = [reverseObjectEnumerator countByEnumeratingWithState:&v86 objects:v94 count:16];
   if (v27)
   {
     v28 = v27;
-    v29 = 0;
+    targetContainerWindow = 0;
     v30 = *v87;
     do
     {
@@ -176,18 +176,18 @@ LABEL_12:
       {
         if (*v87 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v32 = *(*(&v86 + 1) + 8 * i);
-        v33 = [v32 imageComponent];
+        imageComponent = [v32 imageComponent];
 
-        if (v33)
+        if (imageComponent)
         {
           v34 = [v13 objectAtIndexedSubscript:{objc_msgSend(v32, "itemIndex")}];
           v35 = [[_UIDragSetDownItemAnimation alloc] initWithDragItem:v34 droppedItem:v32 dropContainerView:v74 defaultAnimation:v72 > v71 sourceAnimation:v77 delegate:v15];
           [(NSArray *)v76 addObject:v35];
-          [v75 addIndex:{objc_msgSend(v32, "itemIndex")}];
+          [indexSet addIndex:{objc_msgSend(v32, "itemIndex")}];
           if (v77)
           {
             [v34 _sourceVisualTarget];
@@ -200,12 +200,12 @@ LABEL_12:
           v36 = ;
           v37 = [v36 _setDownAnimation:v15 customSpringAnimationBehaviorForSetDownOfDragItem:v34];
           [(_UIDragSetDownItemAnimation *)v35 setCustomSpringAnimationBehavior:v37];
-          if (!v29)
+          if (!targetContainerWindow)
           {
-            v29 = [(_UIDragSetDownItemAnimation *)v35 targetContainerWindow];
-            if (!v29)
+            targetContainerWindow = [(_UIDragSetDownItemAnimation *)v35 targetContainerWindow];
+            if (!targetContainerWindow)
             {
-              v29 = [v36 _windowForSetDownOfDragItem:v34];
+              targetContainerWindow = [v36 _windowForSetDownOfDragItem:v34];
             }
           }
 
@@ -213,7 +213,7 @@ LABEL_12:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v86 objects:v94 count:16];
+      v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v86 objects:v94 count:16];
     }
 
     while (v28);
@@ -221,13 +221,13 @@ LABEL_12:
 
   else
   {
-    v29 = 0;
+    targetContainerWindow = 0;
   }
 
   v38 = v70;
-  [v70 removeObjectsAtIndexes:v75];
+  [v70 removeObjectsAtIndexes:indexSet];
   v39 = v77;
-  if (!v29)
+  if (!targetContainerWindow)
   {
     v84 = 0u;
     v85 = 0u;
@@ -259,9 +259,9 @@ LABEL_12:
             [*(*(&v82 + 1) + 8 * j) _destinationVisualTarget];
           }
           v46 = ;
-          v29 = [v46 _windowForSetDownOfDragItem:{v45, v66}];
+          targetContainerWindow = [v46 _windowForSetDownOfDragItem:{v45, v66}];
 
-          if (v29)
+          if (targetContainerWindow)
           {
 
             v39 = v77;
@@ -281,12 +281,12 @@ LABEL_12:
     }
 
     [(UIView *)v15->_containerView setHidden:0];
-    v29 = [(UIView *)v15->_containerView _window];
+    targetContainerWindow = [(UIView *)v15->_containerView _window];
 LABEL_43:
     v38 = v70;
   }
 
-  objc_storeStrong(&v15->_coordinateContainerWindow, v29);
+  objc_storeStrong(&v15->_coordinateContainerWindow, targetContainerWindow);
   [(NSArray *)v76 makeObjectsPerformSelector:sel_prepareToBeginAnimation];
   v47 = [v13 objectAtIndexedSubscript:0];
   v48 = v47;
@@ -301,9 +301,9 @@ LABEL_43:
   }
   v49 = ;
 
-  v50 = [objc_opt_class() defaultSetDownPropertyAnimator];
+  defaultSetDownPropertyAnimator = [objc_opt_class() defaultSetDownPropertyAnimator];
   remainingItemsPropertyAnimator = v15->_remainingItemsPropertyAnimator;
-  v15->_remainingItemsPropertyAnimator = v50;
+  v15->_remainingItemsPropertyAnimator = defaultSetDownPropertyAnimator;
 
   v80 = 0u;
   v81 = 0u;
@@ -337,8 +337,8 @@ LABEL_43:
   v15->_itemAnimations = v76;
   v58 = v76;
 
-  v14 = v68;
-  v12 = v69;
+  completionCopy = v68;
+  itemsCopy = v69;
 LABEL_55:
 
   return v15;
@@ -346,51 +346,51 @@ LABEL_55:
 
 - (id)_targetLayerDescriptor
 {
-  v3 = [(_UIDragSetDownAnimation *)self coordinateContainerWindow];
-  v4 = [v3 layer];
+  coordinateContainerWindow = [(_UIDragSetDownAnimation *)self coordinateContainerWindow];
+  layer = [coordinateContainerWindow layer];
 
   v5 = objc_alloc_init(_DUITargetLayerDescriptor);
-  v6 = [v4 context];
-  -[_DUITargetLayerDescriptor setContextID:](v5, "setContextID:", [v6 contextId]);
+  context = [layer context];
+  -[_DUITargetLayerDescriptor setContextID:](v5, "setContextID:", [context contextId]);
 
   [(_DUITargetLayerDescriptor *)v5 setRenderID:CALayerGetRenderId()];
-  v7 = [(_UIDragSetDownAnimation *)self containerView];
-  v8 = [v7 layer];
-  v9 = [v8 context];
-  -[_DUITargetLayerDescriptor setSetDownAnimationContextID:](v5, "setSetDownAnimationContextID:", [v9 contextId]);
+  containerView = [(_UIDragSetDownAnimation *)self containerView];
+  layer2 = [containerView layer];
+  context2 = [layer2 context];
+  -[_DUITargetLayerDescriptor setSetDownAnimationContextID:](v5, "setSetDownAnimationContextID:", [context2 contextId]);
 
-  v10 = [v7 layer];
+  layer3 = [containerView layer];
   [(_DUITargetLayerDescriptor *)v5 setSetDownAnimationRenderID:CALayerGetRenderId()];
 
-  v11 = [(_UIDragSetDownAnimation *)self coordinateContainerWindow];
-  v12 = [v11 windowScene];
+  coordinateContainerWindow2 = [(_UIDragSetDownAnimation *)self coordinateContainerWindow];
+  windowScene = [coordinateContainerWindow2 windowScene];
 
-  v13 = [v12 systemShellHostingEnvironment];
-  v14 = [v13 systemShellHostingSpaceIdentifier];
-  [(_DUITargetLayerDescriptor *)v5 setSystemShellHostingSpaceIdentifier:v14];
+  systemShellHostingEnvironment = [windowScene systemShellHostingEnvironment];
+  systemShellHostingSpaceIdentifier = [systemShellHostingEnvironment systemShellHostingSpaceIdentifier];
+  [(_DUITargetLayerDescriptor *)v5 setSystemShellHostingSpaceIdentifier:systemShellHostingSpaceIdentifier];
 
   return v5;
 }
 
-- (void)updateVisibleDroppedItems:(id)a3
+- (void)updateVisibleDroppedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   itemAnimations = self->_itemAnimations;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53___UIDragSetDownAnimation_updateVisibleDroppedItems___block_invoke;
   v7[3] = &unk_1E7106958;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   [(NSArray *)itemAnimations enumerateObjectsWithOptions:2 usingBlock:v7];
 }
 
-- (void)updateTargetedDragPreview:(id)a3 forDragItem:(id)a4
+- (void)updateTargetedDragPreview:(id)preview forDragItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  itemCopy = item;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -411,11 +411,11 @@ LABEL_55:
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 item];
+        item = [v13 item];
 
-        if (v14 == v7)
+        if (item == itemCopy)
         {
-          [v13 updateTargetedDropPreview:v6];
+          [v13 updateTargetedDropPreview:previewCopy];
           goto LABEL_11;
         }
       }
@@ -433,10 +433,10 @@ LABEL_55:
 LABEL_11:
 }
 
-- (void)dirtyTargetedDragPreviewForDragItem:(id)a3
+- (void)dirtyTargetedDragPreviewForDragItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -457,9 +457,9 @@ LABEL_11:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 item];
+        item = [v10 item];
 
-        if (v11 == v4)
+        if (item == itemCopy)
         {
           [v10 dirtyTargetedDropPreview];
           goto LABEL_11;
@@ -487,12 +487,12 @@ LABEL_11:
     if ([(NSArray *)self->_itemAnimations count])
     {
       [(UIView *)self->_containerView setHidden:0];
-      v3 = [(UIView *)self->_containerView _window];
-      v4 = [v3 screen];
+      _window = [(UIView *)self->_containerView _window];
+      screen = [_window screen];
 
       if (os_variant_has_internal_diagnostics())
       {
-        if (!v4)
+        if (!screen)
         {
           v10 = __UIFaultDebugAssertLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -503,7 +503,7 @@ LABEL_11:
         }
       }
 
-      else if (!v4)
+      else if (!screen)
       {
         v11 = *(__UILogGetCategoryCachedImpl("Assert", &begin___s_category) + 8);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -513,13 +513,13 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 displayLinkWithTarget:self selector:sel_updateInFlightAnimationTick_];
+      v5 = [screen displayLinkWithTarget:self selector:sel_updateInFlightAnimationTick_];
       displayLink = self->_displayLink;
       self->_displayLink = v5;
 
       v7 = self->_displayLink;
-      v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v7 addToRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v7 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       [(NSArray *)self->_itemAnimations makeObjectsPerformSelector:sel_beginAnimation];
     }
@@ -543,7 +543,7 @@ LABEL_11:
   }
 }
 
-- (void)updateInFlightAnimationTick:(id)a3
+- (void)updateInFlightAnimationTick:(id)tick
 {
   if ([(NSArray *)self->_itemAnimations count])
   {
@@ -559,10 +559,10 @@ LABEL_11:
   }
 }
 
-- (void)previewContainerAnimationDidCompleteForDragItem:(id)a3
+- (void)previewContainerAnimationDidCompleteForDragItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -583,9 +583,9 @@ LABEL_11:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 item];
+        item = [v10 item];
 
-        if (v11 == v4)
+        if (item == itemCopy)
         {
           [v10 previewContainerAnimationDidComplete];
           goto LABEL_11;
@@ -605,7 +605,7 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)itemAnimationReachedTarget:(id)a3
+- (void)itemAnimationReachedTarget:(id)target
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -655,7 +655,7 @@ LABEL_9:
   }
 }
 
-- (void)itemAnimationCompleted:(id)a3
+- (void)itemAnimationCompleted:(id)completed
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -701,9 +701,9 @@ LABEL_9:
   [(_UIDragSetDownAnimation *)self _allItemAnimationsCompleted];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     [(_UIGroupCompletion *)self->_groupCompletion addNonIncrementingCompletion:?];
   }
@@ -711,27 +711,27 @@ LABEL_9:
 
 - (void)_allItemAnimationsCompleted
 {
-  v7 = self;
-  groupCompletion = v7->_groupCompletion;
+  selfCopy = self;
+  groupCompletion = selfCopy->_groupCompletion;
   if (groupCompletion)
   {
     [(_UIGroupCompletion *)groupCompletion complete];
-    v3 = v7->_groupCompletion;
-    v7->_groupCompletion = 0;
+    v3 = selfCopy->_groupCompletion;
+    selfCopy->_groupCompletion = 0;
   }
 
-  v7->_hasBegun = 0;
-  [(UIView *)v7->_containerView removeFromSuperview];
-  [(UIView *)v7->_containerView setHidden:1];
-  itemAnimations = v7->_itemAnimations;
-  v7->_itemAnimations = 0;
+  selfCopy->_hasBegun = 0;
+  [(UIView *)selfCopy->_containerView removeFromSuperview];
+  [(UIView *)selfCopy->_containerView setHidden:1];
+  itemAnimations = selfCopy->_itemAnimations;
+  selfCopy->_itemAnimations = 0;
 
-  containerView = v7->_containerView;
-  v7->_containerView = 0;
+  containerView = selfCopy->_containerView;
+  selfCopy->_containerView = 0;
 
-  [(CADisplayLink *)v7->_displayLink invalidate];
-  displayLink = v7->_displayLink;
-  v7->_displayLink = 0;
+  [(CADisplayLink *)selfCopy->_displayLink invalidate];
+  displayLink = selfCopy->_displayLink;
+  selfCopy->_displayLink = 0;
 }
 
 + (id)defaultSetDownPropertyAnimator
@@ -742,43 +742,43 @@ LABEL_9:
   return v3;
 }
 
-+ (id)defaultSingleItemAnimationForPlatterView:(id)a3
++ (id)defaultSingleItemAnimationForPlatterView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68___UIDragSetDownAnimation_defaultSingleItemAnimationForPlatterView___block_invoke;
   aBlock[3] = &unk_1E70F3590;
-  v8 = v3;
-  v4 = v3;
+  v8 = viewCopy;
+  v4 = viewCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
 }
 
-+ (id)defaultMultiItemAnimationForPlatterView:(id)a3
++ (id)defaultMultiItemAnimationForPlatterView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67___UIDragSetDownAnimation_defaultMultiItemAnimationForPlatterView___block_invoke;
   aBlock[3] = &unk_1E70F3590;
-  v8 = v3;
-  v4 = v3;
+  v8 = viewCopy;
+  v4 = viewCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
 }
 
-+ (id)defaultDropAnimationForPlatterView:(id)a3
++ (id)defaultDropAnimationForPlatterView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62___UIDragSetDownAnimation_defaultDropAnimationForPlatterView___block_invoke;
   aBlock[3] = &unk_1E70F3590;
-  v8 = v3;
-  v4 = v3;
+  v8 = viewCopy;
+  v4 = viewCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;

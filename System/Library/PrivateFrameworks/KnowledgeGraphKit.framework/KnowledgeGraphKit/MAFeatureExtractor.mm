@@ -1,34 +1,34 @@
 @interface MAFeatureExtractor
 - (NSArray)featureNames;
 - (NSString)name;
-- (id)defaultFloatVectorWithError:(id *)a3;
-- (id)featureVectorWithEntity:(id)a3 error:(id *)a4;
-- (id)featureVectorsWithEntities:(id)a3 entityLabels:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
-- (id)floatVectorWithRetryForEntity:(id)a3 error:(id *)a4;
+- (id)defaultFloatVectorWithError:(id *)error;
+- (id)featureVectorWithEntity:(id)entity error:(id *)error;
+- (id)featureVectorsWithEntities:(id)entities entityLabels:(id)labels progressReporter:(id)reporter error:(id *)error;
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
+- (id)floatVectorWithRetryForEntity:(id)entity error:(id *)error;
 @end
 
 @implementation MAFeatureExtractor
 
-- (id)featureVectorsWithEntities:(id)a3 entityLabels:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (id)featureVectorsWithEntities:(id)entities entityLabels:(id)labels progressReporter:(id)reporter error:(id *)error
 {
-  v10 = a4;
-  v11 = [(MAFeatureExtractor *)self floatMatrixWithEntities:a3 progressReporter:a5 error:a6];
+  labelsCopy = labels;
+  v11 = [(MAFeatureExtractor *)self floatMatrixWithEntities:entities progressReporter:reporter error:error];
   v12 = [MADataFrame alloc];
-  v13 = [(MAFeatureExtractor *)self name];
-  v14 = [(MAFeatureExtractor *)self featureNames];
-  v15 = [(MADataFrame *)v12 initWithName:v13 rowLabels:v10 columnLabels:v14 matrix:v11];
+  name = [(MAFeatureExtractor *)self name];
+  featureNames = [(MAFeatureExtractor *)self featureNames];
+  v15 = [(MADataFrame *)v12 initWithName:name rowLabels:labelsCopy columnLabels:featureNames matrix:v11];
 
   return v15;
 }
 
-- (id)floatVectorWithRetryForEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithRetryForEntity:(id)entity error:(id *)error
 {
   v7 = 3;
   while (1)
   {
-    v8 = [(MAFeatureExtractor *)self floatVectorWithEntity:a3 error:a4];
+    v8 = [(MAFeatureExtractor *)self floatVectorWithEntity:entity error:error];
     if (v8)
     {
       break;
@@ -41,9 +41,9 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
 LABEL_7:
@@ -51,23 +51,23 @@ LABEL_7:
   return v8;
 }
 
-- (id)floatMatrixWithEntities:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)floatMatrixWithEntities:(id)entities progressReporter:(id)reporter error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  entitiesCopy = entities;
+  reporterCopy = reporter;
   v10 = objc_alloc_init(MAMutableFloatMatrix);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v8;
+  obj = entitiesCopy;
   v11 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
-    v24 = v9;
-    v25 = a5;
+    v24 = reporterCopy;
+    errorCopy = error;
     v13 = 0;
     v14 = *v30;
     while (2)
@@ -125,8 +125,8 @@ LABEL_7:
     }
 
 LABEL_14:
-    v9 = v24;
-    a5 = v25;
+    reporterCopy = v24;
+    error = errorCopy;
   }
 
   else
@@ -134,10 +134,10 @@ LABEL_14:
     v13 = 0;
   }
 
-  if (a5 && !v10)
+  if (error && !v10)
   {
     v21 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -145,28 +145,28 @@ LABEL_14:
   return v10;
 }
 
-- (id)featureVectorWithEntity:(id)a3 error:(id *)a4
+- (id)featureVectorWithEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MAFeatureExtractor *)self name];
-  v8 = [(MAFeatureExtractor *)self featureNames];
-  v9 = [(MAFeatureExtractor *)self floatVectorWithEntity:v6 error:a4];
+  entityCopy = entity;
+  name = [(MAFeatureExtractor *)self name];
+  featureNames = [(MAFeatureExtractor *)self featureNames];
+  v9 = [(MAFeatureExtractor *)self floatVectorWithEntity:entityCopy error:error];
 
-  v10 = [[MASeries alloc] initWithName:v7 labels:v8 vector:v9];
+  v10 = [[MASeries alloc] initWithName:name labels:featureNames vector:v9];
 
   return v10;
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  entityCopy = entity;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v14 count:1];
-  v9 = [MAProgressReporter ignoreProgress:v14];
+  entityCopy2 = entity;
+  v8 = [v6 arrayWithObjects:&entityCopy count:1];
+  v9 = [MAProgressReporter ignoreProgress:entityCopy];
 
-  v10 = [(MAFeatureExtractor *)self floatMatrixWithEntities:v8 progressReporter:v9 error:a4];
+  v10 = [(MAFeatureExtractor *)self floatMatrixWithEntities:v8 progressReporter:v9 error:error];
   v11 = [v10 row:0];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -174,7 +174,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)defaultFloatVectorWithError:(id *)a3
+- (id)defaultFloatVectorWithError:(id *)error
 {
   v3 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v3);

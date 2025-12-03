@@ -7,9 +7,9 @@
 - (id)hm_shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 currentHomeName];
-  v4 = [a1 currentHomeIdentifier];
-  v5 = [v2 stringWithFormat:@"Siri Current home name: %@, identifier: %@", v3, v4];
+  currentHomeName = [self currentHomeName];
+  currentHomeIdentifier = [self currentHomeIdentifier];
+  v5 = [v2 stringWithFormat:@"Siri Current home name: %@, identifier: %@", currentHomeName, currentHomeIdentifier];
 
   return v5;
 }

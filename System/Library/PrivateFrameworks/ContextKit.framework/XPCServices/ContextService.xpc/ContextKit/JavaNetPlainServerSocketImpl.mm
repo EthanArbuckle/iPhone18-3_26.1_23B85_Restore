@@ -1,16 +1,16 @@
 @interface JavaNetPlainServerSocketImpl
-- (void)createWithBoolean:(BOOL)a3;
+- (void)createWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaNetPlainServerSocketImpl
 
-- (void)createWithBoolean:(BOOL)a3
+- (void)createWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   v5.receiver = self;
   v5.super_class = JavaNetPlainServerSocketImpl;
   [(JavaNetPlainSocketImpl *)&v5 createWithBoolean:?];
-  if (v3)
+  if (booleanCopy)
   {
     if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
     {

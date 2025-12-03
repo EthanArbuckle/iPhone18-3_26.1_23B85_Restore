@@ -1,21 +1,21 @@
 @interface FeatureExtractor
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5;
-- (FeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4;
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4;
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback;
+- (FeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision;
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level;
 - (void)setupNetworkModel;
 @end
 
 @implementation FeatureExtractor
 
-- (FeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4
+- (FeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision
 {
   [(EspressoModel *)self setUsage:?];
-  [(FeatureExtractor *)self setRevision:a4];
+  [(FeatureExtractor *)self setRevision:revision];
   [(FeatureExtractor *)self setupNetworkModel];
   espresso_file = self->_espresso_file;
   v11.receiver = self;
   v11.super_class = FeatureExtractor;
-  v8 = [(EspressoModel *)&v11 initWithModelName:espresso_file usage:a3];
+  v8 = [(EspressoModel *)&v11 initWithModelName:espresso_file usage:mode];
   if (v8)
   {
     v8->_numLevels = [objc_opt_class() numLevels];
@@ -54,9 +54,9 @@
   }
 }
 
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback
 {
-  v7 = a5;
+  callbackCopy = callback;
   inputBlob = self->_inputBlob;
   plan = self->super._net.plan;
   v10 = *&self->super._net.network_index;
@@ -72,7 +72,7 @@ LABEL_3:
   {
     v12 = 0;
     v13 = 0;
-    var1 = a4->var1;
+    var1 = features->var1;
     while (1)
     {
       v15 = self->_outputBlobs[v12];
@@ -101,7 +101,7 @@ LABEL_8:
   v19 = self->super._plan;
   callbackQueue = self->super._callbackQueue;
   v23 = MEMORY[0x277D85DD0];
-  v24 = v7;
+  v24 = callbackCopy;
   v21 = espresso_plan_submit();
   v11 = v21 == 0;
   if (v21)
@@ -127,7 +127,7 @@ uint64_t __65__FeatureExtractor_extractFeaturesFromImage_toFeatures_callback___b
   return result;
 }
 
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level
 {
   v13 = *MEMORY[0x277D85DE8];
   v12[0] = xmmword_24A8FF120;
@@ -138,7 +138,7 @@ uint64_t __65__FeatureExtractor_extractFeaturesFromImage_toFeatures_callback___b
   FRCGetInputFrameSizeForUsage([(EspressoModel *)self usage], &v11, &v10);
   v7 = v10;
   v6 = v11;
-  v8 = a4 + 1;
+  v8 = level + 1;
   do
   {
     v6 = (v6 + 1) >> 1;
@@ -147,9 +147,9 @@ uint64_t __65__FeatureExtractor_extractFeaturesFromImage_toFeatures_callback___b
   }
 
   while (v8);
-  a3->var0 = v6;
-  a3->var1 = v7;
-  a3->var2 = *(v12 + a4);
+  size->var0 = v6;
+  size->var1 = v7;
+  size->var2 = *(v12 + level);
   v9 = *MEMORY[0x277D85DE8];
 }
 

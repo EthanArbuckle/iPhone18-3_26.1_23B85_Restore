@@ -1,19 +1,19 @@
 @interface CUIKAttendeeHeuristics
-+ (BOOL)hasAttendessIgnoringSelfOrganizerAndLocations:(id)a3;
++ (BOOL)hasAttendessIgnoringSelfOrganizerAndLocations:(id)locations;
 + (id)_participantRoleSortPriority;
 + (id)_participantStatusSortPriority;
-+ (id)sortedHumanAttendeesForEvent:(id)a3 includeResources:(BOOL)a4;
-+ (id)sortedHumanAttendeesToDisplayForEvent:(id)a3 options:(unint64_t)a4;
++ (id)sortedHumanAttendeesForEvent:(id)event includeResources:(BOOL)resources;
++ (id)sortedHumanAttendeesToDisplayForEvent:(id)event options:(unint64_t)options;
 @end
 
 @implementation CUIKAttendeeHeuristics
 
-+ (id)sortedHumanAttendeesToDisplayForEvent:(id)a3 options:(unint64_t)a4
++ (id)sortedHumanAttendeesToDisplayForEvent:(id)event options:(unint64_t)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [CUIKAttendeeHeuristics sortedHumanAttendeesForEvent:v5 includeResources:(a4 >> 1) & 1];
-  v7 = [v5 organizer];
+  eventCopy = event;
+  v6 = [CUIKAttendeeHeuristics sortedHumanAttendeesForEvent:eventCopy includeResources:(options >> 1) & 1];
+  organizer = [eventCopy organizer];
   v8 = [v6 mutableCopy];
   v9 = v8;
   if (v8)
@@ -28,10 +28,10 @@
 
   v11 = v10;
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v12 = [v5 selfAttendee];
-    if (v12)
+    selfAttendee = [eventCopy selfAttendee];
+    if (selfAttendee)
     {
       v22 = 0u;
       v23 = 0u;
@@ -53,7 +53,7 @@
             }
 
             v18 = *(*(&v20 + 1) + 8 * i);
-            if ([v18 isEqualToParticipant:{v12, v20}])
+            if ([v18 isEqualToParticipant:{selfAttendee, v20}])
             {
               [v11 removeObject:v18];
               goto LABEL_16;
@@ -74,28 +74,28 @@ LABEL_16:
     }
   }
 
-  if (v7 && ([v7 isCurrentUser] & 1) == 0)
+  if (organizer && ([organizer isCurrentUser] & 1) == 0)
   {
-    [v11 insertObject:v7 atIndex:0];
+    [v11 insertObject:organizer atIndex:0];
   }
 
   return v11;
 }
 
-+ (id)sortedHumanAttendeesForEvent:(id)a3 includeResources:(BOOL)a4
++ (id)sortedHumanAttendeesForEvent:(id)event includeResources:(BOOL)resources
 {
-  v4 = a4;
+  resourcesCopy = resources;
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 attendees];
-  v31 = v5;
-  v7 = [v5 organizer];
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  eventCopy = event;
+  attendees = [eventCopy attendees];
+  v31 = eventCopy;
+  organizer = [eventCopy organizer];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(attendees, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v6;
+  v9 = attendees;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
   v32 = v9;
   if (v10)
@@ -113,9 +113,9 @@ LABEL_16:
         }
 
         v14 = *(*(&v34 + 1) + 8 * v13);
-        v15 = [v14 participantType];
-        v16 = [v14 isEqualToParticipant:v7];
-        v17 = v15 != 3 || v4;
+        participantType = [v14 participantType];
+        v16 = [v14 isEqualToParticipant:organizer];
+        v17 = participantType != 3 || resourcesCopy;
         if (v16)
         {
           v18 = 1;
@@ -123,19 +123,19 @@ LABEL_16:
 
         else
         {
-          v18 = v15 == 2;
+          v18 = participantType == 2;
         }
 
         if (!v18 && v17 != 0)
         {
-          v20 = [v14 name];
-          if ([v20 length])
+          name = [v14 name];
+          if ([name length])
           {
             goto LABEL_19;
           }
 
-          v21 = [v14 emailAddress];
-          if ([v21 length])
+          emailAddress = [v14 emailAddress];
+          if ([emailAddress length])
           {
 
 LABEL_19:
@@ -145,12 +145,12 @@ LABEL_20:
           }
 
           [v14 phoneNumber];
-          v22 = v7;
+          v22 = organizer;
           v24 = v23 = v8;
           v33 = [v24 length];
 
           v8 = v23;
-          v7 = v22;
+          organizer = v22;
           v9 = v32;
 
           if (v33)
@@ -173,8 +173,8 @@ LABEL_21:
 
   v26 = MEMORY[0x1E695DF90];
   v38 = @"DisplayNameCache";
-  v27 = [MEMORY[0x1E695DF90] dictionary];
-  v39 = v27;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v39 = dictionary;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
   v29 = [v26 dictionaryWithDictionary:v28];
 
@@ -183,9 +183,9 @@ LABEL_21:
     [v29 setObject:v31 forKeyedSubscript:@"Event"];
   }
 
-  if (v7)
+  if (organizer)
   {
-    [v29 setObject:v7 forKeyedSubscript:@"Organizer"];
+    [v29 setObject:organizer forKeyedSubscript:@"Organizer"];
   }
 
   [v8 sortUsingFunction:CUIKParticipantDisplaySort context:v29];
@@ -259,17 +259,17 @@ void __54__CUIKAttendeeHeuristics__participantRoleSortPriority__block_invoke()
   _participantRoleSortPriority__sParticipantRoleSortPriority = v0;
 }
 
-+ (BOOL)hasAttendessIgnoringSelfOrganizerAndLocations:(id)a3
++ (BOOL)hasAttendessIgnoringSelfOrganizerAndLocations:(id)locations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 organizer];
+  locationsCopy = locations;
+  organizer = [locationsCopy organizer];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 attendees];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  attendees = [locationsCopy attendees];
+  v6 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -279,18 +279,18 @@ void __54__CUIKAttendeeHeuristics__participantRoleSortPriority__block_invoke()
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attendees);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 participantType] != 2 && (!objc_msgSend(v4, "isCurrentUser") || !objc_msgSend(v9, "isEqualToParticipant:", v4)))
+        if ([v9 participantType] != 2 && (!objc_msgSend(organizer, "isCurrentUser") || !objc_msgSend(v9, "isEqualToParticipant:", organizer)))
         {
           LOBYTE(v6) = 1;
           goto LABEL_13;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

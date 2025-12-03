@@ -8,34 +8,34 @@
 {
   if (![(HSPCRow *)self constraintsSet])
   {
-    v3 = [(HSPCRow *)self textField];
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textField = [(HSPCRow *)self textField];
+    [textField setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v25 = [(HSPCRow *)self textField];
-    v23 = [v25 leadingAnchor];
-    v24 = [(HSPCNameServiceNoIconRow *)self contentView];
-    v22 = [v24 leadingAnchor];
+    textField2 = [(HSPCRow *)self textField];
+    leadingAnchor = [textField2 leadingAnchor];
+    contentView = [(HSPCNameServiceNoIconRow *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
     +[HSPCRow horizontalLeadingMargin];
-    v21 = [v23 constraintEqualToAnchor:v22 constant:?];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v27[0] = v21;
-    v20 = [(HSPCRow *)self textField];
-    v18 = [v20 topAnchor];
-    v19 = [(HSPCNameServiceNoIconRow *)self contentView];
-    v17 = [v19 topAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17];
+    textField3 = [(HSPCRow *)self textField];
+    topAnchor = [textField3 topAnchor];
+    contentView2 = [(HSPCNameServiceNoIconRow *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v27[1] = v16;
-    v15 = [(HSPCRow *)self textField];
-    v14 = [v15 trailingAnchor];
-    v4 = [(HSPCNameServiceNoIconRow *)self contentView];
-    v5 = [v4 trailingAnchor];
+    textField4 = [(HSPCRow *)self textField];
+    trailingAnchor = [textField4 trailingAnchor];
+    contentView3 = [(HSPCNameServiceNoIconRow *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
     +[HSPCRow horizontalTrailingMargin];
-    v7 = [v14 constraintEqualToAnchor:v5 constant:-v6];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v6];
     v27[2] = v7;
-    v8 = [(HSPCRow *)self textField];
-    v9 = [v8 bottomAnchor];
-    v10 = [(HSPCNameServiceNoIconRow *)self contentView];
-    v11 = [v10 bottomAnchor];
-    v12 = [v9 constraintEqualToAnchor:v11];
+    textField5 = [(HSPCRow *)self textField];
+    bottomAnchor = [textField5 bottomAnchor];
+    contentView4 = [(HSPCNameServiceNoIconRow *)self contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v27[3] = v12;
     v13 = [NSArray arrayWithObjects:v27 count:4];
     [NSLayoutConstraint activateConstraints:v13];

@@ -1,47 +1,47 @@
 @interface SBAffordancePresenceController
-- (SBAffordancePresenceController)initWithDelegate:(id)a3 windowScene:(id)a4;
+- (SBAffordancePresenceController)initWithDelegate:(id)delegate windowScene:(id)scene;
 - (SBAffordancePresenceControllerDelegate)delegate;
-- (id)_animationSettingsForTransitionFromPresence:(int64_t)a3 toPresence:(int64_t)a4;
+- (id)_animationSettingsForTransitionFromPresence:(int64_t)presence toPresence:(int64_t)toPresence;
 - (int64_t)_calculatePresence;
 - (void)_unhideIfAutoHidden;
 - (void)_updateIdleTouchAwarenessClient;
 - (void)_updatePresence;
-- (void)_updatePresence:(int64_t)a3 withAnimationSettings:(id)a4;
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(double)a4 forConfigurationGeneration:(unint64_t)a5 withAssociatedObject:(id)a6;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
+- (void)_updatePresence:(int64_t)presence withAnimationSettings:(id)settings;
+- (void)client:(id)client attentionLostTimeoutDidExpire:(double)expire forConfigurationGeneration:(unint64_t)generation withAssociatedObject:(id)object;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
 - (void)dealloc;
-- (void)setAutoHideAffordance:(BOOL)a3;
-- (void)setHidden:(BOOL)a3 forReason:(id)a4 animated:(BOOL)a5;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)setAutoHideAffordance:(BOOL)affordance;
+- (void)setHidden:(BOOL)hidden forReason:(id)reason animated:(BOOL)animated;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation SBAffordancePresenceController
 
-- (SBAffordancePresenceController)initWithDelegate:(id)a3 windowScene:(id)a4
+- (SBAffordancePresenceController)initWithDelegate:(id)delegate windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  sceneCopy = scene;
   v21.receiver = self;
   v21.super_class = SBAffordancePresenceController;
   v8 = [(SBAffordancePresenceController *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    [(SBAffordancePresenceController *)v8 setDelegate:v6];
+    [(SBAffordancePresenceController *)v8 setDelegate:delegateCopy];
     v9->_autoHideAffordance = 0;
     v10 = +[SBAppSwitcherDomain rootSettings];
     appSwitcherSettings = v9->_appSwitcherSettings;
     v9->_appSwitcherSettings = v10;
 
-    v12 = [MEMORY[0x277D65E80] rootSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     homeGrabberSettings = v9->_homeGrabberSettings;
-    v9->_homeGrabberSettings = v12;
+    v9->_homeGrabberSettings = rootSettings;
 
     [(SBFHomeGrabberSettings *)v9->_homeGrabberSettings addKeyPathObserver:v9];
     v14 = objc_alloc_init(MEMORY[0x277CEF768]);
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
-    [v14 setIdentifier:v16];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v14 setIdentifier:uUIDString];
 
     [v14 setEventMask:8];
     [(SBFHomeGrabberSettings *)v9->_homeGrabberSettings autoHideTime];
@@ -52,9 +52,9 @@
 
     [(SBAttentionAwarenessClient *)v9->_idleTouchAwarenessClient setDelegate:v9];
     [(SBAttentionAwarenessClient *)v9->_idleTouchAwarenessClient setConfiguration:v14];
-    objc_storeWeak(&v9->_windowScene, v7);
-    v19 = [v7 transientUIInteractionManager];
-    [v19 registerParticipantForTapToUnhide:v9];
+    objc_storeWeak(&v9->_windowScene, sceneCopy);
+    transientUIInteractionManager = [sceneCopy transientUIInteractionManager];
+    [transientUIInteractionManager registerParticipantForTapToUnhide:v9];
   }
 
   return v9;
@@ -63,8 +63,8 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained transientUIInteractionManager];
-  [v4 unregisterParticipantForTapToUnhide:self];
+  transientUIInteractionManager = [WeakRetained transientUIInteractionManager];
+  [transientUIInteractionManager unregisterParticipantForTapToUnhide:self];
 
   if ([(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient isEnabled])
   {
@@ -83,11 +83,11 @@
   [(SBAffordancePresenceController *)&v6 dealloc];
 }
 
-- (void)setAutoHideAffordance:(BOOL)a3
+- (void)setAutoHideAffordance:(BOOL)affordance
 {
-  if (self->_autoHideAffordance != a3)
+  if (self->_autoHideAffordance != affordance)
   {
-    self->_autoHideAffordance = a3;
+    self->_autoHideAffordance = affordance;
     [(SBAffordancePresenceController *)self _updateIdleTouchAwarenessClient];
   }
 }
@@ -116,45 +116,45 @@
   }
 }
 
-- (id)_animationSettingsForTransitionFromPresence:(int64_t)a3 toPresence:(int64_t)a4
+- (id)_animationSettingsForTransitionFromPresence:(int64_t)presence toPresence:(int64_t)toPresence
 {
-  if (a3 && a4)
+  if (presence && toPresence)
   {
-    v5 = 0;
+    bSAnimationSettings = 0;
     goto LABEL_9;
   }
 
-  if (a3 && !a4 || !a4 || a3)
+  if (presence && !toPresence || !toPresence || presence)
   {
-    v6 = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings unhideAnimationSettings];
+    unhideAnimationSettings = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings unhideAnimationSettings];
   }
 
   else
   {
     if ([(NSMutableSet *)self->_hiddenOverrides count])
     {
-      v7 = [(SBAppSwitcherSettings *)self->_appSwitcherSettings animationSettings];
-      v9 = [v7 statusBarFadeOutSettings];
-      v5 = [v9 BSAnimationSettings];
+      animationSettings = [(SBAppSwitcherSettings *)self->_appSwitcherSettings animationSettings];
+      statusBarFadeOutSettings = [animationSettings statusBarFadeOutSettings];
+      bSAnimationSettings = [statusBarFadeOutSettings BSAnimationSettings];
 
       goto LABEL_8;
     }
 
-    v6 = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings hideAnimationSettings];
+    unhideAnimationSettings = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings hideAnimationSettings];
   }
 
-  v7 = v6;
-  v5 = [v6 BSAnimationSettings];
+  animationSettings = unhideAnimationSettings;
+  bSAnimationSettings = [unhideAnimationSettings BSAnimationSettings];
 LABEL_8:
 
 LABEL_9:
 
-  return v5;
+  return bSAnimationSettings;
 }
 
 - (void)_updatePresence
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBAffordancePresenceController _updatePresence]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -162,10 +162,10 @@ LABEL_9:
 - (void)_updateIdleTouchAwarenessClient
 {
   autoHideAffordance = self->_autoHideAffordance;
-  v4 = [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient isEnabled];
+  isEnabled = [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient isEnabled];
   if (autoHideAffordance)
   {
-    if (!v4)
+    if (!isEnabled)
     {
       [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient resetAttentionLostTimeout];
       [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:1];
@@ -173,7 +173,7 @@ LABEL_9:
     }
   }
 
-  else if (v4)
+  else if (isEnabled)
   {
     [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:0];
     if (self->_touchState == 1)
@@ -185,16 +185,16 @@ LABEL_9:
   }
 }
 
-- (void)_updatePresence:(int64_t)a3 withAnimationSettings:(id)a4
+- (void)_updatePresence:(int64_t)presence withAnimationSettings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   presence = self->_presence;
-  if ((a3 != 0) != (presence == 0))
+  if ((presence != 0) != (presence == 0))
   {
-    if (a3 && presence != a3)
+    if (presence && presence != presence)
     {
-      self->_presence = a3;
-      if (a3 == 1)
+      self->_presence = presence;
+      if (presence == 1)
       {
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
@@ -204,7 +204,7 @@ LABEL_9:
         [MEMORY[0x277D75D18] performWithoutAnimation:v16];
       }
 
-      else if (a3 == 2)
+      else if (presence == 2)
       {
         [(NSMutableSet *)self->_outstandingVisibilityTransitionTokens count];
       }
@@ -213,7 +213,7 @@ LABEL_9:
 
   else
   {
-    self->_presence = a3;
+    self->_presence = presence;
     v8 = MEMORY[0x277CCABB0];
     ++self->_lastVisibilityTransitionToken;
     v9 = [v8 numberWithUnsignedInteger:?];
@@ -230,7 +230,7 @@ LABEL_9:
       self->_outstandingVisibilityTransitionTokens = v11;
     }
 
-    v13 = [MEMORY[0x277CF0D38] factoryWithSettings:v6];
+    v13 = [MEMORY[0x277CF0D38] factoryWithSettings:settingsCopy];
     [v13 setAllowsAdditiveAnimations:1];
     v14 = MEMORY[0x277CF0D38];
     v19[0] = MEMORY[0x277D85DD0];
@@ -238,7 +238,7 @@ LABEL_9:
     v19[2] = __72__SBAffordancePresenceController__updatePresence_withAnimationSettings___block_invoke;
     v19[3] = &unk_2783A8BC8;
     v19[4] = self;
-    v19[5] = a3;
+    v19[5] = presence;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __72__SBAffordancePresenceController__updatePresence_withAnimationSettings___block_invoke_2;
@@ -277,7 +277,7 @@ void __72__SBAffordancePresenceController__updatePresence_withAnimationSettings_
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 134218240;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2048;
   v6 = a3;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "affordance=%p touch idleness changed - preparing to stop asserting hidden after %fs", &v3, 0x16u);
@@ -307,14 +307,14 @@ uint64_t __53__SBAffordancePresenceController__unhideIfAutoHidden__block_invoke(
   return result;
 }
 
-- (void)setHidden:(BOOL)a3 forReason:(id)a4 animated:(BOOL)a5
+- (void)setHidden:(BOOL)hidden forReason:(id)reason animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  reasonCopy = reason;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v9)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -323,7 +323,7 @@ uint64_t __53__SBAffordancePresenceController__unhideIfAutoHidden__block_invoke(
   else
   {
     [SBAffordancePresenceController setHidden:forReason:animated:];
-    if (v9)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -333,18 +333,18 @@ uint64_t __53__SBAffordancePresenceController__unhideIfAutoHidden__block_invoke(
 LABEL_3:
   v10 = [(NSMutableSet *)self->_hiddenOverrides count];
   hiddenOverrides = self->_hiddenOverrides;
-  if (v6)
+  if (hiddenCopy)
   {
     if (hiddenOverrides)
     {
-      v12 = [v9 copy];
+      v12 = [reasonCopy copy];
       [(NSMutableSet *)hiddenOverrides addObject:v12];
     }
 
     else
     {
       v13 = MEMORY[0x277CBEB58];
-      v14 = [v9 copy];
+      v14 = [reasonCopy copy];
       v15 = [v13 setWithObject:v14];
       v16 = self->_hiddenOverrides;
       self->_hiddenOverrides = v15;
@@ -353,7 +353,7 @@ LABEL_3:
 
   else
   {
-    [(NSMutableSet *)self->_hiddenOverrides removeObject:v9];
+    [(NSMutableSet *)self->_hiddenOverrides removeObject:reasonCopy];
   }
 
   if ((v10 == 0) == ([(NSMutableSet *)self->_hiddenOverrides count]!= 0))
@@ -364,10 +364,10 @@ LABEL_3:
       [SBAffordancePresenceController setHidden:forReason:animated:];
     }
 
-    v18 = [(SBAffordancePresenceController *)self _calculatePresence];
-    if (v5)
+    _calculatePresence = [(SBAffordancePresenceController *)self _calculatePresence];
+    if (animatedCopy)
     {
-      v19 = [(SBAffordancePresenceController *)self _animationSettingsForTransitionFromPresence:self->_presence toPresence:v18];
+      v19 = [(SBAffordancePresenceController *)self _animationSettingsForTransitionFromPresence:self->_presence toPresence:_calculatePresence];
     }
 
     else
@@ -375,11 +375,11 @@ LABEL_3:
       v19 = 0;
     }
 
-    [(SBAffordancePresenceController *)self _updatePresence:v18 withAnimationSettings:v19];
+    [(SBAffordancePresenceController *)self _updatePresence:_calculatePresence withAnimationSettings:v19];
   }
 }
 
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(double)a4 forConfigurationGeneration:(unint64_t)a5 withAssociatedObject:(id)a6
+- (void)client:(id)client attentionLostTimeoutDidExpire:(double)expire forConfigurationGeneration:(unint64_t)generation withAssociatedObject:(id)object
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -399,7 +399,7 @@ LABEL_3:
   }
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -407,9 +407,9 @@ LABEL_3:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  [(SBAffordancePresenceController *)self _updatePresence:a3];
+  [(SBAffordancePresenceController *)self _updatePresence:settings];
 
   [(SBAffordancePresenceController *)self _updateIdleTouchAwarenessClient];
 }

@@ -1,34 +1,34 @@
 @interface VFXNode
-+ (VFXNode)nodeWithMDLAsset:(id)a3;
-+ (VFXNode)nodeWithMDLObject:(id)a3;
-+ (VFXNode)nodeWithMDLObject:(id)a3 masterObjects:(id)a4 worldNodes:(id)a5 skinnedMeshes:(id)a6 skelNodesMap:(void *)a7 asset:(id)a8 options:(id)a9 context:(id)a10 mpuScale:(float)a11;
-+ (VFXNode)nodeWithMDLObject:(id)a3 options:(id)a4 context:(id)a5;
-+ (VFXNode)nodeWithModel:(id)a3;
-+ (VFXNode)nodeWithNodeRef:(__CFXNode *)a3;
-+ (VFXNode)nodeWithSceneKitNode:(id)a3 options:(id)a4;
-+ (id)_dumpNodeTree:(id)a3 tab:(id)a4;
++ (VFXNode)nodeWithMDLAsset:(id)asset;
++ (VFXNode)nodeWithMDLObject:(id)object;
++ (VFXNode)nodeWithMDLObject:(id)object masterObjects:(id)objects worldNodes:(id)nodes skinnedMeshes:(id)meshes skelNodesMap:(void *)map asset:(id)asset options:(id)options context:(id)self0 mpuScale:(float)self1;
++ (VFXNode)nodeWithMDLObject:(id)object options:(id)options context:(id)context;
++ (VFXNode)nodeWithModel:(id)model;
++ (VFXNode)nodeWithNodeRef:(__CFXNode *)ref;
++ (VFXNode)nodeWithSceneKitNode:(id)node options:(id)options;
++ (id)_dumpNodeTree:(id)tree tab:(id)tab;
 + (id)localFrontValue;
 + (id)localRightValue;
 + (id)localUpValue;
 + (id)node;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5;
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output;
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block;
 - (BOOL)_isEffectivelyHidden;
-- (BOOL)canAddChildNode:(id)a3;
+- (BOOL)canAddChildNode:(id)node;
 - (BOOL)castsShadow;
-- (BOOL)getBoundingBoxMin:(VFXNode *)self max:(SEL)a2;
-- (BOOL)getBoundingSphereCenter:(VFXNode *)self radius:(SEL)a2;
-- (BOOL)getFrustum:(id *)a3 withViewport:;
-- (BOOL)hasAncestor:(id)a3;
+- (BOOL)getBoundingBoxMin:(VFXNode *)self max:(SEL)max;
+- (BOOL)getBoundingSphereCenter:(VFXNode *)self radius:(SEL)radius;
+- (BOOL)getFrustum:(id *)frustum withViewport:;
+- (BOOL)hasAncestor:(id)ancestor;
 - (BOOL)hasPhysicBody;
 - (BOOL)isHidden;
 - (BOOL)isHiddenOrHasHiddenAncestor;
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5;
-- (BOOL)rawFloat3ForKey:(id)a3 value:;
-- (BOOL)rawFloat4ForKey:(id)a3 value:;
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination;
+- (BOOL)rawFloat3ForKey:(id)key value:;
+- (BOOL)rawFloat4ForKey:(id)key value:;
 - (BOOL)usesDepthPrePass;
-- (CGRect)_focusFrameInView:(id)a3;
+- (CGRect)_focusFrameInView:(id)view;
 - (NSArray)animationKeys;
 - (NSArray)bridgedComponentNames;
 - (NSArray)childNodes;
@@ -39,8 +39,8 @@
 - (VFXBehaviorGraph)behaviorGraph;
 - (VFXForceField)forceField;
 - (VFXNode)init;
-- (VFXNode)initWithCoder:(id)a3;
-- (VFXNode)initWithNodeRef:(__CFXNode *)a3;
+- (VFXNode)initWithCoder:(id)coder;
+- (VFXNode)initWithNodeRef:(__CFXNode *)ref;
 - (VFXNode)parentNode;
 - (VFXNode)presentationNode;
 - (VFXState)state;
@@ -51,11 +51,11 @@
 - (double)_euler;
 - (double)_quaternion;
 - (double)boundingBox;
-- (double)convertPosition:(void *)a3 fromNode:(uint64_t)a4;
-- (double)convertPosition:(void *)a3 toNode:(uint64_t)a4;
-- (double)convertTransform:(void *)a3 fromNode:(uint64_t)a4;
-- (double)convertVector:(void *)a3 fromNode:(uint64_t)a4;
-- (double)convertVector:(void *)a3 toNode:(uint64_t)a4;
+- (double)convertPosition:(void *)position fromNode:(uint64_t)node;
+- (double)convertPosition:(void *)position toNode:(uint64_t)node;
+- (double)convertTransform:(void *)transform fromNode:(uint64_t)node;
+- (double)convertVector:(void *)vector fromNode:(uint64_t)node;
+- (double)convertVector:(void *)vector toNode:(uint64_t)node;
 - (double)eulerAngles;
 - (double)orientation;
 - (double)pivot;
@@ -67,63 +67,63 @@
 - (double)worldRight;
 - (double)worldUp;
 - (float)opacity;
-- (float32x4_t)convertTransform:(void *)a3 toNode:(uint64_t)a4;
-- (float32x4_t)setTransform:(uint64_t)a3;
+- (float32x4_t)convertTransform:(void *)transform toNode:(uint64_t)node;
+- (float32x4_t)setTransform:(uint64_t)transform;
 - (float32x4_t)worldTransform;
 - (id)__camera;
 - (id)__light;
 - (id)__model;
 - (id)__morpher;
 - (id)_audioPlayers;
-- (id)_cloneWithOption:(unint64_t)a3 copyContext:(id)a4;
-- (id)_copyRecursively:(unint64_t)a3 copyContext:(id)a4;
+- (id)_cloneWithOption:(unint64_t)option copyContext:(id)context;
+- (id)_copyRecursively:(unint64_t)recursively copyContext:(id)context;
 - (id)_dumpTree;
-- (id)_findComponentWithType:(int64_t)a3;
-- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)a3;
-- (id)_valueForSimdVectorKeyPath:(id)a3;
-- (id)_vfxAnimationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)childNodeWithName:(id)a3 recursively:(BOOL)a4;
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4;
-- (id)childNodesWithAttribute:(Class)a3 recursively:(BOOL)a4;
-- (id)cloneWithOption:(unint64_t)a3;
-- (id)convertPositionValue:(id)a3 fromNode:(id)a4;
-- (id)convertPositionValue:(id)a3 toNode:(id)a4;
-- (id)convertTransformValue:(id)a3 fromNode:(id)a4;
-- (id)convertTransformValue:(id)a3 toNode:(id)a4;
-- (id)convertVectorValue:(id)a3 fromNode:(id)a4;
-- (id)convertVectorValue:(id)a3 toNode:(id)a4;
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4;
-- (id)copyWithOptions:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_findComponentWithType:(int64_t)type;
+- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)level;
+- (id)_valueForSimdVectorKeyPath:(id)path;
+- (id)_vfxAnimationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)childNodeWithName:(id)name recursively:(BOOL)recursively;
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively;
+- (id)childNodesWithAttribute:(Class)attribute recursively:(BOOL)recursively;
+- (id)cloneWithOption:(unint64_t)option;
+- (id)convertPositionValue:(id)value fromNode:(id)node;
+- (id)convertPositionValue:(id)value toNode:(id)node;
+- (id)convertTransformValue:(id)value fromNode:(id)node;
+- (id)convertTransformValue:(id)value toNode:(id)node;
+- (id)convertVectorValue:(id)value fromNode:(id)node;
+- (id)convertVectorValue:(id)value toNode:(id)node;
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation;
+- (id)copyWithOptions:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)coreEntityManager;
 - (id)debugQuickLookData;
 - (id)debugQuickLookObject;
-- (id)debugQuickLookObjectWithWorld:(id)a3;
+- (id)debugQuickLookObjectWithWorld:(id)world;
 - (id)deepClone;
-- (id)deepCloneWithContext:(id)a3;
+- (id)deepCloneWithContext:(id)context;
 - (id)deformers;
 - (id)eulerAnglesValue;
 - (id)flattenedClone;
 - (id)flattenedCopy;
 - (id)getBoundingBox;
 - (id)getBoundingSphere;
-- (id)hitTestWithSegmentFrom:(id)a3 toPoint:(id)a4 options:(id)a5;
-- (id)hitTestWithSegmentFromPoint:(VFXNode *)self toPoint:(SEL)a2 options:(id)a3;
+- (id)hitTestWithSegmentFrom:(id)from toPoint:(id)point options:(id)options;
+- (id)hitTestWithSegmentFromPoint:(VFXNode *)self toPoint:(SEL)point options:(id)options;
 - (id)identifier;
-- (id)initPresentationNodeWithNodeRef:(__CFXNode *)a3;
-- (id)objectInAudioPlayersAtIndex:(unint64_t)a3;
-- (id)objectInChildNodesAtIndex:(unint64_t)a3;
-- (id)objectInChildNodesWithAttribute:(id)a3 firstOnly:(BOOL)a4;
+- (id)initPresentationNodeWithNodeRef:(__CFXNode *)ref;
+- (id)objectInAudioPlayersAtIndex:(unint64_t)index;
+- (id)objectInChildNodesAtIndex:(unint64_t)index;
+- (id)objectInChildNodesWithAttribute:(id)attribute firstOnly:(BOOL)only;
 - (id)orientationValue;
 - (id)pivotValue;
 - (id)positionValue;
 - (id)rotationValue;
 - (id)scaleValue;
 - (id)script_rootNode;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (id)valueForUndefinedKey:(id)key;
 - (id)worldFrontValue;
 - (id)worldOrientationValue;
 - (id)worldPositionValue;
@@ -133,40 +133,40 @@
 - (int64_t)authoringCameraType;
 - (int64_t)coreEntity;
 - (int64_t)renderingOrder;
-- (uint64_t)_setQuaternion:(uint64_t)a3;
-- (uint64_t)localRotateBy:(uint64_t)a3;
-- (uint64_t)rotateBy:(uint64_t)a3 aroundTarget:(uint64_t)a4;
-- (uint64_t)setBoundingBox:(float32x4_t)a3;
-- (uint64_t)setWorldOrientation:(uint64_t)a3;
-- (uint64_t)setWorldTransform:(uint64_t)a3;
+- (uint64_t)_setQuaternion:(uint64_t)quaternion;
+- (uint64_t)localRotateBy:(uint64_t)by;
+- (uint64_t)rotateBy:(uint64_t)by aroundTarget:(uint64_t)target;
+- (uint64_t)setBoundingBox:(float32x4_t)box;
+- (uint64_t)setWorldOrientation:(uint64_t)orientation;
+- (uint64_t)setWorldTransform:(uint64_t)transform;
 - (unint64_t)categoryBitMask;
 - (unint64_t)countOfAudioPlayers;
-- (unint64_t)indexOfChildNode:(id)a3;
+- (unint64_t)indexOfChildNode:(id)node;
 - (unsigned)drawCallCount;
-- (void)_addSkinnerWithMDLMesh:(id)a3 worldNodes:(id)a4;
-- (void)_appendFocusableNodesInRect:(CGRect)a3 ofView:(id)a4 toFocusItems:(id)a5;
-- (void)_assignComponent:(id)a3 toContainerWithType:(int64_t)a4;
-- (void)_bakeNodes:(id)a3 folderPath:(id)a4 inVertex:(BOOL)a5 bakeAO:(BOOL)a6 quality:(float)a7 attenuation:(float)a8 geomSetter:(id)a9 terminateSetter:(id)a10;
-- (void)_childNodesWithAttribute:(Class)a3 output:(id)a4 recursively:(BOOL)a5;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_copyBindingsFrom:(id)a3;
-- (void)_copyWithOptions:(unint64_t)a3 to:(id)a4 copyContext:(id)a5;
-- (void)_customDecodingOfVFXNode:(id)a3;
-- (void)_customEncodingOfVFXNode:(id)a3 usePresentationObject:(BOOL)a4;
-- (void)_didDecodeVFXNode:(id)a3;
-- (void)_dump:(id)a3;
-- (void)_encodeNodePropertiesWithCoder:(id)a3;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
-- (void)_propagatePhysicsBodyCountChange:(int)a3;
-- (void)_remapNodeReferences:(id)a3 nullifyIfAbsent:(BOOL)a4;
-- (void)_removeComponentWithType:(int64_t)a3;
-- (void)_setAttributes:(id)a3;
-- (void)_setComponent:(id)a3 withType:(int64_t)a4;
+- (void)_addSkinnerWithMDLMesh:(id)mesh worldNodes:(id)nodes;
+- (void)_appendFocusableNodesInRect:(CGRect)rect ofView:(id)view toFocusItems:(id)items;
+- (void)_assignComponent:(id)component toContainerWithType:(int64_t)type;
+- (void)_bakeNodes:(id)nodes folderPath:(id)path inVertex:(BOOL)vertex bakeAO:(BOOL)o quality:(float)quality attenuation:(float)attenuation geomSetter:(id)setter terminateSetter:(id)self0;
+- (void)_childNodesWithAttribute:(Class)attribute output:(id)output recursively:(BOOL)recursively;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_copyBindingsFrom:(id)from;
+- (void)_copyWithOptions:(unint64_t)options to:(id)to copyContext:(id)context;
+- (void)_customDecodingOfVFXNode:(id)node;
+- (void)_customEncodingOfVFXNode:(id)node usePresentationObject:(BOOL)object;
+- (void)_didDecodeVFXNode:(id)node;
+- (void)_dump:(id)_dump;
+- (void)_encodeNodePropertiesWithCoder:(id)coder;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
+- (void)_propagatePhysicsBodyCountChange:(int)change;
+- (void)_remapNodeReferences:(id)references nullifyIfAbsent:(BOOL)absent;
+- (void)_removeComponentWithType:(int64_t)type;
+- (void)_setAttributes:(id)attributes;
+- (void)_setComponent:(id)component withType:(int64_t)type;
 - (void)_setHasFocusableChild;
-- (void)_setPausedOrPausedByInheritance:(BOOL)a3;
+- (void)_setPausedOrPausedByInheritance:(BOOL)inheritance;
 - (void)_setPosition:(VFXNode *)self;
 - (void)_setScale:(VFXNode *)self;
-- (void)_setSourceObject:(id)a3 forBinding:(id)a4;
+- (void)_setSourceObject:(id)object forBinding:(id)binding;
 - (void)_syncObjCAnimations;
 - (void)_updateAffine;
 - (void)_updateEntityModelFromPresentation;
@@ -175,99 +175,99 @@
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
 - (void)_updateTransform;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationAsset:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
-- (void)addAudioPlayer:(id)a3;
-- (void)addChildNode:(id)a3;
-- (void)addWorldReference:(id)a3;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationAsset:(id)asset forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
+- (void)addAudioPlayer:(id)player;
+- (void)addChildNode:(id)node;
+- (void)addWorldReference:(id)reference;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)dealloc;
 - (void)dump;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAnimationReferencesUsingBlock:(id)a3;
-- (void)enumerateChildNodesUsingBlock:(id)a3;
-- (void)enumerateDrawCallsUsingBlock:(id)a3 context:(id *)a4;
-- (void)enumerateHierarchyUsingBlock:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)insertObject:(id)a3 inAudioPlayersAtIndex:(unint64_t)a4;
-- (void)insertObject:(id)a3 inChildNodesAtIndex:(unint64_t)a4;
-- (void)localRotateByValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAnimationReferencesUsingBlock:(id)block;
+- (void)enumerateChildNodesUsingBlock:(id)block;
+- (void)enumerateDrawCallsUsingBlock:(id)block context:(id *)context;
+- (void)enumerateHierarchyUsingBlock:(id)block;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)insertObject:(id)object inAudioPlayersAtIndex:(unint64_t)index;
+- (void)insertObject:(id)object inChildNodesAtIndex:(unint64_t)index;
+- (void)localRotateByValue:(id)value;
 - (void)localTranslateBy:(VFXNode *)self;
-- (void)localTranslateByValue:(id)a3;
+- (void)localTranslateByValue:(id)value;
 - (void)lookAt:(VFXNode *)self;
-- (void)lookAt:(VFXNode *)self up:(SEL)a2 localFront:;
-- (void)lookAtLocation:(id)a3;
-- (void)lookAtLocation:(id)a3 up:(id)a4 localFront:(id)a5;
+- (void)lookAt:(VFXNode *)self up:(SEL)up localFront:;
+- (void)lookAtLocation:(id)location;
+- (void)lookAtLocation:(id)location up:(id)up localFront:(id)front;
 - (void)makeUniqueID;
 - (void)modelChanged;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(float)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(float)duration;
 - (void)removeAllAudioPlayers;
 - (void)removeAllBindings;
 - (void)removeAllChilds;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(float)a4;
-- (void)removeAudioPlayer:(id)a3;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(float)duration;
+- (void)removeAudioPlayer:(id)player;
 - (void)removeFromParentNode;
-- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)a3;
-- (void)replaceChildNode:(id)a3 with:(id)a4;
-- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInChildNodesAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)index;
+- (void)replaceChildNode:(id)node with:(id)with;
+- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)index withObject:(id)object;
+- (void)replaceObjectInChildNodesAtIndex:(unint64_t)index withObject:(id)object;
 - (void)resetPhysicsBodyTransformInHierarchy;
-- (void)rotateBy:(id)a3 around:(id)a4;
-- (void)setAuthoringCameraType:(int64_t)a3;
-- (void)setBehaviorGraph:(id)a3;
-- (void)setBoundingBoxMin:(VFXNode *)self max:(SEL)a2;
-- (void)setCamera:(id)a3;
-- (void)setCastsShadow:(BOOL)a3;
-- (void)setCategoryBitMask:(unint64_t)a3;
-- (void)setConstraints:(id)a3;
-- (void)setDeformers:(id)a3;
-- (void)setEditorLocked:(BOOL)a3;
+- (void)rotateBy:(id)by around:(id)around;
+- (void)setAuthoringCameraType:(int64_t)type;
+- (void)setBehaviorGraph:(id)graph;
+- (void)setBoundingBoxMin:(VFXNode *)self max:(SEL)max;
+- (void)setCamera:(id)camera;
+- (void)setCastsShadow:(BOOL)shadow;
+- (void)setCategoryBitMask:(unint64_t)mask;
+- (void)setConstraints:(id)constraints;
+- (void)setDeformers:(id)deformers;
+- (void)setEditorLocked:(BOOL)locked;
 - (void)setEulerAngles:(VFXNode *)self;
-- (void)setEulerAnglesValue:(id)a3;
-- (void)setFocusBehavior:(int64_t)a3;
-- (void)setForceField:(id)a3;
-- (void)setGizmo:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIsAuthoring:(BOOL)a3;
-- (void)setIsEyeSightFrame:(BOOL)a3;
-- (void)setIsHandTrackingRoot:(BOOL)a3;
-- (void)setIsJoint:(BOOL)a3;
-- (void)setLight:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setMorpher:(id)a3;
-- (void)setName:(id)a3;
-- (void)setOpacity:(float)a3;
-- (void)setOrientation:(uint64_t)a3;
-- (void)setOrientationValue:(id)a3;
-- (void)setParticleCollider:(id)a3;
-- (void)setParticleEmitter:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPhysicsBody:(id)a3;
-- (void)setPivot:(float32x4_t)a3;
-- (void)setPivotValue:(id)a3;
+- (void)setEulerAnglesValue:(id)value;
+- (void)setFocusBehavior:(int64_t)behavior;
+- (void)setForceField:(id)field;
+- (void)setGizmo:(BOOL)gizmo;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIdentifier:(id)identifier;
+- (void)setIsAuthoring:(BOOL)authoring;
+- (void)setIsEyeSightFrame:(BOOL)frame;
+- (void)setIsHandTrackingRoot:(BOOL)root;
+- (void)setIsJoint:(BOOL)joint;
+- (void)setLight:(id)light;
+- (void)setModel:(id)model;
+- (void)setMorpher:(id)morpher;
+- (void)setName:(id)name;
+- (void)setOpacity:(float)opacity;
+- (void)setOrientation:(uint64_t)orientation;
+- (void)setOrientationValue:(id)value;
+- (void)setParticleCollider:(id)collider;
+- (void)setParticleEmitter:(id)emitter;
+- (void)setPaused:(BOOL)paused;
+- (void)setPhysicsBody:(id)body;
+- (void)setPivot:(float32x4_t)pivot;
+- (void)setPivotValue:(id)value;
 - (void)setPosition:(VFXNode *)self;
-- (void)setPositionValue:(id)a3;
-- (void)setRenderingOrder:(int64_t)a3;
+- (void)setPositionValue:(id)value;
+- (void)setRenderingOrder:(int64_t)order;
 - (void)setRotation:(VFXNode *)self;
-- (void)setRotationValue:(id)a3;
+- (void)setRotationValue:(id)value;
 - (void)setScale:(VFXNode *)self;
-- (void)setScaleValue:(id)a3;
-- (void)setSkinner:(id)a3;
-- (void)setState:(id)a3;
-- (void)setStateNamed:(id)a3;
-- (void)setUsesDepthPrePass:(BOOL)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)setWorld:(id)a3;
-- (void)setWorldOrientationValue:(id)a3;
+- (void)setScaleValue:(id)value;
+- (void)setSkinner:(id)skinner;
+- (void)setState:(id)state;
+- (void)setStateNamed:(id)named;
+- (void)setUsesDepthPrePass:(BOOL)pass;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)setWorld:(id)world;
+- (void)setWorldOrientationValue:(id)value;
 - (void)setWorldPosition:(VFXNode *)self;
-- (void)setWorldPositionValue:(id)a3;
-- (void)setWorldTransformValue:(id)a3;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)setWorldPositionValue:(id)value;
+- (void)setWorldTransformValue:(id)value;
+- (void)unbindAnimatablePath:(id)path;
 @end
 
 @implementation VFXNode
@@ -279,9 +279,9 @@
   return objc_msgSend_integerValue(AssociatedObject, v3, v4, v5);
 }
 
-- (void)setAuthoringCameraType:(int64_t)a3
+- (void)setAuthoringCameraType:(int64_t)type
 {
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3, v3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, type, v3);
 
   objc_setAssociatedObject(self, sel_authoringCameraType, v5, 0x301);
 }
@@ -303,13 +303,13 @@
   return v3;
 }
 
-- (void)enumerateDrawCallsUsingBlock:(id)a3 context:(id *)a4
+- (void)enumerateDrawCallsUsingBlock:(id)block context:(id *)context
 {
-  v5 = objc_msgSend_world(self, a2, a3, a4);
+  v5 = objc_msgSend_world(self, a2, block, context);
   v9 = objc_msgSend_worldRef(v5, v6, v7, v8);
   v10 = *(sub_1AF1D00B0(v9) + 160);
 
-  sub_1AF1475D0(v10, sub_1AF2C0C2C, a4);
+  sub_1AF1475D0(v10, sub_1AF2C0C2C, context);
 }
 
 - (id)positionValue
@@ -329,15 +329,15 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setPositionValue:(id)a3
+- (void)setPositionValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setPosition_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));
@@ -364,17 +364,17 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v35, v37, 4);
 }
 
-- (void)setRotationValue:(id)a3
+- (void)setRotationValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v34 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v33 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v24, 3, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(value, v24, 3, v25);
   objc_msgSend_floatValue(v26, v27, v28, v29);
 
   objc_msgSend_setRotation_(self, v30, v31, v32, COERCE_DOUBLE(__PAIR64__(v33, v34)));
@@ -401,17 +401,17 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v35, v37, 4);
 }
 
-- (void)setOrientationValue:(id)a3
+- (void)setOrientationValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v34 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v33 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v24, 3, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(value, v24, 3, v25);
   objc_msgSend_floatValue(v26, v27, v28, v29);
 
   objc_msgSend_setOrientation_(self, v30, v31, v32, COERCE_DOUBLE(__PAIR64__(v33, v34)));
@@ -438,17 +438,17 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v35, v37, 4);
 }
 
-- (void)setWorldOrientationValue:(id)a3
+- (void)setWorldOrientationValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v34 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v33 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v24, 3, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(value, v24, 3, v25);
   objc_msgSend_floatValue(v26, v27, v28, v29);
 
   objc_msgSend_setWorldOrientation_(self, v30, v31, v32, COERCE_DOUBLE(__PAIR64__(v33, v34)));
@@ -471,15 +471,15 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setEulerAnglesValue:(id)a3
+- (void)setEulerAnglesValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setEulerAngles_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));
@@ -502,15 +502,15 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setScaleValue:(id)a3
+- (void)setScaleValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setScale_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));
@@ -533,15 +533,15 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setWorldPositionValue:(id)a3
+- (void)setWorldPositionValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setWorldPosition_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));
@@ -613,50 +613,50 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v140, v142, 16);
 }
 
-- (void)setPivotValue:(id)a3
+- (void)setPivotValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v120 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v117 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v24, 3, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(value, v24, 3, v25);
   objc_msgSend_floatValue(v26, v27, v28, v29);
   v121 = COERCE_DOUBLE(__PAIR64__(v117, v120));
-  v32 = objc_msgSend_objectAtIndexedSubscript_(a3, v30, 4, v31);
+  v32 = objc_msgSend_objectAtIndexedSubscript_(value, v30, 4, v31);
   objc_msgSend_floatValue(v32, v33, v34, v35);
   v118 = v36;
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a3, v37, 5, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(value, v37, 5, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
   v114 = v43;
-  v46 = objc_msgSend_objectAtIndexedSubscript_(a3, v44, 6, v45);
+  v46 = objc_msgSend_objectAtIndexedSubscript_(value, v44, 6, v45);
   objc_msgSend_floatValue(v46, v47, v48, v49);
-  v52 = objc_msgSend_objectAtIndexedSubscript_(a3, v50, 7, v51);
+  v52 = objc_msgSend_objectAtIndexedSubscript_(value, v50, 7, v51);
   objc_msgSend_floatValue(v52, v53, v54, v55);
   v119 = COERCE_DOUBLE(__PAIR64__(v114, v118));
-  v58 = objc_msgSend_objectAtIndexedSubscript_(a3, v56, 8, v57);
+  v58 = objc_msgSend_objectAtIndexedSubscript_(value, v56, 8, v57);
   objc_msgSend_floatValue(v58, v59, v60, v61);
   v115 = v62;
-  v65 = objc_msgSend_objectAtIndexedSubscript_(a3, v63, 9, v64);
+  v65 = objc_msgSend_objectAtIndexedSubscript_(value, v63, 9, v64);
   objc_msgSend_floatValue(v65, v66, v67, v68);
   v112 = v69;
-  v72 = objc_msgSend_objectAtIndexedSubscript_(a3, v70, 10, v71);
+  v72 = objc_msgSend_objectAtIndexedSubscript_(value, v70, 10, v71);
   objc_msgSend_floatValue(v72, v73, v74, v75);
-  v78 = objc_msgSend_objectAtIndexedSubscript_(a3, v76, 11, v77);
+  v78 = objc_msgSend_objectAtIndexedSubscript_(value, v76, 11, v77);
   objc_msgSend_floatValue(v78, v79, v80, v81);
   v116 = COERCE_DOUBLE(__PAIR64__(v112, v115));
-  v84 = objc_msgSend_objectAtIndexedSubscript_(a3, v82, 12, v83);
+  v84 = objc_msgSend_objectAtIndexedSubscript_(value, v82, 12, v83);
   objc_msgSend_floatValue(v84, v85, v86, v87);
   v113 = v88;
-  v91 = objc_msgSend_objectAtIndexedSubscript_(a3, v89, 13, v90);
+  v91 = objc_msgSend_objectAtIndexedSubscript_(value, v89, 13, v90);
   objc_msgSend_floatValue(v91, v92, v93, v94);
   v111 = v95;
-  v98 = objc_msgSend_objectAtIndexedSubscript_(a3, v96, 14, v97);
+  v98 = objc_msgSend_objectAtIndexedSubscript_(value, v96, 14, v97);
   objc_msgSend_floatValue(v98, v99, v100, v101);
-  v104 = objc_msgSend_objectAtIndexedSubscript_(a3, v102, 15, v103);
+  v104 = objc_msgSend_objectAtIndexedSubscript_(value, v102, 15, v103);
   objc_msgSend_floatValue(v104, v105, v106, v107);
 
   objc_msgSend_setPivot_(self, v108, v109, v110, v121, v119, v116, COERCE_DOUBLE(__PAIR64__(v111, v113)));
@@ -728,1762 +728,1762 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v140, v142, 16);
 }
 
-- (void)setWorldTransformValue:(id)a3
+- (void)setWorldTransformValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v120 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v117 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
-  v26 = objc_msgSend_objectAtIndexedSubscript_(a3, v24, 3, v25);
+  v26 = objc_msgSend_objectAtIndexedSubscript_(value, v24, 3, v25);
   objc_msgSend_floatValue(v26, v27, v28, v29);
   v121 = COERCE_DOUBLE(__PAIR64__(v117, v120));
-  v32 = objc_msgSend_objectAtIndexedSubscript_(a3, v30, 4, v31);
+  v32 = objc_msgSend_objectAtIndexedSubscript_(value, v30, 4, v31);
   objc_msgSend_floatValue(v32, v33, v34, v35);
   v118 = v36;
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a3, v37, 5, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(value, v37, 5, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
   v114 = v43;
-  v46 = objc_msgSend_objectAtIndexedSubscript_(a3, v44, 6, v45);
+  v46 = objc_msgSend_objectAtIndexedSubscript_(value, v44, 6, v45);
   objc_msgSend_floatValue(v46, v47, v48, v49);
-  v52 = objc_msgSend_objectAtIndexedSubscript_(a3, v50, 7, v51);
+  v52 = objc_msgSend_objectAtIndexedSubscript_(value, v50, 7, v51);
   objc_msgSend_floatValue(v52, v53, v54, v55);
   v119 = COERCE_DOUBLE(__PAIR64__(v114, v118));
-  v58 = objc_msgSend_objectAtIndexedSubscript_(a3, v56, 8, v57);
+  v58 = objc_msgSend_objectAtIndexedSubscript_(value, v56, 8, v57);
   objc_msgSend_floatValue(v58, v59, v60, v61);
   v115 = v62;
-  v65 = objc_msgSend_objectAtIndexedSubscript_(a3, v63, 9, v64);
+  v65 = objc_msgSend_objectAtIndexedSubscript_(value, v63, 9, v64);
   objc_msgSend_floatValue(v65, v66, v67, v68);
   v112 = v69;
-  v72 = objc_msgSend_objectAtIndexedSubscript_(a3, v70, 10, v71);
+  v72 = objc_msgSend_objectAtIndexedSubscript_(value, v70, 10, v71);
   objc_msgSend_floatValue(v72, v73, v74, v75);
-  v78 = objc_msgSend_objectAtIndexedSubscript_(a3, v76, 11, v77);
+  v78 = objc_msgSend_objectAtIndexedSubscript_(value, v76, 11, v77);
   objc_msgSend_floatValue(v78, v79, v80, v81);
   v116 = COERCE_DOUBLE(__PAIR64__(v112, v115));
-  v84 = objc_msgSend_objectAtIndexedSubscript_(a3, v82, 12, v83);
+  v84 = objc_msgSend_objectAtIndexedSubscript_(value, v82, 12, v83);
   objc_msgSend_floatValue(v84, v85, v86, v87);
   v113 = v88;
-  v91 = objc_msgSend_objectAtIndexedSubscript_(a3, v89, 13, v90);
+  v91 = objc_msgSend_objectAtIndexedSubscript_(value, v89, 13, v90);
   objc_msgSend_floatValue(v91, v92, v93, v94);
   v111 = v95;
-  v98 = objc_msgSend_objectAtIndexedSubscript_(a3, v96, 14, v97);
+  v98 = objc_msgSend_objectAtIndexedSubscript_(value, v96, 14, v97);
   objc_msgSend_floatValue(v98, v99, v100, v101);
-  v104 = objc_msgSend_objectAtIndexedSubscript_(a3, v102, 15, v103);
+  v104 = objc_msgSend_objectAtIndexedSubscript_(value, v102, 15, v103);
   objc_msgSend_floatValue(v104, v105, v106, v107);
 
   objc_msgSend_setWorldTransform_(self, v108, v109, v110, v121, v119, v116, COERCE_DOUBLE(__PAIR64__(v111, v113)));
 }
 
-- (id)convertPositionValue:(id)a3 toNode:(id)a4
+- (id)convertPositionValue:(id)value toNode:(id)node
 {
   v94[3] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v91 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v88 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  objc_msgSend_convertPosition_toNode_(self, v26, a4, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
+  objc_msgSend_convertPosition_toNode_(self, v26, node, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
   v94[0] = objc_msgSend_numberWithFloat_(v7, v28, v29, v30);
   v31 = MEMORY[0x1E696AD98];
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 0, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 0, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v92 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 1, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 1, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v89 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 2, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 2, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  objc_msgSend_convertPosition_toNode_(self, v52, a4, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
+  objc_msgSend_convertPosition_toNode_(self, v52, node, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
   LODWORD(v54) = HIDWORD(v54);
   v94[1] = objc_msgSend_numberWithFloat_(v31, v55, v56, v57, v54);
   v58 = MEMORY[0x1E696AD98];
-  v61 = objc_msgSend_objectAtIndexedSubscript_(a3, v59, 0, v60);
+  v61 = objc_msgSend_objectAtIndexedSubscript_(value, v59, 0, v60);
   objc_msgSend_floatValue(v61, v62, v63, v64);
   v93 = v65;
-  v68 = objc_msgSend_objectAtIndexedSubscript_(a3, v66, 1, v67);
+  v68 = objc_msgSend_objectAtIndexedSubscript_(value, v66, 1, v67);
   objc_msgSend_floatValue(v68, v69, v70, v71);
   v90 = v72;
-  v75 = objc_msgSend_objectAtIndexedSubscript_(a3, v73, 2, v74);
+  v75 = objc_msgSend_objectAtIndexedSubscript_(value, v73, 2, v74);
   objc_msgSend_floatValue(v75, v76, v77, v78);
-  objc_msgSend_convertPosition_toNode_(self, v79, a4, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
+  objc_msgSend_convertPosition_toNode_(self, v79, node, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
   LODWORD(v82) = v81;
   v94[2] = objc_msgSend_numberWithFloat_(v58, v83, v84, v85, v82);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v86, v94, 3);
 }
 
-- (id)convertPositionValue:(id)a3 fromNode:(id)a4
+- (id)convertPositionValue:(id)value fromNode:(id)node
 {
   v94[3] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v91 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v88 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  objc_msgSend_convertPosition_fromNode_(self, v26, a4, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
+  objc_msgSend_convertPosition_fromNode_(self, v26, node, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
   v94[0] = objc_msgSend_numberWithFloat_(v7, v28, v29, v30);
   v31 = MEMORY[0x1E696AD98];
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 0, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 0, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v92 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 1, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 1, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v89 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 2, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 2, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  objc_msgSend_convertPosition_fromNode_(self, v52, a4, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
+  objc_msgSend_convertPosition_fromNode_(self, v52, node, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
   LODWORD(v54) = HIDWORD(v54);
   v94[1] = objc_msgSend_numberWithFloat_(v31, v55, v56, v57, v54);
   v58 = MEMORY[0x1E696AD98];
-  v61 = objc_msgSend_objectAtIndexedSubscript_(a3, v59, 0, v60);
+  v61 = objc_msgSend_objectAtIndexedSubscript_(value, v59, 0, v60);
   objc_msgSend_floatValue(v61, v62, v63, v64);
   v93 = v65;
-  v68 = objc_msgSend_objectAtIndexedSubscript_(a3, v66, 1, v67);
+  v68 = objc_msgSend_objectAtIndexedSubscript_(value, v66, 1, v67);
   objc_msgSend_floatValue(v68, v69, v70, v71);
   v90 = v72;
-  v75 = objc_msgSend_objectAtIndexedSubscript_(a3, v73, 2, v74);
+  v75 = objc_msgSend_objectAtIndexedSubscript_(value, v73, 2, v74);
   objc_msgSend_floatValue(v75, v76, v77, v78);
-  objc_msgSend_convertPosition_fromNode_(self, v79, a4, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
+  objc_msgSend_convertPosition_fromNode_(self, v79, node, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
   LODWORD(v82) = v81;
   v94[2] = objc_msgSend_numberWithFloat_(v58, v83, v84, v85, v82);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v86, v94, 3);
 }
 
-- (id)convertVectorValue:(id)a3 toNode:(id)a4
+- (id)convertVectorValue:(id)value toNode:(id)node
 {
   v94[3] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v91 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v88 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  objc_msgSend_convertVector_toNode_(self, v26, a4, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
+  objc_msgSend_convertVector_toNode_(self, v26, node, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
   v94[0] = objc_msgSend_numberWithFloat_(v7, v28, v29, v30);
   v31 = MEMORY[0x1E696AD98];
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 0, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 0, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v92 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 1, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 1, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v89 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 2, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 2, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  objc_msgSend_convertVector_toNode_(self, v52, a4, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
+  objc_msgSend_convertVector_toNode_(self, v52, node, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
   LODWORD(v54) = HIDWORD(v54);
   v94[1] = objc_msgSend_numberWithFloat_(v31, v55, v56, v57, v54);
   v58 = MEMORY[0x1E696AD98];
-  v61 = objc_msgSend_objectAtIndexedSubscript_(a3, v59, 0, v60);
+  v61 = objc_msgSend_objectAtIndexedSubscript_(value, v59, 0, v60);
   objc_msgSend_floatValue(v61, v62, v63, v64);
   v93 = v65;
-  v68 = objc_msgSend_objectAtIndexedSubscript_(a3, v66, 1, v67);
+  v68 = objc_msgSend_objectAtIndexedSubscript_(value, v66, 1, v67);
   objc_msgSend_floatValue(v68, v69, v70, v71);
   v90 = v72;
-  v75 = objc_msgSend_objectAtIndexedSubscript_(a3, v73, 2, v74);
+  v75 = objc_msgSend_objectAtIndexedSubscript_(value, v73, 2, v74);
   objc_msgSend_floatValue(v75, v76, v77, v78);
-  objc_msgSend_convertVector_toNode_(self, v79, a4, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
+  objc_msgSend_convertVector_toNode_(self, v79, node, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
   LODWORD(v82) = v81;
   v94[2] = objc_msgSend_numberWithFloat_(v58, v83, v84, v85, v82);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v86, v94, 3);
 }
 
-- (id)convertVectorValue:(id)a3 fromNode:(id)a4
+- (id)convertVectorValue:(id)value fromNode:(id)node
 {
   v94[3] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v91 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v88 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  objc_msgSend_convertVector_fromNode_(self, v26, a4, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
+  objc_msgSend_convertVector_fromNode_(self, v26, node, v27, COERCE_DOUBLE(__PAIR64__(v88, v91)));
   v94[0] = objc_msgSend_numberWithFloat_(v7, v28, v29, v30);
   v31 = MEMORY[0x1E696AD98];
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 0, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 0, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v92 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 1, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 1, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v89 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 2, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 2, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  objc_msgSend_convertVector_fromNode_(self, v52, a4, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
+  objc_msgSend_convertVector_fromNode_(self, v52, node, v53, COERCE_DOUBLE(__PAIR64__(v89, v92)));
   LODWORD(v54) = HIDWORD(v54);
   v94[1] = objc_msgSend_numberWithFloat_(v31, v55, v56, v57, v54);
   v58 = MEMORY[0x1E696AD98];
-  v61 = objc_msgSend_objectAtIndexedSubscript_(a3, v59, 0, v60);
+  v61 = objc_msgSend_objectAtIndexedSubscript_(value, v59, 0, v60);
   objc_msgSend_floatValue(v61, v62, v63, v64);
   v93 = v65;
-  v68 = objc_msgSend_objectAtIndexedSubscript_(a3, v66, 1, v67);
+  v68 = objc_msgSend_objectAtIndexedSubscript_(value, v66, 1, v67);
   objc_msgSend_floatValue(v68, v69, v70, v71);
   v90 = v72;
-  v75 = objc_msgSend_objectAtIndexedSubscript_(a3, v73, 2, v74);
+  v75 = objc_msgSend_objectAtIndexedSubscript_(value, v73, 2, v74);
   objc_msgSend_floatValue(v75, v76, v77, v78);
-  objc_msgSend_convertVector_fromNode_(self, v79, a4, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
+  objc_msgSend_convertVector_fromNode_(self, v79, node, v80, COERCE_DOUBLE(__PAIR64__(v90, v93)));
   LODWORD(v82) = v81;
   v94[2] = objc_msgSend_numberWithFloat_(v58, v83, v84, v85, v82);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v86, v94, 3);
 }
 
-- (id)convertTransformValue:(id)a3 toNode:(id)a4
+- (id)convertTransformValue:(id)value toNode:(id)node
 {
   v1894[16] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v1877 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v1859 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  v28 = objc_msgSend_objectAtIndexedSubscript_(a3, v26, 3, v27);
+  v28 = objc_msgSend_objectAtIndexedSubscript_(value, v26, 3, v27);
   objc_msgSend_floatValue(v28, v29, v30, v31);
   *&v1878 = __PAIR64__(v1859, v1877);
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 4, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 4, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v1860 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 5, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 5, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v1841 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 6, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 6, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  v54 = objc_msgSend_objectAtIndexedSubscript_(a3, v52, 7, v53);
+  v54 = objc_msgSend_objectAtIndexedSubscript_(value, v52, 7, v53);
   objc_msgSend_floatValue(v54, v55, v56, v57);
   *&v1861 = __PAIR64__(v1841, v1860);
-  v60 = objc_msgSend_objectAtIndexedSubscript_(a3, v58, 8, v59);
+  v60 = objc_msgSend_objectAtIndexedSubscript_(value, v58, 8, v59);
   objc_msgSend_floatValue(v60, v61, v62, v63);
   v1842 = v64;
-  v67 = objc_msgSend_objectAtIndexedSubscript_(a3, v65, 9, v66);
+  v67 = objc_msgSend_objectAtIndexedSubscript_(value, v65, 9, v66);
   objc_msgSend_floatValue(v67, v68, v69, v70);
   v1809 = v71;
-  v74 = objc_msgSend_objectAtIndexedSubscript_(a3, v72, 10, v73);
+  v74 = objc_msgSend_objectAtIndexedSubscript_(value, v72, 10, v73);
   objc_msgSend_floatValue(v74, v75, v76, v77);
-  v80 = objc_msgSend_objectAtIndexedSubscript_(a3, v78, 11, v79);
+  v80 = objc_msgSend_objectAtIndexedSubscript_(value, v78, 11, v79);
   objc_msgSend_floatValue(v80, v81, v82, v83);
   *&v1843 = __PAIR64__(v1809, v1842);
-  v86 = objc_msgSend_objectAtIndexedSubscript_(a3, v84, 12, v85);
+  v86 = objc_msgSend_objectAtIndexedSubscript_(value, v84, 12, v85);
   objc_msgSend_floatValue(v86, v87, v88, v89);
   v1810 = v90;
-  v93 = objc_msgSend_objectAtIndexedSubscript_(a3, v91, 13, v92);
+  v93 = objc_msgSend_objectAtIndexedSubscript_(value, v91, 13, v92);
   objc_msgSend_floatValue(v93, v94, v95, v96);
   v1793 = v97;
-  v100 = objc_msgSend_objectAtIndexedSubscript_(a3, v98, 14, v99);
+  v100 = objc_msgSend_objectAtIndexedSubscript_(value, v98, 14, v99);
   objc_msgSend_floatValue(v100, v101, v102, v103);
-  v106 = objc_msgSend_objectAtIndexedSubscript_(a3, v104, 15, v105);
+  v106 = objc_msgSend_objectAtIndexedSubscript_(value, v104, 15, v105);
   objc_msgSend_floatValue(v106, v107, v108, v109);
-  objc_msgSend_convertTransform_toNode_(self, v110, a4, v111, v1878, v1861, v1843, COERCE_DOUBLE(__PAIR64__(v1793, v1810)));
+  objc_msgSend_convertTransform_toNode_(self, v110, node, v111, v1878, v1861, v1843, COERCE_DOUBLE(__PAIR64__(v1793, v1810)));
   v1894[0] = objc_msgSend_numberWithFloat_(v7, v112, v113, v114);
   v115 = MEMORY[0x1E696AD98];
-  v118 = objc_msgSend_objectAtIndexedSubscript_(a3, v116, 0, v117);
+  v118 = objc_msgSend_objectAtIndexedSubscript_(value, v116, 0, v117);
   objc_msgSend_floatValue(v118, v119, v120, v121);
   LODWORD(v1878) = v122;
-  v125 = objc_msgSend_objectAtIndexedSubscript_(a3, v123, 1, v124);
+  v125 = objc_msgSend_objectAtIndexedSubscript_(value, v123, 1, v124);
   objc_msgSend_floatValue(v125, v126, v127, v128);
   LODWORD(v1861) = v129;
-  v132 = objc_msgSend_objectAtIndexedSubscript_(a3, v130, 2, v131);
+  v132 = objc_msgSend_objectAtIndexedSubscript_(value, v130, 2, v131);
   objc_msgSend_floatValue(v132, v133, v134, v135);
-  v138 = objc_msgSend_objectAtIndexedSubscript_(a3, v136, 3, v137);
+  v138 = objc_msgSend_objectAtIndexedSubscript_(value, v136, 3, v137);
   objc_msgSend_floatValue(v138, v139, v140, v141);
   *&v1879 = __PAIR64__(LODWORD(v1861), LODWORD(v1878));
-  v144 = objc_msgSend_objectAtIndexedSubscript_(a3, v142, 4, v143);
+  v144 = objc_msgSend_objectAtIndexedSubscript_(value, v142, 4, v143);
   objc_msgSend_floatValue(v144, v145, v146, v147);
   LODWORD(v1861) = v148;
-  v151 = objc_msgSend_objectAtIndexedSubscript_(a3, v149, 5, v150);
+  v151 = objc_msgSend_objectAtIndexedSubscript_(value, v149, 5, v150);
   objc_msgSend_floatValue(v151, v152, v153, v154);
   LODWORD(v1843) = v155;
-  v158 = objc_msgSend_objectAtIndexedSubscript_(a3, v156, 6, v157);
+  v158 = objc_msgSend_objectAtIndexedSubscript_(value, v156, 6, v157);
   objc_msgSend_floatValue(v158, v159, v160, v161);
-  v164 = objc_msgSend_objectAtIndexedSubscript_(a3, v162, 7, v163);
+  v164 = objc_msgSend_objectAtIndexedSubscript_(value, v162, 7, v163);
   objc_msgSend_floatValue(v164, v165, v166, v167);
   *&v1862 = __PAIR64__(LODWORD(v1843), LODWORD(v1861));
-  v170 = objc_msgSend_objectAtIndexedSubscript_(a3, v168, 8, v169);
+  v170 = objc_msgSend_objectAtIndexedSubscript_(value, v168, 8, v169);
   objc_msgSend_floatValue(v170, v171, v172, v173);
   LODWORD(v1843) = v174;
-  v177 = objc_msgSend_objectAtIndexedSubscript_(a3, v175, 9, v176);
+  v177 = objc_msgSend_objectAtIndexedSubscript_(value, v175, 9, v176);
   objc_msgSend_floatValue(v177, v178, v179, v180);
   v1811 = v181;
-  v184 = objc_msgSend_objectAtIndexedSubscript_(a3, v182, 10, v183);
+  v184 = objc_msgSend_objectAtIndexedSubscript_(value, v182, 10, v183);
   objc_msgSend_floatValue(v184, v185, v186, v187);
-  v190 = objc_msgSend_objectAtIndexedSubscript_(a3, v188, 11, v189);
+  v190 = objc_msgSend_objectAtIndexedSubscript_(value, v188, 11, v189);
   objc_msgSend_floatValue(v190, v191, v192, v193);
   *&v1844 = __PAIR64__(v1811, LODWORD(v1843));
-  v196 = objc_msgSend_objectAtIndexedSubscript_(a3, v194, 12, v195);
+  v196 = objc_msgSend_objectAtIndexedSubscript_(value, v194, 12, v195);
   objc_msgSend_floatValue(v196, v197, v198, v199);
   v1812 = v200;
-  v203 = objc_msgSend_objectAtIndexedSubscript_(a3, v201, 13, v202);
+  v203 = objc_msgSend_objectAtIndexedSubscript_(value, v201, 13, v202);
   objc_msgSend_floatValue(v203, v204, v205, v206);
   v1794 = v207;
-  v210 = objc_msgSend_objectAtIndexedSubscript_(a3, v208, 14, v209);
+  v210 = objc_msgSend_objectAtIndexedSubscript_(value, v208, 14, v209);
   objc_msgSend_floatValue(v210, v211, v212, v213);
-  v216 = objc_msgSend_objectAtIndexedSubscript_(a3, v214, 15, v215);
+  v216 = objc_msgSend_objectAtIndexedSubscript_(value, v214, 15, v215);
   objc_msgSend_floatValue(v216, v217, v218, v219);
-  objc_msgSend_convertTransform_toNode_(self, v220, a4, v221, v1879, v1862, v1844, COERCE_DOUBLE(__PAIR64__(v1794, v1812)));
+  objc_msgSend_convertTransform_toNode_(self, v220, node, v221, v1879, v1862, v1844, COERCE_DOUBLE(__PAIR64__(v1794, v1812)));
   LODWORD(v222) = HIDWORD(v222);
   v1894[1] = objc_msgSend_numberWithFloat_(v115, v223, v224, v225, v222);
   v226 = MEMORY[0x1E696AD98];
-  v229 = objc_msgSend_objectAtIndexedSubscript_(a3, v227, 0, v228);
+  v229 = objc_msgSend_objectAtIndexedSubscript_(value, v227, 0, v228);
   objc_msgSend_floatValue(v229, v230, v231, v232);
   LODWORD(v1879) = v233;
-  v236 = objc_msgSend_objectAtIndexedSubscript_(a3, v234, 1, v235);
+  v236 = objc_msgSend_objectAtIndexedSubscript_(value, v234, 1, v235);
   objc_msgSend_floatValue(v236, v237, v238, v239);
   LODWORD(v1862) = v240;
-  v243 = objc_msgSend_objectAtIndexedSubscript_(a3, v241, 2, v242);
+  v243 = objc_msgSend_objectAtIndexedSubscript_(value, v241, 2, v242);
   objc_msgSend_floatValue(v243, v244, v245, v246);
-  v249 = objc_msgSend_objectAtIndexedSubscript_(a3, v247, 3, v248);
+  v249 = objc_msgSend_objectAtIndexedSubscript_(value, v247, 3, v248);
   objc_msgSend_floatValue(v249, v250, v251, v252);
   *&v1880 = __PAIR64__(LODWORD(v1862), LODWORD(v1879));
-  v255 = objc_msgSend_objectAtIndexedSubscript_(a3, v253, 4, v254);
+  v255 = objc_msgSend_objectAtIndexedSubscript_(value, v253, 4, v254);
   objc_msgSend_floatValue(v255, v256, v257, v258);
   LODWORD(v1862) = v259;
-  v262 = objc_msgSend_objectAtIndexedSubscript_(a3, v260, 5, v261);
+  v262 = objc_msgSend_objectAtIndexedSubscript_(value, v260, 5, v261);
   objc_msgSend_floatValue(v262, v263, v264, v265);
   LODWORD(v1844) = v266;
-  v269 = objc_msgSend_objectAtIndexedSubscript_(a3, v267, 6, v268);
+  v269 = objc_msgSend_objectAtIndexedSubscript_(value, v267, 6, v268);
   objc_msgSend_floatValue(v269, v270, v271, v272);
-  v275 = objc_msgSend_objectAtIndexedSubscript_(a3, v273, 7, v274);
+  v275 = objc_msgSend_objectAtIndexedSubscript_(value, v273, 7, v274);
   objc_msgSend_floatValue(v275, v276, v277, v278);
   *&v1863 = __PAIR64__(LODWORD(v1844), LODWORD(v1862));
-  v281 = objc_msgSend_objectAtIndexedSubscript_(a3, v279, 8, v280);
+  v281 = objc_msgSend_objectAtIndexedSubscript_(value, v279, 8, v280);
   objc_msgSend_floatValue(v281, v282, v283, v284);
   LODWORD(v1844) = v285;
-  v288 = objc_msgSend_objectAtIndexedSubscript_(a3, v286, 9, v287);
+  v288 = objc_msgSend_objectAtIndexedSubscript_(value, v286, 9, v287);
   objc_msgSend_floatValue(v288, v289, v290, v291);
   v1813 = v292;
-  v295 = objc_msgSend_objectAtIndexedSubscript_(a3, v293, 10, v294);
+  v295 = objc_msgSend_objectAtIndexedSubscript_(value, v293, 10, v294);
   objc_msgSend_floatValue(v295, v296, v297, v298);
-  v301 = objc_msgSend_objectAtIndexedSubscript_(a3, v299, 11, v300);
+  v301 = objc_msgSend_objectAtIndexedSubscript_(value, v299, 11, v300);
   objc_msgSend_floatValue(v301, v302, v303, v304);
   *&v1845 = __PAIR64__(v1813, LODWORD(v1844));
-  v307 = objc_msgSend_objectAtIndexedSubscript_(a3, v305, 12, v306);
+  v307 = objc_msgSend_objectAtIndexedSubscript_(value, v305, 12, v306);
   objc_msgSend_floatValue(v307, v308, v309, v310);
   v1814 = v311;
-  v314 = objc_msgSend_objectAtIndexedSubscript_(a3, v312, 13, v313);
+  v314 = objc_msgSend_objectAtIndexedSubscript_(value, v312, 13, v313);
   objc_msgSend_floatValue(v314, v315, v316, v317);
   v1795 = v318;
-  v321 = objc_msgSend_objectAtIndexedSubscript_(a3, v319, 14, v320);
+  v321 = objc_msgSend_objectAtIndexedSubscript_(value, v319, 14, v320);
   objc_msgSend_floatValue(v321, v322, v323, v324);
-  v327 = objc_msgSend_objectAtIndexedSubscript_(a3, v325, 15, v326);
+  v327 = objc_msgSend_objectAtIndexedSubscript_(value, v325, 15, v326);
   objc_msgSend_floatValue(v327, v328, v329, v330);
-  objc_msgSend_convertTransform_toNode_(self, v331, a4, v332, v1880, v1863, v1845, COERCE_DOUBLE(__PAIR64__(v1795, v1814)));
+  objc_msgSend_convertTransform_toNode_(self, v331, node, v332, v1880, v1863, v1845, COERCE_DOUBLE(__PAIR64__(v1795, v1814)));
   LODWORD(v334) = v333;
   v1894[2] = objc_msgSend_numberWithFloat_(v226, v335, v336, v337, v334);
   v338 = MEMORY[0x1E696AD98];
-  v341 = objc_msgSend_objectAtIndexedSubscript_(a3, v339, 0, v340);
+  v341 = objc_msgSend_objectAtIndexedSubscript_(value, v339, 0, v340);
   objc_msgSend_floatValue(v341, v342, v343, v344);
   LODWORD(v1880) = v345;
-  v348 = objc_msgSend_objectAtIndexedSubscript_(a3, v346, 1, v347);
+  v348 = objc_msgSend_objectAtIndexedSubscript_(value, v346, 1, v347);
   objc_msgSend_floatValue(v348, v349, v350, v351);
   LODWORD(v1863) = v352;
-  v355 = objc_msgSend_objectAtIndexedSubscript_(a3, v353, 2, v354);
+  v355 = objc_msgSend_objectAtIndexedSubscript_(value, v353, 2, v354);
   objc_msgSend_floatValue(v355, v356, v357, v358);
-  v361 = objc_msgSend_objectAtIndexedSubscript_(a3, v359, 3, v360);
+  v361 = objc_msgSend_objectAtIndexedSubscript_(value, v359, 3, v360);
   objc_msgSend_floatValue(v361, v362, v363, v364);
   *&v1881 = __PAIR64__(LODWORD(v1863), LODWORD(v1880));
-  v367 = objc_msgSend_objectAtIndexedSubscript_(a3, v365, 4, v366);
+  v367 = objc_msgSend_objectAtIndexedSubscript_(value, v365, 4, v366);
   objc_msgSend_floatValue(v367, v368, v369, v370);
   LODWORD(v1863) = v371;
-  v374 = objc_msgSend_objectAtIndexedSubscript_(a3, v372, 5, v373);
+  v374 = objc_msgSend_objectAtIndexedSubscript_(value, v372, 5, v373);
   objc_msgSend_floatValue(v374, v375, v376, v377);
   LODWORD(v1845) = v378;
-  v381 = objc_msgSend_objectAtIndexedSubscript_(a3, v379, 6, v380);
+  v381 = objc_msgSend_objectAtIndexedSubscript_(value, v379, 6, v380);
   objc_msgSend_floatValue(v381, v382, v383, v384);
-  v387 = objc_msgSend_objectAtIndexedSubscript_(a3, v385, 7, v386);
+  v387 = objc_msgSend_objectAtIndexedSubscript_(value, v385, 7, v386);
   objc_msgSend_floatValue(v387, v388, v389, v390);
   *&v1864 = __PAIR64__(LODWORD(v1845), LODWORD(v1863));
-  v393 = objc_msgSend_objectAtIndexedSubscript_(a3, v391, 8, v392);
+  v393 = objc_msgSend_objectAtIndexedSubscript_(value, v391, 8, v392);
   objc_msgSend_floatValue(v393, v394, v395, v396);
   LODWORD(v1845) = v397;
-  v400 = objc_msgSend_objectAtIndexedSubscript_(a3, v398, 9, v399);
+  v400 = objc_msgSend_objectAtIndexedSubscript_(value, v398, 9, v399);
   objc_msgSend_floatValue(v400, v401, v402, v403);
   v1815 = v404;
-  v407 = objc_msgSend_objectAtIndexedSubscript_(a3, v405, 10, v406);
+  v407 = objc_msgSend_objectAtIndexedSubscript_(value, v405, 10, v406);
   objc_msgSend_floatValue(v407, v408, v409, v410);
-  v413 = objc_msgSend_objectAtIndexedSubscript_(a3, v411, 11, v412);
+  v413 = objc_msgSend_objectAtIndexedSubscript_(value, v411, 11, v412);
   objc_msgSend_floatValue(v413, v414, v415, v416);
   *&v1846 = __PAIR64__(v1815, LODWORD(v1845));
-  v419 = objc_msgSend_objectAtIndexedSubscript_(a3, v417, 12, v418);
+  v419 = objc_msgSend_objectAtIndexedSubscript_(value, v417, 12, v418);
   objc_msgSend_floatValue(v419, v420, v421, v422);
   v1816 = v423;
-  v426 = objc_msgSend_objectAtIndexedSubscript_(a3, v424, 13, v425);
+  v426 = objc_msgSend_objectAtIndexedSubscript_(value, v424, 13, v425);
   objc_msgSend_floatValue(v426, v427, v428, v429);
   v1796 = v430;
-  v433 = objc_msgSend_objectAtIndexedSubscript_(a3, v431, 14, v432);
+  v433 = objc_msgSend_objectAtIndexedSubscript_(value, v431, 14, v432);
   objc_msgSend_floatValue(v433, v434, v435, v436);
-  v439 = objc_msgSend_objectAtIndexedSubscript_(a3, v437, 15, v438);
+  v439 = objc_msgSend_objectAtIndexedSubscript_(value, v437, 15, v438);
   objc_msgSend_floatValue(v439, v440, v441, v442);
-  objc_msgSend_convertTransform_toNode_(self, v443, a4, v444, v1881, v1864, v1846, COERCE_DOUBLE(__PAIR64__(v1796, v1816)));
+  objc_msgSend_convertTransform_toNode_(self, v443, node, v444, v1881, v1864, v1846, COERCE_DOUBLE(__PAIR64__(v1796, v1816)));
   LODWORD(v446) = v445;
   v1894[3] = objc_msgSend_numberWithFloat_(v338, v447, v448, v449, v446);
   v450 = MEMORY[0x1E696AD98];
-  v453 = objc_msgSend_objectAtIndexedSubscript_(a3, v451, 0, v452);
+  v453 = objc_msgSend_objectAtIndexedSubscript_(value, v451, 0, v452);
   objc_msgSend_floatValue(v453, v454, v455, v456);
   LODWORD(v1881) = v457;
-  v460 = objc_msgSend_objectAtIndexedSubscript_(a3, v458, 1, v459);
+  v460 = objc_msgSend_objectAtIndexedSubscript_(value, v458, 1, v459);
   objc_msgSend_floatValue(v460, v461, v462, v463);
   LODWORD(v1864) = v464;
-  v467 = objc_msgSend_objectAtIndexedSubscript_(a3, v465, 2, v466);
+  v467 = objc_msgSend_objectAtIndexedSubscript_(value, v465, 2, v466);
   objc_msgSend_floatValue(v467, v468, v469, v470);
-  v473 = objc_msgSend_objectAtIndexedSubscript_(a3, v471, 3, v472);
+  v473 = objc_msgSend_objectAtIndexedSubscript_(value, v471, 3, v472);
   objc_msgSend_floatValue(v473, v474, v475, v476);
   *&v1882 = __PAIR64__(LODWORD(v1864), LODWORD(v1881));
-  v479 = objc_msgSend_objectAtIndexedSubscript_(a3, v477, 4, v478);
+  v479 = objc_msgSend_objectAtIndexedSubscript_(value, v477, 4, v478);
   objc_msgSend_floatValue(v479, v480, v481, v482);
   LODWORD(v1864) = v483;
-  v486 = objc_msgSend_objectAtIndexedSubscript_(a3, v484, 5, v485);
+  v486 = objc_msgSend_objectAtIndexedSubscript_(value, v484, 5, v485);
   objc_msgSend_floatValue(v486, v487, v488, v489);
   LODWORD(v1846) = v490;
-  v493 = objc_msgSend_objectAtIndexedSubscript_(a3, v491, 6, v492);
+  v493 = objc_msgSend_objectAtIndexedSubscript_(value, v491, 6, v492);
   objc_msgSend_floatValue(v493, v494, v495, v496);
-  v499 = objc_msgSend_objectAtIndexedSubscript_(a3, v497, 7, v498);
+  v499 = objc_msgSend_objectAtIndexedSubscript_(value, v497, 7, v498);
   objc_msgSend_floatValue(v499, v500, v501, v502);
   *&v1865 = __PAIR64__(LODWORD(v1846), LODWORD(v1864));
-  v505 = objc_msgSend_objectAtIndexedSubscript_(a3, v503, 8, v504);
+  v505 = objc_msgSend_objectAtIndexedSubscript_(value, v503, 8, v504);
   objc_msgSend_floatValue(v505, v506, v507, v508);
   LODWORD(v1846) = v509;
-  v512 = objc_msgSend_objectAtIndexedSubscript_(a3, v510, 9, v511);
+  v512 = objc_msgSend_objectAtIndexedSubscript_(value, v510, 9, v511);
   objc_msgSend_floatValue(v512, v513, v514, v515);
   v1817 = v516;
-  v519 = objc_msgSend_objectAtIndexedSubscript_(a3, v517, 10, v518);
+  v519 = objc_msgSend_objectAtIndexedSubscript_(value, v517, 10, v518);
   objc_msgSend_floatValue(v519, v520, v521, v522);
-  v525 = objc_msgSend_objectAtIndexedSubscript_(a3, v523, 11, v524);
+  v525 = objc_msgSend_objectAtIndexedSubscript_(value, v523, 11, v524);
   objc_msgSend_floatValue(v525, v526, v527, v528);
   *&v1847 = __PAIR64__(v1817, LODWORD(v1846));
-  v531 = objc_msgSend_objectAtIndexedSubscript_(a3, v529, 12, v530);
+  v531 = objc_msgSend_objectAtIndexedSubscript_(value, v529, 12, v530);
   objc_msgSend_floatValue(v531, v532, v533, v534);
   v1818 = v535;
-  v538 = objc_msgSend_objectAtIndexedSubscript_(a3, v536, 13, v537);
+  v538 = objc_msgSend_objectAtIndexedSubscript_(value, v536, 13, v537);
   objc_msgSend_floatValue(v538, v539, v540, v541);
   v1797 = v542;
-  v545 = objc_msgSend_objectAtIndexedSubscript_(a3, v543, 14, v544);
+  v545 = objc_msgSend_objectAtIndexedSubscript_(value, v543, 14, v544);
   objc_msgSend_floatValue(v545, v546, v547, v548);
-  v551 = objc_msgSend_objectAtIndexedSubscript_(a3, v549, 15, v550);
+  v551 = objc_msgSend_objectAtIndexedSubscript_(value, v549, 15, v550);
   objc_msgSend_floatValue(v551, v552, v553, v554);
-  objc_msgSend_convertTransform_toNode_(self, v555, a4, v556, v1882, v1865, v1847, COERCE_DOUBLE(__PAIR64__(v1797, v1818)));
+  objc_msgSend_convertTransform_toNode_(self, v555, node, v556, v1882, v1865, v1847, COERCE_DOUBLE(__PAIR64__(v1797, v1818)));
   v1894[4] = objc_msgSend_numberWithFloat_(v450, v557, v558, v559, v560);
   v561 = MEMORY[0x1E696AD98];
-  v564 = objc_msgSend_objectAtIndexedSubscript_(a3, v562, 0, v563);
+  v564 = objc_msgSend_objectAtIndexedSubscript_(value, v562, 0, v563);
   objc_msgSend_floatValue(v564, v565, v566, v567);
   LODWORD(v1882) = v568;
-  v571 = objc_msgSend_objectAtIndexedSubscript_(a3, v569, 1, v570);
+  v571 = objc_msgSend_objectAtIndexedSubscript_(value, v569, 1, v570);
   objc_msgSend_floatValue(v571, v572, v573, v574);
   LODWORD(v1865) = v575;
-  v578 = objc_msgSend_objectAtIndexedSubscript_(a3, v576, 2, v577);
+  v578 = objc_msgSend_objectAtIndexedSubscript_(value, v576, 2, v577);
   objc_msgSend_floatValue(v578, v579, v580, v581);
-  v584 = objc_msgSend_objectAtIndexedSubscript_(a3, v582, 3, v583);
+  v584 = objc_msgSend_objectAtIndexedSubscript_(value, v582, 3, v583);
   objc_msgSend_floatValue(v584, v585, v586, v587);
   *&v1883 = __PAIR64__(LODWORD(v1865), LODWORD(v1882));
-  v590 = objc_msgSend_objectAtIndexedSubscript_(a3, v588, 4, v589);
+  v590 = objc_msgSend_objectAtIndexedSubscript_(value, v588, 4, v589);
   objc_msgSend_floatValue(v590, v591, v592, v593);
   LODWORD(v1865) = v594;
-  v597 = objc_msgSend_objectAtIndexedSubscript_(a3, v595, 5, v596);
+  v597 = objc_msgSend_objectAtIndexedSubscript_(value, v595, 5, v596);
   objc_msgSend_floatValue(v597, v598, v599, v600);
   LODWORD(v1847) = v601;
-  v604 = objc_msgSend_objectAtIndexedSubscript_(a3, v602, 6, v603);
+  v604 = objc_msgSend_objectAtIndexedSubscript_(value, v602, 6, v603);
   objc_msgSend_floatValue(v604, v605, v606, v607);
-  v610 = objc_msgSend_objectAtIndexedSubscript_(a3, v608, 7, v609);
+  v610 = objc_msgSend_objectAtIndexedSubscript_(value, v608, 7, v609);
   objc_msgSend_floatValue(v610, v611, v612, v613);
   *&v1866 = __PAIR64__(LODWORD(v1847), LODWORD(v1865));
-  v616 = objc_msgSend_objectAtIndexedSubscript_(a3, v614, 8, v615);
+  v616 = objc_msgSend_objectAtIndexedSubscript_(value, v614, 8, v615);
   objc_msgSend_floatValue(v616, v617, v618, v619);
   LODWORD(v1847) = v620;
-  v623 = objc_msgSend_objectAtIndexedSubscript_(a3, v621, 9, v622);
+  v623 = objc_msgSend_objectAtIndexedSubscript_(value, v621, 9, v622);
   objc_msgSend_floatValue(v623, v624, v625, v626);
   v1819 = v627;
-  v630 = objc_msgSend_objectAtIndexedSubscript_(a3, v628, 10, v629);
+  v630 = objc_msgSend_objectAtIndexedSubscript_(value, v628, 10, v629);
   objc_msgSend_floatValue(v630, v631, v632, v633);
-  v636 = objc_msgSend_objectAtIndexedSubscript_(a3, v634, 11, v635);
+  v636 = objc_msgSend_objectAtIndexedSubscript_(value, v634, 11, v635);
   objc_msgSend_floatValue(v636, v637, v638, v639);
   *&v1848 = __PAIR64__(v1819, LODWORD(v1847));
-  v642 = objc_msgSend_objectAtIndexedSubscript_(a3, v640, 12, v641);
+  v642 = objc_msgSend_objectAtIndexedSubscript_(value, v640, 12, v641);
   objc_msgSend_floatValue(v642, v643, v644, v645);
   v1820 = v646;
-  v649 = objc_msgSend_objectAtIndexedSubscript_(a3, v647, 13, v648);
+  v649 = objc_msgSend_objectAtIndexedSubscript_(value, v647, 13, v648);
   objc_msgSend_floatValue(v649, v650, v651, v652);
   v1798 = v653;
-  v656 = objc_msgSend_objectAtIndexedSubscript_(a3, v654, 14, v655);
+  v656 = objc_msgSend_objectAtIndexedSubscript_(value, v654, 14, v655);
   objc_msgSend_floatValue(v656, v657, v658, v659);
-  v662 = objc_msgSend_objectAtIndexedSubscript_(a3, v660, 15, v661);
+  v662 = objc_msgSend_objectAtIndexedSubscript_(value, v660, 15, v661);
   objc_msgSend_floatValue(v662, v663, v664, v665);
-  objc_msgSend_convertTransform_toNode_(self, v666, a4, v667, v1883, v1866, v1848, COERCE_DOUBLE(__PAIR64__(v1798, v1820)));
+  objc_msgSend_convertTransform_toNode_(self, v666, node, v667, v1883, v1866, v1848, COERCE_DOUBLE(__PAIR64__(v1798, v1820)));
   LODWORD(v669) = v668;
   v1894[5] = objc_msgSend_numberWithFloat_(v561, v670, v671, v672, v669);
   v673 = MEMORY[0x1E696AD98];
-  v676 = objc_msgSend_objectAtIndexedSubscript_(a3, v674, 0, v675);
+  v676 = objc_msgSend_objectAtIndexedSubscript_(value, v674, 0, v675);
   objc_msgSend_floatValue(v676, v677, v678, v679);
   LODWORD(v1883) = v680;
-  v683 = objc_msgSend_objectAtIndexedSubscript_(a3, v681, 1, v682);
+  v683 = objc_msgSend_objectAtIndexedSubscript_(value, v681, 1, v682);
   objc_msgSend_floatValue(v683, v684, v685, v686);
   LODWORD(v1866) = v687;
-  v690 = objc_msgSend_objectAtIndexedSubscript_(a3, v688, 2, v689);
+  v690 = objc_msgSend_objectAtIndexedSubscript_(value, v688, 2, v689);
   objc_msgSend_floatValue(v690, v691, v692, v693);
-  v696 = objc_msgSend_objectAtIndexedSubscript_(a3, v694, 3, v695);
+  v696 = objc_msgSend_objectAtIndexedSubscript_(value, v694, 3, v695);
   objc_msgSend_floatValue(v696, v697, v698, v699);
   *&v1884 = __PAIR64__(LODWORD(v1866), LODWORD(v1883));
-  v702 = objc_msgSend_objectAtIndexedSubscript_(a3, v700, 4, v701);
+  v702 = objc_msgSend_objectAtIndexedSubscript_(value, v700, 4, v701);
   objc_msgSend_floatValue(v702, v703, v704, v705);
   LODWORD(v1866) = v706;
-  v709 = objc_msgSend_objectAtIndexedSubscript_(a3, v707, 5, v708);
+  v709 = objc_msgSend_objectAtIndexedSubscript_(value, v707, 5, v708);
   objc_msgSend_floatValue(v709, v710, v711, v712);
   LODWORD(v1848) = v713;
-  v716 = objc_msgSend_objectAtIndexedSubscript_(a3, v714, 6, v715);
+  v716 = objc_msgSend_objectAtIndexedSubscript_(value, v714, 6, v715);
   objc_msgSend_floatValue(v716, v717, v718, v719);
-  v722 = objc_msgSend_objectAtIndexedSubscript_(a3, v720, 7, v721);
+  v722 = objc_msgSend_objectAtIndexedSubscript_(value, v720, 7, v721);
   objc_msgSend_floatValue(v722, v723, v724, v725);
   *&v1867 = __PAIR64__(LODWORD(v1848), LODWORD(v1866));
-  v728 = objc_msgSend_objectAtIndexedSubscript_(a3, v726, 8, v727);
+  v728 = objc_msgSend_objectAtIndexedSubscript_(value, v726, 8, v727);
   objc_msgSend_floatValue(v728, v729, v730, v731);
   LODWORD(v1848) = v732;
-  v735 = objc_msgSend_objectAtIndexedSubscript_(a3, v733, 9, v734);
+  v735 = objc_msgSend_objectAtIndexedSubscript_(value, v733, 9, v734);
   objc_msgSend_floatValue(v735, v736, v737, v738);
   v1821 = v739;
-  v742 = objc_msgSend_objectAtIndexedSubscript_(a3, v740, 10, v741);
+  v742 = objc_msgSend_objectAtIndexedSubscript_(value, v740, 10, v741);
   objc_msgSend_floatValue(v742, v743, v744, v745);
-  v748 = objc_msgSend_objectAtIndexedSubscript_(a3, v746, 11, v747);
+  v748 = objc_msgSend_objectAtIndexedSubscript_(value, v746, 11, v747);
   objc_msgSend_floatValue(v748, v749, v750, v751);
   *&v1849 = __PAIR64__(v1821, LODWORD(v1848));
-  v754 = objc_msgSend_objectAtIndexedSubscript_(a3, v752, 12, v753);
+  v754 = objc_msgSend_objectAtIndexedSubscript_(value, v752, 12, v753);
   objc_msgSend_floatValue(v754, v755, v756, v757);
   v1822 = v758;
-  v761 = objc_msgSend_objectAtIndexedSubscript_(a3, v759, 13, v760);
+  v761 = objc_msgSend_objectAtIndexedSubscript_(value, v759, 13, v760);
   objc_msgSend_floatValue(v761, v762, v763, v764);
   v1799 = v765;
-  v768 = objc_msgSend_objectAtIndexedSubscript_(a3, v766, 14, v767);
+  v768 = objc_msgSend_objectAtIndexedSubscript_(value, v766, 14, v767);
   objc_msgSend_floatValue(v768, v769, v770, v771);
-  v774 = objc_msgSend_objectAtIndexedSubscript_(a3, v772, 15, v773);
+  v774 = objc_msgSend_objectAtIndexedSubscript_(value, v772, 15, v773);
   objc_msgSend_floatValue(v774, v775, v776, v777);
-  objc_msgSend_convertTransform_toNode_(self, v778, a4, v779, v1884, v1867, v1849, COERCE_DOUBLE(__PAIR64__(v1799, v1822)));
+  objc_msgSend_convertTransform_toNode_(self, v778, node, v779, v1884, v1867, v1849, COERCE_DOUBLE(__PAIR64__(v1799, v1822)));
   LODWORD(v781) = v780;
   v1894[6] = objc_msgSend_numberWithFloat_(v673, v782, v783, v784, v781);
   v785 = MEMORY[0x1E696AD98];
-  v788 = objc_msgSend_objectAtIndexedSubscript_(a3, v786, 0, v787);
+  v788 = objc_msgSend_objectAtIndexedSubscript_(value, v786, 0, v787);
   objc_msgSend_floatValue(v788, v789, v790, v791);
   LODWORD(v1884) = v792;
-  v795 = objc_msgSend_objectAtIndexedSubscript_(a3, v793, 1, v794);
+  v795 = objc_msgSend_objectAtIndexedSubscript_(value, v793, 1, v794);
   objc_msgSend_floatValue(v795, v796, v797, v798);
   LODWORD(v1867) = v799;
-  v802 = objc_msgSend_objectAtIndexedSubscript_(a3, v800, 2, v801);
+  v802 = objc_msgSend_objectAtIndexedSubscript_(value, v800, 2, v801);
   objc_msgSend_floatValue(v802, v803, v804, v805);
-  v808 = objc_msgSend_objectAtIndexedSubscript_(a3, v806, 3, v807);
+  v808 = objc_msgSend_objectAtIndexedSubscript_(value, v806, 3, v807);
   objc_msgSend_floatValue(v808, v809, v810, v811);
   *&v1885 = __PAIR64__(LODWORD(v1867), LODWORD(v1884));
-  v814 = objc_msgSend_objectAtIndexedSubscript_(a3, v812, 4, v813);
+  v814 = objc_msgSend_objectAtIndexedSubscript_(value, v812, 4, v813);
   objc_msgSend_floatValue(v814, v815, v816, v817);
   LODWORD(v1867) = v818;
-  v821 = objc_msgSend_objectAtIndexedSubscript_(a3, v819, 5, v820);
+  v821 = objc_msgSend_objectAtIndexedSubscript_(value, v819, 5, v820);
   objc_msgSend_floatValue(v821, v822, v823, v824);
   LODWORD(v1849) = v825;
-  v828 = objc_msgSend_objectAtIndexedSubscript_(a3, v826, 6, v827);
+  v828 = objc_msgSend_objectAtIndexedSubscript_(value, v826, 6, v827);
   objc_msgSend_floatValue(v828, v829, v830, v831);
-  v834 = objc_msgSend_objectAtIndexedSubscript_(a3, v832, 7, v833);
+  v834 = objc_msgSend_objectAtIndexedSubscript_(value, v832, 7, v833);
   objc_msgSend_floatValue(v834, v835, v836, v837);
   *&v1868 = __PAIR64__(LODWORD(v1849), LODWORD(v1867));
-  v840 = objc_msgSend_objectAtIndexedSubscript_(a3, v838, 8, v839);
+  v840 = objc_msgSend_objectAtIndexedSubscript_(value, v838, 8, v839);
   objc_msgSend_floatValue(v840, v841, v842, v843);
   LODWORD(v1849) = v844;
-  v847 = objc_msgSend_objectAtIndexedSubscript_(a3, v845, 9, v846);
+  v847 = objc_msgSend_objectAtIndexedSubscript_(value, v845, 9, v846);
   objc_msgSend_floatValue(v847, v848, v849, v850);
   v1823 = v851;
-  v854 = objc_msgSend_objectAtIndexedSubscript_(a3, v852, 10, v853);
+  v854 = objc_msgSend_objectAtIndexedSubscript_(value, v852, 10, v853);
   objc_msgSend_floatValue(v854, v855, v856, v857);
-  v860 = objc_msgSend_objectAtIndexedSubscript_(a3, v858, 11, v859);
+  v860 = objc_msgSend_objectAtIndexedSubscript_(value, v858, 11, v859);
   objc_msgSend_floatValue(v860, v861, v862, v863);
   *&v1850 = __PAIR64__(v1823, LODWORD(v1849));
-  v866 = objc_msgSend_objectAtIndexedSubscript_(a3, v864, 12, v865);
+  v866 = objc_msgSend_objectAtIndexedSubscript_(value, v864, 12, v865);
   objc_msgSend_floatValue(v866, v867, v868, v869);
   v1824 = v870;
-  v873 = objc_msgSend_objectAtIndexedSubscript_(a3, v871, 13, v872);
+  v873 = objc_msgSend_objectAtIndexedSubscript_(value, v871, 13, v872);
   objc_msgSend_floatValue(v873, v874, v875, v876);
   v1800 = v877;
-  v880 = objc_msgSend_objectAtIndexedSubscript_(a3, v878, 14, v879);
+  v880 = objc_msgSend_objectAtIndexedSubscript_(value, v878, 14, v879);
   objc_msgSend_floatValue(v880, v881, v882, v883);
-  v886 = objc_msgSend_objectAtIndexedSubscript_(a3, v884, 15, v885);
+  v886 = objc_msgSend_objectAtIndexedSubscript_(value, v884, 15, v885);
   objc_msgSend_floatValue(v886, v887, v888, v889);
-  objc_msgSend_convertTransform_toNode_(self, v890, a4, v891, v1885, v1868, v1850, COERCE_DOUBLE(__PAIR64__(v1800, v1824)));
+  objc_msgSend_convertTransform_toNode_(self, v890, node, v891, v1885, v1868, v1850, COERCE_DOUBLE(__PAIR64__(v1800, v1824)));
   LODWORD(v893) = v892;
   v1894[7] = objc_msgSend_numberWithFloat_(v785, v894, v895, v896, v893);
   v897 = MEMORY[0x1E696AD98];
-  v900 = objc_msgSend_objectAtIndexedSubscript_(a3, v898, 0, v899);
+  v900 = objc_msgSend_objectAtIndexedSubscript_(value, v898, 0, v899);
   objc_msgSend_floatValue(v900, v901, v902, v903);
   LODWORD(v1885) = v904;
-  v907 = objc_msgSend_objectAtIndexedSubscript_(a3, v905, 1, v906);
+  v907 = objc_msgSend_objectAtIndexedSubscript_(value, v905, 1, v906);
   objc_msgSend_floatValue(v907, v908, v909, v910);
   LODWORD(v1868) = v911;
-  v914 = objc_msgSend_objectAtIndexedSubscript_(a3, v912, 2, v913);
+  v914 = objc_msgSend_objectAtIndexedSubscript_(value, v912, 2, v913);
   objc_msgSend_floatValue(v914, v915, v916, v917);
-  v920 = objc_msgSend_objectAtIndexedSubscript_(a3, v918, 3, v919);
+  v920 = objc_msgSend_objectAtIndexedSubscript_(value, v918, 3, v919);
   objc_msgSend_floatValue(v920, v921, v922, v923);
   *&v1886 = __PAIR64__(LODWORD(v1868), LODWORD(v1885));
-  v926 = objc_msgSend_objectAtIndexedSubscript_(a3, v924, 4, v925);
+  v926 = objc_msgSend_objectAtIndexedSubscript_(value, v924, 4, v925);
   objc_msgSend_floatValue(v926, v927, v928, v929);
   LODWORD(v1868) = v930;
-  v933 = objc_msgSend_objectAtIndexedSubscript_(a3, v931, 5, v932);
+  v933 = objc_msgSend_objectAtIndexedSubscript_(value, v931, 5, v932);
   objc_msgSend_floatValue(v933, v934, v935, v936);
   LODWORD(v1850) = v937;
-  v940 = objc_msgSend_objectAtIndexedSubscript_(a3, v938, 6, v939);
+  v940 = objc_msgSend_objectAtIndexedSubscript_(value, v938, 6, v939);
   objc_msgSend_floatValue(v940, v941, v942, v943);
-  v946 = objc_msgSend_objectAtIndexedSubscript_(a3, v944, 7, v945);
+  v946 = objc_msgSend_objectAtIndexedSubscript_(value, v944, 7, v945);
   objc_msgSend_floatValue(v946, v947, v948, v949);
   *&v1869 = __PAIR64__(LODWORD(v1850), LODWORD(v1868));
-  v952 = objc_msgSend_objectAtIndexedSubscript_(a3, v950, 8, v951);
+  v952 = objc_msgSend_objectAtIndexedSubscript_(value, v950, 8, v951);
   objc_msgSend_floatValue(v952, v953, v954, v955);
   LODWORD(v1850) = v956;
-  v959 = objc_msgSend_objectAtIndexedSubscript_(a3, v957, 9, v958);
+  v959 = objc_msgSend_objectAtIndexedSubscript_(value, v957, 9, v958);
   objc_msgSend_floatValue(v959, v960, v961, v962);
   v1825 = v963;
-  v966 = objc_msgSend_objectAtIndexedSubscript_(a3, v964, 10, v965);
+  v966 = objc_msgSend_objectAtIndexedSubscript_(value, v964, 10, v965);
   objc_msgSend_floatValue(v966, v967, v968, v969);
-  v972 = objc_msgSend_objectAtIndexedSubscript_(a3, v970, 11, v971);
+  v972 = objc_msgSend_objectAtIndexedSubscript_(value, v970, 11, v971);
   objc_msgSend_floatValue(v972, v973, v974, v975);
   *&v1851 = __PAIR64__(v1825, LODWORD(v1850));
-  v978 = objc_msgSend_objectAtIndexedSubscript_(a3, v976, 12, v977);
+  v978 = objc_msgSend_objectAtIndexedSubscript_(value, v976, 12, v977);
   objc_msgSend_floatValue(v978, v979, v980, v981);
   v1826 = v982;
-  v985 = objc_msgSend_objectAtIndexedSubscript_(a3, v983, 13, v984);
+  v985 = objc_msgSend_objectAtIndexedSubscript_(value, v983, 13, v984);
   objc_msgSend_floatValue(v985, v986, v987, v988);
   v1801 = v989;
-  v992 = objc_msgSend_objectAtIndexedSubscript_(a3, v990, 14, v991);
+  v992 = objc_msgSend_objectAtIndexedSubscript_(value, v990, 14, v991);
   objc_msgSend_floatValue(v992, v993, v994, v995);
-  v998 = objc_msgSend_objectAtIndexedSubscript_(a3, v996, 15, v997);
+  v998 = objc_msgSend_objectAtIndexedSubscript_(value, v996, 15, v997);
   objc_msgSend_floatValue(v998, v999, v1000, v1001);
-  objc_msgSend_convertTransform_toNode_(self, v1002, a4, v1003, v1886, v1869, v1851, COERCE_DOUBLE(__PAIR64__(v1801, v1826)));
+  objc_msgSend_convertTransform_toNode_(self, v1002, node, v1003, v1886, v1869, v1851, COERCE_DOUBLE(__PAIR64__(v1801, v1826)));
   v1894[8] = objc_msgSend_numberWithFloat_(v897, v1004, v1005, v1006, v1007);
   v1008 = MEMORY[0x1E696AD98];
-  v1011 = objc_msgSend_objectAtIndexedSubscript_(a3, v1009, 0, v1010);
+  v1011 = objc_msgSend_objectAtIndexedSubscript_(value, v1009, 0, v1010);
   objc_msgSend_floatValue(v1011, v1012, v1013, v1014);
   LODWORD(v1886) = v1015;
-  v1018 = objc_msgSend_objectAtIndexedSubscript_(a3, v1016, 1, v1017);
+  v1018 = objc_msgSend_objectAtIndexedSubscript_(value, v1016, 1, v1017);
   objc_msgSend_floatValue(v1018, v1019, v1020, v1021);
   LODWORD(v1869) = v1022;
-  v1025 = objc_msgSend_objectAtIndexedSubscript_(a3, v1023, 2, v1024);
+  v1025 = objc_msgSend_objectAtIndexedSubscript_(value, v1023, 2, v1024);
   objc_msgSend_floatValue(v1025, v1026, v1027, v1028);
-  v1031 = objc_msgSend_objectAtIndexedSubscript_(a3, v1029, 3, v1030);
+  v1031 = objc_msgSend_objectAtIndexedSubscript_(value, v1029, 3, v1030);
   objc_msgSend_floatValue(v1031, v1032, v1033, v1034);
   *&v1887 = __PAIR64__(LODWORD(v1869), LODWORD(v1886));
-  v1037 = objc_msgSend_objectAtIndexedSubscript_(a3, v1035, 4, v1036);
+  v1037 = objc_msgSend_objectAtIndexedSubscript_(value, v1035, 4, v1036);
   objc_msgSend_floatValue(v1037, v1038, v1039, v1040);
   LODWORD(v1869) = v1041;
-  v1044 = objc_msgSend_objectAtIndexedSubscript_(a3, v1042, 5, v1043);
+  v1044 = objc_msgSend_objectAtIndexedSubscript_(value, v1042, 5, v1043);
   objc_msgSend_floatValue(v1044, v1045, v1046, v1047);
   LODWORD(v1851) = v1048;
-  v1051 = objc_msgSend_objectAtIndexedSubscript_(a3, v1049, 6, v1050);
+  v1051 = objc_msgSend_objectAtIndexedSubscript_(value, v1049, 6, v1050);
   objc_msgSend_floatValue(v1051, v1052, v1053, v1054);
-  v1057 = objc_msgSend_objectAtIndexedSubscript_(a3, v1055, 7, v1056);
+  v1057 = objc_msgSend_objectAtIndexedSubscript_(value, v1055, 7, v1056);
   objc_msgSend_floatValue(v1057, v1058, v1059, v1060);
   *&v1870 = __PAIR64__(LODWORD(v1851), LODWORD(v1869));
-  v1063 = objc_msgSend_objectAtIndexedSubscript_(a3, v1061, 8, v1062);
+  v1063 = objc_msgSend_objectAtIndexedSubscript_(value, v1061, 8, v1062);
   objc_msgSend_floatValue(v1063, v1064, v1065, v1066);
   LODWORD(v1851) = v1067;
-  v1070 = objc_msgSend_objectAtIndexedSubscript_(a3, v1068, 9, v1069);
+  v1070 = objc_msgSend_objectAtIndexedSubscript_(value, v1068, 9, v1069);
   objc_msgSend_floatValue(v1070, v1071, v1072, v1073);
   v1827 = v1074;
-  v1077 = objc_msgSend_objectAtIndexedSubscript_(a3, v1075, 10, v1076);
+  v1077 = objc_msgSend_objectAtIndexedSubscript_(value, v1075, 10, v1076);
   objc_msgSend_floatValue(v1077, v1078, v1079, v1080);
-  v1083 = objc_msgSend_objectAtIndexedSubscript_(a3, v1081, 11, v1082);
+  v1083 = objc_msgSend_objectAtIndexedSubscript_(value, v1081, 11, v1082);
   objc_msgSend_floatValue(v1083, v1084, v1085, v1086);
   *&v1852 = __PAIR64__(v1827, LODWORD(v1851));
-  v1089 = objc_msgSend_objectAtIndexedSubscript_(a3, v1087, 12, v1088);
+  v1089 = objc_msgSend_objectAtIndexedSubscript_(value, v1087, 12, v1088);
   objc_msgSend_floatValue(v1089, v1090, v1091, v1092);
   v1828 = v1093;
-  v1096 = objc_msgSend_objectAtIndexedSubscript_(a3, v1094, 13, v1095);
+  v1096 = objc_msgSend_objectAtIndexedSubscript_(value, v1094, 13, v1095);
   objc_msgSend_floatValue(v1096, v1097, v1098, v1099);
   v1802 = v1100;
-  v1103 = objc_msgSend_objectAtIndexedSubscript_(a3, v1101, 14, v1102);
+  v1103 = objc_msgSend_objectAtIndexedSubscript_(value, v1101, 14, v1102);
   objc_msgSend_floatValue(v1103, v1104, v1105, v1106);
-  v1109 = objc_msgSend_objectAtIndexedSubscript_(a3, v1107, 15, v1108);
+  v1109 = objc_msgSend_objectAtIndexedSubscript_(value, v1107, 15, v1108);
   objc_msgSend_floatValue(v1109, v1110, v1111, v1112);
-  objc_msgSend_convertTransform_toNode_(self, v1113, a4, v1114, v1887, v1870, v1852, COERCE_DOUBLE(__PAIR64__(v1802, v1828)));
+  objc_msgSend_convertTransform_toNode_(self, v1113, node, v1114, v1887, v1870, v1852, COERCE_DOUBLE(__PAIR64__(v1802, v1828)));
   LODWORD(v1116) = v1115;
   v1894[9] = objc_msgSend_numberWithFloat_(v1008, v1117, v1118, v1119, v1116);
   v1120 = MEMORY[0x1E696AD98];
-  v1123 = objc_msgSend_objectAtIndexedSubscript_(a3, v1121, 0, v1122);
+  v1123 = objc_msgSend_objectAtIndexedSubscript_(value, v1121, 0, v1122);
   objc_msgSend_floatValue(v1123, v1124, v1125, v1126);
   LODWORD(v1887) = v1127;
-  v1130 = objc_msgSend_objectAtIndexedSubscript_(a3, v1128, 1, v1129);
+  v1130 = objc_msgSend_objectAtIndexedSubscript_(value, v1128, 1, v1129);
   objc_msgSend_floatValue(v1130, v1131, v1132, v1133);
   LODWORD(v1870) = v1134;
-  v1137 = objc_msgSend_objectAtIndexedSubscript_(a3, v1135, 2, v1136);
+  v1137 = objc_msgSend_objectAtIndexedSubscript_(value, v1135, 2, v1136);
   objc_msgSend_floatValue(v1137, v1138, v1139, v1140);
-  v1143 = objc_msgSend_objectAtIndexedSubscript_(a3, v1141, 3, v1142);
+  v1143 = objc_msgSend_objectAtIndexedSubscript_(value, v1141, 3, v1142);
   objc_msgSend_floatValue(v1143, v1144, v1145, v1146);
   *&v1888 = __PAIR64__(LODWORD(v1870), LODWORD(v1887));
-  v1149 = objc_msgSend_objectAtIndexedSubscript_(a3, v1147, 4, v1148);
+  v1149 = objc_msgSend_objectAtIndexedSubscript_(value, v1147, 4, v1148);
   objc_msgSend_floatValue(v1149, v1150, v1151, v1152);
   LODWORD(v1870) = v1153;
-  v1156 = objc_msgSend_objectAtIndexedSubscript_(a3, v1154, 5, v1155);
+  v1156 = objc_msgSend_objectAtIndexedSubscript_(value, v1154, 5, v1155);
   objc_msgSend_floatValue(v1156, v1157, v1158, v1159);
   LODWORD(v1852) = v1160;
-  v1163 = objc_msgSend_objectAtIndexedSubscript_(a3, v1161, 6, v1162);
+  v1163 = objc_msgSend_objectAtIndexedSubscript_(value, v1161, 6, v1162);
   objc_msgSend_floatValue(v1163, v1164, v1165, v1166);
-  v1169 = objc_msgSend_objectAtIndexedSubscript_(a3, v1167, 7, v1168);
+  v1169 = objc_msgSend_objectAtIndexedSubscript_(value, v1167, 7, v1168);
   objc_msgSend_floatValue(v1169, v1170, v1171, v1172);
   *&v1871 = __PAIR64__(LODWORD(v1852), LODWORD(v1870));
-  v1175 = objc_msgSend_objectAtIndexedSubscript_(a3, v1173, 8, v1174);
+  v1175 = objc_msgSend_objectAtIndexedSubscript_(value, v1173, 8, v1174);
   objc_msgSend_floatValue(v1175, v1176, v1177, v1178);
   LODWORD(v1852) = v1179;
-  v1182 = objc_msgSend_objectAtIndexedSubscript_(a3, v1180, 9, v1181);
+  v1182 = objc_msgSend_objectAtIndexedSubscript_(value, v1180, 9, v1181);
   objc_msgSend_floatValue(v1182, v1183, v1184, v1185);
   v1829 = v1186;
-  v1189 = objc_msgSend_objectAtIndexedSubscript_(a3, v1187, 10, v1188);
+  v1189 = objc_msgSend_objectAtIndexedSubscript_(value, v1187, 10, v1188);
   objc_msgSend_floatValue(v1189, v1190, v1191, v1192);
-  v1195 = objc_msgSend_objectAtIndexedSubscript_(a3, v1193, 11, v1194);
+  v1195 = objc_msgSend_objectAtIndexedSubscript_(value, v1193, 11, v1194);
   objc_msgSend_floatValue(v1195, v1196, v1197, v1198);
   *&v1853 = __PAIR64__(v1829, LODWORD(v1852));
-  v1201 = objc_msgSend_objectAtIndexedSubscript_(a3, v1199, 12, v1200);
+  v1201 = objc_msgSend_objectAtIndexedSubscript_(value, v1199, 12, v1200);
   objc_msgSend_floatValue(v1201, v1202, v1203, v1204);
   v1830 = v1205;
-  v1208 = objc_msgSend_objectAtIndexedSubscript_(a3, v1206, 13, v1207);
+  v1208 = objc_msgSend_objectAtIndexedSubscript_(value, v1206, 13, v1207);
   objc_msgSend_floatValue(v1208, v1209, v1210, v1211);
   v1803 = v1212;
-  v1215 = objc_msgSend_objectAtIndexedSubscript_(a3, v1213, 14, v1214);
+  v1215 = objc_msgSend_objectAtIndexedSubscript_(value, v1213, 14, v1214);
   objc_msgSend_floatValue(v1215, v1216, v1217, v1218);
-  v1221 = objc_msgSend_objectAtIndexedSubscript_(a3, v1219, 15, v1220);
+  v1221 = objc_msgSend_objectAtIndexedSubscript_(value, v1219, 15, v1220);
   objc_msgSend_floatValue(v1221, v1222, v1223, v1224);
-  objc_msgSend_convertTransform_toNode_(self, v1225, a4, v1226, v1888, v1871, v1853, COERCE_DOUBLE(__PAIR64__(v1803, v1830)));
+  objc_msgSend_convertTransform_toNode_(self, v1225, node, v1226, v1888, v1871, v1853, COERCE_DOUBLE(__PAIR64__(v1803, v1830)));
   LODWORD(v1228) = v1227;
   v1894[10] = objc_msgSend_numberWithFloat_(v1120, v1229, v1230, v1231, v1228);
   v1232 = MEMORY[0x1E696AD98];
-  v1235 = objc_msgSend_objectAtIndexedSubscript_(a3, v1233, 0, v1234);
+  v1235 = objc_msgSend_objectAtIndexedSubscript_(value, v1233, 0, v1234);
   objc_msgSend_floatValue(v1235, v1236, v1237, v1238);
   LODWORD(v1888) = v1239;
-  v1242 = objc_msgSend_objectAtIndexedSubscript_(a3, v1240, 1, v1241);
+  v1242 = objc_msgSend_objectAtIndexedSubscript_(value, v1240, 1, v1241);
   objc_msgSend_floatValue(v1242, v1243, v1244, v1245);
   LODWORD(v1871) = v1246;
-  v1249 = objc_msgSend_objectAtIndexedSubscript_(a3, v1247, 2, v1248);
+  v1249 = objc_msgSend_objectAtIndexedSubscript_(value, v1247, 2, v1248);
   objc_msgSend_floatValue(v1249, v1250, v1251, v1252);
-  v1255 = objc_msgSend_objectAtIndexedSubscript_(a3, v1253, 3, v1254);
+  v1255 = objc_msgSend_objectAtIndexedSubscript_(value, v1253, 3, v1254);
   objc_msgSend_floatValue(v1255, v1256, v1257, v1258);
   *&v1889 = __PAIR64__(LODWORD(v1871), LODWORD(v1888));
-  v1261 = objc_msgSend_objectAtIndexedSubscript_(a3, v1259, 4, v1260);
+  v1261 = objc_msgSend_objectAtIndexedSubscript_(value, v1259, 4, v1260);
   objc_msgSend_floatValue(v1261, v1262, v1263, v1264);
   LODWORD(v1871) = v1265;
-  v1268 = objc_msgSend_objectAtIndexedSubscript_(a3, v1266, 5, v1267);
+  v1268 = objc_msgSend_objectAtIndexedSubscript_(value, v1266, 5, v1267);
   objc_msgSend_floatValue(v1268, v1269, v1270, v1271);
   LODWORD(v1853) = v1272;
-  v1275 = objc_msgSend_objectAtIndexedSubscript_(a3, v1273, 6, v1274);
+  v1275 = objc_msgSend_objectAtIndexedSubscript_(value, v1273, 6, v1274);
   objc_msgSend_floatValue(v1275, v1276, v1277, v1278);
-  v1281 = objc_msgSend_objectAtIndexedSubscript_(a3, v1279, 7, v1280);
+  v1281 = objc_msgSend_objectAtIndexedSubscript_(value, v1279, 7, v1280);
   objc_msgSend_floatValue(v1281, v1282, v1283, v1284);
   *&v1872 = __PAIR64__(LODWORD(v1853), LODWORD(v1871));
-  v1287 = objc_msgSend_objectAtIndexedSubscript_(a3, v1285, 8, v1286);
+  v1287 = objc_msgSend_objectAtIndexedSubscript_(value, v1285, 8, v1286);
   objc_msgSend_floatValue(v1287, v1288, v1289, v1290);
   LODWORD(v1853) = v1291;
-  v1294 = objc_msgSend_objectAtIndexedSubscript_(a3, v1292, 9, v1293);
+  v1294 = objc_msgSend_objectAtIndexedSubscript_(value, v1292, 9, v1293);
   objc_msgSend_floatValue(v1294, v1295, v1296, v1297);
   v1831 = v1298;
-  v1301 = objc_msgSend_objectAtIndexedSubscript_(a3, v1299, 10, v1300);
+  v1301 = objc_msgSend_objectAtIndexedSubscript_(value, v1299, 10, v1300);
   objc_msgSend_floatValue(v1301, v1302, v1303, v1304);
-  v1307 = objc_msgSend_objectAtIndexedSubscript_(a3, v1305, 11, v1306);
+  v1307 = objc_msgSend_objectAtIndexedSubscript_(value, v1305, 11, v1306);
   objc_msgSend_floatValue(v1307, v1308, v1309, v1310);
   *&v1854 = __PAIR64__(v1831, LODWORD(v1853));
-  v1313 = objc_msgSend_objectAtIndexedSubscript_(a3, v1311, 12, v1312);
+  v1313 = objc_msgSend_objectAtIndexedSubscript_(value, v1311, 12, v1312);
   objc_msgSend_floatValue(v1313, v1314, v1315, v1316);
   v1832 = v1317;
-  v1320 = objc_msgSend_objectAtIndexedSubscript_(a3, v1318, 13, v1319);
+  v1320 = objc_msgSend_objectAtIndexedSubscript_(value, v1318, 13, v1319);
   objc_msgSend_floatValue(v1320, v1321, v1322, v1323);
   v1804 = v1324;
-  v1327 = objc_msgSend_objectAtIndexedSubscript_(a3, v1325, 14, v1326);
+  v1327 = objc_msgSend_objectAtIndexedSubscript_(value, v1325, 14, v1326);
   objc_msgSend_floatValue(v1327, v1328, v1329, v1330);
-  v1333 = objc_msgSend_objectAtIndexedSubscript_(a3, v1331, 15, v1332);
+  v1333 = objc_msgSend_objectAtIndexedSubscript_(value, v1331, 15, v1332);
   objc_msgSend_floatValue(v1333, v1334, v1335, v1336);
-  objc_msgSend_convertTransform_toNode_(self, v1337, a4, v1338, v1889, v1872, v1854, COERCE_DOUBLE(__PAIR64__(v1804, v1832)));
+  objc_msgSend_convertTransform_toNode_(self, v1337, node, v1338, v1889, v1872, v1854, COERCE_DOUBLE(__PAIR64__(v1804, v1832)));
   LODWORD(v1340) = v1339;
   v1894[11] = objc_msgSend_numberWithFloat_(v1232, v1341, v1342, v1343, v1340);
   v1344 = MEMORY[0x1E696AD98];
-  v1347 = objc_msgSend_objectAtIndexedSubscript_(a3, v1345, 0, v1346);
+  v1347 = objc_msgSend_objectAtIndexedSubscript_(value, v1345, 0, v1346);
   objc_msgSend_floatValue(v1347, v1348, v1349, v1350);
   LODWORD(v1889) = v1351;
-  v1354 = objc_msgSend_objectAtIndexedSubscript_(a3, v1352, 1, v1353);
+  v1354 = objc_msgSend_objectAtIndexedSubscript_(value, v1352, 1, v1353);
   objc_msgSend_floatValue(v1354, v1355, v1356, v1357);
   LODWORD(v1872) = v1358;
-  v1361 = objc_msgSend_objectAtIndexedSubscript_(a3, v1359, 2, v1360);
+  v1361 = objc_msgSend_objectAtIndexedSubscript_(value, v1359, 2, v1360);
   objc_msgSend_floatValue(v1361, v1362, v1363, v1364);
-  v1367 = objc_msgSend_objectAtIndexedSubscript_(a3, v1365, 3, v1366);
+  v1367 = objc_msgSend_objectAtIndexedSubscript_(value, v1365, 3, v1366);
   objc_msgSend_floatValue(v1367, v1368, v1369, v1370);
   *&v1890 = __PAIR64__(LODWORD(v1872), LODWORD(v1889));
-  v1373 = objc_msgSend_objectAtIndexedSubscript_(a3, v1371, 4, v1372);
+  v1373 = objc_msgSend_objectAtIndexedSubscript_(value, v1371, 4, v1372);
   objc_msgSend_floatValue(v1373, v1374, v1375, v1376);
   LODWORD(v1872) = v1377;
-  v1380 = objc_msgSend_objectAtIndexedSubscript_(a3, v1378, 5, v1379);
+  v1380 = objc_msgSend_objectAtIndexedSubscript_(value, v1378, 5, v1379);
   objc_msgSend_floatValue(v1380, v1381, v1382, v1383);
   LODWORD(v1854) = v1384;
-  v1387 = objc_msgSend_objectAtIndexedSubscript_(a3, v1385, 6, v1386);
+  v1387 = objc_msgSend_objectAtIndexedSubscript_(value, v1385, 6, v1386);
   objc_msgSend_floatValue(v1387, v1388, v1389, v1390);
-  v1393 = objc_msgSend_objectAtIndexedSubscript_(a3, v1391, 7, v1392);
+  v1393 = objc_msgSend_objectAtIndexedSubscript_(value, v1391, 7, v1392);
   objc_msgSend_floatValue(v1393, v1394, v1395, v1396);
   *&v1873 = __PAIR64__(LODWORD(v1854), LODWORD(v1872));
-  v1399 = objc_msgSend_objectAtIndexedSubscript_(a3, v1397, 8, v1398);
+  v1399 = objc_msgSend_objectAtIndexedSubscript_(value, v1397, 8, v1398);
   objc_msgSend_floatValue(v1399, v1400, v1401, v1402);
   LODWORD(v1854) = v1403;
-  v1406 = objc_msgSend_objectAtIndexedSubscript_(a3, v1404, 9, v1405);
+  v1406 = objc_msgSend_objectAtIndexedSubscript_(value, v1404, 9, v1405);
   objc_msgSend_floatValue(v1406, v1407, v1408, v1409);
   v1833 = v1410;
-  v1413 = objc_msgSend_objectAtIndexedSubscript_(a3, v1411, 10, v1412);
+  v1413 = objc_msgSend_objectAtIndexedSubscript_(value, v1411, 10, v1412);
   objc_msgSend_floatValue(v1413, v1414, v1415, v1416);
-  v1419 = objc_msgSend_objectAtIndexedSubscript_(a3, v1417, 11, v1418);
+  v1419 = objc_msgSend_objectAtIndexedSubscript_(value, v1417, 11, v1418);
   objc_msgSend_floatValue(v1419, v1420, v1421, v1422);
   *&v1855 = __PAIR64__(v1833, LODWORD(v1854));
-  v1425 = objc_msgSend_objectAtIndexedSubscript_(a3, v1423, 12, v1424);
+  v1425 = objc_msgSend_objectAtIndexedSubscript_(value, v1423, 12, v1424);
   objc_msgSend_floatValue(v1425, v1426, v1427, v1428);
   v1834 = v1429;
-  v1432 = objc_msgSend_objectAtIndexedSubscript_(a3, v1430, 13, v1431);
+  v1432 = objc_msgSend_objectAtIndexedSubscript_(value, v1430, 13, v1431);
   objc_msgSend_floatValue(v1432, v1433, v1434, v1435);
   v1805 = v1436;
-  v1439 = objc_msgSend_objectAtIndexedSubscript_(a3, v1437, 14, v1438);
+  v1439 = objc_msgSend_objectAtIndexedSubscript_(value, v1437, 14, v1438);
   objc_msgSend_floatValue(v1439, v1440, v1441, v1442);
-  v1445 = objc_msgSend_objectAtIndexedSubscript_(a3, v1443, 15, v1444);
+  v1445 = objc_msgSend_objectAtIndexedSubscript_(value, v1443, 15, v1444);
   objc_msgSend_floatValue(v1445, v1446, v1447, v1448);
-  objc_msgSend_convertTransform_toNode_(self, v1449, a4, v1450, v1890, v1873, v1855, COERCE_DOUBLE(__PAIR64__(v1805, v1834)));
+  objc_msgSend_convertTransform_toNode_(self, v1449, node, v1450, v1890, v1873, v1855, COERCE_DOUBLE(__PAIR64__(v1805, v1834)));
   v1894[12] = objc_msgSend_numberWithFloat_(v1344, v1451, v1452, v1453, v1454);
   v1455 = MEMORY[0x1E696AD98];
-  v1458 = objc_msgSend_objectAtIndexedSubscript_(a3, v1456, 0, v1457);
+  v1458 = objc_msgSend_objectAtIndexedSubscript_(value, v1456, 0, v1457);
   objc_msgSend_floatValue(v1458, v1459, v1460, v1461);
   LODWORD(v1890) = v1462;
-  v1465 = objc_msgSend_objectAtIndexedSubscript_(a3, v1463, 1, v1464);
+  v1465 = objc_msgSend_objectAtIndexedSubscript_(value, v1463, 1, v1464);
   objc_msgSend_floatValue(v1465, v1466, v1467, v1468);
   LODWORD(v1873) = v1469;
-  v1472 = objc_msgSend_objectAtIndexedSubscript_(a3, v1470, 2, v1471);
+  v1472 = objc_msgSend_objectAtIndexedSubscript_(value, v1470, 2, v1471);
   objc_msgSend_floatValue(v1472, v1473, v1474, v1475);
-  v1478 = objc_msgSend_objectAtIndexedSubscript_(a3, v1476, 3, v1477);
+  v1478 = objc_msgSend_objectAtIndexedSubscript_(value, v1476, 3, v1477);
   objc_msgSend_floatValue(v1478, v1479, v1480, v1481);
   *&v1891 = __PAIR64__(LODWORD(v1873), LODWORD(v1890));
-  v1484 = objc_msgSend_objectAtIndexedSubscript_(a3, v1482, 4, v1483);
+  v1484 = objc_msgSend_objectAtIndexedSubscript_(value, v1482, 4, v1483);
   objc_msgSend_floatValue(v1484, v1485, v1486, v1487);
   LODWORD(v1873) = v1488;
-  v1491 = objc_msgSend_objectAtIndexedSubscript_(a3, v1489, 5, v1490);
+  v1491 = objc_msgSend_objectAtIndexedSubscript_(value, v1489, 5, v1490);
   objc_msgSend_floatValue(v1491, v1492, v1493, v1494);
   LODWORD(v1855) = v1495;
-  v1498 = objc_msgSend_objectAtIndexedSubscript_(a3, v1496, 6, v1497);
+  v1498 = objc_msgSend_objectAtIndexedSubscript_(value, v1496, 6, v1497);
   objc_msgSend_floatValue(v1498, v1499, v1500, v1501);
-  v1504 = objc_msgSend_objectAtIndexedSubscript_(a3, v1502, 7, v1503);
+  v1504 = objc_msgSend_objectAtIndexedSubscript_(value, v1502, 7, v1503);
   objc_msgSend_floatValue(v1504, v1505, v1506, v1507);
   *&v1874 = __PAIR64__(LODWORD(v1855), LODWORD(v1873));
-  v1510 = objc_msgSend_objectAtIndexedSubscript_(a3, v1508, 8, v1509);
+  v1510 = objc_msgSend_objectAtIndexedSubscript_(value, v1508, 8, v1509);
   objc_msgSend_floatValue(v1510, v1511, v1512, v1513);
   LODWORD(v1855) = v1514;
-  v1517 = objc_msgSend_objectAtIndexedSubscript_(a3, v1515, 9, v1516);
+  v1517 = objc_msgSend_objectAtIndexedSubscript_(value, v1515, 9, v1516);
   objc_msgSend_floatValue(v1517, v1518, v1519, v1520);
   v1835 = v1521;
-  v1524 = objc_msgSend_objectAtIndexedSubscript_(a3, v1522, 10, v1523);
+  v1524 = objc_msgSend_objectAtIndexedSubscript_(value, v1522, 10, v1523);
   objc_msgSend_floatValue(v1524, v1525, v1526, v1527);
-  v1530 = objc_msgSend_objectAtIndexedSubscript_(a3, v1528, 11, v1529);
+  v1530 = objc_msgSend_objectAtIndexedSubscript_(value, v1528, 11, v1529);
   objc_msgSend_floatValue(v1530, v1531, v1532, v1533);
   *&v1856 = __PAIR64__(v1835, LODWORD(v1855));
-  v1536 = objc_msgSend_objectAtIndexedSubscript_(a3, v1534, 12, v1535);
+  v1536 = objc_msgSend_objectAtIndexedSubscript_(value, v1534, 12, v1535);
   objc_msgSend_floatValue(v1536, v1537, v1538, v1539);
   v1836 = v1540;
-  v1543 = objc_msgSend_objectAtIndexedSubscript_(a3, v1541, 13, v1542);
+  v1543 = objc_msgSend_objectAtIndexedSubscript_(value, v1541, 13, v1542);
   objc_msgSend_floatValue(v1543, v1544, v1545, v1546);
   v1806 = v1547;
-  v1550 = objc_msgSend_objectAtIndexedSubscript_(a3, v1548, 14, v1549);
+  v1550 = objc_msgSend_objectAtIndexedSubscript_(value, v1548, 14, v1549);
   objc_msgSend_floatValue(v1550, v1551, v1552, v1553);
-  v1556 = objc_msgSend_objectAtIndexedSubscript_(a3, v1554, 15, v1555);
+  v1556 = objc_msgSend_objectAtIndexedSubscript_(value, v1554, 15, v1555);
   objc_msgSend_floatValue(v1556, v1557, v1558, v1559);
-  objc_msgSend_convertTransform_toNode_(self, v1560, a4, v1561, v1891, v1874, v1856, COERCE_DOUBLE(__PAIR64__(v1806, v1836)));
+  objc_msgSend_convertTransform_toNode_(self, v1560, node, v1561, v1891, v1874, v1856, COERCE_DOUBLE(__PAIR64__(v1806, v1836)));
   LODWORD(v1563) = v1562;
   v1894[13] = objc_msgSend_numberWithFloat_(v1455, v1564, v1565, v1566, v1563);
   v1567 = MEMORY[0x1E696AD98];
-  v1570 = objc_msgSend_objectAtIndexedSubscript_(a3, v1568, 0, v1569);
+  v1570 = objc_msgSend_objectAtIndexedSubscript_(value, v1568, 0, v1569);
   objc_msgSend_floatValue(v1570, v1571, v1572, v1573);
   LODWORD(v1891) = v1574;
-  v1577 = objc_msgSend_objectAtIndexedSubscript_(a3, v1575, 1, v1576);
+  v1577 = objc_msgSend_objectAtIndexedSubscript_(value, v1575, 1, v1576);
   objc_msgSend_floatValue(v1577, v1578, v1579, v1580);
   LODWORD(v1874) = v1581;
-  v1584 = objc_msgSend_objectAtIndexedSubscript_(a3, v1582, 2, v1583);
+  v1584 = objc_msgSend_objectAtIndexedSubscript_(value, v1582, 2, v1583);
   objc_msgSend_floatValue(v1584, v1585, v1586, v1587);
-  v1590 = objc_msgSend_objectAtIndexedSubscript_(a3, v1588, 3, v1589);
+  v1590 = objc_msgSend_objectAtIndexedSubscript_(value, v1588, 3, v1589);
   objc_msgSend_floatValue(v1590, v1591, v1592, v1593);
   *&v1892 = __PAIR64__(LODWORD(v1874), LODWORD(v1891));
-  v1596 = objc_msgSend_objectAtIndexedSubscript_(a3, v1594, 4, v1595);
+  v1596 = objc_msgSend_objectAtIndexedSubscript_(value, v1594, 4, v1595);
   objc_msgSend_floatValue(v1596, v1597, v1598, v1599);
   LODWORD(v1874) = v1600;
-  v1603 = objc_msgSend_objectAtIndexedSubscript_(a3, v1601, 5, v1602);
+  v1603 = objc_msgSend_objectAtIndexedSubscript_(value, v1601, 5, v1602);
   objc_msgSend_floatValue(v1603, v1604, v1605, v1606);
   LODWORD(v1856) = v1607;
-  v1610 = objc_msgSend_objectAtIndexedSubscript_(a3, v1608, 6, v1609);
+  v1610 = objc_msgSend_objectAtIndexedSubscript_(value, v1608, 6, v1609);
   objc_msgSend_floatValue(v1610, v1611, v1612, v1613);
-  v1616 = objc_msgSend_objectAtIndexedSubscript_(a3, v1614, 7, v1615);
+  v1616 = objc_msgSend_objectAtIndexedSubscript_(value, v1614, 7, v1615);
   objc_msgSend_floatValue(v1616, v1617, v1618, v1619);
   *&v1875 = __PAIR64__(LODWORD(v1856), LODWORD(v1874));
-  v1622 = objc_msgSend_objectAtIndexedSubscript_(a3, v1620, 8, v1621);
+  v1622 = objc_msgSend_objectAtIndexedSubscript_(value, v1620, 8, v1621);
   objc_msgSend_floatValue(v1622, v1623, v1624, v1625);
   LODWORD(v1856) = v1626;
-  v1629 = objc_msgSend_objectAtIndexedSubscript_(a3, v1627, 9, v1628);
+  v1629 = objc_msgSend_objectAtIndexedSubscript_(value, v1627, 9, v1628);
   objc_msgSend_floatValue(v1629, v1630, v1631, v1632);
   v1837 = v1633;
-  v1636 = objc_msgSend_objectAtIndexedSubscript_(a3, v1634, 10, v1635);
+  v1636 = objc_msgSend_objectAtIndexedSubscript_(value, v1634, 10, v1635);
   objc_msgSend_floatValue(v1636, v1637, v1638, v1639);
-  v1642 = objc_msgSend_objectAtIndexedSubscript_(a3, v1640, 11, v1641);
+  v1642 = objc_msgSend_objectAtIndexedSubscript_(value, v1640, 11, v1641);
   objc_msgSend_floatValue(v1642, v1643, v1644, v1645);
   *&v1857 = __PAIR64__(v1837, LODWORD(v1856));
-  v1648 = objc_msgSend_objectAtIndexedSubscript_(a3, v1646, 12, v1647);
+  v1648 = objc_msgSend_objectAtIndexedSubscript_(value, v1646, 12, v1647);
   objc_msgSend_floatValue(v1648, v1649, v1650, v1651);
   v1838 = v1652;
-  v1655 = objc_msgSend_objectAtIndexedSubscript_(a3, v1653, 13, v1654);
+  v1655 = objc_msgSend_objectAtIndexedSubscript_(value, v1653, 13, v1654);
   objc_msgSend_floatValue(v1655, v1656, v1657, v1658);
   v1807 = v1659;
-  v1662 = objc_msgSend_objectAtIndexedSubscript_(a3, v1660, 14, v1661);
+  v1662 = objc_msgSend_objectAtIndexedSubscript_(value, v1660, 14, v1661);
   objc_msgSend_floatValue(v1662, v1663, v1664, v1665);
-  v1668 = objc_msgSend_objectAtIndexedSubscript_(a3, v1666, 15, v1667);
+  v1668 = objc_msgSend_objectAtIndexedSubscript_(value, v1666, 15, v1667);
   objc_msgSend_floatValue(v1668, v1669, v1670, v1671);
-  objc_msgSend_convertTransform_toNode_(self, v1672, a4, v1673, v1892, v1875, v1857, COERCE_DOUBLE(__PAIR64__(v1807, v1838)));
+  objc_msgSend_convertTransform_toNode_(self, v1672, node, v1673, v1892, v1875, v1857, COERCE_DOUBLE(__PAIR64__(v1807, v1838)));
   LODWORD(v1675) = v1674;
   v1894[14] = objc_msgSend_numberWithFloat_(v1567, v1676, v1677, v1678, v1675);
   v1679 = MEMORY[0x1E696AD98];
-  v1682 = objc_msgSend_objectAtIndexedSubscript_(a3, v1680, 0, v1681);
+  v1682 = objc_msgSend_objectAtIndexedSubscript_(value, v1680, 0, v1681);
   objc_msgSend_floatValue(v1682, v1683, v1684, v1685);
   LODWORD(v1892) = v1686;
-  v1689 = objc_msgSend_objectAtIndexedSubscript_(a3, v1687, 1, v1688);
+  v1689 = objc_msgSend_objectAtIndexedSubscript_(value, v1687, 1, v1688);
   objc_msgSend_floatValue(v1689, v1690, v1691, v1692);
   LODWORD(v1875) = v1693;
-  v1696 = objc_msgSend_objectAtIndexedSubscript_(a3, v1694, 2, v1695);
+  v1696 = objc_msgSend_objectAtIndexedSubscript_(value, v1694, 2, v1695);
   objc_msgSend_floatValue(v1696, v1697, v1698, v1699);
-  v1702 = objc_msgSend_objectAtIndexedSubscript_(a3, v1700, 3, v1701);
+  v1702 = objc_msgSend_objectAtIndexedSubscript_(value, v1700, 3, v1701);
   objc_msgSend_floatValue(v1702, v1703, v1704, v1705);
   v1893 = COERCE_DOUBLE(__PAIR64__(LODWORD(v1875), LODWORD(v1892)));
-  v1708 = objc_msgSend_objectAtIndexedSubscript_(a3, v1706, 4, v1707);
+  v1708 = objc_msgSend_objectAtIndexedSubscript_(value, v1706, 4, v1707);
   objc_msgSend_floatValue(v1708, v1709, v1710, v1711);
   LODWORD(v1875) = v1712;
-  v1715 = objc_msgSend_objectAtIndexedSubscript_(a3, v1713, 5, v1714);
+  v1715 = objc_msgSend_objectAtIndexedSubscript_(value, v1713, 5, v1714);
   objc_msgSend_floatValue(v1715, v1716, v1717, v1718);
   LODWORD(v1857) = v1719;
-  v1722 = objc_msgSend_objectAtIndexedSubscript_(a3, v1720, 6, v1721);
+  v1722 = objc_msgSend_objectAtIndexedSubscript_(value, v1720, 6, v1721);
   objc_msgSend_floatValue(v1722, v1723, v1724, v1725);
-  v1728 = objc_msgSend_objectAtIndexedSubscript_(a3, v1726, 7, v1727);
+  v1728 = objc_msgSend_objectAtIndexedSubscript_(value, v1726, 7, v1727);
   objc_msgSend_floatValue(v1728, v1729, v1730, v1731);
   v1876 = COERCE_DOUBLE(__PAIR64__(LODWORD(v1857), LODWORD(v1875)));
-  v1734 = objc_msgSend_objectAtIndexedSubscript_(a3, v1732, 8, v1733);
+  v1734 = objc_msgSend_objectAtIndexedSubscript_(value, v1732, 8, v1733);
   objc_msgSend_floatValue(v1734, v1735, v1736, v1737);
   LODWORD(v1857) = v1738;
-  v1741 = objc_msgSend_objectAtIndexedSubscript_(a3, v1739, 9, v1740);
+  v1741 = objc_msgSend_objectAtIndexedSubscript_(value, v1739, 9, v1740);
   objc_msgSend_floatValue(v1741, v1742, v1743, v1744);
   v1839 = v1745;
-  v1748 = objc_msgSend_objectAtIndexedSubscript_(a3, v1746, 10, v1747);
+  v1748 = objc_msgSend_objectAtIndexedSubscript_(value, v1746, 10, v1747);
   objc_msgSend_floatValue(v1748, v1749, v1750, v1751);
-  v1754 = objc_msgSend_objectAtIndexedSubscript_(a3, v1752, 11, v1753);
+  v1754 = objc_msgSend_objectAtIndexedSubscript_(value, v1752, 11, v1753);
   objc_msgSend_floatValue(v1754, v1755, v1756, v1757);
   v1858 = COERCE_DOUBLE(__PAIR64__(v1839, LODWORD(v1857)));
-  v1760 = objc_msgSend_objectAtIndexedSubscript_(a3, v1758, 12, v1759);
+  v1760 = objc_msgSend_objectAtIndexedSubscript_(value, v1758, 12, v1759);
   objc_msgSend_floatValue(v1760, v1761, v1762, v1763);
   v1840 = v1764;
-  v1767 = objc_msgSend_objectAtIndexedSubscript_(a3, v1765, 13, v1766);
+  v1767 = objc_msgSend_objectAtIndexedSubscript_(value, v1765, 13, v1766);
   objc_msgSend_floatValue(v1767, v1768, v1769, v1770);
   v1808 = v1771;
-  v1774 = objc_msgSend_objectAtIndexedSubscript_(a3, v1772, 14, v1773);
+  v1774 = objc_msgSend_objectAtIndexedSubscript_(value, v1772, 14, v1773);
   objc_msgSend_floatValue(v1774, v1775, v1776, v1777);
-  v1780 = objc_msgSend_objectAtIndexedSubscript_(a3, v1778, 15, v1779);
+  v1780 = objc_msgSend_objectAtIndexedSubscript_(value, v1778, 15, v1779);
   objc_msgSend_floatValue(v1780, v1781, v1782, v1783);
-  objc_msgSend_convertTransform_toNode_(self, v1784, a4, v1785, v1893, v1876, v1858, COERCE_DOUBLE(__PAIR64__(v1808, v1840)));
+  objc_msgSend_convertTransform_toNode_(self, v1784, node, v1785, v1893, v1876, v1858, COERCE_DOUBLE(__PAIR64__(v1808, v1840)));
   LODWORD(v1787) = v1786;
   v1894[15] = objc_msgSend_numberWithFloat_(v1679, v1788, v1789, v1790, v1787);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v1791, v1894, 16);
 }
 
-- (id)convertTransformValue:(id)a3 fromNode:(id)a4
+- (id)convertTransformValue:(id)value fromNode:(id)node
 {
   v1894[16] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, node);
   objc_msgSend_floatValue(v8, v9, v10, v11);
   v1877 = v12;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(value, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
   v1859 = v19;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(a3, v20, 2, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(value, v20, 2, v21);
   objc_msgSend_floatValue(v22, v23, v24, v25);
-  v28 = objc_msgSend_objectAtIndexedSubscript_(a3, v26, 3, v27);
+  v28 = objc_msgSend_objectAtIndexedSubscript_(value, v26, 3, v27);
   objc_msgSend_floatValue(v28, v29, v30, v31);
   *&v1878 = __PAIR64__(v1859, v1877);
-  v34 = objc_msgSend_objectAtIndexedSubscript_(a3, v32, 4, v33);
+  v34 = objc_msgSend_objectAtIndexedSubscript_(value, v32, 4, v33);
   objc_msgSend_floatValue(v34, v35, v36, v37);
   v1860 = v38;
-  v41 = objc_msgSend_objectAtIndexedSubscript_(a3, v39, 5, v40);
+  v41 = objc_msgSend_objectAtIndexedSubscript_(value, v39, 5, v40);
   objc_msgSend_floatValue(v41, v42, v43, v44);
   v1841 = v45;
-  v48 = objc_msgSend_objectAtIndexedSubscript_(a3, v46, 6, v47);
+  v48 = objc_msgSend_objectAtIndexedSubscript_(value, v46, 6, v47);
   objc_msgSend_floatValue(v48, v49, v50, v51);
-  v54 = objc_msgSend_objectAtIndexedSubscript_(a3, v52, 7, v53);
+  v54 = objc_msgSend_objectAtIndexedSubscript_(value, v52, 7, v53);
   objc_msgSend_floatValue(v54, v55, v56, v57);
   *&v1861 = __PAIR64__(v1841, v1860);
-  v60 = objc_msgSend_objectAtIndexedSubscript_(a3, v58, 8, v59);
+  v60 = objc_msgSend_objectAtIndexedSubscript_(value, v58, 8, v59);
   objc_msgSend_floatValue(v60, v61, v62, v63);
   v1842 = v64;
-  v67 = objc_msgSend_objectAtIndexedSubscript_(a3, v65, 9, v66);
+  v67 = objc_msgSend_objectAtIndexedSubscript_(value, v65, 9, v66);
   objc_msgSend_floatValue(v67, v68, v69, v70);
   v1809 = v71;
-  v74 = objc_msgSend_objectAtIndexedSubscript_(a3, v72, 10, v73);
+  v74 = objc_msgSend_objectAtIndexedSubscript_(value, v72, 10, v73);
   objc_msgSend_floatValue(v74, v75, v76, v77);
-  v80 = objc_msgSend_objectAtIndexedSubscript_(a3, v78, 11, v79);
+  v80 = objc_msgSend_objectAtIndexedSubscript_(value, v78, 11, v79);
   objc_msgSend_floatValue(v80, v81, v82, v83);
   *&v1843 = __PAIR64__(v1809, v1842);
-  v86 = objc_msgSend_objectAtIndexedSubscript_(a3, v84, 12, v85);
+  v86 = objc_msgSend_objectAtIndexedSubscript_(value, v84, 12, v85);
   objc_msgSend_floatValue(v86, v87, v88, v89);
   v1810 = v90;
-  v93 = objc_msgSend_objectAtIndexedSubscript_(a3, v91, 13, v92);
+  v93 = objc_msgSend_objectAtIndexedSubscript_(value, v91, 13, v92);
   objc_msgSend_floatValue(v93, v94, v95, v96);
   v1793 = v97;
-  v100 = objc_msgSend_objectAtIndexedSubscript_(a3, v98, 14, v99);
+  v100 = objc_msgSend_objectAtIndexedSubscript_(value, v98, 14, v99);
   objc_msgSend_floatValue(v100, v101, v102, v103);
-  v106 = objc_msgSend_objectAtIndexedSubscript_(a3, v104, 15, v105);
+  v106 = objc_msgSend_objectAtIndexedSubscript_(value, v104, 15, v105);
   objc_msgSend_floatValue(v106, v107, v108, v109);
-  objc_msgSend_convertTransform_fromNode_(self, v110, a4, v111, v1878, v1861, v1843, COERCE_DOUBLE(__PAIR64__(v1793, v1810)));
+  objc_msgSend_convertTransform_fromNode_(self, v110, node, v111, v1878, v1861, v1843, COERCE_DOUBLE(__PAIR64__(v1793, v1810)));
   v1894[0] = objc_msgSend_numberWithFloat_(v7, v112, v113, v114);
   v115 = MEMORY[0x1E696AD98];
-  v118 = objc_msgSend_objectAtIndexedSubscript_(a3, v116, 0, v117);
+  v118 = objc_msgSend_objectAtIndexedSubscript_(value, v116, 0, v117);
   objc_msgSend_floatValue(v118, v119, v120, v121);
   LODWORD(v1878) = v122;
-  v125 = objc_msgSend_objectAtIndexedSubscript_(a3, v123, 1, v124);
+  v125 = objc_msgSend_objectAtIndexedSubscript_(value, v123, 1, v124);
   objc_msgSend_floatValue(v125, v126, v127, v128);
   LODWORD(v1861) = v129;
-  v132 = objc_msgSend_objectAtIndexedSubscript_(a3, v130, 2, v131);
+  v132 = objc_msgSend_objectAtIndexedSubscript_(value, v130, 2, v131);
   objc_msgSend_floatValue(v132, v133, v134, v135);
-  v138 = objc_msgSend_objectAtIndexedSubscript_(a3, v136, 3, v137);
+  v138 = objc_msgSend_objectAtIndexedSubscript_(value, v136, 3, v137);
   objc_msgSend_floatValue(v138, v139, v140, v141);
   *&v1879 = __PAIR64__(LODWORD(v1861), LODWORD(v1878));
-  v144 = objc_msgSend_objectAtIndexedSubscript_(a3, v142, 4, v143);
+  v144 = objc_msgSend_objectAtIndexedSubscript_(value, v142, 4, v143);
   objc_msgSend_floatValue(v144, v145, v146, v147);
   LODWORD(v1861) = v148;
-  v151 = objc_msgSend_objectAtIndexedSubscript_(a3, v149, 5, v150);
+  v151 = objc_msgSend_objectAtIndexedSubscript_(value, v149, 5, v150);
   objc_msgSend_floatValue(v151, v152, v153, v154);
   LODWORD(v1843) = v155;
-  v158 = objc_msgSend_objectAtIndexedSubscript_(a3, v156, 6, v157);
+  v158 = objc_msgSend_objectAtIndexedSubscript_(value, v156, 6, v157);
   objc_msgSend_floatValue(v158, v159, v160, v161);
-  v164 = objc_msgSend_objectAtIndexedSubscript_(a3, v162, 7, v163);
+  v164 = objc_msgSend_objectAtIndexedSubscript_(value, v162, 7, v163);
   objc_msgSend_floatValue(v164, v165, v166, v167);
   *&v1862 = __PAIR64__(LODWORD(v1843), LODWORD(v1861));
-  v170 = objc_msgSend_objectAtIndexedSubscript_(a3, v168, 8, v169);
+  v170 = objc_msgSend_objectAtIndexedSubscript_(value, v168, 8, v169);
   objc_msgSend_floatValue(v170, v171, v172, v173);
   LODWORD(v1843) = v174;
-  v177 = objc_msgSend_objectAtIndexedSubscript_(a3, v175, 9, v176);
+  v177 = objc_msgSend_objectAtIndexedSubscript_(value, v175, 9, v176);
   objc_msgSend_floatValue(v177, v178, v179, v180);
   v1811 = v181;
-  v184 = objc_msgSend_objectAtIndexedSubscript_(a3, v182, 10, v183);
+  v184 = objc_msgSend_objectAtIndexedSubscript_(value, v182, 10, v183);
   objc_msgSend_floatValue(v184, v185, v186, v187);
-  v190 = objc_msgSend_objectAtIndexedSubscript_(a3, v188, 11, v189);
+  v190 = objc_msgSend_objectAtIndexedSubscript_(value, v188, 11, v189);
   objc_msgSend_floatValue(v190, v191, v192, v193);
   *&v1844 = __PAIR64__(v1811, LODWORD(v1843));
-  v196 = objc_msgSend_objectAtIndexedSubscript_(a3, v194, 12, v195);
+  v196 = objc_msgSend_objectAtIndexedSubscript_(value, v194, 12, v195);
   objc_msgSend_floatValue(v196, v197, v198, v199);
   v1812 = v200;
-  v203 = objc_msgSend_objectAtIndexedSubscript_(a3, v201, 13, v202);
+  v203 = objc_msgSend_objectAtIndexedSubscript_(value, v201, 13, v202);
   objc_msgSend_floatValue(v203, v204, v205, v206);
   v1794 = v207;
-  v210 = objc_msgSend_objectAtIndexedSubscript_(a3, v208, 14, v209);
+  v210 = objc_msgSend_objectAtIndexedSubscript_(value, v208, 14, v209);
   objc_msgSend_floatValue(v210, v211, v212, v213);
-  v216 = objc_msgSend_objectAtIndexedSubscript_(a3, v214, 15, v215);
+  v216 = objc_msgSend_objectAtIndexedSubscript_(value, v214, 15, v215);
   objc_msgSend_floatValue(v216, v217, v218, v219);
-  objc_msgSend_convertTransform_fromNode_(self, v220, a4, v221, v1879, v1862, v1844, COERCE_DOUBLE(__PAIR64__(v1794, v1812)));
+  objc_msgSend_convertTransform_fromNode_(self, v220, node, v221, v1879, v1862, v1844, COERCE_DOUBLE(__PAIR64__(v1794, v1812)));
   LODWORD(v222) = HIDWORD(v222);
   v1894[1] = objc_msgSend_numberWithFloat_(v115, v223, v224, v225, v222);
   v226 = MEMORY[0x1E696AD98];
-  v229 = objc_msgSend_objectAtIndexedSubscript_(a3, v227, 0, v228);
+  v229 = objc_msgSend_objectAtIndexedSubscript_(value, v227, 0, v228);
   objc_msgSend_floatValue(v229, v230, v231, v232);
   LODWORD(v1879) = v233;
-  v236 = objc_msgSend_objectAtIndexedSubscript_(a3, v234, 1, v235);
+  v236 = objc_msgSend_objectAtIndexedSubscript_(value, v234, 1, v235);
   objc_msgSend_floatValue(v236, v237, v238, v239);
   LODWORD(v1862) = v240;
-  v243 = objc_msgSend_objectAtIndexedSubscript_(a3, v241, 2, v242);
+  v243 = objc_msgSend_objectAtIndexedSubscript_(value, v241, 2, v242);
   objc_msgSend_floatValue(v243, v244, v245, v246);
-  v249 = objc_msgSend_objectAtIndexedSubscript_(a3, v247, 3, v248);
+  v249 = objc_msgSend_objectAtIndexedSubscript_(value, v247, 3, v248);
   objc_msgSend_floatValue(v249, v250, v251, v252);
   *&v1880 = __PAIR64__(LODWORD(v1862), LODWORD(v1879));
-  v255 = objc_msgSend_objectAtIndexedSubscript_(a3, v253, 4, v254);
+  v255 = objc_msgSend_objectAtIndexedSubscript_(value, v253, 4, v254);
   objc_msgSend_floatValue(v255, v256, v257, v258);
   LODWORD(v1862) = v259;
-  v262 = objc_msgSend_objectAtIndexedSubscript_(a3, v260, 5, v261);
+  v262 = objc_msgSend_objectAtIndexedSubscript_(value, v260, 5, v261);
   objc_msgSend_floatValue(v262, v263, v264, v265);
   LODWORD(v1844) = v266;
-  v269 = objc_msgSend_objectAtIndexedSubscript_(a3, v267, 6, v268);
+  v269 = objc_msgSend_objectAtIndexedSubscript_(value, v267, 6, v268);
   objc_msgSend_floatValue(v269, v270, v271, v272);
-  v275 = objc_msgSend_objectAtIndexedSubscript_(a3, v273, 7, v274);
+  v275 = objc_msgSend_objectAtIndexedSubscript_(value, v273, 7, v274);
   objc_msgSend_floatValue(v275, v276, v277, v278);
   *&v1863 = __PAIR64__(LODWORD(v1844), LODWORD(v1862));
-  v281 = objc_msgSend_objectAtIndexedSubscript_(a3, v279, 8, v280);
+  v281 = objc_msgSend_objectAtIndexedSubscript_(value, v279, 8, v280);
   objc_msgSend_floatValue(v281, v282, v283, v284);
   LODWORD(v1844) = v285;
-  v288 = objc_msgSend_objectAtIndexedSubscript_(a3, v286, 9, v287);
+  v288 = objc_msgSend_objectAtIndexedSubscript_(value, v286, 9, v287);
   objc_msgSend_floatValue(v288, v289, v290, v291);
   v1813 = v292;
-  v295 = objc_msgSend_objectAtIndexedSubscript_(a3, v293, 10, v294);
+  v295 = objc_msgSend_objectAtIndexedSubscript_(value, v293, 10, v294);
   objc_msgSend_floatValue(v295, v296, v297, v298);
-  v301 = objc_msgSend_objectAtIndexedSubscript_(a3, v299, 11, v300);
+  v301 = objc_msgSend_objectAtIndexedSubscript_(value, v299, 11, v300);
   objc_msgSend_floatValue(v301, v302, v303, v304);
   *&v1845 = __PAIR64__(v1813, LODWORD(v1844));
-  v307 = objc_msgSend_objectAtIndexedSubscript_(a3, v305, 12, v306);
+  v307 = objc_msgSend_objectAtIndexedSubscript_(value, v305, 12, v306);
   objc_msgSend_floatValue(v307, v308, v309, v310);
   v1814 = v311;
-  v314 = objc_msgSend_objectAtIndexedSubscript_(a3, v312, 13, v313);
+  v314 = objc_msgSend_objectAtIndexedSubscript_(value, v312, 13, v313);
   objc_msgSend_floatValue(v314, v315, v316, v317);
   v1795 = v318;
-  v321 = objc_msgSend_objectAtIndexedSubscript_(a3, v319, 14, v320);
+  v321 = objc_msgSend_objectAtIndexedSubscript_(value, v319, 14, v320);
   objc_msgSend_floatValue(v321, v322, v323, v324);
-  v327 = objc_msgSend_objectAtIndexedSubscript_(a3, v325, 15, v326);
+  v327 = objc_msgSend_objectAtIndexedSubscript_(value, v325, 15, v326);
   objc_msgSend_floatValue(v327, v328, v329, v330);
-  objc_msgSend_convertTransform_fromNode_(self, v331, a4, v332, v1880, v1863, v1845, COERCE_DOUBLE(__PAIR64__(v1795, v1814)));
+  objc_msgSend_convertTransform_fromNode_(self, v331, node, v332, v1880, v1863, v1845, COERCE_DOUBLE(__PAIR64__(v1795, v1814)));
   LODWORD(v334) = v333;
   v1894[2] = objc_msgSend_numberWithFloat_(v226, v335, v336, v337, v334);
   v338 = MEMORY[0x1E696AD98];
-  v341 = objc_msgSend_objectAtIndexedSubscript_(a3, v339, 0, v340);
+  v341 = objc_msgSend_objectAtIndexedSubscript_(value, v339, 0, v340);
   objc_msgSend_floatValue(v341, v342, v343, v344);
   LODWORD(v1880) = v345;
-  v348 = objc_msgSend_objectAtIndexedSubscript_(a3, v346, 1, v347);
+  v348 = objc_msgSend_objectAtIndexedSubscript_(value, v346, 1, v347);
   objc_msgSend_floatValue(v348, v349, v350, v351);
   LODWORD(v1863) = v352;
-  v355 = objc_msgSend_objectAtIndexedSubscript_(a3, v353, 2, v354);
+  v355 = objc_msgSend_objectAtIndexedSubscript_(value, v353, 2, v354);
   objc_msgSend_floatValue(v355, v356, v357, v358);
-  v361 = objc_msgSend_objectAtIndexedSubscript_(a3, v359, 3, v360);
+  v361 = objc_msgSend_objectAtIndexedSubscript_(value, v359, 3, v360);
   objc_msgSend_floatValue(v361, v362, v363, v364);
   *&v1881 = __PAIR64__(LODWORD(v1863), LODWORD(v1880));
-  v367 = objc_msgSend_objectAtIndexedSubscript_(a3, v365, 4, v366);
+  v367 = objc_msgSend_objectAtIndexedSubscript_(value, v365, 4, v366);
   objc_msgSend_floatValue(v367, v368, v369, v370);
   LODWORD(v1863) = v371;
-  v374 = objc_msgSend_objectAtIndexedSubscript_(a3, v372, 5, v373);
+  v374 = objc_msgSend_objectAtIndexedSubscript_(value, v372, 5, v373);
   objc_msgSend_floatValue(v374, v375, v376, v377);
   LODWORD(v1845) = v378;
-  v381 = objc_msgSend_objectAtIndexedSubscript_(a3, v379, 6, v380);
+  v381 = objc_msgSend_objectAtIndexedSubscript_(value, v379, 6, v380);
   objc_msgSend_floatValue(v381, v382, v383, v384);
-  v387 = objc_msgSend_objectAtIndexedSubscript_(a3, v385, 7, v386);
+  v387 = objc_msgSend_objectAtIndexedSubscript_(value, v385, 7, v386);
   objc_msgSend_floatValue(v387, v388, v389, v390);
   *&v1864 = __PAIR64__(LODWORD(v1845), LODWORD(v1863));
-  v393 = objc_msgSend_objectAtIndexedSubscript_(a3, v391, 8, v392);
+  v393 = objc_msgSend_objectAtIndexedSubscript_(value, v391, 8, v392);
   objc_msgSend_floatValue(v393, v394, v395, v396);
   LODWORD(v1845) = v397;
-  v400 = objc_msgSend_objectAtIndexedSubscript_(a3, v398, 9, v399);
+  v400 = objc_msgSend_objectAtIndexedSubscript_(value, v398, 9, v399);
   objc_msgSend_floatValue(v400, v401, v402, v403);
   v1815 = v404;
-  v407 = objc_msgSend_objectAtIndexedSubscript_(a3, v405, 10, v406);
+  v407 = objc_msgSend_objectAtIndexedSubscript_(value, v405, 10, v406);
   objc_msgSend_floatValue(v407, v408, v409, v410);
-  v413 = objc_msgSend_objectAtIndexedSubscript_(a3, v411, 11, v412);
+  v413 = objc_msgSend_objectAtIndexedSubscript_(value, v411, 11, v412);
   objc_msgSend_floatValue(v413, v414, v415, v416);
   *&v1846 = __PAIR64__(v1815, LODWORD(v1845));
-  v419 = objc_msgSend_objectAtIndexedSubscript_(a3, v417, 12, v418);
+  v419 = objc_msgSend_objectAtIndexedSubscript_(value, v417, 12, v418);
   objc_msgSend_floatValue(v419, v420, v421, v422);
   v1816 = v423;
-  v426 = objc_msgSend_objectAtIndexedSubscript_(a3, v424, 13, v425);
+  v426 = objc_msgSend_objectAtIndexedSubscript_(value, v424, 13, v425);
   objc_msgSend_floatValue(v426, v427, v428, v429);
   v1796 = v430;
-  v433 = objc_msgSend_objectAtIndexedSubscript_(a3, v431, 14, v432);
+  v433 = objc_msgSend_objectAtIndexedSubscript_(value, v431, 14, v432);
   objc_msgSend_floatValue(v433, v434, v435, v436);
-  v439 = objc_msgSend_objectAtIndexedSubscript_(a3, v437, 15, v438);
+  v439 = objc_msgSend_objectAtIndexedSubscript_(value, v437, 15, v438);
   objc_msgSend_floatValue(v439, v440, v441, v442);
-  objc_msgSend_convertTransform_fromNode_(self, v443, a4, v444, v1881, v1864, v1846, COERCE_DOUBLE(__PAIR64__(v1796, v1816)));
+  objc_msgSend_convertTransform_fromNode_(self, v443, node, v444, v1881, v1864, v1846, COERCE_DOUBLE(__PAIR64__(v1796, v1816)));
   LODWORD(v446) = v445;
   v1894[3] = objc_msgSend_numberWithFloat_(v338, v447, v448, v449, v446);
   v450 = MEMORY[0x1E696AD98];
-  v453 = objc_msgSend_objectAtIndexedSubscript_(a3, v451, 0, v452);
+  v453 = objc_msgSend_objectAtIndexedSubscript_(value, v451, 0, v452);
   objc_msgSend_floatValue(v453, v454, v455, v456);
   LODWORD(v1881) = v457;
-  v460 = objc_msgSend_objectAtIndexedSubscript_(a3, v458, 1, v459);
+  v460 = objc_msgSend_objectAtIndexedSubscript_(value, v458, 1, v459);
   objc_msgSend_floatValue(v460, v461, v462, v463);
   LODWORD(v1864) = v464;
-  v467 = objc_msgSend_objectAtIndexedSubscript_(a3, v465, 2, v466);
+  v467 = objc_msgSend_objectAtIndexedSubscript_(value, v465, 2, v466);
   objc_msgSend_floatValue(v467, v468, v469, v470);
-  v473 = objc_msgSend_objectAtIndexedSubscript_(a3, v471, 3, v472);
+  v473 = objc_msgSend_objectAtIndexedSubscript_(value, v471, 3, v472);
   objc_msgSend_floatValue(v473, v474, v475, v476);
   *&v1882 = __PAIR64__(LODWORD(v1864), LODWORD(v1881));
-  v479 = objc_msgSend_objectAtIndexedSubscript_(a3, v477, 4, v478);
+  v479 = objc_msgSend_objectAtIndexedSubscript_(value, v477, 4, v478);
   objc_msgSend_floatValue(v479, v480, v481, v482);
   LODWORD(v1864) = v483;
-  v486 = objc_msgSend_objectAtIndexedSubscript_(a3, v484, 5, v485);
+  v486 = objc_msgSend_objectAtIndexedSubscript_(value, v484, 5, v485);
   objc_msgSend_floatValue(v486, v487, v488, v489);
   LODWORD(v1846) = v490;
-  v493 = objc_msgSend_objectAtIndexedSubscript_(a3, v491, 6, v492);
+  v493 = objc_msgSend_objectAtIndexedSubscript_(value, v491, 6, v492);
   objc_msgSend_floatValue(v493, v494, v495, v496);
-  v499 = objc_msgSend_objectAtIndexedSubscript_(a3, v497, 7, v498);
+  v499 = objc_msgSend_objectAtIndexedSubscript_(value, v497, 7, v498);
   objc_msgSend_floatValue(v499, v500, v501, v502);
   *&v1865 = __PAIR64__(LODWORD(v1846), LODWORD(v1864));
-  v505 = objc_msgSend_objectAtIndexedSubscript_(a3, v503, 8, v504);
+  v505 = objc_msgSend_objectAtIndexedSubscript_(value, v503, 8, v504);
   objc_msgSend_floatValue(v505, v506, v507, v508);
   LODWORD(v1846) = v509;
-  v512 = objc_msgSend_objectAtIndexedSubscript_(a3, v510, 9, v511);
+  v512 = objc_msgSend_objectAtIndexedSubscript_(value, v510, 9, v511);
   objc_msgSend_floatValue(v512, v513, v514, v515);
   v1817 = v516;
-  v519 = objc_msgSend_objectAtIndexedSubscript_(a3, v517, 10, v518);
+  v519 = objc_msgSend_objectAtIndexedSubscript_(value, v517, 10, v518);
   objc_msgSend_floatValue(v519, v520, v521, v522);
-  v525 = objc_msgSend_objectAtIndexedSubscript_(a3, v523, 11, v524);
+  v525 = objc_msgSend_objectAtIndexedSubscript_(value, v523, 11, v524);
   objc_msgSend_floatValue(v525, v526, v527, v528);
   *&v1847 = __PAIR64__(v1817, LODWORD(v1846));
-  v531 = objc_msgSend_objectAtIndexedSubscript_(a3, v529, 12, v530);
+  v531 = objc_msgSend_objectAtIndexedSubscript_(value, v529, 12, v530);
   objc_msgSend_floatValue(v531, v532, v533, v534);
   v1818 = v535;
-  v538 = objc_msgSend_objectAtIndexedSubscript_(a3, v536, 13, v537);
+  v538 = objc_msgSend_objectAtIndexedSubscript_(value, v536, 13, v537);
   objc_msgSend_floatValue(v538, v539, v540, v541);
   v1797 = v542;
-  v545 = objc_msgSend_objectAtIndexedSubscript_(a3, v543, 14, v544);
+  v545 = objc_msgSend_objectAtIndexedSubscript_(value, v543, 14, v544);
   objc_msgSend_floatValue(v545, v546, v547, v548);
-  v551 = objc_msgSend_objectAtIndexedSubscript_(a3, v549, 15, v550);
+  v551 = objc_msgSend_objectAtIndexedSubscript_(value, v549, 15, v550);
   objc_msgSend_floatValue(v551, v552, v553, v554);
-  objc_msgSend_convertTransform_fromNode_(self, v555, a4, v556, v1882, v1865, v1847, COERCE_DOUBLE(__PAIR64__(v1797, v1818)));
+  objc_msgSend_convertTransform_fromNode_(self, v555, node, v556, v1882, v1865, v1847, COERCE_DOUBLE(__PAIR64__(v1797, v1818)));
   v1894[4] = objc_msgSend_numberWithFloat_(v450, v557, v558, v559, v560);
   v561 = MEMORY[0x1E696AD98];
-  v564 = objc_msgSend_objectAtIndexedSubscript_(a3, v562, 0, v563);
+  v564 = objc_msgSend_objectAtIndexedSubscript_(value, v562, 0, v563);
   objc_msgSend_floatValue(v564, v565, v566, v567);
   LODWORD(v1882) = v568;
-  v571 = objc_msgSend_objectAtIndexedSubscript_(a3, v569, 1, v570);
+  v571 = objc_msgSend_objectAtIndexedSubscript_(value, v569, 1, v570);
   objc_msgSend_floatValue(v571, v572, v573, v574);
   LODWORD(v1865) = v575;
-  v578 = objc_msgSend_objectAtIndexedSubscript_(a3, v576, 2, v577);
+  v578 = objc_msgSend_objectAtIndexedSubscript_(value, v576, 2, v577);
   objc_msgSend_floatValue(v578, v579, v580, v581);
-  v584 = objc_msgSend_objectAtIndexedSubscript_(a3, v582, 3, v583);
+  v584 = objc_msgSend_objectAtIndexedSubscript_(value, v582, 3, v583);
   objc_msgSend_floatValue(v584, v585, v586, v587);
   *&v1883 = __PAIR64__(LODWORD(v1865), LODWORD(v1882));
-  v590 = objc_msgSend_objectAtIndexedSubscript_(a3, v588, 4, v589);
+  v590 = objc_msgSend_objectAtIndexedSubscript_(value, v588, 4, v589);
   objc_msgSend_floatValue(v590, v591, v592, v593);
   LODWORD(v1865) = v594;
-  v597 = objc_msgSend_objectAtIndexedSubscript_(a3, v595, 5, v596);
+  v597 = objc_msgSend_objectAtIndexedSubscript_(value, v595, 5, v596);
   objc_msgSend_floatValue(v597, v598, v599, v600);
   LODWORD(v1847) = v601;
-  v604 = objc_msgSend_objectAtIndexedSubscript_(a3, v602, 6, v603);
+  v604 = objc_msgSend_objectAtIndexedSubscript_(value, v602, 6, v603);
   objc_msgSend_floatValue(v604, v605, v606, v607);
-  v610 = objc_msgSend_objectAtIndexedSubscript_(a3, v608, 7, v609);
+  v610 = objc_msgSend_objectAtIndexedSubscript_(value, v608, 7, v609);
   objc_msgSend_floatValue(v610, v611, v612, v613);
   *&v1866 = __PAIR64__(LODWORD(v1847), LODWORD(v1865));
-  v616 = objc_msgSend_objectAtIndexedSubscript_(a3, v614, 8, v615);
+  v616 = objc_msgSend_objectAtIndexedSubscript_(value, v614, 8, v615);
   objc_msgSend_floatValue(v616, v617, v618, v619);
   LODWORD(v1847) = v620;
-  v623 = objc_msgSend_objectAtIndexedSubscript_(a3, v621, 9, v622);
+  v623 = objc_msgSend_objectAtIndexedSubscript_(value, v621, 9, v622);
   objc_msgSend_floatValue(v623, v624, v625, v626);
   v1819 = v627;
-  v630 = objc_msgSend_objectAtIndexedSubscript_(a3, v628, 10, v629);
+  v630 = objc_msgSend_objectAtIndexedSubscript_(value, v628, 10, v629);
   objc_msgSend_floatValue(v630, v631, v632, v633);
-  v636 = objc_msgSend_objectAtIndexedSubscript_(a3, v634, 11, v635);
+  v636 = objc_msgSend_objectAtIndexedSubscript_(value, v634, 11, v635);
   objc_msgSend_floatValue(v636, v637, v638, v639);
   *&v1848 = __PAIR64__(v1819, LODWORD(v1847));
-  v642 = objc_msgSend_objectAtIndexedSubscript_(a3, v640, 12, v641);
+  v642 = objc_msgSend_objectAtIndexedSubscript_(value, v640, 12, v641);
   objc_msgSend_floatValue(v642, v643, v644, v645);
   v1820 = v646;
-  v649 = objc_msgSend_objectAtIndexedSubscript_(a3, v647, 13, v648);
+  v649 = objc_msgSend_objectAtIndexedSubscript_(value, v647, 13, v648);
   objc_msgSend_floatValue(v649, v650, v651, v652);
   v1798 = v653;
-  v656 = objc_msgSend_objectAtIndexedSubscript_(a3, v654, 14, v655);
+  v656 = objc_msgSend_objectAtIndexedSubscript_(value, v654, 14, v655);
   objc_msgSend_floatValue(v656, v657, v658, v659);
-  v662 = objc_msgSend_objectAtIndexedSubscript_(a3, v660, 15, v661);
+  v662 = objc_msgSend_objectAtIndexedSubscript_(value, v660, 15, v661);
   objc_msgSend_floatValue(v662, v663, v664, v665);
-  objc_msgSend_convertTransform_fromNode_(self, v666, a4, v667, v1883, v1866, v1848, COERCE_DOUBLE(__PAIR64__(v1798, v1820)));
+  objc_msgSend_convertTransform_fromNode_(self, v666, node, v667, v1883, v1866, v1848, COERCE_DOUBLE(__PAIR64__(v1798, v1820)));
   LODWORD(v669) = v668;
   v1894[5] = objc_msgSend_numberWithFloat_(v561, v670, v671, v672, v669);
   v673 = MEMORY[0x1E696AD98];
-  v676 = objc_msgSend_objectAtIndexedSubscript_(a3, v674, 0, v675);
+  v676 = objc_msgSend_objectAtIndexedSubscript_(value, v674, 0, v675);
   objc_msgSend_floatValue(v676, v677, v678, v679);
   LODWORD(v1883) = v680;
-  v683 = objc_msgSend_objectAtIndexedSubscript_(a3, v681, 1, v682);
+  v683 = objc_msgSend_objectAtIndexedSubscript_(value, v681, 1, v682);
   objc_msgSend_floatValue(v683, v684, v685, v686);
   LODWORD(v1866) = v687;
-  v690 = objc_msgSend_objectAtIndexedSubscript_(a3, v688, 2, v689);
+  v690 = objc_msgSend_objectAtIndexedSubscript_(value, v688, 2, v689);
   objc_msgSend_floatValue(v690, v691, v692, v693);
-  v696 = objc_msgSend_objectAtIndexedSubscript_(a3, v694, 3, v695);
+  v696 = objc_msgSend_objectAtIndexedSubscript_(value, v694, 3, v695);
   objc_msgSend_floatValue(v696, v697, v698, v699);
   *&v1884 = __PAIR64__(LODWORD(v1866), LODWORD(v1883));
-  v702 = objc_msgSend_objectAtIndexedSubscript_(a3, v700, 4, v701);
+  v702 = objc_msgSend_objectAtIndexedSubscript_(value, v700, 4, v701);
   objc_msgSend_floatValue(v702, v703, v704, v705);
   LODWORD(v1866) = v706;
-  v709 = objc_msgSend_objectAtIndexedSubscript_(a3, v707, 5, v708);
+  v709 = objc_msgSend_objectAtIndexedSubscript_(value, v707, 5, v708);
   objc_msgSend_floatValue(v709, v710, v711, v712);
   LODWORD(v1848) = v713;
-  v716 = objc_msgSend_objectAtIndexedSubscript_(a3, v714, 6, v715);
+  v716 = objc_msgSend_objectAtIndexedSubscript_(value, v714, 6, v715);
   objc_msgSend_floatValue(v716, v717, v718, v719);
-  v722 = objc_msgSend_objectAtIndexedSubscript_(a3, v720, 7, v721);
+  v722 = objc_msgSend_objectAtIndexedSubscript_(value, v720, 7, v721);
   objc_msgSend_floatValue(v722, v723, v724, v725);
   *&v1867 = __PAIR64__(LODWORD(v1848), LODWORD(v1866));
-  v728 = objc_msgSend_objectAtIndexedSubscript_(a3, v726, 8, v727);
+  v728 = objc_msgSend_objectAtIndexedSubscript_(value, v726, 8, v727);
   objc_msgSend_floatValue(v728, v729, v730, v731);
   LODWORD(v1848) = v732;
-  v735 = objc_msgSend_objectAtIndexedSubscript_(a3, v733, 9, v734);
+  v735 = objc_msgSend_objectAtIndexedSubscript_(value, v733, 9, v734);
   objc_msgSend_floatValue(v735, v736, v737, v738);
   v1821 = v739;
-  v742 = objc_msgSend_objectAtIndexedSubscript_(a3, v740, 10, v741);
+  v742 = objc_msgSend_objectAtIndexedSubscript_(value, v740, 10, v741);
   objc_msgSend_floatValue(v742, v743, v744, v745);
-  v748 = objc_msgSend_objectAtIndexedSubscript_(a3, v746, 11, v747);
+  v748 = objc_msgSend_objectAtIndexedSubscript_(value, v746, 11, v747);
   objc_msgSend_floatValue(v748, v749, v750, v751);
   *&v1849 = __PAIR64__(v1821, LODWORD(v1848));
-  v754 = objc_msgSend_objectAtIndexedSubscript_(a3, v752, 12, v753);
+  v754 = objc_msgSend_objectAtIndexedSubscript_(value, v752, 12, v753);
   objc_msgSend_floatValue(v754, v755, v756, v757);
   v1822 = v758;
-  v761 = objc_msgSend_objectAtIndexedSubscript_(a3, v759, 13, v760);
+  v761 = objc_msgSend_objectAtIndexedSubscript_(value, v759, 13, v760);
   objc_msgSend_floatValue(v761, v762, v763, v764);
   v1799 = v765;
-  v768 = objc_msgSend_objectAtIndexedSubscript_(a3, v766, 14, v767);
+  v768 = objc_msgSend_objectAtIndexedSubscript_(value, v766, 14, v767);
   objc_msgSend_floatValue(v768, v769, v770, v771);
-  v774 = objc_msgSend_objectAtIndexedSubscript_(a3, v772, 15, v773);
+  v774 = objc_msgSend_objectAtIndexedSubscript_(value, v772, 15, v773);
   objc_msgSend_floatValue(v774, v775, v776, v777);
-  objc_msgSend_convertTransform_fromNode_(self, v778, a4, v779, v1884, v1867, v1849, COERCE_DOUBLE(__PAIR64__(v1799, v1822)));
+  objc_msgSend_convertTransform_fromNode_(self, v778, node, v779, v1884, v1867, v1849, COERCE_DOUBLE(__PAIR64__(v1799, v1822)));
   LODWORD(v781) = v780;
   v1894[6] = objc_msgSend_numberWithFloat_(v673, v782, v783, v784, v781);
   v785 = MEMORY[0x1E696AD98];
-  v788 = objc_msgSend_objectAtIndexedSubscript_(a3, v786, 0, v787);
+  v788 = objc_msgSend_objectAtIndexedSubscript_(value, v786, 0, v787);
   objc_msgSend_floatValue(v788, v789, v790, v791);
   LODWORD(v1884) = v792;
-  v795 = objc_msgSend_objectAtIndexedSubscript_(a3, v793, 1, v794);
+  v795 = objc_msgSend_objectAtIndexedSubscript_(value, v793, 1, v794);
   objc_msgSend_floatValue(v795, v796, v797, v798);
   LODWORD(v1867) = v799;
-  v802 = objc_msgSend_objectAtIndexedSubscript_(a3, v800, 2, v801);
+  v802 = objc_msgSend_objectAtIndexedSubscript_(value, v800, 2, v801);
   objc_msgSend_floatValue(v802, v803, v804, v805);
-  v808 = objc_msgSend_objectAtIndexedSubscript_(a3, v806, 3, v807);
+  v808 = objc_msgSend_objectAtIndexedSubscript_(value, v806, 3, v807);
   objc_msgSend_floatValue(v808, v809, v810, v811);
   *&v1885 = __PAIR64__(LODWORD(v1867), LODWORD(v1884));
-  v814 = objc_msgSend_objectAtIndexedSubscript_(a3, v812, 4, v813);
+  v814 = objc_msgSend_objectAtIndexedSubscript_(value, v812, 4, v813);
   objc_msgSend_floatValue(v814, v815, v816, v817);
   LODWORD(v1867) = v818;
-  v821 = objc_msgSend_objectAtIndexedSubscript_(a3, v819, 5, v820);
+  v821 = objc_msgSend_objectAtIndexedSubscript_(value, v819, 5, v820);
   objc_msgSend_floatValue(v821, v822, v823, v824);
   LODWORD(v1849) = v825;
-  v828 = objc_msgSend_objectAtIndexedSubscript_(a3, v826, 6, v827);
+  v828 = objc_msgSend_objectAtIndexedSubscript_(value, v826, 6, v827);
   objc_msgSend_floatValue(v828, v829, v830, v831);
-  v834 = objc_msgSend_objectAtIndexedSubscript_(a3, v832, 7, v833);
+  v834 = objc_msgSend_objectAtIndexedSubscript_(value, v832, 7, v833);
   objc_msgSend_floatValue(v834, v835, v836, v837);
   *&v1868 = __PAIR64__(LODWORD(v1849), LODWORD(v1867));
-  v840 = objc_msgSend_objectAtIndexedSubscript_(a3, v838, 8, v839);
+  v840 = objc_msgSend_objectAtIndexedSubscript_(value, v838, 8, v839);
   objc_msgSend_floatValue(v840, v841, v842, v843);
   LODWORD(v1849) = v844;
-  v847 = objc_msgSend_objectAtIndexedSubscript_(a3, v845, 9, v846);
+  v847 = objc_msgSend_objectAtIndexedSubscript_(value, v845, 9, v846);
   objc_msgSend_floatValue(v847, v848, v849, v850);
   v1823 = v851;
-  v854 = objc_msgSend_objectAtIndexedSubscript_(a3, v852, 10, v853);
+  v854 = objc_msgSend_objectAtIndexedSubscript_(value, v852, 10, v853);
   objc_msgSend_floatValue(v854, v855, v856, v857);
-  v860 = objc_msgSend_objectAtIndexedSubscript_(a3, v858, 11, v859);
+  v860 = objc_msgSend_objectAtIndexedSubscript_(value, v858, 11, v859);
   objc_msgSend_floatValue(v860, v861, v862, v863);
   *&v1850 = __PAIR64__(v1823, LODWORD(v1849));
-  v866 = objc_msgSend_objectAtIndexedSubscript_(a3, v864, 12, v865);
+  v866 = objc_msgSend_objectAtIndexedSubscript_(value, v864, 12, v865);
   objc_msgSend_floatValue(v866, v867, v868, v869);
   v1824 = v870;
-  v873 = objc_msgSend_objectAtIndexedSubscript_(a3, v871, 13, v872);
+  v873 = objc_msgSend_objectAtIndexedSubscript_(value, v871, 13, v872);
   objc_msgSend_floatValue(v873, v874, v875, v876);
   v1800 = v877;
-  v880 = objc_msgSend_objectAtIndexedSubscript_(a3, v878, 14, v879);
+  v880 = objc_msgSend_objectAtIndexedSubscript_(value, v878, 14, v879);
   objc_msgSend_floatValue(v880, v881, v882, v883);
-  v886 = objc_msgSend_objectAtIndexedSubscript_(a3, v884, 15, v885);
+  v886 = objc_msgSend_objectAtIndexedSubscript_(value, v884, 15, v885);
   objc_msgSend_floatValue(v886, v887, v888, v889);
-  objc_msgSend_convertTransform_fromNode_(self, v890, a4, v891, v1885, v1868, v1850, COERCE_DOUBLE(__PAIR64__(v1800, v1824)));
+  objc_msgSend_convertTransform_fromNode_(self, v890, node, v891, v1885, v1868, v1850, COERCE_DOUBLE(__PAIR64__(v1800, v1824)));
   LODWORD(v893) = v892;
   v1894[7] = objc_msgSend_numberWithFloat_(v785, v894, v895, v896, v893);
   v897 = MEMORY[0x1E696AD98];
-  v900 = objc_msgSend_objectAtIndexedSubscript_(a3, v898, 0, v899);
+  v900 = objc_msgSend_objectAtIndexedSubscript_(value, v898, 0, v899);
   objc_msgSend_floatValue(v900, v901, v902, v903);
   LODWORD(v1885) = v904;
-  v907 = objc_msgSend_objectAtIndexedSubscript_(a3, v905, 1, v906);
+  v907 = objc_msgSend_objectAtIndexedSubscript_(value, v905, 1, v906);
   objc_msgSend_floatValue(v907, v908, v909, v910);
   LODWORD(v1868) = v911;
-  v914 = objc_msgSend_objectAtIndexedSubscript_(a3, v912, 2, v913);
+  v914 = objc_msgSend_objectAtIndexedSubscript_(value, v912, 2, v913);
   objc_msgSend_floatValue(v914, v915, v916, v917);
-  v920 = objc_msgSend_objectAtIndexedSubscript_(a3, v918, 3, v919);
+  v920 = objc_msgSend_objectAtIndexedSubscript_(value, v918, 3, v919);
   objc_msgSend_floatValue(v920, v921, v922, v923);
   *&v1886 = __PAIR64__(LODWORD(v1868), LODWORD(v1885));
-  v926 = objc_msgSend_objectAtIndexedSubscript_(a3, v924, 4, v925);
+  v926 = objc_msgSend_objectAtIndexedSubscript_(value, v924, 4, v925);
   objc_msgSend_floatValue(v926, v927, v928, v929);
   LODWORD(v1868) = v930;
-  v933 = objc_msgSend_objectAtIndexedSubscript_(a3, v931, 5, v932);
+  v933 = objc_msgSend_objectAtIndexedSubscript_(value, v931, 5, v932);
   objc_msgSend_floatValue(v933, v934, v935, v936);
   LODWORD(v1850) = v937;
-  v940 = objc_msgSend_objectAtIndexedSubscript_(a3, v938, 6, v939);
+  v940 = objc_msgSend_objectAtIndexedSubscript_(value, v938, 6, v939);
   objc_msgSend_floatValue(v940, v941, v942, v943);
-  v946 = objc_msgSend_objectAtIndexedSubscript_(a3, v944, 7, v945);
+  v946 = objc_msgSend_objectAtIndexedSubscript_(value, v944, 7, v945);
   objc_msgSend_floatValue(v946, v947, v948, v949);
   *&v1869 = __PAIR64__(LODWORD(v1850), LODWORD(v1868));
-  v952 = objc_msgSend_objectAtIndexedSubscript_(a3, v950, 8, v951);
+  v952 = objc_msgSend_objectAtIndexedSubscript_(value, v950, 8, v951);
   objc_msgSend_floatValue(v952, v953, v954, v955);
   LODWORD(v1850) = v956;
-  v959 = objc_msgSend_objectAtIndexedSubscript_(a3, v957, 9, v958);
+  v959 = objc_msgSend_objectAtIndexedSubscript_(value, v957, 9, v958);
   objc_msgSend_floatValue(v959, v960, v961, v962);
   v1825 = v963;
-  v966 = objc_msgSend_objectAtIndexedSubscript_(a3, v964, 10, v965);
+  v966 = objc_msgSend_objectAtIndexedSubscript_(value, v964, 10, v965);
   objc_msgSend_floatValue(v966, v967, v968, v969);
-  v972 = objc_msgSend_objectAtIndexedSubscript_(a3, v970, 11, v971);
+  v972 = objc_msgSend_objectAtIndexedSubscript_(value, v970, 11, v971);
   objc_msgSend_floatValue(v972, v973, v974, v975);
   *&v1851 = __PAIR64__(v1825, LODWORD(v1850));
-  v978 = objc_msgSend_objectAtIndexedSubscript_(a3, v976, 12, v977);
+  v978 = objc_msgSend_objectAtIndexedSubscript_(value, v976, 12, v977);
   objc_msgSend_floatValue(v978, v979, v980, v981);
   v1826 = v982;
-  v985 = objc_msgSend_objectAtIndexedSubscript_(a3, v983, 13, v984);
+  v985 = objc_msgSend_objectAtIndexedSubscript_(value, v983, 13, v984);
   objc_msgSend_floatValue(v985, v986, v987, v988);
   v1801 = v989;
-  v992 = objc_msgSend_objectAtIndexedSubscript_(a3, v990, 14, v991);
+  v992 = objc_msgSend_objectAtIndexedSubscript_(value, v990, 14, v991);
   objc_msgSend_floatValue(v992, v993, v994, v995);
-  v998 = objc_msgSend_objectAtIndexedSubscript_(a3, v996, 15, v997);
+  v998 = objc_msgSend_objectAtIndexedSubscript_(value, v996, 15, v997);
   objc_msgSend_floatValue(v998, v999, v1000, v1001);
-  objc_msgSend_convertTransform_fromNode_(self, v1002, a4, v1003, v1886, v1869, v1851, COERCE_DOUBLE(__PAIR64__(v1801, v1826)));
+  objc_msgSend_convertTransform_fromNode_(self, v1002, node, v1003, v1886, v1869, v1851, COERCE_DOUBLE(__PAIR64__(v1801, v1826)));
   v1894[8] = objc_msgSend_numberWithFloat_(v897, v1004, v1005, v1006, v1007);
   v1008 = MEMORY[0x1E696AD98];
-  v1011 = objc_msgSend_objectAtIndexedSubscript_(a3, v1009, 0, v1010);
+  v1011 = objc_msgSend_objectAtIndexedSubscript_(value, v1009, 0, v1010);
   objc_msgSend_floatValue(v1011, v1012, v1013, v1014);
   LODWORD(v1886) = v1015;
-  v1018 = objc_msgSend_objectAtIndexedSubscript_(a3, v1016, 1, v1017);
+  v1018 = objc_msgSend_objectAtIndexedSubscript_(value, v1016, 1, v1017);
   objc_msgSend_floatValue(v1018, v1019, v1020, v1021);
   LODWORD(v1869) = v1022;
-  v1025 = objc_msgSend_objectAtIndexedSubscript_(a3, v1023, 2, v1024);
+  v1025 = objc_msgSend_objectAtIndexedSubscript_(value, v1023, 2, v1024);
   objc_msgSend_floatValue(v1025, v1026, v1027, v1028);
-  v1031 = objc_msgSend_objectAtIndexedSubscript_(a3, v1029, 3, v1030);
+  v1031 = objc_msgSend_objectAtIndexedSubscript_(value, v1029, 3, v1030);
   objc_msgSend_floatValue(v1031, v1032, v1033, v1034);
   *&v1887 = __PAIR64__(LODWORD(v1869), LODWORD(v1886));
-  v1037 = objc_msgSend_objectAtIndexedSubscript_(a3, v1035, 4, v1036);
+  v1037 = objc_msgSend_objectAtIndexedSubscript_(value, v1035, 4, v1036);
   objc_msgSend_floatValue(v1037, v1038, v1039, v1040);
   LODWORD(v1869) = v1041;
-  v1044 = objc_msgSend_objectAtIndexedSubscript_(a3, v1042, 5, v1043);
+  v1044 = objc_msgSend_objectAtIndexedSubscript_(value, v1042, 5, v1043);
   objc_msgSend_floatValue(v1044, v1045, v1046, v1047);
   LODWORD(v1851) = v1048;
-  v1051 = objc_msgSend_objectAtIndexedSubscript_(a3, v1049, 6, v1050);
+  v1051 = objc_msgSend_objectAtIndexedSubscript_(value, v1049, 6, v1050);
   objc_msgSend_floatValue(v1051, v1052, v1053, v1054);
-  v1057 = objc_msgSend_objectAtIndexedSubscript_(a3, v1055, 7, v1056);
+  v1057 = objc_msgSend_objectAtIndexedSubscript_(value, v1055, 7, v1056);
   objc_msgSend_floatValue(v1057, v1058, v1059, v1060);
   *&v1870 = __PAIR64__(LODWORD(v1851), LODWORD(v1869));
-  v1063 = objc_msgSend_objectAtIndexedSubscript_(a3, v1061, 8, v1062);
+  v1063 = objc_msgSend_objectAtIndexedSubscript_(value, v1061, 8, v1062);
   objc_msgSend_floatValue(v1063, v1064, v1065, v1066);
   LODWORD(v1851) = v1067;
-  v1070 = objc_msgSend_objectAtIndexedSubscript_(a3, v1068, 9, v1069);
+  v1070 = objc_msgSend_objectAtIndexedSubscript_(value, v1068, 9, v1069);
   objc_msgSend_floatValue(v1070, v1071, v1072, v1073);
   v1827 = v1074;
-  v1077 = objc_msgSend_objectAtIndexedSubscript_(a3, v1075, 10, v1076);
+  v1077 = objc_msgSend_objectAtIndexedSubscript_(value, v1075, 10, v1076);
   objc_msgSend_floatValue(v1077, v1078, v1079, v1080);
-  v1083 = objc_msgSend_objectAtIndexedSubscript_(a3, v1081, 11, v1082);
+  v1083 = objc_msgSend_objectAtIndexedSubscript_(value, v1081, 11, v1082);
   objc_msgSend_floatValue(v1083, v1084, v1085, v1086);
   *&v1852 = __PAIR64__(v1827, LODWORD(v1851));
-  v1089 = objc_msgSend_objectAtIndexedSubscript_(a3, v1087, 12, v1088);
+  v1089 = objc_msgSend_objectAtIndexedSubscript_(value, v1087, 12, v1088);
   objc_msgSend_floatValue(v1089, v1090, v1091, v1092);
   v1828 = v1093;
-  v1096 = objc_msgSend_objectAtIndexedSubscript_(a3, v1094, 13, v1095);
+  v1096 = objc_msgSend_objectAtIndexedSubscript_(value, v1094, 13, v1095);
   objc_msgSend_floatValue(v1096, v1097, v1098, v1099);
   v1802 = v1100;
-  v1103 = objc_msgSend_objectAtIndexedSubscript_(a3, v1101, 14, v1102);
+  v1103 = objc_msgSend_objectAtIndexedSubscript_(value, v1101, 14, v1102);
   objc_msgSend_floatValue(v1103, v1104, v1105, v1106);
-  v1109 = objc_msgSend_objectAtIndexedSubscript_(a3, v1107, 15, v1108);
+  v1109 = objc_msgSend_objectAtIndexedSubscript_(value, v1107, 15, v1108);
   objc_msgSend_floatValue(v1109, v1110, v1111, v1112);
-  objc_msgSend_convertTransform_fromNode_(self, v1113, a4, v1114, v1887, v1870, v1852, COERCE_DOUBLE(__PAIR64__(v1802, v1828)));
+  objc_msgSend_convertTransform_fromNode_(self, v1113, node, v1114, v1887, v1870, v1852, COERCE_DOUBLE(__PAIR64__(v1802, v1828)));
   LODWORD(v1116) = v1115;
   v1894[9] = objc_msgSend_numberWithFloat_(v1008, v1117, v1118, v1119, v1116);
   v1120 = MEMORY[0x1E696AD98];
-  v1123 = objc_msgSend_objectAtIndexedSubscript_(a3, v1121, 0, v1122);
+  v1123 = objc_msgSend_objectAtIndexedSubscript_(value, v1121, 0, v1122);
   objc_msgSend_floatValue(v1123, v1124, v1125, v1126);
   LODWORD(v1887) = v1127;
-  v1130 = objc_msgSend_objectAtIndexedSubscript_(a3, v1128, 1, v1129);
+  v1130 = objc_msgSend_objectAtIndexedSubscript_(value, v1128, 1, v1129);
   objc_msgSend_floatValue(v1130, v1131, v1132, v1133);
   LODWORD(v1870) = v1134;
-  v1137 = objc_msgSend_objectAtIndexedSubscript_(a3, v1135, 2, v1136);
+  v1137 = objc_msgSend_objectAtIndexedSubscript_(value, v1135, 2, v1136);
   objc_msgSend_floatValue(v1137, v1138, v1139, v1140);
-  v1143 = objc_msgSend_objectAtIndexedSubscript_(a3, v1141, 3, v1142);
+  v1143 = objc_msgSend_objectAtIndexedSubscript_(value, v1141, 3, v1142);
   objc_msgSend_floatValue(v1143, v1144, v1145, v1146);
   *&v1888 = __PAIR64__(LODWORD(v1870), LODWORD(v1887));
-  v1149 = objc_msgSend_objectAtIndexedSubscript_(a3, v1147, 4, v1148);
+  v1149 = objc_msgSend_objectAtIndexedSubscript_(value, v1147, 4, v1148);
   objc_msgSend_floatValue(v1149, v1150, v1151, v1152);
   LODWORD(v1870) = v1153;
-  v1156 = objc_msgSend_objectAtIndexedSubscript_(a3, v1154, 5, v1155);
+  v1156 = objc_msgSend_objectAtIndexedSubscript_(value, v1154, 5, v1155);
   objc_msgSend_floatValue(v1156, v1157, v1158, v1159);
   LODWORD(v1852) = v1160;
-  v1163 = objc_msgSend_objectAtIndexedSubscript_(a3, v1161, 6, v1162);
+  v1163 = objc_msgSend_objectAtIndexedSubscript_(value, v1161, 6, v1162);
   objc_msgSend_floatValue(v1163, v1164, v1165, v1166);
-  v1169 = objc_msgSend_objectAtIndexedSubscript_(a3, v1167, 7, v1168);
+  v1169 = objc_msgSend_objectAtIndexedSubscript_(value, v1167, 7, v1168);
   objc_msgSend_floatValue(v1169, v1170, v1171, v1172);
   *&v1871 = __PAIR64__(LODWORD(v1852), LODWORD(v1870));
-  v1175 = objc_msgSend_objectAtIndexedSubscript_(a3, v1173, 8, v1174);
+  v1175 = objc_msgSend_objectAtIndexedSubscript_(value, v1173, 8, v1174);
   objc_msgSend_floatValue(v1175, v1176, v1177, v1178);
   LODWORD(v1852) = v1179;
-  v1182 = objc_msgSend_objectAtIndexedSubscript_(a3, v1180, 9, v1181);
+  v1182 = objc_msgSend_objectAtIndexedSubscript_(value, v1180, 9, v1181);
   objc_msgSend_floatValue(v1182, v1183, v1184, v1185);
   v1829 = v1186;
-  v1189 = objc_msgSend_objectAtIndexedSubscript_(a3, v1187, 10, v1188);
+  v1189 = objc_msgSend_objectAtIndexedSubscript_(value, v1187, 10, v1188);
   objc_msgSend_floatValue(v1189, v1190, v1191, v1192);
-  v1195 = objc_msgSend_objectAtIndexedSubscript_(a3, v1193, 11, v1194);
+  v1195 = objc_msgSend_objectAtIndexedSubscript_(value, v1193, 11, v1194);
   objc_msgSend_floatValue(v1195, v1196, v1197, v1198);
   *&v1853 = __PAIR64__(v1829, LODWORD(v1852));
-  v1201 = objc_msgSend_objectAtIndexedSubscript_(a3, v1199, 12, v1200);
+  v1201 = objc_msgSend_objectAtIndexedSubscript_(value, v1199, 12, v1200);
   objc_msgSend_floatValue(v1201, v1202, v1203, v1204);
   v1830 = v1205;
-  v1208 = objc_msgSend_objectAtIndexedSubscript_(a3, v1206, 13, v1207);
+  v1208 = objc_msgSend_objectAtIndexedSubscript_(value, v1206, 13, v1207);
   objc_msgSend_floatValue(v1208, v1209, v1210, v1211);
   v1803 = v1212;
-  v1215 = objc_msgSend_objectAtIndexedSubscript_(a3, v1213, 14, v1214);
+  v1215 = objc_msgSend_objectAtIndexedSubscript_(value, v1213, 14, v1214);
   objc_msgSend_floatValue(v1215, v1216, v1217, v1218);
-  v1221 = objc_msgSend_objectAtIndexedSubscript_(a3, v1219, 15, v1220);
+  v1221 = objc_msgSend_objectAtIndexedSubscript_(value, v1219, 15, v1220);
   objc_msgSend_floatValue(v1221, v1222, v1223, v1224);
-  objc_msgSend_convertTransform_fromNode_(self, v1225, a4, v1226, v1888, v1871, v1853, COERCE_DOUBLE(__PAIR64__(v1803, v1830)));
+  objc_msgSend_convertTransform_fromNode_(self, v1225, node, v1226, v1888, v1871, v1853, COERCE_DOUBLE(__PAIR64__(v1803, v1830)));
   LODWORD(v1228) = v1227;
   v1894[10] = objc_msgSend_numberWithFloat_(v1120, v1229, v1230, v1231, v1228);
   v1232 = MEMORY[0x1E696AD98];
-  v1235 = objc_msgSend_objectAtIndexedSubscript_(a3, v1233, 0, v1234);
+  v1235 = objc_msgSend_objectAtIndexedSubscript_(value, v1233, 0, v1234);
   objc_msgSend_floatValue(v1235, v1236, v1237, v1238);
   LODWORD(v1888) = v1239;
-  v1242 = objc_msgSend_objectAtIndexedSubscript_(a3, v1240, 1, v1241);
+  v1242 = objc_msgSend_objectAtIndexedSubscript_(value, v1240, 1, v1241);
   objc_msgSend_floatValue(v1242, v1243, v1244, v1245);
   LODWORD(v1871) = v1246;
-  v1249 = objc_msgSend_objectAtIndexedSubscript_(a3, v1247, 2, v1248);
+  v1249 = objc_msgSend_objectAtIndexedSubscript_(value, v1247, 2, v1248);
   objc_msgSend_floatValue(v1249, v1250, v1251, v1252);
-  v1255 = objc_msgSend_objectAtIndexedSubscript_(a3, v1253, 3, v1254);
+  v1255 = objc_msgSend_objectAtIndexedSubscript_(value, v1253, 3, v1254);
   objc_msgSend_floatValue(v1255, v1256, v1257, v1258);
   *&v1889 = __PAIR64__(LODWORD(v1871), LODWORD(v1888));
-  v1261 = objc_msgSend_objectAtIndexedSubscript_(a3, v1259, 4, v1260);
+  v1261 = objc_msgSend_objectAtIndexedSubscript_(value, v1259, 4, v1260);
   objc_msgSend_floatValue(v1261, v1262, v1263, v1264);
   LODWORD(v1871) = v1265;
-  v1268 = objc_msgSend_objectAtIndexedSubscript_(a3, v1266, 5, v1267);
+  v1268 = objc_msgSend_objectAtIndexedSubscript_(value, v1266, 5, v1267);
   objc_msgSend_floatValue(v1268, v1269, v1270, v1271);
   LODWORD(v1853) = v1272;
-  v1275 = objc_msgSend_objectAtIndexedSubscript_(a3, v1273, 6, v1274);
+  v1275 = objc_msgSend_objectAtIndexedSubscript_(value, v1273, 6, v1274);
   objc_msgSend_floatValue(v1275, v1276, v1277, v1278);
-  v1281 = objc_msgSend_objectAtIndexedSubscript_(a3, v1279, 7, v1280);
+  v1281 = objc_msgSend_objectAtIndexedSubscript_(value, v1279, 7, v1280);
   objc_msgSend_floatValue(v1281, v1282, v1283, v1284);
   *&v1872 = __PAIR64__(LODWORD(v1853), LODWORD(v1871));
-  v1287 = objc_msgSend_objectAtIndexedSubscript_(a3, v1285, 8, v1286);
+  v1287 = objc_msgSend_objectAtIndexedSubscript_(value, v1285, 8, v1286);
   objc_msgSend_floatValue(v1287, v1288, v1289, v1290);
   LODWORD(v1853) = v1291;
-  v1294 = objc_msgSend_objectAtIndexedSubscript_(a3, v1292, 9, v1293);
+  v1294 = objc_msgSend_objectAtIndexedSubscript_(value, v1292, 9, v1293);
   objc_msgSend_floatValue(v1294, v1295, v1296, v1297);
   v1831 = v1298;
-  v1301 = objc_msgSend_objectAtIndexedSubscript_(a3, v1299, 10, v1300);
+  v1301 = objc_msgSend_objectAtIndexedSubscript_(value, v1299, 10, v1300);
   objc_msgSend_floatValue(v1301, v1302, v1303, v1304);
-  v1307 = objc_msgSend_objectAtIndexedSubscript_(a3, v1305, 11, v1306);
+  v1307 = objc_msgSend_objectAtIndexedSubscript_(value, v1305, 11, v1306);
   objc_msgSend_floatValue(v1307, v1308, v1309, v1310);
   *&v1854 = __PAIR64__(v1831, LODWORD(v1853));
-  v1313 = objc_msgSend_objectAtIndexedSubscript_(a3, v1311, 12, v1312);
+  v1313 = objc_msgSend_objectAtIndexedSubscript_(value, v1311, 12, v1312);
   objc_msgSend_floatValue(v1313, v1314, v1315, v1316);
   v1832 = v1317;
-  v1320 = objc_msgSend_objectAtIndexedSubscript_(a3, v1318, 13, v1319);
+  v1320 = objc_msgSend_objectAtIndexedSubscript_(value, v1318, 13, v1319);
   objc_msgSend_floatValue(v1320, v1321, v1322, v1323);
   v1804 = v1324;
-  v1327 = objc_msgSend_objectAtIndexedSubscript_(a3, v1325, 14, v1326);
+  v1327 = objc_msgSend_objectAtIndexedSubscript_(value, v1325, 14, v1326);
   objc_msgSend_floatValue(v1327, v1328, v1329, v1330);
-  v1333 = objc_msgSend_objectAtIndexedSubscript_(a3, v1331, 15, v1332);
+  v1333 = objc_msgSend_objectAtIndexedSubscript_(value, v1331, 15, v1332);
   objc_msgSend_floatValue(v1333, v1334, v1335, v1336);
-  objc_msgSend_convertTransform_fromNode_(self, v1337, a4, v1338, v1889, v1872, v1854, COERCE_DOUBLE(__PAIR64__(v1804, v1832)));
+  objc_msgSend_convertTransform_fromNode_(self, v1337, node, v1338, v1889, v1872, v1854, COERCE_DOUBLE(__PAIR64__(v1804, v1832)));
   LODWORD(v1340) = v1339;
   v1894[11] = objc_msgSend_numberWithFloat_(v1232, v1341, v1342, v1343, v1340);
   v1344 = MEMORY[0x1E696AD98];
-  v1347 = objc_msgSend_objectAtIndexedSubscript_(a3, v1345, 0, v1346);
+  v1347 = objc_msgSend_objectAtIndexedSubscript_(value, v1345, 0, v1346);
   objc_msgSend_floatValue(v1347, v1348, v1349, v1350);
   LODWORD(v1889) = v1351;
-  v1354 = objc_msgSend_objectAtIndexedSubscript_(a3, v1352, 1, v1353);
+  v1354 = objc_msgSend_objectAtIndexedSubscript_(value, v1352, 1, v1353);
   objc_msgSend_floatValue(v1354, v1355, v1356, v1357);
   LODWORD(v1872) = v1358;
-  v1361 = objc_msgSend_objectAtIndexedSubscript_(a3, v1359, 2, v1360);
+  v1361 = objc_msgSend_objectAtIndexedSubscript_(value, v1359, 2, v1360);
   objc_msgSend_floatValue(v1361, v1362, v1363, v1364);
-  v1367 = objc_msgSend_objectAtIndexedSubscript_(a3, v1365, 3, v1366);
+  v1367 = objc_msgSend_objectAtIndexedSubscript_(value, v1365, 3, v1366);
   objc_msgSend_floatValue(v1367, v1368, v1369, v1370);
   *&v1890 = __PAIR64__(LODWORD(v1872), LODWORD(v1889));
-  v1373 = objc_msgSend_objectAtIndexedSubscript_(a3, v1371, 4, v1372);
+  v1373 = objc_msgSend_objectAtIndexedSubscript_(value, v1371, 4, v1372);
   objc_msgSend_floatValue(v1373, v1374, v1375, v1376);
   LODWORD(v1872) = v1377;
-  v1380 = objc_msgSend_objectAtIndexedSubscript_(a3, v1378, 5, v1379);
+  v1380 = objc_msgSend_objectAtIndexedSubscript_(value, v1378, 5, v1379);
   objc_msgSend_floatValue(v1380, v1381, v1382, v1383);
   LODWORD(v1854) = v1384;
-  v1387 = objc_msgSend_objectAtIndexedSubscript_(a3, v1385, 6, v1386);
+  v1387 = objc_msgSend_objectAtIndexedSubscript_(value, v1385, 6, v1386);
   objc_msgSend_floatValue(v1387, v1388, v1389, v1390);
-  v1393 = objc_msgSend_objectAtIndexedSubscript_(a3, v1391, 7, v1392);
+  v1393 = objc_msgSend_objectAtIndexedSubscript_(value, v1391, 7, v1392);
   objc_msgSend_floatValue(v1393, v1394, v1395, v1396);
   *&v1873 = __PAIR64__(LODWORD(v1854), LODWORD(v1872));
-  v1399 = objc_msgSend_objectAtIndexedSubscript_(a3, v1397, 8, v1398);
+  v1399 = objc_msgSend_objectAtIndexedSubscript_(value, v1397, 8, v1398);
   objc_msgSend_floatValue(v1399, v1400, v1401, v1402);
   LODWORD(v1854) = v1403;
-  v1406 = objc_msgSend_objectAtIndexedSubscript_(a3, v1404, 9, v1405);
+  v1406 = objc_msgSend_objectAtIndexedSubscript_(value, v1404, 9, v1405);
   objc_msgSend_floatValue(v1406, v1407, v1408, v1409);
   v1833 = v1410;
-  v1413 = objc_msgSend_objectAtIndexedSubscript_(a3, v1411, 10, v1412);
+  v1413 = objc_msgSend_objectAtIndexedSubscript_(value, v1411, 10, v1412);
   objc_msgSend_floatValue(v1413, v1414, v1415, v1416);
-  v1419 = objc_msgSend_objectAtIndexedSubscript_(a3, v1417, 11, v1418);
+  v1419 = objc_msgSend_objectAtIndexedSubscript_(value, v1417, 11, v1418);
   objc_msgSend_floatValue(v1419, v1420, v1421, v1422);
   *&v1855 = __PAIR64__(v1833, LODWORD(v1854));
-  v1425 = objc_msgSend_objectAtIndexedSubscript_(a3, v1423, 12, v1424);
+  v1425 = objc_msgSend_objectAtIndexedSubscript_(value, v1423, 12, v1424);
   objc_msgSend_floatValue(v1425, v1426, v1427, v1428);
   v1834 = v1429;
-  v1432 = objc_msgSend_objectAtIndexedSubscript_(a3, v1430, 13, v1431);
+  v1432 = objc_msgSend_objectAtIndexedSubscript_(value, v1430, 13, v1431);
   objc_msgSend_floatValue(v1432, v1433, v1434, v1435);
   v1805 = v1436;
-  v1439 = objc_msgSend_objectAtIndexedSubscript_(a3, v1437, 14, v1438);
+  v1439 = objc_msgSend_objectAtIndexedSubscript_(value, v1437, 14, v1438);
   objc_msgSend_floatValue(v1439, v1440, v1441, v1442);
-  v1445 = objc_msgSend_objectAtIndexedSubscript_(a3, v1443, 15, v1444);
+  v1445 = objc_msgSend_objectAtIndexedSubscript_(value, v1443, 15, v1444);
   objc_msgSend_floatValue(v1445, v1446, v1447, v1448);
-  objc_msgSend_convertTransform_fromNode_(self, v1449, a4, v1450, v1890, v1873, v1855, COERCE_DOUBLE(__PAIR64__(v1805, v1834)));
+  objc_msgSend_convertTransform_fromNode_(self, v1449, node, v1450, v1890, v1873, v1855, COERCE_DOUBLE(__PAIR64__(v1805, v1834)));
   v1894[12] = objc_msgSend_numberWithFloat_(v1344, v1451, v1452, v1453, v1454);
   v1455 = MEMORY[0x1E696AD98];
-  v1458 = objc_msgSend_objectAtIndexedSubscript_(a3, v1456, 0, v1457);
+  v1458 = objc_msgSend_objectAtIndexedSubscript_(value, v1456, 0, v1457);
   objc_msgSend_floatValue(v1458, v1459, v1460, v1461);
   LODWORD(v1890) = v1462;
-  v1465 = objc_msgSend_objectAtIndexedSubscript_(a3, v1463, 1, v1464);
+  v1465 = objc_msgSend_objectAtIndexedSubscript_(value, v1463, 1, v1464);
   objc_msgSend_floatValue(v1465, v1466, v1467, v1468);
   LODWORD(v1873) = v1469;
-  v1472 = objc_msgSend_objectAtIndexedSubscript_(a3, v1470, 2, v1471);
+  v1472 = objc_msgSend_objectAtIndexedSubscript_(value, v1470, 2, v1471);
   objc_msgSend_floatValue(v1472, v1473, v1474, v1475);
-  v1478 = objc_msgSend_objectAtIndexedSubscript_(a3, v1476, 3, v1477);
+  v1478 = objc_msgSend_objectAtIndexedSubscript_(value, v1476, 3, v1477);
   objc_msgSend_floatValue(v1478, v1479, v1480, v1481);
   *&v1891 = __PAIR64__(LODWORD(v1873), LODWORD(v1890));
-  v1484 = objc_msgSend_objectAtIndexedSubscript_(a3, v1482, 4, v1483);
+  v1484 = objc_msgSend_objectAtIndexedSubscript_(value, v1482, 4, v1483);
   objc_msgSend_floatValue(v1484, v1485, v1486, v1487);
   LODWORD(v1873) = v1488;
-  v1491 = objc_msgSend_objectAtIndexedSubscript_(a3, v1489, 5, v1490);
+  v1491 = objc_msgSend_objectAtIndexedSubscript_(value, v1489, 5, v1490);
   objc_msgSend_floatValue(v1491, v1492, v1493, v1494);
   LODWORD(v1855) = v1495;
-  v1498 = objc_msgSend_objectAtIndexedSubscript_(a3, v1496, 6, v1497);
+  v1498 = objc_msgSend_objectAtIndexedSubscript_(value, v1496, 6, v1497);
   objc_msgSend_floatValue(v1498, v1499, v1500, v1501);
-  v1504 = objc_msgSend_objectAtIndexedSubscript_(a3, v1502, 7, v1503);
+  v1504 = objc_msgSend_objectAtIndexedSubscript_(value, v1502, 7, v1503);
   objc_msgSend_floatValue(v1504, v1505, v1506, v1507);
   *&v1874 = __PAIR64__(LODWORD(v1855), LODWORD(v1873));
-  v1510 = objc_msgSend_objectAtIndexedSubscript_(a3, v1508, 8, v1509);
+  v1510 = objc_msgSend_objectAtIndexedSubscript_(value, v1508, 8, v1509);
   objc_msgSend_floatValue(v1510, v1511, v1512, v1513);
   LODWORD(v1855) = v1514;
-  v1517 = objc_msgSend_objectAtIndexedSubscript_(a3, v1515, 9, v1516);
+  v1517 = objc_msgSend_objectAtIndexedSubscript_(value, v1515, 9, v1516);
   objc_msgSend_floatValue(v1517, v1518, v1519, v1520);
   v1835 = v1521;
-  v1524 = objc_msgSend_objectAtIndexedSubscript_(a3, v1522, 10, v1523);
+  v1524 = objc_msgSend_objectAtIndexedSubscript_(value, v1522, 10, v1523);
   objc_msgSend_floatValue(v1524, v1525, v1526, v1527);
-  v1530 = objc_msgSend_objectAtIndexedSubscript_(a3, v1528, 11, v1529);
+  v1530 = objc_msgSend_objectAtIndexedSubscript_(value, v1528, 11, v1529);
   objc_msgSend_floatValue(v1530, v1531, v1532, v1533);
   *&v1856 = __PAIR64__(v1835, LODWORD(v1855));
-  v1536 = objc_msgSend_objectAtIndexedSubscript_(a3, v1534, 12, v1535);
+  v1536 = objc_msgSend_objectAtIndexedSubscript_(value, v1534, 12, v1535);
   objc_msgSend_floatValue(v1536, v1537, v1538, v1539);
   v1836 = v1540;
-  v1543 = objc_msgSend_objectAtIndexedSubscript_(a3, v1541, 13, v1542);
+  v1543 = objc_msgSend_objectAtIndexedSubscript_(value, v1541, 13, v1542);
   objc_msgSend_floatValue(v1543, v1544, v1545, v1546);
   v1806 = v1547;
-  v1550 = objc_msgSend_objectAtIndexedSubscript_(a3, v1548, 14, v1549);
+  v1550 = objc_msgSend_objectAtIndexedSubscript_(value, v1548, 14, v1549);
   objc_msgSend_floatValue(v1550, v1551, v1552, v1553);
-  v1556 = objc_msgSend_objectAtIndexedSubscript_(a3, v1554, 15, v1555);
+  v1556 = objc_msgSend_objectAtIndexedSubscript_(value, v1554, 15, v1555);
   objc_msgSend_floatValue(v1556, v1557, v1558, v1559);
-  objc_msgSend_convertTransform_fromNode_(self, v1560, a4, v1561, v1891, v1874, v1856, COERCE_DOUBLE(__PAIR64__(v1806, v1836)));
+  objc_msgSend_convertTransform_fromNode_(self, v1560, node, v1561, v1891, v1874, v1856, COERCE_DOUBLE(__PAIR64__(v1806, v1836)));
   LODWORD(v1563) = v1562;
   v1894[13] = objc_msgSend_numberWithFloat_(v1455, v1564, v1565, v1566, v1563);
   v1567 = MEMORY[0x1E696AD98];
-  v1570 = objc_msgSend_objectAtIndexedSubscript_(a3, v1568, 0, v1569);
+  v1570 = objc_msgSend_objectAtIndexedSubscript_(value, v1568, 0, v1569);
   objc_msgSend_floatValue(v1570, v1571, v1572, v1573);
   LODWORD(v1891) = v1574;
-  v1577 = objc_msgSend_objectAtIndexedSubscript_(a3, v1575, 1, v1576);
+  v1577 = objc_msgSend_objectAtIndexedSubscript_(value, v1575, 1, v1576);
   objc_msgSend_floatValue(v1577, v1578, v1579, v1580);
   LODWORD(v1874) = v1581;
-  v1584 = objc_msgSend_objectAtIndexedSubscript_(a3, v1582, 2, v1583);
+  v1584 = objc_msgSend_objectAtIndexedSubscript_(value, v1582, 2, v1583);
   objc_msgSend_floatValue(v1584, v1585, v1586, v1587);
-  v1590 = objc_msgSend_objectAtIndexedSubscript_(a3, v1588, 3, v1589);
+  v1590 = objc_msgSend_objectAtIndexedSubscript_(value, v1588, 3, v1589);
   objc_msgSend_floatValue(v1590, v1591, v1592, v1593);
   *&v1892 = __PAIR64__(LODWORD(v1874), LODWORD(v1891));
-  v1596 = objc_msgSend_objectAtIndexedSubscript_(a3, v1594, 4, v1595);
+  v1596 = objc_msgSend_objectAtIndexedSubscript_(value, v1594, 4, v1595);
   objc_msgSend_floatValue(v1596, v1597, v1598, v1599);
   LODWORD(v1874) = v1600;
-  v1603 = objc_msgSend_objectAtIndexedSubscript_(a3, v1601, 5, v1602);
+  v1603 = objc_msgSend_objectAtIndexedSubscript_(value, v1601, 5, v1602);
   objc_msgSend_floatValue(v1603, v1604, v1605, v1606);
   LODWORD(v1856) = v1607;
-  v1610 = objc_msgSend_objectAtIndexedSubscript_(a3, v1608, 6, v1609);
+  v1610 = objc_msgSend_objectAtIndexedSubscript_(value, v1608, 6, v1609);
   objc_msgSend_floatValue(v1610, v1611, v1612, v1613);
-  v1616 = objc_msgSend_objectAtIndexedSubscript_(a3, v1614, 7, v1615);
+  v1616 = objc_msgSend_objectAtIndexedSubscript_(value, v1614, 7, v1615);
   objc_msgSend_floatValue(v1616, v1617, v1618, v1619);
   *&v1875 = __PAIR64__(LODWORD(v1856), LODWORD(v1874));
-  v1622 = objc_msgSend_objectAtIndexedSubscript_(a3, v1620, 8, v1621);
+  v1622 = objc_msgSend_objectAtIndexedSubscript_(value, v1620, 8, v1621);
   objc_msgSend_floatValue(v1622, v1623, v1624, v1625);
   LODWORD(v1856) = v1626;
-  v1629 = objc_msgSend_objectAtIndexedSubscript_(a3, v1627, 9, v1628);
+  v1629 = objc_msgSend_objectAtIndexedSubscript_(value, v1627, 9, v1628);
   objc_msgSend_floatValue(v1629, v1630, v1631, v1632);
   v1837 = v1633;
-  v1636 = objc_msgSend_objectAtIndexedSubscript_(a3, v1634, 10, v1635);
+  v1636 = objc_msgSend_objectAtIndexedSubscript_(value, v1634, 10, v1635);
   objc_msgSend_floatValue(v1636, v1637, v1638, v1639);
-  v1642 = objc_msgSend_objectAtIndexedSubscript_(a3, v1640, 11, v1641);
+  v1642 = objc_msgSend_objectAtIndexedSubscript_(value, v1640, 11, v1641);
   objc_msgSend_floatValue(v1642, v1643, v1644, v1645);
   *&v1857 = __PAIR64__(v1837, LODWORD(v1856));
-  v1648 = objc_msgSend_objectAtIndexedSubscript_(a3, v1646, 12, v1647);
+  v1648 = objc_msgSend_objectAtIndexedSubscript_(value, v1646, 12, v1647);
   objc_msgSend_floatValue(v1648, v1649, v1650, v1651);
   v1838 = v1652;
-  v1655 = objc_msgSend_objectAtIndexedSubscript_(a3, v1653, 13, v1654);
+  v1655 = objc_msgSend_objectAtIndexedSubscript_(value, v1653, 13, v1654);
   objc_msgSend_floatValue(v1655, v1656, v1657, v1658);
   v1807 = v1659;
-  v1662 = objc_msgSend_objectAtIndexedSubscript_(a3, v1660, 14, v1661);
+  v1662 = objc_msgSend_objectAtIndexedSubscript_(value, v1660, 14, v1661);
   objc_msgSend_floatValue(v1662, v1663, v1664, v1665);
-  v1668 = objc_msgSend_objectAtIndexedSubscript_(a3, v1666, 15, v1667);
+  v1668 = objc_msgSend_objectAtIndexedSubscript_(value, v1666, 15, v1667);
   objc_msgSend_floatValue(v1668, v1669, v1670, v1671);
-  objc_msgSend_convertTransform_fromNode_(self, v1672, a4, v1673, v1892, v1875, v1857, COERCE_DOUBLE(__PAIR64__(v1807, v1838)));
+  objc_msgSend_convertTransform_fromNode_(self, v1672, node, v1673, v1892, v1875, v1857, COERCE_DOUBLE(__PAIR64__(v1807, v1838)));
   LODWORD(v1675) = v1674;
   v1894[14] = objc_msgSend_numberWithFloat_(v1567, v1676, v1677, v1678, v1675);
   v1679 = MEMORY[0x1E696AD98];
-  v1682 = objc_msgSend_objectAtIndexedSubscript_(a3, v1680, 0, v1681);
+  v1682 = objc_msgSend_objectAtIndexedSubscript_(value, v1680, 0, v1681);
   objc_msgSend_floatValue(v1682, v1683, v1684, v1685);
   LODWORD(v1892) = v1686;
-  v1689 = objc_msgSend_objectAtIndexedSubscript_(a3, v1687, 1, v1688);
+  v1689 = objc_msgSend_objectAtIndexedSubscript_(value, v1687, 1, v1688);
   objc_msgSend_floatValue(v1689, v1690, v1691, v1692);
   LODWORD(v1875) = v1693;
-  v1696 = objc_msgSend_objectAtIndexedSubscript_(a3, v1694, 2, v1695);
+  v1696 = objc_msgSend_objectAtIndexedSubscript_(value, v1694, 2, v1695);
   objc_msgSend_floatValue(v1696, v1697, v1698, v1699);
-  v1702 = objc_msgSend_objectAtIndexedSubscript_(a3, v1700, 3, v1701);
+  v1702 = objc_msgSend_objectAtIndexedSubscript_(value, v1700, 3, v1701);
   objc_msgSend_floatValue(v1702, v1703, v1704, v1705);
   v1893 = COERCE_DOUBLE(__PAIR64__(LODWORD(v1875), LODWORD(v1892)));
-  v1708 = objc_msgSend_objectAtIndexedSubscript_(a3, v1706, 4, v1707);
+  v1708 = objc_msgSend_objectAtIndexedSubscript_(value, v1706, 4, v1707);
   objc_msgSend_floatValue(v1708, v1709, v1710, v1711);
   LODWORD(v1875) = v1712;
-  v1715 = objc_msgSend_objectAtIndexedSubscript_(a3, v1713, 5, v1714);
+  v1715 = objc_msgSend_objectAtIndexedSubscript_(value, v1713, 5, v1714);
   objc_msgSend_floatValue(v1715, v1716, v1717, v1718);
   LODWORD(v1857) = v1719;
-  v1722 = objc_msgSend_objectAtIndexedSubscript_(a3, v1720, 6, v1721);
+  v1722 = objc_msgSend_objectAtIndexedSubscript_(value, v1720, 6, v1721);
   objc_msgSend_floatValue(v1722, v1723, v1724, v1725);
-  v1728 = objc_msgSend_objectAtIndexedSubscript_(a3, v1726, 7, v1727);
+  v1728 = objc_msgSend_objectAtIndexedSubscript_(value, v1726, 7, v1727);
   objc_msgSend_floatValue(v1728, v1729, v1730, v1731);
   v1876 = COERCE_DOUBLE(__PAIR64__(LODWORD(v1857), LODWORD(v1875)));
-  v1734 = objc_msgSend_objectAtIndexedSubscript_(a3, v1732, 8, v1733);
+  v1734 = objc_msgSend_objectAtIndexedSubscript_(value, v1732, 8, v1733);
   objc_msgSend_floatValue(v1734, v1735, v1736, v1737);
   LODWORD(v1857) = v1738;
-  v1741 = objc_msgSend_objectAtIndexedSubscript_(a3, v1739, 9, v1740);
+  v1741 = objc_msgSend_objectAtIndexedSubscript_(value, v1739, 9, v1740);
   objc_msgSend_floatValue(v1741, v1742, v1743, v1744);
   v1839 = v1745;
-  v1748 = objc_msgSend_objectAtIndexedSubscript_(a3, v1746, 10, v1747);
+  v1748 = objc_msgSend_objectAtIndexedSubscript_(value, v1746, 10, v1747);
   objc_msgSend_floatValue(v1748, v1749, v1750, v1751);
-  v1754 = objc_msgSend_objectAtIndexedSubscript_(a3, v1752, 11, v1753);
+  v1754 = objc_msgSend_objectAtIndexedSubscript_(value, v1752, 11, v1753);
   objc_msgSend_floatValue(v1754, v1755, v1756, v1757);
   v1858 = COERCE_DOUBLE(__PAIR64__(v1839, LODWORD(v1857)));
-  v1760 = objc_msgSend_objectAtIndexedSubscript_(a3, v1758, 12, v1759);
+  v1760 = objc_msgSend_objectAtIndexedSubscript_(value, v1758, 12, v1759);
   objc_msgSend_floatValue(v1760, v1761, v1762, v1763);
   v1840 = v1764;
-  v1767 = objc_msgSend_objectAtIndexedSubscript_(a3, v1765, 13, v1766);
+  v1767 = objc_msgSend_objectAtIndexedSubscript_(value, v1765, 13, v1766);
   objc_msgSend_floatValue(v1767, v1768, v1769, v1770);
   v1808 = v1771;
-  v1774 = objc_msgSend_objectAtIndexedSubscript_(a3, v1772, 14, v1773);
+  v1774 = objc_msgSend_objectAtIndexedSubscript_(value, v1772, 14, v1773);
   objc_msgSend_floatValue(v1774, v1775, v1776, v1777);
-  v1780 = objc_msgSend_objectAtIndexedSubscript_(a3, v1778, 15, v1779);
+  v1780 = objc_msgSend_objectAtIndexedSubscript_(value, v1778, 15, v1779);
   objc_msgSend_floatValue(v1780, v1781, v1782, v1783);
-  objc_msgSend_convertTransform_fromNode_(self, v1784, a4, v1785, v1893, v1876, v1858, COERCE_DOUBLE(__PAIR64__(v1808, v1840)));
+  objc_msgSend_convertTransform_fromNode_(self, v1784, node, v1785, v1893, v1876, v1858, COERCE_DOUBLE(__PAIR64__(v1808, v1840)));
   LODWORD(v1787) = v1786;
   v1894[15] = objc_msgSend_numberWithFloat_(v1679, v1788, v1789, v1790, v1787);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v1791, v1894, 16);
 }
 
-- (id)hitTestWithSegmentFrom:(id)a3 toPoint:(id)a4 options:(id)a5
+- (id)hitTestWithSegmentFrom:(id)from toPoint:(id)point options:(id)options
 {
-  v9 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(from, a2, 0, point);
   objc_msgSend_floatValue(v9, v10, v11, v12);
   v53 = v13;
-  v16 = objc_msgSend_objectAtIndexedSubscript_(a3, v14, 1, v15);
+  v16 = objc_msgSend_objectAtIndexedSubscript_(from, v14, 1, v15);
   objc_msgSend_floatValue(v16, v17, v18, v19);
   v51 = v20;
-  v23 = objc_msgSend_objectAtIndexedSubscript_(a3, v21, 2, v22);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(from, v21, 2, v22);
   objc_msgSend_floatValue(v23, v24, v25, v26);
   v54 = COERCE_DOUBLE(__PAIR64__(v51, v53));
-  v29 = objc_msgSend_objectAtIndexedSubscript_(a4, v27, 0, v28);
+  v29 = objc_msgSend_objectAtIndexedSubscript_(point, v27, 0, v28);
   objc_msgSend_floatValue(v29, v30, v31, v32);
   v52 = v33;
-  v36 = objc_msgSend_objectAtIndexedSubscript_(a4, v34, 1, v35);
+  v36 = objc_msgSend_objectAtIndexedSubscript_(point, v34, 1, v35);
   objc_msgSend_floatValue(v36, v37, v38, v39);
   v50 = v40;
-  v43 = objc_msgSend_objectAtIndexedSubscript_(a4, v41, 2, v42);
+  v43 = objc_msgSend_objectAtIndexedSubscript_(point, v41, 2, v42);
   objc_msgSend_floatValue(v43, v44, v45, v46);
 
-  return objc_msgSend_hitTestWithSegmentFromPoint_toPoint_options_(self, v47, a5, v48, v54, COERCE_DOUBLE(__PAIR64__(v50, v52)));
+  return objc_msgSend_hitTestWithSegmentFromPoint_toPoint_options_(self, v47, options, v48, v54, COERCE_DOUBLE(__PAIR64__(v50, v52)));
 }
 
 + (id)localRightValue
 {
   v29[3] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AD98];
-  objc_msgSend_localRight(a1, a2, v2, v3);
+  objc_msgSend_localRight(self, a2, v2, v3);
   v9 = objc_msgSend_numberWithFloat_(v5, v6, v7, v8);
   v10 = MEMORY[0x1E696AD98];
-  objc_msgSend_localRight(a1, v11, v12, v13, v9);
+  objc_msgSend_localRight(self, v11, v12, v13, v9);
   LODWORD(v14) = HIDWORD(v14);
   v29[1] = objc_msgSend_numberWithFloat_(v10, v15, v16, v17, v14);
   v18 = MEMORY[0x1E696AD98];
-  objc_msgSend_localRight(a1, v19, v20, v21);
+  objc_msgSend_localRight(self, v19, v20, v21);
   LODWORD(v23) = v22;
   v29[2] = objc_msgSend_numberWithFloat_(v18, v24, v25, v26, v23);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
@@ -2493,14 +2493,14 @@
 {
   v29[3] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AD98];
-  objc_msgSend_localFront(a1, a2, v2, v3);
+  objc_msgSend_localFront(self, a2, v2, v3);
   v9 = objc_msgSend_numberWithFloat_(v5, v6, v7, v8);
   v10 = MEMORY[0x1E696AD98];
-  objc_msgSend_localFront(a1, v11, v12, v13, v9);
+  objc_msgSend_localFront(self, v11, v12, v13, v9);
   LODWORD(v14) = HIDWORD(v14);
   v29[1] = objc_msgSend_numberWithFloat_(v10, v15, v16, v17, v14);
   v18 = MEMORY[0x1E696AD98];
-  objc_msgSend_localFront(a1, v19, v20, v21);
+  objc_msgSend_localFront(self, v19, v20, v21);
   LODWORD(v23) = v22;
   v29[2] = objc_msgSend_numberWithFloat_(v18, v24, v25, v26, v23);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
@@ -2510,14 +2510,14 @@
 {
   v29[3] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AD98];
-  objc_msgSend_localUp(a1, a2, v2, v3);
+  objc_msgSend_localUp(self, a2, v2, v3);
   v9 = objc_msgSend_numberWithFloat_(v5, v6, v7, v8);
   v10 = MEMORY[0x1E696AD98];
-  objc_msgSend_localUp(a1, v11, v12, v13, v9);
+  objc_msgSend_localUp(self, v11, v12, v13, v9);
   LODWORD(v14) = HIDWORD(v14);
   v29[1] = objc_msgSend_numberWithFloat_(v10, v15, v16, v17, v14);
   v18 = MEMORY[0x1E696AD98];
-  objc_msgSend_localUp(a1, v19, v20, v21);
+  objc_msgSend_localUp(self, v19, v20, v21);
   LODWORD(v23) = v22;
   v29[2] = objc_msgSend_numberWithFloat_(v18, v24, v25, v26, v23);
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
@@ -2574,102 +2574,102 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)lookAtLocation:(id)a3
+- (void)lookAtLocation:(id)location
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(location, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(location, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(location, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_lookAt_, v22, v23);
 }
 
-- (void)lookAtLocation:(id)a3 up:(id)a4 localFront:(id)a5
+- (void)lookAtLocation:(id)location up:(id)up localFront:(id)front
 {
-  v9 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(location, a2, 0, up);
   objc_msgSend_floatValue(v9, v10, v11, v12);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(location, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
-  v21 = objc_msgSend_objectAtIndexedSubscript_(a3, v19, 2, v20);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(location, v19, 2, v20);
   objc_msgSend_floatValue(v21, v22, v23, v24);
-  v27 = objc_msgSend_objectAtIndexedSubscript_(a4, v25, 0, v26);
+  v27 = objc_msgSend_objectAtIndexedSubscript_(up, v25, 0, v26);
   objc_msgSend_floatValue(v27, v28, v29, v30);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a4, v31, 1, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(up, v31, 1, v32);
   objc_msgSend_floatValue(v33, v34, v35, v36);
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a4, v37, 2, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(up, v37, 2, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
-  v45 = objc_msgSend_objectAtIndexedSubscript_(a5, v43, 0, v44);
+  v45 = objc_msgSend_objectAtIndexedSubscript_(front, v43, 0, v44);
   objc_msgSend_floatValue(v45, v46, v47, v48);
-  v51 = objc_msgSend_objectAtIndexedSubscript_(a5, v49, 1, v50);
+  v51 = objc_msgSend_objectAtIndexedSubscript_(front, v49, 1, v50);
   objc_msgSend_floatValue(v51, v52, v53, v54);
-  v57 = objc_msgSend_objectAtIndexedSubscript_(a5, v55, 2, v56);
+  v57 = objc_msgSend_objectAtIndexedSubscript_(front, v55, 2, v56);
   objc_msgSend_floatValue(v57, v58, v59, v60);
 
   MEMORY[0x1EEE66B58](self, sel_lookAt_up_localFront_, v61, v62);
 }
 
-- (void)localTranslateByValue:(id)a3
+- (void)localTranslateByValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
 
   MEMORY[0x1EEE66B58](self, sel_localTranslateBy_, v22, v23);
 }
 
-- (void)localRotateByValue:(id)a3
+- (void)localRotateByValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v10, 1, v11);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(value, v10, 1, v11);
   objc_msgSend_floatValue(v12, v13, v14, v15);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v16, 2, v17);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(value, v16, 2, v17);
   objc_msgSend_floatValue(v18, v19, v20, v21);
-  v24 = objc_msgSend_objectAtIndexedSubscript_(a3, v22, 3, v23);
+  v24 = objc_msgSend_objectAtIndexedSubscript_(value, v22, 3, v23);
   objc_msgSend_floatValue(v24, v25, v26, v27);
 
   MEMORY[0x1EEE66B58](self, sel_localRotateBy_, v28, v29);
 }
 
-- (void)rotateBy:(id)a3 around:(id)a4
+- (void)rotateBy:(id)by around:(id)around
 {
-  v7 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v7 = objc_msgSend_objectAtIndexedSubscript_(by, a2, 0, around);
   objc_msgSend_floatValue(v7, v8, v9, v10);
   v57 = v11;
-  v14 = objc_msgSend_objectAtIndexedSubscript_(a3, v12, 1, v13);
+  v14 = objc_msgSend_objectAtIndexedSubscript_(by, v12, 1, v13);
   objc_msgSend_floatValue(v14, v15, v16, v17);
   v55 = v18;
-  v21 = objc_msgSend_objectAtIndexedSubscript_(a3, v19, 2, v20);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(by, v19, 2, v20);
   objc_msgSend_floatValue(v21, v22, v23, v24);
-  v27 = objc_msgSend_objectAtIndexedSubscript_(a3, v25, 3, v26);
+  v27 = objc_msgSend_objectAtIndexedSubscript_(by, v25, 3, v26);
   objc_msgSend_floatValue(v27, v28, v29, v30);
   v58 = COERCE_DOUBLE(__PAIR64__(v55, v57));
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a4, v31, 0, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(around, v31, 0, v32);
   objc_msgSend_floatValue(v33, v34, v35, v36);
   v56 = v37;
-  v40 = objc_msgSend_objectAtIndexedSubscript_(a4, v38, 1, v39);
+  v40 = objc_msgSend_objectAtIndexedSubscript_(around, v38, 1, v39);
   objc_msgSend_floatValue(v40, v41, v42, v43);
   v54 = v44;
-  v47 = objc_msgSend_objectAtIndexedSubscript_(a4, v45, 2, v46);
+  v47 = objc_msgSend_objectAtIndexedSubscript_(around, v45, 2, v46);
   objc_msgSend_floatValue(v47, v48, v49, v50);
 
   objc_msgSend_rotateBy_aroundTarget_(self, v51, v52, v53, v58, COERCE_DOUBLE(__PAIR64__(v54, v56)));
 }
 
-+ (VFXNode)nodeWithMDLAsset:(id)a3
++ (VFXNode)nodeWithMDLAsset:(id)asset
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v5, &v20, v24, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(asset, v5, &v20, v24, 16);
   if (v6)
   {
     v10 = v6;
@@ -2681,7 +2681,7 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(asset);
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
@@ -2692,7 +2692,7 @@
       }
 
       while (v10 != v12);
-      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v7, &v20, v24, 16);
+      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(asset, v7, &v20, v24, 16);
     }
 
     while (v10);
@@ -2701,28 +2701,28 @@
   return v4;
 }
 
-+ (VFXNode)nodeWithMDLObject:(id)a3
++ (VFXNode)nodeWithMDLObject:(id)object
 {
-  v7 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], a2, a3, v3);
+  v7 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], a2, object, v3);
 
-  return objc_msgSend_nodeWithMDLObject_options_context_(a1, v6, a3, 0, v7);
+  return objc_msgSend_nodeWithMDLObject_options_context_(self, v6, object, 0, v7);
 }
 
-+ (VFXNode)nodeWithMDLObject:(id)a3 options:(id)a4 context:(id)a5
++ (VFXNode)nodeWithMDLObject:(id)object options:(id)options context:(id)context
 {
   v133 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_node(a1, a2, a3, a4);
-  v12 = objc_msgSend_name(a3, v9, v10, v11);
+  v8 = objc_msgSend_node(self, a2, object, options);
+  v12 = objc_msgSend_name(object, v9, v10, v11);
   objc_msgSend_setName_(v8, v13, v12, v14);
-  if (objc_msgSend_transform(a3, v15, v16, v17))
+  if (objc_msgSend_transform(object, v15, v16, v17))
   {
-    v21 = objc_msgSend_transform(a3, v18, v19, v20);
+    v21 = objc_msgSend_transform(object, v18, v19, v20);
     objc_msgSend_matrix(v21, v22, v23, v24);
     objc_msgSend_setTransform_(v8, v25, v26, v27);
-    objc_msgSend_transform(a3, v28, v29, v30);
+    objc_msgSend_transform(object, v28, v29, v30);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v35 = objc_msgSend_transform(a3, v32, v33, v34);
+    v35 = objc_msgSend_transform(object, v32, v33, v34);
     if (isKindOfClass)
     {
 LABEL_5:
@@ -2743,7 +2743,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = objc_msgSend_transform(a3, v39, v40, v41);
+      v35 = objc_msgSend_transform(object, v39, v40, v41);
       goto LABEL_5;
     }
   }
@@ -2759,7 +2759,7 @@ LABEL_8:
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v52 = objc_msgSend_submeshes(a3, v49, v50, v51);
+  v52 = objc_msgSend_submeshes(object, v49, v50, v51);
   v54 = objc_msgSend_countByEnumeratingWithState_objects_count_(v52, v53, &v126, v132, 16);
   if (!v54)
   {
@@ -2805,7 +2805,7 @@ LABEL_8:
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    obj = objc_msgSend_submeshes(a3, v55, v56, v57);
+    obj = objc_msgSend_submeshes(object, v55, v56, v57);
     v67 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v66, &v122, v131, 16);
     if (v67)
     {
@@ -2821,12 +2821,12 @@ LABEL_8:
           }
 
           v74 = *(*(&v122 + 1) + 8 * j);
-          v75 = objc_msgSend_node(a1, v68, v69, v70);
+          v75 = objc_msgSend_node(self, v68, v69, v70);
           v76 = MEMORY[0x1E696AEC0];
-          v80 = objc_msgSend_name(a3, v77, v78, v79);
+          v80 = objc_msgSend_name(object, v77, v78, v79);
           v83 = objc_msgSend_stringWithFormat_(v76, v81, @"%@_%d", v82, v80, 0);
           objc_msgSend_setName_(v75, v84, v83, v85);
-          v87 = objc_msgSend_modelWithMDLMesh_submesh_options_(VFXModel, v86, a3, v74, a4);
+          v87 = objc_msgSend_modelWithMDLMesh_submesh_options_(VFXModel, v86, object, v74, options);
           objc_msgSend_setModel_(v75, v88, v87, v89);
           objc_msgSend_addChildNode_(v8, v90, v75, v91);
         }
@@ -2844,7 +2844,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v93 = objc_msgSend_modelWithMDLMesh_options_context_(VFXModel, v92, a3, a4, a5);
+      v93 = objc_msgSend_modelWithMDLMesh_options_context_(VFXModel, v92, object, options, context);
       objc_msgSend_setModel_(v8, v94, v93, v95);
     }
 
@@ -2853,7 +2853,7 @@ LABEL_29:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v98 = objc_msgSend_lightWithMDLLight_(VFXLight, v96, a3, v97);
+        v98 = objc_msgSend_lightWithMDLLight_(VFXLight, v96, object, v97);
       }
 
       else
@@ -2864,14 +2864,14 @@ LABEL_29:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v113 = objc_msgSend_cameraWithMDLCamera_(VFXCamera, v68, a3, v70);
+            v113 = objc_msgSend_cameraWithMDLCamera_(VFXCamera, v68, object, v70);
             objc_msgSend_setCamera_(v8, v114, v113, v115);
           }
 
           goto LABEL_37;
         }
 
-        v98 = objc_msgSend_lightWithMDLLightProbe_(VFXLight, v101, a3, v102);
+        v98 = objc_msgSend_lightWithMDLLightProbe_(VFXLight, v101, object, v102);
       }
 
       objc_msgSend_setLight_(v8, v99, v98, v100);
@@ -2883,7 +2883,7 @@ LABEL_37:
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v103 = objc_msgSend_children(a3, v68, v69, v70);
+  v103 = objc_msgSend_children(object, v68, v69, v70);
   v105 = objc_msgSend_countByEnumeratingWithState_objects_count_(v103, v104, &v118, v130, 16);
   if (v105)
   {
@@ -2898,7 +2898,7 @@ LABEL_37:
           objc_enumerationMutation(v103);
         }
 
-        v110 = objc_msgSend_nodeWithMDLObject_options_context_(VFXNode, v106, *(*(&v118 + 1) + 8 * k), a4, a5);
+        v110 = objc_msgSend_nodeWithMDLObject_options_context_(VFXNode, v106, *(*(&v118 + 1) + 8 * k), options, context);
         if (v110)
         {
           objc_msgSend_addChildNode_(v8, v106, v110, v111);
@@ -2914,19 +2914,19 @@ LABEL_37:
   return v8;
 }
 
-+ (VFXNode)nodeWithMDLObject:(id)a3 masterObjects:(id)a4 worldNodes:(id)a5 skinnedMeshes:(id)a6 skelNodesMap:(void *)a7 asset:(id)a8 options:(id)a9 context:(id)a10 mpuScale:(float)a11
++ (VFXNode)nodeWithMDLObject:(id)object masterObjects:(id)objects worldNodes:(id)nodes skinnedMeshes:(id)meshes skelNodesMap:(void *)map asset:(id)asset options:(id)options context:(id)self0 mpuScale:(float)self1
 {
   v196 = *MEMORY[0x1E69E9840];
-  v15 = objc_msgSend_node(a1, a2, a3, a4);
-  if (objc_msgSend_transform(a3, v16, v17, v18))
+  v15 = objc_msgSend_node(self, a2, object, objects);
+  if (objc_msgSend_transform(object, v16, v17, v18))
   {
-    v22 = objc_msgSend_transform(a3, v19, v20, v21);
+    v22 = objc_msgSend_transform(object, v19, v20, v21);
     objc_msgSend_matrix(v22, v23, v24, v25);
     objc_msgSend_setTransform_(v15, v26, v27, v28);
-    objc_msgSend_transform(a3, v29, v30, v31);
+    objc_msgSend_transform(object, v29, v30, v31);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v39 = objc_msgSend_transform(a3, v33, v34, v35);
+    v39 = objc_msgSend_transform(object, v33, v34, v35);
     if ((isKindOfClass & 1) == 0)
     {
       objc_opt_class();
@@ -2935,7 +2935,7 @@ LABEL_37:
         goto LABEL_18;
       }
 
-      v39 = objc_msgSend_transform(a3, v19, v20, v21);
+      v39 = objc_msgSend_transform(object, v19, v20, v21);
     }
 
     v40 = objc_msgSend_transformAnimation(v39, v36, v37, v38);
@@ -2945,7 +2945,7 @@ LABEL_37:
       objc_msgSend_duration(v40, v19, v20, v21);
       if (v42 != 0.0)
       {
-        v43 = objc_msgSend_valueForKey_(a9, v19, @"kSceneSourceAnimationLoadingMode", v21);
+        v43 = objc_msgSend_valueForKey_(options, v19, @"kSceneSourceAnimationLoadingMode", v21);
         if (v43)
         {
           v48 = v43;
@@ -2969,9 +2969,9 @@ LABEL_37:
           objc_msgSend_setRemovedOnCompletion_(v41, v64, 0, v65);
         }
 
-        objc_msgSend_endTime(a8, v61, v62, v63);
+        objc_msgSend_endTime(asset, v61, v62, v63);
         v67 = v66;
-        objc_msgSend_startTime(a8, v68, v69, v70);
+        objc_msgSend_startTime(asset, v68, v69, v70);
         v75 = v67 - v74;
         if (v67 - v74 > 0.0)
         {
@@ -2985,9 +2985,9 @@ LABEL_37:
           }
         }
 
-        if (a11 != 1.0)
+        if (scale != 1.0)
         {
-          sub_1AF2F36F8(v41, a11);
+          sub_1AF2F36F8(v41, scale);
         }
 
         objc_msgSend_addAnimation_forKey_(v15, v71, v41, @"transform");
@@ -2996,13 +2996,13 @@ LABEL_37:
   }
 
 LABEL_18:
-  v88 = objc_msgSend_name(a3, v19, v20, v21);
+  v88 = objc_msgSend_name(object, v19, v20, v21);
   objc_msgSend_setName_(v15, v89, v88, v90);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v94 = objc_msgSend_path(a3, v91, v92, v93);
-    v97 = objc_msgSend_objectForKey_(a4, v95, v94, v96);
+    v94 = objc_msgSend_path(object, v91, v92, v93);
+    v97 = objc_msgSend_objectForKey_(objects, v95, v94, v96);
     if (v97)
     {
       objc_msgSend_setModel_(v15, v98, v97, v99);
@@ -3010,25 +3010,25 @@ LABEL_18:
 
     else
     {
-      v110 = objc_msgSend_modelWithMDLMesh_options_context_(VFXModel, v98, a3, a9, a10);
+      v110 = objc_msgSend_modelWithMDLMesh_options_context_(VFXModel, v98, object, options, context);
       objc_msgSend_setModel_(v15, v111, v110, v112);
-      v115 = objc_msgSend_componentConformingToProtocol_(a3, v113, &unk_1F262ADF8, v114);
+      v115 = objc_msgSend_componentConformingToProtocol_(object, v113, &unk_1F262ADF8, v114);
       if (v115)
       {
         v118 = v115;
         v119 = sub_1AF2EDE80(v115);
         objc_msgSend_setMorpher_(v15, v120, v119, v121);
-        sub_1AF2EE224(v118, v15, a9, v122);
+        sub_1AF2EE224(v118, v15, options, v122);
       }
 
-      if (objc_msgSend_componentConformingToProtocol_(a3, v116, &unk_1F262AE58, v117))
+      if (objc_msgSend_componentConformingToProtocol_(object, v116, &unk_1F262AE58, v117))
       {
-        objc_msgSend_addObject_(a6, v123, a3, v125);
+        objc_msgSend_addObject_(meshes, v123, object, v125);
       }
 
-      if (objc_msgSend_subdivisionScheme(a3, v123, v124, v125))
+      if (objc_msgSend_subdivisionScheme(object, v123, v124, v125))
       {
-        v129 = objc_msgSend_valueForKey_(a9, v126, @"VFXWorldLoaderConformToSubdivisionScheme", v128);
+        v129 = objc_msgSend_valueForKey_(options, v126, @"VFXWorldLoaderConformToSubdivisionScheme", v128);
         if (objc_msgSend_BOOLValue(v129, v130, v131, v132))
         {
           v133 = objc_msgSend_model(v15, v126, v127, v128);
@@ -3042,7 +3042,7 @@ LABEL_18:
       }
 
       v149 = objc_msgSend_model(v15, v126, v127, v128);
-      objc_msgSend_setObject_forKey_(a4, v150, v149, v94);
+      objc_msgSend_setObject_forKey_(objects, v150, v149, v94);
     }
 
     goto LABEL_38;
@@ -3051,7 +3051,7 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v105 = objc_msgSend_lightWithMDLLight_(VFXLight, v103, a3, v104);
+    v105 = objc_msgSend_lightWithMDLLight_(VFXLight, v103, object, v104);
 LABEL_25:
     objc_msgSend_setLight_(v15, v106, v105, v107);
     goto LABEL_38;
@@ -3060,14 +3060,14 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v105 = objc_msgSend_lightWithMDLLightProbe_(VFXLight, v108, a3, v109);
+    v105 = objc_msgSend_lightWithMDLLightProbe_(VFXLight, v108, object, v109);
     goto LABEL_25;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v153 = objc_msgSend_cameraWithMDLCamera_(VFXCamera, v151, a3, v152);
+    v153 = objc_msgSend_cameraWithMDLCamera_(VFXCamera, v151, object, v152);
     objc_msgSend_setCamera_(v15, v154, v153, v155);
   }
 
@@ -3076,28 +3076,28 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      sub_1AF2F38A8(v15, a3, a7);
+      sub_1AF2F38A8(v15, object, map);
     }
   }
 
 LABEL_38:
-  if (objc_msgSend_instance(a3, v100, v101, v102))
+  if (objc_msgSend_instance(object, v100, v101, v102))
   {
-    v159 = objc_msgSend_instance(a3, v156, v157, v158);
-    *&v160 = a11;
-    v162 = objc_msgSend_nodeWithMDLObject_masterObjects_worldNodes_skinnedMeshes_skelNodesMap_asset_options_context_mpuScale_(VFXNode, v161, v159, a4, a5, a6, a7, a8, v160, a9, a10);
+    v159 = objc_msgSend_instance(object, v156, v157, v158);
+    *&v160 = scale;
+    v162 = objc_msgSend_nodeWithMDLObject_masterObjects_worldNodes_skinnedMeshes_skelNodesMap_asset_options_context_mpuScale_(VFXNode, v161, v159, objects, nodes, meshes, map, asset, v160, options, context);
     objc_msgSend_addChildNode_(v15, v163, v162, v164);
   }
 
-  v165 = objc_msgSend_path(a3, v156, v157, v158);
+  v165 = objc_msgSend_path(object, v156, v157, v158);
   v166 = v15;
-  objc_msgSend_setObject_forKey_(a5, v167, v15, v165);
+  objc_msgSend_setObject_forKey_(nodes, v167, v15, v165);
   v193 = 0u;
   v194 = 0u;
   v191 = 0u;
   v192 = 0u;
-  v187 = a3;
-  v171 = objc_msgSend_children(a3, v168, v169, v170);
+  objectCopy = object;
+  v171 = objc_msgSend_children(object, v168, v169, v170);
   v173 = objc_msgSend_countByEnumeratingWithState_objects_count_(v171, v172, &v191, v195, 16);
   if (v173)
   {
@@ -3112,8 +3112,8 @@ LABEL_38:
           objc_enumerationMutation(v171);
         }
 
-        *&v177 = a11;
-        v181 = objc_msgSend_nodeWithMDLObject_masterObjects_worldNodes_skinnedMeshes_skelNodesMap_asset_options_context_mpuScale_(VFXNode, v174, *(*(&v191 + 1) + 8 * i), a4, a5, a6, a7, a8, v177, a9, a10);
+        *&v177 = scale;
+        v181 = objc_msgSend_nodeWithMDLObject_masterObjects_worldNodes_skinnedMeshes_skelNodesMap_asset_options_context_mpuScale_(VFXNode, v174, *(*(&v191 + 1) + 8 * i), objects, nodes, meshes, map, asset, v177, options, context);
         if (v181)
         {
           objc_msgSend_addChildNode_(v166, v174, v181, v182);
@@ -3126,36 +3126,36 @@ LABEL_38:
     while (v178);
   }
 
-  v183 = objc_msgSend_hidden(v187, v174, v175, v176);
+  v183 = objc_msgSend_hidden(objectCopy, v174, v175, v176);
   objc_msgSend_setHidden_(v166, v184, v183, v185);
   return v166;
 }
 
-- (void)_addSkinnerWithMDLMesh:(id)a3 worldNodes:(id)a4
+- (void)_addSkinnerWithMDLMesh:(id)mesh worldNodes:(id)nodes
 {
-  v7 = objc_msgSend_componentConformingToProtocol_(a3, a2, &unk_1F262AE58, a4);
+  v7 = objc_msgSend_componentConformingToProtocol_(mesh, a2, &unk_1F262AE58, nodes);
   if (v7)
   {
     v11 = v7;
     v12 = objc_msgSend_model(self, v8, v9, v10);
     v16 = objc_msgSend_geometry(v12, v13, v14, v15);
-    v19 = sub_1AF2EDAB8(v11, a4, v17, v18);
+    v19 = sub_1AF2EDAB8(v11, nodes, v17, v18);
     v20 = sub_1AF2EDBF8(v11);
-    v24 = sub_1AF2F3D64(a3, v21, v22, v23);
-    v28 = sub_1AF2F3E10(a3, v25, v26, v27);
+    v24 = sub_1AF2F3D64(mesh, v21, v22, v23);
+    v28 = sub_1AF2F3E10(mesh, v25, v26, v27);
     v31 = objc_msgSend_skinnerWithBaseGeometry_bones_boneInverseBindTransforms_boneWeights_boneIndices_(VFXSkinner, v29, v16, v19, v20, v24, v28);
 
     objc_msgSend_setSkinner_(self, v30, v31, v32);
   }
 }
 
-- (void)_bakeNodes:(id)a3 folderPath:(id)a4 inVertex:(BOOL)a5 bakeAO:(BOOL)a6 quality:(float)a7 attenuation:(float)a8 geomSetter:(id)a9 terminateSetter:(id)a10
+- (void)_bakeNodes:(id)nodes folderPath:(id)path inVertex:(BOOL)vertex bakeAO:(BOOL)o quality:(float)quality attenuation:(float)attenuation geomSetter:(id)setter terminateSetter:(id)self0
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v31[0] = self;
   v18 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], a2, v31, 1);
   v19 = VFXNodesToMDLAsset(v18);
-  v20 = VFXNodesToMDLAsset(a3);
+  v20 = VFXNodesToMDLAsset(nodes);
   v21 = sub_1AF2ED370(v20);
   v22 = sub_1AF2ED370(v19);
   v23 = sub_1AF2ED690(v19);
@@ -3163,23 +3163,23 @@ LABEL_38:
   v30[1] = 3221225472;
   v30[2] = sub_1AF2F405C;
   v30[3] = &unk_1E7A7EAA0;
-  v30[4] = a4;
+  v30[4] = path;
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1AF2F40DC;
   block[3] = &unk_1E7A7EB18;
-  v28 = a6;
-  v29 = a5;
-  v26 = a7;
-  v27 = a8;
+  oCopy = o;
+  vertexCopy = vertex;
+  qualityCopy = quality;
+  attenuationCopy = attenuation;
   block[4] = v21;
   block[5] = v22;
   block[6] = v23;
   block[7] = v20;
   block[8] = v30;
-  block[9] = a9;
-  block[10] = a10;
+  block[9] = setter;
+  block[10] = terminateSetter;
   dispatch_async(global_queue, block);
 }
 
@@ -3205,7 +3205,7 @@ LABEL_38:
   return v2;
 }
 
-- (id)initPresentationNodeWithNodeRef:(__CFXNode *)a3
+- (id)initPresentationNodeWithNodeRef:(__CFXNode *)ref
 {
   v7.receiver = self;
   v7.super_class = VFXNode;
@@ -3214,7 +3214,7 @@ LABEL_38:
   if (v4)
   {
     *(v4 + 48) |= 1u;
-    v4->_node = CFRetain(a3);
+    v4->_node = CFRetain(ref);
     v5->_animationsLock._os_unfair_lock_opaque = 0;
     v5->_valueForKeyLock._os_unfair_lock_opaque = 0;
   }
@@ -3222,14 +3222,14 @@ LABEL_38:
   return v5;
 }
 
-- (VFXNode)initWithNodeRef:(__CFXNode *)a3
+- (VFXNode)initWithNodeRef:(__CFXNode *)ref
 {
   v20.receiver = self;
   v20.super_class = VFXNode;
   v4 = [(VFXNode *)&v20 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     *(v4 + 1) = v5;
     if (v5)
     {
@@ -3261,15 +3261,15 @@ LABEL_38:
 
 + (id)node
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (VFXNode)nodeWithModel:(id)a3
++ (VFXNode)nodeWithModel:(id)model
 {
-  v5 = objc_msgSend_node(a1, a2, a3, v3);
-  objc_msgSend_setModel_(v5, v6, a3, v7);
+  v5 = objc_msgSend_node(self, a2, model, v3);
+  objc_msgSend_setModel_(v5, v6, model, v7);
   return v5;
 }
 
@@ -3338,21 +3338,21 @@ LABEL_38:
   [(VFXNode *)&v23 dealloc];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   name = self->_name;
-  if (a3 | name)
+  if (name | name)
   {
-    if ((objc_msgSend_isEqual_(a3, a2, name, v3) & 1) == 0)
+    if ((objc_msgSend_isEqual_(name, a2, name, v3) & 1) == 0)
     {
 
-      self->_name = objc_msgSend_copy(a3, v7, v8, v9);
+      self->_name = objc_msgSend_copy(name, v7, v8, v9);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = sub_1AF3008D4;
       v11[3] = &unk_1E7A7E220;
       v11[4] = self;
-      v11[5] = a3;
+      v11[5] = name;
       objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v10, self, v11);
     }
   }
@@ -3382,11 +3382,11 @@ LABEL_38:
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = objc_msgSend___CFObject(self, a2, a3, v3);
+  v5 = objc_msgSend___CFObject(self, a2, identifier, v3);
 
-  sub_1AF16CD6C(v5, a3);
+  sub_1AF16CD6C(v5, identifier);
 }
 
 - (id)identifier
@@ -3525,35 +3525,35 @@ LABEL_38:
 
 - (VFXNode)presentationNode
 {
-  v2 = self;
+  selfCopy = self;
   if ((*(self + 48) & 1) == 0)
   {
     self = self->_presentationObject;
     if (!self)
     {
       v3 = [VFXNode alloc];
-      self = objc_msgSend_initPresentationNodeWithNodeRef_(v3, v4, v2->_node, v5);
-      v2->_presentationObject = self;
+      self = objc_msgSend_initPresentationNodeWithNodeRef_(v3, v4, selfCopy->_node, v5);
+      selfCopy->_presentationObject = self;
     }
   }
 
   return self;
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
   v91 = *MEMORY[0x1E69E9840];
   for (i = self->_components; i; i = objc_msgSend_next(i, v8, v9, v10))
   {
-    v7 = objc_msgSend_type(i, a2, a3, a4);
+    v7 = objc_msgSend_type(i, a2, operation, block);
     if (v7 - 3 >= 2 && v7 <= 0xC && ((1 << v7) & 0x1D07) != 0)
     {
       v13 = objc_msgSend_component(i, v8, v9, v10);
-      (*(a4 + 2))(a4, v13, 0, 0);
+      (*(block + 2))(block, v13, 0, 0);
     }
   }
 
-  v14 = objc_msgSend_constraints(self, a2, a3, a4);
+  v14 = objc_msgSend_constraints(self, a2, operation, block);
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
@@ -3571,7 +3571,7 @@ LABEL_38:
           objc_enumerationMutation(v14);
         }
 
-        (*(a4 + 2))(a4, *(*(&v84 + 1) + 8 * j), 0, 0);
+        (*(block + 2))(block, *(*(&v84 + 1) + 8 * j), 0, 0);
       }
 
       v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v22, &v84, v90, 16);
@@ -3583,7 +3583,7 @@ LABEL_38:
   v23 = objc_msgSend_physicsBody(self, v16, v17, v18);
   if (v23)
   {
-    (*(a4 + 2))(a4, v23, 0, 0);
+    (*(block + 2))(block, v23, 0, 0);
   }
 
   v26 = objc_msgSend_skinner(self, v23, v24, v25);
@@ -3594,7 +3594,7 @@ LABEL_38:
     v83[2] = sub_1AF301338;
     v83[3] = &unk_1E7A7C0C8;
     v83[4] = self;
-    (*(a4 + 2))(a4, v26, 0, v83);
+    (*(block + 2))(block, v26, 0, v83);
   }
 
   v29 = objc_msgSend_morpher(self, v26, v27, v28);
@@ -3605,7 +3605,7 @@ LABEL_38:
     v82[2] = sub_1AF301344;
     v82[3] = &unk_1E7A7C0C8;
     v82[4] = self;
-    (*(a4 + 2))(a4, v29, 0, v82);
+    (*(block + 2))(block, v29, 0, v82);
   }
 
   v35 = objc_msgSend_deformers(self, v29, v30, v31);
@@ -3622,7 +3622,7 @@ LABEL_38:
     v77[1] = 3221225472;
     v77[2] = sub_1AF301350;
     v77[3] = &unk_1E7A7ECC8;
-    v77[5] = a4;
+    v77[5] = block;
     v77[6] = &v78;
     v77[4] = v43;
     objc_msgSend_enumerateObjectsUsingBlock_(v35, v44, v77, v45);
@@ -3652,7 +3652,7 @@ LABEL_38:
           objc_enumerationMutation(v48);
         }
 
-        (*(a4 + 2))(a4, *(*(&v73 + 1) + 8 * k), 0, 0);
+        (*(block + 2))(block, *(*(&v73 + 1) + 8 * k), 0, 0);
       }
 
       v52 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v55, &v73, v89, 16);
@@ -3661,7 +3661,7 @@ LABEL_38:
     while (v52);
   }
 
-  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, v50, a4, v51);
+  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, v50, block, v51);
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
@@ -3680,7 +3680,7 @@ LABEL_38:
           objc_enumerationMutation(childNodes);
         }
 
-        (*(a4 + 2))(a4, *(*(&v69 + 1) + 8 * m), 0, 0);
+        (*(block + 2))(block, *(*(&v69 + 1) + 8 * m), 0, 0);
       }
 
       v61 = objc_msgSend_countByEnumeratingWithState_objects_count_(childNodes, v64, &v69, v88, 16);
@@ -3692,22 +3692,22 @@ LABEL_38:
   if (objc_msgSend_stateManager(self, v58, v59, v60))
   {
     v68 = objc_msgSend_stateManager(self, v65, v66, v67);
-    (*(a4 + 2))(a4, v68, 0, 0);
+    (*(block + 2))(block, v68, 0, 0);
   }
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
-  if (self->_world != a3)
+  if (self->_world != reference)
   {
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -3721,8 +3721,8 @@ LABEL_38:
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -3758,16 +3758,16 @@ LABEL_38:
   return sub_1AF1C3FAC(v4);
 }
 
-- (void)_dump:(id)a3
+- (void)_dump:(id)_dump
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_defaultCStringEncoding(MEMORY[0x1E696AEC0], a2, a3, v3);
-  v9 = objc_msgSend_cStringUsingEncoding_(a3, v7, v6, v8);
+  v6 = objc_msgSend_defaultCStringEncoding(MEMORY[0x1E696AEC0], a2, _dump, v3);
+  v9 = objc_msgSend_cStringUsingEncoding_(_dump, v7, v6, v8);
   v13 = objc_msgSend_description(self, v10, v11, v12);
   v17 = objc_msgSend_defaultCStringEncoding(MEMORY[0x1E696AEC0], v14, v15, v16);
   v20 = objc_msgSend_cStringUsingEncoding_(v13, v18, v17, v19);
   printf("%s%s {\n", v9, v20);
-  v23 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"\t%@", v22, a3);
+  v23 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v21, @"\t%@", v22, _dump);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -3797,7 +3797,7 @@ LABEL_38:
   }
 
   v36 = objc_msgSend_defaultCStringEncoding(MEMORY[0x1E696AEC0], v30, v31, v32);
-  v39 = objc_msgSend_cStringUsingEncoding_(a3, v37, v36, v38);
+  v39 = objc_msgSend_cStringUsingEncoding_(_dump, v37, v36, v38);
   printf("%s}\n", v39);
 }
 
@@ -3809,27 +3809,27 @@ LABEL_38:
   NSLog(&stru_1F25869F0.isa);
 }
 
-+ (id)_dumpNodeTree:(id)a3 tab:(id)a4
++ (id)_dumpNodeTree:(id)tree tab:(id)tab
 {
   v37 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AEC0];
-  if (objc_msgSend_name(a3, a2, a3, a4))
+  if (objc_msgSend_name(tree, a2, tree, tab))
   {
-    v11 = objc_msgSend_name(a3, v8, v9, v10);
+    v11 = objc_msgSend_name(tree, v8, v9, v10);
   }
 
   else
   {
-    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"<%p>", v10, a3);
+    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"<%p>", v10, tree);
   }
 
-  v14 = objc_msgSend_stringWithFormat_(v7, v12, @"%@%@\n", v13, a4, v11);
-  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"\t%@", v16, a4);
+  v14 = objc_msgSend_stringWithFormat_(v7, v12, @"%@%@\n", v13, tab, v11);
+  v17 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"\t%@", v16, tab);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v21 = objc_msgSend_childNodes(a3, v18, v19, v20);
+  v21 = objc_msgSend_childNodes(tree, v18, v19, v20);
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, &v32, v36, 16);
   if (v23)
   {
@@ -3845,7 +3845,7 @@ LABEL_38:
           objc_enumerationMutation(v21);
         }
 
-        v28 = objc_msgSend__dumpNodeTree_tab_(a1, v24, *(*(&v32 + 1) + 8 * v27), v17);
+        v28 = objc_msgSend__dumpNodeTree_tab_(self, v24, *(*(&v32 + 1) + 8 * v27), v17);
         v14 = objc_msgSend_stringByAppendingString_(v14, v29, v28, v30);
         ++v27;
       }
@@ -3867,16 +3867,16 @@ LABEL_38:
   return objc_msgSend__dumpNodeTree_tab_(v3, v4, self, &stru_1F2575650);
 }
 
-- (void)_setAttributes:(id)a3
+- (void)_setAttributes:(id)attributes
 {
   os_unfair_lock_lock(&self->_valueForKeyLock);
 
-  self->_valueForKey = a3;
+  self->_valueForKey = attributes;
 
   os_unfair_lock_unlock(&self->_valueForKeyLock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VFXCopyContext);
   v5 = objc_alloc_init(objc_opt_class());
@@ -3887,83 +3887,83 @@ LABEL_38:
   return v5;
 }
 
-- (id)copyWithOptions:(unint64_t)a3
+- (id)copyWithOptions:(unint64_t)options
 {
-  objc_msgSend_begin(VFXTransaction, a2, a3, v3);
+  objc_msgSend_begin(VFXTransaction, a2, options, v3);
   objc_msgSend_setImmediateMode_(VFXTransaction, v6, 1, v7);
   v8 = objc_alloc_init(objc_opt_class());
-  objc_msgSend_copyWithOptions_to_(self, v9, a3, v8);
+  objc_msgSend_copyWithOptions_to_(self, v9, options, v8);
   objc_msgSend_commitImmediate(VFXTransaction, v10, v11, v12);
   return v8;
 }
 
-- (void)_copyWithOptions:(unint64_t)a3 to:(id)a4 copyContext:(id)a5
+- (void)_copyWithOptions:(unint64_t)options to:(id)to copyContext:(id)context
 {
-  v7 = a3;
+  optionsCopy = options;
   v311[1] = *MEMORY[0x1E69E9840];
-  v12 = sub_1AFDF4FDC(a5);
+  v12 = sub_1AFDF4FDC(context);
   if (*(self + 48))
   {
-    v13 = *(a4 + 1);
+    v13 = *(to + 1);
     if (v13)
     {
       sub_1AF16CDFC(v13, 0);
     }
 
-    *(a4 + 48) |= 1u;
+    *(to + 48) |= 1u;
   }
 
   v14 = objc_msgSend_name(self, v9, v10, v11);
-  objc_msgSend_setName_(a4, v15, v14, v16);
+  objc_msgSend_setName_(to, v15, v14, v16);
   if ((*(self + 48) & 8) != 0)
   {
     objc_msgSend_position(self, v17, v18, v19);
-    objc_msgSend_setPosition_(a4, v71, v72, v73);
+    objc_msgSend_setPosition_(to, v71, v72, v73);
     objc_msgSend_scale(self, v74, v75, v76);
-    objc_msgSend_setScale_(a4, v77, v78, v79);
+    objc_msgSend_setScale_(to, v77, v78, v79);
     v80 = (*(self + 49) >> 2) & 3;
     if (v80 > 1)
     {
       if (v80 == 2)
       {
         objc_msgSend_orientation(self, v23, v24, v25);
-        objc_msgSend_setOrientation_(a4, v290, v291, v292);
+        objc_msgSend_setOrientation_(to, v290, v291, v292);
       }
     }
 
     else if (v80)
     {
       objc_msgSend_rotation(self, v23, v24, v25);
-      objc_msgSend_setRotation_(a4, v293, v294, v295);
+      objc_msgSend_setRotation_(to, v293, v294, v295);
     }
 
     else
     {
       objc_msgSend_eulerAngles(self, v23, v24, v25);
-      objc_msgSend_setEulerAngles_(a4, v81, v82, v83);
+      objc_msgSend_setEulerAngles_(to, v81, v82, v83);
     }
   }
 
   else
   {
     objc_msgSend_transform(self, v17, v18, v19);
-    objc_msgSend_setTransform_(a4, v20, v21, v22);
+    objc_msgSend_setTransform_(to, v20, v21, v22);
   }
 
   if ((*(self + 48) & 0x20) != 0)
   {
     objc_msgSend_pivot(self, v23, v24, v25);
-    objc_msgSend_setPivot_(a4, v26, v27, v28);
+    objc_msgSend_setPivot_(to, v26, v27, v28);
   }
 
   isHidden = objc_msgSend_isHidden(self, v23, v24, v25);
-  objc_msgSend_setHidden_(a4, v30, isHidden, v31);
+  objc_msgSend_setHidden_(to, v30, isHidden, v31);
   objc_msgSend_opacity(self, v32, v33, v34);
-  objc_msgSend_setOpacity_(a4, v35, v36, v37);
+  objc_msgSend_setOpacity_(to, v35, v36, v37);
   v41 = objc_msgSend_renderingOrder(self, v38, v39, v40);
-  objc_msgSend_setRenderingOrder_(a4, v42, v41, v43);
+  objc_msgSend_setRenderingOrder_(to, v42, v41, v43);
   v47 = objc_msgSend_categoryBitMask(self, v44, v45, v46);
-  objc_msgSend_setCategoryBitMask_(a4, v48, v47, v49);
+  objc_msgSend_setCategoryBitMask_(to, v48, v47, v49);
   v53 = objc_msgSend_light(self, v50, v51, v52);
   v57 = objc_msgSend_type(v53, v54, v55, v56);
   v61 = objc_msgSend_light(self, v58, v59, v60);
@@ -3971,9 +3971,9 @@ LABEL_38:
   if (v57 == 4)
   {
     v65 = objc_msgSend_copy(v61, v62, v61, v63);
-    objc_msgSend_setLight_(a4, v66, v65, v67);
+    objc_msgSend_setLight_(to, v66, v65, v67);
 
-    if ((v7 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       goto LABEL_28;
     }
@@ -3981,32 +3981,32 @@ LABEL_38:
     goto LABEL_18;
   }
 
-  if ((v7 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v64 = sub_1AF2BED30(v61, a5);
+    v64 = sub_1AF2BED30(v61, context);
   }
 
-  objc_msgSend_setLight_(a4, v62, v64, v63);
-  if ((v7 & 2) == 0)
+  objc_msgSend_setLight_(to, v62, v64, v63);
+  if ((optionsCopy & 2) == 0)
   {
 LABEL_18:
     v84 = objc_msgSend_particleEmitter(self, v68, v69, v70);
-    v85 = sub_1AF2BED30(v84, a5);
-    objc_msgSend_setParticleEmitter_(a4, v86, v85, v87);
+    v85 = sub_1AF2BED30(v84, context);
+    objc_msgSend_setParticleEmitter_(to, v86, v85, v87);
     v91 = objc_msgSend_particleCollider(self, v88, v89, v90);
-    v92 = sub_1AF2BED30(v91, a5);
-    objc_msgSend_setParticleCollider_(a4, v93, v92, v94);
+    v92 = sub_1AF2BED30(v91, context);
+    objc_msgSend_setParticleCollider_(to, v93, v92, v94);
     v98 = objc_msgSend_behaviorGraph(self, v95, v96, v97);
     if (v98)
     {
       v99 = v98;
-      if (objc_msgSend_particleEmitter(a4, v68, v69, v70) || objc_msgSend_particleCollider(a4, v100, v101, v102))
+      if (objc_msgSend_particleEmitter(to, v68, v69, v70) || objc_msgSend_particleCollider(to, v100, v101, v102))
       {
-        v103 = objc_msgSend_particleCollider(a4, v100, v101, v102);
+        v103 = objc_msgSend_particleCollider(to, v100, v101, v102);
         v108 = objc_msgSend_coreEntityHandle(v103, v104, v105, v106);
         if (!v108)
         {
-          v110 = objc_msgSend_particleEmitter(a4, v107, 0, v109);
+          v110 = objc_msgSend_particleEmitter(to, v107, 0, v109);
           v108 = objc_msgSend_coreEntityHandle(v110, v111, v112, v113);
         }
 
@@ -4016,23 +4016,23 @@ LABEL_18:
       else
       {
         v296 = objc_msgSend_behaviorGraph(self, v100, v101, v102);
-        v114 = sub_1AF2BED30(v296, a5);
+        v114 = sub_1AF2BED30(v296, context);
       }
 
       v118 = v114;
       if (v114)
       {
-        objc_msgSend_setBehaviorGraph_(a4, v115, v114, v117);
+        objc_msgSend_setBehaviorGraph_(to, v115, v114, v117);
         if (v12)
         {
           CFDictionarySetValue(v12, v99, v118);
         }
       }
 
-      v119 = objc_msgSend_behaviorGraph(a4, v115, v116, v117);
+      v119 = objc_msgSend_behaviorGraph(to, v115, v116, v117);
       v123 = objc_msgSend_entityObject(v119, v120, v121, v122);
       v310 = objc_msgSend_identifier(self, v124, v125, v126);
-      v311[0] = a4;
+      v311[0] = to;
       v128 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v127, v311, &v310, 1);
       objc_msgSend_updateVFXObjectReferences_(v123, v129, v128, v130);
     }
@@ -4041,24 +4041,24 @@ LABEL_18:
 LABEL_28:
   v131 = objc_msgSend_camera(self, v68, v69, v70);
   v134 = v131;
-  if ((v7 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v134 = sub_1AF2BED30(v131, a5);
+    v134 = sub_1AF2BED30(v131, context);
   }
 
-  objc_msgSend_setCamera_(a4, v132, v134, v133);
+  objc_msgSend_setCamera_(to, v132, v134, v133);
   v138 = objc_msgSend_forceField(self, v135, v136, v137);
   v142 = objc_msgSend_copy(v138, v139, v140, v141);
-  objc_msgSend_setForceField_(a4, v143, v142, v144);
+  objc_msgSend_setForceField_(to, v143, v142, v144);
   v148 = objc_msgSend_castsShadow(self, v145, v146, v147);
-  objc_msgSend_setCastsShadow_(a4, v149, v148, v150);
+  objc_msgSend_setCastsShadow_(to, v149, v148, v150);
   v154 = objc_msgSend_usesDepthPrePass(self, v151, v152, v153);
-  objc_msgSend_setUsesDepthPrePass_(a4, v155, v154, v156);
+  objc_msgSend_setUsesDepthPrePass_(to, v155, v154, v156);
   v160 = objc_msgSend_constraints(self, v157, v158, v159);
   if (objc_msgSend_count(v160, v161, v162, v163))
   {
-    v297 = v7;
-    v298 = a4;
+    v297 = optionsCopy;
+    toCopy = to;
     v167 = objc_alloc(MEMORY[0x1E695DF70]);
     v171 = objc_msgSend_count(v160, v168, v169, v170);
     v174 = objc_msgSend_initWithCapacity_(v167, v172, v171, v173);
@@ -4096,10 +4096,10 @@ LABEL_28:
       while (v180);
     }
 
-    a4 = v298;
-    objc_msgSend_setConstraints_(v298, v177, v174, v179);
+    to = toCopy;
+    objc_msgSend_setConstraints_(toCopy, v177, v174, v179);
 
-    v7 = v297;
+    optionsCopy = v297;
   }
 
   v187 = objc_msgSend_deformers(self, v164, v165, v166);
@@ -4126,7 +4126,7 @@ LABEL_28:
             objc_enumerationMutation(v187);
           }
 
-          v209 = sub_1AF2BED30(*(*(&v300 + 1) + 8 * j), a5);
+          v209 = sub_1AF2BED30(*(*(&v300 + 1) + 8 * j), context);
           objc_msgSend_addObject_(v201, v210, v209, v211);
         }
 
@@ -4136,70 +4136,70 @@ LABEL_28:
       while (v206);
     }
 
-    objc_msgSend_setDeformers_(a4, v204, v201, v205);
+    objc_msgSend_setDeformers_(to, v204, v201, v205);
   }
 
   isAuthoring = objc_msgSend_isAuthoring(self, v191, v192, v193);
-  objc_msgSend_setIsAuthoring_(a4, v214, isAuthoring, v215);
+  objc_msgSend_setIsAuthoring_(to, v214, isAuthoring, v215);
   v219 = objc_msgSend_editorLocked(self, v216, v217, v218);
-  objc_msgSend_setEditorLocked_(a4, v220, v219, v221);
+  objc_msgSend_setEditorLocked_(to, v220, v219, v221);
   v225 = objc_msgSend_focusBehavior(self, v222, v223, v224);
-  objc_msgSend_setFocusBehavior_(a4, v226, v225, v227);
+  objc_msgSend_setFocusBehavior_(to, v226, v225, v227);
   if (objc_msgSend_isAuthoring(self, v228, v229, v230) && objc_msgSend_authoringTargetNode(self, v231, v232, v233))
   {
     v234 = objc_msgSend_authoringTargetNode(self, v231, v232, v233);
-    objc_msgSend_setAuthoringTargetNode_(a4, v235, v234, v236);
+    objc_msgSend_setAuthoringTargetNode_(to, v235, v234, v236);
   }
 
   isGizmo = objc_msgSend_isGizmo(self, v231, v232, v233);
-  objc_msgSend_setGizmo_(a4, v238, isGizmo, v239);
+  objc_msgSend_setGizmo_(to, v238, isGizmo, v239);
   os_unfair_lock_lock(&self->_valueForKeyLock);
   valueForKey = self->_valueForKey;
   v299[0] = MEMORY[0x1E69E9820];
   v299[1] = 3221225472;
   v299[2] = sub_1AF30234C;
   v299[3] = &unk_1E7A7E7E8;
-  v299[4] = a4;
+  v299[4] = to;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(valueForKey, v241, v299, v242);
   os_unfair_lock_unlock(&self->_valueForKeyLock);
-  if ((v7 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    objc_msgSend__copyAnimationsFrom_(a4, v243, self, v244);
+    objc_msgSend__copyAnimationsFrom_(to, v243, self, v244);
   }
 
-  objc_msgSend__copyBindingsFrom_(a4, v243, self, v244);
+  objc_msgSend__copyBindingsFrom_(to, v243, self, v244);
   v248 = objc_msgSend_model(self, v245, v246, v247);
   if (v248)
   {
     v252 = v248;
-    if ((v7 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
-      v252 = sub_1AF2BED30(v248, a5);
+      v252 = sub_1AF2BED30(v248, context);
     }
 
-    objc_msgSend_setModel_(a4, v249, v252, v251);
+    objc_msgSend_setModel_(to, v249, v252, v251);
   }
 
   v253 = objc_msgSend_morpher(self, v249, v250, v251);
   if (v253)
   {
-    v257 = sub_1AF2BED30(v253, a5);
-    objc_msgSend_setMorpher_(a4, v258, v257, v259);
+    v257 = sub_1AF2BED30(v253, context);
+    objc_msgSend_setMorpher_(to, v258, v257, v259);
   }
 
   v260 = objc_msgSend_skinner(self, v254, v255, v256);
   if (v260)
   {
-    v264 = sub_1AF2BED30(v260, a5);
-    objc_msgSend_setSkinner_(a4, v265, v264, v266);
+    v264 = sub_1AF2BED30(v260, context);
+    objc_msgSend_setSkinner_(to, v265, v264, v266);
   }
 
   v267 = objc_msgSend_physicsBody(self, v261, v262, v263);
   if (v267)
   {
     v271 = v267;
-    v272 = sub_1AF2BED30(v267, a5);
-    objc_msgSend_setPhysicsBody_(a4, v273, v272, v274);
+    v272 = sub_1AF2BED30(v267, context);
+    objc_msgSend_setPhysicsBody_(to, v273, v272, v274);
     if (v12)
     {
       CFDictionarySetValue(v12, v271, v272);
@@ -4209,33 +4209,33 @@ LABEL_28:
   if (objc_msgSend_prefab(self, v268, v269, v270))
   {
     v278 = objc_msgSend_prefab(self, v275, v276, v277);
-    v279 = sub_1AF2BED30(v278, a5);
-    objc_msgSend_setPrefab_(a4, v280, v279, v281);
+    v279 = sub_1AF2BED30(v278, context);
+    objc_msgSend_setPrefab_(to, v280, v279, v281);
   }
 
   v282 = objc_msgSend_stateManager(self, v275, v276, v277);
   if (v282)
   {
-    v285 = sub_1AF2BED30(v282, a5);
-    objc_msgSend_setStateManager_(a4, v286, v285, v287);
+    v285 = sub_1AF2BED30(v282, context);
+    objc_msgSend_setStateManager_(to, v286, v285, v287);
   }
 
-  *(a4 + 48) = *(a4 + 48) & 0xBF | *(self + 48) & 0x40;
-  objc_msgSend_setIsEyeSightFrame_(a4, v283, *(self + 49) & 1, v284);
-  objc_msgSend_setIsHandTrackingRoot_(a4, v288, (*(self + 49) >> 1) & 1, v289);
+  *(to + 48) = *(to + 48) & 0xBF | *(self + 48) & 0x40;
+  objc_msgSend_setIsEyeSightFrame_(to, v283, *(self + 49) & 1, v284);
+  objc_msgSend_setIsHandTrackingRoot_(to, v288, (*(self + 49) >> 1) & 1, v289);
 }
 
-- (id)_copyRecursively:(unint64_t)a3 copyContext:(id)a4
+- (id)_copyRecursively:(unint64_t)recursively copyContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(objc_opt_class());
-  if (a4)
+  if (context)
   {
-    v9 = sub_1AFDF4FDC(a4);
+    v9 = sub_1AFDF4FDC(context);
     CFDictionarySetValue(v9, self, v8);
   }
 
-  objc_msgSend__copyWithOptions_to_copyContext_(self, v7, a3, v8, a4);
+  objc_msgSend__copyWithOptions_to_copyContext_(self, v7, recursively, v8, context);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -4258,7 +4258,7 @@ LABEL_28:
         v22 = *(*(&v27 + 1) + 8 * i);
         if ((objc_msgSend_isGizmo(v22, v16, v17, v18) & 1) == 0)
         {
-          v23 = objc_msgSend__copyRecursively_copyContext_(v22, v16, a3, a4);
+          v23 = objc_msgSend__copyRecursively_copyContext_(v22, v16, recursively, context);
           objc_msgSend_addChildNode_(v8, v24, v23, v25);
         }
       }
@@ -4272,30 +4272,30 @@ LABEL_28:
   return v8;
 }
 
-- (id)_cloneWithOption:(unint64_t)a3 copyContext:(id)a4
+- (id)_cloneWithOption:(unint64_t)option copyContext:(id)context
 {
-  objc_msgSend_begin(VFXTransaction, a2, a3, a4);
+  objc_msgSend_begin(VFXTransaction, a2, option, context);
   objc_msgSend_setImmediateMode_(VFXTransaction, v7, 1, v8);
-  v10 = objc_msgSend__copyRecursively_copyContext_(self, v9, a3 | 1, a4);
+  v10 = objc_msgSend__copyRecursively_copyContext_(self, v9, option | 1, context);
   objc_msgSend_commitImmediate(VFXTransaction, v11, v12, v13);
   sub_1AF302550(self, v10, v14, v15);
 
   return v10;
 }
 
-- (id)cloneWithOption:(unint64_t)a3
+- (id)cloneWithOption:(unint64_t)option
 {
   v5 = objc_alloc_init(VFXCopyContext);
-  v7 = objc_msgSend__cloneWithOption_copyContext_(self, v6, a3, v5);
+  v7 = objc_msgSend__cloneWithOption_copyContext_(self, v6, option, v5);
   sub_1AFDF51FC(v5, v7);
 
   return v7;
 }
 
-- (id)deepCloneWithContext:(id)a3
+- (id)deepCloneWithContext:(id)context
 {
-  v5 = objc_msgSend__deepCloneWithContext_(self, a2, a3, v3);
-  sub_1AFDF51FC(a3, v5);
+  v5 = objc_msgSend__deepCloneWithContext_(self, a2, context, v3);
+  sub_1AFDF51FC(context, v5);
   return v5;
 }
 
@@ -4307,13 +4307,13 @@ LABEL_28:
   return v6;
 }
 
-+ (VFXNode)nodeWithNodeRef:(__CFXNode *)a3
++ (VFXNode)nodeWithNodeRef:(__CFXNode *)ref
 {
-  result = sub_1AF16CDEC(a3);
+  result = sub_1AF16CDEC(ref);
   if (!result)
   {
-    v6 = [a1 alloc];
-    v9 = objc_msgSend_initWithNodeRef_(v6, v7, a3, v8);
+    v6 = [self alloc];
+    v9 = objc_msgSend_initWithNodeRef_(v6, v7, ref, v8);
 
     return v9;
   }
@@ -4321,11 +4321,11 @@ LABEL_28:
   return result;
 }
 
-- (id)childNodeWithName:(id)a3 recursively:(BOOL)a4
+- (id)childNodeWithName:(id)name recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_childNodes(self, a2, a3, a4);
+  v6 = objc_msgSend_childNodes(self, a2, name, recursively);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -4346,7 +4346,7 @@ LABEL_3:
 
       v15 = *(*(&v30 + 1) + 8 * v14);
       v16 = objc_msgSend_name(v15, v9, v10, v11);
-      if (objc_msgSend_isEqualToString_(v16, v17, a3, v18))
+      if (objc_msgSend_isEqualToString_(v16, v17, name, v18))
       {
         break;
       }
@@ -4370,7 +4370,7 @@ LABEL_9:
     v15 = 0;
   }
 
-  if (!v15 && v4)
+  if (!v15 && recursivelyCopy)
   {
     v28 = 0u;
     v29 = 0u;
@@ -4390,7 +4390,7 @@ LABEL_9:
             objc_enumerationMutation(v6);
           }
 
-          v24 = objc_msgSend_childNodeWithName_recursively_(*(*(&v26 + 1) + 8 * i), v20, a3, 1);
+          v24 = objc_msgSend_childNodeWithName_recursively_(*(*(&v26 + 1) + 8 * i), v20, name, 1);
           if (v24)
           {
             return v24;
@@ -4417,17 +4417,17 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output
 {
-  v6 = a4;
+  recursivelyCopy = recursively;
   v27 = *MEMORY[0x1E69E9840];
   v25 = 0;
-  if ((*(a3 + 2))(a3, self, &v25))
+  if ((*(test + 2))(test, self, &v25))
   {
-    objc_msgSend_addObject_(a5, v9, self, v11);
+    objc_msgSend_addObject_(output, v9, self, v11);
   }
 
-  if (v6 && (v25 & 1) == 0 && (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, v12 = objc_msgSend_childNodes(self, v9, v10, v11, 0), (v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v21, v26, 16)) != 0))
+  if (recursivelyCopy && (v25 & 1) == 0 && (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, v12 = objc_msgSend_childNodes(self, v9, v10, v11, 0), (v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v21, v26, 16)) != 0))
   {
     v16 = v14;
     v17 = *v22;
@@ -4441,7 +4441,7 @@ LABEL_7:
       }
 
       v19 = 1;
-      v25 = objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v21 + 1) + 8 * v18), v15, a3, 1, a5);
+      v25 = objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v21 + 1) + 8 * v18), v15, test, 1, output);
       if (v25)
       {
         break;
@@ -4469,11 +4469,11 @@ LABEL_13:
   return v19 & 1;
 }
 
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, a4);
+  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, test, recursively);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -4493,7 +4493,7 @@ LABEL_3:
         objc_enumerationMutation(v11);
       }
 
-      if (objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v19 + 1) + 8 * v17), v14, a3, v4, v7))
+      if (objc_msgSend__childNodesPassingTest_recursively_output_(*(*(&v19 + 1) + 8 * v17), v14, test, recursivelyCopy, v7))
       {
         break;
       }
@@ -4514,11 +4514,11 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
-  (*(a3 + 2))(a3, self, &v22);
+  (*(block + 2))(block, self, &v22);
   if ((v22 & 1) == 0)
   {
     v20 = 0u;
@@ -4540,7 +4540,7 @@ LABEL_3:
             objc_enumerationMutation(v8);
           }
 
-          v22 = objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v18 + 1) + 8 * i), v11, a3, v12);
+          v22 = objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v18 + 1) + 8 * i), v11, block, v12);
           if (v22)
           {
             v16 = 1;
@@ -4563,14 +4563,14 @@ LABEL_3:
   return v16 & 1;
 }
 
-- (void)enumerateChildNodesUsingBlock:(id)a3
+- (void)enumerateChildNodesUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = objc_msgSend_childNodes(self, a2, a3, v3, 0);
+  v5 = objc_msgSend_childNodes(self, a2, block, v3, 0);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v13, v17, 16);
   if (v7)
   {
@@ -4585,7 +4585,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v13 + 1) + 8 * v12), v8, a3, v9))
+      if (objc_msgSend__enumerateChildNodesUsingBlock_(*(*(&v13 + 1) + 8 * v12), v8, block, v9))
       {
         break;
       }
@@ -4604,25 +4604,25 @@ LABEL_3:
   }
 }
 
-- (void)enumerateHierarchyUsingBlock:(id)a3
+- (void)enumerateHierarchyUsingBlock:(id)block
 {
   v7 = 0;
-  (*(a3 + 2))(a3, self, &v7);
+  (*(block + 2))(block, self, &v7);
   if ((v7 & 1) == 0)
   {
-    objc_msgSend_enumerateChildNodesUsingBlock_(self, v5, a3, v6);
+    objc_msgSend_enumerateChildNodesUsingBlock_(self, v5, block, v6);
   }
 }
 
-- (void)_childNodesWithAttribute:(Class)a3 output:(id)a4 recursively:(BOOL)a5
+- (void)_childNodesWithAttribute:(Class)attribute output:(id)output recursively:(BOOL)recursively
 {
-  v5 = a5;
+  recursivelyCopy = recursively;
   v36 = *MEMORY[0x1E69E9840];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = objc_msgSend_childNodes(self, a2, a3, a4, 0);
+  v8 = objc_msgSend_childNodes(self, a2, attribute, output, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v31, v35, 16);
   if (v10)
   {
@@ -4639,14 +4639,14 @@ LABEL_3:
         }
 
         v14 = *(*(&v31 + 1) + 8 * v13);
-        if (objc_opt_class() == a3 && objc_msgSend_camera(v14, v15, v16, v17) || objc_opt_class() == a3 && objc_msgSend_light(v14, v18, v19, v20) || objc_opt_class() == a3 && objc_msgSend_model(v14, v21, v22, v23) || objc_opt_class() == a3 && objc_msgSend_morpher(v14, v24, v25, v26) || objc_opt_class() == a3 && objc_msgSend_skinner(v14, v27, v28, v29))
+        if (objc_opt_class() == attribute && objc_msgSend_camera(v14, v15, v16, v17) || objc_opt_class() == attribute && objc_msgSend_light(v14, v18, v19, v20) || objc_opt_class() == attribute && objc_msgSend_model(v14, v21, v22, v23) || objc_opt_class() == attribute && objc_msgSend_morpher(v14, v24, v25, v26) || objc_opt_class() == attribute && objc_msgSend_skinner(v14, v27, v28, v29))
         {
-          objc_msgSend_addObject_(a4, v27, v14, v30);
+          objc_msgSend_addObject_(output, v27, v14, v30);
         }
 
-        if (v5)
+        if (recursivelyCopy)
         {
-          objc_msgSend__childNodesWithAttribute_output_recursively_(v14, v27, a3, a4, 1);
+          objc_msgSend__childNodesWithAttribute_output_recursively_(v14, v27, attribute, output, 1);
         }
 
         ++v13;
@@ -4660,26 +4660,26 @@ LABEL_3:
   }
 }
 
-- (id)childNodesWithAttribute:(Class)a3 recursively:(BOOL)a4
+- (id)childNodesWithAttribute:(Class)attribute recursively:(BOOL)recursively
 {
-  v4 = a4;
-  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, a4);
-  objc_msgSend__childNodesWithAttribute_output_recursively_(self, v8, a3, v7, v4);
+  recursivelyCopy = recursively;
+  v7 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, attribute, recursively);
+  objc_msgSend__childNodesWithAttribute_output_recursively_(self, v8, attribute, v7, recursivelyCopy);
   return v7;
 }
 
-- (id)objectInChildNodesWithAttribute:(id)a3 firstOnly:(BOOL)a4
+- (id)objectInChildNodesWithAttribute:(id)attribute firstOnly:(BOOL)only
 {
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
-  v11 = a4;
-  v6 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, a4);
+  onlyCopy = only;
+  v6 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, attribute, only);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1AF303148;
   v9[3] = &unk_1E7A7ECF0;
-  v9[4] = a3;
+  v9[4] = attribute;
   v9[5] = v10;
   objc_msgSend__childNodesPassingTest_recursively_output_(self, v7, v9, 1, v6);
   _Block_object_dispose(v10, 8);
@@ -4731,12 +4731,12 @@ LABEL_3:
   return result;
 }
 
-- (id)_findComponentWithType:(int64_t)a3
+- (id)_findComponentWithType:(int64_t)type
 {
   v68 = *MEMORY[0x1E69E9840];
   if (*(self + 48))
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v10 = sub_1AF1B75E8(self->_node);
@@ -4886,7 +4886,7 @@ LABEL_39:
     return result;
   }
 
-  if ((((*(self + 26) & 0x7FFFu) >> a3) & 1) == 0)
+  if ((((*(self + 26) & 0x7FFFu) >> type) & 1) == 0)
   {
     return 0;
   }
@@ -4897,7 +4897,7 @@ LABEL_39:
     return components;
   }
 
-  while (objc_msgSend_type(components, a2, a3, v3) != a3)
+  while (objc_msgSend_type(components, a2, type, v3) != type)
   {
     components = objc_msgSend_next(components, v7, v8, v9);
     if (!components)
@@ -4909,12 +4909,12 @@ LABEL_39:
   return objc_msgSend_component(components, v7, v8, v9);
 }
 
-- (void)_removeComponentWithType:(int64_t)a3
+- (void)_removeComponentWithType:(int64_t)type
 {
   components = self->_components;
   if (components)
   {
-    if (objc_msgSend_type(self->_components, a2, a3, v3) == a3)
+    if (objc_msgSend_type(self->_components, a2, type, v3) == type)
     {
       v10 = 0;
 LABEL_7:
@@ -4937,7 +4937,7 @@ LABEL_7:
         self->_components = v24;
       }
 
-      *(self + 26) &= ~(1 << a3) | 0x8000;
+      *(self + 26) &= ~(1 << type) | 0x8000;
     }
 
     else
@@ -4954,7 +4954,7 @@ LABEL_7:
         components = v12;
         v10 = v11;
         v11 = v12;
-        if (objc_msgSend_type(v12, v13, v14, v15) == a3)
+        if (objc_msgSend_type(v12, v13, v14, v15) == type)
         {
           goto LABEL_7;
         }
@@ -4963,13 +4963,13 @@ LABEL_7:
   }
 }
 
-- (void)_assignComponent:(id)a3 toContainerWithType:(int64_t)a4
+- (void)_assignComponent:(id)component toContainerWithType:(int64_t)type
 {
-  v7 = (a4 < 0x10) & (0x1D1Fu >> a4);
-  v8 = 1 << a4;
-  if ((*(self + 26) & (1 << a4) & 0x7FFF) != 0 && (components = self->_components) != 0)
+  v7 = (type < 0x10) & (0x1D1Fu >> type);
+  v8 = 1 << type;
+  if ((*(self + 26) & (1 << type) & 0x7FFF) != 0 && (components = self->_components) != 0)
   {
-    while (objc_msgSend_type(components, a2, a3, a4) != a4)
+    while (objc_msgSend_type(components, a2, component, type) != type)
     {
       components = objc_msgSend_next(components, v10, v11, v12);
       if (!components)
@@ -4986,19 +4986,19 @@ LABEL_7:
         objc_msgSend_removeWorldReference_(v21, v22, self->_world, v23);
       }
 
-      objc_msgSend_setComponent_(components, v10, a3, v12);
+      objc_msgSend_setComponent_(components, v10, component, v12);
       world = self->_world;
       if (world)
       {
 
-        objc_msgSend_addWorldReference_(a3, v24, world, v25);
+        objc_msgSend_addWorldReference_(component, v24, world, v25);
       }
     }
 
     else
     {
 
-      objc_msgSend_setComponent_(components, v10, a3, v12);
+      objc_msgSend_setComponent_(components, v10, component, v12);
     }
   }
 
@@ -5006,7 +5006,7 @@ LABEL_7:
   {
 LABEL_5:
     v13 = [VFXNodeComponent alloc];
-    v15 = objc_msgSend_initWithType_component_(v13, v14, a4, a3);
+    v15 = objc_msgSend_initWithType_component_(v13, v14, type, component);
     objc_msgSend_setNext_(v15, v16, self->_components, v17);
 
     self->_components = v15;
@@ -5015,7 +5015,7 @@ LABEL_5:
       v20 = self->_world;
       if (v20)
       {
-        objc_msgSend_addWorldReference_(a3, v18, v20, v19);
+        objc_msgSend_addWorldReference_(component, v18, v20, v19);
       }
     }
 
@@ -5071,24 +5071,24 @@ LABEL_5:
   return result;
 }
 
-- (id)hitTestWithSegmentFromPoint:(VFXNode *)self toPoint:(SEL)a2 options:(id)a3
+- (id)hitTestWithSegmentFromPoint:(VFXNode *)self toPoint:(SEL)point options:(id)options
 {
   v36 = v4;
   v37 = v5;
-  v8 = objc_msgSend_worldRef(self, a2, a3, v3);
+  v8 = objc_msgSend_worldRef(self, point, options, v3);
   if (v8)
   {
     v12 = v8;
     sub_1AF1CEA20(v8);
     memset(v40, 0, sizeof(v40));
-    if (a3)
+    if (options)
     {
-      if (objc_msgSend_objectForKey_(a3, v13, @"kHitTestRootNode", v15))
+      if (objc_msgSend_objectForKey_(options, v13, @"kHitTestRootNode", v15))
       {
-        objc_msgSend_objectForKey_(a3, v16, @"kHitTestRootNode", v18);
+        objc_msgSend_objectForKey_(options, v16, @"kHitTestRootNode", v18);
       }
 
-      v19 = objc_msgSend_mutableCopy(a3, v16, v17, v18);
+      v19 = objc_msgSend_mutableCopy(options, v16, v17, v18);
     }
 
     else
@@ -5312,24 +5312,24 @@ LABEL_15:
 
 - (double)_quaternion
 {
-  if ((a1[3].i8[0] & 8) == 0)
+  if ((self[3].i8[0] & 8) == 0)
   {
-    objc_msgSend__updateAffine(a1, a2, a3, a4);
+    objc_msgSend__updateAffine(self, a2, a3, a4);
   }
 
-  v5 = (a1[3].u8[1] >> 2) & 3;
+  v5 = (self[3].u8[1] >> 2) & 3;
   if (v5 > 1)
   {
     v14.i64[0] = 0;
     if (v5 != 3)
     {
-      v14 = a1[9];
+      v14 = self[9];
     }
   }
 
   else if (v5)
   {
-    objc_msgSend_rotation(a1, a2, a3, a4);
+    objc_msgSend_rotation(self, a2, a3, a4);
     v16 = vmulq_f32(v15, v15);
     v16.f32[0] = v16.f32[2] + vaddv_f32(*v16.f32);
     v17 = vdupq_lane_s32(*v16.f32, 0);
@@ -5345,7 +5345,7 @@ LABEL_15:
   {
     v6.i64[0] = 0x3F0000003F000000;
     v6.i64[1] = 0x3F0000003F000000;
-    v7 = vmulq_f32(a1[9], v6);
+    v7 = vmulq_f32(self[9], v6);
     v7.i32[3] = 0;
     x = v7;
     v23 = _simd_cos_f4(v7);
@@ -5365,28 +5365,28 @@ LABEL_15:
   return *v14.i64;
 }
 
-- (uint64_t)_setQuaternion:(uint64_t)a3
+- (uint64_t)_setQuaternion:(uint64_t)quaternion
 {
-  if ((*(a1 + 48) & 8) == 0)
+  if ((*(self + 48) & 8) == 0)
   {
-    objc_msgSend__updateAffine(a1, a2, a3, a4);
+    objc_msgSend__updateAffine(self, a2, quaternion, a4);
   }
 
-  result = objc_msgSend__quaternion(a1, a2, a3, a4, *&a5);
+  result = objc_msgSend__quaternion(self, a2, quaternion, a4, *&a5);
   if ((vminvq_u32(vceqq_f32(v14, v9)) & 0x80000000) == 0)
   {
-    objc_msgSend_willChangeValueForKey_(a1, v7, @"orientation", v8);
-    *(a1 + 48) &= ~0x10u;
-    *(a1 + 144) = v14;
-    *(a1 + 49) = *(a1 + 49) & 0xF3 | 8;
+    objc_msgSend_willChangeValueForKey_(self, v7, @"orientation", v8);
+    *(self + 48) &= ~0x10u;
+    *(self + 144) = v14;
+    *(self + 49) = *(self + 49) & 0xF3 | 8;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = sub_1AF304870;
     v15[3] = &unk_1E7A7E5C8;
-    v17 = a1;
+    selfCopy = self;
     v16 = v14;
-    objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v10, a1, @"orientation", v15);
-    return objc_msgSend_didChangeValueForKey_(a1, v11, @"orientation", v12);
+    objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v10, self, @"orientation", v15);
+    return objc_msgSend_didChangeValueForKey_(self, v11, @"orientation", v12);
   }
 
   return result;
@@ -5394,14 +5394,14 @@ LABEL_15:
 
 - (double)_euler
 {
-  if ((*(a1 + 48) & 8) == 0)
+  if ((*(self + 48) & 8) == 0)
   {
-    objc_msgSend__updateAffine(a1, a2, a3, a4);
+    objc_msgSend__updateAffine(self, a2, a3, a4);
   }
 
-  if ((*(a1 + 49) & 0xC) != 0)
+  if ((*(self + 49) & 0xC) != 0)
   {
-    objc_msgSend__quaternion(a1, a2, a3, a4);
+    objc_msgSend__quaternion(self, a2, a3, a4);
     _Q2 = v5;
     v7 = vmulq_f32(v5, v5);
     v8 = vaddv_f32(vadd_f32(*v7.i8, *&vextq_s8(v7, v7, 8uLL)));
@@ -5448,7 +5448,7 @@ LABEL_15:
 
   else
   {
-    v9 = *(a1 + 144);
+    v9 = *(self + 144);
   }
 
   return *&v9;
@@ -5474,7 +5474,7 @@ LABEL_15:
     v11[1] = 3221225472;
     v11[2] = sub_1AF304B00;
     v11[3] = &unk_1E7A7E5C8;
-    v13 = self;
+    selfCopy = self;
     v12 = v10;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"translation", v11);
     objc_msgSend_didChangeValueForKey_(self, v8, @"position", v9);
@@ -5501,7 +5501,7 @@ LABEL_15:
     v11[1] = 3221225472;
     v11[2] = sub_1AF304C0C;
     v11[3] = &unk_1E7A7E5C8;
-    v13 = self;
+    selfCopy = self;
     v12 = v10;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"scale", v11);
     objc_msgSend_didChangeValueForKey_(self, v8, @"scale", v9);
@@ -5538,14 +5538,14 @@ LABEL_15:
   return v5;
 }
 
-- (void)setCastsShadow:(BOOL)a3
+- (void)setCastsShadow:(BOOL)shadow
 {
   v5 = *(self + 49);
-  if ((v5 & 0x20) == 0) == a3 || (*(self + 48))
+  if ((v5 & 0x20) == 0) == shadow || (*(self + 48))
   {
     v9 = v3;
     v10 = v4;
-    if (a3)
+    if (shadow)
     {
       v6 = 32;
     }
@@ -5561,7 +5561,7 @@ LABEL_15:
     v7[2] = sub_1AF304F08;
     v7[3] = &unk_1E7A7E298;
     v7[4] = self;
-    v8 = a3;
+    shadowCopy = shadow;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v7);
   }
 }
@@ -5596,12 +5596,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)setUsesDepthPrePass:(BOOL)a3
+- (void)setUsesDepthPrePass:(BOOL)pass
 {
   v3 = *(self + 49);
-  if (((((v3 & 0x40) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x40) == 0) ^ pass) & 1) == 0)
   {
-    if (a3)
+    if (pass)
     {
       v4 = 64;
     }
@@ -5617,7 +5617,7 @@ LABEL_15:
     v5[2] = sub_1AF30504C;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    passCopy = pass;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -5647,19 +5647,19 @@ LABEL_15:
   }
 }
 
-- (void)setCategoryBitMask:(unint64_t)a3
+- (void)setCategoryBitMask:(unint64_t)mask
 {
-  if (self->_categoryBitMask != a3)
+  if (self->_categoryBitMask != mask)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_categoryBitMask = a3;
+    self->_categoryBitMask = mask;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF30516C;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = mask;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -5694,14 +5694,14 @@ LABEL_15:
   return v5;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5 = *(self + 49);
-  if ((v5 & 0x10) == 0) == a3 || (*(self + 48))
+  if ((v5 & 0x10) == 0) == hidden || (*(self + 48))
   {
     v9 = v3;
     v10 = v4;
-    if (a3)
+    if (hidden)
     {
       v6 = 16;
     }
@@ -5717,7 +5717,7 @@ LABEL_15:
     v7[2] = sub_1AF3052B8;
     v7[3] = &unk_1E7A7E298;
     v7[4] = self;
-    v8 = a3;
+    hiddenCopy = hidden;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"hidden", v7);
   }
 }
@@ -5759,15 +5759,15 @@ LABEL_15:
   }
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v5 = a3;
-  if (v5 > 1.0)
+  opacityCopy = opacity;
+  if (opacityCopy > 1.0)
   {
-    v5 = 1.0;
+    opacityCopy = 1.0;
   }
 
-  v6 = fmax(v5, 0.0);
+  v6 = fmax(opacityCopy, 0.0);
   if (self->_opacity != v6 || (*(self + 48) & 1) != 0)
   {
     v9 = v3;
@@ -5808,19 +5808,19 @@ LABEL_15:
   }
 }
 
-- (void)setRenderingOrder:(int64_t)a3
+- (void)setRenderingOrder:(int64_t)order
 {
-  if (self->_renderingOrder != a3 || (*(self + 48) & 1) != 0)
+  if (self->_renderingOrder != order || (*(self + 48) & 1) != 0)
   {
     v5[6] = v3;
     v5[7] = v4;
-    self->_renderingOrder = a3;
+    self->_renderingOrder = order;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF305588;
     v5[3] = &unk_1E7A7E248;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = order;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
@@ -5905,37 +5905,37 @@ LABEL_15:
   return v9;
 }
 
-- (void)_setComponent:(id)a3 withType:(int64_t)a4
+- (void)_setComponent:(id)component withType:(int64_t)type
 {
-  if (a3)
+  if (component)
   {
-    objc_msgSend__assignComponent_toContainerWithType_(self, a2, a3, a4);
+    objc_msgSend__assignComponent_toContainerWithType_(self, a2, component, type);
   }
 
   else
   {
-    objc_msgSend__removeComponentWithType_(self, a2, a4, a4);
+    objc_msgSend__removeComponentWithType_(self, a2, type, type);
   }
 }
 
-- (void)setLight:(id)a3
+- (void)setLight:(id)light
 {
-  if (objc_msgSend_light(self, a2, a3, v3) != a3)
+  if (objc_msgSend_light(self, a2, light, v3) != light)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 0);
+    objc_msgSend__setComponent_withType_(self, v6, light, 0);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF30581C;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = light;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
 
-- (void)setIsJoint:(BOOL)a3
+- (void)setIsJoint:(BOOL)joint
 {
-  if (a3)
+  if (joint)
   {
     v3 = 64;
   }
@@ -5948,24 +5948,24 @@ LABEL_15:
   *(self + 48) = *(self + 48) & 0xBF | v3;
 }
 
-- (void)setIsEyeSightFrame:(BOOL)a3
+- (void)setIsEyeSightFrame:(BOOL)frame
 {
-  *(self + 49) = *(self + 49) & 0xFE | a3;
+  *(self + 49) = *(self + 49) & 0xFE | frame;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF30592C;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  frameCopy = frame;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setGizmo:(BOOL)a3
+- (void)setGizmo:(BOOL)gizmo
 {
   v3 = *(self + 48);
-  if ((((v3 >= 0) ^ a3) & 1) == 0)
+  if ((((v3 >= 0) ^ gizmo) & 1) == 0)
   {
-    if (a3)
+    if (gizmo)
     {
       v4 = 0x80;
     }
@@ -5981,14 +5981,14 @@ LABEL_15:
     v5[2] = sub_1AF3059F8;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    gizmoCopy = gizmo;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
 
-- (void)setIsHandTrackingRoot:(BOOL)a3
+- (void)setIsHandTrackingRoot:(BOOL)root
 {
-  if (a3)
+  if (root)
   {
     v3 = 2;
   }
@@ -6004,42 +6004,42 @@ LABEL_15:
   v4[2] = sub_1AF305AB4;
   v4[3] = &unk_1E7A7E298;
   v4[4] = self;
-  v5 = a3;
+  rootCopy = root;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v4);
 }
 
-- (void)setSkinner:(id)a3
+- (void)setSkinner:(id)skinner
 {
-  if (objc_msgSend_skinner(self, a2, a3, v3) != a3)
+  if (objc_msgSend_skinner(self, a2, skinner, v3) != skinner)
   {
     v9 = objc_msgSend_model(self, v6, v7, v8);
     if (v9)
     {
       v13 = objc_msgSend_geometry(v9, v10, v11, v12);
-      objc_msgSend__setBaseGeometry_(a3, v14, v13, v15);
+      objc_msgSend__setBaseGeometry_(skinner, v14, v13, v15);
     }
 
-    objc_msgSend__setComponent_withType_(self, v10, a3, 3);
+    objc_msgSend__setComponent_withType_(self, v10, skinner, 3);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_1AF305B98;
     v17[3] = &unk_1E7A7E220;
     v17[4] = self;
-    v17[5] = a3;
+    v17[5] = skinner;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v16, self, v17);
   }
 }
 
-- (void)setMorpher:(id)a3
+- (void)setMorpher:(id)morpher
 {
-  if (objc_msgSend_morpher(self, a2, a3, v3) != a3)
+  if (objc_msgSend_morpher(self, a2, morpher, v3) != morpher)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 4);
+    objc_msgSend__setComponent_withType_(self, v6, morpher, 4);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF305C80;
     v8[3] = &unk_1E7A7E220;
-    v8[4] = a3;
+    v8[4] = morpher;
     v8[5] = self;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
@@ -6056,11 +6056,11 @@ LABEL_15:
   return result;
 }
 
-- (void)setDeformers:(id)a3
+- (void)setDeformers:(id)deformers
 {
-  if (objc_msgSend_deformers(self, a2, a3, v3) != a3)
+  if (objc_msgSend_deformers(self, a2, deformers, v3) != deformers)
   {
-    v9 = objc_msgSend_copy(a3, v6, v7, v8);
+    v9 = objc_msgSend_copy(deformers, v6, v7, v8);
     objc_msgSend__setComponent_withType_(self, v10, v9, 9);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -6072,31 +6072,31 @@ LABEL_15:
   }
 }
 
-- (void)setCamera:(id)a3
+- (void)setCamera:(id)camera
 {
-  if (objc_msgSend_camera(self, a2, a3, v3) != a3)
+  if (objc_msgSend_camera(self, a2, camera, v3) != camera)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 1);
+    objc_msgSend__setComponent_withType_(self, v6, camera, 1);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF305E80;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = camera;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  if (objc_msgSend_model(self, a2, a3, v3) != a3)
+  if (objc_msgSend_model(self, a2, model, v3) != model)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 2);
+    objc_msgSend__setComponent_withType_(self, v6, model, 2);
     v10 = objc_msgSend_skinner(self, v7, v8, v9);
     if (v10)
     {
       v14 = v10;
-      v15 = objc_msgSend_geometry(a3, v11, v12, v13);
+      v15 = objc_msgSend_geometry(model, v11, v12, v13);
       objc_msgSend__setBaseGeometry_(v14, v16, v15, v17);
     }
 
@@ -6105,7 +6105,7 @@ LABEL_15:
     v29[2] = sub_1AF305FB8;
     v29[3] = &unk_1E7A7E220;
     v29[4] = self;
-    v29[5] = a3;
+    v29[5] = model;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v11, self, v29);
     v21 = objc_msgSend_physicsBody(self, v18, v19, v20);
     if (v21)
@@ -6133,17 +6133,17 @@ LABEL_15:
   }
 }
 
-- (void)setBehaviorGraph:(id)a3
+- (void)setBehaviorGraph:(id)graph
 {
-  if (objc_msgSend_behaviorGraph(self, a2, a3, v3) != a3)
+  if (objc_msgSend_behaviorGraph(self, a2, graph, v3) != graph)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 10);
+    objc_msgSend__setComponent_withType_(self, v6, graph, 10);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF3060EC;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = graph;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
@@ -6160,32 +6160,32 @@ LABEL_15:
   return MEMORY[0x1EEE66B58](ComponentWithType, sel_presentationBehaviorGraph, v7, v8);
 }
 
-- (void)setParticleEmitter:(id)a3
+- (void)setParticleEmitter:(id)emitter
 {
-  if (objc_msgSend_particleEmitter(self, a2, a3, v3) != a3)
+  if (objc_msgSend_particleEmitter(self, a2, emitter, v3) != emitter)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 11);
+    objc_msgSend__setComponent_withType_(self, v6, emitter, 11);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF30623C;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = emitter;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
 
-- (void)setParticleCollider:(id)a3
+- (void)setParticleCollider:(id)collider
 {
-  if (objc_msgSend_particleCollider(self, a2, a3, v3) != a3)
+  if (objc_msgSend_particleCollider(self, a2, collider, v3) != collider)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 12);
+    objc_msgSend__setComponent_withType_(self, v6, collider, 12);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF306328;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = collider;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
@@ -6266,11 +6266,11 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination
 {
-  if (!objc_msgSend_hasPrefix_(a3, a2, @"/", a4))
+  if (!objc_msgSend_hasPrefix_(key, a2, @"/", path))
   {
-    v16 = objc_msgSend_rangeOfString_(a3, v8, @"[", v10);
+    v16 = objc_msgSend_rangeOfString_(key, v8, @"[", v10);
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_12;
@@ -6278,13 +6278,13 @@ LABEL_15:
 
     v20 = v16;
     v21 = v16 + 1;
-    if (v16 + 1 >= objc_msgSend_length(a3, v17, v18, v19))
+    if (v16 + 1 >= objc_msgSend_length(key, v17, v18, v19))
     {
       goto LABEL_12;
     }
 
-    v24 = objc_msgSend_substringToIndex_(a3, v22, v20, v23);
-    v27 = objc_msgSend_substringFromIndex_(a3, v25, v21, v26);
+    v24 = objc_msgSend_substringToIndex_(key, v22, v20, v23);
+    v27 = objc_msgSend_substringFromIndex_(key, v25, v21, v26);
     v30 = objc_msgSend_rangeOfString_(v27, v28, @"]", v29);
     if (v30 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -6310,22 +6310,22 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  v11 = objc_msgSend_length(a3, v8, v9, v10);
-  v13 = objc_msgSend_substringWithRange_(a3, v12, 1, v11 - 1);
+  v11 = objc_msgSend_length(key, v8, v9, v10);
+  v13 = objc_msgSend_substringWithRange_(key, v12, 1, v11 - 1);
   v15 = objc_msgSend_childNodeWithName_recursively_(self, v14, v13, 1);
   if (v15)
   {
 LABEL_3:
-    *a5 = v15;
+    *destination = v15;
     LOBYTE(v15) = 1;
   }
 
   return v15;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"transform", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"transform", v3))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_transform(self, v6, v7, v8);
@@ -6334,7 +6334,7 @@ LABEL_3:
     return objc_msgSend_valueWithVFXMatrix4_(v9, v10, v11, v12);
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v6, @"position", v8))
+  if (objc_msgSend_isEqualToString_(key, v6, @"position", v8))
   {
     v17 = MEMORY[0x1E696B098];
     objc_msgSend_position(self, v14, v15, v16);
@@ -6343,14 +6343,14 @@ LABEL_17:
     return objc_msgSend_valueWithVFXFloat3_(v17, v18, v19, v20);
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v14, @"scale", v16))
+  if (objc_msgSend_isEqualToString_(key, v14, @"scale", v16))
   {
     v17 = MEMORY[0x1E696B098];
     objc_msgSend_scale(self, v21, v22, v23);
     goto LABEL_17;
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v21, @"orientation", v23))
+  if (objc_msgSend_isEqualToString_(key, v21, @"orientation", v23))
   {
     v27 = MEMORY[0x1E696B098];
     objc_msgSend_orientation(self, v24, v25, v26);
@@ -6358,19 +6358,19 @@ LABEL_17:
 
   else
   {
-    if (objc_msgSend_isEqualToString_(a3, v24, @"eulerAngles", v26))
+    if (objc_msgSend_isEqualToString_(key, v24, @"eulerAngles", v26))
     {
       goto LABEL_16;
     }
 
-    if (objc_msgSend_isEqualToString_(a3, v31, @"rotation", v33))
+    if (objc_msgSend_isEqualToString_(key, v31, @"rotation", v33))
     {
       v27 = MEMORY[0x1E696B098];
       objc_msgSend_rotation(self, v34, v35, v36);
       goto LABEL_12;
     }
 
-    if (objc_msgSend_isEqualToString_(a3, v34, @"euler", v36))
+    if (objc_msgSend_isEqualToString_(key, v34, @"euler", v36))
     {
 LABEL_16:
       v17 = MEMORY[0x1E696B098];
@@ -6378,32 +6378,32 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (objc_msgSend_isEqualToString_(a3, v31, @"pivot", v33))
+    if (objc_msgSend_isEqualToString_(key, v31, @"pivot", v33))
     {
       v9 = MEMORY[0x1E696B098];
       objc_msgSend_pivot(self, v37, v38, v39);
       goto LABEL_3;
     }
 
-    if (objc_msgSend_isEqualToString_(a3, v37, @"worldTransform", v39))
+    if (objc_msgSend_isEqualToString_(key, v37, @"worldTransform", v39))
     {
       v9 = MEMORY[0x1E696B098];
       objc_msgSend_worldTransform(self, v40, v41, v42);
       goto LABEL_3;
     }
 
-    if (objc_msgSend_isEqualToString_(a3, v40, @"worldPosition", v42))
+    if (objc_msgSend_isEqualToString_(key, v40, @"worldPosition", v42))
     {
       v17 = MEMORY[0x1E696B098];
       objc_msgSend_worldPosition(self, v43, v44, v45);
       goto LABEL_17;
     }
 
-    if (!objc_msgSend_isEqualToString_(a3, v43, @"worldOrientation", v45))
+    if (!objc_msgSend_isEqualToString_(key, v43, @"worldOrientation", v45))
     {
       v49.receiver = self;
       v49.super_class = VFXNode;
-      return [(VFXNode *)&v49 valueForKey:a3];
+      return [(VFXNode *)&v49 valueForKey:key];
     }
 
     v27 = MEMORY[0x1E696B098];
@@ -6415,10 +6415,10 @@ LABEL_12:
   return objc_msgSend_valueWithVFXFloat4_(v27, v28, v29, v30);
 }
 
-- (BOOL)rawFloat4ForKey:(id)a3 value:
+- (BOOL)rawFloat4ForKey:(id)key value:
 {
   v4 = v3;
-  if (objc_msgSend_isEqualToString_(a3, a2, @"orientation", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"orientation", v3))
   {
     objc_msgSend_orientation(self, v7, v8, v9);
 LABEL_7:
@@ -6427,13 +6427,13 @@ LABEL_7:
     return isEqualToString;
   }
 
-  if (objc_msgSend_isEqualToString_(a3, v7, @"rotation", v9))
+  if (objc_msgSend_isEqualToString_(key, v7, @"rotation", v9))
   {
     objc_msgSend_rotation(self, v11, v12, v13);
     goto LABEL_7;
   }
 
-  isEqualToString = objc_msgSend_isEqualToString_(a3, v11, @"worldOrientation", v13);
+  isEqualToString = objc_msgSend_isEqualToString_(key, v11, @"worldOrientation", v13);
   if (isEqualToString)
   {
     objc_msgSend_worldOrientation(self, v15, v16, v17);
@@ -6443,27 +6443,27 @@ LABEL_7:
   return isEqualToString;
 }
 
-- (BOOL)rawFloat3ForKey:(id)a3 value:
+- (BOOL)rawFloat3ForKey:(id)key value:
 {
   v4 = v3;
-  if (objc_msgSend_isEqualToString_(a3, a2, @"position", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"position", v3))
   {
     objc_msgSend_position(self, v7, v8, v9);
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v7, @"scale", v9))
+  else if (objc_msgSend_isEqualToString_(key, v7, @"scale", v9))
   {
     objc_msgSend_scale(self, v11, v12, v13);
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v11, @"eulerAngles", v13) || objc_msgSend_isEqualToString_(a3, v14, @"euler", v16))
+  else if (objc_msgSend_isEqualToString_(key, v11, @"eulerAngles", v13) || objc_msgSend_isEqualToString_(key, v14, @"euler", v16))
   {
     objc_msgSend_eulerAngles(self, v14, v15, v16);
   }
 
   else
   {
-    isEqualToString = objc_msgSend_isEqualToString_(a3, v14, @"worldPosition", v16);
+    isEqualToString = objc_msgSend_isEqualToString_(key, v14, @"worldPosition", v16);
     if (!isEqualToString)
     {
       return isEqualToString;
@@ -6477,87 +6477,87 @@ LABEL_7:
   return isEqualToString;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a4, a2, @"transform", a4))
+  if (objc_msgSend_isEqualToString_(key, a2, @"transform", key))
   {
-    objc_msgSend_VFXMatrix4Value(a3, v7, v8, v9);
+    objc_msgSend_VFXMatrix4Value(value, v7, v8, v9);
 
     objc_msgSend_setTransform_(self, v10, v11, v12);
     return;
   }
 
-  if (objc_msgSend_isEqualToString_(a4, v7, @"position", v9))
+  if (objc_msgSend_isEqualToString_(key, v7, @"position", v9))
   {
-    objc_msgSend_VFXFloat3Value(a3, v13, v14, v15);
+    objc_msgSend_VFXFloat3Value(value, v13, v14, v15);
 
     objc_msgSend_setPosition_(self, v16, v17, v18);
     return;
   }
 
-  if (objc_msgSend_isEqualToString_(a4, v13, @"scale", v15))
+  if (objc_msgSend_isEqualToString_(key, v13, @"scale", v15))
   {
-    objc_msgSend_VFXFloat3Value(a3, v19, v20, v21);
+    objc_msgSend_VFXFloat3Value(value, v19, v20, v21);
 
     objc_msgSend_setScale_(self, v22, v23, v24);
     return;
   }
 
-  if (objc_msgSend_isEqualToString_(a4, v19, @"orientation", v21))
+  if (objc_msgSend_isEqualToString_(key, v19, @"orientation", v21))
   {
-    objc_msgSend_VFXFloat4Value(a3, v25, v26, v27);
+    objc_msgSend_VFXFloat4Value(value, v25, v26, v27);
 
     objc_msgSend_setOrientation_(self, v28, v29, v30);
     return;
   }
 
-  if (objc_msgSend_isEqualToString_(a4, v25, @"eulerAngles", v27))
+  if (objc_msgSend_isEqualToString_(key, v25, @"eulerAngles", v27))
   {
     goto LABEL_18;
   }
 
-  if (objc_msgSend_isEqualToString_(a4, v31, @"rotation", v33))
+  if (objc_msgSend_isEqualToString_(key, v31, @"rotation", v33))
   {
-    objc_msgSend_VFXFloat4Value(a3, v37, v38, v39);
+    objc_msgSend_VFXFloat4Value(value, v37, v38, v39);
 
     objc_msgSend_setRotation_(self, v40, v41, v42);
   }
 
   else
   {
-    if (objc_msgSend_isEqualToString_(a4, v37, @"euler", v39))
+    if (objc_msgSend_isEqualToString_(key, v37, @"euler", v39))
     {
 LABEL_18:
-      objc_msgSend_VFXFloat3Value(a3, v31, v32, v33);
+      objc_msgSend_VFXFloat3Value(value, v31, v32, v33);
 
       objc_msgSend_setEulerAngles_(self, v34, v35, v36);
       return;
     }
 
-    if (objc_msgSend_isEqualToString_(a4, v31, @"pivot", v33))
+    if (objc_msgSend_isEqualToString_(key, v31, @"pivot", v33))
     {
-      objc_msgSend_VFXMatrix4Value(a3, v43, v44, v45);
+      objc_msgSend_VFXMatrix4Value(value, v43, v44, v45);
 
       objc_msgSend_setPivot_(self, v46, v47, v48);
     }
 
-    else if (objc_msgSend_isEqualToString_(a4, v43, @"worldTransform", v45))
+    else if (objc_msgSend_isEqualToString_(key, v43, @"worldTransform", v45))
     {
-      objc_msgSend_VFXMatrix4Value(a3, v49, v50, v51);
+      objc_msgSend_VFXMatrix4Value(value, v49, v50, v51);
 
       objc_msgSend_setWorldTransform_(self, v52, v53, v54);
     }
 
-    else if (objc_msgSend_isEqualToString_(a4, v49, @"worldPosition", v51))
+    else if (objc_msgSend_isEqualToString_(key, v49, @"worldPosition", v51))
     {
-      objc_msgSend_VFXFloat3Value(a3, v55, v56, v57);
+      objc_msgSend_VFXFloat3Value(value, v55, v56, v57);
 
       objc_msgSend_setWorldPosition_(self, v58, v59, v60);
     }
 
-    else if (objc_msgSend_isEqualToString_(a4, v55, @"worldOrientation", v57))
+    else if (objc_msgSend_isEqualToString_(key, v55, @"worldOrientation", v57))
     {
-      objc_msgSend_VFXFloat4Value(a3, v61, v62, v63);
+      objc_msgSend_VFXFloat4Value(value, v61, v62, v63);
 
       objc_msgSend_setWorldOrientation_(self, v64, v65, v66);
     }
@@ -6566,14 +6566,14 @@ LABEL_18:
     {
       v67.receiver = self;
       v67.super_class = VFXNode;
-      [(VFXNode *)&v67 setValue:a3 forKey:a4];
+      [(VFXNode *)&v67 setValue:value forKey:key];
     }
   }
 }
 
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation
 {
-  if (!objc_msgSend_length(a3, a2, a3, a4))
+  if (!objc_msgSend_length(path, a2, path, animation))
   {
     return 0;
   }
@@ -6581,10 +6581,10 @@ LABEL_18:
   v42 = 0;
   v43 = 0;
   v41 = 0;
-  sub_1AF3716AC(a3, &v42, &v41, v7);
-  if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, v8, v42, a3, &v43) && (objc_opt_respondsToSelector() & 1) != 0)
+  sub_1AF3716AC(path, &v42, &v41, v7);
+  if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, v8, v42, path, &v43) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = objc_msgSend_copyAnimationChannelForKeyPath_animation_(v43, v9, v41, a4);
+    v11 = objc_msgSend_copyAnimationChannelForKeyPath_animation_(v43, v9, v41, animation);
     if (v11)
     {
       v12 = v11;
@@ -6603,13 +6603,13 @@ LABEL_18:
   v43 = objc_msgSend_valueForKey_(self, v9, v42, v10);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return sub_1AF291EF0(self, a3, v26, v27);
+    return sub_1AF291EF0(self, path, v26, v27);
   }
 
-  v28 = objc_msgSend_copyAnimationChannelForKeyPath_animation_(v43, v25, v41, a4);
+  v28 = objc_msgSend_copyAnimationChannelForKeyPath_animation_(v43, v25, v41, animation);
   if (!v28)
   {
-    return sub_1AF291EF0(self, a3, v26, v27);
+    return sub_1AF291EF0(self, path, v26, v27);
   }
 
   v29 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -6621,29 +6621,29 @@ LABEL_18:
   return v20;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  result = objc_msgSend__valueForSimdVectorKeyPath_(self, a2, a3, v3);
+  result = objc_msgSend__valueForSimdVectorKeyPath_(self, a2, path, v3);
   if (!result)
   {
     v7.receiver = self;
     v7.super_class = VFXNode;
-    return [(VFXNode *)&v7 valueForKeyPath:a3];
+    return [(VFXNode *)&v7 valueForKeyPath:path];
   }
 
   return result;
 }
 
-- (id)_valueForSimdVectorKeyPath:(id)a3
+- (id)_valueForSimdVectorKeyPath:(id)path
 {
   v45 = 0;
   v44 = 0;
-  sub_1AF3716AC(a3, &v45, &v44, v3);
+  sub_1AF3716AC(path, &v45, &v44, v3);
   if (qword_1ED73B330 != -1)
   {
     sub_1AFDF754C();
@@ -6711,21 +6711,21 @@ LABEL_18:
   return objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v36, v37, v38, v39);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   if ((*(self + 48) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = objc_msgSend_worldRef(self, a2, a3, v3);
+  v6 = objc_msgSend_worldRef(self, a2, key, v3);
   v7 = v6;
   if (v6)
   {
     sub_1AF1CEA20(v6);
   }
 
-  v8 = sub_1AF16E3F4(self->_node, a3);
+  v8 = sub_1AF16E3F4(self->_node, key);
   v9 = v8;
   if (v8)
   {
@@ -6743,7 +6743,7 @@ LABEL_18:
   {
 LABEL_9:
     v19 = 0;
-    if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, a2, a3, a3, &v19))
+    if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, a2, key, key, &v19))
     {
       return v19;
     }
@@ -6751,7 +6751,7 @@ LABEL_9:
     else
     {
       os_unfair_lock_lock(&self->_valueForKeyLock);
-      v17 = objc_msgSend_objectForKey_(self->_valueForKey, v15, a3, v16);
+      v17 = objc_msgSend_objectForKey_(self->_valueForKey, v15, key, v16);
       os_unfair_lock_unlock(&self->_valueForKeyLock);
       if (v17)
       {
@@ -6768,12 +6768,12 @@ LABEL_9:
   return v9;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v7 = sub_1AF376D98(self, a4);
+  v7 = sub_1AF376D98(self, key);
   os_unfair_lock_lock(&self->_valueForKeyLock);
   valueForKey = self->_valueForKey;
-  if (a3)
+  if (value)
   {
     if (!valueForKey)
     {
@@ -6781,30 +6781,30 @@ LABEL_9:
       self->_valueForKey = valueForKey;
     }
 
-    objc_msgSend_setObject_forKey_(valueForKey, v8, a3, a4);
+    objc_msgSend_setObject_forKey_(valueForKey, v8, value, key);
   }
 
   else
   {
-    objc_msgSend_removeObjectForKey_(valueForKey, v8, a4, v9);
+    objc_msgSend_removeObjectForKey_(valueForKey, v8, key, v9);
   }
 
   os_unfair_lock_unlock(&self->_valueForKeyLock);
-  v11 = sub_1AF376D98(self, a4);
+  v11 = sub_1AF376D98(self, key);
   v12 = v11;
   if (v7 && v11)
   {
     node = self->_node;
-    sub_1AF16E2D4(node, a4, v7);
+    sub_1AF16E2D4(node, key, v7);
     v16 = objc_msgSend_stringByAppendingString_(@"customProperty", v14, @".", v15);
-    v19 = objc_msgSend_stringByAppendingString_(v16, v17, a4, v18);
+    v19 = objc_msgSend_stringByAppendingString_(v16, v17, key, v18);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = sub_1AF30746C;
     v21[3] = &unk_1E7A7E2E8;
     v21[5] = v12;
     v21[6] = node;
-    v21[4] = a4;
+    v21[4] = key;
     objc_msgSend_postCommandWithObject_keyPath_applyBlock_(VFXTransaction, v20, self, v19, v21);
 LABEL_10:
     CFRelease(v7);
@@ -6831,20 +6831,20 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v9 = objc_msgSend_objectForKey_(self->_animations, v7, a4, v8);
-  v15 = objc_msgSend_animation(v9, v10, v11, v12) == a3;
+  v9 = objc_msgSend_objectForKey_(self->_animations, v7, key, v8);
+  v15 = objc_msgSend_animation(v9, v10, v11, v12) == animation;
   if (v15)
   {
     objc_msgSend_removeWorldReference_(v9, v13, self->_world, v14);
-    objc_msgSend_removeObjectForKey_(self->_animations, v16, a4, v17);
+    objc_msgSend_removeObjectForKey_(self->_animations, v16, key, v17);
     v21 = objc_msgSend___CFObject(self, v18, v19, v20);
     if ((sub_1AF16D234(v21) & 1) == 0)
     {
@@ -6855,28 +6855,28 @@ LABEL_11:
       }
     }
 
-    sub_1AF16D870(v21, a4, 1);
+    sub_1AF16D870(v21, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v15;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, a3, 0);
-      v5 = objc_msgSend_UUIDString(v7, v8, v9, v10);
+      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, player, 0);
+      keyCopy = objc_msgSend_UUIDString(v7, v8, v9, v10);
     }
 
     if ((*(self + 48) & 1) == 0)
     {
       os_unfair_lock_lock(&self->_animationsLock);
-      objc_msgSend_addWorldReference_(a3, v11, self->_world, v12);
+      objc_msgSend_addWorldReference_(player, v11, self->_world, v12);
       animations = self->_animations;
       if (!animations)
       {
@@ -6884,18 +6884,18 @@ LABEL_11:
         self->_animations = animations;
       }
 
-      objc_msgSend_setObject_forKey_(animations, v13, a3, v5);
+      objc_msgSend_setObject_forKey_(animations, v13, player, keyCopy);
       os_unfair_lock_unlock(&self->_animationsLock);
     }
 
-    v15 = objc_msgSend_timingFunction(VFXTransaction, a2, a3, a4);
+    v15 = objc_msgSend_timingFunction(VFXTransaction, a2, player, key);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_1AF3076BC;
     v18[3] = &unk_1E7A7E2C0;
-    v18[4] = a3;
+    v18[4] = player;
     v18[5] = self;
-    v18[6] = v5;
+    v18[6] = keyCopy;
     v18[7] = v15;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v16, self, v18);
   }
@@ -6910,31 +6910,31 @@ LABEL_11:
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, a3, 0);
-      v5 = objc_msgSend_UUIDString(v7, v8, v9, v10);
+      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, animation, 0);
+      keyCopy = objc_msgSend_UUIDString(v7, v8, v9, v10);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = objc_msgSend_animationWithCAAnimation_(VFXAnimation, v11, v6, v12);
+      animationCopy = objc_msgSend_animationWithCAAnimation_(VFXAnimation, v11, animationCopy, v12);
     }
 
-    v13 = objc_msgSend_animationPlayerWithVFXAnimation_(VFXAnimationPlayer, v11, v6, v12);
-    objc_msgSend_addAnimationPlayer_forKey_(self, v14, v13, v5);
+    v13 = objc_msgSend_animationPlayerWithVFXAnimation_(VFXAnimationPlayer, v11, animationCopy, v12);
+    objc_msgSend_addAnimationPlayer_forKey_(self, v14, v13, keyCopy);
     objc_msgSend_play(v13, v15, v16, v17);
     if (objc_msgSend_isPausedOrPausedByInheritance(self, v18, v19, v20))
     {
 
-      objc_msgSend__pauseAnimation_forKey_pausedByNode_(self, v21, 1, v5, 1);
+      objc_msgSend__pauseAnimation_forKey_pausedByNode_(self, v21, 1, keyCopy, 1);
     }
   }
 
@@ -6997,17 +6997,17 @@ LABEL_11:
   }
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v8 = objc_msgSend_objectForKey_(animations, v5, a3, v6);
+      v8 = objc_msgSend_objectForKey_(animations, v5, key, v6);
       objc_msgSend_removeWorldReference_(v8, v9, self->_world, v10);
-      objc_msgSend_removeObjectForKey_(self->_animations, v11, a3, v12);
+      objc_msgSend_removeObjectForKey_(self->_animations, v11, key, v12);
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
@@ -7019,7 +7019,7 @@ LABEL_11:
     v22[3] = &unk_1E7A7E310;
     v22[7] = v20;
     v22[4] = self;
-    v22[5] = a3;
+    v22[5] = key;
     v22[6] = v16;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v21, self, v22);
   }
@@ -7088,38 +7088,38 @@ LABEL_11:
   }
 }
 
-- (id)_vfxAnimationForKey:(id)a3
+- (id)_vfxAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v8 = objc_msgSend_objectForKey_(animations, v5, v3, v6);
-      v3 = objc_msgSend_animation(v8, v9, v10, v11);
+      v8 = objc_msgSend_objectForKey_(animations, v5, keyCopy, v6);
+      keyCopy = objc_msgSend_animation(v8, v9, v10, v11);
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = objc_msgSend_animationKeys(a3, a2, a3, v3, 0);
+  v6 = objc_msgSend_animationKeys(from, a2, from, v3, 0);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
   if (v8)
   {
@@ -7135,7 +7135,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = objc_msgSend_animationPlayerForKey_(a3, v9, v14, v10);
+        v15 = objc_msgSend_animationPlayerForKey_(from, v9, v14, v10);
         v19 = objc_msgSend_copy(v15, v16, v17, v18);
         objc_msgSend_addAnimationPlayer_forKey_(self, v20, v19, v14);
       }
@@ -7147,34 +7147,34 @@ LABEL_11:
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = objc_msgSend_objectForKey_(animations, v5, v3, v6);
+      keyCopy = objc_msgSend_objectForKey_(animations, v5, keyCopy, v6);
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = objc_msgSend___CFObject(self, a2, a3, a4);
+  nodeCopy = node;
+  animationCopy = animation;
+  v9 = objc_msgSend___CFObject(self, a2, animation, key);
   if (v9)
   {
     v13 = v9;
@@ -7184,22 +7184,22 @@ LABEL_11:
       v15 = v14;
       v16 = CACurrentMediaTime();
 
-      sub_1AF118EBC(v15, v13, a4, v7, v5, v16);
+      sub_1AF118EBC(v15, v13, key, animationCopy, nodeCopy, v16);
     }
   }
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v25[15] = v6;
     v25[16] = v7;
     v13 = objc_alloc_init(CFXBinding);
-    objc_msgSend_setSourceObject_(v13, v14, a4, v15);
-    objc_msgSend_setKeyPathDst_(v13, v16, a3, v17);
-    objc_msgSend_setKeyPathSrc_(v13, v18, a5, v19);
-    objc_msgSend_setOptions_(v13, v20, a6, v21);
+    objc_msgSend_setSourceObject_(v13, v14, object, v15);
+    objc_msgSend_setKeyPathDst_(v13, v16, path, v17);
+    objc_msgSend_setKeyPathSrc_(v13, v18, keyPath, v19);
+    objc_msgSend_setOptions_(v13, v20, options, v21);
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -7207,24 +7207,24 @@ LABEL_11:
       self->_bindings = bindings;
     }
 
-    objc_msgSend_setValue_forKey_(bindings, v22, v13, a3);
+    objc_msgSend_setValue_forKey_(bindings, v22, v13, path);
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = sub_1AF30810C;
     v25[3] = &unk_1E7A7E360;
     v25[4] = self;
-    v25[5] = a4;
-    v25[6] = a3;
-    v25[7] = a5;
-    v25[8] = a6;
+    v25[5] = object;
+    v25[6] = path;
+    v25[7] = keyPath;
+    v25[8] = options;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v24, self, v25);
   }
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
-  objc_msgSend_removeObjectForKey_(self->_bindings, a2, a3, v3);
+  objc_msgSend_removeObjectForKey_(self->_bindings, a2, path, v3);
   if (!objc_msgSend_count(self->_bindings, v6, v7, v8))
   {
 
@@ -7236,7 +7236,7 @@ LABEL_11:
   v10[2] = sub_1AF308250;
   v10[3] = &unk_1E7A7E220;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = path;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, self, v10);
 }
 
@@ -7251,9 +7251,9 @@ LABEL_11:
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v3, self, v4);
 }
 
-- (void)_copyBindingsFrom:(id)a3
+- (void)_copyBindingsFrom:(id)from
 {
-  v5 = objc_msgSend__vfxBindings(a3, a2, a3, v3);
+  v5 = objc_msgSend__vfxBindings(from, a2, from, v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF3083C8;
@@ -7262,23 +7262,23 @@ LABEL_11:
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v5, v6, v8, v7);
 }
 
-- (void)_setSourceObject:(id)a3 forBinding:(id)a4
+- (void)_setSourceObject:(id)object forBinding:(id)binding
 {
-  if (objc_msgSend_sourceObject(a4, a2, a3, a4) != a3)
+  if (objc_msgSend_sourceObject(binding, a2, object, binding) != object)
   {
-    objc_msgSend_setSourceObject_(a4, v7, a3, v8);
+    objc_msgSend_setSourceObject_(binding, v7, object, v8);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF308500;
     v10[3] = &unk_1E7A7E3B0;
     v10[4] = self;
-    v10[5] = a4;
-    v10[6] = a3;
+    v10[5] = binding;
+    v10[6] = object;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, self, v10);
   }
 }
 
-- (void)enumerateAnimationReferencesUsingBlock:(id)a3
+- (void)enumerateAnimationReferencesUsingBlock:(id)block
 {
   bindings = self->_bindings;
   v5[0] = MEMORY[0x1E69E9820];
@@ -7286,63 +7286,63 @@ LABEL_11:
   v5[2] = sub_1AF30863C;
   v5[3] = &unk_1E7A7E400;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = block;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(bindings, a2, v5, v3);
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(float)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(float)duration
 {
   objc_msgSend_begin(VFXTransaction, a2, v3, v4);
-  objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, a3);
+  objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, duration);
   objc_msgSend_removeAllAnimations(self, v10, v11, v12);
 
   objc_msgSend_commit(VFXTransaction, v13, v14, v15);
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(float)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(float)duration
 {
-  objc_msgSend_begin(VFXTransaction, a2, a3, v4);
-  objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10, a4);
-  objc_msgSend_removeAnimationForKey_(self, v11, a3, v12);
+  objc_msgSend_begin(VFXTransaction, a2, key, v4);
+  objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10, duration);
+  objc_msgSend_removeAnimationForKey_(self, v11, key, v12);
 
   objc_msgSend_commit(VFXTransaction, v13, v14, v15);
 }
 
-- (id)objectInChildNodesAtIndex:(unint64_t)a3
+- (id)objectInChildNodesAtIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  v7 = objc_msgSend_objectAtIndex_(self->_childNodes, v5, a3, v6);
+  v7 = objc_msgSend_objectAtIndex_(self->_childNodes, v5, index, v6);
   objc_sync_exit(self);
   return v7;
 }
 
-- (BOOL)canAddChildNode:(id)a3
+- (BOOL)canAddChildNode:(id)node
 {
   for (i = self == 0; self; i = self == 0)
   {
-    if (self == a3)
+    if (self == node)
     {
       break;
     }
 
-    self = objc_msgSend_parentNode(self, a2, a3, v3);
+    self = objc_msgSend_parentNode(self, a2, node, v3);
   }
 
   return i;
 }
 
-- (void)addChildNode:(id)a3
+- (void)addChildNode:(id)node
 {
   objc_sync_enter(self);
   v8 = objc_msgSend_countOfChildNodes(self, v5, v6, v7);
-  objc_msgSend_insertObject_inChildNodesAtIndex_(self, v9, a3, v8);
+  objc_msgSend_insertObject_inChildNodesAtIndex_(self, v9, node, v8);
 
   objc_sync_exit(self);
 }
 
-- (void)insertObject:(id)a3 inChildNodesAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inChildNodesAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (object)
   {
     objc_sync_enter(self);
     if (!self->_childNodes)
@@ -7350,27 +7350,27 @@ LABEL_11:
       self->_childNodes = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    if (objc_msgSend_canAddChildNode_(self, v7, a3, v8))
+    if (objc_msgSend_canAddChildNode_(self, v7, object, v8))
     {
-      if (objc_msgSend_parentNode(a3, v9, v10, v11) != self)
+      if (objc_msgSend_parentNode(object, v9, v10, v11) != self)
       {
-        v12 = a3;
+        objectCopy = object;
         v16 = objc_msgSend_world(self, v13, v14, v15);
-        v23 = objc_msgSend_world(a3, v17, v18, v19);
+        v23 = objc_msgSend_world(object, v17, v18, v19);
         if (v16 == v23)
         {
-          sub_1AF308AC8(a3, v20, v21, v22);
+          sub_1AF308AC8(object, v20, v21, v22);
         }
 
         else
         {
-          objc_msgSend_removeFromParentNode(a3, v20, v21, v22);
+          objc_msgSend_removeFromParentNode(object, v20, v21, v22);
         }
 
-        objc_msgSend__setParent_(a3, v24, self, v25);
-        if (*(a3 + 27))
+        objc_msgSend__setParent_(object, v24, self, v25);
+        if (*(object + 27))
         {
-          objc_msgSend__propagatePhysicsBodyCountChange_(self, v27, *(a3 + 27), v28);
+          objc_msgSend__propagatePhysicsBodyCountChange_(self, v27, *(object + 27), v28);
         }
 
         if (v16 != v23)
@@ -7378,19 +7378,19 @@ LABEL_11:
           world = self->_world;
           if (world)
           {
-            objc_msgSend_addWorldReference_(a3, v27, world, v28);
+            objc_msgSend_addWorldReference_(object, v27, world, v28);
           }
         }
 
-        objc_msgSend_insertObject_atIndex_(self->_childNodes, v27, a3, a4);
-        if ((*(a3 + 50) & 2) != 0)
+        objc_msgSend_insertObject_atIndex_(self->_childNodes, v27, object, index);
+        if ((*(object + 50) & 2) != 0)
         {
           objc_msgSend__setHasFocusableChild(self, v30, v31, v32);
         }
 
-        if (a4)
+        if (index)
         {
-          v33 = objc_msgSend_objectAtIndex_(self->_childNodes, v30, a4 - 1, v32);
+          v33 = objc_msgSend_objectAtIndex_(self->_childNodes, v30, index - 1, v32);
         }
 
         else
@@ -7404,12 +7404,12 @@ LABEL_11:
         v36[3] = &unk_1E7A7E310;
         v36[4] = v33;
         v36[5] = self;
-        v36[6] = a3;
-        v36[7] = a4;
+        v36[6] = object;
+        v36[7] = index;
         objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v30, self, v36);
         if ((*(self + 48) & 4) != 0)
         {
-          objc_msgSend__setPausedOrPausedByInheritance_(a3, v34, 1, v35);
+          objc_msgSend__setPausedOrPausedByInheritance_(object, v34, 1, v35);
         }
       }
     }
@@ -7427,30 +7427,30 @@ LABEL_11:
   }
 }
 
-- (void)replaceObjectInChildNodesAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInChildNodesAtIndex:(unint64_t)index withObject:(id)object
 {
   objc_sync_enter(self);
-  if (a4)
+  if (object)
   {
-    if (objc_msgSend_canAddChildNode_(self, v7, a4, v8))
+    if (objc_msgSend_canAddChildNode_(self, v7, object, v8))
     {
-      v11 = objc_msgSend_objectAtIndex_(self->_childNodes, v9, a3, v10);
+      v11 = objc_msgSend_objectAtIndex_(self->_childNodes, v9, index, v10);
       if (v11)
       {
-        v12 = a4;
-        objc_msgSend_removeFromParentNode(a4, v13, v14, v15);
+        objectCopy = object;
+        objc_msgSend_removeFromParentNode(object, v13, v14, v15);
         objc_msgSend__setParent_(v11, v16, 0, v17);
-        objc_msgSend__setParent_(a4, v18, self, v19);
-        objc_msgSend_addWorldReference_(a4, v20, self->_world, v21);
+        objc_msgSend__setParent_(object, v18, self, v19);
+        objc_msgSend_addWorldReference_(object, v20, self->_world, v21);
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
         v26[2] = sub_1AF30900C;
         v26[3] = &unk_1E7A7E3B0;
         v26[4] = v11;
-        v26[5] = a4;
+        v26[5] = object;
         v26[6] = self;
         objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v22, self, v26);
-        objc_msgSend_replaceObjectAtIndex_withObject_(self->_childNodes, v23, a3, a4);
+        objc_msgSend_replaceObjectAtIndex_withObject_(self->_childNodes, v23, index, object);
       }
 
       else
@@ -7475,7 +7475,7 @@ LABEL_11:
 
   else
   {
-    objc_msgSend_removeObjectFromChildNodesAtIndex_(self, v7, a3, v8);
+    objc_msgSend_removeObjectFromChildNodesAtIndex_(self, v7, index, v8);
   }
 
   objc_sync_exit(self);
@@ -7505,16 +7505,16 @@ LABEL_11:
   else if (self->_parent)
   {
     world = self->_world;
-    v5 = self;
+    selfCopy = self;
     sub_1AF308AC8(self, v6, v7, v8);
     objc_msgSend_removeWorldReference_(self, v9, world, v10);
   }
 }
 
-- (unint64_t)indexOfChildNode:(id)a3
+- (unint64_t)indexOfChildNode:(id)node
 {
   childNodes = self->_childNodes;
-  v6 = objc_msgSend_count(childNodes, a2, a3, v3);
+  v6 = objc_msgSend_count(childNodes, a2, node, v3);
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -7522,7 +7522,7 @@ LABEL_11:
 
   v9 = v6;
   v10 = 0;
-  while (objc_msgSend_objectAtIndex_(childNodes, v7, v10, v8) != a3)
+  while (objc_msgSend_objectAtIndex_(childNodes, v7, v10, v8) != node)
   {
     if (v9 == ++v10)
     {
@@ -7567,10 +7567,10 @@ LABEL_11:
   }
 }
 
-- (BOOL)hasAncestor:(id)a3
+- (BOOL)hasAncestor:(id)ancestor
 {
-  v5 = objc_msgSend_parentNode(self, a2, a3, v3);
-  for (i = v5 != 0; v5 != a3 && v5; i = v5 != 0)
+  v5 = objc_msgSend_parentNode(self, a2, ancestor, v3);
+  for (i = v5 != 0; v5 != ancestor && v5; i = v5 != 0)
   {
     v5 = objc_msgSend_parentNode(v5, v6, v7, v8);
   }
@@ -7578,13 +7578,13 @@ LABEL_11:
   return i;
 }
 
-- (void)replaceChildNode:(id)a3 with:(id)a4
+- (void)replaceChildNode:(id)node with:(id)with
 {
-  v6 = objc_msgSend_indexOfChildNode_(self, a2, a3, a4);
+  v6 = objc_msgSend_indexOfChildNode_(self, a2, node, with);
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    MEMORY[0x1EEE66B58](self, sel_replaceObjectInChildNodesAtIndex_withObject_, v6, a4);
+    MEMORY[0x1EEE66B58](self, sel_replaceObjectInChildNodesAtIndex_withObject_, v6, with);
   }
 }
 
@@ -7602,23 +7602,23 @@ LABEL_11:
   return objc_msgSend_activeState(v4, v5, v6, v7);
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = objc_msgSend_stateManager(self, a2, a3, v3);
+  v5 = objc_msgSend_stateManager(self, a2, state, v3);
 
-  objc_msgSend_setActiveState_(v5, v6, a3, v7);
+  objc_msgSend_setActiveState_(v5, v6, state, v7);
 }
 
-- (void)setStateNamed:(id)a3
+- (void)setStateNamed:(id)named
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3 && objc_msgSend_length(a3, a2, a3, v3))
+  if (named && objc_msgSend_length(named, a2, named, v3))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = objc_msgSend_states(self, a2, a3, v3, 0);
+    v6 = objc_msgSend_states(self, a2, named, v3, 0);
     v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v25, v29, 16);
     if (v8)
     {
@@ -7635,7 +7635,7 @@ LABEL_11:
 
           v15 = *(*(&v25 + 1) + 8 * i);
           v16 = objc_msgSend_name(v15, v9, v10, v11);
-          if (objc_msgSend_isEqualToString_(v16, v17, a3, v18))
+          if (objc_msgSend_isEqualToString_(v16, v17, named, v18))
           {
             v22 = objc_msgSend_stateManager(self, v9, v10, v11);
             objc_msgSend_setActiveState_(v22, v23, v15, v24);
@@ -7656,7 +7656,7 @@ LABEL_11:
 
   else
   {
-    v19 = objc_msgSend_stateManager(self, a2, a3, v3);
+    v19 = objc_msgSend_stateManager(self, a2, named, v3);
 
     objc_msgSend_setActiveState_(v19, v20, 0, v21);
   }
@@ -7666,7 +7666,7 @@ LABEL_11:
 {
   v4 = 0u;
   v5 = 0u;
-  if (objc_msgSend_getBoundingBoxMin_max_(a1, a2, &v4, &v5))
+  if (objc_msgSend_getBoundingBoxMin_max_(self, a2, &v4, &v5))
   {
     v2 = -1;
   }
@@ -7680,19 +7680,19 @@ LABEL_11:
   return result;
 }
 
-- (uint64_t)setBoundingBox:(float32x4_t)a3
+- (uint64_t)setBoundingBox:(float32x4_t)box
 {
   v6 = a2;
-  v7 = a3;
-  if (!VFXBoundingBoxIsNull(a2, a3))
+  boxCopy = box;
+  if (!VFXBoundingBoxIsNull(a2, box))
   {
-    return objc_msgSend_setBoundingBoxMin_max_(a1, v4, &v6, &v7);
+    return objc_msgSend_setBoundingBoxMin_max_(self, v4, &v6, &boxCopy);
   }
 
-  return objc_msgSend_setBoundingBoxMin_max_(a1, v4, 0, 0);
+  return objc_msgSend_setBoundingBoxMin_max_(self, v4, 0, 0);
 }
 
-- (BOOL)getBoundingBoxMin:(VFXNode *)self max:(SEL)a2
+- (BOOL)getBoundingBoxMin:(VFXNode *)self max:(SEL)max
 {
   v65 = *MEMORY[0x1E69E9840];
   if (!self->_node || (*(self + 49) & 0x10) != 0)
@@ -7708,7 +7708,7 @@ LABEL_11:
   v57.i64[0] = 0;
   if (*(self + 48))
   {
-    v9 = objc_msgSend_worldRef(self, a2, v2, v3);
+    v9 = objc_msgSend_worldRef(self, max, v2, v3);
     if (v9)
     {
       v10 = v9;
@@ -7764,7 +7764,7 @@ LABEL_15:
     return 1;
   }
 
-  v13 = objc_msgSend_model(self, a2, v2, v3);
+  v13 = objc_msgSend_model(self, max, v2, v3);
   if (v13 && objc_msgSend_getBoundingBoxMin_max_(v13, v14, v6, v5))
   {
     if (v6)
@@ -7888,7 +7888,7 @@ LABEL_15:
   return v12;
 }
 
-- (void)setBoundingBoxMin:(VFXNode *)self max:(SEL)a2
+- (void)setBoundingBoxMin:(VFXNode *)self max:(SEL)max
 {
   v5 = *self->_fixedBoundingBoxExtrema;
   if (v2 && (v6 = v3) != 0)
@@ -7928,15 +7928,15 @@ LABEL_15:
   }
 }
 
-- (BOOL)getFrustum:(id *)a3 withViewport:
+- (BOOL)getFrustum:(id *)frustum withViewport:
 {
   v60 = v4;
   v63 = v4;
-  if (objc_msgSend_isPresentationObject(self, a2, a3, v3))
+  if (objc_msgSend_isPresentationObject(self, a2, frustum, v3))
   {
     v10 = objc_msgSend_nodeRef(self, v7, v8, v9);
 
-    LOBYTE(v11) = sub_1AF27EE18(v10, a3, v60);
+    LOBYTE(v11) = sub_1AF27EE18(v10, frustum, v60);
   }
 
   else
@@ -8041,12 +8041,12 @@ LABEL_15:
       *&v55 = v44.f32[2] + vaddv_f32(*v44.f32);
       *v44.f32 = vrsqrte_f32(v55);
       *v44.f32 = vmul_f32(*v44.f32, vrsqrts_f32(v55, vmul_f32(*v44.f32, *v44.f32)));
-      *a3 = v48;
-      *(a3 + 1) = v51;
-      *(a3 + 2) = v53;
-      *(a3 + 3) = v54;
-      *(a3 + 4) = vmulq_n_f32(v46, vmul_f32(*v45.f32, vrsqrts_f32(v39.u32[0], vmul_f32(*v45.f32, *v45.f32))).f32[0]);
-      *(a3 + 5) = vmulq_n_f32(v42, vmul_f32(*v44.f32, vrsqrts_f32(v55, vmul_f32(*v44.f32, *v44.f32))).f32[0]);
+      *frustum = v48;
+      *(frustum + 1) = v51;
+      *(frustum + 2) = v53;
+      *(frustum + 3) = v54;
+      *(frustum + 4) = vmulq_n_f32(v46, vmul_f32(*v45.f32, vrsqrts_f32(v39.u32[0], vmul_f32(*v45.f32, *v45.f32))).f32[0]);
+      *(frustum + 5) = vmulq_n_f32(v42, vmul_f32(*v44.f32, vrsqrts_f32(v55, vmul_f32(*v44.f32, *v44.f32))).f32[0]);
       LOBYTE(v11) = 1;
     }
   }
@@ -8114,17 +8114,17 @@ LABEL_15:
   return v4;
 }
 
-- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)a3
+- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)level
 {
-  v4 = a3;
-  v6 = objc_msgSend_worldRef(self, a2, a3, v3);
+  levelCopy = level;
+  v6 = objc_msgSend_worldRef(self, a2, level, v3);
   v7 = v6;
   if (v6)
   {
     sub_1AF1CEA20(v6);
   }
 
-  v8 = sub_1AF1B8E1C(self->_node, v4);
+  v8 = sub_1AF1B8E1C(self->_node, levelCopy);
   v14 = objc_msgSend_nodeWithNodeRef_(VFXNode, v9, v8, v10);
   if (v8)
   {
@@ -8149,21 +8149,21 @@ LABEL_15:
   return v14;
 }
 
-- (void)_setPausedOrPausedByInheritance:(BOOL)a3
+- (void)_setPausedOrPausedByInheritance:(BOOL)inheritance
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = *(self + 48);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ inheritance) & 1) == 0)
   {
-    v4 = a3;
-    v6 = a3 ? 4 : 0;
+    inheritanceCopy = inheritance;
+    v6 = inheritance ? 4 : 0;
     *(self + 48) = v3 & 0xFB | v6;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = sub_1AF30A3CC;
     v24[3] = &unk_1E7A7E298;
     v24[4] = self;
-    v25 = a3;
+    inheritanceCopy2 = inheritance;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v24);
     v22 = 0u;
     v23 = 0u;
@@ -8187,7 +8187,7 @@ LABEL_15:
           v19 = *(*(&v20 + 1) + 8 * i);
           if ((objc_msgSend_isPaused(v19, v13, v14, v15) & 1) == 0)
           {
-            objc_msgSend__setPausedOrPausedByInheritance_(v19, v13, v4, v15);
+            objc_msgSend__setPausedOrPausedByInheritance_(v19, v13, inheritanceCopy, v15);
           }
         }
 
@@ -8199,15 +8199,15 @@ LABEL_15:
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v7 = *(self + 48);
-  if (((((v7 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 2) == 0) ^ paused) & 1) == 0)
   {
     v18 = v5;
     v19 = v4;
-    v8 = a3;
-    if (a3)
+    pausedCopy = paused;
+    if (paused)
     {
       v10 = 2;
     }
@@ -8218,14 +8218,14 @@ LABEL_15:
     }
 
     *(self + 48) = v7 & 0xFD | v10;
-    v11 = objc_msgSend_parentNode(self, a2, a3, v3, v18, v19);
-    v16 = objc_msgSend_isPausedOrPausedByInheritance(v11, v12, v13, v14) | v8;
+    v11 = objc_msgSend_parentNode(self, a2, paused, v3, v18, v19);
+    v16 = objc_msgSend_isPausedOrPausedByInheritance(v11, v12, v13, v14) | pausedCopy;
 
     objc_msgSend__setPausedOrPausedByInheritance_(self, v15, v16, v17);
   }
 }
 
-- (CGRect)_focusFrameInView:(id)a3
+- (CGRect)_focusFrameInView:(id)view
 {
   v38 = *MEMORY[0x1E69E9840];
   DWORD2(v36) = 0;
@@ -8261,7 +8261,7 @@ LABEL_15:
     v32 = v19;
     for (i = 0; i != 8; ++i)
     {
-      objc_msgSend_projectPoint_(a3, v14, v15, v16, *vaddq_f32(v31, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v34, COERCE_FLOAT(v37[i])), v33, *&v37[i], 1), v32, v37[i], 2)).i64, *&v31, *&v32, *&v33, *&v34);
+      objc_msgSend_projectPoint_(view, v14, v15, v16, *vaddq_f32(v31, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v34, COERCE_FLOAT(v37[i])), v33, *&v37[i], 1), v32, v37[i], 2)).i64, *&v31, *&v32, *&v33, *&v34);
       v37[i] = v22;
     }
 
@@ -8302,27 +8302,27 @@ LABEL_15:
   return result;
 }
 
-- (void)_appendFocusableNodesInRect:(CGRect)a3 ofView:(id)a4 toFocusItems:(id)a5
+- (void)_appendFocusableNodesInRect:(CGRect)rect ofView:(id)view toFocusItems:(id)items
 {
   v28 = *MEMORY[0x1E69E9840];
   if ((*(self + 50) & 2) != 0)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    if (objc_msgSend_isFocusInteractionEnabled(self, a2, a4, a5))
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    if (objc_msgSend_isFocusInteractionEnabled(self, a2, view, items))
     {
       if ((objc_msgSend__isEffectivelyHidden(self, v12, v13, v14) & 1) == 0)
       {
-        objc_msgSend__focusFrameInView_(self, v12, a4, v15);
+        objc_msgSend__focusFrameInView_(self, v12, view, v15);
         v30.origin.x = x;
         v30.origin.y = y;
         v30.size.width = width;
         v30.size.height = height;
         if (CGRectIntersectsRect(v29, v30))
         {
-          objc_msgSend_addObject_(a5, v12, self, v16);
+          objc_msgSend_addObject_(items, v12, self, v16);
         }
       }
     }
@@ -8347,7 +8347,7 @@ LABEL_15:
             objc_enumerationMutation(childNodes);
           }
 
-          objc_msgSend__appendFocusableNodesInRect_ofView_toFocusItems_(*(*(&v23 + 1) + 8 * v22++), v19, a4, a5, x, y, width, height);
+          objc_msgSend__appendFocusableNodesInRect_ofView_toFocusItems_(*(*(&v23 + 1) + 8 * v22++), v19, view, items, x, y, width, height);
         }
 
         while (v20 != v22);
@@ -8427,22 +8427,22 @@ LABEL_15:
   }
 }
 
-- (void)setFocusBehavior:(int64_t)a3
+- (void)setFocusBehavior:(int64_t)behavior
 {
   v4 = *(self + 49);
-  if (((v4 >> 7) & 3) != a3)
+  if (((v4 >> 7) & 3) != behavior)
   {
-    v5 = v4 & 0xFE7F | ((a3 & 3) << 7);
+    v5 = v4 & 0xFE7F | ((behavior & 3) << 7);
     *(self + 49) = v5;
-    if ((a3 & 3) != 0)
+    if ((behavior & 3) != 0)
     {
       *(self + 50) = HIBYTE(v5) | 2;
-      objc_msgSend__setHasFocusableChild(self->_parent, a2, a3, v3);
+      objc_msgSend__setHasFocusableChild(self->_parent, a2, behavior, v3);
     }
 
     else
     {
-      objc_msgSend__updateFocusableCache(self, a2, a3, v3);
+      objc_msgSend__updateFocusableCache(self, a2, behavior, v3);
     }
   }
 }
@@ -8467,11 +8467,11 @@ LABEL_15:
   return v7;
 }
 
-- (void)setConstraints:(id)a3
+- (void)setConstraints:(id)constraints
 {
   v33 = *MEMORY[0x1E69E9840];
   ComponentWithType = objc_msgSend__findComponentWithType_(self, a2, 6, v3);
-  if (ComponentWithType != a3)
+  if (ComponentWithType != constraints)
   {
     v10 = ComponentWithType;
     if (ComponentWithType)
@@ -8511,9 +8511,9 @@ LABEL_15:
       objc_msgSend__removeComponentWithType_(self, v7, 6, v9);
     }
 
-    if (a3)
+    if (constraints)
     {
-      v15 = objc_msgSend_mutableCopy(a3, v7, v8, v9);
+      v15 = objc_msgSend_mutableCopy(constraints, v7, v8, v9);
       objc_msgSend__assignComponent_toContainerWithType_(self, v16, v15, 6);
       if (self->_world)
       {
@@ -8521,7 +8521,7 @@ LABEL_15:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v7, &v23, v31, 16);
+        v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(constraints, v7, &v23, v31, 16);
         if (v17)
         {
           v19 = v17;
@@ -8533,14 +8533,14 @@ LABEL_15:
             {
               if (*v24 != v20)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(constraints);
               }
 
               objc_msgSend_addWorldReference_(*(*(&v23 + 1) + 8 * v21++), v7, self->_world, v18);
             }
 
             while (v19 != v21);
-            v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v7, &v23, v31, 16);
+            v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(constraints, v7, &v23, v31, 16);
           }
 
           while (v19);
@@ -8552,16 +8552,16 @@ LABEL_15:
     v22[1] = 3221225472;
     v22[2] = sub_1AF30ACCC;
     v22[3] = &unk_1E7A7E220;
-    v22[4] = a3;
+    v22[4] = constraints;
     v22[5] = self;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v22);
   }
 }
 
-- (void)setPhysicsBody:(id)a3
+- (void)setPhysicsBody:(id)body
 {
-  v6 = objc_msgSend_physicsBody(self, a2, a3, v3);
-  if (v6 != a3)
+  v6 = objc_msgSend_physicsBody(self, a2, body, v3);
+  if (v6 != body)
   {
     v10 = v6;
     if (v6)
@@ -8582,7 +8582,7 @@ LABEL_15:
       v33[1] = 3221225472;
       v33[2] = sub_1AF30AFD4;
       v33[3] = &unk_1E7A7E578;
-      v38 = self;
+      selfCopy = self;
       v34 = v20;
       v35 = v21;
       v36 = v22;
@@ -8591,21 +8591,21 @@ LABEL_15:
       v10 = 0xFFFFFFFFLL;
     }
 
-    if (a3)
+    if (body)
     {
       v10 = (v10 + 1);
-      if (objc_msgSend__owner(a3, v7, v8, v9))
+      if (objc_msgSend__owner(body, v7, v8, v9))
       {
         v26 = sub_1AF0D5194();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          sub_1AFDF7860(a3, self, v26, v27);
+          sub_1AFDF7860(body, self, v26, v27);
         }
       }
 
-      objc_msgSend__assignComponent_toContainerWithType_(self, v25, a3, 7);
-      objc_msgSend__setOwner_(a3, v28, self, v29);
-      objc_msgSend_resetTransform(a3, v30, v31, v32);
+      objc_msgSend__assignComponent_toContainerWithType_(self, v25, body, 7);
+      objc_msgSend__setOwner_(body, v28, self, v29);
+      objc_msgSend_resetTransform(body, v30, v31, v32);
     }
 
     if (v10)
@@ -8627,17 +8627,17 @@ LABEL_15:
   return result;
 }
 
-- (void)setForceField:(id)a3
+- (void)setForceField:(id)field
 {
-  if (objc_msgSend_forceField(self, a2, a3, v3) != a3)
+  if (objc_msgSend_forceField(self, a2, field, v3) != field)
   {
-    objc_msgSend__setComponent_withType_(self, v6, a3, 8);
+    objc_msgSend__setComponent_withType_(self, v6, field, 8);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = sub_1AF30B0D8;
     v8[3] = &unk_1E7A7E220;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = field;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v8);
   }
 }
@@ -8674,15 +8674,15 @@ LABEL_5:
   return v15;
 }
 
-- (void)addAudioPlayer:(id)a3
+- (void)addAudioPlayer:(id)player
 {
-  if (a3)
+  if (player)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = sub_1AF30B238;
     v4[3] = &unk_1E7A7E220;
-    v4[4] = a3;
+    v4[4] = player;
     v4[5] = self;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v4);
   }
@@ -8707,14 +8707,14 @@ LABEL_5:
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)removeAudioPlayer:(id)a3
+- (void)removeAudioPlayer:(id)player
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF30B3C0;
   v3[3] = &unk_1E7A7E220;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = player;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
@@ -8725,39 +8725,39 @@ LABEL_5:
   return objc_msgSend_count(v4, v5, v6, v7);
 }
 
-- (id)objectInAudioPlayersAtIndex:(unint64_t)a3
+- (id)objectInAudioPlayersAtIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_audioPlayers(self, a2, a3, v3);
+  v5 = objc_msgSend_audioPlayers(self, a2, index, v3);
 
-  return objc_msgSend_objectAtIndex_(v5, v6, a3, v7);
+  return objc_msgSend_objectAtIndex_(v5, v6, index, v7);
 }
 
-- (void)insertObject:(id)a3 inAudioPlayersAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inAudioPlayersAtIndex:(unint64_t)index
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_1AF30B4E8;
   v4[3] = &unk_1E7A7E2E8;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = object;
+  v4[6] = index;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v4);
 }
 
-- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)a3
+- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)index
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF30B5A0;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = index;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)index withObject:(id)object
 {
-  if (!a4)
+  if (!object)
   {
     v7 = sub_1AF0D5194();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -8771,23 +8771,23 @@ LABEL_5:
   v14[2] = sub_1AF30B69C;
   v14[3] = &unk_1E7A7E2E8;
   v14[4] = self;
-  v14[5] = a4;
-  v14[6] = a3;
+  v14[5] = object;
+  v14[6] = index;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v14);
 }
 
-- (void)_customEncodingOfVFXNode:(id)a3 usePresentationObject:(BOOL)a4
+- (void)_customEncodingOfVFXNode:(id)node usePresentationObject:(BOOL)object
 {
-  v4 = a4;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = a3;
+    nodeCopy = node;
   }
 
   else
   {
-    v10 = 0;
+    nodeCopy = 0;
   }
 
   if ((*(self + 48) & 8) == 0)
@@ -8798,7 +8798,7 @@ LABEL_5:
   if ((*(self + 50) & 8) != 0)
   {
     v11 = objc_msgSend_editorLocked(self, v7, v8, v9);
-    objc_msgSend_encodeBool_forKey_(a3, v12, v11, @"locked");
+    objc_msgSend_encodeBool_forKey_(node, v12, v11, @"locked");
   }
 
   if ((objc_msgSend__isAReference(self, v7, v8, v9) & 1) == 0)
@@ -8807,144 +8807,144 @@ LABEL_5:
     {
       v19 = objc_msgSend_light(self, v16, v17, v18);
       v22 = v19;
-      if (v4)
+      if (objectCopy)
       {
         v22 = objc_msgSend_presentationLight(v19, v20, v19, v21);
       }
 
-      objc_msgSend_encodeObject_forKey_(a3, v20, v22, @"light");
+      objc_msgSend_encodeObject_forKey_(node, v20, v22, @"light");
     }
 
     if (objc_msgSend_model(self, v16, v17, v18))
     {
       v26 = objc_msgSend_model(self, v23, v24, v25);
       v29 = v26;
-      if (v4)
+      if (objectCopy)
       {
         v29 = objc_msgSend_presentationModel(v26, v27, v26, v28);
       }
 
-      objc_msgSend_encodeObject_forKey_(a3, v27, v29, @"model");
+      objc_msgSend_encodeObject_forKey_(node, v27, v29, @"model");
     }
 
     if (objc_msgSend_camera(self, v23, v24, v25))
     {
       v33 = objc_msgSend_camera(self, v30, v31, v32);
       v36 = v33;
-      if (v4)
+      if (objectCopy)
       {
         v36 = objc_msgSend_presentationCamera(v33, v34, v33, v35);
       }
 
-      objc_msgSend_encodeObject_forKey_(a3, v34, v36, @"camera");
+      objc_msgSend_encodeObject_forKey_(node, v34, v36, @"camera");
     }
 
     if (objc_msgSend_skinner(self, v30, v31, v32))
     {
       v40 = objc_msgSend_skinner(self, v37, v38, v39);
-      objc_msgSend_encodeObject_forKey_(a3, v41, v40, @"skinner");
+      objc_msgSend_encodeObject_forKey_(node, v41, v40, @"skinner");
     }
 
     if (objc_msgSend_morpher(self, v37, v38, v39))
     {
-      if (v10 && (v45 = objc_msgSend_options(v10, v42, v43, v44), v48 = objc_msgSend_objectForKeyedSubscript_(v45, v46, @"VFXWorldExportCompressMorphTargets", v47), objc_msgSend_BOOLValue(v48, v49, v50, v51)) && sub_1AF2FF684(a3, self, v43, v44))
+      if (nodeCopy && (v45 = objc_msgSend_options(nodeCopy, v42, v43, v44), v48 = objc_msgSend_objectForKeyedSubscript_(v45, v46, @"VFXWorldExportCompressMorphTargets", v47), objc_msgSend_BOOLValue(v48, v49, v50, v51)) && sub_1AF2FF684(node, self, v43, v44))
       {
-        objc_msgSend_setSkipMorphTargets_(v10, v42, 1, v44);
+        objc_msgSend_setSkipMorphTargets_(nodeCopy, v42, 1, v44);
         v55 = objc_msgSend_morpher(self, v52, v53, v54);
-        objc_msgSend_encodeObject_forKey_(a3, v56, v55, @"morpher");
-        objc_msgSend_setSkipMorphTargets_(v10, v57, 0, v58);
+        objc_msgSend_encodeObject_forKey_(node, v56, v55, @"morpher");
+        objc_msgSend_setSkipMorphTargets_(nodeCopy, v57, 0, v58);
       }
 
       else
       {
         v59 = objc_msgSend_morpher(self, v42, v43, v44);
-        objc_msgSend_encodeObject_forKey_(a3, v60, v59, @"morpher");
+        objc_msgSend_encodeObject_forKey_(node, v60, v59, @"morpher");
       }
     }
 
     v61 = objc_msgSend_deformers(self, v42, v43, v44);
     if (v61)
     {
-      objc_msgSend_encodeObject_forKey_(a3, v62, v61, @"deformers");
+      objc_msgSend_encodeObject_forKey_(node, v62, v61, @"deformers");
     }
 
     if (objc_msgSend_constraints(self, v62, v63, v64))
     {
       v68 = objc_msgSend_constraints(self, v65, v66, v67);
-      objc_msgSend_encodeObject_forKey_(a3, v69, v68, @"constraints");
+      objc_msgSend_encodeObject_forKey_(node, v69, v68, @"constraints");
     }
 
     if (objc_msgSend_physicsBody(self, v65, v66, v67))
     {
       v73 = objc_msgSend_physicsBody(self, v70, v71, v72);
-      objc_msgSend_encodeObject_forKey_(a3, v74, v73, @"physicsBody");
+      objc_msgSend_encodeObject_forKey_(node, v74, v73, @"physicsBody");
     }
 
     if (objc_msgSend_forceField(self, v70, v71, v72))
     {
       v78 = objc_msgSend_forceField(self, v75, v76, v77);
-      objc_msgSend_encodeObject_forKey_(a3, v79, v78, @"forceField");
+      objc_msgSend_encodeObject_forKey_(node, v79, v78, @"forceField");
     }
 
     if (objc_msgSend_behaviorGraph(self, v75, v76, v77))
     {
       v83 = objc_msgSend_behaviorGraph(self, v80, v81, v82);
-      objc_msgSend_encodeObject_forKey_(a3, v84, v83, @"behaviorGraph");
+      objc_msgSend_encodeObject_forKey_(node, v84, v83, @"behaviorGraph");
     }
 
     if (objc_msgSend_particleEmitter(self, v80, v81, v82))
     {
       v88 = objc_msgSend_particleEmitter(self, v85, v86, v87);
-      objc_msgSend_encodeObject_forKey_(a3, v89, v88, @"emitter");
+      objc_msgSend_encodeObject_forKey_(node, v89, v88, @"emitter");
     }
 
     if (objc_msgSend_particleCollider(self, v85, v86, v87))
     {
       v93 = objc_msgSend_particleCollider(self, v90, v91, v92);
-      objc_msgSend_encodeObject_forKey_(a3, v94, v93, @"collider");
+      objc_msgSend_encodeObject_forKey_(node, v94, v93, @"collider");
     }
 
     if (objc_msgSend_stateManager(self, v90, v91, v92))
     {
       v98 = objc_msgSend_stateManager(self, v95, v96, v97);
-      objc_msgSend_encodeObject_forKey_(a3, v99, v98, @"stateManager");
+      objc_msgSend_encodeObject_forKey_(node, v99, v98, @"stateManager");
     }
 
     if (objc_msgSend_prefab(self, v95, v96, v97))
     {
       v103 = objc_msgSend_prefab(self, v100, v101, v102);
-      objc_msgSend_encodeObject_forKey_(a3, v104, v103, @"prefab");
+      objc_msgSend_encodeObject_forKey_(node, v104, v103, @"prefab");
     }
 
     v105 = *self->_fixedBoundingBoxExtrema;
     if (v105)
     {
       v106 = objc_msgSend_valueWithVFXFloat3_(MEMORY[0x1E696B098], v100, v101, v102, *v105);
-      objc_msgSend_encodeObject_forKey_(a3, v107, v106, @"fixedBoundingBoxExtrema[0]");
+      objc_msgSend_encodeObject_forKey_(node, v107, v106, @"fixedBoundingBoxExtrema[0]");
       v111 = objc_msgSend_valueWithVFXFloat3_(MEMORY[0x1E696B098], v108, v109, v110, *(*self->_fixedBoundingBoxExtrema + 16));
-      objc_msgSend_encodeObject_forKey_(a3, v112, v111, @"fixedBoundingBoxExtrema[1]");
+      objc_msgSend_encodeObject_forKey_(node, v112, v111, @"fixedBoundingBoxExtrema[1]");
     }
 
-    objc_msgSend_encodeBool_forKey_(a3, v100, (*(self + 48) >> 1) & 1, @"paused");
+    objc_msgSend_encodeBool_forKey_(node, v100, (*(self + 48) >> 1) & 1, @"paused");
     v115 = (*(self + 49) >> 7) & 3;
     if (v115)
     {
-      objc_msgSend_encodeInt_forKey_(a3, v113, v115, @"focusBehavior");
+      objc_msgSend_encodeInt_forKey_(node, v113, v115, @"focusBehavior");
     }
 
     if ((*(self + 48) & 0x20) != 0)
     {
-      v116 = self;
-      if (v4)
+      selfCopy = self;
+      if (objectCopy)
       {
-        v116 = objc_msgSend_presentationNode(self, v113, v115, v114);
+        selfCopy = objc_msgSend_presentationNode(self, v113, v115, v114);
       }
 
-      v117 = objc_msgSend_valueForKey_(v116, v113, @"kPivotKey", v114);
+      v117 = objc_msgSend_valueForKey_(selfCopy, v113, @"kPivotKey", v114);
       if (v117)
       {
         objc_msgSend_VFXMatrix4Value(v117, v118, v119, v120);
-        sub_1AF371B50(a3, @"pivot", v121, v122, v123, v124);
+        sub_1AF371B50(node, @"pivot", v121, v122, v123, v124);
       }
     }
   }
@@ -8956,15 +8956,15 @@ LABEL_5:
     objc_msgSend_removeObjectForKey_(v131, v132, @"kPivotKey", v133);
     if (objc_msgSend_count(v131, v134, v135, v136))
     {
-      objc_msgSend_encodeObject_forKey_(a3, v137, v131, @"clientAttributes");
+      objc_msgSend_encodeObject_forKey_(node, v137, v131, @"clientAttributes");
     }
   }
 
   os_unfair_lock_unlock(&self->_valueForKeyLock);
   v144 = 0;
-  if (objc_msgSend__isAReference(self, v138, v139, v140) && v10)
+  if (objc_msgSend__isAReference(self, v138, v139, v140) && nodeCopy)
   {
-    v145 = objc_msgSend_options(v10, v141, v142, v143);
+    v145 = objc_msgSend_options(nodeCopy, v141, v142, v143);
     v148 = objc_msgSend_objectForKeyedSubscript_(v145, v146, @"VFXWorldExportEmbedReferences", v147);
     v144 = objc_msgSend_BOOLValue(v148, v149, v150, v151);
   }
@@ -8972,23 +8972,23 @@ LABEL_5:
   if (objc_msgSend_childNodes(self, v141, v142, v143) && v144 & 1 | ((objc_msgSend__isAReference(self, v152, v153, v154) & 1) == 0))
   {
     v158 = objc_msgSend_childNodes(self, v155, v156, v157);
-    v162 = objc_msgSend_options(v10, v159, v160, v161);
+    v162 = objc_msgSend_options(nodeCopy, v159, v160, v161);
     v165 = objc_msgSend_objectForKeyedSubscript_(v162, v163, @"VFXWorldExportOptimize", v164);
     if (objc_msgSend_BOOLValue(v165, v166, v167, v168))
     {
       v158 = objc_msgSend_VFX_compactMapObjectsUsingBlock_(v158, v169, &unk_1F24EC178, v170);
     }
 
-    objc_msgSend_encodeObject_forKey_(a3, v169, v158, @"childNodes");
+    objc_msgSend_encodeObject_forKey_(node, v169, v158, @"childNodes");
   }
 }
 
-- (void)_customDecodingOfVFXNode:(id)a3
+- (void)_customDecodingOfVFXNode:(id)node
 {
   v209 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_containsValueForKey_(a3, a2, @"paused", v3))
+  if (objc_msgSend_containsValueForKey_(node, a2, @"paused", v3))
   {
-    if (objc_msgSend_decodeBoolForKey_(a3, v6, @"paused", v7))
+    if (objc_msgSend_decodeBoolForKey_(node, v6, @"paused", v7))
     {
       v8 = 2;
     }
@@ -9001,23 +9001,23 @@ LABEL_5:
     *(self + 48) = *(self + 48) & 0xFD | v8;
   }
 
-  v9 = objc_msgSend_decodeIntForKey_(a3, v6, @"focusBehavior", v7);
+  v9 = objc_msgSend_decodeIntForKey_(node, v6, @"focusBehavior", v7);
   objc_msgSend_setFocusBehavior_(self, v10, v9, v11);
-  v14 = objc_msgSend_decodeBoolForKey_(a3, v12, @"locked", v13);
+  v14 = objc_msgSend_decodeBoolForKey_(node, v12, @"locked", v13);
   objc_msgSend_setEditorLocked_(self, v15, v14, v16);
   *self->_anon_40 = xmmword_1AFE20150;
   *&self->_anon_40[16] = xmmword_1AFE20160;
   *&self->_anon_40[32] = xmmword_1AFE20180;
   *&self->_anon_40[48] = xmmword_1AFE201A0;
   *(self + 48) |= 0x10u;
-  if (objc_msgSend_containsValueForKey_(a3, v17, @"fixedBoundingBoxExtrema[0]", v18))
+  if (objc_msgSend_containsValueForKey_(node, v17, @"fixedBoundingBoxExtrema[0]", v18))
   {
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v20, v19, @"fixedBoundingBoxExtrema[0]");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(node, v20, v19, @"fixedBoundingBoxExtrema[0]");
     objc_msgSend_VFXFloat3Value(v21, v22, v23, v24);
     v207 = v25;
     v26 = objc_opt_class();
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v27, v26, @"fixedBoundingBoxExtrema[1]");
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(node, v27, v26, @"fixedBoundingBoxExtrema[1]");
     objc_msgSend_VFXFloat3Value(v28, v29, v30, v31);
     v208 = v32;
     objc_msgSend_setBoundingBoxMin_max_(self, v33, &v207, &v208);
@@ -9025,9 +9025,9 @@ LABEL_5:
 
   v34 = objc_opt_class();
   v35 = objc_opt_class();
-  objc_msgSend_vfx_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(a3, v36, v34, v35, @"whatever");
+  objc_msgSend_vfx_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(node, v36, v34, v35, @"whatever");
   v37 = sub_1AF37287C();
-  v39 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v38, v37, @"clientAttributes");
+  v39 = objc_msgSend_decodeObjectOfClasses_forKey_(node, v38, v37, @"clientAttributes");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -9035,55 +9035,55 @@ LABEL_5:
     objc_msgSend__setAttributes_(self, v44, v43, v45);
   }
 
-  if (objc_msgSend_containsValueForKey_(a3, v40, @"pivot", v42))
+  if (objc_msgSend_containsValueForKey_(node, v40, @"pivot", v42))
   {
-    *&v46 = sub_1AF371C4C(a3, @"pivot").n128_u64[0];
+    *&v46 = sub_1AF371C4C(node, @"pivot").n128_u64[0];
     objc_msgSend_setPivot_(self, v47, v48, v49, v46);
   }
 
   v50 = objc_opt_class();
-  v52 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v51, v50, @"light");
+  v52 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v51, v50, @"light");
   objc_msgSend_setLight_(self, v53, v52, v54);
   v55 = objc_opt_class();
-  v57 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v56, v55, @"model");
+  v57 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v56, v55, @"model");
   objc_msgSend_setModel_(self, v58, v57, v59);
   v60 = objc_opt_class();
-  v62 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v61, v60, @"camera");
+  v62 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v61, v60, @"camera");
   objc_msgSend_setCamera_(self, v63, v62, v64);
   v65 = objc_opt_class();
-  v67 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v66, v65, @"skinner");
+  v67 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v66, v65, @"skinner");
   objc_msgSend_setSkinner_(self, v68, v67, v69);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v70 = sub_1AF2FFDB4(a3, self);
-    objc_msgSend_setAllTargetsFromAnimCodec_(a3, v71, v70, v72);
+    v70 = sub_1AF2FFDB4(node, self);
+    objc_msgSend_setAllTargetsFromAnimCodec_(node, v71, v70, v72);
     v73 = objc_opt_class();
-    v75 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v74, v73, @"morpher");
+    v75 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v74, v73, @"morpher");
     objc_msgSend_setMorpher_(self, v76, v75, v77);
-    objc_msgSend_setAllTargetsFromAnimCodec_(a3, v78, 0, v79);
+    objc_msgSend_setAllTargetsFromAnimCodec_(node, v78, 0, v79);
   }
 
   else
   {
     v80 = objc_opt_class();
-    v82 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v81, v80, @"morpher");
+    v82 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v81, v80, @"morpher");
     objc_msgSend_setMorpher_(self, v83, v82, v84);
   }
 
   v85 = objc_opt_class();
-  v87 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v86, v85, @"deformers");
+  v87 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(node, v86, v85, @"deformers");
   objc_msgSend_setDeformers_(self, v88, v87, v89);
   v90 = objc_opt_class();
-  v92 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v91, v90, @"constraints");
+  v92 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(node, v91, v90, @"constraints");
   objc_msgSend_setConstraints_(self, v93, v92, v94);
   v95 = objc_opt_class();
-  v97 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v96, v95, @"forceField");
+  v97 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(node, v96, v95, @"forceField");
   objc_msgSend_setForceField_(self, v98, v97, v99);
-  if (objc_msgSend_containsValueForKey_(a3, v100, @"effect", v101))
+  if (objc_msgSend_containsValueForKey_(node, v100, @"effect", v101))
   {
     v102 = objc_opt_class();
-    v104 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v103, v102, @"effect");
+    v104 = objc_msgSend_decodeObjectOfClass_forKey_(node, v103, v102, @"effect");
     v105 = [VFXBehaviorGraph alloc];
     v109 = objc_msgSend_tag(v104, v106, v107, v108);
     v112 = objc_msgSend_initWithTag_(v105, v110, v109, v111);
@@ -9097,12 +9097,12 @@ LABEL_5:
   else
   {
     v125 = objc_opt_class();
-    v127 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v126, v125, @"behaviorGraph");
+    v127 = objc_msgSend_decodeObjectOfClass_forKey_(node, v126, v125, @"behaviorGraph");
     objc_msgSend_setBehaviorGraph_(self, v128, v127, v129);
     v130 = objc_opt_class();
-    v132 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v131, v130, @"emitter");
+    v132 = objc_msgSend_decodeObjectOfClass_forKey_(node, v131, v130, @"emitter");
     v133 = objc_opt_class();
-    v135 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v134, v133, @"collider");
+    v135 = objc_msgSend_decodeObjectOfClass_forKey_(node, v134, v133, @"collider");
     if (objc_msgSend_behaviorGraph(self, v136, v137, v138))
     {
       if (v132)
@@ -9147,17 +9147,17 @@ LABEL_5:
   }
 
   v182 = objc_opt_class();
-  v184 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v183, v182, @"stateManager");
+  v184 = objc_msgSend_decodeObjectOfClass_forKey_(node, v183, v182, @"stateManager");
   objc_msgSend_setStateManager_(self, v185, v184, v186);
   v187 = objc_opt_class();
-  v189 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v188, v187, @"prefab");
+  v189 = objc_msgSend_decodeObjectOfClass_forKey_(node, v188, v187, @"prefab");
   if (v189)
   {
     objc_msgSend_setPrefab_(self, v190, v189, v191);
   }
 
   v192 = objc_opt_class();
-  v194 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v193, v192, @"childNodes");
+  v194 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(node, v193, v192, @"childNodes");
   v202 = 0u;
   v203 = 0u;
   v204 = 0u;
@@ -9186,9 +9186,9 @@ LABEL_5:
   }
 }
 
-- (void)_didDecodeVFXNode:(id)a3
+- (void)_didDecodeVFXNode:(id)node
 {
-  if (!objc_msgSend_behaviorGraph(self, a2, a3, v3))
+  if (!objc_msgSend_behaviorGraph(self, a2, node, v3))
   {
     v8 = objc_msgSend_particleEmitter(self, v5, v6, v7);
     v12 = objc_msgSend_tag(v8, v9, v10, v11);
@@ -9203,9 +9203,9 @@ LABEL_5:
   }
 }
 
-- (void)_encodeNodePropertiesWithCoder:(id)a3
+- (void)_encodeNodePropertiesWithCoder:(id)coder
 {
-  sub_1AF371A8C(a3, @"position", *self->_position);
+  sub_1AF371A8C(coder, @"position", *self->_position);
   v8 = (*(self + 49) >> 2) & 3;
   if (v8 > 1)
   {
@@ -9222,7 +9222,7 @@ LABEL_5:
   {
     if (!v8)
     {
-      sub_1AF371A8C(a3, @"eulerAngles", *self->_anon_90);
+      sub_1AF371A8C(coder, @"eulerAngles", *self->_anon_90);
       goto LABEL_8;
     }
 
@@ -9230,59 +9230,59 @@ LABEL_5:
     v10 = @"rotation";
   }
 
-  sub_1AF371AF4(a3, v10, v9);
+  sub_1AF371AF4(coder, v10, v9);
 LABEL_8:
   if ((*(self + 49) & 0xC) != 4)
   {
     objc_msgSend_rotation(self, v5, v6, v7);
-    sub_1AF371AF4(a3, @"rotation", v11);
+    sub_1AF371AF4(coder, @"rotation", v11);
   }
 
-  sub_1AF371A8C(a3, @"scale", *self->_scale);
+  sub_1AF371A8C(coder, @"scale", *self->_scale);
   *&v12 = self->_opacity;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"opacity", v14, v12);
-  objc_msgSend_encodeInteger_forKey_(a3, v15, self->_categoryBitMask, @"categoryBitMask");
-  objc_msgSend_encodeInteger_forKey_(a3, v16, self->_renderingOrder, @"renderingOrder");
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"opacity", v14, v12);
+  objc_msgSend_encodeInteger_forKey_(coder, v15, self->_categoryBitMask, @"categoryBitMask");
+  objc_msgSend_encodeInteger_forKey_(coder, v16, self->_renderingOrder, @"renderingOrder");
   name = self->_name;
   if (name)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v17, name, @"name");
+    objc_msgSend_encodeObject_forKey_(coder, v17, name, @"name");
   }
 
-  objc_msgSend_encodeBool_forKey_(a3, v17, (*(self + 49) >> 4) & 1, @"hidden");
-  objc_msgSend_encodeBool_forKey_(a3, v19, (*(self + 49) >> 5) & 1, @"castsShadow");
-  objc_msgSend_encodeBool_forKey_(a3, v20, (*(self + 49) >> 6) & 1, @"depthPrePass");
-  objc_msgSend_encodeBool_forKey_(a3, v21, *(self + 49) & 1, @"isEyesightFrame");
+  objc_msgSend_encodeBool_forKey_(coder, v17, (*(self + 49) >> 4) & 1, @"hidden");
+  objc_msgSend_encodeBool_forKey_(coder, v19, (*(self + 49) >> 5) & 1, @"castsShadow");
+  objc_msgSend_encodeBool_forKey_(coder, v20, (*(self + 49) >> 6) & 1, @"depthPrePass");
+  objc_msgSend_encodeBool_forKey_(coder, v21, *(self + 49) & 1, @"isEyesightFrame");
   v23 = (*(self + 49) >> 1) & 1;
 
-  objc_msgSend_encodeBool_forKey_(a3, v22, v23, @"isHandTrackingRoot");
+  objc_msgSend_encodeBool_forKey_(coder, v22, v23, @"isHandTrackingRoot");
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8 = objc_msgSend_options(a3, v5, v6, v7), v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"VFXWorldExportPresentationTree", v10), objc_msgSend_BOOLValue(v11, v12, v13, v14)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v8 = objc_msgSend_options(coder, v5, v6, v7), v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"VFXWorldExportPresentationTree", v10), objc_msgSend_BOOLValue(v11, v12, v13, v14)))
   {
     v17 = objc_msgSend_presentationNode(self, v5, v15, v16);
     objc_msgSend__updateModelFromPresentation(v17, v18, v19, v20);
     objc_msgSend__updateAffine(v17, v21, v22, v23);
-    objc_msgSend__customEncodingOfVFXNode_usePresentationObject_(self, v24, a3, 1);
-    objc_msgSend__encodeNodePropertiesWithCoder_(v17, v25, a3, v26);
+    objc_msgSend__customEncodingOfVFXNode_usePresentationObject_(self, v24, coder, 1);
+    objc_msgSend__encodeNodePropertiesWithCoder_(v17, v25, coder, v26);
 
-    sub_1AF372440(a3, self, v27, v28);
+    sub_1AF372440(coder, self, v27, v28);
   }
 
   else
   {
-    objc_msgSend__customEncodingOfVFXNode_usePresentationObject_(self, v5, a3, 0);
-    objc_msgSend__encodeNodePropertiesWithCoder_(self, v29, a3, v30);
-    sub_1AF372440(a3, self, v31, v32);
+    objc_msgSend__customEncodingOfVFXNode_usePresentationObject_(self, v5, coder, 0);
+    objc_msgSend__encodeNodePropertiesWithCoder_(self, v29, coder, v30);
+    sub_1AF372440(coder, self, v31, v32);
 
-    sub_1AF3728B4(a3, self, v33, v34);
+    sub_1AF3728B4(coder, self, v33, v34);
   }
 }
 
-- (VFXNode)initWithCoder:(id)a3
+- (VFXNode)initWithCoder:(id)coder
 {
   v102.receiver = self;
   v102.super_class = VFXNode;
@@ -9301,44 +9301,44 @@ LABEL_8:
     v7->_valueForKeyLock._os_unfair_lock_opaque = 0;
     objc_msgSend__updateModelFromPresentation(v7, v12, v13, v14);
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"name");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"name");
     objc_msgSend_setName_(v7, v18, v17, v19);
-    objc_msgSend__customDecodingOfVFXNode_(v7, v20, a3, v21);
-    v22 = sub_1AF371BC4(a3, @"position");
+    objc_msgSend__customDecodingOfVFXNode_(v7, v20, coder, v21);
+    v22 = sub_1AF371BC4(coder, @"position");
     objc_msgSend_setPosition_(v7, v23, v24, v25, v22);
-    if (objc_msgSend_containsValueForKey_(a3, v26, @"orientation", v27))
+    if (objc_msgSend_containsValueForKey_(coder, v26, @"orientation", v27))
     {
-      *&v30 = sub_1AF371C0C(a3, @"orientation").n128_u64[0];
+      *&v30 = sub_1AF371C0C(coder, @"orientation").n128_u64[0];
       objc_msgSend_setOrientation_(v7, v31, v32, v33, v30);
     }
 
-    else if (objc_msgSend_containsValueForKey_(a3, v28, @"eulerAngles", v29))
+    else if (objc_msgSend_containsValueForKey_(coder, v28, @"eulerAngles", v29))
     {
-      v34 = sub_1AF371BC4(a3, @"eulerAngles");
+      v34 = sub_1AF371BC4(coder, @"eulerAngles");
       objc_msgSend_setEulerAngles_(v7, v35, v36, v37, v34);
     }
 
     else
     {
-      *&v38 = sub_1AF371C0C(a3, @"rotation").n128_u64[0];
+      *&v38 = sub_1AF371C0C(coder, @"rotation").n128_u64[0];
       objc_msgSend_setRotation_(v7, v39, v40, v41, v38);
     }
 
-    v42 = sub_1AF371BC4(a3, @"scale");
+    v42 = sub_1AF371BC4(coder, @"scale");
     objc_msgSend_setScale_(v7, v43, v44, v45, v42);
-    objc_msgSend_decodeFloatForKey_(a3, v46, @"opacity", v47);
+    objc_msgSend_decodeFloatForKey_(coder, v46, @"opacity", v47);
     objc_msgSend_setOpacity_(v7, v48, v49, v50);
-    v53 = objc_msgSend_decodeIntegerForKey_(a3, v51, @"categoryBitMask", v52);
+    v53 = objc_msgSend_decodeIntegerForKey_(coder, v51, @"categoryBitMask", v52);
     objc_msgSend_setCategoryBitMask_(v7, v54, v53, v55);
-    v58 = objc_msgSend_decodeIntegerForKey_(a3, v56, @"renderingOrder", v57);
+    v58 = objc_msgSend_decodeIntegerForKey_(coder, v56, @"renderingOrder", v57);
     objc_msgSend_setRenderingOrder_(v7, v59, v58, v60);
-    v63 = objc_msgSend_decodeBoolForKey_(a3, v61, @"hidden", v62);
+    v63 = objc_msgSend_decodeBoolForKey_(coder, v61, @"hidden", v62);
     objc_msgSend_setHidden_(v7, v64, v63, v65);
-    v68 = objc_msgSend_decodeBoolForKey_(a3, v66, @"castsShadow", v67);
+    v68 = objc_msgSend_decodeBoolForKey_(coder, v66, @"castsShadow", v67);
     objc_msgSend_setCastsShadow_(v7, v69, v68, v70);
-    if (objc_msgSend_containsValueForKey_(a3, v71, @"isEyesightFrame", v72))
+    if (objc_msgSend_containsValueForKey_(coder, v71, @"isEyesightFrame", v72))
     {
-      v75 = objc_msgSend_decodeBoolForKey_(a3, v73, @"isEyesightFrame", v74);
+      v75 = objc_msgSend_decodeBoolForKey_(coder, v73, @"isEyesightFrame", v74);
       objc_msgSend_setIsEyeSightFrame_(v7, v76, v75, v77);
     }
 
@@ -9347,9 +9347,9 @@ LABEL_8:
       objc_msgSend_setIsEyeSightFrame_(v7, v73, 0, v74);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v78, @"isHandTrackingRoot", v79))
+    if (objc_msgSend_containsValueForKey_(coder, v78, @"isHandTrackingRoot", v79))
     {
-      v82 = objc_msgSend_decodeBoolForKey_(a3, v80, @"isHandTrackingRoot", v81);
+      v82 = objc_msgSend_decodeBoolForKey_(coder, v80, @"isHandTrackingRoot", v81);
       objc_msgSend_setIsHandTrackingRoot_(v7, v83, v82, v84);
     }
 
@@ -9358,28 +9358,28 @@ LABEL_8:
       objc_msgSend_setIsHandTrackingRoot_(v7, v80, 0, v81);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v85, @"depthPrePass", v86))
+    if (objc_msgSend_containsValueForKey_(coder, v85, @"depthPrePass", v86))
     {
-      v89 = objc_msgSend_decodeBoolForKey_(a3, v87, @"depthPrePass", v88);
+      v89 = objc_msgSend_decodeBoolForKey_(coder, v87, @"depthPrePass", v88);
       objc_msgSend_setUsesDepthPrePass_(v7, v90, v89, v91);
     }
 
     v92 = objc_opt_class();
-    v94 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v93, v92, @"physicsBody");
+    v94 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v93, v92, @"physicsBody");
     objc_msgSend_setPhysicsBody_(v7, v95, v94, v96);
     v7->_animationsLock._os_unfair_lock_opaque = 0;
-    sub_1AF37249C(a3, v7);
-    sub_1AF372B94(a3, v7);
-    objc_msgSend__didDecodeVFXNode_(v7, v97, a3, v98);
+    sub_1AF37249C(coder, v7);
+    sub_1AF372B94(coder, v7);
+    objc_msgSend__didDecodeVFXNode_(v7, v97, coder, v98);
     objc_msgSend_setImmediateMode_(VFXTransaction, v99, v8, v100);
   }
 
   return v7;
 }
 
-- (void)setIsAuthoring:(BOOL)a3
+- (void)setIsAuthoring:(BOOL)authoring
 {
-  if (a3)
+  if (authoring)
   {
     v4 = 4;
   }
@@ -9390,18 +9390,18 @@ LABEL_8:
   }
 
   *(self + 50) = *(self + 50) & 0xFB | v4;
-  if (a3)
+  if (authoring)
   {
     objc_msgSend_setCastsShadow_(self, a2, 0, v3);
   }
 }
 
-- (void)setEditorLocked:(BOOL)a3
+- (void)setEditorLocked:(BOOL)locked
 {
   v3 = *(self + 50);
-  if (((((v3 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 8) == 0) ^ locked) & 1) == 0)
   {
-    if (a3)
+    if (locked)
     {
       v4 = 8;
     }
@@ -9417,12 +9417,12 @@ LABEL_8:
     v5[2] = sub_1AF30CAE0;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    lockedCopy = locked;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v5);
   }
 }
 
-- (BOOL)getBoundingSphereCenter:(VFXNode *)self radius:(SEL)a2
+- (BOOL)getBoundingSphereCenter:(VFXNode *)self radius:(SEL)radius
 {
   v73 = *MEMORY[0x1E69E9840];
   if (self->_node)
@@ -9432,7 +9432,7 @@ LABEL_8:
     v66 = 0uLL;
     if (*(self + 48))
     {
-      v14 = objc_msgSend_worldRef(self, a2, v2, v3);
+      v14 = objc_msgSend_worldRef(self, radius, v2, v3);
       v15 = v14;
       if (v14)
       {
@@ -9460,7 +9460,7 @@ LABEL_8:
     {
       v49 = v3;
       v65 = 0uLL;
-      v7 = objc_msgSend_model(self, a2, v2, v3);
+      v7 = objc_msgSend_model(self, radius, v2, v3);
       v64.i32[2] = 0;
       v64.i64[0] = 0;
       v63 = 0;
@@ -9610,30 +9610,30 @@ LABEL_8:
 
 - (double)pivot
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v10 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v10 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v10)
     {
       v11 = v10;
       sub_1AF1CEA20(v10);
-      *&v12 = sub_1AF1B887C(*(a1 + 8)).n128_u64[0];
+      *&v12 = sub_1AF1B887C(*(self + 8)).n128_u64[0];
       sub_1AF1CEA9C(v11);
       return v12;
     }
 
     else
     {
-      *&result = sub_1AF1B887C(*(a1 + 8)).n128_u64[0];
+      *&result = sub_1AF1B887C(*(self + 8)).n128_u64[0];
     }
   }
 
   else
   {
     *&result = 1065353216;
-    if ((*(a1 + 48) & 0x20) != 0)
+    if ((*(self + 48) & 0x20) != 0)
     {
-      v6 = objc_msgSend_valueForKey_(a1, a2, @"kPivotKey", a4);
+      v6 = objc_msgSend_valueForKey_(self, a2, @"kPivotKey", a4);
       *&result = 1065353216;
       if (v6)
       {
@@ -9668,24 +9668,24 @@ LABEL_8:
   objc_msgSend_enumerateChildNodesUsingBlock_(self, v9, &unk_1F24EC198, v10);
 }
 
-- (void)_propagatePhysicsBodyCountChange:(int)a3
+- (void)_propagatePhysicsBodyCountChange:(int)change
 {
   if (self)
   {
-    v4 = a3;
+    changeCopy = change;
     do
     {
-      self->_physicsBodyCountInHierarchy += v4;
-      self = objc_msgSend_parentNode(self, a2, *&a3, v3);
+      self->_physicsBodyCountInHierarchy += changeCopy;
+      self = objc_msgSend_parentNode(self, a2, *&change, v3);
     }
 
     while (self);
   }
 }
 
-- (void)setPivot:(float32x4_t)a3
+- (void)setPivot:(float32x4_t)pivot
 {
-  result = objc_msgSend_valueForKey_(a1, a2, @"kPivotKey", a8);
+  result = objc_msgSend_valueForKey_(self, a2, @"kPivotKey", a8);
   if (result)
   {
     result = objc_msgSend_VFXMatrix4Value(result, v10, v11, v12);
@@ -9699,39 +9699,39 @@ LABEL_8:
     v14 = unk_1AFE47AF0;
   }
 
-  if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v13, a3), vceqq_f32(v14, a4)), vandq_s8(vceqq_f32(v15, a5), vceqq_f32(v16, a6)))) & 0x80000000) == 0)
+  if ((vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v13, pivot), vceqq_f32(v14, a4)), vandq_s8(vceqq_f32(v15, a5), vceqq_f32(v16, a6)))) & 0x80000000) == 0)
   {
-    objc_msgSend_willChangeValueForKey_(a1, v10, @"pivot", v12);
+    objc_msgSend_willChangeValueForKey_(self, v10, @"pivot", v12);
     v20 = vdupq_n_s32(0x3727C5ACu);
-    v21 = vminvq_u32(vandq_s8(vandq_s8(vcgeq_f32(v20, vabdq_f32(a4, *(MEMORY[0x1E69E9B18] + 16))), vcgeq_f32(v20, vabdq_f32(a3, *MEMORY[0x1E69E9B18]))), vandq_s8(vcgeq_f32(v20, vabdq_f32(a5, *(MEMORY[0x1E69E9B18] + 32))), vcgeq_f32(v20, vabdq_f32(a6, *(MEMORY[0x1E69E9B18] + 48))))));
-    *(a1 + 48) = *(a1 + 48) & 0xDF | (32 * (v21 >= 0));
+    v21 = vminvq_u32(vandq_s8(vandq_s8(vcgeq_f32(v20, vabdq_f32(a4, *(MEMORY[0x1E69E9B18] + 16))), vcgeq_f32(v20, vabdq_f32(pivot, *MEMORY[0x1E69E9B18]))), vandq_s8(vcgeq_f32(v20, vabdq_f32(a5, *(MEMORY[0x1E69E9B18] + 32))), vcgeq_f32(v20, vabdq_f32(a6, *(MEMORY[0x1E69E9B18] + 48))))));
+    *(self + 48) = *(self + 48) & 0xDF | (32 * (v21 >= 0));
     if (v21 < 0)
     {
-      objc_msgSend_setValue_forKey_(a1, v17, 0, @"kPivotKey");
+      objc_msgSend_setValue_forKey_(self, v17, 0, @"kPivotKey");
     }
 
     else
     {
       v22 = objc_msgSend_valueWithVFXMatrix4_(MEMORY[0x1E696B098], v17, v18, v19);
-      objc_msgSend_setValue_forKey_(a1, v23, v22, @"kPivotKey");
+      objc_msgSend_setValue_forKey_(self, v23, v22, @"kPivotKey");
     }
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = sub_1AF30D258;
     v32[3] = &unk_1E7A7E578;
-    v37 = a1;
-    v33 = a3;
+    selfCopy = self;
+    pivotCopy = pivot;
     v34 = a4;
     v35 = a5;
     v36 = a6;
-    objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v24, a1, @"pivot", v32);
-    if (*(a1 + 54))
+    objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v24, self, @"pivot", v32);
+    if (*(self + 54))
     {
-      objc_msgSend_resetPhysicsBodyTransformInHierarchy(a1, v25, v26, v27);
+      objc_msgSend_resetPhysicsBodyTransformInHierarchy(self, v25, v26, v27);
     }
 
-    return objc_msgSend_didChangeValueForKey_(a1, v25, @"pivot", v27);
+    return objc_msgSend_didChangeValueForKey_(self, v25, @"pivot", v27);
   }
 
   return result;
@@ -9739,38 +9739,38 @@ LABEL_8:
 
 - (double)transform
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v6 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v6 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v6)
     {
       v7 = v6;
       sub_1AF1CEA20(v6);
-      v9 = sub_1AF1B7F84(*(a1 + 8));
+      v9 = sub_1AF1B7F84(*(self + 8));
       sub_1AF1CEA9C(v7);
       *&v5 = v9;
     }
 
     else
     {
-      *&v5 = sub_1AF1B7F84(*(a1 + 8));
+      *&v5 = sub_1AF1B7F84(*(self + 8));
     }
   }
 
   else
   {
-    if ((*(a1 + 48) & 0x10) == 0)
+    if ((*(self + 48) & 0x10) == 0)
     {
-      objc_msgSend__updateTransform(a1, a2, a3, a4);
+      objc_msgSend__updateTransform(self, a2, a3, a4);
     }
 
-    v5 = *(a1 + 64);
+    v5 = *(self + 64);
   }
 
   return *&v5;
 }
 
-- (float32x4_t)setTransform:(uint64_t)a3
+- (float32x4_t)setTransform:(uint64_t)transform
 {
   v8 = result;
   v28 = a5;
@@ -9779,7 +9779,7 @@ LABEL_8:
   v31 = a8;
   if (result[3].i8[0])
   {
-    v16 = objc_msgSend_worldRef(result, a2, a3, a4);
+    v16 = objc_msgSend_worldRef(result, a2, transform, a4);
     if (v16)
     {
       v17 = v16;
@@ -9832,21 +9832,21 @@ LABEL_8:
 
 - (double)position
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v6 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v6 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v6)
     {
       v7 = v6;
       sub_1AF1CEA20(v6);
-      v10 = sub_1AF1B9F08(*(a1 + 8));
+      v10 = sub_1AF1B9F08(*(self + 8));
       sub_1AF1CEA9C(v7);
       *&v5 = v10;
     }
 
     else
     {
-      v8 = *(a1 + 8);
+      v8 = *(self + 8);
 
       *&v5 = sub_1AF1B9F08(v8);
     }
@@ -9854,12 +9854,12 @@ LABEL_8:
 
   else
   {
-    if ((*(a1 + 48) & 8) == 0)
+    if ((*(self + 48) & 8) == 0)
     {
-      objc_msgSend__updateAffine(a1, a2, a3, a4);
+      objc_msgSend__updateAffine(self, a2, a3, a4);
     }
 
-    v5 = *(a1 + 128);
+    v5 = *(self + 128);
   }
 
   return *&v5;
@@ -9901,14 +9901,14 @@ LABEL_8:
 
 - (__n128)rotation
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v29 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v29 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v29)
     {
       v37 = v29;
       sub_1AF1CEA20(v29);
-      sub_1AF1BA0FC(*(a1 + 8), v38, v39, v40, v41, v42, v43, v44);
+      sub_1AF1BA0FC(*(self + 8), v38, v39, v40, v41, v42, v43, v44);
       v57 = v45;
       sub_1AF1CEA9C(v37);
       return v57;
@@ -9916,7 +9916,7 @@ LABEL_8:
 
     else
     {
-      v53 = *(a1 + 8);
+      v53 = *(self + 8);
 
       sub_1AF1BA0FC(v53, v30, v31, v32, v33, v34, v35, v36);
     }
@@ -9924,12 +9924,12 @@ LABEL_8:
 
   else
   {
-    if ((*(a1 + 48) & 8) == 0)
+    if ((*(self + 48) & 8) == 0)
     {
-      objc_msgSend__updateAffine(a1, a2, a3, a4);
+      objc_msgSend__updateAffine(self, a2, a3, a4);
     }
 
-    v6 = (*(a1 + 49) >> 2) & 3;
+    v6 = (*(self + 49) >> 2) & 3;
     if (v6 > 1)
     {
       result.n128_u64[0] = 0;
@@ -9938,7 +9938,7 @@ LABEL_8:
         return result;
       }
 
-      v46 = *(a1 + 144);
+      v46 = *(self + 144);
       v47 = vmulq_f32(v46, v46);
       v47.f32[0] = v47.f32[2] + vaddv_f32(*v47.f32);
       v48 = vdupq_lane_s32(*v47.f32, 0);
@@ -9958,7 +9958,7 @@ LABEL_8:
     {
       v7.i64[0] = 0x3F0000003F000000;
       v7.i64[1] = 0x3F0000003F000000;
-      v8 = vmulq_f32(*(a1 + 144), v7);
+      v8 = vmulq_f32(*(self + 144), v7);
       v8.i32[3] = 0;
       x = v8;
       v55 = _simd_cos_f4(v8);
@@ -9993,7 +9993,7 @@ LABEL_11:
       return result;
     }
 
-    return *(a1 + 144);
+    return *(self + 144);
   }
 
   return result;
@@ -10035,7 +10035,7 @@ LABEL_11:
     v16[1] = 3221225472;
     v16[2] = sub_1AF30DBE0;
     v16[3] = &unk_1E7A7E5C8;
-    v18 = self;
+    selfCopy = self;
     v17 = v10;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"rotation", v16);
     if (self->_physicsBodyCountInHierarchy)
@@ -10049,35 +10049,35 @@ LABEL_11:
 
 - (double)orientation
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v6 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v6 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v6)
     {
       v14 = v6;
       sub_1AF1CEA20(v6);
-      v22 = sub_1AF1BA0F4(*(a1 + 8), v15, v16, v17, v18, v19, v20, v21);
+      v22 = sub_1AF1BA0F4(*(self + 8), v15, v16, v17, v18, v19, v20, v21);
       sub_1AF1CEA9C(v14);
       return v22;
     }
 
     else
     {
-      return sub_1AF1BA0F4(*(a1 + 8), v7, v8, v9, v10, v11, v12, v13);
+      return sub_1AF1BA0F4(*(self + 8), v7, v8, v9, v10, v11, v12, v13);
     }
   }
 
   else
   {
-    objc_msgSend__quaternion(a1, a2, a3, a4);
+    objc_msgSend__quaternion(self, a2, a3, a4);
   }
 
   return result;
 }
 
-- (void)setOrientation:(uint64_t)a3
+- (void)setOrientation:(uint64_t)orientation
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
     if ((vmaxvq_u32(vmvnq_s8(vceqq_f32(a5, a5))) & 0x80000000) != 0)
     {
@@ -10094,19 +10094,19 @@ LABEL_11:
 
     else
     {
-      v9 = objc_msgSend_worldRef(a1, a2, a3, a4);
+      v9 = objc_msgSend_worldRef(self, a2, orientation, a4);
       if (v9)
       {
         v16 = v9;
         sub_1AF1CEA20(v9);
-        sub_1AF1BA184(*(a1 + 8), a5, v17, v18, v19, v20, v21, v22);
+        sub_1AF1BA184(*(self + 8), a5, v17, v18, v19, v20, v21, v22);
 
         sub_1AF1CEA9C(v16);
       }
 
       else
       {
-        v24 = *(a1 + 8);
+        v24 = *(self + 8);
 
         sub_1AF1BA184(v24, a5, v10, v11, v12, v13, v14, v15);
       }
@@ -10115,32 +10115,32 @@ LABEL_11:
 
   else
   {
-    objc_msgSend__setQuaternion_(a1, a2, a3, a4);
-    if (*(a1 + 54))
+    objc_msgSend__setQuaternion_(self, a2, orientation, a4);
+    if (*(self + 54))
     {
 
-      objc_msgSend_resetPhysicsBodyTransformInHierarchy(a1, v6, v7, v8);
+      objc_msgSend_resetPhysicsBodyTransformInHierarchy(self, v6, v7, v8);
     }
   }
 }
 
 - (double)eulerAngles
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v6 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v6 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v6)
     {
       v14 = v6;
       sub_1AF1CEA20(v6);
-      v23 = sub_1AF1BA140(*(a1 + 8), v15, v16, v17, v18, v19, v20, v21);
+      v23 = sub_1AF1BA140(*(self + 8), v15, v16, v17, v18, v19, v20, v21);
       sub_1AF1CEA9C(v14);
       return v23;
     }
 
     else
     {
-      v22 = *(a1 + 8);
+      v22 = *(self + 8);
 
       return sub_1AF1BA140(v22, v7, v8, v9, v10, v11, v12, v13);
     }
@@ -10149,7 +10149,7 @@ LABEL_11:
   else
   {
 
-    objc_msgSend__euler(a1, a2, a3, a4);
+    objc_msgSend__euler(self, a2, a3, a4);
   }
 
   return result;
@@ -10198,7 +10198,7 @@ LABEL_11:
       v19[1] = 3221225472;
       v19[2] = sub_1AF30DFB0;
       v19[3] = &unk_1E7A7E5C8;
-      v21 = self;
+      selfCopy = self;
       v20 = v18;
       objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v10, self, @"eulerAngles", v19);
       if (self->_physicsBodyCountInHierarchy)
@@ -10213,21 +10213,21 @@ LABEL_11:
 
 - (double)scale
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v6 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v6 = objc_msgSend_worldRef(self, a2, a3, a4);
     if (v6)
     {
       v14 = v6;
       sub_1AF1CEA20(v6);
-      v24 = sub_1AF1BA070(*(a1 + 8), v15, v16, v17, v18, v19, v20, v21);
+      v24 = sub_1AF1BA070(*(self + 8), v15, v16, v17, v18, v19, v20, v21);
       sub_1AF1CEA9C(v14);
       *&v5 = v24;
     }
 
     else
     {
-      v22 = *(a1 + 8);
+      v22 = *(self + 8);
 
       *&v5 = sub_1AF1BA070(v22, v7, v8, v9, v10, v11, v12, v13);
     }
@@ -10235,12 +10235,12 @@ LABEL_11:
 
   else
   {
-    if ((*(a1 + 48) & 8) == 0)
+    if ((*(self + 48) & 8) == 0)
     {
-      objc_msgSend__updateAffine(a1, a2, a3, a4);
+      objc_msgSend__updateAffine(self, a2, a3, a4);
     }
 
-    v5 = *(a1 + 160);
+    v5 = *(self + 160);
   }
 
   return *&v5;
@@ -10301,7 +10301,7 @@ LABEL_11:
 
 - (double)worldOrientation
 {
-  objc_msgSend_worldTransform(a1, a2, a3, a4);
+  objc_msgSend_worldTransform(self, a2, a3, a4);
   v5 = vmulq_f32(v4, v4);
   v7 = vmulq_f32(v6, v6);
   v9 = vmulq_f32(v8, v8);
@@ -10398,15 +10398,15 @@ LABEL_9:
   return result;
 }
 
-- (uint64_t)setWorldOrientation:(uint64_t)a3
+- (uint64_t)setWorldOrientation:(uint64_t)orientation
 {
-  if (!objc_msgSend_parentNode(a1, a2, a3, a4))
+  if (!objc_msgSend_parentNode(self, a2, orientation, a4))
   {
     v39 = a5.i64[0];
     goto LABEL_21;
   }
 
-  v9 = objc_msgSend_parentNode(a1, v6, v7, v8);
+  v9 = objc_msgSend_parentNode(self, v6, v7, v8);
   objc_msgSend_worldTransform(v9, v10, v11, v12);
   v62 = __invert_f4(v61);
   v62.columns[3] = vmulq_f32(v62.columns[0], v62.columns[0]);
@@ -10514,21 +10514,21 @@ LABEL_20:
 
 LABEL_21:
 
-  return objc_msgSend_setOrientation_(a1, v6, v7, v8, *&v39);
+  return objc_msgSend_setOrientation_(self, v6, v7, v8, *&v39);
 }
 
 - (float32x4_t)worldTransform
 {
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
-    v22 = objc_msgSend_worldRef(a1, a2, a3, a4);
+    v22 = objc_msgSend_worldRef(self, a2, a3, a4);
     v23 = v22;
     if (v22)
     {
       sub_1AF1CEA20(v22);
     }
 
-    v24 = sub_1AF1B9B04(*(a1 + 8));
+    v24 = sub_1AF1B9B04(*(self + 8));
     result = *v24;
     if (v23)
     {
@@ -10540,14 +10540,14 @@ LABEL_21:
 
   else
   {
-    objc_msgSend_transform(a1, a2, a3, a4);
+    objc_msgSend_transform(self, a2, a3, a4);
     v29 = v9;
     v31 = v8;
     v25 = v11;
     v27 = v10;
-    if ((*(a1 + 48) & 0x20) != 0)
+    if ((*(self + 48) & 0x20) != 0)
     {
-      objc_msgSend_pivot(a1, v5, v6, v7);
+      objc_msgSend_pivot(self, v5, v6, v7);
       v43 = __invert_f4(v42);
       v12 = 0;
       v34 = v31;
@@ -10571,7 +10571,7 @@ LABEL_21:
       v27 = v40;
     }
 
-    v13 = objc_msgSend_parentNode(a1, v5, v6, v7, v25, v27, v29, v31, v34, v35, v36, v37);
+    v13 = objc_msgSend_parentNode(self, v5, v6, v7, v25, v27, v29, v31, v34, v35, v36, v37);
     if (v13)
     {
       objc_msgSend_worldTransform(v13, v14, v15, v16);
@@ -10603,11 +10603,11 @@ LABEL_21:
   return result;
 }
 
-- (uint64_t)setWorldTransform:(uint64_t)a3
+- (uint64_t)setWorldTransform:(uint64_t)transform
 {
-  if (objc_msgSend_parentNode(a1, a2, a3, a4))
+  if (objc_msgSend_parentNode(self, a2, transform, a4))
   {
-    v12 = objc_msgSend_parentNode(a1, v9, v10, v11);
+    v12 = objc_msgSend_parentNode(self, v9, v10, v11);
     objc_msgSend_convertTransform_fromNode_(v12, v13, 0, v14, a5, a6, a7, a8);
   }
 
@@ -10619,28 +10619,28 @@ LABEL_21:
     v15 = a5;
   }
 
-  return objc_msgSend_setTransform_(a1, v9, v10, v11, v15, v16, v17, v18);
+  return objc_msgSend_setTransform_(self, v9, v10, v11, v15, v16, v17, v18);
 }
 
-- (double)convertPosition:(void *)a3 toNode:(uint64_t)a4
+- (double)convertPosition:(void *)position toNode:(uint64_t)node
 {
   v6.columns[3].i64[0] = a5.i64[0];
-  v8 = a3;
-  if (!a3)
+  positionCopy = position;
+  if (!position)
   {
-    v9 = objc_msgSend_world(a1, a2, 0, a4);
-    v8 = objc_msgSend_rootNode(v9, v10, v11, v12);
+    v9 = objc_msgSend_world(self, a2, 0, node);
+    positionCopy = objc_msgSend_rootNode(v9, v10, v11, v12);
     v6.columns[3].i64[0] = a5.i64[0];
   }
 
-  if (v8 != a1)
+  if (positionCopy != self)
   {
-    objc_msgSend_worldTransform(a1, a2, a3, a4);
+    objc_msgSend_worldTransform(self, a2, position, node);
     v6.columns[3] = vmlaq_n_f32(vmlaq_lane_f32(vmlaq_laneq_f32(v6.columns[3], v6.columns[2], a5, 2), v6.columns[1], *a5.f32, 1), v6.columns[0], a5.f32[0]);
-    if (a3)
+    if (position)
     {
       v18 = v6.columns[3];
-      objc_msgSend_worldTransform(a3, v13, v14, v15);
+      objc_msgSend_worldTransform(position, v13, v14, v15);
       v6 = __invert_f4(v19);
       v6.columns[3].i64[0] = vmlaq_n_f32(vmlaq_lane_f32(vmlaq_laneq_f32(v6.columns[3], v6.columns[2], v18, 2), v6.columns[1], *v18.f32, 1), v6.columns[0], v18.f32[0]).u64[0];
     }
@@ -10649,30 +10649,30 @@ LABEL_21:
   return *v6.columns[3].i64;
 }
 
-- (double)convertPosition:(void *)a3 fromNode:(uint64_t)a4
+- (double)convertPosition:(void *)position fromNode:(uint64_t)node
 {
-  v7 = a3;
-  if (!a3)
+  positionCopy = position;
+  if (!position)
   {
-    v8 = objc_msgSend_world(a1, a2, 0, a4);
-    v7 = objc_msgSend_rootNode(v8, v9, v10, v11);
+    v8 = objc_msgSend_world(self, a2, 0, node);
+    positionCopy = objc_msgSend_rootNode(v8, v9, v10, v11);
   }
 
-  if (v7 == a1)
+  if (positionCopy == self)
   {
     return *a5.i64;
   }
 
-  objc_msgSend_worldTransform(a1, a2, a3, a4);
+  objc_msgSend_worldTransform(self, a2, position, node);
   v28 = __invert_f4(v27);
   v15 = v28.columns[3];
-  if (a3)
+  if (position)
   {
     v24 = v28.columns[3];
     v25 = v28.columns[0];
     v22 = v28.columns[2];
     v23 = v28.columns[1];
-    objc_msgSend_worldTransform(a3, v12, v13, v14);
+    objc_msgSend_worldTransform(position, v12, v13, v14);
     v19 = vmlaq_lane_f32(vmlaq_laneq_f32(v17, v16, a5, 2), v18, *a5.f32, 1);
     v28.columns[1] = v23;
     v15 = v24;
@@ -10690,25 +10690,25 @@ LABEL_21:
   return result;
 }
 
-- (double)convertVector:(void *)a3 toNode:(uint64_t)a4
+- (double)convertVector:(void *)vector toNode:(uint64_t)node
 {
   v6.columns[2].i64[0] = a5.i64[0];
-  v8 = a3;
-  if (!a3)
+  vectorCopy = vector;
+  if (!vector)
   {
-    v9 = objc_msgSend_world(a1, a2, 0, a4);
-    v8 = objc_msgSend_rootNode(v9, v10, v11, v12);
+    v9 = objc_msgSend_world(self, a2, 0, node);
+    vectorCopy = objc_msgSend_rootNode(v9, v10, v11, v12);
     v6.columns[2].i64[0] = a5.i64[0];
   }
 
-  if (v8 != a1)
+  if (vectorCopy != self)
   {
-    objc_msgSend_worldTransform(a1, a2, a3, a4);
+    objc_msgSend_worldTransform(self, a2, vector, node);
     v6.columns[2] = vmlaq_n_f32(vmlaq_lane_f32(vmulq_laneq_f32(v6.columns[2], a5, 2), v6.columns[1], *a5.f32, 1), v6.columns[0], a5.f32[0]);
-    if (a3)
+    if (vector)
     {
       v18 = v6.columns[2];
-      objc_msgSend_worldTransform(a3, v13, v14, v15);
+      objc_msgSend_worldTransform(vector, v13, v14, v15);
       v6 = __invert_f4(v19);
       v6.columns[2].i64[0] = vmlaq_n_f32(vmlaq_lane_f32(vmulq_laneq_f32(v6.columns[2], v18, 2), v6.columns[1], *v18.f32, 1), v6.columns[0], v18.f32[0]).u64[0];
     }
@@ -10717,29 +10717,29 @@ LABEL_21:
   return *v6.columns[2].i64;
 }
 
-- (double)convertVector:(void *)a3 fromNode:(uint64_t)a4
+- (double)convertVector:(void *)vector fromNode:(uint64_t)node
 {
-  v7 = a3;
-  if (!a3)
+  vectorCopy = vector;
+  if (!vector)
   {
-    v8 = objc_msgSend_world(a1, a2, 0, a4);
-    v7 = objc_msgSend_rootNode(v8, v9, v10, v11);
+    v8 = objc_msgSend_world(self, a2, 0, node);
+    vectorCopy = objc_msgSend_rootNode(v8, v9, v10, v11);
   }
 
-  if (v7 == a1)
+  if (vectorCopy == self)
   {
     return *a5.i64;
   }
 
-  objc_msgSend_worldTransform(a1, a2, a3, a4);
+  objc_msgSend_worldTransform(self, a2, vector, node);
   v15 = __invert_f4(v23);
   v15.columns[3] = v15.columns[0];
-  if (a3)
+  if (vector)
   {
     v20 = v15.columns[1];
     v21 = v15.columns[0];
     v19 = v15.columns[2];
-    objc_msgSend_worldTransform(a3, v12, v13, v14);
+    objc_msgSend_worldTransform(vector, v12, v13, v14);
     v16 = vmlaq_lane_f32(vmulq_laneq_f32(v15.columns[2], a5, 2), v15.columns[1], *a5.f32, 1);
     v15.columns[2] = v19;
     v15.columns[1] = v20;
@@ -10756,11 +10756,11 @@ LABEL_21:
   return result;
 }
 
-- (float32x4_t)convertTransform:(void *)a3 toNode:(uint64_t)a4
+- (float32x4_t)convertTransform:(void *)transform toNode:(uint64_t)node
 {
-  if (a3)
+  if (transform)
   {
-    if (a3 == a1)
+    if (transform == self)
     {
       return result;
     }
@@ -10769,12 +10769,12 @@ LABEL_21:
     v34 = a6;
     v35 = a7;
     v36 = a8;
-    objc_msgSend_worldTransform(a1, a2, a3, a4);
+    objc_msgSend_worldTransform(self, a2, transform, node);
     v31 = v11;
     v32 = v10;
     v29 = v13;
     v30 = v12;
-    objc_msgSend_worldTransform(a3, v14, v15, v16);
+    objc_msgSend_worldTransform(transform, v14, v15, v16);
     v46 = __invert_f4(v45);
     v17 = 0;
     v37 = v32;
@@ -10804,13 +10804,13 @@ LABEL_21:
     v34 = a6;
     v35 = a7;
     v36 = a8;
-    v21 = objc_msgSend_world(a1, a2, 0, a4);
-    if (objc_msgSend_rootNode(v21, v22, v23, v24) == a1)
+    v21 = objc_msgSend_world(self, a2, 0, node);
+    if (objc_msgSend_rootNode(v21, v22, v23, v24) == self)
     {
       return v33;
     }
 
-    objc_msgSend_worldTransform(a1, v25, v26, v27);
+    objc_msgSend_worldTransform(self, v25, v26, v27);
   }
 
   v28 = 0;
@@ -10833,29 +10833,29 @@ LABEL_21:
   return result;
 }
 
-- (double)convertTransform:(void *)a3 fromNode:(uint64_t)a4
+- (double)convertTransform:(void *)transform fromNode:(uint64_t)node
 {
-  v10 = a3;
+  transformCopy = transform;
   v30 = a5;
-  if (!a3)
+  if (!transform)
   {
-    v11 = objc_msgSend_world(a1, a2, 0, a4);
-    v10 = objc_msgSend_rootNode(v11, v12, v13, v14);
+    v11 = objc_msgSend_world(self, a2, 0, node);
+    transformCopy = objc_msgSend_rootNode(v11, v12, v13, v14);
     a5.n128_u64[0] = v30.n128_u64[0];
   }
 
-  if (v10 != a1)
+  if (transformCopy != self)
   {
-    objc_msgSend_worldTransform(a1, a2, a3, a4);
+    objc_msgSend_worldTransform(self, a2, transform, node);
     v43 = __invert_f4(v42);
     v18 = v43.columns[2];
-    if (a3)
+    if (transform)
     {
       v28 = v43.columns[1];
       v29 = v43.columns[0];
       v26 = v43.columns[3];
       v27 = v43.columns[2];
-      objc_msgSend_worldTransform(a3, v15, v16, v17);
+      objc_msgSend_worldTransform(transform, v15, v16, v17);
       v19 = 0;
       v34 = v20;
       v35 = v21;
@@ -10902,7 +10902,7 @@ LABEL_21:
 
 - (double)worldUp
 {
-  objc_msgSend_worldOrientation(a1, a2, a3, a4);
+  objc_msgSend_worldOrientation(self, a2, a3, a4);
   v21 = v4;
   v5 = objc_opt_class();
   objc_msgSend_localUp(v5, v6, v7, v8);
@@ -10926,7 +10926,7 @@ LABEL_21:
 
 - (double)worldRight
 {
-  objc_msgSend_worldOrientation(a1, a2, a3, a4);
+  objc_msgSend_worldOrientation(self, a2, a3, a4);
   v21 = v4;
   v5 = objc_opt_class();
   objc_msgSend_localRight(v5, v6, v7, v8);
@@ -10950,7 +10950,7 @@ LABEL_21:
 
 - (double)worldFront
 {
-  objc_msgSend_worldOrientation(a1, a2, a3, a4);
+  objc_msgSend_worldOrientation(self, a2, a3, a4);
   v21 = v4;
   v5 = objc_opt_class();
   objc_msgSend_localFront(v5, v6, v7, v8);
@@ -10980,12 +10980,12 @@ LABEL_21:
   MEMORY[0x1EEE66B58](self, sel_lookAt_up_localFront_, v8, v9);
 }
 
-- (void)lookAt:(VFXNode *)self up:(SEL)a2 localFront:
+- (void)lookAt:(VFXNode *)self up:(SEL)up localFront:
 {
   v114 = v6;
   v116 = v5;
   v119 = v4;
-  objc_msgSend_worldPosition(self, a2, v2, v3);
+  objc_msgSend_worldPosition(self, up, v2, v3);
   v9 = vcgeq_f32(vdupq_n_s32(0x3727C5ACu), vabdq_f32(v119, v8));
   v9.i32[3] = v9.i32[2];
   if ((vminvq_u32(v9) & 0x80000000) == 0)
@@ -11199,18 +11199,18 @@ LABEL_21:
   objc_msgSend_setPosition_(self, v19, v20, v21, v23);
 }
 
-- (uint64_t)localRotateBy:(uint64_t)a3
+- (uint64_t)localRotateBy:(uint64_t)by
 {
-  objc_msgSend_orientation(a1, a2, a3, a4);
+  objc_msgSend_orientation(self, a2, by, a4);
   _S2 = a5.u32[3];
   v11 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(a5, a5), a5, 0xCuLL), vnegq_f32(_Q0)), a5, vextq_s8(vuzp1q_s32(_Q0, _Q0), _Q0, 0xCuLL));
   *&v12 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(_Q0, a5, 3), a5, _Q0, 3), vextq_s8(vuzp1q_s32(v11, v11), v11, 0xCuLL)).u64[0];
   __asm { FMLA            S3, S2, V0.S[3] }
 
-  return objc_msgSend_setOrientation_(a1, v6, v7, v8, v12);
+  return objc_msgSend_setOrientation_(self, v6, v7, v8, v12);
 }
 
-- (uint64_t)rotateBy:(uint64_t)a3 aroundTarget:(uint64_t)a4
+- (uint64_t)rotateBy:(uint64_t)by aroundTarget:(uint64_t)target
 {
   v7 = 0;
   v8 = vmulq_f32(a5, a5);
@@ -11273,7 +11273,7 @@ LABEL_21:
   v37 = v42;
   v34 = v45;
   v35 = v44;
-  objc_msgSend_worldTransform(a1, a2, a3, a4);
+  objc_msgSend_worldTransform(self, a2, by, target);
   v24 = 0;
   v38 = v25;
   v39 = v26;
@@ -11295,34 +11295,34 @@ LABEL_21:
   v31 = *&v42;
   v32 = *&v43;
 
-  return objc_msgSend_setWorldTransform_(a1, v21, v22, v23, v31, v32, v29, v30);
+  return objc_msgSend_setWorldTransform_(self, v21, v22, v23, v31, v32, v29, v30);
 }
 
-- (void)_remapNodeReferences:(id)a3 nullifyIfAbsent:(BOOL)a4
+- (void)_remapNodeReferences:(id)references nullifyIfAbsent:(BOOL)absent
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_1AF30FA6C;
   v4[3] = &unk_1E7A7ED40;
-  v4[4] = a3;
-  v5 = a4;
+  v4[4] = references;
+  absentCopy = absent;
   sub_1AF345368(self, 0, v4);
 }
 
-+ (VFXNode)nodeWithSceneKitNode:(id)a3 options:(id)a4
++ (VFXNode)nodeWithSceneKitNode:(id)node options:(id)options
 {
   v6 = objc_autoreleasePoolPush();
   Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
   objc_msgSend_begin(VFXTransaction, v8, v9, v10);
   objc_msgSend_setImmediateMode_(VFXTransaction, v11, 1, v12);
-  v15 = objc_msgSend_objectForKeyedSubscript_(a4, v13, @"VFXSceneKitBridgeOptionOriginalURL", v14);
+  v15 = objc_msgSend_objectForKeyedSubscript_(options, v13, @"VFXSceneKitBridgeOptionOriginalURL", v14);
   PathComponent = objc_msgSend_URLByDeletingLastPathComponent(v15, v16, v17, v18);
   objc_msgSend_setValue_forKey_(VFXTransaction, v20, PathComponent, @"VFXWorldDecodingCurrentEnclosingFolder");
-  v23 = objc_msgSend_objectForKeyedSubscript_(a4, v21, @"VFXSceneKitBridgeOptionSkipLightIntensityRemapping", v22);
+  v23 = objc_msgSend_objectForKeyedSubscript_(options, v21, @"VFXSceneKitBridgeOptionSkipLightIntensityRemapping", v22);
   v27 = objc_msgSend_BOOLValue(v23, v24, v25, v26);
-  v30 = objc_msgSend_objectForKeyedSubscript_(a4, v28, @"VFXSceneKitBridgeOptionOriginalURL", v29);
-  v31 = sub_1AF3264A4(a3, Mutable, v27, v30);
-  sub_1AF327760(a3, Mutable);
+  v30 = objc_msgSend_objectForKeyedSubscript_(options, v28, @"VFXSceneKitBridgeOptionOriginalURL", v29);
+  v31 = sub_1AF3264A4(node, Mutable, v27, v30);
+  sub_1AF327760(node, Mutable);
   objc_msgSend_commit(VFXTransaction, v32, v33, v34);
   CFRelease(Mutable);
   objc_autoreleasePoolPop(v6);
@@ -11337,9 +11337,9 @@ LABEL_21:
   return objc_msgSend_rootNode(v4, v5, v6, v7);
 }
 
-- (void)addAnimationAsset:(id)a3 forKey:(id)a4
+- (void)addAnimationAsset:(id)asset forKey:(id)key
 {
-  v6 = objc_msgSend_asset(a3, a2, a3, a4);
+  v6 = objc_msgSend_asset(asset, a2, asset, key);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -11347,16 +11347,16 @@ LABEL_21:
     v13 = objc_msgSend_nodeWithNodeRef_(VFXNode, v11, v10, v12);
     v18 = objc_msgSend_animation(v6, v14, v15, v16);
 
-    objc_msgSend_addAnimation_forKey_(v13, v17, v18, a4);
+    objc_msgSend_addAnimation_forKey_(v13, v17, v18, key);
   }
 }
 
-- (id)debugQuickLookObjectWithWorld:(id)a3
+- (id)debugQuickLookObjectWithWorld:(id)world
 {
-  v5 = objc_msgSend_deepClone(self, a2, a3, v3);
+  v5 = objc_msgSend_deepClone(self, a2, world, v3);
   objc_msgSend_setHidden_(v5, v6, 0, v7);
   v11 = objc_msgSend_world(VFXWorld, v8, v9, v10);
-  v15 = objc_msgSend_assetRegistry(a3, v12, v13, v14);
+  v15 = objc_msgSend_assetRegistry(world, v12, v13, v14);
   v19 = objc_msgSend_rootNode(v15, v16, v17, v18);
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
@@ -11364,7 +11364,7 @@ LABEL_21:
   v39[3] = &unk_1E7A7F3C0;
   v39[4] = v11;
   objc_msgSend_enumerateHierarchyUsingBlock_(v19, v20, v39, v21);
-  v28 = objc_msgSend_assetPathResolver(a3, v22, v23, v24);
+  v28 = objc_msgSend_assetPathResolver(world, v22, v23, v24);
   if (v28)
   {
     objc_msgSend_setAssetPathResolver_(v11, v25, v28, v27);
@@ -11397,7 +11397,7 @@ LABEL_21:
 
 - (NSArray)bridgedComponentNames
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFC50994();
 
   v3 = sub_1AFDFD3F8();

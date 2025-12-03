@@ -1,48 +1,48 @@
 @interface SIRINLUSystemPrompted
-- (SIRINLUSystemPrompted)initWithCoder:(id)a3;
-- (SIRINLUSystemPrompted)initWithReference:(id)a3;
+- (SIRINLUSystemPrompted)initWithCoder:(id)coder;
+- (SIRINLUSystemPrompted)initWithReference:(id)reference;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUSystemPrompted
 
 - (id)description
 {
-  v3 = [(SIRINLUSystemPrompted *)self reference];
-  v4 = [v3 printedForm];
-  v5 = [SIRINLUPrintUtils indentLines:v4 numSpaces:4];
+  reference = [(SIRINLUSystemPrompted *)self reference];
+  printedForm = [reference printedForm];
+  v5 = [SIRINLUPrintUtils indentLines:printedForm numSpaces:4];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(SIRINLUSystemPrompted *)self renderedText];
-  v8 = [v6 stringWithFormat:@"{SystemPrompted\n  reference:\n%@\n  renderedText: %@\n}", v5, v7];
+  renderedText = [(SIRINLUSystemPrompted *)self renderedText];
+  v8 = [v6 stringWithFormat:@"{SystemPrompted\n  reference:\n%@\n  renderedText: %@\n}", v5, renderedText];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUSystemPrompted *)self reference];
-  [v4 encodeObject:v5 forKey:@"reference"];
+  coderCopy = coder;
+  reference = [(SIRINLUSystemPrompted *)self reference];
+  [coderCopy encodeObject:reference forKey:@"reference"];
 
-  v6 = [(SIRINLUSystemPrompted *)self renderedText];
-  [v4 encodeObject:v6 forKey:@"renderedText"];
+  renderedText = [(SIRINLUSystemPrompted *)self renderedText];
+  [coderCopy encodeObject:renderedText forKey:@"renderedText"];
 }
 
-- (SIRINLUSystemPrompted)initWithCoder:(id)a3
+- (SIRINLUSystemPrompted)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SIRINLUSystemPrompted;
   v5 = [(SIRINLUSystemPrompted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
     reference = v5->_reference;
     v5->_reference = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
     renderedText = v5->renderedText;
     v5->renderedText = v8;
   }
@@ -50,16 +50,16 @@
   return v5;
 }
 
-- (SIRINLUSystemPrompted)initWithReference:(id)a3
+- (SIRINLUSystemPrompted)initWithReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   v9.receiver = self;
   v9.super_class = SIRINLUSystemPrompted;
   v6 = [(SIRINLUSystemPrompted *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reference, a3);
+    objc_storeStrong(&v6->_reference, reference);
   }
 
   return v7;

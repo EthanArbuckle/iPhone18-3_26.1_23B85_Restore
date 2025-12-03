@@ -1,24 +1,24 @@
 @interface TSAImageRenderingExporterDelegate
-- (BOOL)p_imageTypeSupportsHDR:(id)a3;
-- (CGContext)newCGContextForURL:(id)a3;
-- (CGContext)newHDRCGContextForURL:(id)a3;
-- (TSAImageRenderingExporterDelegate)initWithRenderingExporter:(id)a3;
+- (BOOL)p_imageTypeSupportsHDR:(id)r;
+- (CGContext)newCGContextForURL:(id)l;
+- (CGContext)newHDRCGContextForURL:(id)l;
+- (TSAImageRenderingExporterDelegate)initWithRenderingExporter:(id)exporter;
 - (double)viewScale;
-- (void)releaseSDRCGContext:(CGContext *)a3 andHDRContext:(CGContext *)a4;
+- (void)releaseSDRCGContext:(CGContext *)context andHDRContext:(CGContext *)rContext;
 @end
 
 @implementation TSAImageRenderingExporterDelegate
 
-- (TSAImageRenderingExporterDelegate)initWithRenderingExporter:(id)a3
+- (TSAImageRenderingExporterDelegate)initWithRenderingExporter:(id)exporter
 {
-  v4 = a3;
+  exporterCopy = exporter;
   v13.receiver = self;
   v13.super_class = TSAImageRenderingExporterDelegate;
   v5 = [(TSAImageRenderingExporterDelegate *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mRenderingExporter, v4);
+    objc_storeWeak(&v5->mRenderingExporter, exporterCopy);
     v6->mWidth = 0;
     v6->mHeight = 0;
     v6->mScaleToFit = 0;
@@ -53,9 +53,9 @@
   return result;
 }
 
-- (CGContext)newCGContextForURL:(id)a3
+- (CGContext)newCGContextForURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (objc_msgSend_currentTransferFunctionRequiresSDRCGContext(self, v6, v7, v8))
   {
     WeakRetained = objc_loadWeakRetained(&self->mRenderingExporter);
@@ -66,7 +66,7 @@
     v17.f64[0] = recta;
     v17.f64[1] = v43;
     rectb = vbslq_s8(vceqzq_s64(*&self->mWidth), vcvtq_u64_f64(v17), *&self->mWidth);
-    objc_storeStrong(&self->mURL, a3);
+    objc_storeStrong(&self->mURL, l);
     v18 = vcvtq_f64_u64(rectb);
     v19 = v18.f64[1];
     rect = v18.f64[0];
@@ -101,9 +101,9 @@
   return v20;
 }
 
-- (CGContext)newHDRCGContextForURL:(id)a3
+- (CGContext)newHDRCGContextForURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], v6, v7, v8);
   isHDRCapable = objc_msgSend_isHDRCapable(v9, v10, v11, v12);
 
@@ -137,7 +137,7 @@ LABEL_7:
   v25.f64[0] = recta;
   v25.f64[1] = v55;
   rectb = vbslq_s8(vceqzq_s64(*&self->mWidth), vcvtq_u64_f64(v25), *&self->mWidth);
-  objc_storeStrong(&self->mURL, a3);
+  objc_storeStrong(&self->mURL, l);
   v26 = vcvtq_f64_u64(rectb);
   v27 = v26.f64[1];
   rect = v26.f64[0];
@@ -163,23 +163,23 @@ LABEL_8:
   return v28;
 }
 
-- (BOOL)p_imageTypeSupportsHDR:(id)a3
+- (BOOL)p_imageTypeSupportsHDR:(id)r
 {
   v3 = *MEMORY[0x277CE1D90];
-  v4 = a3;
+  rCopy = r;
   v8 = objc_msgSend_identifier(v3, v5, v6, v7);
-  v9 = UTTypeConformsTo(v4, v8);
+  v9 = UTTypeConformsTo(rCopy, v8);
 
   return v9 != 0;
 }
 
-- (void)releaseSDRCGContext:(CGContext *)a3 andHDRContext:(CGContext *)a4
+- (void)releaseSDRCGContext:(CGContext *)context andHDRContext:(CGContext *)rContext
 {
   v163[1] = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], a2, a3, a4);
+  v7 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], a2, context, rContext);
   isHDRCapable = objc_msgSend_isHDRCapable(v7, v8, v9, v10);
 
-  if (!a4 || (isHDRCapable & 1) != 0)
+  if (!rContext || (isHDRCapable & 1) != 0)
   {
     v25 = objc_msgSend_imageType(self, v12, v13, v14);
     v28 = objc_msgSend_p_imageTypeSupportsHDR_(self, v26, v25, v27);
@@ -189,8 +189,8 @@ LABEL_8:
       self->mTransferFunction = 1;
     }
 
-    Image = CGBitmapContextCreateImage(a3);
-    v30 = CGBitmapContextCreateImage(a4);
+    Image = CGBitmapContextCreateImage(context);
+    v30 = CGBitmapContextCreateImage(rContext);
     v34 = v30;
     mTransferFunction = self->mTransferFunction;
     if (mTransferFunction <= 5)
@@ -330,8 +330,8 @@ LABEL_8:
 
     CGImageRelease(Image);
     CGImageRelease(v34);
-    CGContextRelease(a3);
-    CGContextRelease(a4);
+    CGContextRelease(context);
+    CGContextRelease(rContext);
     v149 = self->mURL;
     self->mURL = 0;
   }

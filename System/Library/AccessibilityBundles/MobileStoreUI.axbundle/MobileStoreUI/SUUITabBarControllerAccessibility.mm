@@ -1,14 +1,14 @@
 @interface SUUITabBarControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SUUITabBarControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUITabBarController" hasInstanceVariable:@"_floatingOverlayView" withType:"SUUIFloatingOverlayView"];
-  [v3 validateClass:@"SUUITabBarController" hasInstanceMethod:@"setFloatingOverlayViewController: animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUITabBarController" hasInstanceVariable:@"_floatingOverlayView" withType:"SUUIFloatingOverlayView"];
+  [validationsCopy validateClass:@"SUUITabBarController" hasInstanceMethod:@"setFloatingOverlayViewController: animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 @end

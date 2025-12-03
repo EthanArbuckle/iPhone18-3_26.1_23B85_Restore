@@ -1,24 +1,24 @@
 @interface _UIScrollViewScrollingAnimator
-- (BOOL)_handlePressIfInterested:(id)a3;
-- (BOOL)_keyboardHandlesPressEventForKeyInput:(id)a3;
-- (BOOL)finishHandlingPressEvent:(id)a3;
-- (BOOL)handlePressEventIfInterested:(id)a3;
+- (BOOL)_handlePressIfInterested:(id)interested;
+- (BOOL)_keyboardHandlesPressEventForKeyInput:(id)input;
+- (BOOL)finishHandlingPressEvent:(id)event;
+- (BOOL)handlePressEventIfInterested:(id)interested;
 - (CGPoint)_interactiveScrollVelocity;
 - (UIScrollView)scrollView;
-- (_UIScrollViewScrollingAnimator)initWithScrollView:(id)a3;
-- (double)_distanceForIncrement:(unint64_t)a3 inDirection:(unint64_t)a4;
-- (id)_scrollStateForDirection:(unint64_t)a3 granularity:(unint64_t)a4;
-- (id)_scrollStateForPress:(id)a3;
+- (_UIScrollViewScrollingAnimator)initWithScrollView:(id)view;
+- (double)_distanceForIncrement:(unint64_t)increment inDirection:(unint64_t)direction;
+- (id)_scrollStateForDirection:(unint64_t)direction granularity:(unint64_t)granularity;
+- (id)_scrollStateForPress:(id)press;
 - (unint64_t)_rubberbandableDirections;
-- (unint64_t)_scrollableDirectionsFromOffset:(CGPoint)a3;
-- (void)_beginInteractiveAnimationForScrollState:(id)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_scrollToContentOffset:(CGPoint)a3;
-- (void)_scrollWithScrollToExtentAnimationTo:(CGPoint)a3;
+- (unint64_t)_scrollableDirectionsFromOffset:(CGPoint)offset;
+- (void)_beginInteractiveAnimationForScrollState:(id)state;
+- (void)_displayLinkFired:(id)fired;
+- (void)_scrollToContentOffset:(CGPoint)offset;
+- (void)_scrollWithScrollToExtentAnimationTo:(CGPoint)to;
 - (void)_startDisplayLinkIfNeeded;
 - (void)_stopAnimatedScroll;
 - (void)_stopDisplayLink;
-- (void)animateScrollInDirection:(unint64_t)a3 withGranularity:(unint64_t)a4;
+- (void)animateScrollInDirection:(unint64_t)direction withGranularity:(unint64_t)granularity;
 - (void)cancelInteractiveScroll;
 - (void)dealloc;
 - (void)invalidate;
@@ -26,19 +26,19 @@
 
 @implementation _UIScrollViewScrollingAnimator
 
-- (_UIScrollViewScrollingAnimator)initWithScrollView:(id)a3
+- (_UIScrollViewScrollingAnimator)initWithScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UIScrollViewScrollingAnimator;
   v5 = [(_UIScrollViewScrollingAnimator *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrollView, v4);
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeWeak(&v5->_scrollView, viewCopy);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     trackedPressEvents = v6->_trackedPressEvents;
-    v6->_trackedPressEvents = v7;
+    v6->_trackedPressEvents = weakObjectsHashTable;
   }
 
   return v6;
@@ -52,11 +52,11 @@
   [(_UIScrollViewScrollingAnimator *)&v3 dealloc];
 }
 
-- (BOOL)handlePressEventIfInterested:(id)a3
+- (BOOL)handlePressEventIfInterested:(id)interested
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(_UIScrollViewScrollingAnimator *)self _keyboardHandlesPressEventForKeyInput:v4])
+  interestedCopy = interested;
+  if ([(_UIScrollViewScrollingAnimator *)self _keyboardHandlesPressEventForKeyInput:interestedCopy])
   {
     goto LABEL_12;
   }
@@ -65,8 +65,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 allPresses];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allPresses = [interestedCopy allPresses];
+  v6 = [allPresses countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
 
@@ -84,13 +84,13 @@ LABEL_12:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allPresses);
       }
 
       v8 |= [(_UIScrollViewScrollingAnimator *)self _handlePressIfInterested:*(*(&v13 + 1) + 8 * i)];
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [allPresses countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v7);
@@ -100,25 +100,25 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(NSHashTable *)self->_trackedPressEvents addObject:v4];
+  [(NSHashTable *)self->_trackedPressEvents addObject:interestedCopy];
   v11 = 1;
 LABEL_13:
 
   return v11;
 }
 
-- (BOOL)finishHandlingPressEvent:(id)a3
+- (BOOL)finishHandlingPressEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_isScrollingInteractively && [(NSHashTable *)self->_trackedPressEvents containsObject:v4])
+  eventCopy = event;
+  if (self->_isScrollingInteractively && [(NSHashTable *)self->_trackedPressEvents containsObject:eventCopy])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v4 allPresses];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allPresses = [eventCopy allPresses];
+    v6 = [allPresses countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -129,7 +129,7 @@ LABEL_13:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allPresses);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -143,7 +143,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [allPresses countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           continue;
@@ -155,7 +155,7 @@ LABEL_13:
 
 LABEL_17:
 
-    [(NSHashTable *)self->_trackedPressEvents removeObject:v4];
+    [(NSHashTable *)self->_trackedPressEvents removeObject:eventCopy];
     v14 = 1;
   }
 
@@ -167,10 +167,10 @@ LABEL_17:
   return v14;
 }
 
-- (void)animateScrollInDirection:(unint64_t)a3 withGranularity:(unint64_t)a4
+- (void)animateScrollInDirection:(unint64_t)direction withGranularity:(unint64_t)granularity
 {
   [(_UIScrollViewScrollingAnimator *)self cancelInteractiveScroll];
-  v7 = [(_UIScrollViewScrollingAnimator *)self _scrollStateForDirection:a3 granularity:a4];
+  v7 = [(_UIScrollViewScrollingAnimator *)self _scrollStateForDirection:direction granularity:granularity];
   [(_UIScrollViewScrollingAnimator *)self _beginInteractiveAnimationForScrollState:v7];
   [(_UIScrollViewScrollingAnimator *)self _stopAnimatedScroll];
 }
@@ -194,14 +194,14 @@ LABEL_17:
   objc_storeWeak(&self->_scrollView, 0);
 }
 
-- (void)_beginInteractiveAnimationForScrollState:(id)a3
+- (void)_beginInteractiveAnimationForScrollState:(id)state
 {
-  v21 = a3;
-  objc_storeStrong(&self->_currentScroll, a3);
-  if ([v21 granularity] == 3)
+  stateCopy = state;
+  objc_storeStrong(&self->_currentScroll, state);
+  if ([stateCopy granularity] == 3)
   {
     [(_UIScrollViewScrollingAnimator *)self cancelInteractiveScroll];
-    [v21 offset];
+    [stateCopy offset];
     v6 = self->_modelPosition.x + v5;
     v8 = v7 + self->_modelPosition.y;
     WeakRetained = objc_loadWeakRetained(&self->_scrollView);
@@ -229,11 +229,11 @@ LABEL_17:
   }
 }
 
-- (BOOL)_keyboardHandlesPressEventForKeyInput:(id)a3
+- (BOOL)_keyboardHandlesPressEventForKeyInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   v4 = +[UIKeyboardImpl activeInstance];
-  if (v4 && [v3 type] == 4)
+  if (v4 && [inputCopy type] == 4)
   {
     if ([v4 delegateRequiresKeyEvents])
     {
@@ -242,7 +242,7 @@ LABEL_17:
 
     else
     {
-      v7 = v3;
+      v7 = inputCopy;
       if ([v4 _isKeyCommand:v7])
       {
         v5 = 1;
@@ -250,14 +250,14 @@ LABEL_17:
 
       else
       {
-        v8 = [v7 _unmodifiedInput];
-        v9 = [v8 length];
+        _unmodifiedInput = [v7 _unmodifiedInput];
+        v9 = [_unmodifiedInput length];
 
         if (v9 == 1)
         {
-          v10 = [v4 inputDelegateManager];
-          v11 = [v10 keyInputDelegate];
-          v5 = v11 != 0;
+          inputDelegateManager = [v4 inputDelegateManager];
+          keyInputDelegate = [inputDelegateManager keyInputDelegate];
+          v5 = keyInputDelegate != 0;
         }
 
         else
@@ -276,12 +276,12 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)_handlePressIfInterested:(id)a3
+- (BOOL)_handlePressIfInterested:(id)interested
 {
-  v4 = a3;
-  if (![v4 phase])
+  interestedCopy = interested;
+  if (![interestedCopy phase])
   {
-    v6 = [(_UIScrollViewScrollingAnimator *)self _scrollStateForPress:v4];
+    v6 = [(_UIScrollViewScrollingAnimator *)self _scrollStateForPress:interestedCopy];
     if (v6)
     {
       if (self->_isScrollingInteractively)
@@ -292,19 +292,19 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v7 = [(_UIScrollViewScrollingAnimator *)self _rubberbandableDirections];
-      v8 = [v6 direction];
-      if ((v8 - 1) > 3)
+      _rubberbandableDirections = [(_UIScrollViewScrollingAnimator *)self _rubberbandableDirections];
+      direction = [v6 direction];
+      if ((direction - 1) > 3)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = qword_18A67E2A0[v8 - 1];
+        v9 = qword_18A67E2A0[direction - 1];
       }
 
-      if ((v9 & v7) != 0)
+      if ((v9 & _rubberbandableDirections) != 0)
       {
         v5 = 1;
         self->_isScrollingInteractively = 1;
@@ -323,22 +323,22 @@ LABEL_13:
   return v5;
 }
 
-- (id)_scrollStateForDirection:(unint64_t)a3 granularity:(unint64_t)a4
+- (id)_scrollStateForDirection:(unint64_t)direction granularity:(unint64_t)granularity
 {
-  [(_UIScrollViewScrollingAnimator *)self _distanceForIncrement:a4 inDirection:a3];
+  [(_UIScrollViewScrollingAnimator *)self _distanceForIncrement:granularity inDirection:direction];
   v7 = v6;
-  v8 = (&unk_18A67E1F0 + 8 * a3 - 8);
-  if (a3 - 1 >= 4)
+  v8 = (&unk_18A67E1F0 + 8 * direction - 8);
+  if (direction - 1 >= 4)
   {
     v9 = (MEMORY[0x1E695EFF8] + 8);
   }
 
   else
   {
-    v9 = (&unk_18A67E210 + 8 * a3 - 8);
+    v9 = (&unk_18A67E210 + 8 * direction - 8);
   }
 
-  if (a3 - 1 >= 4)
+  if (direction - 1 >= 4)
   {
     v8 = MEMORY[0x1E695EFF8];
   }
@@ -349,19 +349,19 @@ LABEL_13:
   [(_UIScrollViewScrollingAnimatorState *)v12 setOffset:v7 * v10, v7 * v11];
   [(_UIScrollViewScrollingAnimatorState *)v12 offset];
   [(_UIScrollViewScrollingAnimatorState *)v12 setMaximumVelocity:v13 * 25.0, v14 * 25.0];
-  [(_UIScrollViewScrollingAnimatorState *)v12 setDirection:a3];
-  [(_UIScrollViewScrollingAnimatorState *)v12 setGranularity:a4];
+  [(_UIScrollViewScrollingAnimatorState *)v12 setDirection:direction];
+  [(_UIScrollViewScrollingAnimatorState *)v12 setGranularity:granularity];
   [(_UIScrollViewScrollingAnimatorState *)v12 maximumVelocity];
   [(_UIScrollViewScrollingAnimatorState *)v12 setForce:?];
 
   return v12;
 }
 
-- (id)_scrollStateForPress:(id)a3
+- (id)_scrollStateForPress:(id)press
 {
-  v4 = a3;
-  v5 = scrollingKeyForPress(v4);
-  if (!v5 || (v6 = v5, v7 = [v4 modifierFlags], ((v7 >> 17) & 1) + ((v7 >> 19) & 1) + ((v7 >> 20) & 1) > 1) || (v6 > 6 ? (LODWORD(v8) = -1) : (v8 = qword_18A67E230[v6 - 1]), (v7 & v8 & 0x1A0000) != 0))
+  pressCopy = press;
+  v5 = scrollingKeyForPress(pressCopy);
+  if (!v5 || (v6 = v5, v7 = [pressCopy modifierFlags], ((v7 >> 17) & 1) + ((v7 >> 19) & 1) + ((v7 >> 20) & 1) > 1) || (v6 > 6 ? (LODWORD(v8) = -1) : (v8 = qword_18A67E230[v6 - 1]), (v7 & v8 & 0x1A0000) != 0))
   {
     v9 = 0;
     goto LABEL_8;
@@ -457,11 +457,11 @@ LABEL_8:
 
   v10 = self->_modelPosition.x + v7;
   v11 = self->_modelPosition.y + v9;
-  v12 = [(_UIScrollViewScrollingAnimatorState *)currentScroll direction];
-  if (v12 > 2)
+  direction = [(_UIScrollViewScrollingAnimatorState *)currentScroll direction];
+  if (direction > 2)
   {
     v14 = self->_idealPositionForMinimumTravel.x;
-    if (v12 == 3)
+    if (direction == 3)
     {
       if (v10 >= v14)
       {
@@ -471,7 +471,7 @@ LABEL_8:
       goto LABEL_26;
     }
 
-    if (v12 == 4)
+    if (direction == 4)
     {
       if (v10 < v14)
       {
@@ -485,7 +485,7 @@ LABEL_8:
   else
   {
     v13 = self->_idealPositionForMinimumTravel.y;
-    if (v12 == 1)
+    if (direction == 1)
     {
       if (v11 >= v13)
       {
@@ -495,7 +495,7 @@ LABEL_8:
       goto LABEL_26;
     }
 
-    if (v12 == 2)
+    if (direction == 2)
     {
       if (v11 < v13)
       {
@@ -523,14 +523,14 @@ LABEL_26:
   if (!self->_displayLink)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scrollView);
-    v5 = [WeakRetained window];
+    window = [WeakRetained window];
 
-    if (v5)
+    if (window)
     {
       v6 = objc_loadWeakRetained(&self->_scrollView);
-      v7 = [v6 window];
-      v8 = [v7 screen];
-      v9 = [v8 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+      window2 = [v6 window];
+      screen = [window2 screen];
+      v9 = [screen displayLinkWithTarget:self selector:sel__displayLinkFired_];
       displayLink = self->_displayLink;
       self->_displayLink = v9;
     }
@@ -543,8 +543,8 @@ LABEL_26:
     }
 
     v12 = self->_displayLink;
-    v13 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v12 addToRunLoop:v13 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v12 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
@@ -555,9 +555,9 @@ LABEL_26:
   self->_displayLink = 0;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  v41 = a3;
+  firedCopy = fired;
   v4 = MEMORY[0x1E695EFF8];
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
@@ -655,9 +655,9 @@ LABEL_22:
   v30 = v12 * ((self->_modelPosition.y - v28) * -109.0 - self->_velocity.y * 20.0);
   v31 = v5 + v11 * ((self->_modelPosition.x - v26) * -109.0 - self->_velocity.x * 20.0);
   v32 = v6 + v30;
-  [v41 targetTimestamp];
+  [firedCopy targetTimestamp];
   v34 = v33;
-  [v41 timestamp];
+  [firedCopy timestamp];
   v36 = v34 - v35;
   v37 = self->_velocity.x + v31 * v36;
   v38 = self->_modelPosition.x;
@@ -675,7 +675,7 @@ LABEL_22:
   }
 }
 
-- (double)_distanceForIncrement:(unint64_t)a3 inDirection:(unint64_t)a4
+- (double)_distanceForIncrement:(unint64_t)increment inDirection:(unint64_t)direction
 {
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
   v7 = WeakRetained;
@@ -685,7 +685,7 @@ LABEL_22:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (increment == 1)
   {
     [WeakRetained zoomScale];
     v15 = 40.0;
@@ -694,8 +694,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = a4 - 3;
-  if (a3 == 2)
+  v9 = direction - 3;
+  if (increment == 2)
   {
     [WeakRetained frame];
     if (v9 >= 2)
@@ -712,7 +712,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (increment == 3)
   {
     [WeakRetained contentSize];
     if (v9 <= 1)
@@ -731,10 +731,10 @@ LABEL_14:
   return v8;
 }
 
-- (void)_scrollToContentOffset:(CGPoint)a3
+- (void)_scrollToContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   self->_isAdjustingScrollViewOffset = 1;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
   v7[0] = MEMORY[0x1E69E9820];
@@ -749,10 +749,10 @@ LABEL_14:
   self->_isAdjustingScrollViewOffset = 0;
 }
 
-- (void)_scrollWithScrollToExtentAnimationTo:(CGPoint)a3
+- (void)_scrollWithScrollToExtentAnimationTo:(CGPoint)to
 {
-  y = a3.y;
-  x = a3.x;
+  y = to.y;
+  x = to.x;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -780,10 +780,10 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)_scrollableDirectionsFromOffset:(CGPoint)a3
+- (unint64_t)_scrollableDirectionsFromOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
   [WeakRetained adjustedContentInset];
   v7 = v6;
@@ -845,9 +845,9 @@ LABEL_14:
 - (unint64_t)_rubberbandableDirections
 {
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
-  v4 = [WeakRetained _canScrollWithoutBouncingY];
+  _canScrollWithoutBouncingY = [WeakRetained _canScrollWithoutBouncingY];
 
-  if (v4)
+  if (_canScrollWithoutBouncingY)
   {
     v5 = 5;
   }
@@ -858,9 +858,9 @@ LABEL_14:
   }
 
   v6 = objc_loadWeakRetained(&self->_scrollView);
-  v7 = [v6 _canScrollWithoutBouncingX];
+  _canScrollWithoutBouncingX = [v6 _canScrollWithoutBouncingX];
 
-  if (v7)
+  if (_canScrollWithoutBouncingX)
   {
     return v5 | 0xA;
   }

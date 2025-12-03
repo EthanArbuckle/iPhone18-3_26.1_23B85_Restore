@@ -1,12 +1,12 @@
 @interface CanvasLayoutCoordinator
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillShow:(id)show;
 - (void)onControllerEnvironmentChanges;
-- (void)textViewDidBeginEditing:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
 @end
 
 @implementation CanvasLayoutCoordinator
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

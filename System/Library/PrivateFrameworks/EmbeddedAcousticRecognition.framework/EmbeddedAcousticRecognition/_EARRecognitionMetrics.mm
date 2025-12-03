@@ -1,18 +1,18 @@
 @interface _EARRecognitionMetrics
-- (_EARRecognitionMetrics)initWithRecognizer:(shared_ptr<quasar::SpeechRecognizer>)a3;
+- (_EARRecognitionMetrics)initWithRecognizer:(shared_ptr<quasar::SpeechRecognizer>)recognizer;
 - (id).cxx_construct;
-- (void)addEmojiRecognitionMetrics:(id)a3 recognizedEmojis:(id)a4;
+- (void)addEmojiRecognitionMetrics:(id)metrics recognizedEmojis:(id)emojis;
 - (void)addPauseDurationMetric;
 @end
 
 @implementation _EARRecognitionMetrics
 
-- (_EARRecognitionMetrics)initWithRecognizer:(shared_ptr<quasar::SpeechRecognizer>)a3
+- (_EARRecognitionMetrics)initWithRecognizer:(shared_ptr<quasar::SpeechRecognizer>)recognizer
 {
-  ptr = a3.__ptr_;
+  ptr = recognizer.__ptr_;
   v12.receiver = self;
   v12.super_class = _EARRecognitionMetrics;
-  v4 = [(_EARRecognitionMetrics *)&v12 init:a3.__ptr_];
+  v4 = [(_EARRecognitionMetrics *)&v12 init:recognizer.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -78,25 +78,25 @@ LABEL_8:
   std::__shared_weak_count::__release_shared[abi:ne200100](v4);
 }
 
-- (void)addEmojiRecognitionMetrics:(id)a3 recognizedEmojis:(id)a4
+- (void)addEmojiRecognitionMetrics:(id)metrics recognizedEmojis:(id)emojis
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 objectForKeyedSubscript:@"itnDurationInNs"];
+  metricsCopy = metrics;
+  emojisCopy = emojis;
+  v7 = [metricsCopy objectForKeyedSubscript:@"itnDurationInNs"];
   itnDurationInNs = self->_itnDurationInNs;
   self->_itnDurationInNs = v7;
 
-  v9 = [v13 objectForKeyedSubscript:@"isEmojiPersonalizationUsed"];
+  v9 = [metricsCopy objectForKeyedSubscript:@"isEmojiPersonalizationUsed"];
   self->_isEmojiPersonalizationUsed = [v9 BOOLValue];
 
-  v10 = [v13 objectForKeyedSubscript:@"isEmojiDisambiguationUsed"];
+  v10 = [metricsCopy objectForKeyedSubscript:@"isEmojiDisambiguationUsed"];
   self->_isEmojiDisambiguationUsed = [v10 BOOLValue];
 
-  v11 = [v13 objectForKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
+  v11 = [metricsCopy objectForKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
   self->_isEmojiExpectedButNotRecognized = [v11 BOOLValue];
 
   recognizedEmojis = self->_recognizedEmojis;
-  self->_recognizedEmojis = v6;
+  self->_recognizedEmojis = emojisCopy;
 }
 
 - (id).cxx_construct

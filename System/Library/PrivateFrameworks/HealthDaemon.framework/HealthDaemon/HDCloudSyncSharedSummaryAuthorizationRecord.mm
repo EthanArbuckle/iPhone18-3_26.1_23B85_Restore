@@ -1,93 +1,93 @@
 @interface HDCloudSyncSharedSummaryAuthorizationRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isAuthorizationRecord:(id)a3;
-+ (id)codableRecordFromRecord:(id)a3;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isAuthorizationRecord:(id)record;
++ (id)codableRecordFromRecord:(id)record;
 + (id)fieldsForUnprotectedSerialization;
-+ (id)recordIDWithZoneID:(id)a3 UUID:(id)a4;
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4;
++ (id)recordIDWithZoneID:(id)d UUID:(id)iD;
++ (id)recordWithCKRecord:(id)record error:(id *)error;
 - (CKRecordID)participantRecordID;
-- (HDCloudSyncSharedSummaryAuthorizationRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (HDCloudSyncSharedSummaryAuthorizationRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (NSArray)authorizationIdentifiers;
 - (NSUUID)UUID;
-- (id)initInZone:(id)a3 UUID:(id)a4 authorizationIdentifiers:(id)a5 participantRecord:(id)a6;
-- (void)replaceAuthorizationIdentifiers:(id)a3;
-- (void)updateAuthorizationWithIdentifiersToAdd:(id)a3 identifiersToDelete:(id)a4;
+- (id)initInZone:(id)zone UUID:(id)d authorizationIdentifiers:(id)identifiers participantRecord:(id)record;
+- (void)replaceAuthorizationIdentifiers:(id)identifiers;
+- (void)updateAuthorizationWithIdentifiersToAdd:(id)add identifiersToDelete:(id)delete;
 @end
 
 @implementation HDCloudSyncSharedSummaryAuthorizationRecord
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 UUID:(id)a4
++ (id)recordIDWithZoneID:(id)d UUID:(id)iD
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [v5 stringWithFormat:@"%@/%@", @"SharedSummaryAuthorizationRecord", v7];
+  dCopy = d;
+  uUIDString = [iD UUIDString];
+  v8 = [v5 stringWithFormat:@"%@/%@", @"SharedSummaryAuthorizationRecord", uUIDString];
 
-  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:v6];
+  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:dCopy];
 
   return v9;
 }
 
-+ (BOOL)isAuthorizationRecord:(id)a3
++ (BOOL)isAuthorizationRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"SharedSummaryAuthorizationRecordType"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"SharedSummaryAuthorizationRecordType"];
 
   return v4;
 }
 
-- (id)initInZone:(id)a3 UUID:(id)a4 authorizationIdentifiers:(id)a5 participantRecord:(id)a6
+- (id)initInZone:(id)zone UUID:(id)d authorizationIdentifiers:(id)identifiers participantRecord:(id)record
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [objc_opt_class() recordIDWithZoneID:v13 UUID:v10];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  recordCopy = record;
+  zoneCopy = zone;
+  v14 = [objc_opt_class() recordIDWithZoneID:zoneCopy UUID:dCopy];
 
   v15 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"SharedSummaryAuthorizationRecordType" recordID:v14];
   v16 = [(HDCloudSyncSharedSummaryAuthorizationRecord *)self initWithCKRecord:v15 schemaVersion:1];
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277CBC620]);
-    v18 = [v12 record];
-    v19 = [v18 recordID];
-    v20 = [v17 initWithRecordID:v19 action:1];
+    record = [recordCopy record];
+    recordID = [record recordID];
+    v20 = [v17 initWithRecordID:recordID action:1];
     [v15 setObject:v20 forKeyedSubscript:@"ParticipantRecord"];
 
-    v21 = [v10 UUIDString];
-    v22 = [v21 copy];
+    uUIDString = [dCopy UUIDString];
+    v22 = [uUIDString copy];
     [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)v16->_underlyingAuthorizationRecord setUuid:v22];
 
-    v23 = [v11 copy];
+    v23 = [identifiersCopy copy];
     [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)v16->_underlyingAuthorizationRecord setAuthorizationCategories:v23];
   }
 
   return v16;
 }
 
-- (HDCloudSyncSharedSummaryAuthorizationRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncSharedSummaryAuthorizationRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = HDCloudSyncSharedSummaryAuthorizationRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableSharedSummaryAuthorizationRecord);
     underlyingAuthorizationRecord = v5->_underlyingAuthorizationRecord;
@@ -96,7 +96,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableSharedSummaryAuthorizationRecord alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableSharedSummaryAuthorizationRecord alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingAuthorizationRecord;
   v5->_underlyingAuthorizationRecord = v7;
 
@@ -128,74 +128,74 @@ LABEL_10:
 - (NSUUID)UUID
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord uuid];
-  v5 = [v3 initWithUUIDString:v4];
+  uuid = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord uuid];
+  v5 = [v3 initWithUUIDString:uuid];
 
   return v5;
 }
 
 - (NSArray)authorizationIdentifiers
 {
-  v2 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord authorizationCategories];
-  v3 = [v2 copy];
+  authorizationCategories = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord authorizationCategories];
+  v3 = [authorizationCategories copy];
 
   return v3;
 }
 
 - (CKRecordID)participantRecordID
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"ParticipantRecord"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"ParticipantRecord"];
 
-  v4 = [v3 recordID];
+  recordID = [v3 recordID];
 
-  return v4;
+  return recordID;
 }
 
-- (void)updateAuthorizationWithIdentifiersToAdd:(id)a3 identifiersToDelete:(id)a4
+- (void)updateAuthorizationWithIdentifiersToAdd:(id)add identifiersToDelete:(id)delete
 {
   underlyingAuthorizationRecord = self->_underlyingAuthorizationRecord;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)underlyingAuthorizationRecord authorizationCategories];
-  v11 = HDSharedSummaryMergeAuthorizationIdentifiers(v9, v8, v7);
+  deleteCopy = delete;
+  addCopy = add;
+  authorizationCategories = [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)underlyingAuthorizationRecord authorizationCategories];
+  v11 = HDSharedSummaryMergeAuthorizationIdentifiers(authorizationCategories, addCopy, deleteCopy);
 
   v10 = [v11 mutableCopy];
   [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord setAuthorizationCategories:v10];
 }
 
-- (void)replaceAuthorizationIdentifiers:(id)a3
+- (void)replaceAuthorizationIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)self->_underlyingAuthorizationRecord setAuthorizationCategories:v4];
 }
 
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4
++ (id)recordWithCKRecord:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 recordType];
-  v9 = [a1 recordType];
-  v10 = [v8 isEqualToString:v9];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  recordType2 = [self recordType];
+  v10 = [recordType isEqualToString:recordType2];
 
   if ((v10 & 1) == 0)
   {
     v16 = MEMORY[0x277CCA9B8];
     v17 = objc_opt_class();
-    v11 = [v7 recordType];
-    v14 = [a1 recordType];
+    recordType3 = [recordCopy recordType];
+    recordType4 = [self recordType];
     v18 = @"record has type (%@), but expected (%@)";
-    v25 = v11;
-    v26 = v14;
+    v25 = recordType3;
+    v26 = recordType4;
     v19 = v16;
     v20 = v17;
 LABEL_9:
     v21 = [v19 hk_errorForInvalidArgument:@"@" class:v20 selector:a2 format:{v18, v25, v26}];
     if (v21)
     {
-      if (a4)
+      if (error)
       {
         v22 = v21;
-        *a4 = v21;
+        *error = v21;
       }
 
       else
@@ -209,15 +209,15 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v11 = [v7 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
-  if (!v11 || [a1 requiresUnderlyingMessage] && (objc_msgSend(v7, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), a4), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  recordType3 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
+  if (!recordType3 || [self requiresUnderlyingMessage] && (objc_msgSend(recordCopy, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), error), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
     v15 = 0;
     goto LABEL_17;
   }
 
-  v13 = [v7 hd_requiredValueForKey:@"ParticipantRecord" type:objc_opt_class() error:a4];
-  v14 = v13;
+  v13 = [recordCopy hd_requiredValueForKey:@"ParticipantRecord" type:objc_opt_class() error:error];
+  recordType4 = v13;
   if (!v13)
   {
     goto LABEL_15;
@@ -232,7 +232,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v15 = [[a1 alloc] initWithCKRecord:v7 schemaVersion:{objc_msgSend(v11, "integerValue")}];
+  v15 = [[self alloc] initWithCKRecord:recordCopy schemaVersion:{objc_msgSend(recordType3, "integerValue")}];
 LABEL_16:
 
 LABEL_17:
@@ -243,7 +243,7 @@ LABEL_17:
 + (id)fieldsForUnprotectedSerialization
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HDCloudSyncSharedSummaryAuthorizationRecord;
   v2 = objc_msgSendSuper2(&v9, sel_fieldsForUnprotectedSerialization);
   v10 = objc_opt_class();
@@ -258,18 +258,18 @@ LABEL_17:
   return v6;
 }
 
-+ (id)codableRecordFromRecord:(id)a3
++ (id)codableRecordFromRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_alloc_init(HDCloudSyncCodableSharedSummaryAuthorizationRecord);
-  v5 = [v3 authorizationIdentifiers];
-  v6 = [v5 mutableCopy];
+  authorizationIdentifiers = [recordCopy authorizationIdentifiers];
+  v6 = [authorizationIdentifiers mutableCopy];
   [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)v4 setAuthorizationCategories:v6];
 
-  v7 = [v3 UUID];
+  uUID = [recordCopy UUID];
 
-  v8 = [v7 UUIDString];
-  [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)v4 setUuid:v8];
+  uUIDString = [uUID UUIDString];
+  [(HDCloudSyncCodableSharedSummaryAuthorizationRecord *)v4 setUuid:uUIDString];
 
   return v4;
 }

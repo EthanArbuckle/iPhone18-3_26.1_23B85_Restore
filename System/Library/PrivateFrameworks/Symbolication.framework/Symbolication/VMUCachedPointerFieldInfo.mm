@@ -1,22 +1,22 @@
 @interface VMUCachedPointerFieldInfo
-- (VMUCachedPointerFieldInfo)initWithRootField:(id)a3 leafField:(id)a4 leafOffsetInRootField:(unsigned int)a5;
+- (VMUCachedPointerFieldInfo)initWithRootField:(id)field leafField:(id)leafField leafOffsetInRootField:(unsigned int)rootField;
 @end
 
 @implementation VMUCachedPointerFieldInfo
 
-- (VMUCachedPointerFieldInfo)initWithRootField:(id)a3 leafField:(id)a4 leafOffsetInRootField:(unsigned int)a5
+- (VMUCachedPointerFieldInfo)initWithRootField:(id)field leafField:(id)leafField leafOffsetInRootField:(unsigned int)rootField
 {
-  v9 = a3;
-  v10 = a4;
+  fieldCopy = field;
+  leafFieldCopy = leafField;
   v14.receiver = self;
   v14.super_class = VMUCachedPointerFieldInfo;
   v11 = [(VMUCachedPointerFieldInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_rootField, a3);
-    objc_storeStrong(&v12->_leafField, a4);
-    v12->_leafOffsetInRootField = a5;
+    objc_storeStrong(&v11->_rootField, field);
+    objc_storeStrong(&v12->_leafField, leafField);
+    v12->_leafOffsetInRootField = rootField;
   }
 
   return v12;

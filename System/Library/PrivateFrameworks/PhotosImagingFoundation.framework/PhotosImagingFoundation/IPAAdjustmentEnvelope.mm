@@ -1,5 +1,5 @@
 @interface IPAAdjustmentEnvelope
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
@@ -11,15 +11,15 @@
   v9 = *&self->_originator;
   formatVersion = self->_formatVersion;
   adjustmentStack = self->_adjustmentStack;
-  v6 = [(IPAAdjustmentStack *)adjustmentStack adjustments];
-  v7 = [v3 stringWithFormat:@"<IPAAdjEnv:%p originator=%@ format=%@ formatVersion=%@ adjustments(%p).count=%lu>", self, v9, formatVersion, adjustmentStack, objc_msgSend(v6, "count")];
+  adjustments = [(IPAAdjustmentStack *)adjustmentStack adjustments];
+  v7 = [v3 stringWithFormat:@"<IPAAdjEnv:%p originator=%@ format=%@ formatVersion=%@ adjustments(%p).count=%lu>", self, v9, formatVersion, adjustmentStack, objc_msgSend(adjustments, "count")];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

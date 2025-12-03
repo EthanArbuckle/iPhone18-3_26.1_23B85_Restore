@@ -1,9 +1,9 @@
 @interface VehicleColorPicker
 - (NSArray)cells;
-- (VehicleColorPicker)initWithColors:(id)a3 colorsPerRow:(unint64_t)a4 colorEdgeInsets:(UIEdgeInsets)a5 selectedIndex:(id)a6 contrastColor:(id)a7 delegate:(id)a8;
+- (VehicleColorPicker)initWithColors:(id)colors colorsPerRow:(unint64_t)row colorEdgeInsets:(UIEdgeInsets)insets selectedIndex:(id)index contrastColor:(id)color delegate:(id)delegate;
 - (VehicleColorPickerDelegate)delegate;
-- (void)pressedCell:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pressedCell:(id)cell;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation VehicleColorPicker
@@ -15,24 +15,24 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = VehicleColorPicker;
-  [(VehicleColorPicker *)&v21 traitCollectionDidChange:v4];
-  v5 = [(VehicleColorPicker *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  [(VehicleColorPicker *)&v21 traitCollectionDidChange:changeCopy];
+  traitCollection = [(VehicleColorPicker *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(VehicleColorPicker *)self cells];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    cells = [(VehicleColorPicker *)self cells];
+    v9 = [cells countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -43,17 +43,17 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(cells);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 colorView];
-          v15 = [v14 backgroundColor];
-          [v15 _maps_euclideanDistanceFromColor:self->_contrastColor];
+          colorView = [v13 colorView];
+          backgroundColor = [colorView backgroundColor];
+          [backgroundColor _maps_euclideanDistanceFromColor:self->_contrastColor];
           [v13 setNeedsOutlineStroke:v16 < 0.1];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v10 = [cells countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v10);
@@ -61,19 +61,19 @@
   }
 }
 
-- (void)pressedCell:(id)a3
+- (void)pressedCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(VehicleColorPicker *)self delegate];
-  v6 = [(VehicleColorPicker *)self cells];
-  [v5 colorPicker:self didSelectIndex:{objc_msgSend(v6, "indexOfObject:", v4)}];
+  cellCopy = cell;
+  delegate = [(VehicleColorPicker *)self delegate];
+  cells = [(VehicleColorPicker *)self cells];
+  [delegate colorPicker:self didSelectIndex:{objc_msgSend(cells, "indexOfObject:", cellCopy)}];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(VehicleColorPicker *)self cells];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  cells2 = [(VehicleColorPicker *)self cells];
+  v8 = [cells2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -85,7 +85,7 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cells2);
         }
 
         [*(*(&v12 + 1) + 8 * v11) setActive:0];
@@ -93,13 +93,13 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [cells2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 
-  [v4 setActive:1];
+  [cellCopy setActive:1];
 }
 
 - (NSArray)cells
@@ -108,8 +108,8 @@
   if (!cells)
   {
     v4 = objc_opt_new();
-    v5 = [(VehicleColorPicker *)self colors];
-    v6 = [v5 count];
+    colors = [(VehicleColorPicker *)self colors];
+    v6 = [colors count];
 
     if (v6)
     {
@@ -119,16 +119,16 @@
       height = CGRectZero.size.height;
       do
       {
-        v11 = [[VehiclePickerButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-        v12 = [(VehicleColorPicker *)self colors];
-        v13 = [v12 objectAtIndexedSubscript:v7];
+        height = [[VehiclePickerButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+        colors2 = [(VehicleColorPicker *)self colors];
+        v13 = [colors2 objectAtIndexedSubscript:v7];
 
-        [(VehiclePickerButton *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [(VehiclePickerButton *)v11 setAccessibilityIdentifier:@"VehiclePickerButton"];
-        v14 = [(VehiclePickerButton *)v11 colorView];
-        [v14 setBackgroundColor:v13];
+        [(VehiclePickerButton *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+        [(VehiclePickerButton *)height setAccessibilityIdentifier:@"VehiclePickerButton"];
+        colorView = [(VehiclePickerButton *)height colorView];
+        [colorView setBackgroundColor:v13];
 
-        [(VehiclePickerButton *)v11 setColorViewInsets:self->_colorEdgeInsets.top, self->_colorEdgeInsets.left, self->_colorEdgeInsets.bottom, self->_colorEdgeInsets.right];
+        [(VehiclePickerButton *)height setColorViewInsets:self->_colorEdgeInsets.top, self->_colorEdgeInsets.left, self->_colorEdgeInsets.bottom, self->_colorEdgeInsets.right];
         selectedIndex = self->_selectedIndex;
         if (selectedIndex)
         {
@@ -140,15 +140,15 @@
           v16 = 0;
         }
 
-        [(VehiclePickerButton *)v11 setActive:v16];
+        [(VehiclePickerButton *)height setActive:v16];
         [v13 _maps_euclideanDistanceFromColor:self->_contrastColor];
-        [(VehiclePickerButton *)v11 setNeedsOutlineStroke:v17 < 0.1];
-        [(VehiclePickerButton *)v11 addTarget:self action:"pressedCell:" forControlEvents:64];
-        [(NSArray *)v4 addObject:v11];
+        [(VehiclePickerButton *)height setNeedsOutlineStroke:v17 < 0.1];
+        [(VehiclePickerButton *)height addTarget:self action:"pressedCell:" forControlEvents:64];
+        [(NSArray *)v4 addObject:height];
 
         ++v7;
-        v18 = [(VehicleColorPicker *)self colors];
-        v19 = [v18 count];
+        colors3 = [(VehicleColorPicker *)self colors];
+        v19 = [colors3 count];
       }
 
       while (v7 < v19);
@@ -163,59 +163,59 @@
   return cells;
 }
 
-- (VehicleColorPicker)initWithColors:(id)a3 colorsPerRow:(unint64_t)a4 colorEdgeInsets:(UIEdgeInsets)a5 selectedIndex:(id)a6 contrastColor:(id)a7 delegate:(id)a8
+- (VehicleColorPicker)initWithColors:(id)colors colorsPerRow:(unint64_t)row colorEdgeInsets:(UIEdgeInsets)insets selectedIndex:(id)index contrastColor:(id)color delegate:(id)delegate
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  colorsCopy = colors;
+  indexCopy = index;
+  colorCopy = color;
+  delegateCopy = delegate;
   v79.receiver = self;
   v79.super_class = VehicleColorPicker;
   v21 = [(VehicleColorPicker *)&v79 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v21)
   {
-    v63 = v19;
-    v22 = [v17 copy];
+    v63 = colorCopy;
+    v22 = [colorsCopy copy];
     colors = v21->_colors;
     v21->_colors = v22;
 
-    v21->_colorsPerRow = a4;
+    v21->_colorsPerRow = row;
     v21->_colorEdgeInsets.top = top;
     v21->_colorEdgeInsets.left = left;
     v21->_colorEdgeInsets.bottom = bottom;
     v21->_colorEdgeInsets.right = right;
-    objc_storeStrong(&v21->_contrastColor, a7);
-    objc_storeWeak(&v21->_delegate, v20);
-    v24 = [v18 copy];
+    objc_storeStrong(&v21->_contrastColor, color);
+    objc_storeWeak(&v21->_delegate, delegateCopy);
+    v24 = [indexCopy copy];
     selectedIndex = v21->_selectedIndex;
     v21->_selectedIndex = v24;
 
     v70 = objc_opt_new();
-    v26 = [v17 count];
+    v26 = [colorsCopy count];
     v27 = v26;
-    if (v26 == v26 / a4 * a4)
+    if (v26 == v26 / row * row)
     {
-      v28 = v26 / a4;
+      v28 = v26 / row;
     }
 
     else
     {
-      v28 = v26 / a4 + 1;
+      v28 = v26 / row + 1;
     }
 
-    v29 = [(VehicleColorPicker *)v21 topAnchor];
-    v30 = v29;
-    v65 = v17;
+    topAnchor = [(VehicleColorPicker *)v21 topAnchor];
+    v30 = topAnchor;
+    v65 = colorsCopy;
     v66 = v28;
-    v64 = v18;
-    v62 = v20;
+    v64 = indexCopy;
+    v62 = delegateCopy;
     if (v28)
     {
-      v31 = a4;
+      rowCopy = row;
       v32 = 0;
       v33 = 0;
       do
@@ -224,7 +224,7 @@
         if (v32 >= v27)
         {
           v71 = 0;
-          v54 = 0;
+          trailingAnchor3 = 0;
         }
 
         else
@@ -235,9 +235,9 @@
           v69 = v30;
           while (1)
           {
-            v36 = [(VehicleColorPicker *)v21 cells];
+            cells = [(VehicleColorPicker *)v21 cells];
             v78 = v32;
-            v37 = [v36 objectAtIndexedSubscript:v32];
+            v37 = [cells objectAtIndexedSubscript:v32];
 
             [(VehicleColorPicker *)v21 addSubview:v37];
             v77 = v34;
@@ -245,72 +245,72 @@
             {
               v38 = v37;
 
-              v39 = [v38 leadingAnchor];
-              v76 = [(VehicleColorPicker *)v21 leadingAnchor];
-              v75 = [v39 constraintEqualToAnchor:?];
-              v82[0] = v75;
-              v74 = [v38 topAnchor];
-              v73 = [v74 constraintEqualToAnchor:v30];
+              leadingAnchor = [v38 leadingAnchor];
+              leadingAnchor2 = [(VehicleColorPicker *)v21 leadingAnchor];
+              topAnchor3 = [leadingAnchor constraintEqualToAnchor:?];
+              v82[0] = topAnchor3;
+              topAnchor2 = [v38 topAnchor];
+              v73 = [topAnchor2 constraintEqualToAnchor:v30];
               v82[1] = v73;
-              v40 = [v38 widthAnchor];
-              v41 = [v38 heightAnchor];
-              v72 = v40;
-              v42 = [v40 constraintEqualToAnchor:v41];
-              v82[2] = v42;
-              v43 = [NSArray arrayWithObjects:v82 count:3];
-              [v70 addObjectsFromArray:v43];
+              widthAnchor = [v38 widthAnchor];
+              heightAnchor = [v38 heightAnchor];
+              widthAnchor3 = widthAnchor;
+              heightAnchor2 = [widthAnchor constraintEqualToAnchor:heightAnchor];
+              v82[2] = heightAnchor2;
+              heightAnchor3 = [NSArray arrayWithObjects:v82 count:3];
+              [v70 addObjectsFromArray:heightAnchor3];
               v71 = v38;
             }
 
             else
             {
-              v68 = [v37 leadingAnchor];
-              v76 = [v68 constraintEqualToAnchor:v34];
-              v81[0] = v76;
-              v75 = [v37 topAnchor];
-              v74 = [v75 constraintEqualToAnchor:v30];
-              v81[1] = v74;
-              v44 = [v37 widthAnchor];
-              v72 = [v71 widthAnchor];
-              v73 = v44;
-              v41 = [v44 constraintEqualToAnchor:?];
-              v81[2] = v41;
-              v42 = [v37 heightAnchor];
-              v43 = [v71 heightAnchor];
-              v45 = [v42 constraintEqualToAnchor:v43];
+              leadingAnchor3 = [v37 leadingAnchor];
+              leadingAnchor2 = [leadingAnchor3 constraintEqualToAnchor:v34];
+              v81[0] = leadingAnchor2;
+              topAnchor3 = [v37 topAnchor];
+              topAnchor2 = [topAnchor3 constraintEqualToAnchor:v30];
+              v81[1] = topAnchor2;
+              widthAnchor2 = [v37 widthAnchor];
+              widthAnchor3 = [v71 widthAnchor];
+              v73 = widthAnchor2;
+              heightAnchor = [widthAnchor2 constraintEqualToAnchor:?];
+              v81[2] = heightAnchor;
+              heightAnchor2 = [v37 heightAnchor];
+              heightAnchor3 = [v71 heightAnchor];
+              v45 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
               v81[3] = v45;
               [NSArray arrayWithObjects:v81 count:4];
               v46 = v27;
-              v47 = v31;
+              v47 = rowCopy;
               v49 = v48 = v21;
               [v70 addObjectsFromArray:v49];
 
               v21 = v48;
-              v31 = v47;
+              rowCopy = v47;
               v27 = v46;
-              v39 = v68;
+              leadingAnchor = leadingAnchor3;
             }
 
-            if (v31 == v35)
+            if (rowCopy == v35)
             {
-              v50 = [v37 trailingAnchor];
-              v51 = [(VehicleColorPicker *)v21 trailingAnchor];
-              v52 = [v50 constraintEqualToAnchor:v51];
+              trailingAnchor = [v37 trailingAnchor];
+              trailingAnchor2 = [(VehicleColorPicker *)v21 trailingAnchor];
+              v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
               v80 = v52;
               v53 = [NSArray arrayWithObjects:&v80 count:1];
               [v70 addObjectsFromArray:v53];
             }
 
-            v54 = [v37 trailingAnchor];
+            trailingAnchor3 = [v37 trailingAnchor];
 
             v32 = v78 + 1;
-            if (v35 >= v31)
+            if (v35 >= rowCopy)
             {
               break;
             }
 
             ++v35;
-            v34 = v54;
+            v34 = trailingAnchor3;
             v30 = v69;
             if (v32 >= v27)
             {
@@ -322,10 +322,10 @@
         }
 
 LABEL_19:
-        v55 = [v71 bottomAnchor];
+        bottomAnchor = [v71 bottomAnchor];
 
         v33 = v67 + 1;
-        v30 = v55;
+        v30 = bottomAnchor;
       }
 
       while (v67 + 1 < v66);
@@ -333,22 +333,22 @@ LABEL_19:
 
     else
     {
-      v55 = v29;
+      bottomAnchor = topAnchor;
     }
 
-    v56 = [(VehicleColorPicker *)v21 cells];
-    v57 = [v56 lastObject];
+    cells2 = [(VehicleColorPicker *)v21 cells];
+    lastObject = [cells2 lastObject];
 
-    v58 = [v57 bottomAnchor];
-    v59 = [(VehicleColorPicker *)v21 bottomAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    bottomAnchor2 = [lastObject bottomAnchor];
+    bottomAnchor3 = [(VehicleColorPicker *)v21 bottomAnchor];
+    v60 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v70 addObject:v60];
 
     [NSLayoutConstraint activateConstraints:v70];
-    v18 = v64;
-    v17 = v65;
-    v20 = v62;
-    v19 = v63;
+    indexCopy = v64;
+    colorsCopy = v65;
+    delegateCopy = v62;
+    colorCopy = v63;
   }
 
   return v21;

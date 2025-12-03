@@ -1,12 +1,12 @@
 @interface OKRuntime
 + (id)currentPlatformStringWithDisplayScale;
 + (id)opusKitBundle;
-+ (id)resolutionStringWithSize:(CGSize)a3 andPlatforms:(unint64_t)a4;
-+ (id)resolutionStringWithSize:(CGSize)a3 keepAspectRatio:(BOOL)a4;
-+ (id)resolutionStringWithSize:(CGSize)a3 keepAspectRatio:(BOOL)a4 andPlatforms:(unint64_t)a5;
-+ (id)stringForPlatforms:(unint64_t)a3;
++ (id)resolutionStringWithSize:(CGSize)size andPlatforms:(unint64_t)platforms;
++ (id)resolutionStringWithSize:(CGSize)size keepAspectRatio:(BOOL)ratio;
++ (id)resolutionStringWithSize:(CGSize)size keepAspectRatio:(BOOL)ratio andPlatforms:(unint64_t)platforms;
++ (id)stringForPlatforms:(unint64_t)platforms;
 + (unint64_t)currentPlatform;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 @end
 
 @implementation OKRuntime
@@ -99,25 +99,25 @@ LABEL_7:
 + (id)currentPlatformStringWithDisplayScale
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 stringForPlatforms:{objc_msgSend(a1, "currentPlatform")}];
+  v3 = [self stringForPlatforms:{objc_msgSend(self, "currentPlatform")}];
   [objc_msgSend(MEMORY[0x277D759A0] "mainScreen")];
   return [v2 stringWithFormat:@"%@@%lfx", v3, v4];
 }
 
-+ (id)stringForPlatforms:(unint64_t)a3
++ (id)stringForPlatforms:(unint64_t)platforms
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = v4;
+  platformsCopy = platforms;
+  string = [MEMORY[0x277CCAB68] string];
+  v5 = string;
   v6 = &stru_287AC35A0;
-  if (v3)
+  if (platformsCopy)
   {
-    [v4 appendFormat:@"%@%@", &stru_287AC35A0, @"iphone"];
+    [string appendFormat:@"%@%@", &stru_287AC35A0, @"iphone"];
     v6 = @",";
-    if ((v3 & 2) == 0)
+    if ((platformsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((platformsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -126,17 +126,17 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((platformsCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 appendFormat:@"%@%@", v6, @"ipad"];
   v6 = @",";
-  if ((v3 & 4) == 0)
+  if ((platformsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((platformsCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -144,7 +144,7 @@ LABEL_4:
 LABEL_11:
     [v5 appendFormat:@"%@%@", v6, @"appletv"];
     v6 = @",";
-    if ((v3 & 0x10) == 0)
+    if ((platformsCopy & 0x10) == 0)
     {
       return v5;
     }
@@ -155,13 +155,13 @@ LABEL_11:
 LABEL_10:
   [v5 appendFormat:@"%@%@", v6, @"desktop"];
   v6 = @",";
-  if ((v3 & 8) != 0)
+  if ((platformsCopy & 8) != 0)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if ((v3 & 0x10) != 0)
+  if ((platformsCopy & 0x10) != 0)
   {
 LABEL_6:
     [v5 appendFormat:@"%@%@", v6, @"web"];
@@ -170,54 +170,54 @@ LABEL_6:
   return v5;
 }
 
-+ (id)resolutionStringWithSize:(CGSize)a3 andPlatforms:(unint64_t)a4
++ (id)resolutionStringWithSize:(CGSize)size andPlatforms:(unint64_t)platforms
 {
-  result = [MEMORY[0x277CCACA8] stringWithFormat:@"%ldx%ld", a3.width, a3.height];
-  if (a4)
+  result = [MEMORY[0x277CCACA8] stringWithFormat:@"%ldx%ld", size.width, size.height];
+  if (platforms)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", result, objc_msgSend(a1, "stringForPlatforms:", a4)];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", result, objc_msgSend(self, "stringForPlatforms:", platforms)];
   }
 
   return result;
 }
 
-+ (id)resolutionStringWithSize:(CGSize)a3 keepAspectRatio:(BOOL)a4
++ (id)resolutionStringWithSize:(CGSize)size keepAspectRatio:(BOOL)ratio
 {
   v4 = @"+";
-  if (a4)
+  if (ratio)
   {
     v4 = &stru_287AC35A0;
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ldx%ld", v4, a3.width, a3.height];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ldx%ld", v4, size.width, size.height];
 }
 
-+ (id)resolutionStringWithSize:(CGSize)a3 keepAspectRatio:(BOOL)a4 andPlatforms:(unint64_t)a5
++ (id)resolutionStringWithSize:(CGSize)size keepAspectRatio:(BOOL)ratio andPlatforms:(unint64_t)platforms
 {
   v7 = @"+";
-  if (a4)
+  if (ratio)
   {
     v7 = &stru_287AC35A0;
   }
 
-  result = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ldx%ld", v7, a3.width, a3.height];
-  if (a5)
+  result = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%ldx%ld", v7, size.width, size.height];
+  if (platforms)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", result, objc_msgSend(a1, "stringForPlatforms:", a5)];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@@%@", result, objc_msgSend(self, "stringForPlatforms:", platforms)];
   }
 
   return result;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKRuntime"];
-  [a3 setObject:&unk_287AEFEE8 forKeyedSubscript:@"OKPlatformPhone"];
-  [a3 setObject:&unk_287AEFF00 forKeyedSubscript:@"OKPlatformPad"];
-  [a3 setObject:&unk_287AEFF18 forKeyedSubscript:@"OKPlatformDesktop"];
-  [a3 setObject:&unk_287AEFF30 forKeyedSubscript:@"OKPlatformATV"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKRuntime"];
+  [context setObject:&unk_287AEFEE8 forKeyedSubscript:@"OKPlatformPhone"];
+  [context setObject:&unk_287AEFF00 forKeyedSubscript:@"OKPlatformPad"];
+  [context setObject:&unk_287AEFF18 forKeyedSubscript:@"OKPlatformDesktop"];
+  [context setObject:&unk_287AEFF30 forKeyedSubscript:@"OKPlatformATV"];
 
-  [a3 setObject:&unk_287AEFF48 forKeyedSubscript:@"OKPlatformWeb"];
+  [context setObject:&unk_287AEFF48 forKeyedSubscript:@"OKPlatformWeb"];
 }
 
 @end

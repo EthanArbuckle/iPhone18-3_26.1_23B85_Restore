@@ -1,20 +1,20 @@
 @interface ACDTCCUtilities
-+ (BOOL)clearAllTCCStatesForAccountTypeID:(id)a3;
-+ (BOOL)clearTCCStateForClient:(id)a3 accountTypeID:(id)a4;
-+ (BOOL)setTCCStateForClient:(id)a3 accountTypeID:(id)a4 toGranted:(BOOL)a5;
-+ (__CFString)_TCCServiceForAccountTypeID:(id)a3;
-+ (id)allTCCStatesForAccountTypeID:(id)a3;
-+ (int)TCCStateForClient:(id)a3 accountTypeID:(id)a4;
++ (BOOL)clearAllTCCStatesForAccountTypeID:(id)d;
++ (BOOL)clearTCCStateForClient:(id)client accountTypeID:(id)d;
++ (BOOL)setTCCStateForClient:(id)client accountTypeID:(id)d toGranted:(BOOL)granted;
++ (__CFString)_TCCServiceForAccountTypeID:(id)d;
++ (id)allTCCStatesForAccountTypeID:(id)d;
++ (int)TCCStateForClient:(id)client accountTypeID:(id)d;
 @end
 
 @implementation ACDTCCUtilities
 
-+ (int)TCCStateForClient:(id)a3 accountTypeID:(id)a4
++ (int)TCCStateForClient:(id)client accountTypeID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _TCCServiceForAccountTypeID:v7])
+  clientCopy = client;
+  dCopy = d;
+  if ([self _TCCServiceForAccountTypeID:dCopy])
   {
     v21 = 0u;
     v22 = 0u;
@@ -24,7 +24,7 @@
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
-      v20 = v7;
+      v20 = dCopy;
       v10 = *v22;
       v11 = MEMORY[0x277D6C0C8];
       while (2)
@@ -42,8 +42,8 @@
           if (v14)
           {
             v15 = CFBundleGetIdentifier(v14);
-            v16 = [v6 bundleID];
-            v17 = [v15 isEqualToString:v16];
+            bundleID = [clientCopy bundleID];
+            v17 = [v15 isEqualToString:bundleID];
 
             if (v17)
             {
@@ -62,7 +62,7 @@
                 }
               }
 
-              v7 = v20;
+              dCopy = v20;
 
               goto LABEL_21;
             }
@@ -78,7 +78,7 @@
         break;
       }
 
-      v7 = v20;
+      dCopy = v20;
     }
 
 LABEL_21:
@@ -99,11 +99,11 @@ LABEL_21:
   return v9;
 }
 
-+ (BOOL)setTCCStateForClient:(id)a3 accountTypeID:(id)a4 toGranted:(BOOL)a5
++ (BOOL)setTCCStateForClient:(id)client accountTypeID:(id)d toGranted:(BOOL)granted
 {
-  v7 = a3;
-  v8 = a4;
-  if (![a1 _TCCServiceForAccountTypeID:v8])
+  clientCopy = client;
+  dCopy = d;
+  if (![self _TCCServiceForAccountTypeID:dCopy])
   {
     v12 = _ACDLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if (![v7 bundle])
+  if (![clientCopy bundle])
   {
     v12 = _ACDLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -141,11 +141,11 @@ LABEL_11:
   return v11;
 }
 
-+ (BOOL)clearTCCStateForClient:(id)a3 accountTypeID:(id)a4
++ (BOOL)clearTCCStateForClient:(id)client accountTypeID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (![a1 _TCCServiceForAccountTypeID:v7])
+  clientCopy = client;
+  dCopy = d;
+  if (![self _TCCServiceForAccountTypeID:dCopy])
   {
     v9 = _ACDLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -156,7 +156,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (![v6 bundle])
+  if (![clientCopy bundle])
   {
     v9 = _ACDLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -170,19 +170,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [a1 _TCCServiceForAccountTypeID:v7];
-  [v6 bundle];
+  [self _TCCServiceForAccountTypeID:dCopy];
+  [clientCopy bundle];
   v8 = TCCAccessResetForBundle() != 0;
 LABEL_9:
 
   return v8;
 }
 
-+ (id)allTCCStatesForAccountTypeID:(id)a3
++ (id)allTCCStatesForAccountTypeID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 _TCCServiceForAccountTypeID:v4])
+  dCopy = d;
+  if ([self _TCCServiceForAccountTypeID:dCopy])
   {
     v5 = TCCAccessCopyInformation();
     if (v5)
@@ -257,10 +257,10 @@ LABEL_9:
   return v19;
 }
 
-+ (BOOL)clearAllTCCStatesForAccountTypeID:(id)a3
++ (BOOL)clearAllTCCStatesForAccountTypeID:(id)d
 {
-  v4 = a3;
-  if ([a1 _TCCServiceForAccountTypeID:v4])
+  dCopy = d;
+  if ([self _TCCServiceForAccountTypeID:dCopy])
   {
     v5 = TCCAccessReset() != 0;
   }
@@ -279,10 +279,10 @@ LABEL_9:
   return v5;
 }
 
-+ (__CFString)_TCCServiceForAccountTypeID:(id)a3
++ (__CFString)_TCCServiceForAccountTypeID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CB8C18]])
+  dCopy = d;
+  if ([dCopy isEqualToString:*MEMORY[0x277CB8C18]])
   {
     v4 = MEMORY[0x277D6C170];
 LABEL_7:
@@ -290,19 +290,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8D28]])
+  if ([dCopy isEqualToString:*MEMORY[0x277CB8D28]])
   {
     v4 = MEMORY[0x277D6C228];
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8D00]])
+  if ([dCopy isEqualToString:*MEMORY[0x277CB8D00]])
   {
     v4 = MEMORY[0x277D6C208];
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8D18]])
+  if ([dCopy isEqualToString:*MEMORY[0x277CB8D18]])
   {
     v5 = *MEMORY[0x277D6C220];
   }

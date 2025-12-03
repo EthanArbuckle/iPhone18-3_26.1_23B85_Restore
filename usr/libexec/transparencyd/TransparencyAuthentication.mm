@@ -1,8 +1,8 @@
 @interface TransparencyAuthentication
 + (BOOL)isVirtualMachine;
-- (TransparencyAuthentication)initWithWorkloop:(id)a3;
-- (TransparencyAuthentication)initWithWorkloop:(id)a3 analytics:(id)a4;
-- (void)signData:(id)a3 key:(id)a4 completionHandler:(id)a5;
+- (TransparencyAuthentication)initWithWorkloop:(id)workloop;
+- (TransparencyAuthentication)initWithWorkloop:(id)workloop analytics:(id)analytics;
+- (void)signData:(id)data key:(id)key completionHandler:(id)handler;
 @end
 
 @implementation TransparencyAuthentication
@@ -17,10 +17,10 @@
   return byte_10039CE40;
 }
 
-- (TransparencyAuthentication)initWithWorkloop:(id)a3 analytics:(id)a4
+- (TransparencyAuthentication)initWithWorkloop:(id)workloop analytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  workloopCopy = workloop;
+  analyticsCopy = analytics;
   v14.receiver = self;
   v14.super_class = TransparencyAuthentication;
   v8 = [(TransparencyAuthentication *)&v14 init];
@@ -28,47 +28,47 @@
   if (v8)
   {
     [(TransparencyAuthentication *)v8 setIsSupported:1];
-    [(TransparencyAuthentication *)v9 setWorkloop:v6];
-    [(TransparencyAuthentication *)v9 setAnalytics:v7];
+    [(TransparencyAuthentication *)v9 setWorkloop:workloopCopy];
+    [(TransparencyAuthentication *)v9 setAnalytics:analyticsCopy];
     v10 = [TransparencyBAACertFetcher alloc];
-    v11 = [(TransparencyAuthentication *)v9 analytics];
-    v12 = [(TransparencyBAACertFetcher *)v10 initWithWorkloop:v6 analytics:v11];
+    analytics = [(TransparencyAuthentication *)v9 analytics];
+    v12 = [(TransparencyBAACertFetcher *)v10 initWithWorkloop:workloopCopy analytics:analytics];
     [(TransparencyAuthentication *)v9 setCertFetcher:v12];
   }
 
   return v9;
 }
 
-- (TransparencyAuthentication)initWithWorkloop:(id)a3
+- (TransparencyAuthentication)initWithWorkloop:(id)workloop
 {
-  v4 = a3;
+  workloopCopy = workloop;
   v5 = +[TransparencyAnalytics logger];
-  v6 = [(TransparencyAuthentication *)self initWithWorkloop:v4 analytics:v5];
+  v6 = [(TransparencyAuthentication *)self initWithWorkloop:workloopCopy analytics:v5];
 
   return v6;
 }
 
-- (void)signData:(id)a3 key:(id)a4 completionHandler:(id)a5
+- (void)signData:(id)data key:(id)key completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 useHostKey])
+  keyCopy = key;
+  handlerCopy = handler;
+  dataCopy = data;
+  if ([keyCopy useHostKey])
   {
-    v11 = [(TransparencyAuthentication *)self workloop];
+    workloop = [(TransparencyAuthentication *)self workloop];
     error[1] = _NSConcreteStackBlock;
     error[2] = 3221225472;
     error[3] = sub_100234254;
     error[4] = &unk_10032C318;
     error[5] = self;
-    v17 = v9;
+    v17 = handlerCopy;
     DeviceIdentityCreateHostSignatureWithCompletion();
   }
 
   else
   {
     error[0] = 0;
-    Signature = SecKeyCreateSignature([v8 referenceKey], kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v10, error);
+    Signature = SecKeyCreateSignature([keyCopy referenceKey], kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, error);
 
     if (Signature)
     {
@@ -82,8 +82,8 @@
 
     if (v13)
     {
-      v15 = [v8 certificates];
-      (*(v9 + 2))(v9, Signature, v15, 0);
+      certificates = [keyCopy certificates];
+      (*(handlerCopy + 2))(handlerCopy, Signature, certificates, 0);
     }
 
     else
@@ -102,7 +102,7 @@
       }
 
       Signature = error[0];
-      (*(v9 + 2))(v9, 0, 0, error[0]);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, error[0]);
     }
   }
 }

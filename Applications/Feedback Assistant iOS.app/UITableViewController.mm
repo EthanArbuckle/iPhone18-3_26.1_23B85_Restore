@@ -1,14 +1,14 @@
 @interface UITableViewController
-- (void)closeFeedbackWithItem:(id)a3;
-- (void)didTapCloseFeedbackWithItem:(id)a3 atIndexPath:(id)a4;
+- (void)closeFeedbackWithItem:(id)item;
+- (void)didTapCloseFeedbackWithItem:(id)item atIndexPath:(id)path;
 @end
 
 @implementation UITableViewController
 
-- (void)didTapCloseFeedbackWithItem:(id)a3 atIndexPath:(id)a4
+- (void)didTapCloseFeedbackWithItem:(id)item atIndexPath:(id)path
 {
-  v5 = a3;
-  v29 = a4;
+  itemCopy = item;
+  pathCopy = path;
   v6 = +[FBALog appHandle];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,8 +19,8 @@
   v7 = +[NSBundle mainBundle];
   v8 = FBKCommonStrings;
   v9 = [v7 localizedStringForKey:@"CLOSE_FEEDBACK_ALERT_TITLE(ID)" value:&stru_1000E2210 table:FBKCommonStrings];
-  v10 = [v5 feedbackIDString];
-  v11 = [NSString stringWithFormat:v9, v10];
+  feedbackIDString = [itemCopy feedbackIDString];
+  v11 = [NSString stringWithFormat:v9, feedbackIDString];
 
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"CLOSE_FEEDBACK_ALERT_INFORMATIVE_TEXT" value:&stru_1000E2210 table:v8];
@@ -33,9 +33,9 @@
   v36[1] = 3221225472;
   v36[2] = sub_100004E4C;
   v36[3] = &unk_1000DE4A8;
-  v17 = v5;
+  v17 = itemCopy;
   v37 = v17;
-  v38 = self;
+  selfCopy = self;
   v18 = [UIAlertAction actionWithTitle:v16 style:2 handler:v36];
   [v14 addAction:v18];
 
@@ -46,43 +46,43 @@
   v33[2] = sub_100004F44;
   v33[3] = &unk_1000DE4A8;
   v34 = v17;
-  v35 = self;
+  selfCopy2 = self;
   v21 = v17;
   v22 = [UIAlertAction actionWithTitle:v20 style:1 handler:v33];
   [v14 addAction:v22];
 
-  v23 = self;
-  v24 = [(UITableViewController *)v23 presentedViewController];
+  selfCopy3 = self;
+  presentedViewController = [(UITableViewController *)selfCopy3 presentedViewController];
 
-  v25 = v23;
-  if (v24)
+  presentedViewController2 = selfCopy3;
+  if (presentedViewController)
   {
-    v25 = [(UITableViewController *)v23 presentedViewController];
+    presentedViewController2 = [(UITableViewController *)selfCopy3 presentedViewController];
   }
 
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100005034;
   v30[3] = &unk_1000DE4D0;
-  v31 = v29;
-  v32 = v23;
-  v26 = v29;
-  [v25 presentViewController:v14 animated:1 completion:v30];
+  v31 = pathCopy;
+  v32 = selfCopy3;
+  v26 = pathCopy;
+  [presentedViewController2 presentViewController:v14 animated:1 completion:v30];
 }
 
-- (void)closeFeedbackWithItem:(id)a3
+- (void)closeFeedbackWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[FBKData sharedInstance];
-  v10 = v4;
+  v10 = itemCopy;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000051A4;
   v8[3] = &unk_1000DE4F8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = itemCopy;
+  v7 = itemCopy;
   [v5 closeFeedbackItems:v6 completion:v8];
 }
 

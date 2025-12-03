@@ -1,37 +1,37 @@
 @interface TSCHPresetImagerInfoBased
-+ (id)presetImagerForChartType:(id)a3;
-- (CGRect)p_updateSwatchFrameForInwardLayoutIfNeeded:(CGRect)a3 outImageSize:(CGSize *)a4 outImageScale:(double *)a5 outSwatchOffset:(CGPoint *)a6 outCanvasScale:(double *)a7;
-- (CGRect)p_updateSwatchFrameForRectAdjustmentIfNeeded:(CGRect)a3 rectAdjustment:(id)a4 outSwatchOffset:(CGPoint *)a5;
-- (TSCHPresetImagerInfoBased)initWithChartType:(id)a3;
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3;
++ (id)presetImagerForChartType:(id)type;
+- (CGRect)p_updateSwatchFrameForInwardLayoutIfNeeded:(CGRect)needed outImageSize:(CGSize *)size outImageScale:(double *)scale outSwatchOffset:(CGPoint *)offset outCanvasScale:(double *)canvasScale;
+- (CGRect)p_updateSwatchFrameForRectAdjustmentIfNeeded:(CGRect)needed rectAdjustment:(id)adjustment outSwatchOffset:(CGPoint *)offset;
+- (TSCHPresetImagerInfoBased)initWithChartType:(id)type;
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size;
 - (double)p_canvasScale;
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9;
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache;
 - (id)p_imageRectAdjustments;
-- (id)p_rectAdjustmentForChartType:(id)a3;
-- (void)p_debugGenerateLayoutCacheWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7;
+- (id)p_rectAdjustmentForChartType:(id)type;
+- (void)p_debugGenerateLayoutCacheWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame;
 @end
 
 @implementation TSCHPresetImagerInfoBased
 
-+ (id)presetImagerForChartType:(id)a3
++ (id)presetImagerForChartType:(id)type
 {
-  v3 = a3;
-  v8 = objc_alloc(objc_msgSend_presetImagerClass(v3, v4, v5, v6, v7));
-  v13 = objc_msgSend_initWithChartType_(v8, v9, v10, v11, v12, v3);
+  typeCopy = type;
+  v8 = objc_alloc(objc_msgSend_presetImagerClass(typeCopy, v4, v5, v6, v7));
+  v13 = objc_msgSend_initWithChartType_(v8, v9, v10, v11, v12, typeCopy);
 
   return v13;
 }
 
-- (TSCHPresetImagerInfoBased)initWithChartType:(id)a3
+- (TSCHPresetImagerInfoBased)initWithChartType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = TSCHPresetImagerInfoBased;
-  v6 = [(TSCHPresetImager *)&v9 initWithChartType:v5];
+  v6 = [(TSCHPresetImager *)&v9 initWithChartType:typeCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_chartType, a3);
+    objc_storeStrong(&v6->_chartType, type);
   }
 
   return v7;
@@ -173,16 +173,16 @@ LABEL_10:
   return v171;
 }
 
-- (id)p_rectAdjustmentForChartType:(id)a3
+- (id)p_rectAdjustmentForChartType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9 = objc_msgSend_p_imageRectAdjustments(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, typeCopy);
 
   return v14;
 }
 
-- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)a3
+- (UIEdgeInsets)swatchImageEdgeInsetsForSize:(CGSize)size
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -195,18 +195,18 @@ LABEL_10:
   return result;
 }
 
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache
 {
-  v11 = *&a4;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  v11 = *&target;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v210[1] = *MEMORY[0x277D85DE8];
-  v208 = a5;
-  v18 = a3;
-  v207 = a6;
-  v19 = a8;
+  sizeCopy = size;
+  presetCopy = preset;
+  scaleCopy = scale;
+  rootCopy = root;
   objc_opt_class();
   v24 = objc_msgSend_p_chartType(self, v20, v21, v22, v23);
   v25 = TSUDynamicCast();
@@ -242,8 +242,8 @@ LABEL_10:
     v57 = v53;
     v56 = v54;
     v55 = v59;
-    v208.width = v54;
-    v208.height = v59;
+    sizeCopy.width = v54;
+    sizeCopy.height = v59;
     if (v11)
     {
       goto LABEL_10;
@@ -260,14 +260,14 @@ LABEL_10:
   {
 LABEL_9:
     v60 = MEMORY[0x277D81150];
-    v61 = a9;
+    cacheCopy = cache;
     v62 = v25;
     v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v51, v52, v53, v54, "[TSCHPresetImagerInfoBased imageWithPreset:target:imageSize:imageScale:swatchFrame:documentRoot:shouldCache:]");
     v68 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v64, v65, v66, v67, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHPresetImager.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v60, v69, v70, v71, v72, v63, v68, 2078, 0, "invalid operation target");
 
     v25 = v62;
-    a9 = v61;
+    cache = cacheCopy;
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v73, v74, v75, v76);
   }
@@ -285,7 +285,7 @@ LABEL_10:
   {
     v86 = objc_msgSend_activateLayoutCacheForTarget_requestedSwatchFrame_(v25, v83, x, y, width, v11, height);
     v90 = (v86 == 0) | v50;
-    v197 = a9;
+    cacheCopy2 = cache;
     if ((v86 == 0) | v50 & 1)
     {
       v91 = objc_msgSend_p_chartType(self, v85, v87, v88, v89);
@@ -303,14 +303,14 @@ LABEL_10:
     v204 = v58;
     v194 = v96;
     objc_msgSend_p_updateSwatchFrameForRectAdjustmentIfNeeded_rectAdjustment_outSwatchOffset_(self, v98, v58, v57, v56, v96, &v204, v55);
-    objc_msgSend_p_updateSwatchFrameForInwardLayoutIfNeeded_outImageSize_outImageScale_outSwatchOffset_outCanvasScale_(self, v99, v100, v101, v102, &v208, &v207, &v204, &v206);
+    objc_msgSend_p_updateSwatchFrameForInwardLayoutIfNeeded_outImageSize_outImageScale_outSwatchOffset_outCanvasScale_(self, v99, v100, v101, v102, &sizeCopy, &scaleCopy, &v204, &v206);
     v104 = v103;
     v106 = v105;
     v108 = v107;
     v110 = v109;
     v111 = objc_alloc(MEMORY[0x277D802E0]);
-    v198 = v19;
-    v116 = objc_msgSend_initWithDocumentRoot_(v111, v112, v113, v114, v115, v19);
+    v198 = rootCopy;
+    v116 = objc_msgSend_initWithDocumentRoot_(v111, v112, v113, v114, v115, rootCopy);
     TSUMultiplySizeScalar();
     objc_msgSend_setScaledImageSize_(v116, v117, v118, v119, v120);
     TSUMultiplySizeScalar();
@@ -318,10 +318,10 @@ LABEL_10:
     objc_msgSend_setUnscaledClipRect_(v116, v121, v122, v123, v124);
     v195 = v86;
     v196 = v25;
-    v199 = v18;
-    v126 = objc_msgSend_drawableChartInfoForIconWithPreset_target_inFrame_offset_layoutCache_layoutInward_(v25, v125, v104, v106, v108, v18, v11, v86, v90 & 1, v110, v204, v205);
+    v199 = presetCopy;
+    v126 = objc_msgSend_drawableChartInfoForIconWithPreset_target_inFrame_offset_layoutCache_layoutInward_(v25, v125, v104, v106, v108, presetCopy, v11, v86, v90 & 1, v110, v204, v205);
     v210[0] = v126;
-    LOBYTE(v19) = 1;
+    LOBYTE(rootCopy) = 1;
     v131 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v127, v128, v129, v130, v210, 1);
     v193 = v116;
     objc_msgSend_setInfos_(v116, v132, v133, v134, v135, v131);
@@ -340,7 +340,7 @@ LABEL_10:
     {
       v159 = v154;
       v160 = *v201;
-      LODWORD(v19) = 1;
+      LODWORD(rootCopy) = 1;
       do
       {
         for (i = 0; i != v159; ++i)
@@ -358,16 +358,16 @@ LABEL_10:
 
           if (v173)
           {
-            LODWORD(v19) = v173 & v19;
+            LODWORD(rootCopy) = v173 & rootCopy;
           }
 
           else
           {
-            v178 = v19 ^ 1;
-            LODWORD(v19) = v173 & v19;
+            v178 = rootCopy ^ 1;
+            LODWORD(rootCopy) = v173 & rootCopy;
             if ((v178 & 1) == 0)
             {
-              LODWORD(v19) = objc_msgSend_tsch_hasAllResourcesForFill_(MEMORY[0x277D80248], v174, v175, v176, v177, v162);
+              LODWORD(rootCopy) = objc_msgSend_tsch_hasAllResourcesForFill_(MEMORY[0x277D80248], v174, v175, v176, v177, v162);
             }
           }
         }
@@ -383,28 +383,28 @@ LABEL_10:
     CGImageRelease(v183);
     v25 = v196;
     objc_msgSend_didRenderIconForInfo_(v196, v187, v188, v189, v190, v192);
-    if (v197)
+    if (cacheCopy2)
     {
-      *v197 = v19;
+      *cacheCopy2 = rootCopy;
     }
 
-    v19 = v198;
-    v18 = v199;
+    rootCopy = v198;
+    presetCopy = v199;
   }
 
   return v84;
 }
 
-- (void)p_debugGenerateLayoutCacheWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7
+- (void)p_debugGenerateLayoutCacheWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame
 {
-  v7 = *&a4;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v82 = a5;
-  v81 = a6;
-  v13 = a3;
+  v7 = *&target;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sizeCopy = size;
+  scaleCopy = scale;
+  presetCopy = preset;
   objc_opt_class();
   v18 = objc_msgSend_p_chartType(self, v14, v15, v16, v17);
   v19 = TSUDynamicCast();
@@ -434,30 +434,30 @@ LABEL_10:
   v59 = objc_msgSend_sharedInstance(TSCH3DChartPlatformSettings, v56, v55, v57, v58);
   objc_msgSend_useLayoutInwardForInsertionIcons(v59, v60, v61, v62, v63);
 
-  objc_msgSend_p_updateSwatchFrameForInwardLayoutIfNeeded_outImageSize_outImageScale_outSwatchOffset_outCanvasScale_(self, v64, v47, v49, v51, &v82, &v81, v80, &v79, v53);
-  v69 = objc_msgSend_drawableChartInfoForIconWithPreset_target_inFrame_offset_layoutCache_layoutInward_(v19, v65, v66, v67, v68, v13, v7, 0, 1);
+  objc_msgSend_p_updateSwatchFrameForInwardLayoutIfNeeded_outImageSize_outImageScale_outSwatchOffset_outCanvasScale_(self, v64, v47, v49, v51, &sizeCopy, &scaleCopy, v80, &v79, v53);
+  v69 = objc_msgSend_drawableChartInfoForIconWithPreset_target_inFrame_offset_layoutCache_layoutInward_(v19, v65, v66, v67, v68, presetCopy, v7, 0, 1);
 
   v74 = objc_msgSend_chart(v69, v70, v71, v72, v73);
   objc_msgSend_debugLayoutCache(v74, v75, v76, v77, v78);
 }
 
-- (CGRect)p_updateSwatchFrameForRectAdjustmentIfNeeded:(CGRect)a3 rectAdjustment:(id)a4 outSwatchOffset:(CGPoint *)a5
+- (CGRect)p_updateSwatchFrameForRectAdjustmentIfNeeded:(CGRect)needed rectAdjustment:(id)adjustment outSwatchOffset:(CGPoint *)offset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v15 = v10;
-  if (a5)
+  height = needed.size.height;
+  width = needed.size.width;
+  y = needed.origin.y;
+  x = needed.origin.x;
+  adjustmentCopy = adjustment;
+  v15 = adjustmentCopy;
+  if (offset)
   {
     v12 = *MEMORY[0x277CBF348];
-    *a5 = *MEMORY[0x277CBF348];
+    *offset = *MEMORY[0x277CBF348];
   }
 
-  if (v10)
+  if (adjustmentCopy)
   {
-    objc_msgSend_CGRectValue(v10, v11, *&v12, v13, v14);
+    objc_msgSend_CGRectValue(adjustmentCopy, v11, *&v12, v13, v14);
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -485,10 +485,10 @@ LABEL_10:
 
     else
     {
-      if (a5)
+      if (offset)
       {
-        a5->x = v17;
-        a5->y = v19;
+        offset->x = v17;
+        offset->y = v19;
       }
 
       else
@@ -517,21 +517,21 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)p_updateSwatchFrameForInwardLayoutIfNeeded:(CGRect)a3 outImageSize:(CGSize *)a4 outImageScale:(double *)a5 outSwatchOffset:(CGPoint *)a6 outCanvasScale:(double *)a7
+- (CGRect)p_updateSwatchFrameForInwardLayoutIfNeeded:(CGRect)needed outImageSize:(CGSize *)size outImageScale:(double *)scale outSwatchOffset:(CGPoint *)offset outCanvasScale:(double *)canvasScale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a7)
+  height = needed.size.height;
+  width = needed.size.width;
+  y = needed.origin.y;
+  x = needed.origin.x;
+  if (canvasScale)
   {
-    *a7 = 1.0;
+    *canvasScale = 1.0;
   }
 
   else
   {
     v14 = MEMORY[0x277D81150];
-    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3.origin.x, a3.origin.y, a3.size.width, "[TSCHPresetImagerInfoBased p_updateSwatchFrameForInwardLayoutIfNeeded:outImageSize:outImageScale:outSwatchOffset:outCanvasScale:]");
+    v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, needed.origin.x, needed.origin.y, needed.size.width, "[TSCHPresetImagerInfoBased p_updateSwatchFrameForInwardLayoutIfNeeded:outImageSize:outImageScale:outSwatchOffset:outCanvasScale:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHPresetImager.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v22, v23, v24, v15, v20, 2244, 0, "canvasScale is NULL");
 
@@ -549,11 +549,11 @@ LABEL_10:
           goto LABEL_29;
         }
 
-        if (a4)
+        if (size)
         {
           TSUMultiplySizeScalar();
-          a4->width = v34;
-          a4->height = v35;
+          size->width = v34;
+          size->height = v35;
         }
 
         else
@@ -572,7 +572,7 @@ LABEL_10:
         IsFinite = TSURectIsFinite();
         v58 = width > 0.0 ? IsFinite : 0;
         v59 = height > 0.0 ? v58 : 0;
-        if (a5)
+        if (scale)
         {
           break;
         }
@@ -583,7 +583,7 @@ LABEL_10:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v61, v68, v69, v70, v71, v62, v67, 2265, 0, "imageScale is NULL");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v72, v73, v74, v75);
-        if (a6)
+        if (offset)
         {
           goto LABEL_23;
         }
@@ -601,17 +601,17 @@ LABEL_26:
         }
       }
 
-      v60 = *a5 * 0.5;
-      *a5 = v60;
-      if (!a6)
+      v60 = *scale * 0.5;
+      *scale = v60;
+      if (!offset)
       {
         goto LABEL_26;
       }
 
 LABEL_23:
       TSUMultiplyPointScalar();
-      a6->x = v30;
-      a6->y = v31;
+      offset->x = v30;
+      offset->y = v31;
       if ((v59 & 1) == 0)
       {
         goto LABEL_29;

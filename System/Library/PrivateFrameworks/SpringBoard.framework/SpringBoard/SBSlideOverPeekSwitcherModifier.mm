@@ -1,8 +1,8 @@
 @interface SBSlideOverPeekSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSlideOverPeekSwitcherModifier)initWithAppLayout:(id)a3 peekConfiguration:(int64_t)a4 environmentMode:(int64_t)a5 fromFloatingConfiguration:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSlideOverPeekSwitcherModifier)initWithAppLayout:(id)layout peekConfiguration:(int64_t)configuration environmentMode:(int64_t)mode fromFloatingConfiguration:(int64_t)floatingConfiguration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)handleTapAppLayoutEvent:(id)event;
 - (id)keyboardSuppressionMode;
 - (id)visibleHomeAffordanceLayoutElements;
 - (unint64_t)slideOverTongueDirection;
@@ -10,10 +10,10 @@
 
 @implementation SBSlideOverPeekSwitcherModifier
 
-- (SBSlideOverPeekSwitcherModifier)initWithAppLayout:(id)a3 peekConfiguration:(int64_t)a4 environmentMode:(int64_t)a5 fromFloatingConfiguration:(int64_t)a6
+- (SBSlideOverPeekSwitcherModifier)initWithAppLayout:(id)layout peekConfiguration:(int64_t)configuration environmentMode:(int64_t)mode fromFloatingConfiguration:(int64_t)floatingConfiguration
 {
-  v12 = a3;
-  if (!v12)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBSlideOverPeekSwitcherModifier initWithAppLayout:a2 peekConfiguration:self environmentMode:? fromFloatingConfiguration:?];
   }
@@ -27,11 +27,11 @@
     switcherSettings = v13->_switcherSettings;
     v13->_switcherSettings = v14;
 
-    objc_storeStrong(&v13->_peekingAppLayout, a3);
-    v13->_peekConfiguration = a4;
-    v13->_environmentMode = a5;
-    v13->_fromFloatingConfiguration = a6;
-    v16 = [[SBActiveAppLayoutFloatingSwitcherModifier alloc] initWithActiveAppLayout:v12 fullScreenAppLayout:0 floatingConfiguration:2 environmentMode:a5];
+    objc_storeStrong(&v13->_peekingAppLayout, layout);
+    v13->_peekConfiguration = configuration;
+    v13->_environmentMode = mode;
+    v13->_fromFloatingConfiguration = floatingConfiguration;
+    v16 = [[SBActiveAppLayoutFloatingSwitcherModifier alloc] initWithActiveAppLayout:layoutCopy fullScreenAppLayout:0 floatingConfiguration:2 environmentMode:mode];
     floorModifier = v13->_floorModifier;
     v13->_floorModifier = v16;
 
@@ -41,7 +41,7 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(SBAppLayout *)self->_peekingAppLayout copy];
@@ -50,7 +50,7 @@
   return v6;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v24.receiver = self;
   v24.super_class = SBSlideOverPeekSwitcherModifier;
@@ -59,8 +59,8 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBSlideOverPeekSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBSlideOverPeekSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if ([v14 isEqual:self->_peekingAppLayout])
   {
@@ -111,8 +111,8 @@ LABEL_9:
 - (id)keyboardSuppressionMode
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(SBSlideOverPeekSwitcherModifier *)self appLayouts];
-  v4 = [v2 setWithArray:v3];
+  appLayouts = [(SBSlideOverPeekSwitcherModifier *)self appLayouts];
+  v4 = [v2 setWithArray:appLayouts];
   v5 = [SBSwitcherKeyboardSuppressionMode newSuppressionModeForSwitcherScenesFromAppLayouts:v4];
 
   [v5 setApplyAssertionEvenIfAppIsHostingTheKeyboard:1];
@@ -124,8 +124,8 @@ LABEL_9:
 {
   v6.receiver = self;
   v6.super_class = SBSlideOverPeekSwitcherModifier;
-  v3 = [(SBSlideOverPeekSwitcherModifier *)&v6 visibleHomeAffordanceLayoutElements];
-  v4 = [v3 mutableCopy];
+  visibleHomeAffordanceLayoutElements = [(SBSlideOverPeekSwitcherModifier *)&v6 visibleHomeAffordanceLayoutElements];
+  v4 = [visibleHomeAffordanceLayoutElements mutableCopy];
 
   [v4 removeObject:self->_peekingAppLayout];
 
@@ -145,15 +145,15 @@ LABEL_9:
   }
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBSlideOverPeekSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v16 handleTapAppLayoutEvent:v4];
-  v6 = [v4 appLayout];
-  v7 = [v6 isEqual:self->_peekingAppLayout];
+  v5 = [(SBSwitcherModifier *)&v16 handleTapAppLayoutEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
+  v7 = [appLayout isEqual:self->_peekingAppLayout];
 
   if (v7)
   {
@@ -165,7 +165,7 @@ LABEL_9:
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v12 = [(SBAppLayout *)v9 initWithItemsForLayoutRoles:v11 configuration:1 environment:1 preferredDisplayOrdinal:[(SBSlideOverPeekSwitcherModifier *)self displayOrdinal]];
 
-    v13 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4];
+    v13 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy];
     [v13 setAppLayout:v12];
     [v13 setPeekConfiguration:1];
     [v13 setRetainsSiri:{-[SBSlideOverPeekSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];

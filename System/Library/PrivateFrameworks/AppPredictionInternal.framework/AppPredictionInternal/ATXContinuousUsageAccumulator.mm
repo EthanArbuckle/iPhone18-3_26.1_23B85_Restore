@@ -1,9 +1,9 @@
 @interface ATXContinuousUsageAccumulator
 - (ATXContinuousUsageAccumulator)init;
-- (ATXContinuousUsageAccumulator)initWithAppLaunchPublisher:(id)a3;
+- (ATXContinuousUsageAccumulator)initWithAppLaunchPublisher:(id)publisher;
 - (BOOL)successfullyAccumulatedContinuousUseEvents;
-- (id)eventWithBundleID:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7;
-- (void)recordAppLaunchEndEvent:(id)a3;
+- (id)eventWithBundleID:(id)d launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration;
+- (void)recordAppLaunchEndEvent:(id)event;
 - (void)successfullyAccumulatedContinuousUseEvents;
 @end
 
@@ -14,25 +14,25 @@
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 InFocus];
+  inFocus = [v5 InFocus];
 
   v7 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v8 = [v6 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v7];
+  v8 = [inFocus publisherWithUseCase:*MEMORY[0x277CEBB48] options:v7];
   v9 = [(ATXContinuousUsageAccumulator *)self initWithAppLaunchPublisher:v8];
 
   return v9;
 }
 
-- (ATXContinuousUsageAccumulator)initWithAppLaunchPublisher:(id)a3
+- (ATXContinuousUsageAccumulator)initWithAppLaunchPublisher:(id)publisher
 {
-  v5 = a3;
+  publisherCopy = publisher;
   v13.receiver = self;
   v13.super_class = ATXContinuousUsageAccumulator;
   v6 = [(ATXContinuousUsageAccumulator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appLaunchPublisher, a3);
+    objc_storeStrong(&v6->_appLaunchPublisher, publisher);
     v8 = objc_opt_new();
     appInFocusStartingEvents = v7->_appInFocusStartingEvents;
     v7->_appInFocusStartingEvents = v8;
@@ -49,8 +49,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v4 = +[_ATXAppIconState sharedInstance];
-  v5 = [v4 allInstalledAppsKnownToSpringBoard];
-  v6 = [v3 initWithArray:v5];
+  allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+  v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v18 = 0;
   v19[0] = &v18;
@@ -70,7 +70,7 @@
   v14[3] = &unk_2785988C8;
   v8 = v6;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = [(BPSPublisher *)appLaunchPublisher sinkWithCompletion:v17 receiveInput:v14];
   v10 = *(v19[0] + 40);
   if (v10)
@@ -125,10 +125,10 @@ void __75__ATXContinuousUsageAccumulator_successfullyAccumulatedContinuousUseEve
   }
 }
 
-- (void)recordAppLaunchEndEvent:(id)a3
+- (void)recordAppLaunchEndEvent:(id)event
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [(NSMutableArray *)self->_appInFocusStartingEvents copy];
   v32 = 0u;
   v33 = 0u;
@@ -152,32 +152,32 @@ void __75__ATXContinuousUsageAccumulator_successfullyAccumulatedContinuousUseEve
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v4 bundleID];
-        v13 = [v11 bundleID];
-        v14 = [v12 isEqualToString:v13];
+        bundleID = [eventCopy bundleID];
+        bundleID2 = [v11 bundleID];
+        v14 = [bundleID isEqualToString:bundleID2];
 
         if (v14)
         {
-          v15 = [v11 absoluteTimestamp];
-          v16 = [v4 absoluteTimestamp];
-          v17 = [v15 compare:v16];
+          absoluteTimestamp = [v11 absoluteTimestamp];
+          absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+          v17 = [absoluteTimestamp compare:absoluteTimestamp2];
 
           if (v17 == -1)
           {
             v18 = objc_alloc(MEMORY[0x277CCA970]);
-            v19 = [v11 absoluteTimestamp];
-            v20 = [v4 absoluteTimestamp];
-            v21 = [v18 initWithStartDate:v19 endDate:v20];
+            absoluteTimestamp3 = [v11 absoluteTimestamp];
+            absoluteTimestamp4 = [eventCopy absoluteTimestamp];
+            v21 = [v18 initWithStartDate:absoluteTimestamp3 endDate:absoluteTimestamp4];
 
             [v21 duration];
             if (v22 >= 60.0)
             {
-              v31 = [v4 bundleID];
-              v23 = [v11 launchReason];
-              v24 = [v11 absoluteTimestamp];
-              v25 = [v4 absoluteTimestamp];
+              bundleID3 = [eventCopy bundleID];
+              launchReason = [v11 launchReason];
+              absoluteTimestamp5 = [v11 absoluteTimestamp];
+              absoluteTimestamp6 = [eventCopy absoluteTimestamp];
               [v21 duration];
-              [(ATXContinuousUsageAccumulator *)self eventWithBundleID:v31 launchReason:v23 startTime:v24 endTime:v25 duration:?];
+              [(ATXContinuousUsageAccumulator *)self eventWithBundleID:bundleID3 launchReason:launchReason startTime:absoluteTimestamp5 endTime:absoluteTimestamp6 duration:?];
               v27 = v26 = self;
 
               v9 = v29;
@@ -201,19 +201,19 @@ void __75__ATXContinuousUsageAccumulator_successfullyAccumulatedContinuousUseEve
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)eventWithBundleID:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7
+- (id)eventWithBundleID:(id)d launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [ATXSessionTaggingAppEntity genreIdForBundleId:v14];
-  v16 = [v15 unsignedIntegerValue];
+  endTimeCopy = endTime;
+  timeCopy = time;
+  reasonCopy = reason;
+  dCopy = d;
+  v15 = [ATXSessionTaggingAppEntity genreIdForBundleId:dCopy];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
   v17 = objc_alloc(MEMORY[0x277CEB8F8]);
-  v18 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:v13];
+  v18 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:reasonCopy];
 
-  v19 = [v17 initWithBundleID:v14 category:v16 launchReason:v18 startTime:v12 endTime:v11 duration:a7];
+  v19 = [v17 initWithBundleID:dCopy category:unsignedIntegerValue launchReason:v18 startTime:timeCopy endTime:endTimeCopy duration:duration];
 
   return v19;
 }
@@ -221,7 +221,7 @@ void __75__ATXContinuousUsageAccumulator_successfullyAccumulatedContinuousUseEve
 - (void)successfullyAccumulatedContinuousUseEvents
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXContinuousUsageAccumulator successfullyAccumulatedContinuousUseEvents]";
   v6 = 2112;

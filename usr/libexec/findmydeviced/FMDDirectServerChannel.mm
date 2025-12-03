@@ -1,11 +1,11 @@
 @interface FMDDirectServerChannel
 - (FMDDirectServerChannel)init;
 - (NSHTTPCookieStorage)cookieStorage;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)_logRequestError:(id)a3;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_logRequestError:(id)error;
 - (void)cancelAllRequests;
-- (void)cancelRequestWithId:(id)a3;
-- (void)sendRequestWithId:(id)a3 toURL:(id)a4 withHeaders:(id)a5 body:(id)a6 completion:(id)a7;
+- (void)cancelRequestWithId:(id)id;
+- (void)sendRequestWithId:(id)id toURL:(id)l withHeaders:(id)headers body:(id)body completion:(id)completion;
 @end
 
 @implementation FMDDirectServerChannel
@@ -27,13 +27,13 @@
 
     [(NSURLSessionConfiguration *)v2->_sessionConfig setURLCache:0];
     [(NSURLSessionConfiguration *)v2->_sessionConfig setRequestCachePolicy:1];
-    v7 = [(FMDDirectServerChannel *)v2 cookieStorage];
-    [(NSURLSessionConfiguration *)v2->_sessionConfig setHTTPCookieStorage:v7];
+    cookieStorage = [(FMDDirectServerChannel *)v2 cookieStorage];
+    [(NSURLSessionConfiguration *)v2->_sessionConfig setHTTPCookieStorage:cookieStorage];
 
     v8 = +[NSBundle mainBundle];
-    v9 = [v8 bundleIdentifier];
+    bundleIdentifier = [v8 bundleIdentifier];
 
-    v10 = [[AKAppleIDSession alloc] initWithIdentifier:v9];
+    v10 = [[AKAppleIDSession alloc] initWithIdentifier:bundleIdentifier];
     [(NSURLSessionConfiguration *)v2->_sessionConfig set_appleIDContext:v10];
     v11 = [FMDURLSessionFactory sessionWithConfiguration:v2->_sessionConfig delegate:v2 delegateQueue:v2->_queue];
     session = v2->_session;
@@ -51,83 +51,83 @@
   return v2;
 }
 
-- (void)sendRequestWithId:(id)a3 toURL:(id)a4 withHeaders:(id)a5 body:(id)a6 completion:(id)a7
+- (void)sendRequestWithId:(id)id toURL:(id)l withHeaders:(id)headers body:(id)body completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
-  v16 = [NSMutableURLRequest requestWithURL:a4 cachePolicy:1 timeoutInterval:120.0];
+  idCopy = id;
+  bodyCopy = body;
+  completionCopy = completion;
+  headersCopy = headers;
+  v16 = [NSMutableURLRequest requestWithURL:l cachePolicy:1 timeoutInterval:120.0];
   [v16 setHTTPMethod:@"POST"];
-  [v16 setAllHTTPHeaderFields:v15];
+  [v16 setAllHTTPHeaderFields:headersCopy];
 
-  if (v13)
+  if (bodyCopy)
   {
-    [v16 setHTTPBody:v13];
+    [v16 setHTTPBody:bodyCopy];
   }
 
-  v17 = [(FMDDirectServerChannel *)self session];
+  session = [(FMDDirectServerChannel *)self session];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10018372C;
   v24[3] = &unk_1002CF480;
-  v25 = v12;
-  v26 = v14;
+  v25 = idCopy;
+  v26 = completionCopy;
   v24[4] = self;
-  v18 = v12;
-  v19 = v14;
-  v20 = [v17 dataTaskWithRequest:v16 completionHandler:v24];
+  v18 = idCopy;
+  v19 = completionCopy;
+  v20 = [session dataTaskWithRequest:v16 completionHandler:v24];
 
-  v21 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v21 lock];
+  requestModifierLock = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  v22 = [(FMDDirectServerChannel *)self requests];
-  [v22 setObject:v20 forKeyedSubscript:v18];
+  requests = [(FMDDirectServerChannel *)self requests];
+  [requests setObject:v20 forKeyedSubscript:v18];
 
-  v23 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v23 unlock];
+  requestModifierLock2 = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 
   [v20 resume];
 }
 
-- (void)cancelRequestWithId:(id)a3
+- (void)cancelRequestWithId:(id)id
 {
-  v9 = a3;
-  v4 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v4 lock];
+  idCopy = id;
+  requestModifierLock = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  v5 = [(FMDDirectServerChannel *)self requests];
-  v6 = [v5 objectForKeyedSubscript:v9];
+  requests = [(FMDDirectServerChannel *)self requests];
+  v6 = [requests objectForKeyedSubscript:idCopy];
 
   if (v6)
   {
-    v7 = [(FMDDirectServerChannel *)self requests];
-    [v7 removeObjectForKey:v9];
+    requests2 = [(FMDDirectServerChannel *)self requests];
+    [requests2 removeObjectForKey:idCopy];
 
     [v6 cancel];
   }
 
-  v8 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v8 unlock];
+  requestModifierLock2 = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v3 lock];
+  requestModifierLock = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  v4 = [(FMDDirectServerChannel *)self requests];
+  requests = [(FMDDirectServerChannel *)self requests];
   v5 = +[NSMutableDictionary dictionary];
   [(FMDDirectServerChannel *)self setRequests:v5];
 
-  v6 = [(FMDDirectServerChannel *)self requestModifierLock];
-  [v6 unlock];
+  requestModifierLock2 = [(FMDDirectServerChannel *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = requests;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -171,9 +171,9 @@
     v6 = [v5 stringByAppendingPathComponent:@"com.apple.icloud.findmydeviced"];
     v7 = [v6 stringByAppendingPathComponent:@"cookies"];
 
-    v8 = [v7 UTF8String];
-    v9 = strlen(v8);
-    v10 = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, v8, v9, 1u);
+    uTF8String = [v7 UTF8String];
+    v9 = strlen(uTF8String);
+    v10 = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, uTF8String, v9, 1u);
     v11 = CFHTTPCookieStorageCreateFromFile();
     CFRunLoopGetMain();
     CFHTTPCookieStorageScheduleWithRunLoop();
@@ -196,10 +196,10 @@
   return cookieStorage;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v9 = +[FMSystemInfo sharedInstance];
   if ([v9 isInternalBuild])
   {
@@ -211,10 +211,10 @@
     v10 = 0;
   }
 
-  v11 = [v7 protectionSpace];
-  v12 = [v11 host];
+  protectionSpace = [challengeCopy protectionSpace];
+  host = [protectionSpace host];
 
-  if ([v12 isEqualToString:@"gateway.icloud.com"])
+  if ([host isEqualToString:@"gateway.icloud.com"])
   {
     v13 = [FMPreferencesUtil BOOLForKey:@"EnableCertPinningForFindkit" inDomain:kFMDNotBackedUpPrefDomain];
     v14 = sub_10000BE38();
@@ -234,7 +234,7 @@
   else if (v10)
   {
 LABEL_8:
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_32;
   }
 
@@ -245,9 +245,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "FMDDirectServerChannel Detecting authentication method", buf, 2u);
   }
 
-  v16 = [v7 protectionSpace];
-  v17 = [v16 authenticationMethod];
-  v18 = [v17 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace2 authenticationMethod];
+  v18 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   if (v18)
   {
@@ -258,13 +258,13 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "FMDDirectServerChannel Setting server trust policy", buf, 2u);
     }
 
-    v20 = [v16 host];
+    host2 = [protectionSpace2 host];
     AppleFMiPService = SecPolicyCreateAppleFMiPService();
 
     if (AppleFMiPService)
     {
-      v22 = [v16 serverTrust];
-      v23 = SecTrustSetPolicies(v22, AppleFMiPService);
+      serverTrust = [protectionSpace2 serverTrust];
+      v23 = SecTrustSetPolicies(serverTrust, AppleFMiPService);
       CFRelease(AppleFMiPService);
       if (v23)
       {
@@ -289,9 +289,9 @@ LABEL_8:
       else
       {
         *buf = 0;
-        if (SecTrustEvaluateWithError(v22, buf))
+        if (SecTrustEvaluateWithError(serverTrust, buf))
         {
-          v28 = [NSURLCredential credentialForTrust:v22];
+          v28 = [NSURLCredential credentialForTrust:serverTrust];
           v32 = sub_100002880();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
@@ -344,27 +344,27 @@ LABEL_8:
     v29 = 1;
   }
 
-  (v8)[2](v8, v29, v28);
+  (handlerCopy)[2](handlerCopy, v29, v28);
 
 LABEL_32:
 }
 
-- (void)_logRequestError:(id)a3
+- (void)_logRequestError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = sub_100002880();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = errorCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Network error occured %@", &v10, 0xCu);
     }
 
     v5 = [(FMDEventLoggerEventError *)[FMDEventLoggerEventDataPeekError alloc] initWithEventName:@"FMDDirectServerChannelRequestError"];
-    v6 = [v3 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"FMDUnerlyingErrorKey"];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"FMDUnerlyingErrorKey"];
 
     if (v7)
     {
@@ -373,7 +373,7 @@ LABEL_32:
 
     else
     {
-      v8 = v3;
+      v8 = errorCopy;
     }
 
     [(FMDEventLoggerEventDataPeekError *)v5 setError:v8];

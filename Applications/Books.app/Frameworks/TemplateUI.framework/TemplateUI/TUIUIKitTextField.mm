@@ -1,6 +1,6 @@
 @interface TUIUIKitTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (UIEdgeInsets)editingInsets;
 - (void)layoutSubviews;
 @end
@@ -12,19 +12,19 @@
   v4.receiver = self;
   v4.super_class = TUIUIKitTextField;
   [(TUIUIKitTextField *)&v4 layoutSubviews];
-  v3 = [(TUIUIKitTextField *)self _fieldEditor];
-  if (v3)
+  _fieldEditor = [(TUIUIKitTextField *)self _fieldEditor];
+  if (_fieldEditor)
   {
-    [(TUIUIKitTextField *)self bringSubviewToFront:v3];
+    [(TUIUIKitTextField *)self bringSubviewToFront:_fieldEditor];
   }
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v22.receiver = self;
   v22.super_class = TUIUIKitTextField;
   [(TUIUIKitTextField *)&v22 textRectForBounds:?];
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  [(TUIUIKitTextField *)self textRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIUIKitTextField *)self textRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

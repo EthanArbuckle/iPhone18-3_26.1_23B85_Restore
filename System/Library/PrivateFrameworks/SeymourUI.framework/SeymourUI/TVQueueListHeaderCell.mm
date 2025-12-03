@@ -24,7 +24,7 @@
 
 - (void)handleMainActionButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BFA8F44();
 }
 

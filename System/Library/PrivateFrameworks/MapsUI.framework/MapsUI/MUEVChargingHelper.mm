@@ -1,16 +1,16 @@
 @interface MUEVChargingHelper
-+ (id)localizedStringForAvailableChargers:(unint64_t)a3 outOfTotal:(unint64_t)a4;
-+ (id)localizedStringForAvailableChargers:(unint64_t)a3 outOfTotal:(unint64_t)a4 radiowavesSymbolScale:(int64_t)a5;
++ (id)localizedStringForAvailableChargers:(unint64_t)chargers outOfTotal:(unint64_t)total;
++ (id)localizedStringForAvailableChargers:(unint64_t)chargers outOfTotal:(unint64_t)total radiowavesSymbolScale:(int64_t)scale;
 @end
 
 @implementation MUEVChargingHelper
 
-+ (id)localizedStringForAvailableChargers:(unint64_t)a3 outOfTotal:(unint64_t)a4 radiowavesSymbolScale:(int64_t)a5
++ (id)localizedStringForAvailableChargers:(unint64_t)chargers outOfTotal:(unint64_t)total radiowavesSymbolScale:(int64_t)scale
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v6 = [a1 localizedStringForAvailableChargers:a3 outOfTotal:a4];
+  v6 = [self localizedStringForAvailableChargers:chargers outOfTotal:total];
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = [MEMORY[0x1E69DCAD8] configurationWithScale:a5];
+  v8 = [MEMORY[0x1E69DCAD8] configurationWithScale:scale];
   v9 = [v7 systemImageNamed:@"dot.radiowaves.up.forward" withConfiguration:v8];
 
   v10 = MEMORY[0x1E69DB7F0];
@@ -30,12 +30,12 @@
   return v17;
 }
 
-+ (id)localizedStringForAvailableChargers:(unint64_t)a3 outOfTotal:(unint64_t)a4
++ (id)localizedStringForAvailableChargers:(unint64_t)chargers outOfTotal:(unint64_t)total
 {
   v6 = _MULocalizedStringFromThisBundle(@"[Placecard] Number of chargers available out of total");
-  v7 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, a3, a4];
+  total = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, chargers, total];
 
-  return v7;
+  return total;
 }
 
 @end

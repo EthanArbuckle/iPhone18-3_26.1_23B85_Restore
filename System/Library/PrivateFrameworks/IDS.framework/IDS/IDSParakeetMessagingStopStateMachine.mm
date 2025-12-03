@@ -6,8 +6,8 @@
 
 - (void)dealloc
 {
-  v3 = [(IDSParakeetMessagingStopStateMachine *)self finalAckTimer];
-  [v3 invalidate];
+  finalAckTimer = [(IDSParakeetMessagingStopStateMachine *)self finalAckTimer];
+  [finalAckTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = IDSParakeetMessagingStopStateMachine;

@@ -1,13 +1,13 @@
 @interface ATXUserEducationSuggestionFocusModeSetupTrigger
 + (id)sharedInstance;
 - (ATXUserEducationSuggestionFocusModeSetupTrigger)init;
-- (BOOL)modeHasPassedPastInferenceTest:(unint64_t)a3;
-- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)a3;
-- (void)processNewInferredModeEvent:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)resetUserDefaultsIfNecessaryForDNDSemanticType:(int64_t)a3;
-- (void)resetUserDefaultsIfNecessaryForMode:(unint64_t)a3;
-- (void)unregisterObserver:(id)a3;
+- (BOOL)modeHasPassedPastInferenceTest:(unint64_t)test;
+- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)prediction;
+- (void)processNewInferredModeEvent:(id)event;
+- (void)registerObserver:(id)observer;
+- (void)resetUserDefaultsIfNecessaryForDNDSemanticType:(int64_t)type;
+- (void)resetUserDefaultsIfNecessaryForMode:(unint64_t)mode;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXUserEducationSuggestionFocusModeSetupTrigger
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __65__ATXUserEducationSuggestionFocusModeSetupTrigger_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_34 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_34, block);
@@ -71,11 +71,11 @@ void __65__ATXUserEducationSuggestionFocusModeSetupTrigger_sharedInstance__block
 
     objc_initWeak(buf, v2);
     v11 = BiomeLibrary();
-    v12 = [v11 UserFocus];
-    v13 = [v12 InferredMode];
+    userFocus = [v11 UserFocus];
+    inferredMode = [userFocus InferredMode];
 
-    v14 = [v13 atx_DSLPublisher];
-    v15 = [v14 subscribeOn:v2->_inferredModeScheduler];
+    atx_DSLPublisher = [inferredMode atx_DSLPublisher];
+    v15 = [atx_DSLPublisher subscribeOn:v2->_inferredModeScheduler];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __55__ATXUserEducationSuggestionFocusModeSetupTrigger_init__block_invoke_23;
@@ -152,7 +152,7 @@ void __55__ATXUserEducationSuggestionFocusModeSetupTrigger_init__block_invoke_23
   }
 }
 
-- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)a3
+- (BOOL)modeIsEligibleForSetupPrediction:(unint64_t)prediction
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -174,7 +174,7 @@ void __55__ATXUserEducationSuggestionFocusModeSetupTrigger_init__block_invoke_23
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) unsignedIntegerValue] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) unsignedIntegerValue] == prediction)
         {
           v9 = 1;
           goto LABEL_11;
@@ -198,7 +198,7 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)modeHasPassedPastInferenceTest:(unint64_t)a3
+- (BOOL)modeHasPassedPastInferenceTest:(unint64_t)test
 {
   v22 = 0;
   v23 = &v22;
@@ -224,10 +224,10 @@ LABEL_11:
   v17 = 0;
   v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-604800.0];
   v5 = BiomeLibrary();
-  v6 = [v5 UserFocus];
-  v7 = [v6 InferredMode];
+  userFocus = [v5 UserFocus];
+  inferredMode = [userFocus InferredMode];
 
-  v8 = [v7 atx_publisherWithStartDate:v4 endDate:0 maxEvents:0 lastN:0 reversed:0];
+  v8 = [inferredMode atx_publisherWithStartDate:v4 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__ATXUserEducationSuggestionFocusModeSetupTrigger_modeHasPassedPastInferenceTest___block_invoke;
@@ -240,7 +240,7 @@ LABEL_11:
   v13[4] = v20;
   v13[5] = v18;
   v13[6] = &v22;
-  v13[7] = a3;
+  v13[7] = test;
   v9 = [v8 sinkWithCompletion:v14 receiveInput:v13];
   if (*(v16[0] + 40))
   {
@@ -311,10 +311,10 @@ void __82__ATXUserEducationSuggestionFocusModeSetupTrigger_modeHasPassedPastInfe
   }
 }
 
-- (void)processNewInferredModeEvent:(id)a3
+- (void)processNewInferredModeEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_observers;
   objc_sync_enter(v5);
   v11 = 0u;
@@ -336,7 +336,7 @@ void __82__ATXUserEducationSuggestionFocusModeSetupTrigger_modeHasPassedPastInfe
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) processNewInferredModeEvent:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) processNewInferredModeEvent:{eventCopy, v11}];
       }
 
       while (v7 != v9);
@@ -350,34 +350,34 @@ void __82__ATXUserEducationSuggestionFocusModeSetupTrigger_modeHasPassedPastInfe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)resetUserDefaultsIfNecessaryForMode:(unint64_t)a3
+- (void)resetUserDefaultsIfNecessaryForMode:(unint64_t)mode
 {
-  v7 = [MEMORY[0x277CEB440] sharedInstance];
-  v5 = [v7 dndSemanticTypeForATXMode:a3];
-  v6 = [v5 integerValue];
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+  v5 = [mEMORY[0x277CEB440] dndSemanticTypeForATXMode:mode];
+  integerValue = [v5 integerValue];
 
-  [(ATXUserEducationSuggestionFocusModeSetupTrigger *)self resetUserDefaultsIfNecessaryForDNDSemanticType:v6];
+  [(ATXUserEducationSuggestionFocusModeSetupTrigger *)self resetUserDefaultsIfNecessaryForDNDSemanticType:integerValue];
 }
 
-- (void)resetUserDefaultsIfNecessaryForDNDSemanticType:(int64_t)a3
+- (void)resetUserDefaultsIfNecessaryForDNDSemanticType:(int64_t)type
 {
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v17 = [v3 initWithSuiteName:*MEMORY[0x277CEBD00]];

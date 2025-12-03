@@ -1,6 +1,6 @@
 @interface HUDDurationLayer
 - (HUDDurationLayer)init;
-- (void)setHangDuration:(double)a3 animated:(BOOL)a4;
+- (void)setHangDuration:(double)duration animated:(BOOL)animated;
 @end
 
 @implementation HUDDurationLayer
@@ -23,10 +23,10 @@
   return v3;
 }
 
-- (void)setHangDuration:(double)a3 animated:(BOOL)a4
+- (void)setHangDuration:(double)duration animated:(BOOL)animated
 {
   hangDuration = self->_hangDuration;
-  if (hangDuration == a3)
+  if (hangDuration == duration)
   {
     v6 = sub_100002F0C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -35,7 +35,7 @@
     }
   }
 
-  else if (a4)
+  else if (animated)
   {
     if (!self->_currentAnimation)
     {
@@ -45,7 +45,7 @@
       v16 = sub_100002F0C();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000181F4(self, v16, a3);
+        sub_1000181F4(self, v16, duration);
       }
 
       v17 = +[HUDAnimator sharedAnimator];
@@ -61,12 +61,12 @@
       v41[2] = sub_100001600;
       v41[3] = &unk_100030690;
       v41[4] = self;
-      v20 = [v17 beginAnimationFromValue:v42 toValue:v41 duration:v18 updateBlock:a3 completionBlock:updateInterval];
+      v20 = [v17 beginAnimationFromValue:v42 toValue:v41 duration:v18 updateBlock:duration completionBlock:updateInterval];
       currentAnimation = self->_currentAnimation;
       self->_currentAnimation = v20;
     }
 
-    self->_hangDuration = a3;
+    self->_hangDuration = duration;
     v22 = sub_100002F0C();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -74,12 +74,12 @@
     }
 
     v6 = +[HUDAnimator sharedAnimator];
-    [v6 updateAnimation:self->_currentAnimation toValue:a3 duration:self->_updateInterval];
+    [v6 updateAnimation:self->_currentAnimation toValue:duration duration:self->_updateInterval];
   }
 
   else
   {
-    self->_hangDuration = a3;
+    self->_hangDuration = duration;
     v30 = self->_currentAnimation;
     if (v30)
     {
@@ -97,7 +97,7 @@
     }
 
     [CATransaction setDisableActions:1];
-    v6 = sub_100001120(a3);
+    v6 = sub_100001120(duration);
     [(HUDDurationLayer *)self setString:v6];
   }
 }

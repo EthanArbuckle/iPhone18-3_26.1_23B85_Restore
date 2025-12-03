@@ -1,28 +1,28 @@
 @interface TUMetadataDict
-- (TUMetadataDict)initWithSource:(id)a3 identificationLabel:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUMetadataDict)initWithSource:(id)source identificationLabel:(id)label;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TUMetadataDict
 
-- (TUMetadataDict)initWithSource:(id)a3 identificationLabel:(id)a4
+- (TUMetadataDict)initWithSource:(id)source identificationLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = TUMetadataDict;
   v9 = [(TUMetadataDict *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_source, a3);
-    objc_storeStrong(&v10->_identificationLabel, a4);
+    objc_storeStrong(&v9->_source, source);
+    objc_storeStrong(&v10->_identificationLabel, label);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TUMetadataDict alloc];
   source = self->_source;

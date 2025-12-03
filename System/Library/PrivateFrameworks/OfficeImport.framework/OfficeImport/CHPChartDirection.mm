@@ -1,23 +1,23 @@
 @interface CHPChartDirection
-- (BOOL)isObjectSupported:(id)a3;
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4;
+- (BOOL)isObjectSupported:(id)supported;
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet;
 @end
 
 @implementation CHPChartDirection
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v6 = 0;
-  if (v3)
+  if (supportedCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 chart];
-      v5 = [v4 direction];
+      chart = [supportedCopy chart];
+      direction = [chart direction];
 
-      if (!v5)
+      if (!direction)
       {
         v6 = 1;
       }
@@ -27,29 +27,29 @@
   return v6;
 }
 
-- (void)applyProcessorToObject:(id)a3 sheet:(id)a4
+- (void)applyProcessorToObject:(id)object sheet:(id)sheet
 {
-  v24 = a3;
-  v4 = [v24 seriesCollection];
-  v5 = [v24 chart];
-  if ([v4 count])
+  objectCopy = object;
+  seriesCollection = [objectCopy seriesCollection];
+  chart = [objectCopy chart];
+  if ([seriesCollection count])
   {
-    v6 = [v4 objectAtIndex:0];
-    v7 = [v6 valueData];
-    v8 = v7;
-    if (!v7)
+    v6 = [seriesCollection objectAtIndex:0];
+    valueData = [v6 valueData];
+    v8 = valueData;
+    if (!valueData)
     {
       v14 = 0;
 LABEL_31:
-      [v5 setDirection:v14];
+      [chart setDirection:v14];
 
       goto LABEL_32;
     }
 
-    v9 = [v7 formula];
-    v10 = [v9 references];
+    formula = [valueData formula];
+    references = [formula references];
 
-    if (!v10 || ![v10 count])
+    if (!references || ![references count])
     {
       v14 = 0;
 LABEL_30:
@@ -57,22 +57,22 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v11 = [v10 objectAtIndex:0];
-    v12 = [v11 firstRow];
-    if (v12 < [v11 lastRow] && (v13 = objc_msgSend(v11, "firstColumn"), v13 == objc_msgSend(v11, "lastColumn")))
+    v11 = [references objectAtIndex:0];
+    firstRow = [v11 firstRow];
+    if (firstRow < [v11 lastRow] && (v13 = objc_msgSend(v11, "firstColumn"), v13 == objc_msgSend(v11, "lastColumn")))
     {
       v14 = 2;
     }
 
     else
     {
-      v15 = [v11 firstRow];
-      if (v15 == [v11 lastRow])
+      firstRow2 = [v11 firstRow];
+      if (firstRow2 == [v11 lastRow])
       {
-        v16 = [v11 firstColumn];
-        if (v16 == [v11 lastColumn])
+        firstColumn = [v11 firstColumn];
+        if (firstColumn == [v11 lastColumn])
         {
-          if ([v10 count] < 2)
+          if ([references count] < 2)
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -85,23 +85,23 @@ LABEL_30:
               }
             }
 
-            v17 = [v6 categoryData];
-            v19 = [v17 formula];
-            v20 = [v19 references];
+            categoryData = [v6 categoryData];
+            formula2 = [categoryData formula];
+            references2 = [formula2 references];
 
-            if (v20 && [v20 count])
+            if (references2 && [references2 count])
             {
-              v21 = [v20 objectAtIndex:0];
-              v22 = [v11 firstRow];
-              if (v22 == [v21 firstRow])
+              v21 = [references2 objectAtIndex:0];
+              firstRow3 = [v11 firstRow];
+              if (firstRow3 == [v21 firstRow])
               {
                 v14 = 2;
               }
 
               else
               {
-                v23 = [v11 firstColumn];
-                v14 = v23 == [v21 firstColumn];
+                firstColumn2 = [v11 firstColumn];
+                v14 = firstColumn2 == [v21 firstColumn];
               }
             }
 
@@ -113,9 +113,9 @@ LABEL_30:
 
           else
           {
-            v17 = [v10 objectAtIndex:1];
-            v18 = [v17 firstRow];
-            if (v18 >= [v11 lastRow])
+            categoryData = [references objectAtIndex:1];
+            firstRow4 = [categoryData firstRow];
+            if (firstRow4 >= [v11 lastRow])
             {
               v14 = 1;
             }

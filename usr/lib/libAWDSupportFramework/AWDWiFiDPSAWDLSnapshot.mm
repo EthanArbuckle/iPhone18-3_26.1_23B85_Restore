@@ -1,22 +1,22 @@
 @interface AWDWiFiDPSAWDLSnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasSdb:(BOOL)a3;
-- (void)setHasUse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasSdb:(BOOL)sdb;
+- (void)setHasUse:(BOOL)use;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiDPSAWDLSnapshot
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUse:(BOOL)a3
+- (void)setHasUse:(BOOL)use
 {
-  if (a3)
+  if (use)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSdb:(BOOL)a3
+- (void)setHasSdb:(BOOL)sdb
 {
-  if (a3)
+  if (sdb)
   {
     v3 = 4;
   }
@@ -68,11 +68,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ts), @"ts"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ts), @"ts"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -83,10 +83,10 @@ LABEL_3:
       }
 
 LABEL_9:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_use), @"use"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_use), @"use"}];
       if ((*&self->_has & 4) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_5;
@@ -98,7 +98,7 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -109,13 +109,13 @@ LABEL_4:
   if ((has & 4) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sdb), @"sdb"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sdb), @"sdb"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -168,13 +168,13 @@ LABEL_9:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_ts;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_ts;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -193,8 +193,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_duration;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_duration;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -205,23 +205,23 @@ LABEL_4:
     }
 
 LABEL_9:
-    *(a3 + 5) = self->_sdb;
-    *(a3 + 28) |= 4u;
+    *(to + 5) = self->_sdb;
+    *(to + 28) |= 4u;
     return;
   }
 
 LABEL_8:
-  *(a3 + 6) = self->_use;
-  *(a3 + 28) |= 8u;
+  *(to + 6) = self->_use;
+  *(to + 28) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -273,20 +273,20 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_ts != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_ts != *(equal + 1))
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_21:
       LOBYTE(v5) = 0;
@@ -295,34 +295,34 @@ LABEL_21:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_duration != *(a3 + 4))
+      if ((*(equal + 28) & 2) == 0 || self->_duration != *(equal + 4))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_21;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 28) & 8) == 0 || self->_use != *(a3 + 6))
+      if ((*(equal + 28) & 8) == 0 || self->_use != *(equal + 6))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 28) & 8) != 0)
+    else if ((*(equal + 28) & 8) != 0)
     {
       goto LABEL_21;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_sdb != *(a3 + 5))
+      if ((*(equal + 28) & 4) == 0 || self->_sdb != *(equal + 5))
       {
         goto LABEL_21;
       }
@@ -388,14 +388,14 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_ts = *(a3 + 1);
+    self->_ts = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -408,14 +408,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 2) == 0)
+  else if ((*(from + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_duration = *(a3 + 4);
+  self->_duration = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -425,15 +425,15 @@ LABEL_4:
     }
 
 LABEL_9:
-    self->_sdb = *(a3 + 5);
+    self->_sdb = *(from + 5);
     *&self->_has |= 4u;
     return;
   }
 
 LABEL_8:
-  self->_use = *(a3 + 6);
+  self->_use = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 28) & 4) != 0)
+  if ((*(from + 28) & 4) != 0)
   {
     goto LABEL_9;
   }

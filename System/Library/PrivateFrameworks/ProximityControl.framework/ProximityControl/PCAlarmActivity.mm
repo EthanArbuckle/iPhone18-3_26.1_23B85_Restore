@@ -1,20 +1,20 @@
 @interface PCAlarmActivity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (PCAlarmActivity)initWithActivity:(id)a3;
+- (PCAlarmActivity)initWithActivity:(id)activity;
 - (id)description;
 - (id)fireDate;
 - (id)image;
-- (id)initFromAlarm:(id)a3;
+- (id)initFromAlarm:(id)alarm;
 - (id)title;
 @end
 
 @implementation PCAlarmActivity
 
-- (id)initFromAlarm:(id)a3
+- (id)initFromAlarm:(id)alarm
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alarmCopy = alarm;
   v13.receiver = self;
   v13.super_class = PCAlarmActivity;
   v5 = [(PCAlarmActivity *)&v13 initWithActivityType:@"com.apple.ProximityControl.activity.alarm"];
@@ -22,20 +22,20 @@
   if (v5)
   {
     makeIneligibleForProcessing(v5);
-    v7 = [v4 displayTitle];
-    if ([@"ALARM_DEFAULT_TITLE" isEqualToString:v7])
+    displayTitle = [alarmCopy displayTitle];
+    if ([@"ALARM_DEFAULT_TITLE" isEqualToString:displayTitle])
     {
       v8 = [PCLocalizedString localizedStringForKey:0];
 
-      v7 = v8;
+      displayTitle = v8;
     }
 
-    [(PCAlarmActivity *)v6 setTitle:v7];
+    [(PCAlarmActivity *)v6 setTitle:displayTitle];
     v14[0] = @"fireDate";
-    v9 = [v4 nextFireDate];
+    nextFireDate = [alarmCopy nextFireDate];
     v14[1] = @"displayTitle";
-    v15[0] = v9;
-    v15[1] = v7;
+    v15[0] = nextFireDate;
+    v15[1] = displayTitle;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
     [(PCAlarmActivity *)v6 setUserInfo:v10];
   }
@@ -44,53 +44,53 @@
   return v6;
 }
 
-- (PCAlarmActivity)initWithActivity:(id)a3
+- (PCAlarmActivity)initWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [@"com.apple.ProximityControl.activity.alarm" isEqualToString:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [@"com.apple.ProximityControl.activity.alarm" isEqualToString:activityType];
 
   if (v6)
   {
-    v7 = [v4 activityType];
+    activityType2 = [activityCopy activityType];
     v13.receiver = self;
     v13.super_class = PCAlarmActivity;
-    v8 = [(PCAlarmActivity *)&v13 initWithActivityType:v7];
+    v8 = [(PCAlarmActivity *)&v13 initWithActivityType:activityType2];
 
     if (v8)
     {
-      localizeActivityIfNeeded(v4, 0);
+      localizeActivityIfNeeded(activityCopy, 0);
       makeIneligibleForProcessing(v8);
-      v9 = [v4 userInfo];
-      [(PCAlarmActivity *)v8 setUserInfo:v9];
+      userInfo = [activityCopy userInfo];
+      [(PCAlarmActivity *)v8 setUserInfo:userInfo];
 
-      v10 = [v4 title];
-      [(PCAlarmActivity *)v8 setTitle:v10];
+      title = [activityCopy title];
+      [(PCAlarmActivity *)v8 setTitle:title];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(PCAlarmActivity *)self fireDate];
-  v4 = [(PCAlarmActivity *)self title];
-  v5 = v4;
-  if (v3 && v4)
+  fireDate = [(PCAlarmActivity *)self fireDate];
+  title = [(PCAlarmActivity *)self title];
+  v5 = title;
+  if (fireDate && title)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v6 setTimeStyle:1];
     [v6 setDateStyle:0];
-    v7 = [v6 stringFromDate:v3];
+    v7 = [v6 stringFromDate:fireDate];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v7, v5];
   }
 
@@ -104,44 +104,44 @@
 
 - (BOOL)isValid
 {
-  v2 = [(PCAlarmActivity *)self userInfo];
-  v3 = [v2 allKeys];
-  v4 = [v3 count] != 0;
+  userInfo = [(PCAlarmActivity *)self userInfo];
+  allKeys = [userInfo allKeys];
+  v4 = [allKeys count] != 0;
 
   return v4;
 }
 
 - (id)fireDate
 {
-  v2 = [(PCAlarmActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"fireDate"];
+  userInfo = [(PCAlarmActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"fireDate"];
 
   return v3;
 }
 
 - (id)title
 {
-  v2 = [(PCAlarmActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"displayTitle"];
+  userInfo = [(PCAlarmActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"displayTitle"];
 
   return v3;
 }
 
 - (id)image
 {
-  v2 = [(PCAlarmActivity *)self bundleIdentifier];
-  v3 = [PCActivityUtility iconForBundleIdentifier:v2];
+  bundleIdentifier = [(PCAlarmActivity *)self bundleIdentifier];
+  v3 = [PCActivityUtility iconForBundleIdentifier:bundleIdentifier];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 pcactivityType];
-  if (v5 == [(PCAlarmActivity *)self pcactivityType])
+  equalCopy = equal;
+  pcactivityType = [equalCopy pcactivityType];
+  if (pcactivityType == [(PCAlarmActivity *)self pcactivityType])
   {
-    v6 = [v4 description];
+    v6 = [equalCopy description];
     v7 = [(PCAlarmActivity *)self description];
     v8 = [v6 isEqualToString:v7];
   }

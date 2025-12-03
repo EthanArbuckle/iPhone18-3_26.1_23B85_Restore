@@ -1,37 +1,37 @@
 @interface LACDTOLocationProviderTaskDecorator
 - (LACBackgroundTask)locationStateBackgroundTask;
-- (LACDTOLocationProviderTaskDecorator)initWithLocationProvider:(id)a3 workQueue:(id)a4;
-- (id)_locationStateFromBackgroundTaskResult:(id)a3;
-- (void)_runLocationStateBackgroundTask:(double)a3 completion:(id)a4;
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3;
+- (LACDTOLocationProviderTaskDecorator)initWithLocationProvider:(id)provider workQueue:(id)queue;
+- (id)_locationStateFromBackgroundTaskResult:(id)result;
+- (void)_runLocationStateBackgroundTask:(double)task completion:(id)completion;
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationProviderTaskDecorator
 
-- (LACDTOLocationProviderTaskDecorator)initWithLocationProvider:(id)a3 workQueue:(id)a4
+- (LACDTOLocationProviderTaskDecorator)initWithLocationProvider:(id)provider workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACDTOLocationProviderTaskDecorator;
   v9 = [(LACDTOLocationProviderTaskDecorator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationProvider, a3);
-    objc_storeStrong(&v10->_workQueue, a4);
+    objc_storeStrong(&v9->_locationProvider, provider);
+    objc_storeStrong(&v10->_workQueue, queue);
   }
 
   return v10;
 }
 
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(LACDTOLocationProviderTaskDecorator *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  completionCopy = completion;
+  workQueue = [(LACDTOLocationProviderTaskDecorator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(LACDTOLocationProviderTaskDecorator *)self _runLocationStateBackgroundTask:v5 completion:1.0];
+  [(LACDTOLocationProviderTaskDecorator *)self _runLocationStateBackgroundTask:completionCopy completion:1.0];
 }
 
 - (LACBackgroundTask)locationStateBackgroundTask
@@ -84,31 +84,31 @@ void __66__LACDTOLocationProviderTaskDecorator_locationStateBackgroundTask__bloc
   (*(v2 + 16))(v2, v4);
 }
 
-- (void)_runLocationStateBackgroundTask:(double)a3 completion:(id)a4
+- (void)_runLocationStateBackgroundTask:(double)task completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7 = LACLogDTOLocation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a3;
+    taskCopy = task;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ will perform query with %.2f sec timeout", buf, 0x16u);
   }
 
-  v8 = [(LACDTOLocationProviderTaskDecorator *)self locationStateBackgroundTask];
+  locationStateBackgroundTask = [(LACDTOLocationProviderTaskDecorator *)self locationStateBackgroundTask];
   workQueue = self->_workQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__LACDTOLocationProviderTaskDecorator__runLocationStateBackgroundTask_completion___block_invoke;
   v12[3] = &unk_1E7A95C18;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = completionCopy;
   v13 = v10;
-  [v8 runWithTimeout:workQueue queue:v12 completion:a3];
+  [locationStateBackgroundTask runWithTimeout:workQueue queue:v12 completion:task];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -129,38 +129,38 @@ void __82__LACDTOLocationProviderTaskDecorator__runLocationStateBackgroundTask_c
   }
 }
 
-- (id)_locationStateFromBackgroundTaskResult:(id)a3
+- (id)_locationStateFromBackgroundTaskResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 value];
-  if (v5 && (v6 = v5, [v4 value], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
+  resultCopy = result;
+  value = [resultCopy value];
+  if (value && (v6 = value, [resultCopy value], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
   {
-    v9 = [v4 value];
+    value2 = [resultCopy value];
   }
 
   else
   {
-    v10 = [v4 error];
+    error = [resultCopy error];
 
-    if (v10)
+    if (error)
     {
       v11 = LACLogDTOLocation();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 error];
+        error2 = [resultCopy error];
         v16 = 138543618;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
-        v19 = v12;
+        v19 = error2;
         _os_log_impl(&dword_1B0233000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ query finished with error %{public}@", &v16, 0x16u);
       }
     }
 
-    v9 = +[LACDTOLocationState nullInstance];
+    value2 = +[LACDTOLocationState nullInstance];
   }
 
-  v13 = v9;
+  v13 = value2;
 
   v14 = *MEMORY[0x1E69E9840];
 

@@ -1,38 +1,38 @@
 @interface PKExpiredSinglePassViewController
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4;
-- (PKExpiredSinglePassViewController)initWithPass:(id)a3;
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3;
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller;
+- (PKExpiredSinglePassViewController)initWithPass:(id)pass;
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass;
 - (id)_infoButton;
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3;
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass;
 - (void)_deletePressed;
 - (void)_didPresentDetailViewController;
-- (void)_expiredPassRemovalConfirmedAsDeletion:(BOOL)a3;
+- (void)_expiredPassRemovalConfirmedAsDeletion:(BOOL)deletion;
 - (void)_moreButtonPressed;
 - (void)_sharePass;
 - (void)_unhidePressed;
 - (void)disableButtons;
 - (void)enableButtons;
 - (void)passViewSetup;
-- (void)passWasUpdated:(id)a3;
+- (void)passWasUpdated:(id)updated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKExpiredSinglePassViewController
 
-- (PKExpiredSinglePassViewController)initWithPass:(id)a3
+- (PKExpiredSinglePassViewController)initWithPass:(id)pass
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  passCopy = pass;
   v32.receiver = self;
   v32.super_class = PKExpiredSinglePassViewController;
   v6 = [(PKExpiredSinglePassViewController *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
     v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:16 target:v7 action:sel__deletePressed];
     deleteButton = v7->_deleteButton;
     v7->_deleteButton = v8;
@@ -50,13 +50,13 @@
     v7->_flexibleSpace = v14;
 
     v16 = objc_alloc(MEMORY[0x1E69DC708]);
-    v17 = [(PKExpiredSinglePassViewController *)v7 _infoButton];
-    v18 = [v16 initWithCustomView:v17];
+    _infoButton = [(PKExpiredSinglePassViewController *)v7 _infoButton];
+    v18 = [v16 initWithCustomView:_infoButton];
     infoButton = v7->_infoButton;
     v7->_infoButton = v18;
 
     [(UIBarButtonItem *)v7->_infoButton setAccessibilityIdentifier:*MEMORY[0x1E69B9880]];
-    if (-[PKPass supportsSharing](v7->_pass, "supportsSharing") && [v5 sharingMethod] != -1)
+    if (-[PKPass supportsSharing](v7->_pass, "supportsSharing") && [passCopy sharingMethod] != -1)
     {
       v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:v7 action:sel__sharePass];
       shareButton = v7->_shareButton;
@@ -65,7 +65,7 @@
       [(UIBarButtonItem *)v7->_shareButton setAccessibilityIdentifier:*MEMORY[0x1E69B9C48]];
     }
 
-    v22 = [(PKExpiredSinglePassViewController *)v7 navigationItem];
+    navigationItem = [(PKExpiredSinglePassViewController *)v7 navigationItem];
     v23 = v7->_shareButton;
     if (v23)
     {
@@ -85,7 +85,7 @@
     }
 
     v27 = [v24 arrayWithObjects:v25 count:v26];
-    [v22 setRightBarButtonItems:v27];
+    [navigationItem setRightBarButtonItems:v27];
 
     v28 = [[PKLinkedApplication alloc] initWithPass:v7->_pass];
     linkedApplication = v7->_linkedApplication;
@@ -106,24 +106,24 @@
   v6.receiver = self;
   v6.super_class = PKExpiredSinglePassViewController;
   [(PKExpiredSinglePassViewController *)&v6 viewDidLoad];
-  v3 = [(PKExpiredSinglePassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKExpiredSinglePassViewController *)self view];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [view setBackgroundColor:secondarySystemBackgroundColor];
 
-  v5 = [(PKExpiredSinglePassViewController *)self view];
-  [v5 setAccessibilityIdentifier:*MEMORY[0x1E69B9798]];
+  view2 = [(PKExpiredSinglePassViewController *)self view];
+  [view2 setAccessibilityIdentifier:*MEMORY[0x1E69B9798]];
 
   [(PKExpiredSinglePassViewController *)self passViewSetup];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKExpiredSinglePassViewController;
-  [(PKExpiredSinglePassViewController *)&v5 viewWillAppear:a3];
+  [(PKExpiredSinglePassViewController *)&v5 viewWillAppear:appear];
   [(PKExpiredSinglePassViewController *)self enableButtons];
-  v4 = [(PKExpiredSinglePassViewController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:1];
+  navigationController = [(PKExpiredSinglePassViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
 - (void)viewWillLayoutSubviews
@@ -131,13 +131,13 @@
   v28.receiver = self;
   v28.super_class = PKExpiredSinglePassViewController;
   [(PKExpiredSinglePassViewController *)&v28 viewWillLayoutSubviews];
-  v3 = [(PKExpiredSinglePassViewController *)self view];
-  [v3 bounds];
+  view = [(PKExpiredSinglePassViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   v17 = v5 + v16;
@@ -165,21 +165,21 @@
   [(PKPassView *)passView setFrame:v17, v25, v20, v11 - (v13 + v15) + v26];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKExpiredSinglePassViewController;
-  [(PKExpiredSinglePassViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PKExpiredSinglePassViewController *)self navigationController];
-  [v4 setToolbarHidden:1 animated:1];
+  [(PKExpiredSinglePassViewController *)&v5 viewWillDisappear:disappear];
+  navigationController = [(PKExpiredSinglePassViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:1];
 }
 
 - (void)passViewSetup
 {
-  v3 = [(PKExpiredSinglePassViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(PKExpiredSinglePassViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v7 = v3;
+    v7 = viewIfLoaded;
     v4 = self->_passView;
     v5 = [[PKPassView alloc] initWithPass:self->_pass content:5];
     passView = self->_passView;
@@ -193,18 +193,18 @@
       [(PKPassView *)v4 removeFromSuperview];
     }
 
-    v3 = v7;
+    viewIfLoaded = v7;
   }
 }
 
-- (void)passWasUpdated:(id)a3
+- (void)passWasUpdated:(id)updated
 {
-  objc_storeStrong(&self->_pass, a3);
+  objc_storeStrong(&self->_pass, updated);
 
   [(PKExpiredSinglePassViewController *)self passViewSetup];
 }
 
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -219,9 +219,9 @@
 {
   v3 = PKUIBigInfoButtonImageWithDefaultConfiguration();
   v4 = MEMORY[0x1E69DC740];
-  v5 = [v3 configuration];
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v7 = [v4 pkui_plainConfigurationWithImage:v3 imageConfiguration:v5 foregroundColor:v6];
+  configuration = [v3 configuration];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v7 = [v4 pkui_plainConfigurationWithImage:v3 imageConfiguration:configuration foregroundColor:systemBlueColor];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69DC628];
@@ -257,8 +257,8 @@ void __48__PKExpiredSinglePassViewController__infoButton__block_invoke(uint64_t 
   v4 = PKLocalizedString(&cfstr_ExpiredPassesD.isa);
   v5 = [v3 alertControllerWithTitle:0 message:v4 preferredStyle:0];
 
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_deleteButton];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_deleteButton];
 
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_ExpiredPassesC.isa);
@@ -284,8 +284,8 @@ void __48__PKExpiredSinglePassViewController__infoButton__block_invoke(uint64_t 
   v4 = PKLocalizedString(&cfstr_ExpiredPassesU.isa);
   v5 = [v3 alertControllerWithTitle:0 message:v4 preferredStyle:0];
 
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_unhideButton];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_unhideButton];
 
   v7 = MEMORY[0x1E69DC648];
   v8 = PKLocalizedString(&cfstr_ExpiredPassesC.isa);
@@ -305,41 +305,41 @@ void __48__PKExpiredSinglePassViewController__infoButton__block_invoke(uint64_t 
   [(PKExpiredSinglePassViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_expiredPassRemovalConfirmedAsDeletion:(BOOL)a3
+- (void)_expiredPassRemovalConfirmedAsDeletion:(BOOL)deletion
 {
-  v3 = a3;
+  deletionCopy = deletion;
   [(PKExpiredSinglePassViewController *)self disableButtons];
-  v11 = [(PKExpiredSinglePassViewController *)self parentViewController];
+  parentViewController = [(PKExpiredSinglePassViewController *)self parentViewController];
   v5 = objc_opt_respondsToSelector();
-  v6 = v11;
+  v6 = parentViewController;
   if (v5)
   {
-    v7 = [v11 expiredPassesViewController];
+    expiredPassesViewController = [parentViewController expiredPassesViewController];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(PKPass *)self->_pass uniqueID];
-      [v7 removeExpiredSectionPassWithUniqueID:v8 isDeletion:v3];
+      uniqueID = [(PKPass *)self->_pass uniqueID];
+      [expiredPassesViewController removeExpiredSectionPassWithUniqueID:uniqueID isDeletion:deletionCopy];
 
-      v9 = [(PKExpiredSinglePassViewController *)self navigationController];
-      if ([v9 pk_settings_useStateDrivenNavigation])
+      navigationController = [(PKExpiredSinglePassViewController *)self navigationController];
+      if ([navigationController pk_settings_useStateDrivenNavigation])
       {
-        [v9 pk_settings_popToRootViewController];
+        [navigationController pk_settings_popToRootViewController];
       }
 
       else
       {
-        v10 = [v9 popToRootViewControllerAnimated:1];
+        v10 = [navigationController popToRootViewControllerAnimated:1];
       }
     }
 
-    v6 = v11;
+    v6 = parentViewController;
   }
 }
 
 - (void)_moreButtonPressed
 {
-  v3 = [(PKPass *)self->_pass passType];
-  if (v3 == PKPassTypeSecureElement)
+  passType = [(PKPass *)self->_pass passType];
+  if (passType == PKPassTypeSecureElement)
   {
     v4 = [(PKExpiredSinglePassViewController *)self _paymentPassDetailsViewControllerForPaymentPass:self->_pass];
     if (v4)
@@ -348,7 +348,7 @@ void __48__PKExpiredSinglePassViewController__infoButton__block_invoke(uint64_t 
     }
   }
 
-  else if (v3 == PKPassTypeBarcode)
+  else if (passType == PKPassTypeBarcode)
   {
     v4 = [(PKExpiredSinglePassViewController *)self _barcodePassDetailsViewControllerForBarcodePass:self->_pass];
     if (v4)
@@ -402,12 +402,12 @@ void __47__PKExpiredSinglePassViewController__sharePass__block_invoke(uint64_t a
   }
 }
 
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
-    v4 = a3;
-    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:v4];
+    passCopy = pass;
+    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:passCopy];
 
     [(PKBarcodePassDetailViewController *)v5 setDeleteOverrider:self];
     [(PKBarcodePassDetailViewController *)v5 setShowCloseButton:1];
@@ -421,20 +421,20 @@ void __47__PKExpiredSinglePassViewController__sharePass__block_invoke(uint64_t a
   return v5;
 }
 
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     v4 = MEMORY[0x1E69B8BD8];
-    v5 = a3;
-    v6 = [v4 defaultDataProvider];
+    passCopy = pass;
+    defaultDataProvider = [v4 defaultDataProvider];
     v7 = [PKPaymentPassDetailViewController alloc];
-    v8 = [v5 paymentPass];
+    paymentPass = [passCopy paymentPass];
 
-    v9 = [MEMORY[0x1E69B8EF8] sharedService];
-    v10 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     v11 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v12 = [(PKPaymentPassDetailViewController *)v7 initWithPass:v8 group:0 groupsController:0 webService:v9 peerPaymentWebService:v10 style:0 passLibraryDataProvider:v11 paymentServiceDataProvider:v6];
+    v12 = [(PKPaymentPassDetailViewController *)v7 initWithPass:paymentPass group:0 groupsController:0 webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:mEMORY[0x1E69B9020] style:0 passLibraryDataProvider:v11 paymentServiceDataProvider:defaultDataProvider];
 
     [(PKPaymentPassDetailViewController *)v12 setDeleteOverrider:self];
     [(PKPaymentPassDetailViewController *)v12 setShowDoneButton:1];
@@ -455,17 +455,17 @@ void __47__PKExpiredSinglePassViewController__sharePass__block_invoke(uint64_t a
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
     deleteButton = self->_deleteButton;
-    v4 = [MEMORY[0x1E69DC888] redColor];
-    [(UIBarButtonItem *)deleteButton setTintColor:v4];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIBarButtonItem *)deleteButton setTintColor:redColor];
 
     unhideButton = self->_unhideButton;
-    v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIBarButtonItem *)unhideButton setTintColor:v6];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIBarButtonItem *)unhideButton setTintColor:systemBlueColor];
   }
 
-  v8 = [(PKExpiredSinglePassViewController *)self navigationController];
-  v7 = [v8 toolbar];
-  [v7 setNeedsLayout];
+  navigationController = [(PKExpiredSinglePassViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setNeedsLayout];
 }
 
 - (void)disableButtons
@@ -475,17 +475,17 @@ void __47__PKExpiredSinglePassViewController__sharePass__block_invoke(uint64_t a
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
     deleteButton = self->_deleteButton;
-    v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIBarButtonItem *)deleteButton setTintColor:v4];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIBarButtonItem *)deleteButton setTintColor:tertiaryLabelColor];
 
     unhideButton = self->_unhideButton;
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIBarButtonItem *)unhideButton setTintColor:v6];
+    tertiaryLabelColor2 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIBarButtonItem *)unhideButton setTintColor:tertiaryLabelColor2];
   }
 
-  v8 = [(PKExpiredSinglePassViewController *)self navigationController];
-  v7 = [v8 toolbar];
-  [v7 setNeedsLayout];
+  navigationController = [(PKExpiredSinglePassViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setNeedsLayout];
 }
 
 - (void)_didPresentDetailViewController

@@ -1,9 +1,9 @@
 @interface RPRemoteXPCListener
 - (RPRemoteXPCListener)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -24,27 +24,27 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__RPRemoteXPCListener_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v3 = a3;
-  v5 = v3;
-  if (gLogCategory_RPRemoteXPC > 30 || gLogCategory_RPRemoteXPC == -1 && (v4 = _LogCategory_Initialize(), v3 = v5, !v4))
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (gLogCategory_RPRemoteXPC > 30 || gLogCategory_RPRemoteXPC == -1 && (v4 = _LogCategory_Initialize(), completionCopy = v5, !v4))
   {
-    if (!v3)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -53,12 +53,12 @@
   }
 
   [RPRemoteXPCListener _activateWithCompletion:];
-  v3 = v5;
+  completionCopy = v5;
   if (v5)
   {
 LABEL_5:
-    v3[2](v3, 0);
-    v3 = v5;
+    completionCopy[2](completionCopy, 0);
+    completionCopy = v5;
   }
 
 LABEL_6:

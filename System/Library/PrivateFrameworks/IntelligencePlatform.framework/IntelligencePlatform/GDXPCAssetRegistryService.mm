@@ -1,19 +1,19 @@
 @interface GDXPCAssetRegistryService
 - (GDXPCAssetRegistryService)init;
-- (id)assetEntryResultDataForAssetId:(id)a3 inDomainId:(id)a4 remoteOptionsData:(id)a5 error:(id *)a6;
-- (id)overrideAssetEntryForAssetId:(id)a3 inDomainId:(id)a4 overrideAssetEntryParametersData:(id)a5 error:(id *)a6;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)assetEntryResultDataForAssetId:(id)id inDomainId:(id)domainId remoteOptionsData:(id)data error:(id *)error;
+- (id)overrideAssetEntryForAssetId:(id)id inDomainId:(id)domainId overrideAssetEntryParametersData:(id)data error:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCAssetRegistryService
 
-- (id)overrideAssetEntryForAssetId:(id)a3 inDomainId:(id)a4 overrideAssetEntryParametersData:(id)a5 error:(id *)a6
+- (id)overrideAssetEntryForAssetId:(id)id inDomainId:(id)domainId overrideAssetEntryParametersData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  domainIdCopy = domainId;
+  dataCopy = data;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -45,12 +45,12 @@
   v18[3] = &unk_1E7962668;
   v18[4] = &v27;
   v18[5] = &v21;
-  [v14 overrideAssetEntryForAssetId:v10 inDomainId:v11 overrideAssetEntryParametersData:v12 completion:v18];
+  [v14 overrideAssetEntryForAssetId:idCopy inDomainId:domainIdCopy overrideAssetEntryParametersData:dataCopy completion:v18];
 
   v15 = v28[5];
-  if (a6 && !v15)
+  if (error && !v15)
   {
-    *a6 = v22[5];
+    *error = v22[5];
     v15 = v28[5];
   }
 
@@ -62,11 +62,11 @@
   return v16;
 }
 
-- (id)assetEntryResultDataForAssetId:(id)a3 inDomainId:(id)a4 remoteOptionsData:(id)a5 error:(id *)a6
+- (id)assetEntryResultDataForAssetId:(id)id inDomainId:(id)domainId remoteOptionsData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  domainIdCopy = domainId;
+  dataCopy = data;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -98,12 +98,12 @@
   v18[3] = &unk_1E7962668;
   v18[4] = &v27;
   v18[5] = &v21;
-  [v14 assetEntryResultDataForAssetId:v10 inDomainId:v11 remoteOptionsData:v12 completion:v18];
+  [v14 assetEntryResultDataForAssetId:idCopy inDomainId:domainIdCopy remoteOptionsData:dataCopy completion:v18];
 
   v15 = v28[5];
-  if (a6 && !v15)
+  if (error && !v15)
   {
-    *a6 = v22[5];
+    *error = v22[5];
     v15 = v28[5];
   }
 
@@ -115,14 +115,14 @@
   return v16;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCAssetRegistryService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCAssetRegistryService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

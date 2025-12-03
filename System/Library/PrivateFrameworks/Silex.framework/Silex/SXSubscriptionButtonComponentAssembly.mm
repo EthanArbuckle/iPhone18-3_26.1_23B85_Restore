@@ -1,26 +1,26 @@
 @interface SXSubscriptionButtonComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXSubscriptionButtonComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerClass:objc_opt_class() factory:&__block_literal_global_83];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_83];
   v6 = [v5 withConfiguration:&__block_literal_global_4_1];
 
-  v7 = [v3 callback];
+  callback = [registryCopy callback];
   v8 = TFCallbackScopeAny();
-  [v7 whenResolvingProtocol:&unk_1F5415A30 scope:v8 callbackBlock:&__block_literal_global_56_0];
+  [callback whenResolvingProtocol:&unk_1F5415A30 scope:v8 callbackBlock:&__block_literal_global_56_0];
 
-  v9 = [v3 privateContainer];
-  v10 = [v9 registerClass:objc_opt_class() factory:&__block_literal_global_59_16];
+  privateContainer = [registryCopy privateContainer];
+  v10 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_16];
 
-  v12 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v11 = [v12 registerProtocol:&unk_1F53E0338 factory:&__block_literal_global_66_0];
+  v11 = [publicContainer2 registerProtocol:&unk_1F53E0338 factory:&__block_literal_global_66_0];
 }
 
 SXSubscriptionButtonComponentSizerFactory *__56__SXSubscriptionButtonComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

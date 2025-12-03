@@ -1,9 +1,9 @@
 @interface HREStandardAsyncRecommendationSource
 - (HREStandardAsyncRecommendationSource)init;
-- (id)asyncSetupProcess:(id)a3;
-- (id)dispatchProcess:(id)a3 options:(unint64_t)a4 actionBlock:(id)a5;
-- (id)recommendationsForHome:(id)a3 withServiceLikeItems:(id)a4 accessoryTypeGroup:(id)a5 options:(unint64_t)a6;
-- (void)setupProcess:(id)a3;
+- (id)asyncSetupProcess:(id)process;
+- (id)dispatchProcess:(id)process options:(unint64_t)options actionBlock:(id)block;
+- (id)recommendationsForHome:(id)home withServiceLikeItems:(id)items accessoryTypeGroup:(id)group options:(unint64_t)options;
+- (void)setupProcess:(id)process;
 @end
 
 @implementation HREStandardAsyncRecommendationSource
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (id)recommendationsForHome:(id)a3 withServiceLikeItems:(id)a4 accessoryTypeGroup:(id)a5 options:(unint64_t)a6
+- (id)recommendationsForHome:(id)home withServiceLikeItems:(id)items accessoryTypeGroup:(id)group options:(unint64_t)options
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  groupCopy = group;
+  itemsCopy = items;
+  homeCopy = home;
   v13 = objc_alloc_init([(HREStandardAsyncRecommendationSource *)self generationProcessClass]);
-  [v13 setHome:v12];
+  [v13 setHome:homeCopy];
 
-  v14 = [MEMORY[0x277CBEB98] setWithArray:v11];
+  v14 = [MEMORY[0x277CBEB98] setWithArray:itemsCopy];
 
   [v13 setSourceItems:v14];
-  [v13 setTypeGroup:v10];
+  [v13 setTypeGroup:groupCopy];
 
-  [v13 setOptions:a6];
+  [v13 setOptions:options];
   [(HREStandardAsyncRecommendationSource *)self setupProcess:v13];
   if ([v13 shouldGenerateRecommendations])
   {
@@ -47,7 +47,7 @@
     v20[3] = &unk_279776EA0;
     v20[4] = self;
     v21 = v13;
-    v22 = a6;
+    optionsCopy = options;
     v16 = [v15 flatMap:v20];
   }
 
@@ -61,33 +61,33 @@
   return v16;
 }
 
-- (id)dispatchProcess:(id)a3 options:(unint64_t)a4 actionBlock:(id)a5
+- (id)dispatchProcess:(id)process options:(unint64_t)options actionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if ((v6 & 0x20) != 0)
+  optionsCopy = options;
+  processCopy = process;
+  blockCopy = block;
+  if ((optionsCopy & 0x20) != 0)
   {
     v10 = MEMORY[0x277D2C900];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D14CE8] isInternalTest];
+    isInternalTest = [MEMORY[0x277D14CE8] isInternalTest];
     v10 = MEMORY[0x277D2C900];
-    if (!v9)
+    if (!isInternalTest)
     {
       v15 = MEMORY[0x277D85DD0];
-      v17 = v8;
-      v16 = v7;
-      v11 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-      v12 = [v10 lazyFutureWithBlock:&v15 scheduler:v11];
+      v17 = blockCopy;
+      v16 = processCopy;
+      globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+      v12 = [v10 lazyFutureWithBlock:&v15 scheduler:globalAsyncScheduler];
 
       goto LABEL_6;
     }
   }
 
-  v13 = (*(v8 + 2))(v8, v7);
+  v13 = (*(blockCopy + 2))(blockCopy, processCopy);
   v12 = [v10 futureWithResult:v13];
 
 LABEL_6:
@@ -105,14 +105,14 @@ void __76__HREStandardAsyncRecommendationSource_dispatchProcess_options_actionBl
   [v5 finishWithResult:v6];
 }
 
-- (id)asyncSetupProcess:(id)a3
+- (id)asyncSetupProcess:(id)process
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D14CE8] isInternalTest];
+  processCopy = process;
+  isInternalTest = [MEMORY[0x277D14CE8] isInternalTest];
   v5 = MEMORY[0x277D2C900];
-  if (v4)
+  if (isInternalTest)
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -121,11 +121,11 @@ void __76__HREStandardAsyncRecommendationSource_dispatchProcess_options_actionBl
     v8[1] = 3221225472;
     v8[2] = __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_invoke;
     v8[3] = &unk_279776F18;
-    v9 = v3;
-    v6 = [v5 futureWithBlock:v8];
+    v9 = processCopy;
+    futureWithNoResult = [v5 futureWithBlock:v8];
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 void __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_invoke(uint64_t a1, void *a2)
@@ -150,21 +150,21 @@ uint64_t __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_in
   return [v3 finishWithNoResult];
 }
 
-- (void)setupProcess:(id)a3
+- (void)setupProcess:(id)process
 {
-  v3 = a3;
-  v4 = [v3 sourceItems];
-  if (v4)
+  processCopy = process;
+  sourceItems = [processCopy sourceItems];
+  if (sourceItems)
   {
-    v5 = [v3 sourceItems];
+    sourceItems2 = [processCopy sourceItems];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    sourceItems2 = objc_opt_new();
   }
 
-  v6 = v5;
+  v6 = sourceItems2;
 
   v7 = [v6 na_map:&__block_literal_global_11];
   v8 = [v6 copy];
@@ -177,9 +177,9 @@ uint64_t __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_in
   v71 = v9;
   v13 = [v9 na_flatMap:&__block_literal_global_280];
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v3 home];
-  v16 = [v15 serviceGroups];
-  v17 = [v14 setWithArray:v16];
+  home = [processCopy home];
+  serviceGroups = [home serviceGroups];
+  v17 = [v14 setWithArray:serviceGroups];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __53__HREStandardAsyncRecommendationSource_setupProcess___block_invoke_7;
@@ -219,30 +219,30 @@ uint64_t __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_in
   [v23 unionSet:v29];
 
   v30 = [v23 copy];
-  [v3 setSourceRecommendableObjects:v30];
+  [processCopy setSourceRecommendableObjects:v30];
 
   v31 = MEMORY[0x277CBEB98];
-  v32 = [v3 home];
-  v33 = [v32 hf_allServices];
-  v34 = [v31 setWithArray:v33];
+  home2 = [processCopy home];
+  hf_allServices = [home2 hf_allServices];
+  v34 = [v31 setWithArray:hf_allServices];
 
   v35 = MEMORY[0x277CBEB98];
-  v36 = [v3 home];
-  v37 = [v36 hf_allAccessoryProfiles];
-  v38 = [v35 setWithArray:v37];
+  home3 = [processCopy home];
+  hf_allAccessoryProfiles = [home3 hf_allAccessoryProfiles];
+  v38 = [v35 setWithArray:hf_allAccessoryProfiles];
 
   v39 = MEMORY[0x277CBEB98];
-  v40 = [v3 home];
-  v41 = [v40 serviceGroups];
-  v42 = [v39 setWithArray:v41];
+  home4 = [processCopy home];
+  serviceGroups2 = [home4 serviceGroups];
+  v42 = [v39 setWithArray:serviceGroups2];
 
   v43 = [v42 na_flatMap:&__block_literal_global_302];
   v44 = [v34 na_setByRemovingObjectsFromSet:v43];
 
   v45 = MEMORY[0x277CBEB98];
-  v46 = [v3 home];
-  v47 = [v46 accessories];
-  v48 = [v47 na_filter:&__block_literal_global_304];
+  home5 = [processCopy home];
+  accessories = [home5 accessories];
+  v48 = [accessories na_filter:&__block_literal_global_304];
   v49 = [v45 setWithArray:v48];
 
   v50 = objc_opt_new();
@@ -260,10 +260,10 @@ uint64_t __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_in
   v55 = [HRERecommendableObjectUtilities recommendableObjectsFromHomeKitObjects:v49];
   [v50 unionSet:v55];
 
-  [v3 setHomeRecommendableObjects:v50];
-  v56 = [v3 typeGroup];
+  [processCopy setHomeRecommendableObjects:v50];
+  typeGroup = [processCopy typeGroup];
 
-  if (v56)
+  if (typeGroup)
   {
     if ([v23 count])
     {
@@ -276,16 +276,16 @@ uint64_t __58__HREStandardAsyncRecommendationSource_asyncSetupProcess___block_in
     }
 
     v58 = v57;
-    v59 = [v3 typeGroup];
-    v60 = [MEMORY[0x277D14378] mediaAccessoryTypeGroup];
-    v61 = [v59 intersectsGroup:v60];
+    typeGroup2 = [processCopy typeGroup];
+    mediaAccessoryTypeGroup = [MEMORY[0x277D14378] mediaAccessoryTypeGroup];
+    v61 = [typeGroup2 intersectsGroup:mediaAccessoryTypeGroup];
 
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __53__HREStandardAsyncRecommendationSource_setupProcess___block_invoke_13;
     v75[3] = &unk_279777028;
     v77 = v61;
-    v62 = v3;
+    v62 = processCopy;
     v76 = v62;
     v63 = [v58 na_filter:v75];
 

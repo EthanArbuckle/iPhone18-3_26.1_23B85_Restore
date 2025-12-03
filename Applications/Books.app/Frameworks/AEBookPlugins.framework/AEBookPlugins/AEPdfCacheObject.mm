@@ -1,18 +1,18 @@
 @interface AEPdfCacheObject
-- (AEPdfCacheObject)initWithPdfDocument:(id)a3;
+- (AEPdfCacheObject)initWithPdfDocument:(id)document;
 - (NSUndoManager)pdfUndoManager;
 @end
 
 @implementation AEPdfCacheObject
 
-- (AEPdfCacheObject)initWithPdfDocument:(id)a3
+- (AEPdfCacheObject)initWithPdfDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v6 = [(AEPdfCacheObject *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
+    objc_storeStrong(&v6->_document, document);
   }
 
   return v7;

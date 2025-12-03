@@ -1,34 +1,34 @@
 @interface MFDataMessageStore
-- (MFDataMessageStore)initWithData:(id)a3;
-- (id)_cachedBodyDataForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)bodyDataForMessage:(id)a3 isComplete:(BOOL *)a4 isPartial:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
-- (id)headerDataForMessage:(id)a3 downloadIfNecessary:(BOOL)a4;
+- (MFDataMessageStore)initWithData:(id)data;
+- (id)_cachedBodyDataForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)bodyDataForMessage:(id)message isComplete:(BOOL *)complete isPartial:(BOOL *)partial downloadIfNecessary:(BOOL)necessary;
+- (id)headerDataForMessage:(id)message downloadIfNecessary:(BOOL)necessary;
 - (id)message;
-- (void)setStoragePath:(id)a3;
+- (void)setStoragePath:(id)path;
 @end
 
 @implementation MFDataMessageStore
 
-- (MFDataMessageStore)initWithData:(id)a3
+- (MFDataMessageStore)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MFDataMessageStore;
   v6 = [(MFMessageStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setStoragePath:(id)a3
+- (void)setStoragePath:(id)path
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  pathCopy = path;
+  v4 = [pathCopy copy];
   storagePath = self->_storagePath;
   self->_storagePath = v4;
 }
@@ -48,18 +48,18 @@
   return v4;
 }
 
-- (id)headerDataForMessage:(id)a3 downloadIfNecessary:(BOOL)a4
+- (id)headerDataForMessage:(id)message downloadIfNecessary:(BOOL)necessary
 {
-  v5 = a3;
-  v6 = [(NSData *)self->_data bytes];
+  messageCopy = message;
+  bytes = [(NSData *)self->_data bytes];
   v7 = [(NSData *)self->_data length];
   if (v7)
   {
     v8 = 0;
-    v9 = ~v6;
+    v9 = ~bytes;
     while (1)
     {
-      v11 = *v6++;
+      v11 = *bytes++;
       v10 = v11;
       if ((v8 & 1) != 0 && v10 == 10)
       {
@@ -93,20 +93,20 @@ LABEL_6:
   return v13;
 }
 
-- (id)bodyDataForMessage:(id)a3 isComplete:(BOOL *)a4 isPartial:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (id)bodyDataForMessage:(id)message isComplete:(BOOL *)complete isPartial:(BOOL *)partial downloadIfNecessary:(BOOL)necessary
 {
-  v9 = a3;
-  if (a5)
+  messageCopy = message;
+  if (partial)
   {
-    *a5 = 0;
+    *partial = 0;
   }
 
-  v10 = [(NSData *)self->_data bytes];
+  bytes = [(NSData *)self->_data bytes];
   v11 = [(NSData *)self->_data length];
   if (v11)
   {
     v12 = 0;
-    v13 = v10 + 1;
+    v13 = bytes + 1;
     v14 = &v13[-v11];
     while ((v12 & 1) == 0 || *(v13 - 1) != 10)
     {
@@ -119,9 +119,9 @@ LABEL_6:
       }
     }
 
-    if (a4)
+    if (complete)
     {
-      *a4 = 1;
+      *complete = 1;
     }
 
     v16 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v13 length:-[NSData bytes](self->_data freeWhenDone:{"bytes") - v14, 0}];
@@ -138,18 +138,18 @@ LABEL_8:
     }
 
     v16 = 0;
-    if (a4)
+    if (complete)
     {
-      *a4 = 0;
+      *complete = 0;
     }
   }
 
   return v16;
 }
 
-- (id)_cachedBodyDataForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedBodyDataForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v4 = [(MFDataMessageStore *)self bodyDataForMessage:a3 isComplete:0 isPartial:0 downloadIfNecessary:0];
+  v4 = [(MFDataMessageStore *)self bodyDataForMessage:message isComplete:0 isPartial:0 downloadIfNecessary:0];
 
   return v4;
 }

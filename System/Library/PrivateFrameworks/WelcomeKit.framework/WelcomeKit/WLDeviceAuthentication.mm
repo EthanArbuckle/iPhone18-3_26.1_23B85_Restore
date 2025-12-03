@@ -1,6 +1,6 @@
 @interface WLDeviceAuthentication
 - (WLDeviceAuthentication)init;
-- (WLDeviceAuthentication)initWithCoder:(id)a3;
+- (WLDeviceAuthentication)initWithCoder:(id)coder;
 @end
 
 @implementation WLDeviceAuthentication
@@ -23,13 +23,13 @@
   return v2;
 }
 
-- (WLDeviceAuthentication)initWithCoder:(id)a3
+- (WLDeviceAuthentication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WLDeviceAuthentication *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sessionUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sessionUUID"];
     sessionUUID = v5->_sessionUUID;
     v5->_sessionUUID = v6;
   }

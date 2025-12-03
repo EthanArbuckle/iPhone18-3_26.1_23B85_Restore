@@ -1,13 +1,13 @@
 @interface VehicleDisambiguationTask
-- (void)displayDisambiguationPromptIfNeededFromChromeViewController:(id)a3;
+- (void)displayDisambiguationPromptIfNeededFromChromeViewController:(id)controller;
 @end
 
 @implementation VehicleDisambiguationTask
 
-- (void)displayDisambiguationPromptIfNeededFromChromeViewController:(id)a3
+- (void)displayDisambiguationPromptIfNeededFromChromeViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ LABEL_15:
   }
 
   objc_initWeak(location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, controllerCopy);
   +[MapsExternalAccessory sharedInstance];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;

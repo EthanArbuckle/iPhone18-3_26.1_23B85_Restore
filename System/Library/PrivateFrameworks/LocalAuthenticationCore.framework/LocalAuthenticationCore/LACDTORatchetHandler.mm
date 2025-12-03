@@ -1,41 +1,41 @@
 @interface LACDTORatchetHandler
-- (LACDTORatchetHandler)initWithContextProvider:(id)a3 sep:(id)a4;
-- (void)_ratchetStatusWithCompletion:(id)a3;
-- (void)_resetRatchetWithCompletion:(id)a3;
-- (void)ratchetStateCompositeWithCompletion:(id)a3;
-- (void)ratchetStateWithCompletion:(id)a3;
-- (void)restartRatchetWithIdentifier:(id)a3;
+- (LACDTORatchetHandler)initWithContextProvider:(id)provider sep:(id)sep;
+- (void)_ratchetStatusWithCompletion:(id)completion;
+- (void)_resetRatchetWithCompletion:(id)completion;
+- (void)ratchetStateCompositeWithCompletion:(id)completion;
+- (void)ratchetStateWithCompletion:(id)completion;
+- (void)restartRatchetWithIdentifier:(id)identifier;
 @end
 
 @implementation LACDTORatchetHandler
 
-- (LACDTORatchetHandler)initWithContextProvider:(id)a3 sep:(id)a4
+- (LACDTORatchetHandler)initWithContextProvider:(id)provider sep:(id)sep
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  sepCopy = sep;
   v12.receiver = self;
   v12.super_class = LACDTORatchetHandler;
   v9 = [(LACDTORatchetHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextProvider, a3);
-    objc_storeStrong(&v10->_sep, a4);
+    objc_storeStrong(&v9->_contextProvider, provider);
+    objc_storeStrong(&v10->_sep, sep);
   }
 
   return v10;
 }
 
-- (void)restartRatchetWithIdentifier:(id)a3
+- (void)restartRatchetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   contextProvider = self->_contextProvider;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__LACDTORatchetHandler_restartRatchetWithIdentifier___block_invoke;
   v7[3] = &unk_1E7A96C00;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(LACRemoteContextProviding *)contextProvider createContextWithCompletion:v7];
 }
 
@@ -117,16 +117,16 @@ void __53__LACDTORatchetHandler_restartRatchetWithIdentifier___block_invoke_3(ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ratchetStateWithCompletion:(id)a3
+- (void)ratchetStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__LACDTORatchetHandler_ratchetStateWithCompletion___block_invoke;
   v6[3] = &unk_1E7A96C28;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACDTORatchetHandler *)self _ratchetStatusWithCompletion:v6];
 
@@ -156,16 +156,16 @@ void __51__LACDTORatchetHandler_ratchetStateWithCompletion___block_invoke(uint64
   }
 }
 
-- (void)ratchetStateCompositeWithCompletion:(id)a3
+- (void)ratchetStateCompositeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__LACDTORatchetHandler_ratchetStateCompositeWithCompletion___block_invoke;
   v6[3] = &unk_1E7A96C28;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACDTORatchetHandler *)self _ratchetStatusWithCompletion:v6];
 
@@ -209,10 +209,10 @@ LACDTORatchetStateComposite *__60__LACDTORatchetHandler_ratchetStateCompositeWit
   return v6;
 }
 
-- (void)_resetRatchetWithCompletion:(id)a3
+- (void)_resetRatchetWithCompletion:(id)completion
 {
   v8 = 0;
-  v3 = a3;
+  completionCopy = completion;
   v4 = [LACACMHelper resetRatchet:&v8];
   v5 = v8;
   v6 = v5;
@@ -226,17 +226,17 @@ LACDTORatchetStateComposite *__60__LACDTORatchetHandler_ratchetStateCompositeWit
     v7 = v5;
   }
 
-  (v3)[2](v3, v7);
+  (completionCopy)[2](completionCopy, v7);
 }
 
-- (void)_ratchetStatusWithCompletion:(id)a3
+- (void)_ratchetStatusWithCompletion:(id)completion
 {
   sep = self->_sep;
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(LACDTORatchetSEPInterface *)sep fetchConfigurationAndStatus:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
 void __53__LACDTORatchetHandler_restartRatchetWithIdentifier___block_invoke_cold_1(uint64_t a1, NSObject *a2)

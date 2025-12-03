@@ -1,32 +1,32 @@
 @interface CLKWorldClockTimeFormatter
-+ (id)dayForOffset:(double)a3;
-+ (id)differenceForOffset:(double)a3 caps:(BOOL)a4 suppressZero:(BOOL)a5 size:(int64_t)a6;
++ (id)dayForOffset:(double)offset;
++ (id)differenceForOffset:(double)offset caps:(BOOL)caps suppressZero:(BOOL)zero size:(int64_t)size;
 + (void)initialize;
-+ (void)invalidateTimeZone:(id)a3;
++ (void)invalidateTimeZone:(id)zone;
 @end
 
 @implementation CLKWorldClockTimeFormatter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:a1 selector:sel_invalidateTimeZone_ name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_invalidateTimeZone_ name:*MEMORY[0x277D766F0] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:a1 selector:sel_invalidateTimeZone_ name:*MEMORY[0x277CBE780] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_invalidateTimeZone_ name:*MEMORY[0x277CBE780] object:0];
   }
 }
 
-+ (void)invalidateTimeZone:(id)a3
++ (void)invalidateTimeZone:(id)zone
 {
   [MEMORY[0x277CBEBB0] resetSystemTimeZone];
-  v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [_dayFormatter setTimeZone:v3];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [_dayFormatter setTimeZone:systemTimeZone];
 }
 
-+ (id)dayForOffset:(double)a3
++ (id)dayForOffset:(double)offset
 {
   if (!_dayFormatter)
   {
@@ -34,55 +34,55 @@
     v5 = _dayFormatter;
     _dayFormatter = v4;
 
-    v6 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [_dayFormatter setLocale:v6];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [_dayFormatter setLocale:autoupdatingCurrentLocale];
 
-    v7 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [_dayFormatter setTimeZone:v7];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [_dayFormatter setTimeZone:systemTimeZone];
 
     [_dayFormatter setDateStyle:1];
     [_dayFormatter setTimeStyle:0];
     [_dayFormatter setDoesRelativeDateFormatting:1];
   }
 
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:offset];
   v9 = [_dayFormatter stringFromDate:v8];
 
   return v9;
 }
 
-+ (id)differenceForOffset:(double)a3 caps:(BOOL)a4 suppressZero:(BOOL)a5 size:(int64_t)a6
++ (id)differenceForOffset:(double)offset caps:(BOOL)caps suppressZero:(BOOL)zero size:(int64_t)size
 {
-  v8 = a4;
+  capsCopy = caps;
   v38[1] = *MEMORY[0x277D85DE8];
   if (differenceForOffset_caps_suppressZero_size__onceToken != -1)
   {
     +[CLKWorldClockTimeFormatter differenceForOffset:caps:suppressZero:size:];
   }
 
-  v10 = fmod(a3, 3600.0);
-  if (a3 >= 0.0)
+  v10 = fmod(offset, 3600.0);
+  if (offset >= 0.0)
   {
-    v11 = a3;
+    offsetCopy = offset;
   }
 
   else
   {
-    v11 = -a3;
+    offsetCopy = -offset;
   }
 
-  if (a3 != 0.0)
+  if (offset != 0.0)
   {
-    if (v11 >= 3600.0)
+    if (offsetCopy >= 3600.0)
     {
-      if (v10 != 0.0 && v11 != 3600.0)
+      if (v10 != 0.0 && offsetCopy != 3600.0)
       {
         [differenceForOffset_caps_suppressZero_size__formatter setAllowedUnits:96];
         [differenceForOffset_caps_suppressZero_size__formatter setUnitsStyle:0];
         goto LABEL_33;
       }
 
-      if (!v8)
+      if (!capsCopy)
       {
 LABEL_22:
         v16 = differenceForOffset_caps_suppressZero_size__formatter;
@@ -93,61 +93,61 @@ LABEL_24:
         goto LABEL_33;
       }
 
-      if (a6 > 2)
+      if (size > 2)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = off_278A1FF10[a6];
+        v15 = off_278A1FF10[size];
       }
 
       v18 = CLKWorldClockLocalizedString(v15);
       v19 = MEMORY[0x277CCACA8];
-      v20 = v11 / 3600.0;
+      v20 = offsetCopy / 3600.0;
     }
 
     else
     {
-      if (!v8)
+      if (!capsCopy)
       {
         v16 = differenceForOffset_caps_suppressZero_size__formatter;
         v17 = 64;
         goto LABEL_24;
       }
 
-      if (a6 > 2)
+      if (size > 2)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_278A1FEF8[a6];
+        v13 = off_278A1FEF8[size];
       }
 
       v18 = CLKWorldClockLocalizedString(v13);
       v19 = MEMORY[0x277CCACA8];
-      v20 = v11 / 60.0;
+      v20 = offsetCopy / 60.0;
     }
 
     [v19 localizedStringWithFormat:v18, *&v20];
     goto LABEL_32;
   }
 
-  if (!a5)
+  if (!zero)
   {
-    if (v8)
+    if (capsCopy)
     {
-      if (a6 > 2)
+      if (size > 2)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = off_278A1FF10[a6];
+        v14 = off_278A1FF10[size];
       }
 
       v18 = CLKWorldClockLocalizedString(v14);
@@ -160,7 +160,7 @@ LABEL_24:
       }
 
 LABEL_33:
-      v12 = [differenceForOffset_caps_suppressZero_size__formatter stringFromTimeInterval:v11];
+      v12 = [differenceForOffset_caps_suppressZero_size__formatter stringFromTimeInterval:offsetCopy];
       goto LABEL_34;
     }
 
@@ -169,11 +169,11 @@ LABEL_33:
 
   v12 = &stru_284A20458;
 LABEL_34:
-  if (a3 != 0.0 || !a5)
+  if (offset != 0.0 || !zero)
   {
     v21 = CLKLocaleCurrentNumberSystem();
     v22 = @"+";
-    if (a3 < 0.0)
+    if (offset < 0.0)
     {
       v22 = @"−";
     }

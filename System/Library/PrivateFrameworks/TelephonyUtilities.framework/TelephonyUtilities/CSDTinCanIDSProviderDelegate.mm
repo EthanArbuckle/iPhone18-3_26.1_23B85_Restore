@@ -1,71 +1,71 @@
 @interface CSDTinCanIDSProviderDelegate
-- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)a3 callSource:(id)a4 queue:(id)a5;
-- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)a3 queue:(id)a4;
-- (id)callUpdateForChat:(id)a3;
-- (void)chat:(id)a3 receivedData:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performStartCallAction:(id)a4;
-- (void)providerDidBegin:(id)a3;
+- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)capabilities callSource:(id)source queue:(id)queue;
+- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)capabilities queue:(id)queue;
+- (id)callUpdateForChat:(id)chat;
+- (void)chat:(id)chat receivedData:(id)data;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performStartCallAction:(id)action;
+- (void)providerDidBegin:(id)begin;
 @end
 
 @implementation CSDTinCanIDSProviderDelegate
 
-- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)a3 callSource:(id)a4 queue:(id)a5
+- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)capabilities callSource:(id)source queue:(id)queue
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = a5;
+  sourceCopy = source;
+  queueCopy = queue;
   sub_10028D408();
   return result;
 }
 
-- (id)callUpdateForChat:(id)a3
+- (id)callUpdateForChat:(id)chat
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_10028E500();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (void)provider:(id)a3 performStartCallAction:(id)a4
+- (void)provider:(id)provider performStartCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
   sub_10028E5C8();
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10028F0AC(v6, v7);
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
+  sub_10028F0AC(providerCopy, actionCopy);
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
   sub_10028F4FC();
 }
 
-- (void)providerDidBegin:(id)a3
+- (void)providerDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   sub_10028F99C();
 }
 
-- (void)chat:(id)a3 receivedData:(id)a4
+- (void)chat:(id)chat receivedData:(id)data
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v10 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
@@ -74,10 +74,10 @@
   swift_unknownObjectRelease();
 }
 
-- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)a3 queue:(id)a4
+- (CSDTinCanIDSProviderDelegate)initWithCapabilities:(id)capabilities queue:(id)queue
 {
   swift_unknownObjectRetain();
-  v5 = a4;
+  queueCopy = queue;
   sub_100290760();
 }
 

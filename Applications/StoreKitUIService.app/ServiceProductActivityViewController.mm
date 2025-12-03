@@ -1,46 +1,46 @@
 @interface ServiceProductActivityViewController
 - (CGRect)popoverSourceRect;
-- (ServiceProductActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_productIDFromParameters:(id)a3;
-- (void)_loadClientContextWithCompletionBlock:(id)a3;
-- (void)_loadDidFailWithError:(id)a3;
-- (void)_lookupItemWithIdentifier:(id)a3 success:(id)a4 failure:(id)a5;
-- (void)_presentActivityViewControllerWithItem:(id)a3;
+- (ServiceProductActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_productIDFromParameters:(id)parameters;
+- (void)_loadClientContextWithCompletionBlock:(id)block;
+- (void)_loadDidFailWithError:(id)error;
+- (void)_lookupItemWithIdentifier:(id)identifier success:(id)success failure:(id)failure;
+- (void)_presentActivityViewControllerWithItem:(id)item;
 - (void)dealloc;
-- (void)finishImmediately:(id)a3;
-- (void)setupProductWithParameters:(id)a3;
+- (void)finishImmediately:(id)immediately;
+- (void)setupProductWithParameters:(id)parameters;
 @end
 
 @implementation ServiceProductActivityViewController
 
-- (ServiceProductActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceProductActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v20.receiver = self;
   v20.super_class = ServiceProductActivityViewController;
-  v4 = [(ServiceProductActivityViewController *)&v20 initWithNibName:a3 bundle:a4];
+  v4 = [(ServiceProductActivityViewController *)&v20 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v6 componentsSeparatedByString:@"-"];
-    v8 = [v7 firstObject];
+    uUIDString = [v5 UUIDString];
+    v7 = [uUIDString componentsSeparatedByString:@"-"];
+    firstObject = [v7 firstObject];
     logKey = v4->_logKey;
-    v4->_logKey = v8;
+    v4->_logKey = firstObject;
 
     v10 = +[SSLogConfig sharedConfig];
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 &= 2u;
     }
@@ -64,7 +64,7 @@ LABEL_11:
         return v4;
       }
 
-      v13 = [NSString stringWithCString:v17 encoding:4, &v21, v19];
+      oSLogObject = [NSString stringWithCString:v17 encoding:4, &v21, v19];
       free(v17);
       SSFileLog();
     }
@@ -78,19 +78,19 @@ LABEL_11:
 - (void)dealloc
 {
   v3 = +[SSLogConfig sharedConfig];
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -112,7 +112,7 @@ LABEL_11:
 
   if (v10)
   {
-    v6 = [NSString stringWithCString:v10 encoding:4, &v13, v11];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v13, v11];
     free(v10);
     SSFileLog();
 LABEL_9:
@@ -123,13 +123,13 @@ LABEL_9:
   [(ServiceProductActivityViewController *)&v12 dealloc];
 }
 
-- (void)setupProductWithParameters:(id)a3
+- (void)setupProductWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [(ServiceProductActivityViewController *)self _productIDFromParameters:v4];
+  parametersCopy = parameters;
+  v5 = [(ServiceProductActivityViewController *)self _productIDFromParameters:parametersCopy];
   if (v5)
   {
-    v6 = [v4 valueForKey:SKStoreProductParameterPopoverSourceRect];
+    v6 = [parametersCopy valueForKey:SKStoreProductParameterPopoverSourceRect];
     v27 = CGRectFromString(v6);
     [(ServiceProductActivityViewController *)self setPopoverSourceRect:v27.origin.x, v27.origin.y, v27.size.width, v27.size.height];
 
@@ -158,19 +158,19 @@ LABEL_9:
   else
   {
     v8 = +[SSLogConfig sharedConfig];
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 &= 2u;
     }
@@ -203,15 +203,15 @@ LABEL_9:
   }
 }
 
-- (void)finishImmediately:(id)a3
+- (void)finishImmediately:(id)immediately
 {
-  v4 = a3;
-  v5 = [(ServiceProductActivityViewController *)self presentedViewController];
+  immediatelyCopy = immediately;
+  presentedViewController = [(ServiceProductActivityViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     v6 = [(NSString *)self->_logKey copy];
-    v7 = [v4 BOOLValue];
+    bOOLValue = [immediatelyCopy BOOLValue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10002471C;
@@ -219,17 +219,17 @@ LABEL_9:
     v9[4] = self;
     v10 = v6;
     v8 = v6;
-    [(ServiceProductActivityViewController *)self dismissViewControllerAnimated:v7 completion:v9];
+    [(ServiceProductActivityViewController *)self dismissViewControllerAnimated:bOOLValue completion:v9];
   }
 }
 
-- (void)_loadClientContextWithCompletionBlock:(id)a3
+- (void)_loadClientContextWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[SKUIClientContext defaultContext];
   if (v4)
   {
-    v3[2](v3, v4);
+    blockCopy[2](blockCopy, v4);
   }
 
   else
@@ -239,52 +239,52 @@ LABEL_9:
     v7[1] = 3221225472;
     v7[2] = sub_1000249B4;
     v7[3] = &unk_100051EA8;
-    v8 = v3;
+    v8 = blockCopy;
     [v5 setOutputBlock:v7];
     v6 = objc_alloc_init(NSOperationQueue);
     [v6 addOperation:v5];
   }
 }
 
-- (void)_presentActivityViewControllerWithItem:(id)a3
+- (void)_presentActivityViewControllerWithItem:(id)item
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100024B60;
   v5[3] = &unk_100051EF8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  itemCopy = item;
+  selfCopy = self;
+  v4 = itemCopy;
   [(ServiceProductActivityViewController *)self _loadClientContextWithCompletionBlock:v5];
 }
 
-- (void)_loadDidFailWithError:(id)a3
+- (void)_loadDidFailWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v28 = NSLocalizedDescriptionKey;
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_100052318 table:0];
     v29 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v4 = [NSError errorWithDomain:SKErrorDomain code:5 userInfo:v7];
+    errorCopy = [NSError errorWithDomain:SKErrorDomain code:5 userInfo:v7];
   }
 
   v8 = +[SSLogConfig sharedConfig];
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 &= 2u;
   }
@@ -298,7 +298,7 @@ LABEL_9:
     v24 = 2114;
     v25 = logKey;
     v26 = 2114;
-    v27 = v4;
+    v27 = errorCopy;
     v14 = v12;
     LODWORD(v19) = 32;
     v15 = _os_log_send_and_compose_impl();
@@ -308,16 +308,16 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v11 = [NSString stringWithCString:v15 encoding:4, &v22, v19];
+    oSLogObject = [NSString stringWithCString:v15 encoding:4, &v22, v19];
     free(v15);
     SSFileLog();
   }
 
 LABEL_12:
-  v16 = [SKUIErrorHelper errorWithSafeUserInfo:v4];
-  v17 = [(ServiceProductActivityViewController *)self presentedViewController];
+  v16 = [SKUIErrorHelper errorWithSafeUserInfo:errorCopy];
+  presentedViewController = [(ServiceProductActivityViewController *)self presentedViewController];
 
-  if (v17)
+  if (presentedViewController)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -330,14 +330,14 @@ LABEL_12:
 
   else
   {
-    v18 = [(ServiceProductActivityViewController *)self _clientViewControllerProxy];
-    [v18 didFinishWithResult:&off_100055000 error:v16];
+    _clientViewControllerProxy = [(ServiceProductActivityViewController *)self _clientViewControllerProxy];
+    [_clientViewControllerProxy didFinishWithResult:&off_100055000 error:v16];
   }
 }
 
-- (id)_productIDFromParameters:(id)a3
+- (id)_productIDFromParameters:(id)parameters
 {
-  v4 = [a3 objectForKeyedSubscript:SKStoreProductParameterITunesItemIdentifier];
+  v4 = [parameters objectForKeyedSubscript:SKStoreProductParameterITunesItemIdentifier];
   if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ![v4 length] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !objc_msgSend(v4, "integerValue"))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -372,31 +372,31 @@ LABEL_11:
   return v5;
 }
 
-- (void)_lookupItemWithIdentifier:(id)a3 success:(id)a4 failure:(id)a5
+- (void)_lookupItemWithIdentifier:(id)identifier success:(id)success failure:(id)failure
 {
-  v8 = a3;
-  v37 = a4;
-  v9 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  successCopy = success;
+  failureCopy = failure;
+  if (identifierCopy)
   {
     v10 = [AMSBag bagForProfile:@"appstored" profileVersion:@"1"];
     v36 = [[AMSProcessInfo alloc] initWithBundleIdentifier:@"com.apple.storekitd"];
-    v48 = v8;
+    v48 = identifierCopy;
     v11 = [NSArray arrayWithObjects:&v48 count:1];
     v12 = +[SSLogConfig sharedConfig];
-    v13 = [v12 shouldLog];
+    shouldLog = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog;
     }
 
-    v15 = [v12 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v14;
     }
@@ -415,7 +415,7 @@ LABEL_11:
       v44 = 2114;
       v45 = logKey;
       v46 = 2114;
-      v47 = v8;
+      v47 = identifierCopy;
       v19 = v17;
       LODWORD(v35) = 32;
       v20 = _os_log_send_and_compose_impl();
@@ -430,7 +430,7 @@ LABEL_12:
         [v21 setItemIdentifiers:v11];
         v22 = [(NSString *)self->_logKey copy];
         objc_initWeak(location, self);
-        v23 = [v21 perform];
+        perform = [v21 perform];
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_100025A3C;
@@ -438,9 +438,9 @@ LABEL_12:
         objc_copyWeak(&v42, location);
         v24 = v22;
         v39 = v24;
-        v40 = v37;
-        v41 = v9;
-        [v23 addFinishBlock:v38];
+        v40 = successCopy;
+        v41 = failureCopy;
+        [perform addFinishBlock:v38];
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(location);
@@ -448,7 +448,7 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      v15 = [NSString stringWithCString:v20 encoding:4, location, v35];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, location, v35];
       free(v20);
       SSFileLog();
     }
@@ -457,19 +457,19 @@ LABEL_12:
   }
 
   v25 = +[SSLogConfig sharedConfig];
-  v26 = [v25 shouldLog];
+  shouldLog2 = [v25 shouldLog];
   if ([v25 shouldLogToDisk])
   {
-    v27 = v26 | 2;
+    v27 = shouldLog2 | 2;
   }
 
   else
   {
-    v27 = v26;
+    v27 = shouldLog2;
   }
 
-  v28 = [v25 OSLogObject];
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v29 = v27;
   }
@@ -504,7 +504,7 @@ LABEL_12:
   }
 
   v10 = [[NSError alloc] initWithDomain:SKErrorDomain code:5 userInfo:0];
-  (*(v9 + 2))(v9, v10);
+  (*(failureCopy + 2))(failureCopy, v10);
 LABEL_24:
 }
 

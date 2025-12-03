@@ -1,15 +1,15 @@
 @interface AXSANSControllerImplementation
 - (BOOL)isListening;
 - (_TtP18AXSoundDetectionUI34AXSDSoundActionsControllerDelegate_)delegate;
-- (void)listenEngineDidStartWithInputFormat:(id)a3;
-- (void)listenEngineFailedToStartWithError:(id)a3;
-- (void)listeningStoppedWithError:(id)a3;
-- (void)receivedBuffer:(id)a3 atTime:(id)a4;
-- (void)receivedError:(id)a3 fromDetector:(id)a4;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)listenEngineDidStartWithInputFormat:(id)format;
+- (void)listenEngineFailedToStartWithError:(id)error;
+- (void)listeningStoppedWithError:(id)error;
+- (void)receivedBuffer:(id)buffer atTime:(id)time;
+- (void)receivedError:(id)error fromDetector:(id)detector;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
+- (void)setDelegate:(id)delegate;
 - (void)startListening;
-- (void)startListeningOnQueue:(id)a3;
+- (void)startListeningOnQueue:(id)queue;
 - (void)stopListening;
 @end
 
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC18AXSoundDetectionUI30AXSANSControllerImplementation_delegate;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -40,85 +40,85 @@
   v3 = OBJC_IVAR____TtC18AXSoundDetectionUI34AXSDNSBaseControllerImplementation_listener;
   swift_beginAccess();
   v4 = *(&self->super.super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if ([v4 containsListenDelegate_])
   {
     v6 = *(&self->super.super.isa + v3);
-    v7 = [v6 isListening];
+    isListening = [v6 isListening];
   }
 
   else
   {
-    v7 = 0;
+    isListening = 0;
   }
 
-  return v7;
+  return isListening;
 }
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D668610(0);
 }
 
-- (void)startListeningOnQueue:(id)a3
+- (void)startListeningOnQueue:(id)queue
 {
-  v5 = a3;
-  v6 = self;
-  sub_23D668610(a3);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_23D668610(queue);
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D668D70();
 }
 
-- (void)receivedBuffer:(id)a3 atTime:(id)a4
+- (void)receivedBuffer:(id)buffer atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  v8.super.super.isa = v6;
-  v8.super._impl = v7;
-  AXSANSControllerImplementation.receivedBuffer(_:at:)(v8, v9);
+  bufferCopy = buffer;
+  timeCopy = time;
+  selfCopy = self;
+  v8.super.super.isa = bufferCopy;
+  v8.super._impl = timeCopy;
+  AXSANSControllerImplementation.receivedBuffer(_:at:)(v8, selfCopy);
 }
 
-- (void)listenEngineDidStartWithInputFormat:(id)a3
+- (void)listenEngineDidStartWithInputFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  AXSANSControllerImplementation.listenEngineDidStart(withInputFormat:)(a3);
+  formatCopy = format;
+  selfCopy = self;
+  AXSANSControllerImplementation.listenEngineDidStart(withInputFormat:)(format);
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  AXSANSControllerImplementation.listenEngineFailedToStartWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  AXSANSControllerImplementation.listenEngineFailedToStartWithError(_:)(error);
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s18AXSoundDetectionUI30AXSANSControllerImplementationC19receivedObservation_11forDetectorySo20SNSoundActionsResultC_So20SNDetectSoundRequestCtF_0(v6);
+  observationCopy = observation;
+  detectorCopy = detector;
+  selfCopy = self;
+  _s18AXSoundDetectionUI30AXSANSControllerImplementationC19receivedObservation_11forDetectorySo20SNSoundActionsResultC_So20SNDetectSoundRequestCtF_0(observationCopy);
 }
 
-- (void)receivedError:(id)a3 fromDetector:(id)a4
+- (void)receivedError:(id)error fromDetector:(id)detector
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  AXSANSControllerImplementation.receivedError(_:fromDetector:)(v8, v6);
+  errorCopy = error;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSANSControllerImplementation.receivedError(_:fromDetector:)(errorCopy, detectorCopy);
 }
 
-- (void)listeningStoppedWithError:(id)a3
+- (void)listeningStoppedWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  AXSANSControllerImplementation.listeningStoppedWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  AXSANSControllerImplementation.listeningStoppedWithError(_:)(error);
 }
 
 @end

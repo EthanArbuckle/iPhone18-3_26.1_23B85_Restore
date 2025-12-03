@@ -1,10 +1,10 @@
 @interface SSBiometricAuthenticationContext
 - (SSBiometricAuthenticationContext)init;
-- (SSBiometricAuthenticationContext)initWithXPCEncoding:(id)a3;
+- (SSBiometricAuthenticationContext)initWithXPCEncoding:(id)encoding;
 - (SSPaymentSheet)paymentSheet;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (void)setPaymentSheet:(id)a3;
+- (void)setPaymentSheet:(id)sheet;
 @end
 
 @implementation SSBiometricAuthenticationContext
@@ -36,47 +36,47 @@
   return v3;
 }
 
-- (void)setPaymentSheet:(id)a3
+- (void)setPaymentSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   [(NSLock *)self->_lock lock];
-  if (self->_paymentSheet != v5)
+  if (self->_paymentSheet != sheetCopy)
   {
-    objc_storeStrong(&self->_paymentSheet, a3);
+    objc_storeStrong(&self->_paymentSheet, sheet);
   }
 
-  self->_isPayment = v5 != 0;
+  self->_isPayment = sheetCopy != 0;
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_accountName copyWithZone:a3];
+  v8 = [(NSString *)self->_accountName copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
   *(v5 + 56) = self->_biometricAuthorizationAttempts;
-  v10 = [(NSString *)self->_challenge copyWithZone:a3];
+  v10 = [(NSString *)self->_challenge copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
-  v12 = [(SSConsolidatedDialog *)self->_consolidatedDialog copyWithZone:a3];
+  v12 = [(SSConsolidatedDialog *)self->_consolidatedDialog copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
-  v14 = [(NSString *)self->_dialogId copyWithZone:a3];
+  v14 = [(NSString *)self->_dialogId copyWithZone:zone];
   v15 = *(v5 + 80);
   *(v5 + 80) = v14;
 
   *(v5 + 17) = self->_didAuthenticate;
   *(v5 + 18) = self->_didBuyParamsChange;
   *(v5 + 19) = self->_didFallbackToPassword;
-  v16 = [(NSString *)self->_fpanID copyWithZone:a3];
+  v16 = [(NSString *)self->_fpanID copyWithZone:zone];
   v17 = *(v5 + 88);
   *(v5 + 88) = v16;
 
@@ -85,28 +85,28 @@
   *(v5 + 22) = self->_isPayment;
   *(v5 + 23) = self->_shouldContinueTouchIDSession;
   *(v5 + 24) = self->_shouldSendFallbackHeader;
-  v18 = [(NSString *)self->_signature copyWithZone:a3];
+  v18 = [(NSString *)self->_signature copyWithZone:zone];
   v19 = *(v5 + 120);
   *(v5 + 120) = v18;
 
   *(v5 + 16) = self->_touchIDDelayEnabled;
-  v20 = [(SSPaymentSheet *)self->_paymentSheet copyWithZone:a3];
+  v20 = [(SSPaymentSheet *)self->_paymentSheet copyWithZone:zone];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
-  v22 = [(SSPaymentSheet *)self->_paymentSheet copyWithZone:a3];
+  v22 = [(SSPaymentSheet *)self->_paymentSheet copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
-  v24 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v24 = [(NSString *)self->_userAgent copyWithZone:zone];
   v25 = *(v5 + 128);
   *(v5 + 128) = v24;
 
-  v26 = [(NSString *)self->_xAppleAMDHeader copyWithZone:a3];
+  v26 = [(NSString *)self->_xAppleAMDHeader copyWithZone:zone];
   v27 = *(v5 + 136);
   *(v5 + 136) = v26;
 
-  v28 = [(NSString *)self->_xAppleAMDMHeader copyWithZone:a3];
+  v28 = [(NSString *)self->_xAppleAMDMHeader copyWithZone:zone];
   v29 = *(v5 + 144);
   *(v5 + 144) = v28;
 
@@ -141,11 +141,11 @@
   return v3;
 }
 
-- (SSBiometricAuthenticationContext)initWithXPCEncoding:(id)a3
+- (SSBiometricAuthenticationContext)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v49.receiver = self;
     v49.super_class = SSBiometricAuthenticationContext;

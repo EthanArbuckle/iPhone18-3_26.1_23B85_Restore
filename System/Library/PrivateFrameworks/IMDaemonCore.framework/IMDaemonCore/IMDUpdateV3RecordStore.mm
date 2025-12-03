@@ -1,16 +1,16 @@
 @interface IMDUpdateV3RecordStore
-- (id)batchOfRecordsToWriteWithFilter:(unint64_t)a3 limit:(int64_t)a4 error:(id *)a5;
-- (void)recordUpdateFailedWithID:(id)a3 localGUID:(id)a4 error:(id)a5;
-- (void)recordUpdateSucceededWithRecord:(id)a3;
+- (id)batchOfRecordsToWriteWithFilter:(unint64_t)filter limit:(int64_t)limit error:(id *)error;
+- (void)recordUpdateFailedWithID:(id)d localGUID:(id)iD error:(id)error;
+- (void)recordUpdateSucceededWithRecord:(id)record;
 @end
 
 @implementation IMDUpdateV3RecordStore
 
-- (id)batchOfRecordsToWriteWithFilter:(unint64_t)a3 limit:(int64_t)a4 error:(id *)a5
+- (id)batchOfRecordsToWriteWithFilter:(unint64_t)filter limit:(int64_t)limit error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = [IMDMessageStore sharedInstance:a3];
-  v7 = [v6 messagesPendingUpdateT3ToCloudKitWithLimit:a4];
+  v6 = [IMDMessageStore sharedInstance:filter];
+  v7 = [v6 messagesPendingUpdateT3ToCloudKitWithLimit:limit];
 
   v43 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -54,27 +54,27 @@
             v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
             v17 = MEMORY[0x277D1AA28];
             v18 = +[IMDRecordZoneManager sharedInstance];
-            v19 = [v18 updateRecordZoneID];
+            updateRecordZoneID = [v18 updateRecordZoneID];
             v20 = +[IMDCKRecordSaltManager sharedInstance];
-            v21 = [v20 cachedSalt];
-            v22 = [v17 createCKRecordForUpdateT3:v16 zoneID:v19 salt:v21];
+            cachedSalt = [v20 cachedSalt];
+            v22 = [v17 createCKRecordForUpdateT3:v16 zoneID:updateRecordZoneID salt:cachedSalt];
 
             if (v22)
             {
-              v23 = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
-              v24 = [v22 recordID];
-              v25 = [v24 recordName];
-              v26 = [v23 objectForKeyedSubscript:v25];
+              recordNameToRowIDMap = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
+              recordID = [v22 recordID];
+              recordName = [recordID recordName];
+              v26 = [recordNameToRowIDMap objectForKeyedSubscript:recordName];
               v27 = v26 == 0;
 
               if (v27)
               {
                 [v43 setObject:v22 forKey:v48];
                 v28 = [v11 objectForKeyedSubscript:@"ROWID"];
-                v29 = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
-                v30 = [v22 recordID];
-                v31 = [v30 recordName];
-                [v29 setObject:v28 forKeyedSubscript:v31];
+                recordNameToRowIDMap2 = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
+                recordID2 = [v22 recordID];
+                recordName2 = [recordID2 recordName];
+                [recordNameToRowIDMap2 setObject:v28 forKeyedSubscript:recordName2];
 
                 goto LABEL_26;
               }
@@ -94,10 +94,10 @@
               }
 
               v39 = [v11 objectForKeyedSubscript:@"ROWID"];
-              v40 = [v39 longLongValue];
+              longLongValue = [v39 longLongValue];
 
               v28 = +[IMDMessageStore sharedInstance];
-              [v28 markMessageAsCleanWithROWID:v40];
+              [v28 markMessageAsCleanWithROWID:longLongValue];
 LABEL_26:
             }
           }
@@ -116,10 +116,10 @@ LABEL_26:
             }
 
             v36 = [v11 objectForKeyedSubscript:@"ROWID"];
-            v37 = [v36 longLongValue];
+            longLongValue2 = [v36 longLongValue];
 
             v16 = +[IMDMessageStore sharedInstance];
-            [v16 markMessageAsCleanWithROWID:v37];
+            [v16 markMessageAsCleanWithROWID:longLongValue2];
           }
 
           goto LABEL_29;
@@ -137,10 +137,10 @@ LABEL_26:
         }
 
         v33 = [v11 objectForKeyedSubscript:@"ROWID"];
-        v34 = [v33 longLongValue];
+        longLongValue3 = [v33 longLongValue];
 
         v15 = +[IMDMessageStore sharedInstance];
-        [v15 markMessageAsCleanWithROWID:v34];
+        [v15 markMessageAsCleanWithROWID:longLongValue3];
 LABEL_29:
       }
 
@@ -155,13 +155,13 @@ LABEL_29:
   return v43;
 }
 
-- (void)recordUpdateSucceededWithRecord:(id)a3
+- (void)recordUpdateSucceededWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
-  v6 = [v4 recordID];
-  v7 = [v6 recordName];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  recordCopy = record;
+  recordNameToRowIDMap = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v8 = [recordNameToRowIDMap objectForKeyedSubscript:recordName];
 
   if (v8)
   {
@@ -180,44 +180,44 @@ LABEL_29:
   }
 }
 
-- (void)recordUpdateFailedWithID:(id)a3 localGUID:(id)a4 error:(id)a5
+- (void)recordUpdateFailedWithID:(id)d localGUID:(id)iD error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 recordName];
+      recordName = [dCopy recordName];
       v23 = 138412546;
-      v24 = v10;
+      v24 = errorCopy;
       v25 = 2112;
-      v26 = v12;
+      v26 = recordName;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Error %@ while writing up record %@", &v23, 0x16u);
     }
   }
 
   v13 = +[IMDCKUtilities sharedInstance];
-  v14 = [v13 extractServerRecordFromCKServerErrorRecordChanged:v10];
+  v14 = [v13 extractServerRecordFromCKServerErrorRecordChanged:errorCopy];
 
-  v15 = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
-  v16 = [v8 recordName];
-  v17 = [v15 objectForKeyedSubscript:v16];
+  recordNameToRowIDMap = [(IMDUpdateV3RecordStore *)self recordNameToRowIDMap];
+  recordName2 = [dCopy recordName];
+  v17 = [recordNameToRowIDMap objectForKeyedSubscript:recordName2];
 
-  v18 = [v17 longLongValue];
+  longLongValue = [v17 longLongValue];
   if (v14)
   {
-    v19 = v18;
+    v19 = longLongValue;
     if (IMOSLoggingEnabled())
     {
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v10;
+        v24 = errorCopy;
         _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Extracted record from server error %@", &v23, 0xCu);
       }
     }

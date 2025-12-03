@@ -2,19 +2,19 @@
 - (CGSize)adjustedWindowSizeForSystemRecording;
 - (id)dispatchCaptureQueue;
 - (id)outputPath;
-- (void)captureDidFailWithError:(id)a3;
+- (void)captureDidFailWithError:(id)error;
 - (void)handleDeviceLockedWarning;
 - (void)handleDeviceRestrictionWarning;
 - (void)handleIncomingCallWarning;
 - (void)handleMemoryWarning;
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3;
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler;
 - (void)handleResumeContextIDFailure;
 - (void)handleSystemAlertStop;
-- (void)handleTimerDidUpdate:(id)a3;
+- (void)handleTimerDidUpdate:(id)update;
 - (void)pauseSession;
-- (void)setCaptureMicrophoneEnabled:(BOOL)a3;
-- (void)stopSystemRecordingWithHandler:(id)a3;
-- (void)stopSystemRecordingWithURLHandler:(id)a3;
+- (void)setCaptureMicrophoneEnabled:(BOOL)enabled;
+- (void)stopSystemRecordingWithHandler:(id)handler;
+- (void)stopSystemRecordingWithURLHandler:(id)handler;
 @end
 
 @implementation RPSystemRecordSession
@@ -22,15 +22,15 @@
 - (id)outputPath
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(RPSession *)self bundleID];
-  v5 = [v3 outputPath:2 bundleID:v4];
+  bundleID = [(RPSession *)self bundleID];
+  v5 = [v3 outputPath:2 bundleID:bundleID];
 
   return v5;
 }
 
-- (void)stopSystemRecordingWithHandler:(id)a3
+- (void)stopSystemRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -38,9 +38,9 @@
     v18 = 1024;
     v19 = 193;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 1024;
-    v23 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", buf, 0x22u);
   }
 
@@ -62,8 +62,8 @@
     v11 = 3221225472;
     v12 = sub_1000506D4;
     v13 = &unk_1000A1840;
-    v14 = self;
-    v15 = v4;
+    selfCopy2 = self;
+    v15 = handlerCopy;
     [(RPMovieWriter *)movieWriter finishWritingAndSaveToCameraRollWithSessionID:sessionID mixAudioTracks:mixAudioTracks handler:&v10];
   }
 
@@ -80,9 +80,9 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d no movie writer instance when attempting to stop", buf, 0x12u);
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -90,9 +90,9 @@
   [(RPSession *)self checkAndPlaySystemSessionSound:0];
 }
 
-- (void)stopSystemRecordingWithURLHandler:(id)a3
+- (void)stopSystemRecordingWithURLHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -100,9 +100,9 @@
     v15 = 1024;
     v16 = 245;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 1024;
-    v20 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", buf, 0x22u);
   }
 
@@ -116,8 +116,8 @@
     v8 = 3221225472;
     v9 = sub_100050A90;
     v10 = &unk_1000A1868;
-    v11 = self;
-    v12 = v4;
+    selfCopy2 = self;
+    v12 = handlerCopy;
     [(RPMovieWriter *)movieWriter finishWritingWithHandler:&v7];
   }
 
@@ -130,9 +130,9 @@
 
     [(RPSession *)self setSessionState:3];
     [(RPSession *)self reportSummaryEvent:-5824 recordedFileSize:0];
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -149,9 +149,9 @@
     v7 = 1024;
     v8 = 287;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p pausing in session state %d", buf, 0x22u);
   }
 
@@ -168,14 +168,14 @@
   }
 }
 
-- (void)setCaptureMicrophoneEnabled:(BOOL)a3
+- (void)setCaptureMicrophoneEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(RPSession *)self setMicrophoneEnabled:?];
-  if (v3)
+  if (enabledCopy)
   {
     self->_mixAudioTracks = 1;
-    if ([(RPSession *)self sessionState]== 1 && v3)
+    if ([(RPSession *)self sessionState]== 1 && enabledCopy)
     {
       v5 = +[RPCaptureManager sharedInstance];
       [v5 enableMicrophone];
@@ -221,15 +221,15 @@
   return result;
 }
 
-- (void)captureDidFailWithError:(id)a3
+- (void)captureDidFailWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000511F0;
   v5[3] = &unk_1000A1348;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   [(RPSystemRecordSession *)self stopSystemRecordingWithHandler:v5];
 }
 
@@ -355,27 +355,27 @@
   }
 }
 
-- (void)handleTimerDidUpdate:(id)a3
+- (void)handleTimerDidUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   if ([(RPSession *)self sessionState]== 1 || [(RPSession *)self sessionState]== 4)
   {
     v4 = +[RPFeatureFlagUtility sharedInstance];
-    v5 = [v4 systemBannerEnabled];
+    systemBannerEnabled = [v4 systemBannerEnabled];
 
-    if (v5)
+    if (systemBannerEnabled)
     {
       v6 = +[RPAngelProxy sharedInstance];
-      [v6 updateTimer:v7];
+      [v6 updateTimer:updateCopy];
     }
 
-    [(RPClientProtocol *)self->super._clientProxy recordingTimerDidUpdate:v7];
+    [(RPClientProtocol *)self->super._clientProxy recordingTimerDidUpdate:updateCopy];
   }
 }
 
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -383,23 +383,23 @@
     v23 = 1024;
     v24 = 446;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 1024;
-    v28 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %d", buf, 0x22u);
   }
 
   v5 = +[RPFeatureFlagUtility sharedInstance];
-  v6 = [v5 screenRecordingPassthroughCamera];
+  screenRecordingPassthroughCamera = [v5 screenRecordingPassthroughCamera];
 
-  if (v6)
+  if (screenRecordingPassthroughCamera)
   {
-    v7 = [(RPSession *)self mixedRealityCameraEnabled];
+    mixedRealityCameraEnabled = [(RPSession *)self mixedRealityCameraEnabled];
   }
 
   else
   {
-    v7 = 1;
+    mixedRealityCameraEnabled = 1;
   }
 
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -409,29 +409,29 @@
     v23 = 1024;
     v24 = 453;
     v25 = 1024;
-    LODWORD(v26) = v7;
+    LODWORD(selfCopy) = mixedRealityCameraEnabled;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d enableMixedRealityCamera=%d", buf, 0x18u);
   }
 
   self->super._sessionIsResuming = 1;
   [(RPMovieWriter *)self->_movieWriter notifyRecordingResumed];
   v8 = +[RPCaptureManager sharedInstance];
-  v9 = [(RPSession *)self microphoneEnabled];
+  microphoneEnabled = [(RPSession *)self microphoneEnabled];
   [(RPSession *)self windowSize];
   v11 = v10;
   v13 = v12;
   captureType = self->_captureType;
-  v15 = [(RPSession *)self contextID];
-  v16 = [NSArray arrayWithObject:v15];
+  contextID = [(RPSession *)self contextID];
+  v16 = [NSArray arrayWithObject:contextID];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10005214C;
   v19[3] = &unk_1000A1840;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = handlerCopy;
+  v17 = handlerCopy;
   LOBYTE(v18) = 1;
-  [v8 startCaptureForDelegate:self forProcessID:0xFFFFFFFFLL shouldStartMicrophoneCapture:v9 windowSize:captureType captureType:v16 contextIDs:v7 mixedRealityCamera:v11 systemCapture:v13 didStartHandler:{v18, v19}];
+  [v8 startCaptureForDelegate:self forProcessID:0xFFFFFFFFLL shouldStartMicrophoneCapture:microphoneEnabled windowSize:captureType captureType:v16 contextIDs:mixedRealityCameraEnabled mixedRealityCamera:v11 systemCapture:v13 didStartHandler:{v18, v19}];
 }
 
 - (void)handleResumeContextIDFailure

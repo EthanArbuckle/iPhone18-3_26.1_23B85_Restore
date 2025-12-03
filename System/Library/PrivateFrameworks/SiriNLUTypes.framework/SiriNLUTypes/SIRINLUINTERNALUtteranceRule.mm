@@ -1,36 +1,36 @@
 @interface SIRINLUINTERNALUtteranceRule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addSpansForNamedCaptureGroups:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSpansForNamedCaptureGroups:(id)groups;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALUtteranceRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALUtteranceRule *)self setPattern:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_type = *(v4 + 8);
+    self->_type = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
   compareOptions = self->_compareOptions;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (compareOptions)
   {
     if (v6)
@@ -48,7 +48,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -93,16 +93,16 @@
   return v5 ^ v6 ^ [(NSMutableArray *)self->_spansForNamedCaptureGroups hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   pattern = self->_pattern;
-  if (pattern | *(v4 + 2))
+  if (pattern | *(equalCopy + 2))
   {
     if (![(NSString *)pattern isEqual:?])
     {
@@ -110,16 +110,16 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -127,13 +127,13 @@ LABEL_13:
   }
 
   compareOptions = self->_compareOptions;
-  if (compareOptions | *(v4 + 1) && ![(SIRINLUINTERNALCompareOptions *)compareOptions isEqual:?])
+  if (compareOptions | *(equalCopy + 1) && ![(SIRINLUINTERNALCompareOptions *)compareOptions isEqual:?])
   {
     goto LABEL_13;
   }
 
   spansForNamedCaptureGroups = self->_spansForNamedCaptureGroups;
-  if (spansForNamedCaptureGroups | *(v4 + 3))
+  if (spansForNamedCaptureGroups | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)spansForNamedCaptureGroups isEqual:?];
   }
@@ -148,11 +148,11 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_pattern copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_pattern copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -162,7 +162,7 @@ LABEL_14:
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(SIRINLUINTERNALCompareOptions *)self->_compareOptions copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALCompareOptions *)self->_compareOptions copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -186,7 +186,7 @@ LABEL_14:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addSpansForNamedCaptureGroups:v15];
 
         ++v14;
@@ -203,20 +203,20 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_pattern)
   {
-    [v4 setPattern:?];
-    v4 = v9;
+    [toCopy setPattern:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_type;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_type;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_compareOptions)
@@ -227,10 +227,10 @@ LABEL_14:
   if ([(SIRINLUINTERNALUtteranceRule *)self spansForNamedCaptureGroupsCount])
   {
     [v9 clearSpansForNamedCaptureGroups];
-    v5 = [(SIRINLUINTERNALUtteranceRule *)self spansForNamedCaptureGroupsCount];
-    if (v5)
+    spansForNamedCaptureGroupsCount = [(SIRINLUINTERNALUtteranceRule *)self spansForNamedCaptureGroupsCount];
+    if (spansForNamedCaptureGroupsCount)
     {
-      v6 = v5;
+      v6 = spansForNamedCaptureGroupsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUINTERNALUtteranceRule *)self spansForNamedCaptureGroupsAtIndex:i];
@@ -240,10 +240,10 @@ LABEL_14:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_pattern)
   {
     PBDataWriterWriteStringField();
@@ -298,12 +298,12 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   pattern = self->_pattern;
   if (pattern)
   {
-    [v3 setObject:pattern forKey:@"pattern"];
+    [dictionary setObject:pattern forKey:@"pattern"];
   }
 
   if (*&self->_has)
@@ -325,8 +325,8 @@ LABEL_14:
   compareOptions = self->_compareOptions;
   if (compareOptions)
   {
-    v9 = [(SIRINLUINTERNALCompareOptions *)compareOptions dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"compare_options"];
+    dictionaryRepresentation = [(SIRINLUINTERNALCompareOptions *)compareOptions dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"compare_options"];
   }
 
   if ([(NSMutableArray *)self->_spansForNamedCaptureGroups count])
@@ -351,8 +351,8 @@ LABEL_14:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -375,44 +375,44 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALUtteranceRule;
   v4 = [(SIRINLUINTERNALUtteranceRule *)&v8 description];
-  v5 = [(SIRINLUINTERNALUtteranceRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALUtteranceRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSpansForNamedCaptureGroups:(id)a3
+- (void)addSpansForNamedCaptureGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   spansForNamedCaptureGroups = self->_spansForNamedCaptureGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!spansForNamedCaptureGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_spansForNamedCaptureGroups;
     self->_spansForNamedCaptureGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     spansForNamedCaptureGroups = self->_spansForNamedCaptureGroups;
   }
 
-  [(NSMutableArray *)spansForNamedCaptureGroups addObject:v4];
+  [(NSMutableArray *)spansForNamedCaptureGroups addObject:groupsCopy];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"COMPARISON_TYPE_UNSPECIFIED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"COMPARISON_TYPE_UNSPECIFIED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"COMPARISON_TYPE_EXACT_LITERAL"])
+  else if ([typeCopy isEqualToString:@"COMPARISON_TYPE_EXACT_LITERAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"COMPARISON_TYPE_REGULAR_EXPRESSION"])
+  else if ([typeCopy isEqualToString:@"COMPARISON_TYPE_REGULAR_EXPRESSION"])
   {
     v4 = 2;
   }

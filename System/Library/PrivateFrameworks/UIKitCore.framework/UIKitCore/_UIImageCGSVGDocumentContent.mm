@@ -1,32 +1,32 @@
 @interface _UIImageCGSVGDocumentContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)sizeInPixels;
-- (_UIImageCGSVGDocumentContent)initWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4;
-- (_UIImageCGSVGDocumentContent)initWithScale:(double)a3;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (_UIImageCGSVGDocumentContent)initWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale;
+- (_UIImageCGSVGDocumentContent)initWithScale:(double)scale;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 - (void)dealloc;
 @end
 
 @implementation _UIImageCGSVGDocumentContent
 
-- (_UIImageCGSVGDocumentContent)initWithCGSVGDocument:(CGSVGDocument *)a3 scale:(double)a4
+- (_UIImageCGSVGDocumentContent)initWithCGSVGDocument:(CGSVGDocument *)document scale:(double)scale
 {
-  if (!a3)
+  if (!document)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1740 description:@"Need a svgDocumentRef"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1740 description:@"Need a svgDocumentRef"];
   }
 
-  v8 = CFGetTypeID(a3);
+  v8 = CFGetTypeID(document);
   if (v8 != CGSVGDocumentGetTypeID())
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1741 description:@"svgDocumentRef passed is not a CGSVGDocumentRef"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1741 description:@"svgDocumentRef passed is not a CGSVGDocumentRef"];
   }
 
   v13.receiver = self;
   v13.super_class = _UIImageCGSVGDocumentContent;
-  v9 = [(_UIImageContent *)&v13 initWithScale:a4];
+  v9 = [(_UIImageContent *)&v13 initWithScale:scale];
   if (v9)
   {
     v9->_svgDocumentRef = CGSVGDocumentRetain();
@@ -35,10 +35,10 @@
   return v9;
 }
 
-- (_UIImageCGSVGDocumentContent)initWithScale:(double)a3
+- (_UIImageCGSVGDocumentContent)initWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1752 description:@"You need to use -initWithCGSVGDocument:scale:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1752 description:@"You need to use -initWithCGSVGDocument:scale:"];
 
   return 0;
 }
@@ -66,14 +66,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageCGSVGDocumentContent;
-  if ([(_UIImageContent *)&v7 isEqual:v4])
+  if ([(_UIImageContent *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_svgDocumentRef == v4[5];
+    v5 = self->_svgDocumentRef == equalCopy[5];
   }
 
   else
@@ -84,17 +84,17 @@
   return v5;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  height = a3.height;
-  width = a3.width;
-  CGContextTranslateCTM(a5, 0.0, a3.height);
-  CGContextScaleCTM(a5, 1.0, -1.0);
+  height = size.height;
+  width = size.width;
+  CGContextTranslateCTM(context, 0.0, size.height);
+  CGContextScaleCTM(context, 1.0, -1.0);
   [(_UIImageContent *)self size];
   v10 = width / v9;
   v12 = height / v11;
 
-  CGContextScaleCTM(a5, v10, v12);
+  CGContextScaleCTM(context, v10, v12);
 }
 
 @end

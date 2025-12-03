@@ -4,7 +4,7 @@
 - (BCDiscoverPluginManager)init;
 - (NSArray)discoverPlugins;
 - (id)_buildDiscoverPlugins;
-- (id)sortedPluginsBySectionForInput:(id)a3;
+- (id)sortedPluginsBySectionForInput:(id)input;
 @end
 
 @implementation BCDiscoverPluginManager
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = __48__BCDiscoverPluginManager_discoverPluginBundles__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (discoverPluginBundles_onceToken != -1)
   {
     dispatch_once(&discoverPluginBundles_onceToken, block);
@@ -86,14 +86,14 @@ void __48__BCDiscoverPluginManager_discoverPluginBundles__block_invoke(uint64_t 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v3 addObject:v5];
 
-  v6 = [objc_opt_class() discoverPluginBundles];
+  discoverPluginBundles = [objc_opt_class() discoverPluginBundles];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__BCDiscoverPluginManager__buildDiscoverPlugins__block_invoke;
   v10[3] = &unk_278D22560;
   v11 = v3;
   v7 = v3;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [discoverPluginBundles enumerateObjectsUsingBlock:v10];
 
   v8 = [(BCDiscoverPluginManager *)self sortedPluginsBySectionForInput:v7];
 
@@ -172,23 +172,23 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sortedPluginsBySectionForInput:(id)a3
+- (id)sortedPluginsBySectionForInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v3 count])
+  if ([inputCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndex:v5];
+      v6 = [inputCopy objectAtIndex:v5];
       v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_0];
       [v4 addObject:v7];
 
       ++v5;
     }
 
-    while ([v3 count] > v5);
+    while ([inputCopy count] > v5);
   }
 
   return v4;
@@ -219,9 +219,9 @@ uint64_t __58__BCDiscoverPluginManager_sortedPluginsBySectionForInput___block_in
     os_unfair_lock_lock(&self->_discoverPluginsLock);
     if (!self->_discoverPlugins)
     {
-      v4 = [(BCDiscoverPluginManager *)self _buildDiscoverPlugins];
+      _buildDiscoverPlugins = [(BCDiscoverPluginManager *)self _buildDiscoverPlugins];
       v5 = self->_discoverPlugins;
-      self->_discoverPlugins = v4;
+      self->_discoverPlugins = _buildDiscoverPlugins;
     }
 
     os_unfair_lock_unlock(&self->_discoverPluginsLock);

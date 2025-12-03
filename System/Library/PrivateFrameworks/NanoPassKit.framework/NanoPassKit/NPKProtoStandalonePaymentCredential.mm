@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentCredential
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentCredential
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentCredential;
   v4 = [(NPKProtoStandalonePaymentCredential *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentCredential *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentCredential *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sanitizedPrimaryAccountNumber = self->_sanitizedPrimaryAccountNumber;
   if (sanitizedPrimaryAccountNumber)
   {
-    [v3 setObject:sanitizedPrimaryAccountNumber forKey:@"sanitizedPrimaryAccountNumber"];
+    [dictionary setObject:sanitizedPrimaryAccountNumber forKey:@"sanitizedPrimaryAccountNumber"];
   }
 
   expiration = self->_expiration;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sanitizedPrimaryAccountNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_expiration)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_longDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sanitizedPrimaryAccountNumber)
   {
-    [v4 setSanitizedPrimaryAccountNumber:?];
-    v4 = v5;
+    [toCopy setSanitizedPrimaryAccountNumber:?];
+    toCopy = v5;
   }
 
   if (self->_expiration)
   {
     [v5 setExpiration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_longDescription)
   {
     [v5 setLongDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sanitizedPrimaryAccountNumber copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sanitizedPrimaryAccountNumber copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_expiration copyWithZone:a3];
+  v8 = [(NSString *)self->_expiration copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_longDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_longDescription copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sanitizedPrimaryAccountNumber = self->_sanitizedPrimaryAccountNumber, !(sanitizedPrimaryAccountNumber | v4[3])) || -[NSString isEqual:](sanitizedPrimaryAccountNumber, "isEqual:")) && ((expiration = self->_expiration, !(expiration | v4[1])) || -[NSString isEqual:](expiration, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sanitizedPrimaryAccountNumber = self->_sanitizedPrimaryAccountNumber, !(sanitizedPrimaryAccountNumber | equalCopy[3])) || -[NSString isEqual:](sanitizedPrimaryAccountNumber, "isEqual:")) && ((expiration = self->_expiration, !(expiration | equalCopy[1])) || -[NSString isEqual:](expiration, "isEqual:")))
   {
     longDescription = self->_longDescription;
-    if (longDescription | v4[2])
+    if (longDescription | equalCopy[2])
     {
       v8 = [(NSString *)longDescription isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_longDescription hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(NPKProtoStandalonePaymentCredential *)self setSanitizedPrimaryAccountNumber:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoStandalonePaymentCredential *)self setExpiration:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoStandalonePaymentCredential *)self setLongDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

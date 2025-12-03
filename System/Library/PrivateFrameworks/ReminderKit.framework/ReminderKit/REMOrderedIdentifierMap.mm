@@ -1,67 +1,67 @@
 @interface REMOrderedIdentifierMap
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REMOrderedIdentifierMap)init;
-- (REMOrderedIdentifierMap)initWithCoder:(id)a3;
-- (REMOrderedIdentifierMap)initWithOrderedIdentifiers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (REMOrderedIdentifierMap)initWithCoder:(id)coder;
+- (REMOrderedIdentifierMap)initWithOrderedIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMOrderedIdentifierMap
 
 - (REMOrderedIdentifierMap)init
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
-  v4 = [(REMOrderedIdentifierMap *)self initWithOrderedIdentifiers:v3];
+  array = [MEMORY[0x1E695DEC8] array];
+  v4 = [(REMOrderedIdentifierMap *)self initWithOrderedIdentifiers:array];
 
   return v4;
 }
 
-- (REMOrderedIdentifierMap)initWithOrderedIdentifiers:(id)a3
+- (REMOrderedIdentifierMap)initWithOrderedIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v8.receiver = self;
   v8.super_class = REMOrderedIdentifierMap;
   v5 = [(REMOrderedIdentifierMap *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(REMOrderedIdentifierMap *)v5 setOrderedIdentifiers:v4];
+    [(REMOrderedIdentifierMap *)v5 setOrderedIdentifiers:identifiersCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
-  [v4 encodeObject:v5 forKey:@"orderedIdentifiers"];
+  coderCopy = coder;
+  orderedIdentifiers = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
+  [coderCopy encodeObject:orderedIdentifiers forKey:@"orderedIdentifiers"];
 }
 
-- (REMOrderedIdentifierMap)initWithCoder:(id)a3
+- (REMOrderedIdentifierMap)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"orderedIdentifiers"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"orderedIdentifiers"];
 
   v6 = [(REMOrderedIdentifierMap *)self initWithOrderedIdentifiers:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [REMOrderedIdentifierMap alloc];
-  v6 = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
-  v7 = [v6 copyWithZone:a3];
+  orderedIdentifiers = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
+  v7 = [orderedIdentifiers copyWithZone:zone];
   v8 = [(REMOrderedIdentifierMap *)v5 initWithOrderedIdentifiers:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -71,9 +71,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
-      v6 = [(REMOrderedIdentifierMap *)v4 orderedIdentifiers];
-      v7 = [v5 isEqual:v6];
+      orderedIdentifiers = [(REMOrderedIdentifierMap *)self orderedIdentifiers];
+      orderedIdentifiers2 = [(REMOrderedIdentifierMap *)equalCopy orderedIdentifiers];
+      v7 = [orderedIdentifiers isEqual:orderedIdentifiers2];
     }
 
     else

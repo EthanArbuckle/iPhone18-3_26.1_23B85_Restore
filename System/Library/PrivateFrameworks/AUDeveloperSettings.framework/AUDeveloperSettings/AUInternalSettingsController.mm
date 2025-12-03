@@ -1,6 +1,6 @@
 @interface AUInternalSettingsController
-- (AUInternalSettingsController)initWithCoder:(id)a3;
-- (AUInternalSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AUInternalSettingsController)initWithCoder:(id)coder;
+- (AUInternalSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_23D46A444();
 }
 
-- (AUInternalSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (AUInternalSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_23D46BF08();
   sub_23D46BEF8();
@@ -30,26 +30,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_23D46BDD8();
-    v7 = a4;
-    a3 = sub_23D46BDC8();
+    bundleCopy = bundle;
+    name = sub_23D46BDC8();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AUInternalSettingsController();
-  v9 = [(AUInternalSettingsController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(AUInternalSettingsController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (AUInternalSettingsController)initWithCoder:(id)a3
+- (AUInternalSettingsController)initWithCoder:(id)coder
 {
   sub_23D46BF08();
   sub_23D46BEF8();
@@ -61,8 +61,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for AUInternalSettingsController();
-  v5 = a3;
-  v6 = [(AUInternalSettingsController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AUInternalSettingsController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

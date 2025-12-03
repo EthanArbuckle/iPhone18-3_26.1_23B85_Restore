@@ -1,5 +1,5 @@
 @interface ML3ContainerItemDiffOperation
-- (ML3ContainerItemDiffOperation)initWithContainerPersistentID:(int64_t)a3 updatedItemsPersistentIDs:(id)a4 updatedItemsProperties:(id)a5 connection:(id)a6;
+- (ML3ContainerItemDiffOperation)initWithContainerPersistentID:(int64_t)d updatedItemsPersistentIDs:(id)ds updatedItemsProperties:(id)properties connection:(id)connection;
 - (void)main;
 @end
 
@@ -8,20 +8,20 @@
 - (void)main
 {
   v122[1] = *MEMORY[0x277D85DE8];
-  v82 = [MEMORY[0x277CBEB18] array];
-  v81 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v114 = 0;
   v115 = &v114;
   v116 = 0x3032000000;
   v117 = __Block_byref_object_copy__9738;
   v118 = __Block_byref_object_dispose__9739;
-  v119 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v108 = 0;
   v109 = &v108;
   v110 = 0x3032000000;
   v111 = __Block_byref_object_copy__9738;
   v112 = __Block_byref_object_dispose__9739;
-  v113 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v100 = 0;
   v101 = &v100;
   v102 = 0x5812000000;
@@ -79,7 +79,7 @@
     while (v6);
   }
 
-  v12 = self;
+  selfCopy2 = self;
   v73 = [(NSDictionary *)self->_updatedItemsProperties mutableCopy];
   v13 = [v79 count];
   if (v13)
@@ -112,12 +112,12 @@
 
       v14 += v16;
       objc_autoreleasePoolPop(v15);
-      v12 = self;
+      selfCopy2 = self;
     }
   }
 
   v21 = [MEMORY[0x277CCA940] set];
-  updatedItemsPersistentIDs = v12->_updatedItemsPersistentIDs;
+  updatedItemsPersistentIDs = selfCopy2->_updatedItemsPersistentIDs;
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __37__ML3ContainerItemDiffOperation_main__block_invoke_3;
@@ -132,7 +132,7 @@
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v12->_updatedItemsPersistentIDs;
+  obj = selfCopy2->_updatedItemsPersistentIDs;
   v23 = [(NSArray *)obj countByEnumeratingWithState:&v86 objects:v120 count:16];
   if (v23)
   {
@@ -148,8 +148,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v26 = [*(*(&v86 + 1) + 8 * v25) longLongValue];
-        v27 = v26;
+        longLongValue = [*(*(&v86 + 1) + 8 * v25) longLongValue];
+        v27 = longLongValue;
         v28 = v101[7];
         if (!*&v28)
         {
@@ -160,16 +160,16 @@
         v29.i16[0] = vaddlv_u8(v29);
         if (v29.u32[0] > 1uLL)
         {
-          v30 = v26;
-          if (v26 >= *&v28)
+          v30 = longLongValue;
+          if (longLongValue >= *&v28)
           {
-            v30 = v26 % *&v28;
+            v30 = longLongValue % *&v28;
           }
         }
 
         else
         {
-          v30 = (*&v28 - 1) & v26;
+          v30 = (*&v28 - 1) & longLongValue;
         }
 
         v31 = v101[6];
@@ -182,7 +182,7 @@ LABEL_39:
           v38 = [v37 objectForKeyedSubscript:@"occurrence_id"];
 
           v39 = [ML3ContainerItemDiffMetadata diffMetadataWithPersistentID:0 containerPersistentID:self->_containerPersistentID itemPersistentID:v27 newPosition:v24 previousPosition:-1 uuid:&stru_28408B690 positionUUD:&stru_28408B690 occurrenceID:v38, v72];
-          [v82 addObject:v39];
+          [array addObject:v39];
           goto LABEL_40;
         }
 
@@ -190,7 +190,7 @@ LABEL_39:
         while (1)
         {
           v35 = v33[1];
-          if (v26 == v35)
+          if (longLongValue == v35)
           {
             break;
           }
@@ -221,23 +221,23 @@ LABEL_38:
           }
         }
 
-        if (v33[2] != v26)
+        if (v33[2] != longLongValue)
         {
           goto LABEL_38;
         }
 
         if (v29.u32[0] > 1uLL)
         {
-          v40 = v26;
-          if (v26 >= *&v28)
+          v40 = longLongValue;
+          if (longLongValue >= *&v28)
           {
-            v40 = v26 % *&v28;
+            v40 = longLongValue % *&v28;
           }
         }
 
         else
         {
-          v40 = v34 & v26;
+          v40 = v34 & longLongValue;
         }
 
         v41 = *(v31 + 8 * v40);
@@ -250,7 +250,7 @@ LABEL_87:
         while (2)
         {
           v43 = v42[1];
-          if (v43 != v26)
+          if (v43 != longLongValue)
           {
             if (v29.u32[0] > 1uLL)
             {
@@ -283,7 +283,7 @@ LABEL_56:
           break;
         }
 
-        if (v42[2] != v26)
+        if (v42[2] != longLongValue)
         {
           goto LABEL_56;
         }
@@ -369,7 +369,7 @@ LABEL_56:
           v60 = v59;
 
           v61 = [ML3ContainerItemDiffMetadata diffMetadataWithPersistentID:*v78 containerPersistentID:self->_containerPersistentID itemPersistentID:v27 newPosition:v24 previousPosition:v78[1] uuid:v77 positionUUD:v75 occurrenceID:v60];
-          [v82 addObject:v61];
+          [array addObject:v61];
         }
 
         v63 = v42[3];
@@ -411,14 +411,14 @@ LABEL_40:
     for (k = v67[4]; v69 != k; j = self)
     {
       v71 = [ML3ContainerItemDiffMetadata diffMetadataWithPersistentID:*v69];
-      [v81 addObject:v71];
+      [array2 addObject:v71];
 
       v69 += 2;
     }
   }
 
-  [(ML3ContainerItemDiffOperation *)j setContainerItemsToUpdate:v82];
-  [(ML3ContainerItemDiffOperation *)j setContainerItemsToDelete:v81];
+  [(ML3ContainerItemDiffOperation *)j setContainerItemsToUpdate:array];
+  [(ML3ContainerItemDiffOperation *)j setContainerItemsToDelete:array2];
 
   _Block_object_dispose(&v100, 8);
   std::__hash_table<std::__hash_value_type<long long,std::vector<std::pair<long long,long long>>>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,std::vector<std::pair<long long,long long>>>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,std::vector<std::pair<long long,long long>>>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,std::vector<std::pair<long long,long long>>>>>::~__hash_table(v106);
@@ -706,27 +706,27 @@ void __37__ML3ContainerItemDiffOperation_main__block_invoke_3(uint64_t a1, void 
   [v22 setObject:v21 forKeyedSubscript:v23];
 }
 
-- (ML3ContainerItemDiffOperation)initWithContainerPersistentID:(int64_t)a3 updatedItemsPersistentIDs:(id)a4 updatedItemsProperties:(id)a5 connection:(id)a6
+- (ML3ContainerItemDiffOperation)initWithContainerPersistentID:(int64_t)d updatedItemsPersistentIDs:(id)ds updatedItemsProperties:(id)properties connection:(id)connection
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = ML3ContainerItemDiffOperation;
   v13 = [(ML3ContainerItemDiffOperation *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    v13->_containerPersistentID = a3;
-    v15 = [v10 copy];
+    v13->_containerPersistentID = d;
+    v15 = [dsCopy copy];
     updatedItemsPersistentIDs = v14->_updatedItemsPersistentIDs;
     v14->_updatedItemsPersistentIDs = v15;
 
-    v17 = [v11 copy];
+    v17 = [propertiesCopy copy];
     updatedItemsProperties = v14->_updatedItemsProperties;
     v14->_updatedItemsProperties = v17;
 
-    objc_storeStrong(&v14->_connection, a6);
+    objc_storeStrong(&v14->_connection, connection);
   }
 
   return v14;

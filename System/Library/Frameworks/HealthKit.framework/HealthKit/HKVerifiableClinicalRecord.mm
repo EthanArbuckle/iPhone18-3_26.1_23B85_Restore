@@ -1,75 +1,75 @@
 @interface HKVerifiableClinicalRecord
-+ (HKVerifiableClinicalRecord)verifiableClinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 recordTypes:(id)a8 issuedDate:(id)a9 relevantDate:(id)a10 expirationDate:(id)a11 issuerIdentifier:(id)a12 subject:(id)a13 itemNames:(id)a14 dataRepresentation:(id)a15 originIdentifier:(id)a16 sourceType:(int64_t)a17;
-+ (id)sourceTypeForInternalType:(int64_t)a3;
-+ (int64_t)_privateSourceTypeForExternalType:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
++ (HKVerifiableClinicalRecord)verifiableClinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata recordTypes:(id)types issuedDate:(id)issuedDate relevantDate:(id)self0 expirationDate:(id)self1 issuerIdentifier:(id)self2 subject:(id)self3 itemNames:(id)self4 dataRepresentation:(id)self5 originIdentifier:(id)self6 sourceType:(int64_t)self7;
++ (id)sourceTypeForInternalType:(int64_t)type;
++ (int64_t)_privateSourceTypeForExternalType:(id)type;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKVerifiableClinicalRecord)init;
-- (HKVerifiableClinicalRecord)initWithCoder:(id)a3;
+- (HKVerifiableClinicalRecord)initWithCoder:(id)coder;
 - (NSString)recordIssuerDisplayName;
 - (NSString)recordItemsDisplayName;
 - (NSString)recordTypeDisplayName;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
-- (void)_setDataRepresentation:(id)a3;
-- (void)_setExpirationDate:(id)a3;
-- (void)_setIssuedDate:(id)a3;
-- (void)_setIssuerIdentifier:(id)a3;
-- (void)_setItemNames:(id)a3;
-- (void)_setOriginIdentifier:(id)a3;
-- (void)_setRecordTypes:(id)a3;
-- (void)_setRelevantDate:(id)a3;
-- (void)_setSourceType:(int64_t)a3;
-- (void)_setSubject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDataRepresentation:(id)representation;
+- (void)_setExpirationDate:(id)date;
+- (void)_setIssuedDate:(id)date;
+- (void)_setIssuerIdentifier:(id)identifier;
+- (void)_setItemNames:(id)names;
+- (void)_setOriginIdentifier:(id)identifier;
+- (void)_setRecordTypes:(id)types;
+- (void)_setRelevantDate:(id)date;
+- (void)_setSourceType:(int64_t)type;
+- (void)_setSubject:(id)subject;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKVerifiableClinicalRecord
 
-+ (HKVerifiableClinicalRecord)verifiableClinicalRecordWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 recordTypes:(id)a8 issuedDate:(id)a9 relevantDate:(id)a10 expirationDate:(id)a11 issuerIdentifier:(id)a12 subject:(id)a13 itemNames:(id)a14 dataRepresentation:(id)a15 originIdentifier:(id)a16 sourceType:(int64_t)a17
++ (HKVerifiableClinicalRecord)verifiableClinicalRecordWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata recordTypes:(id)types issuedDate:(id)issuedDate relevantDate:(id)self0 expirationDate:(id)self1 issuerIdentifier:(id)self2 subject:(id)self3 itemNames:(id)self4 dataRepresentation:(id)self5 originIdentifier:(id)self6 sourceType:(int64_t)self7
 {
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  typesCopy = types;
+  issuedDateCopy = issuedDate;
+  relevantDateCopy = relevantDate;
+  expirationDateCopy = expirationDate;
+  identifierCopy = identifier;
+  subjectCopy = subject;
+  namesCopy = names;
+  representationCopy = representation;
+  originIdentifierCopy = originIdentifier;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDate_endDate_device_metadata_recordTypes_issuedDate_relevantDate_expirationDate_issuerIdentifier_subject_itemNames_dataRepresentation_originIdentifier_sourceType___block_invoke;
   aBlock[3] = &unk_1E7383060;
-  v52 = v18;
-  v53 = v19;
-  v54 = v20;
-  v55 = v21;
-  v56 = v22;
-  v57 = v23;
-  v58 = v24;
-  v59 = v25;
-  v60 = v26;
-  v61 = a1;
-  v27 = a1;
-  v62 = a17;
-  v47 = v26;
-  v49 = v25;
-  v48 = v24;
-  v46 = v23;
-  v45 = v22;
-  v44 = v21;
-  v43 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = a7;
-  v31 = a6;
-  v32 = a5;
-  v33 = a4;
-  v34 = a3;
+  v52 = typesCopy;
+  v53 = issuedDateCopy;
+  v54 = relevantDateCopy;
+  v55 = expirationDateCopy;
+  v56 = identifierCopy;
+  v57 = subjectCopy;
+  v58 = namesCopy;
+  v59 = representationCopy;
+  v60 = originIdentifierCopy;
+  selfCopy = self;
+  selfCopy2 = self;
+  sourceTypeCopy = sourceType;
+  v47 = originIdentifierCopy;
+  v49 = representationCopy;
+  v48 = namesCopy;
+  v46 = subjectCopy;
+  v45 = identifierCopy;
+  v44 = expirationDateCopy;
+  v43 = relevantDateCopy;
+  v28 = issuedDateCopy;
+  v29 = typesCopy;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
   v35 = _Block_copy(aBlock);
-  v50.receiver = v27;
+  v50.receiver = selfCopy2;
   v50.super_class = &OBJC_METACLASS___HKVerifiableClinicalRecord;
-  v36 = objc_msgSendSuper2(&v50, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v34, v33, v32, v31, v30, v35);
+  v36 = objc_msgSendSuper2(&v50, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, typeCopy, dateCopy, endDateCopy, deviceCopy, metadataCopy, v35);
 
   return v36;
 }
@@ -148,31 +148,31 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKVerifiableClinicalRecord;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_recordTypes forKey:{@"RecordTypes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_issuedDate forKey:@"IssuedDate"];
-  [v4 encodeObject:self->_relevantDate forKey:@"RelevantDate"];
-  [v4 encodeObject:self->_expirationDate forKey:@"ExpirationDate"];
-  [v4 encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
-  [v4 encodeObject:self->_subject forKey:@"Subject"];
-  [v4 encodeObject:self->_itemNames forKey:@"ItemNames"];
-  [v4 encodeObject:self->_dataRepresentation forKey:@"DataRepresentation"];
-  [v4 encodeObject:self->_sourceType forKey:@"SourceType"];
-  [v4 encodeObject:self->_originIdentifier forKey:@"OriginIdentifier"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_recordTypes forKey:{@"RecordTypes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_issuedDate forKey:@"IssuedDate"];
+  [coderCopy encodeObject:self->_relevantDate forKey:@"RelevantDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"ExpirationDate"];
+  [coderCopy encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
+  [coderCopy encodeObject:self->_subject forKey:@"Subject"];
+  [coderCopy encodeObject:self->_itemNames forKey:@"ItemNames"];
+  [coderCopy encodeObject:self->_dataRepresentation forKey:@"DataRepresentation"];
+  [coderCopy encodeObject:self->_sourceType forKey:@"SourceType"];
+  [coderCopy encodeObject:self->_originIdentifier forKey:@"OriginIdentifier"];
 }
 
-- (HKVerifiableClinicalRecord)initWithCoder:(id)a3
+- (HKVerifiableClinicalRecord)initWithCoder:(id)coder
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = HKVerifiableClinicalRecord;
-  v5 = [(HKSample *)&v39 initWithCoder:v4];
+  v5 = [(HKSample *)&v39 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -180,27 +180,27 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
     v41[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"RecordTypes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"RecordTypes"];
     recordTypes = v5->_recordTypes;
     v5->_recordTypes = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuedDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuedDate"];
     issuedDate = v5->_issuedDate;
     v5->_issuedDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
     relevantDate = v5->_relevantDate;
     v5->_relevantDate = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ExpirationDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
     issuerIdentifier = v5->_issuerIdentifier;
     v5->_issuerIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Subject"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Subject"];
     subject = v5->_subject;
     v5->_subject = v19;
 
@@ -209,18 +209,18 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
     v40[1] = objc_opt_class();
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v23 = [v21 setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"ItemNames"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"ItemNames"];
     itemNames = v5->_itemNames;
     v5->_itemNames = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DataRepresentation"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DataRepresentation"];
     dataRepresentation = v5->_dataRepresentation;
     v5->_dataRepresentation = v26;
 
     v28 = v5->_dataRepresentation;
     if (!v28)
     {
-      v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"JWSRepresentation"];
+      v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"JWSRepresentation"];
       v30 = v5->_dataRepresentation;
       v5->_dataRepresentation = v29;
 
@@ -231,11 +231,11 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
     JWSRepresentation = v5->_JWSRepresentation;
     v5->_JWSRepresentation = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceType"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceType"];
     sourceType = v5->_sourceType;
     v5->_sourceType = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OriginIdentifier"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OriginIdentifier"];
     originIdentifier = v5->_originIdentifier;
     v5->_originIdentifier = v35;
   }
@@ -244,10 +244,10 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v5 = a3;
-  if (self == v5)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v12 = 1;
   }
@@ -256,15 +256,15 @@ void __230__HKVerifiableClinicalRecord_verifiableClinicalRecordWithType_startDat
   {
     v103.receiver = self;
     v103.super_class = HKVerifiableClinicalRecord;
-    if ([(HKSample *)&v103 isEquivalent:v5])
+    if ([(HKSample *)&v103 isEquivalent:equivalentCopy])
     {
-      v6 = v5;
+      v6 = equivalentCopy;
       recordTypes = self->_recordTypes;
-      v8 = [(HKVerifiableClinicalRecord *)v6 recordTypes];
-      if (recordTypes != v8)
+      recordTypes = [(HKVerifiableClinicalRecord *)v6 recordTypes];
+      if (recordTypes != recordTypes)
       {
-        v9 = [(HKVerifiableClinicalRecord *)v6 recordTypes];
-        if (!v9)
+        recordTypes2 = [(HKVerifiableClinicalRecord *)v6 recordTypes];
+        if (!recordTypes2)
         {
           v12 = 0;
 LABEL_108:
@@ -273,8 +273,8 @@ LABEL_108:
         }
 
         v10 = self->_recordTypes;
-        v11 = [(HKVerifiableClinicalRecord *)v6 recordTypes];
-        if (![(NSArray *)v10 isEqualToArray:v11])
+        recordTypes3 = [(HKVerifiableClinicalRecord *)v6 recordTypes];
+        if (![(NSArray *)v10 isEqualToArray:recordTypes3])
         {
           v12 = 0;
 LABEL_55:
@@ -282,28 +282,28 @@ LABEL_55:
           goto LABEL_108;
         }
 
-        v3 = v9;
-        v100 = v11;
+        v3 = recordTypes2;
+        v100 = recordTypes3;
       }
 
       v102 = recordTypes;
       issuedDate = self->_issuedDate;
-      v14 = [(HKVerifiableClinicalRecord *)v6 issuedDate];
-      v99 = issuedDate != v14;
-      if (issuedDate != v14)
+      issuedDate = [(HKVerifiableClinicalRecord *)v6 issuedDate];
+      v99 = issuedDate != issuedDate;
+      if (issuedDate != issuedDate)
       {
-        v15 = [(HKVerifiableClinicalRecord *)v6 issuedDate];
-        if (!v15)
+        issuedDate2 = [(HKVerifiableClinicalRecord *)v6 issuedDate];
+        if (!issuedDate2)
         {
 
           v12 = 0;
           v24 = v102;
-          v11 = v100;
-          v9 = v3;
-          if (v102 == v8)
+          recordTypes3 = v100;
+          recordTypes2 = v3;
+          if (v102 == recordTypes)
           {
 LABEL_107:
-            if (v24 != v8)
+            if (v24 != recordTypes)
             {
               goto LABEL_108;
             }
@@ -316,15 +316,15 @@ LABEL_106:
           goto LABEL_107;
         }
 
-        v16 = v15;
+        v16 = issuedDate2;
         v17 = self->_issuedDate;
-        v98 = [(HKVerifiableClinicalRecord *)v6 issuedDate];
+        issuedDate3 = [(HKVerifiableClinicalRecord *)v6 issuedDate];
         if (![(NSDate *)v17 isEqual:?])
         {
           v12 = 0;
-          v11 = v100;
-          v23 = v14;
-          v9 = v3;
+          recordTypes3 = v100;
+          v23 = issuedDate;
+          recordTypes2 = v3;
           goto LABEL_54;
         }
 
@@ -332,31 +332,31 @@ LABEL_106:
       }
 
       relevantDate = self->_relevantDate;
-      v101 = [(HKVerifiableClinicalRecord *)v6 relevantDate];
+      relevantDate = [(HKVerifiableClinicalRecord *)v6 relevantDate];
       v97 = relevantDate;
-      v19 = relevantDate != v101;
-      if (relevantDate != v101)
+      v19 = relevantDate != relevantDate;
+      if (relevantDate != relevantDate)
       {
-        v20 = [(HKVerifiableClinicalRecord *)v6 relevantDate];
-        if (!v20)
+        relevantDate2 = [(HKVerifiableClinicalRecord *)v6 relevantDate];
+        if (!relevantDate2)
         {
 
           v12 = 0;
-          v26 = issuedDate == v14;
-          v23 = v14;
+          v26 = issuedDate == issuedDate;
+          v23 = issuedDate;
           if (!v26)
           {
             LOBYTE(v30) = 1;
-            v11 = v100;
+            recordTypes3 = v100;
             v31 = v95;
-            v9 = v3;
+            recordTypes2 = v3;
             goto LABEL_103;
           }
 
           v30 = 0;
-          v11 = v100;
+          recordTypes3 = v100;
           v31 = v95;
-          v9 = v3;
+          recordTypes2 = v3;
 LABEL_111:
           if (!v30)
           {
@@ -368,24 +368,24 @@ LABEL_104:
           goto LABEL_105;
         }
 
-        v92 = v20;
+        v92 = relevantDate2;
         v21 = self->_relevantDate;
-        v94 = [(HKVerifiableClinicalRecord *)v6 relevantDate];
+        relevantDate3 = [(HKVerifiableClinicalRecord *)v6 relevantDate];
         if (![(NSDate *)v21 isEqual:?])
         {
           v12 = 0;
           v22 = issuedDate;
-          v23 = v14;
-          v9 = v3;
+          v23 = issuedDate;
+          recordTypes2 = v3;
           goto LABEL_53;
         }
       }
 
       expirationDate = self->_expirationDate;
-      v96 = [(HKVerifiableClinicalRecord *)v6 expirationDate];
+      expirationDate = [(HKVerifiableClinicalRecord *)v6 expirationDate];
       v93 = expirationDate;
-      v26 = expirationDate == v96;
-      v27 = expirationDate != v96;
+      v26 = expirationDate == expirationDate;
+      v27 = expirationDate != expirationDate;
       if (v26)
       {
         v85 = v27;
@@ -393,25 +393,25 @@ LABEL_104:
 
       else
       {
-        v28 = [(HKVerifiableClinicalRecord *)v6 expirationDate];
-        if (!v28)
+        expirationDate2 = [(HKVerifiableClinicalRecord *)v6 expirationDate];
+        if (!expirationDate2)
         {
 
           v12 = 0;
           v22 = issuedDate;
-          if (v97 != v101)
+          if (v97 != relevantDate)
           {
             LOBYTE(v37) = 1;
-            v30 = issuedDate != v14;
-            v23 = v14;
-            v9 = v3;
+            v30 = issuedDate != issuedDate;
+            v23 = issuedDate;
+            recordTypes2 = v3;
             goto LABEL_100;
           }
 
           v37 = 0;
-          v30 = issuedDate != v14;
-          v23 = v14;
-          v9 = v3;
+          v30 = issuedDate != issuedDate;
+          v23 = issuedDate;
+          recordTypes2 = v3;
 LABEL_113:
           if (!v37)
           {
@@ -423,16 +423,16 @@ LABEL_101:
           goto LABEL_102;
         }
 
-        v86 = v28;
+        v86 = expirationDate2;
         v29 = self->_expirationDate;
-        v88 = [(HKVerifiableClinicalRecord *)v6 expirationDate];
+        expirationDate3 = [(HKVerifiableClinicalRecord *)v6 expirationDate];
         if (![(NSDate *)v29 isEqual:?])
         {
           v12 = 0;
           v35 = v97;
           v22 = issuedDate;
-          v23 = v14;
-          v9 = v3;
+          v23 = issuedDate;
+          recordTypes2 = v3;
           goto LABEL_52;
         }
 
@@ -440,35 +440,35 @@ LABEL_101:
       }
 
       issuerIdentifier = self->_issuerIdentifier;
-      v90 = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
+      issuerIdentifier = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
       v91 = issuedDate;
       v87 = issuerIdentifier;
-      v84 = issuerIdentifier != v90;
+      v84 = issuerIdentifier != issuerIdentifier;
       v89 = v19;
-      if (issuerIdentifier == v90)
+      if (issuerIdentifier == issuerIdentifier)
       {
-        v23 = v14;
+        v23 = issuedDate;
       }
 
       else
       {
-        v33 = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
-        if (!v33)
+        issuerIdentifier2 = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
+        if (!issuerIdentifier2)
         {
 
           v12 = 0;
           v35 = v97;
-          v23 = v14;
-          if (v93 != v96)
+          v23 = issuedDate;
+          if (v93 != expirationDate)
           {
             LOBYTE(v42) = 1;
-            v9 = v3;
+            recordTypes2 = v3;
             v22 = v91;
             goto LABEL_97;
           }
 
           v42 = 0;
-          v9 = v3;
+          recordTypes2 = v3;
           v22 = v91;
 LABEL_115:
           if (!v42)
@@ -481,40 +481,40 @@ LABEL_98:
           goto LABEL_99;
         }
 
-        v81 = v33;
+        v81 = issuerIdentifier2;
         v34 = self->_issuerIdentifier;
-        v82 = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
-        v23 = v14;
+        issuerIdentifier3 = [(HKVerifiableClinicalRecord *)v6 issuerIdentifier];
+        v23 = issuedDate;
         if (![(NSString *)v34 isEqualToString:?])
         {
           v12 = 0;
           v35 = v97;
-          v9 = v3;
-          v36 = v90;
+          recordTypes2 = v3;
+          v36 = issuerIdentifier;
           v22 = v91;
           goto LABEL_51;
         }
       }
 
       subject = self->_subject;
-      v83 = [(HKVerifiableClinicalRecord *)v6 subject];
-      v79 = subject != v83;
-      if (subject == v83)
+      subject = [(HKVerifiableClinicalRecord *)v6 subject];
+      v79 = subject != subject;
+      if (subject == subject)
       {
-        v9 = v3;
+        recordTypes2 = v3;
       }
 
       else
       {
-        v39 = [(HKVerifiableClinicalRecord *)v6 subject];
-        v9 = v3;
-        if (!v39)
+        subject2 = [(HKVerifiableClinicalRecord *)v6 subject];
+        recordTypes2 = v3;
+        if (!subject2)
         {
 
           v12 = 0;
-          v36 = v90;
+          v36 = issuerIdentifier;
           v35 = v97;
-          if (issuerIdentifier != v90)
+          if (issuerIdentifier != issuerIdentifier)
           {
             LOBYTE(v47) = 1;
             v22 = v91;
@@ -534,32 +534,32 @@ LABEL_95:
           goto LABEL_96;
         }
 
-        v77 = v39;
+        v77 = subject2;
         v40 = self->_subject;
-        v78 = [(HKVerifiableClinicalRecord *)v6 subject];
+        subject3 = [(HKVerifiableClinicalRecord *)v6 subject];
         if (![(HKVerifiableClinicalRecordSubject *)v40 isEqual:?])
         {
           v12 = 0;
           v35 = v97;
           v22 = v91;
-          v41 = v83;
+          v41 = subject;
           goto LABEL_50;
         }
       }
 
       itemNames = self->_itemNames;
-      v80 = [(HKVerifiableClinicalRecord *)v6 itemNames];
+      itemNames = [(HKVerifiableClinicalRecord *)v6 itemNames];
       v76 = itemNames;
-      v44 = itemNames != v80;
-      if (itemNames != v80)
+      v44 = itemNames != itemNames;
+      if (itemNames != itemNames)
       {
-        v45 = [(HKVerifiableClinicalRecord *)v6 itemNames];
-        if (!v45)
+        itemNames2 = [(HKVerifiableClinicalRecord *)v6 itemNames];
+        if (!itemNames2)
         {
 
           v12 = 0;
-          v41 = v83;
-          v26 = subject == v83;
+          v41 = subject;
+          v26 = subject == subject;
           v35 = v97;
           v22 = v91;
           if (!v26)
@@ -580,36 +580,36 @@ LABEL_92:
           goto LABEL_93;
         }
 
-        v72 = v45;
+        v72 = itemNames2;
         v46 = self->_itemNames;
-        v73 = [(HKVerifiableClinicalRecord *)v6 itemNames];
+        itemNames3 = [(HKVerifiableClinicalRecord *)v6 itemNames];
         if (![(NSArray *)v46 isEqualToArray:?])
         {
           v75 = subject;
           v12 = 0;
           v35 = v97;
           v22 = v91;
-          v41 = v83;
+          v41 = subject;
           goto LABEL_49;
         }
       }
 
       dataRepresentation = self->_dataRepresentation;
-      v74 = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
+      dataRepresentation = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
       v75 = subject;
       v71 = dataRepresentation;
-      if (dataRepresentation != v74)
+      if (dataRepresentation != dataRepresentation)
       {
-        v49 = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
-        if (!v49)
+        dataRepresentation2 = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
+        if (!dataRepresentation2)
         {
           v56 = v44;
 
           v12 = 0;
           v35 = v97;
           v22 = v91;
-          v41 = v83;
-          if (v76 != v80)
+          v41 = subject;
+          if (v76 != itemNames)
           {
             goto LABEL_85;
           }
@@ -617,18 +617,18 @@ LABEL_92:
           goto LABEL_88;
         }
 
-        v69 = v49;
+        v69 = dataRepresentation2;
         v50 = self->_dataRepresentation;
-        v68 = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
+        dataRepresentation3 = [(HKVerifiableClinicalRecord *)v6 dataRepresentation];
         if (![(NSData *)v50 isEqual:?])
         {
           v12 = 0;
           v35 = v97;
           v22 = v91;
-          v41 = v83;
+          v41 = subject;
 LABEL_83:
 
-          if (v76 != v80)
+          if (v76 != itemNames)
           {
             LOBYTE(v56) = 1;
 LABEL_85:
@@ -655,69 +655,69 @@ LABEL_88:
       }
 
       sourceType = self->_sourceType;
-      v70 = [(HKVerifiableClinicalRecord *)v6 sourceType];
+      sourceType = [(HKVerifiableClinicalRecord *)v6 sourceType];
       v67 = sourceType;
-      if (sourceType != v70)
+      if (sourceType != sourceType)
       {
-        v53 = [(HKVerifiableClinicalRecord *)v6 sourceType];
-        if (!v53)
+        sourceType2 = [(HKVerifiableClinicalRecord *)v6 sourceType];
+        if (!sourceType2)
         {
           v12 = 0;
           goto LABEL_82;
         }
 
-        v66 = v53;
+        v66 = sourceType2;
         v54 = self->_sourceType;
-        v55 = [(HKVerifiableClinicalRecord *)v6 sourceType];
-        if (![(NSString *)v54 isEqualToString:v55])
+        sourceType3 = [(HKVerifiableClinicalRecord *)v6 sourceType];
+        if (![(NSString *)v54 isEqualToString:sourceType3])
         {
 
           v12 = 0;
           goto LABEL_122;
         }
 
-        v64 = v55;
+        v64 = sourceType3;
       }
 
       originIdentifier = self->_originIdentifier;
-      v58 = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
-      v12 = originIdentifier == v58;
+      originIdentifier = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
+      v12 = originIdentifier == originIdentifier;
       if (!v12)
       {
-        v59 = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
-        if (v59)
+        originIdentifier2 = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
+        if (originIdentifier2)
         {
           v60 = self->_originIdentifier;
-          v61 = v59;
-          v62 = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
-          v12 = [(NSUUID *)v60 isEqual:v62];
+          v61 = originIdentifier2;
+          originIdentifier3 = [(HKVerifiableClinicalRecord *)v6 originIdentifier];
+          v12 = [(NSUUID *)v60 isEqual:originIdentifier3];
 
-          if (v67 != v70)
+          if (v67 != sourceType)
           {
           }
 
 LABEL_122:
-          if (v71 != v74)
+          if (v71 != dataRepresentation)
           {
           }
 
-          if (v76 != v80)
+          if (v76 != itemNames)
           {
           }
 
-          if (v75 != v83)
+          if (v75 != subject)
           {
           }
 
-          if (v87 != v90)
+          if (v87 != issuerIdentifier)
           {
           }
 
-          if (v93 != v96)
+          if (v93 != expirationDate)
           {
           }
 
-          if (v97 != v101)
+          if (v97 != relevantDate)
           {
           }
 
@@ -725,8 +725,8 @@ LABEL_122:
           {
           }
 
-          v11 = v100;
-          if (v102 == v8)
+          recordTypes3 = v100;
+          if (v102 == recordTypes)
           {
             goto LABEL_109;
           }
@@ -735,13 +735,13 @@ LABEL_122:
         }
       }
 
-      if (v67 == v70)
+      if (v67 == sourceType)
       {
 
         v35 = v97;
         v22 = v91;
-        v41 = v83;
-        if (v71 != v74)
+        v41 = subject;
+        if (v71 != dataRepresentation)
         {
           goto LABEL_83;
         }
@@ -752,16 +752,16 @@ LABEL_122:
 LABEL_82:
       v35 = v97;
       v22 = v91;
-      v41 = v83;
+      v41 = subject;
 
-      if (v71 != v74)
+      if (v71 != dataRepresentation)
       {
         goto LABEL_83;
       }
 
 LABEL_139:
 
-      if (v76 != v80)
+      if (v76 != itemNames)
       {
 LABEL_49:
 
@@ -769,28 +769,28 @@ LABEL_49:
         {
 LABEL_50:
 
-          v36 = v90;
-          if (v87 != v90)
+          v36 = issuerIdentifier;
+          if (v87 != issuerIdentifier)
           {
 LABEL_51:
 
-            if (v93 != v96)
+            if (v93 != expirationDate)
             {
 LABEL_52:
 
               v30 = v99;
-              if (v35 != v101)
+              if (v35 != relevantDate)
               {
 LABEL_53:
 
                 v26 = v22 == v23;
-                v11 = v100;
+                recordTypes3 = v100;
                 v16 = v95;
                 if (!v26)
                 {
 LABEL_54:
 
-                  if (v102 != v8)
+                  if (v102 != recordTypes)
                   {
                     goto LABEL_55;
                   }
@@ -803,7 +803,7 @@ LABEL_109:
 LABEL_105:
 
                 v24 = v102;
-                if (v102 == v8)
+                if (v102 == recordTypes)
                 {
                   goto LABEL_107;
                 }
@@ -814,7 +814,7 @@ LABEL_105:
 LABEL_102:
 
               v26 = v22 == v23;
-              v11 = v100;
+              recordTypes3 = v100;
               v31 = v95;
               if (!v26)
               {
@@ -833,7 +833,7 @@ LABEL_103:
 
 LABEL_99:
 
-            v26 = v35 == v101;
+            v26 = v35 == relevantDate;
             v30 = v99;
             v37 = v89;
             if (!v26)
@@ -854,7 +854,7 @@ LABEL_100:
 LABEL_96:
 
           v42 = v85;
-          if (v93 != v96)
+          if (v93 != expirationDate)
           {
 LABEL_97:
 
@@ -871,9 +871,9 @@ LABEL_97:
 
 LABEL_93:
 
-        v36 = v90;
+        v36 = issuerIdentifier;
         v47 = v84;
-        if (v87 != v90)
+        if (v87 != issuerIdentifier)
         {
 LABEL_94:
 
@@ -914,103 +914,103 @@ LABEL_110:
   return v12;
 }
 
-- (void)_setIssuedDate:(id)a3
+- (void)_setIssuedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   issuedDate = self->_issuedDate;
   self->_issuedDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, issuedDate);
 }
 
-- (void)_setExpirationDate:(id)a3
+- (void)_setExpirationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   expirationDate = self->_expirationDate;
   self->_expirationDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, expirationDate);
 }
 
-- (void)_setIssuerIdentifier:(id)a3
+- (void)_setIssuerIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   issuerIdentifier = self->_issuerIdentifier;
   self->_issuerIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, issuerIdentifier);
 }
 
-- (void)_setItemNames:(id)a3
+- (void)_setItemNames:(id)names
 {
-  v4 = [a3 copy];
+  v4 = [names copy];
   itemNames = self->_itemNames;
   self->_itemNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, itemNames);
 }
 
-- (void)_setDataRepresentation:(id)a3
+- (void)_setDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  representationCopy = representation;
+  v5 = [representationCopy copy];
   dataRepresentation = self->_dataRepresentation;
   self->_dataRepresentation = v5;
 
-  v7 = [v4 copy];
+  v7 = [representationCopy copy];
   JWSRepresentation = self->_JWSRepresentation;
   self->_JWSRepresentation = v7;
 }
 
-- (void)_setOriginIdentifier:(id)a3
+- (void)_setOriginIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   originIdentifier = self->_originIdentifier;
   self->_originIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, originIdentifier);
 }
 
-- (void)_setRecordTypes:(id)a3
+- (void)_setRecordTypes:(id)types
 {
-  v4 = [a3 copy];
+  v4 = [types copy];
   recordTypes = self->_recordTypes;
   self->_recordTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, recordTypes);
 }
 
-- (void)_setRelevantDate:(id)a3
+- (void)_setRelevantDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   relevantDate = self->_relevantDate;
   self->_relevantDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, relevantDate);
 }
 
-- (void)_setSourceType:(int64_t)a3
+- (void)_setSourceType:(int64_t)type
 {
-  v6 = [objc_opt_class() sourceTypeForInternalType:a3];
+  v6 = [objc_opt_class() sourceTypeForInternalType:type];
   v4 = [v6 copy];
   sourceType = self->_sourceType;
   self->_sourceType = v4;
 }
 
-- (void)_setSubject:(id)a3
+- (void)_setSubject:(id)subject
 {
-  v4 = [a3 copy];
+  v4 = [subject copy];
   subject = self->_subject;
   self->_subject = v4;
 
   MEMORY[0x1EEE66BB8](v4, subject);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKVerifiableClinicalRecord;
-  v5 = [(HKSample *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -1108,15 +1108,15 @@ LABEL_22:
   return v8;
 }
 
-+ (int64_t)_privateSourceTypeForExternalType:(id)a3
++ (int64_t)_privateSourceTypeForExternalType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SMARTHealthCard"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SMARTHealthCard"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EUDigitalCOVIDCertificate"])
+  else if ([typeCopy isEqualToString:@"EUDigitalCOVIDCertificate"])
   {
     v4 = 2;
   }
@@ -1129,15 +1129,15 @@ LABEL_22:
   return v4;
 }
 
-+ (id)sourceTypeForInternalType:(int64_t)a3
++ (id)sourceTypeForInternalType:(int64_t)type
 {
   v3 = @"EUDigitalCOVIDCertificate";
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"SMARTHealthCard";
   }
@@ -1150,24 +1150,24 @@ LABEL_22:
 
 - (NSString)recordTypeDisplayName
 {
-  v2 = [(HKVerifiableClinicalRecord *)self recordTypes];
-  v3 = [HKSignedClinicalDataUtilities recordTypeDisplayNameWithTypes:v2];
+  recordTypes = [(HKVerifiableClinicalRecord *)self recordTypes];
+  v3 = [HKSignedClinicalDataUtilities recordTypeDisplayNameWithTypes:recordTypes];
 
   return v3;
 }
 
 - (NSString)recordItemsDisplayName
 {
-  v2 = [(HKVerifiableClinicalRecord *)self itemNames];
-  v3 = [HKSignedClinicalDataUtilities recordItemsDisplayNameWithItems:v2];
+  itemNames = [(HKVerifiableClinicalRecord *)self itemNames];
+  v3 = [HKSignedClinicalDataUtilities recordItemsDisplayNameWithItems:itemNames];
 
   return v3;
 }
 
 - (NSString)recordIssuerDisplayName
 {
-  v3 = [(HKVerifiableClinicalRecord *)self issuerIdentifier];
-  v4 = [HKSignedClinicalDataUtilities preferredRecordIssuerDisplayNameWithIssuerIdentifier:v3];
+  issuerIdentifier = [(HKVerifiableClinicalRecord *)self issuerIdentifier];
+  v4 = [HKSignedClinicalDataUtilities preferredRecordIssuerDisplayNameWithIssuerIdentifier:issuerIdentifier];
 
   if ([v4 length])
   {
@@ -1176,19 +1176,19 @@ LABEL_22:
 
   else
   {
-    v6 = [(HKObject *)self sourceRevision];
-    v7 = [v6 source];
-    v8 = [v7 name];
+    sourceRevision = [(HKObject *)self sourceRevision];
+    source = [sourceRevision source];
+    name = [source name];
 
-    if ([v8 length])
+    if ([name length])
     {
-      v5 = v8;
+      v5 = name;
     }
 
     else
     {
-      v9 = [(HKVerifiableClinicalRecord *)self issuerIdentifier];
-      v5 = [HKSignedClinicalDataUtilities recordIssuerDisplayNameWithIssuerIdentifier:v9];
+      issuerIdentifier2 = [(HKVerifiableClinicalRecord *)self issuerIdentifier];
+      v5 = [HKSignedClinicalDataUtilities recordIssuerDisplayNameWithIssuerIdentifier:issuerIdentifier2];
     }
   }
 

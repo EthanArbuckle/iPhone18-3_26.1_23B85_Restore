@@ -1,17 +1,17 @@
 @interface CAMSmartStyleSettingsPickerView
-- (CAMSmartStyleSettingsPickerView)initWithPHPickerView:(id)a3;
+- (CAMSmartStyleSettingsPickerView)initWithPHPickerView:(id)view;
 - (void)_setConstraints;
 - (void)_updateContinueButtonConfiguration;
 - (void)_updateDeselectAllButtonConfiguration;
-- (void)setWaitingOnLoading:(BOOL)a3;
+- (void)setWaitingOnLoading:(BOOL)loading;
 @end
 
 @implementation CAMSmartStyleSettingsPickerView
 
-- (CAMSmartStyleSettingsPickerView)initWithPHPickerView:(id)a3
+- (CAMSmartStyleSettingsPickerView)initWithPHPickerView:(id)view
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   v35.receiver = self;
   v35.super_class = CAMSmartStyleSettingsPickerView;
   v6 = *MEMORY[0x1E695F058];
@@ -21,11 +21,11 @@
   v10 = [(CAMSmartStyleSettingsPickerView *)&v35 initWithFrame:*MEMORY[0x1E695F058], v7, v8, v9];
   if (v10)
   {
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CAMSmartStyleSettingsPickerView *)v10 setBackgroundColor:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CAMSmartStyleSettingsPickerView *)v10 setBackgroundColor:systemBackgroundColor];
 
-    objc_storeStrong(&v10->__pickerView, a3);
-    [(CAMSmartStyleSettingsPickerView *)v10 addSubview:v5];
+    objc_storeStrong(&v10->__pickerView, view);
+    [(CAMSmartStyleSettingsPickerView *)v10 addSubview:viewCopy];
     v12 = MEMORY[0x1E69DC738];
     v13 = +[CAMSmartStyleSettingsView confirmButtonConfiguration];
     v14 = [v12 buttonWithConfiguration:v13 primaryAction:0];
@@ -46,8 +46,8 @@
     pickerOverlayDisablingView = v10->__pickerOverlayDisablingView;
     v10->__pickerOverlayDisablingView = v20;
 
-    v22 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v23 = [v22 colorWithAlphaComponent:0.3];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v23 = [systemBackgroundColor2 colorWithAlphaComponent:0.3];
     [(UIView *)v10->__pickerOverlayDisablingView setBackgroundColor:v23];
 
     [(UIView *)v10->__pickerOverlayDisablingView setAlpha:0.0];
@@ -56,8 +56,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = [(CAMSmartStyleSettingsPickerView *)v10 subviews];
-    v25 = [v24 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    subviews = [(CAMSmartStyleSettingsPickerView *)v10 subviews];
+    v25 = [subviews countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v25)
     {
       v26 = v25;
@@ -68,13 +68,13 @@
         {
           if (*v32 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v31 + 1) + 8 * i) setTranslatesAutoresizingMaskIntoConstraints:0];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v26 = [subviews countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v26);
@@ -90,92 +90,92 @@
 - (void)_setConstraints
 {
   v59[14] = *MEMORY[0x1E69E9840];
-  v3 = [(CAMSmartStyleSettingsPickerView *)self _pickerView];
-  v4 = [(CAMSmartStyleSettingsPickerView *)self _pickerOverlayDisablingView];
-  v5 = [(CAMSmartStyleSettingsPickerView *)self continueButton];
-  v6 = [(CAMSmartStyleSettingsPickerView *)self deselectAllButton];
+  _pickerView = [(CAMSmartStyleSettingsPickerView *)self _pickerView];
+  _pickerOverlayDisablingView = [(CAMSmartStyleSettingsPickerView *)self _pickerOverlayDisablingView];
+  continueButton = [(CAMSmartStyleSettingsPickerView *)self continueButton];
+  deselectAllButton = [(CAMSmartStyleSettingsPickerView *)self deselectAllButton];
   v36 = MEMORY[0x1E696ACD8];
-  v57 = [v3 topAnchor];
-  v58 = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
-  v56 = [v58 topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  topAnchor = [_pickerView topAnchor];
+  safeAreaLayoutGuide = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[0] = v55;
-  v53 = [v3 bottomAnchor];
-  v52 = [v6 topAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 constant:-20.0];
+  bottomAnchor = [_pickerView bottomAnchor];
+  topAnchor3 = [deselectAllButton topAnchor];
+  v51 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-20.0];
   v59[1] = v51;
-  v54 = v3;
-  v50 = [v3 leadingAnchor];
-  v49 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  v54 = _pickerView;
+  leadingAnchor = [_pickerView leadingAnchor];
+  leadingAnchor2 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[2] = v48;
-  v47 = [v3 trailingAnchor];
-  v46 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
-  v44 = [v47 constraintEqualToAnchor:v46];
+  trailingAnchor = [_pickerView trailingAnchor];
+  trailingAnchor2 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[3] = v44;
-  v42 = [v4 topAnchor];
-  v43 = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
-  v41 = [v43 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  topAnchor4 = [_pickerOverlayDisablingView topAnchor];
+  safeAreaLayoutGuide2 = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
+  topAnchor5 = [safeAreaLayoutGuide2 topAnchor];
+  v40 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v59[4] = v40;
-  v39 = [v4 bottomAnchor];
-  v38 = [(CAMSmartStyleSettingsPickerView *)self bottomAnchor];
-  v35 = [v39 constraintEqualToAnchor:v38];
+  bottomAnchor2 = [_pickerOverlayDisablingView bottomAnchor];
+  bottomAnchor3 = [(CAMSmartStyleSettingsPickerView *)self bottomAnchor];
+  v35 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v59[5] = v35;
-  v45 = v4;
-  v34 = [v4 leadingAnchor];
-  v33 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  v45 = _pickerOverlayDisablingView;
+  leadingAnchor3 = [_pickerOverlayDisablingView leadingAnchor];
+  leadingAnchor4 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v59[6] = v32;
-  v31 = [v4 trailingAnchor];
-  v30 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  trailingAnchor3 = [_pickerOverlayDisablingView trailingAnchor];
+  trailingAnchor4 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
+  v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v59[7] = v29;
-  v26 = [v5 bottomAnchor];
-  v27 = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
-  v25 = [v27 bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:-0.0];
+  bottomAnchor4 = [continueButton bottomAnchor];
+  safeAreaLayoutGuide3 = [(CAMSmartStyleSettingsPickerView *)self safeAreaLayoutGuide];
+  bottomAnchor5 = [safeAreaLayoutGuide3 bottomAnchor];
+  v24 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-0.0];
   v59[8] = v24;
-  v37 = v5;
-  v23 = [v5 leadingAnchor];
-  v22 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:28.0];
+  v37 = continueButton;
+  leadingAnchor5 = [continueButton leadingAnchor];
+  leadingAnchor6 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
+  v21 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:28.0];
   v59[9] = v21;
-  v20 = [v5 trailingAnchor];
-  v19 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-28.0];
+  trailingAnchor5 = [continueButton trailingAnchor];
+  trailingAnchor6 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
+  v18 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-28.0];
   v59[10] = v18;
-  v17 = [v6 bottomAnchor];
-  v7 = [(CAMSmartStyleSettingsPickerView *)self continueButton];
-  v8 = [v7 topAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8 constant:-10.0];
+  bottomAnchor6 = [deselectAllButton bottomAnchor];
+  continueButton2 = [(CAMSmartStyleSettingsPickerView *)self continueButton];
+  topAnchor6 = [continueButton2 topAnchor];
+  v9 = [bottomAnchor6 constraintEqualToAnchor:topAnchor6 constant:-10.0];
   v59[11] = v9;
-  v28 = v6;
-  v10 = [v6 leadingAnchor];
-  v11 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:28.0];
+  v28 = deselectAllButton;
+  leadingAnchor7 = [deselectAllButton leadingAnchor];
+  leadingAnchor8 = [(CAMSmartStyleSettingsPickerView *)self leadingAnchor];
+  v12 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:28.0];
   v59[12] = v12;
-  v13 = [v6 trailingAnchor];
-  v14 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:-28.0];
+  trailingAnchor7 = [deselectAllButton trailingAnchor];
+  trailingAnchor8 = [(CAMSmartStyleSettingsPickerView *)self trailingAnchor];
+  v15 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-28.0];
   v59[13] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:14];
   [v36 activateConstraints:v16];
 }
 
-- (void)setWaitingOnLoading:(BOOL)a3
+- (void)setWaitingOnLoading:(BOOL)loading
 {
-  if (self->_waitingOnLoading != a3)
+  if (self->_waitingOnLoading != loading)
   {
     v8 = v3;
     v9 = v4;
-    self->_waitingOnLoading = a3;
+    self->_waitingOnLoading = loading;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__CAMSmartStyleSettingsPickerView_setWaitingOnLoading___block_invoke;
     v6[3] = &unk_1E76F7850;
     v6[4] = self;
-    v7 = a3;
+    loadingCopy = loading;
     [CAMView animateIfNeededWithDuration:v6 animations:0.25];
     [(CAMSmartStyleSettingsPickerView *)self _updateContinueButtonConfiguration];
   }
@@ -194,8 +194,8 @@ uint64_t __55__CAMSmartStyleSettingsPickerView_setWaitingOnLoading___block_invok
 
 - (void)_updateContinueButtonConfiguration
 {
-  v3 = [(CAMSmartStyleSettingsPickerView *)self isWaitingOnLoading];
-  if (v3)
+  isWaitingOnLoading = [(CAMSmartStyleSettingsPickerView *)self isWaitingOnLoading];
+  if (isWaitingOnLoading)
   {
     v4 = @"SMART_STYLES_SETTINGS_LOADING";
   }
@@ -209,10 +209,10 @@ uint64_t __55__CAMSmartStyleSettingsPickerView_setWaitingOnLoading___block_invok
   v6 = CAMLocalizedFrameworkString(v4, 0);
   [(UIButton *)continueButton setTitle:v6 forState:0];
 
-  v7 = [(UIButton *)self->_continueButton configuration];
-  v8 = [v7 copy];
+  configuration = [(UIButton *)self->_continueButton configuration];
+  v8 = [configuration copy];
 
-  [v8 setShowsActivityIndicator:v3];
+  [v8 setShowsActivityIndicator:isWaitingOnLoading];
   [v8 setImagePlacement:8];
   [v8 setImagePadding:8.0];
   [v8 setTitleAlignment:2];
@@ -222,11 +222,11 @@ uint64_t __55__CAMSmartStyleSettingsPickerView_setWaitingOnLoading___block_invok
 
 - (void)_updateDeselectAllButtonConfiguration
 {
-  v3 = [(CAMSmartStyleSettingsPickerView *)self deselectAllButton];
+  deselectAllButton = [(CAMSmartStyleSettingsPickerView *)self deselectAllButton];
   v2 = CAMLocalizedFrameworkString(@"SMART_STYLES_SETTINGS_DESELECT_ALL", 0);
-  [v3 setTitle:v2 forState:0];
+  [deselectAllButton setTitle:v2 forState:0];
 
-  [v3 setNeedsUpdateConfiguration];
+  [deselectAllButton setNeedsUpdateConfiguration];
 }
 
 @end

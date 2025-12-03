@@ -1,6 +1,6 @@
 @interface NetworkingProcessExtension
 - (_TtC19NetworkingExtension26NetworkingProcessExtension)init;
-- (void)lockdownSandbox:(id)a3;
+- (void)lockdownSandbox:(id)sandbox;
 @end
 
 @implementation NetworkingProcessExtension
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (void)lockdownSandbox:(id)a3
+- (void)lockdownSandbox:(id)sandbox
 {
   v4 = sub_100007794();
   v5 = *(v4 - 8);
@@ -23,7 +23,7 @@
   v8 = v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   if (sub_1000077C4() == 3157553 && v9 == 0xE300000000000000)
   {
-    v10 = self;
+    selfCopy = self;
 
 LABEL_5:
     v14[1] = self;

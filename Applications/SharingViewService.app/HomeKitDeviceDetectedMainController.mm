@@ -1,22 +1,22 @@
 @interface HomeKitDeviceDetectedMainController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation HomeKitDeviceDetectedMainController
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,7 +27,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -41,21 +41,21 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   if (!self->_dismissed)
   {
-    v3 = a3;
+    animatedCopy = animated;
     self->_dismissed = 1;
-    v5 = [(HomeKitDeviceDetectedMainController *)self _remoteViewControllerProxy];
-    v6 = v5;
+    _remoteViewControllerProxy = [(HomeKitDeviceDetectedMainController *)self _remoteViewControllerProxy];
+    v6 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -63,20 +63,20 @@
       v8[1] = 3221225472;
       v8[2] = sub_1000EC1F4;
       v8[3] = &unk_100195AC0;
-      v9 = v5;
-      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:v3 completion:v8];
+      v9 = _remoteViewControllerProxy;
+      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:animatedCopy completion:v8];
     }
 
     else
     {
-      [v5 dismiss];
+      [_remoteViewControllerProxy dismiss];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -104,12 +104,12 @@
 
   v8.receiver = self;
   v8.super_class = HomeKitDeviceDetectedMainController;
-  [(SVSBaseMainController *)&v8 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -117,30 +117,30 @@
 
   v14.receiver = self;
   v14.super_class = HomeKitDeviceDetectedMainController;
-  [(HomeKitDeviceDetectedMainController *)&v14 viewDidAppear:v3];
+  [(HomeKitDeviceDetectedMainController *)&v14 viewDidAppear:appearCopy];
   v5 = [UIStoryboard storyboardWithName:@"HomeKitDeviceDetected" bundle:0];
   storyboard = self->_storyboard;
   self->_storyboard = v5;
 
-  v7 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v7;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
-  v11 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v12 = [v11 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v12;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(HomeKitDeviceDetectedMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
@@ -148,18 +148,18 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(HomeKitDeviceDetectedMainController *)self view];
-  v3 = [v2 window];
+  view = [(HomeKitDeviceDetectedMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -170,23 +170,23 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v9 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 

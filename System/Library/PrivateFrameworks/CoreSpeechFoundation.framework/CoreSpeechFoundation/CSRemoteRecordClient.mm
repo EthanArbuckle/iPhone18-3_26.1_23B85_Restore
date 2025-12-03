@@ -3,22 +3,22 @@
 - (BOOL)hasPendingTwoShotBeep;
 - (BOOL)isConnected;
 - (BOOL)isRecording;
-- (BOOL)startRecordingWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)stopRecording:(id *)a3;
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4;
+- (BOOL)startRecordingWithOptions:(id)options error:(id *)error;
+- (BOOL)stopRecording:(id *)recording;
+- (BOOL)waitingForConnection:(double)connection error:(id *)error;
 - (CSRemoteRecordClient)init;
-- (CSRemoteRecordClient)initWithDeviceId:(id)a3 audioStreamHandleId:(unint64_t)a4;
-- (CSRemoteRecordClient)initWithQueue:(id)a3 IsRemoteRecording:(BOOL)a4;
+- (CSRemoteRecordClient)initWithDeviceId:(id)id audioStreamHandleId:(unint64_t)handleId;
+- (CSRemoteRecordClient)initWithQueue:(id)queue IsRemoteRecording:(BOOL)recording;
 - (CSRemoteRecordClientDelegate)delegate;
 - (id)voiceTriggerEventInfo;
-- (void)_handleDidStartRecordingMessage:(id)a3;
-- (void)_handleServerError:(id)a3;
-- (void)_handleServerEvent:(id)a3;
-- (void)_handleServerMessage:(id)a3;
-- (void)_handleTwoShotDetectedMessage:(id)a3;
+- (void)_handleDidStartRecordingMessage:(id)message;
+- (void)_handleServerError:(id)error;
+- (void)_handleServerEvent:(id)event;
+- (void)_handleServerMessage:(id)message;
+- (void)_handleTwoShotDetectedMessage:(id)message;
 - (void)dealloc;
-- (void)didDeviceConnect:(id)a3;
-- (void)didDeviceDisconnect:(id)a3;
+- (void)didDeviceConnect:(id)connect;
+- (void)didDeviceDisconnect:(id)disconnect;
 @end
 
 @implementation CSRemoteRecordClient
@@ -347,7 +347,7 @@ void __43__CSRemoteRecordClient_didPlayEndpointBeep__block_invoke_2(uint64_t a1,
   }
 }
 
-- (BOOL)stopRecording:(id *)a3
+- (BOOL)stopRecording:(id *)recording
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v25 = @"COMMAND";
@@ -374,9 +374,9 @@ void __43__CSRemoteRecordClient_didPlayEndpointBeep__block_invoke_2(uint64_t a1,
   v13 = &v21;
   v14 = &v15;
   dispatch_sync(queue, block);
-  if (a3)
+  if (recording)
   {
-    *a3 = v16[5];
+    *recording = v16[5];
   }
 
   v8 = *(v22 + 24);
@@ -426,14 +426,14 @@ void __38__CSRemoteRecordClient_stopRecording___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)startRecordingWithOptions:(id)a3 error:(id *)a4
+- (BOOL)startRecordingWithOptions:(id)options error:(id *)error
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v27[0] = @"COMMAND";
   v27[1] = @"startRecordingOptions";
   v28[0] = @"startRecording";
-  v28[1] = v6;
+  v28[1] = optionsCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v23 = 0;
   v24 = &v23;
@@ -456,9 +456,9 @@ void __38__CSRemoteRecordClient_stopRecording___block_invoke(uint64_t a1)
   v15 = &v23;
   v16 = &v17;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = *(v24 + 24);
@@ -508,13 +508,13 @@ void __56__CSRemoteRecordClient_startRecordingWithOptions_error___block_invoke(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTwoShotDetectedMessage:(id)a3
+- (void)_handleTwoShotDetectedMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  messageCopy = message;
   v6 = [v4 alloc];
-  v7 = [v6 _cs_initWithXPCObject:v5];
+  v7 = [v6 _cs_initWithXPCObject:messageCopy];
 
   if (!v7 || ([v7 objectForKeyedSubscript:@"time"], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
@@ -560,13 +560,13 @@ LABEL_10:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDidStartRecordingMessage:(id)a3
+- (void)_handleDidStartRecordingMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  messageCopy = message;
   v6 = [v4 alloc];
-  v7 = [v6 _cs_initWithXPCObject:v5];
+  v7 = [v6 _cs_initWithXPCObject:messageCopy];
 
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -630,12 +630,12 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServerMessage:(id)a3
+- (void)_handleServerMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", xpc_dictionary_get_string(v4, "COMMAND")];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", xpc_dictionary_get_string(messageCopy, "COMMAND")];
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -648,7 +648,7 @@ LABEL_10:
 
   if ([v5 isEqualToString:@"didStartRecording"])
   {
-    [(CSRemoteRecordClient *)self _handleDidStartRecordingMessage:v4];
+    [(CSRemoteRecordClient *)self _handleDidStartRecordingMessage:messageCopy];
     goto LABEL_16;
   }
 
@@ -681,7 +681,7 @@ LABEL_8:
     }
 
     v12 = objc_alloc(MEMORY[0x1E695DF20]);
-    v9 = [v12 _cs_initWithXPCObject:v4];
+    v9 = [v12 _cs_initWithXPCObject:messageCopy];
 
     if (v9)
     {
@@ -700,7 +700,7 @@ LABEL_8:
 
   if ([v5 isEqualToString:@"twoShotDetected"])
   {
-    [(CSRemoteRecordClient *)self _handleTwoShotDetectedMessage:v4];
+    [(CSRemoteRecordClient *)self _handleTwoShotDetectedMessage:messageCopy];
   }
 
 LABEL_16:
@@ -708,14 +708,14 @@ LABEL_16:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServerError:(id)a3
+- (void)_handleServerError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (errorCopy)
   {
-    if (v4 == MEMORY[0x1E69E9E20] || v4 == MEMORY[0x1E69E9E18])
+    if (errorCopy == MEMORY[0x1E69E9E20] || errorCopy == MEMORY[0x1E69E9E18])
     {
       v6 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -733,7 +733,7 @@ LABEL_16:
 
     else
     {
-      string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28]);
+      string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x1E69E9E28]);
       v8 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
@@ -749,15 +749,15 @@ LABEL_16:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServerEvent:(id)a3
+- (void)_handleServerEvent:(id)event
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (eventCopy)
   {
-    v5 = MEMORY[0x1E12BAC70](v4);
-    if (MEMORY[0x1E12BAC70](v4) == MEMORY[0x1E69E9E98])
+    v5 = MEMORY[0x1E12BAC70](eventCopy);
+    if (MEMORY[0x1E12BAC70](eventCopy) == MEMORY[0x1E69E9E98])
     {
       v8 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -767,14 +767,14 @@ LABEL_16:
         _os_log_error_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_ERROR, "%s remoteXPC connection get failed", &v10, 0xCu);
       }
 
-      [(CSRemoteRecordClient *)self _handleServerError:v4];
+      [(CSRemoteRecordClient *)self _handleServerError:eventCopy];
     }
 
     else
     {
       if (v5 == MEMORY[0x1E69E9E80])
       {
-        [(CSRemoteRecordClient *)self _handleServerMessage:v4];
+        [(CSRemoteRecordClient *)self _handleServerMessage:eventCopy];
         goto LABEL_13;
       }
 
@@ -836,10 +836,10 @@ uint64_t __35__CSRemoteRecordClient_isConnected__block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4
+- (BOOL)waitingForConnection:(double)connection error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = [(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (a3 * 1000000000.0))];
+  v6 = [(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (connection * 1000000000.0))];
   if (!v6)
   {
     if ([(CSRemoteRecordClient *)self isConnected])
@@ -854,13 +854,13 @@ uint64_t __35__CSRemoteRecordClient_isConnected__block_invoke(uint64_t result)
       v14 = 136315138;
       v15 = "[CSRemoteRecordClient waitingForConnection:error:]";
       _os_log_error_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_ERROR, "%s Device is connected but RemoteXPC service is not connected", &v14, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_14;
     }
@@ -875,20 +875,20 @@ uint64_t __35__CSRemoteRecordClient_isConnected__block_invoke(uint64_t result)
     v14 = 136315138;
     v15 = "[CSRemoteRecordClient waitingForConnection:error:]";
     _os_log_error_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_ERROR, "%s Device connection waiting timed out", &v14, 0xCu);
-    if (a4)
+    if (error)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_4:
     v8 = 301;
 LABEL_10:
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:v8 userInfo:0];
     v9 = 0;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_15;
   }
 
@@ -909,7 +909,7 @@ LABEL_15:
   return result;
 }
 
-- (void)didDeviceDisconnect:(id)a3
+- (void)didDeviceDisconnect:(id)disconnect
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -946,10 +946,10 @@ void __44__CSRemoteRecordClient_didDeviceDisconnect___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didDeviceConnect:(id)a3
+- (void)didDeviceConnect:(id)connect
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectCopy = connect;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -963,9 +963,9 @@ void __44__CSRemoteRecordClient_didDeviceDisconnect___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __41__CSRemoteRecordClient_didDeviceConnect___block_invoke;
   v9[3] = &unk_1E865C970;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = connectCopy;
+  selfCopy = self;
+  v7 = connectCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1017,10 +1017,10 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
   [WeakRetained _handleServerEvent:v3];
 }
 
-- (CSRemoteRecordClient)initWithQueue:(id)a3 IsRemoteRecording:(BOOL)a4
+- (CSRemoteRecordClient)initWithQueue:(id)queue IsRemoteRecording:(BOOL)recording
 {
-  v7 = a3;
-  if (v7)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v12.receiver = self;
     v12.super_class = CSRemoteRecordClient;
@@ -1028,20 +1028,20 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_queue, a3);
-      v9->_isRemoteRecording = a4;
+      objc_storeStrong(&v8->_queue, queue);
+      v9->_isRemoteRecording = recording;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -1078,10 +1078,10 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
   return v3;
 }
 
-- (CSRemoteRecordClient)initWithDeviceId:(id)a3 audioStreamHandleId:(unint64_t)a4
+- (CSRemoteRecordClient)initWithDeviceId:(id)id audioStreamHandleId:(unint64_t)handleId
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  idCopy = id;
   if (!+[CSUtils isDarwinOS])
   {
     v27.receiver = self;
@@ -1099,7 +1099,7 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
 
       objc_initWeak(&location, self);
       v13 = self->_queue;
-      if (+[CSUtils hasRemoteBuiltInMic](CSUtils, "hasRemoteBuiltInMic") && (!v7 || [v7 isEqualToString:@"BuiltInMicrophoneDevice"]))
+      if (+[CSUtils hasRemoteBuiltInMic](CSUtils, "hasRemoteBuiltInMic") && (!idCopy || [idCopy isEqualToString:@"BuiltInMicrophoneDevice"]))
       {
         v14 = remote_device_copy_unique_of_type();
         device = self->_device;
@@ -1109,7 +1109,7 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
       else
       {
         *buf = 0uLL;
-        v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
+        v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:idCopy];
         [v16 getUUIDBytes:buf];
         v17 = remote_device_copy_device_with_uuid();
         v18 = self->_device;
@@ -1141,8 +1141,8 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
       v20 = self->_device;
       objc_copyWeak(v24, &location);
       remote_device_set_disconnected_callback();
-      self->_audioStreamHandleId = a4;
-      objc_storeStrong(&self->_deviceId, a3);
+      self->_audioStreamHandleId = handleId;
+      objc_storeStrong(&self->_deviceId, id);
       objc_destroyWeak(v24);
       objc_destroyWeak(&v25);
 
@@ -1150,16 +1150,16 @@ void __41__CSRemoteRecordClient_didDeviceConnect___block_invoke_10(uint64_t a1, 
     }
 
     self = self;
-    v8 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
 LABEL_2:
-  v8 = 0;
+  selfCopy = 0;
 LABEL_12:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 void __61__CSRemoteRecordClient_initWithDeviceId_audioStreamHandleId___block_invoke(uint64_t a1, void *a2)

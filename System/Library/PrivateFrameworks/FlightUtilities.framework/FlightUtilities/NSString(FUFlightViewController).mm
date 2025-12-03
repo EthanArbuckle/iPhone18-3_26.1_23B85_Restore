@@ -6,29 +6,29 @@
 
 - (id)localizedTerminalOrGateID
 {
-  v2 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v3 = [v2 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  if ([a1 rangeOfCharacterFromSet:v3] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [a1 integerValue];
-    if ((v4 - 1) <= 0x3E6)
+    integerValue = [self integerValue];
+    if ((integerValue - 1) <= 0x3E6)
     {
       v5 = MEMORY[0x277CCABB8];
-      v6 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
-      v7 = [v5 localizedStringFromNumber:v6 numberStyle:0];
+      v6 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+      selfCopy = [v5 localizedStringFromNumber:v6 numberStyle:0];
 
-      if ([v7 length])
+      if ([selfCopy length])
       {
         goto LABEL_6;
       }
     }
   }
 
-  v7 = a1;
+  selfCopy = self;
 LABEL_6:
 
-  return v7;
+  return selfCopy;
 }
 
 @end

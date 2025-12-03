@@ -1,7 +1,7 @@
 @interface SADomainObjectCommit
 - (id)_ad_replyCommandValue;
 - (id)domainFromSADObject;
-- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)a3;
+- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)handler;
 @end
 
 @implementation SADomainObjectCommit
@@ -9,28 +9,28 @@
 - (id)_ad_replyCommandValue
 {
   v3 = objc_alloc_init(SADomainObjectCommitCompleted);
-  v4 = [(SADomainObjectCommit *)self identifier];
-  v5 = [v4 identifier];
-  [v3 setIdentifier:v5];
+  identifier = [(SADomainObjectCommit *)self identifier];
+  v4Identifier = [identifier identifier];
+  [v3 setIdentifier:v4Identifier];
 
   return v3;
 }
 
-- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)a3
+- (void)_ad_getMessagesRequestValueWithCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v4 = [(SADomainObjectCommit *)self identifier];
+  handlerCopy = handler;
+  identifier = [(SADomainObjectCommit *)self identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SADomainObjectCommit *)self identifier];
-    v7 = [v6 af_messageValue];
+    identifier2 = [(SADomainObjectCommit *)self identifier];
+    af_messageValue = [identifier2 af_messageValue];
 
-    if (v7)
+    if (af_messageValue)
     {
-      v8 = [[STSendDraftMessageRequest alloc] _initWithMessage:v7];
+      v8 = [[STSendDraftMessageRequest alloc] _initWithMessage:af_messageValue];
     }
 
     else
@@ -42,21 +42,21 @@
   else
   {
     v8 = 0;
-    v7 = 0;
+    af_messageValue = 0;
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
 - (id)domainFromSADObject
 {
-  v2 = [(SADomainObjectCommit *)self identifier];
-  v3 = [v2 groupIdentifier];
+  identifier = [(SADomainObjectCommit *)self identifier];
+  groupIdentifier = [identifier groupIdentifier];
 
-  return v3;
+  return groupIdentifier;
 }
 
 @end

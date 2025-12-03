@@ -1,43 +1,43 @@
 @interface PKPerformActionPurchaseNewView
-- (PKPerformActionPurchaseNewView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5;
+- (PKPerformActionPurchaseNewView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider;
 - (PKPerformActionViewDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)transactionAmount;
 - (id)transactionCurrency;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addSubviews;
-- (void)fetchServiceProviderDataWithCompletion:(id)a3;
+- (void)fetchServiceProviderDataWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKPerformActionPurchaseNewView
 
-- (PKPerformActionPurchaseNewView)initWithPass:(id)a3 action:(id)a4 paymentDataProvider:(id)a5
+- (PKPerformActionPurchaseNewView)initWithPass:(id)pass action:(id)action paymentDataProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  passCopy = pass;
+  actionCopy = action;
   v18.receiver = self;
   v18.super_class = PKPerformActionPurchaseNewView;
   v10 = [(PKPerformActionPurchaseNewView *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pass, a3);
-    objc_storeStrong(&v11->_action, a4);
-    v12 = [(PKPerformActionPurchaseNewView *)v11 _shouldReverseLayoutDirection];
+    objc_storeStrong(&v10->_pass, pass);
+    objc_storeStrong(&v11->_action, action);
+    _shouldReverseLayoutDirection = [(PKPerformActionPurchaseNewView *)v11 _shouldReverseLayoutDirection];
     v13 = 2;
-    if (!v12)
+    if (!_shouldReverseLayoutDirection)
     {
       v13 = 0;
     }
 
     v11->_textAlignment = v13;
-    v14 = [v9 purchaseNewActionItems];
-    v15 = [v14 firstObject];
+    purchaseNewActionItems = [actionCopy purchaseNewActionItems];
+    firstObject = [purchaseNewActionItems firstObject];
     purchaseNewItem = v11->_purchaseNewItem;
-    v11->_purchaseNewItem = v15;
+    v11->_purchaseNewItem = firstObject;
 
     [(PKPerformActionPurchaseNewView *)v11 setClipsToBounds:0];
     [(PKPerformActionPurchaseNewView *)v11 _addSubviews];
@@ -56,53 +56,53 @@
   [(UITableView *)tableView setFrame:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [v5 setRightBarButtonEnabled:self->_purchaseNewItem != 0];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:self->_purchaseNewItem != 0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems:a3];
+  v4 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKPerformActionPurchaseNewCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPerformActionPurchaseNewCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKPerformActionPurchaseNewCellIdentifier"];
   }
 
-  v8 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
-  v9 = [v6 row];
+  purchaseNewActionItems = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [purchaseNewActionItems objectAtIndex:v9];
 
-  v11 = [(PKPurchaseNewActionItem *)v10 amount];
-  v12 = [(PKPurchaseNewActionItem *)v10 currency];
+  amount = [(PKPurchaseNewActionItem *)v10 amount];
+  currency = [(PKPurchaseNewActionItem *)v10 currency];
   v13 = PKFormattedCurrencyStringFromNumber();
 
-  v14 = [v7 textLabel];
-  v15 = [v7 detailTextLabel];
-  [v14 setTextAlignment:self->_textAlignment];
-  v16 = [(PKPurchaseNewActionItem *)v10 title];
-  [v14 setText:v16];
+  textLabel = [v7 textLabel];
+  detailTextLabel = [v7 detailTextLabel];
+  [textLabel setTextAlignment:self->_textAlignment];
+  title = [(PKPurchaseNewActionItem *)v10 title];
+  [textLabel setText:title];
 
-  v17 = [MEMORY[0x1E69DC888] labelColor];
-  [v14 setTextColor:v17];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
-  [v14 setLineBreakMode:4];
-  [v15 setTextAlignment:self->_textAlignment];
-  [v15 setText:v13];
-  v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v15 setTextColor:v18];
+  [textLabel setLineBreakMode:4];
+  [detailTextLabel setTextAlignment:self->_textAlignment];
+  [detailTextLabel setText:v13];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
   [v7 setSelectionStyle:3];
   if (v10 == self->_purchaseNewItem)
@@ -122,14 +122,14 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v6 = a4;
-  [v17 deselectRowAtIndexPath:v6 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v7 = self->_purchaseNewItem;
-  v8 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+  purchaseNewActionItems = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
+  v9 = [purchaseNewActionItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if (v7 != v9)
   {
@@ -138,15 +138,15 @@
     [WeakRetained setRightBarButtonEnabled:self->_purchaseNewItem != 0];
 
     v11 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-    [v17 reloadSections:v11 withRowAnimation:5];
+    [viewCopy reloadSections:v11 withRowAnimation:5];
 
-    v12 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
-    v13 = [v12 indexOfObject:v7];
+    purchaseNewActionItems2 = [(PKPaymentPassAction *)self->_action purchaseNewActionItems];
+    v13 = [purchaseNewActionItems2 indexOfObject:v7];
 
-    v14 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:{objc_msgSend(v6, "section")}];
+    v14 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:{objc_msgSend(pathCopy, "section")}];
     v15 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v14];
     [v15 setAccessoryType:0];
-    v16 = [(UITableView *)self->_tableView cellForRowAtIndexPath:v6];
+    v16 = [(UITableView *)self->_tableView cellForRowAtIndexPath:pathCopy];
     [v16 setAccessoryType:3];
   }
 }
@@ -180,25 +180,25 @@
   return purchaseNewItem;
 }
 
-- (void)fetchServiceProviderDataWithCompletion:(id)a3
+- (void)fetchServiceProviderDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   purchaseNewItem = self->_purchaseNewItem;
   if (purchaseNewItem)
   {
-    v7 = [(PKPass *)self->_pass secureElementPass];
+    secureElementPass = [(PKPass *)self->_pass secureElementPass];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73__PKPerformActionPurchaseNewView_fetchServiceProviderDataWithCompletion___block_invoke;
     v8[3] = &unk_1E8012A48;
     v9 = v5;
-    [(PKPurchaseNewActionItem *)purchaseNewItem serviceProviderDataWithItemForPass:v7 completion:v8];
+    [(PKPurchaseNewActionItem *)purchaseNewItem serviceProviderDataWithItemForPass:secureElementPass completion:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

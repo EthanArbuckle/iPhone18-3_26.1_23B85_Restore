@@ -1,10 +1,10 @@
 @interface POUISettingsManager
 - (POUISettingsManager)init;
 - (id)deviceStatus;
-- (id)statusForUserName:(id)a3;
+- (id)statusForUserName:(id)name;
 - (void)init;
-- (void)startDeviceAction:(int64_t)a3;
-- (void)startUserAction:(int64_t)a3 forUserName:(id)a4;
+- (void)startDeviceAction:(int64_t)action;
+- (void)startUserAction:(int64_t)action forUserName:(id)name;
 @end
 
 @implementation POUISettingsManager
@@ -64,10 +64,10 @@
   return v5;
 }
 
-- (id)statusForUserName:(id)a3
+- (id)statusForUserName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POUISettingsManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -90,7 +90,7 @@
   v10[2] = __41__POUISettingsManager_statusForUserName___block_invoke;
   v10[3] = &unk_279A3A218;
   v10[4] = buf;
-  [(POUIServiceConnection *)serviceConnection statusForUser:v4 completion:v10];
+  [(POUIServiceConnection *)serviceConnection statusForUser:nameCopy completion:v10];
   v7 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
 
@@ -99,7 +99,7 @@
   return v7;
 }
 
-- (void)startDeviceAction:(int64_t)a3
+- (void)startDeviceAction:(int64_t)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = PO_LOG_POUISettingsManager();
@@ -122,14 +122,14 @@
   v8[2] = __41__POUISettingsManager_startDeviceAction___block_invoke;
   v8[3] = &unk_279A3A240;
   v8[4] = buf;
-  [(POUIServiceConnection *)serviceConnection startDeviceAction:a3 completion:v8];
+  [(POUIServiceConnection *)serviceConnection startDeviceAction:action completion:v8];
   _Block_object_dispose(buf, 8);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUserAction:(int64_t)a3 forUserName:(id)a4
+- (void)startUserAction:(int64_t)action forUserName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -140,7 +140,7 @@
   v8[2] = __51__POUISettingsManager_startUserAction_forUserName___block_invoke;
   v8[3] = &unk_279A3A240;
   v8[4] = v9;
-  [(POUIServiceConnection *)serviceConnection startAction:a3 forUserName:v6 completion:v8];
+  [(POUIServiceConnection *)serviceConnection startAction:action forUserName:nameCopy completion:v8];
   _Block_object_dispose(v9, 8);
 }
 
@@ -150,7 +150,7 @@
   v3 = 136315394;
   v4 = "[POUISettingsManager init]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_25E831000, a2, OS_LOG_TYPE_DEBUG, "%s  on %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

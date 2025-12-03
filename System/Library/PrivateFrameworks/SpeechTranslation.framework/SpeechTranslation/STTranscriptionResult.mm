@@ -1,22 +1,22 @@
 @interface STTranscriptionResult
 - (BOOL)eligibleForTranslation;
 - (STTranscriptionResult)init;
-- (STTranscriptionResult)initWithText:(id)a3 isFinal:(BOOL)a4;
+- (STTranscriptionResult)initWithText:(id)text isFinal:(BOOL)final;
 - (id)cleanedTextVersion;
-- (void)encodeWithCoder:(id)a3;
-- (void)set_identifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)set_identifier:(id)set_identifier;
 @end
 
 @implementation STTranscriptionResult
 
-- (void)set_identifier:(id)a3
+- (void)set_identifier:(id)set_identifier
 {
   v4 = *(self + OBJC_IVAR___STTranscriptionResult__identifier);
-  *(self + OBJC_IVAR___STTranscriptionResult__identifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___STTranscriptionResult__identifier) = set_identifier;
+  set_identifierCopy = set_identifier;
 }
 
-- (STTranscriptionResult)initWithText:(id)a3 isFinal:(BOOL)a4
+- (STTranscriptionResult)initWithText:(id)text isFinal:(BOOL)final
 {
   v6 = sub_26B5E199C();
   v8 = v7;
@@ -25,23 +25,23 @@
   v10 = (self + OBJC_IVAR___STTranscriptionResult_text);
   *v10 = v6;
   v10[1] = v8;
-  *(self + OBJC_IVAR___STTranscriptionResult_isFinal) = a4;
+  *(self + OBJC_IVAR___STTranscriptionResult_isFinal) = final;
   v12.receiver = self;
   v12.super_class = STTranscriptionResult;
   return [(STTranscriptionResult *)&v12 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  STTranscriptionResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  STTranscriptionResult.encode(with:)(coderCopy);
 }
 
 - (BOOL)eligibleForTranslation
 {
-  v2 = self;
-  v3 = [(STTranscriptionResult *)v2 text];
+  selfCopy = self;
+  text = [(STTranscriptionResult *)selfCopy text];
   v4 = sub_26B5E199C();
   v6 = v5;
 
@@ -56,7 +56,7 @@
 
 - (id)cleanedTextVersion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STTranscriptionResult.cleanedTextVersion()();
 
   return v3;

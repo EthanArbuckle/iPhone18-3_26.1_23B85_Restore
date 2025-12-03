@@ -1,270 +1,270 @@
 @interface HKOverlayRoomStackedContext
-+ (id)_generateNamedDataSourceForTemplateDisplayType:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 currentTimeScope:(int64_t)a6 currentCalendar:(id)a7;
-+ (id)generateCustomSeriesWithTemplateDisplayType:(id)a3 sampleType:(id)a4 applicationItems:(id)a5 currentTimeScope:(int64_t)a6;
-+ (id)generateDisplayTypeForTemplateDisplayType:(id)a3 sampleType:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 currentTimeScope:(int64_t)a7 currentCalendar:(id)a8;
-- (BOOL)_obsoleteDateRange:(id)a3 overlayController:(id)a4;
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 overlayDisplayType:(id)a4 stackedDisplayType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9;
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 overlayDisplayType:(id)a4 stackedSampleType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9;
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 templateDisplayType:(id)a4 sampleType:(id)a5 overlayDisplayType:(id)a6 stackedDisplayType:(id)a7 stackedTemplateDisplayType:(id)a8 stackedSampleType:(id)a9 overlayChartController:(id)a10 currentTimeScope:(int64_t)a11 currentCalendar:(id)a12 applicationItems:(id)a13 isInfoButtonHidden:(BOOL)a14;
-- (HKOverlayRoomStackedContext)initWithSampleType:(id)a3 overlayDisplayType:(id)a4 stackedDisplayType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9;
-- (HKOverlayRoomStackedContext)initWithSampleType:(id)a3 overlayDisplayType:(id)a4 stackedSampleType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9;
-- (id)_buildContextItemWithAttributedValue:(id)a3 valueContext:(id)a4 forTimeScope:(int64_t)a5;
-- (id)_canonicalUnitOverrideForDisplayType:(id)a3;
-- (id)_contextItemTitleForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (id)_generateDisplayTypeForTemplateDisplayType:(id)a3 sampleType:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 currentTimeScope:(int64_t)a7 currentCalendar:(id)a8;
-- (id)_setupContextItemForDisplayType:(id)a3 timeScope:(int64_t)a4 valueContext:(id)a5;
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6;
++ (id)_generateNamedDataSourceForTemplateDisplayType:(id)type overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar;
++ (id)generateCustomSeriesWithTemplateDisplayType:(id)type sampleType:(id)sampleType applicationItems:(id)items currentTimeScope:(int64_t)scope;
++ (id)generateDisplayTypeForTemplateDisplayType:(id)type sampleType:(id)sampleType overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar;
+- (BOOL)_obsoleteDateRange:(id)range overlayController:(id)controller;
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type overlayDisplayType:(id)displayType stackedDisplayType:(id)stackedDisplayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden;
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type overlayDisplayType:(id)displayType stackedSampleType:(id)sampleType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden;
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type templateDisplayType:(id)displayType sampleType:(id)sampleType overlayDisplayType:(id)overlayDisplayType stackedDisplayType:(id)stackedDisplayType stackedTemplateDisplayType:(id)templateDisplayType stackedSampleType:(id)stackedSampleType overlayChartController:(id)self0 currentTimeScope:(int64_t)self1 currentCalendar:(id)self2 applicationItems:(id)self3 isInfoButtonHidden:(BOOL)self4;
+- (HKOverlayRoomStackedContext)initWithSampleType:(id)type overlayDisplayType:(id)displayType stackedDisplayType:(id)stackedDisplayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden;
+- (HKOverlayRoomStackedContext)initWithSampleType:(id)type overlayDisplayType:(id)displayType stackedSampleType:(id)sampleType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden;
+- (id)_buildContextItemWithAttributedValue:(id)value valueContext:(id)context forTimeScope:(int64_t)scope;
+- (id)_canonicalUnitOverrideForDisplayType:(id)type;
+- (id)_contextItemTitleForDisplayType:(id)type timeScope:(int64_t)scope;
+- (id)_generateDisplayTypeForTemplateDisplayType:(id)type sampleType:(id)sampleType overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar;
+- (id)_setupContextItemForDisplayType:(id)type timeScope:(int64_t)scope valueContext:(id)context;
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope;
 - (id)contextItemForLastUpdate;
-- (void)_setAccessibiltyIdentifier:(id)a3 displayType:(id)a4;
-- (void)chartPointsForChartPointType:(unint64_t)a3 dateIntervals:(id)a4 overlayChartController:(id)a5 dateIntervalMustMatchView:(BOOL)a6 timeScope:(int64_t)a7 resolution:(int64_t)a8 completion:(id)a9;
-- (void)setLastUpdatedItemFromPillValue:(id)a3 timeScope:(int64_t)a4 completion:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (void)_setAccessibiltyIdentifier:(id)identifier displayType:(id)type;
+- (void)chartPointsForChartPointType:(unint64_t)type dateIntervals:(id)intervals overlayChartController:(id)controller dateIntervalMustMatchView:(BOOL)view timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
+- (void)setLastUpdatedItemFromPillValue:(id)value timeScope:(int64_t)scope completion:(id)completion;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomStackedContext
 
-- (HKOverlayRoomStackedContext)initWithSampleType:(id)a3 overlayDisplayType:(id)a4 stackedSampleType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9
+- (HKOverlayRoomStackedContext)initWithSampleType:(id)type overlayDisplayType:(id)displayType stackedSampleType:(id)sampleType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden
 {
-  v15 = a3;
-  v38 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v39 = v18;
-  if (v18)
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  sampleTypeCopy = sampleType;
+  controllerCopy = controller;
+  overrideCopy = override;
+  itemsCopy = items;
+  v39 = overrideCopy;
+  if (overrideCopy)
   {
-    v20 = v18;
+    hk_gregorianCalendar = overrideCopy;
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
   }
 
-  v21 = v20;
-  v22 = [v19 timeScopeController];
-  v23 = [v22 selectedTimeScope];
+  v21 = hk_gregorianCalendar;
+  timeScopeController = [itemsCopy timeScopeController];
+  selectedTimeScope = [timeScopeController selectedTimeScope];
 
-  v24 = [v19 displayTypeController];
-  v25 = [v24 displayTypeForObjectType:v15];
+  displayTypeController = [itemsCopy displayTypeController];
+  v25 = [displayTypeController displayTypeForObjectType:typeCopy];
 
-  v35 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:v15 overlayChartController:v17 applicationItems:v19 currentTimeScope:v23 currentCalendar:v21];
-  [v19 displayTypeController];
-  v26 = v15;
-  v27 = v36 = v15;
-  [v27 displayTypeForObjectType:v16];
+  v35 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:typeCopy overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:selectedTimeScope currentCalendar:v21];
+  [itemsCopy displayTypeController];
+  v26 = typeCopy;
+  v27 = v36 = typeCopy;
+  [v27 displayTypeForObjectType:sampleTypeCopy];
   v28 = v21;
-  v29 = self;
-  v31 = v30 = v16;
+  selfCopy = self;
+  v31 = v30 = sampleTypeCopy;
 
-  v32 = [(HKOverlayRoomStackedContext *)v29 _generateDisplayTypeForTemplateDisplayType:v31 sampleType:v30 overlayChartController:v17 applicationItems:v19 currentTimeScope:v23 currentCalendar:v28];
-  LOBYTE(v34) = a9;
-  v37 = [(HKOverlayRoomStackedContext *)v29 initWithDisplayType:v35 templateDisplayType:v25 sampleType:v26 overlayDisplayType:v38 stackedDisplayType:v32 stackedTemplateDisplayType:v31 stackedSampleType:v30 overlayChartController:v17 currentTimeScope:v23 currentCalendar:v39 applicationItems:v19 isInfoButtonHidden:v34];
+  v32 = [(HKOverlayRoomStackedContext *)selfCopy _generateDisplayTypeForTemplateDisplayType:v31 sampleType:v30 overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:selectedTimeScope currentCalendar:v28];
+  LOBYTE(v34) = hidden;
+  v37 = [(HKOverlayRoomStackedContext *)selfCopy initWithDisplayType:v35 templateDisplayType:v25 sampleType:v26 overlayDisplayType:displayTypeCopy stackedDisplayType:v32 stackedTemplateDisplayType:v31 stackedSampleType:v30 overlayChartController:controllerCopy currentTimeScope:selectedTimeScope currentCalendar:v39 applicationItems:itemsCopy isInfoButtonHidden:v34];
 
   return v37;
 }
 
-- (HKOverlayRoomStackedContext)initWithSampleType:(id)a3 overlayDisplayType:(id)a4 stackedDisplayType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9
+- (HKOverlayRoomStackedContext)initWithSampleType:(id)type overlayDisplayType:(id)displayType stackedDisplayType:(id)stackedDisplayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden
 {
-  v15 = a3;
-  v40 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v38 = v18;
-  if (v18)
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  stackedDisplayTypeCopy = stackedDisplayType;
+  controllerCopy = controller;
+  overrideCopy = override;
+  itemsCopy = items;
+  v38 = overrideCopy;
+  if (overrideCopy)
   {
-    v20 = v18;
+    hk_gregorianCalendar = overrideCopy;
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
   }
 
-  v21 = v20;
-  v37 = v20;
-  v22 = [v19 timeScopeController];
-  v23 = [v22 selectedTimeScope];
+  v21 = hk_gregorianCalendar;
+  v37 = hk_gregorianCalendar;
+  timeScopeController = [itemsCopy timeScopeController];
+  selectedTimeScope = [timeScopeController selectedTimeScope];
 
-  v24 = [v19 displayTypeController];
-  v25 = [v24 displayTypeForObjectType:v15];
+  displayTypeController = [itemsCopy displayTypeController];
+  v25 = [displayTypeController displayTypeForObjectType:typeCopy];
 
-  v35 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:v15 overlayChartController:v17 applicationItems:v19 currentTimeScope:v23 currentCalendar:v21];
-  [v19 displayTypeController];
+  v35 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:typeCopy overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:selectedTimeScope currentCalendar:v21];
+  [itemsCopy displayTypeController];
   v27 = v26 = self;
-  v28 = [v16 sampleType];
-  v29 = [v27 displayTypeForObjectType:v28];
-  v30 = [v16 sampleType];
-  v31 = v15;
-  v36 = v15;
-  v32 = v30;
-  LOBYTE(v34) = a9;
-  v39 = [HKOverlayRoomStackedContext initWithDisplayType:v26 templateDisplayType:"initWithDisplayType:templateDisplayType:sampleType:overlayDisplayType:stackedDisplayType:stackedTemplateDisplayType:stackedSampleType:overlayChartController:currentTimeScope:currentCalendar:applicationItems:isInfoButtonHidden:" sampleType:v35 overlayDisplayType:v25 stackedDisplayType:v31 stackedTemplateDisplayType:v40 stackedSampleType:v30 overlayChartController:v17 currentTimeScope:v23 currentCalendar:v38 applicationItems:v19 isInfoButtonHidden:v34];
+  sampleType = [stackedDisplayTypeCopy sampleType];
+  v29 = [v27 displayTypeForObjectType:sampleType];
+  sampleType2 = [stackedDisplayTypeCopy sampleType];
+  v31 = typeCopy;
+  v36 = typeCopy;
+  v32 = sampleType2;
+  LOBYTE(v34) = hidden;
+  v39 = [HKOverlayRoomStackedContext initWithDisplayType:v26 templateDisplayType:"initWithDisplayType:templateDisplayType:sampleType:overlayDisplayType:stackedDisplayType:stackedTemplateDisplayType:stackedSampleType:overlayChartController:currentTimeScope:currentCalendar:applicationItems:isInfoButtonHidden:" sampleType:v35 overlayDisplayType:v25 stackedDisplayType:v31 stackedTemplateDisplayType:displayTypeCopy stackedSampleType:sampleType2 overlayChartController:controllerCopy currentTimeScope:selectedTimeScope currentCalendar:v38 applicationItems:itemsCopy isInfoButtonHidden:v34];
 
   return v39;
 }
 
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 overlayDisplayType:(id)a4 stackedDisplayType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type overlayDisplayType:(id)displayType stackedDisplayType:(id)stackedDisplayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden
 {
-  v14 = a3;
-  v36 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v33 = v17;
-  if (v17)
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  stackedDisplayTypeCopy = stackedDisplayType;
+  controllerCopy = controller;
+  overrideCopy = override;
+  itemsCopy = items;
+  v33 = overrideCopy;
+  if (overrideCopy)
   {
-    v19 = v17;
+    hk_gregorianCalendar = overrideCopy;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
   }
 
-  v32 = v19;
-  v20 = [v18 timeScopeController];
-  v21 = [v20 selectedTimeScope];
+  v32 = hk_gregorianCalendar;
+  timeScopeController = [itemsCopy timeScopeController];
+  selectedTimeScope = [timeScopeController selectedTimeScope];
 
-  v22 = [v14 sampleType];
-  v23 = [v18 displayTypeController];
-  v24 = [v15 sampleType];
-  v25 = [v23 displayTypeForObjectType:v24];
-  v26 = [v15 sampleType];
-  v27 = v14;
-  v31 = v14;
-  v28 = v26;
-  LOBYTE(v30) = a9;
-  v35 = [(HKOverlayRoomStackedContext *)self initWithDisplayType:v27 templateDisplayType:0 sampleType:v22 overlayDisplayType:v36 stackedDisplayType:v15 stackedTemplateDisplayType:v25 stackedSampleType:v26 overlayChartController:v16 currentTimeScope:v21 currentCalendar:v32 applicationItems:v18 isInfoButtonHidden:v30];
+  sampleType = [typeCopy sampleType];
+  displayTypeController = [itemsCopy displayTypeController];
+  sampleType2 = [stackedDisplayTypeCopy sampleType];
+  v25 = [displayTypeController displayTypeForObjectType:sampleType2];
+  sampleType3 = [stackedDisplayTypeCopy sampleType];
+  v27 = typeCopy;
+  v31 = typeCopy;
+  v28 = sampleType3;
+  LOBYTE(v30) = hidden;
+  v35 = [(HKOverlayRoomStackedContext *)self initWithDisplayType:v27 templateDisplayType:0 sampleType:sampleType overlayDisplayType:displayTypeCopy stackedDisplayType:stackedDisplayTypeCopy stackedTemplateDisplayType:v25 stackedSampleType:sampleType3 overlayChartController:controllerCopy currentTimeScope:selectedTimeScope currentCalendar:v32 applicationItems:itemsCopy isInfoButtonHidden:v30];
 
   return v35;
 }
 
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 overlayDisplayType:(id)a4 stackedSampleType:(id)a5 overlayChartController:(id)a6 currentCalendarOverride:(id)a7 applicationItems:(id)a8 isInfoButtonHidden:(BOOL)a9
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type overlayDisplayType:(id)displayType stackedSampleType:(id)sampleType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items isInfoButtonHidden:(BOOL)hidden
 {
-  v15 = a3;
-  v34 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v33 = v18;
-  if (v18)
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  sampleTypeCopy = sampleType;
+  controllerCopy = controller;
+  overrideCopy = override;
+  itemsCopy = items;
+  v33 = overrideCopy;
+  if (overrideCopy)
   {
-    v20 = v18;
+    hk_gregorianCalendar = overrideCopy;
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
   }
 
-  v21 = v20;
-  v22 = [v19 timeScopeController];
-  v23 = [v22 selectedTimeScope];
+  v21 = hk_gregorianCalendar;
+  timeScopeController = [itemsCopy timeScopeController];
+  selectedTimeScope = [timeScopeController selectedTimeScope];
 
-  v24 = [v19 displayTypeController];
-  v25 = [v24 displayTypeForObjectType:v16];
+  displayTypeController = [itemsCopy displayTypeController];
+  v25 = [displayTypeController displayTypeForObjectType:sampleTypeCopy];
 
-  v26 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:v16 overlayChartController:v17 applicationItems:v19 currentTimeScope:v23 currentCalendar:v21];
-  v27 = [v15 sampleType];
-  v28 = self;
-  v29 = v27;
-  LOBYTE(v32) = a9;
-  v30 = [(HKOverlayRoomStackedContext *)v28 initWithDisplayType:v15 templateDisplayType:0 sampleType:v27 overlayDisplayType:v34 stackedDisplayType:v26 stackedTemplateDisplayType:v25 stackedSampleType:v16 overlayChartController:v17 currentTimeScope:v23 currentCalendar:v21 applicationItems:v19 isInfoButtonHidden:v32];
+  v26 = [(HKOverlayRoomStackedContext *)self _generateDisplayTypeForTemplateDisplayType:v25 sampleType:sampleTypeCopy overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:selectedTimeScope currentCalendar:v21];
+  sampleType = [typeCopy sampleType];
+  selfCopy = self;
+  v29 = sampleType;
+  LOBYTE(v32) = hidden;
+  v30 = [(HKOverlayRoomStackedContext *)selfCopy initWithDisplayType:typeCopy templateDisplayType:0 sampleType:sampleType overlayDisplayType:displayTypeCopy stackedDisplayType:v26 stackedTemplateDisplayType:v25 stackedSampleType:sampleTypeCopy overlayChartController:controllerCopy currentTimeScope:selectedTimeScope currentCalendar:v21 applicationItems:itemsCopy isInfoButtonHidden:v32];
 
   return v30;
 }
 
-- (HKOverlayRoomStackedContext)initWithDisplayType:(id)a3 templateDisplayType:(id)a4 sampleType:(id)a5 overlayDisplayType:(id)a6 stackedDisplayType:(id)a7 stackedTemplateDisplayType:(id)a8 stackedSampleType:(id)a9 overlayChartController:(id)a10 currentTimeScope:(int64_t)a11 currentCalendar:(id)a12 applicationItems:(id)a13 isInfoButtonHidden:(BOOL)a14
+- (HKOverlayRoomStackedContext)initWithDisplayType:(id)type templateDisplayType:(id)displayType sampleType:(id)sampleType overlayDisplayType:(id)overlayDisplayType stackedDisplayType:(id)stackedDisplayType stackedTemplateDisplayType:(id)templateDisplayType stackedSampleType:(id)stackedSampleType overlayChartController:(id)self0 currentTimeScope:(int64_t)self1 currentCalendar:(id)self2 applicationItems:(id)self3 isInfoButtonHidden:(BOOL)self4
 {
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  obj = a7;
-  v30 = a7;
-  v29 = a8;
-  v28 = a9;
-  v27 = a12;
-  v21 = a13;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  sampleTypeCopy = sampleType;
+  overlayDisplayTypeCopy = overlayDisplayType;
+  obj = stackedDisplayType;
+  stackedDisplayTypeCopy = stackedDisplayType;
+  templateDisplayTypeCopy = templateDisplayType;
+  stackedSampleTypeCopy = stackedSampleType;
+  calendarCopy = calendar;
+  itemsCopy = items;
   v22 = [(HKOverlayRoomStackedContext *)self init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_applicationItems, a13);
-    objc_storeStrong(&v23->_currentCalendar, a12);
-    objc_storeStrong(&v23->_sampleType, a5);
-    objc_storeStrong(&v23->_templateDisplayType, a4);
-    objc_storeStrong(&v23->_displayType, a3);
-    objc_storeStrong(&v23->_overlayDisplayType, a6);
-    objc_storeStrong(&v23->_stackedSampleType, a9);
-    objc_storeStrong(&v23->_stackedTemplateDisplayType, a8);
+    objc_storeStrong(&v22->_applicationItems, items);
+    objc_storeStrong(&v23->_currentCalendar, calendar);
+    objc_storeStrong(&v23->_sampleType, sampleType);
+    objc_storeStrong(&v23->_templateDisplayType, displayType);
+    objc_storeStrong(&v23->_displayType, type);
+    objc_storeStrong(&v23->_overlayDisplayType, overlayDisplayType);
+    objc_storeStrong(&v23->_stackedSampleType, stackedSampleType);
+    objc_storeStrong(&v23->_stackedTemplateDisplayType, templateDisplayType);
     objc_storeStrong(&v23->_stackedBaseDisplayType, obj);
     lastUpdatedItem = v23->_lastUpdatedItem;
     v23->_lastUpdatedItem = 0;
 
-    v23->_currentTimeScope = a11;
-    v23->_isInfoButtonHidden = a14;
+    v23->_currentTimeScope = scope;
+    v23->_isInfoButtonHidden = hidden;
   }
 
   return v23;
 }
 
-- (id)_generateDisplayTypeForTemplateDisplayType:(id)a3 sampleType:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 currentTimeScope:(int64_t)a7 currentCalendar:(id)a8
+- (id)_generateDisplayTypeForTemplateDisplayType:(id)type sampleType:(id)sampleType overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar
 {
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [objc_opt_class() generateDisplayTypeForTemplateDisplayType:v17 sampleType:v16 overlayChartController:v15 applicationItems:v14 currentTimeScope:a7 currentCalendar:v13];
+  calendarCopy = calendar;
+  itemsCopy = items;
+  controllerCopy = controller;
+  sampleTypeCopy = sampleType;
+  typeCopy = type;
+  v18 = [objc_opt_class() generateDisplayTypeForTemplateDisplayType:typeCopy sampleType:sampleTypeCopy overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:scope currentCalendar:calendarCopy];
 
   return v18;
 }
 
-+ (id)generateDisplayTypeForTemplateDisplayType:(id)a3 sampleType:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 currentTimeScope:(int64_t)a7 currentCalendar:(id)a8
++ (id)generateDisplayTypeForTemplateDisplayType:(id)type sampleType:(id)sampleType overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v18 hk_interactiveChartsFormatterForTimeScope:a7];
-  v20 = [HKOverlayRoomStackedContext generateCustomSeriesWithTemplateDisplayType:v18 sampleType:v17 applicationItems:v15 currentTimeScope:a7];
+  calendarCopy = calendar;
+  itemsCopy = items;
+  controllerCopy = controller;
+  sampleTypeCopy = sampleType;
+  typeCopy = type;
+  v19 = [typeCopy hk_interactiveChartsFormatterForTimeScope:scope];
+  v20 = [HKOverlayRoomStackedContext generateCustomSeriesWithTemplateDisplayType:typeCopy sampleType:sampleTypeCopy applicationItems:itemsCopy currentTimeScope:scope];
 
-  v21 = [a1 _generateNamedDataSourceForTemplateDisplayType:v18 overlayChartController:v16 applicationItems:v15 currentTimeScope:a7 currentCalendar:v14];
+  v21 = [self _generateNamedDataSourceForTemplateDisplayType:typeCopy overlayChartController:controllerCopy applicationItems:itemsCopy currentTimeScope:scope currentCalendar:calendarCopy];
 
   v22 = [HKInteractiveChartDisplayType alloc];
-  v23 = [v18 sampleType];
-  v24 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v22, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v20, v18, v19, [v23 code]);
+  sampleType = [typeCopy sampleType];
+  v24 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v22, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v20, typeCopy, v19, [sampleType code]);
 
-  v25 = [v16 displayTypeForGraphSeries:v20 namedDataSource:v21 templateDisplayType:v24 timeScope:a7 formatter:v19];
+  v25 = [controllerCopy displayTypeForGraphSeries:v20 namedDataSource:v21 templateDisplayType:v24 timeScope:scope formatter:v19];
 
   return v25;
 }
 
-+ (id)generateCustomSeriesWithTemplateDisplayType:(id)a3 sampleType:(id)a4 applicationItems:(id)a5 currentTimeScope:(int64_t)a6
++ (id)generateCustomSeriesWithTemplateDisplayType:(id)type sampleType:(id)sampleType applicationItems:(id)items currentTimeScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 displayCategory];
-  v11 = [v9 unitController];
-  v12 = [v9 chartDataCacheController];
+  typeCopy = type;
+  itemsCopy = items;
+  displayCategory = [typeCopy displayCategory];
+  unitController = [itemsCopy unitController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
 
   v13 = +[HKOverlayContextUtilities stackedAxisConfiguration];
-  v14 = [v8 hk_standardSeriesForTimeScope:a6 displayCategory:v10 unitController:v11 dataCacheController:v12 numericAxisConfigurationOverrides:v13 chartSizeClass:1];
+  v14 = [typeCopy hk_standardSeriesForTimeScope:scope displayCategory:displayCategory unitController:unitController dataCacheController:chartDataCacheController numericAxisConfigurationOverrides:v13 chartSizeClass:1];
 
-  v15 = [v14 yAxis];
-  if (v15)
+  yAxis = [v14 yAxis];
+  if (yAxis)
   {
-    v16 = [v8 localization];
-    v17 = [v16 shortenedDisplayName];
-    [HKOverlayContextUtilities setStackedSeriesLegend:v14 title:v17];
+    localization = [typeCopy localization];
+    shortenedDisplayName = [localization shortenedDisplayName];
+    [HKOverlayContextUtilities setStackedSeriesLegend:v14 title:shortenedDisplayName];
   }
 
   else
@@ -280,21 +280,21 @@
   return v14;
 }
 
-+ (id)_generateNamedDataSourceForTemplateDisplayType:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 currentTimeScope:(int64_t)a6 currentCalendar:(id)a7
++ (id)_generateNamedDataSourceForTemplateDisplayType:(id)type overlayChartController:(id)controller applicationItems:(id)items currentTimeScope:(int64_t)scope currentCalendar:(id)calendar
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v11 healthStore];
-  v14 = [v11 unitController];
+  calendarCopy = calendar;
+  itemsCopy = items;
+  typeCopy = type;
+  healthStore = [itemsCopy healthStore];
+  unitController = [itemsCopy unitController];
 
-  v15 = [v12 hk_healthQueryChartCacheDataSourceForTimeScope:a6 healthStore:v13 unitController:v14];
+  v15 = [typeCopy hk_healthQueryChartCacheDataSourceForTimeScope:scope healthStore:healthStore unitController:unitController];
 
-  [v15 setCalendarOverride:v10];
+  [v15 setCalendarOverride:calendarCopy];
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v12 sampleType];
+  sampleType = [typeCopy sampleType];
 
-  v18 = [v16 stringWithFormat:@"HKOverlayRoomStackedContext_%ld", objc_msgSend(v17, "code")];
+  v18 = [v16 stringWithFormat:@"HKOverlayRoomStackedContext_%ld", objc_msgSend(sampleType, "code")];
 
   v19 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v15 named:v18 withContextTitleForTimeScope:0];
 
@@ -303,43 +303,43 @@
 
 - (id)contextItemForLastUpdate
 {
-  v3 = [(HKOverlayRoomStackedContext *)self lastUpdatedItem];
+  lastUpdatedItem = [(HKOverlayRoomStackedContext *)self lastUpdatedItem];
 
-  if (!v3)
+  if (!lastUpdatedItem)
   {
-    v4 = [(HKOverlayRoomStackedContext *)self applicationItems];
-    v5 = [v4 timeScopeController];
-    v6 = [v5 selectedTimeScope];
+    applicationItems = [(HKOverlayRoomStackedContext *)self applicationItems];
+    timeScopeController = [applicationItems timeScopeController];
+    selectedTimeScope = [timeScopeController selectedTimeScope];
 
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v8 = [v7 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v9 = [(HKOverlayRoomStackedContext *)self buildContextItemWithValue:v8 unit:0 valueContext:0 forTimeScope:v6];
+    v9 = [(HKOverlayRoomStackedContext *)self buildContextItemWithValue:v8 unit:0 valueContext:0 forTimeScope:selectedTimeScope];
     [(HKOverlayRoomStackedContext *)self setLastUpdatedItem:v9];
   }
 
   return [(HKOverlayRoomStackedContext *)self lastUpdatedItem];
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  intervalCopy = interval;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v23[0] = v12;
+  v23[0] = intervalCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __114__HKOverlayRoomStackedContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v18[3] = &unk_1E81B7A38;
   objc_copyWeak(v21, &location);
-  v16 = v13;
+  v16 = controllerCopy;
   v19 = v16;
-  v21[1] = a5;
-  v17 = v14;
+  v21[1] = scope;
+  v17 = completionCopy;
   v20 = v17;
-  [(HKOverlayRoomStackedContext *)self chartPointsForChartPointType:1 dateIntervals:v15 overlayChartController:v16 dateIntervalMustMatchView:1 timeScope:a5 resolution:a6 completion:v18];
+  [(HKOverlayRoomStackedContext *)self chartPointsForChartPointType:1 dateIntervals:v15 overlayChartController:v16 dateIntervalMustMatchView:1 timeScope:scope resolution:resolution completion:v18];
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -378,62 +378,62 @@ void __114__HKOverlayRoomStackedContext_updateContextItemForDateInterval_overlay
   }
 }
 
-- (void)chartPointsForChartPointType:(unint64_t)a3 dateIntervals:(id)a4 overlayChartController:(id)a5 dateIntervalMustMatchView:(BOOL)a6 timeScope:(int64_t)a7 resolution:(int64_t)a8 completion:(id)a9
+- (void)chartPointsForChartPointType:(unint64_t)type dateIntervals:(id)intervals overlayChartController:(id)controller dateIntervalMustMatchView:(BOOL)view timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a9;
+  intervalsCopy = intervals;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(location, self);
-  if (a3 == 1)
+  if (type == 1)
   {
-    v15 = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
+    stackedBaseDisplayType = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v15 = [(HKOverlayRoomStackedContext *)self displayType];
+    stackedBaseDisplayType = [(HKOverlayRoomStackedContext *)self displayType];
 LABEL_5:
-    v16 = v15;
+    v16 = stackedBaseDisplayType;
     goto LABEL_7;
   }
 
   v16 = 0;
 LABEL_7:
-  v27 = [v16 graphSeriesForTimeScope:a7];
+  v27 = [v16 graphSeriesForTimeScope:scope];
   v17 = [(HKOverlayRoomStackedContext *)self _canonicalUnitOverrideForDisplayType:v16];
   if (!v17)
   {
-    v18 = [(HKOverlayRoomStackedContext *)self applicationItems];
-    v19 = [v18 unitController];
-    v17 = [v19 unitForChartingDisplayType:v16];
+    applicationItems = [(HKOverlayRoomStackedContext *)self applicationItems];
+    unitController = [applicationItems unitController];
+    v17 = [unitController unitForChartingDisplayType:v16];
   }
 
-  if ([v12 count])
+  if ([intervalsCopy count])
   {
-    v20 = [v12 firstObject];
-    v26 = v14;
-    v21 = [v12 subarrayWithRange:{1, objc_msgSend(v12, "count") - 1}];
-    v22 = [v20 startDate];
-    v23 = [v20 endDate];
+    firstObject = [intervalsCopy firstObject];
+    v26 = completionCopy;
+    v21 = [intervalsCopy subarrayWithRange:{1, objc_msgSend(intervalsCopy, "count") - 1}];
+    startDate = [firstObject startDate];
+    endDate = [firstObject endDate];
     objc_copyWeak(v33, location);
-    v34 = a6;
-    v29 = v20;
-    v30 = v13;
+    viewCopy = view;
+    v29 = firstObject;
+    v30 = controllerCopy;
     v32 = v26;
-    v33[1] = a3;
+    v33[1] = type;
     v31 = v21;
-    v33[2] = a7;
-    v33[3] = a8;
+    v33[2] = scope;
+    v33[3] = resolution;
     [v30 cachedDataForCustomGraphSeries:v27 timeScope:? resolution:? startDate:? endDate:? completion:?];
 
     objc_destroyWeak(v33);
-    v14 = v26;
+    completionCopy = v26;
   }
 
   else
   {
-    (*(v14 + 2))(v14, MEMORY[0x1E695E0F0], v17, 1, 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], v17, 1, 0);
   }
 
   objc_destroyWeak(location);
@@ -507,20 +507,20 @@ void __155__HKOverlayRoomStackedContext_chartPointsForChartPointType_dateInterva
   }
 }
 
-- (void)setLastUpdatedItemFromPillValue:(id)a3 timeScope:(int64_t)a4 completion:(id)a5
+- (void)setLastUpdatedItemFromPillValue:(id)value timeScope:(int64_t)scope completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  valueCopy = value;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__HKOverlayRoomStackedContext_setLastUpdatedItemFromPillValue_timeScope_completion___block_invoke;
   v12[3] = &unk_1E81B7AB0;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = valueCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  scopeCopy = scope;
+  v10 = completionCopy;
+  v11 = valueCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
 
@@ -562,155 +562,155 @@ LABEL_5:
   return (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)_obsoleteDateRange:(id)a3 overlayController:(id)a4
+- (BOOL)_obsoleteDateRange:(id)range overlayController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 primaryGraphViewController];
-  v7 = [v6 graphView];
-  v8 = [v7 effectiveVisibleRangeActive];
+  rangeCopy = range;
+  primaryGraphViewController = [controller primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
 
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
-  v11 = [v5 startDate];
-  v12 = [v5 endDate];
+  startDate = [effectiveVisibleRangeActive startDate];
+  endDate = [effectiveVisibleRangeActive endDate];
+  startDate2 = [rangeCopy startDate];
+  endDate2 = [rangeCopy endDate];
 
-  v13 = [v9 compare:v11] || objc_msgSend(v10, "compare:", v12);
+  v13 = [startDate compare:startDate2] || objc_msgSend(endDate, "compare:", endDate2);
   return v13;
 }
 
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
-  v14 = [(HKOverlayRoomStackedContext *)self _setupContextItemForDisplayType:v13 timeScope:a6 valueContext:v10];
+  contextCopy = context;
+  unitCopy = unit;
+  valueCopy = value;
+  stackedBaseDisplayType = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
+  v14 = [(HKOverlayRoomStackedContext *)self _setupContextItemForDisplayType:stackedBaseDisplayType timeScope:scope valueContext:contextCopy];
 
-  [v14 setUnit:v11];
-  [v14 setValue:v12];
+  [v14 setUnit:unitCopy];
+  [v14 setValue:valueCopy];
 
-  [(HKOverlayRoomStackedContext *)self _setAccessibiltyIdentifier:v14 displayType:v13];
+  [(HKOverlayRoomStackedContext *)self _setAccessibiltyIdentifier:v14 displayType:stackedBaseDisplayType];
 
   return v14;
 }
 
-- (id)_buildContextItemWithAttributedValue:(id)a3 valueContext:(id)a4 forTimeScope:(int64_t)a5
+- (id)_buildContextItemWithAttributedValue:(id)value valueContext:(id)context forTimeScope:(int64_t)scope
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
-  v11 = [(HKOverlayRoomStackedContext *)self _setupContextItemForDisplayType:v10 timeScope:a5 valueContext:v8];
+  contextCopy = context;
+  valueCopy = value;
+  stackedBaseDisplayType = [(HKOverlayRoomStackedContext *)self stackedBaseDisplayType];
+  v11 = [(HKOverlayRoomStackedContext *)self _setupContextItemForDisplayType:stackedBaseDisplayType timeScope:scope valueContext:contextCopy];
 
-  v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v9];
+  v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:valueCopy];
   v13 = *MEMORY[0x1E69DB650];
-  v14 = [v11 selectedMetricColors];
-  v15 = [v14 contextViewPrimaryTextColor];
-  [v12 addAttribute:v13 value:v15 range:{0, objc_msgSend(v9, "length")}];
+  selectedMetricColors = [v11 selectedMetricColors];
+  contextViewPrimaryTextColor = [selectedMetricColors contextViewPrimaryTextColor];
+  [v12 addAttribute:v13 value:contextViewPrimaryTextColor range:{0, objc_msgSend(valueCopy, "length")}];
 
-  v16 = [HKDisplayTypeContextItemAttributedLabelOverride attributedLabelOverrideWithText:v9 selectedText:v12];
+  v16 = [HKDisplayTypeContextItemAttributedLabelOverride attributedLabelOverrideWithText:valueCopy selectedText:v12];
 
   [v11 setAttributedLabelTextOverride:v16];
-  [(HKOverlayRoomStackedContext *)self _setAccessibiltyIdentifier:v11 displayType:v10];
+  [(HKOverlayRoomStackedContext *)self _setAccessibiltyIdentifier:v11 displayType:stackedBaseDisplayType];
 
   return v11;
 }
 
-- (id)_setupContextItemForDisplayType:(id)a3 timeScope:(int64_t)a4 valueContext:(id)a5
+- (id)_setupContextItemForDisplayType:(id)type timeScope:(int64_t)scope valueContext:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  typeCopy = type;
   v10 = objc_alloc_init(HKDisplayTypeContextItem);
-  v11 = [(HKSampleType *)self->_stackedSampleType identifier];
-  [(HKDisplayTypeContextItem *)v10 setAnalyticsIdentifier:v11];
+  identifier = [(HKSampleType *)self->_stackedSampleType identifier];
+  [(HKDisplayTypeContextItem *)v10 setAnalyticsIdentifier:identifier];
 
-  v12 = [(HKOverlayRoomStackedContext *)self _contextItemTitleForDisplayType:v9 timeScope:a4];
+  v12 = [(HKOverlayRoomStackedContext *)self _contextItemTitleForDisplayType:typeCopy timeScope:scope];
   [(HKDisplayTypeContextItem *)v10 setTitle:v12];
 
   [(HKDisplayTypeContextItem *)v10 setInfoHidden:self->_isInfoButtonHidden];
-  v13 = [v9 contextItemShouldUseTightSpacingBetweenValueAndUnit];
+  contextItemShouldUseTightSpacingBetweenValueAndUnit = [typeCopy contextItemShouldUseTightSpacingBetweenValueAndUnit];
 
-  [(HKDisplayTypeContextItem *)v10 setUseTightSpacingBetweenValueAndUnit:v13];
-  v14 = [(HKOverlayRoomStackedContext *)self stackedContextButtonBackground];
-  v15 = [HKUIMetricColors defaultContextViewColorsUsingColor:v14];
+  [(HKDisplayTypeContextItem *)v10 setUseTightSpacingBetweenValueAndUnit:contextItemShouldUseTightSpacingBetweenValueAndUnit];
+  stackedContextButtonBackground = [(HKOverlayRoomStackedContext *)self stackedContextButtonBackground];
+  v15 = [HKUIMetricColors defaultContextViewColorsUsingColor:stackedContextButtonBackground];
   [(HKDisplayTypeContextItem *)v10 setMetricColors:v15];
 
-  v16 = [(HKOverlayRoomStackedContext *)self stackedSampleType];
-  v17 = [(HKOverlayRoomStackedContext *)self stackedTemplateDisplayType];
-  v18 = [HKOverlayContextUtilities stackedChartMetricColorsForSampleType:v16 templateType:v17];
+  stackedSampleType = [(HKOverlayRoomStackedContext *)self stackedSampleType];
+  stackedTemplateDisplayType = [(HKOverlayRoomStackedContext *)self stackedTemplateDisplayType];
+  v18 = [HKOverlayContextUtilities stackedChartMetricColorsForSampleType:stackedSampleType templateType:stackedTemplateDisplayType];
   [(HKDisplayTypeContextItem *)v10 setSelectedMetricColors:v18];
 
-  [(HKDisplayTypeContextItem *)v10 setValueContext:v8];
+  [(HKDisplayTypeContextItem *)v10 setValueContext:contextCopy];
 
   return v10;
 }
 
-- (void)_setAccessibiltyIdentifier:(id)a3 displayType:(id)a4
+- (void)_setAccessibiltyIdentifier:(id)identifier displayType:(id)type
 {
-  v11 = a4;
-  v5 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = MEMORY[0x1E696AEC0];
   if (isKindOfClass)
   {
-    v8 = [v11 localization];
-    v9 = [v8 displayName];
-    v10 = [v7 hk_chartOverlayAccessibilityIdentifier:v9];
-    [v5 setAccessibilityIdentifier:v10];
+    localization = [typeCopy localization];
+    displayName = [localization displayName];
+    v10 = [v7 hk_chartOverlayAccessibilityIdentifier:displayName];
+    [identifierCopy setAccessibilityIdentifier:v10];
 
-    v5 = v10;
+    identifierCopy = v10;
   }
 
   else
   {
-    v8 = [v11 displayTypeIdentifierString];
-    v9 = [v7 hk_chartOverlayAccessibilityIdentifier:v8];
-    [v5 setAccessibilityIdentifier:v9];
+    localization = [typeCopy displayTypeIdentifierString];
+    displayName = [v7 hk_chartOverlayAccessibilityIdentifier:localization];
+    [identifierCopy setAccessibilityIdentifier:displayName];
   }
 }
 
-- (id)_contextItemTitleForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)_contextItemTitleForDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v5 = a3;
-  v6 = [v5 behavior];
-  v7 = [v6 chartsRelativeData];
+  typeCopy = type;
+  behavior = [typeCopy behavior];
+  chartsRelativeData = [behavior chartsRelativeData];
 
-  if (a4 == 6 || !v7)
+  if (scope == 6 || !chartsRelativeData)
   {
-    v9 = [v5 localization];
-    v13 = [v9 shortenedDisplayName];
+    localization = [typeCopy localization];
+    shortenedDisplayName = [localization shortenedDisplayName];
   }
 
   else
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v10 = [v9 localizedStringForKey:@"OVERLAY_AVERAGE_DATA_TYPE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v11 = [v5 localization];
-    v12 = [v11 embeddedDisplayName];
-    v13 = [v8 stringWithFormat:v10, v12];
+    localization = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+    v10 = [localization localizedStringForKey:@"OVERLAY_AVERAGE_DATA_TYPE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    localization2 = [typeCopy localization];
+    embeddedDisplayName = [localization2 embeddedDisplayName];
+    shortenedDisplayName = [v8 stringWithFormat:v10, embeddedDisplayName];
   }
 
-  return v13;
+  return shortenedDisplayName;
 }
 
-- (id)_canonicalUnitOverrideForDisplayType:(id)a3
+- (id)_canonicalUnitOverrideForDisplayType:(id)type
 {
-  v3 = [a3 objectType];
-  v4 = [v3 identifier];
+  objectType = [type objectType];
+  identifier = [objectType identifier];
   v5 = *MEMORY[0x1E696B648];
 
-  if (v4 == v5)
+  if (identifier == v5)
   {
-    v6 = [MEMORY[0x1E696C510] secondUnit];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
   }
 
   else
   {
-    v6 = 0;
+    secondUnit = 0;
   }
 
-  return v6;
+  return secondUnit;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface SearchUILargeTitleDetailedRowCardSectionView
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (UIEdgeInsets)layoutMargins;
 - (id)setupContentView;
 - (void)didSelectSubtitleItem;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUILargeTitleDetailedRowCardSectionView
@@ -37,9 +37,9 @@
   [(SearchUILargeTitleDetailedRowCardSectionView *)self setTitleLabel:v3];
   v9 = objc_opt_new();
   v10 = MEMORY[0x1E69D9138];
-  v11 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v12 = MEMORY[0x1E69DDD00];
-  if (!v11)
+  if (!isMacOS)
   {
     v12 = MEMORY[0x1E69DDD28];
   }
@@ -48,11 +48,11 @@
   [v9 setFont:v13];
 
   [v9 setProminence:2];
-  v14 = [v9 titleLabel];
-  [v14 setNumberOfLines:2];
+  titleLabel = [v9 titleLabel];
+  [titleLabel setNumberOfLines:2];
 
-  v15 = [v9 titleLabel];
-  [v15 setLineBreakMode:4];
+  titleLabel2 = [v9 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
   [(SearchUILargeTitleDetailedRowCardSectionView *)self setSubtitleButton:v9];
   v16 = objc_alloc(MEMORY[0x1E698B730]);
@@ -82,75 +82,75 @@
   return v22;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v37.receiver = self;
   v37.super_class = SearchUILargeTitleDetailedRowCardSectionView;
-  [(SearchUICardSectionView *)&v37 updateWithRowModel:v4];
-  v5 = [v4 cardSection];
-  v6 = [v5 title];
-  v7 = [(SearchUILargeTitleDetailedRowCardSectionView *)self titleLabel];
-  [v7 setSfText:v6];
+  [(SearchUICardSectionView *)&v37 updateWithRowModel:modelCopy];
+  cardSection = [modelCopy cardSection];
+  title = [cardSection title];
+  titleLabel = [(SearchUILargeTitleDetailedRowCardSectionView *)self titleLabel];
+  [titleLabel setSfText:title];
 
-  v8 = [v5 subtitleButtonItem];
+  subtitleButtonItem = [cardSection subtitleButtonItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v5 subtitleButtonItem];
-    v11 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v11 setHidden:0];
+    subtitleButtonItem2 = [cardSection subtitleButtonItem];
+    subtitleButton = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButton setHidden:0];
 
-    v12 = [v10 title];
-    v13 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v13 setTitle:v12];
+    title2 = [subtitleButtonItem2 title];
+    subtitleButton2 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButton2 setTitle:title2];
 
-    v14 = [v10 command];
-    v15 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v15 setShowsMenuAsPrimaryAction:v14 == 0];
+    command = [subtitleButtonItem2 command];
+    subtitleButton3 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButton3 setShowsMenuAsPrimaryAction:command == 0];
 
-    v16 = [(SearchUICardSectionView *)self feedbackDelegate];
-    v17 = [SearchUIUtilities environmentForDelegate:v16];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+    v17 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-    v18 = [SearchUICommandHandler handlerForRowModel:v4 environment:v17];
-    v19 = [v5 subtitleButtonItem];
-    v20 = [v18 menuForRowModel:v4 buttonItem:v19 commandEnvironment:v17];
-    v21 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v21 setMenu:v20];
+    v18 = [SearchUICommandHandler handlerForRowModel:modelCopy environment:v17];
+    subtitleButtonItem3 = [cardSection subtitleButtonItem];
+    v20 = [v18 menuForRowModel:modelCopy buttonItem:subtitleButtonItem3 commandEnvironment:v17];
+    subtitleButton4 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButton4 setMenu:v20];
 
-    v22 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v22 addTarget:self action:sel_didSelectSubtitleItem];
+    subtitleButton5 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButton5 addTarget:self action:sel_didSelectSubtitleItem];
   }
 
   else
   {
-    v10 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    [v10 setHidden:1];
+    subtitleButtonItem2 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    [subtitleButtonItem2 setHidden:1];
   }
 
-  v23 = [v5 trailingButtonItems];
-  if ([v23 count] != 1)
+  trailingButtonItems = [cardSection trailingButtonItems];
+  if ([trailingButtonItems count] != 1)
   {
     v31 = 0;
     goto LABEL_8;
   }
 
-  v24 = [v5 trailingButtonItems];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  trailingButtonItems2 = [cardSection trailingButtonItems];
+  v25 = [trailingButtonItems2 objectAtIndexedSubscript:0];
   objc_opt_class();
   v26 = objc_opt_isKindOfClass();
 
   if (v26)
   {
-    v27 = [v5 trailingButtonItems];
-    v23 = [v27 objectAtIndexedSubscript:0];
+    trailingButtonItems3 = [cardSection trailingButtonItems];
+    trailingButtonItems = [trailingButtonItems3 objectAtIndexedSubscript:0];
 
-    v28 = [v23 person];
-    v29 = [v28 emailAddresses];
-    v30 = [v29 firstObject];
-    v31 = [v30 length] != 0;
+    person = [trailingButtonItems person];
+    emailAddresses = [person emailAddresses];
+    firstObject = [emailAddresses firstObject];
+    v31 = [firstObject length] != 0;
 
 LABEL_8:
     goto LABEL_10;
@@ -158,11 +158,11 @@ LABEL_8:
 
   v31 = 0;
 LABEL_10:
-  v32 = [(SearchUILargeTitleDetailedRowCardSectionView *)self buttonStackView];
-  [v32 setShouldReverseButtonOrder:v31];
+  buttonStackView = [(SearchUILargeTitleDetailedRowCardSectionView *)self buttonStackView];
+  [buttonStackView setShouldReverseButtonOrder:v31];
 
-  v33 = [(SearchUILargeTitleDetailedRowCardSectionView *)self buttonStackView];
-  v34 = [v5 trailingButtonItems];
+  buttonStackView2 = [(SearchUILargeTitleDetailedRowCardSectionView *)self buttonStackView];
+  trailingButtonItems4 = [cardSection trailingButtonItems];
   if (v31)
   {
     v35 = 2;
@@ -173,38 +173,38 @@ LABEL_10:
     v35 = 3;
   }
 
-  v36 = [(SearchUICardSectionView *)self feedbackDelegate];
-  [v33 updateWithButtonItems:v34 maxButtonItems:v35 buttonItemViewType:1 rowModel:v4 feedbackDelegate:v36];
+  feedbackDelegate2 = [(SearchUICardSectionView *)self feedbackDelegate];
+  [buttonStackView2 updateWithButtonItems:trailingButtonItems4 maxButtonItems:v35 buttonItemViewType:1 rowModel:modelCopy feedbackDelegate:feedbackDelegate2];
 }
 
 - (void)didSelectSubtitleItem
 {
-  v3 = [(SearchUICardSectionView *)self rowModel];
-  v14 = [v3 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  v4 = [v14 subtitleButtonItem];
+  subtitleButtonItem = [cardSection subtitleButtonItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v14;
+  v6 = cardSection;
   if (isKindOfClass)
   {
-    v7 = [v14 subtitleButtonItem];
-    v8 = [(SearchUICardSectionView *)self feedbackDelegate];
-    v9 = [SearchUIUtilities environmentForDelegate:v8];
+    subtitleButtonItem2 = [cardSection subtitleButtonItem];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+    v9 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-    v10 = [v7 command];
+    command = [subtitleButtonItem2 command];
 
-    if (v10)
+    if (command)
     {
-      v11 = [(SearchUICardSectionView *)self rowModel];
-      v12 = [SearchUICommandHandler handlerForButton:v7 rowModel:v11 environment:v9];
+      rowModel2 = [(SearchUICardSectionView *)self rowModel];
+      v12 = [SearchUICommandHandler handlerForButton:subtitleButtonItem2 rowModel:rowModel2 environment:v9];
 
-      v13 = [v7 command];
-      [v12 performCommand:v13 triggerEvent:3 environment:v9];
+      command2 = [subtitleButtonItem2 command];
+      [v12 performCommand:command2 triggerEvent:3 environment:v9];
     }
 
-    v6 = v14;
+    v6 = cardSection;
   }
 }
 
@@ -214,9 +214,9 @@ LABEL_10:
   {
     if (TLKSpotlightPlusUIEnabled())
     {
-      v3 = [(SearchUICardSectionView *)self rowModel];
-      v4 = [v3 fillsBackgroundWithContent];
-      if (v4)
+      rowModel = [(SearchUICardSectionView *)self rowModel];
+      fillsBackgroundWithContent = [rowModel fillsBackgroundWithContent];
+      if (fillsBackgroundWithContent)
       {
         v5 = 16.0;
       }
@@ -227,7 +227,7 @@ LABEL_10:
       }
 
       v6 = 12.0;
-      if (v4)
+      if (fillsBackgroundWithContent)
       {
         v7 = 12.0;
       }
@@ -266,18 +266,18 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+  height = size.height;
+  width = size.width;
+  subviewCopy = subview;
+  subtitleButton = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
 
-  if (v9 == v8)
+  if (subtitleButton == subviewCopy)
   {
-    v12 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
-    v13 = [v12 titleLabel];
-    [v13 effectiveLayoutSizeFittingSize:{width, height}];
+    subtitleButton2 = [(SearchUILargeTitleDetailedRowCardSectionView *)self subtitleButton];
+    titleLabel = [subtitleButton2 titleLabel];
+    [titleLabel effectiveLayoutSizeFittingSize:{width, height}];
     v10 = v14;
     v11 = v15;
   }

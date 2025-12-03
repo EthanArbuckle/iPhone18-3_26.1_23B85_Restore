@@ -1,9 +1,9 @@
 @interface GKMultiplayerPickerPlayerCell
-+ (CGSize)preferredSizeFitting:(CGSize)a3 inTraitEnvironment:(id)a4;
++ (CGSize)preferredSizeFitting:(CGSize)fitting inTraitEnvironment:(id)environment;
 + (NSString)reuseIdentifier;
-- (void)applyWithPlayer:(id)a3 isCoreRecent:(BOOL)a4;
+- (void)applyWithPlayer:(id)player isCoreRecent:(BOOL)recent;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKMultiplayerPickerPlayerCell
@@ -18,21 +18,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerPickerPlayerCell.layoutSubviews()();
 }
 
-- (void)applyWithPlayer:(id)a3 isCoreRecent:(BOOL)a4
+- (void)applyWithPlayer:(id)player isCoreRecent:(BOOL)recent
 {
-  v6 = a3;
-  v7 = self;
-  GKMultiplayerPickerPlayerCell.apply(player:isCoreRecent:)(v6, a4);
+  playerCopy = player;
+  selfCopy = self;
+  GKMultiplayerPickerPlayerCell.apply(player:isCoreRecent:)(playerCopy, recent);
 }
 
-+ (CGSize)preferredSizeFitting:(CGSize)a3 inTraitEnvironment:(id)a4
++ (CGSize)preferredSizeFitting:(CGSize)fitting inTraitEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  static GKMultiplayerPickerPlayerCell.preferredSize(fitting:in:)(a4);
+  static GKMultiplayerPickerPlayerCell.preferredSize(fitting:in:)(environment);
   v6 = v5;
   v8 = v7;
   swift_unknownObjectRelease();
@@ -43,13 +43,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   GKMultiplayerPickerPlayerCell.traitCollectionDidChange(_:)(v9);
 }
 

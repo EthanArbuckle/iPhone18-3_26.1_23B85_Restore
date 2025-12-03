@@ -1,11 +1,11 @@
 @interface HKMedicalCoding
-+ (HDCodableMedicalCodingList)_codeableRepresentationForMedicalCodings:(uint64_t)a1;
-+ (id)_medicalCodingsWithCodable:(uint64_t)a1;
++ (HDCodableMedicalCodingList)_codeableRepresentationForMedicalCodings:(uint64_t)codings;
++ (id)_medicalCodingsWithCodable:(uint64_t)codable;
 @end
 
 @implementation HKMedicalCoding
 
-+ (id)_medicalCodingsWithCodable:(uint64_t)a1
++ (id)_medicalCodingsWithCodable:(uint64_t)codable
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -19,8 +19,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v4 items];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    items = [v4 items];
+    v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -31,7 +31,7 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
           v11 = [v3 createWithCodable:*(*(&v16 + 1) + 8 * i)];
@@ -46,7 +46,7 @@
           [v5 addObject:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -70,7 +70,7 @@ LABEL_13:
   return v13;
 }
 
-+ (HDCodableMedicalCodingList)_codeableRepresentationForMedicalCodings:(uint64_t)a1
++ (HDCodableMedicalCodingList)_codeableRepresentationForMedicalCodings:(uint64_t)codings
 {
   v2 = a2;
   objc_opt_self();

@@ -1,71 +1,71 @@
 @interface HFGroupDiffOperation
-+ (id)deleteOperationWithGroup:(id)a3 atIndex:(unint64_t)a4;
-+ (id)insertOperationWithGroup:(id)a3 atIndex:(unint64_t)a4;
-+ (id)moveOperationWithGroup:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (HFGroupDiffOperation)initWithOperationType:(unint64_t)a3 group:(id)a4 fromIndex:(id)a5 toIndex:(id)a6;
++ (id)deleteOperationWithGroup:(id)group atIndex:(unint64_t)index;
++ (id)insertOperationWithGroup:(id)group atIndex:(unint64_t)index;
++ (id)moveOperationWithGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (BOOL)isEqual:(id)equal;
+- (HFGroupDiffOperation)initWithOperationType:(unint64_t)type group:(id)group fromIndex:(id)index toIndex:(id)toIndex;
 - (NSString)description;
-- (id)_operationDescriptionWithVerboseType:(BOOL)a3;
+- (id)_operationDescriptionWithVerboseType:(BOOL)type;
 - (unint64_t)hash;
 @end
 
 @implementation HFGroupDiffOperation
 
-- (HFGroupDiffOperation)initWithOperationType:(unint64_t)a3 group:(id)a4 fromIndex:(id)a5 toIndex:(id)a6
+- (HFGroupDiffOperation)initWithOperationType:(unint64_t)type group:(id)group fromIndex:(id)index toIndex:(id)toIndex
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  groupCopy = group;
+  indexCopy = index;
+  toIndexCopy = toIndex;
   v17.receiver = self;
   v17.super_class = HFGroupDiffOperation;
   v14 = [(HFGroupDiffOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_group, a4);
-    objc_storeStrong(&v15->_fromIndex, a5);
-    objc_storeStrong(&v15->_toIndex, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_group, group);
+    objc_storeStrong(&v15->_fromIndex, index);
+    objc_storeStrong(&v15->_toIndex, toIndex);
   }
 
   return v15;
 }
 
-+ (id)insertOperationWithGroup:(id)a3 atIndex:(unint64_t)a4
++ (id)insertOperationWithGroup:(id)group atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v9 = [v7 initWithOperationType:1 group:v6 fromIndex:0 toIndex:v8];
+  groupCopy = group;
+  v7 = [self alloc];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  v9 = [v7 initWithOperationType:1 group:groupCopy fromIndex:0 toIndex:v8];
 
   return v9;
 }
 
-+ (id)deleteOperationWithGroup:(id)a3 atIndex:(unint64_t)a4
++ (id)deleteOperationWithGroup:(id)group atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v9 = [v7 initWithOperationType:2 group:v6 fromIndex:v8 toIndex:0];
+  groupCopy = group;
+  v7 = [self alloc];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  v9 = [v7 initWithOperationType:2 group:groupCopy fromIndex:v8 toIndex:0];
 
   return v9;
 }
 
-+ (id)moveOperationWithGroup:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
++ (id)moveOperationWithGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v8 = a3;
-  v9 = [a1 alloc];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  v12 = [v9 initWithOperationType:3 group:v8 fromIndex:v10 toIndex:v11];
+  groupCopy = group;
+  v9 = [self alloc];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:toIndex];
+  v12 = [v9 initWithOperationType:3 group:groupCopy fromIndex:v10 toIndex:v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -75,9 +75,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFGroupDiffOperation *)self type];
-      if (v6 != [(HFGroupDiffOperation *)v5 type])
+      v5 = equalCopy;
+      type = [(HFGroupDiffOperation *)self type];
+      if (type != [(HFGroupDiffOperation *)v5 type])
       {
         v15 = 0;
 LABEL_24:
@@ -85,9 +85,9 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v7 = [(HFGroupDiffOperation *)self group];
-      v8 = [(HFGroupDiffOperation *)v5 group];
-      if (![v7 isEqual:v8])
+      group = [(HFGroupDiffOperation *)self group];
+      group2 = [(HFGroupDiffOperation *)v5 group];
+      if (![group isEqual:group2])
       {
         v15 = 0;
 LABEL_23:
@@ -95,10 +95,10 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v9 = [(HFGroupDiffOperation *)self fromIndex];
-      v10 = [(HFGroupDiffOperation *)v5 fromIndex];
-      v11 = v9;
-      v12 = v10;
+      fromIndex = [(HFGroupDiffOperation *)self fromIndex];
+      fromIndex2 = [(HFGroupDiffOperation *)v5 fromIndex];
+      v11 = fromIndex;
+      v12 = fromIndex2;
       v13 = v12;
       if (v11 == v12)
       {
@@ -126,10 +126,10 @@ LABEL_22:
         }
       }
 
-      v16 = [(HFGroupDiffOperation *)self toIndex];
-      v17 = [(HFGroupDiffOperation *)v5 toIndex];
-      v18 = v16;
-      v19 = v17;
+      toIndex = [(HFGroupDiffOperation *)self toIndex];
+      toIndex2 = [(HFGroupDiffOperation *)v5 toIndex];
+      v18 = toIndex;
+      v19 = toIndex2;
       if (v18 == v19)
       {
         v15 = 1;
@@ -158,15 +158,15 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(HFGroupDiffOperation *)self type];
-  v4 = [(HFGroupDiffOperation *)self group];
-  v5 = [v4 hash];
-  v6 = [(HFGroupDiffOperation *)self fromIndex];
-  v7 = [v6 hash];
-  v8 = [(HFGroupDiffOperation *)self toIndex];
-  v9 = (v7 << 8) ^ (v5 << 16) ^ [v8 hash];
+  type = [(HFGroupDiffOperation *)self type];
+  group = [(HFGroupDiffOperation *)self group];
+  v5 = [group hash];
+  fromIndex = [(HFGroupDiffOperation *)self fromIndex];
+  v7 = [fromIndex hash];
+  toIndex = [(HFGroupDiffOperation *)self toIndex];
+  v9 = (v7 << 8) ^ (v5 << 16) ^ [toIndex hash];
 
-  return v9 + v3;
+  return v9 + type;
 }
 
 - (NSString)description
@@ -179,20 +179,20 @@ LABEL_25:
   return v6;
 }
 
-- (id)_operationDescriptionWithVerboseType:(BOOL)a3
+- (id)_operationDescriptionWithVerboseType:(BOOL)type
 {
-  v3 = a3;
+  typeCopy = type;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__HFGroupDiffOperation__operationDescriptionWithVerboseType___block_invoke;
   v13[3] = &unk_277DF75E8;
   v13[4] = self;
   v5 = __61__HFGroupDiffOperation__operationDescriptionWithVerboseType___block_invoke(v13);
-  v6 = [(HFGroupDiffOperation *)self type];
-  if (v6 > 3)
+  type = [(HFGroupDiffOperation *)self type];
+  if (type > 3)
   {
     v7 = @"(unknown operation type)";
-    if (!v3)
+    if (!typeCopy)
     {
       goto LABEL_6;
     }
@@ -200,8 +200,8 @@ LABEL_25:
     goto LABEL_5;
   }
 
-  v7 = off_277DFAAD0[v6];
-  if (v3)
+  v7 = off_277DFAAD0[type];
+  if (typeCopy)
   {
 LABEL_5:
     v7 = [(__CFString *)v7 stringByAppendingString:@" group"];
@@ -209,9 +209,9 @@ LABEL_5:
 
 LABEL_6:
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(HFGroupDiffOperation *)self group];
-  v10 = [v9 groupIdentifier];
-  v11 = [v8 stringWithFormat:@"%@ %@ %@", v7, v5, v10];
+  group = [(HFGroupDiffOperation *)self group];
+  groupIdentifier = [group groupIdentifier];
+  v11 = [v8 stringWithFormat:@"%@ %@ %@", v7, v5, groupIdentifier];
 
   return v11;
 }

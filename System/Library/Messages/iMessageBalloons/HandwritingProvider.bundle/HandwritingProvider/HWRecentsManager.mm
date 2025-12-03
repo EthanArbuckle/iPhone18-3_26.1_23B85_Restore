@@ -3,15 +3,15 @@
 - (BOOL)_defaultsLoaded;
 - (HWRecentsManager)init;
 - (NSArray)items;
-- (void)_addItem:(id)a3 dataRepresentation:(id)a4 persist:(BOOL)a5;
-- (void)_deleteItem:(id)a3 notify:(BOOL)a4;
+- (void)_addItem:(id)item dataRepresentation:(id)representation persist:(BOOL)persist;
+- (void)_deleteItem:(id)item notify:(BOOL)notify;
 - (void)_loadDefaultItems;
 - (void)_loadItemsFromIMRecentItemsList;
 - (void)_loadItemsFromNSUserDefaults;
 - (void)_loadStoredItems;
 - (void)_notifyChanges;
-- (void)_storeItemAsData:(id)a3 optionalData:(id)a4 persist:(BOOL)a5;
-- (void)_storeItemDataToDefaults:(id)a3 withUUID:(id)a4 persist:(BOOL)a5;
+- (void)_storeItemAsData:(id)data optionalData:(id)optionalData persist:(BOOL)persist;
+- (void)_storeItemDataToDefaults:(id)defaults withUUID:(id)d persist:(BOOL)persist;
 - (void)_synchronizeHandwritingToDefaults;
 - (void)reloadStoredItems;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_101F8;
   block[3] = &unk_28780;
-  block[4] = a1;
+  block[4] = self;
   if (qword_322B8 != -1)
   {
     dispatch_once(&qword_322B8, block);
@@ -81,62 +81,62 @@
   }
 }
 
-- (void)_addItem:(id)a3 dataRepresentation:(id)a4 persist:(BOOL)a5
+- (void)_addItem:(id)item dataRepresentation:(id)representation persist:(BOOL)persist
 {
-  v5 = a5;
-  v18 = a3;
-  v8 = a4;
-  v9 = [v18 uuid];
-  if (v9 && (v10 = v9, [v18 drawing], v11 = objc_claimAutoreleasedReturnValue(), IsValid = DKDrawingIsValid(), v11, v10, IsValid))
+  persistCopy = persist;
+  itemCopy = item;
+  representationCopy = representation;
+  uuid = [itemCopy uuid];
+  if (uuid && (v10 = uuid, [itemCopy drawing], v11 = objc_claimAutoreleasedReturnValue(), IsValid = DKDrawingIsValid(), v11, v10, IsValid))
   {
     itemsData = self->_itemsData;
-    v14 = [v18 uuid];
-    v15 = [v14 UUIDString];
-    v16 = [(NSMutableDictionary *)itemsData valueForKey:v15];
+    uuid2 = [itemCopy uuid];
+    uUIDString = [uuid2 UUIDString];
+    v16 = [(NSMutableDictionary *)itemsData valueForKey:uUIDString];
 
     if (!v16)
     {
-      [(NSMutableArray *)self->_cachedSortedItems addObject:v18];
+      [(NSMutableArray *)self->_cachedSortedItems addObject:itemCopy];
       [(HWRecentsManager *)self _sortItems];
-      [(HWRecentsManager *)self _storeItemAsData:v18 optionalData:v8 persist:v5];
+      [(HWRecentsManager *)self _storeItemAsData:itemCopy optionalData:representationCopy persist:persistCopy];
       [(HWRecentsManager *)self _notifyChanges];
     }
   }
 
   else
   {
-    v17 = [v18 drawing];
-    NSLog(@"Attempted to add invalid handwriting: %@ drawing: %@", v18, v17);
+    drawing = [itemCopy drawing];
+    NSLog(@"Attempted to add invalid handwriting: %@ drawing: %@", itemCopy, drawing);
   }
 }
 
-- (void)_deleteItem:(id)a3 notify:(BOOL)a4
+- (void)_deleteItem:(id)item notify:(BOOL)notify
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  notifyCopy = notify;
+  itemCopy = item;
+  if (itemCopy)
   {
-    v17 = v6;
-    if ([(NSMutableArray *)self->_cachedSortedItems containsObject:v6])
+    v17 = itemCopy;
+    if ([(NSMutableArray *)self->_cachedSortedItems containsObject:itemCopy])
     {
       itemsData = self->_itemsData;
-      v8 = [v17 uuid];
-      v9 = [v8 UUIDString];
-      v10 = [(NSMutableDictionary *)itemsData objectForKey:v9];
+      uuid = [v17 uuid];
+      uUIDString = [uuid UUIDString];
+      v10 = [(NSMutableDictionary *)itemsData objectForKey:uUIDString];
 
-      v11 = [objc_opt_class() recentsDomain];
+      recentsDomain = [objc_opt_class() recentsDomain];
       v12 = IMSharedHelperMD5OfData();
       v13 = +[IMRecentItemsList sharedInstance];
-      [v13 deleteRecentItemWithData:v10 GUID:v12 forDomain:v11];
+      [v13 deleteRecentItemWithData:v10 GUID:v12 forDomain:recentsDomain];
 
       [(NSMutableArray *)self->_cachedSortedItems removeObject:v17];
       v14 = self->_itemsData;
-      v15 = [v17 uuid];
-      v16 = [v15 UUIDString];
-      [(NSMutableDictionary *)v14 removeObjectForKey:v16];
+      uuid2 = [v17 uuid];
+      uUIDString2 = [uuid2 UUIDString];
+      [(NSMutableDictionary *)v14 removeObjectForKey:uUIDString2];
 
       [(HWRecentsManager *)self _sortItems];
-      if (v4)
+      if (notifyCopy)
       {
         [(HWRecentsManager *)self _notifyChanges];
       }
@@ -153,32 +153,32 @@
   [v2 enqueueNotification:v3 postingStyle:2 coalesceMask:1 forModes:0];
 }
 
-- (void)_storeItemAsData:(id)a3 optionalData:(id)a4 persist:(BOOL)a5
+- (void)_storeItemAsData:(id)data optionalData:(id)optionalData persist:(BOOL)persist
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  persistCopy = persist;
+  dataCopy = data;
+  optionalDataCopy = optionalData;
+  v9 = optionalDataCopy;
+  if (optionalDataCopy)
   {
-    v10 = v8;
+    v10 = optionalDataCopy;
   }
 
   else
   {
-    v10 = [HWEncoding encodeHandwriting:v13 compress:1];
+    v10 = [HWEncoding encodeHandwriting:dataCopy compress:1];
     if (!v10)
     {
       goto LABEL_6;
     }
   }
 
-  v11 = [v13 uuid];
+  uuid = [dataCopy uuid];
 
-  if (v11)
+  if (uuid)
   {
-    v12 = [v13 uuid];
-    [(HWRecentsManager *)self _storeItemDataToDefaults:v10 withUUID:v12 persist:v5];
+    uuid2 = [dataCopy uuid];
+    [(HWRecentsManager *)self _storeItemDataToDefaults:v10 withUUID:uuid2 persist:persistCopy];
 
     goto LABEL_7;
   }
@@ -188,25 +188,25 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_storeItemDataToDefaults:(id)a3 withUUID:(id)a4 persist:(BOOL)a5
+- (void)_storeItemDataToDefaults:(id)defaults withUUID:(id)d persist:(BOOL)persist
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  if (v15 && v8)
+  persistCopy = persist;
+  defaultsCopy = defaults;
+  dCopy = d;
+  if (defaultsCopy && dCopy)
   {
-    if (v5)
+    if (persistCopy)
     {
-      v9 = [objc_opt_class() recentsDomain];
-      v10 = v15;
+      recentsDomain = [objc_opt_class() recentsDomain];
+      v10 = defaultsCopy;
       v11 = IMSharedHelperMD5OfData();
       v12 = +[IMRecentItemsList sharedInstance];
-      [v12 addRecentItemWithData:v10 GUID:v11 infoDictionary:0 forDomain:v9];
+      [v12 addRecentItemWithData:v10 GUID:v11 infoDictionary:0 forDomain:recentsDomain];
     }
 
     itemsData = self->_itemsData;
-    v14 = [v8 UUIDString];
-    [(NSMutableDictionary *)itemsData setObject:v15 forKey:v14];
+    uUIDString = [dCopy UUIDString];
+    [(NSMutableDictionary *)itemsData setObject:defaultsCopy forKey:uUIDString];
   }
 
   else
@@ -231,14 +231,14 @@ LABEL_7:
 
 - (void)_loadItemsFromIMRecentItemsList
 {
-  v3 = [objc_opt_class() recentsDomain];
+  recentsDomain = [objc_opt_class() recentsDomain];
   v4 = +[IMRecentItemsList sharedInstance];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10A34;
   v5[3] = &unk_289B0;
   v5[4] = self;
-  [v4 fetchRecentItemsForDomain:v3 completion:v5];
+  [v4 fetchRecentItemsForDomain:recentsDomain completion:v5];
 }
 
 - (void)_loadItemsFromNSUserDefaults
@@ -248,8 +248,8 @@ LABEL_7:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [v2 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -260,7 +260,7 @@ LABEL_7:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = [v2 objectForKey:*(*(&v14 + 1) + 8 * i)];
@@ -270,7 +270,7 @@ LABEL_7:
           v10 = v9;
           if (v9)
           {
-            v11 = [v9 drawing];
+            drawing = [v9 drawing];
             IsValid = DKDrawingIsValid();
 
             if (IsValid)
@@ -286,7 +286,7 @@ LABEL_7:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -314,7 +314,7 @@ LABEL_7:
     v4 = +[NSLocale preferredLanguages];
     v5 = [v4 mutableCopy];
     v50 = v3;
-    v59 = [v3 localizations];
+    localizations = [v3 localizations];
     v6 = +[NSMutableOrderedSet orderedSet];
     v69 = 0u;
     v70 = 0u;
@@ -336,10 +336,10 @@ LABEL_7:
           }
 
           v11 = *(*(&v69 + 1) + 8 * i);
-          v12 = [NSBundle preferredLocalizationsFromArray:v59 forPreferences:v5];
-          v13 = [v12 firstObject];
+          v12 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v5];
+          firstObject = [v12 firstObject];
 
-          [v6 addObject:v13];
+          [v6 addObject:firstObject];
           if ([v5 count])
           {
             [v5 removeObject:v11];
@@ -416,7 +416,7 @@ LABEL_24:
       NSLog(@"Failed to find drawings for any of the following localizations %@", obj);
     }
 
-    v52 = [objc_opt_class() recentsDomain];
+    recentsDomain = [objc_opt_class() recentsDomain];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
@@ -453,16 +453,16 @@ LABEL_24:
             v36 = v27;
             v37 = v29;
             v38 = [v30[123] decodeHandwritingFromData:v35];
-            v39 = [v38 uuid];
-            v40 = [v39 UUIDString];
+            uuid = [v38 uuid];
+            uUIDString = [uuid UUIDString];
 
-            v41 = [v38 drawing];
+            drawing = [v38 drawing];
             v42 = v30;
             IsValid = DKDrawingIsValid();
 
             if (IsValid)
             {
-              v44 = v40 == 0;
+              v44 = uUIDString == 0;
             }
 
             else
@@ -487,16 +487,16 @@ LABEL_24:
               v46 = v45;
               if (v45)
               {
-                v47 = IMSharedHelperMD5OfData();
-                v48 = +[IMRecentItemsList sharedInstance];
-                [v48 addRecentItemWithData:v46 GUID:v47 infoDictionary:0 forDomain:v52];
+                uuid2 = IMSharedHelperMD5OfData();
+                uUIDString2 = +[IMRecentItemsList sharedInstance];
+                [uUIDString2 addRecentItemWithData:v46 GUID:uuid2 infoDictionary:0 forDomain:recentsDomain];
               }
 
               else
               {
-                v47 = [v38 uuid];
-                v48 = [v47 UUIDString];
-                NSLog(@"%s failed to re-compress drawing from default handwriting set %@.", "[HWRecentsManager _loadDefaultItems]", v48);
+                uuid2 = [v38 uuid];
+                uUIDString2 = [uuid2 UUIDString];
+                NSLog(@"%s failed to re-compress drawing from default handwriting set %@.", "[HWRecentsManager _loadDefaultItems]", uUIDString2);
               }
 
               v34 = v60;

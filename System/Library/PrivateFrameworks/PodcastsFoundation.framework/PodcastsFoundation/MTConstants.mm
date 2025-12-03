@@ -1,5 +1,5 @@
 @interface MTConstants
-+ (BOOL)excludeDirectoryFromBackup:(id)a3;
++ (BOOL)excludeDirectoryFromBackup:(id)backup;
 + (id)_watchManagedAssetsDirectoryURL;
 + (id)alignmentAssetURL;
 + (id)artworkAssetURL;
@@ -19,8 +19,8 @@
 + (id)streamedMediaAssetURL;
 + (id)ttmlAssetURL;
 + (void)_repairFilePermissionsIfNeeded;
-+ (void)removeExcludeFromBackupFlagFromDirectoryIfNeeded:(id)a3;
-+ (void)repairPermissionsOfDirectoryIfNeeded:(id)a3;
++ (void)removeExcludeFromBackupFlagFromDirectoryIfNeeded:(id)needed;
++ (void)repairPermissionsOfDirectoryIfNeeded:(id)needed;
 @end
 
 @implementation MTConstants
@@ -28,8 +28,8 @@
 + (id)sharedContainerURL
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"243LU875E5.groups.com.apple.podcasts"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"243LU875E5.groups.com.apple.podcasts"];
 
   if (!v3)
   {
@@ -49,8 +49,8 @@
       }
     }
 
-    v7 = [v4 groupContainerURLs];
-    v3 = [v7 objectForKey:@"243LU875E5.groups.com.apple.podcasts"];
+    groupContainerURLs = [v4 groupContainerURLs];
+    v3 = [groupContainerURLs objectForKey:@"243LU875E5.groups.com.apple.podcasts"];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -91,19 +91,19 @@ void __33__MTConstants_sharedContainerURL__block_invoke(uint64_t a1)
 + (id)sharedDocumentsDirectory
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [a1 sharedContainerURL];
-  v4 = [v3 URLByAppendingPathComponent:@"Documents" isDirectory:1];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  sharedContainerURL = [self sharedContainerURL];
+  v4 = [sharedContainerURL URLByAppendingPathComponent:@"Documents" isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   v8 = 0;
   if (v4 && (v7 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [a1 attributesForNewDirectory];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    attributesForNewDirectory = [self attributesForNewDirectory];
     v21 = 0;
-    v7 = [v9 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:v10 error:&v21];
+    v7 = [defaultManager2 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:attributesForNewDirectory error:&v21];
     v8 = v21;
   }
 
@@ -123,7 +123,7 @@ void __33__MTConstants_sharedContainerURL__block_invoke(uint64_t a1)
   v17[2] = __39__MTConstants_sharedDocumentsDirectory__block_invoke;
   v17[3] = &unk_1E8568E50;
   v20 = v7;
-  v19 = a1;
+  selfCopy = self;
   v12 = v4;
   v18 = v12;
   if (sharedDocumentsDirectory_onceToken != -1)
@@ -205,15 +205,15 @@ void __46__MTConstants_managedObjectModelDefinitionURL__block_invoke(uint64_t a1
 + (id)sharedCacheDirectory
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"243LU875E5.groups.com.apple.podcasts"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"243LU875E5.groups.com.apple.podcasts"];
 
   v5 = [v4 URLByAppendingPathComponent:@"Cache" isDirectory:1];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v5 path];
-    v8 = [v6 fileExistsAtPath:v7];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v5 path];
+    v8 = [defaultManager2 fileExistsAtPath:path];
 
     if (v8)
     {
@@ -221,10 +221,10 @@ void __46__MTConstants_managedObjectModelDefinitionURL__block_invoke(uint64_t a1
       goto LABEL_6;
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [a1 attributesForNewDirectory];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    attributesForNewDirectory = [self attributesForNewDirectory];
     v24 = 0;
-    v13 = [v11 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:v12 error:&v24];
+    v13 = [defaultManager3 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:attributesForNewDirectory error:&v24];
     v9 = v24;
 
     if (v13)
@@ -268,7 +268,7 @@ LABEL_12:
   v20[2] = __35__MTConstants_sharedCacheDirectory__block_invoke;
   v20[3] = &unk_1E8568E50;
   v23 = v10;
-  v22 = a1;
+  selfCopy = self;
   v15 = v5;
   v21 = v15;
   if (sharedCacheDirectory_onceToken != -1)
@@ -309,85 +309,85 @@ void __35__MTConstants_sharedCacheDirectory__block_invoke(uint64_t a1)
 
 + (id)documentsDirectory
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 lastObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager URLsForDirectory:9 inDomains:1];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 + (id)artworkAssetURL
 {
-  v2 = [a1 preferredAssetCacheURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Artwork"];
+  preferredAssetCacheURL = [self preferredAssetCacheURL];
+  v3 = [preferredAssetCacheURL URLByAppendingPathComponent:@"Artwork"];
 
   return v3;
 }
 
 + (id)preferredAssetCacheURL
 {
-  v3 = [a1 sharedAssetsCacheURL];
-  v4 = v3;
-  if (v3)
+  sharedAssetsCacheURL = [self sharedAssetsCacheURL];
+  v4 = sharedAssetsCacheURL;
+  if (sharedAssetsCacheURL)
   {
-    v5 = v3;
+    dataAssetsCacheURL = sharedAssetsCacheURL;
   }
 
   else
   {
-    v5 = [a1 dataAssetsCacheURL];
+    dataAssetsCacheURL = [self dataAssetsCacheURL];
   }
 
-  v6 = v5;
+  v6 = dataAssetsCacheURL;
 
   return v6;
 }
 
 + (id)sharedAssetsCacheURL
 {
-  v2 = [a1 sharedCacheDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Assets"];
+  sharedCacheDirectory = [self sharedCacheDirectory];
+  v3 = [sharedCacheDirectory URLByAppendingPathComponent:@"Assets"];
 
   return v3;
 }
 
 + (id)alignmentAssetURL
 {
-  v2 = [a1 preferredAssetCacheURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Alignments"];
+  preferredAssetCacheURL = [self preferredAssetCacheURL];
+  v3 = [preferredAssetCacheURL URLByAppendingPathComponent:@"Alignments"];
 
   return v3;
 }
 
 + (id)libraryDirectory
 {
-  v2 = [a1 cachesDirectory];
-  v3 = [v2 URLByDeletingLastPathComponent];
+  cachesDirectory = [self cachesDirectory];
+  uRLByDeletingLastPathComponent = [cachesDirectory URLByDeletingLastPathComponent];
 
-  return v3;
+  return uRLByDeletingLastPathComponent;
 }
 
 + (id)cachesDirectory
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 URLsForDirectory:13 inDomains:1];
-  v4 = [v3 lastObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager URLsForDirectory:13 inDomains:1];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 + (id)ttmlAssetURL
 {
-  v2 = [a1 preferredAssetCacheURL];
-  v3 = [v2 URLByAppendingPathComponent:@"TTML"];
+  preferredAssetCacheURL = [self preferredAssetCacheURL];
+  v3 = [preferredAssetCacheURL URLByAppendingPathComponent:@"TTML"];
 
   return v3;
 }
 
 + (id)shazamSignatureAssetURL
 {
-  v2 = [a1 preferredAssetCacheURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ShazamSignatures"];
+  preferredAssetCacheURL = [self preferredAssetCacheURL];
+  v3 = [preferredAssetCacheURL URLByAppendingPathComponent:@"ShazamSignatures"];
 
   return v3;
 }
@@ -434,11 +434,11 @@ void __43__MTConstants_managedObjectModelArchiveURL__block_invoke(uint64_t a1)
 
 + (void)_repairFilePermissionsIfNeeded
 {
-  v5 = [a1 sharedContainerURL];
-  v3 = [v5 URLByAppendingPathComponent:@"Documents" isDirectory:1];
-  [a1 repairPermissionsOfDirectoryIfNeeded:v3];
-  v4 = [v5 URLByAppendingPathComponent:@"Cache" isDirectory:1];
-  [a1 repairPermissionsOfDirectoryIfNeeded:v4];
+  sharedContainerURL = [self sharedContainerURL];
+  v3 = [sharedContainerURL URLByAppendingPathComponent:@"Documents" isDirectory:1];
+  [self repairPermissionsOfDirectoryIfNeeded:v3];
+  v4 = [sharedContainerURL URLByAppendingPathComponent:@"Cache" isDirectory:1];
+  [self repairPermissionsOfDirectoryIfNeeded:v4];
 }
 
 + (id)attributesForNewDirectory
@@ -455,15 +455,15 @@ void __43__MTConstants_managedObjectModelArchiveURL__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (void)repairPermissionsOfDirectoryIfNeeded:(id)a3
++ (void)repairPermissionsOfDirectoryIfNeeded:(id)needed
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if (!getuid())
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [neededCopy path];
+    v7 = [defaultManager fileExistsAtPath:path];
 
     if (v7)
     {
@@ -471,14 +471,14 @@ void __43__MTConstants_managedObjectModelArchiveURL__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v4;
+        v36 = neededCopy;
         _os_log_impl(&dword_1D8CEC000, v8, OS_LOG_TYPE_DEFAULT, "Checking if file permissions need repairing for %@", buf, 0xCu);
       }
 
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
-      v10 = [v4 path];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [neededCopy path];
       v34 = 0;
-      v11 = [v9 attributesOfItemAtPath:v10 error:&v34];
+      v11 = [defaultManager2 attributesOfItemAtPath:path2 error:&v34];
       v12 = v34;
 
       if (!v11)
@@ -500,14 +500,14 @@ void __43__MTConstants_managedObjectModelArchiveURL__block_invoke(uint64_t a1)
       v16 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A320]];
       if (([v15 isEqual:&unk_1F54BD538] & 1) == 0 && (objc_msgSend(v16, "isEqual:", &unk_1F54BD538) & 1) == 0)
       {
-        v19 = _MTLogCategoryDefault();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        attributesForNewDirectory = _MTLogCategoryDefault();
+        if (os_log_type_enabled(attributesForNewDirectory, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
           v36 = v13;
           v37 = 2112;
           v38 = v14;
-          _os_log_impl(&dword_1D8CEC000, v19, OS_LOG_TYPE_DEFAULT, "Permissions do not need repair. (File owner: %@, File Group Owner: %@)", buf, 0x16u);
+          _os_log_impl(&dword_1D8CEC000, attributesForNewDirectory, OS_LOG_TYPE_DEFAULT, "Permissions do not need repair. (File owner: %@, File Group Owner: %@)", buf, 0x16u);
         }
 
         v23 = v12;
@@ -521,15 +521,15 @@ void __43__MTConstants_managedObjectModelArchiveURL__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v4;
+        v36 = neededCopy;
         _os_log_impl(&dword_1D8CEC000, v18, OS_LOG_TYPE_DEFAULT, "Attempting to repair file permissions for %@", buf, 0xCu);
       }
 
-      v19 = [a1 attributesForNewDirectory];
-      v20 = [MEMORY[0x1E696AC08] defaultManager];
-      v21 = [v4 path];
+      attributesForNewDirectory = [self attributesForNewDirectory];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      path3 = [neededCopy path];
       v33 = v12;
-      v22 = [v20 setAttributes:v19 ofItemAtPath:v21 error:&v33];
+      v22 = [defaultManager3 setAttributes:attributesForNewDirectory ofItemAtPath:path3 error:&v33];
       v23 = v33;
 
       v24 = _MTLogCategoryDefault();
@@ -577,9 +577,9 @@ LABEL_24:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeExcludeFromBackupFlagFromDirectoryIfNeeded:(id)a3
++ (void)removeExcludeFromBackupFlagFromDirectoryIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   if (+[PFClientUtil isPodcastsApp])
   {
     v4 = dispatch_get_global_queue(-2, 0);
@@ -587,7 +587,7 @@ LABEL_24:
     block[1] = 3221225472;
     block[2] = __64__MTConstants_removeExcludeFromBackupFlagFromDirectoryIfNeeded___block_invoke;
     block[3] = &unk_1E8568E28;
-    v6 = v3;
+    v6 = neededCopy;
     dispatch_async(v4, block);
   }
 }
@@ -635,13 +635,13 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)excludeDirectoryFromBackup:(id)a3
++ (BOOL)excludeDirectoryFromBackup:(id)backup
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  backupCopy = backup;
   v4 = *MEMORY[0x1E695DB80];
   v10 = 0;
-  v5 = [v3 setResourceValue:MEMORY[0x1E695E118] forKey:v4 error:&v10];
+  v5 = [backupCopy setResourceValue:MEMORY[0x1E695E118] forKey:v4 error:&v10];
   v6 = v10;
   if ((v5 & 1) == 0)
   {
@@ -649,7 +649,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v12 = v3;
+      v12 = backupCopy;
       v13 = 2112;
       v14 = v6;
       _os_log_impl(&dword_1D8CEC000, v7, OS_LOG_TYPE_ERROR, "Error excluding %@ from backup %@", buf, 0x16u);
@@ -662,16 +662,16 @@ LABEL_6:
 
 + (id)dataAssetsCacheURL
 {
-  v2 = [a1 cachesDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Assets"];
+  cachesDirectory = [self cachesDirectory];
+  v3 = [cachesDirectory URLByAppendingPathComponent:@"Assets"];
 
   return v3;
 }
 
 + (id)streamedMediaAssetURL
 {
-  v2 = [a1 preferredAssetCacheURL];
-  v3 = [v2 URLByAppendingPathComponent:@"StreamedMedia"];
+  preferredAssetCacheURL = [self preferredAssetCacheURL];
+  v3 = [preferredAssetCacheURL URLByAppendingPathComponent:@"StreamedMedia"];
 
   return v3;
 }
@@ -679,12 +679,12 @@ LABEL_6:
 + (id)_watchManagedAssetsDirectoryURL
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [a1 sharedCacheDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Episodes" isDirectory:1];
+  sharedCacheDirectory = [self sharedCacheDirectory];
+  v3 = [sharedCacheDirectory URLByAppendingPathComponent:@"Episodes" isDirectory:1];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
@@ -692,9 +692,9 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v18 = 0;
-  v9 = [v8 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v18];
+  v9 = [defaultManager2 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v18];
   v7 = v18;
 
   if (v9)

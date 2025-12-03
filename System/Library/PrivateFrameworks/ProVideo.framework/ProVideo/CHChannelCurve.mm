@@ -1,5 +1,5 @@
 @interface CHChannelCurve
-- (id)addVertexChannelsWithXMLTypeInfoForX:(id)a3 andForY:(id)a4;
+- (id)addVertexChannelsWithXMLTypeInfoForX:(id)x andForY:(id)y;
 - (id)vertexChannelFolders;
 - (void)ozChannel;
 @end
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (id)addVertexChannelsWithXMLTypeInfoForX:(id)a3 andForY:(id)a4
+- (id)addVertexChannelsWithXMLTypeInfoForX:(id)x andForY:(id)y
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)

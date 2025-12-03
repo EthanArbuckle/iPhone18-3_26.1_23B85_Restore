@@ -15,11 +15,11 @@
     if ([v4 hasForm] && objc_msgSend(v4, "hasUnderlyingDate"))
     {
       v5 = MEMORY[0x277CCD5D8];
-      v6 = [v4 form];
+      form = [v4 form];
       [v4 underlyingDate];
       v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
-      v8 = [v4 originalTimeZoneString];
-      v9 = [v5 _medicalDateWithForm:v6 underlyingDate:v7 originalTimeZoneString:v8];
+      originalTimeZoneString = [v4 originalTimeZoneString];
+      v9 = [v5 _medicalDateWithForm:form underlyingDate:v7 originalTimeZoneString:originalTimeZoneString];
     }
 
     else
@@ -39,13 +39,13 @@
 - (HDCodableMedicalDate)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableMedicalDate);
-  -[HDCodableMedicalDate setForm:](v2, "setForm:", [a1 form]);
-  v3 = [a1 underlyingDate];
-  [v3 timeIntervalSinceReferenceDate];
+  -[HDCodableMedicalDate setForm:](v2, "setForm:", [self form]);
+  underlyingDate = [self underlyingDate];
+  [underlyingDate timeIntervalSinceReferenceDate];
   [(HDCodableMedicalDate *)v2 setUnderlyingDate:?];
 
-  v4 = [a1 originalTimeZoneString];
-  [(HDCodableMedicalDate *)v2 setOriginalTimeZoneString:v4];
+  originalTimeZoneString = [self originalTimeZoneString];
+  [(HDCodableMedicalDate *)v2 setOriginalTimeZoneString:originalTimeZoneString];
 
   return v2;
 }

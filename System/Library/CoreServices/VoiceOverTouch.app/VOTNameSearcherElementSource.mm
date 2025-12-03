@@ -1,29 +1,29 @@
 @interface VOTNameSearcherElementSource
-- (VOTNameSearcherElementSource)initWithElement:(id)a3;
+- (VOTNameSearcherElementSource)initWithElement:(id)element;
 - (VOTNameSearcherItemSourceDelegate)delegate;
-- (id)messageForMatchingItemsCount:(int64_t)a3;
-- (id)messageForSelectingItem:(id)a3;
-- (void)elementsRetrieved:(id)a3 finished:(BOOL)a4;
-- (void)retrieveAllEntries:(id)a3;
+- (id)messageForMatchingItemsCount:(int64_t)count;
+- (id)messageForSelectingItem:(id)item;
+- (void)elementsRetrieved:(id)retrieved finished:(BOOL)finished;
+- (void)retrieveAllEntries:(id)entries;
 @end
 
 @implementation VOTNameSearcherElementSource
 
-- (VOTNameSearcherElementSource)initWithElement:(id)a3
+- (VOTNameSearcherElementSource)initWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = VOTNameSearcherElementSource;
   v5 = [(VOTNameSearcherElementSource *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(VOTNameSearcherElementSource *)v5 setBaseElement:v4];
+    [(VOTNameSearcherElementSource *)v5 setBaseElement:elementCopy];
     v7 = objc_opt_new();
     [(VOTNameSearcherElementSource *)v6 setElementFetcher:v7];
 
-    v8 = [(VOTNameSearcherElementSource *)v6 elementFetcher];
-    [v8 setDelegate:v6];
+    elementFetcher = [(VOTNameSearcherElementSource *)v6 elementFetcher];
+    [elementFetcher setDelegate:v6];
 
     v9 = v6;
   }
@@ -31,38 +31,38 @@
   return v6;
 }
 
-- (void)retrieveAllEntries:(id)a3
+- (void)retrieveAllEntries:(id)entries
 {
-  [(VOTNameSearcherElementSource *)self setDelegate:a3];
-  v5 = [(VOTNameSearcherElementSource *)self elementFetcher];
-  v4 = [VOTSharedWorkspace currentElement];
-  [v5 retrieveElementsWithElement:v4 groupNavigationStyle:{objc_msgSend(VOTSharedWorkspace, "navigationStyleHonorsGroups")}];
+  [(VOTNameSearcherElementSource *)self setDelegate:entries];
+  elementFetcher = [(VOTNameSearcherElementSource *)self elementFetcher];
+  currentElement = [VOTSharedWorkspace currentElement];
+  [elementFetcher retrieveElementsWithElement:currentElement groupNavigationStyle:{objc_msgSend(VOTSharedWorkspace, "navigationStyleHonorsGroups")}];
 }
 
-- (id)messageForMatchingItemsCount:(int64_t)a3
+- (id)messageForMatchingItemsCount:(int64_t)count
 {
   v4 = sub_1000511CC(off_1001FDDD0, @"handwrite.num.matching.items.count", 0);
-  v5 = [NSString localizedStringWithFormat:v4, a3];
+  v5 = [NSString localizedStringWithFormat:v4, count];
 
   return v5;
 }
 
-- (id)messageForSelectingItem:(id)a3
+- (id)messageForSelectingItem:(id)item
 {
   v3 = off_1001FDDD0;
-  v4 = a3;
+  itemCopy = item;
   v5 = sub_1000511CC(v3, @"handwrite.choose.item", 0);
-  v6 = [NSString stringWithFormat:v5, v4];
+  itemCopy = [NSString stringWithFormat:v5, itemCopy];
 
-  return v6;
+  return itemCopy;
 }
 
-- (void)elementsRetrieved:(id)a3 finished:(BOOL)a4
+- (void)elementsRetrieved:(id)retrieved finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4 && [v6 count] <= 0x3E8)
+  finishedCopy = finished;
+  retrievedCopy = retrieved;
+  v7 = retrievedCopy;
+  if (finishedCopy && [retrievedCopy count] <= 0x3E8)
   {
     v8 = sub_1000535B8(v7);
     v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
@@ -101,8 +101,8 @@
       while (v12);
     }
 
-    v18 = [(VOTNameSearcherElementSource *)self delegate];
-    [v18 didRetrieveAllEntries:v9];
+    delegate = [(VOTNameSearcherElementSource *)self delegate];
+    [delegate didRetrieveAllEntries:v9];
   }
 }
 

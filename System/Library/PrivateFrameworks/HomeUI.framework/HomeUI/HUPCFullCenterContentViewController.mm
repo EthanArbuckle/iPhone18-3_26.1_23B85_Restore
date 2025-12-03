@@ -1,7 +1,7 @@
 @interface HUPCFullCenterContentViewController
 - (void)insertCenterContentView;
-- (void)setCenteredContentView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCenteredContentView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -16,15 +16,15 @@
   [(HUPCFullCenterContentViewController *)self insertCenterContentView];
 }
 
-- (void)setCenteredContentView:(id)a3
+- (void)setCenteredContentView:(id)view
 {
-  v5 = a3;
-  v4 = [(HUPCFullCenterContentViewController *)self centerContentView];
+  viewCopy = view;
+  centerContentView = [(HUPCFullCenterContentViewController *)self centerContentView];
 
-  if (v4 != v5)
+  if (centerContentView != viewCopy)
   {
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(HUPCFullCenterContentViewController *)self setCenterContentView:v5];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(HUPCFullCenterContentViewController *)self setCenterContentView:viewCopy];
   }
 
   if ([(HUPCFullCenterContentViewController *)self isViewLoaded])
@@ -36,59 +36,59 @@
 - (void)insertCenterContentView
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HUPCFullCenterContentViewController *)self centerContentView];
-  v4 = [v3 superview];
-  v5 = [(HUPCFullCenterContentViewController *)self contentView];
+  centerContentView = [(HUPCFullCenterContentViewController *)self centerContentView];
+  superview = [centerContentView superview];
+  contentView = [(HUPCFullCenterContentViewController *)self contentView];
 
-  if (v4 != v5)
+  if (superview != contentView)
   {
-    v6 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    [v6 removeFromSuperview];
+    centerContentView2 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    [centerContentView2 removeFromSuperview];
 
-    v7 = [(HUPCFullCenterContentViewController *)self contentView];
-    v8 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    [v7 addSubview:v8];
+    contentView2 = [(HUPCFullCenterContentViewController *)self contentView];
+    centerContentView3 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    [contentView2 addSubview:centerContentView3];
 
-    v9 = [(HUPCFullCenterContentViewController *)self contentView];
-    v10 = [v9 mainContentGuide];
+    contentView3 = [(HUPCFullCenterContentViewController *)self contentView];
+    mainContentGuide = [contentView3 mainContentGuide];
 
-    v37 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v36 = [v37 centerXAnchor];
-    v35 = [v10 centerXAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    centerContentView4 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    centerXAnchor = [centerContentView4 centerXAnchor];
+    centerXAnchor2 = [mainContentGuide centerXAnchor];
+    v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v38[0] = v34;
-    v32 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v31 = [v32 centerYAnchor];
-    v30 = [v10 centerYAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    centerContentView5 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    centerYAnchor = [centerContentView5 centerYAnchor];
+    centerYAnchor2 = [mainContentGuide centerYAnchor];
+    v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v38[1] = v29;
-    v33 = v10;
-    v11 = [v10 bottomAnchor];
-    v12 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13];
+    v33 = mainContentGuide;
+    bottomAnchor = [mainContentGuide bottomAnchor];
+    centerContentView6 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    bottomAnchor2 = [centerContentView6 bottomAnchor];
+    v14 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v38[2] = v14;
-    v15 = [v10 topAnchor];
-    v16 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v17 = [v16 topAnchor];
-    v18 = [v15 constraintLessThanOrEqualToAnchor:v17];
+    topAnchor = [mainContentGuide topAnchor];
+    centerContentView7 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    topAnchor2 = [centerContentView7 topAnchor];
+    v18 = [topAnchor constraintLessThanOrEqualToAnchor:topAnchor2];
     v38[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:4];
     [(HUPCFullCenterContentViewController *)self setFloatingConstraintGroup:v19];
 
     v20 = MEMORY[0x277CCAAD0];
-    v21 = [(HUPCFullCenterContentViewController *)self floatingConstraintGroup];
-    [v20 activateConstraints:v21];
+    floatingConstraintGroup = [(HUPCFullCenterContentViewController *)self floatingConstraintGroup];
+    [v20 activateConstraints:floatingConstraintGroup];
 
-    v22 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v23 = [v22 widthAnchor];
-    v24 = [v33 widthAnchor];
-    v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+    centerContentView8 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    widthAnchor = [centerContentView8 widthAnchor];
+    widthAnchor2 = [v33 widthAnchor];
+    v25 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     [v25 setActive:1];
 
-    v26 = [(HUPCFullCenterContentViewController *)self centerContentView];
-    v27 = [(HUPCFullCenterContentViewController *)self contentView];
-    v28 = [v26 pinToEdgesConstraints:v27];
+    centerContentView9 = [(HUPCFullCenterContentViewController *)self centerContentView];
+    contentView4 = [(HUPCFullCenterContentViewController *)self contentView];
+    v28 = [centerContentView9 pinToEdgesConstraints:contentView4];
     [(HUPCFullCenterContentViewController *)self setPinnedConstraintGroup:v28];
   }
 }
@@ -101,11 +101,11 @@
   [(HUPCFullCenterContentViewController *)self recalculateLayoutForTraitCollectionChange];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUPCFullCenterContentViewController;
-  [(HUPCFullCenterContentViewController *)&v4 traitCollectionDidChange:a3];
+  [(HUPCFullCenterContentViewController *)&v4 traitCollectionDidChange:change];
   [(HUPCFullCenterContentViewController *)self recalculateLayoutForTraitCollectionChange];
 }
 

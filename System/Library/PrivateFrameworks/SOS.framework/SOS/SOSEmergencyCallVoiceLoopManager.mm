@@ -1,56 +1,56 @@
 @interface SOSEmergencyCallVoiceLoopManager
 + (BOOL)_activeCallSupportsDTMF;
 + (id)_activeCallPreferringEmergencyOrSOS;
-+ (id)_messageKeyForReason:(int64_t)a3 shortVersion:(BOOL)a4;
++ (id)_messageKeyForReason:(int64_t)reason shortVersion:(BOOL)version;
 + (id)_validDTMFDigits;
 - (BOOL)_isSpeaking;
 - (BOOL)callSupportsRemoteControl;
 - (BOOL)outputToTelephonyUplink;
 - (CLLocation)locationToSynthesize;
-- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)a3;
-- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)a3 playbackMode:(int64_t)a4;
+- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)reason;
+- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)reason playbackMode:(int64_t)mode;
 - (SOSEmergencyCallVoiceLoopManagerDelegate)delegate;
 - (SOSVoiceUtterer)localVoiceUtterer;
 - (SOSVoiceUtterer)uplinkVoiceUtterer;
-- (id)_coordinatesStringFromLocation:(id)a3 shortVersion:(BOOL)a4;
-- (id)_languageToUseInVoiceLoopForCountryCode:(id)a3;
+- (id)_coordinatesStringFromLocation:(id)location shortVersion:(BOOL)version;
+- (id)_languageToUseInVoiceLoopForCountryCode:(id)code;
 - (id)_overrideLocation;
-- (id)_preferredVoiceLanguageForCountryCode:(id)a3;
-- (id)localizedStringForKey:(id)a3;
-- (id)stopConfirmationUtterancesForPlaybackState:(unint64_t)a3 remoteVariant:(BOOL)a4 verbalizedActionOut:(unint64_t *)a5;
+- (id)_preferredVoiceLanguageForCountryCode:(id)code;
+- (id)localizedStringForKey:(id)key;
+- (id)stopConfirmationUtterancesForPlaybackState:(unint64_t)state remoteVariant:(BOOL)variant verbalizedActionOut:(unint64_t *)out;
 - (id)voiceLanguage;
-- (unint64_t)_loopPhaseFromUtteranceIndex:(unint64_t)a3;
+- (unint64_t)_loopPhaseFromUtteranceIndex:(unint64_t)index;
 - (void)_handleDTMFMessageRepeatCommand;
 - (void)_handleDTMFMessageResumeCommand;
 - (void)_handleDTMFMessageStopCommand;
-- (void)_handleRemoteDTMFDigits:(id)a3;
+- (void)_handleRemoteDTMFDigits:(id)digits;
 - (void)_speakLoopMessage;
 - (void)_startListeningForRemoteControl;
 - (void)_startLoopPlayback;
 - (void)_stopListeningForRemoteControl;
 - (void)_stopMessagePlayback;
-- (void)_updateLocation:(id)a3;
-- (void)callCenter:(id)a3 reportedCall:(id)a4 receivedDTMFUpdate:(id)a5;
+- (void)_updateLocation:(id)location;
+- (void)callCenter:(id)center reportedCall:(id)call receivedDTMFUpdate:(id)update;
 - (void)dealloc;
 - (void)invalidate;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)setPlaybackState:(unint64_t)a3;
-- (void)setPlayingLoopIndex:(unint64_t)a3;
-- (void)shiftedLocationIfApplicable:(id)a3 withcompletion:(id)a4;
-- (void)speakResponseUtteranceVariants:(id)a3;
-- (void)speakUtteranceVariants:(id)a3 withPlaybackState:(unint64_t)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)setPlaybackState:(unint64_t)state;
+- (void)setPlayingLoopIndex:(unint64_t)index;
+- (void)shiftedLocationIfApplicable:(id)applicable withcompletion:(id)withcompletion;
+- (void)speakResponseUtteranceVariants:(id)variants;
+- (void)speakUtteranceVariants:(id)variants withPlaybackState:(unint64_t)state;
 - (void)startLoopPlayback;
 - (void)startMessagePlayback;
 - (void)stopLoopPlayback;
 - (void)stopMessagePlayback;
-- (void)voiceUtterer:(id)a3 didFinishSpeakingUtterances:(id)a4;
-- (void)voiceUtterer:(id)a3 willStartSpeakingUtteranceAtIndex:(unint64_t)a4 fromUtterances:(id)a5;
+- (void)voiceUtterer:(id)utterer didFinishSpeakingUtterances:(id)utterances;
+- (void)voiceUtterer:(id)utterer willStartSpeakingUtteranceAtIndex:(unint64_t)index fromUtterances:(id)utterances;
 @end
 
 @implementation SOSEmergencyCallVoiceLoopManager
 
-- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)a3
+- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)reason
 {
   v12.receiver = self;
   v12.super_class = SOSEmergencyCallVoiceLoopManager;
@@ -58,7 +58,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_reason = a3;
+    v4->_reason = reason;
     v6 = objc_alloc(MEMORY[0x277CBFC10]);
     v7 = +[SOSUtilities sosLocationBundle];
     v8 = [v6 initWithEffectiveBundle:v7 delegate:v5 onQueue:MEMORY[0x277D85CD0]];
@@ -67,8 +67,8 @@
 
     [(CLLocationManager *)v5->_locationManager setDesiredAccuracy:-1.0];
     [(CLLocationManager *)v5->_locationManager startUpdatingLocation];
-    v10 = [(CLLocationManager *)v5->_locationManager location];
-    [(SOSEmergencyCallVoiceLoopManager *)v5 _updateLocation:v10];
+    location = [(CLLocationManager *)v5->_locationManager location];
+    [(SOSEmergencyCallVoiceLoopManager *)v5 _updateLocation:location];
 
     [(SOSEmergencyCallVoiceLoopManager *)v5 _startListeningForRemoteControl];
   }
@@ -95,11 +95,11 @@
     _os_log_impl(&dword_264323000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v11, 0xCu);
   }
 
-  v4 = [objc_opt_class() _activeCallSupportsDTMF];
+  _activeCallSupportsDTMF = [objc_opt_class() _activeCallSupportsDTMF];
   v5 = [SOSVoiceLoopAnalyticsReporter alloc];
   reason = self->_reason;
-  v7 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
-  v8 = [(SOSVoiceLoopAnalyticsReporter *)v5 initWithReason:reason language:v7 dtmfAvailable:v4];
+  voiceLanguage = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
+  v8 = [(SOSVoiceLoopAnalyticsReporter *)v5 initWithReason:reason language:voiceLanguage dtmfAvailable:_activeCallSupportsDTMF];
   loopAnalyticsReporter = self->_loopAnalyticsReporter;
   self->_loopAnalyticsReporter = v8;
 
@@ -160,13 +160,13 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)a3 playbackMode:(int64_t)a4
+- (SOSEmergencyCallVoiceLoopManager)initWithReason:(int64_t)reason playbackMode:(int64_t)mode
 {
-  v5 = [(SOSEmergencyCallVoiceLoopManager *)self initWithReason:a3];
+  v5 = [(SOSEmergencyCallVoiceLoopManager *)self initWithReason:reason];
   v6 = v5;
   if (v5)
   {
-    [(SOSEmergencyCallVoiceLoopManager *)v5 setTestMode:a4 == 1];
+    [(SOSEmergencyCallVoiceLoopManager *)v5 setTestMode:mode == 1];
   }
 
   return v6;
@@ -221,8 +221,8 @@
 
 - (BOOL)outputToTelephonyUplink
 {
-  v2 = [(SOSEmergencyCallVoiceLoopManager *)self testMode];
-  if (v2)
+  testMode = [(SOSEmergencyCallVoiceLoopManager *)self testMode];
+  if (testMode)
   {
     v3 = sos_voiceloop_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -232,7 +232,7 @@
     }
   }
 
-  return !v2;
+  return !testMode;
 }
 
 - (SOSVoiceUtterer)localVoiceUtterer
@@ -252,19 +252,19 @@
   return v5;
 }
 
-- (void)speakUtteranceVariants:(id)a3 withPlaybackState:(unint64_t)a4
+- (void)speakUtteranceVariants:(id)variants withPlaybackState:(unint64_t)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  variantsCopy = variants;
   v7 = sos_voiceloop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v18 = 136315650;
-    v19 = "[SOSEmergencyCallVoiceLoopManager speakUtteranceVariants:withPlaybackState:]";
+    stateCopy2 = "[SOSEmergencyCallVoiceLoopManager speakUtteranceVariants:withPlaybackState:]";
     v20 = 2048;
-    v21 = a4;
+    stateCopy = state;
     v22 = 2112;
-    v23 = v6;
+    v23 = variantsCopy;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_INFO, "%s - newPlaybackState:%tu, utteranceVariants:%@", &v18, 0x20u);
   }
 
@@ -272,22 +272,22 @@
   v9 = [SOSUtilities BOOLOverrideForDefaultsKey:@"debug.voiceloop.audio.playLocalAsRemote" defaultValue:0];
   if (v8)
   {
-    [v6 remoteUtterances];
+    [variantsCopy remoteUtterances];
   }
 
   else
   {
-    [v6 localUtterances];
+    [variantsCopy localUtterances];
   }
   v10 = ;
   if (v9)
   {
-    [v6 localUtterances];
+    [variantsCopy localUtterances];
   }
 
   else
   {
-    [v6 remoteUtterances];
+    [variantsCopy remoteUtterances];
   }
   v11 = ;
   v12 = [v10 count];
@@ -302,7 +302,7 @@
   }
 
   v14 = sos_voiceloop_log();
-  v15 = v14;
+  uplinkVoiceUtterer = v14;
   if (!v12 && !v13)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -316,21 +316,21 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134217984;
-    v19 = a4;
-    _os_log_impl(&dword_264323000, v15, OS_LOG_TYPE_DEFAULT, "speakUtteranceVariants - setting newPlaybackState:%tu", &v18, 0xCu);
+    stateCopy2 = state;
+    _os_log_impl(&dword_264323000, uplinkVoiceUtterer, OS_LOG_TYPE_DEFAULT, "speakUtteranceVariants - setting newPlaybackState:%tu", &v18, 0xCu);
   }
 
-  [(SOSEmergencyCallVoiceLoopManager *)self setPlaybackState:a4];
+  [(SOSEmergencyCallVoiceLoopManager *)self setPlaybackState:state];
   if (v12)
   {
-    v16 = [(SOSEmergencyCallVoiceLoopManager *)self localVoiceUtterer];
-    [v16 speakUtterances:v10];
+    localVoiceUtterer = [(SOSEmergencyCallVoiceLoopManager *)self localVoiceUtterer];
+    [localVoiceUtterer speakUtterances:v10];
   }
 
   if (v13)
   {
-    v15 = [(SOSEmergencyCallVoiceLoopManager *)self uplinkVoiceUtterer];
-    [v15 speakUtterances:v11];
+    uplinkVoiceUtterer = [(SOSEmergencyCallVoiceLoopManager *)self uplinkVoiceUtterer];
+    [uplinkVoiceUtterer speakUtterances:v11];
 LABEL_22:
   }
 
@@ -370,10 +370,10 @@ LABEL_22:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPlaybackState:(unint64_t)a3
+- (void)setPlaybackState:(unint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
     v5 = sos_voiceloop_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -382,19 +382,19 @@ LABEL_22:
       v11 = 134218240;
       v12 = playbackState;
       v13 = 2048;
-      v14 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "setPlaybackState: %tu => %tu", &v11, 0x16u);
     }
 
     v7 = self->_playbackState;
-    self->_playbackState = a3;
-    v8 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v8 reportVoiceLoopPlaybackStateChanged:a3];
+    self->_playbackState = state;
+    loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter reportVoiceLoopPlaybackStateChanged:state];
 
-    if (a3 == 100)
+    if (state == 100)
     {
-      v9 = [(SOSEmergencyCallVoiceLoopManager *)self delegate];
-      [v9 voiceLoopManagerDidStartLoopPlayback:self];
+      delegate = [(SOSEmergencyCallVoiceLoopManager *)self delegate];
+      [delegate voiceLoopManagerDidStartLoopPlayback:self];
 LABEL_8:
 
       goto LABEL_9;
@@ -402,8 +402,8 @@ LABEL_8:
 
     if (v7 == 100)
     {
-      v9 = [(SOSEmergencyCallVoiceLoopManager *)self delegate];
-      [v9 voiceLoopManagerDidStopLoopPlayback:self];
+      delegate = [(SOSEmergencyCallVoiceLoopManager *)self delegate];
+      [delegate voiceLoopManagerDidStopLoopPlayback:self];
       goto LABEL_8;
     }
   }
@@ -412,14 +412,14 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPlayingLoopIndex:(unint64_t)a3
+- (void)setPlayingLoopIndex:(unint64_t)index
 {
-  v5 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-  [v5 reportVoiceLoopIndexChanged:a3];
+  loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  [loopAnalyticsReporter reportVoiceLoopIndexChanged:index];
 
-  if (self->_playingLoopIndex != a3)
+  if (self->_playingLoopIndex != index)
   {
-    self->_playingLoopIndex = a3;
+    self->_playingLoopIndex = index;
   }
 }
 
@@ -442,7 +442,7 @@ LABEL_9:
     v6 = 136315394;
     v7 = "[SOSEmergencyCallVoiceLoopManager _speakLoopMessage]";
     v8 = 2048;
-    v9 = [(SOSEmergencyCallVoiceLoopManager *)self playingLoopIndex];
+    playingLoopIndex = [(SOSEmergencyCallVoiceLoopManager *)self playingLoopIndex];
     _os_log_impl(&dword_264323000, v3, OS_LOG_TYPE_DEFAULT, "%s - Playing SOS loop #: %lu", &v6, 0x16u);
   }
 
@@ -452,11 +452,11 @@ LABEL_9:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_loopPhaseFromUtteranceIndex:(unint64_t)a3
+- (unint64_t)_loopPhaseFromUtteranceIndex:(unint64_t)index
 {
-  if (a3 < 3)
+  if (index < 3)
   {
-    return 100 * a3 + 100;
+    return 100 * index + 100;
   }
 
   v4 = sos_voiceloop_log();
@@ -468,15 +468,15 @@ LABEL_9:
   return 0;
 }
 
-+ (id)_messageKeyForReason:(int64_t)a3 shortVersion:(BOOL)a4
++ (id)_messageKeyForReason:(int64_t)reason shortVersion:(BOOL)version
 {
-  v4 = a4;
-  if (a3 == 1)
+  versionCopy = version;
+  if (reason == 1)
   {
     v5 = @"NEWTON_WATCH";
   }
 
-  else if (a3 == 2)
+  else if (reason == 2)
   {
     v5 = @"KAPPA_PHONE";
   }
@@ -493,7 +493,7 @@ LABEL_9:
   }
 
   v7 = @"LOOP";
-  if (v4)
+  if (versionCopy)
   {
     v7 = @"BRIEF";
   }
@@ -503,13 +503,13 @@ LABEL_9:
   return v8;
 }
 
-- (void)voiceUtterer:(id)a3 willStartSpeakingUtteranceAtIndex:(unint64_t)a4 fromUtterances:(id)a5
+- (void)voiceUtterer:(id)utterer willStartSpeakingUtteranceAtIndex:(unint64_t)index fromUtterances:(id)utterances
 {
-  v7 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState:a3];
-  v9 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  v7 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState:utterer];
+  loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
   if (v7 == 100)
   {
-    v8 = [(SOSEmergencyCallVoiceLoopManager *)self _loopPhaseFromUtteranceIndex:a4];
+    v8 = [(SOSEmergencyCallVoiceLoopManager *)self _loopPhaseFromUtteranceIndex:index];
   }
 
   else
@@ -517,30 +517,30 @@ LABEL_9:
     v8 = 0;
   }
 
-  [v9 reportVoiceLoopLoopPhaseChanged:v8];
+  [loopAnalyticsReporter reportVoiceLoopLoopPhaseChanged:v8];
 }
 
-- (void)voiceUtterer:(id)a3 didFinishSpeakingUtterances:(id)a4
+- (void)voiceUtterer:(id)utterer didFinishSpeakingUtterances:(id)utterances
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  uttererCopy = utterer;
   if ([(SOSEmergencyCallVoiceLoopManager *)self _isSpeaking])
   {
     v6 = sos_voiceloop_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       localVoiceUtterer = self->_localVoiceUtterer;
-      v8 = localVoiceUtterer == v5;
-      v9 = [(SOSVoiceUtterer *)localVoiceUtterer isSpeaking];
+      v8 = localVoiceUtterer == uttererCopy;
+      isSpeaking = [(SOSVoiceUtterer *)localVoiceUtterer isSpeaking];
       uplinkVoiceUtterer = self->_uplinkVoiceUtterer;
       v20 = 67109888;
       *v21 = v8;
       *&v21[4] = 1024;
-      *&v21[6] = v9;
+      *&v21[6] = isSpeaking;
       v22 = 1024;
-      v23 = uplinkVoiceUtterer == v5;
+      v23 = uplinkVoiceUtterer == uttererCopy;
       v24 = 1024;
-      v25 = [(SOSVoiceUtterer *)uplinkVoiceUtterer isSpeaking];
+      isSpeaking2 = [(SOSVoiceUtterer *)uplinkVoiceUtterer isSpeaking];
       _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "didFinishSpeakingUtterances - !doneSpeaking; NOP until notified after doneSpeaking (isLocalUtterer:%{BOOL}d localUttererSpeaking:%{BOOL}d isRemoteUtterer:%{BOOL}d remoteUttererSpeaking:%{BOOL}d", &v20, 0x1Au);
     }
 
@@ -549,10 +549,10 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v11 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
+  playbackState = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
   v12 = sos_voiceloop_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11 == 100)
+  if (playbackState == 100)
   {
     if (v13)
     {
@@ -561,8 +561,8 @@ LABEL_10:
       _os_log_impl(&dword_264323000, v12, OS_LOG_TYPE_DEFAULT, "didFinishSpeakingUtterances - Finished spoken portion of loop: %lu", &v20, 0xCu);
     }
 
-    v14 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v14 reportVoiceLoopLoopPhaseChanged:10000];
+    loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter reportVoiceLoopLoopPhaseChanged:10000];
 
     v15 = sos_voiceloop_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -575,8 +575,8 @@ LABEL_10:
     messageRepeatTimer = self->_messageRepeatTimer;
     self->_messageRepeatTimer = v16;
 
-    v18 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v18 addTimer:self->_messageRepeatTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_messageRepeatTimer forMode:*MEMORY[0x277CBE738]];
 
     v6 = [SOSUtilities numberOverrideForDefaultsKey:@"debug.voiceloop.loop.subsequent.volume" defaultValue:&unk_2875D2CC8];
     [v6 floatValue];
@@ -596,11 +596,11 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shiftedLocationIfApplicable:(id)a3 withcompletion:(id)a4
+- (void)shiftedLocationIfApplicable:(id)applicable withcompletion:(id)withcompletion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  applicableCopy = applicable;
+  withcompletionCopy = withcompletion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -625,17 +625,17 @@ LABEL_14:
   v11 = sos_voiceloop_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SOSEmergencyCallVoiceLoopManager *)self locationShifter];
-    v13 = [(SOSEmergencyCallVoiceLoopManager *)self locationShifter];
-    v14 = [objc_opt_class() isLocationShiftRequiredForLocation:v6];
+    locationShifter = [(SOSEmergencyCallVoiceLoopManager *)self locationShifter];
+    locationShifter2 = [(SOSEmergencyCallVoiceLoopManager *)self locationShifter];
+    v14 = [objc_opt_class() isLocationShiftRequiredForLocation:applicableCopy];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = locationShifter;
     *&buf[12] = 1024;
     *&buf[14] = v14;
     _os_log_impl(&dword_264323000, v11, OS_LOG_TYPE_DEFAULT, "Location shifter: %@ - isLocationShiftRequiredForLocation: %{BOOL}d", buf, 0x12u);
   }
 
-  if (v6 && (-[SOSEmergencyCallVoiceLoopManager locationShifter](self, "locationShifter"), (v15 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SOSEmergencyCallVoiceLoopManager locationShifter](self, "locationShifter"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [objc_opt_class() isLocationShiftRequiredForLocation:v6], v16, v15, v17))
+  if (applicableCopy && (-[SOSEmergencyCallVoiceLoopManager locationShifter](self, "locationShifter"), (v15 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SOSEmergencyCallVoiceLoopManager locationShifter](self, "locationShifter"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [objc_opt_class() isLocationShiftRequiredForLocation:applicableCopy], v16, v15, v17))
   {
     objc_initWeak(buf, self);
     v18 = dispatch_get_global_queue(0, 0);
@@ -643,9 +643,9 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = __79__SOSEmergencyCallVoiceLoopManager_shiftedLocationIfApplicable_withcompletion___block_invoke;
     block[3] = &unk_279B53D30;
-    v22 = v7;
+    v22 = withcompletionCopy;
     objc_copyWeak(&v23, buf);
-    v21 = v6;
+    v21 = applicableCopy;
     dispatch_async(v18, block);
 
     objc_destroyWeak(&v23);
@@ -654,7 +654,7 @@ LABEL_14:
 
   else
   {
-    (*(v7 + 2))(v7, v6);
+    (*(withcompletionCopy + 2))(withcompletionCopy, applicableCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -761,9 +761,9 @@ void __79__SOSEmergencyCallVoiceLoopManager_shiftedLocationIfApplicable_withcomp
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   v6 = sos_voiceloop_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -771,20 +771,20 @@ void __79__SOSEmergencyCallVoiceLoopManager_shiftedLocationIfApplicable_withcomp
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "Received location update", v8, 2u);
   }
 
-  v7 = [v5 lastObject];
+  lastObject = [locationsCopy lastObject];
 
-  [(SOSEmergencyCallVoiceLoopManager *)self _updateLocation:v7];
+  [(SOSEmergencyCallVoiceLoopManager *)self _updateLocation:lastObject];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  errorCopy = error;
   v5 = sos_voiceloop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "locationManager:didFailWithError:%{public}@", &v7, 0xCu);
   }
 
@@ -795,21 +795,21 @@ void __79__SOSEmergencyCallVoiceLoopManager_shiftedLocationIfApplicable_withcomp
 {
   if ([SOSUtilities BOOLOverrideForDefaultsKey:@"debug.voiceloop.demo.fakeLocation" defaultValue:0])
   {
-    v3 = [(SOSEmergencyCallVoiceLoopManager *)self _overrideLocation];
+    _overrideLocation = [(SOSEmergencyCallVoiceLoopManager *)self _overrideLocation];
   }
 
   else
   {
-    v3 = self->_locationToSynthesize;
+    _overrideLocation = self->_locationToSynthesize;
   }
 
-  return v3;
+  return _overrideLocation;
 }
 
-- (void)_updateLocation:(id)a3
+- (void)_updateLocation:(id)location
 {
-  v4 = a3;
-  if (!v4)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v14 = sos_voiceloop_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -825,12 +825,12 @@ void __79__SOSEmergencyCallVoiceLoopManager_shiftedLocationIfApplicable_withcomp
   {
     [(CLLocation *)locationToSynthesize horizontalAccuracy];
     v7 = v6;
-    [v4 horizontalAccuracy];
-    if (v7 <= v8 || ([v4 horizontalAccuracy], v9 <= 0.0))
+    [locationCopy horizontalAccuracy];
+    if (v7 <= v8 || ([locationCopy horizontalAccuracy], v9 <= 0.0))
     {
-      v10 = [v4 timestamp];
-      v11 = [(CLLocation *)self->_locationToSynthesize timestamp];
-      [v10 timeIntervalSinceDate:v11];
+      timestamp = [locationCopy timestamp];
+      timestamp2 = [(CLLocation *)self->_locationToSynthesize timestamp];
+      [timestamp timeIntervalSinceDate:timestamp2];
       v13 = v12;
 
       if (v13 <= 5.0)
@@ -854,7 +854,7 @@ LABEL_11:
   v15[2] = __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke;
   v15[3] = &unk_279B53D58;
   objc_copyWeak(&v16, &location);
-  [(SOSEmergencyCallVoiceLoopManager *)self shiftedLocationIfApplicable:v4 withcompletion:v15];
+  [(SOSEmergencyCallVoiceLoopManager *)self shiftedLocationIfApplicable:locationCopy withcompletion:v15];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 LABEL_12:
@@ -878,30 +878,30 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_coordinatesStringFromLocation:(id)a3 shortVersion:(BOOL)a4
+- (id)_coordinatesStringFromLocation:(id)location shortVersion:(BOOL)version
 {
-  v4 = a4;
+  versionCopy = version;
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  locationCopy = location;
   v7 = sos_voiceloop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = v6;
+    v32 = locationCopy;
     v33 = 1024;
-    v34 = v4;
+    v34 = versionCopy;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_DEFAULT, "Creating location string from location:%@ shortVersion:%{BOOL}d", buf, 0x12u);
   }
 
-  if (v6)
+  if (locationCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v8 setNumberStyle:1];
     [v8 setMaximumFractionDigits:4];
-    v9 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
-    if (v9)
+    voiceLanguage = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
+    if (voiceLanguage)
     {
-      [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v9];
+      [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:voiceLanguage];
     }
 
     else
@@ -919,22 +919,22 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
     }
 
     v13 = MEMORY[0x277CCABB0];
-    [v6 coordinate];
+    [locationCopy coordinate];
     v14 = [v13 numberWithDouble:?];
     v15 = [v8 stringFromNumber:v14];
 
     v16 = MEMORY[0x277CCABB0];
-    [v6 coordinate];
+    [locationCopy coordinate];
     v18 = [v16 numberWithDouble:v17];
     v19 = [v8 stringFromNumber:v18];
 
     v20 = MEMORY[0x277CCABB0];
-    [v6 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     LODWORD(v22) = vcvtpd_s64_f64(v21);
     v23 = [v20 numberWithInt:v22];
     v24 = [v8 stringFromNumber:v23];
 
-    if (v4)
+    if (versionCopy)
     {
       v25 = @"SOS_VOICELOOP_SPEECH_BRIEF_LOCATION";
     }
@@ -1012,19 +1012,19 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
   return v11;
 }
 
-- (id)_languageToUseInVoiceLoopForCountryCode:(id)a3
+- (id)_languageToUseInVoiceLoopForCountryCode:(id)code
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = sos_voiceloop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = codeCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_languageToUseInVoiceLoopForCountryCode:%{public}@", &v12, 0xCu);
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"IN"])
+  if ([(__CFString *)codeCopy isEqualToString:@"IN"])
   {
     v6 = sos_voiceloop_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1039,7 +1039,7 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
 
   else
   {
-    v7 = [(SOSEmergencyCallVoiceLoopManager *)self _preferredVoiceLanguageForCountryCode:v4];
+    v7 = [(SOSEmergencyCallVoiceLoopManager *)self _preferredVoiceLanguageForCountryCode:codeCopy];
   }
 
   if (v7)
@@ -1058,15 +1058,15 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
   return v8;
 }
 
-- (id)_preferredVoiceLanguageForCountryCode:(id)a3
+- (id)_preferredVoiceLanguageForCountryCode:(id)code
 {
   v41 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  codeCopy = code;
   v3 = sos_voiceloop_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v26;
+    *(&buf + 4) = codeCopy;
     _os_log_impl(&dword_264323000, v3, OS_LOG_TYPE_DEFAULT, "_preferredVoiceLanguageForCountryCode:%{public}@", &buf, 0xCu);
   }
 
@@ -1088,7 +1088,7 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
 
   v5 = v4;
   _Block_object_dispose(&v31, 8);
-  v6 = [v4 preferredLanguagesForRegion:v26];
+  v6 = [v4 preferredLanguagesForRegion:codeCopy];
   v7 = sos_voiceloop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1098,7 +1098,7 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
   }
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v8 localizations];
+  localizations = [v8 localizations];
 
   v29 = 0u;
   v30 = 0u;
@@ -1120,7 +1120,7 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
           objc_enumerationMutation(obj);
         }
 
-        v14 = [MEMORY[0x277CBEAF8] languageFromLanguage:*(*(&v27 + 1) + 8 * i) byReplacingRegion:{v26, v24}];
+        v14 = [MEMORY[0x277CBEAF8] languageFromLanguage:*(*(&v27 + 1) + 8 * i) byReplacingRegion:{codeCopy, v24}];
         v15 = sos_voiceloop_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -1132,18 +1132,18 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
         v16 = MEMORY[0x277CCA8D8];
         v35 = v14;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-        v18 = [v16 preferredLocalizationsFromArray:v9 forPreferences:v17];
-        v19 = [v18 firstObject];
+        v18 = [v16 preferredLocalizationsFromArray:localizations forPreferences:v17];
+        firstObject = [v18 firstObject];
 
-        v20 = [MEMORY[0x277CB84A8] voiceWithLanguage:v19];
+        v20 = [MEMORY[0x277CB84A8] voiceWithLanguage:firstObject];
 
-        if (v19 && v20)
+        if (firstObject && v20)
         {
           v21 = sos_voiceloop_log();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(buf) = v24;
-            *(&buf + 4) = v19;
+            *(&buf + 4) = firstObject;
             _os_log_impl(&dword_264323000, v21, OS_LOG_TYPE_DEFAULT, "Language selected for speaking: %{public}@", &buf, 0xCu);
           }
 
@@ -1161,71 +1161,71 @@ void __52__SOSEmergencyCallVoiceLoopManager__updateLocation___block_invoke(uint6
     }
   }
 
-  v19 = 0;
+  firstObject = 0;
 LABEL_22:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return firstObject;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
-  v6 = [SOSVoiceUtterance localizedStringForKey:v4 forLocalization:v5];
+  keyCopy = key;
+  voiceLanguage = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
+  v6 = [SOSVoiceUtterance localizedStringForKey:keyCopy forLocalization:voiceLanguage];
 
   return v6;
 }
 
-- (void)callCenter:(id)a3 reportedCall:(id)a4 receivedDTMFUpdate:(id)a5
+- (void)callCenter:(id)center reportedCall:(id)call receivedDTMFUpdate:(id)update
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  callCopy = call;
+  updateCopy = update;
   v9 = sos_voiceloop_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = v8;
+    v13 = updateCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = callCopy;
     _os_log_impl(&dword_264323000, v9, OS_LOG_TYPE_DEFAULT, "receivedDTMFUpdate:%{public}@ call:%@", &v12, 0x16u);
   }
 
-  v10 = [v8 digits];
-  [(SOSEmergencyCallVoiceLoopManager *)self _handleRemoteDTMFDigits:v10];
+  digits = [updateCopy digits];
+  [(SOSEmergencyCallVoiceLoopManager *)self _handleRemoteDTMFDigits:digits];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)callSupportsRemoteControl
 {
-  v3 = [objc_opt_class() _activeCallSupportsDTMF];
-  [(SOSVoiceLoopAnalyticsReporter *)self->_loopAnalyticsReporter reportVoiceLoopSupportsDTMF:v3];
+  _activeCallSupportsDTMF = [objc_opt_class() _activeCallSupportsDTMF];
+  [(SOSVoiceLoopAnalyticsReporter *)self->_loopAnalyticsReporter reportVoiceLoopSupportsDTMF:_activeCallSupportsDTMF];
 
-  return [SOSUtilities BOOLOverrideForDefaultsKey:@"debug.voiceloop.call.supportsDTMF" defaultValue:v3];
+  return [SOSUtilities BOOLOverrideForDefaultsKey:@"debug.voiceloop.call.supportsDTMF" defaultValue:_activeCallSupportsDTMF];
 }
 
 + (BOOL)_activeCallSupportsDTMF
 {
-  v2 = [objc_opt_class() _activeCallPreferringEmergencyOrSOS];
-  v3 = [v2 supportsDTMFUpdates];
+  _activeCallPreferringEmergencyOrSOS = [objc_opt_class() _activeCallPreferringEmergencyOrSOS];
+  supportsDTMFUpdates = [_activeCallPreferringEmergencyOrSOS supportsDTMFUpdates];
 
-  return v3;
+  return supportsDTMFUpdates;
 }
 
 + (id)_activeCallPreferringEmergencyOrSOS
 {
   v23 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277CBEB18]);
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [v3 currentCalls];
-  v5 = [v2 initWithArray:v4];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
+  v5 = [v2 initWithArray:currentCalls];
 
-  v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v7 = [v6 callsOnDefaultPairedDevice];
-  [v5 addObjectsFromArray:v7];
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  callsOnDefaultPairedDevice = [mEMORY[0x277D6EDF8]2 callsOnDefaultPairedDevice];
+  [v5 addObjectsFromArray:callsOnDefaultPairedDevice];
 
   v20 = 0u;
   v21 = 0u;
@@ -1289,14 +1289,14 @@ LABEL_16:
 
 - (void)_startListeningForRemoteControl
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  [v3 addDelegate:self queue:MEMORY[0x277D85CD0]];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  [mEMORY[0x277D6EDF8] addDelegate:self queue:MEMORY[0x277D85CD0]];
 }
 
 - (void)_stopListeningForRemoteControl
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  [v3 removeDelegate:self];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  [mEMORY[0x277D6EDF8] removeDelegate:self];
 }
 
 + (id)_validDTMFDigits
@@ -1318,14 +1318,14 @@ uint64_t __52__SOSEmergencyCallVoiceLoopManager__validDTMFDigits__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_handleRemoteDTMFDigits:(id)a3
+- (void)_handleRemoteDTMFDigits:(id)digits
 {
-  v4 = a3;
-  if ([v4 length] == 1)
+  digitsCopy = digits;
+  if ([digitsCopy length] == 1)
   {
-    v5 = [v4 characterAtIndex:0];
-    v6 = [objc_opt_class() _validDTMFDigits];
-    v7 = [v4 rangeOfCharacterFromSet:v6];
+    v5 = [digitsCopy characterAtIndex:0];
+    _validDTMFDigits = [objc_opt_class() _validDTMFDigits];
+    v7 = [digitsCopy rangeOfCharacterFromSet:_validDTMFDigits];
 
     if (!v7)
     {
@@ -1333,12 +1333,12 @@ uint64_t __52__SOSEmergencyCallVoiceLoopManager__validDTMFDigits__block_invoke()
       goto LABEL_7;
     }
 
-    v8 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
     v9 = v5;
-    [v8 reportVoiceLoopDidStartHandlingDTMFDigitReceived:v9];
+    [loopAnalyticsReporter reportVoiceLoopDidStartHandlingDTMFDigitReceived:v9];
 
-    v10 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v10 reportVoiceLoopDidFinishHandlingDTMFDigitReceived:v9];
+    loopAnalyticsReporter2 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter2 reportVoiceLoopDidFinishHandlingDTMFDigitReceived:v9];
   }
 
   v11 = sos_voiceloop_log();
@@ -1353,27 +1353,27 @@ LABEL_7:
 - (void)_handleDTMFMessageStopCommand
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-  [v3 reportVoiceLoopDidReceiveCommand:100];
+  loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  [loopAnalyticsReporter reportVoiceLoopDidReceiveCommand:100];
 
   v11 = 10000;
-  v4 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
-  v5 = [(SOSEmergencyCallVoiceLoopManager *)self stopConfirmationUtterancesForPlaybackState:v4 remoteVariant:0 verbalizedActionOut:0];
-  v6 = [(SOSEmergencyCallVoiceLoopManager *)self stopConfirmationUtterancesForPlaybackState:v4 remoteVariant:1 verbalizedActionOut:&v11];
+  playbackState = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
+  v5 = [(SOSEmergencyCallVoiceLoopManager *)self stopConfirmationUtterancesForPlaybackState:playbackState remoteVariant:0 verbalizedActionOut:0];
+  v6 = [(SOSEmergencyCallVoiceLoopManager *)self stopConfirmationUtterancesForPlaybackState:playbackState remoteVariant:1 verbalizedActionOut:&v11];
   v7 = [SOSVoiceUtteranceVariants utteranceVariantsWithLocalUtterances:v5 remoteUtterances:v6];
 
   v8 = sos_voiceloop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v13 = v4;
+    v13 = playbackState;
     v14 = 2048;
     v15 = v11;
     _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "_handleDTMFMessageStopCommand -- Stopping from playbackState: %tu (action: %tu)", buf, 0x16u);
   }
 
-  v9 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-  [v9 reportVoiceLoopWillPerformAction:v11];
+  loopAnalyticsReporter2 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  [loopAnalyticsReporter2 reportVoiceLoopWillPerformAction:v11];
 
   [(SOSEmergencyCallVoiceLoopManager *)self speakResponseUtteranceVariants:v7];
   v10 = *MEMORY[0x277D85DE8];
@@ -1381,13 +1381,13 @@ LABEL_7:
 
 - (void)_handleDTMFMessageRepeatCommand
 {
-  v3 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-  [v3 reportVoiceLoopDidReceiveCommand:200];
+  loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  [loopAnalyticsReporter reportVoiceLoopDidReceiveCommand:200];
 
-  v4 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
+  playbackState = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
   v5 = sos_voiceloop_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 100)
+  if (playbackState == 100)
   {
     if (v6)
     {
@@ -1395,8 +1395,8 @@ LABEL_7:
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_handleDTMFMessageRepeatCommand - Received repeat, but not stopped; ignoring", buf, 2u);
     }
 
-    v7 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v7 reportVoiceLoopWillPerformAction:10000];
+    loopAnalyticsReporter2 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter2 reportVoiceLoopWillPerformAction:10000];
   }
 
   else
@@ -1407,24 +1407,24 @@ LABEL_7:
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_handleDTMFMessageRepeatCommand - Repeating", v9, 2u);
     }
 
-    v8 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v8 reportVoiceLoopWillPerformAction:200];
+    loopAnalyticsReporter3 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter3 reportVoiceLoopWillPerformAction:200];
 
     [(SOSEmergencyCallVoiceLoopManager *)self _stopMessagePlayback];
-    v7 = [(SOSEmergencyCallVoiceLoopManager *)self emergencyDescriptorUtteranceVariantsForRepeatVariant:1];
-    [(SOSEmergencyCallVoiceLoopManager *)self speakUtteranceVariants:v7 withPlaybackState:400];
+    loopAnalyticsReporter2 = [(SOSEmergencyCallVoiceLoopManager *)self emergencyDescriptorUtteranceVariantsForRepeatVariant:1];
+    [(SOSEmergencyCallVoiceLoopManager *)self speakUtteranceVariants:loopAnalyticsReporter2 withPlaybackState:400];
   }
 }
 
 - (void)_handleDTMFMessageResumeCommand
 {
-  v3 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-  [v3 reportVoiceLoopDidReceiveCommand:5000];
+  loopAnalyticsReporter = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+  [loopAnalyticsReporter reportVoiceLoopDidReceiveCommand:5000];
 
-  v4 = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
+  playbackState = [(SOSEmergencyCallVoiceLoopManager *)self playbackState];
   v5 = sos_voiceloop_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 100)
+  if (playbackState == 100)
   {
     if (v6)
     {
@@ -1432,8 +1432,8 @@ LABEL_7:
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_handleDTMFMessageResumeCommand - Received resume, but not stopped; ignoring", buf, 2u);
     }
 
-    v7 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v7 reportVoiceLoopWillPerformAction:10000];
+    loopAnalyticsReporter2 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter2 reportVoiceLoopWillPerformAction:10000];
   }
 
   else
@@ -1444,31 +1444,31 @@ LABEL_7:
       _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_handleDTMFMessageResumeCommand - Resuming", v9, 2u);
     }
 
-    v8 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
-    [v8 reportVoiceLoopWillPerformAction:5000];
+    loopAnalyticsReporter3 = [(SOSEmergencyCallVoiceLoopManager *)self loopAnalyticsReporter];
+    [loopAnalyticsReporter3 reportVoiceLoopWillPerformAction:5000];
 
     [(SOSEmergencyCallVoiceLoopManager *)self _stopMessagePlayback];
     [(SOSEmergencyCallVoiceLoopManager *)self _startLoopPlayback];
   }
 }
 
-- (id)stopConfirmationUtterancesForPlaybackState:(unint64_t)a3 remoteVariant:(BOOL)a4 verbalizedActionOut:(unint64_t *)a5
+- (id)stopConfirmationUtterancesForPlaybackState:(unint64_t)state remoteVariant:(BOOL)variant verbalizedActionOut:(unint64_t *)out
 {
-  v6 = a4;
+  variantCopy = variant;
   v36 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = 10000;
-  if (a3 > 299)
+  if (state > 299)
   {
-    if (a3 == 300 || a3 == 400)
+    if (state == 300 || state == 400)
     {
       v10 = 300;
     }
   }
 
-  else if (a3 == 100)
+  else if (state == 100)
   {
-    if (v6)
+    if (variantCopy)
     {
       v14 = MEMORY[0x277CCACA8];
       v15 = [(SOSEmergencyCallVoiceLoopManager *)self localizedStringForKey:@"SOS_VOICELOOP_SPEECH_LOOP_STOPPED_HOW_TO_REPEAT"];
@@ -1481,16 +1481,16 @@ LABEL_7:
     }
 
     v20 = [SOSVoiceUtterance alloc];
-    v21 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
-    v22 = [(SOSVoiceUtterance *)v20 initWithLocalizedMessageString:v16 voiceLanguage:v21];
-    [v9 addObject:v22];
+    voiceLanguage = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
+    v22 = [(SOSVoiceUtterance *)v20 initWithLocalizedMessageString:v16 voiceLanguage:voiceLanguage];
+    [array addObject:v22];
 
     v10 = 100;
   }
 
-  else if (a3 == 200)
+  else if (state == 200)
   {
-    if (v6)
+    if (variantCopy)
     {
       v11 = MEMORY[0x277CCACA8];
       v12 = [(SOSEmergencyCallVoiceLoopManager *)self localizedStringForKey:@"SOS_VOICELOOP_SPEECH_LOOP_STOPPED_HOW_TO_REPEAT"];
@@ -1503,9 +1503,9 @@ LABEL_7:
     }
 
     v17 = [SOSVoiceUtterance alloc];
-    v18 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
-    v19 = [(SOSVoiceUtterance *)v17 initWithLocalizedMessageString:v13 voiceLanguage:v18];
-    [v9 addObject:v19];
+    voiceLanguage2 = [(SOSEmergencyCallVoiceLoopManager *)self voiceLanguage];
+    v19 = [(SOSVoiceUtterance *)v17 initWithLocalizedMessageString:v13 voiceLanguage:voiceLanguage2];
+    [array addObject:v19];
 
     v10 = 400;
   }
@@ -1514,24 +1514,24 @@ LABEL_7:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     *buf = 134218754;
-    v29 = a3;
+    stateCopy = state;
     v30 = 1024;
-    v31 = v6;
+    v31 = variantCopy;
     v32 = 2114;
-    v33 = v9;
+    v33 = array;
     v34 = 2048;
     v35 = v10;
     _os_log_impl(&dword_264323000, v23, OS_LOG_TYPE_INFO, "stopConfirmationUtterancesForPlaybackState:%tu remoteVariant:%{BOOL}d => %{public}@ (action: %tu)", buf, 0x26u);
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v10;
+    *out = v10;
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    v24 = v9;
+    v24 = array;
   }
 
   else
@@ -1545,20 +1545,20 @@ LABEL_7:
   return v24;
 }
 
-- (void)speakResponseUtteranceVariants:(id)a3
+- (void)speakResponseUtteranceVariants:(id)variants
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  variantsCopy = variants;
   v5 = sos_voiceloop_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = variantsCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "speakResponseUtteranceVariants:%{public}@", &v7, 0xCu);
   }
 
   [(SOSEmergencyCallVoiceLoopManager *)self _stopMessagePlayback];
-  [(SOSEmergencyCallVoiceLoopManager *)self speakUtteranceVariants:v4 withPlaybackState:300];
+  [(SOSEmergencyCallVoiceLoopManager *)self speakUtteranceVariants:variantsCopy withPlaybackState:300];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1637,8 +1637,8 @@ LABEL_7:
     }
 
     v23 = objc_alloc(MEMORY[0x277CE41F8]);
-    v24 = [MEMORY[0x277CBEAA8] date];
-    v22 = [v23 initWithCoordinate:v24 altitude:v21 horizontalAccuracy:v20 verticalAccuracy:v10 timestamp:{v13, v13}];
+    date = [MEMORY[0x277CBEAA8] date];
+    v22 = [v23 initWithCoordinate:date altitude:v21 horizontalAccuracy:v20 verticalAccuracy:v10 timestamp:{v13, v13}];
   }
 
   return v22;

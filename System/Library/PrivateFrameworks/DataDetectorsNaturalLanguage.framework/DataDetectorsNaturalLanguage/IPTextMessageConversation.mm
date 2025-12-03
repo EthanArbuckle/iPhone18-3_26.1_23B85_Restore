@@ -1,12 +1,12 @@
 @interface IPTextMessageConversation
-+ (id)collapseMessages:(id)a3;
-+ (id)collapsedMessagesFromMessages:(id)a3;
++ (id)collapseMessages:(id)messages;
++ (id)collapsedMessagesFromMessages:(id)messages;
 - (IPTextMessageConversation)init;
 - (NSArray)allMessages;
-- (id)eventsInPreviouslyScannedMessageWithIdentifier:(id)a3;
-- (id)messageForIdentifier:(id)a3;
-- (void)_scanEventsInLastMessageOnly:(BOOL)a3 synchronously:(BOOL)a4 completionHandler:(id)a5;
-- (void)addMessage:(id)a3;
+- (id)eventsInPreviouslyScannedMessageWithIdentifier:(id)identifier;
+- (id)messageForIdentifier:(id)identifier;
+- (void)_scanEventsInLastMessageOnly:(BOOL)only synchronously:(BOOL)synchronously completionHandler:(id)handler;
+- (void)addMessage:(id)message;
 - (void)reset;
 @end
 
@@ -34,45 +34,45 @@
 
 - (NSArray)allMessages
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IPCircularBufferArray *)v2->_lastMessages allObjects];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(IPCircularBufferArray *)selfCopy->_lastMessages allObjects];
+  v4 = [allObjects copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 setType:IPMessageTypeShortMessage];
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)v5->_messageByMessageIdentifierDictionary objectForKeyedSubscript:v6];
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [messageCopy setType:IPMessageTypeShortMessage];
+  identifier = [messageCopy identifier];
+  v7 = [(NSMutableDictionary *)selfCopy->_messageByMessageIdentifierDictionary objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
-    [(NSMutableDictionary *)v5->_messageByMessageIdentifierDictionary setObject:v4 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)selfCopy->_messageByMessageIdentifierDictionary setObject:messageCopy forKeyedSubscript:identifier];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x3032000000;
     v10[3] = __Block_byref_object_copy__2;
     v10[4] = __Block_byref_object_dispose__2;
-    v11 = v5;
+    v11 = selfCopy;
     lastMessages = v11->_lastMessages;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __40__IPTextMessageConversation_addMessage___block_invoke;
     v9[3] = &unk_278F230E8;
     v9[4] = v10;
-    [(IPCircularBufferArray *)lastMessages addObject:v4 completionHandler:v9];
+    [(IPCircularBufferArray *)lastMessages addObject:messageCopy completionHandler:v9];
     _Block_object_dispose(v10, 8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __40__IPTextMessageConversation_addMessage___block_invoke(uint64_t a1, void *a2)
@@ -98,38 +98,38 @@ void __40__IPTextMessageConversation_addMessage___block_invoke(uint64_t a1, void
   objc_sync_exit(obj);
 }
 
-- (id)messageForIdentifier:(id)a3
+- (id)messageForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_messageByMessageIdentifierDictionary objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_messageByMessageIdentifierDictionary objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_scanEventsInLastMessageOnly:(BOOL)a3 synchronously:(BOOL)a4 completionHandler:(id)a5
+- (void)_scanEventsInLastMessageOnly:(BOOL)only synchronously:(BOOL)synchronously completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  synchronouslyCopy = synchronously;
+  handlerCopy = handler;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
   v29[3] = __Block_byref_object_copy__2;
   v29[4] = __Block_byref_object_dispose__2;
-  v9 = self;
-  v30 = v9;
-  v10 = [(IPTextMessageConversation *)v9 allMessages];
-  v11 = [v10 lastObject];
-  v12 = [v11 isGroupConversation];
+  selfCopy = self;
+  v30 = selfCopy;
+  allMessages = [(IPTextMessageConversation *)selfCopy allMessages];
+  lastObject = [allMessages lastObject];
+  isGroupConversation = [lastObject isGroupConversation];
 
   if (_scanEventsInLastMessageOnly_synchronously_completionHandler__onceToken != -1)
   {
     [IPTextMessageConversation _scanEventsInLastMessageOnly:synchronously:completionHandler:];
   }
 
-  if (v12)
+  if (isGroupConversation)
   {
     v13 = 1;
   }
@@ -140,24 +140,24 @@ void __40__IPTextMessageConversation_addMessage___block_invoke(uint64_t a1, void
   }
 
   v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:v13];
-  v15 = [(IPTextMessageConversation *)v9 allMessages];
+  allMessages2 = [(IPTextMessageConversation *)selfCopy allMessages];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_completionHandler___block_invoke_2;
   v22[3] = &unk_278F23160;
-  v22[4] = v9;
-  v16 = v8;
+  v22[4] = selfCopy;
+  v16 = handlerCopy;
   v25 = v16;
-  v17 = v15;
+  v17 = allMessages2;
   v23 = v17;
   v27 = v13;
   v18 = v14;
-  v28 = a3;
+  onlyCopy = only;
   v24 = v18;
   v26 = v29;
   v19 = MEMORY[0x24C1D4200](v22);
   v20 = v19;
-  if (v5)
+  if (synchronouslyCopy)
   {
     (*(v19 + 16))(v19);
   }
@@ -439,30 +439,30 @@ void __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)eventsInPreviouslyScannedMessageWithIdentifier:(id)a3
+- (id)eventsInPreviouslyScannedMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_eventsByMessageIdentifierDictionary objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_eventsByMessageIdentifierDictionary objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (id)collapsedMessagesFromMessages:(id)a3
++ (id)collapsedMessagesFromMessages:(id)messages
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v32 = objc_opt_new();
-  v4 = [v3 firstObject];
-  v5 = [v4 dateSent];
-  v6 = [v4 sender];
+  firstObject = [messagesCopy firstObject];
+  dateSent = [firstObject dateSent];
+  sender = [firstObject sender];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = v3;
+  v7 = messagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v8)
   {
@@ -485,49 +485,49 @@ void __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_
         if (v12 != v11)
         {
           v14 = *(*(&v35 + 1) + 8 * v11);
-          v15 = [v14 dateSent];
-          [v15 timeIntervalSinceDate:v5];
+          dateSent2 = [v14 dateSent];
+          [dateSent2 timeIntervalSinceDate:dateSent];
           v17 = v16;
 
-          v18 = [v14 sender];
+          sender2 = [v14 sender];
 
-          if (v18 == v6 && v17 < 60.0)
+          if (sender2 == sender && v17 < 60.0)
           {
-            v39[0] = v4;
+            v39[0] = firstObject;
             v39[1] = v14;
             v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-            [a1 collapseMessages:v23];
-            v24 = v6;
+            [self collapseMessages:v23];
+            v24 = sender;
             v26 = v25 = v7;
 
             v27 = v26;
             v7 = v25;
-            v6 = v24;
+            sender = v24;
             v13 = v34;
             v22 = v27;
 
-            v21 = [v14 dateSent];
+            dateSent3 = [v14 dateSent];
 
             v20 = v22;
           }
 
           else
           {
-            if (v4)
+            if (firstObject)
             {
-              [v32 addObject:v4];
+              [v32 addObject:firstObject];
             }
 
             v20 = v14;
 
-            v21 = [v20 dateSent];
+            dateSent3 = [v20 dateSent];
 
             [v20 sender];
-            v6 = v22 = v6;
+            sender = v22 = sender;
           }
 
-          v5 = v21;
-          v4 = v20;
+          dateSent = dateSent3;
+          firstObject = v20;
         }
 
         ++v11;
@@ -541,24 +541,24 @@ void __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_
     while (v9);
   }
 
-  [v32 addObject:v4];
+  [v32 addObject:firstObject];
   v28 = v32;
 
   v29 = *MEMORY[0x277D85DE8];
   return v32;
 }
 
-+ (id)collapseMessages:(id)a3
++ (id)collapseMessages:(id)messages
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_opt_new();
-  v5 = [v3 count];
+  v5 = [messagesCopy count];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v3;
+  v6 = messagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
@@ -574,13 +574,13 @@ void __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v28 + 1) + 8 * i) messageUnits];
-        v13 = [v12 firstObject];
-        v14 = [v13 text];
+        messageUnits = [*(*(&v28 + 1) + 8 * i) messageUnits];
+        firstObject = [messageUnits firstObject];
+        text = [firstObject text];
 
-        if ([v14 length])
+        if ([text length])
         {
-          [v4 appendString:v14];
+          [v4 appendString:text];
           if (v5 - 1 - v9 != i)
           {
             [v4 appendString:@" "];
@@ -595,15 +595,15 @@ void __90__IPTextMessageConversation__scanEventsInLastMessageOnly_synchronously_
     while (v8);
   }
 
-  v15 = [v6 lastObject];
+  lastObject = [v6 lastObject];
   v16 = [IPMessage alloc];
-  v17 = [v15 identifier];
-  v18 = [v15 subject];
-  v19 = [v15 sender];
-  v20 = [v15 recipients];
-  v21 = [v15 dateSent];
-  v22 = [v15 type];
-  v23 = [(IPMessage *)v16 initWithIdentifier:v17 subject:v18 sender:v19 recipients:v20 dateSent:v21 type:v22];
+  identifier = [lastObject identifier];
+  subject = [lastObject subject];
+  sender = [lastObject sender];
+  recipients = [lastObject recipients];
+  dateSent = [lastObject dateSent];
+  type = [lastObject type];
+  v23 = [(IPMessage *)v16 initWithIdentifier:identifier subject:subject sender:sender recipients:recipients dateSent:dateSent type:type];
 
   v24 = [[IPMessageUnit alloc] initWithText:v4 originalMessage:v23 index:0];
   v32 = v24;

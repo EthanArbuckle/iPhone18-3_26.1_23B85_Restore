@@ -1,16 +1,16 @@
 @interface ISLivePhotoPlaybackBehavior
 - ($542DF6A934A12223D4D27E794AA667E2)playbackTimeRange;
-- (ISLivePhotoPlaybackBehavior)initWithInitialLayoutInfo:(id)a3 keyTime:(id *)a4 playbackTimeRange:(id *)a5 photoTransitionDuration:(double)a6 immediatelyShowsPhotoWhenPlaybackEnds:(BOOL)a7 hasBlurryTransition:(BOOL)a8;
+- (ISLivePhotoPlaybackBehavior)initWithInitialLayoutInfo:(id)info keyTime:(id *)time playbackTimeRange:(id *)range photoTransitionDuration:(double)duration immediatelyShowsPhotoWhenPlaybackEnds:(BOOL)ends hasBlurryTransition:(BOOL)transition;
 - (void)_didFinishPreparing;
 - (void)_handleDidFinish;
 - (void)_handleDidSeekToBeginning;
 - (void)_prepareVideoForPlaybackIfNeeded;
-- (void)_prerollWithCompletionHandler:(id)a3;
-- (void)_showVideoWithPlaybackID:(int64_t)a3;
-- (void)_startPlaybackWithPlaybackID:(int64_t)a3;
-- (void)_transitionToVideoWithPlaybackID:(int64_t)a3;
+- (void)_prerollWithCompletionHandler:(id)handler;
+- (void)_showVideoWithPlaybackID:(int64_t)d;
+- (void)_startPlaybackWithPlaybackID:(int64_t)d;
+- (void)_transitionToVideoWithPlaybackID:(int64_t)d;
 - (void)activeDidChange;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startPlayback;
 - (void)videoDidPlayToEnd;
 - (void)videoWillPlayToEnd;
@@ -27,9 +27,9 @@
   return self;
 }
 
-- (void)_showVideoWithPlaybackID:(int64_t)a3
+- (void)_showVideoWithPlaybackID:(int64_t)d
 {
-  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== a3)
+  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== d)
   {
     v4 = 0.0;
     if (self->_hasBlurryTransition)
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)_transitionToVideoWithPlaybackID:(int64_t)a3
+- (void)_transitionToVideoWithPlaybackID:(int64_t)d
 {
-  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== a3)
+  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== d)
   {
     LODWORD(v5) = 1.0;
     [(ISBehavior *)self setVideoPlayRate:v5];
@@ -55,7 +55,7 @@
     v6[2] = __64__ISLivePhotoPlaybackBehavior__transitionToVideoWithPlaybackID___block_invoke;
     v6[3] = &unk_279A2A410;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = d;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
@@ -76,13 +76,13 @@ uint64_t __64__ISLivePhotoPlaybackBehavior__transitionToVideoWithPlaybackID___bl
   return [v2 _showVideoWithPlaybackID:v4];
 }
 
-- (void)_startPlaybackWithPlaybackID:(int64_t)a3
+- (void)_startPlaybackWithPlaybackID:(int64_t)d
 {
-  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== a3)
+  if ([(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID]== d)
   {
     [(ISLivePhotoPlaybackBehavior *)self _setVideoReadyToPlay:0];
 
-    [(ISLivePhotoPlaybackBehavior *)self _transitionToVideoWithPlaybackID:a3];
+    [(ISLivePhotoPlaybackBehavior *)self _transitionToVideoWithPlaybackID:d];
   }
 }
 
@@ -90,31 +90,31 @@ uint64_t __64__ISLivePhotoPlaybackBehavior__transitionToVideoWithPlaybackID___bl
 {
   [(ISLivePhotoPlaybackBehavior *)self _setPreparing:0];
   [(ISLivePhotoPlaybackBehavior *)self _setVideoReadyToPlay:1];
-  v3 = [(ISLivePhotoPlaybackBehavior *)self _readyToPlayPlaybackID];
+  _readyToPlayPlaybackID = [(ISLivePhotoPlaybackBehavior *)self _readyToPlayPlaybackID];
 
-  [(ISLivePhotoPlaybackBehavior *)self _startPlaybackWithPlaybackID:v3];
+  [(ISLivePhotoPlaybackBehavior *)self _startPlaybackWithPlaybackID:_readyToPlayPlaybackID];
 }
 
-- (void)_prerollWithCompletionHandler:(id)a3
+- (void)_prerollWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ISPlayerSettings sharedInstance];
-  v6 = [v5 prerollBeforePlaying];
+  prerollBeforePlaying = [v5 prerollBeforePlaying];
 
-  if (v6)
+  if (prerollBeforePlaying)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __61__ISLivePhotoPlaybackBehavior__prerollWithCompletionHandler___block_invoke;
     v8[3] = &unk_279A2A640;
-    v9 = v4;
+    v9 = handlerCopy;
     LODWORD(v7) = 1.0;
     [(ISBehavior *)self prerollVideoAtRate:v8 completionHandler:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -175,9 +175,9 @@ void __56__ISLivePhotoPlaybackBehavior__handleDidSeekToBeginning__block_invoke_2
     *&range.start.value = *MEMORY[0x277CC08F0];
     range.start.epoch = *(MEMORY[0x277CC08F0] + 16);
     v3 = +[ISPlayerSettings sharedInstance];
-    v4 = [v3 startBehavior];
+    startBehavior = [v3 startBehavior];
 
-    if (v4 == 1)
+    if (startBehavior == 1)
     {
       p_keyTime = &self->_keyTime;
     }
@@ -227,11 +227,11 @@ void __63__ISLivePhotoPlaybackBehavior__prepareVideoForPlaybackIfNeeded__block_i
 
 - (void)startPlayback
 {
-  v3 = [(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID];
-  [(ISLivePhotoPlaybackBehavior *)self _setCurrentPlaybackID:v3 + 1];
-  v4 = [(ISLivePhotoPlaybackBehavior *)self _isVideoReadyToPlay];
-  v5 = v3 + 1;
-  if (v4)
+  _currentPlaybackID = [(ISLivePhotoPlaybackBehavior *)self _currentPlaybackID];
+  [(ISLivePhotoPlaybackBehavior *)self _setCurrentPlaybackID:_currentPlaybackID + 1];
+  _isVideoReadyToPlay = [(ISLivePhotoPlaybackBehavior *)self _isVideoReadyToPlay];
+  v5 = _currentPlaybackID + 1;
+  if (_isVideoReadyToPlay)
   {
 
     [(ISLivePhotoPlaybackBehavior *)self _startPlaybackWithPlaybackID:v5];
@@ -275,8 +275,8 @@ void __63__ISLivePhotoPlaybackBehavior__prepareVideoForPlaybackIfNeeded__block_i
   self->_isTransitioningToPhoto = 0;
   if (self->_delegateFlags.respondsToDidFinish)
   {
-    v4 = [(ISBehavior *)self delegate];
-    [v4 livePhotoPlaybackBehaviorDidFinish:self];
+    delegate = [(ISBehavior *)self delegate];
+    [delegate livePhotoPlaybackBehaviorDidFinish:self];
   }
 }
 
@@ -289,8 +289,8 @@ void __63__ISLivePhotoPlaybackBehavior__prepareVideoForPlaybackIfNeeded__block_i
     v4 = objc_alloc_init(ISPlayerOutputTransitionOptions);
     [(ISPlayerOutputTransitionOptions *)v4 setTransitionDuration:0.5];
     self->_isTransitioningToPhoto = 1;
-    v5 = [(ISBehavior *)self delegate];
-    [v5 livePhotoPlaybackBehaviorWillTransitionToPhoto:self];
+    delegate = [(ISBehavior *)self delegate];
+    [delegate livePhotoPlaybackBehaviorWillTransitionToPhoto:self];
 
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
@@ -310,38 +310,38 @@ void __49__ISLivePhotoPlaybackBehavior_videoWillPlayToEnd__block_invoke(uint64_t
   [WeakRetained _handleDidFinish];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v3 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = ISLivePhotoPlaybackBehavior;
-  v4 = a3;
-  [(ISBehavior *)&v6 setDelegate:v4];
-  p_delegateFlags = &v3->_delegateFlags;
-  v3->_delegateFlags.respondsToDidFinish = objc_opt_respondsToSelector() & 1;
-  LOBYTE(v3) = objc_opt_respondsToSelector();
+  delegateCopy = delegate;
+  [(ISBehavior *)&v6 setDelegate:delegateCopy];
+  p_delegateFlags = &selfCopy->_delegateFlags;
+  selfCopy->_delegateFlags.respondsToDidFinish = objc_opt_respondsToSelector() & 1;
+  LOBYTE(selfCopy) = objc_opt_respondsToSelector();
 
-  p_delegateFlags->respondsToDidBeginPlaying = v3 & 1;
+  p_delegateFlags->respondsToDidBeginPlaying = selfCopy & 1;
 }
 
-- (ISLivePhotoPlaybackBehavior)initWithInitialLayoutInfo:(id)a3 keyTime:(id *)a4 playbackTimeRange:(id *)a5 photoTransitionDuration:(double)a6 immediatelyShowsPhotoWhenPlaybackEnds:(BOOL)a7 hasBlurryTransition:(BOOL)a8
+- (ISLivePhotoPlaybackBehavior)initWithInitialLayoutInfo:(id)info keyTime:(id *)time playbackTimeRange:(id *)range photoTransitionDuration:(double)duration immediatelyShowsPhotoWhenPlaybackEnds:(BOOL)ends hasBlurryTransition:(BOOL)transition
 {
   v17.receiver = self;
   v17.super_class = ISLivePhotoPlaybackBehavior;
-  result = [(ISBehavior *)&v17 initWithInitialLayoutInfo:a3];
+  result = [(ISBehavior *)&v17 initWithInitialLayoutInfo:info];
   if (result)
   {
-    result->_immediatelyShowsPhotoWhenPlaybackEnds = a7;
-    v14 = *&a4->var0;
-    result->_keyTime.epoch = a4->var3;
+    result->_immediatelyShowsPhotoWhenPlaybackEnds = ends;
+    v14 = *&time->var0;
+    result->_keyTime.epoch = time->var3;
     *&result->_keyTime.value = v14;
-    result->_photoTransitionDuration = a6;
-    v15 = *&a5->var1.var1;
-    v16 = *&a5->var0.var0;
-    *&result->_playbackTimeRange.start.epoch = *&a5->var0.var3;
+    result->_photoTransitionDuration = duration;
+    v15 = *&range->var1.var1;
+    v16 = *&range->var0.var0;
+    *&result->_playbackTimeRange.start.epoch = *&range->var0.var3;
     *&result->_playbackTimeRange.duration.timescale = v15;
     *&result->_playbackTimeRange.start.value = v16;
-    result->_hasBlurryTransition = a8;
+    result->_hasBlurryTransition = transition;
   }
 
   return result;

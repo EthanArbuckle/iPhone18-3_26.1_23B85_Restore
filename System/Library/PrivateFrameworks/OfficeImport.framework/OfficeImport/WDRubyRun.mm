@@ -1,19 +1,19 @@
 @interface WDRubyRun
-- (WDRubyRun)initWithParagraph:(id)a3;
+- (WDRubyRun)initWithParagraph:(id)paragraph;
 - (id)description;
 @end
 
 @implementation WDRubyRun
 
-- (WDRubyRun)initWithParagraph:(id)a3
+- (WDRubyRun)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v11.receiver = self;
   v11.super_class = WDRubyRun;
-  v5 = [(WDCharacterRun *)&v11 initWithParagraph:v4];
+  v5 = [(WDCharacterRun *)&v11 initWithParagraph:paragraphCopy];
   if (v5)
   {
-    v6 = [[WDCharacterRun alloc] initWithParagraph:v4];
+    v6 = [[WDCharacterRun alloc] initWithParagraph:paragraphCopy];
     mPhoneticRun = v5->mPhoneticRun;
     v5->mPhoneticRun = v6;
 

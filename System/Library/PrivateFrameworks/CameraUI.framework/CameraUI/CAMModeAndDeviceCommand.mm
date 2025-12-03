@@ -1,27 +1,27 @@
 @interface CAMModeAndDeviceCommand
-- (BOOL)_shouldEnableLivePhotoCaptureForMode:(int64_t)a3 device:(int64_t)a4;
-- (CAMModeAndDeviceCommand)initWithCoder:(id)a3;
-- (CAMModeAndDeviceCommand)initWithGraphConfiguration:(id)a3 minimumExecutionTime:(double)a4 requestID:(int)a5 outputToExternalStorage:(BOOL)a6;
-- (id)_desiredConnectionWithCaptureEngineSecondaryDevice:(id)a3 secondaryVideoPreviewLayer:(id)a4;
-- (id)_desiredPrimaryInputsWithContext:(id)a3 captureEngineDevice:(id)a4;
-- (id)_desiredSecondaryInputsWithCaptureEngineSecondaryDevice:(id)a3;
-- (id)_existingInputsWithContext:(id)a3 without:(id)a4;
-- (id)_existingOutputsWithContext:(id)a3 without:(id)a4;
-- (id)_existingVideoPreviewLayersWithContext:(id)a3 without:(id)a4;
-- (id)_primaryEngineDeviceWithContext:(id)a3 graphConfiguration:(id)a4 resolvedDevice:(int64_t *)a5;
-- (id)_secondaryEngineDeviceWithContext:(id)a3 graphConfiguration:(id)a4 resolvedDevice:(int64_t *)a5;
-- (id)_secondaryInputsBecomingPrimaryWithContext:(id)a3 desiredPrimaryInputs:(id)a4;
-- (id)_specificEncodingBehaviorCommandForGraphConfiguration:(id)a3;
-- (id)_specificFramerateCommandForGraphConfiguration:(id)a3 withContext:(id)a4 configureSecondaryDevice:(BOOL)a5;
-- (id)_specificPreparePhotoSettingsCommandForGraphConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_shouldEnableLivePhotoCaptureForMode:(int64_t)mode device:(int64_t)device;
+- (CAMModeAndDeviceCommand)initWithCoder:(id)coder;
+- (CAMModeAndDeviceCommand)initWithGraphConfiguration:(id)configuration minimumExecutionTime:(double)time requestID:(int)d outputToExternalStorage:(BOOL)storage;
+- (id)_desiredConnectionWithCaptureEngineSecondaryDevice:(id)device secondaryVideoPreviewLayer:(id)layer;
+- (id)_desiredPrimaryInputsWithContext:(id)context captureEngineDevice:(id)device;
+- (id)_desiredSecondaryInputsWithCaptureEngineSecondaryDevice:(id)device;
+- (id)_existingInputsWithContext:(id)context without:(id)without;
+- (id)_existingOutputsWithContext:(id)context without:(id)without;
+- (id)_existingVideoPreviewLayersWithContext:(id)context without:(id)without;
+- (id)_primaryEngineDeviceWithContext:(id)context graphConfiguration:(id)configuration resolvedDevice:(int64_t *)device;
+- (id)_secondaryEngineDeviceWithContext:(id)context graphConfiguration:(id)configuration resolvedDevice:(int64_t *)device;
+- (id)_secondaryInputsBecomingPrimaryWithContext:(id)context desiredPrimaryInputs:(id)inputs;
+- (id)_specificEncodingBehaviorCommandForGraphConfiguration:(id)configuration;
+- (id)_specificFramerateCommandForGraphConfiguration:(id)configuration withContext:(id)context configureSecondaryDevice:(BOOL)device;
+- (id)_specificPreparePhotoSettingsCommandForGraphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sessionModificationLogReason;
 - (id)userInfo;
-- (void)_performPostConfigurationSanityCheckForGraphConfiguration:(id)a3 withContext:(id)a4;
-- (void)_performPostConfigurationSetupForGraphConfiguration:(id)a3 withContext:(id)a4;
-- (void)_sanitizeDeviceUsingContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (void)_performPostConfigurationSanityCheckForGraphConfiguration:(id)configuration withContext:(id)context;
+- (void)_performPostConfigurationSetupForGraphConfiguration:(id)configuration withContext:(id)context;
+- (void)_sanitizeDeviceUsingContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMModeAndDeviceCommand
@@ -29,100 +29,100 @@
 - (id)userInfo
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
-  [v3 setObject:v4 forKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
-  v5 = [(CAMModeAndDeviceCommand *)self _requestID];
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:v5];
+  _desiredGraphConfiguration = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
+  [v3 setObject:_desiredGraphConfiguration forKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
+  _requestID = [(CAMModeAndDeviceCommand *)self _requestID];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:_requestID];
   [v3 setObject:v6 forKeyedSubscript:@"CAMModeAndDeviceCommandRequestID"];
 
-  v7 = [(CAMModeAndDeviceCommand *)self _configurationError];
-  if (v7)
+  _configurationError = [(CAMModeAndDeviceCommand *)self _configurationError];
+  if (_configurationError)
   {
-    [v3 setObject:v7 forKey:@"CAMModeAndDeviceConfigurationError"];
+    [v3 setObject:_configurationError forKey:@"CAMModeAndDeviceConfigurationError"];
   }
 
   return v3;
 }
 
-- (CAMModeAndDeviceCommand)initWithGraphConfiguration:(id)a3 minimumExecutionTime:(double)a4 requestID:(int)a5 outputToExternalStorage:(BOOL)a6
+- (CAMModeAndDeviceCommand)initWithGraphConfiguration:(id)configuration minimumExecutionTime:(double)time requestID:(int)d outputToExternalStorage:(BOOL)storage
 {
-  v11 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = CAMModeAndDeviceCommand;
   v12 = [(CAMCaptureCommand *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->__desiredGraphConfiguration, a3);
+    objc_storeStrong(&v12->__desiredGraphConfiguration, configuration);
     resolvedGraphConfiguration = v13->__resolvedGraphConfiguration;
     v13->__resolvedGraphConfiguration = 0;
 
-    v13->__minimumExecutionTime = a4;
-    v13->__requestID = a5;
+    v13->__minimumExecutionTime = time;
+    v13->__requestID = d;
     configurationError = v13->__configurationError;
     v13->__configurationError = 0;
 
-    v13->__outputToExternalStorage = a6;
+    v13->__outputToExternalStorage = storage;
     v16 = v13;
   }
 
   return v13;
 }
 
-- (CAMModeAndDeviceCommand)initWithCoder:(id)a3
+- (CAMModeAndDeviceCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CAMModeAndDeviceCommand;
-  v5 = [(CAMCaptureCommand *)&v13 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
     desiredGraphConfiguration = v5->__desiredGraphConfiguration;
     v5->__desiredGraphConfiguration = v6;
 
-    v8 = [v4 decodeObjectForKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
+    v8 = [coderCopy decodeObjectForKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
     resolvedGraphConfiguration = v5->__resolvedGraphConfiguration;
     v5->__resolvedGraphConfiguration = v8;
 
-    [v4 decodeDoubleForKey:@"CAMModeAndDeviceCommandMinimumExecutionTime"];
+    [coderCopy decodeDoubleForKey:@"CAMModeAndDeviceCommandMinimumExecutionTime"];
     v5->__minimumExecutionTime = v10;
-    v5->__requestID = [v4 decodeInt32ForKey:@"CAMModeAndDeviceCommandRequestID"];
+    v5->__requestID = [coderCopy decodeInt32ForKey:@"CAMModeAndDeviceCommandRequestID"];
     v11 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMModeAndDeviceCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
+  [coderCopy encodeObject:v5 forKey:@"CAMModeAndDeviceCommandDesiredConfiguration"];
 
-  v6 = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
-  [v4 encodeObject:v6 forKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
+  _resolvedGraphConfiguration = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
+  [coderCopy encodeObject:_resolvedGraphConfiguration forKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
 
   [(CAMModeAndDeviceCommand *)self _minimumExecutionTime];
-  [v4 encodeDouble:@"CAMModeAndDeviceCommandMinimumExecutionTime" forKey:?];
-  [v4 encodeInt32:-[CAMModeAndDeviceCommand _requestID](self forKey:{"_requestID"), @"CAMModeAndDeviceCommandRequestID"}];
+  [coderCopy encodeDouble:@"CAMModeAndDeviceCommandMinimumExecutionTime" forKey:?];
+  [coderCopy encodeInt32:-[CAMModeAndDeviceCommand _requestID](self forKey:{"_requestID"), @"CAMModeAndDeviceCommandRequestID"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CAMModeAndDeviceCommand;
-  v4 = [(CAMCaptureCommand *)&v11 copyWithZone:a3];
-  v5 = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
+  v4 = [(CAMCaptureCommand *)&v11 copyWithZone:zone];
+  _desiredGraphConfiguration = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
   v6 = v4[4];
-  v4[4] = v5;
+  v4[4] = _desiredGraphConfiguration;
 
-  v7 = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
+  _resolvedGraphConfiguration = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
   v8 = v4[5];
-  v4[5] = v7;
+  v4[5] = _resolvedGraphConfiguration;
 
   [(CAMModeAndDeviceCommand *)self _minimumExecutionTime];
   v4[6] = v9;
@@ -133,32 +133,32 @@
 - (id)sessionModificationLogReason
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
-  v5 = [v4 shortDescription];
-  v6 = [v3 stringWithFormat:@"%@ (requestID=%d)", v5, -[CAMModeAndDeviceCommand _requestID](self, "_requestID")];
+  _desiredGraphConfiguration = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
+  shortDescription = [_desiredGraphConfiguration shortDescription];
+  v6 = [v3 stringWithFormat:@"%@ (requestID=%d)", shortDescription, -[CAMModeAndDeviceCommand _requestID](self, "_requestID")];
 
   return v6;
 }
 
-- (void)_sanitizeDeviceUsingContext:(id)a3
+- (void)_sanitizeDeviceUsingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
-  v7 = [v6 mode];
-  v8 = [v6 device];
-  v9 = [v6 videoConfiguration];
-  v10 = [v5 sanitizeDesiredDevice:v8 forMode:v7];
-  v11 = [v6 videoEncodingBehavior];
-  v12 = +[CAMCaptureConfiguration sanitizeVideoConfigurationForDesiredConfiguration:mode:device:trueVideoEnabled:frontRearSimultaneousVideoEnabled:](CAMCaptureConfiguration, "sanitizeVideoConfigurationForDesiredConfiguration:mode:device:trueVideoEnabled:frontRearSimultaneousVideoEnabled:", v9, v7, v10, [v6 trueVideoEnabled], objc_msgSend(v6, "frontRearSimultaneousVideoEnabled"));
+  _desiredGraphConfiguration = [(CAMModeAndDeviceCommand *)self _desiredGraphConfiguration];
+  mode = [_desiredGraphConfiguration mode];
+  device = [_desiredGraphConfiguration device];
+  videoConfiguration = [_desiredGraphConfiguration videoConfiguration];
+  v10 = [v5 sanitizeDesiredDevice:device forMode:mode];
+  videoEncodingBehavior = [_desiredGraphConfiguration videoEncodingBehavior];
+  v12 = +[CAMCaptureConfiguration sanitizeVideoConfigurationForDesiredConfiguration:mode:device:trueVideoEnabled:frontRearSimultaneousVideoEnabled:](CAMCaptureConfiguration, "sanitizeVideoConfigurationForDesiredConfiguration:mode:device:trueVideoEnabled:frontRearSimultaneousVideoEnabled:", videoConfiguration, mode, v10, [_desiredGraphConfiguration trueVideoEnabled], objc_msgSend(_desiredGraphConfiguration, "frontRearSimultaneousVideoEnabled"));
   v66 = v10;
-  v65 = [v4 videoDeviceForMode:v7 desiredDevice:v10 videoConfiguration:v12 videoStabilizationStrength:objc_msgSend(v6 frontRearSimultaneousVideoEnabled:"videoStabilizationStrength") resolvedDevice:{objc_msgSend(v6, "frontRearSimultaneousVideoEnabled"), &v66}];
+  v65 = [contextCopy videoDeviceForMode:mode desiredDevice:v10 videoConfiguration:v12 videoStabilizationStrength:objc_msgSend(_desiredGraphConfiguration frontRearSimultaneousVideoEnabled:"videoStabilizationStrength") resolvedDevice:{objc_msgSend(_desiredGraphConfiguration, "frontRearSimultaneousVideoEnabled"), &v66}];
 
   v13 = v66;
-  v15 = v7 == 2 && v12 == 0;
+  v15 = mode == 2 && v12 == 0;
   if ([v5 isSpatialModeSupported])
   {
-    v17 = v7 == 8 && v12 == 0;
+    v17 = mode == 8 && v12 == 0;
   }
 
   else
@@ -166,7 +166,7 @@
     v17 = 0;
   }
 
-  if ([v6 videoDynamicAspectRatio])
+  if ([_desiredGraphConfiguration videoDynamicAspectRatio])
   {
     v18 = v12 == 0;
   }
@@ -177,15 +177,15 @@
   }
 
   v19 = v18;
-  v63 = self;
+  selfCopy = self;
   v64 = v5;
-  v61 = v7;
+  v61 = mode;
   if (v15 || v17 || v19)
   {
-    v20 = [(CAMModeAndDeviceCommand *)self _outputToExternalStorage];
-    v21 = [v6 prefersHDR10BitVideo];
-    LOBYTE(v30) = [v6 frontRearSimultaneousVideoEnabled];
-    v62 = [v5 resolvedVideoConfigurationForMode:v7 device:v13 videoEncodingBehavior:v11 videoConfiguration:v12 outputToExternalStorage:v20 prefersHDR10BitVideo:v21 frontRearSimultaneousVideoEnabled:v30];
+    _outputToExternalStorage = [(CAMModeAndDeviceCommand *)self _outputToExternalStorage];
+    prefersHDR10BitVideo = [_desiredGraphConfiguration prefersHDR10BitVideo];
+    LOBYTE(v30) = [_desiredGraphConfiguration frontRearSimultaneousVideoEnabled];
+    v62 = [v5 resolvedVideoConfigurationForMode:mode device:v13 videoEncodingBehavior:videoEncodingBehavior videoConfiguration:v12 outputToExternalStorage:_outputToExternalStorage prefersHDR10BitVideo:prefersHDR10BitVideo frontRearSimultaneousVideoEnabled:v30];
   }
 
   else
@@ -194,78 +194,78 @@
   }
 
   v60 = [CAMCaptureGraphConfiguration alloc];
-  v59 = [v6 macroMode];
-  v58 = [v6 audioConfiguration];
-  v57 = [v6 mixAudioWithOthers];
-  v56 = [v6 windNoiseRemovalEnabled];
-  v55 = [v6 previewConfiguration];
-  v54 = [v6 previewSampleBufferVideoFormat];
-  v53 = [v6 previewFilters];
-  v52 = [v6 videoThumbnailOutputConfiguration];
-  v51 = [v6 photoEncodingBehavior];
-  v50 = [v6 videoEncodingBehavior];
-  v49 = [v6 enableAutoFPSVideo];
-  v48 = [v6 isVideoHDRSuspended];
-  v47 = [v6 aspectRatioCrop];
-  v46 = [v6 photoQualityPrioritization];
-  v45 = [v6 isCaptureMirrored];
-  v44 = [v6 enableRAWCaptureIfSupported];
-  v43 = [v6 semanticStyleSupport];
-  v42 = [v6 previewSemanticStyle];
-  v41 = [v6 smartStyles];
-  v40 = [v6 enableContentAwareDistortionCorrection];
-  v39 = [v6 enableResponsiveShutter];
-  v38 = [v6 suspendLivePhotoCapture];
-  v37 = [v6 videoStabilizationStrength];
-  v36 = [v6 maximumPhotoResolution];
-  v22 = [v6 colorSpace];
-  v23 = [v6 isVideoBinned];
-  v24 = [v6 enableDepthSuggestion];
-  v25 = [v6 enableZoomPIP];
-  v26 = [v6 customLensGroup];
-  v27 = [v6 trueVideoEnabled];
-  v28 = [v6 prefersHDR10BitVideo];
-  BYTE2(v35) = [v6 frontRearSimultaneousVideoEnabled];
-  BYTE1(v35) = v28;
-  LOBYTE(v35) = v27;
-  BYTE2(v34) = v25;
-  BYTE1(v34) = v24;
-  LOBYTE(v34) = v23;
-  BYTE2(v33) = v38;
-  BYTE1(v33) = v39;
-  LOBYTE(v33) = v40;
-  BYTE1(v32) = v44;
-  LOBYTE(v32) = v45;
-  BYTE1(v31) = v48;
-  LOBYTE(v31) = v49;
-  LOBYTE(v30) = v56;
-  v29 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v60, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", v61, v13, v59, v62, v58, v57, v30, v55, v54, v53, v52, v51, v50, v31, v47, v46, v32, v43, v42, v41, v33, v37, v36, v22, v34, v26, v35, [v6 videoDynamicAspectRatio], objc_msgSend(v6, "smartFramingFieldOfView"));
+  macroMode = [_desiredGraphConfiguration macroMode];
+  audioConfiguration = [_desiredGraphConfiguration audioConfiguration];
+  mixAudioWithOthers = [_desiredGraphConfiguration mixAudioWithOthers];
+  windNoiseRemovalEnabled = [_desiredGraphConfiguration windNoiseRemovalEnabled];
+  previewConfiguration = [_desiredGraphConfiguration previewConfiguration];
+  previewSampleBufferVideoFormat = [_desiredGraphConfiguration previewSampleBufferVideoFormat];
+  previewFilters = [_desiredGraphConfiguration previewFilters];
+  videoThumbnailOutputConfiguration = [_desiredGraphConfiguration videoThumbnailOutputConfiguration];
+  photoEncodingBehavior = [_desiredGraphConfiguration photoEncodingBehavior];
+  videoEncodingBehavior2 = [_desiredGraphConfiguration videoEncodingBehavior];
+  enableAutoFPSVideo = [_desiredGraphConfiguration enableAutoFPSVideo];
+  isVideoHDRSuspended = [_desiredGraphConfiguration isVideoHDRSuspended];
+  aspectRatioCrop = [_desiredGraphConfiguration aspectRatioCrop];
+  photoQualityPrioritization = [_desiredGraphConfiguration photoQualityPrioritization];
+  isCaptureMirrored = [_desiredGraphConfiguration isCaptureMirrored];
+  enableRAWCaptureIfSupported = [_desiredGraphConfiguration enableRAWCaptureIfSupported];
+  semanticStyleSupport = [_desiredGraphConfiguration semanticStyleSupport];
+  previewSemanticStyle = [_desiredGraphConfiguration previewSemanticStyle];
+  smartStyles = [_desiredGraphConfiguration smartStyles];
+  enableContentAwareDistortionCorrection = [_desiredGraphConfiguration enableContentAwareDistortionCorrection];
+  enableResponsiveShutter = [_desiredGraphConfiguration enableResponsiveShutter];
+  suspendLivePhotoCapture = [_desiredGraphConfiguration suspendLivePhotoCapture];
+  videoStabilizationStrength = [_desiredGraphConfiguration videoStabilizationStrength];
+  maximumPhotoResolution = [_desiredGraphConfiguration maximumPhotoResolution];
+  colorSpace = [_desiredGraphConfiguration colorSpace];
+  isVideoBinned = [_desiredGraphConfiguration isVideoBinned];
+  enableDepthSuggestion = [_desiredGraphConfiguration enableDepthSuggestion];
+  enableZoomPIP = [_desiredGraphConfiguration enableZoomPIP];
+  customLensGroup = [_desiredGraphConfiguration customLensGroup];
+  trueVideoEnabled = [_desiredGraphConfiguration trueVideoEnabled];
+  prefersHDR10BitVideo2 = [_desiredGraphConfiguration prefersHDR10BitVideo];
+  BYTE2(v35) = [_desiredGraphConfiguration frontRearSimultaneousVideoEnabled];
+  BYTE1(v35) = prefersHDR10BitVideo2;
+  LOBYTE(v35) = trueVideoEnabled;
+  BYTE2(v34) = enableZoomPIP;
+  BYTE1(v34) = enableDepthSuggestion;
+  LOBYTE(v34) = isVideoBinned;
+  BYTE2(v33) = suspendLivePhotoCapture;
+  BYTE1(v33) = enableResponsiveShutter;
+  LOBYTE(v33) = enableContentAwareDistortionCorrection;
+  BYTE1(v32) = enableRAWCaptureIfSupported;
+  LOBYTE(v32) = isCaptureMirrored;
+  BYTE1(v31) = isVideoHDRSuspended;
+  LOBYTE(v31) = enableAutoFPSVideo;
+  LOBYTE(v30) = windNoiseRemovalEnabled;
+  v29 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v60, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", v61, v13, macroMode, v62, audioConfiguration, mixAudioWithOthers, v30, previewConfiguration, previewSampleBufferVideoFormat, previewFilters, videoThumbnailOutputConfiguration, photoEncodingBehavior, videoEncodingBehavior2, v31, aspectRatioCrop, photoQualityPrioritization, v32, semanticStyleSupport, previewSemanticStyle, smartStyles, v33, videoStabilizationStrength, maximumPhotoResolution, colorSpace, v34, customLensGroup, v35, [_desiredGraphConfiguration videoDynamicAspectRatio], objc_msgSend(_desiredGraphConfiguration, "smartFramingFieldOfView"));
 
-  [(CAMModeAndDeviceCommand *)v63 _setResolvedGraphConfiguration:v29];
+  [(CAMModeAndDeviceCommand *)selfCopy _setResolvedGraphConfiguration:v29];
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v88 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(CAMModeAndDeviceCommand *)self _sanitizeDeviceUsingContext:v4];
-  v5 = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
-  v6 = [v5 device];
-  v7 = [v4 currentCaptureSession];
-  v81 = v6;
-  v8 = [(CAMModeAndDeviceCommand *)self _primaryEngineDeviceWithContext:v4 graphConfiguration:v5 resolvedDevice:&v81];
-  if (v81 != v6)
+  contextCopy = context;
+  [(CAMModeAndDeviceCommand *)self _sanitizeDeviceUsingContext:contextCopy];
+  _resolvedGraphConfiguration = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
+  device = [_resolvedGraphConfiguration device];
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  v81 = device;
+  v8 = [(CAMModeAndDeviceCommand *)self _primaryEngineDeviceWithContext:contextCopy graphConfiguration:_resolvedGraphConfiguration resolvedDevice:&v81];
+  if (v81 != device)
   {
     v9 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(CAMModeAndDeviceCommand *)&v81 executeWithContext:v6, v9];
+      [(CAMModeAndDeviceCommand *)&v81 executeWithContext:device, v9];
     }
   }
 
-  v80 = [v8 captureDevice];
-  v10 = [v8 videoDeviceFormatForGraphConfiguration:v5 captureSession:v7 deviceIsSecondary:0];
-  v11 = [v8 videoDevicePresetForGraphConfiguration:v5 captureSession:v7];
+  captureDevice = [v8 captureDevice];
+  v10 = [v8 videoDeviceFormatForGraphConfiguration:_resolvedGraphConfiguration captureSession:currentCaptureSession deviceIsSecondary:0];
+  v11 = [v8 videoDevicePresetForGraphConfiguration:_resolvedGraphConfiguration captureSession:currentCaptureSession];
   v12 = v11;
   if (v10 && v11)
   {
@@ -292,9 +292,9 @@
 
 LABEL_13:
   v79 = v8;
-  v28 = [(CAMModeAndDeviceCommand *)self _desiredPrimaryInputsWithContext:v4 captureEngineDevice:v8];
-  v29 = [(CAMModeAndDeviceCommand *)self _existingInputsWithContext:v4 without:v28];
-  v30 = [(CAMModeAndDeviceCommand *)self _secondaryInputsBecomingPrimaryWithContext:v4 desiredPrimaryInputs:v28];
+  v28 = [(CAMModeAndDeviceCommand *)self _desiredPrimaryInputsWithContext:contextCopy captureEngineDevice:v8];
+  v29 = [(CAMModeAndDeviceCommand *)self _existingInputsWithContext:contextCopy without:v28];
+  v30 = [(CAMModeAndDeviceCommand *)self _secondaryInputsBecomingPrimaryWithContext:contextCopy desiredPrimaryInputs:v28];
   v31 = [MEMORY[0x1E695DF70] arrayWithArray:v29];
   v75 = v30;
   [v31 addObjectsFromArray:v30];
@@ -317,7 +317,7 @@ LABEL_13:
     }
   }
 
-  [v7 cam_removeInputs:v31];
+  [currentCaptureSession cam_removeInputs:v31];
   if (v10 || !v12)
   {
     v36 = *MEMORY[0x1E6986AF0];
@@ -325,9 +325,9 @@ LABEL_13:
     v12 = v36;
   }
 
-  if ([v80 supportsAVCaptureSessionPreset:v12] && objc_msgSend(v7, "canSetSessionPreset:", v12))
+  if ([captureDevice supportsAVCaptureSessionPreset:v12] && objc_msgSend(currentCaptureSession, "canSetSessionPreset:", v12))
   {
-    [v7 setSessionPreset:v12];
+    [currentCaptureSession setSessionPreset:v12];
   }
 
   else
@@ -335,28 +335,28 @@ LABEL_13:
     v37 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      [(CAMModeAndDeviceCommand *)v12 executeWithContext:v80, v37];
+      [(CAMModeAndDeviceCommand *)v12 executeWithContext:captureDevice, v37];
     }
   }
 
   v76 = v28;
-  [v7 cam_ensureInputs:v28];
+  [currentCaptureSession cam_ensureInputs:v28];
   if (v10)
   {
-    [v80 setActiveFormat:v10];
+    [captureDevice setActiveFormat:v10];
   }
 
   v74 = objc_alloc_init(CAMResetVideoMinFrameDurationOverrideCommand);
   [(CAMCaptureCommand *)self addSubcommand:?];
   if (v10)
   {
-    if ([v80 isAutoVideoFrameRateEnabled])
+    if ([captureDevice isAutoVideoFrameRateEnabled])
     {
       v38 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:0];
       [(CAMCaptureCommand *)self addSubcommand:v38];
     }
 
-    v39 = [(CAMModeAndDeviceCommand *)self _specificFramerateCommandForGraphConfiguration:v5 withContext:v4 configureSecondaryDevice:0];
+    v39 = [(CAMModeAndDeviceCommand *)self _specificFramerateCommandForGraphConfiguration:_resolvedGraphConfiguration withContext:contextCopy configureSecondaryDevice:0];
     if (v39)
     {
       [(CAMCaptureCommand *)self addSubcommand:v39];
@@ -365,34 +365,34 @@ LABEL_13:
 
   v77 = v12;
   v78 = v10;
-  v40 = [v4 outputsForGraphConfiguration:v5];
-  v72 = [(CAMModeAndDeviceCommand *)self _existingOutputsWithContext:v4 without:v40];
+  v40 = [contextCopy outputsForGraphConfiguration:_resolvedGraphConfiguration];
+  v72 = [(CAMModeAndDeviceCommand *)self _existingOutputsWithContext:contextCopy without:v40];
   v73 = v40;
-  [v7 cam_ensureOutputs:v40 whileRemoving:?];
-  v41 = [v4 primaryVideoPreviewLayerForGraphConfiguration:v5];
+  [currentCaptureSession cam_ensureOutputs:v40 whileRemoving:?];
+  v41 = [contextCopy primaryVideoPreviewLayerForGraphConfiguration:_resolvedGraphConfiguration];
   v85 = v41;
   v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
-  v43 = [(CAMModeAndDeviceCommand *)self _existingVideoPreviewLayersWithContext:v4 without:v42];
+  v43 = [(CAMModeAndDeviceCommand *)self _existingVideoPreviewLayersWithContext:contextCopy without:v42];
 
   v84 = v41;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
   v71 = v43;
-  [v7 cam_ensureVideoPreviewLayers:v44 withConnections:1 whileRemoving:v43];
+  [currentCaptureSession cam_ensureVideoPreviewLayers:v44 withConnections:1 whileRemoving:v43];
 
   buf[0] = 0;
-  [v5 secondaryDevice:buf];
+  [_resolvedGraphConfiguration secondaryDevice:buf];
   if (buf[0] == 1)
   {
     v68 = v29;
-    v45 = [(CAMModeAndDeviceCommand *)self _secondaryEngineDeviceWithContext:v4 graphConfiguration:v5 resolvedDevice:&v81];
+    v45 = [(CAMModeAndDeviceCommand *)self _secondaryEngineDeviceWithContext:contextCopy graphConfiguration:_resolvedGraphConfiguration resolvedDevice:&v81];
     v67 = [(CAMModeAndDeviceCommand *)self _desiredSecondaryInputsWithCaptureEngineSecondaryDevice:v45];
-    [v7 cam_ensureInputs:? exclusively:? withConnections:?];
-    v46 = [v45 captureDevice];
-    v47 = [v45 videoDeviceFormatForGraphConfiguration:v5 captureSession:v7 deviceIsSecondary:1];
-    v66 = v46;
+    [currentCaptureSession cam_ensureInputs:? exclusively:? withConnections:?];
+    captureDevice2 = [v45 captureDevice];
+    v47 = [v45 videoDeviceFormatForGraphConfiguration:_resolvedGraphConfiguration captureSession:currentCaptureSession deviceIsSecondary:1];
+    v66 = captureDevice2;
     if (v47)
     {
-      [v46 setActiveFormat:v47];
+      [captureDevice2 setActiveFormat:v47];
     }
 
     else
@@ -408,65 +408,65 @@ LABEL_13:
     }
 
     v70 = v31;
-    v65 = [[CAMResetVideoMinFrameDurationOverrideCommand alloc] initForSecondaryDevice];
+    initForSecondaryDevice = [[CAMResetVideoMinFrameDurationOverrideCommand alloc] initForSecondaryDevice];
     [(CAMCaptureCommand *)self addSubcommand:?];
     if (v47)
     {
       v57 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:0 configureSecondaryDevice:1];
       [(CAMCaptureCommand *)self addSubcommand:v57];
-      v58 = [(CAMModeAndDeviceCommand *)self _specificFramerateCommandForGraphConfiguration:v5 withContext:v4 configureSecondaryDevice:1];
+      v58 = [(CAMModeAndDeviceCommand *)self _specificFramerateCommandForGraphConfiguration:_resolvedGraphConfiguration withContext:contextCopy configureSecondaryDevice:1];
       if (v58)
       {
         [(CAMCaptureCommand *)self addSubcommand:v58];
       }
     }
 
-    v59 = [v4 secondaryVideoPreviewLayerForGraphConfiguration:v5];
+    v59 = [contextCopy secondaryVideoPreviewLayerForGraphConfiguration:_resolvedGraphConfiguration];
     v83 = v59;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
-    [v7 cam_ensureVideoPreviewLayers:v60 withConnections:0 whileRemoving:MEMORY[0x1E695E0F0]];
+    [currentCaptureSession cam_ensureVideoPreviewLayers:v60 withConnections:0 whileRemoving:MEMORY[0x1E695E0F0]];
 
     v61 = [(CAMModeAndDeviceCommand *)self _desiredConnectionWithCaptureEngineSecondaryDevice:v45 secondaryVideoPreviewLayer:v59];
     v82 = v61;
     v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
-    [v7 cam_ensureConnections:v62];
+    [currentCaptureSession cam_ensureConnections:v62];
 
     v29 = v68;
     v31 = v70;
   }
 
-  v63 = [v4 controlsForGraphConfiguration:v5 recording:0];
-  [v7 cam_ensureControls:v63];
-  [(CAMModeAndDeviceCommand *)self _performPostConfigurationSetupForGraphConfiguration:v5 withContext:v4];
-  v64 = [[CAMGraphConfigurationInspectionCommand alloc] initWithKnownGraphConfiguration:v5];
+  v63 = [contextCopy controlsForGraphConfiguration:_resolvedGraphConfiguration recording:0];
+  [currentCaptureSession cam_ensureControls:v63];
+  [(CAMModeAndDeviceCommand *)self _performPostConfigurationSetupForGraphConfiguration:_resolvedGraphConfiguration withContext:contextCopy];
+  v64 = [[CAMGraphConfigurationInspectionCommand alloc] initWithKnownGraphConfiguration:_resolvedGraphConfiguration];
   [(CAMCaptureCommand *)self addSubcommand:v64];
-  [(CAMModeAndDeviceCommand *)self _performPostConfigurationSanityCheckForGraphConfiguration:v5 withContext:v4];
+  [(CAMModeAndDeviceCommand *)self _performPostConfigurationSanityCheckForGraphConfiguration:_resolvedGraphConfiguration withContext:contextCopy];
 }
 
-- (id)_primaryEngineDeviceWithContext:(id)a3 graphConfiguration:(id)a4 resolvedDevice:(int64_t *)a5
+- (id)_primaryEngineDeviceWithContext:(id)context graphConfiguration:(id)configuration resolvedDevice:(int64_t *)device
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 mode];
-  v10 = [v7 device];
-  v11 = [v7 videoConfiguration];
-  v12 = [v7 videoStabilizationStrength];
-  v13 = [v7 frontRearSimultaneousVideoEnabled];
+  configurationCopy = configuration;
+  contextCopy = context;
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
+  videoConfiguration = [configurationCopy videoConfiguration];
+  videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+  frontRearSimultaneousVideoEnabled = [configurationCopy frontRearSimultaneousVideoEnabled];
 
-  v14 = [v8 videoDeviceForMode:v9 desiredDevice:v10 videoConfiguration:v11 videoStabilizationStrength:v12 frontRearSimultaneousVideoEnabled:v13 resolvedDevice:a5];
+  v14 = [contextCopy videoDeviceForMode:mode desiredDevice:device videoConfiguration:videoConfiguration videoStabilizationStrength:videoStabilizationStrength frontRearSimultaneousVideoEnabled:frontRearSimultaneousVideoEnabled resolvedDevice:device];
 
   return v14;
 }
 
-- (id)_secondaryEngineDeviceWithContext:(id)a3 graphConfiguration:(id)a4 resolvedDevice:(int64_t *)a5
+- (id)_secondaryEngineDeviceWithContext:(id)context graphConfiguration:(id)configuration resolvedDevice:(int64_t *)device
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  configurationCopy = configuration;
   v12 = 0;
-  v9 = [v8 secondaryDevice:&v12];
+  v9 = [configurationCopy secondaryDevice:&v12];
   if (v12 == 1)
   {
-    v10 = [v7 videoDeviceForMode:objc_msgSend(v8 desiredDevice:"mode") videoConfiguration:v9 videoStabilizationStrength:objc_msgSend(v8 frontRearSimultaneousVideoEnabled:"secondaryDeviceVideoConfiguration") resolvedDevice:{objc_msgSend(v8, "secondaryDeviceVideoStabilizationStrength"), objc_msgSend(v8, "frontRearSimultaneousVideoEnabled"), a5}];
+    v10 = [contextCopy videoDeviceForMode:objc_msgSend(configurationCopy desiredDevice:"mode") videoConfiguration:v9 videoStabilizationStrength:objc_msgSend(configurationCopy frontRearSimultaneousVideoEnabled:"secondaryDeviceVideoConfiguration") resolvedDevice:{objc_msgSend(configurationCopy, "secondaryDeviceVideoStabilizationStrength"), objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled"), device}];
   }
 
   else
@@ -477,221 +477,221 @@ LABEL_13:
   return v10;
 }
 
-- (id)_desiredPrimaryInputsWithContext:(id)a3 captureEngineDevice:(id)a4
+- (id)_desiredPrimaryInputsWithContext:(id)context captureEngineDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
-  v9 = [v8 audioConfiguration];
+  contextCopy = context;
+  deviceCopy = device;
+  _resolvedGraphConfiguration = [(CAMModeAndDeviceCommand *)self _resolvedGraphConfiguration];
+  audioConfiguration = [_resolvedGraphConfiguration audioConfiguration];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [v7 captureDeviceInput];
+  captureDeviceInput = [deviceCopy captureDeviceInput];
 
-  if (v11)
+  if (captureDeviceInput)
   {
-    [v10 addObject:v11];
+    [v10 addObject:captureDeviceInput];
   }
 
-  if (v9)
+  if (audioConfiguration)
   {
-    v12 = [v6 audioDeviceInput];
-    if (v12)
+    audioDeviceInput = [contextCopy audioDeviceInput];
+    if (audioDeviceInput)
     {
-      [v10 addObject:v12];
+      [v10 addObject:audioDeviceInput];
     }
   }
 
   return v10;
 }
 
-- (id)_desiredSecondaryInputsWithCaptureEngineSecondaryDevice:(id)a3
+- (id)_desiredSecondaryInputsWithCaptureEngineSecondaryDevice:(id)device
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 captureDeviceInput];
+  captureDeviceInput = [deviceCopy captureDeviceInput];
 
-  if (v6)
+  if (captureDeviceInput)
   {
-    [v5 addObject:v6];
+    [v5 addObject:captureDeviceInput];
   }
 
   return v5;
 }
 
-- (id)_secondaryInputsBecomingPrimaryWithContext:(id)a3 desiredPrimaryInputs:(id)a4
+- (id)_secondaryInputsBecomingPrimaryWithContext:(id)context desiredPrimaryInputs:(id)inputs
 {
-  v5 = a4;
-  v6 = [a3 currentSecondaryVideoDeviceInput];
+  inputsCopy = inputs;
+  currentSecondaryVideoDeviceInput = [context currentSecondaryVideoDeviceInput];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6 && [v5 containsObject:v6])
+  if (currentSecondaryVideoDeviceInput && [inputsCopy containsObject:currentSecondaryVideoDeviceInput])
   {
-    [v7 addObject:v6];
+    [v7 addObject:currentSecondaryVideoDeviceInput];
   }
 
   return v7;
 }
 
-- (id)_existingInputsWithContext:(id)a3 without:(id)a4
+- (id)_existingInputsWithContext:(id)context without:(id)without
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 currentVideoDeviceInput];
-  v8 = [v6 currentSecondaryVideoDeviceInput];
-  v9 = [v6 currentAudioDeviceInput];
+  withoutCopy = without;
+  contextCopy = context;
+  currentVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+  currentSecondaryVideoDeviceInput = [contextCopy currentSecondaryVideoDeviceInput];
+  currentAudioDeviceInput = [contextCopy currentAudioDeviceInput];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = v10;
-  if (v7)
+  if (currentVideoDeviceInput)
   {
-    [v10 addObject:v7];
+    [v10 addObject:currentVideoDeviceInput];
   }
 
-  if (v8)
+  if (currentSecondaryVideoDeviceInput)
   {
-    [v11 addObject:v8];
+    [v11 addObject:currentSecondaryVideoDeviceInput];
   }
 
-  if (v9)
+  if (currentAudioDeviceInput)
   {
-    [v11 addObject:v9];
+    [v11 addObject:currentAudioDeviceInput];
   }
 
-  [v11 removeObjectsInArray:v5];
+  [v11 removeObjectsInArray:withoutCopy];
 
   return v11;
 }
 
-- (id)_existingOutputsWithContext:(id)a3 without:(id)a4
+- (id)_existingOutputsWithContext:(id)context without:(id)without
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 currentStillImageOutput];
-  v8 = [v6 currentMovieFileOutput];
-  v9 = [v6 currentPanoramaOutput];
-  v10 = [v6 currentMetadataOutput];
-  v11 = [v6 currentEffectsPreviewOutput];
-  v12 = [v6 currentVideoThumbnailOutput];
+  withoutCopy = without;
+  contextCopy = context;
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
+  currentPanoramaOutput = [contextCopy currentPanoramaOutput];
+  currentMetadataOutput = [contextCopy currentMetadataOutput];
+  currentEffectsPreviewOutput = [contextCopy currentEffectsPreviewOutput];
+  currentVideoThumbnailOutput = [contextCopy currentVideoThumbnailOutput];
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = v13;
-  if (v7)
+  if (currentStillImageOutput)
   {
-    [v13 addObject:v7];
+    [v13 addObject:currentStillImageOutput];
   }
 
-  if (v8)
+  if (currentMovieFileOutput)
   {
-    [v14 addObject:v8];
+    [v14 addObject:currentMovieFileOutput];
   }
 
-  if (v9)
+  if (currentPanoramaOutput)
   {
-    [v14 addObject:v9];
+    [v14 addObject:currentPanoramaOutput];
   }
 
-  if (v10)
+  if (currentMetadataOutput)
   {
-    [v14 addObject:v10];
+    [v14 addObject:currentMetadataOutput];
   }
 
-  if (v11)
+  if (currentEffectsPreviewOutput)
   {
-    [v14 addObject:v11];
+    [v14 addObject:currentEffectsPreviewOutput];
   }
 
-  if (v12)
+  if (currentVideoThumbnailOutput)
   {
-    [v14 addObject:v12];
+    [v14 addObject:currentVideoThumbnailOutput];
   }
 
-  [v14 removeObjectsInArray:v5];
+  [v14 removeObjectsInArray:withoutCopy];
 
   return v14;
 }
 
-- (id)_existingVideoPreviewLayersWithContext:(id)a3 without:(id)a4
+- (id)_existingVideoPreviewLayersWithContext:(id)context without:(id)without
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 currentCaptureSession];
-  v8 = [v6 currentVideoPreviewLayer];
-  v9 = [v6 currentSecondaryVideoPreviewLayer];
+  withoutCopy = without;
+  contextCopy = context;
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  currentVideoPreviewLayer = [contextCopy currentVideoPreviewLayer];
+  currentSecondaryVideoPreviewLayer = [contextCopy currentSecondaryVideoPreviewLayer];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [v8 session];
+  session = [currentVideoPreviewLayer session];
 
-  if (v11 == v7)
+  if (session == currentCaptureSession)
   {
-    [v10 addObject:v8];
+    [v10 addObject:currentVideoPreviewLayer];
   }
 
-  v12 = [v9 session];
+  session2 = [currentSecondaryVideoPreviewLayer session];
 
-  if (v12 == v7)
+  if (session2 == currentCaptureSession)
   {
-    [v10 addObject:v9];
+    [v10 addObject:currentSecondaryVideoPreviewLayer];
   }
 
-  [v10 removeObjectsInArray:v5];
+  [v10 removeObjectsInArray:withoutCopy];
 
   return v10;
 }
 
-- (id)_desiredConnectionWithCaptureEngineSecondaryDevice:(id)a3 secondaryVideoPreviewLayer:(id)a4
+- (id)_desiredConnectionWithCaptureEngineSecondaryDevice:(id)device secondaryVideoPreviewLayer:(id)layer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 captureDevice];
-  v8 = [v6 captureDeviceInput];
+  layerCopy = layer;
+  deviceCopy = device;
+  captureDevice = [deviceCopy captureDevice];
+  captureDeviceInput = [deviceCopy captureDeviceInput];
 
   v9 = *MEMORY[0x1E6987608];
-  v10 = [v7 deviceType];
-  v11 = [v8 portsWithMediaType:v9 sourceDeviceType:v10 sourceDevicePosition:{objc_msgSend(v7, "position")}];
-  v12 = [v11 firstObject];
+  deviceType = [captureDevice deviceType];
+  v11 = [captureDeviceInput portsWithMediaType:v9 sourceDeviceType:deviceType sourceDevicePosition:{objc_msgSend(captureDevice, "position")}];
+  firstObject = [v11 firstObject];
 
-  v13 = [MEMORY[0x1E6987070] connectionWithInputPort:v12 videoPreviewLayer:v5];
+  v13 = [MEMORY[0x1E6987070] connectionWithInputPort:firstObject videoPreviewLayer:layerCopy];
 
   return v13;
 }
 
-- (id)_specificFramerateCommandForGraphConfiguration:(id)a3 withContext:(id)a4 configureSecondaryDevice:(BOOL)a5
+- (id)_specificFramerateCommandForGraphConfiguration:(id)configuration withContext:(id)context configureSecondaryDevice:(BOOL)device
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mode];
-  if (v9 > 9)
+  deviceCopy = device;
+  configurationCopy = configuration;
+  contextCopy = context;
+  mode = [configurationCopy mode];
+  if (mode > 9)
   {
     v11 = 0;
   }
 
-  else if (v9 == 3)
+  else if (mode == 3)
   {
     v13 = [CAMPanoramaConfigurationCommand alloc];
-    v14 = [v8 currentPanoramaConfiguration];
-    v11 = [(CAMPanoramaConfigurationCommand *)v13 initWithConfiguration:v14];
+    currentPanoramaConfiguration = [contextCopy currentPanoramaConfiguration];
+    v11 = [(CAMPanoramaConfigurationCommand *)v13 initWithConfiguration:currentPanoramaConfiguration];
   }
 
   else
   {
-    v10 = [v7 videoConfiguration];
-    if (v5 && ([v7 secondaryDeviceUsesPrimaryVideoConfigurationForFrameRate] & 1) == 0)
+    videoConfiguration = [configurationCopy videoConfiguration];
+    if (deviceCopy && ([configurationCopy secondaryDeviceUsesPrimaryVideoConfigurationForFrameRate] & 1) == 0)
     {
-      v10 = [v7 secondaryDeviceVideoConfiguration];
+      videoConfiguration = [configurationCopy secondaryDeviceVideoConfiguration];
     }
 
-    v11 = [[CAMVideoFramerateCommand alloc] initWithVideoConfiguration:v10 configureSecondaryDevice:v5];
+    v11 = [[CAMVideoFramerateCommand alloc] initWithVideoConfiguration:videoConfiguration configureSecondaryDevice:deviceCopy];
   }
 
   return v11;
 }
 
-- (id)_specificEncodingBehaviorCommandForGraphConfiguration:(id)a3
+- (id)_specificEncodingBehaviorCommandForGraphConfiguration:(id)configuration
 {
-  v3 = a3;
-  if ([v3 mode] == 3)
+  configurationCopy = configuration;
+  if ([configurationCopy mode] == 3)
   {
-    v4 = -[CAMPanoramaEncodingCommand initWithPhotoEncodingBehavior:]([CAMPanoramaEncodingCommand alloc], "initWithPhotoEncodingBehavior:", [v3 photoEncodingBehavior]);
+    v4 = -[CAMPanoramaEncodingCommand initWithPhotoEncodingBehavior:]([CAMPanoramaEncodingCommand alloc], "initWithPhotoEncodingBehavior:", [configurationCopy photoEncodingBehavior]);
   }
 
   else
@@ -702,124 +702,124 @@ LABEL_13:
   return v4;
 }
 
-- (id)_specificPreparePhotoSettingsCommandForGraphConfiguration:(id)a3
+- (id)_specificPreparePhotoSettingsCommandForGraphConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 mode];
-  if (v4 > 9 || ((1 << v4) & 0x251) == 0)
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
+  if (mode > 9 || ((1 << mode) & 0x251) == 0)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [[CAMPreparePhotoSettingsCommand alloc] initWithGraphConfiguration:v3];
+    v6 = [[CAMPreparePhotoSettingsCommand alloc] initWithGraphConfiguration:configurationCopy];
   }
 
   return v6;
 }
 
-- (void)_performPostConfigurationSetupForGraphConfiguration:(id)a3 withContext:(id)a4
+- (void)_performPostConfigurationSetupForGraphConfiguration:(id)configuration withContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 mode];
-  v7 = [v5 device];
-  v8 = [v5 devicePosition];
+  configurationCopy = configuration;
+  mode = [configurationCopy mode];
+  device = [configurationCopy device];
+  devicePosition = [configurationCopy devicePosition];
   v101[0] = 0;
-  [v5 secondaryDevice:v101];
+  [configurationCopy secondaryDevice:v101];
   v9 = +[CAMCaptureCapabilities capabilities];
-  v98 = v7;
-  v95 = [[CAMIrisVideoRecordingCommand alloc] initWithVideoRecordingEnabled:[(CAMModeAndDeviceCommand *)self _shouldEnableLivePhotoCaptureForMode:v6 device:v7]];
+  v98 = device;
+  v95 = [[CAMIrisVideoRecordingCommand alloc] initWithVideoRecordingEnabled:[(CAMModeAndDeviceCommand *)self _shouldEnableLivePhotoCaptureForMode:mode device:device]];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v94 = -[CAMPausePairedVideoRecordingCommand initWithRecordingPaused:]([CAMPausePairedVideoRecordingCommand alloc], "initWithRecordingPaused:", [v5 suspendLivePhotoCapture]);
+  v94 = -[CAMPausePairedVideoRecordingCommand initWithRecordingPaused:]([CAMPausePairedVideoRecordingCommand alloc], "initWithRecordingPaused:", [configurationCopy suspendLivePhotoCapture]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v10 = -[CAMCTMVideoCaptureEnabledCommand initWithEnabled:]([CAMCTMVideoCaptureEnabledCommand alloc], "initWithEnabled:", [v9 isCTMVideoCaptureSupportedForMode:v6]);
+  v10 = -[CAMCTMVideoCaptureEnabledCommand initWithEnabled:]([CAMCTMVideoCaptureEnabledCommand alloc], "initWithEnabled:", [v9 isCTMVideoCaptureSupportedForMode:mode]);
   [(CAMCaptureCommand *)self addSubcommand:v10];
-  v92 = [[CAMHighResolutionStillImageCommand alloc] initWithHighResolutionStillImageCaptureEnabled:v6 != 5];
+  v92 = [[CAMHighResolutionStillImageCommand alloc] initWithHighResolutionStillImageCaptureEnabled:mode != 5];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  if (v6 == 5)
+  if (mode == 5)
   {
-    v11 = [[CAMTimelapseCaptureRateCommand alloc] initWithDefaultTimelapseCaptureRate];
-    [(CAMCaptureCommand *)self addSubcommand:v11];
+    initWithDefaultTimelapseCaptureRate = [[CAMTimelapseCaptureRateCommand alloc] initWithDefaultTimelapseCaptureRate];
+    [(CAMCaptureCommand *)self addSubcommand:initWithDefaultTimelapseCaptureRate];
   }
 
   v100 = v9;
-  v96 = v8;
-  v91 = [[CAMImageControlModeCommand alloc] initWithCaptureMode:v6 capturing:0];
+  v96 = devicePosition;
+  v91 = [[CAMImageControlModeCommand alloc] initWithCaptureMode:mode capturing:0];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v90 = [[CAMPanoramaRetainedBufferHintCommand alloc] initWithPanoramaRetainedBufferHintEnabled:v6 == 3];
+  v90 = [[CAMPanoramaRetainedBufferHintCommand alloc] initWithPanoramaRetainedBufferHintEnabled:mode == 3];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  if (([v5 enableAutoFPSVideo] & 1) == 0)
+  if (([configurationCopy enableAutoFPSVideo] & 1) == 0)
   {
     v12 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:0];
     [(CAMCaptureCommand *)self addSubcommand:v12];
   }
 
-  v89 = [[CAMLowLightTimelapseCommand alloc] initWithTimelapseLowLightCompensationEnabled:v6 == 5];
+  v89 = [[CAMLowLightTimelapseCommand alloc] initWithTimelapseLowLightCompensationEnabled:mode == 5];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v88 = [[CAMLowLightBoostCommand alloc] initWithLowLightBoostEnabled:[(CAMModeAndDeviceCommand *)self _wantsLowLightBoostForMode:v6 device:v98]];
+  v88 = [[CAMLowLightBoostCommand alloc] initWithLowLightBoostEnabled:[(CAMModeAndDeviceCommand *)self _wantsLowLightBoostForMode:mode device:v98]];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v54 = 0x186u >> v6;
-  v55 = v6 < 9;
-  v13 = -[CAMVideoStabilizationCommand initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:]([CAMVideoStabilizationCommand alloc], "initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:", v55 & (0x186u >> v6), [v5 videoStabilizationStrength], objc_msgSend(v5, "frontRearSimultaneousVideoEnabled"), 0);
+  v54 = 0x186u >> mode;
+  v55 = mode < 9;
+  v13 = -[CAMVideoStabilizationCommand initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:]([CAMVideoStabilizationCommand alloc], "initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:", v55 & (0x186u >> mode), [configurationCopy videoStabilizationStrength], objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled"), 0);
   [(CAMCaptureCommand *)self addSubcommand:v13];
   v86 = [[CAMVideoHDRCommand alloc] initWithVideoHDREnabled:1];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v14 = -[CAMVideoHDRSuspensionCommand initWithVideoHDRSuspended:]([CAMVideoHDRSuspensionCommand alloc], "initWithVideoHDRSuspended:", [v5 isVideoHDRSuspended]);
+  v14 = -[CAMVideoHDRSuspensionCommand initWithVideoHDRSuspended:]([CAMVideoHDRSuspensionCommand alloc], "initWithVideoHDRSuspended:", [configurationCopy isVideoHDRSuspended]);
   [(CAMCaptureCommand *)self addSubcommand:v14];
-  v84 = [[CAMTimelapseStabilizationCommand alloc] initWithTimelapseStabilizationEnabled:v6 == 5];
+  v84 = [[CAMTimelapseStabilizationCommand alloc] initWithTimelapseStabilizationEnabled:mode == 5];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v83 = [[CAMVideoRecordOrientationCommand alloc] initWithEnabled:v6 == 1];
+  v83 = [[CAMVideoRecordOrientationCommand alloc] initWithEnabled:mode == 1];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v82 = [[CAMVideoRecordFaceMetadataCommand alloc] initWithEnabled:v6 == 1];
+  v82 = [[CAMVideoRecordFaceMetadataCommand alloc] initWithEnabled:mode == 1];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v81 = [[CAMVideoLivePhotoMetadataWritingEnabledCommand alloc] initWithEnabled:[(CAMModeAndDeviceCommand *)self _wantsLivePhotoMetadataInVideosForMode:v6 device:v98]];
+  v81 = [[CAMVideoLivePhotoMetadataWritingEnabledCommand alloc] initWithEnabled:[(CAMModeAndDeviceCommand *)self _wantsLivePhotoMetadataInVideosForMode:mode device:v98]];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v15 = -[CAMSampleBufferVideoFormatOutputCommand initWithSampleBufferVideoFormat:]([CAMSampleBufferVideoFormatOutputCommand alloc], "initWithSampleBufferVideoFormat:", [v5 previewSampleBufferVideoFormat]);
+  v15 = -[CAMSampleBufferVideoFormatOutputCommand initWithSampleBufferVideoFormat:]([CAMSampleBufferVideoFormatOutputCommand alloc], "initWithSampleBufferVideoFormat:", [configurationCopy previewSampleBufferVideoFormat]);
   [(CAMCaptureCommand *)self addSubcommand:v15];
-  v16 = [v5 videoThumbnailOutputConfiguration];
-  if (v16)
+  videoThumbnailOutputConfiguration = [configurationCopy videoThumbnailOutputConfiguration];
+  if (videoThumbnailOutputConfiguration)
   {
-    v17 = [[CAMVideoThumbnailOutputConfigurationCommand alloc] initWithConfiguration:v16];
+    v17 = [[CAMVideoThumbnailOutputConfigurationCommand alloc] initWithConfiguration:videoThumbnailOutputConfiguration];
     [(CAMCaptureCommand *)self addSubcommand:v17];
   }
 
-  v78 = -[CAMPreviewConfigurationCommand initWithPreviewConfiguration:]([CAMPreviewConfigurationCommand alloc], "initWithPreviewConfiguration:", [v5 previewConfiguration]);
+  v78 = -[CAMPreviewConfigurationCommand initWithPreviewConfiguration:]([CAMPreviewConfigurationCommand alloc], "initWithPreviewConfiguration:", [configurationCopy previewConfiguration]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v18 = -[CAMColorSpaceCommand initWithColorSpace:]([CAMColorSpaceCommand alloc], "initWithColorSpace:", [v5 colorSpace]);
+  v18 = -[CAMColorSpaceCommand initWithColorSpace:]([CAMColorSpaceCommand alloc], "initWithColorSpace:", [configurationCopy colorSpace]);
   [(CAMCaptureCommand *)self addSubcommand:v18];
   v93 = v10;
   v87 = v13;
   v85 = v14;
-  v79 = v16;
+  v79 = videoThumbnailOutputConfiguration;
   v80 = v15;
   v77 = v18;
-  if (v6 <= 5)
+  if (mode <= 5)
   {
-    if (v6)
+    if (mode)
     {
-      if (v6 == 4)
+      if (mode == 4)
       {
-        v26 = [v100 isLiveFilteringSupported];
-        v19 = 0;
+        isLiveFilteringSupported = [v100 isLiveFilteringSupported];
+        enableDepthSuggestion = 0;
         v68 = 0;
         v21 = 0;
         v22 = v100;
         v23 = 0;
-        v24 = 0;
+        isDeferredPortraitRenderingSupported = 0;
         v25 = 0;
       }
 
       else
       {
-        v19 = 0;
+        enableDepthSuggestion = 0;
         v68 = 0;
         v21 = 0;
         v22 = v100;
         v23 = 0;
-        v24 = 0;
+        isDeferredPortraitRenderingSupported = 0;
         v25 = 0;
-        v26 = 0;
+        isLiveFilteringSupported = 0;
       }
     }
 
@@ -827,60 +827,60 @@ LABEL_13:
     {
       if ([v100 isPhotoModeDepthSuggestionSupportedForDevicePosition:v96])
       {
-        v19 = [v5 enableDepthSuggestion];
+        enableDepthSuggestion = [configurationCopy enableDepthSuggestion];
       }
 
       else
       {
-        v19 = 0;
+        enableDepthSuggestion = 0;
       }
 
-      v24 = [v100 previewQualityStillImageFilteringForPhotoModeSupported] & v19;
+      isDeferredPortraitRenderingSupported = [v100 previewQualityStillImageFilteringForPhotoModeSupported] & enableDepthSuggestion;
       v68 = 0;
-      v26 = [v100 isLiveFilteringSupported] | v19;
-      v21 = v19;
+      isLiveFilteringSupported = [v100 isLiveFilteringSupported] | enableDepthSuggestion;
+      v21 = enableDepthSuggestion;
       v22 = v100;
-      v23 = v19;
-      v25 = v19;
+      v23 = enableDepthSuggestion;
+      v25 = enableDepthSuggestion;
     }
   }
 
-  else if (v6 == 6)
+  else if (mode == 6)
   {
-    v24 = [v100 isDeferredPortraitRenderingSupported];
-    v19 = 0;
+    isDeferredPortraitRenderingSupported = [v100 isDeferredPortraitRenderingSupported];
+    enableDepthSuggestion = 0;
     v68 = 0;
     v21 = 1;
     v22 = v100;
     v23 = 1;
     v25 = 1;
-    v26 = 1;
+    isLiveFilteringSupported = 1;
   }
 
   else
   {
-    v19 = 0;
-    v20 = v6 != 9 && v6 == 7;
+    enableDepthSuggestion = 0;
+    v20 = mode != 9 && mode == 7;
     v68 = v20;
-    v21 = v6 == 9;
+    v21 = mode == 9;
     v22 = v100;
-    v23 = v6 != 9 && v6 == 7;
-    v24 = 0;
+    v23 = mode != 9 && mode == 7;
+    isDeferredPortraitRenderingSupported = 0;
     v25 = 0;
-    v26 = v6 != 9 && v6 == 7;
+    isLiveFilteringSupported = mode != 9 && mode == 7;
   }
 
-  v76 = [[CAMPreviewFilteredRenderingEnabledCommand alloc] initWithFilteredRenderingEnabled:v26 & 1];
+  v76 = [[CAMPreviewFilteredRenderingEnabledCommand alloc] initWithFilteredRenderingEnabled:isLiveFilteringSupported & 1];
   [(CAMCaptureCommand *)self addSubcommand:?];
   v75 = [[CAMStillImageFilteredRenderingEnabledCommand alloc] initWithFilteredRenderingEnabled:v25];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v74 = [[CAMStillImagePreviewQualityFilteredRenderingEnabledCommand alloc] initWithPreviewQualityFilteredRenderingEnabled:v24];
+  v74 = [[CAMStillImagePreviewQualityFilteredRenderingEnabledCommand alloc] initWithPreviewQualityFilteredRenderingEnabled:isDeferredPortraitRenderingSupported];
   [(CAMCaptureCommand *)self addSubcommand:?];
   v27 = [[CAMPreviewDepthDataDeliveryEnabledCommand alloc] initWithDepthDataDeliveryEnabled:v23];
   [(CAMCaptureCommand *)self addSubcommand:v27];
   v73 = [[CAMStillImageDepthDataDeliveryEnabledCommand alloc] initWithDepthDataDeliveryEnabled:v21];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v72 = [[CAMPortraitAutoSuggestEnabledCommand alloc] initWithPortraitAutoSuggestEnabled:v19];
+  v72 = [[CAMPortraitAutoSuggestEnabledCommand alloc] initWithPortraitAutoSuggestEnabled:enableDepthSuggestion];
   [(CAMCaptureCommand *)self addSubcommand:?];
   v71 = [[CAMEnableAvailableSemanticSegmentationMatteTypesCommand alloc] initWithEnabled:v21];
   [(CAMCaptureCommand *)self addSubcommand:?];
@@ -888,45 +888,45 @@ LABEL_13:
   [(CAMCaptureCommand *)self addSubcommand:?];
   v69 = [[CAMVideoDepthDataEnabledCommand alloc] initWithEnabled:v68];
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v67 = [v5 previewFilters];
-  v66 = [[CAMPreviewFiltersCommand alloc] initWithFilters:v67 captureMode:v6];
+  previewFilters = [configurationCopy previewFilters];
+  v66 = [[CAMPreviewFiltersCommand alloc] initWithFilters:previewFilters captureMode:mode];
   [(CAMCaptureCommand *)self addSubcommand:?];
   v28 = v22;
   if ([v22 smartStylesSupported])
   {
-    v29 = [v5 previewSemanticStyle];
-    v30 = [[CAMSessionSmartStyleCommand alloc] initWithSmartStyle:v29];
+    previewSemanticStyle = [configurationCopy previewSemanticStyle];
+    v30 = [[CAMSessionSmartStyleCommand alloc] initWithSmartStyle:previewSemanticStyle];
     [(CAMCaptureCommand *)self addSubcommand:v30];
   }
 
   else
   {
-    v29 = -[CAMSemanticStylesEnabledCommand initWithEnabled:]([CAMSemanticStylesEnabledCommand alloc], "initWithEnabled:", [v5 semanticStyleSupport] & 1);
-    [(CAMCaptureCommand *)self addSubcommand:v29];
-    v31 = [v5 semanticStyleSupport];
-    v32 = v31;
-    v30 = [[CAMSemanticStylesPreviewEnabledCommand alloc] initWithEnabled:(v31 >> 2) & 1];
+    previewSemanticStyle = -[CAMSemanticStylesEnabledCommand initWithEnabled:]([CAMSemanticStylesEnabledCommand alloc], "initWithEnabled:", [configurationCopy semanticStyleSupport] & 1);
+    [(CAMCaptureCommand *)self addSubcommand:previewSemanticStyle];
+    semanticStyleSupport = [configurationCopy semanticStyleSupport];
+    v32 = semanticStyleSupport;
+    v30 = [[CAMSemanticStylesPreviewEnabledCommand alloc] initWithEnabled:(semanticStyleSupport >> 2) & 1];
     [(CAMCaptureCommand *)self addSubcommand:v30];
     if ((v32 & 4) != 0)
     {
       v33 = [CAMSemanticStylesPreviewStyleCommand alloc];
-      v34 = [v5 previewSemanticStyle];
-      v35 = [(CAMSemanticStylesPreviewStyleCommand *)v33 initWithStyle:v34];
+      previewSemanticStyle2 = [configurationCopy previewSemanticStyle];
+      v35 = [(CAMSemanticStylesPreviewStyleCommand *)v33 initWithStyle:previewSemanticStyle2];
 
       [(CAMCaptureCommand *)self addSubcommand:v35];
     }
   }
 
-  v65 = -[CAMPreviewLayerZoomPIPEnabledCommand initWithEnabled:]([CAMPreviewLayerZoomPIPEnabledCommand alloc], "initWithEnabled:", [v5 enableZoomPIP]);
+  v65 = -[CAMPreviewLayerZoomPIPEnabledCommand initWithEnabled:]([CAMPreviewLayerZoomPIPEnabledCommand alloc], "initWithEnabled:", [configurationCopy enableZoomPIP]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v36 = [(CAMModeAndDeviceCommand *)self _specificEncodingBehaviorCommandForGraphConfiguration:v5];
+  v36 = [(CAMModeAndDeviceCommand *)self _specificEncodingBehaviorCommandForGraphConfiguration:configurationCopy];
   if (v36)
   {
     [(CAMCaptureCommand *)self addSubcommand:v36];
   }
 
   v64 = v36;
-  v37 = [(CAMModeAndDeviceCommand *)self _specificPreparePhotoSettingsCommandForGraphConfiguration:v5];
+  v37 = [(CAMModeAndDeviceCommand *)self _specificPreparePhotoSettingsCommandForGraphConfiguration:configurationCopy];
   if (v37)
   {
     [(CAMCaptureCommand *)self addSubcommand:v37];
@@ -935,109 +935,109 @@ LABEL_13:
   v63 = v37;
   v62 = objc_alloc_init(CAMSystemPressureMitigationCommand);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  if ([v28 isAutoFPSVideoSupportedForMode:v6 videoConfiguration:objc_msgSend(v5 videoEncodingBehavior:"videoConfiguration") outputToExternalStorage:objc_msgSend(v5 prefersHDR10BitVideo:"videoEncodingBehavior") frontRearSimultaneousVideoEnabled:{-[CAMModeAndDeviceCommand _outputToExternalStorage](self, "_outputToExternalStorage"), objc_msgSend(v5, "prefersHDR10BitVideo"), objc_msgSend(v5, "frontRearSimultaneousVideoEnabled")}])
+  if ([v28 isAutoFPSVideoSupportedForMode:mode videoConfiguration:objc_msgSend(configurationCopy videoEncodingBehavior:"videoConfiguration") outputToExternalStorage:objc_msgSend(configurationCopy prefersHDR10BitVideo:"videoEncodingBehavior") frontRearSimultaneousVideoEnabled:{-[CAMModeAndDeviceCommand _outputToExternalStorage](self, "_outputToExternalStorage"), objc_msgSend(configurationCopy, "prefersHDR10BitVideo"), objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled")}])
   {
-    v38 = [v5 enableAutoFPSVideo];
+    enableAutoFPSVideo = [configurationCopy enableAutoFPSVideo];
   }
 
   else
   {
-    v38 = 0;
+    enableAutoFPSVideo = 0;
   }
 
   v39 = v96;
-  v97 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:v38];
+  v97 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:enableAutoFPSVideo];
   [(CAMCaptureCommand *)self addSubcommand:?];
   if (v101[0] == 1)
   {
-    v40 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:v38 configureSecondaryDevice:1];
+    v40 = [[CAMAutoFPSVideoCommand alloc] initWithAutoFPSVideoEnabled:enableAutoFPSVideo configureSecondaryDevice:1];
     [(CAMCaptureCommand *)self addSubcommand:v40];
   }
 
-  v99 = -[CAMSpatialOverCaptureEnabledCommand initWithSpatialOverCaptureEnabled:]([CAMSpatialOverCaptureEnabledCommand alloc], "initWithSpatialOverCaptureEnabled:", [v28 spatialOverCaptureSupportForMode:v6 device:v98] & 1);
+  v99 = -[CAMSpatialOverCaptureEnabledCommand initWithSpatialOverCaptureEnabled:]([CAMSpatialOverCaptureEnabledCommand alloc], "initWithSpatialOverCaptureEnabled:", [v28 spatialOverCaptureSupportForMode:mode device:v98] & 1);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v41 = [v28 isAspectRatioCropSupportedForMode:v6 devicePosition:v39];
+  v41 = [v28 isAspectRatioCropSupportedForMode:mode devicePosition:v39];
   v61 = [[CAMNonDestructiveCropEnabledCommand alloc] initWithNonDestructiveCropEnabled:v41];
   [(CAMCaptureCommand *)self addSubcommand:?];
   if (v41)
   {
-    v42 = -[CAMNonDestructiveCropAspectRatioCommand initWithAspectRatioCrop:]([CAMNonDestructiveCropAspectRatioCommand alloc], "initWithAspectRatioCrop:", [v5 aspectRatioCrop]);
+    v42 = -[CAMNonDestructiveCropAspectRatioCommand initWithAspectRatioCrop:]([CAMNonDestructiveCropAspectRatioCommand alloc], "initWithAspectRatioCrop:", [configurationCopy aspectRatioCrop]);
     [(CAMCaptureCommand *)self addSubcommand:v42];
   }
 
-  v43 = -[CAMDeferredProcessingEnabledCommand initWithDeferredProcessingEnabled:]([CAMDeferredProcessingEnabledCommand alloc], "initWithDeferredProcessingEnabled:", [v28 isDeferredProcessingSupportedForMode:v6 devicePosition:v39]);
+  v43 = -[CAMDeferredProcessingEnabledCommand initWithDeferredProcessingEnabled:]([CAMDeferredProcessingEnabledCommand alloc], "initWithDeferredProcessingEnabled:", [v28 isDeferredProcessingSupportedForMode:mode devicePosition:v39]);
   [(CAMCaptureCommand *)self addSubcommand:v43];
-  v60 = -[CAMPhotoQualityPrioritizationConfigurationCommand initWithPhotoQualityPrioritization:]([CAMPhotoQualityPrioritizationConfigurationCommand alloc], "initWithPhotoQualityPrioritization:", [v5 photoQualityPrioritization]);
+  v60 = -[CAMPhotoQualityPrioritizationConfigurationCommand initWithPhotoQualityPrioritization:]([CAMPhotoQualityPrioritizationConfigurationCommand alloc], "initWithPhotoQualityPrioritization:", [configurationCopy photoQualityPrioritization]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v59 = -[CAMMirrorOutputVideoCommand initWithOutputMirrored:]([CAMMirrorOutputVideoCommand alloc], "initWithOutputMirrored:", [v5 isCaptureMirrored]);
+  v59 = -[CAMMirrorOutputVideoCommand initWithOutputMirrored:]([CAMMirrorOutputVideoCommand alloc], "initWithOutputMirrored:", [configurationCopy isCaptureMirrored]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v58 = -[CAMContentAwareDistortionCorrectionCommand initWithContentAwareDistortionCorrectionEnabled:]([CAMContentAwareDistortionCorrectionCommand alloc], "initWithContentAwareDistortionCorrectionEnabled:", [v5 enableContentAwareDistortionCorrection]);
+  v58 = -[CAMContentAwareDistortionCorrectionCommand initWithContentAwareDistortionCorrectionEnabled:]([CAMContentAwareDistortionCorrectionCommand alloc], "initWithContentAwareDistortionCorrectionEnabled:", [configurationCopy enableContentAwareDistortionCorrection]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v57 = -[CAMDemosaicedRAWEnabledCommand initWithEnabled:]([CAMDemosaicedRAWEnabledCommand alloc], "initWithEnabled:", [v5 enableRAWCaptureIfSupported]);
+  v57 = -[CAMDemosaicedRAWEnabledCommand initWithEnabled:]([CAMDemosaicedRAWEnabledCommand alloc], "initWithEnabled:", [configurationCopy enableRAWCaptureIfSupported]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v56 = -[CAMResponsiveShutterEnabledCommand initWithEnabled:]([CAMResponsiveShutterEnabledCommand alloc], "initWithEnabled:", [v5 enableResponsiveShutter]);
+  v56 = -[CAMResponsiveShutterEnabledCommand initWithEnabled:]([CAMResponsiveShutterEnabledCommand alloc], "initWithEnabled:", [configurationCopy enableResponsiveShutter]);
   [(CAMCaptureCommand *)self addSubcommand:?];
-  v44 = -[CAMMaximumPhotoResolutionCommand initWithMaximumPhotoResolution:mode:devicePosition:]([CAMMaximumPhotoResolutionCommand alloc], "initWithMaximumPhotoResolution:mode:devicePosition:", [v5 maximumPhotoResolution], objc_msgSend(v5, "mode"), objc_msgSend(v5, "devicePosition"));
+  v44 = -[CAMMaximumPhotoResolutionCommand initWithMaximumPhotoResolution:mode:devicePosition:]([CAMMaximumPhotoResolutionCommand alloc], "initWithMaximumPhotoResolution:mode:devicePosition:", [configurationCopy maximumPhotoResolution], objc_msgSend(configurationCopy, "mode"), objc_msgSend(configurationCopy, "devicePosition"));
   [(CAMCaptureCommand *)self addSubcommand:v44];
-  v45 = [v28 fallbackPrimaryConstituentDeviceSelectionForMode:objc_msgSend(v5 device:"mode") videoConfiguration:objc_msgSend(v5 videoStabilizationStrength:"device") frontRearSimultaneousVideoEnabled:objc_msgSend(v5 macroMode:{"videoConfiguration"), objc_msgSend(v5, "videoStabilizationStrength"), objc_msgSend(v5, "frontRearSimultaneousVideoEnabled"), objc_msgSend(v5, "macroMode")}];
+  v45 = [v28 fallbackPrimaryConstituentDeviceSelectionForMode:objc_msgSend(configurationCopy device:"mode") videoConfiguration:objc_msgSend(configurationCopy videoStabilizationStrength:"device") frontRearSimultaneousVideoEnabled:objc_msgSend(configurationCopy macroMode:{"videoConfiguration"), objc_msgSend(configurationCopy, "videoStabilizationStrength"), objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled"), objc_msgSend(configurationCopy, "macroMode")}];
   v46 = [[CAMPrimaryConstituentDeviceSwitchingBehaviorCommand alloc] initWithBehavior:0];
   [(CAMCaptureCommand *)self addSubcommand:v46];
   v47 = [[CAMFallbackPrimaryConstituentDeviceCommand alloc] initWithFallbackPrimaryConstituentDeviceSelection:v45];
   [(CAMCaptureCommand *)self addSubcommand:v47];
-  v48 = [v5 frontRearSimultaneousVideoEnabled];
-  v49 = [[CAMFrontRearSimultaneousVideoRecordingCommand alloc] initWithVideoRecordingEnabled:v48];
+  frontRearSimultaneousVideoEnabled = [configurationCopy frontRearSimultaneousVideoEnabled];
+  v49 = [[CAMFrontRearSimultaneousVideoRecordingCommand alloc] initWithVideoRecordingEnabled:frontRearSimultaneousVideoEnabled];
   [(CAMCaptureCommand *)self addSubcommand:v49];
-  v50 = [[CAMFrontRearSimultaneousCaptureCommand alloc] initWithFrontRearSimultaneousCaptureEnabled:v48];
+  v50 = [[CAMFrontRearSimultaneousCaptureCommand alloc] initWithFrontRearSimultaneousCaptureEnabled:frontRearSimultaneousVideoEnabled];
   [(CAMCaptureCommand *)self addSubcommand:v50];
-  if (v48)
+  if (frontRearSimultaneousVideoEnabled)
   {
     if ([v100 isSmartFramingSupported])
     {
-      v51 = [[CAMDynamicAspectRatioCommand alloc] initForSecondaryDevice];
-      [(CAMCaptureCommand *)self addSubcommand:v51];
+      initForSecondaryDevice = [[CAMDynamicAspectRatioCommand alloc] initForSecondaryDevice];
+      [(CAMCaptureCommand *)self addSubcommand:initForSecondaryDevice];
     }
 
-    v52 = -[CAMVideoStabilizationCommand initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:]([CAMVideoStabilizationCommand alloc], "initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:", v55 & v54, [v5 secondaryDeviceVideoStabilizationStrength], 1, 1);
+    v52 = -[CAMVideoStabilizationCommand initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:]([CAMVideoStabilizationCommand alloc], "initWithAutomaticVideoStabilizationEnabled:strength:frontRearSimultaneousVideoEnabled:configureSecondaryDevice:", v55 & v54, [configurationCopy secondaryDeviceVideoStabilizationStrength], 1, 1);
     [(CAMCaptureCommand *)self addSubcommand:v52];
   }
 
-  v53 = [[CAMPostConfigurationSetupCommand alloc] initWithGraphConfiguration:v5];
+  v53 = [[CAMPostConfigurationSetupCommand alloc] initWithGraphConfiguration:configurationCopy];
   [(CAMCaptureCommand *)self addSubcommand:v53];
 }
 
-- (void)_performPostConfigurationSanityCheckForGraphConfiguration:(id)a3 withContext:(id)a4
+- (void)_performPostConfigurationSanityCheckForGraphConfiguration:(id)configuration withContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v36 = [v6 mode];
-  v8 = [v7 currentCaptureSession];
-  v9 = [(CAMModeAndDeviceCommand *)self _primaryEngineDeviceWithContext:v7 graphConfiguration:v6 resolvedDevice:0];
-  v35 = [v9 captureDevice];
-  v10 = [v35 activeFormat];
-  v11 = [v9 videoDeviceFormatForGraphConfiguration:v6 captureSession:v8 deviceIsSecondary:0];
+  configurationCopy = configuration;
+  contextCopy = context;
+  mode = [configurationCopy mode];
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  v9 = [(CAMModeAndDeviceCommand *)self _primaryEngineDeviceWithContext:contextCopy graphConfiguration:configurationCopy resolvedDevice:0];
+  captureDevice = [v9 captureDevice];
+  activeFormat = [captureDevice activeFormat];
+  v11 = [v9 videoDeviceFormatForGraphConfiguration:configurationCopy captureSession:currentCaptureSession deviceIsSecondary:0];
   v12 = v11;
   v13 = 0;
-  if (v11 && v10 != v11)
+  if (v11 && activeFormat != v11)
   {
     v14 = os_log_create("com.apple.camera", "CaptureSession");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v6 device];
-      if (v30 > 0xB)
+      device = [configurationCopy device];
+      if (device > 0xB)
       {
         v31 = 0;
       }
 
       else
       {
-        v31 = off_1E76FA438[v30];
+        v31 = off_1E76FA438[device];
       }
 
       *buf = 138543874;
       v41 = v31;
       v42 = 2114;
-      v43 = v10;
+      v43 = activeFormat;
       v44 = 2114;
       v45 = v12;
       _os_log_error_impl(&dword_1A3640000, v14, OS_LOG_TYPE_ERROR, "Primary device %{public}@'s active device format %{public}@ does not match expected device format %{public}@", buf, 0x20u);
@@ -1048,21 +1048,21 @@ LABEL_13:
 
   v37 = v12;
   v39 = 0;
-  v15 = [v6 secondaryDevice:&v39];
-  v38 = v10;
+  v15 = [configurationCopy secondaryDevice:&v39];
+  v38 = activeFormat;
   if (v39 == 1)
   {
     v16 = v15;
-    v17 = [(CAMModeAndDeviceCommand *)self _secondaryEngineDeviceWithContext:v7 graphConfiguration:v6 resolvedDevice:0];
+    v17 = [(CAMModeAndDeviceCommand *)self _secondaryEngineDeviceWithContext:contextCopy graphConfiguration:configurationCopy resolvedDevice:0];
     v18 = v17;
     if (v17)
     {
-      v33 = [v17 captureDevice];
-      v19 = [v33 activeFormat];
-      v20 = [v18 videoDeviceFormatForGraphConfiguration:v6 captureSession:v8 deviceIsSecondary:1];
+      captureDevice2 = [v17 captureDevice];
+      activeFormat2 = [captureDevice2 activeFormat];
+      v20 = [v18 videoDeviceFormatForGraphConfiguration:configurationCopy captureSession:currentCaptureSession deviceIsSecondary:1];
       v21 = v20;
-      v34 = v19;
-      if (v20 && v19 != v20)
+      v34 = activeFormat2;
+      if (v20 && activeFormat2 != v20)
       {
         v22 = os_log_create("com.apple.camera", "CaptureSession");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1084,9 +1084,9 @@ LABEL_13:
     }
   }
 
-  v24 = [v8 outputs];
-  v25 = [v7 primaryOutputForMode:v36 graphConfiguration:v6];
-  if ([v24 containsObject:v25])
+  outputs = [currentCaptureSession outputs];
+  v25 = [contextCopy primaryOutputForMode:mode graphConfiguration:configurationCopy];
+  if ([outputs containsObject:v25])
   {
     v26 = [v25 connectionWithMediaType:*MEMORY[0x1E6987608]];
     if (!v26)
@@ -1110,22 +1110,22 @@ LABEL_13:
   [(CAMModeAndDeviceCommand *)self _setConfigurationError:v13];
 }
 
-- (BOOL)_shouldEnableLivePhotoCaptureForMode:(int64_t)a3 device:(int64_t)a4
+- (BOOL)_shouldEnableLivePhotoCaptureForMode:(int64_t)mode device:(int64_t)device
 {
   v6 = +[CAMCaptureCapabilities capabilities];
   v7 = v6;
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_1A3A686F8[a4 - 1];
+    v8 = qword_1A3A686F8[device - 1];
   }
 
   v9 = [v6 isLivePhotoSupportedForDevicePosition:v8];
-  if (a3)
+  if (mode)
   {
     v10 = 0;
   }
@@ -1135,12 +1135,12 @@ LABEL_13:
     v10 = v9;
   }
 
-  if (a3 == 4)
+  if (mode == 4)
   {
     v10 = v9;
   }
 
-  if (a3 == 9)
+  if (mode == 9)
   {
     v11 = v9;
   }

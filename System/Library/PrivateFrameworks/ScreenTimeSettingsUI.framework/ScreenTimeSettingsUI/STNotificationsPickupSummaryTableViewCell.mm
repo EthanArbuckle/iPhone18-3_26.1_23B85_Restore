@@ -1,28 +1,28 @@
 @interface STNotificationsPickupSummaryTableViewCell
-- (STNotificationsPickupSummaryTableViewCell)initWithUsageReport:(id)a3;
+- (STNotificationsPickupSummaryTableViewCell)initWithUsageReport:(id)report;
 @end
 
 @implementation STNotificationsPickupSummaryTableViewCell
 
-- (STNotificationsPickupSummaryTableViewCell)initWithUsageReport:(id)a3
+- (STNotificationsPickupSummaryTableViewCell)initWithUsageReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v13.receiver = self;
   v13.super_class = STNotificationsPickupSummaryTableViewCell;
   v5 = [(STNotificationsPickupSummaryTableViewCell *)&v13 initWithStyle:0 reuseIdentifier:0];
   if (v5)
   {
-    v6 = [[STNotificationsPickupSummaryView alloc] initWithUsageReport:v4];
+    v6 = [[STNotificationsPickupSummaryView alloc] initWithUsageReport:reportCopy];
     [(STNotificationsPickupSummaryView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
-    [v7 addSubview:v6];
+    contentView = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
+    [contentView addSubview:v6];
 
-    v8 = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
-    [v8 sizeToFit];
+    contentView2 = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
+    [contentView2 sizeToFit];
 
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
-    v11 = [v9 st_constraintsForView:v10 equalToView:v6];
+    contentView3 = [(STNotificationsPickupSummaryTableViewCell *)v5 contentView];
+    v11 = [v9 st_constraintsForView:contentView3 equalToView:v6];
     [v9 activateConstraints:v11];
   }
 

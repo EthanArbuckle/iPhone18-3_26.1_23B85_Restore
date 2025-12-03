@@ -10,7 +10,7 @@
   v3 = +[CIImage emptyImage];
   if (self->inputImage && self->inputSecondaryImage)
   {
-    v4 = [(CIFusionTwoImagesDelta *)self kernel];
+    kernel = [(CIFusionTwoImagesDelta *)self kernel];
     [(NSNumber *)self->inputApertureScaling floatValue];
     v6 = v5;
     [(CIVector *)self->inputSubtractive Z];
@@ -59,7 +59,7 @@
     v41[1] = @"kCIImageAlphaOne";
     v42[0] = [MEMORY[0x1E696AD98] numberWithInt:2053];
     v42[1] = MEMORY[0x1E695E118];
-    return [v4 applyWithExtent:v39 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v42, v41, 2), v30, v32, v34, v36}];
+    return [kernel applyWithExtent:v39 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v42, v41, 2), v30, v32, v34, v36}];
   }
 
   return v3;

@@ -1,17 +1,17 @@
 @interface BYODDomainPurchaseEligibilityResponse
-- (BYODDomainPurchaseEligibilityResponse)initWithDictionary:(id)a3;
-- (BYODDomainPurchaseEligibilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (BYODDomainPurchaseEligibilityResponse)initWithDictionary:(id)dictionary;
+- (BYODDomainPurchaseEligibilityResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation BYODDomainPurchaseEligibilityResponse
 
-- (BYODDomainPurchaseEligibilityResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (BYODDomainPurchaseEligibilityResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = BYODDomainPurchaseEligibilityResponse;
-  v8 = [(BYODDomainPurchaseEligibilityResponse *)&v11 initWithHTTPResponse:v6 data:v7 bodyIsPlist:0];
+  v8 = [(BYODDomainPurchaseEligibilityResponse *)&v11 initWithHTTPResponse:responseCopy data:dataCopy bodyIsPlist:0];
   if (v8)
   {
     v9 = [(BYODDomainPurchaseEligibilityResponse *)v8 initWithDictionary:*&v8->super.AAResponse_opaque[OBJC_IVAR___AAResponse__responseDictionary]];
@@ -25,16 +25,16 @@
   return v9;
 }
 
-- (BYODDomainPurchaseEligibilityResponse)initWithDictionary:(id)a3
+- (BYODDomainPurchaseEligibilityResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = BYODDomainPurchaseEligibilityResponse;
-  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:v4];
+  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = [BYODDomainPurchaseEligibilityResult alloc];
-    v7 = [v4 objectForKeyedSubscript:@"result"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     v8 = [(BYODDomainPurchaseEligibilityResult *)v6 initWithDictionary:v7];
     v9 = v5->_result;
     v5->_result = v8;

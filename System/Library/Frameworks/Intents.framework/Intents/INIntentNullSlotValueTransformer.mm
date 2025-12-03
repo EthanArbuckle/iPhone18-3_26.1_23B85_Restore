@@ -1,32 +1,32 @@
 @interface INIntentNullSlotValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation INIntentNullSlotValueTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() reverseTransformedValueClass];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   else
   {
-    v5 = 0;
+    null = 0;
   }
 
-  return v5;
+  return null;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() transformedValueClass];
   isKindOfClass = objc_opt_isKindOfClass();
 

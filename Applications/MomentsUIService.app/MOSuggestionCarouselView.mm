@@ -1,25 +1,25 @@
 @interface MOSuggestionCarouselView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (_TtC16MomentsUIService24MOSuggestionCarouselView)initWithFrame:(CGRect)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (_TtC16MomentsUIService24MOSuggestionCarouselView)initWithFrame:(CGRect)frame;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation MOSuggestionCarouselView
 
-- (_TtC16MomentsUIService24MOSuggestionCarouselView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService24MOSuggestionCarouselView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *((swift_isaMask & self->super.super.super.isa) + 0xB0);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   if (v6 >> 62)
   {
@@ -34,38 +34,38 @@
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = MOSuggestionCarouselView.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = MOSuggestionCarouselView.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  MOSuggestionCarouselView.collectionView(_:willDisplay:forItemAt:)(v12, v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  MOSuggestionCarouselView.collectionView(_:willDisplay:forItemAt:)(viewCopy, cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -74,13 +74,13 @@
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   objc_opt_self();
   v12 = swift_dynamicCastObjCClass();
-  v13 = a4;
-  v14 = v13;
+  layoutCopy = layout;
+  v14 = layoutCopy;
   if (v12)
   {
-    v15 = v13;
-    v16 = a3;
-    v17 = self;
+    v15 = layoutCopy;
+    viewCopy = view;
+    selfCopy = self;
     [v12 minimumInteritemSpacing];
     v19 = v18;
     [v12 sectionInset];
@@ -89,12 +89,12 @@
 
   else
   {
-    v22 = a3;
-    v23 = self;
+    viewCopy2 = view;
+    selfCopy2 = self;
     v21 = 0.0;
   }
 
-  [a3 frame];
+  [view frame];
   v25 = v24;
 
   (*(v9 + 8))(v11, v8);
@@ -105,12 +105,12 @@
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  MOSuggestionCarouselView.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v8, &a5->x, x);
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  MOSuggestionCarouselView.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, &offset->x, x);
 }
 
 @end

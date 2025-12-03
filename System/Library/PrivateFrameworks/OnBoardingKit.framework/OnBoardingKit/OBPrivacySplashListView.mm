@@ -1,8 +1,8 @@
 @interface OBPrivacySplashListView
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
-- (void)_updateTextViewsForLinkUITreatment:(id)a3;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
+- (void)_updateTextViewsForLinkUITreatment:(id)treatment;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFonts;
 - (void)updateSpacing;
 - (void)updateTextAlignment;
@@ -13,29 +13,29 @@
 - (void)updateSpacing
 {
   v10 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD80]];
-  v3 = [(OBPrivacySplashListView *)self displayingPrivacyPane];
+  displayingPrivacyPane = [(OBPrivacySplashListView *)self displayingPrivacyPane];
   v4 = 46.0;
-  if (!v3)
+  if (!displayingPrivacyPane)
   {
     v4 = 30.0;
   }
 
   [v10 scaledValueForValue:v4];
   [(OBPrivacySplashListView *)self setSpacing:?];
-  v5 = [(OBPrivacySplashListView *)self textViews];
-  if ([v5 count])
+  textViews = [(OBPrivacySplashListView *)self textViews];
+  if ([textViews count])
   {
-    v6 = [(OBPrivacySplashListView *)self displayingPrivacyPane];
+    displayingPrivacyPane2 = [(OBPrivacySplashListView *)self displayingPrivacyPane];
 
-    if (v6)
+    if (displayingPrivacyPane2)
     {
       goto LABEL_7;
     }
 
     [v10 scaledValueForValue:46.0];
     v8 = v7;
-    v5 = [(OBPrivacySplashListView *)self textViews];
-    v9 = [v5 objectAtIndexedSubscript:0];
+    textViews = [(OBPrivacySplashListView *)self textViews];
+    v9 = [textViews objectAtIndexedSubscript:0];
     [(OBPrivacySplashListView *)self setCustomSpacing:v9 afterView:v8];
   }
 
@@ -58,8 +58,8 @@ LABEL_7:
     v18 = v8;
   }
 
-  v9 = [(OBPrivacySplashListView *)self textViews];
-  v10 = [v9 count];
+  textViews = [(OBPrivacySplashListView *)self textViews];
+  v10 = [textViews count];
 
   if (v10)
   {
@@ -67,8 +67,8 @@ LABEL_7:
     v12 = *MEMORY[0x1E69DDD80];
     do
     {
-      v13 = [(OBPrivacySplashListView *)self textViews];
-      v14 = [v13 objectAtIndexedSubscript:v11];
+      textViews2 = [(OBPrivacySplashListView *)self textViews];
+      v14 = [textViews2 objectAtIndexedSubscript:v11];
 
       if (+[OBFeatureFlags isNaturalUIEnabled]|| !v11 || [(OBPrivacySplashListView *)self displayingPrivacyPane])
       {
@@ -82,8 +82,8 @@ LABEL_7:
       }
 
       ++v11;
-      v15 = [(OBPrivacySplashListView *)self textViews];
-      v16 = [v15 count];
+      textViews3 = [(OBPrivacySplashListView *)self textViews];
+      v16 = [textViews3 count];
     }
 
     while (v16 > v11);
@@ -93,9 +93,9 @@ LABEL_7:
 - (void)updateTextAlignment
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self _obk_isRTL];
+  _obk_isRTL = [(UIView *)self _obk_isRTL];
   v4 = +[OBFeatureFlags isNaturalUIEnabled];
-  if (v3)
+  if (_obk_isRTL)
   {
     v5 = 2;
   }
@@ -116,8 +116,8 @@ LABEL_7:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(OBPrivacySplashListView *)self textViews];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    textViews = [(OBPrivacySplashListView *)self textViews];
+    v7 = [textViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -128,13 +128,13 @@ LABEL_7:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(textViews);
           }
 
           [*(*(&v15 + 1) + 8 * i) setTextAlignment:v5];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [textViews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -145,19 +145,19 @@ LABEL_7:
 
   else
   {
-    v14 = [(OBPrivacySplashListView *)self textViews];
-    v12 = [v14 firstObject];
-    [v12 setTextAlignment:v5];
+    textViews2 = [(OBPrivacySplashListView *)self textViews];
+    firstObject = [textViews2 firstObject];
+    [firstObject setTextAlignment:v5];
 
     v13 = *MEMORY[0x1E69E9840];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = OBPrivacySplashListView;
-  [(OBPrivacySplashListView *)&v4 traitCollectionDidChange:a3];
+  [(OBPrivacySplashListView *)&v4 traitCollectionDidChange:change];
   [(OBPrivacySplashListView *)self updateTextAlignment];
   [(OBPrivacySplashListView *)self updateSpacing];
   [(OBPrivacySplashListView *)self updateFonts];
@@ -168,19 +168,19 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = OBPrivacySplashListView;
   [(OBPrivacySplashListView *)&v4 tintColorDidChange];
-  v3 = [(OBPrivacySplashListView *)self textViews];
-  [(OBPrivacySplashListView *)self _updateTextViewsForLinkUITreatment:v3];
+  textViews = [(OBPrivacySplashListView *)self textViews];
+  [(OBPrivacySplashListView *)self _updateTextViewsForLinkUITreatment:textViews];
 }
 
-- (void)_updateTextViewsForLinkUITreatment:(id)a3
+- (void)_updateTextViewsForLinkUITreatment:(id)treatment
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  treatmentCopy = treatment;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v5 = [treatmentCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -194,16 +194,16 @@ LABEL_7:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(treatmentCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
         if ([(OBPrivacySplashListView *)self underlineLinks])
         {
           v19[0] = v8;
-          v12 = [(OBPrivacySplashListView *)self tintColor];
+          tintColor = [(OBPrivacySplashListView *)self tintColor];
           v19[1] = v9;
-          v20[0] = v12;
+          v20[0] = tintColor;
           v20[1] = &unk_1F2CF8510;
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
           [v11 setLinkTextAttributes:v13];
@@ -218,7 +218,7 @@ LABEL_7:
       }
 
       while (v6 != v10);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [treatmentCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
@@ -227,11 +227,11 @@ LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
+  itemCopy = item;
+  actionCopy = action;
   v8 = _OBLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -239,16 +239,16 @@ LABEL_7:
     _os_log_impl(&dword_1B4FB6000, v8, OS_LOG_TYPE_DEFAULT, "Privacy splash textView:primaryActionForTextItem:...", buf, 2u);
   }
 
-  v9 = [v6 link];
+  link = [itemCopy link];
 
-  if (v9)
+  if (link)
   {
     v10 = _OBLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 link];
+      link2 = [itemCopy link];
       *buf = 138412290;
-      v19 = v11;
+      v19 = link2;
       _os_log_impl(&dword_1B4FB6000, v10, OS_LOG_TYPE_DEFAULT, "Privacy splash returning custom primary action for link %@", buf, 0xCu);
     }
 
@@ -257,13 +257,13 @@ LABEL_7:
     v16[1] = 3221225472;
     v16[2] = __75__OBPrivacySplashListView_textView_primaryActionForTextItem_defaultAction___block_invoke;
     v16[3] = &unk_1E7C155E0;
-    v17 = v6;
+    v17 = itemCopy;
     v13 = [v12 actionWithHandler:v16];
   }
 
   else
   {
-    v13 = v7;
+    v13 = actionCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];

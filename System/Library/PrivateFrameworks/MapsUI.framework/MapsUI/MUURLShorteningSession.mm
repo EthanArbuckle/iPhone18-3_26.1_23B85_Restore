@@ -1,13 +1,13 @@
 @interface MUURLShorteningSession
 - (MUURLShorteningSession)init;
-- (MUURLShorteningSession)initWithOriginalURLProvider:(id)a3;
-- (MUURLShorteningSession)initWithOriginalURLProvider:(id)a3 configuration:(id)a4;
+- (MUURLShorteningSession)initWithOriginalURLProvider:(id)provider;
+- (MUURLShorteningSession)initWithOriginalURLProvider:(id)provider configuration:(id)configuration;
 - (void)preload;
 @end
 
 @implementation MUURLShorteningSession
 
-- (MUURLShorteningSession)initWithOriginalURLProvider:(id)a3 configuration:(id)a4
+- (MUURLShorteningSession)initWithOriginalURLProvider:(id)provider configuration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   v7 = sub_1C584F2C0();
@@ -15,11 +15,11 @@
   v9 = *(v8 + 64);
   MEMORY[0x1EEE9AC00](v7, v10);
   v11 = v26 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a3);
+  v12 = _Block_copy(provider);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   v14 = qword_1EC17B060;
-  v27 = a4;
+  configurationCopy = configuration;
   if (v14 != -1)
   {
     swift_once();
@@ -40,8 +40,8 @@
   v21 = (v20 + v19);
   *v21 = sub_1C568FC38;
   v21[1] = v13;
-  v22 = v27;
-  *(v20 + ((v19 + 23) & 0xFFFFFFFFFFFFFFF8)) = v27;
+  v22 = configurationCopy;
+  *(v20 + ((v19 + 23) & 0xFFFFFFFFFFFFFFF8)) = configurationCopy;
   swift_retain_n();
   v23 = v22;
   *(&self->super.isa + OBJC_IVAR___MUURLShorteningSession_internalShorteningSession) = ItemPreloader.__allocating_init(provider:)(&unk_1C586ADB8, v20);
@@ -52,9 +52,9 @@
   return v24;
 }
 
-- (MUURLShorteningSession)initWithOriginalURLProvider:(id)a3
+- (MUURLShorteningSession)initWithOriginalURLProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v10[4] = sub_1C568FA58;
@@ -84,7 +84,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_1C5659C04(0, 0, v7, &unk_1C586ADB0, v9);
 }
 

@@ -1,9 +1,9 @@
 @interface StoreDownloadQueueRequest
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)queueContentsURLBagKey;
 - (NSString)queueCountURLBagKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -38,26 +38,26 @@
   return [NSString stringWithFormat:@"%@: %@ / %@", [(StoreDownloadQueueRequest *)&v3 description], self->_queueIdentifier, self->_accountIdentifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (v6 = -[StoreDownloadQueueRequest purchaseIdentifier](self, "purchaseIdentifier"), v6 == [a3 purchaseIdentifier]))
+  if (v5 == objc_opt_class() && (v6 = -[StoreDownloadQueueRequest purchaseIdentifier](self, "purchaseIdentifier"), v6 == [equal purchaseIdentifier]))
   {
-    v7 = [(StoreDownloadQueueRequest *)self accountIdentifier];
-    if (v7 == [a3 accountIdentifier] || (v8 = -[NSNumber isEqual:](-[StoreDownloadQueueRequest accountIdentifier](self, "accountIdentifier"), "isEqual:", objc_msgSend(a3, "accountIdentifier"))) != 0)
+    accountIdentifier = [(StoreDownloadQueueRequest *)self accountIdentifier];
+    if (accountIdentifier == [equal accountIdentifier] || (v8 = -[NSNumber isEqual:](-[StoreDownloadQueueRequest accountIdentifier](self, "accountIdentifier"), "isEqual:", objc_msgSend(equal, "accountIdentifier"))) != 0)
     {
-      v9 = [(StoreDownloadQueueRequest *)self queueIdentifier];
-      if (v9 == [a3 queueIdentifier])
+      queueIdentifier = [(StoreDownloadQueueRequest *)self queueIdentifier];
+      if (queueIdentifier == [equal queueIdentifier])
       {
         LOBYTE(v8) = 1;
       }
 
       else
       {
-        v10 = [(StoreDownloadQueueRequest *)self queueIdentifier];
-        v11 = [a3 queueIdentifier];
+        queueIdentifier2 = [(StoreDownloadQueueRequest *)self queueIdentifier];
+        queueIdentifier3 = [equal queueIdentifier];
 
-        LOBYTE(v8) = [(NSString *)v10 isEqual:v11];
+        LOBYTE(v8) = [(NSString *)queueIdentifier2 isEqual:queueIdentifier3];
       }
     }
   }
@@ -70,20 +70,20 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
   *(v5 + 16) = self->_cancelsDuplicateDownloads;
   v5[3] = self->_purchaseIdentifier;
-  v5[4] = [(NSString *)self->_queueIdentifier copyWithZone:a3];
-  v5[5] = [(NSString *)self->_reason copyWithZone:a3];
+  v5[4] = [(NSString *)self->_queueIdentifier copyWithZone:zone];
+  v5[5] = [(NSString *)self->_reason copyWithZone:zone];
   return v5;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100383EE0 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"pendingApps", @"apps", @"pendingBooks", @"books", @"pendingSongs", @"media", 0}];
     qword_100383EE8 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"checkAppQueue", @"apps", @"checkBookQueue", @"books", @"check-download-queue", @"media", 0}];

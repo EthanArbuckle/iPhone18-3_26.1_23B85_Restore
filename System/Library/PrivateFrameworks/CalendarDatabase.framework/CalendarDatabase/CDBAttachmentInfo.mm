@@ -1,28 +1,28 @@
 @interface CDBAttachmentInfo
-- (CDBAttachmentInfo)initWithLegacyURL:(id)a3 url:(id)a4 localRelativePath:(id)a5;
+- (CDBAttachmentInfo)initWithLegacyURL:(id)l url:(id)url localRelativePath:(id)path;
 @end
 
 @implementation CDBAttachmentInfo
 
-- (CDBAttachmentInfo)initWithLegacyURL:(id)a3 url:(id)a4 localRelativePath:(id)a5
+- (CDBAttachmentInfo)initWithLegacyURL:(id)l url:(id)url localRelativePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  urlCopy = url;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = CDBAttachmentInfo;
   v11 = [(CDBAttachmentInfo *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     legacyURL = v11->_legacyURL;
     v11->_legacyURL = v12;
 
-    v14 = [v9 copy];
+    v14 = [urlCopy copy];
     url = v11->_url;
     v11->_url = v14;
 
-    v16 = [v10 copy];
+    v16 = [pathCopy copy];
     localRelativePath = v11->_localRelativePath;
     v11->_localRelativePath = v16;
   }

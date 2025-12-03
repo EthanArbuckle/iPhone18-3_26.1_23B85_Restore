@@ -4,7 +4,7 @@
 - (id)detailString;
 - (id)okayButtonTitle;
 - (id)titleString;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -12,11 +12,11 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 resumePairingController];
-  v4 = [v3 isResumingPairing];
+  setupController = [UIApp setupController];
+  resumePairingController = [setupController resumePairingController];
+  isResumingPairing = [resumePairingController isResumingPairing];
 
-  return v4 ^ 1;
+  return isResumingPairing ^ 1;
 }
 
 - (COSTinkerFeatureSplashViewController)init
@@ -47,36 +47,36 @@
   }
 
   v5 = [[UIImageView alloc] initWithImage:v4];
-  v6 = [v5 layer];
-  [v6 setMinificationFilter:kCAFilterTrilinear];
+  layer = [v5 layer];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
   [v5 setContentMode:1];
-  v7 = [(COSTinkerFeatureSplashViewController *)self contentView];
-  [v7 addSubview:v5];
+  contentView = [(COSTinkerFeatureSplashViewController *)self contentView];
+  [contentView addSubview:v5];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [v5 topAnchor];
-  v9 = [(COSTinkerFeatureSplashViewController *)self contentView];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  topAnchor = [v5 topAnchor];
+  contentView2 = [(COSTinkerFeatureSplashViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [v5 bottomAnchor];
-  v13 = [(COSTinkerFeatureSplashViewController *)self contentView];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [v5 bottomAnchor];
+  contentView3 = [(COSTinkerFeatureSplashViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 
-  v16 = [v5 leftAnchor];
-  v17 = [(COSTinkerFeatureSplashViewController *)self contentView];
-  v18 = [v17 leftAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  leftAnchor = [v5 leftAnchor];
+  contentView4 = [(COSTinkerFeatureSplashViewController *)self contentView];
+  leftAnchor2 = [contentView4 leftAnchor];
+  v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v19 setActive:1];
 
-  v20 = [v5 rightAnchor];
-  v21 = [(COSTinkerFeatureSplashViewController *)self contentView];
-  v22 = [v21 rightAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  rightAnchor = [v5 rightAnchor];
+  contentView5 = [(COSTinkerFeatureSplashViewController *)self contentView];
+  rightAnchor2 = [contentView5 rightAnchor];
+  v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v23 setActive:1];
 }
 
@@ -104,10 +104,10 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(COSTinkerFeatureSplashViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerFeatureSplashViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

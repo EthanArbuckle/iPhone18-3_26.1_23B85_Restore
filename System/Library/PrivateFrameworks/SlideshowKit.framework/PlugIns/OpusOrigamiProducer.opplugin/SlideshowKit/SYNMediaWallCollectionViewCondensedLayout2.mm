@@ -1,21 +1,21 @@
 @interface SYNMediaWallCollectionViewCondensedLayout2
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (SYNMediaWallCollectionViewCondensedLayout2)init;
 - (float)spacingRatio;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)indexPathsForItemsInRect:(CGRect)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)indexPathsForItemsInRect:(CGRect)rect;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (unint64_t)numberOfRows;
 - (void)dealloc;
 - (void)finalizeAnimatedBoundsChange;
 - (void)invalidateLayout;
 - (void)prepareLayout;
-- (void)setNumberOfRows:(unint64_t)a3;
-- (void)setSpacingRatio:(float)a3;
+- (void)setNumberOfRows:(unint64_t)rows;
+- (void)setSpacingRatio:(float)ratio;
 @end
 
 @implementation SYNMediaWallCollectionViewCondensedLayout2
@@ -59,12 +59,12 @@
   return spacingRatio;
 }
 
-- (void)setSpacingRatio:(float)a3
+- (void)setSpacingRatio:(float)ratio
 {
   objc_sync_enter(self);
-  if (self->_spacingRatio != a3)
+  if (self->_spacingRatio != ratio)
   {
-    self->_spacingRatio = a3;
+    self->_spacingRatio = ratio;
     [(SYNMediaWallCollectionViewCondensedLayout2 *)self invalidateLayout];
   }
 
@@ -79,23 +79,23 @@
   return numberOfRows;
 }
 
-- (void)setNumberOfRows:(unint64_t)a3
+- (void)setNumberOfRows:(unint64_t)rows
 {
   objc_sync_enter(self);
-  if (self->_numberOfRows != a3)
+  if (self->_numberOfRows != rows)
   {
-    self->_numberOfRows = a3;
+    self->_numberOfRows = rows;
     [(SYNMediaWallCollectionViewCondensedLayout2 *)self invalidateLayout];
   }
 
   objc_sync_exit(self);
 }
 
-- (id)indexPathsForItemsInRect:(CGRect)a3
+- (id)indexPathsForItemsInRect:(CGRect)rect
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  v6 = [NSMutableArray array:a3.origin.x];
+  width = rect.size.width;
+  x = rect.origin.x;
+  v6 = [NSMutableArray array:rect.origin.x];
   objc_sync_enter(self);
   v18 = 0u;
   v19 = 0u;
@@ -287,21 +287,21 @@
   objc_sync_exit(self);
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_sync_enter(self);
   v8 = +[NSMutableArray array];
-  v9 = [(SYNMediaWallCollectionViewCondensedLayout2 *)self indexPathsForItemsInRect:x, y, width, height];
+  height = [(SYNMediaWallCollectionViewCondensedLayout2 *)self indexPathsForItemsInRect:x, y, width, height];
   v10 = +[NSMutableSet set];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v11 = [height countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v11)
   {
     v12 = *v31;
@@ -311,7 +311,7 @@
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(height);
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
@@ -324,7 +324,7 @@
         [v8 addObject:{-[SYNMediaWallCollectionViewCondensedLayout2 layoutAttributesForItemAtIndexPath:](self, "layoutAttributesForItemAtIndexPath:", v14)}];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v11 = [height countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v11);
@@ -376,7 +376,7 @@
   return v8;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   objc_sync_enter(self);
   v5 = -[NSMutableArray objectAtIndex:](self->_attributes, "objectAtIndex:", [objc_msgSend(-[SYNMediaWallCollectionViewCondensedLayout2 collectionView](self "collectionView")]);
@@ -411,21 +411,21 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  Height = CGRectGetHeight(a3);
+  Height = CGRectGetHeight(change);
   [-[SYNMediaWallCollectionViewCondensedLayout2 collectionView](self "collectionView")];
   return Height != CGRectGetHeight(v6);
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  if (![a3 isEqualToString:UICollectionElementKindSectionHeader])
+  if (![kind isEqualToString:UICollectionElementKindSectionHeader])
   {
     return 0;
   }
 
-  v6 = -[NSMutableArray objectAtIndex:](self->_sectionAttributes, "objectAtIndex:", [a4 indexAtPosition:0]);
+  v6 = -[NSMutableArray objectAtIndex:](self->_sectionAttributes, "objectAtIndex:", [path indexAtPosition:0]);
   if ([v6 isEqual:{+[NSNull null](NSNull, "null")}])
   {
     return 0;
@@ -441,18 +441,18 @@
   self->_oldBounds.size = size;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = SYNMediaWallCollectionViewCondensedLayout2;
-  return [(SYNMediaWallCollectionViewCondensedLayout2 *)&v4 initialLayoutAttributesForAppearingItemAtIndexPath:a3];
+  return [(SYNMediaWallCollectionViewCondensedLayout2 *)&v4 initialLayoutAttributesForAppearingItemAtIndexPath:path];
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = SYNMediaWallCollectionViewCondensedLayout2;
-  return [(SYNMediaWallCollectionViewCondensedLayout2 *)&v4 finalLayoutAttributesForDisappearingItemAtIndexPath:a3];
+  return [(SYNMediaWallCollectionViewCondensedLayout2 *)&v4 finalLayoutAttributesForDisappearingItemAtIndexPath:path];
 }
 
 @end

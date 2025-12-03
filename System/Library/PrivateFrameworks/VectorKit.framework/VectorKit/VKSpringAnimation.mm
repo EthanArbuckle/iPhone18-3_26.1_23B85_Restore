@@ -1,15 +1,15 @@
 @interface VKSpringAnimation
-- (BOOL)_calculateFractionForTimeElapsed:(double)a3 result:(float *)a4;
-- (VKSpringAnimation)initWithTension:(float)a3 friction:(float)a4 name:(id)a5;
-- (void)onTimerFired:(double)a3;
+- (BOOL)_calculateFractionForTimeElapsed:(double)elapsed result:(float *)result;
+- (VKSpringAnimation)initWithTension:(float)tension friction:(float)friction name:(id)name;
+- (void)onTimerFired:(double)fired;
 - (void)pause;
 - (void)resume;
-- (void)stopAnimation:(BOOL)a3;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation VKSpringAnimation
 
-- (void)onTimerFired:(double)a3
+- (void)onTimerFired:(double)fired
 {
   v9.receiver = self;
   v9.super_class = VKSpringAnimation;
@@ -22,34 +22,34 @@
   else
   {
     self->_startTimestampSet = 1;
-    self->_startTimestamp = a3;
-    self->_lastTimestamp = a3;
-    lastTimestamp = a3;
+    self->_startTimestamp = fired;
+    self->_lastTimestamp = fired;
+    lastTimestamp = fired;
   }
 
   if (self->_resuming)
   {
-    self->_startTimestamp = a3 - lastTimestamp + self->_startTimestamp;
+    self->_startTimestamp = fired - lastTimestamp + self->_startTimestamp;
     self->_resuming = 0;
-    lastTimestamp = a3;
+    lastTimestamp = fired;
   }
 
-  self->_lastTimestamp = a3;
+  self->_lastTimestamp = fired;
   v8 = 0.0;
-  v6 = [(VKSpringAnimation *)self _calculateFractionForTimeElapsed:&v8 result:a3 - lastTimestamp];
+  lastTimestamp = [(VKSpringAnimation *)self _calculateFractionForTimeElapsed:&v8 result:fired - lastTimestamp];
   stepHandler = self->_stepHandler;
   if (stepHandler)
   {
     stepHandler[2](v8);
   }
 
-  if (v6)
+  if (lastTimestamp)
   {
     self->super._state = 3;
   }
 }
 
-- (BOOL)_calculateFractionForTimeElapsed:(double)a3 result:(float *)a4
+- (BOOL)_calculateFractionForTimeElapsed:(double)elapsed result:(float *)result
 {
   v6 = self->_lastFraction + -1.0;
   lastVelocity = self->_lastVelocity;
@@ -57,7 +57,7 @@
   tension = self->_tension;
   if ((fabsf((friction * lastVelocity) / tension) + fabsf(v6)) < 0.001)
   {
-    *a4 = 1.0;
+    *result = 1.0;
     return 1;
   }
 
@@ -68,9 +68,9 @@
     if ((friction * 0.5) <= v12)
     {
       v30 = -v13;
-      v31 = exp(v30 * a3);
+      v31 = exp(v30 * elapsed);
       v32 = (lastVelocity + (v13 * v6));
-      v33 = v6 + v32 * a3;
+      v33 = v6 + v32 * elapsed;
       v20 = v33 * v31;
       v29 = (v32 + v33 * v30) * v31;
       goto LABEL_9;
@@ -78,9 +78,9 @@
 
     v16 = sqrtf(-(tension - (v13 * v13)));
     v38 = -v13;
-    v15 = exp(v38 * a3);
+    v15 = exp(v38 * elapsed);
     v23 = v6;
-    v24 = v16 * a3;
+    v24 = v16 * elapsed;
     v25 = cosh(v24);
     v26 = (lastVelocity + (v13 * v6)) / v16;
     v27 = sinh(v24);
@@ -94,9 +94,9 @@
   {
     v14 = sqrtf(tension - (v13 * v13));
     v37 = -v13;
-    v15 = exp(v37 * a3);
+    v15 = exp(v37 * elapsed);
     v16 = v14;
-    v17 = __sincos_stret(v14 * a3);
+    v17 = __sincos_stret(v14 * elapsed);
     v18 = ((lastVelocity + (v13 * v6)) / v14);
     v19 = v17.__sinval * v18 + v17.__cosval * v6;
     v20 = v19 * v15;
@@ -111,7 +111,7 @@ LABEL_9:
   v36 = v34 + 1.0;
   self->_lastFraction = v36;
   self->_lastVelocity = v35;
-  *a4 = v36;
+  *result = v36;
   return (fabsf((self->_friction * self->_lastVelocity) / self->_tension) + fabsf(self->_lastFraction + -1.0)) < 0.001;
 }
 
@@ -131,25 +131,25 @@ LABEL_9:
   [(VKAnimation *)&v2 pause];
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
   v5.receiver = self;
   v5.super_class = VKSpringAnimation;
-  [(VKAnimation *)&v5 stopAnimation:a3];
+  [(VKAnimation *)&v5 stopAnimation:animation];
   stepHandler = self->_stepHandler;
   self->_stepHandler = 0;
 }
 
-- (VKSpringAnimation)initWithTension:(float)a3 friction:(float)a4 name:(id)a5
+- (VKSpringAnimation)initWithTension:(float)tension friction:(float)friction name:(id)name
 {
   v11.receiver = self;
   v11.super_class = VKSpringAnimation;
-  v7 = [(VKAnimation *)&v11 initWithName:a5];
+  v7 = [(VKAnimation *)&v11 initWithName:name];
   v8 = v7;
   if (v7)
   {
-    v7->_tension = a3;
-    v7->_friction = a4;
+    v7->_tension = tension;
+    v7->_friction = friction;
     v9 = v7;
   }
 

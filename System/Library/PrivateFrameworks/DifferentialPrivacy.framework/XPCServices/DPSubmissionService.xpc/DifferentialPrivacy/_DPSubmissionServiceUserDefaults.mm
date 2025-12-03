@@ -4,7 +4,7 @@
 + (id)baaCertificateBackoffDate;
 + (id)qaKeyConfigURL;
 + (id)qaServerURL;
-+ (void)setBAACertificateBackoffDate:(id)a3;
++ (void)setBAACertificateBackoffDate:(id)date;
 @end
 
 @implementation _DPSubmissionServiceUserDefaults
@@ -39,11 +39,11 @@
   return v4;
 }
 
-+ (void)setBAACertificateBackoffDate:(id)a3
++ (void)setBAACertificateBackoffDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setObject:v3 forKey:@"DPSubmissionServiceBAACertificateBackoffDate"];
+  [v4 setObject:dateCopy forKey:@"DPSubmissionServiceBAACertificateBackoffDate"];
 }
 
 + (id)qaServerURL

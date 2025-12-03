@@ -9,13 +9,13 @@
   v7.receiver = self;
   v7.super_class = CNFRegSettingsCellularSettingsCell;
   [(PSTableCell *)&v7 layoutSubviews];
-  v3 = [(CNFRegSettingsCellularSettingsCell *)self tintColor];
-  v4 = [(PSTableCell *)self titleLabel];
-  [v4 setTextColor:v3];
+  tintColor = [(CNFRegSettingsCellularSettingsCell *)self tintColor];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setTextColor:tintColor];
 
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v6 = [(PSTableCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel2 = [(PSTableCell *)self titleLabel];
+  [titleLabel2 setFont:v5];
 }
 
 @end

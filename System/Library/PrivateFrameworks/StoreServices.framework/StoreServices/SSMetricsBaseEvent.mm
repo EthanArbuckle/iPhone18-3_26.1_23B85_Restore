@@ -1,9 +1,9 @@
 @interface SSMetricsBaseEvent
-- (BOOL)isBlacklistedByConfiguration:(id)a3;
+- (BOOL)isBlacklistedByConfiguration:(id)configuration;
 - (SSMetricsBaseEvent)init;
 - (id)description;
 - (unint64_t)pageID;
-- (void)setPageID:(unint64_t)a3;
+- (void)setPageID:(unint64_t)d;
 @end
 
 @implementation SSMetricsBaseEvent
@@ -51,24 +51,24 @@ void __26__SSMetricsBaseEvent_init__block_invoke()
   __mainScreenAnswers = v0;
 }
 
-- (BOOL)isBlacklistedByConfiguration:(id)a3
+- (BOOL)isBlacklistedByConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = SSMetricsBaseEvent;
-  return [(SSMetricsEvent *)&v4 isBlacklistedByConfiguration:a3];
+  return [(SSMetricsEvent *)&v4 isBlacklistedByConfiguration:configuration];
 }
 
 - (unint64_t)pageID
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"pageId"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)setPageID:(unint64_t)a3
+- (void)setPageID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
     [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"pageId"];
@@ -87,9 +87,9 @@ void __26__SSMetricsBaseEvent_init__block_invoke()
   v9.receiver = self;
   v9.super_class = SSMetricsBaseEvent;
   v4 = [(SSMetricsBaseEvent *)&v9 description];
-  v5 = [(SSMetricsMutableEvent *)self eventType];
-  v6 = [(SSMetricsMutableEvent *)self eventVersion];
-  v7 = [v3 stringWithFormat:@"%@ -- [Type: %@] [eVersion: %@]", v4, v5, v6];
+  eventType = [(SSMetricsMutableEvent *)self eventType];
+  eventVersion = [(SSMetricsMutableEvent *)self eventVersion];
+  v7 = [v3 stringWithFormat:@"%@ -- [Type: %@] [eVersion: %@]", v4, eventType, eventVersion];
 
   return v7;
 }

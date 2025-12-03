@@ -1,25 +1,25 @@
 @interface AKColorPaletteView
-- (AKColorPaletteView)initWithCoder:(id)a3;
-- (AKColorPaletteView)initWithFrame:(CGRect)a3;
+- (AKColorPaletteView)initWithCoder:(id)coder;
+- (AKColorPaletteView)initWithFrame:(CGRect)frame;
 - (CGSize)_itemSizeInContainer;
-- (id)_indexPathOfColor:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)_indexPathOfColor:(id)color;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_commonInit;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
 - (void)scrollToCurrentColor;
-- (void)setColor:(id)a3;
-- (void)setScrollDirection:(int64_t)a3;
+- (void)setColor:(id)color;
+- (void)setScrollDirection:(int64_t)direction;
 @end
 
 @implementation AKColorPaletteView
 
-- (AKColorPaletteView)initWithCoder:(id)a3
+- (AKColorPaletteView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKColorPaletteView;
-  v3 = [(AKColorPaletteView *)&v6 initWithCoder:a3];
+  v3 = [(AKColorPaletteView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (AKColorPaletteView)initWithFrame:(CGRect)a3
+- (AKColorPaletteView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKColorPaletteView;
-  v3 = [(AKColorPaletteView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKColorPaletteView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,22 +46,22 @@
 - (void)_commonInit
 {
   v30[8] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  v30[0] = v3;
-  v4 = [MEMORY[0x277D75348] blackColor];
-  v30[1] = v4;
-  v5 = [MEMORY[0x277D75348] akColorPickerPurple];
-  v30[2] = v5;
-  v6 = [MEMORY[0x277D75348] akColorPickerBlue];
-  v30[3] = v6;
-  v7 = [MEMORY[0x277D75348] akColorPickerGreen];
-  v30[4] = v7;
-  v8 = [MEMORY[0x277D75348] akColorPickerYellow];
-  v30[5] = v8;
-  v9 = [MEMORY[0x277D75348] akColorPickerOrange];
-  v30[6] = v9;
-  v10 = [MEMORY[0x277D75348] akColorPickerRed];
-  v30[7] = v10;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v30[0] = whiteColor;
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v30[1] = blackColor;
+  akColorPickerPurple = [MEMORY[0x277D75348] akColorPickerPurple];
+  v30[2] = akColorPickerPurple;
+  akColorPickerBlue = [MEMORY[0x277D75348] akColorPickerBlue];
+  v30[3] = akColorPickerBlue;
+  akColorPickerGreen = [MEMORY[0x277D75348] akColorPickerGreen];
+  v30[4] = akColorPickerGreen;
+  akColorPickerYellow = [MEMORY[0x277D75348] akColorPickerYellow];
+  v30[5] = akColorPickerYellow;
+  akColorPickerOrange = [MEMORY[0x277D75348] akColorPickerOrange];
+  v30[6] = akColorPickerOrange;
+  akColorPickerRed = [MEMORY[0x277D75348] akColorPickerRed];
+  v30[7] = akColorPickerRed;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:8];
   [(AKColorPaletteView *)self setColors:v11];
 
@@ -76,33 +76,33 @@
   v14 = [v13 initWithFrame:v12 collectionViewLayout:?];
   [(AKColorPaletteView *)self setCollectionView:v14];
 
-  v15 = [(AKColorPaletteView *)self collectionView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(AKColorPaletteView *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(AKColorPaletteView *)self collectionView];
-  [v16 setDelegate:self];
+  collectionView2 = [(AKColorPaletteView *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v17 = [(AKColorPaletteView *)self collectionView];
-  [v17 setDataSource:self];
+  collectionView3 = [(AKColorPaletteView *)self collectionView];
+  [collectionView3 setDataSource:self];
 
-  v18 = [(AKColorPaletteView *)self collectionView];
-  [v18 setPagingEnabled:1];
+  collectionView4 = [(AKColorPaletteView *)self collectionView];
+  [collectionView4 setPagingEnabled:1];
 
-  v19 = [(AKColorPaletteView *)self collectionView];
-  [v19 setShowsHorizontalScrollIndicator:0];
+  collectionView5 = [(AKColorPaletteView *)self collectionView];
+  [collectionView5 setShowsHorizontalScrollIndicator:0];
 
-  v20 = [(AKColorPaletteView *)self collectionView];
-  [v20 setShowsVerticalScrollIndicator:0];
+  collectionView6 = [(AKColorPaletteView *)self collectionView];
+  [collectionView6 setShowsVerticalScrollIndicator:0];
 
-  v21 = [MEMORY[0x277D75348] clearColor];
-  v22 = [(AKColorPaletteView *)self collectionView];
-  [v22 setBackgroundColor:v21];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView7 = [(AKColorPaletteView *)self collectionView];
+  [collectionView7 setBackgroundColor:clearColor];
 
-  v23 = [(AKColorPaletteView *)self collectionView];
-  [v23 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"AnnotationKit.colorPickerReuseIdentifier"];
+  collectionView8 = [(AKColorPaletteView *)self collectionView];
+  [collectionView8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"AnnotationKit.colorPickerReuseIdentifier"];
 
-  v24 = [(AKColorPaletteView *)self collectionView];
-  [(AKColorPaletteView *)self addSubview:v24];
+  collectionView9 = [(AKColorPaletteView *)self collectionView];
+  [(AKColorPaletteView *)self addSubview:collectionView9];
 
   v25 = _NSDictionaryOfVariableBindings(&cfstr_Collectionview.isa, self->_collectionView, 0);
   v26 = MEMORY[0x277CCAAD0];
@@ -114,9 +114,9 @@
   [v28 activateConstraints:v29];
 }
 
-- (void)setScrollDirection:(int64_t)a3
+- (void)setScrollDirection:(int64_t)direction
 {
-  self->_scrollDirection = a3;
+  self->_scrollDirection = direction;
   v8 = objc_opt_new();
   [v8 setScrollDirection:self->_scrollDirection];
   [v8 setMinimumInteritemSpacing:0.0];
@@ -124,10 +124,10 @@
   if ([(AKColorPaletteView *)self scrollDirection])
   {
     [v8 setSectionInset:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-    v4 = [(AKColorPaletteView *)self colors];
-    v5 = [v4 reverseObjectEnumerator];
-    v6 = [v5 allObjects];
-    [(AKColorPaletteView *)self setColors:v6];
+    colors = [(AKColorPaletteView *)self colors];
+    reverseObjectEnumerator = [colors reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(AKColorPaletteView *)self setColors:allObjects];
   }
 
   else
@@ -137,47 +137,47 @@
 
   [(AKColorPaletteView *)self _itemSizeInContainer];
   [v8 setItemSize:?];
-  v7 = [(AKColorPaletteView *)self collectionView];
-  [v7 setCollectionViewLayout:v8 animated:0];
+  collectionView = [(AKColorPaletteView *)self collectionView];
+  [collectionView setCollectionViewLayout:v8 animated:0];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(AKColorPaletteView *)self collectionView];
-  v4 = [v3 collectionViewLayout];
+  collectionView = [(AKColorPaletteView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
   [(AKColorPaletteView *)self _itemSizeInContainer];
-  [v4 setItemSize:?];
+  [collectionViewLayout setItemSize:?];
 }
 
 - (void)scrollToCurrentColor
 {
-  v3 = [(AKColorPaletteView *)self color];
+  color = [(AKColorPaletteView *)self color];
 
-  if (v3)
+  if (color)
   {
-    v4 = [(AKColorPaletteView *)self color];
-    v7 = [(AKColorPaletteView *)self _indexPathOfColor:v4];
+    color2 = [(AKColorPaletteView *)self color];
+    v7 = [(AKColorPaletteView *)self _indexPathOfColor:color2];
 
     v5 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{objc_msgSend(v7, "section")}];
     if (v7)
     {
-      v6 = [(AKColorPaletteView *)self collectionView];
-      [v6 scrollToItemAtIndexPath:v5 atScrollPosition:8 animated:0];
+      collectionView = [(AKColorPaletteView *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v5 atScrollPosition:8 animated:0];
     }
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v11 = v5;
+    v11 = colorCopy;
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = [(AKColorPaletteView *)self _indexPathOfColor:self->_color];
     v8 = [(AKColorPaletteView *)self _indexPathOfColor:v11];
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     if (v7)
     {
       [v6 addObject:v7];
@@ -190,19 +190,19 @@
 
     if ([v6 count])
     {
-      v9 = [(AKColorPaletteView *)self collectionView];
-      v10 = [v6 allObjects];
-      [v9 reloadItemsAtIndexPaths:v10];
+      collectionView = [(AKColorPaletteView *)self collectionView];
+      allObjects = [v6 allObjects];
+      [collectionView reloadItemsAtIndexPaths:allObjects];
     }
 
-    v5 = v11;
+    colorCopy = v11;
   }
 }
 
 - (CGSize)_itemSizeInContainer
 {
-  v3 = [(AKColorPaletteView *)self colors];
-  v4 = [v3 count];
+  colors = [(AKColorPaletteView *)self colors];
+  v4 = [colors count];
 
   [(AKColorPaletteView *)self frame];
   IsEmpty = CGRectIsEmpty(v11);
@@ -232,16 +232,16 @@
   return result;
 }
 
-- (id)_indexPathOfColor:(id)a3
+- (id)_indexPathOfColor:(id)color
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(AKColorPaletteView *)self colors];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  colors = [(AKColorPaletteView *)self colors];
+  v6 = [colors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -253,18 +253,18 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(colors);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v4 akIsEqualToColor:v11])
+        if ([colorCopy akIsEqualToColor:v11])
         {
-          v12 = [(AKColorPaletteView *)self colors];
-          v9 = [v12 indexOfObject:v11];
+          colors2 = [(AKColorPaletteView *)self colors];
+          v9 = [colors2 indexOfObject:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [colors countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -286,30 +286,30 @@ LABEL_14:
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AKColorPaletteView *)self colors];
-  v7 = [v5 row];
+  pathCopy = path;
+  colors = [(AKColorPaletteView *)self colors];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [colors objectAtIndexedSubscript:v7];
   [(AKColorPaletteView *)self setColor:v8];
 
   [(AKColorPaletteView *)self sendActionsForControlEvents:4096];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AKColorPaletteView *)self colors:a3];
+  v4 = [(AKColorPaletteView *)self colors:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"AnnotationKit.colorPickerReuseIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"AnnotationKit.colorPickerReuseIdentifier" forIndexPath:pathCopy];
   v8 = [v7 viewWithTag:1001];
   v9 = v8;
   if (v7 && !v8)
@@ -319,12 +319,12 @@ LABEL_14:
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v9 setTag:1001];
     [v9 setClipsToBounds:0];
-    v10 = [v7 contentView];
-    [v10 addSubview:v9];
+    contentView = [v7 contentView];
+    [contentView addSubview:v9];
 
-    v11 = [(AKColorPaletteView *)self scrollDirection];
+    scrollDirection = [(AKColorPaletteView *)self scrollDirection];
     v12 = 39.0;
-    if (v11)
+    if (scrollDirection)
     {
       v12 = 24.0;
     }
@@ -346,17 +346,17 @@ LABEL_14:
     [v20 setActive:1];
   }
 
-  v21 = [(AKColorPaletteView *)self colors];
-  v22 = [v6 row];
+  colors = [(AKColorPaletteView *)self colors];
+  v22 = [pathCopy row];
 
-  v23 = [v21 objectAtIndexedSubscript:v22];
+  v23 = [colors objectAtIndexedSubscript:v22];
 
-  v24 = [(AKColorPaletteView *)self color];
-  v25 = [v24 akIsEqualToColor:v23];
+  color = [(AKColorPaletteView *)self color];
+  v25 = [color akIsEqualToColor:v23];
 
-  v26 = [(AKColorPaletteView *)self scrollDirection];
+  scrollDirection2 = [(AKColorPaletteView *)self scrollDirection];
   v27 = 39.0;
-  if (v26)
+  if (scrollDirection2)
   {
     v27 = 24.0;
   }

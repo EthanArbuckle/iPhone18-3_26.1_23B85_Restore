@@ -1,13 +1,13 @@
 @interface AXAssetsDaemon
 + (id)sharedInstance;
 - (id)_init;
-- (id)_managedAssetForAssetType:(id)a3;
-- (void)_handleDarwinNotification:(id)a3;
-- (void)_updateAssetForAssetType:(id)a3;
-- (void)registerManagedAsset:(id)a3;
-- (void)registerManagedAssets:(id)a3;
+- (id)_managedAssetForAssetType:(id)type;
+- (void)_handleDarwinNotification:(id)notification;
+- (void)_updateAssetForAssetType:(id)type;
+- (void)registerManagedAsset:(id)asset;
+- (void)registerManagedAssets:(id)assets;
 - (void)run;
-- (void)willBecomeIdle:(id)a3 completion:(id)a4;
+- (void)willBecomeIdle:(id)idle completion:(id)completion;
 @end
 
 @implementation AXAssetsDaemon
@@ -34,8 +34,8 @@
     v3 = objc_alloc_init(AXAssetsActivityTransactionManager);
     [(AXAssetsDaemon *)v2 setActivityTransactionManager:v3];
 
-    v4 = [(AXAssetsDaemon *)v2 activityTransactionManager];
-    [v4 setDelegate:v2];
+    activityTransactionManager = [(AXAssetsDaemon *)v2 activityTransactionManager];
+    [activityTransactionManager setDelegate:v2];
 
     v5 = objc_alloc_init(NSMutableArray);
     [(AXAssetsDaemon *)v2 setManagedAssets:v5];
@@ -69,18 +69,18 @@
   return v2;
 }
 
-- (void)registerManagedAsset:(id)a3
+- (void)registerManagedAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(AXAssetsDaemon *)self managedAssets];
-  [v5 addObject:v4];
+  assetCopy = asset;
+  managedAssets = [(AXAssetsDaemon *)self managedAssets];
+  [managedAssets addObject:assetCopy];
 }
 
-- (void)registerManagedAssets:(id)a3
+- (void)registerManagedAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(AXAssetsDaemon *)self managedAssets];
-  [v5 addObjectsFromArray:v4];
+  assetsCopy = assets;
+  managedAssets = [(AXAssetsDaemon *)self managedAssets];
+  [managedAssets addObjectsFromArray:assetsCopy];
 }
 
 - (void)run
@@ -91,13 +91,13 @@
   v23 = sub_100005D24;
   v24 = sub_100005D34;
   v25 = dispatch_semaphore_create(0);
-  v3 = [(AXAssetsDaemon *)self voiceManager];
+  voiceManager = [(AXAssetsDaemon *)self voiceManager];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100005D3C;
   v19[3] = &unk_100018728;
   v19[4] = &v20;
-  [v3 run:v19];
+  [voiceManager run:v19];
 
   dispatch_semaphore_wait(v21[5], 0xFFFFFFFFFFFFFFFFLL);
   objc_initWeak(&location, self);
@@ -112,8 +112,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(AXAssetsDaemon *)self managedAssets];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v26 count:16];
+  managedAssets = [(AXAssetsDaemon *)self managedAssets];
+  v6 = [managedAssets countByEnumeratingWithState:&v12 objects:v26 count:16];
   if (v6)
   {
     v9 = *v13;
@@ -123,20 +123,20 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(managedAssets);
         }
 
         [*(*(&v12 + 1) + 8 * i) checkInAssetUpdateXPCActivity];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v26 count:16];
+      v6 = [managedAssets countByEnumeratingWithState:&v12 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v7 = [(AXAssetsDaemon *)self xpcServer];
-  [v7 startServer];
+  xpcServer = [(AXAssetsDaemon *)self xpcServer];
+  [xpcServer startServer];
 
   v8 = AXLogAssetDaemon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -148,22 +148,22 @@
   dispatch_main();
 }
 
-- (void)_handleDarwinNotification:(id)a3
+- (void)_handleDarwinNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(AXAssetsDaemon *)self voiceManager];
-  [v5 handleDarwinNotification:v4 completion:&stru_1000188E8];
+  notificationCopy = notification;
+  voiceManager = [(AXAssetsDaemon *)self voiceManager];
+  [voiceManager handleDarwinNotification:notificationCopy completion:&stru_1000188E8];
 }
 
-- (id)_managedAssetForAssetType:(id)a3
+- (id)_managedAssetForAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AXAssetsDaemon *)self managedAssets];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  managedAssets = [(AXAssetsDaemon *)self managedAssets];
+  v6 = [managedAssets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -173,13 +173,13 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(managedAssets);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 policy];
-        v11 = [v10 assetType];
-        v12 = [v11 isEqualToString:v4];
+        policy = [v9 policy];
+        assetType = [policy assetType];
+        v12 = [assetType isEqualToString:typeCopy];
 
         if (v12)
         {
@@ -188,7 +188,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [managedAssets countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -203,23 +203,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)_updateAssetForAssetType:(id)a3
+- (void)_updateAssetForAssetType:(id)type
 {
-  v4 = [(AXAssetsDaemon *)self _managedAssetForAssetType:a3];
+  v4 = [(AXAssetsDaemon *)self _managedAssetForAssetType:type];
   v3 = +[AXManagedAssetTaskContext contextWithXPCClient];
   [v4 enqueueAssetUpdateTaskWithContext:v3];
 }
 
-- (void)willBecomeIdle:(id)a3 completion:(id)a4
+- (void)willBecomeIdle:(id)idle completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000061C4;
   block[3] = &unk_100018910;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 }
 

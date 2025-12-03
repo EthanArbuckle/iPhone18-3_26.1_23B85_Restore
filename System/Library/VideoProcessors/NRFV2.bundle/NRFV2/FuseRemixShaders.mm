@@ -1,13 +1,13 @@
 @interface FuseRemixShaders
-+ (unsigned)getIdxForOptionsWithIsLuma:(BOOL)a3 isTopBand:(BOOL)a4 isBand0:(BOOL)a5 isFirstBatch:(BOOL)a6 isLastBatch:(BOOL)a7 usePatchBasedFusion:(BOOL)a8 useGpuCSC:(BOOL)a9 ggmEnabled:(BOOL)a10;
-- (FuseRemixShaders)initWithMetal:(id)a3 pixelFormatLuma:(unint64_t)a4 pixelFormatChroma:(unint64_t)a5;
++ (unsigned)getIdxForOptionsWithIsLuma:(BOOL)luma isTopBand:(BOOL)band isBand0:(BOOL)band0 isFirstBatch:(BOOL)batch isLastBatch:(BOOL)lastBatch usePatchBasedFusion:(BOOL)fusion useGpuCSC:(BOOL)c ggmEnabled:(BOOL)self0;
+- (FuseRemixShaders)initWithMetal:(id)metal pixelFormatLuma:(unint64_t)luma pixelFormatChroma:(unint64_t)chroma;
 @end
 
 @implementation FuseRemixShaders
 
-+ (unsigned)getIdxForOptionsWithIsLuma:(BOOL)a3 isTopBand:(BOOL)a4 isBand0:(BOOL)a5 isFirstBatch:(BOOL)a6 isLastBatch:(BOOL)a7 usePatchBasedFusion:(BOOL)a8 useGpuCSC:(BOOL)a9 ggmEnabled:(BOOL)a10
++ (unsigned)getIdxForOptionsWithIsLuma:(BOOL)luma isTopBand:(BOOL)band isBand0:(BOOL)band0 isFirstBatch:(BOOL)batch isLastBatch:(BOOL)lastBatch usePatchBasedFusion:(BOOL)fusion useGpuCSC:(BOOL)c ggmEnabled:(BOOL)self0
 {
-  if (a4)
+  if (band)
   {
     v10 = 2;
   }
@@ -17,8 +17,8 @@
     v10 = 0;
   }
 
-  v11 = v10 | a3;
-  if (a5)
+  v11 = v10 | luma;
+  if (band0)
   {
     v12 = 4;
   }
@@ -28,7 +28,7 @@
     v12 = 0;
   }
 
-  if (a6)
+  if (batch)
   {
     v13 = 8;
   }
@@ -39,7 +39,7 @@
   }
 
   v14 = v11 | v12 | v13;
-  if (a7)
+  if (lastBatch)
   {
     v15 = 16;
   }
@@ -49,7 +49,7 @@
     v15 = 0;
   }
 
-  if (a8)
+  if (fusion)
   {
     v16 = 32;
   }
@@ -60,7 +60,7 @@
   }
 
   v17 = v14 | v15 | v16;
-  if (a9)
+  if (c)
   {
     v18 = 64;
   }
@@ -71,7 +71,7 @@
   }
 
   v19 = v17 | v18;
-  if (a10)
+  if (enabled)
   {
     v20 = 128;
   }
@@ -84,9 +84,9 @@
   return v19 | v20;
 }
 
-- (FuseRemixShaders)initWithMetal:(id)a3 pixelFormatLuma:(unint64_t)a4 pixelFormatChroma:(unint64_t)a5
+- (FuseRemixShaders)initWithMetal:(id)metal pixelFormatLuma:(unint64_t)luma pixelFormatChroma:(unint64_t)chroma
 {
-  v6 = a3;
+  metalCopy = metal;
   v58 = 0;
   v57 = 1;
   v56.receiver = self;
@@ -94,7 +94,7 @@
   v8 = [(FuseRemixShaders *)&v56 init];
   if (v8)
   {
-    v55 = v6;
+    v55 = metalCopy;
     for (i = 0; i != 256; ++i)
     {
       v10 = i > 0x7F;
@@ -126,12 +126,12 @@ LABEL_12:
       {
         if (i)
         {
-          v14 = a4;
+          chromaCopy = luma;
         }
 
         else
         {
-          v14 = a5;
+          chromaCopy = chroma;
         }
 
         if (i)
@@ -154,7 +154,7 @@ LABEL_12:
         BYTE2(v52) = i > 0x7F;
         BYTE1(v52) = (i & 0x40) != 0;
         LOBYTE(v52) = (i & 0x20) != 0;
-        isLastBatch_usePatchBasedFusion_useGpuCSC_ggmEnabled = objc_msgSend_initWithMetal_fragName_pixelFormat_noisePixelFormat_isFirstBatch_isLastBatch_usePatchBasedFusion_useGpuCSC_ggmEnabled_(v16, v17, v55, v13, v14, v15, (i >> 3) & 1, (i >> 4) & 1, v52);
+        isLastBatch_usePatchBasedFusion_useGpuCSC_ggmEnabled = objc_msgSend_initWithMetal_fragName_pixelFormat_noisePixelFormat_isFirstBatch_isLastBatch_usePatchBasedFusion_useGpuCSC_ggmEnabled_(v16, v17, v55, v13, chromaCopy, v15, (i >> 3) & 1, (i >> 4) & 1, v52);
         v19 = v11[1];
         v11[1] = isLastBatch_usePatchBasedFusion_useGpuCSC_ggmEnabled;
 
@@ -163,13 +163,13 @@ LABEL_12:
           sub_2958C4D48();
           v24 = 0;
           v48 = v59;
-          v6 = v55;
+          metalCopy = v55;
           goto LABEL_35;
         }
       }
     }
 
-    v6 = v55;
+    metalCopy = v55;
     v20 = objc_msgSend_computePipelineStateFor_constants_(v55, v7, @"accWeightDownsample", 0);
     accWeightDownsample = v8->accWeightDownsample;
     v8->accWeightDownsample = v20;

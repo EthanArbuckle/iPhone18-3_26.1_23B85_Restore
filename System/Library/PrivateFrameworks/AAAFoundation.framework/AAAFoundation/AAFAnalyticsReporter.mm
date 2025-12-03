@@ -1,50 +1,50 @@
 @interface AAFAnalyticsReporter
-+ (id)analyticsReporterWithTransport:(id)a3;
-- (AAFAnalyticsReporter)initWithTransport:(id)a3;
-- (void)sendEvent:(id)a3;
++ (id)analyticsReporterWithTransport:(id)transport;
+- (AAFAnalyticsReporter)initWithTransport:(id)transport;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AAFAnalyticsReporter
 
-- (AAFAnalyticsReporter)initWithTransport:(id)a3
+- (AAFAnalyticsReporter)initWithTransport:(id)transport
 {
-  v5 = a3;
+  transportCopy = transport;
   v9.receiver = self;
   v9.super_class = AAFAnalyticsReporter;
   v6 = [(AAFAnalyticsReporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transport, a3);
+    objc_storeStrong(&v6->_transport, transport);
   }
 
   return v7;
 }
 
-+ (id)analyticsReporterWithTransport:(id)a3
++ (id)analyticsReporterWithTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTransport:v4];
+  transportCopy = transport;
+  v5 = [[self alloc] initWithTransport:transportCopy];
 
   return v5;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 completeEvent];
+  eventCopy = event;
+  [eventCopy completeEvent];
   v5 = _AAFLogSystemAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 debugDescription];
+    v8 = [eventCopy debugDescription];
     v9 = [(AAFAnalyticsTransport *)self->_transport debugDescription];
     v11 = 138413058;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
@@ -52,7 +52,7 @@
     _os_log_impl(&dword_1C8644000, v5, OS_LOG_TYPE_DEFAULT, "<%@: %p> Sending event: [%@] with transport: [%@]", &v11, 0x2Au);
   }
 
-  [(AAFAnalyticsReporter *)self _sendEvent:v4];
+  [(AAFAnalyticsReporter *)self _sendEvent:eventCopy];
   v10 = *MEMORY[0x1E69E9840];
 }
 

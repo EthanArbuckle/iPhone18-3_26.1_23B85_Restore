@@ -1,6 +1,6 @@
 @interface _AMUISwitcherVisibleItemRecord
-+ (id)recordWithItem:(uint64_t)a3 index:(void *)a4 forSwitcher:;
-- (_AMUISwitcherVisibleItemRecord)initWithItem:(id)a3 index:(int64_t)a4 forSwitcher:(id)a5;
++ (id)recordWithItem:(uint64_t)item index:(void *)index forSwitcher:;
+- (_AMUISwitcherVisibleItemRecord)initWithItem:(id)item index:(int64_t)index forSwitcher:(id)switcher;
 - (double)presentationProgress;
 - (id)item;
 - (id)itemView;
@@ -11,45 +11,45 @@
 - (uint64_t)isUnsettled;
 - (uint64_t)itemIndex;
 - (void)_updateAppearState;
-- (void)sendCallbackForState:(id *)a1 animated:(uint64_t)a2;
-- (void)setAppearState:(void *)a1;
-- (void)setPresentationProgress:(uint64_t)a1;
-- (void)setUnsettled:(void *)a1;
+- (void)sendCallbackForState:(id *)state animated:(uint64_t)animated;
+- (void)setAppearState:(void *)state;
+- (void)setPresentationProgress:(uint64_t)progress;
+- (void)setUnsettled:(void *)unsettled;
 @end
 
 @implementation _AMUISwitcherVisibleItemRecord
 
-+ (id)recordWithItem:(uint64_t)a3 index:(void *)a4 forSwitcher:
++ (id)recordWithItem:(uint64_t)item index:(void *)index forSwitcher:
 {
-  v6 = a4;
+  indexCopy = index;
   v7 = a2;
-  v8 = [objc_alloc(objc_opt_self()) initWithItem:v7 index:a3 forSwitcher:v6];
+  v8 = [objc_alloc(objc_opt_self()) initWithItem:v7 index:item forSwitcher:indexCopy];
 
   return v8;
 }
 
-- (_AMUISwitcherVisibleItemRecord)initWithItem:(id)a3 index:(int64_t)a4 forSwitcher:(id)a5
+- (_AMUISwitcherVisibleItemRecord)initWithItem:(id)item index:(int64_t)index forSwitcher:(id)switcher
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  switcherCopy = switcher;
   v15.receiver = self;
   v15.super_class = _AMUISwitcherVisibleItemRecord;
   v10 = [(_AMUISwitcherVisibleItemRecord *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_item, v8);
-    v12 = [v8 itemView];
-    objc_storeWeak(&v11->_itemView, v12);
+    objc_storeWeak(&v10->_item, itemCopy);
+    itemView = [itemCopy itemView];
+    objc_storeWeak(&v11->_itemView, itemView);
 
-    v11->_itemIndex = a4;
+    v11->_itemIndex = index;
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v8 itemViewController];
-      objc_storeWeak(&v11->_viewController, v13);
+      itemViewController = [itemCopy itemViewController];
+      objc_storeWeak(&v11->_viewController, itemViewController);
     }
 
-    objc_storeWeak(&v11->_switcher, v9);
+    objc_storeWeak(&v11->_switcher, switcherCopy);
     v11->_presentationProgress = 0.0;
     v11->_appearState = 0;
   }
@@ -72,10 +72,10 @@
 
 - (void)_updateAppearState
 {
-  *a2 = a1;
+  *a2 = self;
   if (a3 < 2)
   {
-    if (a1 != 3)
+    if (self != 3)
     {
       goto LABEL_8;
     }
@@ -84,7 +84,7 @@
     goto LABEL_7;
   }
 
-  if (a3 - 2 < 2 && !a1)
+  if (a3 - 2 < 2 && !self)
   {
     v6 = 1;
 LABEL_7:
@@ -130,26 +130,26 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)setUnsettled:(void *)a1
+- (void)setUnsettled:(void *)unsettled
 {
-  if (a1)
+  if (unsettled)
   {
-    *(a1 + 16) = a2;
-    return [a1 _updateAppearState];
+    *(unsettled + 16) = a2;
+    return [unsettled _updateAppearState];
   }
 
-  return a1;
+  return unsettled;
 }
 
-- (void)setPresentationProgress:(uint64_t)a1
+- (void)setPresentationProgress:(uint64_t)progress
 {
-  if (!a1)
+  if (!progress)
   {
     return;
   }
 
-  v4 = *(a1 + 24);
-  *(a1 + 24) = a2;
+  v4 = *(progress + 24);
+  *(progress + 24) = a2;
   if (BSFloatIsZero())
   {
     v5 = 0;
@@ -159,7 +159,7 @@ LABEL_8:
   {
     if ((BSFloatIsOne() & 1) == 0)
     {
-      switch(*(a1 + 32))
+      switch(*(progress + 32))
       {
         case 0:
           if (BSFloatGreaterThanFloat())
@@ -197,13 +197,13 @@ LABEL_18:
   }
 
 LABEL_6:
-  *(a1 + 8) = v5;
-  [a1 _updateAppearState];
+  *(progress + 8) = v5;
+  [progress _updateAppearState];
 LABEL_7:
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  WeakRetained = objc_loadWeakRetained((progress + 48));
   if (objc_opt_respondsToSelector())
   {
-    v6 = objc_loadWeakRetained((a1 + 40));
+    v6 = objc_loadWeakRetained((progress + 40));
     [OUTLINED_FUNCTION_1(v6 v7];
   }
 }
@@ -218,14 +218,14 @@ LABEL_7:
   return result;
 }
 
-- (void)sendCallbackForState:(id *)a1 animated:(uint64_t)a2
+- (void)sendCallbackForState:(id *)state animated:(uint64_t)animated
 {
-  if (a1)
+  if (state)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
-    v4 = objc_loadWeakRetained(a1 + 5);
-    v5 = objc_loadWeakRetained(a1 + 8);
-    switch(a2)
+    WeakRetained = objc_loadWeakRetained(state + 6);
+    v4 = objc_loadWeakRetained(state + 5);
+    v5 = objc_loadWeakRetained(state + 8);
+    switch(animated)
     {
       case 0:
         v6 = objc_opt_respondsToSelector();
@@ -289,9 +289,9 @@ LABEL_14:
 
 - (double)presentationProgress
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -300,15 +300,15 @@ LABEL_14:
   }
 }
 
-- (void)setAppearState:(void *)a1
+- (void)setAppearState:(void *)state
 {
-  if (a1)
+  if (state)
   {
-    *(a1 + 1) = a2;
-    return [a1 _updateAppearState];
+    *(state + 1) = a2;
+    return [state _updateAppearState];
   }
 
-  return a1;
+  return state;
 }
 
 - (id)switcher
@@ -324,9 +324,9 @@ LABEL_14:
 
 - (uint64_t)isUnsettled
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
   }
 
   else

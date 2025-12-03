@@ -1,29 +1,29 @@
 @interface HKSourceStore
 + (id)taskIdentifier;
-- (HKSourceStore)initWithHealthStore:(id)a3;
-- (id)qaSourceForBundleIdentifier:(id)a3 name:(id)a4 error:(id *)a5;
-- (id)sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 error:(id *)a7;
-- (void)deleteSourceWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchAllSourcesWithCompletion:(id)a3;
-- (void)fetchHasSampleWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchOrderedSourcesForObjectType:(id)a3 completion:(id)a4;
-- (void)updateOrderedSources:(id)a3 forObjectType:(id)a4 completion:(id)a5;
+- (HKSourceStore)initWithHealthStore:(id)store;
+- (id)qaSourceForBundleIdentifier:(id)identifier name:(id)name error:(id *)error;
+- (id)sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type error:(id *)error;
+- (void)deleteSourceWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchAllSourcesWithCompletion:(id)completion;
+- (void)fetchHasSampleWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchOrderedSourcesForObjectType:(id)type completion:(id)completion;
+- (void)updateOrderedSources:(id)sources forObjectType:(id)type completion:(id)completion;
 @end
 
 @implementation HKSourceStore
 
-- (HKSourceStore)initWithHealthStore:(id)a3
+- (HKSourceStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKSourceStore;
   v5 = [(HKSourceStore *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -40,9 +40,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchAllSourcesWithCompletion:(id)a3
+- (void)fetchAllSourcesWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -58,16 +58,16 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)fetchHasSampleWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchHasSampleWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__HKSourceStore_fetchHasSampleWithBundleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E737E1F0;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -75,20 +75,20 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)deleteSourceWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)deleteSourceWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  identifierCopy = identifier;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__HKSourceStore_deleteSourceWithBundleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E737E1F0;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -96,20 +96,20 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchOrderedSourcesForObjectType:(id)a3 completion:(id)a4
+- (void)fetchOrderedSourcesForObjectType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  typeCopy = type;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__HKSourceStore_fetchOrderedSourcesForObjectType_completion___block_invoke;
   v13[3] = &unk_1E737E1F0;
-  v14 = v6;
+  v14 = typeCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -117,22 +117,22 @@
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = typeCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)updateOrderedSources:(id)a3 forObjectType:(id)a4 completion:(id)a5
+- (void)updateOrderedSources:(id)sources forObjectType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  sourcesCopy = sources;
+  typeCopy = type;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __63__HKSourceStore_updateOrderedSources_forObjectType_completion___block_invoke;
   v17[3] = &unk_1E737E218;
-  v18 = v8;
-  v19 = v9;
+  v18 = sourcesCopy;
+  v19 = typeCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -140,17 +140,17 @@
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = typeCopy;
+  v14 = sourcesCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (id)sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 error:(id *)a7
+- (id)sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -175,13 +175,13 @@
   v28[1] = 3221225472;
   v28[2] = __80__HKSourceStore_sourceForAppleDeviceWithUUID_identifier_name_productType_error___block_invoke_2;
   v28[3] = &unk_1E737E240;
-  v18 = v12;
+  v18 = dCopy;
   v29 = v18;
-  v19 = v13;
+  v19 = identifierCopy;
   v30 = v19;
-  v20 = v14;
+  v20 = nameCopy;
   v31 = v20;
-  v21 = v15;
+  v21 = typeCopy;
   v32 = v21;
   v22 = v16;
   v33 = v22;
@@ -194,7 +194,7 @@
   v23 = v36[5];
   if (v23)
   {
-    *a7 = v23;
+    *error = v23;
     v24 = v42[5];
     v42[5] = 0;
   }
@@ -221,10 +221,10 @@ void __80__HKSourceStore_sourceForAppleDeviceWithUUID_identifier_name_productTyp
   *(v9 + 40) = v6;
 }
 
-- (id)qaSourceForBundleIdentifier:(id)a3 name:(id)a4 error:(id *)a5
+- (id)qaSourceForBundleIdentifier:(id)identifier name:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -249,9 +249,9 @@ void __80__HKSourceStore_sourceForAppleDeviceWithUUID_identifier_name_productTyp
   v20[1] = 3221225472;
   v20[2] = __56__HKSourceStore_qaSourceForBundleIdentifier_name_error___block_invoke_2;
   v20[3] = &unk_1E737E218;
-  v12 = v8;
+  v12 = identifierCopy;
   v21 = v12;
-  v13 = v9;
+  v13 = nameCopy;
   v22 = v13;
   v14 = v10;
   v23 = v14;
@@ -264,7 +264,7 @@ void __80__HKSourceStore_sourceForAppleDeviceWithUUID_identifier_name_productTyp
   v15 = v26[5];
   if (v15)
   {
-    *a5 = v15;
+    *error = v15;
     v16 = v32[5];
     v32[5] = 0;
   }

@@ -1,7 +1,7 @@
 @interface UpNextQueuePopOverBackgroundView
 + (UIEdgeInsets)contentViewInsets;
-- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UpNextQueuePopOverBackgroundView
@@ -19,20 +19,20 @@
   return result;
 }
 
-- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for UpNextQueuePopOverBackgroundView();
-  v7 = [(UIPopoverBackgroundView *)&v9 initWithFrame:x, y, width, height];
-  [(UpNextQueuePopOverBackgroundView *)v7 setAlpha:0.0];
-  return v7;
+  height = [(UIPopoverBackgroundView *)&v9 initWithFrame:x, y, width, height];
+  [(UpNextQueuePopOverBackgroundView *)height setAlpha:0.0];
+  return height;
 }
 
-- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithCoder:(id)a3
+- (_TtC9SeymourUI32UpNextQueuePopOverBackgroundView)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);

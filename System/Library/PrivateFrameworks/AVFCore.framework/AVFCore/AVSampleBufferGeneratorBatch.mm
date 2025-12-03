@@ -1,7 +1,7 @@
 @interface AVSampleBufferGeneratorBatch
-- (AVSampleBufferGeneratorBatch)initWithGenerator:(id)a3;
+- (AVSampleBufferGeneratorBatch)initWithGenerator:(id)generator;
 - (BOOL)isOpenToRequests;
-- (opaqueCMSampleBuffer)createAndAddSampleBufferForRequest:(id)a3 error:(id *)a4;
+- (opaqueCMSampleBuffer)createAndAddSampleBufferForRequest:(id)request error:(id *)error;
 - (void)cancel;
 - (void)dealloc;
 - (void)makeDataReadyWithCompletionHandler:(void *)completionHandler;
@@ -9,7 +9,7 @@
 
 @implementation AVSampleBufferGeneratorBatch
 
-- (AVSampleBufferGeneratorBatch)initWithGenerator:(id)a3
+- (AVSampleBufferGeneratorBatch)initWithGenerator:(id)generator
 {
   v17.receiver = self;
   v17.super_class = AVSampleBufferGeneratorBatch;
@@ -17,21 +17,21 @@
   v11 = v5;
   if (v5)
   {
-    if (!a3)
+    if (!generator)
     {
       v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v5 userInfo:{a2, @"invalid parameter not satisfying: %s", v6, v7, v8, v9, v10, "generator != nil"), 0}];
       objc_exception_throw(v16);
     }
 
-    v5->_sampleGenerator = a3;
-    v12 = [a3 _figSampleGenerator];
+    v5->_sampleGenerator = generator;
+    _figSampleGenerator = [generator _figSampleGenerator];
     v13 = *(CMBaseObjectGetVTable() + 16);
     if (*v13 >= 2uLL)
     {
       v14 = v13[4];
       if (v14)
       {
-        v14(v12, *MEMORY[0x1E695E480], &v11->_sampleGeneratorBatch);
+        v14(_figSampleGenerator, *MEMORY[0x1E695E480], &v11->_sampleGeneratorBatch);
       }
     }
 
@@ -67,22 +67,22 @@
   return openToRequests;
 }
 
-- (opaqueCMSampleBuffer)createAndAddSampleBufferForRequest:(id)a3 error:(id *)a4
+- (opaqueCMSampleBuffer)createAndAddSampleBufferForRequest:(id)request error:(id *)error
 {
   v17 = 0;
   sampleGeneratorBatch = self->_sampleGeneratorBatch;
-  v7 = [objc_msgSend(a3 "startCursor")];
-  v8 = [a3 preferredMinSampleCount];
-  v9 = [a3 maxSampleCount];
-  v10 = [a3 direction];
-  v11 = [objc_msgSend(a3 "limitCursor")];
-  v12 = [a3 _figSampleGeneratorReadPolicy];
-  v13 = [a3 _figSampleGeneratorReadFlags];
+  v7 = [objc_msgSend(request "startCursor")];
+  preferredMinSampleCount = [request preferredMinSampleCount];
+  maxSampleCount = [request maxSampleCount];
+  direction = [request direction];
+  v11 = [objc_msgSend(request "limitCursor")];
+  _figSampleGeneratorReadPolicy = [request _figSampleGeneratorReadPolicy];
+  _figSampleGeneratorReadFlags = [request _figSampleGeneratorReadFlags];
   v14 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v14)
   {
-    v15 = v14(sampleGeneratorBatch, v7, v8, v9, v10, v11, v12, v13, AVSampleBufferGenerator_remapSampleBufferTiming, a3, 0, &v17);
-    if (!a4)
+    v15 = v14(sampleGeneratorBatch, v7, preferredMinSampleCount, maxSampleCount, direction, v11, _figSampleGeneratorReadPolicy, _figSampleGeneratorReadFlags, AVSampleBufferGenerator_remapSampleBufferTiming, request, 0, &v17);
+    if (!error)
     {
       return v17;
     }
@@ -91,7 +91,7 @@
   else
   {
     v15 = -12782;
-    if (!a4)
+    if (!error)
     {
       return v17;
     }
@@ -99,7 +99,7 @@
 
   if (v15)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v15, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v15, 0);
   }
 
   return v17;

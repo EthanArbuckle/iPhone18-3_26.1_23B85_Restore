@@ -1,7 +1,7 @@
 @interface SecExperimentConfig
 - (BOOL)isSampled;
-- (BOOL)shouldRunWithSamplingRate:(id)a3;
-- (SecExperimentConfig)initWithConfiguration:(id)a3;
+- (BOOL)shouldRunWithSamplingRate:(id)rate;
+- (SecExperimentConfig)initWithConfiguration:(id)configuration;
 - (unsigned)hostHash;
 @end
 
@@ -9,8 +9,8 @@
 
 - (BOOL)isSampled
 {
-  v3 = [(SecExperimentConfig *)self hostHash];
-  if (!v3 || [(SecExperimentConfig *)self fleetSampleRate]< v3)
+  hostHash = [(SecExperimentConfig *)self hostHash];
+  if (!hostHash || [(SecExperimentConfig *)self fleetSampleRate]< hostHash)
   {
     return 0;
   }
@@ -21,18 +21,18 @@
   return v6;
 }
 
-- (BOOL)shouldRunWithSamplingRate:(id)a3
+- (BOOL)shouldRunWithSamplingRate:(id)rate
 {
-  if (!a3)
+  if (!rate)
   {
     return 0;
   }
 
-  v3 = a3;
+  rateCopy = rate;
   v4 = arc4random();
-  v5 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [rateCopy unsignedIntegerValue];
 
-  return (4295000000.0 / v5) > v4;
+  return (4295000000.0 / unsignedIntegerValue) > v4;
 }
 
 - (unsigned)hostHash
@@ -45,42 +45,42 @@
   return sec_experiment_host_hash_hash;
 }
 
-- (SecExperimentConfig)initWithConfiguration:(id)a3
+- (SecExperimentConfig)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v14.receiver = self, v14.super_class = SecExperimentConfig, v5 = [(SecExperimentConfig *)&v14 init], (self = v5) != 0))
+  configurationCopy = configuration;
+  if (configurationCopy && (v14.receiver = self, v14.super_class = SecExperimentConfig, v5 = [(SecExperimentConfig *)&v14 init], (self = v5) != 0))
   {
-    [(SecExperimentConfig *)v5 setConfig:v4];
-    v6 = [v4 objectForKey:@"ExpName"];
+    [(SecExperimentConfig *)v5 setConfig:configurationCopy];
+    v6 = [configurationCopy objectForKey:@"ExpName"];
     [(SecExperimentConfig *)self setIdentifier:v6];
 
-    v7 = [v4 objectForKey:@"DeviceSampleRate"];
+    v7 = [configurationCopy objectForKey:@"DeviceSampleRate"];
     v8 = v7;
     if (v7)
     {
       -[SecExperimentConfig setDeviceSampleRate:](self, "setDeviceSampleRate:", [v7 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKey:@"FleetSampleRate"];
+    v9 = [configurationCopy objectForKey:@"FleetSampleRate"];
     v10 = v9;
     if (v9)
     {
       -[SecExperimentConfig setFleetSampleRate:](self, "setFleetSampleRate:", [v9 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKey:@"ConfigData"];
+    v11 = [configurationCopy objectForKey:@"ConfigData"];
     [(SecExperimentConfig *)self setConfigurationData:v11];
 
     self = self;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

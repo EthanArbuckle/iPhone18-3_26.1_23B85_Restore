@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (NSArray)hearingControlCenterOrder;
 - (NSDictionary)liveListenRemoteStartHistory;
-- (id)_convertHACCModule:(unint64_t)a3;
-- (unint64_t)_convertHACCPreference:(id)a3;
-- (unint64_t)_convertLuckHACCModuleRawValue:(unint64_t)a3;
+- (id)_convertHACCModule:(unint64_t)module;
+- (unint64_t)_convertHACCPreference:(id)preference;
+- (unint64_t)_convertLuckHACCModuleRawValue:(unint64_t)value;
 - (void)hearingControlCenterOrder;
-- (void)logMessage:(id)a3;
-- (void)setHearingControlCenterOrder:(id)a3;
+- (void)logMessage:(id)message;
+- (void)setHearingControlCenterOrder:(id)order;
 @end
 
 @implementation HUHearingSettings
@@ -33,15 +33,15 @@ uint64_t __35__HUHearingSettings_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = HCLogHearing();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
@@ -82,7 +82,7 @@ uint64_t __35__HUHearingSettings_sharedInstance__block_invoke()
     v13 = 0;
   }
 
-  v18 = [v13 firstObject];
+  firstObject = [v13 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -97,7 +97,7 @@ uint64_t __35__HUHearingSettings_sharedInstance__block_invoke()
 
   else
   {
-    v23 = [v13 firstObject];
+    firstObject2 = [v13 firstObject];
     objc_opt_class();
     v24 = objc_opt_isKindOfClass();
 
@@ -172,34 +172,34 @@ void __46__HUHearingSettings_hearingControlCenterOrder__block_invoke_2(uint64_t 
   }
 }
 
-- (void)setHearingControlCenterOrder:(id)a3
+- (void)setHearingControlCenterOrder:(id)order
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  orderCopy = order;
+  v5 = orderCopy;
+  if (orderCopy)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(orderCopy, "count")}];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke;
     v14 = &unk_1E85CAD48;
-    v15 = self;
+    selfCopy = self;
     v7 = v6;
     v16 = v7;
     [v5 enumerateObjectsUsingBlock:&v11];
     v8 = objc_alloc(MEMORY[0x1E696ACC8]);
-    v9 = [v8 initRequiringSecureCoding:{1, v11, v12, v13, v14, v15}];
+    v9 = [v8 initRequiringSecureCoding:{1, v11, v12, v13, v14, selfCopy}];
     [v9 encodeObject:v7 forKey:*MEMORY[0x1E696A508]];
     [v9 finishEncoding];
-    v10 = [v9 encodedData];
+    encodedData = [v9 encodedData];
   }
 
   else
   {
-    v10 = 0;
+    encodedData = 0;
   }
 
-  [(HCSettings *)self setValue:v10 forPreferenceKey:@"hearingControlCenterOrder"];
+  [(HCSettings *)self setValue:encodedData forPreferenceKey:@"hearingControlCenterOrder"];
 }
 
 uint64_t __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke(uint64_t a1, void *a2)
@@ -222,35 +222,35 @@ uint64_t __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke(uin
   return MEMORY[0x1EEE66BB8](isKindOfClass, v4);
 }
 
-- (unint64_t)_convertHACCPreference:(id)a3
+- (unint64_t)_convertHACCPreference:(id)preference
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HACCModuleStatusPreference"])
+  preferenceCopy = preference;
+  if ([preferenceCopy isEqualToString:@"HACCModuleStatusPreference"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HUIModuleHeadphoneLevelPreference"])
+  else if ([preferenceCopy isEqualToString:@"HUIModuleHeadphoneLevelPreference"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"HACCModuleCSSoundsPreference"])
+  else if ([preferenceCopy isEqualToString:@"HACCModuleCSSoundsPreference"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"HACCModuleLiveListenPreference"])
+  else if ([preferenceCopy isEqualToString:@"HACCModuleLiveListenPreference"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"HACCModulePMETogglePreference"])
+  else if ([preferenceCopy isEqualToString:@"HACCModulePMETogglePreference"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"HACCModuleSSLPreference"])
+  else if ([preferenceCopy isEqualToString:@"HACCModuleSSLPreference"])
   {
     v4 = 32;
   }
@@ -263,43 +263,43 @@ uint64_t __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke(uin
   return v4;
 }
 
-- (id)_convertHACCModule:(unint64_t)a3
+- (id)_convertHACCModule:(unint64_t)module
 {
   v3 = @"HACCModuleLiveListenPreference";
   v4 = @"HACCModuleSSLPreference";
   v5 = @"HACCModulePMETogglePreference";
-  if (a3 != 34)
+  if (module != 34)
   {
     v5 = 0;
   }
 
-  if (a3 != 32)
+  if (module != 32)
   {
     v4 = v5;
   }
 
-  if (a3 != 30)
+  if (module != 30)
   {
     v3 = v4;
   }
 
   v6 = @"HACCModuleCSSoundsPreference";
-  if (a3 != 24)
+  if (module != 24)
   {
     v6 = 0;
   }
 
-  if (a3 == 23)
+  if (module == 23)
   {
     v6 = @"HUIModuleHeadphoneLevelPreference";
   }
 
-  if (!a3)
+  if (!module)
   {
     v6 = @"HACCModuleStatusPreference";
   }
 
-  if (a3 <= 29)
+  if (module <= 29)
   {
     return v6;
   }
@@ -310,12 +310,12 @@ uint64_t __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke(uin
   }
 }
 
-- (unint64_t)_convertLuckHACCModuleRawValue:(unint64_t)a3
+- (unint64_t)_convertLuckHACCModuleRawValue:(unint64_t)value
 {
-  result = a3;
-  if (a3 > 28)
+  result = value;
+  if (value > 28)
   {
-    switch(a3)
+    switch(value)
     {
       case 0x20uLL:
         return 34;
@@ -328,7 +328,7 @@ uint64_t __50__HUHearingSettings_setHearingControlCenterOrder___block_invoke(uin
     }
   }
 
-  else if (a3 - 23 >= 2 && a3)
+  else if (value - 23 >= 2 && value)
   {
     return 39;
   }

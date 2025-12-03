@@ -2,8 +2,8 @@
 - (BOOL)hasAlignmentEdgeMargins;
 - (CGRect)contentRect;
 - (CGRect)edgeRect;
-- (CGRect)insetContentRectWithMetrics:(CGRect)a3;
-- (CGRect)insetRectWithMetrics:(CGRect)a3;
+- (CGRect)insetContentRectWithMetrics:(CGRect)metrics;
+- (CGRect)insetRectWithMetrics:(CGRect)metrics;
 - (CGSize)auxiliary1BottomLeftMargin;
 - (CGSize)auxiliary1TopRightMargin;
 - (CGSize)auxiliary2BottomLeftMargin;
@@ -14,9 +14,9 @@
 - (CGSize)edgeBottomLeftMargin;
 - (CGSize)edgeTopRightMargin;
 - (CGSize)imageSize;
-- (double)initwithImageSize:(double)a3 scale:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithImageSize:(int)a3 defaultImageSize:(double)a4 edgeBottomLeft:(double)a5 edgeTopRight:(double)a6 contentBottomLeft:(double)a7 contentTopRight:(double)a8 baseline:(double)a9 auxiliary1BottomLeft:(double)a10 auxiliary1TopRight:(double)a11 auxiliary2BottomLeft:(uint64_t)a12 auxiliary2TopRight:(uint64_t)a13 scalesVertically:(uint64_t)a14 scalesHorizontally:(uint64_t)a15 scale:(uint64_t)a16;
+- (double)initwithImageSize:(double)size scale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithImageSize:(int)size defaultImageSize:(double)imageSize edgeBottomLeft:(double)left edgeTopRight:(double)right contentBottomLeft:(double)bottomLeft contentTopRight:(double)topRight baseline:(double)baseline auxiliary1BottomLeft:(double)self0 auxiliary1TopRight:(double)self1 auxiliary2BottomLeft:(uint64_t)self2 auxiliary2TopRight:(uint64_t)self3 scalesVertically:(uint64_t)self4 scalesHorizontally:(uint64_t)self5 scale:(uint64_t)self6;
 - (id)metricsByMirroringHorizontally;
 @end
 
@@ -38,7 +38,7 @@
   return v3 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 8) = self->_imageSize;
@@ -179,12 +179,12 @@
   return result;
 }
 
-- (CGRect)insetRectWithMetrics:(CGRect)a3
+- (CGRect)insetRectWithMetrics:(CGRect)metrics
 {
-  v3 = a3.origin.x + a3.size.width - self->_edgeTopRightMargin.width - (a3.origin.x + self->_edgeBottomLeftMargin.width);
-  v4 = a3.origin.y + a3.size.height - self->_edgeTopRightMargin.height - (a3.origin.y + self->_edgeBottomLeftMargin.height);
-  v5 = a3.origin.x + self->_edgeBottomLeftMargin.width;
-  v6 = a3.origin.y + self->_edgeBottomLeftMargin.height;
+  v3 = metrics.origin.x + metrics.size.width - self->_edgeTopRightMargin.width - (metrics.origin.x + self->_edgeBottomLeftMargin.width);
+  v4 = metrics.origin.y + metrics.size.height - self->_edgeTopRightMargin.height - (metrics.origin.y + self->_edgeBottomLeftMargin.height);
+  v5 = metrics.origin.x + self->_edgeBottomLeftMargin.width;
+  v6 = metrics.origin.y + self->_edgeBottomLeftMargin.height;
   result.size.height = v4;
   result.size.width = v3;
   result.origin.y = v6;
@@ -192,12 +192,12 @@
   return result;
 }
 
-- (CGRect)insetContentRectWithMetrics:(CGRect)a3
+- (CGRect)insetContentRectWithMetrics:(CGRect)metrics
 {
-  v3 = a3.origin.x + a3.size.width - self->_contentTopRightMargin.width - (a3.origin.x + self->_contentBottomLeftMargin.width);
-  v4 = a3.origin.y + a3.size.height - self->_contentTopRightMargin.height - (a3.origin.y + self->_contentBottomLeftMargin.height);
-  v5 = a3.origin.x + self->_contentBottomLeftMargin.width;
-  v6 = a3.origin.y + self->_contentBottomLeftMargin.height;
+  v3 = metrics.origin.x + metrics.size.width - self->_contentTopRightMargin.width - (metrics.origin.x + self->_contentBottomLeftMargin.width);
+  v4 = metrics.origin.y + metrics.size.height - self->_contentTopRightMargin.height - (metrics.origin.y + self->_contentBottomLeftMargin.height);
+  v5 = metrics.origin.x + self->_contentBottomLeftMargin.width;
+  v6 = metrics.origin.y + self->_contentBottomLeftMargin.height;
   result.size.height = v4;
   result.size.width = v3;
   result.origin.y = v6;
@@ -205,7 +205,7 @@
   return result;
 }
 
-- (double)initwithImageSize:(double)a3 scale:(double)a4
+- (double)initwithImageSize:(double)size scale:(double)scale
 {
   if (result)
   {
@@ -215,17 +215,17 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = size;
       result[3] = a2;
-      result[4] = a3;
-      result[22] = a4;
+      result[4] = size;
+      result[22] = scale;
     }
   }
 
   return result;
 }
 
-- (id)initWithImageSize:(int)a3 defaultImageSize:(double)a4 edgeBottomLeft:(double)a5 edgeTopRight:(double)a6 contentBottomLeft:(double)a7 contentTopRight:(double)a8 baseline:(double)a9 auxiliary1BottomLeft:(double)a10 auxiliary1TopRight:(double)a11 auxiliary2BottomLeft:(uint64_t)a12 auxiliary2TopRight:(uint64_t)a13 scalesVertically:(uint64_t)a14 scalesHorizontally:(uint64_t)a15 scale:(uint64_t)a16
+- (id)initWithImageSize:(int)size defaultImageSize:(double)imageSize edgeBottomLeft:(double)left edgeTopRight:(double)right contentBottomLeft:(double)bottomLeft contentTopRight:(double)topRight baseline:(double)baseline auxiliary1BottomLeft:(double)self0 auxiliary1TopRight:(double)self1 auxiliary2BottomLeft:(uint64_t)self2 auxiliary2TopRight:(uint64_t)self3 scalesVertically:(uint64_t)self4 scalesHorizontally:(uint64_t)self5 scale:(uint64_t)self6
 {
   if (result)
   {
@@ -234,14 +234,14 @@
     result = objc_msgSendSuper2(&v42, sel_init);
     if (result)
     {
-      *(result + 1) = a4;
-      *(result + 2) = a5;
-      *(result + 3) = a6;
-      *(result + 4) = a7;
-      *(result + 5) = a8;
-      *(result + 6) = a9;
-      *(result + 7) = a10;
-      *(result + 8) = a11;
+      *(result + 1) = imageSize;
+      *(result + 2) = left;
+      *(result + 3) = right;
+      *(result + 4) = bottomLeft;
+      *(result + 5) = topRight;
+      *(result + 6) = baseline;
+      *(result + 7) = auxiliary1BottomLeft;
+      *(result + 8) = auxiliary1TopRight;
       *(result + 9) = a17;
       *(result + 10) = a18;
       *(result + 11) = a19;
@@ -257,7 +257,7 @@
       v40 = *(result + 92) & 0xFFFC;
       *(result + 21) = a29;
       *(result + 22) = a30;
-      if (a3)
+      if (size)
       {
         v41 = 2;
       }

@@ -1,15 +1,15 @@
 @interface MedicalRecordAnnotationViewDataSource
-- (id)dateViewWithOrientation:(int64_t)a3;
+- (id)dateViewWithOrientation:(int64_t)orientation;
 @end
 
 @implementation MedicalRecordAnnotationViewDataSource
 
-- (id)dateViewWithOrientation:(int64_t)a3
+- (id)dateViewWithOrientation:(int64_t)orientation
 {
   v5 = OBJC_IVAR____TtC15HealthRecordsUI37MedicalRecordAnnotationViewDataSource_dateGroup;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC15HealthRecordsUI37MedicalRecordAnnotationViewDataSource_dateGroup);
-  v7 = self;
-  sub_1D129C760(a3, v6);
+  selfCopy = self;
+  sub_1D129C760(orientation, v6);
   v8 = *(&self->super.isa + v5);
   v9 = v8;
 

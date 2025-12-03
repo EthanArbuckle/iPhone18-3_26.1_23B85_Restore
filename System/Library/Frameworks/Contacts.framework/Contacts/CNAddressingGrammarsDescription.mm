@@ -1,23 +1,23 @@
 @interface CNAddressingGrammarsDescription
-- (BOOL)applyCNValue:(id)a3 toArray:(id)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3;
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)applyCNValue:(id)value toArray:(id)array identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value;
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNAddressingGrammarsDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 addressingGrammars];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  addressingGrammars = [contactCopy addressingGrammars];
+  if (!addressingGrammars)
   {
-    v4 = [v7 addressingGrammars];
-    if (!v4)
+    addressingGrammars2 = [otherCopy addressingGrammars];
+    if (!addressingGrammars2)
     {
       v11 = 1;
 LABEL_6:
@@ -26,11 +26,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 addressingGrammars];
-  v10 = [v7 addressingGrammars];
-  v11 = [v9 isEqual:v10];
+  addressingGrammars3 = [contactCopy addressingGrammars];
+  addressingGrammars4 = [otherCopy addressingGrammars];
+  v11 = [addressingGrammars3 isEqual:addressingGrammars4];
 
-  if (!v8)
+  if (!addressingGrammars)
   {
     goto LABEL_6;
   }
@@ -40,11 +40,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -53,17 +53,17 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_addressingGrammars", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_addressingGrammars", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[18];
-  v6[18] = v10;
+  v11 = contactCopy[18];
+  contactCopy[18] = v10;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length
 {
-  if (a3)
+  if (bytes)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:length encoding:4];
     v5 = [MEMORY[0x1E69966D8] decryptAddressingGrammarString:v4];
   }
 
@@ -75,26 +75,26 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)applyCNValue:(id)a3 toArray:(id)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7
+- (BOOL)applyCNValue:(id)value toArray:(id)array identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
   v8.receiver = self;
   v8.super_class = CNAddressingGrammarsDescription;
-  return [(CNMultiValuePropertyDescription *)&v8 applyCNValue:a3 toArray:a4 identifier:a5 legacyIdentifier:*&a6 label:a7];
+  return [(CNMultiValuePropertyDescription *)&v8 applyCNValue:value toArray:array identifier:identifier legacyIdentifier:*&legacyIdentifier label:label];
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value
 {
-  if (a3)
+  if (value)
   {
-    v5 = CFGetTypeID(a3);
+    v5 = CFGetTypeID(value);
     if (v5 == CFStringGetTypeID())
     {
-      v6 = [MEMORY[0x1E69966D8] decryptAddressingGrammarString:a3];
+      v6 = [MEMORY[0x1E69966D8] decryptAddressingGrammarString:value];
     }
 
     else
@@ -111,11 +111,11 @@ LABEL_7:
   return v6;
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v4 = v3;
+  v4 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

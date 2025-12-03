@@ -1,28 +1,28 @@
 @interface MUPlaceExtensionDiscoveryManager
-- (MUPlaceExtensionDiscoveryManager)initWithExtensionDataItems:(id)a3 amsResultProvider:(id)a4;
-- (id)discoveryResultForDataItem:(id)a3;
-- (void)_loadAppLockupExtensionGroupsUsingAppIdentifiers:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)_performExtensionDiscoveryUsingExtensionGroups:(id)a3 usingAppIdentifiers:(id)a4 completion:(id)a5;
-- (void)performExtensionDiscoveryWithOptions:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
+- (MUPlaceExtensionDiscoveryManager)initWithExtensionDataItems:(id)items amsResultProvider:(id)provider;
+- (id)discoveryResultForDataItem:(id)item;
+- (void)_loadAppLockupExtensionGroupsUsingAppIdentifiers:(id)identifiers options:(id)options completion:(id)completion;
+- (void)_performExtensionDiscoveryUsingExtensionGroups:(id)groups usingAppIdentifiers:(id)identifiers completion:(id)completion;
+- (void)performExtensionDiscoveryWithOptions:(id)options callbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MUPlaceExtensionDiscoveryManager
 
-- (void)_performExtensionDiscoveryUsingExtensionGroups:(id)a3 usingAppIdentifiers:(id)a4 completion:(id)a5
+- (void)_performExtensionDiscoveryUsingExtensionGroups:(id)groups usingAppIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696F4C0] lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:v9];
+  groupsCopy = groups;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v11 = [MEMORY[0x1E696F4C0] lookupPolicyForRestaurantReservationExtensionWithContainingAppIdentifiers:identifiersCopy];
   objc_initWeak(&location, self);
   v12 = MEMORY[0x1E696F4C0];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __114__MUPlaceExtensionDiscoveryManager__performExtensionDiscoveryUsingExtensionGroups_usingAppIdentifiers_completion___block_invoke;
   v17[3] = &unk_1E821A848;
-  v13 = v10;
+  v13 = completionCopy;
   v19 = v13;
-  v14 = v8;
+  v14 = groupsCopy;
   v18 = v14;
   objc_copyWeak(&v20, &location);
   v15 = [v12 managerWithExtensionLookupPolicy:v11 updateHandler:v17];
@@ -166,26 +166,26 @@ void __114__MUPlaceExtensionDiscoveryManager__performExtensionDiscoveryUsingExte
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_loadAppLockupExtensionGroupsUsingAppIdentifiers:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_loadAppLockupExtensionGroupsUsingAppIdentifiers:(id)identifiers options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   amsResultProvider = self->_amsResultProvider;
-  v12 = [v8 copy];
+  v12 = [identifiersCopy copy];
   v13 = MEMORY[0x1E69E96A0];
   v14 = MEMORY[0x1E69E96A0];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __104__MUPlaceExtensionDiscoveryManager__loadAppLockupExtensionGroupsUsingAppIdentifiers_options_completion___block_invoke;
   v17[3] = &unk_1E821A848;
-  v15 = v10;
+  v15 = completionCopy;
   v19 = v15;
   objc_copyWeak(&v20, &location);
-  v16 = v8;
+  v16 = identifiersCopy;
   v18 = v16;
-  [(MUAMSResultProvider *)amsResultProvider fetchResultsForBundleIds:v12 options:v9 callbackQueue:v13 completion:v17];
+  [(MUAMSResultProvider *)amsResultProvider fetchResultsForBundleIds:v12 options:optionsCopy callbackQueue:v13 completion:v17];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -239,23 +239,23 @@ _MUExtensionGroup *__104__MUPlaceExtensionDiscoveryManager__loadAppLockupExtensi
   return v10;
 }
 
-- (void)performExtensionDiscoveryWithOptions:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)performExtensionDiscoveryWithOptions:(id)options callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  optionsCopy = options;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v9)
+    if (!queueCopy)
     {
-      v9 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
       v11 = MEMORY[0x1E69E96A0];
     }
 
     if ([(NSMutableDictionary *)self->_extensionsByAppIds count])
     {
       v12 = [(NSArray *)self->_extensionDiscoveryResults copy];
-      v10[2](v10, v12, 0);
+      completionCopy[2](completionCopy, v12, 0);
     }
 
     else
@@ -266,13 +266,13 @@ _MUExtensionGroup *__104__MUPlaceExtensionDiscoveryManager__loadAppLockupExtensi
       v15[1] = 3221225472;
       v15[2] = __98__MUPlaceExtensionDiscoveryManager_performExtensionDiscoveryWithOptions_callbackQueue_completion___block_invoke_2;
       v15[3] = &unk_1E821A7D0;
-      v9 = v9;
-      v16 = v9;
-      v18 = v10;
+      queueCopy = queueCopy;
+      v16 = queueCopy;
+      v18 = completionCopy;
       objc_copyWeak(&v19, &location);
       v14 = v13;
       v17 = v14;
-      [(MUPlaceExtensionDiscoveryManager *)self _loadAppLockupExtensionGroupsUsingAppIdentifiers:v14 options:v8 completion:v15];
+      [(MUPlaceExtensionDiscoveryManager *)self _loadAppLockupExtensionGroupsUsingAppIdentifiers:v14 options:optionsCopy completion:v15];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -386,12 +386,12 @@ void __98__MUPlaceExtensionDiscoveryManager_performExtensionDiscoveryWithOptions
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (id)discoveryResultForDataItem:(id)a3
+- (id)discoveryResultForDataItem:(id)item
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 appBundleIdentifier];
-  v6 = [v5 length];
+  itemCopy = item;
+  appBundleIdentifier = [itemCopy appBundleIdentifier];
+  v6 = [appBundleIdentifier length];
 
   if (v6)
   {
@@ -414,9 +414,9 @@ void __98__MUPlaceExtensionDiscoveryManager_performExtensionDiscoveryWithOptions
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 vendorIdentifier];
-          v13 = [v4 vendorIdentifier];
-          v14 = [v12 isEqual:v13];
+          vendorIdentifier = [v11 vendorIdentifier];
+          vendorIdentifier2 = [itemCopy vendorIdentifier];
+          v14 = [vendorIdentifier isEqual:vendorIdentifier2];
 
           if (v14)
           {
@@ -448,18 +448,18 @@ LABEL_12:
   return v8;
 }
 
-- (MUPlaceExtensionDiscoveryManager)initWithExtensionDataItems:(id)a3 amsResultProvider:(id)a4
+- (MUPlaceExtensionDiscoveryManager)initWithExtensionDataItems:(id)items amsResultProvider:(id)provider
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = MUPlaceExtensionDiscoveryManager;
   v9 = [(MUPlaceExtensionDiscoveryManager *)&v30 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extensionDataItems, a3);
+    objc_storeStrong(&v9->_extensionDataItems, items);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     extensionsByAppIds = v10->_extensionsByAppIds;
     v10->_extensionsByAppIds = v11;
@@ -468,12 +468,12 @@ LABEL_12:
     vendorIdsByAppIds = v10->_vendorIdsByAppIds;
     v10->_vendorIdsByAppIds = v13;
 
-    objc_storeStrong(&v10->_amsResultProvider, a4);
+    objc_storeStrong(&v10->_amsResultProvider, provider);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v7;
+    v15 = itemsCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v16)
     {
@@ -489,10 +489,10 @@ LABEL_12:
           }
 
           v20 = *(*(&v26 + 1) + 8 * i);
-          v21 = [v20 vendorIdentifier];
+          vendorIdentifier = [v20 vendorIdentifier];
           v22 = v10->_vendorIdsByAppIds;
-          v23 = [v20 appBundleIdentifier];
-          [(NSMutableDictionary *)v22 setObject:v21 forKeyedSubscript:v23];
+          appBundleIdentifier = [v20 appBundleIdentifier];
+          [(NSMutableDictionary *)v22 setObject:vendorIdentifier forKeyedSubscript:appBundleIdentifier];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];

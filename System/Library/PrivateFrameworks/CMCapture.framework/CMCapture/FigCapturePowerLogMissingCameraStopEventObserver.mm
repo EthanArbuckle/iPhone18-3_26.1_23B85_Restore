@@ -2,12 +2,12 @@
 - (uint64_t)_cameraAppIsForegroundInLayout:(uint64_t)result;
 - (void)_cancelCameraAppStreamingTimer;
 - (void)_checkCameraAppPowerEventsForAnyStreamingCameras;
-- (void)_handleLayoutUpdate:(uint64_t)a1;
+- (void)_handleLayoutUpdate:(uint64_t)update;
 - (void)_showTTRPromptIfNecessary;
 - (void)_startCameraAppStreamingTimer;
 - (void)dealloc;
-- (void)initWithQueue:(void *)a1;
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4;
+- (void)initWithQueue:(void *)queue;
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -16,14 +16,14 @@
 
 - (void)startObserving
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_12_15(a1);
+    OUTLINED_FUNCTION_12_15(self);
     *(v1 + 16) = 1;
     [*(v1 + 24) addLayoutObserverWithoutImmediateCallback:v1];
-    v2 = [*(v1 + 24) currentLayout];
+    currentLayout = [*(v1 + 24) currentLayout];
 
-    [(FigCapturePowerLogMissingCameraStopEventObserver *)v1 _handleLayoutUpdate:v2];
+    [(FigCapturePowerLogMissingCameraStopEventObserver *)v1 _handleLayoutUpdate:currentLayout];
   }
 }
 
@@ -40,7 +40,7 @@
   [(FigCapturePowerLogMissingCameraStopEventObserver *)&v4 dealloc];
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout
 {
   dispatch_assert_queue_not_V2(self->_observerQueue);
   observerQueue = self->_observerQueue;
@@ -49,7 +49,7 @@
   v7[2] = __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpdateLayout___block_invoke;
   v7[3] = &unk_1E798F898;
   v7[4] = self;
-  v7[5] = a4;
+  v7[5] = layout;
   dispatch_async(observerQueue, v7);
 }
 
@@ -71,14 +71,14 @@ void __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpd
   }
 }
 
-- (void)initWithQueue:(void *)a1
+- (void)initWithQueue:(void *)queue
 {
-  if (!a1)
+  if (!queue)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = queue;
   v6.super_class = FigCapturePowerLogMissingCameraStopEventObserver;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)
@@ -95,9 +95,9 @@ void __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpd
 
 - (void)stopObserving
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_12_15(a1);
+    OUTLINED_FUNCTION_12_15(self);
     *(v1 + 16) = 0;
     [*(v1 + 24) removeLayoutObserver:v1];
     *(v1 + 40) = 0;
@@ -106,11 +106,11 @@ void __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpd
   }
 }
 
-- (void)_handleLayoutUpdate:(uint64_t)a1
+- (void)_handleLayoutUpdate:(uint64_t)update
 {
-  if (a1)
+  if (update)
   {
-    OUTLINED_FUNCTION_12_15(a1);
+    OUTLINED_FUNCTION_12_15(update);
     v4 = [(FigCapturePowerLogMissingCameraStopEventObserver *)v2 _cameraAppIsForegroundInLayout:a2];
     v5 = v4;
     if (*(v2 + 40) == 1 && (v4 & 1) == 0)
@@ -129,9 +129,9 @@ void __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpd
 
 - (void)_cancelCameraAppStreamingTimer
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_12_15(a1);
+    OUTLINED_FUNCTION_12_15(self);
     v2 = *(v1 + 32);
     if (v2)
     {
@@ -160,9 +160,9 @@ void __82__FigCapturePowerLogMissingCameraStopEventObserver_layoutMonitor_didUpd
 
 - (void)_startCameraAppStreamingTimer
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_12_15(a1);
+    OUTLINED_FUNCTION_12_15(self);
     if (*(v1 + 32))
     {
       [(FigCapturePowerLogMissingCameraStopEventObserver *)v1 _cancelCameraAppStreamingTimer];
@@ -224,10 +224,10 @@ void __81__FigCapturePowerLogMissingCameraStopEventObserver__startCameraAppStrea
 
 - (void)_checkCameraAppPowerEventsForAnyStreamingCameras
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v2 = -[FigCapturePowerLogMissingCameraStopEventObserver _cameraAppIsForegroundInLayout:](a1, [*(a1 + 24) currentLayout]);
+    dispatch_assert_queue_V2(*(self + 8));
+    v2 = -[FigCapturePowerLogMissingCameraStopEventObserver _cameraAppIsForegroundInLayout:](self, [*(self + 24) currentLayout]);
     if (dword_1ED844470)
     {
       OUTLINED_FUNCTION_3_28();
@@ -320,7 +320,7 @@ void __81__FigCapturePowerLogMissingCameraStopEventObserver__startCameraAppStrea
 
           OUTLINED_FUNCTION_1_4();
           OUTLINED_FUNCTION_17_8();
-          [(FigCapturePowerLogMissingCameraStopEventObserver *)a1 _showTTRPromptIfNecessary];
+          [(FigCapturePowerLogMissingCameraStopEventObserver *)self _showTTRPromptIfNecessary];
         }
       }
     }
@@ -338,9 +338,9 @@ void __81__FigCapturePowerLogMissingCameraStopEventObserver__startCameraAppStrea
 
     else
     {
-      v3 = [a2 transitioningApps];
+      transitioningApps = [a2 transitioningApps];
 
-      return [v3 containsObject:0x1F2185310];
+      return [transitioningApps containsObject:0x1F2185310];
     }
   }
 
@@ -349,9 +349,9 @@ void __81__FigCapturePowerLogMissingCameraStopEventObserver__startCameraAppStrea
 
 - (void)_showTTRPromptIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(self + 8));
     if (FigDebugIsInternalBuild())
     {
       v8 = 0;

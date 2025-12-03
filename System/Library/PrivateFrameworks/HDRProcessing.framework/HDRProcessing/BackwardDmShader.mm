@@ -1,41 +1,41 @@
 @interface BackwardDmShader
-- (id)getRenderPipelineStateForDevice:(id)a3 Library:(id)a4;
-- (id)getRenderPipelineStateForDevice:(id)a3 Library:(id)a4 Constants:(BOOL *)a5 ConstantNumber:(unsigned int)a6;
-- (id)initShaderWithVertexName:(id)a3 fragmentName:(id)a4 colorFormat:(unint64_t)a5 useCustomMatrix:(BOOL)a6 p3CSC:(BOOL)a7 applyYGamma:(BOOL)a8;
+- (id)getRenderPipelineStateForDevice:(id)device Library:(id)library;
+- (id)getRenderPipelineStateForDevice:(id)device Library:(id)library Constants:(BOOL *)constants ConstantNumber:(unsigned int)number;
+- (id)initShaderWithVertexName:(id)name fragmentName:(id)fragmentName colorFormat:(unint64_t)format useCustomMatrix:(BOOL)matrix p3CSC:(BOOL)c applyYGamma:(BOOL)gamma;
 @end
 
 @implementation BackwardDmShader
 
-- (id)initShaderWithVertexName:(id)a3 fragmentName:(id)a4 colorFormat:(unint64_t)a5 useCustomMatrix:(BOOL)a6 p3CSC:(BOOL)a7 applyYGamma:(BOOL)a8
+- (id)initShaderWithVertexName:(id)name fragmentName:(id)fragmentName colorFormat:(unint64_t)format useCustomMatrix:(BOOL)matrix p3CSC:(BOOL)c applyYGamma:(BOOL)gamma
 {
-  v15 = a3;
-  v16 = a4;
+  nameCopy = name;
+  fragmentNameCopy = fragmentName;
   v21.receiver = self;
   v21.super_class = BackwardDmShader;
   v17 = [(BackwardDmShader *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_vertexKernelName, a3);
-    objc_storeStrong(&v18->_fragmentKernelName, a4);
+    objc_storeStrong(&v17->_vertexKernelName, name);
+    objc_storeStrong(&v18->_fragmentKernelName, fragmentName);
     renderPipeline = v18->_renderPipeline;
     v18->_renderPipeline = 0;
 
-    v18->_colorFormat = a5;
-    v18->_useCustomMatrix = a6;
-    v18->_p3CSC = a7;
-    v18->_applyYGamma = a8;
+    v18->_colorFormat = format;
+    v18->_useCustomMatrix = matrix;
+    v18->_p3CSC = c;
+    v18->_applyYGamma = gamma;
   }
 
   return v18;
 }
 
-- (id)getRenderPipelineStateForDevice:(id)a3 Library:(id)a4
+- (id)getRenderPipelineStateForDevice:(id)device Library:(id)library
 {
   v25 = *MEMORY[0x277D85DE8];
   useCustomMatrix = self->_useCustomMatrix;
   v16 = *&self->_p3CSC;
-  v5 = [(BackwardDmShader *)self getRenderPipelineStateForDevice:a3 Library:a4 Constants:&useCustomMatrix ConstantNumber:3];
+  v5 = [(BackwardDmShader *)self getRenderPipelineStateForDevice:device Library:library Constants:&useCustomMatrix ConstantNumber:3];
   if (!v5)
   {
     if (enableLogInstance)
@@ -93,11 +93,11 @@
   return v5;
 }
 
-- (id)getRenderPipelineStateForDevice:(id)a3 Library:(id)a4 Constants:(BOOL *)a5 ConstantNumber:(unsigned int)a6
+- (id)getRenderPipelineStateForDevice:(id)device Library:(id)library Constants:(BOOL *)constants ConstantNumber:(unsigned int)number
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   renderPipeline = self->_renderPipeline;
   if (renderPipeline)
   {
@@ -105,7 +105,7 @@
     goto LABEL_51;
   }
 
-  if (!a6)
+  if (!number)
   {
     if (enableLogInstance)
     {
@@ -150,14 +150,14 @@
   v15 = 0;
   do
   {
-    [v14 setConstantValue:&a5[v15] type:53 atIndex:v15];
+    [v14 setConstantValue:&constants[v15] type:53 atIndex:v15];
     ++v15;
   }
 
-  while (a6 != v15);
+  while (number != v15);
   vertexKernelName = self->_vertexKernelName;
   v54 = 0;
-  v17 = [v11 newFunctionWithName:vertexKernelName constantValues:v14 error:&v54];
+  v17 = [libraryCopy newFunctionWithName:vertexKernelName constantValues:v14 error:&v54];
   v18 = v54;
   v19 = v18;
   v51 = v17;
@@ -168,13 +168,13 @@
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v41 = self->_vertexKernelName;
-        v42 = [v19 localizedDescription];
+        localizedDescription = [v19 localizedDescription];
         *buf = 136315650;
         v56 = "[BackwardDmShader getRenderPipelineStateForDevice:Library:Constants:ConstantNumber:]";
         v57 = 2112;
         v58 = v41;
         v59 = 2112;
-        v60 = v42;
+        v60 = localizedDescription;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed creating a new vertex function: %@ with error: %@", buf, 0x20u);
       }
 
@@ -196,7 +196,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v26 = self->_vertexKernelName;
-      v27 = [v19 localizedDescription];
+      localizedDescription2 = [v19 localizedDescription];
       *buf = 134218754;
       v56 = WORD1(v25);
       v57 = 2080;
@@ -204,7 +204,7 @@
       v59 = 2112;
       v60 = v26;
       v61 = 2112;
-      v62 = v27;
+      v62 = localizedDescription2;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed creating a new vertex function: %@ with error: %@", buf, 0x2Au);
     }
 
@@ -215,7 +215,7 @@
 
   fragmentKernelName = self->_fragmentKernelName;
   v53 = 0;
-  v21 = [v11 newFunctionWithName:fragmentKernelName constantValues:v14 error:&v53];
+  v21 = [libraryCopy newFunctionWithName:fragmentKernelName constantValues:v14 error:&v53];
   v22 = v53;
   v23 = v22;
   if (!v21 || v22)
@@ -225,13 +225,13 @@
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v49 = self->_fragmentKernelName;
-        v50 = [v23 localizedDescription];
+        localizedDescription3 = [v23 localizedDescription];
         *buf = 136315650;
         v56 = "[BackwardDmShader getRenderPipelineStateForDevice:Library:Constants:ConstantNumber:]";
         v57 = 2112;
         v58 = v49;
         v59 = 2112;
-        v60 = v50;
+        v60 = localizedDescription3;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed creating a new fragment function: %@ with error: %@", buf, 0x20u);
       }
 
@@ -251,7 +251,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v28 = self->_fragmentKernelName;
-      v29 = [v23 localizedDescription];
+      localizedDescription4 = [v23 localizedDescription];
       *buf = 134218754;
       v56 = WORD1(v25);
       v57 = 2080;
@@ -259,7 +259,7 @@
       v59 = 2112;
       v60 = v28;
       v61 = 2112;
-      v62 = v29;
+      v62 = localizedDescription4;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed creating a new fragment function: %@ with error: %@", buf, 0x2Au);
     }
 
@@ -277,12 +277,12 @@ LABEL_35:
   [v30 setVertexFunction:v51];
   [v30 setFragmentFunction:v21];
   colorFormat = self->_colorFormat;
-  v32 = [v30 colorAttachments];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  colorAttachments = [v30 colorAttachments];
+  v33 = [colorAttachments objectAtIndexedSubscript:0];
   [v33 setPixelFormat:colorFormat];
 
   v52 = 0;
-  v13 = [v10 newRenderPipelineStateWithDescriptor:v30 error:&v52];
+  v13 = [deviceCopy newRenderPipelineStateWithDescriptor:v30 error:&v52];
   v34 = v52;
   v35 = v34;
   if (!v13 || v34)
@@ -304,7 +304,7 @@ LABEL_35:
         p_vertexKernelName = &self->_vertexKernelName;
         v37 = self->_vertexKernelName;
         v38 = p_vertexKernelName[1];
-        v40 = [v35 localizedDescription];
+        localizedDescription5 = [v35 localizedDescription];
         *buf = 134219522;
         v56 = WORD1(v36);
         v57 = 2080;
@@ -318,7 +318,7 @@ LABEL_35:
         v65 = 2112;
         v66 = v37;
         v67 = 2112;
-        v68 = v40;
+        v68 = localizedDescription5;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed to create backward DM Kernel: fragment[%p]=%@, vertex[%p]=%@, with error: %@", buf, 0x48u);
       }
 
@@ -334,7 +334,7 @@ LABEL_35:
         v47 = &self->_vertexKernelName;
         v45 = self->_vertexKernelName;
         v46 = v47[1];
-        v48 = [v35 localizedDescription];
+        localizedDescription6 = [v35 localizedDescription];
         *buf = 136316418;
         v56 = "[BackwardDmShader getRenderPipelineStateForDevice:Library:Constants:ConstantNumber:]";
         v57 = 2048;
@@ -346,7 +346,7 @@ LABEL_35:
         v63 = 2112;
         v64 = v45;
         v65 = 2112;
-        v66 = v48;
+        v66 = localizedDescription6;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed to create backward DM Kernel: fragment[%p]=%@, vertex[%p]=%@, with error: %@", buf, 0x3Eu);
       }
 

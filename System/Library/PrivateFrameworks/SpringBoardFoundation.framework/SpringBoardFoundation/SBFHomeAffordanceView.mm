@@ -1,21 +1,21 @@
 @interface SBFHomeAffordanceView
-- (SBFHomeAffordanceView)initWithFrame:(CGRect)a3;
+- (SBFHomeAffordanceView)initWithFrame:(CGRect)frame;
 - (UIView)contentViewContainerView;
 - (UIView)topLevelContainerView;
 - (UIVisualEffectView)visualEffectView;
 - (int64_t)_incrementBounceAnimationGenerationCount;
 - (int64_t)_incrementGlowAnimationGenerationCount;
 - (int64_t)_incrementPulseAnimationGenerationCount;
-- (void)_performBounceAnimationWithCompletionHandler:(id)a3;
-- (void)_performGlowAnimationWithCompletionHandler:(id)a3;
-- (void)_performPulseAnimationWithCompletionHandler:(id)a3;
-- (void)addContentView:(id)a3;
-- (void)cancelHintAnimationWithCompletionHandler:(id)a3;
-- (void)insertContentView:(id)a3 atIndex:(int64_t)a4;
+- (void)_performBounceAnimationWithCompletionHandler:(id)handler;
+- (void)_performGlowAnimationWithCompletionHandler:(id)handler;
+- (void)_performPulseAnimationWithCompletionHandler:(id)handler;
+- (void)addContentView:(id)view;
+- (void)cancelHintAnimationWithCompletionHandler:(id)handler;
+- (void)insertContentView:(id)view atIndex:(int64_t)index;
 - (void)layoutSubviews;
-- (void)performHintAnimationWithCompletionHandler:(id)a3;
-- (void)removeContentView:(id)a3;
-- (void)setHintStyle:(unint64_t)a3;
+- (void)performHintAnimationWithCompletionHandler:(id)handler;
+- (void)removeContentView:(id)view;
+- (void)setHintStyle:(unint64_t)style;
 @end
 
 @implementation SBFHomeAffordanceView
@@ -52,32 +52,32 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-  [v11 setBounds:{v4, v6, v8, v10}];
+  topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+  [topLevelContainerView setBounds:{v4, v6, v8, v10}];
   UIRectGetCenter();
-  [v11 setCenter:?];
-  v12 = [(SBFHomeAffordanceView *)self visualEffectView];
-  if (v12)
+  [topLevelContainerView setCenter:?];
+  visualEffectView = [(SBFHomeAffordanceView *)self visualEffectView];
+  if (visualEffectView)
   {
-    [v11 bounds];
-    [v12 setFrame:?];
-    [v11 bounds];
-    [v12 _setCornerRadius:CGRectGetHeight(v27) * 0.5];
-    [v11 bringSubviewToFront:v12];
+    [topLevelContainerView bounds];
+    [visualEffectView setFrame:?];
+    [topLevelContainerView bounds];
+    [visualEffectView _setCornerRadius:CGRectGetHeight(v27) * 0.5];
+    [topLevelContainerView bringSubviewToFront:visualEffectView];
   }
 
-  v13 = [(SBFHomeAffordanceView *)self contentViewContainerView];
-  if (v13)
+  contentViewContainerView = [(SBFHomeAffordanceView *)self contentViewContainerView];
+  if (contentViewContainerView)
   {
-    [v11 bounds];
-    [v13 setFrame:?];
-    [v11 sendSubviewToBack:v13];
+    [topLevelContainerView bounds];
+    [contentViewContainerView setFrame:?];
+    [topLevelContainerView sendSubviewToBack:contentViewContainerView];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [v13 subviews];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    subviews = [contentViewContainerView subviews];
+    v15 = [subviews countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -89,17 +89,17 @@
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(subviews);
           }
 
           v19 = *(*(&v20 + 1) + 8 * v18);
-          [v13 bounds];
+          [contentViewContainerView bounds];
           [v19 setFrame:?];
           ++v18;
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v16 = [subviews countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v16);
@@ -107,11 +107,11 @@
   }
 }
 
-- (SBFHomeAffordanceView)initWithFrame:(CGRect)a3
+- (SBFHomeAffordanceView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SBFHomeAffordanceView;
-  v3 = [(SBFHomeAffordanceView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFHomeAffordanceView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SBFHomeGrabberDomain rootSettings];
@@ -119,9 +119,9 @@
     v3->_homeGrabberSettings = v4;
 
     v6 = +[SBFSiriDomain rootSettings];
-    v7 = [v6 systemAssistantExperienceSettings];
+    systemAssistantExperienceSettings = [v6 systemAssistantExperienceSettings];
     systemAssistantExperienceSettings = v3->_systemAssistantExperienceSettings;
-    v3->_systemAssistantExperienceSettings = v7;
+    v3->_systemAssistantExperienceSettings = systemAssistantExperienceSettings;
 
     v9 = objc_alloc(MEMORY[0x1E69DD250]);
     v10 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -134,23 +134,23 @@
   return v3;
 }
 
-- (void)setHintStyle:(unint64_t)a3
+- (void)setHintStyle:(unint64_t)style
 {
-  if (self->_hintStyle != a3)
+  if (self->_hintStyle != style)
   {
     v11[9] = v3;
     v11[10] = v4;
-    v5 = a3;
-    self->_hintStyle = a3;
-    v7 = [(SBFHomeAffordanceView *)self visualEffectView];
-    v8 = v7;
-    if ((v5 & 2) == 0 || v7)
+    styleCopy = style;
+    self->_hintStyle = style;
+    visualEffectView = [(SBFHomeAffordanceView *)self visualEffectView];
+    v8 = visualEffectView;
+    if ((styleCopy & 2) == 0 || visualEffectView)
     {
-      if ((v5 & 2) == 0)
+      if ((styleCopy & 2) == 0)
       {
-        if (v7)
+        if (visualEffectView)
         {
-          [v7 removeFromSuperview];
+          [visualEffectView removeFromSuperview];
           [(SBFHomeAffordanceView *)self setVisualEffectView:0];
         }
       }
@@ -160,8 +160,8 @@
     {
       v9 = objc_alloc(MEMORY[0x1E69DD298]);
       v8 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v10 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-      [v10 addSubview:v8];
+      topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+      [topLevelContainerView addSubview:v8];
 
       [(SBFHomeAffordanceView *)self setVisualEffectView:v8];
       v11[0] = MEMORY[0x1E69E9820];
@@ -182,79 +182,79 @@ uint64_t __38__SBFHomeAffordanceView_setHintStyle___block_invoke(uint64_t a1)
   return [v2 layoutIfNeeded];
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
-  v7 = a3;
-  v4 = [(SBFHomeAffordanceView *)self contentViewContainerView];
-  if (!v4)
+  viewCopy = view;
+  contentViewContainerView = [(SBFHomeAffordanceView *)self contentViewContainerView];
+  if (!contentViewContainerView)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
-    v4 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v6 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-    [v6 addSubview:v4];
+    contentViewContainerView = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+    [topLevelContainerView addSubview:contentViewContainerView];
 
-    [(SBFHomeAffordanceView *)self setContentViewContainerView:v4];
+    [(SBFHomeAffordanceView *)self setContentViewContainerView:contentViewContainerView];
   }
 
-  [v4 addSubview:v7];
+  [contentViewContainerView addSubview:viewCopy];
 }
 
-- (void)insertContentView:(id)a3 atIndex:(int64_t)a4
+- (void)insertContentView:(id)view atIndex:(int64_t)index
 {
-  v9 = a3;
-  v6 = [(SBFHomeAffordanceView *)self contentViewContainerView];
-  if (!v6)
+  viewCopy = view;
+  contentViewContainerView = [(SBFHomeAffordanceView *)self contentViewContainerView];
+  if (!contentViewContainerView)
   {
     v7 = objc_alloc(MEMORY[0x1E69DD250]);
-    v6 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v8 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-    [v8 addSubview:v6];
+    contentViewContainerView = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+    [topLevelContainerView addSubview:contentViewContainerView];
 
-    [(SBFHomeAffordanceView *)self setContentViewContainerView:v6];
+    [(SBFHomeAffordanceView *)self setContentViewContainerView:contentViewContainerView];
   }
 
-  [v6 insertSubview:v9 atIndex:a4];
+  [contentViewContainerView insertSubview:viewCopy atIndex:index];
 }
 
-- (void)removeContentView:(id)a3
+- (void)removeContentView:(id)view
 {
-  v9 = a3;
-  v4 = [(SBFHomeAffordanceView *)self contentViewContainerView];
-  v5 = [v9 superview];
-  v6 = [v5 isEqual:v4];
+  viewCopy = view;
+  contentViewContainerView = [(SBFHomeAffordanceView *)self contentViewContainerView];
+  superview = [viewCopy superview];
+  v6 = [superview isEqual:contentViewContainerView];
 
   if (v6)
   {
-    [v9 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 
-  v7 = [v4 subviews];
-  v8 = [v7 count];
+  subviews = [contentViewContainerView subviews];
+  v8 = [subviews count];
 
   if (!v8)
   {
-    [v4 removeFromSuperview];
+    [contentViewContainerView removeFromSuperview];
     [(SBFHomeAffordanceView *)self setContentViewContainerView:0];
   }
 }
 
-- (void)performHintAnimationWithCompletionHandler:(id)a3
+- (void)performHintAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_outstandingGlowOrPulseAnimationCount >= 1)
   {
-    v6 = *(v4 + 2);
+    v6 = *(handlerCopy + 2);
 LABEL_3:
     v6();
     goto LABEL_18;
   }
 
-  v7 = [(SBFHomeAffordanceView *)self hintStyle];
-  v8 = v7;
-  if ((v7 & 6) == 0)
+  hintStyle = [(SBFHomeAffordanceView *)self hintStyle];
+  v8 = hintStyle;
+  if ((hintStyle & 6) == 0)
   {
-    if (v7)
+    if (hintStyle)
     {
       [(SBFHomeAffordanceView *)self _performBounceAnimationWithCompletionHandler:v5];
       goto LABEL_18;
@@ -321,31 +321,31 @@ void __67__SBFHomeAffordanceView_performHintAnimationWithCompletionHandler___blo
   }
 }
 
-- (void)cancelHintAnimationWithCompletionHandler:(id)a3
+- (void)cancelHintAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(SBFHomeAffordanceView *)self _incrementBounceAnimationGenerationCount];
   [(SBFHomeAffordanceView *)self _incrementGlowAnimationGenerationCount];
   [(SBFHomeAffordanceView *)self _incrementPulseAnimationGenerationCount];
-  v5 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-  v6 = [(SBFHomeAffordanceView *)self visualEffectView];
-  v7 = [(SBFSiriSystemAssistantExperienceSettings *)self->_systemAssistantExperienceSettings homeAffordanceHintCancellationAnimationSettings];
+  topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+  visualEffectView = [(SBFHomeAffordanceView *)self visualEffectView];
+  homeAffordanceHintCancellationAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self->_systemAssistantExperienceSettings homeAffordanceHintCancellationAnimationSettings];
   v8 = MEMORY[0x1E69DD250];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__SBFHomeAffordanceView_cancelHintAnimationWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E807F290;
-  v15 = v6;
-  v16 = v5;
+  v15 = visualEffectView;
+  v16 = topLevelContainerView;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__SBFHomeAffordanceView_cancelHintAnimationWithCompletionHandler___block_invoke_2;
   v12[3] = &unk_1E80802C8;
-  v13 = v4;
-  v9 = v4;
-  v10 = v5;
-  v11 = v6;
-  [v8 sb_animateWithSettings:v7 mode:3 animations:v14 completion:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = topLevelContainerView;
+  v11 = visualEffectView;
+  [v8 sb_animateWithSettings:homeAffordanceHintCancellationAnimationSettings mode:3 animations:v14 completion:v12];
 }
 
 uint64_t __66__SBFHomeAffordanceView_cancelHintAnimationWithCompletionHandler___block_invoke(uint64_t a1)
@@ -361,43 +361,43 @@ uint64_t __66__SBFHomeAffordanceView_cancelHintAnimationWithCompletionHandler___
 
 - (int64_t)_incrementBounceAnimationGenerationCount
 {
-  v3 = [(SBFHomeAffordanceView *)self bounceAnimationGenerationCount];
-  [(SBFHomeAffordanceView *)self setBounceAnimationGenerationCount:v3 + 1];
-  return v3 + 1;
+  bounceAnimationGenerationCount = [(SBFHomeAffordanceView *)self bounceAnimationGenerationCount];
+  [(SBFHomeAffordanceView *)self setBounceAnimationGenerationCount:bounceAnimationGenerationCount + 1];
+  return bounceAnimationGenerationCount + 1;
 }
 
 - (int64_t)_incrementGlowAnimationGenerationCount
 {
-  v3 = [(SBFHomeAffordanceView *)self glowAnimationGenerationCount];
-  [(SBFHomeAffordanceView *)self setGlowAnimationGenerationCount:v3 + 1];
-  return v3 + 1;
+  glowAnimationGenerationCount = [(SBFHomeAffordanceView *)self glowAnimationGenerationCount];
+  [(SBFHomeAffordanceView *)self setGlowAnimationGenerationCount:glowAnimationGenerationCount + 1];
+  return glowAnimationGenerationCount + 1;
 }
 
 - (int64_t)_incrementPulseAnimationGenerationCount
 {
-  v3 = [(SBFHomeAffordanceView *)self pulseAnimationGenerationCount];
-  [(SBFHomeAffordanceView *)self setPulseAnimationGenerationCount:v3 + 1];
-  return v3 + 1;
+  pulseAnimationGenerationCount = [(SBFHomeAffordanceView *)self pulseAnimationGenerationCount];
+  [(SBFHomeAffordanceView *)self setPulseAnimationGenerationCount:pulseAnimationGenerationCount + 1];
+  return pulseAnimationGenerationCount + 1;
 }
 
-- (void)_performBounceAnimationWithCompletionHandler:(id)a3
+- (void)_performBounceAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SBFHomeAffordanceView *)self homeGrabberSettings];
+  handlerCopy = handler;
+  homeGrabberSettings = [(SBFHomeAffordanceView *)self homeGrabberSettings];
   objc_initWeak(&location, self);
-  v6 = [(SBFHomeAffordanceView *)self _incrementBounceAnimationGenerationCount];
-  v7 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-  v8 = [v5 bounceAnimationSettings];
+  _incrementBounceAnimationGenerationCount = [(SBFHomeAffordanceView *)self _incrementBounceAnimationGenerationCount];
+  topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+  bounceAnimationSettings = [homeGrabberSettings bounceAnimationSettings];
   v9 = MEMORY[0x1E69DD250];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E807F290;
-  v10 = v7;
+  v10 = topLevelContainerView;
   v23 = v10;
-  v11 = v5;
+  v11 = homeGrabberSettings;
   v24 = v11;
-  [v9 sb_animateWithSettings:v8 mode:3 animations:v22 completion:0];
+  [v9 sb_animateWithSettings:bounceAnimationSettings mode:3 animations:v22 completion:0];
   [v11 bounceReverseAnimationDelay];
   v13 = dispatch_time(0, (v12 * 1000000000.0));
   v17[0] = MEMORY[0x1E69E9820];
@@ -405,13 +405,13 @@ uint64_t __66__SBFHomeAffordanceView_cancelHintAnimationWithCompletionHandler___
   v17[2] = __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandler___block_invoke_2;
   v17[3] = &unk_1E80802F0;
   objc_copyWeak(v21, &location);
-  v18 = v8;
+  v18 = bounceAnimationSettings;
   v19 = v10;
-  v21[1] = v6;
-  v20 = v4;
-  v14 = v4;
+  v21[1] = _incrementBounceAnimationGenerationCount;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v10;
-  v16 = v8;
+  v16 = bounceAnimationSettings;
   dispatch_after(v13, MEMORY[0x1E69E96A0], v17);
 
   objc_destroyWeak(v21);
@@ -467,13 +467,13 @@ uint64_t __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandle
   return [v1 setTransform:v4];
 }
 
-- (void)_performGlowAnimationWithCompletionHandler:(id)a3
+- (void)_performGlowAnimationWithCompletionHandler:(id)handler
 {
-  v48 = a3;
-  v4 = [(SBFHomeAffordanceView *)self systemAssistantExperienceSettings];
+  handlerCopy = handler;
+  systemAssistantExperienceSettings = [(SBFHomeAffordanceView *)self systemAssistantExperienceSettings];
   v5 = objc_alloc(MEMORY[0x1E69DD400]);
-  v6 = [MEMORY[0x1E69DC888] sbf_siriIntelligenceLightColors];
-  v7 = [v6 count];
+  sbf_siriIntelligenceLightColors = [MEMORY[0x1E69DC888] sbf_siriIntelligenceLightColors];
+  v7 = [sbf_siriIntelligenceLightColors count];
   v8 = arc4random_uniform(v7);
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
   if (v7)
@@ -482,7 +482,7 @@ uint64_t __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandle
     v11 = v7;
     do
     {
-      v12 = [v6 objectAtIndex:v10 % v7];
+      v12 = [sbf_siriIntelligenceLightColors objectAtIndex:v10 % v7];
       [v9 addObject:v12];
 
       ++v10;
@@ -496,36 +496,36 @@ uint64_t __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandle
   v14 = [objc_alloc(MEMORY[0x1E69DD468]) initWithColorPalette:v13];
   v15 = [MEMORY[0x1E69DD578] directionalLightWithConfiguration:v14];
   v16 = objc_alloc(MEMORY[0x1E69DD570]);
-  [v4 homeAffordanceGlowInnerLightRadius];
+  [systemAssistantExperienceSettings homeAffordanceGlowInnerLightRadius];
   v17 = [v16 initWithLightSource:v15 radius:0 region:?];
   [v17 setActivationTransitionDirection:2];
   v18 = objc_alloc(MEMORY[0x1E69DD570]);
-  [v4 homeAffordanceGlowOuterLightRadius];
+  [systemAssistantExperienceSettings homeAffordanceGlowOuterLightRadius];
   v47 = v15;
   v19 = [v18 initWithLightSource:v15 radius:1 region:?];
   [v19 setActivationTransitionDirection:2];
   v20 = objc_alloc(MEMORY[0x1E69DD580]);
-  [v4 homeAffordanceGlowHighlightThickness];
+  [systemAssistantExperienceSettings homeAffordanceGlowHighlightThickness];
   v22 = v21;
   v23 = MEMORY[0x1E69DC888];
-  [v4 homeAffordanceGlowHighlightWhiteness];
+  [systemAssistantExperienceSettings homeAffordanceGlowHighlightWhiteness];
   v25 = v24;
-  [v4 homeAffordanceGlowHighlightAlpha];
+  [systemAssistantExperienceSettings homeAffordanceGlowHighlightAlpha];
   v27 = [v23 colorWithWhite:v25 alpha:v26];
-  [v4 homeAffordanceGlowHighlightRadius];
+  [systemAssistantExperienceSettings homeAffordanceGlowHighlightRadius];
   v29 = [v20 initWithThickness:v27 color:2 softRadius:2 region:v22 activationDirection:v28];
 
   objc_initWeak(location, self);
-  v30 = [(SBFHomeAffordanceView *)self _incrementGlowAnimationGenerationCount];
+  _incrementGlowAnimationGenerationCount = [(SBFHomeAffordanceView *)self _incrementGlowAnimationGenerationCount];
   v46 = v13;
-  v31 = [(SBFHomeAffordanceView *)self visualEffectView];
-  v32 = [v4 homeAffordanceGlowAnimationSettings];
+  visualEffectView = [(SBFHomeAffordanceView *)self visualEffectView];
+  homeAffordanceGlowAnimationSettings = [systemAssistantExperienceSettings homeAffordanceGlowAnimationSettings];
   v33 = MEMORY[0x1E69DD250];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __68__SBFHomeAffordanceView__performGlowAnimationWithCompletionHandler___block_invoke;
   v55[3] = &unk_1E807F308;
-  v34 = v31;
+  v34 = visualEffectView;
   v56 = v34;
   v35 = v17;
   v57 = v35;
@@ -533,8 +533,8 @@ uint64_t __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandle
   v58 = v36;
   v37 = v29;
   v59 = v37;
-  [v33 sb_animateWithSettings:v32 mode:3 animations:v55 completion:0];
-  [v4 homeAffordanceGlowReverseAnimationDelay];
+  [v33 sb_animateWithSettings:homeAffordanceGlowAnimationSettings mode:3 animations:v55 completion:0];
+  [systemAssistantExperienceSettings homeAffordanceGlowReverseAnimationDelay];
   v39 = v38;
   UIAnimationDragCoefficient();
   v41 = dispatch_time(0, (v39 * v40 * 1000000000.0));
@@ -543,15 +543,15 @@ uint64_t __70__SBFHomeAffordanceView__performBounceAnimationWithCompletionHandle
   block[2] = __68__SBFHomeAffordanceView__performGlowAnimationWithCompletionHandler___block_invoke_2;
   block[3] = &unk_1E8080340;
   objc_copyWeak(v54, location);
-  v54[1] = v30;
-  v50 = v32;
+  v54[1] = _incrementGlowAnimationGenerationCount;
+  v50 = homeAffordanceGlowAnimationSettings;
   v51 = v34;
-  v52 = v4;
-  v53 = v48;
-  v42 = v48;
-  v43 = v4;
+  v52 = systemAssistantExperienceSettings;
+  v53 = handlerCopy;
+  v42 = handlerCopy;
+  v43 = systemAssistantExperienceSettings;
   v44 = v34;
-  v45 = v32;
+  v45 = homeAffordanceGlowAnimationSettings;
   dispatch_after(v41, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(v54);
@@ -620,24 +620,24 @@ uint64_t __68__SBFHomeAffordanceView__performGlowAnimationWithCompletionHandler_
   return v3();
 }
 
-- (void)_performPulseAnimationWithCompletionHandler:(id)a3
+- (void)_performPulseAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SBFHomeAffordanceView *)self systemAssistantExperienceSettings];
+  handlerCopy = handler;
+  systemAssistantExperienceSettings = [(SBFHomeAffordanceView *)self systemAssistantExperienceSettings];
   objc_initWeak(&location, self);
-  v6 = [(SBFHomeAffordanceView *)self _incrementPulseAnimationGenerationCount];
-  v7 = [(SBFHomeAffordanceView *)self topLevelContainerView];
-  v8 = [v5 homeAffordancePulseAnimationSettings];
+  _incrementPulseAnimationGenerationCount = [(SBFHomeAffordanceView *)self _incrementPulseAnimationGenerationCount];
+  topLevelContainerView = [(SBFHomeAffordanceView *)self topLevelContainerView];
+  homeAffordancePulseAnimationSettings = [systemAssistantExperienceSettings homeAffordancePulseAnimationSettings];
   v9 = MEMORY[0x1E69DD250];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __69__SBFHomeAffordanceView__performPulseAnimationWithCompletionHandler___block_invoke;
   v26[3] = &unk_1E807F290;
-  v10 = v7;
+  v10 = topLevelContainerView;
   v27 = v10;
-  v11 = v5;
+  v11 = systemAssistantExperienceSettings;
   v28 = v11;
-  [v9 sb_animateWithSettings:v8 mode:3 animations:v26 completion:0];
+  [v9 sb_animateWithSettings:homeAffordancePulseAnimationSettings mode:3 animations:v26 completion:0];
   [v11 homeAffordancePulseReverseAnimationDelay];
   v13 = v12;
   UIAnimationDragCoefficient();
@@ -647,15 +647,15 @@ uint64_t __68__SBFHomeAffordanceView__performGlowAnimationWithCompletionHandler_
   block[2] = __69__SBFHomeAffordanceView__performPulseAnimationWithCompletionHandler___block_invoke_2;
   block[3] = &unk_1E8080340;
   objc_copyWeak(v25, &location);
-  v25[1] = v6;
-  v21 = v8;
+  v25[1] = _incrementPulseAnimationGenerationCount;
+  v21 = homeAffordancePulseAnimationSettings;
   v22 = v10;
   v23 = v11;
-  v24 = v4;
-  v16 = v4;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v11;
   v18 = v10;
-  v19 = v8;
+  v19 = homeAffordancePulseAnimationSettings;
   dispatch_after(v15, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(v25);

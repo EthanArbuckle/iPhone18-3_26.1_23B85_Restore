@@ -1,9 +1,9 @@
 @interface ArticleViewerAppStateMonitor
 - (_TtC12NewsArticles28ArticleViewerAppStateMonitor)init;
-- (void)performOnApplicationDidEnterBackground:(id)a3;
-- (void)performOnApplicationWillEnterForeground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3;
+- (void)performOnApplicationDidEnterBackground:(id)background;
+- (void)performOnApplicationWillEnterForeground:(id)foreground;
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background;
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground;
 @end
 
 @implementation ArticleViewerAppStateMonitor
@@ -21,9 +21,9 @@
   return [(ArticleViewerAppStateMonitor *)&v6 init];
 }
 
-- (void)performOnApplicationWillEnterForeground:(id)a3
+- (void)performOnApplicationWillEnterForeground:(id)foreground
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(foreground);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -32,7 +32,7 @@
   v7 = OBJC_IVAR____TtC12NewsArticles28ArticleViewerAppStateMonitor_onForegroundClosures;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;
@@ -57,9 +57,9 @@
   swift_endAccess();
 }
 
-- (void)performOnApplicationDidEnterBackground:(id)a3
+- (void)performOnApplicationDidEnterBackground:(id)background
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(background);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -68,7 +68,7 @@
   v7 = OBJC_IVAR____TtC12NewsArticles28ArticleViewerAppStateMonitor_onEnterBackgroundClosures;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;
@@ -93,9 +93,9 @@
   swift_endAccess();
 }
 
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(foreground);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -104,7 +104,7 @@
   v7 = OBJC_IVAR____TtC12NewsArticles28ArticleViewerAppStateMonitor_onWindowForegroundClosures;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;
@@ -129,9 +129,9 @@
   swift_endAccess();
 }
 
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(background);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -140,7 +140,7 @@
   v7 = OBJC_IVAR____TtC12NewsArticles28ArticleViewerAppStateMonitor_onWindowBackgroundClosures;
   swift_beginAccess();
   v8 = *(&self->super.isa + v7);
-  v9 = self;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(&self->super.isa + v7) = v8;

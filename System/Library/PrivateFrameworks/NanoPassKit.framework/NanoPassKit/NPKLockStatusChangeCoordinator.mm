@@ -1,9 +1,9 @@
 @interface NPKLockStatusChangeCoordinator
-+ (id)descriptionOfLockStatusChangeEvent:(unint64_t)a3;
++ (id)descriptionOfLockStatusChangeEvent:(unint64_t)event;
 - (BOOL)_hasLockBlocksToPerform;
 - (BOOL)_hasUnlockBlocksToPerform;
 - (BOOL)wipeBlocksAfterPerform;
-- (NPKLockStatusChangeCoordinator)initWithQueue:(id)a3 reason:(id)a4;
+- (NPKLockStatusChangeCoordinator)initWithQueue:(id)queue reason:(id)reason;
 - (NPKLockStatusChangeCoordinatorDelegate)delegate;
 - (NSMutableArray)blocksToPerformAfterDeviceLock;
 - (NSMutableArray)blocksToPerformAfterDeviceUnlock;
@@ -12,28 +12,28 @@
 - (void)_handleLockStateChange;
 - (void)_performLockWork;
 - (void)_performUnlockWork;
-- (void)_performWorkForEvent:(unint64_t)a3 withBlocks:(id)a4;
+- (void)_performWorkForEvent:(unint64_t)event withBlocks:(id)blocks;
 - (void)_registerForLockStatusChanges;
 - (void)dealloc;
 - (void)performBlocksIfPossible;
-- (void)performSubjectToEvent:(unint64_t)a3 blockToPerform:(id)a4;
-- (void)setWipeBlocksAfterPerform:(BOOL)a3;
+- (void)performSubjectToEvent:(unint64_t)event blockToPerform:(id)perform;
+- (void)setWipeBlocksAfterPerform:(BOOL)perform;
 @end
 
 @implementation NPKLockStatusChangeCoordinator
 
-- (NPKLockStatusChangeCoordinator)initWithQueue:(id)a3 reason:(id)a4
+- (NPKLockStatusChangeCoordinator)initWithQueue:(id)queue reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = NPKLockStatusChangeCoordinator;
   v9 = [(NPKLockStatusChangeCoordinator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_reason, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_reason, reason);
     [(NPKLockStatusChangeCoordinator *)v10 _registerForLockStatusChanges];
     v10->_wipeBlocksAfterPerform = 1;
   }
@@ -59,9 +59,9 @@
   blocksToPerformAfterDeviceUnlock = self->_blocksToPerformAfterDeviceUnlock;
   if (!blocksToPerformAfterDeviceUnlock)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_blocksToPerformAfterDeviceUnlock;
-    self->_blocksToPerformAfterDeviceUnlock = v4;
+    self->_blocksToPerformAfterDeviceUnlock = array;
 
     blocksToPerformAfterDeviceUnlock = self->_blocksToPerformAfterDeviceUnlock;
   }
@@ -74,9 +74,9 @@
   blocksToPerformAfterDeviceLock = self->_blocksToPerformAfterDeviceLock;
   if (!blocksToPerformAfterDeviceLock)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_blocksToPerformAfterDeviceLock;
-    self->_blocksToPerformAfterDeviceLock = v4;
+    self->_blocksToPerformAfterDeviceLock = array;
 
     blocksToPerformAfterDeviceLock = self->_blocksToPerformAfterDeviceLock;
   }
@@ -84,28 +84,28 @@
   return blocksToPerformAfterDeviceLock;
 }
 
-- (void)performSubjectToEvent:(unint64_t)a3 blockToPerform:(id)a4
+- (void)performSubjectToEvent:(unint64_t)event blockToPerform:(id)perform
 {
-  aBlock = a4;
-  v6 = [(NPKLockStatusChangeCoordinator *)self queue];
-  dispatch_assert_queue_V2(v6);
+  aBlock = perform;
+  queue = [(NPKLockStatusChangeCoordinator *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a3 == 1)
+  if (event == 1)
   {
-    v7 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
+    blocksToPerformAfterDeviceLock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
   }
 
   else
   {
-    if (a3)
+    if (event)
     {
       goto LABEL_6;
     }
 
-    v7 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
+    blocksToPerformAfterDeviceLock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
   }
 
-  v8 = v7;
+  v8 = blocksToPerformAfterDeviceLock;
   v9 = _Block_copy(aBlock);
   [v8 addObject:v9];
 
@@ -124,7 +124,7 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Requested perform blocks if possible.", buf, 0xCu);
     }
   }
@@ -139,7 +139,7 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWipeBlocksAfterPerform:(BOOL)a3
+- (void)setWipeBlocksAfterPerform:(BOOL)perform
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -147,7 +147,7 @@ LABEL_6:
   v4[2] = __60__NPKLockStatusChangeCoordinator_setWipeBlocksAfterPerform___block_invoke;
   v4[3] = &unk_279944FC0;
   v4[4] = self;
-  v5 = a3;
+  performCopy = perform;
   dispatch_async(queue, v4);
 }
 
@@ -170,9 +170,9 @@ LABEL_6:
   return v3;
 }
 
-+ (id)descriptionOfLockStatusChangeEvent:(unint64_t)a3
++ (id)descriptionOfLockStatusChangeEvent:(unint64_t)event
 {
-  if (a3)
+  if (event)
   {
     return @"NPKLockStatusChangeEventLock";
   }
@@ -185,16 +185,16 @@ LABEL_6:
 
 - (BOOL)_hasUnlockBlocksToPerform
 {
-  v2 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
-  v3 = [v2 count] != 0;
+  blocksToPerformAfterDeviceUnlock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
+  v3 = [blocksToPerformAfterDeviceUnlock count] != 0;
 
   return v3;
 }
 
 - (BOOL)_hasLockBlocksToPerform
 {
-  v2 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
-  v3 = [v2 count] != 0;
+  blocksToPerformAfterDeviceLock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
+  v3 = [blocksToPerformAfterDeviceLock count] != 0;
 
   return v3;
 }
@@ -226,7 +226,7 @@ LABEL_6:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Registering for lock state notifications", buf, 0xCu);
       }
     }
@@ -269,13 +269,13 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Handling lock state change", &v16, 0xCu);
     }
   }
 
-  v6 = [(NPKLockStatusChangeCoordinator *)self _lockState];
-  if ([(NPKLockStatusChangeCoordinator *)self _isUnlockedForLockState:v6])
+  _lockState = [(NPKLockStatusChangeCoordinator *)self _lockState];
+  if ([(NPKLockStatusChangeCoordinator *)self _isUnlockedForLockState:_lockState])
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -286,7 +286,7 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
-        v17 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Device is unlocked", &v16, 0xCu);
       }
     }
@@ -296,7 +296,7 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
 
   else
   {
-    v10 = [(NPKLockStatusChangeCoordinator *)self _isLockedForLockState:v6];
+    v10 = [(NPKLockStatusChangeCoordinator *)self _isLockedForLockState:_lockState];
     v11 = pk_General_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -308,7 +308,7 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138543362;
-          v17 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Device is locked", &v16, 0xCu);
         }
       }
@@ -322,9 +322,9 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543618;
-        v17 = self;
+        selfCopy4 = self;
         v18 = 1024;
-        v19 = v6;
+        v19 = _lockState;
         _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Unhandled lock state with value %i", &v16, 0x12u);
       }
     }
@@ -346,17 +346,17 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
       v5 = pk_General_log();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
+        blocksToPerformAfterDeviceUnlock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
         v9 = 138543618;
-        v10 = self;
+        selfCopy = self;
         v11 = 2048;
-        v12 = [v6 count];
+        v12 = [blocksToPerformAfterDeviceUnlock count];
         _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Performing work in response to device unlock - %lu block(s) to execute", &v9, 0x16u);
       }
     }
 
-    v7 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
-    [(NPKLockStatusChangeCoordinator *)self _performWorkForEvent:0 withBlocks:v7];
+    blocksToPerformAfterDeviceUnlock2 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceUnlock];
+    [(NPKLockStatusChangeCoordinator *)self _performWorkForEvent:0 withBlocks:blocksToPerformAfterDeviceUnlock2];
 
     if (self->_wipeBlocksAfterPerform)
     {
@@ -380,17 +380,17 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
       v5 = pk_General_log();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
+        blocksToPerformAfterDeviceLock = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
         v9 = 138543618;
-        v10 = self;
+        selfCopy = self;
         v11 = 2048;
-        v12 = [v6 count];
+        v12 = [blocksToPerformAfterDeviceLock count];
         _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Performing work in response to device lock - %lu block(s) to execute", &v9, 0x16u);
       }
     }
 
-    v7 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
-    [(NPKLockStatusChangeCoordinator *)self _performWorkForEvent:1 withBlocks:v7];
+    blocksToPerformAfterDeviceLock2 = [(NPKLockStatusChangeCoordinator *)self blocksToPerformAfterDeviceLock];
+    [(NPKLockStatusChangeCoordinator *)self _performWorkForEvent:1 withBlocks:blocksToPerformAfterDeviceLock2];
 
     if (self->_wipeBlocksAfterPerform)
     {
@@ -401,15 +401,15 @@ void __63__NPKLockStatusChangeCoordinator__registerForLockStatusChanges__block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performWorkForEvent:(unint64_t)a3 withBlocks:(id)a4
+- (void)_performWorkForEvent:(unint64_t)event withBlocks:(id)blocks
 {
-  v6 = a4;
-  v7 = [(NPKLockStatusChangeCoordinator *)self delegate];
-  [v7 lockStatusChangeCoordinator:self willBeginPerformingBlocksForLockStatusEvent:a3];
+  blocksCopy = blocks;
+  delegate = [(NPKLockStatusChangeCoordinator *)self delegate];
+  [delegate lockStatusChangeCoordinator:self willBeginPerformingBlocksForLockStatusEvent:event];
 
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global];
-  v8 = [(NPKLockStatusChangeCoordinator *)self delegate];
-  [v8 lockStatusChangeCoordinator:self didFinishPerformingBlocksForLockStatusEvent:a3];
+  [blocksCopy enumerateObjectsUsingBlock:&__block_literal_global];
+  delegate2 = [(NPKLockStatusChangeCoordinator *)self delegate];
+  [delegate2 lockStatusChangeCoordinator:self didFinishPerformingBlocksForLockStatusEvent:event];
 }
 
 - (id)description

@@ -3,7 +3,7 @@
 + (id)sharedInstance;
 - (BDSBookWidgetReadingHistoryDataFile)init;
 - (id)load;
-- (void)save:(id)a3;
+- (void)save:(id)save;
 @end
 
 @implementation BDSBookWidgetReadingHistoryDataFile
@@ -39,9 +39,9 @@
 - (id)load
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
+  dataFile = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
   v12 = 0;
-  v3 = [v2 load:&v12];
+  v3 = [dataFile load:&v12];
   v4 = v12;
 
   if (v4)
@@ -95,18 +95,18 @@ LABEL_14:
   return v6;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = a3;
+  saveCopy = save;
   v6 = [[v4 alloc] initRequiringSecureCoding:1];
   [v6 setOutputFormat:200];
-  [v6 encodeObject:v5 forKey:*MEMORY[0x1E696A508]];
+  [v6 encodeObject:saveCopy forKey:*MEMORY[0x1E696A508]];
 
-  v7 = [v6 encodedData];
-  v8 = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
+  encodedData = [v6 encodedData];
+  dataFile = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
   v18 = 0;
-  v9 = [v8 save:v7 error:&v18];
+  v9 = [dataFile save:encodedData error:&v18];
   v10 = v18;
 
   v11 = BDSWidgetLog();
@@ -130,9 +130,9 @@ LABEL_10:
     sub_1E4704674();
   }
 
-  v13 = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
+  dataFile2 = [(BDSBookWidgetReadingHistoryDataFile *)self dataFile];
   v16 = v10;
-  v14 = [v13 remove:&v16];
+  v14 = [dataFile2 remove:&v16];
   v15 = v16;
 
   if ((v14 & 1) == 0)

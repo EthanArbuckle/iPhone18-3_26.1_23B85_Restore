@@ -1,40 +1,40 @@
 @interface SXAXCustomRotorProvider
 - (id)graphSearchForAvailableCustomRotorsAndUpdateCache;
-- (void)initWithRootElement:(void *)a1;
+- (void)initWithRootElement:(void *)element;
 @end
 
 @implementation SXAXCustomRotorProvider
 
-- (void)initWithRootElement:(void *)a1
+- (void)initWithRootElement:(void *)element
 {
   v3 = a2;
-  if (a1)
+  if (element)
   {
-    v7.receiver = a1;
+    v7.receiver = element;
     v7.super_class = SXAXCustomRotorProvider;
     v4 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v4;
+    element = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
-      v5 = a1[1];
-      a1[1] = 0;
+      v5 = element[1];
+      element[1] = 0;
     }
   }
 
-  return a1;
+  return element;
 }
 
 - (id)graphSearchForAvailableCustomRotorsAndUpdateCache
 {
   v55 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     v3 = [v2 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v3)
     {
@@ -58,11 +58,11 @@
       while (v4);
     }
 
-    v7 = [MEMORY[0x1E69DB5C8] defaultVoiceOverOptions];
-    v35 = a1;
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v34 = v7;
-    v9 = [WeakRetained _accessibilityLeafDescendantsWithOptions:v7];
+    defaultVoiceOverOptions = [MEMORY[0x1E69DB5C8] defaultVoiceOverOptions];
+    selfCopy = self;
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    v34 = defaultVoiceOverOptions;
+    v9 = [WeakRetained _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
 
     v10 = objc_opt_new();
     v44 = 0u;
@@ -97,8 +97,8 @@
             v41 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v18 = [v17 supportedCustomRotors];
-            v19 = [v18 countByEnumeratingWithState:&v40 objects:v52 count:16];
+            supportedCustomRotors = [v17 supportedCustomRotors];
+            v19 = [supportedCustomRotors countByEnumeratingWithState:&v40 objects:v52 count:16];
             if (v19)
             {
               v20 = v19;
@@ -109,7 +109,7 @@
                 {
                   if (*v41 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(supportedCustomRotors);
                   }
 
                   v23 = *(*(&v40 + 1) + 8 * j);
@@ -118,18 +118,18 @@
                   {
                     [v10 addObject:v23];
                     v25 = objc_alloc(MEMORY[0x1E695DFA0]);
-                    v26 = [v23 rotorItems];
-                    v27 = [v25 initWithOrderedSet:v26];
+                    rotorItems = [v23 rotorItems];
+                    v27 = [v25 initWithOrderedSet:rotorItems];
 
-                    v28 = [v24 array];
-                    [v27 addObjectsFromArray:v28];
+                    array = [v24 array];
+                    [v27 addObjectsFromArray:array];
 
                     v29 = [v27 copy];
                     [v23 setRotorItems:v29];
                   }
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v40 objects:v52 count:16];
+                v20 = [supportedCustomRotors countByEnumeratingWithState:&v40 objects:v52 count:16];
               }
 
               while (v20);
@@ -152,10 +152,10 @@
     }
 
     v30 = [v10 copy];
-    v31 = *(v35 + 8);
-    *(v35 + 8) = v30;
+    v31 = *(selfCopy + 8);
+    *(selfCopy + 8) = v30;
 
-    v32 = *(v35 + 8);
+    v32 = *(selfCopy + 8);
   }
 
   else

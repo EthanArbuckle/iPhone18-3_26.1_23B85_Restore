@@ -1,22 +1,22 @@
 @interface ICQDaemonAlert
-+ (BOOL)shouldShowForDaemonOffer:(id)a3;
-+ (void)dismissAlertsWithNotificationID:(id)a3;
-- (BOOL)showAlertWithCompletion:(id)a3;
++ (BOOL)shouldShowForDaemonOffer:(id)offer;
++ (void)dismissAlertsWithNotificationID:(id)d;
+- (BOOL)showAlertWithCompletion:(id)completion;
 - (ICQDaemonAlert)init;
-- (ICQDaemonAlert)initWithDaemonOffer:(id)a3;
+- (ICQDaemonAlert)initWithDaemonOffer:(id)offer;
 - (void)dealloc;
 - (void)dismissAlert;
 @end
 
 @implementation ICQDaemonAlert
 
-+ (BOOL)shouldShowForDaemonOffer:(id)a3
++ (BOOL)shouldShowForDaemonOffer:(id)offer
 {
-  v3 = a3;
-  v4 = [v3 alertSpecification];
-  if (v4)
+  offerCopy = offer;
+  alertSpecification = [offerCopy alertSpecification];
+  if (alertSpecification)
   {
-    v5 = [v3 level] != 0;
+    v5 = [offerCopy level] != 0;
   }
 
   else
@@ -39,11 +39,11 @@
   return 0;
 }
 
-- (ICQDaemonAlert)initWithDaemonOffer:(id)a3
+- (ICQDaemonAlert)initWithDaemonOffer:(id)offer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([objc_opt_class() shouldShowForDaemonOffer:v5])
+  offerCopy = offer;
+  if ([objc_opt_class() shouldShowForDaemonOffer:offerCopy])
   {
     v18.receiver = self;
     v18.super_class = ICQDaemonAlert;
@@ -66,7 +66,7 @@
       alertQueue = v7->_alertQueue;
       v7->_alertQueue = v13;
 
-      objc_storeStrong(&v7->_daemonOffer, a3);
+      objc_storeStrong(&v7->_daemonOffer, offer);
       *&v7->_showOnlyInSpringboard = 257;
     }
   }
@@ -77,7 +77,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = offerCopy;
       _os_log_impl(&dword_275572000, v15, OS_LOG_TYPE_DEFAULT, "attempt to create alert for invalid daemonOffer %@", buf, 0xCu);
     }
 
@@ -102,23 +102,23 @@
   [(ICQDaemonAlert *)&v4 dealloc];
 }
 
-- (BOOL)showAlertWithCompletion:(id)a3
+- (BOOL)showAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NSLock *)self->_alertLock lock];
   if (!self->_alertState)
   {
-    v7 = [(ICQDaemonAlert *)self daemonOffer];
-    v8 = [v7 alertSpecification];
+    daemonOffer = [(ICQDaemonAlert *)self daemonOffer];
+    alertSpecification = [daemonOffer alertSpecification];
 
-    if (v8)
+    if (alertSpecification)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke;
       v13[3] = &unk_27A652038;
       v13[4] = self;
-      v14 = v4;
+      v14 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v13);
 
       v9 = 1;
@@ -141,10 +141,10 @@ LABEL_5:
 
   else
   {
-    v10 = [(ICQDaemonAlert *)self daemonOffer];
-    v11 = [v10 alertSpecification];
+    daemonOffer2 = [(ICQDaemonAlert *)self daemonOffer];
+    alertSpecification2 = [daemonOffer2 alertSpecification];
 
-    if (v11)
+    if (alertSpecification2)
     {
       goto LABEL_10;
     }
@@ -159,9 +159,9 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, MEMORY[0x277CBEC10]);
+    (*(completionCopy + 2))(completionCopy, 0, MEMORY[0x277CBEC10]);
   }
 
   v9 = 0;
@@ -411,9 +411,9 @@ void __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke_15(uint64_t a1)
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICQDaemonAlert *)self daemonOffer];
+    daemonOffer = [(ICQDaemonAlert *)self daemonOffer];
     v19 = 138412290;
-    v20 = v4;
+    v20 = daemonOffer;
     _os_log_impl(&dword_275572000, v3, OS_LOG_TYPE_DEFAULT, "dismissing alert for daemonOffer %@", &v19, 0xCu);
   }
 
@@ -421,19 +421,19 @@ void __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke_15(uint64_t a1)
   if (self->_alertState == 1)
   {
     self->_alertState = 2;
-    v5 = self;
+    selfCopy = self;
     if (_ICQDaemonAlertMemoryInitOnce_onceToken != -1)
     {
       [ICQDaemonAlert dismissAlert];
     }
 
-    v6 = [(ICQDaemonAlert *)v5 daemonOffer];
-    v7 = [v6 notificationID];
-    v8 = v7;
+    daemonOffer2 = [(ICQDaemonAlert *)selfCopy daemonOffer];
+    notificationID = [daemonOffer2 notificationID];
+    v8 = notificationID;
     v9 = &stru_288431E38;
-    if (v7)
+    if (notificationID)
     {
-      v9 = v7;
+      v9 = notificationID;
     }
 
     v10 = v9;
@@ -450,7 +450,7 @@ void __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke_15(uint64_t a1)
     [_ICQDaemonAlertMemoryDict removeObjectForKey:v10];
     [_ICQDaemonAlertMemoryLock unlock];
 
-    cfAlert = v5->_cfAlert;
+    cfAlert = selfCopy->_cfAlert;
     if (cfAlert)
     {
       CFUserNotificationCancel(cfAlert);
@@ -461,16 +461,16 @@ void __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke_15(uint64_t a1)
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v5;
+      v20 = selfCopy;
       _os_log_impl(&dword_275572000, v13, OS_LOG_TYPE_DEFAULT, "waiting for alert %@ to dismiss", &v19, 0xCu);
     }
 
-    dispatch_semaphore_wait(v5->_alertSema, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_semaphore_wait(selfCopy->_alertSema, 0xFFFFFFFFFFFFFFFFLL);
     v14 = _ICQGetLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v5;
+      v20 = selfCopy;
       v15 = "finished waiting for alert %@ to dismiss";
       v16 = v14;
       v17 = 12;
@@ -496,11 +496,11 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)dismissAlertsWithNotificationID:(id)a3
++ (void)dismissAlertsWithNotificationID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  dCopy = d;
+  v4 = dCopy;
   if (_ICQDaemonAlertMemoryInitOnce_onceToken != -1)
   {
     __42__ICQDaemonAlert_showAlertWithCompletion___block_invoke_cold_1();
@@ -524,7 +524,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (!v3)
+  if (!dCopy)
   {
     goto LABEL_14;
   }

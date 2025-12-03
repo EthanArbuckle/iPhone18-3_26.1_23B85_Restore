@@ -1,19 +1,19 @@
 @interface _EXExtensionProcessHandle.ProcessObserver
 - (_TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver)init;
-- (void)processDidInvalidate:(id)a3;
+- (void)processDidInvalidate:(id)invalidate;
 @end
 
 @implementation _EXExtensionProcessHandle.ProcessObserver
 
-- (void)processDidInvalidate:(id)a3
+- (void)processDidInvalidate:(id)invalidate
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandlerLock);
-  v5 = a3;
-  v9 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 4);
-  v6 = (&v9->super.isa + OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler);
-  v8 = *(&v9->super.isa + OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler);
-  v7 = *&v9->invalidationHandler[OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler];
+  v6 = (&selfCopy->super.isa + OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler);
+  v7 = *&selfCopy->invalidationHandler[OBJC_IVAR____TtCC19ExtensionFoundation25_EXExtensionProcessHandle15ProcessObserver_invalidationHandler];
   *v6 = 0;
   v6[1] = 0;
   os_unfair_lock_unlock(v4 + 4);

@@ -1,13 +1,13 @@
 @interface _MXExtensionRequestReceipt
-- (_MXExtensionRequestReceipt)initWithCompletion:(id)a3;
+- (_MXExtensionRequestReceipt)initWithCompletion:(id)completion;
 - (void)cancel;
-- (void)cancelWithTimeInterval:(double)a3;
+- (void)cancelWithTimeInterval:(double)interval;
 - (void)dealloc;
 @end
 
 @implementation _MXExtensionRequestReceipt
 
-- (void)cancelWithTimeInterval:(double)a3
+- (void)cancelWithTimeInterval:(double)interval
 {
   timer = self->_timer;
   if (timer)
@@ -15,7 +15,7 @@
     [(NSTimer *)timer invalidate];
   }
 
-  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_cancel selector:0 userInfo:0 repeats:a3];
+  v6 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_cancel selector:0 userInfo:0 repeats:interval];
   v7 = self->_timer;
   self->_timer = v6;
 }
@@ -49,15 +49,15 @@
   [(_MXExtensionRequestReceipt *)&v4 dealloc];
 }
 
-- (_MXExtensionRequestReceipt)initWithCompletion:(id)a3
+- (_MXExtensionRequestReceipt)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = _MXExtensionRequestReceipt;
   v5 = [(_MXExtensionRequestReceipt *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v6;
   }

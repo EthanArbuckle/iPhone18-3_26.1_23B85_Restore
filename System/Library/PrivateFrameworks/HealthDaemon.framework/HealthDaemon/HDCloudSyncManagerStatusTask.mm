@@ -1,22 +1,22 @@
 @interface HDCloudSyncManagerStatusTask
-- (HDCloudSyncManagerStatusTask)initWithManager:(id)a3 completion:(id)a4;
+- (HDCloudSyncManagerStatusTask)initWithManager:(id)manager completion:(id)completion;
 - (void)main;
 @end
 
 @implementation HDCloudSyncManagerStatusTask
 
-- (HDCloudSyncManagerStatusTask)initWithManager:(id)a3 completion:(id)a4
+- (HDCloudSyncManagerStatusTask)initWithManager:(id)manager completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   v13.receiver = self;
   v13.super_class = HDCloudSyncManagerStatusTask;
   v8 = [(HDCloudSyncManagerTask *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_manager, managerCopy);
+    v10 = [completionCopy copy];
     completion = v9->_completion;
     v9->_completion = v10;
   }

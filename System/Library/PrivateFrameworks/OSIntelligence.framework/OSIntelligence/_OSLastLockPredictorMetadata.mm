@@ -1,35 +1,35 @@
 @interface _OSLastLockPredictorMetadata
 - (NSString)description;
-- (_OSLastLockPredictorMetadata)initWithCoder:(id)a3;
-- (_OSLastLockPredictorMetadata)initWithProtocolConformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_OSLastLockPredictorMetadata)initWithCoder:(id)coder;
+- (_OSLastLockPredictorMetadata)initWithProtocolConformer:(id)conformer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _OSLastLockPredictorMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modelVersion = self->modelVersion;
-  v5 = a3;
-  [v5 encodeObject:modelVersion forKey:@"modelVersion"];
-  [v5 encodeObject:self->predictorType forKey:@"predictorType"];
-  [v5 encodeObject:self->queryingMechanism forKey:@"queryingMechanism"];
-  [v5 encodeDouble:@"recommendedRequeryTime" forKey:self->recommendedRequeryTime];
-  [v5 encodeDouble:@"longThreshold" forKey:self->longThreshold];
-  [v5 encodeDouble:@"confidenceThresholdStrict" forKey:self->confidenceThresholdStrict];
-  [v5 encodeDouble:@"confidenceThresholdRelaxed" forKey:self->confidenceThresholdRelaxed];
-  [v5 encodeBool:self->requireEnoughHistory forKey:@"requireEnoughHistory"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modelVersion forKey:@"modelVersion"];
+  [coderCopy encodeObject:self->predictorType forKey:@"predictorType"];
+  [coderCopy encodeObject:self->queryingMechanism forKey:@"queryingMechanism"];
+  [coderCopy encodeDouble:@"recommendedRequeryTime" forKey:self->recommendedRequeryTime];
+  [coderCopy encodeDouble:@"longThreshold" forKey:self->longThreshold];
+  [coderCopy encodeDouble:@"confidenceThresholdStrict" forKey:self->confidenceThresholdStrict];
+  [coderCopy encodeDouble:@"confidenceThresholdRelaxed" forKey:self->confidenceThresholdRelaxed];
+  [coderCopy encodeBool:self->requireEnoughHistory forKey:@"requireEnoughHistory"];
 }
 
-- (_OSLastLockPredictorMetadata)initWithCoder:(id)a3
+- (_OSLastLockPredictorMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _OSLastLockPredictorMetadata;
   v5 = [(_OSLastLockPredictorMetadata *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
     v7 = v6;
     if (v6)
     {
@@ -43,7 +43,7 @@
 
     objc_storeStrong(&v5->modelVersion, v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictorType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictorType"];
     v10 = v9;
     if (v9)
     {
@@ -57,7 +57,7 @@
 
     objc_storeStrong(&v5->predictorType, v11);
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryingMechanism"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryingMechanism"];
     v13 = v12;
     if (v12)
     {
@@ -71,34 +71,34 @@
 
     objc_storeStrong(&v5->queryingMechanism, v14);
 
-    [v4 decodeDoubleForKey:@"recommendedRequeryTime"];
+    [coderCopy decodeDoubleForKey:@"recommendedRequeryTime"];
     v5->recommendedRequeryTime = v15;
-    [v4 decodeDoubleForKey:@"longThreshold"];
+    [coderCopy decodeDoubleForKey:@"longThreshold"];
     v5->longThreshold = v16;
-    [v4 decodeDoubleForKey:@"confidenceThresholdStrict"];
+    [coderCopy decodeDoubleForKey:@"confidenceThresholdStrict"];
     v5->confidenceThresholdStrict = v17;
-    [v4 decodeDoubleForKey:@"confidenceThresholdRelaxed"];
+    [coderCopy decodeDoubleForKey:@"confidenceThresholdRelaxed"];
     v5->confidenceThresholdRelaxed = v18;
-    v5->requireEnoughHistory = [v4 decodeBoolForKey:@"requireEnoughHistory"];
+    v5->requireEnoughHistory = [coderCopy decodeBoolForKey:@"requireEnoughHistory"];
     v19 = v5;
   }
 
   return v5;
 }
 
-- (_OSLastLockPredictorMetadata)initWithProtocolConformer:(id)a3
+- (_OSLastLockPredictorMetadata)initWithProtocolConformer:(id)conformer
 {
-  v4 = a3;
+  conformerCopy = conformer;
   v21.receiver = self;
   v21.super_class = _OSLastLockPredictorMetadata;
   v5 = [(_OSLastLockPredictorMetadata *)&v21 init];
   if (v5)
   {
-    v6 = [v4 modelVersion];
-    v7 = v6;
-    if (v6)
+    modelVersion = [conformerCopy modelVersion];
+    v7 = modelVersion;
+    if (modelVersion)
     {
-      v8 = v6;
+      v8 = modelVersion;
     }
 
     else
@@ -108,11 +108,11 @@
 
     objc_storeStrong(&v5->modelVersion, v8);
 
-    v9 = [v4 predictorType];
-    v10 = v9;
-    if (v9)
+    predictorType = [conformerCopy predictorType];
+    v10 = predictorType;
+    if (predictorType)
     {
-      v11 = v9;
+      v11 = predictorType;
     }
 
     else
@@ -122,11 +122,11 @@
 
     objc_storeStrong(&v5->predictorType, v11);
 
-    v12 = [v4 queryingMechanism];
-    v13 = v12;
-    if (v12)
+    queryingMechanism = [conformerCopy queryingMechanism];
+    v13 = queryingMechanism;
+    if (queryingMechanism)
     {
-      v14 = v12;
+      v14 = queryingMechanism;
     }
 
     else
@@ -136,15 +136,15 @@
 
     objc_storeStrong(&v5->queryingMechanism, v14);
 
-    [v4 recommendedRequeryTime];
+    [conformerCopy recommendedRequeryTime];
     v5->recommendedRequeryTime = v15;
-    [v4 longThreshold];
+    [conformerCopy longThreshold];
     v5->longThreshold = v16;
-    [v4 confidenceThresholdStrict];
+    [conformerCopy confidenceThresholdStrict];
     v5->confidenceThresholdStrict = v17;
-    [v4 confidenceThresholdRelaxed];
+    [conformerCopy confidenceThresholdRelaxed];
     v5->confidenceThresholdRelaxed = v18;
-    v5->requireEnoughHistory = [v4 requireEnoughHistory];
+    v5->requireEnoughHistory = [conformerCopy requireEnoughHistory];
     v19 = v5;
   }
 
@@ -154,8 +154,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_OSLastLockPredictorMetadata *)self predictorType];
-  v5 = [(_OSLastLockPredictorMetadata *)self queryingMechanism];
+  predictorType = [(_OSLastLockPredictorMetadata *)self predictorType];
+  queryingMechanism = [(_OSLastLockPredictorMetadata *)self queryingMechanism];
   [(_OSLastLockPredictorMetadata *)self recommendedRequeryTime];
   v7 = v6 / 60.0;
   [(_OSLastLockPredictorMetadata *)self longThreshold];
@@ -163,7 +163,7 @@
   [(_OSLastLockPredictorMetadata *)self confidenceThresholdRelaxed];
   v11 = v10;
   [(_OSLastLockPredictorMetadata *)self confidenceThresholdStrict];
-  v13 = [v3 stringWithFormat:@"### Last Lock Predictor\n- Model Type: %@\n- How to Query: %@\n- Requery Time: %.2f minutes\n- Definition of Long Inactivity: >%.2f hours\n- Confidence Spectrum: 0 --- low --- %.2f --- medium --- %.2f --- high --- 1", v4, v5, *&v7, *&v9, v11, v12];
+  v13 = [v3 stringWithFormat:@"### Last Lock Predictor\n- Model Type: %@\n- How to Query: %@\n- Requery Time: %.2f minutes\n- Definition of Long Inactivity: >%.2f hours\n- Confidence Spectrum: 0 --- low --- %.2f --- medium --- %.2f --- high --- 1", predictorType, queryingMechanism, *&v7, *&v9, v11, v12];
 
   return v13;
 }

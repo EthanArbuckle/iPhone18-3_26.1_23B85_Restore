@@ -10,7 +10,7 @@
 - (int64_t)_overriddenEnablementGroup;
 - (int64_t)enablementGroup;
 - (void)_configureUserSafetySettingsListener;
-- (void)_connectToFamilyCircle:(id)a3;
+- (void)_connectToFamilyCircle:(id)circle;
 - (void)_updateSettings;
 - (void)dealloc;
 - (void)systemDidLeaveFirstDataProtectionLock;
@@ -156,9 +156,9 @@ LABEL_15:
 {
   v34 = *MEMORY[0x1E69E9840];
   v3 = +[IMUnlockMonitor sharedInstance];
-  v4 = [v3 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v3 isUnderFirstDataProtectionLock];
 
-  if (v4)
+  if (isUnderFirstDataProtectionLock)
   {
     if (IMOSLoggingEnabled())
     {
@@ -213,14 +213,14 @@ LABEL_15:
 
     else
     {
-      v12 = [v9 isCommunicationSafetyNotificationEnabled];
+      isCommunicationSafetyNotificationEnabled = [v9 isCommunicationSafetyNotificationEnabled];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = sub_1A8603FE8;
       v22[3] = &unk_1E782B3B0;
       v22[4] = self;
       v23 = v9;
-      v24 = v12;
+      v24 = isCommunicationSafetyNotificationEnabled;
       v13 = MEMORY[0x1E69E96A0];
       dispatch_async(MEMORY[0x1E69E96A0], v22);
     }
@@ -228,11 +228,11 @@ LABEL_15:
     v15 = +[IMDefaults sharedInstance];
     v16 = [v15 getValueFromDomain:@"com.apple.messages" forKey:@"kCommSafetyRefreshInterval"];
 
-    v17 = [v16 longLongValue];
+    longLongValue = [v16 longLongValue];
     v18 = 240;
-    if (v17)
+    if (longLongValue)
     {
-      v18 = v17;
+      v18 = longLongValue;
     }
 
     v19 = dispatch_time(0, ((v18 * 60.0) * 1000000000.0));
@@ -248,13 +248,13 @@ LABEL_15:
 
 - (BOOL)isFeatureEnabled
 {
-  v3 = [(IMCommSafetySettingsManager *)self enablementGroup];
-  if (v3 != 1)
+  enablementGroup = [(IMCommSafetySettingsManager *)self enablementGroup];
+  if (enablementGroup != 1)
   {
-    LOBYTE(v3) = [(IMCommSafetySettingsManager *)self enablementGroup]== 2;
+    LOBYTE(enablementGroup) = [(IMCommSafetySettingsManager *)self enablementGroup]== 2;
   }
 
-  return v3;
+  return enablementGroup;
 }
 
 - (int64_t)enablementGroup
@@ -328,13 +328,13 @@ LABEL_15:
     notify_cancel(notificationToken);
   }
 
-  v4 = [(IMCommSafetySettingsManager *)self enablementSubscription];
+  enablementSubscription = [(IMCommSafetySettingsManager *)self enablementSubscription];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IMCommSafetySettingsManager *)self enablementSubscription];
-    [v6 cancel];
+    enablementSubscription2 = [(IMCommSafetySettingsManager *)self enablementSubscription];
+    [enablementSubscription2 cancel];
   }
 
   v7.receiver = self;
@@ -465,13 +465,13 @@ LABEL_20:
 
 - (BOOL)checksForSensitivityOnSend
 {
-  v3 = [(IMCommSafetySettingsManager *)self isFeatureEnabled];
-  if (v3)
+  isFeatureEnabled = [(IMCommSafetySettingsManager *)self isFeatureEnabled];
+  if (isFeatureEnabled)
   {
-    LOBYTE(v3) = [(IMCommSafetySettingsManager *)self enablementGroup]== 1;
+    LOBYTE(isFeatureEnabled) = [(IMCommSafetySettingsManager *)self enablementGroup]== 1;
   }
 
-  return v3;
+  return isFeatureEnabled;
 }
 
 - (int64_t)_overriddenEnablementGroup
@@ -484,13 +484,13 @@ LABEL_20:
   return qword_1EB30B838;
 }
 
-- (void)_connectToFamilyCircle:(id)a3
+- (void)_connectToFamilyCircle:(id)circle
 {
-  v4 = a3;
+  circleCopy = circle;
   v5 = +[IMUnlockMonitor sharedInstance];
-  v6 = [v5 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v5 isUnderFirstDataProtectionLock];
 
-  if (v6)
+  if (isUnderFirstDataProtectionLock)
   {
     if (IMOSLoggingEnabled())
     {
@@ -529,7 +529,7 @@ LABEL_20:
     v11[2] = sub_1A870088C;
     v11[3] = &unk_1E782B3D8;
     v11[4] = self;
-    v12 = v4;
+    v12 = circleCopy;
     [v10 startRequestWithCompletionHandler:v11];
   }
 }

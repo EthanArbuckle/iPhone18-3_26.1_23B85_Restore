@@ -1,13 +1,13 @@
 @interface UNNotificationSound
 + (UNNotificationSound)criticalSoundNamed:(UNNotificationSoundName)name withAudioVolume:(float)volume;
 + (UNNotificationSound)defaultCriticalSoundWithAudioVolume:(float)volume;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UNNotificationSound)init;
-- (UNNotificationSound)initWithCoder:(id)a3;
-- (id)_initWithAlertType:(int64_t)a3 alertTopic:(id)a4 audioCategory:(id)a5 audioVolume:(id)a6 critical:(BOOL)a7 maximumDuration:(double)a8 shouldIgnoreAccessibilityDisabledVibrationSetting:(BOOL)a9 shouldIgnoreRingerSwitch:(BOOL)a10 shouldRepeat:(BOOL)a11 toneFileName:(id)a12 toneFileURL:(id)a13 toneIdentifier:(id)a14 toneMediaLibraryItemIdentifier:(unint64_t)a15 vibrationIdentifier:(id)a16 vibrationPatternFileURL:(id)a17;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (UNNotificationSound)initWithCoder:(id)coder;
+- (id)_initWithAlertType:(int64_t)type alertTopic:(id)topic audioCategory:(id)category audioVolume:(id)volume critical:(BOOL)critical maximumDuration:(double)duration shouldIgnoreAccessibilityDisabledVibrationSetting:(BOOL)setting shouldIgnoreRingerSwitch:(BOOL)self0 shouldRepeat:(BOOL)self1 toneFileName:(id)self2 toneFileURL:(id)self3 toneIdentifier:(id)self4 toneMediaLibraryItemIdentifier:(unint64_t)self5 vibrationIdentifier:(id)self6 vibrationPatternFileURL:(id)self7;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationSound
@@ -15,7 +15,7 @@
 + (UNNotificationSound)defaultCriticalSoundWithAudioVolume:(float)volume
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-  v5 = [a1 _soundWithAlertType:17 audioVolume:v4 critical:1 toneFileName:0];
+  v5 = [self _soundWithAlertType:17 audioVolume:v4 critical:1 toneFileName:0];
 
   return v5;
 }
@@ -26,63 +26,63 @@
   v7 = name;
   *&v8 = volume;
   v9 = [v6 numberWithFloat:v8];
-  v10 = [a1 _soundWithAlertType:17 audioVolume:v9 critical:1 toneFileName:v7];
+  v10 = [self _soundWithAlertType:17 audioVolume:v9 critical:1 toneFileName:v7];
 
   return v10;
 }
 
-- (id)_initWithAlertType:(int64_t)a3 alertTopic:(id)a4 audioCategory:(id)a5 audioVolume:(id)a6 critical:(BOOL)a7 maximumDuration:(double)a8 shouldIgnoreAccessibilityDisabledVibrationSetting:(BOOL)a9 shouldIgnoreRingerSwitch:(BOOL)a10 shouldRepeat:(BOOL)a11 toneFileName:(id)a12 toneFileURL:(id)a13 toneIdentifier:(id)a14 toneMediaLibraryItemIdentifier:(unint64_t)a15 vibrationIdentifier:(id)a16 vibrationPatternFileURL:(id)a17
+- (id)_initWithAlertType:(int64_t)type alertTopic:(id)topic audioCategory:(id)category audioVolume:(id)volume critical:(BOOL)critical maximumDuration:(double)duration shouldIgnoreAccessibilityDisabledVibrationSetting:(BOOL)setting shouldIgnoreRingerSwitch:(BOOL)self0 shouldRepeat:(BOOL)self1 toneFileName:(id)self2 toneFileURL:(id)self3 toneIdentifier:(id)self4 toneMediaLibraryItemIdentifier:(unint64_t)self5 vibrationIdentifier:(id)self6 vibrationPatternFileURL:(id)self7
 {
-  v50 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a16;
-  v28 = a17;
+  topicCopy = topic;
+  categoryCopy = category;
+  volumeCopy = volume;
+  nameCopy = name;
+  lCopy = l;
+  identifierCopy = identifier;
+  vibrationIdentifierCopy = vibrationIdentifier;
+  rLCopy = rL;
   v51.receiver = self;
   v51.super_class = UNNotificationSound;
   v29 = [(UNNotificationSound *)&v51 init];
   v30 = v29;
   if (v29)
   {
-    v29->_alertType = a3;
-    v31 = [v50 copy];
+    v29->_alertType = type;
+    v31 = [topicCopy copy];
     alertTopic = v30->_alertTopic;
     v30->_alertTopic = v31;
 
-    v33 = [v22 copy];
+    v33 = [categoryCopy copy];
     audioCategory = v30->_audioCategory;
     v30->_audioCategory = v33;
 
-    v35 = [v23 copy];
+    v35 = [volumeCopy copy];
     audioVolume = v30->_audioVolume;
     v30->_audioVolume = v35;
 
-    v37 = [v24 copy];
+    v37 = [nameCopy copy];
     toneFileName = v30->_toneFileName;
     v30->_toneFileName = v37;
 
-    v39 = [v25 copy];
+    v39 = [lCopy copy];
     toneFileURL = v30->_toneFileURL;
     v30->_toneFileURL = v39;
 
-    v30->_critical = a7;
-    v30->_maximumDuration = a8;
-    v30->_shouldIgnoreAccessibilityDisabledVibrationSetting = a9;
-    v30->_shouldIgnoreRingerSwitch = a10;
-    v30->_shouldRepeat = a11;
-    v41 = [v26 copy];
+    v30->_critical = critical;
+    v30->_maximumDuration = duration;
+    v30->_shouldIgnoreAccessibilityDisabledVibrationSetting = setting;
+    v30->_shouldIgnoreRingerSwitch = switch;
+    v30->_shouldRepeat = repeat;
+    v41 = [identifierCopy copy];
     toneIdentifier = v30->_toneIdentifier;
     v30->_toneIdentifier = v41;
 
-    v30->_toneMediaLibraryItemIdentifier = a15;
-    v43 = [v28 copy];
+    v30->_toneMediaLibraryItemIdentifier = itemIdentifier;
+    v43 = [rLCopy copy];
     vibrationPatternFileURL = v30->_vibrationPatternFileURL;
     v30->_vibrationPatternFileURL = v43;
 
-    v45 = [v27 copy];
+    v45 = [vibrationIdentifierCopy copy];
     vibrationIdentifier = v30->_vibrationIdentifier;
     v30->_vibrationIdentifier = v45;
   }
@@ -92,21 +92,21 @@
 
 - (UNNotificationSound)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UNNotificationSound.m" lineNumber:122 description:@"use +soundWithIdentifier:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UNNotificationSound.m" lineNumber:122 description:@"use +soundWithIdentifier:"];
 
   return 0;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(UNNotificationSound *)self alertType];
-  v29 = [(UNNotificationSound *)self alertTopic];
-  v4 = [v29 hash] ^ v3;
-  v28 = [(UNNotificationSound *)self audioCategory];
-  v5 = [v28 hash];
-  v6 = [(UNNotificationSound *)self audioVolume];
-  v7 = v4 ^ v5 ^ [v6 hash];
+  alertType = [(UNNotificationSound *)self alertType];
+  alertTopic = [(UNNotificationSound *)self alertTopic];
+  v4 = [alertTopic hash] ^ alertType;
+  audioCategory = [(UNNotificationSound *)self audioCategory];
+  v5 = [audioCategory hash];
+  audioVolume = [(UNNotificationSound *)self audioVolume];
+  v7 = v4 ^ v5 ^ [audioVolume hash];
   v8 = MEMORY[0x1E696AD98];
   [(UNNotificationSound *)self maximumDuration];
   v9 = [v8 numberWithDouble:?];
@@ -114,70 +114,70 @@
   v11 = v7 ^ [(UNNotificationSound *)self isCritical];
   v12 = v11 ^ [(UNNotificationSound *)self shouldIgnoreAccessibilityDisabledVibrationSetting];
   v13 = v12 ^ [(UNNotificationSound *)self shouldIgnoreRingerSwitch]^ v10;
-  v14 = [(UNNotificationSound *)self shouldRepeat];
-  v15 = [(UNNotificationSound *)self toneFileName];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(UNNotificationSound *)self toneFileURL];
-  v18 = v16 ^ [v17 hash];
-  v19 = [(UNNotificationSound *)self toneIdentifier];
-  v20 = v13 ^ v18 ^ [v19 hash];
+  shouldRepeat = [(UNNotificationSound *)self shouldRepeat];
+  toneFileName = [(UNNotificationSound *)self toneFileName];
+  v16 = shouldRepeat ^ [toneFileName hash];
+  toneFileURL = [(UNNotificationSound *)self toneFileURL];
+  v18 = v16 ^ [toneFileURL hash];
+  toneIdentifier = [(UNNotificationSound *)self toneIdentifier];
+  v20 = v13 ^ v18 ^ [toneIdentifier hash];
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:{-[UNNotificationSound toneMediaLibraryItemIdentifier](self, "toneMediaLibraryItemIdentifier")}];
   v22 = [v21 hash];
-  v23 = [(UNNotificationSound *)self vibrationIdentifier];
-  v24 = v20 ^ [v23 hash];
-  v25 = [(UNNotificationSound *)self vibrationPatternFileURL];
-  v26 = v24 ^ [v25 hash];
+  vibrationIdentifier = [(UNNotificationSound *)self vibrationIdentifier];
+  v24 = v20 ^ [vibrationIdentifier hash];
+  vibrationPatternFileURL = [(UNNotificationSound *)self vibrationPatternFileURL];
+  v26 = v24 ^ [vibrationPatternFileURL hash];
 
   return v26 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = UNEqualIntegers(-[UNNotificationSound alertType](self, "alertType"), [v4 alertType]);
-    v6 = [(UNNotificationSound *)self alertTopic];
-    v7 = [v4 alertTopic];
-    v8 = v5 & UNEqualStrings(v6, v7);
+    v5 = UNEqualIntegers(-[UNNotificationSound alertType](self, "alertType"), [equalCopy alertType]);
+    alertTopic = [(UNNotificationSound *)self alertTopic];
+    alertTopic2 = [equalCopy alertTopic];
+    v8 = v5 & UNEqualStrings(alertTopic, alertTopic2);
 
-    v9 = [(UNNotificationSound *)self audioCategory];
-    v10 = [v4 audioCategory];
-    LODWORD(v7) = UNEqualStrings(v9, v10);
+    audioCategory = [(UNNotificationSound *)self audioCategory];
+    audioCategory2 = [equalCopy audioCategory];
+    LODWORD(alertTopic2) = UNEqualStrings(audioCategory, audioCategory2);
 
-    v11 = [(UNNotificationSound *)self audioVolume];
-    v12 = [v4 audioVolume];
-    LODWORD(v7) = v8 & v7 & UNEqualObjects(v11, v12);
+    audioVolume = [(UNNotificationSound *)self audioVolume];
+    audioVolume2 = [equalCopy audioVolume];
+    LODWORD(alertTopic2) = v8 & alertTopic2 & UNEqualObjects(audioVolume, audioVolume2);
 
     [(UNNotificationSound *)self maximumDuration];
     v14 = v13;
-    [v4 maximumDuration];
-    LODWORD(v11) = UNEqualDoubles(v14, v15);
-    LODWORD(v12) = v11 & UNEqualBools(-[UNNotificationSound isCritical](self, "isCritical"), [v4 isCritical]);
-    LODWORD(v7) = v7 & v12 & UNEqualBools(-[UNNotificationSound shouldIgnoreAccessibilityDisabledVibrationSetting](self, "shouldIgnoreAccessibilityDisabledVibrationSetting"), [v4 shouldIgnoreAccessibilityDisabledVibrationSetting]);
-    LODWORD(v11) = UNEqualBools(-[UNNotificationSound shouldIgnoreRingerSwitch](self, "shouldIgnoreRingerSwitch"), [v4 shouldIgnoreRingerSwitch]);
-    v16 = v11 & UNEqualBools(-[UNNotificationSound shouldRepeat](self, "shouldRepeat"), [v4 shouldRepeat]);
-    v17 = [(UNNotificationSound *)self toneFileName];
-    v18 = [v4 toneFileName];
-    v19 = v16 & UNEqualStrings(v17, v18);
+    [equalCopy maximumDuration];
+    LODWORD(audioVolume) = UNEqualDoubles(v14, v15);
+    LODWORD(audioVolume2) = audioVolume & UNEqualBools(-[UNNotificationSound isCritical](self, "isCritical"), [equalCopy isCritical]);
+    LODWORD(alertTopic2) = alertTopic2 & audioVolume2 & UNEqualBools(-[UNNotificationSound shouldIgnoreAccessibilityDisabledVibrationSetting](self, "shouldIgnoreAccessibilityDisabledVibrationSetting"), [equalCopy shouldIgnoreAccessibilityDisabledVibrationSetting]);
+    LODWORD(audioVolume) = UNEqualBools(-[UNNotificationSound shouldIgnoreRingerSwitch](self, "shouldIgnoreRingerSwitch"), [equalCopy shouldIgnoreRingerSwitch]);
+    v16 = audioVolume & UNEqualBools(-[UNNotificationSound shouldRepeat](self, "shouldRepeat"), [equalCopy shouldRepeat]);
+    toneFileName = [(UNNotificationSound *)self toneFileName];
+    toneFileName2 = [equalCopy toneFileName];
+    v19 = v16 & UNEqualStrings(toneFileName, toneFileName2);
 
-    v20 = [(UNNotificationSound *)self toneFileURL];
-    v21 = [v4 toneFileURL];
-    LODWORD(v7) = v7 & v19 & UNEqualObjects(v20, v21);
+    toneFileURL = [(UNNotificationSound *)self toneFileURL];
+    toneFileURL2 = [equalCopy toneFileURL];
+    LODWORD(alertTopic2) = alertTopic2 & v19 & UNEqualObjects(toneFileURL, toneFileURL2);
 
-    v22 = [(UNNotificationSound *)self toneIdentifier];
-    v23 = [v4 toneIdentifier];
-    v24 = v7 & UNEqualStrings(v22, v23);
+    toneIdentifier = [(UNNotificationSound *)self toneIdentifier];
+    toneIdentifier2 = [equalCopy toneIdentifier];
+    v24 = alertTopic2 & UNEqualStrings(toneIdentifier, toneIdentifier2);
 
-    LODWORD(v22) = UNEqualDoubles(-[UNNotificationSound toneMediaLibraryItemIdentifier](self, "toneMediaLibraryItemIdentifier"), [v4 toneMediaLibraryItemIdentifier]);
-    v25 = [(UNNotificationSound *)self vibrationIdentifier];
-    v26 = [v4 vibrationIdentifier];
-    v27 = v24 & UNEqualStrings(v25, v26);
+    LODWORD(toneIdentifier) = UNEqualDoubles(-[UNNotificationSound toneMediaLibraryItemIdentifier](self, "toneMediaLibraryItemIdentifier"), [equalCopy toneMediaLibraryItemIdentifier]);
+    vibrationIdentifier = [(UNNotificationSound *)self vibrationIdentifier];
+    vibrationIdentifier2 = [equalCopy vibrationIdentifier];
+    v27 = v24 & UNEqualStrings(vibrationIdentifier, vibrationIdentifier2);
 
-    v28 = [(UNNotificationSound *)self vibrationPatternFileURL];
-    v29 = [v4 vibrationPatternFileURL];
-    v30 = v27 & UNEqualObjects(v28, v29) & v22;
+    vibrationPatternFileURL = [(UNNotificationSound *)self vibrationPatternFileURL];
+    vibrationPatternFileURL2 = [equalCopy vibrationPatternFileURL];
+    v30 = v27 & UNEqualObjects(vibrationPatternFileURL, vibrationPatternFileURL2) & toneIdentifier;
   }
 
   else
@@ -188,87 +188,87 @@
   return v30;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v23 = [UNMutableNotificationSound allocWithZone:a3];
-  v21 = [(UNNotificationSound *)self alertType];
-  v22 = [(UNNotificationSound *)self alertTopic];
-  v20 = [(UNNotificationSound *)self audioCategory];
-  v4 = [(UNNotificationSound *)self audioVolume];
-  v19 = [(UNNotificationSound *)self isCritical];
+  v23 = [UNMutableNotificationSound allocWithZone:zone];
+  alertType = [(UNNotificationSound *)self alertType];
+  alertTopic = [(UNNotificationSound *)self alertTopic];
+  audioCategory = [(UNNotificationSound *)self audioCategory];
+  audioVolume = [(UNNotificationSound *)self audioVolume];
+  isCritical = [(UNNotificationSound *)self isCritical];
   [(UNNotificationSound *)self maximumDuration];
   v6 = v5;
-  v7 = [(UNNotificationSound *)self shouldIgnoreAccessibilityDisabledVibrationSetting];
-  v8 = [(UNNotificationSound *)self shouldIgnoreRingerSwitch];
-  v9 = [(UNNotificationSound *)self shouldRepeat];
-  v10 = [(UNNotificationSound *)self toneFileName];
-  v11 = [(UNNotificationSound *)self toneFileURL];
-  v12 = [(UNNotificationSound *)self toneIdentifier];
-  v13 = [(UNNotificationSound *)self toneMediaLibraryItemIdentifier];
-  v14 = [(UNNotificationSound *)self vibrationIdentifier];
-  v15 = [(UNNotificationSound *)self vibrationPatternFileURL];
-  BYTE1(v18) = v9;
-  LOBYTE(v18) = v8;
-  v16 = [(UNNotificationSound *)v23 _initWithAlertType:v21 alertTopic:v22 audioCategory:v20 audioVolume:v4 critical:v19 maximumDuration:v7 shouldIgnoreAccessibilityDisabledVibrationSetting:v6 shouldIgnoreRingerSwitch:v18 shouldRepeat:v10 toneFileName:v11 toneFileURL:v12 toneIdentifier:v13 toneMediaLibraryItemIdentifier:v14 vibrationIdentifier:v15 vibrationPatternFileURL:?];
+  shouldIgnoreAccessibilityDisabledVibrationSetting = [(UNNotificationSound *)self shouldIgnoreAccessibilityDisabledVibrationSetting];
+  shouldIgnoreRingerSwitch = [(UNNotificationSound *)self shouldIgnoreRingerSwitch];
+  shouldRepeat = [(UNNotificationSound *)self shouldRepeat];
+  toneFileName = [(UNNotificationSound *)self toneFileName];
+  toneFileURL = [(UNNotificationSound *)self toneFileURL];
+  toneIdentifier = [(UNNotificationSound *)self toneIdentifier];
+  toneMediaLibraryItemIdentifier = [(UNNotificationSound *)self toneMediaLibraryItemIdentifier];
+  vibrationIdentifier = [(UNNotificationSound *)self vibrationIdentifier];
+  vibrationPatternFileURL = [(UNNotificationSound *)self vibrationPatternFileURL];
+  BYTE1(v18) = shouldRepeat;
+  LOBYTE(v18) = shouldIgnoreRingerSwitch;
+  v16 = [(UNNotificationSound *)v23 _initWithAlertType:alertType alertTopic:alertTopic audioCategory:audioCategory audioVolume:audioVolume critical:isCritical maximumDuration:shouldIgnoreAccessibilityDisabledVibrationSetting shouldIgnoreAccessibilityDisabledVibrationSetting:v6 shouldIgnoreRingerSwitch:v18 shouldRepeat:toneFileName toneFileName:toneFileURL toneFileURL:toneIdentifier toneIdentifier:toneMediaLibraryItemIdentifier toneMediaLibraryItemIdentifier:vibrationIdentifier vibrationIdentifier:vibrationPatternFileURL vibrationPatternFileURL:?];
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNNotificationSound *)self alertTopic];
-  [v4 encodeObject:v5 forKey:@"alertTopic"];
+  coderCopy = coder;
+  alertTopic = [(UNNotificationSound *)self alertTopic];
+  [coderCopy encodeObject:alertTopic forKey:@"alertTopic"];
 
-  [v4 encodeInteger:-[UNNotificationSound alertType](self forKey:{"alertType"), @"alertType"}];
-  v6 = [(UNNotificationSound *)self audioCategory];
-  [v4 encodeObject:v6 forKey:@"audioCategory"];
+  [coderCopy encodeInteger:-[UNNotificationSound alertType](self forKey:{"alertType"), @"alertType"}];
+  audioCategory = [(UNNotificationSound *)self audioCategory];
+  [coderCopy encodeObject:audioCategory forKey:@"audioCategory"];
 
-  v7 = [(UNNotificationSound *)self audioVolume];
-  [v4 encodeObject:v7 forKey:@"audioVolume"];
+  audioVolume = [(UNNotificationSound *)self audioVolume];
+  [coderCopy encodeObject:audioVolume forKey:@"audioVolume"];
 
-  [v4 encodeBool:-[UNNotificationSound isCritical](self forKey:{"isCritical"), @"critical"}];
+  [coderCopy encodeBool:-[UNNotificationSound isCritical](self forKey:{"isCritical"), @"critical"}];
   [(UNNotificationSound *)self maximumDuration];
-  [v4 encodeDouble:@"maximumDuration" forKey:?];
-  [v4 encodeBool:-[UNNotificationSound shouldIgnoreAccessibilityDisabledVibrationSetting](self forKey:{"shouldIgnoreAccessibilityDisabledVibrationSetting"), @"shouldIgnoreAccessibilityDisabledVibrationSetting"}];
-  [v4 encodeBool:-[UNNotificationSound shouldIgnoreRingerSwitch](self forKey:{"shouldIgnoreRingerSwitch"), @"shouldIgnoreRingerSwitch"}];
-  [v4 encodeBool:-[UNNotificationSound shouldRepeat](self forKey:{"shouldRepeat"), @"shouldRepeat"}];
-  v8 = [(UNNotificationSound *)self toneFileName];
-  [v4 encodeObject:v8 forKey:@"toneFileName"];
+  [coderCopy encodeDouble:@"maximumDuration" forKey:?];
+  [coderCopy encodeBool:-[UNNotificationSound shouldIgnoreAccessibilityDisabledVibrationSetting](self forKey:{"shouldIgnoreAccessibilityDisabledVibrationSetting"), @"shouldIgnoreAccessibilityDisabledVibrationSetting"}];
+  [coderCopy encodeBool:-[UNNotificationSound shouldIgnoreRingerSwitch](self forKey:{"shouldIgnoreRingerSwitch"), @"shouldIgnoreRingerSwitch"}];
+  [coderCopy encodeBool:-[UNNotificationSound shouldRepeat](self forKey:{"shouldRepeat"), @"shouldRepeat"}];
+  toneFileName = [(UNNotificationSound *)self toneFileName];
+  [coderCopy encodeObject:toneFileName forKey:@"toneFileName"];
 
-  v9 = [(UNNotificationSound *)self toneFileURL];
-  [v4 encodeObject:v9 forKey:@"toneFileURL"];
+  toneFileURL = [(UNNotificationSound *)self toneFileURL];
+  [coderCopy encodeObject:toneFileURL forKey:@"toneFileURL"];
 
-  v10 = [(UNNotificationSound *)self toneIdentifier];
-  [v4 encodeObject:v10 forKey:@"toneIdentifier"];
+  toneIdentifier = [(UNNotificationSound *)self toneIdentifier];
+  [coderCopy encodeObject:toneIdentifier forKey:@"toneIdentifier"];
 
-  [v4 encodeInt64:-[UNNotificationSound toneMediaLibraryItemIdentifier](self forKey:{"toneMediaLibraryItemIdentifier"), @"toneMediaLibraryItemIdentifier"}];
-  v11 = [(UNNotificationSound *)self vibrationIdentifier];
-  [v4 encodeObject:v11 forKey:@"vibrationIdentifier"];
+  [coderCopy encodeInt64:-[UNNotificationSound toneMediaLibraryItemIdentifier](self forKey:{"toneMediaLibraryItemIdentifier"), @"toneMediaLibraryItemIdentifier"}];
+  vibrationIdentifier = [(UNNotificationSound *)self vibrationIdentifier];
+  [coderCopy encodeObject:vibrationIdentifier forKey:@"vibrationIdentifier"];
 
-  v12 = [(UNNotificationSound *)self vibrationPatternFileURL];
-  [v4 encodeObject:v12 forKey:@"vibrationPatternFileURL"];
+  vibrationPatternFileURL = [(UNNotificationSound *)self vibrationPatternFileURL];
+  [coderCopy encodeObject:vibrationPatternFileURL forKey:@"vibrationPatternFileURL"];
 }
 
-- (UNNotificationSound)initWithCoder:(id)a3
+- (UNNotificationSound)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"alertTopic"];
-  v21 = [v3 decodeIntegerForKey:@"alertType"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"audioVolume"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"toneFileName"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"toneFileURL"];
-  [v3 decodeDoubleForKey:@"maximumDuration"];
+  coderCopy = coder;
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertTopic"];
+  v21 = [coderCopy decodeIntegerForKey:@"alertType"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioCategory"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioVolume"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toneFileName"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toneFileURL"];
+  [coderCopy decodeDoubleForKey:@"maximumDuration"];
   v7 = v6;
-  v18 = [v3 decodeBoolForKey:@"critical"];
-  v8 = [v3 decodeBoolForKey:@"shouldIgnoreAccessibilityDisabledVibrationSetting"];
-  v9 = [v3 decodeBoolForKey:@"shouldIgnoreRingerSwitch"];
-  v10 = [v3 decodeBoolForKey:@"shouldRepeat"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"toneIdentifier"];
-  v12 = [v3 decodeInt64ForKey:@"toneMediaLibraryItemIdentifier"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"vibrationIdentifier"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"vibrationPatternFileURL"];
+  v18 = [coderCopy decodeBoolForKey:@"critical"];
+  v8 = [coderCopy decodeBoolForKey:@"shouldIgnoreAccessibilityDisabledVibrationSetting"];
+  v9 = [coderCopy decodeBoolForKey:@"shouldIgnoreRingerSwitch"];
+  v10 = [coderCopy decodeBoolForKey:@"shouldRepeat"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toneIdentifier"];
+  v12 = [coderCopy decodeInt64ForKey:@"toneMediaLibraryItemIdentifier"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vibrationIdentifier"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vibrationPatternFileURL"];
 
   BYTE1(v17) = v10;
   LOBYTE(v17) = v9;

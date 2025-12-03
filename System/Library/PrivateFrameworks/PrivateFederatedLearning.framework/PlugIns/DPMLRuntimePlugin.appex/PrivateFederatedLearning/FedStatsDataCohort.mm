@@ -1,6 +1,6 @@
 @interface FedStatsDataCohort
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4;
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6;
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d;
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error;
 + (id)sharedInstance;
 - (FedStatsDataCohort)init;
 @end
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_100017CD0;
   block[3] = &unk_10002C6E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000395A8 != -1)
   {
     dispatch_once(&qword_1000395A8, block);
@@ -42,17 +42,17 @@
   return v2;
 }
 
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  dCopy = d;
   v7 = +[FedStatsDataCohort sharedInstance];
-  v8 = [v7 namespaceMap];
-  v9 = [v8 objectForKey:v6];
+  namespaceMap = [v7 namespaceMap];
+  v9 = [namespaceMap objectForKey:dCopy];
 
   if (v9)
   {
-    v10 = [v9 containsObject:v5];
+    v10 = [v9 containsObject:fieldCopy];
   }
 
   else
@@ -63,32 +63,32 @@
   return v10;
 }
 
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v40 = a5;
+  cohortsCopy = cohorts;
+  dCopy = d;
+  parametersCopy = parameters;
   v11 = +[FedStatsDataCohort sharedInstance];
-  v12 = [v11 namespaceMap];
-  v13 = [v12 objectForKey:v10];
+  namespaceMap = [v11 namespaceMap];
+  v13 = [namespaceMap objectForKey:dCopy];
 
   if (v13)
   {
-    v37 = a6;
-    v38 = v10;
-    v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+    errorCopy = error;
+    v38 = dCopy;
+    v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cohortsCopy count]);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v9;
+    obj = cohortsCopy;
     v15 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (v15)
     {
       v16 = v15;
       v17 = *v43;
       v35 = v11;
-      v36 = v9;
+      v36 = cohortsCopy;
 LABEL_4:
       v18 = 0;
       while (1)
@@ -107,10 +107,10 @@ LABEL_4:
         v20 = [FedStatsCohortFactory cohortQueryFieldByName:v19];
         if (!v20)
         {
-          v9 = v36;
-          v29 = v37;
-          v10 = v38;
-          if (v37)
+          cohortsCopy = v36;
+          v29 = errorCopy;
+          dCopy = v38;
+          if (errorCopy)
           {
             [NSString stringWithFormat:@"%@ cohort is not implemented.", v19, v34];
             v30 = LABEL_25:;
@@ -124,7 +124,7 @@ LABEL_4:
 
         v21 = v20;
         v41 = 0;
-        v22 = [v20 cohortKeyForParameters:v40 possibleError:&v41];
+        v22 = [v20 cohortKeyForParameters:parametersCopy possibleError:&v41];
         v23 = +[_PFLLog framework];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
@@ -156,7 +156,7 @@ LABEL_4:
         {
           v16 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
           v11 = v35;
-          v9 = v36;
+          cohortsCopy = v36;
           if (v16)
           {
             goto LABEL_4;
@@ -166,10 +166,10 @@ LABEL_4:
         }
       }
 
-      v9 = v36;
-      v29 = v37;
-      v10 = v38;
-      if (v37)
+      cohortsCopy = v36;
+      v29 = errorCopy;
+      dCopy = v38;
+      if (errorCopy)
       {
         [NSString stringWithFormat:@"%@ cohort is not approved for %@ namespace.", v19, v38];
         goto LABEL_25;
@@ -185,18 +185,18 @@ LABEL_26:
 LABEL_17:
 
     v25 = [NSArray arrayWithArray:v14];
-    v10 = v38;
+    dCopy = v38;
 LABEL_27:
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      v26 = [NSString stringWithFormat:@"%@ namespace is invalid.", v10];
-      v27 = [FedStatsError errorWithCode:900 description:v26];
-      v28 = *a6;
-      *a6 = v27;
+      dCopy = [NSString stringWithFormat:@"%@ namespace is invalid.", dCopy];
+      v27 = [FedStatsError errorWithCode:900 description:dCopy];
+      v28 = *error;
+      *error = v27;
     }
 
     v25 = 0;

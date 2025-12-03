@@ -1,20 +1,20 @@
 @interface HKInteractiveChartInteractionAnalyticsManager
 - (_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager)init;
-- (_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager)initWithHealthStore:(id)a3;
-- (void)submitWithEvent:(id)a3;
+- (_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager)initWithHealthStore:(id)store;
+- (void)submitWithEvent:(id)event;
 @end
 
 @implementation HKInteractiveChartInteractionAnalyticsManager
 
-- (_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager)initWithHealthStore:(id)a3
+- (_TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager)initWithHealthStore:(id)store
 {
-  v3 = a3;
-  v4 = sub_1C3C3747C(v3);
+  storeCopy = store;
+  v4 = sub_1C3C3747C(storeCopy);
 
   return v4;
 }
 
-- (void)submitWithEvent:(id)a3
+- (void)submitWithEvent:(id)event
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC8HealthUI45HKInteractiveChartInteractionAnalyticsManager_submissionManager);
   if (v3)
@@ -29,10 +29,10 @@
     v11[2] = sub_1C3C37218;
     v11[3] = &block_descriptor_9;
     v8 = _Block_copy(v11);
-    v9 = a3;
-    v10 = self;
+    eventCopy = event;
+    selfCopy = self;
 
-    [v3 submitEvent:v9 completion:v8];
+    [v3 submitEvent:eventCopy completion:v8];
 
     _Block_release(v8);
   }

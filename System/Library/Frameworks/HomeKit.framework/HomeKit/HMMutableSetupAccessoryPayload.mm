@@ -1,36 +1,36 @@
 @interface HMMutableSetupAccessoryPayload
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableSetupAccessoryPayload
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMSetupAccessoryPayload allocWithZone:a3];
-  v5 = [(HMSetupAccessoryPayload *)self setupCode];
-  v6 = [(HMSetupAccessoryPayload *)v4 initWithSetupCode:v5 communicationProtocol:[(HMSetupAccessoryPayload *)self communicationProtocol]];
+  v4 = [HMSetupAccessoryPayload allocWithZone:zone];
+  setupCode = [(HMSetupAccessoryPayload *)self setupCode];
+  v6 = [(HMSetupAccessoryPayload *)v4 initWithSetupCode:setupCode communicationProtocol:[(HMSetupAccessoryPayload *)self communicationProtocol]];
 
-  v7 = [(HMSetupAccessoryPayload *)self setupPayloadURL];
-  [(HMSetupAccessoryPayload *)v6 setSetupPayloadURL:v7];
+  setupPayloadURL = [(HMSetupAccessoryPayload *)self setupPayloadURL];
+  [(HMSetupAccessoryPayload *)v6 setSetupPayloadURL:setupPayloadURL];
 
-  v8 = [(HMSetupAccessoryPayload *)self setupID];
-  [(HMSetupAccessoryPayload *)v6 setSetupID:v8];
+  setupID = [(HMSetupAccessoryPayload *)self setupID];
+  [(HMSetupAccessoryPayload *)v6 setSetupID:setupID];
 
-  v9 = [(HMSetupAccessoryPayload *)self categoryNumber];
-  [(HMSetupAccessoryPayload *)v6 setCategoryNumber:v9];
+  categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
+  [(HMSetupAccessoryPayload *)v6 setCategoryNumber:categoryNumber];
 
-  v10 = [(HMSetupAccessoryPayload *)self productNumber];
-  [(HMSetupAccessoryPayload *)v6 setProductNumber:v10];
+  productNumber = [(HMSetupAccessoryPayload *)self productNumber];
+  [(HMSetupAccessoryPayload *)v6 setProductNumber:productNumber];
 
   [(HMSetupAccessoryPayload *)v6 setSupportsIP:[(HMSetupAccessoryPayload *)self supportsIP]];
   [(HMSetupAccessoryPayload *)v6 setSupportsWAC:[(HMSetupAccessoryPayload *)self supportsWAC]];
   [(HMSetupAccessoryPayload *)v6 setSupportsBTLE:[(HMSetupAccessoryPayload *)self supportsBTLE]];
   [(HMSetupAccessoryPayload *)v6 setPaired:[(HMSetupAccessoryPayload *)self isPaired]];
-  v11 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-  [(HMSetupAccessoryPayload *)v6 setThreadIdentifier:v11];
+  threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
+  [(HMSetupAccessoryPayload *)v6 setThreadIdentifier:threadIdentifier];
 
-  v12 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-  [(HMSetupAccessoryPayload *)v6 setChipAccessorySetupPayload:v12];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  [(HMSetupAccessoryPayload *)v6 setChipAccessorySetupPayload:chipAccessorySetupPayload];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface MFCRAM_MD5Authenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation MFCRAM_MD5Authenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
     v5 = [objc_msgSend(-[MFSASLAuthenticator account](self "account")];
     v6 = [objc_msgSend(-[MFSASLAuthenticator account](self "account")];
@@ -20,7 +20,7 @@
       CFDataAppendBytes(Mutable, [v5 bytes], objc_msgSend(v5, "length"));
       CFDataAppendBytes(Mutable, &bytes, 1);
       MF_MD5HMAC_Init();
-      CC_MD5_Update(c, [a3 bytes], objc_msgSend(a3, "length"));
+      CC_MD5_Update(c, [data bytes], objc_msgSend(data, "length"));
       MF_MD5HMAC_Output();
       v9 = 0;
       do

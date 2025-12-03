@@ -1,10 +1,10 @@
 @interface IDSRegistrationEventTracing
 + (IDSRegistrationEventTracing)sharedInstance;
-- (BOOL)isRegistrationOpenWithGuid:(id)a3;
-- (id)fetchLastRegistrationStatesForServices:(id)a3 summary:(BOOL)a4;
-- (void)beginEvent:(id)a3 identifier:(id)a4;
-- (void)endEvent:(id)a3 identifier:(id)a4 error:(id)a5;
-- (void)trackIDSMessageWithIdentifier:(id)a3 messageType:(int64_t)a4 operation:(id)a5;
+- (BOOL)isRegistrationOpenWithGuid:(id)guid;
+- (id)fetchLastRegistrationStatesForServices:(id)services summary:(BOOL)summary;
+- (void)beginEvent:(id)event identifier:(id)identifier;
+- (void)endEvent:(id)event identifier:(id)identifier error:(id)error;
+- (void)trackIDSMessageWithIdentifier:(id)identifier messageType:(int64_t)type operation:(id)operation;
 @end
 
 @implementation IDSRegistrationEventTracing
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (BOOL)isRegistrationOpenWithGuid:(id)a3
+- (BOOL)isRegistrationOpenWithGuid:(id)guid
 {
   v5 = OBJC_IVAR___IDSRegistrationEventTracing_registrationOperations;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  v7 = a3;
-  v8 = self;
+  guidCopy = guid;
+  selfCopy = self;
 
-  v9 = sub_1A7DA3C48(v7, v6);
+  v9 = sub_1A7DA3C48(guidCopy, v6);
 
   if (v9)
   {
@@ -56,40 +56,40 @@
   return v11 & 1;
 }
 
-- (void)beginEvent:(id)a3 identifier:(id)a4
+- (void)beginEvent:(id)event identifier:(id)identifier
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_1A7DA5910(a3, v7);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1A7DA5910(event, identifierCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)endEvent:(id)a3 identifier:(id)a4 error:(id)a5
+- (void)endEvent:(id)event identifier:(id)identifier error:(id)error
 {
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1A7DA6A30(a3, v9, a5);
+  identifierCopy = identifier;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1A7DA6A30(event, identifierCopy, error);
   swift_unknownObjectRelease();
 }
 
-- (void)trackIDSMessageWithIdentifier:(id)a3 messageType:(int64_t)a4 operation:(id)a5
+- (void)trackIDSMessageWithIdentifier:(id)identifier messageType:(int64_t)type operation:(id)operation
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_1A7DA73C0(v8, a4, v9);
+  identifierCopy = identifier;
+  operationCopy = operation;
+  selfCopy = self;
+  sub_1A7DA73C0(identifierCopy, type, operationCopy);
 }
 
-- (id)fetchLastRegistrationStatesForServices:(id)a3 summary:(BOOL)a4
+- (id)fetchLastRegistrationStatesForServices:(id)services summary:(BOOL)summary
 {
-  v4 = a4;
+  summaryCopy = summary;
   sub_1A7CD1EB4();
   v6 = sub_1A7E22530();
-  v7 = self;
-  sub_1A7DA77A8(v6, v4);
+  selfCopy = self;
+  sub_1A7DA77A8(v6, summaryCopy);
 
   sub_1A7CC7FFC(&qword_1EB2B7230);
   sub_1A7DAA7E8();

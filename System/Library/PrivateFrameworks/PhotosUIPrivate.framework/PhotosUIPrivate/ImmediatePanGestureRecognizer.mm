@@ -1,7 +1,7 @@
 @interface ImmediatePanGestureRecognizer
 - (PUCleanupGestureTouchTypeDelegate)touchTypeDelegate;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation ImmediatePanGestureRecognizer
@@ -13,29 +13,29 @@
   return WeakRetained;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = ImmediatePanGestureRecognizer;
-  [(ImmediatePanGestureRecognizer *)&v4 touchesMoved:a3 withEvent:a4];
+  [(ImmediatePanGestureRecognizer *)&v4 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  v9 = [(ImmediatePanGestureRecognizer *)self touchTypeDelegate];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  touchTypeDelegate = [(ImmediatePanGestureRecognizer *)self touchTypeDelegate];
 
-  if (v9)
+  if (touchTypeDelegate)
   {
-    v10 = [(ImmediatePanGestureRecognizer *)self touchTypeDelegate];
-    [v10 setTouchType:{objc_msgSend(v8, "type")}];
+    touchTypeDelegate2 = [(ImmediatePanGestureRecognizer *)self touchTypeDelegate];
+    [touchTypeDelegate2 setTouchType:{objc_msgSend(anyObject, "type")}];
   }
 
   v11.receiver = self;
   v11.super_class = ImmediatePanGestureRecognizer;
-  [(ImmediatePanGestureRecognizer *)&v11 touchesBegan:v6 withEvent:v7];
+  [(ImmediatePanGestureRecognizer *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
 @end

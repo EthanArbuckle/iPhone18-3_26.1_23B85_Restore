@@ -1,14 +1,14 @@
 @interface COSSoftwareUpdateBetaUpdateContoller
-- (id)_specifierForBetaProgram:(id)a3 rowIdentifier:(id)a4;
+- (id)_specifierForBetaProgram:(id)program rowIdentifier:(id)identifier;
 - (id)appleIDSpecifier;
 - (id)specifiers;
 - (void)addFooter;
-- (void)betaUpdatesAppleIDTapped:(id)a3;
+- (void)betaUpdatesAppleIDTapped:(id)tapped;
 - (void)loadView;
 - (void)postFailedToSetBetaUpdateAlert;
 - (void)setupProgramListSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)willEnterForeground:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation COSSoftwareUpdateBetaUpdateContoller
@@ -22,7 +22,7 @@
   [v3 addObserver:self selector:"willEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -32,13 +32,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
+  updateController = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10012F548;
   v6[3] = &unk_100269800;
   v6[4] = self;
-  [v5 loadBetaUpdatesWithCompletion:v6];
+  [updateController loadBetaUpdatesWithCompletion:v6];
 }
 
 - (id)specifiers
@@ -64,8 +64,8 @@
     [v6 addObjectsFromArray:self->_programsList];
     v9 = [PSSpecifier groupSpecifierWithID:@"BETA_UPDATES_APPLEID_GROUP"];
     [v6 addObject:v9];
-    v10 = [(COSSoftwareUpdateBetaUpdateContoller *)self appleIDSpecifier];
-    [v6 addObject:v10];
+    appleIDSpecifier = [(COSSoftwareUpdateBetaUpdateContoller *)self appleIDSpecifier];
+    [v6 addObject:appleIDSpecifier];
 
     v11 = [NSArray arrayWithArray:v6];
     v12 = *&self->BPSListController_opaque[v2];
@@ -79,14 +79,14 @@
 
 - (id)appleIDSpecifier
 {
-  v3 = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
-  v4 = [v3 betaUpdatesAppleID];
+  updateController = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
+  betaUpdatesAppleID = [updateController betaUpdatesAppleID];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (betaUpdatesAppleID)
   {
     v6 = [v5 localizedStringForKey:@"BETA_UPDATES_APPLE_ID_PREFIX" value:&stru_10026E598 table:@"Software Update"];
-    v7 = [NSString stringWithFormat:v6, v4];
+    v7 = [NSString stringWithFormat:v6, betaUpdatesAppleID];
   }
 
   else
@@ -101,7 +101,7 @@
   return v8;
 }
 
-- (void)betaUpdatesAppleIDTapped:(id)a3
+- (void)betaUpdatesAppleIDTapped:(id)tapped
 {
   v3 = [NSURL URLWithString:@"prefs:root=General&path=SOFTWARE_UPDATE_LINK/SUBetaUpdatesButton"];
   BPSOpenSensitiveURLAsync();
@@ -161,10 +161,10 @@
 
 - (void)setupProgramListSpecifiers
 {
-  v3 = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
-  v4 = [v3 availableBetaPrograms];
+  updateController = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
+  availableBetaPrograms = [updateController availableBetaPrograms];
 
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count] + 2);
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [availableBetaPrograms count] + 2);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"AUTOMATIC_UPDATES_DISABLED" value:&stru_10026E598 table:@"Software Update"];
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -172,19 +172,19 @@
   v9 = v5;
   [v5 addObject:v8];
   [v8 setProperty:@"BETA_UPDATES_OFF_IDENTIFIER" forKey:PSIDKey];
-  v10 = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
-  v11 = [v10 enrolledBetaProgram];
+  updateController2 = [(COSSoftwareUpdateBetaUpdateContoller *)self updateController];
+  enrolledBetaProgram = [updateController2 enrolledBetaProgram];
 
   v28 = v8;
-  if (v11)
+  if (enrolledBetaProgram)
   {
-    v12 = [v4 valueForKey:@"programID"];
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 programID]);
+    v12 = [availableBetaPrograms valueForKey:@"programID"];
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [enrolledBetaProgram programID]);
     v14 = [v12 containsObject:v13];
 
     if ((v14 & 1) == 0)
     {
-      sub_10018C5FC(self, v11, v9);
+      sub_10018C5FC(self, enrolledBetaProgram, v9);
     }
   }
 
@@ -197,7 +197,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = availableBetaPrograms;
   v15 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v15)
   {
@@ -215,10 +215,10 @@
         }
 
         v20 = *(*(&v30 + 1) + 8 * v19);
-        v21 = [v11 programID];
-        v22 = [v20 programID];
+        programID = [enrolledBetaProgram programID];
+        programID2 = [v20 programID];
         v23 = [(COSSoftwareUpdateBetaUpdateContoller *)self _specifierForBetaProgram:v20 rowIdentifier:0];
-        if (v21 == v22)
+        if (programID == programID2)
         {
           if (self)
           {
@@ -251,25 +251,25 @@
   sub_10018C534(self, v27);
 }
 
-- (id)_specifierForBetaProgram:(id)a3 rowIdentifier:(id)a4
+- (id)_specifierForBetaProgram:(id)program rowIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 title];
-  v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  programCopy = program;
+  identifierCopy = identifier;
+  title = [programCopy title];
+  v9 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:3 edit:0];
 
-  if (v7)
+  if (identifierCopy)
   {
-    [v9 setProperty:v7 forKey:PSIDKey];
+    [v9 setProperty:identifierCopy forKey:PSIDKey];
   }
 
   else
   {
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 programID]);
-    v11 = [v10 stringValue];
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [programCopy programID]);
+    stringValue = [v10 stringValue];
 
-    [v9 setUserInfo:v6];
-    [v9 setProperty:v11 forKey:PSIDKey];
+    [v9 setUserInfo:programCopy];
+    [v9 setProperty:stringValue forKey:PSIDKey];
   }
 
   [v9 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
@@ -277,13 +277,13 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = COSSoftwareUpdateBetaUpdateContoller;
-  v6 = a4;
-  [(COSSoftwareUpdateBetaUpdateContoller *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(COSSoftwareUpdateBetaUpdateContoller *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  [(COSSoftwareUpdateBetaUpdateContoller *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(COSSoftwareUpdateBetaUpdateContoller *)self specifierAtIndexPath:pathCopy];
 
   v8 = [v7 propertyForKey:PSIDKey];
   if ([v8 isEqualToString:@"BETA_UPDATES_OFF_IDENTIFIER"])
@@ -293,7 +293,7 @@
 
   else
   {
-    v9 = [v7 userInfo];
+    userInfo = [v7 userInfo];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

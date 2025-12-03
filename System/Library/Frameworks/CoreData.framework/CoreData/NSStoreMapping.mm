@@ -1,6 +1,6 @@
 @interface NSStoreMapping
-- (BOOL)isEqual:(id)a3;
-- (NSStoreMapping)initWithExternalName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSStoreMapping)initWithExternalName:(id)name;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -26,12 +26,12 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSStoreMapping *)self externalName];
+  externalName = [(NSStoreMapping *)self externalName];
 
-  return [v2 hash];
+  return [externalName hash];
 }
 
-- (NSStoreMapping)initWithExternalName:(id)a3
+- (NSStoreMapping)initWithExternalName:(id)name
 {
   v8.receiver = self;
   v8.super_class = NSStoreMapping;
@@ -40,17 +40,17 @@
   if (v4)
   {
     externalName = v4->_externalName;
-    if (externalName != a3)
+    if (externalName != name)
     {
 
-      v5->_externalName = [a3 copy];
+      v5->_externalName = [name copy];
     }
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -58,16 +58,16 @@
     return 0;
   }
 
-  v7 = [(NSStoreMapping *)self externalName];
-  if (v7 == [a3 externalName])
+  externalName = [(NSStoreMapping *)self externalName];
+  if (externalName == [equal externalName])
   {
     return 1;
   }
 
-  v8 = [(NSStoreMapping *)self externalName];
-  v9 = [a3 externalName];
+  externalName2 = [(NSStoreMapping *)self externalName];
+  externalName3 = [equal externalName];
 
-  return [v8 isEqualToString:v9];
+  return [externalName2 isEqualToString:externalName3];
 }
 
 @end

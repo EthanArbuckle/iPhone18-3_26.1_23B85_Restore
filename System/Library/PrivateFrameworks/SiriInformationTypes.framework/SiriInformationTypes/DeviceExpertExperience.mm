@@ -1,14 +1,14 @@
 @interface DeviceExpertExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DeviceExpertExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  DeviceExpertExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  DeviceExpertExperience.encode(with:)(coderCopy);
 }
 
 @end

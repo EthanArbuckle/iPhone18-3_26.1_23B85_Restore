@@ -1,30 +1,30 @@
 @interface SBFLockScreenActionContext
 - (NSString)lockLabel;
 - (NSString)shortLockLabel;
-- (SBFLockScreenActionContext)initWithLockLabel:(id)a3 shortLockLabel:(id)a4 action:(id)a5 identifier:(id)a6;
+- (SBFLockScreenActionContext)initWithLockLabel:(id)label shortLockLabel:(id)lockLabel action:(id)action identifier:(id)identifier;
 @end
 
 @implementation SBFLockScreenActionContext
 
-- (SBFLockScreenActionContext)initWithLockLabel:(id)a3 shortLockLabel:(id)a4 action:(id)a5 identifier:(id)a6
+- (SBFLockScreenActionContext)initWithLockLabel:(id)label shortLockLabel:(id)lockLabel action:(id)action identifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  labelCopy = label;
+  lockLabelCopy = lockLabel;
+  actionCopy = action;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = SBFLockScreenActionContext;
   v15 = [(SBFLockScreenActionContext *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_lockLabel, a3);
-    objc_storeStrong(&v16->_shortLockLabel, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_lockLabel, label);
+    objc_storeStrong(&v16->_shortLockLabel, lockLabel);
+    v17 = [actionCopy copy];
     action = v16->_action;
     v16->_action = v17;
 
-    objc_storeStrong(&v16->_identifier, a6);
+    objc_storeStrong(&v16->_identifier, identifier);
   }
 
   return v16;

@@ -1,5 +1,5 @@
 @interface MSServerSideConfigProtocol
-- (MSServerSideConfigProtocol)initWithPersonID:(id)a3 baseURL:(id)a4;
+- (MSServerSideConfigProtocol)initWithPersonID:(id)d baseURL:(id)l;
 - (void)dealloc;
 - (void)queryConfiguration;
 @end
@@ -21,19 +21,19 @@
   [(MSServerSideConfigProtocol *)&v3 dealloc];
 }
 
-- (MSServerSideConfigProtocol)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSServerSideConfigProtocol)initWithPersonID:(id)d baseURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = MSServerSideConfigProtocol;
   v9 = [(MSServerSideConfigProtocol *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_personID, a3);
+    objc_storeStrong(&v9->_personID, d);
     v10->_context._super.owner = v10;
-    v11 = v7;
+    v11 = dCopy;
     v10->_context._super.personID = v11;
     v12 = MSPlatform();
     v10->_context._super.authToken = [v12 authTokenForPersonID:v11];
@@ -42,11 +42,11 @@
     v10->_context._super.connectionTimeout = 0.0;
     v10->_context.didFinishCallback = _didFinish_2251;
     v10->_context.didFailAuthenticationCallback = _didFailAuthentication_2250;
-    if (v8)
+    if (lCopy)
     {
       v13 = objc_alloc(MEMORY[0x277CBEBC0]);
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/streams/configuration", v11];
-      v15 = [v13 initWithString:v14 relativeToURL:v8];
+      v15 = [v13 initWithString:v14 relativeToURL:lCopy];
       configURL = v10->_configURL;
       v10->_configURL = v15;
     }

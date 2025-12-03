@@ -1,101 +1,101 @@
 @interface CUIThemeGradient
 - (CGFunctionRef)_newColorShaderForDistance:(CGFunctionRef)result;
 - (CGFunctionRef)colorShader;
-- (CGImage)_createRadialGradientImageWithWidth:(double)a3 height:(double)a4;
-- (CUIColor)_colorFromPSDGradientColor:(CGFloat)a3;
-- (CUIThemeGradient)initWithColors:(id)a3 colorlocations:(id)a4 colorMidpoints:(id)a5 opacities:(id)a6 opacityLocations:(id)a7 opacityMidpoints:(id)a8 smoothingCoefficient:(double)a9 fillColor:(id)a10 colorSpace:(CGColorSpace *)a11 dither:(BOOL)a12;
-- (NSMutableArray)_psdGradientColorStopsWithColors:(void *)a3 locations:(uint64_t)a4 colorSpace:;
-- (NSMutableArray)_psdGradientOpacityStopsWithOpacities:(void *)a3 locations:;
-- (const)_psdGradientColorWithColor:(uint64_t)a3 colorSpace:;
-- (id)_initWithGradientEvaluator:(id)a3 colorSpace:(CGColorSpace *)a4;
+- (CGImage)_createRadialGradientImageWithWidth:(double)width height:(double)height;
+- (CUIColor)_colorFromPSDGradientColor:(CGFloat)color;
+- (CUIThemeGradient)initWithColors:(id)colors colorlocations:(id)colorlocations colorMidpoints:(id)midpoints opacities:(id)opacities opacityLocations:(id)locations opacityMidpoints:(id)opacityMidpoints smoothingCoefficient:(double)coefficient fillColor:(id)self0 colorSpace:(CGColorSpace *)self1 dither:(BOOL)self2;
+- (NSMutableArray)_psdGradientColorStopsWithColors:(void *)colors locations:(uint64_t)locations colorSpace:;
+- (NSMutableArray)_psdGradientOpacityStopsWithOpacities:(void *)opacities locations:;
+- (const)_psdGradientColorWithColor:(uint64_t)color colorSpace:;
+- (id)_initWithGradientEvaluator:(id)evaluator colorSpace:(CGColorSpace *)space;
 - (id)colorLocations;
 - (id)colorStops;
 - (id)fillColor;
-- (id)gradientByApplyingEffects:(id)a3;
-- (id)interpolatedColorAtLocation:(double)a3;
+- (id)gradientByApplyingEffects:(id)effects;
+- (id)interpolatedColorAtLocation:(double)location;
 - (id)opacityLocations;
 - (id)opacityStops;
-- (void)_tintColorStopsWithEffects:(uint64_t)a1;
+- (void)_tintColorStopsWithEffects:(uint64_t)effects;
 - (void)dealloc;
-- (void)drawAngleGradientInRect:(CGRect)a3 relativeCenterPosition:(CGPoint)a4 withContext:(CGContext *)a5;
-- (void)drawFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 options:(unint64_t)a5 withContext:(CGContext *)a6;
-- (void)drawInRect:(CGRect)a3 angle:(double)a4 options:(unint64_t)a5 withContext:(CGContext *)a6;
+- (void)drawAngleGradientInRect:(CGRect)rect relativeCenterPosition:(CGPoint)position withContext:(CGContext *)context;
+- (void)drawFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint options:(unint64_t)options withContext:(CGContext *)context;
+- (void)drawInRect:(CGRect)rect angle:(double)angle options:(unint64_t)options withContext:(CGContext *)context;
 @end
 
 @implementation CUIThemeGradient
 
-- (id)_initWithGradientEvaluator:(id)a3 colorSpace:(CGColorSpace *)a4
+- (id)_initWithGradientEvaluator:(id)evaluator colorSpace:(CGColorSpace *)space
 {
   v8.receiver = self;
   v8.super_class = CUIThemeGradient;
   v6 = [(CUIThemeGradient *)&v8 init];
   if (v6)
   {
-    v6->gradientEvaluator = a3;
-    v6->colorSpace = CGColorSpaceRetain(a4);
+    v6->gradientEvaluator = evaluator;
+    v6->colorSpace = CGColorSpaceRetain(space);
   }
 
   return v6;
 }
 
-- (CUIThemeGradient)initWithColors:(id)a3 colorlocations:(id)a4 colorMidpoints:(id)a5 opacities:(id)a6 opacityLocations:(id)a7 opacityMidpoints:(id)a8 smoothingCoefficient:(double)a9 fillColor:(id)a10 colorSpace:(CGColorSpace *)a11 dither:(BOOL)a12
+- (CUIThemeGradient)initWithColors:(id)colors colorlocations:(id)colorlocations colorMidpoints:(id)midpoints opacities:(id)opacities opacityLocations:(id)locations opacityMidpoints:(id)opacityMidpoints smoothingCoefficient:(double)coefficient fillColor:(id)self0 colorSpace:(CGColorSpace *)self1 dither:(BOOL)self2
 {
-  if ([a3 count])
+  if ([colors count])
   {
-    v23 = [a3 count];
-    if (v23 != [a4 count])
+    v23 = [colors count];
+    if (v23 != [colorlocations count])
     {
       [CUIThemeGradient initWithColors:a2 colorlocations:self colorMidpoints:? opacities:? opacityLocations:? opacityMidpoints:? smoothingCoefficient:? fillColor:? colorSpace:? dither:?];
     }
 
-    v24 = [a6 count];
-    if (v24 != [a7 count])
+    v24 = [opacities count];
+    if (v24 != [locations count])
     {
       [CUIThemeGradient initWithColors:a2 colorlocations:self colorMidpoints:? opacities:? opacityLocations:? opacityMidpoints:? smoothingCoefficient:? fillColor:? colorSpace:? dither:?];
     }
 
-    [(CUIThemeGradient *)self _psdGradientColorWithColor:a10 colorSpace:a11];
+    [(CUIThemeGradient *)self _psdGradientColorWithColor:color colorSpace:space];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v33 = [CUIPSDGradientEvaluator alloc];
-    v34 = [(CUIThemeGradient *)self _psdGradientColorStopsWithColors:a3 locations:a4 colorSpace:a11];
-    v35 = [(CUIPSDGradientEvaluator *)v33 initWithColorStops:v34 colorMidpoints:a5 opacityStops:[(CUIThemeGradient *)self _psdGradientOpacityStopsWithOpacities:a6 locations:a7] opacityMidpoints:a8 smoothingCoefficient:a12 fillColor:a9 dither:v26, v28, v30, v32];
-    v36 = [(CUIThemeGradient *)self _initWithGradientEvaluator:v35 colorSpace:a11];
+    v34 = [(CUIThemeGradient *)self _psdGradientColorStopsWithColors:colors locations:colorlocations colorSpace:space];
+    v35 = [(CUIPSDGradientEvaluator *)v33 initWithColorStops:v34 colorMidpoints:midpoints opacityStops:[(CUIThemeGradient *)self _psdGradientOpacityStopsWithOpacities:opacities locations:locations] opacityMidpoints:opacityMidpoints smoothingCoefficient:dither fillColor:coefficient dither:v26, v28, v30, v32];
+    v36 = [(CUIThemeGradient *)self _initWithGradientEvaluator:v35 colorSpace:space];
 
     return v36;
   }
 
   else
   {
-    v21 = self;
+    selfCopy = self;
     return 0;
   }
 }
 
-- (id)gradientByApplyingEffects:(id)a3
+- (id)gradientByApplyingEffects:(id)effects
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (effects)
   {
     v6 = [self->gradientEvaluator copy];
-    v3 = [[CUIThemeGradient alloc] _initWithGradientEvaluator:v6 colorSpace:v3->colorSpace];
-    [(CUIThemeGradient *)v3 _tintColorStopsWithEffects:a3];
+    selfCopy = [[CUIThemeGradient alloc] _initWithGradientEvaluator:v6 colorSpace:selfCopy->colorSpace];
+    [(CUIThemeGradient *)selfCopy _tintColorStopsWithEffects:effects];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)colorStops
 {
-  v3 = [self->gradientEvaluator colorStops];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  colorStops = [self->gradientEvaluator colorStops];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [colorStops count]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [colorStops countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -106,11 +106,11 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(colorStops);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 isDoubleStop];
+        isDoubleStop = [v9 isDoubleStop];
         v11 = 1;
         do
         {
@@ -133,14 +133,14 @@
           }
 
           [(NSMutableArray *)v4 addObject:[(CUIThemeGradient *)self _colorFromPSDGradientColor:v12, v13, v14, v15]];
-          v16 = v10 & v11;
+          v16 = isDoubleStop & v11;
           v11 = 0;
         }
 
         while ((v16 & 1) != 0);
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [colorStops countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -151,13 +151,13 @@
 
 - (id)colorLocations
 {
-  v2 = [self->gradientEvaluator colorStops];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  colorStops = [self->gradientEvaluator colorStops];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [colorStops count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [colorStops countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -168,21 +168,21 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(colorStops);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 isDoubleStop];
+        isDoubleStop = [v8 isDoubleStop];
         [v8 location];
         [(NSMutableArray *)v3 addObject:[NSNumber numberWithDouble:?]];
-        if (v9)
+        if (isDoubleStop)
         {
           [v8 location];
           [(NSMutableArray *)v3 addObject:[NSNumber numberWithDouble:v10 + 0.01]];
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [colorStops countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -193,13 +193,13 @@
 
 - (id)opacityStops
 {
-  v2 = [self->gradientEvaluator opacityStops];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  opacityStops = [self->gradientEvaluator opacityStops];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [opacityStops count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [opacityStops countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -210,11 +210,11 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(opacityStops);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 isDoubleStop];
+        isDoubleStop = [v8 isDoubleStop];
         v10 = 1;
         do
         {
@@ -237,14 +237,14 @@
           }
 
           [(NSMutableArray *)v3 addObject:[NSNumber numberWithDouble:?]];
-          v11 = v9 & v10;
+          v11 = isDoubleStop & v10;
           v10 = 0;
         }
 
         while ((v11 & 1) != 0);
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [opacityStops countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -255,13 +255,13 @@
 
 - (id)opacityLocations
 {
-  v2 = [self->gradientEvaluator opacityStops];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  opacityStops = [self->gradientEvaluator opacityStops];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [opacityStops count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [opacityStops countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -272,13 +272,13 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(opacityStops);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 isDoubleStop];
+        isDoubleStop = [v8 isDoubleStop];
         [v8 location];
-        if (v9)
+        if (isDoubleStop)
         {
           [(NSMutableArray *)v3 addObject:[NSNumber numberWithDouble:v10 + -0.01]];
           [v8 location];
@@ -287,7 +287,7 @@
         [(NSMutableArray *)v3 addObject:[NSNumber numberWithDouble:?]];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [opacityStops countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -316,36 +316,36 @@
   [(CUIThemeGradient *)&v5 dealloc];
 }
 
-- (void)drawInRect:(CGRect)a3 angle:(double)a4 options:(unint64_t)a5 withContext:(CGContext *)a6
+- (void)drawInRect:(CGRect)rect angle:(double)angle options:(unint64_t)options withContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = 0.0;
   v16 = 0.0;
   v13 = 0.0;
   v14 = 0.0;
-  FrameIntersectionWithAxis(&v15, &v13, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4);
-  CGContextSaveGState(a6);
+  FrameIntersectionWithAxis(&v15, &v13, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, angle);
+  CGContextSaveGState(context);
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
-  CGContextClipToRect(a6, v18);
-  [(CUIThemeGradient *)self drawFromPoint:a5 toPoint:a6 options:v15 withContext:v16, v13, v14];
+  CGContextClipToRect(context, v18);
+  [(CUIThemeGradient *)self drawFromPoint:options toPoint:context options:v15 withContext:v16, v13, v14];
 
-  CGContextRestoreGState(a6);
+  CGContextRestoreGState(context);
 }
 
-- (void)drawAngleGradientInRect:(CGRect)a3 relativeCenterPosition:(CGPoint)a4 withContext:(CGContext *)a5
+- (void)drawAngleGradientInRect:(CGRect)rect relativeCenterPosition:(CGPoint)position withContext:(CGContext *)context
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  y = position.y;
+  x = position.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   gradientImage = self->_gradientImage;
   if (!gradientImage)
   {
@@ -379,17 +379,17 @@
   v19 = width + vabdd_f64(v14, x);
   v20 = height + vabdd_f64(v15, y);
 
-  CGContextDrawImage(a5, *&v17, gradientImage);
+  CGContextDrawImage(context, *&v17, gradientImage);
 }
 
-- (void)drawFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 options:(unint64_t)a5 withContext:(CGContext *)a6
+- (void)drawFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint options:(unint64_t)options withContext:(CGContext *)context
 {
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v13 = a3.x == a4.x || a3.y == a4.y;
+  optionsCopy = options;
+  y = toPoint.y;
+  x = toPoint.x;
+  v10 = point.y;
+  v11 = point.x;
+  v13 = point.x == toPoint.x || point.y == toPoint.y;
   if (v13 && [self->gradientEvaluator hasEdgePixel])
   {
     v14 = vabdd_f64(x, v11);
@@ -399,13 +399,13 @@
       v14 = v15;
     }
 
-    v16 = [(CUIThemeGradient *)self _newColorShaderForDistance:v14];
+    colorShader = [(CUIThemeGradient *)self _newColorShaderForDistance:v14];
     v17 = 1;
   }
 
   else
   {
-    v16 = [(CUIThemeGradient *)self colorShader];
+    colorShader = [(CUIThemeGradient *)self colorShader];
     v17 = 0;
   }
 
@@ -413,19 +413,19 @@
   v20.y = v10;
   v21.x = x;
   v21.y = y;
-  Axial = CGShadingCreateAxial(self->colorSpace, v20, v21, v16, v7 & 1, (v7 & 2) != 0);
-  CGContextDrawShading(a6, Axial);
+  Axial = CGShadingCreateAxial(self->colorSpace, v20, v21, colorShader, optionsCopy & 1, (optionsCopy & 2) != 0);
+  CGContextDrawShading(context, Axial);
   CGShadingRelease(Axial);
   if (v17)
   {
 
-    CGFunctionRelease(v16);
+    CGFunctionRelease(colorShader);
   }
 }
 
-- (id)interpolatedColorAtLocation:(double)a3
+- (id)interpolatedColorAtLocation:(double)location
 {
-  [self->gradientEvaluator _smoothedGradientColorAtLocation:a3];
+  [self->gradientEvaluator _smoothedGradientColorAtLocation:location];
   components[0] = v4;
   components[1] = v5;
   components[2] = v6;
@@ -436,15 +436,15 @@
   return v9;
 }
 
-- (CGImage)_createRadialGradientImageWithWidth:(double)a3 height:(double)a4
+- (CGImage)_createRadialGradientImageWithWidth:(double)width height:(double)height
 {
-  result = CreateARGBBitmapContext(a3, a4, 1.0);
+  result = CreateARGBBitmapContext(width, height, 1.0);
   if (result)
   {
     v8 = result;
     Data = CGBitmapContextGetData(result);
     SRGB = _CUIColorSpaceGetSRGB();
-    if (a4 > 0.0)
+    if (height > 0.0)
     {
       v11 = SRGB;
       v12 = 0;
@@ -452,39 +452,39 @@
       v23 = vdupq_n_s64(0x406FE00000000000uLL);
       do
       {
-        if (a3 > 0.0)
+        if (width > 0.0)
         {
-          v14 = v13 - a4 * 0.5;
+          v14 = v13 - height * 0.5;
           v15 = 0.0;
           v16 = 1;
           do
           {
-            v17 = atan2(v14, v15 - a3 * 0.5);
+            v17 = atan2(v14, v15 - width * 0.5);
             if (v14 < 0.0)
             {
               v17 = v17 + 6.28318531;
             }
 
             v18 = [(CUIThemeGradient *)self interpolatedColorAtLocation:v17 / 6.28318531, *&v23];
-            v19 = [v18 CGColor];
-            if (CGColorGetColorSpace(v19) != v11)
+            cGColor = [v18 CGColor];
+            if (CGColorGetColorSpace(cGColor) != v11)
             {
-              v19 = [objc_msgSend(v18 colorUsingCGColorSpace:{v11), "CGColor"}];
+              cGColor = [objc_msgSend(v18 colorUsingCGColorSpace:{v11), "CGColor"}];
             }
 
-            Components = CGColorGetComponents(v19);
+            Components = CGColorGetComponents(cGColor);
             v21 = vshl_u32(vmovn_s64(vcvtq_s64_f64(vmulq_f64(*(Components + 1), v23))), 0x800000010);
             *Data++ = v21.i32[0] | ((*Components * 255.0) << 24) | (Components[3] * 255.0) | v21.i32[1];
             v15 = v16++;
           }
 
-          while (v15 < a3);
+          while (v15 < width);
         }
 
         v13 = ++v12;
       }
 
-      while (v12 < a4);
+      while (v12 < height);
     }
 
     Image = CGBitmapContextCreateImage(v8);
@@ -495,9 +495,9 @@
   return result;
 }
 
-- (NSMutableArray)_psdGradientOpacityStopsWithOpacities:(void *)a3 locations:
+- (NSMutableArray)_psdGradientOpacityStopsWithOpacities:(void *)opacities locations:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -523,7 +523,7 @@
         v19 = *(v35 + 8 * v17);
         v20 = [CUIPSDGradientOpacityStop alloc];
         v15 = v18 + 1;
-        [objc_msgSend(a3 objectAtIndex:{v18), "doubleValue"}];
+        [objc_msgSend(opacities objectAtIndex:{v18), "doubleValue"}];
         v22 = v21;
         [v19 doubleValue];
         v24 = [(CUIPSDGradientOpacityStop *)v20 initWithLocation:v22 opacity:v23];
@@ -543,7 +543,7 @@
   return v5;
 }
 
-- (const)_psdGradientColorWithColor:(uint64_t)a3 colorSpace:
+- (const)_psdGradientColorWithColor:(uint64_t)color colorSpace:
 {
   if (result)
   {
@@ -553,16 +553,16 @@
     result = CGColorGetComponents([v5 CGColor]);
     if (NumberOfComponents != 4 && NumberOfComponents != 2)
     {
-      return [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__psdGradientColorWithColor_colorSpace_ file:v4 lineNumber:@"CUIThemeGradient.m" description:129, @"CUIThemeGradient can't initialize with unsupported color space: %@", a3];
+      return [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__psdGradientColorWithColor_colorSpace_ file:v4 lineNumber:@"CUIThemeGradient.m" description:129, @"CUIThemeGradient can't initialize with unsupported color space: %@", color];
     }
   }
 
   return result;
 }
 
-- (NSMutableArray)_psdGradientColorStopsWithColors:(void *)a3 locations:(uint64_t)a4 colorSpace:
+- (NSMutableArray)_psdGradientColorStopsWithColors:(void *)colors locations:(uint64_t)locations colorSpace:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -585,10 +585,10 @@
           objc_enumerationMutation(a2);
         }
 
-        [(CUIThemeGradient *)a1 _psdGradientColorWithColor:a4 colorSpace:?];
+        [(CUIThemeGradient *)self _psdGradientColorWithColor:locations colorSpace:?];
         v14 = [CUIPSDGradientColorStop alloc];
         v10 = v13 + 1;
-        [objc_msgSend(a3 objectAtIndex:{v13), "doubleValue"}];
+        [objc_msgSend(colors objectAtIndex:{v13), "doubleValue"}];
         OUTLINED_FUNCTION_3_2();
         v16 = [v15 initWithLocation:? gradientColor:?];
         [(NSMutableArray *)v7 addObject:v16];
@@ -607,15 +607,15 @@
   return v7;
 }
 
-- (void)_tintColorStopsWithEffects:(uint64_t)a1
+- (void)_tintColorStopsWithEffects:(uint64_t)effects
 {
-  if (a1)
+  if (effects)
   {
-    v18 = *(a1 + 8);
-    v4 = [v18 colorStops];
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-    obj = v4;
-    v6 = [v4 countByEnumeratingWithState:OUTLINED_FUNCTION_2_1() objects:? count:?];
+    v18 = *(effects + 8);
+    colorStops = [v18 colorStops];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(colorStops, "count")}];
+    obj = colorStops;
+    v6 = [colorStops countByEnumeratingWithState:OUTLINED_FUNCTION_2_1() objects:? count:?];
     if (v6)
     {
       v7 = v6;
@@ -635,7 +635,7 @@
           components[1] = v12;
           components[2] = v13;
           components[3] = v14;
-          v15 = CGColorCreate(*(a1 + 24), components);
+          v15 = CGColorCreate(*(effects + 24), components);
           v16 = [a2 newColorByProcessingColor:v15];
           CGColorGetComponents(v16);
           [v10 location];
@@ -658,18 +658,18 @@
   }
 }
 
-- (CUIColor)_colorFromPSDGradientColor:(CGFloat)a3
+- (CUIColor)_colorFromPSDGradientColor:(CGFloat)color
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   components[0] = a2;
-  components[1] = a3;
+  components[1] = color;
   components[2] = a4;
   components[3] = a5;
-  v5 = CGColorCreate(*(a1 + 24), components);
+  v5 = CGColorCreate(*(self + 24), components);
   v6 = [CUIColor colorWithCGColor:v5];
   CGColorRelease(v5);
   return v6;

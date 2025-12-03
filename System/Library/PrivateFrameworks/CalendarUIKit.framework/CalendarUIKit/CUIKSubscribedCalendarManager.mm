@@ -1,15 +1,15 @@
 @interface CUIKSubscribedCalendarManager
-- (id)_accountDescriptionForCalendar:(id)a3;
-- (id)_createCalDAVChildSubCalAccountForCalendar:(id)a3 inAccountStore:(id)a4;
-- (id)_createLocalSubCalAccountForCalendar:(id)a3 inAccountStore:(id)a4;
-- (id)_createSubcalAccountForCalendar:(id)a3 inAccountStore:(id)a4 newAccountNeedsSaving:(BOOL *)a5;
-- (void)_saveAccount:(id)a3 inStore:(id)a4 updated:(BOOL)a5;
-- (void)_updateAccount:(id)a3 inAccountStore:(id)a4 withCalendar:(id)a5 oldAccount:(id)a6 newAccountDirty:(BOOL)a7 newUsername:(id)a8 newPassword:(id)a9 newAllowsInsecureConnections:(BOOL)a10;
+- (id)_accountDescriptionForCalendar:(id)calendar;
+- (id)_createCalDAVChildSubCalAccountForCalendar:(id)calendar inAccountStore:(id)store;
+- (id)_createLocalSubCalAccountForCalendar:(id)calendar inAccountStore:(id)store;
+- (id)_createSubcalAccountForCalendar:(id)calendar inAccountStore:(id)store newAccountNeedsSaving:(BOOL *)saving;
+- (void)_saveAccount:(id)account inStore:(id)store updated:(BOOL)updated;
+- (void)_updateAccount:(id)account inAccountStore:(id)store withCalendar:(id)calendar oldAccount:(id)oldAccount newAccountDirty:(BOOL)dirty newUsername:(id)username newPassword:(id)password newAllowsInsecureConnections:(BOOL)self0;
 - (void)restartDAAfterAccountUpdates;
 - (void)restartDAAfterCalendarUpdates;
 - (void)shutdownDAForAccountUpdates;
 - (void)shutdownDAForCalendarUpdates;
-- (void)updateOrCreateAccountWithCalendar:(id)a3 previousAccountID:(id)a4 newUsername:(id)a5 newPassword:(id)a6 newAllowsInsecureConnections:(BOOL)a7;
+- (void)updateOrCreateAccountWithCalendar:(id)calendar previousAccountID:(id)d newUsername:(id)username newPassword:(id)password newAllowsInsecureConnections:(BOOL)connections;
 @end
 
 @implementation CUIKSubscribedCalendarManager
@@ -19,8 +19,8 @@
   v8 = *MEMORY[0x1E69E9840];
   if (!self->_calendarSaveMonitoringToken)
   {
-    v3 = [MEMORY[0x1E69998A8] sharedConnection];
-    self->_calendarSaveMonitoringToken = [v3 requestDaemonStopMonitoringAgents];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    self->_calendarSaveMonitoringToken = [mEMORY[0x1E69998A8] requestDaemonStopMonitoringAgents];
 
     v4 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -47,8 +47,8 @@
       _os_log_impl(&dword_1CAB19000, v3, OS_LOG_TYPE_DEFAULT, "Requesting DA start monitoring agents for calendar updates with token %lu", &v6, 0xCu);
     }
 
-    v5 = [MEMORY[0x1E69998A8] sharedConnection];
-    [v5 requestDaemonStartMonitoringAgentsWithToken:self->_calendarSaveMonitoringToken];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    [mEMORY[0x1E69998A8] requestDaemonStartMonitoringAgentsWithToken:self->_calendarSaveMonitoringToken];
 
     self->_calendarSaveMonitoringToken = 0;
   }
@@ -59,8 +59,8 @@
   v8 = *MEMORY[0x1E69E9840];
   if (!self->_accountsSaveMonitoringToken)
   {
-    v3 = [MEMORY[0x1E69998A8] sharedConnection];
-    self->_accountsSaveMonitoringToken = [v3 requestDaemonStopMonitoringAgents];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    self->_accountsSaveMonitoringToken = [mEMORY[0x1E69998A8] requestDaemonStopMonitoringAgents];
 
     v4 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -87,26 +87,26 @@
       _os_log_impl(&dword_1CAB19000, v3, OS_LOG_TYPE_DEFAULT, "Requesting DA start monitoring agents for account updates with token %lu", &v6, 0xCu);
     }
 
-    v5 = [MEMORY[0x1E69998A8] sharedConnection];
-    [v5 requestDaemonStartMonitoringAgentsWithToken:self->_accountsSaveMonitoringToken];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    [mEMORY[0x1E69998A8] requestDaemonStartMonitoringAgentsWithToken:self->_accountsSaveMonitoringToken];
 
     self->_accountsSaveMonitoringToken = 0;
   }
 }
 
-- (void)updateOrCreateAccountWithCalendar:(id)a3 previousAccountID:(id)a4 newUsername:(id)a5 newPassword:(id)a6 newAllowsInsecureConnections:(BOOL)a7
+- (void)updateOrCreateAccountWithCalendar:(id)calendar previousAccountID:(id)d newUsername:(id)username newPassword:(id)password newAllowsInsecureConnections:(BOOL)connections
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (([v12 isSubscribedHolidayCalendar] & 1) == 0)
+  calendarCopy = calendar;
+  dCopy = d;
+  usernameCopy = username;
+  passwordCopy = password;
+  if (([calendarCopy isSubscribedHolidayCalendar] & 1) == 0)
   {
     v16 = objc_alloc_init(MEMORY[0x1E6959A48]);
     v17 = v16;
-    if (v13)
+    if (dCopy)
     {
-      v18 = [v16 accountWithIdentifier:v13];
+      v18 = [v16 accountWithIdentifier:dCopy];
       if (v18)
       {
         goto LABEL_8;
@@ -121,18 +121,18 @@
 
     v18 = 0;
 LABEL_8:
-    v20 = [v12 subcalAccountID];
-    if (v20)
+    subcalAccountID = [calendarCopy subcalAccountID];
+    if (subcalAccountID)
     {
-      v21 = [v17 accountWithIdentifier:v20];
+      v21 = [v17 accountWithIdentifier:subcalAccountID];
       if (v21)
       {
         v22 = v21;
         v23 = 0;
         HIBYTE(v25) = 0;
 LABEL_15:
-        LOBYTE(v25) = a7;
-        [(CUIKSubscribedCalendarManager *)self _updateAccount:v22 inAccountStore:v17 withCalendar:v12 oldAccount:v18 newAccountDirty:v23 & 1 newUsername:v14 newPassword:v15 newAllowsInsecureConnections:v25];
+        LOBYTE(v25) = connections;
+        [(CUIKSubscribedCalendarManager *)self _updateAccount:v22 inAccountStore:v17 withCalendar:calendarCopy oldAccount:v18 newAccountDirty:v23 & 1 newUsername:usernameCopy newPassword:passwordCopy newAllowsInsecureConnections:v25];
 
         goto LABEL_16;
       }
@@ -146,7 +146,7 @@ LABEL_15:
 
     HIBYTE(v25) = 0;
     [(CUIKSubscribedCalendarManager *)self shutdownDAForAccountUpdates];
-    v22 = [(CUIKSubscribedCalendarManager *)self _createSubcalAccountForCalendar:v12 inAccountStore:v17 newAccountNeedsSaving:&v25 + 7];
+    v22 = [(CUIKSubscribedCalendarManager *)self _createSubcalAccountForCalendar:calendarCopy inAccountStore:v17 newAccountNeedsSaving:&v25 + 7];
     v23 = HIBYTE(v25);
     goto LABEL_15;
   }
@@ -154,32 +154,32 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_updateAccount:(id)a3 inAccountStore:(id)a4 withCalendar:(id)a5 oldAccount:(id)a6 newAccountDirty:(BOOL)a7 newUsername:(id)a8 newPassword:(id)a9 newAllowsInsecureConnections:(BOOL)a10
+- (void)_updateAccount:(id)account inAccountStore:(id)store withCalendar:(id)calendar oldAccount:(id)oldAccount newAccountDirty:(BOOL)dirty newUsername:(id)username newPassword:(id)password newAllowsInsecureConnections:(BOOL)self0
 {
-  v11 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = v19;
-  v22 = v20;
+  dirtyCopy = dirty;
+  accountCopy = account;
+  storeCopy = store;
+  calendarCopy = calendar;
+  oldAccountCopy = oldAccount;
+  usernameCopy = username;
+  passwordCopy = password;
+  v21 = usernameCopy;
+  v22 = passwordCopy;
   v23 = v22;
   v62 = v22;
   v63 = v21;
-  if (v18)
+  if (oldAccountCopy)
   {
-    v24 = [v18 username];
+    username = [oldAccountCopy username];
 
-    v25 = [v18 credential];
-    v64 = [v25 password];
+    credential = [oldAccountCopy credential];
+    password = [credential password];
 
-    v26 = [MEMORY[0x1E69998C0] SubCalInsecureConnectionApproved];
-    v27 = [v18 objectForKeyedSubscript:v26];
-    v28 = [v27 BOOLValue];
+    subCalInsecureConnectionApproved = [MEMORY[0x1E69998C0] SubCalInsecureConnectionApproved];
+    v27 = [oldAccountCopy objectForKeyedSubscript:subCalInsecureConnectionApproved];
+    connectionsCopy = [v27 BOOLValue];
 
-    if (!v24)
+    if (!username)
     {
       goto LABEL_4;
     }
@@ -187,156 +187,156 @@ LABEL_16:
     goto LABEL_3;
   }
 
-  v28 = a10;
-  v64 = v22;
-  v24 = v21;
+  connectionsCopy = connections;
+  password = v22;
+  username = v21;
   if (v21)
   {
 LABEL_3:
-    [v15 setUsername:v24];
-    v11 = 1;
+    [accountCopy setUsername:username];
+    dirtyCopy = 1;
   }
 
 LABEL_4:
-  if (v64)
+  if (password)
   {
     v29 = [MEMORY[0x1E6959A30] credentialWithPassword:?];
-    [v15 setCredential:v29];
+    [accountCopy setCredential:v29];
 
-    v11 = 1;
+    dirtyCopy = 1;
   }
 
-  v61 = v24;
-  if (v28)
+  v61 = username;
+  if (connectionsCopy)
   {
-    v30 = [MEMORY[0x1E69998C0] SubCalInsecureConnectionApproved];
-    [v15 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v30];
+    subCalInsecureConnectionApproved2 = [MEMORY[0x1E69998C0] SubCalInsecureConnectionApproved];
+    [accountCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:subCalInsecureConnectionApproved2];
 
-    v11 = 1;
+    dirtyCopy = 1;
   }
 
-  v31 = [MEMORY[0x1E6999830] daAccountSubclassWithBackingAccountInfo:v15];
+  v31 = [MEMORY[0x1E6999830] daAccountSubclassWithBackingAccountInfo:accountCopy];
   v32 = MEMORY[0x1E695DFF8];
-  v33 = [v17 subcalURL];
-  v34 = [v32 URLWithString:v33];
+  subcalURL = [calendarCopy subcalURL];
+  v34 = [v32 URLWithString:subcalURL];
 
   if (v34)
   {
-    v57 = v18;
-    v58 = v16;
-    v59 = v15;
-    v35 = [v34 scheme];
-    v36 = [v35 isEqualToString:@"https"];
+    v57 = oldAccountCopy;
+    v58 = storeCopy;
+    v59 = accountCopy;
+    scheme = [v34 scheme];
+    v36 = [scheme isEqualToString:@"https"];
 
-    v37 = [v34 scheme];
-    v38 = [v37 isEqualToString:@"ftp"];
+    scheme2 = [v34 scheme];
+    v38 = [scheme2 isEqualToString:@"ftp"];
 
     v39 = [MEMORY[0x1E6993070] hostStringFromURL:v34];
-    v40 = [v34 user];
-    v41 = [v40 stringByRemovingPercentEncoding];
+    user = [v34 user];
+    stringByRemovingPercentEncoding = [user stringByRemovingPercentEncoding];
 
-    v42 = [v34 password];
-    v43 = [v42 stringByRemovingPercentEncoding];
+    password2 = [v34 password];
+    stringByRemovingPercentEncoding2 = [password2 stringByRemovingPercentEncoding];
 
     if (v36 != [v31 useSSL])
     {
       [v31 setUseSSL:v36];
-      v11 = 1;
+      dirtyCopy = 1;
     }
 
     if (v38 != [v31 useFTP])
     {
       [v31 setUseFTP:v38];
-      v11 = 1;
+      dirtyCopy = 1;
     }
 
-    v44 = [v31 host];
-    v45 = [v44 isEqualToString:v39];
+    host = [v31 host];
+    v45 = [host isEqualToString:v39];
 
     if ((v45 & 1) == 0)
     {
       [v31 setHost:v39];
-      v11 = 1;
+      dirtyCopy = 1;
     }
 
-    v18 = v57;
-    if ([v41 length])
+    oldAccountCopy = v57;
+    if ([stringByRemovingPercentEncoding length])
     {
-      v46 = [v31 username];
-      v47 = [v41 isEqualToString:v46];
+      username2 = [v31 username];
+      v47 = [stringByRemovingPercentEncoding isEqualToString:username2];
 
       if ((v47 & 1) == 0)
       {
-        [v31 setUsername:v41];
-        v11 = 1;
+        [v31 setUsername:stringByRemovingPercentEncoding];
+        dirtyCopy = 1;
       }
     }
 
-    if ([v43 length])
+    if ([stringByRemovingPercentEncoding2 length])
     {
-      v48 = [v31 password];
-      v49 = [v43 isEqualToString:v48];
+      password3 = [v31 password];
+      v49 = [stringByRemovingPercentEncoding2 isEqualToString:password3];
 
       if ((v49 & 1) == 0)
       {
-        [v31 setPassword:v43];
-        v11 = 1;
+        [v31 setPassword:stringByRemovingPercentEncoding2];
+        dirtyCopy = 1;
       }
     }
 
-    v16 = v58;
-    v15 = v59;
+    storeCopy = v58;
+    accountCopy = v59;
   }
 
-  v50 = [v31 calendarExternalId];
-  v51 = [v17 externalID];
-  v52 = [v51 isEqualToString:v50];
+  calendarExternalId = [v31 calendarExternalId];
+  externalID = [calendarCopy externalID];
+  v52 = [externalID isEqualToString:calendarExternalId];
 
   if ((v52 & 1) == 0)
   {
-    [v17 setExternalID:v50];
+    [calendarCopy setExternalID:calendarExternalId];
   }
 
-  v53 = [v17 stripAlarms];
-  if (v53 != [v31 shouldRemoveAlarms])
+  stripAlarms = [calendarCopy stripAlarms];
+  if (stripAlarms != [v31 shouldRemoveAlarms])
   {
-    [v31 setShouldRemoveAlarms:v53];
-    v11 = 1;
+    [v31 setShouldRemoveAlarms:stripAlarms];
+    dirtyCopy = 1;
   }
 
-  v54 = [v17 stripAttachments];
-  if (v54 != [v31 shouldRemoveAttachments])
+  stripAttachments = [calendarCopy stripAttachments];
+  if (stripAttachments != [v31 shouldRemoveAttachments])
   {
-    [v31 setShouldRemoveAttachments:v54];
-    v11 = 1;
+    [v31 setShouldRemoveAttachments:stripAttachments];
+    dirtyCopy = 1;
   }
 
-  v55 = [v17 refreshInterval];
+  refreshInterval = [calendarCopy refreshInterval];
   [v31 refreshInterval];
-  if (v56 != v55)
+  if (v56 != refreshInterval)
   {
-    [v31 setRefreshInterval:v55];
-    v11 = 1;
+    [v31 setRefreshInterval:refreshInterval];
+    dirtyCopy = 1;
   }
 
-  if (v18)
+  if (oldAccountCopy)
   {
     [(CUIKSubscribedCalendarManager *)self shutdownDAForAccountUpdates];
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __156__CUIKSubscribedCalendarManager__updateAccount_inAccountStore_withCalendar_oldAccount_newAccountDirty_newUsername_newPassword_newAllowsInsecureConnections___block_invoke;
     v65[3] = &unk_1E83997E8;
-    v66 = v18;
-    v67 = self;
-    v68 = v15;
-    v69 = v16;
-    v70 = v11;
+    v66 = oldAccountCopy;
+    selfCopy = self;
+    v68 = accountCopy;
+    v69 = storeCopy;
+    v70 = dirtyCopy;
     [v69 removeAccount:v66 withCompletionHandler:v65];
   }
 
   else
   {
-    [(CUIKSubscribedCalendarManager *)self _saveAccount:v15 inStore:v16 updated:v11];
+    [(CUIKSubscribedCalendarManager *)self _saveAccount:accountCopy inStore:storeCopy updated:dirtyCopy];
   }
 }
 
@@ -355,21 +355,21 @@ void __156__CUIKSubscribedCalendarManager__updateAccount_inAccountStore_withCale
   [*(a1 + 40) _saveAccount:*(a1 + 48) inStore:*(a1 + 56) updated:*(a1 + 64)];
 }
 
-- (void)_saveAccount:(id)a3 inStore:(id)a4 updated:(BOOL)a5
+- (void)_saveAccount:(id)account inStore:(id)store updated:(BOOL)updated
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  accountCopy = account;
+  storeCopy = store;
+  if (updated)
   {
     [(CUIKSubscribedCalendarManager *)self shutdownDAForAccountUpdates];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__CUIKSubscribedCalendarManager__saveAccount_inStore_updated___block_invoke;
     v12[3] = &unk_1E8399810;
-    v13 = v8;
-    v14 = self;
-    [v9 saveAccount:v13 withCompletionHandler:v12];
+    v13 = accountCopy;
+    selfCopy = self;
+    [storeCopy saveAccount:v13 withCompletionHandler:v12];
   }
 
   else
@@ -377,9 +377,9 @@ void __156__CUIKSubscribedCalendarManager__updateAccount_inAccountStore_withCale
     v10 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v8 identifier];
+      identifier = [accountCopy identifier];
       *buf = 138543362;
-      v16 = v11;
+      v16 = identifier;
       _os_log_impl(&dword_1CAB19000, v10, OS_LOG_TYPE_INFO, "No accounts changes required saving subscribed calendar for account %{public}@", buf, 0xCu);
     }
 
@@ -402,91 +402,91 @@ void __62__CUIKSubscribedCalendarManager__saveAccount_inStore_updated___block_in
   [*(a1 + 40) restartDAAfterAccountUpdates];
 }
 
-- (id)_createSubcalAccountForCalendar:(id)a3 inAccountStore:(id)a4 newAccountNeedsSaving:(BOOL *)a5
+- (id)_createSubcalAccountForCalendar:(id)calendar inAccountStore:(id)store newAccountNeedsSaving:(BOOL *)saving
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 source];
-  if ([v10 sourceType] == 2)
+  storeCopy = store;
+  calendarCopy = calendar;
+  source = [calendarCopy source];
+  if ([source sourceType] == 2)
   {
-    *a5 = 0;
-    [(CUIKSubscribedCalendarManager *)self _createCalDAVChildSubCalAccountForCalendar:v9 inAccountStore:v8];
+    *saving = 0;
+    [(CUIKSubscribedCalendarManager *)self _createCalDAVChildSubCalAccountForCalendar:calendarCopy inAccountStore:storeCopy];
   }
 
   else
   {
-    *a5 = 1;
-    [(CUIKSubscribedCalendarManager *)self _createLocalSubCalAccountForCalendar:v9 inAccountStore:v8];
+    *saving = 1;
+    [(CUIKSubscribedCalendarManager *)self _createLocalSubCalAccountForCalendar:calendarCopy inAccountStore:storeCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)_createCalDAVChildSubCalAccountForCalendar:(id)a3 inAccountStore:(id)a4
+- (id)_createCalDAVChildSubCalAccountForCalendar:(id)calendar inAccountStore:(id)store
 {
   v51[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v35 = [v6 source];
-  v37 = [v35 externalID];
+  calendarCopy = calendar;
+  storeCopy = store;
+  source = [calendarCopy source];
+  externalID = [source externalID];
   v8 = +[CUIKLogSubsystem defaultCategory];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v37;
+    *(&buf + 4) = externalID;
     _os_log_impl(&dword_1CAB19000, v8, OS_LOG_TYPE_DEFAULT, "Adding subscription calendar account to parent account ID %{public}@", &buf, 0xCu);
   }
 
-  v36 = [v7 accountWithIdentifier:v37];
+  v36 = [storeCopy accountWithIdentifier:externalID];
   v38 = [MEMORY[0x1E6999830] daAccountSubclassWithBackingAccountInfo:v36];
   if ([v38 conformsToProtocol:&unk_1F4AF8560])
   {
     v9 = v38;
-    v34 = [v6 externalIDTag];
-    if (!v34)
+    externalIDTag = [calendarCopy externalIDTag];
+    if (!externalIDTag)
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v34 = [v10 UUIDString];
-      [v6 setExternalIDTag:v34];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      externalIDTag = [uUID UUIDString];
+      [calendarCopy setExternalIDTag:externalIDTag];
     }
 
-    v11 = [v9 mainPrincipal];
-    v33 = [v11 calendarHomeURL];
+    mainPrincipal = [v9 mainPrincipal];
+    calendarHomeURL = [mainPrincipal calendarHomeURL];
 
-    v12 = [v34 appendSlashIfNeeded];
-    v32 = [v33 URLByAppendingPathComponent:v12];
+    appendSlashIfNeeded = [externalIDTag appendSlashIfNeeded];
+    v32 = [calendarHomeURL URLByAppendingPathComponent:appendSlashIfNeeded];
 
-    v13 = [v32 path];
-    v31 = [v13 appendSlashIfNeeded];
+    path = [v32 path];
+    appendSlashIfNeeded2 = [path appendSlashIfNeeded];
 
     v50[0] = *MEMORY[0x1E69931A0];
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "stripAttachments")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(calendarCopy, "stripAttachments")}];
     v51[0] = v14;
     v50[1] = *MEMORY[0x1E6993198];
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "stripAlarms")}];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(calendarCopy, "stripAlarms")}];
     v51[1] = v15;
     v50[2] = *MEMORY[0x1E69931B0];
-    v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "refreshInterval")}];
+    v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(calendarCopy, "refreshInterval")}];
     v51[2] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:3];
     v18 = [v17 mutableCopy];
 
-    v19 = [v6 subcalURL];
-    [v18 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69931C0]];
+    subcalURL = [calendarCopy subcalURL];
+    [v18 setObject:subcalURL forKeyedSubscript:*MEMORY[0x1E69931C0]];
 
-    v20 = [(CUIKSubscribedCalendarManager *)self _accountDescriptionForCalendar:v6];
+    v20 = [(CUIKSubscribedCalendarManager *)self _accountDescriptionForCalendar:calendarCopy];
     [v18 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69931C8]];
 
-    v21 = [v9 subscribedCalendars];
-    v22 = [v21 mutableCopy];
+    subscribedCalendars = [v9 subscribedCalendars];
+    v22 = [subscribedCalendars mutableCopy];
 
     if (!v22)
     {
       v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    [v22 setObject:v18 forKeyedSubscript:v31];
+    [v22 setObject:v18 forKeyedSubscript:appendSlashIfNeeded2];
     [v9 setSubscribedCalendars:v22];
     [(CUIKSubscribedCalendarManager *)self shutdownDAForAccountUpdates];
     v23 = dispatch_semaphore_create(0);
@@ -502,9 +502,9 @@ void __62__CUIKSubscribedCalendarManager__saveAccount_inStore_updated___block_in
     v39[3] = &unk_1E8399838;
     v24 = v23;
     v40 = v24;
-    v41 = v7;
+    v41 = storeCopy;
     v42 = v36;
-    v25 = v31;
+    v25 = appendSlashIfNeeded2;
     v43 = v25;
     p_buf = &buf;
     [v41 saveAccount:v42 withCompletionHandler:v39];
@@ -512,8 +512,8 @@ void __62__CUIKSubscribedCalendarManager__saveAccount_inStore_updated___block_in
     v26 = *(*(&buf + 1) + 40);
     if (v26)
     {
-      v27 = [v26 identifier];
-      [v6 setSubcalAccountID:v27];
+      identifier = [v26 identifier];
+      [calendarCopy setSubcalAccountID:identifier];
 
       v28 = *(*(&buf + 1) + 40);
     }
@@ -637,29 +637,29 @@ LABEL_22:
 LABEL_23:
 }
 
-- (id)_createLocalSubCalAccountForCalendar:(id)a3 inAccountStore:(id)a4
+- (id)_createLocalSubCalAccountForCalendar:(id)calendar inAccountStore:(id)store
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69598F8]];
+  calendarCopy = calendar;
+  v7 = [store accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69598F8]];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v7];
-    v9 = [(CUIKSubscribedCalendarManager *)self _accountDescriptionForCalendar:v6];
+    v9 = [(CUIKSubscribedCalendarManager *)self _accountDescriptionForCalendar:calendarCopy];
     [v8 setAccountDescription:v9];
 
     [v8 setSupportsAuthentication:1];
     [v8 setAuthenticated:1];
     [v8 setEnabled:1 forDataclass:*MEMORY[0x1E6959AE0]];
-    v10 = [v8 identifier];
-    [v6 setSubcalAccountID:v10];
+    identifier = [v8 identifier];
+    [calendarCopy setSubcalAccountID:identifier];
 
     v11 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 identifier];
+      identifier2 = [v8 identifier];
       v14 = 138543362;
-      v15 = v12;
+      v15 = identifier2;
       _os_log_impl(&dword_1CAB19000, v11, OS_LOG_TYPE_DEFAULT, "Creating local subscription calendar account ID %{public}@", &v14, 0xCu);
     }
   }
@@ -678,22 +678,22 @@ LABEL_23:
   return v8;
 }
 
-- (id)_accountDescriptionForCalendar:(id)a3
+- (id)_accountDescriptionForCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 title];
-  if (![v4 length])
+  calendarCopy = calendar;
+  title = [calendarCopy title];
+  if (![title length])
   {
     v5 = MEMORY[0x1E695DFF8];
-    v6 = [v3 subcalURL];
-    v7 = [v5 URLWithString:v6];
+    subcalURL = [calendarCopy subcalURL];
+    v7 = [v5 URLWithString:subcalURL];
 
     v8 = [MEMORY[0x1E6993070] hostStringFromURL:v7];
 
-    v4 = v8;
+    title = v8;
   }
 
-  return v4;
+  return title;
 }
 
 void __156__CUIKSubscribedCalendarManager__updateAccount_inAccountStore_withCalendar_oldAccount_newAccountDirty_newUsername_newPassword_newAllowsInsecureConnections___block_invoke_cold_1(uint64_t a1)

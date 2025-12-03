@@ -2,71 +2,71 @@
 - (BOOL)inviteFriendsButtonEnabled;
 - (BOOL)inviteFriendsButtonHidden;
 - (BOOL)startGameButtonEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (void)configureUsing:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (void)configureUsing:(id)using;
 - (void)layoutSubviews;
-- (void)setInviteFriendsButtonEnabled:(BOOL)a3;
-- (void)setInviteFriendsButtonHidden:(BOOL)a3;
-- (void)setInviteFriendsHandler:(id)a3;
-- (void)setStartGameButtonEnabled:(BOOL)a3;
-- (void)setStartGameHandler:(id)a3;
-- (void)wantsMaterialBackgroundWithScrollOffset:(double)a3;
+- (void)setInviteFriendsButtonEnabled:(BOOL)enabled;
+- (void)setInviteFriendsButtonHidden:(BOOL)hidden;
+- (void)setInviteFriendsHandler:(id)handler;
+- (void)setStartGameButtonEnabled:(BOOL)enabled;
+- (void)setStartGameHandler:(id)handler;
+- (void)wantsMaterialBackgroundWithScrollOffset:(double)offset;
 @end
 
 @implementation GKMultiplayerFooterView
 
-- (void)wantsMaterialBackgroundWithScrollOffset:(double)a3
+- (void)wantsMaterialBackgroundWithScrollOffset:(double)offset
 {
-  v4 = self;
-  sub_24E03725C(a3);
+  selfCopy = self;
+  sub_24E03725C(offset);
 }
 
 - (BOOL)startGameButtonEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0375FC();
 
   return v3 & 1;
 }
 
-- (void)setStartGameButtonEnabled:(BOOL)a3
+- (void)setStartGameButtonEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_24E03765C(a3);
+  selfCopy = self;
+  sub_24E03765C(enabled);
 }
 
 - (BOOL)inviteFriendsButtonEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0377E4();
 
   return v3 & 1;
 }
 
-- (void)setInviteFriendsButtonEnabled:(BOOL)a3
+- (void)setInviteFriendsButtonEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_24E03788C(a3);
+  selfCopy = self;
+  sub_24E03788C(enabled);
 }
 
 - (BOOL)inviteFriendsButtonHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0379BC();
 
   return v3 & 1;
 }
 
-- (void)setInviteFriendsButtonHidden:(BOOL)a3
+- (void)setInviteFriendsButtonHidden:(BOOL)hidden
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E037A3C();
 }
 
-- (void)setStartGameHandler:(id)a3
+- (void)setStartGameHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -79,13 +79,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_24E0380D4(v4, v5);
 }
 
-- (void)setInviteFriendsHandler:(id)a3
+- (void)setInviteFriendsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -98,28 +98,28 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_24E0383F0(v4, v5);
 }
 
-- (void)configureUsing:(id)a3
+- (void)configureUsing:(id)using
 {
-  v4 = a3;
-  v5 = self;
+  usingCopy = using;
+  selfCopy = self;
   sub_24E038668();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E038730();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_24E038DB4(width);
   v8 = v7;
   v10 = v9;
@@ -138,9 +138,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;

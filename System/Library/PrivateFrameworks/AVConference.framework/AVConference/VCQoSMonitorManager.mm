@@ -3,10 +3,10 @@
 - (VCQoSMonitorManager)init;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)registerQoSReportingSourceForToken:(int64_t)a3;
-- (void)unregisterQoSReportingSourceForToken:(int64_t)a3;
-- (void)updateEventDrivenQoSReport:(id)a3 toClientsWithToken:(int64_t)a4;
-- (void)updateQoSReport:(id)a3 toClientsWithToken:(int64_t)a4;
+- (void)registerQoSReportingSourceForToken:(int64_t)token;
+- (void)unregisterQoSReportingSourceForToken:(int64_t)token;
+- (void)updateEventDrivenQoSReport:(id)report toClientsWithToken:(int64_t)token;
+- (void)updateQoSReport:(id)report toClientsWithToken:(int64_t)token;
 @end
 
 @implementation VCQoSMonitorManager
@@ -58,7 +58,7 @@ void __37__VCQoSMonitorManager_sharedInstance__block_invoke()
   [(VCObject *)&v3 dealloc];
 }
 
-- (void)registerQoSReportingSourceForToken:(int64_t)a3
+- (void)registerQoSReportingSourceForToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -67,7 +67,7 @@ void __37__VCQoSMonitorManager_sharedInstance__block_invoke()
   block[2] = __58__VCQoSMonitorManager_registerQoSReportingSourceForToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -113,7 +113,7 @@ void __58__VCQoSMonitorManager_registerQoSReportingSourceForToken___block_invoke
   }
 }
 
-- (void)unregisterQoSReportingSourceForToken:(int64_t)a3
+- (void)unregisterQoSReportingSourceForToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -122,7 +122,7 @@ void __58__VCQoSMonitorManager_registerQoSReportingSourceForToken___block_invoke
   block[2] = __60__VCQoSMonitorManager_unregisterQoSReportingSourceForToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -163,13 +163,13 @@ void __60__VCQoSMonitorManager_unregisterQoSReportingSourceForToken___block_invo
   }
 }
 
-- (void)updateQoSReport:(id)a3 toClientsWithToken:(int64_t)a4
+- (void)updateQoSReport:(id)report toClientsWithToken:(int64_t)token
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v11[0] = a3;
+  v11[0] = report;
   v10[0] = @"vcQoSReportDictionary";
   v10[1] = @"vcQoSReportToken";
-  v11[1] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11[1] = [MEMORY[0x1E696AD98] numberWithInteger:token];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (VRTraceIsInternalOSInstalled())
   {
@@ -178,10 +178,10 @@ void __60__VCQoSMonitorManager_unregisterQoSReportingSourceForToken___block_invo
     block[1] = 3221225472;
     block[2] = __58__VCQoSMonitorManager_updateQoSReport_toClientsWithToken___block_invoke;
     block[3] = &unk_1E85F4AB8;
-    block[4] = a3;
+    block[4] = report;
     block[5] = self;
     block[6] = v7;
-    block[7] = a4;
+    block[7] = token;
     dispatch_async(xpcCommandQueue, block);
   }
 }
@@ -233,13 +233,13 @@ void __58__VCQoSMonitorManager_updateQoSReport_toClientsWithToken___block_invoke
   }
 }
 
-- (void)updateEventDrivenQoSReport:(id)a3 toClientsWithToken:(int64_t)a4
+- (void)updateEventDrivenQoSReport:(id)report toClientsWithToken:(int64_t)token
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v11[0] = a3;
+  v11[0] = report;
   v10[0] = @"vcQoSReportDictionary";
   v10[1] = @"vcQoSReportToken";
-  v11[1] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11[1] = [MEMORY[0x1E696AD98] numberWithInteger:token];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (VRTraceIsInternalOSInstalled())
   {
@@ -248,10 +248,10 @@ void __58__VCQoSMonitorManager_updateQoSReport_toClientsWithToken___block_invoke
     block[1] = 3221225472;
     block[2] = __69__VCQoSMonitorManager_updateEventDrivenQoSReport_toClientsWithToken___block_invoke;
     block[3] = &unk_1E85F4AB8;
-    block[4] = a3;
+    block[4] = report;
     block[5] = self;
     block[6] = v7;
-    block[7] = a4;
+    block[7] = token;
     dispatch_async(xpcCommandQueue, block);
   }
 }

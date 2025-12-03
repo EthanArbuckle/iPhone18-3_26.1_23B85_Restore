@@ -1,16 +1,16 @@
 @interface PLKShadowDescriptor
-+ (id)shadowWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5;
-+ (id)shadowWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5 strength:(double)a6;
-+ (void)classicDrawShadows:(id)a3 renderScale:(double)a4 color:(id)a5 context:(id)a6;
-+ (void)drawShadows:(id)a3 forImage:(id)a4 contentRect:(CGRect)a5 renderScale:(double)a6 color:(id)a7;
-+ (void)drawShadows:(id)a3 renderScale:(double)a4 color:(id)a5 context:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShadow:(id)a3;
++ (id)shadowWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha;
++ (id)shadowWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha strength:(double)strength;
++ (void)classicDrawShadows:(id)shadows renderScale:(double)scale color:(id)color context:(id)context;
++ (void)drawShadows:(id)shadows forImage:(id)image contentRect:(CGRect)rect renderScale:(double)scale color:(id)color;
++ (void)drawShadows:(id)shadows renderScale:(double)scale color:(id)color context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShadow:(id)shadow;
 - (CGSize)offset;
 - (PLKShadowDescriptor)init;
-- (PLKShadowDescriptor)initWithCoder:(id)a3;
-- (PLKShadowDescriptor)initWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5 strength:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (PLKShadowDescriptor)initWithCoder:(id)coder;
+- (PLKShadowDescriptor)initWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha strength:(double)strength;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLKShadowDescriptor
@@ -24,16 +24,16 @@
   return result;
 }
 
-+ (id)shadowWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5 strength:(double)a6
++ (id)shadowWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha strength:(double)strength
 {
-  v6 = [[a1 alloc] initWithRadius:a3 offset:a4.width alpha:a4.height strength:{a5, a6}];
+  v6 = [[self alloc] initWithRadius:radius offset:offset.width alpha:offset.height strength:{alpha, strength}];
 
   return v6;
 }
 
-+ (id)shadowWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5
++ (id)shadowWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha
 {
-  v5 = [[a1 alloc] initWithRadius:a3 offset:a4.width alpha:a4.height strength:{a5, 1.0}];
+  v5 = [[self alloc] initWithRadius:radius offset:offset.width alpha:offset.height strength:{alpha, 1.0}];
 
   return v5;
 }
@@ -45,10 +45,10 @@
   return 0;
 }
 
-- (PLKShadowDescriptor)initWithRadius:(double)a3 offset:(CGSize)a4 alpha:(double)a5 strength:(double)a6
+- (PLKShadowDescriptor)initWithRadius:(double)radius offset:(CGSize)offset alpha:(double)alpha strength:(double)strength
 {
-  height = a4.height;
-  width = a4.width;
+  height = offset.height;
+  width = offset.width;
   v12.receiver = self;
   v12.super_class = PLKShadowDescriptor;
   result = [(PLKShadowDescriptor *)&v12 init];
@@ -56,41 +56,41 @@
   {
     result->_offset.width = width;
     result->_offset.height = height;
-    result->_radius = a3;
-    result->_alpha = a5;
-    result->_strength = a6;
+    result->_radius = radius;
+    result->_alpha = alpha;
+    result->_strength = strength;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PLKShadowDescriptor *)self isEqualToShadow:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PLKShadowDescriptor *)self isEqualToShadow:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToShadow:(id)a3
+- (BOOL)isEqualToShadow:(id)shadow
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  shadowCopy = shadow;
+  v5 = shadowCopy;
+  if (self == shadowCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && ([(PLKShadowDescriptor *)v4 radius], [(PLKShadowDescriptor *)self radius], BSFloatEqualToFloat()) && ([(PLKShadowDescriptor *)v5 alpha], [(PLKShadowDescriptor *)self alpha], BSFloatEqualToFloat()) && ([(PLKShadowDescriptor *)v5 strength], [(PLKShadowDescriptor *)self strength], BSFloatEqualToFloat()))
+  else if (shadowCopy && ([(PLKShadowDescriptor *)shadowCopy radius], [(PLKShadowDescriptor *)self radius], BSFloatEqualToFloat()) && ([(PLKShadowDescriptor *)v5 alpha], [(PLKShadowDescriptor *)self alpha], BSFloatEqualToFloat()) && ([(PLKShadowDescriptor *)v5 strength], [(PLKShadowDescriptor *)self strength], BSFloatEqualToFloat()))
   {
     [(PLKShadowDescriptor *)v5 offset];
     v7 = v6;
@@ -107,15 +107,15 @@
   return v12;
 }
 
-+ (void)drawShadows:(id)a3 renderScale:(double)a4 color:(id)a5 context:(id)a6
++ (void)drawShadows:(id)shadows renderScale:(double)scale color:(id)color context:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  shadowsCopy = shadows;
+  colorCopy = color;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (colorCopy)
   {
-    v14 = v11;
+    v14 = colorCopy;
   }
 
   else
@@ -125,15 +125,15 @@
     v16[2] = __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invoke;
     v16[3] = &unk_27835B760;
     v6 = &v17;
-    v17 = v12;
+    v17 = contextCopy;
     v14 = __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invoke(v16);
   }
 
-  v15 = [v13 currentImage];
+  currentImage = [v13 currentImage];
   [v13 contentRect];
-  [a1 drawShadows:v10 forImage:v15 contentRect:v14 renderScale:? color:?];
+  [self drawShadows:shadowsCopy forImage:currentImage contentRect:v14 renderScale:? color:?];
 
-  if (!v11)
+  if (!colorCopy)
   {
   }
 }
@@ -159,27 +159,27 @@ id __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invok
   return v3;
 }
 
-+ (void)drawShadows:(id)a3 forImage:(id)a4 contentRect:(CGRect)a5 renderScale:(double)a6 color:(id)a7
++ (void)drawShadows:(id)shadows forImage:(id)image contentRect:(CGRect)rect renderScale:(double)scale color:(id)color
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v85 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  shadowsCopy = shadows;
+  imageCopy = image;
+  colorCopy = color;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v17 = v13;
+  v17 = shadowsCopy;
   if ([v17 count] == 1)
   {
   }
 
   else
   {
-    v18 = [v17 firstObject];
-    [v18 strength];
+    firstObject = [v17 firstObject];
+    [firstObject strength];
 
     v79 = 0u;
     v80 = 0u;
@@ -219,8 +219,8 @@ id __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invok
     }
   }
 
-  v24 = [v17 firstObject];
-  [v24 strength];
+  firstObject2 = [v17 firstObject];
+  [firstObject2 strength];
   IsOne = BSFloatIsOne();
 
   if (IsOne)
@@ -246,17 +246,17 @@ id __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invok
 
           v31 = *(*(&v73 + 1) + 8 * j);
           [v31 offset];
-          v33 = v32 * a6;
+          v33 = v32 * scale;
           [v31 offset];
-          v35 = v34 * a6;
+          v35 = v34 * scale;
           [v31 radius];
-          v37 = v36 * a6;
+          v37 = v36 * scale;
           [v31 alpha];
-          v38 = [v15 colorWithAlphaComponent:?];
-          v39 = [v38 CGColor];
+          v38 = [colorCopy colorWithAlphaComponent:?];
+          cGColor = [v38 CGColor];
           v86.width = v33;
           v86.height = v35;
-          CGContextSetShadowWithColor(CurrentContext, v86, v37, v39);
+          CGContextSetShadowWithColor(CurrentContext, v86, v37, cGColor);
 
           CGContextBeginTransparencyLayer(CurrentContext, 0);
         }
@@ -267,7 +267,7 @@ id __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invok
       while (v28);
     }
 
-    [v14 drawInRect:{x, y, width, height}];
+    [imageCopy drawInRect:{x, y, width, height}];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -301,7 +301,7 @@ id __61__PLKShadowDescriptor_drawShadows_renderScale_color_context___block_invok
   else
   {
 LABEL_28:
-    v63 = a6;
+    scaleCopy = scale;
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -326,15 +326,15 @@ LABEL_28:
           if ((BSFloatLessThanOrEqualToFloat() & 1) == 0)
           {
             [v49 offset];
-            v51 = v50 * v63;
+            v51 = v50 * scaleCopy;
             [v49 offset];
-            v53 = v52 * v63;
+            v53 = v52 * scaleCopy;
             [v49 radius];
-            v55 = v54 * v63;
-            v56 = [v15 CGColor];
+            v55 = v54 * scaleCopy;
+            cGColor2 = [colorCopy CGColor];
             v87.width = v51;
             v87.height = v53;
-            CGContextSetShadowWithColor(CurrentContext, v87, v55, v56);
+            CGContextSetShadowWithColor(CurrentContext, v87, v55, cGColor2);
             CGContextBeginTransparencyLayer(CurrentContext, 0);
             [v49 alpha];
             v58 = v57;
@@ -351,7 +351,7 @@ LABEL_28:
                 v61 = 1.0;
               }
 
-              [v14 drawInRect:0 blendMode:x alpha:{y, width, height, v61}];
+              [imageCopy drawInRect:0 blendMode:x alpha:{y, width, height, v61}];
             }
 
             CGContextEndTransparencyLayer(CurrentContext);
@@ -369,13 +369,13 @@ LABEL_28:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)classicDrawShadows:(id)a3 renderScale:(double)a4 color:(id)a5 context:(id)a6
++ (void)classicDrawShadows:(id)shadows renderScale:(double)scale color:(id)color context:(id)context
 {
   v107 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  i = a5;
-  v10 = a6;
-  v11 = v10;
+  shadowsCopy = shadows;
+  i = color;
+  contextCopy = context;
+  v11 = contextCopy;
   if (i)
   {
     v64 = i;
@@ -387,7 +387,7 @@ LABEL_28:
     v104[1] = 3221225472;
     v104[2] = __68__PLKShadowDescriptor_classicDrawShadows_renderScale_color_context___block_invoke;
     v104[3] = &unk_27835B760;
-    v105 = v10;
+    v105 = contextCopy;
     v64 = __68__PLKShadowDescriptor_classicDrawShadows_renderScale_color_context___block_invoke(v104);
     v58 = &v105;
   }
@@ -396,7 +396,7 @@ LABEL_28:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = v8;
+  obj = shadowsCopy;
   v63 = [obj countByEnumeratingWithState:&v100 objects:v106 count:16];
   if (v63)
   {
@@ -423,49 +423,49 @@ LABEL_28:
         [v13 offset];
         v70 = v17;
         v71 = v18;
-        v19 = [v11 currentImage];
+        currentImage = [v11 currentImage];
         [v11 contentRect];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        [v19 size];
+        [currentImage size];
         v29 = v28;
         v31 = v30;
-        v32 = [v11 format];
+        format = [v11 format];
         if (objc_opt_respondsToSelector())
         {
-          v33 = [v32 contextType];
+          contextType = [format contextType];
         }
 
         else
         {
-          v33 = 4;
+          contextType = 4;
         }
 
-        [v32 scale];
+        [format scale];
         v77 = v34;
         if (objc_opt_respondsToSelector())
         {
-          v35 = [v32 memoryPool];
+          memoryPool = [format memoryPool];
         }
 
         else
         {
-          v35 = 0;
+          memoryPool = 0;
         }
 
-        v36 = v19;
+        v36 = currentImage;
         v37 = v36;
         v38 = v36;
-        if (v33 == 4)
+        if (contextType == 4)
         {
           v38 = [v36 _flatImageWithColor:v64];
         }
 
-        v39 = (v29 + v75 * 2.0) * a4;
+        v39 = (v29 + v75 * 2.0) * scale;
         v40 = ceilf(v39);
-        v41 = (v31 + v75 * 2.0) * a4;
+        v41 = (v31 + v75 * 2.0) * scale;
         v42 = ceilf(v41);
         v57 = v77;
         UIRectCenteredIntegralRectScale();
@@ -473,8 +473,8 @@ LABEL_28:
         v69 = v43;
         v67 = v45;
         v47 = v46;
-        v48 = v77 * a4;
-        v49 = v75 * (v77 * a4);
+        v48 = v77 * scale;
+        v49 = v75 * (v77 * scale);
         if (v49 < 2.0)
         {
           v49 = 2.0;
@@ -483,16 +483,16 @@ LABEL_28:
         v76 = v49;
         v65 = v37;
         v66 = v12;
-        if (v35)
+        if (memoryPool)
         {
           v94 = v40;
           v95 = v42;
           v96 = *&v77;
-          v97 = v33;
-          if (([v35 plk_compatibleWithDescriptor:{&v94, *&v77}] & 1) == 0)
+          v97 = contextType;
+          if (([memoryPool plk_compatibleWithDescriptor:{&v94, *&v77}] & 1) == 0)
           {
 
-            v35 = 0;
+            memoryPool = 0;
           }
         }
 
@@ -518,13 +518,13 @@ LABEL_28:
         v80 = v51;
         v82 = &v94;
         v89 = v77;
-        v90 = v33;
-        v52 = v35;
+        v90 = contextType;
+        v52 = memoryPool;
         v81 = v52;
         v91 = (v70 * v48);
         v92 = (v71 * v48);
         v93 = vcvtmd_u64_f64(v76 * 3.0 * 2.50662827 * 0.25 + 0.5) | 1;
-        v53 = [v50 plk_imageFromContextWithSize:v33 scale:v52 type:v78 pool:v40 drawing:{v42, v77}];
+        v53 = [v50 plk_imageFromContextWithSize:contextType scale:v52 type:v78 pool:v40 drawing:{v42, v77}];
         v54 = v73 * v72;
         v11 = v60;
         for (i = v61; v54 > 0.00000011920929; v54 = v54 + -1.0)
@@ -643,32 +643,32 @@ vImage_Error __68__PLKShadowDescriptor_classicDrawShadows_renderScale_color_cont
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   radius = self->_radius;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = radius;
-  [v8 encodeFloat:@"_radius" forKey:v5];
-  [v8 encodeCGSize:@"_offset" forKey:{self->_offset.width, self->_offset.height}];
+  [coderCopy encodeFloat:@"_radius" forKey:v5];
+  [coderCopy encodeCGSize:@"_offset" forKey:{self->_offset.width, self->_offset.height}];
   alpha = self->_alpha;
   *&alpha = alpha;
-  [v8 encodeFloat:@"_alpha" forKey:alpha];
+  [coderCopy encodeFloat:@"_alpha" forKey:alpha];
   strength = self->_strength;
   *&strength = strength;
-  [v8 encodeFloat:@"_strength" forKey:strength];
+  [coderCopy encodeFloat:@"_strength" forKey:strength];
 }
 
-- (PLKShadowDescriptor)initWithCoder:(id)a3
+- (PLKShadowDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"_radius"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"_radius"];
   v6 = v5;
-  [v4 decodeCGSizeForKey:@"_offset"];
+  [coderCopy decodeCGSizeForKey:@"_offset"];
   v8 = v7;
   v10 = v9;
-  [v4 decodeFloatForKey:@"_alpha"];
+  [coderCopy decodeFloatForKey:@"_alpha"];
   v12 = v11;
-  [v4 decodeFloatForKey:@"_strength"];
+  [coderCopy decodeFloatForKey:@"_strength"];
   v14 = v13;
 
   return [(PLKShadowDescriptor *)self initWithRadius:v6 offset:v8 alpha:v10 strength:v12, v14];

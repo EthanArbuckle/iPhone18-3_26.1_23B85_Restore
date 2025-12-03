@@ -1,14 +1,14 @@
 @interface CDPRecoveryController
-- (id)_sanitizedRecoveryErrorWithError:(id)a3;
-- (void)performRecovery:(id)a3;
+- (id)_sanitizedRecoveryErrorWithError:(id)error;
+- (void)performRecovery:(id)recovery;
 @end
 
 @implementation CDPRecoveryController
 
-- (void)performRecovery:(id)a3
+- (void)performRecovery:(id)recovery
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recoveryCopy = recovery;
   v5 = _os_activity_create(&dword_1DED99000, "cdp: recovery flow", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -38,8 +38,8 @@
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__4;
   v46 = __Block_byref_object_dispose__4;
-  v13 = self;
-  v47 = v13;
+  selfCopy = self;
+  v47 = selfCopy;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __41__CDPRecoveryController_performRecovery___block_invoke;
@@ -47,46 +47,46 @@
   v36 = v7;
   v37 = v9;
   p_buf = &buf;
-  v14 = v4;
+  v14 = recoveryCopy;
   v34 = v14;
   v15 = MEMORY[0x1E12CA380](v33);
-  v16 = [(CDPController *)v13 daemonConn];
+  daemonConn = [(CDPController *)selfCopy daemonConn];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __41__CDPRecoveryController_performRecovery___block_invoke_2;
   v31[3] = &unk_1E869D440;
-  v31[4] = v13;
+  v31[4] = selfCopy;
   v17 = v15;
   v32 = v17;
-  v18 = [v16 daemonWithErrorHandler:v31];
+  v18 = [daemonConn daemonWithErrorHandler:v31];
 
   v19 = _CDPLogSystemAnalytics();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [(CDPController *)v13 context];
-    v28 = [v27 telemetryFlowID];
+    context = [(CDPController *)selfCopy context];
+    telemetryFlowID = [context telemetryFlowID];
     *v39 = 138412546;
-    v40 = v13;
+    v40 = selfCopy;
     v41 = 2112;
-    v42 = v28;
+    v42 = telemetryFlowID;
     _os_log_debug_impl(&dword_1DED99000, v19, OS_LOG_TYPE_DEBUG, "%@: setting context type to be CDPContextTypeAccountRecovery with flowID=%@", v39, 0x16u);
   }
 
-  v20 = [(CDPController *)v13 context];
-  [v20 setType:11];
+  context2 = [(CDPController *)selfCopy context];
+  [context2 setType:11];
 
-  v21 = [(CDPController *)v13 context];
-  v22 = [(CDPController *)v13 uiProviderProxy];
-  v23 = [(CDPController *)v13 authProvider];
-  v24 = [CDPAuthProviderProxy proxyWithAuthProvider:v23];
+  context3 = [(CDPController *)selfCopy context];
+  uiProviderProxy = [(CDPController *)selfCopy uiProviderProxy];
+  authProvider = [(CDPController *)selfCopy authProvider];
+  v24 = [CDPAuthProviderProxy proxyWithAuthProvider:authProvider];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __41__CDPRecoveryController_performRecovery___block_invoke_29;
   v29[3] = &unk_1E869D848;
-  v29[4] = v13;
+  v29[4] = selfCopy;
   v25 = v17;
   v30 = v25;
-  [v18 performRecoveryWithContext:v21 uiProvider:v22 authProvider:v24 completion:v29];
+  [v18 performRecoveryWithContext:context3 uiProvider:uiProviderProxy authProvider:v24 completion:v29];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -185,12 +185,12 @@ void __41__CDPRecoveryController_performRecovery___block_invoke_29(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_sanitizedRecoveryErrorWithError:(id)a3
+- (id)_sanitizedRecoveryErrorWithError:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"CDPStateError"), v5, !v6))
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy && ([errorCopy domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"CDPStateError"), v5, !v6))
   {
     v11 = *MEMORY[0x1E696AA08];
     v12[0] = v4;

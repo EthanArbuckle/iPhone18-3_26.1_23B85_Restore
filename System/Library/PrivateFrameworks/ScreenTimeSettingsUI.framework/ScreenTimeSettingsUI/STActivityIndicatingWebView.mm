@@ -1,19 +1,19 @@
 @interface STActivityIndicatingWebView
-- (STActivityIndicatingWebView)initWithConfiguration:(id)a3;
+- (STActivityIndicatingWebView)initWithConfiguration:(id)configuration;
 - (void)didChangeUserInterfaceStyle;
-- (void)hostActivityIndicatorInView:(id)a3;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)hostActivityIndicatorInView:(id)view;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation STActivityIndicatingWebView
 
-- (STActivityIndicatingWebView)initWithConfiguration:(id)a3
+- (STActivityIndicatingWebView)initWithConfiguration:(id)configuration
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = STActivityIndicatingWebView;
-  v5 = [(STActivityIndicatingWebView *)&v17 initWithFrame:v4 configuration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v5 = [(STActivityIndicatingWebView *)&v17 initWithFrame:configurationCopy configuration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
   activityView = v5->_activityView;
   v5->_activityView = v6;
@@ -44,12 +44,12 @@ void __53__STActivityIndicatingWebView_initWithConfiguration___block_invoke(uint
 
 - (void)didChangeUserInterfaceStyle
 {
-  v3 = [(STActivityIndicatingWebView *)self superview];
+  superview = [(STActivityIndicatingWebView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v6 = [(STActivityIndicatingWebView *)self traitCollection];
-    if ([v6 userInterfaceStyle] == 2)
+    traitCollection = [(STActivityIndicatingWebView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] blackColor];
     }
@@ -59,49 +59,49 @@ void __53__STActivityIndicatingWebView_initWithConfiguration___block_invoke(uint
       [MEMORY[0x277D75348] whiteColor];
     }
     v4 = ;
-    v5 = [(STActivityIndicatingWebView *)self superview];
-    [v5 setBackgroundColor:v4];
+    superview2 = [(STActivityIndicatingWebView *)self superview];
+    [superview2 setBackgroundColor:v4];
   }
 }
 
-- (void)hostActivityIndicatorInView:(id)a3
+- (void)hostActivityIndicatorInView:(id)view
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STActivityIndicatingWebView *)self activityView];
-  v6 = [v5 superview];
+  viewCopy = view;
+  activityView = [(STActivityIndicatingWebView *)self activityView];
+  superview = [activityView superview];
 
-  if (!v6)
+  if (!superview)
   {
-    v7 = [(STActivityIndicatingWebView *)self activityView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityView2 = [(STActivityIndicatingWebView *)self activityView];
+    [activityView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(STActivityIndicatingWebView *)self activityView];
-    [v4 addSubview:v8];
+    activityView3 = [(STActivityIndicatingWebView *)self activityView];
+    [viewCopy addSubview:activityView3];
 
     v18 = MEMORY[0x277CCAAD0];
-    v19 = [(STActivityIndicatingWebView *)self activityView];
-    v9 = [v19 centerXAnchor];
-    v10 = [v4 centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    activityView4 = [(STActivityIndicatingWebView *)self activityView];
+    centerXAnchor = [activityView4 centerXAnchor];
+    centerXAnchor2 = [viewCopy centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v20[0] = v11;
-    v12 = [(STActivityIndicatingWebView *)self activityView];
-    v13 = [v12 centerYAnchor];
-    v14 = [v4 centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    activityView5 = [(STActivityIndicatingWebView *)self activityView];
+    centerYAnchor = [activityView5 centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v20[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     [v18 activateConstraints:v16];
 
     [(STActivityIndicatingWebView *)self setAlpha:0.0];
-    v17 = [(STActivityIndicatingWebView *)self activityView];
-    [v17 startAnimating];
+    activityView6 = [(STActivityIndicatingWebView *)self activityView];
+    [activityView6 startAnimating];
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = [(STActivityIndicatingWebView *)self activityView:a3];
+  v5 = [(STActivityIndicatingWebView *)self activityView:view];
   [v5 stopAnimating];
 
   v6[0] = MEMORY[0x277D85DD0];

@@ -3,20 +3,20 @@
 + (MARelation)momentOfScene;
 + (MARelation)momentOfSceneWithHighConfidenceAssets;
 + (id)filter;
-+ (id)filterForSceneName:(id)a3;
-+ (id)filterForSceneNames:(id)a3;
-+ (id)filterWithSceneIdentifiers:(id)a3;
++ (id)filterForSceneName:(id)name;
++ (id)filterForSceneNames:(id)names;
++ (id)filterWithSceneIdentifiers:(id)identifiers;
 + (id)momentOfSceneWithDominantSceneAssets;
 + (id)momentOfSceneWithSearchConfidenceAssets;
 + (id)suggestableSceneNames;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (BOOL)isSuitableForSuggestions;
 - (NSString)featureIdentifier;
-- (PGGraphSceneNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphSceneNode)initWithSceneName:(id)a3 sceneIdentifier:(unint64_t)a4 level:(unint64_t)a5 isIndexed:(BOOL)a6 localizedName:(id)a7 localizedSynonyms:(id)a8;
-- (PGGraphSceneNode)initWithSceneTaxonomyNode:(id)a3 level:(unint64_t)a4;
+- (PGGraphSceneNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphSceneNode)initWithSceneName:(id)name sceneIdentifier:(unint64_t)identifier level:(unint64_t)level isIndexed:(BOOL)indexed localizedName:(id)localizedName localizedSynonyms:(id)synonyms;
+- (PGGraphSceneNode)initWithSceneTaxonomyNode:(id)node level:(unint64_t)level;
 - (PGGraphSceneNodeCollection)collection;
-- (id)initForTestingWithSceneName:(id)a3;
+- (id)initForTestingWithSceneName:(id)name;
 - (id)momentNodes;
 - (id)propertyDictionary;
 - (unint64_t)numberOfAssets;
@@ -33,19 +33,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphSceneNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphSceneNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
 
 - (id)momentNodes
 {
-  v2 = [(PGGraphSceneNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphSceneNode *)self collection];
+  momentNodes = [collection momentNodes];
+  temporarySet = [momentNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
 - (unint64_t)numberOfDominantSceneAssets
@@ -54,8 +54,8 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(PGGraphSceneNode *)self collection];
-  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:v2];
+  collection = [(PGGraphSceneNode *)self collection];
+  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:collection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__PGGraphSceneNode_numberOfDominantSceneAssets__block_invoke;
@@ -81,8 +81,8 @@ uint64_t __47__PGGraphSceneNode_numberOfDominantSceneAssets__block_invoke(uint64
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(PGGraphSceneNode *)self collection];
-  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:v2];
+  collection = [(PGGraphSceneNode *)self collection];
+  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:collection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__PGGraphSceneNode_numberOfSearchConfidenceAssets__block_invoke;
@@ -108,8 +108,8 @@ uint64_t __50__PGGraphSceneNode_numberOfSearchConfidenceAssets__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(PGGraphSceneNode *)self collection];
-  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:v2];
+  collection = [(PGGraphSceneNode *)self collection];
+  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:collection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__PGGraphSceneNode_numberOfHighConfidenceAssets__block_invoke;
@@ -135,8 +135,8 @@ uint64_t __48__PGGraphSceneNode_numberOfHighConfidenceAssets__block_invoke(uint6
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(PGGraphSceneNode *)self collection];
-  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:v2];
+  collection = [(PGGraphSceneNode *)self collection];
+  v3 = [(PGGraphEdgeCollection *)PGGraphSceneEdgeCollection edgesToNodes:collection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__PGGraphSceneNode_numberOfAssets__block_invoke;
@@ -158,9 +158,9 @@ uint64_t __34__PGGraphSceneNode_numberOfAssets__block_invoke(uint64_t a1, void *
 
 - (BOOL)isSuitableForSuggestions
 {
-  v3 = [objc_opt_class() suggestableSceneNames];
-  v4 = [(PGGraphSceneNode *)self label];
-  v5 = [v3 containsObject:v4];
+  suggestableSceneNames = [objc_opt_class() suggestableSceneNames];
+  label = [(PGGraphSceneNode *)self label];
+  v5 = [suggestableSceneNames containsObject:label];
 
   if (v5)
   {
@@ -245,11 +245,11 @@ uint64_t __44__PGGraphSceneNode_isSuitableForSuggestions__block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"sceneIdentifier"];
     v7 = v6;
@@ -310,30 +310,30 @@ LABEL_15:
   return v12;
 }
 
-- (id)initForTestingWithSceneName:(id)a3
+- (id)initForTestingWithSceneName:(id)name
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 set];
-  v7 = [(PGGraphSceneNode *)self initWithSceneName:v5 sceneIdentifier:1 level:1 isIndexed:1 localizedName:v5 localizedSynonyms:v6];
+  v7 = [(PGGraphSceneNode *)self initWithSceneName:nameCopy sceneIdentifier:1 level:1 isIndexed:1 localizedName:nameCopy localizedSynonyms:v6];
 
   return v7;
 }
 
-- (PGGraphSceneNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphSceneNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 objectForKeyedSubscript:@"sceneIdentifier"];
-  v10 = [v9 unsignedLongLongValue];
+  propertiesCopy = properties;
+  labelCopy = label;
+  v9 = [propertiesCopy objectForKeyedSubscript:@"sceneIdentifier"];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-  v11 = [v7 objectForKeyedSubscript:@"level"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"level"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v13 = [v7 objectForKeyedSubscript:@"isIndexed"];
-  v14 = [v13 BOOLValue];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"isIndexed"];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [v7 objectForKeyedSubscript:@"localizedName"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"localizedName"];
   v16 = v15;
   if (v15)
   {
@@ -342,13 +342,13 @@ LABEL_15:
 
   else
   {
-    v17 = v8;
+    v17 = labelCopy;
   }
 
   v18 = v17;
 
   v19 = objc_alloc(MEMORY[0x277CBEB98]);
-  v20 = [v7 objectForKeyedSubscript:@"localizedSynonyms"];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"localizedSynonyms"];
 
   if (v20)
   {
@@ -363,34 +363,34 @@ LABEL_15:
   v22 = [(__CFString *)v21 componentsSeparatedByString:@", "];
   v23 = [v19 initWithArray:v22];
 
-  v24 = [(PGGraphSceneNode *)self initWithSceneName:v8 sceneIdentifier:v10 level:v12 isIndexed:v14 localizedName:v18 localizedSynonyms:v23];
+  v24 = [(PGGraphSceneNode *)self initWithSceneName:labelCopy sceneIdentifier:unsignedLongLongValue level:unsignedIntegerValue isIndexed:bOOLValue localizedName:v18 localizedSynonyms:v23];
   return v24;
 }
 
-- (PGGraphSceneNode)initWithSceneName:(id)a3 sceneIdentifier:(unint64_t)a4 level:(unint64_t)a5 isIndexed:(BOOL)a6 localizedName:(id)a7 localizedSynonyms:(id)a8
+- (PGGraphSceneNode)initWithSceneName:(id)name sceneIdentifier:(unint64_t)identifier level:(unint64_t)level isIndexed:(BOOL)indexed localizedName:(id)localizedName localizedSynonyms:(id)synonyms
 {
-  v11 = a5;
+  levelCopy = level;
   v28[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  nameCopy = name;
+  localizedNameCopy = localizedName;
+  synonymsCopy = synonyms;
   v27.receiver = self;
   v27.super_class = PGGraphSceneNode;
   v17 = [(PGGraphNode *)&v27 init];
   if (v17)
   {
-    v18 = [v14 capitalizedString];
+    capitalizedString = [nameCopy capitalizedString];
     label = v17->_label;
-    v17->_label = v18;
+    v17->_label = capitalizedString;
 
-    v17->_sceneIdentifier = a4;
-    *(v17 + 32) = v11;
-    v17->_isIndexed = a6;
-    objc_storeStrong(&v17->_localizedName, a7);
+    v17->_sceneIdentifier = identifier;
+    *(v17 + 32) = levelCopy;
+    v17->_isIndexed = indexed;
+    objc_storeStrong(&v17->_localizedName, localizedName);
     v20 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
     v28[0] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-    v22 = [v16 sortedArrayUsingDescriptors:v21];
+    v22 = [synonymsCopy sortedArrayUsingDescriptors:v21];
     v23 = [v22 componentsJoinedByString:{@", "}];
     localizedSynonyms = v17->_localizedSynonyms;
     v17->_localizedSynonyms = v23;
@@ -400,29 +400,29 @@ LABEL_15:
   return v17;
 }
 
-- (PGGraphSceneNode)initWithSceneTaxonomyNode:(id)a3 level:(unint64_t)a4
+- (PGGraphSceneNode)initWithSceneTaxonomyNode:(id)node level:(unint64_t)level
 {
-  v6 = a3;
-  v7 = [v6 name];
-  v8 = [v6 localizedName];
-  v9 = v8;
-  if (v8)
+  nodeCopy = node;
+  name = [nodeCopy name];
+  localizedName = [nodeCopy localizedName];
+  v9 = localizedName;
+  if (localizedName)
   {
-    v10 = v8;
+    capitalizedString = localizedName;
   }
 
   else
   {
-    v10 = [v7 capitalizedString];
+    capitalizedString = [name capitalizedString];
   }
 
-  v11 = v10;
+  v11 = capitalizedString;
 
-  v12 = [v6 localizedSynonyms];
-  v13 = v12;
-  if (v12)
+  localizedSynonyms = [nodeCopy localizedSynonyms];
+  v13 = localizedSynonyms;
+  if (localizedSynonyms)
   {
-    v14 = v12;
+    v14 = localizedSynonyms;
   }
 
   else
@@ -432,7 +432,7 @@ LABEL_15:
 
   v15 = v14;
 
-  v16 = -[PGGraphSceneNode initWithSceneName:sceneIdentifier:level:isIndexed:localizedName:localizedSynonyms:](self, "initWithSceneName:sceneIdentifier:level:isIndexed:localizedName:localizedSynonyms:", v7, [v6 identifier], a4, objc_msgSend(v6, "isIndexed"), v11, v15);
+  v16 = -[PGGraphSceneNode initWithSceneName:sceneIdentifier:level:isIndexed:localizedName:localizedSynonyms:](self, "initWithSceneName:sceneIdentifier:level:isIndexed:localizedName:localizedSynonyms:", name, [nodeCopy identifier], level, objc_msgSend(nodeCopy, "isIndexed"), v11, v15);
   return v16;
 }
 
@@ -441,11 +441,11 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphSceneEdge dominantSceneAssetsFilter];
-  v4 = [v3 inRelation];
-  v11[0] = v4;
+  inRelation = [v3 inRelation];
+  v11[0] = inRelation;
   v5 = +[PGGraphMomentNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -459,11 +459,11 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphSceneEdge searchConfidenceAssetsFilter];
-  v4 = [v3 inRelation];
-  v11[0] = v4;
+  inRelation = [v3 inRelation];
+  v11[0] = inRelation;
   v5 = +[PGGraphMomentNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -477,11 +477,11 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphSceneEdge highConfidenceAssetsFilter];
-  v4 = [v3 inRelation];
-  v11[0] = v4;
+  inRelation = [v3 inRelation];
+  v11[0] = inRelation;
   v5 = +[PGGraphMomentNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -495,11 +495,11 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphSceneEdge isReliableFilter];
-  v4 = [v3 inRelation];
-  v11[0] = v4;
+  inRelation = [v3 inRelation];
+  v11[0] = inRelation;
   v5 = +[PGGraphMomentNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -513,11 +513,11 @@ LABEL_15:
   v11[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
   v3 = +[PGGraphSceneEdge filter];
-  v4 = [v3 inRelation];
-  v11[0] = v4;
+  inRelation = [v3 inRelation];
+  v11[0] = inRelation;
   v5 = +[PGGraphMomentNode filter];
-  v6 = [v5 relation];
-  v11[1] = v6;
+  relation = [v5 relation];
+  v11[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v2 chain:v7];
 
@@ -532,7 +532,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __41__PGGraphSceneNode_suggestableSceneNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (suggestableSceneNames_onceToken != -1)
   {
     dispatch_once(&suggestableSceneNames_onceToken, block);
@@ -574,32 +574,32 @@ void __41__PGGraphSceneNode_suggestableSceneNames__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filterWithSceneIdentifiers:(id)a3
++ (id)filterWithSceneIdentifiers:(id)identifiers
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  identifiersCopy = identifiers;
+  filter = [self filter];
   v10 = @"sceneIdentifier";
-  v11[0] = v4;
+  v11[0] = identifiersCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterForSceneNames:(id)a3
++ (id)filterForSceneNames:(id)names
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  namesCopy = names;
+  v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -614,8 +614,8 @@ void __41__PGGraphSceneNode_suggestableSceneNames__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * i) capitalizedString];
-        [v5 addObject:v11];
+        capitalizedString = [*(*(&v17 + 1) + 8 * i) capitalizedString];
+        [v5 addObject:capitalizedString];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -625,25 +625,25 @@ void __41__PGGraphSceneNode_suggestableSceneNames__block_invoke(uint64_t a1)
   }
 
   v12 = objc_alloc(MEMORY[0x277D22C78]);
-  v13 = [a1 domain];
-  v14 = [v12 initWithLabels:v5 domain:v13 properties:MEMORY[0x277CBEC10]];
+  domain = [self domain];
+  v14 = [v12 initWithLabels:v5 domain:domain properties:MEMORY[0x277CBEC10]];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-+ (id)filterForSceneName:(id)a3
++ (id)filterForSceneName:(id)name
 {
-  v4 = [a3 capitalizedString];
-  v5 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:v4 domain:{objc_msgSend(a1, "domain")}];
+  capitalizedString = [name capitalizedString];
+  v5 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:capitalizedString domain:{objc_msgSend(self, "domain")}];
 
   return v5;
 }
 
 + (id)filter
 {
-  v2 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:0 domain:{objc_msgSend(a1, "domain")}];
+  v2 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:0 domain:{objc_msgSend(self, "domain")}];
 
   return v2;
 }

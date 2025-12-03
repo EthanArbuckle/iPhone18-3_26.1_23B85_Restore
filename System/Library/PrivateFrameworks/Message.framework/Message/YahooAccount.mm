@@ -1,15 +1,15 @@
 @interface YahooAccount
 + (BOOL)deliveryAccountUsesSSL;
-+ (BOOL)getConfigurationFromServerForEmail:(id)a3;
++ (BOOL)getConfigurationFromServerForEmail:(id)email;
 + (BOOL)isSSLEditable;
 + (BOOL)usesSSL;
 + (id)authSchemesForAccountClass;
-+ (id)emailAddressWithUsername:(id)a3;
++ (id)emailAddressWithUsername:(id)username;
 + (unsigned)deliveryAccountPortNumber;
-- (YahooAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4;
-- (id)URLForMessage:(id)a3;
-- (id)_defaultSpecialMailboxNameForType:(int64_t)a3;
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3;
+- (YahooAccount)initWithLibrary:(id)library persistentAccount:(id)account;
+- (id)URLForMessage:(id)message;
+- (id)_defaultSpecialMailboxNameForType:(int64_t)type;
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed;
 - (id)displayUsername;
 - (id)emailAddressStrings;
 - (id)hostname;
@@ -21,11 +21,11 @@
 
 @implementation YahooAccount
 
-- (YahooAccount)initWithLibrary:(id)a3 persistentAccount:(id)a4
+- (YahooAccount)initWithLibrary:(id)library persistentAccount:(id)account
 {
   v7.receiver = self;
   v7.super_class = YahooAccount;
-  v4 = [(IMAPAccount *)&v7 initWithLibrary:a3 persistentAccount:a4];
+  v4 = [(IMAPAccount *)&v7 initWithLibrary:library persistentAccount:account];
   if (v4)
   {
     if (RegisterYahooAuthSchemes_onceToken[0] != -1)
@@ -46,7 +46,7 @@
     +[YahooAccount authSchemesForAccountClass];
   }
 
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___YahooAccount;
   v3 = objc_msgSendSuper2(&v5, sel_authSchemesForAccountClass);
 
@@ -55,52 +55,52 @@
 
 + (BOOL)isSSLEditable
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 valueForKey:@"YahooAllowSSL"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"YahooAllowSSL"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___YahooAccount;
-    v5 = objc_msgSendSuper2(&v8, sel_isSSLEditable);
+    bOOLValue = objc_msgSendSuper2(&v8, sel_isSSLEditable);
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
 
 + (BOOL)usesSSL
 {
-  v2 = [a1 predefinedValueForKey:@"SSLEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self predefinedValueForKey:@"SSLEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unsigned)portNumber
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"YahooIMAPPort"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"YahooIMAPPort"];
 
   if (v4)
   {
-    v5 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = YahooAccount;
-    v5 = [(MFAccount *)&v8 portNumber];
+    unsignedIntValue = [(MFAccount *)&v8 portNumber];
   }
 
-  v6 = v5;
+  v6 = unsignedIntValue;
 
   return v6;
 }
@@ -114,8 +114,8 @@
 
 - (unint64_t)credentialAccessibility
 {
-  v3 = [(MFAccount *)self oauth2Token];
-  v4 = [v3 length];
+  oauth2Token = [(MFAccount *)self oauth2Token];
+  v4 = [oauth2Token length];
 
   if (v4)
   {
@@ -127,10 +127,10 @@
   return [(MFAccount *)&v6 credentialAccessibility];
 }
 
-- (id)_defaultSpecialMailboxNameForType:(int64_t)a3
+- (id)_defaultSpecialMailboxNameForType:(int64_t)type
 {
-  v5 = a3 - 1;
-  if (a3 - 1) < 5 && ((0x1Du >> v5))
+  v5 = type - 1;
+  if (type - 1) < 5 && ((0x1Du >> v5))
   {
     v6 = off_1E7AA7E80[v5];
   }
@@ -147,11 +147,11 @@
   return v6;
 }
 
-+ (id)emailAddressWithUsername:(id)a3
++ (id)emailAddressWithUsername:(id)username
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:&stru_1F273A5E0] & 1) == 0)
+  usernameCopy = username;
+  v4 = usernameCopy;
+  if (usernameCopy && ([usernameCopy isEqualToString:&stru_1F273A5E0] & 1) == 0)
   {
     if ([v4 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -178,8 +178,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(MFAccount *)self username];
-  v5 = [v3 emailAddressWithUsername:v4];
+  username = [(MFAccount *)self username];
+  v5 = [v3 emailAddressWithUsername:username];
 
   if (v5)
   {
@@ -218,31 +218,31 @@
   return v4;
 }
 
-- (id)URLForMessage:(id)a3
+- (id)URLForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 headersIfAvailable];
-  v5 = [v4 firstHeaderForKey:*MEMORY[0x1E69AD638]];
+  messageCopy = message;
+  headersIfAvailable = [messageCopy headersIfAvailable];
+  v5 = [headersIfAvailable firstHeaderForKey:*MEMORY[0x1E69AD638]];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v3 mailbox];
-  v7 = [v3 account];
-  v8 = [v7 primaryMailboxUid];
+  mailbox = [messageCopy mailbox];
+  account = [messageCopy account];
+  primaryMailboxUid = [account primaryMailboxUid];
 
-  if (v6 == v8)
+  if (mailbox == primaryMailboxUid)
   {
-    v10 = @"Inbox";
+    name = @"Inbox";
   }
 
   else
   {
-    v9 = [v3 mailbox];
-    v10 = [v9 name];
+    mailbox2 = [messageCopy mailbox];
+    name = [mailbox2 name];
 
-    if (!v10)
+    if (!name)
     {
 LABEL_4:
       v11 = 0;
@@ -251,10 +251,10 @@ LABEL_4:
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
-  v14 = [(__CFString *)v10 stringByAddingPercentEncodingWithAllowedCharacters:v13];
-  v15 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
-  v16 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+  ef_defaultAllowedCharacterSet = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
+  v14 = [(__CFString *)name stringByAddingPercentEncodingWithAllowedCharacters:ef_defaultAllowedCharacterSet];
+  ef_defaultAllowedCharacterSet2 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
+  v16 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:ef_defaultAllowedCharacterSet2];
   v11 = [v12 stringWithFormat:@"ymail://?fid=%@&mid=%@", v14, v16];
 
 LABEL_7:
@@ -262,10 +262,10 @@ LABEL_7:
   return v11;
 }
 
-+ (BOOL)getConfigurationFromServerForEmail:(id)a3
++ (BOOL)getConfigurationFromServerForEmail:(id)email
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"yahoo.co.jp" options:4] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v3, "rangeOfString:options:", @"ybb.ne.jp", 4) != 0x7FFFFFFFFFFFFFFFLL;
+  emailCopy = email;
+  v4 = [emailCopy rangeOfString:@"yahoo.co.jp" options:4] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(emailCopy, "rangeOfString:options:", @"ybb.ne.jp", 4) != 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
@@ -288,23 +288,23 @@ LABEL_7:
 
 + (BOOL)deliveryAccountUsesSSL
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliverySSLEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliverySSLEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (unsigned)deliveryAccountPortNumber
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliveryPortNumber"];
-  v3 = [v2 unsignedIntValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliveryPortNumber"];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     v4 = objc_alloc_init(MFYahooSMTPAccount);
     [(MFYahooSMTPAccount *)v4 setMailAccount:self];
@@ -320,17 +320,17 @@ LABEL_7:
 
 - (id)displayUsername
 {
-  v2 = [(MFAccount *)self username];
-  [v2 rangeOfString:@"@"];
+  username = [(MFAccount *)self username];
+  [username rangeOfString:@"@"];
   if (!v3)
   {
-    v4 = [objc_opt_class() emailAddressHostPart];
-    v5 = [v2 stringByAppendingFormat:@"@%@", v4];
+    emailAddressHostPart = [objc_opt_class() emailAddressHostPart];
+    v5 = [username stringByAppendingFormat:@"@%@", emailAddressHostPart];
 
-    v2 = v5;
+    username = v5;
   }
 
-  return v2;
+  return username;
 }
 
 @end

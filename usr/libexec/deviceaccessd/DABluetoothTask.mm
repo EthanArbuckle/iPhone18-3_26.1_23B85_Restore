@@ -1,8 +1,8 @@
 @interface DABluetoothTask
 - (DABluetoothTask)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)cancelTimer;
-- (void)setTimerTimeout:(double)a3 queue:(id)a4 handler:(id)a5;
+- (void)setTimerTimeout:(double)timeout queue:(id)queue handler:(id)handler;
 @end
 
 @implementation DABluetoothTask
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (void)setTimerTimeout:(double)a3 queue:(id)a4 handler:(id)a5
+- (void)setTimerTimeout:(double)timeout queue:(id)queue handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   [(DABluetoothTask *)self cancelTimer];
-  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8);
+  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queueCopy);
 
   objc_storeStrong(&self->taskTimer, v9);
   v11[0] = _NSConcreteStackBlock;
@@ -34,8 +34,8 @@
   v11[2] = sub_10002BBD8;
   v11[3] = &unk_100059508;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_source_set_event_handler(v9, v11);
   if (dword_1000607A0 <= 30 && (dword_1000607A0 != -1 || _LogCategory_Initialize()))
   {
@@ -58,9 +58,9 @@
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }

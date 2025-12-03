@@ -1,24 +1,24 @@
 @interface DataDetectorHelperDelegate
 - (_TtC9PencilKitP33_6CA4DD0836BA847654562546A8E159D126DataDetectorHelperDelegate)init;
-- (void)dataDetectorInteractionHelper:(id)a3 replaceStrokes:(id)a4 withStrokes:(id)a5;
-- (void)dataDetectorInteractionHelperNeedsLayout:(id)a3;
+- (void)dataDetectorInteractionHelper:(id)helper replaceStrokes:(id)strokes withStrokes:(id)withStrokes;
+- (void)dataDetectorInteractionHelperNeedsLayout:(id)layout;
 @end
 
 @implementation DataDetectorHelperDelegate
 
-- (void)dataDetectorInteractionHelperNeedsLayout:(id)a3
+- (void)dataDetectorInteractionHelperNeedsLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   specialized DataDetectorHelperDelegate.dataDetectorInteractionHelperNeedsLayout(_:)();
 }
 
-- (void)dataDetectorInteractionHelper:(id)a3 replaceStrokes:(id)a4 withStrokes:(id)a5
+- (void)dataDetectorInteractionHelper:(id)helper replaceStrokes:(id)strokes withStrokes:(id)withStrokes
 {
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = self;
+  helperCopy = helper;
+  selfCopy = self;
   specialized DataDetectorHelperDelegate.dataDetectorInteractionHelper(_:replace:with:)(v7, v8);
 }
 

@@ -1,27 +1,27 @@
 @interface SBHIconLibraryQueryContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQueryContext:(id)a3;
-- (SBHIconLibraryQueryContext)initWithQuery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQueryContext:(id)context;
+- (SBHIconLibraryQueryContext)initWithQuery:(id)query;
 - (id)description;
 @end
 
 @implementation SBHIconLibraryQueryContext
 
-- (SBHIconLibraryQueryContext)initWithQuery:(id)a3
+- (SBHIconLibraryQueryContext)initWithQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v14.receiver = self;
   v14.super_class = SBHIconLibraryQueryContext;
   v5 = [(SBHIconLibraryQueryContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [queryCopy copy];
     query = v5->_query;
     v5->_query = v6;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v5->_UUID;
-    v5->_UUID = v8;
+    v5->_UUID = uUID;
 
     v10 = objc_opt_new();
     contextStorage = v5->_contextStorage;
@@ -41,15 +41,15 @@
   v5 = [v3 appendObject:self->_UUID withName:@"UUID"];
   [v3 appendDictionarySection:self->_contextStorage withName:@"contextStorage" skipIfEmpty:1];
   v6 = [v3 appendInteger:self->_queryContextIdx withName:@"queryContextIdx"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -57,26 +57,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHIconLibraryQueryContext *)self isEqualToQueryContext:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHIconLibraryQueryContext *)self isEqualToQueryContext:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToQueryContext:(id)a3
+- (BOOL)isEqualToQueryContext:(id)context
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  contextCopy = context;
+  p_isa = &contextCopy->super.isa;
+  if (self == contextCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = [(SBHIconLibraryQueryContext *)v4 UUID];
-    v7 = [(SBHIconLibraryQueryContext *)self UUID];
-    v8 = [v6 isEqual:v7];
+    uUID = [(SBHIconLibraryQueryContext *)contextCopy UUID];
+    uUID2 = [(SBHIconLibraryQueryContext *)self UUID];
+    v8 = [uUID isEqual:uUID2];
 
     if (v8 && ([p_isa query], v9 = objc_claimAutoreleasedReturnValue(), -[SBHIconLibraryQueryContext query](self, "query"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqual:", v10), v10, v9, v11))
     {

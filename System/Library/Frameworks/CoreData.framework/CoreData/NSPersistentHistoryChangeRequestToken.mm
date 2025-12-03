@@ -1,29 +1,29 @@
 @interface NSPersistentHistoryChangeRequestToken
-- (NSPersistentHistoryChangeRequestToken)initWithCoder:(id)a3;
-- (id)initForRequest:(id)a3;
+- (NSPersistentHistoryChangeRequestToken)initWithCoder:(id)coder;
+- (id)initForRequest:(id)request;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPersistentHistoryChangeRequestToken
 
-- (id)initForRequest:(id)a3
+- (id)initForRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = NSPersistentHistoryChangeRequestToken;
   v4 = [(NSPersistentHistoryChangeRequestToken *)&v6 init];
   if (v4)
   {
-    v4->_fetchData = [objc_msgSend(a3 "fetchRequest")];
-    v4->_token = [objc_msgSend(a3 "token")];
-    v4->_date = [a3 date];
-    v4->_resultType = [a3 resultType];
-    v4->_delete = [a3 isDelete];
-    v4->_transactionFromToken = [a3 isFetchTransactionForToken];
-    v4->_fetchLimit = [a3 fetchLimit];
-    v4->_fetchOffset = [a3 fetchOffset];
-    v4->_fetchBatchSize = [a3 fetchBatchSize];
-    v4->_percentageOfDB = [a3 percentageOfDB];
+    v4->_fetchData = [objc_msgSend(request "fetchRequest")];
+    v4->_token = [objc_msgSend(request "token")];
+    v4->_date = [request date];
+    v4->_resultType = [request resultType];
+    v4->_delete = [request isDelete];
+    v4->_transactionFromToken = [request isFetchTransactionForToken];
+    v4->_fetchLimit = [request fetchLimit];
+    v4->_fetchOffset = [request fetchOffset];
+    v4->_fetchBatchSize = [request fetchBatchSize];
+    v4->_percentageOfDB = [request percentageOfDB];
   }
 
   return v4;
@@ -40,7 +40,7 @@
   [(NSPersistentHistoryChangeRequestToken *)&v3 dealloc];
 }
 
-- (NSPersistentHistoryChangeRequestToken)initWithCoder:(id)a3
+- (NSPersistentHistoryChangeRequestToken)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = NSPersistentHistoryChangeRequestToken;
@@ -54,35 +54,35 @@
     v9 = [v5 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
-    v4->_fetchData = [a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"fetch"}];
-    v4->_token = [a3 decodeObjectOfClasses:v9 forKey:@"token"];
-    v4->_date = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-    v4->_resultType = [a3 decodeIntegerForKey:@"resultType"];
-    v4->_delete = [a3 decodeBoolForKey:@"delete"];
-    v4->_transactionFromToken = [a3 decodeBoolForKey:@"transactionFromToken"];
-    v4->_fetchLimit = [a3 decodeIntegerForKey:@"fetchLimit"];
-    v4->_fetchOffset = [a3 decodeIntegerForKey:@"fetchOffset"];
-    v4->_fetchBatchSize = [a3 decodeIntegerForKey:@"fetchBatchSize"];
-    v4->_percentageOfDB = [a3 decodeInt64ForKey:@"percentageOfDB"];
+    v4->_fetchData = [coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"fetch"}];
+    v4->_token = [coder decodeObjectOfClasses:v9 forKey:@"token"];
+    v4->_date = [coder decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v4->_resultType = [coder decodeIntegerForKey:@"resultType"];
+    v4->_delete = [coder decodeBoolForKey:@"delete"];
+    v4->_transactionFromToken = [coder decodeBoolForKey:@"transactionFromToken"];
+    v4->_fetchLimit = [coder decodeIntegerForKey:@"fetchLimit"];
+    v4->_fetchOffset = [coder decodeIntegerForKey:@"fetchOffset"];
+    v4->_fetchBatchSize = [coder decodeIntegerForKey:@"fetchBatchSize"];
+    v4->_percentageOfDB = [coder decodeInt64ForKey:@"percentageOfDB"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_fetchData forKey:@"fetch"];
-  [a3 encodeObject:self->_token forKey:@"token"];
-  [a3 encodeObject:self->_date forKey:@"date"];
-  [a3 encodeInteger:self->_resultType forKey:@"resultType"];
-  [a3 encodeBool:self->_delete forKey:@"delete"];
-  [a3 encodeBool:self->_transactionFromToken forKey:@"transactionFromToken"];
-  [a3 encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
-  [a3 encodeInteger:self->_fetchOffset forKey:@"fetchOffset"];
-  [a3 encodeInteger:self->_fetchBatchSize forKey:@"fetchBatchSize"];
+  [coder encodeObject:self->_fetchData forKey:@"fetch"];
+  [coder encodeObject:self->_token forKey:@"token"];
+  [coder encodeObject:self->_date forKey:@"date"];
+  [coder encodeInteger:self->_resultType forKey:@"resultType"];
+  [coder encodeBool:self->_delete forKey:@"delete"];
+  [coder encodeBool:self->_transactionFromToken forKey:@"transactionFromToken"];
+  [coder encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
+  [coder encodeInteger:self->_fetchOffset forKey:@"fetchOffset"];
+  [coder encodeInteger:self->_fetchBatchSize forKey:@"fetchBatchSize"];
   percentageOfDB = self->_percentageOfDB;
 
-  [a3 encodeInt64:percentageOfDB forKey:@"percentageOfDB"];
+  [coder encodeInt64:percentageOfDB forKey:@"percentageOfDB"];
 }
 
 @end

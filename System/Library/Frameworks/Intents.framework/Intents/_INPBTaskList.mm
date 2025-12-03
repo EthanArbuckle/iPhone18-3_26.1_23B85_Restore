@@ -1,14 +1,14 @@
 @interface _INPBTaskList
-- (BOOL)isEqual:(id)a3;
-- (_INPBTaskList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBTaskList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTasks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setTasks:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTasks:(id)tasks;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIdentifier:(id)identifier;
+- (void)setTasks:(id)tasks;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBTaskList
@@ -16,29 +16,29 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBTaskList *)self createdDateTime];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"createdDateTime"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  createdDateTime = [(_INPBTaskList *)self createdDateTime];
+  dictionaryRepresentation = [createdDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"createdDateTime"];
 
-  v6 = [(_INPBTaskList *)self groupName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBTaskList *)self groupName];
+  dictionaryRepresentation2 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"groupName"];
 
   if (self->_identifier)
   {
-    v8 = [(_INPBTaskList *)self identifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBTaskList *)self identifier];
+    v9 = [identifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"identifier"];
   }
 
-  v10 = [(_INPBTaskList *)self modifiedDateTime];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"modifiedDateTime"];
+  modifiedDateTime = [(_INPBTaskList *)self modifiedDateTime];
+  dictionaryRepresentation3 = [modifiedDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"modifiedDateTime"];
 
   if ([(NSArray *)self->_tasks count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -58,8 +58,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation4 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -68,16 +68,16 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"tasks"];
+    [dictionary setObject:array forKeyedSubscript:@"tasks"];
   }
 
-  v19 = [(_INPBTaskList *)self title];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"title"];
+  title = [(_INPBTaskList *)self title];
+  dictionaryRepresentation5 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"title"];
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -90,28 +90,28 @@
   return v6 ^ v7 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBTaskList *)self createdDateTime];
-  v6 = [v4 createdDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self createdDateTime];
+  createdDateTime2 = [equalCopy createdDateTime];
+  if ((createdDateTime != 0) == (createdDateTime2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_INPBTaskList *)self createdDateTime];
-  if (v7)
+  createdDateTime3 = [(_INPBTaskList *)self createdDateTime];
+  if (createdDateTime3)
   {
-    v8 = v7;
-    v9 = [(_INPBTaskList *)self createdDateTime];
-    v10 = [v4 createdDateTime];
-    v11 = [v9 isEqual:v10];
+    v8 = createdDateTime3;
+    createdDateTime4 = [(_INPBTaskList *)self createdDateTime];
+    createdDateTime5 = [equalCopy createdDateTime];
+    v11 = [createdDateTime4 isEqual:createdDateTime5];
 
     if (!v11)
     {
@@ -123,20 +123,20 @@
   {
   }
 
-  v5 = [(_INPBTaskList *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self groupName];
+  createdDateTime2 = [equalCopy groupName];
+  if ((createdDateTime != 0) == (createdDateTime2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBTaskList *)self groupName];
-  if (v12)
+  groupName = [(_INPBTaskList *)self groupName];
+  if (groupName)
   {
-    v13 = v12;
-    v14 = [(_INPBTaskList *)self groupName];
-    v15 = [v4 groupName];
-    v16 = [v14 isEqual:v15];
+    v13 = groupName;
+    groupName2 = [(_INPBTaskList *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v16 = [groupName2 isEqual:groupName3];
 
     if (!v16)
     {
@@ -148,20 +148,20 @@
   {
   }
 
-  v5 = [(_INPBTaskList *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self identifier];
+  createdDateTime2 = [equalCopy identifier];
+  if ((createdDateTime != 0) == (createdDateTime2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBTaskList *)self identifier];
-  if (v17)
+  identifier = [(_INPBTaskList *)self identifier];
+  if (identifier)
   {
-    v18 = v17;
-    v19 = [(_INPBTaskList *)self identifier];
-    v20 = [v4 identifier];
-    v21 = [v19 isEqual:v20];
+    v18 = identifier;
+    identifier2 = [(_INPBTaskList *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v21 = [identifier2 isEqual:identifier3];
 
     if (!v21)
     {
@@ -173,20 +173,20 @@
   {
   }
 
-  v5 = [(_INPBTaskList *)self modifiedDateTime];
-  v6 = [v4 modifiedDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self modifiedDateTime];
+  createdDateTime2 = [equalCopy modifiedDateTime];
+  if ((createdDateTime != 0) == (createdDateTime2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBTaskList *)self modifiedDateTime];
-  if (v22)
+  modifiedDateTime = [(_INPBTaskList *)self modifiedDateTime];
+  if (modifiedDateTime)
   {
-    v23 = v22;
-    v24 = [(_INPBTaskList *)self modifiedDateTime];
-    v25 = [v4 modifiedDateTime];
-    v26 = [v24 isEqual:v25];
+    v23 = modifiedDateTime;
+    modifiedDateTime2 = [(_INPBTaskList *)self modifiedDateTime];
+    modifiedDateTime3 = [equalCopy modifiedDateTime];
+    v26 = [modifiedDateTime2 isEqual:modifiedDateTime3];
 
     if (!v26)
     {
@@ -198,20 +198,20 @@
   {
   }
 
-  v5 = [(_INPBTaskList *)self tasks];
-  v6 = [v4 tasks];
-  if ((v5 != 0) == (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self tasks];
+  createdDateTime2 = [equalCopy tasks];
+  if ((createdDateTime != 0) == (createdDateTime2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBTaskList *)self tasks];
-  if (v27)
+  tasks = [(_INPBTaskList *)self tasks];
+  if (tasks)
   {
-    v28 = v27;
-    v29 = [(_INPBTaskList *)self tasks];
-    v30 = [v4 tasks];
-    v31 = [v29 isEqual:v30];
+    v28 = tasks;
+    tasks2 = [(_INPBTaskList *)self tasks];
+    tasks3 = [equalCopy tasks];
+    v31 = [tasks2 isEqual:tasks3];
 
     if (!v31)
     {
@@ -223,12 +223,12 @@
   {
   }
 
-  v5 = [(_INPBTaskList *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  createdDateTime = [(_INPBTaskList *)self title];
+  createdDateTime2 = [equalCopy title];
+  if ((createdDateTime != 0) != (createdDateTime2 == 0))
   {
-    v32 = [(_INPBTaskList *)self title];
-    if (!v32)
+    title = [(_INPBTaskList *)self title];
+    if (!title)
     {
 
 LABEL_35:
@@ -236,10 +236,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_INPBTaskList *)self title];
-    v35 = [v4 title];
-    v36 = [v34 isEqual:v35];
+    v33 = title;
+    title2 = [(_INPBTaskList *)self title];
+    title3 = [equalCopy title];
+    v36 = [title2 isEqual:title3];
 
     if (v36)
     {
@@ -259,87 +259,87 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBTaskList allocWithZone:](_INPBTaskList init];
-  v6 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:a3];
+  v6 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:zone];
   [(_INPBTaskList *)v5 setCreatedDateTime:v6];
 
-  v7 = [(_INPBDataString *)self->_groupName copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_groupName copyWithZone:zone];
   [(_INPBTaskList *)v5 setGroupName:v7];
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBTaskList *)v5 setIdentifier:v8];
 
-  v9 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:a3];
+  v9 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:zone];
   [(_INPBTaskList *)v5 setModifiedDateTime:v9];
 
-  v10 = [(NSArray *)self->_tasks copyWithZone:a3];
+  v10 = [(NSArray *)self->_tasks copyWithZone:zone];
   [(_INPBTaskList *)v5 setTasks:v10];
 
-  v11 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v11 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBTaskList *)v5 setTitle:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBTaskList *)self data];
+  coderCopy = coder;
+  data = [(_INPBTaskList *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBTaskList)initWithCoder:(id)a3
+- (_INPBTaskList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBTaskList *)self initWithData:v6];
+    self = [(_INPBTaskList *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBTaskList *)self createdDateTime];
+  toCopy = to;
+  createdDateTime = [(_INPBTaskList *)self createdDateTime];
 
-  if (v5)
+  if (createdDateTime)
   {
-    v6 = [(_INPBTaskList *)self createdDateTime];
+    createdDateTime2 = [(_INPBTaskList *)self createdDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBTaskList *)self groupName];
+  groupName = [(_INPBTaskList *)self groupName];
 
-  if (v7)
+  if (groupName)
   {
-    v8 = [(_INPBTaskList *)self groupName];
+    groupName2 = [(_INPBTaskList *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBTaskList *)self identifier];
+  identifier = [(_INPBTaskList *)self identifier];
 
-  if (v9)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_INPBTaskList *)self modifiedDateTime];
+  modifiedDateTime = [(_INPBTaskList *)self modifiedDateTime];
 
-  if (v11)
+  if (modifiedDateTime)
   {
-    v12 = [(_INPBTaskList *)self modifiedDateTime];
+    modifiedDateTime2 = [(_INPBTaskList *)self modifiedDateTime];
     PBDataWriterWriteSubmessage();
   }
 
@@ -375,47 +375,47 @@ LABEL_33:
     while (v15);
   }
 
-  v19 = [(_INPBTaskList *)self title];
+  title = [(_INPBTaskList *)self title];
 
-  if (v19)
+  if (title)
   {
-    v20 = [(_INPBTaskList *)self title];
+    title2 = [(_INPBTaskList *)self title];
     PBDataWriterWriteSubmessage();
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTasks:(id)a3
+- (void)addTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   tasks = self->_tasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!tasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tasks;
-    self->_tasks = v6;
+    self->_tasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     tasks = self->_tasks;
   }
 
-  [(NSArray *)tasks addObject:v4];
+  [(NSArray *)tasks addObject:tasksCopy];
 }
 
-- (void)setTasks:(id)a3
+- (void)setTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   tasks = self->_tasks;
   self->_tasks = v4;
 
   MEMORY[0x1EEE66BB8](v4, tasks);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

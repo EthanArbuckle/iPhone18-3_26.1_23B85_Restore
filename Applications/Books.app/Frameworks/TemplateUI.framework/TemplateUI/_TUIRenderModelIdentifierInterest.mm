@@ -1,21 +1,21 @@
 @interface _TUIRenderModelIdentifierInterest
-- (_TUIRenderModelIdentifierInterest)initWithIndexes:(void *)a3 map:(id)a4;
+- (_TUIRenderModelIdentifierInterest)initWithIndexes:(void *)indexes map:(id)map;
 - (id).cxx_construct;
 @end
 
 @implementation _TUIRenderModelIdentifierInterest
 
-- (_TUIRenderModelIdentifierInterest)initWithIndexes:(void *)a3 map:(id)a4
+- (_TUIRenderModelIdentifierInterest)initWithIndexes:(void *)indexes map:(id)map
 {
-  v7 = a4;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = _TUIRenderModelIdentifierInterest;
   v8 = [(_TUIRenderModelIdentifierInterest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    sub_16C0C4(v8 + 1, a3);
-    objc_storeStrong(&v9->_map, a4);
+    sub_16C0C4(v8 + 1, indexes);
+    objc_storeStrong(&v9->_map, map);
     [(_TUIRenderModelIdentifierMap *)v9->_map _retainIndexes:&v9->_indexes];
   }
 

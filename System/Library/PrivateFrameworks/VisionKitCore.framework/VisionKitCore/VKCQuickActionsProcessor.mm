@@ -1,23 +1,23 @@
 @interface VKCQuickActionsProcessor
-+ (id)configureQuickActionForTuple:(id)a3 unfilteredTextElements:(id)a4;
-+ (id)dedupeQuickActions:(id)a3;
-+ (id)sortQuickActions:(id)a3;
-+ (int64_t)sortOrderForElement:(id)a3;
-+ (void)quickActionsFromElements:(id)a3 unfilteredElements:(id)a4 analysis:(id)a5 queue:(id)a6 completionHandler:(id)a7;
++ (id)configureQuickActionForTuple:(id)tuple unfilteredTextElements:(id)elements;
++ (id)dedupeQuickActions:(id)actions;
++ (id)sortQuickActions:(id)actions;
++ (int64_t)sortOrderForElement:(id)element;
++ (void)quickActionsFromElements:(id)elements unfilteredElements:(id)unfilteredElements analysis:(id)analysis queue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation VKCQuickActionsProcessor
 
-+ (void)quickActionsFromElements:(id)a3 unfilteredElements:(id)a4 analysis:(id)a5 queue:(id)a6 completionHandler:(id)a7
++ (void)quickActionsFromElements:(id)elements unfilteredElements:(id)unfilteredElements analysis:(id)analysis queue:(id)queue completionHandler:(id)handler
 {
   v69 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v12 = a4;
-  v13 = a5;
-  queue = a6;
-  v40 = v12;
-  v41 = a7;
-  v14 = [v12 vk_objectsPassingTest:&__block_literal_global_24];
+  elementsCopy = elements;
+  unfilteredElementsCopy = unfilteredElements;
+  analysisCopy = analysis;
+  queue = queue;
+  v40 = unfilteredElementsCopy;
+  handlerCopy = handler;
+  v14 = [unfilteredElementsCopy vk_objectsPassingTest:&__block_literal_global_24];
   v15 = objc_alloc_init(MEMORY[0x1E696AD18]);
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
@@ -25,7 +25,7 @@
   v55[3] = &unk_1E7BE6160;
   v16 = v15;
   v56 = v16;
-  v45 = [v43 vk_compactMap:v55];
+  v45 = [elementsCopy vk_compactMap:v55];
   v44 = [getDDContextMenuActionClass() filterResultsForQuickActions:v45];
   v17 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -114,17 +114,17 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __105__VKCQuickActionsProcessor_quickActionsFromElements_unfilteredElements_analysis_queue_completionHandler___block_invoke_4;
   block[3] = &unk_1E7BE3E80;
-  v47 = v13;
+  v47 = analysisCopy;
   v48 = v21;
   v49 = v33;
   v50 = v14;
-  v51 = v41;
-  v52 = a1;
-  v34 = v41;
+  v51 = handlerCopy;
+  selfCopy = self;
+  v34 = handlerCopy;
   v35 = v14;
   v36 = v33;
   v37 = v21;
-  v38 = v13;
+  v38 = analysisCopy;
   dispatch_async(queue, block);
 }
 
@@ -263,65 +263,65 @@ void __105__VKCQuickActionsProcessor_quickActionsFromElements_unfilteredElements
   (*(*(a1 + 64) + 16))();
 }
 
-+ (int64_t)sortOrderForElement:(id)a3
++ (int64_t)sortOrderForElement:(id)element
 {
-  v3 = [a3 dataDetectorTypes];
-  if ((v3 & 0x40) != 0)
+  dataDetectorTypes = [element dataDetectorTypes];
+  if ((dataDetectorTypes & 0x40) != 0)
   {
     return 1;
   }
 
-  if ((v3 & 0x200) != 0)
+  if ((dataDetectorTypes & 0x200) != 0)
   {
     return 2;
   }
 
-  if ((v3 & 0x80) != 0)
+  if ((dataDetectorTypes & 0x80) != 0)
   {
     return 3;
   }
 
-  if ((v3 & 0x100) != 0)
+  if ((dataDetectorTypes & 0x100) != 0)
   {
     return 4;
   }
 
-  if (v3)
+  if (dataDetectorTypes)
   {
     return 5;
   }
 
-  if ((v3 & 2) != 0)
+  if ((dataDetectorTypes & 2) != 0)
   {
     return 6;
   }
 
-  if ((v3 & 0x10) != 0)
+  if ((dataDetectorTypes & 0x10) != 0)
   {
     return 7;
   }
 
-  if ((v3 & 8) != 0)
+  if ((dataDetectorTypes & 8) != 0)
   {
     return 8;
   }
 
-  if ((v3 & 4) != 0)
+  if ((dataDetectorTypes & 4) != 0)
   {
     return 9;
   }
 
-  if ((v3 & 0x400) != 0)
+  if ((dataDetectorTypes & 0x400) != 0)
   {
     return 10;
   }
 
-  if ((v3 & 0x800) != 0)
+  if ((dataDetectorTypes & 0x800) != 0)
   {
     return 11;
   }
 
-  if ((v3 & 0x20) != 0)
+  if ((dataDetectorTypes & 0x20) != 0)
   {
     return 13;
   }
@@ -329,11 +329,11 @@ void __105__VKCQuickActionsProcessor_quickActionsFromElements_unfilteredElements
   return 127;
 }
 
-+ (id)dedupeQuickActions:(id)a3
++ (id)dedupeQuickActions:(id)actions
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  actionsCopy = actions;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
@@ -343,10 +343,10 @@ void __105__VKCQuickActionsProcessor_quickActionsFromElements_unfilteredElements
   v17 = v6;
   v7 = v6;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:&v12];
+  [actionsCopy enumerateObjectsUsingBlock:&v12];
 
-  v9 = [v8 allValues];
-  v10 = [v9 arrayByAddingObjectsFromArray:v7];
+  allValues = [v8 allValues];
+  v10 = [allValues arrayByAddingObjectsFromArray:v7];
 
   return v10;
 }
@@ -369,14 +369,14 @@ void __47__VKCQuickActionsProcessor_dedupeQuickActions___block_invoke(uint64_t a
   }
 }
 
-+ (id)sortQuickActions:(id)a3
++ (id)sortQuickActions:(id)actions
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__VKCQuickActionsProcessor_sortQuickActions___block_invoke;
   v5[3] = &__block_descriptor_40_e53_q24__0__VKCActionInfoButton_8__VKCActionInfoButton_16l;
-  v5[4] = a1;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v5[4] = self;
+  v3 = [actions sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -437,15 +437,15 @@ uint64_t __45__VKCQuickActionsProcessor_sortQuickActions___block_invoke(uint64_t
   return v10;
 }
 
-+ (id)configureQuickActionForTuple:(id)a3 unfilteredTextElements:(id)a4
++ (id)configureQuickActionForTuple:(id)tuple unfilteredTextElements:(id)elements
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 button];
-  v8 = [v5 defaultAction];
-  v9 = [v5 menu];
-  v10 = [v5 element];
-  if (!v8)
+  tupleCopy = tuple;
+  elementsCopy = elements;
+  button = [tupleCopy button];
+  defaultAction = [tupleCopy defaultAction];
+  menu = [tupleCopy menu];
+  element = [tupleCopy element];
+  if (!defaultAction)
   {
     goto LABEL_8;
   }
@@ -470,51 +470,51 @@ uint64_t __45__VKCQuickActionsProcessor_sortQuickActions___block_invoke(uint64_t
   _Block_object_dispose(&v23, 8);
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v8 dd_action];
-    v21 = v6;
-    if (([v13 isPlaceholderAction] & 1) != 0 || objc_msgSend(v10, "isUnitConversionDataDetector"))
+    dd_action = [defaultAction dd_action];
+    v21 = elementsCopy;
+    if (([dd_action isPlaceholderAction] & 1) != 0 || objc_msgSend(element, "isUnitConversionDataDetector"))
     {
-      v14 = [MEMORY[0x1E69DCAB8] vk_symbolImageWithName:@"arrow.triangle.swap"];
+      compactIcon = [MEMORY[0x1E69DCAB8] vk_symbolImageWithName:@"arrow.triangle.swap"];
       v20 = 1;
-      v15 = v14;
+      icon = compactIcon;
     }
 
     else
     {
-      v14 = [v13 compactIcon];
-      v15 = [v13 icon];
+      compactIcon = [dd_action compactIcon];
+      icon = [dd_action icon];
       v20 = 0;
     }
 
-    v16 = [v13 quickActionTitle];
-    [v7 setText:v16];
-    [v7 setImage:v14];
-    [v7 setMenuImage:v15];
-    [v7 setDefaultAction:v8];
-    v17 = [v10 uuid];
-    [v7 setCorrelationIdentifier:v17];
+    quickActionTitle = [dd_action quickActionTitle];
+    [button setText:quickActionTitle];
+    [button setImage:compactIcon];
+    [button setMenuImage:icon];
+    [button setDefaultAction:defaultAction];
+    uuid = [element uuid];
+    [button setCorrelationIdentifier:uuid];
 
-    [v7 setMenu:v9];
-    [v7 setRepresentedElement:v10];
-    v6 = v21;
-    [v7 setAllUnfilteredElements:v21];
-    [v7 setShowsMenuAsPrimaryAction:v20];
-    [v7 setAccessibilityIdentifier:@"QuickAction"];
-    [v7 addTarget:v7 action:sel_performDefaultElementAction forControlEvents:64];
+    [button setMenu:menu];
+    [button setRepresentedElement:element];
+    elementsCopy = v21;
+    [button setAllUnfilteredElements:v21];
+    [button setShowsMenuAsPrimaryAction:v20];
+    [button setAccessibilityIdentifier:@"QuickAction"];
+    [button addTarget:button action:sel_performDefaultElementAction forControlEvents:64];
   }
 
   else
   {
 LABEL_8:
-    v16 = 0;
-    v14 = 0;
-    v15 = 0;
-    v13 = v7;
-    v7 = 0;
+    quickActionTitle = 0;
+    compactIcon = 0;
+    icon = 0;
+    dd_action = button;
+    button = 0;
   }
 
-  v18 = v7;
-  return v7;
+  v18 = button;
+  return button;
 }
 
 @end

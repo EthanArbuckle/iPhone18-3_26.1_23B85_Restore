@@ -1,9 +1,9 @@
 @interface MTLegacyManager
-+ (id)_numberFromString:(id)a3;
-+ (id)alarmFromOldAlarm:(id)a3;
++ (id)_numberFromString:(id)string;
++ (id)alarmFromOldAlarm:(id)alarm;
 + (id)sharedManager;
-+ (id)soundFromOldAlarm:(id)a3;
-+ (unint64_t)repeatScheduleFromOldAlarm:(id)a3;
++ (id)soundFromOldAlarm:(id)alarm;
++ (unint64_t)repeatScheduleFromOldAlarm:(id)alarm;
 - (BOOL)_discardOldAlarms;
 - (BOOL)_discardOldTimers;
 - (BOOL)_upgrade;
@@ -62,8 +62,8 @@ uint64_t __32__MTLegacyManager_sharedManager__block_invoke()
     v2->_serializer = v3;
 
     v5 = objc_alloc(MEMORY[0x1E6983308]);
-    v6 = [objc_opt_class() _bundleIDForUNSchedule];
-    v7 = [v5 initWithBundleIdentifier:v6];
+    _bundleIDForUNSchedule = [objc_opt_class() _bundleIDForUNSchedule];
+    v7 = [v5 initWithBundleIdentifier:_bundleIDForUNSchedule];
     notificationCenter = v2->_notificationCenter;
     v2->_notificationCenter = v7;
   }
@@ -117,7 +117,7 @@ uint64_t __33__MTLegacyManager_loadLegacyData__block_invoke(uint64_t result)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ loading user preferences", &v5, 0xCu);
   }
 
@@ -132,7 +132,7 @@ uint64_t __33__MTLegacyManager_loadLegacyData__block_invoke(uint64_t result)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ loading scheduled notifications", buf, 0xCu);
   }
 
@@ -142,7 +142,7 @@ uint64_t __33__MTLegacyManager_loadLegacyData__block_invoke(uint64_t result)
   v11 = 3221225472;
   v12 = __46__MTLegacyManager__loadScheduledNotifications__block_invoke;
   v13 = &unk_1E7B0D7A8;
-  v14 = self;
+  selfCopy2 = self;
   v6 = v4;
   v15 = v6;
   [(UNUserNotificationCenter *)notificationCenter getPendingNotificationRequestsWithCompletionHandler:&v10];
@@ -152,7 +152,7 @@ uint64_t __33__MTLegacyManager_loadLegacyData__block_invoke(uint64_t result)
   {
     v8 = [(NSArray *)self->_scheduledNotifications count:v10];
     *buf = 138543618;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2048;
     v19 = v8;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ found %lu scheduled notifications", buf, 0x16u);
@@ -170,9 +170,9 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
 
 - (void)_upgradeFromSpringboardDefaults
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void MTGSSendAppPreferencesChanged(CFStringRef, CFStringRef)"}];
-  [v0 handleFailureInFunction:v1 file:@"MTLegacyManager.m" lineNumber:25 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"MTLegacyManager.m" lineNumber:25 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -181,7 +181,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"UpgradeAttempted", @"com.apple.mobiletimer", &keyExistsAndHasValidFormat);
-  v4 = 0;
+  _upgrade = 0;
   if (keyExistsAndHasValidFormat)
   {
     v5 = AppBooleanValue == 0;
@@ -198,7 +198,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     if (v6)
     {
       v7 = v6;
-      v4 = [(MTLegacyManager *)self _upgrade];
+      _upgrade = [(MTLegacyManager *)self _upgrade];
       CFRelease(v7);
     }
 
@@ -209,14 +209,14 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     }
   }
 
-  return v4;
+  return _upgrade;
 }
 
 - (BOOL)_upgrade
 {
   CFPreferencesSetAppValue(@"UpgradeAttempted", *MEMORY[0x1E695E4D0], @"com.apple.mobiletimer");
-  v3 = [(MTLegacyManager *)self _upgradeAlarms];
-  return v3 | [(MTLegacyManager *)self _upgradeTimers];
+  _upgradeAlarms = [(MTLegacyManager *)self _upgradeAlarms];
+  return _upgradeAlarms | [(MTLegacyManager *)self _upgradeTimers];
 }
 
 - (BOOL)_upgradeAlarms
@@ -226,7 +226,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ upgrading alarms", buf, 0xCu);
   }
 
@@ -239,14 +239,14 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     {
       v6 = [v4 count];
       *buf = 138543618;
-      v36 = self;
+      selfCopy5 = self;
       v37 = 2048;
       v38 = v6;
       _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ found %ld alarms to upgrade", buf, 0x16u);
     }
 
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-    v28 = [(MTLegacyManager *)self _copyLegacyAlarmsFromPreferences];
+    _copyLegacyAlarmsFromPreferences = [(MTLegacyManager *)self _copyLegacyAlarmsFromPreferences];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -286,7 +286,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
           v19 = [v12 objectForKey:@"setting"];
           -[Alarm setDaySetting:](v13, "setDaySetting:", [v19 unsignedIntValue]);
 
-          v20 = [(Alarm *)v13 alarmID];
+          alarmID = [(Alarm *)v13 alarmID];
           [(Alarm *)v13 markModified];
           v21 = [v12 objectForKey:@"active"];
           -[Alarm setForceActiveForMigration:](v13, "setForceActiveForMigration:", [v21 BOOLValue]);
@@ -304,7 +304,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy5 = self;
       v37 = 2112;
       v38 = v7;
       _os_log_impl(&dword_1B1F9F000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Old alarms being upgraded: %@", buf, 0x16u);
@@ -314,16 +314,16 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy5 = self;
       v37 = 2112;
-      v38 = v28;
+      v38 = _copyLegacyAlarmsFromPreferences;
       _os_log_impl(&dword_1B1F9F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ New alarms already present: %@", buf, 0x16u);
     }
 
-    [(NSArray *)v28 addObjectsFromArray:v7];
-    [(NSArray *)v28 sortUsingSelector:sel_compareTime_];
+    [(NSArray *)_copyLegacyAlarmsFromPreferences addObjectsFromArray:v7];
+    [(NSArray *)_copyLegacyAlarmsFromPreferences sortUsingSelector:sel_compareTime_];
     alarms = self->_alarms;
-    self->_alarms = v28;
+    self->_alarms = _copyLegacyAlarmsFromPreferences;
 
     v25 = 1;
   }
@@ -334,7 +334,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v36 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ No alarms found to upgrade", buf, 0xCu);
     }
 
@@ -352,7 +352,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ upgrading timer", buf, 0xCu);
   }
 
@@ -373,7 +373,7 @@ void __46__MTLegacyManager__loadScheduledNotifications__block_invoke(uint64_t a1
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy3 = self;
       v16 = 2112;
       v17 = v6;
       v9 = "%{public}@ setting current sound: %@";
@@ -391,7 +391,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy3 = self;
       v9 = "%{public}@ setting current sound: Stop Playing";
       v10 = v8;
       v11 = 12;
@@ -413,7 +413,7 @@ LABEL_10:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing AlarmList", &v7, 0xCu);
     }
 
@@ -454,7 +454,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing SBCountdownTimerSoundIdentifier", buf, 0xCu);
     }
   }
@@ -468,7 +468,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing SBCountdownTimerTimeIdentifier", buf, 0xCu);
     }
   }
@@ -489,7 +489,7 @@ LABEL_13:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v3;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Reading alarms from preferences: %@", buf, 0x16u);
@@ -529,7 +529,7 @@ LABEL_13:
           if (os_log_type_enabled(&v13->super, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v16;
-            v23 = self;
+            selfCopy2 = self;
             v24 = 2112;
             v25 = v12;
             _os_log_impl(&dword_1B1F9F000, &v13->super, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalid alarm found in preferences :: %@", buf, 0x16u);
@@ -555,7 +555,7 @@ LABEL_13:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v3;
     _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Reading sleep alarm from preferences: %@", &v8, 0x16u);
@@ -582,20 +582,20 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ loading alarms", &v9, 0xCu);
   }
 
   if (!self->_alarms)
   {
-    v4 = [(MTLegacyManager *)self _copyLegacyAlarmsFromPreferences];
+    _copyLegacyAlarmsFromPreferences = [(MTLegacyManager *)self _copyLegacyAlarmsFromPreferences];
     alarms = self->_alarms;
-    self->_alarms = v4;
+    self->_alarms = _copyLegacyAlarmsFromPreferences;
   }
 
-  v6 = [(MTLegacyManager *)self _copyLegacySleepAlarmFromPreferences];
+  _copyLegacySleepAlarmFromPreferences = [(MTLegacyManager *)self _copyLegacySleepAlarmFromPreferences];
   sleepAlarm = self->_sleepAlarm;
-  self->_sleepAlarm = v6;
+  self->_sleepAlarm = _copyLegacySleepAlarmFromPreferences;
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -607,7 +607,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v39 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ reconiling alarms with notifications", buf, 0xCu);
   }
 
@@ -632,8 +632,8 @@ LABEL_13:
         }
 
         v10 = *(*(&v34 + 1) + 8 * i);
-        v11 = [v10 alarmID];
-        [v4 setObject:v10 forKey:v11];
+        alarmID = [v10 alarmID];
+        [v4 setObject:v10 forKey:alarmID];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v34 objects:v43 count:16];
@@ -645,15 +645,15 @@ LABEL_13:
   sleepAlarm = self->_sleepAlarm;
   if (sleepAlarm)
   {
-    v13 = [self->_sleepAlarm alarmID];
-    [v4 setObject:sleepAlarm forKey:v13];
+    alarmID2 = [self->_sleepAlarm alarmID];
+    [v4 setObject:sleepAlarm forKey:alarmID2];
   }
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = self;
+  selfCopy2 = self;
   v15 = self->_scheduledNotifications;
   v16 = [(NSArray *)v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v16)
@@ -671,9 +671,9 @@ LABEL_13:
           objc_enumerationMutation(v15);
         }
 
-        v21 = [*(*(&v30 + 1) + 8 * j) content];
-        v22 = [v21 userInfo];
-        v23 = [v22 objectForKey:@"alarmId"];
+        content = [*(*(&v30 + 1) + 8 * j) content];
+        userInfo = [content userInfo];
+        v23 = [userInfo objectForKey:@"alarmId"];
 
         if ([v23 length])
         {
@@ -686,7 +686,7 @@ LABEL_13:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v29;
-              v39 = v14;
+              selfCopy = selfCopy2;
               v40 = 2114;
               v41 = v23;
               _os_log_impl(&dword_1B1F9F000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ found scheduled notification matching alarm %{public}@.  Forcing active for migration.", buf, 0x16u);
@@ -705,7 +705,7 @@ LABEL_13:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v39 = v14;
+    selfCopy = selfCopy2;
     _os_log_impl(&dword_1B1F9F000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ finished reconiling alarms with notifications", buf, 0xCu);
   }
 
@@ -719,7 +719,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 5.8381e-34;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ loading timer defaults", buf, 0xCu);
   }
 
@@ -767,8 +767,8 @@ LABEL_13:
     v9 = CFPreferencesCopyAppValue(@"timerSound", @"com.apple.mobiletimer");
     if (!v9)
     {
-      v10 = [MEMORY[0x1E69DA8F0] sharedToneManager];
-      v9 = [v10 defaultToneIdentifierForAlertType:14];
+      mEMORY[0x1E69DA8F0] = [MEMORY[0x1E69DA8F0] sharedToneManager];
+      v9 = [mEMORY[0x1E69DA8F0] defaultToneIdentifierForAlertType:14];
     }
   }
 
@@ -820,7 +820,7 @@ uint64_t __34__MTLegacyManager_purgeLegacyData__block_invoke(uint64_t result)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deleting defaults", &v5, 0xCu);
   }
 
@@ -852,7 +852,7 @@ uint64_t __34__MTLegacyManager_purgeLegacyData__block_invoke(uint64_t result)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling notifications", &v5, 0xCu);
   }
 
@@ -867,7 +867,7 @@ uint64_t __34__MTLegacyManager_purgeLegacyData__block_invoke(uint64_t result)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ clearInvalidPendingNotifications", buf, 0xCu);
   }
 
@@ -952,38 +952,38 @@ void __51__MTLegacyManager_clearInvalidPendingNotifications__block_invoke_2(uint
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)alarmFromOldAlarm:(id)a3
++ (id)alarmFromOldAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = -[MTAlarm initWithHour:minute:]([MTMutableAlarm alloc], "initWithHour:minute:", [v4 hour], objc_msgSend(v4, "minute"));
-  -[MTAlarm setBedtimeHour:](v5, "setBedtimeHour:", [v4 bedtimeHour]);
-  -[MTAlarm setBedtimeMinute:](v5, "setBedtimeMinute:", [v4 bedtimeMinute]);
-  v6 = [v4 bedtimeReminderMinutes];
-  -[MTAlarm setBedtimeReminderMinutes:](v5, "setBedtimeReminderMinutes:", [v6 integerValue]);
+  alarmCopy = alarm;
+  v5 = -[MTAlarm initWithHour:minute:]([MTMutableAlarm alloc], "initWithHour:minute:", [alarmCopy hour], objc_msgSend(alarmCopy, "minute"));
+  -[MTAlarm setBedtimeHour:](v5, "setBedtimeHour:", [alarmCopy bedtimeHour]);
+  -[MTAlarm setBedtimeMinute:](v5, "setBedtimeMinute:", [alarmCopy bedtimeMinute]);
+  bedtimeReminderMinutes = [alarmCopy bedtimeReminderMinutes];
+  -[MTAlarm setBedtimeReminderMinutes:](v5, "setBedtimeReminderMinutes:", [bedtimeReminderMinutes integerValue]);
 
-  -[MTAlarm setRepeatSchedule:](v5, "setRepeatSchedule:", [a1 repeatScheduleFromOldAlarm:v4]);
-  v7 = [a1 soundFromOldAlarm:v4];
+  -[MTAlarm setRepeatSchedule:](v5, "setRepeatSchedule:", [self repeatScheduleFromOldAlarm:alarmCopy]);
+  v7 = [self soundFromOldAlarm:alarmCopy];
   [(MTAlarm *)v5 setSound:v7];
 
-  -[MTAlarm setEnabled:](v5, "setEnabled:", [v4 isActive]);
-  -[MTAlarm setSleepAlarm:](v5, "setSleepAlarm:", [v4 isSleepAlarm]);
-  -[MTAlarm setAllowsSnooze:](v5, "setAllowsSnooze:", [v4 allowsSnooze]);
-  v8 = [v4 title];
+  -[MTAlarm setEnabled:](v5, "setEnabled:", [alarmCopy isActive]);
+  -[MTAlarm setSleepAlarm:](v5, "setSleepAlarm:", [alarmCopy isSleepAlarm]);
+  -[MTAlarm setAllowsSnooze:](v5, "setAllowsSnooze:", [alarmCopy allowsSnooze]);
+  title = [alarmCopy title];
 
-  [(MTAlarm *)v5 setTitle:v8];
+  [(MTAlarm *)v5 setTitle:title];
 
   return v5;
 }
 
-+ (unint64_t)repeatScheduleFromOldAlarm:(id)a3
++ (unint64_t)repeatScheduleFromOldAlarm:(id)alarm
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 repeatDays];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  repeatDays = [alarm repeatDays];
+  v4 = [repeatDays countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -995,13 +995,13 @@ void __51__MTLegacyManager_clearInvalidPendingNotifications__block_invoke_2(uint
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(repeatDays);
         }
 
         v6 |= MTAlarmRepeatScheduleFromDay([*(*(&v11 + 1) + 8 * i) integerValue]);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [repeatDays countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1016,27 +1016,27 @@ void __51__MTLegacyManager_clearInvalidPendingNotifications__block_invoke_2(uint
   return v6;
 }
 
-+ (id)soundFromOldAlarm:(id)a3
++ (id)soundFromOldAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [v4 sound];
-  v6 = [a1 _numberFromString:v5];
+  alarmCopy = alarm;
+  sound = [alarmCopy sound];
+  v6 = [self _numberFromString:sound];
 
-  v7 = [v4 soundType];
+  soundType = [alarmCopy soundType];
   v8 = 0;
-  if (v7 > 0)
+  if (soundType > 0)
   {
-    if (v7 == 1)
+    if (soundType == 1)
     {
-      v12 = [v4 sound];
-      v13 = [v4 vibrationID];
-      v14 = [v4 soundVolume];
-      v8 = [MTSound toneSoundWithIdentifier:v12 vibrationIdentifer:v13 volume:v14];
+      sound2 = [alarmCopy sound];
+      vibrationID = [alarmCopy vibrationID];
+      soundVolume = [alarmCopy soundVolume];
+      v8 = [MTSound toneSoundWithIdentifier:sound2 vibrationIdentifer:vibrationID volume:soundVolume];
     }
 
     else
     {
-      if (v7 != 2)
+      if (soundType != 2)
       {
         goto LABEL_13;
       }
@@ -1046,27 +1046,27 @@ void __51__MTLegacyManager_clearInvalidPendingNotifications__block_invoke_2(uint
         goto LABEL_12;
       }
 
-      v12 = [v4 vibrationID];
-      v13 = [v4 soundVolume];
-      v8 = [MTSound songSoundWithIdentifier:v6 vibrationIdentifier:v12 volume:v13];
+      sound2 = [alarmCopy vibrationID];
+      vibrationID = [alarmCopy soundVolume];
+      v8 = [MTSound songSoundWithIdentifier:v6 vibrationIdentifier:sound2 volume:vibrationID];
     }
 
     goto LABEL_13;
   }
 
-  if (v7 == -1)
+  if (soundType == -1)
   {
 LABEL_12:
     v8 = [MTSound defaultSoundForCategory:0];
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!soundType)
   {
     v9 = *MEMORY[0x1E69DA928];
-    v10 = [v4 vibrationID];
-    v11 = [v4 soundVolume];
-    v8 = [MTSound toneSoundWithIdentifier:v9 vibrationIdentifer:v10 volume:v11];
+    vibrationID2 = [alarmCopy vibrationID];
+    soundVolume2 = [alarmCopy soundVolume];
+    v8 = [MTSound toneSoundWithIdentifier:v9 vibrationIdentifer:vibrationID2 volume:soundVolume2];
   }
 
 LABEL_13:
@@ -1074,16 +1074,16 @@ LABEL_13:
   return v8;
 }
 
-+ (id)_numberFromString:(id)a3
++ (id)_numberFromString:(id)string
 {
   v3 = _numberFromString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[MTLegacyManager _numberFromString:];
   }
 
-  v5 = [_numberFromString__f numberFromString:v4];
+  v5 = [_numberFromString__f numberFromString:stringCopy];
 
   return v5;
 }

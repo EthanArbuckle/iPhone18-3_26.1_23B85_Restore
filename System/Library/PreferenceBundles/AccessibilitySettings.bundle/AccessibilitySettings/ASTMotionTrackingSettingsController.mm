@@ -41,25 +41,25 @@ void __43__ASTMotionTrackingSettingsController_init__block_invoke(uint64_t a1)
 
 - (id)specifiers
 {
-  v3 = [(ASTMotionTrackingSettingsController *)self eyeTracker];
+  eyeTracker = [(ASTMotionTrackingSettingsController *)self eyeTracker];
 
-  if (!v3)
+  if (!eyeTracker)
   {
     objc_opt_class();
-    v4 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    userInfo = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
     v5 = __UIAccessibilityCastAsClass();
 
     v6 = [v5 objectForKeyedSubscript:@"AX_EYE_TRACKER_KEY"];
     [(ASTMotionTrackingSettingsController *)self setEyeTracker:v6];
   }
 
-  v7 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
+  motionTrackingSettingsHelper = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
 
-  if (!v7)
+  if (!motionTrackingSettingsHelper)
   {
     v8 = [ASTMotionTrackingSettingsHelper alloc];
-    v9 = [(ASTMotionTrackingSettingsController *)self eyeTracker];
-    v10 = [(ASTMotionTrackingSettingsHelper *)v8 initWithEyeTracker:v9];
+    eyeTracker2 = [(ASTMotionTrackingSettingsController *)self eyeTracker];
+    v10 = [(ASTMotionTrackingSettingsHelper *)v8 initWithEyeTracker:eyeTracker2];
     [(ASTMotionTrackingSettingsController *)self setMotionTrackingSettingsHelper:v10];
   }
 
@@ -68,9 +68,9 @@ void __43__ASTMotionTrackingSettingsController_init__block_invoke(uint64_t a1)
   if (!v12)
   {
     v13 = [objc_allocWithZone(NSMutableArray) init];
-    v14 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
-    v15 = [v14 specifiers];
-    [v13 axSafelyAddObjectsFromArray:v15];
+    motionTrackingSettingsHelper2 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
+    specifiers = [motionTrackingSettingsHelper2 specifiers];
+    [v13 axSafelyAddObjectsFromArray:specifiers];
 
     v16 = [v13 copy];
     v17 = *&self->AXUISettingsBaseListController_opaque[v11];
@@ -87,19 +87,19 @@ void __43__ASTMotionTrackingSettingsController_init__block_invoke(uint64_t a1)
   v3 = +[AXSettings sharedInstance];
   if ([v3 assistiveTouchEyeTrackingAutoHideEnabled])
   {
-    v4 = [(ASTMotionTrackingSettingsController *)self showingAutoHideSettings];
+    showingAutoHideSettings = [(ASTMotionTrackingSettingsController *)self showingAutoHideSettings];
 
-    if ((v4 & 1) == 0)
+    if ((showingAutoHideSettings & 1) == 0)
     {
-      v5 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
-      v6 = [v5 autoHideTimeoutAndSliderContiguousSpecs];
-      [(ASTMotionTrackingSettingsController *)self insertContiguousSpecifiers:v6 afterSpecifierID:@"AutoHideSwitchSpecifierKey" animated:1];
+      motionTrackingSettingsHelper = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
+      autoHideTimeoutAndSliderContiguousSpecs = [motionTrackingSettingsHelper autoHideTimeoutAndSliderContiguousSpecs];
+      [(ASTMotionTrackingSettingsController *)self insertContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs afterSpecifierID:@"AutoHideSwitchSpecifierKey" animated:1];
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
 LABEL_11:
 
-      [(ASTMotionTrackingSettingsController *)v7 setShowingAutoHideSettings:v8];
+      [(ASTMotionTrackingSettingsController *)selfCopy2 setShowingAutoHideSettings:v8];
       return;
     }
   }
@@ -111,18 +111,18 @@ LABEL_11:
   v12 = +[AXSettings sharedInstance];
   if (([v12 assistiveTouchEyeTrackingAutoHideEnabled] & 1) == 0)
   {
-    v9 = [(ASTMotionTrackingSettingsController *)self showingAutoHideSettings];
+    showingAutoHideSettings2 = [(ASTMotionTrackingSettingsController *)self showingAutoHideSettings];
 
-    if (!v9)
+    if (!showingAutoHideSettings2)
     {
       return;
     }
 
-    v10 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
-    v11 = [v10 autoHideTimeoutAndSliderContiguousSpecs];
-    [(ASTMotionTrackingSettingsController *)self removeContiguousSpecifiers:v11 animated:1];
+    motionTrackingSettingsHelper2 = [(ASTMotionTrackingSettingsController *)self motionTrackingSettingsHelper];
+    autoHideTimeoutAndSliderContiguousSpecs2 = [motionTrackingSettingsHelper2 autoHideTimeoutAndSliderContiguousSpecs];
+    [(ASTMotionTrackingSettingsController *)self removeContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs2 animated:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_11;
   }

@@ -1,27 +1,27 @@
 @interface FMDRequestFMIPUnregister
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestFMIPUnregister)initWithAccount:(id)a3 device:(id)a4 otherDevices:(id)a5;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestFMIPUnregister)initWithAccount:(id)account device:(id)device otherDevices:(id)devices;
 - (id)authToken;
 - (id)requestBody;
-- (void)_dumpInfoForDevice:(id)a3 into:(id)a4 host:(BOOL)a5;
+- (void)_dumpInfoForDevice:(id)device into:(id)into host:(BOOL)host;
 @end
 
 @implementation FMDRequestFMIPUnregister
 
-- (FMDRequestFMIPUnregister)initWithAccount:(id)a3 device:(id)a4 otherDevices:(id)a5
+- (FMDRequestFMIPUnregister)initWithAccount:(id)account device:(id)device otherDevices:(id)devices
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  deviceCopy = device;
+  devicesCopy = devices;
   v14.receiver = self;
   v14.super_class = FMDRequestFMIPUnregister;
-  v11 = [(FMDRequest *)&v14 initWithAccount:v8];
+  v11 = [(FMDRequest *)&v14 initWithAccount:accountCopy];
   v12 = v11;
   if (v11)
   {
-    [(FMDRequestFMIPUnregister *)v11 setAccount:v8];
-    [(FMDRequestFMIPUnregister *)v12 setDevice:v9];
-    [(FMDRequestFMIPUnregister *)v12 setOtherDevices:v10];
+    [(FMDRequestFMIPUnregister *)v11 setAccount:accountCopy];
+    [(FMDRequestFMIPUnregister *)v12 setDevice:deviceCopy];
+    [(FMDRequestFMIPUnregister *)v12 setOtherDevices:devicesCopy];
   }
 
   return v12;
@@ -31,17 +31,17 @@
 {
   v37.receiver = self;
   v37.super_class = FMDRequestFMIPUnregister;
-  v3 = [(FMDRequest *)&v37 requestBody];
-  v4 = [(FMDRequestFMIPUnregister *)self device];
-  v5 = [v4 serialNumber];
+  requestBody = [(FMDRequest *)&v37 requestBody];
+  device = [(FMDRequestFMIPUnregister *)self device];
+  serialNumber = [device serialNumber];
 
-  if (v5)
+  if (serialNumber)
   {
-    v6 = [v3 valueForKey:@"deviceInfo"];
+    v6 = [requestBody valueForKey:@"deviceInfo"];
     v7 = +[FMDSharedConfigurationManager sharedInstance];
-    v8 = [(FMDRequestFMIPUnregister *)self device];
-    v9 = [v8 serialNumber];
-    v10 = [v7 theftAndLossCoverageWithSerialNumber:v9];
+    device2 = [(FMDRequestFMIPUnregister *)self device];
+    serialNumber2 = [device2 serialNumber];
+    v10 = [v7 theftAndLossCoverageWithSerialNumber:serialNumber2];
 
     if (v10)
     {
@@ -54,21 +54,21 @@
     }
 
     [v6 fm_safelyMapKey:@"brassStatus" toObject:v11];
-    [v3 setValue:v6 forKey:@"deviceInfo"];
+    [requestBody setValue:v6 forKey:@"deviceInfo"];
   }
 
   v12 = objc_alloc_init(FMDActingRequestDecorator);
-  v13 = [(FMDActingRequestDecorator *)v12 standardDeviceContext];
+  standardDeviceContext = [(FMDActingRequestDecorator *)v12 standardDeviceContext];
 
-  [v3 fm_safelyMapKey:@"deviceContext" toObject:v13];
+  [requestBody fm_safelyMapKey:@"deviceContext" toObject:standardDeviceContext];
   v14 = +[FMDSystemConfig sharedInstance];
-  v15 = [v14 deviceUDID];
+  deviceUDID = [v14 deviceUDID];
 
-  if (v15)
+  if (deviceUDID)
   {
-    v16 = [(FMDRequestFMIPUnregister *)self device];
-    v17 = [v16 udid];
-    v18 = [v17 isEqualToString:v15];
+    device3 = [(FMDRequestFMIPUnregister *)self device];
+    udid = [device3 udid];
+    v18 = [udid isEqualToString:deviceUDID];
   }
 
   else
@@ -76,23 +76,23 @@
     v18 = 1;
   }
 
-  v19 = [(FMDRequestFMIPUnregister *)self device];
-  [(FMDRequestFMIPUnregister *)self _dumpInfoForDevice:v19 into:v3 host:v18];
+  device4 = [(FMDRequestFMIPUnregister *)self device];
+  [(FMDRequestFMIPUnregister *)self _dumpInfoForDevice:device4 into:requestBody host:v18];
 
-  v20 = [(FMDRequestFMIPUnregister *)self otherDevices];
-  v21 = [v20 count];
+  otherDevices = [(FMDRequestFMIPUnregister *)self otherDevices];
+  v21 = [otherDevices count];
 
   if (v21)
   {
-    v31 = v13;
-    v32 = v3;
+    v31 = standardDeviceContext;
+    v32 = requestBody;
     v22 = +[NSMutableArray array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v23 = [(FMDRequestFMIPUnregister *)self otherDevices];
-    v24 = [v23 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    otherDevices2 = [(FMDRequestFMIPUnregister *)self otherDevices];
+    v24 = [otherDevices2 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v24)
     {
       v25 = v24;
@@ -103,7 +103,7 @@
         {
           if (*v34 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(otherDevices2);
           }
 
           v28 = *(*(&v33 + 1) + 8 * i);
@@ -112,94 +112,94 @@
           [v22 addObject:v29];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v25 = [otherDevices2 countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v25);
     }
 
-    v3 = v32;
+    requestBody = v32;
     [v32 setObject:v22 forKeyedSubscript:@"otherDevices"];
 
-    v13 = v31;
+    standardDeviceContext = v31;
   }
 
   if ((v18 & 1) == 0)
   {
-    [v3 fm_safeSetObject:v15 forKey:@"hostDeviceUdid"];
+    [requestBody fm_safeSetObject:deviceUDID forKey:@"hostDeviceUdid"];
   }
 
-  return v3;
+  return requestBody;
 }
 
 - (id)authToken
 {
-  v2 = [(FMDRequestFMIPUnregister *)self account];
-  v3 = [v2 oneTimeRemoveAuthToken];
+  account = [(FMDRequestFMIPUnregister *)self account];
+  oneTimeRemoveAuthToken = [account oneTimeRemoveAuthToken];
 
-  return v3;
+  return oneTimeRemoveAuthToken;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v3 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_dumpInfoForDevice:(id)a3 into:(id)a4 host:(BOOL)a5
+- (void)_dumpInfoForDevice:(id)device into:(id)into host:(BOOL)host
 {
-  v23 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  intoCopy = into;
   v8 = +[NSMutableDictionary dictionary];
-  v9 = [v23 udid];
-  [v8 fm_safelyMapKey:@"udid" toObject:v9];
+  udid = [deviceCopy udid];
+  [v8 fm_safelyMapKey:@"udid" toObject:udid];
 
-  v10 = [v23 productType];
-  [v8 fm_safelyMapKey:@"productType" toObject:v10];
+  productType = [deviceCopy productType];
+  [v8 fm_safelyMapKey:@"productType" toObject:productType];
 
-  v11 = [v23 buildVersion];
-  [v8 fm_safelyMapKey:@"buildVersion" toObject:v11];
+  buildVersion = [deviceCopy buildVersion];
+  [v8 fm_safelyMapKey:@"buildVersion" toObject:buildVersion];
 
-  v12 = [v23 productVersion];
-  [v8 fm_safelyMapKey:@"productVersion" toObject:v12];
+  productVersion = [deviceCopy productVersion];
+  [v8 fm_safelyMapKey:@"productVersion" toObject:productVersion];
 
-  v13 = [v23 unregisterToken];
-  [v8 fm_safelyMapKey:@"unregisterToken" toObject:v13];
+  unregisterToken = [deviceCopy unregisterToken];
+  [v8 fm_safelyMapKey:@"unregisterToken" toObject:unregisterToken];
 
-  v14 = [v23 pairingId];
-  [v8 fm_safelyMapKey:@"pairingId" toObject:v14];
+  pairingId = [deviceCopy pairingId];
+  [v8 fm_safelyMapKey:@"pairingId" toObject:pairingId];
 
-  if (!a5)
+  if (!host)
   {
-    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v23 paired]);
+    v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deviceCopy paired]);
     [v8 fm_safelyMapKey:@"paired" toObject:v15];
 
-    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v23 migrationConfirmed]);
+    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deviceCopy migrationConfirmed]);
     [v8 fm_safelyMapKey:@"migrationConfirmed" toObject:v16];
   }
 
-  v17 = [v23 disableContext];
-  if (v17)
+  disableContext = [deviceCopy disableContext];
+  if (disableContext)
   {
-    v18 = [NSNumber numberWithUnsignedInteger:v17];
+    v18 = [NSNumber numberWithUnsignedInteger:disableContext];
     [v8 setObject:v18 forKeyedSubscript:@"fmipDisableReason"];
   }
 
-  [v7 setObject:v8 forKeyedSubscript:@"deviceInfo"];
-  v19 = [v23 imei];
-  [v7 fm_safelyMapKey:@"imei" toObject:v19];
+  [intoCopy setObject:v8 forKeyedSubscript:@"deviceInfo"];
+  imei = [deviceCopy imei];
+  [intoCopy fm_safelyMapKey:@"imei" toObject:imei];
 
-  v20 = [v23 imei2];
-  [v7 fm_safelyMapKey:@"imei2" toObject:v20];
+  imei2 = [deviceCopy imei2];
+  [intoCopy fm_safelyMapKey:@"imei2" toObject:imei2];
 
-  v21 = [v23 meid];
-  [v7 fm_safelyMapKey:@"meid" toObject:v21];
+  meid = [deviceCopy meid];
+  [intoCopy fm_safelyMapKey:@"meid" toObject:meid];
 
-  v22 = [v23 serialNumber];
-  [v7 fm_safelyMapKey:@"serialNumber" toObject:v22];
+  serialNumber = [deviceCopy serialNumber];
+  [intoCopy fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 }
 
 @end

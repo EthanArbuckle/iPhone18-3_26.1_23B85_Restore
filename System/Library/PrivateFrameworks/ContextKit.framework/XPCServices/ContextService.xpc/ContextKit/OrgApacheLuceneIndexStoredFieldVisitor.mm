@@ -1,35 +1,35 @@
 @interface OrgApacheLuceneIndexStoredFieldVisitor
-- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexStoredFieldVisitor
 
-- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)binaryFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a4)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [IOSByteArray arrayWithLength:*(a4 + 5)];
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a4 + 1), *(a4 + 4), v7, 0, *(a4 + 5));
+  v7 = [IOSByteArray arrayWithLength:*(ref + 5)];
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), *(ref + 4), v7, 0, *(ref + 5));
 
-  [(OrgApacheLuceneIndexStoredFieldVisitor *)self binaryFieldWithOrgApacheLuceneIndexFieldInfo:a3 withByteArray:v7];
+  [(OrgApacheLuceneIndexStoredFieldVisitor *)self binaryFieldWithOrgApacheLuceneIndexFieldInfo:info withByteArray:v7];
 }
 
-- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)stringFieldWithOrgApacheLuceneIndexFieldInfo:(id)info withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a4)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [IOSByteArray arrayWithLength:*(a4 + 5)];
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a4 + 1), *(a4 + 4), v7, 0, *(a4 + 5));
+  v7 = [IOSByteArray arrayWithLength:*(ref + 5)];
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), *(ref + 4), v7, 0, *(ref + 5));
 
-  [(OrgApacheLuceneIndexStoredFieldVisitor *)self stringFieldWithOrgApacheLuceneIndexFieldInfo:a3 withByteArray:v7];
+  [(OrgApacheLuceneIndexStoredFieldVisitor *)self stringFieldWithOrgApacheLuceneIndexFieldInfo:info withByteArray:v7];
 }
 
 - (void)dealloc

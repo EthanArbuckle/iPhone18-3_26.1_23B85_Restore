@@ -1,11 +1,11 @@
 @interface WFWorkflowRunResult
 - (BOOL)isCancelled;
 - (NSError)error;
-- (WFWorkflowRunResult)initWithCoder:(id)a3;
-- (WFWorkflowRunResult)initWithError:(id)a3;
+- (WFWorkflowRunResult)initWithCoder:(id)coder;
+- (WFWorkflowRunResult)initWithError:(id)error;
 - (id)description;
-- (id)resultBySettingError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)resultBySettingError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowRunResult
@@ -48,8 +48,8 @@
   }
 
   v4 = internalError;
-  v5 = [(NSError *)v4 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [(NSError *)v4 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
     if (self)
     {
@@ -88,57 +88,57 @@
     internalError = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p Error: %@>", v5, self, internalError];
+  internalError = [v3 stringWithFormat:@"<%@: %p Error: %@>", v5, self, internalError];
 
-  return v8;
+  return internalError;
 }
 
-- (WFWorkflowRunResult)initWithCoder:(id)a3
+- (WFWorkflowRunResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = WFAllowedClassesForDecodingNSError();
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"error"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"error"];
 
   v7 = [(WFWorkflowRunResult *)self initWithError:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if (self && (v4 = self->_internalError) != 0)
   {
     v5 = v4;
     v6 = self->_internalError;
     v7 = WFEncodableError(v6);
-    [v8 encodeObject:v7 forKey:@"error"];
+    [coderCopy encodeObject:v7 forKey:@"error"];
   }
 
   else
   {
-    [v8 encodeObject:0 forKey:@"error"];
+    [coderCopy encodeObject:0 forKey:@"error"];
     v5 = 0;
   }
 }
 
-- (id)resultBySettingError:(id)a3
+- (id)resultBySettingError:(id)error
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithError:v3];
+  errorCopy = error;
+  v4 = [objc_alloc(objc_opt_class()) initWithError:errorCopy];
 
   return v4;
 }
 
-- (WFWorkflowRunResult)initWithError:(id)a3
+- (WFWorkflowRunResult)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = WFWorkflowRunResult;
   v6 = [(WFWorkflowRunResult *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalError, a3);
+    objc_storeStrong(&v6->_internalError, error);
     v8 = v7;
   }
 

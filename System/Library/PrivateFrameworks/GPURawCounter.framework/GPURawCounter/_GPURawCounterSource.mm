@@ -1,8 +1,8 @@
 @interface _GPURawCounterSource
-- (BOOL)postProcessRawDataWithRingBufferIndex:(unsigned int)a3 source:(char *)a4 sourceSize:(unint64_t)a5 sourceRead:(unint64_t *)a6 sourceWrite:(unint64_t)a7 output:(char *)a8 outputSize:(unint64_t)a9 outputRead:(unint64_t)a10 outputWrite:(unint64_t *)a11 isLast:(BOOL)a12;
-- (BOOL)requestCounters:(id)a3 firstErrorIndex:(unint64_t *)a4;
-- (BOOL)requestTriggers:(id)a3 firstErrorIndex:(unint64_t *)a4;
-- (_GPURawCounterSource)initWithSourceGroup:(id)a3 name:(id)a4;
+- (BOOL)postProcessRawDataWithRingBufferIndex:(unsigned int)index source:(char *)source sourceSize:(unint64_t)size sourceRead:(unint64_t *)read sourceWrite:(unint64_t)write output:(char *)output outputSize:(unint64_t)outputSize outputRead:(unint64_t)self0 outputWrite:(unint64_t *)self1 isLast:(BOOL)self2;
+- (BOOL)requestCounters:(id)counters firstErrorIndex:(unint64_t *)index;
+- (BOOL)requestTriggers:(id)triggers firstErrorIndex:(unint64_t *)index;
+- (_GPURawCounterSource)initWithSourceGroup:(id)group name:(id)name;
 - (id)availableCounters;
 - (id)availableTriggers;
 - (void)dealloc;
@@ -10,15 +10,15 @@
 
 @implementation _GPURawCounterSource
 
-- (_GPURawCounterSource)initWithSourceGroup:(id)a3 name:(id)a4
+- (_GPURawCounterSource)initWithSourceGroup:(id)group name:(id)name
 {
   v8.receiver = self;
   v8.super_class = _GPURawCounterSource;
   v6 = [(_GPURawCounterSource *)&v8 init];
   if (v6)
   {
-    v6->_name = [a4 copy];
-    v6->_sourceGroup = a3;
+    v6->_name = [name copy];
+    v6->_sourceGroup = group;
     v6->_options = 0;
   }
 
@@ -42,12 +42,12 @@
   return v2;
 }
 
-- (BOOL)requestTriggers:(id)a3 firstErrorIndex:(unint64_t *)a4
+- (BOOL)requestTriggers:(id)triggers firstErrorIndex:(unint64_t *)index
 {
   [(_GPURawCounterSource *)self doesNotRecognizeSelector:a2];
-  if (a4)
+  if (index)
   {
-    *a4 = 0;
+    *index = 0;
   }
 
   return 0;
@@ -61,29 +61,29 @@
   return v2;
 }
 
-- (BOOL)requestCounters:(id)a3 firstErrorIndex:(unint64_t *)a4
+- (BOOL)requestCounters:(id)counters firstErrorIndex:(unint64_t *)index
 {
   [(_GPURawCounterSource *)self doesNotRecognizeSelector:a2];
-  if (a4)
+  if (index)
   {
-    *a4 = 0;
+    *index = 0;
   }
 
   return 0;
 }
 
-- (BOOL)postProcessRawDataWithRingBufferIndex:(unsigned int)a3 source:(char *)a4 sourceSize:(unint64_t)a5 sourceRead:(unint64_t *)a6 sourceWrite:(unint64_t)a7 output:(char *)a8 outputSize:(unint64_t)a9 outputRead:(unint64_t)a10 outputWrite:(unint64_t *)a11 isLast:(BOOL)a12
+- (BOOL)postProcessRawDataWithRingBufferIndex:(unsigned int)index source:(char *)source sourceSize:(unint64_t)size sourceRead:(unint64_t *)read sourceWrite:(unint64_t)write output:(char *)output outputSize:(unint64_t)outputSize outputRead:(unint64_t)self0 outputWrite:(unint64_t *)self1 isLast:(BOOL)self2
 {
-  if (a3)
+  if (index)
   {
-    [(_GPURawCounterSource *)self doesNotRecognizeSelector:a2, a4, a5, a6, a7, a8];
+    [(_GPURawCounterSource *)self doesNotRecognizeSelector:a2, source, size, read, write, output];
     return 0;
   }
 
   else
   {
 
-    return [_GPURawCounterSource postProcessRawDataWithRingBufferSource:"postProcessRawDataWithRingBufferSource:sourceSize:sourceRead:sourceWrite:output:outputSize:outputRead:outputWrite:isLast:" sourceSize:a4 sourceRead:a5 sourceWrite:a6 output:a7 outputSize:a8 outputRead:a9 outputWrite:? isLast:?];
+    return [_GPURawCounterSource postProcessRawDataWithRingBufferSource:"postProcessRawDataWithRingBufferSource:sourceSize:sourceRead:sourceWrite:output:outputSize:outputRead:outputWrite:isLast:" sourceSize:source sourceRead:size sourceWrite:read output:write outputSize:output outputRead:outputSize outputWrite:? isLast:?];
   }
 }
 

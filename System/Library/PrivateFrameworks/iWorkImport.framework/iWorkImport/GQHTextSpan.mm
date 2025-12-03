@@ -1,24 +1,24 @@
 @interface GQHTextSpan
-+ (int)handleAttachment:(id)a3 state:(id)a4;
-+ (int)handleAutoNumber:(id)a3 state:(id)a4;
-+ (int)handleContainerHint:(id)a3 state:(id)a4;
-+ (int)handleTextBackgroundForStyle:(id)a3 destStyle:(id)a4 state:(id)a5;
-+ (int)handleTextList:(id)a3 checkForTrailingBlanks:(BOOL)a4 state:(id)a5;
-+ (int)handleTextMarker:(id)a3 outputBlanks:(BOOL)a4 state:(id)a5;
-+ (int)nonWhitespaceCount:(__CFArray *)a3;
++ (int)handleAttachment:(id)attachment state:(id)state;
++ (int)handleAutoNumber:(id)number state:(id)state;
++ (int)handleContainerHint:(id)hint state:(id)state;
++ (int)handleTextBackgroundForStyle:(id)style destStyle:(id)destStyle state:(id)state;
++ (int)handleTextList:(id)list checkForTrailingBlanks:(BOOL)blanks state:(id)state;
++ (int)handleTextMarker:(id)marker outputBlanks:(BOOL)blanks state:(id)state;
++ (int)nonWhitespaceCount:(__CFArray *)count;
 @end
 
 @implementation GQHTextSpan
 
-+ (int)handleTextList:(id)a3 checkForTrailingBlanks:(BOOL)a4 state:(id)a5
++ (int)handleTextList:(id)list checkForTrailingBlanks:(BOOL)blanks state:(id)state
 {
-  v6 = a4;
-  v8 = [a3 children];
-  Count = CFArrayGetCount(v8);
+  blanksCopy = blanks;
+  children = [list children];
+  Count = CFArrayGetCount(children);
   v10 = Count;
-  if (v6)
+  if (blanksCopy)
   {
-    Count = [GQHTextSpan nonWhitespaceCount:v8];
+    Count = [GQHTextSpan nonWhitespaceCount:children];
   }
 
   if (!v10)
@@ -30,7 +30,7 @@
   v12 = Count;
   do
   {
-    result = [a1 handleTextListChild:CFArrayGetValueAtIndex(v8 outputBlanks:v11) state:{v11 < v12, a5}];
+    result = [self handleTextListChild:CFArrayGetValueAtIndex(children outputBlanks:v11) state:{v11 < v12, state}];
     ++v11;
   }
 
@@ -38,31 +38,31 @@
   return result;
 }
 
-+ (int)handleTextBackgroundForStyle:(id)a3 destStyle:(id)a4 state:(id)a5
++ (int)handleTextBackgroundForStyle:(id)style destStyle:(id)destStyle state:(id)state
 {
   v11 = 0;
-  if ([a3 overridesObjectProperty:22 value:&v11])
+  if ([style overridesObjectProperty:22 value:&v11])
   {
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [a5 getColorString:v11];
-        [a4 addAttribute:off_9CE08 value:v7];
+        v7 = [state getColorString:v11];
+        [destStyle addAttribute:off_9CE08 value:v7];
         v10 = 0.0;
-        if ([objc_msgSend(a5 "implicitStyle")])
+        if ([objc_msgSend(state "implicitStyle")])
         {
           *&v8 = v10;
           if (v10 > 0.0)
           {
-            [a4 addAttribute:off_9CF10 intValue:llroundf(v10)];
+            [destStyle addAttribute:off_9CF10 intValue:llroundf(v10)];
           }
         }
 
-        if ([objc_msgSend(a5 implicitStyle] && v10 > 0.0)
+        if ([objc_msgSend(state implicitStyle] && v10 > 0.0)
         {
-          [a4 addAttribute:off_9CEF8 intValue:llroundf(v10)];
+          [destStyle addAttribute:off_9CEF8 intValue:llroundf(v10)];
         }
       }
     }
@@ -71,15 +71,15 @@
   return 1;
 }
 
-+ (int)nonWhitespaceCount:(__CFArray *)a3
++ (int)nonWhitespaceCount:(__CFArray *)count
 {
-  result = CFArrayGetCount(a3);
+  result = CFArrayGetCount(count);
   if (result >= 1)
   {
     for (i = result & 0x7FFFFFFF; ; --i)
     {
       v6 = i - 1;
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, i - 1);
+      ValueAtIndex = CFArrayGetValueAtIndex(count, i - 1);
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ([ValueAtIndex isBlank] & 1) == 0)
       {
@@ -102,24 +102,24 @@
   return result;
 }
 
-+ (int)handleTextMarker:(id)a3 outputBlanks:(BOOL)a4 state:(id)a5
++ (int)handleTextMarker:(id)marker outputBlanks:(BOOL)blanks state:(id)state
 {
-  v5 = a4;
-  v7 = [a5 htmlDoc];
-  v8 = [a3 type];
-  if (v8 - 2 < 4)
+  blanksCopy = blanks;
+  htmlDoc = [state htmlDoc];
+  type = [marker type];
+  if (type - 2 < 4)
   {
-    [v7 startElement:"br"];
+    [htmlDoc startElement:"br"];
 LABEL_3:
-    [v7 endElement];
+    [htmlDoc endElement];
     return 1;
   }
 
-  if (v8 == 1 && v5)
+  if (type == 1 && blanksCopy)
   {
-    [v7 startElement:"span"];
+    [htmlDoc startElement:"span"];
     v10 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%C %C %C %C ", 160, 160, 160, 160);
-    [v7 addContent:v10];
+    [htmlDoc addContent:v10];
     CFRelease(v10);
     goto LABEL_3;
   }
@@ -127,34 +127,34 @@ LABEL_3:
   return 1;
 }
 
-+ (int)handleAutoNumber:(id)a3 state:(id)a4
++ (int)handleAutoNumber:(id)number state:(id)state
 {
-  v6 = [a4 htmlDoc];
-  if ([a3 type] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(a4, "isMappingHeadersFooters"))
+  htmlDoc = [state htmlDoc];
+  if ([number type] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(state, "isMappingHeadersFooters"))
   {
-    v7 = CFStringCreateWithFormat(0, 0, @"%d", [a4 pageNumberForHeaderOrFooter]);
-    [v6 addContent:v7];
+    v7 = CFStringCreateWithFormat(0, 0, @"%d", [state pageNumberForHeaderOrFooter]);
+    [htmlDoc addContent:v7];
     CFRelease(v7);
   }
 
   else
   {
-    [v6 addContent:{objc_msgSend(a3, "value")}];
+    [htmlDoc addContent:{objc_msgSend(number, "value")}];
   }
 
   return 1;
 }
 
-+ (int)handleAttachment:(id)a3 state:(id)a4
++ (int)handleAttachment:(id)attachment state:(id)state
 {
-  v5 = [a3 drawable];
-  v6 = [a4 useOutline];
-  if (v6)
+  drawable = [attachment drawable];
+  useOutline = [state useOutline];
+  if (useOutline)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [objc_msgSend(v5 "graphicStyle")];
+      externalTextWrap = [objc_msgSend(drawable "graphicStyle")];
     }
 
     else
@@ -162,8 +162,8 @@ LABEL_3:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        LOBYTE(v6) = 0;
-        if (!v5)
+        LOBYTE(useOutline) = 0;
+        if (!drawable)
         {
           return 1;
         }
@@ -171,32 +171,32 @@ LABEL_3:
         goto LABEL_8;
       }
 
-      v7 = [v5 externalTextWrap];
+      externalTextWrap = [drawable externalTextWrap];
     }
 
-    LOBYTE(v6) = [v7 inlineWrapEnabled];
+    LOBYTE(useOutline) = [externalTextWrap inlineWrapEnabled];
   }
 
-  if (!v5)
+  if (!drawable)
   {
     return 1;
   }
 
 LABEL_8:
-  if (v6)
+  if (useOutline)
   {
     return 1;
   }
 
-  return [GQHDrawable handleInlineDrawable:v5 htmlState:a4];
+  return [GQHDrawable handleInlineDrawable:drawable htmlState:state];
 }
 
-+ (int)handleContainerHint:(id)a3 state:(id)a4
++ (int)handleContainerHint:(id)hint state:(id)state
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a4 handleContainerHint:a3];
+    [state handleContainerHint:hint];
   }
 
   return 1;

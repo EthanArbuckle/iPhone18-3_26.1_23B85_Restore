@@ -1,10 +1,10 @@
 @interface SUControllerStatus
 - (SUControllerStatus)init;
-- (SUControllerStatus)initWithCoder:(id)a3;
+- (SUControllerStatus)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUControllerStatus
@@ -24,28 +24,28 @@
   return result;
 }
 
-- (SUControllerStatus)initWithCoder:(id)a3
+- (SUControllerStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUControllerStatus;
   v5 = [(SUControllerStatus *)&v7 init];
   if (v5)
   {
-    v5->_managerState = [v4 decodeInt64ForKey:@"managerState"];
-    v5->_updateState = [v4 decodeInt64ForKey:@"updateState"];
-    v5->_failForwardMode = [v4 decodeBoolForKey:@"failForwardMode"];
+    v5->_managerState = [coderCopy decodeInt64ForKey:@"managerState"];
+    v5->_updateState = [coderCopy decodeInt64ForKey:@"updateState"];
+    v5->_failForwardMode = [coderCopy decodeBoolForKey:@"failForwardMode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SUControllerStatus managerState](self forKey:{"managerState"), @"managerState"}];
-  [v4 encodeInt64:-[SUControllerStatus updateState](self forKey:{"updateState"), @"updateState"}];
-  [v4 encodeBool:-[SUControllerStatus failForwardMode](self forKey:{"failForwardMode"), @"failForwardMode"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SUControllerStatus managerState](self forKey:{"managerState"), @"managerState"}];
+  [coderCopy encodeInt64:-[SUControllerStatus updateState](self forKey:{"updateState"), @"updateState"}];
+  [coderCopy encodeBool:-[SUControllerStatus failForwardMode](self forKey:{"failForwardMode"), @"failForwardMode"}];
 }
 
 - (id)copy
@@ -61,9 +61,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = SUControllerStringForManagerState([(SUControllerStatus *)self managerState]);
   v5 = SUControllerStringForManagerState([(SUControllerStatus *)self updateState]);
-  v6 = [(SUControllerStatus *)self failForwardMode];
+  failForwardMode = [(SUControllerStatus *)self failForwardMode];
   v7 = @"NO";
-  if (v6)
+  if (failForwardMode)
   {
     v7 = @"YES";
   }

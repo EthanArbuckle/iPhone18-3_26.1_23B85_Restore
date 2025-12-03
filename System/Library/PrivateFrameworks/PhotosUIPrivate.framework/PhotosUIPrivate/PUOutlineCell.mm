@@ -1,12 +1,12 @@
 @interface PUOutlineCell
 - (BOOL)_hasEditSpecificAccessories;
 - (PUOutlineCellDelegate)delegate;
-- (id)_editingConfigurationForState:(id)a3;
-- (void)_renameItem:(id)a3 toTitle:(id)a4;
+- (id)_editingConfigurationForState:(id)state;
+- (void)_renameItem:(id)item toTitle:(id)title;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3;
-- (void)setItem:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setImage:(id)image;
+- (void)setItem:(id)item;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation PUOutlineCell
@@ -18,19 +18,19 @@
   return WeakRetained;
 }
 
-- (void)_renameItem:(id)a3 toTitle:(id)a4
+- (void)_renameItem:(id)item toTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUOutlineCell *)self delegate];
-  [v8 outlineCell:self updatedTitle:v6 forItem:v7];
+  titleCopy = title;
+  itemCopy = item;
+  delegate = [(PUOutlineCell *)self delegate];
+  [delegate outlineCell:self updatedTitle:titleCopy forItem:itemCopy];
 }
 
-- (id)_editingConfigurationForState:(id)a3
+- (id)_editingConfigurationForState:(id)state
 {
-  v4 = a3;
-  v5 = [(PUOutlineCell *)self item];
-  if ([v4 isEditing] && (-[PUOutlineCell delegate](self, "delegate"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = objc_msgSend(v5, "isRenamable"), v7, v8))
+  stateCopy = state;
+  item = [(PUOutlineCell *)self item];
+  if ([stateCopy isEditing] && (-[PUOutlineCell delegate](self, "delegate"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, v8 = objc_msgSend(item, "isRenamable"), v7, v8))
   {
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x1E69DD420]);
@@ -39,7 +39,7 @@
     v12[2] = __47__PUOutlineCell__editingConfigurationForState___block_invoke;
     v12[3] = &unk_1E7B779C8;
     objc_copyWeak(&v14, &location);
-    v13 = v5;
+    v13 = item;
     v10 = [v9 initWithDidEndHandler:v12];
     [v10 setUseTextInputAsLabel:1];
     [v10 setShouldEndHandler:&__block_literal_global_20];
@@ -112,8 +112,8 @@ BOOL __47__PUOutlineCell__editingConfigurationForState___block_invoke_2(uint64_t
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PUOutlineCell *)self accessories];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  accessories = [(PUOutlineCell *)self accessories];
+  v3 = [accessories countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -123,7 +123,7 @@ BOOL __47__PUOutlineCell__editingConfigurationForState___block_invoke_2(uint64_t
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessories);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) displayedState] == 1)
@@ -133,7 +133,7 @@ BOOL __47__PUOutlineCell__editingConfigurationForState___block_invoke_2(uint64_t
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [accessories countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -148,94 +148,94 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v51.receiver = self;
   v51.super_class = PUOutlineCell;
-  [(PUOutlineCell *)&v51 updateConfigurationUsingState:v4];
-  v5 = [(PUOutlineCell *)self item];
-  v6 = [MEMORY[0x1E695DF70] array];
-  if ([v5 isExpandable])
+  [(PUOutlineCell *)&v51 updateConfigurationUsingState:stateCopy];
+  item = [(PUOutlineCell *)self item];
+  array = [MEMORY[0x1E695DF70] array];
+  if ([item isExpandable])
   {
     v7 = objc_alloc_init(MEMORY[0x1E69DC7C8]);
-    [v6 addObject:v7];
+    [array addObject:v7];
   }
 
-  if ([v5 isReorderable] && (objc_msgSend(v5, "isGroup") & 1) == 0)
+  if ([item isReorderable] && (objc_msgSend(item, "isGroup") & 1) == 0)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DC7D0]);
-    [v6 addObject:v8];
+    [array addObject:v8];
   }
 
-  if ([v5 isDeletable])
+  if ([item isDeletable])
   {
     v9 = objc_alloc_init(MEMORY[0x1E69DC798]);
-    [v6 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [v5 accessoryTitle];
-  if ([v10 length])
+  accessoryTitle = [item accessoryTitle];
+  if ([accessoryTitle length])
   {
-    v11 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:v10];
-    [v6 addObject:v11];
+    v11 = [objc_alloc(MEMORY[0x1E69DC7B8]) initWithText:accessoryTitle];
+    [array addObject:v11];
   }
 
-  v12 = [v5 accessoryGlyphImageName];
-  if ([v12 length])
+  accessoryGlyphImageName = [item accessoryGlyphImageName];
+  if ([accessoryGlyphImageName length])
   {
-    v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:v12];
+    v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:accessoryGlyphImageName];
     v14 = [v13 imageWithRenderingMode:2];
 
-    v15 = [(PUOutlineCell *)self accessoryImageView];
+    accessoryImageView = [(PUOutlineCell *)self accessoryImageView];
 
-    if (v15)
+    if (accessoryImageView)
     {
-      v16 = [(PUOutlineCell *)self accessoryImageView];
-      [v16 setImage:v14];
+      accessoryImageView2 = [(PUOutlineCell *)self accessoryImageView];
+      [accessoryImageView2 setImage:v14];
     }
 
     else
     {
-      v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
-      [(PUOutlineCell *)self setAccessoryImageView:v16];
+      accessoryImageView2 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
+      [(PUOutlineCell *)self setAccessoryImageView:accessoryImageView2];
     }
 
-    v17 = [(PUOutlineCell *)self accessoryImageView];
-    [v17 setTintAdjustmentMode:1];
+    accessoryImageView3 = [(PUOutlineCell *)self accessoryImageView];
+    [accessoryImageView3 setTintAdjustmentMode:1];
 
-    v18 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v19 = [(PUOutlineCell *)self accessoryImageView];
-    [v19 setTintColor:v18];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    accessoryImageView4 = [(PUOutlineCell *)self accessoryImageView];
+    [accessoryImageView4 setTintColor:systemGrayColor];
 
-    v20 = [(PUOutlineCell *)self accessoryImageView];
-    [v20 sizeToFit];
+    accessoryImageView5 = [(PUOutlineCell *)self accessoryImageView];
+    [accessoryImageView5 sizeToFit];
 
     v21 = objc_alloc(MEMORY[0x1E69DC790]);
-    v22 = [(PUOutlineCell *)self accessoryImageView];
-    v23 = [v21 initWithCustomView:v22 placement:1];
+    accessoryImageView6 = [(PUOutlineCell *)self accessoryImageView];
+    v23 = [v21 initWithCustomView:accessoryImageView6 placement:1];
 
     [v23 setMaintainsFixedSize:1];
-    [v6 addObject:v23];
+    [array addObject:v23];
   }
 
-  [(PUOutlineCell *)self setAccessories:v6];
-  v24 = [(PUOutlineCell *)self defaultContentConfiguration];
-  v25 = [v24 updatedConfigurationForState:v4];
+  [(PUOutlineCell *)self setAccessories:array];
+  defaultContentConfiguration = [(PUOutlineCell *)self defaultContentConfiguration];
+  v25 = [defaultContentConfiguration updatedConfigurationForState:stateCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v26 = [(PUOutlineCell *)self _editingConfigurationForState:v4];
+    v26 = [(PUOutlineCell *)self _editingConfigurationForState:stateCopy];
     [v25 _setTextEditingConfiguration:v26];
   }
 
-  v27 = [v5 title];
-  [v25 setText:v27];
+  title = [item title];
+  [v25 setText:title];
 
-  v28 = [v25 textProperties];
-  v29 = [(PUOutlineCell *)self traitCollection];
-  v30 = [v29 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v30))
+  textProperties = [v25 textProperties];
+  traitCollection = [(PUOutlineCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v31 = 3;
   }
@@ -245,42 +245,42 @@ LABEL_11:
     v31 = 2;
   }
 
-  [v28 setNumberOfLines:v31];
+  [textProperties setNumberOfLines:v31];
 
-  [v28 setLineBreakMode:4];
-  v32 = [v25 imageProperties];
-  v33 = [(PUOutlineCell *)self image];
-  [v25 setImage:v33];
+  [textProperties setLineBreakMode:4];
+  imageProperties = [v25 imageProperties];
+  image = [(PUOutlineCell *)self image];
+  [v25 setImage:image];
 
-  v34 = [MEMORY[0x1E69DCA40] defaultMetrics];
-  [v34 scaledValueForValue:28.0];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+  [defaultMetrics scaledValueForValue:28.0];
   v36 = v35;
 
-  [v32 setReservedLayoutSize:{v36, v36}];
-  [v32 reservedLayoutSize];
-  [v32 setMaximumSize:?];
-  [v32 setCornerRadius:v36 / 9.3];
+  [imageProperties setReservedLayoutSize:{v36, v36}];
+  [imageProperties reservedLayoutSize];
+  [imageProperties setMaximumSize:?];
+  [imageProperties setCornerRadius:v36 / 9.3];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__PUOutlineCell_updateConfigurationUsingState___block_invoke;
   aBlock[3] = &unk_1E7B80798;
-  v50 = v6;
-  v37 = v6;
+  v50 = array;
+  v37 = array;
   v38 = _Block_copy(aBlock);
-  if ([v4 isEditing] && (v38[2](v38) & 1) == 0)
+  if ([stateCopy isEditing] && (v38[2](v38) & 1) == 0)
   {
-    v48 = v5;
-    v39 = v4;
-    v40 = v12;
-    v41 = v10;
+    v48 = item;
+    v39 = stateCopy;
+    v40 = accessoryGlyphImageName;
+    v41 = accessoryTitle;
     v42 = *MEMORY[0x1E69DDC18];
-    [v28 setColorTransformer:*MEMORY[0x1E69DDC18]];
+    [textProperties setColorTransformer:*MEMORY[0x1E69DDC18]];
     v43 = v42;
-    v10 = v41;
-    v12 = v40;
-    v4 = v39;
-    v5 = v48;
-    [v32 setTintColorTransformer:v43];
+    accessoryTitle = v41;
+    accessoryGlyphImageName = v40;
+    stateCopy = v39;
+    item = v48;
+    [imageProperties setTintColorTransformer:v43];
   }
 
   [v25 directionalLayoutMargins];
@@ -291,12 +291,12 @@ LABEL_11:
   [(PUOutlineCell *)self setContentConfiguration:v25];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
+  imageCopy = image;
   v5 = self->_image;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == imageCopy)
   {
   }
 
@@ -306,18 +306,18 @@ LABEL_11:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_image, a3);
+      objc_storeStrong(&self->_image, image);
       [(PUOutlineCell *)self setNeedsUpdateConfiguration];
     }
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   v5 = self->_item;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == itemCopy)
   {
   }
 
@@ -327,7 +327,7 @@ LABEL_11:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_item, a3);
+      objc_storeStrong(&self->_item, item);
       [(PUOutlineCell *)self setNeedsUpdateConfiguration];
     }
   }

@@ -2,19 +2,19 @@
 - (CGPoint)end;
 - (CGPoint)start;
 - (NSString)description;
-- (_HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 userInfo:(id)a5;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (_HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end userInfo:(id)info;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation _HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate
 
-- (_HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 userInfo:(id)a5
+- (_HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end userInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = a5;
+  y = end.y;
+  x = end.x;
+  v8 = start.y;
+  v9 = start.x;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = _HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate;
   v12 = [(_HKJulianIndexedSevenDayQuantitySeriesBlockCoordinate *)&v15 init];
@@ -25,28 +25,28 @@
     v12->_start.y = v8;
     v12->_end.x = x;
     v12->_end.y = y;
-    objc_storeStrong(&v12->_userInfo, a5);
+    objc_storeStrong(&v12->_userInfo, info);
   }
 
   return v13;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   x = self->_start.x;
   y = self->_start.y;
-  b = a3->b;
-  c = a3->c;
-  d = a3->d;
-  tx = a3->tx;
-  ty = a3->ty;
-  v12 = tx + y * c + a3->a * x;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
+  v12 = tx + y * c + transform->a * x;
   v13 = ty + y * d + b * x;
   v14 = self->_end.x;
   v15 = self->_end.y;
-  v16 = tx + c * v15 + a3->a * v14;
+  v16 = tx + c * v15 + transform->a * v14;
   v17 = ty + d * v15 + b * v14;
-  if (a4)
+  if (scale)
   {
     v12 = HKUIFloorCGPointToScreenScale(v12, v13);
     v13 = v18;

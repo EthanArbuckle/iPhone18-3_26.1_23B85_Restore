@@ -1,6 +1,6 @@
 @interface PINModificationDataView
-+ (id)createWithInteraction:(id)a3 error:(id *)a4;
-+ (unint64_t)lengthFromNumberMessage:(unsigned __int8)a3;
++ (id)createWithInteraction:(id)interaction error:(id *)error;
++ (unint64_t)lengthFromNumberMessage:(unsigned __int8)message;
 - (NSString)description;
 - (unsigned)bMsgIndex2;
 - (unsigned)bMsgIndex3;
@@ -11,48 +11,48 @@
 
 @implementation PINModificationDataView
 
-+ (id)createWithInteraction:(id)a3 error:(id *)a4
++ (id)createWithInteraction:(id)interaction error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 PINMessageIndices];
-  v7 = [v6 count];
+  interactionCopy = interaction;
+  pINMessageIndices = [interactionCopy PINMessageIndices];
+  v7 = [pINMessageIndices count];
 
   v8 = [(PINOperationDataView *)[PINModificationDataView alloc] initWithLength:[PINModificationDataView lengthFromNumberMessage:v7]];
   [(PINOperationDataView *)v8 setBPINOperation:1];
-  [v5 initialTimeout];
+  [interactionCopy initialTimeout];
   [(PINOperationDataView *)v8 setBTimeOut:v9];
-  v10 = [v5 PINFormat];
+  pINFormat = [interactionCopy PINFormat];
   v29 = 0;
-  v11 = [v10 PINFormatStringWithError:&v29];
+  v11 = [pINFormat PINFormatStringWithError:&v29];
   v12 = v29;
   [(PINOperationDataView *)v8 setBmFormatString:v11];
 
   if (v12)
   {
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v13 = v12;
       v14 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_14;
     }
 
     goto LABEL_6;
   }
 
-  v15 = [v5 PINFormat];
-  -[PINOperationDataView setBmPINBlockString:](v8, "setBmPINBlockString:", [v15 PINBlockString]);
+  pINFormat2 = [interactionCopy PINFormat];
+  -[PINOperationDataView setBmPINBlockString:](v8, "setBmPINBlockString:", [pINFormat2 PINBlockString]);
 
-  v16 = [v5 PINFormat];
+  pINFormat3 = [interactionCopy PINFormat];
   v28 = 0;
-  v17 = [v16 PINLengthFormatWithError:&v28];
+  v17 = [pINFormat3 PINLengthFormatWithError:&v28];
   v12 = v28;
   [(PINOperationDataView *)v8 setBmPINLengthFormat:v17];
 
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -62,20 +62,20 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  -[PINModificationDataView setBInsertionOffsetOld:](v8, "setBInsertionOffsetOld:", [v5 currentPINByteOffset]);
-  -[PINModificationDataView setBInsertionOffsetNew:](v8, "setBInsertionOffsetNew:", [v5 newPINByteOffset]);
-  v18 = [v5 PINFormat];
-  -[PINModificationDataView setWPINMaxExtraDigit:](v8, "setWPINMaxExtraDigit:", [v18 PINMaxExtraDigit]);
+  -[PINModificationDataView setBInsertionOffsetOld:](v8, "setBInsertionOffsetOld:", [interactionCopy currentPINByteOffset]);
+  -[PINModificationDataView setBInsertionOffsetNew:](v8, "setBInsertionOffsetNew:", [interactionCopy newPINByteOffset]);
+  pINFormat4 = [interactionCopy PINFormat];
+  -[PINModificationDataView setWPINMaxExtraDigit:](v8, "setWPINMaxExtraDigit:", [pINFormat4 PINMaxExtraDigit]);
 
-  -[PINModificationDataView setBConfirmPIN:](v8, "setBConfirmPIN:", [v5 PINConfirmation]);
-  -[PINModificationDataView setBEntryValidationCondition:](v8, "setBEntryValidationCondition:", [v5 PINCompletion]);
+  -[PINModificationDataView setBConfirmPIN:](v8, "setBConfirmPIN:", [interactionCopy PINConfirmation]);
+  -[PINModificationDataView setBEntryValidationCondition:](v8, "setBEntryValidationCondition:", [interactionCopy PINCompletion]);
   [(PINModificationDataView *)v8 setNumberMessage:v7];
-  -[PINModificationDataView setWLangId:](v8, "setWLangId:", [v5 localeID]);
-  v19 = [v5 PINMessageIndices];
-  if ([v19 count])
+  -[PINModificationDataView setWLangId:](v8, "setWLangId:", [interactionCopy localeID]);
+  pINMessageIndices2 = [interactionCopy PINMessageIndices];
+  if ([pINMessageIndices2 count])
   {
-    v20 = [v5 PINMessageIndices];
-    v21 = [v20 objectAtIndexedSubscript:0];
+    pINMessageIndices3 = [interactionCopy PINMessageIndices];
+    v21 = [pINMessageIndices3 objectAtIndexedSubscript:0];
     -[PINModificationDataView setBMsgIndex1:](v8, "setBMsgIndex1:", [v21 unsignedCharValue]);
   }
 
@@ -87,14 +87,14 @@ LABEL_6:
   v22 = v7;
   if (v7 >= 2u)
   {
-    v23 = [v5 PINMessageIndices];
-    v24 = [v23 objectAtIndexedSubscript:1];
+    pINMessageIndices4 = [interactionCopy PINMessageIndices];
+    v24 = [pINMessageIndices4 objectAtIndexedSubscript:1];
     -[PINModificationDataView setBMsgIndex2:](v8, "setBMsgIndex2:", [v24 unsignedCharValue]);
 
     if (v22 != 2)
     {
-      v25 = [v5 PINMessageIndices];
-      v26 = [v25 objectAtIndexedSubscript:2];
+      pINMessageIndices5 = [interactionCopy PINMessageIndices];
+      v26 = [pINMessageIndices5 objectAtIndexedSubscript:2];
       -[PINModificationDataView setBMsgIndex3:](v8, "setBMsgIndex3:", [v26 unsignedCharValue]);
     }
   }
@@ -109,15 +109,15 @@ LABEL_14:
   return v14;
 }
 
-+ (unint64_t)lengthFromNumberMessage:(unsigned __int8)a3
++ (unint64_t)lengthFromNumberMessage:(unsigned __int8)message
 {
   v3 = 19;
-  if (a3 == 3)
+  if (message == 3)
   {
     v3 = 20;
   }
 
-  if (a3)
+  if (message)
   {
     return v3;
   }

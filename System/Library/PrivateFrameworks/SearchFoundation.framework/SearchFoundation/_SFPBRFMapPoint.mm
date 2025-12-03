@@ -1,31 +1,31 @@
 @interface _SFPBRFMapPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapPoint)initWithDictionary:(id)a3;
-- (_SFPBRFMapPoint)initWithFacade:(id)a3;
-- (_SFPBRFMapPoint)initWithJSON:(id)a3;
+- (_SFPBRFMapPoint)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapPoint)initWithFacade:(id)facade;
+- (_SFPBRFMapPoint)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapPoint
 
-- (_SFPBRFMapPoint)initWithFacade:(id)a3
+- (_SFPBRFMapPoint)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapPoint *)self init];
   if (v5)
   {
-    if ([v4 hasX])
+    if ([facadeCopy hasX])
     {
-      [v4 x];
+      [facadeCopy x];
       [(_SFPBRFMapPoint *)v5 setX:?];
     }
 
-    if ([v4 hasY])
+    if ([facadeCopy hasY])
     {
-      [v4 y];
+      [facadeCopy y];
       [(_SFPBRFMapPoint *)v5 setY:?];
     }
 
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (_SFPBRFMapPoint)initWithDictionary:(id)a3
+- (_SFPBRFMapPoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFMapPoint;
   v5 = [(_SFPBRFMapPoint *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"x"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"x"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(_SFPBRFMapPoint *)v5 setX:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"y"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"y"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBRFMapPoint)initWithJSON:(id)a3
+- (_SFPBRFMapPoint)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapPoint *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapPoint *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapPoint *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,13 +101,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_x != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBRFMapPoint *)self x];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"x"];
+    [dictionary setObject:v5 forKeyedSubscript:@"x"];
   }
 
   if (self->_y != 0.0)
@@ -115,10 +115,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBRFMapPoint *)self y];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"y"];
+    [dictionary setObject:v7 forKeyedSubscript:@"y"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -193,13 +193,13 @@
   return v11 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (x = self->_x, objc_msgSend(v4, "x"), x == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (x = self->_x, objc_msgSend(equalCopy, "x"), x == v6))
   {
     y = self->_y;
-    [v4 y];
+    [equalCopy y];
     v7 = y == v10;
   }
 
@@ -211,9 +211,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   [(_SFPBRFMapPoint *)self x];
   if (v4 != 0.0)
   {

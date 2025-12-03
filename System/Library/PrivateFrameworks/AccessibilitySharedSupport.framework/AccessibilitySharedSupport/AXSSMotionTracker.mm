@@ -7,20 +7,20 @@
 - (BOOL)_hasBeenStarted;
 - (BOOL)isTracking;
 - (NSValue)lookAtPoint;
-- (void)_changeState:(id)a3;
+- (void)_changeState:(id)state;
 - (void)_motionTrackingDaemonWasInterruptedFromXPC;
-- (void)_updateState:(id)a3;
+- (void)_updateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)motionTrackingDaemonUpdatedState:(id)a3;
+- (void)motionTrackingDaemonUpdatedState:(id)state;
 - (void)recalibrateFace;
-- (void)setDebugOverlayEnabled:(BOOL)a3;
-- (void)setExpressionConfiguration:(id)a3;
-- (void)setInputConfiguration:(id)a3;
-- (void)setJoystickModeMovementThreshold:(double)a3;
-- (void)setLookAtPoint:(id)a3;
-- (void)setMotionTrackingMode:(unint64_t)a3;
-- (void)setSensitivity:(double)a3;
+- (void)setDebugOverlayEnabled:(BOOL)enabled;
+- (void)setExpressionConfiguration:(id)configuration;
+- (void)setInputConfiguration:(id)configuration;
+- (void)setJoystickModeMovementThreshold:(double)threshold;
+- (void)setLookAtPoint:(id)point;
+- (void)setMotionTrackingMode:(unint64_t)mode;
+- (void)setSensitivity:(double)sensitivity;
 - (void)start;
 - (void)stop;
 @end
@@ -62,44 +62,44 @@
 
 - (BOOL)_hasBeenStarted
 {
-  v2 = [(AXSSMotionTracker *)self _motionTrackingDaemonConnection];
-  v3 = v2 != 0;
+  _motionTrackingDaemonConnection = [(AXSSMotionTracker *)self _motionTrackingDaemonConnection];
+  v3 = _motionTrackingDaemonConnection != 0;
 
   return v3;
 }
 
 - (BOOL)isTracking
 {
-  v3 = [(AXSSMotionTracker *)self _hasBeenStarted];
-  if (v3)
+  _hasBeenStarted = [(AXSSMotionTracker *)self _hasBeenStarted];
+  if (_hasBeenStarted)
   {
 
-    LOBYTE(v3) = [(AXSSMotionTracker *)self _tracking];
+    LOBYTE(_hasBeenStarted) = [(AXSSMotionTracker *)self _tracking];
   }
 
-  return v3;
+  return _hasBeenStarted;
 }
 
 - (void)start
 {
   v22 = *MEMORY[0x1E69E9840];
-  [a1 sensitivity];
+  [self sensitivity];
   v5 = v4;
-  v6 = [a1 motionTrackingMode];
-  v7 = [a1 inputConfiguration];
-  [a1 joystickModeMovementThreshold];
+  motionTrackingMode = [self motionTrackingMode];
+  inputConfiguration = [self inputConfiguration];
+  [self joystickModeMovementThreshold];
   v9 = v8;
-  v10 = [a1 expressionConfiguration];
+  expressionConfiguration = [self expressionConfiguration];
   v12 = 134219010;
   v13 = v5;
   v14 = 2048;
-  v15 = v6;
+  v15 = motionTrackingMode;
   v16 = 2112;
-  v17 = v7;
+  v17 = inputConfiguration;
   v18 = 2048;
   v19 = v9;
   v20 = 2112;
-  v21 = v10;
+  v21 = expressionConfiguration;
   _os_log_debug_impl(&dword_1C0E8A000, a2, OS_LOG_TYPE_DEBUG, "AXSSMotionTracker: start: sensitivity %f mode %lu orderedInputPreference %@ joystickModeMovementThreshold %f expressionConfiguration %@", &v12, 0x34u);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -143,8 +143,8 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   {
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v4 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v4 stopTracking];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon stopTracking];
 
       [(AXSSMotionTracker *)self set_tracking:0];
       [(AXSSMotionTracker *)self _changeState:0];
@@ -166,33 +166,33 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)setDebugOverlayEnabled:(BOOL)a3
+- (void)setDebugOverlayEnabled:(BOOL)enabled
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_debugOverlayEnabled != a3)
+  if (self->_debugOverlayEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = enabledCopy;
       _os_log_impl(&dword_1C0E8A000, v5, OS_LOG_TYPE_INFO, "AXSSMotionTracker:setDebugOverlayEnabled: %d", v9, 8u);
     }
 
-    self->_debugOverlayEnabled = v3;
+    self->_debugOverlayEnabled = enabledCopy;
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v6 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      v7 = v6;
-      if (v3)
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      v7 = _motionTrackingDaemon;
+      if (enabledCopy)
       {
-        [v6 showDebugOverlay];
+        [_motionTrackingDaemon showDebugOverlay];
       }
 
       else
       {
-        [v6 hideDebugOverlay];
+        [_motionTrackingDaemon hideDebugOverlay];
       }
     }
   }
@@ -200,9 +200,9 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMotionTrackingMode:(unint64_t)a3
+- (void)setMotionTrackingMode:(unint64_t)mode
 {
-  if (self->_motionTrackingMode != a3)
+  if (self->_motionTrackingMode != mode)
   {
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -210,18 +210,18 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
       [AXSSMotionTracker setMotionTrackingMode:];
     }
 
-    self->_motionTrackingMode = a3;
+    self->_motionTrackingMode = mode;
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v6 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v6 setMotionTrackingMode:a3];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon setMotionTrackingMode:mode];
     }
   }
 }
 
-- (void)setSensitivity:(double)a3
+- (void)setSensitivity:(double)sensitivity
 {
-  if (vabdd_f64(self->_sensitivity, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_sensitivity, sensitivity) > 2.22044605e-16)
   {
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -229,11 +229,11 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
       [AXSSMotionTracker setSensitivity:];
     }
 
-    self->_sensitivity = a3;
+    self->_sensitivity = sensitivity;
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v6 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v6 setSensitivity:a3];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon setSensitivity:sensitivity];
     }
   }
 }
@@ -245,10 +245,10 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   return v2;
 }
 
-- (void)setInputConfiguration:(id)a3
+- (void)setInputConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (![(AXSSMotionTrackingInputConfiguration *)self->_inputConfiguration isEqual:v4])
+  configurationCopy = configuration;
+  if (![(AXSSMotionTrackingInputConfiguration *)self->_inputConfiguration isEqual:configurationCopy])
   {
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -256,14 +256,14 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
       [AXSSMotionTracker setInputConfiguration:];
     }
 
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     inputConfiguration = self->_inputConfiguration;
     self->_inputConfiguration = v6;
 
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v8 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v8 setInputConfiguration:v4];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon setInputConfiguration:configurationCopy];
     }
   }
 }
@@ -275,10 +275,10 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   return v2;
 }
 
-- (void)setExpressionConfiguration:(id)a3
+- (void)setExpressionConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (![(AXSSMotionTrackingExpressionConfiguration *)self->_expressionConfiguration isEqual:v4])
+  configurationCopy = configuration;
+  if (![(AXSSMotionTrackingExpressionConfiguration *)self->_expressionConfiguration isEqual:configurationCopy])
   {
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -286,21 +286,21 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
       [AXSSMotionTracker setExpressionConfiguration:];
     }
 
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     expressionConfiguration = self->_expressionConfiguration;
     self->_expressionConfiguration = v6;
 
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v8 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v8 setExpressionConfiguration:v4];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon setExpressionConfiguration:configurationCopy];
     }
   }
 }
 
-- (void)setJoystickModeMovementThreshold:(double)a3
+- (void)setJoystickModeMovementThreshold:(double)threshold
 {
-  if (vabdd_f64(self->_joystickModeMovementThreshold, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_joystickModeMovementThreshold, threshold) > 2.22044605e-16)
   {
     v5 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -308,40 +308,40 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
       [AXSSMotionTracker setJoystickModeMovementThreshold:];
     }
 
-    self->_joystickModeMovementThreshold = a3;
+    self->_joystickModeMovementThreshold = threshold;
     if ([(AXSSMotionTracker *)self _tracking])
     {
-      v6 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-      [v6 setJoystickModeMovementThreshold:a3];
+      _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+      [_motionTrackingDaemon setJoystickModeMovementThreshold:threshold];
     }
   }
 }
 
-- (void)setLookAtPoint:(id)a3
+- (void)setLookAtPoint:(id)point
 {
-  v11 = a3;
-  if (v11)
+  pointCopy = point;
+  if (pointCopy)
   {
-    v4 = [(AXSSMotionTracker *)self state];
-    if (v4)
+    state = [(AXSSMotionTracker *)self state];
+    if (state)
     {
-      v5 = v4;
-      v6 = [(AXSSMotionTracker *)self state];
-      v7 = [v6 error];
+      v5 = state;
+      state2 = [(AXSSMotionTracker *)self state];
+      error = [state2 error];
 
-      if (!v7)
+      if (!error)
       {
-        v8 = [(AXSSMotionTracker *)self state];
-        v9 = [v8 copy];
+        state3 = [(AXSSMotionTracker *)self state];
+        v9 = [state3 copy];
 
-        [v11 pointValue];
+        [pointCopy pointValue];
         [v9 setLookAtPoint:?];
         [(AXSSMotionTracker *)self _updateState:v9];
         if ([(AXSSMotionTracker *)self _tracking])
         {
-          v10 = [(AXSSMotionTracker *)self _motionTrackingDaemon];
-          [v11 pointValue];
-          [v10 setLookAtPoint:?];
+          _motionTrackingDaemon = [(AXSSMotionTracker *)self _motionTrackingDaemon];
+          [pointCopy pointValue];
+          [_motionTrackingDaemon setLookAtPoint:?];
         }
       }
     }
@@ -350,13 +350,13 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
 
 - (NSValue)lookAtPoint
 {
-  v3 = [(AXSSMotionTracker *)self state];
+  state = [(AXSSMotionTracker *)self state];
 
-  if (v3)
+  if (state)
   {
     v4 = MEMORY[0x1E696B098];
-    v5 = [(AXSSMotionTracker *)self state];
-    [v5 lookAtPoint];
+    state2 = [(AXSSMotionTracker *)self state];
+    [state2 lookAtPoint];
     v10[0] = v6;
     v10[1] = v7;
     v8 = [v4 valueWithBytes:v10 objCType:"{CGPoint=dd}"];
@@ -370,37 +370,37 @@ void __26__AXSSMotionTracker_start__block_invoke_29(uint64_t a1)
   return v8;
 }
 
-- (void)_updateState:(id)a3
+- (void)_updateState:(id)state
 {
-  [(AXSSMotionTracker *)self setState:a3];
-  v5 = [(AXSSMotionTracker *)self delegate];
+  [(AXSSMotionTracker *)self setState:state];
+  delegate = [(AXSSMotionTracker *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(AXSSMotionTracker *)self state];
-    [v5 motionTracker:self updatedState:v4];
+    state = [(AXSSMotionTracker *)self state];
+    [delegate motionTracker:self updatedState:state];
   }
 }
 
-- (void)_changeState:(id)a3
+- (void)_changeState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __34__AXSSMotionTracker__changeState___block_invoke;
     v6[3] = &unk_1E8134950;
     v6[4] = self;
-    v7 = v4;
+    v7 = stateCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
 
 - (AXSSMotionTrackingDaemonProtocol)_motionTrackingDaemon
 {
-  v2 = [(AXSSMotionTracker *)self _motionTrackingDaemonConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_58];
+  _motionTrackingDaemonConnection = [(AXSSMotionTracker *)self _motionTrackingDaemonConnection];
+  v3 = [_motionTrackingDaemonConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_58];
 
   return v3;
 }
@@ -431,16 +431,16 @@ void __42__AXSSMotionTracker__motionTrackingDaemon__block_invoke(uint64_t a1, vo
   [(AXSSMotionTracker *)self _changeState:v4];
 }
 
-- (void)motionTrackingDaemonUpdatedState:(id)a3
+- (void)motionTrackingDaemonUpdatedState:(id)state
 {
-  v6 = a3;
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: motionTrackingDaemonUpdatedState %@", "-[AXSSMotionTracker motionTrackingDaemonUpdatedState:]", v6];
-  v5 = [(AXSSMotionTracker *)self _loggingRateLimiter];
-  [v5 logString:v4];
+  stateCopy = state;
+  stateCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: motionTrackingDaemonUpdatedState %@", "-[AXSSMotionTracker motionTrackingDaemonUpdatedState:]", stateCopy];
+  _loggingRateLimiter = [(AXSSMotionTracker *)self _loggingRateLimiter];
+  [_loggingRateLimiter logString:stateCopy];
 
-  if (v6)
+  if (stateCopy)
   {
-    [(AXSSMotionTracker *)self _changeState:v6];
+    [(AXSSMotionTracker *)self _changeState:stateCopy];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface RTBackgroundInertialOdometrySampleMO
-+ (id)managedObjectWithCLBackgroundInertialOdometrySample:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithCLBackgroundInertialOdometrySample:(id)sample inManagedObjectContext:(id)context;
 @end
 
 @implementation RTBackgroundInertialOdometrySampleMO
 
-+ (id)managedObjectWithCLBackgroundInertialOdometrySample:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithCLBackgroundInertialOdometrySample:(id)sample inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  sampleCopy = sample;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!sampleCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -25,62 +25,62 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTBackgroundInertialOdometrySampleMO alloc] initWithContext:v6];
-    v9 = [v5 cfAbsTimestamp];
-    [(RTBackgroundInertialOdometrySampleMO *)v8 setCfAbsTimestamp:v9];
+    v8 = [[RTBackgroundInertialOdometrySampleMO alloc] initWithContext:contextCopy];
+    cfAbsTimestamp = [sampleCopy cfAbsTimestamp];
+    [(RTBackgroundInertialOdometrySampleMO *)v8 setCfAbsTimestamp:cfAbsTimestamp];
 
-    [v5 machContinuousTimestamp_s];
+    [sampleCopy machContinuousTimestamp_s];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setMachContinuousTimestamp_s:?];
-    [v5 sampleInterval_s];
+    [sampleCopy sampleInterval_s];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setSampleInterval_s:?];
-    v10 = [v5 deltaPosition_m];
-    [v10 X];
+    deltaPosition_m = [sampleCopy deltaPosition_m];
+    [deltaPosition_m X];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaPositionX_m:?];
 
-    v11 = [v5 deltaPosition_m];
-    [v11 Y];
+    deltaPosition_m2 = [sampleCopy deltaPosition_m];
+    [deltaPosition_m2 Y];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaPositionY_m:?];
 
-    v12 = [v5 deltaPosition_m];
-    [v12 Z];
+    deltaPosition_m3 = [sampleCopy deltaPosition_m];
+    [deltaPosition_m3 Z];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaPositionZ_m:?];
 
-    v13 = [v5 deltaVelocity_mps];
-    [v13 X];
+    deltaVelocity_mps = [sampleCopy deltaVelocity_mps];
+    [deltaVelocity_mps X];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaVelocityX_mps:?];
 
-    v14 = [v5 deltaVelocity_mps];
-    [v14 Y];
+    deltaVelocity_mps2 = [sampleCopy deltaVelocity_mps];
+    [deltaVelocity_mps2 Y];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaVelocityY_mps:?];
 
-    v15 = [v5 deltaVelocity_mps];
-    [v15 Z];
+    deltaVelocity_mps3 = [sampleCopy deltaVelocity_mps];
+    [deltaVelocity_mps3 Z];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setDeltaVelocityZ_mps:?];
 
-    v16 = [v5 quaternion];
-    [v16 X];
+    quaternion = [sampleCopy quaternion];
+    [quaternion X];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setQuaternionX:?];
 
-    v17 = [v5 quaternion];
-    [v17 Y];
+    quaternion2 = [sampleCopy quaternion];
+    [quaternion2 Y];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setQuaternionY:?];
 
-    v18 = [v5 quaternion];
-    [v18 Z];
+    quaternion3 = [sampleCopy quaternion];
+    [quaternion3 Z];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setQuaternionZ:?];
 
-    v19 = [v5 quaternion];
-    [v19 W];
+    quaternion4 = [sampleCopy quaternion];
+    [quaternion4 W];
     [(RTBackgroundInertialOdometrySampleMO *)v8 setQuaternionW:?];
 
-    -[RTBackgroundInertialOdometrySampleMO setReferenceFrame:](v8, "setReferenceFrame:", [v5 sessionReferenceFrame]);
-    -[RTBackgroundInertialOdometrySampleMO setReferenceFrameContinuity:](v8, "setReferenceFrameContinuity:", [v5 referenceFrameContinuity]);
-    -[RTBackgroundInertialOdometrySampleMO setStaticFlag:](v8, "setStaticFlag:", [v5 staticFlag]);
-    -[RTBackgroundInertialOdometrySampleMO setDotBiasChange:](v8, "setDotBiasChange:", [v5 dotBiasChange]);
-    -[RTBackgroundInertialOdometrySampleMO setZupt:](v8, "setZupt:", [v5 zupt]);
-    -[RTBackgroundInertialOdometrySampleMO setMountState:](v8, "setMountState:", [v5 mountState]);
+    -[RTBackgroundInertialOdometrySampleMO setReferenceFrame:](v8, "setReferenceFrame:", [sampleCopy sessionReferenceFrame]);
+    -[RTBackgroundInertialOdometrySampleMO setReferenceFrameContinuity:](v8, "setReferenceFrameContinuity:", [sampleCopy referenceFrameContinuity]);
+    -[RTBackgroundInertialOdometrySampleMO setStaticFlag:](v8, "setStaticFlag:", [sampleCopy staticFlag]);
+    -[RTBackgroundInertialOdometrySampleMO setDotBiasChange:](v8, "setDotBiasChange:", [sampleCopy dotBiasChange]);
+    -[RTBackgroundInertialOdometrySampleMO setZupt:](v8, "setZupt:", [sampleCopy zupt]);
+    -[RTBackgroundInertialOdometrySampleMO setMountState:](v8, "setMountState:", [sampleCopy mountState]);
     goto LABEL_8;
   }
 

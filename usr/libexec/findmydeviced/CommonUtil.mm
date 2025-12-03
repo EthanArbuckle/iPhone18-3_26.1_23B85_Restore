@@ -1,21 +1,21 @@
 @interface CommonUtil
-+ (void)handleAlertAction:(id)a3;
++ (void)handleAlertAction:(id)action;
 @end
 
 @implementation CommonUtil
 
-+ (void)handleAlertAction:(id)a3
++ (void)handleAlertAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
-    v8 = [v3 objectForKeyedSubscript:@"url"];
-    v4 = [v3 objectForKeyedSubscript:@"sensitive"];
+    actionCopy = action;
+    v8 = [actionCopy objectForKeyedSubscript:@"url"];
+    v4 = [actionCopy objectForKeyedSubscript:@"sensitive"];
 
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     v6 = +[LSApplicationWorkspace defaultWorkspace];
     v7 = v6;
-    if (v5)
+    if (bOOLValue)
     {
       [v6 openSensitiveURL:v8 withOptions:0];
     }

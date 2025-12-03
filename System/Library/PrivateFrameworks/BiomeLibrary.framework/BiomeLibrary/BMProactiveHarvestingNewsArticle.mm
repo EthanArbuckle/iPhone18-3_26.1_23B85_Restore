@@ -1,39 +1,39 @@
 @interface BMProactiveHarvestingNewsArticle
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingNewsArticle)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingNewsArticle)initWithUniqueID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 title:(id)a6 content:(id)a7 summary:(id)a8 publication:(id)a9 contentProtection:(id)a10 personaId:(id)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingNewsArticle)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingNewsArticle)initWithUniqueID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp title:(id)title content:(id)content summary:(id)summary publication:(id)publication contentProtection:(id)self0 personaId:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingNewsArticle
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
-    v7 = [v5 uniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueID = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v8 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
-      v10 = [v5 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID3 = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v11 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingNewsArticle *)self domainID];
-    v14 = [v5 domainID];
-    v15 = v14;
-    if (v13 == v14)
+    domainID = [(BMProactiveHarvestingNewsArticle *)self domainID];
+    domainID2 = [v5 domainID];
+    v15 = domainID2;
+    if (domainID == domainID2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingNewsArticle *)self domainID];
-      v17 = [v5 domainID];
-      v18 = [v16 isEqual:v17];
+      domainID3 = [(BMProactiveHarvestingNewsArticle *)self domainID];
+      domainID4 = [v5 domainID];
+      v18 = [domainID3 isEqual:domainID4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
-    v20 = [v5 absoluteTimestamp];
-    v21 = v20;
-    if (v19 == v20)
+    absoluteTimestamp = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v21 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
-      v23 = [v5 absoluteTimestamp];
-      v24 = [v22 isEqual:v23];
+      absoluteTimestamp3 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v24 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingNewsArticle *)self title];
-    v26 = [v5 title];
-    v27 = v26;
-    if (v25 == v26)
+    title = [(BMProactiveHarvestingNewsArticle *)self title];
+    title2 = [v5 title];
+    v27 = title2;
+    if (title == title2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingNewsArticle *)self title];
-      v29 = [v5 title];
-      v30 = [v28 isEqual:v29];
+      title3 = [(BMProactiveHarvestingNewsArticle *)self title];
+      title4 = [v5 title];
+      v30 = [title3 isEqual:title4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMProactiveHarvestingNewsArticle *)self content];
-    v32 = [v5 content];
-    v33 = v32;
-    if (v31 == v32)
+    content = [(BMProactiveHarvestingNewsArticle *)self content];
+    content2 = [v5 content];
+    v33 = content2;
+    if (content == content2)
     {
     }
 
     else
     {
-      v34 = [(BMProactiveHarvestingNewsArticle *)self content];
-      v35 = [v5 content];
-      v36 = [v34 isEqual:v35];
+      content3 = [(BMProactiveHarvestingNewsArticle *)self content];
+      content4 = [v5 content];
+      v36 = [content3 isEqual:content4];
 
       if (!v36)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v37 = [(BMProactiveHarvestingNewsArticle *)self summary];
-    v38 = [v5 summary];
-    v39 = v38;
-    if (v37 == v38)
+    summary = [(BMProactiveHarvestingNewsArticle *)self summary];
+    summary2 = [v5 summary];
+    v39 = summary2;
+    if (summary == summary2)
     {
     }
 
     else
     {
-      v40 = [(BMProactiveHarvestingNewsArticle *)self summary];
-      v41 = [v5 summary];
-      v42 = [v40 isEqual:v41];
+      summary3 = [(BMProactiveHarvestingNewsArticle *)self summary];
+      summary4 = [v5 summary];
+      v42 = [summary3 isEqual:summary4];
 
       if (!v42)
       {
@@ -136,18 +136,18 @@
       }
     }
 
-    v43 = [(BMProactiveHarvestingNewsArticle *)self publication];
-    v44 = [v5 publication];
-    v45 = v44;
-    if (v43 == v44)
+    publication = [(BMProactiveHarvestingNewsArticle *)self publication];
+    publication2 = [v5 publication];
+    v45 = publication2;
+    if (publication == publication2)
     {
     }
 
     else
     {
-      v46 = [(BMProactiveHarvestingNewsArticle *)self publication];
-      v47 = [v5 publication];
-      v48 = [v46 isEqual:v47];
+      publication3 = [(BMProactiveHarvestingNewsArticle *)self publication];
+      publication4 = [v5 publication];
+      v48 = [publication3 isEqual:publication4];
 
       if (!v48)
       {
@@ -155,18 +155,18 @@
       }
     }
 
-    v49 = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
-    v50 = [v5 contentProtection];
-    v51 = v50;
-    if (v49 == v50)
+    contentProtection = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
+    contentProtection2 = [v5 contentProtection];
+    v51 = contentProtection2;
+    if (contentProtection == contentProtection2)
     {
     }
 
     else
     {
-      v52 = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
-      v53 = [v5 contentProtection];
-      v54 = [v52 isEqual:v53];
+      contentProtection3 = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
+      contentProtection4 = [v5 contentProtection];
+      v54 = [contentProtection3 isEqual:contentProtection4];
 
       if (!v54)
       {
@@ -178,18 +178,18 @@ LABEL_34:
       }
     }
 
-    v56 = [(BMProactiveHarvestingNewsArticle *)self personaId];
-    v57 = [v5 personaId];
-    if (v56 == v57)
+    personaId = [(BMProactiveHarvestingNewsArticle *)self personaId];
+    personaId2 = [v5 personaId];
+    if (personaId == personaId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v58 = [(BMProactiveHarvestingNewsArticle *)self personaId];
-      v59 = [v5 personaId];
-      v12 = [v58 isEqual:v59];
+      personaId3 = [(BMProactiveHarvestingNewsArticle *)self personaId];
+      personaId4 = [v5 personaId];
+      v12 = [personaId3 isEqual:personaId4];
     }
 
     goto LABEL_34;
@@ -221,14 +221,14 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
-  v4 = [(BMProactiveHarvestingNewsArticle *)self domainID];
-  v5 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
-  if (v5)
+  uniqueID = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
+  domainID = [(BMProactiveHarvestingNewsArticle *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
-    [v7 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v8 = [v6 numberWithDouble:?];
   }
 
@@ -237,102 +237,102 @@ LABEL_35:
     v8 = 0;
   }
 
-  v9 = [(BMProactiveHarvestingNewsArticle *)self title];
-  v10 = [(BMProactiveHarvestingNewsArticle *)self content];
-  v33 = [(BMProactiveHarvestingNewsArticle *)self summary];
-  v11 = [(BMProactiveHarvestingNewsArticle *)self publication];
-  v12 = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
-  v13 = [(BMProactiveHarvestingNewsArticle *)self personaId];
+  title = [(BMProactiveHarvestingNewsArticle *)self title];
+  content = [(BMProactiveHarvestingNewsArticle *)self content];
+  summary = [(BMProactiveHarvestingNewsArticle *)self summary];
+  publication = [(BMProactiveHarvestingNewsArticle *)self publication];
+  contentProtection = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
+  personaId = [(BMProactiveHarvestingNewsArticle *)self personaId];
   v34[0] = @"uniqueID";
-  v14 = v3;
-  if (!v3)
+  null = uniqueID;
+  if (!uniqueID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v14;
-  v35[0] = v14;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"domainID";
-  v15 = v4;
-  if (!v4)
+  null2 = domainID;
+  if (!domainID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v15;
-  v35[1] = v15;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"absoluteTimestamp";
-  v16 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v3;
-  v26 = v16;
-  v35[2] = v16;
+  v32 = uniqueID;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"title";
-  v17 = v9;
-  if (!v9)
+  null4 = title;
+  if (!title)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v4;
-  v25 = v17;
-  v35[3] = v17;
+  v31 = domainID;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"content";
-  v18 = v10;
-  if (!v10)
+  null5 = content;
+  if (!content)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v8;
-  v35[4] = v18;
+  v35[4] = null5;
   v34[5] = @"summary";
-  v19 = v33;
-  if (!v33)
+  null6 = summary;
+  if (!summary)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[5] = v19;
+  v35[5] = null6;
   v34[6] = @"publication";
-  v20 = v11;
-  if (!v11)
+  null7 = publication;
+  if (!publication)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v20;
+  v35[6] = null7;
   v34[7] = @"contentProtection";
-  v21 = v12;
-  if (!v12)
+  null8 = contentProtection;
+  if (!contentProtection)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v21;
+  v35[7] = null8;
   v34[8] = @"personaId";
-  v22 = v13;
-  if (!v13)
+  null9 = personaId;
+  if (!personaId)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v22;
+  v35[8] = null9;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
-  if (v13)
+  if (personaId)
   {
-    if (v12)
+    if (contentProtection)
     {
       goto LABEL_24;
     }
 
 LABEL_38:
 
-    if (v11)
+    if (publication)
     {
       goto LABEL_25;
     }
@@ -340,13 +340,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v12)
+  if (!contentProtection)
   {
     goto LABEL_38;
   }
 
 LABEL_24:
-  if (v11)
+  if (publication)
   {
     goto LABEL_25;
   }
@@ -354,15 +354,15 @@ LABEL_24:
 LABEL_39:
 
 LABEL_25:
-  if (!v33)
+  if (!summary)
   {
   }
 
-  if (!v10)
+  if (!content)
   {
   }
 
-  if (!v9)
+  if (!title)
   {
   }
 
@@ -402,30 +402,30 @@ LABEL_34:
   return v29;
 }
 
-- (BMProactiveHarvestingNewsArticle)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingNewsArticle)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v100[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"uniqueID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"domainID"];
-    v77 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"domainID"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v24 = 0;
           goto LABEL_50;
         }
 
-        v25 = a4;
+        errorCopy2 = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v97 = *MEMORY[0x1E696A578];
@@ -437,7 +437,7 @@ LABEL_4:
         v30 = [v29 initWithDomain:v27 code:2 userInfo:v28];
         v10 = 0;
         v24 = 0;
-        *v25 = v30;
+        *errorCopy2 = v30;
         goto LABEL_49;
       }
 
@@ -449,7 +449,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     v80 = v10;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -481,7 +481,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v77)
+          if (!errorCopy)
           {
             v81 = 0;
             v24 = 0;
@@ -500,7 +500,7 @@ LABEL_4:
           v65 = [v82 initWithDomain:v64 code:2 userInfo:?];
           v81 = 0;
           v24 = 0;
-          *v77 = v65;
+          *errorCopy = v65;
 LABEL_48:
 
 LABEL_49:
@@ -519,7 +519,7 @@ LABEL_49:
     }
 
 LABEL_23:
-    v32 = [v6 objectForKeyedSubscript:@"title"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     v73 = v11;
     v74 = v9;
     v78 = v32;
@@ -528,7 +528,7 @@ LABEL_23:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v77)
+        if (!errorCopy)
         {
           v42 = 0;
           v24 = 0;
@@ -547,7 +547,7 @@ LABEL_23:
         v10 = v80;
         v42 = 0;
         v24 = 0;
-        *v77 = [v47 initWithDomain:v48 code:2 userInfo:v34];
+        *errorCopy = [v47 initWithDomain:v48 code:2 userInfo:v34];
         goto LABEL_47;
       }
 
@@ -559,13 +559,13 @@ LABEL_23:
       v76 = 0;
     }
 
-    v34 = [v6 objectForKeyedSubscript:@"content"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"content"];
     if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v77)
+        if (!errorCopy)
         {
           v79 = 0;
           v24 = 0;
@@ -584,7 +584,7 @@ LABEL_23:
         v10 = v80;
         v79 = 0;
         v24 = 0;
-        *v77 = [v51 initWithDomain:v52 code:2 userInfo:v35];
+        *errorCopy = [v51 initWithDomain:v52 code:2 userInfo:v35];
 LABEL_45:
 
 LABEL_46:
@@ -603,14 +603,14 @@ LABEL_47:
       v79 = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"summary"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"summary"];
     v72 = v8;
     if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v77)
+        if (!errorCopy)
         {
           v75 = 0;
           v24 = 0;
@@ -626,7 +626,7 @@ LABEL_47:
         v55 = [v53 initWithDomain:v54 code:2 userInfo:v36];
         v75 = 0;
         v24 = 0;
-        *v77 = v55;
+        *errorCopy = v55;
         goto LABEL_44;
       }
 
@@ -638,21 +638,21 @@ LABEL_47:
       v75 = 0;
     }
 
-    v36 = [v6 objectForKeyedSubscript:@"publication"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"publication"];
     v69 = v7;
     if (v36 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v77)
+        if (!errorCopy)
         {
           v70 = 0;
           v24 = 0;
           goto LABEL_44;
         }
 
-        v38 = self;
+        selfCopy3 = self;
         v71 = objc_alloc(MEMORY[0x1E696ABC0]);
         v56 = *MEMORY[0x1E698F240];
         v87 = *MEMORY[0x1E696A578];
@@ -662,10 +662,10 @@ LABEL_47:
         v57 = [v71 initWithDomain:v56 code:2 userInfo:v37];
         v70 = 0;
         v24 = 0;
-        *v77 = v57;
+        *errorCopy = v57;
 LABEL_43:
 
-        self = v38;
+        self = selfCopy3;
         v7 = v69;
 LABEL_44:
         v11 = v73;
@@ -683,14 +683,14 @@ LABEL_44:
       v70 = 0;
     }
 
-    v37 = [v6 objectForKeyedSubscript:@"contentProtection"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"contentProtection"];
     if (v37 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
-      v38 = self;
+      selfCopy3 = self;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v77)
+        if (!errorCopy)
         {
           v39 = 0;
           v24 = 0;
@@ -706,7 +706,7 @@ LABEL_44:
         v59 = [v67 initWithDomain:v58 code:2 userInfo:v40];
         v39 = 0;
         v24 = 0;
-        *v77 = v59;
+        *errorCopy = v59;
         goto LABEL_42;
       }
 
@@ -715,17 +715,17 @@ LABEL_44:
 
     else
     {
-      v38 = self;
+      selfCopy3 = self;
       v39 = 0;
     }
 
-    v40 = [v6 objectForKeyedSubscript:@"personaId"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"personaId"];
     if (v40 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v77)
+        if (errorCopy)
         {
           v68 = objc_alloc(MEMORY[0x1E696ABC0]);
           v66 = *MEMORY[0x1E698F240];
@@ -733,7 +733,7 @@ LABEL_44:
           v60 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"personaId"];
           v84 = v60;
           v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-          *v77 = [v68 initWithDomain:v66 code:2 userInfo:v61];
+          *errorCopy = [v68 initWithDomain:v66 code:2 userInfo:v61];
         }
 
         v41 = 0;
@@ -749,8 +749,8 @@ LABEL_44:
       v41 = 0;
     }
 
-    v24 = [(BMProactiveHarvestingNewsArticle *)v38 initWithUniqueID:v72 domainID:v80 absoluteTimestamp:v81 title:v76 content:v79 summary:v75 publication:v70 contentProtection:v39 personaId:v41];
-    v38 = v24;
+    v24 = [(BMProactiveHarvestingNewsArticle *)selfCopy3 initWithUniqueID:v72 domainID:v80 absoluteTimestamp:v81 title:v76 content:v79 summary:v75 publication:v70 contentProtection:v39 personaId:v41];
+    selfCopy3 = v24;
 LABEL_42:
 
     goto LABEL_43;
@@ -763,14 +763,14 @@ LABEL_42:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v24 = 0;
     goto LABEL_51;
   }
 
-  v19 = a4;
+  errorCopy3 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v99 = *MEMORY[0x1E696A578];
@@ -781,7 +781,7 @@ LABEL_42:
   v10 = v22;
   v8 = 0;
   v24 = 0;
-  *v19 = [v20 initWithDomain:v23 code:2 userInfo:v9];
+  *errorCopy3 = [v20 initWithDomain:v23 code:2 userInfo:v9];
 LABEL_50:
 
 LABEL_51:
@@ -793,74 +793,74 @@ LABEL_51:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingNewsArticle *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_domainID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_content)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_summary)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_publication)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentProtection)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMProactiveHarvestingNewsArticle;
   v5 = [(BMEventBase *)&v25 init];
@@ -869,12 +869,12 @@ LABEL_51:
     goto LABEL_50;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -885,18 +885,18 @@ LABEL_51:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -913,9 +913,9 @@ LABEL_51:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -929,18 +929,18 @@ LABEL_16:
           {
             v5->_hasRaw_absoluteTimestamp = 1;
             v26 = 0.0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v26;
@@ -1019,13 +1019,13 @@ LABEL_41:
       }
 
 LABEL_42:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_49:
     v23 = 0;
@@ -1043,44 +1043,44 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
-  v5 = [(BMProactiveHarvestingNewsArticle *)self domainID];
-  v6 = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
-  v7 = [(BMProactiveHarvestingNewsArticle *)self title];
-  v8 = [(BMProactiveHarvestingNewsArticle *)self content];
-  v9 = [(BMProactiveHarvestingNewsArticle *)self summary];
-  v10 = [(BMProactiveHarvestingNewsArticle *)self publication];
-  v11 = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
-  v12 = [(BMProactiveHarvestingNewsArticle *)self personaId];
-  v13 = [v3 initWithFormat:@"BMProactiveHarvestingNewsArticle with uniqueID: %@, domainID: %@, absoluteTimestamp: %@, title: %@, content: %@, summary: %@, publication: %@, contentProtection: %@, personaId: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  uniqueID = [(BMProactiveHarvestingNewsArticle *)self uniqueID];
+  domainID = [(BMProactiveHarvestingNewsArticle *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingNewsArticle *)self absoluteTimestamp];
+  title = [(BMProactiveHarvestingNewsArticle *)self title];
+  content = [(BMProactiveHarvestingNewsArticle *)self content];
+  summary = [(BMProactiveHarvestingNewsArticle *)self summary];
+  publication = [(BMProactiveHarvestingNewsArticle *)self publication];
+  contentProtection = [(BMProactiveHarvestingNewsArticle *)self contentProtection];
+  personaId = [(BMProactiveHarvestingNewsArticle *)self personaId];
+  v13 = [v3 initWithFormat:@"BMProactiveHarvestingNewsArticle with uniqueID: %@, domainID: %@, absoluteTimestamp: %@, title: %@, content: %@, summary: %@, publication: %@, contentProtection: %@, personaId: %@", uniqueID, domainID, absoluteTimestamp, title, content, summary, publication, contentProtection, personaId];
 
   return v13;
 }
 
-- (BMProactiveHarvestingNewsArticle)initWithUniqueID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 title:(id)a6 content:(id)a7 summary:(id)a8 publication:(id)a9 contentProtection:(id)a10 personaId:(id)a11
+- (BMProactiveHarvestingNewsArticle)initWithUniqueID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp title:(id)title content:(id)content summary:(id)summary publication:(id)publication contentProtection:(id)self0 personaId:(id)self1
 {
-  v30 = a3;
-  v29 = a4;
-  v18 = a5;
-  v28 = a6;
-  v27 = a7;
-  obj = a8;
-  v26 = a8;
-  v25 = a9;
-  v19 = a10;
-  v20 = a11;
+  dCopy = d;
+  iDCopy = iD;
+  timestampCopy = timestamp;
+  titleCopy = title;
+  contentCopy = content;
+  obj = summary;
+  summaryCopy = summary;
+  publicationCopy = publication;
+  protectionCopy = protection;
+  idCopy = id;
   v31.receiver = self;
   v31.super_class = BMProactiveHarvestingNewsArticle;
   v21 = [(BMEventBase *)&v31 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v21->_uniqueID, a3);
-    objc_storeStrong(&v21->_domainID, a4);
-    if (v18)
+    objc_storeStrong(&v21->_uniqueID, d);
+    objc_storeStrong(&v21->_domainID, iD);
+    if (timestampCopy)
     {
       v21->_hasRaw_absoluteTimestamp = 1;
-      [v18 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1090,12 +1090,12 @@ LABEL_50:
     }
 
     v21->_raw_absoluteTimestamp = v22;
-    objc_storeStrong(&v21->_title, a6);
-    objc_storeStrong(&v21->_content, a7);
+    objc_storeStrong(&v21->_title, title);
+    objc_storeStrong(&v21->_content, content);
     objc_storeStrong(&v21->_summary, obj);
-    objc_storeStrong(&v21->_publication, a9);
-    objc_storeStrong(&v21->_contentProtection, a10);
-    objc_storeStrong(&v21->_personaId, a11);
+    objc_storeStrong(&v21->_publication, publication);
+    objc_storeStrong(&v21->_contentProtection, protection);
+    objc_storeStrong(&v21->_personaId, id);
   }
 
   return v21;
@@ -1156,13 +1156,13 @@ LABEL_50:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingNewsArticle alloc] initByReadFrom:v6];
     v8 = v7;

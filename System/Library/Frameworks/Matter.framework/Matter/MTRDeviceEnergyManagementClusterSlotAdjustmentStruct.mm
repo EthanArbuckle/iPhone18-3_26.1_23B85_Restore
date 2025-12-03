@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterSlotAdjustmentStruct
 - (MTRDeviceEnergyManagementClusterSlotAdjustmentStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self slotIndex];
-  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setSlotIndex:v5];
+  slotIndex = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self slotIndex];
+  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setSlotIndex:slotIndex];
 
-  v6 = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self nominalPower];
-  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setNominalPower:v6];
+  nominalPower = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self nominalPower];
+  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setNominalPower:nominalPower];
 
-  v7 = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self duration];
-  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setDuration:v7];
+  duration = [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)self duration];
+  [(MTRDeviceEnergyManagementClusterSlotAdjustmentStruct *)v4 setDuration:duration];
 
   return v4;
 }

@@ -1,33 +1,33 @@
 @interface CNAutocompleteNameComponents
-+ (CNAutocompleteNameComponents)nameComponentsWithFirstName:(id)a3 lastName:(id)a4 nickname:(id)a5 nameSuffix:(id)a6;
++ (CNAutocompleteNameComponents)nameComponentsWithFirstName:(id)name lastName:(id)lastName nickname:(id)nickname nameSuffix:(id)suffix;
 + (id)contactKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation CNAutocompleteNameComponents
 
-+ (CNAutocompleteNameComponents)nameComponentsWithFirstName:(id)a3 lastName:(id)a4 nickname:(id)a5 nameSuffix:(id)a6
++ (CNAutocompleteNameComponents)nameComponentsWithFirstName:(id)name lastName:(id)lastName nickname:(id)nickname nameSuffix:(id)suffix
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = objc_alloc_init(a1);
-  v15 = [v13 copy];
+  suffixCopy = suffix;
+  nicknameCopy = nickname;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  v14 = objc_alloc_init(self);
+  v15 = [nameCopy copy];
 
   v16 = v14[1];
   v14[1] = v15;
 
-  v17 = [v12 copy];
+  v17 = [lastNameCopy copy];
   v18 = v14[2];
   v14[2] = v17;
 
-  v19 = [v11 copy];
+  v19 = [nicknameCopy copy];
   v20 = v14[3];
   v14[3] = v19;
 
-  v21 = [v10 copy];
+  v21 = [suffixCopy copy];
   v22 = v14[4];
   v14[4] = v21;
 
@@ -50,9 +50,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -63,16 +63,16 @@
     if (objc_opt_isKindOfClass())
     {
       firstName = self->_firstName;
-      if (!(firstName | *(a3 + 1)) || (v6 = [(NSString *)firstName isEqual:?]) != 0)
+      if (!(firstName | *(equal + 1)) || (v6 = [(NSString *)firstName isEqual:?]) != 0)
       {
         lastName = self->_lastName;
-        if (!(lastName | *(a3 + 2)) || (v6 = [(NSString *)lastName isEqual:?]) != 0)
+        if (!(lastName | *(equal + 2)) || (v6 = [(NSString *)lastName isEqual:?]) != 0)
         {
           nickname = self->_nickname;
-          if (!(nickname | *(a3 + 3)) || (v6 = [(NSString *)nickname isEqual:?]) != 0)
+          if (!(nickname | *(equal + 3)) || (v6 = [(NSString *)nickname isEqual:?]) != 0)
           {
             nameSuffix = self->_nameSuffix;
-            if (!(nameSuffix | *(a3 + 4)) || (v6 = [(NSString *)nameSuffix isEqual:?]) != 0)
+            if (!(nameSuffix | *(equal + 4)) || (v6 = [(NSString *)nameSuffix isEqual:?]) != 0)
             {
               LOBYTE(v6) = 1;
             }

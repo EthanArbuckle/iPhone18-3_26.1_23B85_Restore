@@ -1,21 +1,21 @@
 @interface SSSDescriptorCollectionBox
 - (NSString)description;
 - (SSSDescriptorCollectionBox)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSSDescriptorCollectionBox
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26A090974(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26A090974(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_26A090F84();
 
   v3 = sub_26A09DE74();

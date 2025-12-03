@@ -1,9 +1,9 @@
 @interface HDSessionAssertionGroup
 - (HDSessionAssertionGroup)init;
-- (void)_transitionToNewAssertions:(uint64_t)a1;
+- (void)_transitionToNewAssertions:(uint64_t)assertions;
 - (void)invalidate;
-- (void)setupState:(int64_t)a3 withAssertions:(id)a4;
-- (void)transitionToState:(int64_t)a3;
+- (void)setupState:(int64_t)state withAssertions:(id)assertions;
+- (void)transitionToState:(int64_t)state;
 @end
 
 @implementation HDSessionAssertionGroup
@@ -27,16 +27,16 @@
   return v2;
 }
 
-- (void)setupState:(int64_t)a3 withAssertions:(id)a4
+- (void)setupState:(int64_t)state withAssertions:(id)assertions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  assertionsCopy = assertions;
   assertionsForState = self->_assertionsForState;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [(NSMutableDictionary *)assertionsForState setObject:v6 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+  [(NSMutableDictionary *)assertionsForState setObject:assertionsCopy forKeyedSubscript:v8];
 
-  [(NSMutableSet *)self->_allAssertions addObjectsFromArray:v6];
-  if (self->_state == a3)
+  [(NSMutableSet *)self->_allAssertions addObjectsFromArray:assertionsCopy];
+  if (self->_state == state)
   {
     _HKInitializeLogging();
     v9 = HKLogAssertions();
@@ -47,30 +47,30 @@
       v11 = HKLogAssertions();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
         v14 = 138412290;
         v15 = v12;
         _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_INFO, "Assertion group: Updating assertions for current state %@", &v14, 0xCu);
       }
     }
 
-    [(HDSessionAssertionGroup *)self _transitionToNewAssertions:v6];
+    [(HDSessionAssertionGroup *)self _transitionToNewAssertions:assertionsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transitionToNewAssertions:(uint64_t)a1
+- (void)_transitionToNewAssertions:(uint64_t)assertions
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (assertions)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = *(a1 + 8);
+    v4 = *(assertions + 8);
     v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (!v5)
     {
@@ -105,8 +105,8 @@
           goto LABEL_16;
         }
 
-        v11 = [v10 taken];
-        if (v10 && (v11 & 1) == 0)
+        taken = [v10 taken];
+        if (v10 && (taken & 1) == 0)
         {
           if ([v10 taken])
           {
@@ -122,9 +122,9 @@
             v14 = HKLogAssertions();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
-              v15 = [*(v10 + 8) assertionIdentifier];
+              assertionIdentifier = [*(v10 + 8) assertionIdentifier];
               *buf = v19;
-              v26 = v15;
+              v26 = assertionIdentifier;
               _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_INFO, "Attempting to take assertion already taken: %@", buf, 0xCu);
             }
           }
@@ -159,12 +159,12 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     _HKInitializeLogging();
     v9 = HKLogAssertions();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -174,7 +174,7 @@ LABEL_21:
       v11 = HKLogAssertions();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
         v20 = 138412290;
         v21 = v12;
         _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_INFO, "Assertion group: Transitioning to state %@", &v20, 0xCu);
@@ -182,7 +182,7 @@ LABEL_21:
     }
 
     assertionsForState = self->_assertionsForState;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     v6 = [(NSMutableDictionary *)assertionsForState objectForKeyedSubscript:v14];
 
     if (v6)
@@ -201,7 +201,7 @@ LABEL_21:
         v17 = HKLogAssertions();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+          v18 = [MEMORY[0x277CCABB0] numberWithInteger:state];
           v20 = 138412290;
           v21 = v18;
           _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_INFO, "Assertion group: No assertions for state %@", &v20, 0xCu);
@@ -258,10 +258,10 @@ LABEL_16:
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 taken];
+        taken = [v7 taken];
         if (v7)
         {
-          v9 = v8 == 0;
+          v9 = taken == 0;
         }
 
         else

@@ -1,6 +1,6 @@
 @interface SFAuthenticateAccountsServiceConfiguration
 - (SFAuthenticateAccountsServiceConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SFAuthenticateAccountsServiceConfiguration
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SFAuthenticateAccountsServiceConfiguration);
   v4->_serviceType = self->_serviceType;

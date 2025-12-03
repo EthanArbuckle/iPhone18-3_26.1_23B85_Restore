@@ -1,7 +1,7 @@
 @interface EnrollmentAnalyticManager
 + (_TtC13HearingModeUI25EnrollmentAnalyticManager)shared;
 - (void)submitEvent;
-- (void)updateKeyWithKey:(int64_t)a3 value:(int64_t)a4;
+- (void)updateKeyWithKey:(int64_t)key value:(int64_t)value;
 @end
 
 @implementation EnrollmentAnalyticManager
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)updateKeyWithKey:(int64_t)a3 value:(int64_t)a4
+- (void)updateKeyWithKey:(int64_t)key value:(int64_t)value
 {
-  v6 = self;
-  sub_25202F19C(a3, a4);
+  selfCopy = self;
+  sub_25202F19C(key, value);
 }
 
 - (void)submitEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_25202F570();
 }
 

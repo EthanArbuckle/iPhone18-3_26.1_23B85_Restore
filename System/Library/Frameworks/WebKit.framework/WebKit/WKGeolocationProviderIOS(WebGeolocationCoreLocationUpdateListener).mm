@@ -7,29 +7,29 @@
 
 - (uint64_t)geolocationAuthorizationGranted
 {
-  (*(**(a1 + 8) + 16))(*(a1 + 8));
-  v2 = *(a1 + 16);
+  (*(**(self + 8) + 16))(*(self + 8));
+  v2 = *(self + 16);
 
   return [v2 geolocationAuthorizationGranted];
 }
 
 - (void)geolocationAuthorizationGranted
 {
-  *a1 = &unk_1F110D868;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F110D868;
+  v2 = self[2];
+  self[2] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = self[1];
+  self[1] = 0;
   if (v3)
   {
     (*(*v3 + 8))(v3);
   }
 
-  return a1;
+  return self;
 }
 
 @end

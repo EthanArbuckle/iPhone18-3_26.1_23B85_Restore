@@ -1,11 +1,11 @@
 @interface MADPhotosProcessingBackgroundSystemTask
 + (BOOL)enabled;
 + (BOOL)frequentProgressReporting;
-+ (void)reportProgressForTasks:(id)a3 cancelOrExtendTimeoutBlock:(id)a4;
-+ (void)unimplementedExceptionForMethodName:(id)a3;
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3;
++ (void)reportProgressForTasks:(id)tasks cancelOrExtendTimeoutBlock:(id)block;
++ (void)unimplementedExceptionForMethodName:(id)name;
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request;
 - (id)reportingTaskIDs;
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation MADPhotosProcessingBackgroundSystemTask
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100011CBC;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B80D8 != -1)
   {
     dispatch_once(&qword_1002B80D8, block);
@@ -25,26 +25,26 @@
   return byte_1002B80D0;
 }
 
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request
 {
-  v4 = a3;
-  if (+[MADProgressManager taskHasReachedSteadyState:](MADProgressManager, "taskHasReachedSteadyState:", [a1 taskID]))
+  requestCopy = request;
+  if (+[MADProgressManager taskHasReachedSteadyState:](MADProgressManager, "taskHasReachedSteadyState:", [self taskID]))
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
       v5 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v5))
       {
-        v6 = [a1 identifier];
+        identifier = [self identifier];
         v7 = 138412290;
-        v8 = v6;
+        v8 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "Task %@ has reached steady-state, relaxing task requirements", &v7, 0xCu);
       }
     }
 
-    [v4 setExpectedDuration:{objc_msgSend(a1, "steadyStateExpedtedDurationSeconds")}];
-    [v4 setTrySchedulingBefore:{objc_msgSend(a1, "activityDelayInSeconds") + objc_msgSend(a1, "steadyStateActivityRepeatGracePeriodSeconds")}];
-    [v4 setBacklogged:0];
+    [requestCopy setExpectedDuration:{objc_msgSend(self, "steadyStateExpedtedDurationSeconds")}];
+    [requestCopy setTrySchedulingBefore:{objc_msgSend(self, "activityDelayInSeconds") + objc_msgSend(self, "steadyStateActivityRepeatGracePeriodSeconds")}];
+    [requestCopy setBacklogged:0];
   }
 }
 
@@ -73,24 +73,24 @@
   return 0;
 }
 
-+ (void)reportProgressForTasks:(id)a3 cancelOrExtendTimeoutBlock:(id)a4
++ (void)reportProgressForTasks:(id)tasks cancelOrExtendTimeoutBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  tasksCopy = tasks;
+  blockCopy = block;
   v8 = +[VCPPhotoLibraryManager sharedManager];
-  v9 = [v8 allPhotoLibraries];
+  allPhotoLibraries = [v8 allPhotoLibraries];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v9;
+  v10 = allPhotoLibraries;
   v30 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v30)
   {
     v11 = *v39;
-    v27 = a1;
-    v28 = v6;
+    selfCopy = self;
+    v28 = tasksCopy;
     v25 = *v39;
     v26 = v10;
     type = VCPLogToOSLogType[5];
@@ -107,9 +107,9 @@
         context = objc_autoreleasePoolPush();
         if ([v13 isSystemPhotoLibrary])
         {
-          if (![a1 frequentProgressReporting])
+          if (![self frequentProgressReporting])
           {
-            [MADProgressManager requestProgressUpdateForTasks:v6];
+            [MADProgressManager requestProgressUpdateForTasks:tasksCopy];
             v23 = +[MADProgressReporterBackgroundSystemTask sharedTask];
             v32 = 0;
             [v23 submitTask:&v32];
@@ -118,11 +118,11 @@
             if (v22 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
             {
 LABEL_24:
-              v24 = [a1 identifier];
+              identifier = [self identifier];
               *buf = 138412546;
-              v43 = a1;
+              selfCopy2 = self;
               v44 = 2112;
-              v45 = v24;
+              v45 = identifier;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@][%@] Failed to request workload progress report task", buf, 0x16u);
             }
 
@@ -135,7 +135,7 @@ LABEL_25:
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v14 = v6;
+          v14 = tasksCopy;
           v15 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
           if (v15)
           {
@@ -152,7 +152,7 @@ LABEL_25:
 
                 v19 = *(*(&v34 + 1) + 8 * j);
                 v20 = objc_autoreleasePoolPush();
-                +[MADProgressManager updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:](MADProgressManager, "updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:", [v19 unsignedIntegerValue], v13, 0, v7);
+                +[MADProgressManager updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:](MADProgressManager, "updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:", [v19 unsignedIntegerValue], v13, 0, blockCopy);
                 objc_autoreleasePoolPop(v20);
               }
 
@@ -162,12 +162,12 @@ LABEL_25:
             while (v16);
           }
 
-          [MADProgressManager updateProgressForTask:16 photoLibrary:v13 reuseCachedValue:0 cancelOrExtendTimeoutBlock:v7];
-          a1 = v27;
-          v6 = v28;
+          [MADProgressManager updateProgressForTask:16 photoLibrary:v13 reuseCachedValue:0 cancelOrExtendTimeoutBlock:blockCopy];
+          self = selfCopy;
+          tasksCopy = v28;
           v11 = v25;
           v10 = v26;
-          if (v7 && v7[2](v7))
+          if (blockCopy && blockCopy[2](blockCopy))
           {
             [MADProgressManager requestProgressUpdateForTasks:v14];
             v21 = +[MADProgressReporterBackgroundSystemTask sharedTask];
@@ -196,32 +196,32 @@ LABEL_26:
   }
 }
 
-- (void)executeWithSystemTask:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (void)executeWithSystemTask:(id)task cancelBlock:(id)block completionHandler:(id)handler
 {
-  v53 = a3;
-  v52 = a4;
-  v8 = a5;
+  taskCopy = task;
+  blockCopy = block;
+  handlerCopy = handler;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [objc_opt_class() identifier];
-  v12 = [NSString stringWithFormat:@"[%@][%@]", v10, v11];
+  identifier = [objc_opt_class() identifier];
+  v12 = [NSString stringWithFormat:@"[%@][%@]", v10, identifier];
 
   if ([objc_opt_class() enabled])
   {
-    v51 = [(MADPhotosProcessingBackgroundSystemTask *)self reportingTaskIDs];
-    if (!v51)
+    reportingTaskIDs = [(MADPhotosProcessingBackgroundSystemTask *)self reportingTaskIDs];
+    if (!reportingTaskIDs)
     {
-      v13 = [objc_opt_class() taskID];
+      taskID = [objc_opt_class() taskID];
       v14 = &off_100295FC0;
-      if (v13 != 16)
+      if (taskID != 16)
       {
         v14 = 0;
       }
 
-      v51 = v14;
+      reportingTaskIDs = v14;
     }
 
-    v15 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], v53);
+    v15 = +[MADThroughputManager throughputManagerForTask:BGSystemTask:](MADThroughputManager, "throughputManagerForTask:BGSystemTask:", [objc_opt_class() taskID], taskCopy);
     v16 = +[NSDate now];
     if (VCPIsRemoteIOSTask())
     {
@@ -235,7 +235,7 @@ LABEL_26:
       v71[2] = sub_100012C70;
       v71[3] = &unk_100282E10;
       v72 = v12;
-      v73 = self;
+      selfCopy = self;
       v74 = v16;
       v17 = [VCPTimer timerWithIntervalSeconds:60 isOneShot:0 andBlock:v71];
     }
@@ -245,8 +245,8 @@ LABEL_26:
     v80 = 0x3032000000;
     v81 = sub_100012D48;
     v82 = sub_100012D58;
-    v19 = [objc_opt_class() identifier];
-    v83 = VCPTransactionWithName(v19);
+    identifier2 = [objc_opt_class() identifier];
+    v83 = VCPTransactionWithName(identifier2);
 
     v69[0] = _NSConcreteStackBlock;
     v69[1] = 3221225472;
@@ -259,7 +259,7 @@ LABEL_26:
     v67[1] = 3221225472;
     v67[2] = sub_100012E34;
     v67[3] = &unk_100282A08;
-    v21 = v52;
+    v21 = blockCopy;
     v68 = v21;
     v50 = objc_retainBlock(v67);
     v58[0] = _NSConcreteStackBlock;
@@ -274,15 +274,15 @@ LABEL_26:
     v61 = v44;
     v45 = v17;
     v62 = v45;
-    v63 = self;
+    selfCopy2 = self;
     p_buf = &buf;
     v64 = v21;
-    v22 = v8;
+    v22 = handlerCopy;
     v65 = v22;
     v23 = objc_retainBlock(v58);
     context = objc_autoreleasePoolPush();
     v24 = +[VCPPhotoLibraryManager sharedManager];
-    v49 = [v24 allPhotoLibraries];
+    allPhotoLibraries = [v24 allPhotoLibraries];
 
     if (_os_feature_enabled_impl())
     {
@@ -295,8 +295,8 @@ LABEL_26:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
         {
           v28 = objc_opt_class();
-          v29 = [objc_opt_class() taskID];
-          sub_10001330C(v29, v78, v28, v28);
+          taskID2 = [objc_opt_class() taskID];
+          sub_10001330C(taskID2, v78, v28, v28);
         }
       }
     }
@@ -312,8 +312,8 @@ LABEL_26:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
         {
           v33 = objc_opt_class();
-          v34 = [objc_opt_class() taskID];
-          sub_100013364(v34, v77, v33, v33);
+          taskID3 = [objc_opt_class() taskID];
+          sub_100013364(taskID3, v77, v33, v33);
         }
       }
     }
@@ -325,13 +325,13 @@ LABEL_26:
 
     if (VCPIsRemoteIOSTask())
     {
-      v35 = [objc_opt_class() taskID];
+      taskID4 = [objc_opt_class() taskID];
       v56[0] = _NSConcreteStackBlock;
       v56[1] = 3221225472;
       v56[2] = sub_10001318C;
       v56[3] = &unk_100282858;
       v57 = v23;
-      v36 = [VCPMADRemoteActivityTask taskWithActivityType:v35 andCompletionHandler:v56];
+      v36 = [VCPMADRemoteActivityTask taskWithActivityType:taskID4 andCompletionHandler:v56];
       [v36 setCancelBlock:v50];
       v37 = &v57;
     }
@@ -344,7 +344,7 @@ LABEL_26:
       v54[3] = &unk_100282E60;
       v55 = v23;
       v38 = objc_retainBlock(v54);
-      v36 = [objc_opt_class() taskWithPhotoLibraries:v49 cancelBlock:v50 progressHandler:v48 andCompletionHandler:v38];
+      v36 = [objc_opt_class() taskWithPhotoLibraries:allPhotoLibraries cancelBlock:v50 progressHandler:v48 andCompletionHandler:v38];
       if (+[MADManagedBackgroundActivitySchedule isMACDPersistEnabled])
       {
         +[MADManagedBackgroundActivitySchedule updateSessionLogWithTaskID:startTime:duration:exitStatus:](MADManagedBackgroundActivitySchedule, "updateSessionLogWithTaskID:startTime:duration:exitStatus:", [objc_opt_class() taskID], v47, 0, -1.0);
@@ -411,13 +411,13 @@ LABEL_26:
       }
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-+ (void)unimplementedExceptionForMethodName:(id)a3
++ (void)unimplementedExceptionForMethodName:(id)name
 {
-  [NSString stringWithFormat:@"[MADPhotosProcessingBackgroundSystemTask %@] should not be called", a3];
+  [NSString stringWithFormat:@"[MADPhotosProcessingBackgroundSystemTask %@] should not be called", name];
   v3 = [NSException exceptionWithName:@"NotImplementedException" reason:objc_claimAutoreleasedReturnValue() userInfo:0];
   objc_exception_throw(v3);
 }

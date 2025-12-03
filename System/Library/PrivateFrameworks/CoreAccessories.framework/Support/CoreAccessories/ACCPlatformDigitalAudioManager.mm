@@ -1,8 +1,8 @@
 @interface ACCPlatformDigitalAudioManager
 + (id)getManager;
-+ (int)sampleRateEnumFromValue:(unsigned int)a3;
-+ (unsigned)sampleRateMaskFromEnum:(int)a3;
-+ (unsigned)sampleRateValueFromEnum:(int)a3;
++ (int)sampleRateEnumFromValue:(unsigned int)value;
++ (unsigned)sampleRateMaskFromEnum:(int)enum;
++ (unsigned)sampleRateValueFromEnum:(int)enum;
 - (ACCPlatformDigitalAudioManager)init;
 - (BOOL)newAudioPropertyNotification;
 - (id)supportedSampleRatesList;
@@ -33,11 +33,11 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (unsigned)sampleRateValueFromEnum:(int)a3
++ (unsigned)sampleRateValueFromEnum:(int)enum
 {
-  if (a3 < 9)
+  if (enum < 9)
   {
-    return dword_1001C4060[a3];
+    return dword_1001C4060[enum];
   }
 
   if (gLogObjects)
@@ -68,24 +68,24 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(ACCPlatformDigitalAudioManager *)a3 sampleRateValueFromEnum:v7];
+    [(ACCPlatformDigitalAudioManager *)enum sampleRateValueFromEnum:v7];
   }
 
   return 0;
 }
 
-+ (int)sampleRateEnumFromValue:(unsigned int)a3
++ (int)sampleRateEnumFromValue:(unsigned int)value
 {
-  if (a3 <= 22049)
+  if (value <= 22049)
   {
-    if (a3 > 11999)
+    if (value > 11999)
     {
-      if (a3 == 12000)
+      if (value == 12000)
       {
         return 2;
       }
 
-      if (a3 == 16000)
+      if (value == 16000)
       {
         return 3;
       }
@@ -93,26 +93,26 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
 
     else
     {
-      if (a3 == 8000)
+      if (value == 8000)
       {
         return 0;
       }
 
-      if (a3 == 11025)
+      if (value == 11025)
       {
         return 1;
       }
     }
   }
 
-  else if (a3 <= 31999)
+  else if (value <= 31999)
   {
-    if (a3 == 22050)
+    if (value == 22050)
     {
       return 4;
     }
 
-    if (a3 == 24000)
+    if (value == 24000)
     {
       return 5;
     }
@@ -120,7 +120,7 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
 
   else
   {
-    switch(a3)
+    switch(value)
     {
       case 0x7D00u:
         return 6;
@@ -149,22 +149,22 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ACCPlatformDigitalAudioManager *)a3 sampleRateEnumFromValue:v5];
+    [(ACCPlatformDigitalAudioManager *)value sampleRateEnumFromValue:v5];
   }
 
   return 9;
 }
 
-+ (unsigned)sampleRateMaskFromEnum:(int)a3
++ (unsigned)sampleRateMaskFromEnum:(int)enum
 {
-  if (a3 >= 9)
+  if (enum >= 9)
   {
     return 0;
   }
 
   else
   {
-    return 1 << a3;
+    return 1 << enum;
   }
 }
 
@@ -242,16 +242,16 @@ void __44__ACCPlatformDigitalAudioManager_getManager__block_invoke(id a1)
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v10 = [(ACCPlatformDigitalAudioManager *)self digAudEndpointUUID];
+      digAudEndpointUUID = [(ACCPlatformDigitalAudioManager *)self digAudEndpointUUID];
       v13 = 138412546;
-      v14 = v10;
+      v14 = digAudEndpointUUID;
       v15 = 2112;
       v16 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[#DigitalAudio] endpointUUID: %@: attributes: %@", &v13, 0x16u);
     }
 
-    v11 = [(ACCPlatformDigitalAudioManager *)self digAudEndpointUUID];
-    v8 = accFeatureHandlers_invokeHandler(v11, 23, v6);
+    digAudEndpointUUID2 = [(ACCPlatformDigitalAudioManager *)self digAudEndpointUUID];
+    v8 = accFeatureHandlers_invokeHandler(digAudEndpointUUID2, 23, v6);
 
     if (v8)
     {

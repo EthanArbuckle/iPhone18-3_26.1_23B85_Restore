@@ -1,8 +1,8 @@
 @interface PKMerchantTokenUnifiedListViewControllerProvider
 + (id)makeViewController;
 - (PKMerchantTokenUnifiedListViewControllerProvider)init;
-- (id)makeViewControllerInNavigationContextForPass:(id)a3 withDelegate:(id)a4 prefetchedMerchantTokens:(id)a5;
-- (id)makeViewControllerInNavigationContextForUnifiedListWithDelegate:(id)a3;
+- (id)makeViewControllerInNavigationContextForPass:(id)pass withDelegate:(id)delegate prefetchedMerchantTokens:(id)tokens;
+- (id)makeViewControllerInNavigationContextForUnifiedListWithDelegate:(id)delegate;
 @end
 
 @implementation PKMerchantTokenUnifiedListViewControllerProvider
@@ -26,28 +26,28 @@
   return v2;
 }
 
-- (id)makeViewControllerInNavigationContextForPass:(id)a3 withDelegate:(id)a4 prefetchedMerchantTokens:(id)a5
+- (id)makeViewControllerInNavigationContextForPass:(id)pass withDelegate:(id)delegate prefetchedMerchantTokens:(id)tokens
 {
-  if (a5)
+  if (tokens)
   {
     sub_1BD3626C8();
     sub_1BE052744();
   }
 
-  v7 = a3;
+  passCopy = pass;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_1BD3621BC(a3);
+  selfCopy = self;
+  v9 = sub_1BD3621BC(pass);
 
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (id)makeViewControllerInNavigationContextForUnifiedListWithDelegate:(id)a3
+- (id)makeViewControllerInNavigationContextForUnifiedListWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1BD3621BC(0);
   swift_unknownObjectRelease();
 

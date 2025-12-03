@@ -73,7 +73,7 @@ LABEL_11:
     v6 = 0;
   }
 
-  v7 = [a1 _resultWithSentences:{v6, v10, v11}];
+  v7 = [self _resultWithSentences:{v6, v10, v11}];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -83,7 +83,7 @@ LABEL_11:
 + (id)resultFromFTSpeechResponse:()Daemon sourceText:censorSpeech:
 {
   v2 = [MEMORY[0x277CE1AE8] sentenceFromFTSpeechResponse:? sourceText:? censorSpeech:?];
-  v3 = [a1 _resultWithSentence:v2];
+  v3 = [self _resultWithSentence:v2];
 
   return v3;
 }
@@ -91,7 +91,7 @@ LABEL_11:
 + (id)resultFromOspreyResponse:()Daemon
 {
   v2 = [MEMORY[0x277CE1AE8] sentenceFromOspreyResponse:?];
-  v3 = [a1 _resultWithSentence:v2];
+  v3 = [self _resultWithSentence:v2];
 
   return v3;
 }
@@ -101,15 +101,15 @@ LABEL_11:
   v32 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 translated_sentences];
-  v9 = [v8 _ltCompactMap:&__block_literal_global_8];
-  if ([v8 count])
+  translated_sentences = [v6 translated_sentences];
+  v9 = [translated_sentences _ltCompactMap:&__block_literal_global_8];
+  if ([translated_sentences count])
   {
-    v10 = [v8 count];
+    v10 = [translated_sentences count];
     if (v10 == [v9 count])
     {
 LABEL_10:
-      v22 = [a1 _resultWithSentences:v9];
+      v22 = [self _resultWithSentences:v9];
       goto LABEL_14;
     }
 
@@ -120,7 +120,7 @@ LABEL_10:
       *buf = 134218240;
       v29 = [v9 count];
       v30 = 2048;
-      v31 = [v8 count];
+      v31 = [translated_sentences count];
     }
   }
 
@@ -133,12 +133,12 @@ LABEL_10:
     }
   }
 
-  v14 = [v6 translated_text];
-  if ([v7 length] && objc_msgSend(v14, "length"))
+  translated_text = [v6 translated_text];
+  if ([v7 length] && objc_msgSend(translated_text, "length"))
   {
     v15 = objc_alloc(MEMORY[0x277CE1AF8]);
-    v16 = [v6 translated_text_romanized];
-    v17 = [v15 initWithText:v14 links:MEMORY[0x277CBEBF8] romanization:v16];
+    translated_text_romanized = [v6 translated_text_romanized];
+    v17 = [v15 initWithText:translated_text links:MEMORY[0x277CBEBF8] romanization:translated_text_romanized];
 
     v18 = objc_alloc(MEMORY[0x277CE1AE8]);
     v27 = v17;
@@ -155,7 +155,7 @@ LABEL_10:
   v23 = _LTOSLogDisambiguation();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    [(_LTDisambiguableResult(Daemon) *)v23 resultFromOspreyBatchResponse:v7 sourceText:v14];
+    [(_LTDisambiguableResult(Daemon) *)v23 resultFromOspreyBatchResponse:v7 sourceText:translated_text];
   }
 
   v22 = 0;

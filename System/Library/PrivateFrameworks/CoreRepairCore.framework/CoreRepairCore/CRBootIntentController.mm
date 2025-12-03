@@ -1,12 +1,12 @@
 @interface CRBootIntentController
-+ (BOOL)clearBootIntentWithError:(id *)a3;
-+ (BOOL)setBootIntentWithLocale:(id)a3 error:(id *)a4;
-+ (id)getSsrBootIntentWithError:(id *)a3;
++ (BOOL)clearBootIntentWithError:(id *)error;
++ (BOOL)setBootIntentWithLocale:(id)locale error:(id *)error;
++ (id)getSsrBootIntentWithError:(id *)error;
 @end
 
 @implementation CRBootIntentController
 
-+ (id)getSsrBootIntentWithError:(id *)a3
++ (id)getSsrBootIntentWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -66,7 +66,7 @@
             {
               v10 = 0;
               v4 = 0;
-              if (!a3)
+              if (!error)
               {
                 goto LABEL_35;
               }
@@ -88,7 +88,7 @@
             v4 = v14;
 LABEL_32:
 
-            if (!a3)
+            if (!error)
             {
               goto LABEL_35;
             }
@@ -97,7 +97,7 @@ LABEL_33:
             if (v5)
             {
               v16 = v5;
-              *a3 = v5;
+              *error = v5;
             }
 
             goto LABEL_35;
@@ -169,10 +169,10 @@ LABEL_35:
   return v17;
 }
 
-+ (BOOL)setBootIntentWithLocale:(id)a3 error:(id *)a4
++ (BOOL)setBootIntentWithLocale:(id)locale error:(id *)error
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
+  localeCopy = locale;
   v7 = [v5 dictionaryWithDictionary:&unk_1F4BCD850];
   v8 = handleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -181,7 +181,7 @@ LABEL_35:
     _os_log_impl(&dword_1CEDC5000, v8, OS_LOG_TYPE_DEFAULT, "Set boot intent and boot command", buf, 2u);
   }
 
-  v9 = [CRWiFiCredentials createEncryptedCredentialsDataWithLocale:v6];
+  v9 = [CRWiFiCredentials createEncryptedCredentialsDataWithLocale:localeCopy];
 
   if (v9)
   {
@@ -269,16 +269,16 @@ LABEL_20:
 
   v18 = 0;
 LABEL_21:
-  if (a4)
+  if (error)
   {
     v21 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v18;
 }
 
-+ (BOOL)clearBootIntentWithError:(id *)a3
++ (BOOL)clearBootIntentWithError:(id *)error
 {
   v13 = 0;
   v4 = [CRNVRAMController deleteNVRAMValueForKey:@"diagnostic-boot-intent" error:&v13];
@@ -292,7 +292,7 @@ LABEL_21:
     if (v6)
     {
       v8 = 1;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -320,11 +320,11 @@ LABEL_21:
 
   v8 = 0;
   v7 = v5;
-  if (a3)
+  if (error)
   {
 LABEL_11:
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_12:

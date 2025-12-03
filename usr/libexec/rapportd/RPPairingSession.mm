@@ -1,18 +1,18 @@
 @interface RPPairingSession
 + (NSDictionary)pairingEndpoints;
-+ (id)agentClientListenerGetPairingData:(id)a3;
-+ (id)endpointGetPINFor:(id)a3;
-+ (void)addPairingSession:(id)a3 forUUID:(id)a4;
-+ (void)setPairingEndpoints:(id)a3;
++ (id)agentClientListenerGetPairingData:(id)data;
++ (id)endpointGetPINFor:(id)for;
++ (void)addPairingSession:(id)session forUUID:(id)d;
++ (void)setPairingEndpoints:(id)endpoints;
 - (_TtC8rapportd16RPPairingSession)init;
-- (_TtC8rapportd16RPPairingSession)initWithApplicationService:(id)a3 queue:(id)a4 availablePINsChangedHandler:(id)a5 bonjourResolveHandler:(id)a6 endpointsChangedHandler:(id)a7;
-- (void)activateForBrowsingWithMode:(unint64_t)a3 completionHandler:(id)a4;
-- (void)activateForServerWithPin:(NSString *)a3 advertiseSensitiveInfo:(BOOL)a4 completionHandler:(id)a5;
-- (void)pairWithPin:(NSString *)a3 completionHandler:(id)a4;
-- (void)pairingResolveBonjourFor:(RPNWEndpoint *)a3 withPIN:(NSString *)a4 clientPublicKey:(NSData *)a5 completionHandler:(id)a6;
-- (void)sendPAKEClientIdentityFor:(NSString *)a3 completionHandler:(id)a4;
-- (void)stopBrowsingWithCompletionHandler:(id)a3;
-- (void)stopServerWithCompletionHandler:(id)a3;
+- (_TtC8rapportd16RPPairingSession)initWithApplicationService:(id)service queue:(id)queue availablePINsChangedHandler:(id)handler bonjourResolveHandler:(id)resolveHandler endpointsChangedHandler:(id)changedHandler;
+- (void)activateForBrowsingWithMode:(unint64_t)mode completionHandler:(id)handler;
+- (void)activateForServerWithPin:(NSString *)pin advertiseSensitiveInfo:(BOOL)info completionHandler:(id)handler;
+- (void)pairWithPin:(NSString *)pin completionHandler:(id)handler;
+- (void)pairingResolveBonjourFor:(RPNWEndpoint *)for withPIN:(NSString *)n clientPublicKey:(NSData *)key completionHandler:(id)handler;
+- (void)sendPAKEClientIdentityFor:(NSString *)for completionHandler:(id)handler;
+- (void)stopBrowsingWithCompletionHandler:(id)handler;
+- (void)stopServerWithCompletionHandler:(id)handler;
 @end
 
 @implementation RPPairingSession
@@ -34,7 +34,7 @@
   return v2.super.isa;
 }
 
-+ (void)setPairingEndpoints:(id)a3
++ (void)setPairingEndpoints:(id)endpoints
 {
   swift_getObjCClassMetadata();
   type metadata accessor for UUID();
@@ -49,11 +49,11 @@
   qword_1001DA6D0 = v3;
 }
 
-- (_TtC8rapportd16RPPairingSession)initWithApplicationService:(id)a3 queue:(id)a4 availablePINsChangedHandler:(id)a5 bonjourResolveHandler:(id)a6 endpointsChangedHandler:(id)a7
+- (_TtC8rapportd16RPPairingSession)initWithApplicationService:(id)service queue:(id)queue availablePINsChangedHandler:(id)handler bonjourResolveHandler:(id)resolveHandler endpointsChangedHandler:(id)changedHandler
 {
-  v10 = _Block_copy(a5);
-  v11 = _Block_copy(a6);
-  v12 = _Block_copy(a7);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(resolveHandler);
+  v12 = _Block_copy(changedHandler);
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
   if (v10)
@@ -94,24 +94,24 @@ LABEL_4:
   *(v16 + 16) = v12;
   v12 = sub_1000F1644;
 LABEL_8:
-  v17 = a4;
-  v18 = sub_1000EFC40(v13, v15, v17, v12, v16);
+  queueCopy = queue;
+  v18 = sub_1000EFC40(v13, v15, queueCopy, v12, v16);
   sub_1000134D4(v11);
   sub_1000134D4(v10);
 
   return v18;
 }
 
-- (void)activateForServerWithPin:(NSString *)a3 advertiseSensitiveInfo:(BOOL)a4 completionHandler:(id)a5
+- (void)activateForServerWithPin:(NSString *)pin advertiseSensitiveInfo:(BOOL)info completionHandler:(id)handler
 {
   v9 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = pin;
+  *(v14 + 24) = info;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = type metadata accessor for TaskPriority();
@@ -126,18 +126,18 @@ LABEL_8:
   v17[3] = 0;
   v17[4] = &unk_10014B470;
   v17[5] = v16;
-  v18 = a3;
+  pinCopy = pin;
 
   sub_1000EED08(0, 0, v12, &unk_10014B478, v17);
 }
 
-- (void)stopServerWithCompletionHandler:(id)a3
+- (void)stopServerWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -157,15 +157,15 @@ LABEL_8:
   sub_1000EED08(0, 0, v8, &unk_10014B458, v13);
 }
 
-- (void)activateForBrowsingWithMode:(unint64_t)a3 completionHandler:(id)a4
+- (void)activateForBrowsingWithMode:(unint64_t)mode completionHandler:(id)handler
 {
   v7 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = mode;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -184,17 +184,17 @@ LABEL_8:
   sub_1000EED08(0, 0, v10, &unk_10014B438, v15);
 }
 
-- (void)pairingResolveBonjourFor:(RPNWEndpoint *)a3 withPIN:(NSString *)a4 clientPublicKey:(NSData *)a5 completionHandler:(id)a6
+- (void)pairingResolveBonjourFor:(RPNWEndpoint *)for withPIN:(NSString *)n clientPublicKey:(NSData *)key completionHandler:(id)handler
 {
   v11 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = for;
+  v16[3] = n;
+  v16[4] = key;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -209,22 +209,22 @@ LABEL_8:
   v19[3] = 0;
   v19[4] = &unk_10014B408;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  forCopy = for;
+  nCopy = n;
+  keyCopy = key;
 
   sub_1000EED08(0, 0, v14, &unk_10014B410, v19);
 }
 
-- (void)pairWithPin:(NSString *)a3 completionHandler:(id)a4
+- (void)pairWithPin:(NSString *)pin completionHandler:(id)handler
 {
   v7 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = pin;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -239,20 +239,20 @@ LABEL_8:
   v15[3] = 0;
   v15[4] = &unk_10014B3E8;
   v15[5] = v14;
-  v16 = a3;
+  pinCopy = pin;
 
   sub_1000EED08(0, 0, v10, &unk_10014B3F0, v15);
 }
 
-- (void)sendPAKEClientIdentityFor:(NSString *)a3 completionHandler:(id)a4
+- (void)sendPAKEClientIdentityFor:(NSString *)for completionHandler:(id)handler
 {
   v7 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -267,18 +267,18 @@ LABEL_8:
   v15[3] = 0;
   v15[4] = &unk_10014B3C8;
   v15[5] = v14;
-  v16 = a3;
+  forCopy = for;
 
   sub_1000EED08(0, 0, v10, &unk_10014B3D0, v15);
 }
 
-- (void)stopBrowsingWithCompletionHandler:(id)a3
+- (void)stopBrowsingWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -298,7 +298,7 @@ LABEL_8:
   sub_1000EED08(0, 0, v8, &unk_10014B398, v13);
 }
 
-+ (void)addPairingSession:(id)a3 forUUID:(id)a4
++ (void)addPairingSession:(id)session forUUID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -318,14 +318,14 @@ LABEL_8:
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   v12 = qword_1001DA6D0;
   qword_1001DA6D0 = 0x8000000000000000;
-  sub_1000EF508(a3, v9, isUniquelyReferenced_nonNull_native);
+  sub_1000EF508(session, v9, isUniquelyReferenced_nonNull_native);
   qword_1001DA6D0 = v12;
   swift_endAccess();
 
   (*(v6 + 8))(v9, v5);
 }
 
-+ (id)agentClientListenerGetPairingData:(id)a3
++ (id)agentClientListenerGetPairingData:(id)data
 {
   swift_unknownObjectRetain();
   v3 = sub_1000EE4D0();
@@ -346,10 +346,10 @@ LABEL_8:
   return v6;
 }
 
-+ (id)endpointGetPINFor:(id)a3
++ (id)endpointGetPINFor:(id)for
 {
   swift_unknownObjectRetain();
-  sub_1000F0C60(a3);
+  sub_1000F0C60(for);
   v5 = v4;
   swift_unknownObjectRelease();
   if (v5)

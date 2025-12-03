@@ -1,36 +1,36 @@
 @interface PXPeopleFlowNavigationController
 - (CGSize)preferredContentSize;
-- (PXPeopleFlowNavigationController)initWithFlowController:(id)a3;
+- (PXPeopleFlowNavigationController)initWithFlowController:(id)controller;
 - (void)_updateActions;
-- (void)back:(id)a3;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)next:(id)a3;
-- (void)setAdvanceButtonEnabled:(BOOL)a3;
+- (void)back:(id)back;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)next:(id)next;
+- (void)setAdvanceButtonEnabled:(BOOL)enabled;
 - (void)viewDidLoad;
 @end
 
 @implementation PXPeopleFlowNavigationController
 
-- (void)setAdvanceButtonEnabled:(BOOL)a3
+- (void)setAdvanceButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PXPeopleFlowNavigationController *)self nextButton];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  nextButton = [(PXPeopleFlowNavigationController *)self nextButton];
+  [nextButton setEnabled:enabledCopy];
 
-  v6 = [(PXPeopleFlowNavigationController *)self doneButton];
-  [v6 setEnabled:v3];
+  doneButton = [(PXPeopleFlowNavigationController *)self doneButton];
+  [doneButton setEnabled:enabledCopy];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v9 = a4;
-  v6 = [v9 conformsToProtocol:&unk_1F1973A48];
-  v7 = v9;
+  viewControllerCopy = viewController;
+  v6 = [viewControllerCopy conformsToProtocol:&unk_1F1973A48];
+  v7 = viewControllerCopy;
   if (v6)
   {
-    v8 = v9;
+    v8 = viewControllerCopy;
     [(PXPeopleFlowNavigationController *)self setCurrentViewController:v8];
     if (objc_opt_respondsToSelector())
     {
@@ -39,14 +39,14 @@
 
     [(PXPeopleFlowNavigationController *)self _updateActions];
 
-    v7 = v9;
+    v7 = viewControllerCopy;
   }
 }
 
 - (void)_updateActions
 {
-  v7 = [(PXPeopleFlowNavigationController *)self flowController];
-  if ([v7 hasPreviousViewController])
+  flowController = [(PXPeopleFlowNavigationController *)self flowController];
+  if ([flowController hasPreviousViewController])
   {
     [(PXPeopleFlowNavigationController *)self backButton];
   }
@@ -56,7 +56,7 @@
     [(PXPeopleFlowNavigationController *)self cancelButton];
   }
   v3 = ;
-  if ([v7 hasNextViewController])
+  if ([flowController hasNextViewController])
   {
     [(PXPeopleFlowNavigationController *)self nextButton];
   }
@@ -66,27 +66,27 @@
     [(PXPeopleFlowNavigationController *)self doneButton];
   }
   v4 = ;
-  v5 = [(PXPeopleFlowNavigationController *)self currentViewController];
-  v6 = [v5 navigationItem];
+  currentViewController = [(PXPeopleFlowNavigationController *)self currentViewController];
+  navigationItem = [currentViewController navigationItem];
 
-  [v6 setLeftBarButtonItem:v3];
-  [v6 setRightBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v3];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (void)back:(id)a3
+- (void)back:(id)back
 {
-  v7 = [(PXPeopleFlowNavigationController *)self currentViewController];
+  currentViewController = [(PXPeopleFlowNavigationController *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v7 willTransitionToPreviousInFlow];
+    [currentViewController willTransitionToPreviousInFlow];
   }
 
   [(PXPeopleFlowNavigationController *)self setAdvanceButtonEnabled:1];
-  v4 = [(PXPeopleFlowNavigationController *)self flowController];
-  if ([v4 hasPreviousViewController])
+  flowController = [(PXPeopleFlowNavigationController *)self flowController];
+  if ([flowController hasPreviousViewController])
   {
-    v5 = [v4 previousViewController];
-    if (v5)
+    previousViewController = [flowController previousViewController];
+    if (previousViewController)
     {
       v6 = [(PXPeopleFlowNavigationController *)self popViewControllerAnimated:1];
     }
@@ -98,25 +98,25 @@
   }
 }
 
-- (void)next:(id)a3
+- (void)next:(id)next
 {
-  v6 = [(PXPeopleFlowNavigationController *)self currentViewController];
+  currentViewController = [(PXPeopleFlowNavigationController *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 willTransitionToNextInFlow];
+    [currentViewController willTransitionToNextInFlow];
   }
 
   [(PXPeopleFlowNavigationController *)self setAdvanceButtonEnabled:1];
-  v4 = [(PXPeopleFlowNavigationController *)self flowController];
-  if ([v4 hasNextViewController])
+  flowController = [(PXPeopleFlowNavigationController *)self flowController];
+  if ([flowController hasNextViewController])
   {
-    v5 = [v4 nextViewController];
+    nextViewController = [flowController nextViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v5 willTransitionIn];
+      [nextViewController willTransitionIn];
     }
 
-    [(PXPeopleFlowNavigationController *)self pushViewController:v5 animated:1];
+    [(PXPeopleFlowNavigationController *)self pushViewController:nextViewController animated:1];
   }
 
   else
@@ -125,23 +125,23 @@
   }
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v5 = a3;
-  v6 = [(PXPeopleFlowNavigationController *)self currentViewController];
+  doneCopy = done;
+  currentViewController = [(PXPeopleFlowNavigationController *)self currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 willTransitionToNextInFlow];
+    [currentViewController willTransitionToNextInFlow];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 shouldConfirmAdvancement];
+    shouldConfirmAdvancement = [currentViewController shouldConfirmAdvancement];
   }
 
   else
   {
-    v7 = 0;
+    shouldConfirmAdvancement = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -149,26 +149,26 @@
   aBlock[2] = __41__PXPeopleFlowNavigationController_done___block_invoke;
   aBlock[3] = &unk_1E774A2C8;
   aBlock[4] = self;
-  v8 = v5;
+  v8 = doneCopy;
   v31 = v8;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if ((v7 & 1) == 0)
+  if ((shouldConfirmAdvancement & 1) == 0)
   {
     (*(v9 + 2))(v9, 0);
     goto LABEL_13;
   }
 
-  v11 = [v6 bootstrapContext];
-  v12 = [v11 localizedName];
-  v29 = v11;
-  v13 = [v11 sourcePerson];
-  if (!v13)
+  bootstrapContext = [currentViewController bootstrapContext];
+  localizedName = [bootstrapContext localizedName];
+  v29 = bootstrapContext;
+  sourcePerson = [bootstrapContext sourcePerson];
+  if (!sourcePerson)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPeopleFlowNavigationController.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFlowNavigationController.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"context.sourcePerson", v24}];
 LABEL_16:
 
     goto LABEL_9;
@@ -177,27 +177,27 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v24 = NSStringFromClass(v25);
-    v26 = [v13 px_descriptionForAssertionMessage];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPeopleFlowNavigationController.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v24, v26}];
+    px_descriptionForAssertionMessage = [sourcePerson px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFlowNavigationController.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"context.sourcePerson", v24, px_descriptionForAssertionMessage}];
 
     goto LABEL_16;
   }
 
 LABEL_9:
-  v27 = v12;
-  v28 = self;
-  if ([v12 length])
+  v27 = localizedName;
+  selfCopy = self;
+  if ([localizedName length])
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleBootstrapVerifyAlertMessageNamed");
+    PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapVerifyAlertMessageNamed");
     objc_claimAutoreleasedReturnValue();
     PXStringWithValidatedFormat();
   }
 
-  v14 = PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleBootstrapVerifyAlertMessageUnnamed");
-  v15 = PXLocalizedStringForPersonOrPetAndVisibility(v13, 0, @"PXPeopleBootstrapVerifyAlertConfirmTitleUnnamed");
+  v14 = PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapVerifyAlertMessageUnnamed");
+  v15 = PXLocalizedStringForPersonOrPetAndVisibility(sourcePerson, 0, @"PXPeopleBootstrapVerifyAlertConfirmTitleUnnamed");
   v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v14 preferredStyle:0];
   v17 = [MEMORY[0x1E69DC648] actionWithTitle:v15 style:0 handler:v10];
   v18 = MEMORY[0x1E69DC648];
@@ -206,10 +206,10 @@ LABEL_9:
 
   [v16 addAction:v17];
   [v16 addAction:v20];
-  v21 = [v16 popoverPresentationController];
-  [v21 setBarButtonItem:v8];
+  popoverPresentationController = [v16 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:v8];
 
-  [(PXPeopleFlowNavigationController *)v28 presentViewController:v16 animated:1 completion:0];
+  [(PXPeopleFlowNavigationController *)selfCopy presentViewController:v16 animated:1 completion:0];
 LABEL_13:
 }
 
@@ -230,11 +230,11 @@ uint64_t __41__PXPeopleFlowNavigationController_done___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(PXPeopleFlowNavigationController *)self flowController];
-  [v5 cancel:v4];
+  cancelCopy = cancel;
+  flowController = [(PXPeopleFlowNavigationController *)self flowController];
+  [flowController cancel:cancelCopy];
 
   [(PXPeopleFlowNavigationController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -285,15 +285,15 @@ uint64_t __41__PXPeopleFlowNavigationController_done___block_invoke(uint64_t a1,
   [(PXPeopleFlowNavigationController *)self setDelegate:self];
 }
 
-- (PXPeopleFlowNavigationController)initWithFlowController:(id)a3
+- (PXPeopleFlowNavigationController)initWithFlowController:(id)controller
 {
-  v5 = a3;
-  if ([v5 hasNextViewController])
+  controllerCopy = controller;
+  if ([controllerCopy hasNextViewController])
   {
-    v6 = [v5 nextViewController];
+    nextViewController = [controllerCopy nextViewController];
     v10.receiver = self;
     v10.super_class = PXPeopleFlowNavigationController;
-    v7 = [(PXPeopleFlowNavigationController *)&v10 initWithRootViewController:v6];
+    v7 = [(PXPeopleFlowNavigationController *)&v10 initWithRootViewController:nextViewController];
 
     if (!v7)
     {
@@ -309,7 +309,7 @@ uint64_t __41__PXPeopleFlowNavigationController_done___block_invoke(uint64_t a1,
   if (v7)
   {
 LABEL_5:
-    objc_storeStrong(&v7->_flowController, a3);
+    objc_storeStrong(&v7->_flowController, controller);
   }
 
 LABEL_6:

@@ -3,9 +3,9 @@
 - (MFPreviewViewController)init;
 - (UIEdgeInsets)minMargins;
 - (id)_errorLabel;
-- (id)_messageForMessageIdentifier:(id)a3;
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4;
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5;
+- (id)_messageForMessageIdentifier:(id)identifier;
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls;
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -35,14 +35,14 @@
     v2->_daemonInterface = v3;
 
     [MFWKWebViewFactory setDaemonInterface:v2->_daemonInterface URLCacheWithMemoryCapacity:0];
-    v5 = [(EMDaemonInterface *)v2->_daemonInterface vipManager];
-    [VIPManager setBackingManager:v5];
+    vipManager = [(EMDaemonInterface *)v2->_daemonInterface vipManager];
+    [VIPManager setBackingManager:vipManager];
 
     v6 = objc_alloc_init(MUICachingSVGConverter);
     v7 = [MUIBrandIndicatorProvider alloc];
-    v8 = [(MFPreviewViewController *)v2 daemonInterface];
-    v9 = [v8 messageRepository];
-    v10 = [v7 initWithMessageRepository:v9 svgConverter:v6];
+    daemonInterface = [(MFPreviewViewController *)v2 daemonInterface];
+    messageRepository = [daemonInterface messageRepository];
+    v10 = [v7 initWithMessageRepository:messageRepository svgConverter:v6];
     [(MFPreviewViewController *)v2 setBrandIndicatorProvider:v10];
 
     v11 = objc_alloc_init(EMCachingContactStore);
@@ -51,18 +51,18 @@
     objc_initWeak(&location, v2);
     v12 = [MUIAvatarImageGenerator alloc];
     brandIndicatorProvider = v2->_brandIndicatorProvider;
-    v14 = [(MFPreviewViewController *)v2 daemonInterface];
-    v15 = [v14 messageRepository];
+    daemonInterface2 = [(MFPreviewViewController *)v2 daemonInterface];
+    messageRepository2 = [daemonInterface2 messageRepository];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_100018964;
     v22 = &unk_100035030;
     objc_copyWeak(&v23, &location);
-    v16 = [v12 initWithBimiProvider:brandIndicatorProvider messageRepository:v15 contactsProviderHandler:&v19];
+    v16 = [v12 initWithBimiProvider:brandIndicatorProvider messageRepository:messageRepository2 contactsProviderHandler:&v19];
     [(MFPreviewViewController *)v2 setAvatarGenerator:v16, v19, v20, v21, v22];
 
-    v17 = [(MFPreviewViewController *)v2 avatarGenerator];
-    [v17 allowGeneratingAvatarImages];
+    avatarGenerator = [(MFPreviewViewController *)v2 avatarGenerator];
+    [avatarGenerator allowGeneratingAvatarImages];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -77,8 +77,8 @@
   v13.super_class = MFPreviewViewController;
   [(MFPreviewViewController *)&v13 viewDidLoad];
   [(MFPreviewViewController *)self systemMinimumLayoutMargins];
-  v3 = [(MFPreviewViewController *)self view];
-  -[MFPreviewViewController setIsRTL:](self, "setIsRTL:", [v3 mf_prefersRightToLeftInterfaceLayout]);
+  view = [(MFPreviewViewController *)self view];
+  -[MFPreviewViewController setIsRTL:](self, "setIsRTL:", [view mf_prefersRightToLeftInterfaceLayout]);
 
   [(MFPreviewViewController *)self isRTL];
   MFEdgeInsetsFromDirectionalEdgeInsets();
@@ -101,11 +101,11 @@
   }
 }
 
-- (void)preparePreviewOfSearchableItemWithIdentifier:(id)a3 queryString:(id)a4 completionHandler:(id)a5
+- (void)preparePreviewOfSearchableItemWithIdentifier:(id)identifier queryString:(id)string completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MFPreviewViewController *)self _messageForMessageIdentifier:v7];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = [(MFPreviewViewController *)self _messageForMessageIdentifier:identifierCopy];
   v10 = +[EFScheduler mainThreadScheduler];
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
@@ -113,7 +113,7 @@
   v17[2] = sub_100018D80;
   v17[3] = &unk_100035058;
   objc_copyWeak(&v19, &location);
-  v11 = v8;
+  v11 = handlerCopy;
   v18 = v11;
   [v9 onScheduler:v10 addSuccessBlock:v17];
   v14[0] = _NSConcreteStackBlock;
@@ -123,7 +123,7 @@
   v12 = v11;
   v16 = v12;
   v14[4] = self;
-  v13 = v7;
+  v13 = identifierCopy;
   v15 = v13;
   [v9 onScheduler:v10 addFailureBlock:v14];
 
@@ -135,8 +135,8 @@
 {
   [(MFPreviewViewController *)self minMargins];
   v4 = v3;
-  v5 = [(MFPreviewViewController *)self view];
-  [v5 frame];
+  view = [(MFPreviewViewController *)self view];
+  [view frame];
   v19 = CGRectInset(v18, v4, v4);
   x = v19.origin.x;
   y = v19.origin.y;
@@ -157,30 +157,30 @@
   [v10 setNumberOfLines:2];
   [v10 setTextAlignment:1];
   [v10 sizeToFit];
-  v15 = [(MFPreviewViewController *)self view];
-  [v15 center];
+  view2 = [(MFPreviewViewController *)self view];
+  [view2 center];
   [v10 setCenter:?];
 
   return v10;
 }
 
-- (id)_messageForMessageIdentifier:(id)a3
+- (id)_messageForMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MFPreviewViewController *)self daemonInterface];
-  v6 = [v5 messageRepository];
+  identifierCopy = identifier;
+  daemonInterface = [(MFPreviewViewController *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
 
-  v7 = [v6 messageForSearchableItemIdentifier:v4];
+  v7 = [messageRepository messageForSearchableItemIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)messageContentView:(id)a3 viewedRemoteURLs:(id)a4
+- (void)messageContentView:(id)view viewedRemoteURLs:(id)ls
 {
-  v7 = a4;
-  v5 = [(MFPreviewViewController *)self daemonInterface];
-  v6 = [v5 messageRepository];
-  [v6 noteViewOfRemoteContentLinks:v7];
+  lsCopy = ls;
+  daemonInterface = [(MFPreviewViewController *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository noteViewOfRemoteContentLinks:lsCopy];
 }
 
 - (UIEdgeInsets)minMargins

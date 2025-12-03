@@ -1,53 +1,53 @@
 @interface USOSerializedGraphNode
-- (USOSerializedGraphNode)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (USOSerializedGraphNode)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOSerializedGraphNode
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[USOSerializedGraphNode usoElementId](self, "usoElementId")}];
-  [v11 encodeObject:v4 forKey:@"usoElementId"];
+  [coderCopy encodeObject:v4 forKey:@"usoElementId"];
 
-  v5 = [(USOSerializedGraphNode *)self usoVerbId];
-  [v11 encodeObject:v5 forKey:@"usoVerbId"];
+  usoVerbId = [(USOSerializedGraphNode *)self usoVerbId];
+  [coderCopy encodeObject:usoVerbId forKey:@"usoVerbId"];
 
-  v6 = [(USOSerializedGraphNode *)self integerPayload];
-  [v11 encodeObject:v6 forKey:@"integerPayload"];
+  integerPayload = [(USOSerializedGraphNode *)self integerPayload];
+  [coderCopy encodeObject:integerPayload forKey:@"integerPayload"];
 
-  v7 = [(USOSerializedGraphNode *)self stringPayload];
-  [v11 encodeObject:v7 forKey:@"stringPayload"];
+  stringPayload = [(USOSerializedGraphNode *)self stringPayload];
+  [coderCopy encodeObject:stringPayload forKey:@"stringPayload"];
 
-  v8 = [(USOSerializedGraphNode *)self entityLabel];
-  [v11 encodeObject:v8 forKey:@"entityLabel"];
+  entityLabel = [(USOSerializedGraphNode *)self entityLabel];
+  [coderCopy encodeObject:entityLabel forKey:@"entityLabel"];
 
-  v9 = [(USOSerializedGraphNode *)self verbLabel];
-  [v11 encodeObject:v9 forKey:@"verbLabel"];
+  verbLabel = [(USOSerializedGraphNode *)self verbLabel];
+  [coderCopy encodeObject:verbLabel forKey:@"verbLabel"];
 
-  v10 = [(USOSerializedGraphNode *)self normalizedStringPayloads];
-  [v11 encodeObject:v10 forKey:@"normalizedStringPayloads"];
+  normalizedStringPayloads = [(USOSerializedGraphNode *)self normalizedStringPayloads];
+  [coderCopy encodeObject:normalizedStringPayloads forKey:@"normalizedStringPayloads"];
 }
 
-- (USOSerializedGraphNode)initWithCoder:(id)a3
+- (USOSerializedGraphNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = USOSerializedGraphNode;
   v5 = [(USOSerializedGraphNode *)&v29 init];
   if (v5)
   {
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usoElementId"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usoVerbId"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"integerPayload"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringPayload"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityLabel"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verbLabel"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usoElementId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usoVerbId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"integerPayload"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringPayload"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityLabel"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verbLabel"];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v27 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v27 forKey:@"normalizedStringPayloads"];
+    v13 = [coderCopy decodeObjectOfClasses:v27 forKey:@"normalizedStringPayloads"];
     v5->_usoElementId = [v28 intValue];
     usoVerbId = v5->_usoVerbId;
     v5->_usoVerbId = v6;

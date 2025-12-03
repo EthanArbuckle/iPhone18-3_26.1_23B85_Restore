@@ -6,22 +6,22 @@
 
 - (id)sirigk_cardSection
 {
-  v3 = [(SAGKLinkedAnswer *)self name];
-  v4 = [SFRichText textWithString:v3];
+  name = [(SAGKLinkedAnswer *)self name];
+  v4 = [SFRichText textWithString:name];
 
   [v4 setMaxLines:3];
-  v5 = [(SAGKLinkedAnswer *)self descriptionText];
-  v6 = [SFRichText textWithString:v5];
+  descriptionText = [(SAGKLinkedAnswer *)self descriptionText];
+  v6 = [SFRichText textWithString:descriptionText];
 
   [v6 setMaxLines:2];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(SAGKLinkedAnswer *)self publicationDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = self;
-    v9 = [(SAGKLinkedAnswer *)v8 displayLink];
-    v10 = [(SAGKLinkedAnswer *)v8 publicationDate];
+    selfCopy = self;
+    displayLink = [(SAGKLinkedAnswer *)selfCopy displayLink];
+    publicationDate = [(SAGKLinkedAnswer *)selfCopy publicationDate];
 
-    v11 = v10;
+    v11 = publicationDate;
     if (qword_20098 != -1)
     {
       sub_B380();
@@ -84,23 +84,23 @@
     [qword_20090 setAllowedUnits:v15];
     v17 = [qword_20090 stringFromDateComponents:v14];
 
-    v18 = [NSString stringWithFormat:@"%@ - %@", v9, v17];
+    v18 = [NSString stringWithFormat:@"%@ - %@", displayLink, v17];
     v16 = [SFRichText textWithString:v18];
   }
 
   else
   {
-    v9 = [(SAGKLinkedAnswer *)self displayLink];
-    v16 = [SFRichText textWithString:v9];
+    displayLink = [(SAGKLinkedAnswer *)self displayLink];
+    v16 = [SFRichText textWithString:displayLink];
   }
 
-  v19 = [(SAGKLinkedAnswer *)self thumbnails];
-  if ([v19 count])
+  thumbnails = [(SAGKLinkedAnswer *)self thumbnails];
+  if ([thumbnails count])
   {
-    v20 = [v19 firstObject];
+    firstObject = [thumbnails firstObject];
     v21 = [SFURLImage alloc];
-    v22 = [v20 resourceUrl];
-    v23 = [v21 initWithURL:v22];
+    resourceUrl = [firstObject resourceUrl];
+    v23 = [v21 initWithURL:resourceUrl];
 
     [v23 setSize:{50.0, 50.0}];
     [v23 setCornerRoundingStyle:2];

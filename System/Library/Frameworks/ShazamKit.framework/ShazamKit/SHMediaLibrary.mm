@@ -2,15 +2,15 @@
 + (SHMediaLibrary)defaultLibrary;
 - (SHMediaLibrarySyncDelegate)delegate;
 - (id)_init;
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4;
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5;
-- (void)_libraryDidCompleteSync:(id)a3;
-- (void)_libraryInfoWithCompletionHandler:(id)a3;
-- (void)_libraryWillBeginSync:(id)a3;
-- (void)_queryLibraryWithCompletionHandler:(id)a3;
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4;
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot;
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers;
+- (void)_libraryDidCompleteSync:(id)sync;
+- (void)_libraryInfoWithCompletionHandler:(id)handler;
+- (void)_libraryWillBeginSync:(id)sync;
+- (void)_queryLibraryWithCompletionHandler:(id)handler;
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler;
 - (void)_synchronize;
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4;
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition;
 - (void)addMediaItems:(NSArray *)mediaItems completionHandler:(void *)completionHandler;
 @end
 
@@ -99,94 +99,94 @@ void __32__SHMediaLibrary_defaultLibrary__block_invoke()
 {
   v6 = completionHandler;
   v7 = mediaItems;
-  v8 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v8 _addMediaItems:v7 completionHandler:v6];
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _addMediaItems:v7 completionHandler:v6];
 }
 
-- (void)_libraryInfoWithCompletionHandler:(id)a3
+- (void)_libraryInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v5 _libraryInfoWithCompletionHandler:v4];
+  handlerCopy = handler;
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _libraryInfoWithCompletionHandler:handlerCopy];
 }
 
-- (void)_queryLibraryWithCompletionHandler:(id)a3
+- (void)_queryLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v5 _queryLibraryWithCompletionHandler:v4];
+  handlerCopy = handler;
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _queryLibraryWithCompletionHandler:handlerCopy];
 }
 
-- (void)_queryLibraryWithParameters:(id)a3 completionHandler:(id)a4
+- (void)_queryLibraryWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v8 _queryLibraryWithParameters:v7 completionHandler:v6];
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _queryLibraryWithParameters:parametersCopy completionHandler:handlerCopy];
 }
 
 - (void)_synchronize
 {
-  v2 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v2 _synchronize];
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _synchronize];
 }
 
-- (void)_synchronizeSnapshot:(id)a3 startCondition:(id)a4
+- (void)_synchronizeSnapshot:(id)snapshot startCondition:(id)condition
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMediaLibrary *)self underlyingLibrary];
-  [v8 _synchronizeSnapshot:v7 startCondition:v6];
+  conditionCopy = condition;
+  snapshotCopy = snapshot;
+  underlyingLibrary = [(SHMediaLibrary *)self underlyingLibrary];
+  [underlyingLibrary _synchronizeSnapshot:snapshotCopy startCondition:conditionCopy];
 }
 
-- (void)_libraryWillBeginSync:(id)a3
+- (void)_libraryWillBeginSync:(id)sync
 {
-  v4 = [(SHMediaLibrary *)self delegate];
+  delegate = [(SHMediaLibrary *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SHMediaLibrary *)self delegate];
-    [v6 _libraryWillBeginSync:self];
+    delegate2 = [(SHMediaLibrary *)self delegate];
+    [delegate2 _libraryWillBeginSync:self];
   }
 }
 
-- (void)_library:(id)a3 didChangeWithSnapshot:(id)a4
+- (void)_library:(id)_library didChangeWithSnapshot:(id)snapshot
 {
-  v8 = a4;
-  v5 = [(SHMediaLibrary *)self delegate];
+  snapshotCopy = snapshot;
+  delegate = [(SHMediaLibrary *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SHMediaLibrary *)self delegate];
-    [v7 _library:self didChangeWithSnapshot:v8];
+    delegate2 = [(SHMediaLibrary *)self delegate];
+    [delegate2 _library:self didChangeWithSnapshot:snapshotCopy];
   }
 }
 
-- (void)_library:(id)a3 didProduceError:(id)a4 failedItemIdentifiers:(id)a5
+- (void)_library:(id)_library didProduceError:(id)error failedItemIdentifiers:(id)identifiers
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(SHMediaLibrary *)self delegate];
+  errorCopy = error;
+  identifiersCopy = identifiers;
+  delegate = [(SHMediaLibrary *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SHMediaLibrary *)self delegate];
-    [v10 _library:self didProduceError:v11 failedItemIdentifiers:v7];
+    delegate2 = [(SHMediaLibrary *)self delegate];
+    [delegate2 _library:self didProduceError:errorCopy failedItemIdentifiers:identifiersCopy];
   }
 }
 
-- (void)_libraryDidCompleteSync:(id)a3
+- (void)_libraryDidCompleteSync:(id)sync
 {
-  v4 = [(SHMediaLibrary *)self delegate];
+  delegate = [(SHMediaLibrary *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SHMediaLibrary *)self delegate];
-    [v6 _libraryDidCompleteSync:self];
+    delegate2 = [(SHMediaLibrary *)self delegate];
+    [delegate2 _libraryDidCompleteSync:self];
   }
 }
 

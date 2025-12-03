@@ -1,5 +1,5 @@
 @interface _SBUIPresentableGestureRecognizerPriorityAssertion
-- (_SBUIPresentableGestureRecognizerPriorityAssertion)initWithReason:(id)a3 invalidationHandler:(id)a4;
+- (_SBUIPresentableGestureRecognizerPriorityAssertion)initWithReason:(id)reason invalidationHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -14,15 +14,15 @@
   [(_SBUIPresentableGestureRecognizerPriorityAssertion *)&v3 dealloc];
 }
 
-- (_SBUIPresentableGestureRecognizerPriorityAssertion)initWithReason:(id)a3 invalidationHandler:(id)a4
+- (_SBUIPresentableGestureRecognizerPriorityAssertion)initWithReason:(id)reason invalidationHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (reasonCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@ LABEL_3:
   v10 = [(_SBUIPresentableGestureRecognizerPriorityAssertion *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
 
@@ -79,7 +79,7 @@ LABEL_3:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9A79000, v6, OS_LOG_TYPE_DEFAULT, "Invalidated gesture recognizer priority assertion: %{public}@", &v7, 0xCu);
     }
   }

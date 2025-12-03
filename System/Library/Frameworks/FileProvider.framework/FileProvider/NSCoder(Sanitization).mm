@@ -10,11 +10,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 userInfo];
+    userInfo = [self userInfo];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 objectForKey:@"FPXPCSanitizerKey"];
+      v3 = [userInfo objectForKey:@"FPXPCSanitizerKey"];
     }
 
     else
@@ -35,31 +35,31 @@
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 fp_sanitizer];
-  if (!v5)
+  fp_sanitizer = [self fp_sanitizer];
+  if (!fp_sanitizer)
   {
     goto LABEL_3;
   }
 
-  v6 = v5;
-  v7 = [v4 fp_toProviderID];
-  v8 = [a1 fp_sanitizer];
-  v9 = [v8 providerIdentifier];
-  v10 = [v9 fp_toProviderID];
-  v11 = [v7 isEqualToString:v10];
+  v6 = fp_sanitizer;
+  fp_toProviderID = [v4 fp_toProviderID];
+  fp_sanitizer2 = [self fp_sanitizer];
+  providerIdentifier = [fp_sanitizer2 providerIdentifier];
+  fp_toProviderID2 = [providerIdentifier fp_toProviderID];
+  v11 = [fp_toProviderID isEqualToString:fp_toProviderID2];
 
   if ((v11 & 1) == 0)
   {
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(NSCoder(Sanitization) *)v4 fp_checkProviderIdentifier:a1, v13];
+      [(NSCoder(Sanitization) *)v4 fp_checkProviderIdentifier:self, v13];
     }
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [a1 fp_sanitizer];
-    v16 = [v15 providerIdentifier];
-    v17 = [v14 stringWithFormat:@"Got invalid provider identifier %@ from coder for extension %@", v4, v16];
+    fp_sanitizer3 = [self fp_sanitizer];
+    providerIdentifier2 = [fp_sanitizer3 providerIdentifier];
+    v17 = [v14 stringWithFormat:@"Got invalid provider identifier %@ from coder for extension %@", v4, providerIdentifier2];
 
     v18 = MEMORY[0x1E696ABC0];
     v19 = *MEMORY[0x1E696A250];
@@ -67,7 +67,7 @@
     v25[0] = v17;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v21 = [v18 errorWithDomain:v19 code:4101 userInfo:v20];
-    [a1 failWithError:v21];
+    [self failWithError:v21];
 
     v12 = 0;
   }

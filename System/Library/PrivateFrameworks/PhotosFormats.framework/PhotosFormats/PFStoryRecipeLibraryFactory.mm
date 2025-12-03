@@ -1,13 +1,13 @@
 @interface PFStoryRecipeLibraryFactory
-+ (id)createLibraryWithKind:(int64_t)a3 url:(id)a4;
++ (id)createLibraryWithKind:(int64_t)kind url:(id)url;
 @end
 
 @implementation PFStoryRecipeLibraryFactory
 
-+ (id)createLibraryWithKind:(int64_t)a3 url:(id)a4
++ (id)createLibraryWithKind:(int64_t)kind url:(id)url
 {
-  v5 = a4;
-  v6 = [[PFStoryConcreteRecipeLibrary alloc] initWithKind:a3 url:v5];
+  urlCopy = url;
+  v6 = [[PFStoryConcreteRecipeLibrary alloc] initWithKind:kind url:urlCopy];
 
   return v6;
 }

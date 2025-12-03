@@ -1,104 +1,104 @@
 @interface REMAttachment
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (REMAttachment)initWithAttachment:(id)a3 objectID:(id)a4 accountID:(id)a5 reminderID:(id)a6;
-- (REMAttachment)initWithCoder:(id)a3;
-- (REMAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (REMAttachment)initWithAttachment:(id)attachment objectID:(id)d accountID:(id)iD reminderID:(id)reminderID;
+- (REMAttachment)initWithCoder:(id)coder;
+- (REMAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i;
 - (id)_deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAttachment
 
-- (REMAttachment)initWithObjectID:(id)a3 accountID:(id)a4 reminderID:(id)a5 UTI:(id)a6
+- (REMAttachment)initWithObjectID:(id)d accountID:(id)iD reminderID:(id)reminderID UTI:(id)i
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  reminderIDCopy = reminderID;
+  iCopy = i;
   v18.receiver = self;
   v18.super_class = REMAttachment;
   v15 = [(REMAttachment *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_objectID, a3);
-    objc_storeStrong(&v16->_accountID, a4);
-    objc_storeStrong(&v16->_reminderID, a5);
-    objc_storeStrong(&v16->_uti, a6);
+    objc_storeStrong(&v15->_objectID, d);
+    objc_storeStrong(&v16->_accountID, iD);
+    objc_storeStrong(&v16->_reminderID, reminderID);
+    objc_storeStrong(&v16->_uti, i);
   }
 
   return v16;
 }
 
-- (REMAttachment)initWithAttachment:(id)a3 objectID:(id)a4 accountID:(id)a5 reminderID:(id)a6
+- (REMAttachment)initWithAttachment:(id)attachment objectID:(id)d accountID:(id)iD reminderID:(id)reminderID
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 _deepCopy];
+  dCopy = d;
+  iDCopy = iD;
+  reminderIDCopy = reminderID;
+  _deepCopy = [attachment _deepCopy];
 
-  objectID = v13->_objectID;
-  v13->_objectID = v10;
-  v15 = v10;
+  objectID = _deepCopy->_objectID;
+  _deepCopy->_objectID = dCopy;
+  v15 = dCopy;
 
-  accountID = v13->_accountID;
-  v13->_accountID = v11;
-  v17 = v11;
+  accountID = _deepCopy->_accountID;
+  _deepCopy->_accountID = iDCopy;
+  v17 = iDCopy;
 
-  reminderID = v13->_reminderID;
-  v13->_reminderID = v12;
+  reminderID = _deepCopy->_reminderID;
+  _deepCopy->_reminderID = reminderIDCopy;
 
-  return v13;
+  return _deepCopy;
 }
 
-- (REMAttachment)initWithCoder:(id)a3
+- (REMAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uti"];
 
   v9 = [(REMAttachment *)self initWithObjectID:v5 accountID:v6 reminderID:v7 UTI:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMAttachment *)self objectID];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMAttachment *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v6 = [(REMAttachment *)self accountID];
-  [v4 encodeObject:v6 forKey:@"accountID"];
+  accountID = [(REMAttachment *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v7 = [(REMAttachment *)self reminderID];
-  [v4 encodeObject:v7 forKey:@"reminderID"];
+  reminderID = [(REMAttachment *)self reminderID];
+  [coderCopy encodeObject:reminderID forKey:@"reminderID"];
 
   v8 = [(REMAttachment *)self uti];
-  [v4 encodeObject:v8 forKey:@"uti"];
+  [coderCopy encodeObject:v8 forKey:@"uti"];
 }
 
 - (id)_deepCopy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(REMAttachment *)self objectID];
-  v5 = [(REMAttachment *)self accountID];
-  v6 = [(REMAttachment *)self reminderID];
+  objectID = [(REMAttachment *)self objectID];
+  accountID = [(REMAttachment *)self accountID];
+  reminderID = [(REMAttachment *)self reminderID];
   v7 = [(REMAttachment *)self uti];
-  v8 = [v3 initWithObjectID:v4 accountID:v5 reminderID:v6 UTI:v7];
+  v8 = [v3 initWithObjectID:objectID accountID:accountID reminderID:reminderID UTI:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -108,19 +108,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(REMAttachment *)v5 objectID];
-      v7 = [(REMAttachment *)self objectID];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      objectID = [(REMAttachment *)v5 objectID];
+      objectID2 = [(REMAttachment *)self objectID];
+      v8 = objectID2;
+      if (objectID == objectID2)
       {
       }
 
       else
       {
-        v9 = [(REMAttachment *)v5 objectID];
-        v10 = [(REMAttachment *)self objectID];
-        v11 = [v9 isEqual:v10];
+        objectID3 = [(REMAttachment *)v5 objectID];
+        objectID4 = [(REMAttachment *)self objectID];
+        v11 = [objectID3 isEqual:objectID4];
 
         if (!v11)
         {
@@ -128,18 +128,18 @@
         }
       }
 
-      v13 = [(REMAttachment *)v5 accountID];
-      v14 = [(REMAttachment *)self accountID];
-      v15 = v14;
-      if (v13 == v14)
+      accountID = [(REMAttachment *)v5 accountID];
+      accountID2 = [(REMAttachment *)self accountID];
+      v15 = accountID2;
+      if (accountID == accountID2)
       {
       }
 
       else
       {
-        v16 = [(REMAttachment *)v5 accountID];
-        v17 = [(REMAttachment *)self accountID];
-        v18 = [v16 isEqual:v17];
+        accountID3 = [(REMAttachment *)v5 accountID];
+        accountID4 = [(REMAttachment *)self accountID];
+        v18 = [accountID3 isEqual:accountID4];
 
         if (!v18)
         {
@@ -147,18 +147,18 @@
         }
       }
 
-      v19 = [(REMAttachment *)v5 reminderID];
-      v20 = [(REMAttachment *)self reminderID];
-      v21 = v20;
-      if (v19 == v20)
+      reminderID = [(REMAttachment *)v5 reminderID];
+      reminderID2 = [(REMAttachment *)self reminderID];
+      v21 = reminderID2;
+      if (reminderID == reminderID2)
       {
       }
 
       else
       {
-        v22 = [(REMAttachment *)v5 reminderID];
-        v23 = [(REMAttachment *)self reminderID];
-        v24 = [v22 isEqual:v23];
+        reminderID3 = [(REMAttachment *)v5 reminderID];
+        reminderID4 = [(REMAttachment *)self reminderID];
+        v24 = [reminderID3 isEqual:reminderID4];
 
         if (!v24)
         {
@@ -197,8 +197,8 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v2 = [(REMAttachment *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMAttachment *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -207,26 +207,26 @@ LABEL_22:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMAttachment *)self objectID];
+  objectID = [(REMAttachment *)self objectID];
   v6 = [(REMAttachment *)self uti];
-  v7 = [v3 stringWithFormat:@"<%@: %p objectID: %@, uti: %@>", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %p objectID: %@, uti: %@>", v4, self, objectID, v6];
 
   return v7;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface MDRLogger
 + (id)sharedInstance;
 - (MDRLogger)init;
-- (id)getLogger:(id)a3;
+- (id)getLogger:(id)logger;
 @end
 
 @implementation MDRLogger
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)getLogger:(id)a3
+- (id)getLogger:(id)logger
 {
-  v4 = a3;
+  loggerCopy = logger;
   v5 = self->_loggerDict;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_loggerDict objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_loggerDict objectForKey:loggerCopy];
 
   if (!v6)
   {
-    v7 = os_log_create("com.apple.MobileDiagnosticsRelay", [v4 UTF8String]);
-    [(NSMutableDictionary *)self->_loggerDict setValue:v7 forKey:v4];
+    v7 = os_log_create("com.apple.MobileDiagnosticsRelay", [loggerCopy UTF8String]);
+    [(NSMutableDictionary *)self->_loggerDict setValue:v7 forKey:loggerCopy];
   }
 
-  v8 = [(NSMutableDictionary *)self->_loggerDict objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_loggerDict objectForKey:loggerCopy];
   objc_sync_exit(v5);
 
   return v8;

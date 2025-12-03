@@ -1,24 +1,24 @@
 @interface VOTUIRotorKnob
-- (CGPoint)_trackPointForPlacement:(double)a3;
-- (VOTUIRotorKnob)initWithFrame:(CGRect)a3;
+- (CGPoint)_trackPointForPlacement:(double)placement;
+- (VOTUIRotorKnob)initWithFrame:(CGRect)frame;
 - (void)_layoutKnob;
-- (void)_layoutMarkerAtPosition:(CGPoint)a3 withCircleLocation:(double)a4 withImageView:(id)a5;
+- (void)_layoutMarkerAtPosition:(CGPoint)position withCircleLocation:(double)location withImageView:(id)view;
 - (void)_layoutTrackMarks;
-- (void)_layoutTrackMarks:(int64_t)a3 placements:(double)a4;
+- (void)_layoutTrackMarks:(int64_t)marks placements:(double)placements;
 - (void)_updateSelectedMarker;
 - (void)layoutSubviews;
 - (void)reset;
-- (void)setCount:(int64_t)a3;
-- (void)updatePosition:(BOOL)a3;
+- (void)setCount:(int64_t)count;
+- (void)updatePosition:(BOOL)position;
 @end
 
 @implementation VOTUIRotorKnob
 
-- (VOTUIRotorKnob)initWithFrame:(CGRect)a3
+- (VOTUIRotorKnob)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = VOTUIRotorKnob;
-  v3 = [(VOTUIRotorKnob *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VOTUIRotorKnob *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [UIImage imageNamed:@"empty" inBundle:v4];
   emptyMarkImage = v3->_emptyMarkImage;
@@ -54,10 +54,10 @@
   return v3;
 }
 
-- (void)updatePosition:(BOOL)a3
+- (void)updatePosition:(BOOL)position
 {
   position = self->_position;
-  if (a3)
+  if (position)
   {
     v4 = position + 1;
   }
@@ -88,41 +88,41 @@
 LABEL_9:
   self->_lastMovementSkippedEmptySpace = 0;
   v6 = self->_count;
-  v7 = a3;
+  positionCopy = position;
   if (v6 == 3)
   {
 LABEL_12:
-    self->_lastMovementSkippedEmptySpace = v4 == v7;
+    self->_lastMovementSkippedEmptySpace = v4 == positionCopy;
     goto LABEL_13;
   }
 
   if (v6 == 2)
   {
-    v7 = !a3;
+    positionCopy = !position;
     goto LABEL_12;
   }
 
 LABEL_13:
-  self->_lastMovementWasForward = a3;
+  self->_lastMovementWasForward = position;
   self->_needsLayout = 1;
   [(VOTUIRotorKnob *)self setNeedsLayout];
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    v3 = 8;
-    if (a3 < 8)
+    countCopy = 8;
+    if (count < 8)
     {
-      v3 = a3;
+      countCopy = count;
     }
 
-    self->_count = v3;
+    self->_count = countCopy;
     position = self->_position;
-    if (position >= v3)
+    if (position >= countCopy)
     {
-      self->_position = position % v3;
+      self->_position = position % countCopy;
     }
 
     self->_needsLayout = 1;
@@ -206,19 +206,19 @@ LABEL_10:
   }
 }
 
-- (void)_layoutMarkerAtPosition:(CGPoint)a3 withCircleLocation:(double)a4 withImageView:(id)a5
+- (void)_layoutMarkerAtPosition:(CGPoint)position withCircleLocation:(double)location withImageView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  [v9 setCenter:{x, y}];
-  v10 = a4 * 6.28318531;
-  [v9 setRotationRadian:v10];
+  y = position.y;
+  x = position.x;
+  viewCopy = view;
+  [viewCopy setCenter:{x, y}];
+  v10 = location * 6.28318531;
+  [viewCopy setRotationRadian:v10];
   memset(&v12, 0, sizeof(v12));
   CGAffineTransformMakeRotation(&v12, v10);
   v11 = v12;
-  [v9 setTransform:&v11];
-  [(VOTUIRotorKnob *)self addSubview:v9];
+  [viewCopy setTransform:&v11];
+  [(VOTUIRotorKnob *)self addSubview:viewCopy];
 }
 
 - (void)reset
@@ -232,12 +232,12 @@ LABEL_10:
   [(NSMutableArray *)markerImageViews enumerateObjectsUsingBlock:v3];
 }
 
-- (CGPoint)_trackPointForPlacement:(double)a3
+- (CGPoint)_trackPointForPlacement:(double)placement
 {
   [(MarkerImageView *)self->_knobImageView center];
   v5 = v4;
   v7 = v6;
-  v8 = __sincos_stret(a3 * 6.28318531);
+  v8 = __sincos_stret(placement * 6.28318531);
   v9 = v5 + v8.__cosval * 38.0;
   v10 = ceilf(v9);
   v11 = v7 + v8.__sinval * 38.0;
@@ -248,21 +248,21 @@ LABEL_10:
   return result;
 }
 
-- (void)_layoutTrackMarks:(int64_t)a3 placements:(double)a4
+- (void)_layoutTrackMarks:(int64_t)marks placements:(double)placements
 {
   v14 = &v15;
-  if (a3 >= 1)
+  if (marks >= 1)
   {
-    for (i = 0; i != a3; ++i)
+    for (i = 0; i != marks; ++i)
     {
-      [(VOTUIRotorKnob *)self _trackPointForPlacement:a4];
+      [(VOTUIRotorKnob *)self _trackPointForPlacement:placements];
       v9 = v8;
       v11 = v10;
       v12 = [(NSMutableArray *)self->_markerImageViews objectAtIndex:i];
-      [(VOTUIRotorKnob *)self _layoutMarkerAtPosition:v12 withCircleLocation:v9 withImageView:v11, a4];
+      [(VOTUIRotorKnob *)self _layoutMarkerAtPosition:v12 withCircleLocation:v9 withImageView:v11, placements];
 
       v13 = v14++;
-      a4 = *v13;
+      placements = *v13;
     }
   }
 }

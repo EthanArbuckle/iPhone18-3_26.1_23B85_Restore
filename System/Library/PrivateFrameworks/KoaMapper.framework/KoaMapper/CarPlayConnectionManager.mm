@@ -1,8 +1,8 @@
 @interface CarPlayConnectionManager
 + (CarPlayConnectionManager)shared;
 - (id)radioStore;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)registerUpdateHandler:(id)a3;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)registerUpdateHandler:(id)handler;
 @end
 
 @implementation CarPlayConnectionManager
@@ -16,15 +16,15 @@
 
 - (id)radioStore
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CarPlayConnectionManager.radioStore()();
 
   return v3;
 }
 
-- (void)registerUpdateHandler:(id)a3
+- (void)registerUpdateHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -39,17 +39,17 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   CarPlayConnectionManager.registerUpdateHandler(_:)(v7, v6);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed String) -> ())?(v7);
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CarPlayConnectionManager.carManager(_:didUpdateCurrentCar:)(v8, a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  CarPlayConnectionManager.carManager(_:didUpdateCurrentCar:)(selfCopy, car);
 }
 
 @end

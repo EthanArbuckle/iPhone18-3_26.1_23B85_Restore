@@ -1,40 +1,40 @@
 @interface LPStocksMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPStocksMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPStocksMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPStocksMetadata
 
-- (LPStocksMetadata)initWithCoder:(id)a3
+- (LPStocksMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = LPStocksMetadata;
   v5 = [(LPStocksMetadata *)&v18 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"combinedTitle");
+    v6 = decodeStringForKey(coderCopy, @"combinedTitle");
     combinedTitle = v5->_combinedTitle;
     v5->_combinedTitle = v6;
 
-    v8 = decodeStringForKey(v4, @"title");
+    v8 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = decodeStringForKey(v4, @"subtitle");
+    v10 = decodeStringForKey(coderCopy, @"subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = decodeStringForKey(v4, @"footnote");
+    v12 = decodeStringForKey(coderCopy, @"footnote");
     footnote = v5->_footnote;
     v5->_footnote = v12;
 
-    v14 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v14 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v14;
 
@@ -44,35 +44,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_combinedTitle forKey:@"combinedTitle"];
-  [v4 _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
-  [v4 _lp_encodeStringIfNotNil:self->_subtitle forKey:@"subtitle"];
-  [v4 _lp_encodeStringIfNotNil:self->_footnote forKey:@"footnote"];
-  [v4 _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_combinedTitle forKey:@"combinedTitle"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_subtitle forKey:@"subtitle"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_footnote forKey:@"footnote"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPStocksMetadata allocWithZone:a3];
+  v4 = [LPStocksMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPStocksMetadata *)self combinedTitle];
-    [(LPStocksMetadata *)v4 setCombinedTitle:v5];
+    combinedTitle = [(LPStocksMetadata *)self combinedTitle];
+    [(LPStocksMetadata *)v4 setCombinedTitle:combinedTitle];
 
-    v6 = [(LPStocksMetadata *)self title];
-    [(LPStocksMetadata *)v4 setTitle:v6];
+    title = [(LPStocksMetadata *)self title];
+    [(LPStocksMetadata *)v4 setTitle:title];
 
-    v7 = [(LPStocksMetadata *)self subtitle];
-    [(LPStocksMetadata *)v4 setSubtitle:v7];
+    subtitle = [(LPStocksMetadata *)self subtitle];
+    [(LPStocksMetadata *)v4 setSubtitle:subtitle];
 
-    v8 = [(LPStocksMetadata *)self footnote];
-    [(LPStocksMetadata *)v4 setFootnote:v8];
+    footnote = [(LPStocksMetadata *)self footnote];
+    [(LPStocksMetadata *)v4 setFootnote:footnote];
 
-    v9 = [(LPStocksMetadata *)self icon];
-    [(LPStocksMetadata *)v4 setIcon:v9];
+    icon = [(LPStocksMetadata *)self icon];
+    [(LPStocksMetadata *)v4 setIcon:icon];
 
     v10 = v4;
   }
@@ -80,12 +80,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPStocksMetadata;
-  if ([(LPStocksMetadata *)&v8 isEqual:v4])
+  if ([(LPStocksMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -95,7 +95,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(self->_combinedTitle, v6[2]) & 1) != 0 && objectsAreEqual_0(self->_title, v6[3]) && objectsAreEqual_0(self->_subtitle, v6[4]) && objectsAreEqual_0(self->_footnote, v6[5]))
       {
         v5 = objectsAreEqual_0(self->_icon, v6[6]);
@@ -116,45 +116,45 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:51];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:51];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
+  v7 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
   if ((v7 - 2) < 2)
   {
-    v17 = [(LPStocksMetadata *)self title];
-    v18 = [v5 captionBar];
-    v19 = [v18 top];
-    v20 = [v19 leading];
-    [v20 setText:v17];
+    title = [(LPStocksMetadata *)self title];
+    captionBar = [v5 captionBar];
+    v19 = [captionBar top];
+    leading = [v19 leading];
+    [leading setText:title];
 
-    v21 = [(LPStocksMetadata *)self subtitle];
-    v22 = [v5 captionBar];
-    v23 = [v22 bottom];
-    v24 = [v23 leading];
-    [v24 setText:v21];
+    subtitle = [(LPStocksMetadata *)self subtitle];
+    captionBar2 = [v5 captionBar];
+    bottom = [captionBar2 bottom];
+    leading2 = [bottom leading];
+    [leading2 setText:subtitle];
 
-    v12 = [(LPStocksMetadata *)self footnote];
-    v13 = LPLocalizedString(v12);
-    v14 = [v5 captionBar];
-    v15 = [v14 belowBottom];
-    v16 = [v15 leading];
-    [v16 setText:v13];
+    footnote = [(LPStocksMetadata *)self footnote];
+    captionBar4 = LPLocalizedString(footnote);
+    captionBar3 = [v5 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:captionBar4];
   }
 
   else
   {
     if (!v7)
     {
-      v12 = [(LPStocksMetadata *)self combinedTitle];
-      v13 = [v5 captionBar];
-      v14 = [v13 top];
-      v15 = [v14 leading];
-      [v15 setText:v12];
+      footnote = [(LPStocksMetadata *)self combinedTitle];
+      captionBar4 = [v5 captionBar];
+      captionBar3 = [captionBar4 top];
+      belowBottom = [captionBar3 leading];
+      [belowBottom setText:footnote];
       goto LABEL_8;
     }
 
@@ -163,45 +163,45 @@
       goto LABEL_9;
     }
 
-    v8 = [(LPStocksMetadata *)self combinedTitle];
-    v9 = [v5 captionBar];
-    v10 = [v9 top];
-    v11 = [v10 leading];
-    [v11 setText:v8];
+    combinedTitle = [(LPStocksMetadata *)self combinedTitle];
+    captionBar5 = [v5 captionBar];
+    v10 = [captionBar5 top];
+    leading4 = [v10 leading];
+    [leading4 setText:combinedTitle];
 
-    v12 = [(LPStocksMetadata *)self footnote];
-    v13 = LPLocalizedString(v12);
-    v14 = [v5 captionBar];
-    v15 = [v14 bottom];
-    v16 = [v15 leading];
-    [v16 setText:v13];
+    footnote = [(LPStocksMetadata *)self footnote];
+    captionBar4 = LPLocalizedString(footnote);
+    captionBar3 = [v5 captionBar];
+    belowBottom = [captionBar3 bottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:captionBar4];
   }
 
 LABEL_8:
 LABEL_9:
-  v25 = [(LPStocksMetadata *)self icon];
-  v26 = [v5 captionBar];
-  [v26 setLeadingIcon:v25];
+  icon = [(LPStocksMetadata *)self icon];
+  captionBar6 = [v5 captionBar];
+  [captionBar6 setLeadingIcon:icon];
 
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"%@: %@");
   v6 = LPLocalizedString(@"Stocks");
-  v7 = [(LPStocksMetadata *)self combinedTitle];
-  v8 = [v4 localizedStringWithFormat:v5, v6, v7];
+  combinedTitle = [(LPStocksMetadata *)self combinedTitle];
+  v8 = [v4 localizedStringWithFormat:v5, v6, combinedTitle];
 
   return v8;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v3 = [(LPStocksMetadata *)self icon];
+  icon = [(LPStocksMetadata *)self icon];
 
-  return v3;
+  return icon;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TVRCTextInputSession
 - (TVRCTextInputSession)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleTextInputChange:(id)a3 started:(BOOL)a4;
-- (void)_handleTextInputStarted:(id)a3;
-- (void)_handleTextInputStopped:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleTextInputChange:(id)change started:(BOOL)started;
+- (void)_handleTextInputStarted:(id)started;
+- (void)_handleTextInputStopped:(id)stopped;
 - (void)_invalidate;
-- (void)activateWithCompletion:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)handleTextActionPayload:(id)payload;
 - (void)invalidate;
-- (void)performDocumentRequest:(id)a3 completion:(id)a4;
+- (void)performDocumentRequest:(id)request completion:(id)completion;
 @end
 
 @implementation TVRCTextInputSession
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -46,15 +46,15 @@
   v9[2] = __47__TVRCTextInputSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_279D82568;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_messenger;
   if (v5)
   {
@@ -96,7 +96,7 @@
     v14[2] = __48__TVRCTextInputSession__activateWithCompletion___block_invoke_4;
     v14[3] = &unk_279D825B8;
     v14[4] = self;
-    v15 = v4;
+    v15 = completionCopy;
     [(RPMessageable *)v5 sendRequestID:@"_tiStart" request:MEMORY[0x277CBEC10] destinationID:v11 options:0 responseHandler:v14];
   }
 
@@ -111,9 +111,9 @@
       _os_log_impl(&dword_26CF7F000, v12, OS_LOG_TYPE_DEFAULT, "### Activate failed: %@\n", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, v7);
+      (*(completionCopy + 2))(completionCopy, v7);
     }
   }
 
@@ -238,10 +238,10 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTextInputStarted:(id)a3
+- (void)_handleTextInputStarted:(id)started
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  startedCopy = started;
   CFDataGetTypeID();
   v5 = CFDictionaryGetTypedValue();
   v6 = _TVRCRemoteTextInputLog();
@@ -252,11 +252,11 @@ LABEL_6:
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "RTI Started: %d bytes\n", v8, 8u);
   }
 
-  [(TVRCTextInputSession *)self _handleTextInputChange:v4 started:1];
+  [(TVRCTextInputSession *)self _handleTextInputChange:startedCopy started:1];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTextInputStopped:(id)a3
+- (void)_handleTextInputStopped:(id)stopped
 {
   v4 = _TVRCRemoteTextInputLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -282,17 +282,17 @@ LABEL_6:
   }
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__TVRCTextInputSession_handleTextActionPayload___block_invoke;
   v7[3] = &unk_279D82648;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = payloadCopy;
+  selfCopy = self;
+  v6 = payloadCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -343,25 +343,25 @@ void __48__TVRCTextInputSession_handleTextActionPayload___block_invoke_35(uint64
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDocumentRequest:(id)a3 completion:(id)a4
+- (void)performDocumentRequest:(id)request completion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _TVRCRemoteTextInputLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = requestCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "No implementation for performDocumentRequest: %@\n", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTextInputChange:(id)a3 started:(BOOL)a4
+- (void)_handleTextInputChange:(id)change started:(BOOL)started
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changeCopy = change;
   CFDataGetTypeID();
   v7 = CFDictionaryGetTypedValue();
   if (v7)
@@ -369,7 +369,7 @@ void __48__TVRCTextInputSession_handleTextActionPayload___block_invoke_35(uint64
     v8 = [MEMORY[0x277D46158] payloadWithData:v7 version:CFDictionaryGetInt64Ranged()];
     if (v8)
     {
-      if (!a4)
+      if (!started)
       {
         v9 = _TVRCRemoteTextInputLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

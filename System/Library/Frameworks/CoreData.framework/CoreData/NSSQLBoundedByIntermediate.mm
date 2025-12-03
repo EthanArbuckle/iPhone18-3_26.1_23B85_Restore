@@ -1,21 +1,21 @@
 @interface NSSQLBoundedByIntermediate
-- (NSSQLBoundedByIntermediate)initWithWorkingEntity:(id)a3 target:(id)a4 bounds:(id)a5 scope:(id)a6;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLBoundedByIntermediate)initWithWorkingEntity:(id)entity target:(id)target bounds:(id)bounds scope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation NSSQLBoundedByIntermediate
 
-- (NSSQLBoundedByIntermediate)initWithWorkingEntity:(id)a3 target:(id)a4 bounds:(id)a5 scope:(id)a6
+- (NSSQLBoundedByIntermediate)initWithWorkingEntity:(id)entity target:(id)target bounds:(id)bounds scope:(id)scope
 {
   v11.receiver = self;
   v11.super_class = NSSQLBoundedByIntermediate;
-  v9 = [(NSSQLIntermediate *)&v11 initWithScope:a6];
+  v9 = [(NSSQLIntermediate *)&v11 initWithScope:scope];
   if (v9)
   {
-    v9->_entity = a3;
-    v9->_target = a4;
-    v9->_bounds = a5;
+    v9->_entity = entity;
+    v9->_target = target;
+    v9->_bounds = bounds;
   }
 
   return v9;
@@ -32,16 +32,16 @@
   [(NSSQLBoundedByIntermediate *)&v3 dealloc];
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  v5 = [(NSExpression *)self->_bounds expressionType];
-  if (v5 == NSConstantValueExpressionType)
+  expressionType = [(NSExpression *)self->_bounds expressionType];
+  if (expressionType == NSConstantValueExpressionType)
   {
-    v16 = [(NSExpression *)self->_bounds constantValue];
-    if ([v16 count] == 2)
+    constantValue = [(NSExpression *)self->_bounds constantValue];
+    if ([constantValue count] == 2)
     {
-      v14 = [v16 firstObject];
-      v17 = [v16 lastObject];
+      firstObject = [constantValue firstObject];
+      lastObject = [constantValue lastObject];
       goto LABEL_19;
     }
 
@@ -52,7 +52,7 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  if (v5 != NSAggregateExpressionType)
+  if (expressionType != NSAggregateExpressionType)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -60,19 +60,19 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  v6 = [(NSExpression *)self->_bounds constantValue];
-  if ([v6 count] != 2)
+  constantValue2 = [(NSExpression *)self->_bounds constantValue];
+  if ([constantValue2 count] != 2)
   {
     goto LABEL_25;
   }
 
-  v7 = [v6 objectAtIndex:0];
-  v8 = [v7 expressionType];
-  v9 = [v6 objectAtIndex:0];
-  v10 = [v9 expressionType];
-  if (v8)
+  v7 = [constantValue2 objectAtIndex:0];
+  expressionType2 = [v7 expressionType];
+  v9 = [constantValue2 objectAtIndex:0];
+  expressionType3 = [v9 expressionType];
+  if (expressionType2)
   {
-    v11 = v8 == 3;
+    v11 = expressionType2 == 3;
   }
 
   else
@@ -86,14 +86,14 @@ LABEL_25:
     v20 = *MEMORY[0x1E695D940];
     v21 = @"Unsupported predicate, topLeft parameter of boundBy: RHS must be a constant or keypath";
 LABEL_29:
-    [a3 setObject:objc_msgSend(v19 forKey:{"exceptionWithName:reason:userInfo:", v20, v21, 0), @"NSUnderlyingException"}];
+    [context setObject:objc_msgSend(v19 forKey:{"exceptionWithName:reason:userInfo:", v20, v21, 0), @"NSUnderlyingException"}];
     return 0;
   }
 
-  v12 = v10;
-  if (v10)
+  v12 = expressionType3;
+  if (expressionType3)
   {
-    v13 = v10 == 3;
+    v13 = expressionType3 == 3;
   }
 
   else
@@ -109,10 +109,10 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (v8)
+  if (expressionType2)
   {
-    v14 = 0;
-    if (v10)
+    firstObject = 0;
+    if (expressionType3)
     {
 LABEL_16:
       v15 = 0;
@@ -122,16 +122,16 @@ LABEL_16:
 
   else
   {
-    v14 = [v7 constantValue];
+    firstObject = [v7 constantValue];
     if (v12)
     {
       goto LABEL_16;
     }
   }
 
-  v17 = [v9 constantValue];
+  lastObject = [v9 constantValue];
 LABEL_19:
-  v15 = v17;
+  v15 = lastObject;
 LABEL_20:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -164,10 +164,10 @@ LABEL_20:
   }
 
   entity = self->_entity;
-  v24 = [v18 firstObject];
+  firstObject2 = [v18 firstObject];
   if (entity)
   {
-    v25 = [(NSMutableDictionary *)entity->_properties objectForKey:v24];
+    v25 = [(NSMutableDictionary *)entity->_properties objectForKey:firstObject2];
   }
 
   else
@@ -175,12 +175,12 @@ LABEL_20:
     v25 = 0;
   }
 
-  v26 = [v25 columnName];
+  columnName = [v25 columnName];
   v27 = self->_entity;
-  v28 = [v18 lastObject];
+  lastObject2 = [v18 lastObject];
   if (v27)
   {
-    v29 = [(NSMutableDictionary *)v27->_properties objectForKey:v28];
+    v29 = [(NSMutableDictionary *)v27->_properties objectForKey:lastObject2];
   }
 
   else
@@ -188,12 +188,12 @@ LABEL_20:
     v29 = 0;
   }
 
-  v30 = [v29 columnName];
-  v31 = -[NSSQLAliasGenerator initWithNestingLevel:]([NSSQLAliasGenerator alloc], "initWithNestingLevel:", [objc_msgSend(a3 objectForKey:{@"nestingLevel", "integerValue"}] + 1);
-  v32 = [(NSSQLAliasGenerator *)v31 generateTableAlias];
+  columnName2 = [v29 columnName];
+  v31 = -[NSSQLAliasGenerator initWithNestingLevel:]([NSSQLAliasGenerator alloc], "initWithNestingLevel:", [objc_msgSend(context objectForKey:{@"nestingLevel", "integerValue"}] + 1);
+  generateTableAlias = [(NSSQLAliasGenerator *)v31 generateTableAlias];
 
   v33 = [NSSQLLocationAttributeRTreeExtension newRTReeTableNameForAttribute:[(NSSQLEntity *)self->_entity entityDescription] onEntity:?];
-  v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"SELECT %@.Z_PK FROM %@ %@ WHERE ? <= %@.%@_MAX AND %@.%@_MIN <= ? AND ? <= %@.%@_MAX AND %@.%@_MIN <= ?", v32, v33, v32, v32, v26, v32, v26, v32, v30, v32, v30];
+  v34 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"SELECT %@.Z_PK FROM %@ %@ WHERE ? <= %@.%@_MAX AND %@.%@_MIN <= ? AND ? <= %@.%@_MAX AND %@.%@_MIN <= ?", generateTableAlias, v33, generateTableAlias, generateTableAlias, columnName, generateTableAlias, columnName, generateTableAlias, columnName2, generateTableAlias, columnName2];
 
   if ([(NSSQLIntermediate *)self isWhereScoped])
   {
@@ -205,14 +205,14 @@ LABEL_20:
     v35 = @"selectBindVars";
   }
 
-  v36 = [a3 objectForKey:v35];
-  [v14 coordinate];
+  v36 = [context objectForKey:v35];
+  [firstObject coordinate];
   v38 = v37;
   [v15 coordinate];
   v40 = v39;
   [v15 coordinate];
   v42 = v41;
-  [v14 coordinate];
+  [firstObject coordinate];
   v44 = v43;
   v45 = [NSSQLBindVariable alloc];
   v46 = -[NSSQLBindVariable initWithValue:sqlType:propertyDescription:](v45, "initWithValue:sqlType:propertyDescription:", [MEMORY[0x1E696AD98] numberWithDouble:v42], 7, 0);

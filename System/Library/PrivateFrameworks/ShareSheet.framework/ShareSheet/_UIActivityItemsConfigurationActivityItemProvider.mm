@@ -1,22 +1,22 @@
 @interface _UIActivityItemsConfigurationActivityItemProvider
-+ (id)metadataForKey:(id)a3 expectedClass:(Class)a4 activityItemsConfiguration:(id)a5 itemAtSourceIndex:(int64_t)a6;
-- (_UIActivityItemsConfigurationActivityItemProvider)initWithActivityItemsConfiguration:(id)a3 itemAtSourceIndex:(int64_t)a4;
++ (id)metadataForKey:(id)key expectedClass:(Class)class activityItemsConfiguration:(id)configuration itemAtSourceIndex:(int64_t)index;
+- (_UIActivityItemsConfigurationActivityItemProvider)initWithActivityItemsConfiguration:(id)configuration itemAtSourceIndex:(int64_t)index;
 - (id)_title;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerRecipients:(id)a3;
-- (id)activityViewControllerShareRecipients:(id)a3;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerRecipients:(id)recipients;
+- (id)activityViewControllerShareRecipients:(id)recipients;
 @end
 
 @implementation _UIActivityItemsConfigurationActivityItemProvider
 
-- (_UIActivityItemsConfigurationActivityItemProvider)initWithActivityItemsConfiguration:(id)a3 itemAtSourceIndex:(int64_t)a4
+- (_UIActivityItemsConfigurationActivityItemProvider)initWithActivityItemsConfiguration:(id)configuration itemAtSourceIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"linkPresentationMetadata" expectedClass:getLPLinkMetadataClass_1() activityItemsConfiguration:v7 itemAtSourceIndex:a4];
-  v9 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"collaborationModeRestrictions" expectedClass:objc_opt_class() activityItemsConfiguration:v7 itemAtSourceIndex:a4];
-  v10 = [v7 itemProvidersForActivityItemsConfiguration];
-  v11 = [v10 objectAtIndexedSubscript:a4];
+  configurationCopy = configuration;
+  v8 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"linkPresentationMetadata" expectedClass:getLPLinkMetadataClass_1() activityItemsConfiguration:configurationCopy itemAtSourceIndex:index];
+  v9 = [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"collaborationModeRestrictions" expectedClass:objc_opt_class() activityItemsConfiguration:configurationCopy itemAtSourceIndex:index];
+  itemProvidersForActivityItemsConfiguration = [configurationCopy itemProvidersForActivityItemsConfiguration];
+  v11 = [itemProvidersForActivityItemsConfiguration objectAtIndexedSubscript:index];
 
   v15.receiver = self;
   v15.super_class = _UIActivityItemsConfigurationActivityItemProvider;
@@ -24,11 +24,11 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activityItemsConfiguration, a3);
+    objc_storeStrong(&v12->_activityItemsConfiguration, configuration);
     objc_storeStrong(&v13->_item, v11);
     objc_storeStrong(&v13->_linkMetadata, v8);
     objc_storeStrong(&v13->_collaborationModeRestrictions, v9);
-    v13->_sourceIndex = a4;
+    v13->_sourceIndex = index;
   }
 
   return v13;
@@ -59,9 +59,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 string];
+    string = [v4 string];
 
-    v4 = v5;
+    v4 = string;
   }
 
 LABEL_9:
@@ -81,7 +81,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   if (dyld_program_sdk_at_least())
   {
@@ -104,9 +104,9 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v6 string];
+          string = [v6 string];
 
-          v6 = v8;
+          v6 = string;
         }
       }
     }
@@ -127,18 +127,18 @@ LABEL_8:
       v9 = 0;
     }
 
-    v7 = v9;
+    _title = v9;
 
     goto LABEL_15;
   }
 
-  v7 = [(_UIActivityItemsConfigurationActivityItemProvider *)self _title];
+  _title = [(_UIActivityItemsConfigurationActivityItemProvider *)self _title];
 LABEL_15:
 
-  return v7;
+  return _title;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   linkMetadata = self->_linkMetadata;
   if (linkMetadata)
@@ -149,8 +149,8 @@ LABEL_15:
   else
   {
     v4 = objc_alloc_init(getLPLinkMetadataClass_1());
-    v6 = [(_UIActivityItemsConfigurationActivityItemProvider *)self _title];
-    [(LPLinkMetadata *)v4 setTitle:v6];
+    _title = [(_UIActivityItemsConfigurationActivityItemProvider *)self _title];
+    [(LPLinkMetadata *)v4 setTitle:_title];
 
     if (objc_opt_respondsToSelector())
     {
@@ -161,16 +161,16 @@ LABEL_15:
       [(LPLinkMetadata *)v4 setImageProvider:v8];
     }
 
-    v9 = [(LPLinkMetadata *)v4 title];
-    if (v9 || ([(LPLinkMetadata *)v4 iconProvider], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    title = [(LPLinkMetadata *)v4 title];
+    if (title || ([(LPLinkMetadata *)v4 iconProvider], (title = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v11 = [(LPLinkMetadata *)v4 imageProvider];
+      imageProvider = [(LPLinkMetadata *)v4 imageProvider];
 
-      if (!v11)
+      if (!imageProvider)
       {
 
         v4 = 0;
@@ -181,7 +181,7 @@ LABEL_15:
   return v4;
 }
 
-- (id)activityViewControllerRecipients:(id)a3
+- (id)activityViewControllerRecipients:(id)recipients
 {
   v4 = objc_opt_class();
   activityItemsConfiguration = self->_activityItemsConfiguration;
@@ -189,7 +189,7 @@ LABEL_15:
   return [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"recipients" expectedClass:v4 activityItemsConfiguration:activityItemsConfiguration itemAtSourceIndex:0];
 }
 
-- (id)activityViewControllerShareRecipients:(id)a3
+- (id)activityViewControllerShareRecipients:(id)recipients
 {
   v4 = objc_opt_class();
   activityItemsConfiguration = self->_activityItemsConfiguration;
@@ -197,15 +197,15 @@ LABEL_15:
   return [_UIActivityItemsConfigurationActivityItemProvider metadataForKey:@"shareRecipients" expectedClass:v4 activityItemsConfiguration:activityItemsConfiguration itemAtSourceIndex:0];
 }
 
-+ (id)metadataForKey:(id)a3 expectedClass:(Class)a4 activityItemsConfiguration:(id)a5 itemAtSourceIndex:(int64_t)a6
++ (id)metadataForKey:(id)key expectedClass:(Class)class activityItemsConfiguration:(id)configuration itemAtSourceIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a5;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v9 activityItemsConfigurationMetadataForItemAtIndex:a6 key:v8], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  keyCopy = key;
+  configurationCopy = configuration;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([configurationCopy activityItemsConfigurationMetadataForItemAtIndex:index key:keyCopy], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 activityItemsConfigurationMetadataForKey:v8];
+      v10 = [configurationCopy activityItemsConfigurationMetadataForKey:keyCopy];
     }
 
     else

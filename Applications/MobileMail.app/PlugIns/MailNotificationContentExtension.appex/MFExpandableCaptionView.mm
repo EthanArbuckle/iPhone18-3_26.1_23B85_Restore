@@ -1,37 +1,37 @@
 @interface MFExpandableCaptionView
-- (MFExpandableCaptionView)initWithFrame:(CGRect)a3;
+- (MFExpandableCaptionView)initWithFrame:(CGRect)frame;
 - (MFExpandableCaptionViewDelegate)delegate;
-- (id)captionLabel:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5;
+- (id)captionLabel:(id)label displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
 - (id)viewForFirstBaselineLayout;
-- (void)_addAtomListForAddresses:(id)a3 label:(id)a4 title:(id)a5 key:(id)a6;
+- (void)_addAtomListForAddresses:(id)addresses label:(id)label title:(id)title key:(id)key;
 - (void)_createPrimaryViews;
 - (void)_initializePrimaryLayoutConstraints;
 - (void)_reattachBottomConstraint;
-- (void)_recipientAtomPressed:(id)a3;
-- (void)_replyToAtomPressed:(id)a3;
-- (void)_senderAtomPressed:(id)a3;
-- (void)_setRecipientDetailsVisible:(BOOL)a3;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)_recipientAtomPressed:(id)pressed;
+- (void)_replyToAtomPressed:(id)pressed;
+- (void)_senderAtomPressed:(id)pressed;
+- (void)_setRecipientDetailsVisible:(BOOL)visible;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)iterateAtomListsWithBlock:(id)a3;
-- (void)labelledAtomList:(id)a3 displayContactCardForAddressAtom:(id)a4;
-- (void)labelledAtomList:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5;
+- (void)iterateAtomListsWithBlock:(id)block;
+- (void)labelledAtomList:(id)list displayContactCardForAddressAtom:(id)atom;
+- (void)labelledAtomList:(id)list searchForDisplayName:(id)name emailAddresses:(id)addresses;
 - (void)reloadData;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4 force:(BOOL)a5;
-- (void)setFont:(id)a3;
-- (void)setListSpacing:(double)a3;
-- (void)setOtherSigners:(id)a3;
-- (void)setParticipants:(id)a3;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated force:(BOOL)force;
+- (void)setFont:(id)font;
+- (void)setListSpacing:(double)spacing;
+- (void)setOtherSigners:(id)signers;
+- (void)setParticipants:(id)participants;
 - (void)updateConstraints;
 @end
 
 @implementation MFExpandableCaptionView
 
-- (MFExpandableCaptionView)initWithFrame:(CGRect)a3
+- (MFExpandableCaptionView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MFExpandableCaptionView;
-  v3 = [(MFExpandableCaptionView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFExpandableCaptionView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,23 +61,23 @@
   [(MFExpandableCaptionView *)&v4 dealloc];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_font] & 1) == 0)
+  fontCopy = font;
+  if (([fontCopy isEqual:self->_font] & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
-    v6 = [(MFExpandableCaptionView *)self timestampLabel];
-    [v6 setFont:v5];
+    objc_storeStrong(&self->_font, font);
+    timestampLabel = [(MFExpandableCaptionView *)self timestampLabel];
+    [timestampLabel setFont:fontCopy];
 
-    v7 = [(MFExpandableCaptionView *)self captionLabel];
-    [v7 setFont:v5];
+    captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+    [captionLabel setFont:fontCopy];
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000EE70;
     v8[3] = &unk_100038D30;
-    v9 = v5;
+    v9 = fontCopy;
     [(MFExpandableCaptionView *)self iterateAtomListsWithBlock:v8];
   }
 }
@@ -87,90 +87,90 @@
   v5 = objc_alloc_init(MFCaptionLabel);
   [(MFExpandableCaptionView *)self setCaptionLabel:?];
 
-  v6 = [(MFExpandableCaptionView *)self captionLabel];
-  [v6 setDataSource:self];
+  captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel setDataSource:self];
 
-  v7 = [(MFExpandableCaptionView *)self captionLabel];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  captionLabel2 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v8 = +[UIColor mailSubtitleGrayColor];
-  v3 = [(MFExpandableCaptionView *)self captionLabel];
-  [v3 setTextColor:v8];
+  captionLabel3 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel3 setTextColor:v8];
 
   v9 = +[MFCaptionLabel defaultFont];
-  v4 = [(MFExpandableCaptionView *)self captionLabel];
-  [v4 setFont:v9];
+  captionLabel4 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel4 setFont:v9];
 
-  v10 = [(MFExpandableCaptionView *)self captionLabel];
+  captionLabel5 = [(MFExpandableCaptionView *)self captionLabel];
   [(MFExpandableCaptionView *)self addSubview:?];
 
   v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(MFExpandableCaptionView *)self setLastBaseLineDeceptionLabel:?];
 
-  v12 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lastBaseLineDeceptionLabel = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
+  [lastBaseLineDeceptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
+  lastBaseLineDeceptionLabel2 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
   [(MFExpandableCaptionView *)self addSubview:?];
 }
 
 - (void)_initializePrimaryLayoutConstraints
 {
-  v3 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
-  v4 = [v3 lastBaselineAnchor];
-  v5 = [(MFExpandableCaptionView *)self captionLabel];
-  v6 = [v5 lastBaselineAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  lastBaseLineDeceptionLabel = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
+  lastBaselineAnchor = [lastBaseLineDeceptionLabel lastBaselineAnchor];
+  captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+  lastBaselineAnchor2 = [captionLabel lastBaselineAnchor];
+  v7 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   [(MFExpandableCaptionView *)self setLastBaselineLabelConstraint:v7];
 
-  v25 = [(MFExpandableCaptionView *)self captionLabel];
-  v24 = [v25 leadingAnchor];
-  v22 = [(MFExpandableCaptionView *)self leadingAnchor];
-  v21 = [v24 constraintEqualToAnchor:?];
+  captionLabel2 = [(MFExpandableCaptionView *)self captionLabel];
+  leadingAnchor = [captionLabel2 leadingAnchor];
+  leadingAnchor2 = [(MFExpandableCaptionView *)self leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:?];
   v26[0] = v21;
-  v20 = [(MFExpandableCaptionView *)self captionLabel];
-  v23 = [v20 trailingAnchor];
-  v19 = [(MFExpandableCaptionView *)self trailingAnchor];
-  v18 = [v23 constraintLessThanOrEqualToAnchor:?];
+  captionLabel3 = [(MFExpandableCaptionView *)self captionLabel];
+  trailingAnchor = [captionLabel3 trailingAnchor];
+  trailingAnchor2 = [(MFExpandableCaptionView *)self trailingAnchor];
+  v18 = [trailingAnchor constraintLessThanOrEqualToAnchor:?];
   v26[1] = v18;
-  v8 = [(MFExpandableCaptionView *)self captionLabel];
-  v9 = [v8 topAnchor];
-  v10 = [(MFExpandableCaptionView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  captionLabel4 = [(MFExpandableCaptionView *)self captionLabel];
+  topAnchor = [captionLabel4 topAnchor];
+  topAnchor2 = [(MFExpandableCaptionView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v11;
-  v12 = [(MFExpandableCaptionView *)self bottomAnchor];
-  v13 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(MFExpandableCaptionView *)self bottomAnchor];
+  lastBaseLineDeceptionLabel2 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
+  bottomAnchor2 = [lastBaseLineDeceptionLabel2 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v15;
-  v16 = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
-  v26[4] = v16;
+  lastBaselineLabelConstraint = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
+  v26[4] = lastBaselineLabelConstraint;
   v17 = [NSArray arrayWithObjects:v26 count:5];
 
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)setListSpacing:(double)a3
+- (void)setListSpacing:(double)spacing
 {
-  if (self->_listSpacing != a3)
+  if (self->_listSpacing != spacing)
   {
-    self->_listSpacing = a3;
+    self->_listSpacing = spacing;
     [(MFExpandableCaptionView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v8 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v9 = [(MFExpandableCaptionView *)self timestampLabel];
-  [v9 setNumberOfLines:!IsAccessibilityCategory];
+  timestampLabel = [(MFExpandableCaptionView *)self timestampLabel];
+  [timestampLabel setNumberOfLines:!IsAccessibilityCategory];
 
-  v10 = [UIApp preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryIsAccessibilityCategory(v10);
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
-  v6 = [(MFExpandableCaptionView *)self timestampLabel];
+  timestampLabel2 = [(MFExpandableCaptionView *)self timestampLabel];
   if (v5)
   {
     v7 = 0;
@@ -181,8 +181,8 @@
     v7 = 4;
   }
 
-  v11 = v6;
-  [v6 setLineBreakMode:v7];
+  v11 = timestampLabel2;
+  [timestampLabel2 setLineBreakMode:v7];
 }
 
 - (void)updateConstraints
@@ -190,24 +190,24 @@
   v13.receiver = self;
   v13.super_class = MFExpandableCaptionView;
   [(MFExpandableCaptionView *)&v13 updateConstraints];
-  v3 = [(MFExpandableCaptionView *)self captionLabelTrailingConstraint];
+  captionLabelTrailingConstraint = [(MFExpandableCaptionView *)self captionLabelTrailingConstraint];
 
-  if (!v3)
+  if (!captionLabelTrailingConstraint)
   {
-    v4 = [(MFExpandableCaptionView *)self captionLabel];
-    v5 = [v4 trailingAnchor];
-    v6 = [(MFExpandableCaptionView *)self trailingAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6 constant:-5.0];
+    captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+    trailingAnchor = [captionLabel trailingAnchor];
+    trailingAnchor2 = [(MFExpandableCaptionView *)self trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
     [(MFExpandableCaptionView *)self setCaptionLabelTrailingConstraint:v7];
 
-    v8 = [(MFExpandableCaptionView *)self captionLabelTrailingConstraint];
-    [v8 setActive:1];
+    captionLabelTrailingConstraint2 = [(MFExpandableCaptionView *)self captionLabelTrailingConstraint];
+    [captionLabelTrailingConstraint2 setActive:1];
   }
 
   [(MFExpandableCaptionView *)self listSpacing];
   v10 = v9;
-  v11 = [(MFExpandableCaptionView *)self atomListStackView];
-  [v11 setSpacing:v10];
+  atomListStackView = [(MFExpandableCaptionView *)self atomListStackView];
+  [atomListStackView setSpacing:v10];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -219,36 +219,36 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(MFExpandableCaptionView *)self captionLabel];
-  v3 = [v2 viewForFirstBaselineLayout];
+  captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+  viewForFirstBaselineLayout = [captionLabel viewForFirstBaselineLayout];
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v7 = a3;
-  v4 = [(MFExpandableCaptionView *)self participantDictionary];
+  participantsCopy = participants;
+  participantDictionary = [(MFExpandableCaptionView *)self participantDictionary];
   v5 = EFDictionarysAreEqual();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v7 mutableCopy];
+    v6 = [participantsCopy mutableCopy];
     [(MFExpandableCaptionView *)self setParticipantDictionary:v6];
 
     [(MFExpandableCaptionView *)self reloadData];
   }
 }
 
-- (void)setOtherSigners:(id)a3
+- (void)setOtherSigners:(id)signers
 {
-  v6 = a3;
-  v4 = [(MFExpandableCaptionView *)self participantDictionary];
+  signersCopy = signers;
+  participantDictionary = [(MFExpandableCaptionView *)self participantDictionary];
 
-  if (v4)
+  if (participantDictionary)
   {
-    v5 = [(MFExpandableCaptionView *)self participantDictionary];
-    [v5 setObject:v6 forKeyedSubscript:@"OtherSignersAtomsKey"];
+    participantDictionary2 = [(MFExpandableCaptionView *)self participantDictionary];
+    [participantDictionary2 setObject:signersCopy forKeyedSubscript:@"OtherSignersAtomsKey"];
 
     [(MFExpandableCaptionView *)self reloadData];
   }
@@ -258,53 +258,53 @@
 {
   if ([(MFExpandableCaptionView *)self isOutgoing])
   {
-    v3 = [(MFExpandableCaptionView *)self captionLabel];
-    [v3 setToRecipients:0];
+    captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+    [captionLabel setToRecipients:0];
 
-    v4 = [(MFExpandableCaptionView *)self participantDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"FromAtomsKey"];
-    v6 = [(MFExpandableCaptionView *)self captionLabel];
-    [v6 setFromSenders:v5];
+    participantDictionary = [(MFExpandableCaptionView *)self participantDictionary];
+    v5 = [participantDictionary objectForKeyedSubscript:@"FromAtomsKey"];
+    captionLabel2 = [(MFExpandableCaptionView *)self captionLabel];
+    [captionLabel2 setFromSenders:v5];
   }
 
   else
   {
-    v7 = [(MFExpandableCaptionView *)self participantDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"ToAtomsKey"];
-    v9 = [(MFExpandableCaptionView *)self captionLabel];
-    [v9 setToRecipients:v8];
+    participantDictionary2 = [(MFExpandableCaptionView *)self participantDictionary];
+    v8 = [participantDictionary2 objectForKeyedSubscript:@"ToAtomsKey"];
+    captionLabel3 = [(MFExpandableCaptionView *)self captionLabel];
+    [captionLabel3 setToRecipients:v8];
 
-    v4 = [(MFExpandableCaptionView *)self captionLabel];
-    [v4 setFromSenders:0];
+    participantDictionary = [(MFExpandableCaptionView *)self captionLabel];
+    [participantDictionary setFromSenders:0];
   }
 
-  v10 = [(MFExpandableCaptionView *)self participantDictionary];
-  v11 = [v10 objectForKeyedSubscript:@"CcAtomsKey"];
-  v12 = [(MFExpandableCaptionView *)self captionLabel];
-  [v12 setCcRecipients:v11];
+  participantDictionary3 = [(MFExpandableCaptionView *)self participantDictionary];
+  v11 = [participantDictionary3 objectForKeyedSubscript:@"CcAtomsKey"];
+  captionLabel4 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel4 setCcRecipients:v11];
 
-  v13 = [(MFExpandableCaptionView *)self participantDictionary];
-  v14 = [v13 objectForKeyedSubscript:@"BccAtomsKey"];
-  v15 = [(MFExpandableCaptionView *)self captionLabel];
-  [v15 setBccRecipients:v14];
+  participantDictionary4 = [(MFExpandableCaptionView *)self participantDictionary];
+  v14 = [participantDictionary4 objectForKeyedSubscript:@"BccAtomsKey"];
+  captionLabel5 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel5 setBccRecipients:v14];
 
-  v16 = [(MFExpandableCaptionView *)self participantDictionary];
-  v17 = [v16 objectForKeyedSubscript:@"OtherSignersAtomsKey"];
-  v18 = [(MFExpandableCaptionView *)self captionLabel];
-  [v18 setOtherSigners:v17];
+  participantDictionary5 = [(MFExpandableCaptionView *)self participantDictionary];
+  v17 = [participantDictionary5 objectForKeyedSubscript:@"OtherSignersAtomsKey"];
+  captionLabel6 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel6 setOtherSigners:v17];
 
-  v19 = [(MFExpandableCaptionView *)self participantDictionary];
-  v20 = [v19 objectForKeyedSubscript:@"ReplyToAtomsKey"];
-  v21 = [(MFExpandableCaptionView *)self captionLabel];
-  [v21 setReplyToSenders:v20];
+  participantDictionary6 = [(MFExpandableCaptionView *)self participantDictionary];
+  v20 = [participantDictionary6 objectForKeyedSubscript:@"ReplyToAtomsKey"];
+  captionLabel7 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel7 setReplyToSenders:v20];
 
-  v22 = [(MFExpandableCaptionView *)self participantDictionary];
-  v23 = [v22 objectForKeyedSubscript:@"FromAtomsKey"];
-  v24 = [(MFExpandableCaptionView *)self captionLabel];
-  v25 = [v24 replyToSenders];
-  v26 = [MFAddressAtomStatusManager shouldDecorateAtomListForSender:v23 replyTo:v25];
-  v27 = [(MFExpandableCaptionView *)self captionLabel];
-  [v27 setHasDifferentReplyToAddress:v26];
+  participantDictionary7 = [(MFExpandableCaptionView *)self participantDictionary];
+  v23 = [participantDictionary7 objectForKeyedSubscript:@"FromAtomsKey"];
+  captionLabel8 = [(MFExpandableCaptionView *)self captionLabel];
+  replyToSenders = [captionLabel8 replyToSenders];
+  v26 = [MFAddressAtomStatusManager shouldDecorateAtomListForSender:v23 replyTo:replyToSenders];
+  captionLabel9 = [(MFExpandableCaptionView *)self captionLabel];
+  [captionLabel9 setHasDifferentReplyToAddress:v26];
 
   if ([(MFExpandableCaptionView *)self isExpanded])
   {
@@ -315,37 +315,37 @@
   }
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4 force:(BOOL)a5
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated force:(BOOL)force
 {
-  if (self->_expanded != a3 || a5)
+  if (self->_expanded != expanded || force)
   {
-    v6 = a4;
-    v7 = a3;
-    if (a3)
+    animatedCopy = animated;
+    expandedCopy = expanded;
+    if (expanded)
     {
-      [(MFExpandableCaptionView *)self _setRecipientDetailsVisible:0, a4, a5];
+      [(MFExpandableCaptionView *)self _setRecipientDetailsVisible:0, animated, force];
       [(MFExpandableCaptionView *)self _setRecipientDetailsVisible:1];
     }
 
-    v9 = [[MFSimpleAnimationCoordinator alloc] initCoordinatorAnimated:v6];
-    v10 = [(MFExpandableCaptionView *)self delegate];
+    v9 = [[MFSimpleAnimationCoordinator alloc] initCoordinatorAnimated:animatedCopy];
+    delegate = [(MFExpandableCaptionView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v10 expandableCaptionView:self willBecomeExpanded:v7 withAnimationCoordinator:v9];
+      [delegate expandableCaptionView:self willBecomeExpanded:expandedCopy withAnimationCoordinator:v9];
     }
 
-    if (v7 && v6)
+    if (expandedCopy && animatedCopy)
     {
       [(MFExpandableCaptionView *)self layoutIfNeeded];
     }
 
-    self->_expanded = v7;
+    self->_expanded = expandedCopy;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10000FF24;
     v22[3] = &unk_100038D58;
     v22[4] = self;
-    v24 = v7;
+    v24 = expandedCopy;
     v11 = v9;
     v23 = v11;
     v12 = objc_retainBlock(v22);
@@ -353,13 +353,13 @@
     v16 = 3221225472;
     v17 = sub_10000FFE4;
     v18 = &unk_100038D80;
-    v21 = v7;
-    v19 = self;
+    v21 = expandedCopy;
+    selfCopy = self;
     v13 = v11;
     v20 = v13;
     v14 = objc_retainBlock(&v15);
     [(MFExpandableCaptionView *)self setNeedsUpdateConstraints:v15];
-    if (v6)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:0 delay:v12 usingSpringWithDamping:v14 initialSpringVelocity:0.349999994 options:0.0 animations:1.0 completion:0.0];
     }
@@ -374,12 +374,12 @@
 
 - (void)_reattachBottomConstraint
 {
-  v8 = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
-  [v8 setActive:0];
+  lastBaselineLabelConstraint = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
+  [lastBaselineLabelConstraint setActive:0];
 
   expanded = self->_expanded;
-  v9 = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
-  [v9 lastBaselineAnchor];
+  lastBaseLineDeceptionLabel = [(MFExpandableCaptionView *)self lastBaseLineDeceptionLabel];
+  [lastBaseLineDeceptionLabel lastBaselineAnchor];
   if (expanded)
     v4 = {;
     [(MFExpandableCaptionView *)self atomListStackView];
@@ -390,20 +390,20 @@
     [(MFExpandableCaptionView *)self captionLabel];
   }
   v5 = ;
-  v6 = [v5 lastBaselineAnchor];
-  v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6];
+  lastBaselineAnchor = [v5 lastBaselineAnchor];
+  v7 = [v4 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor];
   [(MFExpandableCaptionView *)self setLastBaselineLabelConstraint:v7];
 
-  v10 = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
-  [v10 setActive:1];
+  lastBaselineLabelConstraint2 = [(MFExpandableCaptionView *)self lastBaselineLabelConstraint];
+  [lastBaselineLabelConstraint2 setActive:1];
 }
 
-- (void)_setRecipientDetailsVisible:(BOOL)a3
+- (void)_setRecipientDetailsVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(MFExpandableCaptionView *)self atomListStackView];
-  v6 = v5;
-  if (v3)
+  visibleCopy = visible;
+  atomListStackView = [(MFExpandableCaptionView *)self atomListStackView];
+  v6 = atomListStackView;
+  if (visibleCopy)
   {
 
     if (!v6)
@@ -421,18 +421,18 @@
         v8 = 0.0;
       }
 
-      v9 = [(MFExpandableCaptionView *)self atomListStackView];
-      [v9 setAlpha:v8];
+      atomListStackView2 = [(MFExpandableCaptionView *)self atomListStackView];
+      [atomListStackView2 setAlpha:v8];
 
-      v10 = [(MFExpandableCaptionView *)self atomListStackView];
-      v11 = [(MFExpandableCaptionView *)self captionLabel];
-      [(MFExpandableCaptionView *)self insertSubview:v10 belowSubview:v11];
+      atomListStackView3 = [(MFExpandableCaptionView *)self atomListStackView];
+      captionLabel = [(MFExpandableCaptionView *)self captionLabel];
+      [(MFExpandableCaptionView *)self insertSubview:atomListStackView3 belowSubview:captionLabel];
     }
 
     if (![(MFExpandableCaptionView *)self isOutgoing])
     {
-      v12 = [(MFExpandableCaptionView *)self participantDictionary];
-      v13 = [v12 objectForKeyedSubscript:@"ToAtomsKey"];
+      participantDictionary = [(MFExpandableCaptionView *)self participantDictionary];
+      v13 = [participantDictionary objectForKeyedSubscript:@"ToAtomsKey"];
 
       if ([v13 count])
       {
@@ -444,8 +444,8 @@
       }
     }
 
-    v18 = [(MFExpandableCaptionView *)self participantDictionary];
-    v19 = [v18 objectForKeyedSubscript:@"CcAtomsKey"];
+    participantDictionary2 = [(MFExpandableCaptionView *)self participantDictionary];
+    v19 = [participantDictionary2 objectForKeyedSubscript:@"CcAtomsKey"];
 
     v81 = v19;
     if ([v19 count])
@@ -457,8 +457,8 @@
       [(MFExpandableCaptionView *)self _addAtomListForAddresses:v81 label:v21 title:v23 key:@"CcAtomsKey"];
     }
 
-    v24 = [(MFExpandableCaptionView *)self participantDictionary];
-    v25 = [v24 objectForKeyedSubscript:@"BccAtomsKey"];
+    participantDictionary3 = [(MFExpandableCaptionView *)self participantDictionary];
+    v25 = [participantDictionary3 objectForKeyedSubscript:@"BccAtomsKey"];
 
     v80 = v25;
     if ([v25 count])
@@ -470,8 +470,8 @@
       [(MFExpandableCaptionView *)self _addAtomListForAddresses:v80 label:v27 title:v29 key:@"BccAtomsKey"];
     }
 
-    v30 = [(MFExpandableCaptionView *)self participantDictionary];
-    v31 = [v30 objectForKeyedSubscript:@"OtherSignersAtomsKey"];
+    participantDictionary4 = [(MFExpandableCaptionView *)self participantDictionary];
+    v31 = [participantDictionary4 objectForKeyedSubscript:@"OtherSignersAtomsKey"];
 
     v79 = v31;
     if ([v31 count])
@@ -485,8 +485,8 @@
 
     if ([(MFExpandableCaptionView *)self isOutgoing])
     {
-      v36 = [(MFExpandableCaptionView *)self participantDictionary];
-      v37 = [v36 objectForKeyedSubscript:@"FromAtomsKey"];
+      participantDictionary5 = [(MFExpandableCaptionView *)self participantDictionary];
+      v37 = [participantDictionary5 objectForKeyedSubscript:@"FromAtomsKey"];
 
       if ([v37 count])
       {
@@ -498,8 +498,8 @@
       }
     }
 
-    v42 = [(MFExpandableCaptionView *)self participantDictionary];
-    v43 = [v42 objectForKeyedSubscript:@"ReplyToAtomsKey"];
+    participantDictionary6 = [(MFExpandableCaptionView *)self participantDictionary];
+    v43 = [participantDictionary6 objectForKeyedSubscript:@"ReplyToAtomsKey"];
 
     v78 = v43;
     if ([v43 count])
@@ -511,36 +511,36 @@
 
     if ([(MFExpandableCaptionView *)self showsTimestampWhenExpanded])
     {
-      v46 = [(MFExpandableCaptionView *)self timestampLabel];
+      timestampLabel = [(MFExpandableCaptionView *)self timestampLabel];
 
-      if (!v46)
+      if (!timestampLabel)
       {
         v47 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
         [(MFExpandableCaptionView *)self setTimestampLabel:v47];
 
-        v48 = [(MFExpandableCaptionView *)self timestampLabel];
-        [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
+        timestampLabel2 = [(MFExpandableCaptionView *)self timestampLabel];
+        [timestampLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v49 = [(MFExpandableCaptionView *)self font];
-        v50 = [(MFExpandableCaptionView *)self timestampLabel];
-        [v50 setFont:v49];
+        font = [(MFExpandableCaptionView *)self font];
+        timestampLabel3 = [(MFExpandableCaptionView *)self timestampLabel];
+        [timestampLabel3 setFont:font];
 
         v51 = +[UIColor mailSubtitleGrayColor];
-        v52 = [(MFExpandableCaptionView *)self timestampLabel];
-        [v52 setTextColor:v51];
+        timestampLabel4 = [(MFExpandableCaptionView *)self timestampLabel];
+        [timestampLabel4 setTextColor:v51];
 
-        v53 = [UIApp preferredContentSizeCategory];
-        LODWORD(v52) = UIContentSizeCategoryIsAccessibilityCategory(v53);
+        preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+        LODWORD(timestampLabel4) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-        v54 = [(MFExpandableCaptionView *)self timestampLabel];
-        [v54 setNumberOfLines:v52 ^ 1];
+        timestampLabel5 = [(MFExpandableCaptionView *)self timestampLabel];
+        [timestampLabel5 setNumberOfLines:timestampLabel4 ^ 1];
 
-        v55 = [UIApp preferredContentSizeCategory];
-        LODWORD(v52) = UIContentSizeCategoryIsAccessibilityCategory(v55);
+        preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+        LODWORD(timestampLabel4) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
-        v56 = [(MFExpandableCaptionView *)self timestampLabel];
-        v57 = v56;
-        if (v52)
+        timestampLabel6 = [(MFExpandableCaptionView *)self timestampLabel];
+        v57 = timestampLabel6;
+        if (timestampLabel4)
         {
           v58 = 0;
         }
@@ -550,35 +550,35 @@
           v58 = 4;
         }
 
-        [v56 setLineBreakMode:v58];
+        [timestampLabel6 setLineBreakMode:v58];
       }
 
-      v59 = [(MFExpandableCaptionView *)self dateSent];
-      v60 = [NSDateFormatter ef_formatDate:v59 shortStyle:0];
+      dateSent = [(MFExpandableCaptionView *)self dateSent];
+      v60 = [NSDateFormatter ef_formatDate:dateSent shortStyle:0];
 
-      v61 = [(MFExpandableCaptionView *)self timestampLabel];
-      [v61 setText:v60];
+      timestampLabel7 = [(MFExpandableCaptionView *)self timestampLabel];
+      [timestampLabel7 setText:v60];
 
-      v62 = [(MFExpandableCaptionView *)self atomListStackView];
-      v63 = [(MFExpandableCaptionView *)self timestampLabel];
-      [v62 addArrangedSubview:v63];
+      atomListStackView4 = [(MFExpandableCaptionView *)self atomListStackView];
+      timestampLabel8 = [(MFExpandableCaptionView *)self timestampLabel];
+      [atomListStackView4 addArrangedSubview:timestampLabel8];
     }
 
-    v77 = [(MFExpandableCaptionView *)self atomListStackView];
-    v82 = [v77 firstBaselineAnchor];
-    v76 = [(MFExpandableCaptionView *)self captionLabel];
-    v75 = [v76 firstBaselineAnchor];
-    v74 = [v82 constraintEqualToAnchor:?];
+    atomListStackView5 = [(MFExpandableCaptionView *)self atomListStackView];
+    firstBaselineAnchor = [atomListStackView5 firstBaselineAnchor];
+    captionLabel2 = [(MFExpandableCaptionView *)self captionLabel];
+    firstBaselineAnchor2 = [captionLabel2 firstBaselineAnchor];
+    v74 = [firstBaselineAnchor constraintEqualToAnchor:?];
     v83[0] = v74;
-    v64 = [(MFExpandableCaptionView *)self atomListStackView];
-    v65 = [v64 leadingAnchor];
-    v66 = [(MFExpandableCaptionView *)self leadingAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66];
+    atomListStackView6 = [(MFExpandableCaptionView *)self atomListStackView];
+    leadingAnchor = [atomListStackView6 leadingAnchor];
+    leadingAnchor2 = [(MFExpandableCaptionView *)self leadingAnchor];
+    v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v83[1] = v67;
-    v68 = [(MFExpandableCaptionView *)self atomListStackView];
-    v69 = [v68 trailingAnchor];
-    v70 = [(MFExpandableCaptionView *)self trailingAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    atomListStackView7 = [(MFExpandableCaptionView *)self atomListStackView];
+    trailingAnchor = [atomListStackView7 trailingAnchor];
+    trailingAnchor2 = [(MFExpandableCaptionView *)self trailingAnchor];
+    v71 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v83[2] = v71;
     v72 = [NSArray arrayWithObjects:v83 count:3];
 
@@ -587,36 +587,36 @@
 
   else
   {
-    [v5 removeFromSuperview];
+    [atomListStackView removeFromSuperview];
 
     [(MFExpandableCaptionView *)self setAtomListStackView:0];
   }
 
-  v73 = [(MFExpandableCaptionView *)self timestampLabel];
-  [v73 setAccessibilityIdentifier:MSAccessibilityIdentifierMailConversationViewReceivedDateTime];
+  timestampLabel9 = [(MFExpandableCaptionView *)self timestampLabel];
+  [timestampLabel9 setAccessibilityIdentifier:MSAccessibilityIdentifierMailConversationViewReceivedDateTime];
 }
 
-- (id)captionLabel:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5
+- (id)captionLabel:(id)label displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(MFExpandableCaptionView *)self delegate];
-  v9 = [v8 expandableCaptionView:self displayNameForEmailAddress:v7 abbreviated:v5];
+  abbreviatedCopy = abbreviated;
+  addressCopy = address;
+  delegate = [(MFExpandableCaptionView *)self delegate];
+  v9 = [delegate expandableCaptionView:self displayNameForEmailAddress:addressCopy abbreviated:abbreviatedCopy];
 
   return v9;
 }
 
-- (void)iterateAtomListsWithBlock:(id)a3
+- (void)iterateAtomListsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MFExpandableCaptionView *)self atomListStackView];
-  v6 = [v5 arrangedSubviews];
+  atomListStackView = [(MFExpandableCaptionView *)self atomListStackView];
+  arrangedSubviews = [atomListStackView arrangedSubviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -627,39 +627,39 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, v10);
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_addAtomListForAddresses:(id)a3 label:(id)a4 title:(id)a5 key:(id)a6
+- (void)_addAtomListForAddresses:(id)addresses label:(id)label title:(id)title key:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v13 isEqualToString:@"FromAtomsKey"])
+  addressesCopy = addresses;
+  labelCopy = label;
+  titleCopy = title;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"FromAtomsKey"])
   {
     v14 = 1;
   }
 
-  else if ([v13 isEqualToString:@"ReplyToAtomsKey"])
+  else if ([keyCopy isEqualToString:@"ReplyToAtomsKey"])
   {
     v14 = 2;
   }
@@ -671,7 +671,7 @@
 
   v15 = [MFModernLabelledAtomList alloc];
   v16 = +[MFAddressBookManager sharedManager];
-  v17 = [v15 initWithLabel:v11 title:v12 atomType:v14 addressBook:{objc_msgSend(v16, "addressBook")}];
+  v17 = [v15 initWithLabel:labelCopy title:titleCopy atomType:v14 addressBook:{objc_msgSend(v16, "addressBook")}];
 
   [v17 setDelegate:self];
   [(MFExpandableCaptionView *)self listSpacing];
@@ -680,58 +680,58 @@
   v21 = 3221225472;
   v22 = sub_100011230;
   v23 = &unk_100038DA8;
-  v18 = v13;
+  v18 = keyCopy;
   v24 = v18;
-  v25 = self;
-  [v17 setAddresses:v10 withCompletion:&v20];
+  selfCopy = self;
+  [v17 setAddresses:addressesCopy withCompletion:&v20];
   v19 = [(MFExpandableCaptionView *)self atomListStackView:v20];
   [v19 addArrangedSubview:v17];
 }
 
-- (void)_recipientAtomPressed:(id)a3
+- (void)_recipientAtomPressed:(id)pressed
 {
-  v5 = a3;
-  v4 = [(MFExpandableCaptionView *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(MFExpandableCaptionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 expandableCaptionView:self didTapAtom:v5 forAtomType:0];
+    [delegate expandableCaptionView:self didTapAtom:pressedCopy forAtomType:0];
   }
 }
 
-- (void)_senderAtomPressed:(id)a3
+- (void)_senderAtomPressed:(id)pressed
 {
-  v5 = a3;
-  v4 = [(MFExpandableCaptionView *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(MFExpandableCaptionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 expandableCaptionView:self didTapAtom:v5 forAtomType:1];
+    [delegate expandableCaptionView:self didTapAtom:pressedCopy forAtomType:1];
   }
 }
 
-- (void)_replyToAtomPressed:(id)a3
+- (void)_replyToAtomPressed:(id)pressed
 {
-  v5 = a3;
-  v4 = [(MFExpandableCaptionView *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(MFExpandableCaptionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 expandableCaptionView:self didTapAtom:v5 forAtomType:2];
+    [delegate expandableCaptionView:self didTapAtom:pressedCopy forAtomType:2];
   }
 }
 
-- (void)labelledAtomList:(id)a3 searchForDisplayName:(id)a4 emailAddresses:(id)a5
+- (void)labelledAtomList:(id)list searchForDisplayName:(id)name emailAddresses:(id)addresses
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(MFExpandableCaptionView *)self delegate];
-  [v8 expandableCaptionView:self searchForDisplayName:v9 emailAddresses:v7];
+  nameCopy = name;
+  addressesCopy = addresses;
+  delegate = [(MFExpandableCaptionView *)self delegate];
+  [delegate expandableCaptionView:self searchForDisplayName:nameCopy emailAddresses:addressesCopy];
 }
 
-- (void)labelledAtomList:(id)a3 displayContactCardForAddressAtom:(id)a4
+- (void)labelledAtomList:(id)list displayContactCardForAddressAtom:(id)atom
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MFExpandableCaptionView *)self delegate];
-  [v7 expandableCaptionView:self displayContactCardForAddressAtom:v6 atomType:{objc_msgSend(v8, "atomType")}];
+  listCopy = list;
+  atomCopy = atom;
+  delegate = [(MFExpandableCaptionView *)self delegate];
+  [delegate expandableCaptionView:self displayContactCardForAddressAtom:atomCopy atomType:{objc_msgSend(listCopy, "atomType")}];
 }
 
 - (MFExpandableCaptionViewDelegate)delegate

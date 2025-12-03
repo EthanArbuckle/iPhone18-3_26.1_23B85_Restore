@@ -1,57 +1,57 @@
 @interface PKPeerPaymentRecurringPaymentFundingSource
-+ (id)fundingSourceWithDictionary:(id)a3;
-+ (id)fundingSourceWithPass:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithCoder:(id)a3;
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithDictionary:(id)a3;
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithPass:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fundingSourceWithDictionary:(id)dictionary;
++ (id)fundingSourceWithPass:(id)pass;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithCoder:(id)coder;
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithDictionary:(id)dictionary;
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithPass:(id)pass;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentFundingSource
 
-+ (id)fundingSourceWithDictionary:(id)a3
++ (id)fundingSourceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithDictionary:(id)a3
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = PKPeerPaymentRecurringPaymentFundingSource;
   v5 = [(PKPeerPaymentRecurringPaymentFundingSource *)&v22 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"dpanIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"dpanIdentifier"];
     v7 = [v6 copy];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v7;
 
-    v9 = [v4 PKStringForKey:@"fpanIdentifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"fpanIdentifier"];
     v10 = [v9 copy];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v10;
 
-    v12 = [v4 PKStringForKey:@"mpanIdentifier"];
+    v12 = [dictionaryCopy PKStringForKey:@"mpanIdentifier"];
     v13 = [v12 copy];
     mpanIdentifier = v5->_mpanIdentifier;
     v5->_mpanIdentifier = v13;
 
-    v15 = [v4 PKStringForKey:@"name"];
+    v15 = [dictionaryCopy PKStringForKey:@"name"];
     v16 = [v15 copy];
     name = v5->_name;
     v5->_name = v16;
 
-    v5->_type = [v4 PKIntegerForKey:@"type"];
-    v5->_network = [v4 PKIntegerForKey:@"network"];
-    v18 = [v4 PKStringForKey:@"suffix"];
+    v5->_type = [dictionaryCopy PKIntegerForKey:@"type"];
+    v5->_network = [dictionaryCopy PKIntegerForKey:@"network"];
+    v18 = [dictionaryCopy PKStringForKey:@"suffix"];
     v19 = [v18 copy];
     suffix = v5->_suffix;
     v5->_suffix = v19;
@@ -60,72 +60,72 @@
   return v5;
 }
 
-+ (id)fundingSourceWithPass:(id)a3
++ (id)fundingSourceWithPass:(id)pass
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPass:v4];
+  passCopy = pass;
+  v5 = [[self alloc] initWithPass:passCopy];
 
   return v5;
 }
 
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithPass:(id)a3
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v16.receiver = self;
   v16.super_class = PKPeerPaymentRecurringPaymentFundingSource;
   v5 = [(PKPeerPaymentRecurringPaymentFundingSource *)&v16 init];
   if (v5)
   {
-    v6 = [v4 devicePrimaryInAppPaymentApplication];
-    v7 = [v6 dpanIdentifier];
+    devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
+    dpanIdentifier = [devicePrimaryInAppPaymentApplication dpanIdentifier];
     dpanIdentifier = v5->_dpanIdentifier;
-    v5->_dpanIdentifier = v7;
+    v5->_dpanIdentifier = dpanIdentifier;
 
-    v9 = [v4 primaryAccountIdentifier];
+    primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
     fpanIdentifier = v5->_fpanIdentifier;
-    v5->_fpanIdentifier = v9;
+    v5->_fpanIdentifier = primaryAccountIdentifier;
 
-    v11 = [v4 localizedDescription];
+    localizedDescription = [passCopy localizedDescription];
     name = v5->_name;
-    v5->_name = v11;
+    v5->_name = localizedDescription;
 
-    v5->_type = [v6 paymentType];
-    v5->_network = [v6 paymentNetworkIdentifier];
-    v13 = [v4 primaryAccountNumberSuffix];
+    v5->_type = [devicePrimaryInAppPaymentApplication paymentType];
+    v5->_network = [devicePrimaryInAppPaymentApplication paymentNetworkIdentifier];
+    primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
     suffix = v5->_suffix;
-    v5->_suffix = v13;
+    v5->_suffix = primaryAccountNumberSuffix;
   }
 
   return v5;
 }
 
-- (PKPeerPaymentRecurringPaymentFundingSource)initWithCoder:(id)a3
+- (PKPeerPaymentRecurringPaymentFundingSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPeerPaymentRecurringPaymentFundingSource;
   v5 = [(PKPeerPaymentRecurringPaymentFundingSource *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mpanIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mpanIdentifier"];
     mpanIdentifier = v5->_mpanIdentifier;
     v5->_mpanIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v12;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_network = [v4 decodeIntegerForKey:@"network"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suffix"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_network = [coderCopy decodeIntegerForKey:@"network"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suffix"];
     suffix = v5->_suffix;
     v5->_suffix = v14;
   }
@@ -133,17 +133,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dpanIdentifier = self->_dpanIdentifier;
-  v5 = a3;
-  [v5 encodeObject:dpanIdentifier forKey:@"dpanIdentifier"];
-  [v5 encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
-  [v5 encodeObject:self->_mpanIdentifier forKey:@"mpanIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_network forKey:@"network"];
-  [v5 encodeObject:self->_suffix forKey:@"suffix"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dpanIdentifier forKey:@"dpanIdentifier"];
+  [coderCopy encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
+  [coderCopy encodeObject:self->_mpanIdentifier forKey:@"mpanIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_network forKey:@"network"];
+  [coderCopy encodeObject:self->_suffix forKey:@"suffix"];
 }
 
 - (unint64_t)hash
@@ -161,9 +161,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -171,7 +171,7 @@
   }
 
   dpanIdentifier = self->_dpanIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (dpanIdentifier && v6)
   {
     if (([(NSString *)dpanIdentifier isEqual:?]& 1) == 0)
@@ -186,7 +186,7 @@
   }
 
   fpanIdentifier = self->_fpanIdentifier;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (fpanIdentifier && v8)
   {
     if (([(NSString *)fpanIdentifier isEqual:?]& 1) == 0)
@@ -201,7 +201,7 @@
   }
 
   mpanIdentifier = self->_mpanIdentifier;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (mpanIdentifier && v10)
   {
     if (([(NSString *)mpanIdentifier isEqual:?]& 1) == 0)
@@ -216,7 +216,7 @@
   }
 
   name = self->_name;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (name && v12)
   {
     if (([(NSString *)name isEqual:?]& 1) == 0)
@@ -231,7 +231,7 @@
   }
 
   suffix = self->_suffix;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (!suffix || !v14)
   {
     if (suffix == v14)
@@ -250,12 +250,12 @@ LABEL_29:
   }
 
 LABEL_27:
-  if (self->_type != v4[5])
+  if (self->_type != equalCopy[5])
   {
     goto LABEL_29;
   }
 
-  v15 = self->_network == v4[6];
+  v15 = self->_network == equalCopy[6];
 LABEL_30:
 
   return v15;
@@ -276,28 +276,28 @@ LABEL_30:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentRecurringPaymentFundingSource allocWithZone:](PKPeerPaymentRecurringPaymentFundingSource init];
-  v6 = [(NSString *)self->_dpanIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_dpanIdentifier copyWithZone:zone];
   dpanIdentifier = v5->_dpanIdentifier;
   v5->_dpanIdentifier = v6;
 
-  v8 = [(NSString *)self->_fpanIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_fpanIdentifier copyWithZone:zone];
   fpanIdentifier = v5->_fpanIdentifier;
   v5->_fpanIdentifier = v8;
 
-  v10 = [(NSString *)self->_mpanIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_mpanIdentifier copyWithZone:zone];
   mpanIdentifier = v5->_mpanIdentifier;
   v5->_mpanIdentifier = v10;
 
-  v12 = [(NSString *)self->_name copyWithZone:a3];
+  v12 = [(NSString *)self->_name copyWithZone:zone];
   name = v5->_name;
   v5->_name = v12;
 
   v5->_type = self->_type;
   v5->_network = self->_network;
-  v14 = [(NSString *)self->_suffix copyWithZone:a3];
+  v14 = [(NSString *)self->_suffix copyWithZone:zone];
   suffix = v5->_suffix;
   v5->_suffix = v14;
 

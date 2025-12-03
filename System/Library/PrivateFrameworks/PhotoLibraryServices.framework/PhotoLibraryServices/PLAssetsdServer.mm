@@ -1,31 +1,31 @@
 @interface PLAssetsdServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (PLAssetsdServer)initWithDaemonServices:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (PLAssetsdServer)initWithDaemonServices:(id)services;
 - (id)stateCaptureDictionary;
 - (void)_checkInWithLaunchd;
-- (void)_collectCacheMetricsDataFromService:(id)a3;
+- (void)_collectCacheMetricsDataFromService:(id)service;
 - (void)_startObservingLocaleChanges;
-- (void)addService:(id)a3;
-- (void)currentLocaleDidChangeNotification:(id)a3;
-- (void)handleInterruption:(id)a3;
-- (void)handleInvalidation:(id)a3;
+- (void)addService:(id)service;
+- (void)currentLocaleDidChangeNotification:(id)notification;
+- (void)handleInterruption:(id)interruption;
+- (void)handleInvalidation:(id)invalidation;
 - (void)logStatus;
-- (void)removeService:(id)a3;
+- (void)removeService:(id)service;
 - (void)start;
 @end
 
 @implementation PLAssetsdServer
 
-- (void)currentLocaleDidChangeNotification:(id)a3
+- (void)currentLocaleDidChangeNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = PLBackendGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    v5 = [v4 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
     v7 = 138543362;
-    v8 = v5;
+    v8 = localeIdentifier;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "Daemon received locale change notification, requesting exit (current locale: %{public}@)", &v7, 0xCu);
   }
 
@@ -47,21 +47,21 @@
   v3 = PLBackendGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [MEMORY[0x1E695DF58] currentLocale];
-    v5 = [v4 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
     v7 = 138543362;
-    v8 = v5;
+    v8 = localeIdentifier;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "Registering daemon for locale change notification (current locale: %{public}@)", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_currentLocaleDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_currentLocaleDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   +[PLFileDescriptorFuse checkFileDescriptorFuse];
   if ([MEMORY[0x1E69BF350] enabled])
   {
@@ -75,15 +75,15 @@
       connectionLogger = self->_connectionLogger;
     }
 
-    [v7 setDelegate:connectionLogger];
+    [connectionCopy setDelegate:connectionLogger];
   }
 
-  [v7 setExportedInterface:self->_assetsdInterface];
+  [connectionCopy setExportedInterface:self->_assetsdInterface];
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F548];
-  [v7 setRemoteObjectInterface:v11];
+  [connectionCopy setRemoteObjectInterface:v11];
 
-  v12 = [[PLAssetsdService alloc] initWithConnection:v7 libraryBundleController:self->_libraryBundleController daemonServices:self->_daemonServices];
-  [v7 setExportedObject:v12];
+  v12 = [[PLAssetsdService alloc] initWithConnection:connectionCopy libraryBundleController:self->_libraryBundleController daemonServices:self->_daemonServices];
+  [connectionCopy setExportedObject:v12];
   [(PLAssetsdServer *)self addService:v12];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
@@ -93,7 +93,7 @@
   objc_copyWeak(&v21, &location);
   v13 = v12;
   v20 = v13;
-  [v7 setInterruptionHandler:v19];
+  [connectionCopy setInterruptionHandler:v19];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __54__PLAssetsdServer_listener_shouldAcceptNewConnection___block_invoke_2;
@@ -101,8 +101,8 @@
   objc_copyWeak(&v18, &location);
   v14 = v13;
   v17 = v14;
-  [v7 setInvalidationHandler:v16];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:v16];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
@@ -123,45 +123,45 @@ void __54__PLAssetsdServer_listener_shouldAcceptNewConnection___block_invoke_2(u
   [WeakRetained handleInvalidation:*(a1 + 32)];
 }
 
-- (void)handleInvalidation:(id)a3
+- (void)handleInvalidation:(id)invalidation
 {
-  v4 = a3;
-  [(PLAssetsdServer *)self _collectCacheMetricsDataFromService:v4];
-  [v4 handleInvalidation];
-  [(PLAssetsdServer *)self removeService:v4];
+  invalidationCopy = invalidation;
+  [(PLAssetsdServer *)self _collectCacheMetricsDataFromService:invalidationCopy];
+  [invalidationCopy handleInvalidation];
+  [(PLAssetsdServer *)self removeService:invalidationCopy];
 }
 
-- (void)handleInterruption:(id)a3
+- (void)handleInterruption:(id)interruption
 {
-  v4 = a3;
-  [(PLAssetsdServer *)self _collectCacheMetricsDataFromService:v4];
-  [v4 handleInterruption];
-  [(PLAssetsdServer *)self removeService:v4];
+  interruptionCopy = interruption;
+  [(PLAssetsdServer *)self _collectCacheMetricsDataFromService:interruptionCopy];
+  [interruptionCopy handleInterruption];
+  [(PLAssetsdServer *)self removeService:interruptionCopy];
 }
 
-- (void)_collectCacheMetricsDataFromService:(id)a3
+- (void)_collectCacheMetricsDataFromService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_servicesLock);
-  [v4 collectCacheMetrics];
+  [serviceCopy collectCacheMetrics];
 
   os_unfair_lock_unlock(&self->_servicesLock);
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_servicesLock);
-  [(NSMutableSet *)self->_services removeObject:v4];
+  [(NSMutableSet *)self->_services removeObject:serviceCopy];
 
   os_unfair_lock_unlock(&self->_servicesLock);
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&self->_servicesLock);
-  [(NSMutableSet *)self->_services addObject:v4];
+  [(NSMutableSet *)self->_services addObject:serviceCopy];
 
   os_unfair_lock_unlock(&self->_servicesLock);
 }
@@ -169,15 +169,15 @@ void __54__PLAssetsdServer_listener_shouldAcceptNewConnection___block_invoke_2(u
 - (id)stateCaptureDictionary
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_servicesLock);
   services = self->_services;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __41__PLAssetsdServer_stateCaptureDictionary__block_invoke;
   v11 = &unk_1E7578280;
-  v12 = v3;
-  v5 = v3;
+  v12 = array;
+  v5 = array;
   [(NSMutableSet *)services enumerateObjectsUsingBlock:&v8];
   os_unfair_lock_unlock(&self->_servicesLock);
   v13 = @"services";
@@ -253,19 +253,19 @@ void __28__PLAssetsdServer_logStatus__block_invoke(uint64_t a1, void *a2)
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %p start", &v7, 0x16u);
   }
 }
 
-- (PLAssetsdServer)initWithDaemonServices:(id)a3
+- (PLAssetsdServer)initWithDaemonServices:(id)services
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  servicesCopy = services;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLAssetsdServer.m" lineNumber:66 description:@"PLAssetsdServer must only be initialized on assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdServer.m" lineNumber:66 description:@"PLAssetsdServer must only be initialized on assetsd"];
   }
 
   v32.receiver = self;
@@ -274,16 +274,16 @@ void __28__PLAssetsdServer_logStatus__block_invoke(uint64_t a1, void *a2)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_daemonServices, a3);
+    objc_storeStrong(&v7->_daemonServices, services);
     v9 = objc_alloc(MEMORY[0x1E696B0D8]);
     v10 = [v9 initWithMachServiceName:*MEMORY[0x1E69BF408]];
     listener = v8->_listener;
     v8->_listener = v10;
 
     [(NSXPCListener *)v8->_listener setDelegate:v8];
-    v12 = [MEMORY[0x1E69BF1A0] assetsdInterface];
+    assetsdInterface = [MEMORY[0x1E69BF1A0] assetsdInterface];
     assetsdInterface = v8->_assetsdInterface;
-    v8->_assetsdInterface = v12;
+    v8->_assetsdInterface = assetsdInterface;
 
     v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     services = v8->_services;

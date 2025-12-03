@@ -2,39 +2,39 @@
 - (GCPhysicalInputProfile)physicalInputProfile;
 - (GCRacingWheel)capture;
 - (GCRacingWheel)init;
-- (GCRacingWheel)initWithComponents:(id)a3;
-- (GCRacingWheel)initWithIdentifier:(id)a3 components:(id)a4;
+- (GCRacingWheel)initWithComponents:(id)components;
+- (GCRacingWheel)initWithIdentifier:(id)identifier components:(id)components;
 - (GCRacingWheelInput)wheelInput;
 - (NSString)productCategory;
 - (NSString)vendorName;
-- (id)componentForProtocol:(void *)a1;
+- (id)componentForProtocol:(void *)protocol;
 - (id)components;
-- (void)setComponents:(void *)a1;
-- (void)setHandlerQueue:(id)a3;
+- (void)setComponents:(void *)components;
+- (void)setHandlerQueue:(id)queue;
 @end
 
 @implementation GCRacingWheel
 
-- (GCRacingWheel)initWithIdentifier:(id)a3 components:(id)a4
+- (GCRacingWheel)initWithIdentifier:(id)identifier components:(id)components
 {
   v8.receiver = self;
   v8.super_class = GCRacingWheel;
-  v4 = a4;
+  componentsCopy = components;
   v5 = [(GCRacingWheel *)&v8 init];
   objc_storeStrong(&v5->_handlerQueue, MEMORY[0x1E69E96A0]);
   components = v5->_components;
   v5->_components = MEMORY[0x1E695E0F0];
 
-  [(GCRacingWheel *)v5 setComponents:v4];
+  [(GCRacingWheel *)v5 setComponents:componentsCopy];
   return v5;
 }
 
-- (GCRacingWheel)initWithComponents:(id)a3
+- (GCRacingWheel)initWithComponents:(id)components
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(GCRacingWheel *)self initWithIdentifier:v6 components:v5];
+  componentsCopy = components;
+  uUID = [v4 UUID];
+  v7 = [(GCRacingWheel *)self initWithIdentifier:uUID components:componentsCopy];
 
   return v7;
 }
@@ -54,10 +54,10 @@
 
 - (GCRacingWheelInput)wheelInput
 {
-  v2 = [(_GCDevicePhysicalInputComponent *)&self->_input->super.isa defaultPhysicalInput];
-  v3 = [(_GCDevicePhysicalInputBase *)v2 facade];
+  defaultPhysicalInput = [(_GCDevicePhysicalInputComponent *)&self->_input->super.isa defaultPhysicalInput];
+  facade = [(_GCDevicePhysicalInputBase *)defaultPhysicalInput facade];
 
-  return v3;
+  return facade;
 }
 
 id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
@@ -76,24 +76,24 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setComponents:(void *)a1
+- (void)setComponents:(void *)components
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (components)
   {
-    v5 = [v3 differenceFromArray:a1[3]];
-    v6 = [v5 insertions];
+    v5 = [v3 differenceFromArray:components[3]];
+    insertions = [v5 insertions];
 
-    v7 = [v4 differenceFromArray:a1[3]];
-    v8 = [v7 removals];
+    v7 = [v4 differenceFromArray:components[3]];
+    removals = [v7 removals];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = v8;
+    v9 = removals;
     v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v10)
     {
@@ -108,8 +108,8 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v32 + 1) + 8 * i) object];
-          [v14 setDevice:0];
+          object = [*(*(&v32 + 1) + 8 * i) object];
+          [object setDevice:0];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -121,12 +121,12 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
     v26 = v9;
 
     v27 = v4;
-    objc_setProperty(a1, sel_setComponents_, 24, v4, 1, 1);
+    objc_setProperty(components, sel_setComponents_, 24, v4, 1, 1);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v15 = v6;
+    v15 = insertions;
     v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v16)
     {
@@ -141,18 +141,18 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v28 + 1) + 8 * j) object];
-          [v20 setDevice:a1];
+          object2 = [*(*(&v28 + 1) + 8 * j) object];
+          [object2 setDevice:components];
           if (objc_opt_respondsToSelector())
           {
-            [v20 setDispatchQueue:a1[1]];
+            [object2 setDispatchQueue:components[1]];
           }
 
-          v21 = [v20 conformsToProtocol:&unk_1F4EA0600];
-          v22 = a1 + 4;
-          if (v21 & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v22 = a1 + 5, (isKindOfClass))
+          v21 = [object2 conformsToProtocol:&unk_1F4EA0600];
+          v22 = components + 4;
+          if (v21 & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v22 = components + 5, (isKindOfClass))
           {
-            *v22 = v20;
+            *v22 = object2;
           }
         }
 
@@ -162,10 +162,10 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
       while (v17);
     }
 
-    if (!a1[5])
+    if (!components[5])
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:sel_setComponents_ object:a1 file:@"GCRacingWheel.m" lineNumber:92 description:@"Missing required <GCDevicePhysicalInput> component."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setComponents_ object:components file:@"GCRacingWheel.m" lineNumber:92 description:@"Missing required <GCDevicePhysicalInput> component."];
     }
 
     v4 = v27;
@@ -176,22 +176,22 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
 
 - (id)components
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getProperty(a1, sel_components, 24, 1);
+    self = objc_getProperty(self, sel_components, 24, 1);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)componentForProtocol:(void *)a1
+- (id)componentForProtocol:(void *)protocol
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (protocol)
   {
-    v4 = [(GCRacingWheel *)a1 components];
+    components = [(GCRacingWheel *)protocol components];
     OUTLINED_FUNCTION_0_34();
     v6 = [v5 countByEnumeratingWithState:0 objects:? count:?];
     if (v6)
@@ -203,7 +203,7 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
         {
           if (MEMORY[0] != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(components);
           }
 
           v9 = *(8 * i);
@@ -215,7 +215,7 @@ id __24__GCRacingWheel_capture__block_invoke(uint64_t a1, void *a2)
         }
 
         OUTLINED_FUNCTION_0_34();
-        v6 = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v6 = [components countByEnumeratingWithState:? objects:? count:?];
         if (v6)
         {
           continue;
@@ -238,12 +238,12 @@ LABEL_12:
   return v6;
 }
 
-- (void)setHandlerQueue:(id)a3
+- (void)setHandlerQueue:(id)queue
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_handlerQueue, a3);
-  v6 = [(GCRacingWheel *)self components];
+  queueCopy = queue;
+  objc_storeStrong(&self->_handlerQueue, queue);
+  components = [(GCRacingWheel *)self components];
   OUTLINED_FUNCTION_0_34();
   v8 = [v7 countByEnumeratingWithState:0 objects:? count:?];
   if (v8)
@@ -256,18 +256,18 @@ LABEL_12:
       {
         if (MEMORY[0] != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components);
         }
 
         v12 = *(8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v12 setDispatchQueue:v5];
+          [v12 setDispatchQueue:queueCopy];
         }
       }
 
       OUTLINED_FUNCTION_0_34();
-      v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+      v9 = [components countByEnumeratingWithState:? objects:? count:?];
     }
 
     while (v9);
@@ -279,19 +279,19 @@ LABEL_12:
 - (NSString)vendorName
 {
   v2 = [(GCRacingWheel *)self componentForProtocol:?];
-  v3 = [v2 vendorName];
+  vendorName = [v2 vendorName];
 
-  return v3;
+  return vendorName;
 }
 
 - (NSString)productCategory
 {
   v2 = [(GCRacingWheel *)self componentForProtocol:?];
-  v3 = [v2 productCategory];
-  v4 = v3;
-  if (v3)
+  productCategory = [v2 productCategory];
+  v4 = productCategory;
+  if (productCategory)
   {
-    v5 = v3;
+    v5 = productCategory;
   }
 
   else
@@ -306,8 +306,8 @@ LABEL_12:
 
 - (GCRacingWheel)capture
 {
-  v2 = [(GCRacingWheel *)self components];
-  v3 = [v2 gc_arrayByTransformingElementsWithOptions:1 usingBlock:&__block_literal_global_48];
+  components = [(GCRacingWheel *)self components];
+  v3 = [components gc_arrayByTransformingElementsWithOptions:1 usingBlock:&__block_literal_global_48];
 
   v4 = [objc_alloc(objc_opt_class()) initWithComponents:v3];
   v4[48] = 1;

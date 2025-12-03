@@ -1,11 +1,11 @@
 @interface CIAztecCodeDescriptor
 + (CIAztecCodeDescriptor)descriptorWithPayload:(NSData *)errorCorrectedPayload isCompact:(BOOL)isCompact layerCount:(NSInteger)layerCount dataCodewordCount:(NSInteger)dataCodewordCount;
 - (BOOL)isValid;
-- (CIAztecCodeDescriptor)initWithCoder:(id)a3;
+- (CIAztecCodeDescriptor)initWithCoder:(id)coder;
 - (CIAztecCodeDescriptor)initWithPayload:(NSData *)errorCorrectedPayload isCompact:(BOOL)isCompact layerCount:(NSInteger)layerCount dataCodewordCount:(NSInteger)dataCodewordCount;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isValid;
 @end
 
@@ -86,17 +86,17 @@ LABEL_7:
   [(CIAztecCodeDescriptor *)&v4 dealloc];
 }
 
-- (CIAztecCodeDescriptor)initWithCoder:(id)a3
+- (CIAztecCodeDescriptor)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CIAztecCodeDescriptor;
   v4 = [(CIBarcodeDescriptor *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->errorCorrectedPayload = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
-    v4->isCompact = [a3 decodeBoolForKey:@"isCompact"];
-    v4->layerCount = [a3 decodeIntegerForKey:@"layerCount"];
-    v4->dataCodewordCount = [a3 decodeIntegerForKey:@"dataCodewordCount"];
+    v4->errorCorrectedPayload = [coder decodeObjectOfClass:objc_opt_class() forKey:@"errorCorrectedPayload"];
+    v4->isCompact = [coder decodeBoolForKey:@"isCompact"];
+    v4->layerCount = [coder decodeIntegerForKey:@"layerCount"];
+    v4->dataCodewordCount = [coder decodeIntegerForKey:@"dataCodewordCount"];
   }
 
   if (![(CIAztecCodeDescriptor *)v4 isValid])
@@ -108,21 +108,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CIAztecCodeDescriptor;
   [(CIBarcodeDescriptor *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
-  [a3 encodeBool:self->isCompact forKey:@"isCompact"];
-  [a3 encodeInteger:self->layerCount forKey:@"layerCount"];
-  [a3 encodeInteger:self->dataCodewordCount forKey:@"dataCodewordCount"];
+  [coder encodeObject:self->errorCorrectedPayload forKey:@"errorCorrectedPayload"];
+  [coder encodeBool:self->isCompact forKey:@"isCompact"];
+  [coder encodeInteger:self->layerCount forKey:@"layerCount"];
+  [coder encodeInteger:self->dataCodewordCount forKey:@"dataCodewordCount"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CIAztecCodeDescriptor allocWithZone:?];
-  v6 = [(NSData *)self->errorCorrectedPayload copyWithZone:a3];
+  v6 = [(NSData *)self->errorCorrectedPayload copyWithZone:zone];
   v7 = [(CIAztecCodeDescriptor *)v5 initWithPayload:v6 isCompact:self->isCompact layerCount:self->layerCount dataCodewordCount:self->dataCodewordCount];
 
   return v7;

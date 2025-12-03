@@ -1,6 +1,6 @@
 @interface NotificationHandlingTask
-+ (id)taskForData:(id)a3 type:(id)a4 recordIdentifier:(id)a5;
-- (NotificationHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4;
++ (id)taskForData:(id)data type:(id)type recordIdentifier:(id)identifier;
+- (NotificationHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier;
 - (void)_clearBulletin;
 @end
 
@@ -15,49 +15,49 @@
   }
 }
 
-- (NotificationHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4
+- (NotificationHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = NotificationHandlingTask;
   v7 = [(NotificationHandlingTask *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_recordIdentifier, a4);
+    objc_storeStrong(&v7->_recordIdentifier, identifier);
   }
 
   return v8;
 }
 
-+ (id)taskForData:(id)a3 type:(id)a4 recordIdentifier:(id)a5
++ (id)taskForData:(id)data type:(id)type recordIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  dataCopy = data;
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (dataCopy)
   {
-    if ([v8 isEqualToString:@"MapsPushNotifcationTypePushToPhone"])
+    if ([typeCopy isEqualToString:@"MapsPushNotifcationTypePushToPhone"])
     {
       v10 = _PushToPhoneHandlingTask;
 LABEL_10:
-      v11 = [[v10 alloc] initWithData:v7 recordIdentifier:v9];
+      v11 = [[v10 alloc] initWithData:dataCopy recordIdentifier:identifierCopy];
       goto LABEL_15;
     }
 
-    if ([v8 isEqualToString:@"MapsPushNotifcationTypeProblemResolved"])
+    if ([typeCopy isEqualToString:@"MapsPushNotifcationTypeProblemResolved"])
     {
       v10 = _RAPHandlingTask;
       goto LABEL_10;
     }
 
-    if ([v8 isEqualToString:@"MapsPushNotificationTypeAnnouncement"])
+    if ([typeCopy isEqualToString:@"MapsPushNotificationTypeAnnouncement"])
     {
       v10 = _AnnounceHandlingTask;
       goto LABEL_10;
     }
 
-    if ([v8 isEqualToString:@"MapsPushNotificationTypeSharedTrip"])
+    if ([typeCopy isEqualToString:@"MapsPushNotificationTypeSharedTrip"])
     {
       v10 = _SharedTripHandlingTask;
       goto LABEL_10;
@@ -67,7 +67,7 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = typeCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Notification type unknown %@", &v14, 0xCu);
     }
   }

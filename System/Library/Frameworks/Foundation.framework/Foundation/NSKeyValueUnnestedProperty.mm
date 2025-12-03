@@ -1,18 +1,18 @@
 @interface NSKeyValueUnnestedProperty
-- (BOOL)object:(id)a3 withObservance:(id)a4 willChangeValueForKeyOrKeys:(id)a5 recurse:(BOOL)a6 forwardingValues:(id *)a7;
+- (BOOL)object:(id)object withObservance:(id)observance willChangeValueForKeyOrKeys:(id)keys recurse:(BOOL)recurse forwardingValues:(id *)values;
 - (Class)_isaForAutonotifying;
 - (Class)isaForAutonotifying;
-- (id)_initWithContainerClass:(id)a3 key:(id)a4 propertiesBeingInitialized:(__CFSet *)a5;
-- (id)_keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4;
-- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)a3;
+- (id)_initWithContainerClass:(id)class key:(id)key propertiesBeingInitialized:(__CFSet *)initialized;
+- (id)_keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match;
+- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)keys;
 - (id)description;
-- (id)keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4;
-- (id)keyPathIfAffectedByValueForMemberOfKeys:(id)a3;
-- (void)_givenPropertiesBeingInitialized:(__CFSet *)a3 getAffectingProperties:(id)a4;
+- (id)keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match;
+- (id)keyPathIfAffectedByValueForMemberOfKeys:(id)keys;
+- (void)_givenPropertiesBeingInitialized:(__CFSet *)initialized getAffectingProperties:(id)properties;
 - (void)dealloc;
-- (void)object:(id)a3 didAddObservance:(id)a4 recurse:(BOOL)a5;
-- (void)object:(id)a3 didRemoveObservance:(id)a4 recurse:(BOOL)a5;
-- (void)object:(id)a3 withObservance:(id)a4 didChangeValueForKeyOrKeys:(id)a5 recurse:(BOOL)a6 forwardingValues:(id)a7;
+- (void)object:(id)object didAddObservance:(id)observance recurse:(BOOL)recurse;
+- (void)object:(id)object didRemoveObservance:(id)observance recurse:(BOOL)recurse;
+- (void)object:(id)object withObservance:(id)observance didChangeValueForKeyOrKeys:(id)keys recurse:(BOOL)recurse forwardingValues:(id)values;
 @end
 
 @implementation NSKeyValueUnnestedProperty
@@ -42,10 +42,10 @@
             objc_enumerationMutation(affectingProperties);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * i) _isaForAutonotifying];
-          if (v8)
+          _isaForAutonotifying = [*(*(&v11 + 1) + 8 * i) _isaForAutonotifying];
+          if (_isaForAutonotifying)
           {
-            self->_cachedIsaForAutonotifying = v8;
+            self->_cachedIsaForAutonotifying = _isaForAutonotifying;
           }
         }
 
@@ -79,16 +79,16 @@
   return result;
 }
 
-- (id)_initWithContainerClass:(id)a3 key:(id)a4 propertiesBeingInitialized:(__CFSet *)a5
+- (id)_initWithContainerClass:(id)class key:(id)key propertiesBeingInitialized:(__CFSet *)initialized
 {
   v20 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = NSKeyValueUnnestedProperty;
-  v6 = [(NSKeyValueProperty *)&v14 _initWithContainerClass:a3 keyPath:a4 propertiesBeingInitialized:?];
+  v6 = [(NSKeyValueProperty *)&v14 _initWithContainerClass:class keyPath:key propertiesBeingInitialized:?];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [v6 _givenPropertiesBeingInitialized:a5 getAffectingProperties:v7];
+    [v6 _givenPropertiesBeingInitialized:initialized getAffectingProperties:v7];
     [v7 removeObject:v6];
     v8 = [v7 count];
     if (v8)
@@ -164,7 +164,7 @@
   return [NSString stringWithFormat:@"<%@: Container class: %@, Key: %@, isa for autonotifying: %@, Key paths of directly and indirectly affecting properties: %@>", v4, originalClass, keyPath, cachedIsaForAutonotifying, v9];
 }
 
-- (void)_givenPropertiesBeingInitialized:(__CFSet *)a3 getAffectingProperties:(id)a4
+- (void)_givenPropertiesBeingInitialized:(__CFSet *)initialized getAffectingProperties:(id)properties
 {
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_affectingProperties)
@@ -205,11 +205,11 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        v13 = NSKeyValuePropertyForIsaAndKeyPathInner(self->super._containerClass->_originalClass, v12, a3);
-        if (([a4 containsObject:v13] & 1) == 0)
+        v13 = NSKeyValuePropertyForIsaAndKeyPathInner(self->super._containerClass->_originalClass, v12, initialized);
+        if (([properties containsObject:v13] & 1) == 0)
         {
-          [a4 addObject:v13];
-          [v13 _givenPropertiesBeingInitialized:a3 getAffectingProperties:a4];
+          [properties addObject:v13];
+          [v13 _givenPropertiesBeingInitialized:initialized getAffectingProperties:properties];
         }
       }
 
@@ -221,26 +221,26 @@ LABEL_19:
     }
   }
 
-  [a4 addObjectsFromArray:?];
+  [properties addObjectsFromArray:?];
 }
 
-- (id)_keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4
+- (id)_keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match
 {
   keyPath = self->super._keyPath;
-  if (keyPath != a3 && !CFEqual(a3, keyPath))
+  if (keyPath != key && !CFEqual(key, keyPath))
   {
     return 0;
   }
 
-  if (a4)
+  if (match)
   {
-    *a4 = 1;
+    *match = 1;
   }
 
   return self->super._keyPath;
 }
 
-- (id)keyPathIfAffectedByValueForKey:(id)a3 exactMatch:(BOOL *)a4
+- (id)keyPathIfAffectedByValueForKey:(id)key exactMatch:(BOOL *)match
 {
   v17 = *MEMORY[0x1E69E9840];
   result = [NSKeyValueUnnestedProperty _keyPathIfAffectedByValueForKey:"_keyPathIfAffectedByValueForKey:exactMatch:" exactMatch:?];
@@ -265,12 +265,12 @@ LABEL_19:
             objc_enumerationMutation(affectingProperties);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) _keyPathIfAffectedByValueForKey:a3 exactMatch:0])
+          if ([*(*(&v13 + 1) + 8 * i) _keyPathIfAffectedByValueForKey:key exactMatch:0])
           {
             result = self->super._keyPath;
-            if (a4)
+            if (match)
             {
-              *a4 = 0;
+              *match = 0;
             }
 
             return result;
@@ -292,9 +292,9 @@ LABEL_19:
   return result;
 }
 
-- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)a3
+- (id)_keyPathIfAffectedByValueForMemberOfKeys:(id)keys
 {
-  if ([a3 containsObject:self->super._keyPath])
+  if ([keys containsObject:self->super._keyPath])
   {
     return self->super._keyPath;
   }
@@ -305,7 +305,7 @@ LABEL_19:
   }
 }
 
-- (id)keyPathIfAffectedByValueForMemberOfKeys:(id)a3
+- (id)keyPathIfAffectedByValueForMemberOfKeys:(id)keys
 {
   v15 = *MEMORY[0x1E69E9840];
   result = [(NSKeyValueUnnestedProperty *)self _keyPathIfAffectedByValueForMemberOfKeys:?];
@@ -330,7 +330,7 @@ LABEL_19:
             objc_enumerationMutation(affectingProperties);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) _keyPathIfAffectedByValueForMemberOfKeys:a3])
+          if ([*(*(&v11 + 1) + 8 * i) _keyPathIfAffectedByValueForMemberOfKeys:keys])
           {
             return self->super._keyPath;
           }
@@ -351,10 +351,10 @@ LABEL_19:
   return result;
 }
 
-- (void)object:(id)a3 didAddObservance:(id)a4 recurse:(BOOL)a5
+- (void)object:(id)object didAddObservance:(id)observance recurse:(BOOL)recurse
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (recurse)
   {
     affectingProperties = self->_affectingProperties;
     if (affectingProperties)
@@ -377,7 +377,7 @@ LABEL_19:
               objc_enumerationMutation(affectingProperties);
             }
 
-            [*(*(&v13 + 1) + 8 * i) object:a3 didAddObservance:a4 recurse:0];
+            [*(*(&v13 + 1) + 8 * i) object:object didAddObservance:observance recurse:0];
           }
 
           v9 = [(NSArray *)affectingProperties countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -389,10 +389,10 @@ LABEL_19:
   }
 }
 
-- (void)object:(id)a3 didRemoveObservance:(id)a4 recurse:(BOOL)a5
+- (void)object:(id)object didRemoveObservance:(id)observance recurse:(BOOL)recurse
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (recurse)
   {
     affectingProperties = self->_affectingProperties;
     if (affectingProperties)
@@ -415,7 +415,7 @@ LABEL_19:
               objc_enumerationMutation(affectingProperties);
             }
 
-            [*(*(&v13 + 1) + 8 * i) object:a3 didRemoveObservance:a4 recurse:0];
+            [*(*(&v13 + 1) + 8 * i) object:object didRemoveObservance:observance recurse:0];
           }
 
           v9 = [(NSArray *)affectingProperties countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -427,10 +427,10 @@ LABEL_19:
   }
 }
 
-- (BOOL)object:(id)a3 withObservance:(id)a4 willChangeValueForKeyOrKeys:(id)a5 recurse:(BOOL)a6 forwardingValues:(id *)a7
+- (BOOL)object:(id)object withObservance:(id)observance willChangeValueForKeyOrKeys:(id)keys recurse:(BOOL)recurse forwardingValues:(id *)values
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (recurse)
   {
     if (self->_affectingProperties)
     {
@@ -458,20 +458,20 @@ LABEL_19:
             v18 = *(*(&v24 + 1) + 8 * i);
             if (v11)
             {
-              if (![v18 keyPathIfAffectedByValueForMemberOfKeys:a5])
+              if (![v18 keyPathIfAffectedByValueForMemberOfKeys:keys])
               {
                 continue;
               }
             }
 
-            else if (![v18 keyPathIfAffectedByValueForKey:a5 exactMatch:0])
+            else if (![v18 keyPathIfAffectedByValueForKey:keys exactMatch:0])
             {
               continue;
             }
 
             v21 = 0;
             v22 = 0;
-            if ([v18 object:a3 withObservance:a4 willChangeValueForKeyOrKeys:a5 recurse:0 forwardingValues:&v21])
+            if ([v18 object:object withObservance:observance willChangeValueForKeyOrKeys:keys recurse:0 forwardingValues:&v21])
             {
               if (v21)
               {
@@ -513,20 +513,20 @@ LABEL_19:
 
   v15 = 0;
 LABEL_25:
-  a7->var0 = 0;
-  a7->var1 = v15;
+  values->var0 = 0;
+  values->var1 = v15;
   return 1;
 }
 
-- (void)object:(id)a3 withObservance:(id)a4 didChangeValueForKeyOrKeys:(id)a5 recurse:(BOOL)a6 forwardingValues:(id)a7
+- (void)object:(id)object withObservance:(id)observance didChangeValueForKeyOrKeys:(id)keys recurse:(BOOL)recurse forwardingValues:(id)values
 {
-  var1 = a7.var1;
+  var1 = values.var1;
   v20 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [a7.var1 countByEnumeratingWithState:&v16 objects:v15 count:{16, a6, a7.var0}];
+  v11 = [values.var1 countByEnumeratingWithState:&v16 objects:v15 count:{16, recurse, values.var0}];
   if (v11)
   {
     v12 = v11;
@@ -541,7 +541,7 @@ LABEL_25:
           objc_enumerationMutation(var1);
         }
 
-        [*(*(&v16 + 1) + 8 * v14) object:a3 withObservance:a4 didChangeValueForKeyOrKeys:a5 recurse:0 forwardingValues:{objc_msgSend(var1, "objectForKey:", *(*(&v16 + 1) + 8 * v14)), 0}];
+        [*(*(&v16 + 1) + 8 * v14) object:object withObservance:observance didChangeValueForKeyOrKeys:keys recurse:0 forwardingValues:{objc_msgSend(var1, "objectForKey:", *(*(&v16 + 1) + 8 * v14)), 0}];
         ++v14;
       }
 

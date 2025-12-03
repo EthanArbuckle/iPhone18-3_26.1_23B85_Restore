@@ -32,8 +32,8 @@
 
       if (v8)
       {
-        v9 = [MEMORY[0x277CBEAA8] date];
-        v10 = [v9 fc_isLaterThan:v8];
+        date = [MEMORY[0x277CBEAA8] date];
+        v10 = [date fc_isLaterThan:v8];
 
         if (v10)
         {
@@ -145,8 +145,8 @@
     }
 
     *(v280 + 24) &= v30 != 0;
-    v33 = [v30 intValue];
-    v34 = v33;
+    intValue = [v30 intValue];
+    v34 = intValue;
     if (!v30)
     {
 LABEL_44:
@@ -196,29 +196,29 @@ LABEL_44:
       v47 = v46;
       if (v46)
       {
-        v48 = [v46 integerValue];
+        integerValue = [v46 integerValue];
       }
 
       else
       {
-        v48 = 0x7FFFFFFFFFFFFFFFLL;
+        integerValue = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      [v12 setMinimumStoriesAllocation:v48];
+      [v12 setMinimumStoriesAllocation:integerValue];
       v49 = [v4 objectForKeyedSubscript:*MEMORY[0x277D30888]];
       v50 = v49;
       if (v49)
       {
-        v51 = [v49 integerValue];
-        v52 = [v12 minimumStoriesAllocation];
-        if (v51 <= v52)
+        integerValue2 = [v49 integerValue];
+        minimumStoriesAllocation = [v12 minimumStoriesAllocation];
+        if (integerValue2 <= minimumStoriesAllocation)
         {
-          v53 = v52;
+          v53 = minimumStoriesAllocation;
         }
 
         else
         {
-          v53 = v51;
+          v53 = integerValue2;
         }
       }
 
@@ -235,15 +235,15 @@ LABEL_44:
       if (v54)
       {
         v55 = v54;
-        v56 = [v54 intValue];
-        if (v56 >= 2)
+        intValue2 = [v54 intValue];
+        if (intValue2 >= 2)
         {
           v57 = 2;
         }
 
         else
         {
-          v57 = v56;
+          v57 = intValue2;
         }
 
         [v12 setReadArticlesFilterMethod:v57];
@@ -266,15 +266,15 @@ LABEL_44:
       v228 = v60;
       if (v60)
       {
-        v61 = [v60 intValue];
-        if (v61 >= 3)
+        intValue3 = [v60 intValue];
+        if (intValue3 >= 3)
         {
           v62 = 0;
         }
 
         else
         {
-          v62 = v61;
+          v62 = intValue3;
         }
 
         [v12 setSeenArticlesFilterMethod:v62];
@@ -345,9 +345,9 @@ LABEL_44:
       v248 = v73;
       if (v73)
       {
-        v74 = [v73 BOOLValue];
+        bOOLValue = [v73 BOOLValue];
         v75 = 32;
-        if (!v74)
+        if (!bOOLValue)
         {
           v75 = 0;
         }
@@ -396,9 +396,9 @@ LABEL_44:
       v246 = v85;
       if (v85)
       {
-        v86 = [v85 BOOLValue];
+        bOOLValue2 = [v85 BOOLValue];
         v87 = 8;
-        if (!v86)
+        if (!bOOLValue2)
         {
           v87 = 0;
         }
@@ -1107,29 +1107,29 @@ LABEL_280:
     }
 
     v35 = 0;
-    if (v33 > 3)
+    if (intValue > 3)
     {
-      if (v33 != 4 && v33 != 5)
+      if (intValue != 4 && intValue != 5)
       {
         v36 = 0;
-        if (v33 != 6)
+        if (intValue != 6)
         {
           goto LABEL_43;
         }
       }
     }
 
-    else if (v33 >= 2)
+    else if (intValue >= 2)
     {
       v36 = 0;
-      if (v33 != 3)
+      if (intValue != 3)
       {
         goto LABEL_43;
       }
     }
 
     v36 = 1;
-    v35 = v33;
+    v35 = intValue;
 LABEL_43:
     [v12 setSectionType:v35];
     *(v280 + 24) &= v36;

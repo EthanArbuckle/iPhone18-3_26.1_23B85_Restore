@@ -3,7 +3,7 @@
 - (id)_detailTextLabelFont;
 - (id)_titleLabelFont;
 - (id)alternateButtonTitle;
-- (void)alternateButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -28,9 +28,9 @@
   v74.receiver = self;
   v74.super_class = COSAppleWatchPairingDiscoveryNoWatchViewController;
   [(COSAppleWatchPairingDiscoveryNoWatchViewController *)&v74 viewDidLoad];
-  v3 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
+  view = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [UIView alloc];
   y = CGRectZero.origin.y;
@@ -41,8 +41,8 @@
   self->_containerView = v9;
 
   [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
-  [v11 addSubview:self->_containerView];
+  contentView = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
+  [contentView addSubview:self->_containerView];
 
   v12 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
@@ -54,8 +54,8 @@
   self->_titleLabel = v14;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self _titleLabelFont];
-  [(UILabel *)self->_titleLabel setFont:v16];
+  _titleLabelFont = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self _titleLabelFont];
+  [(UILabel *)self->_titleLabel setFont:_titleLabelFont];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
@@ -71,8 +71,8 @@
   self->_detailTextLabel = v20;
 
   [(UILabel *)self->_detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self _detailTextLabelFont];
-  [(UILabel *)self->_detailTextLabel setFont:v22];
+  _detailTextLabelFont = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self _detailTextLabelFont];
+  [(UILabel *)self->_detailTextLabel setFont:_detailTextLabelFont];
 
   [(UILabel *)self->_detailTextLabel setNumberOfLines:0];
   [(UILabel *)self->_detailTextLabel setTextAlignment:1];
@@ -87,65 +87,65 @@
   [(UIView *)self->_containerView addSubview:self->_spinner];
   [(UIView *)self->_containerView addSubview:self->_titleLabel];
   [(UIView *)self->_containerView addSubview:self->_detailTextLabel];
-  v73 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
-  v72 = [v73 leadingAnchor];
-  v71 = [(UIView *)self->_containerView leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  contentView2 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
+  leadingAnchor = [contentView2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+  v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v70;
-  v69 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
-  v68 = [v69 trailingAnchor];
-  v67 = [(UIView *)self->_containerView trailingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  contentView3 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+  v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v75[1] = v66;
-  v64 = [(UIView *)self->_containerView centerXAnchor];
-  v65 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
-  v63 = [v65 centerXAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  centerXAnchor = [(UIView *)self->_containerView centerXAnchor];
+  view2 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v62 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v75[2] = v62;
-  v60 = [(UIView *)self->_containerView centerYAnchor];
-  v61 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
-  v59 = [v61 centerYAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  centerYAnchor = [(UIView *)self->_containerView centerYAnchor];
+  view3 = [(COSAppleWatchPairingDiscoveryNoWatchViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v58 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v75[3] = v58;
-  v57 = [(UIActivityIndicatorView *)self->_spinner topAnchor];
-  v56 = [(UIView *)self->_containerView topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  topAnchor = [(UIActivityIndicatorView *)self->_spinner topAnchor];
+  topAnchor2 = [(UIView *)self->_containerView topAnchor];
+  v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v75[4] = v55;
-  v54 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v53 = [(UIView *)self->_containerView centerXAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  centerXAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_containerView centerXAnchor];
+  v52 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v75[5] = v52;
-  v51 = [(UILabel *)self->_titleLabel topAnchor];
-  v50 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:10.0];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  bottomAnchor = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+  v49 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
   v75[6] = v49;
-  v47 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v48 = [(UIView *)self->_containerView safeAreaLayoutGuide];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_containerView safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v45 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v75[7] = v45;
-  v43 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v44 = [(UIView *)self->_containerView safeAreaLayoutGuide];
-  v42 = [v44 trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_containerView safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide2 trailingAnchor];
+  v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v75[8] = v41;
-  v40 = [(UILabel *)self->_detailTextLabel topAnchor];
-  v39 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:0.0];
+  topAnchor4 = [(UILabel *)self->_detailTextLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v38 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v75[9] = v38;
-  v37 = [(UILabel *)self->_detailTextLabel bottomAnchor];
-  v36 = [(UIView *)self->_containerView bottomAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  bottomAnchor3 = [(UILabel *)self->_detailTextLabel bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_containerView bottomAnchor];
+  v35 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v75[10] = v35;
-  v26 = [(UILabel *)self->_detailTextLabel leadingAnchor];
-  v27 = [(UIView *)self->_containerView safeAreaLayoutGuide];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  leadingAnchor5 = [(UILabel *)self->_detailTextLabel leadingAnchor];
+  safeAreaLayoutGuide3 = [(UIView *)self->_containerView safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide3 leadingAnchor];
+  v29 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v75[11] = v29;
-  v30 = [(UILabel *)self->_detailTextLabel trailingAnchor];
-  v31 = [(UIView *)self->_containerView safeAreaLayoutGuide];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  trailingAnchor5 = [(UILabel *)self->_detailTextLabel trailingAnchor];
+  safeAreaLayoutGuide4 = [(UIView *)self->_containerView safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide4 trailingAnchor];
+  v33 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v75[12] = v33;
   v34 = [NSArray arrayWithObjects:v75 count:13];
   [NSLayoutConstraint activateConstraints:v34];
@@ -183,7 +183,7 @@
   return v3;
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v3 = [NSURL URLWithString:@"https://support.apple.com/HT204505"];

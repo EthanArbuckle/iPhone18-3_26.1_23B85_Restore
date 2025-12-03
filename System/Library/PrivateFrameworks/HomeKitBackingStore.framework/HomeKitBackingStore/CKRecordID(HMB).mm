@@ -10,16 +10,16 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v14[0] = @"r";
-  v5 = [a1 recordName];
-  v15[0] = v5;
+  recordName = [self recordName];
+  v15[0] = recordName;
   v14[1] = @"z";
-  v6 = [a1 zoneID];
-  v7 = [v6 zoneName];
-  v15[1] = v7;
+  zoneID = [self zoneID];
+  zoneName = [zoneID zoneName];
+  v15[1] = zoneName;
   v14[2] = @"u";
-  v8 = [a1 zoneID];
-  v9 = [v8 ownerName];
-  v15[2] = v9;
+  zoneID2 = [self zoneID];
+  ownerName = [zoneID2 ownerName];
+  v15[2] = ownerName;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   v11 = [v10 hmbOPACKDataFromDictionaryWithError:a3];
@@ -31,8 +31,8 @@
 
 - (id)hmbDescription
 {
-  v1 = [a1 recordName];
-  v2 = [v1 substringToIndex:8];
+  recordName = [self recordName];
+  v2 = [recordName substringToIndex:8];
 
   return v2;
 }

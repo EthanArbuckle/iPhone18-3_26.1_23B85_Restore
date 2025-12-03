@@ -1,17 +1,17 @@
 @interface ACDAccountNotifier
 + (NSArray)allNotificationEntries;
 + (void)allNotificationEntries;
-- (ACDAccountNotifier)initWithNotificationEntries:(id)a3;
-- (BOOL)canRemoveAccount:(id)a3 inStore:(id)a4 error:(id *)a5;
-- (BOOL)canSaveAccount:(id)a3 inStore:(id)a4 error:(id *)a5;
-- (BOOL)postWillChangeNotificationForType:(int)a3 inStore:(id)a4 newAccount:(id)a5 oldAccount:(id)a6;
-- (id)_pluginsRegisteredForAccount:(id)a3;
-- (id)_provisionedDataclassesForNewAccount:(id)a3 oldAccount:(id)a4;
-- (id)_unsafe_pluginsRegisteredForNewAccount:(id)a3 oldAccount:(id)a4 changeType:(id)a5;
-- (void)addNotificationEntry:(id)a3;
-- (void)postDidChangeNotificationForType:(int)a3 inStore:(id)a4 newAccount:(id)a5 oldAccount:(id)a6;
-- (void)postDidPerformDataclassActionsOnAccount:(id)a3 forDataclasses:(id)a4;
-- (void)postWillPerformDataclassActionsOnAccount:(id)a3 forDataclasses:(id)a4;
+- (ACDAccountNotifier)initWithNotificationEntries:(id)entries;
+- (BOOL)canRemoveAccount:(id)account inStore:(id)store error:(id *)error;
+- (BOOL)canSaveAccount:(id)account inStore:(id)store error:(id *)error;
+- (BOOL)postWillChangeNotificationForType:(int)type inStore:(id)store newAccount:(id)account oldAccount:(id)oldAccount;
+- (id)_pluginsRegisteredForAccount:(id)account;
+- (id)_provisionedDataclassesForNewAccount:(id)account oldAccount:(id)oldAccount;
+- (id)_unsafe_pluginsRegisteredForNewAccount:(id)account oldAccount:(id)oldAccount changeType:(id)type;
+- (void)addNotificationEntry:(id)entry;
+- (void)postDidChangeNotificationForType:(int)type inStore:(id)store newAccount:(id)account oldAccount:(id)oldAccount;
+- (void)postDidPerformDataclassActionsOnAccount:(id)account forDataclasses:(id)dataclasses;
+- (void)postWillPerformDataclassActionsOnAccount:(id)account forDataclasses:(id)dataclasses;
 - (void)removeAllNotificationEntries;
 @end
 
@@ -37,9 +37,9 @@
   }
 
   v7 = [(ACPluginLoader *)ACDPluginLoader pluginBundlesAtSubpath:@"Notification"];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  v9 = [v8 ac_mapNullable:&__block_literal_global_42];
+  v9 = [allObjects ac_mapNullable:&__block_literal_global_42];
   _ACSignpostGetNanoseconds();
   v10 = _ACDNotificationSignpostSystem();
   v11 = v10;
@@ -66,9 +66,9 @@ ACDPluginEntry *__44__ACDAccountNotifier_allNotificationEntries__block_invoke(ui
   return v3;
 }
 
-- (ACDAccountNotifier)initWithNotificationEntries:(id)a3
+- (ACDAccountNotifier)initWithNotificationEntries:(id)entries
 {
-  v5 = a3;
+  entriesCopy = entries;
   v11.receiver = self;
   v11.super_class = ACDAccountNotifier;
   v6 = [(ACDAccountNotifier *)&v11 init];
@@ -79,25 +79,25 @@ ACDPluginEntry *__44__ACDAccountNotifier_allNotificationEntries__block_invoke(ui
     notificationEntryQueue = v6->_notificationEntryQueue;
     v6->_notificationEntryQueue = v8;
 
-    objc_storeStrong(&v6->_notificationEntries, a3);
+    objc_storeStrong(&v6->_notificationEntries, entries);
   }
 
   return v6;
 }
 
-- (BOOL)canSaveAccount:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)canSaveAccount:(id)account inStore:(id)store error:(id *)error
 {
   v79 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v64 = v8;
-  if (!v8)
+  accountCopy = account;
+  storeCopy = store;
+  v64 = accountCopy;
+  if (!accountCopy)
   {
     [ACDAccountNotifier canSaveAccount:inStore:error:];
   }
 
-  v63 = v9;
-  if (!v9)
+  v63 = storeCopy;
+  if (!storeCopy)
   {
     [ACDAccountNotifier canSaveAccount:inStore:error:];
   }
@@ -139,7 +139,7 @@ LABEL_38:
 
   v16 = v15;
   v60 = v11;
-  v61 = a5;
+  errorCopy = error;
   v17 = 0;
   v18 = *v68;
   v19 = v63;
@@ -160,11 +160,11 @@ LABEL_12:
 
     if ([v21 principalObjectRespondsToSelector:sel_canSaveAccount_inStore_])
     {
-      v26 = [v21 principalObject];
-      v23 = v26;
-      if (v26)
+      principalObject = [v21 principalObject];
+      v23 = principalObject;
+      if (principalObject)
       {
-        if (([v26 canSaveAccount:v64 inStore:v19] & 1) == 0)
+        if (([principalObject canSaveAccount:v64 inStore:v19] & 1) == 0)
         {
           v33 = _ACDNotificationLogSystem();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -179,11 +179,11 @@ LABEL_12:
           v35 = MEMORY[0x277CCACA8];
           v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v37 = [v36 localizedStringForKey:@"ACCOUNT_CANNOT_SAVE_ERROR_FORMAT" value:&stru_2835374D8 table:@"Localizable"];
-          v38 = [v64 accountType];
-          v39 = [v38 accountTypeDescription];
-          v40 = [v64 accountType];
-          v41 = [v40 accountTypeDescription];
-          v42 = [v35 stringWithFormat:v37, v39, v41];
+          accountType = [v64 accountType];
+          accountTypeDescription = [accountType accountTypeDescription];
+          accountType2 = [v64 accountType];
+          accountTypeDescription2 = [accountType2 accountTypeDescription];
+          v42 = [v35 stringWithFormat:v37, accountTypeDescription, accountTypeDescription2];
 
           v43 = MEMORY[0x277CCACA8];
           v44 = objc_opt_class();
@@ -202,7 +202,7 @@ LABEL_12:
 
           v32 = v42;
           v11 = v60;
-          a5 = v61;
+          error = errorCopy;
           v31 = v62;
           goto LABEL_42;
         }
@@ -234,7 +234,7 @@ LABEL_28:
       {
         v29 = 1;
         v11 = v60;
-        a5 = v61;
+        error = errorCopy;
         goto LABEL_38;
       }
 
@@ -242,9 +242,9 @@ LABEL_28:
     }
   }
 
-  v22 = [v21 principalObject];
-  v23 = v22;
-  if (!v22)
+  principalObject2 = [v21 principalObject];
+  v23 = principalObject2;
+  if (!principalObject2)
   {
     v27 = _ACDNotificationLogSystem();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@ LABEL_28:
   }
 
   v66 = v17;
-  v24 = [v22 canSaveAccount:v64 inStore:v19 error:&v66];
+  v24 = [principalObject2 canSaveAccount:v64 inStore:v19 error:&v66];
   v25 = v66;
 
   if (v24)
@@ -279,7 +279,7 @@ LABEL_27:
   }
 
   v11 = v60;
-  a5 = v61;
+  error = errorCopy;
   v31 = v62;
   if (!v25)
   {
@@ -326,26 +326,26 @@ LABEL_44:
     _os_log_debug_impl(&dword_221D2F000, v55, OS_LOG_TYPE_DEBUG, "END [%lld] %fs: CanSaveAccount %{public}@", buf, 0x20u);
   }
 
-  if (a5)
+  if (error)
   {
     v56 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v57 = *MEMORY[0x277D85DE8];
   return v29;
 }
 
-- (BOOL)canRemoveAccount:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)canRemoveAccount:(id)account inStore:(id)store error:(id *)error
 {
   v100 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  v86 = v8;
-  if (v8)
+  accountCopy = account;
+  storeCopy = store;
+  v10 = storeCopy;
+  v86 = accountCopy;
+  if (accountCopy)
   {
-    if (v9)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -398,7 +398,7 @@ LABEL_3:
 
   v73 = v12 - 1;
   v74 = v12;
-  v75 = a5;
+  errorCopy = error;
   v17 = 0;
   v18 = &selRef__setYahooAccountsProvisionedDataclassesToSupportedOnes;
   v19 = &selRef__setYahooAccountsProvisionedDataclassesToSupportedOnes;
@@ -428,12 +428,12 @@ LABEL_10:
     {
       [v21 identifier];
       v27 = v79 = v20;
-      v28 = [v86 accountType];
-      v29 = [v28 identifier];
+      accountType = [v86 accountType];
+      identifier = [accountType identifier];
       *buf = 138544386;
       *&buf[4] = v27;
       v93 = 2114;
-      v94 = *&v29;
+      v94 = *&identifier;
       v95 = 1026;
       *v96 = 3;
       *&v96[4] = 2112;
@@ -449,15 +449,15 @@ LABEL_10:
     v30 = _ACDNotificationSignpostSystem();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v56 = [v21 identifier];
-      v57 = [v86 accountType];
-      v58 = [v57 identifier];
+      identifier2 = [v21 identifier];
+      accountType2 = [v86 accountType];
+      identifier3 = [accountType2 identifier];
       *buf = 134219266;
       *&buf[4] = v23;
       v93 = 2114;
-      v94 = *&v56;
+      v94 = *&identifier2;
       v95 = 2114;
-      *v96 = v58;
+      *v96 = identifier3;
       *&v96[8] = 1026;
       *&v96[10] = 3;
       *&v96[14] = 2112;
@@ -469,12 +469,12 @@ LABEL_10:
 
     if ([v21 principalObjectRespondsToSelector:v85])
     {
-      v31 = [v21 principalObject];
-      v32 = v31;
-      if (v31)
+      principalObject = [v21 principalObject];
+      v32 = principalObject;
+      if (principalObject)
       {
         v87 = v17;
-        v33 = [v31 canRemoveAccount:v86 inStore:v81 error:&v87];
+        v33 = [principalObject canRemoveAccount:v86 inStore:v81 error:&v87];
         v34 = v87;
 
         if (v33)
@@ -520,11 +520,11 @@ LABEL_40:
 
     if ([v21 principalObjectRespondsToSelector:v80])
     {
-      v36 = [v21 principalObject];
-      v32 = v36;
-      if (v36)
+      principalObject2 = [v21 principalObject];
+      v32 = principalObject2;
+      if (principalObject2)
       {
-        if ([v36 canRemoveAccount:v86 inStore:v81])
+        if ([principalObject2 canRemoveAccount:v86 inStore:v81])
         {
           v35 = 1;
 LABEL_39:
@@ -543,9 +543,9 @@ LABEL_39:
         }
 
         v40 = MEMORY[0x277CCACA8];
-        v41 = [v86 accountType];
-        v42 = [v41 accountTypeDescription];
-        v37 = [v40 stringWithFormat:@"Can't remove account with identifier %@ because one plugin doesn't allow it.", v42];
+        accountType3 = [v86 accountType];
+        accountTypeDescription = [accountType3 accountTypeDescription];
+        v37 = [v40 stringWithFormat:@"Can't remove account with identifier %@ because one plugin doesn't allow it.", accountTypeDescription];
 
         v43 = MEMORY[0x277CCACA8];
         v44 = objc_opt_class();
@@ -599,11 +599,11 @@ LABEL_41:
         v53 = @"NO";
       }
 
-      v54 = [v21 identifier];
+      identifier4 = [v21 identifier];
       *buf = 138413058;
       *&buf[4] = v53;
       v93 = 2112;
-      v94 = *&v54;
+      v94 = *&identifier4;
       v95 = 2112;
       *v96 = @"deleted";
       *&v96[8] = 2112;
@@ -625,7 +625,7 @@ LABEL_41:
         v60 = @"NO";
       }
 
-      v61 = [v21 identifier];
+      identifier5 = [v21 identifier];
       *buf = 134219266;
       *&buf[4] = v23;
       v93 = 2048;
@@ -633,7 +633,7 @@ LABEL_41:
       v95 = 2112;
       *v96 = v60;
       *&v96[8] = 2112;
-      *&v96[10] = v61;
+      *&v96[10] = identifier5;
       *&v96[18] = 2112;
       *&v96[20] = @"deleted";
       *&v96[28] = 2112;
@@ -665,7 +665,7 @@ LABEL_41:
   v63 = 0;
 LABEL_60:
   v12 = v74;
-  a5 = v75;
+  error = errorCopy;
   v15 = v73;
 LABEL_62:
 
@@ -703,30 +703,30 @@ LABEL_62:
     _os_log_debug_impl(&dword_221D2F000, v68, OS_LOG_TYPE_DEBUG, "END [%lld] %fs: CanRemoveAccount %{public}@", buf, 0x20u);
   }
 
-  if (a5)
+  if (error)
   {
     v69 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v70 = *MEMORY[0x277D85DE8];
   return v63;
 }
 
-- (BOOL)postWillChangeNotificationForType:(int)a3 inStore:(id)a4 newAccount:(id)a5 oldAccount:(id)a6
+- (BOOL)postWillChangeNotificationForType:(int)type inStore:(id)store newAccount:(id)account oldAccount:(id)oldAccount
 {
   v89 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v71 = COERCE_DOUBLE(a5);
-  v69 = a6;
-  v67 = a3;
-  if (!a3)
+  storeCopy = store;
+  v71 = COERCE_DOUBLE(account);
+  oldAccountCopy = oldAccount;
+  typeCopy = type;
+  if (!type)
   {
     [ACDAccountNotifier postWillChangeNotificationForType:inStore:newAccount:oldAccount:];
   }
 
-  v68 = v10;
-  if (!v10)
+  v68 = storeCopy;
+  if (!storeCopy)
   {
     [ACDAccountNotifier postWillChangeNotificationForType:inStore:newAccount:oldAccount:];
   }
@@ -738,14 +738,14 @@ LABEL_62:
   v13 = v12;
   if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       *&v14 = COERCE_DOUBLE(@"unknown");
     }
 
     else
     {
-      v14 = off_27848C7F0[a3 - 1];
+      v14 = off_27848C7F0[type - 1];
     }
 
     *buf = 138412802;
@@ -753,21 +753,21 @@ LABEL_62:
     v85 = 2112;
     v86 = *&v14;
     v87 = 2112;
-    *v88 = v69;
+    *v88 = oldAccountCopy;
     _os_signpost_emit_with_name_impl(&dword_221D2F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, spid, "AccountWillChange", "%@ (changeType: %@, oldAccount: %@)", buf, 0x20u);
   }
 
   v15 = _ACDNotificationSignpostSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v61 = @"unknown";
     }
 
     else
     {
-      v61 = off_27848C7F0[a3 - 1];
+      v61 = off_27848C7F0[type - 1];
     }
 
     *buf = 134218754;
@@ -777,11 +777,11 @@ LABEL_62:
     v87 = 2112;
     *v88 = v61;
     *&v88[8] = 2112;
-    *&v88[10] = v69;
+    *&v88[10] = oldAccountCopy;
     _os_log_debug_impl(&dword_221D2F000, v15, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountWillChange %@ (changeType: %@, oldAccount: %@)", buf, 0x2Au);
   }
 
-  [(ACDAccountNotifier *)self _pluginsRegisteredForNewAccount:*&v71 oldAccount:v69 changeType:a3];
+  [(ACDAccountNotifier *)self _pluginsRegisteredForNewAccount:*&v71 oldAccount:oldAccountCopy changeType:type];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
@@ -790,7 +790,7 @@ LABEL_62:
   if (v73)
   {
     v65 = 0;
-    v66 = (a3 - 1);
+    v66 = (type - 1);
     v72 = *v79;
     *&v16 = 138412546;
     v63 = v16;
@@ -808,7 +808,7 @@ LABEL_62:
         if ([v18 principalObjectRespondsToSelector:{sel_account_willChangeWithType_inStore_oldAccount_, v63}])
         {
           v19 = [*&v71 copy];
-          v20 = [v69 copy];
+          v20 = [oldAccountCopy copy];
           v77 = v18;
           v76 = v68;
           v21 = v19;
@@ -825,8 +825,8 @@ LABEL_62:
           }
 
           v74 = v24;
-          v25 = [v74 accountType];
-          [v25 identifier];
+          accountType = [v74 accountType];
+          [accountType identifier];
           v75 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
           v26 = _ACDNotificationSignpostSystem();
@@ -836,8 +836,8 @@ LABEL_62:
           v29 = v28;
           if (v27 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
           {
-            v30 = [v77 identifier];
-            v31 = v30;
+            identifier = [v77 identifier];
+            v31 = identifier;
             v32 = @"unknown";
             if (v66 < 5)
             {
@@ -845,11 +845,11 @@ LABEL_62:
             }
 
             *buf = 138544386;
-            v84 = *&v30;
+            v84 = *&identifier;
             v85 = 2114;
             v86 = v75;
             v87 = 1026;
-            *v88 = v67;
+            *v88 = typeCopy;
             *&v88[4] = 2112;
             *&v88[6] = v32;
             *&v88[14] = 2112;
@@ -876,7 +876,7 @@ LABEL_62:
             v87 = 2114;
             *v88 = v75;
             *&v88[8] = 1026;
-            *&v88[10] = v67;
+            *&v88[10] = typeCopy;
             *&v88[14] = 2112;
             *&v88[16] = v48;
             *&v88[24] = 2112;
@@ -884,11 +884,11 @@ LABEL_62:
             _os_log_debug_impl(&dword_221D2F000, v33, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountWillChangePlugin  PluginIdentifier=%{public,signpost.telemetry:string1,name=PluginIdentifier}@  AccountType=%{public,signpost.telemetry:string2,name=AccountType}@  ChangeType=%{public,signpost.telemetry:number1,name=ChangeType}d  enableTelemetry=YES (changeType: %@, account: %@)", buf, 0x3Au);
           }
 
-          v34 = [v77 principalObject];
-          v35 = v34;
-          if (v34)
+          principalObject = [v77 principalObject];
+          v35 = principalObject;
+          if (principalObject)
           {
-            v36 = [v34 account:v21 willChangeWithType:v67 inStore:v76 oldAccount:v23];
+            v36 = [principalObject account:v21 willChangeWithType:typeCopy inStore:v76 oldAccount:v23];
           }
 
           else
@@ -938,8 +938,8 @@ LABEL_62:
           v45 = _ACDNotificationSignpostSystem();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
           {
-            v49 = [v77 identifier];
-            v50 = v49;
+            identifier2 = [v77 identifier];
+            v50 = identifier2;
             v51 = @"NO";
             if (v36)
             {
@@ -959,7 +959,7 @@ LABEL_62:
             v87 = 2112;
             *v88 = v51;
             *&v88[8] = 2112;
-            *&v88[10] = v49;
+            *&v88[10] = identifier2;
             *&v88[18] = 2112;
             *&v88[20] = v52;
             *&v88[28] = 2112;
@@ -1028,20 +1028,20 @@ LABEL_62:
   return v65 & 1;
 }
 
-- (void)postDidChangeNotificationForType:(int)a3 inStore:(id)a4 newAccount:(id)a5 oldAccount:(id)a6
+- (void)postDidChangeNotificationForType:(int)type inStore:(id)store newAccount:(id)account oldAccount:(id)oldAccount
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v64 = COERCE_DOUBLE(a5);
-  v63 = a6;
-  v61 = a3;
-  if (!a3)
+  storeCopy = store;
+  v64 = COERCE_DOUBLE(account);
+  oldAccountCopy = oldAccount;
+  typeCopy = type;
+  if (!type)
   {
     [ACDAccountNotifier postDidChangeNotificationForType:inStore:newAccount:oldAccount:];
   }
 
-  v62 = v10;
-  if (!v10)
+  v62 = storeCopy;
+  if (!storeCopy)
   {
     [ACDAccountNotifier postDidChangeNotificationForType:inStore:newAccount:oldAccount:];
   }
@@ -1053,14 +1053,14 @@ LABEL_62:
   v13 = v12;
   if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       *&v14 = COERCE_DOUBLE(@"unknown");
     }
 
     else
     {
-      v14 = off_27848C7F0[a3 - 1];
+      v14 = off_27848C7F0[type - 1];
     }
 
     *buf = 138412802;
@@ -1068,21 +1068,21 @@ LABEL_62:
     v77 = 2112;
     v78 = *&v14;
     v79 = 2112;
-    *v80 = v63;
+    *v80 = oldAccountCopy;
     _os_signpost_emit_with_name_impl(&dword_221D2F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, spid, "AccountDidChange", "%@ (changeType: %@, oldAccount: %@)", buf, 0x20u);
   }
 
   v15 = _ACDNotificationSignpostSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v57 = @"unknown";
     }
 
     else
     {
-      v57 = off_27848C7F0[a3 - 1];
+      v57 = off_27848C7F0[type - 1];
     }
 
     *buf = 134218754;
@@ -1092,11 +1092,11 @@ LABEL_62:
     v79 = 2112;
     *v80 = v57;
     *&v80[8] = 2112;
-    *&v80[10] = v63;
+    *&v80[10] = oldAccountCopy;
     _os_log_debug_impl(&dword_221D2F000, v15, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountDidChange %@ (changeType: %@, oldAccount: %@)", buf, 0x2Au);
   }
 
-  [(ACDAccountNotifier *)self _pluginsRegisteredForNewAccount:*&v64 oldAccount:v63 changeType:a3];
+  [(ACDAccountNotifier *)self _pluginsRegisteredForNewAccount:*&v64 oldAccount:oldAccountCopy changeType:type];
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
@@ -1104,7 +1104,7 @@ LABEL_62:
   v67 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v67)
   {
-    v60 = (a3 - 1);
+    v60 = (type - 1);
     v66 = *v71;
     *&v16 = 138412546;
     v58 = v16;
@@ -1122,7 +1122,7 @@ LABEL_62:
         if ([v18 principalObjectRespondsToSelector:{sel_account_didChangeWithType_inStore_oldAccount_, v58}])
         {
           v19 = [*&v64 copy];
-          v20 = [v63 copy];
+          v20 = [oldAccountCopy copy];
           v21 = v18;
           v69 = v62;
           v22 = v19;
@@ -1139,8 +1139,8 @@ LABEL_62:
           }
 
           v26 = v25;
-          v27 = [v26 accountType];
-          [v27 identifier];
+          accountType = [v26 accountType];
+          [accountType identifier];
           v68 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
           v28 = _ACDNotificationSignpostSystem();
@@ -1150,8 +1150,8 @@ LABEL_62:
           v31 = v30;
           if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
           {
-            v32 = [v21 identifier];
-            v33 = v32;
+            identifier = [v21 identifier];
+            v33 = identifier;
             v34 = @"unknown";
             if (v60 < 5)
             {
@@ -1159,11 +1159,11 @@ LABEL_62:
             }
 
             *buf = 138544386;
-            v76 = *&v32;
+            v76 = *&identifier;
             v77 = 2114;
             v78 = v68;
             v79 = 1026;
-            *v80 = v61;
+            *v80 = typeCopy;
             *&v80[4] = 2112;
             *&v80[6] = v34;
             *&v80[14] = 2112;
@@ -1190,7 +1190,7 @@ LABEL_62:
             v79 = 2114;
             *v80 = v68;
             *&v80[8] = 1026;
-            *&v80[10] = v61;
+            *&v80[10] = typeCopy;
             *&v80[14] = 2112;
             *&v80[16] = v48;
             *&v80[24] = 2112;
@@ -1198,11 +1198,11 @@ LABEL_62:
             _os_log_debug_impl(&dword_221D2F000, v35, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountDidChangePlugin  PluginIdentifier=%{public,signpost.telemetry:string1,name=PluginIdentifier}@  AccountType=%{public,signpost.telemetry:string2,name=AccountType}@  ChangeType=%{public,signpost.telemetry:number1,name=ChangeType}d  enableTelemetry=YES (changeType: %@, account: %@)", buf, 0x3Au);
           }
 
-          v36 = [v21 principalObject];
-          v37 = v36;
-          if (v36)
+          principalObject = [v21 principalObject];
+          v37 = principalObject;
+          if (principalObject)
           {
-            [v36 account:v22 didChangeWithType:v61 inStore:v69 oldAccount:v24];
+            [principalObject account:v22 didChangeWithType:typeCopy inStore:v69 oldAccount:v24];
           }
 
           else
@@ -1221,8 +1221,8 @@ LABEL_62:
           v41 = v40;
           if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
           {
-            v42 = [v21 identifier];
-            v43 = v42;
+            identifier2 = [v21 identifier];
+            v43 = identifier2;
             *&v44 = COERCE_DOUBLE(@"unknown");
             if (v60 <= 4)
             {
@@ -1230,7 +1230,7 @@ LABEL_62:
             }
 
             *buf = 138412802;
-            v76 = *&v42;
+            v76 = *&identifier2;
             v77 = 2112;
             v78 = *&v44;
             v79 = 2112;
@@ -1241,8 +1241,8 @@ LABEL_62:
           v45 = _ACDNotificationSignpostSystem();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
           {
-            v49 = [v21 identifier];
-            v50 = v49;
+            identifier3 = [v21 identifier];
+            v50 = identifier3;
             v51 = @"unknown";
             if (v60 <= 4)
             {
@@ -1254,7 +1254,7 @@ LABEL_62:
             v77 = 2048;
             v78 = Nanoseconds / 1000000000.0;
             v79 = 2112;
-            *v80 = v49;
+            *v80 = identifier3;
             *&v80[8] = 2112;
             *&v80[10] = v51;
             *&v80[18] = 2112;
@@ -1292,21 +1292,21 @@ LABEL_62:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postWillPerformDataclassActionsOnAccount:(id)a3 forDataclasses:(id)a4
+- (void)postWillPerformDataclassActionsOnAccount:(id)account forDataclasses:(id)dataclasses
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v35 = v6;
-  if (!v6)
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
+  v35 = accountCopy;
+  if (!accountCopy)
   {
-    v32 = v7;
+    v32 = dataclassesCopy;
     [ACDAccountNotifier postWillPerformDataclassActionsOnAccount:forDataclasses:];
-    v7 = v32;
+    dataclassesCopy = v32;
   }
 
-  v34 = v7;
-  if (!v7)
+  v34 = dataclassesCopy;
+  if (!dataclassesCopy)
   {
     [ACDAccountNotifier postWillPerformDataclassActionsOnAccount:forDataclasses:];
   }
@@ -1358,8 +1358,8 @@ LABEL_62:
         v14 = *(*(&v38 + 1) + 8 * i);
         if ([v14 principalObjectRespondsToSelector:sel_account_willPerformActionsForDataclasses_])
         {
-          v15 = [v14 principalObject];
-          if (v15)
+          principalObject = [v14 principalObject];
+          if (principalObject)
           {
             v16 = _ACDNotificationSignpostSystem();
             v17 = _ACSignpostCreate();
@@ -1368,9 +1368,9 @@ LABEL_62:
             v19 = v18;
             if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
             {
-              v20 = [v14 identifier];
+              identifier = [v14 identifier];
               *buf = 138412802;
-              v43 = v20;
+              v43 = identifier;
               v44 = 2112;
               v45 = *&v35;
               v46 = 2112;
@@ -1381,11 +1381,11 @@ LABEL_62:
             v21 = _ACDNotificationSignpostSystem();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v27 = [v14 identifier];
+              identifier2 = [v14 identifier];
               *buf = 134218754;
               v43 = v17;
               v44 = 2112;
-              v45 = *&v27;
+              v45 = *&identifier2;
               v46 = 2112;
               v47 = v35;
               v48 = 2112;
@@ -1393,7 +1393,7 @@ LABEL_62:
               _os_log_debug_impl(&dword_221D2F000, v21, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountWillPerformPlugin %@ : %@ (dataclasses: %@)", buf, 0x2Au);
             }
 
-            [v15 account:v35 willPerformActionsForDataclasses:v34];
+            [principalObject account:v35 willPerformActionsForDataclasses:v34];
             Nanoseconds = _ACSignpostGetNanoseconds();
             v23 = _ACDNotificationSignpostSystem();
             v24 = v23;
@@ -1451,21 +1451,21 @@ LABEL_62:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postDidPerformDataclassActionsOnAccount:(id)a3 forDataclasses:(id)a4
+- (void)postDidPerformDataclassActionsOnAccount:(id)account forDataclasses:(id)dataclasses
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v35 = v6;
-  if (!v6)
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
+  v35 = accountCopy;
+  if (!accountCopy)
   {
-    v32 = v7;
+    v32 = dataclassesCopy;
     [ACDAccountNotifier postDidPerformDataclassActionsOnAccount:forDataclasses:];
-    v7 = v32;
+    dataclassesCopy = v32;
   }
 
-  v34 = v7;
-  if (!v7)
+  v34 = dataclassesCopy;
+  if (!dataclassesCopy)
   {
     [ACDAccountNotifier postDidPerformDataclassActionsOnAccount:forDataclasses:];
   }
@@ -1517,8 +1517,8 @@ LABEL_62:
         v14 = *(*(&v38 + 1) + 8 * i);
         if ([v14 principalObjectRespondsToSelector:sel_account_didPerformActionsForDataclasses_])
         {
-          v15 = [v14 principalObject];
-          if (v15)
+          principalObject = [v14 principalObject];
+          if (principalObject)
           {
             v16 = _ACDNotificationSignpostSystem();
             v17 = _ACSignpostCreate();
@@ -1527,9 +1527,9 @@ LABEL_62:
             v19 = v18;
             if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
             {
-              v20 = [v14 identifier];
+              identifier = [v14 identifier];
               *buf = 138412802;
-              v43 = v20;
+              v43 = identifier;
               v44 = 2112;
               v45 = *&v35;
               v46 = 2112;
@@ -1540,11 +1540,11 @@ LABEL_62:
             v21 = _ACDNotificationSignpostSystem();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v27 = [v14 identifier];
+              identifier2 = [v14 identifier];
               *buf = 134218754;
               v43 = v17;
               v44 = 2112;
-              v45 = *&v27;
+              v45 = *&identifier2;
               v46 = 2112;
               v47 = v35;
               v48 = 2112;
@@ -1552,7 +1552,7 @@ LABEL_62:
               _os_log_debug_impl(&dword_221D2F000, v21, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: AccountDidPerformPlugin %@ : %@ (dataclasses: %@)", buf, 0x2Au);
             }
 
-            [v15 account:v35 didPerformActionsForDataclasses:v34];
+            [principalObject account:v35 didPerformActionsForDataclasses:v34];
             Nanoseconds = _ACSignpostGetNanoseconds();
             v23 = _ACDNotificationSignpostSystem();
             v24 = v23;
@@ -1610,9 +1610,9 @@ LABEL_62:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNotificationEntry:(id)a3
+- (void)addNotificationEntry:(id)entry
 {
-  v4 = [(NSArray *)self->_notificationEntries arrayByAddingObject:a3];
+  v4 = [(NSArray *)self->_notificationEntries arrayByAddingObject:entry];
   notificationEntries = self->_notificationEntries;
   self->_notificationEntries = v4;
 
@@ -1628,9 +1628,9 @@ LABEL_62:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_pluginsRegisteredForAccount:(id)a3
+- (id)_pluginsRegisteredForAccount:(id)account
 {
-  v4 = [(ACDAccountNotifier *)self _unsafe_pluginsRegisteredForNewAccount:a3 oldAccount:0 changeType:0];
+  v4 = [(ACDAccountNotifier *)self _unsafe_pluginsRegisteredForNewAccount:account oldAccount:0 changeType:0];
   if ([v4 count])
   {
     notificationEntryQueue = self->_notificationEntryQueue;
@@ -1660,23 +1660,23 @@ void __51__ACDAccountNotifier__pluginsRegisteredForAccount___block_invoke_2(uint
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)_unsafe_pluginsRegisteredForNewAccount:(id)a3 oldAccount:(id)a4 changeType:(id)a5
+- (id)_unsafe_pluginsRegisteredForNewAccount:(id)account oldAccount:(id)oldAccount changeType:(id)type
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accountType];
-  v12 = [v11 identifier];
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  typeCopy = type;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
 
-  v13 = [v9 accountType];
-  v14 = [v13 identifier];
+  accountType2 = [oldAccountCopy accountType];
+  identifier2 = [accountType2 identifier];
 
-  v15 = [(ACDAccountNotifier *)self _provisionedDataclassesForNewAccount:v8 oldAccount:v9];
-  if (v10)
+  v15 = [(ACDAccountNotifier *)self _provisionedDataclassesForNewAccount:accountCopy oldAccount:oldAccountCopy];
+  if (typeCopy)
   {
     v16 = ExplicitAllowedPluginsByChangeType();
-    v17 = [v16 objectForKeyedSubscript:v10];
+    v17 = [v16 objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -1689,9 +1689,9 @@ void __51__ACDAccountNotifier__pluginsRegisteredForAccount___block_invoke_2(uint
   v31 = 3221225472;
   v32 = __83__ACDAccountNotifier__unsafe_pluginsRegisteredForNewAccount_oldAccount_changeType___block_invoke;
   v33 = &unk_27848C7D0;
-  v19 = v12;
+  v19 = identifier;
   v34 = v19;
-  v20 = v14;
+  v20 = identifier2;
   v35 = v20;
   v21 = v15;
   v36 = v21;
@@ -1702,7 +1702,7 @@ void __51__ACDAccountNotifier__pluginsRegisteredForAccount___block_invoke_2(uint
   v25 = _ACDLogSystem();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [v10 intValue] - 1;
+    v28 = [typeCopy intValue] - 1;
     if (v28 > 4)
     {
       v29 = @"unknown";
@@ -1714,9 +1714,9 @@ void __51__ACDAccountNotifier__pluginsRegisteredForAccount___block_invoke_2(uint
     }
 
     *buf = 138413058;
-    v39 = v8;
+    v39 = accountCopy;
     v40 = 2112;
-    v41 = v9;
+    v41 = oldAccountCopy;
     v42 = 2112;
     v43 = v29;
     v44 = 2114;
@@ -1770,29 +1770,29 @@ LABEL_17:
   return v9;
 }
 
-- (id)_provisionedDataclassesForNewAccount:(id)a3 oldAccount:(id)a4
+- (id)_provisionedDataclassesForNewAccount:(id)account oldAccount:(id)oldAccount
 {
-  v5 = a4;
-  v6 = [a3 provisionedDataclasses];
-  v7 = [v5 provisionedDataclasses];
+  oldAccountCopy = oldAccount;
+  provisionedDataclasses = [account provisionedDataclasses];
+  provisionedDataclasses2 = [oldAccountCopy provisionedDataclasses];
 
-  if (v6 && v7)
+  if (provisionedDataclasses && provisionedDataclasses2)
   {
-    v8 = [v6 setByAddingObjectsFromSet:v7];
+    v8 = [provisionedDataclasses setByAddingObjectsFromSet:provisionedDataclasses2];
 LABEL_8:
     v9 = v8;
     goto LABEL_9;
   }
 
-  if (v6)
+  if (provisionedDataclasses)
   {
-    v8 = v6;
+    v8 = provisionedDataclasses;
     goto LABEL_8;
   }
 
-  if (v7)
+  if (provisionedDataclasses2)
   {
-    v8 = v7;
+    v8 = provisionedDataclasses2;
     goto LABEL_8;
   }
 

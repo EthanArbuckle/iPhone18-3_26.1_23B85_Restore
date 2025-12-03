@@ -1,16 +1,16 @@
 @interface AAMessagingDestination
-- (AAMessagingDestination)initWithEmail:(id)a3;
-- (AAMessagingDestination)initWithHandle:(id)a3;
-- (AAMessagingDestination)initWithPhoneNumber:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)isRegisteredToiMessageWithCompletion:(id)a3;
+- (AAMessagingDestination)initWithEmail:(id)email;
+- (AAMessagingDestination)initWithHandle:(id)handle;
+- (AAMessagingDestination)initWithPhoneNumber:(id)number;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)isRegisteredToiMessageWithCompletion:(id)completion;
 @end
 
 @implementation AAMessagingDestination
 
-- (AAMessagingDestination)initWithEmail:(id)a3
+- (AAMessagingDestination)initWithEmail:(id)email
 {
-  v4 = a3;
+  emailCopy = email;
   v12.receiver = self;
   v12.super_class = AAMessagingDestination;
   v5 = [(AAMessagingDestination *)&v12 init];
@@ -18,11 +18,11 @@
   if (v5)
   {
     v5->_destinationType = 1;
-    v7 = [v4 copy];
+    v7 = [emailCopy copy];
     destination = v6->_destination;
     v6->_destination = v7;
 
-    v9 = _SIDSCopyIDForEmailAddress(v4);
+    v9 = _SIDSCopyIDForEmailAddress(emailCopy);
     destinationURI = v6->_destinationURI;
     v6->_destinationURI = v9;
   }
@@ -30,9 +30,9 @@
   return v6;
 }
 
-- (AAMessagingDestination)initWithPhoneNumber:(id)a3
+- (AAMessagingDestination)initWithPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = AAMessagingDestination;
   v5 = [(AAMessagingDestination *)&v12 init];
@@ -40,11 +40,11 @@
   if (v5)
   {
     v5->_destinationType = 2;
-    v7 = [v4 copy];
+    v7 = [numberCopy copy];
     destination = v6->_destination;
     v6->_destination = v7;
 
-    v9 = _SIDSCopyIDForPhoneNumberWithOptions(v4, 0, 0);
+    v9 = _SIDSCopyIDForPhoneNumberWithOptions(numberCopy, 0, 0);
     destinationURI = v6->_destinationURI;
     v6->_destinationURI = v9;
   }
@@ -52,9 +52,9 @@
   return v6;
 }
 
-- (AAMessagingDestination)initWithHandle:(id)a3
+- (AAMessagingDestination)initWithHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v61.receiver = self;
   v61.super_class = AAMessagingDestination;
   v5 = [(AAMessagingDestination *)&v61 init];
@@ -63,7 +63,7 @@
     goto LABEL_18;
   }
 
-  if ([v4 hasPrefix:@"mailto:"])
+  if ([handleCopy hasPrefix:@"mailto:"])
   {
     v6 = _AALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -79,7 +79,7 @@
     goto LABEL_16;
   }
 
-  if ([v4 hasPrefix:@"tel:"])
+  if ([handleCopy hasPrefix:@"tel:"])
   {
     v16 = _AALogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -91,7 +91,7 @@
 LABEL_15:
     v5->_destinationType = v24;
 LABEL_16:
-    v33 = [v4 copy];
+    v33 = [handleCopy copy];
 LABEL_17:
     destinationURI = v5->_destinationURI;
     v5->_destinationURI = v33;
@@ -105,7 +105,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (([v4 hasPrefix:@"token:"] & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"self-token:"))
+  if (([handleCopy hasPrefix:@"token:"] & 1) != 0 || objc_msgSend(handleCopy, "hasPrefix:", @"self-token:"))
   {
     v25 = _AALogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -117,7 +117,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if ([v4 aa_appearsToBeEmail])
+  if ([handleCopy aa_appearsToBeEmail])
   {
     v39 = _AALogSystem();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -126,18 +126,18 @@ LABEL_18:
     }
 
     v5->_destinationType = 1;
-    v47 = [v4 copy];
+    v47 = [handleCopy copy];
     v48 = v5->_destination;
     v5->_destination = v47;
 
-    v33 = _SIDSCopyIDForEmailAddress(v4);
+    v33 = _SIDSCopyIDForEmailAddress(handleCopy);
     goto LABEL_17;
   }
 
-  v49 = [v4 aa_appearsToBePhoneNumber];
+  aa_appearsToBePhoneNumber = [handleCopy aa_appearsToBePhoneNumber];
   v50 = _AALogSystem();
   v51 = os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG);
-  if (v49)
+  if (aa_appearsToBePhoneNumber)
   {
     if (v51)
     {
@@ -145,17 +145,17 @@ LABEL_18:
     }
 
     v5->_destinationType = 2;
-    v59 = [v4 copy];
+    v59 = [handleCopy copy];
     v60 = v5->_destination;
     v5->_destination = v59;
 
-    v33 = _SIDSCopyIDForPhoneNumberWithOptions(v4, 0, 0);
+    v33 = _SIDSCopyIDForPhoneNumberWithOptions(handleCopy, 0, 0);
     goto LABEL_17;
   }
 
   if (v51)
   {
-    [(AAMessagingDestination *)v4 initWithHandle:v50];
+    [(AAMessagingDestination *)handleCopy initWithHandle:v50];
   }
 
   v37 = 0;
@@ -164,10 +164,10 @@ LABEL_19:
   return v37;
 }
 
-- (void)isRegisteredToiMessageWithCompletion:(id)a3
+- (void)isRegisteredToiMessageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [getIDSIDQueryControllerClass() sharedInstance];
+  completionCopy = completion;
+  sharedInstance = [getIDSIDQueryControllerClass() sharedInstance];
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -184,10 +184,10 @@ LABEL_19:
   v13[2] = __63__AAMessagingDestination_isRegisteredToiMessageWithCompletion___block_invoke;
   v13[3] = &unk_1E7C9D918;
   objc_copyWeak(&v17, &location);
-  v11 = v5;
+  v11 = sharedInstance;
   v14 = v11;
-  v12 = v4;
-  v15 = self;
+  v12 = completionCopy;
+  selfCopy = self;
   v16 = v12;
   [v11 currentIDStatusForDestination:destinationURI service:v8 listenerID:v9 queue:idsQueue completionBlock:v13];
 
@@ -245,9 +245,9 @@ uint64_t __63__AAMessagingDestination_isRegisteredToiMessageWithCompletion___blo
   return (*(*(a1 + 48) + 16))(*(a1 + 48), a2 == 1);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_destination copy];
   v6 = v4[3];
   v4[3] = v5;

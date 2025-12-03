@@ -1,35 +1,35 @@
 @interface CALNPersistentTimeToLeaveRefreshStorage
-+ (id)persistentStorageWithPath:(id)a3;
-+ (id)timeToLeaveRefreshDataFromPersistentStorageWithPath:(id)a3 error:(id *)a4;
-- (BOOL)_loadDataWithError:(id *)a3;
-- (BOOL)_saveDataWithError:(id *)a3;
-- (CALNPersistentTimeToLeaveRefreshStorage)initWithPath:(id)a3;
-- (id)refreshDateWithIdentifier:(id)a3;
++ (id)persistentStorageWithPath:(id)path;
++ (id)timeToLeaveRefreshDataFromPersistentStorageWithPath:(id)path error:(id *)error;
+- (BOOL)_loadDataWithError:(id *)error;
+- (BOOL)_saveDataWithError:(id *)error;
+- (CALNPersistentTimeToLeaveRefreshStorage)initWithPath:(id)path;
+- (id)refreshDateWithIdentifier:(id)identifier;
 - (id)refreshDates;
-- (void)_addRefreshDate:(id)a3 withIdentifier:(id)a4;
+- (void)_addRefreshDate:(id)date withIdentifier:(id)identifier;
 - (void)_removeData;
-- (void)_removeRefreshDateWithIdentifier:(id)a3;
-- (void)addRefreshDate:(id)a3 withIdentifier:(id)a4;
-- (void)removeRefreshDateWithIdentifier:(id)a3;
+- (void)_removeRefreshDateWithIdentifier:(id)identifier;
+- (void)addRefreshDate:(id)date withIdentifier:(id)identifier;
+- (void)removeRefreshDateWithIdentifier:(id)identifier;
 - (void)removeRefreshDates;
 @end
 
 @implementation CALNPersistentTimeToLeaveRefreshStorage
 
-+ (id)persistentStorageWithPath:(id)a3
++ (id)persistentStorageWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
-  v6 = [v5 workQueue];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
+  workQueue = [v5 workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__CALNPersistentTimeToLeaveRefreshStorage_persistentStorageWithPath___block_invoke;
   v12[3] = &unk_278D6F278;
-  v13 = v4;
+  v13 = pathCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_sync(v6, v12);
+  v8 = pathCopy;
+  dispatch_sync(workQueue, v12);
 
   v9 = v14;
   v10 = v7;
@@ -100,18 +100,18 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)timeToLeaveRefreshDataFromPersistentStorageWithPath:(id)a3 error:(id *)a4
++ (id)timeToLeaveRefreshDataFromPersistentStorageWithPath:(id)path error:(id *)error
 {
   v5 = timeToLeaveRefreshDataFromPersistentStorageWithPath_error__onceToken;
-  v6 = a3;
+  pathCopy = path;
   if (v5 != -1)
   {
     +[CALNPersistentTimeToLeaveRefreshStorage timeToLeaveRefreshDataFromPersistentStorageWithPath:error:];
   }
 
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy];
 
-  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:timeToLeaveRefreshDataFromPersistentStorageWithPath_error__allowedClasses fromData:v7 error:a4];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:timeToLeaveRefreshDataFromPersistentStorageWithPath_error__allowedClasses fromData:v7 error:error];
 
   return v8;
 }
@@ -131,15 +131,15 @@ void __101__CALNPersistentTimeToLeaveRefreshStorage_timeToLeaveRefreshDataFromPe
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (CALNPersistentTimeToLeaveRefreshStorage)initWithPath:(id)a3
+- (CALNPersistentTimeToLeaveRefreshStorage)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CALNPersistentTimeToLeaveRefreshStorage;
   v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -149,10 +149,10 @@ void __101__CALNPersistentTimeToLeaveRefreshStorage_timeToLeaveRefreshDataFromPe
 
     objc_opt_class();
     v10 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
 
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v5->_workQueue;
     v5->_workQueue = v13;
   }
@@ -168,14 +168,14 @@ void __101__CALNPersistentTimeToLeaveRefreshStorage_timeToLeaveRefreshDataFromPe
   v10 = __Block_byref_object_copy__7;
   v11 = __Block_byref_object_dispose__7;
   v12 = 0;
-  v3 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CALNPersistentTimeToLeaveRefreshStorage_refreshDates__block_invoke;
   v6[3] = &unk_278D6F460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -192,42 +192,42 @@ void __55__CALNPersistentTimeToLeaveRefreshStorage_refreshDates__block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (void)addRefreshDate:(id)a3 withIdentifier:(id)a4
+- (void)addRefreshDate:(id)date withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  dateCopy = date;
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__CALNPersistentTimeToLeaveRefreshStorage_addRefreshDate_withIdentifier___block_invoke;
   block[3] = &unk_278D6F318;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = dateCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = dateCopy;
+  dispatch_sync(workQueue, block);
 }
 
-- (id)refreshDateWithIdentifier:(id)a3
+- (id)refreshDateWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
   v17 = 0;
-  v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CALNPersistentTimeToLeaveRefreshStorage_refreshDateWithIdentifier___block_invoke;
   block[3] = &unk_278D6F2C8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -244,46 +244,46 @@ void __69__CALNPersistentTimeToLeaveRefreshStorage_refreshDateWithIdentifier___b
   *(v3 + 40) = v2;
 }
 
-- (void)removeRefreshDateWithIdentifier:(id)a3
+- (void)removeRefreshDateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__CALNPersistentTimeToLeaveRefreshStorage_removeRefreshDateWithIdentifier___block_invoke;
   v7[3] = &unk_278D6F278;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 - (void)removeRefreshDates
 {
-  v3 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__CALNPersistentTimeToLeaveRefreshStorage_removeRefreshDates__block_invoke;
   block[3] = &unk_278D6F250;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
-- (void)_addRefreshDate:(id)a3 withIdentifier:(id)a4
+- (void)_addRefreshDate:(id)date withIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  dateCopy = date;
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
-  [v9 addRefreshDate:v6 withIdentifier:v7];
+  inMemoryStorage = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
+  [inMemoryStorage addRefreshDate:dateCopy withIdentifier:identifierCopy];
 
   v13 = 0;
-  LOBYTE(v9) = [(CALNPersistentTimeToLeaveRefreshStorage *)self _saveDataWithError:&v13];
+  LOBYTE(inMemoryStorage) = [(CALNPersistentTimeToLeaveRefreshStorage *)self _saveDataWithError:&v13];
   v10 = v13;
-  if ((v9 & 1) == 0)
+  if ((inMemoryStorage & 1) == 0)
   {
     v11 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -291,9 +291,9 @@ void __69__CALNPersistentTimeToLeaveRefreshStorage_refreshDateWithIdentifier___b
       *buf = 138543874;
       v15 = v10;
       v16 = 2114;
-      v17 = v7;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = dateCopy;
       _os_log_error_impl(&dword_242909000, v11, OS_LOG_TYPE_ERROR, "Could not save time to leave refresh date. error = %{public}@, identifier = %{public}@, data = %@", buf, 0x20u);
     }
   }
@@ -301,19 +301,19 @@ void __69__CALNPersistentTimeToLeaveRefreshStorage_refreshDateWithIdentifier___b
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeRefreshDateWithIdentifier:(id)a3
+- (void)_removeRefreshDateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
-  [v6 removeRefreshDateWithIdentifier:v4];
+  inMemoryStorage = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
+  [inMemoryStorage removeRefreshDateWithIdentifier:identifierCopy];
 
   v9 = 0;
-  LOBYTE(v6) = [(CALNPersistentTimeToLeaveRefreshStorage *)self _saveDataWithError:&v9];
+  LOBYTE(inMemoryStorage) = [(CALNPersistentTimeToLeaveRefreshStorage *)self _saveDataWithError:&v9];
   v7 = v9;
-  if ((v6 & 1) == 0)
+  if ((inMemoryStorage & 1) == 0)
   {
     v8 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -331,15 +331,15 @@ void __69__CALNPersistentTimeToLeaveRefreshStorage_refreshDateWithIdentifier___b
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_loadDataWithError:(id *)a3
+- (BOOL)_loadDataWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_opt_class();
-  v7 = [(CALNPersistentTimeToLeaveRefreshStorage *)self path];
-  v8 = [v6 timeToLeaveRefreshDataFromPersistentStorageWithPath:v7 error:a3];
+  path = [(CALNPersistentTimeToLeaveRefreshStorage *)self path];
+  v8 = [v6 timeToLeaveRefreshDataFromPersistentStorageWithPath:path error:error];
 
   if (v8)
   {
@@ -372,28 +372,28 @@ void __62__CALNPersistentTimeToLeaveRefreshStorage__loadDataWithError___block_in
   [v7 addRefreshDate:v5 withIdentifier:v6];
 }
 
-- (BOOL)_saveDataWithError:(id *)a3
+- (BOOL)_saveDataWithError:(id *)error
 {
-  v5 = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(CALNPersistentTimeToLeaveRefreshStorage *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
-  v7 = [v6 refreshDates];
+  inMemoryStorage = [(CALNPersistentTimeToLeaveRefreshStorage *)self inMemoryStorage];
+  refreshDates = [inMemoryStorage refreshDates];
 
   v18 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v18];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:refreshDates requiringSecureCoding:1 error:&v18];
   v9 = v18;
   if (v8)
   {
-    v10 = [(CALNPersistentTimeToLeaveRefreshStorage *)self path];
+    path = [(CALNPersistentTimeToLeaveRefreshStorage *)self path];
     v17 = v9;
-    v11 = [v8 writeToFile:v10 options:268435457 error:&v17];
+    v11 = [v8 writeToFile:path options:268435457 error:&v17];
     v12 = v17;
 
     if (v11)
     {
       v13 = 1;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -421,11 +421,11 @@ void __62__CALNPersistentTimeToLeaveRefreshStorage__loadDataWithError___block_in
 
   v13 = 0;
   v12 = v9;
-  if (a3)
+  if (error)
   {
 LABEL_11:
     v15 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
 LABEL_12:

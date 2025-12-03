@@ -1,28 +1,28 @@
 @interface EARVoiceCommandSuite
-- (BOOL)isEqual:(id)a3;
-- (EARVoiceCommandSuite)initWithCoder:(id)a3;
-- (EARVoiceCommandSuite)initWithIdentifier:(id)a3 commands:(id)a4;
-- (EARVoiceCommandSuite)initWithPlistJSONDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EARVoiceCommandSuite)initWithCoder:(id)coder;
+- (EARVoiceCommandSuite)initWithIdentifier:(id)identifier commands:(id)commands;
+- (EARVoiceCommandSuite)initWithPlistJSONDictionary:(id)dictionary;
 - (id)plistJSONDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARVoiceCommandSuite
 
-- (EARVoiceCommandSuite)initWithIdentifier:(id)a3 commands:(id)a4
+- (EARVoiceCommandSuite)initWithIdentifier:(id)identifier commands:(id)commands
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  commandsCopy = commands;
   v14.receiver = self;
   v14.super_class = EARVoiceCommandSuite;
   v8 = [(EARVoiceCommandSuite *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [commandsCopy copy];
     commandSpecs = v8->_commandSpecs;
     v8->_commandSpecs = v11;
   }
@@ -30,25 +30,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     identifier = self->_identifier;
-    v8 = [(EARVoiceCommandSuite *)v6 identifier];
-    if ([(NSString *)identifier isEqualToString:v8])
+    identifier = [(EARVoiceCommandSuite *)v6 identifier];
+    if ([(NSString *)identifier isEqualToString:identifier])
     {
       commandSpecs = self->_commandSpecs;
-      v10 = [(EARVoiceCommandSuite *)v6 commandSpecs];
-      v11 = [(NSSet *)commandSpecs isEqualToSet:v10];
+      commandSpecs = [(EARVoiceCommandSuite *)v6 commandSpecs];
+      v11 = [(NSSet *)commandSpecs isEqualToSet:commandSpecs];
     }
 
     else
@@ -65,23 +65,23 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:0 forKey:@"version"];
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_commandSpecs forKey:@"commandSpecs"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:0 forKey:@"version"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_commandSpecs forKey:@"commandSpecs"];
 }
 
-- (EARVoiceCommandSuite)initWithCoder:(id)a3
+- (EARVoiceCommandSuite)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = EARVoiceCommandSuite;
   v5 = [(EARVoiceCommandSuite *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"version"];
+    v6 = [coderCopy decodeIntegerForKey:@"version"];
     if (v6)
     {
       p_super = quasar::QuasarCLogger(v6);
@@ -96,14 +96,14 @@
 
     else
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       identifier = v5->_identifier;
       v5->_identifier = v9;
 
       v11 = MEMORY[0x1E695DFD8];
       v12 = objc_opt_class();
       v8 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-      v13 = [v4 decodeObjectOfClasses:v8 forKey:@"commandSpecs"];
+      v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"commandSpecs"];
       p_super = &v5->_commandSpecs->super;
       v5->_commandSpecs = v13;
     }
@@ -144,36 +144,36 @@ void __43__EARVoiceCommandSuite_plistJSONDictionary__block_invoke(uint64_t a1, v
   [v2 addObject:?];
 }
 
-- (EARVoiceCommandSuite)initWithPlistJSONDictionary:(id)a3
+- (EARVoiceCommandSuite)initWithPlistJSONDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = EARVoiceCommandSuite;
   v6 = [(EARVoiceCommandSuite *)&v36 init];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"version"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"version"];
 
     if (!v7)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:226 description:{@"Missing key %@ of type NSNumber", @"version"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:226 description:{@"Missing key %@ of type NSNumber", @"version"}];
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"version"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:226 description:{@"Wrong value type for key %@; expecting NSNumber", @"version"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:226 description:{@"Wrong value type for key %@; expecting NSNumber", @"version"}];
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"version"];
-    v11 = [v10 integerValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+    integerValue = [v10 integerValue];
 
-    if (v11)
+    if (integerValue)
     {
       p_super = quasar::QuasarCLogger(v12);
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -187,44 +187,44 @@ void __43__EARVoiceCommandSuite_plistJSONDictionary__block_invoke(uint64_t a1, v
 
     else
     {
-      v15 = [v5 objectForKeyedSubscript:@"identifier"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
 
       if (!v15)
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:230 description:{@"Missing key %@ of type NSString", @"identifier"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:230 description:{@"Missing key %@ of type NSString", @"identifier"}];
       }
 
-      v16 = [v5 objectForKeyedSubscript:@"identifier"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
       objc_opt_class();
       v17 = objc_opt_isKindOfClass();
 
       if ((v17 & 1) == 0)
       {
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v31 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:230 description:{@"Wrong value type for key %@; expecting NSString", @"identifier"}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:230 description:{@"Wrong value type for key %@; expecting NSString", @"identifier"}];
       }
 
-      v18 = [v5 objectForKeyedSubscript:@"commandSpecs"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"commandSpecs"];
 
       if (!v18)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:231 description:{@"Missing key %@ of type NSArray", @"commandSpecs"}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:231 description:{@"Missing key %@ of type NSArray", @"commandSpecs"}];
       }
 
-      v19 = [v5 objectForKeyedSubscript:@"commandSpecs"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"commandSpecs"];
       objc_opt_class();
       v20 = objc_opt_isKindOfClass();
 
       if ((v20 & 1) == 0)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v33 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:231 description:{@"Wrong value type for key %@; expecting NSArray", @"commandSpecs"}];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler6 handleFailureInMethod:a2 object:v6 file:@"EARVoiceCommandActiveSet.mm" lineNumber:231 description:{@"Wrong value type for key %@; expecting NSArray", @"commandSpecs"}];
       }
 
       v21 = [MEMORY[0x1E695DFA8] set];
-      v22 = [v5 objectForKeyedSubscript:@"commandSpecs"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"commandSpecs"];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __52__EARVoiceCommandSuite_initWithPlistJSONDictionary___block_invoke;
@@ -233,7 +233,7 @@ void __43__EARVoiceCommandSuite_plistJSONDictionary__block_invoke(uint64_t a1, v
       v35 = v14;
       [v22 enumerateObjectsUsingBlock:v34];
 
-      v23 = [v5 objectForKeyedSubscript:@"identifier"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
       identifier = v6->_identifier;
       v6->_identifier = v23;
 

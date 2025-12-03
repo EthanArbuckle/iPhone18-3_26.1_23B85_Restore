@@ -1,13 +1,13 @@
 @interface CSLUINanoResourceGrabberIconView
-- (CSLUINanoResourceGrabberIconView)initWithBundleID:(id)a3;
-- (void)setRawIcon:(id)a3;
+- (CSLUINanoResourceGrabberIconView)initWithBundleID:(id)d;
+- (void)setRawIcon:(id)icon;
 @end
 
 @implementation CSLUINanoResourceGrabberIconView
 
-- (CSLUINanoResourceGrabberIconView)initWithBundleID:(id)a3
+- (CSLUINanoResourceGrabberIconView)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [UIImage imageNamed:@"Default_Icon@2x" inBundle:v5 compatibleWithTraitCollection:0];
 
@@ -18,7 +18,7 @@
   v9 = [(CSLUINanoResourceGrabberIconView *)&v30 initWithFrame:0.0, 0.0, v8, v8];
   if (v9)
   {
-    v10 = [v4 copy];
+    v10 = [dCopy copy];
     bundleID = v9->_bundleID;
     v9->_bundleID = v10;
 
@@ -40,7 +40,7 @@
     v24[3] = &unk_38A28;
     v16 = v14;
     v25 = v16;
-    [v15 getCachedIconForBundleID:v4 iconVariant:42 outIconImage:&v26 updateBlock:v24];
+    [v15 getCachedIconForBundleID:dCopy iconVariant:42 outIconImage:&v26 updateBlock:v24];
     if (v26)
     {
       [(CSLUINanoResourceGrabberIconView *)v13 setRawIcon:?];
@@ -55,7 +55,7 @@
       v21 = &unk_38A50;
       v23 = v16;
       v22 = v13;
-      [v15 getIconForBundleID:v4 iconVariant:42 block:&v18 timeout:1000.0];
+      [v15 getIconForBundleID:dCopy iconVariant:42 block:&v18 timeout:1000.0];
     }
 
     [(CSLUINanoResourceGrabberIconView *)v13 addSubview:v12, v18, v19, v20, v21];
@@ -64,11 +64,11 @@
   return v9;
 }
 
-- (void)setRawIcon:(id)a3
+- (void)setRawIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   WeakRetained = objc_loadWeakRetained(&self->_imageView);
-  [WeakRetained setImage:v4];
+  [WeakRetained setImage:iconCopy];
 }
 
 @end

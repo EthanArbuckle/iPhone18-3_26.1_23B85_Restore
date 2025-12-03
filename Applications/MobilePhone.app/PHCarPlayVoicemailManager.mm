@@ -4,15 +4,15 @@
 - (BOOL)isVisualVoicemailAvailable;
 - (PHCarPlayVoicemailManager)init;
 - (id)badgeString;
-- (id)localizedSubtitleForMessage:(id)a3;
+- (id)localizedSubtitleForMessage:(id)message;
 - (id)trashedVoicemails;
 - (id)voicemails;
-- (void)_phoneApplicationAddressBookChangedNotification:(id)a3;
+- (void)_phoneApplicationAddressBookChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)onlineStateChangedNotification:(id)a3;
-- (void)subscribedStateChangedNotification:(id)a3;
-- (void)voicemailWithID:(id)a3 completion:(id)a4;
-- (void)voicemailsChangedNotification:(id)a3;
+- (void)onlineStateChangedNotification:(id)notification;
+- (void)subscribedStateChangedNotification:(id)notification;
+- (void)voicemailWithID:(id)d completion:(id)completion;
+- (void)voicemailsChangedNotification:(id)notification;
 @end
 
 @implementation PHCarPlayVoicemailManager
@@ -38,10 +38,10 @@ void __51__PHCarPlayVoicemailManager_sharedVoicemailManager__block_invoke(id a1)
 
 - (BOOL)isVisualVoicemailAvailable
 {
-  v2 = [(PHCarPlayVoicemailManager *)self accountManager];
-  v3 = [v2 isAnyAccountSubscribed];
+  accountManager = [(PHCarPlayVoicemailManager *)self accountManager];
+  isAnyAccountSubscribed = [accountManager isAnyAccountSubscribed];
 
-  return v3;
+  return isAnyAccountSubscribed;
 }
 
 - (PHCarPlayVoicemailManager)init
@@ -54,14 +54,14 @@ void __51__PHCarPlayVoicemailManager_sharedVoicemailManager__block_invoke(id a1)
   {
     v2->_badge = PhoneBadgeKnownZero;
     v4 = +[(PHApplicationServices *)MPApplicationServices];
-    v5 = [v4 accountManager];
+    accountManager = [v4 accountManager];
     accountManager = v3->_accountManager;
-    v3->_accountManager = v5;
+    v3->_accountManager = accountManager;
 
     v7 = +[(PHApplicationServices *)MPApplicationServices];
-    v8 = [v7 voicemailController];
+    voicemailController = [v7 voicemailController];
     voicemailController = v3->_voicemailController;
-    v3->_voicemailController = v8;
+    v3->_voicemailController = voicemailController;
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v3 selector:"voicemailsChangedNotification:" name:@"MPVoicemailControllerMessagesDidChangeNotification" object:0];
@@ -76,13 +76,13 @@ void __51__PHCarPlayVoicemailManager_sharedVoicemailManager__block_invoke(id a1)
     v18[4] = __Block_byref_object_dispose__6;
     objc_initWeak(&v19, v3);
     v12 = +[(PHApplicationServices *)MPApplicationServices];
-    v13 = [v12 badgeCalculator];
+    badgeCalculator = [v12 badgeCalculator];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __33__PHCarPlayVoicemailManager_init__block_invoke;
     v17[3] = &unk_100286BF8;
     v17[4] = v18;
-    v14 = [v13 listenWithHandler:v17];
+    v14 = [badgeCalculator listenWithHandler:v17];
     badgeObservation = v3->_badgeObservation;
     v3->_badgeObservation = v14;
 
@@ -129,25 +129,25 @@ void __33__PHCarPlayVoicemailManager_init__block_invoke_2(void *a1)
   [(PHCarPlayVoicemailManager *)&v4 dealloc];
 }
 
-- (void)voicemailsChangedNotification:(id)a3
+- (void)voicemailsChangedNotification:(id)notification
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PHCarPlayVoicemailManagerChangedNotification" object:0 userInfo:0];
 }
 
-- (void)onlineStateChangedNotification:(id)a3
+- (void)onlineStateChangedNotification:(id)notification
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PHCarPlayVoicemailManagerChangedNotification" object:0 userInfo:0];
 }
 
-- (void)subscribedStateChangedNotification:(id)a3
+- (void)subscribedStateChangedNotification:(id)notification
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PHCarPlayVoicemailManagerChangedNotification" object:0 userInfo:0];
 }
 
-- (void)_phoneApplicationAddressBookChangedNotification:(id)a3
+- (void)_phoneApplicationAddressBookChangedNotification:(id)notification
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PHCarPlayVoicemailManagerChangedNotification" object:0 userInfo:0];
@@ -155,33 +155,33 @@ void __33__PHCarPlayVoicemailManager_init__block_invoke_2(void *a1)
 
 - (id)voicemails
 {
-  v2 = [(PHCarPlayVoicemailManager *)self voicemailController];
-  v3 = [v2 audioMessagesPassingTest:&__block_literal_global_106];
+  voicemailController = [(PHCarPlayVoicemailManager *)self voicemailController];
+  v3 = [voicemailController audioMessagesPassingTest:&__block_literal_global_106];
 
   return v3;
 }
 
 - (id)trashedVoicemails
 {
-  v2 = [(PHCarPlayVoicemailManager *)self voicemailController];
-  v3 = [v2 audioMessagesPassingTest:&__block_literal_global_108];
+  voicemailController = [(PHCarPlayVoicemailManager *)self voicemailController];
+  v3 = [voicemailController audioMessagesPassingTest:&__block_literal_global_108];
 
   return v3;
 }
 
-- (void)voicemailWithID:(id)a3 completion:(id)a4
+- (void)voicemailWithID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHCarPlayVoicemailManager *)self voicemailController];
-  v9 = [v8 voicemailManager];
+  completionCopy = completion;
+  dCopy = d;
+  voicemailController = [(PHCarPlayVoicemailManager *)self voicemailController];
+  voicemailManager = [voicemailController voicemailManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __56__PHCarPlayVoicemailManager_voicemailWithID_completion___block_invoke;
   v11[3] = &unk_100286C60;
-  v12 = v6;
-  v10 = v6;
-  [v9 voicemailWithIdentifier:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [voicemailManager voicemailWithIdentifier:dCopy completion:v11];
 }
 
 - (id)badgeString
@@ -191,11 +191,11 @@ void __33__PHCarPlayVoicemailManager_init__block_invoke_2(void *a1)
   return PhoneStringForBadgeValue();
 }
 
-- (id)localizedSubtitleForMessage:(id)a3
+- (id)localizedSubtitleForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(PHCarPlayVoicemailManager *)self voicemailController];
-  v6 = [v5 localizedSubtitleForMessage:v4];
+  messageCopy = message;
+  voicemailController = [(PHCarPlayVoicemailManager *)self voicemailController];
+  v6 = [voicemailController localizedSubtitleForMessage:messageCopy];
 
   return v6;
 }

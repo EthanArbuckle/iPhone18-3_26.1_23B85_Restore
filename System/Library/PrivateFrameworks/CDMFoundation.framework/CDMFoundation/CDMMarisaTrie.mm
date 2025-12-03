@@ -1,26 +1,26 @@
 @interface CDMMarisaTrie
 - (BOOL)_loadTrie;
-- (BOOL)createFromEntries:(id)a3 withHashValue:(id)a4;
-- (BOOL)hasEntry:(id)a3;
-- (BOOL)hasPrefix:(id)a3;
-- (CDMMarisaTrie)initWithFilePath:(id)a3 versionNumber:(id)a4;
+- (BOOL)createFromEntries:(id)entries withHashValue:(id)value;
+- (BOOL)hasEntry:(id)entry;
+- (BOOL)hasPrefix:(id)prefix;
+- (CDMMarisaTrie)initWithFilePath:(id)path versionNumber:(id)number;
 - (NSNumber)hashValue;
-- (id)_readCachedNumberValueForKey:(id)a3;
-- (id)traversePrefix:(id)a3;
+- (id)_readCachedNumberValueForKey:(id)key;
+- (id)traversePrefix:(id)prefix;
 - (void)dealloc;
 @end
 
 @implementation CDMMarisaTrie
 
-- (id)_readCachedNumberValueForKey:(id)a3
+- (id)_readCachedNumberValueForKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CDMMarisaTrie *)self traversePrefix:v4];
+  keyCopy = key;
+  v5 = [(CDMMarisaTrie *)self traversePrefix:keyCopy];
   if ([v5 count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 substringFromIndex:{objc_msgSend(v4, "length")}];
+    firstObject = [v5 firstObject];
+    v7 = [firstObject substringFromIndex:{objc_msgSend(keyCopy, "length")}];
 
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{strtoull(objc_msgSend(v7, "UTF8String"), 0, 0)}];
   }
@@ -33,7 +33,7 @@
       v12 = 136315394;
       v13 = "[CDMMarisaTrie _readCachedNumberValueForKey:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = keyCopy;
       _os_log_impl(&dword_1DC287000, v9, OS_LOG_TYPE_INFO, "%s WARNING: Failed to find entry for key: %@", &v12, 0x16u);
     }
 
@@ -49,8 +49,8 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   marisa::Trie::clear(&self->_readOnlyTrie);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:self->_filePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:self->_filePath];
 
   if (v4)
   {
@@ -62,12 +62,12 @@
   return v5 ^ 1;
 }
 
-- (id)traversePrefix:(id)a3
+- (id)traversePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
   marisa::Agent::Agent(v9);
-  marisa::Agent::set_query(v9, [v4 UTF8String]);
+  marisa::Agent::set_query(v9, [prefixCopy UTF8String]);
   while (marisa::Trie::predictive_search(&self->_readOnlyTrie, v9))
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -80,39 +80,39 @@
   return v5;
 }
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   marisa::Agent::Agent(v6);
-  marisa::Agent::set_query(v6, [v4 UTF8String]);
+  marisa::Agent::set_query(v6, [prefixCopy UTF8String]);
   LOBYTE(self) = marisa::Trie::predictive_search(&self->_readOnlyTrie, v6);
   marisa::Agent::~Agent(v6);
 
   return self;
 }
 
-- (BOOL)hasEntry:(id)a3
+- (BOOL)hasEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   marisa::Agent::Agent(v6);
-  marisa::Agent::set_query(v6, [v4 UTF8String]);
+  marisa::Agent::set_query(v6, [entryCopy UTF8String]);
   LOBYTE(self) = marisa::Trie::lookup(&self->_readOnlyTrie, v6);
   marisa::Agent::~Agent(v6);
 
   return self;
 }
 
-- (BOOL)createFromEntries:(id)a3 withHashValue:(id)a4
+- (BOOL)createFromEntries:(id)entries withHashValue:(id)value
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  valueCopy = value;
   marisa::Keyset::Keyset(v27);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = entriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v9)
   {
@@ -143,25 +143,25 @@
 
   v15 = MEMORY[0x1E696AEC0];
   v16 = [@"~~_hash_~~%@" copy];
-  v17 = [v15 stringWithFormat:v16, v7];
+  valueCopy = [v15 stringWithFormat:v16, valueCopy];
 
   v18 = v14;
   marisa::Keyset::push_back(v27, [v14 UTF8String]);
-  v19 = v17;
-  marisa::Keyset::push_back(v27, [v17 UTF8String]);
+  v19 = valueCopy;
+  marisa::Keyset::push_back(v27, [valueCopy UTF8String]);
   marisa::Trie::Trie(v30);
   marisa::Trie::build(v30, v27);
   marisa::Trie::save(v30, [(NSString *)self->_filePath UTF8String]);
   marisa::Trie::clear(v30);
   MEMORY[0x1E1297700](v30);
-  v20 = [(CDMMarisaTrie *)self _loadTrie];
+  _loadTrie = [(CDMMarisaTrie *)self _loadTrie];
 
   marisa::scoped_array<marisa::scoped_array<marisa::Key>>::~scoped_array(v29);
   marisa::scoped_array<marisa::scoped_array<char>>::~scoped_array(v28);
   marisa::scoped_array<marisa::scoped_array<char>>::~scoped_array(v27);
 
   v21 = *MEMORY[0x1E69E9840];
-  return v20;
+  return _loadTrie;
 }
 
 - (NSNumber)hashValue
@@ -180,21 +180,21 @@
   [(CDMMarisaTrie *)&v3 dealloc];
 }
 
-- (CDMMarisaTrie)initWithFilePath:(id)a3 versionNumber:(id)a4
+- (CDMMarisaTrie)initWithFilePath:(id)path versionNumber:(id)number
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  numberCopy = number;
   v18.receiver = self;
   v18.super_class = CDMMarisaTrie;
   v8 = [(CDMMarisaTrie *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [pathCopy copy];
     filePath = v8->_filePath;
     v8->_filePath = v9;
 
-    v11 = [v7 copy];
+    v11 = [numberCopy copy];
     versionNumber = v8->_versionNumber;
     v8->_versionNumber = v11;
 

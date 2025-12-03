@@ -1,25 +1,25 @@
 @interface RBEntitlementPredicate
-+ (id)predicateForObject:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6;
-- (BOOL)matchesEntitlements:(id)a3;
++ (id)predicateForObject:(id)object forDomain:(id)domain attribute:(id)attribute errors:(id)errors;
+- (BOOL)matchesEntitlements:(id)entitlements;
 - (id)allEntitlements;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RBEntitlementPredicate
 
-+ (id)predicateForObject:(id)a3 forDomain:(id)a4 attribute:(id)a5 errors:(id)a6
++ (id)predicateForObject:(id)object forDomain:(id)domain attribute:(id)attribute errors:(id)errors
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  objectCopy = object;
+  domainCopy = domain;
+  attributeCopy = attribute;
+  errorsCopy = errors;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [[RBAllEntitlementPredicate alloc] initWithDictionary:v9 forDomain:v10 attribute:v11 errors:v12];
+      v13 = [[RBAllEntitlementPredicate alloc] initWithDictionary:objectCopy forDomain:domainCopy attribute:attributeCopy errors:errorsCopy];
 LABEL_6:
       v14 = v13;
       goto LABEL_10;
@@ -28,19 +28,19 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [[RBAnyEntitlementPredicate alloc] initWithArray:v9 forDomain:v10 attribute:v11 errors:v12];
+      v13 = [[RBAnyEntitlementPredicate alloc] initWithArray:objectCopy forDomain:domainCopy attribute:attributeCopy errors:errorsCopy];
       goto LABEL_6;
     }
 
-    if (v12)
+    if (errorsCopy)
     {
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Domain %@ attribute %@ contains bundle properties of wrong type: %@", v10, v11, v9, *MEMORY[0x277CCA470]];
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Domain %@ attribute %@ contains bundle properties of wrong type: %@", domainCopy, attributeCopy, objectCopy, *MEMORY[0x277CCA470]];
       v22[0] = v16;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v18 = [v15 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v17];
 
-      [v12 addObject:v18];
+      [errorsCopy addObject:v18];
     }
   }
 
@@ -52,7 +52,7 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)matchesEntitlements:(id)a3
+- (BOOL)matchesEntitlements:(id)entitlements
 {
   v3 = objc_opt_class();
   OUTLINED_FUNCTION_2_8(v3);
@@ -66,7 +66,7 @@ LABEL_10:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
   OUTLINED_FUNCTION_2_8(v3);

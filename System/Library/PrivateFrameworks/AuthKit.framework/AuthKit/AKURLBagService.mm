@@ -1,69 +1,69 @@
 @interface AKURLBagService
 + (id)sharedBagService;
 - (AKURLBagService)init;
-- (id)_cachedURLBagForAltDSID:(id)a3;
-- (id)urlBagForAltDSID:(id)a3 error:(id *)a4;
-- (id)urlBagFromCache:(BOOL)a3 altDSID:(id)a4 error:(id *)a5;
-- (void)_fetchBagFromNetworkWithRequest:(id)a3 completion:(id)a4;
-- (void)_invokeClearanceRequest:(id)a3 urlBag:(id)a4 error:(id)a5;
-- (void)_tq_invokeRequest:(id)a3 completion:(id)a4;
+- (id)_cachedURLBagForAltDSID:(id)d;
+- (id)urlBagForAltDSID:(id)d error:(id *)error;
+- (id)urlBagFromCache:(BOOL)cache altDSID:(id)d error:(id *)error;
+- (void)_fetchBagFromNetworkWithRequest:(id)request completion:(id)completion;
+- (void)_invokeClearanceRequest:(id)request urlBag:(id)bag error:(id)error;
+- (void)_tq_invokeRequest:(id)request completion:(id)completion;
 - (void)_tq_processPendingRequests;
-- (void)_updateCacheWithBag:(id)a3 forAltDSID:(id)a4;
-- (void)_updateURLBagIfNecessaryFromHTTPCache:(BOOL)a3 ignoreMemoryCache:(BOOL)a4 altDSID:(id)a5 urlSwitchData:(id)a6 completion:(id)a7;
+- (void)_updateCacheWithBag:(id)bag forAltDSID:(id)d;
+- (void)_updateURLBagIfNecessaryFromHTTPCache:(BOOL)cache ignoreMemoryCache:(BOOL)memoryCache altDSID:(id)d urlSwitchData:(id)data completion:(id)completion;
 - (void)clearSerializedMemoryCache;
 - (void)clearSessionCache;
-- (void)fetchURLBagForAltDSID:(id)a3 completion:(id)a4;
-- (void)fetchURLBagForAltDSID:(id)a3 fromCache:(BOOL)a4 completion:(id)a5;
-- (void)forceURLBagUpdateForAltDSID:(id)a3 urlSwitchData:(id)a4 completion:(id)a5;
+- (void)fetchURLBagForAltDSID:(id)d completion:(id)completion;
+- (void)fetchURLBagForAltDSID:(id)d fromCache:(BOOL)cache completion:(id)completion;
+- (void)forceURLBagUpdateForAltDSID:(id)d urlSwitchData:(id)data completion:(id)completion;
 @end
 
 @implementation AKURLBagService
 
 - (void)_tq_processPendingRequests
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   dispatch_assert_queue_V2(self->_trafficQueue);
-  [(AKURLBagService *)v26 setActiveBagFetchRequest:0];
-  v11 = [(AKURLBagService *)v26 pendingBagFetchRequests];
-  v12 = [(NSMutableArray *)v11 count];
-  _objc_release(v11);
+  [(AKURLBagService *)selfCopy setActiveBagFetchRequest:0];
+  pendingBagFetchRequests = [(AKURLBagService *)selfCopy pendingBagFetchRequests];
+  v12 = [(NSMutableArray *)pendingBagFetchRequests count];
+  _objc_release(pendingBagFetchRequests);
   if (v12)
   {
     location[0] = _AKLogSystem();
     v24 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(AKURLBagService *)v26 pendingBagFetchRequests];
-      v9 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)v10 count]];
-      v8 = [(AKURLBagService *)v26 pendingBagFetchRequests];
-      sub_10001B098(v27, v9, v8);
+      pendingBagFetchRequests2 = [(AKURLBagService *)selfCopy pendingBagFetchRequests];
+      v9 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)pendingBagFetchRequests2 count]];
+      pendingBagFetchRequests3 = [(AKURLBagService *)selfCopy pendingBagFetchRequests];
+      sub_10001B098(v27, v9, pendingBagFetchRequests3);
       _os_log_debug_impl(&_mh_execute_header, location[0], v24, "Processing pending (%@) URL bag requests: %@", v27, 0x16u);
-      _objc_release(v8);
+      _objc_release(pendingBagFetchRequests3);
       _objc_release(v9);
-      _objc_release(v10);
+      _objc_release(pendingBagFetchRequests2);
     }
 
     objc_storeStrong(location, 0);
-    v4 = [(AKURLBagService *)v26 pendingBagFetchRequests];
-    v23 = [(NSMutableArray *)v4 firstObject];
-    _objc_release(v4);
-    v5 = [(AKURLBagService *)v26 pendingBagFetchRequests];
-    [(NSMutableArray *)v5 removeObjectAtIndex:0];
-    _objc_release(v5);
-    v7 = v26;
-    v6 = v23;
+    pendingBagFetchRequests4 = [(AKURLBagService *)selfCopy pendingBagFetchRequests];
+    firstObject = [(NSMutableArray *)pendingBagFetchRequests4 firstObject];
+    _objc_release(pendingBagFetchRequests4);
+    pendingBagFetchRequests5 = [(AKURLBagService *)selfCopy pendingBagFetchRequests];
+    [(NSMutableArray *)pendingBagFetchRequests5 removeObjectAtIndex:0];
+    _objc_release(pendingBagFetchRequests5);
+    v7 = selfCopy;
+    v6 = firstObject;
     v16 = _NSConcreteStackBlock;
     v17 = -1073741824;
     v18 = 0;
     v19 = sub_10014D7A8;
     v20 = &unk_100324938;
-    v21 = _objc_retain(v26);
-    v22 = _objc_retain(v23);
+    v21 = _objc_retain(selfCopy);
+    v22 = _objc_retain(firstObject);
     [(AKURLBagService *)v7 _tq_invokeRequest:v6 completion:&v16];
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v21, 0);
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   else
@@ -130,7 +130,7 @@
 
 - (void)clearSessionCache
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEFAULT;
@@ -143,7 +143,7 @@
   }
 
   objc_storeStrong(location, 0);
-  sub_10014AE88(&v12->_bag_cache_lock, &stru_1003248C0);
+  sub_10014AE88(&selfCopy->_bag_cache_lock, &stru_1003248C0);
   v8 = _AKLogSystem();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -159,7 +159,7 @@
 
 - (void)clearSerializedMemoryCache
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
@@ -172,13 +172,13 @@
   }
 
   objc_storeStrong(location, 0);
-  p_bag_cache_lock = &v19->_bag_cache_lock;
+  p_bag_cache_lock = &selfCopy->_bag_cache_lock;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_10014B0D0;
   v14 = &unk_10031F8B0;
-  v15 = _objc_retain(v19);
+  v15 = _objc_retain(selfCopy);
   sub_10014AE88(p_bag_cache_lock, &v10);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEFAULT;
@@ -194,14 +194,14 @@
   objc_storeStrong(&v15, 0);
 }
 
-- (void)fetchURLBagForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchURLBagForAltDSID:(id)d completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   v9 = _AKLogSystem();
   v8 = 2;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -213,20 +213,20 @@
   }
 
   objc_storeStrong(&v9, 0);
-  [(AKURLBagService *)v12 _updateURLBagIfNecessaryFromHTTPCache:0 ignoreMemoryCache:0 altDSID:location[0] urlSwitchData:0 completion:v10];
+  [(AKURLBagService *)selfCopy _updateURLBagIfNecessaryFromHTTPCache:0 ignoreMemoryCache:0 altDSID:location[0] urlSwitchData:0 completion:v10];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchURLBagForAltDSID:(id)a3 fromCache:(BOOL)a4 completion:(id)a5
+- (void)fetchURLBagForAltDSID:(id)d fromCache:(BOOL)cache completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, d);
+  cacheCopy = cache;
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = 2;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -238,12 +238,12 @@
   }
 
   objc_storeStrong(&v23, 0);
-  if (!v25)
+  if (!cacheCopy)
   {
     goto LABEL_14;
   }
 
-  v20 = [(AKURLBagService *)v27 _cachedURLBagForAltDSID:location[0]];
+  v20 = [(AKURLBagService *)selfCopy _cachedURLBagForAltDSID:location[0]];
   if (v20)
   {
     v19 = _AKLogSystem();
@@ -285,7 +285,7 @@
   if (!v16)
   {
 LABEL_14:
-    [(AKURLBagService *)v27 _updateURLBagIfNecessaryFromHTTPCache:v25 ignoreMemoryCache:0 altDSID:location[0] urlSwitchData:0 completion:v24];
+    [(AKURLBagService *)selfCopy _updateURLBagIfNecessaryFromHTTPCache:cacheCopy ignoreMemoryCache:0 altDSID:location[0] urlSwitchData:0 completion:v24];
     v16 = 0;
   }
 
@@ -293,26 +293,26 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (id)urlBagForAltDSID:(id)a3 error:(id *)a4
+- (id)urlBagForAltDSID:(id)d error:(id *)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKURLBagService *)v8 urlBagFromCache:0 altDSID:location[0] error:a4];
+  objc_storeStrong(location, d);
+  v6 = [(AKURLBagService *)selfCopy urlBagFromCache:0 altDSID:location[0] error:error];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)urlBagFromCache:(BOOL)a3 altDSID:(id)a4 error:(id *)a5
+- (id)urlBagFromCache:(BOOL)cache altDSID:(id)d error:(id *)error
 {
-  v49 = self;
+  selfCopy = self;
   v48 = a2;
-  v47 = a3;
+  cacheCopy = cache;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v45 = a5;
+  objc_storeStrong(&location, d);
+  errorCopy = error;
   v38 = 0;
   v39 = &v38;
   v40 = 838860800;
@@ -326,7 +326,7 @@ LABEL_14:
   v34 = 48;
   v35 = sub_100003DA4;
   v36 = sub_1000113E0;
-  v37 = [(AKURLBagService *)v49 _cachedURLBagForAltDSID:location];
+  v37 = [(AKURLBagService *)selfCopy _cachedURLBagForAltDSID:location];
   if (v32[5])
   {
     v50 = _objc_retain(v32[5]);
@@ -347,8 +347,8 @@ LABEL_14:
 
     objc_storeStrong(&v29, 0);
     v26 = dispatch_semaphore_create(0);
-    v13 = v49;
-    v11 = v47;
+    v13 = selfCopy;
+    v11 = cacheCopy;
     v12 = location;
     v20 = _NSConcreteStackBlock;
     v21 = -1073741824;
@@ -371,11 +371,11 @@ LABEL_14:
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v45)
+    if (errorCopy)
     {
       v8 = v39[5];
       v5 = v8;
-      *v45 = v8;
+      *errorCopy = v8;
     }
 
     v50 = _objc_retain(v32[5]);
@@ -394,15 +394,15 @@ LABEL_14:
   return v6;
 }
 
-- (void)_tq_invokeRequest:(id)a3 completion:(id)a4
+- (void)_tq_invokeRequest:(id)request completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  dispatch_assert_queue_V2(v13[1]);
+  objc_storeStrong(&v11, completion);
+  dispatch_assert_queue_V2(selfCopy[1]);
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -412,22 +412,22 @@ LABEL_14:
   }
 
   objc_storeStrong(&v10, 0);
-  [(dispatch_queue_t *)v13 setActiveBagFetchRequest:location[0]];
-  v4 = v13;
-  v6 = [location[0] context];
-  v5 = [v6 altDSID];
+  [(dispatch_queue_t *)selfCopy setActiveBagFetchRequest:location[0]];
+  v4 = selfCopy;
+  context = [location[0] context];
+  altDSID = [context altDSID];
   v8 = [(dispatch_queue_t *)v4 _cachedURLBagForAltDSID:?];
-  _objc_release(v5);
-  _objc_release(v6);
+  _objc_release(altDSID);
+  _objc_release(context);
   if (v8)
   {
-    [(dispatch_queue_t *)v13 setActiveBagFetchRequest:?];
+    [(dispatch_queue_t *)selfCopy setActiveBagFetchRequest:?];
     (*(v11 + 2))(v11, v8, 0);
   }
 
   else
   {
-    [(dispatch_queue_t *)v13 _fetchBagFromNetworkWithRequest:location[0] completion:v11];
+    [(dispatch_queue_t *)selfCopy _fetchBagFromNetworkWithRequest:location[0] completion:v11];
   }
 
   objc_storeStrong(&v8, 0);
@@ -435,14 +435,14 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchBagFromNetworkWithRequest:(id)a3 completion:(id)a4
+- (void)_fetchBagFromNetworkWithRequest:(id)request completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -453,14 +453,14 @@ LABEL_14:
 
   objc_storeStrong(&v26, 0);
   v9 = [AKURLBagRequestProvider alloc];
-  v12 = [location[0] context];
-  v11 = [v12 altDSID];
-  v10 = [location[0] urlSwitchData];
-  v24 = [(AKURLBagRequestProvider *)v9 initWithAltDSID:v11 urlSwitchData:?];
-  _objc_release(v10);
-  _objc_release(v11);
-  _objc_release(v12);
-  v23 = [v24 newBagURLRequest];
+  context = [location[0] context];
+  altDSID = [context altDSID];
+  urlSwitchData = [location[0] urlSwitchData];
+  v24 = [(AKURLBagRequestProvider *)v9 initWithAltDSID:altDSID urlSwitchData:?];
+  _objc_release(urlSwitchData);
+  _objc_release(altDSID);
+  _objc_release(context);
+  newBagURLRequest = [v24 newBagURLRequest];
   v22 = 0;
   if ([location[0] fromURLCache])
   {
@@ -476,7 +476,7 @@ LABEL_14:
   v22 = v4;
   _objc_release(v5);
   v8 = v22;
-  v7 = v23;
+  v7 = newBagURLRequest;
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
@@ -484,30 +484,30 @@ LABEL_14:
   v18 = &unk_1003248E8;
   v21 = _objc_retain(v27);
   v19 = _objc_retain(location[0]);
-  v20 = _objc_retain(v29);
+  v20 = _objc_retain(selfCopy);
   v6 = [v8 beginDataTaskWithRequest:v7 completionHandler:&v14];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&newBagURLRequest, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateURLBagIfNecessaryFromHTTPCache:(BOOL)a3 ignoreMemoryCache:(BOOL)a4 altDSID:(id)a5 urlSwitchData:(id)a6 completion:(id)a7
+- (void)_updateURLBagIfNecessaryFromHTTPCache:(BOOL)cache ignoreMemoryCache:(BOOL)memoryCache altDSID:(id)d urlSwitchData:(id)data completion:(id)completion
 {
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
+  cacheCopy = cache;
+  memoryCacheCopy = memoryCache;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, d);
   v43 = 0;
-  objc_storeStrong(&v43, a6);
+  objc_storeStrong(&v43, data);
   v42 = 0;
-  objc_storeStrong(&v42, a7);
+  objc_storeStrong(&v42, completion);
   v41 = 0uLL;
   v12 = _AKSignpostLogSystem();
   *&v40 = _AKSignpostCreate();
@@ -544,18 +544,18 @@ LABEL_14:
   v32 = v40;
   v31 = _objc_retain(v42);
   v33 = objc_retainBlock(&v26);
-  queue = v48->_trafficQueue;
+  queue = selfCopy->_trafficQueue;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_10014CF34;
   v19 = &unk_100320508;
   v20 = _objc_retain(location);
-  v24 = v46;
-  v25 = v45;
+  v24 = cacheCopy;
+  v25 = memoryCacheCopy;
   v21 = _objc_retain(v43);
   v23 = _objc_retain(v33);
-  v22 = _objc_retain(v48);
+  v22 = _objc_retain(selfCopy);
   dispatch_async(queue, &v15);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
@@ -568,17 +568,17 @@ LABEL_14:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_invokeClearanceRequest:(id)a3 urlBag:(id)a4 error:(id)a5
+- (void)_invokeClearanceRequest:(id)request urlBag:(id)bag error:(id)error
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, bag);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  queue = v19->_clearanceQueue;
+  objc_storeStrong(&v16, error);
+  queue = selfCopy->_clearanceQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
@@ -596,16 +596,16 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (void)forceURLBagUpdateForAltDSID:(id)a3 urlSwitchData:(id)a4 completion:(id)a5
+- (void)forceURLBagUpdateForAltDSID:(id)d urlSwitchData:(id)data completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, data);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, completion);
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -617,7 +617,7 @@ LABEL_14:
   }
 
   objc_storeStrong(&v20, 0);
-  v7 = v24;
+  v7 = selfCopy;
   v5 = location[0];
   v6 = v22;
   v12 = _NSConcreteStackBlock;
@@ -633,20 +633,20 @@ LABEL_14:
   objc_storeStrong(location, 0);
 }
 
-- (id)_cachedURLBagForAltDSID:(id)a3
+- (id)_cachedURLBagForAltDSID:(id)d
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v14;
+  objc_storeStrong(location, d);
+  v4 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10014DDAC;
   v10 = &unk_100324960;
   v11 = _objc_retain(location[0]);
-  v12 = _objc_retain(v14);
+  v12 = _objc_retain(selfCopy);
   v5 = sub_10014DCFC(&v4->_bag_cache_lock, &v6);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -655,14 +655,14 @@ LABEL_14:
   return v5;
 }
 
-- (void)_updateCacheWithBag:(id)a3 forAltDSID:(id)a4
+- (void)_updateCacheWithBag:(id)bag forAltDSID:(id)d
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bag);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, d);
   v19 = _objc_retain(v20);
   if (![v19 length])
   {
@@ -672,13 +672,13 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    p_bag_cache_lock = &v22->_bag_cache_lock;
+    p_bag_cache_lock = &selfCopy->_bag_cache_lock;
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
     v11 = sub_10014E340;
     v12 = &unk_10031F050;
-    v13 = _objc_retain(v22);
+    v13 = _objc_retain(selfCopy);
     v14 = _objc_retain(v19);
     v15 = _objc_retain(location[0]);
     sub_10014AE88(p_bag_cache_lock, &v8);

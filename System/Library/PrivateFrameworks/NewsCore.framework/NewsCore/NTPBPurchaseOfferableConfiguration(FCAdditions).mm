@@ -8,7 +8,7 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E695DF20] fc_dictionaryFromJSON:v3];
   if ([v4 count])
   {
@@ -50,7 +50,7 @@
           v14 = [v8 objectForKey:@"preferredOffer"];
           [v9 setPreferredOffer:{objc_msgSend(v14, "BOOLValue")}];
 
-          [v21 addObject:v9];
+          [array addObject:v9];
         }
 
         v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -65,7 +65,7 @@
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return array;
 }
 
 @end

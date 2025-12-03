@@ -1,30 +1,30 @@
 @interface PBBProtoPerformanceResult
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimeEnded:(BOOL)a3;
-- (void)setHasTimeStarted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimeEnded:(BOOL)ended;
+- (void)setHasTimeStarted:(BOOL)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoPerformanceResult
 
 + (void)initialize
 {
-  InstanceMethod = class_getInstanceMethod(a1, sel_description);
-  v4 = class_getInstanceMethod(a1, sel_detailedDescription);
+  InstanceMethod = class_getInstanceMethod(self, sel_description);
+  v4 = class_getInstanceMethod(self, sel_detailedDescription);
 
   method_exchangeImplementations(InstanceMethod, v4);
 }
 
-- (void)setHasTimeStarted:(BOOL)a3
+- (void)setHasTimeStarted:(BOOL)started
 {
-  if (a3)
+  if (started)
   {
     v3 = 4;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeEnded:(BOOL)a3
+- (void)setHasTimeEnded:(BOOL)ended
 {
-  if (a3)
+  if (ended)
   {
     v3 = 2;
   }
@@ -58,20 +58,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoPerformanceResult;
   v4 = [(PBBProtoPerformanceResult *)&v8 description];
-  v5 = [(PBBProtoPerformanceResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoPerformanceResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   activityType = self->_activityType;
   if (activityType)
   {
-    [v3 setObject:activityType forKey:@"activityType"];
+    [dictionary setObject:activityType forKey:@"activityType"];
   }
 
   identifier = self->_identifier;
@@ -119,20 +119,20 @@ LABEL_9:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_activityType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -140,7 +140,7 @@ LABEL_9:
   {
     timeDelta = self->_timeDelta;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -161,39 +161,39 @@ LABEL_7:
 
   timeStarted = self->_timeStarted;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
     timeEnded = self->_timeEnded;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_activityType)
   {
-    [v4 setActivityType:?];
-    v4 = v6;
+    [toCopy setActivityType:?];
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     [v6 setIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_timeDelta;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_timeDelta;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -212,26 +212,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 3) = *&self->_timeStarted;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 3) = *&self->_timeStarted;
+  *(toCopy + 48) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 2) = *&self->_timeEnded;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = *&self->_timeEnded;
+    *(toCopy + 48) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_activityType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_activityType copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -273,16 +273,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   activityType = self->_activityType;
-  if (activityType | *(v4 + 4))
+  if (activityType | *(equalCopy + 4))
   {
     if (![(NSString *)activityType isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_4:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -301,13 +301,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timeDelta != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timeDelta != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_20:
     v7 = 0;
@@ -316,21 +316,21 @@ LABEL_20:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_timeStarted != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_timeStarted != *(equalCopy + 3))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 48) & 2) == 0;
+  v7 = (*(equalCopy + 48) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_timeEnded != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_timeEnded != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
@@ -451,28 +451,28 @@ LABEL_21:
   return v4 ^ v3 ^ v7 ^ v11 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PBBProtoPerformanceResult *)self setActivityType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PBBProtoPerformanceResult *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_timeDelta = v4[1];
+    self->_timeDelta = fromCopy[1];
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -485,17 +485,17 @@ LABEL_7:
     }
   }
 
-  else if ((v4[6] & 4) == 0)
+  else if ((fromCopy[6] & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_timeStarted = v4[3];
+  self->_timeStarted = fromCopy[3];
   *&self->_has |= 4u;
-  if ((v4[6] & 2) != 0)
+  if ((fromCopy[6] & 2) != 0)
   {
 LABEL_8:
-    self->_timeEnded = v4[2];
+    self->_timeEnded = fromCopy[2];
     *&self->_has |= 2u;
   }
 

@@ -69,11 +69,11 @@
   v8 = v7;
   [(CIVector *)self->inputCenter Y];
   v10 = [CIVector vectorWithX:v8 Y:v9 Z:v4 W:v6];
-  v11 = [(CICircularScreen *)self _kernel];
+  _kernel = [(CICircularScreen *)self _kernel];
   [(CIImage *)self->inputImage extent];
   v17[0] = self->inputImage;
   v17[1] = v10;
-  return [v11 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v17, 2), v12, v13, v14, v15}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v17, 2), v12, v13, v14, v15}];
 }
 
 @end

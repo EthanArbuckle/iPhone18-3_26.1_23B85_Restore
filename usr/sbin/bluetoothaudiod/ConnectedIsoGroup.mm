@@ -1,25 +1,25 @@
 @interface ConnectedIsoGroup
 - (BOOL)allCoupledCISEstablished;
-- (ConnectedIsoGroup)initWithCIGParams:(id)a3;
-- (id)getCISwithDeviceID:(id)a3;
-- (id)getCISwithID:(unsigned __int8)a3;
+- (ConnectedIsoGroup)initWithCIGParams:(id)params;
+- (id)getCISwithDeviceID:(id)d;
+- (id)getCISwithID:(unsigned __int8)d;
 - (unsigned)addCIS;
-- (unsigned)addCISwithASE:(id)a3 forDevice:(id)a4;
-- (void)removeCISwithID:(unsigned __int8)a3;
+- (unsigned)addCISwithASE:(id)e forDevice:(id)device;
+- (void)removeCISwithID:(unsigned __int8)d;
 @end
 
 @implementation ConnectedIsoGroup
 
-- (ConnectedIsoGroup)initWithCIGParams:(id)a3
+- (ConnectedIsoGroup)initWithCIGParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v11.receiver = self;
   v11.super_class = ConnectedIsoGroup;
   v6 = [(ConnectedIsoGroup *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cigParams, a3);
+    objc_storeStrong(&v6->_cigParams, params);
     v7->_numOfCIS = 0;
     v8 = objc_alloc_init(NSMutableSet);
     cisSet = v7->_cisSet;
@@ -32,47 +32,47 @@
   return v7;
 }
 
-- (unsigned)addCISwithASE:(id)a3 forDevice:(id)a4
+- (unsigned)addCISwithASE:(id)e forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ConnectedIsoGroup *)self currentCisID];
-  [(ConnectedIsoGroup *)self setCurrentCisID:(v8 + 1)];
+  deviceCopy = device;
+  eCopy = e;
+  currentCisID = [(ConnectedIsoGroup *)self currentCisID];
+  [(ConnectedIsoGroup *)self setCurrentCisID:(currentCisID + 1)];
   [(ConnectedIsoGroup *)self setNumOfCIS:([(ConnectedIsoGroup *)self numOfCIS]+ 1)];
-  v9 = [[LeCisParams alloc] initWithCISID:v8];
-  v10 = [[ConnectedIsoStream alloc] initWithCISParams:v9 withASE:v7];
-  [(ConnectedIsoStream *)v10 setDeviceID:v6];
+  v9 = [[LeCisParams alloc] initWithCISID:currentCisID];
+  v10 = [[ConnectedIsoStream alloc] initWithCISParams:v9 withASE:eCopy];
+  [(ConnectedIsoStream *)v10 setDeviceID:deviceCopy];
 
-  v11 = [(ConnectedIsoGroup *)self cisSet];
-  [v11 addObject:v10];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  [cisSet addObject:v10];
 
-  [v7 setCisID:v8];
-  return v8;
+  [eCopy setCisID:currentCisID];
+  return currentCisID;
 }
 
 - (unsigned)addCIS
 {
-  v3 = [(ConnectedIsoGroup *)self currentCisID];
-  [(ConnectedIsoGroup *)self setCurrentCisID:(v3 + 1)];
+  currentCisID = [(ConnectedIsoGroup *)self currentCisID];
+  [(ConnectedIsoGroup *)self setCurrentCisID:(currentCisID + 1)];
   [(ConnectedIsoGroup *)self setNumOfCIS:([(ConnectedIsoGroup *)self numOfCIS]+ 1)];
-  v4 = [[LeCisParams alloc] initWithCISID:v3];
+  v4 = [[LeCisParams alloc] initWithCISID:currentCisID];
   v5 = [[ConnectedIsoStream alloc] initWithCISParams:v4];
   [(ConnectedIsoStream *)v5 setDeviceID:0];
-  v6 = [(ConnectedIsoGroup *)self cisSet];
-  [v6 addObject:v5];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  [cisSet addObject:v5];
 
-  return v3;
+  return currentCisID;
 }
 
-- (void)removeCISwithID:(unsigned __int8)a3
+- (void)removeCISwithID:(unsigned __int8)d
 {
-  v3 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(ConnectedIsoGroup *)self cisSet];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  v6 = [cisSet countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -83,21 +83,21 @@ LABEL_3:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(cisSet);
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      v11 = [v10 cisParams];
-      v12 = [v11 cisID];
+      cisParams = [v10 cisParams];
+      cisID = [cisParams cisID];
 
-      if (v12 == v3)
+      if (cisID == dCopy)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [cisSet countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -115,24 +115,24 @@ LABEL_3:
     }
 
     [(ConnectedIsoGroup *)self setNumOfCIS:([(ConnectedIsoGroup *)self numOfCIS]- 1)];
-    v14 = [(ConnectedIsoGroup *)self cisSet];
-    [v14 removeObject:v13];
+    cisSet2 = [(ConnectedIsoGroup *)self cisSet];
+    [cisSet2 removeObject:v13];
 
-    v5 = v13;
+    cisSet = v13;
   }
 
 LABEL_12:
 }
 
-- (id)getCISwithID:(unsigned __int8)a3
+- (id)getCISwithID:(unsigned __int8)d
 {
-  v3 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(ConnectedIsoGroup *)self cisSet];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  v5 = [cisSet countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,21 +143,21 @@ LABEL_12:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cisSet);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 cisParams];
-        v11 = [v10 cisID];
+        cisParams = [v9 cisParams];
+        cisID = [cisParams cisID];
 
-        if (v11 == v3)
+        if (cisID == dCopy)
         {
           v12 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [cisSet countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -173,15 +173,15 @@ LABEL_11:
   return v12;
 }
 
-- (id)getCISwithDeviceID:(id)a3
+- (id)getCISwithDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(ConnectedIsoGroup *)self cisSet];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  v6 = [cisSet countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -191,20 +191,20 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cisSet);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 deviceID];
+        deviceID = [v9 deviceID];
 
-        if (v10 == v4)
+        if (deviceID == dCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [cisSet countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -225,8 +225,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ConnectedIsoGroup *)self cisSet];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  cisSet = [(ConnectedIsoGroup *)self cisSet];
+  v4 = [cisSet countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -238,18 +238,18 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cisSet);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) deviceID];
+        deviceID = [*(*(&v11 + 1) + 8 * i) deviceID];
 
-        if (v9)
+        if (deviceID)
         {
           ++v6;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [cisSet countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

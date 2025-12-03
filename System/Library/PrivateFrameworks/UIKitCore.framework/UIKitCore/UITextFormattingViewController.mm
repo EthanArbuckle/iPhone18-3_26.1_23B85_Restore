@@ -1,14 +1,14 @@
 @interface UITextFormattingViewController
-- (BOOL)_adjustAttributesInTextStorage:(id)a3 atRange:(_NSRange)a4 forChangeValue:(id)a5;
+- (BOOL)_adjustAttributesInTextStorage:(id)storage atRange:(_NSRange)range forChangeValue:(id)value;
 - (BOOL)_useChildViewWidthForContentSize;
 - (BOOL)_useLandscapeLayout;
-- (BOOL)_useLandscapeLayoutForSize:(CGSize)a3;
+- (BOOL)_useLandscapeLayoutForSize:(CGSize)size;
 - (CGSize)_computeContentSize;
-- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)a3 screenSize:(CGSize)a4;
+- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)size screenSize:(CGSize)screenSize;
 - (UIResponderStandardEditActions)_editResponder;
 - (UITextFormattingViewController)init;
-- (UITextFormattingViewController)initWithCoder:(id)a3;
-- (UITextFormattingViewController)initWithConfiguration:(id)a3;
+- (UITextFormattingViewController)initWithCoder:(id)coder;
+- (UITextFormattingViewController)initWithConfiguration:(id)configuration;
 - (UITextFormattingViewControllerDelegate)delegate;
 - (UITextFormattingViewControllerFormattingDescriptor)formattingDescriptor;
 - (_UITextFormattingViewControllerInternalDelegate)_internalDelegate;
@@ -16,29 +16,29 @@
 - (id)_scrollView;
 - (id)_textView;
 - (int64_t)_backdropViewStyle;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)_applyTextViewHighlightWithChangeValue:(id)a3;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)_applyTextViewHighlightWithChangeValue:(id)value;
 - (void)_cleanupForEditResponder;
 - (void)_commonInit;
-- (void)_invokeEditResponderAction:(SEL)a3;
-- (void)_invokeEditResponderAction:(SEL)a3 withArgument:(id)a4;
+- (void)_invokeEditResponderAction:(SEL)action;
+- (void)_invokeEditResponderAction:(SEL)action withArgument:(id)argument;
 - (void)_modifyKeyboardTrackingIfNeededForKeyboardSuppression;
-- (void)_modifyKeyboardTrackingIfNeededForType:(unint64_t)a3 fromFrame:(CGRect)a4 toFrame:(CGRect)a5 start:(BOOL)a6;
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4;
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4;
-- (void)_presentTypographySettingsForFont:(id)a3;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)_reconfigureViewHierarchyForParentController:(id)a3;
-- (void)_resetDetentsForSheetController:(id)a3 invalidate:(BOOL)a4;
+- (void)_modifyKeyboardTrackingIfNeededForType:(unint64_t)type fromFrame:(CGRect)frame toFrame:(CGRect)toFrame start:(BOOL)start;
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color;
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts;
+- (void)_presentTypographySettingsForFont:(id)font;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)_reconfigureViewHierarchyForParentController:(id)controller;
+- (void)_resetDetentsForSheetController:(id)controller invalidate:(BOOL)invalidate;
 - (void)_resumeKeyboardSuppressionIfNeeded;
-- (void)_sendUpdatesToEditResponder:(id)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)_setEditResponder:(id)a3;
+- (void)_sendUpdatesToEditResponder:(id)responder;
+- (void)_setChildViewController:(id)controller;
+- (void)_setEditResponder:(id)responder;
 - (void)_setupForEditResponder;
 - (void)_startSuppressingKeyboardForTextFormatting;
 - (void)_stopSuppressingKeyboardForTextFormatting;
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributes:(id)a4;
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4;
+- (void)_textFormattingDidChangeValue:(id)value textAttributes:(id)attributes;
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data;
 - (void)_textFormattingDidFinish;
 - (void)_textFormattingRequestsFirstResponderResignation;
 - (void)_textFormattingRequestsFirstResponderRestoration;
@@ -46,105 +46,105 @@
 - (void)_textViewFormattingDidEnd;
 - (void)_textViewFormattingWillBegin;
 - (void)_textViewFormattingWillEnd;
-- (void)_typographySettingsViewControllerDidUpdateFont:(id)a3;
+- (void)_typographySettingsViewControllerDidUpdateFont:(id)font;
 - (void)_updateBackdropView;
 - (void)_updateChildControllersConfiguration;
-- (void)_updateContentSizeForAppearance:(BOOL)a3;
+- (void)_updateContentSizeForAppearance:(BOOL)appearance;
 - (void)_updateDisabledComponents;
-- (void)_updateFormattingDescriptor:(id)a3;
+- (void)_updateFormattingDescriptor:(id)descriptor;
 - (void)_updateInternalConfigurationProperties;
 - (void)_updateNavBarVisibility;
 - (void)_updateScrollViewContentSizeIfNeeded;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fontPickerViewControllerDidCancel:(id)a3;
-- (void)fontPickerViewControllerDidPickFont:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)encodeWithCoder:(id)coder;
+- (void)fontPickerViewControllerDidCancel:(id)cancel;
+- (void)fontPickerViewControllerDidPickFont:(id)font;
 - (void)loadView;
-- (void)modifyKeyboardTrackingIfNeededForType:(unint64_t)a3 start:(BOOL)a4 force:(BOOL)a5 immediate:(BOOL)a6;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setFormattingDescriptor:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)modifyKeyboardTrackingIfNeededForType:(unint64_t)type start:(BOOL)start force:(BOOL)force immediate:(BOOL)immediate;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setConfiguration:(id)configuration;
+- (void)setFormattingDescriptor:(id)descriptor;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation UITextFormattingViewController
 
 - (void)_modifyKeyboardTrackingIfNeededForKeyboardSuppression
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7A85C();
 }
 
-- (void)modifyKeyboardTrackingIfNeededForType:(unint64_t)a3 start:(BOOL)a4 force:(BOOL)a5 immediate:(BOOL)a6
+- (void)modifyKeyboardTrackingIfNeededForType:(unint64_t)type start:(BOOL)start force:(BOOL)force immediate:(BOOL)immediate
 {
-  v10 = self;
-  sub_188F7A9FC(a3, a4, a5, a6);
+  selfCopy = self;
+  sub_188F7A9FC(type, start, force, immediate);
 }
 
-- (void)_modifyKeyboardTrackingIfNeededForType:(unint64_t)a3 fromFrame:(CGRect)a4 toFrame:(CGRect)a5 start:(BOOL)a6
+- (void)_modifyKeyboardTrackingIfNeededForType:(unint64_t)type fromFrame:(CGRect)frame toFrame:(CGRect)toFrame start:(BOOL)start
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = self;
-  sub_188F7AEA4(a3, a6, v14, v13, v12, v11, x, y, width, height);
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  y = toFrame.origin.y;
+  x = toFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  selfCopy = self;
+  sub_188F7AEA4(type, start, v14, v13, v12, v11, x, y, width, height);
 }
 
 - (void)_setupForEditResponder
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7B2B8();
 }
 
 - (void)_cleanupForEditResponder
 {
   v3 = objc_opt_self();
-  v5 = self;
-  v4 = [v3 defaultCenter];
-  [v4 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 }
 
 - (void)_resumeKeyboardSuppressionIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7B610();
 }
 
-- (BOOL)_adjustAttributesInTextStorage:(id)a3 atRange:(_NSRange)a4 forChangeValue:(id)a5
+- (BOOL)_adjustAttributesInTextStorage:(id)storage atRange:(_NSRange)range forChangeValue:(id)value
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_188FE6F7C(v9, location, length, v10);
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  valueCopy = value;
+  selfCopy = self;
+  sub_188FE6F7C(storageCopy, location, length, valueCopy);
   LOBYTE(length) = v12;
 
   return length & 1;
 }
 
-- (UITextFormattingViewController)initWithCoder:(id)a3
+- (UITextFormattingViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UITextFormattingViewController *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UITextFormattingViewControllerConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"UITextFormattingViewControllerConfiguration"];
     v7 = v6;
     if (!v6)
     {
@@ -160,15 +160,15 @@
   return v5;
 }
 
-- (UITextFormattingViewController)initWithConfiguration:(id)a3
+- (UITextFormattingViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = UITextFormattingViewController;
   v5 = [(UIViewController *)&v9 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -268,11 +268,11 @@
   v22 = [(UIViewController *)self registerForTraitChanges:v21 withTarget:self action:sel__onUserInterfaceStyleChange];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UITextFormattingViewController *)self configuration];
-  [v4 encodeObject:v5 forKey:@"UITextFormattingViewControllerConfiguration"];
+  coderCopy = coder;
+  configuration = [(UITextFormattingViewController *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"UITextFormattingViewControllerConfiguration"];
 }
 
 - (void)dealloc
@@ -283,19 +283,19 @@
   [(UIViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v4 viewWillAppear:a3];
+  [(UIViewController *)&v4 viewWillAppear:appear];
   [(UITextFormattingViewController *)self _textViewFormattingWillBegin];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v4 viewIsAppearing:a3];
+  [(UIViewController *)&v4 viewIsAppearing:appearing];
   [(UITextFormattingViewController *)self _updateNavBarVisibility];
   [(UITextFormattingViewController *)self _updateInternalConfigurationProperties];
   [(UITextFormattingViewController *)self _updateChildControllersConfiguration];
@@ -304,42 +304,42 @@
   [(UITextFormattingViewController *)self _modifyKeyboardTrackingIfNeededForType:2 start:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v8 viewDidAppear:a3];
+  [(UIViewController *)&v8 viewDidAppear:appear];
   [(UITextFormattingViewController *)self _modifyKeyboardTrackingIfNeededForType:2 start:0];
   [(UITextFormattingViewController *)self _textViewFormattingDidBegin];
-  v4 = [(UITextFormattingViewController *)self configuration];
-  if ([v4 _isTextAnimationsConfiguration])
+  configuration = [(UITextFormattingViewController *)self configuration];
+  if ([configuration _isTextAnimationsConfiguration])
   {
     v5 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-    v6 = [v5 _textFormattingViewController];
+    _textFormattingViewController = [v5 _textFormattingViewController];
 
-    if (v6 != self)
+    if (_textFormattingViewController != self)
     {
       return;
     }
 
     v7 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-    v4 = [v7 _textFormattingResponder];
+    configuration = [v7 _textFormattingResponder];
 
-    if (v4 && ([v4 isFirstResponder] & 1) == 0)
+    if (configuration && ([configuration isFirstResponder] & 1) == 0)
     {
-      if ([v4 canBecomeFirstResponder])
+      if ([configuration canBecomeFirstResponder])
       {
-        [v4 becomeFirstResponder];
+        [configuration becomeFirstResponder];
       }
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v4 viewWillDisappear:a3];
+  [(UIViewController *)&v4 viewWillDisappear:disappear];
   if ([(UIViewController *)self isBeingDismissed])
   {
     [(UITextFormattingViewController *)self _modifyKeyboardTrackingIfNeededForType:3 start:1];
@@ -348,11 +348,11 @@
   [(UITextFormattingViewController *)self _textViewFormattingWillEnd];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v9 viewDidDisappear:a3];
+  [(UIViewController *)&v9 viewDidDisappear:disappear];
   if ([(UIViewController *)self isBeingDismissed])
   {
     [(UITextFormattingViewController *)self _modifyKeyboardTrackingIfNeededForType:3 start:0];
@@ -410,21 +410,21 @@
     [(UIView *)self->_containerView addSubview:self->_contentView];
     [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
     v36 = MEMORY[0x1E69977A0];
-    v46 = [(UIView *)self->_contentView topAnchor];
-    v44 = [(UIView *)self->_containerView topAnchor];
-    v42 = [v46 constraintEqualToAnchor:v44];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(UIView *)self->_containerView topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[0] = v42;
-    v40 = [(UIView *)self->_contentView leadingAnchor];
-    v38 = [(UIView *)self->_containerView leadingAnchor];
-    v8 = [v40 constraintEqualToAnchor:v38];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v49[1] = v8;
-    v9 = [(UIView *)self->_contentView trailingAnchor];
-    v10 = [(UIView *)self->_containerView trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v49[2] = v11;
-    v12 = [(UIView *)self->_contentView bottomAnchor];
-    v13 = [(UIView *)self->_containerView bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_containerView bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
     [v36 activateConstraints:v15];
@@ -432,27 +432,27 @@
 
   [(UIView *)self->_contentView addSubview:self->_contentStackView];
   [(UIStackView *)self->_contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v39 = [(UIStackView *)self->_contentStackView axis];
+  axis = [(UIStackView *)self->_contentStackView axis];
   v33 = MEMORY[0x1E69977A0];
-  v45 = [(UIView *)self->_contentStackView topAnchor];
-  v47 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v43 = [v47 topAnchor];
-  v41 = [v45 constraintEqualToAnchor:v43];
+  topAnchor3 = [(UIView *)self->_contentStackView topAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v48[0] = v41;
-  v35 = [(UIView *)self->_contentStackView leadingAnchor];
-  v37 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v34 = [v37 leadingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v34];
+  leadingAnchor3 = [(UIView *)self->_contentStackView leadingAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v48[1] = v32;
-  v31 = [(UIView *)self->_contentStackView trailingAnchor];
-  v16 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v17 = [v16 trailingAnchor];
-  v18 = [v31 constraintEqualToAnchor:v17];
+  trailingAnchor3 = [(UIView *)self->_contentStackView trailingAnchor];
+  safeAreaLayoutGuide3 = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide3 trailingAnchor];
+  v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v48[2] = v18;
-  v19 = [(UIView *)self->_contentStackView bottomAnchor];
-  v20 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  bottomAnchor3 = [(UIView *)self->_contentStackView bottomAnchor];
+  safeAreaLayoutGuide4 = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide4 bottomAnchor];
+  v22 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v48[3] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:4];
   [v33 activateConstraints:v23];
@@ -460,16 +460,16 @@
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    v25 = [(_TFTextFormattingContentViewController *)contentViewController view];
-    [v25 removeFromSuperview];
+    view = [(_TFTextFormattingContentViewController *)contentViewController view];
+    [view removeFromSuperview];
 
     [(_TFTextFormattingContentViewController *)self->_contentViewController removeFromParentViewController];
     [(_TFTextFormattingContentViewController *)self->_contentViewController willMoveToParentViewController:self];
-    v26 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+    view2 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
     LODWORD(v27) = 1148846080;
-    [v26 setContentCompressionResistancePriority:v39 == UILayoutConstraintAxisVertical forAxis:v27];
+    [view2 setContentCompressionResistancePriority:axis == UILayoutConstraintAxisVertical forAxis:v27];
     [(UIViewController *)self addChildViewController:self->_contentViewController];
-    [(UIStackView *)self->_contentStackView addArrangedSubview:v26];
+    [(UIStackView *)self->_contentStackView addArrangedSubview:view2];
     [(_TFTextFormattingContentViewController *)self->_contentViewController didMoveToParentViewController:self];
   }
 
@@ -477,12 +477,12 @@
   {
     v28 = objc_opt_new();
     LODWORD(v29) = 1132068864;
-    [v28 setContentHuggingPriority:v39 == UILayoutConstraintAxisVertical forAxis:v29];
+    [v28 setContentHuggingPriority:axis == UILayoutConstraintAxisVertical forAxis:v29];
     [(UIStackView *)self->_contentStackView addArrangedSubview:v28];
   }
 
-  v30 = [(UIViewController *)self parentViewController];
-  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:v30];
+  parentViewController = [(UIViewController *)self parentViewController];
+  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:parentViewController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -491,64 +491,64 @@
   v4.super_class = UITextFormattingViewController;
   [(UIViewController *)&v4 viewWillLayoutSubviews];
   [(UITextFormattingViewController *)self _updateScrollViewContentSizeIfNeeded];
-  v3 = [(UITextFormattingViewController *)self _useLandscapeLayout];
-  if (v3 != [(UITextFormattingViewControllerConfiguration *)self->_configuration _useLandscapeLayout])
+  _useLandscapeLayout = [(UITextFormattingViewController *)self _useLandscapeLayout];
+  if (_useLandscapeLayout != [(UITextFormattingViewControllerConfiguration *)self->_configuration _useLandscapeLayout])
   {
     [(UITextFormattingViewController *)self _updateInternalConfigurationProperties];
     [(UITextFormattingViewController *)self _updateChildControllersConfiguration];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = UITextFormattingViewController;
-  v4 = a3;
-  [(UIViewController *)&v5 willMoveToParentViewController:v4];
-  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(UIViewController *)&v5 willMoveToParentViewController:controllerCopy];
+  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:controllerCopy, v5.receiver, v5.super_class];
 
-  [(UITextFormattingViewControllerConfiguration *)self->_configuration _setHasParentViewController:v4 != 0];
+  [(UITextFormattingViewControllerConfiguration *)self->_configuration _setHasParentViewController:controllerCopy != 0];
   [(UITextFormattingViewController *)self _updateChildControllersConfiguration];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = UITextFormattingViewController;
-  v4 = a3;
-  [(UIViewController *)&v5 didMoveToParentViewController:v4];
-  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(UIViewController *)&v5 didMoveToParentViewController:controllerCopy];
+  [(UITextFormattingViewController *)self _reconfigureViewHierarchyForParentController:controllerCopy, v5.receiver, v5.super_class];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(UITextFormattingViewController *)self _updateContentSizeForAppearance:0];
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v6 = a4;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v6;
+    v5 = presentationControllerCopy;
     [v5 setPrefersEdgeAttachedInCompactHeight:1];
     [v5 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
     [(UITextFormattingViewController *)self _resetDetentsForSheetController:v5 invalidate:0];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v35.receiver = self;
   v35.super_class = UITextFormattingViewController;
-  [(UIViewController *)&v35 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(UIViewController *)&v35 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = [(UIViewController *)self _existingPresentationControllerImmediate:0 effective:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -559,7 +559,7 @@
     v33[3] = &unk_1E70F4990;
     v33[4] = self;
     v34 = v8;
-    [v7 animateAlongsideTransition:v33 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v33 completion:0];
   }
 
   [(UITextFormattingViewController *)self _updateInternalConfigurationProperties];
@@ -570,16 +570,16 @@
   v30[3] = "";
   v31 = 0u;
   v32 = 0u;
-  v9 = [(UIViewController *)self view];
-  v10 = [(UIViewController *)self view];
-  [v10 frame];
+  view = [(UIViewController *)self view];
+  view2 = [(UIViewController *)self view];
+  [view2 frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIViewController *)self view];
-  v20 = [v19 window];
-  [v9 convertRect:v20 toView:{v12, v14, v16, v18}];
+  view3 = [(UIViewController *)self view];
+  window = [view3 window];
+  [view convertRect:window toView:{v12, v14, v16, v18}];
   *&v31 = v21;
   *(&v31 + 1) = v22;
   *&v32 = v23;
@@ -605,7 +605,7 @@
   v25[3] = &unk_1E70F5A98;
   v25[4] = self;
   v25[5] = v30;
-  [v7 animateAlongsideTransition:v26 completion:v25];
+  [coordinatorCopy animateAlongsideTransition:v26 completion:v25];
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v30, 8);
 }
@@ -643,12 +643,12 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   return [*(a1 + 32) _modifyKeyboardTrackingIfNeededForType:1 fromFrame:0 toFrame:v1[4] start:{v1[5], v1[6], v1[7], v2[4], v2[5], v2[6], v2[7]}];
 }
 
-- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)a3 screenSize:(CGSize)a4
+- (CGSize)_formSheetSizeForWindowWithSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = screenSize.height;
+  width = screenSize.width;
+  v6 = size.height;
+  v7 = size.width;
   if ([(UITextFormattingViewControllerConfiguration *)self->_configuration _textViewConfiguration])
   {
     [UIViewController defaultFormSheetSizeForScreenSize:width, height];
@@ -671,39 +671,39 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   return result;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   configuration = self->_configuration;
   self->_configuration = v4;
 
   [(UITextFormattingViewController *)self _updateChildControllersConfiguration];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   remoteViewController = self->_remoteViewController;
-  if (remoteViewController != v5)
+  if (remoteViewController != controllerCopy)
   {
-    v9 = v5;
-    v7 = [(UIViewController *)remoteViewController view];
-    [v7 removeFromSuperview];
+    v9 = controllerCopy;
+    view = [(UIViewController *)remoteViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_remoteViewController removeFromParentViewController];
-    objc_storeStrong(&self->_remoteViewController, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_remoteViewController, controller);
+    controllerCopy = v9;
     if (self->_remoteViewController)
     {
       [(UIViewController *)v9 willMoveToParentViewController:self];
-      v8 = [(UIViewController *)v9 view];
+      view2 = [(UIViewController *)v9 view];
       [(UIViewController *)self addChildViewController:v9];
-      [(UIStackView *)self->_contentStackView addArrangedSubview:v8];
+      [(UIStackView *)self->_contentStackView addArrangedSubview:view2];
       [(UIViewController *)v9 didMoveToParentViewController:self];
       [(UITextFormattingViewController *)self _computeContentSize];
       [(UIViewController *)self setPreferredContentSize:?];
 
-      v5 = v9;
+      controllerCopy = v9;
     }
   }
 }
@@ -715,13 +715,13 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   return v2;
 }
 
-- (void)setFormattingDescriptor:(id)a3
+- (void)setFormattingDescriptor:(id)descriptor
 {
   conversionHandler = self->__conversionHandler;
   self->__conversionHandler = 0;
-  v5 = a3;
+  descriptorCopy = descriptor;
 
-  v6 = [v5 copy];
+  v6 = [descriptorCopy copy];
   formattingDescriptor = self->_formattingDescriptor;
   self->_formattingDescriptor = v6;
 
@@ -730,19 +730,19 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   [(UITextFormattingViewController *)self _updateFormattingDescriptor:v8];
 }
 
-- (void)_setEditResponder:(id)a3
+- (void)_setEditResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   [(UITextFormattingViewController *)self _cleanupForEditResponder];
-  objc_storeWeak(&self->__editResponder, v4);
+  objc_storeWeak(&self->__editResponder, responderCopy);
 
   [(UITextFormattingViewController *)self _setupForEditResponder];
 }
 
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data
 {
-  v19 = a3;
-  v5 = a4;
+  valueCopy = value;
+  dataCopy = data;
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -753,10 +753,10 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  if (v5)
+  if (dataCopy)
   {
     v20 = 0;
-    v16 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v15 fromData:v5 error:&v20];
+    v16 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v15 fromData:dataCopy error:&v20];
     v17 = v20;
   }
 
@@ -766,18 +766,18 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
     v16 = 0;
   }
 
-  [(UITextFormattingViewController *)self _textFormattingDidChangeValue:v19 textAttributes:v16];
+  [(UITextFormattingViewController *)self _textFormattingDidChangeValue:valueCopy textAttributes:v16];
 }
 
 - (void)_textFormattingDidFinish
 {
-  v3 = [(UITextFormattingViewController *)self delegate];
+  delegate = [(UITextFormattingViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UITextFormattingViewController *)self delegate];
-    [v5 textFormattingDidFinish:self];
+    delegate2 = [(UITextFormattingViewController *)self delegate];
+    [delegate2 textFormattingDidFinish:self];
   }
 
   [(UIViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -853,19 +853,19 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
   }
 }
 
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = picker.size.height;
+  width = picker.size.width;
+  y = picker.origin.y;
+  x = picker.origin.x;
+  colorCopy = color;
   v10 = objc_alloc_init(UIColorPickerViewController);
-  [(UIColorPickerViewController *)v10 setSelectedColor:v9];
+  [(UIColorPickerViewController *)v10 setSelectedColor:colorCopy];
   [(UIColorPickerViewController *)v10 setSupportsAlpha:0];
   [(UIColorPickerViewController *)v10 _setSupportsEyedropper:0];
   [(UIColorPickerViewController *)v10 _setShowsGridOnly:1];
-  v11 = [(UITextFormattingViewController *)self delegate];
+  delegate = [(UITextFormattingViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if ((v12 & 1) == 0 || (-[UITextFormattingViewController delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 textFormattingViewController:self shouldPresentColorPicker:v10], v13, v14))
@@ -887,7 +887,7 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
         if (v19)
         {
           v20 = objc_loadWeakRetained(&self->_preferredColorPickerPresentationViewController);
-          v21 = [(UITextFormattingViewController *)self _editResponder];
+          _editResponder = [(UITextFormattingViewController *)self _editResponder];
           self->_shouldSkipStoppingKeyboardSuppressionOnDidDisappear = 1;
           v22 = objc_loadWeakRetained(&self->_internalDelegate);
           objc_initWeak(&location, v22);
@@ -895,7 +895,7 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
           v33[1] = 3221225472;
           v33[2] = __68__UITextFormattingViewController__presentColorPicker_selectedColor___block_invoke;
           v33[3] = &unk_1E711B1F8;
-          v23 = v21;
+          v23 = _editResponder;
           v34 = v23;
           v35 = v10;
           v24 = v20;
@@ -912,19 +912,19 @@ uint64_t __85__UITextFormattingViewController_viewWillTransitionToSize_withTrans
 
     [(UIColorPickerViewController *)v10 setDelegate:self];
     [(UIViewController *)v10 setModalPresentationStyle:7];
-    v25 = [(UIViewController *)v10 popoverPresentationController];
-    v26 = [(UIViewController *)self view];
-    [v25 setSourceView:v26];
+    popoverPresentationController = [(UIViewController *)v10 popoverPresentationController];
+    view = [(UIViewController *)self view];
+    [popoverPresentationController setSourceView:view];
 
-    v27 = [(UIViewController *)v10 popoverPresentationController];
-    v28 = [(UIViewController *)self view];
-    v29 = [v28 window];
-    v30 = [(UIViewController *)self view];
-    [v29 convertRect:v30 toView:{x, y, width, height}];
-    [v27 setSourceRect:?];
+    popoverPresentationController2 = [(UIViewController *)v10 popoverPresentationController];
+    view2 = [(UIViewController *)self view];
+    window = [view2 window];
+    view3 = [(UIViewController *)self view];
+    [window convertRect:view3 toView:{x, y, width, height}];
+    [popoverPresentationController2 setSourceRect:?];
 
-    v31 = [(UIViewController *)v10 popoverPresentationController];
-    [v31 setPermittedArrowDirections:15];
+    popoverPresentationController3 = [(UIViewController *)v10 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:15];
 
     if (![(UIViewController *)self _isInPopoverPresentation])
     {
@@ -978,41 +978,41 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
   }
 }
 
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UITextFormattingViewController *)self configuration];
-  v9 = [v8 fontPickerConfiguration];
-  v10 = v9;
-  if (v9)
+  configurationCopy = configuration;
+  fontsCopy = fonts;
+  configuration = [(UITextFormattingViewController *)self configuration];
+  fontPickerConfiguration = [configuration fontPickerConfiguration];
+  v10 = fontPickerConfiguration;
+  if (fontPickerConfiguration)
   {
-    v11 = v9;
+    v11 = fontPickerConfiguration;
   }
 
   else
   {
-    v11 = v6;
+    v11 = configurationCopy;
   }
 
   v12 = v11;
 
   v13 = [[UIFontPickerViewController alloc] initWithConfiguration:v12];
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(fontsCopy, "count")}];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __84__UITextFormattingViewController__presentFontPickerWithConfiguration_selectedFonts___block_invoke;
   v45[3] = &unk_1E712CCF8;
   v15 = v14;
   v46 = v15;
-  [v7 enumerateObjectsUsingBlock:v45];
+  [fontsCopy enumerateObjectsUsingBlock:v45];
   [(UIFontPickerViewController *)v13 _setSelectedFontDescriptors:v15];
-  v16 = [(UITextFormattingViewController *)self delegate];
+  delegate = [(UITextFormattingViewController *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if ((v17 & 1) == 0 || (-[UITextFormattingViewController delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 textFormattingViewController:self shouldPresentFontPicker:v13], v18, v19))
   {
-    [(UIFontPickerViewController *)v13 _setSelectedFontDescriptors:v15, v6];
+    [(UIFontPickerViewController *)v13 _setSelectedFontDescriptors:v15, configurationCopy];
     WeakRetained = objc_loadWeakRetained(&self->_preferredFontPickerPresentationViewController);
     if (WeakRetained)
     {
@@ -1030,7 +1030,7 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
         if (v24)
         {
           v25 = objc_loadWeakRetained(&self->_preferredFontPickerPresentationViewController);
-          v26 = [(UITextFormattingViewController *)self _editResponder];
+          _editResponder = [(UITextFormattingViewController *)self _editResponder];
           self->_shouldSkipStoppingKeyboardSuppressionOnDidDisappear = 1;
           v27 = objc_loadWeakRetained(&self->_internalDelegate);
           objc_initWeak(&location, v27);
@@ -1038,8 +1038,8 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
           v38[1] = 3221225472;
           v38[2] = __84__UITextFormattingViewController__presentFontPickerWithConfiguration_selectedFonts___block_invoke_2;
           v38[3] = &unk_1E712CD20;
-          v39 = v7;
-          v28 = v26;
+          v39 = fontsCopy;
+          v28 = _editResponder;
           v40 = v28;
           v41 = v13;
           v29 = v25;
@@ -1049,18 +1049,18 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
           objc_destroyWeak(&v43);
 
           objc_destroyWeak(&location);
-          v6 = v36;
+          configurationCopy = v36;
           goto LABEL_15;
         }
       }
     }
 
     [(UIFontPickerViewController *)v13 setDelegate:self];
-    v30 = [(UIViewController *)v13 sheetPresentationController];
-    [v30 setPrefersEdgeAttachedInCompactHeight:1];
+    sheetPresentationController = [(UIViewController *)v13 sheetPresentationController];
+    [sheetPresentationController setPrefersEdgeAttachedInCompactHeight:1];
 
-    v31 = [(UIViewController *)v13 sheetPresentationController];
-    [v31 setWidthFollowsPreferredContentSizeWhenEdgeAttached:0];
+    sheetPresentationController2 = [(UIViewController *)v13 sheetPresentationController];
+    [sheetPresentationController2 setWidthFollowsPreferredContentSizeWhenEdgeAttached:0];
 
     [(UITextFormattingViewController *)self _stopSuppressingKeyboardForTextFormatting];
     [(UITextFormattingViewController *)self _textFormattingRequestsFirstResponderResignation];
@@ -1072,11 +1072,11 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
     v37[4] = self;
     [(UIViewController *)self presentViewController:v13 animated:1 completion:v37];
     objc_storeStrong(&self->_fontPicker, v13);
-    v32 = [v7 firstObject];
-    if (v32)
+    firstObject = [fontsCopy firstObject];
+    if (firstObject)
     {
-      v33 = [v7 firstObject];
-      [v33 pointSize];
+      firstObject2 = [fontsCopy firstObject];
+      [firstObject2 pointSize];
       self->_selectedFontSize = v34;
     }
 
@@ -1086,7 +1086,7 @@ void __68__UITextFormattingViewController__presentColorPicker_selectedColor___bl
       self->_selectedFontSize = v35;
     }
 
-    v6 = v36;
+    configurationCopy = v36;
   }
 
 LABEL_15:
@@ -1146,10 +1146,10 @@ void __84__UITextFormattingViewController__presentFontPickerWithConfiguration_se
   }
 }
 
-- (void)_presentTypographySettingsForFont:(id)a3
+- (void)_presentTypographySettingsForFont:(id)font
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fontCopy = font;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -1182,9 +1182,9 @@ void __84__UITextFormattingViewController__presentFontPickerWithConfiguration_se
   {
     [(UIViewController *)self preferredContentSize];
     v10 = v9;
-    v11 = [(UITextFormattingViewControllerConfiguration *)self->_configuration _useLandscapeLayout];
+    _useLandscapeLayout = [(UITextFormattingViewControllerConfiguration *)self->_configuration _useLandscapeLayout];
     v12 = 0.0;
-    if (v11)
+    if (_useLandscapeLayout)
     {
       v12 = 25.0;
     }
@@ -1199,47 +1199,47 @@ void __84__UITextFormattingViewController__presentFontPickerWithConfiguration_se
     v14 = +[UISheetPresentationControllerDetent largeDetent];
     v27[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-    v16 = [(UIViewController *)v8 sheetPresentationController];
-    [v16 setDetents:v15];
+    sheetPresentationController = [(UIViewController *)v8 sheetPresentationController];
+    [sheetPresentationController setDetents:v15];
 
-    v17 = [(UIViewController *)v8 sheetPresentationController];
-    [v17 setLargestUndimmedDetentIdentifier:@"com.apple.UIKit.textFormattingFontPicker"];
+    sheetPresentationController2 = [(UIViewController *)v8 sheetPresentationController];
+    [sheetPresentationController2 setLargestUndimmedDetentIdentifier:@"com.apple.UIKit.textFormattingFontPicker"];
 
-    v18 = [(UIViewController *)v8 sheetPresentationController];
-    [v18 setPrefersEdgeAttachedInCompactHeight:1];
+    sheetPresentationController3 = [(UIViewController *)v8 sheetPresentationController];
+    [sheetPresentationController3 setPrefersEdgeAttachedInCompactHeight:1];
 
-    v19 = [(UIViewController *)v8 sheetPresentationController];
-    [v19 setWidthFollowsPreferredContentSizeWhenEdgeAttached:0];
+    sheetPresentationController4 = [(UIViewController *)v8 sheetPresentationController];
+    [sheetPresentationController4 setWidthFollowsPreferredContentSizeWhenEdgeAttached:0];
 
-    v20 = [(UIViewController *)v8 sheetPresentationController];
-    [v20 setPrefersGrabberVisible:1];
+    sheetPresentationController5 = [(UIViewController *)v8 sheetPresentationController];
+    [sheetPresentationController5 setPrefersGrabberVisible:1];
   }
 
   [(UIViewController *)self presentViewController:v8 animated:1 completion:0];
-  [v7 _setSelectedFont:v4];
+  [v7 _setSelectedFont:fontCopy];
 }
 
-- (void)_resetDetentsForSheetController:(id)a3 invalidate:(BOOL)a4
+- (void)_resetDetentsForSheetController:(id)controller invalidate:(BOOL)invalidate
 {
-  v4 = a4;
+  invalidateCopy = invalidate;
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v7 = [v6 detents];
-  v8 = [v7 count] == 0;
+  detents = [controllerCopy detents];
+  v8 = [detents count] == 0;
 
   if (!v8)
   {
-    v9 = [v6 detents];
+    detents2 = [controllerCopy detents];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__UITextFormattingViewController__resetDetentsForSheetController_invalidate___block_invoke;
     v15[3] = &unk_1E712CD48;
     v15[4] = &v16;
-    [v9 enumerateObjectsUsingBlock:v15];
+    [detents2 enumerateObjectsUsingBlock:v15];
   }
 
   if (*(v17 + 24) == 1)
@@ -1253,7 +1253,7 @@ void __84__UITextFormattingViewController__presentFontPickerWithConfiguration_se
     v11 = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"com.apple.UIKit.textFormatting" resolver:v14];
     v20[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    [v6 setDetents:v12];
+    [controllerCopy setDetents:v12];
 
     if ([(UITextFormattingViewControllerConfiguration *)self->_configuration _preferringDimmingVisible])
     {
@@ -1265,10 +1265,10 @@ void __84__UITextFormattingViewController__presentFontPickerWithConfiguration_se
       v13 = @"com.apple.UIKit.textFormatting";
     }
 
-    [v6 setLargestUndimmedDetentIdentifier:v13];
-    if (v4)
+    [controllerCopy setLargestUndimmedDetentIdentifier:v13];
+    if (invalidateCopy)
     {
-      [v6 invalidateDetents];
+      [controllerCopy invalidateDetents];
     }
   }
 
@@ -1294,19 +1294,19 @@ void __77__UITextFormattingViewController__resetDetentsForSheetController_invali
 
 - (BOOL)_useLandscapeLayout
 {
-  v3 = [(UIViewController *)self _window];
-  v4 = v3;
-  if (v3)
+  _window = [(UIViewController *)self _window];
+  v4 = _window;
+  if (_window)
   {
-    [v3 frame];
+    [_window frame];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(UIViewController *)self view];
-    [v9 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
     v6 = v10;
     v8 = v11;
   }
@@ -1314,17 +1314,17 @@ void __77__UITextFormattingViewController__resetDetentsForSheetController_invali
   return [(UITextFormattingViewController *)self _useLandscapeLayoutForSize:v6, v8];
 }
 
-- (BOOL)_useLandscapeLayoutForSize:(CGSize)a3
+- (BOOL)_useLandscapeLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(UIViewController *)self _isInPopoverPresentation])
   {
     return 0;
   }
 
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
   v8 = +[UIDevice currentDevice];
   [v8 orientation];
@@ -1335,17 +1335,17 @@ void __77__UITextFormattingViewController__resetDetentsForSheetController_invali
     v9 = 0;
   }
 
-  return !v7 && v9;
+  return !userInterfaceIdiom && v9;
 }
 
 - (void)_updateInternalConfigurationProperties
 {
   [(UITextFormattingViewControllerConfiguration *)self->_configuration _setHasPopoverPresentation:[(UIViewController *)self _isInPopoverPresentation]];
   [(UITextFormattingViewControllerConfiguration *)self->_configuration _setUseLandscapeLayout:[(UITextFormattingViewController *)self _useLandscapeLayout]];
-  v3 = [(UITextFormattingViewController *)self configuration];
-  v4 = [v3 _isTextAnimationsConfiguration];
+  configuration = [(UITextFormattingViewController *)self configuration];
+  _isTextAnimationsConfiguration = [configuration _isTextAnimationsConfiguration];
 
-  if (v4)
+  if (_isTextAnimationsConfiguration)
   {
     if ([(UIViewController *)self _isInPopoverPresentation])
     {
@@ -1354,16 +1354,16 @@ void __77__UITextFormattingViewController__resetDetentsForSheetController_invali
 
     else
     {
-      v7 = [(UIViewController *)self view];
-      [v7 bounds];
+      view = [(UIViewController *)self view];
+      [view bounds];
       v5 = v8 <= 320.0;
     }
 
     v9 = +[UIDevice currentDevice];
     v10 = [v9 _deviceInfoForKey:@"main-screen-class"];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
-    v6 = v11 == 28 || (v11 & 0xFFFFFFFE) == 6 || v5;
+    v6 = integerValue == 28 || (integerValue & 0xFFFFFFFE) == 6 || v5;
   }
 
   else
@@ -1385,40 +1385,40 @@ void __77__UITextFormattingViewController__resetDetentsForSheetController_invali
   [(_TFTextFormattingContentViewController *)contentViewController _setConfiguration:configuration];
 }
 
-- (void)_sendUpdatesToEditResponder:(id)a3
+- (void)_sendUpdatesToEditResponder:(id)responder
 {
-  v12 = a3;
-  v4 = [(UITextFormattingViewController *)self _textView];
-  if (v12 && v4)
+  responderCopy = responder;
+  _textView = [(UITextFormattingViewController *)self _textView];
+  if (responderCopy && _textView)
   {
-    v5 = [v4 selectedTextRange];
-    v6 = [v5 isEmpty];
+    selectedTextRange = [_textView selectedTextRange];
+    isEmpty = [selectedTextRange isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = MakeConversionHandler(v12);
-      v8 = [v4 typingAttributes];
-      v9 = (v7)[2](v7, v8);
-      [v4 setTypingAttributes:v9];
+      v7 = MakeConversionHandler(responderCopy);
+      typingAttributes = [_textView typingAttributes];
+      v9 = (v7)[2](v7, typingAttributes);
+      [_textView setTypingAttributes:v9];
 
       if (objc_opt_respondsToSelector())
       {
-        [v4 performSelector:sel__textFormattingOptionsNeedUpdate_ withObject:0];
+        [_textView performSelector:sel__textFormattingOptionsNeedUpdate_ withObject:0];
       }
     }
   }
 
-  else if (!v12)
+  else if (!responderCopy)
   {
     goto LABEL_10;
   }
 
-  v10 = [(UITextFormattingViewController *)self _editResponder];
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
 
-  if (v10)
+  if (_editResponder)
   {
-    v11 = [(UITextFormattingViewController *)self _editResponder];
-    SendUpdatesToEditResponder(v12, v11);
+    _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
+    SendUpdatesToEditResponder(responderCopy, _editResponder2);
   }
 
 LABEL_10:
@@ -1497,9 +1497,9 @@ LABEL_10:
       navBar = self->_navBar;
     }
 
-    v23 = [(UIView *)navBar superview];
+    superview = [(UIView *)navBar superview];
 
-    if (!v23)
+    if (!superview)
     {
       if (_UISolariumEnabled())
       {
@@ -1510,19 +1510,19 @@ LABEL_10:
       [(UIStackView *)self->_contentStackView insertArrangedSubview:self->_navBar atIndex:0];
     }
 
-    v24 = [(UIViewController *)self navigationItem];
-    [v24 setTitle:0];
+    navigationItem = [(UIViewController *)self navigationItem];
+    [navigationItem setTitle:0];
   }
 
   v25 = self->_navBar;
-  v26 = [(UIViewController *)self navigationItem];
-  v27 = v26;
+  navigationItem2 = [(UIViewController *)self navigationItem];
+  v27 = navigationItem2;
   if (v25)
   {
-    [v26 setTitle:0];
+    [navigationItem2 setTitle:0];
 
-    v28 = [(UIViewController *)self navigationItem];
-    [(UIBarButtonItem *)v28 setRightBarButtonItem:0];
+    navigationItem3 = [(UIViewController *)self navigationItem];
+    [(UIBarButtonItem *)navigationItem3 setRightBarButtonItem:0];
   }
 
   else
@@ -1531,26 +1531,26 @@ LABEL_10:
     v30 = [v29 localizedStringForKey:@"TEXT_FORMATTING_FORMAT" value:@"Format" table:@"Localizable"];
     [v27 setTitle:v30];
 
-    v28 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 primaryAction:0];
-    [(UIBarButtonItem *)v28 setAction:sel__textFormattingDidFinish];
-    [(UIBarButtonItem *)v28 setTarget:self];
-    v31 = [(UIViewController *)self navigationItem];
-    [v31 setRightBarButtonItem:v28];
+    navigationItem3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 primaryAction:0];
+    [(UIBarButtonItem *)navigationItem3 setAction:sel__textFormattingDidFinish];
+    [(UIBarButtonItem *)navigationItem3 setTarget:self];
+    navigationItem4 = [(UIViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:navigationItem3];
   }
 }
 
 - (BOOL)_useChildViewWidthForContentSize
 {
-  if ([(UIViewController *)self _isInPopoverPresentation]|| (v3 = [(UITextFormattingViewController *)self _useLandscapeLayout]))
+  if ([(UIViewController *)self _isInPopoverPresentation]|| (_isTextViewConfiguration = [(UITextFormattingViewController *)self _useLandscapeLayout]))
   {
-    v3 = [(UITextFormattingViewControllerConfiguration *)self->_configuration _isTextViewConfiguration];
-    if (v3)
+    _isTextViewConfiguration = [(UITextFormattingViewControllerConfiguration *)self->_configuration _isTextViewConfiguration];
+    if (_isTextViewConfiguration)
     {
-      LOBYTE(v3) = ![(UITextFormattingViewControllerConfiguration *)self->_configuration _isTextAnimationsConfiguration];
+      LOBYTE(_isTextViewConfiguration) = ![(UITextFormattingViewControllerConfiguration *)self->_configuration _isTextAnimationsConfiguration];
     }
   }
 
-  return v3;
+  return _isTextViewConfiguration;
 }
 
 - (CGSize)_computeContentSize
@@ -1593,8 +1593,8 @@ LABEL_10:
 
   else
   {
-    v13 = [(UIViewController *)self view];
-    [v13 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
     v5 = v14;
   }
 
@@ -1602,9 +1602,9 @@ LABEL_10:
   v16 = 0.0;
   if (navBar)
   {
-    v17 = [(UIView *)navBar superview];
+    superview = [(UIView *)navBar superview];
 
-    if (v17)
+    if (superview)
     {
       v18 = self->_navBar;
       [(UIView *)v18 frame];
@@ -1624,9 +1624,9 @@ LABEL_10:
   return result;
 }
 
-- (void)_updateContentSizeForAppearance:(BOOL)a3
+- (void)_updateContentSizeForAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   v88 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("TextFormattingUI", &qword_1ED49AEE0);
   if (*CategoryCachedImpl)
@@ -1669,37 +1669,37 @@ LABEL_10:
   v7 = self->_remoteViewController;
   if (v7)
   {
-    v8 = [(UIViewController *)v7 view];
-    [v8 frame];
+    view = [(UIViewController *)v7 view];
+    [view frame];
     v10 = v9;
     [(UIViewController *)self->_remoteViewController preferredContentSize];
     v12 = v11;
 
     if (v10 != v12)
     {
-      v13 = [(UIViewController *)self->_remoteViewController view];
-      [v13 frame];
+      view2 = [(UIViewController *)self->_remoteViewController view];
+      [view2 frame];
       v15 = v14;
       v17 = v16;
       v19 = v18;
 
       [(UIViewController *)self->_remoteViewController preferredContentSize];
       v21 = v20;
-      v22 = [(UIViewController *)self->_remoteViewController view];
-      [v22 setFrame:{v15, v17, v19, v21}];
+      view3 = [(UIViewController *)self->_remoteViewController view];
+      [view3 setFrame:{v15, v17, v19, v21}];
 
-      v23 = [(UIStackView *)self->_contentStackView arrangedSubviews];
-      v24 = [(UIViewController *)self->_remoteViewController view];
-      v25 = [v23 indexOfObject:v24];
+      arrangedSubviews = [(UIStackView *)self->_contentStackView arrangedSubviews];
+      view4 = [(UIViewController *)self->_remoteViewController view];
+      v25 = [arrangedSubviews indexOfObject:view4];
 
       if (v25 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v26 = [(UIViewController *)self->_remoteViewController view];
-        [v26 removeFromSuperview];
+        view5 = [(UIViewController *)self->_remoteViewController view];
+        [view5 removeFromSuperview];
 
         contentStackView = self->_contentStackView;
-        v28 = [(UIViewController *)self->_remoteViewController view];
-        [(UIStackView *)contentStackView insertArrangedSubview:v28 atIndex:v25];
+        view6 = [(UIViewController *)self->_remoteViewController view];
+        [(UIStackView *)contentStackView insertArrangedSubview:view6 atIndex:v25];
       }
     }
   }
@@ -1707,37 +1707,37 @@ LABEL_10:
   v29 = self->_contentViewController;
   if (v29)
   {
-    v30 = [(_TFTextFormattingContentViewController *)v29 view];
-    [v30 frame];
+    view7 = [(_TFTextFormattingContentViewController *)v29 view];
+    [view7 frame];
     v32 = v31;
     [(_TFTextFormattingContentViewController *)self->_contentViewController preferredContentSize];
     v34 = v33;
 
     if (v32 != v34)
     {
-      v35 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
-      [v35 frame];
+      view8 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+      [view8 frame];
       v37 = v36;
       v39 = v38;
       v41 = v40;
 
       [(_TFTextFormattingContentViewController *)self->_contentViewController preferredContentSize];
       v43 = v42;
-      v44 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
-      [v44 setFrame:{v37, v39, v41, v43}];
+      view9 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+      [view9 setFrame:{v37, v39, v41, v43}];
 
-      v45 = [(UIStackView *)self->_contentStackView arrangedSubviews];
-      v46 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
-      v47 = [v45 indexOfObject:v46];
+      arrangedSubviews2 = [(UIStackView *)self->_contentStackView arrangedSubviews];
+      view10 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+      v47 = [arrangedSubviews2 indexOfObject:view10];
 
       if (v47 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v48 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
-        [v48 removeFromSuperview];
+        view11 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+        [view11 removeFromSuperview];
 
         v49 = self->_contentStackView;
-        v50 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
-        [(UIStackView *)v49 insertArrangedSubview:v50 atIndex:v47];
+        view12 = [(_TFTextFormattingContentViewController *)self->_contentViewController view];
+        [(UIStackView *)v49 insertArrangedSubview:view12 atIndex:v47];
       }
     }
   }
@@ -1748,27 +1748,27 @@ LABEL_10:
   if (![(UITextFormattingViewController *)self _useChildViewWidthForContentSize])
   {
     [(UIViewController *)self preferredContentSize];
-    if ((v59 != v54 || v58 != v52) && v3)
+    if ((v59 != v54 || v58 != v52) && appearanceCopy)
     {
       if ([(UIViewController *)self _isInPopoverPresentation])
       {
-        v61 = [(UIViewController *)self popoverPresentationController];
+        popoverPresentationController = [(UIViewController *)self popoverPresentationController];
 
-        if (v61)
+        if (popoverPresentationController)
         {
-          v62 = [(UIViewController *)self popoverPresentationController];
-          v63 = [v62 arrowDirection];
+          popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+          arrowDirection = [popoverPresentationController2 arrowDirection];
 
-          if (v63 == 8 || v63 == 4)
+          if (arrowDirection == 8 || arrowDirection == 4)
           {
-            v64 = [(UIViewController *)self view];
-            [v64 bounds];
+            view13 = [(UIViewController *)self view];
+            [view13 bounds];
             v66 = v65;
-            v67 = [(UIViewController *)self view];
-            [v67 safeAreaInsets];
+            view14 = [(UIViewController *)self view];
+            [view14 safeAreaInsets];
             v69 = v66 - v68;
-            v70 = [(UIViewController *)self view];
-            [v70 safeAreaInsets];
+            view15 = [(UIViewController *)self view];
+            [view15 safeAreaInsets];
             v52 = v69 - v71;
           }
         }
@@ -1798,11 +1798,11 @@ LABEL_10:
   [(UITextFormattingViewController *)self _computeContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(UITextFormattingViewController *)self _scrollView];
-  if (v7)
+  _scrollView = [(UITextFormattingViewController *)self _scrollView];
+  if (_scrollView)
   {
-    v16 = v7;
-    [v7 contentSize];
+    v16 = _scrollView;
+    [_scrollView contentSize];
     if (v9 != v4 || v8 != v6)
     {
       [v16 setContentSize:{v4, v6}];
@@ -1810,14 +1810,14 @@ LABEL_10:
 
     [(UIView *)self->_contentView frame];
     v13 = v12 == v4 && v11 == v6;
-    v7 = v16;
+    _scrollView = v16;
     if (!v13)
     {
       [(UIView *)self->_contentView frame];
       v15 = v14;
       [(UIView *)self->_contentView frame];
       [(UIView *)self->_contentView setFrame:v15];
-      v7 = v16;
+      _scrollView = v16;
     }
   }
 }
@@ -1848,96 +1848,96 @@ LABEL_10:
   return v5;
 }
 
-- (void)_invokeEditResponderAction:(SEL)a3
+- (void)_invokeEditResponderAction:(SEL)action
 {
-  v5 = [(UITextFormattingViewController *)self _editResponder];
-  if (v5)
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
+  if (_editResponder)
   {
-    v6 = v5;
-    v7 = [(UITextFormattingViewController *)self _editResponder];
+    v6 = _editResponder;
+    _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(UITextFormattingViewController *)self _editResponder];
-      [v9 a3];
+      _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+      [_editResponder3 action];
     }
   }
 }
 
-- (void)_invokeEditResponderAction:(SEL)a3 withArgument:(id)a4
+- (void)_invokeEditResponderAction:(SEL)action withArgument:(id)argument
 {
-  v11 = a4;
-  v6 = [(UITextFormattingViewController *)self _editResponder];
-  if (v6)
+  argumentCopy = argument;
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
+  if (_editResponder)
   {
-    v7 = v6;
-    v8 = [(UITextFormattingViewController *)self _editResponder];
+    v7 = _editResponder;
+    _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(UITextFormattingViewController *)self _editResponder];
-      [v10 a3];
+      _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+      [_editResponder3 action];
     }
   }
 }
 
-- (void)_applyTextViewHighlightWithChangeValue:(id)a3
+- (void)_applyTextViewHighlightWithChangeValue:(id)value
 {
-  v13 = a3;
-  v4 = [(UITextFormattingViewController *)self _textView];
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  _textView = [(UITextFormattingViewController *)self _textView];
+  v5 = _textView;
+  if (_textView)
   {
-    v6 = [v4 selectedTextRange];
-    v7 = _NSTextHighlightColorSchemeForTextFormattingChangeValue(v13);
-    if ([v6 isEmpty])
+    selectedTextRange = [_textView selectedTextRange];
+    v7 = _NSTextHighlightColorSchemeForTextFormattingChangeValue(valueCopy);
+    if ([selectedTextRange isEmpty])
     {
       v8 = objc_opt_new();
-      v9 = v8;
+      selectedTextRange2 = v8;
       if (v7)
       {
         [v8 setObject:*off_1E70ECA88 forKey:*off_1E70ECA80];
-        [v9 setObject:v7 forKey:*off_1E70ECA40];
+        [selectedTextRange2 setObject:v7 forKey:*off_1E70ECA40];
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
-        [v9 setObject:v11 forKey:*off_1E70ECA80];
+        null = [MEMORY[0x1E695DFB0] null];
+        [selectedTextRange2 setObject:null forKey:*off_1E70ECA80];
 
-        v12 = [MEMORY[0x1E695DFB0] null];
-        [v9 setObject:v12 forKey:*off_1E70ECA40];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        [selectedTextRange2 setObject:null2 forKey:*off_1E70ECA40];
       }
 
-      [(UITextFormattingViewController *)self _sendUpdatesToEditResponder:v9];
+      [(UITextFormattingViewController *)self _sendUpdatesToEditResponder:selectedTextRange2];
     }
 
     else if (v7)
     {
       v10 = *off_1E70ECA88;
-      v9 = [v5 selectedTextRange];
-      [v5 _applyHighlightStyle:v10 colorScheme:v7 toTextRange:v9];
+      selectedTextRange2 = [v5 selectedTextRange];
+      [v5 _applyHighlightStyle:v10 colorScheme:v7 toTextRange:selectedTextRange2];
     }
 
     else
     {
-      v9 = [v5 selectedTextRange];
-      [v5 _removeHighlightsFromTextRange:v9];
+      selectedTextRange2 = [v5 selectedTextRange];
+      [v5 _removeHighlightsFromTextRange:selectedTextRange2];
     }
   }
 }
 
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributes:(id)a4
+- (void)_textFormattingDidChangeValue:(id)value textAttributes:(id)attributes
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  valueCopy = value;
+  attributesCopy = attributes;
+  v8 = attributesCopy;
+  if (attributesCopy)
   {
-    v9 = MakeConversionHandler(v7);
+    v9 = MakeConversionHandler(attributesCopy);
   }
 
   else
@@ -1953,26 +1953,26 @@ LABEL_10:
   {
   }
 
-  v12 = [(UITextFormattingViewController *)self _editResponder];
-  if (!v12)
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
+  if (!_editResponder)
   {
 LABEL_15:
-    v22 = [(UITextFormattingViewController *)self delegate];
+    delegate = [(UITextFormattingViewController *)self delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v19 = [(UITextFormattingViewController *)self delegate];
-      [v19 textFormattingViewController:self didChangeValue:v6];
+      delegate2 = [(UITextFormattingViewController *)self delegate];
+      [delegate2 textFormattingViewController:self didChangeValue:valueCopy];
       goto LABEL_40;
     }
 
-    v24 = [(UITextFormattingViewController *)self configuration];
-    v25 = [v24 _isTextAnimationsConfiguration];
+    configuration = [(UITextFormattingViewController *)self configuration];
+    _isTextAnimationsConfiguration = [configuration _isTextAnimationsConfiguration];
 
-    if (v25 && ([v6 _textAnimationAttributes], v26 = objc_claimAutoreleasedReturnValue(), v8 | v26))
+    if (_isTextAnimationsConfiguration && ([valueCopy _textAnimationAttributes], v26 = objc_claimAutoreleasedReturnValue(), v8 | v26))
     {
-      v19 = v26;
+      delegate2 = v26;
       if (v26)
       {
         v34 = v26;
@@ -1983,147 +1983,147 @@ LABEL_15:
         v34 = v8;
       }
 
-      v35 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v19 = [(UITextFormattingViewController *)self _textView];
-      v27 = [v6 changeType];
-      v28 = [v27 isEqualToString:@"UITextFormattingViewControllerIncreaseFontSizeChange"];
+      delegate2 = [(UITextFormattingViewController *)self _textView];
+      changeType = [valueCopy changeType];
+      v28 = [changeType isEqualToString:@"UITextFormattingViewControllerIncreaseFontSizeChange"];
 
       if (v28)
       {
-        v29 = [(UITextFormattingViewController *)self _editResponder];
+        _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
 
-        if (!v29)
+        if (!_editResponder2)
         {
           goto LABEL_40;
         }
 
-        v30 = [(UITextFormattingViewController *)self _editResponder];
-        [v30 increaseSize:self];
+        _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+        [_editResponder3 increaseSize:self];
 LABEL_39:
 
         goto LABEL_40;
       }
 
-      v31 = [v6 changeType];
-      v32 = [v31 isEqualToString:@"UITextFormattingViewControllerDecreaseFontSizeChange"];
+      changeType2 = [valueCopy changeType];
+      v32 = [changeType2 isEqualToString:@"UITextFormattingViewControllerDecreaseFontSizeChange"];
 
       if (v32)
       {
-        v33 = [(UITextFormattingViewController *)self _editResponder];
+        _editResponder4 = [(UITextFormattingViewController *)self _editResponder];
 
-        if (!v33)
+        if (!_editResponder4)
         {
           goto LABEL_40;
         }
 
-        v30 = [(UITextFormattingViewController *)self _editResponder];
-        [v30 decreaseSize:self];
+        _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+        [_editResponder3 decreaseSize:self];
         goto LABEL_39;
       }
 
-      v36 = [v6 changeType];
-      v37 = [v36 isEqualToString:@"UITextFormattingViewControllerFontSizeChange"];
+      changeType3 = [valueCopy changeType];
+      v37 = [changeType3 isEqualToString:@"UITextFormattingViewControllerFontSizeChange"];
 
       if (v37)
       {
-        v38 = [(UITextFormattingViewController *)self _editResponder];
-        if (!v38)
+        _editResponder5 = [(UITextFormattingViewController *)self _editResponder];
+        if (!_editResponder5)
         {
           goto LABEL_40;
         }
 
-        v39 = v38;
-        v40 = [v6 numberValue];
+        v39 = _editResponder5;
+        numberValue = [valueCopy numberValue];
 
-        if (!v40)
+        if (!numberValue)
         {
           goto LABEL_40;
         }
 
         v72 = @"_UITextFormattingSizeAttributeName";
-        v41 = [v6 numberValue];
-        v73[0] = v41;
-        v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:&v72 count:1];
+        numberValue2 = [valueCopy numberValue];
+        v73[0] = numberValue2;
+        numberValue3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:&v72 count:1];
 
-        [(UITextFormattingViewController *)self _sendUpdatesToEditResponder:v42];
+        [(UITextFormattingViewController *)self _sendUpdatesToEditResponder:numberValue3];
         goto LABEL_34;
       }
 
-      v43 = [v6 changeType];
-      v44 = [v43 isEqualToString:@"UITextFormattingViewControllerSetBoldChange"];
+      changeType4 = [valueCopy changeType];
+      v44 = [changeType4 isEqualToString:@"UITextFormattingViewControllerSetBoldChange"];
 
-      if (v44 || ([v6 changeType], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "isEqualToString:", @"UITextFormattingViewControllerRemoveBoldChange"), v45, v46))
+      if (v44 || ([valueCopy changeType], v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "isEqualToString:", @"UITextFormattingViewControllerRemoveBoldChange"), v45, v46))
       {
-        v47 = [(UITextFormattingViewController *)self _editResponder];
+        _editResponder6 = [(UITextFormattingViewController *)self _editResponder];
 
-        if (!v47)
+        if (!_editResponder6)
         {
           goto LABEL_40;
         }
 
-        v30 = [(UITextFormattingViewController *)self _editResponder];
-        [v30 toggleBoldface:self];
+        _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+        [_editResponder3 toggleBoldface:self];
         goto LABEL_39;
       }
 
-      v51 = [v6 changeType];
-      v52 = [v51 isEqualToString:@"UITextFormattingViewControllerSetItalicChange"];
+      changeType5 = [valueCopy changeType];
+      v52 = [changeType5 isEqualToString:@"UITextFormattingViewControllerSetItalicChange"];
 
-      if (v52 || ([v6 changeType], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToString:", @"UITextFormattingViewControllerRemoveItalicChange"), v53, v54))
+      if (v52 || ([valueCopy changeType], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToString:", @"UITextFormattingViewControllerRemoveItalicChange"), v53, v54))
       {
-        v55 = [(UITextFormattingViewController *)self _editResponder];
+        _editResponder7 = [(UITextFormattingViewController *)self _editResponder];
 
-        if (!v55)
+        if (!_editResponder7)
         {
           goto LABEL_40;
         }
 
-        v30 = [(UITextFormattingViewController *)self _editResponder];
-        [v30 toggleItalics:self];
+        _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+        [_editResponder3 toggleItalics:self];
         goto LABEL_39;
       }
 
-      v56 = [v6 changeType];
-      v57 = [v56 isEqualToString:@"UITextFormattingViewControllerSetUnderlineChange"];
+      changeType6 = [valueCopy changeType];
+      v57 = [changeType6 isEqualToString:@"UITextFormattingViewControllerSetUnderlineChange"];
 
-      if (v57 || ([v6 changeType], v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqualToString:", @"UITextFormattingViewControllerRemoveUnderlineChange"), v58, v59))
+      if (v57 || ([valueCopy changeType], v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqualToString:", @"UITextFormattingViewControllerRemoveUnderlineChange"), v58, v59))
       {
-        v60 = [(UITextFormattingViewController *)self _editResponder];
+        _editResponder8 = [(UITextFormattingViewController *)self _editResponder];
 
-        if (!v60)
+        if (!_editResponder8)
         {
           goto LABEL_40;
         }
 
-        v30 = [(UITextFormattingViewController *)self _editResponder];
-        [v30 toggleUnderline:self];
+        _editResponder3 = [(UITextFormattingViewController *)self _editResponder];
+        [_editResponder3 toggleUnderline:self];
         goto LABEL_39;
       }
 
-      v61 = [v6 changeType];
-      v62 = [v61 isEqualToString:@"UITextFormattingViewControllerTextAlignmentChange"];
+      changeType7 = [valueCopy changeType];
+      v62 = [changeType7 isEqualToString:@"UITextFormattingViewControllerTextAlignmentChange"];
 
       if (v62)
       {
-        if ([v6 textAlignment])
+        if ([valueCopy textAlignment])
         {
-          if ([v6 textAlignment] == 1)
+          if ([valueCopy textAlignment] == 1)
           {
             v63 = sel_alignCenter_;
           }
 
-          else if ([v6 textAlignment] == 2)
+          else if ([valueCopy textAlignment] == 2)
           {
             v63 = sel_alignRight_;
           }
 
           else
           {
-            if ([v6 textAlignment] != 3)
+            if ([valueCopy textAlignment] != 3)
             {
               goto LABEL_40;
             }
@@ -2141,62 +2141,62 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v64 = [v6 changeType];
-      v65 = [v64 isEqualToString:@"UITextFormattingViewControllerLineHeightPointSizeChange"];
+      changeType8 = [valueCopy changeType];
+      v65 = [changeType8 isEqualToString:@"UITextFormattingViewControllerLineHeightPointSizeChange"];
 
       if (v65)
       {
-        v42 = [v6 numberValue];
-        [(UITextFormattingViewController *)self _invokeEditResponderAction:sel__changeLineHeightAction_newLineHeight_ withArgument:v42];
+        numberValue3 = [valueCopy numberValue];
+        [(UITextFormattingViewController *)self _invokeEditResponderAction:sel__changeLineHeightAction_newLineHeight_ withArgument:numberValue3];
 LABEL_34:
 
         goto LABEL_40;
       }
 
-      if (v19)
+      if (delegate2)
       {
-        v66 = [v6 changeType];
-        v67 = [v66 isEqualToString:@"UITextFormattingViewControllerHighlightChange"];
+        changeType9 = [valueCopy changeType];
+        v67 = [changeType9 isEqualToString:@"UITextFormattingViewControllerHighlightChange"];
 
         if (v67)
         {
-          [(UITextFormattingViewController *)self _applyTextViewHighlightWithChangeValue:v6];
+          [(UITextFormattingViewController *)self _applyTextViewHighlightWithChangeValue:valueCopy];
           goto LABEL_40;
         }
 
-        v69 = [v19 textStorage];
-        v70 = [v19 selectedRange];
-        v68 = [(UITextFormattingViewController *)self _adjustAttributesInTextStorage:v69 atRange:v70 forChangeValue:v71, v6];
+        textStorage = [delegate2 textStorage];
+        selectedRange = [delegate2 selectedRange];
+        valueCopy = [(UITextFormattingViewController *)self _adjustAttributesInTextStorage:textStorage atRange:selectedRange forChangeValue:v71, valueCopy];
       }
 
       else
       {
-        v68 = 0;
+        valueCopy = 0;
       }
 
-      if (!v8 || v68)
+      if (!v8 || valueCopy)
       {
         goto LABEL_40;
       }
 
-      v35 = self;
+      selfCopy2 = self;
       v34 = v8;
     }
 
-    [(UITextFormattingViewController *)v35 _sendUpdatesToEditResponder:v34];
+    [(UITextFormattingViewController *)selfCopy2 _sendUpdatesToEditResponder:v34];
     goto LABEL_40;
   }
 
-  v13 = v12;
-  v14 = [(UITextFormattingViewController *)self _editResponder];
+  v13 = _editResponder;
+  _editResponder9 = [(UITextFormattingViewController *)self _editResponder];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_15;
   }
 
-  v15 = [(UITextFormattingViewController *)self _editResponder];
-  v16 = [v15 performSelector:sel__shouldHandleTextFormattingChangeValue_ withObject:v6];
+  _editResponder10 = [(UITextFormattingViewController *)self _editResponder];
+  v16 = [_editResponder10 performSelector:sel__shouldHandleTextFormattingChangeValue_ withObject:valueCopy];
 
   if (v16)
   {
@@ -2205,18 +2205,18 @@ LABEL_34:
 
   if ([(UITextFormattingViewControllerConfiguration *)self->_configuration _isTextAnimationsConfiguration])
   {
-    v17 = [v6 changeType];
+    changeType10 = [valueCopy changeType];
 
-    if (v17 == @"UITextFormattingViewControllerCustomComponentSelectedChange")
+    if (changeType10 == @"UITextFormattingViewControllerCustomComponentSelectedChange")
     {
-      v18 = [(UITextFormattingViewController *)self _textView];
-      v19 = v18;
-      if (v18)
+      _textView = [(UITextFormattingViewController *)self _textView];
+      delegate2 = _textView;
+      if (_textView)
       {
-        v20 = [v18 selectedTextRange];
-        v21 = [v20 isEmpty];
+        selectedTextRange = [_textView selectedTextRange];
+        isEmpty = [selectedTextRange isEmpty];
 
-        if (v21)
+        if (isEmpty)
         {
           [(UITextFormattingViewController *)self _textFormattingDidFinish];
 LABEL_40:
@@ -2227,13 +2227,13 @@ LABEL_40:
     }
   }
 
-  v48 = [(UITextFormattingViewController *)self _editResponder];
+  _editResponder11 = [(UITextFormattingViewController *)self _editResponder];
   v49 = objc_opt_respondsToSelector();
 
   if (v49)
   {
-    v50 = [(UITextFormattingViewController *)self _editResponder];
-    [v50 performSelector:sel__textFormattingOptionsNeedUpdate_ withObject:0];
+    _editResponder12 = [(UITextFormattingViewController *)self _editResponder];
+    [_editResponder12 performSelector:sel__textFormattingOptionsNeedUpdate_ withObject:0];
   }
 
 LABEL_41:
@@ -2241,38 +2241,38 @@ LABEL_41:
 
 - (id)_textView
 {
-  v3 = [(UITextFormattingViewController *)self _editResponder];
-  if (v3)
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
+  if (_editResponder)
   {
-    v4 = v3;
-    v5 = [(UITextFormattingViewController *)self _editResponder];
+    v4 = _editResponder;
+    _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v3 = [(UITextFormattingViewController *)self _editResponder];
+      _editResponder = [(UITextFormattingViewController *)self _editResponder];
     }
 
     else
     {
-      v3 = 0;
+      _editResponder = 0;
     }
   }
 
-  return v3;
+  return _editResponder;
 }
 
-- (void)_reconfigureViewHierarchyForParentController:(id)a3
+- (void)_reconfigureViewHierarchyForParentController:(id)controller
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIViewController *)self view];
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
-  v8 = v7;
+  controllerCopy = controller;
+  view = [(UIViewController *)self view];
+  subviews = [view subviews];
+  firstObject = [subviews firstObject];
+  v8 = firstObject;
   v9 = &OBJC_IVAR___UIScrollView__knobPointerLongPressGestureRecognizer;
-  if (v4)
+  if (controllerCopy)
   {
     containerView = self->_containerView;
 
@@ -2282,11 +2282,11 @@ LABEL_41:
     }
   }
 
-  else if (v7)
+  else if (firstObject)
   {
-    v11 = [(UIViewController *)self view];
-    v12 = [v11 subviews];
-    v13 = [v12 firstObject];
+    view2 = [(UIViewController *)self view];
+    subviews2 = [view2 subviews];
+    firstObject2 = [subviews2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2304,10 +2304,10 @@ LABEL_41:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v15 = [(UIViewController *)self view];
-  v16 = [v15 subviews];
+  view3 = [(UIViewController *)self view];
+  subviews3 = [view3 subviews];
 
-  v17 = [v16 countByEnumeratingWithState:&v91 objects:v98 count:16];
+  v17 = [subviews3 countByEnumeratingWithState:&v91 objects:v98 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2318,13 +2318,13 @@ LABEL_41:
       {
         if (*v92 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(subviews3);
         }
 
         [*(*(&v91 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v91 objects:v98 count:16];
+      v18 = [subviews3 countByEnumeratingWithState:&v91 objects:v98 count:16];
     }
 
     while (v18);
@@ -2334,12 +2334,12 @@ LABEL_41:
   self->_backdropView = 0;
 
   v22 = 0x1E6997000uLL;
-  v90 = v4;
-  if (!v4)
+  v90 = controllerCopy;
+  if (!controllerCopy)
   {
     if (_UISolariumEnabled())
     {
-      v39 = [(UIViewController *)self view];
+      view4 = [(UIViewController *)self view];
     }
 
     else
@@ -2347,30 +2347,30 @@ LABEL_41:
       v41 = [[UIVisualEffectView alloc] initWithEffect:0];
       v88 = [UIBlurEffect effectWithStyle:9];
       [(UIVisualEffectView *)v41 setEffect:v88];
-      v42 = [(UIViewController *)self view];
-      [v42 addSubview:v41];
+      view5 = [(UIViewController *)self view];
+      [view5 addSubview:v41];
 
       [(UIView *)v41 setTranslatesAutoresizingMaskIntoConstraints:0];
       v66 = MEMORY[0x1E69977A0];
-      v82 = [(UIView *)v41 topAnchor];
-      v85 = [(UIViewController *)self view];
-      v79 = [v85 topAnchor];
-      v76 = [v82 constraintEqualToAnchor:v79];
+      topAnchor = [(UIView *)v41 topAnchor];
+      view6 = [(UIViewController *)self view];
+      topAnchor2 = [view6 topAnchor];
+      v76 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v96[0] = v76;
-      v70 = [(UIView *)v41 leadingAnchor];
-      v73 = [(UIViewController *)self view];
-      v68 = [v73 leadingAnchor];
-      v64 = [v70 constraintEqualToAnchor:v68];
+      leadingAnchor = [(UIView *)v41 leadingAnchor];
+      view7 = [(UIViewController *)self view];
+      leadingAnchor2 = [view7 leadingAnchor];
+      v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v96[1] = v64;
-      v62 = [(UIView *)v41 trailingAnchor];
-      v43 = [(UIViewController *)self view];
-      v44 = [v43 trailingAnchor];
-      v45 = [v62 constraintEqualToAnchor:v44];
+      trailingAnchor = [(UIView *)v41 trailingAnchor];
+      view8 = [(UIViewController *)self view];
+      trailingAnchor2 = [view8 trailingAnchor];
+      v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v96[2] = v45;
-      v46 = [(UIView *)v41 bottomAnchor];
-      v47 = [(UIViewController *)self view];
-      v48 = [v47 bottomAnchor];
-      v49 = [v46 constraintEqualToAnchor:v48];
+      bottomAnchor = [(UIView *)v41 bottomAnchor];
+      view9 = [(UIViewController *)self view];
+      bottomAnchor2 = [view9 bottomAnchor];
+      v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v96[3] = v49;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:4];
       [v66 activateConstraints:v50];
@@ -2378,21 +2378,21 @@ LABEL_41:
       v22 = 0x1E6997000uLL;
       v9 = &OBJC_IVAR___UIScrollView__knobPointerLongPressGestureRecognizer;
 
-      v39 = [(UIVisualEffectView *)v41 contentView];
+      view4 = [(UIVisualEffectView *)v41 contentView];
     }
 
     v40 = +[UIColor clearColor];
     goto LABEL_23;
   }
 
-  v23 = [(UITextFormattingViewController *)self configuration];
-  v24 = [v23 _isTextAnimationsConfiguration];
+  configuration = [(UITextFormattingViewController *)self configuration];
+  _isTextAnimationsConfiguration = [configuration _isTextAnimationsConfiguration];
 
-  if (v24)
+  if (_isTextAnimationsConfiguration)
   {
     v25 = [_UIKBVisualEffectViewForTextFormatting alloc];
-    v26 = [(UIViewController *)self view];
-    [v26 bounds];
+    view10 = [(UIViewController *)self view];
+    [view10 bounds];
     v27 = [(UIKBInputBackdropView *)v25 initWithFrame:?];
 
     v28 = self->_backdropView;
@@ -2400,30 +2400,30 @@ LABEL_41:
     v29 = v27;
 
     [(UITextFormattingViewController *)self _updateBackdropView];
-    v30 = [(UIViewController *)self view];
-    [v30 addSubview:v29];
+    view11 = [(UIViewController *)self view];
+    [view11 addSubview:v29];
 
     [(UIView *)v29 setTranslatesAutoresizingMaskIntoConstraints:0];
     v67 = MEMORY[0x1E69977A0];
-    v84 = [(UIView *)v29 topAnchor];
-    v87 = [(UIViewController *)self view];
-    v81 = [v87 topAnchor];
-    v78 = [v84 constraintEqualToAnchor:v81];
+    topAnchor3 = [(UIView *)v29 topAnchor];
+    view12 = [(UIViewController *)self view];
+    topAnchor4 = [view12 topAnchor];
+    v78 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v97[0] = v78;
-    v72 = [(UIView *)v29 leadingAnchor];
-    v75 = [(UIViewController *)self view];
-    v69 = [v75 leadingAnchor];
-    v65 = [v72 constraintEqualToAnchor:v69];
+    leadingAnchor3 = [(UIView *)v29 leadingAnchor];
+    view13 = [(UIViewController *)self view];
+    leadingAnchor4 = [view13 leadingAnchor];
+    v65 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v97[1] = v65;
-    v63 = [(UIView *)v29 trailingAnchor];
-    v31 = [(UIViewController *)self view];
-    v32 = [v31 trailingAnchor];
-    v33 = [v63 constraintEqualToAnchor:v32];
+    trailingAnchor3 = [(UIView *)v29 trailingAnchor];
+    view14 = [(UIViewController *)self view];
+    trailingAnchor4 = [view14 trailingAnchor];
+    v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v97[2] = v33;
-    v34 = [(UIView *)v29 bottomAnchor];
-    v35 = [(UIViewController *)self view];
-    v36 = [v35 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    bottomAnchor3 = [(UIView *)v29 bottomAnchor];
+    view15 = [(UIViewController *)self view];
+    bottomAnchor4 = [view15 bottomAnchor];
+    v37 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v97[3] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:4];
     [v67 activateConstraints:v38];
@@ -2431,178 +2431,178 @@ LABEL_41:
     v9 = &OBJC_IVAR___UIScrollView__knobPointerLongPressGestureRecognizer;
     v22 = 0x1E6997000;
 
-    v39 = [(UIViewController *)self view];
+    view4 = [(UIViewController *)self view];
     v40 = +[UIColor clearColor];
 
 LABEL_23:
-    v51 = [(UIViewController *)self view];
-    [v51 setBackgroundColor:v40];
+    view16 = [(UIViewController *)self view];
+    [view16 setBackgroundColor:v40];
 
     goto LABEL_24;
   }
 
-  v39 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self view];
   v40 = +[UIColor systemBackgroundColor];
-  [v39 setBackgroundColor:v40];
+  [view4 setBackgroundColor:v40];
 LABEL_24:
 
   v52 = v9[685];
-  [v39 addSubview:*(&self->super.super.super.isa + v52)];
+  [view4 addSubview:*(&self->super.super.super.isa + v52)];
   [*(&self->super.super.super.isa + v52) setTranslatesAutoresizingMaskIntoConstraints:0];
   v71 = *(v22 + 1952);
-  v86 = [*(&self->super.super.super.isa + v52) topAnchor];
-  v89 = [v39 safeAreaLayoutGuide];
-  v83 = [v89 topAnchor];
-  v80 = [v86 constraintEqualToAnchor:v83];
+  topAnchor5 = [*(&self->super.super.super.isa + v52) topAnchor];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor6 = [safeAreaLayoutGuide topAnchor];
+  v80 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v95[0] = v80;
-  v77 = [*(&self->super.super.super.isa + v52) leadingAnchor];
-  v74 = [v39 leadingAnchor];
-  v53 = [v77 constraintEqualToAnchor:v74];
+  leadingAnchor5 = [*(&self->super.super.super.isa + v52) leadingAnchor];
+  leadingAnchor6 = [view4 leadingAnchor];
+  v53 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v95[1] = v53;
-  v54 = [*(&self->super.super.super.isa + v52) trailingAnchor];
-  v55 = [v39 trailingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  trailingAnchor5 = [*(&self->super.super.super.isa + v52) trailingAnchor];
+  trailingAnchor6 = [view4 trailingAnchor];
+  v56 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v95[2] = v56;
-  v57 = [*(&self->super.super.super.isa + v52) bottomAnchor];
-  v58 = [v39 safeAreaLayoutGuide];
-  v59 = [v58 bottomAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59];
+  bottomAnchor5 = [*(&self->super.super.super.isa + v52) bottomAnchor];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide2 bottomAnchor];
+  v60 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v95[3] = v60;
   v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:4];
   [v71 activateConstraints:v61];
 
-  v4 = v90;
+  controllerCopy = v90;
 LABEL_25:
 }
 
 - (void)_textViewFormattingWillBegin
 {
-  v3 = [(UITextFormattingViewController *)self _textView];
-  if (v3)
+  _textView = [(UITextFormattingViewController *)self _textView];
+  if (_textView)
   {
-    v8 = v3;
-    v4 = [v3 tintColor];
-    v5 = [(UIViewController *)self view];
-    [v5 setTintColor:v4];
+    v8 = _textView;
+    tintColor = [_textView tintColor];
+    view = [(UIViewController *)self view];
+    [view setTintColor:tintColor];
 
-    v6 = [v8 delegate];
+    delegate = [v8 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 textView:v8 willBeginFormattingWithViewController:self];
+      [delegate textView:v8 willBeginFormattingWithViewController:self];
     }
 
     else
     {
-      v7 = [v8 delegate];
+      delegate2 = [v8 delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 _textView:v8 willBeginFormatting:self];
+        [delegate2 _textView:v8 willBeginFormatting:self];
       }
     }
 
-    v3 = v8;
+    _textView = v8;
   }
 }
 
 - (void)_textViewFormattingDidBegin
 {
-  v3 = [(UITextFormattingViewController *)self _textView];
-  if (v3)
+  _textView = [(UITextFormattingViewController *)self _textView];
+  if (_textView)
   {
-    v6 = v3;
-    v4 = [v3 delegate];
+    v6 = _textView;
+    delegate = [_textView delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 textView:v6 didBeginFormattingWithViewController:self];
+      [delegate textView:v6 didBeginFormattingWithViewController:self];
     }
 
     else
     {
-      v5 = [v6 delegate];
+      delegate2 = [v6 delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v5 _textView:v6 didBeginFormatting:self];
+        [delegate2 _textView:v6 didBeginFormatting:self];
       }
     }
 
-    v3 = v6;
+    _textView = v6;
   }
 }
 
 - (void)_textViewFormattingWillEnd
 {
-  v3 = [(UITextFormattingViewController *)self _textView];
-  if (v3)
+  _textView = [(UITextFormattingViewController *)self _textView];
+  if (_textView)
   {
-    v6 = v3;
-    v4 = [v3 delegate];
+    v6 = _textView;
+    delegate = [_textView delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 textView:v6 willEndFormattingWithViewController:self];
+      [delegate textView:v6 willEndFormattingWithViewController:self];
     }
 
     else
     {
-      v5 = [v6 delegate];
+      delegate2 = [v6 delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v5 _textView:v6 willEndFormatting:self];
+        [delegate2 _textView:v6 willEndFormatting:self];
       }
     }
 
-    v3 = v6;
+    _textView = v6;
   }
 }
 
 - (void)_textViewFormattingDidEnd
 {
-  v3 = [(UITextFormattingViewController *)self _textView];
-  if (v3)
+  _textView = [(UITextFormattingViewController *)self _textView];
+  if (_textView)
   {
-    v6 = v3;
-    v4 = [v3 delegate];
+    v6 = _textView;
+    delegate = [_textView delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 textView:v6 didEndFormattingWithViewController:self];
+      [delegate textView:v6 didEndFormattingWithViewController:self];
     }
 
     else
     {
-      v5 = [v6 delegate];
+      delegate2 = [v6 delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v5 _textView:v6 didEndFormatting:self];
+        [delegate2 _textView:v6 didEndFormatting:self];
       }
     }
 
-    v3 = v6;
+    _textView = v6;
   }
 }
 
 - (int64_t)_backdropViewStyle
 {
   v3 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-  v4 = [v3 _textFormattingViewController];
+  _textFormattingViewController = [v3 _textFormattingViewController];
 
-  if (v4 != self)
+  if (_textFormattingViewController != self)
   {
     goto LABEL_8;
   }
 
   v5 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-  v6 = [v5 _textFormattingResponder];
+  _textFormattingResponder = [v5 _textFormattingResponder];
 
-  if (!v6 || (objc_opt_respondsToSelector() & 1) == 0 || ![v6 _shouldReplaceKeyboardForTextFormattingKeyboardSessionIfApplicable])
+  if (!_textFormattingResponder || (objc_opt_respondsToSelector() & 1) == 0 || ![_textFormattingResponder _shouldReplaceKeyboardForTextFormattingKeyboardSessionIfApplicable])
   {
 
 LABEL_8:
-    v6 = [(UIViewController *)self view];
-    v8 = [v6 _inheritedRenderConfig];
+    _textFormattingResponder = [(UIViewController *)self view];
+    _inheritedRenderConfig = [_textFormattingResponder _inheritedRenderConfig];
     goto LABEL_9;
   }
 
-  v7 = [(UIViewController *)self traitCollection];
-  if ([v7 userInterfaceStyle] == 2)
+  traitCollection = [(UIViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     +[UIKBRenderConfig darkConfig];
   }
@@ -2611,13 +2611,13 @@ LABEL_8:
   {
     +[UIKBRenderConfig defaultEmojiConfig];
   }
-  v8 = ;
+  _inheritedRenderConfig = ;
 
-  [v8 setColorAdaptiveBackground:_UISolariumEnabled()];
+  [_inheritedRenderConfig setColorAdaptiveBackground:_UISolariumEnabled()];
 LABEL_9:
-  v9 = [v8 backdropStyle];
+  backdropStyle = [_inheritedRenderConfig backdropStyle];
 
-  return v9;
+  return backdropStyle;
 }
 
 - (void)_updateBackdropView
@@ -2649,59 +2649,59 @@ LABEL_9:
   return result;
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!continuously)
   {
     v10 = *off_1E70EC920;
-    v11[0] = a4;
+    v11[0] = color;
     v6 = MEMORY[0x1E695DF20];
-    v7 = a4;
+    colorCopy = color;
     v8 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v9 = [[UITextFormattingViewControllerChangeValue alloc] initWithTextColor:v7];
+    v9 = [[UITextFormattingViewControllerChangeValue alloc] initWithTextColor:colorCopy];
 
     [(UITextFormattingViewController *)self _textFormattingDidChangeValue:v9 textAttributes:v8];
   }
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *off_1E70EC920;
-  v4 = a3;
-  v5 = [v4 selectedColor];
-  v14[0] = v5;
+  finishCopy = finish;
+  selectedColor = [finishCopy selectedColor];
+  v14[0] = selectedColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
   v7 = [UITextFormattingViewControllerChangeValue alloc];
-  v8 = [v4 selectedColor];
+  selectedColor2 = [finishCopy selectedColor];
 
-  v9 = [(UITextFormattingViewControllerChangeValue *)v7 initWithTextColor:v8];
+  v9 = [(UITextFormattingViewControllerChangeValue *)v7 initWithTextColor:selectedColor2];
   [(UITextFormattingViewController *)self _textFormattingDidChangeValue:v9 textAttributes:v6];
   colorPicker = self->_colorPicker;
   self->_colorPicker = 0;
 
   [(UITextFormattingViewController *)self _textFormattingRequestsFirstResponderRestoration];
   [(UITextFormattingViewController *)self _startSuppressingKeyboardForTextFormatting];
-  v11 = [(UITextFormattingViewController *)self delegate];
-  LOBYTE(v8) = objc_opt_respondsToSelector();
+  delegate = [(UITextFormattingViewController *)self delegate];
+  LOBYTE(selectedColor2) = objc_opt_respondsToSelector();
 
-  if (v8)
+  if (selectedColor2)
   {
-    v12 = [(UITextFormattingViewController *)self delegate];
-    [v12 _didFinishColorPickingForTextFormattingViewController:self];
+    delegate2 = [(UITextFormattingViewController *)self delegate];
+    [delegate2 _didFinishColorPickingForTextFormattingViewController:self];
   }
 }
 
-- (void)_updateFormattingDescriptor:(id)a3
+- (void)_updateFormattingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     hostingImpl = self->_hostingImpl;
-    v5 = a3;
-    [(_UITextFormattingViewHostingImpl *)hostingImpl setRemoteFormattingDescriptor:v5];
-    [(_TFTextFormattingContentViewController *)self->_contentViewController _setFormattingDescriptor:v5];
+    descriptorCopy = descriptor;
+    [(_UITextFormattingViewHostingImpl *)hostingImpl setRemoteFormattingDescriptor:descriptorCopy];
+    [(_TFTextFormattingContentViewController *)self->_contentViewController _setFormattingDescriptor:descriptorCopy];
 
     [(UITextFormattingViewController *)self _updateDisabledComponents];
   }
@@ -2709,13 +2709,13 @@ LABEL_9:
 
 - (void)_updateDisabledComponents
 {
-  v3 = [(UITextFormattingViewController *)self _editResponder];
+  _editResponder = [(UITextFormattingViewController *)self _editResponder];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UITextFormattingViewController *)self _editResponder];
-    v12 = [v5 performSelector:sel__disabledComponentsForTextFormattingOptions];
+    _editResponder2 = [(UITextFormattingViewController *)self _editResponder];
+    v12 = [_editResponder2 performSelector:sel__disabledComponentsForTextFormattingOptions];
 
     v6 = v12;
   }
@@ -2737,8 +2737,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(UITextFormattingViewController *)self delegate];
-  v10 = [v9 _disabledComponentsForTextFormattingViewController:self];
+  delegate = [(UITextFormattingViewController *)self delegate];
+  v10 = [delegate _disabledComponentsForTextFormattingViewController:self];
 
   v11 = v10;
   if (v10)
@@ -2752,7 +2752,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)fontPickerViewControllerDidCancel:(id)a3
+- (void)fontPickerViewControllerDidCancel:(id)cancel
 {
   fontPicker = self->_fontPicker;
   v6[0] = MEMORY[0x1E69E9820];
@@ -2781,13 +2781,13 @@ void __68__UITextFormattingViewController_fontPickerViewControllerDidCancel___bl
   }
 }
 
-- (void)fontPickerViewControllerDidPickFont:(id)a3
+- (void)fontPickerViewControllerDidPickFont:(id)font
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 selectedFontDescriptor];
-  if (v4)
+  selectedFontDescriptor = [font selectedFontDescriptor];
+  if (selectedFontDescriptor)
   {
-    v5 = [off_1E70ECC18 fontWithDescriptor:v4 size:self->_selectedFontSize];
+    v5 = [off_1E70ECC18 fontWithDescriptor:selectedFontDescriptor size:self->_selectedFontSize];
     v12 = *off_1E70EC918;
     v13[0] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
@@ -2844,33 +2844,33 @@ void __70__UITextFormattingViewController_fontPickerViewControllerDidPickFont___
   }
 }
 
-- (void)_typographySettingsViewControllerDidUpdateFont:(id)a3
+- (void)_typographySettingsViewControllerDidUpdateFont:(id)font
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (font)
   {
     v8 = *off_1E70EC918;
-    v9[0] = a3;
+    v9[0] = font;
     v4 = MEMORY[0x1E695DF20];
-    v5 = a3;
+    fontCopy = font;
     v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    v7 = [[UITextFormattingViewControllerChangeValue alloc] initWithFont:v5];
+    v7 = [[UITextFormattingViewControllerChangeValue alloc] initWithFont:fontCopy];
 
     [(UITextFormattingViewController *)self _textFormattingDidChangeValue:v7 textAttributes:v6];
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v5 = [(UITextFormattingViewController *)self configuration:a3];
+  v5 = [(UITextFormattingViewController *)self configuration:controller];
   if (([v5 _isTextAnimationsConfiguration] & 1) != 0 && (-[UIViewController view](self, "view"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(UIViewController *)self view];
-    v9 = [v8 traitCollection];
-    v10 = [v9 userInterfaceIdiom];
+    view = [(UIViewController *)self view];
+    traitCollection = [view traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v10 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return -1;
     }

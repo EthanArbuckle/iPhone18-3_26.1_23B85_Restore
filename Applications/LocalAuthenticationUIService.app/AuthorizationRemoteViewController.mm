@@ -1,14 +1,14 @@
 @interface AuthorizationRemoteViewController
-- (AuthorizationRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)stopWithReply:(id)a3;
-- (void)viewModel:(id)a3 didReceiveCustomPassword:(id)a4 handler:(id)a5;
+- (AuthorizationRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)stopWithReply:(id)reply;
+- (void)viewModel:(id)model didReceiveCustomPassword:(id)password handler:(id)handler;
 @end
 
 @implementation AuthorizationRemoteViewController
 
-- (AuthorizationRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AuthorizationRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -20,29 +20,29 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AuthorizationRemoteViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AuthorizationRemoteViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)stopWithReply:(id)a3
+- (void)stopWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   _Block_copy(v4);
-  v5 = self;
-  specialized AuthorizationRemoteViewController.stop(reply:)(v5, v4);
+  selfCopy = self;
+  specialized AuthorizationRemoteViewController.stop(reply:)(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)viewModel:(id)a3 didReceiveCustomPassword:(id)a4 handler:(id)a5
+- (void)viewModel:(id)model didReceiveCustomPassword:(id)password handler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
   v10 = *(&self->super.super.super.isa + OBJC_IVAR___AuthorizationRemoteViewController_authorizationViewManager);
-  v11 = self;
+  selfCopy = self;
   if (v10)
   {
     v12 = v10;

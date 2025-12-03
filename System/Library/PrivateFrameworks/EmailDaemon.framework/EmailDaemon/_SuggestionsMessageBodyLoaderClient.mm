@@ -1,25 +1,25 @@
 @interface _SuggestionsMessageBodyLoaderClient
-- (_SuggestionsMessageBodyLoaderClient)initWithLibrary:(id)a3 message:(id)a4 semaphore:(id)a5;
+- (_SuggestionsMessageBodyLoaderClient)initWithLibrary:(id)library message:(id)message semaphore:(id)semaphore;
 - (double)ordering;
 - (void)dealloc;
 @end
 
 @implementation _SuggestionsMessageBodyLoaderClient
 
-- (_SuggestionsMessageBodyLoaderClient)initWithLibrary:(id)a3 message:(id)a4 semaphore:(id)a5
+- (_SuggestionsMessageBodyLoaderClient)initWithLibrary:(id)library message:(id)message semaphore:(id)semaphore
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  messageCopy = message;
+  semaphoreCopy = semaphore;
   v15.receiver = self;
   v15.super_class = _SuggestionsMessageBodyLoaderClient;
   v12 = [(_SuggestionsMessageBodyLoaderClient *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_library, a3);
-    objc_storeStrong(&v13->_message, a4);
-    objc_storeStrong(&v13->_semaphore, a5);
+    objc_storeStrong(&v12->_library, library);
+    objc_storeStrong(&v13->_message, message);
+    objc_storeStrong(&v13->_semaphore, semaphore);
   }
 
   return v13;
@@ -27,9 +27,9 @@
 
 - (double)ordering
 {
-  v3 = [(MFMailMessage *)self->_message headersIfAvailable];
+  headersIfAvailable = [(MFMailMessage *)self->_message headersIfAvailable];
 
-  if (!v3)
+  if (!headersIfAvailable)
   {
     return 0.0;
   }

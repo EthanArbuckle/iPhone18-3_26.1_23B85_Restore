@@ -1,24 +1,24 @@
 @interface TSDReflection
 + (id)reflection;
-- (BOOL)isEqual:(id)a3;
-- (TSDReflection)initWithOpacity:(double)a3 fadeAcceleration:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSDReflection)initWithOpacity:(double)opacity fadeAcceleration:(double)acceleration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object;
 @end
 
 @implementation TSDReflection
 
 + (id)reflection
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (TSDReflection)initWithOpacity:(double)a3 fadeAcceleration:(double)a4
+- (TSDReflection)initWithOpacity:(double)opacity fadeAcceleration:(double)acceleration
 {
   v8.receiver = self;
   v8.super_class = TSDReflection;
@@ -27,20 +27,20 @@
   {
     TSUClamp();
     v5->mOpacity = v6;
-    v5->mFadeAcceleration = a4;
+    v5->mFadeAcceleration = acceleration;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -53,13 +53,13 @@
 
   [(TSDReflection *)self opacity];
   v6 = v5;
-  [a3 opacity];
+  [equal opacity];
   return v6 == v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(TSDReflection *)self opacity];
   v6 = v5;
   [(TSDReflection *)self fadeAcceleration];
@@ -67,9 +67,9 @@
   return [v4 initWithOpacity:v6 fadeAcceleration:v7];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableReflection allocWithZone:a3];
+  v4 = [TSDMutableReflection allocWithZone:zone];
   [(TSDReflection *)self opacity];
   v6 = v5;
   [(TSDReflection *)self fadeAcceleration];
@@ -86,15 +86,15 @@
   return [v3 stringWithFormat:@"<%@ %p opacity=%g>", v5, self, v6];
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __38__TSDReflection_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __38__TSDReflection_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -122,16 +122,16 @@ uint64_t __38__TSDReflection_mixingTypeWithObject___block_invoke(uint64_t a1)
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__TSDReflection_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDReflection *__50__TSDReflection_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)

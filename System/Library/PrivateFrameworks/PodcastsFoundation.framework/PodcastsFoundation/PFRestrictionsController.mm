@@ -22,7 +22,7 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   RestrictionsController.startListening()();
 }
 
@@ -38,7 +38,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1D8E91528(0, 0, v6, &unk_1D91BED88, v8);
 }
 
@@ -58,7 +58,7 @@
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   RestrictionsController.stopListening()();
 }
 

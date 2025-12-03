@@ -1,12 +1,12 @@
 @interface TUConversationInvitationContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInvitationContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInvitationContext:(id)context;
 - (TUConversationInvitationContext)init;
-- (TUConversationInvitationContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationInvitationContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationInvitationContext
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (TUConversationInvitationContext)initWithCoder:(id)a3
+- (TUConversationInvitationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TUConversationInvitationContext;
   v5 = [(TUConversationInvitationContext *)&v11 init];
@@ -36,7 +36,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_nearbyStableDeviceIdentifiers);
-    v8 = [v4 decodeArrayOfObjectsOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:v6 forKey:v7];
     nearbyStableDeviceIdentifiers = v5->_nearbyStableDeviceIdentifiers;
     v5->_nearbyStableDeviceIdentifiers = v8;
   }
@@ -44,19 +44,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+  coderCopy = coder;
+  nearbyStableDeviceIdentifiers = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
   v5 = NSStringFromSelector(sel_nearbyStableDeviceIdentifiers);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:nearbyStableDeviceIdentifiers forKey:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
-  [v4 setNearbyStableDeviceIdentifiers:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  nearbyStableDeviceIdentifiers = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+  [v4 setNearbyStableDeviceIdentifiers:nearbyStableDeviceIdentifiers];
 
   return v4;
 }
@@ -64,12 +64,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+  nearbyStableDeviceIdentifiers = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
 
-  if (v4)
+  if (nearbyStableDeviceIdentifiers)
   {
-    v5 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
-    [v3 appendFormat:@" nearbyStableDeviceIdentifiers=%@", v5];
+    nearbyStableDeviceIdentifiers2 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+    [v3 appendFormat:@" nearbyStableDeviceIdentifiers=%@", nearbyStableDeviceIdentifiers2];
   }
 
   [v3 appendString:@">"];
@@ -80,16 +80,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
-  v3 = [v2 hash];
+  nearbyStableDeviceIdentifiers = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+  v3 = [nearbyStableDeviceIdentifiers hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -97,20 +97,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationInvitationContext *)self isEqualToInvitationContext:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationInvitationContext *)self isEqualToInvitationContext:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToInvitationContext:(id)a3
+- (BOOL)isEqualToInvitationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
-  v6 = [v4 nearbyStableDeviceIdentifiers];
+  contextCopy = context;
+  nearbyStableDeviceIdentifiers = [(TUConversationInvitationContext *)self nearbyStableDeviceIdentifiers];
+  nearbyStableDeviceIdentifiers2 = [contextCopy nearbyStableDeviceIdentifiers];
 
-  LOBYTE(v4) = TUObjectsAreEqualOrNil(v5, v6);
-  return v4;
+  LOBYTE(contextCopy) = TUObjectsAreEqualOrNil(nearbyStableDeviceIdentifiers, nearbyStableDeviceIdentifiers2);
+  return contextCopy;
 }
 
 @end

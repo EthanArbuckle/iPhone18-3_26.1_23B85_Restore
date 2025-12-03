@@ -1,14 +1,14 @@
 @interface HMDBackingStoreTransactionBlock
 + (id)logCategory;
-+ (void)sort:(id)a3;
++ (void)sort:(id)sort;
 - (HMDBackingStore)backingStore;
-- (HMDBackingStoreTransactionBlock)initWithBackingStore:(id)a3 options:(id)a4 label:(id)a5;
+- (HMDBackingStoreTransactionBlock)initWithBackingStore:(id)store options:(id)options label:(id)label;
 - (NSString)description;
-- (void)add:(id)a3 withMessage:(id)a4;
-- (void)addObjects:(id)a3;
-- (void)run:(id)a3;
-- (void)runWithoutSave:(id)a3;
-- (void)save:(id)a3;
+- (void)add:(id)add withMessage:(id)message;
+- (void)addObjects:(id)objects;
+- (void)run:(id)run;
+- (void)runWithoutSave:(id)save;
+- (void)save:(id)save;
 @end
 
 @implementation HMDBackingStoreTransactionBlock
@@ -23,44 +23,44 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDBackingStoreTransactionBlock *)self options];
-  v5 = [(HMDBackingStoreTransactionBlock *)self objects];
-  v6 = [v3 stringWithFormat:@"<HMDBackingStoreTransaction options:%@ objects:%lu>", v4, objc_msgSend(v5, "count")];
+  options = [(HMDBackingStoreTransactionBlock *)self options];
+  objects = [(HMDBackingStoreTransactionBlock *)self objects];
+  v6 = [v3 stringWithFormat:@"<HMDBackingStoreTransaction options:%@ objects:%lu>", options, objc_msgSend(objects, "count")];
 
   return v6;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = a3;
-  v6 = [(HMDBackingStoreTransactionBlock *)self backingStore];
-  v5 = [(HMDBackingStoreTransactionBlock *)self options];
-  [v6 commit:self run:0 save:1 archiveInline:objc_msgSend(v5 completionHandler:{"mustSaveArchiveAtomically"), v4}];
+  saveCopy = save;
+  backingStore = [(HMDBackingStoreTransactionBlock *)self backingStore];
+  options = [(HMDBackingStoreTransactionBlock *)self options];
+  [backingStore commit:self run:0 save:1 archiveInline:objc_msgSend(options completionHandler:{"mustSaveArchiveAtomically"), saveCopy}];
 }
 
-- (void)runWithoutSave:(id)a3
+- (void)runWithoutSave:(id)save
 {
-  v4 = a3;
-  v5 = [(HMDBackingStoreTransactionBlock *)self backingStore];
-  [v5 commit:self run:1 save:0 archiveInline:1 completionHandler:v4];
+  saveCopy = save;
+  backingStore = [(HMDBackingStoreTransactionBlock *)self backingStore];
+  [backingStore commit:self run:1 save:0 archiveInline:1 completionHandler:saveCopy];
 }
 
-- (void)run:(id)a3
+- (void)run:(id)run
 {
-  v4 = a3;
-  v5 = [(HMDBackingStoreTransactionBlock *)self backingStore];
-  [v5 commit:self run:1 save:1 completionHandler:v4];
+  runCopy = run;
+  backingStore = [(HMDBackingStoreTransactionBlock *)self backingStore];
+  [backingStore commit:self run:1 save:1 completionHandler:runCopy];
 }
 
-- (void)addObjects:(id)a3
+- (void)addObjects:(id)objects
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -72,14 +72,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
         [(HMDBackingStoreTransactionBlock *)self add:*(*(&v10 + 1) + 8 * v8++) withMessage:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -88,22 +88,22 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)add:(id)a3 withMessage:(id)a4
+- (void)add:(id)add withMessage:(id)message
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
+  addCopy = add;
+  messageCopy = message;
+  uuid = [addCopy uuid];
 
-  if (!v8)
+  if (!uuid)
   {
     v40 = MEMORY[0x277CBEAD8];
     v41 = *MEMORY[0x277CBE658];
     v42 = MEMORY[0x277CCACA8];
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
-    v45 = [v6 bsoType];
-    v46 = [v42 stringWithFormat:@"UUID for a transaction object (%@ / %@) must be set before adding to a transaction.", v44, v45];
+    bsoType = [addCopy bsoType];
+    v46 = [v42 stringWithFormat:@"UUID for a transaction object (%@ / %@) must be set before adding to a transaction.", v44, bsoType];
     v47 = [v40 exceptionWithName:v41 reason:v46 userInfo:0];
     v48 = v47;
 
@@ -113,7 +113,7 @@
   if ([(HMDBackingStoreTransactionBlock *)self committed])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -128,17 +128,17 @@
 
   else
   {
-    v49 = v7;
+    v49 = messageCopy;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v13 = [(HMDBackingStoreTransactionBlock *)self objects];
-    v52 = [v13 countByEnumeratingWithState:&v53 objects:v61 count:16];
+    objects = [(HMDBackingStoreTransactionBlock *)self objects];
+    v52 = [objects countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v52)
     {
       v14 = *v54;
-      v50 = v6;
+      v50 = addCopy;
       v51 = *v54;
       do
       {
@@ -146,90 +146,90 @@
         {
           if (*v54 != v14)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(objects);
           }
 
           v16 = *(*(&v53 + 1) + 8 * i);
-          v17 = [v16 change];
-          v18 = [v17 uuid];
-          v19 = [v6 uuid];
-          v20 = [v18 isEqual:v19];
+          change = [v16 change];
+          uuid2 = [change uuid];
+          uuid3 = [addCopy uuid];
+          v20 = [uuid2 isEqual:uuid3];
 
           if (v20)
           {
             v21 = objc_autoreleasePoolPush();
-            v22 = self;
+            selfCopy2 = self;
             v23 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
               v24 = HMFGetLogIdentifier();
-              [(HMDBackingStoreTransactionBlock *)v22 options];
-              v25 = v13;
+              [(HMDBackingStoreTransactionBlock *)selfCopy2 options];
+              v25 = objects;
               v27 = v26 = self;
-              v28 = [v27 label];
+              label = [v27 label];
               *buf = 138543618;
               v58 = v24;
               v59 = 2112;
-              v60 = v28;
+              v60 = label;
               _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Just got request to add duplicate model object to transaction %@! (Both will be processed):", buf, 0x16u);
 
               self = v26;
-              v13 = v25;
-              v6 = v50;
+              objects = v25;
+              addCopy = v50;
             }
 
             objc_autoreleasePoolPop(v21);
-            v29 = [v16 change];
+            change2 = [v16 change];
             v30 = MEMORY[0x277CCACA8];
-            v31 = [v16 change];
-            v32 = changeTypeAsNSString([v31 objectChangeType]);
+            change3 = [v16 change];
+            v32 = changeTypeAsNSString([change3 objectChangeType]);
             v33 = [v30 stringWithFormat:@"previous (%@)", v32];
-            [v29 dumpWithVerbosity:1 prefix:v33 logType:16];
+            [change2 dumpWithVerbosity:1 prefix:v33 logType:16];
 
             v34 = MEMORY[0x277CCACA8];
-            v35 = changeTypeAsNSString([v6 objectChangeType]);
+            v35 = changeTypeAsNSString([addCopy objectChangeType]);
             v36 = [v34 stringWithFormat:@"new (%@)", v35];
-            [v6 dumpWithVerbosity:1 prefix:v36 logType:16];
+            [addCopy dumpWithVerbosity:1 prefix:v36 logType:16];
 
             v14 = v51;
           }
         }
 
-        v52 = [v13 countByEnumeratingWithState:&v53 objects:v61 count:16];
+        v52 = [objects countByEnumeratingWithState:&v53 objects:v61 count:16];
       }
 
       while (v52);
     }
 
-    v37 = [(HMDBackingStoreTransactionBlock *)self objects];
-    v7 = v49;
-    v38 = [[HMDBackingStoreTransactionItem alloc] initWithChange:v6 message:v49];
-    [v37 addObject:v38];
+    objects2 = [(HMDBackingStoreTransactionBlock *)self objects];
+    messageCopy = v49;
+    v38 = [[HMDBackingStoreTransactionItem alloc] initWithChange:addCopy message:v49];
+    [objects2 addObject:v38];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBackingStoreTransactionBlock)initWithBackingStore:(id)a3 options:(id)a4 label:(id)a5
+- (HMDBackingStoreTransactionBlock)initWithBackingStore:(id)store options:(id)options label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  optionsCopy = options;
+  labelCopy = label;
   v17.receiver = self;
   v17.super_class = HMDBackingStoreTransactionBlock;
   v11 = [(HMDBackingStoreTransactionBlock *)&v17 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     objects = v11->_objects;
-    v11->_objects = v12;
+    v11->_objects = array;
 
-    objc_storeStrong(&v11->_options, a4);
-    objc_storeWeak(&v11->_backingStore, v8);
+    objc_storeStrong(&v11->_options, options);
+    objc_storeWeak(&v11->_backingStore, storeCopy);
     v11->_committed = 0;
-    if (v10)
+    if (labelCopy)
     {
-      v14 = v10;
+      v14 = labelCopy;
     }
 
     else
@@ -237,7 +237,7 @@
       v14 = @"anonymous";
     }
 
-    [v9 setLabel:v14];
+    [optionsCopy setLabel:v14];
     v15 = v11;
   }
 
@@ -266,19 +266,19 @@ uint64_t __46__HMDBackingStoreTransactionBlock_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (void)sort:(id)a3
++ (void)sort:(id)sort
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] >= 2)
+  sortCopy = sort;
+  if ([sortCopy count] >= 2)
   {
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sortCopy, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sortCopy, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v3;
+    v6 = sortCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -294,10 +294,10 @@ uint64_t __46__HMDBackingStoreTransactionBlock_logCategory__block_invoke()
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 change];
-          v13 = [v12 objectChangeType];
+          change = [v11 change];
+          objectChangeType = [change objectChangeType];
 
-          if (v13 == 3)
+          if (objectChangeType == 3)
           {
             v14 = v4;
           }

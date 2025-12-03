@@ -11,13 +11,13 @@
   v2 = [(HUQuickControlGridServiceSection *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     gridControlItems = v2->_gridControlItems;
-    v2->_gridControlItems = v3;
+    v2->_gridControlItems = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     supplementaryControlItems = v2->_supplementaryControlItems;
-    v2->_supplementaryControlItems = v5;
+    v2->_supplementaryControlItems = array2;
   }
 
   return v2;

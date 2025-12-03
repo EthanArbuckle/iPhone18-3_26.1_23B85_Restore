@@ -1,9 +1,9 @@
 @interface PGGraphMomentFeaturesEdge
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphMomentFeaturesEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
-- (id)initFromMomentNode:(id)a3 toFeatureNode:(id)a4 numberOfRelevantAssets:(unint64_t)a5 allAssetUUIDs:(id)a6;
-- (id)initFromMomentNode:(id)a3 toFeatureNode:(id)a4 numberOfRelevantAssets:(unint64_t)a5 relevantAssetUUIDs:(id)a6;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphMomentFeaturesEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
+- (id)initFromMomentNode:(id)node toFeatureNode:(id)featureNode numberOfRelevantAssets:(unint64_t)assets allAssetUUIDs:(id)ds;
+- (id)initFromMomentNode:(id)node toFeatureNode:(id)featureNode numberOfRelevantAssets:(unint64_t)assets relevantAssetUUIDs:(id)ds;
 - (id)propertyDictionary;
 @end
 
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"rlvacnt"];
     v7 = v6;
@@ -53,42 +53,42 @@
   return v9;
 }
 
-- (PGGraphMomentFeaturesEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphMomentFeaturesEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a7;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 objectForKeyedSubscript:@"rlvacnt"];
-  v14 = [v13 unsignedIntegerValue];
+  propertiesCopy = properties;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  v13 = [propertiesCopy objectForKeyedSubscript:@"rlvacnt"];
+  unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-  v15 = [v10 objectForKeyedSubscript:@"rlvaids"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"rlvaids"];
 
-  v16 = [(PGGraphMomentFeaturesEdge *)self initFromMomentNode:v12 toFeatureNode:v11 numberOfRelevantAssets:v14 allAssetUUIDs:v15];
+  v16 = [(PGGraphMomentFeaturesEdge *)self initFromMomentNode:nodeCopy toFeatureNode:targetNodeCopy numberOfRelevantAssets:unsignedIntegerValue allAssetUUIDs:v15];
   return v16;
 }
 
-- (id)initFromMomentNode:(id)a3 toFeatureNode:(id)a4 numberOfRelevantAssets:(unint64_t)a5 relevantAssetUUIDs:(id)a6
+- (id)initFromMomentNode:(id)node toFeatureNode:(id)featureNode numberOfRelevantAssets:(unint64_t)assets relevantAssetUUIDs:(id)ds
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a6 componentsJoinedByString:{@", "}];
-  v13 = [(PGGraphMomentFeaturesEdge *)self initFromMomentNode:v11 toFeatureNode:v10 numberOfRelevantAssets:a5 allAssetUUIDs:v12];
+  featureNodeCopy = featureNode;
+  nodeCopy = node;
+  v12 = [ds componentsJoinedByString:{@", "}];
+  v13 = [(PGGraphMomentFeaturesEdge *)self initFromMomentNode:nodeCopy toFeatureNode:featureNodeCopy numberOfRelevantAssets:assets allAssetUUIDs:v12];
 
   return v13;
 }
 
-- (id)initFromMomentNode:(id)a3 toFeatureNode:(id)a4 numberOfRelevantAssets:(unint64_t)a5 allAssetUUIDs:(id)a6
+- (id)initFromMomentNode:(id)node toFeatureNode:(id)featureNode numberOfRelevantAssets:(unint64_t)assets allAssetUUIDs:(id)ds
 {
-  v7 = a5;
-  v11 = a6;
+  assetsCopy = assets;
+  dsCopy = ds;
   v15.receiver = self;
   v15.super_class = PGGraphMomentFeaturesEdge;
-  v12 = [(PGGraphEdge *)&v15 initWithSourceNode:a3 targetNode:a4];
+  v12 = [(PGGraphEdge *)&v15 initWithSourceNode:node targetNode:featureNode];
   v13 = v12;
   if (v12)
   {
-    *(v12 + 12) = v7;
-    objc_storeStrong(&v12->_allAssetUUIDs, a6);
+    *(v12 + 12) = assetsCopy;
+    objc_storeStrong(&v12->_allAssetUUIDs, ds);
   }
 
   return v13;

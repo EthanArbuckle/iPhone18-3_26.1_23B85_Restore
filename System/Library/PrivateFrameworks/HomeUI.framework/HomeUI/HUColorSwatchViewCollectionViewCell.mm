@@ -1,15 +1,15 @@
 @interface HUColorSwatchViewCollectionViewCell
-- (HUColorSwatchViewCollectionViewCell)initWithFrame:(CGRect)a3;
+- (HUColorSwatchViewCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HUColorSwatchViewCollectionViewCell
 
-- (HUColorSwatchViewCollectionViewCell)initWithFrame:(CGRect)a3
+- (HUColorSwatchViewCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUColorSwatchViewCollectionViewCell;
-  v3 = [(HUColorSwatchViewCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUColorSwatchViewCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(HUColorSwatchView);
@@ -31,8 +31,8 @@
   v4 = v3;
   [(HUColorSwatchViewCollectionViewCell *)self frame];
   v6 = v5;
-  v7 = [(HUColorSwatchViewCollectionViewCell *)self swatchView];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  swatchView = [(HUColorSwatchViewCollectionViewCell *)self swatchView];
+  [swatchView setFrame:{0.0, 0.0, v4, v6}];
 }
 
 @end

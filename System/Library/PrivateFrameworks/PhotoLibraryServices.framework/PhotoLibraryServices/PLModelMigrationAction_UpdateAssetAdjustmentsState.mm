@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_UpdateAssetAdjustmentsState
-+ (BOOL)isResetAfterRebuildRequiredWithLibrary:(id)a3;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
++ (BOOL)isResetAfterRebuildRequiredWithLibrary:(id)library;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateAssetAdjustmentsState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v101[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -30,7 +30,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setChangeSource:1];
+    [contextCopy setChangeSource:1];
   }
 
   v54[0] = 0;
@@ -50,7 +50,7 @@
   v48[1] = 3221225472;
   v48[2] = __98__PLModelMigrationAction_UpdateAssetAdjustmentsState_performActionWithManagedObjectContext_error___block_invoke;
   v48[3] = &unk_1E7575B30;
-  v13 = v6;
+  v13 = contextCopy;
   v49 = v13;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -83,8 +83,8 @@
       goto LABEL_19;
     }
 
-    v19 = [(PLModelMigrationActionBackground *)self logger];
-    v20 = v19 == 0;
+    logger = [(PLModelMigrationActionBackground *)self logger];
+    v20 = logger == 0;
 
     if (!v20)
     {
@@ -164,8 +164,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v28 = [(PLModelMigrationActionBackground *)self logger];
-  v29 = v28 == 0;
+  logger2 = [(PLModelMigrationActionBackground *)self logger];
+  v29 = logger2 == 0;
 
   if (v29)
   {
@@ -241,10 +241,10 @@ LABEL_19:
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v41 = v63[3];
   v42 = v57[5];
-  if (v41 != 1 && a4)
+  if (v41 != 1 && error)
   {
     v42 = v42;
-    *a4 = v42;
+    *error = v42;
   }
 
   _Block_object_dispose(&v50, 8);
@@ -256,9 +256,9 @@ LABEL_19:
   return 1;
 }
 
-+ (BOOL)isResetAfterRebuildRequiredWithLibrary:(id)a3
++ (BOOL)isResetAfterRebuildRequiredWithLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -274,7 +274,7 @@ LABEL_19:
   v10[2] = __93__PLModelMigrationAction_UpdateAssetAdjustmentsState_isResetAfterRebuildRequiredWithLibrary___block_invoke;
   v10[3] = &unk_1E7578870;
   v12 = &v16;
-  v4 = v3;
+  v4 = libraryCopy;
   v11 = v4;
   v13 = v14;
   [v4 performBlockAndWait:v10];

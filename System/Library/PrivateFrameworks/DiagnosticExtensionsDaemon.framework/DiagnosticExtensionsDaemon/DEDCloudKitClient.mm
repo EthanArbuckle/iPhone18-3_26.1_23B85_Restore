@@ -1,15 +1,15 @@
 @interface DEDCloudKitClient
-- (DEDCloudKitClient)initWithBugSession:(id)a3 configuration:(id)a4;
-- (void)uploadRecords:(id)a3 taskIdentifier:(id)a4 totalUploadSize:(id)a5 perRecordProgressBlock:(id)a6 perRecordSaveBlock:(id)a7 completionBlock:(id)a8;
+- (DEDCloudKitClient)initWithBugSession:(id)session configuration:(id)configuration;
+- (void)uploadRecords:(id)records taskIdentifier:(id)identifier totalUploadSize:(id)size perRecordProgressBlock:(id)block perRecordSaveBlock:(id)saveBlock completionBlock:(id)completionBlock;
 @end
 
 @implementation DEDCloudKitClient
 
-- (DEDCloudKitClient)initWithBugSession:(id)a3 configuration:(id)a4
+- (DEDCloudKitClient)initWithBugSession:(id)session configuration:(id)configuration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   v26.receiver = self;
   v26.super_class = DEDCloudKitClient;
   v9 = [(DEDCloudKitClient *)&v26 init];
@@ -20,20 +20,20 @@
     log = v9->_log;
     v9->_log = v11;
 
-    objc_storeStrong(&v9->_bugSession, a3);
-    objc_storeStrong(&v9->_bugSessionConfig, a4);
-    v13 = [v8 cloudkitData];
+    objc_storeStrong(&v9->_bugSession, session);
+    objc_storeStrong(&v9->_bugSessionConfig, configuration);
+    cloudkitData = [configurationCopy cloudkitData];
 
     v14 = v9->_log;
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (cloudkitData)
     {
       if (v15)
       {
         v16 = v14;
-        v17 = [v8 cloudkitData];
+        cloudkitData2 = [configurationCopy cloudkitData];
         *buf = 138543362;
-        v28 = v17;
+        v28 = cloudkitData2;
         _os_log_impl(&dword_248AD7000, v16, OS_LOG_TYPE_DEFAULT, "cloudkitData: %{public}@", buf, 0xCu);
       }
     }
@@ -44,7 +44,7 @@
       _os_log_impl(&dword_248AD7000, v14, OS_LOG_TYPE_DEFAULT, "No additional CloudKit data was provided", buf, 2u);
     }
 
-    if ([v8 cloudkitUseDevelopmentEnvironment])
+    if ([configurationCopy cloudkitUseDevelopmentEnvironment])
     {
       v18 = 2;
     }
@@ -55,8 +55,8 @@
     }
 
     v19 = objc_alloc(MEMORY[0x277CBC220]);
-    v20 = [v8 cloudkitContainer];
-    v21 = [v19 initWithContainerIdentifier:v20 environment:v18];
+    cloudkitContainer = [configurationCopy cloudkitContainer];
+    v21 = [v19 initWithContainerIdentifier:cloudkitContainer environment:v18];
 
     v22 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v21];
     container = v9->_container;
@@ -67,44 +67,44 @@
   return v9;
 }
 
-- (void)uploadRecords:(id)a3 taskIdentifier:(id)a4 totalUploadSize:(id)a5 perRecordProgressBlock:(id)a6 perRecordSaveBlock:(id)a7 completionBlock:(id)a8
+- (void)uploadRecords:(id)records taskIdentifier:(id)identifier totalUploadSize:(id)size perRecordProgressBlock:(id)block perRecordSaveBlock:(id)saveBlock completionBlock:(id)completionBlock
 {
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [MEMORY[0x277CF0810] sharedScheduler];
+  recordsCopy = records;
+  identifierCopy = identifier;
+  sizeCopy = size;
+  blockCopy = block;
+  saveBlockCopy = saveBlock;
+  completionBlockCopy = completionBlock;
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __124__DEDCloudKitClient_uploadRecords_taskIdentifier_totalUploadSize_perRecordProgressBlock_perRecordSaveBlock_completionBlock___block_invoke;
   v35[3] = &unk_278F66D88;
   v35[4] = self;
-  v21 = v15;
+  v21 = identifierCopy;
   v36 = v21;
-  v32 = v14;
+  v32 = recordsCopy;
   v37 = v32;
-  v22 = v17;
+  v22 = blockCopy;
   v38 = v22;
-  v23 = v18;
+  v23 = saveBlockCopy;
   v39 = v23;
-  v24 = v19;
+  v24 = completionBlockCopy;
   v40 = v24;
-  [v20 registerForTaskWithIdentifier:v21 usingQueue:0 launchHandler:v35];
+  [mEMORY[0x277CF0810] registerForTaskWithIdentifier:v21 usingQueue:0 launchHandler:v35];
 
   v25 = [objc_alloc(MEMORY[0x277CF07C8]) initWithIdentifier:v21];
   [v25 setPriority:2];
   [v25 setRequiresNetworkConnectivity:1];
-  if (v16)
+  if (sizeCopy)
   {
-    [v25 setNetworkUploadSize:{objc_msgSend(v16, "integerValue", v32)}];
+    [v25 setNetworkUploadSize:{objc_msgSend(sizeCopy, "integerValue", v32)}];
   }
 
-  v26 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
   v34 = 0;
-  v27 = [v26 submitTaskRequest:v25 error:&v34];
+  v27 = [mEMORY[0x277CF0810]2 submitTaskRequest:v25 error:&v34];
   v28 = v34;
 
   v29 = [(DEDCloudKitClient *)self log];

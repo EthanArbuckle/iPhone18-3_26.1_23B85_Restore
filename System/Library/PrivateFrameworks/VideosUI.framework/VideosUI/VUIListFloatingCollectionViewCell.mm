@@ -1,7 +1,7 @@
 @interface VUIListFloatingCollectionViewCell
 - (id)vuiContentView;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlightedBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlightedBackgroundColor:(id)color;
 @end
 
 @implementation VUIListFloatingCollectionViewCell
@@ -10,17 +10,17 @@
 {
   v4.receiver = self;
   v4.super_class = VUIListFloatingCollectionViewCell;
-  v2 = [(VUIBaseCollectionViewCell *)&v4 vuiContentView];
+  vuiContentView = [(VUIBaseCollectionViewCell *)&v4 vuiContentView];
 
-  return v2;
+  return vuiContentView;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = VUIListFloatingCollectionViewCell;
-  v4 = a3;
-  [(VUIBaseCollectionViewCell *)&v8 setBackgroundColor:v4];
+  colorCopy = color;
+  [(VUIBaseCollectionViewCell *)&v8 setBackgroundColor:colorCopy];
   v5 = [(VUIListFloatingCollectionViewCell *)self backgroundView:v8.receiver];
 
   if (!v5)
@@ -29,16 +29,16 @@
     [(VUIListFloatingCollectionViewCell *)self setBackgroundView:v6];
   }
 
-  v7 = [(VUIListFloatingCollectionViewCell *)self backgroundView];
-  [v7 setBackgroundColor:v4];
+  backgroundView = [(VUIListFloatingCollectionViewCell *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlightedBackgroundColor:(id)a3
+- (void)setHighlightedBackgroundColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = VUIListFloatingCollectionViewCell;
-  v4 = a3;
-  [(VUIBaseCollectionViewCell *)&v8 setHighlightedBackgroundColor:v4];
+  colorCopy = color;
+  [(VUIBaseCollectionViewCell *)&v8 setHighlightedBackgroundColor:colorCopy];
   v5 = [(VUIListFloatingCollectionViewCell *)self selectedBackgroundView:v8.receiver];
 
   if (!v5)
@@ -47,8 +47,8 @@
     [(VUIListFloatingCollectionViewCell *)self setSelectedBackgroundView:v6];
   }
 
-  v7 = [(VUIListFloatingCollectionViewCell *)self selectedBackgroundView];
-  [v7 setBackgroundColor:v4];
+  selectedBackgroundView = [(VUIListFloatingCollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:colorCopy];
 }
 
 @end

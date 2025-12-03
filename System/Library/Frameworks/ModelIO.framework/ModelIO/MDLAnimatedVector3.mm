@@ -2,24 +2,24 @@
 - (NSUInteger)getDouble3Array:(vector_double3 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (NSUInteger)getFloat3Array:(vector_float3 *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)double3AtTime:(double)a3@<D0>;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)double3AtTime:(double)time@<D0>;
 - (unint64_t)precision;
 - (vector_float3)float3AtTime:(NSTimeInterval)time;
 - (void)resetWithDouble3Array:(const vector_double3 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
 - (void)resetWithFloat3Array:(const vector_float3 *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
-- (void)setDouble3:(__int128 *)a3 atTime:;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
+- (void)setDouble3:(__int128 *)double3 atTime:;
 @end
 
 @implementation MDLAnimatedVector3
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDLAnimatedVector3;
-  return [(MDLAnimatedValue *)&v4 copyWithZone:a3];
+  return [(MDLAnimatedValue *)&v4 copyWithZone:zone];
 }
 
 - (unint64_t)precision
@@ -100,7 +100,7 @@ LABEL_10:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -135,7 +135,7 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -143,7 +143,7 @@ LABEL_10:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2B858(v11) & 1) != 0 || (sub_239E6A188(v11) & 1) != 0 || sub_239F26A84(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);
@@ -153,11 +153,11 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDouble3:(__int128 *)a3 atTime:
+- (void)setDouble3:(__int128 *)double3 atTime:
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = *a3;
-  v3 = *(a3 + 2);
+  v4 = *double3;
+  v3 = *(double3 + 2);
   v5 = 0;
   v6 = &off_284D16698 + 2;
   operator new();
@@ -206,7 +206,7 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)double3AtTime:(double)a3@<D0>
+- (uint64_t)double3AtTime:(double)time@<D0>
 {
   v24 = *MEMORY[0x277D85DE8];
   v21 = 0.0;
@@ -215,7 +215,7 @@ LABEL_10:
   v18 = 0.0;
   v19 = 0;
   v20 = 0;
-  sub_239F24610((a1 + 8), &v21, &v18, a3);
+  sub_239F24610((self + 8), &v21, &v18, time);
   if (!v23)
   {
     goto LABEL_11;
@@ -234,7 +234,7 @@ LABEL_10:
   v7 = sub_239F2C4F8(&v22);
   v8 = *v7;
   v9.f64[0] = *(v7 + 16);
-  if (!*(a1 + 32))
+  if (!*(self + 32))
   {
 LABEL_10:
     v16 = v9;
@@ -258,7 +258,7 @@ LABEL_11:
     {
       v11 = sub_239F2C4F8(&v19);
       v12.f64[0] = v11[1].f64[0];
-      v13 = fmax(fmin((a3 - v21) / (v18 - v21), 1.0), 0.0);
+      v13 = fmax(fmin((time - v21) / (v18 - v21), 1.0), 0.0);
       v9 = vmlaq_n_f64(vmulq_n_f64(v12, v13), v16, 1.0 - v13);
       v8 = vmlaq_n_f64(vmulq_n_f64(*v11, v13), v17, 1.0 - v13);
       goto LABEL_10;

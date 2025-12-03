@@ -1,17 +1,17 @@
 @interface CKDetailsMapViewCell
-- (CKDetailsMapViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsMapViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setLocationStringView:(id)a3;
-- (void)setMapView:(id)a3;
+- (void)setLocationStringView:(id)view;
+- (void)setMapView:(id)view;
 @end
 
 @implementation CKDetailsMapViewCell
 
-- (CKDetailsMapViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsMapViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CKDetailsMapViewCell;
-  v4 = [(CKDetailsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -21,35 +21,35 @@
   return v5;
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v8 = a3;
-  if (self->_mapView != v8)
+  viewCopy = view;
+  if (self->_mapView != viewCopy)
   {
-    objc_storeStrong(&self->_mapView, a3);
-    v5 = [(CKDetailsMapViewCell *)self contentView];
-    [v5 addSubview:self->_mapView];
+    objc_storeStrong(&self->_mapView, view);
+    contentView = [(CKDetailsMapViewCell *)self contentView];
+    [contentView addSubview:self->_mapView];
 
     if (CKIsRunningInMacCatalyst())
     {
-      v6 = [(UIView *)self->_mapView layer];
-      [v6 setCornerRadius:4.0];
+      layer = [(UIView *)self->_mapView layer];
+      [layer setCornerRadius:4.0];
 
-      v7 = [(UIView *)self->_mapView layer];
-      [v7 setMasksToBounds:1];
+      layer2 = [(UIView *)self->_mapView layer];
+      [layer2 setMasksToBounds:1];
     }
   }
 }
 
-- (void)setLocationStringView:(id)a3
+- (void)setLocationStringView:(id)view
 {
-  v5 = a3;
-  if (self->_locationStringView != v5)
+  viewCopy = view;
+  if (self->_locationStringView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_locationStringView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_locationStringView, view);
     [(CKDetailsMapViewCell *)self setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
@@ -58,29 +58,29 @@
   v26.receiver = self;
   v26.super_class = CKDetailsMapViewCell;
   [(CKDetailsCell *)&v26 layoutSubviews];
-  v3 = [(CKDetailsCell *)self topSeperator];
-  [v3 setHidden:1];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:1];
 
-  v4 = [(CKDetailsCell *)self bottomSeperator];
-  [v4 setHidden:1];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:1];
 
-  v5 = [(CKDetailsMapViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(CKDetailsMapViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CKDetailsCell *)self bottomSeperator];
-  [v14 setHidden:1];
+  bottomSeperator2 = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator2 setHidden:1];
 
-  v15 = [(CKDetailsMapViewCell *)self mapView];
-  [v15 setFrame:{v7, v9, v11, v13}];
+  mapView = [(CKDetailsMapViewCell *)self mapView];
+  [mapView setFrame:{v7, v9, v11, v13}];
 
   if (self->_shouldShowLocationString)
   {
-    v16 = [(CKDetailsMapViewCell *)self locationStringView];
-    [v16 frame];
+    locationStringView = [(CKDetailsMapViewCell *)self locationStringView];
+    [locationStringView frame];
 
     [(CKDetailsMapViewCell *)self bounds];
     v18 = v17;
@@ -101,11 +101,11 @@
     v23 = floor(v20 * v21) / v21;
     [(CKDetailsMapViewCell *)self bounds];
     [(CKDetailsLocationStringCell *)self->_locationStringView setFrame:v22, v23];
-    v24 = [(CKDetailsMapViewCell *)self contentView];
-    [v24 addSubview:self->_locationStringView];
+    contentView2 = [(CKDetailsMapViewCell *)self contentView];
+    [contentView2 addSubview:self->_locationStringView];
 
-    v25 = [(CKDetailsMapViewCell *)self contentView];
-    [v25 bringSubviewToFront:self->_locationStringView];
+    contentView3 = [(CKDetailsMapViewCell *)self contentView];
+    [contentView3 bringSubviewToFront:self->_locationStringView];
   }
 }
 

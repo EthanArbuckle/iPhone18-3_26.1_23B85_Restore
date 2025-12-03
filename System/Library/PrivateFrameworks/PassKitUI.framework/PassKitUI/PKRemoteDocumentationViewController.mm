@@ -1,19 +1,19 @@
 @interface PKRemoteDocumentationViewController
 - (BOOL)isWithinBuddy;
-- (PKRemoteDocumentationViewController)initWithContext:(int64_t)a3 URL:(id)a4;
+- (PKRemoteDocumentationViewController)initWithContext:(int64_t)context URL:(id)l;
 - (UIActivityIndicatorView)activityIndicatorView;
 - (UIBarButtonItem)dismissButton;
 - (WKWebView)webView;
-- (int64_t)handleNavigationAction:(id)a3;
+- (int64_t)handleNavigationAction:(id)action;
 - (void)loadContent;
-- (void)navigation:(id)a3 didFinishWithError:(id)a4;
+- (void)navigation:(id)navigation didFinishWithError:(id)error;
 - (void)presentFatalErrorAlert;
-- (void)setIsLoading:(BOOL)a3;
+- (void)setIsLoading:(BOOL)loading;
 - (void)setupActivityIndicatorView;
 - (void)setupDismissButton;
 - (void)setupWebView;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
 @end
 
 @implementation PKRemoteDocumentationViewController
@@ -67,14 +67,14 @@
   return dismissButton;
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
     v7[5] = v3;
     v7[6] = v4;
-    self->_isLoading = a3;
-    if (a3)
+    self->_isLoading = loading;
+    if (loading)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -119,17 +119,17 @@ void __52__PKRemoteDocumentationViewController_setIsLoading___block_invoke_3(uin
   [v1 stopAnimating];
 }
 
-- (PKRemoteDocumentationViewController)initWithContext:(int64_t)a3 URL:(id)a4
+- (PKRemoteDocumentationViewController)initWithContext:(int64_t)context URL:(id)l
 {
-  v7 = a4;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PKRemoteDocumentationViewController;
   v8 = [(PKRemoteDocumentationViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_context = a3;
-    objc_storeStrong(&v8->_url, a4);
+    v8->_context = context;
+    objc_storeStrong(&v8->_url, l);
   }
 
   return v9;
@@ -141,8 +141,8 @@ void __52__PKRemoteDocumentationViewController_setIsLoading___block_invoke_3(uin
   v5.super_class = PKRemoteDocumentationViewController;
   [(PKRemoteDocumentationViewController *)&v5 viewDidLoad];
   v3 = PKProvisioningBackgroundColor();
-  v4 = [(PKRemoteDocumentationViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(PKRemoteDocumentationViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(PKRemoteDocumentationViewController *)self setupWebView];
   [(PKRemoteDocumentationViewController *)self setupActivityIndicatorView];
@@ -153,77 +153,77 @@ void __52__PKRemoteDocumentationViewController_setIsLoading___block_invoke_3(uin
 - (void)setupWebView
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKRemoteDocumentationViewController *)self webView];
-  [v3 setAlpha:0.0];
+  webView = [(PKRemoteDocumentationViewController *)self webView];
+  [webView setAlpha:0.0];
 
-  v4 = [(PKRemoteDocumentationViewController *)self webView];
-  v5 = [v4 scrollView];
-  [v5 setContentInsetAdjustmentBehavior:3];
+  webView2 = [(PKRemoteDocumentationViewController *)self webView];
+  scrollView = [webView2 scrollView];
+  [scrollView setContentInsetAdjustmentBehavior:3];
 
-  v6 = [(PKRemoteDocumentationViewController *)self view];
-  v7 = [(PKRemoteDocumentationViewController *)self webView];
-  [v6 addSubview:v7];
+  view = [(PKRemoteDocumentationViewController *)self view];
+  webView3 = [(PKRemoteDocumentationViewController *)self webView];
+  [view addSubview:webView3];
 
-  v8 = [(PKRemoteDocumentationViewController *)self view];
-  v29 = [(PKRemoteDocumentationViewController *)self view];
-  v27 = [v29 topAnchor];
-  v28 = [(PKRemoteDocumentationViewController *)self webView];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  view2 = [(PKRemoteDocumentationViewController *)self view];
+  view3 = [(PKRemoteDocumentationViewController *)self view];
+  topAnchor = [view3 topAnchor];
+  webView4 = [(PKRemoteDocumentationViewController *)self webView];
+  topAnchor2 = [webView4 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[0] = v25;
-  v24 = [(PKRemoteDocumentationViewController *)self view];
-  v22 = [v24 bottomAnchor];
-  v23 = [(PKRemoteDocumentationViewController *)self webView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  view4 = [(PKRemoteDocumentationViewController *)self view];
+  bottomAnchor = [view4 bottomAnchor];
+  webView5 = [(PKRemoteDocumentationViewController *)self webView];
+  bottomAnchor2 = [webView5 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[1] = v20;
-  v19 = [(PKRemoteDocumentationViewController *)self view];
-  v18 = [v19 leftAnchor];
-  v9 = [(PKRemoteDocumentationViewController *)self webView];
-  v10 = [v9 leftAnchor];
-  v11 = [v18 constraintEqualToAnchor:v10];
+  view5 = [(PKRemoteDocumentationViewController *)self view];
+  leftAnchor = [view5 leftAnchor];
+  webView6 = [(PKRemoteDocumentationViewController *)self webView];
+  leftAnchor2 = [webView6 leftAnchor];
+  v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v30[2] = v11;
-  v12 = [(PKRemoteDocumentationViewController *)self view];
-  v13 = [v12 rightAnchor];
-  v14 = [(PKRemoteDocumentationViewController *)self webView];
-  v15 = [v14 rightAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  view6 = [(PKRemoteDocumentationViewController *)self view];
+  rightAnchor = [view6 rightAnchor];
+  webView7 = [(PKRemoteDocumentationViewController *)self webView];
+  rightAnchor2 = [webView7 rightAnchor];
+  v16 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v30[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
-  [v8 addConstraints:v17];
+  [view2 addConstraints:v17];
 }
 
 - (void)setupActivityIndicatorView
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKRemoteDocumentationViewController *)self view];
-  v4 = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
-  [v3 addSubview:v4];
+  view = [(PKRemoteDocumentationViewController *)self view];
+  activityIndicatorView = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
+  [view addSubview:activityIndicatorView];
 
-  v5 = [(PKRemoteDocumentationViewController *)self view];
-  v16 = [(PKRemoteDocumentationViewController *)self view];
-  v14 = [v16 centerXAnchor];
-  v15 = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
-  v6 = [v15 centerXAnchor];
-  v7 = [v14 constraintEqualToAnchor:v6];
+  view2 = [(PKRemoteDocumentationViewController *)self view];
+  view3 = [(PKRemoteDocumentationViewController *)self view];
+  centerXAnchor = [view3 centerXAnchor];
+  activityIndicatorView2 = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
+  centerXAnchor2 = [activityIndicatorView2 centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[0] = v7;
-  v8 = [(PKRemoteDocumentationViewController *)self view];
-  v9 = [v8 centerYAnchor];
-  v10 = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  view4 = [(PKRemoteDocumentationViewController *)self view];
+  centerYAnchor = [view4 centerYAnchor];
+  activityIndicatorView3 = [(PKRemoteDocumentationViewController *)self activityIndicatorView];
+  centerYAnchor2 = [activityIndicatorView3 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v17[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  [v5 addConstraints:v13];
+  [view2 addConstraints:v13];
 
   [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
 }
 
 - (void)setupDismissButton
 {
-  v4 = [(PKRemoteDocumentationViewController *)self dismissButton];
-  v3 = [(PKRemoteDocumentationViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  dismissButton = [(PKRemoteDocumentationViewController *)self dismissButton];
+  navigationItem = [(PKRemoteDocumentationViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:dismissButton];
 }
 
 - (void)loadContent
@@ -236,16 +236,16 @@ void __52__PKRemoteDocumentationViewController_setIsLoading___block_invoke_3(uin
   v5 = [(WKWebView *)self->_webView loadRequest:v6];
 }
 
-- (void)navigation:(id)a3 didFinishWithError:(id)a4
+- (void)navigation:(id)navigation didFinishWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__PKRemoteDocumentationViewController_navigation_didFinishWithError___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -310,27 +310,27 @@ void __69__PKRemoteDocumentationViewController_navigation_didFinishWithError___b
   [(PKRemoteDocumentationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v7 = a5;
-  v7[2](v7, [(PKRemoteDocumentationViewController *)self handleNavigationAction:a4]);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [(PKRemoteDocumentationViewController *)self handleNavigationAction:action]);
 }
 
-- (int64_t)handleNavigationAction:(id)a3
+- (int64_t)handleNavigationAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 navigationType];
-  if (v5 == -1)
+  actionCopy = action;
+  navigationType = [actionCopy navigationType];
+  if (navigationType == -1)
   {
     v8 = 1;
   }
 
   else
   {
-    if (!v5 && ![(PKRemoteDocumentationViewController *)self isWithinBuddy])
+    if (!navigationType && ![(PKRemoteDocumentationViewController *)self isWithinBuddy])
     {
-      v6 = [v4 request];
-      v7 = [v6 URL];
+      request = [actionCopy request];
+      v7 = [request URL];
 
       PKOpenURL();
     }

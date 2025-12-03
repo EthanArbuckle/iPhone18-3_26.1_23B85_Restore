@@ -1,23 +1,23 @@
 @interface SDAutoUnlockSessionWrapper
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAwdlCacheID:(BOOL)a3;
-- (void)setHasMessageType:(BOOL)a3;
-- (void)setHasUseProxy:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAwdlCacheID:(BOOL)d;
+- (void)setHasMessageType:(BOOL)type;
+- (void)setHasUseProxy:(BOOL)proxy;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockSessionWrapper
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMessageType:(BOOL)a3
+- (void)setHasMessageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUseProxy:(BOOL)a3
+- (void)setHasUseProxy:(BOOL)proxy
 {
-  if (a3)
+  if (proxy)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAwdlCacheID:(BOOL)a3
+- (void)setHasAwdlCacheID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockSessionWrapper;
   v3 = [(SDAutoUnlockSessionWrapper *)&v7 description];
-  v4 = [(SDAutoUnlockSessionWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockSessionWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -175,40 +175,40 @@ LABEL_15:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_sessionID)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_payload)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     messageType = self->_messageType;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_senderID)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -216,7 +216,7 @@ LABEL_15:
   {
     useProxy = self->_useProxy;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -237,74 +237,74 @@ LABEL_13:
 
   awdlCacheID = self->_awdlCacheID;
   PBDataWriterWriteUint32Field();
-  v4 = v11;
+  toCopy = v11;
   if (*&self->_has)
   {
 LABEL_14:
     aksSessionID = self->_aksSessionID;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_15:
   if (self->_encryptedPayload)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_authTag)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_nonce)
   {
     PBDataWriterWriteDataField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[20] = self->_version;
-    *(v4 + 88) |= 8u;
+    toCopy[20] = self->_version;
+    *(toCopy + 88) |= 8u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sessionID)
   {
-    [v4 setSessionID:?];
-    v4 = v6;
+    [toCopy setSessionID:?];
+    toCopy = v6;
   }
 
   if (self->_payload)
   {
     [v6 setPayload:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[10] = self->_messageType;
-    *(v4 + 88) |= 4u;
+    toCopy[10] = self->_messageType;
+    *(toCopy + 88) |= 4u;
   }
 
   if (self->_senderID)
   {
     [v6 setSenderID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 84) = self->_useProxy;
-    *(v4 + 88) |= 0x10u;
+    *(toCopy + 84) = self->_useProxy;
+    *(toCopy + 88) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -323,38 +323,38 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v4[6] = self->_awdlCacheID;
-  *(v4 + 88) |= 2u;
+  toCopy[6] = self->_awdlCacheID;
+  *(toCopy + 88) |= 2u;
   if (*&self->_has)
   {
 LABEL_14:
-    v4[2] = self->_aksSessionID;
-    *(v4 + 88) |= 1u;
+    toCopy[2] = self->_aksSessionID;
+    *(toCopy + 88) |= 1u;
   }
 
 LABEL_15:
   if (self->_encryptedPayload)
   {
     [v6 setEncryptedPayload:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_authTag)
   {
     [v6 setAuthTag:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_nonce)
   {
     [v6 setNonce:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -362,11 +362,11 @@ LABEL_15:
     *(v5 + 88) |= 8u;
   }
 
-  v7 = [(NSData *)self->_sessionID copyWithZone:a3];
+  v7 = [(NSData *)self->_sessionID copyWithZone:zone];
   v8 = v6[9];
   v6[9] = v7;
 
-  v9 = [(NSData *)self->_payload copyWithZone:a3];
+  v9 = [(NSData *)self->_payload copyWithZone:zone];
   v10 = v6[7];
   v6[7] = v9;
 
@@ -376,7 +376,7 @@ LABEL_15:
     *(v6 + 88) |= 4u;
   }
 
-  v11 = [(NSData *)self->_senderID copyWithZone:a3];
+  v11 = [(NSData *)self->_senderID copyWithZone:zone];
   v12 = v6[8];
   v6[8] = v11;
 
@@ -416,51 +416,51 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [(NSData *)self->_encryptedPayload copyWithZone:a3];
+  v14 = [(NSData *)self->_encryptedPayload copyWithZone:zone];
   v15 = v6[4];
   v6[4] = v14;
 
-  v16 = [(NSData *)self->_authTag copyWithZone:a3];
+  v16 = [(NSData *)self->_authTag copyWithZone:zone];
   v17 = v6[2];
   v6[2] = v16;
 
-  v18 = [(NSData *)self->_nonce copyWithZone:a3];
+  v18 = [(NSData *)self->_nonce copyWithZone:zone];
   v19 = v6[6];
   v6[6] = v18;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 88) & 8) == 0 || self->_version != *(v4 + 20))
+    if ((*(equalCopy + 88) & 8) == 0 || self->_version != *(equalCopy + 20))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 88) & 8) != 0)
+  else if ((*(equalCopy + 88) & 8) != 0)
   {
     goto LABEL_43;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 9) && ![(NSData *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 9) && ![(NSData *)sessionID isEqual:?])
   {
     goto LABEL_43;
   }
 
   payload = self->_payload;
-  if (payload | *(v4 + 7))
+  if (payload | *(equalCopy + 7))
   {
     if (![(NSData *)payload isEqual:?])
     {
@@ -469,22 +469,22 @@ LABEL_9:
   }
 
   has = self->_has;
-  v9 = *(v4 + 88);
+  v9 = *(equalCopy + 88);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0 || self->_messageType != *(v4 + 10))
+    if ((*(equalCopy + 88) & 4) == 0 || self->_messageType != *(equalCopy + 10))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 88) & 4) != 0)
+  else if ((*(equalCopy + 88) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   senderID = self->_senderID;
-  if (senderID | *(v4 + 8))
+  if (senderID | *(equalCopy + 8))
   {
     if (![(NSData *)senderID isEqual:?])
     {
@@ -494,10 +494,10 @@ LABEL_9:
     has = self->_has;
   }
 
-  v11 = *(v4 + 88);
+  v11 = *(equalCopy + 88);
   if ((has & 0x10) == 0)
   {
-    if ((*(v4 + 88) & 0x10) == 0)
+    if ((*(equalCopy + 88) & 0x10) == 0)
     {
       goto LABEL_21;
     }
@@ -507,21 +507,21 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if ((*(v4 + 88) & 0x10) == 0)
+  if ((*(equalCopy + 88) & 0x10) == 0)
   {
     goto LABEL_43;
   }
 
-  v12 = *(v4 + 84);
+  v12 = *(equalCopy + 84);
   if (self->_useProxy)
   {
-    if ((*(v4 + 84) & 1) == 0)
+    if ((*(equalCopy + 84) & 1) == 0)
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_43;
   }
@@ -529,38 +529,38 @@ LABEL_43:
 LABEL_21:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_awdlCacheID != *(v4 + 6))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_awdlCacheID != *(equalCopy + 6))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_43;
   }
 
   if (has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_aksSessionID != *(v4 + 2))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_aksSessionID != *(equalCopy + 2))
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_43;
   }
 
   encryptedPayload = self->_encryptedPayload;
-  if (encryptedPayload | *(v4 + 4) && ![(NSData *)encryptedPayload isEqual:?])
+  if (encryptedPayload | *(equalCopy + 4) && ![(NSData *)encryptedPayload isEqual:?])
   {
     goto LABEL_43;
   }
 
   authTag = self->_authTag;
-  if (authTag | *(v4 + 2))
+  if (authTag | *(equalCopy + 2))
   {
     if (![(NSData *)authTag isEqual:?])
     {
@@ -569,7 +569,7 @@ LABEL_21:
   }
 
   nonce = self->_nonce;
-  if (nonce | *(v4 + 6))
+  if (nonce | *(equalCopy + 6))
   {
     v16 = [(NSData *)nonce isEqual:?];
   }
@@ -651,46 +651,46 @@ LABEL_14:
   return v11 ^ v13 ^ [(NSData *)self->_nonce hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 88) & 8) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 88) & 8) != 0)
   {
-    self->_version = *(v4 + 20);
+    self->_version = *(fromCopy + 20);
     *&self->_has |= 8u;
   }
 
-  v6 = v4;
-  if (*(v4 + 9))
+  v6 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(SDAutoUnlockSessionWrapper *)self setSessionID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SDAutoUnlockSessionWrapper *)self setPayload:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 88) & 4) != 0)
+  if ((*(fromCopy + 88) & 4) != 0)
   {
-    self->_messageType = *(v4 + 10);
+    self->_messageType = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(SDAutoUnlockSessionWrapper *)self setSenderID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(fromCopy + 88);
   if ((v5 & 0x10) != 0)
   {
-    self->_useProxy = *(v4 + 84);
+    self->_useProxy = *(fromCopy + 84);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 88);
+    v5 = *(fromCopy + 88);
     if ((v5 & 2) == 0)
     {
 LABEL_13:
@@ -703,37 +703,37 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 88) & 2) == 0)
+  else if ((*(fromCopy + 88) & 2) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_awdlCacheID = *(v4 + 6);
+  self->_awdlCacheID = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
 LABEL_14:
-    self->_aksSessionID = *(v4 + 2);
+    self->_aksSessionID = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
 LABEL_15:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SDAutoUnlockSessionWrapper *)self setEncryptedPayload:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAutoUnlockSessionWrapper *)self setAuthTag:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SDAutoUnlockSessionWrapper *)self setNonce:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

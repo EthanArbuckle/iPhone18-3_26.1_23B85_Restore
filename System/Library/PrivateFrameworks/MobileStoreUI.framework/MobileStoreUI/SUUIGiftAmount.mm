@@ -1,20 +1,20 @@
 @interface SUUIGiftAmount
-- (SUUIGiftAmount)initWithAmountDictionary:(id)a3;
+- (SUUIGiftAmount)initWithAmountDictionary:(id)dictionary;
 - (id)HTTPBodyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUUIGiftAmount
 
-- (SUUIGiftAmount)initWithAmountDictionary:(id)a3
+- (SUUIGiftAmount)initWithAmountDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SUUIGiftAmount;
   v5 = [(SUUIGiftAmount *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"label"];
+    v6 = [dictionaryCopy objectForKey:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -23,7 +23,7 @@
       v5->_displayLabel = v7;
     }
 
-    v9 = [v4 objectForKey:@"partNumber"];
+    v9 = [dictionaryCopy objectForKey:@"partNumber"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -33,7 +33,7 @@
       v5->_partNumber = v10;
     }
 
-    v12 = [v4 objectForKey:@"value"];
+    v12 = [dictionaryCopy objectForKey:@"value"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -48,44 +48,44 @@
 
 - (id)HTTPBodyDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:@"charity" forKey:@"giftType"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"charity" forKey:@"giftType"];
   partNumber = self->_partNumber;
   if (partNumber)
   {
-    [v3 setObject:partNumber forKey:@"partNumber"];
+    [dictionary setObject:partNumber forKey:@"partNumber"];
   }
 
   value = self->_value;
   if (value)
   {
-    v6 = [(NSNumber *)value stringValue];
-    [v3 setObject:v6 forKey:@"amount"];
+    stringValue = [(NSNumber *)value stringValue];
+    [dictionary setObject:stringValue forKey:@"amount"];
   }
 
-  v7 = [MEMORY[0x277D7FCE0] sharedInstance];
-  v8 = [v7 guid];
+  mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+  guid = [mEMORY[0x277D7FCE0] guid];
 
-  if (v8)
+  if (guid)
   {
-    [v3 setObject:v8 forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_displayLabel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_displayLabel copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_partNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_partNumber copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSNumber *)self->_value copyWithZone:a3];
+  v10 = [(NSNumber *)self->_value copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 

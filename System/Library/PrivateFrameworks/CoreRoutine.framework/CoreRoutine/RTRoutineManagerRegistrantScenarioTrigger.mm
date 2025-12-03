@@ -1,8 +1,8 @@
 @interface RTRoutineManagerRegistrantScenarioTrigger
 - (RTRoutineManagerRegistrantScenarioTrigger)init;
-- (id)startMonitoringForScenarioTriggerTypes:(unint64_t)a3 handler:(id)a4;
-- (id)stopMonitoringForScenarioTriggerTypes:(unint64_t)a3;
-- (void)onScenarioTriggers:(id)a3 error:(id)a4;
+- (id)startMonitoringForScenarioTriggerTypes:(unint64_t)types handler:(id)handler;
+- (id)stopMonitoringForScenarioTriggerTypes:(unint64_t)types;
+- (void)onScenarioTriggers:(id)triggers error:(id)error;
 @end
 
 @implementation RTRoutineManagerRegistrantScenarioTrigger
@@ -22,21 +22,21 @@
   return v2;
 }
 
-- (id)startMonitoringForScenarioTriggerTypes:(unint64_t)a3 handler:(id)a4
+- (id)startMonitoringForScenarioTriggerTypes:(unint64_t)types handler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    while (a3)
+    while (types)
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3 & -a3];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:types & -types];
       scenarioTriggerHandlers = self->__scenarioTriggerHandlers;
-      v9 = MEMORY[0x1BFB54DD0](v6);
+      v9 = MEMORY[0x1BFB54DD0](handlerCopy);
       [(NSMutableDictionary *)scenarioTriggerHandlers setObject:v9 forKey:v7];
 
-      self->_monitoredScenarioTriggerTypes |= a3 & -a3;
-      a3 &= a3 - 1;
+      self->_monitoredScenarioTriggerTypes |= types & -types;
+      types &= types - 1;
     }
 
     v12 = 0;
@@ -57,31 +57,31 @@
   return v12;
 }
 
-- (id)stopMonitoringForScenarioTriggerTypes:(unint64_t)a3
+- (id)stopMonitoringForScenarioTriggerTypes:(unint64_t)types
 {
-  if (a3)
+  if (types)
   {
-    v4 = a3;
+    typesCopy = types;
     do
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4 & -v4];
+      v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:typesCopy & -typesCopy];
       [(NSMutableDictionary *)self->__scenarioTriggerHandlers removeObjectForKey:v5];
-      self->_monitoredScenarioTriggerTypes &= ~(v4 & -v4);
-      v4 &= v4 - 1;
+      self->_monitoredScenarioTriggerTypes &= ~(typesCopy & -typesCopy);
+      typesCopy &= typesCopy - 1;
     }
 
-    while (v4);
+    while (typesCopy);
   }
 
   self->_registered = self->_monitoredScenarioTriggerTypes != 0;
   return 0;
 }
 
-- (void)onScenarioTriggers:(id)a3 error:(id)a4
+- (void)onScenarioTriggers:(id)triggers error:(id)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v29 = a4;
+  triggersCopy = triggers;
+  errorCopy = error;
   monitoredScenarioTriggerTypes = self->_monitoredScenarioTriggerTypes;
   v9 = objc_opt_new();
   while (monitoredScenarioTriggerTypes)
@@ -120,9 +120,9 @@
       v39 = 2112;
       v40 = v15;
       v41 = 2112;
-      v42 = v7;
+      v42 = triggersCopy;
       v43 = 2112;
-      v44 = v29;
+      v44 = errorCopy;
       _os_log_impl(&dword_1BF1C4000, v11, OS_LOG_TYPE_INFO, "%@, registered, %@, monitoredScenarioTriggerTypes, %@, scenarioTriggers, %@, error, %@", buf, 0x34u);
 
       v9 = v14;
@@ -132,12 +132,12 @@
   if (self->_registered)
   {
     v27 = v9;
-    v28 = v7;
+    v28 = triggersCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = v7;
+    v16 = triggersCopy;
     v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v17)
     {
@@ -161,7 +161,7 @@
             v25 = v24;
             if (v24)
             {
-              (*(v24 + 16))(v24, v21, v29);
+              (*(v24 + 16))(v24, v21, errorCopy);
             }
           }
         }
@@ -173,7 +173,7 @@
     }
 
     v9 = v27;
-    v7 = v28;
+    triggersCopy = v28;
   }
 
   v26 = *MEMORY[0x1E69E9840];

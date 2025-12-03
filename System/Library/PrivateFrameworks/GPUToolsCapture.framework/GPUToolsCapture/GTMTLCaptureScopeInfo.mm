@@ -1,17 +1,17 @@
 @interface GTMTLCaptureScopeInfo
 + (id)allCaptureScopes;
-+ (id)getInfoWithAddress:(unint64_t)a3;
-+ (id)getInfoWithStreamRef:(unint64_t)a3;
-+ (void)addScope:(id)a3;
++ (id)getInfoWithAddress:(unint64_t)address;
++ (id)getInfoWithStreamRef:(unint64_t)ref;
++ (void)addScope:(id)scope;
 + (void)initialize;
-+ (void)removeScope:(id)a3;
-+ (void)sendAll:(os_unfair_lock_s *)a3;
++ (void)removeScope:(id)scope;
++ (void)sendAll:(os_unfair_lock_s *)all;
 + (void)updateAll;
 @end
 
 @implementation GTMTLCaptureScopeInfo
 
-+ (id)getInfoWithAddress:(unint64_t)a3
++ (id)getInfoWithAddress:(unint64_t)address
 {
   os_unfair_lock_lock(&lock);
   v15 = 0u;
@@ -35,7 +35,7 @@ LABEL_3:
 
       v9 = [_scopes objectForKey:{*(*(&v13 + 1) + 8 * v8), v13}];
       v10 = v9;
-      if (v9 == a3)
+      if (v9 == address)
       {
         break;
       }
@@ -74,11 +74,11 @@ LABEL_12:
   return v11;
 }
 
-+ (id)getInfoWithStreamRef:(unint64_t)a3
++ (id)getInfoWithStreamRef:(unint64_t)ref
 {
   os_unfair_lock_lock(&lock);
   v4 = _scopes;
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [NSNumber numberWithUnsignedLongLong:ref];
   v6 = [v4 objectForKey:v5];
 
   if (v6)
@@ -104,14 +104,14 @@ LABEL_12:
   os_unfair_lock_assert_not_owner(&lock);
 }
 
-+ (void)removeScope:(id)a3
++ (void)removeScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   os_unfair_lock_lock(&lock);
   v4 = _scopes;
-  v5 = [v3 streamReference];
+  streamReference = [scopeCopy streamReference];
 
-  v6 = [NSNumber numberWithUnsignedLongLong:v5];
+  v6 = [NSNumber numberWithUnsignedLongLong:streamReference];
   [v4 removeObjectForKey:v6];
 
   [GTMTLCaptureScopeInfo sendAll:&lock];
@@ -119,22 +119,22 @@ LABEL_12:
   os_unfair_lock_assert_not_owner(&lock);
 }
 
-+ (void)addScope:(id)a3
++ (void)addScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   os_unfair_lock_lock(&lock);
   v4 = _scopes;
-  v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 streamReference]);
-  [v4 setObject:v3 forKey:v5];
+  v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [scopeCopy streamReference]);
+  [v4 setObject:scopeCopy forKey:v5];
 
   [GTMTLCaptureScopeInfo sendAll:&lock];
 
   os_unfair_lock_assert_not_owner(&lock);
 }
 
-+ (void)sendAll:(os_unfair_lock_s *)a3
++ (void)sendAll:(os_unfair_lock_s *)all
 {
-  os_unfair_lock_assert_owner(a3);
+  os_unfair_lock_assert_owner(all);
   v4 = objc_alloc_init(NSMutableArray);
   v12 = 0u;
   v13 = 0u;
@@ -170,7 +170,7 @@ LABEL_12:
     while (v7);
   }
 
-  os_unfair_lock_unlock(a3);
+  os_unfair_lock_unlock(all);
   GTMTLGuestAppClientSendMTLCaptureScopeInfo(g_guestAppClientMTL, v4);
 }
 

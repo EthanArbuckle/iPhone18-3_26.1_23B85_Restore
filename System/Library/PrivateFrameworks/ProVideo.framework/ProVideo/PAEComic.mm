@@ -1,19 +1,19 @@
 @interface PAEComic
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAEComic)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAEComic)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEComic
 
-- (PAEComic)initWithAPIManager:(id)a3
+- (PAEComic)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEComic;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -53,9 +53,9 @@
   return v12 & v11 & [v4 addToggleButtonWithName:objc_msgSend(v5 parmId:"localizedStringForKey:value:table:" defaultValue:@"Comic::Affect Alpha" parmFlags:{0, 0), 9, 0, 3}];
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
-  if (a3 != 1)
+  if (changed != 1)
   {
     return 1;
   }
@@ -111,7 +111,7 @@
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v60[2] = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -128,18 +128,18 @@
   v57 = 0.0;
   v55 = 0.0;
   v54 = 0;
-  [v9 getIntValue:&v59 fromParm:1 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v58 fromParm:4 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v57 fromParm:5 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v56 fromParm:6 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v54 fromParm:8 atFxTime:a5->var0.var1];
-  [v9 getFloatValue:&v55 fromParm:7 atFxTime:a5->var0.var1];
+  [v9 getIntValue:&v59 fromParm:1 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v58 fromParm:4 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v57 fromParm:5 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v56 fromParm:6 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v54 fromParm:8 atFxTime:info->var0.var1];
+  [v9 getFloatValue:&v55 fromParm:7 atFxTime:info->var0.var1];
   v12 = HGObject::operator new(0x1A0uLL);
   HGComicDesignerInterface::HGComicDesignerInterface(v12);
   v53 = 0;
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -169,10 +169,10 @@
   (*(*v12 + 96))(v12, 11, 1.0, 0.0, 0.0, 0.0);
   (*(*v12 + 96))(v12, 12, 1.0, 0.0, 0.0, 0.0);
   (*(*v12 + 96))(v12, 10, 1.0, 0.0, 0.0, 0.0);
-  v19 = [a3 dod];
+  v19 = [output dod];
   v22 = HGRectMake4i(v19, HIDWORD(v19), v20, v21);
   (*(*v12 + 96))(v12, 8, v22, SHIDWORD(v22), v23, v24);
-  [(PAESharedDefaultBase *)self getScaleForImage:a4];
+  [(PAESharedDefaultBase *)self getScaleForImage:input];
   v25 = v51[1];
   v26 = v51[2];
   (*(*v12 + 96))(v12, 9, v25, v26, 0.0, 0.0);
@@ -194,9 +194,9 @@
       v44 = 0;
       v45 = 0.0;
       v43 = 0;
-      [v9 getRedValue:v51 greenValue:&v50 blueValue:&v49 alphaValue:&v48 fromParm:2 atFxTime:a5->var0.var1];
-      [v9 getRedValue:&v47 greenValue:&v46 blueValue:&v45 alphaValue:&v44 fromParm:3 atFxTime:a5->var0.var1];
-      [v9 getBoolValue:&v43 fromParm:9 atFxTime:a5->var0.var1];
+      [v9 getRedValue:v51 greenValue:&v50 blueValue:&v49 alphaValue:&v48 fromParm:2 atFxTime:info->var0.var1];
+      [v9 getRedValue:&v47 greenValue:&v46 blueValue:&v45 alphaValue:&v44 fromParm:3 atFxTime:info->var0.var1];
+      [v9 getBoolValue:&v43 fromParm:9 atFxTime:info->var0.var1];
       (*(*v12 + 96))(v12, 6, 24.0, 0.0, 0.0, 0.0);
       v28.n128_u32[0] = 1.0;
       if (v43)
@@ -218,7 +218,7 @@
       (*(*v29 + 96))(v29, 1, v33, v34, v35, 0.0);
       (*(*v29 + 96))(v29, 2, 1.0, 0.0, 0.0, 0.0);
       (*(*v29 + 96))(v29, 3, 1.0, 0.0, 0.0, 0.0);
-      v36 = [objc_msgSend(v11 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
+      v36 = [objc_msgSend(v11 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
       v37 = *v36;
       v38 = v36[1];
       v39 = v36[2];
@@ -238,7 +238,7 @@
   v53 = v12;
   (*(v41 + 16))(v12);
 LABEL_13:
-  [a3 setHeliumRef:&v53];
+  [output setHeliumRef:&v53];
   (*(*v13 + 24))(v13);
   if (v52)
   {
@@ -254,15 +254,15 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

@@ -1,16 +1,16 @@
 @interface MUWebPlacecardSchemeHandler
 - (_TtC6MapsUI27MUWebPlacecardSchemeHandler)init;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
 @end
 
 @implementation MUWebPlacecardSchemeHandler
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1C566F02C(a4);
+  selfCopy = self;
+  sub_1C566F02C(task);
 
   swift_unknownObjectRelease();
 }

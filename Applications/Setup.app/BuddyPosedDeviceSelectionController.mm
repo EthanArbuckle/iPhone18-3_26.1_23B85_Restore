@@ -4,33 +4,33 @@
 - (double)_headerToContentPadding;
 - (double)_landscapeDefaultSize;
 - (double)_portraitDefaultHeight;
-- (void)_setPosedViewToBoundedHeight:(double)a3 animated:(BOOL)a4 requireLayout:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_setPosedViewToBoundedHeight:(double)height animated:(BOOL)animated requireLayout:(BOOL)layout;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BuddyPosedDeviceSelectionController
 
 - (void)viewDidLoad
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
   v42.receiver = self;
   v42.super_class = BuddyPosedDeviceSelectionController;
   [(BuddyPosedDeviceSelectionController *)&v42 viewDidLoad];
-  v2 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  [(BuddyPosedDeviceSelectionView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  selectionView = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  [(BuddyPosedDeviceSelectionView *)selectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v3 = v44;
-  v4 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  [(BuddyPosedDeviceSelectionView *)v4 setDelegate:v3];
+  v3 = selfCopy;
+  selectionView2 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  [(BuddyPosedDeviceSelectionView *)selectionView2 setDelegate:v3];
 
-  v5 = [(BuddyPosedDeviceSelectionController *)v44 contentView];
-  v6 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  [v5 addSubview:v6];
+  contentView = [(BuddyPosedDeviceSelectionController *)selfCopy contentView];
+  selectionView3 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  [contentView addSubview:selectionView3];
 
   v7 = +[BYDevice currentDevice];
   if ([v7 posedDeviceSelection_largeSizeDevice])
@@ -54,45 +54,45 @@
     v41 = 16.0;
   }
 
-  v12 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  v13 = [(BuddyPosedDeviceSelectionView *)v12 topAnchor];
-  v14 = [(BuddyPosedDeviceSelectionController *)v44 headerView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:v41];
-  [(BuddyPosedDeviceSelectionController *)v44 setContentViewTopConstraint:v16];
+  selectionView4 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  topAnchor = [(BuddyPosedDeviceSelectionView *)selectionView4 topAnchor];
+  headerView = [(BuddyPosedDeviceSelectionController *)selfCopy headerView];
+  bottomAnchor = [headerView bottomAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:v41];
+  [(BuddyPosedDeviceSelectionController *)selfCopy setContentViewTopConstraint:v16];
 
   v17 = +[UIDevice currentDevice];
-  v18 = [(UIDevice *)v17 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v17 userInterfaceIdiom];
 
-  if (v18 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v19 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-    v20 = [(BuddyPosedDeviceSelectionView *)v19 topAnchor];
-    v21 = [(BuddyPosedDeviceSelectionController *)v44 contentView];
-    v22 = [v21 topAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
-    [(BuddyPosedDeviceSelectionController *)v44 setContentViewTopConstraint:v23];
+    selectionView5 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+    topAnchor2 = [(BuddyPosedDeviceSelectionView *)selectionView5 topAnchor];
+    contentView2 = [(BuddyPosedDeviceSelectionController *)selfCopy contentView];
+    topAnchor3 = [contentView2 topAnchor];
+    v23 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
+    [(BuddyPosedDeviceSelectionController *)selfCopy setContentViewTopConstraint:v23];
   }
 
-  v40 = [(BuddyPosedDeviceSelectionController *)v44 contentViewTopConstraint];
-  v45[0] = v40;
-  v39 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  v37 = [(BuddyPosedDeviceSelectionView *)v39 leftAnchor];
-  v38 = [(BuddyPosedDeviceSelectionController *)v44 contentView];
-  v36 = [v38 leftAnchor];
-  v35 = [v37 constraintEqualToAnchor:?];
+  contentViewTopConstraint = [(BuddyPosedDeviceSelectionController *)selfCopy contentViewTopConstraint];
+  v45[0] = contentViewTopConstraint;
+  selectionView6 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  leftAnchor = [(BuddyPosedDeviceSelectionView *)selectionView6 leftAnchor];
+  contentView3 = [(BuddyPosedDeviceSelectionController *)selfCopy contentView];
+  leftAnchor2 = [contentView3 leftAnchor];
+  v35 = [leftAnchor constraintEqualToAnchor:?];
   v45[1] = v35;
-  v34 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  v24 = [(BuddyPosedDeviceSelectionView *)v34 rightAnchor];
-  v25 = [(BuddyPosedDeviceSelectionController *)v44 contentView];
-  v26 = [v25 rightAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  selectionView7 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  rightAnchor = [(BuddyPosedDeviceSelectionView *)selectionView7 rightAnchor];
+  contentView4 = [(BuddyPosedDeviceSelectionController *)selfCopy contentView];
+  rightAnchor2 = [contentView4 rightAnchor];
+  v27 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v45[2] = v27;
-  v28 = [(BuddyPosedDeviceSelectionController *)v44 selectionView];
-  v29 = [(BuddyPosedDeviceSelectionView *)v28 bottomAnchor];
-  v30 = [(BuddyPosedDeviceSelectionController *)v44 contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  selectionView8 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  bottomAnchor2 = [(BuddyPosedDeviceSelectionView *)selectionView8 bottomAnchor];
+  contentView5 = [(BuddyPosedDeviceSelectionController *)selfCopy contentView];
+  bottomAnchor3 = [contentView5 bottomAnchor];
+  v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v45[3] = v32;
   v33 = [NSArray arrayWithObjects:v45 count:4];
   [NSLayoutConstraint activateConstraints:v33];
@@ -100,58 +100,58 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyPosedDeviceSelectionController;
   [(BuddyPosedDeviceSelectionController *)&v3 viewDidLayoutSubviews];
-  v2 = v5;
-  [(BuddyPosedDeviceSelectionController *)v5 _contentViewHeight];
+  v2 = selfCopy;
+  [(BuddyPosedDeviceSelectionController *)selfCopy _contentViewHeight];
   [(BuddyPosedDeviceSelectionController *)v2 _setPosedViewToBoundedHeight:0 animated:0 requireLayout:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = BuddyPosedDeviceSelectionController;
-  [(BuddyPosedDeviceSelectionController *)&v6 viewWillAppear:a3];
-  v3 = [(BuddyPosedDeviceSelectionController *)v9 view];
-  [v3 setNeedsLayout];
+  [(BuddyPosedDeviceSelectionController *)&v6 viewWillAppear:appear];
+  view = [(BuddyPosedDeviceSelectionController *)selfCopy view];
+  [view setNeedsLayout];
 
-  v4 = [(BuddyPosedDeviceSelectionController *)v9 view];
-  [v4 layoutIfNeeded];
+  view2 = [(BuddyPosedDeviceSelectionController *)selfCopy view];
+  [view2 layoutIfNeeded];
 
-  v5 = v9;
-  [(BuddyPosedDeviceSelectionController *)v9 _contentViewHeight];
+  v5 = selfCopy;
+  [(BuddyPosedDeviceSelectionController *)selfCopy _contentViewHeight];
   [(BuddyPosedDeviceSelectionController *)v5 _setPosedViewToBoundedHeight:0 animated:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, change);
+  v4.receiver = selfCopy;
   v4.super_class = BuddyPosedDeviceSelectionController;
   [(BuddyPosedDeviceSelectionController *)&v4 traitCollectionDidChange:location[0]];
-  v3 = v6;
-  [(BuddyPosedDeviceSelectionController *)v6 _contentViewHeight];
+  v3 = selfCopy;
+  [(BuddyPosedDeviceSelectionController *)selfCopy _contentViewHeight];
   [(BuddyPosedDeviceSelectionController *)v3 _setPosedViewToBoundedHeight:0 animated:?];
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v21 = a3;
-  v20 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  if ([(BuddyPosedDeviceSelectionController *)v20 _buttonTrayInlined])
+  objc_storeStrong(location, coordinator);
+  if ([(BuddyPosedDeviceSelectionController *)selfCopy _buttonTrayInlined])
   {
     v18 = 1;
   }
@@ -175,7 +175,7 @@
       v12 = 0;
       v13 = sub_100152C54;
       v14 = &unk_10032D9E8;
-      v15[0] = v20;
+      v15[0] = selfCopy;
       [v9 animateAlongsideTransition:&v10 completion:0];
       objc_storeStrong(v15, 0);
     }
@@ -186,15 +186,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setPosedViewToBoundedHeight:(double)a3 animated:(BOOL)a4 requireLayout:(BOOL)a5
+- (void)_setPosedViewToBoundedHeight:(double)height animated:(BOOL)animated requireLayout:(BOOL)layout
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
+  heightCopy = height;
+  animatedCopy = animated;
+  layoutCopy = layout;
   v21 = 0.7;
-  if (!a4)
+  if (!animated)
   {
     v21 = 0.0;
   }
@@ -204,18 +204,18 @@
   v15 = 0;
   v16 = sub_100152F2C;
   v17 = &unk_10032DA98;
-  v18[0] = v26;
-  v18[1] = *&v24;
-  v19 = v23;
-  v20 = v22;
+  v18[0] = selfCopy;
+  v18[1] = *&heightCopy;
+  v19 = animatedCopy;
+  v20 = layoutCopy;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1001530C4;
   v9 = &unk_10032DAC0;
-  v11 = v23;
-  v12 = v22;
-  v10 = v26;
+  v11 = animatedCopy;
+  v12 = layoutCopy;
+  v10 = selfCopy;
   [UIView animateWithDuration:&v13 animations:&v5 completion:v21];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(v18, 0);
@@ -239,9 +239,9 @@
   }
 
   v6 = v5;
-  v7 = [(BuddyPosedDeviceSelectionController *)self selectionView];
-  v8 = [(BuddyPosedDeviceSelectionView *)v7 leftPosedView];
-  [(BuddyPosedDeviceSelectionItemView *)v8 accessoryViewAndPaddingHeight];
+  selectionView = [(BuddyPosedDeviceSelectionController *)self selectionView];
+  leftPosedView = [(BuddyPosedDeviceSelectionView *)selectionView leftPosedView];
+  [(BuddyPosedDeviceSelectionItemView *)leftPosedView accessoryViewAndPaddingHeight];
   v10 = v9 + v6 * 0.300000012;
   [(BuddyPosedDeviceSelectionController *)self _headerToContentPadding];
   v12 = v10 + v11;
@@ -274,8 +274,8 @@
 
     v9 = v8;
     v10 = [(BuddyPosedDeviceSelectionController *)self selectionView:*&v8];
-    v11 = [(BuddyPosedDeviceSelectionView *)v10 leftPosedView];
-    [(BuddyPosedDeviceSelectionItemView *)v11 accessoryViewAndPaddingHeight];
+    leftPosedView = [(BuddyPosedDeviceSelectionView *)v10 leftPosedView];
+    [(BuddyPosedDeviceSelectionItemView *)leftPosedView accessoryViewAndPaddingHeight];
     v13 = v12 + v9 * 0.300000012;
     [(BuddyPosedDeviceSelectionController *)self _headerToContentPadding];
     v23 = v13 + v14;
@@ -292,27 +292,27 @@
 
 - (BOOL)_buttonTrayInlined
 {
-  v2 = [(BuddyPosedDeviceSelectionController *)self buttonTray];
-  v3 = [v2 superview];
-  v4 = [(BuddyPosedDeviceSelectionController *)self view];
-  v5 = v3 != v4;
+  buttonTray = [(BuddyPosedDeviceSelectionController *)self buttonTray];
+  superview = [buttonTray superview];
+  view = [(BuddyPosedDeviceSelectionController *)self view];
+  v5 = superview != view;
 
   return v5;
 }
 
 - (double)_contentViewHeight
 {
-  v2 = [(BuddyPosedDeviceSelectionController *)self buttonTray];
-  [v2 frame];
+  buttonTray = [(BuddyPosedDeviceSelectionController *)self buttonTray];
+  [buttonTray frame];
   v4 = v3;
-  v5 = [(BuddyPosedDeviceSelectionController *)self contentView];
-  [v5 frame];
+  contentView = [(BuddyPosedDeviceSelectionController *)self contentView];
+  [contentView frame];
   v7 = v4 - v6;
   [(BuddyPosedDeviceSelectionController *)self _headerToContentPadding];
   v9 = v7 - v8;
-  v10 = [(BuddyPosedDeviceSelectionController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 frame];
+  navigationController = [(BuddyPosedDeviceSelectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v46 = v12;
   v45 = v13;
   v48 = v14;
@@ -322,18 +322,18 @@
   v49 = v16;
   v43 = 0x3FD3333340000000;
   v17 = +[BYDevice currentDevice];
-  v18 = [v17 type];
+  type = [v17 type];
 
-  if (v18 == 1)
+  if (type == 1)
   {
     v43 = 0x3FDEB851E0000000;
   }
 
   v19 = [(BuddyPosedDeviceSelectionController *)self navigationController:v43];
-  v20 = [v19 view];
-  v21 = [v20 window];
-  v22 = [v21 windowScene];
-  v23 = sub_100153728([v22 interfaceOrientation]);
+  view = [v19 view];
+  window = [view window];
+  windowScene = [window windowScene];
+  v23 = sub_100153728([windowScene interfaceOrientation]);
 
   if (v23)
   {

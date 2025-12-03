@@ -1,8 +1,8 @@
 @interface _NUStyleEngineMemoryResource
-+ (BOOL)usingSharedMemoryResourceForDevice:(id)a3 withDescriptor:(id)a4 perform:(id)a5;
++ (BOOL)usingSharedMemoryResourceForDevice:(id)device withDescriptor:(id)descriptor perform:(id)perform;
 - (BOOL)setup;
 - (_NUStyleEngineMemoryResource)init;
-- (_NUStyleEngineMemoryResource)initWithDevice:(id)a3 descriptor:(id)a4;
+- (_NUStyleEngineMemoryResource)initWithDevice:(id)device descriptor:(id)descriptor;
 - (id)description;
 - (void)dealloc;
 @end
@@ -13,8 +13,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CMIExternalMemoryResource *)self->_resource allocatorBackend];
-  v6 = [v3 stringWithFormat:@"<%@:%p size: %zu>", v4, self, objc_msgSend(v5, "memSize")];
+  allocatorBackend = [(CMIExternalMemoryResource *)self->_resource allocatorBackend];
+  v6 = [v3 stringWithFormat:@"<%@:%p size: %zu>", v4, self, objc_msgSend(allocatorBackend, "memSize")];
 
   return v6;
 }
@@ -69,11 +69,11 @@
   sid = self->_sid;
   if (sid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v3))
   {
-    v6 = [(CMIExternalMemoryResource *)self->_resource allocatorBackend];
+    allocatorBackend = [(CMIExternalMemoryResource *)self->_resource allocatorBackend];
     *buf = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = [v6 memSize];
+    memSize = [allocatorBackend memSize];
     _os_signpost_emit_with_name_impl(&dword_1C0184000, v4, OS_SIGNPOST_INTERVAL_END, sid, "_NUStyleEngineMemoryResource", "%p mem=%zu", buf, 0x16u);
   }
 
@@ -82,12 +82,12 @@
   [(_NUStyleEngineMemoryResource *)&v7 dealloc];
 }
 
-- (_NUStyleEngineMemoryResource)initWithDevice:(id)a3 descriptor:(id)a4
+- (_NUStyleEngineMemoryResource)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  if (!deviceCopy)
   {
     v18 = NUAssertLogger_30110();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -108,8 +108,8 @@
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v32;
         v53 = 2114;
@@ -120,8 +120,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -130,8 +130,8 @@
     _NUAssertFailHandler("[_NUStyleEngineMemoryResource initWithDevice:descriptor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2609, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "device != nil");
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = descriptorCopy;
+  if (!descriptorCopy)
   {
     v25 = NUAssertLogger_30110();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -152,8 +152,8 @@
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v42 callStackSymbols];
+        v45 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v41;
         v53 = 2114;
@@ -164,8 +164,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -177,8 +177,8 @@
   v50.receiver = self;
   v50.super_class = _NUStyleEngineMemoryResource;
   v10 = [(_NUStyleEngineMemoryResource *)&v50 init];
-  objc_storeStrong(&v10->_device, a3);
-  objc_storeStrong(&v10->_descriptor, a4);
+  objc_storeStrong(&v10->_device, device);
+  objc_storeStrong(&v10->_descriptor, descriptor);
   v11 = objc_alloc_init(MEMORY[0x1E69916D0]);
   resource = v10->_resource;
   v10->_resource = v11;
@@ -255,8 +255,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -272,8 +272,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -289,11 +289,11 @@ LABEL_14:
   _NUAssertFailHandler("[_NUStyleEngineMemoryResource init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2605, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (BOOL)usingSharedMemoryResourceForDevice:(id)a3 withDescriptor:(id)a4 perform:(id)a5
++ (BOOL)usingSharedMemoryResourceForDevice:(id)device withDescriptor:(id)descriptor perform:(id)perform
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  performCopy = perform;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = +[NURenderResourcePool shared];
@@ -301,16 +301,16 @@ LABEL_14:
   v22 = 3221225472;
   v23 = __90___NUStyleEngineMemoryResource_usingSharedMemoryResourceForDevice_withDescriptor_perform___block_invoke;
   v24 = &unk_1E810B8F0;
-  v13 = v7;
+  v13 = deviceCopy;
   v25 = v13;
-  v14 = v8;
+  v14 = descriptorCopy;
   v26 = v14;
   v15 = [v12 checkOutResourceForKey:v11 matching:&v21];
 
   if (v15 || (v16 = [_NUStyleEngineMemoryResource alloc], v15 = [(_NUStyleEngineMemoryResource *)v16 initWithDevice:v13 descriptor:v14, v21, v22, v23, v24, v25], [(_NUStyleEngineMemoryResource *)v15 setup]))
   {
     v17 = [(_NUStyleEngineMemoryResource *)v15 resource:v21];
-    v18 = v9[2](v9, v17);
+    v18 = performCopy[2](performCopy, v17);
 
     v19 = +[NURenderResourcePool shared];
     [v19 checkInResource:v15 forKey:v11];

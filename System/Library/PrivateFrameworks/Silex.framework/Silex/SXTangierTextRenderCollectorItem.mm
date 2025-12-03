@@ -1,64 +1,64 @@
 @interface SXTangierTextRenderCollectorItem
 - (id)description;
-- (id)initWithStorage:(void *)a3 layout:(void *)a4 directLayerHost:(char)a5 selectable:(void *)a6 componentIdentifier:;
+- (id)initWithStorage:(void *)storage layout:(void *)layout directLayerHost:(char)host selectable:(void *)selectable componentIdentifier:;
 - (uint64_t)componentIdentifier;
 - (uint64_t)directLayerHost;
 - (uint64_t)flowRange;
 - (uint64_t)selectable;
 - (uint64_t)storage;
-- (uint64_t)updateWithLayout:(uint64_t)a1;
-- (void)appendToFlowStorage:(uint64_t)a1;
+- (uint64_t)updateWithLayout:(uint64_t)layout;
+- (void)appendToFlowStorage:(uint64_t)storage;
 - (void)flowInfo;
-- (void)flowLayoutWithICC:(void *)a1;
+- (void)flowLayoutWithICC:(void *)c;
 @end
 
 @implementation SXTangierTextRenderCollectorItem
 
-- (id)initWithStorage:(void *)a3 layout:(void *)a4 directLayerHost:(char)a5 selectable:(void *)a6 componentIdentifier:
+- (id)initWithStorage:(void *)storage layout:(void *)layout directLayerHost:(char)host selectable:(void *)selectable componentIdentifier:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  if (a1)
+  storageCopy = storage;
+  layoutCopy = layout;
+  selectableCopy = selectable;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = SXTangierTextRenderCollectorItem;
     v16 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 3, a2);
-      objc_storeStrong(a1 + 7, a3);
-      objc_storeStrong(a1 + 6, a4);
-      *(a1 + 8) = a5;
-      objc_storeStrong(a1 + 5, a6);
+      objc_storeStrong(self + 7, storage);
+      objc_storeStrong(self + 6, layout);
+      *(self + 8) = host;
+      objc_storeStrong(self + 5, selectable);
       v17.f64[0] = NAN;
       v17.f64[1] = NAN;
-      *(a1 + 9) = vnegq_f64(v17);
+      *(self + 9) = vnegq_f64(v17);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)updateWithLayout:(uint64_t)a1
+- (uint64_t)updateWithLayout:(uint64_t)layout
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (layout)
   {
-    v4 = (a1 + 56);
-    if (*(a1 + 56) != v5)
+    v4 = (layout + 56);
+    if (*(layout + 56) != v5)
     {
       v10 = v5;
       objc_storeStrong(v4, a2);
-      v6 = *(a1 + 64);
-      v7 = [v6 layoutController];
-      [v7 unregisterLayout:*(a1 + 64)];
+      v6 = *(layout + 64);
+      layoutController = [v6 layoutController];
+      [layoutController unregisterLayout:*(layout + 64)];
 
-      v8 = *(a1 + 64);
-      *(a1 + 64) = 0;
+      v8 = *(layout + 64);
+      *(layout + 64) = 0;
 
       v5 = v10;
     }
@@ -67,19 +67,19 @@
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)appendToFlowStorage:(uint64_t)a1
+- (void)appendToFlowStorage:(uint64_t)storage
 {
   v4 = a2;
-  if (a1)
+  if (storage)
   {
     v7 = v4;
     v5 = [v4 length];
-    [v7 insertStorage:*(a1 + 24) atCharIndex:v5 dolcContext:0 undoTransaction:0];
+    [v7 insertStorage:*(storage + 24) atCharIndex:v5 dolcContext:0 undoTransaction:0];
     v6 = [v7 length];
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((storage + 32), a2);
     v4 = v7;
-    *(a1 + 72) = v5;
-    *(a1 + 80) = v6 - v5;
+    *(storage + 72) = v5;
+    *(storage + 80) = v6 - v5;
   }
 }
 
@@ -95,73 +95,73 @@
 
 - (void)flowInfo
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [[SXTextTangierFlowInfo alloc] initWithStorage:a1[4] range:a1[9], a1[10]];
-      v5 = v2[2];
-      v2[2] = v4;
+      v4 = [[SXTextTangierFlowInfo alloc] initWithStorage:self[4] range:self[9], self[10]];
+      v5 = selfCopy[2];
+      selfCopy[2] = v4;
 
-      [v2[2] setDirectLayerHost:v2[6]];
-      v3 = v2[2];
+      [selfCopy[2] setDirectLayerHost:selfCopy[6]];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)flowLayoutWithICC:(void *)a1
+- (void)flowLayoutWithICC:(void *)c
 {
   v3 = a2;
-  if (a1)
+  if (c)
   {
-    v4 = a1[8];
-    v5 = a1[6];
-    v6 = a1[7];
+    v4 = c[8];
+    v5 = c[6];
+    v6 = c[7];
     v7 = v5;
     [v6 frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v3 canvasView];
-    [v7 convertRect:v16 toView:{v9, v11, v13, v15}];
+    canvasView = [v3 canvasView];
+    [v7 convertRect:canvasView toView:{v9, v11, v13, v15}];
 
     if (v4)
     {
-      v17 = [a1[8] geometry];
-      [v17 frame];
+      geometry = [c[8] geometry];
+      [geometry frame];
       v31.origin.x = OUTLINED_FUNCTION_0_0();
       v18 = CGRectEqualToRect(v31, v32);
 
       if (v18)
       {
 LABEL_6:
-        a1 = a1[8];
+        c = c[8];
         goto LABEL_7;
       }
 
       v19 = objc_alloc(MEMORY[0x1E69D5668]);
       v20 = OUTLINED_FUNCTION_0_0();
-      v22 = [v21 initWithFrame:v20];
-      [a1[8] setGeometry:v22];
+      flowInfo = [v21 initWithFrame:v20];
+      [c[8] setGeometry:flowInfo];
     }
 
     else
     {
       v24 = [SXTextTangierFlowLayout alloc];
-      v22 = [(SXTangierTextRenderCollectorItem *)a1 flowInfo];
-      v25 = a1[7];
+      flowInfo = [(SXTangierTextRenderCollectorItem *)c flowInfo];
+      v25 = c[7];
       v26 = OUTLINED_FUNCTION_0_0();
       v28 = [v27 initWithInfo:v26 layout:? frame:?];
-      v29 = a1[8];
-      a1[8] = v28;
+      v29 = c[8];
+      c[8] = v28;
     }
 
     goto LABEL_6;
@@ -169,7 +169,7 @@ LABEL_6:
 
 LABEL_7:
 
-  return a1;
+  return c;
 }
 
 - (uint64_t)directLayerHost
@@ -225,9 +225,9 @@ LABEL_7:
 
 - (uint64_t)selectable
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

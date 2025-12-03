@@ -1,11 +1,11 @@
 @interface WFStaccatoActionTemplateParameter
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionTemplateParameter:(id)a3;
-- (WFStaccatoActionTemplateParameter)initWithCoder:(id)a3;
-- (WFStaccatoActionTemplateParameter)initWithKey:(id)a3 actionIdentifier:(id)a4 localizedLabel:(id)a5 localizedDescription:(id)a6 defaultValue:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionTemplateParameter:(id)parameter;
+- (WFStaccatoActionTemplateParameter)initWithCoder:(id)coder;
+- (WFStaccatoActionTemplateParameter)initWithKey:(id)key actionIdentifier:(id)identifier localizedLabel:(id)label localizedDescription:(id)description defaultValue:(id)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFStaccatoActionTemplateParameter
@@ -16,43 +16,43 @@
   v4 = [(WFStaccatoActionTemplateParameter *)self key];
   v5 = [v3 combine:v4];
 
-  v6 = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
-  v7 = [v3 combine:v6];
+  actionIdentifier = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
+  v7 = [v3 combine:actionIdentifier];
 
-  v8 = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
-  v9 = [v3 combine:v8];
+  localizedLabel = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
+  v9 = [v3 combine:localizedLabel];
 
-  v10 = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
-  v11 = [v3 combine:v10];
+  localizedDescription = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
+  v11 = [v3 combine:localizedDescription];
 
-  v12 = [(WFStaccatoActionTemplateParameter *)self defaultValue];
-  v13 = [v3 combine:v12];
+  defaultValue = [(WFStaccatoActionTemplateParameter *)self defaultValue];
+  v13 = [v3 combine:defaultValue];
 
   v14 = [v3 finalize];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplateParameter *)self isEqualToActionTemplateParameter:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplateParameter *)self isEqualToActionTemplateParameter:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToActionTemplateParameter:(id)a3
+- (BOOL)isEqualToActionTemplateParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  parameterCopy = parameter;
+  v5 = parameterCopy;
+  if (parameterCopy == self)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (parameterCopy)
     {
       v6 = [(WFStaccatoActionTemplateParameter *)self key];
       v7 = [(WFStaccatoActionTemplateParameter *)v5 key];
@@ -84,10 +84,10 @@ LABEL_41:
         }
       }
 
-      v15 = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
-      v16 = [(WFStaccatoActionTemplateParameter *)v5 actionIdentifier];
-      v13 = v15;
-      v17 = v16;
+      actionIdentifier = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
+      actionIdentifier2 = [(WFStaccatoActionTemplateParameter *)v5 actionIdentifier];
+      v13 = actionIdentifier;
+      v17 = actionIdentifier2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -114,10 +114,10 @@ LABEL_40:
         }
       }
 
-      v21 = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
-      v22 = [(WFStaccatoActionTemplateParameter *)v5 localizedLabel];
-      v19 = v21;
-      v23 = v22;
+      localizedLabel = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
+      localizedLabel2 = [(WFStaccatoActionTemplateParameter *)v5 localizedLabel];
+      v19 = localizedLabel;
+      v23 = localizedLabel2;
       v18 = v23;
       if (v19 == v23)
       {
@@ -141,10 +141,10 @@ LABEL_40:
         }
       }
 
-      v26 = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
-      v27 = [(WFStaccatoActionTemplateParameter *)v5 localizedDescription];
-      v28 = v26;
-      v29 = v27;
+      localizedDescription = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
+      localizedDescription2 = [(WFStaccatoActionTemplateParameter *)v5 localizedDescription];
+      v28 = localizedDescription;
+      v29 = localizedDescription2;
       v30 = v28;
       v39 = v28;
       v40 = v29;
@@ -186,10 +186,10 @@ LABEL_36:
       }
 
 LABEL_29:
-      v32 = [(WFStaccatoActionTemplateParameter *)self defaultValue];
-      v33 = [(WFStaccatoActionTemplateParameter *)v5 defaultValue];
-      v34 = v32;
-      v35 = v33;
+      defaultValue = [(WFStaccatoActionTemplateParameter *)self defaultValue];
+      defaultValue2 = [(WFStaccatoActionTemplateParameter *)v5 defaultValue];
+      v34 = defaultValue;
+      v35 = defaultValue2;
       v36 = v35;
       if (v34 == v35)
       {
@@ -225,72 +225,72 @@ LABEL_42:
   v12.super_class = WFStaccatoActionTemplateParameter;
   v4 = [(WFStaccatoActionTemplateParameter *)&v12 description];
   v5 = [(WFStaccatoActionTemplateParameter *)self key];
-  v6 = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
-  v7 = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
-  v8 = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
-  v9 = [(WFStaccatoActionTemplateParameter *)self defaultValue];
-  v10 = [v3 stringWithFormat:@"<%@: key: %@, action: %@, label: %@, description: %@, default: %@>", v4, v5, v6, v7, v8, v9];
+  actionIdentifier = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
+  localizedLabel = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
+  localizedDescription = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
+  defaultValue = [(WFStaccatoActionTemplateParameter *)self defaultValue];
+  v10 = [v3 stringWithFormat:@"<%@: key: %@, action: %@, label: %@, description: %@, default: %@>", v4, v5, actionIdentifier, localizedLabel, localizedDescription, defaultValue];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WFStaccatoActionTemplateParameter *)self key];
-  [v4 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  v6 = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
-  [v4 encodeObject:v6 forKey:@"actionIdentifier"];
+  actionIdentifier = [(WFStaccatoActionTemplateParameter *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v7 = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
-  [v4 encodeObject:v7 forKey:@"localizedLabel"];
+  localizedLabel = [(WFStaccatoActionTemplateParameter *)self localizedLabel];
+  [coderCopy encodeObject:localizedLabel forKey:@"localizedLabel"];
 
-  v8 = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
-  [v4 encodeObject:v8 forKey:@"localizedDescription"];
+  localizedDescription = [(WFStaccatoActionTemplateParameter *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v9 = [(WFStaccatoActionTemplateParameter *)self defaultValue];
-  [v4 encodeObject:v9 forKey:@"defaultValue"];
+  defaultValue = [(WFStaccatoActionTemplateParameter *)self defaultValue];
+  [coderCopy encodeObject:defaultValue forKey:@"defaultValue"];
 }
 
-- (WFStaccatoActionTemplateParameter)initWithCoder:(id)a3
+- (WFStaccatoActionTemplateParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedLabel"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedLabel"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
 
-  v10 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     self = [(WFStaccatoActionTemplateParameter *)self initWithKey:v5 actionIdentifier:v6 localizedLabel:v7 localizedDescription:v8 defaultValue:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (WFStaccatoActionTemplateParameter)initWithKey:(id)a3 actionIdentifier:(id)a4 localizedLabel:(id)a5 localizedDescription:(id)a6 defaultValue:(id)a7
+- (WFStaccatoActionTemplateParameter)initWithKey:(id)key actionIdentifier:(id)identifier localizedLabel:(id)label localizedDescription:(id)description defaultValue:(id)value
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  keyCopy = key;
+  identifierCopy = identifier;
+  labelCopy = label;
+  descriptionCopy = description;
+  valueCopy = value;
+  if (keyCopy)
   {
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-    if (v15)
+    if (labelCopy)
     {
       goto LABEL_4;
     }
@@ -298,23 +298,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
-  if (!v14)
+  if (!identifierCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v15)
+  if (labelCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"localizedLabel"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameter.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"localizedLabel"}];
 
 LABEL_4:
   v32.receiver = self;
@@ -322,23 +322,23 @@ LABEL_4:
   v18 = [(WFStaccatoActionTemplateParameter *)&v32 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [keyCopy copy];
     key = v18->_key;
     v18->_key = v19;
 
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     actionIdentifier = v18->_actionIdentifier;
     v18->_actionIdentifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [labelCopy copy];
     localizedLabel = v18->_localizedLabel;
     v18->_localizedLabel = v23;
 
-    v25 = [v16 copy];
+    v25 = [descriptionCopy copy];
     localizedDescription = v18->_localizedDescription;
     v18->_localizedDescription = v25;
 
-    objc_storeStrong(&v18->_defaultValue, a7);
+    objc_storeStrong(&v18->_defaultValue, value);
     v27 = v18;
   }
 

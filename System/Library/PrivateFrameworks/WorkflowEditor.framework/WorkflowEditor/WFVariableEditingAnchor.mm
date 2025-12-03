@@ -1,7 +1,7 @@
 @interface WFVariableEditingAnchor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)sourceRect;
-- (WFVariableEditingAnchor)initWithVariable:(id)a3 variableProvider:(id)a4 parameter:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7;
+- (WFVariableEditingAnchor)initWithVariable:(id)variable variableProvider:(id)provider parameter:(id)parameter sourceView:(id)view sourceRect:(CGRect)rect;
 - (unint64_t)hash;
 @end
 
@@ -20,33 +20,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFVariableEditingAnchor *)self variable];
-    v6 = [v4 variable];
-    if (v5 == v6)
+    variable = [(WFVariableEditingAnchor *)self variable];
+    variable2 = [equalCopy variable];
+    if (variable == variable2)
     {
-      v8 = [(WFVariableEditingAnchor *)self variableProvider];
-      v9 = [v4 variableProvider];
-      if (v8 == v9)
+      variableProvider = [(WFVariableEditingAnchor *)self variableProvider];
+      variableProvider2 = [equalCopy variableProvider];
+      if (variableProvider == variableProvider2)
       {
-        v10 = [(WFVariableEditingAnchor *)self parameter];
-        v11 = [v4 parameter];
-        if (v10 == v11)
+        parameter = [(WFVariableEditingAnchor *)self parameter];
+        parameter2 = [equalCopy parameter];
+        if (parameter == parameter2)
         {
-          v12 = [(WFVariableEditingAnchor *)self sourceView];
-          v13 = [v4 sourceView];
-          if (v12 == v13)
+          sourceView = [(WFVariableEditingAnchor *)self sourceView];
+          sourceView2 = [equalCopy sourceView];
+          if (sourceView == sourceView2)
           {
             [(WFVariableEditingAnchor *)self sourceRect];
             v15 = v14;
             v17 = v16;
             v19 = v18;
             v21 = v20;
-            [v4 sourceRect];
+            [equalCopy sourceRect];
             v28.origin.x = v22;
             v28.origin.y = v23;
             v28.size.width = v24;
@@ -98,28 +98,28 @@
   return v4 ^ v5 ^ [(UIView *)self->_sourceView hash];
 }
 
-- (WFVariableEditingAnchor)initWithVariable:(id)a3 variableProvider:(id)a4 parameter:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7
+- (WFVariableEditingAnchor)initWithVariable:(id)variable variableProvider:(id)provider parameter:(id)parameter sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  if (v17)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  variableCopy = variable;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  viewCopy = view;
+  if (variableCopy)
   {
-    if (v18)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"variableProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"variableProvider"}];
 
-    if (v19)
+    if (parameterCopy)
     {
       goto LABEL_4;
     }
@@ -127,23 +127,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
 
-  if (!v18)
+  if (!providerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v19)
+  if (parameterCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFVariableEditingOptions.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
 
 LABEL_4:
   v28.receiver = self;
@@ -152,14 +152,14 @@ LABEL_4:
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_variable, a3);
-    objc_storeStrong(&v22->_variableProvider, a4);
-    objc_storeStrong(&v22->_parameter, a5);
+    objc_storeStrong(&v21->_variable, variable);
+    objc_storeStrong(&v22->_variableProvider, provider);
+    objc_storeStrong(&v22->_parameter, parameter);
     v22->_sourceRect.origin.x = x;
     v22->_sourceRect.origin.y = y;
     v22->_sourceRect.size.width = width;
     v22->_sourceRect.size.height = height;
-    objc_storeStrong(&v22->_sourceView, a6);
+    objc_storeStrong(&v22->_sourceView, view);
     v23 = v22;
   }
 

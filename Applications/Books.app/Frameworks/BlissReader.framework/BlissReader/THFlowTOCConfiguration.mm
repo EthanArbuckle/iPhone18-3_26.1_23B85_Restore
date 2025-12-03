@@ -1,5 +1,5 @@
 @interface THFlowTOCConfiguration
-- (THFlowTOCConfiguration)initWithContext:(id)a3;
+- (THFlowTOCConfiguration)initWithContext:(id)context;
 - (double)cellHeight;
 - (double)chapterLabelFontSize;
 - (double)discloseButtonLeftMargin;
@@ -26,7 +26,7 @@
 
 @implementation THFlowTOCConfiguration
 
-- (THFlowTOCConfiguration)initWithContext:(id)a3
+- (THFlowTOCConfiguration)initWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = THFlowTOCConfiguration;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
     [(THFlowTOCConfiguration *)v4 _setupCompact];
     [(THFlowTOCConfiguration *)v5 _setupRegular];
     [(THFlowTOCConfiguration *)v5 _setupMegaPad];
@@ -45,153 +45,153 @@
 
 - (double)cellHeight
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"cellHeight" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"cellHeight" context:context];
   return result;
 }
 
 - (double)chapterLabelFontSize
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"chapterLabelFontSize" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"chapterLabelFontSize" context:context];
   return result;
 }
 
 - (double)discloseButtonLeftMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonLeftMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonLeftMargin" context:context];
   return result;
 }
 
 - (double)discloseButtonRadius
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonRadius" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonRadius" context:context];
   return result;
 }
 
 - (double)discloseButtonRightMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonRightMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonRightMargin" context:context];
   return result;
 }
 
 - (double)discloseButtonWidth
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonWidth" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"discloseButtonWidth" context:context];
   return result;
 }
 
 - (double)headerImageToTocTableMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"headerImageToTocTableMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"headerImageToTocTableMargin" context:context];
   return result;
 }
 
 - (double)ordinalNumberLeftMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberLeftMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberLeftMargin" context:context];
   return result;
 }
 
 - (double)ordinalNumberRightMarginChapter
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberRightMarginChapter" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberRightMarginChapter" context:context];
   return result;
 }
 
 - (double)ordinalNumberRightMarginSection
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberRightMarginSection" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalNumberRightMarginSection" context:context];
   return result;
 }
 
 - (double)ordinalWidthLevel1
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel1" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel1" context:context];
   return result;
 }
 
 - (double)ordinalWidthLevel2
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel2" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel2" context:context];
   return result;
 }
 
 - (double)ordinalWidthLevel3
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel3" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"ordinalWidthLevel3" context:context];
   return result;
 }
 
 - (double)pageNumberFontSize
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"pageNumberFontSize" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"pageNumberFontSize" context:context];
   return result;
 }
 
 - (double)pageNumberWidth
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"pageNumberWidth" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"pageNumberWidth" context:context];
   return result;
 }
 
 - (double)sectionLabelFontSize
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"sectionLabelFontSize" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"sectionLabelFontSize" context:context];
   return result;
 }
 
 - (double)sectionLabelRightMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"sectionLabelRightMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"sectionLabelRightMargin" context:context];
   return result;
 }
 
 - (double)separatorColorWhite
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"separatorColorWhite" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"separatorColorWhite" context:context];
   return result;
 }
 
 - (double)viewTopToTocTableMargin
 {
-  v3 = [(THFlowTOCConfiguration *)self context];
+  context = [(THFlowTOCConfiguration *)self context];
 
-  [(THFlowTOCConfiguration *)self floatForKey:@"viewTopToTocTableMargin" context:v3];
+  [(THFlowTOCConfiguration *)self floatForKey:@"viewTopToTocTableMargin" context:context];
   return result;
 }
 

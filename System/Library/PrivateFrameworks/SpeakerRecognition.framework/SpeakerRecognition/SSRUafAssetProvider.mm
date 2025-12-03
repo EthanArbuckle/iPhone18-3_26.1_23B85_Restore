@@ -1,15 +1,15 @@
 @interface SSRUafAssetProvider
 - (SSRUafAssetProvider)init;
-- (id)installedAssetOfType:(unint64_t)a3 forLanguageCode:(id)a4;
+- (id)installedAssetOfType:(unint64_t)type forLanguageCode:(id)code;
 - (void)dealloc;
 @end
 
 @implementation SSRUafAssetProvider
 
-- (id)installedAssetOfType:(unint64_t)a3 forLanguageCode:(id)a4
+- (id)installedAssetOfType:(unint64_t)type forLanguageCode:(id)code
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  codeCopy = code;
   v7 = dispatch_semaphore_create(0);
   v26 = 0;
   v27 = &v26;
@@ -32,7 +32,7 @@
   v19 = &v20;
   v9 = v7;
   v17 = v9;
-  [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:a3 forLocale:v6 completion:v16];
+  [(CSUAFAssetManager *)uafAssetManager getInstalledAssetofType:type forLocale:codeCopy completion:v16];
   v10 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v9, v10);
   v11 = v27[5];

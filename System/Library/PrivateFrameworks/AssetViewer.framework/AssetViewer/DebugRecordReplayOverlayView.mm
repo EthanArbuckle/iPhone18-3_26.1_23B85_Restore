@@ -1,19 +1,19 @@
 @interface DebugRecordReplayOverlayView
-- (_TtC11AssetViewer28DebugRecordReplayOverlayView)initWithFrame:(CGRect)a3;
-- (void)bottomButtonPressed:(id)a3;
+- (_TtC11AssetViewer28DebugRecordReplayOverlayView)initWithFrame:(CGRect)frame;
+- (void)bottomButtonPressed:(id)pressed;
 @end
 
 @implementation DebugRecordReplayOverlayView
 
-- (void)bottomButtonPressed:(id)a3
+- (void)bottomButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 isSelected];
-  [v4 setSelected_];
+  pressedCopy = pressed;
+  selfCopy = self;
+  isSelected = [pressedCopy isSelected];
+  [pressedCopy setSelected_];
   if (swift_unknownObjectWeakLoadStrong())
   {
-    sub_2412D94BC([v4 tag], v5 ^ 1);
+    sub_2412D94BC([pressedCopy tag], isSelected ^ 1);
 
     swift_unknownObjectRelease();
   }
@@ -23,7 +23,7 @@
   }
 }
 
-- (_TtC11AssetViewer28DebugRecordReplayOverlayView)initWithFrame:(CGRect)a3
+- (_TtC11AssetViewer28DebugRecordReplayOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

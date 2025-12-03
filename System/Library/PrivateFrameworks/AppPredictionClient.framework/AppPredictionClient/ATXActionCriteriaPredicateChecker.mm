@@ -1,50 +1,50 @@
 @interface ATXActionCriteriaPredicateChecker
-- (ATXActionCriteriaPredicateChecker)initWithObject:(id)a3;
-- (BOOL)isValid:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
+- (ATXActionCriteriaPredicateChecker)initWithObject:(id)object;
+- (BOOL)isValid:(id)valid;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation ATXActionCriteriaPredicateChecker
 
-- (ATXActionCriteriaPredicateChecker)initWithObject:(id)a3
+- (ATXActionCriteriaPredicateChecker)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = ATXActionCriteriaPredicateChecker;
   v5 = [(ATXActionCriteriaPredicateChecker *)&v9 init];
   if (v5)
   {
-    v6 = [v4 propertyWhitelist];
+    propertyWhitelist = [objectCopy propertyWhitelist];
     propertyNames = v5->_propertyNames;
-    v5->_propertyNames = v6;
+    v5->_propertyNames = propertyWhitelist;
   }
 
   return v5;
 }
 
-- (BOOL)isValid:(id)a3
+- (BOOL)isValid:(id)valid
 {
   self->_ok = 1;
-  [a3 acceptVisitor:self flags:1];
+  [valid acceptVisitor:self flags:1];
   return self->_ok;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v7 = a3;
-  v4 = [v7 expressionType];
-  if (v4 <= 14)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType <= 14)
   {
-    if (v4 != 2)
+    if (expressionType != 2)
     {
-      if (v4 != 3)
+      if (expressionType != 3)
       {
         goto LABEL_9;
       }
 
       propertyNames = self->_propertyNames;
-      v6 = [v7 keyPath];
-      LOBYTE(propertyNames) = [(NSSet *)propertyNames containsObject:v6];
+      keyPath = [expressionCopy keyPath];
+      LOBYTE(propertyNames) = [(NSSet *)propertyNames containsObject:keyPath];
 
       if (propertyNames)
       {
@@ -57,7 +57,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v4 == 15 || v4 == 19)
+  if (expressionType == 15 || expressionType == 19)
   {
     goto LABEL_8;
   }

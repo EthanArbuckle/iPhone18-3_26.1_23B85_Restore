@@ -1,9 +1,9 @@
 @interface CKEffectPickerMacViewController
-- (BOOL)effectSelectionViewController:(id)a3 didSelectEffectWithIdentifier:(id)a4;
-- (BOOL)effectShouldDisplayOverBalloon:(id)a3;
+- (BOOL)effectSelectionViewController:(id)controller didSelectEffectWithIdentifier:(id)identifier;
+- (BOOL)effectShouldDisplayOverBalloon:(id)balloon;
 - (CGPoint)balloonViewOrigin;
-- (CKEffectPickerMacViewController)initWithComposition:(id)a3 balloonViewOrigin:(CGPoint)a4 color:(char)a5 gradientReferenceView:(id)a6;
-- (CKEffectPickerMacViewController)initWithEntryView:(id)a3 balloonViewOrigin:(CGPoint)a4 color:(char)a5 gradientReferenceView:(id)a6 isInlineReply:(BOOL)a7;
+- (CKEffectPickerMacViewController)initWithComposition:(id)composition balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)view;
+- (CKEffectPickerMacViewController)initWithEntryView:(id)view balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)referenceView isInlineReply:(BOOL)reply;
 - (CKEffectPickerViewControllerDelegate)delegate;
 - (CKGradientReferenceView)gradientReferenceView;
 - (CKMessageEntryView)entryView;
@@ -13,41 +13,41 @@
 - (id)createSendButton;
 - (id)keyCommands;
 - (void)_layoutBalloonView;
-- (void)_updateConstraintsWithSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)closeButtonPressed:(id)a3;
+- (void)_updateConstraintsWithSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)closeButtonPressed:(id)pressed;
 - (void)createBalloonView;
 - (void)createTranscriptBlurBackground;
-- (void)didUpdateMaxCellHeight:(double)a3;
-- (void)placeBalloonContainer:(id)a3;
+- (void)didUpdateMaxCellHeight:(double)height;
+- (void)placeBalloonContainer:(id)container;
 - (void)placeSendButton;
 - (void)showCloseButton;
-- (void)startAnimationPreviewForIdentifier:(id)a3;
-- (void)touchUpInsideSendButton:(id)a3;
+- (void)startAnimationPreviewForIdentifier:(id)identifier;
+- (void)touchUpInsideSendButton:(id)button;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKEffectPickerMacViewController
 
-- (CKEffectPickerMacViewController)initWithComposition:(id)a3 balloonViewOrigin:(CGPoint)a4 color:(char)a5 gradientReferenceView:(id)a6
+- (CKEffectPickerMacViewController)initWithComposition:(id)composition balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v13 = a6;
+  y = origin.y;
+  x = origin.x;
+  compositionCopy = composition;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = CKEffectPickerMacViewController;
   v14 = [(CKEffectPickerMacViewController *)&v19 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_composition, a3);
+    objc_storeStrong(&v14->_composition, composition);
     v15->_balloonViewOrigin.x = x;
     v15->_balloonViewOrigin.y = y;
-    v15->_color = a5;
-    objc_storeWeak(&v15->_gradientReferenceView, v13);
+    v15->_color = color;
+    objc_storeWeak(&v15->_gradientReferenceView, viewCopy);
     v15->_hasSelectedDefaultEffect = 0;
     v16 = objc_alloc_init(CKFullScreenEffectManager);
     fsem = v15->_fsem;
@@ -60,45 +60,45 @@
   return v15;
 }
 
-- (CKEffectPickerMacViewController)initWithEntryView:(id)a3 balloonViewOrigin:(CGPoint)a4 color:(char)a5 gradientReferenceView:(id)a6 isInlineReply:(BOOL)a7
+- (CKEffectPickerMacViewController)initWithEntryView:(id)view balloonViewOrigin:(CGPoint)origin color:(char)color gradientReferenceView:(id)referenceView isInlineReply:(BOOL)reply
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v14 = a6;
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
+  referenceViewCopy = referenceView;
   v20.receiver = self;
   v20.super_class = CKEffectPickerMacViewController;
   v15 = [(CKEffectPickerMacViewController *)&v20 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_entryView, v13);
+    objc_storeWeak(&v15->_entryView, viewCopy);
     v16->_balloonViewOrigin.x = x;
     v16->_balloonViewOrigin.y = y;
-    v16->_color = a5;
-    objc_storeWeak(&v16->_gradientReferenceView, v14);
+    v16->_color = color;
+    objc_storeWeak(&v16->_gradientReferenceView, referenceViewCopy);
     v16->_hasSelectedDefaultEffect = 0;
     v17 = objc_alloc_init(CKFullScreenEffectManager);
     fsem = v16->_fsem;
     v16->_fsem = v17;
 
     v16->_showingInStandAloneWindow = 0;
-    v16->_isInlineReply = a7;
+    v16->_isInlineReply = reply;
   }
 
   return v16;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKEffectPickerMacViewController;
-  [(CKEffectPickerMacViewController *)&v5 viewWillAppear:a3];
+  [(CKEffectPickerMacViewController *)&v5 viewWillAppear:appear];
   if (![(CKEffectPickerMacViewController *)self hasSelectedDefaultEffect])
   {
     [(CKEffectPickerMacViewController *)self setHasSelectedDefaultEffect:1];
-    v4 = [(CKEffectPickerMacViewController *)self selectionViewController];
-    [v4 setSelectedEffectIdentifier:@"com.apple.messages.effect.CKHeartEffect"];
+    selectionViewController = [(CKEffectPickerMacViewController *)self selectionViewController];
+    [selectionViewController setSelectedEffectIdentifier:@"com.apple.messages.effect.CKHeartEffect"];
 
     [(CKEffectPickerMacViewController *)self setEffectIdentifier:@"com.apple.messages.effect.CKHeartEffect"];
   }
@@ -113,47 +113,47 @@
   [(CKEffectPickerMacViewController *)self createTranscriptBlurBackground];
   [(CKEffectPickerMacViewController *)self createBalloonView];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 effectPickerPresentsSelectionView];
+  effectPickerPresentsSelectionView = [v3 effectPickerPresentsSelectionView];
 
   v5 = 0x1E695D000;
-  if ((v4 & 1) == 0)
+  if ((effectPickerPresentsSelectionView & 1) == 0)
   {
     v6 = objc_alloc_init(CKEffectSelectionViewController);
     [(CKEffectSelectionViewController *)v6 setDelegate:self];
-    v7 = [(CKEffectSelectionViewController *)v6 view];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(CKEffectSelectionViewController *)v6 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(CKEffectPickerMacViewController *)self addChildViewController:v6];
-    v8 = [(CKEffectPickerMacViewController *)self contentView];
-    v9 = [(CKEffectSelectionViewController *)v6 view];
-    [v8 addSubview:v9];
+    contentView = [(CKEffectPickerMacViewController *)self contentView];
+    view2 = [(CKEffectSelectionViewController *)v6 view];
+    [contentView addSubview:view2];
 
-    v10 = [(CKEffectSelectionViewController *)v6 view];
-    v11 = [v10 heightAnchor];
-    v12 = [v11 constraintEqualToConstant:15.0];
+    view3 = [(CKEffectSelectionViewController *)v6 view];
+    heightAnchor = [view3 heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:15.0];
     [(CKEffectPickerMacViewController *)self setHeightConstraint:v12];
 
     v61 = MEMORY[0x1E696ACD8];
-    v69 = [(CKEffectSelectionViewController *)v6 view];
-    v65 = [v69 leadingAnchor];
-    v67 = [(CKEffectPickerMacViewController *)self contentView];
-    v64 = [v67 leadingAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    view4 = [(CKEffectSelectionViewController *)v6 view];
+    leadingAnchor = [view4 leadingAnchor];
+    contentView2 = [(CKEffectPickerMacViewController *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v73[0] = v63;
-    v62 = [(CKEffectSelectionViewController *)v6 view];
-    v59 = [v62 trailingAnchor];
-    v60 = [(CKEffectPickerMacViewController *)self contentView];
-    v58 = [v60 trailingAnchor];
-    v13 = [v59 constraintEqualToAnchor:v58];
+    view5 = [(CKEffectSelectionViewController *)v6 view];
+    trailingAnchor = [view5 trailingAnchor];
+    contentView3 = [(CKEffectPickerMacViewController *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v73[1] = v13;
-    v14 = [(CKEffectSelectionViewController *)v6 view];
-    v15 = [v14 bottomAnchor];
-    v16 = [(CKEffectPickerMacViewController *)self contentView];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:15.0 + -18.0];
+    view6 = [(CKEffectSelectionViewController *)v6 view];
+    bottomAnchor = [view6 bottomAnchor];
+    contentView4 = [(CKEffectPickerMacViewController *)self contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:15.0 + -18.0];
     v73[2] = v18;
-    v19 = [(CKEffectPickerMacViewController *)self heightConstraint];
-    v73[3] = v19;
+    heightConstraint = [(CKEffectPickerMacViewController *)self heightConstraint];
+    v73[3] = heightConstraint;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:4];
     [v61 activateConstraints:v20];
 
@@ -164,23 +164,23 @@
   }
 
   v21 = objc_alloc_init(CKEffectPreviewCollectionViewController);
-  v22 = [(CKEffectPickerMacViewController *)self contentView];
-  v23 = [(CKEffectPreviewCollectionViewController *)v21 view];
-  [v22 addSubview:v23];
+  contentView5 = [(CKEffectPickerMacViewController *)self contentView];
+  view7 = [(CKEffectPreviewCollectionViewController *)v21 view];
+  [contentView5 addSubview:view7];
 
   [(CKEffectPickerMacViewController *)self addChildViewController:v21];
-  v24 = [(CKEffectPreviewCollectionViewController *)v21 view];
-  v25 = [(CKEffectPickerMacViewController *)self contentView];
-  [v24 __ck_makeEdgesEqualToHorizontalSafeArea:v25];
+  view8 = [(CKEffectPreviewCollectionViewController *)v21 view];
+  contentView6 = [(CKEffectPickerMacViewController *)self contentView];
+  [view8 __ck_makeEdgesEqualToHorizontalSafeArea:contentView6];
 
   [(CKEffectPreviewCollectionViewController *)v21 didMoveToParentViewController:self];
   [(CKEffectPreviewCollectionViewController *)v21 setDelegate:self];
   v70 = v21;
-  v26 = [(CKEffectPreviewCollectionViewController *)v21 view];
-  [v26 setUserInteractionEnabled:0];
+  view9 = [(CKEffectPreviewCollectionViewController *)v21 view];
+  [view9 setUserInteractionEnabled:0];
 
-  v27 = [(CKEffectPreviewCollectionViewController *)v21 view];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view10 = [(CKEffectPreviewCollectionViewController *)v21 view];
+  [view10 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(CKEffectPreviewCollectionViewController *)v21 displayEffectWithIdentifier:0];
   [(CKEffectPickerMacViewController *)self setEffectCollectionViewController:v21];
@@ -200,15 +200,15 @@
   [(CKEffectPickerMacViewController *)self setTitleVibrancyEffect:v66];
   v32 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v66];
   [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [v32 contentView];
-  [v33 addSubview:v28];
+  contentView7 = [v32 contentView];
+  [contentView7 addSubview:v28];
 
   [(CKEffectPickerMacViewController *)self setTitleContainerView:v32];
-  v34 = [(CKEffectPickerMacViewController *)self contentView];
-  [v34 addSubview:v32];
+  contentView8 = [(CKEffectPickerMacViewController *)self contentView];
+  [contentView8 addSubview:v32];
 
-  v35 = [v32 contentView];
-  [v35 __ck_makeEdgesEqualToHorizontalSafeArea:v28];
+  contentView9 = [v32 contentView];
+  [contentView9 __ck_makeEdgesEqualToHorizontalSafeArea:v28];
 
   v36 = +[CKUIBehavior sharedBehaviors];
   [v36 macAppKitToolbarHeight];
@@ -225,34 +225,34 @@
     v40 = v38 * 0.5 - v39 * 0.5;
   }
 
-  v41 = [v32 leadingAnchor];
-  v42 = [(CKEffectPickerMacViewController *)self contentView];
-  v43 = [v42 leadingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  leadingAnchor3 = [v32 leadingAnchor];
+  contentView10 = [(CKEffectPickerMacViewController *)self contentView];
+  leadingAnchor4 = [contentView10 leadingAnchor];
+  v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [(CKEffectPickerMacViewController *)self setTitleLeadingConstraint:v44];
 
   v45 = MEMORY[0x1E696ACD8];
-  v46 = [(CKEffectPickerMacViewController *)self titleLeadingConstraint];
-  v72[0] = v46;
-  v47 = [v32 topAnchor];
-  v48 = [(CKEffectPickerMacViewController *)self contentView];
-  v49 = [v48 topAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:v40];
+  titleLeadingConstraint = [(CKEffectPickerMacViewController *)self titleLeadingConstraint];
+  v72[0] = titleLeadingConstraint;
+  topAnchor = [v32 topAnchor];
+  contentView11 = [(CKEffectPickerMacViewController *)self contentView];
+  topAnchor2 = [contentView11 topAnchor];
+  v50 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v40];
   v72[1] = v50;
   v51 = [*(v5 + 3784) arrayWithObjects:v72 count:2];
   [v45 activateConstraints:v51];
 
-  v52 = [(CKEffectPickerMacViewController *)self createSendButton];
-  [(CKEffectPickerMacViewController *)self setSendButton:v52];
+  createSendButton = [(CKEffectPickerMacViewController *)self createSendButton];
+  [(CKEffectPickerMacViewController *)self setSendButton:createSendButton];
 
-  v53 = [(CKEffectPickerMacViewController *)self contentView];
-  v54 = [(CKEffectPickerMacViewController *)self sendButton];
-  [v53 addSubview:v54];
+  contentView12 = [(CKEffectPickerMacViewController *)self contentView];
+  sendButton = [(CKEffectPickerMacViewController *)self sendButton];
+  [contentView12 addSubview:sendButton];
 
   [(CKEffectPickerMacViewController *)self placeSendButton];
   v55 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v56 = [(CKEffectPickerMacViewController *)self contentView];
-  [v56 addSubview:v55];
+  contentView13 = [(CKEffectPickerMacViewController *)self contentView];
+  [contentView13 addSubview:v55];
 
   [(CKEffectPickerMacViewController *)self placeBalloonContainer:v55];
   v57 = objc_alloc_init(CKChatControllerDummyAnimator);
@@ -276,17 +276,17 @@
   v4.receiver = self;
   v4.super_class = CKEffectPickerMacViewController;
   [(CKEffectPickerMacViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(CKEffectPickerMacViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(CKEffectPickerMacViewController *)self view];
+  [view safeAreaInsets];
   [(CKEffectPickerMacViewController *)self _updateConstraintsWithSafeAreaInsets:?];
 }
 
-- (void)_updateConstraintsWithSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_updateConstraintsWithSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = +[CKUIBehavior sharedBehaviors];
   [v8 macEffectPickerTitleLeadingPadding];
   v10 = v9;
@@ -304,63 +304,63 @@
   }
 
   v17 = left + v10;
-  v18 = [(CKEffectPickerMacViewController *)self closeButtonLeadingConstraint];
-  [v18 setConstant:v17];
+  closeButtonLeadingConstraint = [(CKEffectPickerMacViewController *)self closeButtonLeadingConstraint];
+  [closeButtonLeadingConstraint setConstant:v17];
 
-  v19 = [(CKEffectPickerMacViewController *)self titleLeadingConstraint];
-  [v19 setConstant:v17 + v14];
+  titleLeadingConstraint = [(CKEffectPickerMacViewController *)self titleLeadingConstraint];
+  [titleLeadingConstraint setConstant:v17 + v14];
 
-  v20 = [(CKEffectPickerMacViewController *)self sendButtonTrailingConstraint];
-  [v20 setConstant:-right - v13];
+  sendButtonTrailingConstraint = [(CKEffectPickerMacViewController *)self sendButtonTrailingConstraint];
+  [sendButtonTrailingConstraint setConstant:-right - v13];
 
-  v21 = [(CKEffectPickerMacViewController *)self selectionViewController];
-  [v21 updateContentInsets:{top, left, bottom, right}];
+  selectionViewController = [(CKEffectPickerMacViewController *)self selectionViewController];
+  [selectionViewController updateContentInsets:{top, left, bottom, right}];
 }
 
 - (void)createTranscriptBlurBackground
 {
   v33[4] = *MEMORY[0x1E69E9840];
   v3 = [CKEffectPickerBackgroundView alloc];
-  v4 = [(CKEffectPickerMacViewController *)self view];
-  [v4 bounds];
+  view = [(CKEffectPickerMacViewController *)self view];
+  [view bounds];
   v32 = [(CKEffectPickerBackgroundView *)v3 initWithFrame:?];
 
-  v5 = [(CKEffectPickerMacViewController *)self isInlineReply];
-  v6 = [(CKEffectPickerMacViewController *)self delegate];
-  -[CKEffectPickerBackgroundView setBackgroundColorForTranscriptType:hasPortalBackground:](v32, "setBackgroundColorForTranscriptType:hasPortalBackground:", v5, [v6 hasPortalBackground]);
+  isInlineReply = [(CKEffectPickerMacViewController *)self isInlineReply];
+  delegate = [(CKEffectPickerMacViewController *)self delegate];
+  -[CKEffectPickerBackgroundView setBackgroundColorForTranscriptType:hasPortalBackground:](v32, "setBackgroundColorForTranscriptType:hasPortalBackground:", isInlineReply, [delegate hasPortalBackground]);
 
   [(CKEffectPickerBackgroundView *)v32 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(CKEffectPickerMacViewController *)self view];
-  [v7 addSubview:v32];
+  view2 = [(CKEffectPickerMacViewController *)self view];
+  [view2 addSubview:v32];
 
-  v8 = [(CKEffectPickerBackgroundView *)v32 effectView];
-  v9 = [v8 contentView];
-  [(CKEffectPickerMacViewController *)self setContentView:v9];
+  effectView = [(CKEffectPickerBackgroundView *)v32 effectView];
+  contentView = [effectView contentView];
+  [(CKEffectPickerMacViewController *)self setContentView:contentView];
 
   v22 = MEMORY[0x1E696ACD8];
-  v31 = [(CKEffectPickerMacViewController *)self contentView];
-  v29 = [v31 leadingAnchor];
-  v30 = [(CKEffectPickerMacViewController *)self view];
-  v28 = [v30 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  contentView2 = [(CKEffectPickerMacViewController *)self contentView];
+  leadingAnchor = [contentView2 leadingAnchor];
+  view3 = [(CKEffectPickerMacViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[0] = v27;
-  v26 = [(CKEffectPickerMacViewController *)self contentView];
-  v24 = [v26 trailingAnchor];
-  v25 = [(CKEffectPickerMacViewController *)self view];
-  v23 = [v25 trailingAnchor];
-  v21 = [v24 constraintEqualToAnchor:v23];
+  contentView3 = [(CKEffectPickerMacViewController *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  view4 = [(CKEffectPickerMacViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v33[1] = v21;
-  v20 = [(CKEffectPickerMacViewController *)self contentView];
-  v10 = [v20 bottomAnchor];
-  v11 = [(CKEffectPickerMacViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  contentView4 = [(CKEffectPickerMacViewController *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  view5 = [(CKEffectPickerMacViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[2] = v13;
-  v14 = [(CKEffectPickerMacViewController *)self contentView];
-  v15 = [v14 topAnchor];
-  v16 = [(CKEffectPickerMacViewController *)self view];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  contentView5 = [(CKEffectPickerMacViewController *)self contentView];
+  topAnchor = [contentView5 topAnchor];
+  view6 = [(CKEffectPickerMacViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[3] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
   [v22 activateConstraints:v19];
@@ -384,9 +384,9 @@
   if (objc_opt_isKindOfClass())
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v7 isAccessibilityPreferredContentSizeCategory];
 
-    if (v8)
+    if (isAccessibilityPreferredContentSizeCategory)
     {
       [(CKBalloonView *)v3 truncateForLargeText];
     }
@@ -411,82 +411,82 @@
 - (void)placeSendButton
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CKEffectPickerMacViewController *)self sendButton];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sendButton = [(CKEffectPickerMacViewController *)self sendButton];
+  [sendButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CKEffectPickerMacViewController *)self view];
+  view = [(CKEffectPickerMacViewController *)self view];
   v5 = +[CKUIBehavior sharedBehaviors];
   if ([v5 effectPickerPresentsSelectionView])
   {
-    v6 = [v4 bottomAnchor];
+    bottomAnchor = [view bottomAnchor];
   }
 
   else
   {
-    v7 = [(CKEffectPickerMacViewController *)self selectionViewController];
-    v8 = [v7 view];
-    v6 = [v8 topAnchor];
+    selectionViewController = [(CKEffectPickerMacViewController *)self selectionViewController];
+    view2 = [selectionViewController view];
+    bottomAnchor = [view2 topAnchor];
   }
 
-  v29 = v6;
+  v29 = bottomAnchor;
 
   +[CKGlassSendButton buttonSize];
   v10 = v9;
   v12 = v11;
-  v13 = [(CKEffectPickerMacViewController *)self sendButton];
-  v14 = [v13 trailingAnchor];
-  v15 = [v4 trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+  sendButton2 = [(CKEffectPickerMacViewController *)self sendButton];
+  trailingAnchor = [sendButton2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   [(CKEffectPickerMacViewController *)self setSendButtonTrailingConstraint:v16];
 
   v27 = MEMORY[0x1E696ACD8];
-  v30 = [(CKEffectPickerMacViewController *)self sendButtonTrailingConstraint];
-  v31[0] = v30;
-  v17 = [(CKEffectPickerMacViewController *)self sendButton];
-  v18 = [v17 bottomAnchor];
-  v19 = [v18 constraintEqualToAnchor:v6 constant:-12.0];
+  sendButtonTrailingConstraint = [(CKEffectPickerMacViewController *)self sendButtonTrailingConstraint];
+  v31[0] = sendButtonTrailingConstraint;
+  sendButton3 = [(CKEffectPickerMacViewController *)self sendButton];
+  bottomAnchor2 = [sendButton3 bottomAnchor];
+  v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor constant:-12.0];
   v31[1] = v19;
-  v20 = [(CKEffectPickerMacViewController *)self sendButton];
-  v21 = [v20 widthAnchor];
-  v22 = [v21 constraintEqualToConstant:v10];
+  sendButton4 = [(CKEffectPickerMacViewController *)self sendButton];
+  widthAnchor = [sendButton4 widthAnchor];
+  v22 = [widthAnchor constraintEqualToConstant:v10];
   v31[2] = v22;
-  v23 = [(CKEffectPickerMacViewController *)self sendButton];
-  [v23 heightAnchor];
-  v24 = v28 = v4;
+  sendButton5 = [(CKEffectPickerMacViewController *)self sendButton];
+  [sendButton5 heightAnchor];
+  v24 = v28 = view;
   v25 = [v24 constraintEqualToConstant:v12];
   v31[3] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
   [v27 activateConstraints:v26];
 }
 
-- (void)placeBalloonContainer:(id)a3
+- (void)placeBalloonContainer:(id)container
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:self->_balloonView];
-  [(CKEffectPickerMacViewController *)self setBalloonContainer:v4];
-  v5 = [v4 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:0.0];
+  containerCopy = container;
+  [containerCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [containerCopy addSubview:self->_balloonView];
+  [(CKEffectPickerMacViewController *)self setBalloonContainer:containerCopy];
+  widthAnchor = [containerCopy widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:0.0];
   balloonWidthConstraint = self->_balloonWidthConstraint;
   self->_balloonWidthConstraint = v6;
 
-  v8 = [v4 heightAnchor];
-  v9 = [v8 constraintEqualToConstant:0.0];
+  heightAnchor = [containerCopy heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:0.0];
   balloonHeightConstraint = self->_balloonHeightConstraint;
   self->_balloonHeightConstraint = v9;
 
   v21 = MEMORY[0x1E696ACD8];
-  v11 = [v4 rightAnchor];
-  v12 = [(UIView *)self->_sendButton leftAnchor];
+  rightAnchor = [containerCopy rightAnchor];
+  leftAnchor = [(UIView *)self->_sendButton leftAnchor];
   v13 = +[CKUIBehavior sharedBehaviors];
   [v13 balloonMaskTailSizeForTailShape:1];
-  v15 = [v11 constraintEqualToAnchor:v12 constant:-(8.0 - v14)];
+  v15 = [rightAnchor constraintEqualToAnchor:leftAnchor constant:-(8.0 - v14)];
   v22[0] = v15;
-  v16 = [v4 bottomAnchor];
+  bottomAnchor = [containerCopy bottomAnchor];
 
-  v17 = [(UIView *)self->_sendButton bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  bottomAnchor2 = [(UIView *)self->_sendButton bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19 = self->_balloonWidthConstraint;
   v22[1] = v18;
   v22[2] = v19;
@@ -501,32 +501,32 @@
   v3 = objc_alloc_init(_TtC7ChatKit19CKPillShapedXButton);
   [(CKPillShapedXButton *)v3 addTarget:self action:sel_closeButtonPressed_ forControlEvents:64];
   [(CKPillShapedXButton *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(CKEffectPickerMacViewController *)self contentView];
-  [v4 addSubview:v3];
+  contentView = [(CKEffectPickerMacViewController *)self contentView];
+  [contentView addSubview:v3];
 
   [(CKEffectPickerMacViewController *)self setCloseButton:v3];
   +[_TtC7ChatKit19CKPillShapedXButton buttonSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(CKPillShapedXButton *)v3 leadingAnchor];
-  v10 = [(CKEffectPickerMacViewController *)self view];
-  v11 = [v10 leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  leadingAnchor = [(CKPillShapedXButton *)v3 leadingAnchor];
+  view = [(CKEffectPickerMacViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(CKEffectPickerMacViewController *)self setCloseButtonLeadingConstraint:v12];
 
   v22 = MEMORY[0x1E696ACD8];
-  v23 = [(CKEffectPickerMacViewController *)self closeButtonLeadingConstraint];
-  v24[0] = v23;
-  v13 = [(CKPillShapedXButton *)v3 centerYAnchor];
-  v14 = [(CKEffectPickerMacViewController *)self sendButton];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  closeButtonLeadingConstraint = [(CKEffectPickerMacViewController *)self closeButtonLeadingConstraint];
+  v24[0] = closeButtonLeadingConstraint;
+  centerYAnchor = [(CKPillShapedXButton *)v3 centerYAnchor];
+  sendButton = [(CKEffectPickerMacViewController *)self sendButton];
+  centerYAnchor2 = [sendButton centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v24[1] = v16;
-  v17 = [(CKPillShapedXButton *)v3 widthAnchor];
-  v18 = [v17 constraintEqualToConstant:v6];
+  widthAnchor = [(CKPillShapedXButton *)v3 widthAnchor];
+  v18 = [widthAnchor constraintEqualToConstant:v6];
   v24[2] = v18;
-  v19 = [(CKPillShapedXButton *)v3 heightAnchor];
-  v20 = [v19 constraintEqualToConstant:v8];
+  heightAnchor = [(CKPillShapedXButton *)v3 heightAnchor];
+  v20 = [heightAnchor constraintEqualToConstant:v8];
   v24[3] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   [v22 activateConstraints:v21];
@@ -534,14 +534,14 @@
 
 - (void)_layoutBalloonView
 {
-  v3 = [(CKEffectPickerMacViewController *)self view];
-  [v3 frame];
+  view = [(CKEffectPickerMacViewController *)self view];
+  [view frame];
   v5 = v4;
-  v6 = [(CKEffectPickerMacViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(CKEffectPickerMacViewController *)self view];
+  [view2 safeAreaInsets];
   v8 = v5 - v7;
-  v9 = [(CKEffectPickerMacViewController *)self view];
-  [v9 safeAreaInsets];
+  view3 = [(CKEffectPickerMacViewController *)self view];
+  [view3 safeAreaInsets];
   v11 = v8 - v10;
 
   v12 = +[CKUIBehavior sharedBehaviors];
@@ -572,109 +572,109 @@
   return v4;
 }
 
-- (void)touchUpInsideSendButton:(id)a3
+- (void)touchUpInsideSendButton:(id)button
 {
-  v6 = [(CKEffectPickerMacViewController *)self delegate];
-  v4 = [(CKEffectPickerMacViewController *)self selectionViewController];
-  v5 = [v4 selectedEffectIdentifier];
-  [v6 effectPickerViewController:self effectWithIdentifierSelected:v5];
+  delegate = [(CKEffectPickerMacViewController *)self delegate];
+  selectionViewController = [(CKEffectPickerMacViewController *)self selectionViewController];
+  selectedEffectIdentifier = [selectionViewController selectedEffectIdentifier];
+  [delegate effectPickerViewController:self effectWithIdentifierSelected:selectedEffectIdentifier];
 }
 
-- (void)closeButtonPressed:(id)a3
+- (void)closeButtonPressed:(id)pressed
 {
-  v4 = [(CKEffectPickerMacViewController *)self delegate];
-  [v4 effectPickerViewControllerClose:self animated:0];
+  delegate = [(CKEffectPickerMacViewController *)self delegate];
+  [delegate effectPickerViewControllerClose:self animated:0];
 }
 
-- (void)didUpdateMaxCellHeight:(double)a3
+- (void)didUpdateMaxCellHeight:(double)height
 {
-  v3 = a3 + 15.0;
-  v4 = [(CKEffectPickerMacViewController *)self heightConstraint];
-  [v4 setConstant:v3];
+  v3 = height + 15.0;
+  heightConstraint = [(CKEffectPickerMacViewController *)self heightConstraint];
+  [heightConstraint setConstant:v3];
 }
 
-- (BOOL)effectSelectionViewController:(id)a3 didSelectEffectWithIdentifier:(id)a4
+- (BOOL)effectSelectionViewController:(id)controller didSelectEffectWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  [(CKEffectPickerMacViewController *)self setEffectIdentifier:v5];
-  if (([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"] & 1) == 0)
+  identifierCopy = identifier;
+  [(CKEffectPickerMacViewController *)self setEffectIdentifier:identifierCopy];
+  if (([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.invisibleink"] & 1) == 0)
   {
-    v6 = [(CKEffectPickerMacViewController *)self balloonView];
-    [v6 setInvisibleInkEffectEnabled:0];
+    balloonView = [(CKEffectPickerMacViewController *)self balloonView];
+    [balloonView setInvisibleInkEffectEnabled:0];
   }
 
-  v7 = [(CKEffectPickerMacViewController *)self contentView];
-  v8 = [(CKEffectPickerMacViewController *)self effectShouldDisplayOverBalloon:v5];
-  v9 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
-  v10 = [v9 view];
-  v11 = [(CKEffectPickerMacViewController *)self balloonContainer];
+  contentView = [(CKEffectPickerMacViewController *)self contentView];
+  v8 = [(CKEffectPickerMacViewController *)self effectShouldDisplayOverBalloon:identifierCopy];
+  effectCollectionViewController = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
+  view = [effectCollectionViewController view];
+  balloonContainer = [(CKEffectPickerMacViewController *)self balloonContainer];
   if (v8)
   {
-    [v7 insertSubview:v10 aboveSubview:v11];
+    [contentView insertSubview:view aboveSubview:balloonContainer];
   }
 
   else
   {
-    [v7 insertSubview:v10 belowSubview:v11];
+    [contentView insertSubview:view belowSubview:balloonContainer];
   }
 
-  v12 = [(CKEffectPickerMacViewController *)self sendButton];
-  v13 = [(CKEffectPickerMacViewController *)self balloonContainer];
-  [v7 insertSubview:v12 aboveSubview:v13];
+  sendButton = [(CKEffectPickerMacViewController *)self sendButton];
+  balloonContainer2 = [(CKEffectPickerMacViewController *)self balloonContainer];
+  [contentView insertSubview:sendButton aboveSubview:balloonContainer2];
 
-  v14 = [(CKEffectPickerMacViewController *)self titleContainerView];
-  v15 = [(CKEffectPickerMacViewController *)self balloonContainer];
-  [v7 insertSubview:v14 aboveSubview:v15];
+  titleContainerView = [(CKEffectPickerMacViewController *)self titleContainerView];
+  balloonContainer3 = [(CKEffectPickerMacViewController *)self balloonContainer];
+  [contentView insertSubview:titleContainerView aboveSubview:balloonContainer3];
 
-  v16 = [(CKEffectPickerMacViewController *)self fsem];
-  v17 = [v16 effectForIdentifier:v5];
+  fsem = [(CKEffectPickerMacViewController *)self fsem];
+  v17 = [fsem effectForIdentifier:identifierCopy];
 
   if (v17 && [v17 effectIsDark])
   {
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 effectPickerPresentsSelectionView];
+    effectPickerPresentsSelectionView = [v18 effectPickerPresentsSelectionView];
 
-    if ((v19 & 1) == 0)
+    if ((effectPickerPresentsSelectionView & 1) == 0)
     {
-      v20 = [(CKEffectPickerMacViewController *)self selectionViewController];
-      v21 = [v20 view];
-      v22 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
-      v23 = [v22 view];
-      [v7 insertSubview:v21 aboveSubview:v23];
+      selectionViewController = [(CKEffectPickerMacViewController *)self selectionViewController];
+      view2 = [selectionViewController view];
+      effectCollectionViewController2 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
+      view3 = [effectCollectionViewController2 view];
+      [contentView insertSubview:view2 aboveSubview:view3];
     }
 
-    v24 = [(CKEffectPickerMacViewController *)self titleVibrancyEffect];
-    v25 = [(CKEffectPickerMacViewController *)self titleContainerView];
-    [v25 setEffect:v24];
+    titleVibrancyEffect = [(CKEffectPickerMacViewController *)self titleVibrancyEffect];
+    titleContainerView2 = [(CKEffectPickerMacViewController *)self titleContainerView];
+    [titleContainerView2 setEffect:titleVibrancyEffect];
   }
 
   else
   {
     v26 = +[CKUIBehavior sharedBehaviors];
-    v27 = [v26 effectPickerPresentsSelectionView];
+    effectPickerPresentsSelectionView2 = [v26 effectPickerPresentsSelectionView];
 
-    if ((v27 & 1) == 0)
+    if ((effectPickerPresentsSelectionView2 & 1) == 0)
     {
-      v28 = [(CKEffectPickerMacViewController *)self selectionViewController];
-      v29 = [v28 view];
-      v30 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
-      v31 = [v30 view];
-      [v7 insertSubview:v29 belowSubview:v31];
+      selectionViewController2 = [(CKEffectPickerMacViewController *)self selectionViewController];
+      view4 = [selectionViewController2 view];
+      effectCollectionViewController3 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
+      view5 = [effectCollectionViewController3 view];
+      [contentView insertSubview:view4 belowSubview:view5];
     }
 
-    v24 = [(CKEffectPickerMacViewController *)self titleContainerView];
-    [v24 setEffect:0];
+    titleVibrancyEffect = [(CKEffectPickerMacViewController *)self titleContainerView];
+    [titleVibrancyEffect setEffect:0];
   }
 
   v32 = +[CKImpactEffectManager effectIdentifiers];
-  v33 = [v32 containsObject:v5];
+  v33 = [v32 containsObject:identifierCopy];
 
   if (v33)
   {
-    v34 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
-    [v34 displayEffectWithIdentifier:0];
+    effectCollectionViewController4 = [(CKEffectPickerMacViewController *)self effectCollectionViewController];
+    [effectCollectionViewController4 displayEffectWithIdentifier:0];
 
-    [(CKEffectPickerMacViewController *)self startAnimationPreviewForIdentifier:v5];
+    [(CKEffectPickerMacViewController *)self startAnimationPreviewForIdentifier:identifierCopy];
   }
 
   else
@@ -683,8 +683,8 @@
     v38 = 3221225472;
     v39 = __95__CKEffectPickerMacViewController_effectSelectionViewController_didSelectEffectWithIdentifier___block_invoke;
     v40 = &unk_1E72EB8D0;
-    v41 = self;
-    v42 = v5;
+    selfCopy = self;
+    v42 = identifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], &v37);
   }
 
@@ -709,15 +709,15 @@ void __95__CKEffectPickerMacViewController_effectSelectionViewController_didSele
   [v2 displayEffectWithIdentifier:*(a1 + 40)];
 }
 
-- (BOOL)effectShouldDisplayOverBalloon:(id)a3
+- (BOOL)effectShouldDisplayOverBalloon:(id)balloon
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"com.apple.messages.effect.CKHappyBirthdayEffect";
   v8[1] = @"com.apple.messages.effect.CKConfettiEffect";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  balloonCopy = balloon;
   v5 = [v3 arrayWithObjects:v8 count:2];
-  v6 = [v5 indexOfObject:v4];
+  v6 = [v5 indexOfObject:balloonCopy];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -731,17 +731,17 @@ void __95__CKEffectPickerMacViewController_effectSelectionViewController_didSele
   return v2;
 }
 
-- (void)startAnimationPreviewForIdentifier:(id)a3
+- (void)startAnimationPreviewForIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKEffectPickerMacViewController *)self balloonView];
+  identifierCopy = identifier;
+  balloonView = [(CKEffectPickerMacViewController *)self balloonView];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  subviews = [balloonView subviews];
+  v7 = [subviews countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -751,7 +751,7 @@ void __95__CKEffectPickerMacViewController_effectSelectionViewController_didSele
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -763,7 +763,7 @@ void __95__CKEffectPickerMacViewController_effectSelectionViewController_didSele
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v16 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -775,32 +775,32 @@ void __95__CKEffectPickerMacViewController_effectSelectionViewController_didSele
 
 LABEL_11:
 
-  if (v5)
+  if (balloonView)
   {
-    [v5 setInvisibleInkEffectEnabled:{objc_msgSend(v4, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink"}];
-    [v5 prepareForDisplayIfNeeded];
-    v11 = [(CKEffectPickerMacViewController *)self _defaultSendAnimationContextForAnimationPreview];
-    v21 = v5;
+    [balloonView setInvisibleInkEffectEnabled:{objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.MobileSMS.expressivesend.invisibleink"}];
+    [balloonView prepareForDisplayIfNeeded];
+    _defaultSendAnimationContextForAnimationPreview = [(CKEffectPickerMacViewController *)self _defaultSendAnimationContextForAnimationPreview];
+    v21 = balloonView;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-    [v11 setThrowBalloonViews:v12];
+    [_defaultSendAnimationContextForAnimationPreview setThrowBalloonViews:v12];
 
-    v13 = v7;
+    null = v7;
     if (!v7)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v20 = v13;
+    v20 = null;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    [v11 setAnimatableTextViews:v14];
+    [_defaultSendAnimationContextForAnimationPreview setAnimatableTextViews:v14];
 
     if (!v7)
     {
     }
 
-    [v11 setImpactIdentifier:v4];
-    v15 = [(CKEffectPickerMacViewController *)self dummyAnimator];
-    [v15 beginAnimationWithSendAnimationContext:v11];
+    [_defaultSendAnimationContextForAnimationPreview setImpactIdentifier:identifierCopy];
+    dummyAnimator = [(CKEffectPickerMacViewController *)self dummyAnimator];
+    [dummyAnimator beginAnimationWithSendAnimationContext:_defaultSendAnimationContextForAnimationPreview];
   }
 }
 

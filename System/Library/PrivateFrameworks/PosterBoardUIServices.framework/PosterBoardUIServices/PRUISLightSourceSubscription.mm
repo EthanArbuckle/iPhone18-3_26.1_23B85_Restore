@@ -1,37 +1,37 @@
 @interface PRUISLightSourceSubscription
-+ (id)subscriberOnQueue:(id)a3 activityLevelChangeHandler:(id)a4;
-- (PRUISLightSourceSubscription)initWithSubscription:(id)a3;
++ (id)subscriberOnQueue:(id)queue activityLevelChangeHandler:(id)handler;
+- (PRUISLightSourceSubscription)initWithSubscription:(id)subscription;
 - (id)_identityLightSource;
-- (id)lightSourceOrientationQuaternionForTimestamp:(double)a3;
+- (id)lightSourceOrientationQuaternionForTimestamp:(double)timestamp;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PRUISLightSourceSubscription
 
-+ (id)subscriberOnQueue:(id)a3 activityLevelChangeHandler:(id)a4
++ (id)subscriberOnQueue:(id)queue activityLevelChangeHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [MEMORY[0x1E69AC030] sharedInstance];
-  v9 = [v8 subscribeOnQueue:v6 options:4 activityLevelChangeHandler:v5];
+  mEMORY[0x1E69AC030] = [MEMORY[0x1E69AC030] sharedInstance];
+  v9 = [mEMORY[0x1E69AC030] subscribeOnQueue:queueCopy options:4 activityLevelChangeHandler:handlerCopy];
 
   v10 = [v7 initWithSubscription:v9];
 
   return v10;
 }
 
-- (PRUISLightSourceSubscription)initWithSubscription:(id)a3
+- (PRUISLightSourceSubscription)initWithSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   v9.receiver = self;
   v9.super_class = PRUISLightSourceSubscription;
   v6 = [(PRUISLightSourceSubscription *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lightSourceSubscription, a3);
+    objc_storeStrong(&v6->_lightSourceSubscription, subscription);
   }
 
   return v7;
@@ -65,7 +65,7 @@
   return v2;
 }
 
-- (id)lightSourceOrientationQuaternionForTimestamp:(double)a3
+- (id)lightSourceOrientationQuaternionForTimestamp:(double)timestamp
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = [(LSSSubscription *)self->_lightSourceSubscription lightSourceForTargetTime:?];
@@ -77,7 +77,7 @@
       [PRUISLightSourceSubscription lightSourceOrientationQuaternionForTimestamp:v6];
     }
 
-    v7 = [(PRUISLightSourceSubscription *)self _identityLightSource];
+    _identityLightSource = [(PRUISLightSourceSubscription *)self _identityLightSource];
   }
 
   [v5 orientation];
@@ -100,7 +100,7 @@
     v27 = 2048;
     v28 = v18;
     v29 = 2048;
-    v30 = a3;
+    timestampCopy = timestamp;
     _os_log_debug_impl(&dword_1CAE63000, v16, OS_LOG_TYPE_DEBUG, "Light Source orientation: x: %f, y: %f, z: %f, w: %f, timestamp: %f, current time: %f", &v19, 0x3Eu);
   }
 

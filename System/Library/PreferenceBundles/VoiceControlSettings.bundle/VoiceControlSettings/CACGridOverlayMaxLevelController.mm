@@ -1,7 +1,7 @@
 @interface CACGridOverlayMaxLevelController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CACGridOverlayMaxLevelController
@@ -38,13 +38,13 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = CACGridOverlayMaxLevelController;
-  v6 = a4;
-  v7 = [(CACGridOverlayMaxLevelController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CACGridOverlayMaxLevelController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  v7 = [(CACGridOverlayMaxLevelController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CACGridOverlayMaxLevelController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v9 = [v8 propertyForKey:@"GridOverlayMaxLevel"];
   v10 = +[CACPreferences sharedPreferences];
@@ -53,18 +53,18 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = CACGridOverlayMaxLevelController;
-  v6 = a4;
-  [(CACGridOverlayMaxLevelController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CACGridOverlayMaxLevelController *)self specifierAtIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  [(CACGridOverlayMaxLevelController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CACGridOverlayMaxLevelController *)self specifierAtIndexPath:pathCopy, v10.receiver, v10.super_class];
   v8 = [v7 propertyForKey:@"GridOverlayMaxLevel"];
   v9 = +[CACPreferences sharedPreferences];
   [v9 setGridOverlayMaxLevel:{objc_msgSend(v8, "integerValue")}];
 
-  [(CACGridOverlayMaxLevelController *)self updateTableCheckedSelection:v6];
+  [(CACGridOverlayMaxLevelController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

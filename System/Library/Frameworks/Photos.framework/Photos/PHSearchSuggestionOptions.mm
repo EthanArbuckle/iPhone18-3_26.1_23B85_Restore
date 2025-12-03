@@ -1,31 +1,31 @@
 @interface PHSearchSuggestionOptions
 - (PHSearchSuggestionOptions)init;
 - (id)_minMatchPercentByCategoriesTypeDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonDictionary;
-- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)a3;
-- (void)setMinMatchPercent:(unint64_t)a3 forCategoriesType:(unint64_t)a4;
+- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)type;
+- (void)setMinMatchPercent:(unint64_t)percent forCategoriesType:(unint64_t)type;
 @end
 
 @implementation PHSearchSuggestionOptions
 
 - (id)_minMatchPercentByCategoriesTypeDescription
 {
-  v3 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
-  v4 = [v3 count];
+  minMatchPercentByCategoriesType = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
+  v4 = [minMatchPercentByCategoriesType count];
 
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v6 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
+    minMatchPercentByCategoriesType2 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__PHSearchSuggestionOptions__minMatchPercentByCategoriesTypeDescription__block_invoke;
     v9[3] = &unk_1E75A9DE8;
     v7 = v5;
     v10 = v7;
-    [v6 enumerateKeysAndObjectsUsingBlock:v9];
+    [minMatchPercentByCategoriesType2 enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   else
@@ -70,8 +70,8 @@ void __72__PHSearchSuggestionOptions__minMatchPercentByCategoriesTypeDescription
   v3 = PHSearchQueryResultTypesDescription([(PHSearchSuggestionOptions *)self suggestionResultTypes]);
   v18[1] = v3;
   v17[2] = @"suggestionCategories";
-  v4 = [(PHSearchSuggestionOptions *)self suggestionCategories];
-  v5 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v4);
+  suggestionCategories = [(PHSearchSuggestionOptions *)self suggestionCategories];
+  v5 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(suggestionCategories);
   v18[2] = v5;
   v17[3] = @"limitToExactMatches";
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHSearchSuggestionOptions limitSuggestionsToExactTextMatches](self, "limitSuggestionsToExactTextMatches")}];
@@ -80,12 +80,12 @@ void __72__PHSearchSuggestionOptions__minMatchPercentByCategoriesTypeDescription
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHSearchSuggestionOptions wantsUnscopedSuggestions](self, "wantsUnscopedSuggestions")}];
   v18[4] = v7;
   v17[5] = @"substringMatchedSuggestionCategories";
-  v8 = [(PHSearchSuggestionOptions *)self substringMatchedCategories];
-  v9 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v8);
+  substringMatchedCategories = [(PHSearchSuggestionOptions *)self substringMatchedCategories];
+  v9 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(substringMatchedCategories);
   v18[5] = v9;
   v17[6] = @"minMatchPercentByCategoriesType";
-  v10 = [(PHSearchSuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
-  v18[6] = v10;
+  _minMatchPercentByCategoriesTypeDescription = [(PHSearchSuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
+  v18[6] = _minMatchPercentByCategoriesTypeDescription;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:7];
   v12 = [v15 initWithDictionary:v11];
 
@@ -98,8 +98,8 @@ void __72__PHSearchSuggestionOptions__minMatchPercentByCategoriesTypeDescription
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"SuggestionLimit: %tu, ", self->_suggestionLimit];
-  v4 = [(PHSearchSuggestionOptions *)self suggestionCategories];
-  v5 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v4);
+  suggestionCategories = [(PHSearchSuggestionOptions *)self suggestionCategories];
+  v5 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(suggestionCategories);
   [v3 appendFormat:@"SuggestionCategories: %@, ", v5];
 
   v6 = PHSearchQueryResultTypesDescription([(PHSearchSuggestionOptions *)self suggestionResultTypes]);
@@ -127,45 +127,45 @@ void __72__PHSearchSuggestionOptions__minMatchPercentByCategoriesTypeDescription
   }
 
   [v3 appendFormat:@"WantsUnscopedSuggestions: %@, ", v8];
-  v9 = [(PHSearchSuggestionOptions *)self substringMatchedCategories];
-  v10 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(v9);
+  substringMatchedCategories = [(PHSearchSuggestionOptions *)self substringMatchedCategories];
+  v10 = PLDebugStringsForPHSearchSuggestionCategoriesTypes(substringMatchedCategories);
   [v3 appendFormat:@"SubstringMatchedSuggestionCategories: %@, ", v10];
 
-  v11 = [(PHSearchSuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
-  [v3 appendFormat:@"MinMatchPercentByCategoriesType: %@", v11];
+  _minMatchPercentByCategoriesTypeDescription = [(PHSearchSuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
+  [v3 appendFormat:@"MinMatchPercentByCategoriesType: %@", _minMatchPercentByCategoriesTypeDescription];
 
   v12 = [v3 copy];
 
   return v12;
 }
 
-- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)a3
+- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)type
 {
-  v4 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedIntegerValue];
+  minMatchPercentByCategoriesType = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [minMatchPercentByCategoriesType objectForKeyedSubscript:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setMinMatchPercent:(unint64_t)a3 forCategoriesType:(unint64_t)a4
+- (void)setMinMatchPercent:(unint64_t)percent forCategoriesType:(unint64_t)type
 {
-  v7 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
+  minMatchPercentByCategoriesType = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
 
-  if (!v7)
+  if (!minMatchPercentByCategoriesType)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(PHSearchSuggestionOptions *)self setMinMatchPercentByCategoriesType:v8];
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v9 setObject:v11 forKeyedSubscript:v10];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:percent];
+  minMatchPercentByCategoriesType2 = [(PHSearchSuggestionOptions *)self minMatchPercentByCategoriesType];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [minMatchPercentByCategoriesType2 setObject:v11 forKeyedSubscript:v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHSearchSuggestionOptions);
   [(PHSearchSuggestionOptions *)v4 setSuggestionResultTypes:self->_suggestionResultTypes];

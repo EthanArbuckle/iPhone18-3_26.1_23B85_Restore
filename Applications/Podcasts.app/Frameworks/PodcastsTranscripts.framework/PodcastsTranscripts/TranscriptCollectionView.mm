@@ -1,13 +1,13 @@
 @interface TranscriptCollectionView
-- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithCoder:(id)a3;
-- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithCoder:(id)coder;
+- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (id)_customScrollAnimation;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation TranscriptCollectionView
 
-- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithCoder:(id)a3
+- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19PodcastsTranscripts24TranscriptCollectionView_mode) = 1;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19PodcastsTranscripts24TranscriptCollectionView_subscriptions) = &_swiftEmptyArrayStorage;
@@ -17,18 +17,18 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_6E96C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_6E96C(event, x, y);
 
   return v10;
 }
 
-- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC19PodcastsTranscripts24TranscriptCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

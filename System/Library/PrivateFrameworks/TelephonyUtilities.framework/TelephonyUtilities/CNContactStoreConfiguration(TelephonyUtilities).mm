@@ -34,19 +34,19 @@
 {
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x1E695CE28]);
-  v5 = [v3 provider];
-  v6 = [v5 isSystemProvider];
+  provider = [v3 provider];
+  isSystemProvider = [provider isSystemProvider];
 
-  if (v6)
+  if (isSystemProvider)
   {
-    v7 = [v3 provider];
-    [v7 assumedIdentity];
+    provider2 = [v3 provider];
+    [provider2 assumedIdentity];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    [v7 tu_assumedIdentity];
+    provider2 = [MEMORY[0x1E696AAE8] mainBundle];
+    [provider2 tu_assumedIdentity];
   }
   v8 = ;
 

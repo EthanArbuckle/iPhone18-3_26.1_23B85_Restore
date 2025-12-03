@@ -1,18 +1,18 @@
 @interface NavigationWaypointController
 - (NSArray)displayedWaypoints;
 - (_TtC4Maps28NavigationWaypointController)init;
-- (void)insertWaypoint:(id)a3;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 failedRerouteWithErrorCode:(int64_t)a4;
+- (void)insertWaypoint:(id)waypoint;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service failedRerouteWithErrorCode:(int64_t)code;
 - (void)navigationServiceWillReroute:;
-- (void)removeWaypointAt:(int64_t)a3;
-- (void)replaceWaypoint:(id)a3 with:(id)a4;
-- (void)setDisplayedWaypoints:(id)a3;
-- (void)setOriginWaypoint:(id)a3;
+- (void)removeWaypointAt:(int64_t)at;
+- (void)replaceWaypoint:(id)waypoint with:(id)with;
+- (void)setDisplayedWaypoints:(id)waypoints;
+- (void)setOriginWaypoint:(id)waypoint;
 @end
 
 @implementation NavigationWaypointController
@@ -27,7 +27,7 @@
   return v2.super.isa;
 }
 
-- (void)setDisplayedWaypoints:(id)a3
+- (void)setDisplayedWaypoints:(id)waypoints
 {
   sub_100014C84(0, &qword_101914500);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -36,32 +36,32 @@
   *(self + v5) = v4;
 }
 
-- (void)setOriginWaypoint:(id)a3
+- (void)setOriginWaypoint:(id)waypoint
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28NavigationWaypointController_originWaypoint);
-  *(self + OBJC_IVAR____TtC4Maps28NavigationWaypointController_originWaypoint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28NavigationWaypointController_originWaypoint) = waypoint;
+  waypointCopy = waypoint;
 }
 
-- (void)insertWaypoint:(id)a3
+- (void)insertWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002295BC(v4);
+  waypointCopy = waypoint;
+  selfCopy = self;
+  sub_1002295BC(waypointCopy);
 }
 
-- (void)replaceWaypoint:(id)a3 with:(id)a4
+- (void)replaceWaypoint:(id)waypoint with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100229828(v6, v7);
+  waypointCopy = waypoint;
+  withCopy = with;
+  selfCopy = self;
+  sub_100229828(waypointCopy, withCopy);
 }
 
-- (void)removeWaypointAt:(int64_t)a3
+- (void)removeWaypointAt:(int64_t)at
 {
-  v4 = self;
-  sub_100229B8C(a3);
+  selfCopy = self;
+  sub_100229B8C(at);
 }
 
 - (_TtC4Maps28NavigationWaypointController)init
@@ -71,52 +71,52 @@
   return result;
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v8 = *&a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10022B5CC(a3, v8);
+  v8 = *&type;
+  serviceCopy = service;
+  routeCopy = route;
+  trafficCopy = traffic;
+  selfCopy = self;
+  sub_10022B5CC(service, v8);
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_10022AB64(a3, a4, a5);
+  serviceCopy = service;
+  rerouteCopy = reroute;
+  selfCopy = self;
+  sub_10022AB64(service, reroute, reason);
 }
 
-- (void)navigationService:(id)a3 failedRerouteWithErrorCode:(int64_t)a4
+- (void)navigationService:(id)service failedRerouteWithErrorCode:(int64_t)code
 {
-  v7 = a3;
-  v8 = self;
-  sub_10022AE04(a3, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10022AE04(service, code);
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
-  v8 = self;
-  sub_10022AF94(a3);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10022AF94(service);
 }
 
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_10022B830(a3, a4, a5);
+  serviceCopy = service;
+  waypointCopy = waypoint;
+  selfCopy = self;
+  sub_10022B830(service, waypoint, index);
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_10022B1D8(a3, a4, a5);
+  serviceCopy = service;
+  waypointCopy = waypoint;
+  selfCopy = self;
+  sub_10022B1D8(service, waypoint, index);
 }
 
 - (void)navigationServiceWillReroute:

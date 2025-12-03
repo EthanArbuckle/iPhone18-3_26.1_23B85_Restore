@@ -1,28 +1,28 @@
 @interface ADSynchronizedIdItem
-+ (id)alignToMidnight:(id)a3;
++ (id)alignToMidnight:(id)midnight;
 + (id)calendar;
-- (ADSynchronizedIdItem)initWithBMHomeSeed:(id)a3;
-- (ADSynchronizedIdItem)initWithBMUserAggregationId:(id)a3;
-- (ADSynchronizedIdItem)initWithBMUserSeed:(id)a3;
-- (ADSynchronizedIdItem)initWithValue:(id)a3 andEffectiveFrom:(id)a4 andValidityDays:(unsigned int)a5 andCreatedOn:(id)a6 andAdoptedOn:(id)a7 andSwitchedCount:(unsigned int)a8;
+- (ADSynchronizedIdItem)initWithBMHomeSeed:(id)seed;
+- (ADSynchronizedIdItem)initWithBMUserAggregationId:(id)id;
+- (ADSynchronizedIdItem)initWithBMUserSeed:(id)seed;
+- (ADSynchronizedIdItem)initWithValue:(id)value andEffectiveFrom:(id)from andValidityDays:(unsigned int)days andCreatedOn:(id)on andAdoptedOn:(id)adoptedOn andSwitchedCount:(unsigned int)count;
 - (NSDate)expirationDate;
-- (id)initAndAdopt:(id)a3 andSwitchedCount:(unsigned int)a4;
-- (id)selectEarliest:(id)a3;
-- (id)toBMSiriHomeSeedWithHomeIdentifier:(id)a3;
+- (id)initAndAdopt:(id)adopt andSwitchedCount:(unsigned int)count;
+- (id)selectEarliest:(id)earliest;
+- (id)toBMSiriHomeSeedWithHomeIdentifier:(id)identifier;
 - (id)toBMSiriUserAggregationId;
 - (id)toBMSiriUserSeed;
-- (int64_t)_expirationDaysFrom:(id)a3 withCalendar:(id)a4;
-- (int64_t)expirationDaysFrom:(id)a3;
+- (int64_t)_expirationDaysFrom:(id)from withCalendar:(id)calendar;
+- (int64_t)expirationDaysFrom:(id)from;
 - (int64_t)timelinePosition;
-- (int64_t)timelinePositionWithTime:(id)a3;
-- (int64_t)timelinePositionWithToday:(id)a3 withCalendar:(id)a4;
+- (int64_t)timelinePositionWithTime:(id)time;
+- (int64_t)timelinePositionWithToday:(id)today withCalendar:(id)calendar;
 @end
 
 @implementation ADSynchronizedIdItem
 
-- (id)toBMSiriHomeSeedWithHomeIdentifier:(id)a3
+- (id)toBMSiriHomeSeedWithHomeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [BMSiriHomeSeed alloc];
   value = self->_value;
   effectiveFrom = self->_effectiveFrom;
@@ -30,7 +30,7 @@
   createdOn = self->_createdOn;
   adoptedOn = self->_adoptedOn;
   v11 = [NSNumber numberWithInt:self->_switchedCount];
-  v12 = [v5 initWithHomeIdentifier:v4 seed:value effectiveFrom:effectiveFrom validityDays:v8 createdOn:createdOn adoptedOn:adoptedOn switchedCount:v11];
+  v12 = [v5 initWithHomeIdentifier:identifierCopy seed:value effectiveFrom:effectiveFrom validityDays:v8 createdOn:createdOn adoptedOn:adoptedOn switchedCount:v11];
 
   return v12;
 }
@@ -63,26 +63,26 @@
   return v10;
 }
 
-- (int64_t)timelinePositionWithToday:(id)a3 withCalendar:(id)a4
+- (int64_t)timelinePositionWithToday:(id)today withCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSDate *)self->_effectiveFrom compare:v6]== 1)
+  todayCopy = today;
+  calendarCopy = calendar;
+  if ([(NSDate *)self->_effectiveFrom compare:todayCopy]== 1)
   {
     v8 = 2;
   }
 
   else
   {
-    v8 = [(ADSynchronizedIdItem *)self _expirationDaysFrom:v6 withCalendar:v7]> 0;
+    v8 = [(ADSynchronizedIdItem *)self _expirationDaysFrom:todayCopy withCalendar:calendarCopy]> 0;
   }
 
   return v8;
 }
 
-- (int64_t)timelinePositionWithTime:(id)a3
+- (int64_t)timelinePositionWithTime:(id)time
 {
-  v4 = [ADSynchronizedIdItem alignToMidnight:a3];
+  v4 = [ADSynchronizedIdItem alignToMidnight:time];
   v5 = +[ADSynchronizedIdItem calendar];
   v6 = [(ADSynchronizedIdItem *)self timelinePositionWithToday:v4 withCalendar:v5];
 
@@ -97,58 +97,58 @@
   return v4;
 }
 
-- (id)selectEarliest:(id)a3
+- (id)selectEarliest:(id)earliest
 {
-  v4 = a3;
+  earliestCopy = earliest;
   createdOn = self->_createdOn;
-  v6 = [(ADSynchronizedIdItem *)v4 createdOn];
-  v7 = [(NSDate *)createdOn compare:v6];
+  createdOn = [(ADSynchronizedIdItem *)earliestCopy createdOn];
+  v7 = [(NSDate *)createdOn compare:createdOn];
 
   if (v7 == -1)
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = v4;
+    selfCopy2 = earliestCopy;
     if (v7 != 1)
     {
       value = self->_value;
-      v10 = [(ADSynchronizedIdItem *)v4 value];
-      v11 = [(NSUUID *)value compare:v10];
+      value = [(ADSynchronizedIdItem *)earliestCopy value];
+      v11 = [(NSUUID *)value compare:value];
 
       if ((v11 + 1) >= 2)
       {
-        v8 = v4;
+        selfCopy2 = earliestCopy;
       }
 
       else
       {
-        v8 = self;
+        selfCopy2 = self;
       }
     }
   }
 
-  v12 = v8;
+  v12 = selfCopy2;
 
   return v12;
 }
 
-- (int64_t)_expirationDaysFrom:(id)a3 withCalendar:(id)a4
+- (int64_t)_expirationDaysFrom:(id)from withCalendar:(id)calendar
 {
   validityDays = self->_validityDays;
-  v5 = [a4 components:16 fromDate:self->_effectiveFrom toDate:a3 options:0];
+  v5 = [calendar components:16 fromDate:self->_effectiveFrom toDate:from options:0];
   v6 = validityDays - [v5 day];
 
   return v6;
 }
 
-- (int64_t)expirationDaysFrom:(id)a3
+- (int64_t)expirationDaysFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[ADSynchronizedIdItem calendar];
-  v6 = [(ADSynchronizedIdItem *)self _expirationDaysFrom:v4 withCalendar:v5];
+  v6 = [(ADSynchronizedIdItem *)self _expirationDaysFrom:fromCopy withCalendar:v5];
 
   return v6;
 }
@@ -161,158 +161,158 @@
   return v4;
 }
 
-- (id)initAndAdopt:(id)a3 andSwitchedCount:(unsigned int)a4
+- (id)initAndAdopt:(id)adopt andSwitchedCount:(unsigned int)count
 {
-  v6 = a3;
+  adoptCopy = adopt;
   v17.receiver = self;
   v17.super_class = ADSynchronizedIdItem;
   v7 = [(ADSynchronizedIdItem *)&v17 init];
   if (v7)
   {
-    v8 = [v6 value];
+    value = [adoptCopy value];
     value = v7->_value;
-    v7->_value = v8;
+    v7->_value = value;
 
-    v10 = [v6 effectiveFrom];
+    effectiveFrom = [adoptCopy effectiveFrom];
     effectiveFrom = v7->_effectiveFrom;
-    v7->_effectiveFrom = v10;
+    v7->_effectiveFrom = effectiveFrom;
 
-    v7->_validityDays = [v6 validityDays];
-    v12 = [v6 createdOn];
+    v7->_validityDays = [adoptCopy validityDays];
+    createdOn = [adoptCopy createdOn];
     createdOn = v7->_createdOn;
-    v7->_createdOn = v12;
+    v7->_createdOn = createdOn;
 
     v14 = +[NSDate now];
     adoptedOn = v7->_adoptedOn;
     v7->_adoptedOn = v14;
 
-    v7->_switchedCount = a4;
+    v7->_switchedCount = count;
   }
 
   return v7;
 }
 
-- (ADSynchronizedIdItem)initWithValue:(id)a3 andEffectiveFrom:(id)a4 andValidityDays:(unsigned int)a5 andCreatedOn:(id)a6 andAdoptedOn:(id)a7 andSwitchedCount:(unsigned int)a8
+- (ADSynchronizedIdItem)initWithValue:(id)value andEffectiveFrom:(id)from andValidityDays:(unsigned int)days andCreatedOn:(id)on andAdoptedOn:(id)adoptedOn andSwitchedCount:(unsigned int)count
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  valueCopy = value;
+  fromCopy = from;
+  onCopy = on;
+  adoptedOnCopy = adoptedOn;
   v22.receiver = self;
   v22.super_class = ADSynchronizedIdItem;
   v18 = [(ADSynchronizedIdItem *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_value, a3);
-    objc_storeStrong(&v19->_effectiveFrom, a4);
-    v19->_validityDays = a5;
-    objc_storeStrong(&v19->_createdOn, a6);
-    objc_storeStrong(&v19->_adoptedOn, a7);
-    v19->_switchedCount = a8;
+    objc_storeStrong(&v18->_value, value);
+    objc_storeStrong(&v19->_effectiveFrom, from);
+    v19->_validityDays = days;
+    objc_storeStrong(&v19->_createdOn, on);
+    objc_storeStrong(&v19->_adoptedOn, adoptedOn);
+    v19->_switchedCount = count;
   }
 
   return v19;
 }
 
-- (ADSynchronizedIdItem)initWithBMHomeSeed:(id)a3
+- (ADSynchronizedIdItem)initWithBMHomeSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v15.receiver = self;
   v15.super_class = ADSynchronizedIdItem;
   v5 = [(ADSynchronizedIdItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 seed];
+    seed = [seedCopy seed];
     value = v5->_value;
-    v5->_value = v6;
+    v5->_value = seed;
 
-    v8 = [v4 effectiveFrom];
+    effectiveFrom = [seedCopy effectiveFrom];
     effectiveFrom = v5->_effectiveFrom;
-    v5->_effectiveFrom = v8;
+    v5->_effectiveFrom = effectiveFrom;
 
-    v5->_validityDays = [v4 validityDays];
-    v10 = [v4 createdOn];
+    v5->_validityDays = [seedCopy validityDays];
+    createdOn = [seedCopy createdOn];
     createdOn = v5->_createdOn;
-    v5->_createdOn = v10;
+    v5->_createdOn = createdOn;
 
-    v12 = [v4 adoptedOn];
+    adoptedOn = [seedCopy adoptedOn];
     adoptedOn = v5->_adoptedOn;
-    v5->_adoptedOn = v12;
+    v5->_adoptedOn = adoptedOn;
 
-    v5->_switchedCount = [v4 switchedCount];
+    v5->_switchedCount = [seedCopy switchedCount];
   }
 
   return v5;
 }
 
-- (ADSynchronizedIdItem)initWithBMUserAggregationId:(id)a3
+- (ADSynchronizedIdItem)initWithBMUserAggregationId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = ADSynchronizedIdItem;
   v5 = [(ADSynchronizedIdItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 aggregationId];
+    aggregationId = [idCopy aggregationId];
     value = v5->_value;
-    v5->_value = v6;
+    v5->_value = aggregationId;
 
-    v8 = [v4 effectiveFrom];
+    effectiveFrom = [idCopy effectiveFrom];
     effectiveFrom = v5->_effectiveFrom;
-    v5->_effectiveFrom = v8;
+    v5->_effectiveFrom = effectiveFrom;
 
-    v5->_validityDays = [v4 validityDays];
-    v10 = [v4 createdOn];
+    v5->_validityDays = [idCopy validityDays];
+    createdOn = [idCopy createdOn];
     createdOn = v5->_createdOn;
-    v5->_createdOn = v10;
+    v5->_createdOn = createdOn;
 
-    v12 = [v4 adoptedOn];
+    adoptedOn = [idCopy adoptedOn];
     adoptedOn = v5->_adoptedOn;
-    v5->_adoptedOn = v12;
+    v5->_adoptedOn = adoptedOn;
 
-    v5->_switchedCount = [v4 switchedCount];
+    v5->_switchedCount = [idCopy switchedCount];
   }
 
   return v5;
 }
 
-- (ADSynchronizedIdItem)initWithBMUserSeed:(id)a3
+- (ADSynchronizedIdItem)initWithBMUserSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v15.receiver = self;
   v15.super_class = ADSynchronizedIdItem;
   v5 = [(ADSynchronizedIdItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 seed];
+    seed = [seedCopy seed];
     value = v5->_value;
-    v5->_value = v6;
+    v5->_value = seed;
 
-    v8 = [v4 effectiveFrom];
+    effectiveFrom = [seedCopy effectiveFrom];
     effectiveFrom = v5->_effectiveFrom;
-    v5->_effectiveFrom = v8;
+    v5->_effectiveFrom = effectiveFrom;
 
-    v5->_validityDays = [v4 validityDays];
-    v10 = [v4 createdOn];
+    v5->_validityDays = [seedCopy validityDays];
+    createdOn = [seedCopy createdOn];
     createdOn = v5->_createdOn;
-    v5->_createdOn = v10;
+    v5->_createdOn = createdOn;
 
-    v12 = [v4 adoptedOn];
+    adoptedOn = [seedCopy adoptedOn];
     adoptedOn = v5->_adoptedOn;
-    v5->_adoptedOn = v12;
+    v5->_adoptedOn = adoptedOn;
 
-    v5->_switchedCount = [v4 switchedCount];
+    v5->_switchedCount = [seedCopy switchedCount];
   }
 
   return v5;
 }
 
-+ (id)alignToMidnight:(id)a3
++ (id)alignToMidnight:(id)midnight
 {
-  v3 = a3;
+  midnightCopy = midnight;
   v4 = +[ADSynchronizedIdItem calendar];
-  v5 = [v4 startOfDayForDate:v3];
+  v5 = [v4 startOfDayForDate:midnightCopy];
 
   return v5;
 }

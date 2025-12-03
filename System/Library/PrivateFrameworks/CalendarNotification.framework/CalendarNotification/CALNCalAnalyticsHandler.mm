@@ -1,7 +1,7 @@
 @interface CALNCalAnalyticsHandler
 + (CALNCalAnalyticsHandler)sharedInstance;
-- (void)recordNotificationResponse:(id)a3;
-- (void)recordPostedNotification:(id)a3;
+- (void)recordNotificationResponse:(id)response;
+- (void)recordPostedNotification:(id)notification;
 @end
 
 @implementation CALNCalAnalyticsHandler
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __41__CALNCalAnalyticsHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -30,30 +30,30 @@ uint64_t __41__CALNCalAnalyticsHandler_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)recordPostedNotification:(id)a3
+- (void)recordPostedNotification:(id)notification
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"notificationType";
-  v3 = [a3 sourceIdentifier];
-  v7[0] = v3;
+  sourceIdentifier = [notification sourceIdentifier];
+  v7[0] = sourceIdentifier;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   CalAnalyticsSendEvent();
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordNotificationResponse:(id)a3
+- (void)recordNotificationResponse:(id)response
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"notificationType";
-  v3 = a3;
-  v4 = [v3 notificationRecord];
-  v5 = [v4 sourceIdentifier];
+  responseCopy = response;
+  notificationRecord = [responseCopy notificationRecord];
+  sourceIdentifier = [notificationRecord sourceIdentifier];
   v9[1] = @"actionIdentifier";
-  v10[0] = v5;
-  v6 = [v3 actionIdentifier];
+  v10[0] = sourceIdentifier;
+  actionIdentifier = [responseCopy actionIdentifier];
 
-  v10[1] = v6;
+  v10[1] = actionIdentifier;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   CalAnalyticsSendEvent();
 

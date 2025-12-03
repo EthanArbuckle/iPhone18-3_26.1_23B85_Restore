@@ -1,16 +1,16 @@
 @interface FCTagSubscriptionSorter
-- (id)initWithTagRanker:(id *)a1;
-- (id)sortTagSubscriptions:(uint64_t)a1;
+- (id)initWithTagRanker:(id *)ranker;
+- (id)sortTagSubscriptions:(uint64_t)subscriptions;
 @end
 
 @implementation FCTagSubscriptionSorter
 
-- (id)initWithTagRanker:(id *)a1
+- (id)initWithTagRanker:(id *)ranker
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (ranker)
   {
     if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -26,10 +26,10 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v10.receiver = a1;
+    v10.receiver = ranker;
     v10.super_class = FCTagSubscriptionSorter;
     v6 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v6;
+    ranker = v6;
     if (v6)
     {
       objc_storeStrong(v6 + 1, a2);
@@ -37,15 +37,15 @@
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return a1;
+  return ranker;
 }
 
-- (id)sortTagSubscriptions:(uint64_t)a1
+- (id)sortTagSubscriptions:(uint64_t)subscriptions
 {
   v44[2] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (subscriptions)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -93,7 +93,7 @@
 
     v13 = [v32 sortedArrayUsingComparator:&__block_literal_global_8_3];
     v31 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_11_4];
-    v14 = *(a1 + 8);
+    v14 = *(subscriptions + 8);
     v15 = [v14 rankTagIDsDescending:v31];
 
     aBlock[0] = MEMORY[0x1E69E9820];

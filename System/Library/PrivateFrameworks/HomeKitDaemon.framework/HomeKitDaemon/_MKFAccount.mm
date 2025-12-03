@@ -1,5 +1,5 @@
 @interface _MKFAccount
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFAccountDatabaseID)databaseID;
 - (NSArray)devices;
 - (NSArray)handles;
@@ -10,14 +10,14 @@
 - (NSArray)devices
 {
   v2 = [(_MKFAccount *)self valueForKey:@"devices_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -32,9 +32,9 @@
 - (NSArray)handles
 {
   v2 = [(_MKFAccount *)self valueForKey:@"handles_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFAccountDatabaseID)databaseID

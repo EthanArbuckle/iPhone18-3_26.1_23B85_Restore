@@ -1,27 +1,27 @@
 @interface WFSpeechRecognitionAccessResource
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (unint64_t)status;
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5;
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFSpeechRecognitionAccessResource
 
-- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)a3 userInterface:(id)a4 completionHandler:(id)a5
+- (void)attemptRecoveryFromErrorWithOptionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=General&path=Keyboard/DictationSettings"];
-  v7 = [MEMORY[0x277CFC248] sharedContext];
+  mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __109__WFSpeechRecognitionAccessResource_attemptRecoveryFromErrorWithOptionIndex_userInterface_completionHandler___block_invoke;
   v9[3] = &unk_278C1CBC0;
-  v10 = v5;
-  v8 = v5;
-  [v7 openURL:v6 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [mEMORY[0x277CFC248] openURL:v6 completionHandler:v9];
 }
 
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v3 = WFLocalizedString(@"Enable Dictation");
@@ -35,16 +35,16 @@
 
 - (unint64_t)status
 {
-  v2 = [getAFPreferencesClass_7598() sharedPreferences];
-  if ([v2 dictationIsEnabled])
+  sharedPreferences = [getAFPreferencesClass_7598() sharedPreferences];
+  if ([sharedPreferences dictationIsEnabled])
   {
     v3 = 4;
   }
 
   else
   {
-    v4 = [getAFPreferencesClass_7598() sharedPreferences];
-    if ([v4 suppressDictationOptIn])
+    sharedPreferences2 = [getAFPreferencesClass_7598() sharedPreferences];
+    if ([sharedPreferences2 suppressDictationOptIn])
     {
       v3 = 3;
     }
@@ -58,11 +58,11 @@
   return v3;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"speech recognition", @"speech recognition");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

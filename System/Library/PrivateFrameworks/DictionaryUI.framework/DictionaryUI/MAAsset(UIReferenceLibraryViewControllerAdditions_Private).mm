@@ -7,20 +7,20 @@
 
 - (uint64_t)_formatVersion
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"_CompatibilityVersion"];
-  v3 = [v2 integerValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"_CompatibilityVersion"];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)_contentVersion
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"_ContentVersion"];
-  v3 = [v2 integerValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"_ContentVersion"];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 @end

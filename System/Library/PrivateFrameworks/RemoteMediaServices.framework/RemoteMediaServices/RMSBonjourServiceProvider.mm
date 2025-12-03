@@ -1,19 +1,19 @@
 @interface RMSBonjourServiceProvider
 - (RMSBonjourServiceProvider)init;
 - (RMSServiceProviderDelegate)delegate;
-- (id)_identifierForNetService:(id)a3;
+- (id)_identifierForNetService:(id)service;
 - (id)_searchString;
-- (id)_valueForTXTRecordKey:(id)a3 inTXTDictionary:(id)a4;
-- (int64_t)serviceTypeFromTXTDictionary:(id)a3;
-- (void)_updateCacheWithService:(id)a3 identifier:(id)a4;
-- (void)_updateService:(id)a3 withNetService:(id)a4 txtData:(id)a5;
+- (id)_valueForTXTRecordKey:(id)key inTXTDictionary:(id)dictionary;
+- (int64_t)serviceTypeFromTXTDictionary:(id)dictionary;
+- (void)_updateCacheWithService:(id)service identifier:(id)identifier;
+- (void)_updateService:(id)service withNetService:(id)netService txtData:(id)data;
 - (void)beginDiscovery;
 - (void)dealloc;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
 @end
 
 @implementation RMSBonjourServiceProvider
@@ -62,23 +62,23 @@
 - (void)beginDiscovery
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(RMSBonjourServiceProvider *)self _searchString];
+  _searchString = [(RMSBonjourServiceProvider *)self _searchString];
   v4 = RMSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = _searchString;
     _os_log_impl(&dword_261E98000, v4, OS_LOG_TYPE_DEFAULT, "Searching for services of type: %@", &v7, 0xCu);
   }
 
   netServiceBrowser = self->_netServiceBrowser;
-  v6 = [(RMSBonjourServiceProvider *)self searchDomain];
-  [(NSNetServiceBrowser *)netServiceBrowser searchForServicesOfType:v3 inDomain:v6];
+  searchDomain = [(RMSBonjourServiceProvider *)self searchDomain];
+  [(NSNetServiceBrowser *)netServiceBrowser searchForServicesOfType:_searchString inDomain:searchDomain];
 }
 
-- (int64_t)serviceTypeFromTXTDictionary:(id)a3
+- (int64_t)serviceTypeFromTXTDictionary:(id)dictionary
 {
-  v3 = [(RMSBonjourServiceProvider *)self _valueForTXTRecordKey:@"DvTy" inTXTDictionary:a3];
+  v3 = [(RMSBonjourServiceProvider *)self _valueForTXTRecordKey:@"DvTy" inTXTDictionary:dictionary];
   if ([v3 containsString:@"AppleTV"])
   {
     v4 = 2;
@@ -92,25 +92,25 @@
   return v4;
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  serviceCopy = service;
   v7 = RMSLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 name];
+    name = [serviceCopy name];
     v15 = 138412290;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&dword_261E98000, v7, OS_LOG_TYPE_DEFAULT, "Net service browser did find service: %@", &v15, 0xCu);
   }
 
-  v9 = [(RMSBonjourServiceProvider *)self _identifierForNetService:v6];
-  [v6 setDelegate:self];
-  [v6 startMonitoring];
+  v9 = [(RMSBonjourServiceProvider *)self _identifierForNetService:serviceCopy];
+  [serviceCopy setDelegate:self];
+  [serviceCopy startMonitoring];
   v10 = objc_opt_new();
   [v10 setState:0];
-  [v10 setNetService:v6];
+  [v10 setNetService:serviceCopy];
   [(NSMutableDictionary *)self->_services setObject:v10 forKeyedSubscript:v9];
   v11 = [(NSMutableDictionary *)self->_cache objectForKey:v9];
   if (v11)
@@ -137,38 +137,38 @@
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
-  v9 = [(RMSBonjourServiceProvider *)self _identifierForNetService:a4];
+  v9 = [(RMSBonjourServiceProvider *)self _identifierForNetService:service];
   v6 = [(NSMutableDictionary *)self->_services objectForKeyedSubscript:?];
   if ([v6 isAvailable])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v6 service];
-    [WeakRetained serviceProvider:self serviceDidBecomeUnavailable:v8];
+    service = [v6 service];
+    [WeakRetained serviceProvider:self serviceDidBecomeUnavailable:service];
   }
 
   [(NSMutableDictionary *)self->_services removeObjectForKey:v9];
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RMSBonjourServiceProvider *)self _identifierForNetService:v6];
+  serviceCopy = service;
+  dataCopy = data;
+  v8 = [(RMSBonjourServiceProvider *)self _identifierForNetService:serviceCopy];
   v9 = [(NSMutableDictionary *)self->_services objectForKeyedSubscript:v8];
   v10 = RMSLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 name];
+    name = [serviceCopy name];
     v18 = 138412290;
-    v19 = v11;
+    v19 = name;
     _os_log_impl(&dword_261E98000, v10, OS_LOG_TYPE_DEFAULT, "Service txt record update: %@", &v18, 0xCu);
   }
 
-  v12 = [v9 state];
-  if (v12 == 2)
+  state = [v9 state];
+  if (state == 2)
   {
     v15 = RMSLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -177,107 +177,107 @@
       _os_log_impl(&dword_261E98000, v15, OS_LOG_TYPE_DEFAULT, "DNS resolution already complete for this service, updating clients immediately", &v18, 2u);
     }
 
-    v16 = [v9 service];
-    [(RMSBonjourServiceProvider *)self _updateService:v16 withNetService:v6 txtData:v7];
+    service = [v9 service];
+    [(RMSBonjourServiceProvider *)self _updateService:service withNetService:serviceCopy txtData:dataCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained serviceProvider:self serviceDidBecomeAvailable:v16];
+    [WeakRetained serviceProvider:self serviceDidBecomeAvailable:service];
 
-    [(RMSBonjourServiceProvider *)self _updateCacheWithService:v16 identifier:v8];
+    [(RMSBonjourServiceProvider *)self _updateCacheWithService:service identifier:v8];
   }
 
-  else if (!v12)
+  else if (!state)
   {
     v13 = RMSLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 name];
+      name2 = [serviceCopy name];
       v18 = 138412290;
-      v19 = v14;
+      v19 = name2;
       _os_log_impl(&dword_261E98000, v13, OS_LOG_TYPE_DEFAULT, "Performing DNS resolution for service: %@", &v18, 0xCu);
     }
 
     [v9 setState:1];
-    [v6 resolveWithTimeout:10.0];
+    [serviceCopy resolveWithTimeout:10.0];
   }
 }
 
-- (void)_updateCacheWithService:(id)a3 identifier:(id)a4
+- (void)_updateCacheWithService:(id)service identifier:(id)identifier
 {
   cache = self->_cache;
-  v7 = a4;
-  v8 = [a3 data];
-  [(NSMutableDictionary *)cache setObject:v8 forKey:v7];
+  identifierCopy = identifier;
+  data = [service data];
+  [(NSMutableDictionary *)cache setObject:data forKey:identifierCopy];
 
   CFPreferencesSetAppValue(@"BonjourCacheKey", self->_cache, @"com.apple.RemoteMediaServices");
 
   CFPreferencesAppSynchronize(@"com.apple.RemoteMediaServices");
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RMSBonjourServiceProvider *)self _identifierForNetService:v4];
+  addressCopy = address;
+  v5 = [(RMSBonjourServiceProvider *)self _identifierForNetService:addressCopy];
   v6 = [(NSMutableDictionary *)self->_services objectForKeyedSubscript:v5];
   [v6 setAvailable:1];
   [v6 setState:2];
-  v7 = [v6 service];
-  v8 = [v4 TXTRecordData];
-  [(RMSBonjourServiceProvider *)self _updateService:v7 withNetService:v4 txtData:v8];
+  service = [v6 service];
+  tXTRecordData = [addressCopy TXTRecordData];
+  [(RMSBonjourServiceProvider *)self _updateService:service withNetService:addressCopy txtData:tXTRecordData];
 
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 name];
-    v11 = [v7 displayName];
+    name = [addressCopy name];
+    displayName = [service displayName];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v15 = 138412802;
-    v16 = v10;
+    v16 = name;
     v17 = 2112;
-    v18 = v11;
+    v18 = displayName;
     v19 = 2112;
     v20 = v13;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "Service [%@] resolved and fully available: %@, source: %@", &v15, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained serviceProvider:self serviceDidBecomeAvailable:v7];
+  [WeakRetained serviceProvider:self serviceDidBecomeAvailable:service];
 
-  [(RMSBonjourServiceProvider *)self _updateCacheWithService:v7 identifier:v5];
+  [(RMSBonjourServiceProvider *)self _updateCacheWithService:service identifier:v5];
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [RMSBonjourServiceProvider netService:v4 didNotResolve:v5];
+    [RMSBonjourServiceProvider netService:serviceCopy didNotResolve:v5];
   }
 
-  [v4 resolveWithTimeout:30.0];
+  [serviceCopy resolveWithTimeout:30.0];
 }
 
-- (void)_updateService:(id)a3 withNetService:(id)a4 txtData:(id)a5
+- (void)_updateService:(id)service withNetService:(id)netService txtData:(id)data
 {
-  v17 = a3;
+  serviceCopy = service;
   v8 = MEMORY[0x277CCAB78];
-  v9 = a4;
-  v10 = [v8 dictionaryFromTXTRecordData:a5];
-  v11 = [v9 name];
-  [v17 setNetworkName:v11];
+  netServiceCopy = netService;
+  v10 = [v8 dictionaryFromTXTRecordData:data];
+  name = [netServiceCopy name];
+  [serviceCopy setNetworkName:name];
 
-  v12 = [v9 hostName];
-  [v17 setHostName:v12];
+  hostName = [netServiceCopy hostName];
+  [serviceCopy setHostName:hostName];
 
-  v13 = [v9 port];
-  [v17 setPort:v13];
-  [v17 setServiceType:{-[RMSBonjourServiceProvider serviceTypeFromTXTDictionary:](self, "serviceTypeFromTXTDictionary:", v10)}];
-  [v17 setServiceFlags:{-[RMSBonjourServiceProvider serviceFlagsFromTXTDictionary:](self, "serviceFlagsFromTXTDictionary:", v10)}];
+  port = [netServiceCopy port];
+  [serviceCopy setPort:port];
+  [serviceCopy setServiceType:{-[RMSBonjourServiceProvider serviceTypeFromTXTDictionary:](self, "serviceTypeFromTXTDictionary:", v10)}];
+  [serviceCopy setServiceFlags:{-[RMSBonjourServiceProvider serviceFlagsFromTXTDictionary:](self, "serviceFlagsFromTXTDictionary:", v10)}];
   v14 = [(RMSBonjourServiceProvider *)self _valueForTXTRecordKey:@"hG" inTXTDictionary:v10];
-  [v17 setHomeSharingGroupKey:v14];
-  [v17 setServiceDiscoverySource:{-[RMSBonjourServiceProvider serviceDiscoverySource](self, "serviceDiscoverySource")}];
+  [serviceCopy setHomeSharingGroupKey:v14];
+  [serviceCopy setServiceDiscoverySource:{-[RMSBonjourServiceProvider serviceDiscoverySource](self, "serviceDiscoverySource")}];
   v15 = [(RMSBonjourServiceProvider *)self _valueForTXTRecordKey:@"Name" inTXTDictionary:v10];
   if (!v15)
   {
@@ -289,16 +289,16 @@
   }
 
   v16 = v15;
-  [v17 setDisplayName:v15];
+  [serviceCopy setDisplayName:v15];
 }
 
-- (id)_valueForTXTRecordKey:(id)a3 inTXTDictionary:(id)a4
+- (id)_valueForTXTRecordKey:(id)key inTXTDictionary:(id)dictionary
 {
-  v4 = [a4 objectForKey:a3];
+  v4 = [dictionary objectForKey:key];
   if ([v4 length])
   {
-    v5 = [v4 bytes];
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v5];
+    bytes = [v4 bytes];
+    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:bytes];
   }
 
   else
@@ -309,31 +309,31 @@
   return v6;
 }
 
-- (id)_identifierForNetService:(id)a3
+- (id)_identifierForNetService:(id)service
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 type];
-  v7 = [v4 domain];
+  serviceCopy = service;
+  name = [serviceCopy name];
+  type = [serviceCopy type];
+  domain = [serviceCopy domain];
 
-  v8 = [v3 stringWithFormat:@"%@%@%@", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@%@%@", name, type, domain];
 
   return v8;
 }
 
 - (id)_searchString
 {
-  v3 = [(RMSBonjourServiceProvider *)self searchType];
-  v4 = [(RMSBonjourServiceProvider *)self searchScope];
-  if (v4)
+  searchType = [(RMSBonjourServiceProvider *)self searchType];
+  searchScope = [(RMSBonjourServiceProvider *)self searchScope];
+  if (searchScope)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, _%@", v3, v4];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, _%@", searchType, searchScope];
   }
 
   else
   {
-    v5 = v3;
+    v5 = searchType;
   }
 
   v6 = v5;

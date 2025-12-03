@@ -1,8 +1,8 @@
 @interface sysdiagnose_DEExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4;
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler;
 - (id)getRemoteArchives;
-- (id)tryReusingSysdiagnoseForParameters:(id)a3;
+- (id)tryReusingSysdiagnoseForParameters:(id)parameters;
 - (void)dealloc;
 @end
 
@@ -107,9 +107,9 @@
     v13 = *(v20 + 5);
     *(v20 + 5) = v12;
 
-    v14 = [(sysdiagnose_DEExtension *)self getRemoteArchives];
-    v15 = v14;
-    if ((!v14 || ![v14 count]) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    getRemoteArchives = [(sysdiagnose_DEExtension *)self getRemoteArchives];
+    v15 = getRemoteArchives;
+    if ((!getRemoteArchives || ![getRemoteArchives count]) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *v26 = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Didn't receive a non-zero list of archives from the watch", v26, 2u);
@@ -148,15 +148,15 @@
   return v11;
 }
 
-- (id)tryReusingSysdiagnoseForParameters:(id)a3
+- (id)tryReusingSysdiagnoseForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v45 = 0;
   v44 = 1;
   v43 = 0;
-  sub_100001DA4(@"forceDiagnostic", v3, &v45);
-  sub_100001DA4(@"shouldCreateTarBall", v3, &v44);
-  sub_100001DA4(@"fbaKeychord", v3, &v43);
+  sub_100001DA4(@"forceDiagnostic", parametersCopy, &v45);
+  sub_100001DA4(@"shouldCreateTarBall", parametersCopy, &v44);
+  sub_100001DA4(@"fbaKeychord", parametersCopy, &v43);
   if (v45)
   {
     v4 = 0;
@@ -184,14 +184,14 @@
   if (!string)
   {
 LABEL_8:
-    v10 = 0;
+    path = 0;
     goto LABEL_9;
   }
 
-  v10 = [NSString stringWithUTF8String:string];
+  path = [NSString stringWithUTF8String:string];
 LABEL_9:
 
-  if (v10)
+  if (path)
   {
     goto LABEL_36;
   }
@@ -203,7 +203,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "No in progress archive found for compress: %d. Checking for recent archive", buf, 8u);
   }
 
-  v38 = v3;
+  v38 = parametersCopy;
   v39 = v44;
   v11 = +[NSFileManager defaultManager];
   v12 = sub_100000D70(@"DiagnosticLogs/sysdiagnose");
@@ -240,12 +240,12 @@ LABEL_9:
 
       v22 = *(*(&v48 + 1) + 8 * i);
       v23 = objc_autoreleasePoolPush();
-      v24 = [v22 lastPathComponent];
-      if ([v24 hasPrefix:@"sysdiagnose_"] && (objc_msgSend(v24, "containsString:", v20) & 1) == 0)
+      lastPathComponent = [v22 lastPathComponent];
+      if ([lastPathComponent hasPrefix:@"sysdiagnose_"] && (objc_msgSend(lastPathComponent, "containsString:", v20) & 1) == 0)
       {
         v25 = v16;
         v26 = v20;
-        v27 = [v24 containsString:@"IN_PROGRESS_"];
+        v27 = [lastPathComponent containsString:@"IN_PROGRESS_"];
 
         if (v27)
         {
@@ -256,12 +256,12 @@ LABEL_9:
 
         v47 = 0;
         [v22 getResourceValue:&v47 forKey:NSURLCreationDateKey error:0];
-        v24 = v47;
+        lastPathComponent = v47;
         v46 = 0;
         [v22 getResourceValue:&v46 forKey:NSURLIsDirectoryKey error:0];
         v28 = v46;
         v40 = v28;
-        if ([v24 compare:v42] != 1 || objc_msgSend(v28, "BOOLValue") == v39)
+        if ([lastPathComponent compare:v42] != 1 || objc_msgSend(v28, "BOOLValue") == v39)
         {
           v30 = v41;
           v29 = v42;
@@ -269,7 +269,7 @@ LABEL_9:
 
         else
         {
-          v29 = v24;
+          v29 = lastPathComponent;
 
           v30 = v22;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -300,23 +300,23 @@ LABEL_32:
   if ([v42 compare:v31] == 1)
   {
     v32 = v41;
-    v10 = [v41 path];
+    path = [v41 path];
     v33 = v37;
-    v3 = v38;
+    parametersCopy = v38;
   }
 
   else
   {
-    v10 = 0;
+    path = 0;
     v33 = v37;
-    v3 = v38;
+    parametersCopy = v38;
     v32 = v41;
   }
 
-  if (v10)
+  if (path)
   {
 LABEL_36:
-    v34 = sub_1000014A0(v10);
+    v34 = sub_1000014A0(path);
 
     if ([v34 hasSuffix:@".tar.gz"])
     {
@@ -355,16 +355,16 @@ LABEL_48:
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "yes";
     v32 = "[sysdiagnose_DEExtension attachmentsForParameters:withProgressHandler:]";
     *buf = 136315650;
-    if (!v7)
+    if (!handlerCopy)
     {
       v8 = "no";
     }
@@ -372,11 +372,11 @@ LABEL_48:
     v33 = 2080;
     v34 = v8;
     v35 = 2112;
-    v36 = v6;
+    v36 = parametersCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Called %s. Progress handler passed: %s, parameters: %@", buf, 0x20u);
   }
 
-  v9 = [(sysdiagnose_DEExtension *)self tryReusingSysdiagnoseForParameters:v6];
+  v9 = [(sysdiagnose_DEExtension *)self tryReusingSysdiagnoseForParameters:parametersCopy];
   if (v9 && ([DEAttachmentItem attachmentWithPath:v9], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
@@ -386,13 +386,13 @@ LABEL_48:
 
   else
   {
-    v13 = [v6 copy];
+    v13 = [parametersCopy copy];
     v28 = 0;
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100002208;
     v26[3] = &unk_1000042C8;
-    v27 = v7;
+    v27 = handlerCopy;
     v14 = [Libsysdiagnose sysdiagnoseWithMetadata:v13 withError:&v28 withProgressHandler:v26];
     v11 = v28;
 
@@ -431,9 +431,9 @@ LABEL_48:
     {
       if (v15)
       {
-        v23 = [v11 localizedDescription];
+        localizedDescription = [v11 localizedDescription];
         *buf = 138543362;
-        v32 = v23;
+        v32 = localizedDescription;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Libsysdiagnose returned error %{public}@", buf, 0xCu);
       }
 

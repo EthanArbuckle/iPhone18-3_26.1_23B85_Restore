@@ -1,51 +1,51 @@
 @interface CNSharingProfileOnboardingPhotoSelectionViewController
 + (id)descriptorForRequiredKeys;
-- (CNSharingProfileOnboardingPhotoSelectionViewController)initWithContact:(id)a3 avatarRecord:(id)a4 avatarItemProviderConfiguration:(id)a5;
-- (void)didTapBackButton:(id)a3;
-- (void)didTapDoneButton:(id)a3;
-- (void)didTapSetupLaterButton:(id)a3;
+- (CNSharingProfileOnboardingPhotoSelectionViewController)initWithContact:(id)contact avatarRecord:(id)record avatarItemProviderConfiguration:(id)configuration;
+- (void)didTapBackButton:(id)button;
+- (void)didTapDoneButton:(id)button;
+- (void)didTapSetupLaterButton:(id)button;
 - (void)loadView;
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5;
-- (void)photoPickerDidCancel:(id)a3;
-- (void)sharingPhotoPickerDidSelectAddItem:(id)a3;
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image;
+- (void)photoPickerDidCancel:(id)cancel;
+- (void)sharingPhotoPickerDidSelectAddItem:(id)item;
 - (void)updateForContentSizeCategoryChange;
 @end
 
 @implementation CNSharingProfileOnboardingPhotoSelectionViewController
 
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image
 {
-  v15 = a4;
-  v8 = a5;
-  objc_storeStrong(&self->_photoProviderContact, a4);
-  if ([v8 source] == 1)
+  contactCopy = contact;
+  imageCopy = image;
+  objc_storeStrong(&self->_photoProviderContact, contact);
+  if ([imageCopy source] == 1)
   {
-    v9 = [v8 variant];
+    variant = [imageCopy variant];
 
-    if (v9)
+    if (variant)
     {
       v10 = objc_alloc(MEMORY[0x1E69BDC50]);
-      v11 = [v8 variant];
-      v12 = [v10 initWithColorName:v11];
+      variant2 = [imageCopy variant];
+      v12 = [v10 initWithColorName:variant2];
       [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController setMonogramColor:v12];
     }
   }
 
-  v13 = [v15 memojiMetadata];
-  [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController setMemojiMetadata:v13];
+  memojiMetadata = [contactCopy memojiMetadata];
+  [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController setMemojiMetadata:memojiMetadata];
 
   [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController updateWithContact:self->_photoProviderContact fromFullPhotoPicker:1];
-  v14 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self presentedViewController];
-  [v14 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)photoPickerDidCancel:(id)a3
+- (void)photoPickerDidCancel:(id)cancel
 {
-  v3 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)sharingPhotoPickerDidSelectAddItem:(id)a3
+- (void)sharingPhotoPickerDidSelectAddItem:(id)item
 {
   v4 = [CNPhotoPickerViewController alloc];
   photoProviderContact = self->_photoProviderContact;
@@ -64,9 +64,9 @@
   self->_photoPickerViewController = v8;
   v12 = v8;
 
-  v13 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self view];
-  v14 = [v13 window];
-  [v14 endEditing:1];
+  view = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self view];
+  window = [view window];
+  [window endEditing:1];
 
   v19 = [CNPhotoPickerViewController navigationControllerForPicker:v12];
   [v19 setModalPresentationStyle:2];
@@ -78,56 +78,56 @@
   [(CNSharingProfileOnboardingPhotoSelectionViewController *)self presentViewController:v19 animated:1 completion:0];
 }
 
-- (void)didTapDoneButton:(id)a3
+- (void)didTapDoneButton:(id)button
 {
-  v14 = [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController selectedItem];
+  selectedItem = [(CNSharingProfilePhotoPickerViewController *)self->_sharingPhotoPickerViewController selectedItem];
   v4 = objc_alloc_init(CNSharingProfileOnboardingPhotoSelectionResult);
-  v5 = [v14 originalImageWithSize:{500.0, 500.0}];
+  v5 = [selectedItem originalImageWithSize:{500.0, 500.0}];
   [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setOriginalImage:v5];
 
-  v6 = [v14 compositeImageWithSize:{500.0, 500.0}];
+  v6 = [selectedItem compositeImageWithSize:{500.0, 500.0}];
   [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setCompositedImage:v6];
 
-  v7 = [v14 avatarItem];
-  -[CNSharingProfileOnboardingPhotoSelectionResult setAvatarType:](v4, "setAvatarType:", [v7 type]);
+  avatarItem = [selectedItem avatarItem];
+  -[CNSharingProfileOnboardingPhotoSelectionResult setAvatarType:](v4, "setAvatarType:", [avatarItem type]);
 
-  v8 = [v14 avatarItem];
-  v9 = [v8 variantIdentifier];
-  [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setVariantName:v9];
+  avatarItem2 = [selectedItem avatarItem];
+  variantIdentifier = [avatarItem2 variantIdentifier];
+  [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setVariantName:variantIdentifier];
 
-  v10 = [v14 avatarItem];
-  -[CNSharingProfileOnboardingPhotoSelectionResult setWasSelectedInFullPhotoPicker:](v4, "setWasSelectedInFullPhotoPicker:", [v10 wasSetFromFullPhotoPicker]);
+  avatarItem3 = [selectedItem avatarItem];
+  -[CNSharingProfileOnboardingPhotoSelectionResult setWasSelectedInFullPhotoPicker:](v4, "setWasSelectedInFullPhotoPicker:", [avatarItem3 wasSetFromFullPhotoPicker]);
 
-  v11 = [v14 avatarItem];
-  v12 = [v11 memojiMetadata];
-  [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setMemojiMetadata:v12];
+  avatarItem4 = [selectedItem avatarItem];
+  memojiMetadata = [avatarItem4 memojiMetadata];
+  [(CNSharingProfileOnboardingPhotoSelectionResult *)v4 setMemojiMetadata:memojiMetadata];
 
-  v13 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
-  [v13 photoSelectionViewControllerDidFinishWithResult:v4];
+  delegate = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
+  [delegate photoSelectionViewControllerDidFinishWithResult:v4];
 }
 
-- (void)didTapBackButton:(id)a3
+- (void)didTapBackButton:(id)button
 {
-  v3 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
-  [v3 photoSelectionViewControllerDidFinishWithResult:0];
+  delegate = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
+  [delegate photoSelectionViewControllerDidFinishWithResult:0];
 }
 
-- (void)didTapSetupLaterButton:(id)a3
+- (void)didTapSetupLaterButton:(id)button
 {
-  v4 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
+  delegate = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
-    [v6 photoSelectionViewControllerDidTapSetupLater:self];
+    delegate2 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self delegate];
+    [delegate2 photoSelectionViewControllerDidTapSetupLater:self];
   }
 }
 
 - (void)updateForContentSizeCategoryChange
 {
-  v2 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)loadView
@@ -136,9 +136,9 @@
   v10.super_class = CNSharingProfileOnboardingPhotoSelectionViewController;
   [(OBBaseWelcomeController *)&v10 loadView];
   v3 = objc_alloc_init(CNOnboardingBoldButtonProvider);
-  v4 = [(CNOnboardingBoldButtonProvider *)v3 boldButton];
+  boldButton = [(CNOnboardingBoldButtonProvider *)v3 boldButton];
   confirmButton = self->_confirmButton;
-  self->_confirmButton = v4;
+  self->_confirmButton = boldButton;
 
   v6 = self->_confirmButton;
   v7 = CNContactsUIBundle();
@@ -146,15 +146,15 @@
   [(OBBoldTrayButton *)v6 setTitle:v8 forState:0];
 
   [(OBBoldTrayButton *)self->_confirmButton addTarget:self action:sel_didTapDoneButton_ forControlEvents:64];
-  v9 = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self buttonTray];
-  [v9 addButton:self->_confirmButton];
+  buttonTray = [(CNSharingProfileOnboardingPhotoSelectionViewController *)self buttonTray];
+  [buttonTray addButton:self->_confirmButton];
 }
 
-- (CNSharingProfileOnboardingPhotoSelectionViewController)initWithContact:(id)a3 avatarRecord:(id)a4 avatarItemProviderConfiguration:(id)a5
+- (CNSharingProfileOnboardingPhotoSelectionViewController)initWithContact:(id)contact avatarRecord:(id)record avatarItemProviderConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  recordCopy = record;
+  configurationCopy = configuration;
   v12 = CNContactsUIBundle();
   v13 = [v12 localizedStringForKey:@"SHARING_CHOOSE_YOUR_PHOTO_TO_SHARE" value:&stru_1F0CE7398 table:@"Localized"];
   v24.receiver = self;
@@ -163,13 +163,13 @@
 
   if (v14)
   {
-    objc_storeStrong(&v14->_contact, a3);
-    v15 = [v9 mutableCopy];
+    objc_storeStrong(&v14->_contact, contact);
+    v15 = [contactCopy mutableCopy];
     photoProviderContact = v14->_photoProviderContact;
     v14->_photoProviderContact = v15;
 
-    objc_storeStrong(&v14->_avatarRecord, a4);
-    objc_storeStrong(&v14->_avatarItemProviderConfiguration, a5);
+    objc_storeStrong(&v14->_avatarRecord, record);
+    objc_storeStrong(&v14->_avatarItemProviderConfiguration, configuration);
     v17 = objc_alloc_init(CNSharingProfileLogger);
     logger = v14->_logger;
     v14->_logger = v17;
@@ -178,8 +178,8 @@
     sharingPhotoPickerViewController = v14->_sharingPhotoPickerViewController;
     v14->_sharingPhotoPickerViewController = v19;
 
-    v21 = [(CNSharingProfilePhotoPickerViewController *)v14->_sharingPhotoPickerViewController view];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(CNSharingProfilePhotoPickerViewController *)v14->_sharingPhotoPickerViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(CNSharingProfilePhotoPickerViewController *)v14->_sharingPhotoPickerViewController setDelegate:v14];
     [(CNSharingProfilePhotoPickerViewController *)v14->_sharingPhotoPickerViewController willMoveToParentViewController:v14];

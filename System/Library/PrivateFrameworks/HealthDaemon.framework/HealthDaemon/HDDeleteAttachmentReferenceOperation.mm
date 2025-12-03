@@ -1,43 +1,43 @@
 @interface HDDeleteAttachmentReferenceOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDDeleteAttachmentReferenceOperation)initWithCoder:(id)a3;
-- (void)_initWithReferences:(uint64_t)a3 cloudStatus:;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDDeleteAttachmentReferenceOperation)initWithCoder:(id)coder;
+- (void)_initWithReferences:(uint64_t)references cloudStatus:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDDeleteAttachmentReferenceOperation
 
-- (void)_initWithReferences:(uint64_t)a3 cloudStatus:
+- (void)_initWithReferences:(uint64_t)references cloudStatus:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = HDDeleteAttachmentReferenceOperation;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel_init);
+    if (self)
     {
       v6 = [v5 copy];
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = self[2];
+      self[2] = v6;
 
-      a1[3] = a3;
+      self[3] = references;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v83 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v8 = a4;
-  LOBYTE(v9) = 16;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  LOBYTE(database) = 16;
   if ([(NSArray *)self->_references count])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v50 = self;
+    selfCopy = self;
     references = self->_references;
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
@@ -45,10 +45,10 @@
     v72[3] = &unk_27861B210;
     v52 = v10;
     v73 = v52;
-    if (+[HDAttachmentReferenceEntity filteredNonTombstoneReferences:transaction:error:enumerationHandler:](HDAttachmentReferenceEntity, "filteredNonTombstoneReferences:transaction:error:enumerationHandler:", references, v8, a5, v72) && (![v52 count] || +[HDAttachmentReferenceEntity deleteReferences:cloudStatus:transaction:error:](HDAttachmentReferenceEntity, "deleteReferences:cloudStatus:transaction:error:", v52, v50->_cloudStatus, v8, a5)))
+    if (+[HDAttachmentReferenceEntity filteredNonTombstoneReferences:transaction:error:enumerationHandler:](HDAttachmentReferenceEntity, "filteredNonTombstoneReferences:transaction:error:enumerationHandler:", references, transactionCopy, error, v72) && (![v52 count] || +[HDAttachmentReferenceEntity deleteReferences:cloudStatus:transaction:error:](HDAttachmentReferenceEntity, "deleteReferences:cloudStatus:transaction:error:", v52, selfCopy->_cloudStatus, transactionCopy, error)))
     {
       v12 = [v52 hk_map:&__block_literal_global_234];
-      v13 = v50->_references;
+      v13 = selfCopy->_references;
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
       v70[2] = __77__HDDeleteAttachmentReferenceOperation_performWithProfile_transaction_error___block_invoke_3;
@@ -56,7 +56,7 @@
       v45 = v12;
       v71 = v45;
       v46 = [(NSArray *)v13 hk_filter:v70];
-      if ([v46 count] && !+[HDAttachmentReferenceEntity insertTombstones:cloudStatus:transaction:error:](HDAttachmentReferenceEntity, "insertTombstones:cloudStatus:transaction:error:", v46, v50->_cloudStatus, v8, a5))
+      if ([v46 count] && !+[HDAttachmentReferenceEntity insertTombstones:cloudStatus:transaction:error:](HDAttachmentReferenceEntity, "insertTombstones:cloudStatus:transaction:error:", v46, selfCopy->_cloudStatus, transactionCopy, error))
       {
         v38 = 0;
       }
@@ -72,12 +72,12 @@
         v65[3] = &unk_278616D68;
         v48 = v15;
         v66 = v48;
-        v17 = v54;
+        v17 = profileCopy;
         v67 = v17;
         v47 = v16;
         v68 = v47;
-        v69 = v50;
-        [v8 onCommit:v65 orRollback:0];
+        v69 = selfCopy;
+        [transactionCopy onCommit:v65 orRollback:0];
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
@@ -106,10 +106,10 @@
               v56[2] = __77__HDDeleteAttachmentReferenceOperation_performWithProfile_transaction_error___block_invoke_300;
               v56[3] = &unk_278621878;
               v56[4] = &v57;
-              if (![HDAttachmentReferenceEntity enumerateReferencesForAttachmentIdentifier:v19 type:0 transaction:v8 error:a5 enumerationHandler:v56])
+              if (![HDAttachmentReferenceEntity enumerateReferencesForAttachmentIdentifier:v19 type:0 transaction:transactionCopy error:error enumerationHandler:v56])
               {
 LABEL_30:
-                LOBYTE(v9) = 0;
+                LOBYTE(database) = 0;
 LABEL_31:
                 _Block_object_dispose(&v57, 8);
                 v37 = 0;
@@ -122,45 +122,45 @@ LABEL_31:
                 v20 = *MEMORY[0x277CCC280];
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                 {
-                  v21 = [v19 UUIDString];
+                  uUIDString = [v19 UUIDString];
                   *buf = 138543618;
-                  v75 = v50;
+                  v75 = selfCopy;
                   v76 = 2114;
-                  v77 = v21;
+                  v77 = uUIDString;
                   _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[database] %{public}@: No references remaining. Deleting attachment with identifier %{public}@", buf, 0x16u);
                 }
 
                 [v48 addObject:v19];
-                v22 = [v17 attachmentManager];
-                v23 = [v22 unconfirmedFilesDirectoryURL];
-                v24 = [v19 UUIDString];
-                v25 = [v23 URLByAppendingPathComponent:v24];
+                attachmentManager = [v17 attachmentManager];
+                unconfirmedFilesDirectoryURL = [attachmentManager unconfirmedFilesDirectoryURL];
+                uUIDString2 = [v19 UUIDString];
+                v25 = [unconfirmedFilesDirectoryURL URLByAppendingPathComponent:uUIDString2];
 
-                v26 = [v17 attachmentManager];
-                v27 = [v26 filesDirectoryURL];
-                v28 = [v19 UUIDString];
-                v29 = [v27 URLByAppendingPathComponent:v28];
+                attachmentManager2 = [v17 attachmentManager];
+                filesDirectoryURL = [attachmentManager2 filesDirectoryURL];
+                uUIDString3 = [v19 UUIDString];
+                v29 = [filesDirectoryURL URLByAppendingPathComponent:uUIDString3];
 
                 v55 = 0;
-                LOBYTE(v26) = [v47 moveItemAtURL:v29 toURL:v25 error:&v55];
+                LOBYTE(attachmentManager2) = [v47 moveItemAtURL:v29 toURL:v25 error:&v55];
                 v30 = v55;
-                if ((v26 & 1) == 0)
+                if ((attachmentManager2 & 1) == 0)
                 {
                   _HKInitializeLogging();
                   v31 = *MEMORY[0x277CCC280];
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
                   {
-                    v35 = [v29 path];
-                    v36 = [v25 path];
+                    path = [v29 path];
+                    path2 = [v25 path];
                     *buf = 138544130;
-                    v75 = v50;
+                    v75 = selfCopy;
                     v76 = 2114;
-                    v77 = v35;
+                    v77 = path;
                     v78 = 2114;
-                    v79 = v36;
+                    v79 = path2;
                     v80 = 2114;
                     v81 = v30;
-                    v44 = v36;
+                    v44 = path2;
                     _os_log_error_impl(&dword_228986000, v31, OS_LOG_TYPE_ERROR, "[database] %{public}@: Failed to move file from %{public}@ -> %{public}@ directory with error %{public}@", buf, 0x2Au);
                   }
 
@@ -171,7 +171,7 @@ LABEL_31:
                     if (os_log_type_enabled(*MEMORY[0x277CCC280], OS_LOG_TYPE_FAULT))
                     {
                       *buf = 138543618;
-                      v75 = v50;
+                      v75 = selfCopy;
                       v76 = 2114;
                       v77 = v19;
                       _os_log_fault_impl(&dword_228986000, v32, OS_LOG_TYPE_FAULT, "[database] %{public}@: No such file error for attachment %{public}@", buf, 0x16u);
@@ -182,13 +182,13 @@ LABEL_31:
                   {
                     v41 = v30;
                     v42 = v41;
-                    LOBYTE(v9) = v41 == 0;
+                    LOBYTE(database) = v41 == 0;
                     if (v41)
                     {
-                      if (a5)
+                      if (error)
                       {
                         v43 = v41;
-                        *a5 = v42;
+                        *error = v42;
                       }
 
                       else
@@ -202,8 +202,8 @@ LABEL_31:
                 }
 
                 v33 = HDAttachmentPredicateForAttachmentIdentifier(v19);
-                v9 = [v17 database];
-                v34 = [(HDHealthEntity *)HDAttachmentEntity deleteEntitiesWithPredicate:v33 healthDatabase:v9 error:a5];
+                database = [v17 database];
+                v34 = [(HDHealthEntity *)HDAttachmentEntity deleteEntitiesWithPredicate:v33 healthDatabase:database error:error];
 
                 if (!v34)
                 {
@@ -232,7 +232,7 @@ LABEL_31:
 
 LABEL_34:
 
-        v38 = v37 | v9;
+        v38 = v37 | database;
       }
     }
 
@@ -329,11 +329,11 @@ void __77__HDDeleteAttachmentReferenceOperation_performWithProfile_transaction_e
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (HDDeleteAttachmentReferenceOperation)initWithCoder:(id)a3
+- (HDDeleteAttachmentReferenceOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"delete_attachment_references"];
-  v6 = [v4 decodeIntegerForKey:@"cloud_status"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"delete_attachment_references"];
+  v6 = [coderCopy decodeIntegerForKey:@"cloud_status"];
 
   if (v6)
   {
@@ -350,14 +350,14 @@ void __77__HDDeleteAttachmentReferenceOperation_performWithProfile_transaction_e
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDeleteAttachmentReferenceOperation;
-  v4 = a3;
-  [(HDJournalableOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_references forKey:{@"delete_attachment_references", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_cloudStatus forKey:@"cloud_status"];
+  coderCopy = coder;
+  [(HDJournalableOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_references forKey:{@"delete_attachment_references", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_cloudStatus forKey:@"cloud_status"];
 }
 
 @end

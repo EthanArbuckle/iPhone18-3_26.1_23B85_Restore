@@ -42,7 +42,7 @@
 - (uint64_t)isEqual:()HIDFramework
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
     v5 = 1;
   }
@@ -52,7 +52,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 isEqualToHIDEvent:v4];
+      v5 = [self isEqualToHIDEvent:v4];
     }
 
     else
@@ -102,8 +102,8 @@ LABEL_7:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 children];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  children = [self children];
+  v2 = [children countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = v2;
@@ -115,7 +115,7 @@ LABEL_7:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(children);
         }
 
         v6 = *(*(&v8 + 1) + 8 * v5);
@@ -124,7 +124,7 @@ LABEL_7:
       }
 
       while (v3 != v5);
-      v3 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [children countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v3);

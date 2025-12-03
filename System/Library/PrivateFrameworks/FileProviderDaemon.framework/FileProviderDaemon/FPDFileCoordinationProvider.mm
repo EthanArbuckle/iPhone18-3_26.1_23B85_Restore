@@ -1,87 +1,87 @@
 @interface FPDFileCoordinationProvider
-- (FPDFileCoordinationProvider)initWithRootURL:(id)a3;
+- (FPDFileCoordinationProvider)initWithRootURL:(id)l;
 - (FPDFileCoordinationProviderDelegate)delegate;
 - (NSOperationQueue)_providedItemsOperationQueue;
 - (NSString)_fileReactorID;
-- (id)_physicalURLForURL:(id)a3;
-- (id)delegateForURL:(id)a3;
-- (void)_cancelProvidingItemAtURL:(id)a3 toReaderWithID:(id)a4;
-- (void)_movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)_provideItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)_provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)_providedItemAtURL:(id)a3 didGainPresenterWithInfo:(id)a4;
-- (void)_providedItemAtURL:(id)a3 didLosePresenterWithID:(id)a4;
-- (void)_providedItemAtURL:(id)a3 withPresenterWithID:(id)a4 didMoveToURL:(id)a5;
-- (void)_writerWithID:(id)a3 didFinishWritingForURL:(id)a4;
+- (id)_physicalURLForURL:(id)l;
+- (id)delegateForURL:(id)l;
+- (void)_cancelProvidingItemAtURL:(id)l toReaderWithID:(id)d;
+- (void)_movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)_provideItemAtURL:(id)l completionHandler:(id)handler;
+- (void)_provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)_providedItemAtURL:(id)l didGainPresenterWithInfo:(id)info;
+- (void)_providedItemAtURL:(id)l didLosePresenterWithID:(id)d;
+- (void)_providedItemAtURL:(id)l withPresenterWithID:(id)d didMoveToURL:(id)rL;
+- (void)_writerWithID:(id)d didFinishWritingForURL:(id)l;
 @end
 
 @implementation FPDFileCoordinationProvider
 
-- (FPDFileCoordinationProvider)initWithRootURL:(id)a3
+- (FPDFileCoordinationProvider)initWithRootURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = FPDFileCoordinationProvider;
   v6 = [(FPDFileCoordinationProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_providedItemsURL, a3);
+    objc_storeStrong(&v6->_providedItemsURL, l);
   }
 
   return v7;
 }
 
-- (id)delegateForURL:(id)a3
+- (id)delegateForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(FPDFileCoordinationProvider *)self delegate];
-  v6 = [v5 _siblingDelegateForURL:v4];
+  lCopy = l;
+  delegate = [(FPDFileCoordinationProvider *)self delegate];
+  v6 = [delegate _siblingDelegateForURL:lCopy];
 
   if (v6)
   {
-    v7 = v6;
+    delegate2 = v6;
   }
 
   else
   {
-    v7 = [(FPDFileCoordinationProvider *)self delegate];
+    delegate2 = [(FPDFileCoordinationProvider *)self delegate];
   }
 
-  v8 = v7;
+  v8 = delegate2;
 
   return v8;
 }
 
 - (NSOperationQueue)_providedItemsOperationQueue
 {
-  v2 = [(FPDFileCoordinationProvider *)self delegate];
-  v3 = [v2 _providedItemsOperationQueue];
+  delegate = [(FPDFileCoordinationProvider *)self delegate];
+  _providedItemsOperationQueue = [delegate _providedItemsOperationQueue];
 
-  return v3;
+  return _providedItemsOperationQueue;
 }
 
 - (NSString)_fileReactorID
 {
-  v2 = [(FPDFileCoordinationProvider *)self delegate];
-  v3 = [v2 _fileReactorID];
+  delegate = [(FPDFileCoordinationProvider *)self delegate];
+  _fileReactorID = [delegate _fileReactorID];
 
-  return v3;
+  return _fileReactorID;
 }
 
-- (id)_physicalURLForURL:(id)a3
+- (id)_physicalURLForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(FPDFileCoordinationProvider *)self delegateForURL:v4];
-  v6 = [v5 _physicalURLForURL:v4];
+  lCopy = l;
+  v5 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  v6 = [v5 _physicalURLForURL:lCopy];
 
   return v6;
 }
 
-- (void)_provideItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)_provideItemAtURL:(id)l completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -89,14 +89,14 @@
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E696AC20]);
-  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:v8];
+  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__FPDFileCoordinationProvider__provideItemAtURL_completionHandler___block_invoke;
   v13[3] = &unk_1E83BEC58;
-  v14 = v7;
-  v12 = v7;
-  [v11 _provideItemAtURL:v8 withInfo:v10 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v11 _provideItemAtURL:lCopy withInfo:v10 completionHandler:v13];
 }
 
 void __67__FPDFileCoordinationProvider__provideItemAtURL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -112,68 +112,68 @@ void __67__FPDFileCoordinationProvider__provideItemAtURL_completionHandler___blo
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)_provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)_provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:v10];
-  [v11 _provideItemAtURL:v10 withInfo:v9 completionHandler:v8];
+  handlerCopy = handler;
+  infoCopy = info;
+  lCopy = l;
+  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v11 _provideItemAtURL:lCopy withInfo:infoCopy completionHandler:handlerCopy];
 }
 
-- (void)_cancelProvidingItemAtURL:(id)a3 toReaderWithID:(id)a4
+- (void)_cancelProvidingItemAtURL:(id)l toReaderWithID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:v7];
-  [v8 _cancelProvidingItemAtURL:v7 toReaderWithID:v6];
+  dCopy = d;
+  lCopy = l;
+  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v8 _cancelProvidingItemAtURL:lCopy toReaderWithID:dCopy];
 }
 
-- (void)_writerWithID:(id)a3 didFinishWritingForURL:(id)a4
+- (void)_writerWithID:(id)d didFinishWritingForURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:v6];
-  [v8 _writerWithID:v7 didFinishWritingForURL:v6];
+  lCopy = l;
+  dCopy = d;
+  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v8 _writerWithID:dCopy didFinishWritingForURL:lCopy];
 }
 
-- (void)_providedItemAtURL:(id)a3 didGainPresenterWithInfo:(id)a4
+- (void)_providedItemAtURL:(id)l didGainPresenterWithInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:v7];
-  [v8 _providedItemAtURL:v7 didGainPresenterWithInfo:v6];
+  infoCopy = info;
+  lCopy = l;
+  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v8 _providedItemAtURL:lCopy didGainPresenterWithInfo:infoCopy];
 }
 
-- (void)_providedItemAtURL:(id)a3 didLosePresenterWithID:(id)a4
+- (void)_providedItemAtURL:(id)l didLosePresenterWithID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:v7];
-  [v8 _providedItemAtURL:v7 didLosePresenterWithID:v6];
+  dCopy = d;
+  lCopy = l;
+  v8 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v8 _providedItemAtURL:lCopy didLosePresenterWithID:dCopy];
 }
 
-- (void)_providedItemAtURL:(id)a3 withPresenterWithID:(id)a4 didMoveToURL:(id)a5
+- (void)_providedItemAtURL:(id)l withPresenterWithID:(id)d didMoveToURL:(id)rL
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:v10];
-  [v11 _providedItemAtURL:v10 withPresenterWithID:v9 didMoveToURL:v8];
+  rLCopy = rL;
+  dCopy = d;
+  lCopy = l;
+  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  [v11 _providedItemAtURL:lCopy withPresenterWithID:dCopy didMoveToURL:rLCopy];
 }
 
-- (void)_movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)_movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:v8];
-  v12 = [v9 destinationDirectoryURL];
-  v13 = [(FPDFileCoordinationProvider *)self delegateForURL:v12];
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
+  v11 = [(FPDFileCoordinationProvider *)self delegateForURL:lCopy];
+  destinationDirectoryURL = [infoCopy destinationDirectoryURL];
+  v13 = [(FPDFileCoordinationProvider *)self delegateForURL:destinationDirectoryURL];
 
   if (v11 == v13)
   {
-    [v11 _movingItemAtURL:v8 withInfo:v9 completionHandler:v10];
+    [v11 _movingItemAtURL:lCopy withInfo:infoCopy completionHandler:handlerCopy];
   }
 
   else
@@ -181,11 +181,11 @@ void __67__FPDFileCoordinationProvider__provideItemAtURL_completionHandler___blo
     v14 = fp_current_or_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [FPDFileCoordinationProvider _movingItemAtURL:v8 withInfo:v9 completionHandler:v14];
+      [FPDFileCoordinationProvider _movingItemAtURL:lCopy withInfo:infoCopy completionHandler:v14];
     }
 
-    v15 = [MEMORY[0x1E696AC10] providingRequiredResponse];
-    v10[2](v10, v15);
+    providingRequiredResponse = [MEMORY[0x1E696AC10] providingRequiredResponse];
+    handlerCopy[2](handlerCopy, providingRequiredResponse);
   }
 }
 

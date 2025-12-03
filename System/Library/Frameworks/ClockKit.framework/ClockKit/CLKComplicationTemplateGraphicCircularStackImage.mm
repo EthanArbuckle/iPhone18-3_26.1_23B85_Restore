@@ -1,7 +1,7 @@
 @interface CLKComplicationTemplateGraphicCircularStackImage
 + (CLKComplicationTemplateGraphicCircularStackImage)templateWithLine1ImageProvider:(CLKFullColorImageProvider *)line1ImageProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
 - (CLKComplicationTemplateGraphicCircularStackImage)initWithLine1ImageProvider:(CLKFullColorImageProvider *)line1ImageProvider line2TextProvider:(CLKTextProvider *)line2TextProvider;
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCircularStackImage
@@ -12,11 +12,11 @@
   v7 = line2TextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateGraphicCircularStackImage;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCircularStackImage *)v8 setLine1ImageProvider:v6];
+    [(CLKComplicationTemplateGraphicCircularStackImage *)initPrivate setLine1ImageProvider:v6];
     [(CLKComplicationTemplateGraphicCircularStackImage *)v9 setLine2TextProvider:v7];
   }
 
@@ -27,25 +27,25 @@
 {
   v6 = line2TextProvider;
   v7 = line1ImageProvider;
-  v8 = [[a1 alloc] initWithLine1ImageProvider:v7 line2TextProvider:v6];
+  v8 = [[self alloc] initWithLine1ImageProvider:v7 line2TextProvider:v6];
 
   return v8;
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __98__CLKComplicationTemplateGraphicCircularStackImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __98__CLKComplicationTemplateGraphicCircularStackImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91B78;
   v9 = unk_27DE91B80;
   v10 = &_enumerateFullColorImageProviderKeysWithBlock___imageSize[2 * [(CLKComplicationTemplate *)self sdkVersion]];
   v11 = *v10;
   v12 = *(v10 + 1);
   v13 = 0;
-  (*(v4 + 2))(v4, @"line1ImageProvider", 0, 1, 0, 4, &v13, v11, v12, v8, v9, 0.0);
+  (*(blockCopy + 2))(blockCopy, @"line1ImageProvider", 0, 1, 0, 4, &v13, v11, v12, v8, v9, 0.0);
 }
 
 uint64_t __98__CLKComplicationTemplateGraphicCircularStackImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

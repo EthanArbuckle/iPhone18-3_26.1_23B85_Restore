@@ -1,22 +1,22 @@
 @interface AFBundleResourceManager
 + (id)sharedManager;
 - (AFBundleResourceManager)init;
-- (id)URLForResource:(id)a3;
-- (id)URLForSoundID:(int64_t)a3;
-- (id)resourceForSoundID:(int64_t)a3;
+- (id)URLForResource:(id)resource;
+- (id)URLForSoundID:(int64_t)d;
+- (id)resourceForSoundID:(int64_t)d;
 @end
 
 @implementation AFBundleResourceManager
 
-- (id)URLForResource:(id)a3
+- (id)URLForResource:(id)resource
 {
-  v4 = a3;
-  if (v4)
+  resourceCopy = resource;
+  if (resourceCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [v4 name];
-    v7 = [v4 extension];
-    v8 = [v5 initWithFormat:@"%@.%@", v6, v7];
+    name = [resourceCopy name];
+    extension = [resourceCopy extension];
+    v8 = [v5 initWithFormat:@"%@.%@", name, extension];
 
     if (v8)
     {
@@ -26,9 +26,9 @@
       if (!v9)
       {
         v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v11 = [v4 name];
-        v12 = [v4 extension];
-        v9 = [v10 URLForResource:v11 withExtension:v12];
+        name2 = [resourceCopy name];
+        extension2 = [resourceCopy extension];
+        v9 = [v10 URLForResource:name2 withExtension:extension2];
 
         os_unfair_lock_lock(&self->_lock);
         resourceURLProvidersByIdentifier = self->_resourceURLProvidersByIdentifier;
@@ -39,33 +39,33 @@
 
         else
         {
-          v15 = [MEMORY[0x1E695DFB0] null];
-          [(NSMutableDictionary *)resourceURLProvidersByIdentifier setObject:v15 forKey:v8];
+          null = [MEMORY[0x1E695DFB0] null];
+          [(NSMutableDictionary *)resourceURLProvidersByIdentifier setObject:null forKey:v8];
         }
 
         os_unfair_lock_unlock(&self->_lock);
       }
 
-      v14 = [v9 af_getBundleResourceURL];
+      af_getBundleResourceURL = [v9 af_getBundleResourceURL];
     }
 
     else
     {
-      v14 = 0;
+      af_getBundleResourceURL = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    af_getBundleResourceURL = 0;
   }
 
-  return v14;
+  return af_getBundleResourceURL;
 }
 
-- (id)resourceForSoundID:(int64_t)a3
+- (id)resourceForSoundID:(int64_t)d
 {
-  if ((a3 - 1) > 0xC)
+  if ((d - 1) > 0xC)
   {
     v7 = 0;
   }
@@ -79,7 +79,7 @@
 
     v4 = MEMORY[0x1E696AD98];
     v5 = _AFBundleResourceGetSoundMap_map;
-    v6 = [v4 numberWithInteger:a3];
+    v6 = [v4 numberWithInteger:d];
     v7 = [v5 objectForKey:v6];
   }
 
@@ -122,9 +122,9 @@ void __40__AFBundleResourceManager_sharedManager__block_invoke()
   sharedManager_sharedManager = v0;
 }
 
-- (id)URLForSoundID:(int64_t)a3
+- (id)URLForSoundID:(int64_t)d
 {
-  v4 = [(AFBundleResourceManager *)self resourceForSoundID:a3];
+  v4 = [(AFBundleResourceManager *)self resourceForSoundID:d];
   v5 = [(AFBundleResourceManager *)self URLForResource:v4];
 
   return v5;

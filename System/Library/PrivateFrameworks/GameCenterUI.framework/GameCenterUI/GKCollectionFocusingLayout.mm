@@ -1,19 +1,19 @@
 @interface GKCollectionFocusingLayout
-- (CGSize)sizeForFooterInSection:(int64_t)a3;
-- (CGSize)sizeForHeaderInSection:(int64_t)a3;
-- (CGSize)sizeForItemAtIndexPath:(id)a3;
+- (CGSize)sizeForFooterInSection:(int64_t)section;
+- (CGSize)sizeForHeaderInSection:(int64_t)section;
+- (CGSize)sizeForItemAtIndexPath:(id)path;
 - (GKCollectionFocusingLayout)init;
 - (UIEdgeInsets)sectionInset;
-- (double)minimumInteritemSpacingForSectionAtIndex:(int64_t)a3;
-- (double)minimumLineSpacingForSectionAtIndex:(int64_t)a3;
-- (id)focusAdjustedAttributesForItemAttributes:(id)a3;
-- (id)focusAdjustedAttributesForSupplementaryViewAttributes:(id)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)_updateFocusFrameForCellAtIndexPath:(id)a3;
-- (void)_updateFocusOffsetsForSectionHeadersWithAnimationCoordinator:(id)a3;
+- (double)minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (id)focusAdjustedAttributesForItemAttributes:(id)attributes;
+- (id)focusAdjustedAttributesForSupplementaryViewAttributes:(id)attributes;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)_updateFocusFrameForCellAtIndexPath:(id)path;
+- (void)_updateFocusOffsetsForSectionHeadersWithAnimationCoordinator:(id)coordinator;
 - (void)awakeFromNib;
-- (void)setFocusedIndexPath:(id)a3;
+- (void)setFocusedIndexPath:(id)path;
 @end
 
 @implementation GKCollectionFocusingLayout
@@ -41,20 +41,20 @@
   [(GKCollectionFocusingLayout *)self applyDefaults];
 }
 
-- (void)setFocusedIndexPath:(id)a3
+- (void)setFocusedIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   focusedIndexPath = self->_focusedIndexPath;
-  if (focusedIndexPath != v5)
+  if (focusedIndexPath != pathCopy)
   {
     v7 = focusedIndexPath;
-    objc_storeStrong(&self->_focusedIndexPath, a3);
+    objc_storeStrong(&self->_focusedIndexPath, path);
     v8 = MEMORY[0x277D75D18];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __50__GKCollectionFocusingLayout_setFocusedIndexPath___block_invoke;
     v13 = &unk_279669E48;
-    v14 = self;
+    selfCopy = self;
     v15 = v7;
     v9 = v7;
     [v8 animateWithDuration:4 delay:&v10 options:0 animations:0.3 completion:0.0];
@@ -78,22 +78,22 @@ double *__50__GKCollectionFocusingLayout_setFocusedIndexPath___block_invoke(uint
   return result;
 }
 
-- (void)_updateFocusOffsetsForSectionHeadersWithAnimationCoordinator:(id)a3
+- (void)_updateFocusOffsetsForSectionHeadersWithAnimationCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(GKCollectionFocusingLayout *)self collectionView];
-  v6 = [v5 numberOfSections];
-  if (v6 >= 1)
+  coordinatorCopy = coordinator;
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v7 = v6;
+    v7 = numberOfSections;
     v8 = 0;
     v9 = *MEMORY[0x277D767D8];
     v10 = 0x277CCA000uLL;
-    v29 = self;
+    selfCopy = self;
     do
     {
       v11 = [*(v10 + 2672) indexPathForItem:0 inSection:v8];
-      v12 = [v5 _visibleSupplementaryViewOfKind:v9 atIndexPath:v11];
+      v12 = [collectionView _visibleSupplementaryViewOfKind:v9 atIndexPath:v11];
       if (v12)
       {
         v13 = [(GKCollectionFocusingLayout *)self layoutAttributesForSupplementaryViewOfKind:v9 atIndexPath:v11];
@@ -108,7 +108,7 @@ double *__50__GKCollectionFocusingLayout_setFocusedIndexPath___block_invoke(uint
           v22 = v21;
           [v13 frame];
           v24 = v23;
-          if (v4)
+          if (coordinatorCopy)
           {
             [v12 frame];
             v25 = v10;
@@ -124,8 +124,8 @@ double *__50__GKCollectionFocusingLayout_setFocusedIndexPath___block_invoke(uint
             v35 = v22;
             v28 = v27;
             v10 = v25;
-            self = v29;
-            [v4 addCoordinatedAnimationsForAnimation:v28 animations:v30 completion:0];
+            self = selfCopy;
+            [coordinatorCopy addCoordinatedAnimationsForAnimation:v28 animations:v30 completion:0];
           }
 
           else
@@ -151,15 +151,15 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return [v2 layoutIfNeeded];
 }
 
-- (void)_updateFocusFrameForCellAtIndexPath:(id)a3
+- (void)_updateFocusFrameForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    v21 = v4;
-    v6 = [(GKCollectionFocusingLayout *)self collectionView];
-    v7 = [v6 cellForItemAtIndexPath:v21];
+    v21 = pathCopy;
+    collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+    v7 = [collectionView cellForItemAtIndexPath:v21];
 
     if (v7)
     {
@@ -189,7 +189,7 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
     v5 = v21;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](pathCopy, v5);
 }
 
 - (UIEdgeInsets)sectionInset
@@ -201,13 +201,13 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(GKCollectionFocusingLayout *)self collectionView];
-  v12 = [v11 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v12 collectionView:v13 layout:self insetForSectionAtIndex:0];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self insetForSectionAtIndex:0];
     v4 = v14;
     v6 = v15;
     v8 = v16;
@@ -225,57 +225,57 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return result;
 }
 
-- (double)minimumInteritemSpacingForSectionAtIndex:(int64_t)a3
+- (double)minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
   v12.receiver = self;
   v12.super_class = GKCollectionFocusingLayout;
   [(UICollectionViewFlowLayout *)&v12 minimumInteritemSpacing];
   v6 = v5;
-  v7 = [(GKCollectionFocusingLayout *)self collectionView];
-  v8 = [v7 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v8 collectionView:v9 layout:self minimumInteritemSpacingForSectionAtIndex:a3];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self minimumInteritemSpacingForSectionAtIndex:index];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (double)minimumLineSpacingForSectionAtIndex:(int64_t)a3
+- (double)minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
   v12.receiver = self;
   v12.super_class = GKCollectionFocusingLayout;
   [(UICollectionViewFlowLayout *)&v12 minimumLineSpacing];
   v6 = v5;
-  v7 = [(GKCollectionFocusingLayout *)self collectionView];
-  v8 = [v7 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v8 collectionView:v9 layout:self minimumLineSpacingForSectionAtIndex:a3];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self minimumLineSpacingForSectionAtIndex:index];
     v6 = v10;
   }
 
   return v6;
 }
 
-- (CGSize)sizeForItemAtIndexPath:(id)a3
+- (CGSize)sizeForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(UICollectionViewFlowLayout *)self itemSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(GKCollectionFocusingLayout *)self collectionView];
-  v10 = [v9 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v10 collectionView:v11 layout:self sizeForItemAtIndexPath:v4];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self sizeForItemAtIndexPath:pathCopy];
     v6 = v12;
     v8 = v13;
   }
@@ -287,18 +287,18 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return result;
 }
 
-- (CGSize)sizeForHeaderInSection:(int64_t)a3
+- (CGSize)sizeForHeaderInSection:(int64_t)section
 {
   [(UICollectionViewFlowLayout *)self headerReferenceSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(GKCollectionFocusingLayout *)self collectionView];
-  v10 = [v9 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v10 collectionView:v11 layout:self referenceSizeForHeaderInSection:a3];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self referenceSizeForHeaderInSection:section];
     v6 = v12;
     v8 = v13;
   }
@@ -310,18 +310,18 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return result;
 }
 
-- (CGSize)sizeForFooterInSection:(int64_t)a3
+- (CGSize)sizeForFooterInSection:(int64_t)section
 {
   [(UICollectionViewFlowLayout *)self footerReferenceSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(GKCollectionFocusingLayout *)self collectionView];
-  v10 = [v9 delegate];
+  collectionView = [(GKCollectionFocusingLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(GKCollectionFocusingLayout *)self collectionView];
-    [v10 collectionView:v11 layout:self referenceSizeForFooterInSection:a3];
+    collectionView2 = [(GKCollectionFocusingLayout *)self collectionView];
+    [delegate collectionView:collectionView2 layout:self referenceSizeForFooterInSection:section];
     v6 = v12;
     v8 = v13;
   }
@@ -333,15 +333,15 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return result;
 }
 
-- (id)focusAdjustedAttributesForItemAttributes:(id)a3
+- (id)focusAdjustedAttributesForItemAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
+  attributesCopy = attributes;
+  v5 = attributesCopy;
   if (self->_focusScaleFactor != 1.0)
   {
-    v6 = [v4 indexPath];
-    v7 = [(GKCollectionFocusingLayout *)self focusedIndexPath];
-    v8 = [v6 isEqual:v7];
+    indexPath = [attributesCopy indexPath];
+    focusedIndexPath = [(GKCollectionFocusingLayout *)self focusedIndexPath];
+    v8 = [indexPath isEqual:focusedIndexPath];
 
     if (v8)
     {
@@ -356,33 +356,33 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
   return v5;
 }
 
-- (id)focusAdjustedAttributesForSupplementaryViewAttributes:(id)a3
+- (id)focusAdjustedAttributesForSupplementaryViewAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   focusedIndexPath = self->_focusedIndexPath;
-  v6 = v4;
+  v6 = attributesCopy;
   if (focusedIndexPath)
   {
-    v7 = [(NSIndexPath *)focusedIndexPath section];
-    v8 = [v4 indexPath];
-    if (v7 < [v8 section])
+    section = [(NSIndexPath *)focusedIndexPath section];
+    indexPath = [attributesCopy indexPath];
+    if (section < [indexPath section])
     {
       goto LABEL_3;
     }
 
-    v9 = [v4 representedElementKind];
-    v10 = [v9 isEqual:*MEMORY[0x277D767D8]];
+    representedElementKind = [attributesCopy representedElementKind];
+    v10 = [representedElementKind isEqual:*MEMORY[0x277D767D8]];
 
-    v6 = v4;
+    v6 = attributesCopy;
     if (v10)
     {
-      v8 = [(GKCollectionFocusingLayout *)self layoutAttributesForItemAtIndexPath:self->_focusedIndexPath];
-      [v4 frame];
+      indexPath = [(GKCollectionFocusingLayout *)self layoutAttributesForItemAtIndexPath:self->_focusedIndexPath];
+      [attributesCopy frame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      [v8 frame];
+      [indexPath frame];
       v23 = v19;
       v24 = v20;
       v25 = v21;
@@ -424,7 +424,7 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
         if (v29 < CGRectGetHeight(v38) * 0.5)
         {
           v30 = v14 - self->_focusHeaderOffset;
-          v6 = [v4 copy];
+          v6 = [attributesCopy copy];
 
           [v6 setFrame:{v12, v30, v16, rect}];
           goto LABEL_4;
@@ -432,7 +432,7 @@ uint64_t __91__GKCollectionFocusingLayout__updateFocusOffsetsForSectionHeadersWi
       }
 
 LABEL_3:
-      v6 = v4;
+      v6 = attributesCopy;
 LABEL_4:
     }
   }
@@ -440,21 +440,21 @@ LABEL_4:
   return v6;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = GKCollectionFocusingLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(UICollectionViewFlowLayout *)&v7 layoutAttributesForItemAtIndexPath:path];
   v5 = [(GKCollectionFocusingLayout *)self focusAdjustedAttributesForItemAttributes:v4];
 
   return v5;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = GKCollectionFocusingLayout;
-  v5 = [(UICollectionViewFlowLayout *)&v8 layoutAttributesForSupplementaryViewOfKind:a3 atIndexPath:a4];
+  v5 = [(UICollectionViewFlowLayout *)&v8 layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:path];
   v6 = [(GKCollectionFocusingLayout *)self focusAdjustedAttributesForSupplementaryViewAttributes:v5];
 
   return v6;

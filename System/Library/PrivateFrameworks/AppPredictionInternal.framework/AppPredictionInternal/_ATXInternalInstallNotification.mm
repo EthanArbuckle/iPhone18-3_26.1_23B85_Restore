@@ -1,7 +1,7 @@
 @interface _ATXInternalInstallNotification
-+ (id)_installedAppsWithDatesFromNotificationData:(id)a3;
++ (id)_installedAppsWithDatesFromNotificationData:(id)data;
 - (_ATXInternalInstallNotification)init;
-- (void)registerForNotificationsWithInstallBlock:(id)a3;
+- (void)registerForNotificationsWithInstallBlock:(id)block;
 @end
 
 @implementation _ATXInternalInstallNotification
@@ -21,26 +21,26 @@
   return v2;
 }
 
-- (void)registerForNotificationsWithInstallBlock:(id)a3
+- (void)registerForNotificationsWithInstallBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   note = self->_note;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76___ATXInternalInstallNotification_registerForNotificationsWithInstallBlock___block_invoke;
   v7[3] = &unk_27859ACB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(_ATXInternalNotification *)note registerForNotifications:v7];
 }
 
-+ (id)_installedAppsWithDatesFromNotificationData:(id)a3
++ (id)_installedAppsWithDatesFromNotificationData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
+    v4 = dataCopy;
     v5 = [v4 keysOfEntriesPassingTest:&__block_literal_global_226];
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v17 = 0u;

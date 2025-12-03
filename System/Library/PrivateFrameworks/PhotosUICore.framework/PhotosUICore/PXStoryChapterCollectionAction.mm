@@ -1,25 +1,25 @@
 @interface PXStoryChapterCollectionAction
 - (PXStoryChapterCollectionAction)init;
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 deleteChapterWithIdentifier:(id)a4;
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 editChapterWithIdentifier:(id)a4 changeRequest:(id)a5;
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 edits:(id)a4;
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 insertChapterWithFirstAsset:(id)a4 configuration:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager deleteChapterWithIdentifier:(id)identifier;
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager editChapterWithIdentifier:(id)identifier changeRequest:(id)request;
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager edits:(id)edits;
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager insertChapterWithFirstAsset:(id)asset configuration:(id)configuration;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXStoryChapterCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXStoryChapterCollectionAction *)self chapterCollectionManager];
+  undoCopy = undo;
+  chapterCollectionManager = [(PXStoryChapterCollectionAction *)self chapterCollectionManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PXStoryChapterCollectionAction_performUndo___block_invoke;
   v6[3] = &unk_1E7733468;
   v6[4] = self;
-  [v5 performChanges:v6 completionHandler:v4];
+  [chapterCollectionManager performChanges:v6 completionHandler:undoCopy];
 }
 
 void __46__PXStoryChapterCollectionAction_performUndo___block_invoke(uint64_t a1, void *a2)
@@ -62,17 +62,17 @@ void __46__PXStoryChapterCollectionAction_performUndo___block_invoke(uint64_t a1
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v5 = a3;
-  v6 = [(PXStoryChapterCollectionAction *)self chapterCollectionManager];
+  actionCopy = action;
+  chapterCollectionManager = [(PXStoryChapterCollectionAction *)self chapterCollectionManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PXStoryChapterCollectionAction_performAction___block_invoke;
   v7[3] = &unk_1E7733418;
   v7[4] = self;
   v7[5] = a2;
-  [v6 performChanges:v7 completionHandler:v5];
+  [chapterCollectionManager performChanges:v7 completionHandler:actionCopy];
 }
 
 void __48__PXStoryChapterCollectionAction_performAction___block_invoke(uint64_t a1, void *a2)
@@ -155,29 +155,29 @@ LABEL_15:
   }
 }
 
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 edits:(id)a4
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager edits:(id)edits
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  editsCopy = edits;
   v37.receiver = self;
   v37.super_class = PXStoryChapterCollectionAction;
   v9 = [(PXStoryChapterCollectionAction *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_chapterCollectionManager, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_chapterCollectionManager, manager);
+    v11 = [editsCopy copy];
     edits = v10->_edits;
     v10->_edits = v11;
 
-    v13 = [v7 chapterCollection];
+    chapterCollection = [managerCopy chapterCollection];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__PXStoryChapterCollectionAction_initWithChapterCollectionManager_edits___block_invoke;
     aBlock[3] = &unk_1E77333F0;
-    v29 = v13;
+    v29 = chapterCollection;
     v35 = v29;
     v15 = v14;
     v36 = v15;
@@ -186,7 +186,7 @@ LABEL_15:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = v8;
+    v17 = editsCopy;
     v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v18)
     {
@@ -205,24 +205,24 @@ LABEL_15:
         }
 
         v22 = *(*(&v30 + 1) + 8 * i);
-        v23 = [v22 kind];
-        if (v23 == 3)
+        kind = [v22 kind];
+        if (kind == 3)
         {
-          v24 = [v22 deletedChapterIdentifier];
+          deletedChapterIdentifier = [v22 deletedChapterIdentifier];
         }
 
         else
         {
-          if (v23 != 1)
+          if (kind != 1)
           {
             continue;
           }
 
-          v24 = [v22 editedChapterIdentifier];
+          deletedChapterIdentifier = [v22 editedChapterIdentifier];
         }
 
-        v25 = v24;
-        v16[2](v16, v24);
+        v25 = deletedChapterIdentifier;
+        v16[2](v16, deletedChapterIdentifier);
       }
 
       v19 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -253,54 +253,54 @@ void __73__PXStoryChapterCollectionAction_initWithChapterCollectionManager_edits
   }
 }
 
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 deleteChapterWithIdentifier:(id)a4
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager deleteChapterWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PXStoryConcreteChapterCollectionChapterDeletion alloc] initWithDeletedChapterIdentifier:v6];
+  identifierCopy = identifier;
+  managerCopy = manager;
+  v8 = [[PXStoryConcreteChapterCollectionChapterDeletion alloc] initWithDeletedChapterIdentifier:identifierCopy];
 
   v12[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v10 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:v7 edits:v9];
+  v10 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:managerCopy edits:v9];
 
   return v10;
 }
 
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 insertChapterWithFirstAsset:(id)a4 configuration:(id)a5
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager insertChapterWithFirstAsset:(id)asset configuration:(id)configuration
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PXStoryConcreteChapterCollectionChapterInsertion alloc] initWithFirstAsset:v9 chapterConfiguration:v8];
+  configurationCopy = configuration;
+  assetCopy = asset;
+  managerCopy = manager;
+  v11 = [[PXStoryConcreteChapterCollectionChapterInsertion alloc] initWithFirstAsset:assetCopy chapterConfiguration:configurationCopy];
 
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:v10 edits:v12];
+  v13 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:managerCopy edits:v12];
 
   return v13;
 }
 
-- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)a3 editChapterWithIdentifier:(id)a4 changeRequest:(id)a5
+- (PXStoryChapterCollectionAction)initWithChapterCollectionManager:(id)manager editChapterWithIdentifier:(id)identifier changeRequest:(id)request
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PXStoryConcreteChapterCollectionChapterModification alloc] initWithEditedChapterIdentifier:v9 chapterChangeRequest:v8];
+  requestCopy = request;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  v11 = [[PXStoryConcreteChapterCollectionChapterModification alloc] initWithEditedChapterIdentifier:identifierCopy chapterChangeRequest:requestCopy];
 
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:v10 edits:v12];
+  v13 = [(PXStoryChapterCollectionAction *)self initWithChapterCollectionManager:managerCopy edits:v12];
 
   return v13;
 }
 
 - (PXStoryChapterCollectionAction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryChapterCollectionAction.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryChapterCollectionAction init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChapterCollectionAction.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryChapterCollectionAction init]"}];
 
   abort();
 }

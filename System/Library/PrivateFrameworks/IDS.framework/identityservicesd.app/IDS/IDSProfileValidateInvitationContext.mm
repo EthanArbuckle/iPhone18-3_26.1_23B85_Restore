@@ -1,9 +1,9 @@
 @interface IDSProfileValidateInvitationContext
 - (IDSProfileValidateInvitationContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSProfileValidateInvitationContext
@@ -22,25 +22,25 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = IDSProfileValidateInvitationContext;
-  v4 = [(IDSProfileMessage *)&v11 copyWithZone:a3];
-  v5 = [(IDSProfileValidateInvitationContext *)self basePhoneNumber];
-  [v4 setBasePhoneNumber:v5];
+  v4 = [(IDSProfileMessage *)&v11 copyWithZone:zone];
+  basePhoneNumber = [(IDSProfileValidateInvitationContext *)self basePhoneNumber];
+  [v4 setBasePhoneNumber:basePhoneNumber];
 
-  v6 = [(IDSProfileValidateInvitationContext *)self regionID];
-  [v4 setRegionID:v6];
+  regionID = [(IDSProfileValidateInvitationContext *)self regionID];
+  [v4 setRegionID:regionID];
 
-  v7 = [(IDSProfileValidateInvitationContext *)self responseBasePhoneNumber];
-  [v4 setResponseBasePhoneNumber:v7];
+  responseBasePhoneNumber = [(IDSProfileValidateInvitationContext *)self responseBasePhoneNumber];
+  [v4 setResponseBasePhoneNumber:responseBasePhoneNumber];
 
-  v8 = [(IDSProfileValidateInvitationContext *)self responseRegionID];
-  [v4 setResponseRegionID:v8];
+  responseRegionID = [(IDSProfileValidateInvitationContext *)self responseRegionID];
+  [v4 setResponseRegionID:responseRegionID];
 
-  v9 = [(IDSProfileValidateInvitationContext *)self responseExtraInfo];
-  [v4 setResponseExtraInfo:v9];
+  responseExtraInfo = [(IDSProfileValidateInvitationContext *)self responseExtraInfo];
+  [v4 setResponseExtraInfo:responseExtraInfo];
 
   return v4;
 }
@@ -57,10 +57,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSProfileValidateInvitationContext *)self basePhoneNumber];
-  if (v4)
+  basePhoneNumber = [(IDSProfileValidateInvitationContext *)self basePhoneNumber];
+  if (basePhoneNumber)
   {
-    CFDictionarySetValue(v3, @"base-phone-number", v4);
+    CFDictionarySetValue(v3, @"base-phone-number", basePhoneNumber);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -68,10 +68,10 @@
     sub_10091FBDC();
   }
 
-  v5 = [(IDSProfileValidateInvitationContext *)self regionID];
-  if (v5)
+  regionID = [(IDSProfileValidateInvitationContext *)self regionID];
+  if (regionID)
   {
-    CFDictionarySetValue(v3, @"region-id", v5);
+    CFDictionarySetValue(v3, @"region-id", regionID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -82,19 +82,19 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = IDSProfileValidateInvitationContext;
-  v4 = a3;
-  [(IDSProfileMessage *)&v8 handleResponseDictionary:v4];
-  v5 = [v4 objectForKey:{@"region-id", v8.receiver, v8.super_class}];
+  dictionaryCopy = dictionary;
+  [(IDSProfileMessage *)&v8 handleResponseDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy objectForKey:{@"region-id", v8.receiver, v8.super_class}];
   [(IDSProfileValidateInvitationContext *)self setResponseRegionID:v5];
 
-  v6 = [v4 objectForKey:@"base-phone-number"];
+  v6 = [dictionaryCopy objectForKey:@"base-phone-number"];
   [(IDSProfileValidateInvitationContext *)self setResponseBasePhoneNumber:v6];
 
-  v7 = [v4 objectForKey:@"extra"];
+  v7 = [dictionaryCopy objectForKey:@"extra"];
 
   [(IDSProfileValidateInvitationContext *)self setResponseExtraInfo:v7];
 }

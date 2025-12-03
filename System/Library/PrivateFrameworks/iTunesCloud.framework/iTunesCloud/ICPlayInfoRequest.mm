@@ -1,9 +1,9 @@
 @interface ICPlayInfoRequest
 - (BOOL)_hasRentalInfo;
-- (ICPlayInfoRequest)initWithRequestContext:(id)a3;
-- (id)_getSinfParamValue:(int)a3;
+- (ICPlayInfoRequest)initWithRequestContext:(id)context;
+- (id)_getSinfParamValue:(int)value;
 - (void)execute;
-- (void)performWithResponseHandler:(id)a3;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICPlayInfoRequest
@@ -63,9 +63,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)_getSinfParamValue:(int)a3
+- (id)_getSinfParamValue:(int)value
 {
-  v3 = *&a3;
+  v3 = *&value;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -120,22 +120,22 @@ LABEL_11:
   {
     requestContext = self->_requestContext;
     *buf = 138543618;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2114;
     v33 = requestContext;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Executing playInfo request with context %{public}@", buf, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = self->_DSID;
   if (v6 || ([(ICPlayInfoRequest *)self _getSinfParamValue:1], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    [v5 setObject:v6 forKey:@"dsid"];
+    [dictionary setObject:v6 forKey:@"dsid"];
     contentIdentifier = self->_contentIdentifier;
     if (contentIdentifier)
     {
-      [v5 setObject:contentIdentifier forKey:@"content-id"];
+      [dictionary setObject:contentIdentifier forKey:@"content-id"];
     }
 
     else
@@ -158,43 +158,43 @@ LABEL_11:
         }
 
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-        [v5 setObject:v13 forKey:v10];
+        [dictionary setObject:v13 forKey:v10];
       }
     }
 
     v14 = +[ICDeviceInfo currentDeviceInfo];
-    v15 = [v14 deviceGUID];
-    if (v15)
+    deviceGUID = [v14 deviceGUID];
+    if (deviceGUID)
     {
-      [v5 setObject:v15 forKey:@"guid"];
+      [dictionary setObject:deviceGUID forKey:@"guid"];
     }
 
-    v16 = [v14 deviceModel];
-    if (v16)
+    deviceModel = [v14 deviceModel];
+    if (deviceModel)
     {
-      [v5 setObject:v16 forKey:@"hw.model"];
+      [dictionary setObject:deviceModel forKey:@"hw.model"];
     }
 
     subscriptionPlaybackType = self->_subscriptionPlaybackType;
     if (subscriptionPlaybackType)
     {
-      [v5 setObject:subscriptionPlaybackType forKey:@"subPlayType"];
+      [dictionary setObject:subscriptionPlaybackType forKey:@"subPlayType"];
     }
 
     playerGUID = self->_playerGUID;
     if (playerGUID)
     {
-      [v5 setObject:playerGUID forKey:@"player-guid"];
+      [dictionary setObject:playerGUID forKey:@"player-guid"];
     }
 
     SICData = self->_SICData;
     if (SICData)
     {
-      [v5 setObject:SICData forKey:@"sic"];
+      [dictionary setObject:SICData forKey:@"sic"];
     }
 
     v27 = 0;
-    v20 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:100 options:0 error:&v27];
+    v20 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:&v27];
     v21 = v27;
     if (v21)
     {
@@ -202,7 +202,7 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2114;
         v33 = v21;
         _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to serialize body data. err=%{public}@", buf, 0x16u);
@@ -231,7 +231,7 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2114;
       v33 = 0;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to extract account DSID. err=%{public}@", buf, 0x16u);
@@ -352,16 +352,16 @@ LABEL_10:
   [*(a1 + 32) finishWithError:v6];
 }
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__ICPlayInfoRequest_performWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -383,15 +383,15 @@ void __48__ICPlayInfoRequest_performWithResponseHandler___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICPlayInfoRequest)initWithRequestContext:(id)a3
+- (ICPlayInfoRequest)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICPlayInfoRequest;
   v5 = [(ICRequestOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     requestContext = v5->_requestContext;
     v5->_requestContext = v6;
   }

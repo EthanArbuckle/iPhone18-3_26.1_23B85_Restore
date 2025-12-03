@@ -1,46 +1,46 @@
 @interface GKDashboardChallengeDataSource
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardChallengeDataSource)initWithGameRecord:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)itemForIndexPath:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardChallengeDataSource)initWithGameRecord:(id)record;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)itemForIndexPath:(id)path;
 - (id)sectionHeaderText;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)loadDataWithCompletionHandler:(id)a3;
-- (void)setupCollectionView:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)loadDataWithCompletionHandler:(id)handler;
+- (void)setupCollectionView:(id)view;
 @end
 
 @implementation GKDashboardChallengeDataSource
 
-- (GKDashboardChallengeDataSource)initWithGameRecord:(id)a3
+- (GKDashboardChallengeDataSource)initWithGameRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v8.receiver = self;
   v8.super_class = GKDashboardChallengeDataSource;
   v5 = [(GKCollectionDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKDashboardChallengeDataSource *)v5 setGameRecord:v4];
+    [(GKDashboardChallengeDataSource *)v5 setGameRecord:recordCopy];
     [(GKCollectionDataSource *)v6 setUseStandardHeaders:1];
   }
 
   return v6;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[GKChallengePlayerCell];
-  [v4 registerNib:v5 forCellWithReuseIdentifier:@"challengeCell"];
+  [viewCopy registerNib:v5 forCellWithReuseIdentifier:@"challengeCell"];
   v6.receiver = self;
   v6.super_class = GKDashboardChallengeDataSource;
-  [(GKCollectionDataSource *)&v6 setupCollectionView:v4];
+  [(GKCollectionDataSource *)&v6 setupCollectionView:viewCopy];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -55,14 +55,14 @@
   v15[3] = &unk_27966D2C8;
   v8 = v7;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v18 = v19;
   [v8 perform:v15];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__GKDashboardChallengeDataSource_loadDataWithCompletionHandler___block_invoke_5;
   v11[3] = &unk_27966C058;
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v19;
   v10 = v8;
@@ -166,18 +166,18 @@ void __64__GKDashboardChallengeDataSource_loadDataWithCompletionHandler___block_
   }
 }
 
-- (id)itemForIndexPath:(id)a3
+- (id)itemForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(NSArray *)self->_challenges count];
-  if (v5 <= [v4 item])
+  if (v5 <= [pathCopy item])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_challenges, "objectAtIndexedSubscript:", [v4 item]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_challenges, "objectAtIndexedSubscript:", [pathCopy item]);
   }
 
   return v6;
@@ -189,96 +189,96 @@ void __64__GKDashboardChallengeDataSource_loadDataWithCompletionHandler___block_
   v4 = GKGameCenterUIFrameworkBundle();
   v5 = GKGetLocalizedStringFromTableInBundle();
   v6 = [v3 localizedStringWithFormat:v5, -[GKDashboardChallengeDataSource itemCount](self, "itemCount")];
-  v7 = [v6 localizedUppercaseString];
+  localizedUppercaseString = [v6 localizedUppercaseString];
 
-  return v7;
+  return localizedUppercaseString;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"challengeCell" forIndexPath:v6];
-  v8 = [v6 item];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"challengeCell" forIndexPath:pathCopy];
+  item = [pathCopy item];
 
-  if ([(NSArray *)self->_challenges count]<= v8)
+  if ([(NSArray *)self->_challenges count]<= item)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/GameCenterUIService/Legacy Challenges UI/GKDashboardChallengeDataSource.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = [v9 stringWithFormat:@"%@ (_challenges.count > index)\n[%s (%s:%d)]", v10, "-[GKDashboardChallengeDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(v12, "UTF8String"), 135];
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = [v9 stringWithFormat:@"%@ (_challenges.count > index)\n[%s (%s:%d)]", v10, "-[GKDashboardChallengeDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 135];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v13}];
   }
 
-  v14 = [(NSArray *)self->_challenges objectAtIndexedSubscript:v8];
-  v15 = [v14 issuingPlayer];
-  [v7 setPlayer:v15];
+  v14 = [(NSArray *)self->_challenges objectAtIndexedSubscript:item];
+  issuingPlayer = [v14 issuingPlayer];
+  [v7 setPlayer:issuingPlayer];
 
   v16 = MEMORY[0x277CCACA8];
   v17 = GKGameCenterUIFrameworkBundle();
   v18 = GKGetLocalizedStringFromTableInBundle();
-  v19 = [v14 issuingPlayer];
-  v20 = [v19 displayNameWithOptions:0];
+  issuingPlayer2 = [v14 issuingPlayer];
+  v20 = [issuingPlayer2 displayNameWithOptions:0];
   v21 = [v16 stringWithFormat:v18, v20];
   [v7 setNameText:v21];
 
-  v22 = [v14 listTitleText];
-  [v7 setStatusText:v22];
+  listTitleText = [v14 listTitleText];
+  [v7 setStatusText:listTitleText];
 
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [GKDashboardPlayerCell defaultSize:a3];
+  [GKDashboardPlayerCell defaultSize:view];
   v6 = 0.0;
   result.height = v5;
   result.width = v6;
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = [a3 indexPathsForSelectedItems];
-  v5 = [v4 count] == 0;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count] == 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v17 = a4;
-  v5 = [(GKCollectionDataSource *)self presentationViewController];
+  pathCopy = path;
+  presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
 
-  v6 = v17;
-  if (v5)
+  v6 = pathCopy;
+  if (presentationViewController)
   {
-    v7 = [v17 item];
-    if ([(NSArray *)self->_challenges count]<= v7)
+    item = [pathCopy item];
+    if ([(NSArray *)self->_challenges count]<= item)
     {
       v8 = MEMORY[0x277CCACA8];
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/GameCenterUIService/Legacy Challenges UI/GKDashboardChallengeDataSource.m"];
-      v11 = [v10 lastPathComponent];
-      v12 = [v8 stringWithFormat:@"%@ (_challenges.count > index)\n[%s (%s:%d)]", v9, "-[GKDashboardChallengeDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(v11, "UTF8String"), 160];
+      lastPathComponent = [v10 lastPathComponent];
+      v12 = [v8 stringWithFormat:@"%@ (_challenges.count > index)\n[%s (%s:%d)]", v9, "-[GKDashboardChallengeDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 160];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
     }
 
-    v13 = [(NSArray *)self->_challenges objectAtIndexedSubscript:v7];
+    v13 = [(NSArray *)self->_challenges objectAtIndexedSubscript:item];
     v14 = [[GKChallengeDetailViewController alloc] initWithChallenge:v13];
     [(GKChallengeDetailViewController *)v14 setShouldShowPlay:self->_shouldShowPlay];
     [(GKChallengeDetailViewController *)v14 setDelegate:self];
-    v15 = [(GKCollectionDataSource *)self presentationViewController];
+    presentationViewController2 = [(GKCollectionDataSource *)self presentationViewController];
 
-    if (v15)
+    if (presentationViewController2)
     {
-      v16 = [(GKCollectionDataSource *)self presentationViewController];
-      [GKDashboardPresentationController presentViewController:v14 presentingViewController:v16 animated:1];
+      presentationViewController3 = [(GKCollectionDataSource *)self presentationViewController];
+      [GKDashboardPresentationController presentViewController:v14 presentingViewController:presentationViewController3 animated:1];
     }
 
-    v6 = v17;
+    v6 = pathCopy;
   }
 }
 

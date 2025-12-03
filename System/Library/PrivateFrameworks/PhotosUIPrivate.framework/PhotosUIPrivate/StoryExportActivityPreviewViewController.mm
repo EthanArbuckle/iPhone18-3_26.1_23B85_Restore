@@ -1,7 +1,7 @@
 @interface StoryExportActivityPreviewViewController
-- (_TtC15PhotosUIPrivate40StoryExportActivityPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC15PhotosUIPrivate40StoryExportActivityPreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B38A13C8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1B38A18C4(a3, &selRef_viewDidAppear_, 1);
+  selfCopy = self;
+  sub_1B38A18C4(appear, &selRef_viewDidAppear_, 1);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1B38A18C4(a3, &selRef_viewDidDisappear_, 0);
+  selfCopy = self;
+  sub_1B38A18C4(disappear, &selRef_viewDidDisappear_, 0);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B38A19B4();
 }
 
-- (_TtC15PhotosUIPrivate40StoryExportActivityPreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15PhotosUIPrivate40StoryExportActivityPreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B3C9C5E8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B38A1FC0();
 }
 

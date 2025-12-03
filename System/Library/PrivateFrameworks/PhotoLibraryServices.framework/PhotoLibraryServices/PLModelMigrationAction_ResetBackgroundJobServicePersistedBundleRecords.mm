@@ -1,17 +1,17 @@
 @interface PLModelMigrationAction_ResetBackgroundJobServicePersistedBundleRecords
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetBackgroundJobServicePersistedBundleRecords
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v5 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsVeryLowPriorityKey"];
-  [v6 removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsLowPriorityKey"];
-  [v6 removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsMediumPriorityKey"];
-  [v6 removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsHighPriorityKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsVeryLowPriorityKey"];
+  [standardUserDefaults removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsLowPriorityKey"];
+  [standardUserDefaults removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsMediumPriorityKey"];
+  [standardUserDefaults removeObjectForKey:@"PLBackgroundJobServiceBundleRecordsHighPriorityKey"];
   v7 = PLMigrationGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {

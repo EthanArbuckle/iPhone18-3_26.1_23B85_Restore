@@ -1,32 +1,32 @@
 @interface PVInstructionGraphImageSourceNode
-+ (void)purgeBitmapCache:(BOOL)a3;
-- (HGRef<HGNode>)applyGainMapToGraph:(HGRef<HGNode>)a3 gainMap:(HGRef<HGBitmap>)a4 withHeadroom:(float)a5;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)x2_0 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 animation:(id)a4 isExporting:(BOOL)a5 imageDelegate:(id)a6 renderingIntent:(int)a7 fillMode:(int)a8;
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 key:(id)a4 transform:(CGAffineTransform *)a5 isExporting:(BOOL)a6 imageDelegate:(id)a7 renderingIntent:(int)a8;
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 key:(id)a4 transform:(CGAffineTransform *)a5 isExporting:(BOOL)a6 imageDelegate:(id)a7 renderingIntent:(int)a8 fillMode:(int)a9;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
++ (void)purgeBitmapCache:(BOOL)cache;
+- (HGRef<HGNode>)applyGainMapToGraph:(HGRef<HGNode>)graph gainMap:(HGRef<HGBitmap>)map withHeadroom:(float)headroom;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)x2_0 trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l animation:(id)animation isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent fillMode:(int)mode;
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l key:(id)key transform:(CGAffineTransform *)transform isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent;
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l key:(id)key transform:(CGAffineTransform *)transform isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent fillMode:(int)mode;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 - (id)instructionGraphNodeDescription;
-- (id)loadImageTiles:(CGImage *)a3 size:(CGSize)a4 colorSpace:(id)a5 imageProperties:(PVImageProperties *)a6;
-- (id)newCVPixelBufferCacheItemForGainMapWithColorSpace:(id)a3;
-- (id)newCVPixelBufferCacheItemForImage:(HGRef<PVInstructionGraphContext>)a3;
+- (id)loadImageTiles:(CGImage *)tiles size:(CGSize)size colorSpace:(id)space imageProperties:(PVImageProperties *)properties;
+- (id)newCVPixelBufferCacheItemForGainMapWithColorSpace:(id)space;
+- (id)newCVPixelBufferCacheItemForImage:(HGRef<PVInstructionGraphContext>)image;
 - (void)dealloc;
-- (void)enableHDRGainMap:(BOOL)a3;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4;
-- (void)setHDRGainMapHeadroom:(float)a3;
+- (void)enableHDRGainMap:(BOOL)map;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects;
+- (void)setHDRGainMapHeadroom:(float)headroom;
 @end
 
 @implementation PVInstructionGraphImageSourceNode
 
-+ (void)purgeBitmapCache:(BOOL)a3
++ (void)purgeBitmapCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   [sInputBitmapCacheLock lock];
-  [sInputBitmapCache purge:v3];
+  [sInputBitmapCache purge:cacheCopy];
   [sInputBitmapCacheLock unlock];
-  if (v3)
+  if (cacheCopy)
   {
     v4 = sPixelBufferCache;
 
@@ -34,10 +34,10 @@
   }
 }
 
-- (void)enableHDRGainMap:(BOOL)a3
+- (void)enableHDRGainMap:(BOOL)map
 {
-  LOBYTE(self->m_renderManager.m_Obj) = a3;
-  if (a3)
+  LOBYTE(self->m_renderManager.m_Obj) = map;
+  if (map)
   {
     v6 = [(PVInstructionGraphImageSourceNode *)self key];
     v4 = [v6 stringByAppendingString:@"_gainmap"];
@@ -46,39 +46,39 @@
   }
 }
 
-- (void)setHDRGainMapHeadroom:(float)a3
+- (void)setHDRGainMapHeadroom:(float)headroom
 {
-  v3 = a3;
-  if (v3 < 0.0)
+  headroomCopy = headroom;
+  if (headroomCopy < 0.0)
   {
-    v3 = 0.0;
+    headroomCopy = 0.0;
   }
 
-  if (v3 >= 8.0)
+  if (headroomCopy >= 8.0)
   {
-    v3 = 8.0;
+    headroomCopy = 8.0;
   }
 
-  v4 = v3;
+  v4 = headroomCopy;
   *(&self->m_renderManager.m_Obj + 1) = v4;
 }
 
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 key:(id)a4 transform:(CGAffineTransform *)a5 isExporting:(BOOL)a6 imageDelegate:(id)a7 renderingIntent:(int)a8
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l key:(id)key transform:(CGAffineTransform *)transform isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent
 {
-  v8 = *&a5->c;
-  v11[0] = *&a5->a;
+  v8 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v8;
-  v11[2] = *&a5->tx;
+  v11[2] = *&transform->tx;
   LODWORD(v10) = 1;
-  return [(PVInstructionGraphImageSourceNode *)self initWithURL:a3 key:a4 transform:v11 isExporting:a6 imageDelegate:a7 renderingIntent:*&a8 fillMode:v10];
+  return [(PVInstructionGraphImageSourceNode *)self initWithURL:l key:key transform:v11 isExporting:exporting imageDelegate:delegate renderingIntent:*&intent fillMode:v10];
 }
 
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 key:(id)a4 transform:(CGAffineTransform *)a5 isExporting:(BOOL)a6 imageDelegate:(id)a7 renderingIntent:(int)a8 fillMode:(int)a9
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l key:(id)key transform:(CGAffineTransform *)transform isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent fillMode:(int)mode
 {
-  v9 = *&a8;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  v9 = *&intent;
+  lCopy = l;
+  keyCopy = key;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = PVInstructionGraphImageSourceNode;
   v18 = [(PVInstructionGraphSourceNode *)&v30 init];
@@ -88,18 +88,18 @@
     goto LABEL_18;
   }
 
-  [(PVInstructionGraphImageSourceNode *)v18 setUrl:v15];
-  [(PVInstructionGraphImageSourceNode *)v19 setKey:v16];
-  v20 = *&a5->c;
-  v29[0] = *&a5->a;
+  [(PVInstructionGraphImageSourceNode *)v18 setUrl:lCopy];
+  [(PVInstructionGraphImageSourceNode *)v19 setKey:keyCopy];
+  v20 = *&transform->c;
+  v29[0] = *&transform->a;
   v29[1] = v20;
-  v29[2] = *&a5->tx;
+  v29[2] = *&transform->tx;
   [(PVInstructionGraphSourceNode *)v19 setTransform:v29];
-  [(PVInstructionGraphImageSourceNode *)v19 setImageDelegate:v17];
+  [(PVInstructionGraphImageSourceNode *)v19 setImageDelegate:delegateCopy];
   [(PVInstructionGraphImageSourceNode *)v19 setRenderingIntent:v9];
   [(PVInstructionGraphImageSourceNode *)v19 setUseAnimationInfo:0];
   [(PVInstructionGraphSourceNode *)v19 setIsOverlayTrack:0];
-  [(PVInstructionGraphImageSourceNode *)v19 setFillMode:a9];
+  [(PVInstructionGraphImageSourceNode *)v19 setFillMode:mode];
   LOBYTE(v19->m_renderManager.m_Obj) = 0;
   HIDWORD(v19->m_renderManager.m_Obj) = 1067576197;
   v21 = *&v19->_useHDRGainMap;
@@ -108,7 +108,7 @@
   if ([PVInstructionGraphImageSourceNode initWithURL:key:transform:isExporting:imageDelegate:renderingIntent:fillMode:]::once != -1)
   {
     [PVInstructionGraphImageSourceNode initWithURL:key:transform:isExporting:imageDelegate:renderingIntent:fillMode:];
-    if (a6)
+    if (exporting)
     {
       goto LABEL_4;
     }
@@ -127,7 +127,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (!a6)
+  if (!exporting)
   {
     goto LABEL_6;
   }
@@ -195,13 +195,13 @@ void __114__PVInstructionGraphImageSourceNode_initWithURL_key_transform_isExport
   sExportRenderAndLoadLock = v8;
 }
 
-- (PVInstructionGraphImageSourceNode)initWithURL:(id)a3 animation:(id)a4 isExporting:(BOOL)a5 imageDelegate:(id)a6 renderingIntent:(int)a7 fillMode:(int)a8
+- (PVInstructionGraphImageSourceNode)initWithURL:(id)l animation:(id)animation isExporting:(BOOL)exporting imageDelegate:(id)delegate renderingIntent:(int)intent fillMode:(int)mode
 {
-  v8 = *&a8;
-  v9 = *&a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  v8 = *&mode;
+  v9 = *&intent;
+  lCopy = l;
+  animationCopy = animation;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = PVInstructionGraphImageSourceNode;
   v17 = [(PVInstructionGraphSourceNode *)&v35 init];
@@ -215,17 +215,17 @@ void __114__PVInstructionGraphImageSourceNode_initWithURL_key_transform_isExport
   v32 = *MEMORY[0x277CBF2C0];
   v33 = v19;
   v34 = *(MEMORY[0x277CBF2C0] + 32);
-  [(PVInstructionGraphImageSourceNode *)v17 setUrl:v14];
-  v20 = [v14 path];
-  v21 = [v20 stringByAppendingFormat:@"_ri%d", v9];
+  [(PVInstructionGraphImageSourceNode *)v17 setUrl:lCopy];
+  path = [lCopy path];
+  v21 = [path stringByAppendingFormat:@"_ri%d", v9];
   [(PVInstructionGraphImageSourceNode *)v18 setKey:v21];
 
   v31[0] = v32;
   v31[1] = v33;
   v31[2] = v34;
   [(PVInstructionGraphSourceNode *)v18 setTransform:v31];
-  [(PVInstructionGraphSourceNode *)v18 setTransformAnimation:v15];
-  [(PVInstructionGraphImageSourceNode *)v18 setImageDelegate:v16];
+  [(PVInstructionGraphSourceNode *)v18 setTransformAnimation:animationCopy];
+  [(PVInstructionGraphImageSourceNode *)v18 setImageDelegate:delegateCopy];
   [(PVInstructionGraphImageSourceNode *)v18 setRenderingIntent:v9];
   [(PVInstructionGraphImageSourceNode *)v18 setUseAnimationInfo:1];
   [(PVInstructionGraphSourceNode *)v18 setIsOverlayTrack:0];
@@ -238,7 +238,7 @@ void __114__PVInstructionGraphImageSourceNode_initWithURL_key_transform_isExport
   if ([PVInstructionGraphImageSourceNode initWithURL:animation:isExporting:imageDelegate:renderingIntent:fillMode:]::once != -1)
   {
     [PVInstructionGraphImageSourceNode initWithURL:animation:isExporting:imageDelegate:renderingIntent:fillMode:];
-    if (a5)
+    if (exporting)
     {
       goto LABEL_4;
     }
@@ -257,7 +257,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!exporting)
   {
     goto LABEL_6;
   }
@@ -334,9 +334,9 @@ void __110__PVInstructionGraphImageSourceNode_initWithURL_animation_isExporting_
   [(PVInstructionGraphImageSourceNode *)&v2 dealloc];
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects
 {
-  v6 = a4;
+  effectsCopy = effects;
   v7 = [(PVInstructionGraphImageSourceNode *)self key];
   if (HIDWORD(self->_keyHDRGainMap) == 1)
   {
@@ -363,7 +363,7 @@ void __110__PVInstructionGraphImageSourceNode_initWithURL_animation_isExporting_
     v12 = [sPixelBufferCache objectForKey:v7];
     if (!v12)
     {
-      v13 = *a3.m_Obj;
+      v13 = *node.m_Obj;
       v28 = v13;
       if (v13)
       {
@@ -384,16 +384,16 @@ void __110__PVInstructionGraphImageSourceNode_initWithURL_animation_isExporting_
           v14 = atomic_load(HGLogger::_enabled);
           if (v14)
           {
-            v15 = [v7 UTF8String];
-            HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): loadIGNode: Created CVPixel Buffer for key: %s\n", v16, v17, self, v15);
+            uTF8String = [v7 UTF8String];
+            HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): loadIGNode: Created CVPixel Buffer for key: %s\n", v16, v17, self, uTF8String);
           }
         }
       }
 
       if (LOBYTE(self->m_renderManager.m_Obj) == 1 && *&self->_useHDRGainMap && v12)
       {
-        v18 = [v12 colorSpace];
-        v27 = [(PVInstructionGraphImageSourceNode *)self newCVPixelBufferCacheItemForGainMapWithColorSpace:v18];
+        colorSpace = [v12 colorSpace];
+        v27 = [(PVInstructionGraphImageSourceNode *)self newCVPixelBufferCacheItemForGainMapWithColorSpace:colorSpace];
 
         if (v27)
         {
@@ -401,8 +401,8 @@ void __110__PVInstructionGraphImageSourceNode_initWithURL_animation_isExporting_
           v19 = atomic_load(HGLogger::_enabled);
           if (v19)
           {
-            v20 = [*&self->_useHDRGainMap UTF8String];
-            HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): loadIGNode: Created GainMap CVPixelBuffer for key: %s\n", v21, v22, self, v20);
+            uTF8String2 = [*&self->_useHDRGainMap UTF8String];
+            HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): loadIGNode: Created GainMap CVPixelBuffer for key: %s\n", v21, v22, self, uTF8String2);
           }
         }
       }
@@ -442,17 +442,17 @@ LABEL_26:
   }
 }
 
-- (HGRef<HGNode>)applyGainMapToGraph:(HGRef<HGNode>)a3 gainMap:(HGRef<HGBitmap>)a4 withHeadroom:(float)a5
+- (HGRef<HGNode>)applyGainMapToGraph:(HGRef<HGNode>)graph gainMap:(HGRef<HGBitmap>)map withHeadroom:(float)headroom
 {
   v7 = v5;
-  v8 = *a4.m_Obj;
-  if (*a4.m_Obj)
+  v8 = *map.m_Obj;
+  if (*map.m_Obj)
   {
-    v11 = self;
+    selfCopy = self;
     v12 = HGObject::operator new(0x1F0uLL);
     HGBitmapLoader::HGBitmapLoader(v12, v8);
-    v13 = *&v11->m_cachedImageInfo.cached;
-    width = v11->m_cachedImageInfo.size.width;
+    v13 = *&selfCopy->m_cachedImageInfo.cached;
+    width = selfCopy->m_cachedImageInfo.size.width;
     v15 = HGObject::operator new(0x1D0uLL);
     v15[27] = 0u;
     v15[28] = 0u;
@@ -489,13 +489,13 @@ LABEL_26:
     *(v15 + 104) = 1065353216;
     *(v15 + 424) = 0u;
     *(v15 + 440) = 0u;
-    off_2872E0218(v15, 0, *a3.var0);
+    off_2872E0218(v15, 0, *graph.var0);
     (*(*v15 + 120))(v15, 1, v12);
-    (*(*v15 + 96))(v15, 0, a5, 0.0, 0.0, 0.0);
+    (*(*v15 + 96))(v15, 0, headroom, 0.0, 0.0, 0.0);
     v16 = v13;
     v17 = width;
     (*(*v15 + 96))(v15, 1, v16, v17, 0.0, 0.0);
-    self = (*(*v15 + 96))(v15, 2, (*(*a4.m_Obj + 28) - *(*a4.m_Obj + 20)), (*(*a4.m_Obj + 32) - *(*a4.m_Obj + 24)), 0.0, 0.0);
+    self = (*(*v15 + 96))(v15, 2, (*(*map.m_Obj + 28) - *(*map.m_Obj + 20)), (*(*map.m_Obj + 32) - *(*map.m_Obj + 24)), 0.0, 0.0);
     *v7 = v15;
     if (v12)
     {
@@ -505,36 +505,36 @@ LABEL_26:
 
   else
   {
-    *v5 = *a3.var0;
-    *a3.var0 = 0;
+    *v5 = *graph.var0;
+    *graph.var0 = 0;
   }
 
   return self;
 }
 
-- (id)newCVPixelBufferCacheItemForGainMapWithColorSpace:(id)a3
+- (id)newCVPixelBufferCacheItemForGainMapWithColorSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   if (self->_key && (objc_opt_respondsToSelector() & 1) != 0 && (v5 = [(NSString *)self->_key hdrGainMapImageForURL:*&self->_fillMode renderingIntent:HIDWORD(self->_keyHDRGainMap)], (v6 = v5) != 0))
   {
     Width = CGImageGetWidth(v5);
     Height = CGImageGetHeight(v6);
-    v13 = [v4 cgColorSpace];
+    cgColorSpace = [spaceCopy cgColorSpace];
     v11 = 0x842475241;
     v12 = 8194;
-    v9 = [(PVInstructionGraphImageSourceNode *)self loadImageTiles:v6 size:v4 colorSpace:&v11 imageProperties:Width, Height];
+    height = [(PVInstructionGraphImageSourceNode *)self loadImageTiles:v6 size:spaceCopy colorSpace:&v11 imageProperties:Width, Height];
     CGImageRelease(v6);
   }
 
   else
   {
-    v9 = 0;
+    height = 0;
   }
 
-  return v9;
+  return height;
 }
 
-- (id)newCVPixelBufferCacheItemForImage:(HGRef<PVInstructionGraphContext>)a3
+- (id)newCVPixelBufferCacheItemForImage:(HGRef<PVInstructionGraphContext>)image
 {
   v4 = [(NSString *)self->_key imageForURL:*&self->_fillMode renderingIntent:HIDWORD(self->_keyHDRGainMap)];
   v5 = v4;
@@ -601,17 +601,17 @@ LABEL_26:
 
   memset(v18, 0, sizeof(v18));
   PVImagePropertiesForColorSpace(v10, 1, v18);
-  v11 = [(PVInstructionGraphImageSourceNode *)self loadImageTiles:v5 size:v10 colorSpace:v18 imageProperties:Width, Height];
+  height = [(PVInstructionGraphImageSourceNode *)self loadImageTiles:v5 size:v10 colorSpace:v18 imageProperties:Width, Height];
   CGImageRelease(v5);
 
-  return v11;
+  return height;
 }
 
-- (id)loadImageTiles:(CGImage *)a3 size:(CGSize)a4 colorSpace:(id)a5 imageProperties:(PVImageProperties *)a6
+- (id)loadImageTiles:(CGImage *)tiles size:(CGSize)size colorSpace:(id)space imageProperties:(PVImageProperties *)properties
 {
-  height = a4.height;
-  width = a4.width;
-  v31 = a5;
+  height = size.height;
+  width = size.width;
+  spaceCopy = space;
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = height;
@@ -643,7 +643,7 @@ LABEL_15:
       v14 = v13 >= 0x1000 ? 4096 : v13;
       v15 = PVPixelBufferCreationOptions();
       pixelBufferOut = 0;
-      CVPixelBufferCreate(v10, v14, v11, a6->var0, v15, &pixelBufferOut);
+      CVPixelBufferCreate(v10, v14, v11, properties->var0, v15, &pixelBufferOut);
       if (!pixelBufferOut)
       {
         break;
@@ -651,14 +651,14 @@ LABEL_15:
 
       CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
       BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
-      var1 = a6->var1;
+      var1 = properties->var1;
       BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
-      v19 = CGBitmapContextCreate(BaseAddress, v14, v11, var1, BytesPerRow, a6->var3, a6->var2);
+      v19 = CGBitmapContextCreate(BaseAddress, v14, v11, var1, BytesPerRow, properties->var3, properties->var2);
       v35.origin.x = v12;
       v35.origin.y = v27;
       v35.size.width = v14;
       v35.size.height = v11;
-      v20 = CGImageCreateWithImageInRect(a3, v35);
+      v20 = CGImageCreateWithImageInRect(tiles, v35);
       v36.origin.x = 0.0;
       v36.origin.y = 0.0;
       v36.size.width = v14;
@@ -675,7 +675,7 @@ LABEL_15:
 
       [v32 addObject:pixelBufferOut];
       CVPixelBufferRelease(pixelBufferOut);
-      PVAddColorSpaceAttributesToCVPixelBuffer(pixelBufferOut, v31);
+      PVAddColorSpaceAttributesToCVPixelBuffer(pixelBufferOut, spaceCopy);
       v24 = [MEMORY[0x277CCAE60] valueWithCGRect:{v12, v27, v14, v11}];
       [v30 addObject:v24];
 
@@ -687,19 +687,19 @@ LABEL_15:
       }
     }
 
-    v25 = 0;
+    height = 0;
   }
 
   else
   {
 LABEL_16:
-    v25 = [[CVPixelBufferCacheItem alloc] initWithCVPixelBuffers:v32 DODs:v30 fullSize:v31 colorSpace:width, height];
+    height = [[CVPixelBufferCacheItem alloc] initWithCVPixelBuffers:v32 DODs:v30 fullSize:spaceCopy colorSpace:width, height];
   }
 
-  return v25;
+  return height;
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)x2_0 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)x2_0 trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v186 = v6;
   v216 = *MEMORY[0x277D85DE8];
@@ -709,8 +709,8 @@ LABEL_16:
   if (v8)
   {
     v9 = v188;
-    v10 = [v188 UTF8String];
-    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Image Key: %s\n", v11, v12, v10);
+    uTF8String = [v188 UTF8String];
+    HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Image Key: %s\n", v11, v12, uTF8String);
   }
 
   if (HIDWORD(self->_keyHDRGainMap) == 1)
@@ -744,7 +744,7 @@ LABEL_16:
       v16 = [sPixelBufferCache objectForKey:v188];
       if (!v16)
       {
-        v69 = *a6.m_Obj;
+        v69 = *context.m_Obj;
         v213 = v69;
         if (v69)
         {
@@ -773,8 +773,8 @@ LABEL_16:
         if (v70)
         {
           v71 = v188;
-          v72 = [v188 UTF8String];
-          HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): hgNodeForTime: Created CVPixel Buffer for key: %s\n", v73, v74, self, v72);
+          uTF8String2 = [v188 UTF8String];
+          HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): hgNodeForTime: Created CVPixel Buffer for key: %s\n", v73, v74, self, uTF8String2);
         }
       }
 
@@ -783,8 +783,8 @@ LABEL_16:
         v177 = [sPixelBufferCache objectForKey:*&self->_useHDRGainMap];
         if (!v177)
         {
-          v17 = [v16 colorSpace];
-          v177 = [(PVInstructionGraphImageSourceNode *)self newCVPixelBufferCacheItemForGainMapWithColorSpace:v17];
+          colorSpace = [v16 colorSpace];
+          v177 = [(PVInstructionGraphImageSourceNode *)self newCVPixelBufferCacheItemForGainMapWithColorSpace:colorSpace];
         }
       }
 
@@ -800,8 +800,8 @@ LABEL_16:
       v210 = 0u;
       v211 = 0u;
       v212 = 0u;
-      v18 = [v16 buffers];
-      v19 = [v18 countByEnumeratingWithState:&v209 objects:v215 count:16];
+      buffers = [v16 buffers];
+      v19 = [buffers countByEnumeratingWithState:&v209 objects:v215 count:16];
       if (v19)
       {
         LODWORD(v20) = 0;
@@ -814,15 +814,15 @@ LABEL_16:
           {
             if (*v210 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(buffers);
             }
 
             v23 = *(*(&v209 + 1) + 8 * v22);
             PixelFormatType = CVPixelBufferGetPixelFormatType(v23);
             v26 = HGCV::HGFormatForCVPixelFormat(PixelFormatType, 0, v25);
             HGCVBitmap::create(v23, v26, 0, &v195);
-            v27 = [v16 DODs];
-            v28 = [v27 objectAtIndex:v20];
+            dODs = [v16 DODs];
+            v28 = [dODs objectAtIndex:v20];
             [v28 CGRectValue];
             v30 = v29;
             v32 = v31;
@@ -865,7 +865,7 @@ LABEL_16:
           }
 
           while (v19 != v22);
-          v19 = [v18 countByEnumeratingWithState:&v209 objects:v215 count:16];
+          v19 = [buffers countByEnumeratingWithState:&v209 objects:v215 count:16];
         }
 
         while (v19);
@@ -873,14 +873,14 @@ LABEL_16:
 
       if (v177)
       {
-        v46 = [v177 buffers];
-        v47 = [v46 objectAtIndexedSubscript:0];
+        buffers2 = [v177 buffers];
+        v47 = [buffers2 objectAtIndexedSubscript:0];
 
         v48 = CVPixelBufferGetPixelFormatType(v47);
         v50 = HGCV::HGFormatForCVPixelFormat(v48, 0, v49);
         HGCVBitmap::create(v47, v50, 0, &v195);
-        v51 = [v177 DODs];
-        v52 = [v51 objectAtIndex:0];
+        dODs2 = [v177 DODs];
+        v52 = [dODs2 objectAtIndex:0];
         [v52 CGRectValue];
         v54 = v53;
         v56 = v55;
@@ -911,14 +911,14 @@ LABEL_16:
       [v16 fullSize];
       v77 = v76;
       v79 = v78;
-      v80 = [v16 colorSpace];
+      colorSpace2 = [v16 colorSpace];
       v208 = v67;
       if (v67 != 0.0)
       {
         (*(**&v67 + 16))(COERCE_CGFLOAT(*&v67));
       }
 
-      v14 = [(HGInputBitmapCacheItem *)v75 initWithHGBitmap:&v196 fullSize:v80 colorSpace:&v208 gainMap:v77, v79];
+      v14 = [(HGInputBitmapCacheItem *)v75 initWithHGBitmap:&v196 fullSize:colorSpace2 colorSpace:&v208 gainMap:v77, v79];
       if (v208 != 0.0)
       {
         (*(**&v208 + 24))(COERCE_CGFLOAT(*&v208));
@@ -935,8 +935,8 @@ LABEL_16:
       if (v81)
       {
         v82 = v188;
-        v83 = [v188 UTF8String];
-        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): Cached Texture for key: %s\n", v84, v85, self, v83);
+        uTF8String3 = [v188 UTF8String];
+        HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 2, "PVIGImageSourceNode (%p): Cached Texture for key: %s\n", v84, v85, self, uTF8String3);
       }
 
       [sPixelBufferCache removeObjectForKey:v188];
@@ -1039,10 +1039,10 @@ LABEL_68:
     if (v196)
     {
       (*(*v196 + 24))(v196);
-      v94 = [(HGInputBitmapCacheItem *)v14 colorSpace];
-      v95 = [v94 nclcTriplet];
+      colorSpace3 = [(HGInputBitmapCacheItem *)v14 colorSpace];
+      nclcTriplet = [colorSpace3 nclcTriplet];
 
-      PVCreateColorConform([v95 hgColorPrimary], objc_msgSend(v95, "hgTransferFunction"), 0, 3, 8, 0, &v196);
+      PVCreateColorConform([nclcTriplet hgColorPrimary], objc_msgSend(nclcTriplet, "hgTransferFunction"), 0, 3, 8, 0, &v196);
       (*(*v196 + 120))(v196, 0, COERCE_CGFLOAT(*&v87));
       if (*&v87 == v196)
       {
@@ -1165,10 +1165,10 @@ LABEL_108:
         v106 = *&v105;
       }
 
-      v107 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-      v108 = [v107 nclcTriplet];
+      v107 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+      nclcTriplet2 = [v107 nclcTriplet];
 
-      PVCreateColorConform(3, 8, 0, [v108 hgColorPrimary], objc_msgSend(v108, "hgTransferFunction"), 0, &v194);
+      PVCreateColorConform(3, 8, 0, [nclcTriplet2 hgColorPrimary], objc_msgSend(nclcTriplet2, "hgTransferFunction"), 0, &v194);
       (*(**&v194.a + 120))(*&v194.a, 0, COERCE_DOUBLE(*&v106));
       v87 = v194.a;
       if (*&v106 == *&v194.a)
@@ -1226,12 +1226,12 @@ LABEL_121:
     (*(**&v87 + 16))(COERCE_CGFLOAT(*&v87));
   }
 
-  v96 = [(HGInputBitmapCacheItem *)v14 colorSpace];
-  v97 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-  v98 = PVInstructionGraphContext::WorkingColorSpaceConformIntent(*a6.m_Obj);
+  colorSpace4 = [(HGInputBitmapCacheItem *)v14 colorSpace];
+  v97 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+  v98 = PVInstructionGraphContext::WorkingColorSpaceConformIntent(*context.m_Obj);
   v204 = 0;
-  ColorConformInput(&v205, v96, v97, v98, &v204, &v196);
-  v95 = v204;
+  ColorConformInput(&v205, colorSpace4, v97, v98, &v204, &v196);
+  nclcTriplet = v204;
   v99 = *&v196;
   if (*&v87 == v196)
   {
@@ -1258,11 +1258,11 @@ LABEL_121:
     (*(**&v205 + 24))(COERCE_CGFLOAT(*&v205));
   }
 
-  if (v95)
+  if (nclcTriplet)
   {
-    v100 = [(HGInputBitmapCacheItem *)v14 colorSpace];
-    v101 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-    NSLog(&cfstr_ErrorInColorCo.isa, v100, v101);
+    colorSpace5 = [(HGInputBitmapCacheItem *)v14 colorSpace];
+    v101 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+    NSLog(&cfstr_ErrorInColorCo.isa, colorSpace5, v101);
   }
 
 LABEL_125:
@@ -1291,26 +1291,26 @@ LABEL_125:
     v113 = v110[5];
     width = self->m_cachedImageInfo.size.width;
     v183 = *&self->m_cachedImageInfo.cached;
-    v116 = (*(**a6.m_Obj + 40))();
-    v117 = (*(**a6.m_Obj + 48))();
-    (*(**a6.m_Obj + 40))();
+    v116 = (*(**context.m_Obj + 40))();
+    v117 = (*(**context.m_Obj + 48))();
+    (*(**context.m_Obj + 40))();
     v119 = v118;
-    v120 = (*(**a6.m_Obj + 48))();
+    v120 = (*(**context.m_Obj + 48))();
     v175 = v113;
-    v121 = [(PVInstructionGraphSourceNode *)self transformAnimationContentMode];
-    v122 = v121;
+    transformAnimationContentMode = [(PVInstructionGraphSourceNode *)self transformAnimationContentMode];
+    v122 = transformAnimationContentMode;
     v123 = v116 * v117;
     v124 = v119 * v120;
     v125 = v124;
     v126 = v123;
-    if (!v121)
+    if (!transformAnimationContentMode)
     {
       goto LABEL_160;
     }
 
     v125 = v124;
     v126 = v123;
-    if (v121 == 3)
+    if (transformAnimationContentMode == 3)
     {
       goto LABEL_160;
     }
@@ -1375,8 +1375,8 @@ LABEL_125:
       if (v127 != 2)
       {
 LABEL_156:
-        v136 = [(PVInstructionGraphSourceNode *)self transformAnimation];
-        [v136 aspectRatio];
+        transformAnimation = [(PVInstructionGraphSourceNode *)self transformAnimation];
+        [transformAnimation aspectRatio];
         v138 = *&self->_useAnimationInfo;
         if (v138 <= 3)
         {
@@ -1435,14 +1435,14 @@ LABEL_156:
         }
 
 LABEL_160:
-        v139 = [(PVInstructionGraphSourceNode *)self transformAnimation];
+        transformAnimation2 = [(PVInstructionGraphSourceNode *)self transformAnimation];
         *&v195.a = *&x2_0->var0;
         *&v195.c = x2_0->var3;
-        v140 = [PVTransformAnimation getTransformInfoFromAnimation:v139 atTime:&v195 renderSize:v122 contentMode:0 invertY:&v196 outInfo:v126, v125];
+        v125 = [PVTransformAnimation getTransformInfoFromAnimation:transformAnimation2 atTime:&v195 renderSize:v122 contentMode:0 invertY:&v196 outInfo:v126, v125];
 
         v179 = v124;
         v182 = v123;
-        if (v140)
+        if (v125)
         {
           v141 = v198.f64[1];
           v142 = *(&v197 + 1);
@@ -1644,9 +1644,9 @@ LABEL_194:
   else
   {
     v181 = *&self->m_cachedImageInfo.cached;
-    v178 = (*(**a6.m_Obj + 40))();
+    v178 = (*(**context.m_Obj + 40))();
     v176 = self->m_cachedImageInfo.size.width;
-    (*(**a6.m_Obj + 40))();
+    (*(**context.m_Obj + 40))();
     v130.f64[0] = v181;
     v131.f64[0] = v178;
     v130.f64[1] = v176;
@@ -1666,7 +1666,7 @@ LABEL_197:
   v196 = v202;
   v197 = v203;
   v198 = v129;
-  v170 = (*(**a6.m_Obj + 64))();
+  v170 = (*(**context.m_Obj + 64))();
   HGXFormForCGAffineTransform(&v189, &v196, v170, &v195);
   v171 = v195.a;
   if (*&v87 == *&v195.a)
@@ -1705,10 +1705,10 @@ LABEL_197:
   return v172;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v22 = a3;
+  effectCopy = effect;
   *v6 = 0;
   *(v6 + 8) = 0;
   __asm { FMOV            V0.2D, #-1.0 }
@@ -1720,7 +1720,7 @@ LABEL_197:
   {
     v14 = p_ty[1];
     v13 = p_ty[2];
-    [v22 outputSize];
+    [effectCopy outputSize];
     if (v13 >= v14)
     {
       v17 = v13 / v16;
@@ -1741,9 +1741,9 @@ LABEL_197:
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v32 = a4;
+  contextCopy = context;
   retstr->var0[3][3] = 1.0;
   retstr->var0[2][2] = 1.0;
   retstr->var0[1][1] = 1.0;
@@ -1767,9 +1767,9 @@ LABEL_197:
         v11 = (*(**a5.m_Obj + 48))();
       }
 
-      [v32 outputSize];
+      [contextCopy outputSize];
       v13 = v12;
-      [v32 outputSize];
+      [contextCopy outputSize];
       v14 = v8;
       v15 = v10;
       v16 = v11 * v14;
@@ -1781,7 +1781,7 @@ LABEL_197:
         if (v19 > v20)
         {
 LABEL_10:
-          [v32 outputSize];
+          [contextCopy outputSize];
           v22 = v17 / v21;
 LABEL_15:
           v28 = PCMatrix44Tmpl<double>::leftScale(retstr, v22, -v22, 1.0);
@@ -1799,18 +1799,18 @@ LABEL_19:
         goto LABEL_10;
       }
 
-      [v32 outputSize];
+      [contextCopy outputSize];
       v22 = v16 / v27;
       goto LABEL_15;
     }
 
-    if ([v32 conformToInputAspect])
+    if ([contextCopy conformToInputAspect])
     {
       v23 = *&self->m_cachedImageInfo.cached;
       width = self->m_cachedImageInfo.size.width;
       if (width >= v23)
       {
-        [v32 outputSize];
+        [contextCopy outputSize];
         v26 = width / v25;
 LABEL_18:
         v28 = PCMatrix44Tmpl<double>::leftScale(retstr, v26, -v26, 1.0);
@@ -1825,7 +1825,7 @@ LABEL_18:
       v23 = *&self->m_cachedImageInfo.cached;
     }
 
-    [v32 outputSize];
+    [contextCopy outputSize];
     v26 = v23 / v30;
     goto LABEL_18;
   }
@@ -1835,9 +1835,9 @@ LABEL_20:
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
-  v8 = *a3.m_Obj;
+  v8 = *label.m_Obj;
   if (v8)
   {
     (*(*v8 + 16))(v8, a2);
@@ -1860,26 +1860,26 @@ LABEL_20:
 {
   v12.receiver = self;
   v12.super_class = PVInstructionGraphImageSourceNode;
-  v3 = [(PVInstructionGraphSourceNode *)&v12 instructionGraphNodeDescription];
-  v4 = [v3 mutableCopy];
+  instructionGraphNodeDescription = [(PVInstructionGraphSourceNode *)&v12 instructionGraphNodeDescription];
+  v4 = [instructionGraphNodeDescription mutableCopy];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   [v4 setObject:v6 forKeyedSubscript:@"class"];
 
-  v7 = [*&self->_fillMode absoluteString];
-  if (v7)
+  absoluteString = [*&self->_fillMode absoluteString];
+  if (absoluteString)
   {
-    v8 = [*&self->_fillMode absoluteString];
+    absoluteString2 = [*&self->_fillMode absoluteString];
   }
 
   else
   {
-    v8 = @"unable to get url.path as string";
+    absoluteString2 = @"unable to get url.path as string";
   }
 
-  [v4 setObject:v8 forKeyedSubscript:@"imageURL"];
-  if (v7)
+  [v4 setObject:absoluteString2 forKeyedSubscript:@"imageURL"];
+  if (absoluteString)
   {
   }
 

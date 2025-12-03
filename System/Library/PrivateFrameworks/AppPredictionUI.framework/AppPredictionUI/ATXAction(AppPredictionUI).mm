@@ -6,20 +6,20 @@
 
 - (id)apui_intent
 {
-  v2 = [a1 intent];
-  v3 = v2;
-  if (v2)
+  intent = [self intent];
+  v3 = intent;
+  if (intent)
   {
-    v4 = v2;
+    apui_intent = intent;
   }
 
   else
   {
-    v5 = [a1 userActivity];
-    v4 = [v5 apui_intent];
+    userActivity = [self userActivity];
+    apui_intent = [userActivity apui_intent];
   }
 
-  return v4;
+  return apui_intent;
 }
 
 @end

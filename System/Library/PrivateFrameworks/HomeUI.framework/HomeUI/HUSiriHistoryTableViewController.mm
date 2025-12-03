@@ -1,18 +1,18 @@
 @interface HUSiriHistoryTableViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HUSiriHistoryTableViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUSiriHistoryTableViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HUSiriHistoryTableViewController)initWithAccessoryGroupItem:(id)item;
+- (HUSiriHistoryTableViewController)initWithAccessorySettingItem:(id)item module:(id)module;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUSiriHistoryTableViewController
 
-- (HUSiriHistoryTableViewController)initWithAccessoryGroupItem:(id)a3
+- (HUSiriHistoryTableViewController)initWithAccessoryGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUSiriHistoryItemManager alloc] initWithDelegate:self groupItem:v4];
+  itemCopy = item;
+  v5 = [[HUSiriHistoryItemManager alloc] initWithDelegate:self groupItem:itemCopy];
 
   v9.receiver = self;
   v9.super_class = HUSiriHistoryTableViewController;
@@ -26,9 +26,9 @@
   return v7;
 }
 
-- (HUSiriHistoryTableViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUSiriHistoryTableViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v5 = [a3 copy];
+  v5 = [item copy];
   v6 = [[HUSiriHistoryItemManager alloc] initWithDelegate:self accessorySettingItem:v5];
   v10.receiver = self;
   v10.super_class = HUSiriHistoryTableViewController;
@@ -42,16 +42,16 @@
   return v8;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v18.receiver = self;
   v18.super_class = HUSiriHistoryTableViewController;
-  v11 = a4;
-  [(HUItemTableViewController *)&v18 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v18 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   objc_opt_class();
-  v12 = v10;
+  v12 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -65,80 +65,80 @@
   v14 = v13;
 
   [v14 setDestructive:{1, v18.receiver, v18.super_class}];
-  v15 = [v11 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v17 = [v14 textLabel];
-  [v17 setText:v16];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [v14 textLabel];
+  [textLabel setText:v16];
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 attributedFooterTitleForSection:a4];
+  viewCopy = view;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager attributedFooterTitleForSection:section];
 
   if (v8)
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
 
     if (!v9)
     {
       v9 = [[HUItemTableSectionHeaderFooterView alloc] initWithReuseIdentifier:@"footerReuseIdentifier"];
     }
 
-    v10 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    v11 = [v10 textDragInteraction];
-    [v11 setEnabled:1];
+    messageTextView = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    textDragInteraction = [messageTextView textDragInteraction];
+    [textDragInteraction setEnabled:1];
 
     [(HUItemTableSectionHeaderFooterView *)v9 setType:1];
     [(HUItemTableSectionHeaderFooterView *)v9 setMessage:v8];
-    v6 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    [v6 setDelegate:self];
+    viewCopy = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    [viewCopy setDelegate:self];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HUSiriHistoryTableViewController;
-    v9 = [(HUItemTableViewController *)&v13 tableView:v6 viewForFooterInSection:a4];
+    v9 = [(HUItemTableViewController *)&v13 tableView:viewCopy viewForFooterInSection:section];
   }
 
   return v9;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v7;
+    v20 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v17, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D14C80] aboutImproveSiriAndDictationURL];
-  v10 = [v7 isEqual:v9];
+  aboutImproveSiriAndDictationURL = [MEMORY[0x277D14C80] aboutImproveSiriAndDictationURL];
+  v10 = [lCopy isEqual:aboutImproveSiriAndDictationURL];
 
   if (v10)
   {
-    v11 = [(HUSiriHistoryTableViewController *)self navigationController];
-    v12 = v11;
-    if (v11)
+    navigationController = [(HUSiriHistoryTableViewController *)self navigationController];
+    v12 = navigationController;
+    if (navigationController)
     {
-      v13 = v11;
+      selfCopy2 = navigationController;
     }
 
     else
     {
-      v13 = self;
+      selfCopy2 = self;
     }
 
-    v14 = v13;
+    v14 = selfCopy2;
 
     v15 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376D8]];
     [v15 setPresentingViewController:v14];
@@ -149,16 +149,16 @@
   return 0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = HUSiriHistoryTableViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v29 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v29 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   objc_opt_class();
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -172,14 +172,14 @@
 
   v10 = v9;
 
-  v11 = [(HUSiriHistoryTableViewController *)self siriHistoryItemManager];
-  v12 = [v11 didSelectItemAtIndexPath:v6];
+  siriHistoryItemManager = [(HUSiriHistoryTableViewController *)self siriHistoryItemManager];
+  v12 = [siriHistoryItemManager didSelectItemAtIndexPath:pathCopy];
 
   if (v12)
   {
     v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-    v15 = [(UITableViewController *)self hu_actionSheetWithTitle:v13 message:v14 indexPath:v6];
+    v15 = [(UITableViewController *)self hu_actionSheetWithTitle:v13 message:v14 indexPath:pathCopy];
 
     v16 = MEMORY[0x277D750F8];
     v17 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
@@ -188,8 +188,8 @@
     v25[2] = __70__HUSiriHistoryTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v25[3] = &unk_277DBBD68;
     v26 = v10;
-    v27 = self;
-    v28 = v6;
+    selfCopy = self;
+    v28 = pathCopy;
     v18 = [v16 actionWithTitle:v17 style:2 handler:v25];
     [v15 addAction:v18];
 

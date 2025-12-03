@@ -1,29 +1,29 @@
 @interface SBWindowingLayoutFormatParser
-+ (id)createLayoutRequestForArrangement:(id)a3 bundleIdentifiersToLaunch:(id)a4 error:(id *)a5;
-+ (id)createLayoutRequestForFormat:(id)a3 bundleIdentifiersToLaunch:(id)a4 error:(id *)a5;
-- (_NSRange)_findValidSubStringRangeForComponent:(id)a3 startIndex:(unint64_t)a4 currentIndex:(unint64_t)a5 error:(id *)a6;
-- (id)_createItemRequestWithArrangement:(id)a3 bundleIdentifiers:(id)a4 error:(id *)a5;
-- (id)_createItemRequestWithFormat:(id)a3 bundleIdentifiers:(id)a4 error:(id *)a5;
-- (id)_parse:(id)a3 withBlock:(id)a4;
-- (int64_t)_applyLayoutRole:(int64_t)a3;
++ (id)createLayoutRequestForArrangement:(id)arrangement bundleIdentifiersToLaunch:(id)launch error:(id *)error;
++ (id)createLayoutRequestForFormat:(id)format bundleIdentifiersToLaunch:(id)launch error:(id *)error;
+- (_NSRange)_findValidSubStringRangeForComponent:(id)component startIndex:(unint64_t)index currentIndex:(unint64_t)currentIndex error:(id *)error;
+- (id)_createItemRequestWithArrangement:(id)arrangement bundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)_createItemRequestWithFormat:(id)format bundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)_parse:(id)_parse withBlock:(id)block;
+- (int64_t)_applyLayoutRole:(int64_t)role;
 @end
 
 @implementation SBWindowingLayoutFormatParser
 
-+ (id)createLayoutRequestForFormat:(id)a3 bundleIdentifiersToLaunch:(id)a4 error:(id *)a5
++ (id)createLayoutRequestForFormat:(id)format bundleIdentifiersToLaunch:(id)launch error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  formatCopy = format;
+  launchCopy = launch;
+  if (![formatCopy length])
   {
     v14 = 2;
 LABEL_8:
     _SBWindowingLayoutFormatErrorWithCode(v14);
-    *a5 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_9;
   }
 
-  if (![v8 count])
+  if (![launchCopy count])
   {
     v14 = 5;
     goto LABEL_8;
@@ -31,13 +31,13 @@ LABEL_8:
 
   v9 = objc_alloc_init(SBWindowingLayoutFormatParser);
   v16 = 0;
-  v10 = [(SBWindowingLayoutFormatParser *)v9 _createItemRequestWithFormat:v7 bundleIdentifiers:v8 error:&v16];
+  v10 = [(SBWindowingLayoutFormatParser *)v9 _createItemRequestWithFormat:formatCopy bundleIdentifiers:launchCopy error:&v16];
   v11 = v16;
   v12 = v11;
   if (v11)
   {
     v13 = v11;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_9:
@@ -45,11 +45,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)_createItemRequestWithFormat:(id)a3 bundleIdentifiers:(id)a4 error:(id *)a5
+- (id)_createItemRequestWithFormat:(id)format bundleIdentifiers:(id)identifiers error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v28 = a4;
+  formatCopy = format;
+  identifiersCopy = identifiers;
   v25 = objc_opt_new();
   v8 = objc_opt_new();
   v40[0] = 0;
@@ -60,8 +60,8 @@ LABEL_9:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v24 = v7;
-  v9 = [v7 componentsSeparatedByString:@"|"];
+  v24 = formatCopy;
+  v9 = [formatCopy componentsSeparatedByString:@"|"];
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v10)
   {
@@ -87,8 +87,8 @@ LABEL_9:
         v16 = v15;
         v31 = v16;
         v35 = v11;
-        v17 = v28;
-        v33 = self;
+        v17 = identifiersCopy;
+        selfCopy = self;
         v34 = v40;
         v32 = v17;
         v18 = [(SBWindowingLayoutFormatParser *)self _parse:v14 withBlock:v29];
@@ -96,7 +96,7 @@ LABEL_9:
         if (v18)
         {
           v20 = v18;
-          *a5 = v19;
+          *error = v19;
         }
 
         else
@@ -134,7 +134,7 @@ LABEL_9:
     }
   }
 
-  v21 = [v28 count];
+  v21 = [identifiersCopy count];
   if (v21 == [v25 count])
   {
     v22 = v25;
@@ -143,7 +143,7 @@ LABEL_9:
   else
   {
     _SBWindowingLayoutFormatErrorWithCode(4uLL);
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
 LABEL_20:
@@ -329,20 +329,20 @@ LABEL_60:
   return v5;
 }
 
-+ (id)createLayoutRequestForArrangement:(id)a3 bundleIdentifiersToLaunch:(id)a4 error:(id *)a5
++ (id)createLayoutRequestForArrangement:(id)arrangement bundleIdentifiersToLaunch:(id)launch error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  arrangementCopy = arrangement;
+  launchCopy = launch;
+  if (![arrangementCopy length])
   {
     v14 = 2;
 LABEL_8:
     _SBWindowingLayoutFormatErrorWithCode(v14);
-    *a5 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_9;
   }
 
-  if (![v8 count])
+  if (![launchCopy count])
   {
     v14 = 5;
     goto LABEL_8;
@@ -350,13 +350,13 @@ LABEL_8:
 
   v9 = objc_alloc_init(SBWindowingLayoutFormatParser);
   v16 = 0;
-  v10 = [(SBWindowingLayoutFormatParser *)v9 _createItemRequestWithArrangement:v7 bundleIdentifiers:v8 error:&v16];
+  v10 = [(SBWindowingLayoutFormatParser *)v9 _createItemRequestWithArrangement:arrangementCopy bundleIdentifiers:launchCopy error:&v16];
   v11 = v16;
   v12 = v11;
   if (v11)
   {
     v13 = v11;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_9:
@@ -364,21 +364,21 @@ LABEL_9:
   return v10;
 }
 
-- (id)_createItemRequestWithArrangement:(id)a3 bundleIdentifiers:(id)a4 error:(id *)a5
+- (id)_createItemRequestWithArrangement:(id)arrangement bundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = a4;
+  identifiersCopy = identifiers;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __91__SBWindowingLayoutFormatParser__createItemRequestWithArrangement_bundleIdentifiers_error___block_invoke;
   v19 = &unk_2783B0460;
-  v20 = v8;
-  v21 = self;
-  v9 = v8;
-  v10 = a3;
+  v20 = identifiersCopy;
+  selfCopy = self;
+  v9 = identifiersCopy;
+  arrangementCopy = arrangement;
   v11 = MEMORY[0x223D6F7F0](&v16);
-  v12 = [v10 lowercaseString];
+  lowercaseString = [arrangementCopy lowercaseString];
 
-  if ([v12 isEqualToString:@"split"])
+  if ([lowercaseString isEqualToString:@"split"])
   {
 
     (v11)[2](v11, &unk_28336DFB0);
@@ -386,14 +386,14 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if ([v12 isEqualToString:@"thirds"])
+  if ([lowercaseString isEqualToString:@"thirds"])
   {
 
     (v11)[2](v11, &unk_28336DFC8);
     goto LABEL_7;
   }
 
-  v13 = [v12 isEqualToString:@"grid"];
+  v13 = [lowercaseString isEqualToString:@"grid"];
 
   if (v13)
   {
@@ -402,7 +402,7 @@ LABEL_9:
   }
 
   _SBWindowingLayoutFormatErrorWithCode(7uLL);
-  *a5 = v14 = 0;
+  *error = v14 = 0;
 LABEL_8:
 
   return v14;
@@ -461,17 +461,17 @@ id __91__SBWindowingLayoutFormatParser__createItemRequestWithArrangement_bundleI
   return v4;
 }
 
-- (id)_parse:(id)a3 withBlock:(id)a4
+- (id)_parse:(id)_parse withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  _parseCopy = _parse;
+  blockCopy = block;
+  if ([_parseCopy length])
   {
     v8 = 0;
     while (1)
     {
       v18 = 0;
-      v9 = [(SBWindowingLayoutFormatParser *)self _findValidSubStringRangeForComponent:v6 startIndex:v8 currentIndex:v8 error:&v18];
+      v9 = [(SBWindowingLayoutFormatParser *)self _findValidSubStringRangeForComponent:_parseCopy startIndex:v8 currentIndex:v8 error:&v18];
       v11 = v10;
       v12 = v18;
       v13 = v12;
@@ -481,10 +481,10 @@ id __91__SBWindowingLayoutFormatParser__createItemRequestWithArrangement_bundleI
         goto LABEL_10;
       }
 
-      v14 = [v6 substringWithRange:{v9, v11}];
+      v14 = [_parseCopy substringWithRange:{v9, v11}];
       if ([v14 length])
       {
-        v15 = v7[2](v7, v14);
+        v15 = blockCopy[2](blockCopy, v14);
         if (v15)
         {
           break;
@@ -492,7 +492,7 @@ id __91__SBWindowingLayoutFormatParser__createItemRequestWithArrangement_bundleI
       }
 
       v8 = v9 + v11 + 1;
-      if (v8 >= [v6 length])
+      if (v8 >= [_parseCopy length])
       {
         goto LABEL_7;
       }
@@ -512,15 +512,15 @@ LABEL_7:
   return v16;
 }
 
-- (_NSRange)_findValidSubStringRangeForComponent:(id)a3 startIndex:(unint64_t)a4 currentIndex:(unint64_t)a5 error:(id *)a6
+- (_NSRange)_findValidSubStringRangeForComponent:(id)component startIndex:(unint64_t)index currentIndex:(unint64_t)currentIndex error:(id *)error
 {
-  v10 = a3;
-  if ([v10 length] <= a5)
+  componentCopy = component;
+  if ([componentCopy length] <= currentIndex)
   {
     goto LABEL_8;
   }
 
-  v11 = [v10 characterAtIndex:a5];
+  v11 = [componentCopy characterAtIndex:currentIndex];
   if (v11 == 124 || v11 == 93)
   {
     goto LABEL_8;
@@ -535,48 +535,48 @@ LABEL_7:
       valid = isValidSymbol(v19);
       if (((v18 & 0xDF) - 65) >= 0x1Au && (valid & 1) == 0)
       {
-        *a6 = _SBWindowingLayoutFormatErrorWithCode(1uLL);
-        a4 = 0x7FFFFFFFFFFFFFFFLL;
+        *error = _SBWindowingLayoutFormatErrorWithCode(1uLL);
+        index = 0x7FFFFFFFFFFFFFFFLL;
         v17 = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_9;
       }
 
-      v13 = a5 + 1;
-      v14 = self;
-      v15 = v10;
-      v12 = a4;
+      v13 = currentIndex + 1;
+      selfCopy2 = self;
+      v15 = componentCopy;
+      indexCopy = index;
       goto LABEL_6;
     }
 
 LABEL_8:
-    v17 = a5 - a4;
+    v17 = currentIndex - index;
     goto LABEL_9;
   }
 
-  v12 = a4 + 1;
-  v13 = a5 + 1;
-  v14 = self;
-  v15 = v10;
+  indexCopy = index + 1;
+  v13 = currentIndex + 1;
+  selfCopy2 = self;
+  v15 = componentCopy;
 LABEL_6:
-  a4 = [(SBWindowingLayoutFormatParser *)v14 _findValidSubStringRangeForComponent:v15 startIndex:v12 currentIndex:v13 error:a6];
+  index = [(SBWindowingLayoutFormatParser *)selfCopy2 _findValidSubStringRangeForComponent:v15 startIndex:indexCopy currentIndex:v13 error:error];
   v17 = v16;
 LABEL_9:
 
-  v20 = a4;
+  indexCopy2 = index;
   v21 = v17;
   result.length = v21;
-  result.location = v20;
+  result.location = indexCopy2;
   return result;
 }
 
-- (int64_t)_applyLayoutRole:(int64_t)a3
+- (int64_t)_applyLayoutRole:(int64_t)role
 {
-  if (SBLayoutRoleAdditionalSideRangeMax() <= a3 || SBLayoutRoleIsValidForSplitView(a3) && SBLayoutRoleAdditionalSideRangeMax() > a3)
+  if (SBLayoutRoleAdditionalSideRangeMax() <= role || SBLayoutRoleIsValidForSplitView(role) && SBLayoutRoleAdditionalSideRangeMax() > role)
   {
-    return a3;
+    return role;
   }
 
-  return [(SBWindowingLayoutFormatParser *)self _applyLayoutRole:a3 + 1];
+  return [(SBWindowingLayoutFormatParser *)self _applyLayoutRole:role + 1];
 }
 
 @end

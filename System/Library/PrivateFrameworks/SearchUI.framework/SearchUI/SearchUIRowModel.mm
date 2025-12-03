@@ -3,8 +3,8 @@
 - (BOOL)allowBackgroundColor;
 - (BOOL)fillsBackgroundWithContent;
 - (BOOL)hasGridStyling;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModel:(id)model;
 - (NSString)accessibilityIdentifier;
 - (NSString)applicationBundleIdentifier;
 - (NSString)coreSpotlightIdentifier;
@@ -12,31 +12,31 @@
 - (NSString)fileProviderIdentifier;
 - (NSString)reuseIdentifier;
 - (SFSearchResult)identifyingResult;
-- (SearchUIRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6;
-- (SearchUIRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4;
-- (SearchUIRowModel)initWithResults:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6;
-- (SearchUIRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4;
+- (SearchUIRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIRowModel)initWithResult:(id)result itemIdentifier:(id)identifier;
+- (SearchUIRowModel)initWithResults:(id)results cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIRowModel)initWithResults:(id)results itemIdentifier:(id)identifier;
 - (WFContextualAction)contextualAction;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)fetchFileProviderURLWithCompletionHandler:(id)a3;
-- (void)updateWithEnvironment:(id)a3;
+- (void)fetchFileProviderURLWithCompletionHandler:(id)handler;
+- (void)updateWithEnvironment:(id)environment;
 @end
 
 @implementation SearchUIRowModel
 
 - (SFSearchResult)identifyingResult
 {
-  v2 = [(SearchUIRowModel *)self results];
-  v3 = [v2 firstObject];
+  results = [(SearchUIRowModel *)self results];
+  firstObject = [results firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SearchUIRowModel *)self itemIdentifier];
-  v3 = [v2 hash];
+  itemIdentifier = [(SearchUIRowModel *)self itemIdentifier];
+  v3 = [itemIdentifier hash];
 
   return v3;
 }
@@ -62,29 +62,29 @@
 
 - (NSString)applicationBundleIdentifier
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 applicationBundleIdentifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
 
-  if (!v4)
+  if (!applicationBundleIdentifier)
   {
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [v5 command];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    command = [cardSection command];
 
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? v6 : 0;
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? command : 0;
     v8 = v7;
 
-    v4 = [v8 applicationBundleIdentifier];
+    applicationBundleIdentifier = [v8 applicationBundleIdentifier];
 
-    if (!v4)
+    if (!applicationBundleIdentifier)
     {
-      v9 = [(SearchUIRowModel *)self cardSection];
-      v10 = [v9 command];
+      cardSection2 = [(SearchUIRowModel *)self cardSection];
+      command2 = [cardSection2 command];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = command2;
       }
 
       else
@@ -94,74 +94,74 @@
 
       v12 = v11;
 
-      v4 = [v12 fileProviderIdentifier];
-      if (v4)
+      applicationBundleIdentifier = [v12 fileProviderIdentifier];
+      if (applicationBundleIdentifier)
       {
-        v13 = [v12 coreSpotlightIdentifier];
+        coreSpotlightIdentifier = [v12 coreSpotlightIdentifier];
 
-        if (v13)
+        if (coreSpotlightIdentifier)
         {
-          v4 = [SearchUIUtilities bundleIdentifierForApp:6];
+          applicationBundleIdentifier = [SearchUIUtilities bundleIdentifierForApp:6];
         }
 
         else
         {
-          v4 = 0;
+          applicationBundleIdentifier = 0;
         }
       }
     }
   }
 
-  return v4;
+  return applicationBundleIdentifier;
 }
 
 - (NSString)accessibilityIdentifier
 {
-  v2 = [(SearchUIRowModel *)self identifyingResult];
-  v3 = [v2 type];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  type = [identifyingResult type];
 
-  if ((v3 - 16) > 0x13)
+  if ((type - 16) > 0x13)
   {
     return @"ResultCell";
   }
 
   else
   {
-    return &off_1E85B4108[v3 - 16]->isa;
+    return &off_1E85B4108[type - 16]->isa;
   }
 }
 
-- (SearchUIRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4
+- (SearchUIRowModel)initWithResult:(id)result itemIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[SearchUIRowModel initWithResult:cardSection:queryId:itemIdentifier:](self, "initWithResult:cardSection:queryId:itemIdentifier:", v7, 0, [v7 queryId], v6);
+  identifierCopy = identifier;
+  resultCopy = result;
+  v8 = -[SearchUIRowModel initWithResult:cardSection:queryId:itemIdentifier:](self, "initWithResult:cardSection:queryId:itemIdentifier:", resultCopy, 0, [resultCopy queryId], identifierCopy);
 
   return v8;
 }
 
-- (SearchUIRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6
+- (SearchUIRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (v10)
+  resultCopy = result;
+  v11 = resultCopy;
+  if (resultCopy)
   {
-    v22 = v10;
+    v22 = resultCopy;
     v12 = MEMORY[0x1E695DEC8];
-    v13 = a6;
-    v14 = a4;
+    identifierCopy = identifier;
+    sectionCopy = section;
     v15 = [v12 arrayWithObjects:&v22 count:1];
-    v16 = [(SearchUIRowModel *)self initWithResults:v15 cardSection:v14 queryId:a5 itemIdentifier:v13, v22, v23];
+    v16 = [(SearchUIRowModel *)self initWithResults:v15 cardSection:sectionCopy queryId:id itemIdentifier:identifierCopy, v22, v23];
 
     v17 = v16;
   }
 
   else
   {
-    v18 = a6;
-    v19 = a4;
-    v20 = [(SearchUIRowModel *)self initWithResults:0 cardSection:v19 queryId:a5 itemIdentifier:v18];
+    identifierCopy2 = identifier;
+    sectionCopy2 = section;
+    v20 = [(SearchUIRowModel *)self initWithResults:0 cardSection:sectionCopy2 queryId:id itemIdentifier:identifierCopy2];
 
     v17 = v20;
   }
@@ -169,36 +169,36 @@
   return v17;
 }
 
-- (SearchUIRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4
+- (SearchUIRowModel)initWithResults:(id)results itemIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  v9 = -[SearchUIRowModel initWithResults:cardSection:queryId:itemIdentifier:](self, "initWithResults:cardSection:queryId:itemIdentifier:", v7, 0, [v8 queryId], v6);
+  identifierCopy = identifier;
+  resultsCopy = results;
+  firstObject = [resultsCopy firstObject];
+  v9 = -[SearchUIRowModel initWithResults:cardSection:queryId:itemIdentifier:](self, "initWithResults:cardSection:queryId:itemIdentifier:", resultsCopy, 0, [firstObject queryId], identifierCopy);
 
   return v9;
 }
 
-- (SearchUIRowModel)initWithResults:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6
+- (SearchUIRowModel)initWithResults:(id)results cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultsCopy = results;
+  sectionCopy = section;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = SearchUIRowModel;
   v13 = [(SearchUIRowModel *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(SearchUIRowModel *)v13 setResults:v10];
-    v15 = [v10 firstObject];
-    [(SearchUIRowModel *)v14 setIdentifyingResult:v15];
+    [(SearchUIRowModel *)v13 setResults:resultsCopy];
+    firstObject = [resultsCopy firstObject];
+    [(SearchUIRowModel *)v14 setIdentifyingResult:firstObject];
 
-    [(SearchUIRowModel *)v14 setCardSection:v11];
-    [(SearchUIRowModel *)v14 setItemIdentifier:v12];
+    [(SearchUIRowModel *)v14 setCardSection:sectionCopy];
+    [(SearchUIRowModel *)v14 setItemIdentifier:identifierCopy];
     [(SearchUIRowModel *)v14 setFileProviderURLFetched:0];
     [(SearchUIRowModel *)v14 setAllowAdjustmentsForConcentricity:1];
-    v14->_queryId = a5;
+    v14->_queryId = id;
   }
 
   return v14;
@@ -206,8 +206,8 @@
 
 - (BOOL)fillsBackgroundWithContent
 {
-  v2 = [(SearchUIRowModel *)self backgroundColor];
-  v3 = v2 != 0;
+  backgroundColor = [(SearchUIRowModel *)self backgroundColor];
+  v3 = backgroundColor != 0;
 
   return v3;
 }
@@ -221,10 +221,10 @@
 
   if ([(SearchUIRowModel *)self isTopHit])
   {
-    v3 = [(SearchUIRowModel *)self identifyingResult];
-    v4 = [v3 usesCompactDisplay];
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    usesCompactDisplay = [identifyingResult usesCompactDisplay];
 
-    if (!v4)
+    if (!usesCompactDisplay)
     {
       return 1;
     }
@@ -250,26 +250,26 @@ void __40__SearchUIRowModel_allowBackgroundColor__block_invoke()
 
 - (BOOL)hasGridStyling
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [v5 title];
-    if (v6)
+    cardSection2 = [(SearchUIRowModel *)self cardSection];
+    title = [cardSection2 title];
+    if (title)
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [v5 footnote];
-      v7 = v9 == 0;
+      footnote = [cardSection2 footnote];
+      v7 = footnote == 0;
     }
 
-    v10 = [v5 thumbnail];
+    thumbnail = [cardSection2 thumbnail];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -278,15 +278,15 @@ void __40__SearchUIRowModel_allowBackgroundColor__block_invoke()
 
     else
     {
-      v12 = [v5 thumbnail];
+      thumbnail2 = [cardSection2 thumbnail];
       objc_opt_class();
       v13 = objc_opt_isKindOfClass();
 
       v11 = v13 ^ 1;
     }
 
-    v14 = [v5 useAppIconMetrics];
-    v8 = v14 | (v7 | v11) ^ 1;
+    useAppIconMetrics = [cardSection2 useAppIconMetrics];
+    v8 = useAppIconMetrics | (v7 | v11) ^ 1;
   }
 
   else
@@ -297,19 +297,19 @@ void __40__SearchUIRowModel_allowBackgroundColor__block_invoke()
   return v8 & 1;
 }
 
-- (BOOL)isEqualToModel:(id)a3
+- (BOOL)isEqualToModel:(id)model
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 != self)
+  modelCopy = model;
+  v7 = modelCopy;
+  if (modelCopy != self)
   {
     identifyingResult = self->_identifyingResult;
-    v9 = [(SearchUIRowModel *)v6 identifyingResult];
-    if (identifyingResult != v9)
+    identifyingResult = [(SearchUIRowModel *)modelCopy identifyingResult];
+    if (identifyingResult != identifyingResult)
     {
       v10 = self->_identifyingResult;
-      v3 = [(SearchUIRowModel *)v7 identifyingResult];
-      if (![(SFSearchResult *)v10 isEqual:v3])
+      identifyingResult2 = [(SearchUIRowModel *)v7 identifyingResult];
+      if (![(SFSearchResult *)v10 isEqual:identifyingResult2])
       {
         v11 = 0;
         goto LABEL_15;
@@ -317,13 +317,13 @@ void __40__SearchUIRowModel_allowBackgroundColor__block_invoke()
     }
 
     cardSection = self->_cardSection;
-    v13 = [(SearchUIRowModel *)v7 cardSection];
-    if (cardSection == v13 || (v14 = self->_cardSection, [(SearchUIRowModel *)v7 cardSection], v4 = objc_claimAutoreleasedReturnValue(), [(SFCardSection *)v14 isEqual:v4]))
+    cardSection = [(SearchUIRowModel *)v7 cardSection];
+    if (cardSection == cardSection || (v14 = self->_cardSection, [(SearchUIRowModel *)v7 cardSection], v4 = objc_claimAutoreleasedReturnValue(), [(SFCardSection *)v14 isEqual:v4]))
     {
       results = self->_results;
-      v16 = [(SearchUIRowModel *)v7 results];
-      v17 = v16;
-      if (results == v16)
+      results = [(SearchUIRowModel *)v7 results];
+      v17 = results;
+      if (results == results)
       {
 
         v11 = 1;
@@ -332,15 +332,15 @@ void __40__SearchUIRowModel_allowBackgroundColor__block_invoke()
       else
       {
         v18 = self->_results;
-        v19 = [(SearchUIRowModel *)v7 results];
-        v11 = [(NSArray *)v18 isEqual:v19];
+        results2 = [(SearchUIRowModel *)v7 results];
+        v11 = [(NSArray *)v18 isEqual:results2];
       }
 
-      if (cardSection == v13)
+      if (cardSection == cardSection)
       {
 LABEL_14:
 
-        if (identifyingResult == v9)
+        if (identifyingResult == identifyingResult)
         {
 LABEL_16:
 
@@ -367,17 +367,17 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SearchUIRowModel *)self itemIdentifier];
-    v7 = [v5 itemIdentifier];
+    v5 = equalCopy;
+    itemIdentifier = [(SearchUIRowModel *)self itemIdentifier];
+    itemIdentifier2 = [v5 itemIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [itemIdentifier isEqualToString:itemIdentifier2];
   }
 
   else
@@ -388,25 +388,25 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SearchUIRowModel *)self results];
-  [v4 setResults:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  results = [(SearchUIRowModel *)self results];
+  [v4 setResults:results];
 
-  v6 = [(SearchUIRowModel *)self cardSection];
-  [v4 setCardSection:v6];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  [v4 setCardSection:cardSection];
 
   [v4 setQueryId:{-[SearchUIRowModel queryId](self, "queryId")}];
-  v7 = [(SearchUIRowModel *)self itemIdentifier];
-  [v4 setItemIdentifier:v7];
+  itemIdentifier = [(SearchUIRowModel *)self itemIdentifier];
+  [v4 setItemIdentifier:itemIdentifier];
 
   [v4 setCornerMask:{-[SearchUIRowModel cornerMask](self, "cornerMask")}];
   [v4 setHasCustomCornerRounding:{-[SearchUIRowModel hasCustomCornerRounding](self, "hasCustomCornerRounding")}];
   [v4 setHasValidCommandHandler:{-[SearchUIRowModel hasValidCommandHandler](self, "hasValidCommandHandler")}];
   [v4 setAllowAdjustmentsForConcentricity:{-[SearchUIRowModel allowAdjustmentsForConcentricity](self, "allowAdjustmentsForConcentricity")}];
-  v8 = [(SearchUIRowModel *)self contextualAction];
-  [v4 setContextualAction:v8];
+  contextualAction = [(SearchUIRowModel *)self contextualAction];
+  [v4 setContextualAction:contextualAction];
 
   [v4 setContextualActionLoaded:{-[SearchUIRowModel contextualActionLoaded](self, "contextualActionLoaded")}];
   return v4;
@@ -414,29 +414,29 @@ LABEL_17:
 
 - (NSString)coreSpotlightIdentifier
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 identifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  identifier = [identifyingResult identifier];
 
-  if (!v4)
+  if (!identifier)
   {
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [v5 command];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    command = [cardSection command];
 
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? v6 : 0;
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? command : 0;
     v8 = v7;
 
-    v4 = [v8 coreSpotlightIdentifier];
+    identifier = [v8 coreSpotlightIdentifier];
 
-    if (!v4)
+    if (!identifier)
     {
-      v9 = [(SearchUIRowModel *)self cardSection];
-      v10 = [v9 command];
+      cardSection2 = [(SearchUIRowModel *)self cardSection];
+      command2 = [cardSection2 command];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = command2;
       }
 
       else
@@ -446,36 +446,36 @@ LABEL_17:
 
       v12 = v11;
 
-      v4 = [v12 coreSpotlightIdentifier];
+      identifier = [v12 coreSpotlightIdentifier];
     }
   }
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)displayTitle
 {
-  v2 = [(SearchUIRowModel *)self identifyingResult];
-  v3 = [v2 title];
-  v4 = [v3 text];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  title = [identifyingResult title];
+  text = [title text];
 
-  return v4;
+  return text;
 }
 
 - (NSString)fileProviderIdentifier
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 fileProviderIdentifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  fileProviderIdentifier = [identifyingResult fileProviderIdentifier];
 
-  if (!v4)
+  if (!fileProviderIdentifier)
   {
-    v5 = [(SearchUIRowModel *)self cardSection];
-    v6 = [v5 command];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    command = [cardSection command];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = command;
     }
 
     else
@@ -485,35 +485,35 @@ LABEL_17:
 
     v8 = v7;
 
-    v4 = [v8 fileProviderIdentifier];
+    fileProviderIdentifier = [v8 fileProviderIdentifier];
   }
 
-  return v4;
+  return fileProviderIdentifier;
 }
 
-- (void)fetchFileProviderURLWithCompletionHandler:(id)a3
+- (void)fetchFileProviderURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIRowModel *)self fileProviderFetchedURL];
-  if (v5 || [(SearchUIRowModel *)self fileProviderURLFetched])
+  handlerCopy = handler;
+  fileProviderFetchedURL = [(SearchUIRowModel *)self fileProviderFetchedURL];
+  if (fileProviderFetchedURL || [(SearchUIRowModel *)self fileProviderURLFetched])
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, fileProviderFetchedURL);
   }
 
   else
   {
-    v6 = [(SearchUIRowModel *)self cardSection];
-    v7 = [v6 command];
+    cardSection = [(SearchUIRowModel *)self cardSection];
+    command = [cardSection command];
 
-    v8 = [v7 coreSpotlightIdentifier];
-    v9 = [v7 fileProviderIdentifier];
+    coreSpotlightIdentifier = [command coreSpotlightIdentifier];
+    fileProviderIdentifier = [command fileProviderIdentifier];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__SearchUIRowModel_fetchFileProviderURLWithCompletionHandler___block_invoke;
     v10[3] = &unk_1E85B40E8;
     v10[4] = self;
-    v11 = v4;
-    [SearchUIUtilities fetchURLForCoreSpotlightIdentifier:v8 fileProviderIdentifier:v9 completionHandler:v10];
+    v11 = handlerCopy;
+    [SearchUIUtilities fetchURLForCoreSpotlightIdentifier:coreSpotlightIdentifier fileProviderIdentifier:fileProviderIdentifier completionHandler:v10];
   }
 }
 
@@ -528,53 +528,53 @@ void __62__SearchUIRowModel_fetchFileProviderURLWithCompletionHandler___block_in
 
 - (BOOL)adjustMarginsForConcentricity
 {
-  v3 = [(SearchUIRowModel *)self fillsBackgroundWithContent];
-  if (v3)
+  fillsBackgroundWithContent = [(SearchUIRowModel *)self fillsBackgroundWithContent];
+  if (fillsBackgroundWithContent)
   {
 
-    LOBYTE(v3) = [(SearchUIRowModel *)self allowAdjustmentsForConcentricity];
+    LOBYTE(fillsBackgroundWithContent) = [(SearchUIRowModel *)self allowAdjustmentsForConcentricity];
   }
 
-  return v3;
+  return fillsBackgroundWithContent;
 }
 
 - (WFContextualAction)contextualAction
 {
   if ([(SearchUIRowModel *)self contextualActionLoaded])
   {
-    v3 = self->_contextualAction;
+    settingBiomeStreamIdentifier = self->_contextualAction;
   }
 
   else
   {
     v4 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:self];
     [(SearchUIRowModel *)self setContextualActionLoaded:1];
-    v5 = [v4 intentMessageData];
+    intentMessageData = [v4 intentMessageData];
 
-    if (v5 && (v6 = objc_autoreleasePoolPush(), [v4 intentMessageData], v7 = objc_claimAutoreleasedReturnValue(), WFSpotlightResultRunnableFromData(), v5 = objc_claimAutoreleasedReturnValue(), v7, objc_autoreleasePoolPop(v6), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (intentMessageData && (v6 = objc_autoreleasePoolPush(), [v4 intentMessageData], v7 = objc_claimAutoreleasedReturnValue(), WFSpotlightResultRunnableFromData(), intentMessageData = objc_claimAutoreleasedReturnValue(), v7, objc_autoreleasePoolPop(v6), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v3 = [v5 settingBiomeStreamIdentifier];
+      settingBiomeStreamIdentifier = [intentMessageData settingBiomeStreamIdentifier];
 
-      if (v3)
+      if (settingBiomeStreamIdentifier)
       {
-        v3 = v5;
-        objc_storeStrong(&self->_contextualAction, v5);
-        v5 = v3;
+        settingBiomeStreamIdentifier = intentMessageData;
+        objc_storeStrong(&self->_contextualAction, intentMessageData);
+        intentMessageData = settingBiomeStreamIdentifier;
       }
     }
 
     else
     {
-      v3 = 0;
+      settingBiomeStreamIdentifier = 0;
     }
   }
 
-  return v3;
+  return settingBiomeStreamIdentifier;
 }
 
-- (void)updateWithEnvironment:(id)a3
+- (void)updateWithEnvironment:(id)environment
 {
-  v4 = [SearchUICommandHandler hasValidHandlerForRowModel:self environment:a3];
+  v4 = [SearchUICommandHandler hasValidHandlerForRowModel:self environment:environment];
 
   [(SearchUIRowModel *)self setHasValidCommandHandler:v4];
 }

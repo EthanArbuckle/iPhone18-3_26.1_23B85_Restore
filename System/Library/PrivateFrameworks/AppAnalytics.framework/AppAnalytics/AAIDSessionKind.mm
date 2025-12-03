@@ -1,17 +1,17 @@
 @interface AAIDSessionKind
 - (AAIDSessionKind)init;
-- (AAIDSessionKind)initWithKind:(int64_t)a3 name:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (AAIDSessionKind)initWithKind:(int64_t)kind name:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
 @implementation AAIDSessionKind
 
-- (AAIDSessionKind)initWithKind:(int64_t)a3 name:(id)a4
+- (AAIDSessionKind)initWithKind:(int64_t)kind name:(id)name
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (name)
   {
     v8 = sub_1B6AB92E0();
   }
@@ -22,7 +22,7 @@
     v9 = 0;
   }
 
-  *(&self->super.isa + OBJC_IVAR___AAIDSessionKind_kind) = a3;
+  *(&self->super.isa + OBJC_IVAR___AAIDSessionKind_kind) = kind;
   v10 = (self + OBJC_IVAR___AAIDSessionKind_name);
   *v10 = v8;
   v10[1] = v9;
@@ -31,11 +31,11 @@
   return [(AAIDSessionKind *)&v12 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B6AB9BC0();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = BridgedIDSessionKind.isEqual(_:)(v8);
@@ -61,14 +61,14 @@
   {
     v3 = *(&self->super.isa + OBJC_IVAR___AAIDSessionKind_name);
     sub_1B6ABA210();
-    v4 = self;
+    selfCopy = self;
     sub_1B6AB9380();
   }
 
   else
   {
     sub_1B6ABA210();
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B6ABA220();
@@ -83,7 +83,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = *(&self->super.isa + OBJC_IVAR___AAIDSessionKind_kind);

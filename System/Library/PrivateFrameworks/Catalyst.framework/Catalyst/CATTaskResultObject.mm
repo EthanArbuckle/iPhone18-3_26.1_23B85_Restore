@@ -1,6 +1,6 @@
 @interface CATTaskResultObject
 - (CATTaskResultObject)init;
-- (CATTaskResultObject)initWithCoder:(id)a3;
+- (CATTaskResultObject)initWithCoder:(id)coder;
 @end
 
 @implementation CATTaskResultObject
@@ -12,7 +12,7 @@
   return [(CATTaskResultObject *)&v3 init];
 }
 
-- (CATTaskResultObject)initWithCoder:(id)a3
+- (CATTaskResultObject)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CATTaskResultObject;

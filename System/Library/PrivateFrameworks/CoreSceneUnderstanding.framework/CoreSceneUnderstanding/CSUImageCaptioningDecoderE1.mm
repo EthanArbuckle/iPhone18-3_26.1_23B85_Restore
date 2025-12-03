@@ -1,39 +1,39 @@
 @interface CSUImageCaptioningDecoderE1
-- (BOOL)compareTensorShapesForShape1:(const void *)a3 Shape2:(unint64_t)a4[5] rank:(unint64_t)a5;
-- (BOOL)loadBridge:(id *)a3;
-- (BOOL)loadDecoder:(id *)a3;
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)populateInputBufferWithBridgeFeatures:(id)a3 WithError:(id *)a4;
-- (BOOL)reshapeEncodedFeaturesBufferForBridgeNet:(id)a3 WithError:(id *)a4;
-- (CSUImageCaptioningDecoderE1)initWithConfiguration:(id)a3;
+- (BOOL)compareTensorShapesForShape1:(const void *)shape1 Shape2:(unint64_t)shape2[5] rank:(unint64_t)rank;
+- (BOOL)loadBridge:(id *)bridge;
+- (BOOL)loadDecoder:(id *)decoder;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)populateInputBufferWithBridgeFeatures:(id)features WithError:(id *)error;
+- (BOOL)reshapeEncodedFeaturesBufferForBridgeNet:(id)net WithError:(id *)error;
+- (CSUImageCaptioningDecoderE1)initWithConfiguration:(id)configuration;
 - (id).cxx_construct;
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6;
-- (id)getBridgeLayerOutput:(id)a3 error:(id *)a4;
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error;
+- (id)getBridgeLayerOutput:(id)output error:(id *)error;
 - (id)getCaptionsAfterGreedyDecodingOnEncodedFeatures;
-- (id)postProcessResults:(id)a3 error:(id *)a4;
-- (vector<float,)nextTokensForInputs:(CSUImageCaptioningDecoderE1 *)self AndforMaskPosition:(SEL)a3;
+- (id)postProcessResults:(id)results error:(id *)error;
+- (vector<float,)nextTokensForInputs:(CSUImageCaptioningDecoderE1 *)self AndforMaskPosition:(SEL)position;
 @end
 
 @implementation CSUImageCaptioningDecoderE1
 
-- (CSUImageCaptioningDecoderE1)initWithConfiguration:(id)a3
+- (CSUImageCaptioningDecoderE1)initWithConfiguration:(id)configuration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v32.receiver = self;
   v32.super_class = CSUImageCaptioningDecoderE1;
   v10 = [(CSUImageCaptioningDecoderE1 *)&v32 init];
   if (v10)
   {
-    if (objc_msgSend_revision(v5, v6, v7, v8, v9) != 1)
+    if (objc_msgSend_revision(configurationCopy, v6, v7, v8, v9) != 1)
     {
 LABEL_17:
-      objc_storeStrong(&v10->_configuration, a3);
+      objc_storeStrong(&v10->_configuration, configuration);
       v25 = v10;
       goto LABEL_18;
     }
 
-    objc_msgSend_supportedComputeDevices(v5, v11, v12, v13, v14);
+    objc_msgSend_supportedComputeDevices(configurationCopy, v11, v12, v13, v14);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -58,7 +58,7 @@ LABEL_17:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              objc_msgSend_setComputeDevice_(v5, v17, v21, v22, v23, v28);
+              objc_msgSend_setComputeDevice_(configurationCopy, v17, v21, v22, v23, v28);
 
               goto LABEL_17;
             }
@@ -88,9 +88,9 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)loadBridge:(id *)a3
+- (BOOL)loadBridge:(id *)bridge
 {
-  v6 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, a3, v3, v4);
+  v6 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, bridge, v3, v4);
 
   if (v6 && !self->_bridgeNet.__ptr_)
   {
@@ -103,7 +103,7 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)loadDecoder:(id *)a3
+- (BOOL)loadDecoder:(id *)decoder
 {
   v39 = *MEMORY[0x1E69E9840];
   if (self->_decoderNet.__ptr_)
@@ -114,7 +114,7 @@ LABEL_18:
 
   else
   {
-    if (objc_msgSend_loadPostProcUtilsWithBeamWidth_error_(self, a2, 3, a3, v3))
+    if (objc_msgSend_loadPostProcUtilsWithBeamWidth_error_(self, a2, 3, decoder, v3))
     {
       v11 = objc_msgSend_decoderNetworkPath(self->_configuration, v7, v8, v9, v10);
       v38 = objc_msgSend_UTF8String(v11, v12, v13, v14, v15);
@@ -145,11 +145,11 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   if (!self->_decoderNet.__ptr_)
   {
-    Decoder = objc_msgSend_loadDecoder_(self, a2, a3, v3, v4);
+    Decoder = objc_msgSend_loadDecoder_(self, a2, resources, v3, v4);
     v18 = objc_msgSend_bridgeNetworkPath(self->_configuration, v14, v15, v16, v17);
 
     if (v18)
@@ -161,7 +161,7 @@ LABEL_18:
   }
 
   Decoder = 1;
-  v8 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, a3, v3, v4);
+  v8 = objc_msgSend_bridgeNetworkPath(self->_configuration, a2, resources, v3, v4);
 
   if (!v8)
   {
@@ -174,21 +174,21 @@ LABEL_3:
   if (!ptr && ((Decoder ^ 1) & 1) == 0)
   {
 
-    return objc_msgSend_loadBridge_(self, v9, a3, v10, v11);
+    return objc_msgSend_loadBridge_(self, v9, resources, v10, v11);
   }
 
   return result;
 }
 
-- (BOOL)compareTensorShapesForShape1:(const void *)a3 Shape2:(unint64_t)a4[5] rank:(unint64_t)a5
+- (BOOL)compareTensorShapesForShape1:(const void *)shape1 Shape2:(unint64_t)shape2[5] rank:(unint64_t)rank
 {
-  if (!a5)
+  if (!rank)
   {
     return 1;
   }
 
-  v5 = *a3 - 8 * a5;
-  if (*(v5 + 32) != *a4)
+  v5 = *shape1 - 8 * rank;
+  if (*(v5 + 32) != *shape2)
   {
     return 0;
   }
@@ -198,20 +198,20 @@ LABEL_3:
   do
   {
     v8 = v7;
-    if (a5 == v7)
+    if (rank == v7)
     {
       break;
     }
 
     v9 = *v6++;
-    v10 = a4[v7++];
+    v10 = shape2[v7++];
   }
 
   while (v9 == v10);
-  return v8 >= a5;
+  return v8 >= rank;
 }
 
-- (vector<float,)nextTokensForInputs:(CSUImageCaptioningDecoderE1 *)self AndforMaskPosition:(SEL)a3
+- (vector<float,)nextTokensForInputs:(CSUImageCaptioningDecoderE1 *)self AndforMaskPosition:(SEL)position
 {
   v99 = *MEMORY[0x1E69E9840];
   begin = self->_inputTokens.shape_.sizes_.__begin_;
@@ -459,27 +459,27 @@ LABEL_40:
   return result;
 }
 
-- (BOOL)populateInputBufferWithBridgeFeatures:(id)a3 WithError:(id *)a4
+- (BOOL)populateInputBufferWithBridgeFeatures:(id)features WithError:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
-  sub_1AC0C1F64(a3);
+  sub_1AC0C1F64(features);
   LOWORD(v5) = 1;
   sub_1AC06910C();
 }
 
-- (BOOL)reshapeEncodedFeaturesBufferForBridgeNet:(id)a3 WithError:(id *)a4
+- (BOOL)reshapeEncodedFeaturesBufferForBridgeNet:(id)net WithError:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
-  sub_1AC0C1F64(a3);
+  sub_1AC0C1F64(net);
   LOWORD(v5) = 1;
   sub_1AC06910C();
 }
 
-- (id)getBridgeLayerOutput:(id)a3 error:(id *)a4
+- (id)getBridgeLayerOutput:(id)output error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ((objc_msgSend_loadBridge_(self, v7, a4, v8, v9) & 1) != 0 && objc_msgSend_reshapeEncodedFeaturesBufferForBridgeNet_WithError_(self, v10, v6, a4, v11))
+  outputCopy = output;
+  if ((objc_msgSend_loadBridge_(self, v7, error, v8, v9) & 1) != 0 && objc_msgSend_reshapeEncodedFeaturesBufferForBridgeNet_WithError_(self, v10, outputCopy, error, v11))
   {
     ptr = self->_bridgeNet.__ptr_;
     v17 = objc_msgSend_inputEncodedFeaturesTensorNameOfBridge(self->_configuration, v12, v13, v14, v15);
@@ -578,23 +578,23 @@ LABEL_40:
   return v37;
 }
 
-- (id)computeDecodedCaptionsForFeatures:(id)a3 withDecodingMethod:(int64_t)a4 runDecoderOnly:(BOOL)a5 error:(id *)a6
+- (id)computeDecodedCaptionsForFeatures:(id)features withDecodingMethod:(int64_t)method runDecoderOnly:(BOOL)only error:(id *)error
 {
-  v10 = a3;
-  if ((objc_msgSend_loadResources_(self, v11, a6, v12, v13) & 1) == 0)
+  featuresCopy = features;
+  if ((objc_msgSend_loadResources_(self, v11, error, v12, v13) & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  if (self->_bridgeNet.__ptr_ && !a5)
+  if (self->_bridgeNet.__ptr_ && !only)
   {
-    v18 = objc_msgSend_getBridgeLayerOutput_error_(self, v14, v10, a6, v15);
+    v18 = objc_msgSend_getBridgeLayerOutput_error_(self, v14, featuresCopy, error, v15);
     if (!v18)
     {
       goto LABEL_6;
     }
 
-    v19 = objc_msgSend_populateInputBufferWithBridgeFeatures_WithError_(self, v16, v18, a6, v17);
+    v19 = objc_msgSend_populateInputBufferWithBridgeFeatures_WithError_(self, v16, v18, error, v17);
 
     if ((v19 & 1) == 0)
     {
@@ -602,7 +602,7 @@ LABEL_40:
     }
 
 LABEL_8:
-    if (a4)
+    if (method)
     {
       objc_msgSend_getCaptionsAfterBeamSearchDecodingOnEncodedFeatures(self, v20, v21, v22, v23);
     }
@@ -615,7 +615,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (objc_msgSend_populateInputBufferWithBridgeFeatures_WithError_(self, v14, v10, a6, v15))
+  if (objc_msgSend_populateInputBufferWithBridgeFeatures_WithError_(self, v14, featuresCopy, error, v15))
   {
     goto LABEL_8;
   }
@@ -1247,16 +1247,16 @@ LABEL_120:
   return v174;
 }
 
-- (id)postProcessResults:(id)a3 error:(id *)a4
+- (id)postProcessResults:(id)results error:(id *)error
 {
-  v6 = a3;
+  resultsCopy = results;
   v11 = objc_msgSend_postProcessingHandler(self->_procUtils, v7, v8, v9, v10);
 
   if (v11)
   {
     v16 = objc_msgSend_postProcessingHandler(self->_procUtils, v12, v13, v14, v15);
     v21 = objc_msgSend_genderOptionForBeamSearch(self->_procUtils, v17, v18, v19, v20);
-    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, v6, v21, a4);
+    v23 = objc_msgSend_postProcessResults_genderOption_error_(v16, v22, resultsCopy, v21, error);
   }
 
   else
@@ -1267,7 +1267,7 @@ LABEL_120:
       sub_1AC1201A0(v24);
     }
 
-    v23 = v6;
+    v23 = resultsCopy;
   }
 
   return v23;

@@ -1,12 +1,12 @@
 @interface VUIFamilySharingEntityRequestResponseParser
-+ (id)_parseContentRatingBag:(id)a3;
-+ (id)_parsePlaybackPositionBag:(id)a3;
-+ (id)_parseRelationship:(id)a3;
-+ (id)_parseRelationshipBag:(id)a3;
-+ (id)mediaEntityFromAMSEntityDictionary:(id)a3;
++ (id)_parseContentRatingBag:(id)bag;
++ (id)_parsePlaybackPositionBag:(id)bag;
++ (id)_parseRelationship:(id)relationship;
++ (id)_parseRelationshipBag:(id)bag;
++ (id)mediaEntityFromAMSEntityDictionary:(id)dictionary;
 - (VUIFamilySharingEntityRequestResponseParser)init;
-- (id)_processRawMediaEntities:(id)a3;
-- (id)parseAMSURLResult:(id)a3;
+- (id)_processRawMediaEntities:(id)entities;
+- (id)parseAMSURLResult:(id)result;
 @end
 
 @implementation VUIFamilySharingEntityRequestResponseParser
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (id)parseAMSURLResult:(id)a3
+- (id)parseAMSURLResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 object];
+  resultCopy = result;
+  object = [resultCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [v7 vui_arrayForKey:@"data"];
+    object2 = [resultCopy object];
+    v8 = [object2 vui_arrayForKey:@"data"];
 
     v9 = [(VUIFamilySharingEntityRequestResponseParser *)self _processRawMediaEntities:v8];
   }
@@ -56,14 +56,14 @@
   return v9;
 }
 
-+ (id)mediaEntityFromAMSEntityDictionary:(id)a3
++ (id)mediaEntityFromAMSEntityDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 vui_stringForKey:@"id"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy vui_stringForKey:@"id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 vui_stringForKey:@"type"];
+    v6 = [dictionaryCopy vui_stringForKey:@"type"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -78,10 +78,10 @@
       goto LABEL_45;
     }
 
-    v7 = [v4 vui_dictionaryForKey:@"relationships"];
+    v7 = [dictionaryCopy vui_dictionaryForKey:@"relationships"];
     if (v7)
     {
-      v8 = [a1 _parseRelationshipBag:v7];
+      v8 = [self _parseRelationshipBag:v7];
     }
 
     else
@@ -89,7 +89,7 @@
       v8 = 0;
     }
 
-    v12 = [v4 vui_dictionaryForKey:@"attributes"];
+    v12 = [dictionaryCopy vui_dictionaryForKey:@"attributes"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -146,7 +146,7 @@
     }
 
     v51 = v15;
-    v50 = [v15 firstObject];
+    firstObject = [v15 firstObject];
     v56 = [v12 vui_numberForKey:@"episodeSeasonNumber"];
     v55 = [v12 vui_numberForKey:@"episodeNumber"];
     v54 = [v12 vui_stringForKey:@"iTunesExtrasUrl"];
@@ -167,7 +167,7 @@
       }
 
       v10 = 0;
-      v27 = v50;
+      v27 = firstObject;
       goto LABEL_41;
     }
 
@@ -180,7 +180,7 @@
     v41 = v17;
     v47 = [v18 dateFromString:v17];
     v39 = [v12 vui_dictionaryForKey:@"contentRatingsBySystem"];
-    v46 = [a1 _parseContentRatingBag:?];
+    v46 = [self _parseContentRatingBag:?];
     v38 = [v12 vui_dictionaryForKey:@"previewArtwork"];
     v45 = [v38 vui_stringForKey:@"url"];
     v44 = [v12 vui_stringForKey:@"name"];
@@ -229,8 +229,8 @@ LABEL_36:
     [(VUIFamilySharingEntity *)v29 setStandardDescription:v52];
     [(VUIFamilySharingEntity *)v29 setReleaseDate:v47];
     [(VUIFamilySharingEntity *)v29 setContentRating:v46];
-    v27 = v50;
-    [(VUIFamilySharingEntity *)v29 setGenreTitle:v50];
+    v27 = firstObject;
+    [(VUIFamilySharingEntity *)v29 setGenreTitle:firstObject];
     [(VUIFamilySharingEntity *)v29 setPersonalizedOfferListing:v14];
     [(VUIFamilySharingEntity *)v29 setITunesExtrasUrl:v54];
     if ([v37 count])
@@ -272,16 +272,16 @@ LABEL_46:
   return v10;
 }
 
-- (id)_processRawMediaEntities:(id)a3
+- (id)_processRawMediaEntities:(id)entities
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = entitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -329,21 +329,21 @@ LABEL_46:
   return v13;
 }
 
-+ (id)_parseRelationshipBag:(id)a3
++ (id)_parseRelationshipBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = objc_alloc_init(VUIFamilySharingRelationships);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 vui_dictionaryForKey:@"seasons"];
-    v7 = [a1 _parseRelationship:v6];
+    v6 = [bagCopy vui_dictionaryForKey:@"seasons"];
+    v7 = [self _parseRelationship:v6];
     [(VUIFamilySharingRelationships *)v5 setSeason:v7];
-    v8 = [v4 vui_dictionaryForKey:@"shows"];
-    v9 = [a1 _parseRelationship:v8];
+    v8 = [bagCopy vui_dictionaryForKey:@"shows"];
+    v9 = [self _parseRelationship:v8];
     [(VUIFamilySharingRelationships *)v5 setShow:v9];
-    v10 = [v4 vui_dictionaryForKey:@"playback-position"];
-    v11 = [a1 _parsePlaybackPositionBag:v10];
+    v10 = [bagCopy vui_dictionaryForKey:@"playback-position"];
+    v11 = [self _parsePlaybackPositionBag:v10];
     [(VUIFamilySharingRelationships *)v5 setPlaybackPosition:v11];
   }
 
@@ -360,19 +360,19 @@ LABEL_46:
   return v5;
 }
 
-+ (id)_parsePlaybackPositionBag:(id)a3
++ (id)_parsePlaybackPositionBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   v4 = objc_alloc_init(VUIFamilySharingPlaybackPositionRelationship);
-  v5 = [v3 vui_arrayForKey:@"data"];
+  v5 = [bagCopy vui_arrayForKey:@"data"];
 
   if (v5 && [v5 count])
   {
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (v6)
+    firstObject = [v5 firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 vui_stringForKey:@"id"];
+      v8 = [firstObject vui_stringForKey:@"id"];
       [(VUIFamilySharingRelationship *)v4 setIdentifier:v8];
       v9 = [v7 vui_dictionaryForKey:@"attributes"];
       v10 = v9;
@@ -389,15 +389,15 @@ LABEL_46:
   return v4;
 }
 
-+ (id)_parseContentRatingBag:(id)a3
++ (id)_parseContentRatingBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 allKeys];
-    v5 = [v4 firstObject];
-    v6 = [v3 objectForKey:v5];
+    allKeys = [bagCopy allKeys];
+    firstObject = [allKeys firstObject];
+    v6 = [bagCopy objectForKey:firstObject];
     v7 = v6;
     if (v6)
     {
@@ -407,18 +407,18 @@ LABEL_46:
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 firstObject];
+        firstObject2 = [v10 firstObject];
       }
 
       else
       {
-        v12 = &stru_1F5DB25C0;
+        firstObject2 = &stru_1F5DB25C0;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v9 unsignedIntegerValue];
-        v15 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:v5 ratingLabel:v8 rank:v16 ratingDescription:v12];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        v15 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:firstObject ratingLabel:v8 rank:unsignedIntegerValue ratingDescription:firstObject2];
       }
 
       else
@@ -450,20 +450,20 @@ LABEL_46:
   return v14;
 }
 
-+ (id)_parseRelationship:(id)a3
++ (id)_parseRelationship:(id)relationship
 {
-  v4 = a3;
+  relationshipCopy = relationship;
   v5 = objc_alloc_init(VUIFamilySharingRelationship);
-  v6 = [v4 vui_arrayForKey:@"data"];
+  v6 = [relationshipCopy vui_arrayForKey:@"data"];
 
   if (!v6)
   {
     goto LABEL_14;
   }
 
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (!v7)
+  firstObject = [v6 firstObject];
+  v8 = firstObject;
+  if (!firstObject)
   {
 LABEL_13:
 
@@ -472,14 +472,14 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v9 = [v7 vui_stringForKey:@"id"];
+  v9 = [firstObject vui_stringForKey:@"id"];
   [(VUIFamilySharingRelationship *)v5 setIdentifier:v9];
   v10 = [v8 vui_dictionaryForKey:@"attributes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v29 = [v10 vui_dictionaryForKey:@"contentRatingsBySystem"];
-    v28 = [a1 _parseContentRatingBag:?];
+    v28 = [self _parseContentRatingBag:?];
     [(VUIFamilySharingRelationship *)v5 setContentRating:?];
     v27 = [v10 vui_dictionaryForKey:@"description"];
     v26 = [v27 vui_stringForKey:@"standard"];
@@ -494,8 +494,8 @@ LABEL_14:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 firstObject];
-      [(VUIFamilySharingRelationship *)v5 setGenreTitle:v15];
+      firstObject2 = [v13 firstObject];
+      [(VUIFamilySharingRelationship *)v5 setGenreTitle:firstObject2];
     }
 
     v16 = [v10 vui_dictionaryForKey:@"widescreenArtwork"];

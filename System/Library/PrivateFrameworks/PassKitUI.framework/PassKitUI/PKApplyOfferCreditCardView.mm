@@ -1,6 +1,6 @@
 @interface PKApplyOfferCreditCardView
 - (BOOL)showSchumerBox;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKApplyOfferCreditCardView)init;
 - (void)layoutSubviews;
 @end
@@ -22,8 +22,8 @@
     v2->_creditLimitTitleLabel = v6;
 
     v8 = v2->_creditLimitTitleLabel;
-    v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v8 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v2->_creditLimitTitleLabel setFont:v3];
     [(UILabel *)v2->_creditLimitTitleLabel setTextAlignment:v5];
@@ -34,8 +34,8 @@
 
     [(UILabel *)v2->_creditLimitLabel setFont:v4];
     v12 = v2->_creditLimitLabel;
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v12 setTextColor:labelColor];
 
     [(UILabel *)v2->_creditLimitLabel setTextAlignment:v5];
     [(UILabel *)v2->_creditLimitLabel setAdjustsFontSizeToFitWidth:1];
@@ -46,8 +46,8 @@
 
     [(UILabel *)v2->_aprForPurchaseTitleLabel setFont:v3];
     v16 = v2->_aprForPurchaseTitleLabel;
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v16 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v2->_aprForPurchaseTitleLabel setTextAlignment:v5];
     [(PKApplyOfferCreditCardView *)v2 addSubview:v2->_aprForPurchaseTitleLabel];
@@ -57,8 +57,8 @@
 
     [(UILabel *)v2->_aprForPurchaseLabel setFont:v4];
     v20 = v2->_aprForPurchaseLabel;
-    v21 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v20 setTextColor:v21];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v20 setTextColor:labelColor2];
 
     [(UILabel *)v2->_aprForPurchaseLabel setTextAlignment:v5];
     [(UILabel *)v2->_aprForPurchaseLabel setAdjustsFontSizeToFitWidth:1];
@@ -69,8 +69,8 @@
 
     [(UILabel *)v2->_feeTitleLabel setTextAlignment:v5];
     v24 = v2->_feeTitleLabel;
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v24 setTextColor:v25];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v24 setTextColor:secondaryLabelColor3];
 
     [(UILabel *)v2->_feeTitleLabel setFont:v3];
     [(PKApplyOfferCreditCardView *)v2 addSubview:v2->_feeTitleLabel];
@@ -81,8 +81,8 @@
     [(UILabel *)v2->_feeLabel setTextAlignment:v5];
     [(UILabel *)v2->_feeLabel setFont:v4];
     v28 = v2->_feeLabel;
-    v29 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v28 setTextColor:v29];
+    labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v28 setTextColor:labelColor3];
 
     [(UILabel *)v2->_feeLabel setAdjustsFontSizeToFitWidth:1];
     [(PKApplyOfferCreditCardView *)v2 addSubview:v2->_feeLabel];
@@ -91,8 +91,8 @@
     v2->_dividerLeft = v30;
 
     v32 = v2->_dividerLeft;
-    v33 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v32 setBackgroundColor:v33];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v32 setBackgroundColor:separatorColor];
 
     [(PKApplyOfferCreditCardView *)v2 addSubview:v2->_dividerLeft];
     v34 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -100,8 +100,8 @@
     v2->_dividerRight = v34;
 
     v36 = v2->_dividerRight;
-    v37 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v36 setBackgroundColor:v37];
+    separatorColor2 = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v36 setBackgroundColor:separatorColor2];
 
     [(PKApplyOfferCreditCardView *)v2 addSubview:v2->_dividerRight];
     v38 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -200,10 +200,10 @@
   [(UILabel *)self->_bodyLabel setFrame:x, v29, Width, v30];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_bodyLabel sizeThatFits:a3.width, 1.79769313e308];
+  width = fits.width;
+  [(UILabel *)self->_bodyLabel sizeThatFits:fits.width, 1.79769313e308];
   v6 = v5 + 0.0;
   if ([(PKApplyOfferCreditCardView *)self showSchumerBox])
   {
@@ -222,24 +222,24 @@
 
 - (BOOL)showSchumerBox
 {
-  v3 = [(UILabel *)self->_creditLimitLabel text];
-  if ([v3 length])
+  text = [(UILabel *)self->_creditLimitLabel text];
+  if ([text length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UILabel *)self->_feeLabel text];
-    if ([v5 length])
+    text2 = [(UILabel *)self->_feeLabel text];
+    if ([text2 length])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(UILabel *)self->_aprForPurchaseLabel text];
-      v4 = [v6 length] != 0;
+      text3 = [(UILabel *)self->_aprForPurchaseLabel text];
+      v4 = [text3 length] != 0;
     }
   }
 

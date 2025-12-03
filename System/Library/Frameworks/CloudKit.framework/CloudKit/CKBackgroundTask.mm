@@ -1,14 +1,14 @@
 @interface CKBackgroundTask
-+ (CKBackgroundTask)allocWithZone:(_NSZone *)a3;
++ (CKBackgroundTask)allocWithZone:(_NSZone *)zone;
 - (BOOL)_useExpiringActivity;
-- (BOOL)expiredWithRetryAfter:(double)a3 error:(id *)a4;
-- (CKBackgroundTask)initWithIdentifier:(id)a3;
+- (BOOL)expiredWithRetryAfter:(double)after error:(id *)error;
+- (CKBackgroundTask)initWithIdentifier:(id)identifier;
 - (id)expirationHandler;
 - (int64_t)state;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)complete;
 - (void)dealloc;
-- (void)setExpirationHandler:(id)a3;
+- (void)setExpirationHandler:(id)handler;
 - (void)start;
 @end
 
@@ -197,31 +197,31 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (CKBackgroundTask)allocWithZone:(_NSZone *)a3
++ (CKBackgroundTask)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return objc_msgSend_allocWithZone_(_CKBackgroundTask, v5, a3);
+    return objc_msgSend_allocWithZone_(_CKBackgroundTask, v5, zone);
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKBackgroundTask;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (CKBackgroundTask)initWithIdentifier:(id)a3
+- (CKBackgroundTask)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CKBackgroundTask;
   v7 = [(CKBackgroundTask *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(identifierCopy, v5, v6);
     identifier = v7->_identifier;
     v7->_identifier = v8;
   }
@@ -238,12 +238,12 @@
   return v3;
 }
 
-- (void)setExpirationHandler:(id)a3
+- (void)setExpirationHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_expirationHandler != v4 && (v5 = _Block_copy(v4), expirationHandler = self->_expirationHandler, self->_expirationHandler = v5, expirationHandler, v4) && self->_state == 2)
+  if (self->_expirationHandler != handlerCopy && (v5 = _Block_copy(handlerCopy), expirationHandler = self->_expirationHandler, self->_expirationHandler = v5, expirationHandler, handlerCopy) && self->_state == 2)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -261,7 +261,7 @@
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -280,7 +280,7 @@
   return isManaged;
 }
 
-- (BOOL)expiredWithRetryAfter:(double)a3 error:(id *)a4
+- (BOOL)expiredWithRetryAfter:(double)after error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = NSStringFromSelector(sel_state);
@@ -302,7 +302,7 @@
       v18 = 138412546;
       v19 = v13;
       v20 = 2048;
-      v21 = a3;
+      afterCopy = after;
       _os_log_impl(&dword_1883EA000, v10, OS_LOG_TYPE_INFO, "[%@] Expired with retry after: %g", &v18, 0x16u);
     }
 
@@ -318,54 +318,54 @@
   return 1;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v47 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_identifier(self, v4, v5);
-  objc_msgSend_addProperty_value_shouldRedact_(v47, v7, @"identifier", v6, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"identifier", v6, 0);
 
   v10 = objc_msgSend_state(self, v8, v9);
   if (v10 > 4)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v11, @"state", @"Unknown", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"state", @"Unknown", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v11, @"state", off_1E70BFDF0[v10], 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"state", off_1E70BFDF0[v10], 0);
   }
 
   v14 = objc_msgSend_priority(self, v12, v13);
   if (v14 > 3)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v15, @"priority", @"Unknown", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v15, @"priority", @"Unknown", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v15, @"priority", off_1E70BFE18[v14], 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v15, @"priority", off_1E70BFE18[v14], 0);
   }
 
   v18 = MEMORY[0x1E696AD98];
   isDataBudgeted = objc_msgSend_isDataBudgeted(self, v16, v17);
   v21 = objc_msgSend_numberWithBool_(v18, v20, isDataBudgeted);
-  objc_msgSend_addProperty_value_shouldRedact_(v47, v22, @"dataBudgeted", v21, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v22, @"dataBudgeted", v21, 0);
 
   v23 = MEMORY[0x1E696AD98];
   v26 = objc_msgSend_requiresInexpensiveNetworkConnectivity(self, v24, v25);
   v28 = objc_msgSend_numberWithBool_(v23, v27, v26);
-  objc_msgSend_addProperty_value_shouldRedact_(v47, v29, @"requiresInexpensiveNetworkConnectivity", v28, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v29, @"requiresInexpensiveNetworkConnectivity", v28, 0);
 
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
     Property = objc_getProperty(self, v30, 48, 1);
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v32, @"activity", Property, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v32, @"activity", Property, 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v30, @"activity", 0, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v30, @"activity", 0, 0);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -377,7 +377,7 @@
   if (v42 != *MEMORY[0x1E69C7698])
   {
     v45 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v43, v44, v42);
-    objc_msgSend_addProperty_value_shouldRedact_(v47, v46, @"runTimeRemaining", v45, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v46, @"runTimeRemaining", v45, 0);
   }
 }
 

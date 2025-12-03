@@ -1,20 +1,20 @@
 @interface MKBookmark
-- (MKBookmark)initWithData:(id)a3;
+- (MKBookmark)initWithData:(id)data;
 @end
 
 @implementation MKBookmark
 
-- (MKBookmark)initWithData:(id)a3
+- (MKBookmark)initWithData:(id)data
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = MKBookmark;
   v5 = [(MKBookmark *)&v23 init];
   if (v5)
   {
     v22 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v22];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v22];
     v7 = v22;
     if (v7)
     {
@@ -62,9 +62,9 @@ LABEL_14:
       v27[0] = @"WebBookmarkTypeLeaf";
       v26[0] = @"WebBookmarkType";
       v26[1] = @"WebBookmarkUUID";
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      v14 = [v13 UUIDString];
-      v27[1] = v14;
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v27[1] = uUIDString;
       v26[2] = @"URIDictionary";
       title = v5->_title;
       v24 = @"title";

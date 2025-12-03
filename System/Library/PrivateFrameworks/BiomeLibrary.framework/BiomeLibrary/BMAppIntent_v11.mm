@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMAppIntent_v11;
-  v2 = [(BMAppIntent *)&v4 handlingStatus];
-  if (v2 < 7)
+  handlingStatus = [(BMAppIntent *)&v4 handlingStatus];
+  if (handlingStatus < 7)
   {
-    return v2 + 1;
+    return handlingStatus + 1;
   }
 
   else

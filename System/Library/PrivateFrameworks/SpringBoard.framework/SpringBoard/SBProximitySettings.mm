@@ -10,8 +10,8 @@
   v4 = __sb__runningInSpringBoard();
   if (!v4)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if (![v2 userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if (![currentDevice userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
     {
       v9 = SBUIIsSystemApertureEnabled();
 

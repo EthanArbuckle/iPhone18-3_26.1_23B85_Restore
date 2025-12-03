@@ -1,17 +1,17 @@
 @interface MFMailMessageLibraryPopulateSendersTableMigrationStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryPopulateSendersTableMigrationStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = +[MailAccount mailAccounts];
   v5 = [v4 ef_compactMap:&__block_literal_global_42];
 
   v6 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v7 = [MEMORY[0x1E699B628] runWithConnection:v3 sentMailboxURLs:v5 contactStore:v6];
+  v7 = [MEMORY[0x1E699B628] runWithConnection:connectionCopy sentMailboxURLs:v5 contactStore:v6];
 
   return v7 ^ 1;
 }

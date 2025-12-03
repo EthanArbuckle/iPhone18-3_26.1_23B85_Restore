@@ -1,35 +1,35 @@
 @interface RBSProcessStateDescriptor
 + (id)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
 - (RBSProcessStateDescriptor)init;
-- (RBSProcessStateDescriptor)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessStateDescriptor)initWithRBSXPCCoder:(id)coder;
 - (id)_endowmentNamespaces;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)filterState:(id)a3;
-- (void)setEndowmentNamespaces:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)filterState:(id)state;
+- (void)setEndowmentNamespaces:(id)namespaces;
 @end
 
 @implementation RBSProcessStateDescriptor
 
 + (id)descriptor
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (id)_endowmentNamespaces
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (RBSProcessStateDescriptor)init
@@ -63,8 +63,8 @@
   v8 = [(NSSet *)self->_endowmentNamespaces count];
   if (v8)
   {
-    v2 = [(NSSet *)self->_endowmentNamespaces allObjects];
-    v9 = [v2 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_endowmentNamespaces allObjects];
+    v9 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -96,9 +96,9 @@
   return v5;
 }
 
-- (void)setEndowmentNamespaces:(id)a3
+- (void)setEndowmentNamespaces:(id)namespaces
 {
-  if (a3)
+  if (namespaces)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithArray:?];
   }
@@ -114,10 +114,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)filterState:(id)a3
+- (void)filterState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   values = self->_values;
   if (values)
   {
@@ -129,7 +129,7 @@
 
   else
   {
-    [v4 setTaskState:0];
+    [stateCopy setTaskState:0];
     [v5 setDebugState:0];
     if ((values & 4) != 0)
     {
@@ -156,8 +156,8 @@ LABEL_13:
     if (-[NSSet count](self->_endowmentNamespaces, "count") && ([v5 endowmentNamespaces], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
       v8 = [(NSSet *)self->_endowmentNamespaces mutableCopy];
-      v9 = [v5 endowmentNamespaces];
-      [v8 intersectSet:v9];
+      endowmentNamespaces = [v5 endowmentNamespaces];
+      [v8 intersectSet:endowmentNamespaces];
 
       if ([v8 count])
       {
@@ -249,9 +249,9 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  v11 = [v5 endowmentInfos];
+  endowmentInfos = [v5 endowmentInfos];
 
-  if (!v11)
+  if (!endowmentInfos)
   {
     goto LABEL_28;
   }
@@ -263,7 +263,7 @@ LABEL_24:
   v25 = __Block_byref_object_copy__2;
   v26 = __Block_byref_object_dispose__2;
   v27 = [MEMORY[0x1E695DFA8] set];
-  v13 = [v5 endowmentInfos];
+  endowmentInfos2 = [v5 endowmentInfos];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __41__RBSProcessStateDescriptor_filterState___block_invoke;
@@ -271,7 +271,7 @@ LABEL_24:
   v14 = v12;
   v20 = v14;
   v21 = &v22;
-  [v13 enumerateObjectsUsingBlock:&v16];
+  [endowmentInfos2 enumerateObjectsUsingBlock:&v16];
 
   if ([v23[5] count])
   {
@@ -303,10 +303,10 @@ void __41__RBSProcessStateDescriptor_filterState___block_invoke(uint64_t a1, voi
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_14;
@@ -315,7 +315,7 @@ void __41__RBSProcessStateDescriptor_filterState___block_invoke(uint64_t a1, voi
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     if (self->_values != v7->_values)
     {
@@ -359,7 +359,7 @@ LABEL_14:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RBSProcessStateDescriptor allocWithZone:?]];
   v4->_values = self->_values;
@@ -370,24 +370,24 @@ LABEL_14:
   return v4;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   values = self->_values;
-  v5 = a3;
-  [v5 encodeUInt64:values forKey:@"_values"];
-  v6 = [(RBSProcessStateDescriptor *)self endowmentNamespaces];
-  [v5 encodeObject:v6 forKey:@"_endowmentNamespaces"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:values forKey:@"_values"];
+  endowmentNamespaces = [(RBSProcessStateDescriptor *)self endowmentNamespaces];
+  [coderCopy encodeObject:endowmentNamespaces forKey:@"_endowmentNamespaces"];
 }
 
-- (RBSProcessStateDescriptor)initWithRBSXPCCoder:(id)a3
+- (RBSProcessStateDescriptor)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RBSProcessStateDescriptor *)self init];
   if (v5)
   {
-    v5->_values = [v4 decodeUInt64ForKey:@"_values"];
+    v5->_values = [coderCopy decodeUInt64ForKey:@"_values"];
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_endowmentNamespaces"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"_endowmentNamespaces"];
     endowmentNamespaces = v5->_endowmentNamespaces;
     v5->_endowmentNamespaces = v7;
   }

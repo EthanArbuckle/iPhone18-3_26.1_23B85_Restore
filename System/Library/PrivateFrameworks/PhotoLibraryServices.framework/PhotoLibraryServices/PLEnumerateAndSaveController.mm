@@ -1,20 +1,20 @@
 @interface PLEnumerateAndSaveController
-+ (BOOL)_concurrencyLimiterEnabledForContext:(id)a3;
-+ (void)disableConcurrencyLimiterForContext:(id)a3;
-- (BOOL)processObjectsWithError:(id *)a3;
-- (PLEnumerateAndSaveController)initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultBlock:(id)a9;
-- (PLEnumerateAndSaveController)initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultsBlock:(id)a9;
-- (id)_initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultBlock:(id)a9 processResultsBlock:(id)a10;
-- (void)_inq_runOperationWithObjectIDs:(id)a3 onContext:(id)a4;
++ (BOOL)_concurrencyLimiterEnabledForContext:(id)context;
++ (void)disableConcurrencyLimiterForContext:(id)context;
+- (BOOL)processObjectsWithError:(id *)error;
+- (PLEnumerateAndSaveController)initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultBlock:(id)resultBlock;
+- (PLEnumerateAndSaveController)initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultsBlock:(id)resultsBlock;
+- (id)_initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultBlock:(id)resultBlock processResultsBlock:(id)self0;
+- (void)_inq_runOperationWithObjectIDs:(id)ds onContext:(id)context;
 @end
 
 @implementation PLEnumerateAndSaveController
 
-- (BOOL)processObjectsWithError:(id *)a3
+- (BOOL)processObjectsWithError:(id *)error
 {
   atomic_store(0, &self->_cancelled);
-  v5 = [(PLEnumerateAndSaveController *)self originalFetchRequest];
-  v6 = [v5 copy];
+  originalFetchRequest = [(PLEnumerateAndSaveController *)self originalFetchRequest];
+  v6 = [originalFetchRequest copy];
 
   [v6 setResultType:1];
   [v6 setIncludesPropertyValues:0];
@@ -31,21 +31,21 @@
   v54 = __Block_byref_object_copy__99573;
   v55 = __Block_byref_object_dispose__99574;
   v56 = 0;
-  v7 = [(PLEnumerateAndSaveController *)self originalContext];
-  v34 = [objc_opt_class() _concurrencyLimiterEnabledForContext:v7];
+  originalContext = [(PLEnumerateAndSaveController *)self originalContext];
+  v34 = [objc_opt_class() _concurrencyLimiterEnabledForContext:originalContext];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__PLEnumerateAndSaveController_processObjectsWithError___block_invoke;
   aBlock[3] = &unk_1E7578898;
   v49 = &v57;
-  v8 = v7;
+  v8 = originalContext;
   v47 = v8;
   v9 = v6;
   v48 = v9;
   v50 = &v51;
   v10 = _Block_copy(aBlock);
-  v11 = [v8 concurrencyType];
-  if (*MEMORY[0x1E695D708] == v11 || !v11)
+  concurrencyType = [v8 concurrencyType];
+  if (*MEMORY[0x1E695D708] == concurrencyType || !concurrencyType)
   {
     v10[2](v10);
   }
@@ -65,8 +65,8 @@
     if (v34)
     {
       v16 = +[PLConcurrencyLimiter sharedLimiter];
-      v17 = [v12 photoLibrary];
-      [v16 sync:v15 identifyingBlock:v13 library:v17];
+      photoLibrary = [v12 photoLibrary];
+      [v16 sync:v15 identifyingBlock:v13 library:photoLibrary];
     }
 
     else
@@ -79,7 +79,7 @@
   {
     [(PLEnumerateAndSaveController *)self setSucceeded:0];
     [(PLEnumerateAndSaveController *)self setFirstError:v52[5]];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -87,16 +87,16 @@
     goto LABEL_17;
   }
 
-  v18 = [(PLEnumerateAndSaveController *)self didFetchObjectIDsBlock];
+  didFetchObjectIDsBlock = [(PLEnumerateAndSaveController *)self didFetchObjectIDsBlock];
 
-  if (v18)
+  if (didFetchObjectIDsBlock)
   {
-    v19 = [(PLEnumerateAndSaveController *)self didFetchObjectIDsBlock];
-    v19[2](v19, v58[5]);
+    didFetchObjectIDsBlock2 = [(PLEnumerateAndSaveController *)self didFetchObjectIDsBlock];
+    didFetchObjectIDsBlock2[2](didFetchObjectIDsBlock2, v58[5]);
   }
 
-  v20 = [(PLEnumerateAndSaveController *)self itemsPerBatch];
-  v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v20];
+  itemsPerBatch = [(PLEnumerateAndSaveController *)self itemsPerBatch];
+  v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:itemsPerBatch];
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = v58[5];
   v38[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@
   v24 = v21;
   v39 = v24;
   v41 = &v57;
-  v42 = v20;
+  v42 = itemsPerBatch;
   v25 = v22;
   v40 = v25;
   [v23 enumerateObjectsUsingBlock:v38];
@@ -117,10 +117,10 @@
 
   else
   {
-    v27 = [(PLEnumerateAndSaveController *)self operationName];
-    v28 = [v27 UTF8String];
+    operationName = [(PLEnumerateAndSaveController *)self operationName];
+    uTF8String = [operationName UTF8String];
     v29 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v26 = dispatch_queue_create(v28, v29);
+    v26 = dispatch_queue_create(uTF8String, v29);
   }
 
   v30 = [v25 count];
@@ -134,19 +134,19 @@
   v31 = v25;
   dispatch_apply(v30, v26, block);
 
-  if (a3)
+  if (error)
   {
 LABEL_17:
-    *a3 = [(PLEnumerateAndSaveController *)self firstError];
+    *error = [(PLEnumerateAndSaveController *)self firstError];
   }
 
 LABEL_18:
-  v32 = [(PLEnumerateAndSaveController *)self succeeded];
+  succeeded = [(PLEnumerateAndSaveController *)self succeeded];
 
   _Block_object_dispose(&v51, 8);
   _Block_object_dispose(&v57, 8);
 
-  return v32;
+  return succeeded;
 }
 
 void __56__PLEnumerateAndSaveController_processObjectsWithError___block_invoke(void *a1)
@@ -249,36 +249,36 @@ void __56__PLEnumerateAndSaveController_processObjectsWithError___block_invoke_6
   [v2 pl_performBlockAndWait:v4];
 }
 
-- (void)_inq_runOperationWithObjectIDs:(id)a3 onContext:(id)a4
+- (void)_inq_runOperationWithObjectIDs:(id)ds onContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v7 = a4;
-  if (!v7)
+  dsCopy = ds;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v8 = [(PLEnumerateAndSaveController *)self originalFetchRequest];
-  v9 = [v8 copy];
+  originalFetchRequest = [(PLEnumerateAndSaveController *)self originalFetchRequest];
+  v9 = [originalFetchRequest copy];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v33];
-  [v9 setPredicate:v10];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", dsCopy];
+  [v9 setPredicate:dsCopy];
 
   v40 = 0;
-  v34 = [v7 executeFetchRequest:v9 error:&v40];
+  v34 = [contextCopy executeFetchRequest:v9 error:&v40];
   v32 = v40;
   if (v34)
   {
-    v11 = [(PLEnumerateAndSaveController *)self processResultsBlock];
+    processResultsBlock = [(PLEnumerateAndSaveController *)self processResultsBlock];
 
-    if (v11)
+    if (processResultsBlock)
     {
       v12 = objc_autoreleasePoolPush();
       buf[0] = 0;
-      v13 = [(PLEnumerateAndSaveController *)self processResultsBlock];
-      (v13)[2](v13, v7, v34, buf);
+      processResultsBlock2 = [(PLEnumerateAndSaveController *)self processResultsBlock];
+      (processResultsBlock2)[2](processResultsBlock2, contextCopy, v34, buf);
 
       if (buf[0] == 1)
       {
@@ -311,8 +311,8 @@ void __56__PLEnumerateAndSaveController_processObjectsWithError___block_invoke_6
             v21 = *(*(&v36 + 1) + 8 * i);
             v22 = objc_autoreleasePoolPush();
             buf[0] = 0;
-            v23 = [(PLEnumerateAndSaveController *)self processResultBlock];
-            (v23)[2](v23, v7, v21, buf);
+            processResultBlock = [(PLEnumerateAndSaveController *)self processResultBlock];
+            (processResultBlock)[2](processResultBlock, contextCopy, v21, buf);
 
             if (buf[0] == 1)
             {
@@ -337,10 +337,10 @@ void __56__PLEnumerateAndSaveController_processObjectsWithError___block_invoke_6
 LABEL_23:
     }
 
-    v24 = [v7 hasChanges];
+    hasChanges = [contextCopy hasChanges];
     if ([(PLEnumerateAndSaveController *)self isReadOnly])
     {
-      if (v24)
+      if (hasChanges)
       {
         v25 = PLBackendGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -352,49 +352,49 @@ LABEL_23:
 
       if ([(PLEnumerateAndSaveController *)self shouldResetAfterSave])
       {
-        [v7 reset];
+        [contextCopy reset];
       }
     }
 
-    else if (v24)
+    else if (hasChanges)
     {
       v35 = 0;
-      v26 = [v7 save:&v35];
+      v26 = [contextCopy save:&v35];
       v27 = v35;
       if ((v26 & 1) == 0)
       {
         v28 = PLBackendGetLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v29 = [(PLEnumerateAndSaveController *)self operationName];
+          operationName = [(PLEnumerateAndSaveController *)self operationName];
           *buf = 138412546;
-          v42 = v29;
+          v42 = operationName;
           v43 = 2112;
           v44 = v27;
           _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "PLEnumerateAndSaveController (%@) error saving changes from batch: %@, cancelling remaining operations.", buf, 0x16u);
         }
 
-        v30 = self;
-        objc_sync_enter(v30);
-        if ([(PLEnumerateAndSaveController *)v30 succeeded])
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        if ([(PLEnumerateAndSaveController *)selfCopy succeeded])
         {
-          [(PLEnumerateAndSaveController *)v30 setSucceeded:0];
-          [(PLEnumerateAndSaveController *)v30 setFirstError:v27];
+          [(PLEnumerateAndSaveController *)selfCopy setSucceeded:0];
+          [(PLEnumerateAndSaveController *)selfCopy setFirstError:v27];
         }
 
-        objc_sync_exit(v30);
+        objc_sync_exit(selfCopy);
 
-        atomic_store(1u, &v30->_cancelled);
+        atomic_store(1u, &selfCopy->_cancelled);
       }
 
       if ([(PLEnumerateAndSaveController *)self shouldResetAfterSave])
       {
-        [v7 reset];
+        [contextCopy reset];
       }
 
       else if ([(PLEnumerateAndSaveController *)self shouldRefreshAllAfterSave])
       {
-        [v7 refreshAllObjects];
+        [contextCopy refreshAllObjects];
       }
     }
   }
@@ -404,56 +404,56 @@ LABEL_23:
     v14 = PLBackendGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(PLEnumerateAndSaveController *)self operationName];
+      operationName2 = [(PLEnumerateAndSaveController *)self operationName];
       *buf = 138412546;
-      v42 = v15;
+      v42 = operationName2;
       v43 = 2112;
       v44 = v32;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "PLEnumerateAndSaveController (%@) error fetching batch: %@, cancelling remaining operations.", buf, 0x16u);
     }
 
-    v16 = self;
-    objc_sync_enter(v16);
-    if ([(PLEnumerateAndSaveController *)v16 succeeded])
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    if ([(PLEnumerateAndSaveController *)selfCopy2 succeeded])
     {
-      [(PLEnumerateAndSaveController *)v16 setSucceeded:0];
-      [(PLEnumerateAndSaveController *)v16 setFirstError:v32];
+      [(PLEnumerateAndSaveController *)selfCopy2 setSucceeded:0];
+      [(PLEnumerateAndSaveController *)selfCopy2 setFirstError:v32];
     }
 
-    objc_sync_exit(v16);
+    objc_sync_exit(selfCopy2);
 
-    atomic_store(1u, &v16->_cancelled);
+    atomic_store(1u, &selfCopy2->_cancelled);
   }
 }
 
-- (id)_initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultBlock:(id)a9 processResultsBlock:(id)a10
+- (id)_initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultBlock:(id)resultBlock processResultsBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v44 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = v16;
-  v21 = a9;
-  v22 = a10;
+  nameCopy = name;
+  requestCopy = request;
+  contextCopy = context;
+  blockCopy = block;
+  dsBlockCopy = dsBlock;
+  v20 = nameCopy;
+  resultBlockCopy = resultBlock;
+  resultsBlockCopy = resultsBlock;
   v43 = v20;
   if (!v20)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v23 = v17;
-  v24 = self;
+  v23 = requestCopy;
+  selfCopy = self;
   if (!v23)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:v24 file:@"PLEnumerateAndSaveController.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PLEnumerateAndSaveController.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
-  if (v44)
+  if (contextCopy)
   {
-    if (v18)
+    if (blockCopy)
     {
       goto LABEL_7;
     }
@@ -461,42 +461,42 @@ LABEL_23:
 
   else
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:v24 file:@"PLEnumerateAndSaveController.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PLEnumerateAndSaveController.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    if (v18)
+    if (blockCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v40 handleFailureInMethod:a2 object:v24 file:@"PLEnumerateAndSaveController.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"generateContextBlock"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PLEnumerateAndSaveController.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"generateContextBlock"}];
 
 LABEL_7:
-  v45.receiver = v24;
+  v45.receiver = selfCopy;
   v45.super_class = PLEnumerateAndSaveController;
   v25 = [(PLEnumerateAndSaveController *)&v45 init];
   v26 = v25;
   if (v25)
   {
-    v25->_options = a6;
-    objc_storeStrong(&v25->_operationName, a3);
-    objc_storeStrong(&v26->_originalContext, a5);
-    objc_storeStrong(&v26->_originalFetchRequest, a4);
-    v27 = _Block_copy(v21);
+    v25->_options = options;
+    objc_storeStrong(&v25->_operationName, name);
+    objc_storeStrong(&v26->_originalContext, context);
+    objc_storeStrong(&v26->_originalFetchRequest, request);
+    v27 = _Block_copy(resultBlockCopy);
     processResultBlock = v26->_processResultBlock;
     v26->_processResultBlock = v27;
 
-    v29 = _Block_copy(v22);
+    v29 = _Block_copy(resultsBlockCopy);
     processResultsBlock = v26->_processResultsBlock;
     v26->_processResultsBlock = v29;
 
-    v31 = _Block_copy(v18);
+    v31 = _Block_copy(blockCopy);
     generateContextBlock = v26->_generateContextBlock;
     v26->_generateContextBlock = v31;
 
-    v33 = _Block_copy(v19);
+    v33 = _Block_copy(dsBlockCopy);
     didFetchObjectIDsBlock = v26->_didFetchObjectIDsBlock;
     v26->_didFetchObjectIDsBlock = v33;
 
@@ -510,47 +510,47 @@ LABEL_7:
   return v26;
 }
 
-- (PLEnumerateAndSaveController)initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultsBlock:(id)a9
+- (PLEnumerateAndSaveController)initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultsBlock:(id)resultsBlock
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (!v21)
+  nameCopy = name;
+  requestCopy = request;
+  contextCopy = context;
+  blockCopy = block;
+  dsBlockCopy = dsBlock;
+  resultsBlockCopy = resultsBlock;
+  if (!resultsBlockCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"processResultsBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"processResultsBlock"}];
   }
 
-  v22 = [(PLEnumerateAndSaveController *)self _initWithName:v16 fetchRequest:v17 context:v18 options:a6 generateContextBlock:v19 didFetchObjectIDsBlock:v20 processResultBlock:0 processResultsBlock:v21];
+  v22 = [(PLEnumerateAndSaveController *)self _initWithName:nameCopy fetchRequest:requestCopy context:contextCopy options:options generateContextBlock:blockCopy didFetchObjectIDsBlock:dsBlockCopy processResultBlock:0 processResultsBlock:resultsBlockCopy];
 
   return v22;
 }
 
-- (PLEnumerateAndSaveController)initWithName:(id)a3 fetchRequest:(id)a4 context:(id)a5 options:(unint64_t)a6 generateContextBlock:(id)a7 didFetchObjectIDsBlock:(id)a8 processResultBlock:(id)a9
+- (PLEnumerateAndSaveController)initWithName:(id)name fetchRequest:(id)request context:(id)context options:(unint64_t)options generateContextBlock:(id)block didFetchObjectIDsBlock:(id)dsBlock processResultBlock:(id)resultBlock
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (!v21)
+  nameCopy = name;
+  requestCopy = request;
+  contextCopy = context;
+  blockCopy = block;
+  dsBlockCopy = dsBlock;
+  resultBlockCopy = resultBlock;
+  if (!resultBlockCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"processResultBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLEnumerateAndSaveController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"processResultBlock"}];
   }
 
-  v22 = [(PLEnumerateAndSaveController *)self _initWithName:v16 fetchRequest:v17 context:v18 options:a6 generateContextBlock:v19 didFetchObjectIDsBlock:v20 processResultBlock:v21 processResultsBlock:0];
+  v22 = [(PLEnumerateAndSaveController *)self _initWithName:nameCopy fetchRequest:requestCopy context:contextCopy options:options generateContextBlock:blockCopy didFetchObjectIDsBlock:dsBlockCopy processResultBlock:resultBlockCopy processResultsBlock:0];
 
   return v22;
 }
 
-+ (BOOL)_concurrencyLimiterEnabledForContext:(id)a3
++ (BOOL)_concurrencyLimiterEnabledForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -562,7 +562,7 @@ LABEL_7:
     v6[2] = __69__PLEnumerateAndSaveController__concurrencyLimiterEnabledForContext___block_invoke;
     v6[3] = &unk_1E7578910;
     v8 = &v9;
-    v7 = v3;
+    v7 = contextCopy;
     [v7 pl_performBlockAndWait:v6];
 
     v4 = *(v10 + 24) ^ 1;
@@ -586,15 +586,15 @@ void __69__PLEnumerateAndSaveController__concurrencyLimiterEnabledForContext___b
   *(*(*(a1 + 40) + 8) + 24) = [v2 BOOLValue];
 }
 
-+ (void)disableConcurrencyLimiterForContext:(id)a3
++ (void)disableConcurrencyLimiterForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__PLEnumerateAndSaveController_disableConcurrencyLimiterForContext___block_invoke;
   v5[3] = &unk_1E75781E8;
-  v6 = v3;
-  v4 = v3;
+  v6 = contextCopy;
+  v4 = contextCopy;
   [v4 pl_performBlockAndWait:v5];
 }
 

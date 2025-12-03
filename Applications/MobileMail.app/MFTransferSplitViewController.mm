@@ -1,42 +1,42 @@
 @interface MFTransferSplitViewController
 - (AccountListController)accountListController;
-- (BOOL)executeIfSplitViewIsAvailable:(id)a3;
+- (BOOL)executeIfSplitViewIsAvailable:(id)available;
 - (CGSize)preferredContentSize;
-- (MFTransferSplitViewController)initWithItems:(id)a3 scene:(id)a4 options:(unint64_t)a5 didDismissHandler:(id)a6;
+- (MFTransferSplitViewController)initWithItems:(id)items scene:(id)scene options:(unint64_t)options didDismissHandler:(id)handler;
 - (MFTransferStackViewController)stackViewController;
 - (MessageDisplayCapable)scene;
 - (TransferNavigationController)transferNavigationController;
-- (id)_disabledMailAccountForSourceAccounts:(id)a3 toSameAccountOnly:(BOOL)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)_restoreLayoutForDisplayMode:(int64_t)a3;
-- (void)setUsePushFromLeftPresentation:(BOOL)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transferMailboxPickerController:(id)a3 animateMessageToPoint:(CGPoint)a4 inView:(id)a5 completion:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)_disabledMailAccountForSourceAccounts:(id)accounts toSameAccountOnly:(BOOL)only;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)_restoreLayoutForDisplayMode:(int64_t)mode;
+- (void)setUsePushFromLeftPresentation:(BOOL)presentation;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transferMailboxPickerController:(id)controller animateMessageToPoint:(CGPoint)point inView:(id)view completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MFTransferSplitViewController
 
-- (MFTransferSplitViewController)initWithItems:(id)a3 scene:(id)a4 options:(unint64_t)a5 didDismissHandler:(id)a6
+- (MFTransferSplitViewController)initWithItems:(id)items scene:(id)scene options:(unint64_t)options didDismissHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  itemsCopy = items;
+  sceneCopy = scene;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = MFTransferSplitViewController;
   v14 = [(MFTransferSplitViewController *)&v21 initWithStyle:2];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_itemsToDisplay, a3);
-    objc_storeWeak(&v15->_scene, v12);
-    v15->_transferOptions = a5;
-    v16 = objc_retainBlock(v13);
+    objc_storeStrong(&v14->_itemsToDisplay, items);
+    objc_storeWeak(&v15->_scene, sceneCopy);
+    v15->_transferOptions = options;
+    v16 = objc_retainBlock(handlerCopy);
     didDismissHandler = v15->_didDismissHandler;
     v15->_didDismissHandler = v16;
 
@@ -58,8 +58,8 @@
   {
     v4 = [TransferNavigationController alloc];
     itemsToDisplay = self->_itemsToDisplay;
-    v6 = [(MFTransferSplitViewController *)self scene];
-    v7 = [(TransferNavigationController *)v4 initWithMessages:itemsToDisplay scene:v6 options:self->_transferOptions];
+    scene = [(MFTransferSplitViewController *)self scene];
+    v7 = [(TransferNavigationController *)v4 initWithMessages:itemsToDisplay scene:scene options:self->_transferOptions];
     v8 = self->_transferNavigationController;
     self->_transferNavigationController = v7;
 
@@ -75,8 +75,8 @@
   if (!stackViewController)
   {
     v4 = [MFTransferStackViewController alloc];
-    v5 = [(MFTransferSplitViewController *)self scene];
-    v6 = [(MFTransferStackViewController *)v4 initWithScene:v5];
+    scene = [(MFTransferSplitViewController *)self scene];
+    v6 = [(MFTransferStackViewController *)v4 initWithScene:scene];
     v7 = self->_stackViewController;
     self->_stackViewController = v6;
 
@@ -92,31 +92,31 @@
   if (!accountListController)
   {
     transferOptions = self->_transferOptions;
-    v6 = [(MFTransferSplitViewController *)self transferNavigationController];
-    v7 = [v6 mailboxPickerController];
-    v8 = [v7 sourceAccounts];
+    transferNavigationController = [(MFTransferSplitViewController *)self transferNavigationController];
+    mailboxPickerController = [transferNavigationController mailboxPickerController];
+    sourceAccounts = [mailboxPickerController sourceAccounts];
 
-    v9 = [(MFTransferSplitViewController *)self _disabledMailAccountForSourceAccounts:v8 toSameAccountOnly:(transferOptions >> 7) & 1];
-    if ((self->_transferOptions & 0x80) != 0 && [v8 count] != 1)
+    v9 = [(MFTransferSplitViewController *)self _disabledMailAccountForSourceAccounts:sourceAccounts toSameAccountOnly:(transferOptions >> 7) & 1];
+    if ((self->_transferOptions & 0x80) != 0 && [sourceAccounts count] != 1)
     {
       v20 = +[NSAssertionHandler currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"MFTransferSplitViewController.m" lineNumber:82 description:{@"TransferOptionSameAccountOnly option only allows messages in one account. Accounts: %@", v8}];
+      [v20 handleFailureInMethod:a2 object:self file:@"MFTransferSplitViewController.m" lineNumber:82 description:{@"TransferOptionSameAccountOnly option only allows messages in one account. Accounts: %@", sourceAccounts}];
     }
 
     v10 = [AccountListController alloc];
-    v11 = [(MFTransferSplitViewController *)self scene];
-    v12 = [(AccountListController *)v10 initWithScene:v11];
+    scene = [(MFTransferSplitViewController *)self scene];
+    v12 = [(AccountListController *)v10 initWithScene:scene];
     v13 = self->_accountListController;
     self->_accountListController = v12;
 
-    v14 = [(MFTransferSplitViewController *)self transferNavigationController];
-    v15 = [v14 mailboxPickerController];
-    [(AccountListController *)self->_accountListController setAccountListDelegate:v15];
+    transferNavigationController2 = [(MFTransferSplitViewController *)self transferNavigationController];
+    mailboxPickerController2 = [transferNavigationController2 mailboxPickerController];
+    [(AccountListController *)self->_accountListController setAccountListDelegate:mailboxPickerController2];
 
-    v16 = [(MFTransferSplitViewController *)self transferNavigationController];
-    v17 = [v16 mailboxPickerController];
-    v18 = [v17 account];
-    [(AccountListController *)self->_accountListController setSelectedAccount:v18];
+    transferNavigationController3 = [(MFTransferSplitViewController *)self transferNavigationController];
+    mailboxPickerController3 = [transferNavigationController3 mailboxPickerController];
+    account = [mailboxPickerController3 account];
+    [(AccountListController *)self->_accountListController setSelectedAccount:account];
 
     [(AccountListController *)self->_accountListController setDisabledAccounts:v9];
     accountListController = self->_accountListController;
@@ -125,61 +125,61 @@
   return accountListController;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MFTransferSplitViewController;
-  [(MFTransferSplitViewController *)&v9 traitCollectionDidChange:v4];
+  [(MFTransferSplitViewController *)&v9 traitCollectionDidChange:changeCopy];
   if ([(MFTransferSplitViewController *)self didAppear])
   {
-    v5 = [(MFTransferSplitViewController *)self traitCollection];
-    v6 = [v5 mf_traitDifferenceAffectsTextLayout:v4];
+    traitCollection = [(MFTransferSplitViewController *)self traitCollection];
+    v6 = [traitCollection mf_traitDifferenceAffectsTextLayout:changeCopy];
 
     if (v6)
     {
-      v7 = [(MFTransferSplitViewController *)self transferNavigationController];
-      v8 = [v7 mailboxPickerController];
-      [v8 dismiss];
+      transferNavigationController = [(MFTransferSplitViewController *)self transferNavigationController];
+      mailboxPickerController = [transferNavigationController mailboxPickerController];
+      [mailboxPickerController dismiss];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v30.receiver = self;
   v30.super_class = MFTransferSplitViewController;
   [(MFTransferSplitViewController *)&v30 viewWillAppear:?];
-  v5 = [(MFTransferSplitViewController *)self stackViewController];
-  v6 = [v5 navigationController];
+  stackViewController = [(MFTransferSplitViewController *)self stackViewController];
+  navigationController = [stackViewController navigationController];
 
-  if (v6)
+  if (navigationController)
   {
-    v7 = [v6 viewControllers];
-    v8 = [v7 lastObject];
-    v9 = [(MFTransferSplitViewController *)self stackViewController];
+    viewControllers = [navigationController viewControllers];
+    lastObject = [viewControllers lastObject];
+    stackViewController2 = [(MFTransferSplitViewController *)self stackViewController];
 
-    if (v8 == v9)
+    if (lastObject == stackViewController2)
     {
-      v10 = [v6 popViewControllerAnimated:0];
+      v10 = [navigationController popViewControllerAnimated:0];
     }
   }
 
-  v11 = [(MFTransferSplitViewController *)self transferNavigationController];
-  v12 = [v11 mailboxPickerController];
-  [v12 setAnimationDelegate:self];
+  transferNavigationController = [(MFTransferSplitViewController *)self transferNavigationController];
+  mailboxPickerController = [transferNavigationController mailboxPickerController];
+  [mailboxPickerController setAnimationDelegate:self];
 
   v13 = [UINavigationController alloc];
-  v14 = [(MFTransferSplitViewController *)self stackViewController];
-  v15 = [v13 initWithRootViewController:v14];
+  stackViewController3 = [(MFTransferSplitViewController *)self stackViewController];
+  v15 = [v13 initWithRootViewController:stackViewController3];
   stackNavigationController = self->_stackNavigationController;
   self->_stackNavigationController = v15;
 
-  v17 = [(MFTransferSplitViewController *)self accountListController];
-  [(MFTransferSplitViewController *)self setViewController:v17 forColumn:0];
+  accountListController = [(MFTransferSplitViewController *)self accountListController];
+  [(MFTransferSplitViewController *)self setViewController:accountListController forColumn:0];
 
-  [(MFTransferSplitViewController *)self setViewController:v11 forColumn:1];
+  [(MFTransferSplitViewController *)self setViewController:transferNavigationController forColumn:1];
   [(MFTransferSplitViewController *)self setViewController:self->_stackNavigationController forColumn:2];
   v26 = 0;
   v27 = &v26;
@@ -192,34 +192,34 @@
   v25[4] = &v26;
   [(MFTransferSplitViewController *)self executeIfSplitViewIsAvailable:v25];
   [(MFTransferSplitViewController *)self _restoreLayoutForDisplayMode:v27[3]];
-  v18 = [(MFTransferSplitViewController *)self view];
-  [v18 layoutIfNeeded];
+  view = [(MFTransferSplitViewController *)self view];
+  [view layoutIfNeeded];
 
   transferOptions = self->_transferOptions;
-  v20 = [(MFTransferSplitViewController *)self stackViewController];
-  [v20 setTransferOptions:transferOptions];
+  stackViewController4 = [(MFTransferSplitViewController *)self stackViewController];
+  [stackViewController4 setTransferOptions:transferOptions];
 
-  [v11 beginAppearanceTransition:1 animated:v3];
-  [(UINavigationController *)self->_stackNavigationController beginAppearanceTransition:1 animated:v3];
-  v21 = [(MFTransferSplitViewController *)self stackViewController];
-  v22 = [v21 stackController];
-  LOBYTE(transferOptions) = [v22 hasStackedItems];
+  [transferNavigationController beginAppearanceTransition:1 animated:appearCopy];
+  [(UINavigationController *)self->_stackNavigationController beginAppearanceTransition:1 animated:appearCopy];
+  stackViewController5 = [(MFTransferSplitViewController *)self stackViewController];
+  stackController = [stackViewController5 stackController];
+  LOBYTE(transferOptions) = [stackController hasStackedItems];
 
   if ((transferOptions & 1) == 0)
   {
     v23 = [(NSArray *)self->_itemsToDisplay ef_map:&stru_100655E08];
-    v24 = [(MFTransferSplitViewController *)self stackViewController];
-    [v24 displayStackedViewsForItemsWithIDs:v23];
+    stackViewController6 = [(MFTransferSplitViewController *)self stackViewController];
+    [stackViewController6 displayStackedViewsForItemsWithIDs:v23];
   }
 
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MFTransferSplitViewController;
-  [(MFTransferSplitViewController *)&v4 viewDidAppear:a3];
+  [(MFTransferSplitViewController *)&v4 viewDidAppear:appear];
   [(MFTransferSplitViewController *)self setDidAppear:1];
   if ([(MFTransferSplitViewController *)self displayMode]== 1)
   {
@@ -233,31 +233,31 @@
   v16.super_class = MFTransferSplitViewController;
   [(MFTransferSplitViewController *)&v16 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(MFTransferSplitViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MFTransferSplitViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(MFTransferSplitViewController *)self scene];
-  v6 = [v5 mf_window];
-  [v6 frame];
+  scene = [(MFTransferSplitViewController *)self scene];
+  mf_window = [scene mf_window];
+  [mf_window frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MFTransferSplitViewController *)self view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view2 = [(MFTransferSplitViewController *)self view];
+  [view2 setFrame:{v8, v10, v12, v14}];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MFTransferSplitViewController;
-  [(MFTransferSplitViewController *)&v6 viewDidDisappear:a3];
+  [(MFTransferSplitViewController *)&v6 viewDidDisappear:disappear];
   [(MFTransferSplitViewController *)self setDidAppear:0];
-  v4 = [(MFTransferSplitViewController *)self didDismissHandler];
-  v5 = v4;
-  if (v4)
+  didDismissHandler = [(MFTransferSplitViewController *)self didDismissHandler];
+  v5 = didDismissHandler;
+  if (didDismissHandler)
   {
-    (*(v4 + 16))(v4);
+    (*(didDismissHandler + 16))(didDismissHandler);
   }
 
   [(MFTransferSplitViewController *)self setDidDismissHandler:0];
@@ -283,78 +283,78 @@
   return result;
 }
 
-- (void)_restoreLayoutForDisplayMode:(int64_t)a3
+- (void)_restoreLayoutForDisplayMode:(int64_t)mode
 {
-  if ((a3 - 4) >= 3)
+  if ((mode - 4) >= 3)
   {
-    if ((a3 - 2) >= 2)
+    if ((mode - 2) >= 2)
     {
       return;
     }
 
-    v4 = 1;
+    isCollapsed = 1;
   }
 
   else if (MUISolariumFeatureEnabled())
   {
-    v4 = [(MFTransferSplitViewController *)self isCollapsed];
+    isCollapsed = [(MFTransferSplitViewController *)self isCollapsed];
   }
 
   else
   {
-    v4 = 0;
+    isCollapsed = 0;
   }
 
-  [(MFTransferSplitViewController *)self mf_setColumn:v4 visible:1 animated:0 completion:0];
+  [(MFTransferSplitViewController *)self mf_setColumn:isCollapsed visible:1 animated:0 completion:0];
 }
 
-- (void)setUsePushFromLeftPresentation:(BOOL)a3
+- (void)setUsePushFromLeftPresentation:(BOOL)presentation
 {
-  self->_usePushFromLeftPresentation = a3;
-  if (a3)
+  self->_usePushFromLeftPresentation = presentation;
+  if (presentation)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  [(MFTransferSplitViewController *)self setTransitioningDelegate:v3];
+  [(MFTransferSplitViewController *)self setTransitioningDelegate:selfCopy];
 }
 
-- (void)transferMailboxPickerController:(id)a3 animateMessageToPoint:(CGPoint)a4 inView:(id)a5 completion:(id)a6
+- (void)transferMailboxPickerController:(id)controller animateMessageToPoint:(CGPoint)point inView:(id)view completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 window];
-  [v10 convertPoint:0 toView:{x, y}];
-  [v12 convertPoint:0 toWindow:?];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  completionCopy = completion;
+  window = [viewCopy window];
+  [viewCopy convertPoint:0 toView:{x, y}];
+  [window convertPoint:0 toWindow:?];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(MFTransferSplitViewController *)self stackViewController];
-  v18 = [v17 stackContainerView];
+  stackViewController = [(MFTransferSplitViewController *)self stackViewController];
+  stackContainerView = [stackViewController stackContainerView];
 
-  v19 = [v18 snapshotView];
-  v20 = [(MFTransferSplitViewController *)self view];
-  [v18 frame];
+  snapshotView = [stackContainerView snapshotView];
+  view = [(MFTransferSplitViewController *)self view];
+  [stackContainerView frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v18 superview];
-  [v20 convertRect:v29 fromView:{v22, v24, v26, v28}];
+  superview = [stackContainerView superview];
+  [view convertRect:superview fromView:{v22, v24, v26, v28}];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  [v20 addSubview:v19];
-  [v19 setFrame:{v31, v33, v35, v37}];
+  [view addSubview:snapshotView];
+  [snapshotView setFrame:{v31, v33, v35, v37}];
   v38 = *&CGAffineTransformIdentity.c;
   tx = CGAffineTransformIdentity.tx;
   ty = CGAffineTransformIdentity.ty;
@@ -362,25 +362,25 @@
   *&m.c = v38;
   m.tx = tx;
   m.ty = ty;
-  [v19 setTransform:&m];
-  [v18 setHidden:1];
-  v41 = [v19 layer];
-  [v41 position];
+  [snapshotView setTransform:&m];
+  [stackContainerView setHidden:1];
+  layer = [snapshotView layer];
+  [layer position];
   v43 = v42;
   v45 = v44;
 
-  v46 = [v19 superview];
-  v47 = [v19 window];
-  [v47 convertPoint:0 fromWindow:{v14, v16}];
-  [v46 convertPoint:0 fromView:?];
+  superview2 = [snapshotView superview];
+  window2 = [snapshotView window];
+  [window2 convertPoint:0 fromWindow:{v14, v16}];
+  [superview2 convertPoint:0 fromView:?];
   v49 = v48;
   v51 = v50;
 
   v73 = v51;
   v74 = v49;
-  if (v19)
+  if (snapshotView)
   {
-    [v19 transform];
+    [snapshotView transform];
     a = m.a;
     b = m.b;
     c = m.c;
@@ -404,9 +404,9 @@
   *&m.c = v58;
   *&m.tx = v58;
   *&m.a = v58;
-  if (v19)
+  if (snapshotView)
   {
-    [v19 transform];
+    [snapshotView transform];
   }
 
   else
@@ -433,34 +433,34 @@
   [v68 setAnimations:v66];
   UIAnimationDragCoefficient();
   [v68 setDuration:v69 * 0.5];
-  v70 = [v19 layer];
-  [v70 addAnimation:v68 forKey:0];
+  layer2 = [snapshotView layer];
+  [layer2 addAnimation:v68 forKey:0];
 
   v77[0] = _NSConcreteStackBlock;
   v77[1] = 3221225472;
   v77[2] = sub_100227E44;
   v77[3] = &unk_10064C7E8;
-  v71 = v19;
+  v71 = snapshotView;
   v78 = v71;
   v75[0] = _NSConcreteStackBlock;
   v75[1] = 3221225472;
   v75[2] = sub_100227F00;
   v75[3] = &unk_10064E7F8;
-  v72 = v11;
+  v72 = completionCopy;
   v76 = v72;
   [UIView animateWithDuration:196609 delay:v77 options:v75 animations:0.200000003 completion:0.299999997];
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v7 = a3;
-  v6 = [(MFTransferSplitViewController *)self stackViewController];
-  [v6 updateForDisplayMode:a4 isCollapsed:{objc_msgSend(v7, "isCollapsed")}];
+  controllerCopy = controller;
+  stackViewController = [(MFTransferSplitViewController *)self stackViewController];
+  [stackViewController updateForDisplayMode:mode isCollapsed:{objc_msgSend(controllerCopy, "isCollapsed")}];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -475,9 +475,9 @@
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -492,34 +492,34 @@
   return v4;
 }
 
-- (BOOL)executeIfSplitViewIsAvailable:(id)a3
+- (BOOL)executeIfSplitViewIsAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(MFTransferSplitViewController *)self scene];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable];
+  availableCopy = available;
+  scene = [(MFTransferSplitViewController *)self scene];
+  v6 = [scene conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable];
   if (v6)
   {
-    v7 = [v5 splitViewController];
-    v4[2](v4, v7);
+    splitViewController = [scene splitViewController];
+    availableCopy[2](availableCopy, splitViewController);
   }
 
   return v6;
 }
 
-- (id)_disabledMailAccountForSourceAccounts:(id)a3 toSameAccountOnly:(BOOL)a4
+- (id)_disabledMailAccountForSourceAccounts:(id)accounts toSameAccountOnly:(BOOL)only
 {
-  v4 = a4;
-  v17 = a3;
+  onlyCopy = only;
+  accountsCopy = accounts;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 accountsProvider];
-  v20 = [v6 displayedAccounts];
+  accountsProvider = [v5 accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
 
   v7 = +[NSMutableSet set];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v17;
+  obj = accountsCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -540,7 +540,7 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = v20;
+        v11 = displayedAccounts;
         v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v12)
         {
@@ -555,7 +555,7 @@
               }
 
               v15 = *(*(&v22 + 1) + 8 * i);
-              if (v4 && v15 != v10 || ([MailAccount canMoveMessagesFromAccount:v10 toAccount:*(*(&v22 + 1) + 8 * i)]& 1) == 0)
+              if (onlyCopy && v15 != v10 || ([MailAccount canMoveMessagesFromAccount:v10 toAccount:*(*(&v22 + 1) + 8 * i)]& 1) == 0)
               {
                 [v7 addObject:v15];
               }

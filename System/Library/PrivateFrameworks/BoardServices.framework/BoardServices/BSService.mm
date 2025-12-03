@@ -1,17 +1,17 @@
 @interface BSService
-- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)a1;
-- (id)registerListener:(void *)a3 forInstance:;
+- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)prefix;
+- (id)registerListener:(void *)listener forInstance:;
 @end
 
 @implementation BSService
 
-- (id)registerListener:(void *)a3 forInstance:
+- (id)registerListener:(void *)listener forInstance:
 {
   v96 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  listenerCopy = listener;
+  v7 = listenerCopy;
+  if (!self)
   {
     goto LABEL_35;
   }
@@ -19,9 +19,9 @@
   if (!v5)
   {
     v37 = MEMORY[0x1E696AEC0];
-    if (v6)
+    if (listenerCopy)
     {
-      v38 = v6;
+      v38 = listenerCopy;
     }
 
     else
@@ -29,9 +29,9 @@
       v38 = @"<any>";
     }
 
-    v39 = [*(a1 + 8) identifier];
-    v40 = [*(a1 + 16) identifier];
-    v41 = [v37 stringWithFormat:@"asked to register a nil listener for instance %@ of service %@ of domain %@", v38, v39, v40];
+    identifier = [*(self + 8) identifier];
+    identifier2 = [*(self + 16) identifier];
+    v41 = [v37 stringWithFormat:@"asked to register a nil listener for instance %@ of service %@ of domain %@", v38, identifier, identifier2];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -43,7 +43,7 @@
       v86 = 2114;
       v87 = v44;
       v88 = 2048;
-      v89 = a1;
+      selfCopy5 = self;
       v90 = 2114;
       v91 = @"BSServiceDomain.m";
       v92 = 1024;
@@ -61,9 +61,9 @@
   }
 
   v8 = [MEMORY[0x1E698E7B8] referenceWithObject:v5];
-  os_unfair_lock_lock((a1 + 48));
+  os_unfair_lock_lock((self + 48));
   v76 = v8;
-  if (*(a1 + 52) == 1)
+  if (*(self + 52) == 1)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot register listener on an invalidated service"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@
       v86 = 2114;
       v87 = v49;
       v88 = 2048;
-      v89 = a1;
+      selfCopy5 = self;
       v90 = 2114;
       v91 = @"BSServiceDomain.m";
       v92 = 1024;
@@ -93,12 +93,12 @@
     JUMPOUT(0x19A863298);
   }
 
-  if (*(a1 + 24))
+  if (*(self + 24))
   {
     v51 = MEMORY[0x1E696AEC0];
-    v52 = [*(a1 + 8) identifier];
-    v53 = [*(a1 + 16) identifier];
-    v54 = [v51 stringWithFormat:@"already have a global listener for service %@ of domain %@ : old=%@ new=%@", v52, v53, *(a1 + 24), v5];
+    identifier3 = [*(self + 8) identifier];
+    identifier4 = [*(self + 16) identifier];
+    v54 = [v51 stringWithFormat:@"already have a global listener for service %@ of domain %@ : old=%@ new=%@", identifier3, identifier4, *(self + 24), v5];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -110,7 +110,7 @@
       v86 = 2114;
       v87 = v57;
       v88 = 2048;
-      v89 = a1;
+      selfCopy5 = self;
       v90 = 2114;
       v91 = @"BSServiceDomain.m";
       v92 = 1024;
@@ -127,7 +127,7 @@
     JUMPOUT(0x19A8633C8);
   }
 
-  v9 = *(a1 + 32);
+  v9 = *(self + 32);
   if (v7)
   {
     if (v9)
@@ -137,10 +137,10 @@
       if (v10)
       {
         v59 = MEMORY[0x1E696AEC0];
-        v60 = [*(a1 + 8) identifier];
-        v61 = [*(a1 + 16) identifier];
-        v62 = [*(a1 + 32) objectForKey:v7];
-        v63 = [v59 stringWithFormat:@"already have a listener for instance %@ of service %@ of domain %@ : old=%@ new=%@", v7, v60, v61, v62, v5];
+        identifier5 = [*(self + 8) identifier];
+        identifier6 = [*(self + 16) identifier];
+        v62 = [*(self + 32) objectForKey:v7];
+        v63 = [v59 stringWithFormat:@"already have a listener for instance %@ of service %@ of domain %@ : old=%@ new=%@", v7, identifier5, identifier6, v62, v5];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -152,7 +152,7 @@
           v86 = 2114;
           v87 = v66;
           v88 = 2048;
-          v89 = a1;
+          selfCopy5 = self;
           v90 = 2114;
           v91 = @"BSServiceDomain.m";
           v92 = 1024;
@@ -169,13 +169,13 @@
         JUMPOUT(0x19A863510);
       }
 
-      [*(a1 + 32) setObject:v8 forKey:v7];
+      [*(self + 32) setObject:v8 forKey:v7];
       goto LABEL_13;
     }
 
     v13 = [MEMORY[0x1E695DF90] dictionaryWithObject:v8 forKey:v7];
-    v12 = *(a1 + 32);
-    *(a1 + 32) = v13;
+    v12 = *(self + 32);
+    *(self + 32) = v13;
   }
 
   else
@@ -183,9 +183,9 @@
     if (v9)
     {
       v68 = MEMORY[0x1E696AEC0];
-      v69 = [*(a1 + 8) identifier];
-      v70 = [*(a1 + 16) identifier];
-      v71 = [v68 stringWithFormat:@"already have a listener for service %@ of domain %@ : old=%@ new=%@", v69, v70, *(a1 + 32), v5];
+      identifier7 = [*(self + 8) identifier];
+      identifier8 = [*(self + 16) identifier];
+      v71 = [v68 stringWithFormat:@"already have a listener for service %@ of domain %@ : old=%@ new=%@", identifier7, identifier8, *(self + 32), v5];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -197,7 +197,7 @@
         v86 = 2114;
         v87 = v74;
         v88 = 2048;
-        v89 = a1;
+        selfCopy5 = self;
         v90 = 2114;
         v91 = @"BSServiceDomain.m";
         v92 = 1024;
@@ -215,12 +215,12 @@
     }
 
     v11 = v8;
-    v12 = *(a1 + 24);
-    *(a1 + 24) = v11;
+    v12 = *(self + 24);
+    *(self + 24) = v11;
   }
 
 LABEL_13:
-  v14 = [*(a1 + 40) count];
+  v14 = [*(self + 40) count];
   if (v14)
   {
     if (v7)
@@ -229,8 +229,8 @@ LABEL_13:
       v16 = 0;
       do
       {
-        v17 = [*(a1 + 40) objectAtIndex:v15];
-        v18 = [v17 instance];
+        v17 = [*(self + 40) objectAtIndex:v15];
+        instance = [v17 instance];
         v19 = BSEqualStrings();
 
         if (v19)
@@ -241,7 +241,7 @@ LABEL_13:
           }
 
           [v16 addObject:v17];
-          [*(a1 + 40) removeObjectAtIndex:v15];
+          [*(self + 40) removeObjectAtIndex:v15];
           --v14;
         }
 
@@ -256,10 +256,10 @@ LABEL_13:
 
     else
     {
-      v16 = *(a1 + 40);
-      v20 = [MEMORY[0x1E695DF70] array];
-      v21 = *(a1 + 40);
-      *(a1 + 40) = v20;
+      v16 = *(self + 40);
+      array = [MEMORY[0x1E695DF70] array];
+      v21 = *(self + 40);
+      *(self + 40) = array;
     }
   }
 
@@ -268,7 +268,7 @@ LABEL_13:
     v16 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 48));
+  os_unfair_lock_unlock((self + 48));
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
@@ -296,21 +296,21 @@ LABEL_13:
     while (v23);
   }
 
-  objc_initWeak(location, a1);
+  objc_initWeak(location, self);
   v26 = objc_alloc(MEMORY[0x1E698E778]);
   v27 = MEMORY[0x1E696AEC0];
-  v28 = [*(a1 + 16) identifier];
-  v29 = [v27 stringWithFormat:@"com.apple.boardservices.domain:%@", v28];
+  identifier9 = [*(self + 16) identifier];
+  v29 = [v27 stringWithFormat:@"com.apple.boardservices.domain:%@", identifier9];
   v30 = MEMORY[0x1E696AEC0];
-  v31 = [*(a1 + 8) identifier];
-  v32 = v31;
+  identifier10 = [*(self + 8) identifier];
+  v32 = identifier10;
   v33 = @"<any>";
   if (v7)
   {
     v33 = v7;
   }
 
-  v34 = [v30 stringWithFormat:@"listener:%@-%@ -> %p", v31, v33, v5];
+  v34 = [v30 stringWithFormat:@"listener:%@-%@ -> %p", identifier10, v33, v5];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __42__BSService_registerListener_forInstance___block_invoke;
@@ -318,7 +318,7 @@ LABEL_13:
   objc_copyWeak(&v79, location);
   v77[4] = v76;
   v78 = v7;
-  a1 = [v26 initWithIdentifier:v29 forReason:v34 invalidationBlock:v77];
+  self = [v26 initWithIdentifier:v29 forReason:v34 invalidationBlock:v77];
 
   objc_destroyWeak(&v79);
   objc_destroyWeak(location);
@@ -326,7 +326,7 @@ LABEL_13:
 LABEL_35:
   v35 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 void __42__BSService_registerListener_forInstance___block_invoke(uint64_t a1)
@@ -375,37 +375,37 @@ LABEL_9:
   }
 }
 
-- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)a1
+- (id)_debugDescriptionWithMultilinePrefix:(uint64_t)prefix
 {
   v3 = a2;
-  if (a1)
+  if (prefix)
   {
-    v4 = [MEMORY[0x1E698E680] builderWithObject:a1];
+    v4 = [MEMORY[0x1E698E680] builderWithObject:prefix];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__BSService__debugDescriptionWithMultilinePrefix___block_invoke;
     v16[3] = &unk_1E75209E8;
     v5 = v4;
     v17 = v5;
-    v18 = a1;
+    prefixCopy = prefix;
     v6 = [v5 modifyProem:v16];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __50__BSService__debugDescriptionWithMultilinePrefix___block_invoke_2;
     v13 = &unk_1E75209E8;
-    v14 = a1;
+    prefixCopy2 = prefix;
     v7 = v5;
     v15 = v7;
     [v7 appendBodySectionWithName:0 multilinePrefix:v3 block:&v10];
-    v8 = [v7 build];
+    build = [v7 build];
   }
 
   else
   {
-    v8 = 0;
+    build = 0;
   }
 
-  return v8;
+  return build;
 }
 
 id __50__BSService__debugDescriptionWithMultilinePrefix___block_invoke(uint64_t a1)

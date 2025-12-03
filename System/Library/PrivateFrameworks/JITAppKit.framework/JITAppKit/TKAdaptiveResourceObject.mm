@@ -26,20 +26,20 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [TKAdaptiveResourceManager removeObject:self];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKAdaptiveResourceObject;
   [(TKAdaptiveResourceObject *)&v2 dealloc];
 }
 
 - (void)tmlDispose
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [TKAdaptiveResourceManager removeObject:self];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKAdaptiveResourceObject;
   [(TKAdaptiveResourceObject *)&v2 tmlDispose];
 }

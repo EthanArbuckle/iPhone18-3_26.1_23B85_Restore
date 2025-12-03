@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilFstForwardBytesReader
-- (OrgApacheLuceneUtilFstForwardBytesReader)initWithByteArray:(id)a3;
+- (OrgApacheLuceneUtilFstForwardBytesReader)initWithByteArray:(id)array;
 - (char)readByte;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstForwardBytesReader
 
-- (OrgApacheLuceneUtilFstForwardBytesReader)initWithByteArray:(id)a3
+- (OrgApacheLuceneUtilFstForwardBytesReader)initWithByteArray:(id)array
 {
   OrgApacheLuceneUtilFstFST_BytesReader_init(self, a2);
-  JreStrongAssign(&self->bytes_, a3);
+  JreStrongAssign(&self->bytes_, array);
   return self;
 }
 

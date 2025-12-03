@@ -1,7 +1,7 @@
 @interface TUIElementAnimationGroup
 + (id)supportedAttributes;
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementAnimationGroup
@@ -18,29 +18,29 @@
   return v3;
 }
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v11 = a3;
-  v8 = [a5 stringForAttribute:138 node:a4.var0];
-  [v11 setGroupName:v8];
+  objectCopy = object;
+  v8 = [attributes stringForAttribute:138 node:node.var0];
+  [objectCopy setGroupName:v8];
 
-  v9 = [v11 groupName];
-  v10 = [v9 length];
+  groupName = [objectCopy groupName];
+  v10 = [groupName length];
 
   if (!v10)
   {
-    [v11 setGroupName:@"default"];
+    [objectCopy setGroupName:@"default"];
   }
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 finalizeAnimationGroup];
-  v8 = [v7 groupName];
+  builderCopy = builder;
+  objectCopy = object;
+  finalizeAnimationGroup = [objectCopy finalizeAnimationGroup];
+  groupName = [objectCopy groupName];
 
-  [v6 addAnimationGroup:v9 withName:v8];
+  [builderCopy addAnimationGroup:finalizeAnimationGroup withName:groupName];
 }
 
 @end

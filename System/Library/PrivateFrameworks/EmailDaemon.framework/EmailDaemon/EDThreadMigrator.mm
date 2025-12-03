@@ -1,21 +1,21 @@
 @interface EDThreadMigrator
 + (OS_os_log)log;
 + (id)signpostLog;
-- (EDThreadMigrator)initWithThreadScope:(id)a3 threadPersistence:(id)a4 queryHandler:(id)a5;
+- (EDThreadMigrator)initWithThreadScope:(id)scope threadPersistence:(id)persistence queryHandler:(id)handler;
 - (unint64_t)signpostID;
 - (void)_failMigration;
 - (void)_finishMigrating;
-- (void)_migrateNextBatchWithGeneration:(unint64_t)a3;
-- (void)_scheduleFinalizationForBatchedObjectIDs:(id)a3 withGeneration:(unint64_t)a4 forDelete:(BOOL)a5;
-- (void)addObjectIDsToMigrate:(id)a3;
+- (void)_migrateNextBatchWithGeneration:(unint64_t)generation;
+- (void)_scheduleFinalizationForBatchedObjectIDs:(id)ds withGeneration:(unint64_t)generation forDelete:(BOOL)delete;
+- (void)addObjectIDsToMigrate:(id)migrate;
 - (void)cancel;
-- (void)changeObjectIDsToMigrate:(id)a3;
+- (void)changeObjectIDsToMigrate:(id)migrate;
 - (void)dealloc;
-- (void)deleteObjectIDsToMigrate:(id)a3;
+- (void)deleteObjectIDsToMigrate:(id)migrate;
 - (void)reset;
 - (void)start;
-- (void)startObservingWithObserver:(id)a3;
-- (void)stopObservingWithObserver:(id)a3;
+- (void)startObservingWithObserver:(id)observer;
+- (void)stopObservingWithObserver:(id)observer;
 @end
 
 @implementation EDThreadMigrator
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __23__EDThreadMigrator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_100 != -1)
   {
     dispatch_once(&log_onceToken_100, block);
@@ -51,7 +51,7 @@ void __23__EDThreadMigrator_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__EDThreadMigrator_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_11 != -1)
   {
     dispatch_once(&signpostLog_onceToken_11, block);
@@ -72,17 +72,17 @@ void __31__EDThreadMigrator_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDThreadMigrator)initWithThreadScope:(id)a3 threadPersistence:(id)a4 queryHandler:(id)a5
+- (EDThreadMigrator)initWithThreadScope:(id)scope threadPersistence:(id)persistence queryHandler:(id)handler
 {
-  v26 = a3;
-  v9 = a4;
-  v10 = a5;
+  scopeCopy = scope;
+  persistenceCopy = persistence;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = EDThreadMigrator;
   v11 = [(EDThreadMigrator *)&v27 init];
@@ -92,8 +92,8 @@ void __31__EDThreadMigrator_signpostLog__block_invoke(uint64_t a1)
     threadScope = v11->_threadScope;
     v11->_threadFinalizationInterval = 2.0;
     v14 = MEMORY[0x1E699B978];
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"EDThreadMigrator-%@", threadScope, v26];
-    v16 = [v14 serialDispatchQueueSchedulerWithName:v15];
+    scopeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"EDThreadMigrator-%@", threadScope, scopeCopy];
+    v16 = [v14 serialDispatchQueueSchedulerWithName:scopeCopy];
     workScheduler = v12->_workScheduler;
     v12->_workScheduler = v16;
 
@@ -103,12 +103,12 @@ void __31__EDThreadMigrator_signpostLog__block_invoke(uint64_t a1)
     state = v12->_state;
     v12->_state = v20;
 
-    objc_storeStrong(&v12->_threadScope, a3);
-    objc_storeStrong(&v12->_threadPersistence, a4);
-    objc_storeStrong(&v12->_queryHandler, a5);
-    v22 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v12->_threadScope, scope);
+    objc_storeStrong(&v12->_threadPersistence, persistence);
+    objc_storeStrong(&v12->_queryHandler, handler);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v12->_observers;
-    v12->_observers = v22;
+    v12->_observers = weakObjectsHashTable;
 
     v12->_observerLock._os_unfair_lock_opaque = 0;
     v24 = +[EDThreadMigrator log];
@@ -132,7 +132,7 @@ void __31__EDThreadMigrator_signpostLog__block_invoke(uint64_t a1)
 - (void)start
 {
   *buf = 134218242;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_1C61EF000, log, OS_LOG_TYPE_DEBUG, "%p: Starting migration of thread scope\n%{public}@", buf, 0x16u);
@@ -454,8 +454,8 @@ void __25__EDThreadMigrator_reset__block_invoke(uint64_t a1, void *a2)
 - (void)_failMigration
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(EDThreadMigrator *)self state];
-  [v3 performWhileLocked:&__block_literal_global_91];
+  state = [(EDThreadMigrator *)self state];
+  [state performWhileLocked:&__block_literal_global_91];
 
   os_unfair_lock_lock(&self->_observerLock);
   v4 = [(NSHashTable *)self->_observers copy];
@@ -492,7 +492,7 @@ void __25__EDThreadMigrator_reset__block_invoke(uint64_t a1, void *a2)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_migrateNextBatchWithGeneration:(unint64_t)a3
+- (void)_migrateNextBatchWithGeneration:(unint64_t)generation
 {
   v37 = *MEMORY[0x1E69E9840];
   v27 = 0;
@@ -509,40 +509,40 @@ void __25__EDThreadMigrator_reset__block_invoke(uint64_t a1, void *a2)
   v20 = __Block_byref_object_copy__46;
   v21 = __Block_byref_object_dispose__46;
   v22 = 0;
-  v5 = [(EDThreadMigrator *)self state];
+  state = [(EDThreadMigrator *)self state];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__EDThreadMigrator__migrateNextBatchWithGeneration___block_invoke;
   v16[3] = &unk_1E8257F40;
   v16[7] = &v27;
-  v16[8] = a3;
+  v16[8] = generation;
   v16[4] = self;
   v16[5] = &v17;
   v16[6] = &v23;
-  [v5 performWhileLocked:v16];
+  [state performWhileLocked:v16];
 
   if ((v28[3] & 1) == 0)
   {
-    v6 = [(EDThreadMigrator *)self queryHandler];
-    v7 = [v6 threadsAndMessagesForObjectIDs:v18[5]];
-    v8 = [(EDThreadMigrator *)self threadPersistence];
-    v9 = [v8 addThreadsDuringMigration:v7];
+    queryHandler = [(EDThreadMigrator *)self queryHandler];
+    v7 = [queryHandler threadsAndMessagesForObjectIDs:v18[5]];
+    threadPersistence = [(EDThreadMigrator *)self threadPersistence];
+    v9 = [threadPersistence addThreadsDuringMigration:v7];
 
     if (v9)
     {
       v10 = [v18[5] copy];
-      [(EDThreadMigrator *)self _scheduleFinalizationForBatchedObjectIDs:v10 withGeneration:a3 forDelete:0];
+      [(EDThreadMigrator *)self _scheduleFinalizationForBatchedObjectIDs:v10 withGeneration:generation forDelete:0];
 
       if ((v24[3] & 1) == 0)
       {
-        v11 = [(EDThreadMigrator *)self workScheduler];
+        workScheduler = [(EDThreadMigrator *)self workScheduler];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __52__EDThreadMigrator__migrateNextBatchWithGeneration___block_invoke_27;
         v15[3] = &unk_1E8250A90;
         v15[4] = self;
-        v15[5] = a3;
-        [v11 performBlock:v15];
+        v15[5] = generation;
+        [workScheduler performBlock:v15];
       }
     }
 
@@ -551,13 +551,13 @@ void __25__EDThreadMigrator_reset__block_invoke(uint64_t a1, void *a2)
       v12 = +[EDThreadMigrator log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(EDThreadMigrator *)self threadScope];
+        threadScope = [(EDThreadMigrator *)self threadScope];
         *buf = 134218498;
-        v32 = self;
+        selfCopy = self;
         v33 = 2048;
-        v34 = a3;
+        generationCopy = generation;
         v35 = 2114;
-        v36 = v14;
+        v36 = threadScope;
         _os_log_error_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_ERROR, "%p[%lu]: Failed migration -- unable to add threads\n%{public}@", buf, 0x20u);
       }
 
@@ -634,22 +634,22 @@ LABEL_10:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleFinalizationForBatchedObjectIDs:(id)a3 withGeneration:(unint64_t)a4 forDelete:(BOOL)a5
+- (void)_scheduleFinalizationForBatchedObjectIDs:(id)ds withGeneration:(unint64_t)generation forDelete:(BOOL)delete
 {
-  v8 = a3;
-  v9 = [(EDThreadMigrator *)self workScheduler];
+  dsCopy = ds;
+  workScheduler = [(EDThreadMigrator *)self workScheduler];
   [(EDThreadMigrator *)self threadFinalizationInterval];
   v11 = v10;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__EDThreadMigrator__scheduleFinalizationForBatchedObjectIDs_withGeneration_forDelete___block_invoke;
   v14[3] = &unk_1E8257F90;
-  v17 = a5;
+  deleteCopy = delete;
   v14[4] = self;
-  v16 = a4;
-  v12 = v8;
+  generationCopy = generation;
+  v12 = dsCopy;
   v15 = v12;
-  v13 = [v9 afterDelay:v14 performBlock:v11];
+  v13 = [workScheduler afterDelay:v14 performBlock:v11];
 }
 
 void __86__EDThreadMigrator__scheduleFinalizationForBatchedObjectIDs_withGeneration_forDelete___block_invoke(uint64_t a1)
@@ -776,9 +776,9 @@ void __86__EDThreadMigrator__scheduleFinalizationForBatchedObjectIDs_withGenerat
 - (void)_finishMigrating
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(EDThreadMigrator *)self threadPersistence];
-  v4 = [(EDThreadMigrator *)self threadScope];
-  [v3 endMigratingThreadScope:v4];
+  threadPersistence = [(EDThreadMigrator *)self threadPersistence];
+  threadScope = [(EDThreadMigrator *)self threadScope];
+  [threadPersistence endMigratingThreadScope:threadScope];
 
   os_unfair_lock_lock(&self->_observerLock);
   v5 = [(NSHashTable *)self->_observers copy];
@@ -815,18 +815,18 @@ void __86__EDThreadMigrator__scheduleFinalizationForBatchedObjectIDs_withGenerat
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObjectIDsToMigrate:(id)a3
+- (void)addObjectIDsToMigrate:(id)migrate
 {
-  v4 = a3;
-  v5 = [(EDThreadMigrator *)self state];
+  migrateCopy = migrate;
+  state = [(EDThreadMigrator *)self state];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__EDThreadMigrator_addObjectIDsToMigrate___block_invoke;
   v7[3] = &unk_1E8257FB8;
   v7[4] = self;
-  v6 = v4;
+  v6 = migrateCopy;
   v8 = v6;
-  [v5 performWhileLocked:v7];
+  [state performWhileLocked:v7];
 }
 
 void __42__EDThreadMigrator_addObjectIDsToMigrate___block_invoke(uint64_t a1, void *a2)
@@ -930,18 +930,18 @@ uint64_t __42__EDThreadMigrator_addObjectIDsToMigrate___block_invoke_46(uint64_t
   return [v1 _migrateNextBatchWithGeneration:v2];
 }
 
-- (void)changeObjectIDsToMigrate:(id)a3
+- (void)changeObjectIDsToMigrate:(id)migrate
 {
-  v4 = a3;
-  v5 = [(EDThreadMigrator *)self state];
+  migrateCopy = migrate;
+  state = [(EDThreadMigrator *)self state];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__EDThreadMigrator_changeObjectIDsToMigrate___block_invoke;
   v7[3] = &unk_1E8257FB8;
-  v6 = v4;
+  v6 = migrateCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performWhileLocked:v7];
+  selfCopy = self;
+  [state performWhileLocked:v7];
 }
 
 void __45__EDThreadMigrator_changeObjectIDsToMigrate___block_invoke(uint64_t a1, void *a2)
@@ -1052,18 +1052,18 @@ uint64_t __45__EDThreadMigrator_changeObjectIDsToMigrate___block_invoke_48(uint6
   return [v1 _migrateNextBatchWithGeneration:v2];
 }
 
-- (void)deleteObjectIDsToMigrate:(id)a3
+- (void)deleteObjectIDsToMigrate:(id)migrate
 {
-  v4 = a3;
-  v5 = [(EDThreadMigrator *)self state];
+  migrateCopy = migrate;
+  state = [(EDThreadMigrator *)self state];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__EDThreadMigrator_deleteObjectIDsToMigrate___block_invoke;
   v7[3] = &unk_1E8257FB8;
-  v6 = v4;
+  v6 = migrateCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performWhileLocked:v7];
+  selfCopy = self;
+  [state performWhileLocked:v7];
 }
 
 void __45__EDThreadMigrator_deleteObjectIDsToMigrate___block_invoke(uint64_t a1, void *a2)
@@ -1257,9 +1257,9 @@ uint64_t __45__EDThreadMigrator_deleteObjectIDsToMigrate___block_invoke_50(uint6
   return result;
 }
 
-- (void)startObservingWithObserver:(id)a3
+- (void)startObservingWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[EDThreadMigrator log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1267,13 +1267,13 @@ uint64_t __45__EDThreadMigrator_deleteObjectIDsToMigrate___block_invoke_50(uint6
   }
 
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)stopObservingWithObserver:(id)a3
+- (void)stopObservingWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[EDThreadMigrator log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1281,7 +1281,7 @@ uint64_t __45__EDThreadMigrator_deleteObjectIDsToMigrate___block_invoke_50(uint6
   }
 
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 

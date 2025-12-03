@@ -1,28 +1,28 @@
 @interface MRUNowPlayingTransportControlsView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (MRUNowPlayingTransportControlsView)initWithFrame:(CGRect)a3;
+- (MRUNowPlayingTransportControlsView)initWithFrame:(CGRect)frame;
 - (MRUNowPlayingTransportControlsViewDelegate)delegate;
 - (void)configureLeadingButton;
-- (void)didSelectRoutingButton:(id)a3;
+- (void)didSelectRoutingButton:(id)button;
 - (void)layoutSubviews;
-- (void)setContentScale:(double)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setShowRoutingButton:(BOOL)a3;
-- (void)setShowTVRemoteButton:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTransportControls:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setLayout:(int64_t)layout;
+- (void)setShowRoutingButton:(BOOL)button;
+- (void)setShowTVRemoteButton:(BOOL)button;
+- (void)setStylingProvider:(id)provider;
+- (void)setTransportControls:(id)controls;
 - (void)updateImageConfiguration;
 - (void)updateVisibility;
 @end
 
 @implementation MRUNowPlayingTransportControlsView
 
-- (MRUNowPlayingTransportControlsView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingTransportControlsView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = MRUNowPlayingTransportControlsView;
-  v3 = [(MRUNowPlayingTransportControlsView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingTransportControlsView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [(MPButton *)MRUTransportButton easyTouchButtonWithType:0];
@@ -467,9 +467,9 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -480,24 +480,24 @@ LABEL_22:
   {
     v7.receiver = self;
     v7.super_class = MRUNowPlayingTransportControlsView;
-    v5 = [(MRUNowPlayingTransportControlsView *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(MRUNowPlayingTransportControlsView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;
 }
 
-- (void)setTransportControls:(id)a3
+- (void)setTransportControls:(id)controls
 {
-  objc_storeStrong(&self->_transportControls, a3);
-  v5 = a3;
-  v6 = [v5 leftItem];
-  [(MRUTransportButton *)self->_leftButton setTransportControlItem:v6];
+  objc_storeStrong(&self->_transportControls, controls);
+  controlsCopy = controls;
+  leftItem = [controlsCopy leftItem];
+  [(MRUTransportButton *)self->_leftButton setTransportControlItem:leftItem];
 
-  v7 = [v5 centerItem];
-  [(MRUTransportButton *)self->_centerButton setTransportControlItem:v7];
+  centerItem = [controlsCopy centerItem];
+  [(MRUTransportButton *)self->_centerButton setTransportControlItem:centerItem];
 
-  v8 = [v5 rightItem];
-  [(MRUTransportButton *)self->_rightButton setTransportControlItem:v8];
+  rightItem = [controlsCopy rightItem];
+  [(MRUTransportButton *)self->_rightButton setTransportControlItem:rightItem];
 
   [(MRUNowPlayingTransportControlsView *)self configureLeadingButton];
   [(MRUNowPlayingTransportControlsView *)self updateImageConfiguration];
@@ -505,11 +505,11 @@ LABEL_22:
   [(MRUNowPlayingTransportControlsView *)self updateVisibility];
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingTransportControlsView *)self updateImageConfiguration];
     [(MRUNowPlayingTransportControlsView *)self updateVisibility];
 
@@ -517,22 +517,22 @@ LABEL_22:
   }
 }
 
-- (void)setShowRoutingButton:(BOOL)a3
+- (void)setShowRoutingButton:(BOOL)button
 {
-  if (self->_showRoutingButton != a3)
+  if (self->_showRoutingButton != button)
   {
-    self->_showRoutingButton = a3;
+    self->_showRoutingButton = button;
     [(MRUNowPlayingTransportControlsView *)self updateVisibility];
 
     [(MRUNowPlayingTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowTVRemoteButton:(BOOL)a3
+- (void)setShowTVRemoteButton:(BOOL)button
 {
-  if (self->_showTVRemoteButton != a3)
+  if (self->_showTVRemoteButton != button)
   {
-    self->_showTVRemoteButton = a3;
+    self->_showTVRemoteButton = button;
     [(MRUNowPlayingTransportControlsView *)self configureLeadingButton];
     [(MRUNowPlayingTransportControlsView *)self updateVisibility];
 
@@ -540,38 +540,38 @@ LABEL_22:
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUTransportButton *)self->_leadingButton setStylingProvider:v6];
     [(MRUTransportButton *)self->_leftButton setStylingProvider:v6];
     [(MRUTransportButton *)self->_centerButton setStylingProvider:v6];
     [(MRUTransportButton *)self->_rightButton setStylingProvider:v6];
     [(MRUTransportButton *)self->_routingButton setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUNowPlayingTransportControlsView *)self updateImageConfiguration];
 
     [(MRUNowPlayingTransportControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)didSelectRoutingButton:(id)a3
+- (void)didSelectRoutingButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained transportControlsView:self didSelectRoutingButton:v4];
+  [WeakRetained transportControlsView:self didSelectRoutingButton:buttonCopy];
 }
 
 - (void)updateImageConfiguration
@@ -672,9 +672,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(MRUTransportButton *)self->_leadingButton transportControlItem];
+  transportControlItem = [(MRUTransportButton *)self->_leadingButton transportControlItem];
   v4 = 0.5;
-  if (v8)
+  if (transportControlItem)
   {
     v9 = 0.5;
   }
@@ -706,7 +706,7 @@ LABEL_7:
   {
     v3 = [MRUAsset alloc];
     v4 = +[MRUAssetsProvider tvRemote];
-    v5 = [(MRUAsset *)v3 initWithImage:v4];
+    leadingItem2 = [(MRUAsset *)v3 initWithImage:v4];
 
     v6 = [MRUTransportControlItem alloc];
     v10 = MEMORY[0x1E69E9820];
@@ -715,7 +715,7 @@ LABEL_7:
     v13 = &unk_1E7665D58;
     objc_copyWeak(&v14, &from);
     objc_copyWeak(&v15, &location);
-    v7 = [(MRUTransportControlItem *)v6 initWithIdentifier:@"tvremote" asset:v5 mainAction:&v10];
+    v7 = [(MRUTransportControlItem *)v6 initWithIdentifier:@"tvremote" asset:leadingItem2 mainAction:&v10];
     [(MRUTransportButton *)self->_leadingButton setTransportControlItem:v7, v10, v11, v12, v13];
 
     objc_destroyWeak(&v15);
@@ -724,17 +724,17 @@ LABEL_7:
 
   else
   {
-    v8 = [(MRUTransportControls *)self->_transportControls leadingItem];
+    leadingItem = [(MRUTransportControls *)self->_transportControls leadingItem];
 
     leadingButton = self->_leadingButton;
-    if (!v8)
+    if (!leadingItem)
     {
       [(MRUTransportButton *)self->_leadingButton setTransportControlItem:0];
       goto LABEL_6;
     }
 
-    v5 = [(MRUTransportControls *)self->_transportControls leadingItem];
-    [(MRUTransportButton *)leadingButton setTransportControlItem:v5];
+    leadingItem2 = [(MRUTransportControls *)self->_transportControls leadingItem];
+    [(MRUTransportButton *)leadingButton setTransportControlItem:leadingItem2];
   }
 
 LABEL_6:

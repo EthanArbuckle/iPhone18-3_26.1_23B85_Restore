@@ -1,70 +1,70 @@
 @interface CNContactHeaderCollapsedView
-+ (id)collapsedContactHeaderViewWithContact:(id)a3 showingNavBar:(BOOL)a4 monogramOnly:(BOOL)a5 delegate:(id)a6;
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5;
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3;
-- (CNContactHeaderCollapsedView)initWithContact:(id)a3 frame:(CGRect)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 delegate:(id)a7;
++ (id)collapsedContactHeaderViewWithContact:(id)contact showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate;
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only;
++ (id)sizeAttributesShowingNavBar:(BOOL)bar;
+- (CNContactHeaderCollapsedView)initWithContact:(id)contact frame:(CGRect)frame showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate;
 - (double)height;
-- (id)_headerStringForContacts:(id)a3;
+- (id)_headerStringForContacts:(id)contacts;
 - (unint64_t)avatarStyle;
 - (void)_updatePhotoView;
-- (void)assignImageColorsToAvatarBackgroundView:(id)a3 horizontal:(BOOL)a4;
+- (void)assignImageColorsToAvatarBackgroundView:(id)view horizontal:(BOOL)horizontal;
 - (void)calculateLabelSizes;
 - (void)calculateLabelSizesIfNeeded;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)didFinishUsing;
 - (void)disablePhotoTapGesture;
 - (void)layoutSubviews;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
-- (void)setActionsWrapperView:(id)a3;
-- (void)setAvatarStyle:(unint64_t)a3;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
+- (void)setActionsWrapperView:(id)view;
+- (void)setAvatarStyle:(unint64_t)style;
 - (void)setDefaultLabelColors;
-- (void)setNameTextAttributes:(id)a3;
+- (void)setNameTextAttributes:(id)attributes;
 - (void)setUpNameLabel;
 - (void)setupBackgroundGradientLayer;
-- (void)showLabelAndAvatar:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateBackgroundWithGradientColors:(id)a3 horizontal:(BOOL)a4;
-- (void)updateBackgroundWithPosterSnapshotImage:(id)a3;
+- (void)showLabelAndAvatar:(BOOL)avatar animated:(BOOL)animated;
+- (void)updateBackgroundWithGradientColors:(id)colors horizontal:(BOOL)horizontal;
+- (void)updateBackgroundWithPosterSnapshotImage:(id)image;
 - (void)updateConstraints;
 - (void)updateFontSizes;
-- (void)updateLabelColorsForImageColors:(id)a3;
+- (void)updateLabelColorsForImageColors:(id)colors;
 - (void)updateSizeDependentAttributes;
 @end
 
 @implementation CNContactHeaderCollapsedView
 
-- (id)_headerStringForContacts:(id)a3
+- (id)_headerStringForContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
     if ([(CNContactHeaderCollapsedView *)self usesBrandedCallFormat])
     {
       v5 = *MEMORY[0x1E6996530];
-      v6 = [v4 firstObject];
-      v7 = [v6 phoneNumbers];
-      LOBYTE(v5) = (*(v5 + 16))(v5, v7);
+      firstObject = [contactsCopy firstObject];
+      phoneNumbers = [firstObject phoneNumbers];
+      LOBYTE(v5) = (*(v5 + 16))(v5, phoneNumbers);
 
       if ((v5 & 1) == 0)
       {
-        v8 = [v4 firstObject];
-        v9 = [v8 phoneNumbers];
-        v10 = [v9 firstObject];
+        firstObject2 = [contactsCopy firstObject];
+        phoneNumbers2 = [firstObject2 phoneNumbers];
+        firstObject3 = [phoneNumbers2 firstObject];
 
-        v11 = [v10 value];
-        v12 = [v11 formattedStringValue];
+        value = [firstObject3 value];
+        formattedStringValue = [value formattedStringValue];
 
         if ((*(*MEMORY[0x1E6996570] + 16))())
         {
-          v13 = v12;
+          v13 = formattedStringValue;
 
           goto LABEL_12;
         }
       }
     }
 
-    v15 = [(CNContactHeaderCollapsedView *)self contactFormatter];
-    v16 = [v4 firstObject];
-    v14 = [v15 stringFromContact:v16];
+    contactFormatter = [(CNContactHeaderCollapsedView *)self contactFormatter];
+    firstObject4 = [contactsCopy firstObject];
+    v14 = [contactFormatter stringFromContact:firstObject4];
   }
 
   else
@@ -74,9 +74,9 @@
 
   if (![v14 length])
   {
-    v17 = [(CNContactHeaderCollapsedView *)self alternateName];
+    alternateName = [(CNContactHeaderCollapsedView *)self alternateName];
 
-    v14 = v17;
+    v14 = alternateName;
   }
 
   v13 = v14;
@@ -85,44 +85,44 @@ LABEL_12:
   return v13;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(CNContactHeaderView *)self nameLabel];
-  v4 = [v3 text];
-  v6 = [v4 mutableCopy];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  text = [nameLabel text];
+  v6 = [text mutableCopy];
 
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v5 setString:v6];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setString:v6];
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  changesCopy = changes;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
   if ((v7 & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = CNContactHeaderCollapsedView;
-    [(CNContactHeaderView *)&v13 reloadDataPreservingChanges:v3];
-    v8 = [(CNContactHeaderView *)self contacts];
-    v9 = [(CNContactHeaderCollapsedView *)self _headerStringForContacts:v8];
+    [(CNContactHeaderView *)&v13 reloadDataPreservingChanges:changesCopy];
+    contacts = [(CNContactHeaderView *)self contacts];
+    v9 = [(CNContactHeaderCollapsedView *)self _headerStringForContacts:contacts];
 
     if (v9)
     {
-      v10 = [(CNContactHeaderView *)self nameLabel];
-      v11 = [v10 text];
+      nameLabel = [(CNContactHeaderView *)self nameLabel];
+      text = [nameLabel text];
 
-      if (!v11)
+      if (!text)
       {
         [(CNContactHeaderCollapsedView *)self setNeedsUpdateConstraints];
       }
     }
 
-    v12 = [(CNContactHeaderView *)self nameLabel];
-    [v12 setAb_text:v9];
+    nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+    [nameLabel2 setAb_text:v9];
 
     [(CNContactHeaderCollapsedView *)self _updatePhotoView];
     [(CNContactHeaderView *)self setNeedsLabelSizeCalculation:1];
@@ -133,19 +133,19 @@ LABEL_12:
 
 - (void)_updatePhotoView
 {
-  v8 = [(CNContactHeaderView *)self photoView];
-  v3 = [v8 isHidden];
-  v4 = [(CNContactHeaderView *)self contacts];
-  if ([v4 count] > 1)
+  photoView = [(CNContactHeaderView *)self photoView];
+  isHidden = [photoView isHidden];
+  contacts = [(CNContactHeaderView *)self contacts];
+  if ([contacts count] > 1)
   {
-    [v8 setHidden:0];
+    [photoView setHidden:0];
   }
 
   else
   {
-    v5 = [(CNContactHeaderView *)self contacts];
-    v6 = [v5 firstObject];
-    if ([v6 imageDataAvailable])
+    contacts2 = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts2 firstObject];
+    if ([firstObject imageDataAvailable])
     {
       v7 = 0;
     }
@@ -155,23 +155,23 @@ LABEL_12:
       v7 = [(CNContactHeaderView *)self alwaysShowsMonogram]^ 1;
     }
 
-    [v8 setHidden:v7];
+    [photoView setHidden:v7];
   }
 
-  if (v3 != [v8 isHidden])
+  if (isHidden != [photoView isHidden])
   {
     [(CNContactHeaderCollapsedView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setNameTextAttributes:(id)a3
+- (void)setNameTextAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = CNContactHeaderCollapsedView;
-  v4 = a3;
-  [(CNContactHeaderView *)&v6 setNameTextAttributes:v4];
+  attributesCopy = attributes;
+  [(CNContactHeaderView *)&v6 setNameTextAttributes:attributesCopy];
   v5 = [(CNContactHeaderView *)self nameLabel:v6.receiver];
-  [v5 setAb_textAttributes:v4];
+  [v5 setAb_textAttributes:attributesCopy];
 }
 
 - (void)updateSizeDependentAttributes
@@ -182,18 +182,18 @@ LABEL_12:
     v4 = 0.0;
     if ([(CNContactHeaderView *)self shouldShowBelowNavigationTitle])
     {
-      v5 = [(CNContactHeaderView *)self sizeAttributes];
-      [v5 minNavbarTitleOffset];
+      sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+      [sizeAttributes minNavbarTitleOffset];
       v4 = v6;
     }
 
     [(CNContactHeaderView *)self safeAreaPhotoOffset];
     v8 = v4 + v7;
-    v12 = [(CNContactHeaderView *)self sizeAttributes];
-    [v12 photoMinTopMargin];
+    sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes2 photoMinTopMargin];
     v10 = v8 + v9;
-    v11 = [(CNContactHeaderView *)self photoTopConstraint];
-    [v11 setConstant:v10];
+    photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+    [photoTopConstraint setConstant:v10];
   }
 }
 
@@ -208,8 +208,8 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundGradientLayer = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+  [backgroundGradientLayer setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)calculateLabelSizes
@@ -220,12 +220,12 @@ LABEL_12:
     v4 = v3;
     if (v3 == 0.0)
     {
-      v5 = [(CNContactHeaderCollapsedView *)self superview];
+      superview = [(CNContactHeaderCollapsedView *)self superview];
 
-      if (v5)
+      if (superview)
       {
-        v6 = [(CNContactHeaderCollapsedView *)self superview];
-        [v6 frame];
+        superview2 = [(CNContactHeaderCollapsedView *)self superview];
+        [superview2 frame];
         v4 = v7;
       }
     }
@@ -238,12 +238,12 @@ LABEL_12:
       [(CNContactHeaderCollapsedView *)self layoutMargins];
       v11 = v4 - (v9 + v10);
       [(CNContactHeaderCollapsedView *)self updateFontSizes];
-      v12 = [(CNContactHeaderView *)self nameLabel];
-      [v12 sizeThatFits:{v11, 1000.0}];
+      nameLabel = [(CNContactHeaderView *)self nameLabel];
+      [nameLabel sizeThatFits:{v11, 1000.0}];
       v14 = v13;
 
-      v15 = [(CNContactHeaderCollapsedView *)self _screen];
-      [v15 scale];
+      _screen = [(CNContactHeaderCollapsedView *)self _screen];
+      [_screen scale];
       if (v16 == 0.0)
       {
         if (RoundToScale_onceToken != -1)
@@ -268,8 +268,8 @@ LABEL_12:
       }
 
       [(CNContactHeaderCollapsedView *)self setLabelsHeight:v20];
-      v21 = [(CNContactHeaderView *)self delegate];
-      [v21 headerViewDidUpdateLabelSizes];
+      delegate = [(CNContactHeaderView *)self delegate];
+      [delegate headerViewDidUpdateLabelSizes];
     }
   }
 }
@@ -284,22 +284,22 @@ LABEL_12:
 
 - (void)disablePhotoTapGesture
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  [v2 disablePhotoTapGesture];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView disablePhotoTapGesture];
 }
 
-- (void)showLabelAndAvatar:(BOOL)a3 animated:(BOOL)a4
+- (void)showLabelAndAvatar:(BOOL)avatar animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__CNContactHeaderCollapsedView_showLabelAndAvatar_animated___block_invoke;
   aBlock[3] = &unk_1E74E4768;
-  v11 = a3;
+  avatarCopy = avatar;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v4)
+  if (animatedCopy)
   {
     v7 = MEMORY[0x1E69DD250];
     v8[0] = MEMORY[0x1E69E9820];
@@ -355,8 +355,8 @@ void __60__CNContactHeaderCollapsedView_showLabelAndAvatar_animated___block_invo
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v9];
 
   LODWORD(v8) = [(CNContactHeaderView *)self isAXSize];
-  v10 = [(CNContactHeaderView *)self nameLabel];
-  [v10 setAdjustsFontSizeToFitWidth:v8 ^ 1];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel setAdjustsFontSizeToFitWidth:v8 ^ 1];
 
   if (v8)
   {
@@ -368,36 +368,36 @@ void __60__CNContactHeaderCollapsedView_showLabelAndAvatar_animated___block_invo
     v11 = 0.7;
   }
 
-  v12 = [(CNContactHeaderView *)self nameLabel];
-  [v12 setMinimumScaleFactor:v11];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel2 setMinimumScaleFactor:v11];
 }
 
 - (unint64_t)avatarStyle
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  v3 = [v2 avatarView];
-  v4 = [v3 style];
+  photoView = [(CNContactHeaderView *)self photoView];
+  avatarView = [photoView avatarView];
+  style = [avatarView style];
 
-  return v4;
+  return style;
 }
 
-- (void)setAvatarStyle:(unint64_t)a3
+- (void)setAvatarStyle:(unint64_t)style
 {
-  v5 = [(CNContactHeaderView *)self photoView];
-  v4 = [v5 avatarView];
-  [v4 setStyle:a3];
+  photoView = [(CNContactHeaderView *)self photoView];
+  avatarView = [photoView avatarView];
+  [avatarView setStyle:style];
 }
 
-- (void)setActionsWrapperView:(id)a3
+- (void)setActionsWrapperView:(id)view
 {
-  v5 = a3;
-  if (self->_actionsWrapperView != v5)
+  viewCopy = view;
+  if (self->_actionsWrapperView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_actionsWrapperView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_actionsWrapperView, view);
     [(CNContactHeaderCollapsedView *)self addSubview:v6];
     [(CNContactHeaderCollapsedView *)self setNeedsUpdateConstraints];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
@@ -407,22 +407,22 @@ void __60__CNContactHeaderCollapsedView_showLabelAndAvatar_animated___block_invo
   v51.super_class = CNContactHeaderCollapsedView;
   [(CNContactHeaderView *)&v51 updateConstraints];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CNContactHeaderView *)self activatedConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  activatedConstraints = [(CNContactHeaderView *)self activatedConstraints];
+  v5 = [v3 arrayWithArray:activatedConstraints];
 
-  v6 = [(CNContactHeaderView *)self photoView];
-  v7 = [v6 centerXAnchor];
-  v8 = [(CNContactHeaderCollapsedView *)self centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  photoView = [(CNContactHeaderView *)self photoView];
+  centerXAnchor = [photoView centerXAnchor];
+  centerXAnchor2 = [(CNContactHeaderCollapsedView *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v5 addObject:v9];
 
-  v10 = [(CNContactHeaderView *)self nameLabel];
-  v11 = [v10 topAnchor];
-  v12 = [(CNContactHeaderView *)self photoView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(CNContactHeaderView *)self sizeAttributes];
-  [v14 photoMinBottomMargin];
-  v15 = [v11 constraintEqualToAnchor:v13 constant:?];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  topAnchor = [nameLabel topAnchor];
+  photoView2 = [(CNContactHeaderView *)self photoView];
+  bottomAnchor = [photoView2 bottomAnchor];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes photoMinBottomMargin];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v5 addObject:v15];
 
   v45 = MEMORY[0x1E69E9820];
@@ -431,57 +431,57 @@ void __60__CNContactHeaderCollapsedView_showLabelAndAvatar_animated___block_invo
   v48 = &unk_1E74E2570;
   v16 = v5;
   v49 = v16;
-  v50 = self;
+  selfCopy = self;
   v17 = _Block_copy(&v45);
   v18 = [(CNContactHeaderView *)self nameLabel:v45];
   v17[2](v17, v18);
 
-  v19 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+  actionsWrapperView = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
 
-  if (v19)
+  if (actionsWrapperView)
   {
-    v20 = [(CNContactHeaderCollapsedView *)self leadingAnchor];
-    v21 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-    v22 = [v21 leadingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    leadingAnchor = [(CNContactHeaderCollapsedView *)self leadingAnchor];
+    actionsWrapperView2 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    leadingAnchor2 = [actionsWrapperView2 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v16 addObject:v23];
 
-    v24 = [(CNContactHeaderCollapsedView *)self trailingAnchor];
-    v25 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-    v26 = [v25 trailingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    trailingAnchor = [(CNContactHeaderCollapsedView *)self trailingAnchor];
+    actionsWrapperView3 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    trailingAnchor2 = [actionsWrapperView3 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v16 addObject:v27];
 
-    v28 = [(CNContactHeaderCollapsedView *)self bottomAnchor];
-    v29 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-    v30 = [v29 bottomAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    bottomAnchor2 = [(CNContactHeaderCollapsedView *)self bottomAnchor];
+    actionsWrapperView4 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    bottomAnchor3 = [actionsWrapperView4 bottomAnchor];
+    v31 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v16 addObject:v31];
 
-    v32 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-    v33 = [v32 topAnchor];
-    v34 = [(CNContactHeaderView *)self nameLabel];
-    v35 = [v34 bottomAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    actionsWrapperView5 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    topAnchor2 = [actionsWrapperView5 topAnchor];
+    nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+    bottomAnchor4 = [nameLabel2 bottomAnchor];
+    v36 = [topAnchor2 constraintEqualToAnchor:bottomAnchor4];
     [v16 addObject:v36];
 
-    v37 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    actionsWrapperView6 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
     LODWORD(v38) = 1148846080;
-    [v37 setContentHuggingPriority:1 forAxis:v38];
+    [actionsWrapperView6 setContentHuggingPriority:1 forAxis:v38];
 
-    v39 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    actionsWrapperView7 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
     LODWORD(v40) = 1148846080;
-    [v39 setContentCompressionResistancePriority:1 forAxis:v40];
+    [actionsWrapperView7 setContentCompressionResistancePriority:1 forAxis:v40];
   }
 
   else
   {
-    v39 = [(CNContactHeaderCollapsedView *)self bottomAnchor];
-    v41 = [(CNContactHeaderView *)self nameLabel];
-    v42 = [v41 bottomAnchor];
-    v43 = [(CNContactHeaderView *)self sizeAttributes];
-    [v43 headerBottomMargin];
-    v44 = [v39 constraintEqualToAnchor:v42 constant:?];
+    actionsWrapperView7 = [(CNContactHeaderCollapsedView *)self bottomAnchor];
+    nameLabel3 = [(CNContactHeaderView *)self nameLabel];
+    bottomAnchor5 = [nameLabel3 bottomAnchor];
+    sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes2 headerBottomMargin];
+    v44 = [actionsWrapperView7 constraintEqualToAnchor:bottomAnchor5 constant:?];
     [v16 addObject:v44];
   }
 
@@ -520,21 +520,21 @@ void __49__CNContactHeaderCollapsedView_updateConstraints__block_invoke(uint64_t
 
 - (double)height
 {
-  v3 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+  actionsWrapperView = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
   v4 = 0.0;
   v5 = 0.0;
-  if (v3)
+  if (actionsWrapperView)
   {
-    v6 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-    [v6 frame];
+    actionsWrapperView2 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+    [actionsWrapperView2 frame];
     v5 = v7;
   }
 
-  v8 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
-  if (!v8)
+  actionsWrapperView3 = [(CNContactHeaderCollapsedView *)self actionsWrapperView];
+  if (!actionsWrapperView3)
   {
-    v9 = [(CNContactHeaderView *)self sizeAttributes];
-    [v9 headerBottomMargin];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes headerBottomMargin];
     v4 = v10;
   }
 
@@ -561,26 +561,26 @@ void __49__CNContactHeaderCollapsedView_updateConstraints__block_invoke(uint64_t
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(CNContactHeaderView *)self setNameLabel:v4];
 
-  v5 = [(CNContactHeaderView *)self nameLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(CNContactHeaderView *)self nameLabel];
-  [v6 setTextAlignment:1];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel2 setTextAlignment:1];
 
-  v7 = [(CNContactHeaderView *)self nameLabel];
-  [v7 setNumberOfLines:2];
+  nameLabel3 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel3 setNumberOfLines:2];
 
-  v8 = [(CNContactHeaderView *)self nameLabel];
-  [v8 _cnui_applyContactStyle];
+  nameLabel4 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel4 _cnui_applyContactStyle];
 
-  v9 = [(CNContactHeaderView *)self nameLabel];
-  [(CNContactHeaderCollapsedView *)self addSubview:v9];
+  nameLabel5 = [(CNContactHeaderView *)self nameLabel];
+  [(CNContactHeaderCollapsedView *)self addSubview:nameLabel5];
 }
 
-- (void)updateLabelColorsForImageColors:(id)a3
+- (void)updateLabelColorsForImageColors:(id)colors
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if ([CNImageDerivedColorBackgroundUtilities backgroundColorsPreferWhiteForegroundText:a3])
+  if ([CNImageDerivedColorBackgroundUtilities backgroundColorsPreferWhiteForegroundText:colors])
   {
     +[CNUIColorRepository contactCardStaticAvatarHeaderDefaultTextColor];
   }
@@ -595,49 +595,49 @@ void __49__CNContactHeaderCollapsedView_updateConstraints__block_invoke(uint64_t
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v5];
 
-  v6 = [(CNContactHeaderView *)self delegate];
+  delegate = [(CNContactHeaderView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNContactHeaderView *)self delegate];
-    [v8 headerView:self didSetNameLabelColor:v4];
+    delegate2 = [(CNContactHeaderView *)self delegate];
+    [delegate2 headerView:self didSetNameLabelColor:v4];
   }
 }
 
-- (void)updateBackgroundWithGradientColors:(id)a3 horizontal:(BOOL)a4
+- (void)updateBackgroundWithGradientColors:(id)colors horizontal:(BOOL)horizontal
 {
-  v4 = a4;
-  v6 = a3;
-  [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:v6 horizontal:v4];
-  [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:v6];
+  horizontalCopy = horizontal;
+  colorsCopy = colors;
+  [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:colorsCopy horizontal:horizontalCopy];
+  [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:colorsCopy];
 }
 
-- (void)updateBackgroundWithPosterSnapshotImage:(id)a3
+- (void)updateBackgroundWithPosterSnapshotImage:(id)image
 {
-  v4 = [(CNContactHeaderView *)self contacts];
-  v5 = [v4 firstObject];
-  v6 = [v5 backgroundColors];
-  v7 = [v6 contactPoster];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
+  backgroundColors = [firstObject backgroundColors];
+  contactPoster = [backgroundColors contactPoster];
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:v7 horizontal:0];
-    [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:v7];
+    [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:contactPoster horizontal:0];
+    [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:contactPoster];
   }
 }
 
-- (void)assignImageColorsToAvatarBackgroundView:(id)a3 horizontal:(BOOL)a4
+- (void)assignImageColorsToAvatarBackgroundView:(id)view horizontal:(BOOL)horizontal
 {
-  v4 = a4;
-  v25 = a3;
-  if ([v25 count] == 1)
+  horizontalCopy = horizontal;
+  viewCopy = view;
+  if ([viewCopy count] == 1)
   {
-    v6 = [v25 firstObject];
-    [(CNContactHeaderCollapsedView *)self setBackgroundColor:v6];
+    firstObject = [viewCopy firstObject];
+    [(CNContactHeaderCollapsedView *)self setBackgroundColor:firstObject];
 
-    v7 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-    [v7 setColors:0];
+    backgroundGradientLayer = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+    [backgroundGradientLayer setColors:0];
   }
 
   else
@@ -648,37 +648,37 @@ void __49__CNContactHeaderCollapsedView_updateConstraints__block_invoke(uint64_t
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    backgroundGradientLayer2 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+    [backgroundGradientLayer2 setFrame:{v9, v11, v13, v15}];
 
-    v17 = [v25 _cn_map:&__block_literal_global_820];
-    v18 = [v17 _cn_reversed];
-    v19 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-    [v19 setColors:v18];
+    v17 = [viewCopy _cn_map:&__block_literal_global_820];
+    _cn_reversed = [v17 _cn_reversed];
+    backgroundGradientLayer3 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+    [backgroundGradientLayer3 setColors:_cn_reversed];
 
-    v20 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-    v21 = v20;
-    if (v4)
+    backgroundGradientLayer4 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+    v21 = backgroundGradientLayer4;
+    if (horizontalCopy)
     {
-      [v20 setStartPoint:{0.0, 0.5}];
+      [backgroundGradientLayer4 setStartPoint:{0.0, 0.5}];
 
-      v22 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-      v7 = v22;
+      backgroundGradientLayer5 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+      backgroundGradientLayer = backgroundGradientLayer5;
       v23 = 1.0;
       v24 = 0.5;
     }
 
     else
     {
-      [v20 setStartPoint:{0.5, 0.0}];
+      [backgroundGradientLayer4 setStartPoint:{0.5, 0.0}];
 
-      v22 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
-      v7 = v22;
+      backgroundGradientLayer5 = [(CNContactHeaderCollapsedView *)self backgroundGradientLayer];
+      backgroundGradientLayer = backgroundGradientLayer5;
       v23 = 0.5;
       v24 = 1.0;
     }
 
-    [v22 setEndPoint:{v23, v24}];
+    [backgroundGradientLayer5 setEndPoint:{v23, v24}];
   }
 }
 
@@ -698,14 +698,14 @@ uint64_t __83__CNContactHeaderCollapsedView_assignImageColorsToAvatarBackgroundV
 
   [(UIView *)self->_gradientLayerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNContactHeaderCollapsedView *)self insertSubview:self->_gradientLayerContainerView atIndex:0];
-  v8 = [MEMORY[0x1E6979380] layer];
-  v6 = [(UIView *)self->_gradientLayerContainerView layer];
-  [v6 addSublayer:v8];
+  layer = [MEMORY[0x1E6979380] layer];
+  layer2 = [(UIView *)self->_gradientLayerContainerView layer];
+  [layer2 addSublayer:layer];
 
-  [(CNContactHeaderCollapsedView *)self setBackgroundGradientLayer:v8];
-  v7 = [(CNContactHeaderView *)self backgroundGradientDefaultGrayColors];
-  [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:v7 horizontal:0];
-  [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:v7];
+  [(CNContactHeaderCollapsedView *)self setBackgroundGradientLayer:layer];
+  backgroundGradientDefaultGrayColors = [(CNContactHeaderView *)self backgroundGradientDefaultGrayColors];
+  [(CNContactHeaderCollapsedView *)self assignImageColorsToAvatarBackgroundView:backgroundGradientDefaultGrayColors horizontal:0];
+  [(CNContactHeaderCollapsedView *)self updateLabelColorsForImageColors:backgroundGradientDefaultGrayColors];
 }
 
 - (void)setDefaultLabelColors
@@ -718,11 +718,11 @@ uint64_t __83__CNContactHeaderCollapsedView_assignImageColorsToAvatarBackgroundV
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v4];
 }
 
-- (CNContactHeaderCollapsedView)initWithContact:(id)a3 frame:(CGRect)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 delegate:(id)a7
+- (CNContactHeaderCollapsedView)initWithContact:(id)contact frame:(CGRect)frame showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = CNContactHeaderCollapsedView;
-  v7 = [(CNContactHeaderView *)&v11 initWithContact:a3 frame:0 shouldAllowTakePhotoAction:0 shouldAllowImageDrops:a5 showingNavBar:a6 monogramOnly:a7 delegate:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v7 = [(CNContactHeaderView *)&v11 initWithContact:contact frame:0 shouldAllowTakePhotoAction:0 shouldAllowImageDrops:bar showingNavBar:only monogramOnly:delegate delegate:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
@@ -736,33 +736,33 @@ uint64_t __83__CNContactHeaderCollapsedView_assignImageColorsToAvatarBackgroundV
   return v8;
 }
 
-+ (id)collapsedContactHeaderViewWithContact:(id)a3 showingNavBar:(BOOL)a4 monogramOnly:(BOOL)a5 delegate:(id)a6
++ (id)collapsedContactHeaderViewWithContact:(id)contact showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [sCollapsedContactHeaderView delegate];
-  if (v12)
+  onlyCopy = only;
+  barCopy = bar;
+  contactCopy = contact;
+  delegateCopy = delegate;
+  delegate = [sCollapsedContactHeaderView delegate];
+  if (delegate)
   {
 
 LABEL_4:
-    v13 = [a1 alloc];
-    v14 = [v13 initWithContact:v10 frame:v8 showingNavBar:v7 monogramOnly:v11 delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v13 = [self alloc];
+    v14 = [v13 initWithContact:contactCopy frame:barCopy showingNavBar:onlyCopy monogramOnly:delegateCopy delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 LABEL_5:
     v15 = v14;
     goto LABEL_6;
   }
 
-  if ([sCollapsedContactHeaderView showMonogramsOnly] != v7)
+  if ([sCollapsedContactHeaderView showMonogramsOnly] != onlyCopy)
   {
     goto LABEL_4;
   }
 
   if (!sCollapsedContactHeaderView)
   {
-    v17 = [a1 alloc];
-    v18 = [v17 initWithContact:v10 frame:v8 showingNavBar:v7 monogramOnly:v11 delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v17 = [self alloc];
+    v18 = [v17 initWithContact:contactCopy frame:barCopy showingNavBar:onlyCopy monogramOnly:delegateCopy delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v19 = sCollapsedContactHeaderView;
     sCollapsedContactHeaderView = v18;
 
@@ -771,26 +771,26 @@ LABEL_5:
   }
 
   v15 = sCollapsedContactHeaderView;
-  [v15 setDelegate:v11];
+  [v15 setDelegate:delegateCopy];
   [v15 prepareForReuse];
-  [v15 updateForShowingNavBar:v8];
-  [v15 updateWithNewContact:v10];
+  [v15 updateForShowingNavBar:barCopy];
+  [v15 updateWithNewContact:contactCopy];
 LABEL_6:
 
   return v15;
 }
 
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  onlyCopy = only;
+  dropsCopy = drops;
+  actionCopy = action;
   v8 = +[CNUIContactsEnvironment currentEnvironment];
-  v9 = [v8 inProcessContactStore];
+  inProcessContactStore = [v8 inProcessContactStore];
 
   v10 = +[CNUIContactsEnvironment currentEnvironment];
   v11 = v10;
-  if (v5)
+  if (onlyCopy)
   {
     [v10 cachingMonogramRenderer];
   }
@@ -802,14 +802,14 @@ LABEL_6:
   v12 = ;
 
   v13 = [CNContactPhotoView alloc];
-  v14 = [(CNContactPhotoView *)v13 initWithFrame:v7 shouldAllowTakePhotoAction:1 threeDTouchEnabled:v9 contactStore:v6 allowsImageDrops:v12 imageRenderer:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v14 = [(CNContactPhotoView *)v13 initWithFrame:actionCopy shouldAllowTakePhotoAction:1 threeDTouchEnabled:inProcessContactStore contactStore:dropsCopy allowsImageDrops:v12 imageRenderer:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v14;
 }
 
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3
++ (id)sizeAttributesShowingNavBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     +[CNContactHeaderViewSizeAttributes staticCollapsedDisplayAttributesWithNavBar];
   }

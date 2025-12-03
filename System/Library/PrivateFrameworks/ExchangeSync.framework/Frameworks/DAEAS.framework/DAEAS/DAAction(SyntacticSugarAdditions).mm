@@ -9,64 +9,64 @@
 
 - (id)asServerID
 {
-  v2 = [a1 serverId];
+  serverId = [self serverId];
 
-  if (v2)
+  if (serverId)
   {
-    v3 = [a1 serverId];
+    serverId2 = [self serverId];
   }
 
   else
   {
-    v4 = [a1 changedItem];
-    v3 = [v4 serverID];
+    changedItem = [self changedItem];
+    serverId2 = [changedItem serverID];
   }
 
-  return v3;
+  return serverId2;
 }
 
 - (id)asClientID
 {
-  if ([a1 itemChangeType])
+  if ([self itemChangeType])
   {
-    v2 = 0;
+    clientID = 0;
   }
 
   else
   {
-    v3 = [a1 changedItem];
-    v2 = [v3 clientID];
+    changedItem = [self changedItem];
+    clientID = [changedItem clientID];
   }
 
-  return v2;
+  return clientID;
 }
 
 - (id)asInstanceID
 {
-  v2 = [a1 instanceId];
+  instanceId = [self instanceId];
 
-  if (v2)
+  if (instanceId)
   {
-    v3 = [a1 instanceId];
+    instanceId2 = [self instanceId];
   }
 
   else
   {
-    v4 = [a1 changedItem];
-    v3 = [v4 instanceID];
+    changedItem = [self changedItem];
+    instanceId2 = [changedItem instanceID];
   }
 
-  return v3;
+  return instanceId2;
 }
 
 - (void)appendApplicationDataForTask:()SyntacticSugarAdditions toWBXMLData:
 {
   v8 = a3;
   v6 = a4;
-  if ([a1 itemChangeType] <= 1)
+  if ([self itemChangeType] <= 1)
   {
-    v7 = [a1 changedItem];
-    [v7 appendActiveSyncDataForTask:v8 toWBXMLData:v6];
+    changedItem = [self changedItem];
+    [changedItem appendActiveSyncDataForTask:v8 toWBXMLData:v6];
   }
 }
 

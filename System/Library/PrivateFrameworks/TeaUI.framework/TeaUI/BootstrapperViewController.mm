@@ -1,6 +1,6 @@
 @interface BootstrapperViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC5TeaUI26BootstrapperViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI26BootstrapperViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForStatusBarHidden;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -15,26 +15,26 @@
   return v0;
 }
 
-- (_TtC5TeaUI26BootstrapperViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI26BootstrapperViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1D7FF9D04();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7FF9DCC();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7FFA060();
 }
 

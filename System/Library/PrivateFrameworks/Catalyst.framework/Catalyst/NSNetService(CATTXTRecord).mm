@@ -15,11 +15,11 @@
     context = objc_autoreleasePoolPush();
     v31 = v3;
     v5 = [MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:v3];
-    v6 = [v5 allKeys];
-    v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
-    v28 = [v6 indexesOfObjectsPassingTest:&__block_literal_global_28];
-    v29 = v6;
-    v8 = [v6 objectsAtIndexes:?];
+    allKeys = [v5 allKeys];
+    v7 = [MEMORY[0x277CBEB58] setWithArray:allKeys];
+    v28 = [allKeys indexesOfObjectsPassingTest:&__block_literal_global_28];
+    v29 = allKeys;
+    v8 = [allKeys objectsAtIndexes:?];
     v9 = [MEMORY[0x277CBEB98] setWithArray:v8];
     [v7 minusSet:v9];
 

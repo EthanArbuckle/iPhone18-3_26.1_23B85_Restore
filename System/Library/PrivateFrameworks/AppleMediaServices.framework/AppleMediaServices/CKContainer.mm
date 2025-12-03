@@ -1,24 +1,24 @@
 @interface CKContainer
-- (id)_acceptShareWithShareMetadata:(id)a3;
-- (id)_fetchShareMetadataForURL:(id)a3 withToken:(id)a4;
-- (id)acceptShareURL:(id)a3 withToken:(id)a4;
+- (id)_acceptShareWithShareMetadata:(id)metadata;
+- (id)_fetchShareMetadataForURL:(id)l withToken:(id)token;
+- (id)acceptShareURL:(id)l withToken:(id)token;
 - (id)status;
 @end
 
 @implementation CKContainer
 
-- (id)acceptShareURL:(id)a3 withToken:(id)a4
+- (id)acceptShareURL:(id)l withToken:(id)token
 {
-  v5 = [(CKContainer *)self _fetchShareMetadataForURL:a3 withToken:a4];
+  v5 = [(CKContainer *)self _fetchShareMetadataForURL:l withToken:token];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100094C24;
   v9[3] = &unk_1002B28A8;
   v9[4] = self;
   v6 = [v5 thenWithBlock:v9];
-  v7 = [v6 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v6 binaryPromiseAdapter];
 
-  return v7;
+  return binaryPromiseAdapter;
 }
 
 - (id)status
@@ -34,12 +34,12 @@
   return v3;
 }
 
-- (id)_acceptShareWithShareMetadata:(id)a3
+- (id)_acceptShareWithShareMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(AMSMutablePromise);
   v6 = [CKAcceptSharesOperation alloc];
-  v13 = v4;
+  v13 = metadataCopy;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   v8 = [v6 initWithShareMetadatas:v7];
 
@@ -55,14 +55,14 @@
   return v9;
 }
 
-- (id)_fetchShareMetadataForURL:(id)a3 withToken:(id)a4
+- (id)_fetchShareMetadataForURL:(id)l withToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = tokenCopy;
   }
 
   else
@@ -74,9 +74,9 @@
   v10 = [CKFetchShareMetadataOperation alloc];
   if (v8)
   {
-    v24 = v6;
+    v24 = lCopy;
     v11 = [NSArray arrayWithObjects:&v24 count:1];
-    v22 = v6;
+    v22 = lCopy;
     v23 = v8;
     v12 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v13 = [v10 initWithShareURLs:v11 invitationTokensByShareURL:v12];
@@ -84,7 +84,7 @@
 
   else
   {
-    v21 = v6;
+    v21 = lCopy;
     v11 = [NSArray arrayWithObjects:&v21 count:1];
     v13 = [v10 initWithShareURLs:v11];
   }

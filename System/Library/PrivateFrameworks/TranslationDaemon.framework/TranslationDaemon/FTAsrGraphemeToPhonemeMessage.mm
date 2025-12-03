@@ -1,53 +1,53 @@
 @interface FTAsrGraphemeToPhonemeMessage
-+ (Class)session_message_immutableClassForType:(int64_t)a3;
-+ (int64_t)session_message_typeForImmutableObject:(id)a3;
++ (Class)session_message_immutableClassForType:(int64_t)type;
++ (int64_t)session_message_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)session_message;
-- (FTAsrGraphemeToPhonemeMessage)initWithFlatbuffData:(id)a3 root:(const AsrGraphemeToPhonemeMessage *)a4 verify:(BOOL)a5;
+- (FTAsrGraphemeToPhonemeMessage)initWithFlatbuffData:(id)data root:(const AsrGraphemeToPhonemeMessage *)root verify:(BOOL)verify;
 - (FTGraphemeToPhonemeRequest)session_messageAsFTGraphemeToPhonemeRequest;
 - (FTGraphemeToPhonemeResponse)session_messageAsFTGraphemeToPhonemeResponse;
-- (Offset<siri::speech::qss_fb::AsrGraphemeToPhonemeMessage>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::AsrGraphemeToPhonemeMessage>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)session_message_type;
 @end
 
 @implementation FTAsrGraphemeToPhonemeMessage
 
-- (FTAsrGraphemeToPhonemeMessage)initWithFlatbuffData:(id)a3 root:(const AsrGraphemeToPhonemeMessage *)a4 verify:(BOOL)a5
+- (FTAsrGraphemeToPhonemeMessage)initWithFlatbuffData:(id)data root:(const AsrGraphemeToPhonemeMessage *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTAsrGraphemeToPhonemeMessage;
   v10 = [(FTAsrGraphemeToPhonemeMessage *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -64,9 +64,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -158,28 +158,28 @@ LABEL_16:
 
 - (FLTBFBufferAccessor)session_message
 {
-  v3 = [(FTAsrGraphemeToPhonemeMessage *)self session_message_type];
-  if (v3 == 2)
+  session_message_type = [(FTAsrGraphemeToPhonemeMessage *)self session_message_type];
+  if (session_message_type == 2)
   {
-    v4 = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeResponse];
+    session_messageAsFTGraphemeToPhonemeResponse = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeResponse];
   }
 
-  else if (v3 == 1)
+  else if (session_message_type == 1)
   {
-    v4 = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeRequest];
+    session_messageAsFTGraphemeToPhonemeResponse = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeRequest];
   }
 
   else
   {
-    v4 = 0;
+    session_messageAsFTGraphemeToPhonemeResponse = 0;
   }
 
-  return v4;
+  return session_messageAsFTGraphemeToPhonemeResponse;
 }
 
-+ (Class)session_message_immutableClassForType:(int64_t)a3
++ (Class)session_message_immutableClassForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = off_2789B45F0;
 LABEL_5:
@@ -189,7 +189,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = off_2789B45F8;
     goto LABEL_5;
@@ -200,15 +200,15 @@ LABEL_5:
   return v6;
 }
 
-+ (int64_t)session_message_typeForImmutableObject:(id)a3
++ (int64_t)session_message_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
@@ -221,13 +221,13 @@ LABEL_5:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::AsrGraphemeToPhonemeMessage>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::AsrGraphemeToPhonemeMessage>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTAsrGraphemeToPhonemeMessage *)self session_message_type];
+  session_message_type = [(FTAsrGraphemeToPhonemeMessage *)self session_message_type];
   if ([(FTAsrGraphemeToPhonemeMessage *)self session_message_type]== 1)
   {
-    v6 = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    session_messageAsFTGraphemeToPhonemeRequest = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeRequest];
+    v7 = [session_messageAsFTGraphemeToPhonemeRequest addObjectToBuffer:buffer];
   }
 
   else
@@ -237,8 +237,8 @@ LABEL_5:
 
   if ([(FTAsrGraphemeToPhonemeMessage *)self session_message_type]== 2)
   {
-    v8 = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeResponse];
-    v9 = [v8 addObjectToBuffer:a3];
+    session_messageAsFTGraphemeToPhonemeResponse = [(FTAsrGraphemeToPhonemeMessage *)self session_messageAsFTGraphemeToPhonemeResponse];
+    v9 = [session_messageAsFTGraphemeToPhonemeResponse addObjectToBuffer:buffer];
 
     v10 = v9;
   }
@@ -248,22 +248,22 @@ LABEL_5:
     v10 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 5);
-  v12 = *(a3 + 6);
-  v13 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 5);
+  v12 = *(buffer + 6);
+  v13 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, session_message_type, 0);
   if ([(FTAsrGraphemeToPhonemeMessage *)self session_message_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v7);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v7);
   }
 
   if ([(FTAsrGraphemeToPhonemeMessage *)self session_message_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v10);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v10);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v13 - v12 + v11);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v13 - v12 + v11);
 }
 
 - (id)flatbuffData

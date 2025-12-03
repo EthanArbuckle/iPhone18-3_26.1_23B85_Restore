@@ -1,30 +1,30 @@
 @interface HDTTRPromptController
-+ (id)_nameForDomainName:(uint64_t)a1;
++ (id)_nameForDomainName:(uint64_t)name;
 + (id)_persistedValueKeys;
-+ (id)formattedPersistedValuesForDomainName:(id)a3 database:(id)a4 error:(id *)a5;
-- (BOOL)unitTest_setLastPromptBuild:(id)a3 error:(id *)a4;
-- (BOOL)unitTest_setLastPromptDate:(id)a3 error:(id *)a4;
++ (id)formattedPersistedValuesForDomainName:(id)name database:(id)database error:(id *)error;
+- (BOOL)unitTest_setLastPromptBuild:(id)build error:(id *)error;
+- (BOOL)unitTest_setLastPromptDate:(id)date error:(id *)error;
 - (HDKeyValueDomain)_keyValueDomain;
 - (HDTTRPromptController)init;
-- (HDTTRPromptController)initWithProfile:(id)a3 domainName:(id)a4 loggingCategory:(id)a5;
+- (HDTTRPromptController)initWithProfile:(id)profile domainName:(id)name loggingCategory:(id)category;
 - (id)description;
-- (void)promptIfRequiredForReason:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)promptIfRequiredForReason:(id)reason success:(BOOL)success error:(id)error;
 @end
 
 @implementation HDTTRPromptController
 
-- (HDTTRPromptController)initWithProfile:(id)a3 domainName:(id)a4 loggingCategory:(id)a5
+- (HDTTRPromptController)initWithProfile:(id)profile domainName:(id)name loggingCategory:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = HDTTRPromptController;
   v9 = [(HDTTRPromptController *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_profile, v7);
-    v11 = [HDTTRPromptController _nameForDomainName:v8];
+    objc_storeWeak(&v9->_profile, profileCopy);
+    v11 = [HDTTRPromptController _nameForDomainName:nameCopy];
     name = v10->_name;
     v10->_name = v11;
 
@@ -51,13 +51,13 @@
   return v10;
 }
 
-+ (id)_nameForDomainName:(uint64_t)a1
++ (id)_nameForDomainName:(uint64_t)name
 {
   v2 = a2;
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", objc_opt_self(), v2];
 
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 hk_stringByRemovingCharactersInSet:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [v3 hk_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v5;
 }
@@ -72,13 +72,13 @@
   return 0;
 }
 
-+ (id)formattedPersistedValuesForDomainName:(id)a3 database:(id)a4 error:(id *)a5
++ (id)formattedPersistedValuesForDomainName:(id)name database:(id)database error:(id *)error
 {
-  v6 = a4;
-  v7 = [HDTTRPromptController _nameForDomainName:a3];
+  databaseCopy = database;
+  v7 = [HDTTRPromptController _nameForDomainName:name];
   v8 = +[HDTTRPromptController _persistedValueKeys];
   v29 = 0;
-  v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity _rawValuesForKeys:v8 domain:v7 category:0 database:v6 error:&v29];
+  v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity _rawValuesForKeys:v8 domain:v7 category:0 database:databaseCopy error:&v29];
 
   v10 = v29;
   if (!v9)
@@ -169,20 +169,20 @@ LABEL_15:
   return v5;
 }
 
-- (void)promptIfRequiredForReason:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)promptIfRequiredForReason:(id)reason success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v117[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  errorCopy = error;
   if (([MEMORY[0x277CCDD30] isAppleInternalInstall] & 1) != 0 || _HDIsUnitTesting)
   {
-    v11 = [(HDTTRPromptController *)self _keyValueDomain];
-    if (v6)
+    _keyValueDomain = [(HDTTRPromptController *)self _keyValueDomain];
+    if (successCopy)
     {
       v12 = [MEMORY[0x277CBEB98] setWithObject:@"Errors"];
       v108 = 0;
-      v13 = [v11 removeValuesForKeys:v12 error:&v108];
+      v13 = [_keyValueDomain removeValuesForKeys:v12 error:&v108];
       v14 = v108;
 
       if ((v13 & 1) == 0)
@@ -201,16 +201,16 @@ LABEL_15:
         }
       }
 
-      v16 = v9;
+      v16 = errorCopy;
       goto LABEL_73;
     }
 
-    if (!v9)
+    if (!errorCopy)
     {
-      v9 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Error not provided"];
+      errorCopy = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Error not provided"];
     }
 
-    v101 = v11;
+    v101 = _keyValueDomain;
     if (self)
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.ErrorDate", self->_name];
@@ -222,7 +222,7 @@ LABEL_15:
     }
 
     v116[0] = v17;
-    v18 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v19 = HKDiagnosticStringFromDate();
     v117[0] = v19;
     if (self)
@@ -236,13 +236,13 @@ LABEL_15:
     }
 
     v116[1] = v20;
-    v117[1] = v8;
+    v117[1] = reasonCopy;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v117 forKeys:v116 count:2];
-    v16 = [v9 hk_errorByAddingEntriesToUserInfo:v21];
+    v16 = [errorCopy hk_errorByAddingEntriesToUserInfo:v21];
 
     v22 = +[HDTTRPromptController _persistedValueKeys];
     v107 = 0;
-    v11 = v101;
+    _keyValueDomain = v101;
     v23 = [v101 valuesForKeys:v22 error:&v107];
     v14 = v107;
     if (!v23)
@@ -284,7 +284,7 @@ LABEL_15:
         v46 = self->_loggingCategory;
         if (!os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
-          v11 = v101;
+          _keyValueDomain = v101;
           v47 = v96;
           v22 = v97;
 LABEL_71:
@@ -294,7 +294,7 @@ LABEL_71:
 LABEL_72:
 
 LABEL_73:
-          v9 = v16;
+          errorCopy = v16;
           goto LABEL_74;
         }
 
@@ -306,7 +306,7 @@ LABEL_73:
         *&buf[22] = 2112;
         v110 = v31;
         _os_log_error_impl(&dword_228986000, v46, OS_LOG_TYPE_ERROR, "%{public}@: unable to unarchive errors from data %@: %@", buf, 0x20u);
-        v11 = v101;
+        _keyValueDomain = v101;
 LABEL_70:
         v22 = v97;
         goto LABEL_71;
@@ -320,7 +320,7 @@ LABEL_70:
       v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    v92 = v8;
+    v92 = reasonCopy;
     [v30 insertObject:v16 atIndex:0];
     while ([v30 count] > self->_maximumErrorCount)
     {
@@ -344,9 +344,9 @@ LABEL_70:
 
     v37 = [v23 objectForKeyedSubscript:@"LastPromptBuild"];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v39 = [WeakRetained daemon];
-    v40 = [v39 behavior];
-    v99 = [v40 currentOSBuild];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    currentOSBuild = [behavior currentOSBuild];
 
     v41 = [v30 count];
     maximumErrorCount = self->_maximumErrorCount;
@@ -366,18 +366,18 @@ LABEL_70:
     if (self->_canRepromptOnSameBuild)
     {
       v45 = 0;
-      v8 = v92;
+      reasonCopy = v92;
     }
 
     else
     {
-      v8 = v92;
-      if (v37 == v99)
+      reasonCopy = v92;
+      if (v37 == currentOSBuild)
       {
         goto LABEL_47;
       }
 
-      if (v99)
+      if (currentOSBuild)
       {
         v45 = [v37 isEqualToString:?];
       }
@@ -399,7 +399,7 @@ LABEL_70:
       v52 = v98;
       v53 = MEMORY[0x277CCACA8];
       radarDescription = self->_radarDescription;
-      v55 = v99;
+      v55 = currentOSBuild;
       v93 = v52;
       v56 = HKDiagnosticStringFromDate();
       v57 = [v50 count];
@@ -461,8 +461,8 @@ LABEL_60:
             v114[0] = @"Errors";
             v114[1] = @"LastPromptDate";
             v79 = MEMORY[0x277CCABB0];
-            v80 = [MEMORY[0x277CBEAA8] date];
-            [v80 timeIntervalSinceReferenceDate];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [date2 timeIntervalSinceReferenceDate];
             v81 = [v79 numberWithDouble:?];
             v114[2] = @"LastPromptBuild";
             v115[1] = v81;
@@ -489,7 +489,7 @@ LABEL_60:
               }
             }
 
-            v11 = v101;
+            _keyValueDomain = v101;
             v47 = v96;
             v77 = v94;
           }
@@ -510,7 +510,7 @@ LABEL_60:
             }
 
             v31 = v78;
-            v11 = v101;
+            _keyValueDomain = v101;
             v47 = v96;
           }
 
@@ -553,7 +553,7 @@ LABEL_47:
       *&buf[22] = 2114;
       v110 = v37;
       *v111 = 2114;
-      *&v111[2] = v99;
+      *&v111[2] = currentOSBuild;
       *&v111[10] = 2048;
       *&v111[12] = v70;
       v112 = 2114;
@@ -565,7 +565,7 @@ LABEL_47:
     v71 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v30 requiringSecureCoding:1 error:&v103];
     v31 = v103;
 
-    v11 = v101;
+    _keyValueDomain = v101;
     if (v71)
     {
       v102 = v31;
@@ -590,7 +590,7 @@ LABEL_47:
 
       v47 = v71;
       v31 = v73;
-      v11 = v101;
+      _keyValueDomain = v101;
     }
 
     else
@@ -630,16 +630,16 @@ LABEL_74:
 
 - (HDKeyValueDomain)_keyValueDomain
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [HDKeyValueDomain alloc];
-    category = v1->_category;
-    WeakRetained = objc_loadWeakRetained(&v1->_profile);
-    v1 = [(HDKeyValueDomain *)v2 initWithCategory:0 domainName:category profile:WeakRetained];
+    category = selfCopy->_category;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_profile);
+    selfCopy = [(HDKeyValueDomain *)v2 initWithCategory:0 domainName:category profile:WeakRetained];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __96__HDTTRPromptController__presentTTRPromptForErrors_lastPromptBuild_lastPromptDate_currentBuild___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -701,22 +701,22 @@ void __96__HDTTRPromptController__presentTTRPromptForErrors_lastPromptBuild_last
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)unitTest_setLastPromptDate:(id)a3 error:(id *)a4
+- (BOOL)unitTest_setLastPromptDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDTTRPromptController *)self _keyValueDomain];
-  LOBYTE(a4) = [v7 setDate:v6 forKey:@"LastPromptDate" error:a4];
+  dateCopy = date;
+  _keyValueDomain = [(HDTTRPromptController *)self _keyValueDomain];
+  LOBYTE(error) = [_keyValueDomain setDate:dateCopy forKey:@"LastPromptDate" error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)unitTest_setLastPromptBuild:(id)a3 error:(id *)a4
+- (BOOL)unitTest_setLastPromptBuild:(id)build error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDTTRPromptController *)self _keyValueDomain];
-  LOBYTE(a4) = [v7 setString:v6 forKey:@"LastPromptBuild" error:a4];
+  buildCopy = build;
+  _keyValueDomain = [(HDTTRPromptController *)self _keyValueDomain];
+  LOBYTE(error) = [_keyValueDomain setString:buildCopy forKey:@"LastPromptBuild" error:error];
 
-  return a4;
+  return error;
 }
 
 @end

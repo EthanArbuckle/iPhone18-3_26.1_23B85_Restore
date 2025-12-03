@@ -1,9 +1,9 @@
 @interface ButtonWrapper
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)hitTestInsets;
-- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithCoder:(id)a3;
-- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithFrame:(CGRect)a3;
-- (void)setHitTestInsets:(UIEdgeInsets)a3;
+- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithCoder:(id)coder;
+- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithFrame:(CGRect)frame;
+- (void)setHitTestInsets:(UIEdgeInsets)insets;
 - (void)tintColorDidChange;
 @end
 
@@ -40,7 +40,7 @@
   }
 }
 
-- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithCoder:(id)a3
+- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);
@@ -67,25 +67,25 @@
   return result;
 }
 
-- (void)setHitTestInsets:(UIEdgeInsets)a3
+- (void)setHitTestInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   ObjectType = swift_getObjectType();
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(UIView *)&v12 setHitTestInsets:top, left, bottom, right];
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper_button);
-  v11.receiver = v9;
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper_button);
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
   [(UIView *)&v11 hitTestInsets];
   [v10 setHitTestInsets_];
 }
 
-- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithFrame:(CGRect)a3
+- (_TtC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

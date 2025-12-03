@@ -1,25 +1,25 @@
 @interface PKCloudStoreZoneInvitationRequest
-+ (id)cloudStoreZoneInvitationRequestWithProtobuf:(id)a3;
-+ (id)invitationErrorWithProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKCloudStoreZoneInvitationRequest)initWithCoder:(id)a3;
++ (id)cloudStoreZoneInvitationRequestWithProtobuf:(id)protobuf;
++ (id)invitationErrorWithProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (PKCloudStoreZoneInvitationRequest)initWithCoder:(id)coder;
 - (id)description;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneInvitationRequest
 
-+ (id)cloudStoreZoneInvitationRequestWithProtobuf:(id)a3
++ (id)cloudStoreZoneInvitationRequestWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = objc_alloc_init(PKCloudStoreZoneInvitationRequest);
-  v6 = [v4 invitation];
-  v7 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:v6];
+  invitation = [protobufCopy invitation];
+  v7 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:invitation];
   [(PKCloudStoreZoneInvitationRequest *)v5 setInvitation:v7];
 
-  v8 = [a1 invitationErrorWithProtobuf:v4];
+  v8 = [self invitationErrorWithProtobuf:protobufCopy];
 
   [(PKCloudStoreZoneInvitationRequest *)v5 setInvitationError:v8];
 
@@ -29,48 +29,48 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufCloudStoreZoneInvitationRequest);
-  v4 = [(PKCloudStoreZoneInvitationRequest *)self invitation];
-  v5 = [v4 protobuf];
-  [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setInvitation:v5];
+  invitation = [(PKCloudStoreZoneInvitationRequest *)self invitation];
+  protobuf = [invitation protobuf];
+  [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setInvitation:protobuf];
 
-  v6 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
+  invitationError = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
 
-  if (v6)
+  if (invitationError)
   {
-    v7 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
-    -[PKProtobufCloudStoreZoneInvitationRequest setErrorCode:](v3, "setErrorCode:", [v7 code]);
+    invitationError2 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
+    -[PKProtobufCloudStoreZoneInvitationRequest setErrorCode:](v3, "setErrorCode:", [invitationError2 code]);
 
-    v8 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
-    v9 = [v8 domain];
-    [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setErrorDomain:v9];
+    invitationError3 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
+    domain = [invitationError3 domain];
+    [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setErrorDomain:domain];
 
-    v10 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
-    v11 = [v10 localizedDescription];
-    [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setErrorDescription:v11];
+    invitationError4 = [(PKCloudStoreZoneInvitationRequest *)self invitationError];
+    localizedDescription = [invitationError4 localizedDescription];
+    [(PKProtobufCloudStoreZoneInvitationRequest *)v3 setErrorDescription:localizedDescription];
   }
 
   return v3;
 }
 
-+ (id)invitationErrorWithProtobuf:(id)a3
++ (id)invitationErrorWithProtobuf:(id)protobuf
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 errorDomain];
+  protobufCopy = protobuf;
+  errorDomain = [protobufCopy errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
-    v5 = [v3 errorDescription];
+    errorDescription = [protobufCopy errorDescription];
     v6 = MEMORY[0x1E696ABC0];
-    v7 = [v3 errorDomain];
-    v8 = [v3 errorCode];
+    errorDomain2 = [protobufCopy errorDomain];
+    errorCode = [protobufCopy errorCode];
     v9 = *MEMORY[0x1E696A588];
     v13[0] = *MEMORY[0x1E696A578];
     v13[1] = v9;
-    v14[0] = v5;
-    v14[1] = v5;
+    v14[0] = errorDescription;
+    v14[1] = errorDescription;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-    v11 = [v6 errorWithDomain:v7 code:v8 userInfo:v10];
+    v11 = [v6 errorWithDomain:errorDomain2 code:errorCode userInfo:v10];
   }
 
   else
@@ -81,23 +81,23 @@
   return v11;
 }
 
-- (PKCloudStoreZoneInvitationRequest)initWithCoder:(id)a3
+- (PKCloudStoreZoneInvitationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCloudStoreZoneInvitationRequest;
   v5 = [(PKCloudStoreZoneInvitationRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
     destination = v5->_destination;
     v5->_destination = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitation"];
     invitation = v5->_invitation;
     v5->_invitation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationError"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationError"];
     invitationError = v5->_invitationError;
     v5->_invitationError = v10;
   }
@@ -105,33 +105,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   destination = self->_destination;
-  v5 = a3;
-  [v5 encodeObject:destination forKey:@"destination"];
-  [v5 encodeObject:self->_invitation forKey:@"invitation"];
-  [v5 encodeObject:self->_invitationError forKey:@"invitationError"];
+  coderCopy = coder;
+  [coderCopy encodeObject:destination forKey:@"destination"];
+  [coderCopy encodeObject:self->_invitation forKey:@"invitation"];
+  [coderCopy encodeObject:self->_invitationError forKey:@"invitationError"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_destination];
-  [v3 safelyAddObject:self->_invitation];
-  [v3 safelyAddObject:self->_invitationError];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_destination];
+  [array safelyAddObject:self->_invitation];
+  [array safelyAddObject:self->_invitationError];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else

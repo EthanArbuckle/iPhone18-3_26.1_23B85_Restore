@@ -1,47 +1,47 @@
 @interface HKUnitPreferenceController
-+ (__CFString)_displayNameKey:(int)a3 withNumber:;
-+ (__CFString)_displayNameKeyForUnit:(uint64_t)a3 nameContext:;
-+ (__CFString)_localizedHealthUIStringForDisplayType:(void *)a3 unit:(void *)a4 key:(void *)a5 value:;
-- (id)_displayNameKeyForDisplayType:(int)a3 withNumber:;
-- (id)_displayNameKeyForDisplayType:(int)a3 withNumber:(uint64_t)a4 nameContext:;
-- (id)_longDisplayNameForUnit:(uint64_t)a1;
-- (id)_longDisplayNameOverrideForDisplayType:(uint64_t)a1;
-- (id)_unitDisplayNameKeyForDisplayType:(void *)a3 unit:(uint64_t)a4 nameContext:;
-- (id)localizedHealthUIStringForDisplayType:(void *)a3 key:(void *)a4 value:;
++ (__CFString)_displayNameKey:(int)key withNumber:;
++ (__CFString)_displayNameKeyForUnit:(uint64_t)unit nameContext:;
++ (__CFString)_localizedHealthUIStringForDisplayType:(void *)type unit:(void *)unit key:(void *)key value:;
+- (id)_displayNameKeyForDisplayType:(int)type withNumber:;
+- (id)_displayNameKeyForDisplayType:(int)type withNumber:(uint64_t)number nameContext:;
+- (id)_longDisplayNameForUnit:(uint64_t)unit;
+- (id)_longDisplayNameOverrideForDisplayType:(uint64_t)type;
+- (id)_unitDisplayNameKeyForDisplayType:(void *)type unit:(uint64_t)unit nameContext:;
+- (id)localizedHealthUIStringForDisplayType:(void *)type key:(void *)key value:;
 @end
 
 @implementation HKUnitPreferenceController
 
-+ (__CFString)_localizedHealthUIStringForDisplayType:(void *)a3 unit:(void *)a4 key:(void *)a5 value:
++ (__CFString)_localizedHealthUIStringForDisplayType:(void *)type unit:(void *)unit key:(void *)key value:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  unitCopy = unit;
+  keyCopy = key;
   objc_opt_self();
-  if (v10)
+  if (unitCopy)
   {
-    if ([v10 length])
+    if ([unitCopy length])
     {
-      v12 = [v8 localization];
-      v13 = [v12 localizationTableNameOverride];
+      localization = [v8 localization];
+      localizationTableNameOverride = [localization localizationTableNameOverride];
 
-      if (!v13 || (HKHealthKitFrameworkBundle(), v14 = objc_claimAutoreleasedReturnValue(), [v8 localization], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "localizationTableNameOverride"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "localizedStringForKey:value:table:", v10, &stru_1F42FFBE0, v16), v13 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, !v13) || (v17 = v13, objc_msgSend(v13, "isEqualToString:", v10)))
+      if (!localizationTableNameOverride || (HKHealthKitFrameworkBundle(), v14 = objc_claimAutoreleasedReturnValue(), [v8 localization], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "localizationTableNameOverride"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "localizedStringForKey:value:table:", unitCopy, &stru_1F42FFBE0, v16), localizationTableNameOverride = objc_claimAutoreleasedReturnValue(), v16, v15, v14, !localizationTableNameOverride) || (v17 = localizationTableNameOverride, objc_msgSend(localizationTableNameOverride, "isEqualToString:", unitCopy)))
       {
         v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v17 = [v18 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+        v17 = [v18 localizedStringForKey:unitCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
       }
 
-      if (v11 && ([MEMORY[0x1E696C510] percentUnit], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v9, "isEqual:", v19), v19, (v20 & 1) == 0))
+      if (keyCopy && ([MEMORY[0x1E696C510] percentUnit], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(typeCopy, "isEqual:", v19), v19, (v20 & 1) == 0))
       {
         if (![v17 containsString:@"unit_double"])
         {
-          v26 = [v11 integerValue];
-          v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v17, v26];
+          integerValue = [keyCopy integerValue];
+          v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v17, integerValue];
           if (![(__CFString *)v22 length])
           {
             v27 = MEMORY[0x1E696AEC0];
-            [v11 doubleValue];
+            [keyCopy doubleValue];
             v29 = [v27 localizedStringWithFormat:v17, v28];
 
             v22 = v29;
@@ -51,7 +51,7 @@
         }
 
         v24 = MEMORY[0x1E696AEC0];
-        [v11 doubleValue];
+        [keyCopy doubleValue];
         v21 = [v24 localizedStringWithFormat:v17, v25];
       }
 
@@ -79,12 +79,12 @@ LABEL_14:
   return v22;
 }
 
-+ (__CFString)_displayNameKey:(int)a3 withNumber:
++ (__CFString)_displayNameKey:(int)key withNumber:
 {
   v4 = a2;
   objc_opt_self();
   v5 = @"_NUMBERLESS_UNIT";
-  if (a3)
+  if (key)
   {
     v5 = @"_NUMBERED_UNIT";
   }
@@ -103,7 +103,7 @@ LABEL_14:
   return v7;
 }
 
-+ (__CFString)_displayNameKeyForUnit:(uint64_t)a3 nameContext:
++ (__CFString)_displayNameKeyForUnit:(uint64_t)unit nameContext:
 {
   v4 = a2;
   objc_opt_self();
@@ -112,12 +112,12 @@ LABEL_14:
     +[HKUnitPreferenceController _displayNameKeyForUnit:nameContext:];
   }
 
-  v5 = [MEMORY[0x1E696C510] largeCalorieUnit];
-  v6 = [v4 isEqual:v5];
+  largeCalorieUnit = [MEMORY[0x1E696C510] largeCalorieUnit];
+  v6 = [v4 isEqual:largeCalorieUnit];
 
   if (v6)
   {
-    if (a3 == 2)
+    if (unit == 2)
     {
       v7 = @"LARGE_CALORIES";
     }
@@ -315,32 +315,32 @@ void __67__HKUnitPreferenceController_HealthUI__displayRangeForDisplayType___blo
   displayRangeForDisplayType____displayRanges = v8;
 }
 
-- (id)localizedHealthUIStringForDisplayType:(void *)a3 key:(void *)a4 value:
+- (id)localizedHealthUIStringForDisplayType:(void *)type key:(void *)key value:
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v7 = a4;
-    v8 = a3;
+    keyCopy = key;
+    typeCopy = type;
     v9 = a2;
-    v10 = [v4 unitForDisplayType:v9];
-    v4 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _localizedHealthUIStringForDisplayType:v9 unit:v10 key:v8 value:v7];
+    v10 = [selfCopy unitForDisplayType:v9];
+    selfCopy = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _localizedHealthUIStringForDisplayType:v9 unit:v10 key:typeCopy value:keyCopy];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_unitDisplayNameKeyForDisplayType:(void *)a3 unit:(uint64_t)a4 nameContext:
+- (id)_unitDisplayNameKeyForDisplayType:(void *)type unit:(uint64_t)unit nameContext:
 {
-  v7 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v8 = [a2 localization];
-    v9 = [v8 unitDisplayNameKeyOverrideForUnit:v7 nameContext:a4];
+    localization = [a2 localization];
+    v9 = [localization unitDisplayNameKeyOverrideForUnit:typeCopy nameContext:unit];
 
     if (!v9)
     {
-      v9 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _displayNameKeyForUnit:v7 nameContext:a4];
+      v9 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _displayNameKeyForUnit:typeCopy nameContext:unit];
     }
   }
 
@@ -352,26 +352,26 @@ void __67__HKUnitPreferenceController_HealthUI__displayRangeForDisplayType___blo
   return v9;
 }
 
-- (id)_displayNameKeyForDisplayType:(int)a3 withNumber:
+- (id)_displayNameKeyForDisplayType:(int)type withNumber:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(HKUnitPreferenceController *)a1 _displayNameKeyForDisplayType:a2 withNumber:a3 nameContext:1];
+    self = [(HKUnitPreferenceController *)self _displayNameKeyForDisplayType:a2 withNumber:type nameContext:1];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_displayNameKeyForDisplayType:(int)a3 withNumber:(uint64_t)a4 nameContext:
+- (id)_displayNameKeyForDisplayType:(int)type withNumber:(uint64_t)number nameContext:
 {
-  if (a1)
+  if (self)
   {
     v7 = a2;
-    v8 = [a1 unitForDisplayType:v7];
-    v9 = [(HKUnitPreferenceController *)a1 _unitDisplayNameKeyForDisplayType:v7 unit:v8 nameContext:a4];
+    v8 = [self unitForDisplayType:v7];
+    v9 = [(HKUnitPreferenceController *)self _unitDisplayNameKeyForDisplayType:v7 unit:v8 nameContext:number];
 
-    v10 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _displayNameKey:v9 withNumber:a3];
+    v10 = [(HKUnitPreferenceController *)MEMORY[0x1E696C518] _displayNameKey:v9 withNumber:type];
   }
 
   else
@@ -382,12 +382,12 @@ void __67__HKUnitPreferenceController_HealthUI__displayRangeForDisplayType___blo
   return v10;
 }
 
-- (id)_longDisplayNameOverrideForDisplayType:(uint64_t)a1
+- (id)_longDisplayNameOverrideForDisplayType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    v2 = [a2 displayTypeIdentifier];
-    switch(v2)
+    displayTypeIdentifier = [a2 displayTypeIdentifier];
+    switch(displayTypeIdentifier)
     {
       case 266:
       case 5:
@@ -428,10 +428,10 @@ LABEL_17:
   return v6;
 }
 
-- (id)_longDisplayNameForUnit:(uint64_t)a1
+- (id)_longDisplayNameForUnit:(uint64_t)unit
 {
   v3 = a2;
-  if (!a1)
+  if (!unit)
   {
     goto LABEL_6;
   }
@@ -442,8 +442,8 @@ LABEL_17:
   }
 
   v4 = _MergedGlobals;
-  v5 = [v3 unitString];
-  v6 = [v4 objectForKey:v5];
+  unitString = [v3 unitString];
+  v6 = [v4 objectForKey:unitString];
 
   if (v6)
   {

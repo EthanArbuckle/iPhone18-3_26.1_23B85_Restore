@@ -1,24 +1,24 @@
 @interface AEAssetBaseActivityItemProvider
 - (AEAssetActivityItemProviderSourceDelegate)delegate;
-- (AEAssetBaseActivityItemProvider)initWithDelegate:(id)a3 placeholderItem:(id)a4 propertySource:(id)a5;
-- (BOOL)shouldShareActivityType:(id)a3;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (AEAssetBaseActivityItemProvider)initWithDelegate:(id)delegate placeholderItem:(id)item propertySource:(id)source;
+- (BOOL)shouldShareActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 @end
 
 @implementation AEAssetBaseActivityItemProvider
 
-- (AEAssetBaseActivityItemProvider)initWithDelegate:(id)a3 placeholderItem:(id)a4 propertySource:(id)a5
+- (AEAssetBaseActivityItemProvider)initWithDelegate:(id)delegate placeholderItem:(id)item propertySource:(id)source
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = AEAssetBaseActivityItemProvider;
-  v10 = [(AEAssetBaseActivityItemProvider *)&v15 initWithPlaceholderItem:a4];
+  v10 = [(AEAssetBaseActivityItemProvider *)&v15 initWithPlaceholderItem:item];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    v12 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:v9];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    v12 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:sourceCopy];
     propertyProvider = v11->_propertyProvider;
     v11->_propertyProvider = v12;
   }
@@ -26,13 +26,13 @@
   return v11;
 }
 
-- (BOOL)shouldShareActivityType:(id)a3
+- (BOOL)shouldShareActivityType:(id)type
 {
-  v4 = a3;
-  if ([(AEAssetBaseActivityItemProvider *)self supportsActivityType:v4])
+  typeCopy = type;
+  if ([(AEAssetBaseActivityItemProvider *)self supportsActivityType:typeCopy])
   {
-    v5 = [(AEAssetBaseActivityItemProvider *)self delegate];
-    v6 = [v5 itemProviderSource:self shouldShareActivityType:v4];
+    delegate = [(AEAssetBaseActivityItemProvider *)self delegate];
+    v6 = [delegate itemProviderSource:self shouldShareActivityType:typeCopy];
   }
 
   else
@@ -43,17 +43,17 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v5 = [(AEAssetBaseActivityItemProvider *)self propertyProvider:a3];
-  v6 = [v5 title];
+  v5 = [(AEAssetBaseActivityItemProvider *)self propertyProvider:controller];
+  title = [v5 title];
 
-  v7 = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
-  v8 = [v7 author];
+  propertyProvider = [(AEAssetBaseActivityItemProvider *)self propertyProvider];
+  author = [propertyProvider author];
 
-  if ([v6 length])
+  if ([title length])
   {
-    v9 = [v8 length];
+    v9 = [author length];
     v10 = IMCommonCoreBundle();
     v11 = v10;
     if (v9)
@@ -68,7 +68,7 @@
 
     v13 = [v10 localizedStringForKey:v12 value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-    v14 = [NSString stringWithFormat:v13, v6, v8];
+    v14 = [NSString stringWithFormat:v13, title, author];
   }
 
   else

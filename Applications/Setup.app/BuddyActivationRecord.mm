@@ -3,14 +3,14 @@
 - (BOOL)impliesDemod;
 - (BOOL)impliesEarlyExit;
 - (BuddyActivationRecord)init;
-- (BuddyActivationRecord)initWithActivationRecordDictionary:(id)a3;
+- (BuddyActivationRecord)initWithActivationRecordDictionary:(id)dictionary;
 @end
 
 @implementation BuddyActivationRecord
 
 + (id)_currentActivationRecordDictionary
 {
-  v7[2] = a1;
+  v7[2] = self;
   v7[1] = a2;
   v7[0] = 0;
   location = 0;
@@ -35,22 +35,22 @@
   return v4;
 }
 
-- (BuddyActivationRecord)initWithActivationRecordDictionary:(id)a3
+- (BuddyActivationRecord)initWithActivationRecordDictionary:(id)dictionary
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, dictionary);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = BuddyActivationRecord;
   v4 = [(BuddyActivationRecord *)&v10 init];
-  v12 = v4;
-  objc_storeStrong(&v12, v4);
+  selfCopy = v4;
+  objc_storeStrong(&selfCopy, v4);
   if (v4)
   {
-    *(v12 + 1) = 0;
+    *(selfCopy + 1) = 0;
     v9 = [location[0] objectForKeyedSubscript:@"DeviceConfigurationFlags"];
     oslog = _BYLoggingFacility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -63,22 +63,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = [v9 integerValue];
-      *(v12 + 1) = v5;
+      integerValue = [v9 integerValue];
+      *(selfCopy + 1) = integerValue;
     }
 
     objc_storeStrong(&v9, 0);
   }
 
-  v6 = v12;
+  v6 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (BOOL)impliesDemod
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9 = 0;
   v8 = 6;

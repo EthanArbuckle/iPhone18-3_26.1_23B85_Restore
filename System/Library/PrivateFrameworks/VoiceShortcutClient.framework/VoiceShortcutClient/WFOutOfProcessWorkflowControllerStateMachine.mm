@@ -3,18 +3,18 @@
 - (BOOL)isRunningShortcut;
 - (WFOutOfProcessWorkflowControllerStateMachine)init;
 - (WFOutOfProcessWorkflowControllerStateMachineDelegate)delegate;
-- (void)acquiringRunnerWithReason:(id)a3;
-- (void)exitWithReason:(id)a3;
-- (void)finishRunningWithReason:(id)a3 result:(id)a4;
+- (void)acquiringRunnerWithReason:(id)reason;
+- (void)exitWithReason:(id)reason;
+- (void)finishRunningWithReason:(id)reason result:(id)result;
 - (void)handleRunnerWillExit;
-- (void)handleXPCErrorWithDescription:(id)a3 reason:(id)a4 currentDialogAttribution:(id)a5;
-- (void)handlingRequestWithReason:(id)a3;
-- (void)idleStateWithReason:(id)a3;
-- (void)notifyDelegateWithReason:(id)a3 result:(id)a4 currentDialogAttribution:(id)a5;
+- (void)handleXPCErrorWithDescription:(id)description reason:(id)reason currentDialogAttribution:(id)attribution;
+- (void)handlingRequestWithReason:(id)reason;
+- (void)idleStateWithReason:(id)reason;
+- (void)notifyDelegateWithReason:(id)reason result:(id)result currentDialogAttribution:(id)attribution;
 - (void)pauseAndWriteShortcutToDiskState;
-- (void)startRunningShortcutWithReason:(id)a3;
-- (void)stopShortcutWithError:(id)a3 reason:(id)a4;
-- (void)tearDownRunnerWithReason:(id)a3;
+- (void)startRunningShortcutWithReason:(id)reason;
+- (void)stopShortcutWithError:(id)error reason:(id)reason;
+- (void)tearDownRunnerWithReason:(id)reason;
 @end
 
 @implementation WFOutOfProcessWorkflowControllerStateMachine
@@ -47,8 +47,8 @@
 - (void)handleRunnerWillExit
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WFStateMachine *)self currentState];
-  if (v3 && (v8 = v3, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState && (v8 = currentState, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if ([v8 stage] > 4)
     {
@@ -78,65 +78,65 @@
   }
 }
 
-- (void)handleXPCErrorWithDescription:(id)a3 reason:(id)a4 currentDialogAttribution:(id)a5
+- (void)handleXPCErrorWithDescription:(id)description reason:(id)reason currentDialogAttribution:(id)attribution
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFStateMachine *)self currentState];
-  if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  descriptionCopy = description;
+  reasonCopy = reason;
+  attributionCopy = attribution;
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v11 stage] <= 6)
+    if ([currentState stage] <= 6)
     {
       v12 = MEMORY[0x1E696ABC0];
       v13 = WFOutOfProcessWorkflowControllerErrorDomain;
       v18 = *MEMORY[0x1E696A578];
-      v19[0] = v8;
+      v19[0] = descriptionCopy;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v15 = [v12 errorWithDomain:v13 code:4 userInfo:v14];
 
       v16 = [[WFWorkflowRunResult alloc] initWithError:v15];
-      [(WFOutOfProcessWorkflowControllerStateMachine *)self notifyDelegateWithReason:v9 result:v16 currentDialogAttribution:v10];
+      [(WFOutOfProcessWorkflowControllerStateMachine *)self notifyDelegateWithReason:reasonCopy result:v16 currentDialogAttribution:attributionCopy];
     }
   }
 
   else
   {
 
-    v11 = 0;
+    currentState = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)exitWithReason:(id)a3
+- (void)exitWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (void)tearDownRunnerWithReason:(id)a3
+- (void)tearDownRunnerWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:8];
-  v6 = [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  v6 = [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 
   if (v6)
   {
-    v7 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
+    delegate = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
+      delegateQueue = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __73__WFOutOfProcessWorkflowControllerStateMachine_tearDownRunnerWithReason___block_invoke;
       block[3] = &unk_1E7B02158;
       block[4] = self;
-      dispatch_async(v8, block);
+      dispatch_async(delegateQueue, block);
     }
   }
 }
@@ -147,37 +147,37 @@ void __73__WFOutOfProcessWorkflowControllerStateMachine_tearDownRunnerWithReason
   [v2 controllerStateMachineDidRequestRunnerTearDown:*(a1 + 32)];
 }
 
-- (void)notifyDelegateWithReason:(id)a3 result:(id)a4 currentDialogAttribution:(id)a5
+- (void)notifyDelegateWithReason:(id)reason result:(id)result currentDialogAttribution:(id)attribution
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFStateMachine *)self currentState];
-  if (v11)
+  reasonCopy = reason;
+  resultCopy = result;
+  attributionCopy = attribution;
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v11 stage] < 7)
+      if ([currentState stage] < 7)
       {
         v13 = objc_opt_new();
         [v13 setStage:7];
-        if ([(WFStateMachine *)self transitionToState:v13 withReason:v8])
+        if ([(WFStateMachine *)self transitionToState:v13 withReason:reasonCopy])
         {
-          v14 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
+          delegate = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
 
-          if (v14)
+          if (delegate)
           {
-            v15 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
+            delegateQueue = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __105__WFOutOfProcessWorkflowControllerStateMachine_notifyDelegateWithReason_result_currentDialogAttribution___block_invoke;
             block[3] = &unk_1E7B01C60;
             block[4] = self;
-            v18 = v9;
-            v19 = v10;
-            dispatch_async(v15, block);
+            v18 = resultCopy;
+            v19 = attributionCopy;
+            dispatch_async(delegateQueue, block);
           }
         }
       }
@@ -190,7 +190,7 @@ void __73__WFOutOfProcessWorkflowControllerStateMachine_tearDownRunnerWithReason
           *buf = 136315394;
           v21 = "[WFOutOfProcessWorkflowControllerStateMachine notifyDelegateWithReason:result:currentDialogAttribution:]";
           v22 = 2112;
-          v23 = v8;
+          v23 = reasonCopy;
           _os_log_impl(&dword_1B1DE3000, v12, OS_LOG_TYPE_DEFAULT, "%s Asked to notify delegate because %@ but we're already >= notifying delegate. Ignoring the request.", buf, 0x16u);
         }
       }
@@ -220,28 +220,28 @@ void __105__WFOutOfProcessWorkflowControllerStateMachine_notifyDelegateWithReaso
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishRunningWithReason:(id)a3 result:(id)a4
+- (void)finishRunningWithReason:(id)reason result:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  reasonCopy = reason;
   v8 = objc_opt_new();
   [v8 setStage:6];
-  v9 = [(WFStateMachine *)self transitionToState:v8 withReason:v7];
+  v9 = [(WFStateMachine *)self transitionToState:v8 withReason:reasonCopy];
 
   if (v9)
   {
-    v10 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
+    delegate = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
 
-    if (v10)
+    if (delegate)
     {
-      v11 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
+      delegateQueue = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __79__WFOutOfProcessWorkflowControllerStateMachine_finishRunningWithReason_result___block_invoke;
       v12[3] = &unk_1E7B02180;
       v12[4] = self;
-      v13 = v6;
-      dispatch_async(v11, v12);
+      v13 = resultCopy;
+      dispatch_async(delegateQueue, v12);
     }
   }
 }
@@ -252,44 +252,44 @@ void __79__WFOutOfProcessWorkflowControllerStateMachine_finishRunningWithReason_
   [v2 controllerStateMachine:*(a1 + 32) didFinishRunningShortcutWithResult:*(a1 + 40)];
 }
 
-- (void)stopShortcutWithError:(id)a3 reason:(id)a4
+- (void)stopShortcutWithError:(id)error reason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFStateMachine *)self currentState];
-  if (v8)
+  errorCopy = error;
+  reasonCopy = reason;
+  currentState = [(WFStateMachine *)self currentState];
+  if (currentState)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = objc_opt_new();
       [v9 setStage:5];
-      if ([v8 stage] > 1)
+      if ([currentState stage] > 1)
       {
-        if ([v8 stage] != 2)
+        if ([currentState stage] != 2)
         {
-          if ([v8 stage] == 3)
+          if ([currentState stage] == 3)
           {
-            if ([(WFStateMachine *)self transitionToState:v9 withReason:v7])
+            if ([(WFStateMachine *)self transitionToState:v9 withReason:reasonCopy])
             {
-              v12 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
+              delegate = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegate];
 
-              if (v12)
+              if (delegate)
               {
-                v13 = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
+                delegateQueue = [(WFOutOfProcessWorkflowControllerStateMachine *)self delegateQueue];
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __77__WFOutOfProcessWorkflowControllerStateMachine_stopShortcutWithError_reason___block_invoke;
                 block[3] = &unk_1E7B02180;
                 block[4] = self;
-                v16 = v6;
-                dispatch_async(v13, block);
+                v16 = errorCopy;
+                dispatch_async(delegateQueue, block);
               }
             }
           }
 
-          else if ([v8 stage] >= 4)
+          else if ([currentState stage] >= 4)
           {
             v14 = getWFVoiceShortcutClientLogObject();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -297,7 +297,7 @@ void __79__WFOutOfProcessWorkflowControllerStateMachine_finishRunningWithReason_
               *buf = 136315394;
               v18 = "[WFOutOfProcessWorkflowControllerStateMachine stopShortcutWithError:reason:]";
               v19 = 2048;
-              v20 = [v8 stage];
+              stage = [currentState stage];
               _os_log_impl(&dword_1B1DE3000, v14, OS_LOG_TYPE_DEFAULT, "%s stop was requested, but we're ignoring it because the current stage (%lu) will already result in a stop.", buf, 0x16u);
             }
           }
@@ -305,16 +305,16 @@ void __79__WFOutOfProcessWorkflowControllerStateMachine_finishRunningWithReason_
           goto LABEL_8;
         }
 
-        [(WFStateMachine *)self transitionToState:v9 withReason:v7];
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"stop was requested because %@, tearing down runner", v7];
-        [(WFOutOfProcessWorkflowControllerStateMachine *)self tearDownRunnerWithReason:v10];
+        [(WFStateMachine *)self transitionToState:v9 withReason:reasonCopy];
+        reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"stop was requested because %@, tearing down runner", reasonCopy];
+        [(WFOutOfProcessWorkflowControllerStateMachine *)self tearDownRunnerWithReason:reasonCopy];
       }
 
       else
       {
-        [(WFStateMachine *)self transitionToState:v9 withReason:v7];
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"stop was requested because %@, but we haven't yet acquired a runner, so just exiting", v7];
-        [(WFOutOfProcessWorkflowControllerStateMachine *)self exitWithReason:v10];
+        [(WFStateMachine *)self transitionToState:v9 withReason:reasonCopy];
+        reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"stop was requested because %@, but we haven't yet acquired a runner, so just exiting", reasonCopy];
+        [(WFOutOfProcessWorkflowControllerStateMachine *)self exitWithReason:reasonCopy];
       }
 
 LABEL_8:
@@ -337,50 +337,50 @@ void __77__WFOutOfProcessWorkflowControllerStateMachine_stopShortcutWithError_re
   [(WFStateMachine *)self transitionToState:v3 withReason:@"pause and write shortcut to disk requested"];
 }
 
-- (void)startRunningShortcutWithReason:(id)a3
+- (void)startRunningShortcutWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:3];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (void)acquiringRunnerWithReason:(id)a3
+- (void)acquiringRunnerWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:2];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (void)handlingRequestWithReason:(id)a3
+- (void)handlingRequestWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:1];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
-- (void)idleStateWithReason:(id)a3
+- (void)idleStateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_opt_new();
   [v5 setStage:0];
-  [(WFStateMachine *)self transitionToState:v5 withReason:v4];
+  [(WFStateMachine *)self transitionToState:v5 withReason:reasonCopy];
 }
 
 - (BOOL)isFinishingShortcut
 {
-  v2 = [(WFStateMachine *)self currentState];
-  v3 = v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v2 stage] == 6;
+  currentState = [(WFStateMachine *)self currentState];
+  v3 = currentState && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [currentState stage] == 6;
 
   return v3;
 }
 
 - (BOOL)isRunningShortcut
 {
-  v2 = [(WFStateMachine *)self currentState];
-  v3 = v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v2 stage] == 3;
+  currentState = [(WFStateMachine *)self currentState];
+  v3 = currentState && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [currentState stage] == 3;
 
   return v3;
 }

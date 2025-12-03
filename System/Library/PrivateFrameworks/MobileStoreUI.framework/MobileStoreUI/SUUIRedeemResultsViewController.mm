@@ -1,14 +1,14 @@
 @interface SUUIRedeemResultsViewController
-+ (BOOL)canShowResultsForRedeem:(id)a3;
-+ (id)redeemResultsControllerForRedeem:(id)a3;
-- (SUUIRedeemResultsViewController)initWithRedeem:(id)a3;
-- (void)_doneAction:(id)a3;
++ (BOOL)canShowResultsForRedeem:(id)redeem;
++ (id)redeemResultsControllerForRedeem:(id)redeem;
+- (SUUIRedeemResultsViewController)initWithRedeem:(id)redeem;
+- (void)_doneAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation SUUIRedeemResultsViewController
 
-+ (BOOL)canShowResultsForRedeem:(id)a3
++ (BOOL)canShowResultsForRedeem:(id)redeem
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
@@ -20,10 +20,10 @@
   return 0;
 }
 
-+ (id)redeemResultsControllerForRedeem:(id)a3
++ (id)redeemResultsControllerForRedeem:(id)redeem
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  redeemCopy = redeem;
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
@@ -46,7 +46,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([v9 canShowResultsForRedeem:{v3, v12}])
+      if ([v9 canShowResultsForRedeem:{redeemCopy, v12}])
       {
         break;
       }
@@ -70,17 +70,17 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [[v9 alloc] initWithRedeem:v3];
+  v10 = [[v9 alloc] initWithRedeem:redeemCopy];
 
   return v10;
 }
 
-- (SUUIRedeemResultsViewController)initWithRedeem:(id)a3
+- (SUUIRedeemResultsViewController)initWithRedeem:(id)redeem
 {
-  v5 = a3;
+  redeemCopy = redeem;
   if ([(SUUIRedeemResultsViewController *)self isMemberOfClass:objc_opt_class()])
   {
-    v6 = [SUUIRedeemResultsViewController redeemResultsControllerForRedeem:v5];
+    v6 = [SUUIRedeemResultsViewController redeemResultsControllerForRedeem:redeemCopy];
   }
 
   else
@@ -91,7 +91,7 @@ LABEL_9:
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_redeem, a3);
+      objc_storeStrong(&v7->_redeem, redeem);
     }
 
     v6 = v8;
@@ -108,15 +108,15 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = SUUIRedeemResultsViewController;
   [(SUUIRedeemResultsViewController *)&v7 viewDidLoad];
-  v3 = [(SUUIRedeemStepViewController *)self clientContext];
-  v4 = [(SUUIRedeemResultsViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  clientContext = [(SUUIRedeemStepViewController *)self clientContext];
+  navigationItem = [(SUUIRedeemResultsViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v5 setAction:sel__doneAction_];
   [v5 setTarget:self];
-  if (v3)
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"REDEEM_SUCCESS_DONE_BUTTON" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"REDEEM_SUCCESS_DONE_BUTTON" inTable:@"Redeem"];
   }
 
   else
@@ -127,20 +127,20 @@ LABEL_9:
   [v5 setTitle:v6];
 
   [v5 setStyle:2];
-  [v4 setRightBarButtonItem:v5];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)_doneAction:(id)a3
+- (void)_doneAction:(id)action
 {
   if ([(SUUIRedeemStepViewController *)self shouldShowPassbookLearnMore]&& ([(SUUIRedeemResultsViewController *)self redeem], v4 = objc_claimAutoreleasedReturnValue(), [(SUUIRedeemStepViewController *)self configuration], v5 = objc_claimAutoreleasedReturnValue(), v6 = [SUUIITunesPassLearnMoreAlertDelegate shouldShowAlertForRedeem:v4 configuration:v5], v5, v4, v6))
   {
     v7 = [SUUIITunesPassLearnMoreAlertDelegate alloc];
-    v8 = [(SUUIRedeemStepViewController *)self configuration];
-    v9 = [(SUUIRedeemStepViewController *)self clientContext];
-    v10 = [(SUUIITunesPassLearnMoreAlertDelegate *)v7 initWithRedeemConfiguration:v8 clientContext:v9];
+    configuration = [(SUUIRedeemStepViewController *)self configuration];
+    clientContext = [(SUUIRedeemStepViewController *)self clientContext];
+    v10 = [(SUUIITunesPassLearnMoreAlertDelegate *)v7 initWithRedeemConfiguration:configuration clientContext:clientContext];
 
-    v11 = [(SUUIRedeemResultsViewController *)self presentingViewController];
-    [(SUUIITunesPassLearnMoreAlertDelegate *)v10 setPresentingViewController:v11];
+    presentingViewController = [(SUUIRedeemResultsViewController *)self presentingViewController];
+    [(SUUIITunesPassLearnMoreAlertDelegate *)v10 setPresentingViewController:presentingViewController];
   }
 
   else
@@ -148,31 +148,31 @@ LABEL_9:
     v10 = 0;
   }
 
-  v12 = [(SUUIRedeemResultsViewController *)self redeem];
-  v13 = [v12 redirectURL];
+  redeem = [(SUUIRedeemResultsViewController *)self redeem];
+  redirectURL = [redeem redirectURL];
 
-  v14 = [(SUUIRedeemResultsViewController *)self parentViewController];
-  v15 = v14;
-  if (v14)
+  parentViewController = [(SUUIRedeemResultsViewController *)self parentViewController];
+  v15 = parentViewController;
+  if (parentViewController)
   {
-    v16 = v14;
+    selfCopy = parentViewController;
   }
 
   else
   {
-    v16 = self;
+    selfCopy = self;
   }
 
-  v17 = v16;
+  v17 = selfCopy;
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__SUUIRedeemResultsViewController__doneAction___block_invoke;
   v20[3] = &unk_2798F5AF8;
-  v21 = v13;
+  v21 = redirectURL;
   v22 = v10;
   v18 = v10;
-  v19 = v13;
+  v19 = redirectURL;
   [(SUUIRedeemResultsViewController *)v17 dismissViewControllerAnimated:1 completion:v20];
 }
 

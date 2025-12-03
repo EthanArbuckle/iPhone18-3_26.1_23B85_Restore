@@ -1,45 +1,45 @@
 @interface HDWorkoutClusterComponentEntity
-+ (BOOL)associateWorkout:(id)a3 withCluster:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateWorkoutsForCluster:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)removeWorkout:(id)a3 fromCluster:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)associateWorkout:(id)workout withCluster:(id)cluster transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateWorkoutsForCluster:(id)cluster transaction:(id)transaction error:(id *)error block:(id)block;
++ (BOOL)removeWorkout:(id)workout fromCluster:(id)cluster transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)numberOfWorkoutsInCluster:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)numberOfWorkoutsInCluster:(id)cluster transaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
 @end
 
 @implementation HDWorkoutClusterComponentEntity
 
-+ (BOOL)associateWorkout:(id)a3 withCluster:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)associateWorkout:(id)workout withCluster:(id)cluster transaction:(id)transaction error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  workoutCopy = workout;
+  clusterCopy = cluster;
   v27[0] = @"cluster_id";
   v27[1] = @"workout_id";
   v12 = MEMORY[0x277CBEA60];
-  v13 = a5;
+  transactionCopy = transaction;
   v14 = [v12 arrayWithObjects:v27 count:2];
-  v15 = [v13 databaseForEntityClass:a1];
+  v15 = [transactionCopy databaseForEntityClass:self];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __82__HDWorkoutClusterComponentEntity_associateWorkout_withCluster_transaction_error___block_invoke;
   v24[3] = &unk_278618EF0;
   v25 = v14;
-  v26 = a1;
+  selfCopy = self;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __82__HDWorkoutClusterComponentEntity_associateWorkout_withCluster_transaction_error___block_invoke_2;
   v21[3] = &unk_278613038;
-  v22 = v11;
-  v23 = v10;
-  v16 = v10;
-  v17 = v11;
+  v22 = clusterCopy;
+  v23 = workoutCopy;
+  v16 = workoutCopy;
+  v17 = clusterCopy;
   v18 = v14;
-  LOBYTE(a6) = [v15 executeCachedStatementForKey:&associateWorkout_withCluster_transaction_error__insertKey error:a6 SQLGenerator:v24 bindingHandler:v21 enumerationHandler:0];
+  LOBYTE(error) = [v15 executeCachedStatementForKey:&associateWorkout_withCluster_transaction_error__insertKey error:error SQLGenerator:v24 bindingHandler:v21 enumerationHandler:0];
 
   v19 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __82__HDWorkoutClusterComponentEntity_associateWorkout_withCluster_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -50,28 +50,28 @@ uint64_t __82__HDWorkoutClusterComponentEntity_associateWorkout_withCluster_tran
   return sqlite3_bind_int64(a2, 2, v4);
 }
 
-+ (BOOL)removeWorkout:(id)a3 fromCluster:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)removeWorkout:(id)workout fromCluster:(id)cluster transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  workoutCopy = workout;
+  clusterCopy = cluster;
   v12 = MEMORY[0x277CCACA8];
-  v13 = a5;
-  v14 = [a1 databaseTable];
-  v15 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ = ? AND %@ = ?", v14, @"cluster_id", @"workout_id", 0];
+  transactionCopy = transaction;
+  databaseTable = [self databaseTable];
+  v15 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ = ? AND %@ = ?", databaseTable, @"cluster_id", @"workout_id", 0];
 
-  v16 = [v13 databaseForEntityClass:a1];
+  v16 = [transactionCopy databaseForEntityClass:self];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__HDWorkoutClusterComponentEntity_removeWorkout_fromCluster_transaction_error___block_invoke;
   v20[3] = &unk_278613038;
-  v21 = v11;
-  v22 = v10;
-  v17 = v10;
-  v18 = v11;
-  LOBYTE(a6) = [v16 executeSQL:v15 error:a6 bindingHandler:v20 enumerationHandler:0];
+  v21 = clusterCopy;
+  v22 = workoutCopy;
+  v17 = workoutCopy;
+  v18 = clusterCopy;
+  LOBYTE(error) = [v16 executeSQL:v15 error:error bindingHandler:v20 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __79__HDWorkoutClusterComponentEntity_removeWorkout_fromCluster_transaction_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -82,18 +82,18 @@ uint64_t __79__HDWorkoutClusterComponentEntity_removeWorkout_fromCluster_transac
   return sqlite3_bind_int64(a2, 2, v4);
 }
 
-+ (BOOL)enumerateWorkoutsForCluster:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateWorkoutsForCluster:(id)cluster transaction:(id)transaction error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 databaseForEntityClass:a1];
-  v19 = v10;
+  clusterCopy = cluster;
+  blockCopy = block;
+  v12 = [transaction databaseForEntityClass:self];
+  v19 = clusterCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __87__HDWorkoutClusterComponentEntity_enumerateWorkoutsForCluster_transaction_error_block___block_invoke;
   v20[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v20[4] = a1;
-  v17 = v11;
+  v20[4] = self;
+  v17 = blockCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __87__HDWorkoutClusterComponentEntity_enumerateWorkoutsForCluster_transaction_error_block___block_invoke_2;
@@ -102,11 +102,11 @@ uint64_t __79__HDWorkoutClusterComponentEntity_removeWorkout_fromCluster_transac
   v16[1] = 3221225472;
   v16[2] = __87__HDWorkoutClusterComponentEntity_enumerateWorkoutsForCluster_transaction_error_block___block_invoke_3;
   v16[3] = &unk_278613B30;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [v12 executeCachedStatementForKey:&enumerateWorkoutsForCluster_transaction_error_block__enumerationKey error:a5 SQLGenerator:v20 bindingHandler:v18 enumerationHandler:v16];
+  v13 = blockCopy;
+  v14 = clusterCopy;
+  LOBYTE(error) = [v12 executeCachedStatementForKey:&enumerateWorkoutsForCluster_transaction_error_block__enumerationKey error:error SQLGenerator:v20 bindingHandler:v18 enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
 id __87__HDWorkoutClusterComponentEntity_enumerateWorkoutsForCluster_transaction_error_block___block_invoke(uint64_t a1)
@@ -142,31 +142,31 @@ uint64_t __87__HDWorkoutClusterComponentEntity_enumerateWorkoutsForCluster_trans
   return v4;
 }
 
-+ (id)numberOfWorkoutsInCluster:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)numberOfWorkoutsInCluster:(id)cluster transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  clusterCopy = cluster;
+  transactionCopy = transaction;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v10 = MEMORY[0x277CCACA8];
-  v11 = [a1 databaseTable];
-  v12 = [v10 stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE %@ = ?", v11, @"cluster_id", 0];
+  databaseTable = [self databaseTable];
+  v12 = [v10 stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE %@ = ?", databaseTable, @"cluster_id", 0];
 
-  v13 = [v9 databaseForEntityClass:a1];
+  v13 = [transactionCopy databaseForEntityClass:self];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__HDWorkoutClusterComponentEntity_numberOfWorkoutsInCluster_transaction_error___block_invoke;
   v18[3] = &unk_278614860;
-  v14 = v8;
+  v14 = clusterCopy;
   v19 = v14;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__HDWorkoutClusterComponentEntity_numberOfWorkoutsInCluster_transaction_error___block_invoke_2;
   v17[3] = &unk_278614620;
   v17[4] = &v20;
-  if ([v13 executeSQL:v12 error:a5 bindingHandler:v18 enumerationHandler:v17])
+  if ([v13 executeSQL:v12 error:error bindingHandler:v18 enumerationHandler:v17])
   {
     v15 = [MEMORY[0x277CCABB0] numberWithLongLong:v21[3]];
   }

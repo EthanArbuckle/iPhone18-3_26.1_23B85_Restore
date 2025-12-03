@@ -1,20 +1,20 @@
 @interface PKPaymentInformationEventExtensionHostContext
 - (id)replyQueue;
-- (void)handleConfigurationRequest:(id)a3 completion:(id)a4;
-- (void)handleInformationRequest:(id)a3 completion:(id)a4;
-- (void)handleSignatureRequest:(id)a3 completion:(id)a4;
+- (void)handleConfigurationRequest:(id)request completion:(id)completion;
+- (void)handleInformationRequest:(id)request completion:(id)completion;
+- (void)handleSignatureRequest:(id)request completion:(id)completion;
 @end
 
 @implementation PKPaymentInformationEventExtensionHostContext
 
-- (void)handleInformationRequest:(id)a3 completion:(id)a4
+- (void)handleInformationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
-    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+    replyQueue = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
+    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, replyQueue);
 
     v10 = dispatch_time(0, 15000000000);
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
@@ -23,7 +23,7 @@
     v26[2] = 0x3032000000;
     v26[3] = __Block_byref_object_copy__31;
     v26[4] = __Block_byref_object_dispose__31;
-    v27 = _Block_copy(v7);
+    v27 = _Block_copy(completionCopy);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __85__PKPaymentInformationEventExtensionHostContext_handleInformationRequest_completion___block_invoke;
@@ -55,7 +55,7 @@
     v17[4] = self;
     v16 = v14;
     v18 = v16;
-    [v15 handleInformationRequest:v6 completion:v17];
+    [v15 handleInformationRequest:requestCopy completion:v17];
 
     _Block_object_dispose(v26, 8);
   }
@@ -110,14 +110,14 @@ void __85__PKPaymentInformationEventExtensionHostContext_handleInformationReques
   dispatch_async(v4, v7);
 }
 
-- (void)handleSignatureRequest:(id)a3 completion:(id)a4
+- (void)handleSignatureRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
-    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+    replyQueue = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
+    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, replyQueue);
 
     v10 = dispatch_time(0, 15000000000);
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
@@ -126,7 +126,7 @@ void __85__PKPaymentInformationEventExtensionHostContext_handleInformationReques
     v26[2] = 0x3032000000;
     v26[3] = __Block_byref_object_copy__31;
     v26[4] = __Block_byref_object_dispose__31;
-    v27 = _Block_copy(v7);
+    v27 = _Block_copy(completionCopy);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__PKPaymentInformationEventExtensionHostContext_handleSignatureRequest_completion___block_invoke;
@@ -158,7 +158,7 @@ void __85__PKPaymentInformationEventExtensionHostContext_handleInformationReques
     v17[4] = self;
     v16 = v14;
     v18 = v16;
-    [v15 handleSignatureRequest:v6 completion:v17];
+    [v15 handleSignatureRequest:requestCopy completion:v17];
 
     _Block_object_dispose(v26, 8);
   }
@@ -213,12 +213,12 @@ void __83__PKPaymentInformationEventExtensionHostContext_handleSignatureRequest_
   dispatch_async(v4, v7);
 }
 
-- (void)handleConfigurationRequest:(id)a3 completion:(id)a4
+- (void)handleConfigurationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
-  v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+  requestCopy = request;
+  completionCopy = completion;
+  replyQueue = [(PKPaymentInformationEventExtensionHostContext *)self replyQueue];
+  v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, replyQueue);
 
   v10 = dispatch_time(0, 15000000000);
   dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
@@ -227,7 +227,7 @@ void __83__PKPaymentInformationEventExtensionHostContext_handleSignatureRequest_
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__31;
   v26[4] = __Block_byref_object_dispose__31;
-  v27 = _Block_copy(v7);
+  v27 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__PKPaymentInformationEventExtensionHostContext_handleConfigurationRequest_completion___block_invoke;
@@ -259,7 +259,7 @@ void __83__PKPaymentInformationEventExtensionHostContext_handleSignatureRequest_
   v17[4] = self;
   v16 = v14;
   v18 = v16;
-  [v15 handleConfigurationRequest:v6 completion:v17];
+  [v15 handleConfigurationRequest:requestCopy completion:v17];
 
   _Block_object_dispose(v26, 8);
 }

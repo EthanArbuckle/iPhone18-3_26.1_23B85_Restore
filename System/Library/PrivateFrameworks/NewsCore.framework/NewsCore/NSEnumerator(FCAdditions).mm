@@ -22,18 +22,18 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = 0;
+  nextObject = 0;
   do
   {
-    v6 = v5;
-    v5 = [a1 nextObject];
+    v6 = nextObject;
+    nextObject = [self nextObject];
   }
 
-  while (v5 && !v4[2](v4, v5));
+  while (nextObject && !v4[2](v4, nextObject));
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return nextObject;
 }
 
 @end

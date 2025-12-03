@@ -1,5 +1,5 @@
 @interface HMDSiriStreamStartEvent
-- (HMDSiriStreamStartEvent)initWithActivationType:(unint64_t)a3;
+- (HMDSiriStreamStartEvent)initWithActivationType:(unint64_t)type;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -21,14 +21,14 @@
   return v5;
 }
 
-- (HMDSiriStreamStartEvent)initWithActivationType:(unint64_t)a3
+- (HMDSiriStreamStartEvent)initWithActivationType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = HMDSiriStreamStartEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_activationType = a3;
+    result->_activationType = type;
   }
 
   return result;

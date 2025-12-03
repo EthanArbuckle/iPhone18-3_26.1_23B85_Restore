@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_ResetCurationScoreSyndicatedAsset
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetCurationScoreSyndicatedAsset
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D560];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 alloc];
   v9 = +[PLManagedAsset entity];
   v10 = [v8 initWithEntity:v9];
@@ -22,7 +22,7 @@
   [v10 setPropertiesToUpdate:v12];
 
   v34 = 0;
-  v13 = [v7 executeRequest:v10 error:&v34];
+  v13 = [contextCopy executeRequest:v10 error:&v34];
 
   v14 = v34;
   if (v13)
@@ -32,20 +32,20 @@
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v13 result];
+      result = [v13 result];
       *buf = 138543618;
       *&buf[4] = v17;
       *&buf[12] = 2112;
-      *&buf[14] = v18;
+      *&buf[14] = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "%{public}@.: Successfully batch reset curationScore for %@ assets", buf, 0x16u);
     }
 
     v19 = 1;
-    if (a4)
+    if (error)
     {
 LABEL_5:
       v20 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -56,9 +56,9 @@ LABEL_5:
 
     if (v23)
     {
-      v24 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v24)
+      if (logger)
       {
         v68 = 0u;
         v69 = 0u;
@@ -128,7 +128,7 @@ LABEL_5:
     }
 
     v19 = 3;
-    if (a4)
+    if (error)
     {
       goto LABEL_5;
     }

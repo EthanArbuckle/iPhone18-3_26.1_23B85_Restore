@@ -1,31 +1,31 @@
 @interface TRAArbitrationUserInterfaceStyleInputs
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserInterfaceStyleInputs:(id)a3;
-- (TRAArbitrationUserInterfaceStyleInputs)initWithUserInterfaceStyle:(int64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserInterfaceStyleInputs:(id)inputs;
+- (TRAArbitrationUserInterfaceStyleInputs)initWithUserInterfaceStyle:(int64_t)style;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationUserInterfaceStyleInputs
 
-- (TRAArbitrationUserInterfaceStyleInputs)initWithUserInterfaceStyle:(int64_t)a3
+- (TRAArbitrationUserInterfaceStyleInputs)initWithUserInterfaceStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = TRAArbitrationUserInterfaceStyleInputs;
   result = [(TRAArbitrationUserInterfaceStyleInputs *)&v5 init];
   if (result)
   {
-    result->_userInterfaceStyle = a3;
+    result->_userInterfaceStyle = style;
   }
 
   return result;
 }
 
-- (BOOL)isEqualToUserInterfaceStyleInputs:(id)a3
+- (BOOL)isEqualToUserInterfaceStyleInputs:(id)inputs
 {
-  v4 = a3;
-  if (v4)
+  inputsCopy = inputs;
+  if (inputsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -33,7 +33,7 @@
       [TRAArbitrationUserInterfaceStyleInputs isEqualToUserInterfaceStyleInputs:];
     }
 
-    if (self == v4)
+    if (self == inputsCopy)
     {
       v6 = 1;
     }
@@ -41,7 +41,7 @@
     else
     {
       userInterfaceStyle = self->_userInterfaceStyle;
-      v6 = userInterfaceStyle == [(TRAArbitrationUserInterfaceStyleInputs *)v4 userInterfaceStyle];
+      v6 = userInterfaceStyle == [(TRAArbitrationUserInterfaceStyleInputs *)inputsCopy userInterfaceStyle];
     }
   }
 
@@ -53,10 +53,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -64,7 +64,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationUserInterfaceStyleInputs *)self isEqualToUserInterfaceStyleInputs:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationUserInterfaceStyleInputs *)self isEqualToUserInterfaceStyleInputs:equalCopy];
   }
 
   return v5;
@@ -72,10 +72,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationUserInterfaceStyleInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationUserInterfaceStyleInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -86,12 +86,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationUserInterfaceStyleInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationUserInterfaceStyleInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToUserInterfaceStyleInputs:.cold.1()

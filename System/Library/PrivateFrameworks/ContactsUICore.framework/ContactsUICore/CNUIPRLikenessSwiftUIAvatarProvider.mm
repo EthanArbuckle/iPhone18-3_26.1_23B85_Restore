@@ -1,25 +1,25 @@
 @interface CNUIPRLikenessSwiftUIAvatarProvider
-- (CGImage)_cnui_imageForScope:(id)a3;
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4;
-- (CNUIPRLikenessSwiftUIAvatarProvider)initWithCNContact:(id)a3;
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4;
+- (CGImage)_cnui_imageForScope:(id)scope;
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale;
+- (CNUIPRLikenessSwiftUIAvatarProvider)initWithCNContact:(id)contact;
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation CNUIPRLikenessSwiftUIAvatarProvider
 
-- (CNUIPRLikenessSwiftUIAvatarProvider)initWithCNContact:(id)a3
+- (CNUIPRLikenessSwiftUIAvatarProvider)initWithCNContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v12.receiver = self;
   v12.super_class = CNUIPRLikenessSwiftUIAvatarProvider;
   v6 = [(CNUIPRLikenessSwiftUIAvatarProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
-    v8 = [MEMORY[0x1E6996660] atomicCache];
+    objc_storeStrong(&v6->_contact, contact);
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     cache = v7->_cache;
-    v7->_cache = v8;
+    v7->_cache = atomicCache;
 
     v10 = v7;
   }
@@ -27,11 +27,11 @@
   return v7;
 }
 
-- (CGImage)_cnui_imageForScope:(id)a3
+- (CGImage)_cnui_imageForScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v5 = MEMORY[0x1E696AEC0];
-  [v4 pointSize];
+  [scopeCopy pointSize];
   v6 = NSStringFromSize(v14);
   v7 = [v5 stringWithFormat:@"%@", v6];
 
@@ -41,8 +41,8 @@
   v12[2] = __59__CNUIPRLikenessSwiftUIAvatarProvider__cnui_imageForScope___block_invoke;
   v12[3] = &unk_1E76E9B00;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = scopeCopy;
+  v9 = scopeCopy;
   v10 = [(CNCache *)cache objectForKey:v7 onCacheMiss:v12];
 
   if (v10)
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = NSStringFromSize(a3);
+  v9 = NSStringFromSize(size);
   v10 = [v8 stringWithFormat:@"%@", v9];
 
   cache = self->_cache;
@@ -68,7 +68,7 @@
   v15[3] = &unk_1E76E85A8;
   *&v15[5] = width;
   *&v15[6] = height;
-  *&v15[7] = a4;
+  *&v15[7] = scale;
   v15[4] = self;
   v12 = [(CNCache *)cache objectForKey:v10 onCacheMiss:v15];
   if (v12)
@@ -92,12 +92,12 @@ id __64__CNUIPRLikenessSwiftUIAvatarProvider__cnui_imageForSize_scale___block_in
   return v3;
 }
 
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale
 {
   v4 = MEMORY[0x1E69BDC38];
-  v5 = [(CNUIPRLikenessSwiftUIAvatarProvider *)self _cnui_imageForSize:a3.width scale:a3.height, a4];
+  scale = [(CNUIPRLikenessSwiftUIAvatarProvider *)self _cnui_imageForSize:size.width scale:size.height, scale];
 
-  return [v4 photoWithImage:v5];
+  return [v4 photoWithImage:scale];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PKExpressPassConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PKExpressPassConfiguration)initWithCoder:(id)a3;
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 forPaymentApplications:(id)a4;
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 forSecureElementPass:(id)a4;
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 isNFCExpressEnabled:(BOOL)a4 isUWBExpressEnabled:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKExpressPassConfiguration)initWithCoder:(id)coder;
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information forPaymentApplications:(id)applications;
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information forSecureElementPass:(id)pass;
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information isNFCExpressEnabled:(BOOL)enabled isUWBExpressEnabled:(BOOL)expressEnabled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForPaymentPass:(id)a3 isNFCExpressEnabled:(BOOL)a4 isUWBExpressEnabled:(BOOL)a5 withTechologyTest:(id)a6;
+- (id)initForPaymentPass:(id)pass isNFCExpressEnabled:(BOOL)enabled isUWBExpressEnabled:(BOOL)expressEnabled withTechologyTest:(id)test;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExpressPassConfiguration
 
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 isNFCExpressEnabled:(BOOL)a4 isUWBExpressEnabled:(BOOL)a5
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information isNFCExpressEnabled:(BOOL)enabled isUWBExpressEnabled:(BOOL)expressEnabled
 {
-  result = a3;
+  result = information;
   if (result)
   {
     v10 = result;
@@ -24,14 +24,14 @@
     v11 = [(PKExpressPassConfiguration *)&v14 init];
     if (v11)
     {
-      v12 = [(PKExpressPassConfiguration *)v10 passUniqueIdentifier];
+      passUniqueIdentifier = [(PKExpressPassConfiguration *)v10 passUniqueIdentifier];
       passUniqueIdentifier = v11->_passUniqueIdentifier;
-      v11->_passUniqueIdentifier = v12;
+      v11->_passUniqueIdentifier = passUniqueIdentifier;
 
-      objc_storeStrong(&v11->_passInformation, a3);
-      v11->_isNFCExpressEnabled = a4;
-      v11->_isUWBExpressEnabled = a5;
-      if (!a4 && !a5)
+      objc_storeStrong(&v11->_passInformation, information);
+      v11->_isNFCExpressEnabled = enabled;
+      v11->_isUWBExpressEnabled = expressEnabled;
+      if (!enabled && !expressEnabled)
       {
 
         v11 = 0;
@@ -49,17 +49,17 @@
   return result;
 }
 
-- (id)initForPaymentPass:(id)a3 isNFCExpressEnabled:(BOOL)a4 isUWBExpressEnabled:(BOOL)a5 withTechologyTest:(id)a6
+- (id)initForPaymentPass:(id)pass isNFCExpressEnabled:(BOOL)enabled isUWBExpressEnabled:(BOOL)expressEnabled withTechologyTest:(id)test
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [[PKExpressPassInformation alloc] initForPaymentPass:v11 withTechologyTest:v10];
+  expressEnabledCopy = expressEnabled;
+  enabledCopy = enabled;
+  testCopy = test;
+  passCopy = pass;
+  v12 = [[PKExpressPassInformation alloc] initForPaymentPass:passCopy withTechologyTest:testCopy];
 
   if (v12)
   {
-    v13 = [(PKExpressPassConfiguration *)self initWithPassInformation:v12 isNFCExpressEnabled:v7 isUWBExpressEnabled:v6];
+    v13 = [(PKExpressPassConfiguration *)self initWithPassInformation:v12 isNFCExpressEnabled:enabledCopy isUWBExpressEnabled:expressEnabledCopy];
   }
 
   else
@@ -71,30 +71,30 @@
   return v13;
 }
 
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 forSecureElementPass:(id)a4
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information forSecureElementPass:(id)pass
 {
-  v6 = a3;
-  v7 = [a4 devicePaymentApplications];
-  v8 = [(PKExpressPassConfiguration *)self initWithPassInformation:v6 forPaymentApplications:v7];
+  informationCopy = information;
+  devicePaymentApplications = [pass devicePaymentApplications];
+  v8 = [(PKExpressPassConfiguration *)self initWithPassInformation:informationCopy forPaymentApplications:devicePaymentApplications];
 
   return v8;
 }
 
-- (PKExpressPassConfiguration)initWithPassInformation:(id)a3 forPaymentApplications:(id)a4
+- (PKExpressPassConfiguration)initWithPassInformation:(id)information forPaymentApplications:(id)applications
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  informationCopy = information;
+  applicationsCopy = applications;
+  if (informationCopy)
   {
-    v21 = self;
-    v8 = [v6 paymentApplicationIdentifiers];
+    selfCopy = self;
+    paymentApplicationIdentifiers = [informationCopy paymentApplicationIdentifiers];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v7;
-    v9 = v7;
+    v20 = applicationsCopy;
+    v9 = applicationsCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -111,8 +111,8 @@
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 applicationIdentifier];
-          v17 = [v8 containsObject:v16];
+          applicationIdentifier = [v15 applicationIdentifier];
+          v17 = [paymentApplicationIdentifiers containsObject:applicationIdentifier];
 
           if (v17)
           {
@@ -131,23 +131,23 @@
       v12 = 0;
     }
 
-    self = [(PKExpressPassConfiguration *)v21 initWithPassInformation:v6 isNFCExpressEnabled:v12 & 1 isUWBExpressEnabled:(v12 >> 1) & 1];
-    v18 = self;
-    v7 = v20;
+    self = [(PKExpressPassConfiguration *)selfCopy initWithPassInformation:informationCopy isNFCExpressEnabled:v12 & 1 isUWBExpressEnabled:(v12 >> 1) & 1];
+    selfCopy2 = self;
+    applicationsCopy = v20;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy2 = 0;
   }
 
-  return v18;
+  return selfCopy2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -158,7 +158,7 @@
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v6 = v4;
+      v6 = equalCopy;
     }
 
     else
@@ -167,7 +167,7 @@
     }
 
     v7 = v6;
-    v8 = (isKindOfClass & 1) != 0 && [(NSString *)self->_passUniqueIdentifier isEqualToString:v4->_passUniqueIdentifier]&& [(PKExpressPassInformation *)self->_passInformation isEqual:v4->_passInformation]&& self->_isNFCExpressEnabled == v4->_isNFCExpressEnabled && self->_isUWBExpressEnabled == v4->_isUWBExpressEnabled;
+    v8 = (isKindOfClass & 1) != 0 && [(NSString *)self->_passUniqueIdentifier isEqualToString:equalCopy->_passUniqueIdentifier]&& [(PKExpressPassInformation *)self->_passInformation isEqual:equalCopy->_passInformation]&& self->_isNFCExpressEnabled == equalCopy->_isNFCExpressEnabled && self->_isUWBExpressEnabled == equalCopy->_isUWBExpressEnabled;
   }
 
   return v8;
@@ -205,38 +205,38 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_passInformation forKey:@"passInformation"];
-  [v5 encodeBool:self->_isNFCExpressEnabled forKey:@"isNFCExpressEnabled"];
-  [v5 encodeBool:self->_isUWBExpressEnabled forKey:@"isUWBExpressEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_passInformation forKey:@"passInformation"];
+  [coderCopy encodeBool:self->_isNFCExpressEnabled forKey:@"isNFCExpressEnabled"];
+  [coderCopy encodeBool:self->_isUWBExpressEnabled forKey:@"isUWBExpressEnabled"];
 }
 
-- (PKExpressPassConfiguration)initWithCoder:(id)a3
+- (PKExpressPassConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passInformation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passInformation"];
   if (v5)
   {
-    self = -[PKExpressPassConfiguration initWithPassInformation:isNFCExpressEnabled:isUWBExpressEnabled:](self, "initWithPassInformation:isNFCExpressEnabled:isUWBExpressEnabled:", v5, [v4 decodeBoolForKey:@"isNFCExpressEnabled"], objc_msgSend(v4, "decodeBoolForKey:", @"isUWBExpressEnabled"));
-    v6 = self;
+    self = -[PKExpressPassConfiguration initWithPassInformation:isNFCExpressEnabled:isUWBExpressEnabled:](self, "initWithPassInformation:isNFCExpressEnabled:isUWBExpressEnabled:", v5, [coderCopy decodeBoolForKey:@"isNFCExpressEnabled"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"isUWBExpressEnabled"));
+    selfCopy = self;
   }
 
   else
   {
     v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKExpressPassConfiguration" code:0 userInfo:0];
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKExpressPassInformation allocWithZone:](PKExpressPassInformation initWithExpressPassInformation:"initWithExpressPassInformation:", self->_passInformation];
   v6 = [[PKExpressPassConfiguration allocWithZone:?]isNFCExpressEnabled:"initWithPassInformation:isNFCExpressEnabled:isUWBExpressEnabled:" isUWBExpressEnabled:v5, self->_isNFCExpressEnabled, self->_isUWBExpressEnabled];

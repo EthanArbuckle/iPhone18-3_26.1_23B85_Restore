@@ -1,15 +1,15 @@
 @interface FCUICustomModeViewCell
-- (FCUICustomModeViewCell)initWithFrame:(CGRect)a3;
+- (FCUICustomModeViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation FCUICustomModeViewCell
 
-- (FCUICustomModeViewCell)initWithFrame:(CGRect)a3
+- (FCUICustomModeViewCell)initWithFrame:(CGRect)frame
 {
   v64.receiver = self;
   v64.super_class = FCUICustomModeViewCell;
-  v3 = [(FCUICustomModeViewCell *)&v64 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FCUICustomModeViewCell *)&v64 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -21,15 +21,15 @@
     v3->_selectionView = v8;
 
     [(UIView *)v3->_selectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(UIView *)v3->_selectionView layer];
+    layer = [(UIView *)v3->_selectionView layer];
     v11 = +[UIColor systemBlueColor];
-    [v10 setBorderColor:{objc_msgSend(v11, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v11, "CGColor")}];
 
-    v12 = [(UIView *)v3->_selectionView layer];
-    [v12 setBorderWidth:2.0];
+    layer2 = [(UIView *)v3->_selectionView layer];
+    [layer2 setBorderWidth:2.0];
 
-    v13 = [(FCUICustomModeViewCell *)v3 contentView];
-    [v13 addSubview:v3->_selectionView];
+    contentView = [(FCUICustomModeViewCell *)v3 contentView];
+    [contentView addSubview:v3->_selectionView];
 
     v14 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     imageBackgroundView = v3->_imageBackgroundView;
@@ -40,8 +40,8 @@
     v17 = +[UIColor systemGray5Color];
     [(UIView *)v16 setBackgroundColor:v17];
 
-    v18 = [(FCUICustomModeViewCell *)v3 contentView];
-    [v18 addSubview:v3->_imageBackgroundView];
+    contentView2 = [(FCUICustomModeViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_imageBackgroundView];
 
     v19 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     imageView = v3->_imageView;
@@ -49,68 +49,68 @@
 
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_imageView setContentMode:4];
-    v21 = [(FCUICustomModeViewCell *)v3 contentView];
-    [v21 addSubview:v3->_imageView];
+    contentView3 = [(FCUICustomModeViewCell *)v3 contentView];
+    [contentView3 addSubview:v3->_imageView];
 
     v22 = objc_alloc_init(NSMutableArray);
-    v23 = [(UIView *)v3->_selectionView leadingAnchor];
-    v24 = [(FCUICustomModeViewCell *)v3 contentView];
-    v25 = [v24 leadingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:4.0];
+    leadingAnchor = [(UIView *)v3->_selectionView leadingAnchor];
+    contentView4 = [(FCUICustomModeViewCell *)v3 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     [v22 addObject:v26];
 
-    v27 = [(UIView *)v3->_selectionView topAnchor];
-    v28 = [(FCUICustomModeViewCell *)v3 contentView];
-    v29 = [v28 topAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:4.0];
+    topAnchor = [(UIView *)v3->_selectionView topAnchor];
+    contentView5 = [(FCUICustomModeViewCell *)v3 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     [v22 addObject:v30];
 
-    v31 = [(FCUICustomModeViewCell *)v3 contentView];
-    v32 = [v31 trailingAnchor];
-    v33 = [(UIView *)v3->_selectionView trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:4.0];
+    contentView6 = [(FCUICustomModeViewCell *)v3 contentView];
+    trailingAnchor = [contentView6 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v3->_selectionView trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:4.0];
     [v22 addObject:v34];
 
-    v35 = [(FCUICustomModeViewCell *)v3 contentView];
-    v36 = [v35 bottomAnchor];
-    v37 = [(UIView *)v3->_selectionView bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:4.0];
+    contentView7 = [(FCUICustomModeViewCell *)v3 contentView];
+    bottomAnchor = [contentView7 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3->_selectionView bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:4.0];
     [v22 addObject:v38];
 
-    v39 = [(UIView *)v3->_imageBackgroundView leadingAnchor];
-    v40 = [(FCUICustomModeViewCell *)v3 contentView];
-    v41 = [v40 leadingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41 constant:8.0];
+    leadingAnchor3 = [(UIView *)v3->_imageBackgroundView leadingAnchor];
+    contentView8 = [(FCUICustomModeViewCell *)v3 contentView];
+    leadingAnchor4 = [contentView8 leadingAnchor];
+    v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     [v22 addObject:v42];
 
-    v43 = [(UIView *)v3->_imageBackgroundView topAnchor];
-    v44 = [(FCUICustomModeViewCell *)v3 contentView];
-    v45 = [v44 topAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45 constant:8.0];
+    topAnchor3 = [(UIView *)v3->_imageBackgroundView topAnchor];
+    contentView9 = [(FCUICustomModeViewCell *)v3 contentView];
+    topAnchor4 = [contentView9 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
     [v22 addObject:v46];
 
-    v47 = [(FCUICustomModeViewCell *)v3 contentView];
-    v48 = [v47 trailingAnchor];
-    v49 = [(UIView *)v3->_imageBackgroundView trailingAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49 constant:8.0];
+    contentView10 = [(FCUICustomModeViewCell *)v3 contentView];
+    trailingAnchor3 = [contentView10 trailingAnchor];
+    trailingAnchor4 = [(UIView *)v3->_imageBackgroundView trailingAnchor];
+    v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
     [v22 addObject:v50];
 
-    v51 = [(FCUICustomModeViewCell *)v3 contentView];
-    v52 = [v51 bottomAnchor];
-    v53 = [(UIView *)v3->_imageBackgroundView bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:8.0];
+    contentView11 = [(FCUICustomModeViewCell *)v3 contentView];
+    bottomAnchor3 = [contentView11 bottomAnchor];
+    bottomAnchor4 = [(UIView *)v3->_imageBackgroundView bottomAnchor];
+    v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:8.0];
     [v22 addObject:v54];
 
-    v55 = [(UIImageView *)v3->_imageView centerXAnchor];
-    v56 = [(FCUICustomModeViewCell *)v3 contentView];
-    v57 = [v56 centerXAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    centerXAnchor = [(UIImageView *)v3->_imageView centerXAnchor];
+    contentView12 = [(FCUICustomModeViewCell *)v3 contentView];
+    centerXAnchor2 = [contentView12 centerXAnchor];
+    v58 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v22 addObject:v58];
 
-    v59 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v60 = [(FCUICustomModeViewCell *)v3 contentView];
-    v61 = [v60 centerYAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
+    centerYAnchor = [(UIImageView *)v3->_imageView centerYAnchor];
+    contentView13 = [(FCUICustomModeViewCell *)v3 contentView];
+    centerYAnchor2 = [contentView13 centerYAnchor];
+    v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v22 addObject:v62];
 
     [NSLayoutConstraint activateConstraints:v22];
@@ -124,8 +124,8 @@
   v11.receiver = self;
   v11.super_class = FCUICustomModeViewCell;
   [(FCUICustomModeViewCell *)&v11 layoutSubviews];
-  v3 = [(FCUICustomModeViewCell *)self traitCollection];
-  if ([v3 userInterfaceStyle] == &dword_0 + 2)
+  traitCollection = [(FCUICustomModeViewCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == &dword_0 + 2)
   {
     +[UIColor systemGrayColor];
   }

@@ -3,17 +3,17 @@
 - (BOOL)canEnter3DMode;
 - (BOOL)isFullyPitched;
 - (BOOL)isPitched;
-- (BOOL)snapMapIfNecessary:(BOOL)a3;
-- (Coordinate2D<geo::Radians,)_centerCoordinateForMapRegion:(id)a3;
+- (BOOL)snapMapIfNecessary:(BOOL)necessary;
+- (Coordinate2D<geo::Radians,)_centerCoordinateForMapRegion:(id)region;
 - (Coordinate2D<geo::Radians,)centerCoordinateRad;
-- (Unit<geo::RadianUnitDescription,)greatCircleMidPointLatitude:()Unit<geo:(double>)a3 :()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription RadianUnitDescription fromLongitude:toLongitude:;
-- (Unit<geo::RadianUnitDescription,)widestLatitudeForMapRegion:(id)a3;
-- (VKDaVinciCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6 mapEngine:(void *)a7;
+- (Unit<geo::RadianUnitDescription,)greatCircleMidPointLatitude:()Unit<geo:(double>)geo :()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription RadianUnitDescription fromLongitude:toLongitude:;
+- (Unit<geo::RadianUnitDescription,)widestLatitudeForMapRegion:(id)region;
+- (VKDaVinciCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate mapEngine:(void *)engine;
 - (double)altitude;
 - (double)currentZoomLevel;
 - (double)distanceFromCenterCoordinate;
-- (double)earthRadiusAt:()Unit<geo:(double>)a3 :RadianUnitDescription;
-- (double)geocAngleBetween:()Coordinate2D<geo:(double>)a3 :()Coordinate2D<geo:(double>)a4 :Radians Radians andCoordinate:;
+- (double)earthRadiusAt:()Unit<geo:(double>)geo :RadianUnitDescription;
+- (double)geocAngleBetween:()Coordinate2D<geo:(double>)geo :()Coordinate2D<geo:(double>)a4 :Radians Radians andCoordinate:;
 - (double)heading;
 - (double)maxPitch;
 - (double)maximumZoomLevel;
@@ -21,59 +21,59 @@
 - (double)minimumZoomLevel;
 - (double)pitch;
 - (double)topDownMinimumZoomLevel;
-- (double)zoomForMapRegion:(id)a3;
-- (float)idealPitchForNormalizedZoomLevel:(float)a3;
-- (float)maxPitchForNormalizedZoomLevel:(float)a3;
+- (double)zoomForMapRegion:(id)region;
+- (float)idealPitchForNormalizedZoomLevel:(float)level;
+- (float)maxPitchForNormalizedZoomLevel:(float)level;
 - (float)maximumNormalizedZoomLevel;
-- (float)minPitchForNormalizedZoomLevel:(float)a3;
+- (float)minPitchForNormalizedZoomLevel:(float)level;
 - (float)minimumNormalizedZoomLevel;
-- (id)createMoveToZoomOutZoomInFrameFunction:()CameraFrame<geo:(double> *)a3 :()CameraFrame<geo:(double> *)a4 :Radians Radians toLatLon:;
+- (id)createMoveToZoomOutZoomInFrameFunction:()CameraFrame<geo:(double> *)geo :()CameraFrame<geo:(double> *)a4 :Radians Radians toLatLon:;
 - (id)mapRegion;
 - (int64_t)tileSize;
 - (vector<geo::Coordinate2D<geo::Radians,)_getVisibleArea;
 - (void)_updateCanEnter3DMode;
 - (void)_updateIsPitched;
-- (void)animateRegionWithDuration:(double)a3 timingFunction:(id)a4 stepHandler:(id)a5 completionHandler:(id)a6;
-- (void)animateToRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5;
+- (void)animateRegionWithDuration:(double)duration timingFunction:(id)function stepHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)animateToRestriction:(id)restriction duration:(double)duration timingFunction:(id)function;
 - (void)dealloc;
 - (void)enter3DMode;
-- (void)moveTo:()Coordinate2D<geo:(double>)a3 :(double)a4 Radians height:(BOOL)a5 useHeight:(double)a6 zoom:(double)a7 rotation:(double)a8 tilt:(double)a9 duration:(id)a10 timingCurve:(id)a11 completion:;
-- (void)moveToZoomOutZoomInTransition:()Coordinate2D<geo:(double>)a3 :(double)a4 Radians height:(BOOL)a5 useHeight:(double)a6 zoom:(double)a7 rotation:(double)a8 tilt:(double)a9 duration:(id)a10 timingCurve:(id)a11 completion:;
-- (void)panWithOffset:(CGPoint)a3 relativeToScreenPoint:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completionHandler:(id)a7;
-- (void)pitch:(CGPoint)a3 translation:(double)a4;
-- (void)rotate:(double)a3 atScreenPoint:(CGPoint)a4;
-- (void)rotateTo:(double)a3 animated:(BOOL)a4;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCenterCoordinate3D:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setGesturing:(BOOL)a3;
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8;
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setYaw:(double)a3 animated:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7;
+- (void)moveTo:()Coordinate2D<geo:(double>)geo :(double)a4 Radians height:(BOOL)height useHeight:(double)useHeight zoom:(double)zoom rotation:(double)rotation tilt:(double)tilt duration:(id)self0 timingCurve:(id)self1 completion:;
+- (void)moveToZoomOutZoomInTransition:()Coordinate2D<geo:(double>)geo :(double)a4 Radians height:(BOOL)height useHeight:(double)useHeight zoom:(double)zoom rotation:(double)rotation tilt:(double)tilt duration:(id)self0 timingCurve:(id)self1 completion:;
+- (void)panWithOffset:(CGPoint)offset relativeToScreenPoint:(CGPoint)point animated:(BOOL)animated duration:(double)duration completionHandler:(id)handler;
+- (void)pitch:(CGPoint)pitch translation:(double)translation;
+- (void)rotate:(double)rotate atScreenPoint:(CGPoint)point;
+- (void)rotateTo:(double)to animated:(BOOL)animated;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCenterCoordinate3D:(id)d altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function;
+- (void)setGesturing:(BOOL)gesturing;
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion;
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function;
+- (void)setYaw:(double)yaw animated:(BOOL)animated;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function;
 - (void)stopGlobeAnimations;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5;
-- (void)tiltTo:(double)a3 animated:(BOOL)a4 exaggerate:(BOOL)a5;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler;
+- (void)tiltTo:(double)to animated:(BOOL)animated exaggerate:(BOOL)exaggerate;
 - (void)updateCameraLimits;
 - (void)updateCameraManager;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
 - (void)updateState;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)zoomToDistance:(CGPoint)a3 distance:(double)a4 time:(double)a5 completionHandler:(id)a6;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)zoomToDistance:(CGPoint)distance distance:(double)a4 time:(double)time completionHandler:(id)handler;
 @end
 
 @implementation VKDaVinciCameraController
 
-- (float)maxPitchForNormalizedZoomLevel:(float)a3
+- (float)maxPitchForNormalizedZoomLevel:(float)level
 {
   v5 = +[VKDebugSettings sharedSettings];
-  v6 = [v5 relaxTiltLimits];
+  relaxTiltLimits = [v5 relaxTiltLimits];
 
-  if (v6)
+  if (relaxTiltLimits)
   {
     return 1.4835;
   }
@@ -84,11 +84,11 @@
     return 0.0;
   }
 
-  pitchForZ((v8 + 488), a3);
+  pitchForZ((v8 + 488), level);
   return result;
 }
 
-- (float)idealPitchForNormalizedZoomLevel:(float)a3
+- (float)idealPitchForNormalizedZoomLevel:(float)level
 {
   v3 = *(self->_mapEngine + 5253);
   if (!v3)
@@ -96,11 +96,11 @@
     return 0.0;
   }
 
-  pitchForZ((v3 + 512), a3);
+  pitchForZ((v3 + 512), level);
   return result;
 }
 
-- (float)minPitchForNormalizedZoomLevel:(float)a3
+- (float)minPitchForNormalizedZoomLevel:(float)level
 {
   v3 = *(self->_mapEngine + 5253);
   if (!v3)
@@ -108,7 +108,7 @@
     return 0.0;
   }
 
-  pitchForZ((v3 + 464), a3);
+  pitchForZ((v3 + 464), level);
   return result;
 }
 
@@ -117,10 +117,10 @@
   [(VKCameraController *)self camera];
   LabelingPoint = grl::IconMetricsRenderResult::getLabelingPoint(v10);
   v4 = gdc::Camera::altitude(LabelingPoint);
-  v5 = [(VKDaVinciCameraController *)self tileSize];
+  tileSize = [(VKDaVinciCameraController *)self tileSize];
   [(VKCameraController *)self camera];
   v6 = gdc::Camera::viewSize(v8);
-  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *v4, v5, *v6);
+  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *v4, tileSize, *v6);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
@@ -143,10 +143,10 @@
     std::__shared_weak_count::__release_shared[abi:nn200100](v11);
   }
 
-  v5 = [(VKDaVinciCameraController *)self tileSize];
+  tileSize = [(VKDaVinciCameraController *)self tileSize];
   [(VKCameraController *)self camera];
   v6 = gdc::Camera::viewSize(v8);
-  gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v10, v4, v5, *v6);
+  gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v10, v4, tileSize, *v6);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
@@ -160,10 +160,10 @@
   [(VKCameraController *)self camera];
   LabelingPoint = grl::IconMetricsRenderResult::getLabelingPoint(v10);
   FillRect = grl::IconMetricsRenderResult::getFillRect(LabelingPoint);
-  v5 = [(VKDaVinciCameraController *)self tileSize];
+  tileSize = [(VKDaVinciCameraController *)self tileSize];
   [(VKCameraController *)self camera];
   v6 = gdc::Camera::viewSize(v8);
-  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *FillRect, v5, *v6);
+  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *FillRect, tileSize, *v6);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
@@ -182,10 +182,10 @@
   [(VKCameraController *)self camera];
   LabelingPoint = grl::IconMetricsRenderResult::getLabelingPoint(v10);
   v4 = gdc::CameraLimits::minZoom(LabelingPoint);
-  v5 = [(VKDaVinciCameraController *)self tileSize];
+  tileSize = [(VKDaVinciCameraController *)self tileSize];
   [(VKCameraController *)self camera];
   v6 = gdc::Camera::viewSize(v8);
-  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *v4, v5, *v6);
+  gdc::NormalizedZoomLevel::NormalizedZoomLevel(v12, *v4, tileSize, *v6);
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
@@ -224,10 +224,10 @@
       std::__shared_weak_count::__release_shared[abi:nn200100](v62);
     }
 
-    v6 = [(VKDaVinciCameraController *)self tileSize];
+    tileSize = [(VKDaVinciCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v7 = gdc::Camera::viewSize(v65);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v5, v6, *v7);
+    v7 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v5, tileSize, *v7);
     if (v66)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v66);
@@ -242,7 +242,7 @@
     v14 = v13;
     v15 = v13;
     [(VKCameraController *)self camera];
-    v16 = grl::IconMetricsRenderResult::getLabelingPoint(v65);
+    v16 = grl::IconMetricsRenderResult::getLabelingPoint(minDistanceToGroundRestriction);
     v17 = *gdc::Camera::cameraFrame(v16);
     if (v66)
     {
@@ -252,16 +252,16 @@
     v71 = v15;
     if (v17 > v12 != v14 > v11)
     {
-      v18 = [(VKCameraController *)self cameraDelegate];
-      [v18 mapLayerCanEnter3DModeDidChange:v14 > v11];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate mapLayerCanEnter3DModeDidChange:v14 > v11];
     }
 
     [(VKDaVinciCameraController *)self minimumNormalizedZoomLevel];
     v20 = v19;
-    v21 = [(VKDaVinciCameraController *)self tileSize];
+    tileSize2 = [(VKDaVinciCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v22 = gdc::Camera::viewSize(v65);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v20, v21, *v22);
+    v22 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v20, tileSize2, *v22);
     gdc::DisplayZoomLevel::DisplayZoomLevel(&v70, &v61);
     if (v66)
     {
@@ -270,10 +270,10 @@
 
     [(VKDaVinciCameraController *)self maximumNormalizedZoomLevel];
     v24 = v23;
-    v25 = [(VKDaVinciCameraController *)self tileSize];
+    tileSize3 = [(VKDaVinciCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v26 = gdc::Camera::viewSize(v65);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v24, v25, *v26);
+    v26 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, v24, tileSize3, *v26);
     gdc::DisplayZoomLevel::DisplayZoomLevel(&v69, &v61);
     if (v66)
     {
@@ -297,10 +297,10 @@
         goto LABEL_25;
       }
 
-      v32 = [(VKDaVinciCameraController *)self tileSize];
+      tileSize4 = [(VKDaVinciCameraController *)self tileSize];
       [(VKCameraController *)self camera];
-      v33 = gdc::Camera::viewSize(v65);
-      gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, 25.0, v32, *v33);
+      v33 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+      gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, 25.0, tileSize4, *v33);
       gdc::DisplayZoomLevel::DisplayZoomLevel(v64, &v61);
       v28 = *v64;
       if (v66)
@@ -321,10 +321,10 @@ LABEL_25:
             if (*(v35 + 56) == 1 && *(v35 + 568))
             {
               v36 = fmin(fmax(*(v35 + 584) * 1048576.0 + -0.5, 0.0), 1.0);
-              v37 = [(VKDaVinciCameraController *)self tileSize];
+              tileSize5 = [(VKDaVinciCameraController *)self tileSize];
               [(VKCameraController *)self camera];
-              v38 = gdc::Camera::viewSize(v65);
-              gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, 20.0, v37, *v38);
+              v38 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+              gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v61, 20.0, tileSize5, *v38);
               gdc::DisplayZoomLevel::DisplayZoomLevel(v64, &v61);
               v39 = *v64;
               if (v66)
@@ -341,29 +341,29 @@ LABEL_25:
       }
     }
 
-    v42 = [(VKCameraController *)self vkCamera];
-    v65 = [v42 minDistanceToGroundRestriction];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    minDistanceToGroundRestriction = [vkCamera minDistanceToGroundRestriction];
     LOBYTE(v66) = v43;
 
-    v44 = [(VKCameraController *)self vkCamera];
-    v67 = [v44 maxDistanceToGroundRestriction];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    maxDistanceToGroundRestriction = [vkCamera2 maxDistanceToGroundRestriction];
     v68 = v45;
 
     grl::IconRequestOptions::setContentScale(v63, v27);
-    v46 = [(VKDaVinciCameraController *)self tileSize];
+    tileSize6 = [(VKDaVinciCameraController *)self tileSize];
     [(VKCameraController *)self camera];
     v47 = gdc::Camera::viewSize(v61);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v64, v63[0], v46, *v47);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v64, v63[0], tileSize6, *v47);
     if (v62)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v62);
     }
 
     grl::IconRequestOptions::setContentScale(&v59, v28);
-    v48 = [(VKDaVinciCameraController *)self tileSize];
+    tileSize7 = [(VKDaVinciCameraController *)self tileSize];
     [(VKCameraController *)self camera];
     v49 = gdc::Camera::viewSize(v61);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v63, *&v59, v48, *v49);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v63, *&v59, tileSize7, *v49);
     if (v62)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v62);
@@ -378,7 +378,7 @@ LABEL_25:
     [(VKCameraController *)self camera];
     v51 = gdc::Camera::pitch(*&v52[1]);
     v52[0] = 0.0;
-    gdc::CameraLimits::CameraLimits(&v61, v50, &v58, v56, v51, &v71, v52, v64, v15, v63, &v65);
+    gdc::CameraLimits::CameraLimits(&v61, v50, &v58, v56, v51, &v71, v52, v64, v15, v63, &minDistanceToGroundRestriction);
     if (v53)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v53);
@@ -456,7 +456,7 @@ LABEL_25:
   }
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   mapEngine = self->_mapEngine;
   if (mapEngine)
@@ -485,7 +485,7 @@ LABEL_25:
 
   v26.receiver = self;
   v26.super_class = VKDaVinciCameraController;
-  [(VKScreenCameraController *)&v26 updateWithTimestamp:a4 withContext:a3];
+  [(VKScreenCameraController *)&v26 updateWithTimestamp:context withContext:timestamp];
   [(VKDaVinciCameraController *)self updateCameraLimits];
   [(VKCameraController *)self camera];
   [(VKCameraController *)self camera];
@@ -532,23 +532,23 @@ LABEL_25:
       std::__shared_weak_count::__release_shared[abi:nn200100](v25);
     }
 
-    v16 = [(VKCameraController *)self vkCamera];
-    [v16 setPosition:&v18];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera setPosition:&v18];
 
-    v17 = [(VKCameraController *)self vkCamera];
-    [v17 setOrientation:&v20];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 setOrientation:&v20];
   }
 }
 
-- (void)animateToRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)animateToRestriction:(id)restriction duration:(double)duration timingFunction:(id)function
 {
-  v8 = a5;
-  [a3 radianSingleRect:&v36 westOfDatelineRect:&v34 eastOfDatelineRect:&v32];
+  functionCopy = function;
+  [restriction radianSingleRect:&v36 westOfDatelineRect:&v34 eastOfDatelineRect:&v32];
   [(VKDaVinciCameraController *)self centerCoordinate];
   v10 = v9;
   v12 = v11;
-  v13 = [(VKScreenCameraController *)self regionRestriction];
-  [v13 clampedCoordinate:{v10, v12}];
+  regionRestriction = [(VKScreenCameraController *)self regionRestriction];
+  [regionRestriction clampedCoordinate:{v10, v12}];
   v15 = v14;
   v17 = v16;
 
@@ -578,7 +578,7 @@ LABEL_25:
   v21 = v34;
   v24 = v33;
   v23 = v32;
-  [(VKDaVinciCameraController *)self animateRegionWithDuration:v8 timingFunction:v25 stepHandler:v18 completionHandler:a4];
+  [(VKDaVinciCameraController *)self animateRegionWithDuration:functionCopy timingFunction:v25 stepHandler:v18 completionHandler:duration];
 }
 
 void __74__VKDaVinciCameraController_animateToRestriction_duration_timingFunction___block_invoke(uint64_t a1, float a2)
@@ -892,20 +892,20 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
   return result;
 }
 
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VKScreenCameraController *)self regionRestriction];
-  v11 = [v10 isEqual:v8];
+  restrictionCopy = restriction;
+  functionCopy = function;
+  regionRestriction = [(VKScreenCameraController *)self regionRestriction];
+  v11 = [regionRestriction isEqual:restrictionCopy];
 
   if ((v11 & 1) == 0)
   {
     v33.receiver = self;
     v33.super_class = VKDaVinciCameraController;
-    [(VKScreenCameraController *)&v33 setRegionRestriction:v8 duration:v9 timingFunction:a4];
-    if ([v8 isEmpty])
+    [(VKScreenCameraController *)&v33 setRegionRestriction:restrictionCopy duration:functionCopy timingFunction:duration];
+    if ([restrictionCopy isEmpty])
     {
       cameraManager = self->_cameraManager;
       cameraManager[41] = 0x7FEFFFFFFFFFFFFFLL;
@@ -922,12 +922,12 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
       [(VKDaVinciCameraController *)self centerCoordinate];
       v14 = v13;
       v16 = v15;
-      v17 = [(VKScreenCameraController *)self regionRestriction];
-      v18 = [v17 containsCoordinate:{v14, v16}];
+      regionRestriction2 = [(VKScreenCameraController *)self regionRestriction];
+      v18 = [regionRestriction2 containsCoordinate:{v14, v16}];
 
-      if (v18 & 1 | (a4 <= 0.0))
+      if (v18 & 1 | (duration <= 0.0))
       {
-        [v8 radianSingleRect:&v31 westOfDatelineRect:&v29 eastOfDatelineRect:&v27];
+        [restrictionCopy radianSingleRect:&v31 westOfDatelineRect:&v29 eastOfDatelineRect:&v27];
         if (v18)
         {
           v19 = self->_cameraManager + 328;
@@ -941,11 +941,11 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
 
         else
         {
-          v20 = [(VKCameraController *)self cameraDelegate];
-          v21 = v20;
-          if (v20)
+          cameraDelegate = [(VKCameraController *)self cameraDelegate];
+          v21 = cameraDelegate;
+          if (cameraDelegate)
           {
-            [v20 willBeginRegionChangeAccess:0];
+            [cameraDelegate willBeginRegionChangeAccess:0];
           }
 
           else
@@ -967,11 +967,11 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
             std::__shared_weak_count::__release_shared[abi:nn200100](v26);
           }
 
-          v23 = [(VKCameraController *)self cameraDelegate];
-          [v23 mapLayerDidChangeVisibleRegion];
+          cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+          [cameraDelegate2 mapLayerDidChangeVisibleRegion];
 
-          v24 = [(VKCameraController *)self cameraDelegate];
-          [v24 didEndRegionChangeAccess:v34];
+          cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+          [cameraDelegate3 didEndRegionChangeAccess:v34];
 
           gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v34);
         }
@@ -979,30 +979,30 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
 
       else
       {
-        [(VKDaVinciCameraController *)self animateToRestriction:v8 duration:v9 timingFunction:a4];
+        [(VKDaVinciCameraController *)self animateToRestriction:restrictionCopy duration:functionCopy timingFunction:duration];
       }
     }
   }
 }
 
-- (void)animateRegionWithDuration:(double)a3 timingFunction:(id)a4 stepHandler:(id)a5 completionHandler:(id)a6
+- (void)animateRegionWithDuration:(double)duration timingFunction:(id)function stepHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  functionCopy = function;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   regionAnimation = self->super._regionAnimation;
   if (regionAnimation)
   {
     [(VKAnimation *)regionAnimation stop];
   }
 
-  v14 = [[VKTimedAnimation alloc] initWithDuration:a3];
+  v14 = [[VKTimedAnimation alloc] initWithDuration:duration];
   v15 = self->super._regionAnimation;
   self->super._regionAnimation = v14;
 
-  if (v10)
+  if (functionCopy)
   {
-    v16 = v10;
+    v16 = functionCopy;
   }
 
   else
@@ -1011,18 +1011,18 @@ void *__74__VKDaVinciCameraController_animateToRestriction_duration_timingFuncti
   }
 
   [(VKTimedAnimation *)self->super._regionAnimation setTimingFunction:v16];
-  [(VKTimedAnimation *)self->super._regionAnimation setStepHandler:v11];
+  [(VKTimedAnimation *)self->super._regionAnimation setStepHandler:handlerCopy];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_stepHandler_completionHandler___block_invoke;
   v19[3] = &unk_1E7B3DE58;
   objc_copyWeak(&v21, &location);
-  v17 = v12;
+  v17 = completionHandlerCopy;
   v20 = v17;
   [(VKAnimation *)self->super._regionAnimation setCompletionHandler:v19];
-  v18 = [(VKCameraController *)self cameraDelegate];
-  [v18 willBeginAnimatingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginAnimatingAccess];
 
   md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &self->super._regionAnimation->super);
   objc_destroyWeak(&v21);
@@ -1050,30 +1050,30 @@ void __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_s
   }
 }
 
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function
 {
-  v8 = a5;
+  functionCopy = function;
   var1 = 60592301.5;
-  v10 = fmin(a3->var0, 60592301.5);
-  if (a3->var1 >= 0.0 && a3->var1 <= 60592301.5)
+  v10 = fmin(range->var0, 60592301.5);
+  if (range->var1 >= 0.0 && range->var1 <= 60592301.5)
   {
-    var1 = a3->var1;
+    var1 = range->var1;
   }
 
-  a3->var0 = v10;
-  a3->var1 = var1;
+  range->var0 = v10;
+  range->var1 = var1;
   v36 = 0;
   v37 = 0.0;
   v38 = 0;
   [(VKScreenCameraController *)self centerCoordinateDistanceRange];
-  if (a3->var0 != 0.0 || a3->var1 != v37 || a3->var2 != v38)
+  if (range->var0 != 0.0 || range->var1 != v37 || range->var2 != v38)
   {
-    v34 = *&a3->var0;
-    v35 = *&a3->var2;
+    v34 = *&range->var0;
+    v35 = *&range->var2;
     v33.receiver = self;
     v33.super_class = VKDaVinciCameraController;
-    [(VKScreenCameraController *)&v33 setCenterCoordinateDistanceRange:&v34 duration:v8 timingFunction:a4];
-    a3->var0 = fmax(a3->var0, 0.0);
+    [(VKScreenCameraController *)&v33 setCenterCoordinateDistanceRange:&v34 duration:functionCopy timingFunction:duration];
+    range->var0 = fmax(range->var0, 0.0);
     [(VKCameraController *)self camera];
     v11 = *grl::IconMetricsRenderResult::size(v34);
     if (*(&v34 + 1))
@@ -1081,22 +1081,22 @@ void __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_s
       std::__shared_weak_count::__release_shared[abi:nn200100](*(&v34 + 1));
     }
 
-    var0 = a3->var0;
-    if (v11 >= a3->var0)
+    var0 = range->var0;
+    if (v11 >= range->var0)
     {
-      v13 = a3->var1;
+      v13 = range->var1;
       [(VKDaVinciCameraController *)self distanceFromCenterCoordinate];
       if (v13 >= v14)
       {
         goto LABEL_21;
       }
 
-      var0 = a3->var0;
+      var0 = range->var0;
     }
 
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
-      v19 = a3->var1;
+      v19 = range->var1;
       [(VKDaVinciCameraController *)self centerCoordinateRad];
       v32 = v34;
       [(VKCameraController *)self camera];
@@ -1122,12 +1122,12 @@ void __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_s
         std::__shared_weak_count::__release_shared[abi:nn200100](*(&v34 + 1));
       }
 
-      v15 = [(VKCameraController *)self mapDataAccess];
+      mapDataAccess = [(VKCameraController *)self mapDataAccess];
       [(VKCameraController *)self centerScreenPoint];
       v16 = [(VKCameraController *)self cursorFromScreenPoint:?];
       [(VKCameraController *)self camera];
       v17 = gdc::Camera::cameraFrame(v32);
-      md::MapDataAccess::groundCoordinateForScreenCursor(&v34, v15, v17, v16);
+      md::MapDataAccess::groundCoordinateForScreenCursor(&v34, mapDataAccess, v17, v16);
       if (*(&v32 + 1))
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](*(&v32 + 1));
@@ -1140,8 +1140,8 @@ void __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_s
       v26[1] = 3321888768;
       v26[2] = __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_timingFunction___block_invoke;
       v26[3] = &unk_1F2A2A5B8;
-      v27 = *&a3->var0;
-      v28 = *&a3->var2;
+      v27 = *&range->var0;
+      v28 = *&range->var2;
       v30 = v34;
       v29 = v11;
       v31 = v35;
@@ -1151,7 +1151,7 @@ void __100__VKDaVinciCameraController_animateRegionWithDuration_timingFunction_s
       v25[2] = __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_timingFunction___block_invoke_24;
       v25[3] = &unk_1E7B393B8;
       v25[4] = self;
-      [(VKDaVinciCameraController *)self animateRegionWithDuration:v8 timingFunction:v26 stepHandler:v25 completionHandler:a4];
+      [(VKDaVinciCameraController *)self animateRegionWithDuration:functionCopy timingFunction:v26 stepHandler:v25 completionHandler:duration];
     }
   }
 
@@ -1364,12 +1364,12 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
     std::__shared_weak_count::__release_shared[abi:nn200100](*(&v12 + 1));
   }
 
-  v5 = [(VKCameraController *)self mapDataAccess];
+  mapDataAccess = [(VKCameraController *)self mapDataAccess];
   [(VKCameraController *)self centerScreenPoint];
   v6 = [(VKCameraController *)self cursorFromScreenPoint:?];
   [(VKCameraController *)self camera];
   v7 = gdc::Camera::cameraFrame(v10);
-  md::MapDataAccess::groundCoordinateForScreenCursor(&v12, v5, v7, v6);
+  md::MapDataAccess::groundCoordinateForScreenCursor(&v12, mapDataAccess, v7, v6);
   if (v11)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v11);
@@ -1382,7 +1382,7 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
   return result;
 }
 
-- (Coordinate2D<geo::Radians,)_centerCoordinateForMapRegion:(id)a3
+- (Coordinate2D<geo::Radians,)_centerCoordinateForMapRegion:(id)region
 {
   v4 = v3;
   GEOMapRectForMapRegion();
@@ -1396,41 +1396,41 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
   return result;
 }
 
-- (void)setMapRegion:(id)a3 pitch:(double)a4 yaw:(double)a5 duration:(double)a6 timingCurve:(id)a7 completion:(id)a8
+- (void)setMapRegion:(id)region pitch:(double)pitch yaw:(double)yaw duration:(double)duration timingCurve:(id)curve completion:(id)completion
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a8;
-  [(VKDaVinciCameraController *)self _centerCoordinateForMapRegion:v11];
-  [v11 eastLng];
+  regionCopy = region;
+  curveCopy = curve;
+  completionCopy = completion;
+  [(VKDaVinciCameraController *)self _centerCoordinateForMapRegion:regionCopy];
+  [regionCopy eastLng];
   v15 = v14;
-  [v11 westLng];
+  [regionCopy westLng];
   if (v15 < v16)
   {
-    [v11 eastLng];
-    [v11 setEastLng:v17 + 360.0];
+    [regionCopy eastLng];
+    [regionCopy setEastLng:v17 + 360.0];
   }
 
-  [(VKDaVinciCameraController *)self zoomForMapRegion:v11];
+  [(VKDaVinciCameraController *)self zoomForMapRegion:regionCopy];
   v18[0] = v18[1];
-  [VKDaVinciCameraController moveTo:"moveTo:zoom:rotation:tilt:duration:timingCurve:completion:" zoom:v18 rotation:v12 tilt:v13 duration:? timingCurve:? completion:?];
+  [VKDaVinciCameraController moveTo:"moveTo:zoom:rotation:tilt:duration:timingCurve:completion:" zoom:v18 rotation:curveCopy tilt:completionCopy duration:? timingCurve:? completion:?];
   self->super._userChangedZoomSinceLastProgrammaticRegionChange = 0;
   [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController setHasUserSpecifiedZoomLevel:0];
 }
 
-- (double)zoomForMapRegion:(id)a3
+- (double)zoomForMapRegion:(id)region
 {
-  v4 = a3;
-  [v4 eastLng];
+  regionCopy = region;
+  [regionCopy eastLng];
   v6 = v5;
-  [v4 westLng];
+  [regionCopy westLng];
   if (v6 < v7)
   {
-    [v4 eastLng];
-    [v4 setEastLng:v8 + 360.0];
+    [regionCopy eastLng];
+    [regionCopy setEastLng:v8 + 360.0];
   }
 
-  [(VKDaVinciCameraController *)self _centerCoordinateForMapRegion:v4];
+  [(VKDaVinciCameraController *)self _centerCoordinateForMapRegion:regionCopy];
   [(VKCameraController *)self camera];
   v9 = *gdc::Camera::viewSize(v59[0]);
   [(VKCameraController *)self camera];
@@ -1456,31 +1456,31 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
   v59[0] = v60;
   [(VKDaVinciCameraController *)self earthRadiusAt:v59];
   v13 = v12;
-  [v4 northLat];
+  [regionCopy northLat];
   *v59 = v14 * 0.0174532925;
   v59[1] = *(&v60 + 1);
   v58 = v60;
   [(VKDaVinciCameraController *)self geocAngleBetween:v59 andCoordinate:&v58];
   v55 = v15;
-  [v4 northLat];
+  [regionCopy northLat];
   v59[0] = v16;
   [(VKDaVinciCameraController *)self earthRadiusAt:v59];
   v54 = v17;
   *v59 = v60;
-  [v4 southLat];
+  [regionCopy southLat];
   *&v58 = v18 * 0.0174532925;
   *(&v58 + 1) = *(&v60 + 1);
   [(VKDaVinciCameraController *)self geocAngleBetween:v59 andCoordinate:&v58];
   v53 = v19;
-  [v4 southLat];
+  [regionCopy southLat];
   v59[0] = v20;
   [(VKDaVinciCameraController *)self earthRadiusAt:v59];
   v52 = v21;
-  [(VKDaVinciCameraController *)self widestLatitudeForMapRegion:v4];
+  [(VKDaVinciCameraController *)self widestLatitudeForMapRegion:regionCopy];
   v59[0] = v57;
-  [v4 westLng];
+  [regionCopy westLng];
   *&v58 = v22;
-  [v4 eastLng];
+  [regionCopy eastLng];
   v56[0] = v23;
   [(VKDaVinciCameraController *)self greatCircleMidPointLatitude:v59 fromLongitude:&v58 toLongitude:v56];
   v59[0] = v56[1];
@@ -1489,10 +1489,10 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
   v59[0] = v57;
   [(VKDaVinciCameraController *)self earthRadiusAt:v59];
   v50 = v25;
-  [v4 westLng];
+  [regionCopy westLng];
   v59[0] = v57;
   *&v59[1] = v26 * 0.0174532925;
-  [v4 eastLng];
+  [regionCopy eastLng];
   *&v58 = v57;
   *(&v58 + 1) = v27 * 0.0174532925;
   [(VKDaVinciCameraController *)self geocAngleBetween:v59 andCoordinate:&v58];
@@ -1543,26 +1543,26 @@ void __86__VKDaVinciCameraController_setCenterCoordinateDistanceRange_duration_t
   return fmax(v44 * fmax(v54 * v40.__sinval / v39 + (v40.__cosval + -1.0) * v13, v52 * v41.__sinval / v39 + (v41.__cosval + -1.0) * v13) / (v49 - (v48 + v47)), v37 * (v50 * v35 * v38.__sinval / (v39 * v36) + (v38.__cosval + -1.0) * v51) / (v46 - (v45 + v34)));
 }
 
-- (Unit<geo::RadianUnitDescription,)widestLatitudeForMapRegion:(id)a3
+- (Unit<geo::RadianUnitDescription,)widestLatitudeForMapRegion:(id)region
 {
   v4 = v3;
-  v10 = a3;
-  [v10 southLat];
+  regionCopy = region;
+  [regionCopy southLat];
   if (v5 >= 0.0)
   {
-    [v10 southLat];
+    [regionCopy southLat];
   }
 
   else
   {
-    [v10 northLat];
+    [regionCopy northLat];
     v6 = 0.0;
     if (v7 > 0.0)
     {
       goto LABEL_6;
     }
 
-    [v10 northLat];
+    [regionCopy northLat];
   }
 
   v6 = v8 * 0.0174532925;
@@ -1572,7 +1572,7 @@ LABEL_6:
   return v9;
 }
 
-- (Unit<geo::RadianUnitDescription,)greatCircleMidPointLatitude:()Unit<geo:(double>)a3 :()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription RadianUnitDescription fromLongitude:toLongitude:
+- (Unit<geo::RadianUnitDescription,)greatCircleMidPointLatitude:()Unit<geo:(double>)geo :()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :RadianUnitDescription RadianUnitDescription RadianUnitDescription fromLongitude:toLongitude:
 {
   v9 = v8;
   v10 = *v7 - *v6;
@@ -1583,7 +1583,7 @@ LABEL_6:
   return v13;
 }
 
-- (double)earthRadiusAt:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (double)earthRadiusAt:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v4 = __sincos_stret(*v3);
   v5 = vmulq_n_f64(xmmword_1B33B1E80, v4.__cosval);
@@ -1592,7 +1592,7 @@ LABEL_6:
   return sqrt(vdivq_f64(v7, vdupq_laneq_s64(v7, 1)).f64[0]);
 }
 
-- (double)geocAngleBetween:()Coordinate2D<geo:(double>)a3 :()Coordinate2D<geo:(double>)a4 :Radians Radians andCoordinate:
+- (double)geocAngleBetween:()Coordinate2D<geo:(double>)geo :()Coordinate2D<geo:(double>)a4 :Radians Radians andCoordinate:
 {
   v6 = v4[1];
   v7 = *v5;
@@ -1874,14 +1874,14 @@ LABEL_36:
   return result;
 }
 
-- (void)setYaw:(double)a3 animated:(BOOL)a4
+- (void)setYaw:(double)yaw animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(VKDaVinciCameraController *)self heading];
-  if (vabdd_f64(a3, v7) >= 0.000001)
+  if (vabdd_f64(yaw, v7) >= 0.000001)
   {
 
-    [(VKDaVinciCameraController *)self rotateTo:v4 animated:a3 * -0.0174532925];
+    [(VKDaVinciCameraController *)self rotateTo:animatedCopy animated:yaw * -0.0174532925];
   }
 }
 
@@ -1896,27 +1896,27 @@ LABEL_36:
   }
 }
 
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a7;
+  animatedCopy = animated;
+  headingCopy = heading;
+  annotationCopy = annotation;
+  functionCopy = function;
   annotationTrackingCameraController = self->super._annotationTrackingCameraController;
   if (!annotationTrackingCameraController)
   {
-    v25 = v9;
+    v25 = animatedCopy;
     v15 = [VKDaVinciAnnotationTrackingCameraController alloc];
-    v16 = [(VKCameraController *)self mapDataAccess];
-    v17 = [(VKCameraController *)self animationRunner];
-    v18 = [(VKCameraController *)self runLoopController];
-    v19 = [(VKCameraController *)self cameraDelegate];
-    v20 = [(VKAnnotationTrackingCameraController *)v15 initWithMapDataAccess:v16 animationRunner:v17 runLoopController:v18 cameraDelegate:v19];
+    mapDataAccess = [(VKCameraController *)self mapDataAccess];
+    animationRunner = [(VKCameraController *)self animationRunner];
+    runLoopController = [(VKCameraController *)self runLoopController];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v20 = [(VKAnnotationTrackingCameraController *)v15 initWithMapDataAccess:mapDataAccess animationRunner:animationRunner runLoopController:runLoopController cameraDelegate:cameraDelegate];
     v21 = self->super._annotationTrackingCameraController;
     self->super._annotationTrackingCameraController = v20;
 
-    v22 = [(VKCameraController *)self vkCamera];
-    [(VKCameraController *)self->super._annotationTrackingCameraController setVkCamera:v22];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [(VKCameraController *)self->super._annotationTrackingCameraController setVkCamera:vkCamera];
 
     v23 = self->super._annotationTrackingCameraController;
     [(VKCameraController *)self camera];
@@ -1926,8 +1926,8 @@ LABEL_36:
       std::__shared_weak_count::__release_shared[abi:nn200100](v29);
     }
 
-    v24 = [(VKCameraController *)self canvas];
-    [(VKCameraController *)self->super._annotationTrackingCameraController setCanvas:v24];
+    canvas = [(VKCameraController *)self canvas];
+    [(VKCameraController *)self->super._annotationTrackingCameraController setCanvas:canvas];
 
     v26 = *&self->super._annotationTrackingBehavior.shouldZoomToFit;
     v27 = *&self->super._annotationTrackingBehavior.shouldPreserveUserSpecifiedZoomLevel;
@@ -1937,19 +1937,19 @@ LABEL_36:
     [(VKCameraController *)self edgeInsets];
     [(VKCameraController *)self->super._annotationTrackingCameraController setEdgeInsets:?];
     annotationTrackingCameraController = self->super._annotationTrackingCameraController;
-    v9 = v25;
+    animatedCopy = v25;
   }
 
-  [(VKAnnotationTrackingCameraController *)annotationTrackingCameraController startTrackingAnnotation:v12 trackHeading:v10 animated:v9 duration:v13 timingFunction:a6];
+  [(VKAnnotationTrackingCameraController *)annotationTrackingCameraController startTrackingAnnotation:annotationCopy trackHeading:headingCopy animated:animatedCopy duration:functionCopy timingFunction:duration];
 }
 
-- (void)setGesturing:(BOOL)a3
+- (void)setGesturing:(BOOL)gesturing
 {
-  v3 = a3;
+  gesturingCopy = gesturing;
   v5.receiver = self;
   v5.super_class = VKDaVinciCameraController;
   [(VKCameraController *)&v5 setGesturing:?];
-  [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController setGesturing:v3];
+  [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController setGesturing:gesturingCopy];
 }
 
 - (void)updateState
@@ -1961,12 +1961,12 @@ LABEL_36:
 
 - (void)_updateCanEnter3DMode
 {
-  v3 = [(VKDaVinciCameraController *)self canEnter3DMode];
-  if (self->_couldEnter3DMode != v3)
+  canEnter3DMode = [(VKDaVinciCameraController *)self canEnter3DMode];
+  if (self->_couldEnter3DMode != canEnter3DMode)
   {
-    v4 = v3;
-    v5 = [(VKCameraController *)self cameraDelegate];
-    [v5 mapLayerCanEnter3DModeDidChange:v4];
+    v4 = canEnter3DMode;
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerCanEnter3DModeDidChange:v4];
 
     self->_couldEnter3DMode = v4;
   }
@@ -1974,12 +1974,12 @@ LABEL_36:
 
 - (void)_updateIsPitched
 {
-  v3 = [(VKDaVinciCameraController *)self isPitched];
-  if (self->_wasPitched != v3)
+  isPitched = [(VKDaVinciCameraController *)self isPitched];
+  if (self->_wasPitched != isPitched)
   {
-    v4 = v3;
-    v5 = [(VKCameraController *)self cameraDelegate];
-    [v5 mapLayerDidBecomePitched:v4];
+    v4 = isPitched;
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerDidBecomePitched:v4];
 
     self->_wasPitched = v4;
   }
@@ -2090,14 +2090,14 @@ LABEL_36:
   }
 }
 
-- (void)moveToZoomOutZoomInTransition:()Coordinate2D<geo:(double>)a3 :(double)a4 Radians height:(BOOL)a5 useHeight:(double)a6 zoom:(double)a7 rotation:(double)a8 tilt:(double)a9 duration:(id)a10 timingCurve:(id)a11 completion:
+- (void)moveToZoomOutZoomInTransition:()Coordinate2D<geo:(double>)geo :(double)a4 Radians height:(BOOL)height useHeight:(double)useHeight zoom:(double)zoom rotation:(double)rotation tilt:(double)tilt duration:(id)self0 timingCurve:(id)self1 completion:
 {
   v12 = v11;
-  value = a3.var1._value;
-  v17 = a3.var0._value;
-  v18 = a5;
+  value = geo.var1._value;
+  v17 = geo.var0._value;
+  heightCopy = height;
   v102 = *MEMORY[0x1E69E9840];
-  v20 = a11;
+  curveCopy = curve;
   v21 = v12;
   [(VKDaVinciCameraController *)self stopGlobeAnimations];
   [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController pauseAnimation];
@@ -2120,8 +2120,8 @@ LABEL_36:
     std::__shared_weak_count::__release_shared[abi:nn200100](*(&v97 + 1));
   }
 
-  v66 = a7;
-  v63 = *&a6;
+  zoomCopy = zoom;
+  v63 = *&useHeight;
   v64 = *&a4;
   [(VKCameraController *)self camera];
   v28 = *grl::IconMetricsRenderResult::size(v97);
@@ -2153,7 +2153,7 @@ LABEL_36:
 
   *(&v62 + 1) = v30;
   v65 = v28;
-  v61 = *v18;
+  v61 = *heightCopy;
   [(VKCameraController *)self camera];
   v60 = v29;
   v31 = fmin(v25, fmax(v24, value));
@@ -2169,22 +2169,22 @@ LABEL_36:
   v96[0] = v33 * v32.__cosval * v34.__cosval;
   v96[1] = v33 * v32.__cosval * v34.__sinval;
   v96[2] = v32.__sinval * 0.99330562 * v33;
-  v35 = v18->n128_f64[1];
-  v36 = __sincos_stret(v18->n128_f64[0]);
+  v35 = heightCopy->n128_f64[1];
+  v36 = __sincos_stret(heightCopy->n128_f64[0]);
   v37 = 6378137.0 / sqrt(1.0 - v36.__sinval * v36.__sinval * 0.00669437999);
   v38 = __sincos_stret(v35);
   v95[0] = v37 * v36.__cosval * v38.__cosval;
   v95[1] = v37 * v36.__cosval * v38.__sinval;
   v95[2] = v36.__sinval * 0.99330562 * v37;
   v39 = gm::Matrix<double,3,1>::angle<int,void>(v96, v95);
-  v40 = ((fabs(v27 - (v31 + v17) + v65) * 0.0000000499064047 + v39 * 0.318309886) * 0.8 + 0.2) * v66;
+  v40 = ((fabs(v27 - (v31 + v17) + v65) * 0.0000000499064047 + v39 * 0.318309886) * 0.8 + 0.2) * zoomCopy;
   if (v40 <= 0.0)
   {
-    v49 = [(VKCameraController *)self cameraDelegate];
-    v50 = v49;
-    if (v49)
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v50 = cameraDelegate;
+    if (cameraDelegate)
     {
-      [v49 willBeginRegionChangeAccess:0];
+      [cameraDelegate willBeginRegionChangeAccess:0];
     }
 
     else
@@ -2200,7 +2200,7 @@ LABEL_36:
     cameraManager[242] = 0;
     cameraManager[244] = 0;
     [(VKCameraController *)self camera];
-    v76 = *v18;
+    v76 = *heightCopy;
     v77 = v17;
     *&v54 = gdc::Camera::setTarget(location, &v76).n128_u64[0];
     if (v69)
@@ -2239,8 +2239,8 @@ LABEL_36:
 
     [(VKDaVinciCameraController *)self _updateIsPitched];
     [(VKDaVinciCameraController *)self _updateCanEnter3DMode];
-    v56 = [(VKCameraController *)self cameraDelegate];
-    [v56 mapLayerDidChangeVisibleRegion];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerDidChangeVisibleRegion];
 
     v57 = *[(VKCameraController *)self runLoopController];
     if (v57)
@@ -2249,8 +2249,8 @@ LABEL_36:
       md::MapEngine::setNeedsTick(v57, &v76);
     }
 
-    v58 = [(VKCameraController *)self cameraDelegate];
-    [v58 didEndRegionChangeAccess:&v97];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 didEndRegionChangeAccess:&v97];
 
     [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController resumeAnimation];
     *(self->_cameraManager + 242) = 1;
@@ -2268,9 +2268,9 @@ LABEL_36:
     regionAnimation = self->super._regionAnimation;
     self->super._regionAnimation = v41;
 
-    if (v20)
+    if (curveCopy)
     {
-      v43 = v20;
+      v43 = curveCopy;
     }
 
     else
@@ -2330,8 +2330,8 @@ LABEL_36:
     }
 
     objc_destroyWeak(v46);
-    v51 = [(VKCameraController *)self cameraDelegate];
-    [v51 willBeginAnimatingAccess];
+    cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate4 willBeginAnimatingAccess];
 
     v52 = self->_cameraManager;
     v52[242] = 0;
@@ -2453,12 +2453,12 @@ void __127__VKDaVinciCameraController_moveToZoomOutZoomInTransition_height_useHe
   }
 }
 
-- (id)createMoveToZoomOutZoomInFrameFunction:()CameraFrame<geo:(double> *)a3 :()CameraFrame<geo:(double> *)a4 :Radians Radians toLatLon:
+- (id)createMoveToZoomOutZoomInFrameFunction:()CameraFrame<geo:(double> *)geo :()CameraFrame<geo:(double> *)a4 :Radians Radians toLatLon:
 {
-  value = a3->_target.longitude._value;
-  v7 = a3->_target.altitude._value;
-  v66 = a3->_target.latitude._value;
-  v8 = __sincos_stret(a3->_target.latitude._value);
+  value = geo->_target.longitude._value;
+  v7 = geo->_target.altitude._value;
+  v66 = geo->_target.latitude._value;
+  v8 = __sincos_stret(geo->_target.latitude._value);
   v9 = 6378137.0 / sqrt(1.0 - v8.__sinval * v8.__sinval * 0.00669437999);
   v10 = (v9 + v7) * v8.__cosval;
   v67 = value;
@@ -2483,7 +2483,7 @@ void __127__VKDaVinciCameraController_moveToZoomOutZoomInTransition_height_useHe
   v56 = (v13 + v15 * 0.99330562) * v14.__sinval;
   v70[2] = v56;
   v18 = gm::Matrix<double,3,1>::angle<int,void>(v71, v70);
-  v19 = a3->_heading._value;
+  v19 = geo->_heading._value;
   v20 = a4->_heading._value;
   v59 = v20;
   if ((v19 > 0.0) - (v19 < 0.0) == (v20 > 0.0) - (v20 < 0.0))
@@ -2500,11 +2500,11 @@ void __127__VKDaVinciCameraController_moveToZoomOutZoomInTransition_height_useHe
 
   v46 = v20 - v19;
   v55 = a4->_distanceFromTarget._value;
-  v54 = fmax(fmax(v18 * 6378137.0, v13 + v55), v7 + a3->_distanceFromTarget._value);
+  v54 = fmax(fmax(v18 * 6378137.0, v13 + v55), v7 + geo->_distanceFromTarget._value);
   v22 = v7;
   v48 = v19 + 3.14159265;
-  v52 = a3->_distanceFromTarget._value;
-  v53 = a3->_heading._value;
+  v52 = geo->_distanceFromTarget._value;
+  v53 = geo->_heading._value;
   v23 = fmod(v19 + 3.14159265 + v21 * (v20 - v19), 6.28318531);
   v51 = fmod(v23 + 6.28318531, 6.28318531) + -3.14159265;
   v24 = fmod(3.14159265 - v66 + v68, 6.28318531);
@@ -2552,9 +2552,9 @@ void __127__VKDaVinciCameraController_moveToZoomOutZoomInTransition_height_useHe
   *&v69[17] = v67;
   *&v69[18] = v47;
   *&v69[19] = v52;
-  v69[20] = *&a3->_pitch._value;
+  v69[20] = *&geo->_pitch._value;
   *&v69[21] = v53;
-  v69[22] = *&a3->_roll._value;
+  v69[22] = *&geo->_roll._value;
   *&v69[23] = v65;
   *&v69[24] = v64;
   *&v69[25] = v63;
@@ -2613,15 +2613,15 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
   return result;
 }
 
-- (void)moveTo:()Coordinate2D<geo:(double>)a3 :(double)a4 Radians height:(BOOL)a5 useHeight:(double)a6 zoom:(double)a7 rotation:(double)a8 tilt:(double)a9 duration:(id)a10 timingCurve:(id)a11 completion:
+- (void)moveTo:()Coordinate2D<geo:(double>)geo :(double)a4 Radians height:(BOOL)height useHeight:(double)useHeight zoom:(double)zoom rotation:(double)rotation tilt:(double)tilt duration:(id)self0 timingCurve:(id)self1 completion:
 {
   v12 = v11;
-  value = a3.var1._value;
-  v16 = a10;
-  v17 = a3.var0._value;
-  v18 = a5;
+  value = geo.var1._value;
+  durationCopy = duration;
+  v17 = geo.var0._value;
+  heightCopy = height;
   v82 = *MEMORY[0x1E69E9840];
-  v20 = a11;
+  curveCopy = curve;
   v21 = v12;
   [(VKDaVinciCameraController *)self stopGlobeAnimations];
   [(VKCameraController *)self camera];
@@ -2644,13 +2644,13 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
     }
 
     v58 = fmin(v24, v25);
-    if (a7 <= 0.0)
+    if (zoom <= 0.0)
     {
-      v40 = [(VKCameraController *)self cameraDelegate];
-      v41 = v40;
-      if (v40)
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      v41 = cameraDelegate;
+      if (cameraDelegate)
       {
-        [v40 willBeginRegionChangeAccess:0];
+        [cameraDelegate willBeginRegionChangeAccess:0];
       }
 
       else
@@ -2665,8 +2665,8 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
       cameraManager = self->_cameraManager;
       cameraManager[242] = 0;
       cameraManager[244] = 0;
-      v57 = *v18;
-      *location = *v18;
+      v57 = *heightCopy;
+      *location = *heightCopy;
       v64 = v17;
       [(VKCameraController *)self camera];
       *&v43 = gdc::Camera::setTarget(*&v62.f64[0], location).n128_u64[0];
@@ -2676,7 +2676,7 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
       }
 
       [(VKCameraController *)self camera];
-      gdc::Camera::setPitch(*&v62.f64[0], *&a6);
+      gdc::Camera::setPitch(*&v62.f64[0], *&useHeight);
       if (*&v62.f64[1])
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](*&v62.f64[1]);
@@ -2696,12 +2696,12 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
         std::__shared_weak_count::__release_shared[abi:nn200100](*&v62.f64[1]);
       }
 
-      v44 = [(VKCameraController *)self mapDataAccess];
+      mapDataAccess = [(VKCameraController *)self mapDataAccess];
       [(VKCameraController *)self centerScreenPoint];
       v45 = [(VKCameraController *)self cursorFromScreenPoint:?];
       [(VKCameraController *)self camera];
       v46 = gdc::Camera::cameraFrame(v60);
-      md::MapDataAccess::groundCoordinateForScreenCursor(v62.f64, v44, v46, v45);
+      md::MapDataAccess::groundCoordinateForScreenCursor(v62.f64, mapDataAccess, v46, v45);
       if (v61)
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](v61);
@@ -2727,8 +2727,8 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
 
       [(VKDaVinciCameraController *)self _updateIsPitched];
       [(VKDaVinciCameraController *)self _updateCanEnter3DMode];
-      v54 = [(VKCameraController *)self cameraDelegate];
-      [v54 mapLayerDidChangeVisibleRegion];
+      cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate2 mapLayerDidChangeVisibleRegion];
 
       v55 = *[(VKCameraController *)self runLoopController];
       if (v55)
@@ -2737,13 +2737,13 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
         md::MapEngine::setNeedsTick(v55, &v60);
       }
 
-      if ((v16 & 1) == 0)
+      if ((durationCopy & 1) == 0)
       {
         self->_updateHeight = 1;
       }
 
-      v56 = [(VKCameraController *)self cameraDelegate];
-      [v56 didEndRegionChangeAccess:&v77];
+      cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate3 didEndRegionChangeAccess:&v77];
 
       [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController resumeAnimation];
       *(self->_cameraManager + 242) = 1;
@@ -2757,13 +2757,13 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
 
     else
     {
-      v26 = [[VKTimedAnimation alloc] initWithDuration:a7];
+      v26 = [[VKTimedAnimation alloc] initWithDuration:zoom];
       regionAnimation = self->super._regionAnimation;
       self->super._regionAnimation = v26;
 
-      if (v20)
+      if (curveCopy)
       {
-        v28 = v20;
+        v28 = curveCopy;
       }
 
       else
@@ -2772,8 +2772,8 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
       }
 
       [(VKTimedAnimation *)self->super._regionAnimation setTimingFunction:v28];
-      v29 = [(VKCameraController *)self cameraDelegate];
-      [v29 willBeginAnimatingAccess];
+      cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate4 willBeginAnimatingAccess];
 
       [(VKCameraController *)self camera];
       if (*(&v77 + 1))
@@ -2781,12 +2781,12 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
         std::__shared_weak_count::__release_shared[abi:nn200100](*(&v77 + 1));
       }
 
-      v30 = [(VKCameraController *)self mapDataAccess];
+      mapDataAccess2 = [(VKCameraController *)self mapDataAccess];
       [(VKCameraController *)self centerScreenPoint];
       v31 = [(VKCameraController *)self cursorFromScreenPoint:?];
       [(VKCameraController *)self camera];
       v32 = gdc::Camera::cameraFrame(location[0]);
-      v33 = md::MapDataAccess::groundCoordinateForScreenCursor(&v77, v30, v32, v31);
+      v33 = md::MapDataAccess::groundCoordinateForScreenCursor(&v77, mapDataAccess2, v32, v31);
       if (location[1])
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](location[1]);
@@ -2827,12 +2827,12 @@ long double __77__VKDaVinciCameraController_createMoveToZoomOutZoomInFrameFuncti
       v69[1] = v36;
       v69[2] = v58;
       v69[3] = v37;
-      v69[4] = *&a6;
+      v69[4] = *&useHeight;
       v69[5] = v34;
-      v70 = *v18;
+      v70 = *heightCopy;
       v71 = *(&v34 + 1);
       v72 = v17;
-      v76 = v16;
+      v76 = durationCopy;
       v68[4] = self;
       v73 = v35;
       v74 = v38;
@@ -2993,29 +2993,29 @@ void __104__VKDaVinciCameraController_moveTo_height_useHeight_zoom_rotation_tilt
   }
 }
 
-- (void)panWithOffset:(CGPoint)a3 relativeToScreenPoint:(CGPoint)a4 animated:(BOOL)a5 duration:(double)a6 completionHandler:(id)a7
+- (void)panWithOffset:(CGPoint)offset relativeToScreenPoint:(CGPoint)point animated:(BOOL)animated duration:(double)duration completionHandler:(id)handler
 {
-  v8 = a5;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  v11 = offset.y;
+  v12 = offset.x;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = a7;
+  handlerCopy = handler;
   regionAnimation = self->super._regionAnimation;
   if (regionAnimation && [(VKAnimation *)regionAnimation running])
   {
-    if (v14)
+    if (handlerCopy)
     {
-      v14[2](v14);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    if (a6 <= 0.0)
+    if (duration <= 0.0)
     {
-      v8 = 0;
+      animatedCopy = 0;
     }
 
     [(VKCameraController *)self scaledScreenPointForPoint:x, y];
@@ -3031,12 +3031,12 @@ void __104__VKDaVinciCameraController_moveTo_height_useHeight_zoom_rotation_tilt
     *(cameraManager + 36) = v19;
     *(cameraManager + 20) = v19;
     *(cameraManager + 28) = v19;
-    if (v8)
+    if (animatedCopy)
     {
-      v22 = [(VKCameraController *)self cameraDelegate];
-      [v22 willBeginAnimatingAccess];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate willBeginAnimatingAccess];
 
-      v23 = [[VKTimedAnimation alloc] initWithDuration:a6];
+      v23 = [[VKTimedAnimation alloc] initWithDuration:duration];
       [(VKTimedAnimation *)v23 setTimingFunction:VKAnimationCurveLinear];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -3053,18 +3053,18 @@ void __104__VKDaVinciCameraController_moveTo_height_useHeight_zoom_rotation_tilt
       v28[4] = self;
       v30 = v20;
       v31 = v21;
-      v29 = v14;
+      v29 = handlerCopy;
       [(VKAnimation *)v23 setCompletionHandler:v28];
       md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &v23->super);
     }
 
     else
     {
-      v24 = [(VKCameraController *)self cameraDelegate];
-      v25 = v24;
-      if (v24)
+      cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+      v25 = cameraDelegate2;
+      if (cameraDelegate2)
       {
-        [v24 willBeginRegionChangeAccess:0];
+        [cameraDelegate2 willBeginRegionChangeAccess:0];
       }
 
       else
@@ -3076,12 +3076,12 @@ void __104__VKDaVinciCameraController_moveTo_height_useHeight_zoom_rotation_tilt
       v26 = self->_cameraManager;
       [(VKCameraController *)self cursorFromScreenPoint:v20, v21];
       v26[18] = 1;
-      v27 = [(VKCameraController *)self cameraDelegate];
-      [v27 didEndRegionChangeAccess:v33];
+      cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate3 didEndRegionChangeAccess:v33];
 
-      if (v14)
+      if (handlerCopy)
       {
-        v14[2](v14);
+        handlerCopy[2](handlerCopy);
       }
 
       gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v33);
@@ -3116,11 +3116,11 @@ uint64_t __101__VKDaVinciCameraController_panWithOffset_relativeToScreenPoint_an
   return result;
 }
 
-- (void)zoomToDistance:(CGPoint)a3 distance:(double)a4 time:(double)a5 completionHandler:(id)a6
+- (void)zoomToDistance:(CGPoint)distance distance:(double)a4 time:(double)time completionHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
+  y = distance.y;
+  x = distance.x;
+  handlerCopy = handler;
   v12 = [(VKCameraController *)self cursorFromScreenPoint:x, y];
   [(VKCameraController *)self camera];
   v13 = *grl::IconMetricsRenderResult::size(v28);
@@ -3139,7 +3139,7 @@ uint64_t __101__VKDaVinciCameraController_panWithOffset_relativeToScreenPoint_an
     [(VKAnimation *)zoomAnimation stop];
   }
 
-  v15 = [[VKTimedAnimation alloc] initWithDuration:a5];
+  v15 = [[VKTimedAnimation alloc] initWithDuration:time];
   objc_initWeak(&location, self);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -3156,7 +3156,7 @@ uint64_t __101__VKDaVinciCameraController_panWithOffset_relativeToScreenPoint_an
   v22 = &unk_1E7B3E150;
   objc_copyWeak(v24, &location);
   v24[1] = v12;
-  v16 = v11;
+  v16 = handlerCopy;
   v23 = v16;
   [(VKAnimation *)v15 setCompletionHandler:&v19];
   objc_storeStrong(&self->super._zoomAnimation, v15);
@@ -3216,14 +3216,14 @@ void __76__VKDaVinciCameraController_zoomToDistance_distance_time_completionHand
   }
 }
 
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = zoom.y;
+  x = zoom.x;
+  handlerCopy = handler;
   self->super._userChangedZoomSinceLastProgrammaticRegionChange = 1;
   [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController setHasUserSpecifiedZoomLevel:1];
-  v10 = exp2(-a4);
+  v10 = exp2(-levels);
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -3254,7 +3254,7 @@ void __76__VKDaVinciCameraController_zoomToDistance_distance_time_completionHand
   v21 = &unk_1E7B3E150;
   objc_copyWeak(v23, &location);
   v23[1] = v11;
-  v15 = v9;
+  v15 = handlerCopy;
   v22 = v15;
   [(VKAnimation *)v14 setCompletionHandler:&v18];
   objc_storeStrong(&self->super._zoomAnimation, v14);
@@ -3316,10 +3316,10 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
   }
 }
 
-- (void)tiltTo:(double)a3 animated:(BOOL)a4 exaggerate:(BOOL)a5
+- (void)tiltTo:(double)to animated:(BOOL)animated exaggerate:(BOOL)exaggerate
 {
-  v5 = a5;
-  v6 = a4;
+  exaggerateCopy = exaggerate;
+  animatedCopy = animated;
   v35 = *MEMORY[0x1E69E9840];
   [(VKCameraController *)self centerScreenPoint];
   v9 = [(VKCameraController *)self cursorFromScreenPoint:?];
@@ -3330,7 +3330,7 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
     std::__shared_weak_count::__release_shared[abi:nn200100](location[1]);
   }
 
-  if (v6)
+  if (animatedCopy)
   {
     pitchAnimation = self->super._pitchAnimation;
     if (pitchAnimation)
@@ -3342,7 +3342,7 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
 
     v13 = [VKTimedAnimation alloc];
     v14 = 0.3;
-    if (v5)
+    if (exaggerateCopy)
     {
       v14 = 0.5;
     }
@@ -3358,7 +3358,7 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
     v27[3] = &unk_1E7B39AD8;
     objc_copyWeak(v28, location);
     v28[1] = v10;
-    v28[2] = *&a3;
+    v28[2] = *&to;
     v28[3] = v9;
     [(VKTimedAnimation *)self->super._pitchAnimation setStepHandler:v27];
     v25[0] = MEMORY[0x1E69E9820];
@@ -3370,8 +3370,8 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
     [(VKAnimation *)self->super._pitchAnimation setCompletionHandler:v25];
     [(VKTimedAnimation *)self->super._pitchAnimation setTimingFunction:VKAnimationCurveEaseOut];
     [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController pauseAnimation];
-    v17 = [(VKCameraController *)self cameraDelegate];
-    [v17 willBeginAnimatingAccess];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate willBeginAnimatingAccess];
 
     cameraManager = self->_cameraManager;
     cameraManager[64] = 1;
@@ -3388,11 +3388,11 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
 
   else
   {
-    v19 = [(VKCameraController *)self cameraDelegate];
-    v20 = v19;
-    if (v19)
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    v20 = cameraDelegate2;
+    if (cameraDelegate2)
     {
-      [v19 willBeginRegionChangeAccess:0];
+      [cameraDelegate2 willBeginRegionChangeAccess:0];
     }
 
     else
@@ -3415,8 +3415,8 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
     *(self->_cameraManager + 130) = 1;
     [(VKDaVinciCameraController *)self _updateIsPitched];
     [(VKDaVinciCameraController *)self _updateCanEnter3DMode];
-    v22 = [(VKCameraController *)self cameraDelegate];
-    [v22 mapLayerDidChangeVisibleRegion];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 mapLayerDidChangeVisibleRegion];
 
     v23 = *[(VKCameraController *)self runLoopController];
     if (v23)
@@ -3425,8 +3425,8 @@ void __62__VKDaVinciCameraController_tapZoom_levels_completionHandler___block_in
       md::MapEngine::setNeedsTick(v23, &v29);
     }
 
-    v24 = [(VKCameraController *)self cameraDelegate];
-    [v24 didEndRegionChangeAccess:location];
+    cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate4 didEndRegionChangeAccess:location];
 
     gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(location);
   }
@@ -3473,9 +3473,9 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
   }
 }
 
-- (void)rotateTo:(double)a3 animated:(BOOL)a4
+- (void)rotateTo:(double)to animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v36 = *MEMORY[0x1E69E9840];
   [(VKCameraController *)self centerScreenPoint];
   v7 = [(VKCameraController *)self cursorFromScreenPoint:?];
@@ -3486,7 +3486,7 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
     std::__shared_weak_count::__release_shared[abi:nn200100](location[1]);
   }
 
-  if (v4)
+  if (animatedCopy)
   {
     rotationAnimation = self->super._rotationAnimation;
     if (rotationAnimation)
@@ -3508,7 +3508,7 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
     v28[3] = &unk_1E7B3D550;
     objc_copyWeak(v29, location);
     v29[1] = *&v8;
-    v29[2] = *&a3;
+    v29[2] = *&to;
     [(VKTimedAnimation *)self->super._rotationAnimation setStepHandler:v28];
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
@@ -3534,11 +3534,11 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
 
   else
   {
-    v15 = [(VKCameraController *)self cameraDelegate];
-    v16 = v15;
-    if (v15)
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v16 = cameraDelegate;
+    if (cameraDelegate)
     {
-      [v15 willBeginRegionChangeAccess:0];
+      [cameraDelegate willBeginRegionChangeAccess:0];
     }
 
     else
@@ -3556,10 +3556,10 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
     *(v17 + 14) = v7;
     *(v17 + 15) = 0;
     [(VKCameraController *)self centerScreenPoint];
-    [(VKDaVinciCameraController *)self rotate:a3 - v8 atScreenPoint:v18, v19];
+    [(VKDaVinciCameraController *)self rotate:to - v8 atScreenPoint:v18, v19];
     *(self->_cameraManager + 83) = 1;
-    v20 = [(VKCameraController *)self cameraDelegate];
-    [v20 mapLayerDidChangeVisibleRegion];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerDidChangeVisibleRegion];
 
     v21 = *[(VKCameraController *)self runLoopController];
     if (v21)
@@ -3568,8 +3568,8 @@ void __56__VKDaVinciCameraController_tiltTo_animated_exaggerate___block_invoke_2
       md::MapEngine::setNeedsTick(v21, &v30);
     }
 
-    v22 = [(VKCameraController *)self cameraDelegate];
-    [v22 didEndRegionChangeAccess:location];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 didEndRegionChangeAccess:location];
 
     gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(location);
   }
@@ -3617,9 +3617,9 @@ void __47__VKDaVinciCameraController_rotateTo_animated___block_invoke_2(uint64_t
   }
 }
 
-- (BOOL)snapMapIfNecessary:(BOOL)a3
+- (BOOL)snapMapIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   [(VKCameraController *)self camera];
   v5 = *gdc::Camera::pitch(v18);
   if (v19)
@@ -3649,7 +3649,7 @@ void __47__VKDaVinciCameraController_rotateTo_animated___block_invoke_2(uint64_t
     v12 = 0.0;
   }
 
-  [(VKDaVinciCameraController *)self tiltTo:v3 animated:0 exaggerate:v12];
+  [(VKDaVinciCameraController *)self tiltTo:necessaryCopy animated:0 exaggerate:v12];
 LABEL_10:
   [(VKCameraController *)self camera];
   v13 = fabs(*gdc::Camera::cameraFrame(v18));
@@ -3671,35 +3671,35 @@ LABEL_10:
     [(VKDaVinciCameraController *)self currentZoomLevel];
     if (!v15 && v16 <= 6.0)
     {
-      [(VKDaVinciCameraController *)self rotateTo:v3 animated:0.0];
+      [(VKDaVinciCameraController *)self rotateTo:necessaryCopy animated:0.0];
     }
   }
 
   return 0;
 }
 
-- (void)setCenterCoordinate3D:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate3D:(id)d altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v20 = a9;
-  v21 = a10;
-  v22 = a6 * 0.0174532925;
-  v23 = a4 / fmax(cos(v22), 0.00001);
-  v24 = a5 * -0.0174532925;
-  if (a8)
+  var2 = d.var2;
+  var1 = d.var1;
+  var0 = d.var0;
+  curveCopy = curve;
+  completionCopy = completion;
+  v22 = pitch * 0.0174532925;
+  v23 = altitude / fmax(cos(v22), 0.00001);
+  v24 = yaw * -0.0174532925;
+  if (style)
   {
     v25 = var0 * 0.0174532925;
     v26 = var1 * 0.0174532925;
-    if (a8 == 2)
+    if (style == 2)
     {
-      [(VKDaVinciCameraController *)self moveTo:&v25 height:1 useHeight:v20 zoom:v21 rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:0.0];
+      [(VKDaVinciCameraController *)self moveTo:&v25 height:1 useHeight:curveCopy zoom:completionCopy rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:0.0];
     }
 
     else
     {
-      [(VKDaVinciCameraController *)self moveToZoomOutZoomInTransition:&v25 height:1 useHeight:v20 zoom:v21 rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:a7];
+      [(VKDaVinciCameraController *)self moveToZoomOutZoomInTransition:&v25 height:1 useHeight:curveCopy zoom:completionCopy rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:duration];
     }
   }
 
@@ -3707,32 +3707,32 @@ LABEL_10:
   {
     v25 = var0 * 0.0174532925;
     v26 = var1 * 0.0174532925;
-    [(VKDaVinciCameraController *)self moveTo:&v25 height:1 useHeight:v20 zoom:v21 rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:a7];
+    [(VKDaVinciCameraController *)self moveTo:&v25 height:1 useHeight:curveCopy zoom:completionCopy rotation:var2 tilt:v23 duration:v24 timingCurve:v22 completion:duration];
   }
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v19 = a9;
-  v20 = a10;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  curveCopy = curve;
+  completionCopy = completion;
   v21 = var0 * 0.0174532925;
   v22 = var1 * 0.0174532925;
-  v23 = a6 * 0.0174532925;
-  v24 = a4 / fmax(cos(v23), 0.00001);
-  if (a8)
+  v23 = pitch * 0.0174532925;
+  v24 = altitude / fmax(cos(v23), 0.00001);
+  if (style)
   {
     v25 = v21;
     v26 = v22;
-    if (a8 == 2)
+    if (style == 2)
     {
-      [(VKDaVinciCameraController *)self moveTo:&v25 zoom:v19 rotation:v20 tilt:v24 duration:a5 * -0.0174532925 timingCurve:v23 completion:0.0];
+      [(VKDaVinciCameraController *)self moveTo:&v25 zoom:curveCopy rotation:completionCopy tilt:v24 duration:yaw * -0.0174532925 timingCurve:v23 completion:0.0];
     }
 
     else
     {
-      [(VKDaVinciCameraController *)self moveToZoomOutZoomInTransition:&v25 height:0 useHeight:v19 zoom:v20 rotation:0.0 tilt:v24 duration:a5 * -0.0174532925 timingCurve:v23 completion:a7];
+      [(VKDaVinciCameraController *)self moveToZoomOutZoomInTransition:&v25 height:0 useHeight:curveCopy zoom:completionCopy rotation:0.0 tilt:v24 duration:yaw * -0.0174532925 timingCurve:v23 completion:duration];
     }
   }
 
@@ -3740,14 +3740,14 @@ LABEL_10:
   {
     v25 = v21;
     v26 = v22;
-    [(VKDaVinciCameraController *)self moveTo:&v25 zoom:v19 rotation:v20 tilt:v24 duration:a5 * -0.0174532925 timingCurve:v23 completion:a7];
+    [(VKDaVinciCameraController *)self moveTo:&v25 zoom:curveCopy rotation:completionCopy tilt:v24 duration:yaw * -0.0174532925 timingCurve:v23 completion:duration];
   }
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   zoomAnimation = self->super._zoomAnimation;
   if (!zoomAnimation || ![(VKAnimation *)zoomAnimation running])
   {
@@ -3764,19 +3764,19 @@ LABEL_10:
     cameraManager = self->_cameraManager;
     [(VKCameraController *)self cursorFromScreenPoint:?];
     cameraManager[186] = 1;
-    v8 = [(VKCameraController *)self cameraDelegate];
-    [v8 didEndPinchingAccess];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate didEndPinchingAccess];
 
     [(VKDaVinciCameraController *)self snapMapIfNecessary:1];
   }
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  x = a3.x;
-  if (a5 >= 0.01)
+  x = point.x;
+  if (newFactor >= 0.01)
   {
-    y = a3.y;
+    y = point.y;
     zoomAnimation = self->super._zoomAnimation;
     if (!zoomAnimation || ![(VKAnimation *)zoomAnimation running])
     {
@@ -3792,12 +3792,12 @@ LABEL_10:
 
       cameraManager = self->_cameraManager;
       v12 = [(VKCameraController *)self cursorFromScreenPoint:?];
-      cameraManager[28] = cameraManager[28] * (a4 * 0.7 / a5 + 0.3);
+      cameraManager[28] = cameraManager[28] * (factor * 0.7 / newFactor + 0.3);
       *(cameraManager + 27) = v12;
       self->super._userChangedZoomSinceLastProgrammaticRegionChange = 1;
       [(VKAnnotationTrackingCameraController *)self->super._annotationTrackingCameraController setHasUserSpecifiedZoomLevel:1];
-      v13 = [(VKCameraController *)self cameraDelegate];
-      [v13 mapLayerDidChangeVisibleRegion];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate mapLayerDidChangeVisibleRegion];
 
       v14 = *[(VKCameraController *)self runLoopController];
       if (v14)
@@ -3809,10 +3809,10 @@ LABEL_10:
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(VKCameraController *)self staysCenteredDuringPinch])
   {
     [(VKCameraController *)self centerScreenPoint];
@@ -3825,8 +3825,8 @@ LABEL_10:
 
   v8 = v6;
   v9 = v7;
-  v10 = [(VKCameraController *)self cameraDelegate];
-  [v10 willBeginPinchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginPinchingAccess];
 
   cameraManager = self->_cameraManager;
   v12 = [(VKCameraController *)self cursorFromScreenPoint:v8, v9];
@@ -3837,11 +3837,11 @@ LABEL_10:
   *(cameraManager + 240) = 0;
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   if ([(VKCameraController *)self staysCenteredDuringPinch])
   {
     [(VKCameraController *)self centerScreenPoint];
@@ -3858,9 +3858,9 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler___block_invoke;
   v15[3] = &unk_1E7B392C8;
-  v14 = v9;
+  v14 = handlerCopy;
   v16 = v14;
-  [(VKDaVinciCameraController *)self tapZoom:v15 levels:v12 completionHandler:v13, a3];
+  [(VKDaVinciCameraController *)self tapZoom:v15 levels:v12 completionHandler:v13, zoom];
 }
 
 uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler___block_invoke(uint64_t a1)
@@ -3874,14 +3874,14 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
   return result;
 }
 
-- (void)pitch:(CGPoint)a3 translation:(double)a4
+- (void)pitch:(CGPoint)pitch translation:(double)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = pitch.y;
+  x = pitch.x;
   if ([(VKCameraController *)self isPitchEnabled])
   {
     self->_isRotating = 0;
-    self->super._isPitchIncreasing = a4 < 0.0;
+    self->super._isPitchIncreasing = translation < 0.0;
     if (!self->_isPitching)
     {
       cameraManager = self->_cameraManager;
@@ -3902,7 +3902,7 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
       std::__shared_weak_count::__release_shared[abi:nn200100](v17);
     }
 
-    v12 = fmin(fmax(rubberBandOffsetForOffset(self->_beganDoublePanPitch - a4, v11, 0.0, 0.0698131701), 0.0), v11 + 0.0698131701);
+    v12 = fmin(fmax(rubberBandOffsetForOffset(self->_beganDoublePanPitch - translation, v11, 0.0, 0.0698131701), 0.0), v11 + 0.0698131701);
     v13 = self->_cameraManager;
     v14 = [(VKCameraController *)self cursorFromScreenPoint:x, y];
     v15 = v12 - self->_currentDoublePanPitch;
@@ -3914,15 +3914,15 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
   }
 }
 
-- (void)rotate:(double)a3 atScreenPoint:(CGPoint)a4
+- (void)rotate:(double)rotate atScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   self->_isPitching = 0;
   if (!self->_isRotating)
   {
     cameraManager = self->_cameraManager;
-    v9 = [(VKCameraController *)self cursorFromScreenPoint:a4.x, a4.y];
+    v9 = [(VKCameraController *)self cursorFromScreenPoint:point.x, point.y];
     *(cameraManager + 81) = 1;
     cameraManager[83] = 0;
     *(cameraManager + 14) = v9;
@@ -3932,15 +3932,15 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
 
   v10 = self->_cameraManager;
   v11 = [(VKCameraController *)self cursorFromScreenPoint:x, y];
-  v10[15] = v10[15] + a3;
+  v10[15] = v10[15] + rotate;
   *(v10 + 14) = v11;
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  ptr = a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
-  v17 = *a3.__ptr_;
+  ptr = camera.__ptr_;
+  v5 = *(camera.__ptr_ + 1);
+  v17 = *camera.__ptr_;
   v18 = v5;
   if (v5)
   {
@@ -3949,7 +3949,7 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
 
   v16.receiver = self;
   v16.super_class = VKDaVinciCameraController;
-  [(VKScreenCameraController *)&v16 setCamera:&v17, a3.__cntrl_];
+  [(VKScreenCameraController *)&v16 setCamera:&v17, camera.__cntrl_];
   if (v18)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v18);
@@ -3962,8 +3962,8 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
     v8 = [(VKCameraController *)self vkCamera:gdc::CameraFrame<geo::Radians];
     [v8 setPosition:v14];
 
-    v9 = [(VKCameraController *)self vkCamera];
-    [v9 setOrientation:&v15];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera setOrientation:&v15];
 
     [(VKCameraController *)self camera];
     v10 = gdc::Camera::cameraFrame(*ptr);
@@ -3993,15 +3993,15 @@ uint64_t __67__VKDaVinciCameraController_zoom_withFocusPoint_completionHandler__
   [(VKScreenCameraController *)&v5 dealloc];
 }
 
-- (VKDaVinciCameraController)initWithMapDataAccess:(void *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6 mapEngine:(void *)a7
+- (VKDaVinciCameraController)initWithMapDataAccess:(void *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate mapEngine:(void *)engine
 {
-  v12 = a6;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = VKDaVinciCameraController;
-  v13 = [(VKScreenCameraController *)&v15 initWithMapDataAccess:a3 animationRunner:a4 runLoopController:a5 cameraDelegate:v12];
+  v13 = [(VKScreenCameraController *)&v15 initWithMapDataAccess:access animationRunner:runner runLoopController:controller cameraDelegate:delegateCopy];
   if (v13)
   {
-    v13->_mapEngine = a7;
+    v13->_mapEngine = engine;
     operator new();
   }
 

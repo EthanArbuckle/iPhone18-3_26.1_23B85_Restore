@@ -9,16 +9,16 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = _gkTabStringForTabLevel();
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [a1 debugDescription];
-  [v6 appendFormat:@"%@%@\n", v5, v7];
+  string = [MEMORY[0x277CCAB68] string];
+  v7 = [self debugDescription];
+  [string appendFormat:@"%@%@\n", v5, v7];
 
-  v8 = [a1 sublayers];
+  sublayers = [self sublayers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -29,14 +29,14 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sublayers);
         }
 
         v13 = [*(*(&v16 + 1) + 8 * i) _gkDescriptionWithChildren:a3 + 1];
-        [v6 appendString:v13];
+        [string appendString:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -44,17 +44,17 @@
 
   v14 = _gkUnicodifyDescription();
 
-  return v6;
+  return string;
 }
 
 - (void)_gkParentSublayerTransform
 {
-  v3 = [a1 superlayer];
-  if (v3)
+  superlayer = [self superlayer];
+  if (superlayer)
   {
-    v9 = v3;
-    [v3 sublayerTransform];
-    v3 = v9;
+    v9 = superlayer;
+    [superlayer sublayerTransform];
+    superlayer = v9;
   }
 
   else

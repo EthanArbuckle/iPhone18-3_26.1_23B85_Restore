@@ -1,40 +1,40 @@
 @interface NFContactlessPaymentStartEvent
-- (NFContactlessPaymentStartEvent)initWithCoder:(id)a3;
-- (NFContactlessPaymentStartEvent)initWithDictionary:(id)a3;
+- (NFContactlessPaymentStartEvent)initWithCoder:(id)coder;
+- (NFContactlessPaymentStartEvent)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFContactlessPaymentStartEvent
 
-- (NFContactlessPaymentStartEvent)initWithDictionary:(id)a3
+- (NFContactlessPaymentStartEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = NFContactlessPaymentStartEvent;
   v5 = [(NFContactlessPaymentStartEvent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appletIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"endPointIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endPointIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"selectStatus"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"selectStatus"];
     v5->_selectStatus = [v10 unsignedShortValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"paymentMode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"paymentMode"];
     v5->_paymentMode = [v11 unsignedShortValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"spIdentifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"spIdentifier"];
     spIdentifier = v5->_spIdentifier;
     v5->_spIdentifier = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"BackgroundTransaction"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"BackgroundTransaction"];
     v5->_background = [v14 BOOLValue];
   }
 
@@ -66,44 +66,44 @@
   return v10;
 }
 
-- (NFContactlessPaymentStartEvent)initWithCoder:(id)a3
+- (NFContactlessPaymentStartEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NFContactlessPaymentStartEvent;
   v5 = [(NFContactlessPaymentStartEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endPointIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endPointIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v5->_selectStatus = [v4 decodeInt32ForKey:@"selectStatus"];
-    v5->_paymentMode = [v4 decodeInt32ForKey:@"paymentMode"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spIdentifier"];
+    v5->_selectStatus = [coderCopy decodeInt32ForKey:@"selectStatus"];
+    v5->_paymentMode = [coderCopy decodeInt32ForKey:@"paymentMode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spIdentifier"];
     spIdentifier = v5->_spIdentifier;
     v5->_spIdentifier = v10;
 
-    v5->_background = [v4 decodeBoolForKey:@"BackgroundTransaction"];
+    v5->_background = [coderCopy decodeBoolForKey:@"BackgroundTransaction"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletIdentifier = self->_appletIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appletIdentifier forKey:@"appletIdentifier"];
-  [v5 encodeObject:self->_keyIdentifier forKey:@"endPointIdentifier"];
-  [v5 encodeInt32:self->_selectStatus forKey:@"selectStatus"];
-  [v5 encodeInt32:self->_paymentMode forKey:@"paymentMode"];
-  [v5 encodeObject:self->_spIdentifier forKey:@"spIdentifier"];
-  [v5 encodeBool:self->_background forKey:@"BackgroundTransaction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletIdentifier forKey:@"appletIdentifier"];
+  [coderCopy encodeObject:self->_keyIdentifier forKey:@"endPointIdentifier"];
+  [coderCopy encodeInt32:self->_selectStatus forKey:@"selectStatus"];
+  [coderCopy encodeInt32:self->_paymentMode forKey:@"paymentMode"];
+  [coderCopy encodeObject:self->_spIdentifier forKey:@"spIdentifier"];
+  [coderCopy encodeBool:self->_background forKey:@"BackgroundTransaction"];
 }
 
 @end

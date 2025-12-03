@@ -1,6 +1,6 @@
 @interface FBUIApplicationWorkspaceScene
-- (id)_workspaceQueue_createWatchdogForProcess:(id)a3 sceneAction:(unsigned __int8)a4 transitionContext:(id)a5;
-- (void)_workspaceQueue_cancelWatchdogTimer:(id)a3;
+- (id)_workspaceQueue_createWatchdogForProcess:(id)process sceneAction:(unsigned __int8)action transitionContext:(id)context;
+- (void)_workspaceQueue_cancelWatchdogTimer:(id)timer;
 - (void)_workspaceQueue_invalidate;
 @end
 
@@ -47,18 +47,18 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_workspaceQueue_createWatchdogForProcess:(id)a3 sceneAction:(unsigned __int8)a4 transitionContext:(id)a5
+- (id)_workspaceQueue_createWatchdogForProcess:(id)process sceneAction:(unsigned __int8)action transitionContext:(id)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(FBWorkspaceScene *)self settings];
-  v11 = [v9 watchdogTransitionContext];
-  v12 = [v11 runIndependently];
-  v13 = [v11 watchdogBehavior];
-  if (v13)
+  actionCopy = action;
+  processCopy = process;
+  contextCopy = context;
+  settings = [(FBWorkspaceScene *)self settings];
+  watchdogTransitionContext = [contextCopy watchdogTransitionContext];
+  runIndependently = [watchdogTransitionContext runIndependently];
+  watchdogBehavior = [watchdogTransitionContext watchdogBehavior];
+  if (watchdogBehavior)
   {
-    if (v13 != 1)
+    if (watchdogBehavior != 1)
     {
       v14 = 0;
       v15 = 0;
@@ -69,7 +69,7 @@
     goto LABEL_5;
   }
 
-  if (_FBSceneActionIsSignificant(v6))
+  if (_FBSceneActionIsSignificant(actionCopy))
   {
 LABEL_5:
     sentSceneCreate = self->_sentSceneCreate;
@@ -77,10 +77,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v18 = [v10 isForeground];
+  isForeground = [settings isForeground];
   sentSceneCreate = self->_sentSceneCreate;
   self->_sentSceneCreate = 1;
-  if (v18)
+  if (isForeground)
   {
     v14 = 0;
     v15 = 0;
@@ -98,7 +98,7 @@ LABEL_6:
     v17 = 2;
   }
 
-  v15 = [FBProcessWatchdogEventContext contextForEvent:v17 settings:v10 transitionContext:v9];
+  v15 = [FBProcessWatchdogEventContext contextForEvent:v17 settings:settings transitionContext:contextCopy];
   if (v15)
   {
     v20[0] = MEMORY[0x1E69E9820];
@@ -106,11 +106,11 @@ LABEL_6:
     v20[2] = __104__FBUIApplicationWorkspaceScene__workspaceQueue_createWatchdogForProcess_sceneAction_transitionContext___block_invoke;
     v20[3] = &unk_1E783C9E0;
     v20[4] = self;
-    v14 = [v8 _newWatchdogForContext:v15 completion:v20];
+    v14 = [processCopy _newWatchdogForContext:v15 completion:v20];
     if (v14)
     {
       [(NSMutableSet *)self->_allWatchdogs addObject:v14];
-      if ((v12 & 1) != 0 || ([(NSMutableArray *)self->_watchdogStack addObject:v14], [(NSMutableArray *)self->_watchdogStack count]== 1))
+      if ((runIndependently & 1) != 0 || ([(NSMutableArray *)self->_watchdogStack addObject:v14], [(NSMutableArray *)self->_watchdogStack count]== 1))
       {
         [v14 activate];
       }
@@ -142,25 +142,25 @@ void __104__FBUIApplicationWorkspaceScene__workspaceQueue_createWatchdogForProce
   [v5 performAsync:v7];
 }
 
-- (void)_workspaceQueue_cancelWatchdogTimer:(id)a3
+- (void)_workspaceQueue_cancelWatchdogTimer:(id)timer
 {
-  v4 = a3;
-  if (v4)
+  timerCopy = timer;
+  if (timerCopy)
   {
-    v6 = v4;
-    if ([(NSMutableArray *)self->_watchdogStack indexOfObjectIdenticalTo:v4]!= 0x7FFFFFFFFFFFFFFFLL)
+    v6 = timerCopy;
+    if ([(NSMutableArray *)self->_watchdogStack indexOfObjectIdenticalTo:timerCopy]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->_watchdogStack removeObjectIdenticalTo:v6];
       if ([(NSMutableArray *)self->_watchdogStack count])
       {
-        v5 = [(NSMutableArray *)self->_watchdogStack firstObject];
-        [v5 activate];
+        firstObject = [(NSMutableArray *)self->_watchdogStack firstObject];
+        [firstObject activate];
       }
     }
 
     [(NSMutableSet *)self->_allWatchdogs removeObject:v6];
     [v6 invalidate];
-    v4 = v6;
+    timerCopy = v6;
   }
 }
 

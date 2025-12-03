@@ -1,22 +1,22 @@
 @interface IdentityProofingConfiguration
 - (_TtC13CoreIDVShared29IdentityProofingConfiguration)init;
-- (_TtC13CoreIDVShared29IdentityProofingConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared29IdentityProofingConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityProofingConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityProofingConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityProofingConfiguration.encode(with:)(coderCopy);
 }
 
-- (_TtC13CoreIDVShared29IdentityProofingConfiguration)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared29IdentityProofingConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B648B0(v3);
+  coderCopy = coder;
+  v4 = sub_225B648B0(coderCopy);
 
   return v4;
 }

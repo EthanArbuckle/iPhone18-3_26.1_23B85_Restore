@@ -1,13 +1,13 @@
 @interface GKOperationQueue
-- (void)_gkAddOperationWithDelay:(double)a3 operation:(id)a4;
+- (void)_gkAddOperationWithDelay:(double)delay operation:(id)operation;
 @end
 
 @implementation GKOperationQueue
 
-- (void)_gkAddOperationWithDelay:(double)a3 operation:(id)a4
+- (void)_gkAddOperationWithDelay:(double)delay operation:(id)operation
 {
-  v6 = a4;
-  v7 = [[GKDelayOperation alloc] initWithDelay:v6 andOperation:a3];
+  operationCopy = operation;
+  v7 = [[GKDelayOperation alloc] initWithDelay:operationCopy andOperation:delay];
 
   [(GKOperationQueue *)self addOperation:v7];
 }

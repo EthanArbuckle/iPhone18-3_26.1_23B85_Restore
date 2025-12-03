@@ -1,66 +1,66 @@
 @interface AKAttestationResponseData
-- (AKAttestationResponseData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AKAttestationResponseData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAttestationResponseData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeInteger:v4->_status forKey:@"status"];
-  [location[0] encodeObject:v4->_headersFromServer forKey:@"headersFromServer"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeInteger:selfCopy->_status forKey:@"status"];
+  [location[0] encodeObject:selfCopy->_headersFromServer forKey:@"headersFromServer"];
   objc_storeStrong(location, 0);
 }
 
-- (AKAttestationResponseData)initWithCoder:(id)a3
+- (AKAttestationResponseData)initWithCoder:(id)coder
 {
-  v15 = &v18;
-  v18 = self;
+  v15 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v18;
-  v18 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v16 = [(AKAttestationResponseData *)v3 init];
-  v18 = v16;
-  objc_storeStrong(&v18, v16);
+  selfCopy = v16;
+  objc_storeStrong(&selfCopy, v16);
   if (v16)
   {
     v4 = [location[0] decodeIntegerForKey:@"status"];
-    v18->_status = v4;
+    selfCopy->_status = v4;
     v13 = location[0];
     v12 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v14 = [v12 setWithObjects:{v11, objc_opt_class(), 0}];
     v5 = [v13 decodeObjectOfClasses:? forKey:?];
-    headersFromServer = v18->_headersFromServer;
-    v18->_headersFromServer = v5;
+    headersFromServer = selfCopy->_headersFromServer;
+    selfCopy->_headersFromServer = v5;
     MEMORY[0x1E69E5920](headersFromServer);
     MEMORY[0x1E69E5920](v14);
   }
 
-  v8 = &v18;
-  v10 = MEMORY[0x1E69E5928](v18);
+  v8 = &selfCopy;
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v8, obj);
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = self;
+  selfCopy = self;
   v6[2] = a2;
-  v6[1] = a3;
+  v6[1] = zone;
   v6[0] = objc_opt_new();
-  [v6[0] setStatus:v7->_status];
-  v4 = [(NSDictionary *)v7->_headersFromServer copy];
+  [v6[0] setStatus:selfCopy->_status];
+  v4 = [(NSDictionary *)selfCopy->_headersFromServer copy];
   [v6[0] setHeadersFromServer:?];
   MEMORY[0x1E69E5920](v4);
   v5 = MEMORY[0x1E69E5928](v6[0]);

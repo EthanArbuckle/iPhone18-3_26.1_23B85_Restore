@@ -1,28 +1,28 @@
 @interface SearchUISubscribeForUpdatesHandler
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUISubscribeForUpdatesHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v11 = a5;
-  v6 = [(SearchUICommandHandler *)self rowModel];
+  environmentCopy = environment;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v11 rowModelViewDelegate];
-    v8 = [(SearchUICommandHandler *)self rowModel];
-    v9 = [v7 viewForRowModel:v8];
+    rowModelViewDelegate = [environmentCopy rowModelViewDelegate];
+    rowModel2 = [(SearchUICommandHandler *)self rowModel];
+    v9 = [rowModelViewDelegate viewForRowModel:rowModel2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 cardSectionView];
+      cardSectionView = [v9 cardSectionView];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 toggleStateWithDetailedSectionView:v10];
+        [rowModel toggleStateWithDetailedSectionView:cardSectionView];
       }
     }
   }

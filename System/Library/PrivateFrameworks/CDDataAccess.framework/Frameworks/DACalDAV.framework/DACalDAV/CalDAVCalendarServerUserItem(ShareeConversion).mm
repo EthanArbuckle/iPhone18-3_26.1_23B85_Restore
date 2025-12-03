@@ -12,10 +12,10 @@
   {
     v4 = MEMORY[0x277CBEBC0];
     v5 = a3;
-    v6 = [v5 address];
-    v7 = [v4 URLWithString:v6];
+    address = [v5 address];
+    v7 = [v4 URLWithString:address];
 
-    v8 = [v5 displayName];
+    displayName = [v5 displayName];
     v9 = [v5 status] - 1;
     if (v9 < 5)
     {
@@ -27,11 +27,11 @@
       v10 = 0;
     }
 
-    v11 = [v5 accessLevel];
+    accessLevel = [v5 accessLevel];
 
-    if ((v11 - 1) < 3)
+    if ((accessLevel - 1) < 3)
     {
-      v12 = v11;
+      v12 = accessLevel;
     }
 
     else
@@ -39,17 +39,17 @@
       v12 = 0;
     }
 
-    a1 = [a1 initWithHREF:v7 commonName:v8 inviteStatus:v10 access:v12];
+    self = [self initWithHREF:v7 commonName:displayName inviteStatus:v10 access:v12];
 
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)rem_shareeForREMList:()ShareeConversion
@@ -57,44 +57,44 @@
   v5 = a3;
   if (!v5)
   {
-    [(CalDAVCalendarServerUserItem(ShareeConversion) *)a2 rem_shareeForREMList:a1];
+    [(CalDAVCalendarServerUserItem(ShareeConversion) *)a2 rem_shareeForREMList:self];
   }
 
-  v6 = [a1 acceptedURL];
+  acceptedURL = [self acceptedURL];
 
-  if (v6)
+  if (acceptedURL)
   {
-    v7 = [a1 acceptedURL];
-    v32 = [v7 absoluteString];
+    acceptedURL2 = [self acceptedURL];
+    absoluteString = [acceptedURL2 absoluteString];
   }
 
   else
   {
-    v7 = [a1 href];
-    v8 = [v7 payloadAsFullURL];
-    v32 = [v8 absoluteString];
+    acceptedURL2 = [self href];
+    payloadAsFullURL = [acceptedURL2 payloadAsFullURL];
+    absoluteString = [payloadAsFullURL absoluteString];
   }
 
-  v9 = [a1 firstName];
-  if (v9 && (v10 = v9, [a1 lastName], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  firstName = [self firstName];
+  if (firstName && (v10 = firstName, [self lastName], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v31 = [a1 firstName];
-    v12 = [a1 lastName];
-    v13 = 0;
+    firstName2 = [self firstName];
+    lastName = [self lastName];
+    payloadAsString = 0;
   }
 
   else
   {
-    v14 = [a1 commonName];
-    v13 = [v14 payloadAsString];
+    commonName = [self commonName];
+    payloadAsString = [commonName payloadAsString];
 
-    v12 = 0;
-    v31 = 0;
+    lastName = 0;
+    firstName2 = 0;
   }
 
-  v15 = [a1 inviteStatus];
-  v16 = [v15 name];
-  v17 = _calDAVCalendarServerInviteStatusFromString(v16) - 1;
+  inviteStatus = [self inviteStatus];
+  name = [inviteStatus name];
+  v17 = _calDAVCalendarServerInviteStatusFromString(name) - 1;
   if (v17 < 5)
   {
     v18 = v17 + 1;
@@ -105,18 +105,18 @@
     v18 = 0;
   }
 
-  v19 = [a1 access];
-  v20 = [v19 accessLevel];
-  v21 = [v20 name];
-  v22 = _calDAVCalendarServerAccessLevelFromString(v21);
+  access = [self access];
+  accessLevel = [access accessLevel];
+  name2 = [accessLevel name];
+  v22 = _calDAVCalendarServerAccessLevelFromString(name2);
 
   v23 = objc_alloc(MEMORY[0x277D447E8]);
-  v24 = [MEMORY[0x277D447E8] newObjectID];
-  v25 = [v5 account];
-  [v25 objectID];
+  newObjectID = [MEMORY[0x277D447E8] newObjectID];
+  account = [v5 account];
+  [account objectID];
   v27 = v26 = v5;
-  v28 = [v26 objectID];
-  v29 = [v23 initShareeWithObjectID:v24 accountID:v27 listID:v28 displayName:v13 firstName:v31 lastName:v12 address:v32 status:v18 accessLevel:v22];
+  objectID = [v26 objectID];
+  v29 = [v23 initShareeWithObjectID:newObjectID accountID:v27 listID:objectID displayName:payloadAsString firstName:firstName2 lastName:lastName address:absoluteString status:v18 accessLevel:v22];
 
   return v29;
 }
@@ -126,51 +126,51 @@
   v5 = a3;
   if (!v5)
   {
-    [(CalDAVCalendarServerUserItem(ShareeConversion) *)a2 rem_updatedREMShareeFromREMSharee:a1];
+    [(CalDAVCalendarServerUserItem(ShareeConversion) *)a2 rem_updatedREMShareeFromREMSharee:self];
   }
 
-  v6 = [a1 commonName];
-  v7 = [v6 payloadAsString];
+  commonName = [self commonName];
+  payloadAsString = [commonName payloadAsString];
 
-  v8 = [v5 displayName];
-  v9 = [v5 firstName];
-  v45 = [v5 lastName];
-  v42 = [v5 address];
-  v10 = [v5 status];
-  v11 = [v5 accessLevel];
-  v43 = v7;
-  v44 = v9;
-  if ([v7 length] && (objc_msgSend(v7, "isEqualToString:", v8) & 1) == 0)
+  displayName = [v5 displayName];
+  firstName = [v5 firstName];
+  lastName = [v5 lastName];
+  address = [v5 address];
+  status = [v5 status];
+  accessLevel = [v5 accessLevel];
+  v43 = payloadAsString;
+  v44 = firstName;
+  if ([payloadAsString length] && (objc_msgSend(payloadAsString, "isEqualToString:", displayName) & 1) == 0)
   {
-    v20 = v7;
-    v12 = v8;
+    v20 = payloadAsString;
+    firstName2 = displayName;
     v19 = 1;
-    v8 = v20;
+    displayName = v20;
     goto LABEL_15;
   }
 
-  v12 = [a1 firstName];
-  if (![v12 length])
+  firstName2 = [self firstName];
+  if (![firstName2 length])
   {
 LABEL_12:
     v19 = 0;
     goto LABEL_15;
   }
 
-  v13 = [a1 lastName];
-  if (![v13 length])
+  lastName2 = [self lastName];
+  if (![lastName2 length])
   {
 
     goto LABEL_12;
   }
 
-  v14 = [a1 firstName];
-  v15 = v9;
-  v16 = v14;
-  if ([v14 isEqualToString:v15])
+  firstName3 = [self firstName];
+  v15 = firstName;
+  v16 = firstName3;
+  if ([firstName3 isEqualToString:v15])
   {
-    v17 = [a1 lastName];
-    v18 = [v17 isEqualToString:v45];
+    lastName3 = [self lastName];
+    v18 = [lastName3 isEqualToString:lastName];
 
     if (v18)
     {
@@ -183,22 +183,22 @@ LABEL_12:
   {
   }
 
-  v21 = [a1 firstName];
+  firstName4 = [self firstName];
 
-  [a1 lastName];
+  [self lastName];
   v19 = 0;
-  v12 = v45;
-  v45 = v44 = v21;
+  firstName2 = lastName;
+  lastName = v44 = firstName4;
 LABEL_15:
 
 LABEL_16:
-  v22 = [a1 inviteStatus];
-  v23 = [v22 name];
-  v24 = _calDAVCalendarServerInviteStatusFromString(v23);
+  inviteStatus = [self inviteStatus];
+  name = [inviteStatus name];
+  v24 = _calDAVCalendarServerInviteStatusFromString(name);
 
-  if ((v10 - 1) < 5)
+  if ((status - 1) < 5)
   {
-    v25 = v10;
+    v25 = status;
   }
 
   else
@@ -208,18 +208,18 @@ LABEL_16:
 
   if (v24 != v25)
   {
-    v10 = 0;
+    status = 0;
     v19 = 1;
     if (v24 <= 2)
     {
       if (v24 == 1)
       {
-        v10 = 1;
+        status = 1;
       }
 
       else if (v24 == 2)
       {
-        v10 = 2;
+        status = 2;
       }
     }
 
@@ -228,26 +228,26 @@ LABEL_16:
       switch(v24)
       {
         case 3:
-          v10 = 3;
+          status = 3;
           break;
         case 4:
-          v10 = 4;
+          status = 4;
           break;
         case 5:
-          v10 = 5;
+          status = 5;
           break;
       }
     }
   }
 
-  v26 = [a1 access];
-  v27 = [v26 accessLevel];
-  v28 = [v27 name];
-  v29 = _calDAVCalendarServerAccessLevelFromString(v28);
+  access = [self access];
+  accessLevel2 = [access accessLevel];
+  name2 = [accessLevel2 name];
+  v29 = _calDAVCalendarServerAccessLevelFromString(name2);
 
-  if ((v11 - 1) < 3)
+  if ((accessLevel - 1) < 3)
   {
-    v30 = v11;
+    v30 = accessLevel;
   }
 
   else
@@ -261,27 +261,27 @@ LABEL_16:
     {
       v31 = 0;
       v33 = v44;
-      v32 = v45;
-      v34 = v42;
+      v32 = lastName;
+      v34 = address;
       goto LABEL_33;
     }
   }
 
   else
   {
-    v11 = v29;
+    accessLevel = v29;
   }
 
   v35 = objc_alloc(MEMORY[0x277D447E8]);
-  v36 = [MEMORY[0x277D447E8] newObjectID];
-  v37 = [v5 accountID];
-  v38 = [v5 listID];
-  v41 = v11;
-  v34 = v42;
+  newObjectID = [MEMORY[0x277D447E8] newObjectID];
+  accountID = [v5 accountID];
+  listID = [v5 listID];
+  v41 = accessLevel;
+  v34 = address;
   v39 = v35;
   v33 = v44;
-  v32 = v45;
-  v31 = [v39 initShareeWithObjectID:v36 accountID:v37 listID:v38 displayName:v8 firstName:v44 lastName:v45 address:v42 status:v10 accessLevel:v41];
+  v32 = lastName;
+  v31 = [v39 initShareeWithObjectID:newObjectID accountID:accountID listID:listID displayName:displayName firstName:v44 lastName:lastName address:address status:status accessLevel:v41];
 
 LABEL_33:
 

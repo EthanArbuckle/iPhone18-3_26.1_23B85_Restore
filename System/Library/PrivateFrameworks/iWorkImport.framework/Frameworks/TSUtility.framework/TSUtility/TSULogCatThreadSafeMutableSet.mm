@@ -1,26 +1,26 @@
 @interface TSULogCatThreadSafeMutableSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (TSULogCatThreadSafeMutableSet)init;
-- (TSULogCatThreadSafeMutableSet)initWithArray:(id)a3;
+- (TSULogCatThreadSafeMutableSet)initWithArray:(id)array;
 - (id)allObjects;
 - (id)description;
 - (id)immutableSet;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation TSULogCatThreadSafeMutableSet
 
-- (TSULogCatThreadSafeMutableSet)initWithArray:(id)a3
+- (TSULogCatThreadSafeMutableSet)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = TSULogCatThreadSafeMutableSet;
   v5 = [(TSULogCatThreadSafeMutableSet *)&v12 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:arrayCopy];
     objects = v5->_objects;
     v5->_objects = v6;
 
@@ -35,15 +35,15 @@
 
 - (TSULogCatThreadSafeMutableSet)init
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(TSULogCatThreadSafeMutableSet *)self initWithArray:v3];
+  array = [MEMORY[0x277CBEA60] array];
+  v4 = [(TSULogCatThreadSafeMutableSet *)self initWithArray:array];
 
   return v4;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -53,10 +53,10 @@
   block[1] = 3221225472;
   block[2] = sub_2770C0BF8;
   block[3] = &unk_27A7019E0;
-  v9 = v4;
+  v9 = objectCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   dispatch_sync(logCatQueue, block);
   LOBYTE(logCatQueue) = *(v12 + 24);
 
@@ -127,31 +127,31 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   logCatQueue = self->_logCatQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770C104C;
   v7[3] = &unk_27A702450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(logCatQueue, v7);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   logCatQueue = self->_logCatQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770C10F0;
   v7[3] = &unk_27A702450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(logCatQueue, v7);
 }
 

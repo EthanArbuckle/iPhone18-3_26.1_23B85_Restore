@@ -1,26 +1,26 @@
 @interface ENWebContentTransformer
 - (ENWebContentTransformer)init;
-- (id)archiveBaseURLFromURL:(id)a3;
-- (id)filenameFromURL:(id)a3;
-- (id)htmlFromWebArchive:(id)a3;
-- (id)mimeTypeFromFilename:(id)a3;
-- (id)resourceFromWebResource:(id)a3;
-- (id)sanitizeURLAttribute:(id)a3;
-- (id)transformedValue:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4;
-- (void)parser:(id)a3 didStartElement:(id)a4 attributes:(id)a5;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (id)archiveBaseURLFromURL:(id)l;
+- (id)filenameFromURL:(id)l;
+- (id)htmlFromWebArchive:(id)archive;
+- (id)mimeTypeFromFilename:(id)filename;
+- (id)resourceFromWebResource:(id)resource;
+- (id)sanitizeURLAttribute:(id)attribute;
+- (id)transformedValue:(id)value;
+- (void)parser:(id)parser didEndElement:(id)element;
+- (void)parser:(id)parser didStartElement:(id)element attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation ENWebContentTransformer
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v7 = a4;
+  charactersCopy = characters;
   if ([(ENWebContentTransformer *)self inTitleElement])
   {
-    v5 = [(ENWebContentTransformer *)self title];
-    v6 = [v5 stringByAppendingString:v7];
+    title = [(ENWebContentTransformer *)self title];
+    v6 = [title stringByAppendingString:charactersCopy];
     [(ENWebContentTransformer *)self setTitle:v6];
   }
 
@@ -31,17 +31,17 @@
       goto LABEL_6;
     }
 
-    v5 = [(ENWebContentTransformer *)self enmlWriter];
-    [v5 writeString:v7];
+    title = [(ENWebContentTransformer *)self enmlWriter];
+    [title writeString:charactersCopy];
   }
 
 LABEL_6:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4
+- (void)parser:(id)parser didEndElement:(id)element
 {
-  v8 = a4;
-  if (-[ENWebContentTransformer inTitleElement](self, "inTitleElement") && [v8 isEqualToString:@"title"])
+  elementCopy = element;
+  if (-[ENWebContentTransformer inTitleElement](self, "inTitleElement") && [elementCopy isEqualToString:@"title"])
   {
     [(ENWebContentTransformer *)self setInTitleElement:0];
   }
@@ -53,36 +53,36 @@ LABEL_6:
 
   else
   {
-    v5 = [(ENWebContentTransformer *)self skipTags];
-    v6 = [v5 containsObject:v8];
+    skipTags = [(ENWebContentTransformer *)self skipTags];
+    v6 = [skipTags containsObject:elementCopy];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(ENWebContentTransformer *)self enmlWriter];
-      [v7 endElement];
+      enmlWriter = [(ENWebContentTransformer *)self enmlWriter];
+      [enmlWriter endElement];
     }
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 attributes:(id)a5
+- (void)parser:(id)parser didStartElement:(id)element attributes:(id)attributes
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(ENWebContentTransformer *)self baseURL];
-  if (v9)
+  elementCopy = element;
+  attributesCopy = attributes;
+  baseURL = [(ENWebContentTransformer *)self baseURL];
+  if (baseURL)
   {
 LABEL_2:
 
     goto LABEL_3;
   }
 
-  if ([v7 isEqualToString:@"base"])
+  if ([elementCopy isEqualToString:@"base"])
   {
-    v9 = [v8 objectForKey:@"href"];
-    if (v9)
+    baseURL = [attributesCopy objectForKey:@"href"];
+    if (baseURL)
     {
-      v11 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+      v11 = [MEMORY[0x277CBEBC0] URLWithString:baseURL];
       [(ENWebContentTransformer *)self setBaseURL:v11];
     }
 
@@ -90,50 +90,50 @@ LABEL_2:
   }
 
 LABEL_3:
-  v10 = [(ENWebContentTransformer *)self title];
-  if (v10)
+  title = [(ENWebContentTransformer *)self title];
+  if (title)
   {
 
     goto LABEL_10;
   }
 
-  if (![v7 isEqualToString:@"title"])
+  if (![elementCopy isEqualToString:@"title"])
   {
 LABEL_10:
     if ([(ENWebContentTransformer *)self ignoreElementCount])
     {
       v12 = [(ENWebContentTransformer *)self ignoreElementCount]+ 1;
-      v13 = self;
+      selfCopy2 = self;
 LABEL_12:
-      [(ENWebContentTransformer *)v13 setIgnoreElementCount:v12];
+      [(ENWebContentTransformer *)selfCopy2 setIgnoreElementCount:v12];
       goto LABEL_54;
     }
 
-    v14 = [(ENWebContentTransformer *)self skipTags];
-    v15 = [v14 containsObject:v7];
+    skipTags = [(ENWebContentTransformer *)self skipTags];
+    v15 = [skipTags containsObject:elementCopy];
 
     if (v15)
     {
       goto LABEL_54;
     }
 
-    v16 = [(ENWebContentTransformer *)self ignorableTags];
-    v17 = [v16 containsObject:v7];
+    ignorableTags = [(ENWebContentTransformer *)self ignorableTags];
+    v17 = [ignorableTags containsObject:elementCopy];
 
     if (v17)
     {
-      v13 = self;
+      selfCopy2 = self;
       v12 = 1;
       goto LABEL_12;
     }
 
-    v18 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v8];
+    v18 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:attributesCopy];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v59 = v8;
-    v19 = v8;
+    v59 = attributesCopy;
+    v19 = attributesCopy;
     v20 = [v19 countByEnumeratingWithState:&v66 objects:v71 count:16];
     if (v20)
     {
@@ -149,8 +149,8 @@ LABEL_12:
           }
 
           v24 = *(*(&v66 + 1) + 8 * i);
-          v25 = [(ENWebContentTransformer *)self ignorableAttributes];
-          v26 = [v25 containsObject:v24];
+          ignorableAttributes = [(ENWebContentTransformer *)self ignorableAttributes];
+          v26 = [ignorableAttributes containsObject:v24];
 
           if (v26)
           {
@@ -164,32 +164,32 @@ LABEL_12:
       while (v21);
     }
 
-    v27 = v7;
+    v27 = elementCopy;
     if ([(__CFString *)v27 isEqualToString:@"img"])
     {
-      v28 = [v18 objectForKeyedSubscript:@"src"];
-      v61 = [(ENWebContentTransformer *)self sanitizeURLAttribute:v28];
+      enmlWriter2 = [v18 objectForKeyedSubscript:@"src"];
+      v61 = [(ENWebContentTransformer *)self sanitizeURLAttribute:enmlWriter2];
       if (!v61)
       {
         [(ENWebContentTransformer *)self setIgnoreElementCount:1];
-        v8 = v59;
+        attributesCopy = v59;
 LABEL_48:
 
         goto LABEL_53;
       }
 
-      v56 = v28;
+      v56 = enmlWriter2;
       v57 = v27;
-      v58 = v7;
+      v58 = elementCopy;
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v29 = [(ENWebContentTransformer *)self webArchive];
-      v30 = [v29 subresources];
+      webArchive = [(ENWebContentTransformer *)self webArchive];
+      subresources = [webArchive subresources];
 
-      obj = v30;
-      v31 = [v30 countByEnumeratingWithState:&v62 objects:v70 count:16];
+      obj = subresources;
+      v31 = [subresources countByEnumeratingWithState:&v62 objects:v70 count:16];
       if (v31)
       {
         v32 = v31;
@@ -205,9 +205,9 @@ LABEL_48:
 
             v35 = *(*(&v62 + 1) + 8 * j);
             v36 = [v35 URL];
-            v37 = [v36 absoluteString];
-            v38 = [v61 absoluteString];
-            v39 = [v37 isEqualToString:v38];
+            absoluteString = [v36 absoluteString];
+            absoluteString2 = [v61 absoluteString];
+            v39 = [absoluteString isEqualToString:absoluteString2];
 
             if (v39)
             {
@@ -215,19 +215,19 @@ LABEL_48:
               if (v40)
               {
                 v50 = v40;
-                v51 = [(ENWebContentTransformer *)self note];
-                [v51 addResource:v50];
+                note = [(ENWebContentTransformer *)self note];
+                [note addResource:v50];
 
                 [v18 removeObjectForKey:@"src"];
-                v52 = [(ENWebContentTransformer *)self enmlWriter];
-                v53 = [v50 dataHash];
-                v54 = [v50 mimeType];
-                [v52 writeResourceWithDataHash:v53 mime:v54 attributes:v18];
+                enmlWriter = [(ENWebContentTransformer *)self enmlWriter];
+                dataHash = [v50 dataHash];
+                mimeType = [v50 mimeType];
+                [enmlWriter writeResourceWithDataHash:dataHash mime:mimeType attributes:v18];
 
                 [(ENWebContentTransformer *)self setIgnoreElementCount:1];
-                v7 = v58;
-                v8 = v59;
-                v28 = v56;
+                elementCopy = v58;
+                attributesCopy = v59;
+                enmlWriter2 = v56;
                 v27 = v57;
                 goto LABEL_48;
               }
@@ -244,26 +244,26 @@ LABEL_48:
         }
       }
 
-      v41 = [v61 absoluteString];
-      [v18 setObject:v41 forKeyedSubscript:@"src"];
+      absoluteString3 = [v61 absoluteString];
+      [v18 setObject:absoluteString3 forKeyedSubscript:@"src"];
 
-      v7 = v58;
-      v8 = v59;
+      elementCopy = v58;
+      attributesCopy = v59;
       v27 = v57;
     }
 
     else if ([(__CFString *)v27 isEqualToString:@"a"])
     {
       v42 = [v19 objectForKey:@"href"];
-      v8 = v59;
+      attributesCopy = v59;
       if (v42)
       {
         v43 = [(ENWebContentTransformer *)self sanitizeURLAttribute:v42];
         v44 = v43;
         if (v43)
         {
-          v45 = [v43 absoluteString];
-          [v18 setObject:v45 forKeyedSubscript:@"href"];
+          absoluteString4 = [v43 absoluteString];
+          [v18 setObject:absoluteString4 forKeyedSubscript:@"href"];
         }
 
         else
@@ -275,13 +275,13 @@ LABEL_48:
 
     else
     {
-      v46 = [(ENWebContentTransformer *)self enmlDTD];
-      v47 = [v46 isElementLegal:v27];
+      enmlDTD = [(ENWebContentTransformer *)self enmlDTD];
+      v47 = [enmlDTD isElementLegal:v27];
 
       if ((v47 & 1) == 0)
       {
-        v48 = [(ENWebContentTransformer *)self inlineElements];
-        v49 = [v48 containsObject:v27];
+        inlineElements = [(ENWebContentTransformer *)self inlineElements];
+        v49 = [inlineElements containsObject:v27];
 
         if (v49)
         {
@@ -294,11 +294,11 @@ LABEL_48:
         }
       }
 
-      v8 = v59;
+      attributesCopy = v59;
     }
 
-    v28 = [(ENWebContentTransformer *)self enmlWriter];
-    [v28 startElement:v27 attributes:v18];
+    enmlWriter2 = [(ENWebContentTransformer *)self enmlWriter];
+    [enmlWriter2 startElement:v27 attributes:v18];
 LABEL_53:
 
     goto LABEL_54;
@@ -311,28 +311,28 @@ LABEL_54:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resourceFromWebResource:(id)a3
+- (id)resourceFromWebResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = v5;
-  if (v5 && [v5 length])
+  resourceCopy = resource;
+  data = [resourceCopy data];
+  v6 = data;
+  if (data && [data length])
   {
     v7 = objc_alloc_init(ENResource);
-    v8 = [v4 URL];
-    v9 = [v8 absoluteString];
-    [(ENResource *)v7 setSourceUrl:v9];
+    v8 = [resourceCopy URL];
+    absoluteString = [v8 absoluteString];
+    [(ENResource *)v7 setSourceUrl:absoluteString];
 
     v10 = [(ENWebContentTransformer *)self filenameFromURL:v8];
     [(ENResource *)v7 setFilename:v10];
 
     [(ENResource *)v7 setData:v6];
-    v11 = [v4 MIMEType];
-    v12 = v11;
-    if (!v11 || ![v11 length])
+    mIMEType = [resourceCopy MIMEType];
+    v12 = mIMEType;
+    if (!mIMEType || ![mIMEType length])
     {
-      v13 = [(ENResource *)v7 filename];
-      v14 = [(ENWebContentTransformer *)self mimeTypeFromFilename:v13];
+      filename = [(ENResource *)v7 filename];
+      v14 = [(ENWebContentTransformer *)self mimeTypeFromFilename:filename];
 
       v12 = v14;
     }
@@ -348,10 +348,10 @@ LABEL_54:
   return v7;
 }
 
-- (id)mimeTypeFromFilename:(id)a3
+- (id)mimeTypeFromFilename:(id)filename
 {
-  v3 = a3;
-  if (!v3 || ([ENMIMEUtils determineMIMETypeForFile:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  filenameCopy = filename;
+  if (!filenameCopy || ([ENMIMEUtils determineMIMETypeForFile:filenameCopy], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = @"application/octet-stream";
     v5 = @"application/octet-stream";
@@ -360,34 +360,34 @@ LABEL_54:
   return v4;
 }
 
-- (id)filenameFromURL:(id)a3
+- (id)filenameFromURL:(id)l
 {
-  v3 = a3;
-  if (CFURLHasDirectoryPath(v3))
+  lCopy = l;
+  if (CFURLHasDirectoryPath(lCopy))
   {
-    v4 = 0;
+    lastPathComponent = 0;
   }
 
   else
   {
-    v4 = [v3 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
-- (id)sanitizeURLAttribute:(id)a3
+- (id)sanitizeURLAttribute:(id)attribute
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attributeCopy = attribute;
+  v5 = attributeCopy;
+  if (attributeCopy)
   {
-    v6 = [v4 stringByReplacingPercentEscapesUsingEncoding:4];
+    v6 = [attributeCopy stringByReplacingPercentEscapesUsingEncoding:4];
     v7 = [v6 stringByAddingPercentEscapesUsingEncoding:4];
     v8 = MEMORY[0x277CBEBC0];
-    v9 = [(ENWebContentTransformer *)self baseURL];
-    v10 = [v8 URLWithString:v7 relativeToURL:v9];
+    baseURL = [(ENWebContentTransformer *)self baseURL];
+    v10 = [v8 URLWithString:v7 relativeToURL:baseURL];
 
     if ([ENMLWriter validateURLComponents:v10])
     {
@@ -396,15 +396,15 @@ LABEL_54:
 
     else
     {
-      v12 = [(ENWebContentTransformer *)self webArchive];
-      v13 = [v12 subresources];
+      webArchive = [(ENWebContentTransformer *)self webArchive];
+      subresources = [webArchive subresources];
 
       v14 = [MEMORY[0x277CBEBC0] URLWithString:v5];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v15 = v13;
+      v15 = subresources;
       v11 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
@@ -454,19 +454,19 @@ LABEL_15:
   return v11;
 }
 
-- (id)archiveBaseURLFromURL:(id)a3
+- (id)archiveBaseURLFromURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy)
   {
     v8 = 0;
     goto LABEL_12;
   }
 
-  PathComponent = CFURLCopyLastPathComponent(v3);
-  v6 = [(__CFURL *)v4 scheme];
-  if ([@"file" isEqualToString:v6])
+  PathComponent = CFURLCopyLastPathComponent(lCopy);
+  scheme = [(__CFURL *)v4 scheme];
+  if ([@"file" isEqualToString:scheme])
   {
     v7 = [@"/" isEqualToString:PathComponent];
 
@@ -496,13 +496,13 @@ LABEL_12:
   return v8;
 }
 
-- (id)htmlFromWebArchive:(id)a3
+- (id)htmlFromWebArchive:(id)archive
 {
-  v3 = [a3 mainResource];
-  v4 = [v3 textEncodingName];
-  if (v4)
+  mainResource = [archive mainResource];
+  textEncodingName = [mainResource textEncodingName];
+  if (textEncodingName)
   {
-    v5 = v4;
+    v5 = textEncodingName;
   }
 
   else
@@ -512,10 +512,10 @@ LABEL_12:
 
   v6 = CFStringConvertIANACharSetNameToEncoding(v5);
   v7 = CFStringConvertEncodingToNSStringEncoding(v6);
-  v8 = [v3 data];
-  if (v8)
+  data = [mainResource data];
+  if (data)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:v7];
+    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:data encoding:v7];
   }
 
   else
@@ -526,9 +526,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_alloc_init(ENNote);
   [(ENWebContentTransformer *)self setNote:v5];
   v6 = objc_alloc_init(ENMLWriter);
@@ -545,23 +545,23 @@ LABEL_12:
     [(ENXMLSaxParser *)v8 setDelegate:self];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v10 = v4;
+    mimeType = valueCopy;
     if (isKindOfClass)
     {
-      v11 = [(ENWebContentTransformer *)self htmlFromWebArchive:v10];
-      v12 = [v10 mainResource];
-      v13 = [v12 URL];
+      v11 = [(ENWebContentTransformer *)self htmlFromWebArchive:mimeType];
+      mainResource = [mimeType mainResource];
+      v13 = [mainResource URL];
       [(ENWebContentTransformer *)self setBaseURL:v13];
 
-      [(ENWebContentTransformer *)self setWebArchive:v10];
-      v10 = v11;
+      [(ENWebContentTransformer *)self setWebArchive:mimeType];
+      mimeType = v11;
     }
 
-    v14 = [(ENWebContentTransformer *)self baseURL];
-    v15 = [(ENWebContentTransformer *)self archiveBaseURLFromURL:v14];
+    baseURL = [(ENWebContentTransformer *)self baseURL];
+    v15 = [(ENWebContentTransformer *)self archiveBaseURLFromURL:baseURL];
     [(ENWebContentTransformer *)self setArchiveBaseURL:v15];
 
-    [(ENXMLSaxParser *)v8 parseContents:v10];
+    [(ENXMLSaxParser *)v8 parseContents:mimeType];
   }
 
   else
@@ -574,45 +574,45 @@ LABEL_12:
     }
 
     v8 = objc_alloc_init(ENResource);
-    v25 = [(ENWebContentTransformer *)self baseURL];
-    v26 = [v25 absoluteString];
-    [(ENXMLSaxParser *)v8 setSourceUrl:v26];
+    baseURL2 = [(ENWebContentTransformer *)self baseURL];
+    absoluteString = [baseURL2 absoluteString];
+    [(ENXMLSaxParser *)v8 setSourceUrl:absoluteString];
 
-    v27 = [(ENWebContentTransformer *)self baseURL];
-    v28 = [(ENWebContentTransformer *)self filenameFromURL:v27];
+    baseURL3 = [(ENWebContentTransformer *)self baseURL];
+    v28 = [(ENWebContentTransformer *)self filenameFromURL:baseURL3];
     [(ENXMLSaxParser *)v8 setFilename:v28];
 
-    [(ENXMLSaxParser *)v8 setData:v4];
-    v10 = [(ENWebContentTransformer *)self mimeType];
-    if (!v10)
+    [(ENXMLSaxParser *)v8 setData:valueCopy];
+    mimeType = [(ENWebContentTransformer *)self mimeType];
+    if (!mimeType)
     {
-      v29 = [(ENXMLSaxParser *)v8 filename];
-      v10 = [(ENWebContentTransformer *)self mimeTypeFromFilename:v29];
+      filename = [(ENXMLSaxParser *)v8 filename];
+      mimeType = [(ENWebContentTransformer *)self mimeTypeFromFilename:filename];
     }
 
-    [(ENXMLSaxParser *)v8 setMimeType:v10];
-    v30 = [(ENWebContentTransformer *)self note];
-    [v30 addResource:v8];
+    [(ENXMLSaxParser *)v8 setMimeType:mimeType];
+    note = [(ENWebContentTransformer *)self note];
+    [note addResource:v8];
 
-    v31 = [(ENXMLSaxParser *)v8 dataHash];
-    v32 = [(ENXMLSaxParser *)v8 mimeType];
-    [(ENMLWriter *)v6 writeResourceWithDataHash:v31 mime:v32 attributes:0];
+    dataHash = [(ENXMLSaxParser *)v8 dataHash];
+    mimeType2 = [(ENXMLSaxParser *)v8 mimeType];
+    [(ENMLWriter *)v6 writeResourceWithDataHash:dataHash mime:mimeType2 attributes:0];
   }
 
   [(ENMLWriter *)v6 endDocument];
   v16 = [ENNoteContent alloc];
-  v17 = [(ENXMLWriter *)v6 contents];
-  v18 = [(ENNoteContent *)v16 initWithENML:v17];
+  contents = [(ENXMLWriter *)v6 contents];
+  v18 = [(ENNoteContent *)v16 initWithENML:contents];
   [(ENNote *)v5 setContent:v18];
 
-  v19 = [(ENWebContentTransformer *)self baseURL];
-  v20 = [v19 absoluteString];
-  [(ENNote *)v5 setSourceUrl:v20];
+  baseURL4 = [(ENWebContentTransformer *)self baseURL];
+  absoluteString2 = [baseURL4 absoluteString];
+  [(ENNote *)v5 setSourceUrl:absoluteString2];
 
-  v21 = [(ENWebContentTransformer *)self title];
-  if (v21 || ([(ENNote *)v5 sourceUrl], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  title = [(ENWebContentTransformer *)self title];
+  if (title || ([(ENNote *)v5 sourceUrl], (title = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v22 = v21;
+    v22 = title;
   }
 
   else

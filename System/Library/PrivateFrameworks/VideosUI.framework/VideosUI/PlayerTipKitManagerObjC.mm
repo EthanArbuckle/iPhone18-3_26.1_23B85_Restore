@@ -1,12 +1,12 @@
 @interface PlayerTipKitManagerObjC
-+ (void)addMultiviewTipFor:(id)a3;
-+ (void)addTipsToConfiguration:(id)a3 isRadioBroadcastEnabled:(BOOL)a4;
-+ (void)scheduleTips:(id)a3;
++ (void)addMultiviewTipFor:(id)for;
++ (void)addTipsToConfiguration:(id)configuration isRadioBroadcastEnabled:(BOOL)enabled;
++ (void)scheduleTips:(id)tips;
 @end
 
 @implementation PlayerTipKitManagerObjC
 
-+ (void)addMultiviewTipFor:(id)a3
++ (void)addMultiviewTipFor:(id)for
 {
   swift_unknownObjectRetain();
   sub_1E4207264();
@@ -15,9 +15,9 @@
   __swift_destroy_boxed_opaque_existential_1(v3);
 }
 
-+ (void)addTipsToConfiguration:(id)a3 isRadioBroadcastEnabled:(BOOL)a4
++ (void)addTipsToConfiguration:(id)configuration isRadioBroadcastEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (configuration)
   {
     swift_unknownObjectRetain();
     sub_1E4207264();
@@ -29,14 +29,14 @@
     memset(v5, 0, sizeof(v5));
   }
 
-  static PlayerTipKitManagerObjC.addTipsToConfiguration(_:isRadioBroadcastEnabled:)(v5, a4);
+  static PlayerTipKitManagerObjC.addTipsToConfiguration(_:isRadioBroadcastEnabled:)(v5, enabled);
   sub_1E329505C(v5);
 }
 
-+ (void)scheduleTips:(id)a3
++ (void)scheduleTips:(id)tips
 {
-  v4 = a3;
-  static PlayerTipKitManagerObjC.scheduleTips(_:)(a3);
+  tipsCopy = tips;
+  static PlayerTipKitManagerObjC.scheduleTips(_:)(tips);
 }
 
 @end

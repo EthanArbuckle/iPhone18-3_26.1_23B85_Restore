@@ -1,17 +1,17 @@
 @interface AKCAAuthPromptReporter
-+ (void)reportPromptByClient:(id)a3 withContext:(id)a4;
++ (void)reportPromptByClient:(id)client withContext:(id)context;
 @end
 
 @implementation AKCAAuthPromptReporter
 
-+ (void)reportPromptByClient:(id)a3 withContext:(id)a4
++ (void)reportPromptByClient:(id)client withContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, context);
   if (getenv("__OSINSTALL_ENVIRONMENT") || getenv("__AKSYNCBUBBLE"))
   {
     v22 = 1;
@@ -31,10 +31,10 @@
     _objc_release(v16);
     v21 = v17;
     v20 = +[NSMutableDictionary dictionary];
-    v18 = [location[0] bundleID];
-    if (v18)
+    bundleID = [location[0] bundleID];
+    if (bundleID)
     {
-      v14 = v18;
+      v14 = bundleID;
     }
 
     else
@@ -43,11 +43,11 @@
     }
 
     [v20 setObject:v14 forKeyedSubscript:@"clientId"];
-    _objc_release(v18);
-    v13 = [v23 _proxiedAppBundleID];
-    if (v13)
+    _objc_release(bundleID);
+    _proxiedAppBundleID = [v23 _proxiedAppBundleID];
+    if (_proxiedAppBundleID)
     {
-      v12 = v13;
+      v12 = _proxiedAppBundleID;
     }
 
     else
@@ -56,9 +56,9 @@
     }
 
     [v20 setObject:v12 forKeyedSubscript:@"proxiedClientId"];
-    _objc_release(v13);
-    v6 = [v23 username];
-    if (v6)
+    _objc_release(_proxiedAppBundleID);
+    username = [v23 username];
+    if (username)
     {
       v4 = &__kCFBooleanTrue;
     }
@@ -69,9 +69,9 @@
     }
 
     [v20 setObject:v4 forKeyedSubscript:@"hasUsername"];
-    _objc_release(v6);
-    v7 = [v23 proxiedDevice];
-    if (v7)
+    _objc_release(username);
+    proxiedDevice = [v23 proxiedDevice];
+    if (proxiedDevice)
     {
       v5 = &__kCFBooleanTrue;
     }
@@ -82,16 +82,16 @@
     }
 
     [v20 setObject:v5 forKeyedSubscript:@"proxyingForPairedDevice"];
-    _objc_release(v7);
+    _objc_release(proxiedDevice);
     v8 = [NSNumber numberWithUnsignedInteger:v21];
     [v20 setObject:? forKeyedSubscript:?];
     _objc_release(v8);
     v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 authenticationType]);
     [v20 setObject:? forKeyedSubscript:?];
     _objc_release(v9);
-    v10 = [v23 reason];
+    reason = [v23 reason];
     [v20 setObject:? forKeyedSubscript:?];
-    _objc_release(v10);
+    _objc_release(reason);
     v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 _capabilityForUIDisplay]);
     [v20 setObject:? forKeyedSubscript:?];
     _objc_release(v11);

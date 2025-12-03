@@ -1,39 +1,39 @@
 @interface BCSItemResolver
-- (id)cachedItemMatching:(id)a3;
-- (id)initWithItemCache:(void *)a3 cacheSkipper:(void *)a4 remoteFetcher:(void *)a5 metricFactory:;
-- (void)itemMatching:(id)a3 metric:(id)a4 completion:(id)a5;
+- (id)cachedItemMatching:(id)matching;
+- (id)initWithItemCache:(void *)cache cacheSkipper:(void *)skipper remoteFetcher:(void *)fetcher metricFactory:;
+- (void)itemMatching:(id)matching metric:(id)metric completion:(id)completion;
 @end
 
 @implementation BCSItemResolver
 
-- (id)initWithItemCache:(void *)a3 cacheSkipper:(void *)a4 remoteFetcher:(void *)a5 metricFactory:
+- (id)initWithItemCache:(void *)cache cacheSkipper:(void *)skipper remoteFetcher:(void *)fetcher metricFactory:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  cacheCopy = cache;
+  skipperCopy = skipper;
+  fetcherCopy = fetcher;
+  if (self)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = BCSItemResolver;
     v14 = objc_msgSendSuper2(&v16, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 2, cache);
+      objc_storeStrong(self + 3, skipper);
+      objc_storeStrong(self + 4, fetcher);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)cachedItemMatching:(id)a3
+- (id)cachedItemMatching:(id)matching
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchingCopy = matching;
   if (self)
   {
     itemCacheSkipper = self->_itemCacheSkipper;
@@ -45,7 +45,7 @@
   }
 
   v6 = itemCacheSkipper;
-  v7 = -[BCSItemCacheSkipping shouldSkipCacheForItemOfType:](v6, "shouldSkipCacheForItemOfType:", [v4 type]);
+  v7 = -[BCSItemCacheSkipping shouldSkipCacheForItemOfType:](v6, "shouldSkipCacheForItemOfType:", [matchingCopy type]);
 
   if (v7)
   {
@@ -64,7 +64,7 @@
       itemCache = 0;
     }
 
-    v8 = [(BCSItemCaching *)itemCache itemMatching:v4];
+    v8 = [(BCSItemCaching *)itemCache itemMatching:matchingCopy];
   }
 
   if ([v8 isExpired] && objc_msgSend(v8, "type") != 1)
@@ -72,7 +72,7 @@
     v10 = ABSLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = NSStringFromBCSType([v4 type]);
+      v11 = NSStringFromBCSType([matchingCopy type]);
       v15 = 136315394;
       v16 = "[BCSItemResolver cachedItemMatching:]";
       v17 = 2112;
@@ -90,7 +90,7 @@
       v12 = 0;
     }
 
-    [(BCSItemCaching *)v12 deleteItemMatching:v4];
+    [(BCSItemCaching *)v12 deleteItemMatching:matchingCopy];
 
     v8 = 0;
   }
@@ -100,28 +100,28 @@
   return v8;
 }
 
-- (void)itemMatching:(id)a3 metric:(id)a4 completion:(id)a5
+- (void)itemMatching:(id)matching metric:(id)metric completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 itemIdentifier];
-  v12 = [v8 config];
-  v13 = [v12 buckets];
+  matchingCopy = matching;
+  completionCopy = completion;
+  metricCopy = metric;
+  itemIdentifier = [matchingCopy itemIdentifier];
+  config = [matchingCopy config];
+  buckets = [config buckets];
   if (self)
   {
-    if (0x7FFFFFFFFFFFFFFFLL / v13 <= 25)
+    if (0x7FFFFFFFFFFFFFFFLL / buckets <= 25)
     {
       v14 = 25;
     }
 
     else
     {
-      v14 = 0x7FFFFFFFFFFFFFFFLL / v13;
+      v14 = 0x7FFFFFFFFFFFFFFFLL / buckets;
     }
 
-    v15 = vcvtmd_s64_f64([v11 truncatedHash] / v14);
+    v15 = vcvtmd_s64_f64([itemIdentifier truncatedHash] / v14);
     v16 = v14 * v15;
     v17 = v14 * (v15 + 1);
   }
@@ -139,13 +139,13 @@
   v36[4] = self;
   v39 = v16;
   v40 = v17;
-  v18 = v8;
+  v18 = matchingCopy;
   v37 = v18;
-  v19 = v9;
+  v19 = completionCopy;
   v38 = v19;
   v20 = MEMORY[0x245D07100](v36);
-  v21 = [v18 itemIdentifier];
-  v22 = [(BCSItemResolver *)self cachedItemMatching:v21];
+  itemIdentifier2 = [v18 itemIdentifier];
+  v22 = [(BCSItemResolver *)self cachedItemMatching:itemIdentifier2];
 
   if (self)
   {
@@ -158,23 +158,23 @@
   }
 
   v24 = metricFactory;
-  v25 = [(BCSMetricFactoryProtocol *)v24 measurementFactory];
-  v26 = [v18 itemIdentifier];
+  measurementFactory = [(BCSMetricFactoryProtocol *)v24 measurementFactory];
+  itemIdentifier3 = [v18 itemIdentifier];
 
-  v27 = [v25 itemCacheHitMeasurementForItemIdentifier:v26];
-  [v10 setCacheHitMeasurement:v27];
+  v27 = [measurementFactory itemCacheHitMeasurementForItemIdentifier:itemIdentifier3];
+  [metricCopy setCacheHitMeasurement:v27];
 
-  v28 = [v10 cacheHitMeasurement];
+  cacheHitMeasurement = [metricCopy cacheHitMeasurement];
 
-  [v28 setFlag:v22 != 0];
+  [cacheHitMeasurement setFlag:v22 != 0];
   v29 = ABSLogCommon();
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
   if (v22)
   {
     if (v30)
     {
-      v31 = [v18 itemIdentifier];
-      v32 = NSStringFromBCSType([v31 type]);
+      itemIdentifier4 = [v18 itemIdentifier];
+      v32 = NSStringFromBCSType([itemIdentifier4 type]);
       *buf = 136315394;
       v42 = "[BCSItemResolver itemMatching:metric:completion:]";
       v43 = 2112;
@@ -189,8 +189,8 @@
   {
     if (v30)
     {
-      v33 = [v18 itemIdentifier];
-      v34 = NSStringFromBCSType([v33 type]);
+      itemIdentifier5 = [v18 itemIdentifier];
+      v34 = NSStringFromBCSType([itemIdentifier5 type]);
       *buf = 136315394;
       v42 = "[BCSItemResolver itemMatching:metric:completion:]";
       v43 = 2112;

@@ -1,10 +1,10 @@
 @interface TSTStructuredTextImportRecordUID
 + (id)record;
-+ (id)recordFromArchive:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromArchive:(const void *)a3;
-- (id)textImportRecordForTableInfo:(id)a3;
-- (void)encodeToArchive:(void *)a3;
++ (id)recordFromArchive:(const void *)archive;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromArchive:(const void *)archive;
+- (id)textImportRecordForTableInfo:(id)info;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSTStructuredTextImportRecordUID
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v9 = objc_msgSend_copy(self->_importSettings, v5, v6, v7, v8);
@@ -40,9 +40,9 @@
   return v4;
 }
 
-- (id)textImportRecordForTableInfo:(id)a3
+- (id)textImportRecordForTableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_new();
   objc_msgSend_setImportSettings_(v5, v6, self->_importSettings, v7, v8);
   objc_msgSend_setImportSource_(v5, v9, self->_importSource, v10, v11);
@@ -52,7 +52,7 @@
   importedUIDRegion = self->_importedUIDRegion;
   if (importedUIDRegion)
   {
-    v26 = objc_msgSend_cellRegionFromTable_(importedUIDRegion, v22, v4, v23, v24);
+    v26 = objc_msgSend_cellRegionFromTable_(importedUIDRegion, v22, infoCopy, v23, v24);
     objc_msgSend_setImportedRegion_(v5, v27, v26, v28, v29);
   }
 
@@ -68,24 +68,24 @@
   return v5;
 }
 
-+ (id)recordFromArchive:(const void *)a3
++ (id)recordFromArchive:(const void *)archive
 {
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initFromArchive_(v4, v5, a3, v6, v7);
+  v8 = objc_msgSend_initFromArchive_(v4, v5, archive, v6, v7);
 
   return v8;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
   v41.receiver = self;
   v41.super_class = TSTStructuredTextImportRecordUID;
   v7 = [(TSTStructuredTextImportRecordUID *)&v41 init];
   if (v7)
   {
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      objc_msgSend_settingsFromArchive_(MEMORY[0x277D806E0], v4, *(a3 + 5), v5, v6);
+      objc_msgSend_settingsFromArchive_(MEMORY[0x277D806E0], v4, *(archive + 5), v5, v6);
     }
 
     else
@@ -96,10 +96,10 @@
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
-    v14 = *(a3 + 4);
+    v14 = *(archive + 4);
     if (v14)
     {
-      v15 = *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL;
+      v15 = *(archive + 3) & 0xFFFFFFFFFFFFFFFELL;
       if (*(v15 + 23) < 0)
       {
         v15 = *v15;
@@ -109,21 +109,21 @@
       v17 = *(v7 + 4);
       *(v7 + 4) = v16;
 
-      v14 = *(a3 + 4);
+      v14 = *(archive + 4);
     }
 
     if ((v14 & 0x10) != 0)
     {
-      v18 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v10, v11, v12, v13, *(a3 + 7));
+      v18 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v10, v11, v12, v13, *(archive + 7));
       v19 = *(v7 + 5);
       *(v7 + 5) = v18;
 
-      v14 = *(a3 + 4);
+      v14 = *(archive + 4);
     }
 
     if ((v14 & 2) != 0)
     {
-      v21 = *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL;
+      v21 = *(archive + 4) & 0xFFFFFFFFFFFFFFFELL;
       v22 = *(v21 + 23);
       if (v22 < 0)
       {
@@ -132,7 +132,7 @@
 
       else
       {
-        objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v10, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL, v22, v13);
+        objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v10, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL, v22, v13);
       }
       v20 = ;
     }
@@ -145,8 +145,8 @@
     v23 = *(v7 + 6);
     *(v7 + 6) = v20;
 
-    v28 = *(a3 + 4);
-    v29 = *(a3 + 22);
+    v28 = *(archive + 4);
+    v29 = *(archive + 22);
     if ((v28 & 0x100) == 0)
     {
       v29 = 0.0;
@@ -156,9 +156,9 @@
     if ((v28 & 8) != 0)
     {
       v30 = [TSTCellUIDRegion alloc];
-      if (*(a3 + 6))
+      if (*(archive + 6))
       {
-        v34 = objc_msgSend_initFromMessage_(v30, v31, *(a3 + 6), v32, v33);
+        v34 = objc_msgSend_initFromMessage_(v30, v31, *(archive + 6), v32, v33);
       }
 
       else
@@ -169,44 +169,44 @@
       v35 = *(v7 + 3);
       *(v7 + 3) = v34;
 
-      v28 = *(a3 + 4);
+      v28 = *(archive + 4);
     }
 
     if ((v28 & 0x20) != 0 && !objc_msgSend_sourceEncoding(*(v7 + 2), v24, v25, v26, v27))
     {
-      objc_msgSend_setSourceEncoding_(*(v7 + 2), v36, *(a3 + 8), v37, v38);
+      objc_msgSend_setSourceEncoding_(*(v7 + 2), v36, *(archive + 8), v37, v38);
     }
 
-    v39 = *(a3 + 4);
+    v39 = *(archive + 4);
     if ((v39 & 0x80) != 0)
     {
-      *(v7 + 8) = *(a3 + 10);
+      *(v7 + 8) = *(archive + 10);
     }
 
     if ((v39 & 0x40) != 0)
     {
-      *(v7 + 9) = *(a3 + 9);
+      *(v7 + 9) = *(archive + 9);
     }
   }
 
   return v7;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   importSettings = self->_importSettings;
-  *(a3 + 4) |= 4u;
-  v8 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v8 = *(archive + 5);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(archive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = MEMORY[0x223DA02E0](v9, a2);
-    *(a3 + 5) = v8;
+    *(archive + 5) = v8;
   }
 
   objc_msgSend_encodeToArchive_(importSettings, a2, v8, v3, v4);
@@ -214,15 +214,15 @@
   if (importSource)
   {
     v15 = objc_msgSend_fileSystemRepresentation(importSource, v10, v11, v12, v13);
-    sub_2214CE434(a3, v15);
+    sub_2214CE434(archive, v15);
   }
 
   importDate = self->_importDate;
   if (importDate)
   {
     objc_msgSend_timeIntervalSinceReferenceDate(importDate, v10, v11, v12, v13);
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 7) = v17;
+    *(archive + 4) |= 0x10u;
+    *(archive + 7) = v17;
   }
 
   sourceData = self->_sourceData;
@@ -230,39 +230,39 @@
   {
     v19 = objc_msgSend_bytes(self->_sourceData, v10, v11, v12, v13);
     v24 = objc_msgSend_length(self->_sourceData, v20, v21, v22, v23);
-    sub_2214CE548(a3, v19, v24);
+    sub_2214CE548(archive, v19, v24);
   }
 
   if (objc_msgSend_sourceEncoding(self->_importSettings, v10, v11, v12, v13))
   {
     v29 = objc_msgSend_sourceEncoding(self->_importSettings, v25, v26, v27, v28);
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 8) = v29;
+    *(archive + 4) |= 0x20u;
+    *(archive + 8) = v29;
   }
 
   confidence = self->_confidence;
   if (confidence != 0.0)
   {
     v31 = confidence;
-    *(a3 + 4) |= 0x100u;
-    *(a3 + 22) = v31;
+    *(archive + 4) |= 0x100u;
+    *(archive + 22) = v31;
   }
 
   importedUIDRegion = self->_importedUIDRegion;
   if (importedUIDRegion)
   {
-    *(a3 + 4) |= 8u;
-    v33 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v33 = *(archive + 6);
     if (!v33)
     {
-      v34 = *(a3 + 1);
+      v34 = *(archive + 1);
       if (v34)
       {
         v34 = *(v34 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v33 = google::protobuf::Arena::CreateMaybeMessage<TST::CellUIDRegionArchive>(v34);
-      *(a3 + 6) = v33;
+      *(archive + 6) = v33;
     }
 
     objc_msgSend_saveToMessage_(importedUIDRegion, v25, v33, v27, v28);
@@ -271,15 +271,15 @@
   sourceColumnCount = self->_sourceColumnCount;
   if (sourceColumnCount)
   {
-    *(a3 + 4) |= 0x80u;
-    *(a3 + 10) = sourceColumnCount;
+    *(archive + 4) |= 0x80u;
+    *(archive + 10) = sourceColumnCount;
   }
 
   sourceRowCount = self->_sourceRowCount;
   if (sourceRowCount)
   {
-    *(a3 + 4) |= 0x40u;
-    *(a3 + 9) = sourceRowCount;
+    *(archive + 4) |= 0x40u;
+    *(archive + 9) = sourceRowCount;
   }
 }
 

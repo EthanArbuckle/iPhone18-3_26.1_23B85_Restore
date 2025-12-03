@@ -1,19 +1,19 @@
 @interface PLUnmanagedAdjustment
-+ (BOOL)_assetAdjustmentsHasValidDataType:(id)a3;
-+ (id)_convertRedEyeCorrection:(id)a3 withOrientation:(int64_t)a4;
-+ (id)_convertRedEyeCorrections:(id)a3 withOrientation:(int64_t)a4;
-+ (id)addUnmanagedAdjustmentFromXMPDataIfNeededForAsset:(id)a3;
-+ (id)copyUnmanagedAdjustmentFromSourceAsset:(id)a3 forPlaceholderAsset:(id)a4 inLibrary:(id)a5 error:(id *)a6;
++ (BOOL)_assetAdjustmentsHasValidDataType:(id)type;
++ (id)_convertRedEyeCorrection:(id)correction withOrientation:(int64_t)orientation;
++ (id)_convertRedEyeCorrections:(id)corrections withOrientation:(int64_t)orientation;
++ (id)addUnmanagedAdjustmentFromXMPDataIfNeededForAsset:(id)asset;
++ (id)copyUnmanagedAdjustmentFromSourceAsset:(id)asset forPlaceholderAsset:(id)placeholderAsset inLibrary:(id)library error:(id *)error;
 - (BOOL)isSyncableChange;
 - (BOOL)supportsCloudUpload;
-- (BOOL)updateRenderTypeFlagsForAssetAdjustments:(id)a3 checkFlag:(unsigned __int16)a4 settingPayload:(id)a5;
-- (id)_adjustmentEnvelopeFromAssetAdjustments:(id)a3 error:(id *)a4;
-- (id)_deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:(id)a3 adjustmentEnvelope:(id *)a4 error:(id *)a5;
-- (id)payloadForChangedKeys:(id)a3;
+- (BOOL)updateRenderTypeFlagsForAssetAdjustments:(id)adjustments checkFlag:(unsigned __int16)flag settingPayload:(id)payload;
+- (id)_adjustmentEnvelopeFromAssetAdjustments:(id)adjustments error:(id *)error;
+- (id)_deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:(id)adjustments adjustmentEnvelope:(id *)envelope error:(id *)error;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (unsigned)_cameraAutoRenderTypeFromAssetAdjustments:(id)a3 adjustmentEnvelope:(id *)a4;
-- (unsigned)_processEnabledAdjustmentFromAssetAdjustments:(id)a3 identifier:(id)a4 adjustmentEnvelope:(id *)a5 processingBlock:(id)a6;
-- (unsigned)_styleCastRenderTypeFromAssetAdjustments:(id)a3 settingPayload:(id)a4 adjustmentEnvelope:(id *)a5;
+- (unsigned)_cameraAutoRenderTypeFromAssetAdjustments:(id)adjustments adjustmentEnvelope:(id *)envelope;
+- (unsigned)_processEnabledAdjustmentFromAssetAdjustments:(id)adjustments identifier:(id)identifier adjustmentEnvelope:(id *)envelope processingBlock:(id)block;
+- (unsigned)_styleCastRenderTypeFromAssetAdjustments:(id)adjustments settingPayload:(id)payload adjustmentEnvelope:(id *)envelope;
 - (void)awakeFromInsert;
 - (void)willSave;
 @end
@@ -25,26 +25,26 @@
   v11.receiver = self;
   v11.super_class = PLUnmanagedAdjustment;
   [(PLManagedObject *)&v11 willSave];
-  v3 = [(PLUnmanagedAdjustment *)self managedObjectContext];
+  managedObjectContext = [(PLUnmanagedAdjustment *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PLUnmanagedAdjustment *)self isDeleted]& 1) == 0)
   {
-    v4 = [(PLUnmanagedAdjustment *)self changedValues];
-    v5 = [v4 objectForKeyedSubscript:@"adjustmentTimestamp"];
+    changedValues = [(PLUnmanagedAdjustment *)self changedValues];
+    v5 = [changedValues objectForKeyedSubscript:@"adjustmentTimestamp"];
 
     if (v5)
     {
-      v6 = [(PLUnmanagedAdjustment *)self assetAttributes];
-      v7 = [v6 asset];
+      assetAttributes = [(PLUnmanagedAdjustment *)self assetAttributes];
+      asset = [assetAttributes asset];
 
-      if (v7 && ([v7 isDeleted] & 1) == 0)
+      if (asset && ([asset isDeleted] & 1) == 0)
       {
-        v8 = [(PLUnmanagedAdjustment *)self adjustmentTimestamp];
-        v9 = [v7 adjustmentTimestamp];
-        [v9 timeIntervalSinceDate:v8];
-        if (!v9 || fabs(v10) > 2.22044605e-16)
+        adjustmentTimestamp = [(PLUnmanagedAdjustment *)self adjustmentTimestamp];
+        adjustmentTimestamp2 = [asset adjustmentTimestamp];
+        [adjustmentTimestamp2 timeIntervalSinceDate:adjustmentTimestamp];
+        if (!adjustmentTimestamp2 || fabs(v10) > 2.22044605e-16)
         {
-          [v7 setAdjustmentTimestamp:v8];
+          [asset setAdjustmentTimestamp:adjustmentTimestamp];
         }
       }
     }
@@ -56,55 +56,55 @@
   v4.receiver = self;
   v4.super_class = PLUnmanagedAdjustment;
   [(PLUnmanagedAdjustment *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLUnmanagedAdjustment *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLUnmanagedAdjustment *)self setUuid:uUIDString];
 }
 
 - (BOOL)isSyncableChange
 {
-  v3 = [(PLUnmanagedAdjustment *)self assetAttributes];
-  v4 = [v3 asset];
-  v5 = [v4 isPlaceholderAsset];
+  assetAttributes = [(PLUnmanagedAdjustment *)self assetAttributes];
+  asset = [assetAttributes asset];
+  isPlaceholderAsset = [asset isPlaceholderAsset];
 
-  if (!v5)
+  if (!isPlaceholderAsset)
   {
     return 1;
   }
 
-  v6 = [(PLUnmanagedAdjustment *)self assetAttributes];
-  v7 = [v6 asset];
-  v8 = [PLManagedAsset validShareForPlaceholderAsset:v7];
+  assetAttributes2 = [(PLUnmanagedAdjustment *)self assetAttributes];
+  asset2 = [assetAttributes2 asset];
+  v8 = [PLManagedAsset validShareForPlaceholderAsset:asset2];
 
   return v8;
 }
 
 - (BOOL)supportsCloudUpload
 {
-  v2 = [(PLUnmanagedAdjustment *)self assetAttributes];
-  v3 = [v2 supportsCloudUpload];
+  assetAttributes = [(PLUnmanagedAdjustment *)self assetAttributes];
+  supportsCloudUpload = [assetAttributes supportsCloudUpload];
 
-  return v3;
+  return supportsCloudUpload;
 }
 
-- (id)_adjustmentEnvelopeFromAssetAdjustments:(id)a3 error:(id *)a4
+- (id)_adjustmentEnvelopeFromAssetAdjustments:(id)adjustments error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  adjustmentsCopy = adjustments;
+  if (!adjustmentsCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
   }
 
-  if ([objc_opt_class() _assetAdjustmentsHasValidDataType:v7])
+  if ([objc_opt_class() _assetAdjustmentsHasValidDataType:adjustmentsCopy])
   {
     v8 = MEMORY[0x1E69C0EB8];
-    v9 = [v7 adjustmentData];
-    v10 = [v7 editorBundleID];
-    v11 = [v7 adjustmentFormatIdentifier];
-    v12 = [v7 adjustmentFormatVersion];
+    adjustmentData = [adjustmentsCopy adjustmentData];
+    editorBundleID = [adjustmentsCopy editorBundleID];
+    adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+    adjustmentFormatVersion = [adjustmentsCopy adjustmentFormatVersion];
     v23 = 0;
-    v13 = [v8 deserialize:v9 originator:v10 format:v11 formatVersion:v12 error:&v23];
+    v13 = [v8 deserialize:adjustmentData originator:editorBundleID format:adjustmentFormatIdentifier formatVersion:adjustmentFormatVersion error:&v23];
     v14 = v23;
 
     v15 = v14;
@@ -113,7 +113,7 @@
       goto LABEL_9;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -129,12 +129,12 @@
     v20 = [v17 errorWithDomain:v18 code:47016 userInfo:v19];
 
     v15 = v20;
-    if (a4)
+    if (error)
     {
 LABEL_6:
       v16 = v15;
       v13 = 0;
-      *a4 = v15;
+      *error = v15;
       goto LABEL_9;
     }
   }
@@ -145,12 +145,12 @@ LABEL_9:
   return v13;
 }
 
-- (id)_deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:(id)a3 adjustmentEnvelope:(id *)a4 error:(id *)a5
+- (id)_deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:(id)adjustments adjustmentEnvelope:(id *)envelope error:(id *)error
 {
-  v9 = a3;
-  if (v9)
+  adjustmentsCopy = adjustments;
+  if (adjustmentsCopy)
   {
-    if (a4)
+    if (envelope)
     {
       goto LABEL_3;
     }
@@ -158,47 +158,47 @@ LABEL_9:
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-    if (a4)
+    if (envelope)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
 
 LABEL_3:
-  v10 = *a4;
+  v10 = *envelope;
   if (!v10)
   {
-    v10 = [(PLUnmanagedAdjustment *)self _adjustmentEnvelopeFromAssetAdjustments:v9 error:a5];
-    *a4 = v10;
+    v10 = [(PLUnmanagedAdjustment *)self _adjustmentEnvelopeFromAssetAdjustments:adjustmentsCopy error:error];
+    *envelope = v10;
   }
 
   return v10;
 }
 
-- (unsigned)_processEnabledAdjustmentFromAssetAdjustments:(id)a3 identifier:(id)a4 adjustmentEnvelope:(id *)a5 processingBlock:(id)a6
+- (unsigned)_processEnabledAdjustmentFromAssetAdjustments:(id)adjustments identifier:(id)identifier adjustmentEnvelope:(id *)envelope processingBlock:(id)block
 {
   v54 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v42 = a6;
-  if (v11)
+  adjustmentsCopy = adjustments;
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (adjustmentsCopy)
   {
-    if (a5)
+    if (envelope)
     {
       goto LABEL_3;
     }
 
 LABEL_41:
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:313 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
 
-    if (v12)
+    if (identifierCopy)
     {
       goto LABEL_4;
     }
@@ -206,38 +206,38 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v35 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-  if (!a5)
+  if (!envelope)
   {
     goto LABEL_41;
   }
 
 LABEL_3:
-  if (v12)
+  if (identifierCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_42:
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"matchingIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"matchingIdentifier"}];
 
 LABEL_4:
-  if (!v42)
+  if (!blockCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"processingBlock"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:315 description:{@"Invalid parameter not satisfying: %@", @"processingBlock"}];
   }
 
-  v13 = [v11 adjustmentFormatIdentifier];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E69C0988]];
+  adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+  v14 = [adjustmentFormatIdentifier isEqualToString:*MEMORY[0x1E69C0988]];
 
   if (v14)
   {
     v48 = 0;
-    v15 = [(PLUnmanagedAdjustment *)self _deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:v11 adjustmentEnvelope:a5 error:&v48];
+    v15 = [(PLUnmanagedAdjustment *)self _deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:adjustmentsCopy adjustmentEnvelope:envelope error:&v48];
     v16 = v48;
     v17 = v16;
     if (v15)
@@ -249,8 +249,8 @@ LABEL_4:
       v45 = 0u;
       v46 = 0u;
       v39 = v47 = 0u;
-      v18 = [v39 adjustments];
-      v19 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      adjustments = [v39 adjustments];
+      v19 = [adjustments countByEnumeratingWithState:&v44 objects:v53 count:16];
       if (v19)
       {
         v20 = v19;
@@ -262,12 +262,12 @@ LABEL_10:
         {
           if (*v45 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(adjustments);
           }
 
           v24 = *(*(&v44 + 1) + 8 * v23);
-          v25 = [v24 identifier];
-          v26 = [v25 isEqualToString:v12];
+          identifier = [v24 identifier];
+          v26 = [identifier isEqualToString:identifierCopy];
 
           if (v26)
           {
@@ -275,7 +275,7 @@ LABEL_10:
             {
               buf[0] = 0;
               v43 = 0;
-              v27 = v42[2](v42, v24, buf, &v43);
+              v27 = blockCopy[2](blockCopy, v24, buf, &v43);
               v28 = (buf[0] & 1) != 0 ? 10 : 0;
               v29 = v43 ? 11 : v28;
               v30 = v43 ? 0 : v27;
@@ -289,7 +289,7 @@ LABEL_10:
 
           if (v20 == ++v23)
           {
-            v20 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+            v20 = [adjustments countByEnumeratingWithState:&v44 objects:v53 count:16];
             if (v20)
             {
               goto LABEL_10;
@@ -315,9 +315,9 @@ LABEL_10:
       v32 = PLBackendGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(PLUnmanagedAdjustment *)self uuid];
+        uuid = [(PLUnmanagedAdjustment *)self uuid];
         *buf = 138543618;
-        v50 = v33;
+        v50 = uuid;
         v51 = 2112;
         v52 = v17;
         _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Failed to deserialize adjustment data envelope. Adjustment uuid: %{public}@, error: %@", buf, 0x16u);
@@ -335,13 +335,13 @@ LABEL_10:
   return v21;
 }
 
-- (unsigned)_styleCastRenderTypeFromAssetAdjustments:(id)a3 settingPayload:(id)a4 adjustmentEnvelope:(id *)a5
+- (unsigned)_styleCastRenderTypeFromAssetAdjustments:(id)adjustments settingPayload:(id)payload adjustmentEnvelope:(id *)envelope
 {
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  adjustmentsCopy = adjustments;
+  payloadCopy = payload;
+  if (adjustmentsCopy)
   {
-    if (a5)
+    if (envelope)
     {
       goto LABEL_3;
     }
@@ -349,21 +349,21 @@ LABEL_10:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-    if (a5)
+    if (envelope)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
 
 LABEL_3:
-  v11 = [v9 editorBundleID];
-  v12 = [v11 isEqual:@"com.apple.camera"];
+  editorBundleID = [adjustmentsCopy editorBundleID];
+  v12 = [editorBundleID isEqual:@"com.apple.camera"];
 
   if (v12)
   {
@@ -378,8 +378,8 @@ LABEL_3:
     v18[2] = __100__PLUnmanagedAdjustment__styleCastRenderTypeFromAssetAdjustments_settingPayload_adjustmentEnvelope___block_invoke;
     v18[3] = &unk_1E756DA40;
     v18[4] = self;
-    v19 = v10;
-    v13 = [(PLUnmanagedAdjustment *)self _processEnabledAdjustmentFromAssetAdjustments:v9 identifier:v14 adjustmentEnvelope:a5 processingBlock:v18];
+    v19 = payloadCopy;
+    v13 = [(PLUnmanagedAdjustment *)self _processEnabledAdjustmentFromAssetAdjustments:adjustmentsCopy identifier:v14 adjustmentEnvelope:envelope processingBlock:v18];
   }
 
   return v13;
@@ -444,13 +444,13 @@ uint64_t __100__PLUnmanagedAdjustment__styleCastRenderTypeFromAssetAdjustments_s
   return v14;
 }
 
-- (unsigned)_cameraAutoRenderTypeFromAssetAdjustments:(id)a3 adjustmentEnvelope:(id *)a4
+- (unsigned)_cameraAutoRenderTypeFromAssetAdjustments:(id)adjustments adjustmentEnvelope:(id *)envelope
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  adjustmentsCopy = adjustments;
+  if (adjustmentsCopy)
   {
-    if (a4)
+    if (envelope)
     {
       goto LABEL_3;
     }
@@ -458,38 +458,38 @@ uint64_t __100__PLUnmanagedAdjustment__styleCastRenderTypeFromAssetAdjustments_s
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"adjustments"}];
 
-    if (a4)
+    if (envelope)
     {
       goto LABEL_3;
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLUnmanagedAdjustment.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"envelope"}];
 
 LABEL_3:
-  v8 = [v7 adjustmentFormatIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x1E69C0988]];
+  adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+  v9 = [adjustmentFormatIdentifier isEqualToString:*MEMORY[0x1E69C0988]];
 
   if (v9)
   {
-    v10 = [v7 editorBundleID];
-    v11 = [v10 isEqual:@"com.apple.camera"];
+    editorBundleID = [adjustmentsCopy editorBundleID];
+    v11 = [editorBundleID isEqual:@"com.apple.camera"];
 
     if (v11)
     {
       v27 = 0;
-      v12 = [(PLUnmanagedAdjustment *)self _deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:v7 adjustmentEnvelope:a4 error:&v27];
+      v12 = [(PLUnmanagedAdjustment *)self _deserializeAdjustmentEnvelopeIfNeededFromAssetAdjustments:adjustmentsCopy adjustmentEnvelope:envelope error:&v27];
       v13 = v27;
       if (v12)
       {
-        v14 = [v12 adjustmentStack];
-        v15 = [v14 versionInfo];
-        v16 = [v15 appVersion];
-        if (v16 && (v17 = v16, [v15 appVersion], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", &stru_1F0F06D80), v18, v17, !v19))
+        adjustmentStack = [v12 adjustmentStack];
+        versionInfo = [adjustmentStack versionInfo];
+        appVersion = [versionInfo appVersion];
+        if (appVersion && (v17 = appVersion, [versionInfo appVersion], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", &stru_1F0F06D80), v18, v17, !v19))
         {
           v20 = 0;
         }
@@ -502,15 +502,15 @@ LABEL_3:
 
       else
       {
-        v14 = PLBackendGetLog();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        adjustmentStack = PLBackendGetLog();
+        if (os_log_type_enabled(adjustmentStack, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(PLUnmanagedAdjustment *)self uuid];
+          uuid = [(PLUnmanagedAdjustment *)self uuid];
           *buf = 138543618;
-          v29 = v23;
+          v29 = uuid;
           v30 = 2112;
           v31 = v13;
-          _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to deserialize adjustment data envelope. Adjustment uuid: %{public}@, error: %@", buf, 0x16u);
+          _os_log_impl(&dword_19BF1F000, adjustmentStack, OS_LOG_TYPE_ERROR, "Failed to deserialize adjustment data envelope. Adjustment uuid: %{public}@, error: %@", buf, 0x16u);
         }
 
         v20 = 0;
@@ -525,8 +525,8 @@ LABEL_3:
 
   else
   {
-    v21 = [v7 adjustmentFormatIdentifier];
-    v22 = [v21 isEqualToString:*MEMORY[0x1E69C0E90]];
+    adjustmentFormatIdentifier2 = [adjustmentsCopy adjustmentFormatIdentifier];
+    v22 = [adjustmentFormatIdentifier2 isEqualToString:*MEMORY[0x1E69C0E90]];
 
     if (v22)
     {
@@ -542,51 +542,51 @@ LABEL_3:
   return v20;
 }
 
-- (BOOL)updateRenderTypeFlagsForAssetAdjustments:(id)a3 checkFlag:(unsigned __int16)a4 settingPayload:(id)a5
+- (BOOL)updateRenderTypeFlagsForAssetAdjustments:(id)adjustments checkFlag:(unsigned __int16)flag settingPayload:(id)payload
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  flagCopy = flag;
+  adjustmentsCopy = adjustments;
+  payloadCopy = payload;
   v10 = 0;
-  if (v8 && v6)
+  if (adjustmentsCopy && flagCopy)
   {
-    v11 = [(PLUnmanagedAdjustment *)self adjustmentRenderTypes];
-    v12 = v11;
+    adjustmentRenderTypes = [(PLUnmanagedAdjustment *)self adjustmentRenderTypes];
+    v12 = adjustmentRenderTypes;
     v13 = 0;
-    if ((v6 & 1) != 0 && (v11 & 0x4000) == 0)
+    if ((flagCopy & 1) != 0 && (adjustmentRenderTypes & 0x4000) == 0)
     {
-      v14 = v11 & 0xFFFF9FFF;
+      v14 = adjustmentRenderTypes & 0xFFFF9FFF;
       v26 = 0;
-      v15 = [(PLUnmanagedAdjustment *)self _cameraAutoRenderTypeFromAssetAdjustments:v8 adjustmentEnvelope:&v26];
+      v15 = [(PLUnmanagedAdjustment *)self _cameraAutoRenderTypeFromAssetAdjustments:adjustmentsCopy adjustmentEnvelope:&v26];
       v13 = v26;
       v12 = v14 | v15 | 0x4000;
     }
 
-    if ((v6 & 2) != 0)
+    if ((flagCopy & 2) != 0)
     {
       v16 = v12 & 0xFFFF7FFF;
       v25 = v13;
-      v17 = [(PLUnmanagedAdjustment *)self _styleCastRenderTypeFromAssetAdjustments:v8 settingPayload:v9 adjustmentEnvelope:&v25];
+      v17 = [(PLUnmanagedAdjustment *)self _styleCastRenderTypeFromAssetAdjustments:adjustmentsCopy settingPayload:payloadCopy adjustmentEnvelope:&v25];
       v18 = v25;
 
       v12 = v17 | v16;
       v13 = v18;
     }
 
-    if ((v6 & 4) != 0)
+    if ((flagCopy & 4) != 0)
     {
       v19 = *MEMORY[0x1E69C0950];
       v24 = v13;
-      v20 = [(PLUnmanagedAdjustment *)self _processEnabledAdjustmentFromAssetAdjustments:v8 identifier:v19 adjustmentEnvelope:&v24 processingBlock:&__block_literal_global_52263];
+      v20 = [(PLUnmanagedAdjustment *)self _processEnabledAdjustmentFromAssetAdjustments:adjustmentsCopy identifier:v19 adjustmentEnvelope:&v24 processingBlock:&__block_literal_global_52263];
       v21 = v24;
 
       v12 = v20 | v12 & 0xFFFEFFFF;
       v13 = v21;
     }
 
-    v22 = [(PLUnmanagedAdjustment *)self adjustmentRenderTypes];
-    v10 = v22 != v12;
-    if (v22 != v12)
+    adjustmentRenderTypes2 = [(PLUnmanagedAdjustment *)self adjustmentRenderTypes];
+    v10 = adjustmentRenderTypes2 != v12;
+    if (adjustmentRenderTypes2 != v12)
     {
       [(PLUnmanagedAdjustment *)self setAdjustmentRenderTypes:v12];
     }
@@ -595,62 +595,62 @@ LABEL_3:
   return v10;
 }
 
-+ (id)copyUnmanagedAdjustmentFromSourceAsset:(id)a3 forPlaceholderAsset:(id)a4 inLibrary:(id)a5 error:(id *)a6
++ (id)copyUnmanagedAdjustmentFromSourceAsset:(id)asset forPlaceholderAsset:(id)placeholderAsset inLibrary:(id)library error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 additionalAttributes];
-  v12 = [v11 unmanagedAdjustment];
+  assetCopy = asset;
+  placeholderAssetCopy = placeholderAsset;
+  libraryCopy = library;
+  additionalAttributes = [assetCopy additionalAttributes];
+  unmanagedAdjustment = [additionalAttributes unmanagedAdjustment];
 
-  v13 = [v10 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v14 = [(PLManagedObject *)PLUnmanagedAdjustment insertInManagedObjectContext:v13];
+  v14 = [(PLManagedObject *)PLUnmanagedAdjustment insertInManagedObjectContext:managedObjectContext];
 
-  v15 = [v12 adjustmentBaseImageFormat];
-  [v14 setAdjustmentBaseImageFormat:v15];
+  adjustmentBaseImageFormat = [unmanagedAdjustment adjustmentBaseImageFormat];
+  [v14 setAdjustmentBaseImageFormat:adjustmentBaseImageFormat];
 
-  v16 = [v12 adjustmentFormatIdentifier];
-  [v14 setAdjustmentFormatIdentifier:v16];
+  adjustmentFormatIdentifier = [unmanagedAdjustment adjustmentFormatIdentifier];
+  [v14 setAdjustmentFormatIdentifier:adjustmentFormatIdentifier];
 
-  v17 = [v12 adjustmentFormatVersion];
-  [v14 setAdjustmentFormatVersion:v17];
+  adjustmentFormatVersion = [unmanagedAdjustment adjustmentFormatVersion];
+  [v14 setAdjustmentFormatVersion:adjustmentFormatVersion];
 
-  v18 = [v12 adjustmentTimestamp];
-  [v14 setAdjustmentTimestamp:v18];
+  adjustmentTimestamp = [unmanagedAdjustment adjustmentTimestamp];
+  [v14 setAdjustmentTimestamp:adjustmentTimestamp];
 
-  v19 = [v12 editorLocalizedName];
-  [v14 setEditorLocalizedName:v19];
+  editorLocalizedName = [unmanagedAdjustment editorLocalizedName];
+  [v14 setEditorLocalizedName:editorLocalizedName];
 
-  v20 = [v12 otherAdjustmentsFingerprint];
-  [v14 setOtherAdjustmentsFingerprint:v20];
+  otherAdjustmentsFingerprint = [unmanagedAdjustment otherAdjustmentsFingerprint];
+  [v14 setOtherAdjustmentsFingerprint:otherAdjustmentsFingerprint];
 
-  v21 = [v12 similarToOriginalAdjustmentsFingerprint];
-  [v14 setSimilarToOriginalAdjustmentsFingerprint:v21];
+  similarToOriginalAdjustmentsFingerprint = [unmanagedAdjustment similarToOriginalAdjustmentsFingerprint];
+  [v14 setSimilarToOriginalAdjustmentsFingerprint:similarToOriginalAdjustmentsFingerprint];
 
-  [v14 setAdjustmentRenderTypes:{objc_msgSend(v12, "adjustmentRenderTypes")}];
-  v22 = [v12 uuid];
+  [v14 setAdjustmentRenderTypes:{objc_msgSend(unmanagedAdjustment, "adjustmentRenderTypes")}];
+  uuid = [unmanagedAdjustment uuid];
 
-  if (v22)
+  if (uuid)
   {
-    v23 = [MEMORY[0x1E69BF320] UUIDString];
-    [v14 setUuid:v23];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+    [v14 setUuid:uUIDString];
   }
 
   v24 = MEMORY[0x1E695DFF8];
-  v25 = [v8 pathForAdjustmentFile];
-  v26 = [v24 fileURLWithPath:v25];
+  pathForAdjustmentFile = [assetCopy pathForAdjustmentFile];
+  v26 = [v24 fileURLWithPath:pathForAdjustmentFile];
 
   v27 = MEMORY[0x1E695DFF8];
-  v28 = [v9 pathForAdjustmentFile];
-  v29 = [v27 fileURLWithPath:v28];
+  pathForAdjustmentFile2 = [placeholderAssetCopy pathForAdjustmentFile];
+  v29 = [v27 fileURLWithPath:pathForAdjustmentFile2];
 
   v30 = MEMORY[0x1E69BF238];
-  v31 = [v29 path];
-  v32 = [v31 stringByDeletingLastPathComponent];
+  path = [v29 path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
   v45 = 0;
-  [v30 createDirectoryAtPath:v32 error:&v45];
+  [v30 createDirectoryAtPath:stringByDeletingLastPathComponent error:&v45];
   v33 = v45;
 
   if (!v33)
@@ -664,10 +664,10 @@ LABEL_3:
       goto LABEL_17;
     }
 
-    if (a6)
+    if (error)
     {
       v41 = v40;
-      *a6 = v35;
+      *error = v35;
     }
 
     if (*MEMORY[0x1E6994D48])
@@ -675,8 +675,8 @@ LABEL_3:
       goto LABEL_17;
     }
 
-    v36 = __CPLAssetsdOSLogDomain();
-    if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    uuid2 = __CPLAssetsdOSLogDomain();
+    if (!os_log_type_enabled(uuid2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_16;
     }
@@ -684,7 +684,7 @@ LABEL_3:
     *buf = 138412290;
     v47 = v35;
     v37 = "Failed to copy adjustment file for adjusted source asset: %@";
-    v38 = v36;
+    v38 = uuid2;
     v39 = 12;
 LABEL_15:
     _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_ERROR, v37, buf, v39);
@@ -693,10 +693,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a6)
+  if (error)
   {
     v34 = v33;
-    *a6 = v33;
+    *error = v33;
   }
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -709,9 +709,9 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v36 = [v9 uuid];
+    uuid2 = [placeholderAssetCopy uuid];
     *buf = 138412546;
-    v47 = v36;
+    v47 = uuid2;
     v48 = 2112;
     v49 = v33;
     v37 = "Failed to create adjustment directory for placeholder asset %@: %@";
@@ -725,17 +725,17 @@ LABEL_18:
   return v14;
 }
 
-+ (id)_convertRedEyeCorrection:(id)a3 withOrientation:(int64_t)a4
++ (id)_convertRedEyeCorrection:(id)correction withOrientation:(int64_t)orientation
 {
-  v5 = [a3 mutableCopy];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"pointX" yKey:@"pointY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"snappedX" yKey:@"snappedY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"bitmaskX" yKey:@"bitmaskY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"cornealReflectionX" yKey:@"cornealReflectionY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"repairRectangleMaximumX" yKey:@"repairRectangleMaximumY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"repairRectangleMinimumX" yKey:@"repairRectangleMinimumY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"searchRectangleMaximumX" yKey:@"searchRectangleMaximumY"];
-  [v5 pl_applyOrientation:a4 toNormalizedPointWithXKey:@"searchRectangleMinimumX" yKey:@"searchRectangleMinimumY"];
+  v5 = [correction mutableCopy];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"pointX" yKey:@"pointY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"snappedX" yKey:@"snappedY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"bitmaskX" yKey:@"bitmaskY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"cornealReflectionX" yKey:@"cornealReflectionY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"repairRectangleMaximumX" yKey:@"repairRectangleMaximumY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"repairRectangleMinimumX" yKey:@"repairRectangleMinimumY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"searchRectangleMaximumX" yKey:@"searchRectangleMaximumY"];
+  [v5 pl_applyOrientation:orientation toNormalizedPointWithXKey:@"searchRectangleMinimumX" yKey:@"searchRectangleMinimumY"];
   [v5 pl_enforceCorrectValuesForMinKey:@"repairRectangleMinimumX" maxKey:@"repairRectangleMaximumX"];
   [v5 pl_enforceCorrectValuesForMinKey:@"searchRectangleMinimumX" maxKey:@"searchRectangleMaximumX"];
   [v5 pl_enforceCorrectValuesForMinKey:@"repairRectangleMaximumY" maxKey:@"repairRectangleMinimumY"];
@@ -745,16 +745,16 @@ LABEL_18:
   return v6;
 }
 
-+ (id)_convertRedEyeCorrections:(id)a3 withOrientation:(int64_t)a4
++ (id)_convertRedEyeCorrections:(id)corrections withOrientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  correctionsCopy = corrections;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(correctionsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = correctionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -769,7 +769,7 @@ LABEL_18:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [a1 _convertRedEyeCorrection:*(*(&v16 + 1) + 8 * i) withOrientation:{a4, v16}];
+        v13 = [self _convertRedEyeCorrection:*(*(&v16 + 1) + 8 * i) withOrientation:{orientation, v16}];
         [v7 addObject:v13];
       }
 
@@ -784,35 +784,35 @@ LABEL_18:
   return v14;
 }
 
-+ (BOOL)_assetAdjustmentsHasValidDataType:(id)a3
++ (BOOL)_assetAdjustmentsHasValidDataType:(id)type
 {
-  v3 = [a3 adjustmentData];
+  adjustmentData = [type adjustmentData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (id)addUnmanagedAdjustmentFromXMPDataIfNeededForAsset:(id)a3
++ (id)addUnmanagedAdjustmentFromXMPDataIfNeededForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 orientation];
-  if (v4 != [v3 originalOrientation])
+  assetCopy = asset;
+  orientation = [assetCopy orientation];
+  if (orientation != [assetCopy originalOrientation])
   {
-    [v3 setOriginalOrientation:v4];
+    [assetCopy setOriginalOrientation:orientation];
   }
 
   return 0;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLUnmanagedAdjustment *)self assetAttributes];
-  v6 = [v5 asset];
-  if ([v6 isValidForJournalPersistence])
+  keysCopy = keys;
+  assetAttributes = [(PLUnmanagedAdjustment *)self assetAttributes];
+  asset = [assetAttributes asset];
+  if ([asset isValidForJournalPersistence])
   {
-    v7 = [[PLAssetJournalEntryPayload alloc] initWithUnmanagedAdjustment:self changedKeys:v4];
+    v7 = [[PLAssetJournalEntryPayload alloc] initWithUnmanagedAdjustment:self changedKeys:keysCopy];
   }
 
   else
@@ -825,10 +825,10 @@ LABEL_18:
 
 - (id)payloadID
 {
-  v2 = [(PLUnmanagedAdjustment *)self assetAttributes];
-  v3 = [v2 asset];
-  v4 = [v3 uuid];
-  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v4];
+  assetAttributes = [(PLUnmanagedAdjustment *)self assetAttributes];
+  asset = [assetAttributes asset];
+  uuid = [asset uuid];
+  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v5;
 }

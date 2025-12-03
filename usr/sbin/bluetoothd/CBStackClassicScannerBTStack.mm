@@ -1,11 +1,11 @@
 @interface CBStackClassicScannerBTStack
 - (CBStackClassicScannerBTStack)init;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_deviceFound:(void *)a3 deviceUUID:(id)a4;
-- (void)_deviceLost:(id)a3;
-- (void)_discoveryEvent:(int)a3 device:(BTDeviceImpl *)a4 attributes:(unsigned int)a5;
+- (id)descriptionWithLevel:(int)level;
+- (void)_deviceFound:(void *)found deviceUUID:(id)d;
+- (void)_deviceLost:(id)lost;
+- (void)_discoveryEvent:(int)event device:(BTDeviceImpl *)device attributes:(unsigned int)attributes;
 - (void)_invalidated;
-- (void)_statusEvent:(int)a3 device:(BTDeviceImpl *)a4 result:(int)a5;
+- (void)_statusEvent:(int)event device:(BTDeviceImpl *)device result:(int)result;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   v5 = [(NSMutableDictionary *)self->_deviceMap count];
-  if (v4 < 0x15)
+  if (levelCopy < 0x15)
   {
     v22 = 0;
     v23 = &v22;
@@ -62,7 +62,7 @@
     v14[3] = &unk_100ADF7F8;
     v14[4] = &v22;
     v14[5] = &v16;
-    v15 = v4;
+    v15 = levelCopy;
     [(NSMutableDictionary *)deviceMap enumerateKeysAndObjectsUsingBlock:v14, v12, v5];
     if (v5 > v17[3])
     {
@@ -94,7 +94,7 @@
     goto LABEL_54;
   }
 
-  v2 = self;
+  selfCopy = self;
   if (!self->_deviceLostHandler)
   {
 LABEL_54:
@@ -111,7 +111,7 @@ LABEL_55:
   }
 
   dispatch_assert_queue_V2(dispatchQueue);
-  if (v2->_invalidateCalled)
+  if (selfCopy->_invalidateCalled)
   {
 LABEL_56:
     sub_100806AB0();
@@ -121,7 +121,7 @@ LABEL_57:
   }
 
   v7 = sub_10000E92C();
-  v2->_logPrivateData = (*(*v7 + 160))(v7);
+  selfCopy->_logPrivateData = (*(*v7 + 160))(v7);
   os_unfair_lock_lock(&unk_100B552F8);
   v8 = qword_100B552F0;
   if (!qword_100B552F0)
@@ -133,12 +133,12 @@ LABEL_57:
     v8 = qword_100B552F0;
   }
 
-  v11 = [NSNumber numberWithLong:v2];
-  [v8 setObject:v2 forKeyedSubscript:v11];
+  v11 = [NSNumber numberWithLong:selfCopy];
+  [v8 setObject:selfCopy forKeyedSubscript:v11];
 
   os_unfair_lock_unlock(&unk_100B552F8);
-  p_btSession = &v2->_btSession;
-  if (v2->_btSession)
+  p_btSession = &selfCopy->_btSession;
+  if (selfCopy->_btSession)
   {
     goto LABEL_27;
   }
@@ -157,8 +157,8 @@ LABEL_57:
 
 LABEL_12:
   v12 = qword_100B50B80;
-  v13 = [v4 UTF8String];
-  v14 = strlen(v13);
+  uTF8String = [v4 UTF8String];
+  v14 = strlen(uTF8String);
   if (v14 >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_1000C7698();
@@ -173,7 +173,7 @@ LABEL_12:
   v31 = v14;
   if (v14)
   {
-    memmove(&__dst, v13, v14);
+    memmove(&__dst, uTF8String, v14);
   }
 
   *(&__dst + v15) = 0;
@@ -208,18 +208,18 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (v2->_btDiscoveryAgent)
+  if (selfCopy->_btDiscoveryAgent)
   {
 LABEL_49:
-    if (v2->_profileChangedToken == -1)
+    if (selfCopy->_profileChangedToken == -1)
     {
-      v22 = v2->_dispatchQueue;
+      v22 = selfCopy->_dispatchQueue;
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1001166BC;
       handler[3] = &unk_100ADF848;
-      handler[4] = v2;
-      notify_register_dispatch("com.apple.MCX._managementStatusChangedForDomains", &v2->_profileChangedToken, v22, handler);
+      handler[4] = selfCopy;
+      notify_register_dispatch("com.apple.MCX._managementStatusChangedForDomains", &selfCopy->_profileChangedToken, v22, handler);
     }
 
     return;
@@ -232,12 +232,12 @@ LABEL_49:
     sub_100806A88();
   }
 
-  sub_1005C635C(off_100B50DB0, *p_btSession, &v2->_btDiscoveryAgent, &__dst);
+  sub_1005C635C(off_100B50DB0, *p_btSession, &selfCopy->_btDiscoveryAgent, &__dst);
   v19 = __dst;
   if (__dst)
   {
     *v28 = *off_100AE0BA8;
-    sub_1005C1D20(__dst, v2->_btDiscoveryAgent, v28, v2);
+    sub_1005C1D20(__dst, selfCopy->_btDiscoveryAgent, v28, selfCopy);
     if (qword_100B50DB8 != -1)
     {
       sub_100806A88();
@@ -375,14 +375,14 @@ LABEL_46:
   }
 }
 
-- (void)_deviceFound:(void *)a3 deviceUUID:(id)a4
+- (void)_deviceFound:(void *)found deviceUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   if (!self->_invalidateCalled)
   {
-    v20 = v6;
-    v7 = [v6 UUIDString];
-    v8 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v7];
+    v20 = dCopy;
+    uUIDString = [dCopy UUIDString];
+    v8 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:uUIDString];
     if (v8)
     {
       v9 = 0;
@@ -391,7 +391,7 @@ LABEL_46:
     else
     {
       v10 = objc_alloc_init(CBDevice);
-      [v10 setIdentifier:v7];
+      [v10 setIdentifier:uUIDString];
       [v10 setInternalFlags:128];
       v9 = 0x4000000;
       v8 = v10;
@@ -400,7 +400,7 @@ LABEL_46:
     [v8 setDiscoveryFlags:{objc_msgSend(v8, "discoveryFlags") | 0x4000000000000}];
     [v8 setChangeFlags:0];
     logPrivateData = self->_logPrivateData;
-    v12 = [v8 internalFlags];
+    internalFlags = [v8 internalFlags];
     if (logPrivateData)
     {
       v13 = 0x20000;
@@ -411,8 +411,8 @@ LABEL_46:
       v13 = 0;
     }
 
-    [v8 setInternalFlags:v13 | v12];
-    v14 = [v8 updateWithClassicDevice:a3 deviceUUID:v20] | v9;
+    [v8 setInternalFlags:v13 | internalFlags];
+    v14 = [v8 updateWithClassicDevice:found deviceUUID:v20] | v9;
     [v8 setChangeFlags:{objc_msgSend(v8, "changeFlags") | v14}];
     [v8 setLastSeenTicks:mach_absolute_time()];
     if ((v14 & 0x4000000) != 0)
@@ -427,7 +427,7 @@ LABEL_46:
         deviceMap = self->_deviceMap;
       }
 
-      [(NSMutableDictionary *)deviceMap setObject:v8 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)deviceMap setObject:v8 forKeyedSubscript:uUIDString];
       if (dword_100B50CE0 <= 30 && (dword_100B50CE0 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF_safe();
@@ -459,17 +459,17 @@ LABEL_46:
     (*(v18 + 2))(v18, v8);
 LABEL_23:
 
-    v6 = v20;
+    dCopy = v20;
   }
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v11 = a3;
-  v4 = [v11 UUIDString];
-  v5 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v4];
+  lostCopy = lost;
+  uUIDString = [lostCopy UUIDString];
+  v5 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:uUIDString];
   logPrivateData = self->_logPrivateData;
-  v7 = [v5 internalFlags];
+  internalFlags = [v5 internalFlags];
   if (logPrivateData)
   {
     v8 = 0x20000;
@@ -480,10 +480,10 @@ LABEL_23:
     v8 = 0;
   }
 
-  [v5 setInternalFlags:v8 | v7];
+  [v5 setInternalFlags:v8 | internalFlags];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_deviceMap setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_deviceMap setObject:0 forKeyedSubscript:uUIDString];
     if (dword_100B50CE0 <= 30 && (dword_100B50CE0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
@@ -503,23 +503,23 @@ LABEL_23:
   }
 }
 
-- (void)_discoveryEvent:(int)a3 device:(BTDeviceImpl *)a4 attributes:(unsigned int)a5
+- (void)_discoveryEvent:(int)event device:(BTDeviceImpl *)device attributes:(unsigned int)attributes
 {
   if (self->_invalidateCalled)
   {
     return;
   }
 
-  v5 = *&a5;
+  v5 = *&attributes;
   if (qword_100B508F0 != -1)
   {
     sub_100806B7C();
   }
 
-  v9 = sub_1000E41C0(off_100B508E8, a4);
+  v9 = sub_1000E41C0(off_100B508E8, device);
   if (dword_100B50CE0 <= 30 && (dword_100B50CE0 != -1 || _LogCategory_Initialize()))
   {
-    if (a3 > 2)
+    if (event > 2)
     {
       v10 = "?";
       if (v9)
@@ -552,7 +552,7 @@ LABEL_15:
 
     else
     {
-      v10 = off_100AE0C60[a3];
+      v10 = off_100AE0C60[event];
       if (v9)
       {
         goto LABEL_8;
@@ -581,12 +581,12 @@ LABEL_18:
   v18 = sub_10004DF60(v24);
   if (v18)
   {
-    if (!a3 || a3 == 2)
+    if (!event || event == 2)
     {
       [(CBStackClassicScannerBTStack *)self _deviceFound:v9 deviceUUID:v18, v19, v20, v21];
     }
 
-    else if (a3 == 1)
+    else if (event == 1)
     {
       [(CBStackClassicScannerBTStack *)self _deviceLost:v18];
     }
@@ -598,7 +598,7 @@ LABEL_18:
   }
 }
 
-- (void)_statusEvent:(int)a3 device:(BTDeviceImpl *)a4 result:(int)a5
+- (void)_statusEvent:(int)event device:(BTDeviceImpl *)device result:(int)result
 {
   if (!self->_invalidateCalled && self->_btDiscoveryAgent)
   {
@@ -607,11 +607,11 @@ LABEL_18:
       sub_100806B7C();
     }
 
-    v8 = sub_1000E41C0(off_100B508E8, a4);
+    v8 = sub_1000E41C0(off_100B508E8, device);
     if (dword_100B50CE0 > 30 || (v9 = v8, dword_100B50CE0 == -1) && !_LogCategory_Initialize())
     {
 LABEL_16:
-      if (a3 != 1)
+      if (event != 1)
       {
         return;
       }
@@ -681,7 +681,7 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    if (a3 > 3)
+    if (event > 3)
     {
       if (!v9)
       {

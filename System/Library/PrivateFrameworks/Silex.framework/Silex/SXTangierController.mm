@@ -1,78 +1,78 @@
 @interface SXTangierController
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginInteraction:(id)a4 atPoint:(CGPoint)a5;
-- (CGPoint)pointForCharacterAtIndex:(unint64_t)a3 inComponentWithIdentifier:(id)a4;
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4;
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginInteraction:(id)interaction atPoint:(CGPoint)point;
+- (CGPoint)pointForCharacterAtIndex:(unint64_t)index inComponentWithIdentifier:(id)identifier;
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling;
 - (CGRect)visibleBounds;
 - (NSString)selectedText;
 - (SXComponentController)componentController;
 - (SXComponentInteractionManager)componentInteractionManager;
-- (SXTangierController)initWithViewport:(id)a3 scrollView:(id)a4 componentActionHandler:(id)a5 dragItemProvider:(id)a6 componentController:(id)a7 componentInteractionManager:(id)a8 DOMObjectProvider:(id)a9 adIgnorableViewFactory:(id)a10 config:(id)a11;
+- (SXTangierController)initWithViewport:(id)viewport scrollView:(id)view componentActionHandler:(id)handler dragItemProvider:(id)provider componentController:(id)controller componentInteractionManager:(id)manager DOMObjectProvider:(id)objectProvider adIgnorableViewFactory:(id)self0 config:(id)self1;
 - (SXTangierControllerDelegate)delegate;
 - (id)backgroundColorForDragUIPlatter;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)interactiveCanvasController:(id)a3 dragItemForSmartField:(id)a4 interaction:(id)a5 session:(id)a6;
-- (id)interactiveCanvasController:(id)a3 infoForModel:(id)a4 withSelection:(id)a5;
-- (id)layoutDescriptionForComponent:(id)a3;
-- (id)scrollPositionForVisibleBounds:(CGRect)a3 canvasWidth:(double)a4;
-- (id)searchWithContext:(id)a3;
-- (id)topLevelLayersForInteractiveCanvasController:(id)a3;
-- (id)topLevelRepsForInteractiveCanvasController:(id)a3;
-- (id)visibleBoundsClipViewForInteractiveCanvasController:(id)a3;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)interactiveCanvasController:(id)controller dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session;
+- (id)interactiveCanvasController:(id)controller infoForModel:(id)model withSelection:(id)selection;
+- (id)layoutDescriptionForComponent:(id)component;
+- (id)scrollPositionForVisibleBounds:(CGRect)bounds canvasWidth:(double)width;
+- (id)searchWithContext:(id)context;
+- (id)topLevelLayersForInteractiveCanvasController:(id)controller;
+- (id)topLevelRepsForInteractiveCanvasController:(id)controller;
+- (id)visibleBoundsClipViewForInteractiveCanvasController:(id)controller;
 - (unint64_t)selectableWordLimit;
 - (void)_fixLayoutOffsets;
 - (void)clearSelection;
 - (void)dealloc;
-- (void)didStartPresentingTextView:(id)a3;
-- (void)didStopPresentingTextView:(id)a3;
+- (void)didStartPresentingTextView:(id)view;
+- (void)didStopPresentingTextView:(id)view;
 - (void)didTransitionToPresented;
-- (void)interactiveCanvasController:(id)a3 interactedWithHyperlink:(id)a4 info:(id)a5 range:(_NSRange)a6 touchPoint:(CGPoint)a7 touchAndHold:(BOOL)a8;
-- (void)interactiveCanvasController:(id)a3 scrollViewDidEndDragging:(id)a4 willDecelerate:(BOOL)a5;
-- (void)interactiveCanvasController:(id)a3 scrollViewWillBeginDragging:(id)a4;
-- (void)interactiveCanvasController:(id)a3 scrollViewWillEndDragging:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
-- (void)interactiveCanvasControllerDidScroll:(id)a3;
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3;
-- (void)interactiveCanvasControllerWillStartInteraction:(id)a3;
+- (void)interactiveCanvasController:(id)controller interactedWithHyperlink:(id)hyperlink info:(id)info range:(_NSRange)range touchPoint:(CGPoint)point touchAndHold:(BOOL)hold;
+- (void)interactiveCanvasController:(id)controller scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)interactiveCanvasController:(id)controller scrollViewWillBeginDragging:(id)dragging;
+- (void)interactiveCanvasController:(id)controller scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
+- (void)interactiveCanvasControllerDidScroll:(id)scroll;
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling;
+- (void)interactiveCanvasControllerWillStartInteraction:(id)interaction;
 - (void)reloadSearch;
-- (void)setUnscaledCanvasRect:(CGRect)a3;
+- (void)setUnscaledCanvasRect:(CGRect)rect;
 - (void)teardown;
-- (void)updateCanvasSize:(CGSize)a3 forComponentViews:(id)a4;
-- (void)updateInfosWithBlock:(id)a3;
+- (void)updateCanvasSize:(CGSize)size forComponentViews:(id)views;
+- (void)updateInfosWithBlock:(id)block;
 - (void)updatePresentationState;
 - (void)willTransitionToPresented;
 @end
 
 @implementation SXTangierController
 
-- (SXTangierController)initWithViewport:(id)a3 scrollView:(id)a4 componentActionHandler:(id)a5 dragItemProvider:(id)a6 componentController:(id)a7 componentInteractionManager:(id)a8 DOMObjectProvider:(id)a9 adIgnorableViewFactory:(id)a10 config:(id)a11
+- (SXTangierController)initWithViewport:(id)viewport scrollView:(id)view componentActionHandler:(id)handler dragItemProvider:(id)provider componentController:(id)controller componentInteractionManager:(id)manager DOMObjectProvider:(id)objectProvider adIgnorableViewFactory:(id)self0 config:(id)self1
 {
-  v89 = a3;
-  obj = a4;
-  v18 = a4;
-  v88 = a5;
-  v87 = a6;
-  v19 = a7;
-  v20 = a8;
-  v86 = a9;
-  v21 = a10;
-  v90 = a11;
+  viewportCopy = viewport;
+  obj = view;
+  viewCopy = view;
+  handlerCopy = handler;
+  providerCopy = provider;
+  controllerCopy = controller;
+  managerCopy = manager;
+  objectProviderCopy = objectProvider;
+  factoryCopy = factory;
+  configCopy = config;
   v93.receiver = self;
   v93.super_class = SXTangierController;
   v22 = [(SXTangierController *)&v93 init];
   v23 = v22;
   if (v22)
   {
-    v82 = v21;
-    objc_storeStrong(&v22->_viewport, a3);
+    v82 = factoryCopy;
+    objc_storeStrong(&v22->_viewport, viewport);
     [(SXViewport *)v23->_viewport addViewportChangeListener:v23 forOptions:8];
     objc_storeStrong(&v23->_scrollView, obj);
-    objc_storeStrong(&v23->_componentActionHandler, a5);
-    objc_storeStrong(&v23->_dragItemProvider, a6);
-    objc_storeWeak(&v23->_componentController, v19);
-    v85 = v20;
-    objc_storeWeak(&v23->_componentInteractionManager, v20);
-    objc_storeStrong(&v23->_DOMObjectProvider, a9);
-    objc_storeStrong(&v23->_config, a11);
+    objc_storeStrong(&v23->_componentActionHandler, handler);
+    objc_storeStrong(&v23->_dragItemProvider, provider);
+    objc_storeWeak(&v23->_componentController, controllerCopy);
+    v85 = managerCopy;
+    objc_storeWeak(&v23->_componentInteractionManager, managerCopy);
+    objc_storeStrong(&v23->_DOMObjectProvider, objectProvider);
+    objc_storeStrong(&v23->_config, config);
     v23->_unfairLock._os_unfair_lock_opaque = 0;
     +[SXTextTangierApplicationDelegate setup];
     v24 = objc_alloc_init(SXTextTangierDocumentRoot);
@@ -123,103 +123,103 @@
     [v42 setDirectLayerHostProvider:v41];
 
     v43 = [(SXTangierController *)v23 cvc];
-    v44 = [v43 view];
-    [v44 setClipsToBounds:0];
+    view = [v43 view];
+    [view setClipsToBounds:0];
 
-    v45 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     v46 = [(SXTangierController *)v23 cvc];
-    v47 = [v46 view];
-    [v47 setBackgroundColor:v45];
+    view2 = [v46 view];
+    [view2 setBackgroundColor:clearColor];
 
     v48 = [(SXTangierController *)v23 cvc];
     [v48 setDelegate:v23];
 
     [(SXTangierController *)v23 setSelectionEnabled:1];
-    -[SXTangierController setSelectAllEnabled:](v23, "setSelectAllEnabled:", [v90 limitTextSelectionEnabled] ^ 1);
+    -[SXTangierController setSelectAllEnabled:](v23, "setSelectAllEnabled:", [configCopy limitTextSelectionEnabled] ^ 1);
     v49 = *MEMORY[0x1E695F060];
     v50 = *(MEMORY[0x1E695F060] + 8);
     v51 = [(SXTangierController *)v23 cvc];
-    v52 = [v51 canvasLayer];
-    [v52 setUnscaledSize:{v49, v50}];
+    canvasLayer = [v51 canvasLayer];
+    [canvasLayer setUnscaledSize:{v49, v50}];
 
     v53 = *MEMORY[0x1E695F058];
     v54 = *(MEMORY[0x1E695F058] + 8);
     v55 = *(MEMORY[0x1E695F058] + 16);
     v56 = *(MEMORY[0x1E695F058] + 24);
     v57 = [(SXTangierController *)v23 icc];
-    v58 = [v57 canvasView];
-    [v58 setFrame:{v53, v54, v55, v56}];
+    canvasView = [v57 canvasView];
+    [canvasView setFrame:{v53, v54, v55, v56}];
 
     v59 = [(SXTangierController *)v23 icc];
     [v59 setDataSource:v23];
 
     v60 = [(SXTangierController *)v23 icc];
-    v61 = [v60 canvasView];
+    canvasView2 = [v60 canvasView];
 
-    v62 = [v83 createView];
+    createView = [v83 createView];
     underRepsHost = v23->_underRepsHost;
-    v23->_underRepsHost = v62;
+    v23->_underRepsHost = createView;
 
     v64 = v23->_underRepsHost;
-    [v61 bounds];
+    [canvasView2 bounds];
     [(UIView *)v64 setBounds:?];
     [(UIView *)v23->_underRepsHost setAutoresizingMask:18];
-    v65 = [(UIView *)v23->_underRepsHost layer];
-    [v65 setZPosition:-1.0];
+    layer = [(UIView *)v23->_underRepsHost layer];
+    [layer setZPosition:-1.0];
 
-    v66 = [v83 createView];
+    createView2 = [v83 createView];
     overlayRepsHost = v23->_overlayRepsHost;
-    v23->_overlayRepsHost = v66;
+    v23->_overlayRepsHost = createView2;
 
     v68 = v23->_overlayRepsHost;
-    [v61 bounds];
+    [canvasView2 bounds];
     [(UIView *)v68 setBounds:?];
     [(UIView *)v23->_overlayRepsHost setAutoresizingMask:18];
-    v69 = [(UIView *)v23->_overlayRepsHost layer];
-    [v69 setZPosition:1.0];
+    layer2 = [(UIView *)v23->_overlayRepsHost layer];
+    [layer2 setZPosition:1.0];
 
     [(UIView *)v23->_overlayRepsHost setTag:45366];
-    v70 = [v83 createView];
+    createView3 = [v83 createView];
     aboveRepsHost = v23->_aboveRepsHost;
-    v23->_aboveRepsHost = v70;
+    v23->_aboveRepsHost = createView3;
 
     v72 = v23->_aboveRepsHost;
-    [v61 bounds];
+    [canvasView2 bounds];
     [(UIView *)v72 setBounds:?];
     [(UIView *)v23->_aboveRepsHost setAutoresizingMask:18];
-    v73 = [(UIView *)v23->_aboveRepsHost layer];
-    [v73 setZPosition:2.0];
+    layer3 = [(UIView *)v23->_aboveRepsHost layer];
+    [layer3 setZPosition:2.0];
 
     [(UIView *)v23->_aboveRepsHost setTag:45366];
-    [v61 addSubview:v23->_underRepsHost];
-    [v61 addSubview:v23->_overlayRepsHost];
-    [v61 addSubview:v23->_aboveRepsHost];
+    [canvasView2 addSubview:v23->_underRepsHost];
+    [canvasView2 addSubview:v23->_overlayRepsHost];
+    [canvasView2 addSubview:v23->_aboveRepsHost];
     [(UIView *)v23->_underRepsHost setUserInteractionEnabled:0];
     [(UIView *)v23->_overlayRepsHost setUserInteractionEnabled:0];
     [(UIView *)v23->_aboveRepsHost setUserInteractionEnabled:0];
-    v74 = [(UIView *)v23->_underRepsHost layer];
-    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setUnderRepsLayerHost:v74];
+    layer4 = [(UIView *)v23->_underRepsHost layer];
+    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setUnderRepsLayerHost:layer4];
 
-    v75 = [(UIView *)v23->_aboveRepsHost layer];
-    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setAboveRepsLayerHost:v75];
+    layer5 = [(UIView *)v23->_aboveRepsHost layer];
+    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setAboveRepsLayerHost:layer5];
 
-    v76 = [(UIView *)v23->_overlayRepsHost layer];
-    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setOverlayLayerHost:v76];
+    layer6 = [(UIView *)v23->_overlayRepsHost layer];
+    [(SXTangierRepDirectLayerHostProvider *)v23->_directLayerHostProvider setOverlayLayerHost:layer6];
 
     v77 = [MEMORY[0x1E695DFA8] set];
     presentedTextViews = v23->_presentedTextViews;
     v23->_presentedTextViews = v77;
 
-    v79 = [v61 subviews];
-    v23->_initialSubviewCount = [v79 count];
+    subviews = [canvasView2 subviews];
+    v23->_initialSubviewCount = [subviews count];
 
     v80 = [(SXTangierController *)v23 icc];
-    [v80 setScrollView:v18];
+    [v80 setScrollView:viewCopy];
 
     [(SXTangierController *)v23 updatePresentationState];
-    v21 = v83;
+    factoryCopy = v83;
 
-    v20 = v85;
+    managerCopy = v85;
   }
 
   return v23;
@@ -227,10 +227,10 @@
 
 - (void)updatePresentationState
 {
-  v3 = [(SXTangierController *)self viewport];
-  v4 = [v3 appearState];
+  viewport = [(SXTangierController *)self viewport];
+  appearState = [viewport appearState];
 
-  if (v4 == 1)
+  if (appearState == 1)
   {
 
     [(SXTangierController *)self willTransitionToPresented];
@@ -238,10 +238,10 @@
 
   else
   {
-    v5 = [(SXTangierController *)self viewport];
-    v6 = [v5 appearState];
+    viewport2 = [(SXTangierController *)self viewport];
+    appearState2 = [viewport2 appearState];
 
-    if (v6 == 2)
+    if (appearState2 == 2)
     {
 
       [(SXTangierController *)self didTransitionToPresented];
@@ -271,25 +271,25 @@
   [(SXTangierController *)&v2 dealloc];
 }
 
-- (void)didStartPresentingTextView:(id)a3
+- (void)didStartPresentingTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   os_unfair_lock_lock_with_options();
-  v5 = [(SXTangierController *)self presentedTextViews];
-  [v5 addObject:v4];
+  presentedTextViews = [(SXTangierController *)self presentedTextViews];
+  [presentedTextViews addObject:viewCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
   v7 = [(SXTangierController *)self icc];
-  v6 = [v7 canvas];
-  [v6 layoutIfNeeded];
+  canvas = [v7 canvas];
+  [canvas layoutIfNeeded];
 }
 
-- (void)didStopPresentingTextView:(id)a3
+- (void)didStopPresentingTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   os_unfair_lock_lock_with_options();
-  v5 = [(SXTangierController *)self presentedTextViews];
-  [v5 removeObject:v4];
+  presentedTextViews = [(SXTangierController *)self presentedTextViews];
+  [presentedTextViews removeObject:viewCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }
@@ -300,15 +300,15 @@
   [v2 endEditing];
 }
 
-- (void)updateCanvasSize:(CGSize)a3 forComponentViews:(id)a4
+- (void)updateCanvasSize:(CGSize)size forComponentViews:(id)views
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  viewsCopy = views;
   [(SXTangierController *)self setUnscaledCanvasRect:0.0, 0.0, width, height];
   v8 = [(SXTangierController *)self icc];
-  v9 = [v8 canvas];
-  [v9 layoutIfNeeded];
+  canvas = [v8 canvas];
+  [canvas layoutIfNeeded];
 
   if ([(SXTangierController *)self rebuildFlows])
   {
@@ -316,13 +316,13 @@
     v12[1] = 3221225472;
     v12[2] = __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke;
     v12[3] = &unk_1E8500888;
-    v13 = v7;
+    v13 = viewsCopy;
     [(SXTangierController *)self updateInfosWithBlock:v12];
   }
 
   v10 = [(SXTangierController *)self icc];
-  v11 = [v10 canvas];
-  [v11 layoutIfNeeded];
+  canvas2 = [v10 canvas];
+  [canvas2 layoutIfNeeded];
 
   [(SXTangierController *)self _fixLayoutOffsets];
 }
@@ -362,14 +362,14 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
   }
 }
 
-- (void)setUnscaledCanvasRect:(CGRect)a3
+- (void)setUnscaledCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = [(SXTangierController *)self icc:a3.origin.x];
-  v7 = [v6 layerHost];
-  v8 = [v7 canvasLayer];
-  [v8 unscaledSize];
+  height = rect.size.height;
+  width = rect.size.width;
+  v6 = [(SXTangierController *)self icc:rect.origin.x];
+  layerHost = [v6 layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer unscaledSize];
   v10 = v9;
   v12 = v11;
 
@@ -377,25 +377,25 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
   {
     self->_preventScrollViewDidScrollReentrance = 1;
     v14 = [(SXTangierController *)self icc];
-    v15 = [v14 layerHost];
-    v16 = [v15 canvasLayer];
-    [v16 setUnscaledSize:{width, height}];
+    layerHost2 = [v14 layerHost];
+    canvasLayer2 = [layerHost2 canvasLayer];
+    [canvasLayer2 setUnscaledSize:{width, height}];
 
     self->_preventScrollViewDidScrollReentrance = 0;
   }
 }
 
-- (id)scrollPositionForVisibleBounds:(CGRect)a3 canvasWidth:(double)a4
+- (id)scrollPositionForVisibleBounds:(CGRect)bounds canvasWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v79 = *MEMORY[0x1E69E9840];
   v10 = [(SXTangierController *)self icc];
-  v11 = [v10 layoutController];
+  layoutController = [v10 layoutController];
   rect1 = width;
-  v12 = [v11 layoutsInRect:{x, y, width, height}];
+  v12 = [layoutController layoutsInRect:{x, y, width, height}];
 
   v76 = 0u;
   v77 = 0u;
@@ -405,8 +405,8 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
   v13 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
   if (v13)
   {
-    v67 = self;
-    v69 = a4;
+    selfCopy = self;
+    widthCopy = width;
     v14 = *v75;
     v68 = y;
     v15 = y + height * 0.2;
@@ -424,20 +424,20 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
         }
 
         v18 = *(*(&v74 + 1) + 8 * v17);
-        v19 = [v18 info];
-        v20 = [v19 storage];
-        v21 = [v20 flowName];
-        v22 = [v21 isEqualToString:@"body"];
+        info = [v18 info];
+        storage = [info storage];
+        flowName = [storage flowName];
+        v22 = [flowName isEqualToString:@"body"];
 
         if (v22)
         {
-          v23 = [v18 info];
-          v24 = [v18 columns];
-          v25 = [v24 firstObject];
+          info2 = [v18 info];
+          columns = [v18 columns];
+          firstObject = [columns firstObject];
 
-          v26 = [v23 storage];
-          v27 = [v23 range];
-          v29 = [v26 paragraphIndexRangeForCharRange:{v27, v28}];
+          storage2 = [info2 storage];
+          range = [info2 range];
+          v29 = [storage2 paragraphIndexRangeForCharRange:{range, v28}];
           v31 = v30;
 
           v32 = v29 + v31;
@@ -445,32 +445,32 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
           {
             do
             {
-              v33 = [v23 storage];
-              v34 = [v33 textRangeForParagraphAtIndex:v29];
+              storage3 = [info2 storage];
+              v34 = [storage3 textRangeForParagraphAtIndex:v29];
               v36 = v35;
 
-              [v25 glyphRectForRange:v34 includingLabel:{v36, 0}];
+              [firstObject glyphRectForRange:v34 includingLabel:{v36, 0}];
               v38 = v37;
               v40 = v39;
               v42 = v41;
               v44 = v43;
-              v45 = [v18 geometry];
-              [v45 frame];
+              geometry = [v18 geometry];
+              [geometry frame];
               v47 = v46;
 
-              v48 = v34 - [v23 range];
+              v48 = v34 - [info2 range];
               if (v48 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 while (1)
                 {
-                  v49 = [v25 storage];
-                  v50 = [v49 length];
+                  storage4 = [firstObject storage];
+                  v50 = [storage4 length];
                   if (v48 >= v50)
                   {
                     break;
                   }
 
-                  v51 = __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___block_invoke(v50, v25, v48);
+                  v51 = __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___block_invoke(v50, firstObject, v48);
 
                   if (!v51)
                   {
@@ -481,20 +481,20 @@ void __58__SXTangierController_updateCanvasSize_forComponentViews___block_invoke
                 }
 
 LABEL_13:
-                v52 = [v25 storage];
-                v53 = [v52 length];
+                storage5 = [firstObject storage];
+                v53 = [storage5 length];
                 if (v48 >= v53)
                 {
                 }
 
                 else
                 {
-                  v54 = __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___block_invoke(v53, v25, v48);
+                  v54 = __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___block_invoke(v53, firstObject, v48);
 
                   if ((v54 & 1) == 0)
                   {
                     v55 = v40 + v47;
-                    [v18 pointForCharacterPosition:{objc_msgSend(v23, "range") + v48}];
+                    [v18 pointForCharacterPosition:{objc_msgSend(info2, "range") + v48}];
                     v57 = v56;
                     v81.origin.x = x;
                     v81.origin.y = v15;
@@ -507,14 +507,14 @@ LABEL_13:
                     if (CGRectIntersectsRect(v81, v82))
                     {
                       v58 = [SXTextComponentScrollPosition alloc];
-                      v59 = [(SXTangierController *)v67 textRenderCollector];
-                      v60 = [v59 componentIdentifierForFlowLayout:v18];
-                      v61 = [v18 geometry];
-                      [v61 frame];
+                      textRenderCollector = [(SXTangierController *)selfCopy textRenderCollector];
+                      v60 = [textRenderCollector componentIdentifierForFlowLayout:v18];
+                      geometry2 = [v18 geometry];
+                      [geometry2 frame];
                       v63 = v62 - v68;
-                      v64 = [v18 geometry];
-                      [v64 frame];
-                      v13 = [(SXTextComponentScrollPosition *)v58 initWithComponentIdentifier:v60 canvasWidth:v48 relativePageOffset:v69 characterIndex:v63 relativeTextOffset:v57 + v65 - v68];
+                      geometry3 = [v18 geometry];
+                      [geometry3 frame];
+                      v13 = [(SXTextComponentScrollPosition *)v58 initWithComponentIdentifier:v60 canvasWidth:v48 relativePageOffset:widthCopy characterIndex:v63 relativeTextOffset:v57 + v65 - v68];
 
                       goto LABEL_22;
                     }
@@ -558,13 +558,13 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
   return v8;
 }
 
-- (CGPoint)pointForCharacterAtIndex:(unint64_t)a3 inComponentWithIdentifier:(id)a4
+- (CGPoint)pointForCharacterAtIndex:(unint64_t)index inComponentWithIdentifier:(id)identifier
 {
-  v5 = [(SXTangierTextRenderCollector *)self->_textRenderCollector flowLayoutForComponentIdentifier:a4];
-  v6 = [v5 info];
-  v7 = [v6 range];
+  v5 = [(SXTangierTextRenderCollector *)self->_textRenderCollector flowLayoutForComponentIdentifier:identifier];
+  info = [v5 info];
+  range = [info range];
 
-  [v5 pointForCharacterPosition:v7 + a3];
+  [v5 pointForCharacterPosition:range + index];
   v9 = v8;
   v11 = v10;
 
@@ -575,15 +575,15 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
   return result;
 }
 
-- (id)topLevelRepsForInteractiveCanvasController:(id)a3
+- (id)topLevelRepsForInteractiveCanvasController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock_with_options();
-  v4 = [(SXTangierController *)self presentedTextViews];
-  v5 = [v4 copy];
+  presentedTextViews = [(SXTangierController *)self presentedTextViews];
+  v5 = [presentedTextViews copy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -609,7 +609,7 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
         if (v13)
         {
           v14 = [v12 rep];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -619,15 +619,15 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
-- (id)topLevelLayersForInteractiveCanvasController:(id)a3
+- (id)topLevelLayersForInteractiveCanvasController:(id)controller
 {
   v23 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock_with_options();
-  v4 = [(SXTangierController *)self presentedTextViews];
-  v5 = [v4 copy];
+  presentedTextViews = [(SXTangierController *)self presentedTextViews];
+  v5 = [presentedTextViews copy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
   v6 = [MEMORY[0x1E695DFA8] set];
@@ -652,13 +652,13 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 rep];
-        v14 = [v13 textLayer];
+        textLayer = [v13 textLayer];
 
-        if (v14)
+        if (textLayer)
         {
           v15 = [v12 rep];
-          v16 = [v15 textLayer];
-          [v6 addObject:v16];
+          textLayer2 = [v15 textLayer];
+          [v6 addObject:textLayer2];
         }
       }
 
@@ -674,9 +674,9 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
 - (CGRect)visibleBounds
 {
   v2 = [(SXTangierController *)self icc];
-  v3 = [v2 canvasView];
-  v4 = [v3 enclosingScrollView];
-  [v4 bounds];
+  canvasView = [v2 canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  [enclosingScrollView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -693,78 +693,78 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
   return result;
 }
 
-- (void)interactiveCanvasController:(id)a3 interactedWithHyperlink:(id)a4 info:(id)a5 range:(_NSRange)a6 touchPoint:(CGPoint)a7 touchAndHold:(BOOL)a8
+- (void)interactiveCanvasController:(id)controller interactedWithHyperlink:(id)hyperlink info:(id)info range:(_NSRange)range touchPoint:(CGPoint)point touchAndHold:(BOOL)hold
 {
-  v8 = a8;
-  length = a6.length;
-  location = a6.location;
-  v40 = a3;
-  v14 = a4;
-  v15 = a5;
+  holdCopy = hold;
+  length = range.length;
+  location = range.location;
+  controllerCopy = controller;
+  hyperlinkCopy = hyperlink;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v14;
-    v17 = [v15 directLayerHost];
+    v16 = hyperlinkCopy;
+    directLayerHost = [infoCopy directLayerHost];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v18 = [(SXTangierController *)self icc];
-      v19 = [v18 repForInfo:v15];
+      v19 = [v18 repForInfo:infoCopy];
 
       [v19 glyphRectForRange:location includingLabel:{length, 0}];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      v28 = [v40 canvasView];
-      [v17 convertRect:v28 toView:{v21, v23, v25, v27}];
+      canvasView = [controllerCopy canvasView];
+      [directLayerHost convertRect:canvasView toView:{v21, v23, v25, v27}];
       v30 = v29;
       v32 = v31;
       v34 = v33;
       v36 = v35;
 
-      v37 = [(SXTangierController *)self componentActionHandler];
-      v38 = [v16 action];
-      v39 = [v40 canvasView];
-      [v37 handleAction:v38 sourceView:v39 sourceRect:v8 invocationType:{v30, v32, v34, v36}];
+      componentActionHandler = [(SXTangierController *)self componentActionHandler];
+      action = [v16 action];
+      canvasView2 = [controllerCopy canvasView];
+      [componentActionHandler handleAction:action sourceView:canvasView2 sourceRect:holdCopy invocationType:{v30, v32, v34, v36}];
     }
   }
 }
 
-- (void)interactiveCanvasControllerDidScroll:(id)a3
+- (void)interactiveCanvasControllerDidScroll:(id)scroll
 {
   v4 = [(SXTangierController *)self icc];
-  v5 = [v4 selectedText];
+  selectedText = [v4 selectedText];
 
-  if (v5)
+  if (selectedText)
   {
     [(SXTangierController *)self _fixLayoutOffsets];
   }
 
-  v6 = [(SXTangierController *)self delegate];
+  delegate = [(SXTangierController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SXTangierController *)self delegate];
-    [v8 tangierControllerDidScroll:self];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierControllerDidScroll:self];
   }
 
   v9 = [(SXTangierController *)self icc];
   [v9 invalidateVisibleBounds];
 }
 
-- (void)interactiveCanvasControllerDidStopScrolling:(id)a3
+- (void)interactiveCanvasControllerDidStopScrolling:(id)scrolling
 {
   [(SXTangierController *)self _fixLayoutOffsets];
-  v4 = [(SXTangierController *)self delegate];
+  delegate = [(SXTangierController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SXTangierController *)self delegate];
-    [v6 tangierControllerDidStopScrolling:self];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierControllerDidStopScrolling:self];
   }
 }
 
@@ -776,9 +776,9 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
   v12 = 0u;
   v13 = 0u;
   v3 = [(SXTangierController *)self icc];
-  v4 = [v3 topLevelRepsForHitTesting];
+  topLevelRepsForHitTesting = [v3 topLevelRepsForHitTesting];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v5)
   {
     goto LABEL_10;
@@ -793,82 +793,82 @@ uint64_t __66__SXTangierController_scrollPositionForVisibleBounds_canvasWidth___
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(topLevelRepsForHitTesting);
       }
 
       v7 |= [*(*(&v10 + 1) + 8 * i) updateFromVisualPosition];
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v10 objects:v14 count:16];
   }
 
   while (v6);
 
   if (v7)
   {
-    v4 = [(SXTangierController *)self icc];
-    [v4 invalidateLayers];
+    topLevelRepsForHitTesting = [(SXTangierController *)self icc];
+    [topLevelRepsForHitTesting invalidateLayers];
 LABEL_10:
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 scrollViewWillEndDragging:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6
+- (void)interactiveCanvasController:(id)controller scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a5.y;
-  x = a5.x;
-  v13 = a4;
-  v10 = [(SXTangierController *)self delegate];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  delegate = [(SXTangierController *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(SXTangierController *)self delegate];
-    [v12 tangierController:self scrollViewWillEndDragging:v13 withVelocity:a6 targetContentOffset:{x, y}];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierController:self scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 scrollViewWillBeginDragging:(id)a4
+- (void)interactiveCanvasController:(id)controller scrollViewWillBeginDragging:(id)dragging
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SXTangierController *)self delegate];
+  controllerCopy = controller;
+  draggingCopy = dragging;
+  delegate = [(SXTangierController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SXTangierController *)self delegate];
-    [v9 tangierController:self scrollViewWillBeginDragging:v6];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierController:self scrollViewWillBeginDragging:draggingCopy];
   }
 
-  [v10 endUISession];
+  [controllerCopy endUISession];
 }
 
-- (void)interactiveCanvasController:(id)a3 scrollViewDidEndDragging:(id)a4 willDecelerate:(BOOL)a5
+- (void)interactiveCanvasController:(id)controller scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a5;
-  v10 = a4;
-  v7 = [(SXTangierController *)self delegate];
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  delegate = [(SXTangierController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SXTangierController *)self delegate];
-    [v9 tangierController:self scrollViewDidEndDragging:v10 willDecelerate:v5];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierController:self scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 
-  if (!v5)
+  if (!decelerateCopy)
   {
     [(SXTangierController *)self _fixLayoutOffsets];
   }
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = -CGRectGetWidth(a4);
+  height = tiling.size.height;
+  width = tiling.size.width;
+  y = tiling.origin.y;
+  x = tiling.origin.x;
+  v8 = -CGRectGetWidth(tiling);
   v9 = x;
   v10 = y;
   v11 = width;
@@ -877,19 +877,19 @@ LABEL_10:
   return CGRectInset(*&v9, v8, 0.0);
 }
 
-- (void)interactiveCanvasControllerWillStartInteraction:(id)a3
+- (void)interactiveCanvasControllerWillStartInteraction:(id)interaction
 {
-  v4 = [(SXTangierController *)self delegate];
+  delegate = [(SXTangierController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SXTangierController *)self delegate];
-    [v6 tangierControllerWillStartScrolling:self];
+    delegate2 = [(SXTangierController *)self delegate];
+    [delegate2 tangierControllerWillStartScrolling:self];
   }
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
   if (![(SXTangierController *)self performedInitialLayoutAndRender])
   {
@@ -899,49 +899,49 @@ LABEL_10:
   }
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginInteraction:(id)a4 atPoint:(CGPoint)a5
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  if (![(SXTangierController *)self selectionEnabled:a3])
+  y = point.y;
+  x = point.x;
+  if (![(SXTangierController *)self selectionEnabled:controller])
   {
     return 0;
   }
 
-  v8 = [(SXTangierController *)self componentController];
-  v9 = [v8 componentViewForPoint:{x, y}];
+  componentController = [(SXTangierController *)self componentController];
+  v9 = [componentController componentViewForPoint:{x, y}];
 
-  v10 = [(SXTangierController *)self componentInteractionManager];
-  LOBYTE(v8) = [v10 hasInteractionForLocation:{x, y}];
+  componentInteractionManager = [(SXTangierController *)self componentInteractionManager];
+  LOBYTE(componentController) = [componentInteractionManager hasInteractionForLocation:{x, y}];
 
-  v11 = (v8 & 1) == 0 && (!v9 || ![v9 conformsToProtocol:&unk_1F5398398] || (objc_msgSend(v9, "userInteractable") & 1) == 0);
+  v11 = (componentController & 1) == 0 && (!v9 || ![v9 conformsToProtocol:&unk_1F5398398] || (objc_msgSend(v9, "userInteractable") & 1) == 0);
   return v11;
 }
 
-- (id)interactiveCanvasController:(id)a3 dragItemForSmartField:(id)a4 interaction:(id)a5 session:(id)a6
+- (id)interactiveCanvasController:(id)controller dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(SXTangierController *)self dragItemProvider];
-  v15 = [v14 dragItemForSmartField:v13 interaction:v12 session:v11];
+  controllerCopy = controller;
+  sessionCopy = session;
+  interactionCopy = interaction;
+  fieldCopy = field;
+  dragItemProvider = [(SXTangierController *)self dragItemProvider];
+  v15 = [dragItemProvider dragItemForSmartField:fieldCopy interaction:interactionCopy session:sessionCopy];
 
   if (v15)
   {
-    [v10 endUISession];
+    [controllerCopy endUISession];
   }
 
   return v15;
 }
 
-- (id)interactiveCanvasController:(id)a3 infoForModel:(id)a4 withSelection:(id)a5
+- (id)interactiveCanvasController:(id)controller infoForModel:(id)model withSelection:(id)selection
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 conformsToProtocol:&unk_1F53B0DF0])
+  modelCopy = model;
+  selectionCopy = selection;
+  if ([modelCopy conformsToProtocol:&unk_1F53B0DF0])
   {
-    v9 = v7;
+    v9 = modelCopy;
   }
 
   else
@@ -950,11 +950,11 @@ LABEL_10:
   }
 
   v10 = v9;
-  v11 = v7;
+  v11 = modelCopy;
   NSClassFromString(&cfstr_Tswpstorage.isa);
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
+    v12 = selectionCopy;
     NSClassFromString(&cfstr_Tswpselection.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -967,9 +967,9 @@ LABEL_10:
   return v10;
 }
 
-- (void)updateInfosWithBlock:(id)a3
+- (void)updateInfosWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   textRenderCollector = self->_textRenderCollector;
   v6 = [(SXTangierController *)self icc];
   v8[0] = MEMORY[0x1E69E9820];
@@ -977,8 +977,8 @@ LABEL_10:
   v8[2] = __44__SXTangierController_updateInfosWithBlock___block_invoke;
   v8[3] = &unk_1E8500B00;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(SXTangierTextRenderCollector *)textRenderCollector buildFlowsAndUpdateInfosWithICC:v6 updateBlock:v8];
 }
 
@@ -993,21 +993,21 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
   return result;
 }
 
-- (id)visibleBoundsClipViewForInteractiveCanvasController:(id)a3
+- (id)visibleBoundsClipViewForInteractiveCanvasController:(id)controller
 {
   if ([(SXTangierController *)self disableClippingForTiles])
   {
-    v4 = 0;
+    window = 0;
   }
 
   else
   {
     v5 = [(SXTangierController *)self icc];
-    v6 = [v5 canvasView];
-    v4 = [v6 window];
+    canvasView = [v5 canvasView];
+    window = [canvasView window];
   }
 
-  return v4;
+  return window;
 }
 
 - (void)willTransitionToPresented
@@ -1018,10 +1018,10 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
   [v3 invalidateVisibleBounds];
 
   v4 = [(SXTangierController *)self icc];
-  v5 = [v4 layerHost];
-  v6 = [v5 asiOSCVC];
+  layerHost = [v4 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v6 cancelDelayedTapAction];
+  [asiOSCVC cancelDelayedTapAction];
 }
 
 - (void)didTransitionToPresented
@@ -1033,9 +1033,9 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
   [v3 invalidateVisibleBounds];
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  if (protocol_isEqual(a4, &unk_1F540ECA8))
+  if (protocol_isEqual(protocol, &unk_1F540ECA8))
   {
     v6 = self->_textRenderCollector;
   }
@@ -1050,40 +1050,40 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
 
 - (unint64_t)selectableWordLimit
 {
-  v3 = [(SXTangierController *)self config];
-  v4 = [v3 limitTextSelectionEnabled];
+  config = [(SXTangierController *)self config];
+  limitTextSelectionEnabled = [config limitTextSelectionEnabled];
 
-  if (!v4)
+  if (!limitTextSelectionEnabled)
   {
     return 0;
   }
 
-  v5 = [(SXTangierController *)self config];
-  v6 = [v5 textSelectionLimit];
+  config2 = [(SXTangierController *)self config];
+  textSelectionLimit = [config2 textSelectionLimit];
 
-  return v6;
+  return textSelectionLimit;
 }
 
 - (NSString)selectedText
 {
   v2 = [(SXTangierController *)self icc];
-  v3 = [v2 selectedText];
+  selectedText = [v2 selectedText];
 
-  return v3;
+  return selectedText;
 }
 
-- (id)layoutDescriptionForComponent:(id)a3
+- (id)layoutDescriptionForComponent:(id)component
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  componentCopy = component;
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   textRenderCollector = self->_textRenderCollector;
-  v35 = v4;
-  v6 = [v4 identifier];
-  v7 = [(SXTangierTextRenderCollector *)textRenderCollector flowLayoutForComponentIdentifier:v6];
+  v35 = componentCopy;
+  identifier = [componentCopy identifier];
+  v7 = [(SXTangierTextRenderCollector *)textRenderCollector flowLayoutForComponentIdentifier:identifier];
 
-  v8 = [v7 info];
-  v9 = [v8 storage];
+  info = [v7 info];
+  storage = [info storage];
 
   v43 = 0u;
   v44 = 0u;
@@ -1108,10 +1108,10 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
 
         v40 = v11;
         v12 = *(*(&v41 + 1) + 8 * v11);
-        v13 = [v12 countLines];
-        if (v13)
+        countLines = [v12 countLines];
+        if (countLines)
         {
-          v14 = v13;
+          v14 = countLines;
           for (i = 0; i != v14; ++i)
           {
             [v12 boundsOfLineFragmentAtIndex:i];
@@ -1121,7 +1121,7 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
             v23 = v22;
             v24 = [v12 rangeOfLineFragmentAtIndex:i];
             v26 = v25;
-            v27 = [v9 substringWithRange:{v24, v25}];
+            v27 = [storage substringWithRange:{v24, v25}];
             v47[0] = v10;
             v53.origin.x = v17;
             v53.origin.y = v19;
@@ -1165,17 +1165,17 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
 {
   objc_opt_class();
   v3 = [(SXTangierController *)self icc];
-  v4 = [v3 editorController];
-  v5 = [v4 textInputEditor];
+  editorController = [v3 editorController];
+  textInputEditor = [editorController textInputEditor];
   v6 = TSUDynamicCast();
 
-  v7 = [v6 selection];
-  v8 = [(SXTangierController *)self textRenderCollector];
-  v9 = [v6 storage];
-  v10 = [v8 infoForStorage:v9 selection:v7];
+  selection = [v6 selection];
+  textRenderCollector = [(SXTangierController *)self textRenderCollector];
+  storage = [v6 storage];
+  v10 = [textRenderCollector infoForStorage:storage selection:selection];
 
-  v11 = [v7 start];
-  if (v11 >= [v7 end])
+  start = [selection start];
+  if (start >= [selection end])
   {
     v12 = 0;
     v13 = 0.0;
@@ -1187,8 +1187,8 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
     v13 = 0.0;
     do
     {
-      v14 = [v10 storage];
-      v15 = [v14 characterStyleAtCharIndex:v11 effectiveRange:0];
+      storage2 = [v10 storage];
+      v15 = [storage2 characterStyleAtCharIndex:start effectiveRange:0];
 
       v16 = [v15 valueForProperty:18];
       v17 = v16;
@@ -1199,10 +1199,10 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
         ++v12;
       }
 
-      ++v11;
+      ++start;
     }
 
-    while (v11 < [v7 end]);
+    while (start < [selection end]);
   }
 
   if (v12 <= 1)
@@ -1216,32 +1216,32 @@ uint64_t __44__SXTangierController_updateInfosWithBlock___block_invoke(uint64_t 
   }
 
   v20 = v13 / v19;
-  v21 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   if (v20 > 0.5)
   {
-    v22 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
 
-    v21 = v22;
+    whiteColor = blackColor;
   }
 
-  return v21;
+  return whiteColor;
 }
 
-- (id)searchWithContext:(id)a3
+- (id)searchWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SXTangierController *)self textRenderCollector];
+  contextCopy = context;
+  textRenderCollector = [(SXTangierController *)self textRenderCollector];
   v6 = [(SXTangierController *)self icc];
-  v7 = [v5 searchWithContext:v4 icc:v6];
+  v7 = [textRenderCollector searchWithContext:contextCopy icc:v6];
 
   return v7;
 }
 
 - (void)reloadSearch
 {
-  v4 = [(SXTangierController *)self textRenderCollector];
+  textRenderCollector = [(SXTangierController *)self textRenderCollector];
   v3 = [(SXTangierController *)self icc];
-  [v4 reloadWithICC:v3];
+  [textRenderCollector reloadWithICC:v3];
 }
 
 - (SXTangierControllerDelegate)delegate

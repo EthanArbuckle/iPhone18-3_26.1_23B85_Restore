@@ -1,17 +1,17 @@
 @interface BRDarwinNotifySender
-- (id)initForEventName:(id)a3;
+- (id)initForEventName:(id)name;
 - (unint64_t)lastState;
 - (void)dealloc;
 - (void)invalidate;
-- (void)notifyChangedState:(unint64_t)a3;
+- (void)notifyChangedState:(unint64_t)state;
 @end
 
 @implementation BRDarwinNotifySender
 
-- (id)initForEventName:(id)a3
+- (id)initForEventName:(id)name
 {
-  v5 = a3;
-  if (![v5 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     v7 = brc_bread_crumbs("[BRDarwinNotifySender initForEventName:]", 23);
     v8 = brc_default_log(0, 0);
@@ -30,7 +30,7 @@
   if (v6)
   {
     v6->_token = -1;
-    objc_storeStrong(&v6->_eventName, a3);
+    objc_storeStrong(&v6->_eventName, name);
     if (brc_notify_register_check([(NSString *)self->_eventName UTF8String], &self->_token))
     {
       v7 = brc_bread_crumbs("[BRDarwinNotifySender initForEventName:]", 31);
@@ -42,16 +42,16 @@
 
 LABEL_9:
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
   }
 
   self = self;
-  v9 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -78,7 +78,7 @@ LABEL_10:
   objc_sync_exit(v2);
 }
 
-- (void)notifyChangedState:(unint64_t)a3
+- (void)notifyChangedState:(unint64_t)state
 {
   obj = self;
   objc_sync_enter(obj);
@@ -90,21 +90,21 @@ LABEL_10:
 
   else
   {
-    obj->_lastState = a3;
+    obj->_lastState = state;
     objc_sync_exit(obj);
 
-    v5 = [(NSString *)obj->_eventName UTF8String];
+    uTF8String = [(NSString *)obj->_eventName UTF8String];
 
-    brc_notify_set_state_and_post(token, a3, v5);
+    brc_notify_set_state_and_post(token, state, uTF8String);
   }
 }
 
 - (unint64_t)lastState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastState = v2->_lastState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastState = selfCopy->_lastState;
+  objc_sync_exit(selfCopy);
 
   return lastState;
 }

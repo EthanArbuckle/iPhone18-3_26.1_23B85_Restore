@@ -1,9 +1,9 @@
 @interface FlyoverStatusDebouncer
 - (StatusDebouncerDelegate)delegate;
-- (double)minimumDurationForOutput:(unint64_t)a3;
-- (void)setInput:(unint64_t)a3;
-- (void)setOutput:(unint64_t)a3;
-- (void)timerFired:(id)a3;
+- (double)minimumDurationForOutput:(unint64_t)output;
+- (void)setInput:(unint64_t)input;
+- (void)setOutput:(unint64_t)output;
+- (void)timerFired:(id)fired;
 - (void)updateOutput;
 @end
 
@@ -16,10 +16,10 @@
   return WeakRetained;
 }
 
-- (double)minimumDurationForOutput:(unint64_t)a3
+- (double)minimumDurationForOutput:(unint64_t)output
 {
   result = 0.0;
-  if (a3 - 2 < 3)
+  if (output - 2 < 3)
   {
     return 2.0;
   }
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   timer = self->_timer;
   self->_timer = 0;
@@ -37,16 +37,16 @@
 
 - (void)updateOutput
 {
-  v3 = [(FlyoverStatusDebouncer *)self input];
+  input = [(FlyoverStatusDebouncer *)self input];
 
-  [(FlyoverStatusDebouncer *)self setOutput:v3];
+  [(FlyoverStatusDebouncer *)self setOutput:input];
 }
 
-- (void)setOutput:(unint64_t)a3
+- (void)setOutput:(unint64_t)output
 {
-  if (self->_output != a3)
+  if (self->_output != output)
   {
-    self->_output = a3;
+    self->_output = output;
     [(FlyoverStatusDebouncer *)self minimumDurationForOutput:?];
     if (v4 > 0.0)
     {
@@ -55,22 +55,22 @@
       self->_timer = v5;
     }
 
-    v7 = [(FlyoverStatusDebouncer *)self delegate];
+    delegate = [(FlyoverStatusDebouncer *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(FlyoverStatusDebouncer *)self delegate];
-      [v9 statusDebouncerOutputDidChange:self];
+      delegate2 = [(FlyoverStatusDebouncer *)self delegate];
+      [delegate2 statusDebouncerOutputDidChange:self];
     }
   }
 }
 
-- (void)setInput:(unint64_t)a3
+- (void)setInput:(unint64_t)input
 {
-  if (self->_input != a3)
+  if (self->_input != input)
   {
-    self->_input = a3;
+    self->_input = input;
     if (!self->_timer)
     {
       [(FlyoverStatusDebouncer *)self updateOutput];

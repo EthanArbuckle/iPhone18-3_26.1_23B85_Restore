@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilFstUtil_TopResults
-- (OrgApacheLuceneUtilFstUtil_TopResults)initWithBoolean:(BOOL)a3 withJavaUtilList:(id)a4;
+- (OrgApacheLuceneUtilFstUtil_TopResults)initWithBoolean:(BOOL)boolean withJavaUtilList:(id)list;
 - (id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstUtil_TopResults
 
-- (OrgApacheLuceneUtilFstUtil_TopResults)initWithBoolean:(BOOL)a3 withJavaUtilList:(id)a4
+- (OrgApacheLuceneUtilFstUtil_TopResults)initWithBoolean:(BOOL)boolean withJavaUtilList:(id)list
 {
-  JreStrongAssign(&self->topN_, a4);
-  self->isComplete_ = a3;
+  JreStrongAssign(&self->topN_, list);
+  self->isComplete_ = boolean;
   return self;
 }
 

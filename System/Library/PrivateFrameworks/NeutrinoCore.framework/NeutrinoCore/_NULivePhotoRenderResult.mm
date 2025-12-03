@@ -1,14 +1,14 @@
 @interface _NULivePhotoRenderResult
 - (void)dealloc;
-- (void)setPhotoTime:(id *)a3;
+- (void)setPhotoTime:(id *)time;
 @end
 
 @implementation _NULivePhotoRenderResult
 
-- (void)setPhotoTime:(id *)a3
+- (void)setPhotoTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_photoTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_photoTime.value = *&time->var0;
   self->_photoTime.epoch = var3;
 }
 

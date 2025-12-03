@@ -1,9 +1,9 @@
 @interface HMMTRAttestationStatus
 - (HMMTRAccessoryServer)accessoryServer;
-- (HMMTRAttestationStatus)initWithQueue:(id)a3 uiDialogPresenter:(id)a4 failSafeExpiryTimeoutSecs:(id)a5;
-- (void)_requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4;
-- (void)deviceAttestationCompletedForController:(id)a3 opaqueDeviceHandle:(void *)a4 attestationDeviceInfo:(id)a5 error:(id)a6;
-- (void)populateDelegate:(id)a3;
+- (HMMTRAttestationStatus)initWithQueue:(id)queue uiDialogPresenter:(id)presenter failSafeExpiryTimeoutSecs:(id)secs;
+- (void)_requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler;
+- (void)deviceAttestationCompletedForController:(id)controller opaqueDeviceHandle:(void *)handle attestationDeviceInfo:(id)info error:(id)error;
+- (void)populateDelegate:(id)delegate;
 @end
 
 @implementation HMMTRAttestationStatus
@@ -15,33 +15,33 @@
   return WeakRetained;
 }
 
-- (void)populateDelegate:(id)a3
+- (void)populateDelegate:(id)delegate
 {
   failSafeExpiryTimeoutSecs = self->_failSafeExpiryTimeoutSecs;
-  v5 = a3;
-  [v5 setFailSafeExpiryTimeoutSecs:failSafeExpiryTimeoutSecs];
-  [v5 setDeviceAttestationDelegate:self];
+  delegateCopy = delegate;
+  [delegateCopy setFailSafeExpiryTimeoutSecs:failSafeExpiryTimeoutSecs];
+  [delegateCopy setDeviceAttestationDelegate:self];
 }
 
-- (void)deviceAttestationCompletedForController:(id)a3 opaqueDeviceHandle:(void *)a4 attestationDeviceInfo:(id)a5 error:(id)a6
+- (void)deviceAttestationCompletedForController:(id)controller opaqueDeviceHandle:(void *)handle attestationDeviceInfo:(id)info error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HMMTRAttestationStatus *)self clientQueue];
+  controllerCopy = controller;
+  infoCopy = info;
+  errorCopy = error;
+  clientQueue = [(HMMTRAttestationStatus *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqueDeviceHandle_attestationDeviceInfo_error___block_invoke;
   block[3] = &unk_2786F0A30;
   block[4] = self;
-  v18 = v12;
-  v20 = v11;
-  v21 = a4;
-  v19 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  dispatch_async(v13, block);
+  v18 = errorCopy;
+  v20 = infoCopy;
+  handleCopy = handle;
+  v19 = controllerCopy;
+  v14 = infoCopy;
+  v15 = controllerCopy;
+  v16 = errorCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqueDeviceHandle_attestationDeviceInfo_error___block_invoke(uint64_t a1)
@@ -492,13 +492,13 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4
+- (void)_requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -509,13 +509,13 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMMTRAttestationStatus *)v9 userAuthorizationDelegate];
+  userAuthorizationDelegate = [(HMMTRAttestationStatus *)selfCopy userAuthorizationDelegate];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = v9;
+  v14 = selfCopy;
   v15 = HMFGetOSLogHandle();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
-  if (v12)
+  if (userAuthorizationDelegate)
   {
     if (v16)
     {
@@ -526,7 +526,7 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
     }
 
     objc_autoreleasePoolPop(v13);
-    v18 = [(HMMTRAttestationStatus *)v14 userAuthorizationDelegate];
+    userAuthorizationDelegate2 = [(HMMTRAttestationStatus *)v14 userAuthorizationDelegate];
     v19 = objc_opt_respondsToSelector();
     v20 = objc_autoreleasePoolPush();
     v21 = v14;
@@ -543,14 +543,14 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
       }
 
       objc_autoreleasePoolPop(v20);
-      v25 = [(HMMTRAttestationStatus *)v21 accessoryServer];
+      accessoryServer = [(HMMTRAttestationStatus *)v21 accessoryServer];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __85__HMMTRAttestationStatus__requestUserPermissionForBridgeAccessory_completionHandler___block_invoke;
       v29[3] = &unk_2786F08F0;
       v29[4] = v21;
-      v30 = v7;
-      [v18 requestUserPermissionForBridgeAccessory:v25 completionHandler:v29];
+      v30 = handlerCopy;
+      [userAuthorizationDelegate2 requestUserPermissionForBridgeAccessory:accessoryServer completionHandler:v29];
     }
 
     else
@@ -564,8 +564,8 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
       }
 
       objc_autoreleasePoolPop(v20);
-      v25 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
-      (*(v7 + 2))(v7, 1, v25);
+      accessoryServer = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+      (*(handlerCopy + 2))(handlerCopy, 1, accessoryServer);
     }
   }
 
@@ -580,7 +580,7 @@ void __113__HMMTRAttestationStatus_deviceAttestationCompletedForController_opaqu
     }
 
     objc_autoreleasePoolPop(v13);
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -628,20 +628,20 @@ void __85__HMMTRAttestationStatus__requestUserPermissionForBridgeAccessory_compl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRAttestationStatus)initWithQueue:(id)a3 uiDialogPresenter:(id)a4 failSafeExpiryTimeoutSecs:(id)a5
+- (HMMTRAttestationStatus)initWithQueue:(id)queue uiDialogPresenter:(id)presenter failSafeExpiryTimeoutSecs:(id)secs
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  presenterCopy = presenter;
+  secsCopy = secs;
   v15.receiver = self;
   v15.super_class = HMMTRAttestationStatus;
   v12 = [(HMMTRAttestationStatus *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_failSafeExpiryTimeoutSecs, a5);
-    objc_storeStrong(&v13->_clientQueue, a3);
-    objc_storeStrong(&v13->_uiDialogPresenter, a4);
+    objc_storeStrong(&v12->_failSafeExpiryTimeoutSecs, secs);
+    objc_storeStrong(&v13->_clientQueue, queue);
+    objc_storeStrong(&v13->_uiDialogPresenter, presenter);
   }
 
   return v13;

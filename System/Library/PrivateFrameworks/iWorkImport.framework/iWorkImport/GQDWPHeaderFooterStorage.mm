@@ -1,11 +1,11 @@
 @interface GQDWPHeaderFooterStorage
-- (GQDWPHeaderFooterStorage)initWithName:(__CFString *)a3;
+- (GQDWPHeaderFooterStorage)initWithName:(__CFString *)name;
 - (void)dealloc;
 @end
 
 @implementation GQDWPHeaderFooterStorage
 
-- (GQDWPHeaderFooterStorage)initWithName:(__CFString *)a3
+- (GQDWPHeaderFooterStorage)initWithName:(__CFString *)name
 {
   v7.receiver = self;
   v7.super_class = GQDWPHeaderFooterStorage;
@@ -13,10 +13,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->mName = a3;
-    if (a3)
+    v4->mName = name;
+    if (name)
     {
-      CFRetain(a3);
+      CFRetain(name);
     }
   }
 

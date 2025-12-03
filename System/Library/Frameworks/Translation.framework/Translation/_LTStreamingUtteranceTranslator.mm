@@ -1,26 +1,26 @@
 @interface _LTStreamingUtteranceTranslator
 - (_LTStreamingUtteranceTranslating)utteranceTranslator;
-- (_LTStreamingUtteranceTranslator)initWithLocalePair:(id)a3 offlineMTModel:(id)a4 taskHint:(int64_t)a5;
+- (_LTStreamingUtteranceTranslator)initWithLocalePair:(id)pair offlineMTModel:(id)model taskHint:(int64_t)hint;
 - (_LTStreamingUtteranceTranslatorDelegate)delegate;
-- (void)_checkSpeakableSegmentsForResult:(id)a3 expectedGeneration:(int64_t)a4;
-- (void)_handleError:(id)a3;
-- (void)addInput:(id)a3;
+- (void)_checkSpeakableSegmentsForResult:(id)result expectedGeneration:(int64_t)generation;
+- (void)_handleError:(id)error;
+- (void)addInput:(id)input;
 - (void)inputDidFinish;
-- (void)translateInput:(id)a3 withGeneration:(int64_t)a4 completion:(id)a5;
+- (void)translateInput:(id)input withGeneration:(int64_t)generation completion:(id)completion;
 @end
 
 @implementation _LTStreamingUtteranceTranslator
 
-- (_LTStreamingUtteranceTranslator)initWithLocalePair:(id)a3 offlineMTModel:(id)a4 taskHint:(int64_t)a5
+- (_LTStreamingUtteranceTranslator)initWithLocalePair:(id)pair offlineMTModel:(id)model taskHint:(int64_t)hint
 {
-  v8 = a3;
-  v9 = a4;
+  pairCopy = pair;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = _LTStreamingUtteranceTranslator;
   v10 = [(_LTStreamingUtteranceTranslator *)&v21 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [pairCopy copy];
     localePair = v10->_localePair;
     v10->_localePair = v11;
 
@@ -32,22 +32,22 @@
     translator = v10->_translator;
     v10->_translator = v15;
 
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionID = v10->_sessionID;
-    v10->_sessionID = v17;
+    v10->_sessionID = uUID;
 
     objc_storeWeak(&v10->_utteranceTranslator, v10);
-    objc_storeStrong(&v10->_offlineMTModelURL, a4);
-    v10->_taskHint = a5;
+    objc_storeStrong(&v10->_offlineMTModelURL, model);
+    v10->_taskHint = hint;
     v19 = v10;
   }
 
   return v10;
 }
 
-- (void)addInput:(id)a3
+- (void)addInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if (self->_isFinished)
   {
     v5 = _LTOSLogSpeech();
@@ -66,7 +66,7 @@
     block[2] = __44___LTStreamingUtteranceTranslator_addInput___block_invoke;
     block[3] = &unk_278B6CD08;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = inputCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v9);
@@ -88,34 +88,34 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(_LTStreamingUtteranceTranslator *)self delegate];
+  delegate = [(_LTStreamingUtteranceTranslator *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 translator:self didEncounterError:v5];
+    [delegate translator:self didEncounterError:errorCopy];
   }
 }
 
-- (void)_checkSpeakableSegmentsForResult:(id)a3 expectedGeneration:(int64_t)a4
+- (void)_checkSpeakableSegmentsForResult:(id)result expectedGeneration:(int64_t)generation
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_queue);
   v7 = self->_spokenSegments;
-  v8 = [v6 stableSegments];
+  stableSegments = [resultCopy stableSegments];
   v9 = _LTOSLogStabilization();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(_LTStreamingUtteranceTranslator *)v9 _checkSpeakableSegmentsForResult:v8 expectedGeneration:v7];
+    [(_LTStreamingUtteranceTranslator *)v9 _checkSpeakableSegmentsForResult:stableSegments expectedGeneration:v7];
   }
 
-  v10 = [v6 output];
-  v11 = [v10 isFinal];
+  output = [resultCopy output];
+  isFinal = [output isFinal];
 
-  if (v11)
+  if (isFinal)
   {
     spokenSegments = self->_spokenSegments;
     self->_spokenSegments = 0;
@@ -127,21 +127,21 @@
     }
   }
 
-  if (self->_lastSpokenGeneration <= a4)
+  if (self->_lastSpokenGeneration <= generation)
   {
-    if (![(NSArray *)v7 isEqualToArray:v8])
+    if (![(NSArray *)v7 isEqualToArray:stableSegments])
     {
       v16 = [(NSArray *)v7 count];
-      if (v16 <= [v8 count])
+      if (v16 <= [stableSegments count])
       {
-        v34 = v11;
+        v34 = isFinal;
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v36 = v6;
-        v19 = [v6 output];
-        v20 = [v19 locale];
+        v36 = resultCopy;
+        output2 = [resultCopy output];
+        locale = [output2 locale];
 
-        v35 = v8;
-        v21 = [v8 subarrayWithRange:{-[NSArray count](v7, "count"), objc_msgSend(v8, "count") - -[NSArray count](v7, "count")}];
+        v35 = stableSegments;
+        v21 = [stableSegments subarrayWithRange:{-[NSArray count](v7, "count"), objc_msgSend(stableSegments, "count") - -[NSArray count](v7, "count")}];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
@@ -161,7 +161,7 @@
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [[_LTStreamingSpeakableOutput alloc] initWithText:*(*(&v38 + 1) + 8 * i) locale:v20];
+              v26 = [[_LTStreamingSpeakableOutput alloc] initWithText:*(*(&v38 + 1) + 8 * i) locale:locale];
               if (objc_opt_respondsToSelector())
               {
                 [WeakRetained translator:self didProduceSpeakableOutput:v26];
@@ -172,7 +172,7 @@
                   [(_LTStreamingSpeakableOutput *)v26 translatedText];
                   v30 = v29 = self;
                   *buf = 138739971;
-                  v44 = v30;
+                  generationCopy = v30;
                   _os_log_impl(&dword_23AAF5000, v28, OS_LOG_TYPE_INFO, "Producing spoken output: %{sensitive}@", buf, 0xCu);
 
                   self = v29;
@@ -187,7 +187,7 @@
           while (v23);
         }
 
-        v8 = v35;
+        stableSegments = v35;
         if ((v34 & 1) == 0)
         {
           v31 = [v35 copy];
@@ -195,7 +195,7 @@
           self->_spokenSegments = v31;
         }
 
-        v6 = v36;
+        resultCopy = v36;
         self->_lastSpokenGeneration = [v36 generation];
       }
 
@@ -217,7 +217,7 @@
     {
       currentGeneration = self->_currentGeneration;
       *buf = 134218240;
-      v44 = a4;
+      generationCopy = generation;
       v45 = 2048;
       v46 = currentGeneration;
       _os_log_impl(&dword_23AAF5000, v14, OS_LOG_TYPE_DEFAULT, "Processing older result from generation %zd instead of current generation %zd; ignoring any potential stableSegments since they should have already been spoken", buf, 0x16u);
@@ -227,19 +227,19 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)translateInput:(id)a3 withGeneration:(int64_t)a4 completion:(id)a5
+- (void)translateInput:(id)input withGeneration:(int64_t)generation completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  inputCopy = input;
   v10 = [_LTStabilizationTranslationRequest alloc];
-  v11 = [(_LTStreamingUtteranceTranslator *)self localePair];
-  v13 = [(_LTStabilizationTranslationRequest *)v10 initWithLocalePair:v11 completion:v8];
+  localePair = [(_LTStreamingUtteranceTranslator *)self localePair];
+  v13 = [(_LTStabilizationTranslationRequest *)v10 initWithLocalePair:localePair completion:completionCopy];
 
-  v12 = [(NSUUID *)self->_sessionID UUIDString];
-  [(_LTTranslationRequest *)v13 setSessionID:v12];
+  uUIDString = [(NSUUID *)self->_sessionID UUIDString];
+  [(_LTTranslationRequest *)v13 setSessionID:uUIDString];
 
-  [(_LTStabilizationTranslationRequest *)v13 setInput:v9];
-  [(_LTStabilizationTranslationRequest *)v13 setGeneration:a4];
+  [(_LTStabilizationTranslationRequest *)v13 setInput:inputCopy];
+  [(_LTStabilizationTranslationRequest *)v13 setGeneration:generation];
   [(_LTTranslationRequest *)v13 setTaskHint:self->_taskHint];
   [(_LTTranslationRequest *)v13 set_offlineMTModelURL:self->_offlineMTModelURL];
   [(_LTTranslator *)self->_translator translate:v13];

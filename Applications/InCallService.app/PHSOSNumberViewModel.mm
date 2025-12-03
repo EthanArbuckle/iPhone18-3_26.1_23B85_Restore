@@ -1,21 +1,21 @@
 @interface PHSOSNumberViewModel
-- (PHSOSNumberViewModel)initWithSOSHandle:(id)a3;
+- (PHSOSNumberViewModel)initWithSOSHandle:(id)handle;
 - (id)sosSubtitle;
 - (id)sosTitle;
 @end
 
 @implementation PHSOSNumberViewModel
 
-- (PHSOSNumberViewModel)initWithSOSHandle:(id)a3
+- (PHSOSNumberViewModel)initWithSOSHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = PHSOSNumberViewModel;
   v5 = [(PHSOSNumberViewModel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PHSOSNumberViewModel *)v5 setSosHandle:v4];
+    [(PHSOSNumberViewModel *)v5 setSosHandle:handleCopy];
   }
 
   return v6;
@@ -24,20 +24,20 @@
 - (id)sosTitle
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [(PHSOSNumberViewModel *)self sosHandle];
-  v5 = [v4 label];
-  v6 = [v3 localizedStringForKey:v5 value:&stru_100361FD0 table:@"InCallService"];
+  sosHandle = [(PHSOSNumberViewModel *)self sosHandle];
+  label = [sosHandle label];
+  v6 = [v3 localizedStringForKey:label value:&stru_100361FD0 table:@"InCallService"];
 
   return v6;
 }
 
 - (id)sosSubtitle
 {
-  v2 = [(PHSOSNumberViewModel *)self sosHandle];
-  v3 = [v2 handle];
-  v4 = [v3 value];
+  sosHandle = [(PHSOSNumberViewModel *)self sosHandle];
+  handle = [sosHandle handle];
+  value = [handle value];
 
-  return v4;
+  return value;
 }
 
 @end

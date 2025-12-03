@@ -1,22 +1,22 @@
 @interface CPSystemCoordinatorConfigurationTemplatePreference
 - (CPSystemCoordinatorConfigurationTemplatePreference)init;
-- (CPSystemCoordinatorConfigurationTemplatePreference)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CPSystemCoordinatorConfigurationTemplatePreference)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSystemCoordinatorConfigurationTemplatePreference
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SystemCoordinatorConfiguration._SpatialTemplatePreference.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SystemCoordinatorConfiguration._SpatialTemplatePreference.encode(with:)(coderCopy);
 }
 
-- (CPSystemCoordinatorConfigurationTemplatePreference)initWithCoder:(id)a3
+- (CPSystemCoordinatorConfigurationTemplatePreference)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized SystemCoordinatorConfiguration._SpatialTemplatePreference.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized SystemCoordinatorConfiguration._SpatialTemplatePreference.init(coder:)(coderCopy);
 
   return v4;
 }

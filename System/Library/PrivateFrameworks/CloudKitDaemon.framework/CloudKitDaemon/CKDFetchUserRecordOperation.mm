@@ -1,15 +1,15 @@
 @interface CKDFetchUserRecordOperation
 - (id)analyticsPayload;
-- (void)fetchRecordsWithIDs:(id)a3 andFullRecords:(id)a4;
+- (void)fetchRecordsWithIDs:(id)ds andFullRecords:(id)records;
 - (void)main;
 @end
 
 @implementation CKDFetchUserRecordOperation
 
-- (void)fetchRecordsWithIDs:(id)a3 andFullRecords:(id)a4
+- (void)fetchRecordsWithIDs:(id)ds andFullRecords:(id)records
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  recordsCopy = records;
   v8 = [CKDFetchUserRecordURLRequest alloc];
   v10 = objc_msgSend_initWithOperation_(v8, v9, self);
   objc_initWeak(&location, self);
@@ -62,7 +62,7 @@
     v19 = 138544130;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v13;
     v25 = 2112;
@@ -78,17 +78,17 @@
 {
   v38.receiver = self;
   v38.super_class = CKDFetchUserRecordOperation;
-  v3 = [(CKDDatabaseOperation *)&v38 analyticsPayload];
+  analyticsPayload = [(CKDDatabaseOperation *)&v38 analyticsPayload];
   v4 = MEMORY[0x277CCABB0];
   v7 = objc_msgSend_recordIDsToFetch(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
   v12 = objc_msgSend_numberWithUnsignedInteger_(v4, v11, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v13, v12, 0x28387E6C0);
+  objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v13, v12, 0x28387E6C0);
 
   v14 = MEMORY[0x277CCABB0];
   AssetContent = objc_msgSend_shouldFetchAssetContent(self, v15, v16);
   v19 = objc_msgSend_numberWithBool_(v14, v18, AssetContent);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v20, v19, 0x28387E6E0);
+  objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v20, v19, 0x28387E6E0);
 
   v23 = objc_msgSend_desiredKeySet(self, v21, v22);
   v26 = objc_msgSend_count(v23, v24, v25);
@@ -99,10 +99,10 @@
     v30 = objc_msgSend_desiredKeySet(self, v27, v28);
     v33 = objc_msgSend_count(v30, v31, v32);
     v35 = objc_msgSend_numberWithUnsignedInteger_(v29, v34, v33);
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v36, v35, 0x28387E700);
+    objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v36, v35, 0x28387E700);
   }
 
-  return v3;
+  return analyticsPayload;
 }
 
 @end

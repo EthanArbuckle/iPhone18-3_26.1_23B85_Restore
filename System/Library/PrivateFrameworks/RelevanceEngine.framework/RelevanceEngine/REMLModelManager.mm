@@ -1,75 +1,75 @@
 @interface REMLModelManager
-- (BOOL)_loadModelAtPath:(id)a3 mlFeatures:(id)a4 checkModelVersion:(BOOL)a5;
-- (BOOL)_saveModelToDisk:(id *)a3;
-- (REMLModelManager)initWithRelevanceEngine:(id)a3;
-- (id)_createOrderFeatureListFromModelFileURL:(id)a3 mlFeatures:(id)a4;
-- (id)comparatorWithRules:(id)a3;
-- (id)createOutputFeatureFromDouble:(double)a3 error:(id *)a4;
-- (id)predictionForLogicalElement:(id)a3;
+- (BOOL)_loadModelAtPath:(id)path mlFeatures:(id)features checkModelVersion:(BOOL)version;
+- (BOOL)_saveModelToDisk:(id *)disk;
+- (REMLModelManager)initWithRelevanceEngine:(id)engine;
+- (id)_createOrderFeatureListFromModelFileURL:(id)l mlFeatures:(id)features;
+- (id)comparatorWithRules:(id)rules;
+- (id)createOutputFeatureFromDouble:(double)double error:(id *)error;
+- (id)predictionForLogicalElement:(id)element;
 - (id)sentimentAnalyzer;
 - (void)_logMetrics;
 - (void)_notifyObserversThatModelUpdated;
-- (void)_saveDataStoresToURL:(id)a3;
-- (void)addDataStore:(id)a3;
+- (void)_saveDataStoresToURL:(id)l;
+- (void)addDataStore:(id)store;
 - (void)dealloc;
 - (void)flushTraining;
 - (void)manuallySaveModel;
-- (void)performModelClearWithCompletion:(id)a3;
-- (void)performTrainingWithFeatureMaps:(id)a3 content:(id)a4 events:(id)a5 interactions:(id)a6 purgeCaches:(BOOL)a7 completion:(id)a8;
+- (void)performModelClearWithCompletion:(id)completion;
+- (void)performTrainingWithFeatureMaps:(id)maps content:(id)content events:(id)events interactions:(id)interactions purgeCaches:(BOOL)caches completion:(id)completion;
 @end
 
 @implementation REMLModelManager
 
-- (REMLModelManager)initWithRelevanceEngine:(id)a3
+- (REMLModelManager)initWithRelevanceEngine:(id)engine
 {
   v90 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  engineCopy = engine;
   v85.receiver = self;
   v85.super_class = REMLModelManager;
-  v5 = [(RERelevanceEngineSubsystem *)&v85 initWithRelevanceEngine:v4];
+  v5 = [(RERelevanceEngineSubsystem *)&v85 initWithRelevanceEngine:engineCopy];
   if (v5)
   {
-    v6 = [v4 configuration];
-    v7 = [v6 modelFileURL];
-    v8 = [v7 path];
+    configuration = [engineCopy configuration];
+    modelFileURL = [configuration modelFileURL];
+    path = [modelFileURL path];
     modelFileLocation = v5->_modelFileLocation;
-    v5->_modelFileLocation = v8;
+    v5->_modelFileLocation = path;
 
-    v10 = [v4 configuration];
-    v5->_modelStorageBehavior = [v10 modelStorageBehavior];
+    configuration2 = [engineCopy configuration];
+    v5->_modelStorageBehavior = [configuration2 modelStorageBehavior];
 
-    v11 = [v4 configuration];
-    v12 = [v11 metricsRecorder];
+    configuration3 = [engineCopy configuration];
+    metricsRecorder = [configuration3 metricsRecorder];
     metricsRecoder = v5->_metricsRecoder;
-    v5->_metricsRecoder = v12;
+    v5->_metricsRecoder = metricsRecorder;
 
-    v14 = [v4 configuration];
-    v5->_elementsHiddenByDefault = [v14 elementsHiddenByDefault];
+    configuration4 = [engineCopy configuration];
+    v5->_elementsHiddenByDefault = [configuration4 elementsHiddenByDefault];
 
     v15 = objc_alloc_init(REObserverStore);
     observers = v5->_observers;
     v5->_observers = v15;
 
-    v17 = [v4 configuration];
-    v5->_modelVersionNumber = ([v17 modelVersion] << 8) + 195936478;
+    configuration5 = [engineCopy configuration];
+    v5->_modelVersionNumber = ([configuration5 modelVersion] << 8) + 195936478;
 
     v18 = objc_alloc_init(REObserverStore);
     dataStores = v5->_dataStores;
     v5->_dataStores = v18;
 
-    v20 = [v4 mlFeatures];
-    v21 = [MEMORY[0x277CBEAA8] date];
+    mlFeatures = [engineCopy mlFeatures];
+    date = [MEMORY[0x277CBEAA8] date];
     lastCacheResetDate = v5->_lastCacheResetDate;
-    v5->_lastCacheResetDate = v21;
+    v5->_lastCacheResetDate = date;
 
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v23 = [v4 configuration];
-    v24 = [v23 interactionDescriptors];
+    configuration6 = [engineCopy configuration];
+    interactionDescriptors = [configuration6 interactionDescriptors];
 
-    v25 = [v24 countByEnumeratingWithState:&v81 objects:v89 count:16];
+    v25 = [interactionDescriptors countByEnumeratingWithState:&v81 objects:v89 count:16];
     if (v25)
     {
       v26 = v25;
@@ -81,14 +81,14 @@
         {
           if (*v82 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(interactionDescriptors);
           }
 
           [*(*(&v81 + 1) + 8 * i) weight];
           v28 = v28 + v30;
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v81 objects:v89 count:16];
+        v26 = [interactionDescriptors countByEnumeratingWithState:&v81 objects:v89 count:16];
       }
 
       while (v26);
@@ -106,8 +106,8 @@
 
     v37 = 0x27D84B000;
     v38 = 0x27D84B000;
-    v76 = v20;
-    if ([(REMLModelManager *)v5 _loadModelAtPath:v5->_modelFileLocation mlFeatures:v20 checkModelVersion:1])
+    v76 = mlFeatures;
+    if ([(REMLModelManager *)v5 _loadModelAtPath:v5->_modelFileLocation mlFeatures:mlFeatures checkModelVersion:1])
     {
       v5->_validModel = 1;
     }
@@ -121,15 +121,15 @@
         _os_log_impl(&dword_22859F000, v39, OS_LOG_TYPE_DEFAULT, "Falling back to base model", buf, 2u);
       }
 
-      v40 = [v4 configuration];
-      v41 = [v40 baseModelFileURL];
-      v42 = [v41 path];
-      v43 = [(REMLModelManager *)v5 _loadModelAtPath:v42 mlFeatures:v20 checkModelVersion:0];
+      configuration7 = [engineCopy configuration];
+      baseModelFileURL = [configuration7 baseModelFileURL];
+      path2 = [baseModelFileURL path];
+      v43 = [(REMLModelManager *)v5 _loadModelAtPath:path2 mlFeatures:mlFeatures checkModelVersion:0];
 
       v37 = 0x27D84B000;
       if (!v43)
       {
-        v75 = v4;
+        v75 = engineCopy;
         v44 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v76, "count")}];
         v77 = 0u;
         v78 = 0u;
@@ -181,15 +181,15 @@
 
         v54 = [REMLLinearModel alloc];
         v55 = [REFeatureSet featureSetWithFeatures:v5->_orderedFeatures];
-        v56 = [(RERelevanceEngineSubsystem *)v5 relevanceEngine];
-        v57 = [v56 configuration];
-        v58 = [v57 interactionDescriptors];
-        v59 = [(REMLLinearModel *)v54 initWithFeatureSet:v55 interactionDescriptors:v58];
+        relevanceEngine = [(RERelevanceEngineSubsystem *)v5 relevanceEngine];
+        configuration8 = [relevanceEngine configuration];
+        interactionDescriptors2 = [configuration8 interactionDescriptors];
+        v59 = [(REMLLinearModel *)v54 initWithFeatureSet:v55 interactionDescriptors:interactionDescriptors2];
         v37 = 0x27D84B000uLL;
         model = v5->_model;
         v5->_model = v59;
 
-        v4 = v75;
+        engineCopy = v75;
       }
     }
 
@@ -215,11 +215,11 @@
     trainingQueue = v5->_trainingQueue;
     v5->_trainingQueue = v68;
 
-    v70 = [v4 logger];
-    [v70 addLoggable:v5];
+    logger = [engineCopy logger];
+    [logger addLoggable:v5];
 
-    v71 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v71 addObserver:v5 selector:sel__logMetrics name:@"REDidCollectMetrics" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__logMetrics name:@"REDidCollectMetrics" object:0];
   }
 
   v72 = *MEMORY[0x277D85DE8];
@@ -228,12 +228,12 @@
 
 - (void)dealloc
 {
-  v3 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v4 = [v3 logger];
-  [v4 removeLoggable:self];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  logger = [relevanceEngine logger];
+  [logger removeLoggable:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = REMLModelManager;
@@ -251,29 +251,29 @@
   dispatch_async(trainingQueue, block);
 }
 
-- (void)addDataStore:(id)a3
+- (void)addDataStore:(id)store
 {
-  v4 = a3;
-  [(REObserverStore *)self->_dataStores addObserver:v4];
+  storeCopy = store;
+  [(REObserverStore *)self->_dataStores addObserver:storeCopy];
   if (self->_validModel)
   {
-    v5 = [v4 dataStoreKey];
+    dataStoreKey = [storeCopy dataStoreKey];
     v6 = [(NSString *)self->_modelFileLocation stringByAppendingPathComponent:@"DataStores"];
-    v7 = [v6 stringByAppendingPathComponent:v5];
+    v7 = [v6 stringByAppendingPathComponent:dataStoreKey];
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v8 fileExistsAtPath:v7];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:v7];
 
     if (v9)
     {
       v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
       v11 = 0;
-      [v4 modelManager:self loadDataStoreFromURL:v10 error:&v11];
+      [storeCopy modelManager:self loadDataStoreFromURL:v10 error:&v11];
     }
   }
 }
 
-- (void)_saveDataStoresToURL:(id)a3
+- (void)_saveDataStoresToURL:(id)l
 {
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_modelFileLocation];
   v5 = [v4 URLByAppendingPathComponent:@"DataStores"];
@@ -284,7 +284,7 @@
   v8[2] = __41__REMLModelManager__saveDataStoresToURL___block_invoke;
   v8[3] = &unk_2785FB470;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   [(REObserverStore *)dataStores enumerateObserversWithBlock:v8];
 }
@@ -303,21 +303,21 @@ void __41__REMLModelManager__saveDataStoresToURL___block_invoke(uint64_t a1, voi
   [v3 modelManager:v8 saveDataStoreToURL:v5 error:&v9];
 }
 
-- (BOOL)_loadModelAtPath:(id)a3 mlFeatures:(id)a4 checkModelVersion:(BOOL)a5
+- (BOOL)_loadModelAtPath:(id)path mlFeatures:(id)features checkModelVersion:(BOOL)version
 {
-  v5 = a5;
+  versionCopy = version;
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = v8;
-  if (a3)
+  featuresCopy = features;
+  v9 = featuresCopy;
+  if (path)
   {
-    v84 = v8;
-    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+    v84 = featuresCopy;
+    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
     v11 = [v10 URLByAppendingPathComponent:@"model"];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v11 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v11 path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     [v11 URLByAppendingPathComponent:@"version"];
     v83 = v90[1] = 0;
@@ -333,14 +333,14 @@ void __41__REMLModelManager__saveDataStoresToURL___block_invoke(uint64_t a1, voi
       v16 = 1;
     }
 
-    if (v16 || !v5)
+    if (v16 || !versionCopy)
     {
-      if (!v15 && v5)
+      if (!v15 && versionCopy)
       {
-        v18 = [v83 absoluteString];
+        absoluteString = [v83 absoluteString];
         v91 = 0;
-        v19 = [MEMORY[0x277CCAA00] defaultManager];
-        v20 = [v19 fileExistsAtPath:v18 isDirectory:&v91];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        v20 = [defaultManager2 fileExistsAtPath:absoluteString isDirectory:&v91];
 
         v21 = v91;
         v22 = 0;
@@ -366,16 +366,16 @@ LABEL_22:
     else
     {
       v25 = v11;
-      v26 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v27 = [v15 componentsSeparatedByCharactersInSet:v26];
-      v28 = [v27 firstObject];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      v27 = [v15 componentsSeparatedByCharactersInSet:newlineCharacterSet];
+      firstObject = [v27 firstObject];
 
-      v15 = [v28 stringByReplacingOccurrencesOfString:@"Version: " withString:&stru_283B97458];
+      v15 = [firstObject stringByReplacingOccurrencesOfString:@"Version: " withString:&stru_283B97458];
 
-      v29 = [v15 longLongValue];
-      if (v29 != self->_modelVersionNumber)
+      longLongValue = [v15 longLongValue];
+      if (longLongValue != self->_modelVersionNumber)
       {
-        v32 = v29;
+        v32 = longLongValue;
         v33 = RELogForDomain(4);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -399,10 +399,10 @@ LABEL_26:
         }
 
         v37 = [REFeatureSet featureSetWithFeatures:orderedFeatures];
-        v38 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-        v39 = [v38 configuration];
-        v40 = [v39 interactionDescriptors];
-        v41 = [(REMLLinearModel *)v35 initWithFeatureSet:v37 interactionDescriptors:v40];
+        relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+        configuration = [relevanceEngine configuration];
+        interactionDescriptors = [configuration interactionDescriptors];
+        v41 = [(REMLLinearModel *)v35 initWithFeatureSet:v37 interactionDescriptors:interactionDescriptors];
         model = self->_model;
         self->_model = v41;
 
@@ -410,17 +410,17 @@ LABEL_26:
         v82 = v34;
         if (v22)
         {
-          v43 = [v34 path];
-          v44 = [(REMLLinearModel *)self->_model requiresDirectory];
+          path2 = [v34 path];
+          requiresDirectory = [(REMLLinearModel *)self->_model requiresDirectory];
           v91 = 0;
           v45 = MEMORY[0x277CCAA00];
-          v46 = v43;
-          v47 = [v45 defaultManager];
-          v48 = [v47 fileExistsAtPath:v46 isDirectory:&v91];
+          v46 = path2;
+          defaultManager3 = [v45 defaultManager];
+          v48 = [defaultManager3 fileExistsAtPath:v46 isDirectory:&v91];
 
           v49 = v91;
           v24 = 1;
-          if (v48 && v49 == v44)
+          if (v48 && v49 == requiresDirectory)
           {
             v50 = self->_model;
             v90[0] = v81;
@@ -461,9 +461,9 @@ LABEL_38:
                   }
 
                   v59 = *(*(&v86 + 1) + 8 * i);
-                  v60 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-                  v61 = [v60 rootFeatures];
-                  LODWORD(v59) = [v61 containsFeature:v59];
+                  relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+                  rootFeatures = [relevanceEngine2 rootFeatures];
+                  LODWORD(v59) = [rootFeatures containsFeature:v59];
 
                   if (v59)
                   {
@@ -494,11 +494,11 @@ LABEL_48:
               v65 = v78;
               if (v24)
               {
-                v66 = [v80 path];
-                v67 = [v66 stringByAppendingPathComponent:@"content.ctx"];
+                path3 = [v80 path];
+                v67 = [path3 stringByAppendingPathComponent:@"content.ctx"];
 
-                v68 = [MEMORY[0x277CCAA00] defaultManager];
-                v69 = [v68 fileExistsAtPath:v67];
+                defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+                v69 = [defaultManager4 fileExistsAtPath:v67];
 
                 if (v69)
                 {
@@ -584,17 +584,17 @@ LABEL_61:
   return v24;
 }
 
-- (id)_createOrderFeatureListFromModelFileURL:(id)a3 mlFeatures:(id)a4
+- (id)_createOrderFeatureListFromModelFileURL:(id)l mlFeatures:(id)features
 {
   v80 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  lCopy = l;
+  featuresCopy = features;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v8 = v6;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v9)
   {
@@ -610,8 +610,8 @@ LABEL_61:
         }
 
         v13 = *(*(&v71 + 1) + 8 * i);
-        v14 = [v13 name];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        name = [v13 name];
+        [dictionary setObject:v13 forKeyedSubscript:name];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v71 objects:v79 count:16];
@@ -622,10 +622,10 @@ LABEL_61:
 
   v15 = [v8 mutableCopy];
   v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v17 = [v5 URLByAppendingPathComponent:@"features.dat"];
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v17 path];
-  v20 = [v18 fileExistsAtPath:v19];
+  v17 = [lCopy URLByAppendingPathComponent:@"features.dat"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v17 path];
+  v20 = [defaultManager fileExistsAtPath:path];
 
   v55 = v15;
   if (v20)
@@ -637,15 +637,15 @@ LABEL_61:
     {
       v50 = v17;
       v51 = v8;
-      v52 = v5;
+      v52 = lCopy;
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
       v22 = 0x277CCA000uLL;
-      v23 = [MEMORY[0x277CCA900] newlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
       v49 = v21;
-      v24 = [v21 componentsSeparatedByCharactersInSet:v23];
+      v24 = [v21 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
       obj = v24;
       v58 = [v24 countByEnumeratingWithState:&v66 objects:v78 count:16];
@@ -667,12 +667,12 @@ LABEL_61:
           }
 
           v26 = *(*(&v66 + 1) + 8 * v25);
-          v27 = [*(v22 + 2304) whitespaceCharacterSet];
-          v28 = [v26 stringByTrimmingCharactersInSet:v27];
+          whitespaceCharacterSet = [*(v22 + 2304) whitespaceCharacterSet];
+          v28 = [v26 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
           if ([v28 length])
           {
-            v29 = [v7 objectForKeyedSubscript:v28];
+            v29 = [dictionary objectForKeyedSubscript:v28];
             if (v29)
             {
               v30 = v29;
@@ -772,7 +772,7 @@ LABEL_34:
     v50 = v17;
     v51 = v8;
     v37 = v16;
-    v52 = v5;
+    v52 = lCopy;
     v53 = 0;
 LABEL_36:
     v61 = 0u;
@@ -821,7 +821,7 @@ LABEL_36:
     v16 = v37;
     v45 = [v37 copy];
     v8 = v51;
-    v5 = v52;
+    lCopy = v52;
     v17 = v50;
     v15 = v55;
   }
@@ -888,34 +888,34 @@ LABEL_11:
   return v5;
 }
 
-- (id)createOutputFeatureFromDouble:(double)a3 error:(id *)a4
+- (id)createOutputFeatureFromDouble:(double)double error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc(MEMORY[0x277CBFED0]);
   v12 = @"ModelPrediction";
-  v7 = [MEMORY[0x277CBFEF8] featureValueWithDouble:a3];
+  v7 = [MEMORY[0x277CBFEF8] featureValueWithDouble:double];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v6 initWithDictionary:v8 error:a4];
+  v9 = [v6 initWithDictionary:v8 error:error];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (BOOL)_saveModelToDisk:(id *)a3
+- (BOOL)_saveModelToDisk:(id *)disk
 {
   v115 = *MEMORY[0x277D85DE8];
   modelFileLocation = self->_modelFileLocation;
   if (modelFileLocation)
   {
     v5 = [(NSString *)modelFileLocation stringByAppendingPathComponent:@"model"];
-    v6 = [v5 lastPathComponent];
-    v7 = [@"." stringByAppendingString:v6];
+    lastPathComponent = [v5 lastPathComponent];
+    v7 = [@"." stringByAppendingString:lastPathComponent];
 
     v8 = v5;
-    v9 = [v5 stringByDeletingLastPathComponent];
-    v10 = [v9 stringByAppendingPathComponent:v7];
+    stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+    v10 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v7];
 
     v11 = v10;
     v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
@@ -923,8 +923,8 @@ LABEL_11:
     v113 = 0;
     v14 = MEMORY[0x277CCAA00];
     v15 = v13;
-    v16 = [v14 defaultManager];
-    v17 = [v16 fileExistsAtPath:v15 isDirectory:&v113];
+    defaultManager = [v14 defaultManager];
+    v17 = [defaultManager fileExistsAtPath:v15 isDirectory:&v113];
 
     if (v17)
     {
@@ -938,10 +938,10 @@ LABEL_11:
 
     if (v18)
     {
-      v21 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v22 = self->_modelFileLocation;
       v112 = 0;
-      v23 = [v21 removeItemAtPath:v22 error:&v112];
+      v23 = [defaultManager2 removeItemAtPath:v22 error:&v112];
       v24 = v112;
 
       if ((v23 & 1) == 0)
@@ -955,11 +955,11 @@ LABEL_11:
 
         v29 = v8;
         v30 = v11;
-        if (a3)
+        if (disk)
         {
           v67 = v24;
           v20 = 0;
-          *a3 = v24;
+          *disk = v24;
           goto LABEL_82;
         }
 
@@ -968,29 +968,29 @@ LABEL_37:
         goto LABEL_82;
       }
 
-      v95 = self;
+      selfCopy2 = self;
       v19 = v24;
     }
 
     else
     {
-      v95 = self;
+      selfCopy2 = self;
       v19 = 0;
     }
 
     v25 = v12;
     v26 = 0x277CCA000uLL;
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [v12 path];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v12 path];
     v29 = v8;
     v30 = v11;
-    if ([v27 fileExistsAtPath:v28])
+    if ([defaultManager3 fileExistsAtPath:path])
     {
       v96 = v7;
       v93 = v8;
-      v31 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
       v111 = v19;
-      v32 = [v31 removeItemAtURL:v25 error:&v111];
+      v32 = [defaultManager4 removeItemAtURL:v25 error:&v111];
       v24 = v111;
 
       if ((v32 & 1) == 0)
@@ -1003,11 +1003,11 @@ LABEL_37:
         }
 
         v7 = v96;
-        if (a3)
+        if (disk)
         {
           v69 = v24;
           v20 = 0;
-          *a3 = v24;
+          *disk = v24;
         }
 
         else
@@ -1021,7 +1021,7 @@ LABEL_37:
 
       v19 = v24;
       v30 = v11;
-      v33 = a3;
+      diskCopy2 = disk;
       v29 = v93;
       v7 = v96;
       v26 = 0x277CCA000;
@@ -1030,12 +1030,12 @@ LABEL_37:
     else
     {
 
-      v33 = a3;
+      diskCopy2 = disk;
     }
 
-    v34 = [*(v26 + 2560) defaultManager];
+    defaultManager5 = [*(v26 + 2560) defaultManager];
     v110 = v19;
-    v35 = [v34 createDirectoryAtURL:v25 withIntermediateDirectories:1 attributes:0 error:&v110];
+    v35 = [defaultManager5 createDirectoryAtURL:v25 withIntermediateDirectories:1 attributes:0 error:&v110];
     v24 = v110;
 
     if (v35)
@@ -1043,7 +1043,7 @@ LABEL_37:
       v36 = v29;
       v97 = v7;
       v37 = MEMORY[0x277CCACA8];
-      modelVersionNumber = v95->_modelVersionNumber;
+      modelVersionNumber = selfCopy2->_modelVersionNumber;
       v39 = REBuildVersion();
       v40 = [v37 stringWithFormat:@"Version: %llu\nSystem: %@\n", modelVersionNumber, v39];
 
@@ -1064,11 +1064,11 @@ LABEL_37:
         }
 
         v71 = v92;
-        if (v33)
+        if (diskCopy2)
         {
           v72 = v42;
           v20 = 0;
-          *v33 = v42;
+          *diskCopy2 = v42;
         }
 
         else
@@ -1081,12 +1081,12 @@ LABEL_37:
 
       v91 = v30;
       v94 = v36;
-      v43 = [MEMORY[0x277CCAB68] stringWithCapacity:{15 * -[NSArray count](v95->_orderedFeatures, "count")}];
+      v43 = [MEMORY[0x277CCAB68] stringWithCapacity:{15 * -[NSArray count](selfCopy2->_orderedFeatures, "count")}];
       v105 = 0u;
       v106 = 0u;
       v107 = 0u;
       v108 = 0u;
-      v44 = v95->_orderedFeatures;
+      v44 = selfCopy2->_orderedFeatures;
       v45 = [(NSArray *)v44 countByEnumeratingWithState:&v105 objects:v114 count:16];
       if (v45)
       {
@@ -1101,8 +1101,8 @@ LABEL_37:
               objc_enumerationMutation(v44);
             }
 
-            v49 = [*(*(&v105 + 1) + 8 * i) name];
-            [v43 appendString:v49];
+            name = [*(*(&v105 + 1) + 8 * i) name];
+            [v43 appendString:name];
 
             [v43 appendString:@"\n"];
           }
@@ -1127,11 +1127,11 @@ LABEL_37:
           [REMLModelManager _saveModelToDisk:];
         }
 
-        if (a3)
+        if (disk)
         {
           v74 = v52;
           v20 = 0;
-          *a3 = v52;
+          *disk = v52;
         }
 
         else
@@ -1143,7 +1143,7 @@ LABEL_37:
         goto LABEL_59;
       }
 
-      model = v95->_model;
+      model = selfCopy2->_model;
       v54 = [v25 URLByAppendingPathComponent:@"model"];
       v103 = v52;
       LOBYTE(model) = [(REMLModel *)model saveModelToURL:v54 error:&v103];
@@ -1162,20 +1162,20 @@ LABEL_37:
         goto LABEL_55;
       }
 
-      [(REMLModelManager *)v95 _saveDataStoresToURL:v25];
-      if (v95->_supportsContentRanking)
+      [(REMLModelManager *)selfCopy2 _saveDataStoresToURL:v25];
+      if (selfCopy2->_supportsContentRanking)
       {
-        v57 = [v25 path];
-        v58 = [v57 stringByAppendingPathComponent:@"content.ctx"];
+        path2 = [v25 path];
+        v58 = [path2 stringByAppendingPathComponent:@"content.ctx"];
 
-        v59 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
         v102 = v55;
-        v60 = [v59 createDirectoryAtPath:v58 withIntermediateDirectories:1 attributes:0 error:&v102];
+        v60 = [defaultManager6 createDirectoryAtPath:v58 withIntermediateDirectories:1 attributes:0 error:&v102];
         v61 = v102;
 
         if (v60)
         {
-          contentRanker = v95->_contentRanker;
+          contentRanker = selfCopy2->_contentRanker;
           v101 = v61;
           v63 = [(REContentRanker *)contentRanker save:v58 error:&v101];
           v52 = v101;
@@ -1185,18 +1185,18 @@ LABEL_37:
 
 LABEL_61:
             v77 = v52;
-            v78 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager7 = [MEMORY[0x277CCAA00] defaultManager];
             v79 = [MEMORY[0x277CBEBC0] fileURLWithPath:v94];
             v100 = v52;
-            v80 = [v78 replaceItemAtURL:v79 withItemAtURL:v25 backupItemName:0 options:0 resultingItemURL:0 error:&v100];
+            v80 = [defaultManager7 replaceItemAtURL:v79 withItemAtURL:v25 backupItemName:0 options:0 resultingItemURL:0 error:&v100];
             v52 = v100;
 
             if (v80)
             {
-              v81 = [MEMORY[0x277CCAA00] defaultManager];
-              v82 = [v25 path];
+              defaultManager8 = [MEMORY[0x277CCAA00] defaultManager];
+              path3 = [v25 path];
               v56 = v97;
-              if (([v81 fileExistsAtPath:v82] & 1) == 0)
+              if (([defaultManager8 fileExistsAtPath:path3] & 1) == 0)
               {
 
                 v20 = 1;
@@ -1205,9 +1205,9 @@ LABEL_61:
                 goto LABEL_80;
               }
 
-              v83 = [MEMORY[0x277CCAA00] defaultManager];
+              defaultManager9 = [MEMORY[0x277CCAA00] defaultManager];
               v99 = v52;
-              v84 = [v83 removeItemAtURL:v25 error:&v99];
+              v84 = [defaultManager9 removeItemAtURL:v25 error:&v99];
               v55 = v99;
 
               v29 = v94;
@@ -1237,11 +1237,11 @@ LABEL_81:
 LABEL_55:
 
               v71 = v92;
-              if (a3)
+              if (disk)
               {
                 v76 = v55;
                 v20 = 0;
-                *a3 = v55;
+                *disk = v55;
               }
 
               else
@@ -1262,11 +1262,11 @@ LABEL_55:
             }
 
             v29 = v94;
-            if (a3)
+            if (disk)
             {
               v86 = v52;
               v20 = 0;
-              *a3 = v52;
+              *disk = v52;
               goto LABEL_80;
             }
 
@@ -1289,10 +1289,10 @@ LABEL_79:
           v71 = v92;
         }
 
-        if (a3)
+        if (disk)
         {
           v88 = v52;
-          *a3 = v52;
+          *disk = v52;
         }
 
         goto LABEL_79;
@@ -1308,11 +1308,11 @@ LABEL_79:
       [REMLModelManager _saveModelToDisk:];
     }
 
-    if (v33)
+    if (diskCopy2)
     {
       v65 = v24;
       v20 = 0;
-      *v33 = v24;
+      *diskCopy2 = v24;
 LABEL_82:
 
       goto LABEL_83;
@@ -1335,27 +1335,27 @@ LABEL_83:
   dispatch_sync(trainingQueue, &__block_literal_global_73_0);
 }
 
-- (void)performTrainingWithFeatureMaps:(id)a3 content:(id)a4 events:(id)a5 interactions:(id)a6 purgeCaches:(BOOL)a7 completion:(id)a8
+- (void)performTrainingWithFeatureMaps:(id)maps content:(id)content events:(id)events interactions:(id)interactions purgeCaches:(BOOL)caches completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if ([v14 count])
+  mapsCopy = maps;
+  contentCopy = content;
+  eventsCopy = events;
+  interactionsCopy = interactions;
+  completionCopy = completion;
+  if ([mapsCopy count])
   {
     trainingQueue = self->_trainingQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __102__REMLModelManager_performTrainingWithFeatureMaps_content_events_interactions_purgeCaches_completion___block_invoke;
     block[3] = &unk_2785FB4C0;
-    v27 = a7;
-    v21 = v14;
-    v22 = v16;
-    v23 = self;
-    v24 = v17;
-    v25 = v15;
-    v26 = v18;
+    cachesCopy = caches;
+    v21 = mapsCopy;
+    v22 = eventsCopy;
+    selfCopy = self;
+    v24 = interactionsCopy;
+    v25 = contentCopy;
+    v26 = completionCopy;
     dispatch_async(trainingQueue, block);
   }
 }
@@ -1519,18 +1519,18 @@ void __37__REMLModelManager_manuallySaveModel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)performModelClearWithCompletion:(id)a3
+- (void)performModelClearWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RERelevanceEngineSubsystem *)self queue];
+  completionCopy = completion;
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__REMLModelManager_performModelClearWithCompletion___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__REMLModelManager_performModelClearWithCompletion___block_invoke(uint64_t a1)
@@ -1567,15 +1567,15 @@ void __52__REMLModelManager_performModelClearWithCompletion___block_invoke_2(uin
   }
 }
 
-- (id)comparatorWithRules:(id)a3
+- (id)comparatorWithRules:(id)rules
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [MEMORY[0x277CBEB18] array];
-  REExtractRules(v5, v6, v7);
+  rulesCopy = rules;
+  array = [v4 array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  REExtractRules(rulesCopy, array, array2);
 
-  v8 = [REMLElementComparator comparatorWithFilteringRules:v6 rankingRules:v7 model:self->_model elementsHiddenByDefault:self->_elementsHiddenByDefault];
+  v8 = [REMLElementComparator comparatorWithFilteringRules:array rankingRules:array2 model:self->_model elementsHiddenByDefault:self->_elementsHiddenByDefault];
 
   return v8;
 }
@@ -1595,11 +1595,11 @@ void __52__REMLModelManager_performModelClearWithCompletion___block_invoke_2(uin
   return v3;
 }
 
-- (id)predictionForLogicalElement:(id)a3
+- (id)predictionForLogicalElement:(id)element
 {
   model = self->_model;
-  v4 = [a3 featureMap];
-  v5 = [(REMLModel *)model predictWithFeatures:v4];
+  featureMap = [element featureMap];
+  v5 = [(REMLModel *)model predictWithFeatures:featureMap];
 
   return v5;
 }

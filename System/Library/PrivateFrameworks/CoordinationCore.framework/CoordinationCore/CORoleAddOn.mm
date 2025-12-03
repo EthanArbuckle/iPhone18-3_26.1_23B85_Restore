@@ -1,21 +1,21 @@
 @interface CORoleAddOn
 - (BOOL)_isLegacyStereoPair;
-- (BOOL)_isLegacyStereoPairPeer:(id)a3;
+- (BOOL)_isLegacyStereoPairPeer:(id)peer;
 - (CORoleAddOn)init;
 - (CORoleAddOnDelegate)delegate;
-- (id)_memberForNode:(id)a3;
+- (id)_memberForNode:(id)node;
 - (id)_roleForCurrentDevice;
-- (id)_roleForNode:(id)a3;
+- (id)_roleForNode:(id)node;
 - (void)_enableForPairLegacySupport;
 - (void)_notifyDelegate;
 - (void)_updateCurrentDeviceState;
 - (void)_updateState;
-- (void)_withLock:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)meshController:(id)a3 willTransitionToState:(unint64_t)a4;
-- (void)monitor:(id)a3 defaultChanged:(unint64_t)a4;
-- (void)setDelegate:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)meshController:(id)controller willTransitionToState:(unint64_t)state;
+- (void)monitor:(id)monitor defaultChanged:(unint64_t)changed;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CORoleAddOn
@@ -32,9 +32,9 @@
     defaultsMonitor = v2->_defaultsMonitor;
     v2->_defaultsMonitor = 0;
 
-    v5 = [(CORoleAddOn *)v3 _memberForCurrentDevice];
-    v6 = [MEMORY[0x277CFD0A0] roleForUnknown];
-    v7 = [objc_alloc(MEMORY[0x277CFD090]) initWithMember:v5 role:v6];
+    _memberForCurrentDevice = [(CORoleAddOn *)v3 _memberForCurrentDevice];
+    roleForUnknown = [MEMORY[0x277CFD0A0] roleForUnknown];
+    v7 = [objc_alloc(MEMORY[0x277CFD090]) initWithMember:_memberForCurrentDevice role:roleForUnknown];
     currentDeviceSnapshot = v3->_currentDeviceSnapshot;
     v3->_currentDeviceSnapshot = v7;
 
@@ -64,11 +64,11 @@
   v5 = COCoreLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CORoleAddOn *)self defaultsMonitor];
+    defaultsMonitor = [(CORoleAddOn *)self defaultsMonitor];
     v8 = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v6;
+    v11 = defaultsMonitor;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p add-on using monitor %p for local role in pair", &v8, 0x16u);
   }
 
@@ -76,12 +76,12 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
   v6.receiver = self;
   v6.super_class = CORoleAddOn;
-  [(COMeshAddOn *)&v6 meshController:a3 didTransitionToState:?];
-  if (a4 == 3)
+  [(COMeshAddOn *)&v6 meshController:controller didTransitionToState:?];
+  if (state == 3)
   {
     [(CORoleAddOn *)self _updateCurrentDeviceState];
     [(CORoleAddOn *)self _updateState];
@@ -89,28 +89,28 @@
   }
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = CORoleAddOn;
-  [(COMeshAddOn *)&v4 didChangeNodesForMeshController:a3];
+  [(COMeshAddOn *)&v4 didChangeNodesForMeshController:controller];
   [(CORoleAddOn *)self _updateCurrentDeviceState];
   [(CORoleAddOn *)self _updateState];
   [(CORoleAddOn *)self _notifyDelegate];
 }
 
-- (void)meshController:(id)a3 willTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller willTransitionToState:(unint64_t)state
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(CORoleAddOn *)self _updateCurrentDeviceState];
   v7.receiver = self;
   v7.super_class = CORoleAddOn;
-  [(COMeshAddOn *)&v7 meshController:v6 willTransitionToState:a4];
+  [(COMeshAddOn *)&v7 meshController:controllerCopy willTransitionToState:state];
 }
 
-- (void)monitor:(id)a3 defaultChanged:(unint64_t)a4
+- (void)monitor:(id)monitor defaultChanged:(unint64_t)changed
 {
-  [(CORoleAddOn *)self _updateCurrentDeviceState:a3];
+  [(CORoleAddOn *)self _updateCurrentDeviceState:monitor];
   [(CORoleAddOn *)self _updateState];
 
   [(CORoleAddOn *)self _notifyDelegate];
@@ -215,16 +215,16 @@ void __27__CORoleAddOn__updateState__block_invoke(uint64_t a1)
 
 - (void)_updateCurrentDeviceState
 {
-  v3 = [(COMeshAddOn *)self meshController];
-  v4 = [v3 nodeForMe];
+  meshController = [(COMeshAddOn *)self meshController];
+  nodeForMe = [meshController nodeForMe];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__CORoleAddOn__updateCurrentDeviceState__block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = nodeForMe;
+  v5 = nodeForMe;
   [(CORoleAddOn *)self _withLock:v6];
 }
 
@@ -282,45 +282,45 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_memberForNode:(id)a3
+- (id)_memberForNode:(id)node
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshController];
-  v6 = [v5 nodeForMe];
+  nodeCopy = node;
+  meshController = [(COMeshAddOn *)self meshController];
+  nodeForMe = [meshController nodeForMe];
 
-  if ([v4 isEqual:v6])
+  if ([nodeCopy isEqual:nodeForMe])
   {
-    v7 = [(CORoleAddOn *)self _memberForCurrentDevice];
+    _memberForCurrentDevice = [(CORoleAddOn *)self _memberForCurrentDevice];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [v4 HomeKitIdentifier];
-    v10 = v9;
-    if (v9)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    homeKitIdentifier = [nodeCopy HomeKitIdentifier];
+    v10 = homeKitIdentifier;
+    if (homeKitIdentifier)
     {
-      v11 = [v9 UUIDString];
-      [v8 setObject:v11 forKey:@"accessory"];
+      uUIDString = [homeKitIdentifier UUIDString];
+      [dictionary setObject:uUIDString forKey:@"accessory"];
     }
 
-    v12 = [v4 IDSIdentifier];
-    if (v12)
+    iDSIdentifier = [nodeCopy IDSIdentifier];
+    if (iDSIdentifier)
     {
-      [v8 setObject:v12 forKey:@"IDS"];
+      [dictionary setObject:iDSIdentifier forKey:@"IDS"];
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CFD088]) initWithType:3 deviceMetadata:v8];
+    _memberForCurrentDevice = [objc_alloc(MEMORY[0x277CFD088]) initWithType:3 deviceMetadata:dictionary];
   }
 
-  return v7;
+  return _memberForCurrentDevice;
 }
 
 - (id)_roleForCurrentDevice
 {
-  v3 = [(CORoleAddOn *)self defaultsMonitor];
-  v4 = v3;
-  if (v3 && (v5 = [v3 result] - 1, v5 <= 2))
+  defaultsMonitor = [(CORoleAddOn *)self defaultsMonitor];
+  v4 = defaultsMonitor;
+  if (defaultsMonitor && (v5 = [defaultsMonitor result] - 1, v5 <= 2))
   {
     v6 = qword_2444487D0[v5];
   }
@@ -330,16 +330,16 @@ LABEL_10:
     v6 = 16;
   }
 
-  v7 = [(COMeshAddOn *)self meshController];
-  v8 = [v7 clusterOptions];
+  meshController = [(COMeshAddOn *)self meshController];
+  clusterOptions = [meshController clusterOptions];
 
-  if (v8)
+  if (clusterOptions)
   {
-    v9 = [(COMeshAddOn *)self meshController];
-    v10 = [v9 me];
-    v11 = [(COMeshAddOn *)self meshController];
-    v12 = [v11 leader];
-    v13 = [v10 isEqual:v12];
+    meshController2 = [(COMeshAddOn *)self meshController];
+    v10 = [meshController2 me];
+    meshController3 = [(COMeshAddOn *)self meshController];
+    leader = [meshController3 leader];
+    v13 = [v10 isEqual:leader];
 
     if (v13)
     {
@@ -352,23 +352,23 @@ LABEL_10:
   return v14;
 }
 
-- (id)_roleForNode:(id)a3
+- (id)_roleForNode:(id)node
 {
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshController];
-  v6 = [v5 nodeForMe];
+  nodeCopy = node;
+  meshController = [(COMeshAddOn *)self meshController];
+  nodeForMe = [meshController nodeForMe];
 
-  if ([v4 isEqual:v6])
+  if ([nodeCopy isEqual:nodeForMe])
   {
-    v7 = [(CORoleAddOn *)self _roleForCurrentDevice];
+    _roleForCurrentDevice = [(CORoleAddOn *)self _roleForCurrentDevice];
   }
 
   else
   {
-    if ([(CORoleAddOn *)self _isLegacyStereoPair]&& [(CORoleAddOn *)self _isLegacyStereoPairPeer:v4])
+    if ([(CORoleAddOn *)self _isLegacyStereoPair]&& [(CORoleAddOn *)self _isLegacyStereoPairPeer:nodeCopy])
     {
-      v8 = [(COClusterMemberRoleSnapshot *)self->_currentDeviceSnapshot role];
-      if (([v8 flags] & 4) != 0)
+      role = [(COClusterMemberRoleSnapshot *)self->_currentDeviceSnapshot role];
+      if (([role flags] & 4) != 0)
       {
         v9 = 18;
       }
@@ -384,15 +384,15 @@ LABEL_10:
       v9 = 16;
     }
 
-    v10 = [(COMeshAddOn *)self meshController];
-    v11 = [v10 clusterOptions];
+    meshController2 = [(COMeshAddOn *)self meshController];
+    clusterOptions = [meshController2 clusterOptions];
 
-    if (v11)
+    if (clusterOptions)
     {
-      v12 = [v4 remote];
-      v13 = [(COMeshAddOn *)self meshController];
-      v14 = [v13 leader];
-      v15 = [v12 isEqual:v14];
+      remote = [nodeCopy remote];
+      meshController3 = [(COMeshAddOn *)self meshController];
+      leader = [meshController3 leader];
+      v15 = [remote isEqual:leader];
 
       if (v15)
       {
@@ -400,28 +400,28 @@ LABEL_10:
       }
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CFD0A0]) initWithRoleFlags:v9];
+    _roleForCurrentDevice = [objc_alloc(MEMORY[0x277CFD0A0]) initWithRoleFlags:v9];
   }
 
-  v16 = v7;
+  v16 = _roleForCurrentDevice;
 
   return v16;
 }
 
 - (BOOL)_isLegacyStereoPair
 {
-  v2 = [(CORoleAddOn *)self defaultsMonitor];
-  v3 = v2 != 0;
+  defaultsMonitor = [(CORoleAddOn *)self defaultsMonitor];
+  v3 = defaultsMonitor != 0;
 
   return v3;
 }
 
-- (BOOL)_isLegacyStereoPairPeer:(id)a3
+- (BOOL)_isLegacyStereoPairPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = +[COHomeKitAdapter sharedInstance];
-  v6 = [v5 currentAccessory];
-  if (!v6)
+  currentAccessory = [v5 currentAccessory];
+  if (!currentAccessory)
   {
     v7 = 0;
 LABEL_7:
@@ -429,40 +429,40 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v7 = [v5 homeForAccessory:v6];
+  v7 = [v5 homeForAccessory:currentAccessory];
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = [v5 mediaSystemForAccessory:v6 inHome:v7];
+  v8 = [v5 mediaSystemForAccessory:currentAccessory inHome:v7];
   if (!v8)
   {
     goto LABEL_7;
   }
 
   v9 = v8;
-  v10 = [v8 uniqueIdentifier];
+  uniqueIdentifier = [v8 uniqueIdentifier];
   if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
   {
-    v11 = [(COMeshAddOn *)self meshController];
-    v12 = [v11 nodeManager];
-    v13 = [v4 remote];
-    v14 = [v12 nodeControllerForConstituent:v13];
+    meshController = [(COMeshAddOn *)self meshController];
+    nodeManager = [meshController nodeManager];
+    remote = [peerCopy remote];
+    client2 = [nodeManager nodeControllerForConstituent:remote];
 
-    v15 = [v14 rapportTransport];
-    v16 = [v15 client];
-    v17 = [v16 destinationDevice];
+    rapportTransport = [client2 rapportTransport];
+    client = [rapportTransport client];
+    destinationDevice = [client destinationDevice];
   }
 
   else
   {
-    v14 = [v4 client];
-    v17 = [v14 destinationDevice];
+    client2 = [peerCopy client];
+    destinationDevice = [client2 destinationDevice];
   }
 
-  v19 = [v17 mediaSystemIdentifier];
-  v18 = [v10 isEqual:v19];
+  mediaSystemIdentifier = [destinationDevice mediaSystemIdentifier];
+  v18 = [uniqueIdentifier isEqual:mediaSystemIdentifier];
 
 LABEL_10:
   return v18;
@@ -499,16 +499,16 @@ uint64_t __23__CORoleAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v4);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __27__CORoleAddOn_setDelegate___block_invoke;
   v9 = &unk_278E156B0;
-  v10 = v4;
-  v11 = self;
-  v5 = v4;
+  v10 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(CORoleAddOn *)self _withLock:&v6];
   [(CORoleAddOn *)self _notifyDelegate:v6];
 }
@@ -529,11 +529,11 @@ void __27__CORoleAddOn_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

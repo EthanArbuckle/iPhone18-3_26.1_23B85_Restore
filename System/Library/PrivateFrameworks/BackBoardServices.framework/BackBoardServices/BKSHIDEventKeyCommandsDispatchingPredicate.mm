@@ -1,46 +1,46 @@
 @interface BKSHIDEventKeyCommandsDispatchingPredicate
 - (BKSHIDEventKeyCommandsDispatchingPredicate)init;
-- (BKSHIDEventKeyCommandsDispatchingPredicate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithSenderDescriptors:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventKeyCommandsDispatchingPredicate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithSenderDescriptors:(id)descriptors;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 @end
 
 @implementation BKSHIDEventKeyCommandsDispatchingPredicate
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self succinctDescriptionBuilder];
-  v6 = [(NSSet *)self->_senderDescriptors allObjects];
-  [v5 appendArraySection:v6 withName:@"senders" multilinePrefix:v4 skipIfEmpty:0];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self succinctDescriptionBuilder];
+  allObjects = [(NSSet *)self->_senderDescriptors allObjects];
+  [succinctDescriptionBuilder appendArraySection:allObjects withName:@"senders" multilinePrefix:prefixCopy skipIfEmpty:0];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -51,7 +51,7 @@
     if (v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class()))
     {
       senderDescriptors = self->_senderDescriptors;
-      v9 = v4->_senderDescriptors;
+      v9 = equalCopy->_senderDescriptors;
       v7 = BSEqualObjects();
     }
 
@@ -64,10 +64,10 @@
   return v7;
 }
 
-- (BKSHIDEventKeyCommandsDispatchingPredicate)initWithCoder:(id)a3
+- (BKSHIDEventKeyCommandsDispatchingPredicate)initWithCoder:(id)coder
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -81,10 +81,10 @@
       v26 = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v11 = [v7 errorWithDomain:v8 code:4866 userInfo:v10];
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
 
 LABEL_11:
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_12;
     }
   }
@@ -92,7 +92,7 @@ LABEL_11:
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v14 forKey:@"senders"];
+  v9 = [coderCopy decodeObjectOfClasses:v14 forKey:@"senders"];
 
   if (v9)
   {
@@ -124,17 +124,17 @@ LABEL_11:
 LABEL_10:
     v21 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
     v22 = [v15 errorWithDomain:v16 code:4866 userInfo:v21];
-    [v4 failWithError:v22];
+    [coderCopy failWithError:v22];
 
     goto LABEL_11;
   }
 
   self = [(BKSHIDEventKeyCommandsDispatchingPredicate *)self _initWithSenderDescriptors:v9];
-  v20 = self;
+  selfCopy = self;
 LABEL_12:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
 BOOL __60__BKSHIDEventKeyCommandsDispatchingPredicate_initWithCoder___block_invoke(uint64_t a1, void *a2)
@@ -146,9 +146,9 @@ BOOL __60__BKSHIDEventKeyCommandsDispatchingPredicate_initWithCoder___block_invo
   return (isKindOfClass & 1) == 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSMutableHIDEventKeyCommandsDispatchingPredicate allocWithZone:a3];
+  v4 = [BKSMutableHIDEventKeyCommandsDispatchingPredicate allocWithZone:zone];
   senderDescriptors = self->_senderDescriptors;
 
   return [(BKSHIDEventKeyCommandsDispatchingPredicate *)v4 _initWithSenderDescriptors:senderDescriptors];
@@ -173,10 +173,10 @@ id __54__BKSHIDEventKeyCommandsDispatchingPredicate_displays__block_invoke(uint6
   return v5;
 }
 
-- (id)_initWithSenderDescriptors:(id)a3
+- (id)_initWithSenderDescriptors:(id)descriptors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v6 = objc_opt_class();
   if (v6 != objc_opt_class())
   {
@@ -194,7 +194,7 @@ id __54__BKSHIDEventKeyCommandsDispatchingPredicate_displays__block_invoke(uint6
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDEventKeyCommandsDispatchingPredicate.m";
         v26 = 1024;
@@ -216,7 +216,7 @@ id __54__BKSHIDEventKeyCommandsDispatchingPredicate_displays__block_invoke(uint6
   v8 = [(BKSHIDEventKeyCommandsDispatchingPredicate *)&v17 init];
   if (v8)
   {
-    v9 = [v5 copy];
+    v9 = [descriptorsCopy copy];
     senderDescriptors = v8->_senderDescriptors;
     v8->_senderDescriptors = v9;
   }
@@ -238,7 +238,7 @@ id __54__BKSHIDEventKeyCommandsDispatchingPredicate_displays__block_invoke(uint6
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventKeyCommandsDispatchingPredicate.m";
     v17 = 1024;

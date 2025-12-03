@@ -1,39 +1,39 @@
 @interface PXStoryMutableConcreteTimeline
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_appendSegmentFromTimeline:(id)a3 withIdentifier:(int64_t)a4;
-- (int64_t)addSegmentWithTimeRange:(id *)a3 info:(id *)a4;
-- (int64_t)appendSegmentWithDurationInfo:(id *)a3 clipCount:(int64_t)a4 compositionInfo:(id *)a5 configuration:(id)a6;
-- (int64_t)insertClipInTimeRange:(id *)a3 resourceKind:(int64_t)a4 options:(unint64_t)a5 resourceIndex:(int64_t)a6 frame:(CGRect)a7 transitionInfo:(id *)a8 kenBurnsAnimationInfo:(id *)a9;
-- (void)appendTimeRange:(id *)a3 fromTimeline:(id)a4;
-- (void)appendTimeline:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_appendSegmentFromTimeline:(id)timeline withIdentifier:(int64_t)identifier;
+- (int64_t)addSegmentWithTimeRange:(id *)range info:(id *)info;
+- (int64_t)appendSegmentWithDurationInfo:(id *)info clipCount:(int64_t)count compositionInfo:(id *)compositionInfo configuration:(id)configuration;
+- (int64_t)insertClipInTimeRange:(id *)range resourceKind:(int64_t)kind options:(unint64_t)options resourceIndex:(int64_t)index frame:(CGRect)frame transitionInfo:(id *)info kenBurnsAnimationInfo:(id *)animationInfo;
+- (void)appendTimeRange:(id *)range fromTimeline:(id)timeline;
+- (void)appendTimeline:(id)timeline;
 - (void)dealloc;
-- (void)modifyInfoForSegmentAtIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)modifyOptionsForClipWithIdentifier:(int64_t)a3 hintIndex:(int64_t)a4 usingBlock:(id)a5;
+- (void)modifyInfoForSegmentAtIndex:(int64_t)index usingBlock:(id)block;
+- (void)modifyOptionsForClipWithIdentifier:(int64_t)identifier hintIndex:(int64_t)index usingBlock:(id)block;
 - (void)removeAllClipsAndSegments;
-- (void)setStartTime:(id *)a3;
-- (void)setTimeline:(id)a3;
+- (void)setStartTime:(id *)time;
+- (void)setTimeline:(id)timeline;
 @end
 
 @implementation PXStoryMutableConcreteTimeline
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXStoryConcreteTimeline alloc];
 
   return [(PXStoryConcreteTimeline *)v4 initWithTimeline:self];
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
   if ([(PXStoryConcreteTimeline *)self numberOfClips]|| [(PXStoryConcreteTimeline *)self numberOfSegments])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:726 description:@"currently only supporting changing the start time for an empty timeline"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:726 description:@"currently only supporting changing the start time for an empty timeline"];
   }
 
   [(PXStoryConcreteTimeline *)self timeRange];
   duration = v8.duration;
-  start = *a3;
+  start = *time;
   CMTimeRangeMake(&v8, &start, &duration);
   v6 = *&v8.start.epoch;
   *&self->super._timeRange.start.value = *&v8.start.value;
@@ -43,37 +43,37 @@
 
 - (void)removeAllClipsAndSegments
 {
-  v2 = self;
+  selfCopy = self;
   [(PXStoryConcreteTimeline *)self setNumberOfClips:0];
-  [(PXStoryConcreteTimeline *)v2 setNumberOfSegments:0];
-  v2 = (v2 + 8);
+  [(PXStoryConcreteTimeline *)selfCopy setNumberOfSegments:0];
+  selfCopy = (selfCopy + 8);
   *&start.value = PXStoryTimeZero;
   start.epoch = 0;
   *&duration.value = PXStoryTimeZero;
   duration.epoch = 0;
   CMTimeRangeMake(&v4, &start, &duration);
   v3 = *&v4.start.epoch;
-  *&v2->super.super.super.isa = *&v4.start.value;
-  *&v2->super._timeRange.start.timescale = v3;
-  *&v2->super._timeRange.duration.value = *&v4.duration.timescale;
+  *&selfCopy->super.super.super.isa = *&v4.start.value;
+  *&selfCopy->super._timeRange.start.timescale = v3;
+  *&selfCopy->super._timeRange.duration.value = *&v4.duration.timescale;
 }
 
-- (void)modifyOptionsForClipWithIdentifier:(int64_t)a3 hintIndex:(int64_t)a4 usingBlock:(id)a5
+- (void)modifyOptionsForClipWithIdentifier:(int64_t)identifier hintIndex:(int64_t)index usingBlock:(id)block
 {
-  v9 = a5;
-  v10 = [(PXStoryConcreteTimeline *)self numberOfClips];
-  if (a4 < 0 || v10 <= a4 || *(&self->super._clipInfos->var0 + 96 * a4) != a3)
+  blockCopy = block;
+  numberOfClips = [(PXStoryConcreteTimeline *)self numberOfClips];
+  if (index < 0 || numberOfClips <= index || *(&self->super._clipInfos->var0 + 96 * index) != identifier)
   {
     PXAssertGetLog();
   }
 
-  if (a4 >= v10)
+  if (index >= numberOfClips)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:715 description:{@"no clip found with identifier %li", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:715 description:{@"no clip found with identifier %li", identifier}];
   }
 
-  v9[2](v9, &self->super._clipInfos->var3 + 96 * a4);
+  blockCopy[2](blockCopy, &self->super._clipInfos->var3 + 96 * index);
 }
 
 BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resourceIndex___block_invoke(uint64_t a1, uint64_t a2)
@@ -102,27 +102,27 @@ BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resour
   return CMTimeCompare(&range.start, &v4.start) < 1;
 }
 
-- (int64_t)insertClipInTimeRange:(id *)a3 resourceKind:(int64_t)a4 options:(unint64_t)a5 resourceIndex:(int64_t)a6 frame:(CGRect)a7 transitionInfo:(id *)a8 kenBurnsAnimationInfo:(id *)a9
+- (int64_t)insertClipInTimeRange:(id *)range resourceKind:(int64_t)kind options:(unint64_t)options resourceIndex:(int64_t)index frame:(CGRect)frame transitionInfo:(id *)info kenBurnsAnimationInfo:(id *)animationInfo
 {
   memset(v27, 0, sizeof(v27));
-  *&v71[8] = a3->var1;
+  *&v71[8] = range->var1;
   *v71 = 0;
   v70 = PXStoryTimeZero;
   memset(v73, 0, 40);
   v72 = PXStoryTimeMaximum;
   add = atomic_fetch_add(PXStoryClipIdentifierMakeUnique_uniqueIdentifier, 1u);
-  v10 = *&a9->var1.var0.tx;
-  v58 = *&a9->var1.var0.c;
+  v10 = *&animationInfo->var1.var0.tx;
+  v58 = *&animationInfo->var1.var0.c;
   v59 = v10;
-  v60 = *&a9->var2.var0;
-  v11 = *&a9->var0.var0.c;
-  v54 = *&a9->var0.var0.a;
+  v60 = *&animationInfo->var2.var0;
+  v11 = *&animationInfo->var0.var0.c;
+  v54 = *&animationInfo->var0.var0.a;
   v55 = v11;
-  v12 = *&a9->var1.var0.a;
-  v56 = *&a9->var0.var0.tx;
+  v12 = *&animationInfo->var1.var0.a;
+  v56 = *&animationInfo->var0.var0.tx;
   v57 = v12;
-  v13 = *&a8->var2.var1;
-  v62 = *&a8->var0;
+  v13 = *&info->var2.var1;
+  v62 = *&info->var0;
   v63 = v13;
   v35 = xmmword_1A5383910;
   v36 = xmmword_1A5383920;
@@ -132,10 +132,10 @@ BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resour
   v34 = xmmword_1A5383900;
   v29 = PXStoryAssetContentInfoNull;
   v30 = unk_1A53838C0;
-  v14 = *&a3->var0.var3;
-  v69[0] = *&a3->var0.var0;
+  v14 = *&range->var0.var3;
+  v69[0] = *&range->var0.var0;
   v69[1] = v14;
-  v69[2] = *&a3->var1.var1;
+  v69[2] = *&range->var1.var1;
   v22 = v72;
   v23 = v73[0];
   v24 = v73[1];
@@ -158,13 +158,13 @@ BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resour
   v42 = xmmword_1A5383960;
   v43 = unk_1A5383970;
   v44 = xmmword_1A5383980;
-  var3 = a9->var2.var3;
-  v64 = *&a8->var3;
+  var3 = animationInfo->var2.var3;
+  v64 = *&info->var3;
   v18[0] = add;
-  v18[1] = a4;
-  v18[2] = *&a7.size.width;
-  v18[3] = *&a7.size.height;
-  v18[4] = a5;
+  v18[1] = kind;
+  v18[2] = *&frame.size.width;
+  v18[3] = *&frame.size.height;
+  v18[4] = options;
   v25 = *&v73[2];
   v26 = 0;
   v28 = 0;
@@ -175,32 +175,32 @@ BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resour
   v67 = 0u;
   v65 = 0u;
   v68 = 0;
-  return [(PXStoryMutableConcreteTimeline *)self addClipWithTimeRange:v69 frame:v18 info:a6 resourceIndex:a7.origin.x, a7.origin.y];
+  return [(PXStoryMutableConcreteTimeline *)self addClipWithTimeRange:v69 frame:v18 info:index resourceIndex:frame.origin.x, frame.origin.y];
 }
 
-- (void)setTimeline:(id)a3
+- (void)setTimeline:(id)timeline
 {
-  v4 = a3;
+  timelineCopy = timeline;
   [(PXStoryMutableConcreteTimeline *)self removeAllClipsAndSegments];
-  [(PXStoryMutableConcreteTimeline *)self appendTimeline:v4];
+  [(PXStoryMutableConcreteTimeline *)self appendTimeline:timelineCopy];
 }
 
-- (int64_t)_appendSegmentFromTimeline:(id)a3 withIdentifier:(int64_t)a4
+- (int64_t)_appendSegmentFromTimeline:(id)timeline withIdentifier:(int64_t)identifier
 {
-  v6 = a3;
-  v7 = v6;
+  timelineCopy = timeline;
+  v7 = timelineCopy;
   memset(v38, 0, sizeof(v38));
   v37 = 0u;
-  if (v6)
+  if (timelineCopy)
   {
-    [v6 timeRangeForSegmentWithIdentifier:a4];
+    [timelineCopy timeRangeForSegmentWithIdentifier:identifier];
     *&v34[8] = *(v38 + 8);
     *&v34[24] = *(&v38[1] + 1);
     *v34 = 0;
     v33 = PXStoryTimeZero;
     memset(v36, 0, 40);
     v35 = PXStoryTimeMaximum;
-    [v7 infoForSegmentWithIdentifier:a4];
+    [v7 infoForSegmentWithIdentifier:identifier];
   }
 
   else
@@ -247,20 +247,20 @@ BOOL __80__PXStoryMutableConcreteTimeline_addClipWithTimeRange_frame_info_resour
   return v12;
 }
 
-- (void)appendTimeRange:(id *)a3 fromTimeline:(id)a4
+- (void)appendTimeRange:(id *)range fromTimeline:(id)timeline
 {
-  v6 = a4;
+  timelineCopy = timeline;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__PXStoryMutableConcreteTimeline_appendTimeRange_fromTimeline___block_invoke;
   v10[3] = &unk_1E773B9D8;
   v10[4] = self;
-  v11 = v6;
-  v7 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v11 = timelineCopy;
+  v7 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v7;
-  v9[2] = *&a3->var1.var1;
-  v8 = v6;
+  v9[2] = *&range->var1.var1;
+  v8 = timelineCopy;
   [v8 enumerateSegmentsInTimeRange:v9 usingBlock:v10];
 }
 
@@ -290,36 +290,36 @@ uint64_t __63__PXStoryMutableConcreteTimeline_appendTimeRange_fromTimeline___blo
   return result;
 }
 
-- (void)appendTimeline:(id)a3
+- (void)appendTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   [(PXStoryConcreteTimeline *)self size];
   v7 = v6;
   v9 = v8;
-  [v5 size];
+  [timelineCopy size];
   if (v7 != v11 || v9 != v10)
   {
     PXAssertGetLog();
   }
 
-  v13 = [(PXStoryConcreteTimeline *)self resourcesDataSource];
-  v14 = [v5 resourcesDataSource];
-  v15 = v14;
-  if (v13 == v14)
+  resourcesDataSource = [(PXStoryConcreteTimeline *)self resourcesDataSource];
+  resourcesDataSource2 = [timelineCopy resourcesDataSource];
+  v15 = resourcesDataSource2;
+  if (resourcesDataSource == resourcesDataSource2)
   {
   }
 
   else
   {
-    v16 = [v13 isEqual:v14];
+    v16 = [resourcesDataSource isEqual:resourcesDataSource2];
 
     if (v16)
     {
       goto LABEL_11;
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:582 description:@"timeline resources data sources aren't compatible"];
+    resourcesDataSource = [MEMORY[0x1E696AAA8] currentHandler];
+    [resourcesDataSource handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:582 description:@"timeline resources data sources aren't compatible"];
   }
 
 LABEL_11:
@@ -327,9 +327,9 @@ LABEL_11:
   [(PXStoryConcreteTimeline *)self timeRange];
   range = rhs;
   CMTimeRangeGetEnd(&v20, &range);
-  if (v5)
+  if (timelineCopy)
   {
-    [v5 timeRange];
+    [timelineCopy timeRange];
   }
 
   else
@@ -342,67 +342,67 @@ LABEL_11:
   rhs.start.epoch = v18;
   range.start = v20;
   CMTimeSubtract(&v21, &range.start, &rhs.start);
-  -[PXStoryConcreteTimeline setNumberOfClips:](self, "setNumberOfClips:", [v5 numberOfClips] + -[PXStoryConcreteTimeline numberOfClips](self, "numberOfClips"));
+  -[PXStoryConcreteTimeline setNumberOfClips:](self, "setNumberOfClips:", [timelineCopy numberOfClips] + -[PXStoryConcreteTimeline numberOfClips](self, "numberOfClips"));
   _PXGArrayCopyRangeToArray();
 }
 
-- (int64_t)addSegmentWithTimeRange:(id *)a3 info:(id *)a4
+- (int64_t)addSegmentWithTimeRange:(id *)range info:(id *)info
 {
-  v7 = [(PXStoryConcreteTimeline *)self numberOfSegments];
-  [(PXStoryConcreteTimeline *)self setNumberOfSegments:v7 + 1];
-  v8 = &self->super._segmentTimeRanges[v7];
-  v9 = *&a3->var1.var1;
-  v10 = *&a3->var0.var0;
-  *&v8->var0.var3 = *&a3->var0.var3;
+  numberOfSegments = [(PXStoryConcreteTimeline *)self numberOfSegments];
+  [(PXStoryConcreteTimeline *)self setNumberOfSegments:numberOfSegments + 1];
+  v8 = &self->super._segmentTimeRanges[numberOfSegments];
+  v9 = *&range->var1.var1;
+  v10 = *&range->var0.var0;
+  *&v8->var0.var3 = *&range->var0.var3;
   *&v8->var1.var1 = v9;
   *&v8->var0.var0 = v10;
-  v7 *= 200;
-  v11 = self->super._segmentInfos + v7;
-  v12 = *&a4->var3.var0.var0;
-  v13 = *&a4->var3.var0.var3;
-  v14 = *&a4->var3.var1.var1;
-  *(v11 + 5) = *&a4->var2.var3;
+  numberOfSegments *= 200;
+  v11 = self->super._segmentInfos + numberOfSegments;
+  v12 = *&info->var3.var0.var0;
+  v13 = *&info->var3.var0.var3;
+  v14 = *&info->var3.var1.var1;
+  *(v11 + 5) = *&info->var2.var3;
   *(v11 + 6) = v12;
   *(v11 + 7) = v13;
   *(v11 + 8) = v14;
-  v15 = *&a4->var1.var3;
-  v16 = *&a4->var2.var0;
-  v17 = *&a4->var2.var2.var1;
-  *(v11 + 1) = *&a4->var1.var1;
+  v15 = *&info->var1.var3;
+  v16 = *&info->var2.var0;
+  v17 = *&info->var2.var2.var1;
+  *(v11 + 1) = *&info->var1.var1;
   *(v11 + 2) = v15;
   *(v11 + 3) = v16;
   *(v11 + 4) = v17;
-  v18 = *&a4->var3.var2.var0;
-  v19 = *&a4->var3.var2.var3;
-  v20 = *&a4->var3.var3.var0.var1;
-  *(v11 + 24) = a4->var3.var3.var1;
+  v18 = *&info->var3.var2.var0;
+  v19 = *&info->var3.var2.var3;
+  v20 = *&info->var3.var3.var0.var1;
+  *(v11 + 24) = info->var3.var3.var1;
   *(v11 + 10) = v19;
   *(v11 + 11) = v20;
   *(v11 + 9) = v18;
-  *v11 = *&a4->var0;
-  v21 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  *v11 = *&info->var0;
+  v21 = *&range->var0.var3;
+  *&range.start.value = *&range->var0.var0;
   *&range.start.epoch = v21;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&range->var1.var1;
   CMTimeRangeGetEnd(&v23, &range);
   range.start = self->super._timeRange.duration;
   time2 = v23;
   CMTimeMaximum(&v24, &range.start, &time2);
   self->super._timeRange.duration = v24;
-  return *(&self->super._segmentInfos->var0 + v7);
+  return *(&self->super._segmentInfos->var0 + numberOfSegments);
 }
 
-- (void)modifyInfoForSegmentAtIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)modifyInfoForSegmentAtIndex:(int64_t)index usingBlock:(id)block
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([(PXStoryConcreteTimeline *)self numberOfSegments]<= a3)
+  blockCopy = block;
+  if ([(PXStoryConcreteTimeline *)self numberOfSegments]<= index)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:550 description:{@"Asked to modify out-of bounds segment index %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:550 description:{@"Asked to modify out-of bounds segment index %ld", index}];
   }
 
-  v8 = self->super._segmentInfos + 200 * a3;
+  v8 = self->super._segmentInfos + 200 * index;
   v9 = *v8;
   v10 = *(v8 + 88);
   v49 = *(v8 + 72);
@@ -433,14 +433,14 @@ LABEL_11:
   *&v39[168] = v42;
   *&v39[152] = v41;
   *&v39[136] = v40;
-  v7[2](v7, v39);
+  blockCopy[2](blockCopy, v39);
   if (*v39 != v9)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:554 description:@"Modified segment info identifier must match existing identifier."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimeline.m" lineNumber:554 description:@"Modified segment info identifier must match existing identifier."];
   }
 
-  v14 = self->super._segmentInfos + 200 * a3;
+  v14 = self->super._segmentInfos + 200 * index;
   *v14 = *v39;
   v15 = *&v39[16];
   v16 = *&v39[32];
@@ -463,7 +463,7 @@ LABEL_11:
   *(v14 + 10) = v22;
   *(v14 + 11) = v23;
   *(v14 + 9) = v21;
-  v24 = &self->super._segmentTimeRanges[a3];
+  v24 = &self->super._segmentTimeRanges[index];
   v25 = *&v39[128];
   *&v24->var1.var0 = *&v39[112];
   v24->var1.var3 = v25;
@@ -478,10 +478,10 @@ LABEL_11:
   rhs.var0.var3 = 0;
   if (CMTimeCompare(&lhs, &rhs))
   {
-    v26 = a3 + 1;
-    if (a3 + 1 < [(PXStoryConcreteTimeline *)self numberOfSegments])
+    v26 = index + 1;
+    if (index + 1 < [(PXStoryConcreteTimeline *)self numberOfSegments])
     {
-      v27 = 48 * a3 + 48;
+      v27 = 48 * index + 48;
       do
       {
         v28 = self->super._segmentTimeRanges + v27;
@@ -503,7 +503,7 @@ LABEL_11:
 
   segmentTimeRanges = self->super._segmentTimeRanges;
   p_timeRange = &self->super._timeRange;
-  rhs = segmentTimeRanges[a3];
+  rhs = segmentTimeRanges[index];
   lhs = rhs;
   CMTimeRangeGetEnd(&v35, &lhs);
   *&lhs.var0.var0 = *&p_timeRange->duration.value;
@@ -513,10 +513,10 @@ LABEL_11:
   p_timeRange->duration = v36;
 }
 
-- (int64_t)appendSegmentWithDurationInfo:(id *)a3 clipCount:(int64_t)a4 compositionInfo:(id *)a5 configuration:(id)a6
+- (int64_t)appendSegmentWithDurationInfo:(id *)info clipCount:(int64_t)count compositionInfo:(id *)compositionInfo configuration:(id)configuration
 {
-  v8 = a6;
-  [(PXStoryConcreteTimeline *)self setNumberOfClips:[(PXStoryConcreteTimeline *)self numberOfClips]+ a4];
+  configurationCopy = configuration;
+  [(PXStoryConcreteTimeline *)self setNumberOfClips:[(PXStoryConcreteTimeline *)self numberOfClips]+ count];
   _PXGArrayCapacityResizeToCount();
 }
 

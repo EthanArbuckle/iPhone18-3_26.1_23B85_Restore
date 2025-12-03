@@ -1,6 +1,6 @@
 @interface ICDebugTimer
-+ (id)debugTimerForClass:(Class)a3;
-+ (void)enableTimersForClass:(Class)a3;
++ (id)debugTimerForClass:(Class)class;
++ (void)enableTimersForClass:(Class)class;
 - (void)pause;
 - (void)resume;
 - (void)start;
@@ -9,9 +9,9 @@
 
 @implementation ICDebugTimer
 
-+ (id)debugTimerForClass:(Class)a3
++ (id)debugTimerForClass:(Class)class
 {
-  if ([enabledTimers containsObject:a3])
+  if ([enabledTimers containsObject:class])
   {
     v3 = objc_alloc_init(ICDebugTimer);
   }
@@ -24,7 +24,7 @@
   return v3;
 }
 
-+ (void)enableTimersForClass:(Class)a3
++ (void)enableTimersForClass:(Class)class
 {
   if (enableTimersForClass__onceToken != -1)
   {
@@ -33,7 +33,7 @@
 
   v4 = enabledTimers;
 
-  [v4 addObject:a3];
+  [v4 addObject:class];
 }
 
 uint64_t __37__ICDebugTimer_enableTimersForClass___block_invoke()
@@ -46,14 +46,14 @@ uint64_t __37__ICDebugTimer_enableTimersForClass___block_invoke()
 - (void)start
 {
   [(ICDebugTimer *)self setElapsedTime:0.0];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(ICDebugTimer *)self setStartingDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(ICDebugTimer *)self setStartingDate:date];
 }
 
 - (void)pause
 {
-  v3 = [(ICDebugTimer *)self startingDate];
-  [v3 timeIntervalSinceNow];
+  startingDate = [(ICDebugTimer *)self startingDate];
+  [startingDate timeIntervalSinceNow];
   v5 = v4;
   [(ICDebugTimer *)self elapsedTime];
   [(ICDebugTimer *)self setElapsedTime:v6 - v5];
@@ -63,14 +63,14 @@ uint64_t __37__ICDebugTimer_enableTimersForClass___block_invoke()
 
 - (void)resume
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(ICDebugTimer *)self setStartingDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(ICDebugTimer *)self setStartingDate:date];
 }
 
 - (void)stop
 {
-  v3 = [(ICDebugTimer *)self startingDate];
-  [v3 timeIntervalSinceNow];
+  startingDate = [(ICDebugTimer *)self startingDate];
+  [startingDate timeIntervalSinceNow];
   v5 = v4;
   [(ICDebugTimer *)self elapsedTime];
   [(ICDebugTimer *)self setElapsedTime:v6 - v5];

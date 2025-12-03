@@ -1,21 +1,21 @@
 @interface CloudGeniusOnlyIfNonZeroDoubleTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusOnlyIfNonZeroDoubleTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v3 doubleValue], v4 == 0.0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([valueCopy doubleValue], v4 == 0.0))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = valueCopy;
   }
 
   return v5;

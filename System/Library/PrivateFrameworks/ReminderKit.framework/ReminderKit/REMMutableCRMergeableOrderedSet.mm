@@ -1,41 +1,41 @@
 @interface REMMutableCRMergeableOrderedSet
 - (NSString)description;
-- (REMMutableCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 immutableDocumentToEdit:(id)a4 undos:(id)a5;
-- (id)addObject:(id)a3;
+- (REMMutableCRMergeableOrderedSet)initWithReplicaIDSource:(id)source immutableDocumentToEdit:(id)edit undos:(id)undos;
+- (id)addObject:(id)object;
 - (id)documentToEdit;
 - (id)immutableOrderedSet;
-- (id)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (id)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (id)removeObjectAtIndex:(unint64_t)a3;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
-- (void)replicaIDHelperDidAcquireReplicaUUID:(id)a3;
+- (id)insertObject:(id)object atIndex:(unint64_t)index;
+- (id)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (id)removeObjectAtIndex:(unint64_t)index;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
+- (void)replicaIDHelperDidAcquireReplicaUUID:(id)d;
 - (void)undo;
-- (void)undo:(id)a3;
+- (void)undo:(id)undo;
 @end
 
 @implementation REMMutableCRMergeableOrderedSet
 
-- (REMMutableCRMergeableOrderedSet)initWithReplicaIDSource:(id)a3 immutableDocumentToEdit:(id)a4 undos:(id)a5
+- (REMMutableCRMergeableOrderedSet)initWithReplicaIDSource:(id)source immutableDocumentToEdit:(id)edit undos:(id)undos
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  editCopy = edit;
+  undosCopy = undos;
   v20.receiver = self;
   v20.super_class = REMMutableCRMergeableOrderedSet;
   v12 = [(REMMutableCRMergeableOrderedSet *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_replicaIDSource, a3);
-    objc_storeStrong(&v13->_document, a4);
-    v14 = [(CRDocument *)v13->_document rootObject];
-    [v14 setDelegate:v13];
+    objc_storeStrong(&v12->_replicaIDSource, source);
+    objc_storeStrong(&v13->_document, edit);
+    rootObject = [(CRDocument *)v13->_document rootObject];
+    [rootObject setDelegate:v13];
 
-    v15 = [v11 mutableCopy];
+    v15 = [undosCopy mutableCopy];
     undos = v13->_undos;
     v13->_undos = v15;
 
-    v17 = [[REMReplicaIDHelper alloc] initWithReplicaIDSource:v9 owner:v13 replicaClockProvider:v10];
+    v17 = [[REMReplicaIDHelper alloc] initWithReplicaIDSource:sourceCopy owner:v13 replicaClockProvider:editCopy];
     replicaIDHelper = v13->_replicaIDHelper;
     v13->_replicaIDHelper = v17;
   }
@@ -46,17 +46,17 @@
 - (id)immutableOrderedSet
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(REMMutableCRMergeableOrderedSet *)self document];
+  document = [(REMMutableCRMergeableOrderedSet *)self document];
   v5 = +[REMReplicaIDHelper nonEditingReplicaUUID];
-  v6 = [v4 copyForReplica:v5];
+  v6 = [document copyForReplica:v5];
 
-  v7 = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
-  [v7 didCopy];
+  replicaIDHelper = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
+  [replicaIDHelper didCopy];
 
   v8 = [REMCRMergeableOrderedSet alloc];
-  v9 = [(REMMutableCRMergeableOrderedSet *)self replicaIDSource];
-  v10 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  v11 = [(REMCRMergeableOrderedSet *)v8 initWithReplicaIDSource:v9 document:v6 undos:v10];
+  replicaIDSource = [(REMMutableCRMergeableOrderedSet *)self replicaIDSource];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  v11 = [(REMCRMergeableOrderedSet *)v8 initWithReplicaIDSource:replicaIDSource document:v6 undos:undos];
 
   objc_autoreleasePoolPop(v3);
 
@@ -67,126 +67,126 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMMutableCRMergeableOrderedSet *)self document];
-  v6 = [v3 stringWithFormat:@"<%@: %p document: %@>", v4, self, v5];
+  document = [(REMMutableCRMergeableOrderedSet *)self document];
+  v6 = [v3 stringWithFormat:@"<%@: %p document: %@>", v4, self, document];
 
   return v6;
 }
 
 - (id)documentToEdit
 {
-  v3 = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
-  [v3 willEdit];
+  replicaIDHelper = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
+  [replicaIDHelper willEdit];
 
   return [(REMMutableCRMergeableOrderedSet *)self document];
 }
 
-- (id)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (id)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_opt_new();
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:v7];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-  v10 = [v9 rootObject];
-  [v10 insertObject:v6 atIndex:a4];
+  documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+  rootObject = [documentToEdit rootObject];
+  [rootObject insertObject:objectCopy atIndex:index];
 
   objc_autoreleasePoolPop(v8);
-  v11 = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
-  v12 = [v11 immutableCopy];
+  currentUndo = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
+  immutableCopy = [currentUndo immutableCopy];
 
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:0];
-  v13 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  [v13 addObject:v12];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  [undos addObject:immutableCopy];
 
-  return v12;
+  return immutableCopy;
 }
 
-- (id)addObject:(id)a3
+- (id)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_new();
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:v5];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-  v8 = [v7 rootObject];
-  [v8 addObject:v4];
+  documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+  rootObject = [documentToEdit rootObject];
+  [rootObject addObject:objectCopy];
 
   objc_autoreleasePoolPop(v6);
-  v9 = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
-  v10 = [v9 immutableCopy];
+  currentUndo = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
+  immutableCopy = [currentUndo immutableCopy];
 
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:0];
-  v11 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  [v11 addObject:v10];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  [undos addObject:immutableCopy];
 
-  return v10;
+  return immutableCopy;
 }
 
-- (id)removeObjectAtIndex:(unint64_t)a3
+- (id)removeObjectAtIndex:(unint64_t)index
 {
   v5 = objc_opt_new();
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:v5];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-  v8 = [v7 rootObject];
-  [v8 removeObjectAtIndex:a3];
+  documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+  rootObject = [documentToEdit rootObject];
+  [rootObject removeObjectAtIndex:index];
 
   objc_autoreleasePoolPop(v6);
-  v9 = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
-  v10 = [v9 immutableCopy];
+  currentUndo = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
+  immutableCopy = [currentUndo immutableCopy];
 
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:0];
-  v11 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  [v11 addObject:v10];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  [undos addObject:immutableCopy];
 
-  return v10;
+  return immutableCopy;
 }
 
-- (id)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (id)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v7 = objc_opt_new();
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:v7];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-  v10 = [v9 rootObject];
-  [v10 moveObjectFromIndex:a3 toIndex:a4];
+  documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+  rootObject = [documentToEdit rootObject];
+  [rootObject moveObjectFromIndex:index toIndex:toIndex];
 
   objc_autoreleasePoolPop(v8);
-  v11 = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
-  v12 = [v11 immutableCopy];
+  currentUndo = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
+  immutableCopy = [currentUndo immutableCopy];
 
   [(REMMutableCRMergeableOrderedSet *)self setCurrentUndo:0];
-  v13 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  [v13 addObject:v12];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  [undos addObject:immutableCopy];
 
-  return v12;
+  return immutableCopy;
 }
 
 - (void)undo
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  v5 = [v4 lastObject];
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  lastObject = [undos lastObject];
 
-  v6 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  [v6 removeLastObject];
+  undos2 = [(REMMutableCRMergeableOrderedSet *)self undos];
+  [undos2 removeLastObject];
 
-  if (v5)
+  if (lastObject)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v5 undoBlocks];
-    v8 = [v7 reverseObjectEnumerator];
+    undoBlocks = [lastObject undoBlocks];
+    reverseObjectEnumerator = [undoBlocks reverseObjectEnumerator];
 
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -197,16 +197,16 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-          v15 = [v14 rootObject];
-          (*(v13 + 16))(v13, v15);
+          documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+          rootObject = [documentToEdit rootObject];
+          (*(v13 + 16))(v13, rootObject);
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -215,10 +215,10 @@
 
   else
   {
-    v8 = +[REMLog crdt];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    reverseObjectEnumerator = +[REMLog crdt];
+    if (os_log_type_enabled(reverseObjectEnumerator, OS_LOG_TYPE_ERROR))
     {
-      [(REMMutableCRMergeableOrderedSet *)v8 undo];
+      [(REMMutableCRMergeableOrderedSet *)reverseObjectEnumerator undo];
     }
   }
 
@@ -226,12 +226,12 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(REMMutableCRMergeableOrderedSet *)self undos];
-  v6 = [v5 containsObject:v4];
+  undoCopy = undo;
+  undos = [(REMMutableCRMergeableOrderedSet *)self undos];
+  v6 = [undos containsObject:undoCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -239,16 +239,16 @@
   }
 
   v7 = objc_autoreleasePoolPush();
-  if (v4)
+  if (undoCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v4 undoBlocks];
-    v9 = [v8 reverseObjectEnumerator];
+    undoBlocks = [undoCopy undoBlocks];
+    reverseObjectEnumerator = [undoBlocks reverseObjectEnumerator];
 
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -259,16 +259,16 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
-          v16 = [v15 rootObject];
-          (*(v14 + 16))(v14, v16);
+          documentToEdit = [(REMMutableCRMergeableOrderedSet *)self documentToEdit];
+          rootObject = [documentToEdit rootObject];
+          (*(v14 + 16))(v14, rootObject);
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -277,10 +277,10 @@
 
   else
   {
-    v9 = +[REMLog crdt];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    reverseObjectEnumerator = +[REMLog crdt];
+    if (os_log_type_enabled(reverseObjectEnumerator, OS_LOG_TYPE_ERROR))
     {
-      [(REMMutableCRMergeableOrderedSet *)v9 undo];
+      [(REMMutableCRMergeableOrderedSet *)reverseObjectEnumerator undo];
     }
   }
 
@@ -288,29 +288,29 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
-  [v6 addUndoBlock:v5];
+  blockCopy = block;
+  currentUndo = [(REMMutableCRMergeableOrderedSet *)self currentUndo];
+  [currentUndo addUndoBlock:blockCopy];
 }
 
-- (void)replicaIDHelperDidAcquireReplicaUUID:(id)a3
+- (void)replicaIDHelperDidAcquireReplicaUUID:(id)d
 {
-  v12 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v12 replicaUUID];
-  v6 = [(REMMutableCRMergeableOrderedSet *)self document];
-  v7 = [v6 copyForReplica:v5];
+  replicaUUID = [dCopy replicaUUID];
+  document = [(REMMutableCRMergeableOrderedSet *)self document];
+  v7 = [document copyForReplica:replicaUUID];
   [(REMMutableCRMergeableOrderedSet *)self setDocument:v7];
 
-  v8 = [(REMMutableCRMergeableOrderedSet *)self document];
-  v9 = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
-  [v9 setReplicaClockProvider:v8];
+  document2 = [(REMMutableCRMergeableOrderedSet *)self document];
+  replicaIDHelper = [(REMMutableCRMergeableOrderedSet *)self replicaIDHelper];
+  [replicaIDHelper setReplicaClockProvider:document2];
 
-  v10 = [(REMMutableCRMergeableOrderedSet *)self document];
-  v11 = [v10 rootObject];
-  [v11 setDelegate:self];
+  document3 = [(REMMutableCRMergeableOrderedSet *)self document];
+  rootObject = [document3 rootObject];
+  [rootObject setDelegate:self];
 
   objc_autoreleasePoolPop(v4);
 }

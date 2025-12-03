@@ -1,10 +1,10 @@
 @interface GKAutoPeerIDTable
-- (void)setObject:(id)a3 forKey:(unsigned int)a4;
+- (void)setObject:(id)object forKey:(unsigned int)key;
 @end
 
 @implementation GKAutoPeerIDTable
 
-- (void)setObject:(id)a3 forKey:(unsigned int)a4
+- (void)setObject:(id)object forKey:(unsigned int)key
 {
   v19 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -20,9 +20,9 @@
       v13 = 1024;
       v14 = 631;
       v15 = 2112;
-      v16 = a3;
+      objectCopy = object;
       v17 = 1024;
-      v18 = a4;
+      keyCopy = key;
       _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKAutoPeerIDTable setObject:[%@] forKey:[%d] ignored", &v9, 0x2Cu);
     }
   }

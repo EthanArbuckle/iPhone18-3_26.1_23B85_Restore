@@ -1,57 +1,57 @@
 @interface SBSystemShellExtendedDisplayControllerPolicy
 - (BOOL)_areRuntimeAvailabilityRequirementsMet;
-- (SBSystemShellExtendedDisplayControllerPolicy)initWithExternalDisplayDefaults:(id)a3 appSwitcherDefaults:(id)a4 externalDisplayService:(id)a5 mousePointerManager:(id)a6 runtimeAvailabilitySettings:(id)a7 sceneManager:(id)a8 windowSceneManager:(id)a9;
-- (id)_fetchOrCreateSceneWithDisplayConfiguration:(id)a3 deactivationReasons:(unint64_t)a4 sceneManager:(id)a5;
-- (id)assertionPreferencesForDisplay:(id)a3 displayConfiguration:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)displayPreferencesForDisplayController:(id)a3;
+- (SBSystemShellExtendedDisplayControllerPolicy)initWithExternalDisplayDefaults:(id)defaults appSwitcherDefaults:(id)switcherDefaults externalDisplayService:(id)service mousePointerManager:(id)manager runtimeAvailabilitySettings:(id)settings sceneManager:(id)sceneManager windowSceneManager:(id)windowSceneManager;
+- (id)_fetchOrCreateSceneWithDisplayConfiguration:(id)configuration deactivationReasons:(unint64_t)reasons sceneManager:(id)manager;
+- (id)assertionPreferencesForDisplay:(id)display displayConfiguration:(id)configuration;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)displayPreferencesForDisplayController:(id)controller;
 - (void)_hardwareAvailabilityChanged;
-- (void)_windowManagementStyleDidChange:(id)a3;
-- (void)connectToDisplayController:(id)a3 displayConfiguration:(id)a4 embeddedBacklightOn:(BOOL)a5;
+- (void)_windowManagementStyleDidChange:(id)change;
+- (void)connectToDisplayController:(id)controller displayConfiguration:(id)configuration embeddedBacklightOn:(BOOL)on;
 - (void)dealloc;
-- (void)displayController:(id)a3 didBeginTransaction:(id)a4 sceneManager:(id)a5 displayConfiguration:(id)a6 deactivationReasons:(unint64_t)a7;
-- (void)displayController:(id)a3 didGainControlOfDisplayWithSceneManager:(id)a4;
-- (void)displayController:(id)a3 sceneManager:(id)a4 didLoseControlOfDisplayWithDeactivationReasons:(unint64_t)a5;
-- (void)displayController:(id)a3 sceneManager:(id)a4 didReceiveNewDeactivationReasons:(unint64_t)a5;
-- (void)displayController:(id)a3 updatePresentationWithSceneManager:(id)a4 displayConfiguration:(id)a5 completion:(id)a6;
-- (void)displayControllerWillDisconnect:(id)a3 sceneManager:(id)a4;
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4;
-- (void)externalDisplayServiceDidUpdatePreferredDisplayArrangement:(id)a3;
-- (void)mousePointerManager:(id)a3 hardwarePointingDeviceAttachedDidChange:(BOOL)a4;
+- (void)displayController:(id)controller didBeginTransaction:(id)transaction sceneManager:(id)manager displayConfiguration:(id)configuration deactivationReasons:(unint64_t)reasons;
+- (void)displayController:(id)controller didGainControlOfDisplayWithSceneManager:(id)manager;
+- (void)displayController:(id)controller sceneManager:(id)manager didLoseControlOfDisplayWithDeactivationReasons:(unint64_t)reasons;
+- (void)displayController:(id)controller sceneManager:(id)manager didReceiveNewDeactivationReasons:(unint64_t)reasons;
+- (void)displayController:(id)controller updatePresentationWithSceneManager:(id)manager displayConfiguration:(id)configuration completion:(id)completion;
+- (void)displayControllerWillDisconnect:(id)disconnect sceneManager:(id)manager;
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source;
+- (void)externalDisplayServiceDidUpdatePreferredDisplayArrangement:(id)arrangement;
+- (void)mousePointerManager:(id)manager hardwarePointingDeviceAttachedDidChange:(BOOL)change;
 - (void)reevaluateMirroringEnablement;
 @end
 
 @implementation SBSystemShellExtendedDisplayControllerPolicy
 
-- (SBSystemShellExtendedDisplayControllerPolicy)initWithExternalDisplayDefaults:(id)a3 appSwitcherDefaults:(id)a4 externalDisplayService:(id)a5 mousePointerManager:(id)a6 runtimeAvailabilitySettings:(id)a7 sceneManager:(id)a8 windowSceneManager:(id)a9
+- (SBSystemShellExtendedDisplayControllerPolicy)initWithExternalDisplayDefaults:(id)defaults appSwitcherDefaults:(id)switcherDefaults externalDisplayService:(id)service mousePointerManager:(id)manager runtimeAvailabilitySettings:(id)settings sceneManager:(id)sceneManager windowSceneManager:(id)windowSceneManager
 {
-  v16 = a3;
-  v17 = a4;
-  obj = a5;
-  v32 = a5;
-  v28 = a6;
-  v18 = a6;
-  v29 = a7;
-  v19 = a7;
-  v30 = a8;
-  v20 = a8;
-  v21 = a9;
-  v31 = v16;
-  if (!v16)
+  defaultsCopy = defaults;
+  switcherDefaultsCopy = switcherDefaults;
+  obj = service;
+  serviceCopy = service;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  settingsCopy = settings;
+  settingsCopy2 = settings;
+  sceneManagerCopy = sceneManager;
+  sceneManagerCopy2 = sceneManager;
+  windowSceneManagerCopy = windowSceneManager;
+  v31 = defaultsCopy;
+  if (!defaultsCopy)
   {
     [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
   }
 
-  v22 = v17;
-  if (!v17)
+  v22 = switcherDefaultsCopy;
+  if (!switcherDefaultsCopy)
   {
     [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
   }
 
-  if (v32)
+  if (serviceCopy)
   {
-    if (v18)
+    if (managerCopy2)
     {
       goto LABEL_7;
     }
@@ -60,10 +60,10 @@
   else
   {
     [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-    if (v18)
+    if (managerCopy2)
     {
 LABEL_7:
-      if (v19)
+      if (settingsCopy2)
       {
         goto LABEL_8;
       }
@@ -73,17 +73,17 @@ LABEL_7:
   }
 
   [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-  if (v19)
+  if (settingsCopy2)
   {
 LABEL_8:
-    if (v20)
+    if (sceneManagerCopy2)
     {
       goto LABEL_9;
     }
 
 LABEL_16:
     [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-    if (v21)
+    if (windowSceneManagerCopy)
     {
       goto LABEL_10;
     }
@@ -93,13 +93,13 @@ LABEL_16:
 
 LABEL_15:
   [SBSystemShellExtendedDisplayControllerPolicy initWithExternalDisplayDefaults:appSwitcherDefaults:externalDisplayService:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-  if (!v20)
+  if (!sceneManagerCopy2)
   {
     goto LABEL_16;
   }
 
 LABEL_9:
-  if (v21)
+  if (windowSceneManagerCopy)
   {
     goto LABEL_10;
   }
@@ -113,13 +113,13 @@ LABEL_10:
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_externalDisplayDefaults, a3);
-    objc_storeStrong(&v24->_appSwitcherDefaults, a4);
+    objc_storeStrong(&v23->_externalDisplayDefaults, defaults);
+    objc_storeStrong(&v24->_appSwitcherDefaults, switcherDefaults);
     objc_storeStrong(&v24->_externalDisplayService, obj);
-    objc_storeStrong(&v24->_mousePointerManager, v28);
-    objc_storeStrong(&v24->_runtimeAvailabilitySettings, v29);
-    objc_storeStrong(&v24->_fbSceneManager, v30);
-    objc_storeStrong(&v24->_windowSceneManager, a9);
+    objc_storeStrong(&v24->_mousePointerManager, managerCopy);
+    objc_storeStrong(&v24->_runtimeAvailabilitySettings, settingsCopy);
+    objc_storeStrong(&v24->_fbSceneManager, sceneManagerCopy);
+    objc_storeStrong(&v24->_windowSceneManager, windowSceneManager);
     [(SBExternalDisplayService *)v24->_externalDisplayService addObserver:v24];
     [(PTSettings *)v24->_runtimeAvailabilitySettings addKeyObserver:v24];
   }
@@ -137,26 +137,26 @@ LABEL_10:
   [(SBSystemShellExtendedDisplayControllerPolicy *)&v3 dealloc];
 }
 
-- (void)connectToDisplayController:(id)a3 displayConfiguration:(id)a4 embeddedBacklightOn:(BOOL)a5
+- (void)connectToDisplayController:(id)controller displayConfiguration:(id)configuration embeddedBacklightOn:(BOOL)on
 {
   v65 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSystemShellExtendedDisplayControllerPolicy connectToDisplayController:displayConfiguration:embeddedBacklightOn:];
   }
 
-  objc_storeWeak(&self->_displayController, v9);
-  v11 = [v10 identity];
+  objc_storeWeak(&self->_displayController, controllerCopy);
+  identity = [configurationCopy identity];
   displayIdentity = self->_displayIdentity;
-  self->_displayIdentity = v11;
+  self->_displayIdentity = identity;
 
   v13 = objc_alloc_init(MEMORY[0x277CF0B80]);
   displayDisconnectSignal = self->_displayDisconnectSignal;
   self->_displayDisconnectSignal = v13;
 
-  self->_embeddedBacklightOn = a5;
+  self->_embeddedBacklightOn = on;
   if ([(FBSDisplayIdentity *)self->_displayIdentity connectionType]!= 2 && [(FBSDisplayIdentity *)self->_displayIdentity connectionType]!= 1)
   {
     [SBSystemShellExtendedDisplayControllerPolicy connectToDisplayController:displayConfiguration:embeddedBacklightOn:];
@@ -174,7 +174,7 @@ LABEL_10:
     }
   }
 
-  v16 = [(SBExternalDisplayDefaults *)self->_externalDisplayDefaults displayModeSettingsForDisplay:v10];
+  v16 = [(SBExternalDisplayDefaults *)self->_externalDisplayDefaults displayModeSettingsForDisplay:configurationCopy];
   displayModeSettings = self->_displayModeSettings;
   self->_displayModeSettings = v16;
 
@@ -184,7 +184,7 @@ LABEL_10:
   v56[2] = __116__SBSystemShellExtendedDisplayControllerPolicy_connectToDisplayController_displayConfiguration_embeddedBacklightOn___block_invoke;
   v56[3] = &unk_2783AB2A8;
   v56[4] = self;
-  v19 = v10;
+  v19 = configurationCopy;
   v57 = v19;
   v58 = a2;
   v20 = [(SBExternalDisplayDefaults *)externalDisplayDefaults observeDisplayModeSettingsOnQueue:MEMORY[0x277D85CD0] withBlock:v56];
@@ -225,11 +225,11 @@ LABEL_10:
   displayScaleMapping = self->_displayScaleMapping;
   self->_displayScaleMapping = v28;
 
-  v30 = [(SBSystemShellExtendedDisplayControllerPolicy *)self _areRuntimeAvailabilityRequirementsMet];
+  _areRuntimeAvailabilityRequirementsMet = [(SBSystemShellExtendedDisplayControllerPolicy *)self _areRuntimeAvailabilityRequirementsMet];
   [(SBSystemShellExtendedDisplayControllerPolicy *)self reevaluateMirroringEnablement];
-  self->_didConnectToRequiredDevicesDuringTimerWindow = v30;
-  v31 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v31 addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
+  self->_didConnectToRequiredDevicesDuringTimerWindow = _areRuntimeAvailabilityRequirementsMet;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
   v32 = objc_alloc(MEMORY[0x277CF0BD8]);
   v33 = MEMORY[0x277CCACA8];
   v34 = objc_opt_class();
@@ -246,7 +246,7 @@ LABEL_10:
   v53[3] = &unk_2783BE640;
   v53[4] = self;
   v55 = a2;
-  v40 = v31;
+  v40 = defaultCenter;
   v54 = v40;
   [(BSContinuousMachTimer *)v39 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v53 queue:14.0 handler:0.5];
 
@@ -265,13 +265,13 @@ LABEL_10:
   [(SBMousePointerManager *)self->_mousePointerManager addObserver:self];
   [v40 addObserver:self selector:sel__keyboardAvailabilityChanged_ name:@"SBHardwareKeyboardAvailabilityChangedNotification" object:0];
   v59[0] = @"kSBSystemShellExtendedDisplayControllerHardwareAvailabilityIsAvailableKey";
-  v45 = [MEMORY[0x277CCABB0] numberWithBool:v30];
+  v45 = [MEMORY[0x277CCABB0] numberWithBool:_areRuntimeAvailabilityRequirementsMet];
   v60[0] = v45;
   v60[1] = MEMORY[0x277CBEC38];
   v59[1] = @"kSBSystemShellExtendedDisplayControllerFiredDuringDeviceConnectionWindowKey";
   v59[2] = @"kSBSystemShellExtendedDisplayControllerDisplayIdentityKey";
-  v46 = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
-  v60[2] = v46;
+  rootIdentity = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
+  v60[2] = rootIdentity;
   v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:3];
   [v40 postNotificationName:@"SBSystemShellExtendedDisplayControllerPolicyConnectNotification" object:self userInfo:v47];
 
@@ -374,10 +374,10 @@ void __116__SBSystemShellExtendedDisplayControllerPolicy_connectToDisplayControl
   }
 }
 
-- (void)displayControllerWillDisconnect:(id)a3 sceneManager:(id)a4
+- (void)displayControllerWillDisconnect:(id)disconnect sceneManager:(id)manager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  [(BSAtomicSignal *)self->_displayDisconnectSignal signal:a3];
+  [(BSAtomicSignal *)self->_displayDisconnectSignal signal:disconnect];
   [(BSDefaultObserver *)self->_displayModeSettingsToken invalidate];
   displayModeSettingsToken = self->_displayModeSettingsToken;
   self->_displayModeSettingsToken = 0;
@@ -387,20 +387,20 @@ void __116__SBSystemShellExtendedDisplayControllerPolicy_connectToDisplayControl
   self->_externalDisplayDefaultsToken = 0;
 
   [(SBMousePointerManager *)self->_mousePointerManager removeObserver:self];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   v10 = @"kSBSystemShellExtendedDisplayControllerDisplayIdentityKey";
-  v8 = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
-  v11[0] = v8;
+  rootIdentity = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
+  v11[0] = rootIdentity;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v7 postNotificationName:@"SBSystemShellExtendedDisplayControllerPolicyDisconnectNotification" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"SBSystemShellExtendedDisplayControllerPolicyDisconnectNotification" object:self userInfo:v9];
 }
 
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source
 {
-  v5 = a3;
+  changeCopy = change;
   v14 = *MEMORY[0x277D85DE8];
-  if ([(SBSystemShellExtendedDisplayControllerPolicy *)self _shouldIgnoreEmbeddedBacklightChangingSource:a4])
+  if ([(SBSystemShellExtendedDisplayControllerPolicy *)self _shouldIgnoreEmbeddedBacklightChangingSource:source])
   {
     v7 = SBLogDisplayControlling();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -409,28 +409,28 @@ void __116__SBSystemShellExtendedDisplayControllerPolicy_connectToDisplayControl
       *buf = 138543618;
       v11 = v8;
       v12 = 2048;
-      v13 = a4;
+      sourceCopy = source;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ ignoring backlight change source: %ld", buf, 0x16u);
     }
   }
 
-  else if (self->_embeddedBacklightOn != v5)
+  else if (self->_embeddedBacklightOn != changeCopy)
   {
-    self->_embeddedBacklightOn = v5;
+    self->_embeddedBacklightOn = changeCopy;
     WeakRetained = objc_loadWeakRetained(&self->_displayController);
     [WeakRetained requestUpdate:1];
   }
 }
 
-- (void)displayController:(id)a3 didGainControlOfDisplayWithSceneManager:(id)a4
+- (void)displayController:(id)controller didGainControlOfDisplayWithSceneManager:(id)manager
 {
-  v5 = [a4 allScenes];
+  allScenes = [manager allScenes];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __106__SBSystemShellExtendedDisplayControllerPolicy_displayController_didGainControlOfDisplayWithSceneManager___block_invoke;
   v6[3] = &unk_2783ACB60;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [allScenes enumerateObjectsUsingBlock:v6];
 
   self->_previouslyReceivedDeactivationReasons = 0;
 }
@@ -456,18 +456,18 @@ void __106__SBSystemShellExtendedDisplayControllerPolicy_displayController_didGa
   }
 }
 
-- (void)displayController:(id)a3 sceneManager:(id)a4 didLoseControlOfDisplayWithDeactivationReasons:(unint64_t)a5
+- (void)displayController:(id)controller sceneManager:(id)manager didLoseControlOfDisplayWithDeactivationReasons:(unint64_t)reasons
 {
-  v7 = [a4 allScenes];
+  allScenes = [manager allScenes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __126__SBSystemShellExtendedDisplayControllerPolicy_displayController_sceneManager_didLoseControlOfDisplayWithDeactivationReasons___block_invoke;
   v8[3] = &unk_2783BE668;
   v8[4] = self;
-  v8[5] = a5;
-  [v7 enumerateObjectsUsingBlock:v8];
+  v8[5] = reasons;
+  [allScenes enumerateObjectsUsingBlock:v8];
 
-  self->_previouslyReceivedDeactivationReasons = a5;
+  self->_previouslyReceivedDeactivationReasons = reasons;
 }
 
 void __126__SBSystemShellExtendedDisplayControllerPolicy_displayController_sceneManager_didLoseControlOfDisplayWithDeactivationReasons___block_invoke(uint64_t a1, void *a2)
@@ -491,18 +491,18 @@ void __126__SBSystemShellExtendedDisplayControllerPolicy_displayController_scene
   }
 }
 
-- (void)displayController:(id)a3 sceneManager:(id)a4 didReceiveNewDeactivationReasons:(unint64_t)a5
+- (void)displayController:(id)controller sceneManager:(id)manager didReceiveNewDeactivationReasons:(unint64_t)reasons
 {
-  v7 = [a4 allScenes];
+  allScenes = [manager allScenes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_sceneManager_didReceiveNewDeactivationReasons___block_invoke;
   v8[3] = &unk_2783BE668;
   v8[4] = self;
-  v8[5] = a5;
-  [v7 enumerateObjectsUsingBlock:v8];
+  v8[5] = reasons;
+  [allScenes enumerateObjectsUsingBlock:v8];
 
-  self->_previouslyReceivedDeactivationReasons = a5;
+  self->_previouslyReceivedDeactivationReasons = reasons;
 }
 
 void __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_sceneManager_didReceiveNewDeactivationReasons___block_invoke(uint64_t a1, void *a2)
@@ -521,15 +521,15 @@ void __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_scene
   }
 }
 
-- (void)displayController:(id)a3 didBeginTransaction:(id)a4 sceneManager:(id)a5 displayConfiguration:(id)a6 deactivationReasons:(unint64_t)a7
+- (void)displayController:(id)controller didBeginTransaction:(id)transaction sceneManager:(id)manager displayConfiguration:(id)configuration deactivationReasons:(unint64_t)reasons
 {
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  transactionCopy = transaction;
+  managerCopy = manager;
+  configurationCopy = configuration;
   if ([(SBSystemShellExtendedDisplayControllerPolicy *)self _wantsControlOfDisplay])
   {
-    v15 = [(SBSystemShellExtendedDisplayControllerPolicy *)self _fetchOrCreateSceneWithDisplayConfiguration:v14 deactivationReasons:a7 sceneManager:v13];
+    v15 = [(SBSystemShellExtendedDisplayControllerPolicy *)self _fetchOrCreateSceneWithDisplayConfiguration:configurationCopy deactivationReasons:reasons sceneManager:managerCopy];
     v16 = SBLogDisplayControlling();
     v17 = v16;
     if (v15)
@@ -544,10 +544,10 @@ void __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_scene
         _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ retrieved springboard scene %{public}@", buf, 0x16u);
       }
 
-      if ([v12 isAuditHistoryEnabled])
+      if ([transactionCopy isAuditHistoryEnabled])
       {
-        v19 = [v15 identifier];
-        [v12 _addAuditHistoryItem:{@"retrieved springboard scene %@", v19}];
+        identifier = [v15 identifier];
+        [transactionCopy _addAuditHistoryItem:{@"retrieved springboard scene %@", identifier}];
       }
     }
 
@@ -558,9 +558,9 @@ void __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_scene
         [SBSystemShellExtendedDisplayControllerPolicy displayController:a2 didBeginTransaction:v17 sceneManager:? displayConfiguration:? deactivationReasons:?];
       }
 
-      if ([v12 isAuditHistoryEnabled])
+      if ([transactionCopy isAuditHistoryEnabled])
       {
-        [v12 _addAuditHistoryItem:@"failed to retrieve springboard scene"];
+        [transactionCopy _addAuditHistoryItem:@"failed to retrieve springboard scene"];
       }
     }
 
@@ -571,13 +571,13 @@ void __112__SBSystemShellExtendedDisplayControllerPolicy_displayController_scene
   else
   {
     [(FBScene *)self->_currentScene invalidate];
-    v20 = [v13 allScenes];
+    allScenes = [managerCopy allScenes];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __140__SBSystemShellExtendedDisplayControllerPolicy_displayController_didBeginTransaction_sceneManager_displayConfiguration_deactivationReasons___block_invoke;
     v22[3] = &unk_2783ACB60;
     v22[4] = self;
-    [v20 enumerateObjectsUsingBlock:v22];
+    [allScenes enumerateObjectsUsingBlock:v22];
 
     currentScene = self->_currentScene;
     self->_currentScene = 0;
@@ -594,24 +594,24 @@ uint64_t __140__SBSystemShellExtendedDisplayControllerPolicy_displayController_d
   return result;
 }
 
-- (void)displayController:(id)a3 updatePresentationWithSceneManager:(id)a4 displayConfiguration:(id)a5 completion:(id)a6
+- (void)displayController:(id)controller updatePresentationWithSceneManager:(id)manager displayConfiguration:(id)configuration completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FBSDisplayConfiguration *)self->_lastPresentationUpdateDisplayConfiguration isEqual:v12];
+  controllerCopy = controller;
+  managerCopy = manager;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v14 = [(FBSDisplayConfiguration *)self->_lastPresentationUpdateDisplayConfiguration isEqual:configurationCopy];
   if ((v14 & 1) == 0)
   {
-    objc_storeStrong(&self->_lastPresentationUpdateDisplayConfiguration, a5);
+    objc_storeStrong(&self->_lastPresentationUpdateDisplayConfiguration, configuration);
   }
 
   v15 = [MEMORY[0x277CBEB58] set];
-  v16 = [v11 boundPointerUIScenes];
-  if (v16)
+  boundPointerUIScenes = [managerCopy boundPointerUIScenes];
+  if (boundPointerUIScenes)
   {
-    [v15 unionSet:v16];
+    [v15 unionSet:boundPointerUIScenes];
   }
 
   if (self->_currentScene)
@@ -636,7 +636,7 @@ uint64_t __140__SBSystemShellExtendedDisplayControllerPolicy_displayController_d
 
   if (v18)
   {
-    v13[2](v13);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -655,12 +655,12 @@ uint64_t __140__SBSystemShellExtendedDisplayControllerPolicy_displayController_d
     v23[1] = 3221225472;
     v23[2] = __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updatePresentationWithSceneManager_displayConfiguration_completion___block_invoke;
     v23[3] = &unk_2783BE6B8;
-    v24 = v12;
-    v25 = self;
+    v24 = configurationCopy;
+    selfCopy = self;
     v28 = a2;
     v29 = v19;
     v27 = v30;
-    v26 = v13;
+    v26 = completionCopy;
     [v15 enumerateObjectsUsingBlock:v23];
   }
 
@@ -713,7 +713,7 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
   }
 }
 
-- (id)displayPreferencesForDisplayController:(id)a3
+- (id)displayPreferencesForDisplayController:(id)controller
 {
   v4 = objc_alloc_init(MEMORY[0x277D0AD40]);
   [(SBSDisplayModeSettings *)self->_displayModeSettings overscanCompensation];
@@ -726,15 +726,15 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
   return v6;
 }
 
-- (id)assertionPreferencesForDisplay:(id)a3 displayConfiguration:(id)a4
+- (id)assertionPreferencesForDisplay:(id)display displayConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(SBDisplayAssertionPreferences);
   [(SBDisplayAssertionPreferences *)v6 setWantsControlOfDisplay:[(SBSystemShellExtendedDisplayControllerPolicy *)self _wantsControlOfDisplay]];
   v7 = [(SBExternalDisplayService *)self->_externalDisplayService preferredArrangementOfExternalDisplay:self->_displayIdentity];
   [(SBDisplayAssertionPreferences *)v6 setDisplayArrangement:v7];
 
-  v8 = [SBDisplayPowerLogEntry forDisplay:v5 mode:3 zoom:SBDisplayPowerLogZoomLevelFromScale([(SBSDisplayModeSettings *)self->_displayModeSettings scale])];
+  v8 = [SBDisplayPowerLogEntry forDisplay:configurationCopy mode:3 zoom:SBDisplayPowerLogZoomLevelFromScale([(SBSDisplayModeSettings *)self->_displayModeSettings scale])];
 
   [(SBDisplayAssertionPreferences *)v6 setPowerLogEntry:v8];
   displayIdentity = self->_displayIdentity;
@@ -749,7 +749,7 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
   return v6;
 }
 
-- (void)externalDisplayServiceDidUpdatePreferredDisplayArrangement:(id)a3
+- (void)externalDisplayServiceDidUpdatePreferredDisplayArrangement:(id)arrangement
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -760,17 +760,17 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
   [WeakRetained requestUpdate:1];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSystemShellExtendedDisplayControllerPolicy *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSystemShellExtendedDisplayControllerPolicy *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -778,8 +778,8 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
   v15[3] = &unk_2783A92D8;
   v6 = v5;
   v16 = v6;
-  v17 = self;
-  [v6 appendBodySectionWithName:@"Display Scale Mapping" multilinePrefix:v4 block:v15];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:@"Display Scale Mapping" multilinePrefix:prefixCopy block:v15];
   if (self->_currentScene)
   {
     v13[0] = MEMORY[0x277D85DD0];
@@ -789,13 +789,13 @@ void __133__SBSystemShellExtendedDisplayControllerPolicy_displayController_updat
     v13[4] = self;
     v7 = v6;
     v14 = v7;
-    [v7 appendBodySectionWithName:@"FBScene" multilinePrefix:v4 block:v13];
+    [v7 appendBodySectionWithName:@"FBScene" multilinePrefix:prefixCopy block:v13];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __86__SBSystemShellExtendedDisplayControllerPolicy_descriptionBuilderWithMultilinePrefix___block_invoke_3;
     v10[3] = &unk_2783A92D8;
     v11 = v7;
-    v12 = self;
+    selfCopy2 = self;
     [v11 appendBodySectionWithName:@"Dev Overrides" multilinePrefix:@"\t" block:v10];
   }
 
@@ -825,7 +825,7 @@ id __86__SBSystemShellExtendedDisplayControllerPolicy_descriptionBuilderWithMult
   return [v3 appendFloat:@"contentsScale" withName:2 decimalPrecision:?];
 }
 
-- (void)mousePointerManager:(id)a3 hardwarePointingDeviceAttachedDidChange:(BOOL)a4
+- (void)mousePointerManager:(id)manager hardwarePointingDeviceAttachedDidChange:(BOOL)change
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
@@ -847,13 +847,13 @@ void __108__SBSystemShellExtendedDisplayControllerPolicy_mousePointerManager_har
 - (BOOL)_areRuntimeAvailabilityRequirementsMet
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemShellExtendedDisplayControllerPolicy *)self _currentRuntimeMask];
-  v4 = [(SBExternalDisplayRuntimeAvailabilitySettings *)self->_runtimeAvailabilitySettings extendedDisplayRequirements];
+  _currentRuntimeMask = [(SBSystemShellExtendedDisplayControllerPolicy *)self _currentRuntimeMask];
+  extendedDisplayRequirements = [(SBExternalDisplayRuntimeAvailabilitySettings *)self->_runtimeAvailabilitySettings extendedDisplayRequirements];
   v5 = SBLogDisplayControlling();
   if (os_signpost_enabled(v5))
   {
-    v6 = SBManagedDisplayModeRequirementMaskDescription(v4);
-    v7 = SBManagedDisplayModeRequirementMaskDescription(v3);
+    v6 = SBManagedDisplayModeRequirementMaskDescription(extendedDisplayRequirements);
+    v7 = SBManagedDisplayModeRequirementMaskDescription(_currentRuntimeMask);
     v15 = 138543618;
     v16 = v6;
     v17 = 2114;
@@ -861,18 +861,18 @@ void __108__SBSystemShellExtendedDisplayControllerPolicy_mousePointerManager_har
     _os_signpost_emit_with_name_impl(&dword_21ED4E000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SB_EXTENDED_DISPLAY_RESOLVER_EVALUATE", "required: %{public}@; current: %{public}@", &v15, 0x16u);
   }
 
-  v8 = v4 & v3;
+  v8 = extendedDisplayRequirements & _currentRuntimeMask;
 
   v9 = SBLogDisplayControlling();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
-    v11 = SBManagedDisplayModeRequirementMaskDescription(v4);
-    v12 = SBManagedDisplayModeRequirementMaskDescription(v3);
+    v11 = SBManagedDisplayModeRequirementMaskDescription(extendedDisplayRequirements);
+    v12 = SBManagedDisplayModeRequirementMaskDescription(_currentRuntimeMask);
     v15 = 138544130;
     v16 = v10;
     v17 = 1024;
-    *v18 = v8 == v4;
+    *v18 = v8 == extendedDisplayRequirements;
     *&v18[4] = 2114;
     *&v18[6] = v11;
     v19 = 2114;
@@ -880,7 +880,7 @@ void __108__SBSystemShellExtendedDisplayControllerPolicy_mousePointerManager_har
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ returning %{BOOL}u; requiredMask: %{public}@; currentMask: %{public}@", &v15, 0x26u);
   }
 
-  v13 = v8 == v4;
+  v13 = v8 == extendedDisplayRequirements;
 
   self->_requiredHardwareAvailable = v13;
   return v13;
@@ -897,9 +897,9 @@ uint64_t __67__SBSystemShellExtendedDisplayControllerPolicy__currentRuntimeMask_
 - (void)_hardwareAvailabilityChanged
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemShellExtendedDisplayControllerPolicy *)self _areRuntimeAvailabilityRequirementsMet];
-  v4 = [(BSContinuousMachTimer *)self->_timerForAttachedDevicesToAffectDisplayAssertion isScheduled];
-  if (v4 && !self->_didConnectToRequiredDevicesDuringTimerWindow && v3)
+  _areRuntimeAvailabilityRequirementsMet = [(SBSystemShellExtendedDisplayControllerPolicy *)self _areRuntimeAvailabilityRequirementsMet];
+  isScheduled = [(BSContinuousMachTimer *)self->_timerForAttachedDevicesToAffectDisplayAssertion isScheduled];
+  if (isScheduled && !self->_didConnectToRequiredDevicesDuringTimerWindow && _areRuntimeAvailabilityRequirementsMet)
   {
     v5 = SBLogDisplayControlling();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -908,41 +908,41 @@ uint64_t __67__SBSystemShellExtendedDisplayControllerPolicy__currentRuntimeMask_
       *buf = 138543618;
       v16 = v6;
       v17 = 1024;
-      v18 = v3;
+      v18 = _areRuntimeAvailabilityRequirementsMet;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ saw required devices connect while timer was scheduled. isAvailable: %{BOOL}u", buf, 0x12u);
     }
 
-    self->_didConnectToRequiredDevicesDuringTimerWindow = v3;
+    self->_didConnectToRequiredDevicesDuringTimerWindow = _areRuntimeAvailabilityRequirementsMet;
     [(SBSystemShellExtendedDisplayControllerPolicy *)self reevaluateMirroringEnablement];
     WeakRetained = objc_loadWeakRetained(&self->_displayController);
     [WeakRetained requestUpdate:7];
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{v3, @"kSBSystemShellExtendedDisplayControllerHardwareAvailabilityIsAvailableKey"}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{_areRuntimeAvailabilityRequirementsMet, @"kSBSystemShellExtendedDisplayControllerHardwareAvailabilityIsAvailableKey"}];
   v14[0] = v9;
   v13[1] = @"kSBSystemShellExtendedDisplayControllerFiredDuringDeviceConnectionWindowKey";
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isScheduled];
   v14[1] = v10;
   v13[2] = @"kSBSystemShellExtendedDisplayControllerDisplayIdentityKey";
-  v11 = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
-  v14[2] = v11;
+  rootIdentity = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
+  v14[2] = rootIdentity;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  [v8 postNotificationName:@"SBSystemShellExtendedDisplayControllerHardwareAvailabilityNotification" object:self userInfo:v12];
+  [defaultCenter postNotificationName:@"SBSystemShellExtendedDisplayControllerHardwareAvailabilityNotification" object:self userInfo:v12];
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [changeCopy object];
 
-  v8 = SBSafeCast(v5, v6);
+  v8 = SBSafeCast(v5, object);
 
-  v7 = [v8 windowScene];
-  LODWORD(v4) = [v7 isMainDisplayWindowScene];
+  windowScene = [v8 windowScene];
+  LODWORD(changeCopy) = [windowScene isMainDisplayWindowScene];
 
-  if (v4)
+  if (changeCopy)
   {
     [(SBSystemShellExtendedDisplayControllerPolicy *)self reevaluateMirroringEnablement];
   }
@@ -953,14 +953,14 @@ uint64_t __67__SBSystemShellExtendedDisplayControllerPolicy__currentRuntimeMask_
   if ([(SBAppSwitcherDefaults *)self->_appSwitcherDefaults shouldUpdateExternalDisplayMirroringWhenWindowManagementStyleUpdates])
   {
     windowSceneManager = self->_windowSceneManager;
-    v4 = [MEMORY[0x277D0AA90] mainIdentity];
-    v9 = [(SBWindowSceneManager *)windowSceneManager windowSceneForDisplayIdentity:v4];
+    mainIdentity = [MEMORY[0x277D0AA90] mainIdentity];
+    v9 = [(SBWindowSceneManager *)windowSceneManager windowSceneForDisplayIdentity:mainIdentity];
 
-    v5 = [v9 switcherController];
-    v6 = [v5 windowManagementContext];
-    v7 = [v6 baseStyle];
+    switcherController = [v9 switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    baseStyle = [windowManagementContext baseStyle];
 
-    if (v7)
+    if (baseStyle)
     {
       v8 = !self->_requiredHardwareAvailable;
     }
@@ -974,94 +974,94 @@ uint64_t __67__SBSystemShellExtendedDisplayControllerPolicy__currentRuntimeMask_
   }
 }
 
-- (id)_fetchOrCreateSceneWithDisplayConfiguration:(id)a3 deactivationReasons:(unint64_t)a4 sceneManager:(id)a5
+- (id)_fetchOrCreateSceneWithDisplayConfiguration:(id)configuration deactivationReasons:(unint64_t)reasons sceneManager:(id)manager
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  configurationCopy = configuration;
+  managerCopy = manager;
   v10 = MEMORY[0x277D0ADC0];
   v11 = MEMORY[0x277CCACA8];
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [v8 identity];
-  v15 = [v11 stringWithFormat:@"%@:%@", v13, v14];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  identity = [configurationCopy identity];
+  v15 = [v11 stringWithFormat:@"%@:%@", bundleIdentifier, identity];
   v16 = [v10 identityForIdentifier:v15];
 
   fbSceneManager = self->_fbSceneManager;
-  v18 = [v16 identifier];
-  v19 = [(FBSceneManager *)fbSceneManager sceneWithIdentifier:v18];
+  identifier = [v16 identifier];
+  v19 = [(FBSceneManager *)fbSceneManager sceneWithIdentifier:identifier];
 
   if (v19)
   {
-    v20 = [v19 uiSettings];
-    v21 = [v20 mutableCopy];
+    uiSettings = [v19 uiSettings];
+    definition = [uiSettings mutableCopy];
 
-    [v21 setDisplayConfiguration:v8];
-    [v8 bounds];
-    [v21 setFrame:?];
-    [v21 setForeground:a4 == 0];
-    [v21 setDeactivationReasons:{objc_msgSend(v21, "deactivationReasons") | a4}];
-    [v19 updateSettings:v21 withTransitionContext:0];
+    [definition setDisplayConfiguration:configurationCopy];
+    [configurationCopy bounds];
+    [definition setFrame:?];
+    [definition setForeground:reasons == 0];
+    [definition setDeactivationReasons:{objc_msgSend(definition, "deactivationReasons") | reasons}];
+    [v19 updateSettings:definition withTransitionContext:0];
     v22 = SBLogDisplayControlling();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
-      v24 = [v19 identifier];
+      identifier2 = [v19 identifier];
       *buf = 138543618;
       v45 = v23;
       v46 = 2114;
-      v47 = v24;
+      v47 = identifier2;
       _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_INFO, "%{public}@ reset %{public}@ for presentation", buf, 0x16u);
     }
   }
 
   else
   {
-    v21 = [MEMORY[0x277D0AD48] definition];
-    [v21 setIdentity:v16];
-    v25 = [MEMORY[0x277D0ADA8] localIdentity];
-    [v21 setClientIdentity:v25];
+    definition = [MEMORY[0x277D0AD48] definition];
+    [definition setIdentity:v16];
+    localIdentity = [MEMORY[0x277D0ADA8] localIdentity];
+    [definition setClientIdentity:localIdentity];
 
     v26 = +[(FBSSceneSpecification *)SBExternalDisplayApplicationSceneSpecification];
-    [v21 setSpecification:v26];
+    [definition setSpecification:v26];
 
     v27 = MEMORY[0x277D0AD50];
-    v28 = [v21 specification];
-    v22 = [v27 parametersForSpecification:v28];
+    specification = [definition specification];
+    v22 = [v27 parametersForSpecification:specification];
 
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __125__SBSystemShellExtendedDisplayControllerPolicy__fetchOrCreateSceneWithDisplayConfiguration_deactivationReasons_sceneManager___block_invoke;
     v40[3] = &unk_2783BE6E0;
-    v41 = v8;
-    v43 = a4;
-    v39 = v9;
-    v42 = v9;
+    v41 = configurationCopy;
+    reasonsCopy = reasons;
+    v39 = managerCopy;
+    v42 = managerCopy;
     [v22 updateSettingsWithBlock:v40];
     [v22 updateClientSettingsWithBlock:&__block_literal_global_139];
     v29 = self->_fbSceneManager;
-    v30 = [v21 identity];
-    v31 = [v30 identifier];
-    v32 = [MEMORY[0x277D0AA98] sharedInstance];
-    v19 = [(FBSceneManager *)v29 createSceneWithIdentifier:v31 parameters:v22 clientProvider:v32 transitionContext:0];
+    identity2 = [definition identity];
+    identifier3 = [identity2 identifier];
+    mEMORY[0x277D0AA98] = [MEMORY[0x277D0AA98] sharedInstance];
+    v19 = [(FBSceneManager *)v29 createSceneWithIdentifier:identifier3 parameters:v22 clientProvider:mEMORY[0x277D0AA98] transitionContext:0];
 
     v33 = SBLogDisplayControlling();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       v34 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
-      v35 = [v19 identifier];
+      identifier4 = [v19 identifier];
       *buf = 138543618;
       v45 = v34;
       v46 = 2114;
-      v47 = v35;
+      v47 = identifier4;
       _os_log_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_INFO, "%{public}@ initialized %{public}@ for presentation", buf, 0x16u);
     }
 
-    v36 = [v19 systemShellHostingEnvironment];
+    systemShellHostingEnvironment = [v19 systemShellHostingEnvironment];
     v37 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration();
-    [v36 setSystemShellHostingSpaceIdentifier:v37];
+    [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v37];
 
-    v9 = v39;
+    managerCopy = v39;
   }
 
   return v19;

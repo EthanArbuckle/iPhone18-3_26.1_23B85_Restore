@@ -2,7 +2,7 @@
 + (id)supportedConfigurationClassesArray;
 + (id)supportedConfigurationTypes;
 - (_TtC25ManagedSettingsSubscriber25ManagedSettingsApplicator)init;
-- (_TtC25ManagedSettingsSubscriber25ManagedSettingsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4;
+- (_TtC25ManagedSettingsSubscriber25ManagedSettingsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates;
 @end
 
 @implementation ManagedSettingsApplicator
@@ -20,7 +20,7 @@
 
 + (id)supportedConfigurationTypes
 {
-  v2 = [objc_opt_self() managedSettingsSchemas];
+  managedSettingsSchemas = [objc_opt_self() managedSettingsSchemas];
   sub_10000B858(0, &qword_10001CCA8, RMModelConfigurationSchema_ptr);
   v3 = sub_1000113EC();
 
@@ -38,7 +38,7 @@
   return v2.super.isa;
 }
 
-- (_TtC25ManagedSettingsSubscriber25ManagedSettingsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4
+- (_TtC25ManagedSettingsSubscriber25ManagedSettingsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

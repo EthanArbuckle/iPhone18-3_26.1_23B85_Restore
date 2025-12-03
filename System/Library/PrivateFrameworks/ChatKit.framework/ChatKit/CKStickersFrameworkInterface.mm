@@ -1,13 +1,13 @@
 @interface CKStickersFrameworkInterface
-+ (BOOL)updateSavedStickerWithIdentifier:(id)a3 stickerEffectEnum:(int64_t)a4 error:(id *)a5;
-+ (id)uiStickerForSTKSticker:(id)a3;
-+ (id)uiStickerWithIdentifier:(id)a3;
++ (BOOL)updateSavedStickerWithIdentifier:(id)identifier stickerEffectEnum:(int64_t)enum error:(id *)error;
++ (id)uiStickerForSTKSticker:(id)sticker;
++ (id)uiStickerWithIdentifier:(id)identifier;
 - (CKStickersFrameworkInterface)init;
 @end
 
 @implementation CKStickersFrameworkInterface
 
-+ (BOOL)updateSavedStickerWithIdentifier:(id)a3 stickerEffectEnum:(int64_t)a4 error:(id *)a5
++ (BOOL)updateSavedStickerWithIdentifier:(id)identifier stickerEffectEnum:(int64_t)enum error:(id *)error
 {
   v5 = sub_190D518A0();
   v6 = *(v5 - 8);
@@ -19,7 +19,7 @@
   return 1;
 }
 
-+ (id)uiStickerWithIdentifier:(id)a3
++ (id)uiStickerWithIdentifier:(id)identifier
 {
   v3 = sub_190D518A0();
   v4 = *(v3 - 8);
@@ -32,9 +32,9 @@
   return v7;
 }
 
-+ (id)uiStickerForSTKSticker:(id)a3
++ (id)uiStickerForSTKSticker:(id)sticker
 {
-  v3 = a3;
+  stickerCopy = sticker;
   v4 = sub_190B01FC4();
 
   return v4;

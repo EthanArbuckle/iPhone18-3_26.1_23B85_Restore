@@ -1,10 +1,10 @@
 @interface AGXG18PFamilySparseHeap
-- (AGXG18PFamilySparseHeap)initWithDevice:(id)a3 descriptor:(id)a4;
+- (AGXG18PFamilySparseHeap)initWithDevice:(id)device descriptor:(id)descriptor;
 - (id).cxx_construct;
-- (id)newTextureWithDescriptor:(id)a3;
+- (id)newTextureWithDescriptor:(id)descriptor;
 - (unint64_t)usedSize;
 - (void)dealloc;
-- (void)removeTexture:(id)a3;
+- (void)removeTexture:(id)texture;
 @end
 
 @implementation AGXG18PFamilySparseHeap
@@ -17,13 +17,13 @@
   return self;
 }
 
-- (void)removeTexture:(id)a3
+- (void)removeTexture:(id)texture
 {
   begin = self->_resources.__begin_;
   var0 = self->_resources.var0;
   if (begin != var0)
   {
-    while (*begin != a3)
+    while (*begin != texture)
     {
       if (++begin == var0)
       {
@@ -38,7 +38,7 @@
       {
         do
         {
-          if (*v5 != a3)
+          if (*v5 != texture)
           {
             *begin++ = *v5;
           }
@@ -58,9 +58,9 @@
   }
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  result = [(AGXTexture *)[AGXG18PFamilyTexture alloc] initWithSparseHeap:self desc:a3 sparsePageSize:self->sparse_page_size];
+  result = [(AGXTexture *)[AGXG18PFamilyTexture alloc] initWithSparseHeap:self desc:descriptor sparsePageSize:self->sparse_page_size];
   if (result)
   {
     v6 = result;
@@ -72,15 +72,15 @@
   return result;
 }
 
-- (AGXG18PFamilySparseHeap)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilySparseHeap)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  if (![a4 validateWithDevice:?])
+  if (![descriptor validateWithDevice:?])
   {
     goto LABEL_26;
   }
 
-  v7 = [a4 descriptorPrivate];
-  v8 = v7[3];
+  descriptorPrivate = [descriptor descriptorPrivate];
+  v8 = descriptorPrivate[3];
   if (v8 == 102)
   {
     v9 = 0x10000;
@@ -100,15 +100,15 @@
   v10 = v8 == 103 ? 0x40000 : (v8 == 102) << 16;
   self->sparse_page_queue_alignment_padding = v10;
   sparse_page_size = self->sparse_page_size;
-  v12 = (sparse_page_size - 1 + *v7) & -sparse_page_size;
+  v12 = (sparse_page_size - 1 + *descriptorPrivate) & -sparse_page_size;
   v13 = v12 + sparse_page_size - 1;
   v14 = v13 / sparse_page_size;
   if (v13 / sparse_page_size > 0x80000000)
   {
 LABEL_26:
-    v20 = self;
+    selfCopy = self;
 LABEL_27:
-    [(AGXG18PFamilySparseHeap *)v20 dealloc];
+    [(AGXG18PFamilySparseHeap *)selfCopy dealloc];
     return 0;
   }
 
@@ -120,21 +120,21 @@ LABEL_27:
 
   v46 = v15;
   v45 = *MEMORY[0x29EDCA6D0];
-  v16 = v7[2] != 0;
-  v17 = v16 & 0xFFFFFFFFFFFFFCFFLL | (([a4 hazardTrackingMode] & 3) << 8);
+  v16 = descriptorPrivate[2] != 0;
+  v17 = v16 & 0xFFFFFFFFFFFFFCFFLL | (([descriptor hazardTrackingMode] & 3) << 8);
   v48.receiver = self;
   v48.super_class = AGXG18PFamilySparseHeap;
-  v18 = -[_MTLHeap initWithType:options:](&v48, sel_initWithType_options_, [a4 type], v17 | 0x20);
-  v19 = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:a3 length:v12 + v18->sparse_page_queue_alignment_padding options:v17 | 0x20 isSuballocDisabled:0 pinnedGPULocation:0];
-  v20 = v18;
+  v18 = -[_MTLHeap initWithType:options:](&v48, sel_initWithType_options_, [descriptor type], v17 | 0x20);
+  v19 = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:device length:v12 + v18->sparse_page_queue_alignment_padding options:v17 | 0x20 isSuballocDisabled:0 pinnedGPULocation:0];
+  selfCopy = v18;
   v18->_sparse_pages_buffer = v19;
   if (!v19)
   {
     goto LABEL_27;
   }
 
-  v21 = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:a3 length:((4 * v46 + 12) + v45 - 1) & -v45 options:v17 | 0x20020 isSuballocDisabled:0 pinnedGPULocation:0];
-  v20 = v18;
+  v21 = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithDevice:device length:((4 * v46 + 12) + v45 - 1) & -v45 options:v17 | 0x20020 isSuballocDisabled:0 pinnedGPULocation:0];
+  selfCopy = v18;
   v18->_sparse_queue_buffer = v21;
   if (!v21)
   {
@@ -203,7 +203,7 @@ LABEL_27:
 LABEL_31:
   v29[1] = v14;
   v18->_size = v12;
-  v18->_device = a3;
+  v18->_device = device;
   sparse_pages_buffer = v18->_sparse_pages_buffer;
   std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](&v18->_resources, &sparse_pages_buffer);
   sparse_pages_buffer = v18->_sparse_queue_buffer;

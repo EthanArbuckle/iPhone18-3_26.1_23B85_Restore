@@ -2,16 +2,16 @@
 + (Class)_scrollViewClass;
 + (Class)defaultIconListViewClass;
 - (CCUIIconScrollView)scrollView;
-- (CGRect)_frameForIconListAtIndex:(int64_t)a3;
-- (void)_configureIconListView:(id)a3;
+- (CGRect)_frameForIconListAtIndex:(int64_t)index;
+- (void)_configureIconListView:(id)view;
 - (void)_layoutSubviews;
-- (void)_scrollViewDidInterruptDecelerating:(id)a3;
-- (void)_updateIconListContainment:(id)a3 atIndex:(int64_t)a4;
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating;
+- (void)_updateIconListContainment:(id)containment atIndex:(int64_t)index;
 - (void)dealloc;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation IconListFolderView
@@ -20,7 +20,7 @@
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for IconListFolderView();
-  v2 = [(SBFolderView *)&v5 scrollView];
+  scrollView = [(SBFolderView *)&v5 scrollView];
   objc_opt_self();
   v3 = swift_dynamicCastObjCClassUnconditional();
 
@@ -32,9 +32,9 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_scrollPositionProperty);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for IconListFolderView();
     [(SBFolderView *)&v4 dealloc];
   }
@@ -47,7 +47,7 @@
 
 - (void)_layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA8EB50();
 }
 
@@ -65,28 +65,28 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_configureIconListView:(id)a3
+- (void)_configureIconListView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21EA8ED44(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21EA8ED44(viewCopy);
 }
 
-- (void)_updateIconListContainment:(id)a3 atIndex:(int64_t)a4
+- (void)_updateIconListContainment:(id)containment atIndex:(int64_t)index
 {
-  v5 = a3;
-  v9 = self;
-  v6 = [v5 superview];
-  if (!v6 || (v7 = *(&v9->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_contentView), v8 = v6, v6, v8 != v7))
+  containmentCopy = containment;
+  selfCopy = self;
+  superview = [containmentCopy superview];
+  if (!superview || (v7 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_contentView), v8 = superview, superview, v8 != v7))
   {
-    [*(&v9->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_contentView) addSubview_];
+    [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_contentView) addSubview_];
   }
 }
 
-- (CGRect)_frameForIconListAtIndex:(int64_t)a3
+- (CGRect)_frameForIconListAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_21EA8EFE4(a3);
+  selfCopy = self;
+  v5 = sub_21EA8EFE4(index);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -102,19 +102,19 @@
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_21EA8F174(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_21EA8F174(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for IconListFolderView();
   v4 = v6.receiver;
-  [(SBFolderView *)&v6 scrollViewWillBeginDragging:a3];
+  [(SBFolderView *)&v6 scrollViewWillBeginDragging:dragging];
   v4[OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_isTrackingDrag] = 1;
   *&v4[OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_numOutstandingScrollAnimations] = 0;
   v5 = &v4[OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_animatedTargetContentOffset];
@@ -122,37 +122,37 @@
   v5[8] = 1;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v11.receiver = self;
   v11.super_class = type metadata accessor for IconListFolderView();
-  v9 = a3;
+  draggingCopy = dragging;
   v10 = v11.receiver;
-  [(SBFolderView *)&v11 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
-  sub_21EA8DB80(a5->y);
+  [(SBFolderView *)&v11 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
+  sub_21EA8DB80(offset->y);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for IconListFolderView();
   v4 = v6.receiver;
-  [(SBFolderView *)&v6 scrollViewDidEndScrollingAnimation:a3];
+  [(SBFolderView *)&v6 scrollViewDidEndScrollingAnimation:animation];
   v5 = &v4[OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_animatedTargetContentOffset];
   *v5 = 0;
   v5[8] = 1;
 }
 
-- (void)_scrollViewDidInterruptDecelerating:(id)a3
+- (void)_scrollViewDidInterruptDecelerating:(id)decelerating
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_isTrackingDrag) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_numOutstandingScrollAnimations) = 0;
   v3 = self + OBJC_IVAR____TtC15ControlCenterUI18IconListFolderView_animatedTargetContentOffset;
   *v3 = 0;
   v3[8] = 1;
-  [(IconListFolderView *)self scrollViewDidScroll:a3];
+  [(IconListFolderView *)self scrollViewDidScroll:decelerating];
 }
 
 @end

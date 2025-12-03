@@ -1,23 +1,23 @@
 @interface CKSIMSelectionFieldView
 - (CKComposeSubscriptionSelectorButtonDelegate)subscriptionButtonDelegate;
-- (CKSIMSelectionFieldView)initWithFrame:(CGRect)a3;
+- (CKSIMSelectionFieldView)initWithFrame:(CGRect)frame;
 - (unint64_t)currentTheme;
 - (void)_commonViewSetup;
 - (void)dismissContextMenu;
 - (void)layoutSubviews;
-- (void)setPreferredFont:(id)a3;
-- (void)setSubscriptionButtonDelegate:(id)a3;
-- (void)setSubscriptionSelectionMenu:(id)a3;
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4 theme:(unint64_t)a5;
+- (void)setPreferredFont:(id)font;
+- (void)setSubscriptionButtonDelegate:(id)delegate;
+- (void)setSubscriptionSelectionMenu:(id)menu;
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text theme:(unint64_t)theme;
 @end
 
 @implementation CKSIMSelectionFieldView
 
-- (CKSIMSelectionFieldView)initWithFrame:(CGRect)a3
+- (CKSIMSelectionFieldView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKSIMSelectionFieldView;
-  v3 = [(CKSIMSelectionFieldView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKSIMSelectionFieldView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -59,13 +59,13 @@
   [(CKSIMSelectionFieldView *)self addSubview:v6];
   [(CKSIMSelectionFieldView *)self setContentStackView:v6];
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [v6 topAnchor];
-  v10 = [(CKSIMSelectionFieldView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [v6 topAnchor];
+  topAnchor2 = [(CKSIMSelectionFieldView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v17[0] = v11;
-  v12 = [v6 bottomAnchor];
-  v13 = [(CKSIMSelectionFieldView *)self bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [v6 bottomAnchor];
+  bottomAnchor2 = [(CKSIMSelectionFieldView *)self bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   [v8 activateConstraints:v15];
@@ -108,71 +108,71 @@ void __43__CKSIMSelectionFieldView__commonViewSetup__block_invoke()
   [v10 defaultSeparatorHeight];
   v12 = v11;
 
-  v13 = [(CKSIMSelectionFieldView *)self separatorView];
-  [v13 setFrame:{0.0, v9, v4, v12}];
+  separatorView = [(CKSIMSelectionFieldView *)self separatorView];
+  [separatorView setFrame:{0.0, v9, v4, v12}];
 }
 
-- (void)setPreferredFont:(id)a3
+- (void)setPreferredFont:(id)font
 {
-  v5 = a3;
-  if (self->_preferredFont != v5)
+  fontCopy = font;
+  if (self->_preferredFont != fontCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_preferredFont, a3);
-    v6 = [(CKSIMSelectionFieldView *)self captionLabel];
-    [v6 setFont:v8];
+    v8 = fontCopy;
+    objc_storeStrong(&self->_preferredFont, font);
+    captionLabel = [(CKSIMSelectionFieldView *)self captionLabel];
+    [captionLabel setFont:v8];
 
-    v7 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-    [v7 updateTitleFont:v8];
+    subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+    [subscriptionSelectorButton updateTitleFont:v8];
 
-    v5 = v8;
+    fontCopy = v8;
   }
 }
 
-- (void)setSubscriptionButtonDelegate:(id)a3
+- (void)setSubscriptionButtonDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  [subscriptionSelectorButton setDelegate:delegateCopy];
 }
 
 - (CKComposeSubscriptionSelectorButtonDelegate)subscriptionButtonDelegate
 {
-  v2 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  v3 = [v2 delegate];
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  delegate = [subscriptionSelectorButton delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setSubscriptionSelectionMenu:(id)a3
+- (void)setSubscriptionSelectionMenu:(id)menu
 {
-  objc_storeStrong(&self->_subscriptionSelectionMenu, a3);
-  v5 = a3;
-  v6 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  [v6 setMenu:v5];
+  objc_storeStrong(&self->_subscriptionSelectionMenu, menu);
+  menuCopy = menu;
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  [subscriptionSelectorButton setMenu:menuCopy];
 }
 
 - (unint64_t)currentTheme
 {
-  v2 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  v3 = [v2 theme];
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  theme = [subscriptionSelectorButton theme];
 
-  return v3;
+  return theme;
 }
 
 - (void)dismissContextMenu
 {
-  v3 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  v2 = [v3 contextMenuInteraction];
-  [v2 dismissMenu];
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  contextMenuInteraction = [subscriptionSelectorButton contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
-- (void)updateContentsWithTitle:(id)a3 badgeText:(id)a4 theme:(unint64_t)a5
+- (void)updateContentsWithTitle:(id)title badgeText:(id)text theme:(unint64_t)theme
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
-  [v10 updateContentsWithTitle:v9 badgeText:v8 theme:a5];
+  textCopy = text;
+  titleCopy = title;
+  subscriptionSelectorButton = [(CKSIMSelectionFieldView *)self subscriptionSelectorButton];
+  [subscriptionSelectorButton updateContentsWithTitle:titleCopy badgeText:textCopy theme:theme];
 }
 
 @end

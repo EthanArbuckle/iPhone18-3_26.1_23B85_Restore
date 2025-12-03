@@ -8,7 +8,7 @@
 
 - (uint64_t)mergeWith:()CRDT
 {
-  result = [a1 isEqual:?];
+  result = [self isEqual:?];
   if ((result & 1) == 0)
   {
     v2 = MEMORY[0x277D36198];
@@ -31,7 +31,7 @@
 
   else
   {
-    v6 = [a1 init];
+    v6 = [self init];
   }
 
   return v6;
@@ -40,7 +40,7 @@
 - (void)encodeWithICCRCoder:()CRDT
 {
   v4 = a3;
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   [v4 encodeDouble:@"doubleValue" forKey:?];
 }
 

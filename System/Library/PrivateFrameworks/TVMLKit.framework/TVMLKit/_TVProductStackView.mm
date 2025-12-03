@@ -1,42 +1,42 @@
 @interface _TVProductStackView
-+ (id)productStackViewWithElement:(id)a3 existingView:(id)a4;
-- (id)impressionableElementsContainedInDocument:(id)a3;
++ (id)productStackViewWithElement:(id)element existingView:(id)view;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setButtonsRowView:(id)a3;
-- (void)setDescriptionView:(id)a3;
-- (void)setInitialFocusView:(id)a3;
-- (void)setTitleView:(id)a3;
-- (void)setViewsAboveDescription:(id)a3;
-- (void)setViewsBelowDescription:(id)a3;
+- (void)setButtonsRowView:(id)view;
+- (void)setDescriptionView:(id)view;
+- (void)setInitialFocusView:(id)view;
+- (void)setTitleView:(id)view;
+- (void)setViewsAboveDescription:(id)description;
+- (void)setViewsBelowDescription:(id)description;
 @end
 
 @implementation _TVProductStackView
 
-+ (id)productStackViewWithElement:(id)a3 existingView:(id)a4
++ (id)productStackViewWithElement:(id)element existingView:(id)view
 {
   v118 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
-  v78 = v6;
+  v78 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    viewCopy = viewCopy;
   }
 
   else
   {
     v8 = [_TVProductStackView alloc];
-    v7 = [(_TVFocusRedirectView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v6];
+    viewCopy = [(_TVFocusRedirectView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), viewCopy];
   }
 
-  v9 = v7;
+  v9 = viewCopy;
   v85 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v86 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v5 children];
-  v11 = [v10 count];
+  children = [elementCopy children];
+  v11 = [children count];
 
   v12 = v11 - 1;
   v83 = v9;
@@ -49,8 +49,8 @@
   {
     do
     {
-      v13 = [v5 children];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      children2 = [elementCopy children];
+      v14 = [children2 objectAtIndexedSubscript:v12];
 
       if ([v14 tv_elementType] == 44)
       {
@@ -58,8 +58,8 @@
         v112 = 0u;
         v109 = 0u;
         v110 = 0u;
-        v15 = [v14 children];
-        v16 = [v15 countByEnumeratingWithState:&v109 objects:v117 count:16];
+        children3 = [v14 children];
+        v16 = [children3 countByEnumeratingWithState:&v109 objects:v117 count:16];
         if (v16)
         {
           v17 = v16;
@@ -70,7 +70,7 @@
             {
               if (*v110 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(children3);
               }
 
               v20 = *(*(&v109 + 1) + 8 * i);
@@ -82,7 +82,7 @@
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v109 objects:v117 count:16];
+            v17 = [children3 countByEnumeratingWithState:&v109 objects:v117 count:16];
             v21 = 0;
             v9 = v83;
             if (v17)
@@ -119,8 +119,8 @@ LABEL_19:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v24 = [v22 children];
-  v25 = [v24 countByEnumeratingWithState:&v105 objects:v116 count:16];
+  children4 = [v22 children];
+  v25 = [children4 countByEnumeratingWithState:&v105 objects:v116 count:16];
   v81 = v22;
   if (v25)
   {
@@ -132,7 +132,7 @@ LABEL_19:
       {
         if (*v106 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(children4);
         }
 
         if ([*(*(&v105 + 1) + 8 * j) tv_elementType] == 7)
@@ -142,7 +142,7 @@ LABEL_19:
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v105 objects:v116 count:16];
+      v26 = [children4 countByEnumeratingWithState:&v105 objects:v116 count:16];
       if (v26)
       {
         continue;
@@ -165,7 +165,7 @@ LABEL_34:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  obj = [v5 children];
+  obj = [elementCopy children];
   v29 = [obj countByEnumeratingWithState:&v101 objects:v115 count:16];
   if (!v29)
   {
@@ -186,7 +186,7 @@ LABEL_34:
   v90 = 0;
   v91 = 0;
   v31 = *v102;
-  v80 = v5;
+  v80 = elementCopy;
   do
   {
     for (k = 0; k != v30; ++k)
@@ -197,10 +197,10 @@ LABEL_34:
       }
 
       v33 = *(*(&v101 + 1) + 8 * k);
-      v34 = [v33 tv_elementType];
-      if (v34 != 55)
+      tv_elementType = [v33 tv_elementType];
+      if (tv_elementType != 55)
       {
-        if (v34 == 16)
+        if (tv_elementType == 16)
         {
           if (!v91)
           {
@@ -219,11 +219,11 @@ LABEL_34:
         }
 
 LABEL_51:
-        if ([v5 updateType] == 1)
+        if ([elementCopy updateType] == 1)
         {
           if (v33 == v22)
           {
-            v39 = [(_TVProductStackView *)v9 buttonsRowView];
+            buttonsRowView = [(_TVProductStackView *)v9 buttonsRowView];
           }
 
           else
@@ -233,17 +233,17 @@ LABEL_51:
               goto LABEL_54;
             }
 
-            v40 = [(_TVProductStackView *)v9 descriptionView];
-            v41 = [v40 tv_associatedIKViewElement];
+            descriptionView = [(_TVProductStackView *)v9 descriptionView];
+            tv_associatedIKViewElement = [descriptionView tv_associatedIKViewElement];
 
-            if (v41 != v33 || ([(_TVProductStackView *)v9 descriptionView], (v39 = objc_claimAutoreleasedReturnValue()) == 0))
+            if (tv_associatedIKViewElement != v33 || ([(_TVProductStackView *)v9 descriptionView], (buttonsRowView = objc_claimAutoreleasedReturnValue()) == 0))
             {
               v99 = 0u;
               v100 = 0u;
               v97 = 0u;
               v98 = 0u;
-              v42 = [(_TVProductStackView *)v9 viewsAboveDescription];
-              v43 = [v42 countByEnumeratingWithState:&v97 objects:v114 count:16];
+              viewsAboveDescription = [(_TVProductStackView *)v9 viewsAboveDescription];
+              v43 = [viewsAboveDescription countByEnumeratingWithState:&v97 objects:v114 count:16];
               if (v43)
               {
                 v44 = v43;
@@ -254,20 +254,20 @@ LABEL_60:
                 {
                   if (*v98 != v45)
                   {
-                    objc_enumerationMutation(v42);
+                    objc_enumerationMutation(viewsAboveDescription);
                   }
 
                   v47 = *(*(&v97 + 1) + 8 * v46);
-                  v48 = [v47 tv_associatedIKViewElement];
+                  tv_associatedIKViewElement2 = [v47 tv_associatedIKViewElement];
 
-                  if (v48 == v33)
+                  if (tv_associatedIKViewElement2 == v33)
                   {
                     break;
                   }
 
                   if (v44 == ++v46)
                   {
-                    v44 = [v42 countByEnumeratingWithState:&v97 objects:v114 count:16];
+                    v44 = [viewsAboveDescription countByEnumeratingWithState:&v97 objects:v114 count:16];
                     v22 = v81;
                     if (v44)
                     {
@@ -286,7 +286,7 @@ LABEL_60:
                   goto LABEL_70;
                 }
 
-                v5 = v80;
+                elementCopy = v80;
                 v9 = v83;
               }
 
@@ -300,8 +300,8 @@ LABEL_70:
                 v93 = 0u;
                 v94 = 0u;
                 v9 = v83;
-                v49 = [(_TVProductStackView *)v83 viewsBelowDescription];
-                v38 = [v49 countByEnumeratingWithState:&v93 objects:v113 count:16];
+                viewsBelowDescription = [(_TVProductStackView *)v83 viewsBelowDescription];
+                v38 = [viewsBelowDescription countByEnumeratingWithState:&v93 objects:v113 count:16];
                 if (v38)
                 {
                   v50 = *v94;
@@ -311,20 +311,20 @@ LABEL_70:
                     {
                       if (*v94 != v50)
                       {
-                        objc_enumerationMutation(v49);
+                        objc_enumerationMutation(viewsBelowDescription);
                       }
 
                       v52 = *(*(&v93 + 1) + 8 * m);
-                      v53 = [v52 tv_associatedIKViewElement];
+                      tv_associatedIKViewElement3 = [v52 tv_associatedIKViewElement];
 
-                      if (v53 == v33)
+                      if (tv_associatedIKViewElement3 == v33)
                       {
                         v38 = v52;
                         goto LABEL_82;
                       }
                     }
 
-                    v38 = [v49 countByEnumeratingWithState:&v93 objects:v113 count:16];
+                    v38 = [viewsBelowDescription countByEnumeratingWithState:&v93 objects:v113 count:16];
                     if (v38)
                     {
                       continue;
@@ -338,14 +338,14 @@ LABEL_82:
                   v22 = v81;
                 }
 
-                v5 = v80;
+                elementCopy = v80;
               }
 
               goto LABEL_84;
             }
           }
 
-          v38 = v39;
+          v38 = buttonsRowView;
         }
 
         else
@@ -375,12 +375,12 @@ LABEL_84:
               }
             }
 
-            v56 = [v33 style];
-            [v56 tv_height];
+            style = [v33 style];
+            [style tv_height];
             v58 = v57;
 
-            v59 = [v33 style];
-            [v59 tv_interitemSpacing];
+            style2 = [v33 style];
+            [style2 tv_interitemSpacing];
             v61 = v60;
 
             if (v33 == v22)
@@ -443,8 +443,8 @@ LABEL_84:
         if ([v33 tv_textStyle] == 3)
         {
           v35 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v36 = [(_TVProductStackView *)v9 descriptionView];
-          v37 = [v35 _viewFromElement:v33 existingView:v36];
+          descriptionView2 = [(_TVProductStackView *)v9 descriptionView];
+          v37 = [v35 _viewFromElement:v33 existingView:descriptionView2];
 
           v90 = v37;
           continue;
@@ -476,8 +476,8 @@ LABEL_110:
     v68 = v88;
   }
 
-  v69 = [(_TVProductStackView *)v9 titleView];
-  v70 = [v67 _viewFromElement:v68 existingView:v69];
+  titleView = [(_TVProductStackView *)v9 titleView];
+  v70 = [v67 _viewFromElement:v68 existingView:titleView];
 
   [(_TVProductStackView *)v9 setTitleView:v70];
   [(_TVProductStackView *)v9 setButtonsRowView:v84];
@@ -501,14 +501,14 @@ LABEL_110:
   }
 
   [(_TVProductStackView *)v9 setInitialFocusView:v72];
-  [(_TVProductStackView *)v9 setStackElement:v5];
-  v73 = [(_TVProductStackView *)v9 initialFocusView];
-  v74 = v73 | v90;
+  [(_TVProductStackView *)v9 setStackElement:elementCopy];
+  initialFocusView = [(_TVProductStackView *)v9 initialFocusView];
+  v74 = initialFocusView | v90;
 
   if (!v74)
   {
-    v75 = [(_TVFocusRedirectView *)v9 containerGuide];
-    [v75 setEnabled:0];
+    containerGuide = [(_TVFocusRedirectView *)v9 containerGuide];
+    [containerGuide setEnabled:0];
   }
 
   v76 = v9;
@@ -548,36 +548,36 @@ LABEL_5:
   return v5;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v9 = [a3 nextFocusedView];
-  v5 = [(UIView *)v9 isDescendantOfView:self];
-  v6 = v9;
+  nextFocusedView = [context nextFocusedView];
+  v5 = [(UIView *)nextFocusedView isDescendantOfView:self];
+  v6 = nextFocusedView;
   if (v5)
   {
-    v7 = [(UIView *)v9 isDescendantOfView:self->_buttonsRowView];
-    buttonsRowView = v9;
+    v7 = [(UIView *)nextFocusedView isDescendantOfView:self->_buttonsRowView];
+    buttonsRowView = nextFocusedView;
     if (v7)
     {
       buttonsRowView = self->_buttonsRowView;
     }
 
     objc_storeStrong(&self->_lastFocusedView, buttonsRowView);
-    v6 = v9;
+    v6 = nextFocusedView;
   }
 
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   titleView = self->_titleView;
-  v7 = v5;
-  if (titleView != v5)
+  v7 = viewCopy;
+  if (titleView != viewCopy)
   {
     [(UIView *)titleView removeFromSuperview];
-    objc_storeStrong(&self->_titleView, a3);
+    objc_storeStrong(&self->_titleView, view);
     if (self->_titleView)
     {
       [(_TVProductStackView *)self addSubview:?];
@@ -587,14 +587,14 @@ LABEL_5:
   [(_TVProductStackView *)self setNeedsLayout];
 }
 
-- (void)setViewsAboveDescription:(id)a3
+- (void)setViewsAboveDescription:(id)description
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_viewsAboveDescription isEqualToArray:v5])
+  descriptionCopy = description;
+  if (![(NSArray *)self->_viewsAboveDescription isEqualToArray:descriptionCopy])
   {
     [(NSArray *)self->_viewsAboveDescription makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_viewsAboveDescription, a3);
+    objc_storeStrong(&self->_viewsAboveDescription, description);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -629,13 +629,13 @@ LABEL_5:
   [(_TVProductStackView *)self setNeedsLayout];
 }
 
-- (void)setDescriptionView:(id)a3
+- (void)setDescriptionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   descriptionView = self->_descriptionView;
-  if (descriptionView != v5)
+  if (descriptionView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (descriptionView)
     {
       v7 = self->_lastFocusedView == descriptionView;
@@ -648,33 +648,33 @@ LABEL_5:
 
     if (v7)
     {
-      objc_storeStrong(&self->_lastFocusedView, a3);
+      objc_storeStrong(&self->_lastFocusedView, view);
       [(_TVProductStackView *)self setNeedsFocusUpdate];
       descriptionView = self->_descriptionView;
     }
 
     [(UIView *)descriptionView removeFromSuperview];
-    objc_storeStrong(&self->_descriptionView, a3);
+    objc_storeStrong(&self->_descriptionView, view);
     if (self->_descriptionView)
     {
       [(_TVProductStackView *)self addSubview:?];
     }
 
     descriptionView = [(_TVProductStackView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](descriptionView, v5);
+  MEMORY[0x2821F96F8](descriptionView, viewCopy);
 }
 
-- (void)setViewsBelowDescription:(id)a3
+- (void)setViewsBelowDescription:(id)description
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_viewsBelowDescription isEqualToArray:v5])
+  descriptionCopy = description;
+  if (![(NSArray *)self->_viewsBelowDescription isEqualToArray:descriptionCopy])
   {
     [(NSArray *)self->_viewsBelowDescription makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_viewsBelowDescription, a3);
+    objc_storeStrong(&self->_viewsBelowDescription, description);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -709,27 +709,27 @@ LABEL_5:
   [(_TVProductStackView *)self setNeedsLayout];
 }
 
-- (void)setButtonsRowView:(id)a3
+- (void)setButtonsRowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   buttonsRowView = self->_buttonsRowView;
   if (self->_lastFocusedView == buttonsRowView && buttonsRowView != 0)
   {
-    objc_storeStrong(&self->_lastFocusedView, a3);
+    objc_storeStrong(&self->_lastFocusedView, view);
     [(_TVProductStackView *)self setNeedsFocusUpdate];
   }
 
   v8 = self->_buttonsRowView;
-  self->_buttonsRowView = v5;
+  self->_buttonsRowView = viewCopy;
 }
 
-- (void)setInitialFocusView:(id)a3
+- (void)setInitialFocusView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   initialFocusView = self->_initialFocusView;
-  if (initialFocusView != v5)
+  if (initialFocusView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     lastFocusedView = self->_lastFocusedView;
     if (initialFocusView)
     {
@@ -743,12 +743,12 @@ LABEL_5:
 
     if (!v8 && (lastFocusedView == initialFocusView || [(UIView *)lastFocusedView isDescendantOfView:?]))
     {
-      objc_storeStrong(&self->_lastFocusedView, a3);
+      objc_storeStrong(&self->_lastFocusedView, view);
       [(_TVProductStackView *)self setNeedsFocusUpdate];
     }
 
-    objc_storeStrong(&self->_initialFocusView, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_initialFocusView, view);
+    viewCopy = v9;
   }
 }
 
@@ -779,11 +779,11 @@ LABEL_5:
   v73.size.width = width;
   v73.size.height = height;
   v14 = CGRectGetWidth(v73);
-  v15 = [(UIView *)self->_titleView tv_associatedIKViewElement];
-  v16 = [v15 tv_elementType];
+  tv_associatedIKViewElement = [(UIView *)self->_titleView tv_associatedIKViewElement];
+  tv_elementType = [tv_associatedIKViewElement tv_elementType];
 
   v17 = 0.0;
-  if (v16 == 55)
+  if (tv_elementType == 55)
   {
     [(UIView *)self->_titleView sizeThatFits:v14, v10];
     v19 = v18;
@@ -849,8 +849,8 @@ LABEL_5:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v36 = [(NSArray *)self->_viewsBelowDescription reverseObjectEnumerator];
-  v37 = [v36 countByEnumeratingWithState:&v59 objects:v68 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_viewsBelowDescription reverseObjectEnumerator];
+  v37 = [reverseObjectEnumerator countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v37)
   {
     v38 = v37;
@@ -864,7 +864,7 @@ LABEL_5:
       {
         if (*v60 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v43 = *(*(&v59 + 1) + 8 * v41);
@@ -891,7 +891,7 @@ LABEL_5:
       }
 
       while (v38 != v41);
-      v38 = [v36 countByEnumeratingWithState:&v59 objects:v68 count:16];
+      v38 = [reverseObjectEnumerator countByEnumeratingWithState:&v59 objects:v68 count:16];
     }
 
     while (v38);
@@ -910,31 +910,31 @@ LABEL_5:
   [(UIView *)self->_descriptionView setFrame:v55, v22 + v52, v56, v57];
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVProductStackView *)self stackElement];
-  v6 = [v5 appDocument];
-  v7 = [v6 isEqual:v4];
+  documentCopy = document;
+  stackElement = [(_TVProductStackView *)self stackElement];
+  appDocument = [stackElement appDocument];
+  v7 = [appDocument isEqual:documentCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(_TVProductStackView *)self titleView];
-    v10 = [v9 tv_impressionableElementsForDocument:v4];
-    [v8 addObjectsFromArray:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    titleView = [(_TVProductStackView *)self titleView];
+    v10 = [titleView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v10];
 
-    v11 = [(_TVProductStackView *)self descriptionView];
-    v12 = [v11 tv_impressionableElementsForDocument:v4];
-    [v8 addObjectsFromArray:v12];
+    descriptionView = [(_TVProductStackView *)self descriptionView];
+    v12 = [descriptionView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v12];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [(_TVProductStackView *)self viewsAboveDescription];
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    viewsAboveDescription = [(_TVProductStackView *)self viewsAboveDescription];
+    v14 = [viewsAboveDescription countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v14)
     {
       v15 = v14;
@@ -945,14 +945,14 @@ LABEL_5:
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(viewsAboveDescription);
           }
 
-          v18 = [*(*(&v31 + 1) + 8 * i) tv_impressionableElementsForDocument:v4];
-          [v8 addObjectsFromArray:v18];
+          v18 = [*(*(&v31 + 1) + 8 * i) tv_impressionableElementsForDocument:documentCopy];
+          [array addObjectsFromArray:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v15 = [viewsAboveDescription countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v15);
@@ -962,8 +962,8 @@ LABEL_5:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [(_TVProductStackView *)self viewsBelowDescription];
-    v20 = [v19 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    viewsBelowDescription = [(_TVProductStackView *)self viewsBelowDescription];
+    v20 = [viewsBelowDescription countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v20)
     {
       v21 = v20;
@@ -974,22 +974,22 @@ LABEL_5:
         {
           if (*v28 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(viewsBelowDescription);
           }
 
-          v24 = [*(*(&v27 + 1) + 8 * j) tv_impressionableElementsForDocument:v4];
-          [v8 addObjectsFromArray:v24];
+          v24 = [*(*(&v27 + 1) + 8 * j) tv_impressionableElementsForDocument:documentCopy];
+          [array addObjectsFromArray:v24];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v21 = [viewsBelowDescription countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v21);
     }
 
-    if ([v8 count])
+    if ([array count])
     {
-      v25 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v25 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else

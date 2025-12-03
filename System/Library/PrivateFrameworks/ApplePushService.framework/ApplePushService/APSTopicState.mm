@@ -1,8 +1,8 @@
 @interface APSTopicState
 - (APSConnectionServer)connectionServer;
-- (APSTopicState)initWithTopicName:(id)a3 connectionServer:(id)a4 attributes:(id)a5 topicHash:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (APSTopicState)initWithTopicName:(id)name connectionServer:(id)server attributes:(id)attributes topicHash:(id)hash;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,22 +15,22 @@
   return WeakRetained;
 }
 
-- (APSTopicState)initWithTopicName:(id)a3 connectionServer:(id)a4 attributes:(id)a5 topicHash:(id)a6
+- (APSTopicState)initWithTopicName:(id)name connectionServer:(id)server attributes:(id)attributes topicHash:(id)hash
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  serverCopy = server;
+  attributesCopy = attributes;
+  hashCopy = hash;
   v18.receiver = self;
   v18.super_class = APSTopicState;
   v15 = [(APSTopicState *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_topicName, a3);
-    objc_storeStrong(&v16->_topicHash, a6);
-    objc_storeWeak(&v16->_connectionServer, v12);
-    objc_storeStrong(&v16->_attributes, a5);
+    objc_storeStrong(&v15->_topicName, name);
+    objc_storeStrong(&v16->_topicHash, hash);
+    objc_storeWeak(&v16->_connectionServer, serverCopy);
+    objc_storeStrong(&v16->_attributes, attributes);
     v16->_currentFilter = 0;
     v16->_desiredFilter = 0;
   }
@@ -53,7 +53,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(APSTopicState);
   objc_storeStrong(&v4->_topicName, self->_topicName);
@@ -67,16 +67,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_10;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     LOBYTE(v15) = 1;
     goto LABEL_28;
@@ -86,42 +86,42 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(APSTopicState *)v6 topicName];
-    v8 = [(APSTopicState *)self topicName];
-    if ([v7 isEqualToString:v8])
+    topicName = [(APSTopicState *)v6 topicName];
+    topicName2 = [(APSTopicState *)self topicName];
+    if ([topicName isEqualToString:topicName2])
     {
-      v9 = [(APSTopicState *)v6 topicHash];
-      v10 = [(APSTopicState *)self topicHash];
-      if ([v9 isEqualToData:v10])
+      topicHash = [(APSTopicState *)v6 topicHash];
+      topicHash2 = [(APSTopicState *)self topicHash];
+      if ([topicHash isEqualToData:topicHash2])
       {
-        v11 = [(APSTopicState *)v6 connectionServer];
-        v12 = [(APSTopicState *)self connectionServer];
-        if ([v11 isEqual:v12])
+        connectionServer = [(APSTopicState *)v6 connectionServer];
+        connectionServer2 = [(APSTopicState *)self connectionServer];
+        if ([connectionServer isEqual:connectionServer2])
         {
-          v29 = [(APSTopicState *)v6 attributes];
-          v13 = [v29 filter];
-          v28 = [(APSTopicState *)self attributes];
-          if (v13 == [v28 filter])
+          attributes = [(APSTopicState *)v6 attributes];
+          filter = [attributes filter];
+          attributes2 = [(APSTopicState *)self attributes];
+          if (filter == [attributes2 filter])
           {
-            v27 = [(APSTopicState *)v6 attributes];
-            v14 = [v27 isDarkWakeEnabled];
-            v26 = [(APSTopicState *)self attributes];
-            if (v14 == [v26 isDarkWakeEnabled])
+            attributes3 = [(APSTopicState *)v6 attributes];
+            isDarkWakeEnabled = [attributes3 isDarkWakeEnabled];
+            attributes4 = [(APSTopicState *)self attributes];
+            if (isDarkWakeEnabled == [attributes4 isDarkWakeEnabled])
             {
-              v25 = [(APSTopicState *)v6 attributes];
-              v16 = [v25 isPushWakeEnabled];
-              v24 = [(APSTopicState *)self attributes];
-              if (v16 == [v24 isPushWakeEnabled])
+              attributes5 = [(APSTopicState *)v6 attributes];
+              isPushWakeEnabled = [attributes5 isPushWakeEnabled];
+              attributes6 = [(APSTopicState *)self attributes];
+              if (isPushWakeEnabled == [attributes6 isPushWakeEnabled])
               {
-                v23 = [(APSTopicState *)v6 attributes];
-                v17 = [v23 isCriticalWakeEnabled];
-                v22 = [(APSTopicState *)self attributes];
-                if (v17 == [v22 isCriticalWakeEnabled])
+                attributes7 = [(APSTopicState *)v6 attributes];
+                isCriticalWakeEnabled = [attributes7 isCriticalWakeEnabled];
+                attributes8 = [(APSTopicState *)self attributes];
+                if (isCriticalWakeEnabled == [attributes8 isCriticalWakeEnabled])
                 {
-                  v21 = [(APSTopicState *)v6 attributes];
-                  v20 = [v21 isUltraConstrainedEnabled];
-                  v18 = [(APSTopicState *)self attributes];
-                  v15 = v20 ^ [v18 isUltraConstrainedEnabled] ^ 1;
+                  attributes9 = [(APSTopicState *)v6 attributes];
+                  isUltraConstrainedEnabled = [attributes9 isUltraConstrainedEnabled];
+                  attributes10 = [(APSTopicState *)self attributes];
+                  v15 = isUltraConstrainedEnabled ^ [attributes10 isUltraConstrainedEnabled] ^ 1;
                 }
 
                 else

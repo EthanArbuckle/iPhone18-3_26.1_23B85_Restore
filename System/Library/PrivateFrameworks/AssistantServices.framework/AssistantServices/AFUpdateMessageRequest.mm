@@ -1,21 +1,21 @@
 @interface AFUpdateMessageRequest
-- (AFUpdateMessageRequest)initWithCoder:(id)a3;
-- (id)_initWithMessage:(id)a3;
-- (id)createResponseWithMessageIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AFUpdateMessageRequest)initWithCoder:(id)coder;
+- (id)_initWithMessage:(id)message;
+- (id)createResponseWithMessageIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFUpdateMessageRequest
 
-- (AFUpdateMessageRequest)initWithCoder:(id)a3
+- (AFUpdateMessageRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AFUpdateMessageRequest;
-  v5 = [(AFSiriRequest *)&v9 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UpdateMessageRequestMessage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpdateMessageRequestMessage"];
     message = v5->_message;
     v5->_message = v6;
   }
@@ -23,33 +23,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AFUpdateMessageRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_message forKey:{@"UpdateMessageRequestMessage", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_message forKey:{@"UpdateMessageRequestMessage", v5.receiver, v5.super_class}];
 }
 
-- (id)createResponseWithMessageIdentifier:(id)a3
+- (id)createResponseWithMessageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[AFObjectUpdatedSiriResponse alloc] _initWithRequest:self objectIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[AFObjectUpdatedSiriResponse alloc] _initWithRequest:self objectIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)_initWithMessage:(id)a3
+- (id)_initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = AFUpdateMessageRequest;
   v6 = [(AFSiriRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;

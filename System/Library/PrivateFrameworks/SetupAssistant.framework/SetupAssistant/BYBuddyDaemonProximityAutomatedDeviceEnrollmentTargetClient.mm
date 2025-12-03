@@ -1,17 +1,17 @@
 @interface BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient
 - (BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient)init;
 - (BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetProtocol)delegate;
-- (id)connectionToMachService:(id)a3;
-- (void)activateUsingWiFiWithCompletion:(id)a3;
+- (id)connectionToMachService:(id)service;
+- (void)activateUsingWiFiWithCompletion:(id)completion;
 - (void)beginAdvertisingProximityAutomatedDeviceEnrollment;
-- (void)configuratorPairingSuccessfulWithViewModel:(id)a3;
-- (void)dismissProximityPinCodeWithError:(id)a3;
-- (void)displayProximityPinCode:(id)a3;
+- (void)configuratorPairingSuccessfulWithViewModel:(id)model;
+- (void)dismissProximityPinCodeWithError:(id)error;
+- (void)displayProximityPinCode:(id)code;
 - (void)displayShutdownUI;
 - (void)endAdvertisingProximityAutomatedDeviceEnrollment;
-- (void)enrollmentCompleteWithViewModel:(id)a3;
-- (void)enrollmentHasStatusUpdateWithViewModel:(id)a3;
-- (void)fetchActivationStateWithCompletion:(id)a3;
+- (void)enrollmentCompleteWithViewModel:(id)model;
+- (void)enrollmentHasStatusUpdateWithViewModel:(id)model;
+- (void)fetchActivationStateWithCompletion:(id)completion;
 - (void)shutdown;
 @end
 
@@ -76,22 +76,22 @@
   return v2;
 }
 
-- (id)connectionToMachService:(id)a3
+- (id)connectionToMachService:(id)service
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v4 options:0];
+  serviceCopy = service;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:serviceCopy options:0];
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B4BD8];
   [v5 setRemoteObjectInterface:v6];
 
   [v5 setExportedObject:self];
-  v7 = [objc_opt_class() clientInterface];
-  [v5 setExportedInterface:v7];
+  clientInterface = [objc_opt_class() clientInterface];
+  [v5 setExportedInterface:clientInterface];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_connectionToMachService___block_invoke;
   v13[3] = &unk_1E7D027A8;
-  v8 = v4;
+  v8 = serviceCopy;
   v14 = v8;
   [v5 setInvalidationHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
@@ -138,13 +138,13 @@ void __87__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_connectio
 - (void)beginAdvertisingProximityAutomatedDeviceEnrollment
 {
   objc_initWeak(&location, self);
-  v3 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __113__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_beginAdvertisingProximityAutomatedDeviceEnrollment__block_invoke;
   v4[3] = &unk_1E7D027D0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(connectionQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -161,13 +161,13 @@ void __113__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_beginAdv
 - (void)endAdvertisingProximityAutomatedDeviceEnrollment
 {
   objc_initWeak(&location, self);
-  v3 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __111__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_endAdvertisingProximityAutomatedDeviceEnrollment__block_invoke;
   v4[3] = &unk_1E7D027D0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(connectionQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -184,13 +184,13 @@ void __111__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_endAdver
 - (void)shutdown
 {
   objc_initWeak(&location, self);
-  v3 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_shutdown__block_invoke;
   v4[3] = &unk_1E7D027D0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(connectionQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -204,10 +204,10 @@ void __71__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_shutdown_
   [v2 shutdown];
 }
 
-- (void)displayProximityPinCode:(id)a3
+- (void)displayProximityPinCode:(id)code
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  codeCopy = code;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -218,15 +218,15 @@ void __71__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_shutdown_
   }
 
   objc_initWeak(buf, self);
-  v8 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_displayProximityPinCode___block_invoke;
   v11[3] = &unk_1E7D027F8;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
-  dispatch_async(v8, v11);
+  v12 = codeCopy;
+  v9 = codeCopy;
+  dispatch_async(connectionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -240,10 +240,10 @@ void __87__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_displayPr
   [v2 displayProximityPinCode:*(a1 + 32)];
 }
 
-- (void)dismissProximityPinCodeWithError:(id)a3
+- (void)dismissProximityPinCodeWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -254,15 +254,15 @@ void __87__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_displayPr
   }
 
   objc_initWeak(buf, self);
-  v8 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_dismissProximityPinCodeWithError___block_invoke;
   v11[3] = &unk_1E7D027F8;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
-  dispatch_async(v8, v11);
+  v12 = errorCopy;
+  v9 = errorCopy;
+  dispatch_async(connectionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -276,10 +276,10 @@ void __96__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_dismissPr
   [v2 dismissProximityPinCodeWithError:*(a1 + 32)];
 }
 
-- (void)configuratorPairingSuccessfulWithViewModel:(id)a3
+- (void)configuratorPairingSuccessfulWithViewModel:(id)model
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -290,15 +290,15 @@ void __96__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_dismissPr
   }
 
   objc_initWeak(buf, self);
-  v8 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __106__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_configuratorPairingSuccessfulWithViewModel___block_invoke;
   v11[3] = &unk_1E7D027F8;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
-  dispatch_async(v8, v11);
+  v12 = modelCopy;
+  v9 = modelCopy;
+  dispatch_async(connectionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -312,10 +312,10 @@ void __106__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_configur
   [v2 configuratorPairingSuccessfulWithViewModel:*(a1 + 32)];
 }
 
-- (void)enrollmentHasStatusUpdateWithViewModel:(id)a3
+- (void)enrollmentHasStatusUpdateWithViewModel:(id)model
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -326,15 +326,15 @@ void __106__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_configur
   }
 
   objc_initWeak(buf, self);
-  v8 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_enrollmentHasStatusUpdateWithViewModel___block_invoke;
   v11[3] = &unk_1E7D027F8;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
-  dispatch_async(v8, v11);
+  v12 = modelCopy;
+  v9 = modelCopy;
+  dispatch_async(connectionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -348,10 +348,10 @@ void __102__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_enrollme
   [v2 enrollmentHasStatusUpdateWithViewModel:*(a1 + 32)];
 }
 
-- (void)fetchActivationStateWithCompletion:(id)a3
+- (void)fetchActivationStateWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -362,15 +362,15 @@ void __102__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_enrollme
   }
 
   objc_initWeak(buf, self);
-  v8 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __98__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_fetchActivationStateWithCompletion___block_invoke;
   v11[3] = &unk_1E7D02820;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
-  dispatch_async(v8, v11);
+  v12 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(connectionQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -384,10 +384,10 @@ void __98__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_fetchActi
   [v2 fetchActivationStateWithCompletion:*(a1 + 32)];
 }
 
-- (void)activateUsingWiFiWithCompletion:(id)a3
+- (void)activateUsingWiFiWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -403,8 +403,8 @@ void __98__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_fetchActi
   v10[2] = __95__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_activateUsingWiFiWithCompletion___block_invoke;
   v10[3] = &unk_1E7D02820;
   objc_copyWeak(&v12, buf);
-  v11 = v5;
-  v8 = v5;
+  v11 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v12);
@@ -419,10 +419,10 @@ void __95__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_activateU
   [v2 activateUsingWiFiWithCompletion:*(a1 + 32)];
 }
 
-- (void)enrollmentCompleteWithViewModel:(id)a3
+- (void)enrollmentCompleteWithViewModel:(id)model
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  modelCopy = model;
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -438,8 +438,8 @@ void __95__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_activateU
   v10[2] = __95__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_enrollmentCompleteWithViewModel___block_invoke;
   v10[3] = &unk_1E7D027F8;
   objc_copyWeak(&v12, buf);
-  v11 = v5;
-  v8 = v5;
+  v11 = modelCopy;
+  v8 = modelCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v12);
@@ -467,13 +467,13 @@ void __95__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_enrollmen
   }
 
   objc_initWeak(buf, self);
-  v6 = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
+  connectionQueue = [(BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient *)self connectionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient_displayShutdownUI__block_invoke;
   block[3] = &unk_1E7D027D0;
   objc_copyWeak(&v9, buf);
-  dispatch_async(v6, block);
+  dispatch_async(connectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);

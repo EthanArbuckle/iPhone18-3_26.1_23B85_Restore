@@ -1,54 +1,54 @@
 @interface CustomGestureController
 - (BOOL)_shouldDisableCreateNewGestureButton;
-- (BOOL)gestureRecorder:(id)a3 canSaveGestureWithName:(id)a4;
+- (BOOL)gestureRecorder:(id)recorder canSaveGestureWithName:(id)name;
 - (NSArray)customGestureSpecifiers;
-- (id)nameForItem:(id)a3;
-- (id)setName:(id)a3 forItem:(id)a4;
-- (id)specifierForKey:(id)a3 withSpecifiers:(id)a4;
+- (id)nameForItem:(id)item;
+- (id)setName:(id)name forItem:(id)item;
+- (id)specifierForKey:(id)key withSpecifiers:(id)specifiers;
 - (id)specifiers;
 - (void)_createCustomGesture;
-- (void)_disableCreateNewGestureButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)_hideSpecifiersDuringEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)gestureRecorder:(id)a3 saveGestureWithPropertyListRepresentation:(id)a4;
-- (void)gestureRecorder:(id)a3 saveNamedReplayableGesture:(id)a4;
+- (void)_disableCreateNewGestureButton:(BOOL)button animated:(BOOL)animated;
+- (void)_hideSpecifiersDuringEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)gestureRecorder:(id)recorder saveGestureWithPropertyListRepresentation:(id)representation;
+- (void)gestureRecorder:(id)recorder saveNamedReplayableGesture:(id)gesture;
 - (void)handleExternalSettingsChange;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CustomGestureController
 
-- (id)nameForItem:(id)a3
+- (id)nameForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 hasLocalizableName];
+  itemCopy = item;
+  name = [itemCopy name];
+  hasLocalizableName = [itemCopy hasLocalizableName];
 
-  if (v5)
+  if (hasLocalizableName)
   {
     if (ASTBundle_onceToken != -1)
     {
       [CustomGestureController nameForItem:];
     }
 
-    v6 = [ASTBundle__astBundle localizedStringForKey:v4 value:&stru_25D420 table:@"LocalizedStrings"];
+    v6 = [ASTBundle__astBundle localizedStringForKey:name value:&stru_25D420 table:@"LocalizedStrings"];
 
-    v4 = v6;
+    name = v6;
   }
 
-  return v4;
+  return name;
 }
 
-- (id)setName:(id)a3 forItem:(id)a4
+- (id)setName:(id)name forItem:(id)item
 {
-  v5 = a4;
-  [v5 setName:a3];
-  [v5 setHasLocalizableName:0];
+  itemCopy = item;
+  [itemCopy setName:name];
+  [itemCopy setHasLocalizableName:0];
 
-  return v5;
+  return itemCopy;
 }
 
 - (void)handleExternalSettingsChange
@@ -65,26 +65,26 @@
 - (NSArray)customGestureSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CustomGestureController *)self customGesturesTitle];
-  v5 = [PSSpecifier groupSpecifierWithName:v4];
+  customGesturesTitle = [(CustomGestureController *)self customGesturesTitle];
+  v5 = [PSSpecifier groupSpecifierWithName:customGesturesTitle];
 
   v6 = PSKeyNameKey;
   [v5 setProperty:@"CustomGestureHeading" forKey:PSKeyNameKey];
-  v7 = [(CustomGestureController *)self customGesturesExplanatoryText];
+  customGesturesExplanatoryText = [(CustomGestureController *)self customGesturesExplanatoryText];
 
-  if (v7)
+  if (customGesturesExplanatoryText)
   {
-    v8 = [(CustomGestureController *)self customGesturesExplanatoryText];
-    [v5 setProperty:v8 forKey:PSFooterTextGroupKey];
+    customGesturesExplanatoryText2 = [(CustomGestureController *)self customGesturesExplanatoryText];
+    [v5 setProperty:customGesturesExplanatoryText2 forKey:PSFooterTextGroupKey];
   }
 
   [v3 addObject:v5];
-  v9 = [(AXNamedItemsListController *)self namedItemSpecifiers];
-  [v3 addObjectsFromArray:v9];
+  namedItemSpecifiers = [(AXNamedItemsListController *)self namedItemSpecifiers];
+  [v3 addObjectsFromArray:namedItemSpecifiers];
 
-  v10 = [(CustomGestureController *)self _shouldDisableCreateNewGestureButton];
+  _shouldDisableCreateNewGestureButton = [(CustomGestureController *)self _shouldDisableCreateNewGestureButton];
   v11 = settingsLocString(@"CreateCustomGesture", @"HandSettings");
-  if (v10)
+  if (_shouldDisableCreateNewGestureButton)
   {
     v12 = 4;
   }
@@ -94,7 +94,7 @@
     v12 = 1;
   }
 
-  if (v10)
+  if (_shouldDisableCreateNewGestureButton)
   {
     v13 = &kCFBooleanFalse;
   }
@@ -119,15 +119,15 @@
   return v3;
 }
 
-- (id)specifierForKey:(id)a3 withSpecifiers:(id)a4
+- (id)specifierForKey:(id)key withSpecifiers:(id)specifiers
 {
-  v5 = a3;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  specifiersCopy = specifiers;
+  v7 = [specifiersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -139,12 +139,12 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v12 propertyForKey:{v10, v17}];
-        v14 = [v13 isEqualToString:v5];
+        v14 = [v13 isEqualToString:keyCopy];
 
         if (v14)
         {
@@ -153,7 +153,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [specifiersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -173,19 +173,19 @@ LABEL_11:
 {
   if ([(CustomGestureController *)self maximumNumberOfCustomGestures])
   {
-    v3 = [(CustomGestureController *)self _customGestures];
-    v4 = [v3 count];
+    _customGestures = [(CustomGestureController *)self _customGestures];
+    v4 = [_customGestures count];
     if (v4 >= [(CustomGestureController *)self maximumNumberOfCustomGestures])
     {
-      v5 = 1;
+      isEditing = 1;
     }
 
     else
     {
-      v5 = [(CustomGestureController *)self isEditing];
+      isEditing = [(CustomGestureController *)self isEditing];
     }
 
-    return v5;
+    return isEditing;
   }
 
   else
@@ -195,16 +195,16 @@ LABEL_11:
   }
 }
 
-- (void)_disableCreateNewGestureButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_disableCreateNewGestureButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(CustomGestureController *)self specifiers:a3];
+  buttonCopy = button;
+  v6 = [(CustomGestureController *)self specifiers:button];
   v12 = [(CustomGestureController *)self specifierForKey:@"CreateCustomGesture" withSpecifiers:v6];
 
   v7 = [v12 propertyForKey:PSTableCellKey];
-  v8 = !v4;
-  v9 = !v4;
-  if (v4)
+  v8 = !buttonCopy;
+  v9 = !buttonCopy;
+  if (buttonCopy)
   {
     v10 = 4;
   }
@@ -226,17 +226,17 @@ LABEL_11:
   [v12 setCellType:v10];
 }
 
-- (void)_hideSpecifiersDuringEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_hideSpecifiersDuringEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   if (!self->_hiddenSpecifiers)
   {
     v9 = objc_alloc_init(NSMutableArray);
     hiddenSpecifiers = self->_hiddenSpecifiers;
     self->_hiddenSpecifiers = v9;
 
-    if (v5)
+    if (editingCopy)
     {
       goto LABEL_3;
     }
@@ -247,26 +247,26 @@ LABEL_5:
     v13 = 3221225472;
     v14 = __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block_invoke_3;
     v15 = &unk_256190;
-    v16 = self;
+    selfCopy = self;
     v17 = v11;
-    v18 = v4;
+    v18 = animatedCopy;
     v8 = v11;
     dispatch_async(&_dispatch_main_q, &v12);
     [(NSMutableArray *)self->_hiddenSpecifiers removeAllObjects:v12];
-    [(CustomGestureController *)self _disableCreateNewGestureButton:[(CustomGestureController *)self _shouldDisableCreateNewGestureButton] animated:v4];
+    [(CustomGestureController *)self _disableCreateNewGestureButton:[(CustomGestureController *)self _shouldDisableCreateNewGestureButton] animated:animatedCopy];
 
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!editing)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(CustomGestureController *)self _disableCreateNewGestureButton:[(CustomGestureController *)self _shouldDisableCreateNewGestureButton] animated:v4];
-  v7 = [(CustomGestureController *)self specifiers];
-  v8 = [NSMutableArray arrayWithArray:v7];
+  [(CustomGestureController *)self _disableCreateNewGestureButton:[(CustomGestureController *)self _shouldDisableCreateNewGestureButton] animated:animatedCopy];
+  specifiers = [(CustomGestureController *)self specifiers];
+  v8 = [NSMutableArray arrayWithArray:specifiers];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -279,7 +279,7 @@ LABEL_3:
   block[2] = __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block_invoke_2;
   block[3] = &unk_2554E8;
   block[4] = self;
-  v20 = v4;
+  v20 = animatedCopy;
   dispatch_async(&_dispatch_main_q, block);
 LABEL_6:
 }
@@ -324,9 +324,9 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
   v4 = *&self->super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CustomGestureController *)self customGestureSpecifiers];
+    customGestureSpecifiers = [(CustomGestureController *)self customGestureSpecifiers];
     v6 = *&self->super.AXUISettingsBaseListController_opaque[v3];
-    *&self->super.AXUISettingsBaseListController_opaque[v3] = v5;
+    *&self->super.AXUISettingsBaseListController_opaque[v3] = customGestureSpecifiers;
 
     v4 = *&self->super.AXUISettingsBaseListController_opaque[v3];
   }
@@ -362,17 +362,17 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
   [(CustomGestureController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CustomGestureController *)self specifierForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(CustomGestureController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSKeyNameKey];
   v10 = [v9 isEqualToString:@"CreateCustomGesture"];
 
   if (v10)
   {
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
     [(CustomGestureController *)self _createCustomGesture];
   }
@@ -381,44 +381,44 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
   {
     v11.receiver = self;
     v11.super_class = CustomGestureController;
-    [(AXNamedItemsListController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
+    [(AXNamedItemsListController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CustomGestureController *)self willBecomeActive];
   v5.receiver = self;
   v5.super_class = CustomGestureController;
-  [(AXNamedItemsListController *)&v5 viewWillAppear:v3];
+  [(AXNamedItemsListController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CustomGestureController *)self willResignActive];
   v5.receiver = self;
   v5.super_class = CustomGestureController;
-  [(CustomGestureController *)&v5 viewWillDisappear:v3];
+  [(CustomGestureController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(CustomGestureController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(CustomGestureController *)self isEditing]!= editing)
   {
-    if (v5)
+    if (editingCopy)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [(CustomGestureController *)self table];
-      v8 = [v7 visibleCells];
+      table = [(CustomGestureController *)self table];
+      visibleCells = [table visibleCells];
 
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -430,7 +430,7 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
           {
             if (*v17 != v12)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(visibleCells);
             }
 
             v14 = *(*(&v16 + 1) + 8 * i);
@@ -441,7 +441,7 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v10);
@@ -451,31 +451,31 @@ BOOL __65__CustomGestureController__hideSpecifiersDuringEditing_animated___block
           goto LABEL_15;
         }
 
-        v8 = [(CustomGestureController *)self table];
-        [v8 reloadData];
+        visibleCells = [(CustomGestureController *)self table];
+        [visibleCells reloadData];
       }
     }
 
 LABEL_15:
     v15.receiver = self;
     v15.super_class = CustomGestureController;
-    [(CustomGestureController *)&v15 setEditing:v5 animated:v4];
-    [(CustomGestureController *)self _hideSpecifiersDuringEditing:v5 animated:v4];
+    [(CustomGestureController *)&v15 setEditing:editingCopy animated:animatedCopy];
+    [(CustomGestureController *)self _hideSpecifiersDuringEditing:editingCopy animated:animatedCopy];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CustomGestureController;
-  [(AXNamedItemsListController *)&v6 tableView:a3 commitEditingStyle:a4 forRowAtIndexPath:a5];
+  [(AXNamedItemsListController *)&v6 tableView:view commitEditingStyle:style forRowAtIndexPath:path];
   [(CustomGestureController *)self _disableCreateNewGestureButton:[(CustomGestureController *)self _shouldDisableCreateNewGestureButton] animated:0];
 }
 
-- (BOOL)gestureRecorder:(id)a3 canSaveGestureWithName:(id)a4
+- (BOOL)gestureRecorder:(id)recorder canSaveGestureWithName:(id)name
 {
-  v5 = a4;
-  if ([v5 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     [(AXNamedItemsListController *)self valueInSettings];
     v15 = 0u;
@@ -496,8 +496,8 @@ LABEL_15:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) name];
-          v12 = [v11 isEqualToString:v5];
+          name = [*(*(&v15 + 1) + 8 * i) name];
+          v12 = [name isEqualToString:nameCopy];
 
           if (v12)
           {
@@ -528,14 +528,14 @@ LABEL_12:
   return v13;
 }
 
-- (void)gestureRecorder:(id)a3 saveGestureWithPropertyListRepresentation:(id)a4
+- (void)gestureRecorder:(id)recorder saveGestureWithPropertyListRepresentation:(id)representation
 {
-  v8 = [AXNamedReplayableGesture gestureWithLegacyFormatDictionary:a4];
-  v5 = [(AXNamedItemsListController *)self valueInSettings];
-  if (v5)
+  v8 = [AXNamedReplayableGesture gestureWithLegacyFormatDictionary:representation];
+  valueInSettings = [(AXNamedItemsListController *)self valueInSettings];
+  if (valueInSettings)
   {
-    v6 = v5;
-    v7 = [v5 arrayByAddingObject:v8];
+    v6 = valueInSettings;
+    v7 = [valueInSettings arrayByAddingObject:v8];
   }
 
   else
@@ -546,21 +546,21 @@ LABEL_12:
   [(AXNamedItemsListController *)self setValueInSettings:v7];
 }
 
-- (void)gestureRecorder:(id)a3 saveNamedReplayableGesture:(id)a4
+- (void)gestureRecorder:(id)recorder saveNamedReplayableGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(AXNamedItemsListController *)self valueInSettings];
-  if (v6)
+  gestureCopy = gesture;
+  valueInSettings = [(AXNamedItemsListController *)self valueInSettings];
+  if (valueInSettings)
   {
-    v7 = v6;
-    v8 = [v6 arrayByAddingObject:v5];
+    v7 = valueInSettings;
+    v8 = [valueInSettings arrayByAddingObject:gestureCopy];
 
-    v5 = v7;
+    gestureCopy = v7;
   }
 
   else
   {
-    v8 = [NSArray arrayWithObject:v5];
+    v8 = [NSArray arrayWithObject:gestureCopy];
   }
 
   [(AXNamedItemsListController *)self setValueInSettings:v8];

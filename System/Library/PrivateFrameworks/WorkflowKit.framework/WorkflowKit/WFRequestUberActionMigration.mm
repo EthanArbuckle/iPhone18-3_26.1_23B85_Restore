@@ -1,16 +1,16 @@
 @interface WFRequestUberActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFRequestUberActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1050.8"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1050.8"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.ubercab.UberClient.requestuber", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.ubercab.UberClient.requestuber", migrationCopy);
   }
 
   else
@@ -48,13 +48,13 @@
         }
 
         v8 = *(*(&v34 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"com.ubercab.UberClient.requestuber"])
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKeyedSubscript:v5];
 
@@ -99,16 +99,16 @@
             v19 = v18;
 
             v20 = MEMORY[0x1E696AD98];
-            v21 = [v19 integerValue];
+            integerValue = [v19 integerValue];
 
-            if (v21 <= 1)
+            if (integerValue <= 1)
             {
               v22 = 1;
             }
 
             else
             {
-              v22 = v21;
+              v22 = integerValue;
             }
 
             v23 = [v20 numberWithInteger:v22];
@@ -144,9 +144,9 @@
 
           if ([v26 isEqualToString:@"Current Location"])
           {
-            v27 = [[WFLocationValue alloc] initWithCurrentLocation];
-            v28 = [(WFLocationValue *)v27 serializedRepresentation];
-            [v12 setValue:v28 forKey:@"PickupLocation"];
+            initWithCurrentLocation = [[WFLocationValue alloc] initWithCurrentLocation];
+            serializedRepresentation = [(WFLocationValue *)initWithCurrentLocation serializedRepresentation];
+            [v12 setValue:serializedRepresentation forKey:@"PickupLocation"];
           }
 
           else if ([v26 isEqualToString:@"Custom Location"])
@@ -154,8 +154,8 @@
             [v12 removeObjectForKey:@"UberCustomLocation"];
           }
 
-          v29 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v8 setObject:@"is.workflow.actions.ride.requestride" forKeyedSubscript:v29];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v8 setObject:@"is.workflow.actions.ride.requestride" forKeyedSubscript:actionIdentifierKey2];
 
           v5 = v14;
           v6 = v31;

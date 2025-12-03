@@ -1,14 +1,14 @@
 @interface MNAudioManager
 - (BOOL)_deviceIsMuted;
 - (BOOL)_deviceSettingsAllowSpeech;
-- (BOOL)vibrateForShortPrompt:(unint64_t)a3;
+- (BOOL)vibrateForShortPrompt:(unint64_t)prompt;
 - (BOOL)voiceGuidanceEnabled;
-- (int)_supportedTransportTypeForTransportType:(int)a3;
-- (void)audioSystemOptions:(id)a3 didChangeGuidanceLevel:(unint64_t)a4 transportType:(int)a5;
+- (int)_supportedTransportTypeForTransportType:(int)type;
+- (void)audioSystemOptions:(id)options didChangeGuidanceLevel:(unint64_t)level transportType:(int)type;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)requestSpeech:(id)a3 guidanceLevel:(unint64_t)a4 modifier:(unint64_t)a5 shortPromptType:(unint64_t)a6 completionHandler:(id)a7;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)requestSpeech:(id)speech guidanceLevel:(unint64_t)level modifier:(unint64_t)modifier shortPromptType:(unint64_t)type completionHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MNAudioManager
@@ -50,16 +50,16 @@
     }
 
 LABEL_14:
-    LOBYTE(v6) = 0;
+    LOBYTE(_deviceSettingsAllowSpeech) = 0;
     goto LABEL_15;
   }
 
-  v6 = [(MNAudioManager *)self _deviceSettingsAllowSpeech];
+  _deviceSettingsAllowSpeech = [(MNAudioManager *)self _deviceSettingsAllowSpeech];
   v3 = GetAudioLogForMNAudioManagerCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v7 = "not";
-    if (v6)
+    if (_deviceSettingsAllowSpeech)
     {
       v7 = "is";
     }
@@ -72,7 +72,7 @@ LABEL_14:
 LABEL_15:
 
   v8 = *MEMORY[0x1E69E9840];
-  return v6;
+  return _deviceSettingsAllowSpeech;
 }
 
 - (BOOL)_deviceSettingsAllowSpeech
@@ -81,17 +81,17 @@ LABEL_15:
   if ((self->_transportType & 0xFFFFFFFE) == 2)
   {
     v2 = +[MNAudioHardwareEngine headphonesAreInUse];
-    v3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    v4 = [v3 attributeForKey:*MEMORY[0x1E69AEA90]];
-    v5 = [v4 BOOLValue];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    v4 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA90]];
+    bOOLValue = [v4 BOOLValue];
 
-    v6 = v2 | v5 ^ 1;
+    v6 = v2 | bOOLValue ^ 1;
     v7 = GetAudioLogForMNAudioManagerCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = "DO NOT";
       v14 = 136315650;
-      if ((v2 | v5 ^ 1))
+      if ((v2 | bOOLValue ^ 1))
       {
         v8 = "DO";
       }
@@ -100,7 +100,7 @@ LABEL_15:
       v16 = 1024;
       v17 = v2;
       v18 = 1024;
-      v19 = v5 & 1;
+      v19 = bOOLValue & 1;
       v9 = "ⓜ Device settings %s allow speech, headphonesInUse=%d, systemIsMuted=%d";
       v10 = v7;
       v11 = 24;
@@ -127,15 +127,15 @@ LABEL_8:
   return v6 & 1;
 }
 
-- (void)audioSystemOptions:(id)a3 didChangeGuidanceLevel:(unint64_t)a4 transportType:(int)a5
+- (void)audioSystemOptions:(id)options didChangeGuidanceLevel:(unint64_t)level transportType:(int)type
 {
-  if (self->_transportType == a5)
+  if (self->_transportType == type)
   {
-    [(GEOObserverHashTable *)self->_observers audioManager:self didChangeVoiceGuidanceLevel:a4];
+    [(GEOObserverHashTable *)self->_observers audioManager:self didChangeVoiceGuidanceLevel:level];
   }
 }
 
-- (BOOL)vibrateForShortPrompt:(unint64_t)a3
+- (BOOL)vibrateForShortPrompt:(unint64_t)prompt
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_transportType <= 1u)
@@ -180,14 +180,14 @@ LABEL_13:
   audioEngine = self->_audioEngine;
   v9 = *MEMORY[0x1E69E9840];
 
-  return [(MNAudioHardwareEngine *)audioEngine vibrateForShortPrompt:a3];
+  return [(MNAudioHardwareEngine *)audioEngine vibrateForShortPrompt:prompt];
 }
 
-- (void)requestSpeech:(id)a3 guidanceLevel:(unint64_t)a4 modifier:(unint64_t)a5 shortPromptType:(unint64_t)a6 completionHandler:(id)a7
+- (void)requestSpeech:(id)speech guidanceLevel:(unint64_t)level modifier:(unint64_t)modifier shortPromptType:(unint64_t)type completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  if (![v12 length])
+  speechCopy = speech;
+  handlerCopy = handler;
+  if (![speechCopy length])
   {
     v14 = GetAudioLogForMNAudioManagerCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -219,13 +219,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a5 == 1)
+  if (modifier == 1)
   {
-    a6 |= 0x40uLL;
+    type |= 0x40uLL;
   }
 
-  v17 = [v12 _navigation_stringByMarkingAsNavigationText];
-  [(MNAudioHardwareEngine *)self->_audioEngine requestSpeech:v17 guidanceLevel:a4 shortPromptType:a6 completionHandler:v13];
+  _navigation_stringByMarkingAsNavigationText = [speechCopy _navigation_stringByMarkingAsNavigationText];
+  [(MNAudioHardwareEngine *)self->_audioEngine requestSpeech:_navigation_stringByMarkingAsNavigationText guidanceLevel:level shortPromptType:type completionHandler:handlerCopy];
 
 LABEL_12:
 }
@@ -233,40 +233,40 @@ LABEL_12:
 - (BOOL)_deviceIsMuted
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEA90]];
-  v4 = [v3 BOOLValue];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA90]];
+  bOOLValue = [v3 BOOLValue];
 
-  v5 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v6 = [v5 getSilentMode];
+  mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  getSilentMode = [mEMORY[0x1E69AED10]2 getSilentMode];
 
   v7 = GetAudioLogForMNAudioManagerCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "not";
     v11 = 136315650;
-    if ((v4 | v6))
+    if ((bOOLValue | getSilentMode))
     {
       v8 = "is";
     }
 
     v12 = v8;
     v13 = 1024;
-    v14 = v4;
+    v14 = bOOLValue;
     v15 = 1024;
-    v16 = (v6 & 1) == 0;
+    v16 = (getSilentMode & 1) == 0;
     _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "ⓜ Device %s muted, systemMuted=%d, ringerSwitchEnabled=%d", &v11, 0x18u);
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return (v4 | v6) & 1;
+  return (bOOLValue | getSilentMode) & 1;
 }
 
-- (int)_supportedTransportTypeForTransportType:(int)a3
+- (int)_supportedTransportTypeForTransportType:(int)type
 {
-  if ((a3 & 0xFFFFFFFE) == 2)
+  if ((type & 0xFFFFFFFE) == 2)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -275,14 +275,14 @@ LABEL_12:
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
-    v6 = [v4 conformsToProtocol:&unk_1F4EFDF00];
+    v6 = [observerCopy conformsToProtocol:&unk_1F4EFDF00];
     v7 = GetAudioLogForMNAudioManagerCategory();
     observers = v7;
     if ((v6 & 1) == 0)
@@ -323,14 +323,14 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
-    if ([v4 conformsToProtocol:&unk_1F4EFDF00])
+    if ([observerCopy conformsToProtocol:&unk_1F4EFDF00])
     {
       if (!self->_observers)
       {

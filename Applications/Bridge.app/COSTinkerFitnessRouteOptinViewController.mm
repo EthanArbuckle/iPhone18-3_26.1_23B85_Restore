@@ -7,29 +7,29 @@
 - (id)imageResource;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)selectedOptinChoice:(BOOL)a3;
+- (void)selectedOptinChoice:(BOOL)choice;
 @end
 
 @implementation COSTinkerFitnessRouteOptinViewController
 
 + (BOOL)controllerNeedsToRun
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 didAllowTinkerLocationPermissions];
+  setupController = [UIApp setupController];
+  didAllowTinkerLocationPermissions = [setupController didAllowTinkerLocationPermissions];
 
-  if (v4)
+  if (didAllowTinkerLocationPermissions)
   {
-    v5 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v6 = [[NSUUID alloc] initWithUUIDString:@"7664BE48-77C3-48E5-BEE7-7EB383BA163C"];
-    LOBYTE(v4) = [v5 supportsCapability:v6];
+    LOBYTE(didAllowTinkerLocationPermissions) = [activeWatch supportsCapability:v6];
 
-    if ((v4 & 1) == 0)
+    if ((didAllowTinkerLocationPermissions & 1) == 0)
     {
       v7 = pbb_bridge_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = a1;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Skipping (%@); Paired Watch does not have capability", &v9, 0xCu);
       }
     }
@@ -37,17 +37,17 @@
 
   else
   {
-    v5 = pbb_bridge_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_bridge_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = a1;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Skipping (%@); Location permissions were denied earlier", &v9, 0xCu);
-      LOBYTE(v4) = 0;
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "Skipping (%@); Location permissions were denied earlier", &v9, 0xCu);
+      LOBYTE(didAllowTinkerLocationPermissions) = 0;
     }
   }
 
-  return v4;
+  return didAllowTinkerLocationPermissions;
 }
 
 - (COSTinkerFitnessRouteOptinViewController)init
@@ -74,33 +74,33 @@
 
 - (id)detailString
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerUserName];
-  v4 = [v3 localizedCapitalizedString];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"ROUTE_GPS_DETAIL_TINKER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v7 = [NSString stringWithFormat:v6, v4];
+  v7 = [NSString stringWithFormat:v6, localizedCapitalizedString];
 
   return v7;
 }
 
 - (id)imageResource
 {
-  v2 = [UIApp activeWatch];
-  v3 = sub_100059F28(v2);
+  activeWatch = [UIApp activeWatch];
+  v3 = sub_100059F28(activeWatch);
 
   return v3;
 }
 
-- (void)selectedOptinChoice:(BOOL)a3
+- (void)selectedOptinChoice:(BOOL)choice
 {
-  v3 = a3;
-  v5 = [UIApp bridgeController];
-  [v5 tellGizmoToSetFitnessRouteTrackingEnabled:v3];
+  choiceCopy = choice;
+  bridgeController = [UIApp bridgeController];
+  [bridgeController tellGizmoToSetFitnessRouteTrackingEnabled:choiceCopy];
 
-  v6 = [(COSTinkerFitnessRouteOptinViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate = [(COSTinkerFitnessRouteOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

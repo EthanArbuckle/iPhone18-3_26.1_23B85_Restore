@@ -1,14 +1,14 @@
 @interface PKDashboardAccountModulePresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardAccountModulePresenter)init;
-- (id)accountViewControllerWithConfiguration:(id)a3 presentationContext:(id)a4;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)accountViewControllerWithConfiguration:(id)configuration presentationContext:(id)context;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (void)_configureCell:(id)a3 item:(id)a4 collectionView:(id)a5;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)pushAccountViewControllerForAccount:(id)a3 presentingPass:(id)a4 presentationContext:(id)a5 onNavigationController:(id)a6;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)_configureCell:(id)cell item:(id)item collectionView:(id)view;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)pushAccountViewControllerForAccount:(id)account presentingPass:(id)pass presentationContext:(id)context onNavigationController:(id)controller;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardAccountModulePresenter
@@ -39,41 +39,41 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:@"PKDashboardAccountModulePresenterIdentifier" forIndexPath:a5];
-  [(PKDashboardAccountModulePresenter *)self _configureCell:v10 item:v9 collectionView:v8];
+  viewCopy = view;
+  itemCopy = item;
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKDashboardAccountModulePresenterIdentifier" forIndexPath:path];
+  [(PKDashboardAccountModulePresenter *)self _configureCell:v10 item:itemCopy collectionView:viewCopy];
 
   return v10;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v15 || (*(v15 + 2))(v15))
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  controllerCopy = controller;
+  presentCopy = present;
+  v16 = presentCopy;
+  if (!presentCopy || (*(presentCopy + 2))(presentCopy))
   {
-    v17 = v20;
-    v18 = [v17 account];
-    v19 = [v17 presentingPass];
+    v17 = itemCopy;
+    account = [v17 account];
+    presentingPass = [v17 presentingPass];
 
-    [(PKDashboardAccountModulePresenter *)self pushAccountViewControllerForAccount:v18 presentingPass:v19 presentationContext:0 onNavigationController:v14];
+    [(PKDashboardAccountModulePresenter *)self pushAccountViewControllerForAccount:account presentingPass:presentingPass presentationContext:0 onNavigationController:controllerCopy];
   }
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v9 = a4;
-  v10 = a3;
+  viewCopy = view;
+  itemCopy = item;
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v12 = a5 + v11 * -2.0;
-  [(PKDashboardAccountModulePresenter *)self _configureCell:self->_sampleCell item:v10 collectionView:v9];
+  v12 = width + v11 * -2.0;
+  [(PKDashboardAccountModulePresenter *)self _configureCell:self->_sampleCell item:itemCopy collectionView:viewCopy];
 
   sampleCell = self->_sampleCell;
 
@@ -83,17 +83,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKAccountModuleCollectionViewCell alloc];
@@ -105,41 +105,41 @@
   }
 }
 
-- (void)pushAccountViewControllerForAccount:(id)a3 presentingPass:(id)a4 presentationContext:(id)a5 onNavigationController:(id)a6
+- (void)pushAccountViewControllerForAccount:(id)account presentingPass:(id)pass presentationContext:(id)context onNavigationController:(id)controller
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  controllerCopy = controller;
+  contextCopy = context;
+  passCopy = pass;
+  accountCopy = account;
   v15 = objc_alloc_init(PKAccountViewInterfaceConfiguration);
-  [(PKAccountViewInterfaceConfiguration *)v15 setAccount:v13];
+  [(PKAccountViewInterfaceConfiguration *)v15 setAccount:accountCopy];
 
   [(PKAccountViewInterfaceConfiguration *)v15 setDestination:0];
   [(PKAccountViewInterfaceConfiguration *)v15 setViewStyle:0];
-  [(PKAccountViewInterfaceConfiguration *)v15 setCashbackPass:v12];
+  [(PKAccountViewInterfaceConfiguration *)v15 setCashbackPass:passCopy];
 
-  v14 = [(PKDashboardAccountModulePresenter *)self accountViewControllerWithConfiguration:v15 presentationContext:v11];
+  v14 = [(PKDashboardAccountModulePresenter *)self accountViewControllerWithConfiguration:v15 presentationContext:contextCopy];
 
-  [v10 pushViewController:v14 animated:1];
+  [controllerCopy pushViewController:v14 animated:1];
 }
 
-- (id)accountViewControllerWithConfiguration:(id)a3 presentationContext:(id)a4
+- (id)accountViewControllerWithConfiguration:(id)configuration presentationContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 account];
-  v8 = [v6 presentationSource];
+  configurationCopy = configuration;
+  contextCopy = context;
+  account = [configurationCopy account];
+  presentationSource = [contextCopy presentationSource];
 
-  if (v8)
+  if (presentationSource)
   {
-    if (v8 == 2)
+    if (presentationSource == 2)
     {
-      v9 = [v7 accountIdentifier];
+      accountIdentifier = [account accountIdentifier];
       if (PKAccountServiceIsNewAccountWithAccountIdentifier())
       {
-        v10 = [v5 destination];
-        [v5 setIsNewAccount:v10 == 0];
-        if (!v10)
+        destination = [configurationCopy destination];
+        [configurationCopy setIsNewAccount:destination == 0];
+        if (!destination)
         {
           PKSetAccountServiceIsNewAccountWithAccountIdentifier();
         }
@@ -147,26 +147,26 @@
 
       else
       {
-        [v5 setIsNewAccount:0];
+        [configurationCopy setIsNewAccount:0];
       }
     }
   }
 
-  else if (![v5 destination])
+  else if (![configurationCopy destination])
   {
-    v11 = [v7 savingsDetails];
-    v12 = [v11 fccStepUpDetails];
-    v13 = [v12 thresholdExceeded];
+    savingsDetails = [account savingsDetails];
+    fccStepUpDetails = [savingsDetails fccStepUpDetails];
+    thresholdExceeded = [fccStepUpDetails thresholdExceeded];
 
-    if (v13)
+    if (thresholdExceeded)
     {
-      [v5 setDestination:11];
+      [configurationCopy setDestination:11];
     }
   }
 
-  if ([v7 type] == 4)
+  if ([account type] == 4)
   {
-    v14 = [PKAccountViewInterfaceHelper initialAccountViewControllerWithConfiguration:v5];
+    v14 = [PKAccountViewInterfaceHelper initialAccountViewControllerWithConfiguration:configurationCopy];
   }
 
   else
@@ -177,18 +177,18 @@
   return v14;
 }
 
-- (void)_configureCell:(id)a3 item:(id)a4 collectionView:(id)a5
+- (void)_configureCell:(id)cell item:(id)item collectionView:(id)view
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [v8 account];
-  [v6 configureWithAccount:v7];
+  itemCopy = item;
+  cellCopy = cell;
+  account = [itemCopy account];
+  [cellCopy configureWithAccount:account];
 }
 
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 account];
-  if ([v5 type] == 4)
+  account = [item account];
+  if ([account type] == 4)
   {
     v6 = PKLocalizedFeatureString();
   }

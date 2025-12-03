@@ -1,6 +1,6 @@
 @interface ACLSIPv6Range
-- (ACLSIPv6Range)initWithFirst:(const in6_addr *)a3 andLast:(const in6_addr *)a4;
-- (BOOL)containsAddress:(const in6_addr *)a3;
+- (ACLSIPv6Range)initWithFirst:(const in6_addr *)first andLast:(const in6_addr *)last;
+- (BOOL)containsAddress:(const in6_addr *)address;
 - (id)description;
 - (in6_addr)first;
 - (in6_addr)last;
@@ -8,11 +8,11 @@
 
 @implementation ACLSIPv6Range
 
-- (ACLSIPv6Range)initWithFirst:(const in6_addr *)a3 andLast:(const in6_addr *)a4
+- (ACLSIPv6Range)initWithFirst:(const in6_addr *)first andLast:(const in6_addr *)last
 {
-  v6 = bswap64(*a3->__u6_addr8);
-  v7 = bswap64(*a4->__u6_addr8);
-  if (v6 == v7 && (v6 = bswap64(*&a3->__u6_addr32[2]), v7 = bswap64(*&a4->__u6_addr32[2]), v6 == v7))
+  v6 = bswap64(*first->__u6_addr8);
+  v7 = bswap64(*last->__u6_addr8);
+  if (v6 == v7 && (v6 = bswap64(*&first->__u6_addr32[2]), v7 = bswap64(*&last->__u6_addr32[2]), v6 == v7))
   {
     v8 = 0;
   }
@@ -35,27 +35,27 @@
     v11 = v10;
     if (v10)
     {
-      [(ACLSIPv6Range *)v10 setFirst:*a3->__u6_addr8, *&a3->__u6_addr32[2]];
-      [(ACLSIPv6Range *)v11 setLast:*a4->__u6_addr8, *&a4->__u6_addr32[2]];
+      [(ACLSIPv6Range *)v10 setFirst:*first->__u6_addr8, *&first->__u6_addr32[2]];
+      [(ACLSIPv6Range *)v11 setLast:*last->__u6_addr8, *&last->__u6_addr32[2]];
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)containsAddress:(const in6_addr *)a3
+- (BOOL)containsAddress:(const in6_addr *)address
 {
   v3 = bswap64(*self->_first.__u6_addr8);
-  v4 = bswap64(*a3->__u6_addr8);
-  if (v3 == v4 && (v3 = bswap64(*&self->_first.__u6_addr32[2]), v4 = bswap64(*&a3->__u6_addr32[2]), v3 == v4))
+  v4 = bswap64(*address->__u6_addr8);
+  if (v3 == v4 && (v3 = bswap64(*&self->_first.__u6_addr32[2]), v4 = bswap64(*&address->__u6_addr32[2]), v3 == v4))
   {
     v5 = 0;
   }
@@ -75,9 +75,9 @@
     return 0;
   }
 
-  v7 = bswap64(*a3->__u6_addr8);
+  v7 = bswap64(*address->__u6_addr8);
   v8 = bswap64(*self->_last.__u6_addr8);
-  if (v7 == v8 && (v7 = bswap64(*&a3->__u6_addr32[2]), v8 = bswap64(*&self->_last.__u6_addr32[2]), v7 == v8))
+  if (v7 == v8 && (v7 = bswap64(*&address->__u6_addr32[2]), v8 = bswap64(*&self->_last.__u6_addr32[2]), v7 == v8))
   {
     v9 = 0;
   }

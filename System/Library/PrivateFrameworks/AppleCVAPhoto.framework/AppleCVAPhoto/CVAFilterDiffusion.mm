@@ -1,29 +1,29 @@
 @interface CVAFilterDiffusion
-- (CVAFilterDiffusion)initWithFigMetalContext:(id)a3 bufferWidth:(unint64_t)a4 bufferHeight:(unint64_t)a5 edgeVariance:(float)a6 stepSize:(float)a7 error:(id *)a8;
-- (void)encodeDavidIterationToCommandBufferInternal:(id)a3 priorTexture:(id)a4 confidenceTexture:(id)a5 sourceTexture:(id)a6 destinationTexture:(id)a7;
-- (void)encodeDiffusionMapLaplacianToCommandBuffer:(id)a3 diffusionMapTexture:(id)a4 outputLaplacian:(id)a5;
-- (void)encodeEdgeLaplacianToCommandBuffer:(id)a3 colorTexture:(id)a4 outputLaplacian:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 priorTexture:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 diffusionMapTexture:(id)a7 confidenceTexture:(id)a8 iterations:(unsigned int)a9;
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5 colorTexture:(id)a6 iterations:(unsigned int)a7;
-- (void)encodeToCommandBufferInternal:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5;
+- (CVAFilterDiffusion)initWithFigMetalContext:(id)context bufferWidth:(unint64_t)width bufferHeight:(unint64_t)height edgeVariance:(float)variance stepSize:(float)size error:(id *)error;
+- (void)encodeDavidIterationToCommandBufferInternal:(id)internal priorTexture:(id)texture confidenceTexture:(id)confidenceTexture sourceTexture:(id)sourceTexture destinationTexture:(id)destinationTexture;
+- (void)encodeDiffusionMapLaplacianToCommandBuffer:(id)buffer diffusionMapTexture:(id)texture outputLaplacian:(id)laplacian;
+- (void)encodeEdgeLaplacianToCommandBuffer:(id)buffer colorTexture:(id)texture outputLaplacian:(id)laplacian;
+- (void)encodeToCommandBuffer:(id)buffer priorTexture:(id)texture sourceTexture:(id)sourceTexture destinationTexture:(id)destinationTexture diffusionMapTexture:(id)mapTexture confidenceTexture:(id)confidenceTexture iterations:(unsigned int)iterations;
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture colorTexture:(id)colorTexture iterations:(unsigned int)iterations;
+- (void)encodeToCommandBufferInternal:(id)internal sourceTexture:(id)texture destinationTexture:(id)destinationTexture;
 @end
 
 @implementation CVAFilterDiffusion
 
-- (void)encodeToCommandBuffer:(id)a3 priorTexture:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 diffusionMapTexture:(id)a7 confidenceTexture:(id)a8 iterations:(unsigned int)a9
+- (void)encodeToCommandBuffer:(id)buffer priorTexture:(id)texture sourceTexture:(id)sourceTexture destinationTexture:(id)destinationTexture diffusionMapTexture:(id)mapTexture confidenceTexture:(id)confidenceTexture iterations:(unsigned int)iterations
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v30 = a7;
-  v19 = a8;
-  if (a9)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  sourceTextureCopy = sourceTexture;
+  destinationTextureCopy = destinationTexture;
+  mapTextureCopy = mapTexture;
+  confidenceTextureCopy = confidenceTexture;
+  if (iterations)
   {
-    v29 = v18;
+    v29 = destinationTextureCopy;
     v20 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut32_1;
     v21 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut32_0;
-    if ([v17 pixelFormat] != 55 && objc_msgSend(v29, "pixelFormat") != 55)
+    if ([sourceTextureCopy pixelFormat] != 55 && objc_msgSend(v29, "pixelFormat") != 55)
     {
       v21 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut16_0;
       v20 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut16_1;
@@ -31,16 +31,16 @@
 
     v22 = *(&self->super.super.isa + *v21);
     v23 = *(&self->super.super.isa + *v20);
-    [(CVAFilterDiffusion *)self encodeDiffusionMapLaplacianToCommandBuffer:v15 diffusionMapTexture:v30 outputLaplacian:self->_laplacian];
-    v24 = a9 - 1;
-    if (a9 == 1)
+    [(CVAFilterDiffusion *)self encodeDiffusionMapLaplacianToCommandBuffer:bufferCopy diffusionMapTexture:mapTextureCopy outputLaplacian:self->_laplacian];
+    v24 = iterations - 1;
+    if (iterations == 1)
     {
-      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:v15 priorTexture:v16 confidenceTexture:v19 sourceTexture:v17 destinationTexture:v29];
+      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:bufferCopy priorTexture:textureCopy confidenceTexture:confidenceTextureCopy sourceTexture:sourceTextureCopy destinationTexture:v29];
     }
 
     else
     {
-      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:v15 priorTexture:v16 confidenceTexture:v19 sourceTexture:v17 destinationTexture:v23];
+      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:bufferCopy priorTexture:textureCopy confidenceTexture:confidenceTextureCopy sourceTexture:sourceTextureCopy destinationTexture:v23];
       if (v24 < 2)
       {
         v27 = v22;
@@ -54,7 +54,7 @@
         {
           v27 = v23;
           v23 = v22;
-          [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:v15 priorTexture:v16 confidenceTexture:v19 sourceTexture:v27 destinationTexture:v22];
+          [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:bufferCopy priorTexture:textureCopy confidenceTexture:confidenceTextureCopy sourceTexture:v27 destinationTexture:v22];
           --v24;
           v22 = v27;
         }
@@ -65,36 +65,36 @@
       v22 = v23;
       v28 = v23;
       v23 = v27;
-      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:v15 priorTexture:v16 confidenceTexture:v19 sourceTexture:v28 destinationTexture:v26];
+      [(CVAFilterDiffusion *)self encodeDavidIterationToCommandBufferInternal:bufferCopy priorTexture:textureCopy confidenceTexture:confidenceTextureCopy sourceTexture:v28 destinationTexture:v26];
     }
 
-    v18 = v29;
+    destinationTextureCopy = v29;
   }
 
   else
   {
-    v25 = [v15 blitCommandEncoder];
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
     memset(v33, 0, sizeof(v33));
-    v32[0] = [v17 width];
-    v32[1] = [v17 height];
+    v32[0] = [sourceTextureCopy width];
+    v32[1] = [sourceTextureCopy height];
     v32[2] = 1;
     memset(v31, 0, sizeof(v31));
-    [v25 copyFromTexture:v17 sourceSlice:0 sourceLevel:0 sourceOrigin:v33 sourceSize:v32 toTexture:v18 destinationSlice:0 destinationLevel:0 destinationOrigin:v31];
-    [v25 endEncoding];
+    [blitCommandEncoder copyFromTexture:sourceTextureCopy sourceSlice:0 sourceLevel:0 sourceOrigin:v33 sourceSize:v32 toTexture:destinationTextureCopy destinationSlice:0 destinationLevel:0 destinationOrigin:v31];
+    [blitCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5 colorTexture:(id)a6 iterations:(unsigned int)a7
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture colorTexture:(id)colorTexture iterations:(unsigned int)iterations
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a7)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  destinationTextureCopy = destinationTexture;
+  colorTextureCopy = colorTexture;
+  if (iterations)
   {
     v16 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut32_1;
     v17 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut32_0;
-    if ([v13 pixelFormat] != 55 && objc_msgSend(v14, "pixelFormat") != 55)
+    if ([textureCopy pixelFormat] != 55 && objc_msgSend(destinationTextureCopy, "pixelFormat") != 55)
     {
       v17 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut16_0;
       v16 = &OBJC_IVAR___CVAFilterDiffusion__tmpOut16_1;
@@ -102,16 +102,16 @@
 
     v18 = *(&self->super.super.isa + *v17);
     v19 = *(&self->super.super.isa + *v16);
-    [(CVAFilterDiffusion *)self encodeEdgeLaplacianToCommandBuffer:v12 colorTexture:v15 outputLaplacian:self->_laplacian];
-    v20 = a7 - 1;
-    if (a7 == 1)
+    [(CVAFilterDiffusion *)self encodeEdgeLaplacianToCommandBuffer:bufferCopy colorTexture:colorTextureCopy outputLaplacian:self->_laplacian];
+    v20 = iterations - 1;
+    if (iterations == 1)
     {
-      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:v12 sourceTexture:v13 destinationTexture:v14];
+      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:bufferCopy sourceTexture:textureCopy destinationTexture:destinationTextureCopy];
     }
 
     else
     {
-      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:v12 sourceTexture:v13 destinationTexture:v19];
+      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:bufferCopy sourceTexture:textureCopy destinationTexture:v19];
       if (v20 < 2)
       {
         v22 = v18;
@@ -123,7 +123,7 @@
         {
           v22 = v19;
           v19 = v18;
-          [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:v12 sourceTexture:v22 destinationTexture:v18];
+          [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:bufferCopy sourceTexture:v22 destinationTexture:v18];
           --v20;
           v18 = v22;
         }
@@ -134,156 +134,156 @@
       v18 = v19;
       v23 = v19;
       v19 = v22;
-      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:v12 sourceTexture:v23 destinationTexture:v14];
+      [(CVAFilterDiffusion *)self encodeToCommandBufferInternal:bufferCopy sourceTexture:v23 destinationTexture:destinationTextureCopy];
     }
   }
 
   else
   {
-    v21 = [v12 blitCommandEncoder];
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
     memset(v26, 0, sizeof(v26));
-    v25[0] = [v13 width];
-    v25[1] = [v13 height];
+    v25[0] = [textureCopy width];
+    v25[1] = [textureCopy height];
     v25[2] = 1;
     memset(v24, 0, sizeof(v24));
-    [v21 copyFromTexture:v13 sourceSlice:0 sourceLevel:0 sourceOrigin:v26 sourceSize:v25 toTexture:v14 destinationSlice:0 destinationLevel:0 destinationOrigin:v24];
-    [v21 endEncoding];
+    [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:0 sourceLevel:0 sourceOrigin:v26 sourceSize:v25 toTexture:destinationTextureCopy destinationSlice:0 destinationLevel:0 destinationOrigin:v24];
+    [blitCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeDiffusionMapLaplacianToCommandBuffer:(id)a3 diffusionMapTexture:(id)a4 outputLaplacian:(id)a5
+- (void)encodeDiffusionMapLaplacianToCommandBuffer:(id)buffer diffusionMapTexture:(id)texture outputLaplacian:(id)laplacian
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_createDiffusionMapLaplacianKernel"];
-  [v10 setComputePipelineState:self->_createDiffusionMapLaplacianKernel];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
-  v13[0] = ([v8 width] + 15) >> 4;
-  v13[1] = ([v8 height] + 15) >> 4;
+  textureCopy = texture;
+  laplacianCopy = laplacian;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_createDiffusionMapLaplacianKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_createDiffusionMapLaplacianKernel];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:laplacianCopy atIndex:1];
+  v13[0] = ([textureCopy width] + 15) >> 4;
+  v13[1] = ([textureCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeEdgeLaplacianToCommandBuffer:(id)a3 colorTexture:(id)a4 outputLaplacian:(id)a5
+- (void)encodeEdgeLaplacianToCommandBuffer:(id)buffer colorTexture:(id)texture outputLaplacian:(id)laplacian
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_createEdgeLaplacianKernel"];
-  [v10 setComputePipelineState:self->_createEdgeLaplacianKernel];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
-  [v10 setBuffer:self->_edgeLaplacianConfigImmutable offset:0 atIndex:0];
-  v13[0] = ([v8 width] + 15) >> 4;
-  v13[1] = ([v8 height] + 15) >> 4;
+  textureCopy = texture;
+  laplacianCopy = laplacian;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_createEdgeLaplacianKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_createEdgeLaplacianKernel];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:laplacianCopy atIndex:1];
+  [computeCommandEncoder setBuffer:self->_edgeLaplacianConfigImmutable offset:0 atIndex:0];
+  v13[0] = ([textureCopy width] + 15) >> 4;
+  v13[1] = ([textureCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeDavidIterationToCommandBufferInternal:(id)a3 priorTexture:(id)a4 confidenceTexture:(id)a5 sourceTexture:(id)a6 destinationTexture:(id)a7
+- (void)encodeDavidIterationToCommandBufferInternal:(id)internal priorTexture:(id)texture confidenceTexture:(id)confidenceTexture sourceTexture:(id)sourceTexture destinationTexture:(id)destinationTexture
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 computeCommandEncoder];
-  [v16 setLabel:@"_laplacianDavidKernel"];
-  [v16 setComputePipelineState:self->_laplacianDavidKernel];
-  [v16 setTexture:self->_laplacian atIndex:0];
-  [v16 setTexture:v13 atIndex:1];
-  [v16 setTexture:v12 atIndex:2];
-  [v16 setTexture:v14 atIndex:3];
-  [v16 setTexture:v15 atIndex:4];
-  [v16 setBuffer:self->_davidConfigImmutable offset:0 atIndex:0];
-  v19[0] = ([v14 width] + 15) >> 4;
-  v19[1] = ([v14 height] + 15) >> 4;
+  textureCopy = texture;
+  confidenceTextureCopy = confidenceTexture;
+  sourceTextureCopy = sourceTexture;
+  destinationTextureCopy = destinationTexture;
+  computeCommandEncoder = [internal computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_laplacianDavidKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_laplacianDavidKernel];
+  [computeCommandEncoder setTexture:self->_laplacian atIndex:0];
+  [computeCommandEncoder setTexture:confidenceTextureCopy atIndex:1];
+  [computeCommandEncoder setTexture:textureCopy atIndex:2];
+  [computeCommandEncoder setTexture:sourceTextureCopy atIndex:3];
+  [computeCommandEncoder setTexture:destinationTextureCopy atIndex:4];
+  [computeCommandEncoder setBuffer:self->_davidConfigImmutable offset:0 atIndex:0];
+  v19[0] = ([sourceTextureCopy width] + 15) >> 4;
+  v19[1] = ([sourceTextureCopy height] + 15) >> 4;
   v19[2] = 1;
   v17 = xmmword_1DED747F0;
   v18 = 1;
-  [v16 dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
-  [v16 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeToCommandBufferInternal:(id)a3 sourceTexture:(id)a4 destinationTexture:(id)a5
+- (void)encodeToCommandBufferInternal:(id)internal sourceTexture:(id)texture destinationTexture:(id)destinationTexture
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_laplacianJacobiKernel"];
-  [v10 setComputePipelineState:self->_laplacianJacobiKernel];
-  [v10 setTexture:self->_laplacian atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
-  [v10 setTexture:v9 atIndex:2];
-  [v10 setBuffer:self->_jacobiConfigImmutable offset:0 atIndex:0];
-  v13[0] = ([v8 width] + 15) >> 4;
-  v13[1] = ([v8 height] + 15) >> 4;
+  textureCopy = texture;
+  destinationTextureCopy = destinationTexture;
+  computeCommandEncoder = [internal computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_laplacianJacobiKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_laplacianJacobiKernel];
+  [computeCommandEncoder setTexture:self->_laplacian atIndex:0];
+  [computeCommandEncoder setTexture:textureCopy atIndex:1];
+  [computeCommandEncoder setTexture:destinationTextureCopy atIndex:2];
+  [computeCommandEncoder setBuffer:self->_jacobiConfigImmutable offset:0 atIndex:0];
+  v13[0] = ([textureCopy width] + 15) >> 4;
+  v13[1] = ([textureCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (CVAFilterDiffusion)initWithFigMetalContext:(id)a3 bufferWidth:(unint64_t)a4 bufferHeight:(unint64_t)a5 edgeVariance:(float)a6 stepSize:(float)a7 error:(id *)a8
+- (CVAFilterDiffusion)initWithFigMetalContext:(id)context bufferWidth:(unint64_t)width bufferHeight:(unint64_t)height edgeVariance:(float)variance stepSize:(float)size error:(id *)error
 {
-  v14 = a3;
+  contextCopy = context;
   v36.receiver = self;
   v36.super_class = CVAFilterDiffusion;
   v15 = [(ImageSaverRegistrator *)&v36 init];
   if (v15)
   {
-    v16 = [v14 device];
-    v15->_width = a4;
-    v15->_height = a5;
-    v15->_edgeVariance = a6;
+    device = [contextCopy device];
+    v15->_width = width;
+    v15->_height = height;
+    v15->_edgeVariance = variance;
     width = v15->_width;
-    v18 = sub_1DED6FDC8(v16, 115, width, a5, 0, a8);
+    v18 = sub_1DED6FDC8(device, 115, width, height, 0, error);
     laplacian = v15->_laplacian;
     v15->_laplacian = v18;
 
-    v20 = sub_1DED6FDC8(v16, 25, width, a5, 0, a8);
+    v20 = sub_1DED6FDC8(device, 25, width, height, 0, error);
     tmpOut16_0 = v15->_tmpOut16_0;
     v15->_tmpOut16_0 = v20;
 
-    v22 = sub_1DED6FDC8(v16, 25, width, a5, 0, a8);
+    v22 = sub_1DED6FDC8(device, 25, width, height, 0, error);
     tmpOut16_1 = v15->_tmpOut16_1;
     v15->_tmpOut16_1 = v22;
 
-    v24 = sub_1DED6FDC8(v16, 55, width, a5, 0, a8);
+    v24 = sub_1DED6FDC8(device, 55, width, height, 0, error);
     tmpOut32_0 = v15->_tmpOut32_0;
     v15->_tmpOut32_0 = v24;
 
-    v26 = sub_1DED6FDC8(v16, 55, width, a5, 0, a8);
+    v26 = sub_1DED6FDC8(device, 55, width, height, 0, error);
     tmpOut32_1 = v15->_tmpOut32_1;
     v15->_tmpOut32_1 = v26;
 
-    v28 = [v16 newBufferWithLength:4 options:0];
+    v28 = [device newBufferWithLength:4 options:0];
     edgeLaplacianConfigImmutable = v15->_edgeLaplacianConfigImmutable;
     v15->_edgeLaplacianConfigImmutable = v28;
 
-    *[(MTLBuffer *)v15->_edgeLaplacianConfigImmutable contents]= -1.0 / (a6 + a6);
-    v30 = [v16 newBufferWithLength:4 options:0];
+    *[(MTLBuffer *)v15->_edgeLaplacianConfigImmutable contents]= -1.0 / (variance + variance);
+    v30 = [device newBufferWithLength:4 options:0];
     jacobiConfigImmutable = v15->_jacobiConfigImmutable;
     v15->_jacobiConfigImmutable = v30;
 
-    *[(MTLBuffer *)v15->_jacobiConfigImmutable contents]= a7;
-    v32 = [v16 newBufferWithLength:4 options:0];
+    *[(MTLBuffer *)v15->_jacobiConfigImmutable contents]= size;
+    v32 = [device newBufferWithLength:4 options:0];
     davidConfigImmutable = v15->_davidConfigImmutable;
     v15->_davidConfigImmutable = v32;
 
     *[(MTLBuffer *)v15->_davidConfigImmutable contents]= 1061997773;
-    sub_1DED422A0(&v15->_createEdgeLaplacianKernel, v14, @"createEdgeLaplacian", 0);
-    sub_1DED422A0(&v15->_createDiffusionMapLaplacianKernel, v14, @"createDiffusionMapLaplacian", 0);
-    sub_1DED422A0(&v15->_laplacianJacobiKernel, v14, @"laplacianJacobi", 0);
-    sub_1DED422A0(&v15->_laplacianDavidKernel, v14, @"laplacianDavid", 0);
+    sub_1DED422A0(&v15->_createEdgeLaplacianKernel, contextCopy, @"createEdgeLaplacian", 0);
+    sub_1DED422A0(&v15->_createDiffusionMapLaplacianKernel, contextCopy, @"createDiffusionMapLaplacian", 0);
+    sub_1DED422A0(&v15->_laplacianJacobiKernel, contextCopy, @"laplacianJacobi", 0);
+    sub_1DED422A0(&v15->_laplacianDavidKernel, contextCopy, @"laplacianDavid", 0);
     v34 = v15;
   }
 

@@ -1,20 +1,20 @@
 @interface WDBrandLogoView
 - (CGSize)intrinsicContentSize;
-- (WDBrandLogoView)initWithFrame:(CGRect)a3;
-- (WDBrandLogoView)initWithSize:(double)a3;
+- (WDBrandLogoView)initWithFrame:(CGRect)frame;
+- (WDBrandLogoView)initWithSize:(double)size;
 - (void)_updateStyle;
-- (void)fetchBrandable:(id)a3 dataProvider:(id)a4;
+- (void)fetchBrandable:(id)brandable dataProvider:(id)provider;
 - (void)prepareForReuse;
-- (void)setSize:(double)a3;
+- (void)setSize:(double)size;
 @end
 
 @implementation WDBrandLogoView
 
-- (WDBrandLogoView)initWithFrame:(CGRect)a3
+- (WDBrandLogoView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = WDBrandLogoView;
-  v3 = [(WDBrandLogoView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WDBrandLogoView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (WDBrandLogoView)initWithSize:(double)a3
+- (WDBrandLogoView)initWithSize:(double)size
 {
   v4 = [(WDBrandLogoView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v5 = v4;
   if (v4)
   {
-    [(WDBrandLogoView *)v4 setSize:a3];
+    [(WDBrandLogoView *)v4 setSize:size];
   }
 
   return v5;
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (void)fetchBrandable:(id)a3 dataProvider:(id)a4
+- (void)fetchBrandable:(id)brandable dataProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  brandableCopy = brandable;
+  providerCopy = provider;
   [(WDBrandLogoView *)self prepareForReuse];
   objc_initWeak(&location, self);
   [(WDBrandLogoView *)self intrinsicContentSize];
@@ -71,8 +71,8 @@
   v13 = v12;
   [MEMORY[0x1E69DCAE0] logoInsetForImageViewSize:{v9, v11}];
   v15 = v14;
-  v16 = [v6 brand];
-  v17 = [v6 title];
+  brand = [brandableCopy brand];
+  title = [brandableCopy title];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __47__WDBrandLogoView_fetchBrandable_dataProvider___block_invoke;
@@ -81,7 +81,7 @@
   objc_copyWeak(v20, &location);
   v20[2] = v13;
   v19[4] = self;
-  v18 = [v7 fetchLogoForBrand:v16 fallback:v17 size:v19 completion:*&v13];
+  v18 = [providerCopy fetchLogoForBrand:brand fallback:title size:v19 completion:*&v13];
   [(WDBrandLogoView *)self setCancellationToken:v18];
 
   objc_destroyWeak(v20);
@@ -114,17 +114,17 @@ uint64_t __47__WDBrandLogoView_fetchBrandable_dataProvider___block_invoke(uint64
 
 - (void)prepareForReuse
 {
-  v3 = [(WDBrandLogoView *)self cancellationToken];
-  [v3 cancel];
+  cancellationToken = [(WDBrandLogoView *)self cancellationToken];
+  [cancellationToken cancel];
 
   [(WDBrandLogoView *)self setCancellationToken:0];
 
   [(WDBrandLogoView *)self setImage:0];
 }
 
-- (void)setSize:(double)a3
+- (void)setSize:(double)size
 {
-  self->_size = a3;
+  self->_size = size;
   [(WDBrandLogoView *)self invalidateIntrinsicContentSize];
 
   [(WDBrandLogoView *)self _updateStyle];
@@ -132,10 +132,10 @@ uint64_t __47__WDBrandLogoView_fetchBrandable_dataProvider___block_invoke(uint64
 
 - (void)_updateStyle
 {
-  v3 = [(WDBrandLogoView *)self isFallback];
+  isFallback = [(WDBrandLogoView *)self isFallback];
   [(WDBrandLogoView *)self intrinsicContentSize];
 
-  [(UIImageView *)self applyAccountLogoStyleForIsMonogram:v3 imageViewSize:?];
+  [(UIImageView *)self applyAccountLogoStyleForIsMonogram:isFallback imageViewSize:?];
 }
 
 @end

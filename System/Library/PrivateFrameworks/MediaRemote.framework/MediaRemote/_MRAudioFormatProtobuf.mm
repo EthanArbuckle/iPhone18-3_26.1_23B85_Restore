@@ -1,24 +1,24 @@
 @interface _MRAudioFormatProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRenderingMode:(id)a3;
-- (int)StringAsTier:(id)a3;
+- (int)StringAsRenderingMode:(id)mode;
+- (int)StringAsTier:(id)tier;
 - (int)renderingMode;
 - (int)tier;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBitrate:(BOOL)a3;
-- (void)setHasChannelLayout:(BOOL)a3;
-- (void)setHasCodec:(BOOL)a3;
-- (void)setHasMultiChannel:(BOOL)a3;
-- (void)setHasRenderingMode:(BOOL)a3;
-- (void)setHasSampleRate:(BOOL)a3;
-- (void)setHasSpatialized:(BOOL)a3;
-- (void)setHasTier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBitrate:(BOOL)bitrate;
+- (void)setHasChannelLayout:(BOOL)layout;
+- (void)setHasCodec:(BOOL)codec;
+- (void)setHasMultiChannel:(BOOL)channel;
+- (void)setHasRenderingMode:(BOOL)mode;
+- (void)setHasSampleRate:(BOOL)rate;
+- (void)setHasSpatialized:(BOOL)spatialized;
+- (void)setHasTier:(BOOL)tier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRAudioFormatProtobuf
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setHasTier:(BOOL)a3
+- (void)setHasTier:(BOOL)tier
 {
-  if (a3)
+  if (tier)
   {
     v3 = 64;
   }
@@ -64,30 +64,30 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsTier:(id)a3
+- (int)StringAsTier:(id)tier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LowBandwidthStereo"])
+  tierCopy = tier;
+  if ([tierCopy isEqualToString:@"LowBandwidthStereo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HighQualityStereo"])
+  else if ([tierCopy isEqualToString:@"HighQualityStereo"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Lossless"])
+  else if ([tierCopy isEqualToString:@"Lossless"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighResolutionLossless"])
+  else if ([tierCopy isEqualToString:@"HighResolutionLossless"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Spatial"])
+  else if ([tierCopy isEqualToString:@"Spatial"])
   {
     v4 = 4;
   }
@@ -100,9 +100,9 @@
   return v4;
 }
 
-- (void)setHasBitrate:(BOOL)a3
+- (void)setHasBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 2;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSampleRate:(BOOL)a3
+- (void)setHasSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 4;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCodec:(BOOL)a3
+- (void)setHasCodec:(BOOL)codec
 {
-  if (a3)
+  if (codec)
   {
     v3 = 16;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSpatialized:(BOOL)a3
+- (void)setHasSpatialized:(BOOL)spatialized
 {
-  if (a3)
+  if (spatialized)
   {
     v3 = 256;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMultiChannel:(BOOL)a3
+- (void)setHasMultiChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 128;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasChannelLayout:(BOOL)a3
+- (void)setHasChannelLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v3 = 8;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRenderingMode:(BOOL)a3
+- (void)setHasRenderingMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 32;
   }
@@ -205,35 +205,35 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsRenderingMode:(id)a3
+- (int)StringAsRenderingMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MonoStereo"])
+  else if ([modeCopy isEqualToString:@"MonoStereo"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Surround"])
+  else if ([modeCopy isEqualToString:@"Surround"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SpatialAudio"])
+  else if ([modeCopy isEqualToString:@"SpatialAudio"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DolbyAudio"])
+  else if ([modeCopy isEqualToString:@"DolbyAudio"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DolbyAtmos"])
+  else if ([modeCopy isEqualToString:@"DolbyAtmos"])
   {
     v4 = 5;
   }
@@ -252,15 +252,15 @@
   v8.receiver = self;
   v8.super_class = _MRAudioFormatProtobuf;
   v4 = [(_MRAudioFormatProtobuf *)&v8 description];
-  v5 = [(_MRAudioFormatProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRAudioFormatProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -275,7 +275,7 @@
       v6 = off_1E769DFD8[tier];
     }
 
-    [v3 setObject:v6 forKey:@"tier"];
+    [dictionary setObject:v6 forKey:@"tier"];
 
     has = self->_has;
   }
@@ -283,7 +283,7 @@
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_bitrate];
-    [v3 setObject:v13 forKey:@"bitrate"];
+    [dictionary setObject:v13 forKey:@"bitrate"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -304,7 +304,7 @@ LABEL_8:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sampleRate];
-  [v3 setObject:v14 forKey:@"sampleRate"];
+  [dictionary setObject:v14 forKey:@"sampleRate"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -320,7 +320,7 @@ LABEL_9:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_bitDepth];
-  [v3 setObject:v15 forKey:@"bitDepth"];
+  [dictionary setObject:v15 forKey:@"bitDepth"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -336,7 +336,7 @@ LABEL_10:
 
 LABEL_26:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_codec];
-  [v3 setObject:v16 forKey:@"codec"];
+  [dictionary setObject:v16 forKey:@"codec"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -352,7 +352,7 @@ LABEL_11:
 
 LABEL_27:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_spatialized];
-  [v3 setObject:v17 forKey:@"spatialized"];
+  [dictionary setObject:v17 forKey:@"spatialized"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -368,32 +368,32 @@ LABEL_12:
 
 LABEL_28:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_multiChannel];
-  [v3 setObject:v18 forKey:@"multiChannel"];
+  [dictionary setObject:v18 forKey:@"multiChannel"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_channelLayout];
-    [v3 setObject:v7 forKey:@"channelLayout"];
+    [dictionary setObject:v7 forKey:@"channelLayout"];
   }
 
 LABEL_14:
   audioChannelLayoutDescription = self->_audioChannelLayoutDescription;
   if (audioChannelLayoutDescription)
   {
-    [v3 setObject:audioChannelLayoutDescription forKey:@"audioChannelLayoutDescription"];
+    [dictionary setObject:audioChannelLayoutDescription forKey:@"audioChannelLayoutDescription"];
   }
 
   groupID = self->_groupID;
   if (groupID)
   {
-    [v3 setObject:groupID forKey:@"groupID"];
+    [dictionary setObject:groupID forKey:@"groupID"];
   }
 
   stableVariantID = self->_stableVariantID;
   if (stableVariantID)
   {
-    [v3 setObject:stableVariantID forKey:@"stableVariantID"];
+    [dictionary setObject:stableVariantID forKey:@"stableVariantID"];
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -409,15 +409,15 @@ LABEL_14:
       v12 = off_1E769E000[renderingMode];
     }
 
-    [v3 setObject:v12 forKey:@"renderingMode"];
+    [dictionary setObject:v12 forKey:@"renderingMode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -548,14 +548,14 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    v4[18] = self->_tier;
-    *(v4 + 40) |= 0x40u;
+    toCopy[18] = self->_tier;
+    *(toCopy + 40) |= 0x40u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -574,8 +574,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 2) = self->_bitrate;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 2) = self->_bitrate;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -589,8 +589,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 3) = self->_sampleRate;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 3) = self->_sampleRate;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -604,8 +604,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(v4 + 1) = self->_bitDepth;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 1) = self->_bitDepth;
+  *(toCopy + 40) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -619,8 +619,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  v4[11] = self->_codec;
-  *(v4 + 40) |= 0x10u;
+  toCopy[11] = self->_codec;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -634,8 +634,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(v4 + 77) = self->_spatialized;
-  *(v4 + 40) |= 0x100u;
+  *(toCopy + 77) = self->_spatialized;
+  *(toCopy + 40) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -649,45 +649,45 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 76) = self->_multiChannel;
-  *(v4 + 40) |= 0x80u;
+  *(toCopy + 76) = self->_multiChannel;
+  *(toCopy + 40) |= 0x80u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
-    v4[10] = self->_channelLayout;
-    *(v4 + 40) |= 8u;
+    toCopy[10] = self->_channelLayout;
+    *(toCopy + 40) |= 8u;
   }
 
 LABEL_10:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_audioChannelLayoutDescription)
   {
-    [v4 setAudioChannelLayoutDescription:?];
-    v4 = v6;
+    [toCopy setAudioChannelLayoutDescription:?];
+    toCopy = v6;
   }
 
   if (self->_groupID)
   {
     [v6 setGroupID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stableVariantID)
   {
     [v6 setStableVariantID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[14] = self->_renderingMode;
-    *(v4 + 40) |= 0x20u;
+    toCopy[14] = self->_renderingMode;
+    *(toCopy + 40) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -797,15 +797,15 @@ LABEL_9:
   }
 
 LABEL_10:
-  v8 = [(NSString *)self->_audioChannelLayoutDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_audioChannelLayoutDescription copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
-  v10 = [(NSString *)self->_groupID copyWithZone:a3];
+  v10 = [(NSString *)self->_groupID copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
-  v12 = [(NSString *)self->_stableVariantID copyWithZone:a3];
+  v12 = [(NSString *)self->_stableVariantID copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
@@ -818,19 +818,19 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_tier != *(v4 + 18))
+    if ((v6 & 0x40) == 0 || self->_tier != *(equalCopy + 18))
     {
       goto LABEL_55;
     }
@@ -843,7 +843,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_bitrate != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_bitrate != *(equalCopy + 2))
     {
       goto LABEL_55;
     }
@@ -856,7 +856,7 @@ LABEL_10:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_sampleRate != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_sampleRate != *(equalCopy + 3))
     {
       goto LABEL_55;
     }
@@ -869,7 +869,7 @@ LABEL_10:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_bitDepth != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_bitDepth != *(equalCopy + 1))
     {
       goto LABEL_55;
     }
@@ -882,7 +882,7 @@ LABEL_10:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_codec != *(v4 + 11))
+    if ((v6 & 0x10) == 0 || self->_codec != *(equalCopy + 11))
     {
       goto LABEL_55;
     }
@@ -895,27 +895,27 @@ LABEL_10:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0)
+    if ((*(equalCopy + 40) & 0x100) == 0)
     {
       goto LABEL_55;
     }
 
-    v7 = *(v4 + 77);
+    v7 = *(equalCopy + 77);
     if (self->_spatialized)
     {
-      if ((*(v4 + 77) & 1) == 0)
+      if ((*(equalCopy + 77) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 77))
+    else if (*(equalCopy + 77))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
     goto LABEL_55;
   }
@@ -937,16 +937,16 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if (self->_multiChannel)
   {
-    if ((*(v4 + 76) & 1) == 0)
+    if ((*(equalCopy + 76) & 1) == 0)
     {
       goto LABEL_55;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_55;
   }
@@ -954,7 +954,7 @@ LABEL_55:
 LABEL_31:
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_channelLayout != *(v4 + 10))
+    if ((v6 & 8) == 0 || self->_channelLayout != *(equalCopy + 10))
     {
       goto LABEL_55;
     }
@@ -966,13 +966,13 @@ LABEL_31:
   }
 
   audioChannelLayoutDescription = self->_audioChannelLayoutDescription;
-  if (audioChannelLayoutDescription | *(v4 + 4) && ![(NSString *)audioChannelLayoutDescription isEqual:?])
+  if (audioChannelLayoutDescription | *(equalCopy + 4) && ![(NSString *)audioChannelLayoutDescription isEqual:?])
   {
     goto LABEL_55;
   }
 
   groupID = self->_groupID;
-  if (groupID | *(v4 + 6))
+  if (groupID | *(equalCopy + 6))
   {
     if (![(NSString *)groupID isEqual:?])
     {
@@ -981,7 +981,7 @@ LABEL_31:
   }
 
   stableVariantID = self->_stableVariantID;
-  if (stableVariantID | *(v4 + 8))
+  if (stableVariantID | *(equalCopy + 8))
   {
     if (![(NSString *)stableVariantID isEqual:?])
     {
@@ -989,10 +989,10 @@ LABEL_31:
     }
   }
 
-  v12 = *(v4 + 40);
+  v12 = *(equalCopy + 40);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v12 & 0x20) != 0 && self->_renderingMode == *(v4 + 14))
+    if ((v12 & 0x20) != 0 && self->_renderingMode == *(equalCopy + 14))
     {
       v13 = 1;
       goto LABEL_56;
@@ -1132,15 +1132,15 @@ LABEL_18:
   return v15 ^ v16 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) != 0)
   {
-    self->_tier = *(v4 + 18);
+    self->_tier = *(fromCopy + 18);
     *&self->_has |= 0x40u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1158,9 +1158,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_bitrate = *(v4 + 2);
+  self->_bitrate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1173,9 +1173,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_sampleRate = *(v4 + 3);
+  self->_sampleRate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1188,9 +1188,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_bitDepth = *(v4 + 1);
+  self->_bitDepth = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -1203,9 +1203,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_codec = *(v4 + 11);
+  self->_codec = *(fromCopy + 11);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1218,9 +1218,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_spatialized = *(v4 + 77);
+  self->_spatialized = *(fromCopy + 77);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1233,38 +1233,38 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_multiChannel = *(v4 + 76);
+  self->_multiChannel = *(fromCopy + 76);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 40) & 8) != 0)
+  if ((*(fromCopy + 40) & 8) != 0)
   {
 LABEL_9:
-    self->_channelLayout = *(v4 + 10);
+    self->_channelLayout = *(fromCopy + 10);
     *&self->_has |= 8u;
   }
 
 LABEL_10:
-  v6 = v4;
-  if (*(v4 + 4))
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(_MRAudioFormatProtobuf *)self setAudioChannelLayoutDescription:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_MRAudioFormatProtobuf *)self setGroupID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(_MRAudioFormatProtobuf *)self setStableVariantID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 40) & 0x20) != 0)
+  if ((*(fromCopy + 40) & 0x20) != 0)
   {
-    self->_renderingMode = *(v4 + 14);
+    self->_renderingMode = *(fromCopy + 14);
     *&self->_has |= 0x20u;
   }
 }

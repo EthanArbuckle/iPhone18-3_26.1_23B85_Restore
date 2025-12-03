@@ -1,38 +1,38 @@
 @interface OrgApacheLuceneIndexMergeRateLimiter
 - (BOOL)getAbort;
-- (OrgApacheLuceneIndexMergeRateLimiter)initWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3;
+- (OrgApacheLuceneIndexMergeRateLimiter)initWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge;
 - (double)getMBPerSec;
 - (int64_t)getTotalPausedNS;
 - (int64_t)getTotalStoppedNS;
-- (int64_t)pauseWithLong:(int64_t)a3;
+- (int64_t)pauseWithLong:(int64_t)long;
 - (void)checkAbort;
 - (void)dealloc;
 - (void)setAbort;
-- (void)setMBPerSecWithDouble:(double)a3;
+- (void)setMBPerSecWithDouble:(double)double;
 @end
 
 @implementation OrgApacheLuceneIndexMergeRateLimiter
 
-- (OrgApacheLuceneIndexMergeRateLimiter)initWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3
+- (OrgApacheLuceneIndexMergeRateLimiter)initWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge
 {
   OrgApacheLuceneStoreRateLimiter_init(self, a2);
-  JreStrongAssign(&self->merge_, a3);
+  JreStrongAssign(&self->merge_, merge);
   [(OrgApacheLuceneIndexMergeRateLimiter *)self setMBPerSecWithDouble:INFINITY];
   return self;
 }
 
-- (void)setMBPerSecWithDouble:(double)a3
+- (void)setMBPerSecWithDouble:(double)double
 {
   objc_sync_enter(self);
-  if (a3 < 0.0)
+  if (double < 0.0)
   {
     v16 = JreStrcat("$D", v5, v6, v7, v8, v9, v10, v11, @"mbPerSec must be positive; got: ");
     v17 = new_JavaLangIllegalArgumentException_initWithNSString_(v16);
     objc_exception_throw(v17);
   }
 
-  self->mbPerSec_ = a3;
-  v12 = a3 * 0.025 * 1024.0;
+  self->mbPerSec_ = double;
+  v12 = double * 0.025 * 1024.0;
   v13 = vcvtd_n_s64_f64(v12, 0xAuLL);
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   if (v12 * 1024.0 < 0.0)
@@ -64,15 +64,15 @@
   return mbPerSec;
 }
 
-- (int64_t)pauseWithLong:(int64_t)a3
+- (int64_t)pauseWithLong:(int64_t)long
 {
   v5 = atomic_load(&self->totalBytesWritten_);
-  atomic_store(v5 + a3, &self->totalBytesWritten_);
+  atomic_store(v5 + long, &self->totalBytesWritten_);
   v6 = JavaLangSystem_nanoTime();
   v7 = 0;
   while (1)
   {
-    v8 = sub_1000CB7AC(self, a3, v6);
+    v8 = sub_1000CB7AC(self, long, v6);
     if ((atomic_load_explicit(OrgApacheLuceneIndexMergeRateLimiter_PauseResultEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_1000CBE40();

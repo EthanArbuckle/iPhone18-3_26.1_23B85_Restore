@@ -1,8 +1,8 @@
 @interface HMMissingWalletKey
-+ (id)missingWalletKeyWithValue:(id)a3 home:(id)a4;
++ (id)missingWalletKeyWithValue:(id)value home:(id)home;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMMissingWalletKey)initWithAccessory:(id)a3 user:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMMissingWalletKey)initWithAccessory:(id)accessory user:(id)user;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
@@ -14,14 +14,14 @@
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMissingWalletKey *)self accessory];
-  v5 = [v4 uuid];
-  v6 = [v3 initWithName:@"accessoryUUID" value:v5];
+  accessory = [(HMMissingWalletKey *)self accessory];
+  uuid = [accessory uuid];
+  v6 = [v3 initWithName:@"accessoryUUID" value:uuid];
   v14[0] = v6;
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMMissingWalletKey *)self user];
-  v9 = [v8 uuid];
-  v10 = [v7 initWithName:@"userUUID" value:v9];
+  user = [(HMMissingWalletKey *)self user];
+  uuid2 = [user uuid];
+  v10 = [v7 initWithName:@"userUUID" value:uuid2];
   v14[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
@@ -39,23 +39,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMMissingWalletKey *)self accessory];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 hash];
-  v6 = [(HMMissingWalletKey *)self user];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 hash];
+  accessory = [(HMMissingWalletKey *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  v5 = [uniqueIdentifier hash];
+  user = [(HMMissingWalletKey *)self user];
+  uniqueIdentifier2 = [user uniqueIdentifier];
+  v8 = [uniqueIdentifier2 hash];
 
   return v8 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -69,18 +69,18 @@
     goto LABEL_7;
   }
 
-  v7 = [(HMMissingWalletKey *)self accessory];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v6 accessory];
-  v10 = [v9 uniqueIdentifier];
+  accessory = [(HMMissingWalletKey *)self accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  accessory2 = [v6 accessory];
+  uniqueIdentifier2 = [accessory2 uniqueIdentifier];
   v11 = HMFEqualObjects();
 
   if (v11)
   {
-    v12 = [(HMMissingWalletKey *)self user];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [v6 user];
-    v15 = [v14 uniqueIdentifier];
+    user = [(HMMissingWalletKey *)self user];
+    uniqueIdentifier3 = [user uniqueIdentifier];
+    user2 = [v6 user];
+    uniqueIdentifier4 = [user2 uniqueIdentifier];
     v16 = HMFEqualObjects();
   }
 
@@ -93,18 +93,18 @@ LABEL_7:
   return v16;
 }
 
-- (HMMissingWalletKey)initWithAccessory:(id)a3 user:(id)a4
+- (HMMissingWalletKey)initWithAccessory:(id)accessory user:(id)user
 {
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  userCopy = user;
   v12.receiver = self;
   v12.super_class = HMMissingWalletKey;
   v9 = [(HMMissingWalletKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessory, a3);
-    objc_storeStrong(&v10->_user, a4);
+    objc_storeStrong(&v9->_accessory, accessory);
+    objc_storeStrong(&v10->_user, user);
   }
 
   return v10;
@@ -117,16 +117,16 @@ LABEL_7:
   return NSStringFromClass(v2);
 }
 
-+ (id)missingWalletKeyWithValue:(id)a3 home:(id)a4
++ (id)missingWalletKeyWithValue:(id)value home:(id)home
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accessoryUUID];
-  v9 = [v7 accessoryWithUUID:v8];
+  valueCopy = value;
+  homeCopy = home;
+  accessoryUUID = [valueCopy accessoryUUID];
+  v9 = [homeCopy accessoryWithUUID:accessoryUUID];
 
-  v10 = [v6 userUUID];
-  v11 = [v7 userWithUUID:v10];
+  userUUID = [valueCopy userUUID];
+  v11 = [homeCopy userWithUUID:userUUID];
 
   if (v9 && v11)
   {
@@ -136,19 +136,19 @@ LABEL_7:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v6 accessoryUUID];
-      v18 = [v6 userUUID];
+      accessoryUUID2 = [valueCopy accessoryUUID];
+      userUUID2 = [valueCopy userUUID];
       v21 = 138544386;
       v22 = v16;
       v23 = 2112;
-      v24 = v17;
+      v24 = accessoryUUID2;
       v25 = 2112;
-      v26 = v18;
+      v26 = userUUID2;
       v27 = 2112;
       v28 = v9;
       v29 = 2112;

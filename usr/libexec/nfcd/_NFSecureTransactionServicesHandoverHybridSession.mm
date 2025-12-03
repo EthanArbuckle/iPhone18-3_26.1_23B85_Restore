@@ -1,71 +1,71 @@
 @interface _NFSecureTransactionServicesHandoverHybridSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)willStartSession;
-- (_NFSecureTransactionServicesHandoverHybridSession)initWithRemoteObject:(id)a3 role:(unint64_t)a4 type:(unint64_t)a5 driverWrapper:(id)a6 workQueue:(id)a7;
-- (id)_asynchronousRemoteProxyWithErrorHandler:(id)a3;
-- (id)_synchronousRemoteProxyWithErrorHandler:(id)a3;
+- (_NFSecureTransactionServicesHandoverHybridSession)initWithRemoteObject:(id)object role:(unint64_t)role type:(unint64_t)type driverWrapper:(id)wrapper workQueue:(id)queue;
+- (id)_asynchronousRemoteProxyWithErrorHandler:(id)handler;
+- (id)_synchronousRemoteProxyWithErrorHandler:(id)handler;
 - (id)createCHSelectErrorMessage;
 - (unint64_t)getCHConfig;
 - (unint64_t)getSTSHelperOperation;
 - (void)_startSEProxyListener;
-- (void)_startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5;
-- (void)_startTNEPReaderWithCallback:(id)a3;
+- (void)_startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback;
+- (void)_startTNEPReaderWithCallback:(id)callback;
 - (void)cleanup;
 - (void)coreDuetActivityRevoked;
-- (void)didStartSession:(id)a3;
-- (void)enablePlasticCardMode:(BOOL)a3 completion:(id)a4;
-- (void)endSession:(id)a3;
-- (void)getAppletsWithCompletion:(id)a3;
-- (void)getFelicaAppletState:(id)a3 completion:(id)a4;
-- (void)getTransitAppletState:(id)a3 completion:(id)a4;
-- (void)handleFieldNotification:(id)a3;
-- (void)handleHostCardReaderDetected:(id)a3;
+- (void)didStartSession:(id)session;
+- (void)enablePlasticCardMode:(BOOL)mode completion:(id)completion;
+- (void)endSession:(id)session;
+- (void)getAppletsWithCompletion:(id)completion;
+- (void)getFelicaAppletState:(id)state completion:(id)completion;
+- (void)getTransitAppletState:(id)state completion:(id)completion;
+- (void)handleFieldNotification:(id)notification;
+- (void)handleHostCardReaderDetected:(id)detected;
 - (void)handleReaderBurnoutCleared;
 - (void)handleReaderBurnoutTimer;
-- (void)handleRemoteTagsDetected:(id)a3;
+- (void)handleRemoteTagsDetected:(id)detected;
 - (void)iso18013DataRetrievalCompleted;
 - (void)relinquishSEProxy;
 - (void)reqlinquishNFCReaderProxy;
 - (void)restartNFCReaderDiscovery;
-- (void)startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4;
-- (void)startExpressModeWithCompletion:(id)a3;
-- (void)startHCEProcessingWithDevice:(id)a3 completion:(id)a4;
-- (void)startHostCardEmulationWithCompletion:(id)a3;
-- (void)startSTSNotificationListenerEndpoint:(id)a3;
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5;
-- (void)startTNEPReaderWithCallback:(id)a3;
-- (void)staticReaderEngagementDiscovered:(id)a3;
-- (void)tnepReaderDeselectWithCallback:(id)a3;
-- (void)tnepReaderRestartPollingWithCallback:(id)a3;
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4;
-- (void)tnepReaderSend:(id)a3 callback:(id)a4;
-- (void)tnepReaderServicesAborted:(id)a3;
-- (void)tnepReaderServicesDiscovered:(id)a3;
+- (void)startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion;
+- (void)startExpressModeWithCompletion:(id)completion;
+- (void)startHCEProcessingWithDevice:(id)device completion:(id)completion;
+- (void)startHostCardEmulationWithCompletion:(id)completion;
+- (void)startSTSNotificationListenerEndpoint:(id)endpoint;
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback;
+- (void)startTNEPReaderWithCallback:(id)callback;
+- (void)staticReaderEngagementDiscovered:(id)discovered;
+- (void)tnepReaderDeselectWithCallback:(id)callback;
+- (void)tnepReaderRestartPollingWithCallback:(id)callback;
+- (void)tnepReaderSelectService:(id)service callback:(id)callback;
+- (void)tnepReaderSend:(id)send callback:(id)callback;
+- (void)tnepReaderServicesAborted:(id)aborted;
+- (void)tnepReaderServicesDiscovered:(id)discovered;
 - (void)tnepServiceInvalidate;
-- (void)tnepTagDeviceDeselected:(id)a3;
-- (void)tnepTagDeviceNDEFMessageReceived:(id)a3;
+- (void)tnepTagDeviceDeselected:(id)deselected;
+- (void)tnepTagDeviceNDEFMessageReceived:(id)received;
 - (void)tnepTagDeviceReaderDetected;
-- (void)tnepTagDeviceSelected:(id)a3 respondHandler:(id)a4;
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4;
+- (void)tnepTagDeviceSelected:(id)selected respondHandler:(id)handler;
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback;
 @end
 
 @implementation _NFSecureTransactionServicesHandoverHybridSession
 
-- (_NFSecureTransactionServicesHandoverHybridSession)initWithRemoteObject:(id)a3 role:(unint64_t)a4 type:(unint64_t)a5 driverWrapper:(id)a6 workQueue:(id)a7
+- (_NFSecureTransactionServicesHandoverHybridSession)initWithRemoteObject:(id)object role:(unint64_t)role type:(unint64_t)type driverWrapper:(id)wrapper workQueue:(id)queue
 {
-  v13 = a6;
+  wrapperCopy = wrapper;
   v18.receiver = self;
   v18.super_class = _NFSecureTransactionServicesHandoverHybridSession;
-  v14 = [(_NFXPCSession *)&v18 initWithRemoteObject:a3 workQueue:a7 allowsBackgroundMode:1];
+  v14 = [(_NFXPCSession *)&v18 initWithRemoteObject:object workQueue:queue allowsBackgroundMode:1];
   v15 = v14;
   if (v14)
   {
-    *(v14 + 388) = a4;
-    *(v14 + 396) = a5;
+    *(v14 + 388) = role;
+    *(v14 + 396) = type;
     v16 = *(v14 + 412);
     *(v14 + 412) = 0;
 
-    objc_storeStrong((v15 + 404), a6);
+    objc_storeStrong((v15 + 404), wrapper);
   }
 
   return v15;
@@ -81,21 +81,21 @@
   return [(_NFContactlessSession *)&v5 willStartSession];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v4 = a3;
-  v5 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-  [v5 invalidate];
+  sessionCopy = session;
+  stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+  [stsHelper invalidate];
 
   [(_NFSecureTransactionServicesHandoverHybridSession *)self setStsHelper:0];
   v6.receiver = self;
   v6.super_class = _NFSecureTransactionServicesHandoverHybridSession;
-  [(_NFXPCSession *)&v6 endSession:v4];
+  [(_NFXPCSession *)&v6 endSession:sessionCopy];
 }
 
-- (void)startSTSNotificationListenerEndpoint:(id)a3
+- (void)startSTSNotificationListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   if (![(_NFSession *)self didStart]|| [(_NFSession *)self isSuspended]|| [(_NFSession *)self didEnd])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -107,19 +107,19 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v12 = [(_NFSession *)self sessionUID];
+      sessionUID = [(_NFSession *)self sessionUID];
       v13 = 45;
       if (isMetaClass)
       {
         v13 = 43;
       }
 
-      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 98, v12);
+      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 98, sessionUID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v14 = NFSharedLogGetLogger();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    stsHelper = NFSharedLogGetLogger();
+    if (os_log_type_enabled(stsHelper, OS_LOG_TYPE_ERROR))
     {
       v15 = object_getClass(self);
       if (class_isMetaClass(v15))
@@ -134,7 +134,7 @@
 
       v17 = object_getClassName(self);
       v18 = sel_getName(a2);
-      v19 = [(_NFSession *)self sessionUID];
+      sessionUID2 = [(_NFSession *)self sessionUID];
       *buf = 67110146;
       v32 = v16;
       v33 = 2082;
@@ -144,8 +144,8 @@
       v37 = 1024;
       v38 = 98;
       v39 = 2114;
-      v40 = v19;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
+      v40 = sessionUID2;
+      _os_log_impl(&_mh_execute_header, stsHelper, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
     }
   }
 
@@ -195,21 +195,21 @@
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
     }
 
-    v14 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-    v29 = [v14 connectToNotificationListener:v5];
+    stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+    v29 = [stsHelper connectToNotificationListener:endpointCopy];
   }
 }
 
-- (void)getAppletsWithCompletion:(id)a3
+- (void)getAppletsWithCompletion:(id)completion
 {
   v3.receiver = self;
   v3.super_class = _NFSecureTransactionServicesHandoverHybridSession;
-  [(_NFContactlessPaymentSession *)&v3 getAppletsWithCompletion:a3];
+  [(_NFContactlessPaymentSession *)&v3 getAppletsWithCompletion:completion];
 }
 
-- (void)startDeferredCardEmulationWithAuthorization:(id)a3 completion:(id)a4
+- (void)startDeferredCardEmulationWithAuthorization:(id)authorization completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSError alloc];
   v8 = [NSString stringWithUTF8String:"nfcd"];
   v14[0] = NSLocalizedDescriptionKey;
@@ -225,12 +225,12 @@
   v15[3] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v13 = [v7 initWithDomain:v8 code:14 userInfo:v12];
-  (*(a4 + 2))(v6, v13);
+  (*(completion + 2))(completionCopy, v13);
 }
 
-- (void)startHostCardEmulationWithCompletion:(id)a3
+- (void)startHostCardEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [NSError alloc];
   v7 = [NSString stringWithUTF8String:"nfcd"];
   v13[0] = NSLocalizedDescriptionKey;
@@ -246,12 +246,12 @@
   v14[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
   v12 = [v6 initWithDomain:v7 code:14 userInfo:v11];
-  (*(a3 + 2))(v5, v12);
+  (*(completion + 2))(completionCopy, v12);
 }
 
-- (void)getFelicaAppletState:(id)a3 completion:(id)a4
+- (void)getFelicaAppletState:(id)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSError alloc];
   v8 = [NSString stringWithUTF8String:"nfcd"];
   v14[0] = NSLocalizedDescriptionKey;
@@ -267,12 +267,12 @@
   v15[3] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v13 = [v7 initWithDomain:v8 code:14 userInfo:v12];
-  (*(a4 + 2))(v6, 0, v13);
+  (*(completion + 2))(completionCopy, 0, v13);
 }
 
-- (void)getTransitAppletState:(id)a3 completion:(id)a4
+- (void)getTransitAppletState:(id)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSError alloc];
   v8 = [NSString stringWithUTF8String:"nfcd"];
   v14[0] = NSLocalizedDescriptionKey;
@@ -288,12 +288,12 @@
   v15[3] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v13 = [v7 initWithDomain:v8 code:14 userInfo:v12];
-  (*(a4 + 2))(v6, 0, v13);
+  (*(completion + 2))(completionCopy, 0, v13);
 }
 
-- (void)enablePlasticCardMode:(BOOL)a3 completion:(id)a4
+- (void)enablePlasticCardMode:(BOOL)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [NSError alloc];
   v8 = [NSString stringWithUTF8String:"nfcd"];
   v14[0] = NSLocalizedDescriptionKey;
@@ -309,12 +309,12 @@
   v15[3] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4];
   v13 = [v7 initWithDomain:v8 code:14 userInfo:v12];
-  (*(a4 + 2))(v6, v13);
+  (*(completion + 2))(completionCopy, v13);
 }
 
-- (void)startExpressModeWithCompletion:(id)a3
+- (void)startExpressModeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [NSError alloc];
   v7 = [NSString stringWithUTF8String:"nfcd"];
   v13[0] = NSLocalizedDescriptionKey;
@@ -330,30 +330,30 @@
   v14[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
   v12 = [v6 initWithDomain:v7 code:14 userInfo:v11];
-  (*(a3 + 2))(v5, v12);
+  (*(completion + 2))(completionCopy, v12);
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_100240E88;
   v9 = &unk_1003162B8;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [(_NFSecureTransactionServicesHandoverHybridSession *)self _asynchronousRemoteProxyWithErrorHandler:&v6];
-  [v5 fieldNotification:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 fieldNotification:{notificationCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   v5 = NFSharedSignpostLog();
-  v6 = [(_NFSession *)self signpostId];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostId;
     if (os_signpost_enabled(v5))
     {
       *v8 = 0;
@@ -361,17 +361,17 @@
     }
   }
 
-  [(_NFSecureTransactionServicesHandoverHybridSession *)self startHCEProcessingWithDevice:v4 completion:0];
+  [(_NFSecureTransactionServicesHandoverHybridSession *)self startHCEProcessingWithDevice:detectedCopy completion:0];
 }
 
-- (void)handleRemoteTagsDetected:(id)a3
+- (void)handleRemoteTagsDetected:(id)detected
 {
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  detectedCopy = detected;
+  v6 = [detectedCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v6)
   {
     goto LABEL_10;
@@ -384,12 +384,12 @@
     {
       if (*v26 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(detectedCopy);
       }
 
       v9 = *(*(&v25 + 1) + 8 * i);
-      v10 = [v9 tagA];
-      if (v10)
+      tagA = [v9 tagA];
+      if (tagA)
       {
 
 LABEL_13:
@@ -400,11 +400,11 @@ LABEL_13:
           goto LABEL_16;
         }
 
-        v13 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
-        if (v13)
+        driverWrapper = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
+        if (driverWrapper)
         {
-          v14 = v13;
-          v15 = sub_100190BD0(v13, v6, 0);
+          v14 = driverWrapper;
+          v15 = sub_100190BD0(driverWrapper, v6, 0);
 
           if (v15)
           {
@@ -413,10 +413,10 @@ LABEL_13:
         }
 
         v17 = NFSharedSignpostLog();
-        v18 = [(_NFSession *)self signpostId];
-        if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostId = [(_NFSession *)self signpostId];
+        if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v19 = v18;
+          v19 = signpostId;
           if (os_signpost_enabled(v17))
           {
             *v24 = 0;
@@ -425,24 +425,24 @@ LABEL_13:
         }
 
         [(_NFSecureTransactionServicesHandoverHybridSession *)self setConnectedTag:v6];
-        v20 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
-        if (v20)
+        tnepHandler = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+        if (tnepHandler)
         {
-          v21 = v20;
+          v21 = tnepHandler;
           if ([(_NFSecureTransactionServicesHandoverHybridSession *)self role]== 4)
           {
 
 LABEL_25:
-            v16 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
-            v23 = [(_NFSecureTransactionServicesHandoverHybridSession *)self connectedTag];
-            sub_100264684(v16, v23);
+            tnepHandler2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+            connectedTag = [(_NFSecureTransactionServicesHandoverHybridSession *)self connectedTag];
+            sub_100264684(tnepHandler2, connectedTag);
 
             goto LABEL_17;
           }
 
-          v22 = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
+          role = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
 
-          if (v22 == 1)
+          if (role == 1)
           {
             goto LABEL_25;
           }
@@ -453,15 +453,15 @@ LABEL_25:
         goto LABEL_11;
       }
 
-      v11 = [v9 tagB];
+      tagB = [v9 tagB];
 
-      if (v11)
+      if (tagB)
       {
         goto LABEL_13;
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v6 = [detectedCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v6)
     {
       continue;
@@ -471,19 +471,19 @@ LABEL_25:
   }
 
 LABEL_10:
-  v12 = v5;
+  v12 = detectedCopy;
 LABEL_11:
 
 LABEL_16:
-  v16 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
-  sub_10021E364(v16);
+  tnepHandler2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
+  sub_10021E364(tnepHandler2);
 LABEL_17:
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if ([v5 seSessionAccess] && (objc_msgSend(v5, "hceAccess") & 1) != 0)
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy seSessionAccess] && (objc_msgSend(entitlementsCopy, "hceAccess") & 1) != 0)
   {
     v6 = 0;
   }
@@ -495,9 +495,9 @@ LABEL_17:
     if (Logger)
     {
       v8 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v12 = 45;
       if (isMetaClass)
@@ -512,7 +512,7 @@ LABEL_17:
     v13 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = object_getClass(a1);
+      v14 = object_getClass(self);
       if (class_isMetaClass(v14))
       {
         v15 = 43;
@@ -526,7 +526,7 @@ LABEL_17:
       *buf = 67109890;
       v27 = v15;
       v28 = 2082;
-      v29 = object_getClassName(a1);
+      v29 = object_getClassName(self);
       v30 = 2082;
       v31 = sel_getName(a2);
       v32 = 1024;
@@ -569,8 +569,8 @@ LABEL_17:
     v5 = sub_10004C224(NFRoutingConfig, 0);
     v6 = [v4 setRoutingConfig:v5];
 
-    v7 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-    [v7 invalidate];
+    stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+    [stsHelper invalidate];
   }
 
   v9.receiver = self;
@@ -587,14 +587,14 @@ LABEL_17:
 - (void)_startSEProxyListener
 {
   v4 = [NFSecureElementProxyListener alloc];
-  v5 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
-  v6 = [(NFSecureElementProxyListener *)v4 initWithDriverWrapper:v5];
+  driverWrapper = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
+  v6 = [(NFSecureElementProxyListener *)v4 initWithDriverWrapper:driverWrapper];
   [(_NFSecureTransactionServicesHandoverHybridSession *)self setSeProxyListener:v6];
 
-  v7 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-  v8 = [(_NFSecureTransactionServicesHandoverHybridSession *)self seProxyListener];
-  v9 = [(_NFSession *)self workQueue];
-  v10 = [v7 startSEProxyListener:v8 parameters:&__NSDictionary0__struct workQueue:v9];
+  stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+  seProxyListener = [(_NFSecureTransactionServicesHandoverHybridSession *)self seProxyListener];
+  workQueue = [(_NFSession *)self workQueue];
+  v10 = [stsHelper startSEProxyListener:seProxyListener parameters:&__NSDictionary0__struct workQueue:workQueue];
 
   if (v10)
   {
@@ -646,12 +646,12 @@ LABEL_17:
   }
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v124.receiver = self;
   v124.super_class = _NFSecureTransactionServicesHandoverHybridSession;
-  [(_NFContactlessPaymentSession *)&v124 didStartSession:v5];
+  [(_NFContactlessPaymentSession *)&v124 didStartSession:sessionCopy];
   v123[0] = _NSConcreteStackBlock;
   v123[1] = 3221225472;
   v123[2] = sub_10024291C;
@@ -666,22 +666,22 @@ LABEL_17:
   v122[4] = self;
   v122[5] = a2;
   v7 = objc_retainBlock(v122);
-  if (v5)
+  if (sessionCopy)
   {
-    (v6[2])(v6, v5);
+    (v6[2])(v6, sessionCopy);
     goto LABEL_93;
   }
 
   v8 = +[_NFHardwareManager sharedHardwareManager];
-  v9 = [v8 secureElementWrapper];
+  secureElementWrapper = [v8 secureElementWrapper];
   v10 = *(&self->_driverWrapper + 4);
-  *(&self->_driverWrapper + 4) = v9;
+  *(&self->_driverWrapper + 4) = secureElementWrapper;
 
   if ([(_NFSecureTransactionServicesHandoverHybridSession *)self role]== 1 || [(_NFSecureTransactionServicesHandoverHybridSession *)self role]== 4)
   {
     if ([(_NFSecureTransactionServicesHandoverHybridSession *)self role]== 1)
     {
-      v11 = [(_NFSecureTransactionServicesHandoverHybridSession *)self getCHConfig];
+      getCHConfig = [(_NFSecureTransactionServicesHandoverHybridSession *)self getCHConfig];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
       if (Logger)
@@ -697,7 +697,7 @@ LABEL_17:
           v16 = 43;
         }
 
-        v13(6, "%c[%{public}s %{public}s]:%i Starting ISO18013 reader polling, hoConfig=0x%lx", v16, ClassName, Name, 298, v11);
+        v13(6, "%c[%{public}s %{public}s]:%i Starting ISO18013 reader polling, hoConfig=0x%lx", v16, ClassName, Name, 298, getCHConfig);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -726,15 +726,15 @@ LABEL_17:
         v132 = 1024;
         v133 = 298;
         v134 = 2048;
-        v135 = v11;
+        v135 = getCHConfig;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Starting ISO18013 reader polling, hoConfig=0x%lx", buf, 0x2Cu);
       }
 
       v22 = NFSharedSignpostLog();
-      v23 = [(_NFSession *)self signpostId];
-      if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId = [(_NFSession *)self signpostId];
+      if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v24 = v23;
+        v24 = signpostId;
         if (os_signpost_enabled(v22))
         {
           *buf = 0;
@@ -742,14 +742,14 @@ LABEL_17:
         }
       }
 
-      v25 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-      v26 = [v25 startISO18013WithConnectionHandoverConfiguration:v11 type:-[_NFSecureTransactionServicesHandoverHybridSession getSTSHelperOperation](self credentialType:"getSTSHelperOperation") delegate:{5, self}];
+      stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+      v26 = [stsHelper startISO18013WithConnectionHandoverConfiguration:getCHConfig type:-[_NFSecureTransactionServicesHandoverHybridSession getSTSHelperOperation](self credentialType:"getSTSHelperOperation") delegate:{5, self}];
 
       v27 = NFSharedSignpostLog();
-      v28 = [(_NFSession *)self signpostId];
-      if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId2 = [(_NFSession *)self signpostId];
+      if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v29 = v28;
+        v29 = signpostId2;
         if (os_signpost_enabled(v27))
         {
           *buf = 138412290;
@@ -768,10 +768,10 @@ LABEL_92:
       }
 
       v65 = NFSharedSignpostLog();
-      v66 = [(_NFSession *)self signpostId];
-      if (v66 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId3 = [(_NFSession *)self signpostId];
+      if (signpostId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v67 = v66;
+        v67 = signpostId3;
         if (os_signpost_enabled(v65))
         {
           *buf = 0;
@@ -781,8 +781,8 @@ LABEL_92:
 
       [(_NFSecureTransactionServicesHandoverHybridSession *)self _startSEProxyListener];
       v41 = NFSharedSignpostLog();
-      v68 = [(_NFSession *)self signpostId];
-      if (v68 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v43 = v68, !os_signpost_enabled(v41)))
+      signpostId4 = [(_NFSession *)self signpostId];
+      if (signpostId4 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v43 = signpostId4, !os_signpost_enabled(v41)))
       {
 LABEL_58:
 
@@ -854,13 +854,13 @@ LABEL_58:
       }
 
       v41 = NFSharedSignpostLog();
-      v42 = [(_NFSession *)self signpostId];
-      if (v42 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+      signpostId5 = [(_NFSession *)self signpostId];
+      if (signpostId5 - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_58;
       }
 
-      v43 = v42;
+      v43 = signpostId5;
       if (!os_signpost_enabled(v41))
       {
         goto LABEL_58;
@@ -878,11 +878,11 @@ LABEL_58:
 
   if (![(_NFSecureTransactionServicesHandoverHybridSession *)self role]|| [(_NFSecureTransactionServicesHandoverHybridSession *)self role]== 3)
   {
-    v47 = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
+    role = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v48 = NFLogGetLogger();
     v49 = v48;
-    if (v47)
+    if (role)
     {
       if (v48)
       {
@@ -928,13 +928,13 @@ LABEL_58:
       }
 
       v59 = NFSharedSignpostLog();
-      v60 = [(_NFSession *)self signpostId];
-      if (v60 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+      signpostId6 = [(_NFSession *)self signpostId];
+      if (signpostId6 - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_91;
       }
 
-      v61 = v60;
+      v61 = signpostId6;
       if (!os_signpost_enabled(v59))
       {
         goto LABEL_91;
@@ -992,10 +992,10 @@ LABEL_58:
       }
 
       v96 = NFSharedSignpostLog();
-      v97 = [(_NFSession *)self signpostId];
-      if (v97 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId7 = [(_NFSession *)self signpostId];
+      if (signpostId7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v98 = v97;
+        v98 = signpostId7;
         if (os_signpost_enabled(v96))
         {
           *buf = 0;
@@ -1003,14 +1003,14 @@ LABEL_58:
         }
       }
 
-      v99 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-      v26 = [v99 startISO18013WithConnectionHandoverConfiguration:-[_NFSecureTransactionServicesHandoverHybridSession getCHConfig](self type:"getCHConfig") credentialType:-[_NFSecureTransactionServicesHandoverHybridSession getSTSHelperOperation](self delegate:{"getSTSHelperOperation"), 5, self}];
+      stsHelper2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+      v26 = [stsHelper2 startISO18013WithConnectionHandoverConfiguration:-[_NFSecureTransactionServicesHandoverHybridSession getCHConfig](self type:"getCHConfig") credentialType:-[_NFSecureTransactionServicesHandoverHybridSession getSTSHelperOperation](self delegate:{"getSTSHelperOperation"), 5, self}];
 
       v100 = NFSharedSignpostLog();
-      v101 = [(_NFSession *)self signpostId];
-      if (v101 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId8 = [(_NFSession *)self signpostId];
+      if (signpostId8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v102 = v101;
+        v102 = signpostId8;
         if (os_signpost_enabled(v100))
         {
           *buf = 138412290;
@@ -1025,10 +1025,10 @@ LABEL_58:
       }
 
       v103 = NFSharedSignpostLog();
-      v104 = [(_NFSession *)self signpostId];
-      if (v104 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId9 = [(_NFSession *)self signpostId];
+      if (signpostId9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v105 = v104;
+        v105 = signpostId9;
         if (os_signpost_enabled(v103))
         {
           *buf = 0;
@@ -1038,8 +1038,8 @@ LABEL_58:
 
       [(_NFSecureTransactionServicesHandoverHybridSession *)self _startSEProxyListener];
       v59 = NFSharedSignpostLog();
-      v106 = [(_NFSession *)self signpostId];
-      if (v106 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v61 = v106, !os_signpost_enabled(v59)))
+      signpostId10 = [(_NFSession *)self signpostId];
+      if (signpostId10 - 1 > 0xFFFFFFFFFFFFFFFDLL || (v61 = signpostId10, !os_signpost_enabled(v59)))
       {
 LABEL_91:
 
@@ -1135,12 +1135,12 @@ LABEL_91:
 LABEL_93:
 }
 
-- (void)_startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5
+- (void)_startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback
 {
-  v9 = a3;
+  servicesCopy = services;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-  v10 = a5;
-  v11 = a4;
+  callbackCopy = callback;
+  recordsCopy = records;
   Logger = NFLogGetLogger();
   if (Logger)
   {
@@ -1155,7 +1155,7 @@ LABEL_93:
       v16 = 43;
     }
 
-    v13(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v16, ClassName, Name, 382, v9);
+    v13(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v16, ClassName, Name, 382, servicesCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1182,37 +1182,37 @@ LABEL_93:
     v34 = 1024;
     v35 = 382;
     v36 = 2114;
-    v37 = v9;
+    v37 = servicesCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i services=%{public}@", buf, 0x2Cu);
   }
 
   v20 = [NFTNEPHandler alloc];
-  v21 = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
-  if (v21)
+  role = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
+  if (role)
   {
-    v22 = [(_NFXPCSession *)self remoteObject];
+    selfCopy = [(_NFXPCSession *)self remoteObject];
   }
 
   else
   {
-    v22 = self;
+    selfCopy = self;
   }
 
-  v23 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
-  v24 = sub_1002644CC(&v20->super.isa, 0, v22, v23, [(_NFSession *)self signpostId]);
+  driverWrapper = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
+  v24 = sub_1002644CC(&v20->super.isa, 0, selfCopy, driverWrapper, [(_NFSession *)self signpostId]);
   [(_NFSecureTransactionServicesHandoverHybridSession *)self setTnepHandler:v24];
 
-  if (v21)
+  if (role)
   {
   }
 
-  v25 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
-  [v25 startTNEPDeviceWithServices:v9 optionalRecords:v11 callback:v10];
+  tnepHandler = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+  [tnepHandler startTNEPDeviceWithServices:servicesCopy optionalRecords:recordsCopy callback:callbackCopy];
 }
 
-- (void)_startTNEPReaderWithCallback:(id)a3
+- (void)_startTNEPReaderWithCallback:(id)callback
 {
-  v5 = a3;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1258,31 +1258,31 @@ LABEL_93:
   }
 
   v15 = [NFTNEPHandler alloc];
-  v16 = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
-  v17 = self;
-  if (v16 != 1)
+  role = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
+  selfCopy = self;
+  if (role != 1)
   {
-    v17 = [(_NFXPCSession *)self remoteObject];
+    selfCopy = [(_NFXPCSession *)self remoteObject];
   }
 
-  v18 = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
-  v19 = sub_1002644CC(&v15->super.isa, 1, v17, v18, [(_NFSession *)self signpostId]);
+  driverWrapper = [(_NFSecureTransactionServicesHandoverHybridSession *)self driverWrapper];
+  v19 = sub_1002644CC(&v15->super.isa, 1, selfCopy, driverWrapper, [(_NFSession *)self signpostId]);
   [(_NFSecureTransactionServicesHandoverHybridSession *)self setTnepHandler:v19];
 
-  if (v16 != 1)
+  if (role != 1)
   {
   }
 
-  v20 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+  tnepHandler = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100243AD8;
   v23[3] = &unk_100316598;
-  v24 = v5;
+  v24 = callbackCopy;
   v25 = a2;
   v23[4] = self;
-  v21 = v5;
-  [v20 startTNEPReaderWithCallback:v23];
+  v21 = callbackCopy;
+  [tnepHandler startTNEPReaderWithCallback:v23];
 }
 
 - (void)iso18013DataRetrievalCompleted
@@ -1382,8 +1382,8 @@ LABEL_93:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v13 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-  [v13 stopSEProxyListener];
+  stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+  [stsHelper stopSEProxyListener];
 
   [(_NFSecureTransactionServicesHandoverHybridSession *)self setSeProxyListener:0];
 }
@@ -1490,133 +1490,133 @@ LABEL_93:
 
 - (void)coreDuetActivityRevoked
 {
-  v3 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100244604;
   block[3] = &unk_100315F30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_NFSession *)self workQueue];
+  servicesCopy = services;
+  recordsCopy = records;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002447BC;
   block[3] = &unk_1003165C0;
-  v19 = v11;
+  v19 = callbackCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = servicesCopy;
+  v18 = recordsCopy;
+  v13 = recordsCopy;
+  v14 = servicesCopy;
+  v15 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  messageCopy = message;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100244FD4;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = messageCopy;
+  v10 = messageCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)startTNEPReaderWithCallback:(id)a3
+- (void)startTNEPReaderWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100245630;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4
+- (void)tnepReaderSelectService:(id)service callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  serviceCopy = service;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100245BE4;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = serviceCopy;
+  v10 = serviceCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)tnepReaderDeselectWithCallback:(id)a3
+- (void)tnepReaderDeselectWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100246234;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepReaderSend:(id)a3 callback:(id)a4
+- (void)tnepReaderSend:(id)send callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  sendCopy = send;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100246894;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = sendCopy;
+  v10 = sendCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)tnepReaderRestartPollingWithCallback:(id)a3
+- (void)tnepReaderRestartPollingWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100246ED0;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)tnepServiceInvalidate
@@ -1632,14 +1632,14 @@ LABEL_93:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v10 = [(_NFSession *)self sessionUID];
+      sessionUID = [(_NFSession *)self sessionUID];
       v11 = 45;
       if (isMetaClass)
       {
         v11 = 43;
       }
 
-      v5(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v11, ClassName, Name, 605, v10);
+      v5(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v11, ClassName, Name, 605, sessionUID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1659,7 +1659,7 @@ LABEL_93:
 
       v15 = object_getClassName(self);
       v16 = sel_getName(a2);
-      v17 = [(_NFSession *)self sessionUID];
+      sessionUID2 = [(_NFSession *)self sessionUID];
       LODWORD(buf) = 67110146;
       HIDWORD(buf) = v14;
       v32 = 2082;
@@ -1669,7 +1669,7 @@ LABEL_93:
       v36 = 1024;
       v37 = 605;
       v38 = 2114;
-      v39 = v17;
+      v39 = sessionUID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", &buf, 0x2Cu);
     }
   }
@@ -1721,14 +1721,14 @@ LABEL_93:
     }
 
     objc_initWeak(&buf, self);
-    v27 = [(_NFSession *)self workQueue];
+    workQueue = [(_NFSession *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100247830;
     block[3] = &unk_100316610;
     objc_copyWeak(v30, &buf);
     v30[1] = a2;
-    dispatch_async(v27, block);
+    dispatch_async(workQueue, block);
 
     objc_destroyWeak(v30);
     objc_destroyWeak(&buf);
@@ -1782,11 +1782,11 @@ LABEL_93:
   }
 }
 
-- (void)tnepTagDeviceSelected:(id)a3 respondHandler:(id)a4
+- (void)tnepTagDeviceSelected:(id)selected respondHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 isEqualToString:@"urn:nfc:sn:handover"];
+  selectedCopy = selected;
+  handlerCopy = handler;
+  v9 = [selectedCopy isEqualToString:@"urn:nfc:sn:handover"];
   v10 = v9 ^ 1;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1803,7 +1803,7 @@ LABEL_93:
       v16 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", v16, ClassName, Name, 636, v7, v10);
+    v12(6, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", v16, ClassName, Name, 636, selectedCopy, v10);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1830,7 +1830,7 @@ LABEL_93:
     v29 = 1024;
     v30 = 636;
     v31 = 2114;
-    v32 = v7;
+    v32 = selectedCopy;
     v33 = 2048;
     v34 = v9 ^ 1;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", buf, 0x36u);
@@ -1848,12 +1848,12 @@ LABEL_93:
     [v20 connectionHandoverTNEPServiceSelected:@"urn:nfc:sn:handover"];
   }
 
-  v8[2](v8, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
 }
 
-- (void)tnepTagDeviceDeselected:(id)a3
+- (void)tnepTagDeviceDeselected:(id)deselected
 {
-  v5 = a3;
+  deselectedCopy = deselected;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1863,14 +1863,14 @@ LABEL_93:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v12 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
+    deviceHandoverSelectError = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", v13, ClassName, Name, 650, v12, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", v13, ClassName, Name, 650, deviceHandoverSelectError, deselectedCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1890,7 +1890,7 @@ LABEL_93:
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
+    deviceHandoverSelectError2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
     *buf = 67110402;
     *&buf[4] = v16;
     v36 = 2082;
@@ -1900,15 +1900,15 @@ LABEL_93:
     v40 = 1024;
     v41 = 650;
     v42 = 2114;
-    v43 = v19;
+    v43 = deviceHandoverSelectError2;
     v44 = 2114;
-    v45 = v5;
+    v45 = deselectedCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", buf, 0x36u);
   }
 
-  v20 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
+  deviceHandoverSelectError3 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
 
-  if (v20)
+  if (deviceHandoverSelectError3)
   {
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -1917,15 +1917,15 @@ LABEL_93:
     v34[4] = self;
     v34[5] = a2;
     v21 = [(_NFSecureTransactionServicesHandoverHybridSession *)self _asynchronousRemoteProxyWithErrorHandler:v34];
-    v22 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
-    [v21 connectionHandoverProcessFailure:v22];
+    deviceHandoverSelectError4 = [(_NFSecureTransactionServicesHandoverHybridSession *)self deviceHandoverSelectError];
+    [v21 connectionHandoverProcessFailure:deviceHandoverSelectError4];
 
     [(_NFSecureTransactionServicesHandoverHybridSession *)self setDeviceHandoverSelectError:0];
   }
 
-  else if (v5)
+  else if (deselectedCopy)
   {
-    if ([v5 code] == 28)
+    if ([deselectedCopy code] == 28)
     {
       v23 = STS_XCPHELPER_ERROR_DOMAIN;
       v46 = NSLocalizedDescriptionKey;
@@ -1935,7 +1935,7 @@ LABEL_93:
       v26 = 8;
     }
 
-    else if ([v5 code] == 62 || objc_msgSend(v5, "code") == 59)
+    else if ([deselectedCopy code] == 62 || objc_msgSend(deselectedCopy, "code") == 59)
     {
       v28 = STS_XCPHELPER_ERROR_DOMAIN;
       v46 = NSLocalizedDescriptionKey;
@@ -1980,14 +1980,14 @@ LABEL_93:
   }
 }
 
-- (void)tnepTagDeviceNDEFMessageReceived:(id)a3
+- (void)tnepTagDeviceNDEFMessageReceived:(id)received
 {
-  v5 = a3;
+  receivedCopy = received;
   v6 = NFSharedSignpostLog();
-  v7 = [(_NFSession *)self signpostId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signpostId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -1995,22 +1995,22 @@ LABEL_93:
     }
   }
 
-  v9 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-  v10 = [v5 asData];
+  stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+  asData = [receivedCopy asData];
 
-  v11 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100248A94;
   v12[3] = &unk_100316660;
   v12[4] = self;
   v12[5] = a2;
-  [v9 processConnectionHandoverRequestData:v10 callbackQueue:v11 responseHandler:v12];
+  [stsHelper processConnectionHandoverRequestData:asData callbackQueue:workQueue responseHandler:v12];
 }
 
-- (void)tnepReaderServicesDiscovered:(id)a3
+- (void)tnepReaderServicesDiscovered:(id)discovered
 {
-  v5 = a3;
+  discoveredCopy = discovered;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2026,7 +2026,7 @@ LABEL_93:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v10, ClassName, Name, 711, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v10, ClassName, Name, 711, discoveredCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2053,7 +2053,7 @@ LABEL_93:
     v53 = 1024;
     v54 = 711;
     v55 = 2114;
-    v56 = v5;
+    v56 = discoveredCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i services=%{public}@", buf, 0x2Cu);
   }
 
@@ -2061,7 +2061,7 @@ LABEL_93:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v14 = v5;
+  v14 = discoveredCopy;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v15)
   {
@@ -2095,7 +2095,7 @@ LABEL_93:
           v31 = [(_NFSecureTransactionServicesHandoverHybridSession *)self _asynchronousRemoteProxyWithErrorHandler:v40];
           [v31 connectionHandoverTNEPServiceSelected:@"urn:nfc:sn:handover"];
 
-          v32 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+          tnepHandler = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
           v37[0] = _NSConcreteStackBlock;
           v37[1] = 3221225472;
           v37[2] = sub_100249B10;
@@ -2104,7 +2104,7 @@ LABEL_93:
           v39 = a2;
           v37[4] = self;
           v33 = v30;
-          [v32 tnepReaderSelectService:@"urn:nfc:sn:handover" callback:v37];
+          [tnepHandler tnepReaderSelectService:@"urn:nfc:sn:handover" callback:v37];
 
           goto LABEL_29;
         }
@@ -2169,9 +2169,9 @@ LABEL_93:
 LABEL_29:
 }
 
-- (void)staticReaderEngagementDiscovered:(id)a3
+- (void)staticReaderEngagementDiscovered:(id)discovered
 {
-  v5 = a3;
+  discoveredCopy = discovered;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2187,7 +2187,7 @@ LABEL_29:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i handover select = %@", v10, ClassName, Name, 793, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i handover select = %@", v10, ClassName, Name, 793, discoveredCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2214,30 +2214,30 @@ LABEL_29:
     v26 = 1024;
     v27 = 793;
     v28 = 2112;
-    v29 = v5;
+    v29 = discoveredCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i handover select = %@", buf, 0x2Cu);
   }
 
-  v14 = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
-  v15 = [v5 asData];
-  v16 = [(_NFSession *)self workQueue];
+  stsHelper = [(_NFSecureTransactionServicesHandoverHybridSession *)self stsHelper];
+  asData = [discoveredCopy asData];
+  workQueue = [(_NFSession *)self workQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10024AA8C;
   v19[3] = &unk_1003162B8;
   v19[4] = self;
   v19[5] = a2;
-  [v14 connectRemoteWithConnectionHandoverSelect:v15 callbackQueue:v16 responseHandler:v19];
+  [stsHelper connectRemoteWithConnectionHandoverSelect:asData callbackQueue:workQueue responseHandler:v19];
 }
 
-- (void)tnepReaderServicesAborted:(id)a3
+- (void)tnepReaderServicesAborted:(id)aborted
 {
-  v5 = a3;
+  abortedCopy = aborted;
   v6 = NFSharedSignpostLog();
-  v7 = [(_NFSession *)self signpostId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signpostId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -2260,7 +2260,7 @@ LABEL_29:
       v13 = 43;
     }
 
-    v10(3, "%c[%{public}s %{public}s]:%i error=%{public}@", v13, ClassName, Name, 816, v5);
+    v10(3, "%c[%{public}s %{public}s]:%i error=%{public}@", v13, ClassName, Name, 816, abortedCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2289,7 +2289,7 @@ LABEL_29:
     v29 = 1024;
     v30 = 816;
     v31 = 2114;
-    v32 = v5;
+    v32 = abortedCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i error=%{public}@", buf, 0x2Cu);
   }
 
@@ -2300,27 +2300,27 @@ LABEL_29:
   v22[4] = self;
   v22[5] = a2;
   v19 = [(_NFSecureTransactionServicesHandoverHybridSession *)self _asynchronousRemoteProxyWithErrorHandler:v22];
-  [v19 tnepReaderServicesAborted:v5];
+  [v19 tnepReaderServicesAborted:abortedCopy];
 }
 
-- (void)startHCEProcessingWithDevice:(id)a3 completion:(id)a4
+- (void)startHCEProcessingWithDevice:(id)device completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+  deviceCopy = device;
+  completionCopy = completion;
+  tnepHandler = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
 
-  if (v9)
+  if (tnepHandler)
   {
-    v10 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
-    v11 = v10;
-    if (v10)
+    tnepHandler2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self tnepHandler];
+    v11 = tnepHandler2;
+    if (tnepHandler2)
     {
-      sub_1002645F8(v10, v7);
+      sub_1002645F8(tnepHandler2, deviceCopy);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -2370,7 +2370,7 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Missing tnepHandler", buf, 0x22u);
     }
 
-    if (v8)
+    if (completionCopy)
     {
       v21 = [NSError alloc];
       v22 = [NSString stringWithUTF8String:"nfcd"];
@@ -2379,7 +2379,7 @@ LABEL_29:
       v28 = v23;
       v24 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v25 = [v21 initWithDomain:v22 code:13 userInfo:v24];
-      (v8)[2](v8, v25);
+      (completionCopy)[2](completionCopy, v25);
     }
   }
 }
@@ -2395,14 +2395,14 @@ LABEL_29:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v19 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+    type = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
     v10 = 45;
     if (isMetaClass)
     {
       v10 = 43;
     }
 
-    v5(6, "%c[%{public}s %{public}s]:%i type=0x%lx", v10, ClassName, Name, 837, v19);
+    v5(6, "%c[%{public}s %{public}s]:%i type=0x%lx", v10, ClassName, Name, 837, type);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2429,23 +2429,23 @@ LABEL_29:
     v26 = 1024;
     v27 = 837;
     v28 = 2048;
-    v29 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+    type2 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i type=0x%lx", buf, 0x2Cu);
   }
 
-  v14 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
-  v15 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
-  v16 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
-  v17 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
-  return (16 * (v14 & 1)) | (v15 >> 1) & 1 | (v16 >> 1) & 2 | (v17 >> 1) & 4 | ([(_NFSecureTransactionServicesHandoverHybridSession *)self type]>> 1) & 8;
+  type3 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+  type4 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+  type5 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+  type6 = [(_NFSecureTransactionServicesHandoverHybridSession *)self type];
+  return (16 * (type3 & 1)) | (type4 >> 1) & 1 | (type5 >> 1) & 2 | (type6 >> 1) & 4 | ([(_NFSecureTransactionServicesHandoverHybridSession *)self type]>> 1) & 8;
 }
 
 - (unint64_t)getSTSHelperOperation
 {
-  v4 = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
-  if (v4 - 2 >= 3 && v4 != -1)
+  role = [(_NFSecureTransactionServicesHandoverHybridSession *)self role];
+  if (role - 2 >= 3 && role != -1)
   {
-    return v4 == 1;
+    return role == 1;
   }
 
   v6 = +[NSAssertionHandler currentHandler];
@@ -2454,20 +2454,20 @@ LABEL_29:
   return -1;
 }
 
-- (id)_synchronousRemoteProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_NFXPCSession *)self remoteObject];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  v6 = [remoteObject synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_asynchronousRemoteProxyWithErrorHandler:(id)a3
+- (id)_asynchronousRemoteProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_NFXPCSession *)self remoteObject];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  v6 = [remoteObject remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -2484,8 +2484,8 @@ LABEL_29:
 
   v5 = objc_alloc_init(NFNdefRecordInternal);
   v6 = [[NSMutableData alloc] initWithBytes:&unk_100297C5D length:2];
-  v7 = [v2 asData];
-  [v6 appendData:v7];
+  asData = [v2 asData];
+  [v6 appendData:asData];
 
   [v5 setTypeNameFormat:1];
   v8 = [[NSData alloc] initWithBytes:&unk_100297C5B length:2];
@@ -2500,8 +2500,8 @@ LABEL_29:
 
 - (void)handleReaderBurnoutTimer
 {
-  v4 = [(_NFSession *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [(_NFSession *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))

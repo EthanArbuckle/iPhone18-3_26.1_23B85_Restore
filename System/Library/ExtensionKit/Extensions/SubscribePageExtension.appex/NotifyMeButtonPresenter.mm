@@ -2,12 +2,12 @@
 - (void)appEnteredWhileAppeared;
 - (void)appExitedWhileAppeared;
 - (void)displayTimeReached;
-- (void)userNotificationsDidChangeNotification:(id)a3;
+- (void)userNotificationsDidChangeNotification:(id)notification;
 @end
 
 @implementation NotifyMeButtonPresenter
 
-- (void)userNotificationsDidChangeNotification:(id)a3
+- (void)userNotificationsDidChangeNotification:(id)notification
 {
   v3 = sub_100740EA4();
   v4 = *(v3 - 8);

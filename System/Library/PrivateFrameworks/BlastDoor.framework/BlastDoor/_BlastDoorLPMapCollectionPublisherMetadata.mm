@@ -1,29 +1,29 @@
 @interface _BlastDoorLPMapCollectionPublisherMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPMapCollectionPublisherMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPMapCollectionPublisherMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPMapCollectionPublisherMetadata
 
-- (_BlastDoorLPMapCollectionPublisherMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPMapCollectionPublisherMetadata)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _BlastDoorLPMapCollectionPublisherMetadata;
   v5 = [(_BlastDoorLPMapCollectionPublisherMetadata *)&v14 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     v7 = *&v5->_numberOfPublishedCollections;
     *&v5->_numberOfPublishedCollections = v6;
 
-    v8 = decodeNumberForKey(v4, @"numberOfPublishedCollections");
+    v8 = decodeNumberForKey(coderCopy, @"numberOfPublishedCollections");
     *(&v5->super.__dummyPropertyForObservation + 1) = [v8 unsignedIntValue];
 
-    v9 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
+    v9 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
     name = v5->_name;
     v5->_name = v9;
 
@@ -34,28 +34,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *&self->_numberOfPublishedCollections;
-  v6 = a3;
-  [v6 _bd_lp_encodeObjectIfNotNil:v4 forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:v4 forKey:@"name"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&self->super.__dummyPropertyForObservation + 1)];
-  [v6 _bd_lp_encodeObjectIfNotNil:v5 forKey:@"numberOfPublishedCollections"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:v5 forKey:@"numberOfPublishedCollections"];
 
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"icon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPMapCollectionPublisherMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPMapCollectionPublisherMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPMapCollectionPublisherMetadata *)self name];
-    [(_BlastDoorLPMapCollectionPublisherMetadata *)v4 setName:v5];
+    name = [(_BlastDoorLPMapCollectionPublisherMetadata *)self name];
+    [(_BlastDoorLPMapCollectionPublisherMetadata *)v4 setName:name];
 
     [(_BlastDoorLPMapCollectionPublisherMetadata *)v4 setNumberOfPublishedCollections:[(_BlastDoorLPMapCollectionPublisherMetadata *)self numberOfPublishedCollections]];
-    v6 = [(_BlastDoorLPMapCollectionPublisherMetadata *)self icon];
-    [(_BlastDoorLPMapCollectionPublisherMetadata *)v4 setIcon:v6];
+    icon = [(_BlastDoorLPMapCollectionPublisherMetadata *)self icon];
+    [(_BlastDoorLPMapCollectionPublisherMetadata *)v4 setIcon:icon];
 
     v7 = v4;
   }
@@ -63,13 +63,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = _BlastDoorLPMapCollectionPublisherMetadata;
-  if ([(_BlastDoorLPMapCollectionPublisherMetadata *)&v11 isEqual:v4])
+  if ([(_BlastDoorLPMapCollectionPublisherMetadata *)&v11 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[2];
       if ((!(v7 | *&self->_numberOfPublishedCollections) || [v7 isEqual:?]) && *(v6 + 3) == *(&self->super.__dummyPropertyForObservation + 1))
       {

@@ -1,5 +1,5 @@
 @interface NRDNSProxy
-- (NRDNSProxy)initWithQueue:(id)a3 nrUUID:(id)a4 delegate:(id)a5;
+- (NRDNSProxy)initWithQueue:(id)queue nrUUID:(id)d delegate:(id)delegate;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -59,7 +59,7 @@
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
     v11 = 90;
-    v12 = self;
+    selfCopy = self;
     v9 = "";
     v10 = "[NRDNSProxy dealloc]";
     _NRLogWithArgs();
@@ -107,11 +107,11 @@
   }
 }
 
-- (NRDNSProxy)initWithQueue:(id)a3 nrUUID:(id)a4 delegate:(id)a5
+- (NRDNSProxy)initWithQueue:(id)queue nrUUID:(id)d delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  dCopy = d;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = NRDNSProxy;
   v11 = [(NRDNSProxy *)&v22 init];
@@ -138,13 +138,13 @@
   v12 = v11;
   v11->_identifier = atomic_fetch_add_explicit(&qword_100228188, 1uLL, memory_order_relaxed);
   queue = v11->_queue;
-  v11->_queue = v8;
-  v14 = v8;
+  v11->_queue = queueCopy;
+  v14 = queueCopy;
 
   nrUUID = v12->_nrUUID;
-  v12->_nrUUID = v9;
+  v12->_nrUUID = dCopy;
 
-  objc_storeWeak(&v12->_delegate, v10);
+  objc_storeWeak(&v12->_delegate, delegateCopy);
   v12->_state = 0;
 
   return v12;

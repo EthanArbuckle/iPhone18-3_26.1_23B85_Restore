@@ -1,32 +1,32 @@
 @interface SiriUITemplateViewController
-+ (id)templateViewControllerForTemplateModel:(id)a3;
++ (id)templateViewControllerForTemplateModel:(id)model;
 - (SiriUITemplateModelPrivate)templateModelPrivate;
 - (SiriUITemplateViewControllerDelegate)delegate;
-- (id)_initWithTemplateModel:(id)a3;
+- (id)_initWithTemplateModel:(id)model;
 - (void)loadView;
-- (void)setCompressed:(BOOL)a3;
+- (void)setCompressed:(BOOL)compressed;
 @end
 
 @implementation SiriUITemplateViewController
 
-+ (id)templateViewControllerForTemplateModel:(id)a3
++ (id)templateViewControllerForTemplateModel:(id)model
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_msgSend(v3 "templateViewControllerClass"))];
+  modelCopy = model;
+  v4 = [objc_alloc(objc_msgSend(modelCopy "templateViewControllerClass"))];
 
   return v4;
 }
 
-- (id)_initWithTemplateModel:(id)a3
+- (id)_initWithTemplateModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = SiriUITemplateViewController;
   v6 = [(SiriUITemplateViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateModel, a3);
+    objc_storeStrong(&v6->_templateModel, model);
     v7->_active = 1;
   }
 
@@ -35,8 +35,8 @@
 
 - (void)loadView
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SiriUITemplateViewController.m" lineNumber:32 description:@"The 'view' property of this class must conform to SiriUITemplateView."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SiriUITemplateViewController.m" lineNumber:32 description:@"The 'view' property of this class must conform to SiriUITemplateView."];
 }
 
 - (SiriUITemplateModelPrivate)templateModelPrivate
@@ -54,16 +54,16 @@
   return v3;
 }
 
-- (void)setCompressed:(BOOL)a3
+- (void)setCompressed:(BOOL)compressed
 {
-  if (self->_compressed != a3)
+  if (self->_compressed != compressed)
   {
-    self->_compressed = a3;
-    v5 = [(SiriUITemplateViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_compressed = compressed;
+    view = [(SiriUITemplateViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(SiriUITemplateViewController *)self view];
-    [v6 setNeedsUpdateConstraints];
+    view2 = [(SiriUITemplateViewController *)self view];
+    [view2 setNeedsUpdateConstraints];
   }
 }
 

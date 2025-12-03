@@ -2,16 +2,16 @@
 - (CGSize)size;
 - (NSString)description;
 - (_TtC11FMFindingUI11FMPFSKScene)init;
-- (_TtC11FMFindingUI11FMPFSKScene)initWithSize:(CGSize)a3;
-- (void)setSize:(CGSize)a3;
-- (void)update:(double)a3;
+- (_TtC11FMFindingUI11FMPFSKScene)initWithSize:(CGSize)size;
+- (void)setSize:(CGSize)size;
+- (void)update:(double)update;
 @end
 
 @implementation FMPFSKScene
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A5100E8();
 
   v3 = sub_24A62EBE4();
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
-  v4 = self;
-  sub_24A5D5650(a3);
+  selfCopy = self;
+  sub_24A5D5650(update);
 }
 
 - (CGSize)size
@@ -35,15 +35,15 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_24A5D602C(width, height);
 }
 
-- (_TtC11FMFindingUI11FMPFSKScene)initWithSize:(CGSize)a3
+- (_TtC11FMFindingUI11FMPFSKScene)initWithSize:(CGSize)size
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

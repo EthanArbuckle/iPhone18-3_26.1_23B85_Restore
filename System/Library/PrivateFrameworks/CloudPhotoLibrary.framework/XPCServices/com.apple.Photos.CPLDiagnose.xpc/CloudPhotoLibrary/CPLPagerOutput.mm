@@ -1,5 +1,5 @@
 @interface CPLPagerOutput
-- (CPLPagerOutput)initWithInputFromOutput:(id)a3 interruptionHandler:(id)a4;
+- (CPLPagerOutput)initWithInputFromOutput:(id)output interruptionHandler:(id)handler;
 - (void)_fdIsInvalid;
 - (void)_taskHasFinished;
 - (void)closeOutput;
@@ -8,10 +8,10 @@
 
 @implementation CPLPagerOutput
 
-- (CPLPagerOutput)initWithInputFromOutput:(id)a3 interruptionHandler:(id)a4
+- (CPLPagerOutput)initWithInputFromOutput:(id)output interruptionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  handlerCopy = handler;
   *v28 = 0;
   if (pipe(v28))
   {
@@ -22,7 +22,7 @@
   v9 = v28[1];
   v26.receiver = self;
   v26.super_class = CPLPagerOutput;
-  v10 = -[CPLOutput initWithFileDescriptor:isATTY:supportsEscapeSequences:usesColor:supports24BitColor:](&v26, "initWithFileDescriptor:isATTY:supportsEscapeSequences:usesColor:supports24BitColor:", v28[1], [v6 isATTY], objc_msgSend(v6, "supportsEscapeSequences"), objc_msgSend(v6, "usesColor"), objc_msgSend(v6, "supports24BitColor"));
+  v10 = -[CPLOutput initWithFileDescriptor:isATTY:supportsEscapeSequences:usesColor:supports24BitColor:](&v26, "initWithFileDescriptor:isATTY:supportsEscapeSequences:usesColor:supports24BitColor:", v28[1], [outputCopy isATTY], objc_msgSend(outputCopy, "supportsEscapeSequences"), objc_msgSend(outputCopy, "usesColor"), objc_msgSend(outputCopy, "supports24BitColor"));
   if (!v10)
   {
     goto LABEL_16;
@@ -32,7 +32,7 @@
   v12 = *(v10 + 7);
   *(v10 + 7) = v11;
 
-  v13 = [v7 copy];
+  v13 = [handlerCopy copy];
   v14 = *(v10 + 11);
   *(v10 + 11) = v13;
 

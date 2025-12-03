@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (PKDeviceRegistrationService)init;
 - (void)dealloc;
-- (void)performDeviceRegistrationForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6;
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6;
-- (void)performDeviceRegistrationWithCompletion:(id)a3;
-- (void)performRegistrationForMemberOfRegions:(id)a3 withReason:(id)a4 completion:(id)a5;
-- (void)performRegistrationForRegion:(id)a3 withReason:(id)a4 completion:(id)a5;
+- (void)performDeviceRegistrationForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion;
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion;
+- (void)performDeviceRegistrationWithCompletion:(id)completion;
+- (void)performRegistrationForMemberOfRegions:(id)regions withReason:(id)reason completion:(id)completion;
+- (void)performRegistrationForRegion:(id)region withReason:(id)reason completion:(id)completion;
 @end
 
 @implementation PKDeviceRegistrationService
@@ -54,15 +54,15 @@ void __45__PKDeviceRegistrationService_sharedInstance__block_invoke()
   [(PKDeviceRegistrationService *)&v2 dealloc];
 }
 
-- (void)performDeviceRegistrationWithCompletion:(id)a3
+- (void)performDeviceRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PKDeviceRegistrationService_performDeviceRegistrationWithCompletion___block_invoke;
   v6[3] = &unk_1E79D62F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PKDeviceRegistrationService *)self performDeviceRegistrationReturningContextForReason:@"default" brokerURL:0 actionType:0 completion:v6];
 }
 
@@ -77,16 +77,16 @@ uint64_t __71__PKDeviceRegistrationService_performDeviceRegistrationWithCompleti
   return result;
 }
 
-- (void)performDeviceRegistrationForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6
+- (void)performDeviceRegistrationForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__PKDeviceRegistrationService_performDeviceRegistrationForReason_brokerURL_actionType_completion___block_invoke;
   v12[3] = &unk_1E79D62F0;
-  v13 = v10;
-  v11 = v10;
-  [(PKDeviceRegistrationService *)self performDeviceRegistrationReturningContextForReason:a3 brokerURL:a4 actionType:a5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(PKDeviceRegistrationService *)self performDeviceRegistrationReturningContextForReason:reason brokerURL:l actionType:type completion:v12];
 }
 
 uint64_t __98__PKDeviceRegistrationService_performDeviceRegistrationForReason_brokerURL_actionType_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -100,22 +100,22 @@ uint64_t __98__PKDeviceRegistrationService_performDeviceRegistrationForReason_br
   return result;
 }
 
-- (void)performRegistrationForMemberOfRegions:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)performRegistrationForMemberOfRegions:(id)regions withReason:(id)reason completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PKDeviceRegistrationService_performRegistrationForMemberOfRegions_withReason_completion___block_invoke;
   aBlock[3] = &unk_1E79C4EA0;
-  v16 = v9;
+  v16 = completionCopy;
   v17 = a2;
   aBlock[4] = self;
-  v10 = v9;
-  v11 = a4;
-  v12 = a3;
+  v10 = completionCopy;
+  reasonCopy = reason;
+  regionsCopy = regions;
   v13 = _Block_copy(aBlock);
   v14 = [(PKDeviceRegistrationService *)self _remoteObjectProxyWithFailureHandler:v13];
-  [v14 performRegistrationForMemberOfRegions:v12 withReason:v11 completion:v10];
+  [v14 performRegistrationForMemberOfRegions:regionsCopy withReason:reasonCopy completion:v10];
 }
 
 void __91__PKDeviceRegistrationService_performRegistrationForMemberOfRegions_withReason_completion___block_invoke(uint64_t a1)
@@ -138,22 +138,22 @@ void __91__PKDeviceRegistrationService_performRegistrationForMemberOfRegions_wit
   }
 }
 
-- (void)performRegistrationForRegion:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)performRegistrationForRegion:(id)region withReason:(id)reason completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__PKDeviceRegistrationService_performRegistrationForRegion_withReason_completion___block_invoke;
   aBlock[3] = &unk_1E79C4EA0;
-  v16 = v9;
+  v16 = completionCopy;
   v17 = a2;
   aBlock[4] = self;
-  v10 = v9;
-  v11 = a4;
-  v12 = a3;
+  v10 = completionCopy;
+  reasonCopy = reason;
+  regionCopy = region;
   v13 = _Block_copy(aBlock);
   v14 = [(PKDeviceRegistrationService *)self _remoteObjectProxyWithFailureHandler:v13];
-  [v14 performRegistrationForRegion:v12 withReason:v11 completion:v10];
+  [v14 performRegistrationForRegion:regionCopy withReason:reasonCopy completion:v10];
 }
 
 void __82__PKDeviceRegistrationService_performRegistrationForRegion_withReason_completion___block_invoke(uint64_t a1)
@@ -176,22 +176,22 @@ void __82__PKDeviceRegistrationService_performRegistrationForRegion_withReason_c
   }
 }
 
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 actionType:(int64_t)a5 completion:(id)a6
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l actionType:(int64_t)type completion:(id)completion
 {
-  v11 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __114__PKDeviceRegistrationService_performDeviceRegistrationReturningContextForReason_brokerURL_actionType_completion___block_invoke;
   aBlock[3] = &unk_1E79C4EA0;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   aBlock[4] = self;
-  v12 = v11;
-  v13 = a4;
-  v14 = a3;
+  v12 = completionCopy;
+  lCopy = l;
+  reasonCopy = reason;
   v15 = _Block_copy(aBlock);
   v16 = [(PKDeviceRegistrationService *)self _remoteObjectProxyWithFailureHandler:v15];
-  [v16 performDeviceRegistrationReturningContextForReason:v14 brokerURL:v13 actionType:a5 completion:v12];
+  [v16 performDeviceRegistrationReturningContextForReason:reasonCopy brokerURL:lCopy actionType:type completion:v12];
 }
 
 void __114__PKDeviceRegistrationService_performDeviceRegistrationReturningContextForReason_brokerURL_actionType_completion___block_invoke(uint64_t a1)

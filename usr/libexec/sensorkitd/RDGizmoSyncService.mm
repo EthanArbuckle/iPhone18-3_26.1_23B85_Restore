@@ -1,19 +1,19 @@
 @interface RDGizmoSyncService
 + (void)initialize;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
 @end
 
 @implementation RDGizmoSyncService
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071AB0 = os_log_create("com.apple.SensorKit", "RDGizmoSyncService");
   }
@@ -36,11 +36,11 @@
   [(RDGizmoSyncService *)&v7 dealloc];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  if (a7 || !a6)
+  if (error || !success)
   {
-    v28 = a6;
+    successCopy = success;
     if (!self || (v31 = 0u, v32 = 0u, v29 = 0u, v30 = 0u, listeners = self->_listeners, (v20 = [(NSHashTable *)listeners countByEnumeratingWithState:&v29 objects:buf count:16]) == 0))
     {
 LABEL_26:
@@ -48,15 +48,15 @@ LABEL_26:
       if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544387;
-        v34 = a3;
+        serviceCopy2 = service;
         v35 = 2113;
-        v36 = a4;
+        accountCopy2 = account;
         v37 = 2114;
-        v38 = a5;
+        identifierCopy2 = identifier;
         v39 = 1026;
-        v40 = v28;
+        v40 = successCopy;
         v41 = 2114;
-        v42 = a7;
+        errorCopy = error;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "IDS send failed. service:%{public}@ account:%{private}@ identifier:%{public}@ didSendWithSuccess:%{public}d error:%{public}@", buf, 0x30u);
       }
 
@@ -85,7 +85,7 @@ LABEL_19:
         if (objc_opt_respondsToSelector())
         {
 LABEL_25:
-          [v24 service:self didFailMessageWithIDSIdentifier:a5 error:a7];
+          [v24 service:self didFailMessageWithIDSIdentifier:identifier error:error];
         }
       }
 
@@ -106,15 +106,15 @@ LABEL_25:
   if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138544387;
-    v34 = a3;
+    serviceCopy2 = service;
     v35 = 2113;
-    v36 = a4;
+    accountCopy2 = account;
     v37 = 2114;
-    v38 = a5;
+    identifierCopy2 = identifier;
     v39 = 1026;
     v40 = 1;
     v41 = 2114;
-    v42 = 0;
+    errorCopy = 0;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "IDS send success. service:%{public}@ account:%{private}@ identifier:%{public}@ didSendWithSuccess:%{public}d error:%{public}@", buf, 0x30u);
     if (!self)
     {
@@ -160,7 +160,7 @@ LABEL_25:
           }
         }
 
-        [v18 service:self didSendMessageWithIDSIdentifier:a5];
+        [v18 service:self didSendMessageWithIDSIdentifier:identifier];
       }
 
       v15 = [(NSHashTable *)v13 countByEnumeratingWithState:&v29 objects:buf count:16];
@@ -170,46 +170,46 @@ LABEL_25:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  if (self->_keyService == a3)
+  if (self->_keyService == service)
   {
     v19 = qword_100071AB0;
     if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_INFO))
     {
-      v20 = sub_100023C20(self, a6, [(IDSService *)self->_resourceService devices]);
+      v20 = sub_100023C20(self, d, [(IDSService *)self->_resourceService devices]);
       *buf = 138543875;
-      v71 = a6;
+      dCopy3 = d;
       v72 = 2114;
       v73 = v20;
       v74 = 2113;
-      v75 = a5;
+      contextCopy = message;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "IDS message received key service. fromID: %{public}@, pairedID: %{public}@, message: %{private}@", buf, 0x20u);
     }
 
-    v51 = [a5 objectForKeyedSubscript:@"RDGizmoSyncSensorIdentifierKey"];
+    v51 = [message objectForKeyedSubscript:@"RDGizmoSyncSensorIdentifierKey"];
     if (v51)
     {
-      v21 = sub_100023C20(self, a6, [(IDSService *)self->_resourceService devices]);
+      v21 = sub_100023C20(self, d, [(IDSService *)self->_resourceService devices]);
       if (v21)
       {
-        v52 = self;
+        selfCopy = self;
         v50 = v21;
         v22 = sub_10003A334(v51, v21, self->_fileURLs, self->_defaults);
         v45 = sub_100011CFC([RDEncryptingDatastore alloc], v22);
-        if (![a5 objectForKeyedSubscript:@"RDGizmoSyncKeysKey"])
+        if (![message objectForKeyedSubscript:@"RDGizmoSyncKeysKey"])
         {
           v68 = @"RDGizmoSyncKeysKey";
-          v67 = a5;
-          v69 = [NSArray arrayWithObjects:&v67 count:1];
-          a5 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
+          messageCopy2 = message;
+          v69 = [NSArray arrayWithObjects:&messageCopy2 count:1];
+          message = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
         }
 
         v61 = 0u;
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        obj = [a5 objectForKeyedSubscript:@"RDGizmoSyncKeysKey"];
+        obj = [message objectForKeyedSubscript:@"RDGizmoSyncKeysKey"];
         v48 = [obj countByEnumeratingWithState:&v59 objects:buf count:16];
         if (!v48)
         {
@@ -242,7 +242,7 @@ LABEL_23:
               v55 = 0u;
               v56 = 0u;
               v57 = 0u;
-              listeners = v52->_listeners;
+              listeners = selfCopy->_listeners;
               v32 = [(NSHashTable *)listeners countByEnumeratingWithState:&v54 objects:&v63 count:16];
               if (v32)
               {
@@ -271,7 +271,7 @@ LABEL_23:
                       }
                     }
 
-                    [v36 service:v52 didReceiveKeyServiceMessage:v25 fromID:a6 key:v27 keyName:v30 sensor:v51 archiveURLPath:v29 deviceID:v50];
+                    [v36 service:selfCopy didReceiveKeyServiceMessage:v25 fromID:d key:v27 keyName:v30 sensor:v51 archiveURLPath:v29 deviceID:v50];
                   }
 
                   v33 = [(NSHashTable *)listeners countByEnumeratingWithState:&v54 objects:&v63 count:16];
@@ -330,7 +330,7 @@ LABEL_25:
       }
 
       *buf = 138543362;
-      v71 = a6;
+      dCopy3 = d;
       v41 = "Failed to find a device id from IDS id %{public}@";
       v42 = v44;
       v43 = 12;
@@ -357,15 +357,15 @@ LABEL_25:
   v10 = qword_100071AB0;
   if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_INFO))
   {
-    v11 = sub_100023C20(self, a6, [(IDSService *)self->_resourceService devices]);
+    v11 = sub_100023C20(self, d, [(IDSService *)self->_resourceService devices]);
     *buf = 138544130;
-    v71 = a6;
+    dCopy3 = d;
     v72 = 2114;
     v73 = v11;
     v74 = 2114;
-    v75 = a7;
+    contextCopy = context;
     v76 = 2114;
-    v77 = a5;
+    messageCopy3 = message;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "IDS message received on resource service. fromID: %{public}@, pairedID: %{public}@, context: %{public}@, message: %{public}@", buf, 0x2Au);
   }
 
@@ -373,7 +373,7 @@ LABEL_25:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v12 = self;
+  selfCopy2 = self;
   v13 = self->_listeners;
   v14 = [(NSHashTable *)v13 countByEnumeratingWithState:&v63 objects:buf count:16];
   if (v14)
@@ -403,7 +403,7 @@ LABEL_25:
           }
         }
 
-        [v18 service:v12 didReceiveResourceServiceMessage:a5 fromID:a6 incomingResponseIdentifier:objc_msgSend(a7 outgoingResponseIdentifier:{"incomingResponseIdentifier"), objc_msgSend(a7, "outgoingResponseIdentifier")}];
+        [v18 service:selfCopy2 didReceiveResourceServiceMessage:message fromID:d incomingResponseIdentifier:objc_msgSend(context outgoingResponseIdentifier:{"incomingResponseIdentifier"), objc_msgSend(context, "outgoingResponseIdentifier")}];
       }
 
       v15 = [(NSHashTable *)v13 countByEnumeratingWithState:&v63 objects:buf count:16];
@@ -413,9 +413,9 @@ LABEL_25:
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  if (self->_resourceService == a3)
+  if (self->_resourceService == service)
   {
     v12 = 0u;
     v13 = 0u;
@@ -450,7 +450,7 @@ LABEL_25:
             }
           }
 
-          [v11 service:self connectedDevicesChanged:a4];
+          [v11 service:self connectedDevicesChanged:changed];
         }
 
         v8 = [(NSHashTable *)listeners countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -461,27 +461,27 @@ LABEL_25:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v13 = qword_100071AB0;
   if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_INFO))
   {
     *buf = 138544643;
-    v35 = a3;
+    metadataCopy3 = service;
     v36 = 2114;
-    v37 = a4;
+    accountCopy = account;
     v38 = 2113;
-    v39 = a5;
+    lCopy = l;
     v40 = 2114;
-    v41 = a6;
+    metadataCopy = metadata;
     v42 = 2114;
-    v43 = a7;
+    dCopy = d;
     v44 = 2114;
-    v45 = a8;
+    contextCopy = context;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "IDS resource received. service: %{public}@ resource: %{public}@ account: %{private}@ metadata: %{public}@ fromID: %{public}@ context: %{public}@", buf, 0x3Eu);
   }
 
-  v14 = [a6 objectForKeyedSubscript:{@"RDGizmoSyncSensorIdentifierKey", a5, a7}];
+  v14 = [metadata objectForKeyedSubscript:{@"RDGizmoSyncSensorIdentifierKey", l, d}];
   if (!v14)
   {
     v24 = qword_100071AB0;
@@ -491,13 +491,13 @@ LABEL_25:
     }
 
     *buf = 138543362;
-    v35 = a6;
+    metadataCopy3 = metadata;
     v25 = "No sensor identifier in message payload %{public}@. Ignoring message";
     goto LABEL_21;
   }
 
   v15 = v14;
-  v16 = [a6 objectForKeyedSubscript:@"RDGizmoSyncSamplesURLKey"];
+  v16 = [metadata objectForKeyedSubscript:@"RDGizmoSyncSamplesURLKey"];
   if (!v16)
   {
     v24 = qword_100071AB0;
@@ -507,7 +507,7 @@ LABEL_25:
     }
 
     *buf = 138543362;
-    v35 = a6;
+    metadataCopy3 = metadata;
     v25 = "No gizmo sync samples URL in message payload %{public}@. Ignoring message";
 LABEL_21:
     _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, v25, buf, 0xCu);
@@ -550,7 +550,7 @@ LABEL_21:
             }
           }
 
-          [v23 service:self didReceiveArchive:v27 sensor:v15 gizmoSnapshotURL:v17 metadata:a6 fromID:v29];
+          [v23 service:self didReceiveArchive:v27 sensor:v15 gizmoSnapshotURL:v17 metadata:metadata fromID:v29];
         }
 
         v20 = [(NSHashTable *)listeners countByEnumeratingWithState:&v30 objects:buf count:16];
@@ -561,21 +561,21 @@ LABEL_21:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context
 {
   v13 = qword_100071AB0;
   if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544387;
-    v25 = a3;
+    serviceCopy = service;
     v26 = 2113;
-    v27 = a4;
+    accountCopy = account;
     v28 = 2114;
-    v29 = a5;
+    identifierCopy = identifier;
     v30 = 2114;
-    v31 = a6;
+    dCopy = d;
     v32 = 2114;
-    v33 = a7;
+    contextCopy = context;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "IDS Message delivered. service: %{public}@ account: %{private}@ identifier: %{public}@ fromID: %{public}@ context: %{public}@", buf, 0x34u);
   }
 
@@ -614,7 +614,7 @@ LABEL_21:
             }
           }
 
-          [v19 service:self didDeliverMessageWithIDSIdentifier:a5];
+          [v19 service:self didDeliverMessageWithIDSIdentifier:identifier];
         }
 
         v16 = [(NSHashTable *)listeners countByEnumeratingWithState:&v20 objects:buf count:16];
@@ -625,13 +625,13 @@ LABEL_21:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v8 = qword_100071AB0;
   if (os_log_type_enabled(qword_100071AB0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = a5;
+    dataCopy = data;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "IDS Incoming data %{public}@", &v9, 0xCu);
   }
 }

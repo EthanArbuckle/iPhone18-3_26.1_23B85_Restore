@@ -1,18 +1,18 @@
 @interface AggregatedTimeSpentStoreDatabase
 - (BOOL)removeAllEntries;
-- (BOOL)removeEntries:(id)a3;
-- (BOOL)storeEntryWithLineID:(id)a3 durationInSeconds:(int)a4 eventTimestamp:(id)a5 clientIdentifier:(id)a6;
+- (BOOL)removeEntries:(id)entries;
+- (BOOL)storeEntryWithLineID:(id)d durationInSeconds:(int)seconds eventTimestamp:(id)timestamp clientIdentifier:(id)identifier;
 - (_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase)init;
-- (_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase)initWithDatabase:(id)a3;
-- (id)retrieveTimeSpentEntriesWithOlderThanDate:(id)a3;
+- (_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase)initWithDatabase:(id)database;
+- (id)retrieveTimeSpentEntriesWithOlderThanDate:(id)date;
 @end
 
 @implementation AggregatedTimeSpentStoreDatabase
 
-- (_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase)initWithDatabase:(id)a3
+- (_TtC15LegacyInterface32AggregatedTimeSpentStoreDatabase)initWithDatabase:(id)database
 {
   sub_100206B54();
-  v5 = a3;
+  databaseCopy = database;
   sub_1003995A8();
   sub_100397D38();
   swift_allocObject();
@@ -24,14 +24,14 @@
   return v6;
 }
 
-- (id)retrieveTimeSpentEntriesWithOlderThanDate:(id)a3
+- (id)retrieveTimeSpentEntriesWithOlderThanDate:(id)date
 {
   v4 = sub_100397748();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = (&v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_100397708();
-  v8 = self;
+  selfCopy = self;
   v9 = AggregatedTimeSpentStoreDatabase.retrieveTimeSpentEntries(olderThanDate:)(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -49,17 +49,17 @@
   return v10.super.isa;
 }
 
-- (BOOL)removeEntries:(id)a3
+- (BOOL)removeEntries:(id)entries
 {
   type metadata accessor for AggregatedTimeSpentEntry();
   v4 = sub_100399198();
-  v5 = self;
+  selfCopy = self;
   v6 = AggregatedTimeSpentStoreDatabase.removeEntries(_:)(v4);
 
   return v6;
 }
 
-- (BOOL)storeEntryWithLineID:(id)a3 durationInSeconds:(int)a4 eventTimestamp:(id)a5 clientIdentifier:(id)a6
+- (BOOL)storeEntryWithLineID:(id)d durationInSeconds:(int)seconds eventTimestamp:(id)timestamp clientIdentifier:(id)identifier
 {
   v8 = sub_100397748();
   v9 = *(v8 - 8);
@@ -70,8 +70,8 @@
   sub_100397708();
   v15 = sub_100398F58();
   v17 = v16;
-  v18 = self;
-  LOBYTE(v15) = AggregatedTimeSpentStoreDatabase.storeEntry(withLineID:durationInSeconds:eventTimestamp:clientIdentifier:)(v12, v14, a4, v11, v15, v17);
+  selfCopy = self;
+  LOBYTE(v15) = AggregatedTimeSpentStoreDatabase.storeEntry(withLineID:durationInSeconds:eventTimestamp:clientIdentifier:)(v12, v14, seconds, v11, v15, v17);
 
   (*(v9 + 8))(v11, v8);
   return v15 & 1;
@@ -79,7 +79,7 @@
 
 - (BOOL)removeAllEntries
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AggregatedTimeSpentStoreDatabase.removeAllEntries()();
 
   return v3;

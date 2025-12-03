@@ -1,5 +1,5 @@
 @interface TVRUIRemoteViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axSiriHintEnabled;
 - (BOOL)_axVolumeHintEnabled;
 - (id)_axButtonHintText;
@@ -13,29 +13,29 @@
 
 @implementation TVRUIRemoteViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"devicePickerViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"touchpadViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"activeDevice" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRMessageView" hasInstanceMethod:@"currentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"showLoadingSpinner" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"showSearchingSpinner" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"clearMessageContent" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"tapToRadarButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUITouchpadViewController" hasInstanceMethod:@"touchpadView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"isDevicePickerShowing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TVRUITouchpadViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"TVRUIHintsViewController" hasInstanceMethod:@"allowSiriHint" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TVRUIHintsViewController" hasInstanceMethod:@"allowVolumeHint" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"devicePickerViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"touchpadViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"activeDevice" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRMessageView" hasInstanceMethod:@"currentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"showLoadingSpinner" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"showSearchingSpinner" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"clearMessageContent" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"tapToRadarButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIRemoteViewController" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUITouchpadViewController" hasInstanceMethod:@"touchpadView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"isDevicePickerShowing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TVRUITouchpadViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"TVRUIHintsViewController" hasInstanceMethod:@"allowSiriHint" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TVRUIHintsViewController" hasInstanceMethod:@"allowVolumeHint" withFullSignature:{"B", 0}];
   if (NSClassFromString(&cfstr_Tvremoteviewco.isa))
   {
-    [v3 validateClass:@"TVRemoteViewController" hasInstanceMethod:@"hintsViewController" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"TVRemoteViewController" hasInstanceMethod:@"hintsViewController" withFullSignature:{"@", 0}];
   }
 }
 
@@ -71,8 +71,8 @@
   [v8 setAccessibilityLabel:@"Tap to Radar"];
 
   v9 = [(TVRUIRemoteViewControllerAccessibility *)self safeValueForKeyPath:@"devicePickerViewController.titleButton"];
-  v10 = [(TVRUIRemoteViewControllerAccessibility *)self _axButtonHintText];
-  [v9 setAccessibilityHint:v10];
+  _axButtonHintText = [(TVRUIRemoteViewControllerAccessibility *)self _axButtonHintText];
+  [v9 setAccessibilityHint:_axButtonHintText];
 
   v11 = [(TVRUIRemoteViewControllerAccessibility *)self safeValueForKey:@"_messageView"];
   v12 = [v11 safeUIViewForKey:@"currentView"];
@@ -178,44 +178,44 @@ uint64_t __84__TVRUIRemoteViewControllerAccessibility__accessibilityLoadAccessib
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 parentViewController];
-  v4 = [v3 safeValueForKey:@"hintsViewController"];
+  parentViewController = [v2 parentViewController];
+  v4 = [parentViewController safeValueForKey:@"hintsViewController"];
 
   return v4;
 }
 
 - (BOOL)_axSiriHintEnabled
 {
-  v2 = [(TVRUIRemoteViewControllerAccessibility *)self _axHintsViewController];
-  v3 = [v2 safeBoolForKey:@"allowSiriHint"];
+  _axHintsViewController = [(TVRUIRemoteViewControllerAccessibility *)self _axHintsViewController];
+  v3 = [_axHintsViewController safeBoolForKey:@"allowSiriHint"];
 
   return v3;
 }
 
 - (BOOL)_axVolumeHintEnabled
 {
-  v2 = [(TVRUIRemoteViewControllerAccessibility *)self _axHintsViewController];
-  v3 = [v2 safeBoolForKey:@"allowVolumeHint"];
+  _axHintsViewController = [(TVRUIRemoteViewControllerAccessibility *)self _axHintsViewController];
+  v3 = [_axHintsViewController safeBoolForKey:@"allowVolumeHint"];
 
   return v3;
 }
 
 - (id)_axButtonHintText
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(TVRUIRemoteViewControllerAccessibility *)self _axSiriHintEnabled])
   {
     v4 = accessibilityLocalizedString(@"tv.remote.hint.siri.text");
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   if ([(TVRUIRemoteViewControllerAccessibility *)self _axVolumeHintEnabled])
   {
     v5 = accessibilityLocalizedString(@"tv.remote.hint.volume.text");
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  v6 = MEMORY[0x29ED3BAD0](v3);
+  v6 = MEMORY[0x29ED3BAD0](array);
 
   return v6;
 }

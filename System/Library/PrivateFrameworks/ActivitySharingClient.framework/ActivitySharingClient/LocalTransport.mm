@@ -1,6 +1,6 @@
 @interface LocalTransport
 - (_TtC21ActivitySharingClient14LocalTransport)init;
-- (void)transportRequest:(int64_t)a3 data:(id)a4 completion:(id)a5;
+- (void)transportRequest:(int64_t)request data:(id)data completion:(id)completion;
 @end
 
 @implementation LocalTransport
@@ -19,18 +19,18 @@
   return [(LocalTransport *)&v6 init];
 }
 
-- (void)transportRequest:(int64_t)a3 data:(id)a4 completion:(id)a5
+- (void)transportRequest:(int64_t)request data:(id)data completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E3466E0, &qword_23E5CE510);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v22 - v11;
-  v13 = _Block_copy(a5);
-  v14 = self;
-  if (a4)
+  v13 = _Block_copy(completion);
+  selfCopy = self;
+  if (data)
   {
-    v15 = a4;
-    a4 = sub_23E5C8BB0();
+    dataCopy = data;
+    data = sub_23E5C8BB0();
     v17 = v16;
   }
 
@@ -55,8 +55,8 @@
   v21[2] = 0;
   v21[3] = 0;
   v21[4] = self;
-  v21[5] = a3;
-  v21[6] = a4;
+  v21[5] = request;
+  v21[6] = data;
   v21[7] = v17;
   v21[8] = sub_23E56117C;
   v21[9] = v18;

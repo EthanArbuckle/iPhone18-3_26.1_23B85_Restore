@@ -2,13 +2,13 @@
 + (id)sharedMonitor;
 - (ATStatusMonitor)init;
 - (id)allStatus;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setDataClasses:(id)a3 forObserver:(id)a4;
-- (void)updateAssets:(id)a3;
-- (void)updateStatus:(id)a3;
-- (void)updateStatusValuesWithDictionary:(id)a3;
-- (void)updateStatusWithValue:(id)a3 forKey:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setDataClasses:(id)classes forObserver:(id)observer;
+- (void)updateAssets:(id)assets;
+- (void)updateStatus:(id)status;
+- (void)updateStatusValuesWithDictionary:(id)dictionary;
+- (void)updateStatusWithValue:(id)value forKey:(id)key;
 @end
 
 @implementation ATStatusMonitor
@@ -25,17 +25,17 @@
   return v3;
 }
 
-- (void)updateStatusValuesWithDictionary:(id)a3
+- (void)updateStatusValuesWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   statusQueue = self->_statusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ATStatusMonitor_updateStatusValuesWithDictionary___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_async(statusQueue, v7);
 }
 
@@ -76,20 +76,20 @@ void __52__ATStatusMonitor_updateStatusValuesWithDictionary___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStatusWithValue:(id)a3 forKey:(id)a4
+- (void)updateStatusWithValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   statusQueue = self->_statusQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ATStatusMonitor_updateStatusWithValue_forKey___block_invoke;
   block[3] = &unk_2784E9568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_async(statusQueue, block);
 }
 
@@ -130,17 +130,17 @@ void __48__ATStatusMonitor_updateStatusWithValue_forKey___block_invoke(void *a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAssets:(id)a3
+- (void)updateAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   statusQueue = self->_statusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ATStatusMonitor_updateAssets___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetsCopy;
+  v6 = assetsCopy;
   dispatch_async(statusQueue, v7);
 }
 
@@ -226,17 +226,17 @@ void __32__ATStatusMonitor_updateAssets___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStatus:(id)a3
+- (void)updateStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   statusQueue = self->_statusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ATStatusMonitor_updateStatus___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(statusQueue, v7);
 }
 
@@ -295,20 +295,20 @@ void __32__ATStatusMonitor_updateStatus___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDataClasses:(id)a3 forObserver:(id)a4
+- (void)setDataClasses:(id)classes forObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  observerCopy = observer;
   statusQueue = self->_statusQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ATStatusMonitor_setDataClasses_forObserver___block_invoke;
   block[3] = &unk_2784E9568;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = classesCopy;
+  selfCopy = self;
+  v14 = observerCopy;
+  v9 = observerCopy;
+  v10 = classesCopy;
   dispatch_async(statusQueue, block);
 }
 
@@ -373,17 +373,17 @@ void __46__ATStatusMonitor_setDataClasses_forObserver___block_invoke(void *a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   statusQueue = self->_statusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ATStatusMonitor_removeObserver___block_invoke;
   v7[3] = &unk_2784E9608;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(statusQueue, v7);
 }
 
@@ -404,17 +404,17 @@ uint64_t __34__ATStatusMonitor_removeObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   statusQueue = self->_statusQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ATStatusMonitor_addObserver___block_invoke;
   v7[3] = &unk_2784E9608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(statusQueue, v7);
 }
 
@@ -486,13 +486,13 @@ uint64_t __31__ATStatusMonitor_addObserver___block_invoke(uint64_t a1)
     statusQueue = v2->_statusQueue;
     v2->_statusQueue = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     statusObservers = v2->_statusObservers;
-    v2->_statusObservers = v5;
+    v2->_statusObservers = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observerDataClasses = v2->_observerDataClasses;
-    v2->_observerDataClasses = v7;
+    v2->_observerDataClasses = weakToStrongObjectsMapTable;
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     statuses = v2->_statuses;

@@ -1,14 +1,14 @@
 @interface HPSUISpatialProfileNavigationController
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation HPSUISpatialProfileNavigationController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = HPSUISpatialProfileNavigationController;
-  [(HPSUISpatialProfileNavigationController *)&v12 viewDidAppear:a3];
+  [(HPSUISpatialProfileNavigationController *)&v12 viewDidAppear:disappear];
   v4 = os_log_create("com.apple.connectedAudio", "HeadphoneCommonUIKit");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,7 +17,7 @@
   }
 
   v5 = [(HPSUISpatialProfileNavigationController *)self popToRootViewControllerAnimated:0];
-  v6 = [(HPSUISpatialProfileNavigationController *)self topViewController];
+  topViewController = [(HPSUISpatialProfileNavigationController *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -30,8 +30,8 @@
       _os_log_impl(&dword_1AC1C3000, v8, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Top View Controller is HPSUISpatialProfileEnrollmentController", v11, 2u);
     }
 
-    v9 = [(HPSUISpatialProfileNavigationController *)self topViewController];
-    [v9 viewDidDisappear:1];
+    topViewController2 = [(HPSUISpatialProfileNavigationController *)self topViewController];
+    [topViewController2 viewDidDisappear:1];
   }
 
   dismissalHandler = self->dismissalHandler;

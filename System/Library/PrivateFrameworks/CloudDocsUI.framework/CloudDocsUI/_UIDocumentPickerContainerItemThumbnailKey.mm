@@ -1,27 +1,27 @@
 @interface _UIDocumentPickerContainerItemThumbnailKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (_UIDocumentPickerContainerItemThumbnailKey)initWithPrimaryKey:(id)a3 size:(CGSize)a4 scale:(double)a5;
+- (_UIDocumentPickerContainerItemThumbnailKey)initWithPrimaryKey:(id)key size:(CGSize)size scale:(double)scale;
 - (unint64_t)hash;
 @end
 
 @implementation _UIDocumentPickerContainerItemThumbnailKey
 
-- (_UIDocumentPickerContainerItemThumbnailKey)initWithPrimaryKey:(id)a3 size:(CGSize)a4 scale:(double)a5
+- (_UIDocumentPickerContainerItemThumbnailKey)initWithPrimaryKey:(id)key size:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = _UIDocumentPickerContainerItemThumbnailKey;
   v11 = [(_UIDocumentPickerContainerItemThumbnailKey *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_primaryKey, a3);
+    objc_storeStrong(&v11->_primaryKey, key);
     v12->_size.width = width;
     v12->_size.height = height;
-    v12->_scale = a5;
+    v12->_scale = scale;
   }
 
   return v12;
@@ -29,8 +29,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_UIDocumentPickerContainerItemThumbnailKey *)self primaryKey];
-  v4 = [v3 hash];
+  primaryKey = [(_UIDocumentPickerContainerItemThumbnailKey *)self primaryKey];
+  v4 = [primaryKey hash];
 
   [(_UIDocumentPickerContainerItemThumbnailKey *)self size];
   v6 = v5 - v4 + 32 * v4;
@@ -40,21 +40,21 @@
   return v9 - v8 + 32 * v8 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(_UIDocumentPickerContainerItemThumbnailKey *)self primaryKey];
-    v8 = [(_UIDocumentPickerContainerItemThumbnailKey *)v6 primaryKey];
-    if ([v7 isEqual:v8])
+    primaryKey = [(_UIDocumentPickerContainerItemThumbnailKey *)self primaryKey];
+    primaryKey2 = [(_UIDocumentPickerContainerItemThumbnailKey *)v6 primaryKey];
+    if ([primaryKey isEqual:primaryKey2])
     {
       [(_UIDocumentPickerContainerItemThumbnailKey *)self size];
       v10 = v9;

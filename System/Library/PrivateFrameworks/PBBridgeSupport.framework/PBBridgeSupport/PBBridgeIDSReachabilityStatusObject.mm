@@ -1,18 +1,18 @@
 @interface PBBridgeIDSReachabilityStatusObject
-+ (id)connectivityString:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)connectivityString:(unint64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PBBridgeIDSReachabilityStatusObject
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    v5 = [(NSUUID *)self->_idsDeviceID isEqual:v4[1]];
+    v5 = [(NSUUID *)self->_idsDeviceID isEqual:equalCopy[1]];
   }
 
   else
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PBBridgeIDSReachabilityStatusObject allocWithZone:?]];
   objc_storeStrong(&v4->_idsDeviceID, self->_idsDeviceID);
@@ -41,16 +41,16 @@
   return v5;
 }
 
-+ (id)connectivityString:(unint64_t)a3
++ (id)connectivityString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"unknown enum value";
   }
 
   else
   {
-    return off_2799F48E8[a3];
+    return off_2799F48E8[string];
   }
 }
 

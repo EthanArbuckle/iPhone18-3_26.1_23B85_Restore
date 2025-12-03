@@ -7,7 +7,7 @@
 - (id)dc_compressedData:()Signing
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 < 0)
   {
     if (DCInternalLogSystem_onceToken_4 != -1)
@@ -55,7 +55,7 @@ LABEL_13:
   }
 
   v8 = v7;
-  v9 = compression_encode_buffer(v7, v6, [a1 bytes], objc_msgSend(a1, "length"), 0, a3);
+  v9 = compression_encode_buffer(v7, v6, [self bytes], objc_msgSend(self, "length"), 0, a3);
   if (v9)
   {
     v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v8 length:v9 freeWhenDone:1];

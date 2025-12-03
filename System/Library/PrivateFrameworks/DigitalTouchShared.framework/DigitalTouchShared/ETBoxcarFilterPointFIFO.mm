@@ -1,9 +1,9 @@
 @interface ETBoxcarFilterPointFIFO
-- (ETBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5;
-- (char)setPrevPoints:(char *)a3;
+- (ETBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing;
+- (char)setPrevPoints:(char *)points;
 - (id).cxx_construct;
 - (uint64_t)prevPoints;
-- (void)addPoints:(ETBoxcarFilterPointFIFO *)self count:(SEL)a2;
+- (void)addPoints:(ETBoxcarFilterPointFIFO *)self count:(SEL)count;
 - (void)clear;
 - (void)emitAveragedPoint;
 - (void)flush;
@@ -11,15 +11,15 @@
 
 @implementation ETBoxcarFilterPointFIFO
 
-- (ETBoxcarFilterPointFIFO)initWithFIFO:(id)a3 width:(unint64_t)a4 spacing:(float)a5
+- (ETBoxcarFilterPointFIFO)initWithFIFO:(id)o width:(unint64_t)width spacing:(float)spacing
 {
   v8.receiver = self;
   v8.super_class = ETBoxcarFilterPointFIFO;
-  result = [(ETPointFIFO *)&v8 initWithFIFO:a3];
+  result = [(ETPointFIFO *)&v8 initWithFIFO:o];
   if (result)
   {
-    result->_width = a4;
-    result->_spacing = a5;
+    result->_width = width;
+    result->_spacing = spacing;
   }
 
   return result;
@@ -57,7 +57,7 @@
   [(ETPointFIFO *)self emitPoints:&v11 count:1];
 }
 
-- (void)addPoints:(ETBoxcarFilterPointFIFO *)self count:(SEL)a2
+- (void)addPoints:(ETBoxcarFilterPointFIFO *)self count:(SEL)count
 {
   if (v3)
   {
@@ -135,15 +135,15 @@
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(a1 + 32), *(a1 + 40), (*(a1 + 40) - *(a1 + 32)) >> 3);
+  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(self + 32), *(self + 40), (*(self + 40) - *(self + 32)) >> 3);
 }
 
-- (char)setPrevPoints:(char *)a3
+- (char)setPrevPoints:(char *)points
 {
-  result = (a1 + 32);
-  if (result != a3)
+  result = (self + 32);
+  if (result != points)
   {
-    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *a3, a3[1], (a3[1] - *a3) >> 3);
+    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *points, points[1], (points[1] - *points) >> 3);
   }
 
   return result;

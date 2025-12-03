@@ -1,52 +1,52 @@
 @interface MFCollectionViewPagingAnimator
-- (MFCollectionViewPagingAnimator)initWithCollectionView:(id)a3;
-- (void)bounceAlongEdge:(unint64_t)a3;
+- (MFCollectionViewPagingAnimator)initWithCollectionView:(id)view;
+- (void)bounceAlongEdge:(unint64_t)edge;
 - (void)cancelAllAnimations;
-- (void)scrollToItemAtIndexPath:(id)a3 dynamicOffset:(id)a4 shouldAdjustToShowPreviousMessage:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)scrollToItemAtIndexPath:(id)path dynamicOffset:(id)offset shouldAdjustToShowPreviousMessage:(BOOL)message animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation MFCollectionViewPagingAnimator
 
-- (MFCollectionViewPagingAnimator)initWithCollectionView:(id)a3
+- (MFCollectionViewPagingAnimator)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = MFCollectionViewPagingAnimator;
   v5 = [(MFCollectionViewPagingAnimator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MFCollectionViewPagingAnimator *)v5 setCollectionView:v4];
+    [(MFCollectionViewPagingAnimator *)v5 setCollectionView:viewCopy];
   }
 
   return v6;
 }
 
-- (void)scrollToItemAtIndexPath:(id)a3 dynamicOffset:(id)a4 shouldAdjustToShowPreviousMessage:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)scrollToItemAtIndexPath:(id)path dynamicOffset:(id)offset shouldAdjustToShowPreviousMessage:(BOOL)message animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  animatedCopy = animated;
+  messageCopy = message;
+  pathCopy = path;
+  offsetCopy = offset;
+  completionCopy = completion;
   [(MFCollectionViewPagingAnimator *)self cancelAllAnimations];
-  v15 = [(MFCollectionViewPagingAnimator *)self collectionView];
-  [v15 _systemContentInset];
+  collectionView = [(MFCollectionViewPagingAnimator *)self collectionView];
+  [collectionView _systemContentInset];
   v17 = v16;
-  [v15 contentInset];
-  if (v13)
+  [collectionView contentInset];
+  if (offsetCopy)
   {
-    [v15 mf_contentOffsetApplyingDynamicOffset:v13 indexPath:v12];
+    [collectionView mf_contentOffsetApplyingDynamicOffset:offsetCopy indexPath:pathCopy];
     v20 = v19;
   }
 
   else
   {
     v21 = v17 + v18;
-    if ([v12 item])
+    if ([pathCopy item])
     {
-      v22 = [(MFCollectionViewPagingAnimator *)self collectionView];
-      v23 = [v22 layoutAttributesForItemAtIndexPath:v12];
+      collectionView2 = [(MFCollectionViewPagingAnimator *)self collectionView];
+      v23 = [collectionView2 layoutAttributesForItemAtIndexPath:pathCopy];
 
       if (v23)
       {
@@ -55,7 +55,7 @@
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        if (v9)
+        if (messageCopy)
         {
           [(MFCollectionViewPagingAnimator *)self autoScrollOffsetAdjustment];
         }
@@ -89,13 +89,13 @@
   v39[1] = 3221225472;
   v39[2] = sub_1001B46D8;
   v39[3] = &unk_10064EF40;
-  v34 = v15;
+  v34 = collectionView;
   v40 = v34;
   v41 = v20;
-  v42 = v8;
+  v42 = animatedCopy;
   v35 = objc_retainBlock(v39);
   v36 = v35;
-  if (v8)
+  if (animatedCopy)
   {
     [(MFCollectionViewPagingAnimator *)self setAnimatingScroll:1];
     v37[0] = _NSConcreteStackBlock;
@@ -103,41 +103,41 @@
     v37[2] = sub_1001B4854;
     v37[3] = &unk_10064FAE0;
     v37[4] = self;
-    v38 = v14;
+    v38 = completionCopy;
     [UIView animateWithDuration:0 delay:v36 usingSpringWithDamping:v37 initialSpringVelocity:0.45 options:0.0 animations:1.0 completion:0.0];
   }
 
   else
   {
     (v35[2])(v35);
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)bounceAlongEdge:(unint64_t)a3
+- (void)bounceAlongEdge:(unint64_t)edge
 {
-  if (a3 != 1 && a3 != 4)
+  if (edge != 1 && edge != 4)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"MFCollectionViewPagingAnimator.m" lineNumber:98 description:@"bounceOnEdge currently only supports UIRectEdgeTop and UIRectEdgeBottom"];
   }
 
   [(MFCollectionViewPagingAnimator *)self cancelAllAnimations];
-  v7 = [(MFCollectionViewPagingAnimator *)self collectionView];
-  v8 = v7;
-  if (a3 == 1)
+  collectionView = [(MFCollectionViewPagingAnimator *)self collectionView];
+  v8 = collectionView;
+  if (edge == 1)
   {
-    [v7 contentInset];
+    [collectionView contentInset];
     v10 = -v9;
     v11 = -70.0 - v9;
   }
 
   else
   {
-    [v7 contentSize];
+    [collectionView contentSize];
     v13 = v12;
     [v8 frame];
     Height = CGRectGetHeight(v26);
@@ -171,18 +171,18 @@
   v18 = v24;
   v22 = v10;
   v20 = v18;
-  v21 = self;
+  selfCopy = self;
   [UIView animateWithDuration:0x10000 delay:v23 options:v19 animations:0.2 completion:0.0];
 }
 
 - (void)cancelAllAnimations
 {
-  v4 = [(MFCollectionViewPagingAnimator *)self collectionView];
-  v3 = [v4 layer];
-  [v3 removeAllAnimations];
+  collectionView = [(MFCollectionViewPagingAnimator *)self collectionView];
+  layer = [collectionView layer];
+  [layer removeAllAnimations];
 
-  v5 = [(MFCollectionViewPagingAnimator *)self collectionView];
-  [v5 _stopScrollingAndZoomingAnimations];
+  collectionView2 = [(MFCollectionViewPagingAnimator *)self collectionView];
+  [collectionView2 _stopScrollingAndZoomingAnimations];
 }
 
 @end

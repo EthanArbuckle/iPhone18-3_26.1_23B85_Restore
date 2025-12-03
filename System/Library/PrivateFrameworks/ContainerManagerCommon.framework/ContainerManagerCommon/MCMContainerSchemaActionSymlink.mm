@@ -1,24 +1,24 @@
 @interface MCMContainerSchemaActionSymlink
 + (id)actionIdentifier;
-- (BOOL)performWithError:(id *)a3;
-- (MCMContainerSchemaActionSymlink)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6;
+- (BOOL)performWithError:(id *)error;
+- (MCMContainerSchemaActionSymlink)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context;
 - (NSString)description;
 @end
 
 @implementation MCMContainerSchemaActionSymlink
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSURL *)self->_finalLinkURL path];
+  path = [(NSURL *)self->_finalLinkURL path];
   v5 = self->_targetPath;
   v6 = MEMORY[0x1E695DF70];
-  v7 = [v4 pathComponents];
-  v8 = [v6 arrayWithArray:v7];
+  pathComponents = [path pathComponents];
+  v8 = [v6 arrayWithArray:pathComponents];
 
   v9 = MEMORY[0x1E695DF70];
-  v10 = [(NSString *)v5 pathComponents];
-  v11 = [v9 arrayWithArray:v10];
+  pathComponents2 = [(NSString *)v5 pathComponents];
+  v11 = [v9 arrayWithArray:pathComponents2];
   while (1)
   {
 
@@ -27,9 +27,9 @@
       break;
     }
 
-    v10 = [v8 objectAtIndexedSubscript:0];
+    pathComponents2 = [v8 objectAtIndexedSubscript:0];
     v12 = [v11 objectAtIndexedSubscript:0];
-    if (([v10 isEqualToString:v12] & 1) == 0)
+    if (([pathComponents2 isEqualToString:v12] & 1) == 0)
     {
 
       break;
@@ -44,21 +44,21 @@
     [v8 removeObjectAtIndex:0];
   }
 
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v8 count])
   {
     v14 = 0;
     do
     {
-      [v13 addObject:@".."];
+      [array addObject:@".."];
       ++v14;
     }
 
     while (v14 < [v8 count]);
   }
 
-  [v13 addObjectsFromArray:v11];
-  v15 = [MEMORY[0x1E696AEC0] pathWithComponents:v13];
+  [array addObjectsFromArray:v11];
+  v15 = [MEMORY[0x1E696AEC0] pathWithComponents:array];
 
   targetPath = self->_targetPath;
   self->_targetPath = v15;
@@ -79,10 +79,10 @@
   v22 = [(MCMContainerSchemaActionBase *)self fixAndRetryIfPermissionsErrorWithURL:linkURL error:v32 duringBlock:v29];
   v23 = v32[0];
   v24 = v23;
-  if (a3 && !v22)
+  if (error && !v22)
   {
     v25 = v23;
-    *a3 = v24;
+    *error = v24;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -186,37 +186,37 @@ LABEL_10:
 - (NSString)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() actionIdentifier];
-  v4 = [(NSURL *)self->_linkURL path];
-  v5 = [v3 stringByAppendingFormat:@" [%@] → [%@]", v4, self->_targetPath];
+  actionIdentifier = [objc_opt_class() actionIdentifier];
+  path = [(NSURL *)self->_linkURL path];
+  v5 = [actionIdentifier stringByAppendingFormat:@" [%@] → [%@]", path, self->_targetPath];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (MCMContainerSchemaActionSymlink)initWithSourcePathArgument:(id)a3 destinationPathArgument:(id)a4 destFinalPathArgument:(id)a5 context:(id)a6
+- (MCMContainerSchemaActionSymlink)initWithSourcePathArgument:(id)argument destinationPathArgument:(id)pathArgument destFinalPathArgument:(id)finalPathArgument context:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  argumentCopy = argument;
+  pathArgumentCopy = pathArgument;
+  finalPathArgumentCopy = finalPathArgument;
   v22.receiver = self;
   v22.super_class = MCMContainerSchemaActionSymlink;
-  v13 = [(MCMContainerSchemaActionBase *)&v22 initWithContext:a6];
+  v13 = [(MCMContainerSchemaActionBase *)&v22 initWithContext:context];
   if (v13)
   {
-    v14 = [v11 fileURL];
+    fileURL = [pathArgumentCopy fileURL];
     linkURL = v13->_linkURL;
-    v13->_linkURL = v14;
+    v13->_linkURL = fileURL;
 
-    v16 = [v12 fileURL];
+    fileURL2 = [finalPathArgumentCopy fileURL];
     finalLinkURL = v13->_finalLinkURL;
-    v13->_finalLinkURL = v16;
+    v13->_finalLinkURL = fileURL2;
 
-    v18 = [v10 string];
+    string = [argumentCopy string];
     targetPath = v13->_targetPath;
-    v13->_targetPath = v18;
+    v13->_targetPath = string;
 
     if (!v13->_linkURL || !v13->_targetPath)
     {

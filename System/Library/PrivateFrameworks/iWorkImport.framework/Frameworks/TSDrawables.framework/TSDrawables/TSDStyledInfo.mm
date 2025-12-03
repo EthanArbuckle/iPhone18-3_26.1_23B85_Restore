@@ -8,20 +8,20 @@
 - (TSDStroke)stroke;
 - (TSSStyle)style;
 - (float)opacity;
-- (id)boxedValueForProperty:(int)a3;
-- (id)objectForProperty:(int)a3;
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4;
+- (id)boxedValueForProperty:(int)property;
+- (id)objectForProperty:(int)property;
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info;
 - (id)propertyMapForNewPreset;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)i_setValue:(id)a3 forProperty:(int)a4;
-- (void)i_setValue:(id)a3 forProperty:(int)a4 inStylesheet:(id)a5;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)setBoxedValue:(id)a3 forProperty:(int)a4;
-- (void)setOpacity:(float)a3;
-- (void)setReflection:(id)a3;
-- (void)setShadow:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setValuesForProperties:(id)a3;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)i_setValue:(id)value forProperty:(int)property;
+- (void)i_setValue:(id)value forProperty:(int)property inStylesheet:(id)stylesheet;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)setBoxedValue:(id)value forProperty:(int)property;
+- (void)setOpacity:(float)opacity;
+- (void)setReflection:(id)reflection;
+- (void)setShadow:(id)shadow;
+- (void)setStyle:(id)style;
+- (void)setValuesForProperties:(id)properties;
 @end
 
 @implementation TSDStyledInfo
@@ -70,9 +70,9 @@
   objc_exception_throw(v19);
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDStyledInfo setStyle:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDStyledInfo.m");
@@ -93,9 +93,9 @@
   objc_exception_throw(v22);
 }
 
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDStyledInfo pastedPropertyMapForStyle:tailLineEndInfo:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDStyledInfo.m");
@@ -187,9 +187,9 @@
   return v17;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v56 = a3;
+  opacityCopy = opacity;
   v5 = objc_msgSend_style(self, a2, v3);
 
   if (!v5)
@@ -216,10 +216,10 @@
   }
 
   v28 = objc_msgSend_styleClass(self, v19, v20);
-  objc_msgSend_validateFloatValue_forProperty_(v28, v29, &v56, 518);
+  objc_msgSend_validateFloatValue_forProperty_(v28, v29, &opacityCopy, 518);
   objc_msgSend_willChangeProperty_(self, v30, 518);
   v31 = objc_alloc(MEMORY[0x277D80AB8]);
-  v33 = objc_msgSend_initWithPropertiesAndValues_(v31, v32, 518, v56, 0, 0);
+  v33 = objc_msgSend_initWithPropertiesAndValues_(v31, v32, 518, opacityCopy, 0, 0);
   v36 = objc_msgSend_documentRoot(self, v34, v35);
   v39 = objc_msgSend_stylesheet(v36, v37, v38);
   v42 = objc_msgSend_style(self, v40, v41);
@@ -269,13 +269,13 @@
   return v16;
 }
 
-- (void)setReflection:(id)a3
+- (void)setReflection:(id)reflection
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  reflectionCopy = reflection;
+  v10 = reflectionCopy;
+  if (reflectionCopy)
   {
-    v7 = v4;
+    v7 = reflectionCopy;
   }
 
   else
@@ -316,13 +316,13 @@
   return v18;
 }
 
-- (void)setShadow:(id)a3
+- (void)setShadow:(id)shadow
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  shadowCopy = shadow;
+  v10 = shadowCopy;
+  if (shadowCopy)
   {
-    v7 = v4;
+    v7 = shadowCopy;
   }
 
   else
@@ -334,10 +334,10 @@
   objc_msgSend_i_setValue_forProperty_(self, v8, v7, 520);
 }
 
-- (id)boxedValueForProperty:(int)a3
+- (id)boxedValueForProperty:(int)property
 {
-  v3 = *&a3;
-  v5 = objc_msgSend_style(self, a2, *&a3);
+  v3 = *&property;
+  v5 = objc_msgSend_style(self, a2, *&property);
 
   if (!v5)
   {
@@ -368,11 +368,11 @@
   return v22;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 515)
+  if (property == 515)
   {
-    v3 = objc_msgSend_style(self, a2, *&a3);
+    v3 = objc_msgSend_style(self, a2, *&property);
   }
 
   else
@@ -385,11 +385,11 @@
   return v3;
 }
 
-- (void)setBoxedValue:(id)a3 forProperty:(int)a4
+- (void)setBoxedValue:(id)value forProperty:(int)property
 {
-  v4 = *&a4;
-  v63 = a3;
-  if (!v63)
+  v4 = *&property;
+  valueCopy = value;
+  if (!valueCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDStyledInfo setBoxedValue:forProperty:]");
@@ -427,7 +427,7 @@
   objc_msgSend_willChangeProperty_(self, v29, v4);
   v37 = objc_alloc(MEMORY[0x277D80AB8]);
   v39 = objc_msgSend_initWithCapacity_(v37, v38, 1);
-  objc_msgSend_setBoxedObject_forProperty_(v39, v40, v63, v4);
+  objc_msgSend_setBoxedObject_forProperty_(v39, v40, valueCopy, v4);
   v43 = objc_msgSend_documentRoot(self, v41, v42);
   v46 = objc_msgSend_stylesheet(v43, v44, v45);
   v49 = objc_msgSend_style(self, v47, v48);
@@ -450,9 +450,9 @@
   objc_msgSend_setStyle_(self, v55, v51);
 }
 
-- (void)setValuesForProperties:(id)a3
+- (void)setValuesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_style(self, v5, v6);
 
   if (!v7)
@@ -478,13 +478,13 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  v30 = objc_msgSend_allProperties(v4, v21, v22);
+  v30 = objc_msgSend_allProperties(propertiesCopy, v21, v22);
   objc_msgSend_willChangeProperties_(self, v31, v30);
 
   v34 = objc_msgSend_documentRoot(self, v32, v33);
   v37 = objc_msgSend_stylesheet(v34, v35, v36);
   v40 = objc_msgSend_style(self, v38, v39);
-  v53 = objc_msgSend_variationOfStyle_propertyMap_(v37, v41, v40, v4);
+  v53 = objc_msgSend_variationOfStyle_propertyMap_(v37, v41, v40, propertiesCopy);
 
   v44 = objc_msgSend_style(self, v42, v43);
   objc_opt_class();
@@ -503,11 +503,11 @@
   objc_msgSend_setStyle_(self, v45, v53);
 }
 
-- (void)i_setValue:(id)a3 forProperty:(int)a4
+- (void)i_setValue:(id)value forProperty:(int)property
 {
-  v4 = *&a4;
-  v60 = a3;
-  if (!v60)
+  v4 = *&property;
+  valueCopy = value;
+  if (!valueCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDStyledInfo i_setValue:forProperty:]");
@@ -543,7 +543,7 @@
   }
 
   objc_msgSend_willChangeProperty_(self, v29, v4);
-  v37 = objc_msgSend_initWithPropertiesAndValues_(objc_alloc(MEMORY[0x277D80AB8]), v60, v4, v60, 0);
+  v37 = objc_msgSend_initWithPropertiesAndValues_(objc_alloc(MEMORY[0x277D80AB8]), valueCopy, v4, valueCopy, 0);
   v40 = objc_msgSend_documentRoot(self, v38, v39);
   v43 = objc_msgSend_stylesheet(v40, v41, v42);
   v46 = objc_msgSend_style(self, v44, v45);
@@ -566,12 +566,12 @@
   objc_msgSend_setStyle_(self, v52, v48);
 }
 
-- (void)i_setValue:(id)a3 forProperty:(int)a4 inStylesheet:(id)a5
+- (void)i_setValue:(id)value forProperty:(int)property inStylesheet:(id)stylesheet
 {
-  v6 = *&a4;
-  v52 = a3;
-  v10 = a5;
-  if (!v52)
+  v6 = *&property;
+  valueCopy = value;
+  stylesheetCopy = stylesheet;
+  if (!valueCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDStyledInfo i_setValue:forProperty:inStylesheet:]");
@@ -585,7 +585,7 @@
 
   if (v18)
   {
-    if (v10)
+    if (stylesheetCopy)
     {
       goto LABEL_5;
     }
@@ -599,7 +599,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v42, v39, v41, 231, 0, "invalid nil value for '%{public}s'", "self.style");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44);
-    if (v10)
+    if (stylesheetCopy)
     {
       goto LABEL_5;
     }
@@ -613,9 +613,9 @@
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51);
 LABEL_5:
   objc_msgSend_willChangeProperty_(self, v19, v6);
-  v20 = objc_msgSend_initWithPropertiesAndValues_(objc_alloc(MEMORY[0x277D80AB8]), v52, v6, v52, 0);
+  v20 = objc_msgSend_initWithPropertiesAndValues_(objc_alloc(MEMORY[0x277D80AB8]), valueCopy, v6, valueCopy, 0);
   v23 = objc_msgSend_style(self, v21, v22);
-  v25 = objc_msgSend_variationOfStyle_propertyMap_(v10, v24, v23, v20);
+  v25 = objc_msgSend_variationOfStyle_propertyMap_(stylesheetCopy, v24, v23, v20);
 
   v28 = objc_msgSend_style(self, v26, v27);
   objc_opt_class();
@@ -634,20 +634,20 @@ LABEL_5:
   objc_msgSend_setStyle_(self, v30, v25);
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a4;
+  mapperCopy = mapper;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2766DCDB8;
   v11[3] = &unk_27A6CCEB0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = mapperCopy;
+  v7 = mapperCopy;
+  stylesheetCopy = stylesheet;
   objc_msgSend_replaceReferencedStylesUsingBlock_(self, v9, v11);
   v10.receiver = self;
   v10.super_class = TSDStyledInfo;
-  [(TSDDrawableInfo *)&v10 adoptStylesheet:v8 withMapper:v7];
+  [(TSDDrawableInfo *)&v10 adoptStylesheet:stylesheetCopy withMapper:v7];
 }
 
 - (id)propertyMapForNewPreset
@@ -698,11 +698,11 @@ LABEL_5:
   return v10;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v27 = objc_msgSend_style(self, v5, v6);
-  v7 = v4[2](v4);
+  v7 = blockCopy[2](blockCopy);
 
   if (!v7)
   {

@@ -1,17 +1,17 @@
 @interface ReadingListTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityDeleteReadingListItem;
 - (id)_privateAccessibilityCustomActions;
 @end
 
 @implementation ReadingListTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ReadingListTableViewCell" hasInstanceMethod:@"siteName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ReadingListTableViewCell" hasInstanceMethod:@"previewText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ReadingListViewController" hasInstanceMethod:@"_readingListItemAtIndexPathDelete:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ReadingListTableViewCell" hasInstanceMethod:@"siteName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ReadingListTableViewCell" hasInstanceMethod:@"previewText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ReadingListViewController" hasInstanceMethod:@"_readingListItemAtIndexPathDelete:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)_privateAccessibilityCustomActions
@@ -36,11 +36,11 @@
 - (BOOL)_accessibilityDeleteReadingListItem
 {
   v2 = [(ReadingListTableViewCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
-  v3 = [v2 dataSource];
+  dataSource = [v2 dataSource];
   v4 = objc_opt_respondsToSelector();
   if (v4)
   {
-    v6 = v3;
+    v6 = dataSource;
     AXPerformSafeBlock();
   }
 

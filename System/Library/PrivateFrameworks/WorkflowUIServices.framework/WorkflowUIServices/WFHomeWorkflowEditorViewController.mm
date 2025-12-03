@@ -1,13 +1,13 @@
 @interface WFHomeWorkflowEditorViewController
 + (void)preloadActionRegistryIfNeeded;
 + (void)preloadHomeManager;
-- (WFHomeWorkflowEditorViewController)initWithHomeWorkflow:(id)a3 actionSetBuilder:(id)a4 home:(id)a5;
+- (WFHomeWorkflowEditorViewController)initWithHomeWorkflow:(id)workflow actionSetBuilder:(id)builder home:(id)home;
 - (WFHomeWorkflowEditorViewControllerDelegate)delegate;
-- (void)composeViewControllerRequestsDismissal:(id)a3;
+- (void)composeViewControllerRequestsDismissal:(id)dismissal;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFHomeWorkflowEditorViewController
@@ -19,15 +19,15 @@
   return WeakRetained;
 }
 
-- (void)composeViewControllerRequestsDismissal:(id)a3
+- (void)composeViewControllerRequestsDismissal:(id)dismissal
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 workflow];
-  v6 = [v5 record];
-  v7 = [v6 fileRepresentation];
+  dismissalCopy = dismissal;
+  workflow = [dismissalCopy workflow];
+  record = [workflow record];
+  fileRepresentation = [record fileRepresentation];
   v15 = 0;
-  v8 = [v7 fileDataWithError:&v15];
+  v8 = [fileRepresentation fileDataWithError:&v15];
   v9 = v15;
 
   if (v8)
@@ -51,10 +51,10 @@
     v11 = v10;
     _Block_object_dispose(&v16, 8);
     v12 = [[v10 alloc] initWithData:v8];
-    v13 = [(WFHomeWorkflowEditorViewController *)self delegate];
+    delegate = [(WFHomeWorkflowEditorViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 homeWorkflowEditorViewController:self didFinishWithHomeWorkflow:v12 includesSecureAccessory:{-[NSObject requiresDeviceUnlock](v12, "requiresDeviceUnlock")}];
+      [delegate homeWorkflowEditorViewController:self didFinishWithHomeWorkflow:v12 includesSecureAccessory:{-[NSObject requiresDeviceUnlock](v12, "requiresDeviceUnlock")}];
     }
 
     else
@@ -68,11 +68,11 @@
     v12 = getWFGeneralLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v4 workflow];
+      workflow2 = [dismissalCopy workflow];
       *buf = 136315650;
       *&buf[4] = "[WFHomeWorkflowEditorViewController composeViewControllerRequestsDismissal:]";
       *&buf[12] = 2112;
-      *&buf[14] = v14;
+      *&buf[14] = workflow2;
       *&buf[22] = 2114;
       v21 = v9;
       _os_log_impl(&dword_1C830A000, v12, OS_LOG_TYPE_ERROR, "%s Failed to get file data from Workflow: %@. Error: %{public}@", buf, 0x20u);
@@ -80,24 +80,24 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = [(WFComposeViewController *)self->_composeViewController navigationItem:a3];
-  v7 = [v9 rightBarButtonItems];
-  v8 = [(WFHomeWorkflowEditorViewController *)self navigationItem];
-  [v8 setRightBarButtonItems:v7];
+  v9 = [(WFComposeViewController *)self->_composeViewController navigationItem:path];
+  rightBarButtonItems = [v9 rightBarButtonItems];
+  navigationItem = [(WFHomeWorkflowEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:rightBarButtonItems];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WFHomeWorkflowEditorViewController;
-  [(WFHomeWorkflowEditorViewController *)&v7 viewWillAppear:a3];
+  [(WFHomeWorkflowEditorViewController *)&v7 viewWillAppear:appear];
   [objc_opt_class() preloadActionRegistryIfNeeded];
-  v4 = [MEMORY[0x1E69DC888] wf_homeTintColor];
-  v5 = [(WFHomeWorkflowEditorViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setTintColor:v4];
+  wf_homeTintColor = [MEMORY[0x1E69DC888] wf_homeTintColor];
+  navigationController = [(WFHomeWorkflowEditorViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setTintColor:wf_homeTintColor];
 }
 
 - (void)viewDidLoad
@@ -108,43 +108,43 @@
   v3 = WFLocalizedString(@"Shortcut");
   [(WFHomeWorkflowEditorViewController *)self setTitle:v3];
 
-  v4 = [MEMORY[0x1E69DC888] wf_homeTintColor];
-  v5 = [(WFHomeWorkflowEditorViewController *)self view];
-  [v5 setTintColor:v4];
+  wf_homeTintColor = [MEMORY[0x1E69DC888] wf_homeTintColor];
+  view = [(WFHomeWorkflowEditorViewController *)self view];
+  [view setTintColor:wf_homeTintColor];
 
-  v6 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
+  composeViewController = [(WFHomeWorkflowEditorViewController *)self composeViewController];
 
-  if (v6)
+  if (composeViewController)
   {
-    v7 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
-    [(WFHomeWorkflowEditorViewController *)self addChildViewController:v7];
+    composeViewController2 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
+    [(WFHomeWorkflowEditorViewController *)self addChildViewController:composeViewController2];
 
-    v8 = [(WFHomeWorkflowEditorViewController *)self view];
-    v9 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
-    v10 = [v9 view];
-    [v8 addSubview:v10];
+    view2 = [(WFHomeWorkflowEditorViewController *)self view];
+    composeViewController3 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
+    view3 = [composeViewController3 view];
+    [view2 addSubview:view3];
 
-    v11 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
-    [v11 didMoveToParentViewController:self];
+    composeViewController4 = [(WFHomeWorkflowEditorViewController *)self composeViewController];
+    [composeViewController4 didMoveToParentViewController:self];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(WFComposeViewController *)self->_composeViewController navigationItem];
-  [v3 removeObserver:self forKeyPath:@"rightBarButtonItems" context:0];
+  navigationItem = [(WFComposeViewController *)self->_composeViewController navigationItem];
+  [navigationItem removeObserver:self forKeyPath:@"rightBarButtonItems" context:0];
 
   v4.receiver = self;
   v4.super_class = WFHomeWorkflowEditorViewController;
   [(WFHomeWorkflowEditorViewController *)&v4 dealloc];
 }
 
-- (WFHomeWorkflowEditorViewController)initWithHomeWorkflow:(id)a3 actionSetBuilder:(id)a4 home:(id)a5
+- (WFHomeWorkflowEditorViewController)initWithHomeWorkflow:(id)workflow actionSetBuilder:(id)builder home:(id)home
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v49 = a4;
-  v50 = a5;
+  workflowCopy = workflow;
+  builderCopy = builder;
+  homeCopy = home;
   v55.receiver = self;
   v55.super_class = WFHomeWorkflowEditorViewController;
   v9 = [(WFHomeWorkflowEditorViewController *)&v55 initWithNibName:0 bundle:0];
@@ -169,9 +169,9 @@
 
   if (!ActionKitLibraryCore_frameworkLibrary)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    workflowCopy = [MEMORY[0x1E696AAA8] currentHandler];
     v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void *ActionKitLibrary(void)"];
-    [v8 handleFailureInFunction:v47 file:@"WFHomeWorkflowEditorViewController.m" lineNumber:21 description:{@"%s", v56}];
+    [workflowCopy handleFailureInFunction:v47 file:@"WFHomeWorkflowEditorViewController.m" lineNumber:21 description:{@"%s", v56}];
 
     goto LABEL_35;
   }
@@ -184,8 +184,8 @@
 
   while (1)
   {
-    v11 = [v8 data];
-    if (v11)
+    data = [workflowCopy data];
+    if (data)
     {
       *&v62 = 0;
       *(&v62 + 1) = &v62;
@@ -207,7 +207,7 @@
       _Block_object_dispose(&v62, 8);
       v14 = [v12 alloc];
       v54 = 0;
-      v15 = [v14 initWithFileData:v11 name:0 error:&v54];
+      v15 = [v14 initWithFileData:data name:0 error:&v54];
       v16 = v54;
       v53 = v16;
       v17 = [v15 recordRepresentationWithError:&v53];
@@ -239,14 +239,14 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (!v49)
+    if (!builderCopy)
     {
       v18 = 0;
 LABEL_29:
       v15 = getWFHomeLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v45 = [v11 length];
+        v45 = [data length];
         *buf = 136315650;
         *&buf[4] = "[WFHomeWorkflowEditorViewController initWithHomeWorkflow:actionSetBuilder:home:]";
         *&buf[12] = 2048;
@@ -302,8 +302,8 @@ LABEL_29:
     v28 = v27;
     _Block_object_dispose(&v62, 8);
     v29 = [v27 alloc];
-    v30 = [v49 allActionSets];
-    v31 = v50;
+    allActionSets = [builderCopy allActionSets];
+    v31 = homeCopy;
     *&v62 = 0;
     *(&v62 + 1) = &v62;
     v63 = 0x2020000000;
@@ -329,9 +329,9 @@ LABEL_29:
       break;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    workflowCopy = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull soft_WFSerializableHomeIdentifier(HMHome * _Nonnull __strong)"];
-    [v8 handleFailureInFunction:v48 file:@"WFHomeWorkflowEditorViewController.m" lineNumber:113 description:{@"%s", dlerror()}];
+    [workflowCopy handleFailureInFunction:v48 file:@"WFHomeWorkflowEditorViewController.m" lineNumber:113 description:{@"%s", dlerror()}];
 
 LABEL_35:
     __break(1u);
@@ -341,13 +341,13 @@ LABEL_36:
 
   v35 = v32(v31);
 
-  v15 = [v29 initWithActionSets:v30 homeIdentifier:v35];
-  v36 = [getWFActionRegistryClass() sharedRegistry];
+  v15 = [v29 initWithActionSets:allActionSets homeIdentifier:v35];
+  sharedRegistry = [getWFActionRegistryClass() sharedRegistry];
   v57 = @"WFHomeTriggerActionSets";
-  v37 = [v15 serializedRepresentation];
-  v58 = v37;
+  serializedRepresentation = [v15 serializedRepresentation];
+  v58 = serializedRepresentation;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-  v17 = [v36 createActionWithIdentifier:@"is.workflow.actions.homeaccessory" serializedParameters:v38];
+  v17 = [sharedRegistry createActionWithIdentifier:@"is.workflow.actions.homeaccessory" serializedParameters:v38];
 
   [v20 addAction:v17];
 LABEL_21:
@@ -375,13 +375,13 @@ LABEL_21:
 
   v40 = v39;
   _Block_object_dispose(&v62, 8);
-  v41 = [[v39 alloc] initForHomeEditingWithWorkflow:v20 home:v50];
+  v41 = [[v39 alloc] initForHomeEditingWithWorkflow:v20 home:homeCopy];
   composeViewController = v9->_composeViewController;
   v9->_composeViewController = v41;
 
   [(WFComposeViewController *)v9->_composeViewController setDelegate:v9];
-  v43 = [(WFComposeViewController *)v9->_composeViewController navigationItem];
-  [v43 addObserver:v9 forKeyPath:@"rightBarButtonItems" options:0 context:0];
+  navigationItem = [(WFComposeViewController *)v9->_composeViewController navigationItem];
+  [navigationItem addObserver:v9 forKeyPath:@"rightBarButtonItems" options:0 context:0];
 
   v22 = v9;
   v15 = v20;
@@ -393,19 +393,19 @@ LABEL_33:
 
 + (void)preloadActionRegistryIfNeeded
 {
-  v2 = [getWFActionRegistryClass() sharedRegistry];
-  [v2 fill];
+  sharedRegistry = [getWFActionRegistryClass() sharedRegistry];
+  [sharedRegistry fill];
 }
 
 + (void)preloadHomeManager
 {
-  v2 = [getWFHomeManagerClass() sharedManager];
-  v3 = [v2 hasLoadedHomes];
+  sharedManager = [getWFHomeManagerClass() sharedManager];
+  hasLoadedHomes = [sharedManager hasLoadedHomes];
 
-  if ((v3 & 1) == 0)
+  if ((hasLoadedHomes & 1) == 0)
   {
-    v4 = [getWFHomeManagerClass() sharedManager];
-    [v4 reloadData];
+    sharedManager2 = [getWFHomeManagerClass() sharedManager];
+    [sharedManager2 reloadData];
   }
 }
 

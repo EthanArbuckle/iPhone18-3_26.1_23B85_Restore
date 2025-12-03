@@ -15,8 +15,8 @@
   v1 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v0 setFont:v1];
 
-  v2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v0 setTextColor:v2];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v0 setTextColor:secondaryLabelColor];
 
   return v0;
 }
@@ -31,8 +31,8 @@
   v1 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v0 setFont:v1];
 
-  v2 = [MEMORY[0x1E69DC888] labelColor];
-  [v0 setTextColor:v2];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v0 setTextColor:labelColor];
 
   return v0;
 }

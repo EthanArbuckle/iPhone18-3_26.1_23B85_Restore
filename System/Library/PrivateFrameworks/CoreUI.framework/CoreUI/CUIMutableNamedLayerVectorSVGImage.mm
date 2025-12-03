@@ -3,11 +3,11 @@
 - (CUIMutableNamedLayerVectorSVGImage)init;
 - (id)gradient;
 - (void)dealloc;
-- (void)setAppearance:(id)a3;
-- (void)setColor:(CGColor *)a3;
-- (void)setGradient:(id)a3;
-- (void)setSvgDocument:(CGSVGDocument *)a3;
-- (void)setSvgDocumentURL:(id)a3;
+- (void)setAppearance:(id)appearance;
+- (void)setColor:(CGColor *)color;
+- (void)setGradient:(id)gradient;
+- (void)setSvgDocument:(CGSVGDocument *)document;
+- (void)setSvgDocumentURL:(id)l;
 @end
 
 @implementation CUIMutableNamedLayerVectorSVGImage
@@ -34,51 +34,51 @@
   [(CUINamedLayerVectorSVGImage *)&v4 dealloc];
 }
 
-- (void)setSvgDocumentURL:(id)a3
+- (void)setSvgDocumentURL:(id)l
 {
   [(CUIMutableNamedLayerVectorSVGImage *)self setSvgDocument:CGSVGDocumentCreateFromURL()];
 
   CGSVGDocumentRelease();
 }
 
-- (void)setSvgDocument:(CGSVGDocument *)a3
+- (void)setSvgDocument:(CGSVGDocument *)document
 {
   svgDocument = self->_svgDocument;
-  if (svgDocument != a3)
+  if (svgDocument != document)
   {
     if (svgDocument)
     {
       CFRelease(svgDocument);
     }
 
-    if (a3)
+    if (document)
     {
-      CFRetain(a3);
+      CFRetain(document);
     }
 
-    self->_svgDocument = a3;
+    self->_svgDocument = document;
   }
 }
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
   gradientOrColor = self->_gradientOrColor;
-  if (gradientOrColor != a3)
+  if (gradientOrColor != color)
   {
 
-    v6 = a3;
-    self->_gradientOrColor = a3;
+    colorCopy = color;
+    self->_gradientOrColor = color;
   }
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
   gradientOrColor = self->_gradientOrColor;
-  if (gradientOrColor != a3)
+  if (gradientOrColor != gradient)
   {
 
-    v6 = a3;
-    self->_gradientOrColor = a3;
+    gradientCopy = gradient;
+    self->_gradientOrColor = gradient;
   }
 }
 
@@ -110,13 +110,13 @@
   }
 }
 
-- (void)setAppearance:(id)a3
+- (void)setAppearance:(id)appearance
 {
   appearance = self->_appearance;
-  if (appearance != a3)
+  if (appearance != appearance)
   {
 
-    self->_appearance = a3;
+    self->_appearance = appearance;
   }
 }
 

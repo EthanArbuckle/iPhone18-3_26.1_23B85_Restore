@@ -1,31 +1,31 @@
 @interface ICSelectionStateUtilities
-+ (id)selectedNoteObjectIDFromArchive:(id)a3 modernManagedObjectContext:(id)a4 legacyManagedObjectContext:(id)a5;
-+ (void)updateArchive:(id)a3 forNewViewMode:(int64_t)a4 requiresContainerSelection:(BOOL)a5 requiresObjectSelection:(BOOL)a6 validateContainerSelection:(BOOL)a7 defaultObjectID:(id)a8 modernManagedObjectContext:(id)a9 legacyManagedObjectContext:(id)a10;
++ (id)selectedNoteObjectIDFromArchive:(id)archive modernManagedObjectContext:(id)context legacyManagedObjectContext:(id)objectContext;
++ (void)updateArchive:(id)archive forNewViewMode:(int64_t)mode requiresContainerSelection:(BOOL)selection requiresObjectSelection:(BOOL)objectSelection validateContainerSelection:(BOOL)containerSelection defaultObjectID:(id)d modernManagedObjectContext:(id)context legacyManagedObjectContext:(id)self0;
 - (_TtC11MobileNotes25ICSelectionStateUtilities)init;
 @end
 
 @implementation ICSelectionStateUtilities
 
-+ (id)selectedNoteObjectIDFromArchive:(id)a3 modernManagedObjectContext:(id)a4 legacyManagedObjectContext:(id)a5
++ (id)selectedNoteObjectIDFromArchive:(id)archive modernManagedObjectContext:(id)context legacyManagedObjectContext:(id)objectContext
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_1001F6A24(a3, a4, a5);
+  archiveCopy = archive;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  v11 = sub_1001F6A24(archive, context, objectContext);
 
   return v11;
 }
 
-+ (void)updateArchive:(id)a3 forNewViewMode:(int64_t)a4 requiresContainerSelection:(BOOL)a5 requiresObjectSelection:(BOOL)a6 validateContainerSelection:(BOOL)a7 defaultObjectID:(id)a8 modernManagedObjectContext:(id)a9 legacyManagedObjectContext:(id)a10
++ (void)updateArchive:(id)archive forNewViewMode:(int64_t)mode requiresContainerSelection:(BOOL)selection requiresObjectSelection:(BOOL)objectSelection validateContainerSelection:(BOOL)containerSelection defaultObjectID:(id)d modernManagedObjectContext:(id)context legacyManagedObjectContext:(id)self0
 {
-  v18 = a6;
-  v19 = a7;
+  objectSelectionCopy = objectSelection;
+  containerSelectionCopy = containerSelection;
   swift_getObjCClassMetadata();
-  v14 = a3;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  sub_1001F303C(a3, a4, a5, v18, v19, a8, a9, a10);
+  archiveCopy = archive;
+  dCopy = d;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  sub_1001F303C(archive, mode, selection, objectSelectionCopy, containerSelectionCopy, d, context, objectContext);
 }
 
 - (_TtC11MobileNotes25ICSelectionStateUtilities)init

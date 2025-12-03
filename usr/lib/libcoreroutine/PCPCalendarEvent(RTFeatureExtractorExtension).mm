@@ -10,49 +10,49 @@
   v5 = a3;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x277D3F888]);
-  v8 = [v5 structuredLocation];
-  v9 = [v8 geoLocation];
-  [v9 coordinate];
+  structuredLocation = [v5 structuredLocation];
+  geoLocation = [structuredLocation geoLocation];
+  [geoLocation coordinate];
   [v7 setLocationLatitudeDeg:?];
 
-  v10 = [v5 structuredLocation];
-  v11 = [v10 geoLocation];
-  [v11 coordinate];
+  structuredLocation2 = [v5 structuredLocation];
+  geoLocation2 = [structuredLocation2 geoLocation];
+  [geoLocation2 coordinate];
   [v7 setLocationLongitudeDeg:v12];
 
-  v13 = [v5 structuredLocation];
-  v14 = [v13 geoLocation];
-  [v14 horizontalAccuracy];
+  structuredLocation3 = [v5 structuredLocation];
+  geoLocation3 = [structuredLocation3 geoLocation];
+  [geoLocation3 horizontalAccuracy];
   [v7 setLocationHorizontalUncertaintyMeters:?];
 
-  v15 = [v5 structuredLocation];
-  v16 = [v15 geoLocation];
-  [v7 setLocationReferenceFrame:{objc_msgSend(v16, "referenceFrame")}];
+  structuredLocation4 = [v5 structuredLocation];
+  geoLocation4 = [structuredLocation4 geoLocation];
+  [v7 setLocationReferenceFrame:{objc_msgSend(geoLocation4, "referenceFrame")}];
 
   [v6 setLocation:v7];
-  v17 = [v5 eventIdentifier];
-  [v6 setEventId:v17];
+  eventIdentifier = [v5 eventIdentifier];
+  [v6 setEventId:eventIdentifier];
 
-  v18 = [v5 structuredLocation];
-  v19 = [v18 title];
-  [v6 setLocationTitle:v19];
+  structuredLocation5 = [v5 structuredLocation];
+  title = [structuredLocation5 title];
+  [v6 setLocationTitle:title];
 
   [v6 setStatus:{objc_msgSend(v5, "status")}];
-  v20 = [v5 startDate];
-  [v20 timeIntervalSinceReferenceDate];
+  startDate = [v5 startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [v6 setStartTimeCFAbsolute:?];
 
-  v21 = [v5 endDate];
-  [v21 timeIntervalSinceReferenceDate];
+  endDate = [v5 endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [v6 setEndTimeCFAbsolute:?];
 
-  v22 = [v5 calendar];
-  v23 = [v22 calendarIdentifier];
-  [v6 setCalendarId:v23];
+  calendar = [v5 calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [v6 setCalendarId:calendarIdentifier];
 
-  v24 = [v5 title];
+  title2 = [v5 title];
 
-  [v6 setTitleOfEvent:v24];
+  [v6 setTitleOfEvent:title2];
   return v6;
 }
 

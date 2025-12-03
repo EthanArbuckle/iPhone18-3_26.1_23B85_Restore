@@ -1,42 +1,42 @@
 @interface MTLDebugArgumentEncoder
-- (MTLDebugArgumentEncoder)initWithBaseObject:(id)a3 structType:(id)a4 parent:(id)a5;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
-- (void)constantDataAtIndex:(unint64_t)a3;
+- (MTLDebugArgumentEncoder)initWithBaseObject:(id)object structType:(id)type parent:(id)parent;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
+- (void)constantDataAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 elementIndex:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset elementIndex:(unint64_t)index;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index;
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range;
 @end
 
 @implementation MTLDebugArgumentEncoder
 
-- (MTLDebugArgumentEncoder)initWithBaseObject:(id)a3 structType:(id)a4 parent:(id)a5
+- (MTLDebugArgumentEncoder)initWithBaseObject:(id)object structType:(id)type parent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = MTLDebugArgumentEncoder;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a5];
-  if (a4)
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:object parent:parent];
+  if (type)
   {
     if (result)
     {
@@ -63,12 +63,12 @@
   [(MTLToolsObject *)&v4 dealloc];
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 elementIndex:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset elementIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device];
   _MTLMessageContextBegin_();
-  v9 = a4;
-  if (a3)
+  offsetCopy2 = offset;
+  if (buffer)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -76,58 +76,58 @@
       _MTLMessageContextPush_();
     }
 
-    v10 = [a3 storageMode];
-    v11 = [(MTLToolsObject *)self baseObject];
-    if (v10)
+    storageMode = [buffer storageMode];
+    baseObject = [(MTLToolsObject *)self baseObject];
+    if (storageMode)
     {
       v17 = MTLStorageModeString();
       _MTLMessageContextPush_();
     }
 
-    v9 = a4;
-    if (a5 != -1)
+    offsetCopy2 = offset;
+    if (index != -1)
     {
-      v9 = a4 + [-[MTLToolsObject baseObject](self "baseObject")] * a5;
+      offsetCopy2 = offset + [-[MTLToolsObject baseObject](self "baseObject")] * index;
     }
 
-    v12 = [v11 encodedLength] + v9;
-    if (v12 > [a3 length])
+    v12 = [baseObject encodedLength] + offsetCopy2;
+    if (v12 > [buffer length])
     {
-      v16 = [v11 encodedLength];
-      v21 = [a3 length];
+      encodedLength = [baseObject encodedLength];
+      v21 = [buffer length];
       _MTLMessageContextPush_();
-      [a3 setIsContentExposedToCPU:{1, v9, v16, v21}];
+      [buffer setIsContentExposedToCPU:{1, offsetCopy2, encodedLength, v21}];
     }
 
     else
     {
-      [a3 setIsContentExposedToCPU:{1, v18, v19, v20}];
+      [buffer setIsContentExposedToCPU:{1, v18, v19, v20}];
     }
   }
 
   _MTLMessageContextEnd();
-  v13 = [a3 baseObject];
-  v14 = [(MTLToolsObject *)self baseObject];
-  if (a5 == -1)
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [(MTLToolsObject *)self baseObject];
+  if (index == -1)
   {
-    [v14 setArgumentBuffer:v13 offset:v9];
+    [baseObject3 setArgumentBuffer:baseObject2 offset:offsetCopy2];
   }
 
   else
   {
-    [v14 setArgumentBuffer:v13 startOffset:a4 arrayElement:a5];
+    [baseObject3 setArgumentBuffer:baseObject2 startOffset:offset arrayElement:index];
   }
 
-  self->_currentOffset = v9;
+  self->_currentOffset = offsetCopy2;
   currentBuffer = self->_currentBuffer;
-  if (currentBuffer != a3)
+  if (currentBuffer != buffer)
   {
 
-    self->_currentBuffer = v13;
+    self->_currentBuffer = baseObject2;
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   memset(&v11, 0, sizeof(v11));
   [(MTLToolsArgumentEncoder *)self device];
@@ -135,13 +135,13 @@
   if (!self->_currentBuffer)
   {
     _MTLMessageContextPush_();
-    if (a3)
+    if (buffer)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    if (a4)
+    if (offset)
     {
       goto LABEL_8;
     }
@@ -149,7 +149,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_10;
   }
@@ -163,15 +163,15 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v9 = [a3 device];
-  if (v9 != [(MTLToolsArgumentEncoder *)self device])
+  device = [buffer device];
+  if (device != [(MTLToolsArgumentEncoder *)self device])
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 length] <= a4)
+  if ([buffer length] <= offset)
   {
-    [a3 length];
+    [buffer length];
     goto LABEL_8;
   }
 
@@ -179,18 +179,18 @@ LABEL_11:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a5, 3u, &v11);
+    StructType::indexIsValueType(reflectionParser, index, 3u, &v11);
   }
 
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v22 = a5;
+  length = range.length;
+  location = range.location;
+  rangeCopy = range;
   memset(&v21, 0, sizeof(v21));
   [(MTLToolsArgumentEncoder *)self device];
   _MTLMessageContextBegin_();
@@ -202,16 +202,16 @@ LABEL_11:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexRangeIsValueType(reflectionParser, &v22.location, 3u, &v21);
+    StructType::indexRangeIsValueType(reflectionParser, &rangeCopy.location, 3u, &v21);
   }
 
   std::vector<objc_object  {objcproto9MTLBuffer}*>::vector[abi:ne200100](__p, length);
   if (length)
   {
     v11 = 0;
-    while (!a3[v11])
+    while (!buffers[v11])
     {
-      v15 = a4[v11];
+      v15 = offsets[v11];
       if (v15)
       {
         v14 = v11;
@@ -222,8 +222,8 @@ LABEL_15:
       }
 
 LABEL_17:
-      v16 = [a3[v11] baseObject];
-      *(__p[0] + v11++) = v16;
+      baseObject = [buffers[v11] baseObject];
+      *(__p[0] + v11++) = baseObject;
       if (length == v11)
       {
         goto LABEL_18;
@@ -238,28 +238,28 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v12 = [a3[v11] device];
-    if (v12 != [(MTLToolsArgumentEncoder *)self device])
+    device = [buffers[v11] device];
+    if (device != [(MTLToolsArgumentEncoder *)self device])
     {
       v18 = v11;
       _MTLMessageContextPush_();
     }
 
-    v13 = a4[v11];
-    if (v13 < [a3[v11] length])
+    v13 = offsets[v11];
+    if (v13 < [buffers[v11] length])
     {
       goto LABEL_17;
     }
 
-    v14 = a4[v11];
-    v15 = [a3[v11] length];
+    v14 = offsets[v11];
+    v15 = [buffers[v11] length];
     goto LABEL_15;
   }
 
 LABEL_18:
   _MTLMessageContextEnd();
-  v17 = [(MTLToolsObject *)self baseObject];
-  [v17 setBuffers:__p[0] offsets:a4 withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setBuffers:__p[0] offsets:offsets withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -267,7 +267,7 @@ LABEL_18:
   }
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -279,18 +279,18 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 1u, &v8);
+    StructType::indexIsValueType(reflectionParser, index, 1u, &v8);
   }
 
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a4;
+  length = range.length;
+  location = range.location;
+  rangeCopy = range;
   memset(&v13, 0, sizeof(v13));
   [(MTLToolsArgumentEncoder *)self device];
   _MTLMessageContextBegin_();
@@ -302,7 +302,7 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexRangeIsValueType(reflectionParser, &v14.location, 1u, &v13);
+    StructType::indexRangeIsValueType(reflectionParser, &rangeCopy.location, 1u, &v13);
   }
 
   _MTLMessageContextEnd();
@@ -311,13 +311,13 @@ LABEL_18:
   {
     for (i = 0; i != length; ++i)
     {
-      v10 = [a3[i] baseObject];
-      *(__p[0] + i) = v10;
+      baseObject = [textures[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v11 = [(MTLToolsObject *)self baseObject];
-  [v11 setTextures:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setTextures:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -325,7 +325,7 @@ LABEL_18:
   }
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -337,10 +337,10 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 2u, &v8);
+    StructType::indexIsValueType(reflectionParser, index, 2u, &v8);
   }
 
-  if (a3 && ([objc_msgSend(a3 "descriptor")] & 1) == 0)
+  if (state && ([objc_msgSend(state "descriptor")] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
@@ -349,11 +349,11 @@ LABEL_18:
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v15 = a4;
+  length = range.length;
+  location = range.location;
+  rangeCopy = range;
   memset(&v14, 0, sizeof(v14));
   [(MTLToolsArgumentEncoder *)self device];
   _MTLMessageContextBegin_();
@@ -365,7 +365,7 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexRangeIsValueType(reflectionParser, &v15.location, 2u, &v14);
+    StructType::indexRangeIsValueType(reflectionParser, &rangeCopy.location, 2u, &v14);
   }
 
   std::vector<objc_object  {objcproto15MTLSamplerState}*>::vector[abi:ne200100](__p, length);
@@ -373,20 +373,20 @@ LABEL_18:
   {
     for (i = 0; i != length; ++i)
     {
-      v10 = a3[i];
+      v10 = states[i];
       if (v10 && ([objc_msgSend(v10 "descriptor")] & 1) == 0)
       {
         _MTLMessageContextPush_();
       }
 
-      v11 = [a3[i] baseObject];
-      *(__p[0] + i) = v11;
+      baseObject = [states[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
   _MTLMessageContextEnd();
-  v12 = [(MTLToolsObject *)self baseObject];
-  [v12 setSamplerStates:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setSamplerStates:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -394,7 +394,7 @@ LABEL_18:
   }
 }
 
-- (void)constantDataAtIndex:(unint64_t)a3
+- (void)constantDataAtIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -406,14 +406,14 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a3, 0, &v7);
+    StructType::indexIsValueType(reflectionParser, index, 0, &v7);
   }
 
   _MTLMessageContextEnd();
   return [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -425,36 +425,36 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 5u, &v11);
+    StructType::indexIsValueType(reflectionParser, index, 5u, &v11);
   }
 
-  if (a3)
+  if (state)
   {
-    if (([objc_msgSend(a3 "baseObject")] & 1) == 0)
+    if (([objc_msgSend(state "baseObject")] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
     _MTLMessageContextEnd();
-    v8 = [(MTLToolsObject *)self baseObject];
-    v9 = [a3 baseObject];
-    v10 = v8;
+    baseObject = [(MTLToolsObject *)self baseObject];
+    baseObject2 = [state baseObject];
+    baseObject3 = baseObject;
   }
 
   else
   {
     _MTLMessageContextEnd();
-    v10 = [(MTLToolsObject *)self baseObject];
-    v9 = 0;
+    baseObject3 = [(MTLToolsObject *)self baseObject];
+    baseObject2 = 0;
   }
 
-  [v10 setRenderPipelineState:v9 atIndex:a4];
+  [baseObject3 setRenderPipelineState:baseObject2 atIndex:index];
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -474,11 +474,11 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      if (*a3)
+      if (*states)
       {
-        v11 = [*a3 baseObject];
-        *v10 = v11;
-        if (([v11 supportIndirectCommandBuffers] & 1) == 0)
+        baseObject = [*states baseObject];
+        *v10 = baseObject;
+        if (([baseObject supportIndirectCommandBuffers] & 1) == 0)
         {
           _MTLMessageContextPush_();
         }
@@ -490,7 +490,7 @@ LABEL_18:
       }
 
       ++v10;
-      ++a3;
+      ++states;
       --v9;
     }
 
@@ -502,7 +502,7 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -514,36 +514,36 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 6u, &v11);
+    StructType::indexIsValueType(reflectionParser, index, 6u, &v11);
   }
 
-  if (a3)
+  if (state)
   {
-    if (([objc_msgSend(a3 "baseObject")] & 1) == 0)
+    if (([objc_msgSend(state "baseObject")] & 1) == 0)
     {
       _MTLMessageContextPush_();
     }
 
     _MTLMessageContextEnd();
-    v8 = [(MTLToolsObject *)self baseObject];
-    v9 = [a3 baseObject];
-    v10 = v8;
+    baseObject = [(MTLToolsObject *)self baseObject];
+    baseObject2 = [state baseObject];
+    baseObject3 = baseObject;
   }
 
   else
   {
     _MTLMessageContextEnd();
-    v10 = [(MTLToolsObject *)self baseObject];
-    v9 = 0;
+    baseObject3 = [(MTLToolsObject *)self baseObject];
+    baseObject2 = 0;
   }
 
-  [v10 setComputePipelineState:v9 atIndex:a4];
+  [baseObject3 setComputePipelineState:baseObject2 atIndex:index];
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -563,11 +563,11 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      if (*a3)
+      if (*states)
       {
-        v11 = [*a3 baseObject];
-        *v10 = v11;
-        if (([v11 supportIndirectCommandBuffers] & 1) == 0)
+        baseObject = [*states baseObject];
+        *v10 = baseObject;
+        if (([baseObject supportIndirectCommandBuffers] & 1) == 0)
         {
           _MTLMessageContextPush_();
         }
@@ -579,7 +579,7 @@ LABEL_18:
       }
 
       ++v10;
-      ++a3;
+      ++states;
       --v9;
     }
 
@@ -591,7 +591,7 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -600,26 +600,26 @@ LABEL_18:
     _MTLMessageContextPush_();
   }
 
-  StructType::indexIsValueType(self->_reflectionParser, a4, 7u, &v9);
+  StructType::indexIsValueType(self->_reflectionParser, index, 7u, &v9);
   _MTLMessageContextEnd();
-  v7 = [(MTLToolsObject *)self baseObject];
-  if (a3)
+  baseObject = [(MTLToolsObject *)self baseObject];
+  if (buffer)
   {
-    v8 = [a3 baseObject];
+    baseObject2 = [buffer baseObject];
   }
 
   else
   {
-    v8 = 0;
+    baseObject2 = 0;
   }
 
-  [v7 setIndirectCommandBuffer:v8 atIndex:a4];
+  [baseObject setIndirectCommandBuffer:baseObject2 atIndex:index];
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -640,14 +640,14 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v11 = *a3;
-      if (*a3)
+      baseObject = *buffers;
+      if (*buffers)
       {
-        v11 = [v11 baseObject];
+        baseObject = [baseObject baseObject];
       }
 
-      *v10++ = v11;
-      ++a3;
+      *v10++ = baseObject;
+      ++buffers;
       --v9;
     }
 
@@ -658,7 +658,7 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   memset(&v12, 0, sizeof(v12));
   [(MTLToolsArgumentEncoder *)self device];
@@ -666,7 +666,7 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    MemberAtIndex = StructType::findMemberAtIndex(reflectionParser, a3, 0, &v12);
+    MemberAtIndex = StructType::findMemberAtIndex(reflectionParser, index, 0, &v12);
     v7 = MemberAtIndex;
     if (!v12.var0 && !*(MemberAtIndex + 24))
     {
@@ -697,16 +697,16 @@ LABEL_18:
   return v10;
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
-  checkAccelerationStructure(self->super.super._device, a3, 1);
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  checkAccelerationStructure(self->super.super._device, structure, 1);
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [structure baseObject];
 
-  [v7 setAccelerationStructure:v8 atIndex:a4];
+  [baseObject setAccelerationStructure:baseObject2 atIndex:index];
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -718,154 +718,22 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 8u, &v8);
+    StructType::indexIsValueType(reflectionParser, index, 8u, &v8);
   }
 
   _MTLMessageContextEnd();
-  if (a3)
+  if (table)
   {
-    a3 = [a3 baseObject];
+    table = [table baseObject];
   }
 
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  [(MTLToolsArgumentEncoder *)self device:0];
-  _MTLMessageContextBegin_();
-  if (!self->_currentBuffer)
-  {
-    _MTLMessageContextPush_();
-  }
-
-  reflectionParser = self->_reflectionParser;
-  if (reflectionParser)
-  {
-    StructType::indexRangeIsValueType(reflectionParser, &v14, 8u, &v13);
-  }
-
-  _MTLMessageContextEnd();
-  if (length)
-  {
-    v9 = length;
-    v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
-    do
-    {
-      v11 = *a3;
-      if (*a3)
-      {
-        v11 = [v11 baseObject];
-      }
-
-      *v10++ = v11;
-      ++a3;
-      --v9;
-    }
-
-    while (v9);
-  }
-
-  [-[MTLToolsObject baseObject](self "baseObject")];
-  v12 = *MEMORY[0x277D85DE8];
-}
-
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
-{
-  [(MTLToolsArgumentEncoder *)self device:0];
-  _MTLMessageContextBegin_();
-  if (!self->_currentBuffer)
-  {
-    _MTLMessageContextPush_();
-  }
-
-  reflectionParser = self->_reflectionParser;
-  if (reflectionParser)
-  {
-    StructType::indexIsValueType(reflectionParser, a4, 9u, &v8);
-  }
-
-  _MTLMessageContextEnd();
-  if (a3)
-  {
-    a3 = [a3 baseObject];
-  }
-
-  [-[MTLToolsObject baseObject](self "baseObject")];
-}
-
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
-{
-  length = a4.length;
-  location = a4.location;
-  [(MTLToolsArgumentEncoder *)self device:0];
-  _MTLMessageContextBegin_();
-  if (!self->_currentBuffer)
-  {
-    _MTLMessageContextPush_();
-  }
-
-  reflectionParser = self->_reflectionParser;
-  if (reflectionParser)
-  {
-    StructType::indexRangeIsValueType(reflectionParser, &v14, 9u, &v13);
-  }
-
-  _MTLMessageContextEnd();
-  if (length)
-  {
-    v9 = length;
-    v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
-    do
-    {
-      v11 = *a3;
-      if (*a3)
-      {
-        v11 = [v11 baseObject];
-      }
-
-      *v10++ = v11;
-      ++a3;
-      --v9;
-    }
-
-    while (v9);
-  }
-
-  [-[MTLToolsObject baseObject](self "baseObject")];
-  v12 = *MEMORY[0x277D85DE8];
-}
-
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4
-{
-  [(MTLToolsArgumentEncoder *)self device:0];
-  _MTLMessageContextBegin_();
-  if (!self->_currentBuffer)
-  {
-    _MTLMessageContextPush_();
-  }
-
-  reflectionParser = self->_reflectionParser;
-  if (reflectionParser)
-  {
-    StructType::indexIsValueType(reflectionParser, a4, 8u, &v8);
-  }
-
-  _MTLMessageContextEnd();
-  if (a3)
-  {
-    a3 = [a3 baseObject];
-  }
-
-  [-[MTLToolsObject baseObject](self "baseObject")];
-}
-
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4
-{
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -886,14 +754,14 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v11 = *a3;
-      if (*a3)
+      baseObject = *tables;
+      if (*tables)
       {
-        v11 = [v11 baseObject];
+        baseObject = [baseObject baseObject];
       }
 
-      *v10++ = v11;
-      ++a3;
+      *v10++ = baseObject;
+      ++tables;
       --v9;
     }
 
@@ -904,7 +772,7 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -916,22 +784,22 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 9u, &v8);
+    StructType::indexIsValueType(reflectionParser, index, 9u, &v8);
   }
 
   _MTLMessageContextEnd();
-  if (a3)
+  if (table)
   {
-    a3 = [a3 baseObject];
+    table = [table baseObject];
   }
 
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -952,14 +820,14 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v11 = *a3;
-      if (*a3)
+      baseObject = *tables;
+      if (*tables)
       {
-        v11 = [v11 baseObject];
+        baseObject = [baseObject baseObject];
       }
 
-      *v10++ = v11;
-      ++a3;
+      *v10++ = baseObject;
+      ++tables;
       --v9;
     }
 
@@ -970,7 +838,7 @@ LABEL_18:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index
 {
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
@@ -982,17 +850,149 @@ LABEL_18:
   reflectionParser = self->_reflectionParser;
   if (reflectionParser)
   {
-    StructType::indexIsValueType(reflectionParser, a4, 0xCu, &v8);
+    StructType::indexIsValueType(reflectionParser, index, 8u, &v8);
+  }
+
+  _MTLMessageContextEnd();
+  if (table)
+  {
+    table = [table baseObject];
+  }
+
+  [-[MTLToolsObject baseObject](self "baseObject")];
+}
+
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range
+{
+  length = range.length;
+  location = range.location;
+  [(MTLToolsArgumentEncoder *)self device:0];
+  _MTLMessageContextBegin_();
+  if (!self->_currentBuffer)
+  {
+    _MTLMessageContextPush_();
+  }
+
+  reflectionParser = self->_reflectionParser;
+  if (reflectionParser)
+  {
+    StructType::indexRangeIsValueType(reflectionParser, &v14, 8u, &v13);
+  }
+
+  _MTLMessageContextEnd();
+  if (length)
+  {
+    v9 = length;
+    v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
+    do
+    {
+      baseObject = *tables;
+      if (*tables)
+      {
+        baseObject = [baseObject baseObject];
+      }
+
+      *v10++ = baseObject;
+      ++tables;
+      --v9;
+    }
+
+    while (v9);
+  }
+
+  [-[MTLToolsObject baseObject](self "baseObject")];
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index
+{
+  [(MTLToolsArgumentEncoder *)self device:0];
+  _MTLMessageContextBegin_();
+  if (!self->_currentBuffer)
+  {
+    _MTLMessageContextPush_();
+  }
+
+  reflectionParser = self->_reflectionParser;
+  if (reflectionParser)
+  {
+    StructType::indexIsValueType(reflectionParser, index, 9u, &v8);
+  }
+
+  _MTLMessageContextEnd();
+  if (table)
+  {
+    table = [table baseObject];
+  }
+
+  [-[MTLToolsObject baseObject](self "baseObject")];
+}
+
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range
+{
+  length = range.length;
+  location = range.location;
+  [(MTLToolsArgumentEncoder *)self device:0];
+  _MTLMessageContextBegin_();
+  if (!self->_currentBuffer)
+  {
+    _MTLMessageContextPush_();
+  }
+
+  reflectionParser = self->_reflectionParser;
+  if (reflectionParser)
+  {
+    StructType::indexRangeIsValueType(reflectionParser, &v14, 9u, &v13);
+  }
+
+  _MTLMessageContextEnd();
+  if (length)
+  {
+    v9 = length;
+    v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
+    do
+    {
+      baseObject = *tables;
+      if (*tables)
+      {
+        baseObject = [baseObject baseObject];
+      }
+
+      *v10++ = baseObject;
+      ++tables;
+      --v9;
+    }
+
+    while (v9);
+  }
+
+  [-[MTLToolsObject baseObject](self "baseObject")];
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index
+{
+  [(MTLToolsArgumentEncoder *)self device:0];
+  _MTLMessageContextBegin_();
+  if (!self->_currentBuffer)
+  {
+    _MTLMessageContextPush_();
+  }
+
+  reflectionParser = self->_reflectionParser;
+  if (reflectionParser)
+  {
+    StructType::indexIsValueType(reflectionParser, index, 0xCu, &v8);
   }
 
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(MTLToolsArgumentEncoder *)self device:0];
   _MTLMessageContextBegin_();
   if (!self->_currentBuffer)
@@ -1013,14 +1013,14 @@ LABEL_18:
     v10 = (&v13.var0 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v11 = *a3;
-      if (*a3)
+      baseObject = *states;
+      if (*states)
       {
-        v11 = [v11 baseObject];
+        baseObject = [baseObject baseObject];
       }
 
-      *v10++ = v11;
-      ++a3;
+      *v10++ = baseObject;
+      ++states;
       --v9;
     }
 

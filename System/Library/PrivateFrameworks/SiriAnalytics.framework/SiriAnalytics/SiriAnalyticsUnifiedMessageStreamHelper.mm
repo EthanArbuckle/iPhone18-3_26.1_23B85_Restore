@@ -1,7 +1,7 @@
 @interface SiriAnalyticsUnifiedMessageStreamHelper
 + (id)fileURL;
 + (id)identifier;
-+ (void)ensureDirectoryExistsAt:(id)a3;
++ (void)ensureDirectoryExistsAt:(id)at;
 @end
 
 @implementation SiriAnalyticsUnifiedMessageStreamHelper
@@ -14,7 +14,7 @@
   return v2;
 }
 
-+ (void)ensureDirectoryExistsAt:(id)a3
++ (void)ensureDirectoryExistsAt:(id)at
 {
   v3 = sub_1D992AD44();
   v4 = *(v3 - 8);

@@ -1,6 +1,6 @@
 @interface UITextView
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UITextView
@@ -112,60 +112,60 @@
   return v8;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"autocapitalizationType"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"autocapitalizationType"])
   {
-    v10 = [v9 autocapitalizationType];
+    autocapitalizationType = [objectCopy autocapitalizationType];
 LABEL_11:
-    v11 = [NSNumber numberWithInteger:v10];
+    v11 = [NSNumber numberWithInteger:autocapitalizationType];
 LABEL_12:
-    a6 = v11;
+    error = v11;
     goto LABEL_13;
   }
 
-  if ([v8 isEqualToString:@"autocorrectionType"])
+  if ([nameCopy isEqualToString:@"autocorrectionType"])
   {
-    v10 = [v9 autocorrectionType];
+    autocapitalizationType = [objectCopy autocorrectionType];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:@"keyboardAppearance"])
+  if ([nameCopy isEqualToString:@"keyboardAppearance"])
   {
-    v10 = [v9 keyboardAppearance];
+    autocapitalizationType = [objectCopy keyboardAppearance];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:@"keyboardType"])
+  if ([nameCopy isEqualToString:@"keyboardType"])
   {
-    v10 = [v9 keyboardType];
+    autocapitalizationType = [objectCopy keyboardType];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:@"returnKeyType"])
+  if ([nameCopy isEqualToString:@"returnKeyType"])
   {
-    v10 = [v9 returnKeyType];
+    autocapitalizationType = [objectCopy returnKeyType];
     goto LABEL_11;
   }
 
-  if ([v8 isEqualToString:@"enablesReturnKeyAutomatically"])
+  if ([nameCopy isEqualToString:@"enablesReturnKeyAutomatically"])
   {
-    v13 = [v9 enablesReturnKeyAutomatically];
+    enablesReturnKeyAutomatically = [objectCopy enablesReturnKeyAutomatically];
 LABEL_20:
-    v11 = [NSNumber numberWithBool:v13];
+    v11 = [NSNumber numberWithBool:enablesReturnKeyAutomatically];
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:@"secureTextEntry"])
+  if ([nameCopy isEqualToString:@"secureTextEntry"])
   {
-    v13 = [v9 isSecureTextEntry];
+    enablesReturnKeyAutomatically = [objectCopy isSecureTextEntry];
     goto LABEL_20;
   }
 
-  v14 = v9;
-  v15 = v8;
+  v14 = objectCopy;
+  v15 = nameCopy;
   if (![v15 length])
   {
     goto LABEL_33;
@@ -181,31 +181,31 @@ LABEL_20:
   {
     if ([v15 length] < 2)
     {
-      v20 = [v15 uppercaseString];
+      uppercaseString = [v15 uppercaseString];
     }
 
     else
     {
       v17 = [v15 substringToIndex:1];
-      v18 = [v17 uppercaseString];
+      uppercaseString2 = [v17 uppercaseString];
       v19 = [v15 substringFromIndex:1];
-      v20 = [v18 stringByAppendingString:v19];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v19];
     }
 
-    v21 = [@"is" stringByAppendingString:v20];
+    v21 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v21);
     v16 = (objc_opt_respondsToSelector() & 1) != 0 ? v21 : 0;
   }
 
   if (v16)
   {
-    a6 = [v14 valueForKey:v16];
+    error = [v14 valueForKey:v16];
   }
 
   else
   {
 LABEL_33:
-    if (a6)
+    if (error)
     {
       v22 = v15;
       if (v14)
@@ -239,10 +239,10 @@ LABEL_33:
       v27 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v26];
 
       v28 = v27;
-      *a6 = v27;
+      *error = v27;
 
       v16 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -253,7 +253,7 @@ LABEL_33:
 
 LABEL_13:
 
-  return a6;
+  return error;
 }
 
 @end

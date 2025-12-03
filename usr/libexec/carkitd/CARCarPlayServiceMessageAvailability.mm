@@ -1,27 +1,27 @@
 @interface CARCarPlayServiceMessageAvailability
-- (CARCarPlayServiceMessageAvailability)initWithDictionaryRepresentation:(id)a3;
-- (CARCarPlayServiceMessageAvailability)initWithWirelessAvailable:(BOOL)a3 wiredAvailable:(id)a4 usbIdentifier:(id)a5 themeAssetsAvailable:(id)a6;
+- (CARCarPlayServiceMessageAvailability)initWithDictionaryRepresentation:(id)representation;
+- (CARCarPlayServiceMessageAvailability)initWithWirelessAvailable:(BOOL)available wiredAvailable:(id)wiredAvailable usbIdentifier:(id)identifier themeAssetsAvailable:(id)assetsAvailable;
 - (NSString)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CARCarPlayServiceMessageAvailability
 
-- (CARCarPlayServiceMessageAvailability)initWithWirelessAvailable:(BOOL)a3 wiredAvailable:(id)a4 usbIdentifier:(id)a5 themeAssetsAvailable:(id)a6
+- (CARCarPlayServiceMessageAvailability)initWithWirelessAvailable:(BOOL)available wiredAvailable:(id)wiredAvailable usbIdentifier:(id)identifier themeAssetsAvailable:(id)assetsAvailable
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  wiredAvailableCopy = wiredAvailable;
+  identifierCopy = identifier;
+  assetsAvailableCopy = assetsAvailable;
   v17.receiver = self;
   v17.super_class = CARCarPlayServiceMessageAvailability;
   v14 = [(CARCarPlayServiceMessageAvailability *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_wirelessAvailable = a3;
-    objc_storeStrong(&v14->_wiredAvailable, a4);
-    objc_storeStrong(&v15->_usbIdentifier, a5);
-    objc_storeStrong(&v15->_themeAssetsAvailable, a6);
+    v14->_wirelessAvailable = available;
+    objc_storeStrong(&v14->_wiredAvailable, wiredAvailable);
+    objc_storeStrong(&v15->_usbIdentifier, identifier);
+    objc_storeStrong(&v15->_themeAssetsAvailable, assetsAvailable);
   }
 
   return v15;
@@ -42,12 +42,12 @@
     v4 = @"NO";
   }
 
-  v5 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
+  wiredAvailable = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
   v6 = @"unset";
-  if (v5)
+  if (wiredAvailable)
   {
-    v13 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
-    if ([v13 BOOLValue])
+    wiredAvailable2 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
+    if ([wiredAvailable2 BOOLValue])
     {
       v6 = @"YES";
     }
@@ -58,12 +58,12 @@
     }
   }
 
-  v7 = [(CARCarPlayServiceMessageAvailability *)self usbIdentifier];
-  v8 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
-  if (v8)
+  usbIdentifier = [(CARCarPlayServiceMessageAvailability *)self usbIdentifier];
+  themeAssetsAvailable = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
+  if (themeAssetsAvailable)
   {
-    v9 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
-    if ([v9 BOOLValue])
+    themeAssetsAvailable2 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
+    if ([themeAssetsAvailable2 BOOLValue])
     {
       v10 = @"YES";
     }
@@ -73,28 +73,28 @@
       v10 = @"NO";
     }
 
-    v11 = [NSString stringWithFormat:@"%@ {wirelessAvailable: %@, wiredAvailable: %@, usbIdentifier: %@, themeAssetsAvailable: %@}", v3, v4, v6, v7, v10];
+    v11 = [NSString stringWithFormat:@"%@ {wirelessAvailable: %@, wiredAvailable: %@, usbIdentifier: %@, themeAssetsAvailable: %@}", v3, v4, v6, usbIdentifier, v10];
   }
 
   else
   {
-    v11 = [NSString stringWithFormat:@"%@ {wirelessAvailable: %@, wiredAvailable: %@, usbIdentifier: %@, themeAssetsAvailable: %@}", v3, v4, v6, v7, @"unset"];
+    v11 = [NSString stringWithFormat:@"%@ {wirelessAvailable: %@, wiredAvailable: %@, usbIdentifier: %@, themeAssetsAvailable: %@}", v3, v4, v6, usbIdentifier, @"unset"];
   }
 
-  if (v5)
+  if (wiredAvailable)
   {
   }
 
   return v11;
 }
 
-- (CARCarPlayServiceMessageAvailability)initWithDictionaryRepresentation:(id)a3
+- (CARCarPlayServiceMessageAvailability)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4)
+  representationCopy = representation;
+  if (representationCopy)
   {
     objc_opt_class();
-    v5 = [v4 objectForKey:@"wireless"];
+    v5 = [representationCopy objectForKey:@"wireless"];
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;
@@ -113,7 +113,7 @@
         sub_100085860();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_57;
     }
 
@@ -137,12 +137,12 @@
         sub_1000857EC();
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_56;
     }
 
     objc_opt_class();
-    v10 = [v4 objectForKey:@"wired"];
+    v10 = [representationCopy objectForKey:@"wired"];
     if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v11 = v10;
@@ -175,7 +175,7 @@
           sub_1000857EC();
         }
 
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_55;
       }
 
@@ -199,7 +199,7 @@
           sub_100085778();
         }
 
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_54;
       }
     }
@@ -211,7 +211,7 @@
     }
 
     objc_opt_class();
-    v16 = [v4 objectForKey:@"asset"];
+    v16 = [representationCopy objectForKey:@"asset"];
     if (v16 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v17 = v16;
@@ -244,7 +244,7 @@
           sub_1000857EC();
         }
 
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_53;
       }
     }
@@ -255,7 +255,7 @@
     }
 
     self = [(CARCarPlayServiceMessageAvailability *)self initWithWirelessAvailable:[v8 BOOLValue] wiredAvailable:v13 usbIdentifier:v15 themeAssetsAvailable:v19];
-    v9 = self;
+    selfCopy = self;
 LABEL_53:
 
 LABEL_54:
@@ -267,10 +267,10 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_58:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -282,27 +282,27 @@ LABEL_58:
   v5 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   [v3 setObject:v5 forKey:@"wireless"];
 
-  v6 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
+  wiredAvailable = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
 
-  if (v6)
+  if (wiredAvailable)
   {
     v7 = +[NSMutableDictionary dictionary];
-    v8 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
-    [v7 cr_setSafeObject:v8 forKey:@"available"];
+    wiredAvailable2 = [(CARCarPlayServiceMessageAvailability *)self wiredAvailable];
+    [v7 cr_setSafeObject:wiredAvailable2 forKey:@"available"];
 
-    v9 = [(CARCarPlayServiceMessageAvailability *)self usbIdentifier];
-    [v7 cr_setSafeObject:v9 forKey:@"usbIdentifier"];
+    usbIdentifier = [(CARCarPlayServiceMessageAvailability *)self usbIdentifier];
+    [v7 cr_setSafeObject:usbIdentifier forKey:@"usbIdentifier"];
 
     [v3 setObject:v7 forKey:@"wired"];
   }
 
-  v10 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
+  themeAssetsAvailable = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
 
-  if (v10)
+  if (themeAssetsAvailable)
   {
     v11 = +[NSMutableDictionary dictionary];
-    v12 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
-    [v11 cr_setSafeObject:v12 forKey:@"available"];
+    themeAssetsAvailable2 = [(CARCarPlayServiceMessageAvailability *)self themeAssetsAvailable];
+    [v11 cr_setSafeObject:themeAssetsAvailable2 forKey:@"available"];
 
     [v3 setObject:v11 forKey:@"asset"];
   }

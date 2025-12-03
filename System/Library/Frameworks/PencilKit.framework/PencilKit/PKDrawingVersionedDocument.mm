@@ -1,29 +1,29 @@
 @interface PKDrawingVersionedDocument
-- (BOOL)loadUnzippedData:(id)a3;
-- (PKDrawingVersionedDocument)initWithDrawing:(id)a3;
-- (PKDrawingVersionedDocument)initWithDrawingClass:(Class)a3;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithDrawingVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (BOOL)loadUnzippedData:(id)data;
+- (PKDrawingVersionedDocument)initWithDrawing:(id)drawing;
+- (PKDrawingVersionedDocument)initWithDrawingClass:(Class)class;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithDrawingVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation PKDrawingVersionedDocument
 
-- (PKDrawingVersionedDocument)initWithDrawingClass:(Class)a3
+- (PKDrawingVersionedDocument)initWithDrawingClass:(Class)class
 {
   v6.receiver = self;
   v6.super_class = PKDrawingVersionedDocument;
   v4 = [(PKVersionedDocument *)&v6 init];
-  objc_storeStrong(&v4->_drawingClass, a3);
+  objc_storeStrong(&v4->_drawingClass, class);
   return v4;
 }
 
-- (BOOL)loadUnzippedData:(id)a3
+- (BOOL)loadUnzippedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PKDrawingVersionedDocument;
-  v5 = [(PKVersionedDocument *)&v9 loadUnzippedData:v4];
+  v5 = [(PKVersionedDocument *)&v9 loadUnzippedData:dataCopy];
   if (v5 && !self->_drawing)
   {
     v6 = objc_alloc_init(self->_drawingClass);
@@ -34,15 +34,15 @@
   return v5;
 }
 
-- (PKDrawingVersionedDocument)initWithDrawing:(id)a3
+- (PKDrawingVersionedDocument)initWithDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v11.receiver = self;
   v11.super_class = PKDrawingVersionedDocument;
   v5 = [(PKVersionedDocument *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [drawingCopy copy];
     drawing = v5->_drawing;
     v5->_drawing = v6;
 
@@ -54,32 +54,32 @@
   return v5;
 }
 
-- (unint64_t)mergeWithDrawingVersionedDocument:(id)a3
+- (unint64_t)mergeWithDrawingVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(PKDrawingVersionedDocument *)self drawing];
-  v6 = [v4 drawing];
-  v7 = [v5 mergeWithDrawing:v6];
+  documentCopy = document;
+  drawing = [(PKDrawingVersionedDocument *)self drawing];
+  drawing2 = [documentCopy drawing];
+  v7 = [drawing mergeWithDrawing:drawing2];
 
   v9.receiver = self;
   v9.super_class = PKDrawingVersionedDocument;
-  [(PKVersionedDocument *)&v9 mergeWithVersionedDocument:v4];
+  [(PKVersionedDocument *)&v9 mergeWithVersionedDocument:documentCopy];
 
   return v7;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v11 = a4;
+  dataCopy = data;
   drawingClass = self->_drawingClass;
-  if (a3 < 0xA)
+  if (version < 0xA)
   {
-    v7 = [[drawingClass alloc] initWithLegacyData:v11];
+    v7 = [[drawingClass alloc] initWithLegacyData:dataCopy];
   }
 
   else
   {
-    v7 = [[drawingClass alloc] initWithV1Data:v11 loadNonInkingStrokes:{-[PKDrawingVersionedDocument loadNonInkingStrokes](self, "loadNonInkingStrokes")}];
+    v7 = [[drawingClass alloc] initWithV1Data:dataCopy loadNonInkingStrokes:{-[PKDrawingVersionedDocument loadNonInkingStrokes](self, "loadNonInkingStrokes")}];
   }
 
   v8 = v7;
@@ -104,10 +104,10 @@
 LABEL_9:
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  v4 = [(PKDrawingVersionedDocument *)self drawing];
-  v5 = [v4 v1SerializeWithPathData:1 toVersion:a3];
+  drawing = [(PKDrawingVersionedDocument *)self drawing];
+  v5 = [drawing v1SerializeWithPathData:1 toVersion:version];
 
   return v5;
 }

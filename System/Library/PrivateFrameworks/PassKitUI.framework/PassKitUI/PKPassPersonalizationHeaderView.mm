@@ -1,25 +1,25 @@
 @interface PKPassPersonalizationHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassPersonalizationHeaderView)initWithLogoImage:(id)a3 description:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassPersonalizationHeaderView)initWithLogoImage:(id)image description:(id)description;
 - (void)_configureForCurrentState;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation PKPassPersonalizationHeaderView
 
-- (PKPassPersonalizationHeaderView)initWithLogoImage:(id)a3 description:(id)a4
+- (PKPassPersonalizationHeaderView)initWithLogoImage:(id)image description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  descriptionCopy = description;
   v22.receiver = self;
   v22.super_class = PKPassPersonalizationHeaderView;
   v8 = [(PKTableHeaderView *)&v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
-    v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v7];
+    v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:descriptionCopy];
     v11 = objc_alloc_init(PKTableHeaderView);
     tableHeaderView = v8->_tableHeaderView;
     v8->_tableHeaderView = v11;
@@ -27,34 +27,34 @@
     [v9 setLineSpacing:-2.0];
     [v10 addAttribute:*MEMORY[0x1E69DB688] value:v9 range:{0, objc_msgSend(v10, "length")}];
     [(PKTableHeaderView *)v8->_tableHeaderView setStyle:2];
-    if (v6)
+    if (imageCopy)
     {
-      v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
+      v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
       [v13 setContentMode:1];
       [v13 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 150.0, 40.0}];
       [(PKTableHeaderView *)v8->_tableHeaderView setImageView:v13];
     }
 
-    v14 = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
-    [v14 setNumberOfLines:1];
+    titleLabel = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
+    [titleLabel setNumberOfLines:1];
 
-    v15 = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
-    [v15 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v16 = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
-    [v16 setMinimumScaleFactor:0.5];
+    titleLabel3 = [(PKTableHeaderView *)v8->_tableHeaderView titleLabel];
+    [titleLabel3 setMinimumScaleFactor:0.5];
 
-    v17 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
-    [v17 setNumberOfLines:3];
+    subtitleLabel = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
+    [subtitleLabel setNumberOfLines:3];
 
-    v18 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
-    [v18 setAttributedText:v10];
+    subtitleLabel2 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
+    [subtitleLabel2 setAttributedText:v10];
 
-    v19 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
-    [v19 setAdjustsFontSizeToFitWidth:1];
+    subtitleLabel3 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
+    [subtitleLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v20 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
-    [v20 setMinimumScaleFactor:0.2];
+    subtitleLabel4 = [(PKTableHeaderView *)v8->_tableHeaderView subtitleLabel];
+    [subtitleLabel4 setMinimumScaleFactor:0.2];
 
     [(PKPassPersonalizationHeaderView *)v8 addSubview:v8->_tableHeaderView];
     [(PKPassPersonalizationHeaderView *)v8 _configureForCurrentState];
@@ -70,18 +70,18 @@
   [(PKPassPersonalizationHeaderView *)&v2 dealloc];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PKPassPersonalizationHeaderView *)self _configureForCurrentState];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKTableHeaderView *)self->_tableHeaderView sizeThatFits:a3.width, a3.height];
+  [(PKTableHeaderView *)self->_tableHeaderView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -124,24 +124,24 @@ LABEL_7:
   v12 = 0;
   v5 = 0;
 LABEL_9:
-  v7 = [(PKTableHeaderView *)self->_tableHeaderView titleLabel];
-  [v7 setText:v12];
+  titleLabel = [(PKTableHeaderView *)self->_tableHeaderView titleLabel];
+  [titleLabel setText:v12];
 
-  v8 = [(PKTableHeaderView *)self->_tableHeaderView activityIndicator];
+  activityIndicator = [(PKTableHeaderView *)self->_tableHeaderView activityIndicator];
   v9 = v3 ^ 1u;
-  [v8 setHidden:v9];
+  [activityIndicator setHidden:v9];
 
   [(PKTableHeaderView *)self->_tableHeaderView showCheckmark:v5 animated:0];
-  v10 = [(PKTableHeaderView *)self->_tableHeaderView activityIndicator];
-  v11 = v10;
+  activityIndicator2 = [(PKTableHeaderView *)self->_tableHeaderView activityIndicator];
+  v11 = activityIndicator2;
   if (v9)
   {
-    [v10 stopAnimating];
+    [activityIndicator2 stopAnimating];
   }
 
   else
   {
-    [v10 startAnimating];
+    [activityIndicator2 startAnimating];
   }
 
   [(PKTableHeaderView *)self->_tableHeaderView setNeedsLayout];

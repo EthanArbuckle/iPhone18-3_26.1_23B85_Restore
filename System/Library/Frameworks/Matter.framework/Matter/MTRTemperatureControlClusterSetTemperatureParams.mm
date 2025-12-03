@@ -1,8 +1,8 @@
 @interface MTRTemperatureControlClusterSetTemperatureParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRTemperatureControlClusterSetTemperatureParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTemperatureControlClusterSetTemperatureParams);
-  v5 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
-  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTargetTemperature:v5];
+  targetTemperature = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
+  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTargetTemperature:targetTemperature];
 
-  v6 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
-  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTargetTemperatureLevel:v6];
+  targetTemperatureLevel = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
+  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTargetTemperatureLevel:targetTemperatureLevel];
 
-  v7 = [(MTRTemperatureControlClusterSetTemperatureParams *)self timedInvokeTimeoutMs];
-  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRTemperatureControlClusterSetTemperatureParams *)self timedInvokeTimeoutMs];
+  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRTemperatureControlClusterSetTemperatureParams *)self serverSideProcessingTimeout];
-  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRTemperatureControlClusterSetTemperatureParams *)self serverSideProcessingTimeout];
+  [(MTRTemperatureControlClusterSetTemperatureParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,30 +60,30 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v25[0] = 0;
   LOBYTE(v27) = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
+  targetTemperature = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
 
-  if (v5)
+  if (targetTemperature)
   {
     v25[0] = 1;
-    v26 = 0;
-    v6 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
-    v26 = [v6 shortValue];
+    shortValue = 0;
+    targetTemperature2 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperature];
+    shortValue = [targetTemperature2 shortValue];
   }
 
-  v7 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
+  targetTemperatureLevel = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
 
-  if (v7)
+  if (targetTemperatureLevel)
   {
     v27 = 1;
-    v8 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
-    HIBYTE(v27) = [v8 unsignedCharValue];
+    targetTemperatureLevel2 = [(MTRTemperatureControlClusterSetTemperatureParams *)self targetTemperatureLevel];
+    HIBYTE(v27) = [targetTemperatureLevel2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -105,8 +105,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -134,19 +134,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRTemperatureControlClusterSetTemperatureParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -157,7 +157,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x314500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

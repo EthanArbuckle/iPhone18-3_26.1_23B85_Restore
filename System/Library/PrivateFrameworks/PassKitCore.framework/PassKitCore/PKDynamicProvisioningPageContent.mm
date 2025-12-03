@@ -1,14 +1,14 @@
 @interface PKDynamicProvisioningPageContent
-- (PKDynamicProvisioningPageContent)initWithDictonary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKDynamicProvisioningPageContent)initWithDictonary:(id)dictonary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKDynamicProvisioningPageContent
 
-- (PKDynamicProvisioningPageContent)initWithDictonary:(id)a3
+- (PKDynamicProvisioningPageContent)initWithDictonary:(id)dictonary
 {
   v109 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictonaryCopy = dictonary;
   v104.receiver = self;
   v104.super_class = PKDynamicProvisioningPageContent;
   v5 = [(PKDynamicProvisioningPageContent *)&v104 init];
@@ -17,7 +17,7 @@
     goto LABEL_76;
   }
 
-  v6 = [v4 PKStringForKey:@"identifier"];
+  v6 = [dictonaryCopy PKStringForKey:@"identifier"];
   v7 = v6;
   if (v6)
   {
@@ -26,69 +26,69 @@
 
   else
   {
-    v8 = [v4 PKStringForKey:@"contextIdentifier"];
+    v8 = [dictonaryCopy PKStringForKey:@"contextIdentifier"];
   }
 
   p_identifier = &v5->_identifier;
   identifier = v5->_identifier;
   v5->_identifier = v8;
 
-  v11 = [v4 PKStringForKey:@"title"];
+  v11 = [dictonaryCopy PKStringForKey:@"title"];
   title = v5->_title;
   v5->_title = v11;
 
   if (!v5->_title)
   {
-    v13 = [v4 PKStringForKey:@"contextLocalizedTitle"];
+    v13 = [dictonaryCopy PKStringForKey:@"contextLocalizedTitle"];
     v14 = v5->_title;
     v5->_title = v13;
 
     if (!v5->_title)
     {
-      v15 = [v4 PKStringForKey:@"localizedTitle"];
+      v15 = [dictonaryCopy PKStringForKey:@"localizedTitle"];
       v16 = v5->_title;
       v5->_title = v15;
     }
   }
 
-  v17 = [v4 PKStringForKey:@"description"];
+  v17 = [dictonaryCopy PKStringForKey:@"description"];
   subtitle = v5->_subtitle;
   v5->_subtitle = v17;
 
   if (!v5->_subtitle)
   {
-    v19 = [v4 PKStringForKey:@"contextLocalizedDescription"];
+    v19 = [dictonaryCopy PKStringForKey:@"contextLocalizedDescription"];
     v20 = v5->_subtitle;
     v5->_subtitle = v19;
 
     if (!v5->_subtitle)
     {
-      v21 = [v4 PKStringForKey:@"localizedDescription"];
+      v21 = [dictonaryCopy PKStringForKey:@"localizedDescription"];
       v22 = v5->_subtitle;
       v5->_subtitle = v21;
     }
   }
 
-  v23 = [v4 PKStringForKey:@"altDescription"];
+  v23 = [dictonaryCopy PKStringForKey:@"altDescription"];
   altSubtitle = v5->_altSubtitle;
   v5->_altSubtitle = v23;
 
   if (!v5->_altSubtitle)
   {
-    v25 = [v4 PKStringForKey:@"contextLocalizedAltDescription"];
+    v25 = [dictonaryCopy PKStringForKey:@"contextLocalizedAltDescription"];
     v26 = v5->_altSubtitle;
     v5->_altSubtitle = v25;
 
     if (!v5->_altSubtitle)
     {
-      v27 = [v4 PKStringForKey:@"localizedAltDescription"];
+      v27 = [dictonaryCopy PKStringForKey:@"localizedAltDescription"];
       v28 = v5->_altSubtitle;
       v5->_altSubtitle = v27;
     }
   }
 
-  v5->_altSubtitleTimeInterval = [v4 PKIntegerForKey:@"contextAltDescriptionTimeInterval"];
-  v29 = [v4 PKStringForKey:@"contentAlignment"];
+  v5->_altSubtitleTimeInterval = [dictonaryCopy PKIntegerForKey:@"contextAltDescriptionTimeInterval"];
+  v29 = [dictonaryCopy PKStringForKey:@"contentAlignment"];
   v30 = v29;
   if (v29)
   {
@@ -97,7 +97,7 @@
 
   else
   {
-    v31 = [v4 PKStringForKey:@"contentAlingment"];
+    v31 = [dictonaryCopy PKStringForKey:@"contentAlingment"];
   }
 
   v32 = v31;
@@ -113,7 +113,7 @@
   }
 
   v5->_contentAlignment = v33;
-  v34 = [v4 PKStringForKey:@"body"];
+  v34 = [dictonaryCopy PKStringForKey:@"body"];
   v35 = v34;
   if (v34)
   {
@@ -122,13 +122,13 @@
 
   else
   {
-    v36 = [v4 PKStringForKey:@"contextLocalizedBody"];
+    v36 = [dictonaryCopy PKStringForKey:@"contextLocalizedBody"];
   }
 
   body = v5->_body;
   v5->_body = v36;
 
-  v38 = [v4 PKStringForKey:@"footnote"];
+  v38 = [dictonaryCopy PKStringForKey:@"footnote"];
   v39 = v38;
   if (v38)
   {
@@ -137,13 +137,13 @@
 
   else
   {
-    v40 = [v4 PKStringForKey:@"contextLocalizedFootnote"];
+    v40 = [dictonaryCopy PKStringForKey:@"contextLocalizedFootnote"];
   }
 
   footnote = v5->_footnote;
   v5->_footnote = v40;
 
-  v42 = [v4 PKStringForKey:@"footnoteDisclosure"];
+  v42 = [dictonaryCopy PKStringForKey:@"footnoteDisclosure"];
   v43 = v42;
   if (v42)
   {
@@ -152,13 +152,13 @@
 
   else
   {
-    v44 = [v4 PKStringForKey:@"contextLocalizedFootnoteDisclosure"];
+    v44 = [dictonaryCopy PKStringForKey:@"contextLocalizedFootnoteDisclosure"];
   }
 
   footnoteDisclosure = v5->_footnoteDisclosure;
   v5->_footnoteDisclosure = v44;
 
-  v46 = [v4 PKStringForKey:@"primaryActionTitle"];
+  v46 = [dictonaryCopy PKStringForKey:@"primaryActionTitle"];
   v47 = v46;
   if (v46)
   {
@@ -167,13 +167,13 @@
 
   else
   {
-    v48 = [v4 PKStringForKey:@"contextLocalizedPrimaryActionTitle"];
+    v48 = [dictonaryCopy PKStringForKey:@"contextLocalizedPrimaryActionTitle"];
   }
 
   primaryActionTitle = v5->_primaryActionTitle;
   v5->_primaryActionTitle = v48;
 
-  v50 = [v4 PKStringForKey:@"altPrimaryActionTitle"];
+  v50 = [dictonaryCopy PKStringForKey:@"altPrimaryActionTitle"];
   v51 = v50;
   if (v50)
   {
@@ -182,13 +182,13 @@
 
   else
   {
-    v52 = [v4 PKStringForKey:@"contextLocalizedAltPrimaryActionTitle"];
+    v52 = [dictonaryCopy PKStringForKey:@"contextLocalizedAltPrimaryActionTitle"];
   }
 
   altPrimaryActionTitle = v5->_altPrimaryActionTitle;
   v5->_altPrimaryActionTitle = v52;
 
-  v54 = [v4 PKStringForKey:@"primaryActionIdentifier"];
+  v54 = [dictonaryCopy PKStringForKey:@"primaryActionIdentifier"];
   v55 = v54;
   if (v54)
   {
@@ -197,13 +197,13 @@
 
   else
   {
-    v56 = [v4 PKStringForKey:@"contextPrimaryActionIdentifier"];
+    v56 = [dictonaryCopy PKStringForKey:@"contextPrimaryActionIdentifier"];
   }
 
   primaryActionIdentifier = v5->_primaryActionIdentifier;
   v5->_primaryActionIdentifier = v56;
 
-  v58 = [v4 PKStringForKey:@"secondaryActionTitle"];
+  v58 = [dictonaryCopy PKStringForKey:@"secondaryActionTitle"];
   v59 = v58;
   if (v58)
   {
@@ -212,13 +212,13 @@
 
   else
   {
-    v60 = [v4 PKStringForKey:@"contextLocalizedSecondaryActionTitle"];
+    v60 = [dictonaryCopy PKStringForKey:@"contextLocalizedSecondaryActionTitle"];
   }
 
   secondaryActionTitle = v5->_secondaryActionTitle;
   v5->_secondaryActionTitle = v60;
 
-  v62 = [v4 PKStringForKey:@"secondaryActionIdentifier"];
+  v62 = [dictonaryCopy PKStringForKey:@"secondaryActionIdentifier"];
   v63 = v62;
   if (v62)
   {
@@ -227,13 +227,13 @@
 
   else
   {
-    v64 = [v4 PKStringForKey:@"contextSecondaryActionIdentifier"];
+    v64 = [dictonaryCopy PKStringForKey:@"contextSecondaryActionIdentifier"];
   }
 
   secondaryActionIdentifier = v5->_secondaryActionIdentifier;
   v5->_secondaryActionIdentifier = v64;
 
-  v66 = [v4 PKStringForKey:@"disclosureTitle"];
+  v66 = [dictonaryCopy PKStringForKey:@"disclosureTitle"];
   v67 = v66;
   if (v66)
   {
@@ -242,13 +242,13 @@
 
   else
   {
-    v68 = [v4 PKStringForKey:@"contextDisclosureTitle"];
+    v68 = [dictonaryCopy PKStringForKey:@"contextDisclosureTitle"];
   }
 
   disclosureTitle = v5->_disclosureTitle;
   v5->_disclosureTitle = v68;
 
-  v70 = [v4 PKStringForKey:@"layout"];
+  v70 = [dictonaryCopy PKStringForKey:@"layout"];
   v71 = v70;
   if (v70 == @"default")
   {
@@ -284,9 +284,9 @@ LABEL_54:
 LABEL_55:
 
   v5->_layout = v73;
-  v5->_requiresExplicitPrimaryAction = [v4 PKBoolForKey:@"requiresExplicitPrimaryAction"];
-  v77 = [v4 PKDictionaryForKey:@"heroImage"];
-  if (v77 || ([v4 PKDictionaryForKey:@"contextHeroImage"], (v77 = objc_claimAutoreleasedReturnValue()) != 0))
+  v5->_requiresExplicitPrimaryAction = [dictonaryCopy PKBoolForKey:@"requiresExplicitPrimaryAction"];
+  v77 = [dictonaryCopy PKDictionaryForKey:@"heroImage"];
+  if (v77 || ([dictonaryCopy PKDictionaryForKey:@"contextHeroImage"], (v77 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v78 = v77;
     v79 = PKScreenScale();
@@ -328,8 +328,8 @@ LABEL_55:
     }
   }
 
-  v86 = [v4 PKDictionaryForKey:@"learnMore"];
-  if (v86 || ([v4 PKDictionaryForKey:@"contextLearnMore"], (v86 = objc_claimAutoreleasedReturnValue()) != 0))
+  v86 = [dictonaryCopy PKDictionaryForKey:@"learnMore"];
+  if (v86 || ([dictonaryCopy PKDictionaryForKey:@"contextLearnMore"], (v86 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v87 = v86;
     v88 = [[PKDynamicProvisioningPageLearnMoreContent alloc] initWithDictionary:v86];
@@ -337,7 +337,7 @@ LABEL_55:
     v5->_learnMore = v88;
   }
 
-  v90 = [v4 PKDictionaryForKey:@"secondaryActionItem"];
+  v90 = [dictonaryCopy PKDictionaryForKey:@"secondaryActionItem"];
   if (v90)
   {
     v91 = [[PKDynamicProvisioningPageLearnMoreContent alloc] initWithDictionary:v90];
@@ -345,7 +345,7 @@ LABEL_55:
     v5->_secondaryActionItem = v91;
   }
 
-  v93 = [v4 PKDictionaryForKey:@"contextLoading"];
+  v93 = [dictonaryCopy PKDictionaryForKey:@"contextLoading"];
   if (v93)
   {
     v94 = [[PKDynamicProvisioningPageContent alloc] initWithDictonary:v93];
@@ -353,7 +353,7 @@ LABEL_55:
     v5->_loadingPageContent = v94;
   }
 
-  v96 = [v4 PKDictionaryForKey:@"actionContent"];
+  v96 = [dictonaryCopy PKDictionaryForKey:@"actionContent"];
   if ([v96 count])
   {
     v97 = [[PKApplyActionContent alloc] initWithDictionary:v96];
@@ -361,7 +361,7 @@ LABEL_55:
     v5->_actionContent = v97;
   }
 
-  v99 = [v4 PKDictionaryForKey:@"footerContent"];
+  v99 = [dictonaryCopy PKDictionaryForKey:@"footerContent"];
   if ([v99 count])
   {
     v100 = [[PKApplyFooterContent alloc] initWithDictionary:v99];
@@ -373,83 +373,83 @@ LABEL_76:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKDynamicProvisioningPageContent allocWithZone:](PKDynamicProvisioningPageContent init];
   v5->_pageNumber = self->_pageNumber;
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v10;
 
-  v12 = [(NSString *)self->_altSubtitle copyWithZone:a3];
+  v12 = [(NSString *)self->_altSubtitle copyWithZone:zone];
   altSubtitle = v5->_altSubtitle;
   v5->_altSubtitle = v12;
 
-  v14 = [(NSString *)self->_body copyWithZone:a3];
+  v14 = [(NSString *)self->_body copyWithZone:zone];
   body = v5->_body;
   v5->_body = v14;
 
-  v16 = [(NSString *)self->_footnote copyWithZone:a3];
+  v16 = [(NSString *)self->_footnote copyWithZone:zone];
   footnote = v5->_footnote;
   v5->_footnote = v16;
 
-  v18 = [(NSString *)self->_footnoteDisclosure copyWithZone:a3];
+  v18 = [(NSString *)self->_footnoteDisclosure copyWithZone:zone];
   footnoteDisclosure = v5->_footnoteDisclosure;
   v5->_footnoteDisclosure = v18;
 
-  v20 = [(NSString *)self->_primaryActionTitle copyWithZone:a3];
+  v20 = [(NSString *)self->_primaryActionTitle copyWithZone:zone];
   primaryActionTitle = v5->_primaryActionTitle;
   v5->_primaryActionTitle = v20;
 
-  v22 = [(NSString *)self->_altPrimaryActionTitle copyWithZone:a3];
+  v22 = [(NSString *)self->_altPrimaryActionTitle copyWithZone:zone];
   altPrimaryActionTitle = v5->_altPrimaryActionTitle;
   v5->_altPrimaryActionTitle = v22;
 
-  v24 = [(NSString *)self->_primaryActionIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_primaryActionIdentifier copyWithZone:zone];
   primaryActionIdentifier = v5->_primaryActionIdentifier;
   v5->_primaryActionIdentifier = v24;
 
-  v26 = [(NSString *)self->_secondaryActionTitle copyWithZone:a3];
+  v26 = [(NSString *)self->_secondaryActionTitle copyWithZone:zone];
   secondaryActionTitle = v5->_secondaryActionTitle;
   v5->_secondaryActionTitle = v26;
 
-  v28 = [(NSString *)self->_secondaryActionIdentifier copyWithZone:a3];
+  v28 = [(NSString *)self->_secondaryActionIdentifier copyWithZone:zone];
   secondaryActionIdentifier = v5->_secondaryActionIdentifier;
   v5->_secondaryActionIdentifier = v28;
 
-  v30 = [(NSString *)self->_disclosureTitle copyWithZone:a3];
+  v30 = [(NSString *)self->_disclosureTitle copyWithZone:zone];
   disclosureTitle = v5->_disclosureTitle;
   v5->_disclosureTitle = v30;
 
-  v32 = [(PKDynamicProvisioningPageLearnMoreContent *)self->_learnMore copyWithZone:a3];
+  v32 = [(PKDynamicProvisioningPageLearnMoreContent *)self->_learnMore copyWithZone:zone];
   learnMore = v5->_learnMore;
   v5->_learnMore = v32;
 
-  v34 = [(PKDynamicProvisioningPageLearnMoreContent *)self->_secondaryActionItem copyWithZone:a3];
+  v34 = [(PKDynamicProvisioningPageLearnMoreContent *)self->_secondaryActionItem copyWithZone:zone];
   secondaryActionItem = v5->_secondaryActionItem;
   v5->_secondaryActionItem = v34;
 
-  v36 = [(NSString *)self->_heroImageURL copyWithZone:a3];
+  v36 = [(NSString *)self->_heroImageURL copyWithZone:zone];
   heroImageURL = v5->_heroImageURL;
   v5->_heroImageURL = v36;
 
-  v38 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:a3];
+  v38 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:zone];
   footerContent = v5->_footerContent;
   v5->_footerContent = v38;
 
-  v40 = [(PKApplyActionContent *)self->_actionContent copyWithZone:a3];
+  v40 = [(PKApplyActionContent *)self->_actionContent copyWithZone:zone];
   actionContent = v5->_actionContent;
   v5->_actionContent = v40;
 
-  v42 = [(PKDynamicProvisioningPageContent *)self->_loadingPageContent copyWithZone:a3];
+  v42 = [(PKDynamicProvisioningPageContent *)self->_loadingPageContent copyWithZone:zone];
   loadingPageContent = v5->_loadingPageContent;
   v5->_loadingPageContent = v42;
 

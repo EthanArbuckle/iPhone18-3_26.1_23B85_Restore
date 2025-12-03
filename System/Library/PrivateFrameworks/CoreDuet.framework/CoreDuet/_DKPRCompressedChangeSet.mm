@@ -1,13 +1,13 @@
 @interface _DKPRCompressedChangeSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)compressedData;
 - (uint64_t)setUncompressedLength:(uint64_t)result;
 - (uint64_t)uncompressedLength;
-- (void)setCompressedData:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setCompressedData:(uint64_t)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRCompressedChangeSet
@@ -18,32 +18,32 @@
   v8.receiver = self;
   v8.super_class = _DKPRCompressedChangeSet;
   v4 = [(_DKPRCompressedChangeSet *)&v8 description];
-  v5 = [(_DKPRCompressedChangeSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRCompressedChangeSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_uncompressedLength];
-  [v3 setObject:v4 forKey:@"uncompressedLength"];
+  [dictionary setObject:v4 forKey:@"uncompressedLength"];
 
   compressedData = self->_compressedData;
   if (compressedData)
   {
-    [v3 setObject:compressedData forKey:@"compressedData"];
+    [dictionary setObject:compressedData forKey:@"compressedData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   uncompressedLength = self->_uncompressedLength;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteUint64Field();
   if (!self->_compressedData)
   {
@@ -53,24 +53,24 @@
   PBDataWriterWriteDataField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_uncompressedLength;
-  v6 = [(NSData *)self->_compressedData copyWithZone:a3];
+  v6 = [(NSData *)self->_compressedData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_uncompressedLength == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_uncompressedLength == equalCopy[1])
   {
     compressedData = self->_compressedData;
-    if (compressedData | v4[2])
+    if (compressedData | equalCopy[2])
     {
       v6 = [(NSData *)compressedData isEqual:?];
     }
@@ -89,11 +89,11 @@
   return v6;
 }
 
-- (void)setCompressedData:(uint64_t)a1
+- (void)setCompressedData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((data + 16), a2);
   }
 }
 

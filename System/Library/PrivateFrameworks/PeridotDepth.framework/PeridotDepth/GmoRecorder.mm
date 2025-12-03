@@ -1,14 +1,14 @@
 @interface GmoRecorder
-- (BOOL)setPathWith:(id)a3;
-- (id)generateFileNameWithExtension:(id)a3 extensionStr:(id)a4;
-- (id)init:(id)a3 recordType:(int)a4 recorderId:(unsigned int)a5 filePrefix:(id)a6 fileExt:(id)a7;
-- (void)addRecSize:(void *)a3 size:(unint64_t)a4 headerRec:(BOOL)a5;
-- (void)addRecWithObject:(id)a3;
+- (BOOL)setPathWith:(id)with;
+- (id)generateFileNameWithExtension:(id)extension extensionStr:(id)str;
+- (id)init:(id)init recordType:(int)type recorderId:(unsigned int)id filePrefix:(id)prefix fileExt:(id)ext;
+- (void)addRecSize:(void *)size size:(unint64_t)a4 headerRec:(BOOL)rec;
+- (void)addRecWithObject:(id)object;
 - (void)checkStopConditionsAndStop;
 - (void)finish;
-- (void)requestWithNumOfRecords:(unint64_t)a3;
-- (void)requestWithRecordLengthMs:(int64_t)a3;
-- (void)startRec:(id)a3 addTimeStamp:(BOOL)a4 dirName:(id)a5;
+- (void)requestWithNumOfRecords:(unint64_t)records;
+- (void)requestWithRecordLengthMs:(int64_t)ms;
+- (void)startRec:(id)rec addTimeStamp:(BOOL)stamp dirName:(id)name;
 - (void)stop;
 - (void)stopAndCloseFile;
 @end
@@ -213,10 +213,10 @@ LABEL_6:
   }
 }
 
-- (void)addRecWithObject:(id)a3
+- (void)addRecWithObject:(id)object
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   [(GmoRecorder *)self timersUpdate];
   [(GmoRecorder *)self checkStopConditionsAndStop];
   if (self->_isActive)
@@ -239,7 +239,7 @@ LABEL_6:
     }
 
     v20 = 0;
-    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:v7 options:0 error:&v20];
+    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:objectCopy format:v7 options:0 error:&v20];
     v9 = v20;
     fullFilePath = self->_fullFilePath;
     v19 = v9;
@@ -278,7 +278,7 @@ LABEL_6:
   }
 }
 
-- (void)addRecSize:(void *)a3 size:(unint64_t)a4 headerRec:(BOOL)a5
+- (void)addRecSize:(void *)size size:(unint64_t)a4 headerRec:(BOOL)rec
 {
   v14 = *MEMORY[0x277D85DE8];
   [(GmoRecorder *)self timersUpdate];
@@ -287,7 +287,7 @@ LABEL_6:
   {
     if (self->_type)
     {
-      if (a5)
+      if (rec)
       {
         return;
       }
@@ -295,7 +295,7 @@ LABEL_6:
       goto LABEL_4;
     }
 
-    if (fwrite(a3, a4, 1uLL, self->_file) != 1)
+    if (fwrite(size, a4, 1uLL, self->_file) != 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -311,7 +311,7 @@ LABEL_6:
     }
 
     self->_bytesWritten += a4;
-    if (!a5)
+    if (!rec)
     {
 LABEL_4:
       ++self->_recordsWritten;
@@ -319,12 +319,12 @@ LABEL_4:
   }
 }
 
-- (void)startRec:(id)a3 addTimeStamp:(BOOL)a4 dirName:(id)a5
+- (void)startRec:(id)rec addTimeStamp:(BOOL)stamp dirName:(id)name
 {
-  v6 = a4;
+  stampCopy = stamp;
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  recCopy = rec;
+  nameCopy = name;
   if (self->_recordsRequested == self->_recLenghMsRequested)
   {
     __assert_rtn("[GmoRecorder startRec:addTimeStamp:dirName:]", "GmoRecorder.mm", 191, "_recordsRequested ^ _recLenghMsRequested");
@@ -332,14 +332,14 @@ LABEL_4:
 
   if (self->_startRequested && !self->_isActive && !self->_stopRequested)
   {
-    v10 = [(NSString *)self->_recDirPath stringByAppendingPathComponent:v9];
+    v10 = [(NSString *)self->_recDirPath stringByAppendingPathComponent:nameCopy];
     currentRecDirPath = self->_currentRecDirPath;
     self->_currentRecDirPath = v10;
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v13 = self->_currentRecDirPath;
     v40 = 0;
-    v14 = [v12 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v40];
+    v14 = [defaultManager createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v40];
     v39 = v40;
 
     v38 = [v39 description];
@@ -347,14 +347,14 @@ LABEL_4:
     {
       self->_isActive = 1;
       self->_startRequested = 0;
-      if (v6)
+      if (stampCopy)
       {
-        [(GmoRecorder *)self generateFileNameWithExtension:v8 extensionStr:self->_ext];
+        [(GmoRecorder *)self generateFileNameWithExtension:recCopy extensionStr:self->_ext];
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, self->_ext];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", recCopy, self->_ext];
       }
       v15 = ;
       fileNameWithExt = self->_fileNameWithExt;
@@ -371,13 +371,13 @@ LABEL_4:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v36 = *__error();
-          v37 = [(NSString *)self->_fullFilePath UTF8String];
+          uTF8String = [(NSString *)self->_fullFilePath UTF8String];
           *buf = 136315650;
           v42 = "[GmoRecorder startRec:addTimeStamp:dirName:]";
           v43 = 1024;
           LODWORD(v44) = v36;
           WORD2(v44) = 2080;
-          *(&v44 + 6) = v37;
+          *(&v44 + 6) = uTF8String;
           _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: REC:ERROR: %d Unable to create record: %s\n", buf, 0x1Cu);
         }
 
@@ -426,7 +426,7 @@ LABEL_4:
         v22 = self->_recordsRequested;
         v21 = self->_recordsWritten;
         v23 = v38;
-        v24 = [v38 UTF8String];
+        uTF8String2 = [v38 UTF8String];
         *buf = 136317186;
         v42 = "[GmoRecorder startRec:addTimeStamp:dirName:]";
         v43 = 2112;
@@ -444,7 +444,7 @@ LABEL_4:
         v48 = 2048;
         v49 = v21;
         v50 = 2080;
-        v51 = v24;
+        v51 = uTF8String2;
         _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: REC:START:ERROR Error creating path: %@ for: recId: %d, Type: %d, Req: %d, recReq: %lld, Actv: %d, recWritten: %lld, error:%s\n", buf, 0x4Cu);
       }
 
@@ -453,34 +453,34 @@ LABEL_4:
   }
 }
 
-- (id)generateFileNameWithExtension:(id)a3 extensionStr:(id)a4
+- (id)generateFileNameWithExtension:(id)extension extensionStr:(id)str
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEAA8] date];
+  extensionCopy = extension;
+  strCopy = str;
+  date = [MEMORY[0x277CBEAA8] date];
   v9 = objc_opt_new();
   [v9 setDateFormat:@"yyyy-MM-dd"];
-  v10 = [v9 stringFromDate:v8];
-  v11 = [MEMORY[0x277CBEAA8] date];
+  v10 = [v9 stringFromDate:date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v12 = objc_opt_new();
   [v12 setDateFormat:@"HH-mm-ss"];
-  v13 = [v12 stringFromDate:v11];
+  v13 = [v12 stringFromDate:date2];
   prefix = self->_prefix;
-  if (v6)
+  if (extensionCopy)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_D%@_T%@%@.%@", prefix, v10, v13, v6, v7];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_D%@_T%@%@.%@", prefix, v10, v13, extensionCopy, strCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_D%@_T%@.%@", prefix, v10, v13, v7];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_D%@_T%@.%@", prefix, v10, v13, strCopy];
   }
   v15 = ;
 
   return v15;
 }
 
-- (void)requestWithNumOfRecords:(unint64_t)a3
+- (void)requestWithNumOfRecords:(unint64_t)records
 {
   if (!self->_isActive)
   {
@@ -492,12 +492,12 @@ LABEL_4:
     self->_currentRecLengthMs = 0;
     self->_recordsWritten = 0;
     self->_bytesWritten = 0;
-    self->_recordsRequested = a3;
+    self->_recordsRequested = records;
     [(gmoRecorderStatusUpdateDelegate *)self->delegate gmoRecorderStartRequestedDelegate:self];
   }
 }
 
-- (void)requestWithRecordLengthMs:(int64_t)a3
+- (void)requestWithRecordLengthMs:(int64_t)ms
 {
   if (!self->_isActive)
   {
@@ -507,20 +507,20 @@ LABEL_4:
     self->_secondsComplete = 0;
     *&self->_currentRecLengthMs = 0u;
     *&self->_recordsWritten = 0u;
-    self->_recLenghMsRequested = a3;
+    self->_recLenghMsRequested = ms;
     [(gmoRecorderStatusUpdateDelegate *)self->delegate gmoRecorderStartRequestedDelegate:self];
   }
 }
 
-- (BOOL)setPathWith:(id)a3
+- (BOOL)setPathWith:(id)with
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_recDirPath, a3);
-  objc_storeStrong(&self->_currentRecDirPath, a3);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  withCopy = with;
+  objc_storeStrong(&self->_recDirPath, with);
+  objc_storeStrong(&self->_currentRecDirPath, with);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0;
-  v7 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v19];
+  v7 = [defaultManager createDirectoryAtPath:withCopy withIntermediateDirectories:1 attributes:0 error:&v19];
   v8 = v19;
 
   v9 = [v8 description];
@@ -533,11 +533,11 @@ LABEL_4:
     isActive = self->_isActive;
     recordsWritten = self->_recordsWritten;
     v16 = v9;
-    v17 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     *buf = 136317186;
     v21 = "[GmoRecorder setPathWith:]";
     v22 = 2112;
-    v23 = v5;
+    v23 = withCopy;
     v24 = 1024;
     v25 = recorderId;
     v26 = 1024;
@@ -551,41 +551,41 @@ LABEL_4:
     v34 = 2048;
     v35 = recordsWritten;
     v36 = 2080;
-    v37 = v17;
+    v37 = uTF8String;
     _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: REC:SETPATH: %@, recId: %d, Type: %d, Req: %d, lengthReg: %ld, Actv: %d, recWritten: %lld, error:%s\n", buf, 0x4Cu);
   }
 
   return v7;
 }
 
-- (id)init:(id)a3 recordType:(int)a4 recorderId:(unsigned int)a5 filePrefix:(id)a6 fileExt:(id)a7
+- (id)init:(id)init recordType:(int)type recorderId:(unsigned int)id filePrefix:(id)prefix fileExt:(id)ext
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (!v12 || [v12 isEqualToString:&stru_28380C970])
+  initCopy = init;
+  prefixCopy = prefix;
+  extCopy = ext;
+  if (!initCopy || [initCopy isEqualToString:&stru_28380C970])
   {
     __assert_rtn("[GmoRecorder init:recordType:recorderId:filePrefix:fileExt:]", "GmoRecorder.mm", 34, "recPath!=nullptr && ![recPath isEqualToString:@]");
   }
 
-  self->_recorderId = a5;
-  self->_type = a4;
+  self->_recorderId = id;
+  self->_type = type;
   fileNameWithExt = self->_fileNameWithExt;
   self->_fileNameWithExt = &stru_28380C970;
 
   fullFilePath = self->_fullFilePath;
   self->_fullFilePath = &stru_28380C970;
 
-  objc_storeStrong(&self->_ext, a7);
-  objc_storeStrong(&self->_prefix, a6);
+  objc_storeStrong(&self->_ext, ext);
+  objc_storeStrong(&self->_prefix, prefix);
   self->_startTime = 0.0;
   self->_secondsComplete = 0;
   *(&self->_secondsComplete + 5) = 0;
   *&self->_recLenghMsRequested = 0u;
   *&self->_recordsRequested = 0u;
   self->_bytesWritten = 0;
-  v17 = [(GmoRecorder *)self setPathWith:v12];
+  v17 = [(GmoRecorder *)self setPathWith:initCopy];
   v18 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
   if (v17)
   {
@@ -602,7 +602,7 @@ LABEL_4:
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: REC:INIT: Type: %d, Path: %@\n", &v25, 0x1Cu);
     }
 
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -620,10 +620,10 @@ LABEL_4:
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: REC:INIT:ERROR: Unable to use path: %@ for recorder type: %d\n", &v25, 0x1Cu);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 @end

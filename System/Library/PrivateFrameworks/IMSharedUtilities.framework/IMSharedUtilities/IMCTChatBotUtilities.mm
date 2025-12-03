@@ -1,14 +1,14 @@
 @interface IMCTChatBotUtilities
-+ (BOOL)IMHandleIsChatBot:(id)a3;
-+ (id)IMChipFromCTChip:(id)a3 originalID:(id)a4;
-+ (id)IMChipListFromCTChipList:(id)a3 originalID:(id)a4;
-+ (id)IMChipListFromSuggestions:(id)a3;
++ (BOOL)IMHandleIsChatBot:(id)bot;
++ (id)IMChipFromCTChip:(id)chip originalID:(id)d;
++ (id)IMChipListFromCTChipList:(id)list originalID:(id)d;
++ (id)IMChipListFromSuggestions:(id)suggestions;
 - (IMCTChatBotUtilities)init;
 @end
 
 @implementation IMCTChatBotUtilities
 
-+ (BOOL)IMHandleIsChatBot:(id)a3
++ (BOOL)IMHandleIsChatBot:(id)bot
 {
   v3 = sub_1A88C82E8();
   v5 = sub_1A87BB058(v3, v4);
@@ -16,7 +16,7 @@
   return v5 & 1;
 }
 
-+ (id)IMChipListFromSuggestions:(id)a3
++ (id)IMChipListFromSuggestions:(id)suggestions
 {
   sub_1A88C82E8();
   swift_getObjCClassMetadata();
@@ -25,21 +25,21 @@
   return v3;
 }
 
-+ (id)IMChipListFromCTChipList:(id)a3 originalID:(id)a4
++ (id)IMChipListFromCTChipList:(id)list originalID:(id)d
 {
   sub_1A88C82E8();
   swift_getObjCClassMetadata();
-  v5 = a3;
-  v6 = sub_1A87BA95C(a3);
+  listCopy = list;
+  v6 = sub_1A87BA95C(list);
 
   return v6;
 }
 
-+ (id)IMChipFromCTChip:(id)a3 originalID:(id)a4
++ (id)IMChipFromCTChip:(id)chip originalID:(id)d
 {
   sub_1A88C82E8();
-  v5 = a3;
-  v6 = sub_1A87BC3A0(v5);
+  chipCopy = chip;
+  v6 = sub_1A87BC3A0(chipCopy);
 
   return v6;
 }

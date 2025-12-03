@@ -1,22 +1,22 @@
 @interface TRISubjectRotationNotification
 + (BOOL)notifySubjectRotation;
-+ (id)registerSubjectRotationWithQueue:(id)a3 usingBlock:(id)a4;
-+ (void)deregisterUpdateWithToken:(id)a3;
++ (id)registerSubjectRotationWithQueue:(id)queue usingBlock:(id)block;
++ (void)deregisterUpdateWithToken:(id)token;
 @end
 
 @implementation TRISubjectRotationNotification
 
-+ (id)registerSubjectRotationWithQueue:(id)a3 usingBlock:(id)a4
++ (id)registerSubjectRotationWithQueue:(id)queue usingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_UTILITY, 0);
 
-    v5 = dispatch_queue_create("com.apple.trial.SubjectRotation", v8);
+    queueCopy = dispatch_queue_create("com.apple.trial.SubjectRotation", v8);
   }
 
   out_token = 0;
@@ -24,9 +24,9 @@
   v18 = 3221225472;
   v19 = __78__TRISubjectRotationNotification_registerSubjectRotationWithQueue_usingBlock___block_invoke;
   v20 = &unk_27885ECF8;
-  v21 = v6;
-  v9 = v6;
-  v10 = notify_register_dispatch("com.apple.trial.SubjectRotation", &out_token, v5, &v17);
+  v21 = blockCopy;
+  v9 = blockCopy;
+  v10 = notify_register_dispatch("com.apple.trial.SubjectRotation", &out_token, queueCopy, &v17);
   if (v10)
   {
     v11 = v10;
@@ -64,13 +64,13 @@ uint64_t __78__TRISubjectRotationNotification_registerSubjectRotationWithQueue_u
   return (*(*(a1 + 32) + 16))();
 }
 
-+ (void)deregisterUpdateWithToken:(id)a3
++ (void)deregisterUpdateWithToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = [a3 token];
+    token = [token token];
 
-    notify_cancel(v3);
+    notify_cancel(token);
   }
 }
 

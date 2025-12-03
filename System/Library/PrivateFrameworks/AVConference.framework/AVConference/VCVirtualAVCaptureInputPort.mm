@@ -1,19 +1,19 @@
 @interface VCVirtualAVCaptureInputPort
 - (AVCaptureInput)input;
-- (BOOL)isEqual:(id)a3;
-- (VCVirtualAVCaptureInputPort)initWithDevice:(id)a3 mediaType:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VCVirtualAVCaptureInputPort)initWithDevice:(id)device mediaType:(id)type;
 - (id)connections;
-- (void)addConnection:(id)a3;
+- (void)addConnection:(id)connection;
 - (void)dealloc;
 - (void)disconnect;
-- (void)setInput:(id)a3;
+- (void)setInput:(id)input;
 @end
 
 @implementation VCVirtualAVCaptureInputPort
 
-- (VCVirtualAVCaptureInputPort)initWithDevice:(id)a3 mediaType:(id)a4
+- (VCVirtualAVCaptureInputPort)initWithDevice:(id)device mediaType:(id)type
 {
-  if (!a3)
+  if (!device)
   {
     [VCVirtualAVCaptureInputPort initWithDevice:mediaType:];
 LABEL_13:
@@ -21,7 +21,7 @@ LABEL_13:
     return 0;
   }
 
-  v6 = [a4 copy];
+  v6 = [type copy];
   self->_mediaType = v6;
   if (!v6)
   {
@@ -29,7 +29,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:a3];
+  v7 = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:device];
   self->_input = v7;
   if (!v7)
   {
@@ -108,10 +108,10 @@ LABEL_13:
   [(AVCaptureInputPort *)&v3 dealloc];
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   os_unfair_lock_lock(&self->_stateLock);
-  [(NSMutableArray *)self->_connections addObject:a3];
+  [(NSMutableArray *)self->_connections addObject:connection];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -128,29 +128,29 @@ LABEL_13:
 - (AVCaptureInput)input
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(VCWeakObjectHolder *)self->_input strong];
+  strong = [(VCWeakObjectHolder *)self->_input strong];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return strong;
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
   os_unfair_lock_lock(&self->_stateLock);
 
-  self->_input = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:a3];
+  self->_input = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:input];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_mediaType isEqual:*(a3 + 3)];
+    v5 = [(NSString *)self->_mediaType isEqual:*(equal + 3)];
     if (v5)
     {
-      LOBYTE(v5) = self->_input == *(a3 + 2);
+      LOBYTE(v5) = self->_input == *(equal + 2);
     }
   }
 

@@ -1,11 +1,11 @@
 @interface ISGenerationRequest
 - (ISGenerationRequest)init;
-- (ISGenerationRequest)initWithCoder:(id)a3;
-- (id)compositorElementsForDecorations:(id)a3 primaryIconResourceProvider:(id)a4 imageDescriptor:(id)a5;
-- (id)generateImageReturningRecordIdentifiers:(id *)a3;
-- (id)iconSpecificationFromRecipe:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)sendAnalytics:(id)a3 compositor:(id)a4 imageDescriptor:(id)a5;
+- (ISGenerationRequest)initWithCoder:(id)coder;
+- (id)compositorElementsForDecorations:(id)decorations primaryIconResourceProvider:(id)provider imageDescriptor:(id)descriptor;
+- (id)generateImageReturningRecordIdentifiers:(id *)identifiers;
+- (id)iconSpecificationFromRecipe:(id)recipe;
+- (void)encodeWithCoder:(id)coder;
+- (void)sendAnalytics:(id)analytics compositor:(id)compositor imageDescriptor:(id)descriptor;
 @end
 
 @implementation ISGenerationRequest
@@ -35,55 +35,55 @@
   return v2;
 }
 
-- (ISGenerationRequest)initWithCoder:(id)a3
+- (ISGenerationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ISGenerationRequest;
   v5 = [(ISGenerationRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageDescriptor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDescriptor"];
     imageDescriptor = v5->_imageDescriptor;
     v5->_imageDescriptor = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsDatabaseUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsDatabaseUUID"];
     lsDatabaseUUID = v5->_lsDatabaseUUID;
     v5->_lsDatabaseUUID = v10;
 
-    v5->_lsDatabaseSequenceNumber = [v4 decodeInt64ForKey:@"lsDatabaseSequenceNumber"];
+    v5->_lsDatabaseSequenceNumber = [coderCopy decodeInt64ForKey:@"lsDatabaseSequenceNumber"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageDescriptor = self->_imageDescriptor;
-  v5 = a3;
-  [v5 encodeObject:imageDescriptor forKey:@"imageDescriptor"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
-  [v5 encodeObject:self->_lsDatabaseUUID forKey:@"lsDatabaseUUID"];
-  [v5 encodeInt64:self->_lsDatabaseSequenceNumber forKey:@"lsDatabaseSequenceNumber"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageDescriptor forKey:@"imageDescriptor"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
+  [coderCopy encodeObject:self->_lsDatabaseUUID forKey:@"lsDatabaseUUID"];
+  [coderCopy encodeInt64:self->_lsDatabaseSequenceNumber forKey:@"lsDatabaseSequenceNumber"];
 }
 
-- (void)sendAnalytics:(id)a3 compositor:(id)a4 imageDescriptor:(id)a5
+- (void)sendAnalytics:(id)analytics compositor:(id)compositor imageDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSinceDate:_lastAnalyticsStartDate];
+  analyticsCopy = analytics;
+  compositorCopy = compositor;
+  descriptorCopy = descriptor;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:_lastAnalyticsStartDate];
   v13 = v12;
 
   v14 = +[ISDefaults sharedInstance];
-  v15 = [v14 isIconSegmentationAnalyticsForAllIconsEnabled];
+  isIconSegmentationAnalyticsForAllIconsEnabled = [v14 isIconSegmentationAnalyticsForAllIconsEnabled];
 
-  if ((v15 & 1) != 0 || v13 > 604800.0)
+  if ((isIconSegmentationAnalyticsForAllIconsEnabled & 1) != 0 || v13 > 604800.0)
   {
     _analyticsMessageCount = 0;
   }
@@ -93,58 +93,58 @@
     goto LABEL_18;
   }
 
-  v16 = [(ISGenerationRequest *)self icon];
+  icon = [(ISGenerationRequest *)self icon];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v18 = [(ISGenerationRequest *)self icon];
-    v19 = [v18 bundleIdentifier];
+    icon2 = [(ISGenerationRequest *)self icon];
+    bundleIdentifier = [icon2 bundleIdentifier];
 
-    if (([v19 hasPrefix:@"com.apple"] & 1) == 0)
+    if (([bundleIdentifier hasPrefix:@"com.apple"] & 1) == 0)
     {
       v20 = +[ISDefaults sharedInstance];
       if ([v20 isIconSegmentationAnalyticsForAllIconsEnabled])
       {
 
 LABEL_11:
-        v22 = [(ISGenerationRequest *)self icon];
-        v23 = [v22 bundleVersion];
+        icon3 = [(ISGenerationRequest *)self icon];
+        bundleVersion = [icon3 bundleVersion];
 
-        v24 = [v8 iconResource];
+        iconResource = [analyticsCopy iconResource];
         objc_opt_class();
         v25 = objc_opt_isKindOfClass();
 
         if (v25)
         {
-          v26 = [v8 iconResource];
-          v27 = [v26 hasDarkResource];
-          v28 = [v26 hasTintableResource];
+          iconResource2 = [analyticsCopy iconResource];
+          hasDarkResource = [iconResource2 hasDarkResource];
+          hasTintableResource = [iconResource2 hasTintableResource];
         }
 
         else
         {
-          v28 = 0;
-          v27 = 0;
+          hasTintableResource = 0;
+          hasDarkResource = 0;
         }
 
-        v29 = [v9 analyticsSegmented];
-        v30 = [v10 appearance];
+        analyticsSegmented = [compositorCopy analyticsSegmented];
+        appearance = [descriptorCopy appearance];
         v35 = MEMORY[0x1E69E9820];
-        v36 = v19;
-        v31 = v23;
-        LOBYTE(v38) = v29;
-        BYTE1(v38) = v27;
-        BYTE2(v38) = v28;
+        v36 = bundleIdentifier;
+        v31 = bundleVersion;
+        LOBYTE(v38) = analyticsSegmented;
+        BYTE1(v38) = hasDarkResource;
+        BYTE2(v38) = hasTintableResource;
         v37 = v31;
         AnalyticsSendEventLazy();
         v32 = _analyticsMessageCount;
         if (!_analyticsMessageCount)
         {
-          v33 = [MEMORY[0x1E695DF00] date];
+          date2 = [MEMORY[0x1E695DF00] date];
           v34 = _lastAnalyticsStartDate;
-          _lastAnalyticsStartDate = v33;
+          _lastAnalyticsStartDate = date2;
 
           v32 = _analyticsMessageCount;
         }
@@ -226,15 +226,15 @@ LABEL_7:
   return v10;
 }
 
-- (id)generateImageReturningRecordIdentifiers:(id *)a3
+- (id)generateImageReturningRecordIdentifiers:(id *)identifiers
 {
-  v3 = self;
+  selfCopy = self;
   v125 = *MEMORY[0x1E69E9840];
-  v4 = [(ISGenerationRequest *)self imageDescriptor];
-  v5 = [v4 copy];
+  imageDescriptor = [(ISGenerationRequest *)self imageDescriptor];
+  v5 = [imageDescriptor copy];
 
-  v6 = [(ISGenerationRequest *)v3 icon];
-  v108 = v6;
+  icon = [(ISGenerationRequest *)selfCopy icon];
+  v108 = icon;
   if (v5)
   {
     v7 = _ISPrepareISIconSignpostLog();
@@ -242,9 +242,9 @@ LABEL_7:
 
     if (v8)
     {
-      v105 = v3;
+      v105 = selfCopy;
       v109 = v5;
-      v9 = [v6 _activeSignpostsForDescriptor:v5];
+      v9 = [icon _activeSignpostsForDescriptor:v5];
       v115 = 0u;
       v116 = 0u;
       v117 = 0u;
@@ -272,10 +272,10 @@ LABEL_7:
               if (v16)
               {
                 v17 = _ISPrepareISIconSignpostLog();
-                v18 = [v14 unsignedLongLongValue];
-                if ((v18 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+                unsignedLongLongValue = [v14 unsignedLongLongValue];
+                if ((unsignedLongLongValue - 1) <= 0xFFFFFFFFFFFFFFFDLL)
                 {
-                  v19 = v18;
+                  v19 = unsignedLongLongValue;
                   if (os_signpost_enabled(v17))
                   {
                     *buf = 0;
@@ -292,40 +292,40 @@ LABEL_7:
         while (v11);
       }
 
-      v6 = v108;
+      icon = v108;
       v5 = v109;
-      v3 = v105;
+      selfCopy = v105;
     }
   }
 
-  v20 = [v6 makeResourceProvider];
-  v21 = v20;
-  if (v20)
+  makeResourceProvider = [icon makeResourceProvider];
+  v21 = makeResourceProvider;
+  if (makeResourceProvider)
   {
-    [v20 resolveIconResource];
+    [makeResourceProvider resolveIconResource];
     [v21 configureProviderFromDescriptor:v5];
     v22 = objc_alloc_init(ISCompositor);
-    v23 = [v21 customRecipe];
+    customRecipe = [v21 customRecipe];
 
-    if (v23)
+    if (customRecipe)
     {
-      v24 = [v21 customRecipe];
+      customRecipe2 = [v21 customRecipe];
     }
 
     else
     {
-      v24 = v21;
+      customRecipe2 = v21;
     }
 
-    v26 = v24;
+    v26 = customRecipe2;
     v27 = [ISRecipeFactory factoryWithDescriptor:v5 resourceProvider:v21];
-    v28 = [v27 recipe];
+    recipe = [v27 recipe];
 
     if ([v21 isGenericProvider] && (objc_msgSend(v5, "shape") == 5 || objc_msgSend(v5, "shape") == 6))
     {
       v29 = MEMORY[0x1E69A8990];
-      v30 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-      v31 = [v29 imageBagWithResourcesNamed:@"AppClipDefaultIcon" fromBundle:v30];
+      iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+      v31 = [v29 imageBagWithResourcesNamed:@"AppClipDefaultIcon" fromBundle:iconsetResourceBundle];
       [v21 setIconResource:v31];
     }
 
@@ -340,7 +340,7 @@ LABEL_7:
       [(ISCompositor *)v22 setRenderingMode:2];
     }
 
-    v34 = [(ISGenerationRequest *)v3 iconSpecificationFromRecipe:v28];
+    v34 = [(ISGenerationRequest *)selfCopy iconSpecificationFromRecipe:recipe];
     [v5 size];
     v36 = v35;
     v38 = v37;
@@ -364,28 +364,28 @@ LABEL_7:
     }
 
     v110 = v40;
-    v50 = [v21 iconResource];
+    iconResource = [v21 iconResource];
     objc_opt_class();
     v51 = objc_opt_isKindOfClass();
 
     if (v51)
     {
-      v52 = [v21 iconResource];
-      [v52 updateDescriptorWithImageDescriptor:v5];
+      iconResource2 = [v21 iconResource];
+      [iconResource2 updateDescriptorWithImageDescriptor:v5];
     }
 
     v106 = v26;
-    v102 = [[ISCompositorElement alloc] initWithRecipe:v28 resourceProvider:v26];
+    v102 = [[ISCompositorElement alloc] initWithRecipe:recipe resourceProvider:v26];
     [(ISCompositor *)v22 addElement:?];
     v53 = objc_opt_new();
-    v54 = [v6 decorations];
-    [v53 addObjectsFromArray:v54];
+    decorations = [icon decorations];
+    [v53 addObjectsFromArray:decorations];
 
     v55 = [ISIconDecoration decorationsFromDescriptor:v5];
     [v53 addObjectsFromArray:v55];
 
     v101 = v53;
-    v56 = [(ISGenerationRequest *)v3 compositorElementsForDecorations:v53 primaryIconResourceProvider:v21 imageDescriptor:v5];
+    v56 = [(ISGenerationRequest *)selfCopy compositorElementsForDecorations:v53 primaryIconResourceProvider:v21 imageDescriptor:v5];
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
@@ -428,7 +428,7 @@ LABEL_7:
     }
 
     objc_opt_class();
-    v104 = v28;
+    v104 = recipe;
     v70 = objc_opt_isKindOfClass();
     v71 = round(v62 * 1.18);
     v72 = round(v64 * 1.18);
@@ -452,8 +452,8 @@ LABEL_7:
       v74 = v62;
     }
 
-    v75 = [v21 iconResource];
-    v76 = [v75 conformsToProtocol:&unk_1F1A69890];
+    iconResource3 = [v21 iconResource];
+    v76 = [iconResource3 conformsToProtocol:&unk_1F1A69890];
 
     if (v76)
     {
@@ -461,14 +461,14 @@ LABEL_7:
     }
 
     v77 = [(ISCompositor *)v22 imageForSize:v74 scale:v73, v66];
-    [(ISGenerationRequest *)v3 sendAnalytics:v21 compositor:v22 imageDescriptor:v5];
-    v78 = [v21 iconResource];
-    v79 = [v78 conformsToProtocol:&unk_1F1A69910];
+    [(ISGenerationRequest *)selfCopy sendAnalytics:v21 compositor:v22 imageDescriptor:v5];
+    iconResource4 = [v21 iconResource];
+    v79 = [iconResource4 conformsToProtocol:&unk_1F1A69910];
 
     if (v79)
     {
-      v80 = [v21 iconResource];
-      v81 = [v80 layerDataForSize:v74 scale:{v73, v66}];
+      iconResource5 = [v21 iconResource];
+      v81 = [iconResource5 layerDataForSize:v74 scale:{v73, v66}];
     }
 
     else
@@ -477,43 +477,43 @@ LABEL_7:
     }
 
     v82 = objc_alloc(MEMORY[0x1E69A8988]);
-    v83 = [v77 CGImage];
+    cGImage = [v77 CGImage];
     [v77 scale];
     v99 = v81;
-    v84 = [v82 initWithCGImage:v83 scale:v81 layerData:?];
+    v84 = [v82 initWithCGImage:cGImage scale:v81 layerData:?];
 
     [v110 minimumSize];
     [v84 setMinimumSize:?];
     [v84 setIconSize:{v62, v64}];
-    v85 = [v84 data];
+    data = [v84 data];
     v86 = objc_alloc(MEMORY[0x1E69A8988]);
-    v87 = [v21 validationToken];
-    v25 = [v86 initWithData:v85 uuid:0 validationToken:v87];
+    validationToken = [v21 validationToken];
+    v25 = [v86 initWithData:data uuid:0 validationToken:validationToken];
 
-    v88 = [v21 iconResource];
-    LODWORD(v87) = [v88 conformsToProtocol:&unk_1F1A69890];
+    iconResource6 = [v21 iconResource];
+    LODWORD(validationToken) = [iconResource6 conformsToProtocol:&unk_1F1A69890];
 
-    if (v87)
+    if (validationToken)
     {
-      v89 = [v21 iconResource];
-      v90 = [v89 generationReport];
-      [v25 setGenerationReport:v90];
+      iconResource7 = [v21 iconResource];
+      generationReport = [iconResource7 generationReport];
+      [v25 setGenerationReport:generationReport];
     }
 
     else
     {
-      v89 = [v84 generationReport];
-      [v25 setGenerationReport:v89];
+      iconResource7 = [v84 generationReport];
+      [v25 setGenerationReport:iconResource7];
     }
 
     [v25 setLargest:v100];
-    if (a3)
+    if (identifiers)
     {
       v91 = v5;
-      v92 = [v21 sourceRecordIdentifiers];
-      if (v92 && (v93 = v92, [v21 sourceRecordIdentifiers], v94 = objc_claimAutoreleasedReturnValue(), v95 = objc_msgSend(v94, "count"), v94, v93, v95))
+      sourceRecordIdentifiers = [v21 sourceRecordIdentifiers];
+      if (sourceRecordIdentifiers && (v93 = sourceRecordIdentifiers, [v21 sourceRecordIdentifiers], v94 = objc_claimAutoreleasedReturnValue(), v95 = objc_msgSend(v94, "count"), v94, v93, v95))
       {
-        *a3 = [v21 sourceRecordIdentifiers];
+        *identifiers = [v21 sourceRecordIdentifiers];
       }
 
       else
@@ -532,7 +532,7 @@ LABEL_7:
       v5 = v91;
     }
 
-    v6 = v108;
+    icon = v108;
   }
 
   else
@@ -545,12 +545,12 @@ LABEL_7:
   return v25;
 }
 
-- (id)iconSpecificationFromRecipe:(id)a3
+- (id)iconSpecificationFromRecipe:(id)recipe
 {
-  v3 = a3;
+  recipeCopy = recipe;
   if (objc_opt_respondsToSelector())
   {
-    [v3 iconSpecification];
+    [recipeCopy iconSpecification];
   }
 
   else
@@ -562,23 +562,23 @@ LABEL_7:
   return v4;
 }
 
-- (id)compositorElementsForDecorations:(id)a3 primaryIconResourceProvider:(id)a4 imageDescriptor:(id)a5
+- (id)compositorElementsForDecorations:(id)decorations primaryIconResourceProvider:(id)provider imageDescriptor:(id)descriptor
 {
   v66 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  decorationsCopy = decorations;
+  providerCopy = provider;
+  descriptorCopy = descriptor;
   v52 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v7;
+  obj = decorationsCopy;
   v54 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v54)
   {
     v10 = *v56;
-    v50 = v8;
+    v50 = providerCopy;
     v51 = *v56;
     do
     {
@@ -590,61 +590,61 @@ LABEL_7:
         }
 
         v12 = *(*(&v55 + 1) + 8 * i);
-        v13 = [ISRecipeFactory factoryWithDescriptor:v9 resourceProvider:v8];
+        v13 = [ISRecipeFactory factoryWithDescriptor:descriptorCopy resourceProvider:providerCopy];
         v14 = [v13 recipeForDecoration:v12];
 
-        v15 = [v12 identifierKind];
-        if (v15 == 1)
+        identifierKind = [v12 identifierKind];
+        if (identifierKind == 1)
         {
           v24 = MEMORY[0x1E6963620];
-          v25 = [v12 identifier];
-          v19 = [v24 bundleRecordWithBundleIdentifier:v25 allowPlaceholder:1 error:0];
+          identifier = [v12 identifier];
+          v19 = [v24 bundleRecordWithBundleIdentifier:identifier allowPlaceholder:1 error:0];
 
           v18 = [[ISRecordResourceProvider alloc] initWithRecord:v19 options:0];
           [(ISResourceProvider *)v18 resolveIconResource];
-          [(ISRecordResourceProvider *)v18 configureProviderFromDescriptor:v9];
+          [(ISRecordResourceProvider *)v18 configureProviderFromDescriptor:descriptorCopy];
           if (!v14)
           {
             goto LABEL_32;
           }
 
-          v26 = [(ISRecordResourceProvider *)v18 iconResource];
+          iconResource = [(ISRecordResourceProvider *)v18 iconResource];
 
-          if (!v26)
+          if (!iconResource)
           {
             goto LABEL_32;
           }
 
-          v27 = [(ISRecordResourceProvider *)v18 iconResource];
+          iconResource2 = [(ISRecordResourceProvider *)v18 iconResource];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v29 = [(ISRecordResourceProvider *)v18 iconResource];
-            [v29 updateDescriptorWithImageDescriptor:v9];
+            iconResource3 = [(ISRecordResourceProvider *)v18 iconResource];
+            [iconResource3 updateDescriptorWithImageDescriptor:descriptorCopy];
           }
 
           v30 = [_ISCompositorElement alloc];
           v61 = @"kISPrimaryResourceKey";
-          v31 = [(ISRecordResourceProvider *)v18 iconResource];
-          v62 = v31;
+          iconResource4 = [(ISRecordResourceProvider *)v18 iconResource];
+          v62 = iconResource4;
           v32 = MEMORY[0x1E695DF20];
           v33 = &v62;
           v34 = &v61;
           goto LABEL_31;
         }
 
-        if (v15 != 3)
+        if (identifierKind != 3)
         {
-          if (v15 != 2)
+          if (identifierKind != 2)
           {
             goto LABEL_34;
           }
 
-          v16 = [v8 decorationResources];
-          v17 = [v12 uuid];
-          v18 = [v16 objectForKeyedSubscript:v17];
+          decorationResources = [providerCopy decorationResources];
+          uuid = [v12 uuid];
+          v18 = [decorationResources objectForKeyedSubscript:uuid];
 
           if (v18)
           {
@@ -654,38 +654,38 @@ LABEL_7:
           else
           {
             v35 = MEMORY[0x1E69636B0];
-            v36 = [v12 identifier];
-            v37 = [v35 typeRecordWithIdentifier:v36];
+            identifier2 = [v12 identifier];
+            v37 = [v35 typeRecordWithIdentifier:identifier2];
 
-            v38 = [MEMORY[0x1E6963620] coreTypesBundleRecord];
-            v39 = [v38 bundleIdentifier];
+            coreTypesBundleRecord = [MEMORY[0x1E6963620] coreTypesBundleRecord];
+            bundleIdentifier = [coreTypesBundleRecord bundleIdentifier];
 
             v40 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:@"com.apple.icon-decoration.system"];
-            if ([v37 conformsToTypeRecord:v40] && (objc_msgSend(v37, "declaringBundleRecord"), v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "bundleIdentifier"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isEqualToString:", v39), v42, v41, !v43))
+            if ([v37 conformsToTypeRecord:v40] && (objc_msgSend(v37, "declaringBundleRecord"), v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "bundleIdentifier"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isEqualToString:", bundleIdentifier), v42, v41, !v43))
             {
               v19 = 0;
             }
 
             else
             {
-              v44 = [v37 identifier];
-              v19 = [(ISResourceProvider *)ISRecordResourceProvider resourceProviderWithTypeIdentifier:v44 options:0];
+              identifier3 = [v37 identifier];
+              v19 = [(ISResourceProvider *)ISRecordResourceProvider resourceProviderWithTypeIdentifier:identifier3 options:0];
             }
 
-            v8 = v50;
+            providerCopy = v50;
             v10 = v51;
           }
 
           [(ISResourceProvider *)v19 resolveIconResource];
-          [(ISResourceProvider *)v19 configureProviderFromDescriptor:v9];
+          [(ISResourceProvider *)v19 configureProviderFromDescriptor:descriptorCopy];
           if (!v14)
           {
             goto LABEL_32;
           }
 
-          v45 = [(ISResourceProvider *)v19 iconResource];
+          iconResource5 = [(ISResourceProvider *)v19 iconResource];
 
-          if (!v45)
+          if (!iconResource5)
           {
             goto LABEL_32;
           }
@@ -693,13 +693,13 @@ LABEL_7:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(ISRecordResourceProvider *)v18 updateDescriptorWithImageDescriptor:v9];
+            [(ISRecordResourceProvider *)v18 updateDescriptorWithImageDescriptor:descriptorCopy];
           }
 
           v30 = [_ISCompositorElement alloc];
           v63 = @"kISPrimaryResourceKey";
-          v31 = [(ISResourceProvider *)v19 iconResource];
-          v64 = v31;
+          iconResource4 = [(ISResourceProvider *)v19 iconResource];
+          v64 = iconResource4;
           v32 = MEMORY[0x1E695DF20];
           v33 = &v64;
           v34 = &v63;
@@ -712,11 +712,11 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v20 = [v12 compositorResource];
-        v19 = v20;
+        compositorResource = [v12 compositorResource];
+        v19 = compositorResource;
         if (v14)
         {
-          v21 = v20 == 0;
+          v21 = compositorResource == 0;
         }
 
         else

@@ -25,7 +25,7 @@ LABEL_101:
     objc_exception_throw([v85 exceptionWithName:v86 reason:v87 userInfo:0]);
   }
 
-  v8 = _myersDescent(a1, a3, a5);
+  v8 = _myersDescent(self, a3, a5);
   v9 = v8;
   v94 = a4;
   obj = a5;
@@ -49,7 +49,7 @@ LABEL_101:
 
   context = objc_autoreleasePoolPush();
   v11 = [a3 count];
-  v12 = [a1 count];
+  v12 = [self count];
   v13 = [(NSPointerArray *)v9 count];
   v90 = v9;
   if (v13 >= 2)
@@ -125,15 +125,15 @@ LABEL_14:
           v35 = [NSValue valueWithNonretainedObject:v34];
           if ([v93 objectForKeyedSubscript:v35])
           {
-            v36 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
 
           else
           {
-            v36 = [*(v15 + 1744) numberWithUnsignedInteger:v11];
+            null = [*(v15 + 1744) numberWithUnsignedInteger:v11];
           }
 
-          [v93 setObject:v36 forKeyedSubscript:v35];
+          [v93 setObject:null forKeyedSubscript:v35];
           v43 = [*(v15 + 1744) numberWithUnsignedInteger:v11];
           v44 = v89;
 LABEL_49:
@@ -162,19 +162,19 @@ LABEL_49:
       {
         if ((v94 & 4) != 0)
         {
-          v34 = [a1 objectAtIndexedSubscript:v24];
+          v34 = [self objectAtIndexedSubscript:v24];
           v37 = [NSValue valueWithNonretainedObject:v34];
           if ([v97 objectForKeyedSubscript:v37])
           {
-            v38 = [MEMORY[0x1E695DFB0] null];
+            null2 = [MEMORY[0x1E695DFB0] null];
           }
 
           else
           {
-            v38 = [*(v15 + 1744) numberWithUnsignedInteger:v12];
+            null2 = [*(v15 + 1744) numberWithUnsignedInteger:v12];
           }
 
-          [v97 setObject:v38 forKeyedSubscript:v37];
+          [v97 setObject:null2 forKeyedSubscript:v37];
           v43 = [*(v15 + 1744) numberWithUnsignedInteger:v12];
           v44 = v98;
           goto LABEL_49;
@@ -188,7 +188,7 @@ LABEL_49:
 
         else
         {
-          v32 = [a1 objectAtIndexedSubscript:v12];
+          v32 = [self objectAtIndexedSubscript:v12];
         }
 
         v39 = v33;
@@ -242,13 +242,13 @@ LABEL_50:
           }
 
           v51 = *(*(&v112 + 1) + 8 * i);
-          v52 = [v51 nonretainedObjectValue];
+          nonretainedObjectValue = [v51 nonretainedObjectValue];
           v53 = [v97 objectForKeyedSubscript:v51];
           if (v53)
           {
             v54 = v53;
             v55 = [objc_msgSend(v93 objectForKeyedSubscript:{v51), "unsignedIntegerValue"}];
-            v56 = [v54 unsignedIntegerValue];
+            unsignedIntegerValue = [v54 unsignedIntegerValue];
             v57 = [NSOrderedCollectionChange alloc];
             if ((v94 & 2) != 0)
             {
@@ -257,10 +257,10 @@ LABEL_50:
 
             else
             {
-              v58 = v52;
+              v58 = nonretainedObjectValue;
             }
 
-            v59 = [(NSOrderedCollectionChange *)v57 initWithObject:v58 type:1 index:v55 associatedIndex:v56];
+            v59 = [(NSOrderedCollectionChange *)v57 initWithObject:v58 type:1 index:v55 associatedIndex:unsignedIntegerValue];
             v60 = [NSOrderedCollectionChange alloc];
             v61 = 0;
             if ((v94 & 1) == 0)
@@ -268,11 +268,11 @@ LABEL_50:
               v61 = [v98 objectForKeyedSubscript:v54];
             }
 
-            v62 = [(NSOrderedCollectionChange *)v60 initWithObject:v61 type:0 index:v56 associatedIndex:v55];
+            v62 = [(NSOrderedCollectionChange *)v60 initWithObject:v61 type:0 index:unsignedIntegerValue associatedIndex:v55];
             [v45 addObject:v59];
             [v45 addObject:v62];
             [v100 addIndex:v55];
-            [v46 addIndex:v56];
+            [v46 addIndex:unsignedIntegerValue];
           }
         }
 
@@ -302,8 +302,8 @@ LABEL_50:
           }
 
           v67 = *(*(&v107 + 1) + 8 * j);
-          v68 = [v67 unsignedIntegerValue];
-          if (([v100 containsIndex:v68] & 1) == 0)
+          unsignedIntegerValue2 = [v67 unsignedIntegerValue];
+          if (([v100 containsIndex:unsignedIntegerValue2] & 1) == 0)
           {
             v69 = [NSOrderedCollectionChange alloc];
             if ((v94 & 2) != 0)
@@ -316,7 +316,7 @@ LABEL_50:
               v70 = [v89 objectForKeyedSubscript:v67];
             }
 
-            v71 = [(NSOrderedCollectionChange *)v69 initWithObject:v70 type:1 index:v68];
+            v71 = [(NSOrderedCollectionChange *)v69 initWithObject:v70 type:1 index:unsignedIntegerValue2];
             [v45 addObject:v71];
           }
         }
@@ -346,8 +346,8 @@ LABEL_50:
           }
 
           v76 = *(*(&v102 + 1) + 8 * k);
-          v77 = [v76 unsignedIntegerValue];
-          if (([v46 containsIndex:v77] & 1) == 0)
+          unsignedIntegerValue3 = [v76 unsignedIntegerValue];
+          if (([v46 containsIndex:unsignedIntegerValue3] & 1) == 0)
           {
             v78 = [NSOrderedCollectionChange alloc];
             if (v94)
@@ -360,7 +360,7 @@ LABEL_50:
               v79 = [v98 objectForKeyedSubscript:v76];
             }
 
-            v80 = [(NSOrderedCollectionChange *)v78 initWithObject:v79 type:0 index:v77];
+            v80 = [(NSOrderedCollectionChange *)v78 initWithObject:v79 type:0 index:unsignedIntegerValue3];
             [v45 addObject:v80];
           }
         }
@@ -395,7 +395,7 @@ LABEL_50:
 - (id)arrayByApplyingDifference:()NSArrayDiffing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -415,12 +415,12 @@ LABEL_50:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 changeType];
-        v11 = [v9 index];
+        changeType = [v9 changeType];
+        index = [v9 index];
         v12 = [v4 count];
-        if (v10 == 1)
+        if (changeType == 1)
         {
-          if (v11 >= v12)
+          if (index >= v12)
           {
             return 0;
           }
@@ -430,7 +430,7 @@ LABEL_50:
 
         else
         {
-          if (v11 > v12)
+          if (index > v12)
           {
             return 0;
           }

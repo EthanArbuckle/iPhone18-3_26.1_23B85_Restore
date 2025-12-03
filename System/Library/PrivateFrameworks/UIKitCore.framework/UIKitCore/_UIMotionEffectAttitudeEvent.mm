@@ -1,8 +1,8 @@
 @interface _UIMotionEffectAttitudeEvent
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attitude;
-- (_UIMotionEffectAttitudeEvent)initWithTimestamp:(double)a3 attitude:(id)a4;
-- (double)velocityRelativeToPreviousEvent:(id)a3;
-- (id)copyWithTimestamp:(double)a3;
+- (_UIMotionEffectAttitudeEvent)initWithTimestamp:(double)timestamp attitude:(id)attitude;
+- (double)velocityRelativeToPreviousEvent:(id)event;
+- (id)copyWithTimestamp:(double)timestamp;
 @end
 
 @implementation _UIMotionEffectAttitudeEvent
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (_UIMotionEffectAttitudeEvent)initWithTimestamp:(double)a3 attitude:(id)a4
+- (_UIMotionEffectAttitudeEvent)initWithTimestamp:(double)timestamp attitude:(id)attitude
 {
-  var3 = a4.var3;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var3 = attitude.var3;
+  var2 = attitude.var2;
+  var1 = attitude.var1;
+  var0 = attitude.var0;
   v9.receiver = self;
   v9.super_class = _UIMotionEffectAttitudeEvent;
-  result = [(_UIMotionEffectEvent *)&v9 initWithTimestamp:a3];
+  result = [(_UIMotionEffectEvent *)&v9 initWithTimestamp:timestamp];
   if (result)
   {
     result->_attitude.x = var0;
@@ -40,17 +40,17 @@
   return result;
 }
 
-- (id)copyWithTimestamp:(double)a3
+- (id)copyWithTimestamp:(double)timestamp
 {
   v5 = objc_alloc(objc_opt_class());
   [(_UIMotionEffectAttitudeEvent *)self attitude];
 
-  return [v5 initWithTimestamp:a3 attitude:{v6, v7, v8, v9}];
+  return [v5 initWithTimestamp:timestamp attitude:{v6, v7, v8, v9}];
 }
 
-- (double)velocityRelativeToPreviousEvent:(id)a3
+- (double)velocityRelativeToPreviousEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   v5 = 0.0;
   if (objc_opt_isKindOfClass())
@@ -60,14 +60,14 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v4 attitude];
+    [eventCopy attitude];
     v15 = v7 - v14;
     v17 = v9 - v16;
     v19 = v11 - v18;
     v21 = v13 - v20;
     [(_UIMotionEffectEvent *)self timestamp];
     v23 = v22;
-    [v4 timestamp];
+    [eventCopy timestamp];
     v5 = (v21 * v21 + v19 * v19 + v15 * v15 + v17 * v17) / (v23 - v24);
   }
 

@@ -1,24 +1,24 @@
 @interface CNContactSelectContainersAction
-- (BOOL)containerPicker:(id)a3 shouldAllowDeselectionOfContainerWithIdentifier:(id)a4;
-- (void)containerPicker:(id)a3 didFinishWithPickedContainers:(id)a4;
-- (void)performActionWithContainerContext:(id)a3;
+- (BOOL)containerPicker:(id)picker shouldAllowDeselectionOfContainerWithIdentifier:(id)identifier;
+- (void)containerPicker:(id)picker didFinishWithPickedContainers:(id)containers;
+- (void)performActionWithContainerContext:(id)context;
 @end
 
 @implementation CNContactSelectContainersAction
 
-- (BOOL)containerPicker:(id)a3 shouldAllowDeselectionOfContainerWithIdentifier:(id)a4
+- (BOOL)containerPicker:(id)picker shouldAllowDeselectionOfContainerWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CNContactSelectContainersAction *)self containerContext];
-  v7 = [v6 originalContainers];
-  v8 = [v7 allValues];
+  identifierCopy = identifier;
+  containerContext = [(CNContactSelectContainersAction *)self containerContext];
+  originalContainers = [containerContext originalContainers];
+  allValues = [originalContainers allValues];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__CNContactSelectContainersAction_containerPicker_shouldAllowDeselectionOfContainerWithIdentifier___block_invoke;
   v12[3] = &unk_1E74E75E0;
-  v13 = v5;
-  v9 = v5;
-  v10 = [v8 _cn_any:v12];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [allValues _cn_any:v12];
 
   return v10 ^ 1;
 }
@@ -31,13 +31,13 @@ uint64_t __99__CNContactSelectContainersAction_containerPicker_shouldAllowDesele
   return v4;
 }
 
-- (void)containerPicker:(id)a3 didFinishWithPickedContainers:(id)a4
+- (void)containerPicker:(id)picker didFinishWithPickedContainers:(id)containers
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CNContactSelectContainersAction *)self containerContext];
-  v7 = [v6 selectedContainers];
-  v8 = [v7 copy];
+  containersCopy = containers;
+  containerContext = [(CNContactSelectContainersAction *)self containerContext];
+  selectedContainers = [containerContext selectedContainers];
+  v8 = [selectedContainers copy];
 
   v33 = 0u;
   v34 = 0u;
@@ -59,10 +59,10 @@ uint64_t __99__CNContactSelectContainersAction_containerPicker_shouldAllowDesele
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        if (([v5 containsObject:v14] & 1) == 0)
+        if (([containersCopy containsObject:v14] & 1) == 0)
         {
-          v15 = [(CNContactSelectContainersAction *)self containerContext];
-          [v15 removeContainer:v14];
+          containerContext2 = [(CNContactSelectContainersAction *)self containerContext];
+          [containerContext2 removeContainer:v14];
         }
       }
 
@@ -76,7 +76,7 @@ uint64_t __99__CNContactSelectContainersAction_containerPicker_shouldAllowDesele
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = v5;
+  v16 = containersCopy;
   v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
@@ -92,8 +92,8 @@ uint64_t __99__CNContactSelectContainersAction_containerPicker_shouldAllowDesele
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
-        v22 = [(CNContactSelectContainersAction *)self containerContext];
-        [v22 addContainer:v21];
+        containerContext3 = [(CNContactSelectContainersAction *)self containerContext];
+        [containerContext3 addContainer:v21];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -102,49 +102,49 @@ uint64_t __99__CNContactSelectContainersAction_containerPicker_shouldAllowDesele
     while (v18);
   }
 
-  v23 = [(CNContactAction *)self delegate];
-  v24 = [(CNContactSelectContainersAction *)self containerPicker];
-  v25 = [v24 navigationController];
-  [v23 action:self dismissViewController:v25 sender:self];
+  delegate = [(CNContactAction *)self delegate];
+  containerPicker = [(CNContactSelectContainersAction *)self containerPicker];
+  navigationController = [containerPicker navigationController];
+  [delegate action:self dismissViewController:navigationController sender:self];
 
   [(CNContactSelectContainersAction *)self cleanupForDismissal];
-  v26 = [(CNContactAction *)self delegate];
-  [v26 actionDidFinish:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 actionDidFinish:self];
 }
 
-- (void)performActionWithContainerContext:(id)a3
+- (void)performActionWithContainerContext:(id)context
 {
-  v4 = a3;
-  [(CNContactSelectContainersAction *)self setContainerContext:v4];
-  v5 = [v4 selectedContainers];
+  contextCopy = context;
+  [(CNContactSelectContainersAction *)self setContainerContext:contextCopy];
+  selectedContainers = [contextCopy selectedContainers];
 
-  v15 = [v5 _cn_map:&__block_literal_global_52122];
+  v15 = [selectedContainers _cn_map:&__block_literal_global_52122];
 
-  v6 = [(CNContactSelectContainersAction *)self containerPicker];
+  containerPicker = [(CNContactSelectContainersAction *)self containerPicker];
 
-  if (v6)
+  if (containerPicker)
   {
-    v7 = [(CNContactSelectContainersAction *)self containerPicker];
-    [(CNContactContainerPickerViewController *)v7 setSelectedContainerIdentifiers:v15];
+    containerPicker2 = [(CNContactSelectContainersAction *)self containerPicker];
+    [(CNContactContainerPickerViewController *)containerPicker2 setSelectedContainerIdentifiers:v15];
   }
 
   else
   {
     v8 = [CNContactContainerPickerViewController alloc];
-    v9 = [(CNContactAction *)self delegate];
-    v10 = [v9 contactViewCache];
-    v7 = [(CNContactContainerPickerViewController *)v8 initWithContactViewCache:v10 selectedContainerIdentifiers:v15];
+    delegate = [(CNContactAction *)self delegate];
+    contactViewCache = [delegate contactViewCache];
+    containerPicker2 = [(CNContactContainerPickerViewController *)v8 initWithContactViewCache:contactViewCache selectedContainerIdentifiers:v15];
 
-    [(CNContactContainerPickerViewController *)v7 setDelegate:self];
-    [(CNContactSelectContainersAction *)self setContainerPicker:v7];
+    [(CNContactContainerPickerViewController *)containerPicker2 setDelegate:self];
+    [(CNContactSelectContainersAction *)self setContainerPicker:containerPicker2];
   }
 
   v11 = objc_alloc(MEMORY[0x1E69DCCD8]);
-  v12 = [(CNContactSelectContainersAction *)self containerPicker];
-  v13 = [v11 initWithRootViewController:v12];
+  containerPicker3 = [(CNContactSelectContainersAction *)self containerPicker];
+  v13 = [v11 initWithRootViewController:containerPicker3];
 
-  v14 = [(CNContactAction *)self delegate];
-  [v14 action:self presentViewController:v13 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 action:self presentViewController:v13 sender:self];
 }
 
 @end

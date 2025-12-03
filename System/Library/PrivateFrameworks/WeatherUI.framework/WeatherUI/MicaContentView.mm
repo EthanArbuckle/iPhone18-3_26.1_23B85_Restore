@@ -1,30 +1,30 @@
 @interface MicaContentView
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation MicaContentView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  MicaContentView.willMove(toWindow:)(a3);
+  windowCopy = window;
+  selfCopy = self;
+  MicaContentView.willMove(toWindow:)(window);
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  MicaContentView.layoutSublayers(of:)(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  MicaContentView.layoutSublayers(of:)(layerCopy);
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   sub_1BCE1D280();
-  v6 = a3;
-  v7 = self;
+  layerCopy = layer;
+  selfCopy = self;
   v8 = MicaContentView.action(for:forKey:)();
 
   return v8;

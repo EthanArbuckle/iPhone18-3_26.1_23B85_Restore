@@ -1,18 +1,18 @@
 @interface MPSNDArrayLUTDequantize
-- (MPSNDArrayLUTDequantize)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayLUTDequantize)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayLUTDequantize)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayLUTDequantize)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayLUTDequantize
 
-- (MPSNDArrayLUTDequantize)initWithDevice:(id)a3
+- (MPSNDArrayLUTDequantize)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayLUTDequantize;
-  result = [(MPSNDArrayMultiaryKernel *)&v4 initWithDevice:a3 sourceCount:2];
+  result = [(MPSNDArrayMultiaryKernel *)&v4 initWithDevice:device sourceCount:2];
   if (result)
   {
     result->super._encode = EncodeArrayLUTDequant;
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (MPSNDArrayLUTDequantize)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayLUTDequantize)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayLUTDequantize;
-  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super._encode = EncodeArrayLUTDequant;
@@ -36,18 +36,18 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MPSNDArrayLUTDequantize;
-  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:a3];
+  [(MPSNDArrayMultiaryBase *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayLUTDequantize;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 17) = EncodeArrayLUTDequant;
@@ -57,11 +57,11 @@
   return result;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayLUTDequantize;
-  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
+  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
 }
 
 @end

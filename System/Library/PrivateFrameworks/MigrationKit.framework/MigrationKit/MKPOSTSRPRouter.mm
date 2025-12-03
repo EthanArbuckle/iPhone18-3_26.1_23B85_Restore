@@ -1,30 +1,30 @@
 @interface MKPOSTSRPRouter
-- (MKPOSTSRPRouter)initWithSRP:(id)a3;
+- (MKPOSTSRPRouter)initWithSRP:(id)p;
 - (MKPOSTSRPRouterDelegate)delegate;
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKPOSTSRPRouter
 
-- (MKPOSTSRPRouter)initWithSRP:(id)a3
+- (MKPOSTSRPRouter)initWithSRP:(id)p
 {
-  v5 = a3;
+  pCopy = p;
   v9.receiver = self;
   v9.super_class = MKPOSTSRPRouter;
   v6 = [(MKPOSTSRPRouter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_srp, a3);
+    objc_storeStrong(&v6->_srp, p);
   }
 
   return v7;
 }
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
-  v6 = [a4 body];
-  if (![v6 length])
+  body = [request body];
+  if (![body length])
   {
     v9 = +[MKLog log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
   }
 
   v15 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:&v15];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:body options:0 error:&v15];
   v8 = v15;
   if (v8)
   {

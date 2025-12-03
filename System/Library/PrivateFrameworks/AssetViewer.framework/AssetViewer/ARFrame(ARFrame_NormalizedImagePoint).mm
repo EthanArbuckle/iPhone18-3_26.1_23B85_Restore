@@ -10,7 +10,7 @@
   v13 = v4;
   v5 = *(&a2 + 1) / a4;
   v12 = v5;
-  [a1 displayTransformForOrientation:a3 viewportSize:a4];
+  [self displayTransformForOrientation:a3 viewportSize:a4];
   *v14.columns[1].f32 = vcvt_f32_f64(0);
   v14.columns[0] = v14.columns[1].u64[0];
   v14.columns[1] = v14.columns[1].u64[0];

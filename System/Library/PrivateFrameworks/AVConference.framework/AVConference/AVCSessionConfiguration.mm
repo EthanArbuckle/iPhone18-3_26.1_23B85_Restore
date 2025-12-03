@@ -1,27 +1,27 @@
 @interface AVCSessionConfiguration
-+ (const)cStringFromSessionMode:(int64_t)a3;
-+ (int64_t)clientSessionModeWithSessionMode:(int64_t)a3;
-+ (int64_t)sessionModeWithClientSessionMode:(int64_t)a3;
++ (const)cStringFromSessionMode:(int64_t)mode;
++ (int64_t)clientSessionModeWithSessionMode:(int64_t)mode;
++ (int64_t)sessionModeWithClientSessionMode:(int64_t)mode;
 - (AVCSessionConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deserializeNwActivity:(id)a3;
+- (id)deserializeNwActivity:(id)activity;
 - (id)dictionary;
-- (id)serializeNwActivity:(id)a3;
+- (id)serializeNwActivity:(id)activity;
 - (void)cleanupNwActivity;
 - (void)dealloc;
-- (void)setParentNWActivity:(id)a3;
-- (void)setSessionMode:(int64_t)a3;
-- (void)setUpWithDictionary:(id)a3;
+- (void)setParentNWActivity:(id)activity;
+- (void)setSessionMode:(int64_t)mode;
+- (void)setUpWithDictionary:(id)dictionary;
 @end
 
 @implementation AVCSessionConfiguration
 
-+ (const)cStringFromSessionMode:(int64_t)a3
++ (const)cStringFromSessionMode:(int64_t)mode
 {
-  if (a3 < 4)
+  if (mode < 4)
   {
-    return off_1E85F9AB0[a3];
+    return off_1E85F9AB0[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -30,7 +30,7 @@
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(AVCSessionConfiguration *)v5 cStringFromSessionMode:a3, v6];
+      [(AVCSessionConfiguration *)v5 cStringFromSessionMode:mode, v6];
     }
   }
 
@@ -88,10 +88,10 @@
   [(AVCSessionConfiguration *)&v3 dealloc];
 }
 
-- (void)setSessionMode:(int64_t)a3
+- (void)setSessionMode:(int64_t)mode
 {
   v16 = *MEMORY[0x1E69E9840];
-  IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAVCSessionMode", a3);
+  IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAVCSessionMode", mode);
   v5 = IntValueForKey;
   if (IntValueForKey > 3)
   {
@@ -120,27 +120,27 @@
   }
 }
 
-- (void)setUpWithDictionary:(id)a3
+- (void)setUpWithDictionary:(id)dictionary
 {
-  -[AVCSessionConfiguration setSessionMode:](self, "setSessionMode:", +[AVCSessionConfiguration clientSessionModeWithSessionMode:](AVCSessionConfiguration, "clientSessionModeWithSessionMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionType", "integerValue"}]));
-  -[AVCSessionConfiguration setReportingHierarchyToken:](self, "setReportingHierarchyToken:", [a3 objectForKeyedSubscript:@"vcSessionParentHierarchyToken"]);
-  self->_oneToOneModeEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionOneOnOneModeEnabled", "BOOLValue"}];
-  if ([a3 objectForKeyedSubscript:@"vcSessionConversationID"])
+  -[AVCSessionConfiguration setSessionMode:](self, "setSessionMode:", +[AVCSessionConfiguration clientSessionModeWithSessionMode:](AVCSessionConfiguration, "clientSessionModeWithSessionMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionType", "integerValue"}]));
+  -[AVCSessionConfiguration setReportingHierarchyToken:](self, "setReportingHierarchyToken:", [dictionary objectForKeyedSubscript:@"vcSessionParentHierarchyToken"]);
+  self->_oneToOneModeEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionOneOnOneModeEnabled", "BOOLValue"}];
+  if ([dictionary objectForKeyedSubscript:@"vcSessionConversationID"])
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(a3, "objectForKeyedSubscript:", @"vcSessionConversationID"}];
+    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:{objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcSessionConversationID"}];
     [(AVCSessionConfiguration *)self setConversationID:v5];
   }
 
-  -[AVCSessionConfiguration setConversationTimeBase:](self, "setConversationTimeBase:", [a3 objectForKeyedSubscript:@"vcSessionConversationTimeBase"]);
-  -[AVCSessionConfiguration setConversationTimeBaseTruncated:](self, "setConversationTimeBaseTruncated:", [a3 objectForKeyedSubscript:@"vcSessionConversationTimeBaseTruncated"]);
-  -[AVCSessionConfiguration setServiceName:](self, "setServiceName:", [a3 objectForKeyedSubscript:@"vcSessionServiceName"]);
-  -[AVCSessionConfiguration setOutOfProcessCodecsEnabled:](self, "setOutOfProcessCodecsEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionOutOfProcessCodecsEnabled", "BOOLValue"}]);
-  if ([a3 objectForKeyedSubscript:@"vcSessionParentNWActivity"])
+  -[AVCSessionConfiguration setConversationTimeBase:](self, "setConversationTimeBase:", [dictionary objectForKeyedSubscript:@"vcSessionConversationTimeBase"]);
+  -[AVCSessionConfiguration setConversationTimeBaseTruncated:](self, "setConversationTimeBaseTruncated:", [dictionary objectForKeyedSubscript:@"vcSessionConversationTimeBaseTruncated"]);
+  -[AVCSessionConfiguration setServiceName:](self, "setServiceName:", [dictionary objectForKeyedSubscript:@"vcSessionServiceName"]);
+  -[AVCSessionConfiguration setOutOfProcessCodecsEnabled:](self, "setOutOfProcessCodecsEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionOutOfProcessCodecsEnabled", "BOOLValue"}]);
+  if ([dictionary objectForKeyedSubscript:@"vcSessionParentNWActivity"])
   {
-    -[AVCSessionConfiguration setParentNWActivity:](self, "setParentNWActivity:", -[AVCSessionConfiguration deserializeNwActivity:](self, "deserializeNwActivity:", [a3 objectForKeyedSubscript:@"vcSessionParentNWActivity"]));
+    -[AVCSessionConfiguration setParentNWActivity:](self, "setParentNWActivity:", -[AVCSessionConfiguration deserializeNwActivity:](self, "deserializeNwActivity:", [dictionary objectForKeyedSubscript:@"vcSessionParentNWActivity"]));
   }
 
-  v6 = +[AVCSessionABTestConfiguration createWithDictionary:](AVCSessionABTestConfiguration, "createWithDictionary:", [a3 objectForKeyedSubscript:@"vcSessionABTestsConfiguration"]);
+  v6 = +[AVCSessionABTestConfiguration createWithDictionary:](AVCSessionABTestConfiguration, "createWithDictionary:", [dictionary objectForKeyedSubscript:@"vcSessionABTestsConfiguration"]);
 
   [(AVCSessionConfiguration *)self setAbTestConfiguration:v6];
 }
@@ -203,7 +203,7 @@
   return v4;
 }
 
-- (void)setParentNWActivity:(id)a3
+- (void)setParentNWActivity:(id)activity
 {
   parentNWActivity = self->_parentNWActivity;
   if (parentNWActivity)
@@ -211,41 +211,41 @@
     nw_release(parentNWActivity);
   }
 
-  self->_parentNWActivity = a3;
-  if (a3)
+  self->_parentNWActivity = activity;
+  if (activity)
   {
 
-    nw_retain(a3);
+    nw_retain(activity);
   }
 }
 
-+ (int64_t)clientSessionModeWithSessionMode:(int64_t)a3
++ (int64_t)clientSessionModeWithSessionMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 3)
+  if ((mode - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
-+ (int64_t)sessionModeWithClientSessionMode:(int64_t)a3
++ (int64_t)sessionModeWithClientSessionMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 3)
+  if ((mode - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
-- (id)serializeNwActivity:(id)a3
+- (id)serializeNwActivity:(id)activity
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = nw_activity_copy_xpc_token();
@@ -275,12 +275,12 @@
   return v5;
 }
 
-- (id)deserializeNwActivity:(id)a3
+- (id)deserializeNwActivity:(id)activity
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (activity)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:a3];
+    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:activity];
     v4 = v3;
     if (v3)
     {
@@ -315,28 +315,28 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setSessionMode:{-[AVCSessionConfiguration sessionMode](self, "sessionMode")}];
   [v5 setOneToOneModeEnabled:{-[AVCSessionConfiguration isOneToOneModeEnabled](self, "isOneToOneModeEnabled")}];
   [v5 setAbTestConfiguration:{-[AVCSessionConfiguration abTestConfiguration](self, "abTestConfiguration")}];
   [v5 setRemoteScreenControlEnabled:{-[AVCSessionConfiguration isRemoteScreenControlEnabled](self, "isRemoteScreenControlEnabled")}];
   [v5 setParentNWActivity:{-[AVCSessionConfiguration parentNWActivity](self, "parentNWActivity")}];
   [v5 setOutOfProcessCodecsEnabled:{-[AVCSessionConfiguration outOfProcessCodecsEnabled](self, "outOfProcessCodecsEnabled")}];
-  v6 = [(NSCopying *)[(AVCSessionConfiguration *)self reportingHierarchyToken] copyWithZone:a3];
+  v6 = [(NSCopying *)[(AVCSessionConfiguration *)self reportingHierarchyToken] copyWithZone:zone];
   [v5 setReportingHierarchyToken:v6];
 
-  v7 = [(NSUUID *)[(AVCSessionConfiguration *)self conversationID] copyWithZone:a3];
+  v7 = [(NSUUID *)[(AVCSessionConfiguration *)self conversationID] copyWithZone:zone];
   [v5 setConversationID:v7];
 
-  v8 = [(NSDate *)[(AVCSessionConfiguration *)self conversationTimeBase] copyWithZone:a3];
+  v8 = [(NSDate *)[(AVCSessionConfiguration *)self conversationTimeBase] copyWithZone:zone];
   [v5 setConversationTimeBase:v8];
 
-  v9 = [(NSDate *)[(AVCSessionConfiguration *)self conversationTimeBaseTruncated] copyWithZone:a3];
+  v9 = [(NSDate *)[(AVCSessionConfiguration *)self conversationTimeBaseTruncated] copyWithZone:zone];
   [v5 setConversationTimeBaseTruncated:v9];
 
-  v10 = [(NSString *)[(AVCSessionConfiguration *)self serviceName] copyWithZone:a3];
+  v10 = [(NSString *)[(AVCSessionConfiguration *)self serviceName] copyWithZone:zone];
   [v5 setServiceName:v10];
 
   return v5;

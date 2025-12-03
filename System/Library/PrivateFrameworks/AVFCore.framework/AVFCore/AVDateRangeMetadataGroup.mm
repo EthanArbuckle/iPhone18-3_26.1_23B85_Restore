@@ -1,16 +1,16 @@
 @interface AVDateRangeMetadataGroup
-+ (id)_figMetadataArrayForMetadataItems:(id)a3;
-+ (id)_metadataItemsForFigMetadataArray:(id)a3;
++ (id)_figMetadataArrayForMetadataItems:(id)items;
++ (id)_metadataItemsForFigMetadataArray:(id)array;
 - (AVDateRangeMetadataGroup)init;
 - (AVDateRangeMetadataGroup)initWithItems:(NSArray *)items startDate:(NSDate *)startDate endDate:(NSDate *)endDate;
-- (AVDateRangeMetadataGroup)initWithPropertyList:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithTaggedRangeMetadataDictionary:(id)a3 items:(id)a4;
+- (AVDateRangeMetadataGroup)initWithPropertyList:(id)list;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithTaggedRangeMetadataDictionary:(id)dictionary items:(id)items;
 - (id)_taggedRangeMetadataDictionary;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_extractPropertiesFromTaggedRangeMetadataDictionary:(id)a3;
+- (void)_extractPropertiesFromTaggedRangeMetadataDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
@@ -18,10 +18,10 @@
 
 - (AVDateRangeMetadataGroup)init
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
-  v4 = [MEMORY[0x1E695DF00] date];
+  array = [MEMORY[0x1E695DEC8] array];
+  date = [MEMORY[0x1E695DF00] date];
 
-  return [(AVDateRangeMetadataGroup *)self initWithItems:v3 startDate:v4 endDate:0];
+  return [(AVDateRangeMetadataGroup *)self initWithItems:array startDate:date endDate:0];
 }
 
 - (AVDateRangeMetadataGroup)initWithItems:(NSArray *)items startDate:(NSDate *)startDate endDate:(NSDate *)endDate
@@ -66,13 +66,13 @@
   [(AVDateRangeMetadataGroup *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AVMutableDateRangeMetadataGroup allocWithZone:a3];
-  v5 = [(AVDateRangeMetadataGroup *)self _taggedRangeMetadataDictionary];
-  v6 = [(AVDateRangeMetadataGroup *)self items];
+  v4 = [AVMutableDateRangeMetadataGroup allocWithZone:zone];
+  _taggedRangeMetadataDictionary = [(AVDateRangeMetadataGroup *)self _taggedRangeMetadataDictionary];
+  items = [(AVDateRangeMetadataGroup *)self items];
 
-  return [(AVMutableDateRangeMetadataGroup *)v4 _initWithTaggedRangeMetadataDictionary:v5 items:v6];
+  return [(AVMutableDateRangeMetadataGroup *)v4 _initWithTaggedRangeMetadataDictionary:_taggedRangeMetadataDictionary items:items];
 }
 
 - (id)description
@@ -82,37 +82,37 @@
   return [v3 stringWithFormat:@"<%@: %p, startDate=%@, endDate=%@ classifyingLabel=%@ uniqueID=%@ items=%@>", NSStringFromClass(v4), self, -[AVDateRangeMetadataGroup startDate](self, "startDate"), -[AVDateRangeMetadataGroup endDate](self, "endDate"), -[AVDateRangeMetadataGroup classifyingLabel](self, "classifyingLabel"), -[AVDateRangeMetadataGroup uniqueID](self, "uniqueID"), -[AVDateRangeMetadataGroup items](self, "items")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_19;
   }
 
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equal || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(v15) = 0;
     return v15;
   }
 
-  v5 = [(AVDateRangeMetadataGroup *)self startDate];
-  v6 = [a3 startDate];
-  v7 = [(AVDateRangeMetadataGroup *)self endDate];
-  v8 = [a3 endDate];
-  v9 = [(AVDateRangeMetadataGroup *)self items];
-  v10 = [a3 items];
-  v11 = [(AVDateRangeMetadataGroup *)self classifyingLabel];
-  v12 = [a3 classifyingLabel];
-  v18 = [(AVDateRangeMetadataGroup *)self uniqueID];
-  v17 = [a3 uniqueID];
-  v13 = [(AVDateRangeMetadataGroup *)self cueingOptions];
-  v14 = [a3 cueingOptions];
-  if ((v5 == v6 || (v15 = -[NSDate isEqual:](v5, "isEqual:", v6)) != 0) && (v7 == v8 || (v15 = -[NSDate isEqual:](v7, "isEqual:", v8)) != 0) && (v9 == v10 || (v15 = -[NSArray isEqual:](v9, "isEqual:", v10)) != 0) && (v11 == v12 || (v15 = [v11 isEqual:v12]) != 0) && (v18 == v17 || (v15 = objc_msgSend(v18, "isEqual:")) != 0))
+  startDate = [(AVDateRangeMetadataGroup *)self startDate];
+  startDate2 = [equal startDate];
+  endDate = [(AVDateRangeMetadataGroup *)self endDate];
+  endDate2 = [equal endDate];
+  items = [(AVDateRangeMetadataGroup *)self items];
+  items2 = [equal items];
+  classifyingLabel = [(AVDateRangeMetadataGroup *)self classifyingLabel];
+  classifyingLabel2 = [equal classifyingLabel];
+  uniqueID = [(AVDateRangeMetadataGroup *)self uniqueID];
+  uniqueID2 = [equal uniqueID];
+  cueingOptions = [(AVDateRangeMetadataGroup *)self cueingOptions];
+  cueingOptions2 = [equal cueingOptions];
+  if ((startDate == startDate2 || (v15 = -[NSDate isEqual:](startDate, "isEqual:", startDate2)) != 0) && (endDate == endDate2 || (v15 = -[NSDate isEqual:](endDate, "isEqual:", endDate2)) != 0) && (items == items2 || (v15 = -[NSArray isEqual:](items, "isEqual:", items2)) != 0) && (classifyingLabel == classifyingLabel2 || (v15 = [classifyingLabel isEqual:classifyingLabel2]) != 0) && (uniqueID == uniqueID2 || (v15 = objc_msgSend(uniqueID, "isEqual:")) != 0))
   {
-    if (v13 != v14)
+    if (cueingOptions != cueingOptions2)
     {
 
-      LOBYTE(v15) = [(NSString *)v13 isEqual:v14];
+      LOBYTE(v15) = [(NSString *)cueingOptions isEqual:cueingOptions2];
       return v15;
     }
 
@@ -132,20 +132,20 @@ LABEL_19:
   return v6 ^ [-[AVDateRangeMetadataGroup uniqueID](self "uniqueID")];
 }
 
-- (AVDateRangeMetadataGroup)initWithPropertyList:(id)a3
+- (AVDateRangeMetadataGroup)initWithPropertyList:(id)list
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = self;
+    selfCopy = self;
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v8, v9, v10, v11, v12, "[propertyList isKindOfClass:[NSDictionary class]]"), 0}];
     objc_exception_throw(v13);
   }
 
-  return [(AVDateRangeMetadataGroup *)self _initWithTaggedRangeMetadataDictionary:a3 items:0];
+  return [(AVDateRangeMetadataGroup *)self _initWithTaggedRangeMetadataDictionary:list items:0];
 }
 
-- (id)_initWithTaggedRangeMetadataDictionary:(id)a3 items:(id)a4
+- (id)_initWithTaggedRangeMetadataDictionary:(id)dictionary items:(id)items
 {
   v9.receiver = self;
   v9.super_class = AVDateRangeMetadataGroup;
@@ -157,12 +157,12 @@ LABEL_19:
     if (v7)
     {
       CFRetain(v7);
-      if (a4)
+      if (items)
       {
-        v6->_priv->metadataItems = [a4 copy];
+        v6->_priv->metadataItems = [items copy];
       }
 
-      [(AVDateRangeMetadataGroup *)v6 _extractPropertiesFromTaggedRangeMetadataDictionary:a3];
+      [(AVDateRangeMetadataGroup *)v6 _extractPropertiesFromTaggedRangeMetadataDictionary:dictionary];
     }
 
     else
@@ -175,17 +175,17 @@ LABEL_19:
   return v6;
 }
 
-+ (id)_figMetadataArrayForMetadataItems:(id)a3
++ (id)_figMetadataArrayForMetadataItems:(id)items
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (items)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -197,34 +197,34 @@ LABEL_19:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(items);
           }
 
-          [v4 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "_figMetadataDictionary")}];
+          [array addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "_figMetadataDictionary")}];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
     }
   }
 
-  return [v4 copy];
+  return [array copy];
 }
 
-+ (id)_metadataItemsForFigMetadataArray:(id)a3
++ (id)_metadataItemsForFigMetadataArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (array)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -236,108 +236,108 @@ LABEL_19:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
-          [v4 addObject:{+[AVMetadataItem _metadataItemWithFigMetadataDictionary:](AVMetadataItem, "_metadataItemWithFigMetadataDictionary:", *(*(&v10 + 1) + 8 * v8++))}];
+          [array addObject:{+[AVMetadataItem _metadataItemWithFigMetadataDictionary:](AVMetadataItem, "_metadataItemWithFigMetadataDictionary:", *(*(&v10 + 1) + 8 * v8++))}];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
     }
   }
 
-  return [v4 copy];
+  return [array copy];
 }
 
 - (id)_taggedRangeMetadataDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(AVDateRangeMetadataGroup *)self startDate])
   {
-    v4 = [(AVDateRangeMetadataGroup *)self startDate];
-    [v3 setObject:v4 forKey:*MEMORY[0x1E6972CE0]];
+    startDate = [(AVDateRangeMetadataGroup *)self startDate];
+    [dictionary setObject:startDate forKey:*MEMORY[0x1E6972CE0]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self endDate])
   {
-    v5 = [(AVDateRangeMetadataGroup *)self endDate];
-    [v3 setObject:v5 forKey:*MEMORY[0x1E6972CC0]];
+    endDate = [(AVDateRangeMetadataGroup *)self endDate];
+    [dictionary setObject:endDate forKey:*MEMORY[0x1E6972CC0]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self items])
   {
     v6 = [AVDateRangeMetadataGroup _figMetadataArrayForMetadataItems:[(AVDateRangeMetadataGroup *)self items]];
-    [v3 setObject:v6 forKey:*MEMORY[0x1E6972CD0]];
+    [dictionary setObject:v6 forKey:*MEMORY[0x1E6972CD0]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self classifyingLabel])
   {
-    v7 = [(AVDateRangeMetadataGroup *)self classifyingLabel];
-    [v3 setObject:v7 forKey:*MEMORY[0x1E6972CA0]];
+    classifyingLabel = [(AVDateRangeMetadataGroup *)self classifyingLabel];
+    [dictionary setObject:classifyingLabel forKey:*MEMORY[0x1E6972CA0]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self uniqueID])
   {
-    v8 = [(AVDateRangeMetadataGroup *)self uniqueID];
-    [v3 setObject:v8 forKey:*MEMORY[0x1E6972CC8]];
+    uniqueID = [(AVDateRangeMetadataGroup *)self uniqueID];
+    [dictionary setObject:uniqueID forKey:*MEMORY[0x1E6972CC8]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self cueingOptions])
   {
-    v9 = [(AVDateRangeMetadataGroup *)self cueingOptions];
-    [v3 setObject:v9 forKey:*MEMORY[0x1E6972CA8]];
+    cueingOptions = [(AVDateRangeMetadataGroup *)self cueingOptions];
+    [dictionary setObject:cueingOptions forKey:*MEMORY[0x1E6972CA8]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self discoveryTimestamp])
   {
-    v10 = [(AVDateRangeMetadataGroup *)self discoveryTimestamp];
-    [v3 setObject:v10 forKey:*MEMORY[0x1E6972CB0]];
+    discoveryTimestamp = [(AVDateRangeMetadataGroup *)self discoveryTimestamp];
+    [dictionary setObject:discoveryTimestamp forKey:*MEMORY[0x1E6972CB0]];
   }
 
   if ([(AVDateRangeMetadataGroup *)self modificationTimestamp])
   {
-    v11 = [(AVDateRangeMetadataGroup *)self modificationTimestamp];
-    [v3 setObject:v11 forKey:*MEMORY[0x1E6972CD8]];
+    modificationTimestamp = [(AVDateRangeMetadataGroup *)self modificationTimestamp];
+    [dictionary setObject:modificationTimestamp forKey:*MEMORY[0x1E6972CD8]];
   }
 
   if (self->_priv->extraFigProperties)
   {
-    [v3 addEntriesFromDictionary:?];
+    [dictionary addEntriesFromDictionary:?];
   }
 
   v12 = MEMORY[0x1E695DF20];
 
-  return [v12 dictionaryWithDictionary:v3];
+  return [v12 dictionaryWithDictionary:dictionary];
 }
 
-- (void)_extractPropertiesFromTaggedRangeMetadataDictionary:(id)a3
+- (void)_extractPropertiesFromTaggedRangeMetadataDictionary:(id)dictionary
 {
-  if (!a3 || self->_priv->extraFigProperties)
+  if (!dictionary || self->_priv->extraFigProperties)
   {
     return;
   }
 
   v31 = *MEMORY[0x1E6972CE0];
-  v5 = [a3 objectForKey:?];
+  v5 = [dictionary objectForKey:?];
   v30 = *MEMORY[0x1E6972CC0];
-  v23 = [a3 objectForKey:?];
+  v23 = [dictionary objectForKey:?];
   v29 = *MEMORY[0x1E6972CB8];
-  v6 = [a3 objectForKey:?];
+  v6 = [dictionary objectForKey:?];
   v28 = *MEMORY[0x1E6972CD0];
-  v7 = [a3 objectForKey:?];
+  v7 = [dictionary objectForKey:?];
   v27 = *MEMORY[0x1E6972CA0];
-  v8 = [a3 objectForKey:?];
+  v8 = [dictionary objectForKey:?];
   v26 = *MEMORY[0x1E6972CC8];
-  v9 = [a3 objectForKey:?];
-  v21 = [a3 objectForKey:*MEMORY[0x1E6972CA8]];
+  v9 = [dictionary objectForKey:?];
+  v21 = [dictionary objectForKey:*MEMORY[0x1E6972CA8]];
   v25 = *MEMORY[0x1E6972CB0];
-  v10 = [a3 objectForKey:?];
+  v10 = [dictionary objectForKey:?];
   v24 = *MEMORY[0x1E6972CD8];
-  v22 = [a3 objectForKey:?];
+  v22 = [dictionary objectForKey:?];
   if (v5)
   {
     objc_opt_class();
@@ -473,7 +473,7 @@ LABEL_40:
   self->_priv->cueingOptions = [v14 copy];
   self->_priv->discoveryTimestamp = [v13 copy];
   self->_priv->modificationTimestamp = [v15 copy];
-  v18 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v18 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
   [v18 removeObjectForKey:v31];
   [v18 removeObjectForKey:v30];
   [v18 removeObjectForKey:v29];

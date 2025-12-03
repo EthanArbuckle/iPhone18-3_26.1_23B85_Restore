@@ -7,10 +7,10 @@
 - (BOOL)isUserInteractingWithMap;
 - (MKMapView)mapView;
 - (NSArray)annotations;
-- (SXMapComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 documentTitleProvider:(id)a9;
+- (SXMapComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor documentTitleProvider:(id)titleProvider;
 - (id)mapTitle;
-- (unint64_t)mapTypeForSegmentIndex:(unint64_t)a3;
-- (unint64_t)segmentIndexForMapType:(unint64_t)a3;
+- (unint64_t)mapTypeForSegmentIndex:(unint64_t)index;
+- (unint64_t)segmentIndexForMapType:(unint64_t)type;
 - (void)cancelSnapShot;
 - (void)configureMapView;
 - (void)createMediaEngageEvent;
@@ -18,33 +18,33 @@
 - (void)dealloc;
 - (void)discardContents;
 - (void)dismissFullScreen;
-- (void)enableMapViewInteraction:(BOOL)a3;
+- (void)enableMapViewInteraction:(BOOL)interaction;
 - (void)finishMediaEngageEvent;
-- (void)handleTap:(id)a3;
-- (void)mapTypeChanged:(id)a3;
-- (void)memoryWarning:(id)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)handleTap:(id)tap;
+- (void)mapTypeChanged:(id)changed;
+- (void)memoryWarning:(id)warning;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)presentFullScreen;
 - (void)renderContents;
 - (void)setupNavigationBar;
 - (void)setupToolbar;
 - (void)submitEvents;
 - (void)submitMediaEngageCompleteEvent;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SXMapComponentView
 
-- (SXMapComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 documentTitleProvider:(id)a9
+- (SXMapComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor documentTitleProvider:(id)titleProvider
 {
-  v16 = a9;
+  titleProviderCopy = titleProvider;
   v30.receiver = self;
   v30.super_class = SXMapComponentView;
-  v17 = [(SXMediaComponentView *)&v30 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:a8];
+  v17 = [(SXMediaComponentView *)&v30 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitor];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_documentTitleProvider, a9);
+    objc_storeStrong(&v17->_documentTitleProvider, titleProvider);
     v19 = objc_alloc_init(SXMapSnapShotter);
     snapShotter = v18->_snapShotter;
     v18->_snapShotter = v19;
@@ -54,8 +54,8 @@
     v18->_imageView = v21;
 
     [(UIImageView *)v18->_imageView setUserInteractionEnabled:1];
-    v23 = [(SXComponentView *)v18 contentView];
-    [v23 addSubview:v18->_imageView];
+    contentView = [(SXComponentView *)v18 contentView];
+    [contentView addSubview:v18->_imageView];
 
     v24 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     cachedSnapshots = v18->_cachedSnapshots;
@@ -66,8 +66,8 @@
     v18->_tapGesture = v26;
 
     [(UIImageView *)v18->_imageView addGestureRecognizer:v18->_tapGesture];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v18 selector:sel_memoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel_memoryWarning_ name:*MEMORY[0x1E69DDAD8] object:0];
   }
 
   return v18;
@@ -75,18 +75,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
 
   v4.receiver = self;
   v4.super_class = SXMapComponentView;
   [(SXComponentView *)&v4 dealloc];
 }
 
-- (void)memoryWarning:(id)a3
+- (void)memoryWarning:(id)warning
 {
-  v3 = [(SXMapComponentView *)self cachedSnapshots];
-  [v3 removeAllObjects];
+  cachedSnapshots = [(SXMapComponentView *)self cachedSnapshots];
+  [cachedSnapshots removeAllObjects];
 }
 
 - (void)renderContents
@@ -97,15 +97,15 @@
   [(SXMapComponentView *)self createSnapShot];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  var0 = a3.var0;
+  var0 = changes.var0;
   v6.receiver = self;
   v6.super_class = SXMapComponentView;
-  [(SXComponentView *)&v6 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
-  v5 = [(SXMapComponentView *)self imageView];
+  [(SXComponentView *)&v6 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
+  imageView = [(SXMapComponentView *)self imageView];
   [(SXComponentView *)self contentFrame];
-  [v5 setFrame:?];
+  [imageView setFrame:?];
 
   if ([(SXComponentView *)self hasRenderedContents])
   {
@@ -121,17 +121,17 @@
   v4.receiver = self;
   v4.super_class = SXMapComponentView;
   [(SXComponentView *)&v4 discardContents];
-  v3 = [(SXMapComponentView *)self imageView];
-  [v3 setImage:0];
+  imageView = [(SXMapComponentView *)self imageView];
+  [imageView setImage:0];
 
   [(SXMapComponentView *)self cancelSnapShot];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = SXMapComponentView;
-  [(SXMapComponentView *)&v4 traitCollectionDidChange:a3];
+  [(SXMapComponentView *)&v4 traitCollectionDidChange:change];
   if ([(SXComponentView *)self hasRenderedContents])
   {
     [(SXMapComponentView *)self createSnapShot];
@@ -144,37 +144,37 @@
   v4 = v3;
   v6 = v5;
   v7 = objc_alloc_init(MEMORY[0x1E696F2B0]);
-  v8 = [(SXComponentView *)self component];
-  [v7 setMapType:{objc_msgSend(v8, "defaultMapType")}];
+  component = [(SXComponentView *)self component];
+  [v7 setMapType:{objc_msgSend(component, "defaultMapType")}];
 
   [(SXMapComponentView *)self mapRect];
   [v7 setMapRect:?];
   [v7 setSize:{v4, v6}];
-  v9 = [(SXMapComponentView *)self traitCollection];
-  [v7 setTraitCollection:v9];
+  traitCollection = [(SXMapComponentView *)self traitCollection];
+  [v7 setTraitCollection:traitCollection];
 
-  v10 = [(SXMapComponentView *)self cachedSnapshots];
-  v11 = [v10 objectForKey:v7];
+  cachedSnapshots = [(SXMapComponentView *)self cachedSnapshots];
+  v11 = [cachedSnapshots objectForKey:v7];
 
   if (v11)
   {
-    v12 = [(SXMapComponentView *)self imageView];
-    [v12 setImage:v11];
+    imageView = [(SXMapComponentView *)self imageView];
+    [imageView setImage:v11];
   }
 
   else
   {
     [(SXMapComponentView *)self cancelSnapShot];
     objc_initWeak(&location, self);
-    v13 = [(SXMapComponentView *)self snapShotter];
-    v14 = [(SXMapComponentView *)self annotations];
+    snapShotter = [(SXMapComponentView *)self snapShotter];
+    annotations = [(SXMapComponentView *)self annotations];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __36__SXMapComponentView_createSnapShot__block_invoke;
     v16[3] = &unk_1E8501FF0;
     objc_copyWeak(&v18, &location);
     v17 = v7;
-    v15 = [v13 snapShotWithOptions:v17 annotations:v14 completionBlock:v16];
+    v15 = [snapShotter snapShotWithOptions:v17 annotations:annotations completionBlock:v16];
     [(SXMapComponentView *)self setSnapShotCancelHandler:v15];
 
     objc_destroyWeak(&v18);
@@ -220,12 +220,12 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
 
 - (void)cancelSnapShot
 {
-  v3 = [(SXMapComponentView *)self snapShotCancelHandler];
+  snapShotCancelHandler = [(SXMapComponentView *)self snapShotCancelHandler];
 
-  if (v3)
+  if (snapShotCancelHandler)
   {
-    v4 = [(SXMapComponentView *)self snapShotCancelHandler];
-    v4[2]();
+    snapShotCancelHandler2 = [(SXMapComponentView *)self snapShotCancelHandler];
+    snapShotCancelHandler2[2]();
 
     [(SXMapComponentView *)self setSnapShotCancelHandler:0];
   }
@@ -237,15 +237,15 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
   annotations = self->_annotations;
   if (!annotations)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 items];
+    component = [(SXComponentView *)self component];
+    items = [component items];
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -257,23 +257,23 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
           v11 = [[SXMapComponentAnnotation alloc] initWithMapItem:*(*(&v15 + 1) + 8 * v10)];
-          [v4 addObject:v11];
+          [array addObject:v11];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    v12 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+    v12 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
     v13 = self->_annotations;
     self->_annotations = v12;
 
@@ -298,15 +298,15 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
 - ($04509175BD9135993A1E69B8DF80FE31)region
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 items];
+  component = [(SXComponentView *)self component];
+  items = [component items];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -318,27 +318,27 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v11 = MEMORY[0x1E696B098];
         [*(*(&v15 + 1) + 8 * v10) coordinate];
         v12 = [v11 valueWithMKCoordinate:?];
-        [v4 addObject:v12];
+        [array addObject:v12];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(SXComponentView *)self component];
-  [v13 region];
-  [SXMapComponentSizer regionFromRegion:v4 coordinates:?];
+  component2 = [(SXComponentView *)self component];
+  [component2 region];
+  [SXMapComponentSizer regionFromRegion:array coordinates:?];
 
   return result;
 }
@@ -346,18 +346,18 @@ void __36__SXMapComponentView_createSnapShot__block_invoke_2(uint64_t a1)
 - (void)presentFullScreen
 {
   [(SXMapComponentView *)self configureMapView];
-  v3 = [(SXComponentView *)self presentationDelegate];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SXMapComponentView_presentFullScreen__block_invoke;
   v7[3] = &unk_1E84FED18;
   v7[4] = self;
-  v4 = [v3 requestFullScreenCanvasViewControllerForComponent:self withCompletionBlock:v7];
+  v4 = [presentationDelegate requestFullScreenCanvasViewControllerForComponent:self withCompletionBlock:v7];
   [(SXMapComponentView *)self setFullScreenCanvasViewController:v4];
 
-  v5 = [(SXMapComponentView *)self mapTitle];
-  v6 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  [v6 setTitle:v5];
+  mapTitle = [(SXMapComponentView *)self mapTitle];
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  [fullScreenCanvasViewController setTitle:mapTitle];
 }
 
 uint64_t __39__SXMapComponentView_presentFullScreen__block_invoke(uint64_t a1)
@@ -479,21 +479,21 @@ void __39__SXMapComponentView_presentFullScreen__block_invoke_5(uint64_t a1)
 
 - (void)dismissFullScreen
 {
-  v3 = [(SXMapComponentView *)self imageView];
-  [v3 setAlpha:1.0];
+  imageView = [(SXMapComponentView *)self imageView];
+  [imageView setAlpha:1.0];
 
-  v4 = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__SXMapComponentView_dismissFullScreen__block_invoke;
   v6[3] = &unk_1E84FED18;
   v6[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v6];
+  [fullScreenCanvasViewController dismissViewControllerAnimated:1 completion:v6];
 
   [(SXMapComponentView *)self finishMediaEngageEvent];
   [(SXMapComponentView *)self submitMediaEngageCompleteEvent];
-  v5 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  [v5 setNeedsStatusBarAppearanceUpdate];
+  fullScreenCanvasViewController2 = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  [fullScreenCanvasViewController2 setNeedsStatusBarAppearanceUpdate];
 }
 
 uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
@@ -510,19 +510,19 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
   return [v4 setFullScreenCanvasViewController:0];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(SXMapComponentView *)self imageView];
-  v5 = [v4 image];
-  if (v5)
+  imageView = [(SXMapComponentView *)self imageView];
+  image = [imageView image];
+  if (image)
   {
   }
 
   else
   {
-    v6 = [(SXMapComponentView *)self isPresentingFullscreen];
+    isPresentingFullscreen = [(SXMapComponentView *)self isPresentingFullscreen];
 
-    if (!v6)
+    if (!isPresentingFullscreen)
     {
       return;
     }
@@ -532,14 +532,14 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
   {
     if (![(SXMapComponentView *)self hasSelectedAnnotations])
     {
-      v7 = [(SXMapComponentView *)self areBarsHidden];
-      v8 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-      v9 = [v8 navigationController];
-      [v9 setNavigationBarHidden:!v7 animated:1];
+      areBarsHidden = [(SXMapComponentView *)self areBarsHidden];
+      fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+      navigationController = [fullScreenCanvasViewController navigationController];
+      [navigationController setNavigationBarHidden:!areBarsHidden animated:1];
 
-      v11 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-      v10 = [v11 navigationController];
-      [v10 setToolbarHidden:!v7 animated:1];
+      fullScreenCanvasViewController2 = [(SXMapComponentView *)self fullScreenCanvasViewController];
+      navigationController2 = [fullScreenCanvasViewController2 navigationController];
+      [navigationController2 setToolbarHidden:!areBarsHidden animated:1];
     }
   }
 
@@ -552,46 +552,46 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
 
 - (void)configureMapView
 {
-  v3 = [(SXMapComponentView *)self mapView];
-  v4 = [(SXMapComponentView *)self mapView];
-  v5 = [v4 annotations];
-  [v3 removeAnnotations:v5];
+  mapView = [(SXMapComponentView *)self mapView];
+  mapView2 = [(SXMapComponentView *)self mapView];
+  annotations = [mapView2 annotations];
+  [mapView removeAnnotations:annotations];
 
-  v6 = [(SXMapComponentView *)self mapView];
-  v7 = [(SXMapComponentView *)self annotations];
-  [v6 addAnnotations:v7];
+  mapView3 = [(SXMapComponentView *)self mapView];
+  annotations2 = [(SXMapComponentView *)self annotations];
+  [mapView3 addAnnotations:annotations2];
 
-  v8 = [(SXMapComponentView *)self mapView];
+  mapView4 = [(SXMapComponentView *)self mapView];
   [(SXMapComponentView *)self mapRect];
-  [v8 setVisibleMapRect:?];
+  [mapView4 setVisibleMapRect:?];
 
-  v10 = [(SXMapComponentView *)self mapView];
-  v9 = [(SXComponentView *)self component];
-  [v10 setMapType:{objc_msgSend(v9, "defaultMapType")}];
+  mapView5 = [(SXMapComponentView *)self mapView];
+  component = [(SXComponentView *)self component];
+  [mapView5 setMapType:{objc_msgSend(component, "defaultMapType")}];
 }
 
 - (void)setupNavigationBar
 {
-  v3 = [(SXMapComponentView *)self doneBarButtonItem];
+  doneBarButtonItem = [(SXMapComponentView *)self doneBarButtonItem];
 
-  if (!v3)
+  if (!doneBarButtonItem)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_handleDoneTap_];
     [(SXMapComponentView *)self setDoneBarButtonItem:v4];
   }
 
-  v7 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  v5 = [v7 navigationItem];
-  v6 = [(SXMapComponentView *)self doneBarButtonItem];
-  [v5 setRightBarButtonItem:v6];
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  navigationItem = [fullScreenCanvasViewController navigationItem];
+  doneBarButtonItem2 = [(SXMapComponentView *)self doneBarButtonItem];
+  [navigationItem setRightBarButtonItem:doneBarButtonItem2];
 }
 
 - (void)setupToolbar
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SXMapComponentView *)self segmentedControl];
+  segmentedControl = [(SXMapComponentView *)self segmentedControl];
 
-  if (!v3)
+  if (!segmentedControl)
   {
     v4 = SXBundle();
     v5 = [v4 localizedStringForKey:@"Standard" value:&stru_1F532F6C0 table:0];
@@ -618,46 +618,46 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
     [(SXMapComponentView *)self setSegmentedControl:v11];
   }
 
-  v16 = [(SXMapComponentView *)self segmentedControl];
-  v17 = [(SXMapComponentView *)self mapView];
-  [v16 setSelectedSegmentIndex:{-[SXMapComponentView segmentIndexForMapType:](self, "segmentIndexForMapType:", objc_msgSend(v17, "mapType"))}];
+  segmentedControl2 = [(SXMapComponentView *)self segmentedControl];
+  mapView = [(SXMapComponentView *)self mapView];
+  [segmentedControl2 setSelectedSegmentIndex:{-[SXMapComponentView segmentIndexForMapType:](self, "segmentIndexForMapType:", objc_msgSend(mapView, "mapType"))}];
 
-  v18 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  v19 = [(SXMapComponentView *)self toolbarItems];
-  [v18 setToolbarItems:v19];
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  toolbarItems = [(SXMapComponentView *)self toolbarItems];
+  [fullScreenCanvasViewController setToolbarItems:toolbarItems];
 }
 
-- (unint64_t)segmentIndexForMapType:(unint64_t)a3
+- (unint64_t)segmentIndexForMapType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_1D8392480[a3];
+    return qword_1D8392480[type];
   }
 }
 
-- (unint64_t)mapTypeForSegmentIndex:(unint64_t)a3
+- (unint64_t)mapTypeForSegmentIndex:(unint64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (index == 1);
   }
 }
 
-- (void)mapTypeChanged:(id)a3
+- (void)mapTypeChanged:(id)changed
 {
-  v4 = -[SXMapComponentView mapTypeForSegmentIndex:](self, "mapTypeForSegmentIndex:", [a3 selectedSegmentIndex]);
-  v5 = [(SXMapComponentView *)self mapView];
-  [v5 setMapType:v4];
+  v4 = -[SXMapComponentView mapTypeForSegmentIndex:](self, "mapTypeForSegmentIndex:", [changed selectedSegmentIndex]);
+  mapView = [(SXMapComponentView *)self mapView];
+  [mapView setMapType:v4];
 }
 
 - (MKMapView)mapView
@@ -670,17 +670,17 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
     v5 = [v4 initWithFrame:?];
     [v5 _setUseBalloonCalloutsForLabels:1];
     [v5 setDelegate:self];
-    v6 = [(SXComponentView *)self contentView];
-    v7 = [(SXMapComponentView *)self imageView];
-    [v6 insertSubview:v5 belowSubview:v7];
+    contentView = [(SXComponentView *)self contentView];
+    imageView = [(SXMapComponentView *)self imageView];
+    [contentView insertSubview:v5 belowSubview:imageView];
 
     [(SXMapComponentView *)self setMapView:v5];
     [(SXMapComponentView *)self enableMapViewInteraction:0];
     v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTap_];
     [v8 setDelegate:self];
-    v9 = [(SXMapComponentView *)self mapView];
-    v10 = [v9 _selectingTapGestureRecognizer];
-    [v8 requireGestureRecognizerToFail:v10];
+    mapView = [(SXMapComponentView *)self mapView];
+    _selectingTapGestureRecognizer = [mapView _selectingTapGestureRecognizer];
+    [v8 requireGestureRecognizerToFail:_selectingTapGestureRecognizer];
 
     [v5 addGestureRecognizer:v8];
     [(SXMapComponentView *)self setTapGesture:v8];
@@ -691,13 +691,13 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
   return mapView;
 }
 
-- (void)enableMapViewInteraction:(BOOL)a3
+- (void)enableMapViewInteraction:(BOOL)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   [(MKMapView *)self->_mapView setZoomEnabled:?];
   mapView = self->_mapView;
 
-  [(MKMapView *)mapView setScrollEnabled:v3];
+  [(MKMapView *)mapView setScrollEnabled:interactionCopy];
 }
 
 - (BOOL)isUserInteractingWithMap
@@ -707,10 +707,10 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(SXMapComponentView *)self mapView];
-  v4 = [v3 gestureRecognizers];
+  mapView = [(SXMapComponentView *)self mapView];
+  gestureRecognizers = [mapView gestureRecognizers];
 
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v5 = [gestureRecognizers countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -721,7 +721,7 @@ uint64_t __39__SXMapComponentView_dismissFullScreen__block_invoke(uint64_t a1)
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         if ([*(*(&v28 + 1) + 8 * i) numberOfTouches])
@@ -732,7 +732,7 @@ LABEL_26:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v6)
       {
         continue;
@@ -746,10 +746,10 @@ LABEL_26:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(SXMapComponentView *)self mapView];
-  v4 = [v9 subviews];
+  mapView2 = [(SXMapComponentView *)self mapView];
+  gestureRecognizers = [mapView2 subviews];
 
-  v10 = [v4 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  v10 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v10)
   {
     v11 = *v25;
@@ -759,7 +759,7 @@ LABEL_26:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v13 = *(*(&v24 + 1) + 8 * j);
@@ -767,8 +767,8 @@ LABEL_26:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v14 = [v13 gestureRecognizers];
-        v15 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+        gestureRecognizers2 = [v13 gestureRecognizers];
+        v15 = [gestureRecognizers2 countByEnumeratingWithState:&v20 objects:v32 count:16];
         if (v15)
         {
           v16 = v15;
@@ -779,7 +779,7 @@ LABEL_26:
             {
               if (*v21 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(gestureRecognizers2);
               }
 
               if ([*(*(&v20 + 1) + 8 * k) numberOfTouches])
@@ -789,7 +789,7 @@ LABEL_26:
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v20 objects:v32 count:16];
+            v16 = [gestureRecognizers2 countByEnumeratingWithState:&v20 objects:v32 count:16];
             if (v16)
             {
               continue;
@@ -800,7 +800,7 @@ LABEL_26:
         }
       }
 
-      v10 = [v4 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v10 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v10);
@@ -813,48 +813,48 @@ LABEL_27:
 
 - (BOOL)isPresentingFullscreen
 {
-  v2 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  v3 = v2 != 0;
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  v3 = fullScreenCanvasViewController != 0;
 
   return v3;
 }
 
 - (BOOL)areBarsHidden
 {
-  v2 = [(SXMapComponentView *)self fullScreenCanvasViewController];
-  v3 = [v2 navigationController];
-  v4 = [v3 isNavigationBarHidden];
+  fullScreenCanvasViewController = [(SXMapComponentView *)self fullScreenCanvasViewController];
+  navigationController = [fullScreenCanvasViewController navigationController];
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  return v4;
+  return isNavigationBarHidden;
 }
 
 - (BOOL)hasSelectedAnnotations
 {
-  v2 = [(SXMapComponentView *)self mapView];
-  v3 = [v2 selectedAnnotations];
-  v4 = [v3 count] != 0;
+  mapView = [(SXMapComponentView *)self mapView];
+  selectedAnnotations = [mapView selectedAnnotations];
+  v4 = [selectedAnnotations count] != 0;
 
   return v4;
 }
 
 - (id)mapTitle
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 caption];
+  component = [(SXComponentView *)self component];
+  caption = [component caption];
 
-  v5 = [(SXMapComponentView *)self mapView];
-  v6 = [v5 annotations];
+  mapView = [(SXMapComponentView *)self mapView];
+  annotations = [mapView annotations];
 
-  if (!v4)
+  if (!caption)
   {
-    if ([v6 count] != 1 || (objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "title"), v4 = objc_claimAutoreleasedReturnValue(), v7, !v4))
+    if ([annotations count] != 1 || (objc_msgSend(annotations, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "title"), caption = objc_claimAutoreleasedReturnValue(), v7, !caption))
     {
-      v8 = [(SXMapComponentView *)self documentTitleProvider];
-      v4 = [v8 title];
+      documentTitleProvider = [(SXMapComponentView *)self documentTitleProvider];
+      caption = [documentTitleProvider title];
     }
   }
 
-  return v4;
+  return caption;
 }
 
 - (void)submitEvents
@@ -867,9 +867,9 @@ LABEL_27:
 
 - (void)createMediaEngageEvent
 {
-  v3 = [(SXMapComponentView *)self activeMediaEngageEvent];
+  activeMediaEngageEvent = [(SXMapComponentView *)self activeMediaEngageEvent];
 
-  if (!v3)
+  if (!activeMediaEngageEvent)
   {
     v4 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
     [(SXMapComponentView *)self setActiveMediaEngageEvent:v4];
@@ -878,16 +878,16 @@ LABEL_27:
 
 - (void)finishMediaEngageEvent
 {
-  v3 = [(SXMapComponentView *)self activeMediaEngageEvent];
+  activeMediaEngageEvent = [(SXMapComponentView *)self activeMediaEngageEvent];
 
-  if (v3)
+  if (activeMediaEngageEvent)
   {
-    v4 = [(SXMapComponentView *)self activeMediaEngageEvent];
-    [v4 determineEndDate];
+    activeMediaEngageEvent2 = [(SXMapComponentView *)self activeMediaEngageEvent];
+    [activeMediaEngageEvent2 determineEndDate];
 
-    v5 = [(SXMediaComponentView *)self analyticsReporting];
-    v6 = [(SXMapComponentView *)self activeMediaEngageEvent];
-    [v5 reportEvent:v6];
+    analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+    activeMediaEngageEvent3 = [(SXMapComponentView *)self activeMediaEngageEvent];
+    [analyticsReporting reportEvent:activeMediaEngageEvent3];
 
     [(SXMapComponentView *)self setActiveMediaEngageEvent:0];
   }
@@ -897,8 +897,8 @@ LABEL_27:
 {
   v4 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
   [v4 determineEndDate];
-  v3 = [(SXMediaComponentView *)self analyticsReporting];
-  [v3 reportEvent:v4];
+  analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+  [analyticsReporting reportEvent:v4];
 }
 
 @end

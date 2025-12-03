@@ -9,12 +9,12 @@
 
 - (id)nanoSyncDescription
 {
-  v3 = [(HDIDSIncomingRequest *)self pbRequest];
-  v4 = HDNanoSyncDescriptionSafe(v3);
+  pbRequest = [(HDIDSIncomingRequest *)self pbRequest];
+  v4 = HDNanoSyncDescriptionSafe(pbRequest);
 
-  LODWORD(v3) = [(HDIDSIncomingRequest *)self messageID];
-  v5 = [(HDIDSIncomingRequest *)self idsIdentifier];
-  v6 = FormattedMessageDescription(v3, 1, 1, v5, v4);
+  LODWORD(pbRequest) = [(HDIDSIncomingRequest *)self messageID];
+  idsIdentifier = [(HDIDSIncomingRequest *)self idsIdentifier];
+  v6 = FormattedMessageDescription(pbRequest, 1, 1, idsIdentifier, v4);
 
   return v6;
 }
@@ -34,8 +34,8 @@
 
     else
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:805 description:{@"Can't access -pbRequest without a mapping for messageID: %hu", self->_messageID}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSMessageCenter.m" lineNumber:805 description:{@"Can't access -pbRequest without a mapping for messageID: %hu", self->_messageID}];
 
       v7 = 0;
     }
@@ -66,7 +66,7 @@
         *buf = 138412546;
         v10 = objc_opt_class();
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         v6 = v10;
         _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%@ (%@) deallocated without sending a response", buf, 0x16u);
       }

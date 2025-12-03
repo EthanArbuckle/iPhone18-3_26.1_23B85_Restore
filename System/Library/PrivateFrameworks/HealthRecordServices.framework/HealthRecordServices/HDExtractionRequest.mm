@@ -1,40 +1,40 @@
 @interface HDExtractionRequest
-- (HDExtractionRequest)initWithCoder:(id)a3;
-- (HDExtractionRequest)initWithResources:(id)a3;
+- (HDExtractionRequest)initWithCoder:(id)coder;
+- (HDExtractionRequest)initWithResources:(id)resources;
 - (id)debugDescription;
 @end
 
 @implementation HDExtractionRequest
 
-- (HDExtractionRequest)initWithCoder:(id)a3
+- (HDExtractionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"Resources"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"Resources"];
   if (v6)
   {
     self = [(HDExtractionRequest *)self initWithResources:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (HDExtractionRequest)initWithResources:(id)a3
+- (HDExtractionRequest)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = HDExtractionRequest;
   v5 = [(HDExtractionRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resourcesCopy copy];
     resources = v5->_resources;
     v5->_resources = v6;
   }

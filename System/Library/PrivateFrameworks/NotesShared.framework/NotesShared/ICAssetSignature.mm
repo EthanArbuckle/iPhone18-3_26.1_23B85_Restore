@@ -1,46 +1,46 @@
 @interface ICAssetSignature
-+ (BOOL)hasFetchedAssets:(id)a3;
-+ (BOOL)hasLocallyStoredAssetsInObject:(id)a3 context:(id)a4;
-+ (BOOL)shouldWriteAssetIfNeededToKey:(id)a3 inRecord:(id)a4 forObject:(id)a5 context:(id)a6;
-+ (id)allAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4;
-+ (id)assetSignatureForCloudKitRecordKey:(id)a3 isUserSpecificRecordKey:(BOOL)a4 cloudSyncingObject:(id)a5 context:(id)a6;
-+ (id)assetSignatureHashFromAssets:(id)a3;
-+ (id)assetSignaturesMatchingPredicate:(id)a3 context:(id)a4;
-+ (id)commonAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4;
-+ (id)makeAssetSignatureIfNeededWithCloudKitRecordKey:(id)a3 isUserSpecificRecordKey:(BOOL)a4 cloudSyncingObject:(id)a5 account:(id)a6 context:(id)a7;
-+ (id)makeAssetSignatureWithCloudKitRecordKey:(id)a3 fetchedLocalAssetSignatureHash:(id)a4 lastKnownServerAssetSignatureHash:(id)a5 isUserSpecificRecordKey:(BOOL)a6 cloudSyncingObject:(id)a7 account:(id)a8 context:(id)a9;
-+ (id)userSpecificAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4;
-+ (void)mergeIncomingAssetsFromRecord:(id)a3 forObject:(id)a4 account:(id)a5 context:(id)a6;
++ (BOOL)hasFetchedAssets:(id)assets;
++ (BOOL)hasLocallyStoredAssetsInObject:(id)object context:(id)context;
++ (BOOL)shouldWriteAssetIfNeededToKey:(id)key inRecord:(id)record forObject:(id)object context:(id)context;
++ (id)allAssetSignaturesForCloudSyncingObject:(id)object context:(id)context;
++ (id)assetSignatureForCloudKitRecordKey:(id)key isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object context:(id)context;
++ (id)assetSignatureHashFromAssets:(id)assets;
++ (id)assetSignaturesMatchingPredicate:(id)predicate context:(id)context;
++ (id)commonAssetSignaturesForCloudSyncingObject:(id)object context:(id)context;
++ (id)makeAssetSignatureIfNeededWithCloudKitRecordKey:(id)key isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object account:(id)account context:(id)context;
++ (id)makeAssetSignatureWithCloudKitRecordKey:(id)key fetchedLocalAssetSignatureHash:(id)hash lastKnownServerAssetSignatureHash:(id)signatureHash isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object account:(id)account context:(id)context;
++ (id)userSpecificAssetSignaturesForCloudSyncingObject:(id)object context:(id)context;
++ (void)mergeIncomingAssetsFromRecord:(id)record forObject:(id)object account:(id)account context:(id)context;
 - (BOOL)outOfDate;
 @end
 
 @implementation ICAssetSignature
 
-+ (id)makeAssetSignatureWithCloudKitRecordKey:(id)a3 fetchedLocalAssetSignatureHash:(id)a4 lastKnownServerAssetSignatureHash:(id)a5 isUserSpecificRecordKey:(BOOL)a6 cloudSyncingObject:(id)a7 account:(id)a8 context:(id)a9
++ (id)makeAssetSignatureWithCloudKitRecordKey:(id)key fetchedLocalAssetSignatureHash:(id)hash lastKnownServerAssetSignatureHash:(id)signatureHash isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object account:(id)account context:(id)context
 {
-  if (a9)
+  if (context)
   {
-    v11 = a6;
-    v15 = a9;
-    v16 = a8;
-    v17 = a7;
-    v18 = a5;
-    v19 = a4;
-    v20 = a3;
+    recordKeyCopy = recordKey;
+    contextCopy = context;
+    accountCopy = account;
+    objectCopy = object;
+    signatureHashCopy = signatureHash;
+    hashCopy = hash;
+    keyCopy = key;
     objc_opt_class();
-    v21 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"ICAssetSignature" inManagedObjectContext:v15];
+    v21 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"ICAssetSignature" inManagedObjectContext:contextCopy];
     v22 = ICCheckedDynamicCast();
 
-    v23 = [v16 persistentStore];
+    persistentStore = [accountCopy persistentStore];
 
-    [v15 assignObject:v22 toPersistentStore:v23];
-    [v22 setCloudKitRecordKey:v20];
+    [contextCopy assignObject:v22 toPersistentStore:persistentStore];
+    [v22 setCloudKitRecordKey:keyCopy];
 
-    [v22 setFetchedLocalAssetSignatureHash:v19];
-    [v22 setLastKnownServerAssetSignatureHash:v18];
+    [v22 setFetchedLocalAssetSignatureHash:hashCopy];
+    [v22 setLastKnownServerAssetSignatureHash:signatureHashCopy];
 
-    [v22 setIsUserSpecificRecordKey:v11];
-    [v22 setCloudSyncingObject:v17];
+    [v22 setIsUserSpecificRecordKey:recordKeyCopy];
+    [v22 setCloudSyncingObject:objectCopy];
   }
 
   else
@@ -51,16 +51,16 @@
   return v22;
 }
 
-+ (id)makeAssetSignatureIfNeededWithCloudKitRecordKey:(id)a3 isUserSpecificRecordKey:(BOOL)a4 cloudSyncingObject:(id)a5 account:(id)a6 context:(id)a7
++ (id)makeAssetSignatureIfNeededWithCloudKitRecordKey:(id)key isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object account:(id)account context:(id)context
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  recordKeyCopy = recordKey;
+  keyCopy = key;
+  objectCopy = object;
+  accountCopy = account;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v16 = [a1 assetSignatureForCloudKitRecordKey:v12 isUserSpecificRecordKey:v10 cloudSyncingObject:v13 context:v15];
+    v16 = [self assetSignatureForCloudKitRecordKey:keyCopy isUserSpecificRecordKey:recordKeyCopy cloudSyncingObject:objectCopy context:contextCopy];
     v17 = v16;
     if (v16)
     {
@@ -69,7 +69,7 @@
 
     else
     {
-      v18 = [a1 makeAssetSignatureWithCloudKitRecordKey:v12 fetchedLocalAssetSignatureHash:0 lastKnownServerAssetSignatureHash:0 isUserSpecificRecordKey:v10 cloudSyncingObject:v13 account:v14 context:v15];
+      v18 = [self makeAssetSignatureWithCloudKitRecordKey:keyCopy fetchedLocalAssetSignatureHash:0 lastKnownServerAssetSignatureHash:0 isUserSpecificRecordKey:recordKeyCopy cloudSyncingObject:objectCopy account:accountCopy context:contextCopy];
     }
 
     v19 = v18;
@@ -83,49 +83,49 @@
   return v19;
 }
 
-+ (id)assetSignatureForCloudKitRecordKey:(id)a3 isUserSpecificRecordKey:(BOOL)a4 cloudSyncingObject:(id)a5 context:(id)a6
++ (id)assetSignatureForCloudKitRecordKey:(id)key isUserSpecificRecordKey:(BOOL)recordKey cloudSyncingObject:(id)object context:(id)context
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (context)
   {
-    v7 = a4;
+    recordKeyCopy = recordKey;
     v10 = MEMORY[0x277CCA920];
     v11 = MEMORY[0x277CCAC30];
-    v12 = a6;
-    v13 = a5;
-    v14 = [v11 predicateWithFormat:@"cloudKitRecordKey == %@", a3];
+    contextCopy = context;
+    objectCopy = object;
+    v14 = [v11 predicateWithFormat:@"cloudKitRecordKey == %@", key];
     v24[0] = v14;
     v15 = MEMORY[0x277CCAC30];
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:recordKeyCopy];
     v17 = [v15 predicateWithFormat:@"isUserSpecificRecordKey == %@", v16];
     v24[1] = v17;
-    v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", v13];
+    objectCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", objectCopy];
 
-    v24[2] = v18;
+    v24[2] = objectCopy;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
     v20 = [v10 andPredicateWithSubpredicates:v19];
 
-    v21 = [a1 assetSignaturesMatchingPredicate:v20 context:v12];
+    v21 = [self assetSignaturesMatchingPredicate:v20 context:contextCopy];
 
-    v22 = [v21 firstObject];
+    firstObject = [v21 firstObject];
   }
 
   else
   {
-    v22 = 0;
+    firstObject = 0;
   }
 
-  return v22;
+  return firstObject;
 }
 
-+ (id)allAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4
++ (id)allAssetSignaturesForCloudSyncingObject:(id)object context:(id)context
 {
-  if (a4)
+  if (context)
   {
     v6 = MEMORY[0x277CCAC30];
-    v7 = a4;
-    v8 = [v6 predicateWithFormat:@"cloudSyncingObject == %@", a3];
-    v9 = [a1 assetSignaturesMatchingPredicate:v8 context:v7];
+    contextCopy = context;
+    object = [v6 predicateWithFormat:@"cloudSyncingObject == %@", object];
+    v9 = [self assetSignaturesMatchingPredicate:object context:contextCopy];
   }
 
   else
@@ -136,23 +136,23 @@
   return v9;
 }
 
-+ (id)userSpecificAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4
++ (id)userSpecificAssetSignaturesForCloudSyncingObject:(id)object context:(id)context
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (context)
   {
     v6 = MEMORY[0x277CCA920];
     v7 = MEMORY[0x277CCAC30];
-    v8 = a4;
-    v9 = a3;
+    contextCopy = context;
+    objectCopy = object;
     v10 = [v7 predicateWithFormat:@"isUserSpecificRecordKey == %@", MEMORY[0x277CBEC38]];
-    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", v9, v10];
+    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", objectCopy, v10];
 
     v16[1] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v13 = [v6 andPredicateWithSubpredicates:v12];
 
-    v14 = [a1 assetSignaturesMatchingPredicate:v13 context:v8];
+    v14 = [self assetSignaturesMatchingPredicate:v13 context:contextCopy];
   }
 
   else
@@ -163,23 +163,23 @@
   return v14;
 }
 
-+ (id)commonAssetSignaturesForCloudSyncingObject:(id)a3 context:(id)a4
++ (id)commonAssetSignaturesForCloudSyncingObject:(id)object context:(id)context
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (context)
   {
     v6 = MEMORY[0x277CCA920];
     v7 = MEMORY[0x277CCAC30];
-    v8 = a4;
-    v9 = a3;
+    contextCopy = context;
+    objectCopy = object;
     v10 = [v7 predicateWithFormat:@"isUserSpecificRecordKey == %@", MEMORY[0x277CBEC28]];
-    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", v9, v10];
+    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"cloudSyncingObject == %@", objectCopy, v10];
 
     v16[1] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v13 = [v6 andPredicateWithSubpredicates:v12];
 
-    v14 = [a1 assetSignaturesMatchingPredicate:v13 context:v8];
+    v14 = [self assetSignaturesMatchingPredicate:v13 context:contextCopy];
   }
 
   else
@@ -190,12 +190,12 @@
   return v14;
 }
 
-+ (id)assetSignaturesMatchingPredicate:(id)a3 context:(id)a4
++ (id)assetSignaturesMatchingPredicate:(id)predicate context:(id)context
 {
   v4 = MEMORY[0x277CBEBF8];
-  if (a4)
+  if (context)
   {
-    v5 = [ICAssetSignature ic_objectsMatchingPredicate:a3 context:?];
+    v5 = [ICAssetSignature ic_objectsMatchingPredicate:predicate context:?];
     v6 = v5;
     if (v5)
     {
@@ -213,26 +213,26 @@
   return v4;
 }
 
-+ (void)mergeIncomingAssetsFromRecord:(id)a3 forObject:(id)a4 account:(id)a5 context:(id)a6
++ (void)mergeIncomingAssetsFromRecord:(id)record forObject:(id)object account:(id)account context:(id)context
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v38 = a4;
-  v37 = a5;
-  v40 = a6;
-  if (v40)
+  recordCopy = record;
+  objectCopy = object;
+  accountCopy = account;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v11 = [v10 assetsByKey];
-    v33 = v10;
-    v12 = [v10 recordID];
-    v35 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v12];
+    assetsByKey = [recordCopy assetsByKey];
+    v33 = recordCopy;
+    recordID = [recordCopy recordID];
+    v35 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:recordID];
 
     v36 = [MEMORY[0x277CBEB58] set];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = [v11 allKeys];
+    obj = [assetsByKey allKeys];
     v13 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v13)
     {
@@ -249,11 +249,11 @@
 
           v16 = *(*(&v45 + 1) + 8 * i);
           objc_opt_class();
-          v17 = [v11 objectForKeyedSubscript:v16];
+          v17 = [assetsByKey objectForKeyedSubscript:v16];
           v18 = ICDynamicCast();
 
           objc_opt_class();
-          v19 = [v11 objectForKeyedSubscript:v16];
+          v19 = [assetsByKey objectForKeyedSubscript:v16];
           v20 = ICDynamicCast();
 
           if (v18)
@@ -263,12 +263,12 @@
             v20 = v21;
           }
 
-          v22 = [a1 assetSignatureHashFromAssets:v20];
+          v22 = [self assetSignatureHashFromAssets:v20];
           if (v22)
           {
-            v23 = [a1 hasFetchedAssets:v20];
+            v23 = [self hasFetchedAssets:v20];
             [v36 ic_addNonNilObject:v16];
-            v24 = [ICAssetSignature makeAssetSignatureIfNeededWithCloudKitRecordKey:v16 isUserSpecificRecordKey:v35 cloudSyncingObject:v38 account:v37 context:v40];
+            v24 = [ICAssetSignature makeAssetSignatureIfNeededWithCloudKitRecordKey:v16 isUserSpecificRecordKey:v35 cloudSyncingObject:objectCopy account:accountCopy context:contextCopy];
             [v24 setLastKnownServerAssetSignatureHash:v22];
             if (v23)
             {
@@ -285,15 +285,15 @@
 
     if (v35)
     {
-      [a1 userSpecificAssetSignaturesForCloudSyncingObject:v38 context:v40];
+      [self userSpecificAssetSignaturesForCloudSyncingObject:objectCopy context:contextCopy];
     }
 
     else
     {
-      [a1 commonAssetSignaturesForCloudSyncingObject:v38 context:v40];
+      [self commonAssetSignaturesForCloudSyncingObject:objectCopy context:contextCopy];
     }
 
-    v10 = v33;
+    recordCopy = v33;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -313,12 +313,12 @@
           }
 
           v30 = *(*(&v41 + 1) + 8 * j);
-          v31 = [v30 cloudKitRecordKey];
-          v32 = [v36 containsObject:v31];
+          cloudKitRecordKey = [v30 cloudKitRecordKey];
+          v32 = [v36 containsObject:cloudKitRecordKey];
 
           if ((v32 & 1) == 0)
           {
-            [v40 deleteObject:v30];
+            [contextCopy deleteObject:v30];
           }
         }
 
@@ -332,15 +332,15 @@
 
 - (BOOL)outOfDate
 {
-  v3 = [(ICAssetSignature *)self lastKnownServerAssetSignatureHash];
-  if (v3)
+  lastKnownServerAssetSignatureHash = [(ICAssetSignature *)self lastKnownServerAssetSignatureHash];
+  if (lastKnownServerAssetSignatureHash)
   {
-    v4 = [(ICAssetSignature *)self fetchedLocalAssetSignatureHash];
-    if (v4)
+    fetchedLocalAssetSignatureHash = [(ICAssetSignature *)self fetchedLocalAssetSignatureHash];
+    if (fetchedLocalAssetSignatureHash)
     {
-      v5 = [(ICAssetSignature *)self fetchedLocalAssetSignatureHash];
-      v6 = [(ICAssetSignature *)self lastKnownServerAssetSignatureHash];
-      v7 = [v5 isEqualToString:v6] ^ 1;
+      fetchedLocalAssetSignatureHash2 = [(ICAssetSignature *)self fetchedLocalAssetSignatureHash];
+      lastKnownServerAssetSignatureHash2 = [(ICAssetSignature *)self lastKnownServerAssetSignatureHash];
+      v7 = [fetchedLocalAssetSignatureHash2 isEqualToString:lastKnownServerAssetSignatureHash2] ^ 1;
     }
 
     else
@@ -357,12 +357,12 @@
   return v7;
 }
 
-+ (BOOL)hasLocallyStoredAssetsInObject:(id)a3 context:(id)a4
++ (BOOL)hasLocallyStoredAssetsInObject:(id)object context:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (context)
   {
-    [a1 allAssetSignaturesForCloudSyncingObject:a3 context:?];
+    [self allAssetSignaturesForCloudSyncingObject:object context:?];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -380,9 +380,9 @@
             objc_enumerationMutation(v4);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * i) fetchedLocalAssetSignatureHash];
+          fetchedLocalAssetSignatureHash = [*(*(&v10 + 1) + 8 * i) fetchedLocalAssetSignatureHash];
 
-          if (v8)
+          if (fetchedLocalAssetSignatureHash)
           {
             LOBYTE(v5) = 1;
             goto LABEL_12;
@@ -410,28 +410,28 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)shouldWriteAssetIfNeededToKey:(id)a3 inRecord:(id)a4 forObject:(id)a5 context:(id)a6
++ (BOOL)shouldWriteAssetIfNeededToKey:(id)key inRecord:(id)record forObject:(id)object context:(id)context
 {
   v6 = 1;
-  if (a5 && a6)
+  if (object && context)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = a3;
-    v14 = [a4 recordID];
-    v15 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v14];
+    contextCopy = context;
+    objectCopy = object;
+    keyCopy = key;
+    recordID = [record recordID];
+    v15 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:recordID];
 
-    v16 = [a1 assetSignatureForCloudKitRecordKey:v13 isUserSpecificRecordKey:v15 cloudSyncingObject:v12 context:v11];
+    v16 = [self assetSignatureForCloudKitRecordKey:keyCopy isUserSpecificRecordKey:v15 cloudSyncingObject:objectCopy context:contextCopy];
 
-    v17 = [v16 fetchedLocalAssetSignatureHash];
-    v18 = [v16 lastKnownServerAssetSignatureHash];
-    v19 = v18;
-    if (v17 | v18)
+    fetchedLocalAssetSignatureHash = [v16 fetchedLocalAssetSignatureHash];
+    lastKnownServerAssetSignatureHash = [v16 lastKnownServerAssetSignatureHash];
+    v19 = lastKnownServerAssetSignatureHash;
+    if (fetchedLocalAssetSignatureHash | lastKnownServerAssetSignatureHash)
     {
       v6 = 0;
-      if (v17 && v18)
+      if (fetchedLocalAssetSignatureHash && lastKnownServerAssetSignatureHash)
       {
-        v6 = [v17 isEqualToString:v18];
+        v6 = [fetchedLocalAssetSignatureHash isEqualToString:lastKnownServerAssetSignatureHash];
       }
     }
 
@@ -444,18 +444,18 @@ LABEL_12:
   return v6;
 }
 
-+ (id)assetSignatureHashFromAssets:(id)a3
++ (id)assetSignatureHashFromAssets:(id)assets
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v4 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = assetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -475,8 +475,8 @@ LABEL_12:
           v11 = v10;
           if (v10)
           {
-            v12 = [v10 signature];
-            [v4 appendData:v12];
+            signature = [v10 signature];
+            [data appendData:signature];
           }
         }
 
@@ -486,26 +486,26 @@ LABEL_12:
       while (v7);
     }
 
-    v13 = [v4 ic_sha256];
+    ic_sha256 = [data ic_sha256];
   }
 
   else
   {
-    v13 = 0;
+    ic_sha256 = 0;
   }
 
-  return v13;
+  return ic_sha256;
 }
 
-+ (BOOL)hasFetchedAssets:(id)a3
++ (BOOL)hasFetchedAssets:(id)assets
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  assetsCopy = assets;
+  v4 = [assetsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -515,7 +515,7 @@ LABEL_12:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetsCopy);
         }
 
         objc_opt_class();
@@ -529,7 +529,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [assetsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

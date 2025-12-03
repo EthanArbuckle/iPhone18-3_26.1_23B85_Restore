@@ -1,9 +1,9 @@
 @interface _CPMapsCardSectionEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPMapsCardSectionEngagementFeedback)init;
-- (_CPMapsCardSectionEngagementFeedback)initWithFacade:(id)a3;
+- (_CPMapsCardSectionEngagementFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPMapsCardSectionEngagementFeedback
@@ -17,34 +17,34 @@
   return v4 ^ v6 ^ [(NSString *)self->_resultId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_21;
   }
 
-  v6 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
-  v7 = [v4 destination];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPMapsCardSectionEngagementFeedback *)self destination];
+  destination2 = [equalCopy destination];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_20;
   }
 
-  v8 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
-  if (v8)
+  destination3 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
+  if (destination3)
   {
-    v9 = v8;
-    v10 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
-    v11 = [v4 destination];
-    v12 = [v10 isEqual:v11];
+    v9 = destination3;
+    destination4 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
+    destination5 = [equalCopy destination];
+    v12 = [destination4 isEqual:destination5];
 
     if (!v12)
     {
@@ -57,37 +57,37 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_21;
   }
 
   actionCardType = self->_actionCardType;
-  if (actionCardType != [v4 actionCardType])
+  if (actionCardType != [equalCopy actionCardType])
   {
     goto LABEL_21;
   }
 
   feedbackType = self->_feedbackType;
-  if (feedbackType != [v4 feedbackType])
+  if (feedbackType != [equalCopy feedbackType])
   {
     goto LABEL_21;
   }
 
-  v6 = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
-  v7 = [v4 cardSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
+  destination2 = [equalCopy cardSectionId];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_20;
   }
 
-  v16 = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
-  if (v16)
+  cardSectionId = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
+  if (cardSectionId)
   {
-    v17 = v16;
-    v18 = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
-    v19 = [v4 cardSectionId];
-    v20 = [v18 isEqual:v19];
+    v17 = cardSectionId;
+    cardSectionId2 = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
+    cardSectionId3 = [equalCopy cardSectionId];
+    v20 = [cardSectionId2 isEqual:cardSectionId3];
 
     if (!v20)
     {
@@ -99,12 +99,12 @@
   {
   }
 
-  v6 = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
-  v7 = [v4 resultId];
-  if ((v6 != 0) != (v7 == 0))
+  destination = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
+  destination2 = [equalCopy resultId];
+  if ((destination != 0) != (destination2 == 0))
   {
-    v21 = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
-    if (!v21)
+    resultId = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
+    if (!resultId)
     {
 
 LABEL_24:
@@ -112,10 +112,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v22 = v21;
-    v23 = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
-    v24 = [v4 resultId];
-    v25 = [v23 isEqual:v24];
+    v22 = resultId;
+    resultId2 = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
+    resultId3 = [equalCopy resultId];
+    v25 = [resultId2 isEqual:resultId3];
 
     if (v25)
     {
@@ -135,20 +135,20 @@ LABEL_22:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if ([(_CPMapsCardSectionEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
+  destination = [(_CPMapsCardSectionEngagementFeedback *)self destination];
 
-  if (v5)
+  if (destination)
   {
-    v6 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
+    destination2 = [(_CPMapsCardSectionEngagementFeedback *)self destination];
     PBDataWriterWriteSubmessage();
   }
 
@@ -170,22 +170,22 @@ LABEL_22:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
+  cardSectionId = [(_CPMapsCardSectionEngagementFeedback *)self cardSectionId];
 
-  if (v10)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
+  resultId = [(_CPMapsCardSectionEngagementFeedback *)self resultId];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (resultId)
   {
     resultId = self->_resultId;
     PBDataWriterWriteStringField();
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -203,42 +203,42 @@ LABEL_22:
   return v2;
 }
 
-- (_CPMapsCardSectionEngagementFeedback)initWithFacade:(id)a3
+- (_CPMapsCardSectionEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v16.receiver = self;
   v16.super_class = _CPMapsCardSectionEngagementFeedback;
   v5 = [(_CPMapsCardSectionEngagementFeedback *)&v16 init];
   if (v5)
   {
-    -[_CPMapsCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 destination];
+    -[_CPMapsCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    destination = [facadeCopy destination];
 
-    if (v6)
+    if (destination)
     {
       v7 = [_CPPunchoutForFeedback alloc];
-      v8 = [v4 destination];
-      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:v8];
+      destination2 = [facadeCopy destination];
+      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:destination2];
       [(_CPMapsCardSectionEngagementFeedback *)v5 setDestination:v9];
     }
 
-    -[_CPMapsCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPMapsCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [v4 actionCardType]);
-    -[_CPMapsCardSectionEngagementFeedback setFeedbackType:](v5, "setFeedbackType:", [v4 feedbackType]);
-    v10 = [v4 cardSectionId];
+    -[_CPMapsCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPMapsCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [facadeCopy actionCardType]);
+    -[_CPMapsCardSectionEngagementFeedback setFeedbackType:](v5, "setFeedbackType:", [facadeCopy feedbackType]);
+    cardSectionId = [facadeCopy cardSectionId];
 
-    if (v10)
+    if (cardSectionId)
     {
-      v11 = [v4 cardSectionId];
-      [(_CPMapsCardSectionEngagementFeedback *)v5 setCardSectionId:v11];
+      cardSectionId2 = [facadeCopy cardSectionId];
+      [(_CPMapsCardSectionEngagementFeedback *)v5 setCardSectionId:cardSectionId2];
     }
 
-    v12 = [v4 resultId];
+    resultId = [facadeCopy resultId];
 
-    if (v12)
+    if (resultId)
     {
-      v13 = [v4 resultId];
-      [(_CPMapsCardSectionEngagementFeedback *)v5 setResultId:v13];
+      resultId2 = [facadeCopy resultId];
+      [(_CPMapsCardSectionEngagementFeedback *)v5 setResultId:resultId2];
     }
 
     v14 = v5;

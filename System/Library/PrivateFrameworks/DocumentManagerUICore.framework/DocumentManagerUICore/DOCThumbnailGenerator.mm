@@ -1,17 +1,17 @@
 @interface DOCThumbnailGenerator
 + (DOCThumbnailGenerator)sharedGenerator;
 - (DOCThumbnailGenerator)init;
-- (id)_alternateThumbnailKeyForNode:(id)a3 originalKey:(id)a4 descriptor:(id)a5;
+- (id)_alternateThumbnailKeyForNode:(id)node originalKey:(id)key descriptor:(id)descriptor;
 - (id)_currentNodeThumbnailsBatch;
 - (id)_endCurrentThumbnailsBatch;
-- (id)_thumbnailFallbackForNode:(id)a3 descriptor:(id)a4 currentThumbnail:(id)a5;
-- (id)_thumbnailForNode:(id)a3 descriptor:(id)a4 forceFetch:(BOOL)a5;
-- (id)iconForNode:(id)a3 descriptor:(id)a4;
-- (id)iconForURL:(id)a3 descriptor:(id)a4;
+- (id)_thumbnailFallbackForNode:(id)node descriptor:(id)descriptor currentThumbnail:(id)thumbnail;
+- (id)_thumbnailForNode:(id)node descriptor:(id)descriptor forceFetch:(BOOL)fetch;
+- (id)iconForNode:(id)node descriptor:(id)descriptor;
+- (id)iconForURL:(id)l descriptor:(id)descriptor;
 - (id)startBatching;
-- (void)endBatching:(id)a3;
-- (void)markThumbnailAsRecentlyUsed:(id)a3;
-- (void)performInBatch:(id)a3;
+- (void)endBatching:(id)batching;
+- (void)markThumbnailAsRecentlyUsed:(id)used;
+- (void)performInBatch:(id)batch;
 - (void)startBatching;
 @end
 
@@ -43,9 +43,9 @@ uint64_t __40__DOCThumbnailGenerator_sharedGenerator__block_invoke()
   v2 = [(DOCThumbnailGenerator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CDAAE0] sharedGenerator];
+    mEMORY[0x277CDAAE0] = [MEMORY[0x277CDAAE0] sharedGenerator];
     thumbnailGenerator = v2->_thumbnailGenerator;
-    v2->_thumbnailGenerator = v3;
+    v2->_thumbnailGenerator = mEMORY[0x277CDAAE0];
 
     v5 = objc_opt_new();
     thumbnailCache = v2->_thumbnailCache;
@@ -57,11 +57,11 @@ uint64_t __40__DOCThumbnailGenerator_sharedGenerator__block_invoke()
 
 - (id)startBatching
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
-  v5 = [v3 objectForKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
+  v5 = [threadDictionary objectForKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
   if (![v5 count])
   {
     if (v4)
@@ -71,11 +71,11 @@ uint64_t __40__DOCThumbnailGenerator_sharedGenerator__block_invoke()
 
     v6 = objc_opt_new();
 
-    [v3 setObject:v6 forKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
-    v7 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    [threadDictionary setObject:v6 forKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
 
-    [v3 setObject:v7 forKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
-    v5 = v7;
+    [threadDictionary setObject:weakObjectsPointerArray forKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
+    v5 = weakObjectsPointerArray;
     v4 = v6;
   }
 
@@ -87,54 +87,54 @@ uint64_t __40__DOCThumbnailGenerator_sharedGenerator__block_invoke()
 
 - (id)_endCurrentThumbnailsBatch
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
   v5 = [v4 copy];
 
-  [v3 setObject:0 forKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
+  [threadDictionary setObject:0 forKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
 
   return v5;
 }
 
-- (id)_thumbnailForNode:(id)a3 descriptor:(id)a4 forceFetch:(BOOL)a5
+- (id)_thumbnailForNode:(id)node descriptor:(id)descriptor forceFetch:(BOOL)fetch
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  fetchCopy = fetch;
+  nodeCopy = node;
+  descriptorCopy = descriptor;
   v10 = [DOCThumbnailKey alloc];
-  v11 = [v8 thumbnailIdentifier];
-  v12 = [(DOCThumbnailKey *)v10 initWithPrimaryKey:v11 descriptor:v9];
+  thumbnailIdentifier = [nodeCopy thumbnailIdentifier];
+  v12 = [(DOCThumbnailKey *)v10 initWithPrimaryKey:thumbnailIdentifier descriptor:descriptorCopy];
 
-  v13 = [(DOCThumbnailGenerator *)self _alternateThumbnailKeyForNode:v8 originalKey:v12 descriptor:v9];
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [(DOCThumbnailCache *)v14->_thumbnailCache cachedThumbnailNodes];
-  v16 = [v15 objectForKey:v12];
+  v13 = [(DOCThumbnailGenerator *)self _alternateThumbnailKeyForNode:nodeCopy originalKey:v12 descriptor:descriptorCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedThumbnailNodes = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+  v16 = [cachedThumbnailNodes objectForKey:v12];
 
   if (!v16)
   {
-    v17 = [(DOCThumbnailCache *)v14->_thumbnailCache cachedThumbnailNodes];
-    v16 = [v17 objectForKey:v13];
+    cachedThumbnailNodes2 = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+    v16 = [cachedThumbnailNodes2 objectForKey:v13];
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
-  v18 = [(DOCThumbnailGenerator *)v14 _thumbnailFallbackForNode:v8 descriptor:v9 currentThumbnail:v16];
+  v18 = [(DOCThumbnailGenerator *)selfCopy _thumbnailFallbackForNode:nodeCopy descriptor:descriptorCopy currentThumbnail:v16];
   if (!v18)
   {
-    v18 = [(DOCThumbnailGenerator *)v14 iconForNode:v8 descriptor:v9];
+    v18 = [(DOCThumbnailGenerator *)selfCopy iconForNode:nodeCopy descriptor:descriptorCopy];
     if (v16)
     {
       goto LABEL_5;
     }
 
 LABEL_11:
-    v23 = [[DOCNodeThumbnail alloc] initWithGenerator:v14 node:v8 descriptor:v9 fallback:v18];
-    v24 = [(DOCThumbnailGenerator *)v14 _currentNodeThumbnailsBatch];
-    v25 = v24;
-    if (v5)
+    v23 = [[DOCNodeThumbnail alloc] initWithGenerator:selfCopy node:nodeCopy descriptor:descriptorCopy fallback:v18];
+    _currentNodeThumbnailsBatch = [(DOCThumbnailGenerator *)selfCopy _currentNodeThumbnailsBatch];
+    v25 = _currentNodeThumbnailsBatch;
+    if (fetchCopy)
     {
       v26 = 2;
     }
@@ -144,7 +144,7 @@ LABEL_11:
       v26 = 0;
     }
 
-    if (v24)
+    if (_currentNodeThumbnailsBatch)
     {
       v27 = objc_opt_new();
       [v27 setThumbnail:v23];
@@ -157,13 +157,13 @@ LABEL_11:
       [(DOCNodeThumbnail *)v23 fetchWithOptions:v26];
     }
 
-    v28 = v14;
+    v28 = selfCopy;
     objc_sync_enter(v28);
-    v29 = [(DOCThumbnailCache *)v14->_thumbnailCache cachedThumbnailNodes];
-    [v29 setObject:v23 forKey:v12];
+    cachedThumbnailNodes3 = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+    [cachedThumbnailNodes3 setObject:v23 forKey:v12];
 
-    v30 = [(DOCThumbnailCache *)v14->_thumbnailCache cachedThumbnailNodes];
-    [v30 setObject:v23 forKey:v13];
+    cachedThumbnailNodes4 = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+    [cachedThumbnailNodes4 setObject:v23 forKey:v13];
 
     objc_sync_exit(v28);
     v22 = v23;
@@ -178,20 +178,20 @@ LABEL_11:
 
 LABEL_5:
   [v16 setFallback:v18];
-  v19 = [v8 thumbnailIdentifier];
-  [v16 updateNodeThumbnailIdentifierTo:v19];
+  thumbnailIdentifier2 = [nodeCopy thumbnailIdentifier];
+  [v16 updateNodeThumbnailIdentifierTo:thumbnailIdentifier2];
 
-  if (v5)
+  if (fetchCopy)
   {
     [v16 fetchWithOptions:3];
   }
 
   if (v13)
   {
-    v20 = v14;
+    v20 = selfCopy;
     objc_sync_enter(v20);
-    v21 = [(DOCThumbnailCache *)v14->_thumbnailCache cachedThumbnailNodes];
-    [v21 setObject:v16 forKey:v13];
+    cachedThumbnailNodes5 = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+    [cachedThumbnailNodes5 setObject:v16 forKey:v13];
 
     objc_sync_exit(v20);
   }
@@ -202,20 +202,20 @@ LABEL_18:
   return v22;
 }
 
-- (id)_alternateThumbnailKeyForNode:(id)a3 originalKey:(id)a4 descriptor:(id)a5
+- (id)_alternateThumbnailKeyForNode:(id)node originalKey:(id)key descriptor:(id)descriptor
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 fpfs_fpItem];
+  keyCopy = key;
+  descriptorCopy = descriptor;
+  nodeCopy = node;
+  fpfs_fpItem = [nodeCopy fpfs_fpItem];
 
   v11 = 0;
-  if (v10 && v10 != v9)
+  if (fpfs_fpItem && fpfs_fpItem != nodeCopy)
   {
-    v12 = [v7 primaryKey];
-    v13 = [v12 customFolderId];
+    primaryKey = [keyCopy primaryKey];
+    customFolderId = [primaryKey customFolderId];
 
-    if (v13)
+    if (customFolderId)
     {
       v11 = 0;
     }
@@ -223,33 +223,33 @@ LABEL_18:
     else
     {
       v14 = [DOCThumbnailKey alloc];
-      v15 = [v10 thumbnailIdentifier];
-      v11 = [(DOCThumbnailKey *)v14 initWithPrimaryKey:v15 descriptor:v8];
+      thumbnailIdentifier = [fpfs_fpItem thumbnailIdentifier];
+      v11 = [(DOCThumbnailKey *)v14 initWithPrimaryKey:thumbnailIdentifier descriptor:descriptorCopy];
     }
   }
 
   return v11;
 }
 
-- (id)_thumbnailFallbackForNode:(id)a3 descriptor:(id)a4 currentThumbnail:(id)a5
+- (id)_thumbnailFallbackForNode:(id)node descriptor:(id)descriptor currentThumbnail:(id)thumbnail
 {
-  v78 = a3;
-  v9 = a4;
-  v75 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [v9 size];
+  nodeCopy = node;
+  descriptorCopy = descriptor;
+  thumbnailCopy = thumbnail;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [descriptorCopy size];
   v12 = v11;
-  [v9 scale];
+  [descriptorCopy scale];
   v14 = v13;
-  [v9 size];
+  [descriptorCopy size];
   v16 = v15;
-  [v9 scale];
+  [descriptorCopy scale];
   v18 = v17;
   memset(&enumerator, 0, sizeof(enumerator));
-  v19 = [(DOCThumbnailCache *)v10->_thumbnailCache cachedThumbnailNodes];
-  NSEnumerateMapTable(&enumerator, v19);
-  obj = &v10->super.isa;
+  cachedThumbnailNodes = [(DOCThumbnailCache *)selfCopy->_thumbnailCache cachedThumbnailNodes];
+  NSEnumerateMapTable(&enumerator, cachedThumbnailNodes);
+  obj = &selfCopy->super.isa;
   v20 = v16 * v18 + v12 * v14;
 
   v21 = 0;
@@ -271,31 +271,31 @@ LABEL_2:
       v23 = key;
 
       v24 = value;
-      v25 = [v9 style];
-      v26 = [v24 style];
-      v27 = [v78 thumbnailIdentifier];
-      v28 = [v24 nodeThumbnailIdentifier];
-      v5 = [v27 isEqual:v28];
+      style = [descriptorCopy style];
+      style2 = [v24 style];
+      thumbnailIdentifier = [nodeCopy thumbnailIdentifier];
+      nodeThumbnailIdentifier = [v24 nodeThumbnailIdentifier];
+      v5 = [thumbnailIdentifier isEqual:nodeThumbnailIdentifier];
 
-      v29 = [v78 identifier];
-      v30 = [v24 node];
-      v31 = [v30 identifier];
-      LODWORD(v28) = [v29 isEqual:v31];
+      identifier = [nodeCopy identifier];
+      node = [v24 node];
+      identifier2 = [node identifier];
+      LODWORD(nodeThumbnailIdentifier) = [identifier isEqual:identifier2];
 
-      v32 = [v24 isRepresentativeIcon];
-      v33 = v25 == v26;
+      isRepresentativeIcon = [v24 isRepresentativeIcon];
+      v33 = style == style2;
       v22 = v24;
       v21 = v23;
     }
 
-    while ((v33 & v32 & (v5 | v28)) != 1);
-    [v9 size];
+    while ((v33 & isRepresentativeIcon & (v5 | nodeThumbnailIdentifier)) != 1);
+    [descriptorCopy size];
     v35 = v34;
     v37 = v36;
     [v24 size];
     if (v35 == v39 && v37 == v38)
     {
-      [v9 scale];
+      [descriptorCopy scale];
       v41 = v40;
       [v24 scale];
       if (((v41 == v42) & v5) == 1)
@@ -353,12 +353,12 @@ LABEL_21:
     goto LABEL_28;
   }
 
-  if (v77 == v75)
+  if (v77 == thumbnailCopy)
   {
-    v71 = [v77 fallback];
-    if ([v71 isRepresentativeIcon])
+    fallback = [v77 fallback];
+    if ([fallback isRepresentativeIcon])
     {
-      v72 = v71;
+      v72 = fallback;
     }
 
     else
@@ -370,28 +370,28 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  [v9 size];
+  [descriptorCopy size];
   v61 = v60;
   v63 = v62;
   [v77 size];
   v65 = 1;
   if (v61 == v66 && v63 == v64)
   {
-    [v9 scale];
+    [descriptorCopy scale];
     v68 = v67;
     [v77 scale];
     if (v68 == v69)
     {
-      v70 = [v77 thumbnailImage];
+      thumbnailImage = [v77 thumbnailImage];
 
-      if (v70)
+      if (thumbnailImage)
       {
         [v77 setFallback:0];
-        v71 = [obj[1] cachedThumbnailNodes];
-        [v71 removeObjectForKey:v76];
+        fallback = [obj[1] cachedThumbnailNodes];
+        [fallback removeObjectForKey:v76];
 LABEL_27:
 
-        v65 = v77 != v75;
+        v65 = v77 != thumbnailCopy;
         goto LABEL_28;
       }
 
@@ -410,71 +410,71 @@ LABEL_28:
   return v5;
 }
 
-- (id)iconForURL:(id)a3 descriptor:(id)a4
+- (id)iconForURL:(id)l descriptor:(id)descriptor
 {
-  v4 = [DOCThumbnailRequest iconRequestForURL:a3 descriptor:a4 thumbnailGenerator:self->_thumbnailGenerator];
+  v4 = [DOCThumbnailRequest iconRequestForURL:l descriptor:descriptor thumbnailGenerator:self->_thumbnailGenerator];
   v5 = [[DOCIconPromise alloc] initWithRequest:v4];
 
   return v5;
 }
 
-- (id)iconForNode:(id)a3 descriptor:(id)a4
+- (id)iconForNode:(id)node descriptor:(id)descriptor
 {
-  v4 = [DOCThumbnailRequest iconRequestForNode:a3 descriptor:a4 thumbnailGenerator:self->_thumbnailGenerator];
+  v4 = [DOCThumbnailRequest iconRequestForNode:node descriptor:descriptor thumbnailGenerator:self->_thumbnailGenerator];
   v5 = [[DOCIconPromise alloc] initWithRequest:v4];
 
   return v5;
 }
 
-- (void)markThumbnailAsRecentlyUsed:(id)a3
+- (void)markThumbnailAsRecentlyUsed:(id)used
 {
   thumbnailCache = self->_thumbnailCache;
-  v4 = a3;
-  v6 = [(DOCThumbnailCache *)thumbnailCache recentlyUsedNodes];
-  v5 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v4];
-  [v6 setObject:v4 forKey:v5];
+  usedCopy = used;
+  recentlyUsedNodes = [(DOCThumbnailCache *)thumbnailCache recentlyUsedNodes];
+  v5 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:usedCopy];
+  [recentlyUsedNodes setObject:usedCopy forKey:v5];
 }
 
 - (id)_currentNodeThumbnailsBatch
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"DOCThumbnailGeneratorNodeThumbnailsBatchKey"];
 
   return v4;
 }
 
-- (void)performInBatch:(id)a3
+- (void)performInBatch:(id)batch
 {
-  v6 = a3;
-  if (v6)
+  batchCopy = batch;
+  if (batchCopy)
   {
-    v5 = [(DOCThumbnailGenerator *)self startBatching];
-    if (v5)
+    startBatching = [(DOCThumbnailGenerator *)self startBatching];
+    if (startBatching)
     {
-      v6[2]();
-      [(DOCThumbnailGenerator *)self endBatching:v5];
+      batchCopy[2]();
+      [(DOCThumbnailGenerator *)self endBatching:startBatching];
     }
   }
 
   else
   {
     [(DOCThumbnailGenerator *)a2 performInBatch:&v7];
-    v5 = v7;
+    startBatching = v7;
   }
 }
 
-- (void)endBatching:(id)a3
+- (void)endBatching:(id)batching
 {
-  v4 = a3;
-  if (v4)
+  batchingCopy = batching;
+  if (batchingCopy)
   {
-    v5 = [MEMORY[0x277CCACC8] currentThread];
-    v6 = [v5 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v7 = [v6 objectForKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
-    [v4 _setInvalidated:1];
+    v7 = [threadDictionary objectForKeyedSubscript:@"DOCThumbnailActiveBatchingTokensKey"];
+    [batchingCopy _setInvalidated:1];
     [v7 compact];
     if (![v7 count])
     {
@@ -482,7 +482,7 @@ LABEL_28:
     }
 
     v8 = 0;
-    while ([v7 pointerAtIndex:v8] != v4)
+    while ([v7 pointerAtIndex:v8] != batchingCopy)
     {
       if (++v8 >= [v7 count])
       {
@@ -503,20 +503,20 @@ LABEL_6:
 
     if (![v7 count])
     {
-      v9 = [(DOCThumbnailGenerator *)self _endCurrentThumbnailsBatch];
-      if (!v9)
+      _endCurrentThumbnailsBatch = [(DOCThumbnailGenerator *)self _endCurrentThumbnailsBatch];
+      if (!_endCurrentThumbnailsBatch)
       {
         [DOCThumbnailGenerator endBatching:];
       }
 
-      if ([v9 count])
+      if ([_endCurrentThumbnailsBatch count])
       {
         thumbnailGenerator = self->_thumbnailGenerator;
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __37__DOCThumbnailGenerator_endBatching___block_invoke;
         v11[3] = &unk_278FB38C0;
-        v12 = v9;
+        v12 = _endCurrentThumbnailsBatch;
         [(QLThumbnailGenerator *)thumbnailGenerator performInBatch:v11];
       }
     }
@@ -574,7 +574,7 @@ void __37__DOCThumbnailGenerator_endBatching___block_invoke(uint64_t a1)
 - (void)startBatching
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

@@ -1,7 +1,7 @@
 @interface CCWalletPassEventContent
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPassEventContent)initWithArtistIDs:(id)a3 awayTeamAbbreviation:(id)a4 awayTeamName:(id)a5 eventName:(id)a6 eventType:(id)a7 genre:(id)a8 homeTeamAbbreviation:(id)a9 homeTeamName:(id)a10 performerNames:(id)a11 error:(id *)a12;
-- (CCWalletPassEventContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPassEventContent)initWithArtistIDs:(id)ds awayTeamAbbreviation:(id)abbreviation awayTeamName:(id)name eventName:(id)eventName eventType:(id)type genre:(id)genre homeTeamAbbreviation:(id)teamAbbreviation homeTeamName:(id)self0 performerNames:(id)self1 error:(id *)self2;
+- (CCWalletPassEventContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)artistIDs;
 - (NSArray)performerNames;
 - (NSString)awayTeamAbbreviation;
@@ -12,30 +12,30 @@
 - (NSString)homeTeamAbbreviation;
 - (NSString)homeTeamName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPassEventContent
 
-- (CCWalletPassEventContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPassEventContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v18 = [v6 objectForKeyedSubscript:@"artistIDs"];
-    v9 = [v6 objectForKeyedSubscript:@"awayTeamAbbreviation"];
-    v19 = [v6 objectForKeyedSubscript:@"awayTeamName"];
-    v10 = [v6 objectForKeyedSubscript:@"eventName"];
-    v11 = [v6 objectForKeyedSubscript:@"eventType"];
-    v12 = [v6 objectForKeyedSubscript:@"genre"];
-    [v6 objectForKeyedSubscript:@"homeTeamAbbreviation"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"artistIDs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"awayTeamAbbreviation"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"awayTeamName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"eventName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"genre"];
+    [dictionaryCopy objectForKeyedSubscript:@"homeTeamAbbreviation"];
     v17 = v20 = self;
-    v13 = [v6 objectForKeyedSubscript:@"homeTeamName"];
-    v14 = [v6 objectForKeyedSubscript:@"performerNames"];
-    v15 = [[CCWalletPassEventContent alloc] initWithArtistIDs:v18 awayTeamAbbreviation:v9 awayTeamName:v19 eventName:v10 eventType:v11 genre:v12 homeTeamAbbreviation:v17 homeTeamName:v13 performerNames:v14 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"homeTeamName"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"performerNames"];
+    v15 = [[CCWalletPassEventContent alloc] initWithArtistIDs:v18 awayTeamAbbreviation:v9 awayTeamName:v19 eventName:v10 eventType:v11 genre:v12 homeTeamAbbreviation:v17 homeTeamName:v13 performerNames:v14 error:error];
 
     self = v20;
   }
@@ -54,56 +54,56 @@
   v3 = objc_opt_new();
   if (self->_artistIDs)
   {
-    v4 = [(CCWalletPassEventContent *)self artistIDs];
-    [v3 setObject:v4 forKeyedSubscript:@"artistIDs"];
+    artistIDs = [(CCWalletPassEventContent *)self artistIDs];
+    [v3 setObject:artistIDs forKeyedSubscript:@"artistIDs"];
   }
 
   if (self->_awayTeamAbbreviation)
   {
-    v5 = [(CCWalletPassEventContent *)self awayTeamAbbreviation];
-    [v3 setObject:v5 forKeyedSubscript:@"awayTeamAbbreviation"];
+    awayTeamAbbreviation = [(CCWalletPassEventContent *)self awayTeamAbbreviation];
+    [v3 setObject:awayTeamAbbreviation forKeyedSubscript:@"awayTeamAbbreviation"];
   }
 
   if (self->_awayTeamName)
   {
-    v6 = [(CCWalletPassEventContent *)self awayTeamName];
-    [v3 setObject:v6 forKeyedSubscript:@"awayTeamName"];
+    awayTeamName = [(CCWalletPassEventContent *)self awayTeamName];
+    [v3 setObject:awayTeamName forKeyedSubscript:@"awayTeamName"];
   }
 
   if (self->_eventName)
   {
-    v7 = [(CCWalletPassEventContent *)self eventName];
-    [v3 setObject:v7 forKeyedSubscript:@"eventName"];
+    eventName = [(CCWalletPassEventContent *)self eventName];
+    [v3 setObject:eventName forKeyedSubscript:@"eventName"];
   }
 
   if (self->_eventType)
   {
-    v8 = [(CCWalletPassEventContent *)self eventType];
-    [v3 setObject:v8 forKeyedSubscript:@"eventType"];
+    eventType = [(CCWalletPassEventContent *)self eventType];
+    [v3 setObject:eventType forKeyedSubscript:@"eventType"];
   }
 
   if (self->_genre)
   {
-    v9 = [(CCWalletPassEventContent *)self genre];
-    [v3 setObject:v9 forKeyedSubscript:@"genre"];
+    genre = [(CCWalletPassEventContent *)self genre];
+    [v3 setObject:genre forKeyedSubscript:@"genre"];
   }
 
   if (self->_homeTeamAbbreviation)
   {
-    v10 = [(CCWalletPassEventContent *)self homeTeamAbbreviation];
-    [v3 setObject:v10 forKeyedSubscript:@"homeTeamAbbreviation"];
+    homeTeamAbbreviation = [(CCWalletPassEventContent *)self homeTeamAbbreviation];
+    [v3 setObject:homeTeamAbbreviation forKeyedSubscript:@"homeTeamAbbreviation"];
   }
 
   if (self->_homeTeamName)
   {
-    v11 = [(CCWalletPassEventContent *)self homeTeamName];
-    [v3 setObject:v11 forKeyedSubscript:@"homeTeamName"];
+    homeTeamName = [(CCWalletPassEventContent *)self homeTeamName];
+    [v3 setObject:homeTeamName forKeyedSubscript:@"homeTeamName"];
   }
 
   if (self->_performerNames)
   {
-    v12 = [(CCWalletPassEventContent *)self performerNames];
-    [v3 setObject:v12 forKeyedSubscript:@"performerNames"];
+    performerNames = [(CCWalletPassEventContent *)self performerNames];
+    [v3 setObject:performerNames forKeyedSubscript:@"performerNames"];
   }
 
   v13 = [v3 copy];
@@ -111,64 +111,64 @@
   return v13;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v15 = a3;
+  blockCopy = block;
   if (self->_artistIDs)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46124 repeatedStringValue:self->_artistIDs];
-    v15[2](v15, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_awayTeamAbbreviation)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46125 stringValue:self->_awayTeamAbbreviation];
-    v15[2](v15, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_awayTeamName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46126 stringValue:self->_awayTeamName];
-    v15[2](v15, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_eventName)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46127 stringValue:self->_eventName];
-    v15[2](v15, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_eventType)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46128 stringValue:self->_eventType];
-    v15[2](v15, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_genre)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46129 stringValue:self->_genre];
-    v15[2](v15, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_homeTeamAbbreviation)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46130 stringValue:self->_homeTeamAbbreviation];
-    v15[2](v15, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_homeTeamName)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46131 stringValue:self->_homeTeamName];
-    v15[2](v15, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
-  v13 = v15;
+  v13 = blockCopy;
   if (self->_performerNames)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46132 repeatedStringValue:self->_performerNames];
-    v15[2](v15, v14);
+    blockCopy[2](blockCopy, v14);
 
-    v13 = v15;
+    v13 = blockCopy;
   }
 }
 
@@ -235,10 +235,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v41 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v41];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -475,13 +475,13 @@ LABEL_59:
   {
     CCSetError();
     v33 = 0;
-    v34 = v41;
+    v34 = dataCopy;
   }
 
   else
   {
     v35 = MEMORY[0x1E6993AA8];
-    v34 = v41;
+    v34 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v36 = objc_opt_class();
@@ -502,23 +502,23 @@ LABEL_59:
   return v33;
 }
 
-- (CCWalletPassEventContent)initWithArtistIDs:(id)a3 awayTeamAbbreviation:(id)a4 awayTeamName:(id)a5 eventName:(id)a6 eventType:(id)a7 genre:(id)a8 homeTeamAbbreviation:(id)a9 homeTeamName:(id)a10 performerNames:(id)a11 error:(id *)a12
+- (CCWalletPassEventContent)initWithArtistIDs:(id)ds awayTeamAbbreviation:(id)abbreviation awayTeamName:(id)name eventName:(id)eventName eventType:(id)type genre:(id)genre homeTeamAbbreviation:(id)teamAbbreviation homeTeamName:(id)self0 performerNames:(id)self1 error:(id *)self2
 {
   v88 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v64 = a7;
-  v68 = a8;
-  v67 = a9;
-  v66 = a10;
-  v65 = a11;
+  dsCopy = ds;
+  abbreviationCopy = abbreviation;
+  nameCopy = name;
+  eventNameCopy = eventName;
+  typeCopy = type;
+  genreCopy = genre;
+  teamAbbreviationCopy = teamAbbreviation;
+  teamNameCopy = teamName;
+  namesCopy = names;
   v21 = objc_opt_new();
   v22 = 0x1E696A000uLL;
-  if (!v17)
+  if (!dsCopy)
   {
-    v62 = a12;
+    errorCopy2 = error;
     v24 = 0;
     goto LABEL_12;
   }
@@ -529,12 +529,12 @@ LABEL_59:
   v24 = 0;
   if (v23)
   {
-    v62 = a12;
+    errorCopy2 = error;
     v83 = 0u;
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v25 = v17;
+    v25 = dsCopy;
     v26 = [v25 countByEnumeratingWithState:&v81 objects:v87 count:16];
     if (v26)
     {
@@ -561,8 +561,8 @@ LABEL_59:
 
     v22 = 0x1E696A000;
 LABEL_12:
-    v31 = v64;
-    if (v18)
+    v31 = typeCopy;
+    if (abbreviationCopy)
     {
       v32 = *(v22 + 3776);
       objc_opt_class();
@@ -576,11 +576,11 @@ LABEL_12:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v19)
+      if (!nameCopy)
       {
 LABEL_15:
         v24 = v34;
-        if (v20)
+        if (eventNameCopy)
         {
           goto LABEL_16;
         }
@@ -592,7 +592,7 @@ LABEL_15:
     else
     {
       v34 = v24;
-      if (!v19)
+      if (!nameCopy)
       {
         goto LABEL_15;
       }
@@ -610,7 +610,7 @@ LABEL_15:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v20)
+    if (eventNameCopy)
     {
 LABEL_16:
       v35 = *(v22 + 3776);
@@ -625,7 +625,7 @@ LABEL_16:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v64)
+      if (!typeCopy)
       {
         goto LABEL_18;
       }
@@ -635,19 +635,19 @@ LABEL_16:
 
 LABEL_24:
     v34 = v24;
-    if (!v64)
+    if (!typeCopy)
     {
 LABEL_18:
       v24 = v34;
 LABEL_27:
-      if (v68)
+      if (genreCopy)
       {
-        v37 = v19;
-        v38 = v20;
+        v37 = nameCopy;
+        v38 = eventNameCopy;
         objc_opt_class();
         v76 = v24;
         v46 = CCValidateIsInstanceOfExpectedClass();
-        v41 = v68;
+        v41 = genreCopy;
         v47 = v24;
 
         if (!v46)
@@ -656,13 +656,13 @@ LABEL_27:
           v39 = 0;
           v24 = v47;
 LABEL_53:
-          v40 = self;
+          selfCopy4 = self;
           goto LABEL_54;
         }
 
         CCPBDataWriterWriteStringField();
-        v20 = v38;
-        v19 = v37;
+        eventNameCopy = v38;
+        nameCopy = v37;
       }
 
       else
@@ -670,7 +670,7 @@ LABEL_53:
         v47 = v24;
       }
 
-      if (!v67)
+      if (!teamAbbreviationCopy)
       {
         v24 = v47;
         goto LABEL_36;
@@ -685,7 +685,7 @@ LABEL_53:
       {
         CCPBDataWriterWriteStringField();
 LABEL_36:
-        if (!v66)
+        if (!teamNameCopy)
         {
           v34 = v24;
           goto LABEL_41;
@@ -700,17 +700,17 @@ LABEL_36:
         {
           CCPBDataWriterWriteStringField();
 LABEL_41:
-          if (!v65)
+          if (!namesCopy)
           {
-            v37 = v19;
-            v38 = v20;
+            v37 = nameCopy;
+            v38 = eventNameCopy;
             v24 = v34;
-            v57 = self;
+            selfCopy3 = self;
 LABEL_56:
-            v60 = [v21 immutableData];
-            v61 = [(CCItemMessage *)v57 initWithData:v60 error:v62];
+            immutableData = [v21 immutableData];
+            v61 = [(CCItemMessage *)selfCopy3 initWithData:immutableData error:errorCopy2];
 
-            v40 = v61;
+            selfCopy4 = v61;
             v39 = v61;
             goto LABEL_20;
           }
@@ -726,7 +726,7 @@ LABEL_56:
             v72 = 0u;
             v69 = 0u;
             v70 = 0u;
-            v51 = v65;
+            v51 = namesCopy;
             v52 = [v51 countByEnumeratingWithState:&v69 objects:v86 count:16];
             if (v52)
             {
@@ -751,11 +751,11 @@ LABEL_56:
               while (v53);
             }
 
-            v37 = v19;
-            v38 = v20;
+            v37 = nameCopy;
+            v38 = eventNameCopy;
 
-            v57 = self;
-            v31 = v64;
+            selfCopy3 = self;
+            v31 = typeCopy;
             goto LABEL_56;
           }
 
@@ -763,19 +763,19 @@ LABEL_56:
         }
 
 LABEL_39:
-        v37 = v19;
-        v38 = v20;
+        v37 = nameCopy;
+        v38 = eventNameCopy;
         CCSetError();
         v39 = 0;
         v24 = v34;
 LABEL_52:
-        v41 = v68;
+        v41 = genreCopy;
         goto LABEL_53;
       }
 
 LABEL_51:
-      v37 = v19;
-      v38 = v20;
+      v37 = nameCopy;
+      v38 = eventNameCopy;
       CCSetError();
       v39 = 0;
       goto LABEL_52;
@@ -797,14 +797,14 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  v37 = v19;
-  v38 = v20;
+  v37 = nameCopy;
+  v38 = eventNameCopy;
   CCSetError();
   v39 = 0;
-  v40 = self;
-  v31 = v64;
+  selfCopy4 = self;
+  v31 = typeCopy;
 LABEL_20:
-  v41 = v68;
+  v41 = genreCopy;
 LABEL_54:
 
   v58 = *MEMORY[0x1E69E9840];

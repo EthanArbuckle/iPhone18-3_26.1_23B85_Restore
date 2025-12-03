@@ -1,16 +1,16 @@
 @interface EFLazyCache
-- (EFLazyCache)initWithCountLimit:(unint64_t)a3;
+- (EFLazyCache)initWithCountLimit:(unint64_t)limit;
 - (EFLazyCacheDelegate)delegate;
-- (id)cachedObjectForKey:(id)a3;
-- (id)objectForKey:(id)a3 generator:(id)a4;
-- (id)storedObjectForKey:(id)a3;
-- (int64_t)waiterCountForKey:(id)a3;
-- (void)_exchangeOriginalObject:(id)a3 forKey:(id)a4 withObject:(id)a5;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (id)cachedObjectForKey:(id)key;
+- (id)objectForKey:(id)key generator:(id)generator;
+- (id)storedObjectForKey:(id)key;
+- (int64_t)waiterCountForKey:(id)key;
+- (void)_exchangeOriginalObject:(id)object forKey:(id)key withObject:(id)withObject;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation EFLazyCache
@@ -32,7 +32,7 @@
   [(EFLazyCache *)&v3 dealloc];
 }
 
-- (EFLazyCache)initWithCountLimit:(unint64_t)a3
+- (EFLazyCache)initWithCountLimit:(unint64_t)limit
 {
   v10.receiver = self;
   v10.super_class = EFLazyCache;
@@ -47,16 +47,16 @@
     storage = v4->_storage;
     v4->_storage = v7;
 
-    [(NSCache *)v4->_storage setCountLimit:a3];
+    [(NSCache *)v4->_storage setCountLimit:limit];
     [(NSCache *)v4->_storage setDelegate:v4];
   }
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -68,46 +68,46 @@
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSRecursiveLock *)self->_lock lock];
-  [(NSCache *)self->_storage removeObjectForKey:v4];
+  [(NSCache *)self->_storage removeObjectForKey:keyCopy];
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)_exchangeOriginalObject:(id)a3 forKey:(id)a4 withObject:(id)a5
+- (void)_exchangeOriginalObject:(id)object forKey:(id)key withObject:(id)withObject
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  keyCopy = key;
+  withObjectCopy = withObject;
   [(NSRecursiveLock *)self->_lock lock];
-  v10 = [(NSCache *)self->_storage objectForKey:v8];
-  if (v10 == v12)
+  v10 = [(NSCache *)self->_storage objectForKey:keyCopy];
+  if (v10 == objectCopy)
   {
     storage = self->_storage;
-    if (v9)
+    if (withObjectCopy)
     {
-      [(NSCache *)storage setObject:v9 forKey:v8];
+      [(NSCache *)storage setObject:withObjectCopy forKey:keyCopy];
     }
 
     else
     {
-      [(NSCache *)storage removeObjectForKey:v8];
+      [(NSCache *)storage removeObjectForKey:keyCopy];
     }
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (id)objectForKey:(id)a3 generator:(id)a4
+- (id)objectForKey:(id)key generator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  generatorCopy = generator;
   while (1)
   {
     [(NSRecursiveLock *)self->_lock lock];
-    v8 = [(NSCache *)self->_storage objectForKey:v6];
+    v8 = [(NSCache *)self->_storage objectForKey:keyCopy];
     if (v8)
     {
       objc_opt_class();
@@ -121,7 +121,7 @@
     else
     {
       v12 = [[_EFLazyCacheConditionLock alloc] initWithCondition:0];
-      [(NSCache *)self->_storage setObject:v12 forKey:v6];
+      [(NSCache *)self->_storage setObject:v12 forKey:keyCopy];
       v13 = 0;
     }
 
@@ -133,8 +133,8 @@
 
     if ([(NSConditionLock *)v12 tryLockWhenCondition:0])
     {
-      v13 = v7[2](v7);
-      [(EFLazyCache *)self _exchangeOriginalObject:v12 forKey:v6 withObject:v13];
+      v13 = generatorCopy[2](generatorCopy);
+      [(EFLazyCache *)self _exchangeOriginalObject:v12 forKey:keyCopy withObject:v13];
       [(NSConditionLock *)v12 unlockWithCondition:1];
       break;
     }
@@ -148,19 +148,19 @@
   return v13;
 }
 
-- (id)storedObjectForKey:(id)a3
+- (id)storedObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(NSCache *)self->_storage objectForKey:v4];
+  v5 = [(NSCache *)self->_storage objectForKey:keyCopy];
   [(NSRecursiveLock *)self->_lock unlock];
 
   return v5;
 }
 
-- (id)cachedObjectForKey:(id)a3
+- (id)cachedObjectForKey:(id)key
 {
-  v3 = [(EFLazyCache *)self storedObjectForKey:a3];
+  v3 = [(EFLazyCache *)self storedObjectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -177,14 +177,14 @@
   return v4;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v8 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (self->_storage == v8 && (*&self->_flags & 1) != 0)
+    if (self->_storage == cacheCopy && (*&self->_flags & 1) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
     }
@@ -194,7 +194,7 @@
       WeakRetained = 0;
     }
 
-    [WeakRetained lazyCache:self willEvictObject:v6];
+    [WeakRetained lazyCache:self willEvictObject:objectCopy];
   }
 }
 
@@ -205,21 +205,21 @@
   return WeakRetained;
 }
 
-- (int64_t)waiterCountForKey:(id)a3
+- (int64_t)waiterCountForKey:(id)key
 {
-  v3 = [(EFLazyCache *)self storedObjectForKey:a3];
+  v3 = [(EFLazyCache *)self storedObjectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 waiterCount];
+    waiterCount = [v3 waiterCount];
   }
 
   else
   {
-    v4 = 0;
+    waiterCount = 0;
   }
 
-  return v4;
+  return waiterCount;
 }
 
 @end

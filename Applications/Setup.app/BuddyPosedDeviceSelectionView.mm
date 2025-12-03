@@ -1,213 +1,213 @@
 @interface BuddyPosedDeviceSelectionView
-+ (id)selectionItemWithImageName:(id)a3 symbolName:(id)a4 segment:(int64_t)a5 text:(id)a6 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a7 posedDevicesPadding:(double)a8;
++ (id)selectionItemWithImageName:(id)name symbolName:(id)symbolName segment:(int64_t)segment text:(id)text hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding;
 - (BuddyPosedDeviceSelectionDelegate)delegate;
-- (BuddyPosedDeviceSelectionView)initWithLeftView:(id)a3 centerView:(id)a4 rightView:(id)a5;
-- (void)_updateViewContainerForAccessibilityOptions:(id)a3 contents:(id)a4;
+- (BuddyPosedDeviceSelectionView)initWithLeftView:(id)view centerView:(id)centerView rightView:(id)rightView;
+- (void)_updateViewContainerForAccessibilityOptions:(id)options contents:(id)contents;
 - (void)didMoveToSuperview;
-- (void)selectSegment:(int64_t)a3;
-- (void)tapped:(id)a3;
+- (void)selectSegment:(int64_t)segment;
+- (void)tapped:(id)tapped;
 @end
 
 @implementation BuddyPosedDeviceSelectionView
 
-- (BuddyPosedDeviceSelectionView)initWithLeftView:(id)a3 centerView:(id)a4 rightView:(id)a5
+- (BuddyPosedDeviceSelectionView)initWithLeftView:(id)view centerView:(id)centerView rightView:(id)rightView
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v68 = 0;
-  objc_storeStrong(&v68, a4);
+  objc_storeStrong(&v68, centerView);
   v67 = 0;
-  objc_storeStrong(&v67, a5);
-  v7 = v70;
-  v70 = 0;
+  objc_storeStrong(&v67, rightView);
+  v7 = selfCopy;
+  selfCopy = 0;
   v66.receiver = v7;
   v66.super_class = BuddyPosedDeviceSelectionView;
   v8 = [(BuddyPosedDeviceSelectionView *)&v66 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v70 = v8;
-  objc_storeStrong(&v70, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
     v9 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v10 = *(v70 + 5);
-    *(v70 + 5) = v9;
+    v10 = *(selfCopy + 5);
+    *(selfCopy + 5) = v9;
 
     +[BuddyPosedDeviceSelectionView posedDevicesPadding];
-    [*(v70 + 5) setSpacing:v11 * 0.5];
-    [*(v70 + 5) setDistribution:1];
-    [*(v70 + 5) setAxis:0];
+    [*(selfCopy + 5) setSpacing:v11 * 0.5];
+    [*(selfCopy + 5) setDistribution:1];
+    [*(selfCopy + 5) setAxis:0];
     v12 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v13 = *(v70 + 6);
-    *(v70 + 6) = v12;
+    v13 = *(selfCopy + 6);
+    *(selfCopy + 6) = v12;
 
     v14 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v15 = *(v70 + 7);
-    *(v70 + 7) = v14;
+    v15 = *(selfCopy + 7);
+    *(selfCopy + 7) = v14;
 
     v16 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v17 = *(v70 + 8);
-    *(v70 + 8) = v16;
+    v17 = *(selfCopy + 8);
+    *(selfCopy + 8) = v16;
 
-    objc_storeStrong(v70 + 2, location[0]);
-    objc_storeStrong(v70 + 3, v68);
-    objc_storeStrong(v70 + 4, v67);
-    [*(v70 + 6) addSubview:location[0]];
-    [*(v70 + 7) addSubview:v68];
-    [*(v70 + 8) addSubview:v67];
-    v65 = [location[0] centerXAnchor];
-    v64 = [*(v70 + 6) centerXAnchor];
-    v63 = [v65 constraintEqualToAnchor:?];
+    objc_storeStrong(selfCopy + 2, location[0]);
+    objc_storeStrong(selfCopy + 3, v68);
+    objc_storeStrong(selfCopy + 4, v67);
+    [*(selfCopy + 6) addSubview:location[0]];
+    [*(selfCopy + 7) addSubview:v68];
+    [*(selfCopy + 8) addSubview:v67];
+    centerXAnchor = [location[0] centerXAnchor];
+    centerXAnchor2 = [*(selfCopy + 6) centerXAnchor];
+    v63 = [centerXAnchor constraintEqualToAnchor:?];
     v71[0] = v63;
-    v62 = [location[0] widthAnchor];
-    v61 = [*(v70 + 6) widthAnchor];
-    v60 = [v62 constraintEqualToAnchor:?];
+    widthAnchor = [location[0] widthAnchor];
+    widthAnchor2 = [*(selfCopy + 6) widthAnchor];
+    v60 = [widthAnchor constraintEqualToAnchor:?];
     v71[1] = v60;
-    v59 = [location[0] topAnchor];
-    v58 = [*(v70 + 6) topAnchor];
-    v57 = [v59 constraintEqualToAnchor:?];
+    topAnchor = [location[0] topAnchor];
+    topAnchor2 = [*(selfCopy + 6) topAnchor];
+    v57 = [topAnchor constraintEqualToAnchor:?];
     v71[2] = v57;
-    v56 = [*(v70 + 6) bottomAnchor];
-    v55 = [location[0] bottomAnchor];
-    v54 = [v56 constraintEqualToAnchor:?];
+    bottomAnchor = [*(selfCopy + 6) bottomAnchor];
+    bottomAnchor2 = [location[0] bottomAnchor];
+    v54 = [bottomAnchor constraintEqualToAnchor:?];
     v71[3] = v54;
-    v53 = [v68 centerXAnchor];
-    v52 = [*(v70 + 7) centerXAnchor];
-    v51 = [v53 constraintEqualToAnchor:?];
+    centerXAnchor3 = [v68 centerXAnchor];
+    centerXAnchor4 = [*(selfCopy + 7) centerXAnchor];
+    v51 = [centerXAnchor3 constraintEqualToAnchor:?];
     v71[4] = v51;
-    v50 = [v68 widthAnchor];
-    v49 = [*(v70 + 7) widthAnchor];
-    v48 = [v50 constraintEqualToAnchor:?];
+    widthAnchor3 = [v68 widthAnchor];
+    widthAnchor4 = [*(selfCopy + 7) widthAnchor];
+    v48 = [widthAnchor3 constraintEqualToAnchor:?];
     v71[5] = v48;
-    v47 = [v68 topAnchor];
-    v46 = [*(v70 + 7) topAnchor];
-    v45 = [v47 constraintEqualToAnchor:?];
+    topAnchor3 = [v68 topAnchor];
+    topAnchor4 = [*(selfCopy + 7) topAnchor];
+    v45 = [topAnchor3 constraintEqualToAnchor:?];
     v71[6] = v45;
-    v44 = [*(v70 + 7) bottomAnchor];
-    v43 = [v68 bottomAnchor];
-    v42 = [v44 constraintEqualToAnchor:?];
+    bottomAnchor3 = [*(selfCopy + 7) bottomAnchor];
+    bottomAnchor4 = [v68 bottomAnchor];
+    v42 = [bottomAnchor3 constraintEqualToAnchor:?];
     v71[7] = v42;
-    v41 = [v67 centerXAnchor];
-    v40 = [*(v70 + 8) centerXAnchor];
-    v39 = [v41 constraintEqualToAnchor:?];
+    centerXAnchor5 = [v67 centerXAnchor];
+    centerXAnchor6 = [*(selfCopy + 8) centerXAnchor];
+    v39 = [centerXAnchor5 constraintEqualToAnchor:?];
     v71[8] = v39;
-    v18 = [v67 widthAnchor];
-    v19 = [*(v70 + 8) widthAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    widthAnchor5 = [v67 widthAnchor];
+    widthAnchor6 = [*(selfCopy + 8) widthAnchor];
+    v20 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v71[9] = v20;
-    v21 = [v67 topAnchor];
-    v22 = [*(v70 + 8) topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    topAnchor5 = [v67 topAnchor];
+    topAnchor6 = [*(selfCopy + 8) topAnchor];
+    v23 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v71[10] = v23;
-    v24 = [*(v70 + 8) bottomAnchor];
-    v25 = [v67 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor5 = [*(selfCopy + 8) bottomAnchor];
+    bottomAnchor6 = [v67 bottomAnchor];
+    v26 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v71[11] = v26;
     v27 = [NSArray arrayWithObjects:v71 count:12];
     [NSLayoutConstraint activateConstraints:v27];
 
-    [*(v70 + 5) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [*(v70 + 6) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [*(v70 + 7) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [*(v70 + 8) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [*(v70 + 5) addArrangedSubview:*(v70 + 6)];
-    [*(v70 + 5) addArrangedSubview:*(v70 + 7)];
-    [*(v70 + 5) addArrangedSubview:*(v70 + 8)];
-    [v70 addSubview:*(v70 + 5)];
-    [*(v70 + 5) pinToEdges:v70];
+    [*(selfCopy + 5) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(selfCopy + 6) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(selfCopy + 7) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(selfCopy + 8) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [*(selfCopy + 5) addArrangedSubview:*(selfCopy + 6)];
+    [*(selfCopy + 5) addArrangedSubview:*(selfCopy + 7)];
+    [*(selfCopy + 5) addArrangedSubview:*(selfCopy + 8)];
+    [selfCopy addSubview:*(selfCopy + 5)];
+    [*(selfCopy + 5) pinToEdges:selfCopy];
     v28 = [UITapGestureRecognizer alloc];
-    v29 = [v28 initWithTarget:v70 action:"tapped:"];
-    v30 = *(v70 + 9);
-    *(v70 + 9) = v29;
+    v29 = [v28 initWithTarget:selfCopy action:"tapped:"];
+    v30 = *(selfCopy + 9);
+    *(selfCopy + 9) = v29;
 
     v31 = [UITapGestureRecognizer alloc];
-    v32 = [v31 initWithTarget:v70 action:"tapped:"];
-    v33 = *(v70 + 10);
-    *(v70 + 10) = v32;
+    v32 = [v31 initWithTarget:selfCopy action:"tapped:"];
+    v33 = *(selfCopy + 10);
+    *(selfCopy + 10) = v32;
 
     v34 = [UITapGestureRecognizer alloc];
-    v35 = [v34 initWithTarget:v70 action:"tapped:"];
-    v36 = *(v70 + 11);
-    *(v70 + 11) = v35;
+    v35 = [v34 initWithTarget:selfCopy action:"tapped:"];
+    v36 = *(selfCopy + 11);
+    *(selfCopy + 11) = v35;
 
-    [*(v70 + 6) addGestureRecognizer:*(v70 + 9)];
-    [*(v70 + 7) addGestureRecognizer:*(v70 + 10)];
-    [*(v70 + 8) addGestureRecognizer:*(v70 + 11)];
+    [*(selfCopy + 6) addGestureRecognizer:*(selfCopy + 9)];
+    [*(selfCopy + 7) addGestureRecognizer:*(selfCopy + 10)];
+    [*(selfCopy + 8) addGestureRecognizer:*(selfCopy + 11)];
   }
 
-  v37 = v70;
+  v37 = selfCopy;
   objc_storeStrong(&v67, 0);
   objc_storeStrong(&v68, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v70, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v37;
 }
 
 - (void)didMoveToSuperview
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11.receiver = self;
   v11.super_class = BuddyPosedDeviceSelectionView;
   [(BuddyPosedDeviceSelectionView *)&v11 didMoveToSuperview];
-  v2 = v13;
-  v3 = [(BuddyPosedDeviceSelectionView *)v13 leftContainer];
-  v4 = [(BuddyPosedDeviceSelectionView *)v13 leftPosedView];
-  [(BuddyPosedDeviceSelectionView *)v2 _updateViewContainerForAccessibilityOptions:v3 contents:v4];
+  v2 = selfCopy;
+  leftContainer = [(BuddyPosedDeviceSelectionView *)selfCopy leftContainer];
+  leftPosedView = [(BuddyPosedDeviceSelectionView *)selfCopy leftPosedView];
+  [(BuddyPosedDeviceSelectionView *)v2 _updateViewContainerForAccessibilityOptions:leftContainer contents:leftPosedView];
 
-  v5 = v13;
-  v6 = [(BuddyPosedDeviceSelectionView *)v13 centerContainer];
-  v7 = [(BuddyPosedDeviceSelectionView *)v13 centerPosedView];
-  [(BuddyPosedDeviceSelectionView *)v5 _updateViewContainerForAccessibilityOptions:v6 contents:v7];
+  v5 = selfCopy;
+  centerContainer = [(BuddyPosedDeviceSelectionView *)selfCopy centerContainer];
+  centerPosedView = [(BuddyPosedDeviceSelectionView *)selfCopy centerPosedView];
+  [(BuddyPosedDeviceSelectionView *)v5 _updateViewContainerForAccessibilityOptions:centerContainer contents:centerPosedView];
 
-  v8 = v13;
-  v9 = [(BuddyPosedDeviceSelectionView *)v13 rightContainer];
-  v10 = [(BuddyPosedDeviceSelectionView *)v13 rightPosedView];
-  [(BuddyPosedDeviceSelectionView *)v8 _updateViewContainerForAccessibilityOptions:v9 contents:v10];
+  v8 = selfCopy;
+  rightContainer = [(BuddyPosedDeviceSelectionView *)selfCopy rightContainer];
+  rightPosedView = [(BuddyPosedDeviceSelectionView *)selfCopy rightPosedView];
+  [(BuddyPosedDeviceSelectionView *)v8 _updateViewContainerForAccessibilityOptions:rightContainer contents:rightPosedView];
 }
 
-- (void)tapped:(id)a3
+- (void)tapped:(id)tapped
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v3 = location[0];
-  v4 = [location[0] view];
-  [v3 locationInView:v4];
+  view = [location[0] view];
+  [v3 locationInView:view];
   v6 = v5;
-  v7 = [(BuddyPosedDeviceSelectionView *)v17 leftPosedView];
-  [(BuddyPosedDeviceSelectionItemView *)v7 contentContainerHeight];
+  leftPosedView = [(BuddyPosedDeviceSelectionView *)selfCopy leftPosedView];
+  [(BuddyPosedDeviceSelectionItemView *)leftPosedView contentContainerHeight];
   v9 = v8;
 
   if (v6 >= v9)
   {
-    v10 = [location[0] view];
-    v11 = [(BuddyPosedDeviceSelectionView *)v17 leftContainer];
+    view2 = [location[0] view];
+    leftContainer = [(BuddyPosedDeviceSelectionView *)selfCopy leftContainer];
 
-    if (v10 == v11)
+    if (view2 == leftContainer)
     {
-      [(BuddyPosedDeviceSelectionView *)v17 selectSegment:0];
+      [(BuddyPosedDeviceSelectionView *)selfCopy selectSegment:0];
     }
 
     else
     {
-      v12 = [location[0] view];
-      v13 = [(BuddyPosedDeviceSelectionView *)v17 centerContainer];
+      view3 = [location[0] view];
+      centerContainer = [(BuddyPosedDeviceSelectionView *)selfCopy centerContainer];
 
-      if (v12 == v13)
+      if (view3 == centerContainer)
       {
-        [(BuddyPosedDeviceSelectionView *)v17 selectSegment:2];
+        [(BuddyPosedDeviceSelectionView *)selfCopy selectSegment:2];
       }
 
       else
       {
-        v14 = [location[0] view];
-        v15 = [(BuddyPosedDeviceSelectionView *)v17 rightContainer];
+        view4 = [location[0] view];
+        rightContainer = [(BuddyPosedDeviceSelectionView *)selfCopy rightContainer];
 
-        if (v14 == v15)
+        if (view4 == rightContainer)
         {
-          [(BuddyPosedDeviceSelectionView *)v17 selectSegment:1];
+          [(BuddyPosedDeviceSelectionView *)selfCopy selectSegment:1];
         }
       }
     }
@@ -216,79 +216,79 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)selectSegment:(int64_t)a3
+- (void)selectSegment:(int64_t)segment
 {
-  v3 = [(BuddyPosedDeviceSelectionView *)self leftPosedView];
-  [(BuddyPosedDeviceSelectionItemView *)v3 setSelected:a3 == 0];
+  leftPosedView = [(BuddyPosedDeviceSelectionView *)self leftPosedView];
+  [(BuddyPosedDeviceSelectionItemView *)leftPosedView setSelected:segment == 0];
 
-  v4 = [(BuddyPosedDeviceSelectionView *)self centerPosedView];
-  [(BuddyPosedDeviceSelectionItemView *)v4 setSelected:a3 == 2];
+  centerPosedView = [(BuddyPosedDeviceSelectionView *)self centerPosedView];
+  [(BuddyPosedDeviceSelectionItemView *)centerPosedView setSelected:segment == 2];
 
-  v5 = [(BuddyPosedDeviceSelectionView *)self rightPosedView];
-  [(BuddyPosedDeviceSelectionItemView *)v5 setSelected:a3 == 1];
+  rightPosedView = [(BuddyPosedDeviceSelectionView *)self rightPosedView];
+  [(BuddyPosedDeviceSelectionItemView *)rightPosedView setSelected:segment == 1];
 
-  v6 = [(BuddyPosedDeviceSelectionView *)self leftContainer];
-  v7 = [(BuddyPosedDeviceSelectionView *)self leftPosedView];
-  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:v6 contents:v7];
+  leftContainer = [(BuddyPosedDeviceSelectionView *)self leftContainer];
+  leftPosedView2 = [(BuddyPosedDeviceSelectionView *)self leftPosedView];
+  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:leftContainer contents:leftPosedView2];
 
-  v8 = [(BuddyPosedDeviceSelectionView *)self centerContainer];
-  v9 = [(BuddyPosedDeviceSelectionView *)self centerPosedView];
-  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:v8 contents:v9];
+  centerContainer = [(BuddyPosedDeviceSelectionView *)self centerContainer];
+  centerPosedView2 = [(BuddyPosedDeviceSelectionView *)self centerPosedView];
+  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:centerContainer contents:centerPosedView2];
 
-  v10 = [(BuddyPosedDeviceSelectionView *)self rightContainer];
-  v11 = [(BuddyPosedDeviceSelectionView *)self rightPosedView];
-  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:v10 contents:v11];
+  rightContainer = [(BuddyPosedDeviceSelectionView *)self rightContainer];
+  rightPosedView2 = [(BuddyPosedDeviceSelectionView *)self rightPosedView];
+  [(BuddyPosedDeviceSelectionView *)self _updateViewContainerForAccessibilityOptions:rightContainer contents:rightPosedView2];
 
-  v12 = [(BuddyPosedDeviceSelectionView *)self delegate];
-  [(BuddyPosedDeviceSelectionDelegate *)v12 didSelectSegment:a3];
+  delegate = [(BuddyPosedDeviceSelectionView *)self delegate];
+  [(BuddyPosedDeviceSelectionDelegate *)delegate didSelectSegment:segment];
 }
 
-+ (id)selectionItemWithImageName:(id)a3 symbolName:(id)a4 segment:(int64_t)a5 text:(id)a6 hostViewLayoutMargins:(NSDirectionalEdgeInsets)a7 posedDevicesPadding:(double)a8
++ (id)selectionItemWithImageName:(id)name symbolName:(id)symbolName segment:(int64_t)segment text:(id)text hostViewLayoutMargins:(NSDirectionalEdgeInsets)margins posedDevicesPadding:(double)padding
 {
-  v22 = a7;
-  location[2] = a1;
+  marginsCopy = margins;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
-  v19 = a5;
+  objc_storeStrong(&v20, symbolName);
+  segmentCopy = segment;
   v18 = 0;
-  objc_storeStrong(&v18, a6);
-  v17[1] = *&a8;
+  objc_storeStrong(&v18, text);
+  v17[1] = *&padding;
   v12 = [BuddyPosedDeviceSelectionItemAccessoryView alloc];
   v17[0] = [(BuddyPosedDeviceSelectionItemAccessoryView *)v12 initWithSymbol:v20 text:v18];
   v16 = [UIImage imageNamed:location[0]];
   v13 = [BuddyPosedDeviceSelectionItemView alloc];
-  v14 = [(BuddyPosedDeviceSelectionItemView *)v13 initWithContentImage:v16 selectionSegment:v19 accessoryView:v17[0] hostViewLayoutMargins:v22.top posedDevicesPadding:v22.leading, v22.bottom, v22.trailing, a8];
+  padding = [(BuddyPosedDeviceSelectionItemView *)v13 initWithContentImage:v16 selectionSegment:segmentCopy accessoryView:v17[0] hostViewLayoutMargins:marginsCopy.top posedDevicesPadding:marginsCopy.leading, marginsCopy.bottom, marginsCopy.trailing, padding];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 
-  return v14;
+  return padding;
 }
 
-- (void)_updateViewContainerForAccessibilityOptions:(id)a3 contents:(id)a4
+- (void)_updateViewContainerForAccessibilityOptions:(id)options contents:(id)contents
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, contents);
   [location[0] setIsAccessibilityElement:1];
   [location[0] setAccessibilityTraits:UIAccessibilityTraitButton];
   if ([v8 selected])
   {
     v5 = location[0];
-    v6 = [location[0] accessibilityTraits];
-    [v5 setAccessibilityTraits:v6 | UIAccessibilityTraitSelected];
+    accessibilityTraits = [location[0] accessibilityTraits];
+    [v5 setAccessibilityTraits:accessibilityTraits | UIAccessibilityTraitSelected];
   }
 
-  v7 = [v8 title];
-  [location[0] setAccessibilityLabel:v7];
+  title = [v8 title];
+  [location[0] setAccessibilityLabel:title];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);

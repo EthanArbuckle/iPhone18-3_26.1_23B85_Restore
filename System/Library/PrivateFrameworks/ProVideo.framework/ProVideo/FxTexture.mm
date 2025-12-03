@@ -1,11 +1,11 @@
 @interface FxTexture
 - (BOOL)_verifyImage;
 - (FxTexture)init;
-- (FxTexture)initWithInfo:(id *)a3 textureId:(unsigned int)a4 andTarget:(unsigned int)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)createData:(unsigned int)a3 withType:(unsigned int)a4;
+- (FxTexture)initWithInfo:(id *)info textureId:(unsigned int)id andTarget:(unsigned int)target;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)createData:(unsigned int)data withType:(unsigned int)type;
 - (void)dealloc;
-- (void)getTextureCoords:(double *)a3 right:(double *)a4 bottom:(double *)a5 top:(double *)a6;
+- (void)getTextureCoords:(double *)coords right:(double *)right bottom:(double *)bottom top:(double *)top;
 @end
 
 @implementation FxTexture
@@ -34,14 +34,14 @@
   return result;
 }
 
-- (FxTexture)initWithInfo:(id *)a3 textureId:(unsigned int)a4 andTarget:(unsigned int)a5
+- (FxTexture)initWithInfo:(id *)info textureId:(unsigned int)id andTarget:(unsigned int)target
 {
-  v7 = *&a3->var6;
-  v14[2] = *&a3->var4;
+  v7 = *&info->var6;
+  v14[2] = *&info->var4;
   v14[3] = v7;
-  var8 = a3->var8;
-  v8 = *&a3->var2;
-  v14[0] = *&a3->var0;
+  var8 = info->var8;
+  v8 = *&info->var2;
+  v14[0] = *&info->var0;
   v14[1] = v8;
   v13.receiver = self;
   v13.super_class = FxTexture;
@@ -52,8 +52,8 @@
     texturePriv = v9->_texturePriv;
     if (texturePriv || (texturePriv = malloc_type_calloc(1uLL, 0xCuLL, 0x100004005A209FEuLL), (v10->_texturePriv = texturePriv) != 0))
     {
-      texturePriv->var0 = a4;
-      texturePriv->var1 = a5;
+      texturePriv->var0 = id;
+      texturePriv->var1 = target;
       texturePriv->var2 = 0;
     }
   }
@@ -61,7 +61,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FxTexture alloc];
   if (self)
@@ -94,14 +94,14 @@
   [(FxImage *)&v4 dealloc];
 }
 
-- (void)createData:(unsigned int)a3 withType:(unsigned int)a4
+- (void)createData:(unsigned int)data withType:(unsigned int)type
 {
-  v5 = malloc_type_malloc(4 * [(FxImage *)self width:*&a3]* [(FxImage *)self height], 0x100004077774924uLL);
+  v5 = malloc_type_malloc(4 * [(FxImage *)self width:*&data]* [(FxImage *)self height], 0x100004077774924uLL);
   [(FxTexture *)self bind];
   return v5;
 }
 
-- (void)getTextureCoords:(double *)a3 right:(double *)a4 bottom:(double *)a5 top:(double *)a6
+- (void)getTextureCoords:(double *)coords right:(double *)right bottom:(double *)bottom top:(double *)top
 {
   v11 = [(FxImage *)self dod];
   v12 = v11;
@@ -109,47 +109,47 @@
   v15 = HIDWORD(v11);
   if ([(FxTexture *)self isInputImage])
   {
-    if (a3)
+    if (coords)
     {
-      *a3 = 0.0;
+      *coords = 0.0;
     }
 
-    if (a5)
+    if (bottom)
     {
-      *a5 = 0.0;
+      *bottom = 0.0;
     }
 
-    if (a4)
+    if (right)
     {
-      *a4 = (v14 - v12);
+      *right = (v14 - v12);
     }
 
-    if (a6)
+    if (top)
     {
       LODWORD(v16) = HIDWORD(v14) - v15;
 LABEL_18:
-      *a6 = v16;
+      *top = v16;
     }
   }
 
   else
   {
-    if (a3)
+    if (coords)
     {
-      *a3 = v12;
+      *coords = v12;
     }
 
-    if (a4)
+    if (right)
     {
-      *a4 = v14;
+      *right = v14;
     }
 
-    if (a5)
+    if (bottom)
     {
-      *a5 = v15;
+      *bottom = v15;
     }
 
-    if (a6)
+    if (top)
     {
       v16 = HIDWORD(v14);
       goto LABEL_18;
@@ -161,22 +161,22 @@ LABEL_18:
 {
   v6.receiver = self;
   v6.super_class = FxTexture;
-  v3 = [(FxImage *)&v6 _verifyImage];
-  if (v3)
+  _verifyImage = [(FxImage *)&v6 _verifyImage];
+  if (_verifyImage)
   {
     texturePriv = self->_texturePriv;
     if (texturePriv)
     {
-      LOBYTE(v3) = texturePriv->var1 != 0;
+      LOBYTE(_verifyImage) = texturePriv->var1 != 0;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_verifyImage) = 0;
     }
   }
 
-  return v3;
+  return _verifyImage;
 }
 
 @end

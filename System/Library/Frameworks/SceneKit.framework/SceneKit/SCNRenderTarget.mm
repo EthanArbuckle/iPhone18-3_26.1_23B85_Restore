@@ -1,16 +1,16 @@
 @interface SCNRenderTarget
-- (BOOL)matchesDescription:(id *)a3 size:(unint64_t)a4 arrayLength:;
-- (SCNRenderTarget)initWithDescription:(id *)a3 size:(unint64_t)a4 arrayLength:;
+- (BOOL)matchesDescription:(id *)description size:(unint64_t)size arrayLength:;
+- (SCNRenderTarget)initWithDescription:(id *)description size:(unint64_t)size arrayLength:;
 - (id)ciImage;
 - (id)description;
-- (id)textureForSliceIndex:(unint64_t)a3;
+- (id)textureForSliceIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setTexture:(id)a3;
+- (void)setTexture:(id)texture;
 @end
 
 @implementation SCNRenderTarget
 
-- (SCNRenderTarget)initWithDescription:(id *)a3 size:(unint64_t)a4 arrayLength:
+- (SCNRenderTarget)initWithDescription:(id *)description size:(unint64_t)size arrayLength:
 {
   v6 = v4;
   v9.receiver = self;
@@ -18,9 +18,9 @@
   result = [(SCNRenderTarget *)&v9 init];
   if (result)
   {
-    result->_description = *a3;
+    result->_description = *description;
     *result->_size = v6;
-    result->_arrayLength = a4;
+    result->_arrayLength = size;
   }
 
   return result;
@@ -44,24 +44,24 @@
   return result;
 }
 
-- (BOOL)matchesDescription:(id *)a3 size:(unint64_t)a4 arrayLength:
+- (BOOL)matchesDescription:(id *)description size:(unint64_t)size arrayLength:
 {
   v5 = vceq_f32(*self->_size, v4);
-  result = (vpmin_u32(v5, v5).u32[0] & 0x80000000) != 0 && self->_description.format == a3->var0 && self->_description.sampleCount == a3->var1 && ((*(a3 + 3) ^ *(&self->_description + 3)) & 5) == 0 && (((*(a3 + 3) ^ *(&self->_description + 3)) & 0x30) == 0 ? (v6 = self->_description.textureUsage == a3->var2) : (v6 = 0), v6) && self->_arrayLength == a4;
+  result = (vpmin_u32(v5, v5).u32[0] & 0x80000000) != 0 && self->_description.format == description->var0 && self->_description.sampleCount == description->var1 && ((*(description + 3) ^ *(&self->_description + 3)) & 5) == 0 && (((*(description + 3) ^ *(&self->_description + 3)) & 0x30) == 0 ? (v6 = self->_description.textureUsage == description->var2) : (v6 = 0), v6) && self->_arrayLength == size;
   return result;
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
   texture = self->_texture;
-  if (texture != a3)
+  if (texture != texture)
   {
 
-    v6 = a3;
-    self->_texture = v6;
+    textureCopy = texture;
+    self->_texture = textureCopy;
     if (self->_name)
     {
-      v7 = v6 == 0;
+      v7 = textureCopy == 0;
     }
 
     else
@@ -78,7 +78,7 @@
   }
 }
 
-- (id)textureForSliceIndex:(unint64_t)a3
+- (id)textureForSliceIndex:(unint64_t)index
 {
   sliceTextures = self->_sliceTextures;
   if (!sliceTextures)
@@ -111,7 +111,7 @@
     }
   }
 
-  return [(NSArray *)sliceTextures objectAtIndexedSubscript:a3];
+  return [(NSArray *)sliceTextures objectAtIndexedSubscript:index];
 }
 
 - (id)ciImage

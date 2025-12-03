@@ -25,9 +25,9 @@
 {
   [(SSHBHIDHumiditySensorSample *)self timestamp];
   v4 = v3;
-  v5 = [(SSHBHIDHumiditySensorSample *)self sequence];
+  sequence = [(SSHBHIDHumiditySensorSample *)self sequence];
   [(SSHBHIDHumiditySensorSample *)self humidity];
-  return [NSString stringWithFormat:@"%f, %u, %f", v4, v5, v6];
+  return [NSString stringWithFormat:@"%f, %u, %f", v4, sequence, v6];
 }
 
 @end

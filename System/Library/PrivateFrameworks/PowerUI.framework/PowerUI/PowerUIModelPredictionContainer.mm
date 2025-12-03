@@ -1,41 +1,41 @@
 @interface PowerUIModelPredictionContainer
-- (PowerUIModelPredictionContainer)initWithEngagementConfidence:(double)a3 withSmartChargeDuration:(double)a4 withModelVersion:(id)a5;
-- (id)initInvalidEntry:(unint64_t)a3 withEngagementConfidence:(double)a4 withSmartChargeDuration:(double)a5 withModelVersion:(id)a6;
+- (PowerUIModelPredictionContainer)initWithEngagementConfidence:(double)confidence withSmartChargeDuration:(double)duration withModelVersion:(id)version;
+- (id)initInvalidEntry:(unint64_t)entry withEngagementConfidence:(double)confidence withSmartChargeDuration:(double)duration withModelVersion:(id)version;
 @end
 
 @implementation PowerUIModelPredictionContainer
 
-- (PowerUIModelPredictionContainer)initWithEngagementConfidence:(double)a3 withSmartChargeDuration:(double)a4 withModelVersion:(id)a5
+- (PowerUIModelPredictionContainer)initWithEngagementConfidence:(double)confidence withSmartChargeDuration:(double)duration withModelVersion:(id)version
 {
-  v9 = a5;
+  versionCopy = version;
   v13.receiver = self;
   v13.super_class = PowerUIModelPredictionContainer;
   v10 = [(PowerUIModelPredictionContainer *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_modelVersion, a5);
-    v11->_engagementConfidence = a3;
-    v11->_smartChargeDuration = a4;
+    objc_storeStrong(&v10->_modelVersion, version);
+    v11->_engagementConfidence = confidence;
+    v11->_smartChargeDuration = duration;
     v11->_state = 0;
   }
 
   return v11;
 }
 
-- (id)initInvalidEntry:(unint64_t)a3 withEngagementConfidence:(double)a4 withSmartChargeDuration:(double)a5 withModelVersion:(id)a6
+- (id)initInvalidEntry:(unint64_t)entry withEngagementConfidence:(double)confidence withSmartChargeDuration:(double)duration withModelVersion:(id)version
 {
-  v11 = a6;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = PowerUIModelPredictionContainer;
   v12 = [(PowerUIModelPredictionContainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_state = a3;
-    v12->_engagementConfidence = a4;
-    v12->_smartChargeDuration = a5;
-    objc_storeStrong(&v12->_modelVersion, a6);
+    v12->_state = entry;
+    v12->_engagementConfidence = confidence;
+    v12->_smartChargeDuration = duration;
+    objc_storeStrong(&v12->_modelVersion, version);
   }
 
   return v13;

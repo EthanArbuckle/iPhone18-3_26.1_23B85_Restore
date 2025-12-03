@@ -1,22 +1,22 @@
 @interface PAAccessRecordCoalescingIncompleteRecordState
-- (PAAccessRecordCoalescingIncompleteRecordState)initWithPreviousState:(id)a3 recordToRepublish:(id)a4;
+- (PAAccessRecordCoalescingIncompleteRecordState)initWithPreviousState:(id)state recordToRepublish:(id)republish;
 - (id)recordsToRepublish;
 @end
 
 @implementation PAAccessRecordCoalescingIncompleteRecordState
 
-- (PAAccessRecordCoalescingIncompleteRecordState)initWithPreviousState:(id)a3 recordToRepublish:(id)a4
+- (PAAccessRecordCoalescingIncompleteRecordState)initWithPreviousState:(id)state recordToRepublish:(id)republish
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  republishCopy = republish;
   v12.receiver = self;
   v12.super_class = PAAccessRecordCoalescingIncompleteRecordState;
   v9 = [(PAAccessRecordCoalescingIncompleteRecordState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_previousState, a3);
-    objc_storeStrong(&v10->_recordToRepublish, a4);
+    objc_storeStrong(&v9->_previousState, state);
+    objc_storeStrong(&v10->_recordToRepublish, republish);
   }
 
   return v10;

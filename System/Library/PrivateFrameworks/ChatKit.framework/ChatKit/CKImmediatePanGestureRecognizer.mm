@@ -1,14 +1,14 @@
 @interface CKImmediatePanGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation CKImmediatePanGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CKImmediatePanGestureRecognizer;
-  [(CKImmediatePanGestureRecognizer *)&v5 touchesBegan:a3 withEvent:a4];
+  [(CKImmediatePanGestureRecognizer *)&v5 touchesBegan:began withEvent:event];
   [(CKImmediatePanGestureRecognizer *)self setState:1];
 }
 

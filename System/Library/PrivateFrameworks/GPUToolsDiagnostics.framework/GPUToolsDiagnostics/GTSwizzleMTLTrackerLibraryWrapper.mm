@@ -1,9 +1,9 @@
 @interface GTSwizzleMTLTrackerLibraryWrapper
-+ (id)libraryWrapperWithLibrary:(Library *)a3;
-- (GTSwizzleMTLTrackerLibraryWrapper)initWithLibrary:(Library *)a3;
++ (id)libraryWrapperWithLibrary:(Library *)library;
+- (GTSwizzleMTLTrackerLibraryWrapper)initWithLibrary:(Library *)library;
 - (Library)library;
 - (id).cxx_construct;
-- (void)setLibrary:(Library *)a3;
+- (void)setLibrary:(Library *)library;
 @end
 
 @implementation GTSwizzleMTLTrackerLibraryWrapper
@@ -16,14 +16,14 @@
   return self;
 }
 
-- (void)setLibrary:(Library *)a3
+- (void)setLibrary:(Library *)library
 {
-  objc_storeStrong(&self->_library.Path, a3->Path);
-  objc_storeStrong(&self->_library.Metallib, a3->Metallib);
-  objc_storeStrong(&self->_library.Source, a3->Source);
-  *&self->_library.isDefaultMetallib = *&a3->isDefaultMetallib;
+  objc_storeStrong(&self->_library.Path, library->Path);
+  objc_storeStrong(&self->_library.Metallib, library->Metallib);
+  objc_storeStrong(&self->_library.Source, library->Source);
+  *&self->_library.isDefaultMetallib = *&library->isDefaultMetallib;
 
-  Path = a3->Path;
+  Path = library->Path;
 }
 
 - (Library)library
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (GTSwizzleMTLTrackerLibraryWrapper)initWithLibrary:(Library *)a3
+- (GTSwizzleMTLTrackerLibraryWrapper)initWithLibrary:(Library *)library
 {
   v7.receiver = self;
   v7.super_class = GTSwizzleMTLTrackerLibraryWrapper;
@@ -45,24 +45,24 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_library.Path, a3->Path);
-    objc_storeStrong(&v5->_library.Metallib, a3->Metallib);
-    objc_storeStrong(&v5->_library.Source, a3->Source);
-    *&v5->_library.isDefaultMetallib = *&a3->isDefaultMetallib;
+    objc_storeStrong(&v4->_library.Path, library->Path);
+    objc_storeStrong(&v5->_library.Metallib, library->Metallib);
+    objc_storeStrong(&v5->_library.Source, library->Source);
+    *&v5->_library.isDefaultMetallib = *&library->isDefaultMetallib;
   }
 
   return v5;
 }
 
-+ (id)libraryWrapperWithLibrary:(Library *)a3
++ (id)libraryWrapperWithLibrary:(Library *)library
 {
-  v4 = [a1 alloc];
-  v5 = a3->Path;
+  v4 = [self alloc];
+  v5 = library->Path;
   v10[0] = v5;
-  v6 = a3->Metallib;
+  v6 = library->Metallib;
   v10[1] = v6;
-  v7 = a3->Source;
-  v8 = *&a3->isDefaultMetallib;
+  v7 = library->Source;
+  v8 = *&library->isDefaultMetallib;
   v10[2] = v7;
   v10[3] = v8;
   if (v4)

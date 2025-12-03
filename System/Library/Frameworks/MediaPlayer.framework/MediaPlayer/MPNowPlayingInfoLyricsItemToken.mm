@@ -1,6 +1,6 @@
 @interface MPNowPlayingInfoLyricsItemToken
-- (MPNowPlayingInfoLyricsItemToken)initWithIdentifier:(id)a3 userInfo:(id)a4;
-- (MPNowPlayingInfoLyricsItemToken)initWithMediaRemoteLyricsItemToken:(void *)a3;
+- (MPNowPlayingInfoLyricsItemToken)initWithIdentifier:(id)identifier userInfo:(id)info;
+- (MPNowPlayingInfoLyricsItemToken)initWithMediaRemoteLyricsItemToken:(void *)token;
 - (void)dealloc;
 @end
 
@@ -19,24 +19,24 @@
   [(MPNowPlayingInfoLyricsItemToken *)&v4 dealloc];
 }
 
-- (MPNowPlayingInfoLyricsItemToken)initWithMediaRemoteLyricsItemToken:(void *)a3
+- (MPNowPlayingInfoLyricsItemToken)initWithMediaRemoteLyricsItemToken:(void *)token
 {
   v7.receiver = self;
   v7.super_class = MPNowPlayingInfoLyricsItemToken;
   v4 = [(MPNowPlayingInfoLyricsItemToken *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (token && v4)
   {
-    v4->_mediaRemoteLyricsItemToken = CFRetain(a3);
+    v4->_mediaRemoteLyricsItemToken = CFRetain(token);
   }
 
   return v5;
 }
 
-- (MPNowPlayingInfoLyricsItemToken)initWithIdentifier:(id)a3 userInfo:(id)a4
+- (MPNowPlayingInfoLyricsItemToken)initWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = MPNowPlayingInfoLyricsItemToken;
   v8 = [(MPNowPlayingInfoLyricsItemToken *)&v10 init];

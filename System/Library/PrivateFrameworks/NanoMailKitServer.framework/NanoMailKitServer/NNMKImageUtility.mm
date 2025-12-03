@@ -1,24 +1,24 @@
 @interface NNMKImageUtility
-+ (void)scaleImageFromURL:(id)a3 imageData:(id)a4 destinationURL:(id)a5 destinationData:(id)a6 maxWidth:(float)a7;
++ (void)scaleImageFromURL:(id)l imageData:(id)data destinationURL:(id)rL destinationData:(id)destinationData maxWidth:(float)width;
 @end
 
 @implementation NNMKImageUtility
 
-+ (void)scaleImageFromURL:(id)a3 imageData:(id)a4 destinationURL:(id)a5 destinationData:(id)a6 maxWidth:(float)a7
++ (void)scaleImageFromURL:(id)l imageData:(id)data destinationURL:(id)rL destinationData:(id)destinationData maxWidth:(float)width
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  lCopy = l;
+  dataCopy = data;
+  rLCopy = rL;
+  destinationDataCopy = destinationData;
+  if (dataCopy)
   {
-    v15 = CGImageSourceCreateWithData(v12, 0);
+    v15 = CGImageSourceCreateWithData(dataCopy, 0);
   }
 
   else
   {
-    v15 = CGImageSourceCreateWithURL(v11, 0);
+    v15 = CGImageSourceCreateWithURL(lCopy, 0);
   }
 
   v16 = v15;
@@ -33,9 +33,9 @@
       {
         v33 = 0.0;
         CFNumberGetValue(Value, kCFNumberCGFloatType, &v33);
-        if (v33 < a7)
+        if (v33 < width)
         {
-          a7 = v33;
+          width = v33;
         }
       }
 
@@ -48,7 +48,7 @@
     v23 = *MEMORY[0x277CD2D40];
     v34[0] = v22;
     v34[1] = v23;
-    *&v18 = a7;
+    *&v18 = width;
     v24 = [MEMORY[0x277CCABB0] numberWithFloat:v18];
     v34[2] = *MEMORY[0x277CD2D48];
     v35[1] = v24;
@@ -58,14 +58,14 @@
 
     Count = CGImageSourceGetCount(v16);
     Type = CGImageSourceGetType(v16);
-    if (v14)
+    if (destinationDataCopy)
     {
-      v29 = CGImageDestinationCreateWithData(v14, Type, Count, 0);
+      v29 = CGImageDestinationCreateWithData(destinationDataCopy, Type, Count, 0);
     }
 
     else
     {
-      v29 = CGImageDestinationCreateWithURL(v13, Type, Count, 0);
+      v29 = CGImageDestinationCreateWithURL(rLCopy, Type, Count, 0);
     }
 
     v30 = v29;

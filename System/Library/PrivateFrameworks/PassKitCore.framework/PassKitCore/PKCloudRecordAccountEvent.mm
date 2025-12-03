@@ -1,24 +1,24 @@
 @interface PKCloudRecordAccountEvent
-- (PKCloudRecordAccountEvent)initWithCoder:(id)a3;
-- (id)_descriptionWithIncludeItem:(BOOL)a3;
+- (PKCloudRecordAccountEvent)initWithCoder:(id)coder;
+- (id)_descriptionWithIncludeItem:(BOOL)item;
 - (id)description;
-- (id)descriptionWithItem:(BOOL)a3;
-- (int64_t)compare:(id)a3;
-- (void)applyCloudRecordObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionWithItem:(BOOL)item;
+- (int64_t)compare:(id)compare;
+- (void)applyCloudRecordObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordAccountEvent
 
-- (PKCloudRecordAccountEvent)initWithCoder:(id)a3
+- (PKCloudRecordAccountEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCloudRecordAccountEvent;
-  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:v4];
+  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     event = v5->_event;
     v5->_event = v6;
   }
@@ -26,35 +26,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKCloudRecordAccountEvent;
-  v4 = a3;
-  [(PKCloudRecordObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_event forKey:{@"event", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKCloudRecordObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_event forKey:{@"event", v5.receiver, v5.super_class}];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   event = self->_event;
-  v4 = a3;
-  v5 = [(PKAccountEvent *)event identifier];
-  v6 = [v4 event];
+  compareCopy = compare;
+  identifier = [(PKAccountEvent *)event identifier];
+  event = [compareCopy event];
 
-  v7 = [v6 identifier];
-  v8 = [v5 compare:v7];
+  identifier2 = [event identifier];
+  v8 = [identifier compare:identifier2];
 
   return v8;
 }
 
-- (id)descriptionWithItem:(BOOL)a3
+- (id)descriptionWithItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = [(PKCloudRecordAccountEvent *)self _descriptionWithIncludeItem:?];
   v8.receiver = self;
   v8.super_class = PKCloudRecordAccountEvent;
-  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:v3];
+  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:itemCopy];
   [v5 appendFormat:@"\n%@", v6];
 
   return v5;
@@ -71,50 +71,50 @@
   return v3;
 }
 
-- (id)_descriptionWithIncludeItem:(BOOL)a3
+- (id)_descriptionWithIncludeItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  itemCopy = item;
+  string = [MEMORY[0x1E696AD60] string];
   event = self->_event;
   if (event)
   {
-    if (v3)
+    if (itemCopy)
     {
-      v7 = [(PKAccountEvent *)event identifier];
+      identifier = [(PKAccountEvent *)event identifier];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      [v5 appendFormat:@"event: id: %@, class: %@\n", v7, v9];
+      [string appendFormat:@"event: id: %@, class: %@\n", identifier, v9];
     }
   }
 
   else
   {
-    [v5 appendFormat:@"No associated event in database\n"];
+    [string appendFormat:@"No associated event in database\n"];
   }
 
-  return v5;
+  return string;
 }
 
-- (void)applyCloudRecordObject:(id)a3
+- (void)applyCloudRecordObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10.receiver = self;
     v10.super_class = PKCloudRecordAccountEvent;
-    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:v4];
-    v5 = v4;
+    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:objectCopy];
+    v5 = objectCopy;
     v6 = v5;
     if (!self->_event)
     {
-      v7 = [v5 event];
+      event = [v5 event];
 
-      if (v7)
+      if (event)
       {
-        v8 = [v6 event];
+        event2 = [v6 event];
         event = self->_event;
-        self->_event = v8;
+        self->_event = event2;
       }
     }
   }

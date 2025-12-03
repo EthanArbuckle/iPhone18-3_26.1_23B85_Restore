@@ -1,22 +1,22 @@
 @interface ICDelegationConsumerService
 - (ICDelegationConsumerService)init;
-- (void)performRequest:(id)a3 withResponseHandler:(id)a4;
+- (void)performRequest:(id)request withResponseHandler:(id)handler;
 @end
 
 @implementation ICDelegationConsumerService
 
-- (void)performRequest:(id)a3 withResponseHandler:(id)a4
+- (void)performRequest:(id)request withResponseHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v6;
+    v26 = requestCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing request: %{public}@", buf, 0x16u);
   }
 
@@ -27,15 +27,15 @@
   v20[2] = __66__ICDelegationConsumerService_performRequest_withResponseHandler___block_invoke;
   v20[3] = &unk_1E7BF5B90;
   objc_copyWeak(&v22, buf);
-  v10 = v7;
+  v10 = handlerCopy;
   v21 = v10;
-  v11 = [(ICDelegationConsumerServiceSession *)v9 initWithRequest:v6 responseHandler:v20];
+  v11 = [(ICDelegationConsumerServiceSession *)v9 initWithRequest:requestCopy responseHandler:v20];
   accessQueue = self->_accessQueue;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __66__ICDelegationConsumerService_performRequest_withResponseHandler___block_invoke_3;
   v17 = &unk_1E7BFA078;
-  v18 = self;
+  selfCopy2 = self;
   v13 = v11;
   v19 = v13;
   dispatch_barrier_async(accessQueue, &v14);

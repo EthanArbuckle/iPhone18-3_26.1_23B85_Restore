@@ -1,47 +1,47 @@
 @interface LookAroundActionCoordinator
 - (AppCoordinator)appCoordinator;
-- (BOOL)pptTestIsTrayType:(int64_t)a3;
+- (BOOL)pptTestIsTrayType:(int64_t)type;
 - (GEOMapServiceTraits)newTraits;
-- (LookAroundActionCoordinator)initWithContainerViewController:(id)a3;
+- (LookAroundActionCoordinator)initWithContainerViewController:(id)controller;
 - (LookAroundContainerViewController)containerViewController;
 - (LookAroundPIPDataCoordinator)dataCoordinator;
 - (MKMapItem)currentMapItem;
-- (id)activityViewControllerForPlaceViewController:(id)a3;
+- (id)activityViewControllerForPlaceViewController:(id)controller;
 - (id)mapView;
 - (id)placeCardViewController;
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3;
-- (id)trayContaineeViewControllerWithLookAroundView:(id)a3;
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c;
+- (id)trayContaineeViewControllerWithLookAroundView:(id)view;
 - (int64_t)displayedViewMode;
-- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)a3;
-- (void)_captureLookAroundUserAction:(int)a3 onTarget:(int)a4;
-- (void)_handleEnterToBackgroundNotification:(id)a3;
-- (void)_handleEnterToForegroundNotification:(id)a3;
+- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)subviews;
+- (void)_captureLookAroundUserAction:(int)action onTarget:(int)target;
+- (void)_handleEnterToBackgroundNotification:(id)notification;
+- (void)_handleEnterToForegroundNotification:(id)notification;
 - (void)_registerBackgroundNotifications;
-- (void)collectionPickerClosed:(id)a3;
-- (void)collectionPickerNewCollection:(id)a3;
-- (void)didDismissViewController:(id)a3 mapItem:(id)a4;
+- (void)collectionPickerClosed:(id)closed;
+- (void)collectionPickerNewCollection:(id)collection;
+- (void)didDismissViewController:(id)controller mapItem:(id)item;
 - (void)exitLookAround;
-- (void)placeCardViewController:(id)a3 didSelectParent:(id)a4;
-- (void)placeCardViewController:(id)a3 doDirectionItem:(id)a4 userInfo:(id)a5;
-- (void)placeCardViewController:(id)a3 presentPOIEnrichmentWithCoordinator:(id)a4;
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4;
-- (void)placeCardViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6;
-- (void)placeCardViewController:(id)a3 selectExploreGuidesWithGuideLocation:(id)a4;
-- (void)placeCardViewController:(id)a3 showCollection:(id)a4;
-- (void)placeCardViewController:(id)a3 showCuratedCollection:(id)a4;
-- (void)placeCardViewController:(id)a3 showCuratedCollectionIdentifier:(id)a4;
-- (void)placeCardViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7;
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4;
-- (void)presentFromContainerViewController:(id)a3 animated:(BOOL)a4;
-- (void)viewController:(id)a3 createNewCollectionWithSession:(id)a4;
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6;
-- (void)viewController:(id)a3 openURL:(id)a4;
-- (void)viewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6;
-- (void)viewController:(id)a3 presentPlaceCardForItem:(id)a4 animated:(BOOL)a5;
-- (void)viewControllerGoPreviousState:(id)a3 withSender:(id)a4;
-- (void)viewControllerPresentLookAround:(id)a3 showsFullScreen:(BOOL)a4;
-- (void)viewControllerPresentTTR:(id)a3;
-- (void)viewControllerPresentTray:(id)a3 showsFullScreen:(BOOL)a4 usingLookAroundView:(id)a5;
+- (void)placeCardViewController:(id)controller didSelectParent:(id)parent;
+- (void)placeCardViewController:(id)controller doDirectionItem:(id)item userInfo:(id)info;
+- (void)placeCardViewController:(id)controller presentPOIEnrichmentWithCoordinator:(id)coordinator;
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard;
+- (void)placeCardViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids;
+- (void)placeCardViewController:(id)controller selectExploreGuidesWithGuideLocation:(id)location;
+- (void)placeCardViewController:(id)controller showCollection:(id)collection;
+- (void)placeCardViewController:(id)controller showCuratedCollection:(id)collection;
+- (void)placeCardViewController:(id)controller showCuratedCollectionIdentifier:(id)identifier;
+- (void)placeCardViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate;
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type;
+- (void)presentFromContainerViewController:(id)controller animated:(BOOL)animated;
+- (void)viewController:(id)controller createNewCollectionWithSession:(id)session;
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)viewController:(id)controller openURL:(id)l;
+- (void)viewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)viewController:(id)controller presentPlaceCardForItem:(id)item animated:(BOOL)animated;
+- (void)viewControllerGoPreviousState:(id)state withSender:(id)sender;
+- (void)viewControllerPresentLookAround:(id)around showsFullScreen:(BOOL)screen;
+- (void)viewControllerPresentTTR:(id)r;
+- (void)viewControllerPresentTray:(id)tray showsFullScreen:(BOOL)screen usingLookAroundView:(id)view;
 @end
 
 @implementation LookAroundActionCoordinator
@@ -60,76 +60,76 @@
   return WeakRetained;
 }
 
-- (void)_captureLookAroundUserAction:(int)a3 onTarget:(int)a4
+- (void)_captureLookAroundUserAction:(int)action onTarget:(int)target
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&target;
+  v5 = *&action;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v16 = [WeakRetained lookAroundView];
+  lookAroundView = [WeakRetained lookAroundView];
 
-  [v16 centerCoordinate];
+  [lookAroundView centerCoordinate];
   v9 = [[GEOLocation alloc] initWithLatitude:v7 longitude:v8];
-  [v16 presentationYaw];
+  [lookAroundView presentationYaw];
   v11 = v10;
-  v12 = [v16 visiblePlaceMUIDs];
-  v13 = [v12 count];
-  if ([v16 showsRoadLabels])
+  visiblePlaceMUIDs = [lookAroundView visiblePlaceMUIDs];
+  v13 = [visiblePlaceMUIDs count];
+  if ([lookAroundView showsRoadLabels])
   {
-    v14 = 1;
+    showsPointLabels = 1;
   }
 
   else
   {
-    v14 = [v16 showsPointLabels];
+    showsPointLabels = [lookAroundView showsPointLabels];
   }
 
-  LOBYTE(v15) = v14;
+  LOBYTE(v15) = showsPointLabels;
   [GEOAPPortal captureLookAroundUserAction:v5 onTarget:v4 eventValue:0 location:v9 heading:v11 zoom:v13 numberPoisInView:0.0 labelingShown:v15];
 }
 
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type
 {
-  if ((a4 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
-    v5 = a3;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    [WeakRetained popLastViewControllerAnimated:v5];
+    [WeakRetained popLastViewControllerAnimated:animatedCopy];
   }
 }
 
-- (BOOL)pptTestIsTrayType:(int64_t)a3
+- (BOOL)pptTestIsTrayType:(int64_t)type
 {
-  if (a3 != 3)
+  if (type != 3)
   {
     return 0;
   }
 
-  v3 = [(LookAroundActionCoordinator *)self containerViewController];
-  v4 = [v3 isDisplayingLookAroundFullScreen];
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  isDisplayingLookAroundFullScreen = [containerViewController isDisplayingLookAroundFullScreen];
 
-  return v4;
+  return isDisplayingLookAroundFullScreen;
 }
 
-- (void)_handleEnterToBackgroundNotification:(id)a3
+- (void)_handleEnterToBackgroundNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [WeakRetained _maps_uiScene];
+  _maps_uiScene = [WeakRetained _maps_uiScene];
 
-  if (v4 == v6)
+  if (object == _maps_uiScene)
   {
 
     [GEOAPPortal captureLookAroundUserAction:6059 onTarget:0 eventValue:0];
   }
 }
 
-- (void)_handleEnterToForegroundNotification:(id)a3
+- (void)_handleEnterToForegroundNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [WeakRetained _maps_uiScene];
+  _maps_uiScene = [WeakRetained _maps_uiScene];
 
-  if (v4 == v6)
+  if (object == _maps_uiScene)
   {
 
     [GEOAPPortal captureLookAroundUserAction:6058 onTarget:0 eventValue:0];
@@ -145,31 +145,31 @@
   [v4 addObserver:self selector:"_handleEnterToForegroundNotification:" name:UISceneWillEnterForegroundNotification object:0];
 }
 
-- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)a3
+- (int64_t)overriddenInterfaceStyleForPlaceViewControllerSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [WeakRetained isDisplayingLookAroundFullScreen];
+  isDisplayingLookAroundFullScreen = [WeakRetained isDisplayingLookAroundFullScreen];
 
-  if (v6)
+  if (isDisplayingLookAroundFullScreen)
   {
-    v7 = 2;
+    preferredUserInterfaceStyle = 2;
   }
 
   else
   {
-    v7 = [v4 preferredUserInterfaceStyle];
+    preferredUserInterfaceStyle = [subviewsCopy preferredUserInterfaceStyle];
   }
 
-  return v7;
+  return preferredUserInterfaceStyle;
 }
 
-- (id)activityViewControllerForPlaceViewController:(id)a3
+- (id)activityViewControllerForPlaceViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained createActivityViewControllerForCurrentContext];
+  createActivityViewControllerForCurrentContext = [WeakRetained createActivityViewControllerForCurrentContext];
 
-  return v4;
+  return createActivityViewControllerForCurrentContext;
 }
 
 - (void)exitLookAround
@@ -179,14 +179,14 @@
   v4 = sub_10000FA08(WeakRetained);
 
   v5 = objc_loadWeakRetained(&self->_containerViewController);
-  v6 = [v5 isDisplayingLookAroundPIP];
+  isDisplayingLookAroundPIP = [v5 isDisplayingLookAroundPIP];
   v7 = 0.26;
   if (v4 != 5)
   {
     v7 = 0.0;
   }
 
-  if (v6)
+  if (isDisplayingLookAroundPIP)
   {
     v8 = 0.75;
   }
@@ -199,49 +199,49 @@
   v9 = objc_loadWeakRetained(&self->_containerViewController);
   [v9 prepareForExit];
 
-  v10 = [(LookAroundActionCoordinator *)self dataCoordinator];
+  dataCoordinator = [(LookAroundActionCoordinator *)self dataCoordinator];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100C84910;
   v11[3] = &unk_101661B98;
   objc_copyWeak(&v12, &location);
-  [v10 exitLookAroundPIPAfter:v11 withCompletion:v8];
+  [dataCoordinator exitLookAroundPIPAfter:v11 withCompletion:v8];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)didDismissViewController:(id)a3 mapItem:(id)a4
+- (void)didDismissViewController:(id)controller mapItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PlaceCardItem alloc] initWithMapItem:v6];
+  itemCopy = item;
+  controllerCopy = controller;
+  v8 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
 
-  [(LookAroundActionCoordinator *)self viewController:v7 presentPlaceCardForItem:v8];
+  [(LookAroundActionCoordinator *)self viewController:controllerCopy presentPlaceCardForItem:v8];
 }
 
-- (void)viewController:(id)a3 openURL:(id)a4
+- (void)viewController:(id)controller openURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = [MapsWebLinkPresenter alloc];
-  v7 = [(LookAroundActionCoordinator *)self containerViewController];
-  v8 = [(MapsWebLinkPresenter *)v6 initWithPresentingViewController:v7];
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  v8 = [(MapsWebLinkPresenter *)v6 initWithPresentingViewController:containerViewController];
 
-  [(MapsWebLinkPresenter *)v8 presentWebURL:v5];
+  [(MapsWebLinkPresenter *)v8 presentWebURL:lCopy];
 }
 
-- (void)viewController:(id)a3 pickCollectionWithSession:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6
+- (void)viewController:(id)controller pickCollectionWithSession:(id)session sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[CollectionPicker alloc] initWithCollectionEditSession:v13 sourceView:v12 sourceRect:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  sessionCopy = session;
+  height = [[CollectionPicker alloc] initWithCollectionEditSession:sessionCopy sourceView:viewCopy sourceRect:x, y, width, height];
 
   collectionPicker = self->_collectionPicker;
-  self->_collectionPicker = v14;
+  self->_collectionPicker = height;
 
   [(CollectionPicker *)self->_collectionPicker setDelegate:self];
   v16 = self->_collectionPicker;
@@ -258,14 +258,14 @@
   [(CollectionPicker *)v16 viewControllerToPresentIfContainee:v18 ifAlertController:v17];
 }
 
-- (void)viewControllerPresentTTR:(id)a3
+- (void)viewControllerPresentTTR:(id)r
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v5 = [WeakRetained lookAroundView];
-  v6 = [v5 fullSharingURL];
-  v7 = [v6 absoluteString];
+  lookAroundView = [WeakRetained lookAroundView];
+  fullSharingURL = [lookAroundView fullSharingURL];
+  absoluteString = [fullSharingURL absoluteString];
 
-  v8 = [NSString stringWithFormat:@"Summary:\n\nSteps to Reproduce:\n\nResults:\n\nTest Environment:\n\nShare Link:\n%@", v7];
+  v8 = [NSString stringWithFormat:@"Summary:\n\nSteps to Reproduce:\n\nResults:\n\nTest Environment:\n\nShare Link:\n%@", absoluteString];
   v9 = objc_opt_new();
   [v9 setTitle:@"[LookAround] "];
   [v9 addNote:v8];
@@ -280,10 +280,10 @@
   v11 = qword_10195EDB0;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = self;
-    if (!v12)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v17 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -291,22 +291,22 @@
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(LookAroundActionCoordinator *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(LookAroundActionCoordinator *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_10;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_10:
 
 LABEL_12:
     *buf = 138543362;
-    v20 = v17;
+    v20 = selfCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR for lookaround", buf, 0xCu);
   }
 
@@ -314,73 +314,73 @@ LABEL_12:
   [v18 launchTTRWithRadar:v9];
 }
 
-- (void)viewControllerPresentTray:(id)a3 showsFullScreen:(BOOL)a4 usingLookAroundView:(id)a5
+- (void)viewControllerPresentTray:(id)tray showsFullScreen:(BOOL)screen usingLookAroundView:(id)view
 {
-  v6 = a5;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v7 = [(LookAroundActionCoordinator *)self trayContaineeViewControllerWithLookAroundView:v6];
+  v7 = [(LookAroundActionCoordinator *)self trayContaineeViewControllerWithLookAroundView:viewCopy];
 
   [WeakRetained presentTray:v7];
 }
 
-- (void)presentFromContainerViewController:(id)a3 animated:(BOOL)a4
+- (void)presentFromContainerViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setContaineeDelegate:self];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [controllerCopy setContaineeDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained presentController:v6 animated:v4];
+  [WeakRetained presentController:controllerCopy animated:animatedCopy];
 }
 
-- (void)viewController:(id)a3 presentPlaceCardForItem:(id)a4 animated:(BOOL)a5
+- (void)viewController:(id)controller presentPlaceCardForItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v17 = a4;
-  v7 = [(LookAroundActionCoordinator *)self placeCardViewController];
+  animatedCopy = animated;
+  itemCopy = item;
+  placeCardViewController = [(LookAroundActionCoordinator *)self placeCardViewController];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v9 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
 
-  v10 = [v7 placeCardItem];
-  v11 = [v10 mapItem];
-  v12 = [v11 _geoMapItem];
+  placeCardItem = [placeCardViewController placeCardItem];
+  mapItem = [placeCardItem mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
 
-  v13 = [v17 mapItem];
-  v14 = [v13 _geoMapItem];
+  mapItem2 = [itemCopy mapItem];
+  _geoMapItem2 = [mapItem2 _geoMapItem];
 
   IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
-  if (v9 == v7 && (IsEqualToMapItemForPurpose & 1) != 0)
+  if (currentViewController == placeCardViewController && (IsEqualToMapItemForPurpose & 1) != 0)
   {
-    v16 = [v7 cardPresentationController];
-    [v16 wantsLayout:2];
+    cardPresentationController = [placeCardViewController cardPresentationController];
+    [cardPresentationController wantsLayout:2];
   }
 
   else
   {
     [(LookAroundActionCoordinator *)self _captureLookAroundUserAction:21 onTarget:201];
-    [v7 setPlaceCardItem:v17 withHistory:0];
-    v16 = objc_loadWeakRetained(&self->_containerViewController);
-    [v16 presentController:v7 animated:v5];
+    [placeCardViewController setPlaceCardItem:itemCopy withHistory:0];
+    cardPresentationController = objc_loadWeakRetained(&self->_containerViewController);
+    [cardPresentationController presentController:placeCardViewController animated:animatedCopy];
   }
 }
 
-- (void)viewControllerPresentLookAround:(id)a3 showsFullScreen:(BOOL)a4
+- (void)viewControllerPresentLookAround:(id)around showsFullScreen:(BOOL)screen
 {
-  v4 = a4;
+  screenCopy = screen;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [WeakRetained animateTransitionToFullScreen:v4];
+  [WeakRetained animateTransitionToFullScreen:screenCopy];
 }
 
-- (void)viewControllerGoPreviousState:(id)a3 withSender:(id)a4
+- (void)viewControllerGoPreviousState:(id)state withSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  senderCopy = sender;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_4:
-    if (self->_placeCardViewController == v6)
+    if (self->_placeCardViewController == stateCopy)
     {
       [(LookAroundActionCoordinator *)self _captureLookAroundUserAction:4 onTarget:201];
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
@@ -395,7 +395,7 @@ LABEL_4:
       dispatch_after(v14, &_dispatch_main_q, block);
     }
 
-    else if (self->_trayContaineeViewController != v6)
+    else if (self->_trayContaineeViewController != stateCopy)
     {
       v12 = objc_loadWeakRetained(&self->_containerViewController);
       [v12 popLastViewControllerAnimated:1];
@@ -405,34 +405,34 @@ LABEL_4:
   }
 
   v9 = objc_loadWeakRetained(&self->_containerViewController);
-  v10 = [v9 _maps_mapsSceneDelegate];
-  v11 = [v10 topMostPresentedViewController];
+  _maps_mapsSceneDelegate = [v9 _maps_mapsSceneDelegate];
+  topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
 
-  if (([(LookAroundTrayContaineeViewController *)v11 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol]& 1) != 0)
+  if (([(LookAroundTrayContaineeViewController *)topMostPresentedViewController conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol]& 1) != 0)
   {
 
     goto LABEL_4;
   }
 
-  if (v11 != v6)
+  if (topMostPresentedViewController != stateCopy)
   {
-    v15 = [(LookAroundTrayContaineeViewController *)v6 presentedViewController];
+    presentedViewController = [(LookAroundTrayContaineeViewController *)stateCopy presentedViewController];
 
-    if (v15 == v11)
+    if (presentedViewController == topMostPresentedViewController)
     {
-      [(LookAroundTrayContaineeViewController *)v11 dismissViewControllerAnimated:1 completion:0];
+      [(LookAroundTrayContaineeViewController *)topMostPresentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 
 LABEL_12:
 }
 
-- (void)viewController:(id)a3 createNewCollectionWithSession:(id)a4
+- (void)viewController:(id)controller createNewCollectionWithSession:(id)session
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 collection];
-  if ([v7 handlerType] == 3)
+  controllerCopy = controller;
+  sessionCopy = session;
+  collection = [sessionCopy collection];
+  if ([collection handlerType] == 3)
   {
     v8 = 256;
   }
@@ -460,23 +460,23 @@ LABEL_12:
     }
   }
 
-  v9 = [[CollectionCreateViewController alloc] initWithEditSession:v6];
+  v9 = [[CollectionCreateViewController alloc] initWithEditSession:sessionCopy];
   [(ContaineeViewController *)v9 setContaineeDelegate:self];
   [(CollectionCreateViewController *)v9 setTarget:v8];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v9 animated:1];
 }
 
-- (void)viewController:(id)a3 editNameOfMapItem:(id)a4 saveHandler:(id)a5 cancelHandler:(id)a6
+- (void)viewController:(id)controller editNameOfMapItem:(id)item saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v8 = [UIViewController _maps_viewControllerForRenamingMapItem:a4 saveHandler:a5 cancelHandler:a6];
+  v8 = [UIViewController _maps_viewControllerForRenamingMapItem:item saveHandler:handler cancelHandler:cancelHandler];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained _maps_topMostPresentViewController:v8 animated:1 completion:0];
 }
 
-- (void)collectionPickerNewCollection:(id)a3
+- (void)collectionPickerNewCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   collectionPicker = self->_collectionPicker;
   self->_collectionPicker = 0;
 
@@ -486,7 +486,7 @@ LABEL_12:
   v11[2] = sub_100C85744;
   v11[3] = &unk_10164F880;
   objc_copyWeak(&v13, &location);
-  v6 = v4;
+  v6 = collectionCopy;
   v12 = v6;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -502,19 +502,19 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)collectionPickerClosed:(id)a3
+- (void)collectionPickerClosed:(id)closed
 {
   collectionPicker = self->_collectionPicker;
   self->_collectionPicker = 0;
 }
 
-- (id)trayContaineeViewControllerWithLookAroundView:(id)a3
+- (id)trayContaineeViewControllerWithLookAroundView:(id)view
 {
   trayContaineeViewController = self->_trayContaineeViewController;
   if (!trayContaineeViewController)
   {
-    v5 = a3;
-    v6 = [[LookAroundTrayContaineeViewController alloc] initWithLookAroundView:v5];
+    viewCopy = view;
+    v6 = [[LookAroundTrayContaineeViewController alloc] initWithLookAroundView:viewCopy];
 
     v7 = self->_trayContaineeViewController;
     self->_trayContaineeViewController = v6;
@@ -533,8 +533,8 @@ LABEL_12:
   if (!self->_dataCoordinator)
   {
     v3 = [LookAroundPIPDataCoordinatorImpl alloc];
-    v4 = [(LookAroundActionCoordinator *)self mapView];
-    v5 = [(LookAroundPIPDataCoordinatorImpl *)v3 initWithMapView:v4];
+    mapView = [(LookAroundActionCoordinator *)self mapView];
+    v5 = [(LookAroundPIPDataCoordinatorImpl *)v3 initWithMapView:mapView];
     dataCoordinator = self->_dataCoordinator;
     self->_dataCoordinator = v5;
   }
@@ -572,147 +572,147 @@ LABEL_12:
 
 - (id)mapView
 {
-  v2 = [(LookAroundActionCoordinator *)self appCoordinator];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 - (MKMapItem)currentMapItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v3 = [WeakRetained currentMapItem];
+  currentMapItem = [WeakRetained currentMapItem];
 
-  return v3;
+  return currentMapItem;
 }
 
-- (LookAroundActionCoordinator)initWithContainerViewController:(id)a3
+- (LookAroundActionCoordinator)initWithContainerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = LookAroundActionCoordinator;
   v5 = [(LookAroundActionCoordinator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_containerViewController, v4);
+    objc_storeWeak(&v5->_containerViewController, controllerCopy);
     [(LookAroundActionCoordinator *)v6 _registerBackgroundNotifications];
   }
 
   return v6;
 }
 
-- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)a3
+- (id)placeCardViewControllerRequestsMapViewAssociatedWithVC:(id)c
 {
   v3 = objc_alloc_init(MKMapView);
 
   return v3;
 }
 
-- (void)placeCardViewController:(id)a3 requestCopyLinkToClipboard:(id)a4
+- (void)placeCardViewController:(id)controller requestCopyLinkToClipboard:(id)clipboard
 {
-  v5 = a4;
-  v7 = [(LookAroundActionCoordinator *)self containerViewController];
-  v6 = [v7 chromeViewController];
-  [v6 copy:v5];
+  clipboardCopy = clipboard;
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  [chromeViewController copy:clipboardCopy];
 }
 
-- (void)placeCardViewController:(id)a3 presentPOIEnrichmentWithCoordinator:(id)a4
+- (void)placeCardViewController:(id)controller presentPOIEnrichmentWithCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LookAroundActionCoordinator *)self containerViewController];
-  [v6 setContainerViewController:v8];
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  [coordinatorCopy setContainerViewController:containerViewController];
 
-  v9 = [v7 containeeDelegate];
+  containeeDelegate = [controllerCopy containeeDelegate];
 
-  [v6 setContaineeDelegate:v9];
-  v10 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v10 presentPOIEnrichmentWithCoordinator:v6];
+  [coordinatorCopy setContaineeDelegate:containeeDelegate];
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator presentPOIEnrichmentWithCoordinator:coordinatorCopy];
 }
 
-- (void)placeCardViewController:(id)a3 seeAllCollections:(id)a4 usingTitle:(id)a5 usingCollectionIds:(id)a6
+- (void)placeCardViewController:(id)controller seeAllCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v10 openCuratedCollectionsList:v9 usingTitle:v8];
+  titleCopy = title;
+  collectionsCopy = collections;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openCuratedCollectionsList:collectionsCopy usingTitle:titleCopy];
 }
 
-- (void)placeCardViewController:(id)a3 selectExploreGuidesWithGuideLocation:(id)a4
+- (void)placeCardViewController:(id)controller selectExploreGuidesWithGuideLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v6 openGuidesHomeWithGuideLocation:v5];
+  locationCopy = location;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openGuidesHomeWithGuideLocation:locationCopy];
 }
 
-- (void)placeCardViewController:(id)a3 showCuratedCollectionIdentifier:(id)a4
+- (void)placeCardViewController:(id)controller showCuratedCollectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v6 openCuratedCollectionWithIdentifier:v5];
+  identifierCopy = identifier;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openCuratedCollectionWithIdentifier:identifierCopy];
 }
 
-- (void)placeCardViewController:(id)a3 showCuratedCollection:(id)a4
+- (void)placeCardViewController:(id)controller showCuratedCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   v6 = [MKMapItemIdentifier alloc];
-  v7 = [v5 collectionIdentifier];
+  collectionIdentifier = [collectionCopy collectionIdentifier];
 
-  v9 = [v6 initWithGEOMapItemIdentifier:v7];
-  v8 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v8 openCuratedCollectionWithIdentifier:v9];
+  v9 = [v6 initWithGEOMapItemIdentifier:collectionIdentifier];
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openCuratedCollectionWithIdentifier:v9];
 }
 
-- (void)placeCardViewController:(id)a3 showRelatedMapItems:(id)a4 withTitle:(id)a5 originalMapItem:(id)a6 analyticsDelegate:(id)a7
+- (void)placeCardViewController:(id)controller showRelatedMapItems:(id)items withTitle:(id)title originalMapItem:(id)item analyticsDelegate:(id)delegate
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v15 openRelatedMapItems:v14 withTitle:v13 originalMapItem:v12 analyticsDelegate:v11];
+  delegateCopy = delegate;
+  itemCopy = item;
+  titleCopy = title;
+  itemsCopy = items;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openRelatedMapItems:itemsCopy withTitle:titleCopy originalMapItem:itemCopy analyticsDelegate:delegateCopy];
 }
 
-- (void)placeCardViewController:(id)a3 showCollection:(id)a4
+- (void)placeCardViewController:(id)controller showCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v6 openCollection:v5];
+  collectionCopy = collection;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openCollection:collectionCopy];
 }
 
-- (void)placeCardViewController:(id)a3 doDirectionItem:(id)a4 userInfo:(id)a5
+- (void)placeCardViewController:(id)controller doDirectionItem:(id)item userInfo:(id)info
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v9 enterRoutePlanningWithDirectionItem:v8 allowToPromptEditing:1 withUserInfo:v7];
+  infoCopy = info;
+  itemCopy = item;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator enterRoutePlanningWithDirectionItem:itemCopy allowToPromptEditing:1 withUserInfo:infoCopy];
 }
 
-- (void)placeCardViewController:(id)a3 didSelectParent:(id)a4
+- (void)placeCardViewController:(id)controller didSelectParent:(id)parent
 {
-  v5 = a4;
-  v6 = [(LookAroundActionCoordinator *)self appCoordinator];
-  [v6 openParentMapItem:v5];
+  parentCopy = parent;
+  appCoordinator = [(LookAroundActionCoordinator *)self appCoordinator];
+  [appCoordinator openParentMapItem:parentCopy];
 }
 
 - (GEOMapServiceTraits)newTraits
 {
-  v2 = [(LookAroundActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 currentTraits];
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  return v4;
+  return currentTraits;
 }
 
 - (int64_t)displayedViewMode
 {
-  v2 = [(LookAroundActionCoordinator *)self containerViewController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 displayedViewMode];
+  containerViewController = [(LookAroundActionCoordinator *)self containerViewController];
+  chromeViewController = [containerViewController chromeViewController];
+  displayedViewMode = [chromeViewController displayedViewMode];
 
-  return v4;
+  return displayedViewMode;
 }
 
 @end

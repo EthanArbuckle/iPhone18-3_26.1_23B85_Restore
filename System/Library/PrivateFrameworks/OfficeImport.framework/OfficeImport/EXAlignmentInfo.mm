@@ -1,10 +1,10 @@
 @interface EXAlignmentInfo
-+ (id)edAlignmentInfoFromVmlAlignmentInfoElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edAlignmentInfoFromXmlAlignmentInfoElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edAlignmentInfoFromVmlAlignmentInfoElement:(_xmlNode *)element state:(id)state;
++ (id)edAlignmentInfoFromXmlAlignmentInfoElement:(_xmlNode *)element state:(id)state;
 + (id)horizontalAlignmentEnumMap;
 + (id)verticalAlignmentEnumMap;
-+ (int)edHorizontalAlignFromHorizontalAlignString:(id)a3;
-+ (int)edVerticalAlignFromVerticalAlignString:(id)a3;
++ (int)edHorizontalAlignFromHorizontalAlignString:(id)string;
++ (int)edVerticalAlignFromVerticalAlignString:(id)string;
 + (void)horizontalAlignmentEnumMap;
 + (void)verticalAlignmentEnumMap;
 @end
@@ -57,41 +57,41 @@ void __43__EXAlignmentInfo_verticalAlignmentEnumMap__block_invoke()
   +[EXAlignmentInfo verticalAlignmentEnumMap]::sVerticalAlignmentEnumMap = v0;
 }
 
-+ (id)edAlignmentInfoFromXmlAlignmentInfoElement:(_xmlNode *)a3 state:(id)a4
++ (id)edAlignmentInfoFromXmlAlignmentInfoElement:(_xmlNode *)element state:(id)state
 {
-  v6 = [EDAlignmentInfo alignmentInfo:a3];
-  if (a3)
+  v6 = [EDAlignmentInfo alignmentInfo:element];
+  if (element)
   {
     v16 = 0;
-    v7 = CXOptionalStringAttribute(a3, CXNoNamespace, "horizontal", &v16);
+    v7 = CXOptionalStringAttribute(element, CXNoNamespace, "horizontal", &v16);
     v8 = v16;
     if (v7)
     {
-      [v6 setHorizontalAlignment:{objc_msgSend(a1, "edHorizontalAlignFromHorizontalAlignString:", v8)}];
+      [v6 setHorizontalAlignment:{objc_msgSend(self, "edHorizontalAlignFromHorizontalAlignString:", v8)}];
     }
 
     v15 = 0;
-    v9 = CXOptionalStringAttribute(a3, CXNoNamespace, "vertical", &v15);
+    v9 = CXOptionalStringAttribute(element, CXNoNamespace, "vertical", &v15);
     v10 = v15;
     if (v9)
     {
-      [v6 setVerticalAlignment:{objc_msgSend(a1, "edVerticalAlignFromVerticalAlignString:", v10)}];
+      [v6 setVerticalAlignment:{objc_msgSend(self, "edVerticalAlignFromVerticalAlignString:", v10)}];
     }
 
     v14 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "indent", &v14))
+    if (CXOptionalUnsignedLongAttribute(element, CXNoNamespace, "indent", &v14))
     {
       [v6 setIndent:v14];
     }
 
     v13 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "wrapText", &v13))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "wrapText", &v13))
     {
       [v6 setTextWrapped:v13];
     }
 
     v12 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "textRotation", &v12))
+    if (CXOptionalUnsignedLongAttribute(element, CXNoNamespace, "textRotation", &v12))
     {
       [v6 setTextRotation:v12];
     }
@@ -100,34 +100,34 @@ void __43__EXAlignmentInfo_verticalAlignmentEnumMap__block_invoke()
   return v6;
 }
 
-+ (id)edAlignmentInfoFromVmlAlignmentInfoElement:(_xmlNode *)a3 state:(id)a4
++ (id)edAlignmentInfoFromVmlAlignmentInfoElement:(_xmlNode *)element state:(id)state
 {
-  v6 = [EDAlignmentInfo alignmentInfo:a3];
-  if (a3)
+  v6 = [EDAlignmentInfo alignmentInfo:element];
+  if (element)
   {
-    v7 = OCXFindChild(a3, EXVmlNamespace, "TextHAlign");
+    v7 = OCXFindChild(element, EXVmlNamespace, "TextHAlign");
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v7];
-      [v6 setHorizontalAlignment:{objc_msgSend(a1, "edHorizontalAlignFromHorizontalAlignString:", v8)}];
+      [v6 setHorizontalAlignment:{objc_msgSend(self, "edHorizontalAlignFromHorizontalAlignString:", v8)}];
     }
 
-    v9 = OCXFindChild(a3, EXVmlNamespace, "TextVAlign");
+    v9 = OCXFindChild(element, EXVmlNamespace, "TextVAlign");
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v9];
-      [v6 setVerticalAlignment:{objc_msgSend(a1, "edVerticalAlignFromVerticalAlignString:", v10)}];
+      [v6 setVerticalAlignment:{objc_msgSend(self, "edVerticalAlignFromVerticalAlignString:", v10)}];
     }
   }
 
   return v6;
 }
 
-+ (int)edHorizontalAlignFromHorizontalAlignString:(id)a3
++ (int)edHorizontalAlignFromHorizontalAlignString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 caseInsensitiveCompare:@"general"])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy caseInsensitiveCompare:@"general"])
   {
     if (![v4 caseInsensitiveCompare:@"left"])
     {
@@ -172,11 +172,11 @@ LABEL_10:
   return v5;
 }
 
-+ (int)edVerticalAlignFromVerticalAlignString:(id)a3
++ (int)edVerticalAlignFromVerticalAlignString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 caseInsensitiveCompare:@"top"])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy caseInsensitiveCompare:@"top"])
   {
     if (![v4 caseInsensitiveCompare:@"center"])
     {

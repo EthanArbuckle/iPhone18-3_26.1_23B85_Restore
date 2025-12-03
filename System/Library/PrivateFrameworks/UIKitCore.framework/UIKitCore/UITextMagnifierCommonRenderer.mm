@@ -1,9 +1,9 @@
 @interface UITextMagnifierCommonRenderer
 - (id)backgroundColourIfNecessary;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
 - (void)didMoveToSuperview;
 - (void)loadImages;
-- (void)performOperations:(id)a3;
+- (void)performOperations:(id)operations;
 - (void)update;
 @end
 
@@ -14,17 +14,17 @@
   v24 = *MEMORY[0x1E69E9840];
   if (!self->m_loaded)
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    objc_storeStrong(&self->m_images, v17);
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    objc_storeStrong(&self->m_offsets, v16);
-    v15 = self;
-    v3 = [(UITextMagnifierCommonRenderer *)self visualsForMagnifier];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&self->m_images, dictionary);
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&self->m_offsets, dictionary2);
+    selfCopy = self;
+    visualsForMagnifier = [(UITextMagnifierCommonRenderer *)self visualsForMagnifier];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = [v3 allKeys];
+    obj = [visualsForMagnifier allKeys];
     v4 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v4)
     {
@@ -40,7 +40,7 @@
           }
 
           v8 = *(*(&v19 + 1) + 8 * i);
-          v9 = [v3 objectForKey:v8];
+          v9 = [visualsForMagnifier objectForKey:v8];
           v10 = [v9 objectForKey:@"UITextMagnifierFilename"];
           v11 = v10;
           if (v10)
@@ -49,11 +49,11 @@
             if (v12)
             {
               v13 = v12;
-              [v17 setObject:v12 forKey:v8];
+              [dictionary setObject:v12 forKey:v8];
               v14 = [v9 objectForKey:@"UITextMagnifierOffset"];
               if (v14)
               {
-                [v16 setObject:v14 forKey:v8];
+                [dictionary2 setObject:v14 forKey:v8];
               }
             }
           }
@@ -65,20 +65,20 @@
       while (v5);
     }
 
-    v15->m_loaded = 1;
+    selfCopy->m_loaded = 1;
   }
 }
 
-- (void)performOperations:(id)a3
+- (void)performOperations:(id)operations
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITextMagnifierCommonRenderer *)self magnifier];
-  v6 = [v5 target];
-  v7 = [v6 window];
+  operationsCopy = operations;
+  magnifier = [(UITextMagnifierCommonRenderer *)self magnifier];
+  target = [magnifier target];
+  window = [target window];
 
-  v8 = [v7 screen];
-  v9 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 forScreen:v8];
+  screen = [window screen];
+  v9 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 forScreen:screen];
 
   if ([UIApp _isSpringBoard])
   {
@@ -95,7 +95,7 @@
     v21[2] = __51__UITextMagnifierCommonRenderer_performOperations___block_invoke;
     v21[3] = &unk_1E7125460;
     v23 = &v29;
-    v22 = v7;
+    v22 = window;
     v24 = &v25;
     [v9 enumerateObjectsUsingBlock:v21];
     if (v30[3] == 0x7FFFFFFFFFFFFFFFLL || v26[3] == 0x7FFFFFFFFFFFFFFFLL)
@@ -140,7 +140,7 @@
         v16 = *(*(&v17 + 1) + 8 * i);
         if ([v16 _appearsInLoupe])
         {
-          v4[2](v4, v16);
+          operationsCopy[2](operationsCopy, v16);
         }
       }
 
@@ -175,8 +175,8 @@ void __51__UITextMagnifierCommonRenderer_performOperations___block_invoke(void *
 {
   if (![UIApp _isSpringBoard] || ((-[UITextMagnifierCommonRenderer magnifier](self, "magnifier"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "target"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "window"), v2 = objc_claimAutoreleasedReturnValue(), v5, v4, objc_msgSend(v2, "screen"), v6 = objc_claimAutoreleasedReturnValue(), +[UIWindow allWindowsIncludingInternalWindows:onlyVisibleWindows:forScreen:](UIWindow, "allWindowsIncludingInternalWindows:onlyVisibleWindows:forScreen:", 1, 1, v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v23 = 0, v24 = &v23, v25 = 0x2020000000, v26 = 0x7FFFFFFFFFFFFFFFLL, v19 = 0, v20 = &v19, v21 = 0x2020000000, v22 = 0x7FFFFFFFFFFFFFFFLL, v15[0] = MEMORY[0x1E69E9820], v15[1] = 3221225472, v15[2] = __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invoke, v15[3] = &unk_1E7125460, v17 = &v23, v8 = v2, v16 = v8, v18 = &v19, objc_msgSend(v7, "enumerateObjectsUsingBlock:", v15), v24[3] != 0x7FFFFFFFFFFFFFFFLL) && v20[3] != 0x7FFFFFFFFFFFFFFFLL ? (+[UIColor blackColor](UIColor, "blackColor"), v2 = objc_claimAutoreleasedReturnValue(), v9 = 0) : (v9 = 1), v16, _Block_object_dispose(&v19, 8), _Block_object_dispose(&v23, 8), v7, v8, v9))
   {
-    v10 = [(UIView *)self _window];
-    if ([v10 _isHostedInAnotherProcess])
+    _window = [(UIView *)self _window];
+    if ([_window _isHostedInAnotherProcess])
     {
 LABEL_8:
       v11 = +[UIColor darkGrayColor];
@@ -187,30 +187,30 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v13 = [v10 windowScene];
-    v14 = [v13 _backgroundStyle];
+    windowScene = [_window windowScene];
+    _backgroundStyle = [windowScene _backgroundStyle];
 
-    if (v14 <= 6)
+    if (_backgroundStyle <= 6)
     {
-      if (((1 << v14) & 0xC) != 0)
+      if (((1 << _backgroundStyle) & 0xC) != 0)
       {
         v11 = +[UIColor lightGrayColor];
         goto LABEL_9;
       }
 
-      if (((1 << v14) & 0x30) != 0)
+      if (((1 << _backgroundStyle) & 0x30) != 0)
       {
         goto LABEL_8;
       }
 
-      if (((1 << v14) & 0x42) != 0)
+      if (((1 << _backgroundStyle) & 0x42) != 0)
       {
         v11 = +[UIColor grayColor];
         goto LABEL_9;
       }
     }
 
-    if (!v14)
+    if (!_backgroundStyle)
     {
       v2 = 0;
     }
@@ -236,21 +236,21 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
 
 - (void)update
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(UITextMagnifierCommonRenderer *)self loadImages];
-    v81 = [(UITextMagnifierCommonRenderer *)self magnifier];
-    v4 = [v81 isHorizontal];
+    magnifier = [(UITextMagnifierCommonRenderer *)self magnifier];
+    isHorizontal = [magnifier isHorizontal];
     v5 = @"UITextMagnifierVerticalLo";
-    if (v4)
+    if (isHorizontal)
     {
       v5 = @"UITextMagnifierHorizontalLo";
     }
 
     m_images = self->m_images;
-    if (v4)
+    if (isHorizontal)
     {
       v7 = @"UITextMagnifierHorizontalMask";
     }
@@ -260,7 +260,7 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
       v7 = @"UITextMagnifierVerticalMask";
     }
 
-    if (v4)
+    if (isHorizontal)
     {
       v8 = @"UITextMagnifierHorizontalHi";
     }
@@ -304,8 +304,8 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
       m_back = self->m_back;
       self->m_back = v28;
 
-      v30 = [(UIView *)self layer];
-      [v30 addSublayer:self->m_back];
+      layer = [(UIView *)self layer];
+      [layer addSublayer:self->m_back];
     }
 
     -[CALayer setContents:](self->m_back, "setContents:", [v10 CGImage]);
@@ -318,19 +318,19 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
       v33 = objc_alloc_init(MEMORY[0x1E6979398]);
       [(CALayer *)self->m_mask setMask:v33];
 
-      v34 = [(UIView *)self layer];
-      [v34 insertSublayer:self->m_mask above:self->m_back];
+      layer2 = [(UIView *)self layer];
+      [layer2 insertSublayer:self->m_mask above:self->m_back];
     }
 
-    v35 = [v18 CGImage];
-    v36 = [(CALayer *)self->m_mask mask];
-    [v36 setContents:v35];
+    cGImage = [v18 CGImage];
+    mask = [(CALayer *)self->m_mask mask];
+    [mask setContents:cGImage];
 
     m_content = self->m_content;
     if (m_content)
     {
-      v38 = [(CALayer *)m_content sublayers];
-      v39 = [v38 copy];
+      sublayers = [(CALayer *)m_content sublayers];
+      v39 = [sublayers copy];
       [v39 makeObjectsPerformSelector:sel_removeFromSuperlayer];
     }
 
@@ -350,8 +350,8 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
       m_front = self->m_front;
       self->m_front = v42;
 
-      v44 = [(UIView *)self layer];
-      [v44 insertSublayer:self->m_front above:self->m_mask];
+      layer3 = [(UIView *)self layer];
+      [layer3 insertSublayer:self->m_front above:self->m_mask];
     }
 
     -[CALayer setContents:](self->m_front, "setContents:", [v82 CGImage]);
@@ -361,36 +361,36 @@ void __60__UITextMagnifierCommonRenderer_backgroundColourIfNecessary__block_invo
       self->_isRegisteredForGeometryChanges = 1;
     }
 
-    v45 = [(UITextMagnifierCommonRenderer *)self backgroundColourIfNecessary];
-    v46 = v81;
-    if (v45)
+    backgroundColourIfNecessary = [(UITextMagnifierCommonRenderer *)self backgroundColourIfNecessary];
+    v46 = magnifier;
+    if (backgroundColourIfNecessary)
     {
       v76 = v18;
       v77 = v10;
       v47 = objc_alloc_init(MEMORY[0x1E6979398]);
-      v75 = v45;
-      [v47 setBackgroundColor:{objc_msgSend(v45, "CGColor")}];
-      v48 = [(UITextMagnifierCommonRenderer *)self magnifier];
-      v49 = [v48 target];
-      v50 = [v49 window];
-      v51 = [v50 screen];
-      v52 = v51;
-      if (!v51)
+      v75 = backgroundColourIfNecessary;
+      [v47 setBackgroundColor:{objc_msgSend(backgroundColourIfNecessary, "CGColor")}];
+      magnifier2 = [(UITextMagnifierCommonRenderer *)self magnifier];
+      target = [magnifier2 target];
+      window = [target window];
+      screen = [window screen];
+      mainScreen = screen;
+      if (!screen)
       {
-        v52 = [objc_opt_self() mainScreen];
+        mainScreen = [objc_opt_self() mainScreen];
       }
 
-      [v52 bounds];
+      [mainScreen bounds];
       [v47 setFrame:?];
-      if (!v51)
+      if (!screen)
       {
       }
 
       [(CALayer *)self->m_content addSublayer:v47];
-      v46 = v81;
+      v46 = magnifier;
       v18 = v76;
       v10 = v77;
-      v45 = v75;
+      backgroundColourIfNecessary = v75;
     }
 
     v84[0] = MEMORY[0x1E69E9820];
@@ -468,9 +468,9 @@ void __39__UITextMagnifierCommonRenderer_update__block_invoke(uint64_t a1, void 
   [*(*(a1 + 32) + 448) addSublayer:v3];
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  if ((a3->var0 & 6) != 0)
+  if ((changed->var0 & 6) != 0)
   {
     v37 = v11;
     v38 = v10;
@@ -480,13 +480,13 @@ void __39__UITextMagnifierCommonRenderer_update__block_invoke(uint64_t a1, void 
     v42 = v6;
     v43 = v4;
     v44 = v5;
-    v13 = [(UITextMagnifierCommonRenderer *)self magnifier];
-    [v13 offsetFromMagnificationPoint];
+    magnifier = [(UITextMagnifierCommonRenderer *)self magnifier];
+    [magnifier offsetFromMagnificationPoint];
     v15 = v14;
     v16 = *MEMORY[0x1E695EFF8];
     v17 = *(MEMORY[0x1E695EFF8] + 8);
-    v18 = [v13 isHorizontal];
-    if (v18)
+    isHorizontal = [magnifier isHorizontal];
+    if (isHorizontal)
     {
       v19 = v15 + v17;
     }
@@ -496,7 +496,7 @@ void __39__UITextMagnifierCommonRenderer_update__block_invoke(uint64_t a1, void 
       v19 = v17;
     }
 
-    if (v18)
+    if (isHorizontal)
     {
       v20 = v16;
     }
@@ -506,9 +506,9 @@ void __39__UITextMagnifierCommonRenderer_update__block_invoke(uint64_t a1, void 
       v20 = v15 + v16;
     }
 
-    v21 = [(UIView *)self _window];
+    _window = [(UIView *)self _window];
     [(UIView *)self bounds];
-    [v21 convertRect:self fromView:?];
+    [_window convertRect:self fromView:?];
     v23 = v22;
     v25 = v24;
     v27 = v26;

@@ -1,18 +1,18 @@
 @interface availabilityPredict061725
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (availabilityPredict061725)init;
-- (availabilityPredict061725)initWithConfiguration:(id)a3 error:(id *)a4;
-- (availabilityPredict061725)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (availabilityPredict061725)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (availabilityPredict061725)initWithMLModel:(id)a3;
-- (id)predictionFromDowntimeStartHour:(double)a3 downtimeEndHour:(double)a4 hour:(double)a5 weekday:(double)a6 motionActivityCount:(double)a7 motionActivityCountShortLookback:(double)a8 motionActivityOverlapCountShortLookback:(double)a9 engagementCount:(double)a10 engagementCountMidLookback:(double)a11 engagementCountBin1MidLookback:(double)a12 healthandfitnessScreentimeCount:(double)a13 healthandfitnessScreentimeCountMidLookback:(double)a14 healthandfitnessScreentimeCountShortLookback:(double)a15 screentimeCount:(double)a16 screentimeSameWeekdayProbability:(double)a17 screentimeCountShortLookback:(double)a18 overMedianScreentimeSameWeekdayProbability:(double)a19 overMedianScreentimeSameWeekdayProbabilityShortLookback:(double)a20 over20MinScreentimeSameWeekdayProbability:(double)a21 over20MinScreentimeCountMidLookback:(double)a22 callCount:(double)a23 musicCount:(double)a24 musicCountShortLookback:(double)a25 atHomeCount:(double)a26 atHomeCountShortLookback:(double)a27 atWorkCount:(double)a28 atWorkSameWeekdayProbability:(double)a29 atWorkCountShortLookback:(double)a30 weekdayPrevScreentimeCount:(double)a31 firstScreentimeOfDay:(double)a32 lastScreentimeOfDay:(double)a33 isAfternoon:(double)a34 isEvening:(double)a35 isMorning:(double)a36 isNight:(double)a37 error:(id *)a38;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (availabilityPredict061725)initWithConfiguration:(id)configuration error:(id *)error;
+- (availabilityPredict061725)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (availabilityPredict061725)initWithContentsOfURL:(id)l error:(id *)error;
+- (availabilityPredict061725)initWithMLModel:(id)model;
+- (id)predictionFromDowntimeStartHour:(double)hour downtimeEndHour:(double)endHour hour:(double)a5 weekday:(double)weekday motionActivityCount:(double)count motionActivityCountShortLookback:(double)lookback motionActivityOverlapCountShortLookback:(double)shortLookback engagementCount:(double)self0 engagementCountMidLookback:(double)self1 engagementCountBin1MidLookback:(double)self2 healthandfitnessScreentimeCount:(double)self3 healthandfitnessScreentimeCountMidLookback:(double)self4 healthandfitnessScreentimeCountShortLookback:(double)self5 screentimeCount:(double)self6 screentimeSameWeekdayProbability:(double)self7 screentimeCountShortLookback:(double)self8 overMedianScreentimeSameWeekdayProbability:(double)self9 overMedianScreentimeSameWeekdayProbabilityShortLookback:(double)probabilityShortLookback over20MinScreentimeSameWeekdayProbability:(double)sameWeekdayProbability over20MinScreentimeCountMidLookback:(double)screentimeCountMidLookback callCount:(double)callCount musicCount:(double)musicCount musicCountShortLookback:(double)musicCountShortLookback atHomeCount:(double)homeCount atHomeCountShortLookback:(double)homeCountShortLookback atWorkCount:(double)workCount atWorkSameWeekdayProbability:(double)workSameWeekdayProbability atWorkCountShortLookback:(double)hour0 weekdayPrevScreentimeCount:(double)hour1 firstScreentimeOfDay:(double)hour2 lastScreentimeOfDay:(double)hour3 isAfternoon:(double)hour4 isEvening:(double)hour5 isMorning:(double)hour6 isNight:(double)hour7 error:(id *)hour8;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation availabilityPredict061725
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (availabilityPredict061725)initWithMLModel:(id)a3
+- (availabilityPredict061725)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = availabilityPredict061725;
@@ -51,115 +51,115 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (availabilityPredict061725)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(availabilityPredict061725 *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(availabilityPredict061725 *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (availabilityPredict061725)initWithConfiguration:(id)a3 error:(id *)a4
+- (availabilityPredict061725)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(availabilityPredict061725 *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(availabilityPredict061725 *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (availabilityPredict061725)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (availabilityPredict061725)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MLModel modelWithContentsOfURL:a3 error:a4];
+  v5 = [MLModel modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(availabilityPredict061725 *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (availabilityPredict061725)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (availabilityPredict061725)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MLModel modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MLModel modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(availabilityPredict061725 *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __79__availabilityPredict061725_loadContentsOfURL_configuration_completionHandler___block_invoke;
   v8[3] = &unk_100340B08;
-  v9 = a5;
-  v7 = v9;
-  [MLModel loadContentsOfURL:a3 configuration:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [MLModel loadContentsOfURL:l configuration:configuration completionHandler:v8];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v7 = objc_alloc_init(MLPredictionOptions);
-  v8 = [(availabilityPredict061725 *)self predictionFromFeatures:v6 options:v7 error:a4];
+  v8 = [(availabilityPredict061725 *)self predictionFromFeatures:featuresCopy options:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(availabilityPredict061725 *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(availabilityPredict061725 *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [availabilityPredict061725Output alloc];
     v13 = [v11 featureValueForName:@"target"];
-    v14 = [v13 int64Value];
+    int64Value = [v13 int64Value];
     v15 = [v11 featureValueForName:@"classProbability"];
-    v16 = [v15 dictionaryValue];
-    v17 = [(availabilityPredict061725Output *)v12 initWithTarget:v14 classProbability:v16];
+    dictionaryValue = [v15 dictionaryValue];
+    v17 = [(availabilityPredict061725Output *)v12 initWithTarget:int64Value classProbability:dictionaryValue];
   }
 
   else
@@ -170,50 +170,50 @@
   return v17;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(availabilityPredict061725 *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(availabilityPredict061725 *)self model];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __70__availabilityPredict061725_predictionFromFeatures_completionHandler___block_invoke;
   v10[3] = &unk_100340B30;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(availabilityPredict061725 *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(availabilityPredict061725 *)self model];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __78__availabilityPredict061725_predictionFromFeatures_options_completionHandler___block_invoke;
   v13[3] = &unk_100340B30;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromDowntimeStartHour:(double)a3 downtimeEndHour:(double)a4 hour:(double)a5 weekday:(double)a6 motionActivityCount:(double)a7 motionActivityCountShortLookback:(double)a8 motionActivityOverlapCountShortLookback:(double)a9 engagementCount:(double)a10 engagementCountMidLookback:(double)a11 engagementCountBin1MidLookback:(double)a12 healthandfitnessScreentimeCount:(double)a13 healthandfitnessScreentimeCountMidLookback:(double)a14 healthandfitnessScreentimeCountShortLookback:(double)a15 screentimeCount:(double)a16 screentimeSameWeekdayProbability:(double)a17 screentimeCountShortLookback:(double)a18 overMedianScreentimeSameWeekdayProbability:(double)a19 overMedianScreentimeSameWeekdayProbabilityShortLookback:(double)a20 over20MinScreentimeSameWeekdayProbability:(double)a21 over20MinScreentimeCountMidLookback:(double)a22 callCount:(double)a23 musicCount:(double)a24 musicCountShortLookback:(double)a25 atHomeCount:(double)a26 atHomeCountShortLookback:(double)a27 atWorkCount:(double)a28 atWorkSameWeekdayProbability:(double)a29 atWorkCountShortLookback:(double)a30 weekdayPrevScreentimeCount:(double)a31 firstScreentimeOfDay:(double)a32 lastScreentimeOfDay:(double)a33 isAfternoon:(double)a34 isEvening:(double)a35 isMorning:(double)a36 isNight:(double)a37 error:(id *)a38
+- (id)predictionFromDowntimeStartHour:(double)hour downtimeEndHour:(double)endHour hour:(double)a5 weekday:(double)weekday motionActivityCount:(double)count motionActivityCountShortLookback:(double)lookback motionActivityOverlapCountShortLookback:(double)shortLookback engagementCount:(double)self0 engagementCountMidLookback:(double)self1 engagementCountBin1MidLookback:(double)self2 healthandfitnessScreentimeCount:(double)self3 healthandfitnessScreentimeCountMidLookback:(double)self4 healthandfitnessScreentimeCountShortLookback:(double)self5 screentimeCount:(double)self6 screentimeSameWeekdayProbability:(double)self7 screentimeCountShortLookback:(double)self8 overMedianScreentimeSameWeekdayProbability:(double)self9 overMedianScreentimeSameWeekdayProbabilityShortLookback:(double)probabilityShortLookback over20MinScreentimeSameWeekdayProbability:(double)sameWeekdayProbability over20MinScreentimeCountMidLookback:(double)screentimeCountMidLookback callCount:(double)callCount musicCount:(double)musicCount musicCountShortLookback:(double)musicCountShortLookback atHomeCount:(double)homeCount atHomeCountShortLookback:(double)homeCountShortLookback atWorkCount:(double)workCount atWorkSameWeekdayProbability:(double)workSameWeekdayProbability atWorkCountShortLookback:(double)hour0 weekdayPrevScreentimeCount:(double)hour1 firstScreentimeOfDay:(double)hour2 lastScreentimeOfDay:(double)hour3 isAfternoon:(double)hour4 isEvening:(double)hour5 isMorning:(double)hour6 isNight:(double)hour7 error:(id *)hour8
 {
-  v40 = [[availabilityPredict061725Input alloc] initWithDowntimeStartHour:a3 downtimeEndHour:a4 hour:a5 weekday:a6 motionActivityCount:a7 motionActivityCountShortLookback:a8 motionActivityOverlapCountShortLookback:a9 engagementCount:a10 engagementCountMidLookback:*&a11 engagementCountBin1MidLookback:*&a12 healthandfitnessScreentimeCount:*&a13 healthandfitnessScreentimeCountMidLookback:*&a14 healthandfitnessScreentimeCountShortLookback:*&a15 screentimeCount:*&a16 screentimeSameWeekdayProbability:*&a17 screentimeCountShortLookback:*&a18 overMedianScreentimeSameWeekdayProbability:*&a19 overMedianScreentimeSameWeekdayProbabilityShortLookback:*&a20 over20MinScreentimeSameWeekdayProbability:*&a21 over20MinScreentimeCountMidLookback:*&a22 callCount:*&a23 musicCount:*&a24 musicCountShortLookback:*&a25 atHomeCount:*&a26 atHomeCountShortLookback:*&a27 atWorkCount:*&a28 atWorkSameWeekdayProbability:*&a29 atWorkCountShortLookback:*&a30 weekdayPrevScreentimeCount:*&a31 firstScreentimeOfDay:*&a32 lastScreentimeOfDay:*&a33 isAfternoon:*&a34 isEvening:*&a35 isMorning:*&a36 isNight:*&a37];
-  v41 = [(availabilityPredict061725 *)self predictionFromFeatures:v40 error:a38];
+  v40 = [[availabilityPredict061725Input alloc] initWithDowntimeStartHour:hour downtimeEndHour:endHour hour:a5 weekday:weekday motionActivityCount:count motionActivityCountShortLookback:lookback motionActivityOverlapCountShortLookback:shortLookback engagementCount:engagementCount engagementCountMidLookback:*&midLookback engagementCountBin1MidLookback:*&bin1MidLookback healthandfitnessScreentimeCount:*&screentimeCount healthandfitnessScreentimeCountMidLookback:*&countMidLookback healthandfitnessScreentimeCountShortLookback:*&countShortLookback screentimeCount:*&a16 screentimeSameWeekdayProbability:*&probability screentimeCountShortLookback:*&screentimeCountShortLookback overMedianScreentimeSameWeekdayProbability:*&weekdayProbability overMedianScreentimeSameWeekdayProbabilityShortLookback:*&probabilityShortLookback over20MinScreentimeSameWeekdayProbability:*&sameWeekdayProbability over20MinScreentimeCountMidLookback:*&screentimeCountMidLookback callCount:*&callCount musicCount:*&musicCount musicCountShortLookback:*&musicCountShortLookback atHomeCount:*&homeCount atHomeCountShortLookback:*&homeCountShortLookback atWorkCount:*&workCount atWorkSameWeekdayProbability:*&workSameWeekdayProbability atWorkCountShortLookback:*&workCountShortLookback weekdayPrevScreentimeCount:*&prevScreentimeCount firstScreentimeOfDay:*&day lastScreentimeOfDay:*&ofDay isAfternoon:*&afternoon isEvening:*&evening isMorning:*&morning isNight:*&night];
+  v41 = [(availabilityPredict061725 *)self predictionFromFeatures:v40 error:error];
 
   return v41;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:v8];
-  v11 = [(availabilityPredict061725 *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:inputsCopy];
+  model = [(availabilityPredict061725 *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -221,26 +221,26 @@
     if ([v12 count] >= 1)
     {
       v23 = v10;
-      v24 = v9;
-      v25 = v8;
+      v24 = optionsCopy;
+      v25 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:v14];
         v16 = [availabilityPredict061725Output alloc];
         v17 = [v15 featureValueForName:@"target"];
-        v18 = [v17 int64Value];
+        int64Value = [v17 int64Value];
         v19 = [v15 featureValueForName:@"classProbability"];
-        v20 = [v19 dictionaryValue];
-        v21 = [(availabilityPredict061725Output *)v16 initWithTarget:v18 classProbability:v20];
+        dictionaryValue = [v19 dictionaryValue];
+        v21 = [(availabilityPredict061725Output *)v16 initWithTarget:int64Value classProbability:dictionaryValue];
 
         [v13 addObject:v21];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v24;
-      v8 = v25;
+      optionsCopy = v24;
+      inputsCopy = v25;
       v10 = v23;
     }
   }

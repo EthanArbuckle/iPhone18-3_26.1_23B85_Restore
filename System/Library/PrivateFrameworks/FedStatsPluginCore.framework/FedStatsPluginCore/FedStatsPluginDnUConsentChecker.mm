@@ -1,12 +1,12 @@
 @interface FedStatsPluginDnUConsentChecker
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4;
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation FedStatsPluginDnUConsentChecker
 
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error
 {
-  if ([&unk_285E17A88 containsObject:{a3, a4}])
+  if ([&unk_285E17A88 containsObject:{identifier, error}])
   {
     v4 = MEMORY[0x277CBEC38];
   }
@@ -14,8 +14,8 @@
   else
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v5 numberWithBool:{objc_msgSend(v6, "isDiagnosticSubmissionAllowed")}];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v4 = [v5 numberWithBool:{objc_msgSend(mEMORY[0x277D262A0], "isDiagnosticSubmissionAllowed")}];
   }
 
   return v4;

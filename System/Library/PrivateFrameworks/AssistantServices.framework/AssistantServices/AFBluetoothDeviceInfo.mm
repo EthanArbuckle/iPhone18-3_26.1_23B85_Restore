@@ -1,139 +1,139 @@
 @interface AFBluetoothDeviceInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFBluetoothDeviceInfo)initWithAddress:(id)a3 name:(id)a4 deviceUID:(id)a5 vendorID:(unsigned int)a6 productID:(unsigned int)a7 isAdvancedAppleAudioDevice:(BOOL)a8 supportsInEarDetection:(BOOL)a9 supportsVoiceTrigger:(BOOL)a10 supportsJustSiri:(BOOL)a11 supportsSpokenNotification:(BOOL)a12 supportsListeningModeANC:(BOOL)a13 supportsListeningModeTransparency:(BOOL)a14 supportsListeningModeAutomatic:(BOOL)a15 supportsConversationAwareness:(BOOL)a16 supportsPersonalVolume:(BOOL)a17 supportsAnnounceCall:(BOOL)a18 supportsLiveTranslationCapability:(BOOL)a19 headGestureConfiguration:(id)a20;
-- (AFBluetoothDeviceInfo)initWithBuilder:(id)a3;
-- (AFBluetoothDeviceInfo)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFBluetoothDeviceInfo)initWithAddress:(id)address name:(id)name deviceUID:(id)d vendorID:(unsigned int)iD productID:(unsigned int)productID isAdvancedAppleAudioDevice:(BOOL)device supportsInEarDetection:(BOOL)detection supportsVoiceTrigger:(BOOL)self0 supportsJustSiri:(BOOL)self1 supportsSpokenNotification:(BOOL)self2 supportsListeningModeANC:(BOOL)self3 supportsListeningModeTransparency:(BOOL)self4 supportsListeningModeAutomatic:(BOOL)self5 supportsConversationAwareness:(BOOL)self6 supportsPersonalVolume:(BOOL)self7 supportsAnnounceCall:(BOOL)self8 supportsLiveTranslationCapability:(BOOL)self9 headGestureConfiguration:(id)configuration;
+- (AFBluetoothDeviceInfo)initWithBuilder:(id)builder;
+- (AFBluetoothDeviceInfo)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFBluetoothDeviceInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   address = self->_address;
-  v19 = a3;
-  [v19 encodeObject:address forKey:@"AFBluetoothDeviceInfo::address"];
-  [v19 encodeObject:self->_name forKey:@"AFBluetoothDeviceInfo::name"];
-  [v19 encodeObject:self->_deviceUID forKey:@"AFBluetoothDeviceInfo::deviceUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:address forKey:@"AFBluetoothDeviceInfo::address"];
+  [coderCopy encodeObject:self->_name forKey:@"AFBluetoothDeviceInfo::name"];
+  [coderCopy encodeObject:self->_deviceUID forKey:@"AFBluetoothDeviceInfo::deviceUID"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_vendorID];
-  [v19 encodeObject:v5 forKey:@"AFBluetoothDeviceInfo::vendorID"];
+  [coderCopy encodeObject:v5 forKey:@"AFBluetoothDeviceInfo::vendorID"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_productID];
-  [v19 encodeObject:v6 forKey:@"AFBluetoothDeviceInfo::productID"];
+  [coderCopy encodeObject:v6 forKey:@"AFBluetoothDeviceInfo::productID"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAdvancedAppleAudioDevice];
-  [v19 encodeObject:v7 forKey:@"AFBluetoothDeviceInfo::isAdvancedAppleAudioDevice"];
+  [coderCopy encodeObject:v7 forKey:@"AFBluetoothDeviceInfo::isAdvancedAppleAudioDevice"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsInEarDetection];
-  [v19 encodeObject:v8 forKey:@"AFBluetoothDeviceInfo::supportsInEarDetection"];
+  [coderCopy encodeObject:v8 forKey:@"AFBluetoothDeviceInfo::supportsInEarDetection"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsVoiceTrigger];
-  [v19 encodeObject:v9 forKey:@"AFBluetoothDeviceInfo::supportsVoiceTrigger"];
+  [coderCopy encodeObject:v9 forKey:@"AFBluetoothDeviceInfo::supportsVoiceTrigger"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsJustSiri];
-  [v19 encodeObject:v10 forKey:@"AFBluetoothDeviceInfo::supportsJustSiri"];
+  [coderCopy encodeObject:v10 forKey:@"AFBluetoothDeviceInfo::supportsJustSiri"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsSpokenNotification];
-  [v19 encodeObject:v11 forKey:@"AFBluetoothDeviceInfo::supportsSpokenNotification"];
+  [coderCopy encodeObject:v11 forKey:@"AFBluetoothDeviceInfo::supportsSpokenNotification"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsListeningModeANC];
-  [v19 encodeObject:v12 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeANC"];
+  [coderCopy encodeObject:v12 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeANC"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsListeningModeTransparency];
-  [v19 encodeObject:v13 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeTransparency"];
+  [coderCopy encodeObject:v13 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeTransparency"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsListeningModeAutomatic];
-  [v19 encodeObject:v14 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeAutomatic"];
+  [coderCopy encodeObject:v14 forKey:@"AFBluetoothDeviceInfo::supportsListeningModeAutomatic"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsConversationAwareness];
-  [v19 encodeObject:v15 forKey:@"AFBluetoothDeviceInfo::supportsConversationAwareness"];
+  [coderCopy encodeObject:v15 forKey:@"AFBluetoothDeviceInfo::supportsConversationAwareness"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsPersonalVolume];
-  [v19 encodeObject:v16 forKey:@"AFBluetoothDeviceInfo::supportsPersonalVolume"];
+  [coderCopy encodeObject:v16 forKey:@"AFBluetoothDeviceInfo::supportsPersonalVolume"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsAnnounceCall];
-  [v19 encodeObject:v17 forKey:@"AFBluetoothDeviceInfo::supportsAnnounceCall"];
+  [coderCopy encodeObject:v17 forKey:@"AFBluetoothDeviceInfo::supportsAnnounceCall"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsLiveTranslationCapability];
-  [v19 encodeObject:v18 forKey:@"AFBluetoothDeviceInfo::supportsLiveTranslationCapability"];
+  [coderCopy encodeObject:v18 forKey:@"AFBluetoothDeviceInfo::supportsLiveTranslationCapability"];
 
-  [v19 encodeObject:self->_headGestureConfiguration forKey:@"AFBluetoothDeviceInfo::headGestureConfiguration"];
+  [coderCopy encodeObject:self->_headGestureConfiguration forKey:@"AFBluetoothDeviceInfo::headGestureConfiguration"];
 }
 
-- (AFBluetoothDeviceInfo)initWithCoder:(id)a3
+- (AFBluetoothDeviceInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::address"];
-  v36 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::name"];
-  v35 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::deviceUID"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::vendorID"];
-  v34 = [v4 unsignedIntValue];
+  coderCopy = coder;
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::address"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::name"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::deviceUID"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::vendorID"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::productID"];
-  v33 = [v5 unsignedIntValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::productID"];
+  unsignedIntValue2 = [v5 unsignedIntValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::isAdvancedAppleAudioDevice"];
-  v32 = [v6 BOOLValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::isAdvancedAppleAudioDevice"];
+  bOOLValue = [v6 BOOLValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsInEarDetection"];
-  v31 = [v7 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsInEarDetection"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsVoiceTrigger"];
-  v30 = [v8 BOOLValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsVoiceTrigger"];
+  bOOLValue3 = [v8 BOOLValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsJustSiri"];
-  v29 = [v9 BOOLValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsJustSiri"];
+  bOOLValue4 = [v9 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsSpokenNotification"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsSpokenNotification"];
+  bOOLValue5 = [v10 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeANC"];
-  v13 = [v12 BOOLValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeANC"];
+  bOOLValue6 = [v12 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeTransparency"];
-  v15 = [v14 BOOLValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeTransparency"];
+  bOOLValue7 = [v14 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeAutomatic"];
-  v17 = [v16 BOOLValue];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsListeningModeAutomatic"];
+  bOOLValue8 = [v16 BOOLValue];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsConversationAwareness"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsConversationAwareness"];
   LOBYTE(v16) = [v18 BOOLValue];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsPersonalVolume"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsPersonalVolume"];
   LOBYTE(v18) = [v19 BOOLValue];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsAnnounceCall"];
-  v21 = [v20 BOOLValue];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsAnnounceCall"];
+  bOOLValue9 = [v20 BOOLValue];
 
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsLiveTranslationCapability"];
-  v23 = [v22 BOOLValue];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::supportsLiveTranslationCapability"];
+  bOOLValue10 = [v22 BOOLValue];
 
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::headGestureConfiguration"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothDeviceInfo::headGestureConfiguration"];
 
-  BYTE2(v28) = v23;
-  BYTE1(v28) = v21;
+  BYTE2(v28) = bOOLValue10;
+  BYTE1(v28) = bOOLValue9;
   LOBYTE(v28) = v18;
   HIBYTE(v27) = v16;
-  BYTE6(v27) = v17;
-  BYTE5(v27) = v15;
-  BYTE4(v27) = v13;
-  BYTE3(v27) = v11;
-  BYTE2(v27) = v29;
-  BYTE1(v27) = v30;
-  LOBYTE(v27) = v31;
-  v25 = [AFBluetoothDeviceInfo initWithAddress:"initWithAddress:name:deviceUID:vendorID:productID:isAdvancedAppleAudioDevice:supportsInEarDetection:supportsVoiceTrigger:supportsJustSiri:supportsSpokenNotification:supportsListeningModeANC:supportsListeningModeTransparency:supportsListeningModeAutomatic:supportsConversationAwareness:supportsPersonalVolume:supportsAnnounceCall:supportsLiveTranslationCapability:headGestureConfiguration:" name:v37 deviceUID:v36 vendorID:v35 productID:v34 isAdvancedAppleAudioDevice:v33 supportsInEarDetection:v32 supportsVoiceTrigger:v27 supportsJustSiri:v28 supportsSpokenNotification:v24 supportsListeningModeANC:? supportsListeningModeTransparency:? supportsListeningModeAutomatic:? supportsConversationAwareness:? supportsPersonalVolume:? supportsAnnounceCall:? supportsLiveTranslationCapability:? headGestureConfiguration:?];
+  BYTE6(v27) = bOOLValue8;
+  BYTE5(v27) = bOOLValue7;
+  BYTE4(v27) = bOOLValue6;
+  BYTE3(v27) = bOOLValue5;
+  BYTE2(v27) = bOOLValue4;
+  BYTE1(v27) = bOOLValue3;
+  LOBYTE(v27) = bOOLValue2;
+  v25 = [AFBluetoothDeviceInfo initWithAddress:"initWithAddress:name:deviceUID:vendorID:productID:isAdvancedAppleAudioDevice:supportsInEarDetection:supportsVoiceTrigger:supportsJustSiri:supportsSpokenNotification:supportsListeningModeANC:supportsListeningModeTransparency:supportsListeningModeAutomatic:supportsConversationAwareness:supportsPersonalVolume:supportsAnnounceCall:supportsLiveTranslationCapability:headGestureConfiguration:" name:v37 deviceUID:v36 vendorID:v35 productID:unsignedIntValue isAdvancedAppleAudioDevice:unsignedIntValue2 supportsInEarDetection:bOOLValue supportsVoiceTrigger:v27 supportsJustSiri:v28 supportsSpokenNotification:v24 supportsListeningModeANC:? supportsListeningModeTransparency:? supportsListeningModeAutomatic:? supportsConversationAwareness:? supportsPersonalVolume:? supportsAnnounceCall:? supportsLiveTranslationCapability:? headGestureConfiguration:?];
 
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v28 = 1;
   }
@@ -143,7 +143,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       vendorID = self->_vendorID;
       if (vendorID != [(AFBluetoothDeviceInfo *)v5 vendorID])
       {
@@ -189,21 +189,21 @@
       supportsListeningModeANC = self->_supportsListeningModeANC;
       if (supportsListeningModeANC == [(AFBluetoothDeviceInfo *)v5 supportsListeningModeANC]&& (supportsListeningModeTransparency = self->_supportsListeningModeTransparency, supportsListeningModeTransparency == [(AFBluetoothDeviceInfo *)v5 supportsListeningModeTransparency]) && (supportsListeningModeAutomatic = self->_supportsListeningModeAutomatic, supportsListeningModeAutomatic == [(AFBluetoothDeviceInfo *)v5 supportsListeningModeAutomatic]) && (supportsConversationAwareness = self->_supportsConversationAwareness, supportsConversationAwareness == [(AFBluetoothDeviceInfo *)v5 supportsConversationAwareness]) && (supportsPersonalVolume = self->_supportsPersonalVolume, supportsPersonalVolume == [(AFBluetoothDeviceInfo *)v5 supportsPersonalVolume]) && (supportsAnnounceCall = self->_supportsAnnounceCall, supportsAnnounceCall == [(AFBluetoothDeviceInfo *)v5 supportsAnnounceCall]) && (supportsLiveTranslationCapability = self->_supportsLiveTranslationCapability, supportsLiveTranslationCapability == [(AFBluetoothDeviceInfo *)v5 supportsLiveTranslationCapability]))
       {
-        v20 = [(AFBluetoothDeviceInfo *)v5 address];
+        address = [(AFBluetoothDeviceInfo *)v5 address];
         address = self->_address;
-        if (address == v20 || [(NSString *)address isEqual:v20])
+        if (address == address || [(NSString *)address isEqual:address])
         {
-          v22 = [(AFBluetoothDeviceInfo *)v5 name];
+          name = [(AFBluetoothDeviceInfo *)v5 name];
           name = self->_name;
-          if (name == v22 || [(NSString *)name isEqual:v22])
+          if (name == name || [(NSString *)name isEqual:name])
           {
-            v24 = [(AFBluetoothDeviceInfo *)v5 deviceUID];
+            deviceUID = [(AFBluetoothDeviceInfo *)v5 deviceUID];
             deviceUID = self->_deviceUID;
-            if (deviceUID == v24 || [(NSUUID *)deviceUID isEqual:v24])
+            if (deviceUID == deviceUID || [(NSUUID *)deviceUID isEqual:deviceUID])
             {
-              v26 = [(AFBluetoothDeviceInfo *)v5 headGestureConfiguration];
+              headGestureConfiguration = [(AFBluetoothDeviceInfo *)v5 headGestureConfiguration];
               headGestureConfiguration = self->_headGestureConfiguration;
-              v28 = headGestureConfiguration == v26 || [(AFBluetoothHeadGestureConfiguration *)headGestureConfiguration isEqual:v26];
+              v28 = headGestureConfiguration == headGestureConfiguration || [(AFBluetoothHeadGestureConfiguration *)headGestureConfiguration isEqual:headGestureConfiguration];
             }
 
             else
@@ -278,7 +278,7 @@ LABEL_28:
   return v29 ^ v27;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v20.receiver = self;
@@ -405,38 +405,38 @@ LABEL_28:
   return v18;
 }
 
-- (AFBluetoothDeviceInfo)initWithAddress:(id)a3 name:(id)a4 deviceUID:(id)a5 vendorID:(unsigned int)a6 productID:(unsigned int)a7 isAdvancedAppleAudioDevice:(BOOL)a8 supportsInEarDetection:(BOOL)a9 supportsVoiceTrigger:(BOOL)a10 supportsJustSiri:(BOOL)a11 supportsSpokenNotification:(BOOL)a12 supportsListeningModeANC:(BOOL)a13 supportsListeningModeTransparency:(BOOL)a14 supportsListeningModeAutomatic:(BOOL)a15 supportsConversationAwareness:(BOOL)a16 supportsPersonalVolume:(BOOL)a17 supportsAnnounceCall:(BOOL)a18 supportsLiveTranslationCapability:(BOOL)a19 headGestureConfiguration:(id)a20
+- (AFBluetoothDeviceInfo)initWithAddress:(id)address name:(id)name deviceUID:(id)d vendorID:(unsigned int)iD productID:(unsigned int)productID isAdvancedAppleAudioDevice:(BOOL)device supportsInEarDetection:(BOOL)detection supportsVoiceTrigger:(BOOL)self0 supportsJustSiri:(BOOL)self1 supportsSpokenNotification:(BOOL)self2 supportsListeningModeANC:(BOOL)self3 supportsListeningModeTransparency:(BOOL)self4 supportsListeningModeAutomatic:(BOOL)self5 supportsConversationAwareness:(BOOL)self6 supportsPersonalVolume:(BOOL)self7 supportsAnnounceCall:(BOOL)self8 supportsLiveTranslationCapability:(BOOL)self9 headGestureConfiguration:(id)configuration
 {
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a20;
+  addressCopy = address;
+  nameCopy = name;
+  dCopy = d;
+  configurationCopy = configuration;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __413__AFBluetoothDeviceInfo_initWithAddress_name_deviceUID_vendorID_productID_isAdvancedAppleAudioDevice_supportsInEarDetection_supportsVoiceTrigger_supportsJustSiri_supportsSpokenNotification_supportsListeningModeANC_supportsListeningModeTransparency_supportsListeningModeAutomatic_supportsConversationAwareness_supportsPersonalVolume_supportsAnnounceCall_supportsLiveTranslationCapability_headGestureConfiguration___block_invoke;
   v36[3] = &unk_1E7344598;
-  v37 = v22;
-  v38 = v23;
-  v41 = a6;
-  v42 = a7;
-  v43 = a8;
-  v44 = a9;
-  v45 = a10;
-  v46 = a11;
-  v47 = a12;
-  v48 = a13;
-  v49 = a14;
-  v50 = a15;
-  v51 = a16;
-  v52 = a17;
-  v53 = a18;
-  v54 = a19;
-  v39 = v24;
-  v40 = v25;
-  v26 = v25;
-  v27 = v24;
-  v28 = v23;
-  v29 = v22;
+  v37 = addressCopy;
+  v38 = nameCopy;
+  iDCopy = iD;
+  productIDCopy = productID;
+  deviceCopy = device;
+  detectionCopy = detection;
+  triggerCopy = trigger;
+  siriCopy = siri;
+  notificationCopy = notification;
+  cCopy = c;
+  transparencyCopy = transparency;
+  automaticCopy = automatic;
+  awarenessCopy = awareness;
+  volumeCopy = volume;
+  callCopy = call;
+  capabilityCopy = capability;
+  v39 = dCopy;
+  v40 = configurationCopy;
+  v26 = configurationCopy;
+  v27 = dCopy;
+  v28 = nameCopy;
+  v29 = addressCopy;
   v30 = [(AFBluetoothDeviceInfo *)self initWithBuilder:v36];
 
   return v30;
@@ -466,31 +466,31 @@ void __413__AFBluetoothDeviceInfo_initWithAddress_name_deviceUID_vendorID_produc
   [v4 setHeadGestureConfiguration:*(a1 + 56)];
 }
 
-- (AFBluetoothDeviceInfo)initWithBuilder:(id)a3
+- (AFBluetoothDeviceInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = AFBluetoothDeviceInfo;
   v5 = [(AFBluetoothDeviceInfo *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFBluetoothDeviceInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFBluetoothDeviceInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFBluetoothDeviceInfoMutation *)v7 getAddress];
-      v9 = [v8 copy];
+      getAddress = [(_AFBluetoothDeviceInfoMutation *)v7 getAddress];
+      v9 = [getAddress copy];
       address = v6->_address;
       v6->_address = v9;
 
-      v11 = [(_AFBluetoothDeviceInfoMutation *)v7 getName];
-      v12 = [v11 copy];
+      getName = [(_AFBluetoothDeviceInfoMutation *)v7 getName];
+      v12 = [getName copy];
       name = v6->_name;
       v6->_name = v12;
 
-      v14 = [(_AFBluetoothDeviceInfoMutation *)v7 getDeviceUID];
-      v15 = [v14 copy];
+      getDeviceUID = [(_AFBluetoothDeviceInfoMutation *)v7 getDeviceUID];
+      v15 = [getDeviceUID copy];
       deviceUID = v6->_deviceUID;
       v6->_deviceUID = v15;
 
@@ -508,8 +508,8 @@ void __413__AFBluetoothDeviceInfo_initWithAddress_name_deviceUID_vendorID_produc
       v6->_supportsPersonalVolume = [(_AFBluetoothDeviceInfoMutation *)v7 getSupportsPersonalVolume];
       v6->_supportsAnnounceCall = [(_AFBluetoothDeviceInfoMutation *)v7 getSupportsAnnounceCall];
       v6->_supportsLiveTranslationCapability = [(_AFBluetoothDeviceInfoMutation *)v7 getSupportsLiveTranslationCapability];
-      v17 = [(_AFBluetoothDeviceInfoMutation *)v7 getHeadGestureConfiguration];
-      v18 = [v17 copy];
+      getHeadGestureConfiguration = [(_AFBluetoothDeviceInfoMutation *)v7 getHeadGestureConfiguration];
+      v18 = [getHeadGestureConfiguration copy];
       headGestureConfiguration = v6->_headGestureConfiguration;
       v6->_headGestureConfiguration = v18;
     }
@@ -518,36 +518,36 @@ void __413__AFBluetoothDeviceInfo_initWithAddress_name_deviceUID_vendorID_produc
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFBluetoothDeviceInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFBluetoothDeviceInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFBluetoothDeviceInfo);
-      v7 = [(_AFBluetoothDeviceInfoMutation *)v5 getAddress];
-      v8 = [v7 copy];
+      getAddress = [(_AFBluetoothDeviceInfoMutation *)v5 getAddress];
+      v8 = [getAddress copy];
       address = v6->_address;
       v6->_address = v8;
 
-      v10 = [(_AFBluetoothDeviceInfoMutation *)v5 getName];
-      v11 = [v10 copy];
+      getName = [(_AFBluetoothDeviceInfoMutation *)v5 getName];
+      v11 = [getName copy];
       name = v6->_name;
       v6->_name = v11;
 
-      v13 = [(_AFBluetoothDeviceInfoMutation *)v5 getDeviceUID];
-      v14 = [v13 copy];
+      getDeviceUID = [(_AFBluetoothDeviceInfoMutation *)v5 getDeviceUID];
+      v14 = [getDeviceUID copy];
       deviceUID = v6->_deviceUID;
       v6->_deviceUID = v14;
 
@@ -565,8 +565,8 @@ void __413__AFBluetoothDeviceInfo_initWithAddress_name_deviceUID_vendorID_produc
       v6->_supportsPersonalVolume = [(_AFBluetoothDeviceInfoMutation *)v5 getSupportsPersonalVolume];
       v6->_supportsAnnounceCall = [(_AFBluetoothDeviceInfoMutation *)v5 getSupportsAnnounceCall];
       v6->_supportsLiveTranslationCapability = [(_AFBluetoothDeviceInfoMutation *)v5 getSupportsLiveTranslationCapability];
-      v16 = [(_AFBluetoothDeviceInfoMutation *)v5 getHeadGestureConfiguration];
-      v17 = [v16 copy];
+      getHeadGestureConfiguration = [(_AFBluetoothDeviceInfoMutation *)v5 getHeadGestureConfiguration];
+      v17 = [getHeadGestureConfiguration copy];
       headGestureConfiguration = v6->_headGestureConfiguration;
       v6->_headGestureConfiguration = v17;
     }

@@ -1,18 +1,18 @@
 @interface OFLRUCache
-- (BOOL)loadFromURL:(id)a3;
-- (BOOL)writeToURL:(id)a3;
+- (BOOL)loadFromURL:(id)l;
+- (BOOL)writeToURL:(id)l;
 - (OFLRUCache)init;
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)currentUsedSlots;
-- (void)_promoteListElement:(_OFLRUCacheListElement *)a3;
-- (void)_removeListElement:(_OFLRUCacheListElement *)a3;
+- (void)_promoteListElement:(_OFLRUCacheListElement *)element;
+- (void)_removeListElement:(_OFLRUCacheListElement *)element;
 - (void)dealloc;
-- (void)evictSlots:(unint64_t)a3;
+- (void)evictSlots:(unint64_t)slots;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setNumberOfSlots:(unint64_t)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setNumberOfSlots:(unint64_t)slots;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation OFLRUCache
@@ -96,16 +96,16 @@
   [(OFLRUCache *)&v10 dealloc];
 }
 
-- (void)_promoteListElement:(_OFLRUCacheListElement *)a3
+- (void)_promoteListElement:(_OFLRUCacheListElement *)element
 {
   p_var0 = &self->_leastRecentUsedList->var0;
   if (*p_var0 >= 2uLL)
   {
-    v5 = &a3->var1->var0;
-    var2 = a3->var2;
+    v5 = &element->var1->var0;
+    var2 = element->var2;
     if (var2)
     {
-      p_var0 = &a3->var2->var0;
+      p_var0 = &element->var2->var0;
     }
 
     p_var0[1] = v5;
@@ -115,29 +115,29 @@
     }
 
     v5[2] = var2;
-    a3->var1 = self->_leastRecentUsedList->var1;
-    a3->var2 = 0;
+    element->var1 = self->_leastRecentUsedList->var1;
+    element->var2 = 0;
     leastRecentUsedList = self->_leastRecentUsedList;
     var1 = leastRecentUsedList->var1;
     if (var1)
     {
-      var1->var2 = a3;
+      var1->var2 = element;
       leastRecentUsedList = self->_leastRecentUsedList;
     }
 
-    leastRecentUsedList->var1 = a3;
+    leastRecentUsedList->var1 = element;
   }
 }
 
-- (void)_removeListElement:(_OFLRUCacheListElement *)a3
+- (void)_removeListElement:(_OFLRUCacheListElement *)element
 {
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var1 = element->var1;
+  var2 = element->var2;
   if (var2)
   {
     var2->var1 = var1;
     leastRecentUsedList = self->_leastRecentUsedList;
-    if (leastRecentUsedList->var1 == a3)
+    if (leastRecentUsedList->var1 == element)
     {
       leastRecentUsedList->var1 = 0;
     }
@@ -161,29 +161,29 @@ LABEL_8:
 LABEL_5:
   var1->var2 = var2;
   v8 = self->_leastRecentUsedList;
-  if (v8->var2 == a3)
+  if (v8->var2 == element)
   {
     v8->var2 = 0;
   }
 
 LABEL_9:
-  [(NSMutableDictionary *)self->_leastRecentUsedDictionary removeObjectForKey:a3->var0];
-  if (a3->var0)
+  [(NSMutableDictionary *)self->_leastRecentUsedDictionary removeObjectForKey:element->var0];
+  if (element->var0)
   {
   }
 
-  free(a3);
+  free(element);
   --self->_leastRecentUsedList->var0;
 }
 
-- (void)setNumberOfSlots:(unint64_t)a3
+- (void)setNumberOfSlots:(unint64_t)slots
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  if (self->_numberOfSlots > a3)
+  if (self->_numberOfSlots > slots)
   {
 LABEL_2:
     leastRecentUsedList = self->_leastRecentUsedList;
-    while (leastRecentUsedList->var0 > a3)
+    while (leastRecentUsedList->var0 > slots)
     {
       var2 = leastRecentUsedList->var2;
       if (var2)
@@ -195,7 +195,7 @@ LABEL_2:
     }
   }
 
-  self->_numberOfSlots = a3;
+  self->_numberOfSlots = slots;
   recursiveLock = self->_recursiveLock;
 
   [(NSRecursiveLock *)recursiveLock unlock];
@@ -210,13 +210,13 @@ LABEL_2:
   return var0;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  v5 = [(NSMutableDictionary *)self->_cacheDictionary objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_cacheDictionary objectForKey:key];
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:a3];
+    v6 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:key];
     if (v6)
     {
       -[OFLRUCache _promoteListElement:](self, "_promoteListElement:", [v6 pointerValue]);
@@ -228,12 +228,12 @@ LABEL_2:
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   if (self->_numberOfSlots)
   {
     [(NSRecursiveLock *)self->_recursiveLock lock];
-    v7 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:a4];
+    v7 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:key];
     if (v7)
     {
       -[OFLRUCache _promoteListElement:](self, "_promoteListElement:", [v7 pointerValue]);
@@ -242,9 +242,9 @@ LABEL_2:
     else
     {
       v8 = malloc_type_malloc(0x18uLL, 0xA00409BE6959DuLL);
-      v9 = a4;
+      keyCopy = key;
       var1 = self->_leastRecentUsedList->var1;
-      v8->var0 = v9;
+      v8->var0 = keyCopy;
       v8->var1 = var1;
       v8->var2 = 0;
       leastRecentUsedList = self->_leastRecentUsedList;
@@ -262,7 +262,7 @@ LABEL_2:
         v13->var2 = v8;
       }
 
-      -[NSMutableDictionary setObject:forKey:](self->_leastRecentUsedDictionary, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:v8], a4);
+      -[NSMutableDictionary setObject:forKey:](self->_leastRecentUsedDictionary, "setObject:forKey:", [MEMORY[0x277CCAE60] valueWithPointer:v8], key);
     }
 
     v15 = self->_leastRecentUsedList;
@@ -276,7 +276,7 @@ LABEL_2:
       }
     }
 
-    [(NSMutableDictionary *)self->_cacheDictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_cacheDictionary setObject:object forKey:key];
     recursiveLock = self->_recursiveLock;
 
     [(NSRecursiveLock *)recursiveLock unlock];
@@ -292,16 +292,16 @@ LABEL_2:
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  v5 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_leastRecentUsedDictionary objectForKey:key];
   if (v5)
   {
     -[OFLRUCache _removeListElement:](self, "_removeListElement:", [v5 pointerValue]);
   }
 
-  [(NSMutableDictionary *)self->_cacheDictionary removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_cacheDictionary removeObjectForKey:key];
   recursiveLock = self->_recursiveLock;
 
   [(NSRecursiveLock *)recursiveLock unlock];
@@ -339,10 +339,10 @@ LABEL_2:
   [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (void)evictSlots:(unint64_t)a3
+- (void)evictSlots:(unint64_t)slots
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
-  for (; a3; --a3)
+  for (; slots; --slots)
   {
     var2 = self->_leastRecentUsedList->var2;
     if (var2)
@@ -357,12 +357,12 @@ LABEL_2:
   [(NSRecursiveLock *)recursiveLock unlock];
 }
 
-- (BOOL)loadFromURL:(id)a3
+- (BOOL)loadFromURL:(id)l
 {
   v28 = *MEMORY[0x277D85DE8];
   v21 = objc_autoreleasePoolPush();
   [(OFLRUCache *)self removeAllObjects];
-  v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:a3];
+  v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:l];
   v26 = 0;
   [v5 open];
   v6 = [MEMORY[0x277CCAC58] propertyListWithStream:v5 options:0 format:0 error:&v26];
@@ -424,14 +424,14 @@ LABEL_2:
 
   else if (OFLoggerLevel >= 4)
   {
-    +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 411, @"Failed to load cache from %@: %@", a3, [v26 localizedDescription]);
+    +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 411, @"Failed to load cache from %@: %@", l, [v26 localizedDescription]);
   }
 
   objc_autoreleasePoolPop(v21);
   return v6 != 0;
 }
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
   [(NSRecursiveLock *)self->_recursiveLock lock];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -453,7 +453,7 @@ LABEL_2:
   {
     if (OFLoggerLevel >= 4)
     {
-      +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 484, @"Failed to save cache to %@ (%@): %@", a3, v9, [v13 localizedDescription]);
+      +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 484, @"Failed to save cache to %@ (%@): %@", l, v9, [v13 localizedDescription]);
     }
 
     [v10 close];
@@ -463,12 +463,12 @@ LABEL_2:
 
   [v10 close];
 
-  [v8 removeItemAtURL:a3 error:0];
-  if (([v8 moveItemAtURL:v9 toURL:a3 error:&v13] & 1) == 0)
+  [v8 removeItemAtURL:l error:0];
+  if (([v8 moveItemAtURL:v9 toURL:l error:&v13] & 1) == 0)
   {
     if (OFLoggerLevel >= 4)
     {
-      +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 502, @"Failed to save cache to %@: %@", a3, [v13 localizedDescription]);
+      +[OFLogger logMessageWithLevel:file:line:andFormat:](OFLogger, "logMessageWithLevel:file:line:andFormat:", 4, "/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Caching/OFLRUCache.m", 502, @"Failed to save cache to %@: %@", l, [v13 localizedDescription]);
     }
 
 LABEL_11:

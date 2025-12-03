@@ -10,15 +10,15 @@
   {
     v5.receiver = self;
     v5.super_class = ArtworkCollectionViewCellAccessibility;
-    v3 = [(ArtworkCollectionViewCellAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(ArtworkCollectionViewCellAccessibility *)&v5 accessibilityLabel];
   }
 
   else
   {
-    v3 = accessibilityAppStoreLocalizedString(@"artwork.view");
+    accessibilityLabel = accessibilityAppStoreLocalizedString(@"artwork.view");
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

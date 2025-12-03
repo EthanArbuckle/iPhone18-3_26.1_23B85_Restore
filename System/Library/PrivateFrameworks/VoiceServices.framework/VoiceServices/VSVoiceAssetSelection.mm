@@ -3,24 +3,24 @@
 - (BOOL)isInstalled;
 - (NSString)voicePath;
 - (VSVoiceAssetSelection)init;
-- (VSVoiceAssetSelection)initWithTrialVoice:(id)a3;
+- (VSVoiceAssetSelection)initWithTrialVoice:(id)voice;
 - (_opaque_pthread_mutex_t)voicePathLock;
 - (double)preferenceScore;
 - (id)descriptiveKey;
 - (id)key;
 - (unint64_t)size;
 - (void)dealloc;
-- (void)setVoicePathLock:(_opaque_pthread_mutex_t *)a3;
+- (void)setVoicePathLock:(_opaque_pthread_mutex_t *)lock;
 @end
 
 @implementation VSVoiceAssetSelection
 
-- (void)setVoicePathLock:(_opaque_pthread_mutex_t *)a3
+- (void)setVoicePathLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_voicePathLock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_voicePathLock.__opaque[24] = *&lock->__opaque[24];
   *&self->_voicePathLock.__opaque[40] = v5;
   *&self->_voicePathLock.__sig = v3;
   *&self->_voicePathLock.__opaque[8] = v4;
@@ -39,23 +39,23 @@
 
 - (double)preferenceScore
 {
-  v3 = [(VSVoiceAssetSelection *)self voiceData];
-  v4 = [v3 type];
+  voiceData = [(VSVoiceAssetSelection *)self voiceData];
+  type = [voiceData type];
 
   v5 = 0.0;
-  if (v4 > 2)
+  if (type > 2)
   {
-    if (v4 == 3)
+    if (type == 3)
     {
       v5 = 3000.0;
     }
 
-    else if (v4 == 4)
+    else if (type == 4)
     {
-      v6 = [(VSVoiceAssetSelection *)self voiceData];
-      v7 = [v6 isVoiceReadyToUse];
+      voiceData2 = [(VSVoiceAssetSelection *)self voiceData];
+      isVoiceReadyToUse = [voiceData2 isVoiceReadyToUse];
 
-      if (v7)
+      if (isVoiceReadyToUse)
       {
         v5 = 4000.0;
       }
@@ -67,20 +67,20 @@
     }
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     v5 = 1000.0;
   }
 
-  else if (v4 == 2)
+  else if (type == 2)
   {
     v5 = 2000.0;
   }
 
-  v8 = [(VSVoiceAssetSelection *)self voiceData];
-  v9 = [v8 footprint];
+  voiceData3 = [(VSVoiceAssetSelection *)self voiceData];
+  footprint = [voiceData3 footprint];
 
-  if (v9 == 3)
+  if (footprint == 3)
   {
     v10 = 300.0;
     v12 = v5 + 300.0;
@@ -90,12 +90,12 @@
   {
     v10 = v5 + 200.0;
     v11 = v5 + 100.0;
-    if (v9 != 1)
+    if (footprint != 1)
     {
       v11 = v5;
     }
 
-    if (v9 == 2)
+    if (footprint == 2)
     {
       v12 = v5 + 200.0;
     }
@@ -106,9 +106,9 @@
     }
   }
 
-  v13 = [(VSVoiceAssetSelection *)self voiceData];
-  v14 = [v13 contentVersion];
-  [v14 floatValue];
+  voiceData4 = [(VSVoiceAssetSelection *)self voiceData];
+  contentVersion = [voiceData4 contentVersion];
+  [contentVersion floatValue];
   v16 = v12 + v15 / 2147483650.0;
 
   return v16;
@@ -116,11 +116,11 @@
 
 - (BOOL)isDownloading
 {
-  v3 = [(VSVoiceAssetSelection *)self asset];
-  if (v3)
+  asset = [(VSVoiceAssetSelection *)self asset];
+  if (asset)
   {
-    v4 = [(VSVoiceAssetSelection *)self asset];
-    v5 = [v4 state] == 4;
+    asset2 = [(VSVoiceAssetSelection *)self asset];
+    v5 = [asset2 state] == 4;
   }
 
   else
@@ -133,11 +133,11 @@
 
 - (BOOL)isInstalled
 {
-  v3 = [(VSVoiceAssetSelection *)self asset];
-  if (v3)
+  asset = [(VSVoiceAssetSelection *)self asset];
+  if (asset)
   {
-    v4 = [(VSVoiceAssetSelection *)self asset];
-    v5 = ([v4 wasLocal] & 1) != 0 || self->_voicePath != 0;
+    asset2 = [(VSVoiceAssetSelection *)self asset];
+    v5 = ([asset2 wasLocal] & 1) != 0 || self->_voicePath != 0;
   }
 
   else
@@ -150,19 +150,19 @@
 
 - (unint64_t)size
 {
-  v4 = [(VSVoiceAssetSelection *)self asset];
-  v5 = [v4 attributes];
+  asset = [(VSVoiceAssetSelection *)self asset];
+  attributes = [asset attributes];
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D28920]];
-  v7 = [v6 integerValue];
+  v6 = [attributes objectForKeyedSubscript:*MEMORY[0x277D28920]];
+  integerValue = [v6 integerValue];
 
-  if ((v7 & 0x8000000000000000) != 0)
+  if ((integerValue & 0x8000000000000000) != 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"VSMobileAssetsManager.m" lineNumber:211 description:@"negative size"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VSMobileAssetsManager.m" lineNumber:211 description:@"negative size"];
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (NSString)voicePath
@@ -171,26 +171,26 @@
   p_voicePath = &self->_voicePath;
   if (!self->_voicePath)
   {
-    v4 = [(VSVoiceAssetSelection *)self asset];
+    asset = [(VSVoiceAssetSelection *)self asset];
 
-    if (v4)
+    if (asset)
     {
-      v5 = [(VSVoiceAssetSelection *)self asset];
-      v6 = [v5 getLocalUrl];
-      v7 = [v6 path];
+      asset2 = [(VSVoiceAssetSelection *)self asset];
+      getLocalUrl = [asset2 getLocalUrl];
+      path = [getLocalUrl path];
 
-      if (v7)
+      if (path)
       {
         v8 = MEMORY[0x277CCACA8];
-        v9 = [(VSVoiceAssetSelection *)self voiceData];
-        v10 = [v9 languages];
-        v11 = [v10 firstObject];
-        v12 = [v8 stringWithFormat:@"%@.tmp", v11];
-        v13 = [v7 stringByAppendingPathComponent:v12];
+        voiceData = [(VSVoiceAssetSelection *)self voiceData];
+        languages = [voiceData languages];
+        firstObject = [languages firstObject];
+        v12 = [v8 stringWithFormat:@"%@.tmp", firstObject];
+        v13 = [path stringByAppendingPathComponent:v12];
 
         if (!v13 || ([MEMORY[0x277CCAA00] defaultManager], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "fileExistsAtPath:", v13), v14, v16 = v13, (v15 & 1) == 0))
         {
-          v16 = v7;
+          v16 = path;
         }
 
         objc_storeStrong(&self->_voicePath, v16);
@@ -206,7 +206,7 @@
       }
 
       v18 = builtInVoicePath;
-      v7 = *p_voicePath;
+      path = *p_voicePath;
       *p_voicePath = v18;
     }
   }
@@ -220,18 +220,18 @@ LABEL_11:
 
 - (id)descriptiveKey
 {
-  v2 = [(VSVoiceAssetSelection *)self voiceData];
-  v3 = [v2 descriptiveKey];
+  voiceData = [(VSVoiceAssetSelection *)self voiceData];
+  descriptiveKey = [voiceData descriptiveKey];
 
-  return v3;
+  return descriptiveKey;
 }
 
 - (id)key
 {
-  v2 = [(VSVoiceAssetSelection *)self voiceData];
-  v3 = [v2 voiceKey];
+  voiceData = [(VSVoiceAssetSelection *)self voiceData];
+  voiceKey = [voiceData voiceKey];
 
-  return v3;
+  return voiceKey;
 }
 
 - (void)dealloc
@@ -242,25 +242,25 @@ LABEL_11:
   [(VSVoiceAssetSelection *)&v3 dealloc];
 }
 
-- (VSVoiceAssetSelection)initWithTrialVoice:(id)a3
+- (VSVoiceAssetSelection)initWithTrialVoice:(id)voice
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  voiceCopy = voice;
   v6 = [(VSVoiceAssetSelection *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trialVoice, a3);
+    objc_storeStrong(&v6->_trialVoice, voice);
     v8 = objc_alloc_init(VSVoiceAsset);
     voiceData = v7->_voiceData;
     v7->_voiceData = v8;
 
     [(VSAssetBase *)v7->_voiceData setStorage:3];
-    v10 = [v5 language];
-    if (v10)
+    language = [voiceCopy language];
+    if (language)
     {
-      v11 = [v5 language];
-      v22[0] = v11;
+      language2 = [voiceCopy language];
+      v22[0] = language2;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
       [(VSVoiceAsset *)v7->_voiceData setLanguages:v12];
     }
@@ -270,18 +270,18 @@ LABEL_11:
       [(VSVoiceAsset *)v7->_voiceData setLanguages:MEMORY[0x277CBEBF8]];
     }
 
-    v13 = [v5 name];
-    [(VSVoiceAsset *)v7->_voiceData setName:v13];
+    name = [voiceCopy name];
+    [(VSVoiceAsset *)v7->_voiceData setName:name];
 
-    -[VSVoiceAsset setType:](v7->_voiceData, "setType:", [v5 type]);
-    -[VSVoiceAsset setFootprint:](v7->_voiceData, "setFootprint:", [v5 footprint]);
-    -[VSVoiceAsset setGender:](v7->_voiceData, "setGender:", [v5 gender]);
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "version")}];
+    -[VSVoiceAsset setType:](v7->_voiceData, "setType:", [voiceCopy type]);
+    -[VSVoiceAsset setFootprint:](v7->_voiceData, "setFootprint:", [voiceCopy footprint]);
+    -[VSVoiceAsset setGender:](v7->_voiceData, "setGender:", [voiceCopy gender]);
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(voiceCopy, "version")}];
     [(VSAssetBase *)v7->_voiceData setContentVersion:v14];
 
-    if ([v5 compatibilityVersion])
+    if ([voiceCopy compatibilityVersion])
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "compatibilityVersion")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(voiceCopy, "compatibilityVersion")}];
       [(VSAssetBase *)v7->_voiceData setCompatibilityVersion:v15];
     }
 
@@ -290,12 +290,12 @@ LABEL_11:
       [(VSAssetBase *)v7->_voiceData setCompatibilityVersion:0];
     }
 
-    -[VSVoiceAsset setIsInstalled:](v7->_voiceData, "setIsInstalled:", [v5 isLocal]);
+    -[VSVoiceAsset setIsInstalled:](v7->_voiceData, "setIsInstalled:", [voiceCopy isLocal]);
     [(VSAssetBase *)v7->_voiceData setIsPurgeable:1];
     [(VSVoiceAsset *)v7->_voiceData setIsBuiltInVoice:0];
-    if ([v5 assetSize])
+    if ([voiceCopy assetSize])
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "assetSize")}];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(voiceCopy, "assetSize")}];
       [(VSAssetBase *)v7->_voiceData setDownloadSize:v16];
     }
 
@@ -304,11 +304,11 @@ LABEL_11:
       [(VSAssetBase *)v7->_voiceData setDownloadSize:0];
     }
 
-    v17 = [v5 path];
+    path = [voiceCopy path];
     voicePath = v7->_voicePath;
-    v7->_voicePath = v17;
+    v7->_voicePath = path;
 
-    if ([v5 type] == 4)
+    if ([voiceCopy type] == 4)
     {
       v19 = v7->_voicePath;
       if (v19)

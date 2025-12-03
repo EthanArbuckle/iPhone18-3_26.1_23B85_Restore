@@ -11,8 +11,8 @@
   v15 = *MEMORY[0x1E69E9840];
   v2 = +[UIAccessibilityElementTraversalOptions options];
   [v2 setShouldIncludeStatusBarWindow:1];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [a1 _accessibilityTraversalWindowsWithOptions:v2];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [self _accessibilityTraversalWindowsWithOptions:v2];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -31,7 +31,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 axSafelyAddObjectsFromArray:*(*(&v10 + 1) + 8 * i)];
+        [array axSafelyAddObjectsFromArray:*(*(&v10 + 1) + 8 * i)];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -40,40 +40,40 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_accessibilityTraversalWindowsWithOptions:()UIAccessibilityElementTraversal
 {
   v4 = a3;
-  v5 = [a1 _visibleWindows];
-  v6 = [v5 mutableCopy];
+  _visibleWindows = [self _visibleWindows];
+  v6 = [_visibleWindows mutableCopy];
 
   [v6 sortWithOptions:16 usingComparator:&__block_literal_global_560];
   v7 = MEMORY[0x1E69DDA98];
-  v8 = [*MEMORY[0x1E69DDA98] _accessibilityMainWindow];
-  v9 = [v8 windowScene];
+  _accessibilityMainWindow = [*MEMORY[0x1E69DDA98] _accessibilityMainWindow];
+  windowScene = [_accessibilityMainWindow windowScene];
 
-  if (v9 != a1)
+  if (windowScene != self)
   {
     v10 = [*v7 _accessibilityMainWindowInWindows:v6];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      keyWindow = v10;
     }
 
     else
     {
-      v12 = [a1 keyWindow];
+      keyWindow = [self keyWindow];
     }
 
-    v13 = v12;
+    v13 = keyWindow;
 
-    v8 = v13;
+    _accessibilityMainWindow = v13;
   }
 
-  v14 = [*v7 _accessibilityElementWindowsWithOptions:v4 referenceWindow:v8 allWindows:v6];
+  v14 = [*v7 _accessibilityElementWindowsWithOptions:v4 referenceWindow:_accessibilityMainWindow allWindows:v6];
 
   return v14;
 }
@@ -82,19 +82,19 @@
 {
   v34 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [*MEMORY[0x1E69DDA98] connectedScenes];
-  v7 = [v6 containsObject:a1];
+  array = [MEMORY[0x1E695DF70] array];
+  connectedScenes = [*MEMORY[0x1E69DDA98] connectedScenes];
+  v7 = [connectedScenes containsObject:self];
 
   v25 = v7;
   if (v7)
   {
-    v8 = [a1 _accessibilityLeadingMultitaskingElements];
-    [v5 axSafelyAddObjectsFromArray:v8];
+    _accessibilityLeadingMultitaskingElements = [self _accessibilityLeadingMultitaskingElements];
+    [array axSafelyAddObjectsFromArray:_accessibilityLeadingMultitaskingElements];
   }
 
-  v26 = a1;
-  v9 = [a1 _accessibilityTraversalWindowsWithOptions:v4];
+  selfCopy = self;
+  v9 = [self _accessibilityTraversalWindowsWithOptions:v4];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -119,7 +119,7 @@
         {
           if ([v4 shouldReturnScannerGroups] && objc_msgSend(v9, "count") >= 2)
           {
-            v16 = v5;
+            v16 = array;
             v17 = MEMORY[0x1E695DF90];
             v31 = @"GroupElements";
             v32 = v15;
@@ -127,16 +127,16 @@
             v19 = [v17 dictionaryWithDictionary:v18];
 
             [v19 setObject:&unk_1F1DC2650 forKeyedSubscript:@"GroupTraits"];
-            v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v26, "_accessibilityScanningBehaviorTraits") | 0x10}];
+            v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(selfCopy, "_accessibilityScanningBehaviorTraits") | 0x10}];
             [v19 setObject:v20 forKeyedSubscript:@"GroupScanBehaviorTraits"];
 
-            v21 = [v26 _accessibilityGroupIdentifier];
-            if (v21)
+            _accessibilityGroupIdentifier = [selfCopy _accessibilityGroupIdentifier];
+            if (_accessibilityGroupIdentifier)
             {
-              [v19 setObject:v21 forKeyedSubscript:@"GroupIdentifier"];
+              [v19 setObject:_accessibilityGroupIdentifier forKeyedSubscript:@"GroupIdentifier"];
             }
 
-            v5 = v16;
+            array = v16;
             [v16 addObject:v19];
 
             v12 = 0x1E69DD000;
@@ -144,7 +144,7 @@
 
           else
           {
-            [v5 axSafelyAddObjectsFromArray:v15];
+            [array axSafelyAddObjectsFromArray:v15];
           }
         }
       }
@@ -157,8 +157,8 @@
 
   if (v25)
   {
-    v22 = [v26 _accessibilityTrailingMultitaskingElements];
-    [v5 axSafelyAddObjectsFromArray:v22];
+    _accessibilityTrailingMultitaskingElements = [selfCopy _accessibilityTrailingMultitaskingElements];
+    [array axSafelyAddObjectsFromArray:_accessibilityTrailingMultitaskingElements];
   }
 
   v23 = AXLogElementTraversal();
@@ -167,7 +167,7 @@
     [UIWindowScene(UIAccessibilityElementTraversal) _accessibilityViewChildrenWithOptions:];
   }
 
-  return v5;
+  return array;
 }
 
 @end

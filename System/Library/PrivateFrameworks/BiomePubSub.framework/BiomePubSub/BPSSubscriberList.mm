@@ -1,8 +1,8 @@
 @interface BPSSubscriberList
 - (BPSSubscriberList)init;
 - (id)claimAll;
-- (int64_t)appendElement:(id)a3;
-- (void)removeTicket:(int64_t)a3;
+- (int64_t)appendElement:(id)element;
+- (void)removeTicket:(int64_t)ticket;
 @end
 
 @implementation BPSSubscriberList
@@ -29,57 +29,57 @@
   return v2;
 }
 
-- (int64_t)appendElement:(id)a3
+- (int64_t)appendElement:(id)element
 {
-  v4 = a3;
-  v5 = [(BPSSubscriberList *)self nextTicket];
+  elementCopy = element;
+  nextTicket = [(BPSSubscriberList *)self nextTicket];
   [(BPSSubscriberList *)self setNextTicket:[(BPSSubscriberList *)self nextTicket]+ 1];
-  v6 = [(BPSSubscriberList *)self items];
-  [v6 addObject:v4];
+  items = [(BPSSubscriberList *)self items];
+  [items addObject:elementCopy];
 
-  v7 = [(BPSSubscriberList *)self tickets];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-  [v7 addObject:v8];
+  tickets = [(BPSSubscriberList *)self tickets];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:nextTicket];
+  [tickets addObject:v8];
 
-  return v5;
+  return nextTicket;
 }
 
-- (void)removeTicket:(int64_t)a3
+- (void)removeTicket:(int64_t)ticket
 {
-  if (a3 < 0)
+  if (ticket < 0)
   {
     [(BPSSubscriberList *)a2 removeTicket:?];
   }
 
-  if ([(BPSSubscriberList *)self nextTicket]<= a3)
+  if ([(BPSSubscriberList *)self nextTicket]<= ticket)
   {
     [(BPSSubscriberList *)a2 removeTicket:?];
   }
 
-  v6 = [(BPSSubscriberList *)self tickets];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 indexOfObject:v7];
+  tickets = [(BPSSubscriberList *)self tickets];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:ticket];
+  v8 = [tickets indexOfObject:v7];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(BPSSubscriberList *)self items];
-    [v9 removeObjectAtIndex:v8];
+    items = [(BPSSubscriberList *)self items];
+    [items removeObjectAtIndex:v8];
 
-    v10 = [(BPSSubscriberList *)self tickets];
-    [v10 removeObjectAtIndex:v8];
+    tickets2 = [(BPSSubscriberList *)self tickets];
+    [tickets2 removeObjectAtIndex:v8];
   }
 }
 
 - (id)claimAll
 {
-  v3 = [(BPSSubscriberList *)self items];
-  v4 = [v3 copy];
+  items = [(BPSSubscriberList *)self items];
+  v4 = [items copy];
 
-  v5 = [(BPSSubscriberList *)self items];
-  [v5 removeAllObjects];
+  items2 = [(BPSSubscriberList *)self items];
+  [items2 removeAllObjects];
 
-  v6 = [(BPSSubscriberList *)self tickets];
-  [v6 removeAllObjects];
+  tickets = [(BPSSubscriberList *)self tickets];
+  [tickets removeAllObjects];
 
   return v4;
 }

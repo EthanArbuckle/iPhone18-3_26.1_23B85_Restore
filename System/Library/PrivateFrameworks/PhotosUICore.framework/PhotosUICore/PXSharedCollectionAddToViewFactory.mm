@@ -1,14 +1,14 @@
 @interface PXSharedCollectionAddToViewFactory
-+ (id)contentHostedViewControllerWithSharedCollection:(id)a3 assets:(id)a4 doneCallback:(id)a5;
-+ (id)contentHostedViewControllerWithSharedCollection:(id)a3 mediaSources:(id)a4 doneCallback:(id)a5;
++ (id)contentHostedViewControllerWithSharedCollection:(id)collection assets:(id)assets doneCallback:(id)callback;
++ (id)contentHostedViewControllerWithSharedCollection:(id)collection mediaSources:(id)sources doneCallback:(id)callback;
 - (_TtC12PhotosUICore34PXSharedCollectionAddToViewFactory)init;
 @end
 
 @implementation PXSharedCollectionAddToViewFactory
 
-+ (id)contentHostedViewControllerWithSharedCollection:(id)a3 assets:(id)a4 doneCallback:(id)a5
++ (id)contentHostedViewControllerWithSharedCollection:(id)collection assets:(id)assets doneCallback:(id)callback
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(callback);
   sub_1A3C52C70(0, &qword_1EB126660);
   v7 = sub_1A524CA34();
   if (v6)
@@ -23,12 +23,12 @@
     v8 = 0;
   }
 
-  sub_1A4126110(a3, v7, v6, v8);
+  sub_1A4126110(collection, v7, v6, v8);
 }
 
-+ (id)contentHostedViewControllerWithSharedCollection:(id)a3 mediaSources:(id)a4 doneCallback:(id)a5
++ (id)contentHostedViewControllerWithSharedCollection:(id)collection mediaSources:(id)sources doneCallback:(id)callback
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(callback);
   sub_1A3C52C70(0, &qword_1EB12B540);
   v7 = sub_1A524CA34();
   if (v6)
@@ -43,7 +43,7 @@
     v8 = 0;
   }
 
-  sub_1A41266E4(a3, v7, v6, v8);
+  sub_1A41266E4(collection, v7, v6, v8);
 }
 
 - (_TtC12PhotosUICore34PXSharedCollectionAddToViewFactory)init

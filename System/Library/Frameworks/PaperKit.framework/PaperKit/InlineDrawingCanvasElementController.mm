@@ -1,13 +1,13 @@
 @interface InlineDrawingCanvasElementController
 - (_TtC8PaperKit36InlineDrawingCanvasElementController)init;
-- (void)toolPickerFramesObscuredDidChange:(id)a3;
+- (void)toolPickerFramesObscuredDidChange:(id)change;
 @end
 
 @implementation InlineDrawingCanvasElementController
 
-- (void)toolPickerFramesObscuredDidChange:(id)a3
+- (void)toolPickerFramesObscuredDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   InlineDrawingCanvasElementController.updateToolPickerUI()();
 }
 

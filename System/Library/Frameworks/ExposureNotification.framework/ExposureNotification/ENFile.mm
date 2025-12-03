@@ -1,21 +1,21 @@
 @interface ENFile
-- (BOOL)_readHashFromArchive:(id)a3 error:(id *)a4;
-- (BOOL)_readHashFromFile:(__sFILE *)a3 error:(id *)a4;
-- (BOOL)_readHeaderFromFile:(__sFILE *)a3 error:(id *)a4;
-- (BOOL)_readMetadataFromArchive:(id)a3 error:(id *)a4;
-- (BOOL)_readMetadataFromCoder:(id)a3 error:(id *)a4;
-- (BOOL)_readMetadataFromFileHandle:(__sFILE *)a3 error:(id *)a4;
-- (BOOL)_readPrepareAndReturnError:(id *)a3;
-- (BOOL)_resetAndReadHeaderFromArchive:(id)a3 error:(id *)a4;
-- (BOOL)_writeMetadataAndReturnError:(id *)a3;
-- (BOOL)_writePrepareAndReturnError:(id *)a3;
-- (BOOL)closeAndReturnError:(id *)a3;
-- (BOOL)openForWritingToData:(id)a3 error:(id *)a4;
-- (BOOL)openWithArchive:(id)a3 error:(id *)a4;
-- (BOOL)openWithFD:(int)a3 reading:(BOOL)a4 error:(id *)a5;
-- (BOOL)writeTEK:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-- (id)_readKeyWithPtr:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (id)readTEKWithFlags:(unsigned int)a3 error:(id *)a4;
+- (BOOL)_readHashFromArchive:(id)archive error:(id *)error;
+- (BOOL)_readHashFromFile:(__sFILE *)file error:(id *)error;
+- (BOOL)_readHeaderFromFile:(__sFILE *)file error:(id *)error;
+- (BOOL)_readMetadataFromArchive:(id)archive error:(id *)error;
+- (BOOL)_readMetadataFromCoder:(id)coder error:(id *)error;
+- (BOOL)_readMetadataFromFileHandle:(__sFILE *)handle error:(id *)error;
+- (BOOL)_readPrepareAndReturnError:(id *)error;
+- (BOOL)_resetAndReadHeaderFromArchive:(id)archive error:(id *)error;
+- (BOOL)_writeMetadataAndReturnError:(id *)error;
+- (BOOL)_writePrepareAndReturnError:(id *)error;
+- (BOOL)closeAndReturnError:(id *)error;
+- (BOOL)openForWritingToData:(id)data error:(id *)error;
+- (BOOL)openWithArchive:(id)archive error:(id *)error;
+- (BOOL)openWithFD:(int)d reading:(BOOL)reading error:(id *)error;
+- (BOOL)writeTEK:(id)k flags:(unsigned int)flags error:(id *)error;
+- (id)_readKeyWithPtr:(const char *)ptr length:(unint64_t)length error:(id *)error;
+- (id)readTEKWithFlags:(unsigned int)flags error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -40,31 +40,31 @@
   [(ENFile *)&v4 dealloc];
 }
 
-- (BOOL)openWithArchive:(id)a3 error:(id *)a4
+- (BOOL)openWithArchive:(id)archive error:(id *)error
 {
-  v6 = a3;
+  archiveCopy = archive;
   if (gLogCategory_ENFile <= 10 && (gLogCategory_ENFile != -1 || _LogCategory_Initialize()))
   {
     [ENFile openWithArchive:error:];
   }
 
   archive = self->_archive;
-  self->_archive = v6;
+  self->_archive = archiveCopy;
 
   self->_reading = 1;
 
-  return [(ENFile *)self _readPrepareAndReturnError:a4];
+  return [(ENFile *)self _readPrepareAndReturnError:error];
 }
 
-- (BOOL)openWithFD:(int)a3 reading:(BOOL)a4 error:(id *)a5
+- (BOOL)openWithFD:(int)d reading:(BOOL)reading error:(id *)error
 {
-  v6 = a4;
+  readingCopy = reading;
   if (gLogCategory_ENFile <= 30 && (gLogCategory_ENFile != -1 || _LogCategory_Initialize()))
   {
     LogPrintF_safe();
   }
 
-  if (v6)
+  if (readingCopy)
   {
     v9 = "rb";
   }
@@ -74,14 +74,14 @@
     v9 = "wb";
   }
 
-  v10 = fdopen(a3, v9);
+  v10 = fdopen(d, v9);
   if (v10 || *__error() && !*__error())
   {
     self->_fileHandle = v10;
-    self->_reading = v6;
-    if (v6)
+    self->_reading = readingCopy;
+    if (readingCopy)
     {
-      if (![(ENFile *)self _readPrepareAndReturnError:a5])
+      if (![(ENFile *)self _readPrepareAndReturnError:error])
       {
         goto LABEL_13;
       }
@@ -89,7 +89,7 @@
 
     else
     {
-      LODWORD(v11) = [(ENFile *)self _writePrepareAndReturnError:a5];
+      LODWORD(v11) = [(ENFile *)self _writePrepareAndReturnError:error];
       if (!v11)
       {
         return v11;
@@ -100,12 +100,12 @@
     return v11;
   }
 
-  if (a5)
+  if (error)
   {
     v12 = ENErrorF(2);
     v11 = v12;
     LOBYTE(v11) = 0;
-    *a5 = v12;
+    *error = v12;
     return v11;
   }
 
@@ -114,23 +114,23 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)openForWritingToData:(id)a3 error:(id *)a4
+- (BOOL)openForWritingToData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (gLogCategory_ENFile <= 30 && (gLogCategory_ENFile != -1 || _LogCategory_Initialize()))
   {
     [ENFile openForWritingToData:error:];
   }
 
   outputData = self->_outputData;
-  self->_outputData = v6;
+  self->_outputData = dataCopy;
 
   self->_reading = 0;
 
-  return [(ENFile *)self _writePrepareAndReturnError:a4];
+  return [(ENFile *)self _writePrepareAndReturnError:error];
 }
 
-- (BOOL)closeAndReturnError:(id *)a3
+- (BOOL)closeAndReturnError:(id *)error
 {
   archive = self->_archive;
   if (archive)
@@ -164,7 +164,7 @@ LABEL_11:
         return 1;
       }
 
-      if (a3)
+      if (error)
       {
         v13 = *__error();
         v10 = 1;
@@ -172,7 +172,7 @@ LABEL_17:
         v11 = ENErrorF(v10);
         v12 = v11;
         result = 0;
-        *a3 = v11;
+        *error = v11;
         return result;
       }
 
@@ -185,7 +185,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (error)
   {
     v10 = 10;
     goto LABEL_17;
@@ -194,16 +194,16 @@ LABEL_17:
   return 0;
 }
 
-- (BOOL)_readHeaderFromFile:(__sFILE *)a3 error:(id *)a4
+- (BOOL)_readHeaderFromFile:(__sFILE *)file error:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   __ptr = 0;
   v12 = 0;
-  if (fread(&__ptr, 1uLL, 0x10uLL, a3) != 16)
+  if (fread(&__ptr, 1uLL, 0x10uLL, file) != 16)
   {
-    if (feof(a3))
+    if (feof(file))
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -212,7 +212,7 @@ LABEL_17:
     else
     {
       *__error();
-      if (!a4)
+      if (!error)
       {
 LABEL_18:
         result = 0;
@@ -230,7 +230,7 @@ LABEL_18:
 
   if (__ptr != 0x726F707845204B45 || v12 != 0x2020202031762074)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -239,7 +239,7 @@ LABEL_15:
     v8 = ENErrorF(15);
     v9 = v8;
     result = 0;
-    *a4 = v8;
+    *error = v8;
     goto LABEL_19;
   }
 
@@ -249,12 +249,12 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)_readHashFromFile:(__sFILE *)a3 error:(id *)a4
+- (BOOL)_readHashFromFile:(__sFILE *)file error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!file)
   {
-    if (a4)
+    if (error)
     {
       v14 = ENErrorF(10);
       v16 = v14;
@@ -264,11 +264,11 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v6 = fileno(a3);
+  v6 = fileno(file);
   memset(&v19, 0, sizeof(v19));
   if (fstat(v6, &v19) && (!*__error() || *__error()))
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -279,7 +279,7 @@ LABEL_19:
   st_size = v19.st_size;
   if (v19.st_size == -1)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -290,7 +290,7 @@ LABEL_19:
   v8 = mmap(0, v19.st_size, 1, 2, v6, 0);
   if (v8 == -1 && (!*__error() || *__error()))
   {
-    if (a4)
+    if (error)
     {
 LABEL_13:
       v13 = *MEMORY[0x277CCA590];
@@ -298,7 +298,7 @@ LABEL_13:
       v15 = v14;
 LABEL_14:
       result = 0;
-      *a4 = v14;
+      *error = v14;
       goto LABEL_19;
     }
 
@@ -328,16 +328,16 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)_readMetadataFromFileHandle:(__sFILE *)a3 error:(id *)a4
+- (BOOL)_readMetadataFromFileHandle:(__sFILE *)handle error:(id *)error
 {
   v12 = 0;
-  if (fgetpos(a3, &v12) && (!*__error() || *__error()))
+  if (fgetpos(handle, &v12) && (!*__error() || *__error()))
   {
-    if (a4)
+    if (error)
     {
       v10 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -352,19 +352,19 @@ LABEL_19:
     v11[1] = 3221225472;
     v11[2] = __44__ENFile__readMetadataFromFileHandle_error___block_invoke;
     v11[3] = &__block_descriptor_48_e5_v8__0l;
-    v11[4] = a3;
+    v11[4] = handle;
     v11[5] = v12;
     v7 = MEMORY[0x2383EE560](v11);
-    v8 = [(ENFile *)self _readMetadataFromCoder:self->_protobufCoder error:a4];
+    v8 = [(ENFile *)self _readMetadataFromCoder:self->_protobufCoder error:error];
     v7[2](v7);
   }
 
   return v8;
 }
 
-- (BOOL)_readMetadataFromCoder:(id)a3 error:(id *)a4
+- (BOOL)_readMetadataFromCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -376,9 +376,9 @@ LABEL_19:
   v43[2] = __39__ENFile__readMetadataFromCoder_error___block_invoke;
   v43[3] = &unk_278A4B610;
   v43[4] = &v44;
-  v43[5] = a4;
+  v43[5] = error;
   v7 = MEMORY[0x2383EE560](v43);
-  if (v6)
+  if (coderCopy)
   {
     while (1)
     {
@@ -394,7 +394,7 @@ LABEL_30:
       v9 = (v45 + 5);
       obj = v45[5];
       v41 = 0;
-      v10 = [v6 readType:&v42 tag:&v41 eofOkay:1 error:&obj];
+      v10 = [coderCopy readType:&v42 tag:&v41 eofOkay:1 error:&obj];
       objc_storeStrong(v9, obj);
       if ((v10 & 1) == 0)
       {
@@ -418,7 +418,7 @@ LABEL_30:
           v24 = (v45 + 5);
           v38 = v45[5];
           v39 = 0;
-          v25 = [v6 readFixedUInt64:&v39 error:&v38];
+          v25 = [coderCopy readFixedUInt64:&v39 error:&v38];
           objc_storeStrong(v24, v38);
           if ((v25 & 1) == 0)
           {
@@ -437,7 +437,7 @@ LABEL_30:
           v39 = 0;
           v16 = (v45 + 5);
           v37 = v45[5];
-          v17 = [v6 readFixedUInt64:&v39 error:&v37];
+          v17 = [coderCopy readFixedUInt64:&v39 error:&v37];
           objc_storeStrong(v16, v37);
           if ((v17 & 1) == 0)
           {
@@ -459,7 +459,7 @@ LABEL_30:
           case 3:
             v19 = (v45 + 5);
             v36 = v45[5];
-            v20 = [v6 readNSStringAndReturnError:&v36];
+            v20 = [coderCopy readNSStringAndReturnError:&v36];
             objc_storeStrong(v19, v36);
             if (!v20)
             {
@@ -474,7 +474,7 @@ LABEL_30:
             LODWORD(v39) = 0;
             v21 = (v45 + 5);
             v35 = v45[5];
-            v22 = [v6 readVarIntUInt32:&v39 error:&v35];
+            v22 = [coderCopy readVarIntUInt32:&v39 error:&v35];
             objc_storeStrong(v21, v35);
             if ((v22 & 1) == 0)
             {
@@ -490,7 +490,7 @@ LABEL_30:
             LODWORD(v39) = 0;
             v11 = (v45 + 5);
             v34 = v45[5];
-            v12 = [v6 readVarIntUInt32:&v39 error:&v34];
+            v12 = [coderCopy readVarIntUInt32:&v39 error:&v34];
             objc_storeStrong(v11, v34);
             if ((v12 & 1) == 0)
             {
@@ -509,7 +509,7 @@ LABEL_23:
 
       v27 = (v45 + 5);
       v33 = v45[5];
-      v28 = [v6 skipType:v42 error:&v33];
+      v28 = [coderCopy skipType:v42 error:&v33];
       objc_storeStrong(v27, v33);
       if (!v28)
       {
@@ -562,14 +562,14 @@ id __39__ENFile__readMetadataFromCoder_error___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_writePrepareAndReturnError:(id *)a3
+- (BOOL)_writePrepareAndReturnError:(id *)error
 {
   fileHandle = self->_fileHandle;
   v6 = self->_outputData;
   v7 = v6;
   if (!(fileHandle | v6))
   {
-    if (a3)
+    if (error)
     {
       v14 = 10;
       goto LABEL_13;
@@ -597,12 +597,12 @@ LABEL_16:
 
   if (fwrite("EK Export v1    ", 1uLL, 0x10uLL, fileHandle) != 16 && (!*__error() || *__error()))
   {
-    if (a3)
+    if (error)
     {
       v14 = 1;
 LABEL_13:
       ENErrorF(v14);
-      *a3 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_10;
     }
 
@@ -615,15 +615,15 @@ LABEL_13:
 
   [(ENProtobufCoder *)self->_protobufCoder setFileHandle:fileHandle];
 LABEL_9:
-  v12 = [(ENFile *)self _writeMetadataAndReturnError:a3];
+  v12 = [(ENFile *)self _writeMetadataAndReturnError:error];
 LABEL_10:
 
   return v12;
 }
 
-- (id)readTEKWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)readTEKWithFlags:(unsigned int)flags error:(id *)error
 {
-  v5 = a3;
+  flagsCopy = flags;
   v7 = self->_protobufCoder;
   if (v7)
   {
@@ -637,9 +637,9 @@ LABEL_10:
     {
       while (1)
       {
-        v11 = (v5 & 2) != 0 && v28 == 8;
+        v11 = (flagsCopy & 2) != 0 && v28 == 8;
         v12 = !v11;
-        if ((v5 & (v28 == 7)) != 0 || !v12)
+        if ((flagsCopy & (v28 == 7)) != 0 || !v12)
         {
           break;
         }
@@ -701,7 +701,7 @@ LABEL_13:
 
 LABEL_19:
     objc_autoreleasePoolPop(v8);
-    if (a4)
+    if (error)
     {
       if (v16)
       {
@@ -713,14 +713,14 @@ LABEL_19:
         v21 = v10;
       }
 
-      *a4 = v21;
+      *error = v21;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     ENErrorF(10);
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -731,7 +731,7 @@ LABEL_19:
   return v16;
 }
 
-- (id)_readKeyWithPtr:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (id)_readKeyWithPtr:(const char *)ptr length:(unint64_t)length error:(id *)error
 {
   v9 = self->_tekProtobufCoder;
   if (!v9)
@@ -741,7 +741,7 @@ LABEL_19:
     self->_tekProtobufCoder = v9;
   }
 
-  [(ENProtobufCoder *)v9 setReadMemory:a3 length:a4];
+  [(ENProtobufCoder *)v9 setReadMemory:ptr length:length];
   v11 = objc_alloc_init(ENTemporaryExposureKey);
   v25 = 0;
   v23 = 0;
@@ -755,10 +755,10 @@ LABEL_19:
     {
       if (!v12)
       {
-        if (a5)
+        if (error)
         {
           v21 = v14;
-          *a5 = v14;
+          *error = v14;
         }
 
 LABEL_41:
@@ -775,7 +775,7 @@ LABEL_42:
           if (v24 == 5)
           {
             v22 = 0;
-            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:a5])
+            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:error])
             {
               goto LABEL_41;
             }
@@ -786,7 +786,7 @@ LABEL_42:
           else
           {
             v22 = 0;
-            if (![(ENProtobufCoder *)v9 readVarIntSInt32:&v22 error:a5])
+            if (![(ENProtobufCoder *)v9 readVarIntSInt32:&v22 error:error])
             {
               goto LABEL_41;
             }
@@ -800,7 +800,7 @@ LABEL_42:
         if (v24 == 7)
         {
           LOBYTE(v22) = 0;
-          if (![(ENProtobufCoder *)v9 readVarIntBoolean:&v22 error:a5])
+          if (![(ENProtobufCoder *)v9 readVarIntBoolean:&v22 error:error])
           {
             goto LABEL_41;
           }
@@ -812,7 +812,7 @@ LABEL_42:
         if (v24 == 8)
         {
           v22 = 0;
-          if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:a5])
+          if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:error])
           {
             goto LABEL_41;
           }
@@ -829,7 +829,7 @@ LABEL_42:
           if (v24 == 3)
           {
             v22 = 0;
-            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:a5])
+            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:error])
             {
               goto LABEL_41;
             }
@@ -840,7 +840,7 @@ LABEL_42:
           else
           {
             v22 = 0;
-            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:a5])
+            if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:error])
             {
               goto LABEL_41;
             }
@@ -853,7 +853,7 @@ LABEL_42:
 
         if (v24 == 1)
         {
-          v15 = [(ENProtobufCoder *)v9 readNSDataAndReturnError:a5];
+          v15 = [(ENProtobufCoder *)v9 readNSDataAndReturnError:error];
           if (!v15)
           {
             goto LABEL_41;
@@ -868,7 +868,7 @@ LABEL_42:
         if (v24 == 2)
         {
           v22 = 0;
-          if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:a5])
+          if (![(ENProtobufCoder *)v9 readVarIntUInt32:&v22 error:error])
           {
             goto LABEL_41;
           }
@@ -878,7 +878,7 @@ LABEL_42:
         }
       }
 
-      if (![(ENProtobufCoder *)v9 skipType:v25 error:a5])
+      if (![(ENProtobufCoder *)v9 skipType:v25 error:error])
       {
         goto LABEL_41;
       }
@@ -896,22 +896,22 @@ LABEL_32:
     while (v12 || v17);
   }
 
-  v18 = [(ENTemporaryExposureKey *)v11 keyData];
+  keyData = [(ENTemporaryExposureKey *)v11 keyData];
 
-  if (v18)
+  if (keyData)
   {
     v19 = v11;
   }
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_42;
     }
 
     ENErrorF(1);
-    *a5 = v19 = 0;
+    *error = v19 = 0;
   }
 
 LABEL_36:
@@ -919,21 +919,21 @@ LABEL_36:
   return v19;
 }
 
-- (BOOL)writeTEK:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (BOOL)writeTEK:(id)k flags:(unsigned int)flags error:(id *)error
 {
-  v6 = a4;
+  flagsCopy = flags;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  kCopy = k;
   fileHandle = self->_fileHandle;
   v10 = self->_outputData;
   if (!(fileHandle | v10))
   {
-    if (a5)
+    if (error)
     {
       v23 = 10;
 LABEL_31:
       ENErrorF(v23);
-      *a5 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_34;
     }
 
@@ -952,64 +952,64 @@ LABEL_31:
 
   memset(v26, 0, sizeof(v26));
   [(ENProtobufCoder *)tekProtobufCoder setWriteMemory:v26 length:128];
-  if ([v8 daysSinceOnsetOfSymptoms] != 0x7FFFFFFFFFFFFFFFLL && !-[ENProtobufCoder writeVarIntSInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntSInt32:tag:error:", objc_msgSend(v8, "daysSinceOnsetOfSymptoms"), 6, a5))
+  if ([kCopy daysSinceOnsetOfSymptoms] != 0x7FFFFFFFFFFFFFFFLL && !-[ENProtobufCoder writeVarIntSInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntSInt32:tag:error:", objc_msgSend(kCopy, "daysSinceOnsetOfSymptoms"), 6, error))
   {
     goto LABEL_33;
   }
 
-  v14 = [v8 diagnosisReportType];
-  if (v14)
+  diagnosisReportType = [kCopy diagnosisReportType];
+  if (diagnosisReportType)
   {
-    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:v14 tag:5 error:a5])
+    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:diagnosisReportType tag:5 error:error])
     {
       goto LABEL_33;
     }
   }
 
-  v15 = [v8 keyData];
-  if (v15 && ![(ENProtobufCoder *)self->_tekProtobufCoder writeNSData:v15 tag:1 error:a5])
+  keyData = [kCopy keyData];
+  if (keyData && ![(ENProtobufCoder *)self->_tekProtobufCoder writeNSData:keyData tag:1 error:error])
   {
 
     goto LABEL_33;
   }
 
-  if (!-[ENProtobufCoder writeVarIntUInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntUInt32:tag:error:", [v8 rollingStartNumber], 3, a5))
+  if (!-[ENProtobufCoder writeVarIntUInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntUInt32:tag:error:", [kCopy rollingStartNumber], 3, error))
   {
     goto LABEL_33;
   }
 
-  v16 = [v8 rollingPeriod];
-  if (v16)
+  rollingPeriod = [kCopy rollingPeriod];
+  if (rollingPeriod)
   {
-    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:v16 tag:4 error:a5])
+    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:rollingPeriod tag:4 error:error])
     {
       goto LABEL_33;
     }
   }
 
-  if (!-[ENProtobufCoder writeVarIntUInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntUInt32:tag:error:", [v8 transmissionRiskLevel], 2, a5))
+  if (!-[ENProtobufCoder writeVarIntUInt32:tag:error:](self->_tekProtobufCoder, "writeVarIntUInt32:tag:error:", [kCopy transmissionRiskLevel], 2, error))
   {
     goto LABEL_33;
   }
 
-  if (!-[ENProtobufCoder writeVarIntBoolean:tag:error:](self->_tekProtobufCoder, "writeVarIntBoolean:tag:error:", [v8 vaccinated], 7, a5))
+  if (!-[ENProtobufCoder writeVarIntBoolean:tag:error:](self->_tekProtobufCoder, "writeVarIntBoolean:tag:error:", [kCopy vaccinated], 7, error))
   {
     goto LABEL_33;
   }
 
-  v17 = [v8 variantOfConcernType];
-  if (v17)
+  variantOfConcernType = [kCopy variantOfConcernType];
+  if (variantOfConcernType)
   {
-    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:v17 tag:8 error:a5])
+    if (![(ENProtobufCoder *)self->_tekProtobufCoder writeVarIntUInt32:variantOfConcernType tag:8 error:error])
     {
       goto LABEL_33;
     }
   }
 
-  v18 = [(ENProtobufCoder *)self->_tekProtobufCoder writeBase];
-  if (!v18)
+  writeBase = [(ENProtobufCoder *)self->_tekProtobufCoder writeBase];
+  if (!writeBase)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_30;
     }
@@ -1017,11 +1017,11 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  v19 = v18;
-  v20 = [(ENProtobufCoder *)self->_tekProtobufCoder writeDst];
-  if (!v20)
+  v19 = writeBase;
+  writeDst = [(ENProtobufCoder *)self->_tekProtobufCoder writeDst];
+  if (!writeDst)
   {
-    if (a5)
+    if (error)
     {
 LABEL_30:
       v23 = 16;
@@ -1033,10 +1033,10 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (v20 != v19)
+  if (writeDst != v19)
   {
-    v21 = (v6 & 2) != 0 ? 8 : 7;
-    if (![(ENProtobufCoder *)self->_protobufCoder writeLengthDelimitedPtr:v19 length:v20 - v19 tag:v21 error:a5])
+    v21 = (flagsCopy & 2) != 0 ? 8 : 7;
+    if (![(ENProtobufCoder *)self->_protobufCoder writeLengthDelimitedPtr:v19 length:writeDst - v19 tag:v21 error:error])
     {
       goto LABEL_33;
     }
@@ -1049,13 +1049,13 @@ LABEL_34:
   return v22;
 }
 
-- (BOOL)_readPrepareAndReturnError:(id *)a3
+- (BOOL)_readPrepareAndReturnError:(id *)error
 {
   v5 = self->_archive;
   fileHandle = self->_fileHandle;
   if (!(v5 | fileHandle))
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -1089,7 +1089,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -1097,7 +1097,7 @@ LABEL_16:
     v14 = 16;
 LABEL_13:
     ENErrorF(v14);
-    *a3 = v11 = 0;
+    *error = v11 = 0;
     goto LABEL_17;
   }
 
@@ -1117,14 +1117,14 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)_resetAndReadHeaderFromArchive:(id)a3 error:(id *)a4
+- (BOOL)_resetAndReadHeaderFromArchive:(id)archive error:(id *)error
 {
   __s1[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  archiveCopy = archive;
+  v6 = archiveCopy;
+  if (archiveCopy)
   {
-    if ([v5 resetToCurrentEntryAndReturnError:a4])
+    if ([archiveCopy resetToCurrentEntryAndReturnError:error])
     {
       __s1[0] = 0;
       __s1[1] = 0;
@@ -1145,19 +1145,19 @@ LABEL_17:
           goto LABEL_19;
         }
 
-        if (a4)
+        if (error)
         {
           v10 = ENErrorF(15);
           goto LABEL_9;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v10 = ENNestedErrorF(v8, 15);
 LABEL_9:
         v11 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_19:
 
         goto LABEL_20;
@@ -1170,7 +1170,7 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_15:
     v11 = 0;
@@ -1178,18 +1178,18 @@ LABEL_15:
   }
 
   ENErrorF(10);
-  *a4 = v11 = 0;
+  *error = v11 = 0;
 LABEL_20:
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (BOOL)_readHashFromArchive:(id)a3 error:(id *)a4
+- (BOOL)_readHashFromArchive:(id)archive error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 resetToCurrentEntryAndReturnError:a4])
+  archiveCopy = archive;
+  if ([archiveCopy resetToCurrentEntryAndReturnError:error])
   {
     v7 = ccsha256_di();
     v8 = (*(v7 + 8) + *(v7 + 16) + 19) & 0xFFFFFFFFFFFFFFF8;
@@ -1237,13 +1237,13 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_readMetadataFromArchive:(id)a3 error:(id *)a4
+- (BOOL)_readMetadataFromArchive:(id)archive error:(id *)error
 {
-  v4 = a3;
+  archiveCopy = archive;
   if ([OUTLINED_FUNCTION_0_3() _resetAndReadHeaderFromArchive:? error:?])
   {
     v5 = objc_alloc_init(ENProtobufCoder);
-    [(ENProtobufCoder *)v5 setReadArchive:v4];
+    [(ENProtobufCoder *)v5 setReadArchive:archiveCopy];
     v6 = [OUTLINED_FUNCTION_1_1() _readMetadataFromCoder:? error:?];
   }
 
@@ -1255,15 +1255,15 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_writeMetadataAndReturnError:(id *)a3
+- (BOOL)_writeMetadataAndReturnError:(id *)error
 {
   if (!self->_protobufCoder)
   {
-    if (a3)
+    if (error)
     {
       ENErrorF(12);
       v8 = 0;
-      *a3 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_13;
     }
 
@@ -1284,7 +1284,7 @@ LABEL_17:
   v7 = self->_metadata;
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
-  if (v8 && ![(ENProtobufCoder *)self->_protobufCoder writeNSString:v8 tag:3 error:a3])
+  if (v8 && ![(ENProtobufCoder *)self->_protobufCoder writeNSString:v8 tag:3 error:error])
   {
     goto LABEL_17;
   }

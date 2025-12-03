@@ -1,38 +1,38 @@
 @interface TUIBoxBuilder
 - (BOOL)containsSingleComponent;
 - (id)finalizeAnimationGroups;
-- (id)finalizeModelsWithParent:(id)a3 box:(id)a4 context:(id)a5;
-- (void)addAnimationGroup:(id)a3 withName:(id)a4;
-- (void)addModel:(id)a3;
-- (void)finalizeModelsWithParent:(id)a3;
-- (void)finalizeModelsWithParent:(id)a3 context:(id)a4;
+- (id)finalizeModelsWithParent:(id)parent box:(id)box context:(id)context;
+- (void)addAnimationGroup:(id)group withName:(id)name;
+- (void)addModel:(id)model;
+- (void)finalizeModelsWithParent:(id)parent;
+- (void)finalizeModelsWithParent:(id)parent context:(id)context;
 @end
 
 @implementation TUIBoxBuilder
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   contents = self->_contents;
-  v8 = v4;
+  v8 = modelCopy;
   if (!contents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contents;
     self->_contents = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     contents = self->_contents;
   }
 
-  [(NSMutableArray *)contents addObject:v4];
+  [(NSMutableArray *)contents addObject:modelCopy];
 }
 
 - (BOOL)containsSingleComponent
 {
   if ([(NSMutableArray *)self->_contents count]== &dword_0 + 1)
   {
-    v3 = [(NSMutableArray *)self->_contents firstObject];
+    firstObject = [(NSMutableArray *)self->_contents firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -45,53 +45,53 @@
   return isKindOfClass & 1;
 }
 
-- (id)finalizeModelsWithParent:(id)a3 box:(id)a4 context:(id)a5
+- (id)finalizeModelsWithParent:(id)parent box:(id)box context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   contents = self->_contents;
-  v10 = a4;
-  v11 = a3;
+  boxCopy = box;
+  parentCopy = parent;
   v12 = [(TUIBoxBuilder *)self checkContents:contents];
   if (v12)
   {
-    [v8 reportError:v12];
+    [contextCopy reportError:v12];
   }
 
   v13 = self->_contents;
   v14 = self->_contents;
   self->_contents = 0;
 
-  [v11 updateModelChildren:v13];
-  [v10 setAxCustomActions:self->_axActions];
-  v15 = [(TUIBoxBuilder *)self finalizeAnimationGroups];
-  [v10 setAnimationGroups:v15];
+  [parentCopy updateModelChildren:v13];
+  [boxCopy setAxCustomActions:self->_axActions];
+  finalizeAnimationGroups = [(TUIBoxBuilder *)self finalizeAnimationGroups];
+  [boxCopy setAnimationGroups:finalizeAnimationGroups];
 
   return v13;
 }
 
-- (void)finalizeModelsWithParent:(id)a3 context:(id)a4
+- (void)finalizeModelsWithParent:(id)parent context:(id)context
 {
-  v10 = a3;
-  v6 = a4;
+  parentCopy = parent;
+  contextCopy = context;
   v7 = objc_opt_class();
-  v8 = TUIDynamicCast(v7, v10);
-  v9 = [(TUIBoxBuilder *)self finalizeModelsWithParent:v10 box:v8 context:v6];
+  v8 = TUIDynamicCast(v7, parentCopy);
+  v9 = [(TUIBoxBuilder *)self finalizeModelsWithParent:parentCopy box:v8 context:contextCopy];
 }
 
-- (void)finalizeModelsWithParent:(id)a3
+- (void)finalizeModelsWithParent:(id)parent
 {
   contents = self->_contents;
   self->_contents = 0;
   v5 = contents;
-  v6 = a3;
+  parentCopy = parent;
 
-  [v6 updateModelChildren:v5];
+  [parentCopy updateModelChildren:v5];
 }
 
-- (void)addAnimationGroup:(id)a3 withName:(id)a4
+- (void)addAnimationGroup:(id)group withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nameCopy = name;
   animations = self->_animations;
   if (!animations)
   {
@@ -102,7 +102,7 @@
     animations = self->_animations;
   }
 
-  [(NSMutableDictionary *)animations setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)animations setObject:groupCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroups

@@ -1,18 +1,18 @@
 @interface _UICollectionPreferredSize
-+ (double)preferredSizeForOriginalSize:(double)a3 fittingSize:(uint64_t)a4 layoutSize:(void *)a5;
++ (double)preferredSizeForOriginalSize:(double)size fittingSize:(uint64_t)fittingSize layoutSize:(void *)layoutSize;
 - (double)fittingSize;
-- (double)preferredSizeForOriginalSize:(double)a3 layoutSize:(double)a4;
+- (double)preferredSizeForOriginalSize:(double)size layoutSize:(double)layoutSize;
 - (id)description;
-- (id)initWithOriginalSize:(void *)a3 fittingSize:(double)a4 layoutSize:(double)a5 additionalData:(double)a6;
+- (id)initWithOriginalSize:(void *)size fittingSize:(double)fittingSize layoutSize:(double)layoutSize additionalData:(double)data;
 @end
 
 @implementation _UICollectionPreferredSize
 
 - (double)fittingSize
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -21,53 +21,53 @@
   }
 }
 
-+ (double)preferredSizeForOriginalSize:(double)a3 fittingSize:(uint64_t)a4 layoutSize:(void *)a5
++ (double)preferredSizeForOriginalSize:(double)size fittingSize:(uint64_t)fittingSize layoutSize:(void *)layoutSize
 {
   objc_opt_self();
-  v8 = [a5 widthDimension];
-  v9 = [v8 isEstimated];
+  widthDimension = [layoutSize widthDimension];
+  isEstimated = [widthDimension isEstimated];
 
-  if (!v9)
+  if (!isEstimated)
   {
-    a3 = a1;
+    size = self;
   }
 
-  v10 = [a5 heightDimension];
-  [v10 isEstimated];
+  heightDimension = [layoutSize heightDimension];
+  [heightDimension isEstimated];
 
-  return a3;
+  return size;
 }
 
-- (id)initWithOriginalSize:(void *)a3 fittingSize:(double)a4 layoutSize:(double)a5 additionalData:(double)a6
+- (id)initWithOriginalSize:(void *)size fittingSize:(double)fittingSize layoutSize:(double)layoutSize additionalData:(double)data
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = _UICollectionPreferredSize;
   v13 = objc_msgSendSuper2(&v16, sel_init);
   v14 = v13;
   if (v13)
   {
-    *(v13 + 1) = a4;
-    *(v13 + 2) = a5;
-    *(v13 + 3) = a6;
+    *(v13 + 1) = fittingSize;
+    *(v13 + 2) = layoutSize;
+    *(v13 + 3) = data;
     *(v13 + 4) = a7;
     objc_storeStrong(v13 + 5, a2);
-    objc_storeStrong(v14 + 7, a3);
+    objc_storeStrong(v14 + 7, size);
     *(v14 + 48) = 0;
   }
 
   return v14;
 }
 
-- (double)preferredSizeForOriginalSize:(double)a3 layoutSize:(double)a4
+- (double)preferredSizeForOriginalSize:(double)size layoutSize:(double)layoutSize
 {
-  if (a1)
+  if (self)
   {
-    return [(_UICollectionPreferredSize *)a3 preferredSizeForOriginalSize:a4 fittingSize:*(a1 + 24) layoutSize:_UICollectionPreferredSize, a2];
+    return [(_UICollectionPreferredSize *)size preferredSizeForOriginalSize:layoutSize fittingSize:*(self + 24) layoutSize:_UICollectionPreferredSize, a2];
   }
 
   else

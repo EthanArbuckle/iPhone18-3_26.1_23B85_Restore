@@ -1,16 +1,16 @@
 @interface DNDSMutableSyncSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DNDSMutableSyncSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSSyncSettings alloc];
-  v5 = [(DNDSSyncSettings *)self isPairSyncEnabled];
-  v6 = [(DNDSSyncSettings *)self isCloudSyncEnabled];
+  isPairSyncEnabled = [(DNDSSyncSettings *)self isPairSyncEnabled];
+  isCloudSyncEnabled = [(DNDSSyncSettings *)self isCloudSyncEnabled];
 
-  return [(DNDSSyncSettings *)v4 initWithPairSyncEnabled:v5 cloudSyncEnabled:v6];
+  return [(DNDSSyncSettings *)v4 initWithPairSyncEnabled:isPairSyncEnabled cloudSyncEnabled:isCloudSyncEnabled];
 }
 
 @end

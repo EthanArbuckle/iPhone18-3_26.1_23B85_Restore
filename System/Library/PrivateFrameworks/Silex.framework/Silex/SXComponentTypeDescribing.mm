@@ -1,42 +1,42 @@
 @interface SXComponentTypeDescribing
-+ (id)descriptionWithType:(id)a3 role:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionWithType:(id)type role:(int)role;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SXComponentTypeDescribing
 
-+ (id)descriptionWithType:(id)a3 role:(int)a4
++ (id)descriptionWithType:(id)type role:(int)role
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = objc_alloc_init(objc_opt_class());
   v7 = v6[2];
-  v6[2] = v5;
+  v6[2] = typeCopy;
 
-  *(v6 + 2) = a4;
+  *(v6 + 2) = role;
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SXComponentTypeDescribing *)self role];
-  v4 = [(SXComponentTypeDescribing *)self type];
-  v5 = [v4 hash];
+  role = [(SXComponentTypeDescribing *)self role];
+  type = [(SXComponentTypeDescribing *)self type];
+  v5 = [type hash];
 
-  return v5 ^ v3;
+  return v5 ^ role;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SXComponentTypeDescribing *)self role];
-  if (v5 == [v4 role])
+  equalCopy = equal;
+  role = [(SXComponentTypeDescribing *)self role];
+  if (role == [equalCopy role])
   {
-    v6 = [(SXComponentTypeDescribing *)self type];
-    v7 = [v4 type];
-    v8 = [v6 isEqual:v7];
+    type = [(SXComponentTypeDescribing *)self type];
+    type2 = [equalCopy type];
+    v8 = [type isEqual:type2];
   }
 
   else
@@ -47,11 +47,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(SXComponentTypeDescribing *)self type];
-  v6 = [v4 descriptionWithType:v5 role:{-[SXComponentTypeDescribing role](self, "role")}];
+  type = [(SXComponentTypeDescribing *)self type];
+  v6 = [v4 descriptionWithType:type role:{-[SXComponentTypeDescribing role](self, "role")}];
 
   return v6;
 }

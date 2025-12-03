@@ -11,7 +11,7 @@
 + (id)storeConfigurationForEnergyMode;
 + (id)storeConfigurationForLowPowerMode;
 + (id)storeConfigurationForPluggedIn;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -20,7 +20,7 @@
 + (id)BatteryLevel
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBatteryLevel];
+  configurationForBatteryLevel = [self configurationForBatteryLevel];
   v3 = +[BMDeviceBatteryLevel columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -32,7 +32,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Power.BatteryLevel" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.BatteryLevel" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.BatteryLevel" schema:v9 configuration:configurationForBatteryLevel];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -41,13 +41,13 @@
 
 + (id)configurationForBatteryLevel
 {
-  v3 = [a1 storeConfigurationForBatteryLevel];
-  v4 = [a1 syncPolicyForBatteryLevel];
+  storeConfigurationForBatteryLevel = [self storeConfigurationForBatteryLevel];
+  syncPolicyForBatteryLevel = [self syncPolicyForBatteryLevel];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BDE9A404-9A1D-4844-A47D-92DEC7628986"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.BatteryLevel" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.BatteryLevel" eventClass:objc_opt_class() storeConfig:storeConfigurationForBatteryLevel syncPolicy:syncPolicyForBatteryLevel legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -63,7 +63,7 @@
 + (id)PluggedIn
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPluggedIn];
+  configurationForPluggedIn = [self configurationForPluggedIn];
   v3 = +[BMDevicePluggedIn columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -75,7 +75,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Power.PluggedIn" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.PluggedIn" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.PluggedIn" schema:v9 configuration:configurationForPluggedIn];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -84,13 +84,13 @@
 
 + (id)configurationForPluggedIn
 {
-  v3 = [a1 storeConfigurationForPluggedIn];
-  v4 = [a1 syncPolicyForPluggedIn];
+  storeConfigurationForPluggedIn = [self storeConfigurationForPluggedIn];
+  syncPolicyForPluggedIn = [self syncPolicyForPluggedIn];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2FEE7364-BA27-47DB-9779-796E8D9B014E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.PluggedIn" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.PluggedIn" eventClass:objc_opt_class() storeConfig:storeConfigurationForPluggedIn syncPolicy:syncPolicyForPluggedIn legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -106,7 +106,7 @@
 + (id)EnergyMode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEnergyMode];
+  configurationForEnergyMode = [self configurationForEnergyMode];
   v3 = +[BMEnergyMode columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -118,7 +118,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Power.EnergyMode" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.EnergyMode" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.EnergyMode" schema:v9 configuration:configurationForEnergyMode];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -127,13 +127,13 @@
 
 + (id)configurationForEnergyMode
 {
-  v3 = [a1 storeConfigurationForEnergyMode];
-  v4 = [a1 syncPolicyForEnergyMode];
+  storeConfigurationForEnergyMode = [self storeConfigurationForEnergyMode];
+  syncPolicyForEnergyMode = [self syncPolicyForEnergyMode];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D5E993B1-3A29-4C8E-B575-DD880EF5DD66"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.EnergyMode" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.EnergyMode" eventClass:objc_opt_class() storeConfig:storeConfigurationForEnergyMode syncPolicy:syncPolicyForEnergyMode legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -149,7 +149,7 @@
 + (id)LowPowerMode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLowPowerMode];
+  configurationForLowPowerMode = [self configurationForLowPowerMode];
   v3 = +[BMDeviceLowPowerMode columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -161,7 +161,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Power.LowPowerMode" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.LowPowerMode" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Power.LowPowerMode" schema:v9 configuration:configurationForLowPowerMode];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -170,13 +170,13 @@
 
 + (id)configurationForLowPowerMode
 {
-  v3 = [a1 storeConfigurationForLowPowerMode];
-  v4 = [a1 syncPolicyForLowPowerMode];
+  storeConfigurationForLowPowerMode = [self storeConfigurationForLowPowerMode];
+  syncPolicyForLowPowerMode = [self syncPolicyForLowPowerMode];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"097B026F-5852-40F8-9DC8-FC433F1C36A2"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.LowPowerMode" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Power.LowPowerMode" eventClass:objc_opt_class() storeConfig:storeConfigurationForLowPowerMode syncPolicy:syncPolicyForLowPowerMode legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -189,32 +189,32 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"BatteryLevel"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"BatteryLevel"])
   {
-    v5 = [a1 BatteryLevel];
+    batteryLevel = [self BatteryLevel];
 LABEL_9:
-    v6 = v5;
+    v6 = batteryLevel;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"EnergyMode"])
+  if ([nameCopy isEqualToString:@"EnergyMode"])
   {
-    v5 = [a1 EnergyMode];
+    batteryLevel = [self EnergyMode];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"LowPowerMode"])
+  if ([nameCopy isEqualToString:@"LowPowerMode"])
   {
-    v5 = [a1 LowPowerMode];
+    batteryLevel = [self LowPowerMode];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"PluggedIn"])
+  if ([nameCopy isEqualToString:@"PluggedIn"])
   {
-    v5 = [a1 PluggedIn];
+    batteryLevel = [self PluggedIn];
     goto LABEL_9;
   }
 

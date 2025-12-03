@@ -1,31 +1,31 @@
 @interface RWIProtocolDOMStorageDomainEventDispatcher
-- (RWIProtocolDOMStorageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
-- (void)domStorageItemAddedWithStorageId:(id)a3 key:(id)a4 newValue:(id)a5;
-- (void)domStorageItemRemovedWithStorageId:(id)a3 key:(id)a4;
-- (void)domStorageItemUpdatedWithStorageId:(id)a3 key:(id)a4 oldValue:(id)a5 newValue:(id)a6;
-- (void)domStorageItemsClearedWithStorageId:(id)a3;
+- (RWIProtocolDOMStorageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
+- (void)domStorageItemAddedWithStorageId:(id)id key:(id)key newValue:(id)value;
+- (void)domStorageItemRemovedWithStorageId:(id)id key:(id)key;
+- (void)domStorageItemUpdatedWithStorageId:(id)id key:(id)key oldValue:(id)value newValue:(id)newValue;
+- (void)domStorageItemsClearedWithStorageId:(id)id;
 @end
 
 @implementation RWIProtocolDOMStorageDomainEventDispatcher
 
-- (RWIProtocolDOMStorageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolDOMStorageDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMStorageDomainEventDispatcher;
   result = [(RWIProtocolDOMStorageDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
 }
 
-- (void)domStorageItemsClearedWithStorageId:(id)a3
+- (void)domStorageItemsClearedWithStorageId:(id)id
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!id)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"storageId"}];
   }
@@ -42,9 +42,9 @@
   v8 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  if (a3)
+  if (id)
   {
-    [a3 toJSONObject];
+    [id toJSONObject];
     v9 = v26;
   }
 
@@ -141,17 +141,17 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v32];
 }
 
-- (void)domStorageItemRemovedWithStorageId:(id)a3 key:(id)a4
+- (void)domStorageItemRemovedWithStorageId:(id)id key:(id)key
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
   v8 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"storageId"}];
   }
 
-  if (!a4)
+  if (!key)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*v8 format:{@"required parameter '%@' cannot be nil", @"key"}];
   }
@@ -168,9 +168,9 @@
   v11 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  if (a3)
+  if (id)
   {
-    [a3 toJSONObject];
+    [id toJSONObject];
     v12 = v31;
   }
 
@@ -237,7 +237,7 @@
   v21 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  MEMORY[0x2743DB520](&v32, a4);
+  MEMORY[0x2743DB520](&v32, key);
   WTF::JSONImpl::ObjectBase::setString(v21, &v33, &v32);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v32);
   v22 = v36;
@@ -289,17 +289,17 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v37];
 }
 
-- (void)domStorageItemAddedWithStorageId:(id)a3 key:(id)a4 newValue:(id)a5
+- (void)domStorageItemAddedWithStorageId:(id)id key:(id)key newValue:(id)value
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
   v10 = MEMORY[0x277CBE660];
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (key)
     {
 LABEL_3:
-      if (a5)
+      if (value)
       {
         goto LABEL_5;
       }
@@ -311,14 +311,14 @@ LABEL_3:
   else
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"storageId"}];
-    if (a4)
+    if (key)
     {
       goto LABEL_3;
     }
   }
 
   v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"key"}];
-  if (!a5)
+  if (!value)
   {
 LABEL_4:
     v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"newValue"}];
@@ -337,9 +337,9 @@ LABEL_5:
   v13 = v39;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v37 = v41[0];
-  if (a3)
+  if (id)
   {
-    [a3 toJSONObject];
+    [id toJSONObject];
     v14 = v35;
   }
 
@@ -406,13 +406,13 @@ LABEL_5:
   v23 = v39;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v37 = v41[0];
-  MEMORY[0x2743DB520](&v36, a4);
+  MEMORY[0x2743DB520](&v36, key);
   WTF::JSONImpl::ObjectBase::setString(v23, &v37, &v36);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v36);
   v24 = v39;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v37 = v41[0];
-  MEMORY[0x2743DB520](&v35, a5);
+  MEMORY[0x2743DB520](&v35, value);
   WTF::JSONImpl::ObjectBase::setString(v24, &v37, &v35);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v35);
   v25 = v40;
@@ -464,23 +464,23 @@ LABEL_5:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v41];
 }
 
-- (void)domStorageItemUpdatedWithStorageId:(id)a3 key:(id)a4 oldValue:(id)a5 newValue:(id)a6
+- (void)domStorageItemUpdatedWithStorageId:(id)id key:(id)key oldValue:(id)value newValue:(id)newValue
 {
   v10 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v11 = v10;
   v12 = MEMORY[0x277CBE660];
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (key)
     {
 LABEL_3:
-      if (!a5)
+      if (!value)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      if (a6)
+      if (newValue)
       {
         goto LABEL_10;
       }
@@ -492,21 +492,21 @@ LABEL_8:
   else
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"storageId"}];
-    if (a4)
+    if (key)
     {
       goto LABEL_3;
     }
   }
 
   v10 = [MEMORY[0x277CBEAD8] raise:*v12 format:{@"required parameter '%@' cannot be nil", @"key"}];
-  if (a5)
+  if (value)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
   v10 = [MEMORY[0x277CBEAD8] raise:*v12 format:{@"required parameter '%@' cannot be nil", @"oldValue"}];
-  if (!a6)
+  if (!newValue)
   {
 LABEL_9:
     v10 = [MEMORY[0x277CBEAD8] raise:*v12 format:{@"required parameter '%@' cannot be nil", @"newValue"}];
@@ -525,9 +525,9 @@ LABEL_10:
   v15 = v43;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v41 = v45[0];
-  if (a3)
+  if (id)
   {
-    [a3 toJSONObject];
+    [id toJSONObject];
     v16 = v39;
   }
 
@@ -594,19 +594,19 @@ LABEL_10:
   v25 = v43;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v41 = v45[0];
-  MEMORY[0x2743DB520](&v40, a4);
+  MEMORY[0x2743DB520](&v40, key);
   WTF::JSONImpl::ObjectBase::setString(v25, &v41, &v40);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v40);
   v26 = v43;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v41 = v45[0];
-  MEMORY[0x2743DB520](&v39, a5);
+  MEMORY[0x2743DB520](&v39, value);
   WTF::JSONImpl::ObjectBase::setString(v26, &v41, &v39);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v39);
   v27 = v43;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v41 = v45[0];
-  MEMORY[0x2743DB520](&v38, a6);
+  MEMORY[0x2743DB520](&v38, newValue);
   WTF::JSONImpl::ObjectBase::setString(v27, &v41, &v38);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v38);
   v28 = v44;

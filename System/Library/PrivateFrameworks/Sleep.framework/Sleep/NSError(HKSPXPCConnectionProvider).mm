@@ -6,10 +6,10 @@
 
 - (BOOL)hksp_shouldRetryMessage
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCA050]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x277CCA050]];
 
-  return v3 && ([a1 code] & 0xFFFFFFFFFFFFFFFDLL) == 4097;
+  return v3 && ([self code] & 0xFFFFFFFFFFFFFFFDLL) == 4097;
 }
 
 @end

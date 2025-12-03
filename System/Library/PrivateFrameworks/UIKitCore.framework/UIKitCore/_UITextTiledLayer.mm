@@ -1,25 +1,25 @@
 @interface _UITextTiledLayer
 - (NSArray)tiles;
 - (_UITextTiledLayer)init;
-- (id)_prepareNonTiledGhostLayersForVisibleBounds:(CGRect)a3 inBounds:(CGRect)a4;
-- (id)_prepareTilesForVisibleBounds:(CGRect)a3 inBounds:(CGRect)a4;
-- (id)_preparedTileForFrame:(CGRect)a3 mask:(id)a4 opacity:(double)a5 deferred:(BOOL)a6;
+- (id)_prepareNonTiledGhostLayersForVisibleBounds:(CGRect)bounds inBounds:(CGRect)inBounds;
+- (id)_prepareTilesForVisibleBounds:(CGRect)bounds inBounds:(CGRect)inBounds;
+- (id)_preparedTileForFrame:(CGRect)frame mask:(id)mask opacity:(double)opacity deferred:(BOOL)deferred;
 - (void)_didSetDelegate;
-- (void)_drawInContext:(CGContext *)a3 offset:(CGPoint)a4 clip:(CGPath *)a5;
-- (void)_updateTilingViewportWindow:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
-- (void)layerWillDraw:(id)a3;
+- (void)_drawInContext:(CGContext *)context offset:(CGPoint)offset clip:(CGPath *)clip;
+- (void)_updateTilingViewportWindow:(id)window;
+- (void)drawInContext:(CGContext *)context;
+- (void)layerWillDraw:(id)draw;
 - (void)layoutSublayers;
 - (void)resumeTiling;
-- (void)setContentsFormat:(id)a3;
-- (void)setContentsMultiplyColor:(CGColor *)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDrawsAsynchronously:(BOOL)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setRasterizationScale:(double)a3;
-- (void)setUnsafeUnretainedDelegate:(id)a3;
-- (void)setUsesTiledLayers:(BOOL)a3;
+- (void)setContentsFormat:(id)format;
+- (void)setContentsMultiplyColor:(CGColor *)color;
+- (void)setContentsScale:(double)scale;
+- (void)setDelegate:(id)delegate;
+- (void)setDrawsAsynchronously:(BOOL)asynchronously;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setRasterizationScale:(double)scale;
+- (void)setUnsafeUnretainedDelegate:(id)delegate;
+- (void)setUsesTiledLayers:(BOOL)layers;
 @end
 
 @implementation _UITextTiledLayer
@@ -45,25 +45,25 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = _UITextTiledLayer;
-  [(_UITextTiledLayer *)&v4 setDelegate:a3];
+  [(_UITextTiledLayer *)&v4 setDelegate:delegate];
   [(_UITextTiledLayer *)self _didSetDelegate];
 }
 
-- (void)setUnsafeUnretainedDelegate:(id)a3
+- (void)setUnsafeUnretainedDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = _UITextTiledLayer;
-  [(_UITextTiledLayer *)&v4 setUnsafeUnretainedDelegate:a3];
+  [(_UITextTiledLayer *)&v4 setUnsafeUnretainedDelegate:delegate];
   [(_UITextTiledLayer *)self _didSetDelegate];
 }
 
 - (void)_didSetDelegate
 {
-  v3 = [(_UITextTiledLayer *)self delegate];
+  delegate = [(_UITextTiledLayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = 64;
@@ -76,7 +76,7 @@
 
   *&self->_tcTiledLayerFlags = *&self->_tcTiledLayerFlags & 0xBF | v4;
 
-  v6 = [(_UITextTiledLayer *)self delegate];
+  delegate2 = [(_UITextTiledLayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = 0x80;
@@ -90,64 +90,64 @@
   *&self->_tcTiledLayerFlags = v5 & 0x80 | *&self->_tcTiledLayerFlags & 0x7F;
 }
 
-- (void)layerWillDraw:(id)a3
+- (void)layerWillDraw:(id)draw
 {
   if ((*&self->_tcTiledLayerFlags & 0x80000000) != 0)
   {
-    v5 = [(_UITextTiledLayer *)self delegate];
-    [v5 layerWillDraw:self];
+    delegate = [(_UITextTiledLayer *)self delegate];
+    [delegate layerWillDraw:self];
   }
 }
 
-- (void)_drawInContext:(CGContext *)a3 offset:(CGPoint)a4 clip:(CGPath *)a5
+- (void)_drawInContext:(CGContext *)context offset:(CGPoint)offset clip:(CGPath *)clip
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSaveGState(a3);
-  if (a5)
+  y = offset.y;
+  x = offset.x;
+  CGContextSaveGState(context);
+  if (clip)
   {
-    CGContextAddPath(a3, a5);
-    CGContextEOClip(a3);
+    CGContextAddPath(context, clip);
+    CGContextEOClip(context);
   }
 
-  CGContextTranslateCTM(a3, -x, -y);
+  CGContextTranslateCTM(context, -x, -y);
   v10.receiver = self;
   v10.super_class = _UITextTiledLayer;
-  [(_UITextTiledLayer *)&v10 drawInContext:a3];
-  CGContextRestoreGState(a3);
+  [(_UITextTiledLayer *)&v10 drawInContext:context];
+  CGContextRestoreGState(context);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   if ((*&self->_tcTiledLayerFlags & 1) != 0 || self->_clip || ![(NSMutableArray *)self->_visibleTiles count])
   {
     if (self->_clip)
     {
-      CGContextSaveGState(a3);
-      CGContextAddPath(a3, [(UIBezierPath *)self->_clip CGPath]);
-      CGContextEOClip(a3);
+      CGContextSaveGState(context);
+      CGContextAddPath(context, [(UIBezierPath *)self->_clip CGPath]);
+      CGContextEOClip(context);
       v6.receiver = self;
       v6.super_class = _UITextTiledLayer;
-      [(_UITextTiledLayer *)&v6 drawInContext:a3];
-      CGContextRestoreGState(a3);
+      [(_UITextTiledLayer *)&v6 drawInContext:context];
+      CGContextRestoreGState(context);
     }
 
     else
     {
       v5.receiver = self;
       v5.super_class = _UITextTiledLayer;
-      [(_UITextTiledLayer *)&v5 drawInContext:a3];
+      [(_UITextTiledLayer *)&v5 drawInContext:context];
     }
   }
 }
 
-- (void)setUsesTiledLayers:(BOOL)a3
+- (void)setUsesTiledLayers:(BOOL)layers
 {
   tcTiledLayerFlags = self->_tcTiledLayerFlags;
-  if ((tcTiledLayerFlags & 1) == a3)
+  if ((tcTiledLayerFlags & 1) == layers)
   {
-    *&self->_tcTiledLayerFlags = tcTiledLayerFlags & 0xFE | !a3;
-    if (a3)
+    *&self->_tcTiledLayerFlags = tcTiledLayerFlags & 0xFE | !layers;
+    if (layers)
     {
       [(_UITextTiledLayer *)self setContents:0];
     }
@@ -170,15 +170,15 @@
   return v2;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  v18 = a3;
+  rectCopy = rect;
   v25 = *MEMORY[0x1E69E9840];
   if ((*&self->_tcTiledLayerFlags & 1) != 0 || ![(NSMutableArray *)self->_visibleTiles count])
   {
     v19.receiver = self;
     v19.super_class = _UITextTiledLayer;
-    [(_UITextTiledLayer *)&v19 setNeedsDisplayInRect:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height, *&v18.origin.x, *&v18.origin.y, *&v18.size.width, *&v18.size.height];
+    [(_UITextTiledLayer *)&v19 setNeedsDisplayInRect:rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height, *&rectCopy.origin.x, *&rectCopy.origin.y, *&rectCopy.size.width, *&rectCopy.size.height];
   }
 
   else if ((*&self->_tcTiledLayerFlags & 0x3C) == 0)
@@ -208,7 +208,7 @@
 
           v13 = *(*(&v20 + 1) + 8 * i);
           [v13 frame];
-          v27 = CGRectIntersection(v26, v18);
+          v27 = CGRectIntersection(v26, rectCopy);
           x = v27.origin.x;
           y = v27.origin.y;
           width = v27.size.width;
@@ -232,15 +232,15 @@
   }
 }
 
-- (id)_preparedTileForFrame:(CGRect)a3 mask:(id)a4 opacity:(double)a5 deferred:(BOOL)a6
+- (id)_preparedTileForFrame:(CGRect)frame mask:(id)mask opacity:(double)opacity deferred:(BOOL)deferred
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  deferredCopy = deferred;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  maskCopy = mask;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -285,7 +285,7 @@ LABEL_3:
 
     v22 = v20;
     v23 = v22;
-    if (v6)
+    if (deferredCopy)
     {
 
       v21 = &__block_literal_global_613;
@@ -313,7 +313,7 @@ LABEL_3:
   {
 LABEL_9:
 
-    if (v6)
+    if (deferredCopy)
     {
       v21 = &__block_literal_global_613;
     }
@@ -332,8 +332,8 @@ LABEL_14:
     [(_UITextTiledLayer *)self rasterizationScale];
     [v23 setRasterizationScale:?];
     [v23 setDrawsAsynchronously:{-[_UITextTiledLayer drawsAsynchronously](self, "drawsAsynchronously")}];
-    v24 = [(_UITextTiledLayer *)self contentsFormat];
-    [v23 setContentsFormat:v24];
+    contentsFormat = [(_UITextTiledLayer *)self contentsFormat];
+    [v23 setContentsFormat:contentsFormat];
 
     [v23 setContentsMultiplyColor:{-[_UITextTiledLayer contentsMultiplyColor](self, "contentsMultiplyColor")}];
     [(_UITextTiledLayer *)self addSublayer:v23];
@@ -341,7 +341,7 @@ LABEL_14:
   }
 
   v27 = v23[6];
-  if (!v14)
+  if (!maskCopy)
   {
     if (!v27)
     {
@@ -353,21 +353,21 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  if (!v27 || ([v27 isEqual:v14] & 1) == 0)
+  if (!v27 || ([v27 isEqual:maskCopy] & 1) == 0)
   {
-    objc_storeStrong(v23 + 6, a4);
+    objc_storeStrong(v23 + 6, mask);
 LABEL_25:
     v21[2](v21, v23);
   }
 
 LABEL_26:
-  *&v25 = a5;
+  *&v25 = opacity;
   [v23 setOpacity:{v25, v29}];
 
   return v23;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -393,7 +393,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContentsScale:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setContentsScale:{scale, v10}];
       }
 
       while (v7 != v9);
@@ -404,7 +404,7 @@ LABEL_26:
   }
 }
 
-- (void)setRasterizationScale:(double)a3
+- (void)setRasterizationScale:(double)scale
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -430,7 +430,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setRasterizationScale:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setRasterizationScale:{scale, v10}];
       }
 
       while (v7 != v9);
@@ -441,9 +441,9 @@ LABEL_26:
   }
 }
 
-- (void)setDrawsAsynchronously:(BOOL)a3
+- (void)setDrawsAsynchronously:(BOOL)asynchronously
 {
-  v3 = a3;
+  asynchronouslyCopy = asynchronously;
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = _UITextTiledLayer;
@@ -468,7 +468,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setDrawsAsynchronously:{v3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setDrawsAsynchronously:{asynchronouslyCopy, v10}];
       }
 
       while (v7 != v9);
@@ -479,13 +479,13 @@ LABEL_26:
   }
 }
 
-- (void)setContentsFormat:(id)a3
+- (void)setContentsFormat:(id)format
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formatCopy = format;
   v14.receiver = self;
   v14.super_class = _UITextTiledLayer;
-  [(_UITextTiledLayer *)&v14 setContentsFormat:v4];
+  [(_UITextTiledLayer *)&v14 setContentsFormat:formatCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -506,7 +506,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContentsFormat:v4, v10];
+        [*(*(&v10 + 1) + 8 * v9++) setContentsFormat:formatCopy, v10];
       }
 
       while (v7 != v9);
@@ -517,7 +517,7 @@ LABEL_26:
   }
 }
 
-- (void)setContentsMultiplyColor:(CGColor *)a3
+- (void)setContentsMultiplyColor:(CGColor *)color
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -543,7 +543,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContentsMultiplyColor:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setContentsMultiplyColor:{color, v10}];
       }
 
       while (v7 != v9);
@@ -554,18 +554,18 @@ LABEL_26:
   }
 }
 
-- (id)_prepareTilesForVisibleBounds:(CGRect)a3 inBounds:(CGRect)a4
+- (id)_prepareTilesForVisibleBounds:(CGRect)bounds inBounds:(CGRect)inBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = inBounds.size.height;
+  width = inBounds.size.width;
+  y = inBounds.origin.y;
+  x = inBounds.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
   v91 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3))
+  if (CGRectIsEmpty(bounds))
   {
     v13 = 0;
   }
@@ -648,8 +648,8 @@ LABEL_26:
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ((*&self->_tcTiledLayerFlags & 0x40) != 0)
     {
-      v31 = [(_UITextTiledLayer *)self delegate];
-      v30 = [v31 _textTiledLayer:self maskedRectsInVisibleRect:{v75, v76, rect, rect2}];
+      delegate = [(_UITextTiledLayer *)self delegate];
+      v30 = [delegate _textTiledLayer:self maskedRectsInVisibleRect:{v75, v76, rect, rect2}];
     }
 
     else
@@ -860,14 +860,14 @@ LABEL_26:
   return v13;
 }
 
-- (id)_prepareNonTiledGhostLayersForVisibleBounds:(CGRect)a3 inBounds:(CGRect)a4
+- (id)_prepareNonTiledGhostLayersForVisibleBounds:(CGRect)bounds inBounds:(CGRect)inBounds
 {
   v45 = *MEMORY[0x1E69E9840];
-  rect2[0] = a3.origin.x;
-  y = a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
-  if (CGRectIsEmpty(a3))
+  rect2[0] = bounds.origin.x;
+  y = bounds.origin.y;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  if (CGRectIsEmpty(bounds))
   {
     v8 = 0;
     v9 = 0;
@@ -875,13 +875,13 @@ LABEL_26:
 
   else
   {
-    v10 = [(_UITextTiledLayer *)self delegate];
+    delegate = [(_UITextTiledLayer *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(_UITextTiledLayer *)self delegate];
-      v13 = [v12 _textTiledLayer:self maskedRectsInVisibleRect:{rect2[0], y, width, height}];
+      delegate2 = [(_UITextTiledLayer *)self delegate];
+      v13 = [delegate2 _textTiledLayer:self maskedRectsInVisibleRect:{rect2[0], y, width, height}];
     }
 
     else
@@ -934,7 +934,7 @@ LABEL_26:
                 v48.origin.y = v23;
                 v48.size.width = v25;
                 v48.size.height = v27;
-                v49 = CGRectIntersection(v48, a4);
+                v49 = CGRectIntersection(v48, inBounds);
                 x = v49.origin.x;
                 v30 = v49.origin.y;
                 v31 = v49.size.width;
@@ -949,7 +949,7 @@ LABEL_26:
 
                 if (!v8)
                 {
-                  v8 = [UIBezierPath bezierPathWithRect:0.0, 0.0, a4.size.width, a4.size.height];
+                  v8 = [UIBezierPath bezierPathWithRect:0.0, 0.0, inBounds.size.width, inBounds.size.height];
                 }
 
                 v36 = [UIBezierPath bezierPathWithRect:x, v30, v31, v32];
@@ -983,9 +983,9 @@ LABEL_26:
   return v9;
 }
 
-- (void)_updateTilingViewportWindow:(id)a3
+- (void)_updateTilingViewportWindow:(id)window
 {
-  obj = [a3 layer];
+  obj = [window layer];
   tcTiledLayerFlags = self->_tcTiledLayerFlags;
   WeakRetained = objc_loadWeakRetained(&self->_viewportLayer);
 
@@ -1330,10 +1330,10 @@ LABEL_19:
     v98.size.height = height;
     if (!CGRectIsEmpty(v98))
     {
-      v61 = [(_UITextTiledLayer *)self contents];
-      if (v61)
+      contents = [(_UITextTiledLayer *)self contents];
+      if (contents)
       {
-        v62 = v61;
+        v62 = contents;
         clip = self->_clip;
         v64 = v26;
         v65 = clip;
@@ -1389,8 +1389,8 @@ LABEL_44:
   tcTiledLayerFlags = self->_tcTiledLayerFlags;
   if ((tcTiledLayerFlags & 0x3C) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UITextTiledLayer.m" lineNumber:776 description:@"suspendLayout underflow!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextTiledLayer.m" lineNumber:776 description:@"suspendLayout underflow!"];
 
     tcTiledLayerFlags = self->_tcTiledLayerFlags;
   }

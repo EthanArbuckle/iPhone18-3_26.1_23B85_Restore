@@ -1,44 +1,44 @@
 @interface MapsSuggestionsTransportModePredictionOutput
-- (MapsSuggestionsTransportModePredictionOutput)initWithActualTransportMode:(id)a3 actualTransportModeProbability:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (MapsSuggestionsTransportModePredictionOutput)initWithActualTransportMode:(id)mode actualTransportModeProbability:(id)probability;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation MapsSuggestionsTransportModePredictionOutput
 
-- (MapsSuggestionsTransportModePredictionOutput)initWithActualTransportMode:(id)a3 actualTransportModeProbability:(id)a4
+- (MapsSuggestionsTransportModePredictionOutput)initWithActualTransportMode:(id)mode actualTransportModeProbability:(id)probability
 {
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  probabilityCopy = probability;
   v12.receiver = self;
   v12.super_class = MapsSuggestionsTransportModePredictionOutput;
   v9 = [(MapsSuggestionsTransportModePredictionOutput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actualTransportMode, a3);
-    objc_storeStrong(&v10->_actualTransportModeProbability, a4);
+    objc_storeStrong(&v9->_actualTransportMode, mode);
+    objc_storeStrong(&v10->_actualTransportModeProbability, probability);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"actualTransportMode"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"actualTransportMode"])
   {
-    v5 = [(MapsSuggestionsTransportModePredictionOutput *)self actualTransportMode];
-    v6 = [MLFeatureValue featureValueWithString:v5];
+    actualTransportMode = [(MapsSuggestionsTransportModePredictionOutput *)self actualTransportMode];
+    v6 = [MLFeatureValue featureValueWithString:actualTransportMode];
 LABEL_5:
     v7 = v6;
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"actualTransportModeProbability"])
+  if ([nameCopy isEqualToString:@"actualTransportModeProbability"])
   {
-    v5 = [(MapsSuggestionsTransportModePredictionOutput *)self actualTransportModeProbability];
-    v6 = [MLFeatureValue featureValueWithDictionary:v5 error:0];
+    actualTransportMode = [(MapsSuggestionsTransportModePredictionOutput *)self actualTransportModeProbability];
+    v6 = [MLFeatureValue featureValueWithDictionary:actualTransportMode error:0];
     goto LABEL_5;
   }
 

@@ -1,31 +1,31 @@
 @interface NTKComplicationControllerAssertion
 - (BOOL)invalidated;
-- (NTKComplicationControllerAssertion)initWithController:(id)a3 dataMode:(int64_t)a4;
+- (NTKComplicationControllerAssertion)initWithController:(id)controller dataMode:(int64_t)mode;
 - (int64_t)dataMode;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDataMode:(int64_t)a3;
+- (void)setDataMode:(int64_t)mode;
 @end
 
 @implementation NTKComplicationControllerAssertion
 
-- (NTKComplicationControllerAssertion)initWithController:(id)a3 dataMode:(int64_t)a4
+- (NTKComplicationControllerAssertion)initWithController:(id)controller dataMode:(int64_t)mode
 {
-  v7 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = NTKComplicationControllerAssertion;
   v8 = [(NTKComplicationControllerAssertion *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controller, a3);
+    objc_storeStrong(&v8->_controller, controller);
     v9->_lock._os_unfair_lock_opaque = 0;
-    v9->_lock_dataMode = a4;
+    v9->_lock_dataMode = mode;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__NTKComplicationControllerAssertion_initWithController_dataMode___block_invoke;
     v11[3] = &unk_27877E438;
-    v12 = v7;
+    v12 = controllerCopy;
     v13 = v9;
     dispatch_async(MEMORY[0x277D85CD0], v11);
   }
@@ -60,20 +60,20 @@ uint64_t __66__NTKComplicationControllerAssertion_initWithController_dataMode___
   [(NTKComplicationControllerAssertion *)&v3 dealloc];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   os_unfair_lock_lock(&self->_lock);
   lock_dataMode = self->_lock_dataMode;
-  self->_lock_dataMode = a3;
+  self->_lock_dataMode = mode;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_dataMode != a3)
+  if (lock_dataMode != mode)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__NTKComplicationControllerAssertion_setDataMode___block_invoke;
     v6[3] = &unk_2787805D8;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = mode;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }

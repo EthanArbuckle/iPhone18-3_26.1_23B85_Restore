@@ -1,35 +1,35 @@
 @interface MNDisplayETAInfo
-+ (BOOL)isDisplayDate:(id)a3 equalTo:(id)a4;
++ (BOOL)isDisplayDate:(id)date equalTo:(id)to;
 + (id)dateFormatter;
-+ (id)displayETAInfoForRouteInfo:(id)a3 routeCoordinate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MNDisplayETAInfo)initWithCoder:(id)a3;
-- (MNDisplayETAInfo)initWithDisplayETAToEndOfLeg:(id)a3 displayRemainingMinutesToEndOfLeg:(unint64_t)a4 displayETAToEndOfRoute:(id)a5 displayRemainingMinutesToEndOfRoute:(unint64_t)a6;
++ (id)displayETAInfoForRouteInfo:(id)info routeCoordinate:(id)coordinate;
+- (BOOL)isEqual:(id)equal;
+- (MNDisplayETAInfo)initWithCoder:(id)coder;
+- (MNDisplayETAInfo)initWithDisplayETAToEndOfLeg:(id)leg displayRemainingMinutesToEndOfLeg:(unint64_t)ofLeg displayETAToEndOfRoute:(id)route displayRemainingMinutesToEndOfRoute:(unint64_t)ofRoute;
 - (NSDate)displayETAToEndOfLeg;
 - (NSDate)etaToEndOfRoute;
 - (id)description;
 - (unint64_t)displayRemainingMinutesToEndOfLeg;
 - (unint64_t)legIndex;
 - (unint64_t)remainingMinutesToEndOfRoute;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNDisplayETAInfo
 
 - (unint64_t)displayRemainingMinutesToEndOfLeg
 {
-  v2 = [(MNDisplayETAInfo *)self legInfos];
-  v3 = [v2 firstObject];
-  v4 = [v3 remainingMinutes];
+  legInfos = [(MNDisplayETAInfo *)self legInfos];
+  firstObject = [legInfos firstObject];
+  remainingMinutes = [firstObject remainingMinutes];
 
-  return v4;
+  return remainingMinutes;
 }
 
 - (NSDate)displayETAToEndOfLeg
 {
-  v2 = [(MNDisplayETAInfo *)self legInfos];
-  v3 = [v2 firstObject];
-  v4 = [v3 eta];
+  legInfos = [(MNDisplayETAInfo *)self legInfos];
+  firstObject = [legInfos firstObject];
+  v4 = [firstObject eta];
 
   return v4;
 }
@@ -70,8 +70,8 @@
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = [v4 componentsJoinedByString:{@", "}];
-  v13 = [(MNDisplayETAInfo *)self etaToEndOfRoute];
-  v14 = [v3 stringFromDate:v13];
+  etaToEndOfRoute = [(MNDisplayETAInfo *)self etaToEndOfRoute];
+  v14 = [v3 stringFromDate:etaToEndOfRoute];
   v15 = [v11 stringWithFormat:@"%@ | endOfRoute: %@ / %d min", v12, v14, -[MNDisplayETAInfo remainingMinutesToEndOfRoute](self, "remainingMinutesToEndOfRoute")];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -93,8 +93,8 @@
 
 - (NSDate)etaToEndOfRoute
 {
-  v2 = [(NSArray *)self->_legInfos lastObject];
-  v3 = [v2 eta];
+  lastObject = [(NSArray *)self->_legInfos lastObject];
+  v3 = [lastObject eta];
 
   return v3;
 }
@@ -140,13 +140,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[2];
     v7 = self->_routeID;
     v8 = v6;
@@ -181,35 +181,35 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   routeID = self->_routeID;
-  v5 = a3;
-  [v5 encodeObject:routeID forKey:@"_routeID"];
-  [v5 encodeObject:self->_legInfos forKey:@"_legInfos"];
-  [v5 encodeBool:self->_isUsingServerDisplayETA forKey:@"_isUsingServerDisplayETA"];
+  coderCopy = coder;
+  [coderCopy encodeObject:routeID forKey:@"_routeID"];
+  [coderCopy encodeObject:self->_legInfos forKey:@"_legInfos"];
+  [coderCopy encodeBool:self->_isUsingServerDisplayETA forKey:@"_isUsingServerDisplayETA"];
 }
 
-- (MNDisplayETAInfo)initWithCoder:(id)a3
+- (MNDisplayETAInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MNDisplayETAInfo;
   v5 = [(MNDisplayETAInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
     routeID = v5->_routeID;
     v5->_routeID = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_legInfos"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_legInfos"];
     legInfos = v5->_legInfos;
     v5->_legInfos = v11;
 
-    v5->_isUsingServerDisplayETA = [v4 decodeBoolForKey:@"_isUsingServerDisplayETA"];
+    v5->_isUsingServerDisplayETA = [coderCopy decodeBoolForKey:@"_isUsingServerDisplayETA"];
     v13 = v5;
   }
 
@@ -228,18 +228,18 @@ uint64_t __33__MNDisplayETAInfo_dateFormatter__block_invoke()
   return [v2 setTimeStyle:1];
 }
 
-+ (BOOL)isDisplayDate:(id)a3 equalTo:(id)a4
++ (BOOL)isDisplayDate:(id)date equalTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  dateCopy = date;
+  toCopy = to;
+  v7 = toCopy;
+  if (dateCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (dateCopy && toCopy)
     {
-      v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v10 = [v9 compareDate:v5 toDate:v7 toUnitGranularity:64];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v10 = [currentCalendar compareDate:dateCopy toDate:v7 toUnitGranularity:64];
 
       v8 = v10 == 0;
     }
@@ -253,27 +253,27 @@ uint64_t __33__MNDisplayETAInfo_dateFormatter__block_invoke()
   return v8;
 }
 
-+ (id)displayETAInfoForRouteInfo:(id)a3 routeCoordinate:(id)a4
++ (id)displayETAInfoForRouteInfo:(id)info routeCoordinate:(id)coordinate
 {
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 route];
-  v7 = [v6 legIndexForRouteCoordinate:a4];
+  infoCopy = info;
+  route = [infoCopy route];
+  v7 = [route legIndexForRouteCoordinate:coordinate];
 
   v92 = -1;
-  v8 = [v5 etaRoute];
-  v9 = [v8 serverDisplayETA];
-  if (!v9)
+  etaRoute = [infoCopy etaRoute];
+  serverDisplayETA = [etaRoute serverDisplayETA];
+  if (!serverDisplayETA)
   {
     goto LABEL_6;
   }
 
-  v10 = v9;
-  v11 = [v8 legs];
-  v12 = [v11 firstObject];
-  v13 = [v12 originalLegIndex];
+  v10 = serverDisplayETA;
+  legs = [etaRoute legs];
+  firstObject = [legs firstObject];
+  originalLegIndex = [firstObject originalLegIndex];
 
-  if (v13 != v7)
+  if (originalLegIndex != v7)
   {
     goto LABEL_6;
   }
@@ -284,22 +284,22 @@ uint64_t __33__MNDisplayETAInfo_dateFormatter__block_invoke()
   [v16 timeIntervalSinceReferenceDate];
   v18 = v17;
 
-  v19 = [v8 responseDate];
-  [v19 timeIntervalSinceReferenceDate];
+  responseDate = [etaRoute responseDate];
+  [responseDate timeIntervalSinceReferenceDate];
   v21 = v20 + v15;
 
   if (v18 < v21)
   {
-    v22 = [v8 serverDisplayETA];
-    [v22 timeIntervalSinceNow];
+    serverDisplayETA2 = [etaRoute serverDisplayETA];
+    [serverDisplayETA2 timeIntervalSinceNow];
     v24 = v23;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v26 = floor(v25 * 0.0166666667);
-    [v22 timeIntervalSinceReferenceDate];
+    [serverDisplayETA2 timeIntervalSinceReferenceDate];
     v28 = (floor(v27 * 0.0166666667) - v26);
     v92 = v28;
     v29 = 1;
-    if (!v22)
+    if (!serverDisplayETA2)
     {
       goto LABEL_12;
     }
@@ -308,20 +308,20 @@ uint64_t __33__MNDisplayETAInfo_dateFormatter__block_invoke()
   else
   {
 LABEL_6:
-    v30 = [v5 route];
-    v31 = [v5 etaRoute];
-    [v30 remainingTimeToEndOfCurrentLegFrom:a4 etaRoute:v31];
+    route2 = [infoCopy route];
+    etaRoute2 = [infoCopy etaRoute];
+    [route2 remainingTimeToEndOfCurrentLegFrom:coordinate etaRoute:etaRoute2];
     v24 = v32;
 
     v91 = 0;
     MNDisplayETAAndRemainingMinutes(&v91, &v92, v24);
-    v22 = v91;
+    serverDisplayETA2 = v91;
     v29 = 0;
     v28 = v92;
-    if (!v22)
+    if (!serverDisplayETA2)
     {
 LABEL_12:
-      v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got an invalid display ETA to end of leg : %@ %llu", v22, v28];
+      v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got an invalid display ETA to end of leg : %@ %llu", serverDisplayETA2, v28];
       v65 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
@@ -349,73 +349,73 @@ LABEL_12:
   }
 
   v83 = v29;
-  v33 = [v5 route];
-  v34 = [v33 legs];
-  v35 = [v34 objectAtIndexedSubscript:v7];
+  route3 = [infoCopy route];
+  legs2 = [route3 legs];
+  v35 = [legs2 objectAtIndexedSubscript:v7];
 
-  v36 = [v35 destination];
-  v37 = [v36 timezone];
+  destination = [v35 destination];
+  timezone = [destination timezone];
 
-  v38 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = objc_alloc_init(MNDisplayETALegInfo);
   v85 = v35;
   [v35 destination];
-  v41 = v40 = v8;
-  v42 = [v41 uniqueID];
-  [(MNDisplayETALegInfo *)v39 setWaypointID:v42];
+  v41 = v40 = etaRoute;
+  uniqueID = [v41 uniqueID];
+  [(MNDisplayETALegInfo *)v39 setWaypointID:uniqueID];
 
   [(MNDisplayETALegInfo *)v39 setLegIndex:v7];
   [(MNDisplayETALegInfo *)v39 setRemainingMinutes:v92];
-  v86 = v22;
-  [(MNDisplayETALegInfo *)v39 setEta:v22];
-  v84 = v37;
-  [(MNDisplayETALegInfo *)v39 setTimeZone:v37];
-  [v38 addObject:v39];
+  v86 = serverDisplayETA2;
+  [(MNDisplayETALegInfo *)v39 setEta:serverDisplayETA2];
+  v84 = timezone;
+  [(MNDisplayETALegInfo *)v39 setTimeZone:timezone];
+  [array addObject:v39];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__MNDisplayETAInfo_displayETAInfoForRouteInfo_routeCoordinate___block_invoke;
   aBlock[3] = &unk_1E8430098;
-  v43 = v5;
+  v43 = infoCopy;
   v89 = v43;
-  v82 = v38;
+  v82 = array;
   v90 = v82;
   v44 = _Block_copy(aBlock);
   v87 = v40;
   if (v40)
   {
-    v45 = [v43 route];
-    v46 = [v45 legs];
-    v81 = [v46 count];
-    v47 = [v43 etaRoute];
-    v48 = [v47 legs];
+    route4 = [v43 route];
+    legs3 = [route4 legs];
+    v81 = [legs3 count];
+    etaRoute3 = [v43 etaRoute];
+    legs4 = [etaRoute3 legs];
     v49 = v39;
-    v50 = v5;
-    v51 = [v48 count];
+    v50 = infoCopy;
+    v51 = [legs4 count];
 
     v52 = v7 - v81 + v51;
-    v5 = v50;
+    infoCopy = v50;
     v39 = v49;
     v53 = v52 + 1;
-    v54 = [v43 etaRoute];
-    v55 = [v54 legs];
-    v56 = [v55 count];
+    etaRoute4 = [v43 etaRoute];
+    legs5 = [etaRoute4 legs];
+    v56 = [legs5 count];
 
     if (v53 < v56)
     {
       do
       {
-        v57 = [v43 etaRoute];
-        v58 = [v57 legs];
-        v59 = [v58 objectAtIndexedSubscript:v53];
+        etaRoute5 = [v43 etaRoute];
+        legs6 = [etaRoute5 legs];
+        v59 = [legs6 objectAtIndexedSubscript:v53];
 
         [v59 travelDuration];
         v24 = v60 + v24;
         v44[2](v44, [v59 originalLegIndex], v24);
 
         ++v53;
-        v61 = [v43 etaRoute];
-        v62 = [v61 legs];
-        v63 = [v62 count];
+        etaRoute6 = [v43 etaRoute];
+        legs7 = [etaRoute6 legs];
+        v63 = [legs7 count];
       }
 
       while (v53 < v63);
@@ -425,26 +425,26 @@ LABEL_12:
   else
   {
     v67 = v7 + 1;
-    v68 = [v43 route];
-    v69 = [v68 legs];
-    v70 = [v69 count];
+    route5 = [v43 route];
+    legs8 = [route5 legs];
+    v70 = [legs8 count];
 
     if (v67 < v70)
     {
       do
       {
-        v71 = [v43 route];
-        v72 = [v71 legs];
-        v73 = [v72 objectAtIndexedSubscript:v67];
+        route6 = [v43 route];
+        legs9 = [route6 legs];
+        v73 = [legs9 objectAtIndexedSubscript:v67];
 
         [v73 travelDuration];
         v24 = v74 + v24;
         v44[2](v44, v67, v24);
 
         ++v67;
-        v75 = [v43 route];
-        v76 = [v75 legs];
-        v77 = [v76 count];
+        route7 = [v43 route];
+        legs10 = [route7 legs];
+        v77 = [legs10 count];
       }
 
       while (v67 < v77);
@@ -452,14 +452,14 @@ LABEL_12:
   }
 
   v66 = objc_alloc_init(MNDisplayETAInfo);
-  v78 = [v43 routeID];
-  [(MNDisplayETAInfo *)v66 setRouteID:v78];
+  routeID = [v43 routeID];
+  [(MNDisplayETAInfo *)v66 setRouteID:routeID];
 
   [(MNDisplayETAInfo *)v66 setLegInfos:v82];
   v66->_isUsingServerDisplayETA = v83;
 
-  v22 = v86;
-  v8 = v87;
+  serverDisplayETA2 = v86;
+  etaRoute = v87;
   v65 = v84;
   v64 = v85;
 LABEL_18:
@@ -494,18 +494,18 @@ void __63__MNDisplayETAInfo_displayETAInfoForRouteInfo_routeCoordinate___block_i
   [*(a1 + 40) addObject:v11];
 }
 
-- (MNDisplayETAInfo)initWithDisplayETAToEndOfLeg:(id)a3 displayRemainingMinutesToEndOfLeg:(unint64_t)a4 displayETAToEndOfRoute:(id)a5 displayRemainingMinutesToEndOfRoute:(unint64_t)a6
+- (MNDisplayETAInfo)initWithDisplayETAToEndOfLeg:(id)leg displayRemainingMinutesToEndOfLeg:(unint64_t)ofLeg displayETAToEndOfRoute:(id)route displayRemainingMinutesToEndOfRoute:(unint64_t)ofRoute
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  routeCopy = route;
   v16.receiver = self;
   v16.super_class = MNDisplayETAInfo;
   v9 = [(MNDisplayETAInfo *)&v16 init];
   if (v9)
   {
     v10 = objc_opt_new();
-    [v10 setRemainingMinutes:a6];
-    [v10 setEta:v8];
+    [v10 setRemainingMinutes:ofRoute];
+    [v10 setEta:routeCopy];
     v17[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     legInfos = v9->_legInfos;
@@ -520,20 +520,20 @@ void __63__MNDisplayETAInfo_displayETAInfoForRouteInfo_routeCoordinate___block_i
 
 - (unint64_t)legIndex
 {
-  v3 = [(MNDisplayETAInfo *)self legInfos];
-  if ([v3 count])
+  legInfos = [(MNDisplayETAInfo *)self legInfos];
+  if ([legInfos count])
   {
-    v4 = [(MNDisplayETAInfo *)self legInfos];
-    v5 = [v4 firstObject];
-    v6 = [v5 legIndex];
+    legInfos2 = [(MNDisplayETAInfo *)self legInfos];
+    firstObject = [legInfos2 firstObject];
+    legIndex = [firstObject legIndex];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    legIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return legIndex;
 }
 
 @end

@@ -38,15 +38,15 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_LAB_normalize];
-  v4 = [(CIImage *)self->inputImage imageByConvertingWorkingSpaceToLab];
+  imageByConvertingWorkingSpaceToLab = [(CIImage *)self->inputImage imageByConvertingWorkingSpaceToLab];
   if ([(NSNumber *)self->inputNormalize BOOLValue])
   {
-    [(CIImage *)v4 extent];
-    v10[0] = v4;
+    [(CIImage *)imageByConvertingWorkingSpaceToLab extent];
+    v10[0] = imageByConvertingWorkingSpaceToLab;
     return -[CIColorKernel applyWithExtent:arguments:](v3, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1], v5, v6, v7, v8);
   }
 
-  return v4;
+  return imageByConvertingWorkingSpaceToLab;
 }
 
 @end

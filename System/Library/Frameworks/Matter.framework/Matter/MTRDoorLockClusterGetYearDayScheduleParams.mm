@@ -1,8 +1,8 @@
 @interface MTRDoorLockClusterGetYearDayScheduleParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDoorLockClusterGetYearDayScheduleParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetYearDayScheduleParams);
-  v5 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self yearDayIndex];
-  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setYearDayIndex:v5];
+  yearDayIndex = [(MTRDoorLockClusterGetYearDayScheduleParams *)self yearDayIndex];
+  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setYearDayIndex:yearDayIndex];
 
-  v6 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self userIndex];
-  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterGetYearDayScheduleParams *)self userIndex];
+  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetYearDayScheduleParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self serverSideProcessingTimeout];
-  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRDoorLockClusterGetYearDayScheduleParams *)self serverSideProcessingTimeout];
+  [(MTRDoorLockClusterGetYearDayScheduleParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,18 +60,18 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v23[0] = 0;
-  v24 = 0;
+  unsignedShortValue = 0;
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self yearDayIndex];
-  v23[0] = [v5 unsignedCharValue];
+  yearDayIndex = [(MTRDoorLockClusterGetYearDayScheduleParams *)self yearDayIndex];
+  v23[0] = [yearDayIndex unsignedCharValue];
 
-  v6 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self userIndex];
-  v24 = [v6 unsignedShortValue];
+  userIndex = [(MTRDoorLockClusterGetYearDayScheduleParams *)self userIndex];
+  unsignedShortValue = [userIndex unsignedShortValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v20);
   if (v20)
@@ -92,8 +92,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v14;
       v9 = v7;
     }
@@ -121,19 +121,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDoorLockClusterGetYearDayScheduleParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -144,7 +144,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x4D7800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

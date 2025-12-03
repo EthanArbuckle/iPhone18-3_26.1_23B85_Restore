@@ -1,19 +1,19 @@
 @interface RedirFromUtranCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRedirCause:(id)a3;
+- (int)StringAsRedirCause:(id)cause;
 - (int)redirCause;
 - (unint64_t)hash;
-- (unsigned)endStatusCountApAtIndex:(unint64_t)a3;
-- (unsigned)endStatusCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)endStatusCountApAtIndex:(unint64_t)index;
+- (unsigned)endStatusCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTotal:(BOOL)a3;
-- (void)setHasTotalAp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTotal:(BOOL)total;
+- (void)setHasTotalAp:(BOOL)ap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RedirFromUtranCount
@@ -40,20 +40,20 @@
   }
 }
 
-- (int)StringAsRedirCause:(id)a3
+- (int)StringAsRedirCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WTOL_REDIR_CAUSE_CONN_RELEASE"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"WTOL_REDIR_CAUSE_CONN_RELEASE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WTOL_REDIR_CAUSE_CONN_REJECT"])
+  else if ([causeCopy isEqualToString:@"WTOL_REDIR_CAUSE_CONN_REJECT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WTOL_REDIR_CAUSE_NONE"])
+  else if ([causeCopy isEqualToString:@"WTOL_REDIR_CAUSE_NONE"])
   {
     v4 = 2;
   }
@@ -66,9 +66,9 @@
   return v4;
 }
 
-- (void)setHasTotal:(BOOL)a3
+- (void)setHasTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 2;
   }
@@ -81,23 +81,23 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)endStatusCountAtIndex:(unint64_t)a3
+- (unsigned)endStatusCountAtIndex:(unint64_t)index
 {
   p_endStatusCounts = &self->_endStatusCounts;
   count = self->_endStatusCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_endStatusCounts->list[a3];
+  return p_endStatusCounts->list[index];
 }
 
-- (void)setHasTotalAp:(BOOL)a3
+- (void)setHasTotalAp:(BOOL)ap
 {
-  if (a3)
+  if (ap)
   {
     v3 = 4;
   }
@@ -110,18 +110,18 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)endStatusCountApAtIndex:(unint64_t)a3
+- (unsigned)endStatusCountApAtIndex:(unint64_t)index
 {
   p_endStatusCountAps = &self->_endStatusCountAps;
   count = self->_endStatusCountAps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_endStatusCountAps->list[a3];
+  return p_endStatusCountAps->list[index];
 }
 
 - (id)description
@@ -129,8 +129,8 @@
   v7.receiver = self;
   v7.super_class = RedirFromUtranCount;
   v3 = [(RedirFromUtranCount *)&v7 description];
-  v4 = [(RedirFromUtranCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RedirFromUtranCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -178,9 +178,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -241,31 +241,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[14] = self->_redirCause;
-    *(v4 + 68) |= 1u;
+    toCopy[14] = self->_redirCause;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[15] = self->_total;
-    *(v4 + 68) |= 2u;
+    toCopy[15] = self->_total;
+    *(toCopy + 68) |= 2u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if ([(RedirFromUtranCount *)self endStatusCountsCount])
   {
     [v12 clearEndStatusCounts];
-    v6 = [(RedirFromUtranCount *)self endStatusCountsCount];
-    if (v6)
+    endStatusCountsCount = [(RedirFromUtranCount *)self endStatusCountsCount];
+    if (endStatusCountsCount)
     {
-      v7 = v6;
+      v7 = endStatusCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addEndStatusCount:{-[RedirFromUtranCount endStatusCountAtIndex:](self, "endStatusCountAtIndex:", i)}];
@@ -282,10 +282,10 @@
   if ([(RedirFromUtranCount *)self endStatusCountApsCount])
   {
     [v12 clearEndStatusCountAps];
-    v9 = [(RedirFromUtranCount *)self endStatusCountApsCount];
-    if (v9)
+    endStatusCountApsCount = [(RedirFromUtranCount *)self endStatusCountApsCount];
+    if (endStatusCountApsCount)
     {
-      v10 = v9;
+      v10 = endStatusCountApsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addEndStatusCountAp:{-[RedirFromUtranCount endStatusCountApAtIndex:](self, "endStatusCountApAtIndex:", j)}];
@@ -294,9 +294,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -323,37 +323,37 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_redirCause != *(v4 + 14))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_redirCause != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_total != *(v4 + 15))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_total != *(equalCopy + 15))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -365,16 +365,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_totalAp != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_totalAp != *(equalCopy + 16))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_19;
   }
@@ -423,28 +423,28 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_redirCause = *(v4 + 14);
+    self->_redirCause = *(fromCopy + 14);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_total = *(v4 + 15);
+    self->_total = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
-  v12 = v4;
-  v6 = [v4 endStatusCountsCount];
-  if (v6)
+  v12 = fromCopy;
+  endStatusCountsCount = [fromCopy endStatusCountsCount];
+  if (endStatusCountsCount)
   {
-    v7 = v6;
+    v7 = endStatusCountsCount;
     for (i = 0; i != v7; ++i)
     {
       -[RedirFromUtranCount addEndStatusCount:](self, "addEndStatusCount:", [v12 endStatusCountAtIndex:i]);
@@ -457,10 +457,10 @@ LABEL_6:
     *&self->_has |= 4u;
   }
 
-  v9 = [v12 endStatusCountApsCount];
-  if (v9)
+  endStatusCountApsCount = [v12 endStatusCountApsCount];
+  if (endStatusCountApsCount)
   {
-    v10 = v9;
+    v10 = endStatusCountApsCount;
     for (j = 0; j != v10; ++j)
     {
       -[RedirFromUtranCount addEndStatusCountAp:](self, "addEndStatusCountAp:", [v12 endStatusCountApAtIndex:j]);

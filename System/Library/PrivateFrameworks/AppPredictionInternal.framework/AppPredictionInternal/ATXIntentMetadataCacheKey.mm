@@ -1,5 +1,5 @@
 @interface ATXIntentMetadataCacheKey
-- (ATXIntentMetadataCacheKey)initWithIntent:(id)a3 includingParameters:(BOOL)a4 includingParameterValues:(BOOL)a5 localeIdentifier:(id)a6;
+- (ATXIntentMetadataCacheKey)initWithIntent:(id)intent includingParameters:(BOOL)parameters includingParameterValues:(BOOL)values localeIdentifier:(id)identifier;
 - (id)stringRepresentationForSerialization;
 @end
 
@@ -63,33 +63,33 @@
   return v19;
 }
 
-- (ATXIntentMetadataCacheKey)initWithIntent:(id)a3 includingParameters:(BOOL)a4 includingParameterValues:(BOOL)a5 localeIdentifier:(id)a6
+- (ATXIntentMetadataCacheKey)initWithIntent:(id)intent includingParameters:(BOOL)parameters includingParameterValues:(BOOL)values localeIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  valuesCopy = values;
+  parametersCopy = parameters;
+  intentCopy = intent;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = ATXIntentMetadataCacheKey;
   v12 = [(ATXIntentMetadataCacheKey *)&v24 init];
   if (v12)
   {
-    v13 = [v10 extensionBundleId];
-    v14 = v13;
-    if (v13)
+    extensionBundleId = [intentCopy extensionBundleId];
+    v14 = extensionBundleId;
+    if (extensionBundleId)
     {
-      v15 = v13;
+      launchId = extensionBundleId;
     }
 
     else
     {
-      v15 = [v10 launchId];
+      launchId = [intentCopy launchId];
     }
 
-    v16 = v15;
+    v16 = launchId;
 
-    v17 = [v10 _className];
-    if (![v16 length] || !objc_msgSend(v17, "length"))
+    _className = [intentCopy _className];
+    if (![v16 length] || !objc_msgSend(_className, "length"))
     {
 
       v22 = 0;
@@ -97,31 +97,31 @@
     }
 
     objc_storeStrong(&v12->_bundleId, v16);
-    objc_storeStrong(&v12->_intentClassName, v17);
-    if (v8)
+    objc_storeStrong(&v12->_intentClassName, _className);
+    if (parametersCopy)
     {
-      v18 = [v10 atx_nonNilParameters];
+      atx_nonNilParameters = [intentCopy atx_nonNilParameters];
       nonNilParameters = v12->_nonNilParameters;
-      v12->_nonNilParameters = v18;
+      v12->_nonNilParameters = atx_nonNilParameters;
     }
 
-    if (v7)
+    if (valuesCopy)
     {
-      v20 = [v10 atx_backingStoreDataHash];
-      if (v20 <= 1)
+      atx_backingStoreDataHash = [intentCopy atx_backingStoreDataHash];
+      if (atx_backingStoreDataHash <= 1)
       {
         v21 = 1;
       }
 
       else
       {
-        v21 = v20;
+        v21 = atx_backingStoreDataHash;
       }
 
       v12->_intentHash = v21;
     }
 
-    objc_storeStrong(&v12->_localeIdentifier, a6);
+    objc_storeStrong(&v12->_localeIdentifier, identifier);
   }
 
   v22 = v12;

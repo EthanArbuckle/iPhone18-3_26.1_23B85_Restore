@@ -1,87 +1,87 @@
 @interface PARSmartSearchV1Parameters
 - (PARSmartSearchV1Parameters)init;
-- (PARSmartSearchV1Parameters)initWithCoder:(id)a3;
-- (id)initFromBag:(id)a3;
-- (id)initFromLast1hour:(double)a3 last1day:(double)a4 last1week:(double)a5 last1month:(double)a6 all:(double)a7 mostRecent:(double)a8 minThresholdToSend:(double)a9;
-- (void)encodeWithCoder:(id)a3;
+- (PARSmartSearchV1Parameters)initWithCoder:(id)coder;
+- (id)initFromBag:(id)bag;
+- (id)initFromLast1hour:(double)last1hour last1day:(double)last1day last1week:(double)last1week last1month:(double)last1month all:(double)all mostRecent:(double)recent minThresholdToSend:(double)send;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARSmartSearchV1Parameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   weightLast1hour = self->_weightLast1hour;
-  v5 = a3;
-  [v5 encodeDouble:@"_weightLast1hour" forKey:weightLast1hour];
-  [v5 encodeDouble:@"_weightLast1day" forKey:self->_weightLast1day];
-  [v5 encodeDouble:@"_weightLast1week" forKey:self->_weightLast1week];
-  [v5 encodeDouble:@"_weightLast1month" forKey:self->_weightLast1month];
-  [v5 encodeDouble:@"_weightAll" forKey:self->_weightAll];
-  [v5 encodeDouble:@"_weightMostRecent" forKey:self->_weightMostRecent];
-  [v5 encodeDouble:@"_weightMinThresholdToSend" forKey:self->_weightMinThresholdToSend];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_weightLast1hour" forKey:weightLast1hour];
+  [coderCopy encodeDouble:@"_weightLast1day" forKey:self->_weightLast1day];
+  [coderCopy encodeDouble:@"_weightLast1week" forKey:self->_weightLast1week];
+  [coderCopy encodeDouble:@"_weightLast1month" forKey:self->_weightLast1month];
+  [coderCopy encodeDouble:@"_weightAll" forKey:self->_weightAll];
+  [coderCopy encodeDouble:@"_weightMostRecent" forKey:self->_weightMostRecent];
+  [coderCopy encodeDouble:@"_weightMinThresholdToSend" forKey:self->_weightMinThresholdToSend];
 }
 
-- (PARSmartSearchV1Parameters)initWithCoder:(id)a3
+- (PARSmartSearchV1Parameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PARSmartSearchV1Parameters *)self init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_weightLast1hour"];
+    [coderCopy decodeDoubleForKey:@"_weightLast1hour"];
     v5->_weightLast1hour = v6;
-    [v4 decodeDoubleForKey:@"_weightLast1day"];
+    [coderCopy decodeDoubleForKey:@"_weightLast1day"];
     v5->_weightLast1day = v7;
-    [v4 decodeDoubleForKey:@"_weightLast1week"];
+    [coderCopy decodeDoubleForKey:@"_weightLast1week"];
     v5->_weightLast1week = v8;
-    [v4 decodeDoubleForKey:@"_weightLast1month"];
+    [coderCopy decodeDoubleForKey:@"_weightLast1month"];
     v5->_weightLast1month = v9;
-    [v4 decodeDoubleForKey:@"_weightAll"];
+    [coderCopy decodeDoubleForKey:@"_weightAll"];
     v5->_weightAll = v10;
-    [v4 decodeDoubleForKey:@"_weightMostRecent"];
+    [coderCopy decodeDoubleForKey:@"_weightMostRecent"];
     v5->_weightMostRecent = v11;
-    [v4 decodeDoubleForKey:@"_weightMinThresholdToSend"];
+    [coderCopy decodeDoubleForKey:@"_weightMinThresholdToSend"];
     v5->_weightMinThresholdToSend = v12;
   }
 
   return v5;
 }
 
-- (id)initFromLast1hour:(double)a3 last1day:(double)a4 last1week:(double)a5 last1month:(double)a6 all:(double)a7 mostRecent:(double)a8 minThresholdToSend:(double)a9
+- (id)initFromLast1hour:(double)last1hour last1day:(double)last1day last1week:(double)last1week last1month:(double)last1month all:(double)all mostRecent:(double)recent minThresholdToSend:(double)send
 {
   result = [(PARSmartSearchV1Parameters *)self init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
-    *(result + 5) = a7;
-    *(result + 6) = a8;
-    *(result + 7) = a9;
+    *(result + 1) = last1hour;
+    *(result + 2) = last1day;
+    *(result + 3) = last1week;
+    *(result + 4) = last1month;
+    *(result + 5) = all;
+    *(result + 6) = recent;
+    *(result + 7) = send;
   }
 
   return result;
 }
 
-- (id)initFromBag:(id)a3
+- (id)initFromBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = [(PARSmartSearchV1Parameters *)self init];
   if (v5)
   {
-    [v4 safariLast1hour];
+    [bagCopy safariLast1hour];
     v5->_weightLast1hour = v6;
-    [v4 safariLast1day];
+    [bagCopy safariLast1day];
     v5->_weightLast1day = v7;
-    [v4 safariLast1week];
+    [bagCopy safariLast1week];
     v5->_weightLast1week = v8;
-    [v4 safariLast1month];
+    [bagCopy safariLast1month];
     v5->_weightLast1month = v9;
-    [v4 safariAll];
+    [bagCopy safariAll];
     v5->_weightAll = v10;
-    [v4 safariMostRecent];
+    [bagCopy safariMostRecent];
     v5->_weightMostRecent = v11;
-    [v4 safariDecay];
+    [bagCopy safariDecay];
     v5->_weightMinThresholdToSend = v12;
   }
 

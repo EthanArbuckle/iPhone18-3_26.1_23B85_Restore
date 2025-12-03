@@ -1,38 +1,38 @@
 @interface _SFPBOpenMediaCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBOpenMediaCommand)initWithDictionary:(id)a3;
-- (_SFPBOpenMediaCommand)initWithFacade:(id)a3;
-- (_SFPBOpenMediaCommand)initWithJSON:(id)a3;
+- (_SFPBOpenMediaCommand)initWithDictionary:(id)dictionary;
+- (_SFPBOpenMediaCommand)initWithFacade:(id)facade;
+- (_SFPBOpenMediaCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setClientSelectedBundleIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setClientSelectedBundleIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBOpenMediaCommand
 
-- (_SFPBOpenMediaCommand)initWithFacade:(id)a3
+- (_SFPBOpenMediaCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBOpenMediaCommand *)self init];
   if (v5)
   {
-    v6 = [v4 mediaMetadata];
+    mediaMetadata = [facadeCopy mediaMetadata];
 
-    if (v6)
+    if (mediaMetadata)
     {
       v7 = [_SFPBMediaMetadata alloc];
-      v8 = [v4 mediaMetadata];
-      v9 = [(_SFPBMediaMetadata *)v7 initWithFacade:v8];
+      mediaMetadata2 = [facadeCopy mediaMetadata];
+      v9 = [(_SFPBMediaMetadata *)v7 initWithFacade:mediaMetadata2];
       [(_SFPBOpenMediaCommand *)v5 setMediaMetadata:v9];
     }
 
-    v10 = [v4 clientSelectedBundleIdentifier];
+    clientSelectedBundleIdentifier = [facadeCopy clientSelectedBundleIdentifier];
 
-    if (v10)
+    if (clientSelectedBundleIdentifier)
     {
-      v11 = [v4 clientSelectedBundleIdentifier];
-      [(_SFPBOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:v11];
+      clientSelectedBundleIdentifier2 = [facadeCopy clientSelectedBundleIdentifier];
+      [(_SFPBOpenMediaCommand *)v5 setClientSelectedBundleIdentifier:clientSelectedBundleIdentifier2];
     }
 
     v12 = v5;
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBOpenMediaCommand)initWithDictionary:(id)a3
+- (_SFPBOpenMediaCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBOpenMediaCommand;
   v5 = [(_SFPBOpenMediaCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mediaMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mediaMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBOpenMediaCommand *)v5 setMediaMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"clientSelectedBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clientSelectedBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBOpenMediaCommand)initWithJSON:(id)a3
+- (_SFPBOpenMediaCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBOpenMediaCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBOpenMediaCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBOpenMediaCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,55 +107,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clientSelectedBundleIdentifier)
   {
-    v4 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"clientSelectedBundleIdentifier"];
+    clientSelectedBundleIdentifier = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
+    v5 = [clientSelectedBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"clientSelectedBundleIdentifier"];
   }
 
   if (self->_mediaMetadata)
   {
-    v6 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    mediaMetadata = [(_SFPBOpenMediaCommand *)self mediaMetadata];
+    dictionaryRepresentation = [mediaMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"mediaMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"mediaMetadata"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"mediaMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"mediaMetadata"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
-  v6 = [v4 mediaMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  mediaMetadata = [(_SFPBOpenMediaCommand *)self mediaMetadata];
+  mediaMetadata2 = [equalCopy mediaMetadata];
+  if ((mediaMetadata != 0) == (mediaMetadata2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
-  if (v7)
+  mediaMetadata3 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
+  if (mediaMetadata3)
   {
-    v8 = v7;
-    v9 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
-    v10 = [v4 mediaMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = mediaMetadata3;
+    mediaMetadata4 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
+    mediaMetadata5 = [equalCopy mediaMetadata];
+    v11 = [mediaMetadata4 isEqual:mediaMetadata5];
 
     if (!v11)
     {
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
-  v6 = [v4 clientSelectedBundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  mediaMetadata = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
+  mediaMetadata2 = [equalCopy clientSelectedBundleIdentifier];
+  if ((mediaMetadata != 0) != (mediaMetadata2 == 0))
   {
-    v12 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
-    if (!v12)
+    clientSelectedBundleIdentifier = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
+    if (!clientSelectedBundleIdentifier)
     {
 
 LABEL_15:
@@ -180,10 +180,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
-    v15 = [v4 clientSelectedBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = clientSelectedBundleIdentifier;
+    clientSelectedBundleIdentifier2 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
+    clientSelectedBundleIdentifier3 = [equalCopy clientSelectedBundleIdentifier];
+    v16 = [clientSelectedBundleIdentifier2 isEqual:clientSelectedBundleIdentifier3];
 
     if (v16)
     {
@@ -203,25 +203,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBOpenMediaCommand *)self mediaMetadata];
-  if (v4)
+  toCopy = to;
+  mediaMetadata = [(_SFPBOpenMediaCommand *)self mediaMetadata];
+  if (mediaMetadata)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
-  if (v5)
+  clientSelectedBundleIdentifier = [(_SFPBOpenMediaCommand *)self clientSelectedBundleIdentifier];
+  if (clientSelectedBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setClientSelectedBundleIdentifier:(id)a3
+- (void)setClientSelectedBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   clientSelectedBundleIdentifier = self->_clientSelectedBundleIdentifier;
   self->_clientSelectedBundleIdentifier = v4;
 

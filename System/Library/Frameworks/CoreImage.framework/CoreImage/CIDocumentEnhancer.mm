@@ -170,10 +170,10 @@
   *(&v145 + 1) = v40;
   v44 = v37;
   v151 = v44;
-  v45 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_CElumaToR, v145];
+  v145 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_CElumaToR, v145];
   [(CIImage *)v15 extent];
   v175 = v15;
-  v50 = -[CIColorKernel applyWithExtent:arguments:](v45, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v175 count:1], v46, v47, v48, v49);
+  v50 = -[CIColorKernel applyWithExtent:arguments:](v145, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v175 count:1], v46, v47, v48, v49);
   v173 = @"inputExtent";
   [(CIImage *)v50 extent];
   v174 = [CIVector vectorWithCGRect:?];

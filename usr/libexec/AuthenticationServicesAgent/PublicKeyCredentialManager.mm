@@ -1,68 +1,68 @@
 @interface PublicKeyCredentialManager
-+ (id)asTransportsFromWKTransports:(id)a3;
-+ (id)wkSecurityKeyTransportsFromASTransports:(id)a3;
-- (BOOL)deleteAllPasskeysForRelyingParty:(id)a3 error:(id *)a4;
-- (BOOL)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 error:(id *)a5;
-- (BOOL)passkeyExistsForRelyingParty:(id)a3 username:(id)a4;
-- (id)_allowedCredentialsForAssertionOptions:(id)a3;
-- (id)_asToWKCredentialAssertionOptions:(id)a3;
-- (id)_asToWKCredentialCreationOptions:(id)a3 forCredentialKind:(unint64_t)a4;
-- (id)_createCredentialOfKind:(unint64_t)a3 withOptions:(id)a4 authenticatedLAContext:(id)a5 delegate:(id)a6 webFrameIdentifier:(id)a7 parentActivity:(id)a8 isConditionalRegistration:(BOOL)a9 testOptions:(id)a10;
-- (id)_newPanelForOperation:(id)a3;
-- (id)_operationForApplicationIdentifierIfExists:(id)a3;
-- (id)_operationForPanel:(id)a3;
-- (id)_operationForPanelIfExists:(id)a3;
-- (id)_operationForUUID:(id)a3;
-- (id)_operationForUUIDIfExists:(id)a3;
-- (id)_operationForWebFrameIdentifier:(id)a3;
-- (id)autoFillOperationUUIDForApplicationIdentifier:(id)a3;
-- (id)autoFillOperationUUIDForWebFrameIdentifier:(id)a3;
-- (id)autoFillPasskeysForOperationUUID:(id)a3;
-- (id)beginAssertionsWithOptions:(id)a3 forProcessWithApplicationIdentifier:(id)a4 delegate:(id)a5 requestStyle:(int64_t)a6 webFrameIdentifier:(id)a7 parentActivity:(id)a8 testOptions:(id)a9;
-- (id)browserPasskeysForRelyingParty:(id)a3 testOptions:(id)a4;
-- (id)encodeGetAssertionCommandWithOptions:(id)a3 authenticatorUserVerificationAvailability:(unint64_t)a4 authenticatorSupportedExtensions:(id)a5;
-- (id)encodeMakeCredentialCommandWithOptions:(id)a3 authenticatorUserVerificationAvailability:(unint64_t)a4 authenticatorSupportedExtensions:(id)a5;
-- (id)initForTesting:(BOOL)a3;
-- (id)internalErrorToWKErrorIfApplicable:(id)a3;
-- (void)_completeAssertionWithExternalPasskeyForOperation:(id)a3 usingCredential:(id)a4;
-- (void)_finishAssertionForOperationWithUUID:(id)a3 identifier:(id)a4 authenticatedContext:(id)a5 savedAccountContext:(id)a6;
-- (void)_getExternalPasskeyRequestForOperation:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6;
-- (void)_getPasskeyAssertionRequestParametersForOperation:(id)a3 completionHandler:(id)a4;
-- (void)_queryExternalLoginChoicesForOperation:(id)a3 completionHandler:(id)a4;
-- (void)_tearDownOperationWithUUID:(id)a3;
-- (void)_updateLastUsedDateForPasskeySavedAccountWithAssertion:(id)a3 relyingParty:(id)a4 context:(id)a5;
-- (void)assertUsingPlatformCredentialForLoginChoice:(id)a3 authenticatedContext:(id)a4;
-- (void)assertUsingSecurityKeyCredentialForLoginChoice:(id)a3;
-- (void)cancelOperationIfNecessaryWithUUID:(id)a3 overrideError:(id)a4;
-- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)a3 usingCredential:(id)a4;
-- (void)completeAssertionWithExternalPasskeyForUUID:(id)a3 usingCredential:(id)a4;
-- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)a3 usingCredential:(id)a4;
-- (void)computeClientDataIfNeededForAssertionOptions:(id)a3;
-- (void)computeClientDataIfNeededForCreationOptions:(id)a3;
-- (void)computeUserVerificationForAssertionOptions:(id)a3;
-- (void)getExternalPasskeyRequestForApplicationIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6;
-- (void)getExternalPasskeyRequestForWebFrameIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6;
-- (void)getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:(id)a3 orApplicationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)getPasskeyAssertionRequestParametersForApplicationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getPasskeyAssertionRequestParametersForCABLEWithCompletionHandler:(id)a3;
-- (void)getPasskeyAssertionRequestParametersForWebFrameIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)operation:(id)a3 selectAssertionResponse:(id)a4 source:(int64_t)a5 completionHandler:(id)a6;
-- (void)operation:(id)a3 updateWebAuthenticationPanel:(int64_t)a4;
-- (void)panel:(id)a3 dismissWebAuthenticationPanelWithResult:(int64_t)a4;
-- (void)panel:(id)a3 requestLAContextForUserVerificationWithCompletionHandler:(id)a4;
-- (void)panel:(id)a3 requestNewPINWithMinLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)panel:(id)a3 requestPINWithRemainingRetries:(unint64_t)a4 completionHandler:(id)a5;
-- (void)panel:(id)a3 selectAssertionResponse:(id)a4 source:(int64_t)a5 completionHandler:(id)a6;
-- (void)panel:(id)a3 updateWebAuthenticationPanel:(int64_t)a4;
-- (void)presentCABLESheetForOperationUUID:(id)a3 withCompletionHandler:(id)a4;
-- (void)test_getAssertionWithMediationRequirement:(int64_t)a3 clientDataJSON:(NSData *)a4 options:(_WKPublicKeyCredentialRequestOptions *)a5 operation:(PublicKeyCredentialOperation *)a6 completionHandler:(id)a7;
-- (void)test_getBrowserPasskeysForRelyingParty:(NSString *)a3 completionHandler:(id)a4;
-- (void)test_makeCredentialWithMediationRequirement:(int64_t)a3 clientDataHash:(NSData *)a4 options:(_WKPublicKeyCredentialCreationOptions *)a5 testOptions:(_TtC26AuthenticationServicesCore31ASCCredentialRequestTestOptions *)a6 clientDataJSON:(NSData *)a7 completionHandler:(id)a8;
++ (id)asTransportsFromWKTransports:(id)transports;
++ (id)wkSecurityKeyTransportsFromASTransports:(id)transports;
+- (BOOL)deleteAllPasskeysForRelyingParty:(id)party error:(id *)error;
+- (BOOL)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d error:(id *)error;
+- (BOOL)passkeyExistsForRelyingParty:(id)party username:(id)username;
+- (id)_allowedCredentialsForAssertionOptions:(id)options;
+- (id)_asToWKCredentialAssertionOptions:(id)options;
+- (id)_asToWKCredentialCreationOptions:(id)options forCredentialKind:(unint64_t)kind;
+- (id)_createCredentialOfKind:(unint64_t)kind withOptions:(id)options authenticatedLAContext:(id)context delegate:(id)delegate webFrameIdentifier:(id)identifier parentActivity:(id)activity isConditionalRegistration:(BOOL)registration testOptions:(id)self0;
+- (id)_newPanelForOperation:(id)operation;
+- (id)_operationForApplicationIdentifierIfExists:(id)exists;
+- (id)_operationForPanel:(id)panel;
+- (id)_operationForPanelIfExists:(id)exists;
+- (id)_operationForUUID:(id)d;
+- (id)_operationForUUIDIfExists:(id)exists;
+- (id)_operationForWebFrameIdentifier:(id)identifier;
+- (id)autoFillOperationUUIDForApplicationIdentifier:(id)identifier;
+- (id)autoFillOperationUUIDForWebFrameIdentifier:(id)identifier;
+- (id)autoFillPasskeysForOperationUUID:(id)d;
+- (id)beginAssertionsWithOptions:(id)options forProcessWithApplicationIdentifier:(id)identifier delegate:(id)delegate requestStyle:(int64_t)style webFrameIdentifier:(id)frameIdentifier parentActivity:(id)activity testOptions:(id)testOptions;
+- (id)browserPasskeysForRelyingParty:(id)party testOptions:(id)options;
+- (id)encodeGetAssertionCommandWithOptions:(id)options authenticatorUserVerificationAvailability:(unint64_t)availability authenticatorSupportedExtensions:(id)extensions;
+- (id)encodeMakeCredentialCommandWithOptions:(id)options authenticatorUserVerificationAvailability:(unint64_t)availability authenticatorSupportedExtensions:(id)extensions;
+- (id)initForTesting:(BOOL)testing;
+- (id)internalErrorToWKErrorIfApplicable:(id)applicable;
+- (void)_completeAssertionWithExternalPasskeyForOperation:(id)operation usingCredential:(id)credential;
+- (void)_finishAssertionForOperationWithUUID:(id)d identifier:(id)identifier authenticatedContext:(id)context savedAccountContext:(id)accountContext;
+- (void)_getExternalPasskeyRequestForOperation:(id)operation relyingPartyIdentifier:(id)identifier credentialID:(id)d completionHandler:(id)handler;
+- (void)_getPasskeyAssertionRequestParametersForOperation:(id)operation completionHandler:(id)handler;
+- (void)_queryExternalLoginChoicesForOperation:(id)operation completionHandler:(id)handler;
+- (void)_tearDownOperationWithUUID:(id)d;
+- (void)_updateLastUsedDateForPasskeySavedAccountWithAssertion:(id)assertion relyingParty:(id)party context:(id)context;
+- (void)assertUsingPlatformCredentialForLoginChoice:(id)choice authenticatedContext:(id)context;
+- (void)assertUsingSecurityKeyCredentialForLoginChoice:(id)choice;
+- (void)cancelOperationIfNecessaryWithUUID:(id)d overrideError:(id)error;
+- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)identifier usingCredential:(id)credential;
+- (void)completeAssertionWithExternalPasskeyForUUID:(id)d usingCredential:(id)credential;
+- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)identifier usingCredential:(id)credential;
+- (void)computeClientDataIfNeededForAssertionOptions:(id)options;
+- (void)computeClientDataIfNeededForCreationOptions:(id)options;
+- (void)computeUserVerificationForAssertionOptions:(id)options;
+- (void)getExternalPasskeyRequestForApplicationIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier credentialID:(id)d completionHandler:(id)handler;
+- (void)getExternalPasskeyRequestForWebFrameIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier credentialID:(id)d completionHandler:(id)handler;
+- (void)getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:(id)identifier orApplicationIdentifier:(id)applicationIdentifier completionHandler:(id)handler;
+- (void)getPasskeyAssertionRequestParametersForApplicationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getPasskeyAssertionRequestParametersForCABLEWithCompletionHandler:(id)handler;
+- (void)getPasskeyAssertionRequestParametersForWebFrameIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)operation:(id)operation selectAssertionResponse:(id)response source:(int64_t)source completionHandler:(id)handler;
+- (void)operation:(id)operation updateWebAuthenticationPanel:(int64_t)panel;
+- (void)panel:(id)panel dismissWebAuthenticationPanelWithResult:(int64_t)result;
+- (void)panel:(id)panel requestLAContextForUserVerificationWithCompletionHandler:(id)handler;
+- (void)panel:(id)panel requestNewPINWithMinLength:(unint64_t)length completionHandler:(id)handler;
+- (void)panel:(id)panel requestPINWithRemainingRetries:(unint64_t)retries completionHandler:(id)handler;
+- (void)panel:(id)panel selectAssertionResponse:(id)response source:(int64_t)source completionHandler:(id)handler;
+- (void)panel:(id)panel updateWebAuthenticationPanel:(int64_t)authenticationPanel;
+- (void)presentCABLESheetForOperationUUID:(id)d withCompletionHandler:(id)handler;
+- (void)test_getAssertionWithMediationRequirement:(int64_t)requirement clientDataJSON:(NSData *)n options:(_WKPublicKeyCredentialRequestOptions *)options operation:(PublicKeyCredentialOperation *)operation completionHandler:(id)handler;
+- (void)test_getBrowserPasskeysForRelyingParty:(NSString *)party completionHandler:(id)handler;
+- (void)test_makeCredentialWithMediationRequirement:(int64_t)requirement clientDataHash:(NSData *)hash options:(_WKPublicKeyCredentialCreationOptions *)options testOptions:(_TtC26AuthenticationServicesCore31ASCCredentialRequestTestOptions *)testOptions clientDataJSON:(NSData *)n completionHandler:(id)handler;
 @end
 
 @implementation PublicKeyCredentialManager
 
-- (id)initForTesting:(BOOL)a3
+- (id)initForTesting:(BOOL)testing
 {
   v18.receiver = self;
   v18.super_class = PublicKeyCredentialManager;
@@ -70,7 +70,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isForTesting = a3;
+    v4->_isForTesting = testing;
     v4->_operationsLock._os_unfair_lock_opaque = 0;
     v6 = +[NSMutableDictionary dictionary];
     uuidToOperation = v5->_uuidToOperation;
@@ -101,27 +101,27 @@
   return v5;
 }
 
-- (void)panel:(id)a3 updateWebAuthenticationPanel:(int64_t)a4
+- (void)panel:(id)panel updateWebAuthenticationPanel:(int64_t)authenticationPanel
 {
-  v6 = [(PublicKeyCredentialManager *)self _operationForPanel:a3];
+  v6 = [(PublicKeyCredentialManager *)self _operationForPanel:panel];
   if (v6)
   {
-    [(PublicKeyCredentialManager *)self operation:v6 updateWebAuthenticationPanel:a4];
+    [(PublicKeyCredentialManager *)self operation:v6 updateWebAuthenticationPanel:authenticationPanel];
   }
 
   _objc_release_x1();
 }
 
-- (void)operation:(id)a3 updateWebAuthenticationPanel:(int64_t)a4
+- (void)operation:(id)operation updateWebAuthenticationPanel:(int64_t)panel
 {
-  v6 = a3;
-  v7 = [v6 delegate];
-  v8 = v7;
-  if (a4 > 5)
+  operationCopy = operation;
+  delegate = [operationCopy delegate];
+  v8 = delegate;
+  if (panel > 5)
   {
-    if (a4 > 8)
+    if (panel > 8)
     {
-      switch(a4)
+      switch(panel)
       {
         case 9:
           v9 = 20;
@@ -130,23 +130,23 @@
           v9 = 21;
           goto LABEL_26;
         case 11:
-          [v7 didEnterCorrectPIN];
+          [delegate didEnterCorrectPIN];
           break;
       }
     }
 
     else
     {
-      if (a4 == 6)
+      if (panel == 6)
       {
-        v10 = [v6 activity];
-        os_activity_apply(v10, &stru_1000312B0);
+        activity = [operationCopy activity];
+        os_activity_apply(activity, &stru_1000312B0);
 
         v9 = 7;
         goto LABEL_26;
       }
 
-      if (a4 != 7)
+      if (panel != 7)
       {
         v9 = 13;
         goto LABEL_26;
@@ -156,21 +156,21 @@
       v11[1] = 3221225472;
       v11[2] = sub_100002EBC;
       v11[3] = &unk_1000312D8;
-      v12 = v7;
-      [(PublicKeyCredentialManager *)self _queryExternalLoginChoicesForOperation:v6 completionHandler:v11];
+      v12 = delegate;
+      [(PublicKeyCredentialManager *)self _queryExternalLoginChoicesForOperation:operationCopy completionHandler:v11];
     }
   }
 
   else
   {
-    if (a4 > 2)
+    if (panel > 2)
     {
-      if (a4 == 3)
+      if (panel == 3)
       {
         v9 = 9;
       }
 
-      else if (a4 == 4)
+      else if (panel == 4)
       {
         v9 = 8;
       }
@@ -183,7 +183,7 @@
       goto LABEL_26;
     }
 
-    switch(a4)
+    switch(panel)
     {
       case 0:
         v9 = 4;
@@ -200,87 +200,87 @@ LABEL_26:
   }
 }
 
-- (void)panel:(id)a3 selectAssertionResponse:(id)a4 source:(int64_t)a5 completionHandler:(id)a6
+- (void)panel:(id)panel selectAssertionResponse:(id)response source:(int64_t)source completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(PublicKeyCredentialManager *)self _operationForPanel:a3];
+  responseCopy = response;
+  handlerCopy = handler;
+  v12 = [(PublicKeyCredentialManager *)self _operationForPanel:panel];
   if (v12)
   {
-    v13 = [v10 safari_mapObjectsUsingBlock:&stru_100031318];
+    v13 = [responseCopy safari_mapObjectsUsingBlock:&stru_100031318];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100003038;
     v14[3] = &unk_100031340;
-    v15 = v11;
-    [(PublicKeyCredentialManager *)self operation:v12 selectAssertionResponse:v13 source:a5 completionHandler:v14];
+    v15 = handlerCopy;
+    [(PublicKeyCredentialManager *)self operation:v12 selectAssertionResponse:v13 source:source completionHandler:v14];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)operation:(id)a3 selectAssertionResponse:(id)a4 source:(int64_t)a5 completionHandler:(id)a6
+- (void)operation:(id)operation selectAssertionResponse:(id)response source:(int64_t)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 delegate];
-  v14 = [v10 uuid];
-  if (a5 == 1)
+  operationCopy = operation;
+  responseCopy = response;
+  handlerCopy = handler;
+  delegate = [operationCopy delegate];
+  uuid = [operationCopy uuid];
+  if (source == 1)
   {
-    +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v11 count]);
+    +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [responseCopy count]);
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100003914;
     v28 = v27[3] = &unk_1000313E0;
-    v29 = v14;
+    v29 = uuid;
     v17 = v28;
-    v21 = [v11 safari_mapAndFilterObjectsUsingBlock:v27];
-    [v10 mergeIdentifiersToAssertionResponses:v17];
+    v21 = [responseCopy safari_mapAndFilterObjectsUsingBlock:v27];
+    [operationCopy mergeIdentifiersToAssertionResponses:v17];
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_1000039D8;
     v25 = &unk_100031340;
-    v26 = v12;
-    [v10 setSecurityKeyAssertionSelectionCallback:&v22];
-    [v13 didFetchSecurityKeyLoginChoices:{v21, v22, v23, v24, v25}];
+    v26 = handlerCopy;
+    [operationCopy setSecurityKeyAssertionSelectionCallback:&v22];
+    [delegate didFetchSecurityKeyLoginChoices:{v21, v22, v23, v24, v25}];
 
     v20 = v28;
     goto LABEL_5;
   }
 
-  if (!a5)
+  if (!source)
   {
-    v15 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v11 count]);
+    v15 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [responseCopy count]);
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100003400;
     v37[3] = &unk_100031368;
     v37[4] = self;
-    v16 = v10;
+    v16 = operationCopy;
     v38 = v16;
     v39 = v15;
-    v40 = v14;
+    v40 = uuid;
     v17 = v15;
-    v18 = [v11 safari_mapAndFilterObjectsUsingBlock:v37];
+    v18 = [responseCopy safari_mapAndFilterObjectsUsingBlock:v37];
     [v16 mergeIdentifiersToAssertionResponses:v17];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100003720;
     v35[3] = &unk_100031340;
-    v36 = v12;
+    v36 = handlerCopy;
     [v16 setPlatformAssertionSelectionCallback:v35];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000037E0;
     v30[3] = &unk_1000313B8;
-    v31 = v13;
+    v31 = delegate;
     v32 = v18;
     v33 = v16;
-    v34 = self;
+    selfCopy = self;
     v19 = v18;
     [(PublicKeyCredentialManager *)self _queryExternalLoginChoicesForOperation:v33 completionHandler:v30];
 
@@ -289,25 +289,25 @@ LABEL_5:
   }
 }
 
-- (void)panel:(id)a3 dismissWebAuthenticationPanelWithResult:(int64_t)a4
+- (void)panel:(id)panel dismissWebAuthenticationPanelWithResult:(int64_t)result
 {
-  v6 = a3;
-  v7 = [(PublicKeyCredentialManager *)self _operationForPanelIfExists:v6];
+  panelCopy = panel;
+  v7 = [(PublicKeyCredentialManager *)self _operationForPanelIfExists:panelCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 activity];
+    activity = [v7 activity];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_100003C10;
     v16 = &unk_100031408;
     v10 = v8;
     v17 = v10;
-    v18 = a4;
-    os_activity_apply(v9, &v13);
+    resultCopy = result;
+    os_activity_apply(activity, &v13);
 
-    v11 = [v10 uuid];
-    [(PublicKeyCredentialManager *)self cancelOperationIfNecessaryWithUUID:v11 overrideError:0];
+    uuid = [v10 uuid];
+    [(PublicKeyCredentialManager *)self cancelOperationIfNecessaryWithUUID:uuid overrideError:0];
   }
 
   else
@@ -316,100 +316,100 @@ LABEL_5:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v20 = v6;
+      v20 = panelCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Operation for panel %p already dismissed.", buf, 0xCu);
     }
   }
 }
 
-- (void)panel:(id)a3 requestLAContextForUserVerificationWithCompletionHandler:(id)a4
+- (void)panel:(id)panel requestLAContextForUserVerificationWithCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PublicKeyCredentialManager *)self _operationForPanel:a3];
+  handlerCopy = handler;
+  v7 = [(PublicKeyCredentialManager *)self _operationForPanel:panel];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 activity];
+    activity = [v7 activity];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003DFC;
     block[3] = &unk_100031148;
     v10 = v8;
     v13 = v10;
-    os_activity_apply(v9, block);
+    os_activity_apply(activity, block);
 
-    v11 = [v10 authenticatedLAContext];
-    v6[2](v6, v11);
+    authenticatedLAContext = [v10 authenticatedLAContext];
+    handlerCopy[2](handlerCopy, authenticatedLAContext);
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)panel:(id)a3 requestPINWithRemainingRetries:(unint64_t)a4 completionHandler:(id)a5
+- (void)panel:(id)panel requestPINWithRemainingRetries:(unint64_t)retries completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(PublicKeyCredentialManager *)self _operationForPanel:a3];
+  handlerCopy = handler;
+  v9 = [(PublicKeyCredentialManager *)self _operationForPanel:panel];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 activity];
+    activity = [v9 activity];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100004000;
     block[3] = &unk_100031148;
     v12 = v10;
     v15 = v12;
-    os_activity_apply(v11, block);
+    os_activity_apply(activity, block);
 
-    v13 = [v12 delegate];
-    [v13 requestPINWithRemainingRetries:a4 completionHandler:v8];
+    delegate = [v12 delegate];
+    [delegate requestPINWithRemainingRetries:retries completionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8, &stru_100031CE0);
+    handlerCopy[2](handlerCopy, &stru_100031CE0);
   }
 }
 
-- (void)panel:(id)a3 requestNewPINWithMinLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)panel:(id)panel requestNewPINWithMinLength:(unint64_t)length completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(PublicKeyCredentialManager *)self _operationForPanel:a3];
+  handlerCopy = handler;
+  v9 = [(PublicKeyCredentialManager *)self _operationForPanel:panel];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 activity];
+    activity = [v9 activity];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000041DC;
     block[3] = &unk_100031148;
     v12 = v10;
     v15 = v12;
-    os_activity_apply(v11, block);
+    os_activity_apply(activity, block);
 
-    v13 = [v12 delegate];
-    [v13 requestNewPINWithMinLength:a4 completionHandler:v8];
+    delegate = [v12 delegate];
+    [delegate requestNewPINWithMinLength:length completionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8, &stru_100031CE0);
+    handlerCopy[2](handlerCopy, &stru_100031CE0);
   }
 }
 
-- (id)beginAssertionsWithOptions:(id)a3 forProcessWithApplicationIdentifier:(id)a4 delegate:(id)a5 requestStyle:(int64_t)a6 webFrameIdentifier:(id)a7 parentActivity:(id)a8 testOptions:(id)a9
+- (id)beginAssertionsWithOptions:(id)options forProcessWithApplicationIdentifier:(id)identifier delegate:(id)delegate requestStyle:(int64_t)style webFrameIdentifier:(id)frameIdentifier parentActivity:(id)activity testOptions:(id)testOptions
 {
-  v14 = a3;
-  v47 = a4;
-  v50 = a5;
-  v48 = a7;
-  v49 = a8;
-  v51 = a9;
-  v52 = v14;
-  v15 = [v14 objectAtIndexedSubscript:0];
+  optionsCopy = options;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  frameIdentifierCopy = frameIdentifier;
+  activityCopy = activity;
+  testOptionsCopy = testOptions;
+  v52 = optionsCopy;
+  v15 = [optionsCopy objectAtIndexedSubscript:0];
   [(PublicKeyCredentialManager *)self computeClientDataIfNeededForAssertionOptions:v15];
 
   v74 = 0;
@@ -424,15 +424,15 @@ LABEL_5:
   v73[3] = &unk_100031430;
   v73[4] = self;
   v73[5] = &v74;
-  v16 = v14;
-  v17 = [v14 safari_mapObjectsUsingBlock:v73];
-  [(PublicKeyCredentialManager *)self computeUserVerificationForAssertionOptions:v14];
+  v16 = optionsCopy;
+  v17 = [optionsCopy safari_mapObjectsUsingBlock:v73];
+  [(PublicKeyCredentialManager *)self computeUserVerificationForAssertionOptions:optionsCopy];
   v18 = [v17 objectAtIndexedSubscript:0];
-  v19 = [v18 relyingPartyIdentifier];
-  v53 = -[PublicKeyCredentialManager _newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:](self, "_newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:", v19, v50, v47, v48, [v18 userVerification] == 0, v49, v51);
-  v20 = [v16 firstObject];
-  [v53 setAssertionOptions:v20];
-  v46 = v19;
+  relyingPartyIdentifier = [v18 relyingPartyIdentifier];
+  v53 = -[PublicKeyCredentialManager _newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:](self, "_newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:", relyingPartyIdentifier, delegateCopy, identifierCopy, frameIdentifierCopy, [v18 userVerification] == 0, activityCopy, testOptionsCopy);
+  firstObject = [v16 firstObject];
+  [v53 setAssertionOptions:firstObject];
+  v46 = relyingPartyIdentifier;
 
   v21 = +[NSMutableArray array];
   v71 = 0u;
@@ -459,23 +459,23 @@ LABEL_5:
       }
 
       v28 = *(*(&v69 + 1) + 8 * i);
-      v29 = [v28 authenticatorAttachment];
-      if (v29 == 1)
+      authenticatorAttachment = [v28 authenticatorAttachment];
+      if (authenticatorAttachment == 1)
       {
-        v30 = [v28 allowCredentials];
-        [v21 safari_addObjectsFromArrayUnlessNil:v30];
+        allowCredentials = [v28 allowCredentials];
+        [v21 safari_addObjectsFromArrayUnlessNil:allowCredentials];
         v24 = 1;
       }
 
       else
       {
-        if (v29 != 2)
+        if (authenticatorAttachment != 2)
         {
           continue;
         }
 
-        v30 = [v28 allowCredentials];
-        [v21 safari_addObjectsFromArrayUnlessNil:v30];
+        allowCredentials = [v28 allowCredentials];
+        [v21 safari_addObjectsFromArrayUnlessNil:allowCredentials];
         v23 = 1;
       }
     }
@@ -514,28 +514,28 @@ LABEL_13:
     }
 
     v33 = [v52 objectAtIndexedSubscript:0];
-    v34 = [v33 clientDataJSON];
+    clientDataJSON = [v33 clientDataJSON];
 
-    [v53 setClientDataJSONForApps:v34];
+    [v53 setClientDataJSONForApps:clientDataJSON];
     v66[0] = _NSConcreteStackBlock;
     v66[1] = 3221225472;
     v66[2] = sub_100004A58;
     v66[3] = &unk_100031478;
     v35 = v53;
     v67 = v35;
-    v36 = v50;
+    v36 = delegateCopy;
     v68 = v36;
     v37 = objc_retainBlock(v66);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100004DFC;
     block[3] = &unk_1000314C8;
-    v65 = a6;
+    styleCopy = style;
     v57 = v52;
-    v58 = v51;
-    v59 = self;
-    v38 = v34;
-    v60 = v38;
+    v58 = testOptionsCopy;
+    selfCopy = self;
+    activity3 = clientDataJSON;
+    v60 = activity3;
     v61 = v18;
     v39 = v35;
     v62 = v39;
@@ -547,8 +547,8 @@ LABEL_13:
     {
       if ((+[_WKWebAuthenticationPanel isUserVerifyingPlatformAuthenticatorAvailable]& 1) == 0)
       {
-        v41 = [v39 activity];
-        os_activity_apply(v41, &stru_100031508);
+        activity = [v39 activity];
+        os_activity_apply(activity, &stru_100031508);
 
         v54[0] = _NSConcreteStackBlock;
         v54[1] = 3221225472;
@@ -561,119 +561,119 @@ LABEL_13:
 
     else
     {
-      v43 = [v39 activity];
-      os_activity_apply(v43, &stru_1000314E8);
+      activity2 = [v39 activity];
+      os_activity_apply(activity2, &stru_1000314E8);
 
       [v36 didFetchPlatformLoginChoices:0];
     }
 
-    v42 = [v39 uuid];
+    uuid = [v39 uuid];
   }
 
   else
   {
-    v38 = [v53 activity];
-    os_activity_apply(v38, &stru_100031450);
-    v42 = 0;
+    activity3 = [v53 activity];
+    os_activity_apply(activity3, &stru_100031450);
+    uuid = 0;
   }
 
   _Block_object_dispose(&v74, 8);
 
-  return v42;
+  return uuid;
 }
 
-- (void)assertUsingPlatformCredentialForLoginChoice:(id)a3 authenticatedContext:(id)a4
+- (void)assertUsingPlatformCredentialForLoginChoice:(id)choice authenticatedContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [v7 publicKeyCredentialOperationUUID];
-  v8 = [v7 identifier];
+  contextCopy = context;
+  choiceCopy = choice;
+  publicKeyCredentialOperationUUID = [choiceCopy publicKeyCredentialOperationUUID];
+  identifier = [choiceCopy identifier];
 
   v9 = +[WBSSavedAccountContext defaultContext];
-  [(PublicKeyCredentialManager *)self _finishAssertionForOperationWithUUID:v10 identifier:v8 authenticatedContext:v6 savedAccountContext:v9];
+  [(PublicKeyCredentialManager *)self _finishAssertionForOperationWithUUID:publicKeyCredentialOperationUUID identifier:identifier authenticatedContext:contextCopy savedAccountContext:v9];
 }
 
-- (void)_finishAssertionForOperationWithUUID:(id)a3 identifier:(id)a4 authenticatedContext:(id)a5 savedAccountContext:(id)a6
+- (void)_finishAssertionForOperationWithUUID:(id)d identifier:(id)identifier authenticatedContext:(id)context savedAccountContext:(id)accountContext
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PublicKeyCredentialManager *)self _operationForUUID:a3];
+  identifierCopy = identifier;
+  contextCopy = context;
+  accountContextCopy = accountContext;
+  v13 = [(PublicKeyCredentialManager *)self _operationForUUID:d];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 identifiersToAssertionResponses];
-    v16 = [v15 objectForKeyedSubscript:v10];
+    identifiersToAssertionResponses = [v13 identifiersToAssertionResponses];
+    v16 = [identifiersToAssertionResponses objectForKeyedSubscript:identifierCopy];
 
     if (v16)
     {
-      v17 = [v14 relyingPartyIdentifier];
-      if (([v17 isEqualToString:@"apple.com"] & 1) == 0)
+      relyingPartyIdentifier = [v14 relyingPartyIdentifier];
+      if (([relyingPartyIdentifier isEqualToString:@"apple.com"] & 1) == 0)
       {
-        [(PublicKeyCredentialManager *)self _updateLastUsedDateForPasskeySavedAccountWithAssertion:v16 relyingParty:v17 context:v12];
+        [(PublicKeyCredentialManager *)self _updateLastUsedDateForPasskeySavedAccountWithAssertion:v16 relyingParty:relyingPartyIdentifier context:accountContextCopy];
       }
 
-      [v16 setLaContext:v11];
+      [v16 setLaContext:contextCopy];
       [v14 selectPlatformAssertion:v16];
     }
 
     else
     {
-      v18 = [v14 activity];
+      activity = [v14 activity];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100005578;
       block[3] = &unk_100031148;
-      v20 = v10;
-      os_activity_apply(v18, block);
+      v20 = identifierCopy;
+      os_activity_apply(activity, block);
     }
   }
 }
 
-- (void)_updateLastUsedDateForPasskeySavedAccountWithAssertion:(id)a3 relyingParty:(id)a4 context:(id)a5
+- (void)_updateLastUsedDateForPasskeySavedAccountWithAssertion:(id)assertion relyingParty:(id)party context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  partyCopy = party;
+  assertionCopy = assertion;
   v13 = +[NSDate now];
-  v10 = [v9 userHandle];
-  v11 = [v10 base64EncodedStringWithOptions:0];
-  v12 = [v9 group];
+  userHandle = [assertionCopy userHandle];
+  v11 = [userHandle base64EncodedStringWithOptions:0];
+  group = [assertionCopy group];
 
-  [NSURLCredentialStorage safari_setLastUsedDate:v13 forPasskeyWithUserHandle:v11 relyingPartyID:v8 groupID:v12 context:v7];
+  [NSURLCredentialStorage safari_setLastUsedDate:v13 forPasskeyWithUserHandle:v11 relyingPartyID:partyCopy groupID:group context:contextCopy];
 }
 
-- (id)autoFillOperationUUIDForApplicationIdentifier:(id)a3
+- (id)autoFillOperationUUIDForApplicationIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:?];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 uuid];
+      uuid = [v3 uuid];
     }
 
     else
     {
-      v5 = 0;
+      uuid = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    uuid = 0;
   }
 
-  return v5;
+  return uuid;
 }
 
-- (id)autoFillOperationUUIDForWebFrameIdentifier:(id)a3
+- (id)autoFillOperationUUIDForWebFrameIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:?];
-    v4 = [v3 uuid];
+    uuid = [v3 uuid];
   }
 
   else
@@ -684,16 +684,16 @@ LABEL_13:
       sub_100020280(v5, v6, v7, v8, v9, v10, v11, v12);
     }
 
-    v4 = 0;
+    uuid = 0;
   }
 
-  return v4;
+  return uuid;
 }
 
-- (id)autoFillPasskeysForOperationUUID:(id)a3
+- (id)autoFillPasskeysForOperationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:v4];
+  dCopy = d;
+  v5 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:dCopy];
   v6 = v5;
   if (!v5)
   {
@@ -702,22 +702,22 @@ LABEL_13:
 
   if ([v5 hasSelectedAssertion])
   {
-    v7 = [v6 activity];
+    activity = [v6 activity];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100005BF8;
     block[3] = &unk_100031148;
-    v44 = v4;
-    os_activity_apply(v7, block);
+    v44 = dCopy;
+    os_activity_apply(activity, block);
 
     v8 = [[WBSPair alloc] initWithFirst:&__NSArray0__struct second:0];
     goto LABEL_8;
   }
 
   v9 = +[ASFeatureManager sharedManager];
-  v10 = [v9 isDeviceConfiguredToAllowPasskeys];
+  isDeviceConfiguredToAllowPasskeys = [v9 isDeviceConfiguredToAllowPasskeys];
 
-  if ((v10 & 1) == 0)
+  if ((isDeviceConfiguredToAllowPasskeys & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -726,9 +726,9 @@ LABEL_13:
   if ([v11 atLeastOneEnabledExtensionSupportsPasskeys])
   {
     v12 = +[SFAutoFillFeatureManager sharedFeatureManager];
-    v13 = [v12 shouldAutoFillPasswordsFromKeychain];
+    shouldAutoFillPasswordsFromKeychain = [v12 shouldAutoFillPasswordsFromKeychain];
 
-    if ((v13 & 1) == 0)
+    if ((shouldAutoFillPasswordsFromKeychain & 1) == 0)
     {
 LABEL_7:
       v8 = [[WBSPair alloc] initWithFirst:&__NSArray0__struct second:0];
@@ -740,15 +740,15 @@ LABEL_7:
   {
   }
 
-  v15 = [v6 identifiersToAssertionResponses];
-  v16 = [v6 relyingPartyIdentifier];
-  v38 = [v6 shouldRequireUserVerification];
+  identifiersToAssertionResponses = [v6 identifiersToAssertionResponses];
+  relyingPartyIdentifier = [v6 relyingPartyIdentifier];
+  shouldRequireUserVerification = [v6 shouldRequireUserVerification];
   v35 = v6;
-  v37 = [v6 requestUsedNonEmptyAllowList];
-  v17 = v15;
-  v40 = v16;
-  v36 = v4;
-  v41 = v4;
+  requestUsedNonEmptyAllowList = [v6 requestUsedNonEmptyAllowList];
+  v17 = identifiersToAssertionResponses;
+  v40 = relyingPartyIdentifier;
+  v36 = dCopy;
+  v41 = dCopy;
   v39 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
   v45 = 0u;
   v46 = 0u;
@@ -774,17 +774,17 @@ LABEL_7:
         v23 = [v18 objectForKeyedSubscript:*(*(&v45 + 1) + 8 * v22)];
         if ([v23 synchronizable])
         {
-          v24 = [v23 userHandle];
-          v25 = [v24 base64EncodedStringWithOptions:0];
+          userHandle = [v23 userHandle];
+          v25 = [userHandle base64EncodedStringWithOptions:0];
 
-          v26 = [v23 group];
-          v27 = [NSURLCredentialStorage safari_customTitleForPasskeyWithUserHandle:v25 relyingPartyID:v40 groupID:v26];
+          group = [v23 group];
+          v27 = [NSURLCredentialStorage safari_customTitleForPasskeyWithUserHandle:v25 relyingPartyID:v40 groupID:group];
 
           v28 = [WBSAutoFillPasskey alloc];
-          v29 = [v23 name];
+          name = [v23 name];
           v30 = sub_100003680(v23);
-          LOBYTE(v34) = v37;
-          v31 = [v28 initWithUsername:v29 customTitle:v27 relyingPartyIdentifier:v40 identifier:v30 operationUUID:v41 shouldRequireUserVerification:v38 requestUsedNonEmptyAllowList:v34];
+          LOBYTE(v34) = requestUsedNonEmptyAllowList;
+          v31 = [v28 initWithUsername:name customTitle:v27 relyingPartyIdentifier:v40 identifier:v30 operationUUID:v41 shouldRequireUserVerification:shouldRequireUserVerification requestUsedNonEmptyAllowList:v34];
 
           [v39 addObject:v31];
           v20 = v42;
@@ -812,7 +812,7 @@ LABEL_7:
   }
 
   v6 = v35;
-  v4 = v36;
+  dCopy = v36;
   v8 = [[WBSPair alloc] initWithFirst:v32 second:v33];
 
 LABEL_8:
@@ -820,24 +820,24 @@ LABEL_8:
   return v8;
 }
 
-- (void)presentCABLESheetForOperationUUID:(id)a3 withCompletionHandler:(id)a4
+- (void)presentCABLESheetForOperationUUID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = sub_10000A644();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Asked to present caBLE for AutoFill operation %{public}@", &v13, 0xCu);
   }
 
-  v9 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:v6];
+  v9 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:dCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 delegate];
-    [v11 presentCABLESheetWithCompletionHandler:v7];
+    delegate = [v9 delegate];
+    [delegate presentCABLESheetWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -849,21 +849,21 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Could not find operation.", &v13, 2u);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)assertUsingSecurityKeyCredentialForLoginChoice:(id)a3
+- (void)assertUsingSecurityKeyCredentialForLoginChoice:(id)choice
 {
-  v4 = a3;
-  v5 = [v4 publicKeyCredentialOperationUUID];
-  v6 = [(PublicKeyCredentialManager *)self _operationForUUID:v5];
+  choiceCopy = choice;
+  publicKeyCredentialOperationUUID = [choiceCopy publicKeyCredentialOperationUUID];
+  v6 = [(PublicKeyCredentialManager *)self _operationForUUID:publicKeyCredentialOperationUUID];
 
   if (v6)
   {
-    v7 = [v6 identifiersToAssertionResponses];
-    v8 = [v4 identifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    identifiersToAssertionResponses = [v6 identifiersToAssertionResponses];
+    identifier = [choiceCopy identifier];
+    v9 = [identifiersToAssertionResponses objectForKeyedSubscript:identifier];
 
     if (v9)
     {
@@ -872,35 +872,35 @@ LABEL_8:
 
     else
     {
-      v10 = [v6 activity];
+      activity = [v6 activity];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100005F74;
       block[3] = &unk_100031148;
-      v12 = v4;
-      os_activity_apply(v10, block);
+      v12 = choiceCopy;
+      os_activity_apply(activity, block);
     }
   }
 }
 
-- (void)cancelOperationIfNecessaryWithUUID:(id)a3 overrideError:(id)a4
+- (void)cancelOperationIfNecessaryWithUUID:(id)d overrideError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:v6];
+  dCopy = d;
+  errorCopy = error;
+  v8 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 activity];
+    activity = [v8 activity];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000060E4;
     v16 = &unk_100031290;
-    v11 = v6;
+    v11 = dCopy;
     v17 = v11;
-    v12 = v7;
+    v12 = errorCopy;
     v18 = v12;
-    os_activity_apply(v10, &v13);
+    os_activity_apply(activity, &v13);
 
     if (v12)
     {
@@ -911,122 +911,122 @@ LABEL_8:
   }
 }
 
-- (id)encodeMakeCredentialCommandWithOptions:(id)a3 authenticatorUserVerificationAvailability:(unint64_t)a4 authenticatorSupportedExtensions:(id)a5
+- (id)encodeMakeCredentialCommandWithOptions:(id)options authenticatorUserVerificationAvailability:(unint64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 2)
+  optionsCopy = options;
+  extensionsCopy = extensions;
+  if (availability == 2)
   {
     v10 = 2;
   }
 
   else
   {
-    v10 = a4 == 1;
+    v10 = availability == 1;
   }
 
-  v11 = [(PublicKeyCredentialManager *)self _asToWKCredentialCreationOptions:v8 forCredentialKind:1];
-  v12 = [v8 clientDataJSON];
-  if (!v12)
+  v11 = [(PublicKeyCredentialManager *)self _asToWKCredentialCreationOptions:optionsCopy forCredentialKind:1];
+  clientDataJSON = [optionsCopy clientDataJSON];
+  if (!clientDataJSON)
   {
-    v13 = [v8 challenge];
-    v14 = [v8 relyingPartyIdentifier];
-    v15 = [@"https://" stringByAppendingString:v14];
-    v12 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:0 challenge:v13 origin:v15];
+    challenge = [optionsCopy challenge];
+    relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+    v15 = [@"https://" stringByAppendingString:relyingPartyIdentifier];
+    clientDataJSON = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:0 challenge:challenge origin:v15];
   }
 
-  v16 = [v8 clientDataHash];
+  clientDataHash = [optionsCopy clientDataHash];
   if (objc_opt_respondsToSelector())
   {
-    if (v16)
+    if (clientDataHash)
     {
-      [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataHash:v16 options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:v9];
+      [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataHash:clientDataHash options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:extensionsCopy];
     }
 
     else
     {
-      [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataJSON:v12 options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:v9];
+      [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataJSON:clientDataJSON options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:extensionsCopy];
     }
   }
 
-  else if (v16)
+  else if (clientDataHash)
   {
-    [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataHash:v16 options:v11 userVerificationAvailability:v10];
+    [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataHash:clientDataHash options:v11 userVerificationAvailability:v10];
   }
 
   else
   {
-    [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataJSON:v12 options:v11 userVerificationAvailability:v10];
+    [_WKWebAuthenticationPanel encodeMakeCredentialCommandWithClientDataJSON:clientDataJSON options:v11 userVerificationAvailability:v10];
   }
   v17 = ;
   v18 = v17;
-  v19 = [(PublicKeyCredentialManager *)self encodeExtensionsIfNeededForCTAPRegistrationCommand:v17 registrationOptions:v8];
+  v19 = [(PublicKeyCredentialManager *)self encodeExtensionsIfNeededForCTAPRegistrationCommand:v17 registrationOptions:optionsCopy];
 
-  v20 = [[WBSPair alloc] initWithFirst:v12 second:v19];
+  v20 = [[WBSPair alloc] initWithFirst:clientDataJSON second:v19];
 
   return v20;
 }
 
-- (id)encodeGetAssertionCommandWithOptions:(id)a3 authenticatorUserVerificationAvailability:(unint64_t)a4 authenticatorSupportedExtensions:(id)a5
+- (id)encodeGetAssertionCommandWithOptions:(id)options authenticatorUserVerificationAvailability:(unint64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 2)
+  optionsCopy = options;
+  extensionsCopy = extensions;
+  if (availability == 2)
   {
     v10 = 2;
   }
 
   else
   {
-    v10 = a4 == 1;
+    v10 = availability == 1;
   }
 
-  v11 = [(PublicKeyCredentialManager *)self _asToWKCredentialAssertionOptions:v8];
-  v12 = [v8 clientDataJSON];
-  if (!v12)
+  v11 = [(PublicKeyCredentialManager *)self _asToWKCredentialAssertionOptions:optionsCopy];
+  clientDataJSON = [optionsCopy clientDataJSON];
+  if (!clientDataJSON)
   {
-    v13 = [v8 challenge];
-    v14 = [v8 relyingPartyIdentifier];
-    v15 = [@"https://" stringByAppendingString:v14];
-    v12 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:1 challenge:v13 origin:v15];
+    challenge = [optionsCopy challenge];
+    relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+    v15 = [@"https://" stringByAppendingString:relyingPartyIdentifier];
+    clientDataJSON = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:1 challenge:challenge origin:v15];
   }
 
-  v16 = [v8 clientDataHash];
+  clientDataHash = [optionsCopy clientDataHash];
   if (objc_opt_respondsToSelector())
   {
-    if (v16)
+    if (clientDataHash)
     {
-      [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataHash:v16 options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:v9];
+      [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataHash:clientDataHash options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:extensionsCopy];
     }
 
     else
     {
-      [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataJSON:v12 options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:v9];
+      [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataJSON:clientDataJSON options:v11 userVerificationAvailability:v10 authenticatorSupportedExtensions:extensionsCopy];
     }
   }
 
-  else if (v16)
+  else if (clientDataHash)
   {
-    [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataHash:v16 options:v11 userVerificationAvailability:v10];
+    [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataHash:clientDataHash options:v11 userVerificationAvailability:v10];
   }
 
   else
   {
-    [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataJSON:v12 options:v11 userVerificationAvailability:v10];
+    [_WKWebAuthenticationPanel encodeGetAssertionCommandWithClientDataJSON:clientDataJSON options:v11 userVerificationAvailability:v10];
   }
   v17 = ;
   v18 = v17;
-  v19 = [(PublicKeyCredentialManager *)self encodeExtensionsIfNeededForCTAPAssertionCommand:v17 assertionOptions:v8];
+  v19 = [(PublicKeyCredentialManager *)self encodeExtensionsIfNeededForCTAPAssertionCommand:v17 assertionOptions:optionsCopy];
 
-  v20 = [[WBSPair alloc] initWithFirst:v12 second:v19];
+  v20 = [[WBSPair alloc] initWithFirst:clientDataJSON second:v19];
 
   return v20;
 }
 
-- (id)browserPasskeysForRelyingParty:(id)a3 testOptions:(id)a4
+- (id)browserPasskeysForRelyingParty:(id)party testOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  partyCopy = party;
+  optionsCopy = options;
   v8 = dispatch_group_create();
   v27 = 0;
   v28 = &v27;
@@ -1034,7 +1034,7 @@ LABEL_8:
   v30 = "";
   v31 = 0;
   v9 = +[NSMutableArray array];
-  if (v7)
+  if (optionsCopy)
   {
     dispatch_group_enter(v8);
     v23[0] = _NSConcreteStackBlock;
@@ -1045,14 +1045,14 @@ LABEL_8:
     v10 = v9;
     v24 = v10;
     v25 = v8;
-    [(PublicKeyCredentialManager *)self test_getBrowserPasskeysForRelyingParty:v6 completionHandler:v23];
+    [(PublicKeyCredentialManager *)self test_getBrowserPasskeysForRelyingParty:partyCopy completionHandler:v23];
 
     v11 = v24;
   }
 
   else
   {
-    v11 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:v6];
+    v11 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:partyCopy];
     os_unfair_lock_lock(v28 + 8);
     v12 = [v11 safari_mapAndFilterObjectsUsingBlock:&stru_100031570];
     v10 = [NSMutableArray arrayWithArray:v12];
@@ -1061,7 +1061,7 @@ LABEL_8:
   }
 
   dispatch_group_enter(v8);
-  v32 = v6;
+  v32 = partyCopy;
   v13 = [NSArray arrayWithObjects:&v32 count:1];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -1083,16 +1083,16 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)deletePasskeyForRelyingParty:(id)a3 withCredentialID:(id)a4 error:(id *)a5
+- (BOOL)deletePasskeyForRelyingParty:(id)party withCredentialID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:v7];
+  partyCopy = party;
+  dCopy = d;
+  v9 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:partyCopy];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100006E48;
   v18 = &unk_100031598;
-  v10 = v8;
+  v10 = dCopy;
   v19 = v10;
   v11 = [v9 safari_containsObjectPassingTest:&v15];
   if (v11)
@@ -1111,16 +1111,16 @@ LABEL_8:
     v20 = NSLocalizedFailureReasonErrorKey;
     v21 = @"Could not find expected passkey.";
     v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1, v15, v16, v17, v18];
-    *a5 = [NSError errorWithDomain:ASAuthorizationErrorDomain code:1004 userInfo:v13];
+    *error = [NSError errorWithDomain:ASAuthorizationErrorDomain code:1004 userInfo:v13];
   }
 
   return v11;
 }
 
-- (BOOL)deleteAllPasskeysForRelyingParty:(id)a3 error:(id *)a4
+- (BOOL)deleteAllPasskeysForRelyingParty:(id)party error:(id *)error
 {
-  v5 = a3;
-  v6 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:v5];
+  partyCopy = party;
+  v6 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:partyCopy];
   v7 = [v6 count];
   v8 = sub_10000A644();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -1129,7 +1129,7 @@ LABEL_8:
     if (v9)
     {
       *buf = 138543362;
-      v32 = v5;
+      v32 = partyCopy;
       v22 = 1;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Found no passkeys for %{public}@.", buf, 0xCu);
       goto LABEL_18;
@@ -1178,7 +1178,7 @@ LABEL_17:
     while (v13);
   }
 
-  v6 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:v5];
+  v6 = [_WKWebAuthenticationPanel getAllLocalAuthenticatorCredentialsWithRPID:partyCopy];
 
   if (![v6 count])
   {
@@ -1198,7 +1198,7 @@ LABEL_17:
   v28 = NSLocalizedFailureReasonErrorKey;
   v29 = @"Unable to delete some passkeys.";
   v21 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1, v24];
-  *a4 = [NSError errorWithDomain:ASAuthorizationErrorDomain code:1000 userInfo:v21];
+  *error = [NSError errorWithDomain:ASAuthorizationErrorDomain code:1000 userInfo:v21];
 
   v22 = 0;
 LABEL_18:
@@ -1206,13 +1206,13 @@ LABEL_18:
   return v22;
 }
 
-- (void)getExternalPasskeyRequestForWebFrameIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6
+- (void)getExternalPasskeyRequestForWebFrameIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier credentialID:(id)d completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:v13];
+  partyIdentifierCopy = partyIdentifier;
+  dCopy = d;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v14 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:identifierCopy];
 
   v15 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:v14];
 
@@ -1222,8 +1222,8 @@ LABEL_18:
     v17[1] = 3221225472;
     v17[2] = sub_1000072E4;
     v17[3] = &unk_1000315C0;
-    v18 = v12;
-    [(PublicKeyCredentialManager *)self _getExternalPasskeyRequestForOperation:v15 relyingPartyIdentifier:v10 credentialID:v11 completionHandler:v17];
+    v18 = handlerCopy;
+    [(PublicKeyCredentialManager *)self _getExternalPasskeyRequestForOperation:v15 relyingPartyIdentifier:partyIdentifierCopy credentialID:dCopy completionHandler:v17];
   }
 
   else
@@ -1234,24 +1234,24 @@ LABEL_18:
       sub_100020418();
     }
 
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)getExternalPasskeyRequestForApplicationIdentifier:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6
+- (void)getExternalPasskeyRequestForApplicationIdentifier:(id)identifier relyingPartyIdentifier:(id)partyIdentifier credentialID:(id)d completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:a3];
+  partyIdentifierCopy = partyIdentifier;
+  dCopy = d;
+  handlerCopy = handler;
+  v13 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:identifier];
   if (v13)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10000741C;
     v15[3] = &unk_1000315C0;
-    v16 = v12;
-    [(PublicKeyCredentialManager *)self _getExternalPasskeyRequestForOperation:v13 relyingPartyIdentifier:v10 credentialID:v11 completionHandler:v15];
+    v16 = handlerCopy;
+    [(PublicKeyCredentialManager *)self _getExternalPasskeyRequestForOperation:v13 relyingPartyIdentifier:partyIdentifierCopy credentialID:dCopy completionHandler:v15];
   }
 
   else
@@ -1262,88 +1262,88 @@ LABEL_18:
       sub_100020418();
     }
 
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)_getExternalPasskeyRequestForOperation:(id)a3 relyingPartyIdentifier:(id)a4 credentialID:(id)a5 completionHandler:(id)a6
+- (void)_getExternalPasskeyRequestForOperation:(id)operation relyingPartyIdentifier:(id)identifier credentialID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
+  operationCopy = operation;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007538;
   v15[3] = &unk_1000315E8;
-  v16 = a4;
-  v17 = a5;
-  v18 = v10;
-  v19 = a6;
-  v11 = v19;
-  v12 = v10;
-  v13 = v17;
-  v14 = v16;
+  identifierCopy = identifier;
+  dCopy = d;
+  v18 = operationCopy;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  v12 = operationCopy;
+  v13 = dCopy;
+  v14 = identifierCopy;
   [(PublicKeyCredentialManager *)self _queryExternalLoginChoicesForOperation:v12 completionHandler:v15];
 }
 
-- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)a3 usingCredential:(id)a4
+- (void)completeAssertionWithExternalPasskeyForWebFrameIdentifier:(id)identifier usingCredential:(id)credential
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:v7];
+  credentialCopy = credential;
+  identifierCopy = identifier;
+  v8 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:identifierCopy];
 
   v9 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:v8];
 
-  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v9 usingCredential:v6];
+  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v9 usingCredential:credentialCopy];
 }
 
-- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)a3 usingCredential:(id)a4
+- (void)completeAssertionWithExternalPasskeyForApplicationIdentifier:(id)identifier usingCredential:(id)credential
 {
-  v6 = a4;
-  v7 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:a3];
-  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v7 usingCredential:v6];
+  credentialCopy = credential;
+  v7 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:identifier];
+  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v7 usingCredential:credentialCopy];
 }
 
-- (void)completeAssertionWithExternalPasskeyForUUID:(id)a3 usingCredential:(id)a4
+- (void)completeAssertionWithExternalPasskeyForUUID:(id)d usingCredential:(id)credential
 {
-  v6 = a4;
-  v7 = [(PublicKeyCredentialManager *)self _operationForUUID:a3];
-  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v7 usingCredential:v6];
+  credentialCopy = credential;
+  v7 = [(PublicKeyCredentialManager *)self _operationForUUID:d];
+  [(PublicKeyCredentialManager *)self _completeAssertionWithExternalPasskeyForOperation:v7 usingCredential:credentialCopy];
 }
 
-- (void)_completeAssertionWithExternalPasskeyForOperation:(id)a3 usingCredential:(id)a4
+- (void)_completeAssertionWithExternalPasskeyForOperation:(id)operation usingCredential:(id)credential
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 uuid];
+  operationCopy = operation;
+  credentialCopy = credential;
+  uuid = [operationCopy uuid];
   v8 = [NSError safari_errorWithDomain:ASCAuthorizationErrorDomain code:12 privacyPreservingDescription:@"Operation performed with external passkey"];
-  [(PublicKeyCredentialManager *)self cancelOperationIfNecessaryWithUUID:v7 overrideError:v8];
+  [(PublicKeyCredentialManager *)self cancelOperationIfNecessaryWithUUID:uuid overrideError:v8];
 
-  v9 = [v12 clientDataJSONForApps];
+  clientDataJSONForApps = [operationCopy clientDataJSONForApps];
 
-  if (v9)
+  if (clientDataJSONForApps)
   {
-    v10 = [v12 clientDataJSONForApps];
-    [v6 setRawClientDataJSON:v10];
+    clientDataJSONForApps2 = [operationCopy clientDataJSONForApps];
+    [credentialCopy setRawClientDataJSON:clientDataJSONForApps2];
   }
 
-  v11 = [v12 delegate];
-  [v11 didCompleteAssertionWithCredential:v6 error:0];
+  delegate = [operationCopy delegate];
+  [delegate didCompleteAssertionWithCredential:credentialCopy error:0];
 }
 
-- (void)_queryExternalLoginChoicesForOperation:(id)a3 completionHandler:(id)a4
+- (void)_queryExternalLoginChoicesForOperation:(id)operation completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 assertionOptions];
+  operationCopy = operation;
+  handlerCopy = handler;
+  assertionOptions = [operationCopy assertionOptions];
 
-  if (v7)
+  if (assertionOptions)
   {
-    v8 = [v5 assertionOptions];
-    v9 = [v8 allowedCredentials];
-    v10 = [v9 safari_mapObjectsUsingBlock:&stru_100031628];
+    assertionOptions2 = [operationCopy assertionOptions];
+    allowedCredentials = [assertionOptions2 allowedCredentials];
+    v10 = [allowedCredentials safari_mapObjectsUsingBlock:&stru_100031628];
 
     v11 = [v10 count] != 0;
-    v12 = [v5 relyingPartyIdentifier];
-    v21 = v12;
+    relyingPartyIdentifier = [operationCopy relyingPartyIdentifier];
+    v21 = relyingPartyIdentifier;
     v13 = [NSArray arrayWithObjects:&v21 count:1];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -1351,8 +1351,8 @@ LABEL_18:
     v16[3] = &unk_100031678;
     v20 = v11;
     v17 = v10;
-    v18 = v5;
-    v19 = v6;
+    v18 = operationCopy;
+    v19 = handlerCopy;
     v14 = v10;
     [SFSafariCredentialStore getExternalPasskeyCredentialIdentitiesForDomains:v13 completionHandler:v16];
   }
@@ -1365,38 +1365,38 @@ LABEL_18:
       sub_1000204DC();
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)getPasskeyAssertionRequestParametersForWebFrameIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getPasskeyAssertionRequestParametersForWebFrameIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v8 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:identifierCopy];
 
   v9 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:v8];
 
-  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v9 completionHandler:v6];
+  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v9 completionHandler:handlerCopy];
 }
 
-- (void)getPasskeyAssertionRequestParametersForApplicationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getPasskeyAssertionRequestParametersForApplicationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:a3];
-  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v7 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:identifier];
+  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v7 completionHandler:handlerCopy];
 }
 
-- (void)getPasskeyAssertionRequestParametersForCABLEWithCompletionHandler:(id)a3
+- (void)getPasskeyAssertionRequestParametersForCABLEWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_operationsLock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_uuidToOperation allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_uuidToOperation allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1406,21 +1406,21 @@ LABEL_18:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 delegate];
-        v11 = [v10 isCABLEAuthenticatorRequest];
+        delegate = [v9 delegate];
+        isCABLEAuthenticatorRequest = [delegate isCABLEAuthenticatorRequest];
 
-        if (v11)
+        if (isCABLEAuthenticatorRequest)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1433,36 +1433,36 @@ LABEL_18:
 LABEL_11:
 
   os_unfair_lock_unlock(&self->_operationsLock);
-  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v6 completionHandler:v4];
+  [(PublicKeyCredentialManager *)self _getPasskeyAssertionRequestParametersForOperation:v6 completionHandler:handlerCopy];
 }
 
-- (void)getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:(id)a3 orApplicationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:(id)identifier orApplicationIdentifier:(id)applicationIdentifier completionHandler:(id)handler
 {
-  v11 = a3;
-  if (v11)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = a5;
-    v9 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:v11];
-    v10 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:v9];
-    (*(a5 + 2))(v8, v10 != 0);
+    handlerCopy = handler;
+    v9 = [[ASGlobalFrameIdentifier alloc] initWithCoreFrameIdentifier:identifierCopy];
+    handlerCopy2 = [(PublicKeyCredentialManager *)self _operationForWebFrameIdentifier:v9];
+    (*(handler + 2))(handlerCopy, handlerCopy2 != 0);
   }
 
   else
   {
-    v10 = a5;
-    v9 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:a4];
-    (*(a5 + 2))(v10, v9 != 0);
+    handlerCopy2 = handler;
+    v9 = [(PublicKeyCredentialManager *)self _operationForApplicationIdentifierIfExists:applicationIdentifier];
+    (*(handler + 2))(handlerCopy2, v9 != 0);
   }
 }
 
-- (void)_getPasskeyAssertionRequestParametersForOperation:(id)a3 completionHandler:(id)a4
+- (void)_getPasskeyAssertionRequestParametersForOperation:(id)operation completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   v7 = +[SFCredentialProviderExtensionManager sharedManager];
-  v8 = [v7 atLeastOneEnabledExtensionSupportsPasskeys];
+  atLeastOneEnabledExtensionSupportsPasskeys = [v7 atLeastOneEnabledExtensionSupportsPasskeys];
 
-  if ((v8 & 1) == 0)
+  if ((atLeastOneEnabledExtensionSupportsPasskeys & 1) == 0)
   {
     v16 = sub_10000A644();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1473,7 +1473,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (!v5)
+  if (!operationCopy)
   {
     v17 = sub_10000A644();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1482,23 +1482,23 @@ LABEL_11:
     }
 
 LABEL_10:
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_17;
   }
 
-  v9 = [v5 assertionOptions];
-  v10 = v9;
-  if (v9)
+  assertionOptions = [operationCopy assertionOptions];
+  v10 = assertionOptions;
+  if (assertionOptions)
   {
-    v11 = [v9 allowedCredentials];
-    v12 = [v11 safari_mapObjectsUsingBlock:&stru_1000316B8];
+    allowedCredentials = [assertionOptions allowedCredentials];
+    v12 = [allowedCredentials safari_mapObjectsUsingBlock:&stru_1000316B8];
 
-    v13 = [v5 assertionOptions];
-    v14 = [v13 extensions];
+    assertionOptions2 = [operationCopy assertionOptions];
+    extensions = [assertionOptions2 extensions];
 
-    if (v14)
+    if (extensions)
     {
-      v15 = [[ASPasskeyAssertionCredentialExtensionInput alloc] initWithCoreExtensions:v14];
+      v15 = [[ASPasskeyAssertionCredentialExtensionInput alloc] initWithCoreExtensions:extensions];
     }
 
     else
@@ -1507,12 +1507,12 @@ LABEL_10:
     }
 
     v19 = [ASPasskeyCredentialRequestParameters alloc];
-    v20 = [v5 relyingPartyIdentifier];
-    v21 = [v10 clientDataHash];
-    v22 = [v10 userVerificationPreference];
-    v23 = [v19 initWithRelyingPartyIdentifier:v20 clientDataHash:v21 userVerificationPreference:v22 allowedCredentials:v12 extensionInput:v15];
+    relyingPartyIdentifier = [operationCopy relyingPartyIdentifier];
+    clientDataHash = [v10 clientDataHash];
+    userVerificationPreference = [v10 userVerificationPreference];
+    v23 = [v19 initWithRelyingPartyIdentifier:relyingPartyIdentifier clientDataHash:clientDataHash userVerificationPreference:userVerificationPreference allowedCredentials:v12 extensionInput:v15];
 
-    (v6)[2](v6, v23);
+    (handlerCopy)[2](handlerCopy, v23);
   }
 
   else
@@ -1523,43 +1523,43 @@ LABEL_10:
       sub_100020544();
     }
 
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_17:
 }
 
-- (id)_asToWKCredentialCreationOptions:(id)a3 forCredentialKind:(unint64_t)a4
+- (id)_asToWKCredentialCreationOptions:(id)options forCredentialKind:(unint64_t)kind
 {
-  v5 = a3;
-  v6 = [v5 supportedAlgorithmIdentifiers];
-  v7 = [v6 safari_mapObjectsUsingBlock:&stru_1000316F8];
+  optionsCopy = options;
+  supportedAlgorithmIdentifiers = [optionsCopy supportedAlgorithmIdentifiers];
+  v7 = [supportedAlgorithmIdentifiers safari_mapObjectsUsingBlock:&stru_1000316F8];
 
-  v8 = [v5 relyingPartyIdentifier];
-  v9 = [[_WKPublicKeyCredentialRelyingPartyEntity alloc] initWithName:v8];
-  [v9 setIdentifier:v8];
+  relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+  v9 = [[_WKPublicKeyCredentialRelyingPartyEntity alloc] initWithName:relyingPartyIdentifier];
+  [v9 setIdentifier:relyingPartyIdentifier];
   v10 = [_WKPublicKeyCredentialUserEntity alloc];
-  v11 = [v5 userName];
-  v12 = [v5 userIdentifier];
-  v13 = [v5 userDisplayName];
-  v14 = [v10 initWithName:v11 identifier:v12 displayName:v13];
+  userName = [optionsCopy userName];
+  userIdentifier = [optionsCopy userIdentifier];
+  userDisplayName = [optionsCopy userDisplayName];
+  v14 = [v10 initWithName:userName identifier:userIdentifier displayName:userDisplayName];
 
   v30 = v7;
   v15 = [[_WKPublicKeyCredentialCreationOptions alloc] initWithRelyingParty:v9 user:v14 publicKeyCredentialParamaters:v7];
   v16 = objc_alloc_init(_WKAuthenticatorSelectionCriteria);
   v17 = v16;
-  if (a4 == 1)
+  if (kind == 1)
   {
     v20 = 1;
     [v16 setAuthenticatorAttachment:1];
-    v18 = [v5 attestationPreference];
-    if (![v18 length])
+    attestationPreference = [optionsCopy attestationPreference];
+    if (![attestationPreference length])
     {
       goto LABEL_11;
     }
 
     v20 = 1;
-    if (sub_100008824(v18) != 3)
+    if (sub_100008824(attestationPreference) != 3)
     {
       goto LABEL_11;
     }
@@ -1569,21 +1569,21 @@ LABEL_17:
 
   else
   {
-    if (a4 != 2)
+    if (kind != 2)
     {
       v20 = 0;
       goto LABEL_12;
     }
 
     [v16 setAuthenticatorAttachment:2];
-    v18 = [v5 attestationPreference];
-    if (![v18 length])
+    attestationPreference = [optionsCopy attestationPreference];
+    if (![attestationPreference length])
     {
       v20 = 0;
       goto LABEL_11;
     }
 
-    v19 = sub_100008824(v18);
+    v19 = sub_100008824(attestationPreference);
     v20 = 0;
   }
 
@@ -1591,8 +1591,8 @@ LABEL_17:
 LABEL_11:
 
 LABEL_12:
-  v21 = [v5 residentKeyPreference];
-  if (v21 >= 4)
+  residentKeyPreference = [optionsCopy residentKeyPreference];
+  if (residentKeyPreference >= 4)
   {
     v23 = sub_10000A644();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1605,102 +1605,102 @@ LABEL_12:
 
   else
   {
-    v22 = qword_1000251E0[v21];
+    v22 = qword_1000251E0[residentKeyPreference];
   }
 
   [v17 setResidentKey:v22];
-  v24 = [v5 excludedCredentials];
-  if ([v24 count])
+  excludedCredentials = [optionsCopy excludedCredentials];
+  if ([excludedCredentials count])
   {
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100008948;
     v31[3] = &unk_100031718;
     v32 = v20;
-    v25 = [v24 safari_mapObjectsUsingBlock:v31];
+    v25 = [excludedCredentials safari_mapObjectsUsingBlock:v31];
     [v15 setExcludeCredentials:v25];
   }
 
-  v26 = [v5 userVerificationPreference];
-  if ([v26 length])
+  userVerificationPreference = [optionsCopy userVerificationPreference];
+  if ([userVerificationPreference length])
   {
-    [v17 setUserVerification:sub_100008A30(v26)];
+    [v17 setUserVerification:sub_100008A30(userVerificationPreference)];
   }
 
   [v15 setAuthenticatorSelection:v17];
-  v27 = [v5 timeout];
-  if (v27)
+  timeout = [optionsCopy timeout];
+  if (timeout)
   {
-    [v15 setTimeout:v27];
+    [v15 setTimeout:timeout];
   }
 
-  v28 = [v5 extensionsCBORForWebKit];
-  if (v28)
+  extensionsCBORForWebKit = [optionsCopy extensionsCBORForWebKit];
+  if (extensionsCBORForWebKit)
   {
-    [v15 setExtensionsCBOR:v28];
+    [v15 setExtensionsCBOR:extensionsCBORForWebKit];
   }
 
   return v15;
 }
 
-- (id)_asToWKCredentialAssertionOptions:(id)a3
+- (id)_asToWKCredentialAssertionOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(_WKPublicKeyCredentialRequestOptions);
-  v6 = [v4 relyingPartyIdentifier];
-  [v5 setRelyingPartyIdentifier:v6];
-  v7 = [v4 credentialKind];
-  if (v7 == 1)
+  relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+  [v5 setRelyingPartyIdentifier:relyingPartyIdentifier];
+  credentialKind = [optionsCopy credentialKind];
+  if (credentialKind == 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = 2 * (v7 == 2);
+    v8 = 2 * (credentialKind == 2);
   }
 
   [v5 setAuthenticatorAttachment:v8];
-  v9 = [(PublicKeyCredentialManager *)self _allowedCredentialsForAssertionOptions:v4];
+  v9 = [(PublicKeyCredentialManager *)self _allowedCredentialsForAssertionOptions:optionsCopy];
   if ([v9 count])
   {
     [v5 setAllowCredentials:v9];
   }
 
-  v10 = [v4 userVerificationPreference];
-  if ([v10 length])
+  userVerificationPreference = [optionsCopy userVerificationPreference];
+  if ([userVerificationPreference length])
   {
-    [v5 setUserVerification:sub_100008A30(v10)];
+    [v5 setUserVerification:sub_100008A30(userVerificationPreference)];
   }
 
-  v11 = [v4 timeout];
-  if (v11)
+  timeout = [optionsCopy timeout];
+  if (timeout)
   {
-    [v5 setTimeout:v11];
+    [v5 setTimeout:timeout];
   }
 
-  v12 = [v4 extensionsCBORForWebKit];
-  if (v12)
+  extensionsCBORForWebKit = [optionsCopy extensionsCBORForWebKit];
+  if (extensionsCBORForWebKit)
   {
-    [v5 setExtensionsCBOR:v12];
+    [v5 setExtensionsCBOR:extensionsCBORForWebKit];
   }
 
   return v5;
 }
 
-- (id)_allowedCredentialsForAssertionOptions:(id)a3
+- (id)_allowedCredentialsForAssertionOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[NSMutableArray array];
-  v5 = [v3 credentialKind];
-  if (v5 == 1)
+  credentialKind = [optionsCopy credentialKind];
+  if (credentialKind == 1)
   {
     v6 = &stru_100031758;
   }
 
   else
   {
-    if (v5 != 2)
+    if (credentialKind != 2)
     {
       goto LABEL_6;
     }
@@ -1708,8 +1708,8 @@ LABEL_12:
     v6 = &stru_100031778;
   }
 
-  v7 = [v3 allowedCredentials];
-  v8 = [v7 safari_mapObjectsUsingBlock:v6];
+  allowedCredentials = [optionsCopy allowedCredentials];
+  v8 = [allowedCredentials safari_mapObjectsUsingBlock:v6];
   [v4 addObjectsFromArray:v8];
 
 LABEL_6:
@@ -1717,76 +1717,76 @@ LABEL_6:
   return v4;
 }
 
-- (id)_createCredentialOfKind:(unint64_t)a3 withOptions:(id)a4 authenticatedLAContext:(id)a5 delegate:(id)a6 webFrameIdentifier:(id)a7 parentActivity:(id)a8 isConditionalRegistration:(BOOL)a9 testOptions:(id)a10
+- (id)_createCredentialOfKind:(unint64_t)kind withOptions:(id)options authenticatedLAContext:(id)context delegate:(id)delegate webFrameIdentifier:(id)identifier parentActivity:(id)activity isConditionalRegistration:(BOOL)registration testOptions:(id)self0
 {
-  v16 = a4;
-  v37 = a6;
-  v36 = a10;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
-  [(PublicKeyCredentialManager *)self computeClientDataIfNeededForCreationOptions:v16];
-  v20 = [v16 relyingPartyIdentifier];
-  v21 = [(PublicKeyCredentialManager *)self _asToWKCredentialCreationOptions:v16 forCredentialKind:a3];
-  v22 = [v21 authenticatorSelection];
-  v23 = -[PublicKeyCredentialManager _newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:](self, "_newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:", v20, v37, 0, v18, [v22 userVerification] == 0, v17, v36);
+  optionsCopy = options;
+  delegateCopy = delegate;
+  testOptionsCopy = testOptions;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  contextCopy = context;
+  [(PublicKeyCredentialManager *)self computeClientDataIfNeededForCreationOptions:optionsCopy];
+  relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+  v21 = [(PublicKeyCredentialManager *)self _asToWKCredentialCreationOptions:optionsCopy forCredentialKind:kind];
+  authenticatorSelection = [v21 authenticatorSelection];
+  v23 = -[PublicKeyCredentialManager _newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:](self, "_newOperationWithRelyingPartyIdentifier:delegate:sourceApplicationIdentifier:webFrameIdentifier:shouldRequireUserVerification:parentActivity:testOptions:", relyingPartyIdentifier, delegateCopy, 0, identifierCopy, [authenticatorSelection userVerification] == 0, activityCopy, testOptionsCopy);
 
-  [v23 setAuthenticatedLAContext:v19];
-  [v23 setCreationOptions:v16];
-  v24 = [v16 clientDataJSON];
+  [v23 setAuthenticatedLAContext:contextCopy];
+  [v23 setCreationOptions:optionsCopy];
+  clientDataJSON = [optionsCopy clientDataJSON];
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_100009048;
   v49[3] = &unk_1000317C0;
   v25 = v23;
-  v51 = v37;
-  v52 = a3;
+  v51 = delegateCopy;
+  kindCopy = kind;
   v50 = v25;
-  v38 = v37;
+  v38 = delegateCopy;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000093F0;
   block[3] = &unk_100031810;
   block[4] = self;
   v40 = v25;
-  v48 = a9;
-  v41 = v36;
-  v42 = v16;
+  registrationCopy = registration;
+  v41 = testOptionsCopy;
+  v42 = optionsCopy;
   v43 = v21;
-  v44 = v24;
+  v44 = clientDataJSON;
   v46 = objc_retainBlock(v49);
-  v47 = a3;
-  v45 = v20;
-  v26 = v20;
+  kindCopy2 = kind;
+  v45 = relyingPartyIdentifier;
+  v26 = relyingPartyIdentifier;
   v27 = v46;
-  v28 = v24;
+  v28 = clientDataJSON;
   v29 = v21;
-  v30 = v16;
-  v31 = v36;
+  v30 = optionsCopy;
+  v31 = testOptionsCopy;
   v32 = v25;
   dispatch_async(&_dispatch_main_q, block);
-  v33 = [v32 uuid];
+  uuid = [v32 uuid];
 
-  return v33;
+  return uuid;
 }
 
-- (id)_newPanelForOperation:(id)a3
+- (id)_newPanelForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock(&self->_operationsLock);
   v5 = objc_alloc_init(_WKWebAuthenticationPanel);
   [v5 setDelegate:self];
-  [v4 setPanel:v5];
-  v6 = [v4 activity];
+  [operationCopy setPanel:v5];
+  activity = [operationCopy activity];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000098B0;
   v15 = &unk_100031290;
   v7 = v5;
   v16 = v7;
-  v17 = v4;
-  v8 = v4;
-  os_activity_apply(v6, &v12);
+  v17 = operationCopy;
+  v8 = operationCopy;
+  os_activity_apply(activity, &v12);
 
   [(NSMapTable *)self->_panelToWeakOperation setObject:v8 forKey:v7, v12, v13, v14, v15];
   os_unfair_lock_unlock(&self->_operationsLock);
@@ -1796,40 +1796,40 @@ LABEL_6:
   return v10;
 }
 
-- (void)_tearDownOperationWithUUID:(id)a3
+- (void)_tearDownOperationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_operationsLock);
-  v5 = [(NSMutableDictionary *)self->_uuidToOperation objectForKeyedSubscript:v4];
-  v6 = [v5 activity];
+  v5 = [(NSMutableDictionary *)self->_uuidToOperation objectForKeyedSubscript:dCopy];
+  activity = [v5 activity];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009D34;
   block[3] = &unk_100031148;
-  v9 = v4;
-  v7 = v4;
-  os_activity_apply(v6, block);
+  v9 = dCopy;
+  v7 = dCopy;
+  os_activity_apply(activity, block);
 
   [v5 tearDownIfNecessary];
   [(NSMutableDictionary *)self->_uuidToOperation setObject:0 forKeyedSubscript:v7];
   os_unfair_lock_unlock(&self->_operationsLock);
 }
 
-- (id)_operationForPanelIfExists:(id)a3
+- (id)_operationForPanelIfExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   os_unfair_lock_lock(&self->_operationsLock);
-  v5 = [(NSMapTable *)self->_panelToWeakOperation objectForKey:v4];
+  v5 = [(NSMapTable *)self->_panelToWeakOperation objectForKey:existsCopy];
 
   os_unfair_lock_unlock(&self->_operationsLock);
 
   return v5;
 }
 
-- (id)_operationForPanel:(id)a3
+- (id)_operationForPanel:(id)panel
 {
-  v4 = a3;
-  v5 = [(PublicKeyCredentialManager *)self _operationForPanelIfExists:v4];
+  panelCopy = panel;
+  v5 = [(PublicKeyCredentialManager *)self _operationForPanelIfExists:panelCopy];
   v6 = v5;
   if (v5)
   {
@@ -1848,21 +1848,21 @@ LABEL_6:
   return v6;
 }
 
-- (id)_operationForUUIDIfExists:(id)a3
+- (id)_operationForUUIDIfExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   os_unfair_lock_lock(&self->_operationsLock);
-  v5 = [(NSMutableDictionary *)self->_uuidToOperation objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_uuidToOperation objectForKeyedSubscript:existsCopy];
 
   os_unfair_lock_unlock(&self->_operationsLock);
 
   return v5;
 }
 
-- (id)_operationForUUID:(id)a3
+- (id)_operationForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:v4];
+  dCopy = d;
+  v5 = [(PublicKeyCredentialManager *)self _operationForUUIDIfExists:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -1881,98 +1881,98 @@ LABEL_6:
   return v6;
 }
 
-- (id)_operationForApplicationIdentifierIfExists:(id)a3
+- (id)_operationForApplicationIdentifierIfExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   os_unfair_lock_lock(&self->_operationsLock);
-  v5 = [(NSMapTable *)self->_applicationIdentifierToWeakOperation objectForKey:v4];
+  v5 = [(NSMapTable *)self->_applicationIdentifierToWeakOperation objectForKey:existsCopy];
 
   os_unfair_lock_unlock(&self->_operationsLock);
 
   return v5;
 }
 
-- (id)_operationForWebFrameIdentifier:(id)a3
+- (id)_operationForWebFrameIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_operationsLock);
-  v5 = [(NSMapTable *)self->_webFrameIdentifierToWeakOperationForBrowser objectForKey:v4];
+  v5 = [(NSMapTable *)self->_webFrameIdentifierToWeakOperationForBrowser objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_operationsLock);
 
   return v5;
 }
 
-- (void)computeClientDataIfNeededForCreationOptions:(id)a3
+- (void)computeClientDataIfNeededForCreationOptions:(id)options
 {
-  v11 = a3;
-  v3 = [v11 clientDataJSON];
-  if (v3)
+  optionsCopy = options;
+  clientDataJSON = [optionsCopy clientDataJSON];
+  if (clientDataJSON)
   {
     goto LABEL_2;
   }
 
-  v4 = [v11 clientDataHash];
+  clientDataHash = [optionsCopy clientDataHash];
 
-  if (!v4)
+  if (!clientDataHash)
   {
-    v3 = [v11 challenge];
-    v8 = [v11 relyingPartyIdentifier];
-    v9 = [@"https://" stringByAppendingString:v8];
-    v10 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:0 challenge:v3 origin:v9];
-    [v11 setClientDataJSON:v10];
+    clientDataJSON = [optionsCopy challenge];
+    relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+    v9 = [@"https://" stringByAppendingString:relyingPartyIdentifier];
+    v10 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:0 challenge:clientDataJSON origin:v9];
+    [optionsCopy setClientDataJSON:v10];
 
 LABEL_2:
   }
 
-  v5 = [v11 clientDataHash];
+  clientDataHash2 = [optionsCopy clientDataHash];
 
-  if (!v5)
+  if (!clientDataHash2)
   {
     v6 = [NSMutableData dataWithLength:32];
-    v7 = [v11 clientDataJSON];
-    CC_SHA256([v7 bytes], objc_msgSend(v7, "length"), objc_msgSend(v6, "mutableBytes"));
-    [v11 setClientDataHash:v6];
+    clientDataJSON2 = [optionsCopy clientDataJSON];
+    CC_SHA256([clientDataJSON2 bytes], objc_msgSend(clientDataJSON2, "length"), objc_msgSend(v6, "mutableBytes"));
+    [optionsCopy setClientDataHash:v6];
   }
 }
 
-- (void)computeClientDataIfNeededForAssertionOptions:(id)a3
+- (void)computeClientDataIfNeededForAssertionOptions:(id)options
 {
-  v11 = a3;
-  v3 = [v11 clientDataJSON];
-  if (v3)
+  optionsCopy = options;
+  clientDataJSON = [optionsCopy clientDataJSON];
+  if (clientDataJSON)
   {
     goto LABEL_2;
   }
 
-  v4 = [v11 clientDataHash];
+  clientDataHash = [optionsCopy clientDataHash];
 
-  if (!v4)
+  if (!clientDataHash)
   {
-    v3 = [v11 challenge];
-    v8 = [v11 relyingPartyIdentifier];
-    v9 = [@"https://" stringByAppendingString:v8];
-    v10 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:1 challenge:v3 origin:v9];
-    [v11 setClientDataJSON:v10];
+    clientDataJSON = [optionsCopy challenge];
+    relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+    v9 = [@"https://" stringByAppendingString:relyingPartyIdentifier];
+    v10 = [_WKWebAuthenticationPanel getClientDataJSONForAuthenticationType:1 challenge:clientDataJSON origin:v9];
+    [optionsCopy setClientDataJSON:v10];
 
 LABEL_2:
   }
 
-  v5 = [v11 clientDataHash];
+  clientDataHash2 = [optionsCopy clientDataHash];
 
-  if (!v5)
+  if (!clientDataHash2)
   {
     v6 = [NSMutableData dataWithLength:32];
-    v7 = [v11 clientDataJSON];
-    CC_SHA256([v7 bytes], objc_msgSend(v7, "length"), objc_msgSend(v6, "mutableBytes"));
-    [v11 setClientDataHash:v6];
+    clientDataJSON2 = [optionsCopy clientDataJSON];
+    CC_SHA256([clientDataJSON2 bytes], objc_msgSend(clientDataJSON2, "length"), objc_msgSend(v6, "mutableBytes"));
+    [optionsCopy setClientDataHash:v6];
   }
 }
 
-- (id)internalErrorToWKErrorIfApplicable:(id)a3
+- (id)internalErrorToWKErrorIfApplicable:(id)applicable
 {
-  v3 = a3;
-  if ([v3 safari_matchesErrorDomain:ASCAuthorizationErrorDomain andCode:7])
+  applicableCopy = applicable;
+  if ([applicableCopy safari_matchesErrorDomain:ASCAuthorizationErrorDomain andCode:7])
   {
     v7 = NSLocalizedDescriptionKey;
     v8 = @"At least one credential matches an entry of the excludeCredentials list in the platform attached authenticator.";
@@ -1982,25 +1982,25 @@ LABEL_2:
 
   else
   {
-    v5 = v3;
+    v5 = applicableCopy;
   }
 
   return v5;
 }
 
-- (void)test_makeCredentialWithMediationRequirement:(int64_t)a3 clientDataHash:(NSData *)a4 options:(_WKPublicKeyCredentialCreationOptions *)a5 testOptions:(_TtC26AuthenticationServicesCore31ASCCredentialRequestTestOptions *)a6 clientDataJSON:(NSData *)a7 completionHandler:(id)a8
+- (void)test_makeCredentialWithMediationRequirement:(int64_t)requirement clientDataHash:(NSData *)hash options:(_WKPublicKeyCredentialCreationOptions *)options testOptions:(_TtC26AuthenticationServicesCore31ASCCredentialRequestTestOptions *)testOptions clientDataJSON:(NSData *)n completionHandler:(id)handler
 {
   v15 = sub_10000D1D4(&qword_100035A70, &qword_100025450);
   v16 = *(*(v15 - 8) + 64);
   __chkstk_darwin(v15 - 8);
   v18 = &v29 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
+  v20[2] = requirement;
+  v20[3] = hash;
+  v20[4] = options;
+  v20[5] = testOptions;
+  v20[6] = n;
   v20[7] = v19;
   v20[8] = self;
   v21 = type metadata accessor for TaskPriority();
@@ -2015,26 +2015,26 @@ LABEL_2:
   v23[3] = 0;
   v23[4] = &unk_100025540;
   v23[5] = v22;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
-  v28 = self;
+  hashCopy = hash;
+  optionsCopy = options;
+  testOptionsCopy = testOptions;
+  nCopy = n;
+  selfCopy = self;
   sub_100013898(0, 0, v18, &unk_100025548, v23);
 }
 
-- (void)test_getAssertionWithMediationRequirement:(int64_t)a3 clientDataJSON:(NSData *)a4 options:(_WKPublicKeyCredentialRequestOptions *)a5 operation:(PublicKeyCredentialOperation *)a6 completionHandler:(id)a7
+- (void)test_getAssertionWithMediationRequirement:(int64_t)requirement clientDataJSON:(NSData *)n options:(_WKPublicKeyCredentialRequestOptions *)options operation:(PublicKeyCredentialOperation *)operation completionHandler:(id)handler
 {
   v13 = sub_10000D1D4(&qword_100035A70, &qword_100025450);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v26 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = requirement;
+  v18[3] = n;
+  v18[4] = options;
+  v18[5] = operation;
   v18[6] = v17;
   v18[7] = self;
   v19 = type metadata accessor for TaskPriority();
@@ -2049,22 +2049,22 @@ LABEL_2:
   v21[3] = 0;
   v21[4] = &unk_1000254D0;
   v21[5] = v20;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = self;
+  nCopy = n;
+  optionsCopy = options;
+  operationCopy = operation;
+  selfCopy = self;
   sub_100013898(0, 0, v16, &unk_1000254D8, v21);
 }
 
-- (void)test_getBrowserPasskeysForRelyingParty:(NSString *)a3 completionHandler:(id)a4
+- (void)test_getBrowserPasskeysForRelyingParty:(NSString *)party completionHandler:(id)handler
 {
   v7 = sub_10000D1D4(&qword_100035A70, &qword_100025450);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = party;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -2079,18 +2079,18 @@ LABEL_2:
   v15[3] = 0;
   v15[4] = &unk_100025470;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  partyCopy = party;
+  selfCopy = self;
   sub_100013898(0, 0, v10, &unk_100025480, v15);
 }
 
-- (BOOL)passkeyExistsForRelyingParty:(id)a3 username:(id)a4
+- (BOOL)passkeyExistsForRelyingParty:(id)party username:(id)username
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -2100,7 +2100,7 @@ LABEL_2:
   return v8 & 1;
 }
 
-+ (id)asTransportsFromWKTransports:(id)a3
++ (id)asTransportsFromWKTransports:(id)transports
 {
   sub_10001F88C(0, &qword_100035A28, NSNumber_ptr);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -2111,7 +2111,7 @@ LABEL_2:
   return v4.super.isa;
 }
 
-+ (id)wkSecurityKeyTransportsFromASTransports:(id)a3
++ (id)wkSecurityKeyTransportsFromASTransports:(id)transports
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10001E990(v3);
@@ -2122,11 +2122,11 @@ LABEL_2:
   return v4.super.isa;
 }
 
-- (void)computeUserVerificationForAssertionOptions:(id)a3
+- (void)computeUserVerificationForAssertionOptions:(id)options
 {
   sub_10001F88C(0, &qword_100035A50, ASCPublicKeyCredentialAssertionOptions_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_100010EA8(v4);
 }
 

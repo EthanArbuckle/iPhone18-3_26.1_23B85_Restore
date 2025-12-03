@@ -1,23 +1,23 @@
 @interface SRAuthorizationStore
 + (SRAuthorizationStore)allSensorsStore;
-+ (id)sharedAuthorizationStoreForSensors:(id)a3;
++ (id)sharedAuthorizationStoreForSensors:(id)sensors;
 + (void)initialize;
-- (BOOL)checkAccessForService:(id)a3 auditToken:(id *)a4;
-- (BOOL)sensorHasReaderAuthorization:(id)a3;
-- (BOOL)sensorHasReaderAuthorization:(id)a3 forBundleId:(id)a4;
-- (SRAuthorizationStore)initWithSensors:(id)a3 withAuthorizationTimes:(BOOL)a4;
+- (BOOL)checkAccessForService:(id)service auditToken:(id *)token;
+- (BOOL)sensorHasReaderAuthorization:(id)authorization;
+- (BOOL)sensorHasReaderAuthorization:(id)authorization forBundleId:(id)id;
+- (SRAuthorizationStore)initWithSensors:(id)sensors withAuthorizationTimes:(BOOL)times;
 - (id)readerAuthorizationBundleIdValues;
-- (uint64_t)updateOverrideOnAuthorizationChangeForService:(int)a3 withPendingValue:(uint64_t)a4 forBundleId:;
-- (uint64_t)updateToNewAuthorizations:(void *)a3 fromOldAuthorizations:(void *)a4 delegates:;
-- (void)addReaderAuthorizationDelegate:(id)a3;
-- (void)addWriterAuthorizationDelegate:(id)a3;
+- (uint64_t)updateOverrideOnAuthorizationChangeForService:(int)service withPendingValue:(uint64_t)value forBundleId:;
+- (uint64_t)updateToNewAuthorizations:(void *)authorizations fromOldAuthorizations:(void *)oldAuthorizations delegates:;
+- (void)addReaderAuthorizationDelegate:(id)delegate;
+- (void)addWriterAuthorizationDelegate:(id)delegate;
 - (void)dealloc;
-- (void)listenForAuthorizationUpdates:(BOOL)a3;
-- (void)removeReaderAuthorizationDelegate:(id)a3;
-- (void)removeWriterAuthorizationDelegate:(id)a3;
+- (void)listenForAuthorizationUpdates:(BOOL)updates;
+- (void)removeReaderAuthorizationDelegate:(id)delegate;
+- (void)removeWriterAuthorizationDelegate:(id)delegate;
 - (void)resetAllAuthorizations;
-- (void)resetAllAuthorizationsForBundleId:(id)a3;
-- (void)resetAuthorizationForService:(id)a3 bundleId:(id)a4;
+- (void)resetAllAuthorizationsForBundleId:(id)id;
+- (void)resetAuthorizationForService:(id)service bundleId:(id)id;
 - (void)updateAuthorizations;
 @end
 
@@ -26,12 +26,12 @@
 - (void)updateAuthorizations
 {
   v174 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_146;
   }
 
-  dispatch_assert_queue_V2([a1 updateQueue]);
+  dispatch_assert_queue_V2([self updateQueue]);
   v1 = os_transaction_create();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -45,24 +45,24 @@
   }
 
   v98 = v1;
-  v106 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v140[0] = MEMORY[0x1E69E9820];
   v140[1] = 3221225472;
   v141 = __64__SRAuthorizationStore_readerAuthorizationInformationForSensors__block_invoke;
   v142 = &unk_1E8330540;
-  v143 = v106;
-  v4 = [a1 readerAuthorizationGroups];
+  v143 = dictionary;
+  readerAuthorizationGroups = [self readerAuthorizationGroups];
   v166 = 0u;
   v167 = 0u;
   memset(v165, 0, sizeof(v165));
-  v5 = [v4 countByEnumeratingWithState:v165 objects:buf count:16];
+  v5 = [readerAuthorizationGroups countByEnumeratingWithState:v165 objects:buf count:16];
   v6 = 0x1EE02A000uLL;
   if (v5)
   {
     v7 = **&v165[16];
     v8 = MEMORY[0x1E695E110];
     v9 = MEMORY[0x1E695E118];
-    obj = v4;
+    obj = readerAuthorizationGroups;
     v94 = **&v165[16];
     do
     {
@@ -77,8 +77,8 @@
 
         v10 = *(*&v165[8] + 8 * v105);
         context = objc_autoreleasePoolPush();
-        v110 = [*(a1 + 32) bundleIdentifiersForService:v10];
-        v11 = [*(a1 + 32) bundleIdentifiersDisabledForService:v10];
+        v110 = [*(self + 32) bundleIdentifiersForService:v10];
+        v11 = [*(self + 32) bundleIdentifiersDisabledForService:v10];
         v107 = v11;
         if (v110)
         {
@@ -101,7 +101,7 @@
           }
         }
 
-        v14 = [*(a1 + 32) isOverriddenForService:v10];
+        v14 = [*(self + 32) isOverriddenForService:v10];
         v15 = *(v6 + 3040);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -289,20 +289,20 @@
     while (v5);
   }
 
-  v101 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:{objc_msgSend(a1, "readerAuthorizationValues")}];
-  [a1 setReaderAuthorizationValues:v106];
+  v101 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:{objc_msgSend(self, "readerAuthorizationValues")}];
+  [self setReaderAuthorizationValues:dictionary];
   v168 = 0u;
   v169 = 0u;
   v170 = 0u;
   v171 = 0u;
-  v33 = [a1 readerAuthorizationValues];
-  v34 = [v33 countByEnumeratingWithState:&v168 objects:buf count:16];
+  readerAuthorizationValues = [self readerAuthorizationValues];
+  v34 = [readerAuthorizationValues countByEnumeratingWithState:&v168 objects:buf count:16];
   if (v34)
   {
-    v119 = v33;
+    v119 = readerAuthorizationValues;
     v35 = 0;
     v36 = *v169;
-    v37 = a1;
+    selfCopy3 = self;
     do
     {
       for (m = 0; m != v34; ++m)
@@ -317,7 +317,7 @@
         v153 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v40 = [objc_msgSend(v37 "readerAuthorizationValues")];
+        v40 = [objc_msgSend(selfCopy3 "readerAuthorizationValues")];
         v41 = [v40 countByEnumeratingWithState:&v152 objects:v172 count:16];
         if (v41)
         {
@@ -331,7 +331,7 @@
                 objc_enumerationMutation(v40);
               }
 
-              if ([objc_msgSend(objc_msgSend(objc_msgSend(a1 "readerAuthorizationValues")])
+              if ([objc_msgSend(objc_msgSend(objc_msgSend(self "readerAuthorizationValues")])
               {
                 v35 = 1;
                 goto LABEL_74;
@@ -348,7 +348,7 @@
           }
 
 LABEL_74:
-          v37 = a1;
+          selfCopy3 = self;
         }
       }
 
@@ -361,12 +361,12 @@ LABEL_74:
   else
   {
     v35 = 0;
-    v37 = a1;
+    selfCopy3 = self;
   }
 
-  [v37 setSensorKitActive:v35 & 1];
-  v44 = a1;
-  if (*(a1 + 12) != 1)
+  [selfCopy3 setSensorKitActive:v35 & 1];
+  selfCopy5 = self;
+  if (*(self + 12) != 1)
   {
     goto LABEL_113;
   }
@@ -376,15 +376,15 @@ LABEL_74:
   v155 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v46 = [a1 readerAuthorizationValues];
-  v47 = [v46 countByEnumeratingWithState:&v152 objects:buf count:16];
+  readerAuthorizationValues2 = [self readerAuthorizationValues];
+  v47 = [readerAuthorizationValues2 countByEnumeratingWithState:&v152 objects:buf count:16];
   if (!v47)
   {
     goto LABEL_112;
   }
 
   v95 = *v153;
-  v92 = v46;
+  v92 = readerAuthorizationValues2;
   do
   {
     v48 = 0;
@@ -398,7 +398,7 @@ LABEL_74:
 
       v49 = *(*(&v152 + 1) + 8 * v48);
       contexta = objc_autoreleasePoolPush();
-      v50 = [*(a1 + 32) informationForBundleId:v49];
+      v50 = [*(self + 32) informationForBundleId:v49];
       v150 = 0u;
       v151 = 0u;
       v148 = 0u;
@@ -468,7 +468,7 @@ LABEL_108:
             v147 = 0u;
             v144 = 0u;
             v145 = 0u;
-            v56 = [objc_msgSend(a1 "readerAuthorizationGroups")];
+            v56 = [objc_msgSend(self "readerAuthorizationGroups")];
             v57 = [v56 countByEnumeratingWithState:&v144 objects:&v168 count:16];
             if (v57)
             {
@@ -514,40 +514,40 @@ LABEL_105:
 
   while (v47);
 LABEL_112:
-  [a1 setReaderLastModifiedAuthorizationTimes:v45];
+  [self setReaderLastModifiedAuthorizationTimes:v45];
 
-  v44 = a1;
+  selfCopy5 = self;
 LABEL_113:
-  v67 = *(v44 + 16);
+  v67 = *(selfCopy5 + 16);
   objc_sync_enter(v67);
-  v68 = [*(v44 + 16) copy];
+  v68 = [*(selfCopy5 + 16) copy];
   objc_sync_exit(v67);
-  [(SRAuthorizationStore *)v44 updateToNewAuthorizations:v106 fromOldAuthorizations:v101 delegates:v68];
+  [(SRAuthorizationStore *)selfCopy5 updateToNewAuthorizations:dictionary fromOldAuthorizations:v101 delegates:v68];
 
-  v69 = *(a1 + 24);
+  v69 = *(self + 24);
   objc_sync_enter(v69);
   v70 = 0x1EE02A000uLL;
-  obja = [*(a1 + 24) copy];
+  obja = [*(self + 24) copy];
   objc_sync_exit(v69);
-  v71 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   *v165 = MEMORY[0x1E69E9820];
   *&v165[8] = 3221225472;
   *&v165[16] = __64__SRAuthorizationStore_writerAuthorizationInformationForSensors__block_invoke;
   *&v165[24] = &unk_1E8330540;
-  *&v166 = v71;
-  v72 = [a1 writerAuthorizationGroups];
+  *&v166 = dictionary2;
+  writerAuthorizationGroups = [self writerAuthorizationGroups];
   v154 = 0u;
   v155 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v73 = [v72 countByEnumeratingWithState:&v152 objects:buf count:16];
-  v102 = v71;
+  v73 = [writerAuthorizationGroups countByEnumeratingWithState:&v152 objects:buf count:16];
+  v102 = dictionary2;
   if (v73)
   {
     v109 = *v153;
     v74 = MEMORY[0x1E695E110];
     v75 = MEMORY[0x1E695E118];
-    v116 = v72;
+    v116 = writerAuthorizationGroups;
     do
     {
       v76 = 0;
@@ -561,8 +561,8 @@ LABEL_113:
 
         v77 = *(*(&v152 + 1) + 8 * v76);
         v121 = objc_autoreleasePoolPush();
-        v78 = [*(a1 + 32) bundleIdentifiersForService:v77];
-        v79 = [*(a1 + 32) bundleIdentifiersDisabledForService:v77];
+        v78 = [*(self + 32) bundleIdentifiersForService:v77];
+        v79 = [*(self + 32) bundleIdentifiersDisabledForService:v77];
         v80 = v79;
         v81 = *(v70 + 3040);
         if (v78)
@@ -667,9 +667,9 @@ LABEL_113:
     while (v73);
   }
 
-  v90 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:{objc_msgSend(a1, "writerAuthorizationValues")}];
-  [a1 setWriterAuthorizationValues:v102];
-  [(SRAuthorizationStore *)a1 updateToNewAuthorizations:v102 fromOldAuthorizations:v90 delegates:obja];
+  v90 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:{objc_msgSend(self, "writerAuthorizationValues")}];
+  [self setWriterAuthorizationValues:v102];
+  [(SRAuthorizationStore *)self updateToNewAuthorizations:v102 fromOldAuthorizations:v90 delegates:obja];
 
   os_activity_scope_leave(&state);
 LABEL_146:
@@ -678,13 +678,13 @@ LABEL_146:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAuthorizationStore = os_log_create("com.apple.SensorKit", "AuthorizationStore");
   }
 }
 
-- (SRAuthorizationStore)initWithSensors:(id)a3 withAuthorizationTimes:(BOOL)a4
+- (SRAuthorizationStore)initWithSensors:(id)sensors withAuthorizationTimes:(BOOL)times
 {
   block[16] = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(SRTCCStorePassThrough);
@@ -697,12 +697,12 @@ LABEL_146:
     {
       v9 = v8;
       v8->_tccStore = v7;
-      v9->_sensors = a3;
-      v9->_fetchAuthorizationTimes = a4;
-      v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      objc_setProperty_nonatomic(v9, v11, v10, 16);
-      v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      objc_setProperty_nonatomic(v9, v13, v12, 24);
+      v9->_sensors = sensors;
+      v9->_fetchAuthorizationTimes = times;
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      objc_setProperty_nonatomic(v9, v11, weakObjectsHashTable, 16);
+      weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      objc_setProperty_nonatomic(v9, v13, weakObjectsHashTable2, 24);
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9->_updateQueue = dispatch_queue_create("SRAuthorizationStore.updateQueue", v14);
       v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSSet count](v9->_sensors, "count")}];
@@ -734,21 +734,21 @@ LABEL_146:
             if (v23)
             {
               v24 = v23;
-              v25 = [v23 authorizationService];
-              v26 = [v15 objectForKeyedSubscript:v25];
+              authorizationService = [v23 authorizationService];
+              v26 = [v15 objectForKeyedSubscript:authorizationService];
               if (!v26)
               {
                 v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-                [v15 setObject:v27 forKeyedSubscript:v25];
+                [v15 setObject:v27 forKeyedSubscript:authorizationService];
 
-                v26 = [v15 objectForKeyedSubscript:v25];
+                v26 = [v15 objectForKeyedSubscript:authorizationService];
               }
 
               [v26 addObject:{objc_msgSend(v24, "name")}];
-              v28 = [v24 writerAuthorizationService];
-              if (v28)
+              writerAuthorizationService = [v24 writerAuthorizationService];
+              if (writerAuthorizationService)
               {
-                [v34 setObject:objc_msgSend(v24 forKeyedSubscript:{"name"), v28}];
+                [v34 setObject:objc_msgSend(v24 forKeyedSubscript:{"name"), writerAuthorizationService}];
               }
             }
 
@@ -779,13 +779,13 @@ LABEL_146:
 
       [(SRAuthorizationStore *)v33 setWriterAuthorizationGroups:v34];
       [(SRAuthorizationStore *)v33 listenForAuthorizationUpdates:1];
-      v30 = [(SRAuthorizationStore *)v33 updateQueue];
+      updateQueue = [(SRAuthorizationStore *)v33 updateQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __51__SRAuthorizationStore_startUpdatingAuthorizations__block_invoke;
       block[3] = &unk_1E8330208;
       block[4] = v33;
-      dispatch_sync(v30, block);
+      dispatch_sync(updateQueue, block);
     }
 
     else
@@ -798,13 +798,13 @@ LABEL_146:
   return self;
 }
 
-+ (id)sharedAuthorizationStoreForSensors:(id)a3
++ (id)sharedAuthorizationStoreForSensors:(id)sensors
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__SRAuthorizationStore_sharedAuthorizationStoreForSensors___block_invoke;
   block[3] = &unk_1E8330208;
-  block[4] = a3;
+  block[4] = sensors;
   if (qword_1EE02AAF0 != -1)
   {
     dispatch_once(&qword_1EE02AAF0, block);
@@ -830,8 +830,8 @@ SRAuthorizationStore *__59__SRAuthorizationStore_sharedAuthorizationStoreForSens
   v15 = 0u;
   v16 = 0u;
   v4 = +[SRSensorsCache defaultCache];
-  v5 = [(SRSensorsCache *)v4 allSensorDescriptions];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allSensorDescriptions = [(SRSensorsCache *)v4 allSensorDescriptions];
+  v6 = [allSensorDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -843,14 +843,14 @@ SRAuthorizationStore *__59__SRAuthorizationStore_sharedAuthorizationStoreForSens
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSensorDescriptions);
         }
 
         [v2 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * v9++), "name", v13)}];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allSensorDescriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -881,14 +881,14 @@ SRAuthorizationStore *__59__SRAuthorizationStore_sharedAuthorizationStoreForSens
   [(SRAuthorizationStore *)&v6 dealloc];
 }
 
-- (void)listenForAuthorizationUpdates:(BOOL)a3
+- (void)listenForAuthorizationUpdates:(BOOL)updates
 {
   v41 = *MEMORY[0x1E69E9840];
   p_notifyToken = &self->_notifyToken;
   notifyToken = self->_notifyToken;
   v7 = SRLogAuthorizationStore;
   v8 = os_log_type_enabled(SRLogAuthorizationStore, OS_LOG_TYPE_INFO);
-  if (a3)
+  if (updates)
   {
     if (notifyToken)
     {
@@ -910,13 +910,13 @@ LABEL_36:
       }
 
       objc_initWeak(buf, self);
-      v10 = [(SRAuthorizationStore *)self updateQueue];
+      updateQueue = [(SRAuthorizationStore *)self updateQueue];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke;
       handler[3] = &unk_1E83304A8;
       objc_copyWeak(&v35, buf);
-      v11 = notify_register_dispatch("com.apple.tcc.access.changed", p_notifyToken, v10, handler);
+      v11 = notify_register_dispatch("com.apple.tcc.access.changed", p_notifyToken, updateQueue, handler);
       if (v11)
       {
         v12 = SRLogAuthorizationStore;
@@ -1034,13 +1034,13 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
   [(SRAuthorizationStore *)Weak updateAuthorizations];
 }
 
-- (uint64_t)updateToNewAuthorizations:(void *)a3 fromOldAuthorizations:(void *)a4 delegates:
+- (uint64_t)updateToNewAuthorizations:(void *)authorizations fromOldAuthorizations:(void *)oldAuthorizations delegates:
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (authorizations)
   {
-    v6 = a3;
-    v7 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(a3, "allKeys")}];
+    authorizationsCopy = authorizations;
+    v7 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(authorizations, "allKeys")}];
     [v7 unionSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(a2, "allKeys"))}];
     v63 = 0u;
     v64 = 0u;
@@ -1055,8 +1055,8 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
       *&v9 = 138543618;
       v40 = v9;
       v44 = a2;
-      v45 = a4;
-      v43 = v6;
+      oldAuthorizationsCopy = oldAuthorizations;
+      v43 = authorizationsCopy;
       do
       {
         v10 = 0;
@@ -1069,7 +1069,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
 
           v48 = v10;
           v11 = *(*(&v61 + 1) + 8 * v10);
-          v12 = [v6 objectForKeyedSubscript:{v11, v40}];
+          v12 = [authorizationsCopy objectForKeyedSubscript:{v11, v40}];
           v13 = [a2 objectForKeyedSubscript:v11];
           v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           v57 = 0u;
@@ -1158,7 +1158,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
             v52 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v29 = [v45 countByEnumeratingWithState:&v49 objects:v73 count:16];
+            v29 = [oldAuthorizationsCopy countByEnumeratingWithState:&v49 objects:v73 count:16];
             if (v29)
             {
               v30 = v29;
@@ -1169,17 +1169,17 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
                 {
                   if (*v50 != v31)
                   {
-                    objc_enumerationMutation(v45);
+                    objc_enumerationMutation(oldAuthorizationsCopy);
                   }
 
                   v33 = *(*(&v49 + 1) + 8 * k);
                   if (objc_opt_respondsToSelector())
                   {
-                    [v33 authorizationStore:a1 didUpdateAuthorizationsForBundleId:v11 sensors:v14];
+                    [v33 authorizationStore:self didUpdateAuthorizationsForBundleId:v11 sensors:v14];
                   }
                 }
 
-                v30 = [v45 countByEnumeratingWithState:&v49 objects:v73 count:16];
+                v30 = [oldAuthorizationsCopy countByEnumeratingWithState:&v49 objects:v73 count:16];
               }
 
               while (v30);
@@ -1197,7 +1197,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
           }
 
           v10 = v48 + 1;
-          v6 = v43;
+          authorizationsCopy = v43;
         }
 
         while (v48 + 1 != v46);
@@ -1215,7 +1215,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    result = [a4 countByEnumeratingWithState:&v65 objects:v77 count:16];
+    result = [oldAuthorizations countByEnumeratingWithState:&v65 objects:v77 count:16];
     if (result)
     {
       v35 = result;
@@ -1227,20 +1227,20 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
         {
           if (*v66 != v36)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(oldAuthorizations);
           }
 
           v38 = *(*(&v65 + 1) + 8 * v37);
           if (objc_opt_respondsToSelector())
           {
-            [v38 authorizationStore:a1 didDetermineInitialAuthorizationValues:a2];
+            [v38 authorizationStore:self didDetermineInitialAuthorizationValues:a2];
           }
 
           ++v37;
         }
 
         while (v35 != v37);
-        result = [a4 countByEnumeratingWithState:&v65 objects:v77 count:16];
+        result = [oldAuthorizations countByEnumeratingWithState:&v65 objects:v77 count:16];
         v35 = result;
       }
 
@@ -1252,7 +1252,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
   return result;
 }
 
-- (void)addReaderAuthorizationDelegate:(id)a3
+- (void)addReaderAuthorizationDelegate:(id)delegate
 {
   if (self)
   {
@@ -1268,16 +1268,16 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
     v6 = 0;
   }
 
-  [(NSHashTable *)v6 addObject:a3];
+  [(NSHashTable *)v6 addObject:delegate];
   if ([(SRAuthorizationStore *)self readerAuthorizationValues]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [a3 authorizationStore:self didDetermineInitialAuthorizationValues:{-[SRAuthorizationStore readerAuthorizationValues](self, "readerAuthorizationValues")}];
+    [delegate authorizationStore:self didDetermineInitialAuthorizationValues:{-[SRAuthorizationStore readerAuthorizationValues](self, "readerAuthorizationValues")}];
   }
 
   objc_sync_exit(readerAuthorizationDelegates);
 }
 
-- (void)removeReaderAuthorizationDelegate:(id)a3
+- (void)removeReaderAuthorizationDelegate:(id)delegate
 {
   if (self)
   {
@@ -1293,12 +1293,12 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
     v6 = 0;
   }
 
-  [(NSHashTable *)v6 removeObject:a3];
+  [(NSHashTable *)v6 removeObject:delegate];
 
   objc_sync_exit(readerAuthorizationDelegates);
 }
 
-- (void)addWriterAuthorizationDelegate:(id)a3
+- (void)addWriterAuthorizationDelegate:(id)delegate
 {
   if (self)
   {
@@ -1314,16 +1314,16 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
     v6 = 0;
   }
 
-  [(NSHashTable *)v6 addObject:a3];
+  [(NSHashTable *)v6 addObject:delegate];
   if ([(SRAuthorizationStore *)self writerAuthorizationValues]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [a3 authorizationStore:self didDetermineInitialAuthorizationValues:{-[SRAuthorizationStore writerAuthorizationValues](self, "writerAuthorizationValues")}];
+    [delegate authorizationStore:self didDetermineInitialAuthorizationValues:{-[SRAuthorizationStore writerAuthorizationValues](self, "writerAuthorizationValues")}];
   }
 
   objc_sync_exit(writerAuthorizationDelegates);
 }
 
-- (void)removeWriterAuthorizationDelegate:(id)a3
+- (void)removeWriterAuthorizationDelegate:(id)delegate
 {
   if (self)
   {
@@ -1339,20 +1339,20 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
     v6 = 0;
   }
 
-  [(NSHashTable *)v6 removeObject:a3];
+  [(NSHashTable *)v6 removeObject:delegate];
 
   objc_sync_exit(writerAuthorizationDelegates);
 }
 
-- (BOOL)sensorHasReaderAuthorization:(id)a3
+- (BOOL)sensorHasReaderAuthorization:(id)authorization
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SRAuthorizationStore *)self readerAuthorizationBundleIdValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  readerAuthorizationBundleIdValues = [(SRAuthorizationStore *)self readerAuthorizationBundleIdValues];
+  v6 = [readerAuthorizationBundleIdValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1364,10 +1364,10 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(readerAuthorizationBundleIdValues);
         }
 
-        if ([(SRAuthorizationStore *)self sensorHasReaderAuthorization:a3 forBundleId:*(*(&v12 + 1) + 8 * v9)])
+        if ([(SRAuthorizationStore *)self sensorHasReaderAuthorization:authorization forBundleId:*(*(&v12 + 1) + 8 * v9)])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -1377,7 +1377,7 @@ void __54__SRAuthorizationStore_listenForAuthorizationUpdates___block_invoke(uin
       }
 
       while (v7 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [readerAuthorizationBundleIdValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       v7 = v6;
       if (v6)
       {
@@ -1393,34 +1393,34 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)sensorHasReaderAuthorization:(id)a3 forBundleId:(id)a4
+- (BOOL)sensorHasReaderAuthorization:(id)authorization forBundleId:(id)id
 {
   v4 = [-[NSDictionary objectForKeyedSubscript:](-[SRAuthorizationStore readerAuthorizationValues](self "readerAuthorizationValues")];
 
   return [v4 BOOLValue];
 }
 
-- (uint64_t)updateOverrideOnAuthorizationChangeForService:(int)a3 withPendingValue:(uint64_t)a4 forBundleId:
+- (uint64_t)updateOverrideOnAuthorizationChangeForService:(int)service withPendingValue:(uint64_t)value forBundleId:
 {
   result = 0;
   v38 = *MEMORY[0x1E69E9840];
-  if (!a1 || (v6 = a2) == 0)
+  if (!self || (v6 = a2) == 0)
   {
 LABEL_29:
     v22 = *MEMORY[0x1E69E9840];
     return result;
   }
 
-  if (!a3)
+  if (!service)
   {
-    v24 = a1;
-    v10 = [a1 readerAuthorizationBundleIdValues];
+    selfCopy = self;
+    readerAuthorizationBundleIdValues = [self readerAuthorizationBundleIdValues];
     v11 = [SRSensorDescription sensorDescriptionsForAuthorizationService:v6];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    v12 = [readerAuthorizationBundleIdValues countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (!v12)
     {
       goto LABEL_28;
@@ -1439,11 +1439,11 @@ LABEL_29:
       {
         if (*v33 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(readerAuthorizationBundleIdValues);
         }
 
         v16 = *(*(&v32 + 1) + 8 * v15);
-        if (([v16 isEqualToString:a4] & 1) == 0)
+        if (([v16 isEqualToString:value] & 1) == 0)
         {
           v30 = 0u;
           v31 = 0u;
@@ -1453,7 +1453,7 @@ LABEL_29:
           if (v17)
           {
             v18 = v17;
-            v19 = a4;
+            valueCopy = value;
             v20 = *v29;
             while (2)
             {
@@ -1464,7 +1464,7 @@ LABEL_29:
                   objc_enumerationMutation(v11);
                 }
 
-                if ([objc_msgSend(objc_msgSend(v10 objectForKeyedSubscript:{v16), "objectForKeyedSubscript:", objc_msgSend(*(*(&v28 + 1) + 8 * i), "name")), "BOOLValue"}])
+                if ([objc_msgSend(objc_msgSend(readerAuthorizationBundleIdValues objectForKeyedSubscript:{v16), "objectForKeyedSubscript:", objc_msgSend(*(*(&v28 + 1) + 8 * i), "name")), "BOOLValue"}])
                 {
                   v25 = 1;
                   goto LABEL_23;
@@ -1481,7 +1481,7 @@ LABEL_29:
             }
 
 LABEL_23:
-            a4 = v19;
+            value = valueCopy;
             v14 = v26;
             v13 = v27;
           }
@@ -1491,7 +1491,7 @@ LABEL_23:
       }
 
       while (v15 != v13);
-      v13 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v13 = [readerAuthorizationBundleIdValues countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v13);
@@ -1504,26 +1504,26 @@ LABEL_23:
     else
     {
 LABEL_28:
-      result = [v24[4] setOverride:0 forService:v6];
+      result = [selfCopy[4] setOverride:0 forService:v6];
     }
 
     goto LABEL_29;
   }
 
-  v7 = a1[4];
+  v7 = self[4];
   v8 = *MEMORY[0x1E69E9840];
 
   return [v7 setOverride:1 forService:a2];
 }
 
-- (void)resetAllAuthorizationsForBundleId:(id)a3
+- (void)resetAllAuthorizationsForBundleId:(id)id
 {
   v26 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [(NSDictionary *)[(SRAuthorizationStore *)self readerAuthorizationValues] objectForKeyedSubscript:a3];
+  obj = [(NSDictionary *)[(SRAuthorizationStore *)self readerAuthorizationValues] objectForKeyedSubscript:id];
   v5 = [obj countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v5)
   {
@@ -1548,14 +1548,14 @@ LABEL_28:
         if (os_log_type_enabled(SRLogAuthorizationStore, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v15;
-          v22 = a3;
+          idCopy = id;
           v23 = 2112;
           v24 = v12;
           _os_log_impl(&dword_1C914D000, v13, OS_LOG_TYPE_DEFAULT, "reset reader authorization for bundle %@ service %@", buf, 0x16u);
         }
 
-        [(SRTCCStore *)self->_tccStore resetService:v12 forBundleId:a3, v15];
-        [(SRAuthorizationStore *)self updateOverrideOnAuthorizationChangeForService:v12 withPendingValue:0 forBundleId:a3];
+        [(SRTCCStore *)self->_tccStore resetService:v12 forBundleId:id, v15];
+        [(SRAuthorizationStore *)self updateOverrideOnAuthorizationChangeForService:v12 withPendingValue:0 forBundleId:id];
         objc_autoreleasePoolPop(v11);
         ++v9;
       }
@@ -1580,8 +1580,8 @@ LABEL_28:
   v18 = &unk_1E83304F8;
   v19 = v3;
   __46__SRAuthorizationStore_resetAllAuthorizations__block_invoke(v16, [(SRAuthorizationStore *)self readerAuthorizationBundleIdValues], &__block_literal_global_2);
-  v4 = [(SRAuthorizationStore *)self writerAuthorizationValues];
-  v17(v16, v4, &__block_literal_global_26);
+  writerAuthorizationValues = [(SRAuthorizationStore *)self writerAuthorizationValues];
+  v17(v16, writerAuthorizationValues, &__block_literal_global_26);
   v5 = SRLogAuthorizationStore;
   if (os_log_type_enabled(SRLogAuthorizationStore, OS_LOG_TYPE_DEFAULT))
   {
@@ -1700,21 +1700,21 @@ uint64_t __46__SRAuthorizationStore_resetAllAuthorizations__block_invoke(uint64_
   return result;
 }
 
-- (void)resetAuthorizationForService:(id)a3 bundleId:(id)a4
+- (void)resetAuthorizationForService:(id)service bundleId:(id)id
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = SRLogAuthorizationStore;
   if (os_log_type_enabled(SRLogAuthorizationStore, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = a3;
+    serviceCopy = service;
     v11 = 2114;
-    v12 = a4;
+    idCopy = id;
     _os_log_impl(&dword_1C914D000, v7, OS_LOG_TYPE_DEFAULT, "Reset authorization for service %@ and bundle id: %{public}@", &v9, 0x16u);
   }
 
-  [(SRTCCStore *)self->_tccStore resetService:a3 forBundleId:a4];
-  [(SRAuthorizationStore *)self updateOverrideOnAuthorizationChangeForService:a3 withPendingValue:0 forBundleId:a4];
+  [(SRTCCStore *)self->_tccStore resetService:service forBundleId:id];
+  [(SRAuthorizationStore *)self updateOverrideOnAuthorizationChangeForService:service withPendingValue:0 forBundleId:id];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -1745,13 +1745,13 @@ uint64_t __64__SRAuthorizationStore_writerAuthorizationInformationForSensors__bl
 - (id)readerAuthorizationBundleIdValues
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(SRAuthorizationStore *)self readerAuthorizationValues];
-  v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSDictionary count](v2, "count")}];
+  readerAuthorizationValues = [(SRAuthorizationStore *)self readerAuthorizationValues];
+  v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSDictionary count](readerAuthorizationValues, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSDictionary *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [(NSDictionary *)readerAuthorizationValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1762,17 +1762,17 @@ uint64_t __64__SRAuthorizationStore_writerAuthorizationInformationForSensors__bl
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(readerAuthorizationValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if (([v8 isEqualToString:@"com.apple.sensorkit.dummy-bundle-id"] & 1) == 0)
         {
-          [v3 setObject:-[NSDictionary objectForKeyedSubscript:](v2 forKeyedSubscript:{"objectForKeyedSubscript:", v8), v8}];
+          [v3 setObject:-[NSDictionary objectForKeyedSubscript:](readerAuthorizationValues forKeyedSubscript:{"objectForKeyedSubscript:", v8), v8}];
         }
       }
 
-      v5 = [(NSDictionary *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSDictionary *)readerAuthorizationValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1783,13 +1783,13 @@ uint64_t __64__SRAuthorizationStore_writerAuthorizationInformationForSensors__bl
   return result;
 }
 
-- (BOOL)checkAccessForService:(id)a3 auditToken:(id *)a4
+- (BOOL)checkAccessForService:(id)service auditToken:(id *)token
 {
   tccStore = self->_tccStore;
-  v5 = *&a4->var0[4];
-  v7[0] = *a4->var0;
+  v5 = *&token->var0[4];
+  v7[0] = *token->var0;
   v7[1] = v5;
-  return [(SRTCCStore *)tccStore checkAccessForService:a3 auditToken:v7];
+  return [(SRTCCStore *)tccStore checkAccessForService:service auditToken:v7];
 }
 
 @end

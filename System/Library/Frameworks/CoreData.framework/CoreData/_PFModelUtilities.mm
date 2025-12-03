@@ -1,15 +1,15 @@
 @interface _PFModelUtilities
-+ (void)addAttributes:(void *)a3 toPropertiesOfEntity:;
-+ (void)addRelationships:(void *)a3 toPropertiesOfEntity:;
++ (void)addAttributes:(void *)attributes toPropertiesOfEntity:;
++ (void)addRelationships:(void *)relationships toPropertiesOfEntity:;
 @end
 
 @implementation _PFModelUtilities
 
-+ (void)addAttributes:(void *)a3 toPropertiesOfEntity:
++ (void)addAttributes:(void *)attributes toPropertiesOfEntity:
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v16 = [objc_msgSend(a3 "properties")];
+  v16 = [objc_msgSend(attributes "properties")];
   objc_opt_self();
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
@@ -57,9 +57,9 @@
 
             else
             {
-              v13 = [(NSAttributeDescription *)v11 attributeType];
+              attributeType = [(NSAttributeDescription *)v11 attributeType];
               v14 = [v10 objectAtIndex:2];
-              if (v13 == 1000)
+              if (attributeType == 1000)
               {
                 -[NSAttributeDescription setAllowsExternalBinaryDataStorage:](v11, "setAllowsExternalBinaryDataStorage:", [v14 BOOLValue]);
               }
@@ -82,22 +82,22 @@
   }
 
   [v16 addObjectsFromArray:v17];
-  [a3 setProperties:v16];
+  [attributes setProperties:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addRelationships:(void *)a3 toPropertiesOfEntity:
++ (void)addRelationships:(void *)relationships toPropertiesOfEntity:
 {
   objc_opt_self();
-  v5 = [objc_msgSend(a3 "properties")];
+  v5 = [objc_msgSend(relationships "properties")];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59___PFModelUtilities_addRelationships_toPropertiesOfEntity___block_invoke;
   v6[3] = &unk_1E6EC28F8;
   v6[4] = v5;
   [a2 enumerateKeysAndObjectsUsingBlock:v6];
-  [a3 setProperties:v5];
+  [relationships setProperties:v5];
 }
 
 @end

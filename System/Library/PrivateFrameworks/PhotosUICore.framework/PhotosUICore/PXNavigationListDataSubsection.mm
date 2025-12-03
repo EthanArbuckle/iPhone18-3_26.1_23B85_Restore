@@ -1,20 +1,20 @@
 @interface PXNavigationListDataSubsection
-- (PXNavigationListDataSubsection)initWithDataSection:(id)a3 indexDelta:(int64_t)a4 expandedIndex:(int64_t)a5 indentationLevel:(int64_t)a6 externalStartIndex:(int64_t)a7 skipAssetCountFetches:(BOOL)a8;
-- (id)listItemAtExternalIndex:(int64_t)a3 topLevelIdentifier:(id)a4;
+- (PXNavigationListDataSubsection)initWithDataSection:(id)section indexDelta:(int64_t)delta expandedIndex:(int64_t)index indentationLevel:(int64_t)level externalStartIndex:(int64_t)startIndex skipAssetCountFetches:(BOOL)fetches;
+- (id)listItemAtExternalIndex:(int64_t)index topLevelIdentifier:(id)identifier;
 @end
 
 @implementation PXNavigationListDataSubsection
 
-- (id)listItemAtExternalIndex:(int64_t)a3 topLevelIdentifier:(id)a4
+- (id)listItemAtExternalIndex:(int64_t)index topLevelIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(PXNavigationListDataSubsection *)self indexDelta]+ a3;
+  identifierCopy = identifier;
+  v7 = [(PXNavigationListDataSubsection *)self indexDelta]+ index;
   v8 = v7 - [(PXNavigationListDataSubsection *)self externalStartIndex];
-  v9 = [(PXNavigationListDataSubsection *)self listDataSection];
-  v10 = v9;
-  if (v9)
+  listDataSection = [(PXNavigationListDataSubsection *)self listDataSection];
+  v10 = listDataSection;
+  if (listDataSection)
   {
-    v11 = [v9 objectAtIndex:v8];
+    v11 = [listDataSection objectAtIndex:v8];
   }
 
   else
@@ -25,8 +25,8 @@
 
     if (!v11)
     {
-      v14 = [(PXNavigationListDataSubsection *)self dataSection];
-      v15 = [v14 objectAtIndex:v8];
+      dataSection = [(PXNavigationListDataSubsection *)self dataSection];
+      v15 = [dataSection objectAtIndex:v8];
       if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v16 = v15;
@@ -37,7 +37,7 @@
         v16 = 0;
       }
 
-      v17 = v14;
+      v17 = dataSection;
       v29 = v15;
       if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
       {
@@ -50,10 +50,10 @@
       }
 
       v19 = [v18 objectAtIndex:v8];
-      v20 = [v17 outlineObject];
+      outlineObject = [v17 outlineObject];
       if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v21 = v20;
+        v21 = outlineObject;
       }
 
       else
@@ -91,7 +91,7 @@
         }
       }
 
-      v11 = PXNavigationListItemWithObject(v29, v24, v23, v22, v6);
+      v11 = PXNavigationListItemWithObject(v29, v24, v23, v22, identifierCopy);
       v25 = self->_listItemsCache;
       v26 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
       [(NSMutableDictionary *)v25 setObject:v11 forKeyedSubscript:v26];
@@ -101,24 +101,24 @@
   return v11;
 }
 
-- (PXNavigationListDataSubsection)initWithDataSection:(id)a3 indexDelta:(int64_t)a4 expandedIndex:(int64_t)a5 indentationLevel:(int64_t)a6 externalStartIndex:(int64_t)a7 skipAssetCountFetches:(BOOL)a8
+- (PXNavigationListDataSubsection)initWithDataSection:(id)section indexDelta:(int64_t)delta expandedIndex:(int64_t)index indentationLevel:(int64_t)level externalStartIndex:(int64_t)startIndex skipAssetCountFetches:(BOOL)fetches
 {
-  v15 = a3;
+  sectionCopy = section;
   v22.receiver = self;
   v22.super_class = PXNavigationListDataSubsection;
   v16 = [(PXNavigationListDataSubsection *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_dataSection, a3);
-    v17->_indentationLevel = a6;
-    v17->_indexDelta = a4;
-    v17->_expandedIndex = a5;
-    v17->_externalStartIndex = a7;
+    objc_storeStrong(&v16->_dataSection, section);
+    v17->_indentationLevel = level;
+    v17->_indexDelta = delta;
+    v17->_expandedIndex = index;
+    v17->_externalStartIndex = startIndex;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v15;
+      v18 = sectionCopy;
     }
 
     else
@@ -131,7 +131,7 @@
     listItemsCache = v17->_listItemsCache;
     v17->_listItemsCache = v19;
 
-    v17->_skipAssetCountFetches = a8;
+    v17->_skipAssetCountFetches = fetches;
   }
 
   return v17;

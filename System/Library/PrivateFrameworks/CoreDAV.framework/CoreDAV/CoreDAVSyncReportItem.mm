@@ -1,7 +1,7 @@
 @interface CoreDAVSyncReportItem
 + (id)copyParseRules;
 - (id)description;
-- (void)_setSyncTokenItem:(id)a3;
+- (void)_setSyncTokenItem:(id)item;
 @end
 
 @implementation CoreDAVSyncReportItem
@@ -14,8 +14,8 @@
   v4 = [(CoreDAVMultiStatusItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVSyncReportItem *)self syncToken];
-  [v3 appendFormat:@"\n  Sync token: [%@]", v5];
+  syncToken = [(CoreDAVSyncReportItem *)self syncToken];
+  [v3 appendFormat:@"\n  Sync token: [%@]", syncToken];
 
   return v3;
 }
@@ -23,12 +23,12 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___CoreDAVSyncReportItem;
     v6 = objc_msgSendSuper2(&v14, sel_copyParseRules);
     v5 = [v6 mutableCopy];
@@ -39,20 +39,20 @@
 
     [v5 setValuesForKeysWithDictionary:v10];
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)_setSyncTokenItem:(id)a3
+- (void)_setSyncTokenItem:(id)item
 {
-  v4 = [a3 payloadAsString];
+  payloadAsString = [item payloadAsString];
   syncToken = self->_syncToken;
-  self->_syncToken = v4;
+  self->_syncToken = payloadAsString;
 
-  MEMORY[0x2821F96F8](v4, syncToken);
+  MEMORY[0x2821F96F8](payloadAsString, syncToken);
 }
 
 @end

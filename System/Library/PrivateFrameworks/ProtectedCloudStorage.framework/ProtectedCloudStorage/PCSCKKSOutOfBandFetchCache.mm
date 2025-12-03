@@ -1,12 +1,12 @@
 @interface PCSCKKSOutOfBandFetchCache
 + (id)cache;
 - (PCSCKKSOutOfBandFetchCache)init;
-- (_PCSIdentityData)copyIdentity:(id)a3;
-- (void)cacheCurrentIdentityFetchResult:(_PCSIdentitySetData *)a3 notFound:(id)a4;
-- (void)cachePCSIdentityFetchResult:(_PCSIdentitySetData *)a3 notFound:(id)a4 serviceID:(unsigned int)a5;
+- (_PCSIdentityData)copyIdentity:(id)identity;
+- (void)cacheCurrentIdentityFetchResult:(_PCSIdentitySetData *)result notFound:(id)found;
+- (void)cachePCSIdentityFetchResult:(_PCSIdentitySetData *)result notFound:(id)found serviceID:(unsigned int)d;
 - (void)dealloc;
-- (void)getCurrentIdentities:(id)a3 result:(id)a4;
-- (void)getPCSIdentities:(id)a3 forServiceID:(unsigned int)a4 result:(id)a5;
+- (void)getCurrentIdentities:(id)identities result:(id)result;
+- (void)getPCSIdentities:(id)identities forServiceID:(unsigned int)d result:(id)result;
 @end
 
 @implementation PCSCKKSOutOfBandFetchCache
@@ -59,21 +59,21 @@ uint64_t __35__PCSCKKSOutOfBandFetchCache_cache__block_invoke()
   [(PCSCKKSOutOfBandFetchCache *)&v4 dealloc];
 }
 
-- (void)getCurrentIdentities:(id)a3 result:(id)a4
+- (void)getCurrentIdentities:(id)identities result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSCKKSOutOfBandFetchCache *)self queue];
+  identitiesCopy = identities;
+  resultCopy = result;
+  queue = [(PCSCKKSOutOfBandFetchCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__PCSCKKSOutOfBandFetchCache_getCurrentIdentities_result___block_invoke;
   block[3] = &unk_1E7B196B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = identitiesCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = identitiesCopy;
+  dispatch_sync(queue, block);
 }
 
 void __58__PCSCKKSOutOfBandFetchCache_getCurrentIdentities_result___block_invoke(uint64_t a1)
@@ -153,19 +153,19 @@ void __58__PCSCKKSOutOfBandFetchCache_getCurrentIdentities_result___block_invoke
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cacheCurrentIdentityFetchResult:(_PCSIdentitySetData *)a3 notFound:(id)a4
+- (void)cacheCurrentIdentityFetchResult:(_PCSIdentitySetData *)result notFound:(id)found
 {
-  v6 = a4;
-  v7 = [(PCSCKKSOutOfBandFetchCache *)self queue];
+  foundCopy = found;
+  queue = [(PCSCKKSOutOfBandFetchCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PCSCKKSOutOfBandFetchCache_cacheCurrentIdentityFetchResult_notFound___block_invoke;
   block[3] = &unk_1E7B19708;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
-  dispatch_barrier_async(v7, block);
+  v10 = foundCopy;
+  selfCopy = self;
+  resultCopy = result;
+  v8 = foundCopy;
+  dispatch_barrier_async(queue, block);
 }
 
 uint64_t __71__PCSCKKSOutOfBandFetchCache_cacheCurrentIdentityFetchResult_notFound___block_invoke(uint64_t a1)
@@ -220,22 +220,22 @@ uint64_t __71__PCSCKKSOutOfBandFetchCache_cacheCurrentIdentityFetchResult_notFou
   return PCSIdentitySetSetCurrentIdentity(v7, a2);
 }
 
-- (void)getPCSIdentities:(id)a3 forServiceID:(unsigned int)a4 result:(id)a5
+- (void)getPCSIdentities:(id)identities forServiceID:(unsigned int)d result:(id)result
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PCSCKKSOutOfBandFetchCache *)self queue];
+  identitiesCopy = identities;
+  resultCopy = result;
+  queue = [(PCSCKKSOutOfBandFetchCache *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__PCSCKKSOutOfBandFetchCache_getPCSIdentities_forServiceID_result___block_invoke;
   v13[3] = &unk_1E7B19730;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = identitiesCopy;
+  selfCopy = self;
+  dCopy = d;
+  v16 = resultCopy;
+  v11 = resultCopy;
+  v12 = identitiesCopy;
+  dispatch_sync(queue, v13);
 }
 
 void __67__PCSCKKSOutOfBandFetchCache_getPCSIdentities_forServiceID_result___block_invoke(uint64_t a1)
@@ -324,20 +324,20 @@ void __67__PCSCKKSOutOfBandFetchCache_getPCSIdentities_forServiceID_result___blo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cachePCSIdentityFetchResult:(_PCSIdentitySetData *)a3 notFound:(id)a4 serviceID:(unsigned int)a5
+- (void)cachePCSIdentityFetchResult:(_PCSIdentitySetData *)result notFound:(id)found serviceID:(unsigned int)d
 {
-  v8 = a4;
-  v9 = [(PCSCKKSOutOfBandFetchCache *)self queue];
+  foundCopy = found;
+  queue = [(PCSCKKSOutOfBandFetchCache *)self queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PCSCKKSOutOfBandFetchCache_cachePCSIdentityFetchResult_notFound_serviceID___block_invoke;
   v11[3] = &unk_1E7B19780;
-  v12 = v8;
-  v13 = self;
-  v15 = a5;
-  v14 = a3;
-  v10 = v8;
-  dispatch_barrier_async(v9, v11);
+  v12 = foundCopy;
+  selfCopy = self;
+  dCopy = d;
+  resultCopy = result;
+  v10 = foundCopy;
+  dispatch_barrier_async(queue, v11);
 }
 
 uint64_t __77__PCSCKKSOutOfBandFetchCache_cachePCSIdentityFetchResult_notFound_serviceID___block_invoke(uint64_t a1)
@@ -409,23 +409,23 @@ uint64_t __77__PCSCKKSOutOfBandFetchCache_cachePCSIdentityFetchResult_notFound_s
   return PCSIdentitySetAddIdentity(v9, a2);
 }
 
-- (_PCSIdentityData)copyIdentity:(id)a3
+- (_PCSIdentityData)copyIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(PCSCKKSOutOfBandFetchCache *)self queue];
+  queue = [(PCSCKKSOutOfBandFetchCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PCSCKKSOutOfBandFetchCache_copyIdentity___block_invoke;
   block[3] = &unk_1E7B197A8;
-  v10 = v4;
+  v10 = identityCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identityCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);

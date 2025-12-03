@@ -1,9 +1,9 @@
 @interface MTRDoorLockClusterGetHolidayScheduleResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetHolidayScheduleResponseParams)init;
-- (MTRDoorLockClusterGetHolidayScheduleResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRDoorLockClusterGetHolidayScheduleResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRDoorLockClusterGetHolidayScheduleResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterGetHolidayScheduleResponseParams);
-  v5 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self holidayIndex];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setHolidayIndex:v5];
+  holidayIndex = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self holidayIndex];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setHolidayIndex:holidayIndex];
 
-  v6 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self status];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setStatus:v6];
+  status = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self status];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setStatus:status];
 
-  v7 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self localStartTime];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setLocalStartTime:v7];
+  localStartTime = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self localStartTime];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setLocalStartTime:localStartTime];
 
-  v8 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self localEndTime];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setLocalEndTime:v8];
+  localEndTime = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self localEndTime];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setLocalEndTime:localEndTime];
 
-  v9 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self operatingMode];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setOperatingMode:v9];
+  operatingMode = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self operatingMode];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setOperatingMode:operatingMode];
 
-  v10 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -120,7 +120,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRDoorLockClusterGetHolidayScheduleResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRDoorLockClusterGetHolidayScheduleResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRDoorLockClusterGetHolidayScheduleResponseParams;
@@ -128,7 +128,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -144,17 +144,17 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setHolidayIndex:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 1)];
   [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setStatus:v6];
 
-  if (*(a3 + 4) == 1)
+  if (*(struct + 4) == 1)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 4)];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 4)];
     [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setLocalStartTime:v7];
   }
 
@@ -163,9 +163,9 @@ LABEL_6:
     [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setLocalStartTime:0];
   }
 
-  if (*(a3 + 12) == 1)
+  if (*(struct + 12) == 1)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(a3 + 12)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*sub_238DE3698(struct + 12)];
     [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setLocalEndTime:v8];
   }
 
@@ -174,8 +174,8 @@ LABEL_6:
     [(MTRDoorLockClusterGetHolidayScheduleResponseParams *)self setLocalEndTime:0];
   }
 
-  v10 = *(a3 + 20);
-  v9 = a3 + 20;
+  v10 = *(struct + 20);
+  v9 = struct + 20;
   if (v10 == 1)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v9)];

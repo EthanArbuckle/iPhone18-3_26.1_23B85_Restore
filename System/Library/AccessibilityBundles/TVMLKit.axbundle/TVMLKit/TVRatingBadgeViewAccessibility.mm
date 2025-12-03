@@ -18,15 +18,15 @@
 
     v11.receiver = self;
     v11.super_class = TVRatingBadgeViewAccessibility;
-    v8 = [(TVRatingBadgeViewAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel = [(TVRatingBadgeViewAccessibility *)&v11 accessibilityLabel];
   }
 
   else
   {
-    v8 = UIAXStarRatingStringForRatingWithMaxRating();
+    accessibilityLabel = UIAXStarRatingStringForRatingWithMaxRating();
   }
 
-  return v8;
+  return accessibilityLabel;
 }
 
 @end

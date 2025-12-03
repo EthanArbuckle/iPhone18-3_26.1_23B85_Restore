@@ -3,7 +3,7 @@
 + (UICollectionViewLayoutAttributes)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind withIndexPath:(NSIndexPath *)indexPath;
 + (UICollectionViewLayoutAttributes)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind withIndexPath:(NSIndexPath *)indexPath;
 - (BOOL)_hasMaskViewFrame;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CATransform3D)transform3D;
 - (CGAffineTransform)transform;
 - (CGPoint)center;
@@ -18,15 +18,15 @@
 - (double)_listLayoutItemMaxWidth;
 - (id)_existingListAttributes;
 - (id)_preferredSizingData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)_isEquivalentTo:(uint64_t)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)_isEquivalentTo:(uint64_t)to;
 - (unint64_t)hash;
 - (void)__indexPath;
 - (void)_isTransitionVisibleTo:(void *)result;
 - (void)_listAttributesCreatingIfNecessary;
-- (void)_setMaskedCorners:(uint64_t)a1;
-- (void)_setPinningAlignment:(uint64_t)a1;
-- (void)_setPreferredSizingData:(uint64_t)a1;
+- (void)_setMaskedCorners:(uint64_t)corners;
+- (void)_setPinningAlignment:(uint64_t)alignment;
+- (void)_setPreferredSizingData:(uint64_t)data;
 - (void)setBounds:(CGRect)bounds;
 - (void)setCenter:(CGPoint)center;
 - (void)setFrame:(CGRect)frame;
@@ -145,13 +145,13 @@
 
 - (id)_existingListAttributes
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[35];
+    self = self[35];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (UICollectionViewLayoutAttributes)init
@@ -279,13 +279,13 @@
 
 - (id)_preferredSizingData
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[34];
+    self = self[34];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)__indexPath
@@ -309,17 +309,17 @@
 
 - (double)_listLayoutItemMaxWidth
 {
-  v3 = [(UICollectionViewLayoutAttributes *)&self->super.isa _existingListAttributes];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)&self->super.isa _existingListAttributes];
 
-  if (!v3)
+  if (!_existingListAttributes)
   {
     return 0.0;
   }
 
-  v4 = [(UICollectionViewLayoutAttributes *)&self->super.isa _existingListAttributes];
-  if (v4)
+  _existingListAttributes2 = [(UICollectionViewLayoutAttributes *)&self->super.isa _existingListAttributes];
+  if (_existingListAttributes2)
   {
-    v5 = v4[8];
+    v5 = _existingListAttributes2[8];
   }
 
   else
@@ -332,29 +332,29 @@
 
 - (void)_listAttributesCreatingIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[35];
+    selfCopy = self;
+    v3 = self[35];
     if (!v3)
     {
       v4 = objc_alloc_init(_UICollectionLayoutListAttributes);
-      v5 = v2[35];
-      v2[35] = v4;
+      v5 = selfCopy[35];
+      selfCopy[35] = v4;
 
-      v3 = v2[35];
+      v3 = selfCopy[35];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (UICollectionViewLayoutAttributes)layoutAttributesForCellWithIndexPath:(NSIndexPath *)indexPath
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   *(v4 + 72) |= 1u;
   objc_storeStrong(v4 + 1, @"UICollectionElementKindCell");
   objc_storeStrong(v4 + 2, indexPath);
@@ -364,7 +364,7 @@
 
 + (UICollectionViewLayoutAttributes)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind withIndexPath:(NSIndexPath *)indexPath
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = [(NSString *)elementKind copy];
   v8 = *(v6 + 1);
   *(v6 + 1) = v7;
@@ -376,7 +376,7 @@
 
 + (UICollectionViewLayoutAttributes)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind withIndexPath:(NSIndexPath *)indexPath
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   objc_storeStrong(v6 + 2, indexPath);
   v7 = [(NSString *)decorationViewKind copy];
   v8 = v6[1];
@@ -406,43 +406,43 @@
   self->_layoutFlags = (*&self->_layoutFlags & 0xFFFFFFFB | v3);
 }
 
-- (void)_setMaskedCorners:(uint64_t)a1
+- (void)_setMaskedCorners:(uint64_t)corners
 {
-  if (a1)
+  if (corners)
   {
     if (a2 >= 0x10)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__setMaskedCorners_ object:a1 file:@"UICollectionViewLayout.m" lineNumber:264 description:{@"CACornerMask value (%ld) does not fit in bitfield reserved space", a2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setMaskedCorners_ object:corners file:@"UICollectionViewLayout.m" lineNumber:264 description:{@"CACornerMask value (%ld) does not fit in bitfield reserved space", a2}];
     }
 
-    *(a1 + 288) = *(a1 + 288) & 0xFFFFFE1F | (32 * (a2 & 0xF));
+    *(corners + 288) = *(corners + 288) & 0xFFFFFE1F | (32 * (a2 & 0xF));
   }
 }
 
-- (void)_setPinningAlignment:(uint64_t)a1
+- (void)_setPinningAlignment:(uint64_t)alignment
 {
-  if (a1)
+  if (alignment)
   {
     if (a2 >= 16)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__setPinningAlignment_ object:a1 file:@"UICollectionViewLayout.m" lineNumber:318 description:{@"NSRectAlignment value (%ld) does not fit in bitfield reserved space", a2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setPinningAlignment_ object:alignment file:@"UICollectionViewLayout.m" lineNumber:318 description:{@"NSRectAlignment value (%ld) does not fit in bitfield reserved space", a2}];
     }
 
-    *(a1 + 288) = *(a1 + 288) & 0xFFFF87FF | ((a2 & 0xF) << 11);
+    *(alignment + 288) = *(alignment + 288) & 0xFFFF87FF | ((a2 & 0xF) << 11);
   }
 }
 
-- (void)_setPreferredSizingData:(uint64_t)a1
+- (void)_setPreferredSizingData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 272), a2);
+    objc_storeStrong((data + 272), a2);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 12) = *&self->_alpha;
@@ -533,13 +533,13 @@
   x = bounds.origin.x;
   if (bounds.origin.x != 0.0 || bounds.origin.y != 0.0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12.origin.x = x;
     v12.origin.y = y;
     v12.size.width = width;
     v12.size.height = height;
     v10 = NSStringFromCGRect(v12);
-    [v9 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:459 description:{@"UICollectionViewLayoutAttributes bounds must be set with a (0, 0) origin %@ - %@", self, v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:459 description:{@"UICollectionViewLayoutAttributes bounds must be set with a (0, 0) origin %@ - %@", self, v10}];
   }
 
   [(UICollectionViewLayoutAttributes *)self setSize:width, height];
@@ -559,13 +559,13 @@
     v23.size.height = height;
     if (CGRectIsInfinite(v23))
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27.origin.x = x;
       v27.origin.y = y;
       v27.size.width = width;
       v27.size.height = height;
       v19 = NSStringFromCGRect(v27);
-      [v18 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:466 description:{@"UICollectionViewLayoutAttributes: -setFrame: with CGRectInfinite is undefined. Attributes: %@; new frame: %@", self, v19}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:466 description:{@"UICollectionViewLayoutAttributes: -setFrame: with CGRectInfinite is undefined. Attributes: %@; new frame: %@", self, v19}];
     }
 
     v24.origin.x = x;
@@ -574,13 +574,13 @@
     v24.size.height = height;
     if (CGRectIsNull(v24))
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v28.origin.x = x;
       v28.origin.y = y;
       v28.size.width = width;
       v28.size.height = height;
       v21 = NSStringFromCGRect(v28);
-      [v20 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:467 description:{@"UICollectionViewLayoutAttributes: -setFrame: with CGRectNull is undefined. Attributes: %@; new frame: %@", self, v21}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:467 description:{@"UICollectionViewLayoutAttributes: -setFrame: with CGRectNull is undefined. Attributes: %@; new frame: %@", self, v21}];
     }
   }
 
@@ -588,24 +588,24 @@
   {
     if ((*&x & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&y & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v25.origin.x = x;
       v25.origin.y = y;
       v25.size.width = width;
       v25.size.height = height;
       v15 = NSStringFromCGRect(v25);
-      [v14 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:470 description:{@"UICollectionViewLayoutAttributes: -setFrame: requires finite coordinates. Attributes: %@; new frame: %@", self, v15}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:470 description:{@"UICollectionViewLayoutAttributes: -setFrame: requires finite coordinates. Attributes: %@; new frame: %@", self, v15}];
     }
 
     if ((*&width & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&height & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v26.origin.x = x;
       v26.origin.y = y;
       v26.size.width = width;
       v26.size.height = height;
       v17 = NSStringFromCGRect(v26);
-      [v16 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:471 description:{@"UICollectionViewLayoutAttributes: -setFrame: requires finite dimensions. Attributes: %@; new frame: %@", self, v17}];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:471 description:{@"UICollectionViewLayoutAttributes: -setFrame: requires finite dimensions. Attributes: %@; new frame: %@", self, v17}];
     }
   }
 
@@ -645,11 +645,11 @@
   width = size.width;
   if (dyld_program_sdk_at_least() && ((*&width & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&height & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11.width = width;
     v11.height = height;
     v10 = NSStringFromCGSize(v11);
-    [v9 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:481 description:{@"UICollectionViewLayoutAttributes: -setSize: requires finite dimensions. Attributes: %@; new size: %@", self, v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:481 description:{@"UICollectionViewLayoutAttributes: -setSize: requires finite dimensions. Attributes: %@; new size: %@", self, v10}];
   }
 
   if (width != self->_size.width || height != self->_size.height)
@@ -671,11 +671,11 @@
   v6 = y;
   if (v5 && ((*&x & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&y & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14.x = x;
     v14.y = y;
     v11 = NSStringFromCGPoint(v14);
-    [v10 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:492 description:{@"UICollectionViewLayoutAttributes: -setCenter: requires finite coordinates. Attributes: %@; new center: %@", self, v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:492 description:{@"UICollectionViewLayoutAttributes: -setCenter: requires finite coordinates. Attributes: %@; new center: %@", self, v11}];
 
     v7 = x;
     v6 = y;
@@ -713,7 +713,7 @@
     *&a.m23 = v9;
     if ((_UICATransform3DHasFiniteMembers(&a) & 1) == 0)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = *&transform3D->m33;
       *&a.m31 = *&transform3D->m31;
       *&a.m33 = v26;
@@ -727,7 +727,7 @@
       *&a.m21 = *&transform3D->m21;
       *&a.m23 = v29;
       v30 = _NSStringFromCATransform3D(&a);
-      [v25 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:508 description:{@"UICollectionViewLayoutAttributes: -setTransform3D: requires that all members in the transform matrix are finite numbers. Attributes: %@; new transform: %@", self, v30}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:508 description:{@"UICollectionViewLayoutAttributes: -setTransform3D: requires that all members in the transform matrix are finite numbers. Attributes: %@; new transform: %@", self, v30}];
     }
   }
 
@@ -791,13 +791,13 @@
     v12 = vandq_s8(vandq_s8(vcgtq_s64(v11, v9), vcgtq_s64(v11, v10)), vandq_s8(vcgtq_s64(v11, v8), vcgtq_s64(v11, 0)));
     if ((vandq_s8(v12, vdupq_laneq_s64(v12, 1)).u64[0] & 0x8000000000000000) == 0)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = *&transform->c;
       *&v18.m11 = *&transform->a;
       *&v18.m13 = v15;
       *&v18.m21 = *&transform->tx;
       v16 = NSStringFromCGAffineTransform(&v18);
-      [v14 handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:522 description:{@"UICollectionViewLayoutAttributes: -setTransform: requires that all members in the transform matrix be finite numbers. Attributes: %@; new transform: %@", self, v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewLayout.m" lineNumber:522 description:{@"UICollectionViewLayoutAttributes: -setTransform: requires that all members in the transform matrix be finite numbers. Attributes: %@; new transform: %@", self, v16}];
     }
   }
 
@@ -860,8 +860,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
-  [v6 appendFormat:@"index path: %@; ", v7];
+  _ui_shortDescription = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
+  [v6 appendFormat:@"index path: %@; ", _ui_shortDescription];
 
   if ((*&self->_layoutFlags & 1) == 0)
   {
@@ -925,9 +925,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -937,11 +937,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSIndexPath *)self->_indexPath isEqual:*(a3 + 2)];
+      v5 = [(NSIndexPath *)self->_indexPath isEqual:*(equal + 2)];
       if (v5)
       {
 
-        LOBYTE(v5) = [(UICollectionViewLayoutAttributes *)self _isEquivalentTo:a3];
+        LOBYTE(v5) = [(UICollectionViewLayoutAttributes *)self _isEquivalentTo:equal];
       }
     }
 
@@ -954,19 +954,19 @@
   return v5;
 }
 
-- (uint64_t)_isEquivalentTo:(uint64_t)a1
+- (uint64_t)_isEquivalentTo:(uint64_t)to
 {
   result = 0;
-  if (a1 && a2)
+  if (to && a2)
   {
-    if (*(a1 + 96) == 0.0)
+    if (*(to + 96) == 0.0)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = (*(a1 + 288) >> 2) & 1;
+      v5 = (*(to + 288) >> 2) & 1;
     }
 
     if (*(a2 + 96) == 0.0)
@@ -985,29 +985,29 @@
     }
 
     v7 = vdupq_n_s64(0x3E80000000000000uLL);
-    v8 = vmovn_s64(vcgtq_f64(v7, vabdq_f64(*(a1 + 32), *(a2 + 32))));
+    v8 = vmovn_s64(vcgtq_f64(v7, vabdq_f64(*(to + 32), *(a2 + 32))));
     if ((v8.i32[0] & v8.i32[1] & 1) == 0)
     {
       return 0;
     }
 
-    v9 = vmovn_s64(vcgtq_f64(v7, vabdq_f64(*(a1 + 48), *(a2 + 48))));
+    v9 = vmovn_s64(vcgtq_f64(v7, vabdq_f64(*(to + 48), *(a2 + 48))));
     if ((v9.i32[1] & v9.i32[0] & 1) == 0)
     {
       return 0;
     }
 
-    v10 = *(a1 + 192);
-    *&a.m31 = *(a1 + 176);
+    v10 = *(to + 192);
+    *&a.m31 = *(to + 176);
     *&a.m33 = v10;
-    v11 = *(a1 + 224);
-    *&a.m41 = *(a1 + 208);
+    v11 = *(to + 224);
+    *&a.m41 = *(to + 208);
     *&a.m43 = v11;
-    v12 = *(a1 + 128);
-    *&a.m11 = *(a1 + 112);
+    v12 = *(to + 128);
+    *&a.m11 = *(to + 112);
     *&a.m13 = v12;
-    v13 = *(a1 + 160);
-    *&a.m21 = *(a1 + 144);
+    v13 = *(to + 160);
+    *&a.m21 = *(to + 144);
     *&a.m23 = v13;
     v14 = *(a2 + 192);
     *&v27.m31 = *(a2 + 176);
@@ -1027,43 +1027,43 @@
       return result;
     }
 
-    if (*(a1 + 296) != *(a2 + 296))
+    if (*(to + 296) != *(a2 + 296))
     {
       return 0;
     }
 
-    if (((*(a2 + 288) ^ *(a1 + 288)) & 8) != 0)
+    if (((*(a2 + 288) ^ *(to + 288)) & 8) != 0)
     {
       return 0;
     }
 
-    v18 = *(a1 + 96);
+    v18 = *(to + 96);
     [a2 alpha];
-    if (v18 != v19 || ((*(a2 + 288) ^ *(a1 + 288)) & 0x1F0) != 0 || *(a1 + 312) != *(a2 + 312) || *(a1 + 304) != *(a2 + 304))
+    if (v18 != v19 || ((*(a2 + 288) ^ *(to + 288)) & 0x1F0) != 0 || *(to + 312) != *(a2 + 312) || *(to + 304) != *(a2 + 304))
     {
       return 0;
     }
 
-    result = CGRectEqualToRect(*(a1 + 240), *(a2 + 240));
+    result = CGRectEqualToRect(*(to + 240), *(a2 + 240));
     if (!result)
     {
       return result;
     }
 
-    v20 = *(a1 + 288);
+    v20 = *(to + 288);
     v21 = *(a2 + 288);
-    if ((v21 ^ v20) & 0xFC00) == 0 && (v22 = (v20 >> 9) & 1, v22 == ((v21 >> 9) & 1)) && (!v22 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 320), *(a2 + 320)), vceqq_f64(*(a1 + 336), *(a2 + 336)))))))
+    if ((v21 ^ v20) & 0xFC00) == 0 && (v22 = (v20 >> 9) & 1, v22 == ((v21 >> 9) & 1)) && (!v22 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(to + 320), *(a2 + 320)), vceqq_f64(*(to + 336), *(a2 + 336)))))))
     {
-      v23 = *(a1 + 8);
+      v23 = *(to + 8);
       if (v23 == *(a2 + 8) || (result = [v23 isEqualToString:?], result))
       {
-        result = _deferringTokenEqualToToken(*(a1 + 272), *(a2 + 272));
+        result = _deferringTokenEqualToToken(*(to + 272), *(a2 + 272));
         if (result)
         {
-          result = _deferringTokenEqualToToken(*(a1 + 280), *(a2 + 280));
+          result = _deferringTokenEqualToToken(*(to + 280), *(a2 + 280));
           if (result)
           {
-            v24 = _getCustomAttributes(a1);
+            v24 = _getCustomAttributes(to);
             v25 = _getCustomAttributes(a2);
             v26 = _deferringTokenEqualToToken(v24, v25);
 

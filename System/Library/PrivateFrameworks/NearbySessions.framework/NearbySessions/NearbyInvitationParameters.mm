@@ -1,15 +1,15 @@
 @interface NearbyInvitationParameters
 - (_TtC14NearbySessions26NearbyInvitationParameters)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbyInvitationParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbyInvitationParameters.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbyInvitationParameters.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions26NearbyInvitationParameters)init

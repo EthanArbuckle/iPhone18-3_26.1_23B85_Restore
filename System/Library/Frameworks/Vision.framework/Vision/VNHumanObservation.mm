@@ -1,29 +1,29 @@
 @interface VNHumanObservation
-- (BOOL)isEqual:(id)a3;
-- (VNHumanObservation)initWithCoder:(id)a3;
-- (VNHumanObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 upperBodyOnly:(BOOL)a5 confidence:(float)a6;
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNHumanObservation)initWithCoder:(id)coder;
+- (VNHumanObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box upperBodyOnly:(BOOL)only confidence:(float)confidence;
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTorsoprint:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTorsoprint:(id)torsoprint;
 @end
 
 @implementation VNHumanObservation
 
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNHumanObservation *)self torsoprint];
-  v8 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"torsoprint", v7, v6, a4);
+  specifierCopy = specifier;
+  torsoprint = [(VNHumanObservation *)self torsoprint];
+  v8 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"torsoprint", torsoprint, specifierCopy, error);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -32,17 +32,17 @@
   {
     v12.receiver = self;
     v12.super_class = VNHumanObservation;
-    if ([(VNDetectedObjectObservation *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNDetectedObjectObservation *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNHumanObservation *)self torsoprint];
-      v7 = [(VNHumanObservation *)v5 torsoprint];
+      v5 = equalCopy;
+      torsoprint = [(VNHumanObservation *)self torsoprint];
+      torsoprint2 = [(VNHumanObservation *)v5 torsoprint];
       v8 = VisionCoreEqualOrNilObjects();
 
       if (v8)
       {
-        v9 = [(VNHumanObservation *)self upperBodyOnly];
-        v10 = v9 ^ [(VNHumanObservation *)v5 upperBodyOnly]^ 1;
+        upperBodyOnly = [(VNHumanObservation *)self upperBodyOnly];
+        v10 = upperBodyOnly ^ [(VNHumanObservation *)v5 upperBodyOnly]^ 1;
       }
 
       else
@@ -65,12 +65,12 @@
   v9.receiver = self;
   v9.super_class = VNHumanObservation;
   v3 = [(VNDetectedObjectObservation *)&v9 hash];
-  v4 = [(VNHumanObservation *)self torsoprint];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  torsoprint = [(VNHumanObservation *)self torsoprint];
+  v5 = [torsoprint hash] ^ __ROR8__(v3, 51);
 
-  v6 = [(VNHumanObservation *)self upperBodyOnly];
+  upperBodyOnly = [(VNHumanObservation *)self upperBodyOnly];
   v7 = 21845;
-  if (v6)
+  if (upperBodyOnly)
   {
     v7 = 43690;
   }
@@ -82,61 +82,61 @@
 {
   v7.receiver = self;
   v7.super_class = VNHumanObservation;
-  v3 = [(VNDetectedObjectObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNDetectedObjectObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(VNTorsoprint *)self->_torsoprint copy];
-    v5 = *(v3 + 160);
-    *(v3 + 160) = v4;
+    v5 = *(vn_cloneObject + 160);
+    *(vn_cloneObject + 160) = v4;
 
-    *(v3 + 168) = self->_upperBodyOnly;
+    *(vn_cloneObject + 168) = self->_upperBodyOnly;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNHumanObservation;
-  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNHumanObservation"];
-  [v4 encodeObject:self->_torsoprint forKey:@"trsPrnt"];
-  [v4 encodeBool:self->_upperBodyOnly forKey:@"upBdyOnly"];
+  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNHumanObservation"];
+  [coderCopy encodeObject:self->_torsoprint forKey:@"trsPrnt"];
+  [coderCopy encodeBool:self->_upperBodyOnly forKey:@"upBdyOnly"];
 }
 
-- (VNHumanObservation)initWithCoder:(id)a3
+- (VNHumanObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = VNHumanObservation;
-  v5 = [(VNDetectedObjectObservation *)&v13 initWithCoder:v4];
+  v5 = [(VNDetectedObjectObservation *)&v13 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 vn_decodeCodingVersionForKey:@"VNHumanObservation"];
+  v6 = [coderCopy vn_decodeCodingVersionForKey:@"VNHumanObservation"];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive %@ object due to coding version mismatch: Currently supported: %u; encoded: %u", objc_opt_class(), 0, v6];
     v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 
 LABEL_4:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trsPrnt"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trsPrnt"];
   torsoprint = v5->_torsoprint;
   v5->_torsoprint = v10;
 
   v5->_upperBodyOnly = 1;
-  if ([v4 containsValueForKey:@"upBdyOnly"])
+  if ([coderCopy containsValueForKey:@"upBdyOnly"])
   {
-    v5->_upperBodyOnly = [v4 decodeBoolForKey:@"upBdyOnly"];
+    v5->_upperBodyOnly = [coderCopy decodeBoolForKey:@"upBdyOnly"];
   }
 
   v9 = v5;
@@ -145,35 +145,35 @@ LABEL_8:
   return v9;
 }
 
-- (VNHumanObservation)initWithOriginatingRequestSpecifier:(id)a3 boundingBox:(CGRect)a4 upperBodyOnly:(BOOL)a5 confidence:(float)a6
+- (VNHumanObservation)initWithOriginatingRequestSpecifier:(id)specifier boundingBox:(CGRect)box upperBodyOnly:(BOOL)only confidence:(float)confidence
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = VNHumanObservation;
-  v14 = [(VNDetectedObjectObservation *)&v20 initWithOriginatingRequestSpecifier:v13 boundingBox:x, y, width, height];
-  v16 = v14;
-  if (v14)
+  height = [(VNDetectedObjectObservation *)&v20 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:x, y, width, height];
+  v16 = height;
+  if (height)
   {
-    *&v15 = a6;
-    [(VNObservation *)v14 setConfidence:v15];
+    *&v15 = confidence;
+    [(VNObservation *)height setConfidence:v15];
     torsoprint = v16->_torsoprint;
     v16->_torsoprint = 0;
 
-    v16->_upperBodyOnly = a5;
+    v16->_upperBodyOnly = only;
     v18 = v16;
   }
 
   return v16;
 }
 
-- (void)setTorsoprint:(id)a3
+- (void)setTorsoprint:(id)torsoprint
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  torsoprintCopy = torsoprint;
+  v4 = [torsoprintCopy copy];
   torsoprint = self->_torsoprint;
   self->_torsoprint = v4;
 }

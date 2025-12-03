@@ -1,19 +1,19 @@
 @interface MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest
-+ (int64_t)_underlyingFavoriteEntityChangeRequestActionFrom:(int64_t)a3;
-- (MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest)initWithModelObject:(id)a3 requestActionType:(int64_t)a4;
++ (int64_t)_underlyingFavoriteEntityChangeRequestActionFrom:(int64_t)from;
+- (MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest)initWithModelObject:(id)object requestActionType:(int64_t)type;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest
 
-- (MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest)initWithModelObject:(id)a3 requestActionType:(int64_t)a4
+- (MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest)initWithModelObject:(id)object requestActionType:(int64_t)type
 {
-  v6 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest;
   v7 = [(MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest *)&v19 init];
   if (v7)
   {
-    v8 = [MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest _underlyingFavoriteEntityChangeRequestActionFrom:a4];
+    v8 = [MusicKit_SoftLinking_MPModelLibraryFavoriteEntityChangeRequest _underlyingFavoriteEntityChangeRequestActionFrom:type];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2050000000;
@@ -56,8 +56,8 @@
     v7->_underlyingFavoriteEntityChangeRequest = v14;
 
     v16 = v7->_underlyingFavoriteEntityChangeRequest;
-    v17 = [v6 _underlyingModelObject];
-    [(MPModelLibraryFavoriteEntityChangeRequest *)v16 setModelObject:v17];
+    _underlyingModelObject = [objectCopy _underlyingModelObject];
+    [(MPModelLibraryFavoriteEntityChangeRequest *)v16 setModelObject:_underlyingModelObject];
 
     [(MPModelLibraryFavoriteEntityChangeRequest *)v7->_underlyingFavoriteEntityChangeRequest setRequestAction:v11];
   }
@@ -65,16 +65,16 @@
   return v7;
 }
 
-+ (int64_t)_underlyingFavoriteEntityChangeRequestActionFrom:(int64_t)a3
++ (int64_t)_underlyingFavoriteEntityChangeRequestActionFrom:(int64_t)from
 {
-  if ((a3 - 1) >= 3)
+  if ((from - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 

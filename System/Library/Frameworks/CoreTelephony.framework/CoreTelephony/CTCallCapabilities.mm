@@ -1,8 +1,8 @@
 @interface CTCallCapabilities
-- (CTCallCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTCallCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCallCapabilities
@@ -20,9 +20,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsWifiCallingAvailable:{-[CTCallCapabilities isWifiCallingAvailable](self, "isWifiCallingAvailable")}];
   [v4 setIsVoLTECallingAvailable:{-[CTCallCapabilities isVoLTECallingAvailable](self, "isVoLTECallingAvailable")}];
   [v4 setIsCSCallingAvailable:{-[CTCallCapabilities isCSCallingAvailable](self, "isCSCallingAvailable")}];
@@ -32,31 +32,31 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTCallCapabilities isWifiCallingAvailable](self forKey:{"isWifiCallingAvailable"), @"isWifiCallingAvailable"}];
-  [v4 encodeBool:-[CTCallCapabilities isVoLTECallingAvailable](self forKey:{"isVoLTECallingAvailable"), @"isVoLTECallingAvailable"}];
-  [v4 encodeBool:-[CTCallCapabilities isCSCallingAvailable](self forKey:{"isCSCallingAvailable"), @"isCSCallingAvailable"}];
-  [v4 encodeBool:-[CTCallCapabilities isEmergencyCallingOnWifiAllowed](self forKey:{"isEmergencyCallingOnWifiAllowed"), @"isEmergencyCallingOnWifiAllowed"}];
-  [v4 encodeBool:-[CTCallCapabilities isEmergencyCallingOnWifiAvailable](self forKey:{"isEmergencyCallingOnWifiAvailable"), @"isEmergencyCallingOnWifiAvailable"}];
-  [v4 encodeBool:-[CTCallCapabilities isCarrierSupportsEmergencyCallOnWifiNoLimit](self forKey:{"isCarrierSupportsEmergencyCallOnWifiNoLimit"), @"isCarrierSupportsEmergencyCallOnWifiNoLimit"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTCallCapabilities isWifiCallingAvailable](self forKey:{"isWifiCallingAvailable"), @"isWifiCallingAvailable"}];
+  [coderCopy encodeBool:-[CTCallCapabilities isVoLTECallingAvailable](self forKey:{"isVoLTECallingAvailable"), @"isVoLTECallingAvailable"}];
+  [coderCopy encodeBool:-[CTCallCapabilities isCSCallingAvailable](self forKey:{"isCSCallingAvailable"), @"isCSCallingAvailable"}];
+  [coderCopy encodeBool:-[CTCallCapabilities isEmergencyCallingOnWifiAllowed](self forKey:{"isEmergencyCallingOnWifiAllowed"), @"isEmergencyCallingOnWifiAllowed"}];
+  [coderCopy encodeBool:-[CTCallCapabilities isEmergencyCallingOnWifiAvailable](self forKey:{"isEmergencyCallingOnWifiAvailable"), @"isEmergencyCallingOnWifiAvailable"}];
+  [coderCopy encodeBool:-[CTCallCapabilities isCarrierSupportsEmergencyCallOnWifiNoLimit](self forKey:{"isCarrierSupportsEmergencyCallOnWifiNoLimit"), @"isCarrierSupportsEmergencyCallOnWifiNoLimit"}];
 }
 
-- (CTCallCapabilities)initWithCoder:(id)a3
+- (CTCallCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTCallCapabilities;
   v5 = [(CTCallCapabilities *)&v7 init];
   if (v5)
   {
-    v5->_isWifiCallingAvailable = [v4 decodeBoolForKey:@"isWifiCallingAvailable"];
-    v5->_isVoLTECallingAvailable = [v4 decodeBoolForKey:@"isVoLTECallingAvailable"];
-    v5->_isCSCallingAvailable = [v4 decodeBoolForKey:@"isCSCallingAvailable"];
-    v5->_isEmergencyCallingOnWifiAllowed = [v4 decodeBoolForKey:@"isEmergencyCallingOnWifiAllowed"];
-    v5->_isEmergencyCallingOnWifiAvailable = [v4 decodeBoolForKey:@"isEmergencyCallingOnWifiAvailable"];
-    v5->_isCarrierSupportsEmergencyCallOnWifiNoLimit = [v4 decodeBoolForKey:@"isCarrierSupportsEmergencyCallOnWifiNoLimit"];
+    v5->_isWifiCallingAvailable = [coderCopy decodeBoolForKey:@"isWifiCallingAvailable"];
+    v5->_isVoLTECallingAvailable = [coderCopy decodeBoolForKey:@"isVoLTECallingAvailable"];
+    v5->_isCSCallingAvailable = [coderCopy decodeBoolForKey:@"isCSCallingAvailable"];
+    v5->_isEmergencyCallingOnWifiAllowed = [coderCopy decodeBoolForKey:@"isEmergencyCallingOnWifiAllowed"];
+    v5->_isEmergencyCallingOnWifiAvailable = [coderCopy decodeBoolForKey:@"isEmergencyCallingOnWifiAvailable"];
+    v5->_isCarrierSupportsEmergencyCallOnWifiNoLimit = [coderCopy decodeBoolForKey:@"isCarrierSupportsEmergencyCallOnWifiNoLimit"];
   }
 
   return v5;

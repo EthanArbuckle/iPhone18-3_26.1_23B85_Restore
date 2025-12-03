@@ -24,29 +24,29 @@
 
 - (uint64_t)notificationsEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"NotificationsEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"NotificationsEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)showsInNotificationCenter
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"ShowsInNotificationCenter"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"ShowsInNotificationCenter"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)isSummarizationEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"SummarizationEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"SummarizationEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)notificationSectionSettingsForBBSectionInfo:()Bulletin
@@ -54,22 +54,22 @@
   v46 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277D77E20]);
-  v5 = [v3 sectionID];
-  [v4 setSectionIdentifier:v5];
+  sectionID = [v3 sectionID];
+  [v4 setSectionIdentifier:sectionID];
 
-  v6 = [v3 subsectionID];
-  [v4 setSubSectionIdentifier:v6];
+  subsectionID = [v3 subsectionID];
+  [v4 setSubSectionIdentifier:subsectionID];
 
-  v7 = [v3 displayName];
-  if (v7)
+  displayName = [v3 displayName];
+  if (displayName)
   {
-    [v4 setDisplayName:v7];
+    [v4 setDisplayName:displayName];
   }
 
   else
   {
-    v8 = [v3 appName];
-    [v4 setDisplayName:v8];
+    appName = [v3 appName];
+    [v4 setDisplayName:appName];
   }
 
   v9 = objc_opt_new();
@@ -121,8 +121,8 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v25 = [v3 subsections];
-  v26 = [v25 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  subsections = [v3 subsections];
+  v26 = [subsections countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v26)
   {
     v27 = v26;
@@ -133,14 +133,14 @@
       {
         if (*v42 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(subsections);
         }
 
         v30 = [MEMORY[0x277D77E58] notificationSectionSettingsForBBSectionInfo:*(*(&v41 + 1) + 8 * i)];
         [v24 addObject:v30];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v27 = [subsections countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v27);
@@ -158,12 +158,12 @@
   }
 
   [v4 setUserConfigurable:v31];
-  v32 = [v3 icon];
-  if (v32)
+  icon = [v3 icon];
+  if (icon)
   {
-    v33 = [MEMORY[0x277D759A0] mainScreen];
-    [v33 scale];
-    v34 = [v32 nc_imageForFormat:17 scale:0 userInterfaceStyle:0 usedUserInterfaceStyle:?];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v34 = [icon nc_imageForFormat:17 scale:0 userInterfaceStyle:0 usedUserInterfaceStyle:?];
 
     if (v34)
     {
@@ -175,25 +175,25 @@
   [v4 setHasProvisionalAuthorization:{objc_msgSend(v3, "authorizationStatus") == 3}];
   [v4 setIsDeliveredQuietly:{objc_msgSend(v3, "isDeliveredQuietly")}];
   [v4 setIsAppClip:{objc_msgSend(v3, "isAppClip")}];
-  v35 = [v3 muteAssertion];
+  muteAssertion = [v3 muteAssertion];
 
-  if (v35)
+  if (muteAssertion)
   {
-    v36 = [v3 muteAssertion];
+    muteAssertion2 = [v3 muteAssertion];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v37 = [MEMORY[0x277D77E50] sectionMuteAssertion];
+      sectionMuteAssertion = [MEMORY[0x277D77E50] sectionMuteAssertion];
     }
 
     else
     {
       v38 = MEMORY[0x277D77E70];
-      v39 = [v36 threadIDs];
-      v37 = [v38 threadsMuteAssertionWithMutedThreadIDs:v39];
+      threadIDs = [muteAssertion2 threadIDs];
+      sectionMuteAssertion = [v38 threadsMuteAssertionWithMutedThreadIDs:threadIDs];
     }
 
-    [v4 setMuteAssertion:v37];
+    [v4 setMuteAssertion:sectionMuteAssertion];
   }
 
   return v4;
@@ -201,47 +201,47 @@
 
 - (uint64_t)criticalAlertsEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"CriticalAlertsEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"CriticalAlertsEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)showsInLockScreen
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"ShowsInLockScreen"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"ShowsInLockScreen"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)subSectionPriority
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"SubSectionPriorty"];
-  v3 = [v2 integerValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"SubSectionPriorty"];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (uint64_t)contentPreviewSetting
 {
-  v2 = [a1 settings];
-  v3 = [v2 objectForKey:@"ContentPreviewSetting"];
-  v4 = [v3 integerValue];
+  settings = [self settings];
+  v3 = [settings objectForKey:@"ContentPreviewSetting"];
+  integerValue = [v3 integerValue];
 
-  return [a1 _contentPreviewSettingFromBBContentPreviewSetting:v4];
+  return [self _contentPreviewSettingFromBBContentPreviewSetting:integerValue];
 }
 
 - (uint64_t)groupingSetting
 {
-  v2 = [a1 settings];
-  v3 = [v2 objectForKey:@"GroupingSetting"];
-  v4 = [v3 integerValue];
+  settings = [self settings];
+  v3 = [settings objectForKey:@"GroupingSetting"];
+  integerValue = [v3 integerValue];
 
-  return [a1 _groupingSettingFromBBGroupingSetting:v4];
+  return [self _groupingSettingFromBBGroupingSetting:integerValue];
 }
 
 - (id)_notificationSectionSettingsForSubSectionWithIdentifier:()Bulletin
@@ -253,7 +253,7 @@
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [a1 subSectionSettings];
+  subSectionSettings = [self subSectionSettings];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__NCNotificationSectionSettings_Bulletin___notificationSectionSettingsForSubSectionWithIdentifier___block_invoke;
@@ -261,7 +261,7 @@
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [subSectionSettings enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -296,7 +296,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v12 = [a1 _notificationSectionSettingsForSubSectionWithIdentifier:{*(*(&v18 + 1) + 8 * i), v18}];
+          v12 = [self _notificationSectionSettingsForSubSectionWithIdentifier:{*(*(&v18 + 1) + 8 * i), v18}];
           v13 = v12;
           if (v12)
           {
@@ -320,69 +320,69 @@
       v9 = 0;
     }
 
-    v16 = [v9 contentPreviewSetting];
+    contentPreviewSetting = [v9 contentPreviewSetting];
   }
 
   else
   {
-    v16 = [a1 contentPreviewSetting];
+    contentPreviewSetting = [self contentPreviewSetting];
   }
 
-  return v16;
+  return contentPreviewSetting;
 }
 
 - (uint64_t)isTimeSensitiveEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"TimeSensitiveEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"TimeSensitiveEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)hasUserConfiguredTimeSensitiveSetting
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"UserConfiguredTimeSensitiveSetting"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"UserConfiguredTimeSensitiveSetting"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)isScheduledDeliveryEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"ScheduledDeliveryEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"ScheduledDeliveryEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)isDirectMessagesEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"DirectMessagesEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"DirectMessagesEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)hasUserConfiguredDirectMessagesSetting
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"UserConfiguredDirectMessagesSetting"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"UserConfiguredDirectMessagesSetting"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)isPrioritizationEnabled
 {
-  v1 = [a1 settings];
-  v2 = [v1 objectForKey:@"PrioritizationEnabled"];
-  v3 = [v2 BOOLValue];
+  settings = [self settings];
+  v2 = [settings objectForKey:@"PrioritizationEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_contentPreviewSettingFromBBContentPreviewSetting:()Bulletin
@@ -393,7 +393,7 @@
     v6 = *MEMORY[0x277D77DB8];
     if (os_log_type_enabled(*MEMORY[0x277D77DB8], OS_LOG_TYPE_ERROR))
     {
-      [(NCNotificationSectionSettings(Bulletin) *)v6 _contentPreviewSettingFromBBContentPreviewSetting:a1, a3];
+      [(NCNotificationSectionSettings(Bulletin) *)v6 _contentPreviewSettingFromBBContentPreviewSetting:self, a3];
     }
 
     return 0;

@@ -4,30 +4,30 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setWorkoutName:(id)a3;
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setWorkoutName:(id)name;
 @end
 
 @implementation INCancelWorkoutIntent
 
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 facadePropertyName];
-  v9 = [v8 isEqualToString:@"workoutName"];
+  descriptionCopy = description;
+  localizerCopy = localizer;
+  facadePropertyName = [descriptionCopy facadePropertyName];
+  v9 = [facadePropertyName isEqualToString:@"workoutName"];
 
   if (v9)
   {
-    v10 = [(INCancelWorkoutIntent *)self workoutName];
-    v11 = [v10 spokenPhrase];
+    workoutName = [(INCancelWorkoutIntent *)self workoutName];
+    spokenPhrase = [workoutName spokenPhrase];
 
-    if ([v11 hasPrefix:@"com.apple.intents.WorkoutNameIdentifier."])
+    if ([spokenPhrase hasPrefix:@"com.apple.intents.WorkoutNameIdentifier."])
     {
-      v12 = [v11 substringFromIndex:{objc_msgSend(@"com.apple.intents.WorkoutNameIdentifier.", "length")}];
-      v13 = INLocalizedStringWithLocalizer(v11, v12, v7);
+      v12 = [spokenPhrase substringFromIndex:{objc_msgSend(@"com.apple.intents.WorkoutNameIdentifier.", "length")}];
+      v13 = INLocalizedStringWithLocalizer(spokenPhrase, v12, localizerCopy);
 
       goto LABEL_6;
     }
@@ -35,15 +35,15 @@
 
   v15.receiver = self;
   v15.super_class = INCancelWorkoutIntent;
-  v13 = [(INIntent *)&v15 localizeValueOfSlotDescription:v6 withLocalizer:v7];
+  v13 = [(INIntent *)&v15 localizeValueOfSlotDescription:descriptionCopy withLocalizer:localizerCopy];
 LABEL_6:
 
   return v13;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INCancelWorkoutIntent *)self _typedBackingStore:a3];
+  v6 = [(INCancelWorkoutIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -52,16 +52,16 @@ LABEL_6:
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"workoutName";
-  v2 = [(INCancelWorkoutIntent *)self workoutName];
-  v3 = v2;
-  if (!v2)
+  workoutName = [(INCancelWorkoutIntent *)self workoutName];
+  null = workoutName;
+  if (!workoutName)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!workoutName)
   {
   }
 
@@ -70,20 +70,20 @@ LABEL_6:
   return v4;
 }
 
-- (void)setWorkoutName:(id)a3
+- (void)setWorkoutName:(id)name
 {
-  v4 = a3;
-  v6 = [(INCancelWorkoutIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INCancelWorkoutIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setWorkoutName:v5];
+  [_typedBackingStore setWorkoutName:v5];
 }
 
 - (INSpeakableString)workoutName
 {
-  v2 = [(INCancelWorkoutIntent *)self _typedBackingStore];
-  v3 = [v2 workoutName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INCancelWorkoutIntent *)self _typedBackingStore];
+  workoutName = [_typedBackingStore workoutName];
+  v4 = INIntentSlotValueTransformFromDataString(workoutName);
 
   return v4;
 }
@@ -103,28 +103,28 @@ LABEL_6:
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INCancelWorkoutIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INCancelWorkoutIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INCancelWorkoutIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INCancelWorkoutIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

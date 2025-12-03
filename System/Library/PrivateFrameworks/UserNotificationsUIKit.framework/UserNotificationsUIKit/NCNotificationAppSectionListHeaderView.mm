@@ -1,30 +1,30 @@
 @interface NCNotificationAppSectionListHeaderView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationAppSectionListHeaderViewDelegate)delegate;
 - (unint64_t)_maximumNumberOfLinesForTitleText;
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3;
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame;
 - (void)_configureOptionsButtonIfNecessary;
 - (void)_layoutIconImageView;
 - (void)_layoutOptionsButton;
 - (void)_layoutTitleLabel;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForTitleTextLabel;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)didTapOptionsButton:(id)a3;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
+- (void)didTapOptionsButton:(id)button;
 - (void)layoutSubviews;
-- (void)setIcons:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIcons:(id)icons;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationAppSectionListHeaderView
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v10];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -39,7 +39,7 @@
       titleLabel = self->_titleLabel;
     }
 
-    [(UILabel *)titleLabel setText:v10];
+    [(UILabel *)titleLabel setText:titleCopy];
     [(NCNotificationAppSectionListHeaderView *)self _updateTextAttributesForTitleTextLabel];
     v9 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
     [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:v9 outgoingProvider:0];
@@ -47,21 +47,21 @@
   }
 }
 
-- (void)setIcons:(id)a3
+- (void)setIcons:(id)icons
 {
-  v16 = a3;
-  v5 = [v16 firstObject];
-  if (v5)
+  iconsCopy = icons;
+  firstObject = [iconsCopy firstObject];
+  if (firstObject)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
-    if (v5 == v3)
+    null = [MEMORY[0x277CBEB68] null];
+    if (firstObject == null)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5;
+      v6 = firstObject;
     }
   }
 
@@ -71,11 +71,11 @@
   }
 
   objc_storeStrong(&self->_lightIcon, v6);
-  if (v5)
+  if (firstObject)
   {
   }
 
-  if ([v16 count] <= 1)
+  if ([iconsCopy count] <= 1)
   {
 
     v8 = 0;
@@ -86,13 +86,13 @@
   else
   {
     v7 = 1;
-    v8 = [v16 objectAtIndexedSubscript:1];
+    v8 = [iconsCopy objectAtIndexedSubscript:1];
 
     if (v8)
     {
-      v5 = [MEMORY[0x277CBEB68] null];
+      firstObject = [MEMORY[0x277CBEB68] null];
       v7 = 0;
-      if (v8 == v5)
+      if (v8 == firstObject)
       {
         v9 = 0;
       }
@@ -114,8 +114,8 @@
   {
   }
 
-  v10 = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
-  if ([v10 userInterfaceStyle] != 2 || (lightIcon = self->_darkIcon) == 0)
+  traitCollection = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] != 2 || (lightIcon = self->_darkIcon) == 0)
   {
     lightIcon = self->_lightIcon;
   }
@@ -140,10 +140,10 @@
   [(NCNotificationAppSectionListHeaderView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationAppSectionListHeaderOptionsButton *)self->_optionsButton frame];
   v6 = CGRectGetWidth(v14);
   titleLabel = self->_titleLabel;
@@ -154,8 +154,8 @@
 
   [(NCNotificationAppSectionListHeaderOptionsButton *)self->_optionsButton frame];
   CGRectGetHeight(v15);
-  v8 = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v10 = v9;
 
@@ -177,18 +177,18 @@
   [(NCNotificationAppSectionListHeaderView *)self _layoutTitleLabel];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = NCNotificationAppSectionListHeaderView;
-  [(NCNotificationAppSectionListHeaderView *)&v7 traitCollectionDidChange:a3];
-  v4 = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  [(NCNotificationAppSectionListHeaderView *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(NCNotificationAppSectionListHeaderView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (self->_userInterfaceStyle != v5)
+  if (self->_userInterfaceStyle != userInterfaceStyle)
   {
-    self->_userInterfaceStyle = v5;
-    if (v5 != 2 || (lightIcon = self->_darkIcon) == 0)
+    self->_userInterfaceStyle = userInterfaceStyle;
+    if (userInterfaceStyle != 2 || (lightIcon = self->_darkIcon) == 0)
     {
       lightIcon = self->_lightIcon;
     }
@@ -261,9 +261,9 @@
     v30.size.height = v11;
     Height = CGRectGetHeight(v30);
     [(UILabel *)self->_titleLabel unui_measuringHeightWithNumberOfLines:[(NCNotificationAppSectionListHeaderView *)self _numberOfLinesForTitleTextInFrame:0.0, 0.0, v12, Height]];
-    v14 = [(NCNotificationAppSectionListHeaderView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationAppSectionListHeaderView *)self _shouldReverseLayoutDirection];
     [(UIImageView *)self->_iconImageView frame];
-    if (v14)
+    if (_shouldReverseLayoutDirection)
     {
       CGRectGetMinX(*&v15);
     }
@@ -338,8 +338,8 @@
     self->_optionsButton = v6;
 
     v8 = self->_optionsButton;
-    v9 = [MEMORY[0x277D75348] blackColor];
-    [(NCNotificationAppSectionListHeaderOptionsButton *)v8 setTintColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NCNotificationAppSectionListHeaderOptionsButton *)v8 setTintColor:blackColor];
 
     [(NCNotificationAppSectionListHeaderOptionsButton *)self->_optionsButton setAlpha:1.0];
     [(NCNotificationAppSectionListHeaderOptionsButton *)self->_optionsButton _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
@@ -349,20 +349,20 @@
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   iconImageView = self->_iconImageView;
-  v8 = a5;
-  v9 = a3;
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:iconImageView ifSymbolImageWithStyle:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_optionsButton style:1 visualStylingProvider:v9 outgoingProvider:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:iconImageView ifSymbolImageWithStyle:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_titleLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_optionsButton style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
 - (unint64_t)_maximumNumberOfLinesForTitleText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 0;
   }
@@ -375,16 +375,16 @@
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForTitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   titleLabel = self->_titleLabel;
-  v9 = [(NCNotificationAppSectionListHeaderView *)self _maximumNumberOfLinesForTitleText];
+  _maximumNumberOfLinesForTitleText = [(NCNotificationAppSectionListHeaderView *)self _maximumNumberOfLinesForTitleText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:titleLabel maximumNumberOfLines:_maximumNumberOfLinesForTitleText inFrame:x, y, width, height];
 }
 
 - (void)_updateTextAttributes
@@ -399,8 +399,8 @@
 {
   if (self->_titleLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -415,11 +415,11 @@
   }
 }
 
-- (void)didTapOptionsButton:(id)a3
+- (void)didTapOptionsButton:(id)button
 {
-  v4 = a3;
-  v5 = [(NCNotificationAppSectionListHeaderView *)self delegate];
-  [v5 appSectionListHeaderView:self didRequestPresentingOptionsMenuFromView:v4];
+  buttonCopy = button;
+  delegate = [(NCNotificationAppSectionListHeaderView *)self delegate];
+  [delegate appSectionListHeaderView:self didRequestPresentingOptionsMenuFromView:buttonCopy];
 }
 
 - (NCNotificationAppSectionListHeaderViewDelegate)delegate

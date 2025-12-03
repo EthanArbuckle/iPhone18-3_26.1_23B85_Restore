@@ -1,21 +1,21 @@
 @interface HULinkedApplicationTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HULinkedApplicationTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HULinkedApplicationTableViewCell" hasInstanceMethod:@"linkedApplicationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"publisherLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"ratingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULinkedApplicationRatingView" hasInstanceMethod:@"starViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULinkedApplicationRatingView" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"priceLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HULinkedApplicationTableViewCell" hasInstanceMethod:@"linkedApplicationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"publisherLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"ratingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationRatingView" hasInstanceMethod:@"starViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationRatingView" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"HULinkedApplicationView" hasInstanceMethod:@"priceLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

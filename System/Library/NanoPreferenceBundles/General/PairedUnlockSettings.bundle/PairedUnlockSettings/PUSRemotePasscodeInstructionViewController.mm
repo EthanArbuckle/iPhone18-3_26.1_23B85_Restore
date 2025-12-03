@@ -1,5 +1,5 @@
 @interface PUSRemotePasscodeInstructionViewController
-- (PUSRemotePasscodeInstructionViewController)initWithAction:(int64_t)a3;
+- (PUSRemotePasscodeInstructionViewController)initWithAction:(int64_t)action;
 - (PUSRemotePasscodeViewControllerDelegate)delegate;
 - (void)_cancel;
 - (void)viewDidLoad;
@@ -8,7 +8,7 @@
 
 @implementation PUSRemotePasscodeInstructionViewController
 
-- (PUSRemotePasscodeInstructionViewController)initWithAction:(int64_t)a3
+- (PUSRemotePasscodeInstructionViewController)initWithAction:(int64_t)action
 {
   v9.receiver = self;
   v9.super_class = PUSRemotePasscodeInstructionViewController;
@@ -16,10 +16,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_action = a3;
+    v4->_action = action;
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v4 action:"_cancel"];
-    v7 = [(PUSRemotePasscodeInstructionViewController *)v5 navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    navigationItem = [(PUSRemotePasscodeInstructionViewController *)v5 navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 
   return v5;
@@ -46,9 +46,9 @@
   v7 = [v6 localizedStringForKey:v5 value:&stru_10840 table:@"PasscodeSettings"];
   [(PUSRemotePasscodeInstructionViewController *)self setTitle:v7];
 
-  v8 = [(PUSRemotePasscodeInstructionViewController *)self view];
+  view = [(PUSRemotePasscodeInstructionViewController *)self view];
   v9 = BPSBackgroundColor();
-  [v8 setBackgroundColor:v9];
+  [view setBackgroundColor:v9];
 
   v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   instructionLabel = self->_instructionLabel;
@@ -67,18 +67,18 @@
 
   [(UILabel *)self->_instructionLabel setNumberOfLines:0];
   [(UILabel *)self->_instructionLabel setTextAlignment:1];
-  [v8 addSubview:self->_instructionLabel];
+  [view addSubview:self->_instructionLabel];
   [(PUSRemotePasscodeInstructionViewController *)self setModalInPresentation:1];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v8 = [(PUSRemotePasscodeInstructionViewController *)self view];
-  [v8 bounds];
+  view = [(PUSRemotePasscodeInstructionViewController *)self view];
+  [view bounds];
   [(UILabel *)self->_instructionLabel sizeThatFits:v3 + -80.0, v4 + -80.0];
-  v5 = [(PUSRemotePasscodeInstructionViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 bounds];
+  navigationController = [(PUSRemotePasscodeInstructionViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar bounds];
   CGRectGetHeight(v10);
   v7 = +[UIScreen mainScreen];
   [v7 scale];

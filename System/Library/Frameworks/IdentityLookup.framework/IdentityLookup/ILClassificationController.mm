@@ -1,18 +1,18 @@
 @interface ILClassificationController
 + (BOOL)shouldActivate;
 + (ILClassificationController)sharedInstance;
-+ (id)electedExtensionFromExtensions:(id)a3;
++ (id)electedExtensionFromExtensions:(id)extensions;
 - (BOOL)isClassificationAvailable;
 - (ILClassificationController)init;
 - (NSArray)extensions;
 - (NSExtension)electedExtension;
-- (void)activateWithCompletion:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)beginMatchingExtensionsWithFirstCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)addDelegate:(id)delegate;
+- (void)beginMatchingExtensionsWithFirstCompletion:(id)completion;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
-- (void)setElectedExtension:(id)a3;
-- (void)updateExtensions:(id)a3 electedExtensions:(id)a4;
+- (void)removeDelegate:(id)delegate;
+- (void)setElectedExtension:(id)extension;
+- (void)updateExtensions:(id)extensions electedExtensions:(id)electedExtensions;
 @end
 
 @implementation ILClassificationController
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __44__ILClassificationController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -54,9 +54,9 @@ uint64_t __44__ILClassificationController_sharedInstance__block_invoke(uint64_t 
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v2->_delegates;
-    v2->_delegates = v6;
+    v2->_delegates = weakObjectsHashTable;
   }
 
   return v2;
@@ -93,9 +93,9 @@ void __44__ILClassificationController_shouldActivate__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ILDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,15 +103,15 @@ void __44__ILClassificationController_shouldActivate__block_invoke()
     _os_log_impl(&dword_238A41000, v5, OS_LOG_TYPE_DEFAULT, "requested activate classification controller...", buf, 2u);
   }
 
-  v6 = [(ILClassificationController *)self queue];
+  queue = [(ILClassificationController *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__ILClassificationController_activateWithCompletion___block_invoke;
   v8[3] = &unk_278A5E578;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 void __53__ILClassificationController_activateWithCompletion___block_invoke(uint64_t a1)
@@ -182,20 +182,20 @@ LABEL_14:
   }
 }
 
-- (void)beginMatchingExtensionsWithFirstCompletion:(id)a3
+- (void)beginMatchingExtensionsWithFirstCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ILDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     *buf = 138412290;
     v17 = v6;
     _os_log_impl(&dword_238A41000, v5, OS_LOG_TYPE_DEFAULT, "begin matching extensions with first match completion: %@", buf, 0xCu);
   }
 
-  [(ILClassificationController *)self setFirstMatchCompletionBlock:v4];
+  [(ILClassificationController *)self setFirstMatchCompletionBlock:completionCopy];
   objc_initWeak(buf, self);
   v14 = *MEMORY[0x277CCA0F8];
   v15 = @"com.apple.identitylookup.classification-ui";
@@ -300,39 +300,39 @@ uint64_t __73__ILClassificationController_beginMatchingExtensionsWithFirstComple
   return [v6 updateExtensions:v7 electedExtensions:v8];
 }
 
-- (void)updateExtensions:(id)a3 electedExtensions:(id)a4
+- (void)updateExtensions:(id)extensions electedExtensions:(id)electedExtensions
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ILClassificationController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  extensionsCopy = extensions;
+  electedExtensionsCopy = electedExtensions;
+  queue = [(ILClassificationController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = ILDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v7;
+    v29 = extensionsCopy;
     v30 = 2112;
-    v31 = v8;
+    v31 = electedExtensionsCopy;
     v32 = 2112;
     v33 = @"com.apple.identitylookup.classification-ui";
     _os_log_impl(&dword_238A41000, v10, OS_LOG_TYPE_DEFAULT, "updating extensions: %@ elected extension: %@ for point name: %@", buf, 0x20u);
   }
 
-  v20 = v8;
-  v21 = v7;
+  v20 = electedExtensionsCopy;
+  v21 = extensionsCopy;
 
-  objc_storeStrong(&self->_electedExtension, a4);
-  objc_storeStrong(&self->_extensions, a3);
+  objc_storeStrong(&self->_electedExtension, electedExtensions);
+  objc_storeStrong(&self->_extensions, extensions);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(ILClassificationController *)self delegates];
-  v12 = [v11 allObjects];
+  delegates = [(ILClassificationController *)self delegates];
+  allObjects = [delegates allObjects];
 
-  v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v13 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -344,7 +344,7 @@ uint64_t __73__ILClassificationController_beginMatchingExtensionsWithFirstComple
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v16);
@@ -361,7 +361,7 @@ uint64_t __73__ILClassificationController_beginMatchingExtensionsWithFirstComple
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:{16, v20, v21}];
+      v14 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:{16, v20, v21}];
     }
 
     while (v14);
@@ -382,8 +382,8 @@ void __65__ILClassificationController_updateExtensions_electedExtensions___block
 
 - (BOOL)isClassificationAvailable
 {
-  v2 = [(ILClassificationController *)self electedExtension];
-  v3 = v2 != 0;
+  electedExtension = [(ILClassificationController *)self electedExtension];
+  v3 = electedExtension != 0;
 
   return v3;
 }
@@ -396,14 +396,14 @@ void __65__ILClassificationController_updateExtensions_electedExtensions___block
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(ILClassificationController *)self queue];
+  queue = [(ILClassificationController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__ILClassificationController_electedExtension__block_invoke;
   v6[3] = &unk_278A5E6A8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -419,14 +419,14 @@ void __65__ILClassificationController_updateExtensions_electedExtensions___block
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(ILClassificationController *)self queue];
+  queue = [(ILClassificationController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ILClassificationController_extensions__block_invoke;
   v6[3] = &unk_278A5E6A8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -434,18 +434,18 @@ void __65__ILClassificationController_updateExtensions_electedExtensions___block
   return v4;
 }
 
-- (void)setElectedExtension:(id)a3
+- (void)setElectedExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(ILClassificationController *)self queue];
+  extensionCopy = extension;
+  queue = [(ILClassificationController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ILClassificationController_setElectedExtension___block_invoke;
   v7[3] = &unk_278A5E680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = extensionCopy;
+  v6 = extensionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __50__ILClassificationController_setElectedExtension___block_invoke(uint64_t a1)
@@ -514,18 +514,18 @@ void __50__ILClassificationController_setElectedExtension___block_invoke(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ILClassificationController *)self queue];
+  delegateCopy = delegate;
+  queue = [(ILClassificationController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ILClassificationController_addDelegate___block_invoke;
   v7[3] = &unk_278A5E680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __42__ILClassificationController_addDelegate___block_invoke(uint64_t a1)
@@ -534,18 +534,18 @@ void __42__ILClassificationController_addDelegate___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ILClassificationController *)self queue];
+  delegateCopy = delegate;
+  queue = [(ILClassificationController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ILClassificationController_removeDelegate___block_invoke;
   v7[3] = &unk_278A5E680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __45__ILClassificationController_removeDelegate___block_invoke(uint64_t a1)
@@ -554,15 +554,15 @@ void __45__ILClassificationController_removeDelegate___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-+ (id)electedExtensionFromExtensions:(id)a3
++ (id)electedExtensionFromExtensions:(id)extensions
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  extensionsCopy = extensions;
+  v4 = [extensionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -572,7 +572,7 @@ void __45__ILClassificationController_removeDelegate___block_invoke(uint64_t a1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(extensionsCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -583,7 +583,7 @@ void __45__ILClassificationController_removeDelegate___block_invoke(uint64_t a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [extensionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -603,8 +603,8 @@ LABEL_11:
 - (void)dealloc
 {
   v3 = MEMORY[0x277CCA9C8];
-  v4 = [(ILClassificationController *)self matchingExtensionToken];
-  [v3 endMatchingExtensions:v4];
+  matchingExtensionToken = [(ILClassificationController *)self matchingExtensionToken];
+  [v3 endMatchingExtensions:matchingExtensionToken];
 
   v5.receiver = self;
   v5.super_class = ILClassificationController;

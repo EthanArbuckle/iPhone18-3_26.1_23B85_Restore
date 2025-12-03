@@ -1,18 +1,18 @@
 @interface PKSelectionTile
-- (PKSelectionTile)initWithProperties:(id)a3;
+- (PKSelectionTile)initWithProperties:(id)properties;
 @end
 
 @implementation PKSelectionTile
 
-- (PKSelectionTile)initWithProperties:(id)a3
+- (PKSelectionTile)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = PKSelectionTile;
   v5 = [(PKSelectionTile *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
 

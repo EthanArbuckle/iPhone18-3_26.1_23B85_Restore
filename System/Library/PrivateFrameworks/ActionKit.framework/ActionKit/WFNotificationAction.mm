@@ -1,39 +1,39 @@
 @interface WFNotificationAction
 - (id)actionAlert;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)getNotificationAttachmentsWithInput:(id)a3 completionHandler:(id)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)getNotificationAttachmentsWithInput:(id)input completionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFNotificationAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to display %2$@ in a notification?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to display notifications?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   if (!objc_opt_class())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WFNotificationAction.m" lineNumber:97 description:@"UNUserNotificationCenter is not available"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFNotificationAction.m" lineNumber:97 description:@"UNUserNotificationCenter is not available"];
   }
 
   v5 = [(WFNotificationAction *)self parameterValueForKey:@"WFInput" ofClass:objc_opt_class()];
@@ -129,11 +129,11 @@ void __51__WFNotificationAction_runAsynchronouslyWithInput___block_invoke(uint64
   return v5;
 }
 
-- (void)getNotificationAttachmentsWithInput:(id)a3 completionHandler:(id)a4
+- (void)getNotificationAttachmentsWithInput:(id)input completionHandler:(id)handler
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  inputCopy = input;
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
   v26[2] = objc_opt_class();
@@ -143,8 +143,8 @@ void __51__WFNotificationAction_runAsynchronouslyWithInput___block_invoke(uint64
   v21[1] = 3221225472;
   v21[2] = __78__WFNotificationAction_getNotificationAttachmentsWithInput_completionHandler___block_invoke;
   v21[3] = &unk_278C1EE80;
-  v22 = v5;
-  v9 = v5;
+  v22 = handlerCopy;
+  v9 = handlerCopy;
   v10 = [v8 requestForCoercingToContentClasses:v7 completionHandler:v21];
   v11 = MEMORY[0x277CBEB70];
   v12 = objc_opt_class();
@@ -160,7 +160,7 @@ void __51__WFNotificationAction_runAsynchronouslyWithInput___block_invoke(uint64
   v19 = [v15 optionsWithDictionary:v18];
   [v10 setOptions:v19];
 
-  [v6 performCoercion:v10];
+  [inputCopy performCoercion:v10];
   v20 = *MEMORY[0x277D85DE8];
 }
 

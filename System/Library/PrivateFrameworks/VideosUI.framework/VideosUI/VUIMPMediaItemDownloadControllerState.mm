@@ -1,7 +1,7 @@
 @interface VUIMPMediaItemDownloadControllerState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIMPMediaItemDownloadControllerState)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIMPMediaItemDownloadControllerState);
   v4->_status = self->_status;
@@ -36,11 +36,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMPMediaItemDownloadControllerState *)self status];
+  status = [(VUIMPMediaItemDownloadControllerState *)self status];
   [(VUIMPMediaItemDownloadControllerState *)self downloadProgress];
   v5 = (v4 * 100.0);
-  v6 = [(VUIMPMediaItemDownloadControllerState *)self bytesToDownload];
-  v7 = [(VUIMPMediaItemDownloadControllerState *)self bytesDownloaded];
+  bytesToDownload = [(VUIMPMediaItemDownloadControllerState *)self bytesToDownload];
+  bytesDownloaded = [(VUIMPMediaItemDownloadControllerState *)self bytesDownloaded];
   if ([(VUIMPMediaItemDownloadControllerState *)self downloadSucceeded])
   {
     v8 = 16;
@@ -51,31 +51,31 @@
     v8 = 0;
   }
 
-  v9 = [(VUIMPMediaItemDownloadControllerState *)self error];
-  v10 = v3 ^ (4 * v6) ^ (2 * v5) ^ (8 * v7);
-  v11 = v8 ^ [v9 hash];
+  error = [(VUIMPMediaItemDownloadControllerState *)self error];
+  v10 = status ^ (4 * bytesToDownload) ^ (2 * v5) ^ (8 * bytesDownloaded);
+  v11 = v8 ^ [error hash];
 
   return v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMPMediaItemDownloadControllerState *)self status];
-    if (v7 == [(VUIMPMediaItemDownloadControllerState *)v6 status]&& ([(VUIMPMediaItemDownloadControllerState *)self downloadProgress], v9 = v8, [(VUIMPMediaItemDownloadControllerState *)v6 downloadProgress], v9 == v10) && (v11 = [(VUIMPMediaItemDownloadControllerState *)self bytesToDownload], v11 == [(VUIMPMediaItemDownloadControllerState *)v6 bytesToDownload]) && (v12 = [(VUIMPMediaItemDownloadControllerState *)self bytesDownloaded], v12 == [(VUIMPMediaItemDownloadControllerState *)v6 bytesDownloaded]) && (v13 = [(VUIMPMediaItemDownloadControllerState *)self downloadSucceeded], v13 == [(VUIMPMediaItemDownloadControllerState *)v6 downloadSucceeded]))
+    status = [(VUIMPMediaItemDownloadControllerState *)self status];
+    if (status == [(VUIMPMediaItemDownloadControllerState *)v6 status]&& ([(VUIMPMediaItemDownloadControllerState *)self downloadProgress], v9 = v8, [(VUIMPMediaItemDownloadControllerState *)v6 downloadProgress], v9 == v10) && (v11 = [(VUIMPMediaItemDownloadControllerState *)self bytesToDownload], v11 == [(VUIMPMediaItemDownloadControllerState *)v6 bytesToDownload]) && (v12 = [(VUIMPMediaItemDownloadControllerState *)self bytesDownloaded], v12 == [(VUIMPMediaItemDownloadControllerState *)v6 bytesDownloaded]) && (v13 = [(VUIMPMediaItemDownloadControllerState *)self downloadSucceeded], v13 == [(VUIMPMediaItemDownloadControllerState *)v6 downloadSucceeded]))
     {
-      v16 = [(VUIMPMediaItemDownloadControllerState *)self error];
-      v17 = [(VUIMPMediaItemDownloadControllerState *)v6 error];
-      v14 = v16 == v17;
+      error = [(VUIMPMediaItemDownloadControllerState *)self error];
+      error2 = [(VUIMPMediaItemDownloadControllerState *)v6 error];
+      v14 = error == error2;
     }
 
     else
@@ -101,15 +101,15 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMPMediaItemDownloadControllerState *)self status];
-  if (v6 > 3)
+  status = [(VUIMPMediaItemDownloadControllerState *)self status];
+  if (status > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E8736748[v6];
+    v7 = off_1E8736748[status];
   }
 
   v8 = [v5 stringWithFormat:@"%@=%@", @"status", v7];
@@ -145,8 +145,8 @@
   [v3 addObject:v24];
 
   v25 = MEMORY[0x1E696AEC0];
-  v26 = [(VUIMPMediaItemDownloadControllerState *)self error];
-  v27 = [v25 stringWithFormat:@"%@=%@", @"error", v26];
+  error = [(VUIMPMediaItemDownloadControllerState *)self error];
+  v27 = [v25 stringWithFormat:@"%@=%@", @"error", error];
   [v3 addObject:v27];
 
   v28 = MEMORY[0x1E696AEC0];

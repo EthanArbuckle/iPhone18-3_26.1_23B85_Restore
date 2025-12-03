@@ -1,18 +1,18 @@
 @interface MultiAppFallbackIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MultiAppFallbackIconView
 
-- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = sub_BD88(&qword_9464F8);
   __chkstk_darwin(v9);
@@ -25,12 +25,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider24MultiAppFallbackIconView_sizeCategory) = 7;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(MultiAppFallbackIconView *)&v12 initWithFrame:x, y, width, height];
-  [(MultiAppFallbackIconView *)v10 setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  return v10;
+  height = [(MultiAppFallbackIconView *)&v12 initWithFrame:x, y, width, height];
+  [(MultiAppFallbackIconView *)height setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+  return height;
 }
 
-- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider24MultiAppFallbackIconView)initWithCoder:(id)coder
 {
   v4 = sub_BD88(&qword_9464F8);
   __chkstk_darwin(v4);
@@ -48,17 +48,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_31CA70();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(MultiAppFallbackIconView *)v5 traitCollection];
-  sub_31CCA4(v6, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(MultiAppFallbackIconView *)selfCopy traitCollection];
+  sub_31CCA4(traitCollection, width, height);
   v8 = v7;
   v10 = v9;
 

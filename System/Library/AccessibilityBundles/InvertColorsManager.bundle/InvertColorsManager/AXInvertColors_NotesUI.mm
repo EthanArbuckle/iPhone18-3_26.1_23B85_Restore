@@ -1,31 +1,31 @@
 @interface AXInvertColors_NotesUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_NotesUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v6 = a3;
+  validationsCopy = validations;
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.mobilenotes"];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v5)
   {
-    [v6 validateClass:@"ICSystemPaperViewController"];
+    [validationsCopy validateClass:@"ICSystemPaperViewController"];
   }
 
-  [v6 validateClass:@"ICWindow" isKindOfClass:@"UIWindow"];
+  [validationsCopy validateClass:@"ICWindow" isKindOfClass:@"UIWindow"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"ICWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"ICImageAttachmentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NotesBackgroundViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"ICWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"ICImageAttachmentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"NotesBackgroundViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface CSEventListenerDonation
-- (CSEventListenerDonation)initWithSerialNumber:(unint64_t)a3 bundle:(const char *)a4 journalCookie:(const char *)a5 itemsObj:(id *)a6 contentDictObj:(id *)a7 htmlDictObj:(id *)a8 embeddingsObj:(id *)a9 indexType:(int)a10 bundleHash:(unsigned int)a11;
-- (__n128)setContentDictObj:(__n128 *)a1;
-- (__n128)setEmbeddingsObj:(__n128 *)a1;
-- (__n128)setHtmlDictObj:(uint64_t)a1;
-- (__n128)setItemsObj:(uint64_t)a1;
+- (CSEventListenerDonation)initWithSerialNumber:(unint64_t)number bundle:(const char *)bundle journalCookie:(const char *)cookie itemsObj:(id *)obj contentDictObj:(id *)dictObj htmlDictObj:(id *)htmlDictObj embeddingsObj:(id *)embeddingsObj indexType:(int)self0 bundleHash:(unsigned int)self1;
+- (__n128)setContentDictObj:(__n128 *)obj;
+- (__n128)setEmbeddingsObj:(__n128 *)obj;
+- (__n128)setHtmlDictObj:(uint64_t)obj;
+- (__n128)setItemsObj:(uint64_t)obj;
 - (uint64_t)contentDictObj;
 - (uint64_t)embeddingsObj;
 - (uint64_t)homePathHash;
@@ -20,43 +20,43 @@
 - (uint64_t)setOffset:(uint64_t)result;
 - (uint64_t)setSize:(uint64_t)result;
 - (unsigned)protectionClass;
-- (void)iterateItems:(id)a3;
+- (void)iterateItems:(id)items;
 @end
 
 @implementation CSEventListenerDonation
 
-- (CSEventListenerDonation)initWithSerialNumber:(unint64_t)a3 bundle:(const char *)a4 journalCookie:(const char *)a5 itemsObj:(id *)a6 contentDictObj:(id *)a7 htmlDictObj:(id *)a8 embeddingsObj:(id *)a9 indexType:(int)a10 bundleHash:(unsigned int)a11
+- (CSEventListenerDonation)initWithSerialNumber:(unint64_t)number bundle:(const char *)bundle journalCookie:(const char *)cookie itemsObj:(id *)obj contentDictObj:(id *)dictObj htmlDictObj:(id *)htmlDictObj embeddingsObj:(id *)embeddingsObj indexType:(int)self0 bundleHash:(unsigned int)self1
 {
   v22.receiver = self;
   v22.super_class = CSEventListenerDonation;
   result = [(CSEventListenerDonation *)&v22 init];
   if (result)
   {
-    result->_serialNumber = a3;
-    result->_bundle = a4;
-    result->_journalCookie = a5;
-    v18 = *&a6->var0;
-    result->_itemsObj.reference = a6->var2;
+    result->_serialNumber = number;
+    result->_bundle = bundle;
+    result->_journalCookie = cookie;
+    v18 = *&obj->var0;
+    result->_itemsObj.reference = obj->var2;
     *&result->_itemsObj.containerBytes = v18;
-    v19 = *&a7->var0;
-    result->_contentDictObj.reference = a7->var2;
+    v19 = *&dictObj->var0;
+    result->_contentDictObj.reference = dictObj->var2;
     *&result->_contentDictObj.containerBytes = v19;
-    v20 = *&a8->var0;
-    result->_htmlDictObj.reference = a8->var2;
+    v20 = *&htmlDictObj->var0;
+    result->_htmlDictObj.reference = htmlDictObj->var2;
     *&result->_htmlDictObj.containerBytes = v20;
-    v21 = *&a9->var0;
-    result->_embeddingsObj.reference = a9->var2;
+    v21 = *&embeddingsObj->var0;
+    result->_embeddingsObj.reference = embeddingsObj->var2;
     *&result->_embeddingsObj.containerBytes = v21;
-    result->_indexType = a10;
-    result->_bundleHash = a11;
+    result->_indexType = type;
+    result->_bundleHash = hash;
   }
 
   return result;
 }
 
-- (void)iterateItems:(id)a3
+- (void)iterateItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v33[4] = self->_itemsObj;
   if (_MDPlistGetPlistObjectType() == 240)
   {
@@ -144,7 +144,7 @@
               memset(v17, 0, sizeof(v17));
               LODWORD(v16) = IntValue;
               v14 = [(CSEventDonationJournalItem *)v13 initWithIdentifier:&contentDictObj itemObj:&v25 attrDictObj:&v23 customDictObj:&v22 contentObj:&v20 htmlObj:&v18 embeddingsObj:v17 flags:v16];
-              v15 = v4[2](v4, v14);
+              v15 = itemsCopy[2](itemsCopy, v14);
 
               if (v15)
               {
@@ -232,23 +232,23 @@
 
 - (unsigned)protectionClass
 {
-  if (a1)
+  if (self)
   {
-    a1 = protectionClassWithType(a1[4]);
+    self = protectionClassWithType(self[4]);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)indexTypeName
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_18(a1);
+    return OUTLINED_FUNCTION_18(self);
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)setFd:(uint64_t)result
@@ -301,37 +301,37 @@
   return result;
 }
 
-- (__n128)setItemsObj:(uint64_t)a1
+- (__n128)setItemsObj:(uint64_t)obj
 {
-  if (a1)
+  if (obj)
   {
     result = *a2;
-    *(a1 + 88) = a2[1].n128_u64[0];
-    *(a1 + 72) = result;
+    *(obj + 88) = a2[1].n128_u64[0];
+    *(obj + 72) = result;
   }
 
   return result;
 }
 
-- (__n128)setContentDictObj:(__n128 *)a1
+- (__n128)setContentDictObj:(__n128 *)obj
 {
-  if (a1)
+  if (obj)
   {
     result = *a2;
-    a1[7].n128_u64[0] = a2[1].n128_u64[0];
-    a1[6] = result;
+    obj[7].n128_u64[0] = a2[1].n128_u64[0];
+    obj[6] = result;
   }
 
   return result;
 }
 
-- (__n128)setHtmlDictObj:(uint64_t)a1
+- (__n128)setHtmlDictObj:(uint64_t)obj
 {
-  if (a1)
+  if (obj)
   {
     result = *a2;
-    *(a1 + 136) = a2[1].n128_u64[0];
-    *(a1 + 120) = result;
+    *(obj + 136) = a2[1].n128_u64[0];
+    *(obj + 120) = result;
   }
 
   return result;
@@ -387,13 +387,13 @@
   return result;
 }
 
-- (__n128)setEmbeddingsObj:(__n128 *)a1
+- (__n128)setEmbeddingsObj:(__n128 *)obj
 {
-  if (a1)
+  if (obj)
   {
     result = *a2;
-    a1[10].n128_u64[0] = a2[1].n128_u64[0];
-    a1[9] = result;
+    obj[10].n128_u64[0] = a2[1].n128_u64[0];
+    obj[9] = result;
   }
 
   return result;

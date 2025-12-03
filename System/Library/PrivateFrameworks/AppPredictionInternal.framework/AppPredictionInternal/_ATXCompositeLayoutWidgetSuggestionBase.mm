@@ -1,27 +1,27 @@
 @interface _ATXCompositeLayoutWidgetSuggestionBase
-- (BOOL)addSuggestion:(id)a3 asMainSuggestion:(BOOL)a4 dryRun:(BOOL)a5;
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3;
+- (BOOL)addSuggestion:(id)suggestion asMainSuggestion:(BOOL)mainSuggestion dryRun:(BOOL)run;
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion;
 - (_ATXHomeScreenStackState)stack;
 - (id)_existingSuggestionsInLayout;
 @end
 
 @implementation _ATXCompositeLayoutWidgetSuggestionBase
 
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion
 {
   suggestionDeduplicator = self->_suggestionDeduplicator;
-  v5 = a3;
-  v6 = [(_ATXCompositeLayoutWidgetSuggestionBase *)self _existingSuggestionsInLayout];
-  LOBYTE(suggestionDeduplicator) = [(ATXSuggestionDeduplicatorProtocol *)suggestionDeduplicator suggestionIsDuplicate:v5 existingSuggestions:v6 shouldCompareAcrossTypes:1];
+  suggestionCopy = suggestion;
+  _existingSuggestionsInLayout = [(_ATXCompositeLayoutWidgetSuggestionBase *)self _existingSuggestionsInLayout];
+  LOBYTE(suggestionDeduplicator) = [(ATXSuggestionDeduplicatorProtocol *)suggestionDeduplicator suggestionIsDuplicate:suggestionCopy existingSuggestions:_existingSuggestionsInLayout shouldCompareAcrossTypes:1];
 
   return suggestionDeduplicator;
 }
 
-- (BOOL)addSuggestion:(id)a3 asMainSuggestion:(BOOL)a4 dryRun:(BOOL)a5
+- (BOOL)addSuggestion:(id)suggestion asMainSuggestion:(BOOL)mainSuggestion dryRun:(BOOL)run
 {
-  v41 = a4;
+  mainSuggestionCopy = mainSuggestion;
   v63 = *MEMORY[0x277D85DE8];
-  v43 = a3;
+  suggestionCopy = suggestion;
   if ([(_ATXCompositeLayoutWidgetSuggestionBase *)self isLayoutComplete])
   {
     v6 = 0;
@@ -34,8 +34,8 @@
     v55 = 0u;
     v56 = 0u;
     v54 = 0u;
-    v7 = [v43 uiSpecification];
-    obj = [v7 preferredLayoutConfigs];
+    uiSpecification = [suggestionCopy uiSpecification];
+    obj = [uiSpecification preferredLayoutConfigs];
 
     v8 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
     if (v8)
@@ -51,38 +51,38 @@ LABEL_5:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v54 + 1) + 8 * v10) applicableLayoutType];
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+        applicableLayoutType = [*(*(&v54 + 1) + 8 * v10) applicableLayoutType];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:applicableLayoutType];
         v13 = [v45 objectForKeyedSubscript:v12];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
         suggestionsBySuggestionLayoutTypes = self->_suggestionsBySuggestionLayoutTypes;
-        v16 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+        v16 = [MEMORY[0x277CCABB0] numberWithInteger:applicableLayoutType];
         v17 = [(NSMutableDictionary *)suggestionsBySuggestionLayoutTypes objectForKeyedSubscript:v16];
 
         v18 = [v17 count];
-        v19 = v18 < v14;
-        if (v18 < v14 && !a5)
+        v19 = v18 < unsignedIntegerValue;
+        if (v18 < unsignedIntegerValue && !run)
         {
           if (!v17)
           {
             v17 = objc_opt_new();
             v20 = self->_suggestionsBySuggestionLayoutTypes;
-            v21 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+            v21 = [MEMORY[0x277CCABB0] numberWithInteger:applicableLayoutType];
             [(NSMutableDictionary *)v20 setObject:v17 forKeyedSubscript:v21];
           }
 
-          [v17 addObject:v43];
-          if (v41)
+          [v17 addObject:suggestionCopy];
+          if (mainSuggestionCopy)
           {
-            objc_storeStrong(&self->_mainSuggestionInLayout, a3);
+            objc_storeStrong(&self->_mainSuggestionInLayout, suggestion);
           }
 
           v19 = 2;
           v40 = 1;
         }
 
-        if (v18 < v14)
+        if (v18 < unsignedIntegerValue)
         {
           break;
         }
@@ -119,7 +119,7 @@ LABEL_20:
       v46[2] = __81___ATXCompositeLayoutWidgetSuggestionBase_addSuggestion_asMainSuggestion_dryRun___block_invoke;
       v46[3] = &unk_278598C98;
       v47 = v45;
-      v48 = self;
+      selfCopy = self;
       v49 = &v50;
       [v47 enumerateKeysAndObjectsUsingBlock:v46];
       if (*(v51 + 24) == 1)
@@ -138,16 +138,16 @@ LABEL_20:
         self->_suggestionLayout = v31;
 
         [(ATXSuggestionLayout *)self->_suggestionLayout setIsValidForSuggestionsWidget:1];
-        v33 = [(ATXProactiveSuggestion *)self->_mainSuggestionInLayout uuid];
-        [(ATXSuggestionLayout *)self->_suggestionLayout setUuidOfHighestConfidenceSuggestion:v33];
+        uuid = [(ATXProactiveSuggestion *)self->_mainSuggestionInLayout uuid];
+        [(ATXSuggestionLayout *)self->_suggestionLayout setUuidOfHighestConfidenceSuggestion:uuid];
 
         v34 = __atxlog_handle_blending();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [(ATXHomeScreenWidgetIdentifiable *)self->_widget widgetUniqueId];
+          widgetUniqueId = [(ATXHomeScreenWidgetIdentifiable *)self->_widget widgetUniqueId];
           v36 = self->_suggestionLayout;
           *buf = 138412546;
-          v59 = v35;
+          v59 = widgetUniqueId;
           v60 = 2112;
           v61 = v36;
           _os_log_impl(&dword_2263AA000, v34, OS_LOG_TYPE_DEFAULT, "Layout for widget %@ is complete: %@", buf, 0x16u);
@@ -176,7 +176,7 @@ LABEL_28:
   suggestionLayout = self->_suggestionLayout;
   if (suggestionLayout)
   {
-    v4 = [(ATXSuggestionLayout *)suggestionLayout minSuggestionListInLayout];
+    minSuggestionListInLayout = [(ATXSuggestionLayout *)suggestionLayout minSuggestionListInLayout];
   }
 
   else
@@ -187,12 +187,12 @@ LABEL_28:
     v8[1] = 3221225472;
     v8[2] = __71___ATXCompositeLayoutWidgetSuggestionBase__existingSuggestionsInLayout__block_invoke;
     v8[3] = &unk_278598CC0;
-    v4 = v5;
-    v9 = v4;
+    minSuggestionListInLayout = v5;
+    v9 = minSuggestionListInLayout;
     [(NSMutableDictionary *)suggestionsBySuggestionLayoutTypes enumerateKeysAndObjectsUsingBlock:v8];
   }
 
-  return v4;
+  return minSuggestionListInLayout;
 }
 
 - (_ATXHomeScreenStackState)stack

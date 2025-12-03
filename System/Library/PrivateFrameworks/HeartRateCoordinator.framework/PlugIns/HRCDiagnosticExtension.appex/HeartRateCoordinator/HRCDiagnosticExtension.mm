@@ -1,19 +1,19 @@
 @interface HRCDiagnosticExtension
-- (BOOL)_callingHostIsDiagnostics:(id)a3;
+- (BOOL)_callingHostIsDiagnostics:(id)diagnostics;
 - (BOOL)_forceFlushLogs;
-- (id)_collectFilesFrom:(const void *)a3 withFilter:(void *)a4 skipNewest:(BOOL)a5;
+- (id)_collectFilesFrom:(const void *)from withFilter:(void *)filter skipNewest:(BOOL)newest;
 - (id)_getPalomaLogs;
-- (id)attachmentsForParameters:(id)a3;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation HRCDiagnosticExtension
 
-- (BOOL)_callingHostIsDiagnostics:(id)a3
+- (BOOL)_callingHostIsDiagnostics:(id)diagnostics
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  diagnosticsCopy = diagnostics;
+  v4 = [diagnosticsCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -41,18 +41,18 @@
   return v7;
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = sub_10000391C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setupWithParameters: %{public}@", &buf, 0xCu);
   }
 
-  if ([(HRCDiagnosticExtension *)self _callingHostIsDiagnostics:v4])
+  if ([(HRCDiagnosticExtension *)self _callingHostIsDiagnostics:parametersCopy])
   {
     v6 = objc_alloc_init(CBUserController);
     *&buf = 0;
@@ -141,18 +141,18 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = sub_10000391C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v4;
+    v14 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "teardownWithParameters: %{public}@", &v13, 0xCu);
   }
 
-  if ([(HRCDiagnosticExtension *)self _callingHostIsDiagnostics:v4])
+  if ([(HRCDiagnosticExtension *)self _callingHostIsDiagnostics:parametersCopy])
   {
     v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.HeartRateCoordinator"];
     v7 = [v6 objectForKey:@"InitialLimitedLoggingState"];
@@ -199,25 +199,25 @@ LABEL_21:
   }
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = sub_10000391C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v4;
+    v15 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "attachmentsForParameters: %{public}@", &v14, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  if ((([v6 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar")) && (objc_msgSend(v4, "objectForKeyedSubscript:", @"DEExtensionAttachmentsParamConsentProvidedKey"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, (v8 & 1) == 0))
+  v6 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  if ((([v6 isEqualToString:@"com.apple.taptoradard"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.TapToRadar")) && (objc_msgSend(parametersCopy, "objectForKeyedSubscript:", @"DEExtensionAttachmentsParamConsentProvidedKey"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, (v8 & 1) == 0))
   {
-    v12 = sub_10000391C();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    _getPalomaLogs = sub_10000391C();
+    if (os_log_type_enabled(_getPalomaLogs, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "consent not provided: returning an empty list of attachments", &v14, 2u);
+      _os_log_impl(&_mh_execute_header, _getPalomaLogs, OS_LOG_TYPE_DEFAULT, "consent not provided: returning an empty list of attachments", &v14, 2u);
     }
 
     v10 = &__NSArray0__struct;
@@ -225,13 +225,13 @@ LABEL_21:
 
   else
   {
-    v9 = [(HRCDiagnosticExtension *)self _forceFlushLogs];
+    _forceFlushLogs = [(HRCDiagnosticExtension *)self _forceFlushLogs];
     v10 = objc_opt_new();
-    v11 = [(HRCDiagnosticExtension *)self _getHRCLP5s:v9];
+    v11 = [(HRCDiagnosticExtension *)self _getHRCLP5s:_forceFlushLogs];
     [v10 addObjectsFromArray:v11];
 
-    v12 = [(HRCDiagnosticExtension *)self _getPalomaLogs];
-    [v10 addObjectsFromArray:v12];
+    _getPalomaLogs = [(HRCDiagnosticExtension *)self _getPalomaLogs];
+    [v10 addObjectsFromArray:_getPalomaLogs];
   }
 
   return v10;
@@ -344,32 +344,32 @@ LABEL_9:
   return v3;
 }
 
-- (id)_collectFilesFrom:(const void *)a3 withFilter:(void *)a4 skipNewest:(BOOL)a5
+- (id)_collectFilesFrom:(const void *)from withFilter:(void *)filter skipNewest:(BOOL)newest
 {
-  v5 = a5;
+  newestCopy = newest;
   v40 = objc_opt_new();
   v8 = sub_10000391C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(from + 23) >= 0)
     {
-      v9 = a3;
+      fromCopy = from;
     }
 
     else
     {
-      v9 = *a3;
+      fromCopy = *from;
     }
 
     LODWORD(buf[0].__r_.__value_.__l.__data_) = 136446210;
-    *(buf[0].__r_.__value_.__r.__words + 4) = v9;
+    *(buf[0].__r_.__value_.__r.__words + 4) = fromCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Attaching files from %{public}s", buf, 0xCu);
   }
 
   __ec.__val_ = 0;
   v10 = std::system_category();
   __ec.__cat_ = v10;
-  std::__fs::filesystem::__status(a3, &__ec);
+  std::__fs::filesystem::__status(from, &__ec);
   if (buf[0].__r_.__value_.__s.__data_[0])
   {
     __ec.__val_ = 0;
@@ -381,7 +381,7 @@ LABEL_9:
       v51 = 0;
       buf[0].__r_.__value_.__s.__data_[0] = 0;
       v48 = 0;
-      std::__fs::filesystem::directory_iterator::directory_iterator(&v46, a3, &__ec, none);
+      std::__fs::filesystem::directory_iterator::directory_iterator(&v46, from, &__ec, none);
       ptr = v46.__imp_.__ptr_;
       cntrl = v46.__imp_.__cntrl_;
       if (v46.__imp_.__cntrl_)
@@ -436,7 +436,7 @@ LABEL_50:
               }
 
               v35 = [NSString stringWithCString:v33 encoding:4, v39];
-              if (v5 && v48 == 1 && (v34.__data_ = buf, sub_100002904(v31, v34)))
+              if (newestCopy && v48 == 1 && (v34.__data_ = buf, sub_100002904(v31, v34)))
               {
                 v36 = sub_10000391C();
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -496,12 +496,12 @@ LABEL_50:
           break;
         }
 
-        if (!a4)
+        if (!filter)
         {
           goto LABEL_77;
         }
 
-        v23 = *(a4 + 3);
+        v23 = *(filter + 3);
         if (!v23)
         {
           sub_1000038B4();
@@ -511,7 +511,7 @@ LABEL_50:
         {
 LABEL_77:
           sub_100002830(&v49, v21);
-          if (v5)
+          if (newestCopy)
           {
             v24.__d_.__rep_ = std::__fs::filesystem::__last_write_time(v21, &__ec).__d_.__rep_;
             if (__ec.__val_)
@@ -604,7 +604,7 @@ LABEL_15:
     v16 = sub_10000391C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_100003CA4(a3);
+      sub_100003CA4(from);
     }
 
     goto LABEL_71;

@@ -1,20 +1,20 @@
 @interface HKCodableMenstrualCyclesProjectionHighlightTileViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableMenstrualCyclesProjectionHighlightTileViewModel
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -33,34 +33,34 @@
   v8.receiver = self;
   v8.super_class = HKCodableMenstrualCyclesProjectionHighlightTileViewModel;
   v4 = [(HKCodableMenstrualCyclesProjectionHighlightTileViewModel *)&v8 description];
-  v5 = [(HKCodableMenstrualCyclesProjectionHighlightTileViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableMenstrualCyclesProjectionHighlightTileViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   projection = self->_projection;
   if (projection)
   {
-    v5 = [(HKCodableMenstrualCyclesProjection *)projection dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"projection"];
+    dictionaryRepresentation = [(HKCodableMenstrualCyclesProjection *)projection dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"projection"];
   }
 
   projectionKind = self->_projectionKind;
   if (projectionKind)
   {
-    v7 = [(HKCodableMenstrualCyclesProjectionKind *)projectionKind dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"projectionKind"];
+    dictionaryRepresentation2 = [(HKCodableMenstrualCyclesProjectionKind *)projectionKind dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"projectionKind"];
   }
 
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-    [v3 setObject:v9 forKey:@"latestSupportedVersion"];
+    [dictionary setObject:v9 forKey:@"latestSupportedVersion"];
 
     has = self->_has;
   }
@@ -68,82 +68,82 @@
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v10 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v10 forKey:@"minimumSupportedVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_projection)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_projectionKind)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_projection)
   {
-    [v4 setProjection:?];
-    v4 = v6;
+    [toCopy setProjection:?];
+    toCopy = v6;
   }
 
   if (self->_projectionKind)
   {
     [v6 setProjectionKind:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_latestSupportedVersion;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_latestSupportedVersion;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_minimumSupportedVersion;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = self->_minimumSupportedVersion;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableMenstrualCyclesProjection *)self->_projection copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableMenstrualCyclesProjection *)self->_projection copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(HKCodableMenstrualCyclesProjectionKind *)self->_projectionKind copyWithZone:a3];
+  v8 = [(HKCodableMenstrualCyclesProjectionKind *)self->_projectionKind copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -164,16 +164,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   projection = self->_projection;
-  if (projection | *(v4 + 3))
+  if (projection | *(equalCopy + 3))
   {
     if (![(HKCodableMenstrualCyclesProjection *)projection isEqual:?])
     {
@@ -182,7 +182,7 @@
   }
 
   projectionKind = self->_projectionKind;
-  if (projectionKind | *(v4 + 4))
+  if (projectionKind | *(equalCopy + 4))
   {
     if (![(HKCodableMenstrualCyclesProjectionKind *)projectionKind isEqual:?])
     {
@@ -192,23 +192,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_latestSupportedVersion != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_latestSupportedVersion != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 2) == 0;
+  v7 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_minimumSupportedVersion != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_minimumSupportedVersion != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
@@ -249,12 +249,12 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   projection = self->_projection;
-  v6 = v4[3];
-  v10 = v4;
+  v6 = fromCopy[3];
+  v10 = fromCopy;
   if (projection)
   {
     if (!v6)
@@ -275,10 +275,10 @@ LABEL_3:
     [(HKCodableMenstrualCyclesProjectionHighlightTileViewModel *)self setProjection:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   projectionKind = self->_projectionKind;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   if (projectionKind)
   {
     if (!v8)
@@ -299,23 +299,23 @@ LABEL_7:
     projectionKind = [(HKCodableMenstrualCyclesProjectionHighlightTileViewModel *)self setProjectionKind:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  v9 = *(v4 + 40);
+  v9 = *(fromCopy + 40);
   if (v9)
   {
-    self->_latestSupportedVersion = v4[1];
+    self->_latestSupportedVersion = fromCopy[1];
     *&self->_has |= 1u;
-    v9 = *(v4 + 40);
+    v9 = *(fromCopy + 40);
   }
 
   if ((v9 & 2) != 0)
   {
-    self->_minimumSupportedVersion = v4[2];
+    self->_minimumSupportedVersion = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  MEMORY[0x1EEE66BB8](projectionKind, v4);
+  MEMORY[0x1EEE66BB8](projectionKind, fromCopy);
 }
 
 @end

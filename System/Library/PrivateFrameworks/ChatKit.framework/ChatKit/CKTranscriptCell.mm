@@ -1,30 +1,30 @@
 @interface CKTranscriptCell
 - (CKBalloonViewAnimationDelegate)animationDelegate;
-- (CKTranscriptCell)initWithFrame:(CGRect)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (CKTranscriptCell)initWithFrame:(CGRect)frame;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviews;
 - (void)layoutSubviewsForDrawer;
 - (void)prepareForReuse;
-- (void)setDrawerPercentRevealed:(double)a3;
-- (void)setLinkInteractions:(id)a3;
+- (void)setDrawerPercentRevealed:(double)revealed;
+- (void)setLinkInteractions:(id)interactions;
 @end
 
 @implementation CKTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v15 = a3;
-  [v15 contentInsets];
+  itemCopy = item;
+  [itemCopy contentInsets];
   [(CKEditableCollectionViewCell *)self setContentInsets:?];
-  v8 = [v15 transcriptOrientation];
-  if ([(CKEditableCollectionViewCell *)self orientation]!= v8)
+  transcriptOrientation = [itemCopy transcriptOrientation];
+  if ([(CKEditableCollectionViewCell *)self orientation]!= transcriptOrientation)
   {
-    [(CKEditableCollectionViewCell *)self setOrientation:v8];
+    [(CKEditableCollectionViewCell *)self setOrientation:transcriptOrientation];
     [(CKTranscriptCell *)self setNeedsLayout];
   }
 
-  v9 = [v15 canBeSelectedInEditMode];
-  if ([v15 itemIsReplyContextPreview])
+  canBeSelectedInEditMode = [itemCopy canBeSelectedInEditMode];
+  if ([itemCopy itemIsReplyContextPreview])
   {
     isKindOfClass = 1;
   }
@@ -40,7 +40,7 @@
   objc_opt_class();
   v12 = isKindOfClass | v11 | objc_opt_isKindOfClass();
   v13 = 2;
-  if (!v9)
+  if (!canBeSelectedInEditMode)
   {
     v13 = 0;
   }
@@ -58,16 +58,16 @@
   [(CKEditableCollectionViewCell *)self setEditingStyle:v14];
 }
 
-- (CKTranscriptCell)initWithFrame:(CGRect)a3
+- (CKTranscriptCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKTranscriptCell;
-  v3 = [(CKTranscriptCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKTranscriptCell *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(CKTranscriptCell *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v4;
@@ -96,20 +96,20 @@
   [(CKEditableCollectionViewCell *)self setIsInReplyContext:0];
   [(CKTranscriptCell *)self setShouldFreezeReplyDecorationsForTimestampReveal:0];
   [(CKTranscriptCell *)self setDrawerPercentRevealed:0.0];
-  v3 = [(CKEditableCollectionViewCell *)self contentView];
-  [v3 setAlpha:1.0];
+  contentView = [(CKEditableCollectionViewCell *)self contentView];
+  [contentView setAlpha:1.0];
 
-  v4 = [(CKTranscriptCell *)self layer];
-  [v4 setFilters:0];
+  layer = [(CKTranscriptCell *)self layer];
+  [layer setFilters:0];
 
   [(CKTranscriptCell *)self setEmphasisState:0];
 }
 
-- (void)setDrawerPercentRevealed:(double)a3
+- (void)setDrawerPercentRevealed:(double)revealed
 {
-  if (self->_drawerPercentRevealed != a3)
+  if (self->_drawerPercentRevealed != revealed)
   {
-    self->_drawerPercentRevealed = a3;
+    self->_drawerPercentRevealed = revealed;
     [(CKTranscriptCell *)self setNeedsLayout];
   }
 }
@@ -124,8 +124,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKEditableCollectionViewCell *)self contentView];
-  [v11 frame];
+  contentView = [(CKEditableCollectionViewCell *)self contentView];
+  [contentView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -164,13 +164,13 @@
   }
 
   [(CKEditableCollectionViewCell *)self setContentAlignmentRect:v4, v6, v8, v10];
-  [v11 setFrame:{v13, v15, v17, v19}];
+  [contentView setFrame:{v13, v15, v17, v19}];
 }
 
-- (void)setLinkInteractions:(id)a3
+- (void)setLinkInteractions:(id)interactions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionsCopy = interactions;
   linkInteractions = self->_linkInteractions;
   if (linkInteractions)
   {
@@ -205,7 +205,7 @@
     }
   }
 
-  v11 = [v4 copy];
+  v11 = [interactionsCopy copy];
   v12 = self->_linkInteractions;
   self->_linkInteractions = v11;
 

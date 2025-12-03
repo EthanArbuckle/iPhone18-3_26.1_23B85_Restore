@@ -1,21 +1,21 @@
 @interface CSUAFDownloadMonitor
 + (id)sharedInstance;
 - (CSUAFDownloadMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)notifyAssets:(id)a3 onQueue:(id)a4;
+- (void)notifyAssets:(id)assets onQueue:(id)queue;
 @end
 
 @implementation CSUAFDownloadMonitor
 
-- (void)notifyAssets:(id)a3 onQueue:(id)a4
+- (void)notifyAssets:(id)assets onQueue:(id)queue
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__CSUAFDownloadMonitor_notifyAssets_onQueue___block_invoke;
   v4[3] = &unk_1E865CB20;
   v4[4] = self;
-  [(CSEventMonitor *)self enumerateObserversInQueue:v4, a4];
+  [(CSEventMonitor *)self enumerateObserversInQueue:v4, queue];
 }
 
 void __45__CSUAFDownloadMonitor_notifyAssets_onQueue___block_invoke(uint64_t a1, void *a2)
@@ -43,27 +43,27 @@ void __45__CSUAFDownloadMonitor_notifyAssets_onQueue___block_invoke(uint64_t a1,
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__CSUAFDownloadMonitor__startMonitoringWithQueue___block_invoke;
   v15[3] = &unk_1E865A8B0;
   objc_copyWeak(&v17, &location);
-  v5 = v4;
+  v5 = queueCopy;
   v16 = v5;
   v6 = MEMORY[0x1E12BA300](v15);
-  v7 = [MEMORY[0x1E69DEEE8] sharedManager];
+  mEMORY[0x1E69DEEE8] = [MEMORY[0x1E69DEEE8] sharedManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__CSUAFDownloadMonitor__startMonitoringWithQueue___block_invoke_284;
   v13[3] = &unk_1E865AD60;
   v8 = v6;
   v14 = v8;
-  v9 = [v7 observeAssetSet:@"com.apple.siri.understanding" queue:0 handler:v13];
+  v9 = [mEMORY[0x1E69DEEE8] observeAssetSet:@"com.apple.siri.understanding" queue:0 handler:v13];
   observerToken = self->_observerToken;
   self->_observerToken = v9;
 
@@ -113,15 +113,15 @@ void __50__CSUAFDownloadMonitor__startMonitoringWithQueue___block_invoke(uint64_
     v5.receiver = self;
     v5.super_class = CSUAFDownloadMonitor;
     self = [(CSEventMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

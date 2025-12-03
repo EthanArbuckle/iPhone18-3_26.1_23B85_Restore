@@ -1,8 +1,8 @@
 @interface SiriUISnippetExtensionCardSectionViewController
 + (id)cardSectionClasses;
-- (CGSize)maximumSizeForRemoteViewController:(id)a3;
-- (CGSize)minimumSizeForRemoteViewController:(id)a3;
-- (void)_attemptToConnectToRemoteViewControllerWithInteraction:(id)a3 forParameters:(id)a4;
+- (CGSize)maximumSizeForRemoteViewController:(id)controller;
+- (CGSize)minimumSizeForRemoteViewController:(id)controller;
+- (void)_attemptToConnectToRemoteViewControllerWithInteraction:(id)interaction forParameters:(id)parameters;
 - (void)_cancelTouchesIfNecessary;
 - (void)_loadCardSectionView;
 - (void)_resumeTouchesIfNecessary;
@@ -14,7 +14,7 @@
 - (void)dealloc
 {
   [(SiriUISnippetExtensionCardSectionViewController *)self _resumeTouchesIfNecessary];
-  v3 = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
+  disconnect = [(INUIRemoteViewController *)self->_remoteViewController disconnect];
   v4.receiver = self;
   v4.super_class = SiriUISnippetExtensionCardSectionViewController;
   [(SiriUISnippetExtensionCardSectionViewController *)&v4 dealloc];
@@ -37,11 +37,11 @@
 
 - (void)_cancelTouchesIfNecessary
 {
-  v3 = [(INUIRemoteViewController *)self->_remoteViewController _cancelTouchesForCurrentEventInHostedContent];
+  _cancelTouchesForCurrentEventInHostedContent = [(INUIRemoteViewController *)self->_remoteViewController _cancelTouchesForCurrentEventInHostedContent];
   touchDeliveryPolicyAssertion = self->_touchDeliveryPolicyAssertion;
-  self->_touchDeliveryPolicyAssertion = v3;
+  self->_touchDeliveryPolicyAssertion = _cancelTouchesForCurrentEventInHostedContent;
 
-  MEMORY[0x2821F96F8](v3, touchDeliveryPolicyAssertion);
+  MEMORY[0x2821F96F8](_cancelTouchesForCurrentEventInHostedContent, touchDeliveryPolicyAssertion);
 }
 
 - (void)_resumeTouchesIfNecessary
@@ -51,17 +51,17 @@
   self->_touchDeliveryPolicyAssertion = 0;
 }
 
-- (void)_attemptToConnectToRemoteViewControllerWithInteraction:(id)a3 forParameters:(id)a4
+- (void)_attemptToConnectToRemoteViewControllerWithInteraction:(id)interaction forParameters:(id)parameters
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = MEMORY[0x277CD4600];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __120__SiriUISnippetExtensionCardSectionViewController__attemptToConnectToRemoteViewControllerWithInteraction_forParameters___block_invoke;
   v8[3] = &unk_279C5A9F8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = interactionCopy;
+  selfCopy = self;
+  v7 = interactionCopy;
   [v6 _requestRemoteViewControllerForSnippetExtensionInteraction:v7 delegate:self connectionHandler:v8];
 }
 
@@ -157,7 +157,7 @@ void __120__SiriUISnippetExtensionCardSectionViewController__attemptToConnectToR
   [*(a1 + 40) _finishLoadingViewIfNecessary];
 }
 
-- (CGSize)minimumSizeForRemoteViewController:(id)a3
+- (CGSize)minimumSizeForRemoteViewController:(id)controller
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -166,10 +166,10 @@ void __120__SiriUISnippetExtensionCardSectionViewController__attemptToConnectToR
   return result;
 }
 
-- (CGSize)maximumSizeForRemoteViewController:(id)a3
+- (CGSize)maximumSizeForRemoteViewController:(id)controller
 {
-  v4 = [(CRKCardSectionViewController *)self delegate];
-  [v4 boundingSizeForCardSectionViewController:self];
+  delegate = [(CRKCardSectionViewController *)self delegate];
+  [delegate boundingSizeForCardSectionViewController:self];
   v6 = v5;
   v8 = v7;
 

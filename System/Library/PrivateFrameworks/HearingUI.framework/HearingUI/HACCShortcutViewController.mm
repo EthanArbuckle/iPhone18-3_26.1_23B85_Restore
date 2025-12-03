@@ -1,63 +1,63 @@
 @interface HACCShortcutViewController
 - (AXHAShortcutUpdateProtocol)delegate;
-- (BOOL)_isMainStackForModule:(unint64_t)a3;
+- (BOOL)_isMainStackForModule:(unint64_t)module;
 - (BOOL)_isShownInGallery;
 - (BOOL)_isStandaloneHeadphoneLevels;
-- (BOOL)_isStandaloneHeadphoneLevelsFromMainStackOrderArray:(id)a3;
+- (BOOL)_isStandaloneHeadphoneLevelsFromMainStackOrderArray:(id)array;
 - (BOOL)_isStandalonePMEModule;
-- (BOOL)_isStandalonePMEModuleFromMainStackOrderArray:(id)a3;
-- (BOOL)addPartialSeparatorAboveModule:(unint64_t)a3;
+- (BOOL)_isStandalonePMEModuleFromMainStackOrderArray:(id)array;
+- (BOOL)addPartialSeparatorAboveModule:(unint64_t)module;
 - (BOOL)isControlCenterModuleExpanded;
 - (BOOL)isExpanded;
-- (BOOL)shouldDisplayControlForModule:(unint64_t)a3;
-- (BOOL)shouldDisplayControlForModule:(unint64_t)a3 fromModulesArray:(id)a4 mainStackOrderArrayCopy:(id)a5;
+- (BOOL)shouldDisplayControlForModule:(unint64_t)module;
+- (BOOL)shouldDisplayControlForModule:(unint64_t)module fromModulesArray:(id)array mainStackOrderArrayCopy:(id)copy;
 - (BOOL)shouldShowHeadphoneLevelUnavailable;
 - (BOOL)showPMEExpandedOptions;
 - (HACCContentViewController)expandedController;
-- (HACCShortcutViewController)initWithDelegate:(id)a3 andAvailableModules:(id)a4;
+- (HACCShortcutViewController)initWithDelegate:(id)delegate andAvailableModules:(id)modules;
 - (double)moduleHeight;
 - (double)preferredContentWidth;
 - (id)backgroundUpdateQueue;
 - (id)containerViewsForPlatterTreatment;
-- (id)contentControllerForModule:(unint64_t)a3;
-- (id)parentViewControllerForModule:(unint64_t)a3;
+- (id)contentControllerForModule:(unint64_t)module;
+- (id)parentViewControllerForModule:(unint64_t)module;
 - (id)stackOrder;
-- (unint64_t)_mainStackIndexForModule:(unint64_t)a3;
+- (unint64_t)_mainStackIndexForModule:(unint64_t)module;
 - (void)_logLiveListenAnalytics;
-- (void)contentCategoryDidChange:(id)a3;
-- (void)controlDidActivate:(id)a3;
+- (void)contentCategoryDidChange:(id)change;
+- (void)controlDidActivate:(id)activate;
 - (void)dealloc;
-- (void)mediaPlaybackDidChange:(id)a3;
+- (void)mediaPlaybackDidChange:(id)change;
 - (void)mediaServerDied;
 - (void)registerNotifications;
 - (void)resetHeadphoneLevelModule;
-- (void)routesDidChange:(id)a3;
+- (void)routesDidChange:(id)change;
 - (void)startListeningForHeadphoneUpdates;
 - (void)startListeningForHearingAidUpdates;
 - (void)stopListeningForHeadphoneUpdates;
 - (void)stopListeningForHearingAidUpdates;
 - (void)updateAvailableControls;
-- (void)updateContentViewListeners:(BOOL)a3;
+- (void)updateContentViewListeners:(BOOL)listeners;
 - (void)updateHeight;
 - (void)updateView;
-- (void)updateViewForModule:(unint64_t)a3;
-- (void)updateViewForProperties:(id)a3;
-- (void)viewController:(id)a3 didExpand:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateViewForModule:(unint64_t)module;
+- (void)updateViewForProperties:(id)properties;
+- (void)viewController:(id)controller didExpand:(BOOL)expand;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HACCShortcutViewController
 
-- (HACCShortcutViewController)initWithDelegate:(id)a3 andAvailableModules:(id)a4
+- (HACCShortcutViewController)initWithDelegate:(id)delegate andAvailableModules:(id)modules
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  modulesCopy = modules;
   v35.receiver = self;
   v35.super_class = HACCShortcutViewController;
   v8 = [(HACCShortcutViewController *)&v35 init];
@@ -65,26 +65,26 @@
   {
     objc_initWeak(&location, v8);
     v8->_bluetoothAvailable = 1;
-    [(HACCShortcutViewController *)v8 setDelegate:v6];
-    v9 = [MEMORY[0x277D3A1C8] sharedInstance];
-    v10 = [MEMORY[0x277D12E38] sharedUtilities];
-    [v10 requestCurrentRoutesWithCompletion:0];
+    [(HACCShortcutViewController *)v8 setDelegate:delegateCopy];
+    mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+    mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+    [mEMORY[0x277D12E38] requestCurrentRoutesWithCompletion:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v8 selector:sel_hearingStatusBarTapped_ name:@"SBStatusBarReturnToHearingAidNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_hearingStatusBarTapped_ name:@"SBStatusBarReturnToHearingAidNotification" object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v8 selector:sel_routesDidChange_ name:*MEMORY[0x277D12DA8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_routesDidChange_ name:*MEMORY[0x277D12DA8] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v8 selector:sel_routesDidChange_ name:*MEMORY[0x277D3A1F0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v8 selector:sel_routesDidChange_ name:*MEMORY[0x277D3A1F0] object:0];
 
     [(HACCShortcutViewController *)v8 registerNotifications];
     [(HACCShortcutViewController *)v8 routesDidChange:0];
-    v14 = [MEMORY[0x277D12E00] sharedInstance];
-    [v14 registerLoggingBlock:&__block_literal_global_2 withListener:v8];
+    mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
+    [mEMORY[0x277D12E00] registerLoggingBlock:&__block_literal_global_2 withListener:v8];
 
-    v15 = [MEMORY[0x277D12E00] sharedInstance];
+    mEMORY[0x277D12E00]2 = [MEMORY[0x277D12E00] sharedInstance];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __67__HACCShortcutViewController_initWithDelegate_andAvailableModules___block_invoke_291;
@@ -92,23 +92,23 @@
     v16 = v8;
     v32 = v16;
     objc_copyWeak(&v33, &location);
-    [v15 registerBluetoothStateBlock:v31 withListener:v16];
+    [mEMORY[0x277D12E00]2 registerBluetoothStateBlock:v31 withListener:v16];
 
-    v17 = [MEMORY[0x277D12E18] sharedInstance];
+    mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
     v28 = __67__HACCShortcutViewController_initWithDelegate_andAvailableModules___block_invoke_3;
     v29 = &unk_2796F6D18;
     objc_copyWeak(&v30, &location);
-    [v17 registerUpdateBlock:&v26 forRetrieveSelector:sel_timerEnabled withListener:v16];
+    [mEMORY[0x277D12E18] registerUpdateBlock:&v26 forRetrieveSelector:sel_timerEnabled withListener:v16];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v16 selector:sel_contentCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v16 selector:sel_contentCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    [(HACCShortcutViewController *)v16 setModuleToViewControllerMap:v19];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HACCShortcutViewController *)v16 setModuleToViewControllerMap:dictionary];
 
-    [(HACCShortcutViewController *)v16 setAvailableModules:v7];
+    [(HACCShortcutViewController *)v16 setAvailableModules:modulesCopy];
     v20 = objc_alloc_init(MEMORY[0x277CCAB58]);
     [v20 addIndex:0];
     [v20 addIndex:34];
@@ -120,9 +120,9 @@
     mainStackIndexSet = v16->_mainStackIndexSet;
     v16->_mainStackIndexSet = v21;
 
-    v23 = [(HACCShortcutViewController *)v16 stackOrder];
+    stackOrder = [(HACCShortcutViewController *)v16 stackOrder];
     mainStackOrderArray = v16->_mainStackOrderArray;
-    v16->_mainStackOrderArray = v23;
+    v16->_mainStackOrderArray = stackOrder;
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v33);
@@ -202,8 +202,8 @@ void __67__HACCShortcutViewController_initWithDelegate_andAvailableModules___blo
 - (id)stackOrder
 {
   v2 = MEMORY[0x277CBEB18];
-  v3 = [(HACCShortcutViewController *)self availableModules];
-  v4 = [v2 arrayWithArray:v3];
+  availableModules = [(HACCShortcutViewController *)self availableModules];
+  v4 = [v2 arrayWithArray:availableModules];
 
   if ([v4 count])
   {
@@ -213,9 +213,9 @@ void __67__HACCShortcutViewController_initWithDelegate_andAvailableModules___blo
   else
   {
     v6 = MEMORY[0x277CBEB18];
-    v7 = [MEMORY[0x277D12E28] sharedInstance];
-    v8 = [v7 hearingControlCenterOrder];
-    v5 = [v6 arrayWithArray:v8];
+    mEMORY[0x277D12E28] = [MEMORY[0x277D12E28] sharedInstance];
+    hearingControlCenterOrder = [mEMORY[0x277D12E28] hearingControlCenterOrder];
+    v5 = [v6 arrayWithArray:hearingControlCenterOrder];
 
     v9 = [v5 indexOfObject:&unk_2864655A0];
     if (([v5 containsObject:&unk_2864655B8] & 1) == 0 && v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -230,36 +230,36 @@ void __67__HACCShortcutViewController_initWithDelegate_andAvailableModules___blo
 - (void)registerNotifications
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   v4 = MEMORY[0x277D26C38];
   v5 = MEMORY[0x277D26D40];
   v6 = *MEMORY[0x277D26D40];
   v14[0] = *MEMORY[0x277D26C38];
   v14[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  [v3 setAttribute:v7 forKey:*MEMORY[0x277D26DD0] error:0];
+  [mEMORY[0x277D26E58] setAttribute:v7 forKey:*MEMORY[0x277D26DD0] error:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *v4;
-  v10 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v8 addObserver:self selector:sel_mediaPlaybackDidChange_ name:v9 object:v10];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter addObserver:self selector:sel_mediaPlaybackDidChange_ name:v9 object:mEMORY[0x277D26E58]2];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v12 = *v5;
-  v13 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v11 addObserver:self selector:sel_mediaServerDied name:v12 object:v13];
+  mEMORY[0x277D26E58]3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_mediaServerDied name:v12 object:mEMORY[0x277D26E58]3];
 }
 
 - (void)mediaServerDied
 {
   v3 = dispatch_time(0, 2000000000);
-  v4 = [(HACCShortcutViewController *)self backgroundUpdateQueue];
+  backgroundUpdateQueue = [(HACCShortcutViewController *)self backgroundUpdateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HACCShortcutViewController_mediaServerDied__block_invoke;
   block[3] = &unk_2796F6D90;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, backgroundUpdateQueue, block);
 }
 
 uint64_t __45__HACCShortcutViewController_mediaServerDied__block_invoke(uint64_t a1)
@@ -272,19 +272,19 @@ uint64_t __45__HACCShortcutViewController_mediaServerDied__block_invoke(uint64_t
   return [v3 registerNotifications];
 }
 
-- (void)mediaPlaybackDidChange:(id)a3
+- (void)mediaPlaybackDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  changeCopy = change;
   v4 = HCLogComfortSounds();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = changeCopy;
     _os_log_impl(&dword_252166000, v4, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Media playback did change %@", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = changeCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -299,7 +299,7 @@ uint64_t __53__HACCShortcutViewController_mediaPlaybackDidChange___block_invoke(
   return [v4 updateView];
 }
 
-- (void)routesDidChange:(id)a3
+- (void)routesDidChange:(id)change
 {
   v4 = HCLogHearing();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -308,13 +308,13 @@ uint64_t __53__HACCShortcutViewController_mediaPlaybackDidChange___block_invoke(
     _os_log_impl(&dword_252166000, v4, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Routes changed", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277D12E00] sharedInstance];
+  mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__HACCShortcutViewController_routesDidChange___block_invoke;
   v6[3] = &unk_2796F6DB8;
   v6[4] = self;
-  [v5 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v6];
+  [mEMORY[0x277D12E00] getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v6];
 }
 
 void __46__HACCShortcutViewController_routesDidChange___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -373,8 +373,8 @@ void __51__HACCShortcutViewController_backgroundUpdateQueue__block_invoke()
   [v3 setShowsVerticalScrollIndicator:0];
   [v3 setShowsHorizontalScrollIndicator:0];
   [v3 setClipsToBounds:0];
-  v4 = [(HACCShortcutViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(HACCShortcutViewController *)self view];
+  [view addSubview:v3];
 
   [(HACCShortcutViewController *)self setScrollView:v3];
   v5 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -390,12 +390,12 @@ void __51__HACCShortcutViewController_backgroundUpdateQueue__block_invoke()
 - (void)startListeningForHearingAidUpdates
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D12E20] sharedInstance];
-  v4 = [v3 pairedHearingAids];
+  mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+  pairedHearingAids = [mEMORY[0x277D12E20] pairedHearingAids];
 
-  if ([(HACCShortcutViewController *)self listeningForHearingAidUpdates]|| !v4)
+  if ([(HACCShortcutViewController *)self listeningForHearingAidUpdates]|| !pairedHearingAids)
   {
-    if (!v4)
+    if (!pairedHearingAids)
     {
       v12 = HCLogHearingAids();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -415,27 +415,27 @@ void __51__HACCShortcutViewController_backgroundUpdateQueue__block_invoke()
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_252166000, v5, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Paired to Hearing Aids, Start listening for available Hearing Devices %p", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v6 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __64__HACCShortcutViewController_startListeningForHearingAidUpdates__block_invoke;
     v18[3] = &unk_2796F7430;
     objc_copyWeak(&v19, buf);
     v18[4] = self;
-    [v6 registerListener:self forAvailableDeviceHandler:v18];
+    [mEMORY[0x277D12DE8] registerListener:self forAvailableDeviceHandler:v18];
 
-    v7 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__HACCShortcutViewController_startListeningForHearingAidUpdates__block_invoke_330;
     v16[3] = &unk_2796F74D0;
     objc_copyWeak(&v17, buf);
-    [v7 registerListener:self forPropertyUpdateHandler:v16];
+    [mEMORY[0x277D12DE8]2 registerListener:self forPropertyUpdateHandler:v16];
 
     v8 = HCLogHearingAids();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -444,15 +444,15 @@ void __51__HACCShortcutViewController_backgroundUpdateQueue__block_invoke()
       _os_log_impl(&dword_252166000, v8, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Requesting Reachability Status", v15, 2u);
     }
 
-    v9 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v9 requestHearingAidReachabilityStatus];
+    mEMORY[0x277D12DE8]3 = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8]3 requestHearingAidReachabilityStatus];
 
     AXPerformBlockOnMainThreadAfterDelay();
-    v10 = [(HACCShortcutViewController *)self currentHearingDevice];
-    v11 = v10;
-    if (v10)
+    currentHearingDevice = [(HACCShortcutViewController *)self currentHearingDevice];
+    v11 = currentHearingDevice;
+    if (currentHearingDevice)
     {
-      [v10 setKeepInSync:1];
+      [currentHearingDevice setKeepInSync:1];
     }
 
     objc_destroyWeak(&v17);
@@ -460,9 +460,9 @@ void __51__HACCShortcutViewController_backgroundUpdateQueue__block_invoke()
     objc_destroyWeak(buf);
   }
 
-  v13 = [(HACCShortcutViewController *)self currentHearingDevice];
-  v14 = v13;
-  if (v13 && ([v13 didLoadRequiredProperties] & 1) == 0)
+  currentHearingDevice2 = [(HACCShortcutViewController *)self currentHearingDevice];
+  v14 = currentHearingDevice2;
+  if (currentHearingDevice2 && ([currentHearingDevice2 didLoadRequiredProperties] & 1) == 0)
   {
     [v14 loadRequiredProperties];
   }
@@ -560,21 +560,21 @@ void __64__HACCShortcutViewController_startListeningForHearingAidUpdates__block_
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_252166000, v3, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Stop listening for Hearing Aids updates %@", &v8, 0xCu);
     }
 
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v4 unregisterAvailableDevicesListener:self];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8] unregisterAvailableDevicesListener:self];
 
-    v5 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v5 unregisterPropertyUpdateListener:self];
+    mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8]2 unregisterPropertyUpdateListener:self];
 
-    v6 = [(HACCShortcutViewController *)self currentHearingDevice];
-    v7 = v6;
-    if (v6)
+    currentHearingDevice = [(HACCShortcutViewController *)self currentHearingDevice];
+    v7 = currentHearingDevice;
+    if (currentHearingDevice)
     {
-      [v6 setKeepInSync:0];
+      [currentHearingDevice setKeepInSync:0];
     }
 
     [(HACCShortcutViewController *)self setListeningForHearingAidUpdates:0];
@@ -586,10 +586,10 @@ void __64__HACCShortcutViewController_startListeningForHearingAidUpdates__block_
 {
   if (![(HACCShortcutViewController *)self listeningForHeadphoneUpdates])
   {
-    v3 = [MEMORY[0x277D12E20] sharedInstance];
-    v4 = [v3 liveHeadphoneLevelEnabled];
+    mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+    liveHeadphoneLevelEnabled = [mEMORY[0x277D12E20] liveHeadphoneLevelEnabled];
 
-    if (v4)
+    if (liveHeadphoneLevelEnabled)
     {
       [(HACCShortcutViewController *)self setListeningForHeadphoneUpdates:1];
       objc_initWeak(&location, self);
@@ -608,13 +608,13 @@ void __64__HACCShortcutViewController_startListeningForHearingAidUpdates__block_
         }
       }
 
-      v6 = [MEMORY[0x277D12DE8] sharedInstance];
+      mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_invoke;
       v7[3] = &unk_2796F74D0;
       objc_copyWeak(&v8, &location);
-      [v6 registerListener:self forLiveHeadphoneLevelHandler:v7];
+      [mEMORY[0x277D12DE8] registerListener:self forLiveHeadphoneLevelHandler:v7];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -668,15 +668,15 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
 
 - (void)resetHeadphoneLevelModule
 {
-  v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-  v6 = [v3 objectForKey:&unk_2864655B8];
+  moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  v6 = [moduleToViewControllerMap objectForKey:&unk_2864655B8];
 
   [v6 removeFromParentViewController];
-  v4 = [v6 view];
-  [v4 removeFromSuperview];
+  view = [v6 view];
+  [view removeFromSuperview];
 
-  v5 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-  [v5 removeObjectForKey:&unk_2864655B8];
+  moduleToViewControllerMap2 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  [moduleToViewControllerMap2 removeObjectForKey:&unk_2864655B8];
 
   [(HACCShortcutViewController *)self updateView];
 }
@@ -690,44 +690,44 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
     _os_log_impl(&dword_252166000, v3, OS_LOG_TYPE_INFO, "CCShortcutViewController: Unregistering listener to stop receiving headphone audio updates", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277D12DE8] sharedInstance];
-  [v4 unregisterLiveHeadphoneLevelHandler:self];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  [mEMORY[0x277D12DE8] unregisterLiveHeadphoneLevelHandler:self];
 
   [(HACCShortcutViewController *)self setListeningForHeadphoneUpdates:0];
   [(HACCShortcutViewController *)self setHeadphoneAudioAvailable:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v4 viewDidAppear:a3];
+  [(HACCShortcutViewController *)&v4 viewDidAppear:appear];
   [(HACCShortcutViewController *)self updateAvailableControls];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v6 viewWillAppear:a3];
+  [(HACCShortcutViewController *)&v6 viewWillAppear:appear];
   v4 = HCLogHearingAids();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [HACCShortcutViewController viewWillAppear:];
   }
 
-  v5 = [MEMORY[0x277D12E38] sharedUtilities];
-  [v5 clearAudioRoutes];
+  mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+  [mEMORY[0x277D12E38] clearAudioRoutes];
 
   [(HACCShortcutViewController *)self startListeningForHearingAidUpdates];
   [(HACCShortcutViewController *)self startListeningForHeadphoneUpdates];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v5 viewDidDisappear:a3];
+  [(HACCShortcutViewController *)&v5 viewDidDisappear:disappear];
   v4 = HCLogHearingAids();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -743,28 +743,28 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
   self->_isOnOverlayWindow = 0;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v5.receiver = self;
   v5.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v5 viewIsAppearing:a3];
-  v4 = [(HACCShortcutViewController *)self view];
-  [v4 setClipsToBounds:0];
+  [(HACCShortcutViewController *)&v5 viewIsAppearing:appearing];
+  view = [(HACCShortcutViewController *)self view];
+  [view setClipsToBounds:0];
 
   [(HACCShortcutViewController *)self updateAvailableControls];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v12 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(HACCShortcutViewController *)&v12 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   v7 = HCLogHearingAids();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(HACCShortcutViewController *)self viewDidMoveToWindow:v6 shouldAppearOrDisappear:v7];
+    [(HACCShortcutViewController *)self viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:v7];
   }
 
   NSClassFromString(&cfstr_Sbtransientove.isa);
@@ -779,11 +779,11 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
       [HACCShortcutViewController viewDidMoveToWindow:shouldAppearOrDisappear:];
     }
 
-    v9 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v9 sendMessagesPriorityHigh];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8] sendMessagesPriorityHigh];
   }
 
-  if (!v6)
+  if (!windowCopy)
   {
     [(HACCShortcutViewController *)self updateContentViewListeners:0];
     if (self->_isOnOverlayWindow)
@@ -795,8 +795,8 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
         [HACCShortcutViewController viewDidMoveToWindow:shouldAppearOrDisappear:];
       }
 
-      v11 = [MEMORY[0x277D12DE8] sharedInstance];
-      [v11 sendMessagesPriorityDefault];
+      mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+      [mEMORY[0x277D12DE8]2 sendMessagesPriorityDefault];
     }
 
     self->_isOnOverlayWindow = 0;
@@ -805,21 +805,21 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
 
 - (BOOL)_isShownInGallery
 {
-  v2 = [(HACCShortcutViewController *)self view];
-  v3 = [v2 _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Sbhaddwidgetsh.isa)];
+  view = [(HACCShortcutViewController *)self view];
+  v3 = [view _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Sbhaddwidgetsh.isa)];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = HACCShortcutViewController;
-  [(HACCShortcutViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(HACCShortcutViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -831,7 +831,7 @@ void __63__HACCShortcutViewController_startListeningForHeadphoneUpdates__block_i
   v8[2] = __81__HACCShortcutViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_2796F74F8;
   objc_copyWeak(&v9, &location);
-  [v7 animateAlongsideTransition:v10 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -908,18 +908,18 @@ LABEL_15:
   }
 }
 
-- (void)contentCategoryDidChange:(id)a3
+- (void)contentCategoryDidChange:(id)change
 {
-  v4 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__HACCShortcutViewController_contentCategoryDidChange___block_invoke;
   v6[3] = &unk_2796F7520;
   v6[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [moduleToViewControllerMap enumerateKeysAndObjectsUsingBlock:v6];
 
-  v5 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-  [v5 removeAllObjects];
+  moduleToViewControllerMap2 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  [moduleToViewControllerMap2 removeAllObjects];
 
   [(HACCShortcutViewController *)self updateAvailableControls];
 }
@@ -937,25 +937,25 @@ void __55__HACCShortcutViewController_contentCategoryDidChange___block_invoke(ui
   [v7 removeFromSuperview];
 }
 
-- (BOOL)shouldDisplayControlForModule:(unint64_t)a3
+- (BOOL)shouldDisplayControlForModule:(unint64_t)module
 {
-  v5 = [(HACCShortcutViewController *)self mainStackOrderArray];
-  v6 = [(HACCShortcutViewController *)self mainStackOrderArray];
-  LOBYTE(a3) = [(HACCShortcutViewController *)self shouldDisplayControlForModule:a3 fromModulesArray:v5 mainStackOrderArrayCopy:v6];
+  mainStackOrderArray = [(HACCShortcutViewController *)self mainStackOrderArray];
+  mainStackOrderArray2 = [(HACCShortcutViewController *)self mainStackOrderArray];
+  LOBYTE(module) = [(HACCShortcutViewController *)self shouldDisplayControlForModule:module fromModulesArray:mainStackOrderArray mainStackOrderArrayCopy:mainStackOrderArray2];
 
-  return a3;
+  return module;
 }
 
-- (BOOL)shouldDisplayControlForModule:(unint64_t)a3 fromModulesArray:(id)a4 mainStackOrderArrayCopy:(id)a5
+- (BOOL)shouldDisplayControlForModule:(unint64_t)module fromModulesArray:(id)array mainStackOrderArrayCopy:(id)copy
 {
   v109 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HACCShortcutViewController *)self currentHearingDevice];
-  if (v10)
+  arrayCopy = array;
+  copyCopy = copy;
+  currentHearingDevice = [(HACCShortcutViewController *)self currentHearingDevice];
+  if (currentHearingDevice)
   {
-    v11 = [MEMORY[0x277D12DE8] sharedInstance];
-    if ([v11 hearingAidReachable])
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    if ([mEMORY[0x277D12DE8] hearingAidReachable])
     {
       bluetoothAvailable = self->_bluetoothAvailable;
     }
@@ -971,47 +971,47 @@ void __55__HACCShortcutViewController_contentCategoryDidChange___block_invoke(ui
     bluetoothAvailable = 0;
   }
 
-  v13 = [(HACCShortcutViewController *)self currentHearingDevice];
-  v14 = v13;
-  switch(a3)
+  currentHearingDevice2 = [(HACCShortcutViewController *)self currentHearingDevice];
+  v14 = currentHearingDevice2;
+  switch(module)
   {
     case 0uLL:
       v27 = &unk_2864655A0;
       goto LABEL_99;
     case 1uLL:
-      v37 = [v13 propertyIsAvailable:0x4000000000 forEar:2];
+      v37 = [currentHearingDevice2 propertyIsAvailable:0x4000000000 forEar:2];
       v38 = v14;
       v39 = 0x4000000000;
       goto LABEL_38;
     case 2uLL:
-      v37 = [v13 propertyIsAvailable:0x4000000000 forEar:4];
+      v37 = [currentHearingDevice2 propertyIsAvailable:0x4000000000 forEar:4];
       v47 = v14;
       v48 = 0x4000000000;
       goto LABEL_74;
     case 3uLL:
-      v43 = [v13 propertyIsAvailable:0x4000000000 forEar:2];
+      v43 = [currentHearingDevice2 propertyIsAvailable:0x4000000000 forEar:2];
       v44 = [v14 propertyIsAvailable:0x4000000000 forEar:4];
       v45 = v14;
       v46 = 0x4000000000;
       goto LABEL_58;
     case 4uLL:
-      v37 = [v13 propertyIsAvailable:64 forEar:2];
+      v37 = [currentHearingDevice2 propertyIsAvailable:64 forEar:2];
       v38 = v14;
       v39 = 64;
       goto LABEL_38;
     case 5uLL:
-      v37 = [v13 propertyIsAvailable:64 forEar:4];
+      v37 = [currentHearingDevice2 propertyIsAvailable:64 forEar:4];
       v47 = v14;
       v48 = 64;
       goto LABEL_74;
     case 6uLL:
-      v43 = [v13 propertyIsAvailable:64 forEar:2];
+      v43 = [currentHearingDevice2 propertyIsAvailable:64 forEar:2];
       v44 = [v14 propertyIsAvailable:64 forEar:4];
       v45 = v14;
       v46 = 64;
       goto LABEL_58;
     case 7uLL:
-      v37 = [v13 propertyIsAvailable:0x80000000 forEar:2];
+      v37 = [currentHearingDevice2 propertyIsAvailable:0x80000000 forEar:2];
       v38 = v14;
       v39 = 0x80000000;
 LABEL_38:
@@ -1022,10 +1022,10 @@ LABEL_38:
       }
 
       v53 = v52;
-      v54 = [v14 isLeftConnected];
+      isLeftConnected = [v14 isLeftConnected];
       goto LABEL_76;
     case 8uLL:
-      v37 = [v13 propertyIsAvailable:0x80000000 forEar:4];
+      v37 = [currentHearingDevice2 propertyIsAvailable:0x80000000 forEar:4];
       v47 = v14;
       v48 = 0x80000000;
 LABEL_74:
@@ -1036,12 +1036,12 @@ LABEL_74:
       }
 
       v53 = v73;
-      v54 = [v14 isRightConnected];
+      isLeftConnected = [v14 isRightConnected];
 LABEL_76:
-      LOBYTE(self) = v54 & v37 & v53;
+      LOBYTE(self) = isLeftConnected & v37 & v53;
       goto LABEL_165;
     case 9uLL:
-      v43 = [v13 propertyIsAvailable:0x80000000 forEar:2];
+      v43 = [currentHearingDevice2 propertyIsAvailable:0x80000000 forEar:2];
       v44 = [v14 propertyIsAvailable:0x80000000 forEar:4];
       v45 = v14;
       v46 = 0x80000000;
@@ -1070,7 +1070,7 @@ LABEL_58:
 
       goto LABEL_165;
     case 0xAuLL:
-      if ([v13 propertyIsAvailable:0x2000000000 forEar:2])
+      if ([currentHearingDevice2 propertyIsAvailable:0x2000000000 forEar:2])
       {
         goto LABEL_71;
       }
@@ -1079,7 +1079,7 @@ LABEL_58:
       v36 = 0x2000000000;
       goto LABEL_136;
     case 0xBuLL:
-      if ([v13 propertyIsAvailable:0x1000000000 forEar:2])
+      if ([currentHearingDevice2 propertyIsAvailable:0x1000000000 forEar:2])
       {
 LABEL_71:
         LOBYTE(self) = 1;
@@ -1108,17 +1108,17 @@ LABEL_136:
 
       goto LABEL_165;
     case 0xCuLL:
-      v40 = [v13 propertyIsAvailable:128 forEar:2];
+      v40 = [currentHearingDevice2 propertyIsAvailable:128 forEar:2];
       v41 = [v14 shouldOnlyShowIndividualVolumesForProperty:128];
-      v19 = [v14 leftSelectedStreamingProgram];
-      if ([v19 isSelected])
+      leftSelectedStreamingProgram = [v14 leftSelectedStreamingProgram];
+      if ([leftSelectedStreamingProgram isSelected])
       {
-        v42 = [v19 isStreamOrMixingStream];
+        isStreamOrMixingStream = [leftSelectedStreamingProgram isStreamOrMixingStream];
       }
 
       else
       {
-        v42 = 0;
+        isStreamOrMixingStream = 0;
       }
 
       if (!bluetoothAvailable)
@@ -1126,20 +1126,20 @@ LABEL_136:
         goto LABEL_134;
       }
 
-      v87 = [v14 isLeftConnected];
+      isLeftConnected2 = [v14 isLeftConnected];
       goto LABEL_133;
     case 0xDuLL:
-      v40 = [v13 propertyIsAvailable:128 forEar:4];
+      v40 = [currentHearingDevice2 propertyIsAvailable:128 forEar:4];
       v41 = [v14 shouldOnlyShowIndividualVolumesForProperty:128];
-      v19 = [v14 rightSelectedStreamingProgram];
-      if ([v19 isSelected])
+      leftSelectedStreamingProgram = [v14 rightSelectedStreamingProgram];
+      if ([leftSelectedStreamingProgram isSelected])
       {
-        v42 = [v19 isStreamOrMixingStream];
+        isStreamOrMixingStream = [leftSelectedStreamingProgram isStreamOrMixingStream];
       }
 
       else
       {
-        v42 = 0;
+        isStreamOrMixingStream = 0;
       }
 
       if (!bluetoothAvailable)
@@ -1147,34 +1147,34 @@ LABEL_136:
         goto LABEL_134;
       }
 
-      v87 = [v14 isRightConnected];
+      isLeftConnected2 = [v14 isRightConnected];
 LABEL_133:
-      LOBYTE(self) = v87 & v40 & v41 & v42;
+      LOBYTE(self) = isLeftConnected2 & v40 & v41 & isStreamOrMixingStream;
       goto LABEL_164;
     case 0xEuLL:
-      v98 = [v13 propertyIsAvailable:128 forEar:2];
+      v98 = [currentHearingDevice2 propertyIsAvailable:128 forEar:2];
       v32 = [v14 propertyIsAvailable:128 forEar:4];
       v33 = [v14 shouldOnlyShowIndividualVolumesForProperty:128];
-      v19 = [v14 leftSelectedStreamingProgram];
-      v28 = [v14 rightSelectedStreamingProgram];
-      if ([v19 isSelected])
+      leftSelectedStreamingProgram = [v14 leftSelectedStreamingProgram];
+      rightSelectedStreamingProgram = [v14 rightSelectedStreamingProgram];
+      if ([leftSelectedStreamingProgram isSelected])
       {
-        v34 = [v19 isStreamOrMixingStream];
+        isStreamOrMixingStream2 = [leftSelectedStreamingProgram isStreamOrMixingStream];
       }
 
       else
       {
-        v34 = 0;
+        isStreamOrMixingStream2 = 0;
       }
 
-      if ([v28 isSelected])
+      if ([rightSelectedStreamingProgram isSelected])
       {
-        v86 = [v28 isStreamOrMixingStream];
+        isStreamOrMixingStream3 = [rightSelectedStreamingProgram isStreamOrMixingStream];
       }
 
       else
       {
-        v86 = 0;
+        isStreamOrMixingStream3 = 0;
       }
 
       if (!bluetoothAvailable || ![v14 isLeftConnected] || v33 & 1 | ((objc_msgSend(v14, "isRightConnected") & 1) == 0))
@@ -1182,29 +1182,29 @@ LABEL_133:
         goto LABEL_119;
       }
 
-      LOBYTE(self) = v34 & v98 | v86 & v32;
+      LOBYTE(self) = isStreamOrMixingStream2 & v98 | isStreamOrMixingStream3 & v32;
       goto LABEL_163;
     case 0xFuLL:
-      v49 = [v13 leftPrograms];
-      v50 = [v49 count];
+      leftPrograms = [currentHearingDevice2 leftPrograms];
+      v50 = [leftPrograms count];
 
       v51 = v50 == 0;
       goto LABEL_64;
     case 0x10uLL:
-      v29 = [v13 rightPrograms];
-      v30 = [v29 count];
+      rightPrograms = [currentHearingDevice2 rightPrograms];
+      v30 = [rightPrograms count];
 
       v31 = v30 == 0;
       goto LABEL_83;
     case 0x11uLL:
-      v59 = [v13 programs];
-      v60 = [v59 count];
+      programs = [currentHearingDevice2 programs];
+      v60 = [programs count];
 
       v61 = v60 == 0;
       goto LABEL_45;
     case 0x12uLL:
-      v69 = [v13 leftPrograms];
-      v70 = [v69 indexOfObjectPassingTest:&__block_literal_global_367];
+      leftPrograms2 = [currentHearingDevice2 leftPrograms];
+      v70 = [leftPrograms2 indexOfObjectPassingTest:&__block_literal_global_367];
 
       v51 = v70 == 0x7FFFFFFFFFFFFFFFLL;
 LABEL_64:
@@ -1214,11 +1214,11 @@ LABEL_64:
         goto LABEL_157;
       }
 
-      v72 = [v14 isLeftConnected];
+      isLeftConnected3 = [v14 isLeftConnected];
       goto LABEL_159;
     case 0x13uLL:
-      v75 = [v13 rightPrograms];
-      v76 = [v75 indexOfObjectPassingTest:&__block_literal_global_369];
+      rightPrograms2 = [currentHearingDevice2 rightPrograms];
+      v76 = [rightPrograms2 indexOfObjectPassingTest:&__block_literal_global_369];
 
       v31 = v76 == 0x7FFFFFFFFFFFFFFFLL;
 LABEL_83:
@@ -1230,8 +1230,8 @@ LABEL_83:
 
       goto LABEL_157;
     case 0x14uLL:
-      v62 = [v13 programs];
-      v63 = [v62 indexOfObjectPassingTest:&__block_literal_global_371];
+      programs2 = [currentHearingDevice2 programs];
+      v63 = [programs2 indexOfObjectPassingTest:&__block_literal_global_371];
 
       v61 = v63 == 0x7FFFFFFFFFFFFFFFLL;
 LABEL_45:
@@ -1247,19 +1247,19 @@ LABEL_45:
       }
 
 LABEL_88:
-      v72 = [v14 isRightConnected];
+      isLeftConnected3 = [v14 isRightConnected];
       goto LABEL_159;
     case 0x15uLL:
-      v65 = [(HACCShortcutViewController *)self currentHearingDevice];
-      if ([v65 propertyIsAvailable:0x10000000000 forEar:2])
+      currentHearingDevice3 = [(HACCShortcutViewController *)self currentHearingDevice];
+      if ([currentHearingDevice3 propertyIsAvailable:0x10000000000 forEar:2])
       {
         v66 = 1;
       }
 
       else
       {
-        v88 = [(HACCShortcutViewController *)self currentHearingDevice];
-        v66 = [v88 propertyIsAvailable:0x10000000000 forEar:4];
+        currentHearingDevice4 = [(HACCShortcutViewController *)self currentHearingDevice];
+        v66 = [currentHearingDevice4 propertyIsAvailable:0x10000000000 forEar:4];
       }
 
       v89 = hearingAidReceivingAudio();
@@ -1277,13 +1277,13 @@ LABEL_88:
       if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67110144;
-        v100 = self;
+        selfCopy = self;
         v101 = 1024;
         v102 = bluetoothAvailable;
         v103 = 1024;
         v104 = v66;
         v105 = 1024;
-        v106 = [v14 availableInputEars];
+        availableInputEars = [v14 availableInputEars];
         v107 = 1024;
         v108 = v89;
         _os_log_impl(&dword_252166000, v90, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Showing mic control %d = [%d, %d, %d, %d]", buf, 0x20u);
@@ -1294,7 +1294,7 @@ LABEL_88:
       LOBYTE(self) = bluetoothAvailable;
       goto LABEL_165;
     case 0x17uLL:
-      if ([(HACCShortcutViewController *)self _isStandaloneHeadphoneLevelsFromMainStackOrderArray:v9])
+      if ([(HACCShortcutViewController *)self _isStandaloneHeadphoneLevelsFromMainStackOrderArray:copyCopy])
       {
         goto LABEL_147;
       }
@@ -1304,28 +1304,28 @@ LABEL_88:
         goto LABEL_157;
       }
 
-      v19 = [MEMORY[0x277D12E20] sharedInstance];
-      if (![v19 liveHeadphoneLevelEnabled])
+      leftSelectedStreamingProgram = [MEMORY[0x277D12E20] sharedInstance];
+      if (![leftSelectedStreamingProgram liveHeadphoneLevelEnabled])
       {
         goto LABEL_134;
       }
 
       v20 = &unk_2864655A0;
 LABEL_12:
-      LOBYTE(self) = [v8 containsObject:v20];
+      LOBYTE(self) = [arrayCopy containsObject:v20];
       goto LABEL_164;
     case 0x18uLL:
     case 0x1CuLL:
-      v19 = [MEMORY[0x277D12E18] sharedInstance];
-      if ([v19 comfortSoundsAvailable])
+      leftSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if ([leftSelectedStreamingProgram comfortSoundsAvailable])
       {
         goto LABEL_11;
       }
 
       goto LABEL_134;
     case 0x19uLL:
-      v19 = [MEMORY[0x277D12E18] sharedInstance];
-      if (![v19 comfortSoundsAvailable] || self->_mediaIsPlaying)
+      leftSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if (![leftSelectedStreamingProgram comfortSoundsAvailable] || self->_mediaIsPlaying)
       {
         goto LABEL_134;
       }
@@ -1334,31 +1334,31 @@ LABEL_11:
       v20 = &unk_286465618;
       goto LABEL_12;
     case 0x1AuLL:
-      v19 = [MEMORY[0x277D12E18] sharedInstance];
-      if (![v19 comfortSoundsAvailable])
+      leftSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if (![leftSelectedStreamingProgram comfortSoundsAvailable])
       {
         goto LABEL_134;
       }
 
-      v28 = [MEMORY[0x277D12E18] sharedInstance];
-      if (![v28 mixesWithMedia] || !self->_mediaIsPlaying)
+      rightSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if (![rightSelectedStreamingProgram mixesWithMedia] || !self->_mediaIsPlaying)
       {
         goto LABEL_119;
       }
 
       goto LABEL_95;
     case 0x1BuLL:
-      v19 = [MEMORY[0x277D12E18] sharedInstance];
-      if (![v19 comfortSoundsAvailable])
+      leftSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if (![leftSelectedStreamingProgram comfortSoundsAvailable])
       {
         goto LABEL_134;
       }
 
-      v28 = [MEMORY[0x277D12E18] sharedInstance];
-      if ([v28 timerEnabled])
+      rightSelectedStreamingProgram = [MEMORY[0x277D12E18] sharedInstance];
+      if ([rightSelectedStreamingProgram timerEnabled])
       {
 LABEL_95:
-        LOBYTE(self) = [v8 containsObject:&unk_286465618];
+        LOBYTE(self) = [arrayCopy containsObject:&unk_286465618];
       }
 
       else
@@ -1369,7 +1369,7 @@ LABEL_119:
 
       goto LABEL_163;
     case 0x1DuLL:
-      if (![(HACCShortcutViewController *)self shouldDisplayControlForModule:25 fromModulesArray:v8 mainStackOrderArrayCopy:v9]&& ![(HACCShortcutViewController *)self shouldDisplayControlForModule:26 fromModulesArray:v8 mainStackOrderArrayCopy:v9])
+      if (![(HACCShortcutViewController *)self shouldDisplayControlForModule:25 fromModulesArray:arrayCopy mainStackOrderArrayCopy:copyCopy]&& ![(HACCShortcutViewController *)self shouldDisplayControlForModule:26 fromModulesArray:arrayCopy mainStackOrderArrayCopy:copyCopy])
       {
         goto LABEL_157;
       }
@@ -1379,12 +1379,12 @@ LABEL_119:
     case 0x1EuLL:
       goto LABEL_42;
     case 0x1FuLL:
-      v55 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-      v56 = [v55 objectForKey:&unk_2864655E8];
-      v57 = [v56 value];
-      v58 = [v57 BOOLValue];
+      moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+      v56 = [moduleToViewControllerMap objectForKey:&unk_2864655E8];
+      value = [v56 value];
+      bOOLValue = [value BOOLValue];
 
-      if (!v58 || !_os_feature_enabled_impl())
+      if (!bOOLValue || !_os_feature_enabled_impl())
       {
         goto LABEL_157;
       }
@@ -1393,15 +1393,15 @@ LABEL_42:
       v27 = &unk_2864655E8;
       goto LABEL_99;
     case 0x20uLL:
-      v19 = [MEMORY[0x277D3A1D0] sharedInstance];
-      if (([v19 personalMediaEnabled] & 1) != 0 || !-[HACCShortcutViewController currentDeviceSupportsSSL](self, "currentDeviceSupportsSSL") || !objc_msgSend(v8, "containsObject:", &unk_286465600))
+      leftSelectedStreamingProgram = [MEMORY[0x277D3A1D0] sharedInstance];
+      if (([leftSelectedStreamingProgram personalMediaEnabled] & 1) != 0 || !-[HACCShortcutViewController currentDeviceSupportsSSL](self, "currentDeviceSupportsSSL") || !objc_msgSend(arrayCopy, "containsObject:", &unk_286465600))
       {
         goto LABEL_134;
       }
 
-      v28 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v74 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      LOBYTE(self) = [v28 yodelEnabledForAddress:v74] ^ 1;
+      rightSelectedStreamingProgram = [MEMORY[0x277D3A1C8] sharedInstance];
+      currentDeviceAddress = [(HACCShortcutViewController *)self currentDeviceAddress];
+      LOBYTE(self) = [rightSelectedStreamingProgram yodelEnabledForAddress:currentDeviceAddress] ^ 1;
       goto LABEL_162;
     case 0x21uLL:
       v27 = &unk_286465600;
@@ -1409,25 +1409,25 @@ LABEL_42:
     case 0x22uLL:
     case 0x23uLL:
     case 0x26uLL:
-      v15 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v16 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      v17 = [v15 yodelEnabledForAddress:v16];
+      mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+      currentDeviceAddress2 = [(HACCShortcutViewController *)self currentDeviceAddress];
+      v17 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress2];
 
       if (v17)
       {
-        v18 = [v8 containsObject:&unk_2864655D0];
+        v18 = [arrayCopy containsObject:&unk_2864655D0];
       }
 
       else
       {
-        v21 = [MEMORY[0x277D3A1D0] sharedInstance];
-        if ([v21 personalMediaEnabled])
+        mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+        if ([mEMORY[0x277D3A1D0] personalMediaEnabled])
         {
-          v22 = [MEMORY[0x277D3A1D0] sharedInstance];
-          v23 = [v22 personalMediaConfiguration];
-          if (v23)
+          mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+          personalMediaConfiguration = [mEMORY[0x277D3A1D0]2 personalMediaConfiguration];
+          if (personalMediaConfiguration)
           {
-            v18 = [v8 containsObject:&unk_2864655D0];
+            v18 = [arrayCopy containsObject:&unk_2864655D0];
           }
 
           else
@@ -1446,7 +1446,7 @@ LABEL_42:
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v100 = [v8 containsObject:&unk_2864655D0];
+        selfCopy = [arrayCopy containsObject:&unk_2864655D0];
         _os_log_impl(&dword_252166000, v92, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Should Display Control - modules array does contain PME toggle: %d", buf, 8u);
       }
 
@@ -1457,33 +1457,33 @@ LABEL_147:
         goto LABEL_165;
       }
 
-      v72 = [(HACCShortcutViewController *)self _isStandalonePMEModuleFromMainStackOrderArray:v9];
+      isLeftConnected3 = [(HACCShortcutViewController *)self _isStandalonePMEModuleFromMainStackOrderArray:copyCopy];
       goto LABEL_159;
     case 0x24uLL:
-      v24 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v25 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      v26 = [v24 yodelEnabledForAddress:v25];
+      mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+      currentDeviceAddress3 = [(HACCShortcutViewController *)self currentDeviceAddress];
+      v26 = [mEMORY[0x277D3A1C8]2 yodelEnabledForAddress:currentDeviceAddress3];
 
       if (v26)
       {
         v27 = &unk_2864655D0;
 LABEL_99:
-        v72 = [v8 containsObject:v27];
+        isLeftConnected3 = [arrayCopy containsObject:v27];
         goto LABEL_159;
       }
 
-      v19 = [MEMORY[0x277D3A1D0] sharedInstance];
-      if ([v19 personalMediaEnabled])
+      leftSelectedStreamingProgram = [MEMORY[0x277D3A1D0] sharedInstance];
+      if ([leftSelectedStreamingProgram personalMediaEnabled])
       {
-        v28 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v74 = [v28 personalMediaConfiguration];
-        if (v74)
+        rightSelectedStreamingProgram = [MEMORY[0x277D3A1D0] sharedInstance];
+        currentDeviceAddress = [rightSelectedStreamingProgram personalMediaConfiguration];
+        if (currentDeviceAddress)
         {
-          v84 = [MEMORY[0x277D3A1D0] sharedInstance];
-          v85 = [(HACCShortcutViewController *)self currentDeviceAddress];
-          if ([v84 transparencyCustomizedForAddress:v85])
+          mEMORY[0x277D3A1D0]3 = [MEMORY[0x277D3A1D0] sharedInstance];
+          currentDeviceAddress4 = [(HACCShortcutViewController *)self currentDeviceAddress];
+          if ([mEMORY[0x277D3A1D0]3 transparencyCustomizedForAddress:currentDeviceAddress4])
           {
-            LOBYTE(self) = [v8 containsObject:&unk_2864655D0];
+            LOBYTE(self) = [arrayCopy containsObject:&unk_2864655D0];
           }
 
           else
@@ -1519,16 +1519,16 @@ LABEL_164:
 
       else
       {
-        v78 = [MEMORY[0x277D3A1D0] sharedInstance];
-        if ([v78 personalMediaEnabled])
+        mEMORY[0x277D3A1D0]4 = [MEMORY[0x277D3A1D0] sharedInstance];
+        if ([mEMORY[0x277D3A1D0]4 personalMediaEnabled])
         {
-          v79 = [MEMORY[0x277D3A1D0] sharedInstance];
-          v80 = [v79 personalMediaConfiguration];
-          if (v80)
+          mEMORY[0x277D3A1D0]5 = [MEMORY[0x277D3A1D0] sharedInstance];
+          personalMediaConfiguration2 = [mEMORY[0x277D3A1D0]5 personalMediaConfiguration];
+          if (personalMediaConfiguration2)
           {
-            v81 = [MEMORY[0x277D3A1D0] sharedInstance];
-            v82 = [(HACCShortcutViewController *)self currentDeviceAddress];
-            v83 = [v81 transparencyCustomizedForAddress:v82];
+            mEMORY[0x277D3A1D0]6 = [MEMORY[0x277D3A1D0] sharedInstance];
+            currentDeviceAddress5 = [(HACCShortcutViewController *)self currentDeviceAddress];
+            v83 = [mEMORY[0x277D3A1D0]6 transparencyCustomizedForAddress:currentDeviceAddress5];
           }
 
           else
@@ -1536,7 +1536,7 @@ LABEL_164:
             v83 = 0;
           }
 
-          v93 = [(HACCShortcutViewController *)self currentDeviceSupportsSSL];
+          currentDeviceSupportsSSL = [(HACCShortcutViewController *)self currentDeviceSupportsSSL];
           if (v83)
           {
             goto LABEL_158;
@@ -1546,15 +1546,15 @@ LABEL_164:
         else
         {
 
-          v93 = [(HACCShortcutViewController *)self currentDeviceSupportsSSL];
+          currentDeviceSupportsSSL = [(HACCShortcutViewController *)self currentDeviceSupportsSSL];
         }
 
-        v91 = v93;
+        v91 = currentDeviceSupportsSSL;
       }
 
-      v94 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v95 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      v96 = [v94 yodelEnabledForAddress:v95];
+      mEMORY[0x277D3A1C8]3 = [MEMORY[0x277D3A1C8] sharedInstance];
+      currentDeviceAddress6 = [(HACCShortcutViewController *)self currentDeviceAddress];
+      v96 = [mEMORY[0x277D3A1C8]3 yodelEnabledForAddress:currentDeviceAddress6];
 
       if ((v96 & 1) == 0 && !v91)
       {
@@ -1564,9 +1564,9 @@ LABEL_157:
       }
 
 LABEL_158:
-      v72 = [(HACCShortcutViewController *)self shouldDisplayControlForModule:36 fromModulesArray:v8 mainStackOrderArrayCopy:v9];
+      isLeftConnected3 = [(HACCShortcutViewController *)self shouldDisplayControlForModule:36 fromModulesArray:arrayCopy mainStackOrderArrayCopy:copyCopy];
 LABEL_159:
-      LOBYTE(self) = v72;
+      LOBYTE(self) = isLeftConnected3;
 LABEL_165:
 
       return self & 1;
@@ -1575,11 +1575,11 @@ LABEL_165:
   }
 }
 
-- (BOOL)addPartialSeparatorAboveModule:(unint64_t)a3
+- (BOOL)addPartialSeparatorAboveModule:(unint64_t)module
 {
-  v5 = a3 == 37 || a3 - 25 < 2;
+  v5 = module == 37 || module - 25 < 2;
   v6 = _os_feature_enabled_impl();
-  v7 = a3 == 31 || v5;
+  v7 = module == 31 || v5;
   if (v6)
   {
     return v7;
@@ -1591,27 +1591,27 @@ LABEL_165:
   }
 }
 
-- (id)parentViewControllerForModule:(unint64_t)a3
+- (id)parentViewControllerForModule:(unint64_t)module
 {
-  if (a3 > 24)
+  if (module > 24)
   {
-    if (a3 > 31)
+    if (module > 31)
     {
-      if (a3 <= 34)
+      if (module <= 34)
       {
-        if (a3 == 33)
+        if (module == 33)
         {
-          v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-          v4 = v3;
+          moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+          v4 = moduleToViewControllerMap;
           v5 = &unk_286465600;
           goto LABEL_10;
         }
       }
 
-      else if (a3 - 35 < 4)
+      else if (module - 35 < 4)
       {
-        v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-        v4 = v3;
+        moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+        v4 = moduleToViewControllerMap;
         v5 = &unk_2864655D0;
         goto LABEL_10;
       }
@@ -1619,77 +1619,77 @@ LABEL_165:
 
     else
     {
-      if (a3 - 25 < 5)
+      if (module - 25 < 5)
       {
-        v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-        v4 = v3;
+        moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+        v4 = moduleToViewControllerMap;
         v5 = &unk_286465618;
         goto LABEL_10;
       }
 
-      if (a3 == 31)
+      if (module == 31)
       {
-        v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-        v4 = v3;
+        moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+        v4 = moduleToViewControllerMap;
         v5 = &unk_2864655E8;
         goto LABEL_10;
       }
     }
   }
 
-  else if (a3 - 1 < 0x16)
+  else if (module - 1 < 0x16)
   {
-    v3 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-    v4 = v3;
+    moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+    v4 = moduleToViewControllerMap;
     v5 = &unk_2864655A0;
 LABEL_10:
-    v6 = [v3 objectForKey:v5];
+    selfCopy = [moduleToViewControllerMap objectForKey:v5];
 
     goto LABEL_11;
   }
 
-  v6 = self;
+  selfCopy = self;
 LABEL_11:
 
+  return selfCopy;
+}
+
+- (BOOL)_isMainStackForModule:(unint64_t)module
+{
+  mainStackIndexSet = [(HACCShortcutViewController *)self mainStackIndexSet];
+  LOBYTE(module) = [mainStackIndexSet containsIndex:module];
+
+  return module;
+}
+
+- (unint64_t)_mainStackIndexForModule:(unint64_t)module
+{
+  mainStackOrderArray = [(HACCShortcutViewController *)self mainStackOrderArray];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:module];
+  v6 = [mainStackOrderArray indexOfObject:v5];
+
   return v6;
 }
 
-- (BOOL)_isMainStackForModule:(unint64_t)a3
+- (id)contentControllerForModule:(unint64_t)module
 {
-  v4 = [(HACCShortcutViewController *)self mainStackIndexSet];
-  LOBYTE(a3) = [v4 containsIndex:a3];
-
-  return a3;
-}
-
-- (unint64_t)_mainStackIndexForModule:(unint64_t)a3
-{
-  v4 = [(HACCShortcutViewController *)self mainStackOrderArray];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 indexOfObject:v5];
-
-  return v6;
-}
-
-- (id)contentControllerForModule:(unint64_t)a3
-{
-  v3 = [[HACCContentViewController alloc] initWithContentModule:a3 andDelegate:self];
+  v3 = [[HACCContentViewController alloc] initWithContentModule:module andDelegate:self];
 
   return v3;
 }
 
-- (void)updateContentViewListeners:(BOOL)a3
+- (void)updateContentViewListeners:(BOOL)listeners
 {
-  v3 = a3;
+  listenersCopy = listeners;
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-  v5 = [v4 allValues];
+  moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  allValues = [moduleToViewControllerMap allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1700,12 +1700,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 contentView];
-        if (v3)
+        contentView = [v10 contentView];
+        if (listenersCopy)
         {
           v12 = objc_opt_respondsToSelector();
 
@@ -1714,8 +1714,8 @@ LABEL_11:
             continue;
           }
 
-          v13 = [v10 contentView];
-          [v13 subscribeListeners];
+          contentView2 = [v10 contentView];
+          [contentView2 subscribeListeners];
         }
 
         else
@@ -1727,12 +1727,12 @@ LABEL_11:
             continue;
           }
 
-          v13 = [v10 contentView];
-          [v13 unsubscribeListeners];
+          contentView2 = [v10 contentView];
+          [contentView2 unsubscribeListeners];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1745,24 +1745,24 @@ LABEL_11:
   {
     [(HACCShortcutViewController *)self startListeningForHearingAidUpdates];
     [(HACCShortcutViewController *)self startListeningForHeadphoneUpdates];
-    v3 = [(HACCShortcutViewController *)self view];
-    [v3 bounds];
+    view = [(HACCShortcutViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(HACCShortcutViewController *)self view];
-    [v8 frame];
+    view2 = [(HACCShortcutViewController *)self view];
+    [view2 frame];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(HACCShortcutViewController *)self scrollView];
-    [v13 setFrame:{v5, v7, v10, v12}];
+    scrollView = [(HACCShortcutViewController *)self scrollView];
+    [scrollView setFrame:{v5, v7, v10, v12}];
 
-    v14 = [(HACCShortcutViewController *)self mainStackOrderArray];
-    v15 = [v14 copy];
+    mainStackOrderArray = [(HACCShortcutViewController *)self mainStackOrderArray];
+    v15 = [mainStackOrderArray copy];
 
-    v16 = [MEMORY[0x277D12DE8] sharedInstance];
-    v17 = [v16 connectionQueue];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    connectionQueue = [mEMORY[0x277D12DE8] connectionQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __53__HACCShortcutViewController_updateAvailableControls__block_invoke;
@@ -1770,7 +1770,7 @@ LABEL_11:
     v19[4] = self;
     v20 = v15;
     v18 = v15;
-    dispatch_async(v17, v19);
+    dispatch_async(connectionQueue, v19);
   }
 }
 
@@ -1980,38 +1980,38 @@ LABEL_32:
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v3 = [(HACCShortcutViewController *)self view];
-  [v3 bounds];
+  view = [(HACCShortcutViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(HACCShortcutViewController *)self mainStackIndexSet];
+  mainStackIndexSet = [(HACCShortcutViewController *)self mainStackIndexSet];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __42__HACCShortcutViewController_updateHeight__block_invoke;
   v18[3] = &unk_2796F7548;
   v18[4] = self;
   v18[5] = &v19;
-  [v6 enumerateIndexesUsingBlock:v18];
+  [mainStackIndexSet enumerateIndexesUsingBlock:v18];
 
   self->_moduleHeight = v20[3];
-  v7 = [(HACCShortcutViewController *)self stackView];
-  [v7 frame];
+  stackView = [(HACCShortcutViewController *)self stackView];
+  [stackView frame];
   v9 = v8;
   v11 = v10;
 
   v12 = v20[3];
-  v13 = [(HACCShortcutViewController *)self stackView];
-  [v13 setFrame:{v9, v11, v5, v12}];
+  stackView2 = [(HACCShortcutViewController *)self stackView];
+  [stackView2 setFrame:{v9, v11, v5, v12}];
 
-  v14 = [(HACCShortcutViewController *)self scrollView];
+  scrollView = [(HACCShortcutViewController *)self scrollView];
   [(HACCShortcutViewController *)self moduleHeight];
-  [v14 setFrame:{0.0, 0.0, v5, v15}];
+  [scrollView setFrame:{0.0, 0.0, v5, v15}];
 
-  v16 = [(HACCShortcutViewController *)self scrollView];
-  [v16 setContentSize:{v5, v20[3]}];
+  scrollView2 = [(HACCShortcutViewController *)self scrollView];
+  [scrollView2 setContentSize:{v5, v20[3]}];
 
-  v17 = [(HACCShortcutViewController *)self delegate];
-  [v17 shortcutDidChangeSize:self];
+  delegate = [(HACCShortcutViewController *)self delegate];
+  [delegate shortcutDidChangeSize:self];
 
   _Block_object_dispose(&v19, 8);
 }
@@ -2041,8 +2041,8 @@ void __42__HACCShortcutViewController_updateHeight__block_invoke(uint64_t a1, ui
 - (double)moduleHeight
 {
   moduleHeight = self->_moduleHeight;
-  v4 = [(HACCShortcutViewController *)self view];
-  [v4 bounds];
+  view = [(HACCShortcutViewController *)self view];
+  [view bounds];
   v5 = CGRectGetMidY(v11) - moduleHeight * 0.5;
 
   v6 = MEMORY[0x25309AB60]() * 0.5;
@@ -2056,8 +2056,8 @@ void __42__HACCShortcutViewController_updateHeight__block_invoke(uint64_t a1, ui
     v7 = v6;
   }
 
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = CGRectGetHeight(v12) + v7 * -2.0;
 
   self->_mainModuleOrigin.x = 0.0;
@@ -2075,8 +2075,8 @@ void __42__HACCShortcutViewController_updateHeight__block_invoke(uint64_t a1, ui
 
 - (double)preferredContentWidth
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v5);
 
   return Width;
@@ -2085,7 +2085,7 @@ void __42__HACCShortcutViewController_updateHeight__block_invoke(uint64_t a1, ui
 - (id)containerViewsForPlatterTreatment
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(HACCShortcutViewController *)self mainStackIndexSet];
+  mainStackIndexSet = [(HACCShortcutViewController *)self mainStackIndexSet];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__HACCShortcutViewController_containerViewsForPlatterTreatment__block_invoke;
@@ -2093,7 +2093,7 @@ void __42__HACCShortcutViewController_updateHeight__block_invoke(uint64_t a1, ui
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateIndexesUsingBlock:v9];
+  [mainStackIndexSet enumerateIndexesUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -2126,13 +2126,13 @@ void __63__HACCShortcutViewController_containerViewsForPlatterTreatment__block_i
   v9 = __Block_byref_object_copy__1;
   v10 = __Block_byref_object_dispose__1;
   v11 = 0;
-  v2 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__HACCShortcutViewController_expandedController__block_invoke;
   v5[3] = &unk_2796F7598;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [moduleToViewControllerMap enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2156,32 +2156,32 @@ void __48__HACCShortcutViewController_expandedController__block_invoke(uint64_t 
 
 - (BOOL)isExpanded
 {
-  v2 = [(HACCShortcutViewController *)self expandedController];
-  v3 = v2 != 0;
+  expandedController = [(HACCShortcutViewController *)self expandedController];
+  v3 = expandedController != 0;
 
   return v3;
 }
 
 - (BOOL)isControlCenterModuleExpanded
 {
-  v2 = [(HACCShortcutViewController *)self parentViewController];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  parentViewController = [(HACCShortcutViewController *)self parentViewController];
+  if (parentViewController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 isExpanded];
+    isExpanded = [parentViewController isExpanded];
   }
 
   else
   {
-    v3 = 1;
+    isExpanded = 1;
   }
 
-  return v3;
+  return isExpanded;
 }
 
 - (void)updateView
 {
-  v3 = [(HACCShortcutViewController *)self view];
-  [v3 alpha];
+  view = [(HACCShortcutViewController *)self view];
+  [view alpha];
   v5 = v4;
 
   if (v5 > 0.0)
@@ -2195,34 +2195,34 @@ void __48__HACCShortcutViewController_expandedController__block_invoke(uint64_t 
   }
 }
 
-- (void)updateViewForModule:(unint64_t)a3
+- (void)updateViewForModule:(unint64_t)module
 {
-  v6 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v5 = [v6 objectForKey:v4];
+  moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:module];
+  v5 = [moduleToViewControllerMap objectForKey:v4];
   [v5 updateValue];
 }
 
-- (void)updateViewForProperties:(id)a3
+- (void)updateViewForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D12DE8] sharedInstance];
-  v6 = [v5 hearingAidReachable];
+  propertiesCopy = properties;
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  hearingAidReachable = [mEMORY[0x277D12DE8] hearingAidReachable];
 
-  if (v6)
+  if (hearingAidReachable)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__HACCShortcutViewController_updateViewForProperties___block_invoke_2;
     v8[3] = &unk_2796F7600;
     v8[4] = self;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [propertiesCopy enumerateObjectsUsingBlock:v8];
   }
 
   else if ([(HACCShortcutViewController *)self isExpanded])
   {
-    v7 = [(HACCShortcutViewController *)self moduleToViewControllerMap];
-    [v7 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_396];
+    moduleToViewControllerMap = [(HACCShortcutViewController *)self moduleToViewControllerMap];
+    [moduleToViewControllerMap enumerateKeysAndObjectsUsingBlock:&__block_literal_global_396];
   }
 }
 
@@ -2410,11 +2410,11 @@ LABEL_31:
 
 - (BOOL)_isStandaloneHeadphoneLevels
 {
-  v3 = [(HACCShortcutViewController *)self mainStackOrderArray];
-  if ([v3 count] == 1)
+  mainStackOrderArray = [(HACCShortcutViewController *)self mainStackOrderArray];
+  if ([mainStackOrderArray count] == 1)
   {
-    v4 = [(HACCShortcutViewController *)self mainStackOrderArray];
-    v5 = [v4 containsObject:&unk_2864655B8];
+    mainStackOrderArray2 = [(HACCShortcutViewController *)self mainStackOrderArray];
+    v5 = [mainStackOrderArray2 containsObject:&unk_2864655B8];
   }
 
   else
@@ -2425,12 +2425,12 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)_isStandaloneHeadphoneLevelsFromMainStackOrderArray:(id)a3
+- (BOOL)_isStandaloneHeadphoneLevelsFromMainStackOrderArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  arrayCopy = array;
+  if ([arrayCopy count] == 1)
   {
-    v4 = [v3 containsObject:&unk_2864655B8];
+    v4 = [arrayCopy containsObject:&unk_2864655B8];
   }
 
   else
@@ -2443,11 +2443,11 @@ LABEL_31:
 
 - (BOOL)shouldShowHeadphoneLevelUnavailable
 {
-  v3 = [(HACCShortcutViewController *)self _isStandaloneHeadphoneLevels];
+  _isStandaloneHeadphoneLevels = [(HACCShortcutViewController *)self _isStandaloneHeadphoneLevels];
   if ([(HACCShortcutViewController *)self headphoneAudioAvailable])
   {
-    v4 = [MEMORY[0x277D12E20] sharedInstance];
-    v5 = [v4 liveHeadphoneLevelEnabled] ^ 1;
+    mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+    v5 = [mEMORY[0x277D12E20] liveHeadphoneLevelEnabled] ^ 1;
   }
 
   else
@@ -2455,16 +2455,16 @@ LABEL_31:
     LOBYTE(v5) = 1;
   }
 
-  return v3 & v5;
+  return _isStandaloneHeadphoneLevels & v5;
 }
 
 - (BOOL)_isStandalonePMEModule
 {
-  v3 = [(HACCShortcutViewController *)self mainStackOrderArray];
-  if ([v3 count] == 1)
+  mainStackOrderArray = [(HACCShortcutViewController *)self mainStackOrderArray];
+  if ([mainStackOrderArray count] == 1)
   {
-    v4 = [(HACCShortcutViewController *)self mainStackOrderArray];
-    v5 = [v4 containsObject:&unk_2864655D0];
+    mainStackOrderArray2 = [(HACCShortcutViewController *)self mainStackOrderArray];
+    v5 = [mainStackOrderArray2 containsObject:&unk_2864655D0];
   }
 
   else
@@ -2475,12 +2475,12 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)_isStandalonePMEModuleFromMainStackOrderArray:(id)a3
+- (BOOL)_isStandalonePMEModuleFromMainStackOrderArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  arrayCopy = array;
+  if ([arrayCopy count] == 1)
   {
-    v4 = [v3 containsObject:&unk_2864655D0];
+    v4 = [arrayCopy containsObject:&unk_2864655D0];
   }
 
   else
@@ -2493,12 +2493,12 @@ LABEL_31:
 
 - (BOOL)showPMEExpandedOptions
 {
-  v3 = [MEMORY[0x277D3A1D0] sharedInstance];
-  if ([v3 personalMediaEnabled])
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  if ([mEMORY[0x277D3A1D0] personalMediaEnabled])
   {
-    v4 = [MEMORY[0x277D3A1D0] sharedInstance];
-    v5 = [v4 personalMediaConfiguration];
-    v6 = v5 != 0;
+    mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+    personalMediaConfiguration = [mEMORY[0x277D3A1D0]2 personalMediaConfiguration];
+    v6 = personalMediaConfiguration != 0;
   }
 
   else
@@ -2506,152 +2506,152 @@ LABEL_31:
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x277D3A1C8] sharedInstance];
-  v8 = [(HACCShortcutViewController *)self currentDeviceAddress];
-  v9 = [v7 yodelEnabledForAddress:v8];
+  mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+  currentDeviceAddress = [(HACCShortcutViewController *)self currentDeviceAddress];
+  v9 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
   return (v9 | v6) & 1;
 }
 
-- (void)viewController:(id)a3 didExpand:(BOOL)a4
+- (void)viewController:(id)controller didExpand:(BOOL)expand
 {
-  if (!a4)
+  if (!expand)
   {
-    a3 = 0;
+    controller = 0;
   }
 
-  [(HACCShortcutViewController *)self setExpandedController:a3];
+  [(HACCShortcutViewController *)self setExpandedController:controller];
 }
 
-- (void)controlDidActivate:(id)a3
+- (void)controlDidActivate:(id)activate
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activateCopy = activate;
   v5 = HCLogHearing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 module];
-    v7 = [v4 contentValue];
+    module = [activateCopy module];
+    contentValue = [activateCopy contentValue];
     *buf = 134218242;
-    v56 = v6;
+    v56 = module;
     v57 = 2112;
-    v58 = v7;
+    v58 = contentValue;
     _os_log_impl(&dword_252166000, v5, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Control activated %ld - %@", buf, 0x16u);
   }
 
-  v8 = [(HACCShortcutViewController *)self currentHearingDevice];
-  switch([v4 module])
+  currentHearingDevice = [(HACCShortcutViewController *)self currentHearingDevice];
+  switch([activateCopy module])
   {
     case 1:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setLeftMixedVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setLeftMixedVolume:?];
       goto LABEL_45;
     case 2:
       goto LABEL_16;
     case 3:
-      v25 = [v4 contentValue];
-      [v25 doubleValue];
-      [v8 setLeftMixedVolume:?];
+      contentValue3 = [activateCopy contentValue];
+      [contentValue3 doubleValue];
+      [currentHearingDevice setLeftMixedVolume:?];
 
 LABEL_16:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setRightMixedVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setRightMixedVolume:?];
       goto LABEL_45;
     case 4:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setLeftMicrophoneVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setLeftMicrophoneVolume:?];
       goto LABEL_45;
     case 5:
       goto LABEL_18;
     case 6:
-      v26 = [v4 contentValue];
-      [v26 doubleValue];
-      [v8 setLeftMicrophoneVolume:?];
+      contentValue4 = [activateCopy contentValue];
+      [contentValue4 doubleValue];
+      [currentHearingDevice setLeftMicrophoneVolume:?];
 
 LABEL_18:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setRightMicrophoneVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setRightMicrophoneVolume:?];
       goto LABEL_45;
     case 7:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setLeftSensitivity:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setLeftSensitivity:?];
       goto LABEL_45;
     case 8:
       goto LABEL_27;
     case 9:
-      v35 = [v4 contentValue];
-      [v35 doubleValue];
-      [v8 setLeftSensitivity:?];
+      contentValue5 = [activateCopy contentValue];
+      [contentValue5 doubleValue];
+      [currentHearingDevice setLeftSensitivity:?];
 
 LABEL_27:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setRightSensitivity:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setRightSensitivity:?];
       goto LABEL_45;
     case 10:
-      v32 = [v4 contentValue];
-      [v32 doubleValue];
+      contentValue6 = [activateCopy contentValue];
+      [contentValue6 doubleValue];
       v34 = ((v33 + -0.5) * 255.0);
 
-      [v8 setLeftTreble:v34];
-      [v8 setRightTreble:v34];
+      [currentHearingDevice setLeftTreble:v34];
+      [currentHearingDevice setRightTreble:v34];
       goto LABEL_46;
     case 11:
-      v15 = [v4 contentValue];
-      [v15 doubleValue];
+      contentValue7 = [activateCopy contentValue];
+      [contentValue7 doubleValue];
       v17 = ((v16 + -0.5) * 255.0);
 
-      [v8 setLeftBass:v17];
-      [v8 setRightBass:v17];
+      [currentHearingDevice setLeftBass:v17];
+      [currentHearingDevice setRightBass:v17];
       goto LABEL_46;
     case 12:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setLeftStreamVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setLeftStreamVolume:?];
       goto LABEL_45;
     case 13:
       goto LABEL_9;
     case 14:
-      v14 = [v4 contentValue];
-      [v14 doubleValue];
-      [v8 setLeftStreamVolume:?];
+      contentValue8 = [activateCopy contentValue];
+      [contentValue8 doubleValue];
+      [currentHearingDevice setLeftStreamVolume:?];
 
 LABEL_9:
-      v9 = [v4 contentValue];
-      [v9 doubleValue];
-      [v8 setRightStreamVolume:?];
+      contentValue2 = [activateCopy contentValue];
+      [contentValue2 doubleValue];
+      [currentHearingDevice setRightStreamVolume:?];
       goto LABEL_45;
     case 24:
-      v27 = [MEMORY[0x277D12E18] sharedInstance];
-      v28 = [v27 comfortSoundsAvailable];
+      mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+      comfortSoundsAvailable = [mEMORY[0x277D12E18] comfortSoundsAvailable];
 
-      if (!v28)
+      if (!comfortSoundsAvailable)
       {
         goto LABEL_46;
       }
 
-      v29 = [MEMORY[0x277D12E18] sharedInstance];
-      v30 = [v29 comfortSoundsEnabled];
+      mEMORY[0x277D12E18]2 = [MEMORY[0x277D12E18] sharedInstance];
+      comfortSoundsEnabled = [mEMORY[0x277D12E18]2 comfortSoundsEnabled];
 
-      v9 = [MEMORY[0x277D12E18] sharedInstance];
-      [v9 setComfortSoundsEnabled:v30 ^ 1u];
+      contentValue2 = [MEMORY[0x277D12E18] sharedInstance];
+      [contentValue2 setComfortSoundsEnabled:comfortSoundsEnabled ^ 1u];
       goto LABEL_45;
     case 25:
-      v9 = [MEMORY[0x277D12E18] sharedInstance];
-      v31 = [v4 contentValue];
-      [v31 doubleValue];
-      [v9 setRelativeVolume:?];
+      contentValue2 = [MEMORY[0x277D12E18] sharedInstance];
+      contentValue9 = [activateCopy contentValue];
+      [contentValue9 doubleValue];
+      [contentValue2 setRelativeVolume:?];
       goto LABEL_31;
     case 26:
-      v9 = [MEMORY[0x277D12E18] sharedInstance];
-      v31 = [v4 contentValue];
-      [v31 doubleValue];
-      [v9 setMediaVolume:?];
+      contentValue2 = [MEMORY[0x277D12E18] sharedInstance];
+      contentValue9 = [activateCopy contentValue];
+      [contentValue9 doubleValue];
+      [contentValue2 setMediaVolume:?];
 LABEL_31:
 
       goto LABEL_45;
@@ -2659,47 +2659,47 @@ LABEL_31:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = v4;
+        currentDeviceAddress = activateCopy;
       }
 
       else
       {
-        v18 = 0;
+        currentDeviceAddress = 0;
       }
 
-      v41 = [v4 contentValue];
-      v42 = [v41 BOOLValue];
+      contentValue10 = [activateCopy contentValue];
+      bOOLValue = [contentValue10 BOOLValue];
 
       hearingLocString();
-      if (v42)
+      if (bOOLValue)
         v43 = {;
-        [v18 setAccessibilityValueString:v43];
+        [currentDeviceAddress setAccessibilityValueString:v43];
 
-        v44 = [MEMORY[0x277D12DE8] sharedInstance];
-        [v44 stopLiveListen];
+        mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+        [mEMORY[0x277D12DE8] stopLiveListen];
       }
 
       else
         v45 = {;
-        [v18 setAccessibilityValueString:v45];
+        [currentDeviceAddress setAccessibilityValueString:v45];
 
-        v46 = [MEMORY[0x277D12DE8] sharedInstance];
-        [v46 startLiveListen];
+        mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+        [mEMORY[0x277D12DE8]2 startLiveListen];
 
         [(HACCShortcutViewController *)self _logLiveListenAnalytics];
       }
 
       goto LABEL_42;
     case 32:
-      v9 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      if ([v9 length])
+      contentValue2 = [(HACCShortcutViewController *)self currentDeviceAddress];
+      if ([contentValue2 length])
       {
-        v10 = [MEMORY[0x277D3A1D0] sharedInstance];
-        if ([v10 personalMediaEnabled])
+        mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+        if ([mEMORY[0x277D3A1D0] personalMediaEnabled])
         {
-          v11 = [MEMORY[0x277D3A1D0] sharedInstance];
-          v12 = [v11 personalMediaConfiguration];
-          v13 = v12 != 0;
+          mEMORY[0x277D3A1D0]2 = [MEMORY[0x277D3A1D0] sharedInstance];
+          personalMediaConfiguration = [mEMORY[0x277D3A1D0]2 personalMediaConfiguration];
+          v13 = personalMediaConfiguration != 0;
         }
 
         else
@@ -2707,33 +2707,33 @@ LABEL_31:
           v13 = 0;
         }
 
-        v47 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v48 = [v47 transparencyCustomizedForAddress:v9];
+        mEMORY[0x277D3A1D0]3 = [MEMORY[0x277D3A1D0] sharedInstance];
+        v48 = [mEMORY[0x277D3A1D0]3 transparencyCustomizedForAddress:contentValue2];
 
-        v49 = [MEMORY[0x277D12E00] sharedInstance];
+        mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __49__HACCShortcutViewController_controlDidActivate___block_invoke;
         v50[3] = &unk_2796F7650;
         v53 = v13;
         v54 = v48;
-        v51 = v9;
-        v52 = v4;
-        [v49 getSSLEnabledForAddress:v51 withCompletion:v50];
+        v51 = contentValue2;
+        v52 = activateCopy;
+        [mEMORY[0x277D12E00] getSSLEnabledForAddress:v51 withCompletion:v50];
       }
 
 LABEL_45:
 
       goto LABEL_46;
     case 37:
-      v18 = [(HACCShortcutViewController *)self currentDeviceAddress];
-      v19 = [MEMORY[0x277D3A1C8] sharedInstance];
-      v20 = [v19 yodelEnabledForAddress:v18];
+      currentDeviceAddress = [(HACCShortcutViewController *)self currentDeviceAddress];
+      mEMORY[0x277D3A1C8] = [MEMORY[0x277D3A1C8] sharedInstance];
+      v20 = [mEMORY[0x277D3A1C8] yodelEnabledForAddress:currentDeviceAddress];
 
       if (v20)
       {
-        v21 = [MEMORY[0x277D3A1C8] sharedInstance];
-        v22 = [v21 beamformingForAddress:v18];
+        mEMORY[0x277D3A1C8]2 = [MEMORY[0x277D3A1C8] sharedInstance];
+        v22 = [mEMORY[0x277D3A1C8]2 beamformingForAddress:currentDeviceAddress];
 
         v23 = HCLogAudioAccommodations();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -2743,22 +2743,22 @@ LABEL_45:
           _os_log_impl(&dword_252166000, v23, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Yodel beamformer toggled %d", buf, 8u);
         }
 
-        v24 = [MEMORY[0x277D3A1C8] sharedInstance];
-        [v24 setBeamforming:v22 ^ 1u forAddress:v18];
+        mEMORY[0x277D3A1C8]3 = [MEMORY[0x277D3A1C8] sharedInstance];
+        [mEMORY[0x277D3A1C8]3 setBeamforming:v22 ^ 1u forAddress:currentDeviceAddress];
       }
 
       else
       {
-        v36 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v37 = [v36 transparencyCustomizedForAddress:v18];
+        mEMORY[0x277D3A1D0]4 = [MEMORY[0x277D3A1D0] sharedInstance];
+        v37 = [mEMORY[0x277D3A1D0]4 transparencyCustomizedForAddress:currentDeviceAddress];
 
         if (!v37)
         {
           goto LABEL_37;
         }
 
-        v38 = [MEMORY[0x277D3A1D0] sharedInstance];
-        v39 = [v38 transparencyBeamformingForAddress:v18];
+        mEMORY[0x277D3A1D0]5 = [MEMORY[0x277D3A1D0] sharedInstance];
+        v39 = [mEMORY[0x277D3A1D0]5 transparencyBeamformingForAddress:currentDeviceAddress];
 
         v40 = HCLogAudioAccommodations();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -2768,8 +2768,8 @@ LABEL_45:
           _os_log_impl(&dword_252166000, v40, OS_LOG_TYPE_DEFAULT, "CCShortcutViewController: Beamformer toggled %d", buf, 8u);
         }
 
-        v24 = [MEMORY[0x277D3A1D0] sharedInstance];
-        [v24 setTransparencyBeamforming:v39 ^ 1u forAddress:v18];
+        mEMORY[0x277D3A1C8]3 = [MEMORY[0x277D3A1D0] sharedInstance];
+        [mEMORY[0x277D3A1C8]3 setTransparencyBeamforming:v39 ^ 1u forAddress:currentDeviceAddress];
       }
 
 LABEL_37:
@@ -2836,8 +2836,8 @@ uint64_t __49__HACCShortcutViewController_controlDidActivate___block_invoke_2(ui
 
 - (void)_logLiveListenAnalytics
 {
-  v2 = [MEMORY[0x277D12E38] sharedUtilities];
-  [v2 requestCurrentRoutesWithCompletion:&__block_literal_global_450];
+  mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+  [mEMORY[0x277D12E38] requestCurrentRoutesWithCompletion:&__block_literal_global_450];
 }
 
 void __53__HACCShortcutViewController__logLiveListenAnalytics__block_invoke(uint64_t a1, void *a2)

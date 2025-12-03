@@ -1,8 +1,8 @@
 @interface _PXChangeDetailsEntry
 - (NSDictionary)subitemChangesByItem;
-- (_PXChangeDetailsEntry)initWithIndex:(int64_t)a3 changeDetails:(id)a4;
-- (void)addSubitemEntry:(id)a3;
-- (void)updateWithSectionedChangeDetails:(id)a3;
+- (_PXChangeDetailsEntry)initWithIndex:(int64_t)index changeDetails:(id)details;
+- (void)addSubitemEntry:(id)entry;
+- (void)updateWithSectionedChangeDetails:(id)details;
 @end
 
 @implementation _PXChangeDetailsEntry
@@ -34,8 +34,8 @@
           v8 = *(*(&v13 + 1) + 8 * i);
           if ([v8 index] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v9 = [v8 changeDetails];
-            v10 = [v9 copy];
+            changeDetails = [v8 changeDetails];
+            v10 = [changeDetails copy];
             v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "index")}];
             [0 setObject:v10 forKeyedSubscript:v11];
           }
@@ -51,36 +51,36 @@
   return 0;
 }
 
-- (void)updateWithSectionedChangeDetails:(id)a3
+- (void)updateWithSectionedChangeDetails:(id)details
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_PXChangeDetailsEntry *)self index];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  detailsCopy = details;
+  index = [(_PXChangeDetailsEntry *)self index];
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PXSectionedChangeDetailsCoalescer.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedChangeDetailsCoalescer.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex != NSNotFound"}];
   }
 
-  v7 = [v5 itemChangesInSection:v6];
-  v8 = [(_PXChangeDetailsEntry *)self changeDetails];
-  [v8 addChangeDetails:v7];
+  v7 = [detailsCopy itemChangesInSection:index];
+  changeDetails = [(_PXChangeDetailsEntry *)self changeDetails];
+  [changeDetails addChangeDetails:v7];
 
-  v9 = [(_PXChangeDetailsEntry *)self changeDetails];
-  v10 = [v9 hasIncrementalChanges];
+  changeDetails2 = [(_PXChangeDetailsEntry *)self changeDetails];
+  hasIncrementalChanges = [changeDetails2 hasIncrementalChanges];
 
-  if (v10)
+  if (hasIncrementalChanges)
   {
-    v30 = v6;
-    v11 = [v5 itemsWithSubitemChangesInSection:{-[_PXChangeDetailsEntry index](self, "index")}];
+    v30 = index;
+    v11 = [detailsCopy itemsWithSubitemChangesInSection:{-[_PXChangeDetailsEntry index](self, "index")}];
     v12 = [v11 mutableCopy];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [(_PXChangeDetailsEntry *)self subitemEntries];
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    subitemEntries = [(_PXChangeDetailsEntry *)self subitemEntries];
+    v14 = [subitemEntries countByEnumeratingWithState:&v31 objects:v35 count:16];
     v29 = v7;
     if (v14)
     {
@@ -92,7 +92,7 @@
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subitemEntries);
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
@@ -100,18 +100,18 @@
           [v18 setIndex:v19];
           if (v19 != 0x7FFFFFFFFFFFFFFFLL && [v12 containsIndex:v19])
           {
-            [v5 subitemChangesInItem:v19 section:v30];
-            v21 = v20 = v5;
-            v22 = [v18 changeDetails];
-            [v22 addChangeDetails:v21];
+            [detailsCopy subitemChangesInItem:v19 section:v30];
+            v21 = v20 = detailsCopy;
+            changeDetails3 = [v18 changeDetails];
+            [changeDetails3 addChangeDetails:v21];
 
             [v12 removeIndex:v19];
-            v5 = v20;
+            detailsCopy = v20;
             v7 = v29;
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v15 = [subitemEntries countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v15);
@@ -119,15 +119,15 @@
 
     while ([v12 count])
     {
-      v23 = [v12 firstIndex];
-      [v12 removeIndex:v23];
-      v24 = [(_PXChangeDetailsEntry *)self changeDetails];
-      v25 = [v24 indexAfterRevertingChangesFromIndex:v23];
+      firstIndex = [v12 firstIndex];
+      [v12 removeIndex:firstIndex];
+      changeDetails4 = [(_PXChangeDetailsEntry *)self changeDetails];
+      v25 = [changeDetails4 indexAfterRevertingChangesFromIndex:firstIndex];
 
       if (v25 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v26 = [v5 subitemChangesInItem:v23 section:v30];
-        v27 = [[_PXChangeDetailsEntry alloc] initWithIndex:v23 changeDetails:v26];
+        v26 = [detailsCopy subitemChangesInItem:firstIndex section:v30];
+        v27 = [[_PXChangeDetailsEntry alloc] initWithIndex:firstIndex changeDetails:v26];
         [(_PXChangeDetailsEntry *)self addSubitemEntry:v27];
       }
     }
@@ -136,35 +136,35 @@
   }
 }
 
-- (void)addSubitemEntry:(id)a3
+- (void)addSubitemEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   subitemEntries = self->_subitemEntries;
-  v8 = v4;
+  v8 = entryCopy;
   if (!subitemEntries)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_subitemEntries;
     self->_subitemEntries = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     subitemEntries = self->_subitemEntries;
   }
 
-  [(NSMutableArray *)subitemEntries addObject:v4];
+  [(NSMutableArray *)subitemEntries addObject:entryCopy];
 }
 
-- (_PXChangeDetailsEntry)initWithIndex:(int64_t)a3 changeDetails:(id)a4
+- (_PXChangeDetailsEntry)initWithIndex:(int64_t)index changeDetails:(id)details
 {
-  v6 = a4;
+  detailsCopy = details;
   v12.receiver = self;
   v12.super_class = _PXChangeDetailsEntry;
   v7 = [(_PXChangeDetailsEntry *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_index = a3;
-    v9 = [v6 mutableCopy];
+    v7->_index = index;
+    v9 = [detailsCopy mutableCopy];
     changeDetails = v8->_changeDetails;
     v8->_changeDetails = v9;
   }

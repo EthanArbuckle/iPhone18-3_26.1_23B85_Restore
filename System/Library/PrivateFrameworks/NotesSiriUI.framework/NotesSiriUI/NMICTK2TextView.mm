@@ -1,16 +1,16 @@
 @interface NMICTK2TextView
-+ (id)createTextViewWithNote:(id)a3 size:(CGSize)a4;
++ (id)createTextViewWithNote:(id)note size:(CGSize)size;
 @end
 
 @implementation NMICTK2TextView
 
-+ (id)createTextViewWithNote:(id)a3 size:(CGSize)a4
++ (id)createTextViewWithNote:(id)note size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x277D35998];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithNote:v7 size:0 insideSystemPaper:1 insideSiriSnippet:{width, height}];
+  noteCopy = note;
+  v8 = [[v6 alloc] initWithNote:noteCopy size:0 insideSystemPaper:1 insideSiriSnippet:{width, height}];
 
   return v8;
 }

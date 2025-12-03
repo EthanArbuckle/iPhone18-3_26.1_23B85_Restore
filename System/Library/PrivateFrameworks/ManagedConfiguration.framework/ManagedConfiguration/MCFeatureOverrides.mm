@@ -1,23 +1,23 @@
 @interface MCFeatureOverrides
-+ (BOOL)BOOLForDefaultsKey:(id)a3 isPresent:(BOOL *)a4;
++ (BOOL)BOOLForDefaultsKey:(id)key isPresent:(BOOL *)present;
 + (BOOL)allowUnsupervisedWatchEnrollment;
 + (BOOL)allowVPNInUserEnrollment;
-+ (double)accountRemovalTimeoutWithDefaultValue:(double)a3;
-+ (id)_numberForDefaultsKey:(id)a3 isPresent:(BOOL *)a4;
++ (double)accountRemovalTimeoutWithDefaultValue:(double)value;
++ (id)_numberForDefaultsKey:(id)key isPresent:(BOOL *)present;
 + (int)profileEventsExpirationInterval;
 + (unint64_t)profileEventsMaxLength;
 @end
 
 @implementation MCFeatureOverrides
 
-+ (id)_numberForDefaultsKey:(id)a3 isPresent:(BOOL *)a4
++ (id)_numberForDefaultsKey:(id)key isPresent:(BOOL *)present
 {
-  v6 = a3;
-  if (![a1 isAppleInternal])
+  keyCopy = key;
+  if (![self isAppleInternal])
   {
     v8 = 0;
     v9 = 0;
-    if (!a4)
+    if (!present)
     {
       goto LABEL_8;
     }
@@ -25,8 +25,8 @@
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 objectForKey:v6];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:keyCopy];
 
   v9 = v8 != 0;
   if (v8)
@@ -34,10 +34,10 @@
     v10 = v8;
   }
 
-  if (a4)
+  if (present)
   {
 LABEL_7:
-    *a4 = v9;
+    *present = v9;
   }
 
 LABEL_8:
@@ -45,100 +45,100 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)BOOLForDefaultsKey:(id)a3 isPresent:(BOOL *)a4
++ (BOOL)BOOLForDefaultsKey:(id)key isPresent:(BOOL *)present
 {
-  v4 = [a1 _numberForDefaultsKey:a3 isPresent:a4];
+  v4 = [self _numberForDefaultsKey:key isPresent:present];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (BOOL)allowVPNInUserEnrollment
 {
-  v3 = [a1 isAppleInternal];
-  if ([a1 isAppleInternal])
+  isAppleInternal = [self isAppleInternal];
+  if ([self isAppleInternal])
   {
     v6 = 0;
-    v4 = [a1 BOOLForDefaultsKey:@"MCAllowFullVPNInUserEnrollments" isPresent:&v6];
+    v4 = [self BOOLForDefaultsKey:@"MCAllowFullVPNInUserEnrollments" isPresent:&v6];
     if (v6)
     {
       return v4;
     }
   }
 
-  return v3;
+  return isAppleInternal;
 }
 
 + (BOOL)allowUnsupervisedWatchEnrollment
 {
-  v3 = [a1 isAppleInternal];
-  if ([a1 isAppleInternal])
+  isAppleInternal = [self isAppleInternal];
+  if ([self isAppleInternal])
   {
     v6 = 0;
-    v4 = [a1 BOOLForDefaultsKey:@"MCAllowUnsupervisedWatchEnrollment" isPresent:&v6];
+    v4 = [self BOOLForDefaultsKey:@"MCAllowUnsupervisedWatchEnrollment" isPresent:&v6];
     if (v6)
     {
       return v4;
     }
   }
 
-  return v3;
+  return isAppleInternal;
 }
 
 + (unint64_t)profileEventsMaxLength
 {
-  v2 = [a1 _numberForDefaultsKey:@"MCProfileEventsMaxLength" isPresent:0];
+  v2 = [self _numberForDefaultsKey:@"MCProfileEventsMaxLength" isPresent:0];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v4 = 20;
+    unsignedIntValue = 20;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 + (int)profileEventsExpirationInterval
 {
-  v2 = [a1 _numberForDefaultsKey:@"MCProfileEventsExpirationInterval" isPresent:0];
+  v2 = [self _numberForDefaultsKey:@"MCProfileEventsExpirationInterval" isPresent:0];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 1209600;
+    intValue = 1209600;
   }
 
-  return v4;
+  return intValue;
 }
 
-+ (double)accountRemovalTimeoutWithDefaultValue:(double)a3
++ (double)accountRemovalTimeoutWithDefaultValue:(double)value
 {
-  v4 = [a1 _numberForDefaultsKey:@"MCAccountRemovalTimeout" isPresent:0];
+  v4 = [self _numberForDefaultsKey:@"MCAccountRemovalTimeout" isPresent:0];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    a3 = v6;
+    value = v6;
   }
 
-  return a3;
+  return value;
 }
 
 @end

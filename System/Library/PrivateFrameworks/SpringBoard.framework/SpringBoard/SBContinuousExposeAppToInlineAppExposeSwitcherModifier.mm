@@ -1,28 +1,28 @@
 @interface SBContinuousExposeAppToInlineAppExposeSwitcherModifier
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBContinuousExposeAppToInlineAppExposeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 activeAppLayout:(id)a5 appExposeBundleIdentifier:(id)a6;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBContinuousExposeAppToInlineAppExposeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction activeAppLayout:(id)layout appExposeBundleIdentifier:(id)identifier;
 - (id)_inlineAppExposeAppLayouts;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBContinuousExposeAppToInlineAppExposeSwitcherModifier
 
-- (SBContinuousExposeAppToInlineAppExposeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 activeAppLayout:(id)a5 appExposeBundleIdentifier:(id)a6
+- (SBContinuousExposeAppToInlineAppExposeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction activeAppLayout:(id)layout appExposeBundleIdentifier:(id)identifier
 {
-  v11 = a5;
-  v12 = a6;
+  layoutCopy = layout;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = SBContinuousExposeAppToInlineAppExposeSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   v14 = v13;
   if (v13)
   {
-    v13->_direction = a4;
-    objc_storeStrong(&v13->_activeAppLayout, a5);
-    objc_storeStrong(&v14->_appExposeBundleIdentifier, a6);
+    v13->_direction = direction;
+    objc_storeStrong(&v13->_activeAppLayout, layout);
+    objc_storeStrong(&v14->_appExposeBundleIdentifier, identifier);
   }
 
   return v14;
@@ -32,9 +32,9 @@
 {
   v9.receiver = self;
   v9.super_class = SBContinuousExposeAppToInlineAppExposeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v9 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v9 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = SBAppendSwitcherModifierResponse(v4, v3);
+  v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
@@ -51,36 +51,36 @@
 {
   v8.receiver = self;
   v8.super_class = SBContinuousExposeAppToInlineAppExposeSwitcherModifier;
-  v3 = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)&v8 visibleAppLayouts];
-  v4 = v3;
+  visibleAppLayouts = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)&v8 visibleAppLayouts];
+  v4 = visibleAppLayouts;
   if (self->_direction)
   {
-    v5 = v3;
+    v5 = visibleAppLayouts;
   }
 
   else
   {
-    v6 = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self _inlineAppExposeAppLayouts];
-    v5 = [v4 setByAddingObjectsFromArray:v6];
+    _inlineAppExposeAppLayouts = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self _inlineAppExposeAppLayouts];
+    v5 = [v4 setByAddingObjectsFromArray:_inlineAppExposeAppLayouts];
   }
 
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
-  v5 = v4;
+  layoutsCopy = layouts;
+  v5 = layoutsCopy;
   if (self->_direction == 1)
   {
-    v6 = v4;
+    v6 = layoutsCopy;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeAppToInlineAppExposeSwitcherModifier;
-    v6 = [(SBTransitionSwitcherModifier *)&v9 adjustedAppLayoutsForAppLayouts:v4];
+    v6 = [(SBTransitionSwitcherModifier *)&v9 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   v7 = v6;
@@ -88,7 +88,7 @@
   return v7;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v29.receiver = self;
   v29.super_class = SBContinuousExposeAppToInlineAppExposeSwitcherModifier;
@@ -97,19 +97,19 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
-  v15 = [(SBTransitionSwitcherModifier *)self transitionPhase];
+  transitionPhase = [(SBTransitionSwitcherModifier *)self transitionPhase];
   if (([v14 isEqual:self->_activeAppLayout] & 1) == 0)
   {
-    v16 = [v14 continuousExposeIdentifier];
-    v17 = [v16 containsString:self->_appExposeBundleIdentifier];
+    continuousExposeIdentifier = [v14 continuousExposeIdentifier];
+    v17 = [continuousExposeIdentifier containsString:self->_appExposeBundleIdentifier];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [(SBSwitcherModifier *)self windowingConfiguration];
-      [v18 stripWidth];
+      windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+      [windowingConfiguration stripWidth];
       v20 = v19;
 
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -124,9 +124,9 @@
       }
 
       direction = self->_direction;
-      if (direction || v15 != 2)
+      if (direction || transitionPhase != 2)
       {
-        if (v15 == 1 && direction == 1)
+        if (transitionPhase == 1 && direction == 1)
         {
           v6 = v22;
         }
@@ -150,11 +150,11 @@
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
-  v7 = [v6 indexOfObject:v5];
+  layoutCopy = layout;
+  appLayouts = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts indexOfObject:layoutCopy];
 
   [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self frameForIndex:v7];
   v9 = v8;
@@ -181,8 +181,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  appLayouts = [(SBContinuousExposeAppToInlineAppExposeSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -193,12 +193,12 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(appLayouts);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 continuousExposeIdentifier];
-        if ([v9 containsString:self->_appExposeBundleIdentifier])
+        continuousExposeIdentifier = [v8 continuousExposeIdentifier];
+        if ([continuousExposeIdentifier containsString:self->_appExposeBundleIdentifier])
         {
           v10 = [v8 isEqual:self->_activeAppLayout];
 
@@ -213,7 +213,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [appLayouts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

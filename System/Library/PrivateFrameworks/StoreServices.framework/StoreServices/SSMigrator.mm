@@ -1,6 +1,6 @@
 @interface SSMigrator
 - (SSMigrator)init;
-- (void)performMigration:(unint64_t)a3 completionBlock:(id)a4;
+- (void)performMigration:(unint64_t)migration completionBlock:(id)block;
 @end
 
 @implementation SSMigrator
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)performMigration:(unint64_t)a3 completionBlock:(id)a4
+- (void)performMigration:(unint64_t)migration completionBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v7 = +[SSLogConfig sharedStoreServicesConfig];
@@ -32,19 +32,19 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v11 = v9;
     }
@@ -68,9 +68,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v26, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v26, v23}];
       free(v12);
-      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, v10);
+      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
     }
 
     goto LABEL_15;
@@ -78,17 +78,17 @@ LABEL_15:
 
 LABEL_16:
   v19 = SSXPCCreateMessageDictionary(116);
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:migration];
   SSXPCDictionarySetObject(v19, "1", v20);
 
-  NSLog(&cfstr_PerformingMigr.isa, a3);
+  NSLog(&cfstr_PerformingMigr.isa, migration);
   connection = self->_connection;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __47__SSMigrator_performMigration_completionBlock___block_invoke;
   v24[3] = &unk_1E84AE2D8;
-  v25 = v6;
-  v22 = v6;
+  v25 = blockCopy;
+  v22 = blockCopy;
   [(SSXPCConnection *)connection sendMessage:v19 withReply:v24];
 }
 

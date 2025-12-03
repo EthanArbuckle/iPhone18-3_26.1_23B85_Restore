@@ -1,53 +1,53 @@
 @interface PlatformTextFieldCoordinator
 - (_TtC7SwiftUI28PlatformTextFieldCoordinator)init;
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)pressedReturnKey:(id)a3;
-- (void)primaryActionTriggered:(id)a3;
-- (void)textChanged:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(void *)a1;
-- (void)textViewDidEndEditing:(id)a3;
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)pressedReturnKey:(id)key;
+- (void)primaryActionTriggered:(id)triggered;
+- (void)textChanged:(id)changed;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(void *)selection;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation PlatformTextFieldCoordinator
 
-- (void)textViewDidChangeSelection:(void *)a1
+- (void)textViewDidChangeSelection:(void *)selection
 {
-  v1 = a1;
+  selectionCopy = selection;
   PlatformTextFieldCoordinator.didChangeSelection()();
 }
 
-- (void)primaryActionTriggered:(id)a3
+- (void)primaryActionTriggered:(id)triggered
 {
-  v3 = self;
+  selfCopy = self;
   PlatformTextFieldCoordinator.triggerPrimaryAction()();
 }
 
-- (void)pressedReturnKey:(id)a3
+- (void)pressedReturnKey:(id)key
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PlatformTextFieldCoordinator.pressedReturnKey(_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)textChanged:(id)a3
+- (void)textChanged:(id)changed
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI28PlatformTextFieldCoordinator_isUserEditing) = 1;
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 text];
-  if (v6)
+  changedCopy = changed;
+  selfCopy = self;
+  text = [changedCopy text];
+  if (text)
   {
-    v7 = v6;
+    v7 = text;
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
@@ -70,41 +70,41 @@
   return result;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized PlatformTextFieldCoordinator.textFieldDidBeginEditing(_:)(closure #1 in PlatformTextFieldCoordinator.didBeginEditing()partial apply);
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized PlatformTextFieldCoordinator.textFieldDidEndEditing(_:reason:)(closure #1 in PlatformTextFieldCoordinator.didEndEditing()partial apply);
 }
 
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions
 {
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for UIMenuElement);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   PlatformTextFieldCoordinator.presentEditMenu(with:)(v8, v6);
   v10 = v9;
 
   return v10;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI28PlatformTextFieldCoordinator_isUserEditing) = 1;
-  v4 = a3;
-  v12 = self;
-  v5 = [v4 attributedText];
-  if (v5)
+  changeCopy = change;
+  selfCopy = self;
+  attributedText = [changeCopy attributedText];
+  if (attributedText)
   {
-    v6 = v5;
-    v7 = [v5 string];
+    v6 = attributedText;
+    string = [attributedText string];
 
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
@@ -120,17 +120,17 @@
   }
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized PlatformTextFieldCoordinator.textFieldDidBeginEditing(_:)(partial apply for closure #1 in PlatformTextFieldCoordinator.didBeginEditing());
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized PlatformTextFieldCoordinator.textFieldDidEndEditing(_:reason:)(partial apply for closure #1 in PlatformTextFieldCoordinator.didEndEditing());
 }
 

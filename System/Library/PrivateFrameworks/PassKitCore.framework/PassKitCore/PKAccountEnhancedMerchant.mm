@@ -1,20 +1,20 @@
 @interface PKAccountEnhancedMerchant
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountEnhancedMerchant:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountEnhancedMerchant:(id)merchant;
 - (NSString)description;
 - (PKAccountEnhancedMerchant)init;
-- (PKAccountEnhancedMerchant)initWithCoder:(id)a3;
-- (PKAccountEnhancedMerchant)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAccountEnhancedMerchant)initWithCoder:(id)coder;
+- (PKAccountEnhancedMerchant)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hashedPaymentIdentifiers;
 - (unint64_t)hash;
-- (void)_initWithMerchantDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBrandMUIDsFromJSONString:(id)a3;
-- (void)setEnhancedRewardsProgramIdentifiersFromJSONString:(id)a3;
-- (void)setExcludedMUIDsFromJSONString:(id)a3;
-- (void)setMapsSearchStringsFromJSONString:(id)a3;
-- (void)setPaymentIdentifiersFromJSONString:(id)a3;
+- (void)_initWithMerchantDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBrandMUIDsFromJSONString:(id)string;
+- (void)setEnhancedRewardsProgramIdentifiersFromJSONString:(id)string;
+- (void)setExcludedMUIDsFromJSONString:(id)string;
+- (void)setMapsSearchStringsFromJSONString:(id)string;
+- (void)setPaymentIdentifiersFromJSONString:(id)string;
 @end
 
 @implementation PKAccountEnhancedMerchant
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (PKAccountEnhancedMerchant)initWithDictionary:(id)a3
+- (PKAccountEnhancedMerchant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v9.receiver = self;
     v9.super_class = PKAccountEnhancedMerchant;
@@ -51,58 +51,58 @@
     v6 = v5;
     if (v5)
     {
-      [(PKAccountEnhancedMerchant *)v5 _initWithMerchantDictionary:v4];
+      [(PKAccountEnhancedMerchant *)v5 _initWithMerchantDictionary:dictionaryCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)_initWithMerchantDictionary:(id)a3
+- (void)_initWithMerchantDictionary:(id)dictionary
 {
-  v50 = a3;
-  v4 = [v50 PKStringForKey:@"privateIdentifier"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"privateIdentifier"];
   privateIdentifier = self->_privateIdentifier;
   self->_privateIdentifier = v4;
 
-  v6 = [v50 PKStringForKey:@"name"];
+  v6 = [dictionaryCopy PKStringForKey:@"name"];
   name = self->_name;
   self->_name = v6;
 
-  v8 = [v50 PKStringForKey:@"description"];
+  v8 = [dictionaryCopy PKStringForKey:@"description"];
   detailedDescription = self->_detailedDescription;
   self->_detailedDescription = v8;
 
-  v10 = [v50 PKArrayForKey:@"logoImage"];
+  v10 = [dictionaryCopy PKArrayForKey:@"logoImage"];
   v11 = [[PKRemoteImageSet alloc] initWithName:@"logoImage" dictionaries:v10];
   logoImage = self->_logoImage;
   self->_logoImage = v11;
 
-  v13 = [v50 PKArrayForKey:@"iconImage"];
+  v13 = [dictionaryCopy PKArrayForKey:@"iconImage"];
   v14 = [[PKRemoteImageSet alloc] initWithName:@"iconImage" dictionaries:v13];
   iconImage = self->_iconImage;
   self->_iconImage = v14;
 
-  v16 = [v50 PKStringForKey:@"adamID"];
-  v17 = [v16 nonZeroUnsignedLongLongNSNumberValue];
+  v16 = [dictionaryCopy PKStringForKey:@"adamID"];
+  nonZeroUnsignedLongLongNSNumberValue = [v16 nonZeroUnsignedLongLongNSNumberValue];
   adamID = self->_adamID;
-  self->_adamID = v17;
+  self->_adamID = nonZeroUnsignedLongLongNSNumberValue;
 
-  v19 = [v50 objectForKey:@"brandMUIDs"];
+  v19 = [dictionaryCopy objectForKey:@"brandMUIDs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 nonZeroUnsignedLongLongSetValue];
+    nonZeroUnsignedLongLongSetValue = [v19 nonZeroUnsignedLongLongSetValue];
     brandMUIDs = self->_brandMUIDs;
-    self->_brandMUIDs = v20;
+    self->_brandMUIDs = nonZeroUnsignedLongLongSetValue;
   }
 
   else
@@ -119,13 +119,13 @@
   }
 
 LABEL_7:
-  v22 = [v50 objectForKey:@"excludedMUIDs"];
+  v22 = [dictionaryCopy objectForKey:@"excludedMUIDs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v22 nonZeroUnsignedLongLongSetValue];
+    nonZeroUnsignedLongLongSetValue2 = [v22 nonZeroUnsignedLongLongSetValue];
     excludedMUIDs = self->_excludedMUIDs;
-    self->_excludedMUIDs = v23;
+    self->_excludedMUIDs = nonZeroUnsignedLongLongSetValue2;
   }
 
   else
@@ -142,21 +142,21 @@ LABEL_7:
   }
 
 LABEL_13:
-  v25 = [v50 PKURLForKey:@"website"];
+  v25 = [dictionaryCopy PKURLForKey:@"website"];
   website = self->_website;
   self->_website = v25;
 
-  v27 = [v50 PKURLForKey:@"loyaltyPassURL"];
+  v27 = [dictionaryCopy PKURLForKey:@"loyaltyPassURL"];
   loyaltyPassURL = self->_loyaltyPassURL;
   self->_loyaltyPassURL = v27;
 
-  v29 = [v50 objectForKey:@"paymentIdentifiers"];
+  v29 = [dictionaryCopy objectForKey:@"paymentIdentifiers"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v30 = [v29 stringSetValue];
+    stringSetValue = [v29 stringSetValue];
     paymentIdentifiers = self->_paymentIdentifiers;
-    self->_paymentIdentifiers = v30;
+    self->_paymentIdentifiers = stringSetValue;
   }
 
   else
@@ -173,13 +173,13 @@ LABEL_13:
   }
 
 LABEL_19:
-  v32 = [v50 objectForKey:@"mapsSearchStrings"];
+  v32 = [dictionaryCopy objectForKey:@"mapsSearchStrings"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = [v32 stringSetValue];
+    stringSetValue2 = [v32 stringSetValue];
     mapsSearchStrings = self->_mapsSearchStrings;
-    self->_mapsSearchStrings = v33;
+    self->_mapsSearchStrings = stringSetValue2;
   }
 
   else
@@ -196,38 +196,38 @@ LABEL_19:
   }
 
 LABEL_25:
-  v35 = [v50 PKStringForKey:@"disclosures"];
+  v35 = [dictionaryCopy PKStringForKey:@"disclosures"];
   disclosures = self->_disclosures;
   self->_disclosures = v35;
 
-  v37 = [v50 PKStringForKey:@"mapsSearchText"];
+  v37 = [dictionaryCopy PKStringForKey:@"mapsSearchText"];
   mapsSearchText = self->_mapsSearchText;
   self->_mapsSearchText = v37;
 
-  v39 = [v50 PKStringForKey:@"paymentSheetRewardsText"];
+  v39 = [dictionaryCopy PKStringForKey:@"paymentSheetRewardsText"];
   paymentSheetRewardsText = self->_paymentSheetRewardsText;
   self->_paymentSheetRewardsText = v39;
 
-  v41 = [v50 PKStringForKey:@"paymentSheetMerchantRewardsText"];
+  v41 = [dictionaryCopy PKStringForKey:@"paymentSheetMerchantRewardsText"];
   paymentSheetMerchantRewardsText = self->_paymentSheetMerchantRewardsText;
   self->_paymentSheetMerchantRewardsText = v41;
 
-  self->_suppressPaymentSheetRewardsHint = [v50 PKBoolForKey:@"suppressPaymentSheetRewardsHint"];
-  v43 = [v50 PKDateForKey:@"paymentSheetOverrideStart"];
+  self->_suppressPaymentSheetRewardsHint = [dictionaryCopy PKBoolForKey:@"suppressPaymentSheetRewardsHint"];
+  v43 = [dictionaryCopy PKDateForKey:@"paymentSheetOverrideStart"];
   paymentSheetOverrideStart = self->_paymentSheetOverrideStart;
   self->_paymentSheetOverrideStart = v43;
 
-  v45 = [v50 PKDateForKey:@"paymentSheetOverrideEnd"];
+  v45 = [dictionaryCopy PKDateForKey:@"paymentSheetOverrideEnd"];
   paymentSheetOverrideEnd = self->_paymentSheetOverrideEnd;
   self->_paymentSheetOverrideEnd = v45;
 
-  v47 = [v50 objectForKey:@"enhancedRewardsProgramIdentifier"];
+  v47 = [dictionaryCopy objectForKey:@"enhancedRewardsProgramIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v48 = [v47 stringSetValue];
+    stringSetValue3 = [v47 stringSetValue];
     enhancedRewardsProgramIdentifiers = self->_enhancedRewardsProgramIdentifiers;
-    self->_enhancedRewardsProgramIdentifiers = v48;
+    self->_enhancedRewardsProgramIdentifiers = stringSetValue3;
   }
 
   else
@@ -246,90 +246,90 @@ LABEL_25:
 LABEL_31:
 }
 
-- (void)setBrandMUIDsFromJSONString:(id)a3
+- (void)setBrandMUIDsFromJSONString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonNonZeroUnsignedLongLongNSNumberSetValue];
+    jsonNonZeroUnsignedLongLongNSNumberSetValue = [string jsonNonZeroUnsignedLongLongNSNumberSetValue];
   }
 
   else
   {
-    v4 = 0;
+    jsonNonZeroUnsignedLongLongNSNumberSetValue = 0;
   }
 
   brandMUIDs = self->_brandMUIDs;
-  self->_brandMUIDs = v4;
+  self->_brandMUIDs = jsonNonZeroUnsignedLongLongNSNumberSetValue;
 }
 
-- (void)setExcludedMUIDsFromJSONString:(id)a3
+- (void)setExcludedMUIDsFromJSONString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonNonZeroUnsignedLongLongNSNumberSetValue];
+    jsonNonZeroUnsignedLongLongNSNumberSetValue = [string jsonNonZeroUnsignedLongLongNSNumberSetValue];
   }
 
   else
   {
-    v4 = 0;
+    jsonNonZeroUnsignedLongLongNSNumberSetValue = 0;
   }
 
   excludedMUIDs = self->_excludedMUIDs;
-  self->_excludedMUIDs = v4;
+  self->_excludedMUIDs = jsonNonZeroUnsignedLongLongNSNumberSetValue;
 }
 
-- (void)setPaymentIdentifiersFromJSONString:(id)a3
+- (void)setPaymentIdentifiersFromJSONString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonStringSetValue];
+    jsonStringSetValue = [string jsonStringSetValue];
   }
 
   else
   {
-    v4 = 0;
+    jsonStringSetValue = 0;
   }
 
   paymentIdentifiers = self->_paymentIdentifiers;
-  self->_paymentIdentifiers = v4;
+  self->_paymentIdentifiers = jsonStringSetValue;
 }
 
-- (void)setEnhancedRewardsProgramIdentifiersFromJSONString:(id)a3
+- (void)setEnhancedRewardsProgramIdentifiersFromJSONString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonStringSetValue];
+    jsonStringSetValue = [string jsonStringSetValue];
   }
 
   else
   {
-    v4 = 0;
+    jsonStringSetValue = 0;
   }
 
   enhancedRewardsProgramIdentifiers = self->_enhancedRewardsProgramIdentifiers;
-  self->_enhancedRewardsProgramIdentifiers = v4;
+  self->_enhancedRewardsProgramIdentifiers = jsonStringSetValue;
 }
 
-- (void)setMapsSearchStringsFromJSONString:(id)a3
+- (void)setMapsSearchStringsFromJSONString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 jsonStringSetValue];
+    jsonStringSetValue = [string jsonStringSetValue];
   }
 
   else
   {
-    v4 = 0;
+    jsonStringSetValue = 0;
   }
 
   mapsSearchStrings = self->_mapsSearchStrings;
-  self->_mapsSearchStrings = v4;
+  self->_mapsSearchStrings = jsonStringSetValue;
 }
 
 - (id)hashedPaymentIdentifiers
 {
-  v2 = [(NSSet *)self->_paymentIdentifiers allObjects];
-  v3 = [v2 pk_arrayBySafelyApplyingBlock:&__block_literal_global_225];
+  allObjects = [(NSSet *)self->_paymentIdentifiers allObjects];
+  v3 = [allObjects pk_arrayBySafelyApplyingBlock:&__block_literal_global_225];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
@@ -352,74 +352,74 @@ id __53__PKAccountEnhancedMerchant_hashedPaymentIdentifiers__block_invoke(uint64
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p; ", objc_opt_class(), self];
   [v3 appendFormat:@"privateIdentifier: '%@'; ", self->_privateIdentifier];
   [v3 appendFormat:@"name: '%@'; ", self->_name];
-  v4 = [(NSString *)self->_detailedDescription truncatedStringWithEllipsis];
-  [v3 appendFormat:@"description: '%@'; ", v4];
+  truncatedStringWithEllipsis = [(NSString *)self->_detailedDescription truncatedStringWithEllipsis];
+  [v3 appendFormat:@"description: '%@'; ", truncatedStringWithEllipsis];
 
   [v3 appendFormat:@"logoImage: '%@'; ", self->_logoImage];
   [v3 appendFormat:@"iconImage: '%@'; ", self->_iconImage];
   [v3 appendFormat:@"adamID: '%@'; ", self->_adamID];
-  v5 = [(NSSet *)self->_brandMUIDs jsonString];
-  [v3 appendFormat:@"brandMUIDs: '%@'; ", v5];
+  jsonString = [(NSSet *)self->_brandMUIDs jsonString];
+  [v3 appendFormat:@"brandMUIDs: '%@'; ", jsonString];
 
-  v6 = [(NSSet *)self->_excludedMUIDs jsonString];
-  [v3 appendFormat:@"excludedMUIDs: '%@'; ", v6];
+  jsonString2 = [(NSSet *)self->_excludedMUIDs jsonString];
+  [v3 appendFormat:@"excludedMUIDs: '%@'; ", jsonString2];
 
-  v7 = [(NSURL *)self->_website absoluteString];
-  [v3 appendFormat:@"website: '%@'; ", v7];
+  absoluteString = [(NSURL *)self->_website absoluteString];
+  [v3 appendFormat:@"website: '%@'; ", absoluteString];
 
-  v8 = [(NSURL *)self->_loyaltyPassURL absoluteString];
-  [v3 appendFormat:@"loyaltyPassURL: '%@'; ", v8];
+  absoluteString2 = [(NSURL *)self->_loyaltyPassURL absoluteString];
+  [v3 appendFormat:@"loyaltyPassURL: '%@'; ", absoluteString2];
 
-  v9 = [(NSSet *)self->_paymentIdentifiers jsonString];
-  [v3 appendFormat:@"paymentIdentifiers: '%@'", v9];
+  jsonString3 = [(NSSet *)self->_paymentIdentifiers jsonString];
+  [v3 appendFormat:@"paymentIdentifiers: '%@'", jsonString3];
 
-  v10 = [(NSString *)self->_disclosures truncatedStringWithEllipsis];
-  [v3 appendFormat:@"disclosures: '%@'", v10];
+  truncatedStringWithEllipsis2 = [(NSString *)self->_disclosures truncatedStringWithEllipsis];
+  [v3 appendFormat:@"disclosures: '%@'", truncatedStringWithEllipsis2];
 
   [v3 appendFormat:@"mapsSearchText: '%@'", self->_mapsSearchText];
-  v11 = [(NSSet *)self->_mapsSearchStrings jsonString];
-  [v3 appendFormat:@"mapsSearchStrings: '%@'", v11];
+  jsonString4 = [(NSSet *)self->_mapsSearchStrings jsonString];
+  [v3 appendFormat:@"mapsSearchStrings: '%@'", jsonString4];
 
   [v3 appendFormat:@"paymentSheetRewardsText: '%@'", self->_paymentSheetRewardsText];
   [v3 appendFormat:@"paymentSheetMerchantRewardsText: '%@'", self->_paymentSheetMerchantRewardsText];
   [v3 appendFormat:@"suppressPaymentSheetRewardsHint: '%d'", self->_suppressPaymentSheetRewardsHint];
   [v3 appendFormat:@"paymentSheetOverrideStart: '%@'", self->_paymentSheetOverrideStart];
   [v3 appendFormat:@"paymentSheetOverrideEnd: '%@'", self->_paymentSheetOverrideEnd];
-  v12 = [(NSSet *)self->_enhancedRewardsProgramIdentifiers jsonString];
-  [v3 appendFormat:@"enhancedRewardsProgramIdentifiers: '%@'", v12];
+  jsonString5 = [(NSSet *)self->_enhancedRewardsProgramIdentifiers jsonString];
+  [v3 appendFormat:@"enhancedRewardsProgramIdentifiers: '%@'", jsonString5];
 
   [v3 appendFormat:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEnhancedMerchant *)self isEqualToAccountEnhancedMerchant:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEnhancedMerchant *)self isEqualToAccountEnhancedMerchant:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountEnhancedMerchant:(id)a3
+- (BOOL)isEqualToAccountEnhancedMerchant:(id)merchant
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  merchantCopy = merchant;
+  v5 = merchantCopy;
+  if (!merchantCopy)
   {
     goto LABEL_89;
   }
 
-  v6 = *(v4 + 2);
+  v6 = *(merchantCopy + 2);
   v7 = self->_privateIdentifier;
   v8 = v6;
   v9 = v8;
@@ -802,35 +802,35 @@ LABEL_90:
   return v5;
 }
 
-- (PKAccountEnhancedMerchant)initWithCoder:(id)a3
+- (PKAccountEnhancedMerchant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = PKAccountEnhancedMerchant;
   v5 = [(PKAccountEnhancedMerchant *)&v53 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateIdentifier"];
     privateIdentifier = v5->_privateIdentifier;
     v5->_privateIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     detailedDescription = v5->_detailedDescription;
     v5->_detailedDescription = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logoImage"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logoImage"];
     logoImage = v5->_logoImage;
     v5->_logoImage = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconImage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconImage"];
     iconImage = v5->_iconImage;
     v5->_iconImage = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
     adamID = v5->_adamID;
     v5->_adamID = v16;
 
@@ -838,19 +838,19 @@ LABEL_90:
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v18 setWithObjects:{v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"brandMUIDs"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"brandMUIDs"];
     brandMUIDs = v5->_brandMUIDs;
     v5->_brandMUIDs = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v21 forKey:@"excludedMUIDs"];
+    v24 = [coderCopy decodeObjectOfClasses:v21 forKey:@"excludedMUIDs"];
     excludedMUIDs = v5->_excludedMUIDs;
     v5->_excludedMUIDs = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"website"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"website"];
     website = v5->_website;
     v5->_website = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyPassURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loyaltyPassURL"];
     loyaltyPassURL = v5->_loyaltyPassURL;
     v5->_loyaltyPassURL = v28;
 
@@ -858,40 +858,40 @@ LABEL_90:
     v31 = objc_opt_class();
     v32 = objc_opt_class();
     v33 = [v30 setWithObjects:{v31, v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"paymentIdentifiers"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"paymentIdentifiers"];
     paymentIdentifiers = v5->_paymentIdentifiers;
     v5->_paymentIdentifiers = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disclosures"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disclosures"];
     disclosures = v5->_disclosures;
     v5->_disclosures = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapsSearchText"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapsSearchText"];
     mapsSearchText = v5->_mapsSearchText;
     v5->_mapsSearchText = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetRewardsText"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetRewardsText"];
     paymentSheetRewardsText = v5->_paymentSheetRewardsText;
     v5->_paymentSheetRewardsText = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetMerchantRewardsText"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetMerchantRewardsText"];
     paymentSheetMerchantRewardsText = v5->_paymentSheetMerchantRewardsText;
     v5->_paymentSheetMerchantRewardsText = v42;
 
-    v5->_suppressPaymentSheetRewardsHint = [v4 decodeBoolForKey:@"suppressPaymentSheetRewardsHint"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetOverrideStart"];
+    v5->_suppressPaymentSheetRewardsHint = [coderCopy decodeBoolForKey:@"suppressPaymentSheetRewardsHint"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetOverrideStart"];
     paymentSheetOverrideStart = v5->_paymentSheetOverrideStart;
     v5->_paymentSheetOverrideStart = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetOverrideEnd"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSheetOverrideEnd"];
     paymentSheetOverrideEnd = v5->_paymentSheetOverrideEnd;
     v5->_paymentSheetOverrideEnd = v46;
 
-    v48 = [v4 decodeObjectOfClasses:v33 forKey:@"enhancedRewardsProgramIdentifier"];
+    v48 = [coderCopy decodeObjectOfClasses:v33 forKey:@"enhancedRewardsProgramIdentifier"];
     enhancedRewardsProgramIdentifiers = v5->_enhancedRewardsProgramIdentifiers;
     v5->_enhancedRewardsProgramIdentifiers = v48;
 
-    v50 = [v4 decodeObjectOfClasses:v33 forKey:@"mapsSearchStrings"];
+    v50 = [coderCopy decodeObjectOfClasses:v33 forKey:@"mapsSearchStrings"];
     mapsSearchStrings = v5->_mapsSearchStrings;
     v5->_mapsSearchStrings = v50;
   }
@@ -899,109 +899,109 @@ LABEL_90:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   privateIdentifier = self->_privateIdentifier;
-  v5 = a3;
-  [v5 encodeObject:privateIdentifier forKey:@"privateIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_detailedDescription forKey:@"description"];
-  [v5 encodeObject:self->_logoImage forKey:@"logoImage"];
-  [v5 encodeObject:self->_iconImage forKey:@"iconImage"];
-  [v5 encodeObject:self->_adamID forKey:@"adamID"];
-  [v5 encodeObject:self->_brandMUIDs forKey:@"brandMUIDs"];
-  [v5 encodeObject:self->_excludedMUIDs forKey:@"excludedMUIDs"];
-  [v5 encodeObject:self->_website forKey:@"website"];
-  [v5 encodeObject:self->_loyaltyPassURL forKey:@"loyaltyPassURL"];
-  [v5 encodeObject:self->_paymentIdentifiers forKey:@"paymentIdentifiers"];
-  [v5 encodeObject:self->_disclosures forKey:@"disclosures"];
-  [v5 encodeObject:self->_mapsSearchText forKey:@"mapsSearchText"];
-  [v5 encodeObject:self->_paymentSheetRewardsText forKey:@"paymentSheetRewardsText"];
-  [v5 encodeObject:self->_paymentSheetMerchantRewardsText forKey:@"paymentSheetMerchantRewardsText"];
-  [v5 encodeBool:self->_suppressPaymentSheetRewardsHint forKey:@"suppressPaymentSheetRewardsHint"];
-  [v5 encodeObject:self->_paymentSheetOverrideStart forKey:@"paymentSheetOverrideStart"];
-  [v5 encodeObject:self->_paymentSheetOverrideEnd forKey:@"paymentSheetOverrideEnd"];
-  [v5 encodeObject:self->_enhancedRewardsProgramIdentifiers forKey:@"enhancedRewardsProgramIdentifier"];
-  [v5 encodeObject:self->_mapsSearchStrings forKey:@"mapsSearchStrings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:privateIdentifier forKey:@"privateIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_detailedDescription forKey:@"description"];
+  [coderCopy encodeObject:self->_logoImage forKey:@"logoImage"];
+  [coderCopy encodeObject:self->_iconImage forKey:@"iconImage"];
+  [coderCopy encodeObject:self->_adamID forKey:@"adamID"];
+  [coderCopy encodeObject:self->_brandMUIDs forKey:@"brandMUIDs"];
+  [coderCopy encodeObject:self->_excludedMUIDs forKey:@"excludedMUIDs"];
+  [coderCopy encodeObject:self->_website forKey:@"website"];
+  [coderCopy encodeObject:self->_loyaltyPassURL forKey:@"loyaltyPassURL"];
+  [coderCopy encodeObject:self->_paymentIdentifiers forKey:@"paymentIdentifiers"];
+  [coderCopy encodeObject:self->_disclosures forKey:@"disclosures"];
+  [coderCopy encodeObject:self->_mapsSearchText forKey:@"mapsSearchText"];
+  [coderCopy encodeObject:self->_paymentSheetRewardsText forKey:@"paymentSheetRewardsText"];
+  [coderCopy encodeObject:self->_paymentSheetMerchantRewardsText forKey:@"paymentSheetMerchantRewardsText"];
+  [coderCopy encodeBool:self->_suppressPaymentSheetRewardsHint forKey:@"suppressPaymentSheetRewardsHint"];
+  [coderCopy encodeObject:self->_paymentSheetOverrideStart forKey:@"paymentSheetOverrideStart"];
+  [coderCopy encodeObject:self->_paymentSheetOverrideEnd forKey:@"paymentSheetOverrideEnd"];
+  [coderCopy encodeObject:self->_enhancedRewardsProgramIdentifiers forKey:@"enhancedRewardsProgramIdentifier"];
+  [coderCopy encodeObject:self->_mapsSearchStrings forKey:@"mapsSearchStrings"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_privateIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_privateIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_detailedDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_detailedDescription copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(PKRemoteImageSet *)self->_logoImage copyWithZone:a3];
+  v12 = [(PKRemoteImageSet *)self->_logoImage copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(PKRemoteImageSet *)self->_iconImage copyWithZone:a3];
+  v14 = [(PKRemoteImageSet *)self->_iconImage copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSNumber *)self->_adamID copyWithZone:a3];
+  v16 = [(NSNumber *)self->_adamID copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(NSSet *)self->_brandMUIDs deepCopyWithZone:a3];
+  v18 = [(NSSet *)self->_brandMUIDs deepCopyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
-  v20 = [(NSSet *)self->_excludedMUIDs deepCopyWithZone:a3];
+  v20 = [(NSSet *)self->_excludedMUIDs deepCopyWithZone:zone];
   v21 = *(v5 + 72);
   *(v5 + 72) = v20;
 
-  v22 = [(NSURL *)self->_website copyWithZone:a3];
+  v22 = [(NSURL *)self->_website copyWithZone:zone];
   v23 = *(v5 + 80);
   *(v5 + 80) = v22;
 
-  v24 = [(NSURL *)self->_loyaltyPassURL copyWithZone:a3];
+  v24 = [(NSURL *)self->_loyaltyPassURL copyWithZone:zone];
   v25 = *(v5 + 88);
   *(v5 + 88) = v24;
 
-  v26 = [(NSSet *)self->_paymentIdentifiers deepCopyWithZone:a3];
+  v26 = [(NSSet *)self->_paymentIdentifiers deepCopyWithZone:zone];
   v27 = *(v5 + 96);
   *(v5 + 96) = v26;
 
-  v28 = [(NSString *)self->_disclosures copyWithZone:a3];
+  v28 = [(NSString *)self->_disclosures copyWithZone:zone];
   v29 = *(v5 + 104);
   *(v5 + 104) = v28;
 
-  v30 = [(NSString *)self->_mapsSearchText copyWithZone:a3];
+  v30 = [(NSString *)self->_mapsSearchText copyWithZone:zone];
   v31 = *(v5 + 112);
   *(v5 + 112) = v30;
 
-  v32 = [(NSString *)self->_paymentSheetRewardsText copyWithZone:a3];
+  v32 = [(NSString *)self->_paymentSheetRewardsText copyWithZone:zone];
   v33 = *(v5 + 128);
   *(v5 + 128) = v32;
 
-  v34 = [(NSString *)self->_paymentSheetMerchantRewardsText copyWithZone:a3];
+  v34 = [(NSString *)self->_paymentSheetMerchantRewardsText copyWithZone:zone];
   v35 = *(v5 + 136);
   *(v5 + 136) = v34;
 
   *(v5 + 8) = self->_suppressPaymentSheetRewardsHint;
-  v36 = [(NSDate *)self->_paymentSheetOverrideStart copyWithZone:a3];
+  v36 = [(NSDate *)self->_paymentSheetOverrideStart copyWithZone:zone];
   v37 = *(v5 + 144);
   *(v5 + 144) = v36;
 
-  v38 = [(NSDate *)self->_paymentSheetOverrideEnd copyWithZone:a3];
+  v38 = [(NSDate *)self->_paymentSheetOverrideEnd copyWithZone:zone];
   v39 = *(v5 + 152);
   *(v5 + 152) = v38;
 
-  v40 = [(NSSet *)self->_enhancedRewardsProgramIdentifiers deepCopyWithZone:a3];
+  v40 = [(NSSet *)self->_enhancedRewardsProgramIdentifiers deepCopyWithZone:zone];
   v41 = *(v5 + 160);
   *(v5 + 160) = v40;
 
-  v42 = [(NSSet *)self->_mapsSearchStrings deepCopyWithZone:a3];
+  v42 = [(NSSet *)self->_mapsSearchStrings deepCopyWithZone:zone];
   v43 = *(v5 + 120);
   *(v5 + 120) = v42;
 

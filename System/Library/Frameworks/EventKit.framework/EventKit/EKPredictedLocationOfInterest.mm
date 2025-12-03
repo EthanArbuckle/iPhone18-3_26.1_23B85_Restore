@@ -1,63 +1,63 @@
 @interface EKPredictedLocationOfInterest
-- (EKPredictedLocationOfInterest)initWithPredictedLocationOfInterest:(id)a3;
-- (EKPredictedLocationOfInterest)initWithType:(int64_t)a3 customLabel:(id)a4 mapItemName:(id)a5 addressCountryCode:(id)a6 addressThoroughFare:(id)a7 addressLocality:(id)a8;
+- (EKPredictedLocationOfInterest)initWithPredictedLocationOfInterest:(id)interest;
+- (EKPredictedLocationOfInterest)initWithType:(int64_t)type customLabel:(id)label mapItemName:(id)name addressCountryCode:(id)code addressThoroughFare:(id)fare addressLocality:(id)locality;
 @end
 
 @implementation EKPredictedLocationOfInterest
 
-- (EKPredictedLocationOfInterest)initWithPredictedLocationOfInterest:(id)a3
+- (EKPredictedLocationOfInterest)initWithPredictedLocationOfInterest:(id)interest
 {
-  v16 = a3;
-  v4 = [v16 locationOfInterest];
-  v5 = [v4 mapItem];
-  v6 = [v5 address];
-  v7 = [v4 type];
-  v8 = [v4 customLabel];
-  v9 = [v5 name];
-  v10 = [v6 countryCode];
-  v11 = [v6 thoroughfare];
-  v12 = [v6 locality];
-  v13 = [(EKPredictedLocationOfInterest *)self initWithType:v7 customLabel:v8 mapItemName:v9 addressCountryCode:v10 addressThoroughFare:v11 addressLocality:v12];
+  interestCopy = interest;
+  locationOfInterest = [interestCopy locationOfInterest];
+  mapItem = [locationOfInterest mapItem];
+  address = [mapItem address];
+  type = [locationOfInterest type];
+  customLabel = [locationOfInterest customLabel];
+  name = [mapItem name];
+  countryCode = [address countryCode];
+  thoroughfare = [address thoroughfare];
+  locality = [address locality];
+  v13 = [(EKPredictedLocationOfInterest *)self initWithType:type customLabel:customLabel mapItemName:name addressCountryCode:countryCode addressThoroughFare:thoroughfare addressLocality:locality];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_rtPredictedLocationOfInterest, a3);
+    objc_storeStrong(&v13->_rtPredictedLocationOfInterest, interest);
   }
 
   return v13;
 }
 
-- (EKPredictedLocationOfInterest)initWithType:(int64_t)a3 customLabel:(id)a4 mapItemName:(id)a5 addressCountryCode:(id)a6 addressThoroughFare:(id)a7 addressLocality:(id)a8
+- (EKPredictedLocationOfInterest)initWithType:(int64_t)type customLabel:(id)label mapItemName:(id)name addressCountryCode:(id)code addressThoroughFare:(id)fare addressLocality:(id)locality
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  labelCopy = label;
+  nameCopy = name;
+  codeCopy = code;
+  fareCopy = fare;
+  localityCopy = locality;
   v32.receiver = self;
   v32.super_class = EKPredictedLocationOfInterest;
   v19 = [(EKPredictedLocationOfInterest *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    v19->_type = a3;
-    v21 = [v14 copy];
+    v19->_type = type;
+    v21 = [labelCopy copy];
     customLabel = v20->_customLabel;
     v20->_customLabel = v21;
 
-    v23 = [v15 copy];
+    v23 = [nameCopy copy];
     mapItemName = v20->_mapItemName;
     v20->_mapItemName = v23;
 
-    v25 = [v16 copy];
+    v25 = [codeCopy copy];
     addressCountryCode = v20->_addressCountryCode;
     v20->_addressCountryCode = v25;
 
-    v27 = [v17 copy];
+    v27 = [fareCopy copy];
     addressThoroughfare = v20->_addressThoroughfare;
     v20->_addressThoroughfare = v27;
 
-    v29 = [v18 copy];
+    v29 = [localityCopy copy];
     addressLocality = v20->_addressLocality;
     v20->_addressLocality = v29;
   }

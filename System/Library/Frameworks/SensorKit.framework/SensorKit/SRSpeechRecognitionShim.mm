@@ -1,15 +1,15 @@
 @interface SRSpeechRecognitionShim
-- (SRSpeechRecognitionShim)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
+- (SRSpeechRecognitionShim)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
 @end
 
 @implementation SRSpeechRecognitionShim
 
-- (SRSpeechRecognitionShim)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRSpeechRecognitionShim)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  v5 = [[SRSpeechMetrics alloc] initWithBinarySampleRepresentation:a3 metadata:a4 timestamp:a5];
-  v6 = [(SRSpeechMetrics *)v5 speechRecognition];
+  v5 = [[SRSpeechMetrics alloc] initWithBinarySampleRepresentation:representation metadata:metadata timestamp:timestamp];
+  speechRecognition = [(SRSpeechMetrics *)v5 speechRecognition];
 
-  return v6;
+  return speechRecognition;
 }
 
 @end

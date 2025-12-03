@@ -1,38 +1,38 @@
 @interface SBPIPStashableWrapperViewController
 - (CGSize)minimumStashTabSize;
 - (CGSize)preferredContentSize;
-- (SBPIPStashableWrapperViewController)initWithContentViewController:(id)a3 cornerRadius:(double)a4 stashVisualSettings:(id)a5 shadowSettings:(id)a6;
+- (SBPIPStashableWrapperViewController)initWithContentViewController:(id)controller cornerRadius:(double)radius stashVisualSettings:(id)settings shadowSettings:(id)shadowSettings;
 - (SBPIPStashableWrapperViewControllerDelegate)delegate;
-- (id)_newShadowViewWithSettings:(id)a3;
+- (id)_newShadowViewWithSettings:(id)settings;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (void)_addMaskViewSubviewIfNeeded;
-- (void)_applyDropShadowSettings:(id)a3 toView:(id)a4;
-- (void)_handleTapWhileStashedGestureRecognizer:(id)a3;
+- (void)_applyDropShadowSettings:(id)settings toView:(id)view;
+- (void)_handleTapWhileStashedGestureRecognizer:(id)recognizer;
 - (void)_layoutStashTabViewsIfNeeded;
 - (void)_resetStashTabViewsIfPossible;
-- (void)_setPortalActive:(BOOL)a3 left:(BOOL)a4;
-- (void)_setStashMaskActive:(BOOL)a3;
-- (void)_setStashProgress:(double)a3 animated:(BOOL)a4;
-- (void)_setStashedTabHidden:(BOOL)a3 left:(BOOL)a4;
-- (void)_updateContentCornerRadiusForMaskActive:(BOOL)a3;
+- (void)_setPortalActive:(BOOL)active left:(BOOL)left;
+- (void)_setStashMaskActive:(BOOL)active;
+- (void)_setStashProgress:(double)progress animated:(BOOL)animated;
+- (void)_setStashedTabHidden:(BOOL)hidden left:(BOOL)left;
+- (void)_updateContentCornerRadiusForMaskActive:(BOOL)active;
 - (void)dealloc;
 - (void)loadView;
-- (void)setInteractivelyResizing:(BOOL)a3;
-- (void)setMinimumStashTabSize:(CGSize)a3;
-- (void)setStashTabHidden:(BOOL)a3 left:(BOOL)a4 withSpringBehavior:(id)a5 completion:(id)a6;
-- (void)setStashed:(BOOL)a3 animated:(BOOL)a4;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)setInteractivelyResizing:(BOOL)resizing;
+- (void)setMinimumStashTabSize:(CGSize)size;
+- (void)setStashTabHidden:(BOOL)hidden left:(BOOL)left withSpringBehavior:(id)behavior completion:(id)completion;
+- (void)setStashed:(BOOL)stashed animated:(BOOL)animated;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBPIPStashableWrapperViewController
 
-- (SBPIPStashableWrapperViewController)initWithContentViewController:(id)a3 cornerRadius:(double)a4 stashVisualSettings:(id)a5 shadowSettings:(id)a6
+- (SBPIPStashableWrapperViewController)initWithContentViewController:(id)controller cornerRadius:(double)radius stashVisualSettings:(id)settings shadowSettings:(id)shadowSettings
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  settingsCopy = settings;
+  shadowSettingsCopy = shadowSettings;
   v14 = SBLogPIP();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -45,10 +45,10 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_settings, a5);
-    objc_storeStrong(&v16->_shadowSettings, a6);
-    v16->_cornerRadiusMetric = a4;
-    objc_storeStrong(&v16->_contentViewController, a3);
+    objc_storeStrong(&v15->_settings, settings);
+    objc_storeStrong(&v16->_shadowSettings, shadowSettings);
+    v16->_cornerRadiusMetric = radius;
+    objc_storeStrong(&v16->_contentViewController, controller);
     v16->_stashTabHidden = 1;
     [(SBPIPStashableWrapperViewController *)v16 setAccessibilityIdentifier:@"SBPIP-StashingContainerViewController"];
     [(PTSettings *)v16->_shadowSettings addKeyPathObserver:v16];
@@ -69,8 +69,8 @@
   if ([(SBPIPStashableWrapperViewController *)self isViewLoaded])
   {
     [(UIViewController *)self->_contentViewController willMoveToParentViewController:0];
-    v4 = [(UIViewController *)self->_contentViewController view];
-    [v4 removeFromSuperview];
+    view = [(UIViewController *)self->_contentViewController view];
+    [view removeFromSuperview];
 
     [(UIViewController *)self->_contentViewController removeFromParentViewController];
   }
@@ -80,67 +80,67 @@
   [(SBPIPStashableWrapperViewController *)&v5 dealloc];
 }
 
-- (void)setStashed:(BOOL)a3 animated:(BOOL)a4
+- (void)setStashed:(BOOL)stashed animated:(BOOL)animated
 {
-  if (self->_stashed != a3)
+  if (self->_stashed != stashed)
   {
-    v5 = a3;
-    self->_stashed = a3;
+    stashedCopy = stashed;
+    self->_stashed = stashed;
     v7 = 0.0;
-    if (a3)
+    if (stashed)
     {
       v7 = 1.0;
     }
 
-    [(SBPIPStashableWrapperViewController *)self _setStashProgress:a4 animated:v7];
+    [(SBPIPStashableWrapperViewController *)self _setStashProgress:animated animated:v7];
     if ([(SBPIPStashableWrapperViewController *)self isViewLoaded])
     {
-      if (v5)
+      if (stashedCopy)
       {
         v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapWhileStashedGestureRecognizer_];
         stashedTapGestureRecognizer = self->_stashedTapGestureRecognizer;
         self->_stashedTapGestureRecognizer = v8;
 
-        v10 = [(SBPIPStashableWrapperViewController *)self view];
-        [v10 addGestureRecognizer:self->_stashedTapGestureRecognizer];
+        view = [(SBPIPStashableWrapperViewController *)self view];
+        [view addGestureRecognizer:self->_stashedTapGestureRecognizer];
       }
 
       else
       {
-        v10 = [(SBPIPStashableWrapperViewController *)self view];
-        [v10 removeGestureRecognizer:self->_stashedTapGestureRecognizer];
+        view = [(SBPIPStashableWrapperViewController *)self view];
+        [view removeGestureRecognizer:self->_stashedTapGestureRecognizer];
       }
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained stashableWrapper:self didTransitionToStashed:v5];
+      [WeakRetained stashableWrapper:self didTransitionToStashed:stashedCopy];
     }
   }
 }
 
-- (void)setInteractivelyResizing:(BOOL)a3
+- (void)setInteractivelyResizing:(BOOL)resizing
 {
-  if (self->_interactivelyResizing != a3)
+  if (self->_interactivelyResizing != resizing)
   {
-    self->_interactivelyResizing = a3;
+    self->_interactivelyResizing = resizing;
     [(SBPIPStashableWrapperViewController *)self _resetStashTabViewsIfPossible];
-    v5 = [(SBPIPStashableWrapperViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(SBPIPStashableWrapperViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(SBPIPStashableWrapperViewController *)self view];
-    [v6 layoutIfNeeded];
+    view2 = [(SBPIPStashableWrapperViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 }
 
-- (void)setMinimumStashTabSize:(CGSize)a3
+- (void)setMinimumStashTabSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_minimumStashTabSize.width != a3.width || self->_minimumStashTabSize.height != a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_minimumStashTabSize.width != size.width || self->_minimumStashTabSize.height != size.height)
   {
-    self->_minimumStashTabSize = a3;
+    self->_minimumStashTabSize = size;
     if ([(SBPIPStashableWrapperViewController *)self isViewLoaded])
     {
       WeakRetained = objc_loadWeakRetained(&self->_stashMaskView);
@@ -153,14 +153,14 @@
   }
 }
 
-- (void)_setStashProgress:(double)a3 animated:(BOOL)a4
+- (void)_setStashProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v43 = *MEMORY[0x277D85DE8];
   [(SBPIPStashView *)self->_stashView blurProgress];
   v9 = v8;
   IsZero = BSFloatIsZero();
-  if (a3 < 0.2)
+  if (progress < 0.2)
   {
     v11 = IsZero;
   }
@@ -170,7 +170,7 @@
     v11 = 0;
   }
 
-  if (v9 != a3 && (v11 & 1) == 0 && [(SBPIPStashableWrapperViewController *)self isViewLoaded])
+  if (v9 != progress && (v11 & 1) == 0 && [(SBPIPStashableWrapperViewController *)self isViewLoaded])
   {
     v12 = BSFloatIsZero();
     if ((v12 & 1) == 0 && [(SBPIPStashView *)self->_stashView isHidden])
@@ -197,7 +197,7 @@
     v35[3] = &unk_2783ABD10;
     v35[4] = self;
     v36 = v12;
-    *&v35[5] = a3;
+    *&v35[5] = progress;
     v15 = MEMORY[0x223D6F7F0](v35);
     v16 = self->_inFlightStashProgressAnimationIdentifier + 1;
     self->_inFlightStashProgressAnimationIdentifier = v16;
@@ -228,7 +228,7 @@
     v32[4] = self;
     *&v32[5] = v19;
     v20 = MEMORY[0x223D6F7F0](v32);
-    if (v4)
+    if (animatedCopy)
     {
       v21 = MEMORY[0x277D75D18];
       v30[0] = MEMORY[0x277D85DD0];
@@ -329,25 +329,25 @@ uint64_t __66__SBPIPStashableWrapperViewController__setStashProgress_animated___
   return result;
 }
 
-- (void)setStashTabHidden:(BOOL)a3 left:(BOOL)a4 withSpringBehavior:(id)a5 completion:(id)a6
+- (void)setStashTabHidden:(BOOL)hidden left:(BOOL)left withSpringBehavior:(id)behavior completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (__PAIR64__(self->_stashTabShownLeft, self->_stashTabHidden) == __PAIR64__(v7, v8))
+  leftCopy = left;
+  hiddenCopy = hidden;
+  behaviorCopy = behavior;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (__PAIR64__(self->_stashTabShownLeft, self->_stashTabHidden) == __PAIR64__(leftCopy, hiddenCopy))
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    self->_stashTabHidden = v8;
-    self->_stashTabShownLeft = v7 & ~v8;
+    self->_stashTabHidden = hiddenCopy;
+    self->_stashTabShownLeft = leftCopy & ~hiddenCopy;
     v13 = self->_inFlightStashTabAnimationIdentifier + 1;
     self->_inFlightStashTabAnimationIdentifier = v13;
     v14 = MEMORY[0x277D75D18];
@@ -356,16 +356,16 @@ uint64_t __66__SBPIPStashableWrapperViewController__setStashProgress_animated___
     v18[2] = __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSpringBehavior_completion___block_invoke;
     v18[3] = &unk_2783AC158;
     v18[4] = self;
-    v19 = v8;
-    v20 = v7;
+    v19 = hiddenCopy;
+    v20 = leftCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSpringBehavior_completion___block_invoke_2;
     v15[3] = &unk_2783A92B0;
     v17 = v13;
     v15[4] = self;
-    v16 = v11;
-    [v14 _animateUsingSpringBehavior:v10 tracking:0 animations:v18 completion:v15];
+    v16 = completionCopy;
+    [v14 _animateUsingSpringBehavior:behaviorCopy tracking:0 animations:v18 completion:v15];
   }
 }
 
@@ -401,7 +401,7 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   v34.receiver = self;
   v34.super_class = SBPIPStashableWrapperViewController;
   [(SBPIPStashableWrapperViewController *)&v34 viewDidLoad];
-  v3 = [(SBPIPStashableWrapperViewController *)self view];
+  view = [(SBPIPStashableWrapperViewController *)self view];
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
@@ -411,11 +411,11 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   containerView = self->_containerView;
   self->_containerView = v9;
 
-  [v3 addSubview:self->_containerView];
+  [view addSubview:self->_containerView];
   [(SBPIPStashableWrapperViewController *)self addChildViewController:self->_contentViewController];
-  v11 = [(UIViewController *)self->_contentViewController view];
+  view2 = [(UIViewController *)self->_contentViewController view];
   contentView = self->_contentView;
-  self->_contentView = v11;
+  self->_contentView = view2;
 
   [(UIView *)self->_containerView addSubview:self->_contentView];
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
@@ -460,19 +460,19 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   [(SBPIPStashView *)self->_stashView setHidden:1];
   [(SBPIPStashView *)self->_stashView setUserInteractionEnabled:0];
   [(UIView *)self->_containerView addSubview:self->_stashView];
-  v23 = [(SBPIPShadowSettings *)self->_shadowSettings bodyShadowSettings];
-  v24 = [(SBPIPStashableWrapperViewController *)self _newShadowViewWithSettings:v23];
+  bodyShadowSettings = [(SBPIPShadowSettings *)self->_shadowSettings bodyShadowSettings];
+  v24 = [(SBPIPStashableWrapperViewController *)self _newShadowViewWithSettings:bodyShadowSettings];
   shadowView = self->_shadowView;
   self->_shadowView = v24;
 
-  [v3 insertSubview:self->_shadowView atIndex:0];
-  v26 = [(SBPIPShadowSettings *)self->_shadowSettings tabShadowSettings];
-  v27 = [(SBPIPStashableWrapperViewController *)self _newShadowViewWithSettings:v26];
+  [view insertSubview:self->_shadowView atIndex:0];
+  tabShadowSettings = [(SBPIPShadowSettings *)self->_shadowSettings tabShadowSettings];
+  v27 = [(SBPIPStashableWrapperViewController *)self _newShadowViewWithSettings:tabShadowSettings];
   tabShadowView = self->_tabShadowView;
   self->_tabShadowView = v27;
 
   [(UIView *)self->_tabShadowView setHidden:1];
-  [v3 insertSubview:self->_tabShadowView atIndex:0];
+  [view insertSubview:self->_tabShadowView atIndex:0];
   [(SBPIPStashableWrapperViewController *)self _addMaskViewSubviewIfNeeded];
 }
 
@@ -481,8 +481,8 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   v30.receiver = self;
   v30.super_class = SBPIPStashableWrapperViewController;
   [(SBPIPStashableWrapperViewController *)&v30 viewWillLayoutSubviews];
-  v3 = [(SBPIPStashableWrapperViewController *)self view];
-  [v3 bounds];
+  view = [(SBPIPStashableWrapperViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -599,33 +599,33 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   }
 }
 
-- (void)_setStashedTabHidden:(BOOL)a3 left:(BOOL)a4
+- (void)_setStashedTabHidden:(BOOL)hidden left:(BOOL)left
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  leftCopy = left;
+  hiddenCopy = hidden;
+  if (!hidden)
   {
     [(UIView *)self->_tabShadowView setAlpha:0.0];
     [(UIView *)self->_tabShadowView setHidden:0];
-    [(SBPIPStashableWrapperViewController *)self _setPortalActive:1 left:v4];
+    [(SBPIPStashableWrapperViewController *)self _setPortalActive:1 left:leftCopy];
     [(SBPIPStashableWrapperViewController *)self _setStashMaskActive:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_stashMaskView);
-  [WeakRetained setTabHidden:v5 left:v4];
+  [WeakRetained setTabHidden:hiddenCopy left:leftCopy];
 
   stashView = self->_stashView;
 
-  [(SBPIPStashView *)stashView setChevronHidden:v5 left:v4];
+  [(SBPIPStashView *)stashView setChevronHidden:hiddenCopy left:leftCopy];
 }
 
-- (void)_setPortalActive:(BOOL)a3 left:(BOOL)a4
+- (void)_setPortalActive:(BOOL)active left:(BOOL)left
 {
-  v4 = a4;
+  leftCopy = left;
   leftSideContentPortalView = self->_leftSideContentPortalView;
-  v7 = !a3;
-  v8 = a3 && a4;
-  if (a3 && a4)
+  v7 = !active;
+  v8 = active && left;
+  if (active && left)
   {
     contentView = self->_contentView;
   }
@@ -637,7 +637,7 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
 
   [(SBPortalView *)leftSideContentPortalView setSourceView:contentView];
   [(SBPortalView *)self->_leftSideContentPortalView setMatchesTransform:1];
-  v10 = v7 | v4;
+  v10 = v7 | leftCopy;
   if (v10)
   {
     v11 = 0;
@@ -656,23 +656,23 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
   [(SBPortalView *)rightSideContentPortalView setHidden:v10];
 }
 
-- (void)_setStashMaskActive:(BOOL)a3
+- (void)_setStashMaskActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   p_stashMaskView = &self->_stashMaskView;
-  if (a3)
+  if (active)
   {
     WeakRetained = objc_loadWeakRetained(p_stashMaskView);
     if (WeakRetained)
     {
-      v7 = [(UIView *)self->_containerView maskView];
+      maskView = [(UIView *)self->_containerView maskView];
 
-      if (!v7)
+      if (!maskView)
       {
         [WeakRetained setHidden:0];
         [(UIView *)self->_containerView setMaskView:WeakRetained];
-        v8 = [(SBPIPStashableWrapperViewController *)self view];
-        [v8 setHitTestExtenderView:WeakRetained];
+        view = [(SBPIPStashableWrapperViewController *)self view];
+        [view setHitTestExtenderView:WeakRetained];
       }
     }
   }
@@ -686,10 +686,10 @@ uint64_t __92__SBPIPStashableWrapperViewController_setStashTabHidden_left_withSp
     [WeakRetained setHitTestExtenderView:0];
   }
 
-  [(SBPIPStashableWrapperViewController *)self _updateContentCornerRadiusForMaskActive:v3];
+  [(SBPIPStashableWrapperViewController *)self _updateContentCornerRadiusForMaskActive:activeCopy];
 }
 
-- (void)_updateContentCornerRadiusForMaskActive:(BOOL)a3
+- (void)_updateContentCornerRadiusForMaskActive:(BOOL)active
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -730,9 +730,9 @@ void __79__SBPIPStashableWrapperViewController__updateContentCornerRadiusForMask
 {
   if (self->_stashTabHidden)
   {
-    v3 = [(UIView *)self->_containerView maskView];
+    maskView = [(UIView *)self->_containerView maskView];
 
-    if (v3)
+    if (maskView)
     {
       if (self->_interactivelyResizing || ([(SBPIPStashView *)self->_stashView blurProgress], !BSFloatIsZero()))
       {
@@ -785,84 +785,84 @@ uint64_t __68__SBPIPStashableWrapperViewController__resetStashTabViewsIfPossible
   return [(SBPIPStashableWrapperViewController *)&v4 interfaceOrientation];
 }
 
-- (void)_handleTapWhileStashedGestureRecognizer:(id)a3
+- (void)_handleTapWhileStashedGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained stashableWrapper:self didReceivedTapGesture:v5];
+    [WeakRetained stashableWrapper:self didReceivedTapGesture:recognizerCopy];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v7 = a4;
-  if ([v7 hasPrefix:@"bodyShadowSettings"])
+  pathCopy = path;
+  if ([pathCopy hasPrefix:@"bodyShadowSettings"])
   {
-    v5 = [(SBPIPShadowSettings *)self->_shadowSettings bodyShadowSettings];
+    bodyShadowSettings = [(SBPIPShadowSettings *)self->_shadowSettings bodyShadowSettings];
     v6 = &OBJC_IVAR___SBPIPStashableWrapperViewController__shadowView;
   }
 
   else
   {
-    if (![v7 hasPrefix:@"tabShadowSettings"])
+    if (![pathCopy hasPrefix:@"tabShadowSettings"])
     {
       goto LABEL_6;
     }
 
-    v5 = [(SBPIPShadowSettings *)self->_shadowSettings tabShadowSettings];
+    bodyShadowSettings = [(SBPIPShadowSettings *)self->_shadowSettings tabShadowSettings];
     v6 = &OBJC_IVAR___SBPIPStashableWrapperViewController__tabShadowView;
   }
 
-  [(SBPIPStashableWrapperViewController *)self _applyDropShadowSettings:v5 toView:*(&self->super.super.super.isa + *v6)];
+  [(SBPIPStashableWrapperViewController *)self _applyDropShadowSettings:bodyShadowSettings toView:*(&self->super.super.super.isa + *v6)];
 
 LABEL_6:
 }
 
-- (id)_newShadowViewWithSettings:(id)a3
+- (id)_newShadowViewWithSettings:(id)settings
 {
   v4 = MEMORY[0x277D75D18];
-  v5 = a3;
+  settingsCopy = settings;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v7 setUserInteractionEnabled:0];
-  v8 = [v7 layer];
-  [v8 setAllowsEdgeAntialiasing:1];
+  layer = [v7 layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  v9 = [v7 layer];
-  [v9 setShadowPathIsBounds:1];
+  layer2 = [v7 layer];
+  [layer2 setShadowPathIsBounds:1];
 
-  [(SBPIPStashableWrapperViewController *)self _applyDropShadowSettings:v5 toView:v7];
+  [(SBPIPStashableWrapperViewController *)self _applyDropShadowSettings:settingsCopy toView:v7];
   return v7;
 }
 
-- (void)_applyDropShadowSettings:(id)a3 toView:(id)a4
+- (void)_applyDropShadowSettings:(id)settings toView:(id)view
 {
-  v20 = a4;
-  v5 = a3;
-  [v5 opacity];
+  viewCopy = view;
+  settingsCopy = settings;
+  [settingsCopy opacity];
   v7 = v6;
-  [v5 offsetX];
+  [settingsCopy offsetX];
   v9 = v8;
-  [v5 offsetY];
+  [settingsCopy offsetY];
   v11 = v10;
-  [v5 radius];
+  [settingsCopy radius];
   v13 = v12;
-  [v5 continuousCornerRadius];
+  [settingsCopy continuousCornerRadius];
   v15 = v14;
 
-  v16 = [v20 layer];
-  [v16 setShadowOffset:{v9, v11}];
+  layer = [viewCopy layer];
+  [layer setShadowOffset:{v9, v11}];
 
-  v17 = [v20 layer];
+  layer2 = [viewCopy layer];
   *&v18 = v7;
-  [v17 setShadowOpacity:v18];
+  [layer2 setShadowOpacity:v18];
 
-  v19 = [v20 layer];
-  [v19 setShadowRadius:v13];
+  layer3 = [viewCopy layer];
+  [layer3 setShadowRadius:v13];
 
-  [v20 _setContinuousCornerRadius:v15];
+  [viewCopy _setContinuousCornerRadius:v15];
 }
 
 - (SBPIPStashableWrapperViewControllerDelegate)delegate

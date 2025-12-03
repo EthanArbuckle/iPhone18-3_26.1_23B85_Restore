@@ -1,6 +1,6 @@
 @interface InBoxUpdateMode
 + (id)powerModeInstance;
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4;
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context;
 - (InBoxUpdateMode)init;
 - (void)enterPowerMode;
 - (void)exitPowerMode;
@@ -55,12 +55,12 @@
   return v3;
 }
 
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context
 {
-  v5 = a3;
+  hintsCopy = hints;
   if ([(PowerModeObjImpl *)self supportedPlatform])
   {
-    v6 = [v5 objectForKeyedSubscript:@"InBoxSoftwareUpdate"];
+    v6 = [hintsCopy objectForKeyedSubscript:@"InBoxSoftwareUpdate"];
     v7 = [v6 state] == 1;
   }
 

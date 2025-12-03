@@ -1,33 +1,33 @@
 @interface ASDSelectorValue
-- (ASDSelectorValue)initWithValue:(unsigned int)a3 name:(id)a4 andKind:(unsigned int)a5 selected:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
+- (ASDSelectorValue)initWithValue:(unsigned int)value name:(id)name andKind:(unsigned int)kind selected:(BOOL)selected;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation ASDSelectorValue
 
-- (ASDSelectorValue)initWithValue:(unsigned int)a3 name:(id)a4 andKind:(unsigned int)a5 selected:(BOOL)a6
+- (ASDSelectorValue)initWithValue:(unsigned int)value name:(id)name andKind:(unsigned int)kind selected:(BOOL)selected
 {
-  v11 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = ASDSelectorValue;
   v12 = [(ASDSelectorValue *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_value = a3;
-    objc_storeStrong(&v12->_name, a4);
-    v13->_kind = a5;
-    v13->_selected = a6;
+    v12->_value = value;
+    objc_storeStrong(&v12->_name, name);
+    v13->_kind = kind;
+    v13->_selected = selected;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -37,8 +37,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ASDSelectorValue *)v4 value];
-      v6 = v5 == [(ASDSelectorValue *)self value];
+      value = [(ASDSelectorValue *)equalCopy value];
+      v6 = value == [(ASDSelectorValue *)self value];
     }
 
     else
@@ -53,7 +53,7 @@
 - (id)description
 {
   v19 = MEMORY[0x277CCACA8];
-  v18 = [(ASDSelectorValue *)self value];
+  value = [(ASDSelectorValue *)self value];
   if ([(ASDSelectorValue *)self value]< 0x20000000 || [(ASDSelectorValue *)self value]> 2130706431)
   {
     v3 = 32;
@@ -87,16 +87,16 @@
 
   if ([(ASDSelectorValue *)self value]< 32 || [(ASDSelectorValue *)self value]== 127)
   {
-    v6 = 32;
+    value2 = 32;
   }
 
   else
   {
-    v6 = [(ASDSelectorValue *)self value];
+    value2 = [(ASDSelectorValue *)self value];
   }
 
-  v7 = [(ASDSelectorValue *)self name];
-  v8 = [(ASDSelectorValue *)self kind];
+  name = [(ASDSelectorValue *)self name];
+  kind = [(ASDSelectorValue *)self kind];
   if ([(ASDSelectorValue *)self kind]< 0x20000000 || [(ASDSelectorValue *)self kind]> 2130706431)
   {
     v9 = 32;
@@ -129,22 +129,22 @@
 
   if ([(ASDSelectorValue *)self kind]< 32 || [(ASDSelectorValue *)self kind]== 127)
   {
-    v12 = 32;
+    kind2 = 32;
   }
 
   else
   {
-    v12 = [(ASDSelectorValue *)self kind];
+    kind2 = [(ASDSelectorValue *)self kind];
   }
 
-  v13 = [(ASDSelectorValue *)self selected];
+  selected = [(ASDSelectorValue *)self selected];
   v14 = "";
-  if (v13)
+  if (selected)
   {
     v14 = ", selected";
   }
 
-  v15 = [v19 stringWithFormat:@"value: %x (%c%c%c%c), name: %@, kind: %x (%c%c%c%c)%s", v18, v17, v4, v5, v6, v7, v8, v9, v10, v11, v12, v14];
+  v15 = [v19 stringWithFormat:@"value: %x (%c%c%c%c), name: %@, kind: %x (%c%c%c%c)%s", value, v17, v4, v5, value2, name, kind, v9, v10, v11, kind2, v14];
 
   return v15;
 }

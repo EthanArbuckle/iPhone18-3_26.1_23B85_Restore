@@ -1,9 +1,9 @@
 @interface VCDiskUtils
-+ (BOOL)checkAttributesForDirectory:(id)a3;
-+ (BOOL)createDefaultAttributeDirectoryIfNeeded:(id)a3;
++ (BOOL)checkAttributesForDirectory:(id)directory;
++ (BOOL)createDefaultAttributeDirectoryIfNeeded:(id)needed;
 + (BOOL)createDefaultCacheDirectoryIfNeeded;
 + (BOOL)createDefaultLogDirectoryIfNeeded;
-+ (BOOL)setAttributesForDirectory:(id)a3;
++ (BOOL)setAttributesForDirectory:(id)directory;
 + (id)getDefaultLogDumpPath;
 @end
 
@@ -18,19 +18,19 @@
 
 + (BOOL)createDefaultLogDirectoryIfNeeded
 {
-  v3 = [a1 getDefaultLogDumpPath];
+  getDefaultLogDumpPath = [self getDefaultLogDumpPath];
 
-  return [a1 createDefaultAttributeDirectoryIfNeeded:v3];
+  return [self createDefaultAttributeDirectoryIfNeeded:getDefaultLogDumpPath];
 }
 
 + (BOOL)createDefaultCacheDirectoryIfNeeded
 {
-  v3 = [a1 getCachesDirectoryPath];
+  getCachesDirectoryPath = [self getCachesDirectoryPath];
 
-  return [a1 createDefaultAttributeDirectoryIfNeeded:v3];
+  return [self createDefaultAttributeDirectoryIfNeeded:getCachesDirectoryPath];
 }
 
-+ (BOOL)createDefaultAttributeDirectoryIfNeeded:(id)a3
++ (BOOL)createDefaultAttributeDirectoryIfNeeded:(id)needed
 {
   v16 = *MEMORY[0x277D85DE8];
   v9 = 0;
@@ -38,11 +38,11 @@
   {
     if ((v9 & 1) == 0)
     {
-      [VCDiskUtils createDefaultAttributeDirectoryIfNeeded:a3];
+      [VCDiskUtils createDefaultAttributeDirectoryIfNeeded:needed];
       goto LABEL_16;
     }
 
-    if (([a1 checkAttributesForDirectory:a3] & 1) == 0)
+    if (([self checkAttributesForDirectory:needed] & 1) == 0)
     {
       if (VRTraceGetErrorLogLevelForModule("") >= 7)
       {
@@ -60,7 +60,7 @@
         }
       }
 
-      if (([a1 setAttributesForDirectory:a3] & 1) == 0)
+      if (([self setAttributesForDirectory:needed] & 1) == 0)
       {
         +[VCDiskUtils createDefaultAttributeDirectoryIfNeeded:];
 LABEL_16:
@@ -72,13 +72,13 @@ LABEL_16:
 
   else
   {
-    if ((VCDiskUtils_CreateDirectory([a3 UTF8String]) & 1) == 0)
+    if ((VCDiskUtils_CreateDirectory([needed UTF8String]) & 1) == 0)
     {
       +[VCDiskUtils createDefaultAttributeDirectoryIfNeeded:];
       goto LABEL_16;
     }
 
-    if (([a1 setAttributesForDirectory:a3] & 1) == 0)
+    if (([self setAttributesForDirectory:needed] & 1) == 0)
     {
       +[VCDiskUtils createDefaultAttributeDirectoryIfNeeded:];
       goto LABEL_16;
@@ -91,7 +91,7 @@ LABEL_12:
   return result;
 }
 
-+ (BOOL)checkAttributesForDirectory:(id)a3
++ (BOOL)checkAttributesForDirectory:(id)directory
 {
   v11 = 0;
   v3 = [objc_msgSend(MEMORY[0x277CCAA08] "defaultManager")];
@@ -126,7 +126,7 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)setAttributesForDirectory:(id)a3
++ (BOOL)setAttributesForDirectory:(id)directory
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v10[2] = [MEMORY[0x277CCABA8] numberWithInt:{493, 0, *MEMORY[0x277CCA168], *MEMORY[0x277CCA128], *MEMORY[0x277CCA188], @"mobile", @"mobile"}];

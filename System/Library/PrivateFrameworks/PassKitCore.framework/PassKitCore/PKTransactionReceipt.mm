@@ -1,30 +1,30 @@
 @interface PKTransactionReceipt
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransactionReceipt:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransactionReceipt:(id)receipt;
 - (PKCurrencyAmount)subtotalCurrencyAmount;
 - (PKCurrencyAmount)totalCurrencyAmount;
-- (PKTransactionReceipt)initWithCoder:(id)a3;
-- (PKTransactionReceipt)initWithFileURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKTransactionReceipt)initWithCoder:(id)coder;
+- (PKTransactionReceipt)initWithFileURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithBundle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithBundle:(id)bundle;
 @end
 
 @implementation PKTransactionReceipt
 
-- (PKTransactionReceipt)initWithFileURL:(id)a3
+- (PKTransactionReceipt)initWithFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PKTransactionReceipt;
   v6 = [(PKTransactionReceipt *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
-    v8 = [MEMORY[0x1E696AAE8] bundleWithURL:v5];
+    objc_storeStrong(&v6->_fileURL, l);
+    v8 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
     if (v8)
     {
       [(PKTransactionReceipt *)v7 updateWithBundle:v8];
@@ -40,10 +40,10 @@
   return v7;
 }
 
-- (void)updateWithBundle:(id)a3
+- (void)updateWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 URLForResource:@"receipt" withExtension:@"json"];
+  bundleCopy = bundle;
+  v5 = [bundleCopy URLForResource:@"receipt" withExtension:@"json"];
   if (!v5)
   {
     v6 = 0;
@@ -120,7 +120,7 @@ LABEL_13:
       v53[1] = 3221225472;
       v53[2] = __41__PKTransactionReceipt_updateWithBundle___block_invoke;
       v53[3] = &unk_1E79C8608;
-      v31 = v4;
+      v31 = bundleCopy;
       v54 = v31;
       v32 = [v30 pk_arrayByApplyingBlock:v53];
       headerFields = self->_headerFields;
@@ -215,33 +215,33 @@ PKTransactionReceiptSummaryItem *__41__PKTransactionReceipt_updateWithBundle___b
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceipt *)self isEqualToTransactionReceipt:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceipt *)self isEqualToTransactionReceipt:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTransactionReceipt:(id)a3
+- (BOOL)isEqualToTransactionReceipt:(id)receipt
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  receiptCopy = receipt;
+  v5 = receiptCopy;
+  if (!receiptCopy)
   {
     goto LABEL_47;
   }
 
-  v6 = v4[1];
+  v6 = receiptCopy[1];
   v7 = self->_uniqueID;
   v8 = v6;
   v9 = v8;
@@ -504,73 +504,73 @@ LABEL_48:
   return v5;
 }
 
-- (PKTransactionReceipt)initWithCoder:(id)a3
+- (PKTransactionReceipt)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = PKTransactionReceipt;
   v5 = [(PKTransactionReceipt *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptProviderIdentifier"];
     receiptProviderIdentifier = v5->_receiptProviderIdentifier;
     v5->_receiptProviderIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiptIdentifier"];
     receiptIdentifier = v5->_receiptIdentifier;
     v5->_receiptIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportURL"];
     supportURL = v5->_supportURL;
     v5->_supportURL = v14;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtotalAmount"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtotalAmount"];
     subtotalAmount = v5->_subtotalAmount;
     v5->_subtotalAmount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalAmount"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalAmount"];
     totalAmount = v5->_totalAmount;
     v5->_totalAmount = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"headerFields"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"headerFields"];
     headerFields = v5->_headerFields;
     v5->_headerFields = v25;
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"lineItems"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"lineItems"];
     lineItems = v5->_lineItems;
     v5->_lineItems = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"summaryItems"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"summaryItems"];
     summaryItems = v5->_summaryItems;
     v5->_summaryItems = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HTMLReceiptData"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HTMLReceiptData"];
     htmlReceiptData = v5->_htmlReceiptData;
     v5->_htmlReceiptData = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PDFReceiptData"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PDFReceiptData"];
     pdfReceiptData = v5->_pdfReceiptData;
     v5->_pdfReceiptData = v39;
   }
@@ -578,79 +578,79 @@ LABEL_48:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueID = self->_uniqueID;
-  v5 = a3;
-  [v5 encodeObject:uniqueID forKey:@"uniqueID"];
-  [v5 encodeObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
-  [v5 encodeObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
-  [v5 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
-  [v5 encodeObject:self->_supportURL forKey:@"supportURL"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_subtotalAmount forKey:@"subtotalAmount"];
-  [v5 encodeObject:self->_totalAmount forKey:@"totalAmount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_headerFields forKey:@"headerFields"];
-  [v5 encodeObject:self->_lineItems forKey:@"lineItems"];
-  [v5 encodeObject:self->_summaryItems forKey:@"summaryItems"];
-  [v5 encodeObject:self->_htmlReceiptData forKey:@"HTMLReceiptData"];
-  [v5 encodeObject:self->_pdfReceiptData forKey:@"PDFReceiptData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
+  [coderCopy encodeObject:self->_receiptProviderIdentifier forKey:@"receiptProviderIdentifier"];
+  [coderCopy encodeObject:self->_receiptIdentifier forKey:@"receiptIdentifier"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  [coderCopy encodeObject:self->_supportURL forKey:@"supportURL"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_subtotalAmount forKey:@"subtotalAmount"];
+  [coderCopy encodeObject:self->_totalAmount forKey:@"totalAmount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_headerFields forKey:@"headerFields"];
+  [coderCopy encodeObject:self->_lineItems forKey:@"lineItems"];
+  [coderCopy encodeObject:self->_summaryItems forKey:@"summaryItems"];
+  [coderCopy encodeObject:self->_htmlReceiptData forKey:@"HTMLReceiptData"];
+  [coderCopy encodeObject:self->_pdfReceiptData forKey:@"PDFReceiptData"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_receiptProviderIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_receiptProviderIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_receiptIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_receiptIdentifier copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSDate *)self->_lastUpdatedDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_lastUpdatedDate copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   v5[6] = self->_state;
-  v14 = [(NSURL *)self->_supportURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_supportURL copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSDecimalNumber *)self->_subtotalAmount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_subtotalAmount copyWithZone:zone];
   v17 = v5[7];
   v5[7] = v16;
 
-  v18 = [(NSDecimalNumber *)self->_totalAmount copyWithZone:a3];
+  v18 = [(NSDecimalNumber *)self->_totalAmount copyWithZone:zone];
   v19 = v5[8];
   v5[8] = v18;
 
-  v20 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v20 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v21 = v5[9];
   v5[9] = v20;
 
-  v22 = [(NSArray *)self->_headerFields copyWithZone:a3];
+  v22 = [(NSArray *)self->_headerFields copyWithZone:zone];
   v23 = v5[10];
   v5[10] = v22;
 
-  v24 = [(NSArray *)self->_lineItems copyWithZone:a3];
+  v24 = [(NSArray *)self->_lineItems copyWithZone:zone];
   v25 = v5[11];
   v5[11] = v24;
 
-  v26 = [(NSArray *)self->_summaryItems copyWithZone:a3];
+  v26 = [(NSArray *)self->_summaryItems copyWithZone:zone];
   v27 = v5[12];
   v5[12] = v26;
 
-  v28 = [(NSData *)self->_htmlReceiptData copyWithZone:a3];
+  v28 = [(NSData *)self->_htmlReceiptData copyWithZone:zone];
   v29 = v5[14];
   v5[14] = v28;
 
-  v30 = [(NSData *)self->_pdfReceiptData copyWithZone:a3];
+  v30 = [(NSData *)self->_pdfReceiptData copyWithZone:zone];
   v31 = v5[13];
   v5[13] = v30;
 

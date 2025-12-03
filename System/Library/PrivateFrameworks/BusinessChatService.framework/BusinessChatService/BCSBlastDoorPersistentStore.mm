@@ -1,40 +1,40 @@
 @interface BCSBlastDoorPersistentStore
-- (id)fileURLForImageWithName:(id)a3 error:(id *)a4;
-- (id)initWithCacheURL:(id *)a1;
-- (id)updateImageWithName:(id)a3 error:(id *)a4;
+- (id)fileURLForImageWithName:(id)name error:(id *)error;
+- (id)initWithCacheURL:(id *)l;
+- (id)updateImageWithName:(id)name error:(id *)error;
 - (void)deleteExpiredImages;
-- (void)deleteImageWithName:(id)a3;
+- (void)deleteImageWithName:(id)name;
 @end
 
 @implementation BCSBlastDoorPersistentStore
 
-- (id)initWithCacheURL:(id *)a1
+- (id)initWithCacheURL:(id *)l
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (l)
   {
-    v27.receiver = a1;
+    v27.receiver = l;
     v27.super_class = BCSBlastDoorPersistentStore;
     v5 = objc_msgSendSuper2(&v27, sel_init);
-    a1 = v5;
+    l = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = ABSLogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [a1 cacheURL];
+        cacheURL = [l cacheURL];
         *buf = 138412290;
-        *&buf[4] = v26;
+        *&buf[4] = cacheURL;
         _os_log_debug_impl(&dword_242072000, v6, OS_LOG_TYPE_DEBUG, "Creating BlastDoor image cache at: %@", buf, 0xCu);
       }
 
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v30 = 0;
-      v8 = [a1 cacheURL];
-      v9 = [v8 path];
-      v10 = [v7 fileExistsAtPath:v9 isDirectory:&v30];
+      cacheURL2 = [l cacheURL];
+      path = [cacheURL2 path];
+      v10 = [defaultManager fileExistsAtPath:path isDirectory:&v30];
 
       if (v10 && (v30 & 1) == 0)
       {
@@ -45,19 +45,19 @@
           _os_log_error_impl(&dword_242072000, v23, OS_LOG_TYPE_ERROR, "Error creating BlastDoor cache store: unexpected state (found file instead of directory)", buf, 2u);
         }
 
-        v24 = [a1 cacheURL];
+        cacheURL3 = [l cacheURL];
         v29 = 0;
-        v25 = [v7 removeItemAtURL:v24 error:&v29];
+        v25 = [defaultManager removeItemAtURL:cacheURL3 error:&v29];
         v11 = v29;
 
         if ((v25 & 1) == 0)
         {
-          v17 = ABSLogCommon();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          defaultManager3 = ABSLogCommon();
+          if (os_log_type_enabled(defaultManager3, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             *&buf[4] = v11;
-            _os_log_error_impl(&dword_242072000, v17, OS_LOG_TYPE_ERROR, "Error removing unexpected file (instead of directory): %@", buf, 0xCu);
+            _os_log_error_impl(&dword_242072000, defaultManager3, OS_LOG_TYPE_ERROR, "Error removing unexpected file (instead of directory): %@", buf, 0xCu);
           }
 
           goto LABEL_13;
@@ -70,10 +70,10 @@
       }
 
       v12 = v11;
-      v13 = [MEMORY[0x277CCAA00] defaultManager];
-      v14 = [a1 cacheURL];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      cacheURL4 = [l cacheURL];
       v28 = v11;
-      v15 = [v13 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v28];
+      v15 = [defaultManager2 createDirectoryAtURL:cacheURL4 withIntermediateDirectories:1 attributes:0 error:&v28];
       v11 = v28;
 
       if ((v15 & 1) == 0)
@@ -87,55 +87,55 @@
         }
       }
 
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
       v31 = *MEMORY[0x277CCA1B0];
       *buf = *MEMORY[0x277CCA198];
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v31 count:1];
-      v19 = [a1 cacheURL];
-      v20 = [v19 path];
-      [v17 setAttributes:v18 ofItemAtPath:v20 error:0];
+      cacheURL5 = [l cacheURL];
+      path2 = [cacheURL5 path];
+      [defaultManager3 setAttributes:v18 ofItemAtPath:path2 error:0];
 
 LABEL_13:
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return a1;
+  return l;
 }
 
-- (id)fileURLForImageWithName:(id)a3 error:(id *)a4
+- (id)fileURLForImageWithName:(id)name error:(id *)error
 {
-  v5 = a3;
-  v6 = [(BCSBlastDoorPersistentStore *)self cacheURL];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v5];
+  nameCopy = name;
+  cacheURL = [(BCSBlastDoorPersistentStore *)self cacheURL];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", nameCopy];
 
-  v8 = [v6 URLByAppendingPathComponent:v7];
+  v8 = [cacheURL URLByAppendingPathComponent:nameCopy];
 
   return v8;
 }
 
-- (id)updateImageWithName:(id)a3 error:(id *)a4
+- (id)updateImageWithName:(id)name error:(id *)error
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = [(BCSBlastDoorPersistentStore *)self fileURLForImageWithName:a3 error:a4];
+  v4 = [(BCSBlastDoorPersistentStore *)self fileURLForImageWithName:name error:error];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v15 = 0;
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6 isDirectory:&v15];
+    path = [v4 path];
+    v7 = [defaultManager fileExistsAtPath:path isDirectory:&v15];
 
     if (v7 && (v15 & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v16[0] = *MEMORY[0x277CCA150];
       v10 = [MEMORY[0x277CBEAA8] now];
       v16[1] = *MEMORY[0x277CCA1B0];
       v17[0] = v10;
       v17[1] = *MEMORY[0x277CCA198];
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-      v12 = [v4 path];
-      [v9 setAttributes:v11 ofItemAtPath:v12 error:0];
+      path2 = [v4 path];
+      [defaultManager2 setAttributes:v11 ofItemAtPath:path2 error:0];
 
       v8 = v4;
     }
@@ -156,32 +156,32 @@ LABEL_13:
   return v8;
 }
 
-- (void)deleteImageWithName:(id)a3
+- (void)deleteImageWithName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = nameCopy;
     _os_log_debug_impl(&dword_242072000, v5, OS_LOG_TYPE_DEBUG, "Deleting image named: %@", &v9, 0xCu);
   }
 
-  v6 = [(BCSBlastDoorPersistentStore *)self fileURLForImageWithName:v4 error:0];
+  v6 = [(BCSBlastDoorPersistentStore *)self fileURLForImageWithName:nameCopy error:0];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    [v7 removeItemAtURL:v6 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v6 error:0];
   }
 
   else
   {
-    v7 = ABSLogCommon();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    defaultManager = ABSLogCommon();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(v9) = 0;
-      _os_log_debug_impl(&dword_242072000, v7, OS_LOG_TYPE_DEBUG, "Asked to delete image but unable to construct file URL", &v9, 2u);
+      _os_log_debug_impl(&dword_242072000, defaultManager, OS_LOG_TYPE_DEBUG, "Asked to delete image but unable to construct file URL", &v9, 2u);
     }
   }
 
@@ -198,14 +198,14 @@ LABEL_13:
     _os_log_debug_impl(&dword_242072000, v3, OS_LOG_TYPE_DEBUG, "Deleting expired images", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [(BCSBlastDoorPersistentStore *)self cacheURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  cacheURL = [(BCSBlastDoorPersistentStore *)self cacheURL];
   v6 = *MEMORY[0x277CBE7B0];
   v31[0] = *MEMORY[0x277CBE8E8];
   v31[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-  v22 = v4;
-  v8 = [v4 enumeratorAtURL:v5 includingPropertiesForKeys:v7 options:5 errorHandler:0];
+  v22 = defaultManager;
+  v8 = [defaultManager enumeratorAtURL:cacheURL includingPropertiesForKeys:v7 options:5 errorHandler:0];
 
   v26 = 0u;
   v27 = 0u;

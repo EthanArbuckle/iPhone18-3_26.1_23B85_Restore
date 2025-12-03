@@ -1,30 +1,30 @@
 @interface ICIAMLocalNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)triggerAsString:(int)a3;
-- (int)StringAsTrigger:(id)a3;
+- (id)triggerAsString:(int)string;
+- (int)StringAsTrigger:(id)trigger;
 - (int)trigger;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInterval:(BOOL)a3;
-- (void)setHasTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInterval:(BOOL)interval;
+- (void)setHasTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMLocalNotification
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) != 0)
   {
-    self->_trigger = *(v4 + 8);
+    self->_trigger = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -37,26 +37,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 1) == 0)
+  else if ((*(fromCopy + 36) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_date = *(v4 + 1);
+  self->_date = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
 LABEL_4:
-    self->_interval = *(v4 + 2);
+    self->_interval = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ICIAMLocalNotification *)self setNotification:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -145,23 +145,23 @@ LABEL_9:
   return v12 ^ v8 ^ v13 ^ [(NSString *)self->_notification hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_trigger != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_trigger != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
 LABEL_19:
     v6 = 0;
@@ -170,32 +170,32 @@ LABEL_19:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_interval != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_interval != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   notification = self->_notification;
-  if (notification | *(v4 + 3))
+  if (notification | *(equalCopy + 3))
   {
     v6 = [(NSString *)notification isEqual:?];
   }
@@ -210,9 +210,9 @@ LABEL_20:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -250,21 +250,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_notification copyWithZone:a3];
+  v8 = [(NSString *)self->_notification copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[8] = self->_trigger;
-    *(v4 + 36) |= 4u;
+    toCopy[8] = self->_trigger;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -283,33 +283,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 1) = *&self->_date;
-  *(v4 + 36) |= 1u;
+  *(toCopy + 1) = *&self->_date;
+  *(toCopy + 36) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(v4 + 2) = *&self->_interval;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 2) = *&self->_interval;
+    *(toCopy + 36) |= 2u;
   }
 
 LABEL_5:
   if (self->_notification)
   {
-    v6 = v4;
-    [v4 setNotification:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setNotification:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -329,25 +329,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
   if (self->_notification)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -370,7 +370,7 @@ LABEL_5:
       v6 = @"Calendar";
     }
 
-    [v3 setObject:v6 forKey:@"trigger"];
+    [dictionary setObject:v6 forKey:@"trigger"];
 
     has = self->_has;
   }
@@ -378,7 +378,7 @@ LABEL_5:
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v7 forKey:@"date"];
+    [dictionary setObject:v7 forKey:@"date"];
 
     has = self->_has;
   }
@@ -386,16 +386,16 @@ LABEL_5:
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_interval];
-    [v3 setObject:v8 forKey:@"interval"];
+    [dictionary setObject:v8 forKey:@"interval"];
   }
 
   notification = self->_notification;
   if (notification)
   {
-    [v3 setObject:notification forKey:@"notification"];
+    [dictionary setObject:notification forKey:@"notification"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -404,15 +404,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = ICIAMLocalNotification;
   v4 = [(ICIAMLocalNotification *)&v8 description];
-  v5 = [(ICIAMLocalNotification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMLocalNotification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasInterval:(BOOL)a3
+- (void)setHasInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -425,34 +425,34 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsTrigger:(id)a3
+- (int)StringAsTrigger:(id)trigger
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Calendar"])
+  triggerCopy = trigger;
+  if ([triggerCopy isEqualToString:@"Calendar"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TimeInterval"];
+    v4 = [triggerCopy isEqualToString:@"TimeInterval"];
   }
 
   return v4;
 }
 
-- (id)triggerAsString:(int)a3
+- (id)triggerAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"TimeInterval";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -464,9 +464,9 @@ LABEL_5:
   return v4;
 }
 
-- (void)setHasTrigger:(BOOL)a3
+- (void)setHasTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 4;
   }

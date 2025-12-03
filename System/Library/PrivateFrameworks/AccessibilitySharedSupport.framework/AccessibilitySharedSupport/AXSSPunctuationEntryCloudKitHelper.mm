@@ -1,123 +1,123 @@
 @interface AXSSPunctuationEntryCloudKitHelper
-- (id)createCKRecordFromEntry:(id)a3;
-- (id)createCKRecordFromObject:(id)a3;
-- (id)testRecordForSchemaCreation:(id)a3;
-- (void)_processPunctuationEntryFromCKRecord:(id)a3;
+- (id)createCKRecordFromEntry:(id)entry;
+- (id)createCKRecordFromObject:(id)object;
+- (id)testRecordForSchemaCreation:(id)creation;
+- (void)_processPunctuationEntryFromCKRecord:(id)record;
 - (void)beginWatchingForChanges;
-- (void)clearRecordsForPurging:(id)a3;
+- (void)clearRecordsForPurging:(id)purging;
 - (void)dealloc;
-- (void)processRecordDeletionsFromServer:(id)a3;
-- (void)processServerUpdateChanges:(id)a3 moc:(id)a4 recordNameToManagedObject:(id)a5;
-- (void)punctuationGroupChanged:(id)a3;
-- (void)retrieveLocalChangesForCloud:(id)a3;
+- (void)processRecordDeletionsFromServer:(id)server;
+- (void)processServerUpdateChanges:(id)changes moc:(id)moc recordNameToManagedObject:(id)object;
+- (void)punctuationGroupChanged:(id)changed;
+- (void)retrieveLocalChangesForCloud:(id)cloud;
 @end
 
 @implementation AXSSPunctuationEntryCloudKitHelper
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXSSPunctuationEntryCloudKitHelper;
   [(AXSSCloudKitHelper *)&v4 dealloc];
 }
 
-- (id)testRecordForSchemaCreation:(id)a3
+- (id)testRecordForSchemaCreation:(id)creation
 {
   v4 = MEMORY[0x1E695BA60];
-  v5 = a3;
+  creationCopy = creation;
   v6 = [v4 alloc];
-  v7 = [(AXSSCloudKitHelper *)self zoneSubscription];
-  v8 = [v7 recordType];
-  v9 = [v6 initWithRecordType:v8 recordID:v5];
+  zoneSubscription = [(AXSSCloudKitHelper *)self zoneSubscription];
+  recordType = [zoneSubscription recordType];
+  v9 = [v6 initWithRecordType:recordType recordID:creationCopy];
 
   [v9 setRule:@"Rule"];
   [v9 setVersion:&unk_1F4066FA8];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  [v9 setGroupUUID:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [v9 setGroupUUID:uUID];
 
   return v9;
 }
 
-- (id)createCKRecordFromEntry:(id)a3
+- (id)createCKRecordFromEntry:(id)entry
 {
   v4 = MEMORY[0x1E695BA70];
-  v5 = a3;
+  entryCopy = entry;
   v6 = [v4 alloc];
-  v7 = [v5 uuid];
-  v8 = [v7 UUIDString];
-  v9 = [(AXSSCloudKitHelper *)self recordZone];
-  v10 = [v9 zoneID];
-  v11 = [v6 initWithRecordName:v8 zoneID:v10];
+  uuid = [entryCopy uuid];
+  uUIDString = [uuid UUIDString];
+  recordZone = [(AXSSCloudKitHelper *)self recordZone];
+  zoneID = [recordZone zoneID];
+  v11 = [v6 initWithRecordName:uUIDString zoneID:zoneID];
 
   v12 = objc_alloc(MEMORY[0x1E695BA60]);
-  v13 = [(AXSSPunctuationEntryCloudKitHelper *)self recordType];
-  v14 = [v12 initWithRecordType:v13 recordID:v11];
+  recordType = [(AXSSPunctuationEntryCloudKitHelper *)self recordType];
+  v14 = [v12 initWithRecordType:recordType recordID:v11];
 
   v15 = +[AXSSPunctuationManager sharedDatabase];
-  v16 = [v15 ruleToString:{objc_msgSend(v5, "rule")}];
+  v16 = [v15 ruleToString:{objc_msgSend(entryCopy, "rule")}];
   [v14 setRule:v16];
 
-  v17 = [v5 punctuation];
-  [v14 setPunctuation:v17];
+  punctuation = [entryCopy punctuation];
+  [v14 setPunctuation:punctuation];
 
-  v18 = [v5 replacement];
-  [v14 setReplacement:v18];
+  replacement = [entryCopy replacement];
+  [v14 setReplacement:replacement];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v5, "version")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(entryCopy, "version")}];
   [v14 setVersion:v19];
 
-  v20 = [v5 groupUUID];
+  groupUUID = [entryCopy groupUUID];
 
-  [v14 setGroupUUID:v20];
+  [v14 setGroupUUID:groupUUID];
 
   return v14;
 }
 
-- (id)createCKRecordFromObject:(id)a3
+- (id)createCKRecordFromObject:(id)object
 {
   v4 = MEMORY[0x1E695BA70];
-  v5 = a3;
+  objectCopy = object;
   v6 = [v4 alloc];
-  v7 = [v5 uuid];
-  v8 = [v7 UUIDString];
-  v9 = [(AXSSCloudKitHelper *)self recordZone];
-  v10 = [v9 zoneID];
-  v11 = [v6 initWithRecordName:v8 zoneID:v10];
+  uuid = [objectCopy uuid];
+  uUIDString = [uuid UUIDString];
+  recordZone = [(AXSSCloudKitHelper *)self recordZone];
+  zoneID = [recordZone zoneID];
+  v11 = [v6 initWithRecordName:uUIDString zoneID:zoneID];
 
   v12 = objc_alloc(MEMORY[0x1E695BA60]);
-  v13 = [(AXSSPunctuationEntryCloudKitHelper *)self recordType];
-  v14 = [v12 initWithRecordType:v13 recordID:v11];
+  recordType = [(AXSSPunctuationEntryCloudKitHelper *)self recordType];
+  v14 = [v12 initWithRecordType:recordType recordID:v11];
 
-  v15 = [v5 rule];
-  [v14 setRule:v15];
+  rule = [objectCopy rule];
+  [v14 setRule:rule];
 
-  v16 = [v5 punctuation];
-  [v14 setPunctuation:v16];
+  punctuation = [objectCopy punctuation];
+  [v14 setPunctuation:punctuation];
 
-  v17 = [v5 replacement];
-  [v14 setReplacement:v17];
+  replacement = [objectCopy replacement];
+  [v14 setReplacement:replacement];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "version")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(objectCopy, "version")}];
   [v14 setVersion:v18];
 
-  v19 = [v5 groupUUID];
+  groupUUID = [objectCopy groupUUID];
 
-  [v14 setGroupUUID:v19];
+  [v14 setGroupUUID:groupUUID];
 
   return v14;
 }
 
-- (void)_processPunctuationEntryFromCKRecord:(id)a3
+- (void)_processPunctuationEntryFromCKRecord:(id)record
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v5 = [v3 recordID];
-  v6 = [v5 recordName];
-  v7 = [v4 initWithUUIDString:v6];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v7 = [v4 initWithUUIDString:recordName];
 
   v8 = +[AXSSPunctuationManager sharedDatabase];
   v9 = [v8 punctuationEntryForUUID:v7];
@@ -129,9 +129,9 @@
     goto LABEL_10;
   }
 
-  v10 = [v9 ckChangeTag];
-  v11 = [v3 recordChangeTag];
-  v12 = [v10 isEqual:v11];
+  ckChangeTag = [v9 ckChangeTag];
+  recordChangeTag = [recordCopy recordChangeTag];
+  v12 = [ckChangeTag isEqual:recordChangeTag];
 
   if (v12)
   {
@@ -153,21 +153,21 @@ LABEL_12:
 
 LABEL_10:
     v21 = +[AXSSPunctuationManager sharedDatabase];
-    v22 = [v3 rule];
-    [v9 setRule:{objc_msgSend(v21, "stringToRule:", v22)}];
+    rule = [recordCopy rule];
+    [v9 setRule:{objc_msgSend(v21, "stringToRule:", rule)}];
 
-    v23 = [v3 punctuation];
-    [v9 setPunctuation:v23];
+    punctuation = [recordCopy punctuation];
+    [v9 setPunctuation:punctuation];
 
-    v24 = [v3 replacement];
-    [v9 setReplacement:v24];
+    replacement = [recordCopy replacement];
+    [v9 setReplacement:replacement];
 
-    v25 = [v3 groupUUID];
-    [v9 setGroupUUID:v25];
+    groupUUID = [recordCopy groupUUID];
+    [v9 setGroupUUID:groupUUID];
 
     [v9 setInCloud:1];
-    v26 = [v3 recordChangeTag];
-    [v9 setCkChangeTag:v26];
+    recordChangeTag2 = [recordCopy recordChangeTag];
+    [v9 setCkChangeTag:recordChangeTag2];
 
     v27 = +[AXSSPunctuationManager sharedDatabase];
     [v27 updateEntry:v9 fromCloudKit:1];
@@ -184,11 +184,11 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v15 = [v9 lastModifiedDate];
-  [v15 timeIntervalSinceReferenceDate];
+  lastModifiedDate = [v9 lastModifiedDate];
+  [lastModifiedDate timeIntervalSinceReferenceDate];
   v17 = v16;
-  v18 = [v3 modificationDate];
-  [v18 timeIntervalSinceReferenceDate];
+  modificationDate = [recordCopy modificationDate];
+  [modificationDate timeIntervalSinceReferenceDate];
   v20 = v19;
 
   if (v17 <= v20)
@@ -215,29 +215,29 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = AXSSPunctuationEntryCloudKitHelper;
   [(AXSSCloudKitHelper *)&v8 beginWatchingForChanges];
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel_punctuationGroupChanged_ name:@"AXSSVoiceOverPunctuationGroupsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_punctuationGroupChanged_ name:@"AXSSVoiceOverPunctuationGroupsChangedNotification" object:0];
 
   v4 = objc_alloc(MEMORY[0x1E6988780]);
-  v5 = [(AXSSCloudKitHelper *)self cloudkitQueue];
-  v6 = [v4 initWithTargetSerialQueue:v5];
+  cloudkitQueue = [(AXSSCloudKitHelper *)self cloudkitQueue];
+  v6 = [v4 initWithTargetSerialQueue:cloudkitQueue];
   changeCoalescer = self->_changeCoalescer;
   self->_changeCoalescer = v6;
 
   [(AXDispatchTimer *)self->_changeCoalescer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 }
 
-- (void)punctuationGroupChanged:(id)a3
+- (void)punctuationGroupChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   changeCoalescer = self->_changeCoalescer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_invoke;
   v7[3] = &unk_1E8134950;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   [(AXDispatchTimer *)changeCoalescer afterDelay:v7 processBlock:0.5];
 }
 
@@ -269,15 +269,15 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
   [v0 refreshAllObjects];
 }
 
-- (void)clearRecordsForPurging:(id)a3
+- (void)clearRecordsForPurging:(id)purging
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  purgingCopy = purging;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [purgingCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -289,7 +289,7 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(purgingCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -301,15 +301,15 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
 
         v10 = +[AXSSPunctuationManager sharedDatabase];
         v11 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v12 = [v8 recordName];
-        v13 = [v11 initWithUUIDString:v12];
+        recordName = [v8 recordName];
+        v13 = [v11 initWithUUIDString:recordName];
         [v10 removeCloudRecordForPurge:v13];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v5 = [purgingCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v5);
@@ -318,21 +318,21 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveLocalChangesForCloud:(id)a3
+- (void)retrieveLocalChangesForCloud:(id)cloud
 {
   v79 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v5 = +[AXSSPunctuationManager sharedDatabase];
-  v6 = [v5 punctuationGroups];
+  punctuationGroups = [v5 punctuationGroups];
 
-  obj = v6;
-  v54 = v4;
-  v52 = [v6 countByEnumeratingWithState:&v66 objects:v78 count:16];
+  obj = punctuationGroups;
+  v54 = array;
+  v52 = [punctuationGroups countByEnumeratingWithState:&v66 objects:v78 count:16];
   if (v52)
   {
     v51 = *v67;
@@ -352,8 +352,8 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v56 = [v8 entries];
-        v9 = [v56 countByEnumeratingWithState:&v62 objects:v77 count:16];
+        entries = [v8 entries];
+        v9 = [entries countByEnumeratingWithState:&v62 objects:v77 count:16];
         if (v9)
         {
           v10 = v9;
@@ -365,74 +365,74 @@ void __62__AXSSPunctuationEntryCloudKitHelper_punctuationGroupChanged___block_in
             {
               if (*v63 != v11)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(entries);
               }
 
               v13 = *(*(&v62 + 1) + 8 * v12);
               v14 = AXLogPunctuationStorage();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
               {
-                v26 = [v13 inCloud];
-                v27 = [v13 ckChangeTag];
-                v28 = [MEMORY[0x1E695DF00] date];
-                [v28 timeIntervalSinceReferenceDate];
+                inCloud = [v13 inCloud];
+                ckChangeTag = [v13 ckChangeTag];
+                date = [MEMORY[0x1E695DF00] date];
+                [date timeIntervalSinceReferenceDate];
                 v30 = v29;
-                v31 = [v13 ckRecordProcessDate];
-                [v31 timeIntervalSinceReferenceDate];
+                ckRecordProcessDate = [v13 ckRecordProcessDate];
+                [ckRecordProcessDate timeIntervalSinceReferenceDate];
                 *buf = 67109890;
-                *v72 = v26;
+                *v72 = inCloud;
                 *&v72[4] = 2112;
-                *&v72[6] = v27;
+                *&v72[6] = ckChangeTag;
                 v73 = 2112;
                 v74 = v13;
                 v75 = 2048;
                 v76 = v30 - v32;
                 _os_log_debug_impl(&dword_1C0E8A000, v14, OS_LOG_TYPE_DEBUG, "Is entry in icloud? %d, tag: %@: %@, last mod date: %f", buf, 0x26u);
 
-                v4 = v54;
+                array = v54;
               }
 
-              v15 = [v13 inCloud];
-              if (v15)
+              inCloud2 = [v13 inCloud];
+              if (inCloud2)
               {
-                v16 = [v13 ckChangeTag];
-                v3 = v16;
-                if (v16)
+                ckChangeTag2 = [v13 ckChangeTag];
+                v3 = ckChangeTag2;
+                if (ckChangeTag2)
                 {
                   goto LABEL_23;
                 }
               }
 
-              v17 = [v13 ckRecordProcessDate];
-              if (!v17)
+              ckRecordProcessDate2 = [v13 ckRecordProcessDate];
+              if (!ckRecordProcessDate2)
               {
 
-                if (v15)
+                if (inCloud2)
                 {
                 }
 
 LABEL_22:
                 v24 = [(AXSSPunctuationEntryCloudKitHelper *)self createCKRecordFromEntry:v13];
-                [v4 addObject:v24];
+                [array addObject:v24];
 
-                v25 = [MEMORY[0x1E695DF00] date];
-                [v13 setCkRecordProcessDate:v25];
+                date2 = [MEMORY[0x1E695DF00] date];
+                [v13 setCkRecordProcessDate:date2];
 
-                v16 = +[AXSSPunctuationManager sharedDatabase];
-                [v16 updateEntry:v13];
+                ckChangeTag2 = +[AXSSPunctuationManager sharedDatabase];
+                [ckChangeTag2 updateEntry:v13];
 LABEL_23:
 
                 goto LABEL_24;
               }
 
-              v18 = [MEMORY[0x1E695DF00] date];
-              [v18 timeIntervalSinceReferenceDate];
+              date3 = [MEMORY[0x1E695DF00] date];
+              [date3 timeIntervalSinceReferenceDate];
               v20 = v19;
-              v21 = [v13 ckRecordProcessDate];
-              [v21 timeIntervalSinceReferenceDate];
+              ckRecordProcessDate3 = [v13 ckRecordProcessDate];
+              [ckRecordProcessDate3 timeIntervalSinceReferenceDate];
               v23 = v20 - v22;
 
-              if (v15)
+              if (inCloud2)
               {
               }
 
@@ -446,7 +446,7 @@ LABEL_24:
             }
 
             while (v10 != v12);
-            v10 = [v56 countByEnumeratingWithState:&v62 objects:v77 count:16];
+            v10 = [entries countByEnumeratingWithState:&v62 objects:v77 count:16];
           }
 
           while (v10);
@@ -462,7 +462,7 @@ LABEL_24:
     while (v52);
   }
 
-  v33 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v34 = +[AXSSPunctuationManager sharedDatabase];
   v35 = +[AXSSPunctuationEntry description];
   v36 = [v34 cloudRecordsToPurge:v35];
@@ -488,12 +488,12 @@ LABEL_24:
 
         v41 = *(*(&v58 + 1) + 8 * i);
         v42 = objc_alloc(MEMORY[0x1E695BA70]);
-        v43 = [v41 UUIDString];
-        v44 = [(AXSSCloudKitHelper *)self recordZone];
-        v45 = [v44 zoneID];
-        v46 = [v42 initWithRecordName:v43 zoneID:v45];
+        uUIDString = [v41 UUIDString];
+        recordZone = [(AXSSCloudKitHelper *)self recordZone];
+        zoneID = [recordZone zoneID];
+        v46 = [v42 initWithRecordName:uUIDString zoneID:zoneID];
 
-        [v33 addObject:v46];
+        [array2 addObject:v46];
         v47 = AXLogPunctuationStorage();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
@@ -502,7 +502,7 @@ LABEL_24:
           _os_log_impl(&dword_1C0E8A000, v47, OS_LOG_TYPE_INFO, "Purging entry: %@", buf, 0xCu);
         }
 
-        v4 = v54;
+        array = v54;
       }
 
       v38 = [v57 countByEnumeratingWithState:&v58 objects:v70 count:16];
@@ -511,7 +511,7 @@ LABEL_24:
     while (v38);
   }
 
-  v49[2](v49, v4, v33, &__block_literal_global_23_0);
+  cloudCopy[2](cloudCopy, array, array2, &__block_literal_global_23_0);
   v48 = *MEMORY[0x1E69E9840];
 }
 
@@ -567,18 +567,18 @@ void __67__AXSSPunctuationEntryCloudKitHelper_retrieveLocalChangesForCloud___blo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processServerUpdateChanges:(id)a3 moc:(id)a4 recordNameToManagedObject:(id)a5
+- (void)processServerUpdateChanges:(id)changes moc:(id)moc recordNameToManagedObject:(id)object
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  changesCopy = changes;
+  objectCopy = object;
   v9 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v7;
+    v22 = changesCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = objectCopy;
     _os_log_impl(&dword_1C0E8A000, v9, OS_LOG_TYPE_DEFAULT, "Received server updates: %@, %@", buf, 0x16u);
   }
 
@@ -586,7 +586,7 @@ void __67__AXSSPunctuationEntryCloudKitHelper_retrieveLocalChangesForCloud___blo
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v7;
+  v10 = changesCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -615,15 +615,15 @@ void __67__AXSSPunctuationEntryCloudKitHelper_retrieveLocalChangesForCloud___blo
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processRecordDeletionsFromServer:(id)a3
+- (void)processRecordDeletionsFromServer:(id)server
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  serverCopy = server;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v4 = [serverCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -634,13 +634,13 @@ void __67__AXSSPunctuationEntryCloudKitHelper_retrieveLocalChangesForCloud___blo
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(serverCopy);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
         v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v10 = [v8 recordName];
-        v11 = [v9 initWithUUIDString:v10];
+        recordName = [v8 recordName];
+        v11 = [v9 initWithUUIDString:recordName];
 
         v12 = +[AXSSPunctuationManager sharedDatabase];
         v13 = [v12 punctuationEntryForUUID:v11];
@@ -659,7 +659,7 @@ void __67__AXSSPunctuationEntryCloudKitHelper_retrieveLocalChangesForCloud___blo
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v5 = [serverCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v5);

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneStoreSingleInstanceLockFactory
 - (OrgApacheLuceneStoreSingleInstanceLockFactory)init;
-- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4;
+- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneStoreSingleInstanceLockFactory
 
-- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4
+- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string
 {
   locks = self->locks_;
   objc_sync_enter(locks);
@@ -16,7 +16,7 @@
     JreThrowNullPointerException();
   }
 
-  if (![(JavaUtilHashSet *)v7 addWithId:a4])
+  if (![(JavaUtilHashSet *)v7 addWithId:string])
   {
     v18 = JreStrcat("$@$$C", v8, v9, v10, v11, v12, v13, v14, @"lock instance already obtained: (dir=");
     v19 = new_OrgApacheLuceneStoreLockObtainFailedException_initWithNSString_(v18);
@@ -24,7 +24,7 @@
   }
 
   v15 = [OrgApacheLuceneStoreSingleInstanceLockFactory_SingleInstanceLock alloc];
-  sub_10002B594(v15, self, a4);
+  sub_10002B594(v15, self, string);
   v16 = v15;
   objc_sync_exit(locks);
   return v16;

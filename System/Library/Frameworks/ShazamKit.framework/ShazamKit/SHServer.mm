@@ -1,6 +1,6 @@
 @interface SHServer
 - (SHServer)init;
-- (id)buildListenerForMachService:(Class)a3;
+- (id)buildListenerForMachService:(Class)service;
 - (id)buildListeners;
 - (void)start;
 - (void)stop;
@@ -16,9 +16,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SHServer *)v2 buildListeners];
+    buildListeners = [(SHServer *)v2 buildListeners];
     listeners = v3->_listeners;
-    v3->_listeners = v4;
+    v3->_listeners = buildListeners;
 
     v6 = objc_alloc_init(SHMediaLibraryAccountListener);
     accountListener = v3->_accountListener;
@@ -38,8 +38,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SHServer *)self listeners];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  listeners = [(SHServer *)self listeners];
+  v4 = [listeners countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -51,7 +51,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listeners);
         }
 
         [*(*(&v10 + 1) + 8 * v7) listen];
@@ -59,17 +59,17 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [listeners countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SHServer *)self accountListener];
-  [v8 listenForChanges];
+  accountListener = [(SHServer *)self accountListener];
+  [accountListener listenForChanges];
 
-  v9 = [(SHServer *)self apsConnection];
-  [v9 registerForPushNotifications];
+  apsConnection = [(SHServer *)self apsConnection];
+  [apsConnection registerForPushNotifications];
 }
 
 - (void)stop
@@ -78,8 +78,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SHServer *)self listeners];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  listeners = [(SHServer *)self listeners];
+  v4 = [listeners countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,7 +91,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listeners);
         }
 
         [*(*(&v9 + 1) + 8 * v7) stopListening];
@@ -99,14 +99,14 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [listeners countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SHServer *)self accountListener];
-  [v8 stopListeningForChanges];
+  accountListener = [(SHServer *)self accountListener];
+  [accountListener stopListeningForChanges];
 }
 
 - (id)buildListeners
@@ -149,12 +149,12 @@
   return v11;
 }
 
-- (id)buildListenerForMachService:(Class)a3
+- (id)buildListenerForMachService:(Class)service
 {
-  v3 = [[_TtC7shazamd17SHServiceProvider alloc] initWithService:a3];
+  v3 = [[_TtC7shazamd17SHServiceProvider alloc] initWithService:service];
   v4 = [SHConnectionListener alloc];
-  v5 = [(SHServiceProvider *)v3 buildListener];
-  v6 = [(SHConnectionListener *)v4 initWithServiceProvider:v3 listener:v5];
+  buildListener = [(SHServiceProvider *)v3 buildListener];
+  v6 = [(SHConnectionListener *)v4 initWithServiceProvider:v3 listener:buildListener];
 
   return v6;
 }

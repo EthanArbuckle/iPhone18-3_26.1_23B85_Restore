@@ -1,15 +1,15 @@
 @interface SAURIHandoffPayload
-- (void)_ad_setPayloadOnRequestInfo:(id)a3;
+- (void)_ad_setPayloadOnRequestInfo:(id)info;
 @end
 
 @implementation SAURIHandoffPayload
 
-- (void)_ad_setPayloadOnRequestInfo:(id)a3
+- (void)_ad_setPayloadOnRequestInfo:(id)info
 {
-  v4 = a3;
-  v6 = [(SAURIHandoffPayload *)self link];
-  v5 = [v6 absoluteString];
-  [v4 setHandoffURLString:v5];
+  infoCopy = info;
+  link = [(SAURIHandoffPayload *)self link];
+  absoluteString = [link absoluteString];
+  [infoCopy setHandoffURLString:absoluteString];
 }
 
 @end

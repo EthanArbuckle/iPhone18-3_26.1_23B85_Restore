@@ -1,15 +1,15 @@
 @interface PIInpaintOperation
 - (BOOL)hasExclusionMask;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualtoInpaintOperation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualtoInpaintOperation:(id)operation;
 - (BOOL)isFilledBrushStroke;
 - (BOOL)isTargetPoints;
 - (CGPoint)sourceOffset;
 - (PIInpaintOperation)init;
-- (PIInpaintOperation)initWithDictionary:(id)a3;
+- (PIInpaintOperation)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)nu_updateDigest:(id)a3;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation PIInpaintOperation
@@ -23,26 +23,26 @@
   return result;
 }
 
-- (BOOL)isEqualtoInpaintOperation:(id)a3
+- (BOOL)isEqualtoInpaintOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 mode];
-  if (v5 != [(PIInpaintOperation *)self mode])
+  operationCopy = operation;
+  mode = [operationCopy mode];
+  if (mode != [(PIInpaintOperation *)self mode])
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 options];
-  if (v6 != [(PIInpaintOperation *)self options])
+  options = [operationCopy options];
+  if (options != [(PIInpaintOperation *)self options])
   {
     goto LABEL_8;
   }
 
   if ([(PIInpaintOperation *)self mode]== 2)
   {
-    v7 = [v4 brushStroke];
-    v8 = [(PIInpaintOperation *)self brushStroke];
-    v9 = [v7 isEqualToBrushStroke:v8];
+    brushStroke = [operationCopy brushStroke];
+    brushStroke2 = [(PIInpaintOperation *)self brushStroke];
+    v9 = [brushStroke isEqualToBrushStroke:brushStroke2];
 
     if ((v9 & 1) == 0)
     {
@@ -52,9 +52,9 @@
 
   else
   {
-    v10 = [v4 maskIdentifiers];
-    v11 = [(PIInpaintOperation *)self maskIdentifiers];
-    v12 = [v10 isEqualToArray:v11];
+    maskIdentifiers = [operationCopy maskIdentifiers];
+    maskIdentifiers2 = [(PIInpaintOperation *)self maskIdentifiers];
+    v12 = [maskIdentifiers isEqualToArray:maskIdentifiers2];
 
     if (!v12)
     {
@@ -64,17 +64,17 @@ LABEL_8:
     }
   }
 
-  v13 = [v4 hasExclusionMask];
-  if (v13 != [(PIInpaintOperation *)self hasExclusionMask])
+  hasExclusionMask = [operationCopy hasExclusionMask];
+  if (hasExclusionMask != [(PIInpaintOperation *)self hasExclusionMask])
   {
     goto LABEL_8;
   }
 
   if ([(PIInpaintOperation *)self hasExclusionMask])
   {
-    v16 = [v4 exclusionMaskIdentifiers];
-    v17 = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
-    v14 = [v16 isEqualToArray:v17];
+    exclusionMaskIdentifiers = [operationCopy exclusionMaskIdentifiers];
+    exclusionMaskIdentifiers2 = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
+    v14 = [exclusionMaskIdentifiers isEqualToArray:exclusionMaskIdentifiers2];
   }
 
   else
@@ -87,13 +87,13 @@ LABEL_9:
   return v14 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqualtoInpaintOperation:self];
+    v5 = [equalCopy isEqualtoInpaintOperation:self];
   }
 
   else
@@ -122,22 +122,22 @@ LABEL_9:
   return (0xA9D3B49167B13 * self->_options) ^ v4;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 addString:@"PIInpaintOperation{"];
+  digestCopy = digest;
+  [digestCopy addString:@"PIInpaintOperation{"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_mode];
-  [v5 nu_updateDigest:v4];
+  [v5 nu_updateDigest:digestCopy];
 
-  [(NUBrushStroke *)self->_brushStroke nu_updateDigest:v4];
-  [v4 addCString:{", "}];
+  [(NUBrushStroke *)self->_brushStroke nu_updateDigest:digestCopy];
+  [digestCopy addCString:{", "}];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(PIInpaintOperation *)self maskIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  maskIdentifiers = [(PIInpaintOperation *)self maskIdentifiers];
+  v7 = [maskIdentifiers countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -148,13 +148,13 @@ LABEL_9:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(maskIdentifiers);
         }
 
-        [v4 addString:*(*(&v25 + 1) + 8 * i)];
+        [digestCopy addString:*(*(&v25 + 1) + 8 * i)];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v8 = [maskIdentifiers countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v8);
@@ -164,8 +164,8 @@ LABEL_9:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  exclusionMaskIdentifiers = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
+  v12 = [exclusionMaskIdentifiers countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -176,25 +176,25 @@ LABEL_9:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(exclusionMaskIdentifiers);
         }
 
-        [v4 addString:*(*(&v21 + 1) + 8 * j)];
+        [digestCopy addString:*(*(&v21 + 1) + 8 * j)];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v13 = [exclusionMaskIdentifiers countByEnumeratingWithState:&v21 objects:v31 count:16];
     }
 
     while (v13);
   }
 
-  [v4 addCString:{", "}];
+  [digestCopy addCString:{", "}];
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PIInpaintOperation options](self, "options")}];
-  [v16 nu_updateDigest:v4];
+  [v16 nu_updateDigest:digestCopy];
 
   if (self->_sourceOffset.x != *MEMORY[0x1E695EFF8] || self->_sourceOffset.y != *(MEMORY[0x1E695EFF8] + 8))
   {
-    [v4 addCString:{", "}];
+    [digestCopy addCString:{", "}];
     v29[0] = @"x";
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sourceOffset.x];
     v29[1] = @"y";
@@ -203,15 +203,15 @@ LABEL_9:
     v30[1] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
 
-    [v20 nu_updateDigest:v4];
+    [v20 nu_updateDigest:digestCopy];
   }
 
-  [v4 addString:@"}"];
+  [digestCopy addString:@"}"];
 }
 
 - (BOOL)isFilledBrushStroke
 {
-  v3 = [(PIInpaintOperation *)self maskIdentifiers];
+  maskIdentifiers = [(PIInpaintOperation *)self maskIdentifiers];
   v4 = PFExists();
 
   return (v4 | ([(PIInpaintOperation *)self options]>> 4)) & 1;
@@ -219,7 +219,7 @@ LABEL_9:
 
 - (BOOL)isTargetPoints
 {
-  v3 = [(PIInpaintOperation *)self maskIdentifiers];
+  maskIdentifiers = [(PIInpaintOperation *)self maskIdentifiers];
   v4 = PFExists();
 
   return (v4 | ([(PIInpaintOperation *)self options]>> 3)) & 1;
@@ -227,8 +227,8 @@ LABEL_9:
 
 - (BOOL)hasExclusionMask
 {
-  v2 = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
-  v3 = [v2 count] != 0;
+  exclusionMaskIdentifiers = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
+  v3 = [exclusionMaskIdentifiers count] != 0;
 
   return v3;
 }
@@ -236,14 +236,14 @@ LABEL_9:
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PIInpaintOperation *)self brushStroke];
-  [v3 setObject:v4 forKeyedSubscript:@"stroke"];
+  brushStroke = [(PIInpaintOperation *)self brushStroke];
+  [v3 setObject:brushStroke forKeyedSubscript:@"stroke"];
 
-  v5 = [(PIInpaintOperation *)self maskIdentifiers];
-  [v3 setObject:v5 forKeyedSubscript:@"maskIdentifiers"];
+  maskIdentifiers = [(PIInpaintOperation *)self maskIdentifiers];
+  [v3 setObject:maskIdentifiers forKeyedSubscript:@"maskIdentifiers"];
 
-  v6 = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
-  [v3 setObject:v6 forKeyedSubscript:@"exclusionMaskIdentifiers"];
+  exclusionMaskIdentifiers = [(PIInpaintOperation *)self exclusionMaskIdentifiers];
+  [v3 setObject:exclusionMaskIdentifiers forKeyedSubscript:@"exclusionMaskIdentifiers"];
 
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8 = objc_opt_class();
@@ -253,27 +253,27 @@ LABEL_9:
   return v10;
 }
 
-- (PIInpaintOperation)initWithDictionary:(id)a3
+- (PIInpaintOperation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PIInpaintOperation;
   v5 = [(PIInpaintOperation *)&v24 init];
-  v6 = [v4 objectForKeyedSubscript:@"mode"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"mode"];
   v5->_mode = PIRetouchModeFromString(v6);
 
   if ((v5->_mode - 1) <= 1)
   {
-    v7 = [MEMORY[0x1E69B3980] brushStrokeFromDictionary:v4];
+    v7 = [MEMORY[0x1E69B3980] brushStrokeFromDictionary:dictionaryCopy];
     brushStroke = v5->_brushStroke;
     v5->_brushStroke = v7;
 
     if (v5->_mode == 1)
     {
-      v9 = [v4 objectForKeyedSubscript:@"repairEdges"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"repairEdges"];
       v5->_repairEdges = [v9 BOOLValue];
 
-      v10 = [v4 objectForKeyedSubscript:@"sourceOffset"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"sourceOffset"];
       v11 = [v10 objectForKeyedSubscript:@"x"];
       v12 = [v10 objectForKeyedSubscript:@"y"];
       [v11 doubleValue];
@@ -284,15 +284,15 @@ LABEL_9:
     }
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"options"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"options"];
   v5->_options = [v16 unsignedIntegerValue];
 
-  v17 = [v4 objectForKeyedSubscript:@"maskIdentifiers"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"maskIdentifiers"];
   v18 = [v17 copy];
   maskIdentifiers = v5->_maskIdentifiers;
   v5->_maskIdentifiers = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"exclusionMaskIdentifiers"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"exclusionMaskIdentifiers"];
   v21 = [v20 copy];
   exclusionMaskIdentifiers = v5->_exclusionMaskIdentifiers;
   v5->_exclusionMaskIdentifiers = v21;
@@ -341,8 +341,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -369,8 +369,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

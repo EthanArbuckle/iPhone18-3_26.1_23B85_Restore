@@ -1,8 +1,8 @@
 @interface MTRJointFabricDatastoreClusterAddAdminParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRJointFabricDatastoreClusterAddAdminParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,9 +25,9 @@
     vendorID = v3->_vendorID;
     v3->_vendorID = &unk_284C3E4C8;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     icac = v3->_icac;
-    v3->_icac = v7;
+    v3->_icac = data;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -39,26 +39,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterAddAdminParams);
-  v5 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self nodeID];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterAddAdminParams *)self nodeID];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setFriendlyName:v6];
+  friendlyName = [(MTRJointFabricDatastoreClusterAddAdminParams *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setFriendlyName:friendlyName];
 
-  v7 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self vendorID];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setVendorID:v7];
+  vendorID = [(MTRJointFabricDatastoreClusterAddAdminParams *)self vendorID];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setVendorID:vendorID];
 
-  v8 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self icac];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setIcac:v8];
+  icac = [(MTRJointFabricDatastoreClusterAddAdminParams *)self icac];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setIcac:icac];
 
-  v9 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self timedInvokeTimeoutMs];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRJointFabricDatastoreClusterAddAdminParams *)self timedInvokeTimeoutMs];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self serverSideProcessingTimeout];
-  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRJointFabricDatastoreClusterAddAdminParams *)self serverSideProcessingTimeout];
+  [(MTRJointFabricDatastoreClusterAddAdminParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -77,27 +77,27 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v28 = 0uLL;
   v26 = 0uLL;
-  v25 = 0;
-  v27 = 0;
+  unsignedLongLongValue = 0;
+  unsignedShortValue = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self nodeID];
-  v25 = [v5 unsignedLongLongValue];
+  nodeID = [(MTRJointFabricDatastoreClusterAddAdminParams *)self nodeID];
+  unsignedLongLongValue = [nodeID unsignedLongLongValue];
 
-  v6 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self friendlyName];
-  sub_238DB9BD8(v17, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
+  friendlyName = [(MTRJointFabricDatastoreClusterAddAdminParams *)self friendlyName];
+  sub_238DB9BD8(v17, [friendlyName UTF8String], objc_msgSend(friendlyName, "lengthOfBytesUsingEncoding:", 4));
 
   v26 = v17[0];
-  v7 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self vendorID];
-  v27 = [v7 unsignedShortValue];
+  vendorID = [(MTRJointFabricDatastoreClusterAddAdminParams *)self vendorID];
+  unsignedShortValue = [vendorID unsignedShortValue];
 
-  v8 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self icac];
-  sub_238DB6950(v17, [v8 bytes], objc_msgSend(v8, "length"));
+  icac = [(MTRJointFabricDatastoreClusterAddAdminParams *)self icac];
+  sub_238DB6950(v17, [icac bytes], objc_msgSend(icac, "length"));
 
   v28 = v17[0];
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -110,7 +110,7 @@
     v21 = 0;
     sub_238EA16C4(&v18, &v22, 0);
     sub_2393C7BF0(v17, &v18, 0xFFFFFFFF);
-    v9 = sub_238F1B374(&v25, v17, 0x100uLL);
+    v9 = sub_238F1B374(&unsignedLongLongValue, v17, 0x100uLL);
     v11 = v9;
     if (v9 || (v9 = sub_238DD2EFC(v17, &v22), v11 = v9, v9))
     {
@@ -119,8 +119,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -148,19 +148,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRJointFabricDatastoreClusterAddAdminParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -171,7 +171,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x9C7900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

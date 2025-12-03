@@ -1,14 +1,14 @@
 @interface SUUIProductPageAction
-+ (id)actionWithType:(int64_t)a3;
++ (id)actionWithType:(int64_t)type;
 - (UIViewController)viewController;
 @end
 
 @implementation SUUIProductPageAction
 
-+ (id)actionWithType:(int64_t)a3
++ (id)actionWithType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setActionType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setActionType:type];
 
   return v4;
 }

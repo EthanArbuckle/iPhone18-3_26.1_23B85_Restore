@@ -12,9 +12,9 @@
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtCC12PhotosUICore24ValueDrivingScrollLayoutP33_47CE02453974CF9C45460F69EF777CFA13ContentLayout_updater);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 updateIfNeeded];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for ValueDrivingScrollLayout.ContentLayout();
     [(ValueDrivingScrollLayout.ContentLayout *)&v4 update];
   }

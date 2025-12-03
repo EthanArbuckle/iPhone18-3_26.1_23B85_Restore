@@ -1,35 +1,35 @@
 @interface _INPBLanguageTag
-- (BOOL)isEqual:(id)a3;
-- (_INPBLanguageTag)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBLanguageTag)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTag:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTag:(id)tag;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBLanguageTag
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_tag)
   {
     v4 = [(_INPBLanguageTag *)self tag];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"tag"];
+    [dictionary setObject:v5 forKeyedSubscript:@"tag"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = [(_INPBLanguageTag *)self tag];
-    v6 = [v4 tag];
+    v6 = [equalCopy tag];
     v7 = v6;
     if ((v5 != 0) != (v6 == 0))
     {
@@ -44,7 +44,7 @@ LABEL_10:
 
       v9 = v8;
       v10 = [(_INPBLanguageTag *)self tag];
-      v11 = [v4 tag];
+      v11 = [equalCopy tag];
       v12 = [v10 isEqual:v11];
 
       if (v12)
@@ -64,42 +64,42 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBLanguageTag allocWithZone:](_INPBLanguageTag init];
-  v6 = [(NSString *)self->_tag copyWithZone:a3];
+  v6 = [(NSString *)self->_tag copyWithZone:zone];
   [(_INPBLanguageTag *)v5 setTag:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBLanguageTag *)self data];
+  coderCopy = coder;
+  data = [(_INPBLanguageTag *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBLanguageTag)initWithCoder:(id)a3
+- (_INPBLanguageTag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBLanguageTag *)self initWithData:v6];
+    self = [(_INPBLanguageTag *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   v4 = [(_INPBLanguageTag *)self tag];
 
   if (v4)
@@ -109,9 +109,9 @@ LABEL_8:
   }
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  v4 = [a3 copy];
+  v4 = [tag copy];
   tag = self->_tag;
   self->_tag = v4;
 

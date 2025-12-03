@@ -1,22 +1,22 @@
 @interface MPMediaQueryCriteria
 - (BOOL)excludesEntitiesWithBlankNames;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)specifiesPlaylistItems;
 - (MPMediaQueryCriteria)init;
-- (id)ML3CollectionsQueryInLibrary:(id)a3;
-- (id)ML3ItemsQueryInLibrary:(id)a3;
-- (id)ML3ItemsQueryInLibrary:(id)a3 orderingTerms:(id)a4 nameBlankProperty:(id)a5;
-- (id)ML3OrderingTermsForGroupingType:(int64_t)a3;
-- (id)ML3OrderingTermsForMPOrderingProperties:(id)a3 directionalityMapping:(id)a4 entityClass:(Class)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)ML3CollectionsQueryInLibrary:(id)library;
+- (id)ML3ItemsQueryInLibrary:(id)library;
+- (id)ML3ItemsQueryInLibrary:(id)library orderingTerms:(id)terms nameBlankProperty:(id)property;
+- (id)ML3OrderingTermsForGroupingType:(int64_t)type;
+- (id)ML3OrderingTermsForMPOrderingProperties:(id)properties directionalityMapping:(id)mapping entityClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)predicateForProperty:(id)a3;
+- (id)predicateForProperty:(id)property;
 - (unint64_t)hash;
-- (void)addFilterPredicate:(id)a3;
-- (void)addFilterPredicates:(id)a3;
-- (void)removeFilterPredicate:(id)a3;
-- (void)removePredicatesForProperty:(id)a3;
-- (void)setFilterPredicates:(id)a3;
+- (void)addFilterPredicate:(id)predicate;
+- (void)addFilterPredicates:(id)predicates;
+- (void)removeFilterPredicate:(id)predicate;
+- (void)removePredicatesForProperty:(id)property;
+- (void)setFilterPredicates:(id)predicates;
 @end
 
 @implementation MPMediaQueryCriteria
@@ -199,8 +199,8 @@
             dispatch_once(&excludesEntitiesWithBlankNames_once, &__block_literal_global_20342);
           }
 
-          v9 = [v8 property];
-          if ([excludesEntitiesWithBlankNames_allowedBlankNameProperties containsObject:v9] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"mediaType") && (objc_msgSend(v8, "value"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass) && (objc_msgSend(v8, "value"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "integerValue"), v12, v13) && (v13 == 4 || (v13 & 0xFFFFFFFFFFFF00FFLL) == 0))
+          property = [v8 property];
+          if ([excludesEntitiesWithBlankNames_allowedBlankNameProperties containsObject:property] & 1) != 0 || objc_msgSend(property, "isEqualToString:", @"mediaType") && (objc_msgSend(v8, "value"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass) && (objc_msgSend(v8, "value"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "integerValue"), v12, v13) && (v13 == 4 || (v13 & 0xFFFFFFFFFFFF00FFLL) == 0))
           {
 
             v2 = 0;
@@ -235,14 +235,14 @@ void __54__MPMediaQueryCriteria_excludesEntitiesWithBlankNames__block_invoke()
   excludesEntitiesWithBlankNames_allowedBlankNameProperties = v0;
 }
 
-- (id)ML3CollectionsQueryInLibrary:(id)a3
+- (id)ML3CollectionsQueryInLibrary:(id)library
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPMediaQueryCriteria *)self groupingType];
-  v6 = 0;
+  libraryCopy = library;
+  groupingType = [(MPMediaQueryCriteria *)self groupingType];
+  array = 0;
   v7 = MEMORY[0x1E69B2D98];
-  switch(v5)
+  switch(groupingType)
   {
     case 0:
     case 22:
@@ -275,16 +275,16 @@ void __54__MPMediaQueryCriteria_excludesEntitiesWithBlankNames__block_invoke()
     case 20:
       v7 = MEMORY[0x1E69B2F88];
 LABEL_7:
-      v6 = *v7;
+      array = *v7;
       goto LABEL_8;
     case 6:
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v17 = [(MPMediaQueryCriteria *)self filterPredicates];
-      v18 = [v17 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      filterPredicates = [(MPMediaQueryCriteria *)self filterPredicates];
+      v18 = [filterPredicates countByEnumeratingWithState:&v33 objects:v39 count:16];
       if (v18)
       {
         v19 = v18;
@@ -295,40 +295,40 @@ LABEL_7:
           {
             if (*v34 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(filterPredicates);
             }
 
-            v22 = [*(*(&v33 + 1) + 8 * i) ML3PredicateForContainer];
-            if (v22)
+            mL3PredicateForContainer = [*(*(&v33 + 1) + 8 * i) ML3PredicateForContainer];
+            if (mL3PredicateForContainer)
             {
-              [v6 addObject:v22];
+              [array addObject:mL3PredicateForContainer];
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v33 objects:v39 count:16];
+          v19 = [filterPredicates countByEnumeratingWithState:&v33 objects:v39 count:16];
         }
 
         while (v19);
       }
 
-      v13 = [MEMORY[0x1E69B3428] predicateMatchingPredicates:v6];
-      v23 = [(MPMediaQueryCriteria *)self orderingProperties];
-      v24 = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
-      v14 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:v23 directionalityMapping:v24 entityClass:objc_opt_class()];
+      v13 = [MEMORY[0x1E69B3428] predicateMatchingPredicates:array];
+      orderingProperties = [(MPMediaQueryCriteria *)self orderingProperties];
+      orderingDirectionMappings = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
+      defaultOrderingTerms = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:orderingProperties directionalityMapping:orderingDirectionMappings entityClass:objc_opt_class()];
 
-      if (!v14)
+      if (!defaultOrderingTerms)
       {
-        v14 = [MEMORY[0x1E69B34A0] defaultOrderingTerms];
+        defaultOrderingTerms = [MEMORY[0x1E69B34A0] defaultOrderingTerms];
       }
 
       if ([(MPMediaQueryCriteria *)self includeNonLibraryEntities])
       {
-        [MEMORY[0x1E69B34A0] unrestrictedAllItemsQueryWithlibrary:v4 predicate:v13 orderingTerms:v14];
+        [MEMORY[0x1E69B34A0] unrestrictedAllItemsQueryWithlibrary:libraryCopy predicate:v13 orderingTerms:defaultOrderingTerms];
       }
 
       else
       {
-        [MEMORY[0x1E69B34A0] queryWithLibrary:v4 predicate:v13 orderingTerms:v14];
+        [MEMORY[0x1E69B34A0] queryWithLibrary:libraryCopy predicate:v13 orderingTerms:defaultOrderingTerms];
       }
       v25 = ;
       v30 = v25;
@@ -353,9 +353,9 @@ LABEL_7:
       goto LABEL_38;
     default:
 LABEL_8:
-      v8 = [(MPMediaQueryCriteria *)self orderingProperties];
-      v9 = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
-      v10 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:v8 directionalityMapping:v9 entityClass:objc_opt_class()];
+      orderingProperties2 = [(MPMediaQueryCriteria *)self orderingProperties];
+      orderingDirectionMappings2 = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
+      v10 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:orderingProperties2 directionalityMapping:orderingDirectionMappings2 entityClass:objc_opt_class()];
       v11 = v10;
       if (v10)
       {
@@ -364,13 +364,13 @@ LABEL_8:
 
       else
       {
-        v12 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForGroupingType:v5];
+        v12 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForGroupingType:groupingType];
       }
 
       v13 = v12;
 
-      v14 = [(MPMediaQueryCriteria *)self ML3ItemsQueryInLibrary:v4 orderingTerms:v13 nameBlankProperty:v6];
-      switch(v5)
+      defaultOrderingTerms = [(MPMediaQueryCriteria *)self ML3ItemsQueryInLibrary:libraryCopy orderingTerms:v13 nameBlankProperty:array];
+      switch(groupingType)
       {
         case 0:
         case 22:
@@ -412,21 +412,21 @@ LABEL_8:
           v15 = MEMORY[0x1E69B3418];
           v16 = MEMORY[0x1E69B31F0];
 LABEL_34:
-          v29 = [v15 aggregateQueryWithUnitQuery:v14 foreignPersistentIDProperty:*v16];
+          v29 = [v15 aggregateQueryWithUnitQuery:defaultOrderingTerms foreignPersistentIDProperty:*v16];
           break;
         default:
           v26 = os_log_create("com.apple.amp.mediaplayer", "Library");
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v27 = [(MPMediaQueryCriteria *)self groupingType];
-            if (v27 > 0x16)
+            groupingType2 = [(MPMediaQueryCriteria *)self groupingType];
+            if (groupingType2 > 0x16)
             {
               v28 = @"(unknown grouping type)";
             }
 
             else
             {
-              v28 = off_1E7679DB0[v27];
+              v28 = off_1E7679DB0[groupingType2];
             }
 
             v32 = v28;
@@ -436,7 +436,7 @@ LABEL_34:
           }
 
 LABEL_52:
-          v29 = v14;
+          v29 = defaultOrderingTerms;
           break;
       }
 
@@ -452,20 +452,20 @@ LABEL_38:
   }
 }
 
-- (id)ML3ItemsQueryInLibrary:(id)a3 orderingTerms:(id)a4 nameBlankProperty:(id)a5
+- (id)ML3ItemsQueryInLibrary:(id)library orderingTerms:(id)terms nameBlankProperty:(id)property
 {
   v54 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v40 = a4;
-  v43 = a5;
-  v48 = [MEMORY[0x1E695DF70] array];
+  libraryCopy = library;
+  termsCopy = terms;
+  propertyCopy = property;
+  array = [MEMORY[0x1E695DF70] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v42 = self;
-  v8 = [(MPMediaQueryCriteria *)self filterPredicates];
-  v9 = [v8 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  selfCopy = self;
+  filterPredicates = [(MPMediaQueryCriteria *)self filterPredicates];
+  v9 = [filterPredicates countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v9)
   {
     v10 = v9;
@@ -481,73 +481,73 @@ LABEL_38:
       {
         if (*v50 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(filterPredicates);
         }
 
         v15 = *(*(&v49 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 property];
-          if ([v16 isEqualToString:@"playlistPersistentID"])
+          property = [v15 property];
+          if ([property isEqualToString:@"playlistPersistentID"])
           {
-            v17 = [v15 value];
-            v18 = [v17 longLongValue];
+            value = [v15 value];
+            longLongValue = [value longLongValue];
             goto LABEL_17;
           }
 
-          if ([v16 isEqualToString:@"name"])
+          if ([property isEqualToString:@"name"])
           {
             v19 = MEMORY[0x1E69B34A0];
             v20 = MEMORY[0x1E69B3488];
-            v21 = [v15 value];
-            v22 = [v20 predicateWithProperty:v46 equalToValue:v21];
-            v17 = [v19 anyInLibrary:v47 predicate:v22];
+            value2 = [v15 value];
+            v22 = [v20 predicateWithProperty:v46 equalToValue:value2];
+            value = [v19 anyInLibrary:libraryCopy predicate:v22];
 
             goto LABEL_16;
           }
 
-          if ([v16 isEqualToString:@"cloudPlaylistUniversalLibraryID"])
+          if ([property isEqualToString:@"cloudPlaylistUniversalLibraryID"])
           {
             v23 = MEMORY[0x1E69B34A0];
             v24 = MEMORY[0x1E69B3488];
-            v25 = [v15 value];
+            value3 = [v15 value];
             v26 = v24;
             v27 = v45;
             goto LABEL_15;
           }
 
-          if ([v16 isEqualToString:@"cloudGlobalID"])
+          if ([property isEqualToString:@"cloudGlobalID"])
           {
             v23 = MEMORY[0x1E69B34A0];
             v28 = MEMORY[0x1E69B3488];
-            v25 = [v15 value];
+            value3 = [v15 value];
             v26 = v28;
             v27 = v44;
 LABEL_15:
-            v29 = [v26 predicateWithProperty:v27 equalToValue:{v25, v40}];
-            v17 = [v23 anyInLibrary:v47 predicate:v29];
+            v29 = [v26 predicateWithProperty:v27 equalToValue:{value3, termsCopy}];
+            value = [v23 anyInLibrary:libraryCopy predicate:v29];
 
 LABEL_16:
-            v18 = [v17 persistentID];
+            longLongValue = [value persistentID];
 LABEL_17:
-            v11 = v18;
+            v11 = longLongValue;
 
             v12 = 1;
             goto LABEL_21;
           }
         }
 
-        v16 = [v15 ML3PredicateForTrack];
-        if (v16)
+        property = [v15 ML3PredicateForTrack];
+        if (property)
         {
-          [v48 addObject:v16];
+          [array addObject:property];
         }
 
 LABEL_21:
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v10 = [filterPredicates countByEnumeratingWithState:&v49 objects:v53 count:16];
       if (!v10)
       {
         goto LABEL_25;
@@ -559,24 +559,24 @@ LABEL_21:
   v12 = 0;
 LABEL_25:
 
-  if (v43 && [(MPMediaQueryCriteria *)v42 excludesEntitiesWithBlankNames])
+  if (propertyCopy && [(MPMediaQueryCriteria *)selfCopy excludesEntitiesWithBlankNames])
   {
-    v30 = [MEMORY[0x1E69B3508] predicateWithProperty:v43];
-    [v48 addObject:v30];
+    v30 = [MEMORY[0x1E69B3508] predicateWithProperty:propertyCopy];
+    [array addObject:v30];
   }
 
-  v31 = [MEMORY[0x1E69B3428] predicateMatchingPredicates:{v48, v40}];
-  v32 = [(MPMediaQueryCriteria *)v42 groupingType];
-  v33 = v32;
+  v31 = [MEMORY[0x1E69B3428] predicateMatchingPredicates:{array, termsCopy}];
+  groupingType = [(MPMediaQueryCriteria *)selfCopy groupingType];
+  v33 = groupingType;
   if (v12)
   {
     v34 = v41;
-    if (!v41 && v32)
+    if (!v41 && groupingType)
     {
-      v34 = [(MPMediaQueryCriteria *)v42 ML3OrderingTermsForGroupingType:v32];
+      v34 = [(MPMediaQueryCriteria *)selfCopy ML3OrderingTermsForGroupingType:groupingType];
     }
 
-    v35 = [MEMORY[0x1E69B34A0] newWithPersistentID:v11 inLibrary:v47];
+    v35 = [MEMORY[0x1E69B34A0] newWithPersistentID:v11 inLibrary:libraryCopy];
     v36 = [MEMORY[0x1E69B3538] containerQueryWithContainer:v35 predicate:v31 orderingTerms:v34];
 
     if (!v36)
@@ -585,17 +585,17 @@ LABEL_25:
     }
 
 LABEL_42:
-    if ([(MPMediaQueryCriteria *)v42 ignoreSystemFilterPredicates])
+    if ([(MPMediaQueryCriteria *)selfCopy ignoreSystemFilterPredicates])
     {
       [v36 setIgnoreSystemFilterPredicates:1];
     }
 
-    if ([(MPMediaQueryCriteria *)v42 ignoreRestrictionsPredicates])
+    if ([(MPMediaQueryCriteria *)selfCopy ignoreRestrictionsPredicates])
     {
       [v36 setIgnoreRestrictionsPredicates:1];
     }
 
-    if (v42->_entityLimit)
+    if (selfCopy->_entityLimit)
     {
       [v36 setLimit:?];
     }
@@ -606,9 +606,9 @@ LABEL_42:
   v34 = v41;
   if (!v41)
   {
-    if ([(MPMediaQueryCriteria *)v42 entityOrder]== 2)
+    if ([(MPMediaQueryCriteria *)selfCopy entityOrder]== 2)
     {
-      v34 = [(MPMediaQueryCriteria *)v42 ML3OrderingTermsForGroupingType:v33];
+      v34 = [(MPMediaQueryCriteria *)selfCopy ML3OrderingTermsForGroupingType:v33];
     }
 
     else
@@ -617,16 +617,16 @@ LABEL_42:
     }
   }
 
-  v37 = [(MPMediaQueryCriteria *)v42 includeNonLibraryEntities];
-  useSections = v42->_useSections;
-  if (v37)
+  includeNonLibraryEntities = [(MPMediaQueryCriteria *)selfCopy includeNonLibraryEntities];
+  useSections = selfCopy->_useSections;
+  if (includeNonLibraryEntities)
   {
-    [MEMORY[0x1E69B3538] allItemsQueryWithLibrary:v47 predicate:v31 orderingTerms:v34 usingSections:useSections];
+    [MEMORY[0x1E69B3538] allItemsQueryWithLibrary:libraryCopy predicate:v31 orderingTerms:v34 usingSections:useSections];
   }
 
   else
   {
-    [MEMORY[0x1E69B3538] queryWithLibrary:v47 predicate:v31 orderingTerms:v34 usingSections:useSections];
+    [MEMORY[0x1E69B3538] queryWithLibrary:libraryCopy predicate:v31 orderingTerms:v34 usingSections:useSections];
   }
   v36 = ;
   if (v36)
@@ -639,48 +639,48 @@ LABEL_48:
   return v36;
 }
 
-- (id)ML3ItemsQueryInLibrary:(id)a3
+- (id)ML3ItemsQueryInLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(MPMediaQueryCriteria *)self orderingProperties];
-  v6 = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
-  v7 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:v5 directionalityMapping:v6 entityClass:objc_opt_class()];
+  libraryCopy = library;
+  orderingProperties = [(MPMediaQueryCriteria *)self orderingProperties];
+  orderingDirectionMappings = [(MPMediaQueryCriteria *)self orderingDirectionMappings];
+  v7 = [(MPMediaQueryCriteria *)self ML3OrderingTermsForMPOrderingProperties:orderingProperties directionalityMapping:orderingDirectionMappings entityClass:objc_opt_class()];
 
-  v8 = [(MPMediaQueryCriteria *)self ML3ItemsQueryInLibrary:v4 orderingTerms:v7 nameBlankProperty:*MEMORY[0x1E69B3388]];
+  v8 = [(MPMediaQueryCriteria *)self ML3ItemsQueryInLibrary:libraryCopy orderingTerms:v7 nameBlankProperty:*MEMORY[0x1E69B3388]];
 
   return v8;
 }
 
-- (id)ML3OrderingTermsForGroupingType:(int64_t)a3
+- (id)ML3OrderingTermsForGroupingType:(int64_t)type
 {
   v41[6] = *MEMORY[0x1E69E9840];
   v3 = 0;
-  switch(a3)
+  switch(type)
   {
     case 0:
       v19 = [(MPMediaQueryCriteria *)self predicateForProperty:@"mediaType"];
-      v20 = [v19 value];
+      value = [v19 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v22 = [(MPMediaQueryCriteria *)self predicateForProperty:@"mediaType"];
-        v23 = [v22 value];
-        v24 = [v23 integerValue];
+        value2 = [v22 value];
+        integerValue = [value2 integerValue];
 
-        if ((v24 & 0xFFFFFFFFFFFFFEFFLL) == 0x200)
+        if ((integerValue & 0xFFFFFFFFFFFFFEFFLL) == 0x200)
         {
           goto LABEL_17;
         }
 
         v27 = [(MPMediaQueryCriteria *)self predicateForProperty:@"isITunesU"];
-        v28 = [v27 value];
-        v29 = [v28 integerValue];
+        value3 = [v27 value];
+        integerValue2 = [value3 integerValue];
 
-        if (v29 || (v24 & 1) == 0 && (v24 & 0x140A) != 0 && (v24 & 0xFFFFFFFFFFFFEAF4) == 0)
+        if (integerValue2 || (integerValue & 1) == 0 && (integerValue & 0x140A) != 0 && (integerValue & 0xFFFFFFFFFFFFEAF4) == 0)
         {
-          v4 = [MEMORY[0x1E69B3538] podcastsEpisodesDefaultOrderingTerms];
+          podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] podcastsEpisodesDefaultOrderingTerms];
           goto LABEL_37;
         }
       }
@@ -700,14 +700,14 @@ LABEL_48:
         }
       }
 
-      v4 = [MEMORY[0x1E69B3538] albumAllArtistsDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] albumAllArtistsDefaultOrderingTerms];
       goto LABEL_37;
     case 1:
     case 10:
-      v4 = [MEMORY[0x1E69B3538] albumsDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] albumsDefaultOrderingTerms];
       goto LABEL_37;
     case 2:
-      v4 = [MEMORY[0x1E69B3538] artistsDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] artistsDefaultOrderingTerms];
       goto LABEL_37;
     case 3:
       v5 = [MEMORY[0x1E69B34F8] orderingTermWithProperty:*MEMORY[0x1E69B2D70]];
@@ -720,20 +720,20 @@ LABEL_48:
       v14 = v39;
       goto LABEL_22;
     case 4:
-      v4 = [MEMORY[0x1E69B3538] composersDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] composersDefaultOrderingTerms];
       goto LABEL_37;
     case 5:
-      v4 = [MEMORY[0x1E69B3538] genresDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] genresDefaultOrderingTerms];
       goto LABEL_37;
     case 6:
       break;
     case 7:
-      v4 = [MEMORY[0x1E69B3538] podcastsDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] podcastsDefaultOrderingTerms];
       goto LABEL_37;
     case 8:
     case 9:
 LABEL_17:
-      v4 = [MEMORY[0x1E69B3538] TVShowEpisodesDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] TVShowEpisodesDefaultOrderingTerms];
       goto LABEL_37;
     case 12:
     case 21:
@@ -814,7 +814,7 @@ LABEL_6:
       goto LABEL_22;
     case 17:
     case 22:
-      v4 = [MEMORY[0x1E69B3538] albumsByAlbumArtistDefaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] albumsByAlbumArtistDefaultOrderingTerms];
       goto LABEL_37;
     case 18:
       v5 = [MEMORY[0x1E69B34F8] orderingTermWithProperty:*MEMORY[0x1E69B2EB0] direction:2];
@@ -871,38 +871,38 @@ LABEL_26:
       break;
     default:
 LABEL_36:
-      v4 = [MEMORY[0x1E69B3538] defaultOrderingTerms];
+      podcastsEpisodesDefaultOrderingTerms = [MEMORY[0x1E69B3538] defaultOrderingTerms];
 LABEL_37:
-      v3 = v4;
+      v3 = podcastsEpisodesDefaultOrderingTerms;
       break;
   }
 
   return v3;
 }
 
-- (id)ML3OrderingTermsForMPOrderingProperties:(id)a3 directionalityMapping:(id)a4 entityClass:(Class)a5
+- (id)ML3OrderingTermsForMPOrderingProperties:(id)properties directionalityMapping:(id)mapping entityClass:(Class)class
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  mappingCopy = mapping;
   if (ML3OrderingTermsForMPOrderingProperties_directionalityMapping_entityClass__onceToken != -1)
   {
     dispatch_once(&ML3OrderingTermsForMPOrderingProperties_directionalityMapping_entityClass__onceToken, &__block_literal_global_10141);
   }
 
-  if (![v6 count])
+  if (![propertiesCopy count])
   {
     v28 = 0;
     goto LABEL_31;
   }
 
-  v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v6;
-  v8 = v6;
+  v26 = propertiesCopy;
+  v8 = propertiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (!v9)
   {
@@ -922,7 +922,7 @@ LABEL_37:
       }
 
       v13 = *(*(&v29 + 1) + 8 * v12);
-      v14 = [v7 objectForKeyedSubscript:v13];
+      v14 = [mappingCopy objectForKeyedSubscript:v13];
       v15 = [ML3OrderingTermsForMPOrderingProperties_directionalityMapping_entityClass__orderingTermMap objectForKeyedSubscript:v13];
       v16 = v15;
       if (v14)
@@ -930,14 +930,14 @@ LABEL_37:
         if (v15)
         {
           v17 = MEMORY[0x1E69B34F8];
-          v18 = [v15 property];
-          v19 = [v17 orderingTermWithProperty:v18 direction:{objc_msgSend(v14, "intValue")}];
+          property = [v15 property];
+          v19 = [v17 orderingTermWithProperty:property direction:{objc_msgSend(v14, "intValue")}];
 
           v16 = v19;
           goto LABEL_18;
         }
 
-        v22 = [(objc_class *)a5 propertyForMPMediaEntityProperty:v13];
+        v22 = [(objc_class *)class propertyForMPMediaEntityProperty:v13];
         if (!v22)
         {
 LABEL_23:
@@ -945,7 +945,7 @@ LABEL_23:
           goto LABEL_20;
         }
 
-        v18 = v22;
+        property = v22;
         v21 = [MEMORY[0x1E69B34F8] orderingTermWithProperty:v22 direction:{objc_msgSend(v14, "intValue")}];
 LABEL_17:
         v16 = v21;
@@ -961,13 +961,13 @@ LABEL_18:
 
       if (!v15)
       {
-        v20 = [(objc_class *)a5 propertyForMPMediaEntityProperty:v13];
+        v20 = [(objc_class *)class propertyForMPMediaEntityProperty:v13];
         if (!v20)
         {
           goto LABEL_23;
         }
 
-        v18 = v20;
+        property = v20;
         v21 = [MEMORY[0x1E69B34F8] orderingTermWithProperty:v20];
         goto LABEL_17;
       }
@@ -1001,7 +1001,7 @@ LABEL_25:
     v28 = 0;
   }
 
-  v6 = v26;
+  propertiesCopy = v26;
 LABEL_31:
 
   return v28;
@@ -1077,8 +1077,8 @@ void __112__MPMediaQueryCriteria_ML3Additions__ML3OrderingTermsForMPOrderingProp
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 property];
-          v9 = [v8 isEqualToString:@"playlistPersistentID"];
+          property = [v7 property];
+          v9 = [property isEqualToString:@"playlistPersistentID"];
 
           if (v9)
           {
@@ -1104,10 +1104,10 @@ LABEL_12:
   return v10;
 }
 
-- (void)removePredicatesForProperty:(id)a3
+- (void)removePredicatesForProperty:(id)property
 {
   v29 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  propertyCopy = property;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1132,8 +1132,8 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 property];
-          v12 = [v11 isEqualToString:v18];
+          property = [v10 property];
+          v12 = [property isEqualToString:propertyCopy];
 
           if (v12)
           {
@@ -1187,10 +1187,10 @@ LABEL_12:
   }
 }
 
-- (id)predicateForProperty:(id)a3
+- (id)predicateForProperty:(id)property
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1213,8 +1213,8 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 property];
-          v11 = [v10 isEqualToString:v4];
+          property = [v9 property];
+          v11 = [property isEqualToString:propertyCopy];
 
           if (v11)
           {
@@ -1239,14 +1239,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)setFilterPredicates:(id)a3
+- (void)setFilterPredicates:(id)predicates
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_filterPredicates != v4)
+  predicatesCopy = predicates;
+  v5 = predicatesCopy;
+  if (self->_filterPredicates != predicatesCopy)
   {
-    v9 = v4;
-    if (v4)
+    v9 = predicatesCopy;
+    if (predicatesCopy)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1266,9 +1266,9 @@ LABEL_12:
   }
 }
 
-- (void)removeFilterPredicate:(id)a3
+- (void)removeFilterPredicate:(id)predicate
 {
-  [(NSMutableSet *)self->_filterPredicates removeObject:a3];
+  [(NSMutableSet *)self->_filterPredicates removeObject:predicate];
   if (![(NSMutableSet *)self->_filterPredicates count])
   {
     filterPredicates = self->_filterPredicates;
@@ -1276,10 +1276,10 @@ LABEL_12:
   }
 }
 
-- (void)addFilterPredicates:(id)a3
+- (void)addFilterPredicates:(id)predicates
 {
-  v7 = a3;
-  if ([v7 count])
+  predicatesCopy = predicates;
+  if ([predicatesCopy count])
   {
     filterPredicates = self->_filterPredicates;
     if (filterPredicates)
@@ -1295,11 +1295,11 @@ LABEL_12:
     v6 = self->_filterPredicates;
     self->_filterPredicates = v5;
 
-    [(NSMutableSet *)self->_filterPredicates addObjectsFromArray:v7];
+    [(NSMutableSet *)self->_filterPredicates addObjectsFromArray:predicatesCopy];
   }
 }
 
-- (void)addFilterPredicate:(id)a3
+- (void)addFilterPredicate:(id)predicate
 {
   filterPredicates = self->_filterPredicates;
   if (filterPredicates)
@@ -1307,24 +1307,24 @@ LABEL_12:
     v5 = filterPredicates;
     v6 = self->_filterPredicates;
     self->_filterPredicates = v5;
-    v7 = a3;
+    predicateCopy = predicate;
   }
 
   else
   {
     v8 = MEMORY[0x1E695DFA8];
-    v9 = a3;
+    predicateCopy2 = predicate;
     v10 = objc_alloc_init(v8);
     v6 = self->_filterPredicates;
     self->_filterPredicates = v10;
   }
 
-  [(NSMutableSet *)self->_filterPredicates addObject:a3];
+  [(NSMutableSet *)self->_filterPredicates addObject:predicate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 16) = self->_entityOrder;
   *(v4 + 24) = self->_groupingType;
   *(v4 + 32) = self->_entityLimit;
@@ -1356,10 +1356,10 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v9 = [v4 isMemberOfClass:objc_opt_class()] && *(v4 + 2) == self->_entityOrder && *(v4 + 3) == self->_groupingType && *(v4 + 4) == self->_entityLimit && ((v5 = *(v4 + 5), v5 == self->_orderingProperties) || -[NSArray isEqualToArray:](v5, "isEqualToArray:")) && ((v6 = *(v4 + 1), v6 == self->_filterPredicates) || -[NSMutableSet isEqualToSet:](v6, "isEqualToSet:")) && ((v7 = *(v4 + 6), v7 == self->_itemPropertiesToFetch) || -[NSSet isEqualToSet:](v7, "isEqualToSet:")) && ((v8 = *(v4 + 7), v8 == self->_collectionPropertiesToFetch) || -[NSSet isEqualToSet:](v8, "isEqualToSet:")) && v4[64] == self->_useSections && v4[65] == self->_ignoreSystemFilterPredicates && v4[66] == self->_ignoreRestrictionsPredicates && v4[67] == self->_includeNonLibraryEntities && v4[68] == self->_includeEntitiesWithBlankNames && *(v4 + 9) == self->_orderingDirectionMappings;
+  equalCopy = equal;
+  v9 = [equalCopy isMemberOfClass:objc_opt_class()] && *(equalCopy + 2) == self->_entityOrder && *(equalCopy + 3) == self->_groupingType && *(equalCopy + 4) == self->_entityLimit && ((v5 = *(equalCopy + 5), v5 == self->_orderingProperties) || -[NSArray isEqualToArray:](v5, "isEqualToArray:")) && ((v6 = *(equalCopy + 1), v6 == self->_filterPredicates) || -[NSMutableSet isEqualToSet:](v6, "isEqualToSet:")) && ((v7 = *(equalCopy + 6), v7 == self->_itemPropertiesToFetch) || -[NSSet isEqualToSet:](v7, "isEqualToSet:")) && ((v8 = *(equalCopy + 7), v8 == self->_collectionPropertiesToFetch) || -[NSSet isEqualToSet:](v8, "isEqualToSet:")) && equalCopy[64] == self->_useSections && equalCopy[65] == self->_ignoreSystemFilterPredicates && equalCopy[66] == self->_ignoreRestrictionsPredicates && equalCopy[67] == self->_includeNonLibraryEntities && equalCopy[68] == self->_includeEntitiesWithBlankNames && *(equalCopy + 9) == self->_orderingDirectionMappings;
 
   return v9;
 }

@@ -1,32 +1,32 @@
 @interface SPIndexInformation
 - (NSDateInterval)dateInterval;
-- (SPIndexInformation)initWithBeaconIdentifier:(id)a3 sequence:(unsigned __int8)a4 index:(unint64_t)a5;
-- (SPIndexInformation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPIndexInformation)initWithBeaconIdentifier:(id)identifier sequence:(unsigned __int8)sequence index:(unint64_t)index;
+- (SPIndexInformation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPIndexInformation
 
-- (SPIndexInformation)initWithBeaconIdentifier:(id)a3 sequence:(unsigned __int8)a4 index:(unint64_t)a5
+- (SPIndexInformation)initWithBeaconIdentifier:(id)identifier sequence:(unsigned __int8)sequence index:(unint64_t)index
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SPIndexInformation;
   v10 = [(SPIndexInformation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_beaconIdentifier, a3);
-    v11->_sequence = a4;
-    v11->_index = a5;
+    objc_storeStrong(&v10->_beaconIdentifier, identifier);
+    v11->_sequence = sequence;
+    v11->_index = index;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPIndexInformation alloc];
   sequence = self->_sequence;
@@ -36,24 +36,24 @@
   return [(SPIndexInformation *)v4 initWithBeaconIdentifier:beaconIdentifier sequence:sequence index:index];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   beaconIdentifier = self->_beaconIdentifier;
-  v5 = a3;
-  [v5 encodeObject:beaconIdentifier forKey:@"beaconIdentifer"];
-  [v5 encodeInteger:self->_sequence forKey:@"sequence"];
-  [v5 encodeInt64:self->_index forKey:@"index"];
+  coderCopy = coder;
+  [coderCopy encodeObject:beaconIdentifier forKey:@"beaconIdentifer"];
+  [coderCopy encodeInteger:self->_sequence forKey:@"sequence"];
+  [coderCopy encodeInt64:self->_index forKey:@"index"];
 }
 
-- (SPIndexInformation)initWithCoder:(id)a3
+- (SPIndexInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifer"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifer"];
   beaconIdentifier = self->_beaconIdentifier;
   self->_beaconIdentifier = v5;
 
-  self->_sequence = [v4 decodeIntegerForKey:@"sequence"];
-  v7 = [v4 decodeInt64ForKey:@"index"];
+  self->_sequence = [coderCopy decodeIntegerForKey:@"sequence"];
+  v7 = [coderCopy decodeInt64ForKey:@"index"];
 
   self->_index = v7;
   return self;
@@ -61,14 +61,14 @@
 
 - (id)description
 {
-  v3 = [(SPIndexInformation *)self sequence];
+  sequence = [(SPIndexInformation *)self sequence];
   v4 = @"secondary";
-  if (v3 != 2)
+  if (sequence != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 1)
+  if (sequence == 1)
   {
     v5 = @"primary";
   }
@@ -79,8 +79,8 @@
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(SPIndexInformation *)self beaconIdentifier];
-  v8 = [v6 stringWithFormat:@"%@:%@/%llu", v7, v5, -[SPIndexInformation index](self, "index")];
+  beaconIdentifier = [(SPIndexInformation *)self beaconIdentifier];
+  v8 = [v6 stringWithFormat:@"%@:%@/%llu", beaconIdentifier, v5, -[SPIndexInformation index](self, "index")];
 
   return v8;
 }
@@ -88,8 +88,8 @@
 - (NSDateInterval)dateInterval
 {
   v2 = objc_alloc(MEMORY[0x277CCA970]);
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  v4 = [v2 initWithStartDate:v3 duration:0.0];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v4 = [v2 initWithStartDate:distantPast duration:0.0];
 
   return v4;
 }

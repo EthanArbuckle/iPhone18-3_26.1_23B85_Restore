@@ -1,60 +1,60 @@
 @interface HUColorWheelView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)colorWheelCoordinateForPoint:(CGPoint)a3 boundedToWheel:(BOOL)a4;
-- (CGPoint)pointForColorWheelCoordinate:(id)a3;
-- (HUColorWheelView)initWithColorWheelSpace:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)colorWheelCoordinateForPoint:(CGPoint)point boundedToWheel:(BOOL)wheel;
+- (CGPoint)pointForColorWheelCoordinate:(id)coordinate;
+- (HUColorWheelView)initWithColorWheelSpace:(id)space;
 - (double)_outerRadius;
 - (id)wheelBezierPath;
-- (void)drawRect:(CGRect)a3;
-- (void)setColorWheelSpace:(id)a3;
-- (void)setWheelHoleRadius:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setColorWheelSpace:(id)space;
+- (void)setWheelHoleRadius:(double)radius;
 @end
 
 @implementation HUColorWheelView
 
-- (HUColorWheelView)initWithColorWheelSpace:(id)a3
+- (HUColorWheelView)initWithColorWheelSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v11.receiver = self;
   v11.super_class = HUColorWheelView;
   v5 = [(HUColorWheelView *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(HUColorWheelView *)v5 setColorWheelSpace:v4];
+    [(HUColorWheelView *)v5 setColorWheelSpace:spaceCopy];
     [(HUColorWheelView *)v6 setOpaque:0];
-    v7 = [(HUColorWheelView *)v6 widthAnchor];
-    v8 = [(HUColorWheelView *)v6 heightAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    widthAnchor = [(HUColorWheelView *)v6 widthAnchor];
+    heightAnchor = [(HUColorWheelView *)v6 heightAnchor];
+    v9 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     [v9 setActive:1];
   }
 
   return v6;
 }
 
-- (void)setColorWheelSpace:(id)a3
+- (void)setColorWheelSpace:(id)space
 {
-  v6 = a3;
-  v8 = v6;
-  if (!v6)
+  spaceCopy = space;
+  v8 = spaceCopy;
+  if (!spaceCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HUColorWheelView.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"colorWheelSpace != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUColorWheelView.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"colorWheelSpace != nil"}];
 
-    v6 = 0;
+    spaceCopy = 0;
   }
 
-  if (([(HUColorWheelSpace *)self->_colorWheelSpace isEqual:v6]& 1) == 0)
+  if (([(HUColorWheelSpace *)self->_colorWheelSpace isEqual:spaceCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_colorWheelSpace, a3);
+    objc_storeStrong(&self->_colorWheelSpace, space);
     [(HUColorWheelView *)self setNeedsDisplay];
   }
 }
 
-- (void)setWheelHoleRadius:(double)a3
+- (void)setWheelHoleRadius:(double)radius
 {
-  if (self->_wheelHoleRadius != a3)
+  if (self->_wheelHoleRadius != radius)
   {
-    self->_wheelHoleRadius = a3;
+    self->_wheelHoleRadius = radius;
     [(HUColorWheelView *)self setNeedsDisplay];
   }
 }
@@ -86,17 +86,17 @@
   return v9;
 }
 
-- (CGPoint)pointForColorWheelCoordinate:(id)a3
+- (CGPoint)pointForColorWheelCoordinate:(id)coordinate
 {
-  var0 = a3.var0;
-  if (a3.var1 == 1.79769313e308)
+  var0 = coordinate.var0;
+  if (coordinate.var1 == 1.79769313e308)
   {
     var1 = 0.5;
   }
 
   else
   {
-    var1 = a3.var1;
+    var1 = coordinate.var1;
   }
 
   [(HUColorWheelView *)self wheelHoleRadius];
@@ -115,10 +115,10 @@
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)colorWheelCoordinateForPoint:(CGPoint)a3 boundedToWheel:(BOOL)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)colorWheelCoordinateForPoint:(CGPoint)point boundedToWheel:(BOOL)wheel
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(HUColorWheelView *)self bounds];
   [(HUColorWheelView *)self wheelHoleRadius];
 
@@ -128,14 +128,14 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(HUColorWheelView *)self wheelBezierPath:a3.origin.x];
+  v4 = [(HUColorWheelView *)self wheelBezierPath:rect.origin.x];
   [v4 addClip];
 
-  v5 = [(HUColorWheelView *)self colorWheelSpace];
+  colorWheelSpace = [(HUColorWheelView *)self colorWheelSpace];
 
-  if (!v5)
+  if (!colorWheelSpace)
   {
     NSLog(&cfstr_MissingColorSp.isa, self);
   }
@@ -148,7 +148,7 @@
   [objc_opt_class() _colorWheelRenderingScale];
   [(HUColorWheelView *)self wheelHoleRadius];
   v10 = v9;
-  v11 = [(HUColorWheelView *)self colorWheelSpace];
+  colorWheelSpace2 = [(HUColorWheelView *)self colorWheelSpace];
   v12 = v6;
   v13 = v8;
   if (*&v6 != *&v8)
@@ -173,11 +173,11 @@
   v28 = v12;
   v29 = v18;
   v30 = v10;
-  v25 = v11;
+  v25 = colorWheelSpace2;
   v26 = v6;
   v31 = 4;
   v32 = Data;
-  v21 = v11;
+  v21 = colorWheelSpace2;
   dispatch_apply(v19, v20, block);
 
   Image = CGBitmapContextCreateImage(v16);

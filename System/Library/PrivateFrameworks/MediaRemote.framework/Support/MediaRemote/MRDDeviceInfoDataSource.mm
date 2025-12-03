@@ -17,13 +17,13 @@
 - (id)discoverySession;
 - (id)networkIdentifier;
 - (void)_deviceInfoDidChange;
-- (void)_deviceInfoDidChangeWithDeviceInfo:(id)a3;
-- (void)_otherDeviceInfoDidChange:(id)a3;
-- (void)_writeDeviceInfo:(id)a3 toPath:(id)a4;
+- (void)_deviceInfoDidChangeWithDeviceInfo:(id)info;
+- (void)_otherDeviceInfoDidChange:(id)change;
+- (void)_writeDeviceInfo:(id)info toPath:(id)path;
 - (void)dealloc;
-- (void)handleGroupSessionDidStartEligibilityMonitoringNotification:(id)a3;
-- (void)handleGroupSessionServerDidStartNotification:(id)a3;
-- (void)handleNowPlayingInfoDidChangeNotification:(id)a3;
+- (void)handleGroupSessionDidStartEligibilityMonitoringNotification:(id)notification;
+- (void)handleGroupSessionServerDidStartNotification:(id)notification;
+- (void)handleNowPlayingInfoDidChangeNotification:(id)notification;
 - (void)reloadDeviceInfoImmediately;
 @end
 
@@ -45,13 +45,13 @@
   {
     self->_deviceInfoReloadScheduled = 1;
     v3 = dispatch_time(0, 100000000);
-    v4 = [objc_opt_class() _workerQueue];
+    _workerQueue = [objc_opt_class() _workerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100024358;
     block[3] = &unk_1004B6D08;
     block[4] = self;
-    dispatch_after(v3, v4, block);
+    dispatch_after(v3, _workerQueue, block);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -61,10 +61,10 @@
 {
   v93 = +[NSDate date];
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  v92 = v3;
-  v4 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"CurrentDeviceInfo", v3];
+  v92 = uUIDString;
+  v4 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"CurrentDeviceInfo", uUIDString];
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,14 +75,14 @@
 
   v6 = +[MRAVOutputContext sharedAudioPresentationContext];
   v7 = objc_alloc_init(MRDeviceInfo);
-  v8 = [(MRDDeviceInfoDataSource *)self deviceName];
-  [v7 setName:v8];
+  deviceName = [(MRDDeviceInfoDataSource *)self deviceName];
+  [v7 setName:deviceName];
 
   v9 = MSVCopyLocalizedModelName();
   [v7 setLocalizedModelName:v9];
 
-  v10 = [(MRDDeviceInfoDataSource *)self networkIdentifier];
-  [v7 setManagedConfigurationDeviceIdentifier:v10];
+  networkIdentifier = [(MRDDeviceInfoDataSource *)self networkIdentifier];
+  [v7 setManagedConfigurationDeviceIdentifier:networkIdentifier];
 
   v11 = MSVCopySystemBuildVersion();
   [v7 setBuildVersion:v11];
@@ -104,36 +104,36 @@
   [v7 setTightSyncUID:v14];
 
   v15 = +[MRAVClusterController sharedController];
-  v16 = [v15 needsCommandRedirection];
+  needsCommandRedirection = [v15 needsCommandRedirection];
 
-  if (!v16)
+  if (!needsCommandRedirection)
   {
-    v18 = +[MRDMediaRemoteServer server];
-    v24 = [v18 routingServer];
-    [v7 setProxyGroupPlayer:{objc_msgSend(v24, "isSilentPrimary")}];
+    clusterLeaderUID = +[MRDMediaRemoteServer server];
+    routingServer = [clusterLeaderUID routingServer];
+    [v7 setProxyGroupPlayer:{objc_msgSend(routingServer, "isSilentPrimary")}];
     goto LABEL_9;
   }
 
   v17 = +[MRAVClusterController sharedController];
-  v18 = [v17 clusterLeaderUID];
+  clusterLeaderUID = [v17 clusterLeaderUID];
 
-  if (v18)
+  if (clusterLeaderUID)
   {
     v19 = +[MRDMediaRemoteServer server];
-    v20 = [v19 nowPlayingServer];
-    v21 = [v20 originClients];
+    nowPlayingServer = [v19 nowPlayingServer];
+    originClients = [nowPlayingServer originClients];
     v100[0] = _NSConcreteStackBlock;
     v100[1] = 3221225472;
     v100[2] = sub_1000E7F34;
     v100[3] = &unk_1004B83E8;
-    v18 = v18;
-    v101 = v18;
-    v22 = [v21 msv_firstWhere:v100];
+    clusterLeaderUID = clusterLeaderUID;
+    v101 = clusterLeaderUID;
+    v22 = [originClients msv_firstWhere:v100];
 
-    v23 = [v22 deviceInfo];
-    [v7 setProxyGroupPlayer:{objc_msgSend(v23, "isProxyGroupPlayer")}];
+    deviceInfo = [v22 deviceInfo];
+    [v7 setProxyGroupPlayer:{objc_msgSend(deviceInfo, "isProxyGroupPlayer")}];
 
-    v24 = v101;
+    routingServer = v101;
 LABEL_9:
   }
 
@@ -145,11 +145,11 @@ LABEL_9:
 
   [v7 setGroupLeader:MRMediaRemoteAirPlayReceiverGetIsGroupLeader()];
   v27 = +[MRDMediaRemoteServer server];
-  v28 = [v27 routingServer];
-  [v7 setAirPlayActive:{objc_msgSend(v28, "airplayActive")}];
+  routingServer2 = [v27 routingServer];
+  [v7 setAirPlayActive:{objc_msgSend(routingServer2, "airplayActive")}];
 
-  v29 = [(MRDDeviceInfoDataSource *)self deviceUID];
-  [v7 setDeviceUID:v29];
+  deviceUID = [(MRDDeviceInfoDataSource *)self deviceUID];
+  [v7 setDeviceUID:deviceUID];
 
   v30 = MRMediaRemoteCopyLocalClusterID();
   [v7 setClusterID:v30];
@@ -163,18 +163,18 @@ LABEL_9:
 
   [v7 setConfiguredClusterSize:MRMediaRemoteGetLocalClusterSize()];
   [v7 setClusterLeader:MRMediaRemoteIsClusterLeader()];
-  v33 = [v6 contextID];
-  [v7 setRoutingContextID:v33];
+  contextID = [v6 contextID];
+  [v7 setRoutingContextID:contextID];
 
   v91 = v6;
-  v34 = [v6 outputDevices];
+  outputDevices = [v6 outputDevices];
   v35 = objc_alloc_init(NSMutableArray);
   v36 = objc_alloc_init(NSMutableSet);
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v37 = v34;
+  v37 = outputDevices;
   v38 = [v37 countByEnumeratingWithState:&v96 objects:v111 count:16];
   if (!v38)
   {
@@ -195,11 +195,11 @@ LABEL_9:
       v42 = *(*(&v96 + 1) + 8 * i);
       if ([(__CFString *)v42 isLocalDevice])
       {
-        v43 = [v7 tightSyncUID];
-        v44 = v43;
-        if (v43)
+        tightSyncUID = [v7 tightSyncUID];
+        v44 = tightSyncUID;
+        if (tightSyncUID)
         {
-          v45 = v43;
+          v45 = tightSyncUID;
         }
 
         else
@@ -211,11 +211,11 @@ LABEL_9:
         goto LABEL_28;
       }
 
-      v46 = [(__CFString *)v42 logicalDeviceID];
+      logicalDeviceID = [(__CFString *)v42 logicalDeviceID];
 
-      if (v46)
+      if (logicalDeviceID)
       {
-        v47 = [(__CFString *)v42 logicalDeviceID];
+        logicalDeviceID2 = [(__CFString *)v42 logicalDeviceID];
         goto LABEL_24;
       }
 
@@ -223,10 +223,10 @@ LABEL_9:
 
       if (v48)
       {
-        v47 = [(__CFString *)v42 uid];
+        logicalDeviceID2 = [(__CFString *)v42 uid];
 LABEL_24:
-        v44 = v47;
-        if (v47)
+        v44 = logicalDeviceID2;
+        if (logicalDeviceID2)
         {
           v49 = [[MRDeviceInfo alloc] initWithOutputDevice:v42];
           [v35 addObject:v49];
@@ -255,11 +255,11 @@ LABEL_30:
 
   [v7 setGroupLogicalDeviceCount:{objc_msgSend(v36, "count")}];
   [v7 setGroupedDevices:v35];
-  v50 = [(MRDDeviceInfoDataSource *)self clusteredDevices];
-  [v7 setClusteredDevices:v50];
+  clusteredDevices = [(MRDDeviceInfoDataSource *)self clusteredDevices];
+  [v7 setClusteredDevices:clusteredDevices];
 
-  v51 = [(MRDDeviceInfoDataSource *)self allClusteredDevices];
-  [v7 setAllClusteredDevices:v51];
+  allClusteredDevices = [(MRDDeviceInfoDataSource *)self allClusteredDevices];
+  [v7 setAllClusteredDevices:allClusteredDevices];
 
   if (MSVDeviceIsAppleTV())
   {
@@ -270,58 +270,58 @@ LABEL_30:
   [v7 setSupportsSystemPairing:{objc_msgSend(v52, "useExternalDeviceSystemPairing")}];
 
   v53 = +[NSBundle mainBundle];
-  v54 = [v53 bundleIdentifier];
-  [v7 setBundleIdentifier:v54];
+  bundleIdentifier = [v53 bundleIdentifier];
+  [v7 setBundleIdentifier:bundleIdentifier];
 
   v95 = v53;
-  v55 = [v53 infoDictionary];
-  v56 = [v55 objectForKeyedSubscript:kCFBundleVersionKey];
+  infoDictionary = [v53 infoDictionary];
+  v56 = [infoDictionary objectForKeyedSubscript:kCFBundleVersionKey];
   [v7 setBundleVersion:v56];
 
-  v57 = [(MRDDeviceInfoDataSource *)self _readDeviceInfo];
-  v58 = [v57 objectForKeyedSubscript:@"identifier"];
+  _readDeviceInfo = [(MRDDeviceInfoDataSource *)self _readDeviceInfo];
+  v58 = [_readDeviceInfo objectForKeyedSubscript:@"identifier"];
   [v7 setIdentifier:v58];
 
   v59 = MRMediaRemoteAirPlayReceiverCopyGroupIdentity();
   if (v59)
   {
 LABEL_33:
-    v60 = v59;
+    groupID = v59;
   }
 
   else
   {
     v61 = [v37 msv_firstWhere:&stru_1004BC2B8];
-    v60 = [v61 groupID];
+    groupID = [v61 groupID];
 
-    if (!v60)
+    if (!groupID)
     {
-      v59 = [v57 objectForKeyedSubscript:@"defaultGroupUID"];
+      v59 = [_readDeviceInfo objectForKeyedSubscript:@"defaultGroupUID"];
       goto LABEL_33;
     }
   }
 
-  [v7 setGroupUID:v60];
+  [v7 setGroupUID:groupID];
   v62 = MRMediaRemoteAirPlayReceiverCopyAirPlayGroupIdentity();
   if (v62)
   {
 LABEL_36:
-    v63 = v62;
+    airPlayGroupID = v62;
   }
 
   else
   {
     v64 = [v37 msv_firstWhere:&stru_1004BC2D8];
-    v63 = [v64 airPlayGroupID];
+    airPlayGroupID = [v64 airPlayGroupID];
 
-    if (!v63)
+    if (!airPlayGroupID)
     {
-      v62 = [v57 objectForKeyedSubscript:@"defaultGroupUID"];
+      v62 = [_readDeviceInfo objectForKeyedSubscript:@"defaultGroupUID"];
       goto LABEL_36;
     }
   }
 
-  [v7 setAirPlayGroupUID:v63];
+  [v7 setAirPlayGroupUID:airPlayGroupID];
   v65 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
   [v7 setSystemMediaApplication:v65];
 
@@ -340,7 +340,7 @@ LABEL_36:
     [v7 setAirPlayReceivers:v70];
   }
 
-  v90 = v57;
+  v90 = _readDeviceInfo;
   [v7 setSupportsSharedQueue:1];
   [v7 setSharedQueueVersion:3];
   [v7 setSupportsACL:1];
@@ -355,9 +355,9 @@ LABEL_36:
     goto LABEL_44;
   }
 
-  v73 = [(MRDDeviceInfoDataSource *)self isAirPlayVideoActive];
+  isAirPlayVideoActive = [(MRDDeviceInfoDataSource *)self isAirPlayVideoActive];
 
-  if ((v73 & 1) == 0)
+  if ((isAirPlayVideoActive & 1) == 0)
   {
 LABEL_44:
     [v7 setGroupContainsDiscoverableGroupLeader:MRMediaRemoteGetLocalGroupContainsDiscoverableGroupLeader()];
@@ -383,20 +383,20 @@ LABEL_44:
   [v7 setLastSupportedProtocolMessageType:139];
   [v7 setParentGroupSupportsGroupCohesion:MRMediaRemoteParentGroupSupportsGroupCohesion()];
   v77 = +[MRDMediaRemoteServer server];
-  v78 = [v77 routingServer];
-  v79 = [v78 systemEndpointController];
-  v80 = [v79 activeOutputDeviceUID:0];
+  routingServer3 = [v77 routingServer];
+  systemEndpointController = [routingServer3 systemEndpointController];
+  v80 = [systemEndpointController activeOutputDeviceUID:0];
   [v7 setActiveSystemEndpointUID:v80];
 
-  v81 = [v7 name];
+  name = [v7 name];
 
   v82 = _MRLogForCategory();
   v83 = os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT);
-  if (v81)
+  if (name)
   {
     if (v83)
     {
-      v84 = [v7 name];
+      name2 = [v7 name];
       v85 = +[NSDate date];
       [v85 timeIntervalSinceDate:v93];
       *buf = 138544130;
@@ -404,7 +404,7 @@ LABEL_44:
       v104 = 2114;
       v105 = v92;
       v106 = 2112;
-      v107 = v84;
+      v107 = name2;
       v108 = 2048;
       v109 = v86;
       _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds", buf, 0x2Au);
@@ -415,8 +415,8 @@ LABEL_44:
 
   else if (v83)
   {
-    v84 = +[NSDate date];
-    [v84 timeIntervalSinceDate:v93];
+    name2 = +[NSDate date];
+    [name2 timeIntervalSinceDate:v93];
     *buf = 138543874;
     v103 = @"CurrentDeviceInfo";
     v104 = 2114;
@@ -432,8 +432,8 @@ LABEL_53:
 
 - (void)reloadDeviceInfoImmediately
 {
-  v3 = [(MRDDeviceInfoDataSource *)self _currentDeviceInfo];
-  [(MRDDeviceInfoDataSource *)self _deviceInfoDidChangeWithDeviceInfo:v3];
+  _currentDeviceInfo = [(MRDDeviceInfoDataSource *)self _currentDeviceInfo];
+  [(MRDDeviceInfoDataSource *)self _deviceInfoDidChangeWithDeviceInfo:_currentDeviceInfo];
 }
 
 - (NSString)deviceName
@@ -505,8 +505,8 @@ LABEL_53:
 
 - (id)clusteredDevices
 {
-  v2 = [(MRDDeviceInfoDataSource *)self discoverySession];
-  [v2 availableOutputDevices];
+  discoverySession = [(MRDDeviceInfoDataSource *)self discoverySession];
+  [discoverySession availableOutputDevices];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -532,8 +532,8 @@ LABEL_53:
           v16 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v8 = [v7 clusterCompositionMembers];
-          v9 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          clusterCompositionMembers = [v7 clusterCompositionMembers];
+          v9 = [clusterCompositionMembers countByEnumeratingWithState:&v15 objects:v23 count:16];
           if (v9)
           {
             v10 = v9;
@@ -544,14 +544,14 @@ LABEL_53:
               {
                 if (*v16 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(clusterCompositionMembers);
                 }
 
                 v13 = [[MRDeviceInfo alloc] initWithOutputDevice:*(*(&v15 + 1) + 8 * j)];
                 [v4 addObject:v13];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+              v10 = [clusterCompositionMembers countByEnumeratingWithState:&v15 objects:v23 count:16];
             }
 
             while (v10);
@@ -609,8 +609,8 @@ LABEL_18:
 
 - (id)allClusteredDevices
 {
-  v2 = [(MRDDeviceInfoDataSource *)self discoverySession];
-  [v2 availableOutputDevices];
+  discoverySession = [(MRDDeviceInfoDataSource *)self discoverySession];
+  [discoverySession availableOutputDevices];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -636,8 +636,8 @@ LABEL_18:
           v16 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v8 = [v7 allClusterMembersOutputDevices];
-          v9 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          allClusterMembersOutputDevices = [v7 allClusterMembersOutputDevices];
+          v9 = [allClusterMembersOutputDevices countByEnumeratingWithState:&v15 objects:v23 count:16];
           if (v9)
           {
             v10 = v9;
@@ -648,14 +648,14 @@ LABEL_18:
               {
                 if (*v16 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(allClusterMembersOutputDevices);
                 }
 
                 v13 = [[MRDeviceInfo alloc] initWithOutputDevice:*(*(&v15 + 1) + 8 * j)];
                 [v4 addObject:v13];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+              v10 = [allClusterMembersOutputDevices countByEnumeratingWithState:&v15 objects:v23 count:16];
             }
 
             while (v10);
@@ -718,13 +718,13 @@ LABEL_18:
     pairingManager = v2->_pairingManager;
     v2->_pairingManager = v3;
 
-    v5 = [objc_opt_class() _workerQueue];
-    [(CUPairingManager *)v2->_pairingManager setDispatchQueue:v5];
+    _workerQueue = [objc_opt_class() _workerQueue];
+    [(CUPairingManager *)v2->_pairingManager setDispatchQueue:_workerQueue];
 
     v2->_lock._os_unfair_lock_opaque = 0;
-    v6 = [(MRDDeviceInfoDataSource *)v2 _currentDeviceInfo];
+    _currentDeviceInfo = [(MRDDeviceInfoDataSource *)v2 _currentDeviceInfo];
     deviceInfo = v2->_deviceInfo;
-    v2->_deviceInfo = v6;
+    v2->_deviceInfo = _currentDeviceInfo;
 
     objc_initWeak(&location, v2);
     v49 = @"UserAssignedDeviceName";
@@ -782,9 +782,9 @@ LABEL_18:
     objc_copyWeak(&v39, &location);
     [(CUPairingManager *)v2->_pairingManager setIdentityDeletedHandler:v38];
     v13 = +[MRUserSettings currentSettings];
-    v14 = [v13 groupSessionDelayedInitializationEnabled];
+    groupSessionDelayedInitializationEnabled = [v13 groupSessionDelayedInitializationEnabled];
 
-    if (v14)
+    if (groupSessionDelayedInitializationEnabled)
     {
       v15 = +[NSNotificationCenter defaultCenter];
       [v15 addObserver:v2 selector:"handleGroupSessionServerDidStartNotification:" name:@"MRDGroupSessionServerDidStartNotification" object:0];
@@ -826,13 +826,13 @@ LABEL_18:
     objc_copyWeak(&v33, &location);
     v25 = [v24 addObserverForName:@"MRDNowPlayingAirplaySessionStarted" object:0 queue:0 usingBlock:v32];
 
-    v26 = [objc_opt_class() _workerQueue];
+    _workerQueue2 = [objc_opt_class() _workerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000E7AC0;
     block[3] = &unk_1004B8280;
     objc_copyWeak(&v31, &location);
-    dispatch_async(v26, block);
+    dispatch_async(_workerQueue2, block);
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&v33);
@@ -868,13 +868,13 @@ LABEL_18:
   [(MRDDeviceInfoDataSource *)&v6 dealloc];
 }
 
-- (void)_deviceInfoDidChangeWithDeviceInfo:(id)a3
+- (void)_deviceInfoDidChangeWithDeviceInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_lock);
-  if (([v5 isEqual:self->_deviceInfo] & 1) == 0)
+  if (([infoCopy isEqual:self->_deviceInfo] & 1) == 0)
   {
-    objc_storeStrong(&self->_deviceInfo, a3);
+    objc_storeStrong(&self->_deviceInfo, info);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -883,8 +883,8 @@ LABEL_18:
       block[2] = sub_1000E7D98;
       block[3] = &unk_1004B69D0;
       v8 = WeakRetained;
-      v9 = self;
-      v10 = v5;
+      selfCopy = self;
+      v10 = infoCopy;
       dispatch_async(&_dispatch_main_q, block);
     }
   }
@@ -892,31 +892,31 @@ LABEL_18:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_otherDeviceInfoDidChange:(id)a3
+- (void)_otherDeviceInfoDidChange:(id)change
 {
-  v13 = a3;
+  changeCopy = change;
   v4 = +[MRAVClusterController sharedController];
-  v5 = [v4 clusterLeaderUID];
+  clusterLeaderUID = [v4 clusterLeaderUID];
 
-  if (v5)
+  if (clusterLeaderUID)
   {
     v6 = +[MRAVClusterController sharedController];
-    v7 = [v6 clusterStatus];
+    clusterStatus = [v6 clusterStatus];
 
-    if (v7 == 2)
+    if (clusterStatus == 2)
     {
-      v8 = [v13 userInfo];
-      v9 = [v8 objectForKeyedSubscript:kMRPairedDeviceUserInfoKey];
+      userInfo = [changeCopy userInfo];
+      v9 = [userInfo objectForKeyedSubscript:kMRPairedDeviceUserInfoKey];
 
-      v10 = [v9 deviceUID];
-      v11 = [v10 isEqualToString:v5];
+      deviceUID = [v9 deviceUID];
+      v11 = [deviceUID isEqualToString:clusterLeaderUID];
 
       if (v11)
       {
         os_unfair_lock_lock(&self->_lock);
-        v12 = [(MRDeviceInfo *)self->_deviceInfo isProxyGroupPlayer];
+        isProxyGroupPlayer = [(MRDeviceInfo *)self->_deviceInfo isProxyGroupPlayer];
         os_unfair_lock_unlock(&self->_lock);
-        if (v12 != [v9 isProxyGroupPlayer])
+        if (isProxyGroupPlayer != [v9 isProxyGroupPlayer])
         {
           [(MRDDeviceInfoDataSource *)self _deviceInfoDidChange];
         }
@@ -969,11 +969,11 @@ LABEL_18:
   return v4;
 }
 
-- (void)_writeDeviceInfo:(id)a3 toPath:(id)a4
+- (void)_writeDeviceInfo:(id)info toPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v12 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v12];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:info requiringSecureCoding:1 error:&v12];
   v7 = v12;
   if (v7)
   {
@@ -986,7 +986,7 @@ LABEL_18:
   }
 
   v10 = 0;
-  [v6 writeToFile:v5 options:268435457 error:&v10];
+  [v6 writeToFile:pathCopy options:268435457 error:&v10];
   if (v10)
   {
     v9 = _MRLogForCategory();
@@ -1001,18 +1001,18 @@ LABEL_18:
 - (BOOL)_calculateIsAirPlayVideoActive
 {
   v2 = +[MRDMediaRemoteServer server];
-  v3 = [v2 nowPlayingServer];
-  v4 = [v3 localOriginClient];
-  v5 = [v4 activeNowPlayingClient];
-  v6 = [v5 activePlayerClient];
+  nowPlayingServer = [v2 nowPlayingServer];
+  localOriginClient = [nowPlayingServer localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-  v7 = [v6 playerPath];
-  v8 = [v7 client];
-  if ([v8 isAirPlay])
+  playerPath = [activePlayerClient playerPath];
+  client = [playerPath client];
+  if ([client isAirPlay])
   {
-    v9 = [v6 nowPlayingContentItem];
-    v10 = [v9 metadata];
-    v11 = [v10 mediaType] == 2;
+    nowPlayingContentItem = [activePlayerClient nowPlayingContentItem];
+    metadata = [nowPlayingContentItem metadata];
+    v11 = [metadata mediaType] == 2;
   }
 
   else
@@ -1023,41 +1023,41 @@ LABEL_18:
   return v11;
 }
 
-- (void)handleGroupSessionServerDidStartNotification:(id)a3
+- (void)handleGroupSessionServerDidStartNotification:(id)notification
 {
   v4 = +[MRDMediaRemoteServer server];
-  v6 = [v4 groupSessionServer];
+  groupSessionServer = [v4 groupSessionServer];
 
-  v5 = [v6 sessionManager];
-  [v5 addObserver:self];
+  sessionManager = [groupSessionServer sessionManager];
+  [sessionManager addObserver:self];
   [(MRDDeviceInfoDataSource *)self _deviceInfoDidChange];
 }
 
-- (void)handleGroupSessionDidStartEligibilityMonitoringNotification:(id)a3
+- (void)handleGroupSessionDidStartEligibilityMonitoringNotification:(id)notification
 {
   v4 = +[MRDMediaRemoteServer server];
-  v6 = [v4 groupSessionServer];
+  groupSessionServer = [v4 groupSessionServer];
 
-  v5 = [v6 eligibilityMonitor];
-  [v5 addObserver:self];
+  eligibilityMonitor = [groupSessionServer eligibilityMonitor];
+  [eligibilityMonitor addObserver:self];
 
   [(MRDDeviceInfoDataSource *)self _deviceInfoDidChange];
 }
 
-- (void)handleNowPlayingInfoDidChangeNotification:(id)a3
+- (void)handleNowPlayingInfoDidChangeNotification:(id)notification
 {
-  v4 = [(MRDDeviceInfoDataSource *)self _calculateIsAirPlayVideoActive];
+  _calculateIsAirPlayVideoActive = [(MRDDeviceInfoDataSource *)self _calculateIsAirPlayVideoActive];
   os_unfair_lock_lock(&self->_lock);
   isAirPlayVideoActive = self->_isAirPlayVideoActive;
-  self->_isAirPlayVideoActive = v4;
+  self->_isAirPlayVideoActive = _calculateIsAirPlayVideoActive;
   os_unfair_lock_unlock(&self->_lock);
-  if (isAirPlayVideoActive != v4)
+  if (isAirPlayVideoActive != _calculateIsAirPlayVideoActive)
   {
     v6 = _MRLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v4;
+      v7[1] = _calculateIsAirPlayVideoActive;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDDeviceInfoDataSource] AirPlayVideoActive -> %{BOOL}u", v7, 8u);
     }
 

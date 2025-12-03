@@ -1,21 +1,21 @@
 @interface SGModelSampler
-- (BOOL)shouldSampleForLabel:(id)a3 isDynamicLabel:(BOOL)a4;
-- (SGModelSampler)initWithPositiveRate:(double)a3 dynamicLabelRate:(double)a4 negativeRate:(double)a5 rng:(id)a6;
+- (BOOL)shouldSampleForLabel:(id)label isDynamicLabel:(BOOL)dynamicLabel;
+- (SGModelSampler)initWithPositiveRate:(double)rate dynamicLabelRate:(double)labelRate negativeRate:(double)negativeRate rng:(id)rng;
 @end
 
 @implementation SGModelSampler
 
-- (BOOL)shouldSampleForLabel:(id)a3 isDynamicLabel:(BOOL)a4
+- (BOOL)shouldSampleForLabel:(id)label isDynamicLabel:(BOOL)dynamicLabel
 {
-  v4 = a4;
-  v6 = [a3 unsignedIntegerValue];
+  dynamicLabelCopy = dynamicLabel;
+  unsignedIntegerValue = [label unsignedIntegerValue];
   v7 = 8;
-  if (v4)
+  if (dynamicLabelCopy)
   {
     v7 = 16;
   }
 
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
     v7 = 24;
   }
@@ -45,19 +45,19 @@
   return result;
 }
 
-- (SGModelSampler)initWithPositiveRate:(double)a3 dynamicLabelRate:(double)a4 negativeRate:(double)a5 rng:(id)a6
+- (SGModelSampler)initWithPositiveRate:(double)rate dynamicLabelRate:(double)labelRate negativeRate:(double)negativeRate rng:(id)rng
 {
-  v11 = a6;
+  rngCopy = rng;
   v15.receiver = self;
   v15.super_class = SGModelSampler;
   v12 = [(SGModelSampler *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_positiveRate = a3;
-    v12->_dynamicLabelRate = a4;
-    v12->_negativeRate = a5;
-    objc_storeStrong(&v12->_rng, a6);
+    v12->_positiveRate = rate;
+    v12->_dynamicLabelRate = labelRate;
+    v12->_negativeRate = negativeRate;
+    objc_storeStrong(&v12->_rng, rng);
   }
 
   return v13;

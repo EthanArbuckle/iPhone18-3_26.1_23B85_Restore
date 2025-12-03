@@ -1,32 +1,32 @@
 @interface SMResponseToTriggerPromptRemoteControlMessage
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithCoder:(id)a3;
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithDate:(id)a3 messageID:(id)a4 response:(int64_t)a5 sessionID:(id)a6 sourceDeviceType:(int64_t)a7 sourceDeviceID:(id)a8;
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithDictionary:(id)a3;
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithTriggerPromptResponse:(int64_t)a3 sessionID:(id)a4 sourceDeviceType:(int64_t)a5 sourceDeviceID:(id)a6;
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithCoder:(id)coder;
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithDate:(id)date messageID:(id)d response:(int64_t)response sessionID:(id)iD sourceDeviceType:(int64_t)type sourceDeviceID:(id)deviceID;
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithDictionary:(id)dictionary;
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithTriggerPromptResponse:(int64_t)response sessionID:(id)d sourceDeviceType:(int64_t)type sourceDeviceID:(id)iD;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMResponseToTriggerPromptRemoteControlMessage
 
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithTriggerPromptResponse:(int64_t)a3 sessionID:(id)a4 sourceDeviceType:(int64_t)a5 sourceDeviceID:(id)a6
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithTriggerPromptResponse:(int64_t)response sessionID:(id)d sourceDeviceType:(int64_t)type sourceDeviceID:(id)iD
 {
-  v10 = a6;
-  v11 = a4;
+  iDCopy = iD;
+  dCopy = d;
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [(SMResponseToTriggerPromptRemoteControlMessage *)self initWithDate:v12 messageID:v13 response:a3 sessionID:v11 sourceDeviceType:a5 sourceDeviceID:v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v14 = [(SMResponseToTriggerPromptRemoteControlMessage *)self initWithDate:v12 messageID:uUID response:response sessionID:dCopy sourceDeviceType:type sourceDeviceID:iDCopy];
 
   return v14;
 }
 
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithDate:(id)a3 messageID:(id)a4 response:(int64_t)a5 sessionID:(id)a6 sourceDeviceType:(int64_t)a7 sourceDeviceID:(id)a8
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithDate:(id)date messageID:(id)d response:(int64_t)response sessionID:(id)iD sourceDeviceType:(int64_t)type sourceDeviceID:(id)deviceID
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (!v14)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  deviceIDCopy = deviceID;
+  if (!dateCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v15)
+  if (!dCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -54,7 +54,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v16)
+  if (!iDCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -66,34 +66,34 @@ LABEL_13:
 
 LABEL_14:
 
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
   v24.receiver = self;
   v24.super_class = SMResponseToTriggerPromptRemoteControlMessage;
-  v18 = [(SMMessage *)&v24 initWithDate:v14 messageID:v15 sessionID:v16];
+  v18 = [(SMMessage *)&v24 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v19 = v18;
   if (v18)
   {
-    v18->_response = a5;
-    objc_storeStrong(&v18->_sourceDeviceID, a8);
-    v19->_sourceDeviceType = a7;
+    v18->_response = response;
+    objc_storeStrong(&v18->_sourceDeviceID, deviceID);
+    v19->_sourceDeviceType = type;
   }
 
   self = v19;
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithDictionary:(id)a3
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithDictionary:(id)dictionary
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -105,16 +105,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_16:
-      v29 = 0;
+      selfCopy = 0;
       goto LABEL_17;
     }
 
@@ -126,9 +126,9 @@ LABEL_16:
     v65 = 2112;
     v66 = v32;
     v67 = 1024;
-    v68 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v69 = 1024;
-    v70 = v8;
+    v70 = intValue;
     v33 = "#RemoteControl,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v34 = v12;
     v35 = 34;
@@ -139,9 +139,9 @@ LABEL_31:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 != 1)
+  if (intValue2 != 1)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -157,7 +157,7 @@ LABEL_31:
     v65 = 2112;
     v66 = v32;
     v67 = 1024;
-    v68 = v10;
+    messageType = intValue2;
     v33 = "#RemoteControl,%@,%@,unrecognized interface version,%d";
     v34 = v12;
     v35 = 28;
@@ -181,7 +181,7 @@ LABEL_31:
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 intValue];
+        intValue3 = [v18 intValue];
         v21 = objc_alloc(MEMORY[0x277CCAD78]);
         v22 = [v6 valueForKey:@"sessionID"];
         v23 = [v21 initWithUUIDString:v22];
@@ -193,15 +193,15 @@ LABEL_31:
           if (v24)
           {
             v61 = v23;
-            v25 = [v24 intValue];
+            intValue4 = [v24 intValue];
             v26 = [v6 valueForKey:@"sourceDeviceId"];
             if (v26)
             {
               v27 = v26;
-              v28 = v25;
+              v28 = intValue4;
               v23 = v61;
-              self = [(SMResponseToTriggerPromptRemoteControlMessage *)self initWithDate:v14 messageID:v17 response:v20 sessionID:v61 sourceDeviceType:v28 sourceDeviceID:v26];
-              v29 = self;
+              self = [(SMResponseToTriggerPromptRemoteControlMessage *)self initWithDate:v14 messageID:v17 response:intValue3 sessionID:v61 sourceDeviceType:v28 sourceDeviceID:v26];
+              selfCopy = self;
             }
 
             else
@@ -220,7 +220,7 @@ LABEL_31:
               }
 
               v27 = 0;
-              v29 = 0;
+              selfCopy = 0;
               v23 = v61;
             }
           }
@@ -243,7 +243,7 @@ LABEL_31:
               v23 = v55;
             }
 
-            v29 = 0;
+            selfCopy = 0;
           }
 
           v38 = v62;
@@ -266,7 +266,7 @@ LABEL_31:
             v23 = 0;
           }
 
-          v29 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -288,7 +288,7 @@ LABEL_31:
           v23 = v48;
         }
 
-        v29 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -307,7 +307,7 @@ LABEL_31:
         _os_log_error_impl(&dword_26455D000, v19, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v29 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -326,36 +326,36 @@ LABEL_31:
       _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing date", buf, 0x16u);
     }
 
-    v29 = 0;
+    selfCopy = 0;
   }
 
 LABEL_17:
   v36 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v8.receiver = self;
   v8.super_class = SMResponseToTriggerPromptRemoteControlMessage;
-  v3 = [(SMMessage *)&v8 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v8 outputToDictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMResponseToTriggerPromptRemoteControlMessage response](self, "response")}];
-  [v3 setObject:v4 forKey:@"userTriggerResponse"];
+  [outputToDictionary setObject:v4 forKey:@"userTriggerResponse"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMResponseToTriggerPromptRemoteControlMessage sourceDeviceType](self, "sourceDeviceType")}];
-  [v3 setObject:v5 forKey:@"idsDeviceType"];
+  [outputToDictionary setObject:v5 forKey:@"idsDeviceType"];
 
-  v6 = [(SMResponseToTriggerPromptRemoteControlMessage *)self sourceDeviceID];
-  [v3 setObject:v6 forKey:@"sourceDeviceId"];
+  sourceDeviceID = [(SMResponseToTriggerPromptRemoteControlMessage *)self sourceDeviceID];
+  [outputToDictionary setObject:sourceDeviceID forKey:@"sourceDeviceId"];
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -370,21 +370,21 @@ LABEL_17:
 
   v8.receiver = self;
   v8.super_class = SMResponseToTriggerPromptRemoteControlMessage;
-  [(SMMessage *)&v8 encodeWithCoder:v4];
-  [v4 encodeInteger:-[SMResponseToTriggerPromptRemoteControlMessage response](self forKey:{"response"), @"userTriggerResponse"}];
-  [v4 encodeInteger:-[SMResponseToTriggerPromptRemoteControlMessage sourceDeviceType](self forKey:{"sourceDeviceType"), @"idsDeviceType"}];
-  v6 = [(SMResponseToTriggerPromptRemoteControlMessage *)self sourceDeviceID];
-  [v4 encodeObject:v6 forKey:@"sourceDeviceId"];
+  [(SMMessage *)&v8 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[SMResponseToTriggerPromptRemoteControlMessage response](self forKey:{"response"), @"userTriggerResponse"}];
+  [coderCopy encodeInteger:-[SMResponseToTriggerPromptRemoteControlMessage sourceDeviceType](self forKey:{"sourceDeviceType"), @"idsDeviceType"}];
+  sourceDeviceID = [(SMResponseToTriggerPromptRemoteControlMessage *)self sourceDeviceID];
+  [coderCopy encodeObject:sourceDeviceID forKey:@"sourceDeviceId"];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (SMResponseToTriggerPromptRemoteControlMessage)initWithCoder:(id)a3
+- (SMResponseToTriggerPromptRemoteControlMessage)initWithCoder:(id)coder
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -396,7 +396,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -413,7 +413,7 @@ LABEL_17:
     v41 = 2112;
     v42 = v18;
     v43 = 1024;
-    v44 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v45 = 1024;
     v46 = v7;
     v19 = "#RemoteControl,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -444,7 +444,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing messageID", &v39, 0x16u);
       }
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -464,7 +464,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#RemoteControl,%@,%@,missing date", &v39, 0x16u);
       }
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -477,7 +477,7 @@ LABEL_32:
       {
         v14 = v13;
         self = -[SMResponseToTriggerPromptRemoteControlMessage initWithDate:messageID:response:sessionID:sourceDeviceType:sourceDeviceID:](self, "initWithDate:messageID:response:sessionID:sourceDeviceType:sourceDeviceID:", v10, v9, v12, v11, [v6 decodeIntegerForKey:@"idsDeviceType"], v13);
-        v15 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -518,7 +518,7 @@ LABEL_30:
       }
     }
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -534,7 +534,7 @@ LABEL_30:
     v41 = 2112;
     v42 = v18;
     v43 = 1024;
-    v44 = v22;
+    messageType = v22;
     v19 = "#RemoteControl,%@,%@,unrecognized interface version,%d";
     v20 = v9;
     v21 = 28;
@@ -542,11 +542,11 @@ LABEL_30:
   }
 
 LABEL_14:
-  v15 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
 @end

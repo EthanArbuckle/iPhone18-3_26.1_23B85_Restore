@@ -6,8 +6,8 @@
 
 - (NSError)conversationServiceDataSourceError
 {
-  v3 = [(NSError *)self domain];
-  v4 = [NSError errorWithDomain:v3 code:[(NSError *)self code] userInfo:0];
+  domain = [(NSError *)self domain];
+  v4 = [NSError errorWithDomain:domain code:[(NSError *)self code] userInfo:0];
 
   v8 = NSUnderlyingErrorKey;
   v9 = v4;

@@ -1,29 +1,29 @@
 @interface PKReplacePhysicalCardReasonViewController
-- (PKReplacePhysicalCardReasonViewController)initWithPhysicalCardController:(id)a3 context:(int64_t)a4;
-- (id)_cellForReasonAtIndexPath:(id)a3 inTableView:(id)a4;
-- (void)_nextButtonPressed:(id)a3;
-- (void)_reasonRowSelectedAtIndexPath:(id)a3 inTableView:(id)a4;
+- (PKReplacePhysicalCardReasonViewController)initWithPhysicalCardController:(id)controller context:(int64_t)context;
+- (id)_cellForReasonAtIndexPath:(id)path inTableView:(id)view;
+- (void)_nextButtonPressed:(id)pressed;
+- (void)_reasonRowSelectedAtIndexPath:(id)path inTableView:(id)view;
 - (void)_updateNavigationButtons;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKReplacePhysicalCardReasonViewController
 
-- (PKReplacePhysicalCardReasonViewController)initWithPhysicalCardController:(id)a3 context:(int64_t)a4
+- (PKReplacePhysicalCardReasonViewController)initWithPhysicalCardController:(id)controller context:(int64_t)context
 {
-  v7 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = PKReplacePhysicalCardReasonViewController;
   v8 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v20, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 1);
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controller, a3);
-    v9->_context = a4;
-    v10 = [v7 account];
-    v9->_feature = [v10 feature];
+    objc_storeStrong(&v8->_controller, controller);
+    v9->_context = context;
+    account = [controllerCopy account];
+    v9->_feature = [account feature];
 
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v9 action:sel__cancelButtonPressed_];
     cancelButton = v9->_cancelButton;
@@ -35,17 +35,17 @@
     nextButton = v9->_nextButton;
     v9->_nextButton = v15;
 
-    v17 = [(PKReplacePhysicalCardReasonViewController *)v9 navigationItem];
+    navigationItem = [(PKReplacePhysicalCardReasonViewController *)v9 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v17 pkui_setupScrollEdgeChromelessAppearance];
-      [v17 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
-    [v17 setLeftBarButtonItem:v9->_cancelButton];
-    [v17 setRightBarButtonItem:v9->_nextButton];
+    [navigationItem setLeftBarButtonItem:v9->_cancelButton];
+    [navigationItem setRightBarButtonItem:v9->_nextButton];
     v18 = PKLocalizedFeatureString();
-    [v17 setTitle:v18];
+    [navigationItem setTitle:v18];
 
     [(PKReplacePhysicalCardReasonViewController *)v9 _updateNavigationButtons];
   }
@@ -58,8 +58,8 @@
   v4.receiver = self;
   v4.super_class = PKReplacePhysicalCardReasonViewController;
   [(PKSectionTableViewController *)&v4 viewDidLoad];
-  v3 = [(PKReplacePhysicalCardReasonViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPhysicalCardReasonTableViewCellReuseIdentifier"];
+  tableView = [(PKReplacePhysicalCardReasonViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPhysicalCardReasonTableViewCellReuseIdentifier"];
 }
 
 - (void)viewWillLayoutSubviews
@@ -69,31 +69,31 @@
   [(PKReplacePhysicalCardReasonViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKReplacePhysicalCardReasonViewController *)self tableView];
-    v4 = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKReplacePhysicalCardReasonViewController *)self tableView];
+    navigationItem = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKReplacePhysicalCardReasonViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKReplacePhysicalCardReasonViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_reasonRowSelectedAtIndexPath:(id)a3 inTableView:(id)a4
+- (void)_reasonRowSelectedAtIndexPath:(id)path inTableView:(id)view
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 row];
-  [v12 section];
+  pathCopy = path;
+  viewCopy = view;
+  v7 = [pathCopy row];
+  [pathCopy section];
   if (!self->_hasSelectedRow || self->_selectedRow != v7)
   {
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:? inSection:?];
-    v10 = [v6 cellForRowAtIndexPath:v9];
+    v10 = [viewCopy cellForRowAtIndexPath:v9];
 
     [v10 setAccessoryType:0];
-    v11 = [v6 cellForRowAtIndexPath:v12];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
     [v11 setAccessoryType:3];
     self->_hasSelectedRow = 1;
@@ -101,14 +101,14 @@
     [(PKReplacePhysicalCardReasonViewController *)self _updateNavigationButtons];
   }
 
-  [v6 deselectRowAtIndexPath:v12 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)_cellForReasonAtIndexPath:(id)a3 inTableView:(id)a4
+- (id)_cellForReasonAtIndexPath:(id)path inTableView:(id)view
 {
-  v6 = a3;
-  v7 = [a4 dequeueReusableCellWithIdentifier:@"PKPhysicalCardReasonTableViewCellReuseIdentifier" forIndexPath:v6];
-  if ([v6 row] > 4)
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPhysicalCardReasonTableViewCellReuseIdentifier" forIndexPath:pathCopy];
+  if ([pathCopy row] > 4)
   {
     v8 = 0;
   }
@@ -118,13 +118,13 @@
     v8 = PKLocalizedFeatureString();
   }
 
-  v9 = [v7 textLabel];
-  [v9 setText:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v8];
 
   if (self->_hasSelectedRow)
   {
     selectedRow = self->_selectedRow;
-    if (selectedRow == [v6 row])
+    if (selectedRow == [pathCopy row])
     {
       v11 = 3;
     }
@@ -152,33 +152,33 @@
   [(UIBarButtonItem *)self->_nextButton setEnabled:v3];
   if (self->_loadingCustomizationOptions)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v6 startAnimating];
-    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v6];
-    v5 = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    navigationItem2 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [navigationItem2 startAnimating];
+    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:navigationItem2];
+    navigationItem = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
   }
 
   else
   {
-    v6 = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:self->_nextButton];
+    navigationItem2 = [(PKReplacePhysicalCardReasonViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:self->_nextButton];
   }
 }
 
-- (void)_nextButtonPressed:(id)a3
+- (void)_nextButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (!self->_loadingCustomizationOptions && self->_hasSelectedRow)
   {
     self->_loadingCustomizationOptions = 1;
     [(PKReplacePhysicalCardReasonViewController *)self _updateNavigationButtons];
     v18 = [PKOrderPhysicalCardController alloc];
-    v19 = [MEMORY[0x1E69B8400] sharedInstance];
-    v5 = [MEMORY[0x1E69B8EF8] sharedService];
-    v6 = [(PKPhysicalCardController *)self->_controller paymentPass];
-    v7 = [(PKPhysicalCardController *)self->_controller account];
-    v8 = [(PKPhysicalCardController *)self->_controller accountUser];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    paymentPass = [(PKPhysicalCardController *)self->_controller paymentPass];
+    account = [(PKPhysicalCardController *)self->_controller account];
+    accountUser = [(PKPhysicalCardController *)self->_controller accountUser];
     selectedRow = self->_selectedRow;
     if (selectedRow > 4)
     {
@@ -192,18 +192,18 @@
 
     v17 = v10;
     context = self->_context;
-    v12 = [(PKPhysicalCardController *)self->_controller primaryPhysicalCard];
-    v13 = v12;
-    if (!v12)
+    primaryPhysicalCard = [(PKPhysicalCardController *)self->_controller primaryPhysicalCard];
+    unactivatedPhysicalCard = primaryPhysicalCard;
+    if (!primaryPhysicalCard)
     {
-      v13 = [(PKPhysicalCardController *)self->_controller unactivatedPhysicalCard];
+      unactivatedPhysicalCard = [(PKPhysicalCardController *)self->_controller unactivatedPhysicalCard];
     }
 
-    v14 = [(PKOrderPhysicalCardController *)v18 initWithAccountService:v19 paymentWebService:v5 paymentPass:v6 account:v7 accountUser:v8 orderReason:v17 context:context currentPhysicalCard:v13];
+    v14 = [(PKOrderPhysicalCardController *)v18 initWithAccountService:mEMORY[0x1E69B8400] paymentWebService:mEMORY[0x1E69B8EF8] paymentPass:paymentPass account:account accountUser:accountUser orderReason:v17 context:context currentPhysicalCard:unactivatedPhysicalCard];
     orderController = self->_orderController;
     self->_orderController = v14;
 
-    if (!v12)
+    if (!primaryPhysicalCard)
     {
     }
 

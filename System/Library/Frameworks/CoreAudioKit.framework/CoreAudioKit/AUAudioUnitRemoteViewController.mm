@@ -1,20 +1,20 @@
 @interface AUAudioUnitRemoteViewController
-+ (void)_fetchViewController:(id)a3 requestIdentifier:(id)a4 completion:(id)a5;
-+ (void)_fetchViewControllerForExtension:(id)a3 inputItems:(id)a4 completion:(id)a5;
++ (void)_fetchViewController:(id)controller requestIdentifier:(id)identifier completion:(id)completion;
++ (void)_fetchViewControllerForExtension:(id)extension inputItems:(id)items completion:(id)completion;
 @end
 
 @implementation AUAudioUnitRemoteViewController
 
-+ (void)_fetchViewControllerForExtension:(id)a3 inputItems:(id)a4 completion:(id)a5
++ (void)_fetchViewControllerForExtension:(id)extension inputItems:(id)items completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__AUAudioUnitRemoteViewController__fetchViewControllerForExtension_inputItems_completion___block_invoke;
   v9[3] = &unk_278A25658;
-  v10 = v7;
-  v8 = v7;
-  [a3 instantiateViewControllerWithInputItems:a4 listenerEndpoint:0 connectionHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [extension instantiateViewControllerWithInputItems:items listenerEndpoint:0 connectionHandler:v9];
 }
 
 void __90__AUAudioUnitRemoteViewController__fetchViewControllerForExtension_inputItems_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -47,22 +47,22 @@ void __90__AUAudioUnitRemoteViewController__fetchViewControllerForExtension_inpu
   v9();
 }
 
-+ (void)_fetchViewController:(id)a3 requestIdentifier:(id)a4 completion:(id)a5
++ (void)_fetchViewController:(id)controller requestIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   aBlock = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __85__AUAudioUnitRemoteViewController__fetchViewController_requestIdentifier_completion___block_invoke;
   v18 = &unk_278A25680;
-  v19 = v6;
-  v7 = v6;
-  v8 = a3;
+  v19 = completionCopy;
+  v7 = completionCopy;
+  controllerCopy = controller;
   v9 = _Block_copy(&aBlock);
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v8 _plugIn];
+  _plugIn = [controllerCopy _plugIn];
 
-  v12 = [v11 identifier];
-  v13 = [v10 stringWithFormat:@"%@.viewbridge", v12, aBlock, v16, v17, v18];
+  identifier = [_plugIn identifier];
+  v13 = [v10 stringWithFormat:@"%@.viewbridge", identifier, aBlock, v16, v17, v18];
 
   v14 = [AUAudioUnitRemoteViewController requestViewController:@"AUAudioUnitViewService" fromServiceWithBundleIdentifier:v13 connectionHandler:v9];
 }

@@ -32,18 +32,18 @@
     v7 = v2;
     v23 = v7;
     v8 = _Block_copy(aBlock);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __30__ATXLockscreenBlacklist_init__block_invoke_33;
     v20[3] = &unk_27859E970;
     v10 = v8;
     v21 = v10;
-    v11 = [v9 addObserverForName:@"com.apple.duetexpertd.prefschanged" object:0 queue:0 usingBlock:v20];
+    v11 = [defaultCenter addObserverForName:@"com.apple.duetexpertd.prefschanged" object:0 queue:0 usingBlock:v20];
     notificationCenterToken = v7->_notificationCenterToken;
     v7->_notificationCenterToken = v11;
 
-    v13 = [@"com.apple.duetexpertd.prefschanged" UTF8String];
+    uTF8String = [@"com.apple.duetexpertd.prefschanged" UTF8String];
     v14 = dispatch_get_global_queue(9, 0);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -51,7 +51,7 @@
     handler[3] = &unk_27859E998;
     v15 = v10;
     v19 = v15;
-    LODWORD(v7) = notify_register_dispatch(v13, &v7->_libnotifyToken, v14, handler);
+    LODWORD(v7) = notify_register_dispatch(uTF8String, &v7->_libnotifyToken, v14, handler);
 
     if (v7)
     {
@@ -131,8 +131,8 @@ void __30__ATXLockscreenBlacklist_init__block_invoke_2(uint64_t a1, void *a2)
 
   if (self->_notificationCenterToken)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_notificationCenterToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_notificationCenterToken];
   }
 
   v5.receiver = self;
@@ -146,7 +146,7 @@ void __30__ATXLockscreenBlacklist_init__block_invoke_2(uint64_t a1, void *a2)
   block[1] = 3221225472;
   block[2] = __40__ATXLockscreenBlacklist_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken10 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken10, block);
@@ -324,9 +324,9 @@ void __54__ATXLockscreenBlacklist_isPredictionGloballyDisabled__block_invoke(uin
 + (id)appsLockedOrHiddenByAppProtection
 {
   v2 = objc_opt_new();
-  v3 = [v2 hiddenOrLockedBundleIDs];
+  hiddenOrLockedBundleIDs = [v2 hiddenOrLockedBundleIDs];
 
-  return v3;
+  return hiddenOrLockedBundleIDs;
 }
 
 - (void)init

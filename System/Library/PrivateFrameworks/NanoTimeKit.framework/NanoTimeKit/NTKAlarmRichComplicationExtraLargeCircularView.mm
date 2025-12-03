@@ -15,8 +15,8 @@
 
 - (int64_t)_backgroundFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -31,8 +31,8 @@
 
 - (int64_t)_foregroundFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {

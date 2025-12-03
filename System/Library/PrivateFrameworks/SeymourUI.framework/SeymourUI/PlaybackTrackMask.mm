@@ -1,29 +1,29 @@
 @interface PlaybackTrackMask
-- (_TtC9SeymourUI17PlaybackTrackMask)initWithCoder:(id)a3;
-- (_TtC9SeymourUI17PlaybackTrackMask)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI17PlaybackTrackMask)initWithCoder:(id)coder;
+- (_TtC9SeymourUI17PlaybackTrackMask)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PlaybackTrackMask
 
-- (_TtC9SeymourUI17PlaybackTrackMask)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI17PlaybackTrackMask)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = type metadata accessor for PlaybackTrackMask();
-  v7 = [(PlaybackTrackMask *)&v12 initWithFrame:x, y, width, height];
+  height = [(PlaybackTrackMask *)&v12 initWithFrame:x, y, width, height];
   v8 = objc_opt_self();
-  v9 = v7;
-  v10 = [v8 blackColor];
-  [(PlaybackTrackMask *)v9 setBackgroundColor:v10];
+  v9 = height;
+  blackColor = [v8 blackColor];
+  [(PlaybackTrackMask *)v9 setBackgroundColor:blackColor];
 
   return v9;
 }
 
-- (_TtC9SeymourUI17PlaybackTrackMask)initWithCoder:(id)a3
+- (_TtC9SeymourUI17PlaybackTrackMask)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -36,9 +36,9 @@
   v4.super_class = type metadata accessor for PlaybackTrackMask();
   v2 = v4.receiver;
   [(PlaybackTrackMask *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 @end

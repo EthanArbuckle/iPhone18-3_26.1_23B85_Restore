@@ -1,21 +1,21 @@
 @interface ABSLasordaSession
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
 - (void)_batchSupplier;
 - (void)dealloc;
-- (void)lateSetupForSession:(id)a3;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (void)lateSetupForSession:(id)session;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation ABSLasordaSession
 
-- (void)lateSetupForSession:(id)a3
+- (void)lateSetupForSession:(id)session
 {
   v14.receiver = self;
   v14.super_class = ABSLasordaSession;
-  v4 = a3;
-  [(ABSSyncSession *)&v14 lateSetupForSession:v4];
-  v5 = [(ABSSyncSession *)self options];
-  v6 = [v5 objectForKeyedSubscript:off_1000719B8];
+  sessionCopy = session;
+  [(ABSSyncSession *)&v14 lateSetupForSession:sessionCopy];
+  options = [(ABSSyncSession *)self options];
+  v6 = [options objectForKeyedSubscript:off_1000719B8];
   self->_sessionSupportsContactAccountIDs = [v6 BOOLValue];
 
   v7 = 3;
@@ -31,9 +31,9 @@
 
   +[ABSContactsSyncObject clearMeCardSet];
   self->_gtLogger = ct_green_tea_logger_create();
-  v10 = [v4 isResetSync];
+  isResetSync = [sessionCopy isResetSync];
 
-  self->_isReset = v10;
+  self->_isReset = isResetSync;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100029914;
@@ -46,14 +46,14 @@
   [(NSThread *)self->_producerThread start];
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  changesCopy = changes;
   v63.receiver = self;
   v63.super_class = ABSLasordaSession;
-  [(ABSSyncSession *)&v63 syncSession:v8 enqueueChanges:v9 error:a5];
-  v10 = objc_retainBlock(v9);
+  [(ABSSyncSession *)&v63 syncSession:sessionCopy enqueueChanges:changesCopy error:error];
+  v10 = objc_retainBlock(changesCopy);
   if ([(ABSLasordaSession *)self delayUs])
   {
     v61[0] = _NSConcreteStackBlock;
@@ -61,31 +61,31 @@
     v61[2] = sub_10002A2F8;
     v61[3] = &unk_10005D718;
     v61[4] = self;
-    v62 = v9;
+    v62 = changesCopy;
     v11 = objc_retainBlock(v61);
 
     v10 = v11;
   }
 
   context = objc_autoreleasePoolPush();
-  if ([v8 state] == 5)
+  if ([sessionCopy state] == 5)
   {
-    v12 = [v8 error];
+    error = [sessionCopy error];
 
-    if (v12)
+    if (error)
     {
       v13 = *(qword_100071D00 + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_10003B33C(v13, v8);
+        sub_10003B33C(v13, sessionCopy);
       }
 
       [(NDTResultsFIFO *)self->_fifo terminate];
       producerThread = self->_producerThread;
       self->_producerThread = 0;
 
-      v15 = [v8 error];
-      [(ABSSyncSession *)self setCapturedError:v15];
+      error2 = [sessionCopy error];
+      [(ABSSyncSession *)self setCapturedError:error2];
 
       goto LABEL_16;
     }
@@ -196,7 +196,7 @@ LABEL_65:
 
         v22 = 1;
 LABEL_66:
-        v27 = v9;
+        v27 = changesCopy;
         goto LABEL_67;
       }
 
@@ -205,7 +205,7 @@ LABEL_66:
       self->_acctsSha = v17;
 
       v19 = objc_alloc_init(ABSAccountsDiffObject);
-      if (([v8 isResetSync] & 1) != 0 || !-[ABSSyncObject matches:](v19, "matches:", 0))
+      if (([sessionCopy isResetSync] & 1) != 0 || !-[ABSSyncObject matches:](v19, "matches:", 0))
       {
         v23 = *(qword_100071D00 + 8);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -276,7 +276,7 @@ LABEL_66:
   v52 = 50;
   v49 = 0;
   v50 = &v49;
-  v27 = v9;
+  v27 = changesCopy;
   do
   {
     if (v50[6] < 1)
@@ -308,7 +308,7 @@ LABEL_66:
     v44[4] = self;
     v45 = v29;
     v30 = fifo;
-    v27 = v9;
+    v27 = changesCopy;
     [(NDTResultsFIFO *)v30 conditionalPop:v44];
   }
 
@@ -361,7 +361,7 @@ LABEL_67:
   v21[3] = &unk_10005D768;
   v21[4] = self;
   v8 = objc_retainBlock(v21);
-  v9 = [(ABSLasordaSession *)self contactsSource];
+  contactsSource = [(ABSLasordaSession *)self contactsSource];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002A84C;
@@ -380,42 +380,42 @@ LABEL_67:
   v15 = &unk_10005D7B8;
   v10 = v20;
   v11 = v7;
-  [v9 enumerateContactsAdd:v18 remove:v17 lmaAdd:&v12];
+  [contactsSource enumerateContactsAdd:v18 remove:v17 lmaAdd:&v12];
 
   [(NDTResultsFIFO *)self->_fifo finish:v12];
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  sessionCopy = session;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v7;
+      v15 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "There was a session ending error (%{public}@). Setting exitNow flag on session", buf, 0xCu);
     }
 
     [(NDTResultsFIFO *)self->_fifo terminate];
   }
 
-  else if ([v6 isSending])
+  else if ([sessionCopy isSending])
   {
     v9 = +[ABSyncInterface sharedInstance];
-    v10 = [v9 serverState];
-    [v10 setStringValue:self->_favsSha forKey:@"com.apple.absd.favorites.sha"];
+    serverState = [v9 serverState];
+    [serverState setStringValue:self->_favsSha forKey:@"com.apple.absd.favorites.sha"];
 
     v11 = +[ABSyncInterface sharedInstance];
-    v12 = [v11 serverState];
-    [v12 setStringValue:self->_acctsSha forKey:@"com.apple.absd.accounts.sha"];
+    serverState2 = [v11 serverState];
+    [serverState2 setStringValue:self->_acctsSha forKey:@"com.apple.absd.accounts.sha"];
   }
 
   v13.receiver = self;
   v13.super_class = ABSLasordaSession;
-  [(ABSSyncSession *)&v13 syncSession:v6 didEndWithError:v7];
+  [(ABSSyncSession *)&v13 syncSession:sessionCopy didEndWithError:errorCopy];
 }
 
 - (void)dealloc

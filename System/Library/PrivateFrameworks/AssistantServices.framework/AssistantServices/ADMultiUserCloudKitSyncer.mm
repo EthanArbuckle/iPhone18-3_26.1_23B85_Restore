@@ -1,29 +1,29 @@
 @interface ADMultiUserCloudKitSyncer
 + (id)sharedService;
-- (id)_addHomeMembershipsToDictionary:(id)a3;
-- (id)_generateVersion1HomeMembershipRecordKeyFromHomeID:(id)a3 homeUserID:(id)a4;
-- (id)_generateVersion2HomeMembershipRecordKeyFromHomeID:(id)a3;
+- (id)_addHomeMembershipsToDictionary:(id)dictionary;
+- (id)_generateVersion1HomeMembershipRecordKeyFromHomeID:(id)d homeUserID:(id)iD;
+- (id)_generateVersion2HomeMembershipRecordKeyFromHomeID:(id)d;
 - (id)_homeMembershipsToDelete;
 - (id)_init;
-- (id)_setHomeMembershipsDeletion:(id)a3;
+- (id)_setHomeMembershipsDeletion:(id)deletion;
 - (id)getAudioAppSignalsPayload;
-- (id)setPersonalData:(id)a3;
-- (void)_deleteHomeMemberShipsFromCloud:(unint64_t)a3;
-- (void)_saveBackupIdentifiersAnchor:(id)a3;
-- (void)_saveCachedAssistantDataAnchor:(id)a3;
-- (void)_saveIdentifiersAnchor:(id)a3;
+- (id)setPersonalData:(id)data;
+- (void)_deleteHomeMemberShipsFromCloud:(unint64_t)cloud;
+- (void)_saveBackupIdentifiersAnchor:(id)anchor;
+- (void)_saveCachedAssistantDataAnchor:(id)anchor;
+- (void)_saveIdentifiersAnchor:(id)anchor;
 - (void)_setupMGQUserAssignedDeviceNameNotificationHandler;
-- (void)_syncIdentifiersToCloud:(unint64_t)a3 forceUpdate:(BOOL)a4 voiceIDChangedToEnabled:(BOOL)a5;
-- (void)_syncMeCard:(unint64_t)a3 anchorToSave:(id)a4;
-- (void)accountDidChange:(id)a3;
-- (void)assistantDataManager:(id)a3 didUpdateAssistantData:(id)a4 meCards:(id)a5 unredactedAnchor:(id)a6;
+- (void)_syncIdentifiersToCloud:(unint64_t)cloud forceUpdate:(BOOL)update voiceIDChangedToEnabled:(BOOL)enabled;
+- (void)_syncMeCard:(unint64_t)card anchorToSave:(id)save;
+- (void)accountDidChange:(id)change;
+- (void)assistantDataManager:(id)manager didUpdateAssistantData:(id)data meCards:(id)cards unredactedAnchor:(id)anchor;
 - (void)dealloc;
-- (void)enabledBitsChanged:(id)a3;
-- (void)markHomeMembershipsForDeletion:(id)a3;
-- (void)meDeviceChanged:(id)a3;
-- (void)primaryUserSharedUserIdentifierDidChangeNotification:(id)a3;
-- (void)setHomeMemberships:(id)a3 homeMembershipsToDelete:(id)a4 voiceIDSetting:(BOOL)a5;
-- (void)syncAudioAppSignalsPayload:(id)a3;
+- (void)enabledBitsChanged:(id)changed;
+- (void)markHomeMembershipsForDeletion:(id)deletion;
+- (void)meDeviceChanged:(id)changed;
+- (void)primaryUserSharedUserIdentifierDidChangeNotification:(id)notification;
+- (void)setHomeMemberships:(id)memberships homeMembershipsToDelete:(id)delete voiceIDSetting:(BOOL)setting;
+- (void)syncAudioAppSignalsPayload:(id)payload;
 - (void)syncIdentifiersToCloud;
 @end
 
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (void)_syncIdentifiersToCloud:(unint64_t)a3 forceUpdate:(BOOL)a4 voiceIDChangedToEnabled:(BOOL)a5
+- (void)_syncIdentifiersToCloud:(unint64_t)cloud forceUpdate:(BOOL)update voiceIDChangedToEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -55,7 +55,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (a3)
+  if (cloud)
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -63,11 +63,11 @@
       *buf = 136315394;
       *&buf[4] = "[ADMultiUserCloudKitSyncer _syncIdentifiersToCloud:forceUpdate:voiceIDChangedToEnabled:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = cloud;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s retryCount = %ld", buf, 0x16u);
     }
 
-    if (a3 >= 0x10)
+    if (cloud >= 0x10)
     {
       v10 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -102,30 +102,30 @@ LABEL_12:
     v127 = self->_meIsMeDevice;
     v109 = +[ACAccountStore defaultStore];
     v14 = +[ADAccount activeAccount];
-    v15 = [v14 assistantIdentifier];
+    assistantIdentifier = [v14 assistantIdentifier];
     assistantIdentifier = self->_assistantIdentifier;
-    self->_assistantIdentifier = v15;
+    self->_assistantIdentifier = assistantIdentifier;
 
     v17 = +[ADAccount activeAccount];
-    v111 = [v17 loggingAssistantIdentifier];
+    loggingAssistantIdentifier = [v17 loggingAssistantIdentifier];
 
     v18 = +[ADAccount activeAccount];
-    v107 = [v18 speechIdentifier];
+    speechIdentifier = [v18 speechIdentifier];
 
     v19 = +[ADPreferences sharedPreferences];
-    v113 = [v19 sharedUserIdentifier];
+    sharedUserIdentifier = [v19 sharedUserIdentifier];
     v108 = v19;
-    v112 = [v19 loggingSharedUserIdentifier];
-    v20 = [v109 aa_primaryAppleAccount];
-    v106 = [v20 aa_altDSID];
+    loggingSharedUserIdentifier = [v19 loggingSharedUserIdentifier];
+    aa_primaryAppleAccount = [v109 aa_primaryAppleAccount];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
-    v21 = [v108 productTypePrefix];
+    productTypePrefix = [v108 productTypePrefix];
     v105 = SiriCoreUserAgentStringCreate();
 
     v22 = +[ADAccount activeAccount];
-    v110 = [v22 aceHost];
+    aceHost = [v22 aceHost];
 
-    v103 = [(ADMultiUserCloudKitSyncer *)self getAudioAppSignalsPayload];
+    getAudioAppSignalsPayload = [(ADMultiUserCloudKitSyncer *)self getAudioAppSignalsPayload];
     v104 = AFUserAssignedDeviceName();
     v23 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -135,7 +135,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
     }
 
-    if (!v113 || !v112)
+    if (!sharedUserIdentifier || !loggingSharedUserIdentifier)
     {
       v35 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -159,17 +159,17 @@ LABEL_12:
       v24 = &stru_10051F508;
     }
 
-    v25 = v111;
-    if (!v111)
+    v25 = loggingAssistantIdentifier;
+    if (!loggingAssistantIdentifier)
     {
       v25 = &stru_10051F508;
     }
 
     v141[0] = v24;
     v141[1] = v25;
-    if (v107)
+    if (speechIdentifier)
     {
-      v26 = v107;
+      v26 = speechIdentifier;
     }
 
     else
@@ -178,23 +178,23 @@ LABEL_12:
     }
 
     v141[2] = v26;
-    v141[3] = v113;
+    v141[3] = sharedUserIdentifier;
     v27 = v105;
     if (!v105)
     {
       v27 = &stru_10051F508;
     }
 
-    v141[4] = v112;
+    v141[4] = loggingSharedUserIdentifier;
     v141[5] = v27;
-    v28 = v110;
-    if (!v110)
+    v28 = aceHost;
+    if (!aceHost)
     {
       v28 = &stru_10051F508;
     }
 
-    v29 = v106;
-    if (!v106)
+    v29 = aa_altDSID;
+    if (!aa_altDSID)
     {
       v29 = &stru_10051F508;
     }
@@ -248,7 +248,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "%s saved anchor:%@\tcached anchor:%@\tnew anchor:%@", v133, 0x2Au);
     }
 
-    if (a4)
+    if (update)
     {
       goto LABEL_54;
     }
@@ -320,14 +320,14 @@ LABEL_54:
         v56 = @"meDeviceiCloudAltDSID";
         v57 = @"meDeviceACEHost";
         v58 = @"meDeviceVoiceIDChangedToEnabledTimestamp";
-        if (v103 && +[AFFeatureFlags isAudioAppPredictionOnHomePodEnabled])
+        if (getAudioAppSignalsPayload && +[AFFeatureFlags isAudioAppPredictionOnHomePodEnabled])
         {
-          [v46 setObject:v103 forKey:@"meDeviceAudioAppSignals"];
+          [v46 setObject:getAudioAppSignalsPayload forKey:@"meDeviceAudioAppSignals"];
         }
 
-        if (v106)
+        if (aa_altDSID)
         {
-          [v46 setObject:v106 forKey:@"meDeviceiCloudAltDSID"];
+          [v46 setObject:aa_altDSID forKey:@"meDeviceiCloudAltDSID"];
         }
 
         v131[0] = @"meDeviceAssistantID";
@@ -395,14 +395,14 @@ LABEL_54:
       {
       }
 
-      if (v111)
+      if (loggingAssistantIdentifier)
       {
-        [v46 setObject:v111 forKey:v95];
+        [v46 setObject:loggingAssistantIdentifier forKey:v95];
       }
 
-      if (v107)
+      if (speechIdentifier)
       {
-        [v46 setObject:v107 forKey:v99];
+        [v46 setObject:speechIdentifier forKey:v99];
       }
 
       else
@@ -411,20 +411,20 @@ LABEL_54:
         [v46 setObject:v70 forKey:v99];
       }
 
-      [v46 setObject:v113 forKey:v98];
-      [v46 setObject:v112 forKey:v97];
-      if (v110)
+      [v46 setObject:sharedUserIdentifier forKey:v98];
+      [v46 setObject:loggingSharedUserIdentifier forKey:v97];
+      if (aceHost)
       {
-        [v46 setObject:v110 forKey:v96];
+        [v46 setObject:aceHost forKey:v96];
       }
 
-      if (v47 && v5)
+      if (v47 && enabledCopy)
       {
         v71 = +[NSDate date];
         [v71 timeIntervalSince1970];
         v73 = v72;
 
-        v129 = v113;
+        v129 = sharedUserIdentifier;
         v74 = [NSNumber numberWithDouble:v73];
         v130 = v74;
         v75 = [NSDictionary dictionaryWithObjects:&v130 forKeys:&v129 count:1];
@@ -558,11 +558,11 @@ LABEL_104:
   }
 }
 
-- (id)_setHomeMembershipsDeletion:(id)a3
+- (id)_setHomeMembershipsDeletion:(id)deletion
 {
-  v4 = a3;
-  v5 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
-  v6 = [v5 count];
+  deletionCopy = deletion;
+  _homeMembershipsToDelete = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
+  v6 = [_homeMembershipsToDelete count];
 
   v7 = AFSiriLogContextDaemon;
   v8 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
@@ -571,11 +571,11 @@ LABEL_104:
     if (v8)
     {
       v9 = v7;
-      v10 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
+      _homeMembershipsToDelete2 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
       *buf = 136315395;
       v28 = "[ADMultiUserCloudKitSyncer _setHomeMembershipsDeletion:]";
       v29 = 2113;
-      v30 = v10;
+      v30 = _homeMembershipsToDelete2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Home memberships marked for deletion (%{private}@)", buf, 0x16u);
     }
 
@@ -583,8 +583,8 @@ LABEL_104:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    _homeMembershipsToDelete3 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
+    v12 = [_homeMembershipsToDelete3 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -595,20 +595,20 @@ LABEL_104:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_homeMembershipsToDelete3);
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
-          v18 = [v17 objectForKey:v16];
+          _homeMembershipsToDelete4 = [(ADMultiUserCloudKitSyncer *)self _homeMembershipsToDelete];
+          v18 = [_homeMembershipsToDelete4 objectForKey:v16];
 
           v19 = [(ADMultiUserCloudKitSyncer *)self _generateVersion1HomeMembershipRecordKeyFromHomeID:v16 homeUserID:v18];
-          [v4 addObject:v19];
+          [deletionCopy addObject:v19];
           v20 = [(ADMultiUserCloudKitSyncer *)self _generateVersion2HomeMembershipRecordKeyFromHomeID:v16];
-          [v4 addObject:v20];
+          [deletionCopy addObject:v20];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [_homeMembershipsToDelete3 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v13);
@@ -622,12 +622,12 @@ LABEL_104:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s No home memberships to delete", buf, 0xCu);
   }
 
-  return v4;
+  return deletionCopy;
 }
 
-- (void)_deleteHomeMemberShipsFromCloud:(unint64_t)a3
+- (void)_deleteHomeMemberShipsFromCloud:(unint64_t)cloud
 {
-  if (a3 < 0x10)
+  if (cloud < 0x10)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = [(ADMultiUserCloudKitSyncer *)self _setHomeMembershipsDeletion:v6];
@@ -637,7 +637,7 @@ LABEL_104:
       *buf = 136315651;
       v16 = "[ADMultiUserCloudKitSyncer _deleteHomeMemberShipsFromCloud:]";
       v17 = 2048;
-      v18 = a3;
+      cloudCopy = cloud;
       v19 = 2113;
       v20 = v6;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Retry count (%ld) for home membership records set for deletion (%{private}@)", buf, 0x20u);
@@ -645,7 +645,7 @@ LABEL_104:
 
     if ([v6 count])
     {
-      v9 = a3 + 1;
+      v9 = cloud + 1;
       v10 = +[ADCloudKitManager sharedManager];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -681,14 +681,14 @@ LABEL_104:
   }
 }
 
-- (id)_addHomeMembershipsToDictionary:(id)a3
+- (id)_addHomeMembershipsToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21 = objc_alloc_init(NSMutableDictionary);
-  [v21 addEntriesFromDictionary:v4];
+  [v21 addEntriesFromDictionary:dictionaryCopy];
   if ([(NSDictionary *)self->_homeMemberships count])
   {
-    v20 = v4;
+    v20 = dictionaryCopy;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -766,7 +766,7 @@ LABEL_104:
       while (v6);
     }
 
-    v4 = v20;
+    dictionaryCopy = v20;
   }
 
   else
@@ -783,11 +783,11 @@ LABEL_104:
   return v21;
 }
 
-- (id)_generateVersion2HomeMembershipRecordKeyFromHomeID:(id)a3
+- (id)_generateVersion2HomeMembershipRecordKeyFromHomeID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [@"*^&9&J#AzPm" dataUsingEncoding:4];
-  v5 = [v3 dataUsingEncoding:4];
+  v5 = [dCopy dataUsingEncoding:4];
 
   v6 = AFSecurityDigestData();
   v7 = 0;
@@ -815,14 +815,14 @@ LABEL_104:
   return v9;
 }
 
-- (id)_generateVersion1HomeMembershipRecordKeyFromHomeID:(id)a3 homeUserID:(id)a4
+- (id)_generateVersion1HomeMembershipRecordKeyFromHomeID:(id)d homeUserID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = [@"*^&9&J#AzPm" dataUsingEncoding:4];
-  v8 = [NSString stringWithFormat:@"%@%@%@", v6, @"+", v5];
+  iDCopy = [NSString stringWithFormat:@"%@%@%@", dCopy, @"+", iDCopy];
 
-  v9 = [v8 dataUsingEncoding:4];
+  v9 = [iDCopy dataUsingEncoding:4];
 
   v10 = AFSecurityDigestData();
   v11 = 0;
@@ -850,38 +850,38 @@ LABEL_104:
   return v13;
 }
 
-- (void)_saveBackupIdentifiersAnchor:(id)a3
+- (void)_saveBackupIdentifiersAnchor:(id)anchor
 {
-  objc_storeStrong(&self->_cachedBackupIdentifiersAnchor, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_cachedBackupIdentifiersAnchor, anchor);
+  anchorCopy = anchor;
   v5 = +[ADPreferences sharedPreferences];
-  [v5 setMultiUserSyncerBackupIdentifiersAnchor:v4];
+  [v5 setMultiUserSyncerBackupIdentifiersAnchor:anchorCopy];
 }
 
-- (void)_saveIdentifiersAnchor:(id)a3
+- (void)_saveIdentifiersAnchor:(id)anchor
 {
-  objc_storeStrong(&self->_cachedIdentifiersAnchor, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_cachedIdentifiersAnchor, anchor);
+  anchorCopy = anchor;
   v5 = +[ADPreferences sharedPreferences];
-  [v5 setMultiUserSyncerIdentifiersAnchor:v4];
+  [v5 setMultiUserSyncerIdentifiersAnchor:anchorCopy];
 }
 
-- (void)_saveCachedAssistantDataAnchor:(id)a3
+- (void)_saveCachedAssistantDataAnchor:(id)anchor
 {
-  objc_storeStrong(&self->_cachedAssistantDataAnchor, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_cachedAssistantDataAnchor, anchor);
+  anchorCopy = anchor;
   v5 = +[ADPreferences sharedPreferences];
-  [v5 setMultiUserSyncerSADAnchor:v4];
+  [v5 setMultiUserSyncerSADAnchor:anchorCopy];
 }
 
-- (id)setPersonalData:(id)a3
+- (id)setPersonalData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   cachedAssistantData = self->_cachedAssistantData;
   if (!cachedAssistantData)
   {
 LABEL_51:
-    v10 = v4;
+    v10 = dataCopy;
     goto LABEL_52;
   }
 
@@ -890,45 +890,45 @@ LABEL_51:
   {
     if (self->_meIsMeDevice)
     {
-      v11 = [(SASetAssistantData *)self->_cachedAssistantData countryCode];
-      if (v11)
+      countryCode = [(SASetAssistantData *)self->_cachedAssistantData countryCode];
+      if (countryCode)
       {
-        [v4 setObject:v11 forKey:@"meCountryCode"];
+        [dataCopy setObject:countryCode forKey:@"meCountryCode"];
       }
 
-      v12 = [(SASetAssistantData *)self->_cachedAssistantData parentalRestrictions];
-      if (v12)
+      parentalRestrictions = [(SASetAssistantData *)self->_cachedAssistantData parentalRestrictions];
+      if (parentalRestrictions)
       {
-        [v4 setObject:v12 forKey:@"meParentalRestrictions"];
+        [dataCopy setObject:parentalRestrictions forKey:@"meParentalRestrictions"];
       }
 
-      v13 = [(SASetAssistantData *)self->_cachedAssistantData preferredLanguage];
-      if (v13)
+      preferredLanguage = [(SASetAssistantData *)self->_cachedAssistantData preferredLanguage];
+      if (preferredLanguage)
       {
-        [v4 setObject:v13 forKey:@"mePreferredLanguage"];
+        [dataCopy setObject:preferredLanguage forKey:@"mePreferredLanguage"];
       }
 
-      v14 = [(SASetAssistantData *)self->_cachedAssistantData region];
-      if (v14)
+      region = [(SASetAssistantData *)self->_cachedAssistantData region];
+      if (region)
       {
-        [v4 setObject:v14 forKey:@"meRegion"];
+        [dataCopy setObject:region forKey:@"meRegion"];
       }
 
-      v51 = v14;
-      v15 = [(SASetAssistantData *)self->_cachedAssistantData temperatureUnit];
-      if (v15)
+      v51 = region;
+      temperatureUnit = [(SASetAssistantData *)self->_cachedAssistantData temperatureUnit];
+      if (temperatureUnit)
       {
-        [v4 setObject:v15 forKey:@"meTemperatureUnit"];
+        [dataCopy setObject:temperatureUnit forKey:@"meTemperatureUnit"];
       }
 
-      v50 = v15;
-      v16 = [(SASetAssistantData *)self->_cachedAssistantData ttsVoice];
-      v17 = v16;
-      if (v16)
+      v50 = temperatureUnit;
+      ttsVoice = [(SASetAssistantData *)self->_cachedAssistantData ttsVoice];
+      v17 = ttsVoice;
+      if (ttsVoice)
       {
-        v18 = [v16 dictionary];
+        dictionary = [ttsVoice dictionary];
         v53 = 0;
-        v19 = [NSPropertyListSerialization dataWithPropertyList:v18 format:200 options:0 error:&v53];
+        v19 = [NSPropertyListSerialization dataWithPropertyList:dictionary format:200 options:0 error:&v53];
         v20 = v53;
 
         if (v20 || !v19)
@@ -946,14 +946,14 @@ LABEL_51:
 
         else
         {
-          [v4 setObject:v19 forKey:@"meTTSVoice"];
+          [dataCopy setObject:v19 forKey:@"meTTSVoice"];
         }
       }
 
-      v24 = [(SASetAssistantData *)self->_cachedAssistantData twentyFourHourTimeDisplay];
-      if (v24)
+      twentyFourHourTimeDisplay = [(SASetAssistantData *)self->_cachedAssistantData twentyFourHourTimeDisplay];
+      if (twentyFourHourTimeDisplay)
       {
-        [v4 setObject:v24 forKey:@"twentyFourHourTimeDisplay"];
+        [dataCopy setObject:twentyFourHourTimeDisplay forKey:@"twentyFourHourTimeDisplay"];
       }
 
       else
@@ -967,17 +967,17 @@ LABEL_51:
         }
 
         v26 = [NSNumber numberWithInteger:-1];
-        [v4 setObject:v26 forKey:@"twentyFourHourTimeDisplay"];
+        [dataCopy setObject:v26 forKey:@"twentyFourHourTimeDisplay"];
       }
 
       v49 = v17;
       v27 = @"meCard";
       v28 = +[ADPreferences sharedPreferences];
-      v29 = [v28 languageCode];
+      languageCode = [v28 languageCode];
 
-      if (v29)
+      if (languageCode)
       {
-        [v4 setObject:v29 forKey:@"siriLanguage"];
+        [dataCopy setObject:languageCode forKey:@"siriLanguage"];
       }
 
       else
@@ -992,7 +992,7 @@ LABEL_51:
       }
 
       v31 = AFUserAssignedDeviceName();
-      if (v31 && (+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet"), v32 = objc_claimAutoreleasedReturnValue(), [v31 stringByTrimmingCharactersInSet:v32], v48 = v4, v33 = v29, v34 = v24, v35 = v13, v36 = v12, v37 = v11, v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "length"), v38, v11 = v37, v12 = v36, v13 = v35, v24 = v34, v29 = v33, v4 = v48, v32, v39))
+      if (v31 && (+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet"), v32 = objc_claimAutoreleasedReturnValue(), [v31 stringByTrimmingCharactersInSet:v32], v48 = dataCopy, v33 = languageCode, v34 = twentyFourHourTimeDisplay, v35 = preferredLanguage, v36 = parentalRestrictions, v37 = countryCode, v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "length"), v38, countryCode = v37, parentalRestrictions = v36, preferredLanguage = v35, twentyFourHourTimeDisplay = v34, languageCode = v33, dataCopy = v48, v32, v39))
       {
         [v48 setObject:v31 forKey:@"companionName"];
       }
@@ -1023,9 +1023,9 @@ LABEL_51:
       v42 = v41;
       if (v41)
       {
-        v43 = [v41 dictionary];
+        dictionary2 = [v41 dictionary];
         v52 = 0;
-        v44 = [NSPropertyListSerialization dataWithPropertyList:v43 format:200 options:0 error:&v52];
+        v44 = [NSPropertyListSerialization dataWithPropertyList:dictionary2 format:200 options:0 error:&v52];
         v45 = v52;
 
         if (v45 || !v44)
@@ -1043,7 +1043,7 @@ LABEL_51:
 
         else
         {
-          [v4 setObject:v44 forKey:v21];
+          [dataCopy setObject:v44 forKey:v21];
         }
       }
     }
@@ -1065,11 +1065,11 @@ LABEL_52:
   return v10;
 }
 
-- (void)assistantDataManager:(id)a3 didUpdateAssistantData:(id)a4 meCards:(id)a5 unredactedAnchor:(id)a6
+- (void)assistantDataManager:(id)manager didUpdateAssistantData:(id)data meCards:(id)cards unredactedAnchor:(id)anchor
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a4 copy];
+  cardsCopy = cards;
+  anchorCopy = anchor;
+  v11 = [data copy];
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -1077,17 +1077,17 @@ LABEL_52:
   v16[3] = &unk_10051DB18;
   v16[4] = self;
   v17 = v11;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
+  v18 = cardsCopy;
+  v19 = anchorCopy;
+  v13 = anchorCopy;
+  v14 = cardsCopy;
   v15 = v11;
   dispatch_async(queue, v16);
 }
 
-- (void)_syncMeCard:(unint64_t)a3 anchorToSave:(id)a4
+- (void)_syncMeCard:(unint64_t)card anchorToSave:(id)save
 {
-  v6 = a4;
+  saveCopy = save;
   v7 = +[ADPreferences sharedPreferences];
   if ([v7 multiUserIsOnboardingDevice])
   {
@@ -1103,7 +1103,7 @@ LABEL_52:
     }
   }
 
-  if (a3 < 0x10)
+  if (card < 0x10)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
     v11 = [(ADMultiUserCloudKitSyncer *)self setPersonalData:v10];
@@ -1113,7 +1113,7 @@ LABEL_52:
     v13[2] = sub_10027FE58;
     v13[3] = &unk_10051C9D0;
     v13[4] = self;
-    v14 = v6;
+    v14 = saveCopy;
     [v12 addDictionaryToSharedStore:v10 completion:v13];
   }
 
@@ -1131,21 +1131,21 @@ LABEL_52:
 LABEL_8:
 }
 
-- (void)meDeviceChanged:(id)a3
+- (void)meDeviceChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002800AC;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)primaryUserSharedUserIdentifierDidChangeNotification:(id)a3
+- (void)primaryUserSharedUserIdentifierDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1156,7 +1156,7 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1167,7 +1167,7 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)enabledBitsChanged:(id)a3
+- (void)enabledBitsChanged:(id)changed
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
@@ -1215,40 +1215,40 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)setHomeMemberships:(id)a3 homeMembershipsToDelete:(id)a4 voiceIDSetting:(BOOL)a5
+- (void)setHomeMemberships:(id)memberships homeMembershipsToDelete:(id)delete voiceIDSetting:(BOOL)setting
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  membershipsCopy = memberships;
+  deleteCopy = delete;
+  if (membershipsCopy)
   {
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100280C9C;
     v11[3] = &unk_10051C958;
-    v12 = v8;
-    v13 = self;
-    v15 = a5;
-    v14 = v9;
+    v12 = membershipsCopy;
+    selfCopy = self;
+    settingCopy = setting;
+    v14 = deleteCopy;
     dispatch_async(queue, v11);
   }
 }
 
-- (void)markHomeMembershipsForDeletion:(id)a3
+- (void)markHomeMembershipsForDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100281164;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deletionCopy;
+  selfCopy = self;
+  v6 = deletionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)syncAudioAppSignalsPayload:(id)a3
+- (void)syncAudioAppSignalsPayload:(id)payload
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1298,9 +1298,9 @@ LABEL_8:
     v2->_queue = v4;
 
     v6 = +[ADPreferences sharedPreferences];
-    v7 = [v6 sharedUserIdentifier];
+    sharedUserIdentifier = [v6 sharedUserIdentifier];
     sharedUserIdentifier = v2->_sharedUserIdentifier;
-    v2->_sharedUserIdentifier = v7;
+    v2->_sharedUserIdentifier = sharedUserIdentifier;
 
     v9 = +[NSNotificationCenter defaultCenter];
     [v9 addObserver:v2 selector:"enabledBitsChanged:" name:@"ADPreferencesEnabledBitsDidChangeNotification" object:0];
@@ -1323,12 +1323,12 @@ LABEL_8:
 
     v11 = +[ADMultiUserMeDevice sharedInstance];
     [v9 addObserver:v2 selector:"meDeviceChanged:" name:@"ADMultiUserMeDeviceChangedNotification" object:0];
-    v12 = [v11 isMeDevice];
-    v2->_meIsMeDevice = [v12 BOOLValue];
+    isMeDevice = [v11 isMeDevice];
+    v2->_meIsMeDevice = [isMeDevice BOOLValue];
 
-    v13 = [v11 meDeviceIDSIdentifier];
+    meDeviceIDSIdentifier = [v11 meDeviceIDSIdentifier];
     idsIdentifier = v2->_idsIdentifier;
-    v2->_idsIdentifier = v13;
+    v2->_idsIdentifier = meDeviceIDSIdentifier;
 
     meIsMeDevice = v2->_meIsMeDevice;
     v16 = AFSiriLogContextDaemon;

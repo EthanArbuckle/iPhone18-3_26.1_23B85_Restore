@@ -1,71 +1,71 @@
 @interface PadShowEventInWeekViewTest
 - (id)_getEvent;
-- (void)_setupViewToDate:(id)a3;
+- (void)_setupViewToDate:(id)date;
 @end
 
 @implementation PadShowEventInWeekViewTest
 
-- (void)_setupViewToDate:(id)a3
+- (void)_setupViewToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ApplicationTest *)self model];
-  [v5 setSelectedDate:v4];
+  dateCopy = date;
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:dateCopy];
 
-  v6 = [(ApplicationTest *)self application];
-  v7 = [v6 rootNavigationController];
-  v8 = [v7 resetToWeekView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToWeekView = [rootNavigationController resetToWeekView];
 
-  [(PadShowEventTest *)self setController:v8];
-  [v8 setDisplayedDate:v4 animated:0];
+  [(PadShowEventTest *)self setController:resetToWeekView];
+  [resetToWeekView setDisplayedDate:dateCopy animated:0];
 }
 
 - (id)_getEvent
 {
-  v2 = [(PadShowEventTest *)self controller];
-  v3 = [v2 visibleWeeks];
-  v4 = [v3 firstObject];
+  controller = [(PadShowEventTest *)self controller];
+  visibleWeeks = [controller visibleWeeks];
+  firstObject = [visibleWeeks firstObject];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 weekView];
-  v6 = [v5 content];
-  v7 = [v6 occurrenceViews];
+  weekView = [firstObject weekView];
+  content = [weekView content];
+  occurrenceViews = [content occurrenceViews];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v8)
+  occurrence3 = [occurrenceViews countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (occurrence3)
   {
     v9 = *v16;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != occurrence3; i = i + 1)
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(occurrenceViews);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 occurrence];
-        if ([v12 isAllDay])
+        occurrence = [v11 occurrence];
+        if ([occurrence isAllDay])
         {
         }
 
         else
         {
-          v13 = [v11 occurrence];
+          occurrence2 = [v11 occurrence];
 
-          if (v13)
+          if (occurrence2)
           {
-            v8 = [v11 occurrence];
+            occurrence3 = [v11 occurrence];
             goto LABEL_13;
           }
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v8)
+      occurrence3 = [occurrenceViews countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (occurrence3)
       {
         continue;
       }
@@ -76,7 +76,7 @@
 
 LABEL_13:
 
-  return v8;
+  return occurrence3;
 }
 
 @end

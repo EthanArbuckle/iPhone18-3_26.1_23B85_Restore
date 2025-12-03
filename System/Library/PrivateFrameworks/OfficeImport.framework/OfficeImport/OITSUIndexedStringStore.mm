@@ -1,7 +1,7 @@
 @interface OITSUIndexedStringStore
 - (OITSUIndexedStringStore)init;
-- (id)stringForIndex:(unint64_t)a3;
-- (unint64_t)indexForString:(id)a3;
+- (id)stringForIndex:(unint64_t)index;
+- (unint64_t)indexForString:(id)string;
 - (void)dealloc;
 @end
 
@@ -29,14 +29,14 @@
   [(OITSUIndexedStringStore *)&v3 dealloc];
 }
 
-- (unint64_t)indexForString:(id)a3
+- (unint64_t)indexForString:(id)string
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [a3 length];
-  if (a3 && v5)
+  v5 = [string length];
+  if (string && v5)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -44,7 +44,7 @@
     block[2] = __42__OITSUIndexedStringStore_indexForString___block_invoke;
     block[3] = &unk_2799C60D8;
     block[4] = self;
-    block[5] = a3;
+    block[5] = string;
     block[6] = &v10;
     dispatch_sync(accessQueue, block);
   }
@@ -71,7 +71,7 @@ void __42__OITSUIndexedStringStore_indexForString___block_invoke(void *a1)
   }
 }
 
-- (id)stringForIndex:(unint64_t)a3
+- (id)stringForIndex:(unint64_t)index
 {
   v8 = 0;
   v9 = &v8;
@@ -79,7 +79,7 @@ void __42__OITSUIndexedStringStore_indexForString___block_invoke(void *a1)
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  if (a3)
+  if (index)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@ void __42__OITSUIndexedStringStore_indexForString___block_invoke(void *a1)
     block[2] = __42__OITSUIndexedStringStore_stringForIndex___block_invoke;
     block[3] = &unk_2799C6100;
     block[5] = &v8;
-    block[6] = a3;
+    block[6] = index;
     block[4] = self;
     dispatch_sync(accessQueue, block);
     v4 = v9[5];

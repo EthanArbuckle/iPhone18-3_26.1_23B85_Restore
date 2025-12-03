@@ -1,18 +1,18 @@
 @interface HMDAccessorySettingMergeStrategy
-- (HMDAccessorySettingMergeStrategy)initWithMergeStrategy:(id)a3;
+- (HMDAccessorySettingMergeStrategy)initWithMergeStrategy:(id)strategy;
 @end
 
 @implementation HMDAccessorySettingMergeStrategy
 
-- (HMDAccessorySettingMergeStrategy)initWithMergeStrategy:(id)a3
+- (HMDAccessorySettingMergeStrategy)initWithMergeStrategy:(id)strategy
 {
-  v4 = a3;
+  strategyCopy = strategy;
   v15.receiver = self;
   v15.super_class = HMDAccessorySettingMergeStrategy;
   v5 = [(HMDAccessorySettingMergeStrategy *)&v15 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = strategyCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

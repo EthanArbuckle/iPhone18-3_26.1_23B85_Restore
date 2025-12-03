@@ -1,6 +1,6 @@
 @interface MTRTargetNavigatorClusterTargetInfoStruct
 - (MTRTargetNavigatorClusterTargetInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTargetNavigatorClusterTargetInfoStruct);
-  v5 = [(MTRTargetNavigatorClusterTargetInfoStruct *)self identifier];
-  [(MTRTargetNavigatorClusterTargetInfoStruct *)v4 setIdentifier:v5];
+  identifier = [(MTRTargetNavigatorClusterTargetInfoStruct *)self identifier];
+  [(MTRTargetNavigatorClusterTargetInfoStruct *)v4 setIdentifier:identifier];
 
-  v6 = [(MTRTargetNavigatorClusterTargetInfoStruct *)self name];
-  [(MTRTargetNavigatorClusterTargetInfoStruct *)v4 setName:v6];
+  name = [(MTRTargetNavigatorClusterTargetInfoStruct *)self name];
+  [(MTRTargetNavigatorClusterTargetInfoStruct *)v4 setName:name];
 
   return v4;
 }

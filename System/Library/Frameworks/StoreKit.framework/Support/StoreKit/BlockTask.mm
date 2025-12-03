@@ -1,19 +1,19 @@
 @interface BlockTask
-- (BlockTask)initWithBlock:(id)a3;
+- (BlockTask)initWithBlock:(id)block;
 - (void)main;
 @end
 
 @implementation BlockTask
 
-- (BlockTask)initWithBlock:(id)a3
+- (BlockTask)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = BlockTask;
   v5 = [(Task *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }

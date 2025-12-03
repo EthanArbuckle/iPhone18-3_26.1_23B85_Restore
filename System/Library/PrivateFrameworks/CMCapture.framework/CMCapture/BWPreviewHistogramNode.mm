@@ -1,8 +1,8 @@
 @interface BWPreviewHistogramNode
 - (BWPreviewHistogramNode)init;
-- (void)_emitISPLumaHistogramFromSampleBuffer:(uint64_t)a1;
-- (void)_emitMSRHistogramFromSampleBuffer:(uint64_t)a1;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)_emitISPLumaHistogramFromSampleBuffer:(uint64_t)buffer;
+- (void)_emitMSRHistogramFromSampleBuffer:(uint64_t)buffer;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPreviewHistogramNode
@@ -31,23 +31,23 @@
   return v3;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (*(&self->super._requiresEndOfDataForConfigurationChanges + 1))
   {
-    [(BWPreviewHistogramNode *)self _emitMSRHistogramFromSampleBuffer:a3];
+    [(BWPreviewHistogramNode *)self _emitMSRHistogramFromSampleBuffer:buffer];
   }
 
   if (*(&self->super._requiresEndOfDataForConfigurationChanges + 2))
   {
 
-    [(BWPreviewHistogramNode *)self _emitISPLumaHistogramFromSampleBuffer:a3];
+    [(BWPreviewHistogramNode *)self _emitISPLumaHistogramFromSampleBuffer:buffer];
   }
 }
 
-- (void)_emitMSRHistogramFromSampleBuffer:(uint64_t)a1
+- (void)_emitMSRHistogramFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     v26 = 0;
     v3 = CMGetAttachment(target, *off_1E798A520, 0);
@@ -63,7 +63,7 @@
         if (v26)
         {
           CMSetAttachment(v26, *off_1E798A528, v14, 1u);
-          [*(a1 + 16) emitSampleBuffer:v26];
+          [*(buffer + 16) emitSampleBuffer:v26];
           if (v26)
           {
             CFRelease(v26);
@@ -87,20 +87,20 @@
   }
 }
 
-- (void)_emitISPLumaHistogramFromSampleBuffer:(uint64_t)a1
+- (void)_emitISPLumaHistogramFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     v3 = [CMGetAttachment(target *off_1E798A3C8];
     if (v3)
     {
-      v4 = [v3 bytes];
-      if (*v4 == 256)
+      bytes = [v3 bytes];
+      if (*bytes == 256)
       {
-        if (*(a1 + 124) == 1)
+        if (*(buffer + 124) == 1)
         {
           v5 = 0;
-          v6 = v4 + 2;
+          v6 = bytes + 2;
           do
           {
             *&v30[v5] = *v6 + *(v6 - 1);
@@ -116,7 +116,7 @@
 
         else
         {
-          v8 = v4 + 1;
+          v8 = bytes + 1;
           v7 = MEMORY[0x1E695DEF0];
           v9 = 1024;
         }
@@ -128,7 +128,7 @@
         if (targeta)
         {
           CMSetAttachment(targeta, *off_1E798A528, v10, 1u);
-          [*(a1 + 16) emitSampleBuffer:targeta];
+          [*(buffer + 16) emitSampleBuffer:targeta];
           if (targeta)
           {
             CFRelease(targeta);

@@ -1,7 +1,7 @@
 @interface PendingApplePayOrderImporter
-+ (id)makeImporterAndReturnError:(id *)a3;
++ (id)makeImporterAndReturnError:(id *)error;
 - (_TtC10FinanceKit28PendingApplePayOrderImporter)init;
-- (void)insertOrUpdatePendingApplePayOrderWithOrderDetails:(id)a3;
+- (void)insertOrUpdatePendingApplePayOrderWithOrderDetails:(id)details;
 @end
 
 @implementation PendingApplePayOrderImporter
@@ -13,18 +13,18 @@
   return result;
 }
 
-+ (id)makeImporterAndReturnError:(id *)a3
++ (id)makeImporterAndReturnError:(id *)error
 {
   sub_1B765EF18();
 
   return v3;
 }
 
-- (void)insertOrUpdatePendingApplePayOrderWithOrderDetails:(id)a3
+- (void)insertOrUpdatePendingApplePayOrderWithOrderDetails:(id)details
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B765E0D4(v4);
+  detailsCopy = details;
+  selfCopy = self;
+  sub_1B765E0D4(detailsCopy);
 }
 
 @end

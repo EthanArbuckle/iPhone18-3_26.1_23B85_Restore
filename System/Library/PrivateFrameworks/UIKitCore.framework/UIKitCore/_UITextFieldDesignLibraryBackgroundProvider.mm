@@ -1,17 +1,17 @@
 @interface _UITextFieldDesignLibraryBackgroundProvider
-- (CGRect)contentFrameForBounds:(CGRect)a3;
-- (CGSize)intrinsicSizeForContentSize:(CGSize)a3;
+- (CGRect)contentFrameForBounds:(CGRect)bounds;
+- (CGSize)intrinsicSizeForContentSize:(CGSize)size;
 - (_UITextFieldDesignLibraryBackgroundProvider)init;
 - (double)naturalHeight;
-- (void)controlSizeDidChange:(void *)a1;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)controlSizeDidChange:(void *)change;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UITextFieldDesignLibraryBackgroundProvider
 
-- (void)controlSizeDidChange:(void *)a1
+- (void)controlSizeDidChange:(void *)change
 {
-  v1 = a1;
+  changeCopy = change;
   sub_1890FA2C8();
 }
 
@@ -34,35 +34,35 @@
   return [(_UITextFieldDesignLibraryBackgroundProvider *)&v13 init];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_UITextFieldBackgroundProvider *)v5 textField];
-  if (v6 && (v7 = v6, v9 = [(UIView *)v6 traitCollection], v7, v9))
+  changeCopy = change;
+  selfCopy = self;
+  textField = [(_UITextFieldBackgroundProvider *)selfCopy textField];
+  if (textField && (v7 = textField, v9 = [(UIView *)textField traitCollection], v7, v9))
   {
-    v8 = [(UITraitCollection *)v9 _semanticContext];
-    if (v8 != [(UITraitCollection *)v4 _semanticContext])
+    _semanticContext = [(UITraitCollection *)v9 _semanticContext];
+    if (_semanticContext != [(UITraitCollection *)changeCopy _semanticContext])
     {
       sub_1890F9A5C();
     }
 
-    v4 = v5;
+    changeCopy = selfCopy;
   }
 
   else
   {
-    v9 = v5;
+    v9 = selfCopy;
   }
 }
 
-- (CGRect)contentFrameForBounds:(CGRect)a3
+- (CGRect)contentFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_1890F9B40(x, y, width, height);
   v9 = v8;
   v11 = v10;
@@ -80,11 +80,11 @@
   return result;
 }
 
-- (CGSize)intrinsicSizeForContentSize:(CGSize)a3
+- (CGSize)intrinsicSizeForContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = sub_1890F9D74();
 
   if (v6 == -1.0)
@@ -105,7 +105,7 @@
 
 - (double)naturalHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890F9D74();
 
   return v3;

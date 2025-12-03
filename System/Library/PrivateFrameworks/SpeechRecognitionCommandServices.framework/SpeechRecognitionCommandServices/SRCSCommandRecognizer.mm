@@ -1,22 +1,22 @@
 @interface SRCSCommandRecognizer
-- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)a3 commandIdentifiers:(id)a4;
-- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)a3 spokenCommands:(id)a4;
+- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)system commandIdentifiers:(id)identifiers;
+- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)system spokenCommands:(id)commands;
 - (id)commandRecognitionSystem;
 @end
 
 @implementation SRCSCommandRecognizer
 
-- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)a3 commandIdentifiers:(id)a4
+- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)system commandIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  identifiersCopy = identifiers;
   v8 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v10)
   {
@@ -45,7 +45,7 @@
             _os_log_impl(&dword_26B44D000, v19, OS_LOG_TYPE_DEFAULT, "Error, could not create command %@!", buf, 0xCu);
           }
 
-          v18 = 0;
+          selfCopy = 0;
           goto LABEL_13;
         }
 
@@ -66,34 +66,34 @@
     }
   }
 
-  self = [(SRCSCommandRecognizer *)self initWithCommandRecognitionSystem:v6 spokenCommands:v8];
-  v18 = self;
+  self = [(SRCSCommandRecognizer *)self initWithCommandRecognitionSystem:systemCopy spokenCommands:v8];
+  selfCopy = self;
 LABEL_13:
-  v20 = v18;
+  v20 = selfCopy;
 
   v21 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)a3 spokenCommands:(id)a4
+- (SRCSCommandRecognizer)initWithCommandRecognitionSystem:(id)system spokenCommands:(id)commands
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  commandsCopy = commands;
   v24.receiver = self;
   v24.super_class = SRCSCommandRecognizer;
   v8 = [(SRCSCommandRecognizer *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_commandRecognitionSystem, v6);
-    objc_storeStrong(&v9->_spokenCommands, a4);
+    objc_storeWeak(&v8->_commandRecognitionSystem, systemCopy);
+    objc_storeStrong(&v9->_spokenCommands, commands);
     if (initWithCommandRecognitionSystem_spokenCommands__staticInitialization != -1)
     {
       [SRCSCommandRecognizer initWithCommandRecognitionSystem:spokenCommands:];
     }
 
-    [v6 addRecognizer:v9];
+    [systemCopy addRecognizer:v9];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;

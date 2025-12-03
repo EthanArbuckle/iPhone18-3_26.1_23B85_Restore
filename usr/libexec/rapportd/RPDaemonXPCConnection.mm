@@ -1,36 +1,36 @@
 @interface RPDaemonXPCConnection
-- (BOOL)_entitledForLabel:(id)a3 error:(id *)a4;
-- (RPDaemonXPCConnection)initWithDaemon:(id)a3 xpcConnection:(id)a4;
+- (BOOL)_entitledForLabel:(id)label error:(id *)error;
+- (RPDaemonXPCConnection)initWithDaemon:(id)daemon xpcConnection:(id)connection;
 - (void)_invalidateAssertions;
-- (void)activateAssertionWithIdentifier:(id)a3;
+- (void)activateAssertionWithIdentifier:(id)identifier;
 - (void)connectionInvalidated;
-- (void)diagnosticCommand:(id)a3 params:(id)a4 completion:(id)a5;
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 level:(int)a4 completion:(id)a5;
-- (void)primaryAccountSignedInWithCompletion:(id)a3;
-- (void)primaryAccountSignedOutWithCompletion:(id)a3;
-- (void)regenerateSelfIdentity:(id)a3 withCompletion:(id)a4;
-- (void)regenerateTemporarySelfIdentityWithCompletion:(id)a3;
-- (void)removeAdHocPairedIdentity:(id)a3 completion:(id)a4;
-- (void)removeSessionPairedIdentity:(id)a3 completion:(id)a4;
-- (void)serverCreateDeviceMappingInternal:(int)a3 applicationService:(id)a4 deviceID:(id)a5 endpointID:(id)a6 completion:(id)a7;
-- (void)serverExchangeQUICPublicKeyFor:(id)a3 publicKey:(id)a4 completion:(id)a5;
+- (void)diagnosticCommand:(id)command params:(id)params completion:(id)completion;
+- (void)diagnosticLogControl:(id)control completion:(id)completion;
+- (void)diagnosticShow:(id)show level:(int)level completion:(id)completion;
+- (void)primaryAccountSignedInWithCompletion:(id)completion;
+- (void)primaryAccountSignedOutWithCompletion:(id)completion;
+- (void)regenerateSelfIdentity:(id)identity withCompletion:(id)completion;
+- (void)regenerateTemporarySelfIdentityWithCompletion:(id)completion;
+- (void)removeAdHocPairedIdentity:(id)identity completion:(id)completion;
+- (void)removeSessionPairedIdentity:(id)identity completion:(id)completion;
+- (void)serverCreateDeviceMappingInternal:(int)internal applicationService:(id)service deviceID:(id)d endpointID:(id)iD completion:(id)completion;
+- (void)serverExchangeQUICPublicKeyFor:(id)for publicKey:(id)key completion:(id)completion;
 @end
 
 @implementation RPDaemonXPCConnection
 
-- (RPDaemonXPCConnection)initWithDaemon:(id)a3 xpcConnection:(id)a4
+- (RPDaemonXPCConnection)initWithDaemon:(id)daemon xpcConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  daemonCopy = daemon;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = RPDaemonXPCConnection;
   v9 = [(RPDaemonXPCConnection *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemon, a3);
-    objc_storeStrong(&v10->_xpcCnx, a4);
+    objc_storeStrong(&v9->_daemon, daemon);
+    objc_storeStrong(&v10->_xpcCnx, connection);
     v11 = v10;
   }
 
@@ -48,9 +48,9 @@
   [(RPDaemonXPCConnection *)self _invalidateAssertions];
 }
 
-- (BOOL)_entitledForLabel:(id)a3 error:(id *)a4
+- (BOOL)_entitledForLabel:(id)label error:(id *)error
 {
-  v6 = a3;
+  labelCopy = label;
   if (!self->_entitledClient)
   {
     p_xpcCnx = &self->_xpcCnx;
@@ -68,13 +68,13 @@
     if (dword_1001D3730 <= 60 && (dword_1001D3730 != -1 || _LogCategory_Initialize()))
     {
       sub_1001174E8(p_xpcCnx);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_10:
 
@@ -83,7 +83,7 @@ LABEL_10:
     }
 
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_10;
   }
 
@@ -93,15 +93,15 @@ LABEL_11:
   return v7;
 }
 
-- (void)activateAssertionWithIdentifier:(id)a3
+- (void)activateAssertionWithIdentifier:(id)identifier
 {
-  v15 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v4 = [(RPDaemonXPCConnection *)self _entitledForLabel:@"ActivateAssertion" error:0];
-  v5 = v15;
+  v5 = identifierCopy;
   if (v4)
   {
-    v6 = v15;
+    v6 = identifierCopy;
     if (v6)
     {
       if ([(NSMutableSet *)self->_assertions containsObject:v6])
@@ -154,7 +154,7 @@ LABEL_11:
 
 LABEL_21:
 
-    v5 = v15;
+    v5 = identifierCopy;
   }
 }
 
@@ -210,28 +210,28 @@ LABEL_21:
   [(NSMutableSet *)self->_assertions removeAllObjects];
 }
 
-- (void)diagnosticCommand:(id)a3 params:(id)a4 completion:(id)a5
+- (void)diagnosticCommand:(id)command params:(id)params completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v22 = 0;
   [(RPDaemonXPCConnection *)self _entitledForLabel:@"DiagnosticCommand" error:&v22];
   v11 = v22;
   if (v11)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
 
     goto LABEL_19;
   }
 
-  if (!v8)
+  if (!commandCopy)
   {
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
@@ -258,7 +258,7 @@ LABEL_21:
           objc_enumerationMutation(v12);
         }
 
-        if ([*(*(&v18 + 1) + 8 * i) diagnosticCommand:v8 params:v9])
+        if ([*(*(&v18 + 1) + 8 * i) diagnosticCommand:commandCopy params:paramsCopy])
         {
 
           goto LABEL_17;
@@ -275,42 +275,42 @@ LABEL_21:
     }
   }
 
-  if (![(RPDaemon *)self->_daemon diagnosticCommand:v8 params:v9])
+  if (![(RPDaemon *)self->_daemon diagnosticCommand:commandCopy params:paramsCopy])
   {
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
 
 LABEL_21:
     v17 = RPErrorF();
-    v10[2](v10, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
 
     goto LABEL_19;
   }
 
 LABEL_17:
-  if (v10)
+  if (completionCopy)
   {
-    (v10)[2](v10, &__NSDictionary0__struct, 0);
+    (completionCopy)[2](completionCopy, &__NSDictionary0__struct, 0);
   }
 
 LABEL_19:
 }
 
-- (void)diagnosticLogControl:(id)a3 completion:(id)a4
+- (void)diagnosticLogControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v10 = 0;
   [(RPDaemonXPCConnection *)self _entitledForLabel:@"DiagnosticLogControl" error:&v10];
   v8 = v10;
   if (!v8)
   {
-    if (v6 && ([v6 UTF8String], LogControl()))
+    if (controlCopy && ([controlCopy UTF8String], LogControl()))
     {
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_4;
       }
@@ -319,7 +319,7 @@ LABEL_19:
     else
     {
       LogShow();
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_4;
       }
@@ -328,32 +328,32 @@ LABEL_19:
     goto LABEL_3;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_3:
     v9 = NSPrintF();
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
 LABEL_4:
 }
 
-- (void)diagnosticShow:(id)a3 level:(int)a4 completion:(id)a5
+- (void)diagnosticShow:(id)show level:(int)level completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  showCopy = show;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v13 = 0;
   [(RPDaemonXPCConnection *)self _entitledForLabel:@"DiagnosticShow" error:&v13];
   v9 = v13;
   if (!v9)
   {
-    if (v7 && [v7 rangeOfString:@"ident" options:9] != 0x7FFFFFFFFFFFFFFFLL)
+    if (showCopy && [showCopy rangeOfString:@"ident" options:9] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = +[RPIdentityDaemon sharedIdentityDaemon];
       v10 = CUDescriptionWithLevel();
 
-      if (!v8)
+      if (!completionCopy)
       {
         goto LABEL_15;
       }
@@ -361,7 +361,7 @@ LABEL_4:
 
     else
     {
-      if ([v7 isEqual:@"kc"])
+      if ([showCopy isEqual:@"kc"])
       {
         [(RPDaemon *)self->_daemon keychainStateString];
       }
@@ -371,7 +371,7 @@ LABEL_4:
         CUDescriptionWithLevel();
       }
       v10 = ;
-      if (!v8)
+      if (!completionCopy)
       {
         goto LABEL_15;
       }
@@ -379,30 +379,30 @@ LABEL_4:
 
     if (v10)
     {
-      v8[2](v8, v10);
+      completionCopy[2](completionCopy, v10);
     }
 
     else
     {
       v12 = NSPrintF();
-      v8[2](v8, v12);
+      completionCopy[2](completionCopy, v12);
     }
 
     goto LABEL_15;
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v10 = NSPrintF();
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
 LABEL_15:
   }
 }
 
-- (void)regenerateSelfIdentity:(id)a3 withCompletion:(id)a4
+- (void)regenerateSelfIdentity:(id)identity withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   xpcCnx = self->_xpcCnx;
   p_xpcCnx = &self->_xpcCnx;
   v9 = [(NSXPCConnection *)xpcCnx cuValueForEntitlementNoCache:@"com.apple.rapport.RegenerateIdentity"];
@@ -411,9 +411,9 @@ LABEL_15:
   if (v10)
   {
     v11 = +[RPPeopleDaemon sharedPeopleDaemon];
-    [v11 regenerateSelfIdentity:v13];
+    [v11 regenerateSelfIdentity:identityCopy];
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -424,13 +424,13 @@ LABEL_15:
       sub_1001175B0(p_xpcCnx);
     }
 
-    (v6)[2](v6, v12);
+    (completionCopy)[2](completionCopy, v12);
   }
 }
 
-- (void)regenerateTemporarySelfIdentityWithCompletion:(id)a3
+- (void)regenerateTemporarySelfIdentityWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   xpcCnx = self->_xpcCnx;
   p_xpcCnx = &self->_xpcCnx;
   v6 = [(NSXPCConnection *)xpcCnx cuValueForEntitlementNoCache:@"com.apple.rapport.RegenerateIdentity"];
@@ -441,7 +441,7 @@ LABEL_15:
     v8 = +[RPIdentityDaemon sharedIdentityDaemon];
     [v8 regenerateTemporarySelfIdentity];
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -452,13 +452,13 @@ LABEL_15:
       sub_1001175FC(p_xpcCnx);
     }
 
-    (v10)[2](v10, v9);
+    (completionCopy)[2](completionCopy, v9);
   }
 }
 
-- (void)primaryAccountSignedInWithCompletion:(id)a3
+- (void)primaryAccountSignedInWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   xpcCnx = self->_xpcCnx;
   p_xpcCnx = &self->_xpcCnx;
@@ -475,7 +475,7 @@ LABEL_15:
     v8 = +[RPDaemon sharedDaemon];
     [v8 postDaemonInfoChanges:64];
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -486,13 +486,13 @@ LABEL_15:
       sub_100117648(p_xpcCnx);
     }
 
-    (v10)[2](v10, v9);
+    (completionCopy)[2](completionCopy, v9);
   }
 }
 
-- (void)primaryAccountSignedOutWithCompletion:(id)a3
+- (void)primaryAccountSignedOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   xpcCnx = self->_xpcCnx;
   p_xpcCnx = &self->_xpcCnx;
@@ -578,7 +578,7 @@ LABEL_15:
     v23 = +[RPDaemon sharedDaemon];
     [v23 postDaemonInfoChanges:16];
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -589,16 +589,16 @@ LABEL_15:
       sub_1001176DC(p_xpcCnx);
     }
 
-    (v4)[2](v4, v24);
+    (completionCopy)[2](completionCopy, v24);
   }
 }
 
-- (void)serverCreateDeviceMappingInternal:(int)a3 applicationService:(id)a4 deviceID:(id)a5 endpointID:(id)a6 completion:(id)a7
+- (void)serverCreateDeviceMappingInternal:(int)internal applicationService:(id)service deviceID:(id)d endpointID:(id)iD completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v27 = 0;
   v16 = [(RPDaemonXPCConnection *)self _entitledForLabel:@"createDeviceMapping" error:&v27];
@@ -606,21 +606,21 @@ LABEL_15:
   if (v16)
   {
     v18 = +[RPCompanionLinkDaemon sharedCompanionLinkDaemon];
-    v19 = [v18 findDeviceFromID:v13];
+    v19 = [v18 findDeviceFromID:dCopy];
 
     if (v19)
     {
-      switch(a3)
+      switch(internal)
       {
         case 2:
-          [RPNWListener queryDeviceToApplicationServiceMapping:v12 device:v19 completion:v15];
+          [RPNWListener queryDeviceToApplicationServiceMapping:serviceCopy device:v19 completion:completionCopy];
           break;
         case 1:
-          v25 = [RPNWListener addDeviceToApplicationServiceMapping:v12 device:v19 completion:v15];
+          v25 = [RPNWListener addDeviceToApplicationServiceMapping:serviceCopy device:v19 completion:completionCopy];
           break;
         case 0:
           v20 = +[RPNWEndpoint dduiEndpointsKey];
-          v21 = [RPNWEndpoint addEndpointMapping:v19 endpointID:v14 applicationService:v12 discoverySessionID:v20 shouldAutomapListener:0];
+          v21 = [RPNWEndpoint addEndpointMapping:v19 endpointID:iDCopy applicationService:serviceCopy discoverySessionID:v20 shouldAutomapListener:0];
 
           if ((v21 & 1) == 0)
           {
@@ -629,11 +629,11 @@ LABEL_15:
             v17 = v22;
           }
 
-          if (v15)
+          if (completionCopy)
           {
             v23 = +[RPNWNetworkAgent sharedNetworkAgent];
-            v24 = [v23 networkAgentID];
-            v15[2](v15, v24, v17);
+            networkAgentID = [v23 networkAgentID];
+            completionCopy[2](completionCopy, networkAgentID, v17);
           }
 
           break;
@@ -647,7 +647,7 @@ LABEL_15:
       if (dword_1001D3730 <= 90 && (dword_1001D3730 != -1 || _LogCategory_Initialize()))
       {
         sub_1001177F0();
-        if (!v15)
+        if (!completionCopy)
         {
           goto LABEL_20;
         }
@@ -655,12 +655,12 @@ LABEL_15:
         goto LABEL_19;
       }
 
-      if (v15)
+      if (completionCopy)
       {
 LABEL_19:
         v26 = RPErrorF();
 
-        v15[2](v15, 0, v26);
+        completionCopy[2](completionCopy, 0, v26);
         v17 = v26;
       }
     }
@@ -670,19 +670,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
   }
 
 LABEL_21:
 }
 
-- (void)serverExchangeQUICPublicKeyFor:(id)a3 publicKey:(id)a4 completion:(id)a5
+- (void)serverExchangeQUICPublicKeyFor:(id)for publicKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  keyCopy = key;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v14 = 0;
   v11 = [(RPDaemonXPCConnection *)self _entitledForLabel:@"serverExchangeQUICPublicKeyFor" error:&v14];
@@ -690,67 +690,67 @@ LABEL_21:
   if (v11)
   {
     v13 = +[RPNWNetworkAgent sharedNetworkAgent];
-    [v13 exchangeQUICPublicKeyFor:v8 publicKey:v9 completion:v10];
+    [v13 exchangeQUICPublicKeyFor:forCopy publicKey:keyCopy completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v12);
   }
 }
 
-- (void)removeSessionPairedIdentity:(id)a3 completion:(id)a4
+- (void)removeSessionPairedIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v10 = 0;
   [(RPDaemonXPCConnection *)self _entitledForLabel:@"removeSessionPairedIdentity" error:&v10];
   v8 = v10;
   if (v8)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v8);
+      completionCopy[2](completionCopy, v8);
     }
   }
 
   else
   {
     v9 = +[RPIdentityDaemon sharedIdentityDaemon];
-    [v9 removeSessionPairedIdentityWithIdentifier:v6];
+    [v9 removeSessionPairedIdentityWithIdentifier:identityCopy];
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)removeAdHocPairedIdentity:(id)a3 completion:(id)a4
+- (void)removeAdHocPairedIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v10 = 0;
   [(RPDaemonXPCConnection *)self _entitledForLabel:@"removeAdHocPairedIdentity" error:&v10];
   v8 = v10;
   if (v8)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v8);
+      completionCopy[2](completionCopy, v8);
     }
   }
 
   else
   {
     v9 = +[RPIdentityDaemon sharedIdentityDaemon];
-    [v9 removeAdHocPairedIdentityWithIdentifier:v6];
+    [v9 removeAdHocPairedIdentityWithIdentifier:identityCopy];
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }

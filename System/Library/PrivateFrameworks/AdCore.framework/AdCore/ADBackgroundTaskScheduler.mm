@@ -1,12 +1,12 @@
 @interface ADBackgroundTaskScheduler
 + (id)sharedInstance;
-+ (void)registerTaskDelegate:(id)a3 forRequestID:(id)a4;
-+ (void)unregisterTaskDelegate:(id)a3;
++ (void)registerTaskDelegate:(id)delegate forRequestID:(id)d;
++ (void)unregisterTaskDelegate:(id)delegate;
 - (ADBackgroundTaskScheduler)init;
-- (void)addBackgroundTask:(id)a3;
-- (void)cancelBackgroundTask:(id)a3;
-- (void)checkOnTask:(id)a3;
-- (void)handleXPCActivity:(id)a3 withID:(id)a4;
+- (void)addBackgroundTask:(id)task;
+- (void)cancelBackgroundTask:(id)task;
+- (void)checkOnTask:(id)task;
+- (void)handleXPCActivity:(id)activity withID:(id)d;
 @end
 
 @implementation ADBackgroundTaskScheduler
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__ADBackgroundTaskScheduler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_0, block);
@@ -36,10 +36,10 @@ uint64_t __43__ADBackgroundTaskScheduler_sharedInstance__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)registerTaskDelegate:(id)a3 forRequestID:(id)a4
++ (void)registerTaskDelegate:(id)delegate forRequestID:(id)d
 {
-  v8 = a3;
-  v5 = a4;
+  delegateCopy = delegate;
+  dCopy = d;
   if (registerTaskDelegate_forRequestID__onceToken != -1)
   {
     +[ADBackgroundTaskScheduler registerTaskDelegate:forRequestID:];
@@ -47,16 +47,16 @@ uint64_t __43__ADBackgroundTaskScheduler_sharedInstance__block_invoke(uint64_t a
 
   v6 = _lockableObject;
   objc_sync_enter(v6);
-  v7 = [_delegates objectForKeyedSubscript:v5];
+  v7 = [_delegates objectForKeyedSubscript:dCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [_delegates setObject:v7 forKeyedSubscript:v5];
+    [_delegates setObject:v7 forKeyedSubscript:dCopy];
   }
 
-  if (([v7 containsObject:v8] & 1) == 0)
+  if (([v7 containsObject:delegateCopy] & 1) == 0)
   {
-    [v7 addObject:v8];
+    [v7 addObject:delegateCopy];
   }
 
   objc_sync_exit(v6);
@@ -72,9 +72,9 @@ void __63__ADBackgroundTaskScheduler_registerTaskDelegate_forRequestID___block_i
   _lockableObject = @"lock";
 }
 
-+ (void)unregisterTaskDelegate:(id)a3
++ (void)unregisterTaskDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = _lockableObject;
   objc_sync_enter(v4);
   if (_delegates)
@@ -85,7 +85,7 @@ void __63__ADBackgroundTaskScheduler_registerTaskDelegate_forRequestID___block_i
     v10[1] = 3221225472;
     v10[2] = __52__ADBackgroundTaskScheduler_unregisterTaskDelegate___block_invoke;
     v10[3] = &unk_278C55130;
-    v11 = v3;
+    v11 = delegateCopy;
     v7 = v5;
     v12 = v7;
     [v6 enumerateKeysAndObjectsUsingBlock:v10];
@@ -135,27 +135,27 @@ uint64_t __52__ADBackgroundTaskScheduler_unregisterTaskDelegate___block_invoke_2
   return [(ADBackgroundTaskScheduler *)&v3 init];
 }
 
-- (void)handleXPCActivity:(id)a3 withID:(id)a4
+- (void)handleXPCActivity:(id)activity withID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  state = xpc_activity_get_state(v5);
+  activityCopy = activity;
+  dCopy = d;
+  state = xpc_activity_get_state(activityCopy);
   if ((state | 2) == 2)
   {
     v8 = _lockableObject;
     objc_sync_enter(v8);
-    v9 = [_delegates objectForKeyedSubscript:v6];
+    v9 = [_delegates objectForKeyedSubscript:dCopy];
     if (v9)
     {
       if (state)
       {
         if (state == 2)
         {
-          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Request to run activity %@ (state: %ld)", objc_opt_class(), v6, 2];
+          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Request to run activity %@ (state: %ld)", objc_opt_class(), dCopy, 2];
           _ADLog(@"LATDLogging", v10, 0);
 
-          v11 = xpc_activity_copy_criteria(v5);
-          v12 = [[ADBackgroundTaskRequest alloc] initWithCriteria:v11 ID:v6 activity:v5];
+          v11 = xpc_activity_copy_criteria(activityCopy);
+          v12 = [[ADBackgroundTaskRequest alloc] initWithCriteria:v11 ID:dCopy activity:activityCopy];
           v24 = 0;
           v25 = &v24;
           v26 = 0x2020000000;
@@ -170,8 +170,8 @@ uint64_t __52__ADBackgroundTaskScheduler_unregisterTaskDelegate___block_invoke_2
           [v9 enumerateObjectsUsingBlock:v21];
           if ((v25[3] & 1) == 0)
           {
-            v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No registered handler for task %@ successfully returned.", objc_opt_class(), v6];
-            _ADLog(@"LATDLogging", v14, 16);
+            dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No registered handler for task %@ successfully returned.", objc_opt_class(), dCopy];
+            _ADLog(@"LATDLogging", dCopy, 16);
           }
 
           _Block_object_dispose(&v24, 8);
@@ -180,23 +180,23 @@ uint64_t __52__ADBackgroundTaskScheduler_unregisterTaskDelegate___block_invoke_2
 
       else
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Checking in on activity %@ (state: %ld)", objc_opt_class(), v6, 0];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Checking in on activity %@ (state: %ld)", objc_opt_class(), dCopy, 0];
         _ADLog(@"LATDLogging", v17, 0);
 
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __54__ADBackgroundTaskScheduler_handleXPCActivity_withID___block_invoke_2;
         v18[3] = &unk_278C55108;
-        v19 = v6;
-        v20 = v5;
+        v19 = dCopy;
+        v20 = activityCopy;
         [v9 enumerateObjectsUsingBlock:v18];
       }
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No receiver registered for XPC job with ID %@", objc_opt_class(), v6];
-      _ADLog(@"LATDLogging", v16, 0);
+      dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No receiver registered for XPC job with ID %@", objc_opt_class(), dCopy];
+      _ADLog(@"LATDLogging", dCopy2, 0);
     }
 
     objc_sync_exit(v8);
@@ -204,8 +204,8 @@ uint64_t __52__ADBackgroundTaskScheduler_unregisterTaskDelegate___block_invoke_2
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Unexpected XPC_ACTIVITY_STATE - %ld", objc_opt_class(), state];
-    _ADLog(@"LATDLogging", v15, 0);
+    state = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Unexpected XPC_ACTIVITY_STATE - %ld", objc_opt_class(), state];
+    _ADLog(@"LATDLogging", state, 0);
   }
 }
 
@@ -225,18 +225,18 @@ void __54__ADBackgroundTaskScheduler_handleXPCActivity_withID___block_invoke_2(u
   }
 }
 
-- (void)addBackgroundTask:(id)a3
+- (void)addBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 requestIdentifier];
-  if (v5)
+  taskCopy = task;
+  requestIdentifier = [taskCopy requestIdentifier];
+  if (requestIdentifier)
   {
     v6 = _lockableObject;
     objc_sync_enter(v6);
-    v7 = [_delegates objectForKeyedSubscript:v5];
-    if (!v7 || ([_delegates objectForKeyedSubscript:v5], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9))
+    v7 = [_delegates objectForKeyedSubscript:requestIdentifier];
+    if (!v7 || ([_delegates objectForKeyedSubscript:requestIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7, !v9))
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No delegate is registered to handle request %@.", objc_opt_class(), v5];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: No delegate is registered to handle request %@.", objc_opt_class(), requestIdentifier];
       _ADLog(@"LATDLogging", v10, 0);
     }
 
@@ -247,9 +247,9 @@ void __54__ADBackgroundTaskScheduler_handleXPCActivity_withID___block_invoke_2(u
     v13[1] = 3221225472;
     v13[2] = __47__ADBackgroundTaskScheduler_addBackgroundTask___block_invoke;
     v13[3] = &unk_278C551A8;
-    v14 = v4;
-    v15 = self;
-    v16 = v5;
+    v14 = taskCopy;
+    selfCopy = self;
+    v16 = requestIdentifier;
     [v11 addOperationWithBlock:v13];
   }
 
@@ -314,20 +314,20 @@ void __47__ADBackgroundTaskScheduler_addBackgroundTask___block_invoke_2(uint64_t
   releaseXPCTransaction(v5);
 }
 
-- (void)cancelBackgroundTask:(id)a3
+- (void)cancelBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Canceling XPC activity: %@", objc_opt_class(), v4];
-  _ADLog(@"LATDLogging", v5, 0);
+  taskCopy = task;
+  taskCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Canceling XPC activity: %@", objc_opt_class(), taskCopy];
+  _ADLog(@"LATDLogging", taskCopy, 0);
 
   v6 = +[ADServer workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__ADBackgroundTaskScheduler_cancelBackgroundTask___block_invoke;
   v8[3] = &unk_278C551D0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
   [v6 addOperationWithBlock:v8];
 }
 
@@ -339,21 +339,21 @@ void __50__ADBackgroundTaskScheduler_cancelBackgroundTask___block_invoke(uint64_
   _ADLog(@"LATDLogging", v3, 0);
 }
 
-- (void)checkOnTask:(id)a3
+- (void)checkOnTask:(id)task
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.adprivacyd Checking on background task %@", v3];
+  taskCopy = task;
+  uTF8String = [taskCopy UTF8String];
+  taskCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.adprivacyd Checking on background task %@", taskCopy];
   v6 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __41__ADBackgroundTaskScheduler_checkOnTask___block_invoke;
   handler[3] = &unk_278C55180;
-  v10 = v5;
-  v11 = v3;
-  v7 = v3;
-  v8 = v5;
-  xpc_activity_register(v4, v6, handler);
+  v10 = taskCopy;
+  v11 = taskCopy;
+  v7 = taskCopy;
+  v8 = taskCopy;
+  xpc_activity_register(uTF8String, v6, handler);
 }
 
 void __41__ADBackgroundTaskScheduler_checkOnTask___block_invoke(uint64_t a1, void *a2)

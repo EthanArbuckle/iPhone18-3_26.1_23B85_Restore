@@ -7,9 +7,9 @@
 - (uint64_t)undynamicColor
 {
   v1 = MEMORY[0x277D75348];
-  v2 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return [v1 colorWithCGColor:v2];
+  return [v1 colorWithCGColor:cGColor];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface VCVideoTransmitterBase
-- (VCVideoTransmitterBase)initWithConfig:(id)a3;
+- (VCVideoTransmitterBase)initWithConfig:(id)config;
 - (void)dealloc;
 @end
 
 @implementation VCVideoTransmitterBase
 
-- (VCVideoTransmitterBase)initWithConfig:(id)a3
+- (VCVideoTransmitterBase)initWithConfig:(id)config
 {
   v38 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -13,39 +13,39 @@
   v4 = [(VCVideoTransmitterBase *)&v19 init];
   if (v4)
   {
-    if ([a3 framerate] <= 0x3C && objc_msgSend(a3, "framerate"))
+    if ([config framerate] <= 0x3C && objc_msgSend(config, "framerate"))
     {
-      v4->_targetFramerate = [a3 framerate];
+      v4->_targetFramerate = [config framerate];
     }
 
-    v4->_txMaxBitrate = [a3 txMaxBitrate];
-    v4->_txMinBitrate = [a3 txMinBitrate];
-    v4->_temporaryMaximumBitrate = [a3 txMinBitrate];
-    if ([a3 videoResolution] == 27)
+    v4->_txMaxBitrate = [config txMaxBitrate];
+    v4->_txMinBitrate = [config txMinBitrate];
+    v4->_temporaryMaximumBitrate = [config txMinBitrate];
+    if ([config videoResolution] == 27)
     {
-      v4->_encodingWidth = [a3 customWidth];
-      v5 = [a3 customHeight];
+      v4->_encodingWidth = [config customWidth];
+      customHeight = [config customHeight];
       encodingWidth = v4->_encodingWidth;
     }
 
     else
     {
-      +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [a3 videoResolution]);
+      +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [config videoResolution]);
       encodingWidth = v7;
       v4->_encodingWidth = v7;
-      v5 = v8;
+      customHeight = v8;
     }
 
-    v4->_encodingHeight = v5;
-    if ([a3 captureSource] == 3)
+    v4->_encodingHeight = customHeight;
+    if ([config captureSource] == 3)
     {
-      [VideoUtil getBestCaptureSizeForEncodingSize:encodingWidth, v5];
+      [VideoUtil getBestCaptureSizeForEncodingSize:encodingWidth, customHeight];
       encodingWidth = v9;
-      v5 = v10;
+      customHeight = v10;
     }
 
     v4->_captureWidth = encodingWidth;
-    v4->_captureHeight = v5;
+    v4->_captureHeight = customHeight;
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCVideoTransmitterBase-initialized");
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -53,7 +53,7 @@
       v12 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [a3 logPrefix];
+        logPrefix = [config logPrefix];
         captureWidth = v4->_captureWidth;
         captureHeight = v4->_captureHeight;
         v16 = v4->_encodingWidth;
@@ -67,7 +67,7 @@
         v26 = 2048;
         v27 = v4;
         v28 = 2112;
-        v29 = v13;
+        v29 = logPrefix;
         v30 = 1024;
         v31 = captureWidth;
         v32 = 1024;

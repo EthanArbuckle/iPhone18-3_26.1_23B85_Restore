@@ -1,8 +1,8 @@
 @interface DBGTargetHub
 + (id)sharedHub;
 - (DBGTargetHub)init;
-- (id)performRequest:(id)a3;
-- (id)performRequestWithRequestInBase64:(id)a3;
+- (id)performRequest:(id)request;
+- (id)performRequestWithRequestInBase64:(id)base64;
 - (void)clearAllRequestsAndData;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __25__DBGTargetHub_sharedHub__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHub_onceToken != -1)
   {
     dispatch_once(&sharedHub_onceToken, block);
@@ -39,20 +39,20 @@ uint64_t __25__DBGTargetHub_sharedHub__block_invoke(uint64_t a1)
   return [(DBGTargetHub *)&v3 init];
 }
 
-- (id)performRequest:(id)a3
+- (id)performRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[DebugHierarchyTargetHub sharedHub];
-  v5 = [v4 performRequest:v3];
+  v5 = [v4 performRequest:requestCopy];
 
   return v5;
 }
 
-- (id)performRequestWithRequestInBase64:(id)a3
+- (id)performRequestWithRequestInBase64:(id)base64
 {
-  v3 = a3;
+  base64Copy = base64;
   v4 = +[DebugHierarchyTargetHub sharedHub];
-  v5 = [v4 performRequestWithRequestInBase64:v3];
+  v5 = [v4 performRequestWithRequestInBase64:base64Copy];
 
   return v5;
 }

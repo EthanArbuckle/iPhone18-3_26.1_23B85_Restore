@@ -1,12 +1,12 @@
 @interface ProductReviewActionsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension24ProductReviewActionsView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension24ProductReviewActionsView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductReviewActionsView
 
-- (_TtC20ProductPageExtension24ProductReviewActionsView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension24ProductReviewActionsView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension24ProductReviewActionsView_writeReviewAction;
   v5 = sub_10000A5D4(&qword_100955BD0);
@@ -27,17 +27,17 @@
   sub_100741F94(v4);
   sub_10000CF78(v4, v4[3]);
   [v2 bounds];
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_10076E0EC();
 
   sub_10000CD74(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_10074218C(width, height);
   v8 = v7;
 

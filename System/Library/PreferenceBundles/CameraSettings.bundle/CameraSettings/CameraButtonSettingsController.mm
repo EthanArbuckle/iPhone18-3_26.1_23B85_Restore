@@ -1,19 +1,19 @@
 @interface CameraButtonSettingsController
 - (BOOL)_visualIntelligenceEnabled;
 - (id)_cameraAdjustmentsCustomizeSpecifier;
-- (id)_cameraAdjustmentsEnabled:(id)a3;
+- (id)_cameraAdjustmentsEnabled:(id)enabled;
 - (id)_createSpecifiers;
-- (id)_isCameraControlRequireScreenOn:(id)a3;
-- (id)_isCameraControlVisualIntelligencelEnabled:(id)a3;
-- (id)_localizedTitleForGesture:(int64_t)a3;
+- (id)_isCameraControlRequireScreenOn:(id)on;
+- (id)_isCameraControlVisualIntelligencelEnabled:(id)enabled;
+- (id)_localizedTitleForGesture:(int64_t)gesture;
 - (id)specifiers;
 - (void)_handleCustomizeControlsSpecifierVisibility;
-- (void)_setCameraAdjustmentsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setCameraControlRequireScreenOn:(id)a3 specifier:(id)a4;
-- (void)_setCameraControlVisualIntelligenceEnabled:(id)a3 specifier:(id)a4;
+- (void)_setCameraAdjustmentsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setCameraControlRequireScreenOn:(id)on specifier:(id)specifier;
+- (void)_setCameraControlVisualIntelligenceEnabled:(id)enabled specifier:(id)specifier;
 - (void)_setupAppConfigurationCoordinatorIfNecessary;
 - (void)emitNavigationEvent;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -26,9 +26,9 @@
   v4 = *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CameraButtonSettingsController *)self _createSpecifiers];
-    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:v5];
-    v6 = [v5 copy];
+    _createSpecifiers = [(CameraButtonSettingsController *)self _createSpecifiers];
+    [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:_createSpecifiers];
+    v6 = [_createSpecifiers copy];
     v7 = *&self->super.PSListController_opaque[v3];
     *&self->super.PSListController_opaque[v3] = v6;
 
@@ -52,11 +52,11 @@
 
   v54 = v5;
   [v3 addObject:v5];
-  v9 = [*(&self->super + 1) associatedAppBundleID];
-  v10 = [CameraSettingsUtilities displayNameForBundleID:v9];
+  associatedAppBundleID = [*(&self->super + 1) associatedAppBundleID];
+  v10 = [CameraSettingsUtilities displayNameForBundleID:associatedAppBundleID];
 
   v53 = v10;
-  v11 = self;
+  selfCopy = self;
   v12 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
   [v12 setIdentifier:@"LAUNCH_CAMERA_BUTTON_SETTINGS"];
   v52 = v12;
@@ -91,7 +91,7 @@
         }
 
         v20 = *(*(&v57 + 1) + 8 * i);
-        v21 = -[CameraButtonSettingsController _localizedTitleForGesture:](v11, "_localizedTitleForGesture:", [v20 integerValue]);
+        v21 = -[CameraButtonSettingsController _localizedTitleForGesture:](selfCopy, "_localizedTitleForGesture:", [v20 integerValue]);
         v22 = [PSSpecifier preferenceSpecifierNamed:v21 target:0 set:0 get:0 detail:0 cell:3 edit:0];
         [v22 setProperty:v20 forKey:@"CAMAppLaunchGestureProperty"];
         [v15 addObject:v22];
@@ -104,7 +104,7 @@
     while (v17);
   }
 
-  v23 = [NSNumber numberWithInteger:[(CameraButtonSettingsController *)v11 _selectedLaunchGesture]];
+  v23 = [NSNumber numberWithInteger:[(CameraButtonSettingsController *)selfCopy _selectedLaunchGesture]];
   v24 = [v56 objectForKeyedSubscript:v23];
   [v13 setProperty:v24 forKey:PSRadioGroupCheckedSpecifierKey];
 
@@ -112,7 +112,7 @@
   v26 = v15;
   [v15 addObject:v25];
   v27 = sub_747C(@"CAPTURE_BUTTON_REQUIRES_SCREEN_ON");
-  v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:v11 set:"_setCameraControlRequireScreenOn:specifier:" get:"_isCameraControlRequireScreenOn:" detail:0 cell:6 edit:0];
+  v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:selfCopy set:"_setCameraControlRequireScreenOn:specifier:" get:"_isCameraControlRequireScreenOn:" detail:0 cell:6 edit:0];
 
   [v28 setIdentifier:@"CAPTURE_BUTTON_REQUIRES_SCREEN_ON"];
   v29 = sub_747C(@"CAPTURE_BUTTON_REQUIRES_SCREEN_ON_FOOTER");
@@ -129,15 +129,15 @@
   [v31 setProperty:v32 forKey:v51];
 
   v33 = sub_747C(@"CAMERA_ADJUSTMENTS");
-  v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:v11 set:"_setCameraAdjustmentsEnabled:specifier:" get:"_cameraAdjustmentsEnabled:" detail:0 cell:6 edit:0];
+  v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:selfCopy set:"_setCameraAdjustmentsEnabled:specifier:" get:"_cameraAdjustmentsEnabled:" detail:0 cell:6 edit:0];
 
   [v34 setIdentifier:@"CAMERA_BUTTON_ADJUSTMENTS_SWITCH"];
   [v15 addObject:v34];
-  -[CameraButtonSettingsController setCameraAdjustmentsCustomizeSpecifierIndex:](v11, "setCameraAdjustmentsCustomizeSpecifierIndex:", [v15 count]);
+  -[CameraButtonSettingsController setCameraAdjustmentsCustomizeSpecifierIndex:](selfCopy, "setCameraAdjustmentsCustomizeSpecifierIndex:", [v15 count]);
   if (sub_75E8())
   {
-    v35 = [(CameraButtonSettingsController *)v11 _cameraAdjustmentsCustomizeSpecifier];
-    [v15 addObject:v35];
+    _cameraAdjustmentsCustomizeSpecifier = [(CameraButtonSettingsController *)selfCopy _cameraAdjustmentsCustomizeSpecifier];
+    [v15 addObject:_cameraAdjustmentsCustomizeSpecifier];
   }
 
   if ((+[CAMCaptureCapabilities isMessagesAppInstalled](CAMCaptureCapabilities, "isMessagesAppInstalled") & 1) != 0 || +[CAMCaptureCapabilities isCameraAppInstalled])
@@ -147,7 +147,7 @@
     [v37 setProperty:v36 forKey:v51];
     [v15 addObject:v37];
     v38 = sub_747C(@"LOCK_TO_FOCUS");
-    v39 = [PSSpecifier preferenceSpecifierNamed:v38 target:v11 set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+    v39 = [PSSpecifier preferenceSpecifierNamed:v38 target:selfCopy set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
 
     [v39 setObject:@"com.apple.camera" forKeyedSubscript:PSDefaultsKey];
     [v39 setObject:@"systemOverlay.focusLockEnabled" forKeyedSubscript:PSKeyNameKey];
@@ -156,7 +156,7 @@
     [v15 addObject:v39];
   }
 
-  if ([(CameraButtonSettingsController *)v11 _visualIntelligenceEnabled])
+  if ([(CameraButtonSettingsController *)selfCopy _visualIntelligenceEnabled])
   {
     v40 = sub_747C(@"CAPTURE_BUTTON_LAUNCH_VISUAL_INTELLIGENCE_TITLE");
     v41 = [PSSpecifier groupSpecifierWithName:v40];
@@ -166,7 +166,7 @@
 
     [v15 addObject:v41];
     v43 = sub_747C(@"CAPTURE_BUTTON_PRESS_AND_HOLD");
-    v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:v11 set:"_setCameraControlVisualIntelligenceEnabled:specifier:" get:"_isCameraControlVisualIntelligencelEnabled:" detail:0 cell:6 edit:0];
+    v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:selfCopy set:"_setCameraControlVisualIntelligenceEnabled:specifier:" get:"_isCameraControlVisualIntelligencelEnabled:" detail:0 cell:6 edit:0];
 
     [v44 setIdentifier:@"CAMERA_BUTTON_PRESS_AND_HOLD_SWITCH"];
     [v15 addObject:v44];
@@ -175,7 +175,7 @@
   v45 = [PSSpecifier groupSpecifierWithID:@"accessiblityGroup"];
   [v15 addObject:v45];
   v46 = sub_747C(@"CAMERA_BUTTON_ACCESSIBILITY");
-  v47 = [PSSpecifier preferenceSpecifierNamed:v46 target:v11 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+  v47 = [PSSpecifier preferenceSpecifierNamed:v46 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
   [v47 setIdentifier:@"CAMERA_BUTTON_ACCESSIBILITY"];
   [v26 addObject:v47];
@@ -183,9 +183,9 @@
   return v26;
 }
 
-- (id)_localizedTitleForGesture:(int64_t)a3
+- (id)_localizedTitleForGesture:(int64_t)gesture
 {
-  if (!a3)
+  if (!gesture)
   {
     v4 = @"CAPTURE_BUTTON_LAUNCH_SINGLE_CLICK";
 LABEL_5:
@@ -194,7 +194,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (gesture == 1)
   {
     v4 = @"CAPTURE_BUTTON_LAUNCH_DOUBLE_CLICK";
     goto LABEL_5;
@@ -219,16 +219,16 @@ LABEL_5:
   }
 }
 
-- (id)_cameraAdjustmentsEnabled:(id)a3
+- (id)_cameraAdjustmentsEnabled:(id)enabled
 {
   v3 = sub_75E8();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)_setCameraAdjustmentsEnabled:(id)a3 specifier:(id)a4
+- (void)_setCameraAdjustmentsEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(CAMUserPreferenceCameraAdjustmentsEnabled, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(CAMUserPreferenceCameraAdjustmentsEnabled, enabled, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
 
   [(CameraButtonSettingsController *)self _handleCustomizeControlsSpecifierVisibility];
@@ -239,14 +239,14 @@ LABEL_5:
   [(CameraButtonSettingsController *)self beginUpdates];
   if (sub_75E8())
   {
-    v3 = [(CameraButtonSettingsController *)self _cameraAdjustmentsCustomizeSpecifier];
-    [(CameraButtonSettingsController *)self insertSpecifier:v3 atIndex:[(CameraButtonSettingsController *)self cameraAdjustmentsCustomizeSpecifierIndex] animated:1];
+    _cameraAdjustmentsCustomizeSpecifier = [(CameraButtonSettingsController *)self _cameraAdjustmentsCustomizeSpecifier];
+    [(CameraButtonSettingsController *)self insertSpecifier:_cameraAdjustmentsCustomizeSpecifier atIndex:[(CameraButtonSettingsController *)self cameraAdjustmentsCustomizeSpecifierIndex] animated:1];
   }
 
   else
   {
-    v3 = [(CameraButtonSettingsController *)self specifierForID:@"kCameraCaptureButtonCustomizeControlsID"];
-    [(CameraButtonSettingsController *)self removeSpecifier:v3 animated:1];
+    _cameraAdjustmentsCustomizeSpecifier = [(CameraButtonSettingsController *)self specifierForID:@"kCameraCaptureButtonCustomizeControlsID"];
+    [(CameraButtonSettingsController *)self removeSpecifier:_cameraAdjustmentsCustomizeSpecifier animated:1];
   }
 
   [(CameraButtonSettingsController *)self endUpdates];
@@ -262,14 +262,14 @@ LABEL_5:
   return v4;
 }
 
-- (void)_setCameraControlRequireScreenOn:(id)a3 specifier:(id)a4
+- (void)_setCameraControlRequireScreenOn:(id)on specifier:(id)specifier
 {
-  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [a3 BOOLValue] ^ 1);
+  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [on BOOLValue] ^ 1);
   CFPreferencesSetAppValue(@"SBCaptureButtonDisableWakeWhenDim", v4, @"com.apple.springboard");
   CFPreferencesAppSynchronize(@"com.apple.springboard");
 }
 
-- (id)_isCameraControlRequireScreenOn:(id)a3
+- (id)_isCameraControlRequireScreenOn:(id)on
 {
   keyExistsAndHasValidFormat = 0;
   if (CFPreferencesGetAppBooleanValue(@"SBCaptureButtonDisableWakeWhenDim", @"com.apple.springboard", &keyExistsAndHasValidFormat))
@@ -288,16 +288,16 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setCameraControlVisualIntelligenceEnabled:(id)a3 specifier:(id)a4
+- (void)_setCameraControlVisualIntelligenceEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[AFPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setVisualIntelligenceCameraControlEnabled:v5];
+  [v6 setVisualIntelligenceCameraControlEnabled:bOOLValue];
 }
 
-- (id)_isCameraControlVisualIntelligencelEnabled:(id)a3
+- (id)_isCameraControlVisualIntelligencelEnabled:(id)enabled
 {
   v3 = +[AFPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 visualIntelligenceCameraControlEnabled]);
@@ -305,30 +305,30 @@ LABEL_5:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CameraButtonSettingsController;
-  [(CameraButtonSettingsController *)&v16 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CameraButtonSettingsController *)self specifierAtIndexPath:v6];
+  [(CameraButtonSettingsController *)&v16 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CameraButtonSettingsController *)self specifierAtIndexPath:pathCopy];
   v8 = [(CameraButtonSettingsController *)self specifierForID:@"CAMAppGestureSelectionGroupSpecifier"];
   if (v8)
   {
-    v9 = [v6 section];
+    section = [pathCopy section];
     v10 = [(CameraButtonSettingsController *)self indexPathForSpecifier:v8];
-    v11 = [v10 section];
+    section2 = [v10 section];
 
-    if (v9 == v11)
+    if (section == section2)
     {
       v12 = [v7 propertyForKey:@"CAMAppLaunchGestureProperty"];
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 integerValue];
-        if (v14)
+        integerValue = [v12 integerValue];
+        if (integerValue)
         {
-          v15 = 2 * (v14 == &dword_0 + 1);
+          v15 = 2 * (integerValue == &dword_0 + 1);
         }
 
         else
@@ -358,14 +358,14 @@ LABEL_5:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CAMERA_CONTROL_TITLE" table:@"CameraSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CAMERA_CONTROL_TITLE" table:@"CameraSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];

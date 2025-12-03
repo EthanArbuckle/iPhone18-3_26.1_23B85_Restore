@@ -1,17 +1,17 @@
 @interface APPCControllerReceiver
-- (id)_coordinatorForRequester:(id)a3 clientInfo:(id)a4;
+- (id)_coordinatorForRequester:(id)requester clientInfo:(id)info;
 - (void)_finishedWithAllRequests;
-- (void)_finishedWithRequestsForCoordinator:(id)a3;
+- (void)_finishedWithRequestsForCoordinator:(id)coordinator;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)extendCollectionClassesForExportedInterface:(id)a3;
-- (void)extendCollectionClassesForRemoteInterface:(id)a3;
-- (void)finishedWithRequestsForRequester:(id)a3 logID:(unint64_t)a4;
-- (void)preWarm:(id)a3 logID:(unint64_t)a4 completion:(id)a5;
-- (void)proxyURLWithLogID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)requestPromotedContentOfTypes:(id)a3 forRequester:(id)a4 forContext:(id)a5 withClientInfo:(id)a6 deliverEntireBatch:(BOOL)a7 logID:(unint64_t)a8 completionHandler:(id)a9;
-- (void)sendAndRankContent:(id)a3 forContext:(id)a4 placement:(unint64_t)a5 logID:(unint64_t)a6 completionHandler:(id)a7;
-- (void)setConnection:(id)a3;
+- (void)extendCollectionClassesForExportedInterface:(id)interface;
+- (void)extendCollectionClassesForRemoteInterface:(id)interface;
+- (void)finishedWithRequestsForRequester:(id)requester logID:(unint64_t)d;
+- (void)preWarm:(id)warm logID:(unint64_t)d completion:(id)completion;
+- (void)proxyURLWithLogID:(unint64_t)d completionHandler:(id)handler;
+- (void)requestPromotedContentOfTypes:(id)types forRequester:(id)requester forContext:(id)context withClientInfo:(id)info deliverEntireBatch:(BOOL)batch logID:(unint64_t)d completionHandler:(id)handler;
+- (void)sendAndRankContent:(id)content forContext:(id)context placement:(unint64_t)placement logID:(unint64_t)d completionHandler:(id)handler;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation APPCControllerReceiver
@@ -26,11 +26,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{sensitive}s: Removing all coordinators and setting APXPCConnection to nil", &v9, 0xCu);
   }
 
-  v4 = [(APPCControllerReceiver *)self lock];
-  [v4 lock];
+  lock = [(APPCControllerReceiver *)self lock];
+  [lock lock];
 
-  v5 = [(APPCControllerReceiver *)self coordinators];
-  [v5 removeAllObjects];
+  coordinators = [(APPCControllerReceiver *)self coordinators];
+  [coordinators removeAllObjects];
 
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -40,12 +40,12 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{sensitive}s: Invalidating APXPCConnection", &v9, 0xCu);
   }
 
-  v7 = [(APPCControllerReceiver *)self connection];
-  [v7 invalidate];
+  connection = [(APPCControllerReceiver *)self connection];
+  [connection invalidate];
 
   [(APPCControllerReceiver *)self setConnection:0];
-  v8 = [(APPCControllerReceiver *)self lock];
-  [v8 unlock];
+  lock2 = [(APPCControllerReceiver *)self lock];
+  [lock2 unlock];
 }
 
 - (void)connectionInvalidated
@@ -64,32 +64,32 @@
   [(APPCControllerReceiver *)self _finishedWithAllRequests];
 }
 
-- (void)requestPromotedContentOfTypes:(id)a3 forRequester:(id)a4 forContext:(id)a5 withClientInfo:(id)a6 deliverEntireBatch:(BOOL)a7 logID:(unint64_t)a8 completionHandler:(id)a9
+- (void)requestPromotedContentOfTypes:(id)types forRequester:(id)requester forContext:(id)context withClientInfo:(id)info deliverEntireBatch:(BOOL)batch logID:(unint64_t)d completionHandler:(id)handler
 {
-  v35 = a7;
-  v38 = a3;
-  v37 = a4;
-  v14 = a5;
-  v39 = a6;
-  v15 = a9;
+  batchCopy = batch;
+  typesCopy = types;
+  requesterCopy = requester;
+  contextCopy = context;
+  infoCopy = info;
+  handlerCopy = handler;
   v16 = APPerfLogForCategory();
   v17 = v16;
-  if (a8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_END, a8, "xpcDelay", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_END, d, "xpcDelay", "", buf, 2u);
   }
 
   v18 = APLogForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [v14 identifier];
+    identifier = [contextCopy identifier];
     *buf = 138543362;
-    v46 = v19;
+    v46 = identifier;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Received request to fetch ad for context %{public}@", buf, 0xCu);
   }
 
-  v36 = [v14 identifier];
+  identifier2 = [contextCopy identifier];
   v20 = APLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -97,11 +97,11 @@
     *buf = 138478595;
     v46 = v21;
     v47 = 2114;
-    v48 = v36;
+    v48 = identifier2;
     v49 = 2114;
-    v50 = v36;
+    v50 = identifier2;
     v51 = 2114;
-    v52 = v38;
+    v52 = typesCopy;
     v22 = v21;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{private}@ %{public}@] Prefetching promoted content for context %{public}@ with requested Ad types %{public}@", buf, 0x2Au);
   }
@@ -112,24 +112,24 @@
   {
     v24 = objc_loadWeakRetained(&location);
     v25 = v24;
-    v26 = [v25 connection];
+    connection = [v25 connection];
     v27 = objc_loadWeakRetained(&location);
-    v28 = [v27 connection];
-    v29 = [v28 bundleID];
+    connection2 = [v27 connection];
+    bundleID = [connection2 bundleID];
     *buf = 136643587;
     v46 = "[APPCControllerReceiver requestPromotedContentOfTypes:forRequester:forContext:withClientInfo:deliverEntireBatch:logID:completionHandler:]";
     v47 = 2050;
     v48 = v24;
     v49 = 2050;
-    v50 = v26;
+    v50 = connection;
     v51 = 2114;
-    v52 = v29;
+    v52 = bundleID;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%{sensitive}s: controller (weakSelf) %{public}p connection %{public}p bundleID is %{public}@.", buf, 0x2Au);
   }
 
-  v30 = [(APPCControllerReceiver *)self _coordinatorForRequester:v37 clientInfo:v39];
-  v31 = [(APPCControllerReceiver *)self connection];
-  v32 = [v31 bundleID];
+  v30 = [(APPCControllerReceiver *)self _coordinatorForRequester:requesterCopy clientInfo:infoCopy];
+  connection3 = [(APPCControllerReceiver *)self connection];
+  bundleID2 = [connection3 bundleID];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100379490;
@@ -137,26 +137,26 @@
   objc_copyWeak(&v43, &location);
   v33 = v30;
   v41 = v33;
-  v34 = v15;
+  v34 = handlerCopy;
   v42 = v34;
-  sub_1003959BC(v33, v38, v14, v32, v39, v35, v40);
+  sub_1003959BC(v33, typesCopy, contextCopy, bundleID2, infoCopy, batchCopy, v40);
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(&location);
 }
 
-- (void)_finishedWithRequestsForCoordinator:(id)a3
+- (void)_finishedWithRequestsForCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(APPCControllerReceiver *)self lock];
-  [v5 lock];
+  coordinatorCopy = coordinator;
+  lock = [(APPCControllerReceiver *)self lock];
+  [lock lock];
 
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = sub_10039440C(v4);
+    v9 = sub_10039440C(coordinatorCopy);
     v12 = 138478083;
     v13 = v7;
     v14 = 2114;
@@ -164,33 +164,33 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{private}@] Finished with requests for coordinator %{public}@", &v12, 0x16u);
   }
 
-  v10 = [(APPCControllerReceiver *)self coordinators];
-  [v10 removeObject:v4];
+  coordinators = [(APPCControllerReceiver *)self coordinators];
+  [coordinators removeObject:coordinatorCopy];
 
-  v11 = [(APPCControllerReceiver *)self lock];
-  [v11 unlock];
+  lock2 = [(APPCControllerReceiver *)self lock];
+  [lock2 unlock];
 }
 
-- (void)finishedWithRequestsForRequester:(id)a3 logID:(unint64_t)a4
+- (void)finishedWithRequestsForRequester:(id)requester logID:(unint64_t)d
 {
-  v6 = a3;
+  requesterCopy = requester;
   v7 = APPerfLogForCategory();
   v8 = v7;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_END, a4, "xpcDelay", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_END, d, "xpcDelay", "", buf, 2u);
   }
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100379870;
   v19[3] = &unk_1004806C8;
-  v9 = v6;
+  v9 = requesterCopy;
   v20 = v9;
   v10 = [NSPredicate predicateWithBlock:v19];
-  v11 = [(APPCControllerReceiver *)self lock];
-  [v11 lock];
+  lock = [(APPCControllerReceiver *)self lock];
+  [lock lock];
 
   v12 = APLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -204,14 +204,14 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{private}@] Finished with requests for %{public}@", buf, 0x16u);
   }
 
-  v15 = [(APPCControllerReceiver *)self coordinators];
-  [v15 filterUsingPredicate:v10];
+  coordinators = [(APPCControllerReceiver *)self coordinators];
+  [coordinators filterUsingPredicate:v10];
 
-  v16 = [(APPCControllerReceiver *)self lock];
-  [v16 unlock];
+  lock2 = [(APPCControllerReceiver *)self lock];
+  [lock2 unlock];
 
-  v17 = [(APPCControllerReceiver *)self coordinators];
-  v18 = [v17 count];
+  coordinators2 = [(APPCControllerReceiver *)self coordinators];
+  v18 = [coordinators2 count];
 
   if (!v18)
   {
@@ -219,10 +219,10 @@
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
-  objc_storeStrong(&self->_connection, a3);
+  connectionCopy = connection;
+  objc_storeStrong(&self->_connection, connection);
   v6 = APLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -230,32 +230,32 @@
     v8 = 136643075;
     v9 = "[APPCControllerReceiver setConnection:]";
     v10 = 2114;
-    v11 = connection;
+    connectionCopy2 = connection;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{sensitive}s: APXPCConnection set to %{public}@", &v8, 0x16u);
   }
 }
 
-- (void)proxyURLWithLogID:(unint64_t)a3 completionHandler:(id)a4
+- (void)proxyURLWithLogID:(unint64_t)d completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = APPerfLogForCategory();
   v7 = v6;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     LOWORD(v22) = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, a3, "xpcDelay", "", &v22, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_END, d, "xpcDelay", "", &v22, 2u);
   }
 
-  if (v5)
+  if (handlerCopy)
   {
     v8 = +[APProxySettings settings];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 resourceConnectProxyURL];
+      resourceConnectProxyURL = [v8 resourceConnectProxyURL];
       v11 = APLogForCategory();
       v12 = v11;
-      if (v10)
+      if (resourceConnectProxyURL)
       {
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
@@ -263,12 +263,12 @@
           v22 = 138478083;
           v23 = v13;
           v24 = 2114;
-          v25 = v10;
+          v25 = resourceConnectProxyURL;
           v14 = v13;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{private}@] Retrieved APProxySettings, resourceConnectProxyURL is %{public}@", &v22, 0x16u);
         }
 
-        v5[2](v5, v10);
+        handlerCopy[2](handlerCopy, resourceConnectProxyURL);
       }
 
       else
@@ -282,7 +282,7 @@
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%{private}@] resourceConnectProxyURL not found in proxySettings.", &v22, 0xCu);
         }
 
-        v5[2](v5, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
 
@@ -298,7 +298,7 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{private}@] Error reading proxySettings.", &v22, 0xCu);
       }
 
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -316,85 +316,85 @@
   }
 }
 
-- (void)preWarm:(id)a3 logID:(unint64_t)a4 completion:(id)a5
+- (void)preWarm:(id)warm logID:(unint64_t)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  warmCopy = warm;
   v9 = APPerfLogForCategory();
   v10 = v9;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *v12 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_END, a4, "xpcDelay", "", v12, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_END, d, "xpcDelay", "", v12, 2u);
   }
 
-  v11 = [APPromotedContentControllerDaemonModule didPrewarm:v8];
-  v7[2](v7, v11);
+  v11 = [APPromotedContentControllerDaemonModule didPrewarm:warmCopy];
+  completionCopy[2](completionCopy, v11);
 }
 
-- (void)sendAndRankContent:(id)a3 forContext:(id)a4 placement:(unint64_t)a5 logID:(unint64_t)a6 completionHandler:(id)a7
+- (void)sendAndRankContent:(id)content forContext:(id)context placement:(unint64_t)placement logID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a7;
+  handlerCopy = handler;
   v9 = APPerfLogForCategory();
   v10 = v9;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *v11 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_END, a6, "xpcDelay", "", v11, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_END, d, "xpcDelay", "", v11, 2u);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (id)_coordinatorForRequester:(id)a3 clientInfo:(id)a4
+- (id)_coordinatorForRequester:(id)requester clientInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  requesterCopy = requester;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = objc_loadWeakRetained(&location);
     v10 = v9;
-    v11 = [v10 connection];
+    connection = [v10 connection];
     v12 = objc_loadWeakRetained(&location);
-    v13 = [v12 connection];
-    v14 = [v13 bundleID];
+    connection2 = [v12 connection];
+    bundleID = [connection2 bundleID];
     *buf = 136643587;
     v36 = "[APPCControllerReceiver _coordinatorForRequester:clientInfo:]";
     v37 = 2050;
     v38 = v9;
     v39 = 2050;
-    v40 = v11;
+    v40 = connection;
     v41 = 2114;
-    v42 = v14;
+    v42 = bundleID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{sensitive}s: controller (weakSelf) %{public}p connection %{public}p bundleID is %{public}@.", buf, 0x2Au);
   }
 
   v15 = [APPCControllerCoordinator alloc];
-  v16 = [(APPCControllerReceiver *)self connection];
-  v17 = [v16 bundleID];
-  v18 = [(APPCControllerReceiver *)self identifierProvider];
-  v19 = [(APPCControllerReceiver *)self connection];
+  connection3 = [(APPCControllerReceiver *)self connection];
+  bundleID2 = [connection3 bundleID];
+  identifierProvider = [(APPCControllerReceiver *)self identifierProvider];
+  connection4 = [(APPCControllerReceiver *)self connection];
   v27 = _NSConcreteStackBlock;
   v28 = 3221225472;
   v29 = sub_10037A124;
   v30 = &unk_1004806F0;
-  v20 = v7;
+  v20 = infoCopy;
   v31 = v20;
   objc_copyWeak(&v33, &location);
-  v21 = v6;
+  v21 = requesterCopy;
   v32 = v21;
-  v22 = sub_1003957D4(v15, v17, v21, v18, v19, &v27);
+  v22 = sub_1003957D4(v15, bundleID2, v21, identifierProvider, connection4, &v27);
 
   v23 = [(APPCControllerReceiver *)self lock:v27];
   [v23 lock];
 
-  v24 = [(APPCControllerReceiver *)self coordinators];
-  [v24 addObject:v22];
+  coordinators = [(APPCControllerReceiver *)self coordinators];
+  [coordinators addObject:v22];
 
-  v25 = [(APPCControllerReceiver *)self lock];
-  [v25 unlock];
+  lock = [(APPCControllerReceiver *)self lock];
+  [lock unlock];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&location);
@@ -418,21 +418,21 @@
   [(APPCControllerReceiver *)self _finishedWithAllRequests];
 }
 
-- (void)extendCollectionClassesForExportedInterface:(id)a3
+- (void)extendCollectionClassesForExportedInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = objc_opt_class();
   v5 = [NSSet setWithObjects:v4, objc_opt_class(), 0];
-  [v3 setClasses:v5 forSelector:"sendAndRankContent:forContext:placement:logID:completionHandler:" argumentIndex:0 ofReply:0];
-  [v3 setClasses:v5 forSelector:"sendAndRankContent:forContext:placement:logID:completionHandler:" argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v5 forSelector:"sendAndRankContent:forContext:placement:logID:completionHandler:" argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v5 forSelector:"sendAndRankContent:forContext:placement:logID:completionHandler:" argumentIndex:0 ofReply:1];
 }
 
-- (void)extendCollectionClassesForRemoteInterface:(id)a3
+- (void)extendCollectionClassesForRemoteInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = objc_opt_class();
   v5 = [NSSet setWithObjects:v4, objc_opt_class(), 0];
-  [v3 setClasses:v5 forSelector:"contentResponses:requester:" argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v5 forSelector:"contentResponses:requester:" argumentIndex:0 ofReply:0];
 }
 
 @end

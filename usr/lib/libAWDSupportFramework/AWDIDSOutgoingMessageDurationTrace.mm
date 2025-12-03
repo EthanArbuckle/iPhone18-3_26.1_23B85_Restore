@@ -1,32 +1,32 @@
 @interface AWDIDSOutgoingMessageDurationTrace
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAggregatedMessageSendCount:(BOOL)a3;
-- (void)setHasAvgAggregatedMessageSendDuration:(BOOL)a3;
-- (void)setHasAvgEncryptionDuration:(BOOL)a3;
-- (void)setHasCommand:(BOOL)a3;
-- (void)setHasCompressPayloadDuration:(BOOL)a3;
-- (void)setHasCompressPayloadStart:(BOOL)a3;
-- (void)setHasEncryptionCount:(BOOL)a3;
-- (void)setHasIDQueryDuration:(BOOL)a3;
-- (void)setHasIDQueryStart:(BOOL)a3;
-- (void)setHasMessageOnQueueDuration:(BOOL)a3;
-- (void)setHasMessageOnQueueStart:(BOOL)a3;
-- (void)setHasMessagesOnQueue:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasSendToDaemonDuration:(BOOL)a3;
-- (void)setHasSendToDaemonStart:(BOOL)a3;
-- (void)setHasStoreInDatabaseDuration:(BOOL)a3;
-- (void)setHasStoreInDatabaseStart:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUncompressedMessageSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAggregatedMessageSendCount:(BOOL)count;
+- (void)setHasAvgAggregatedMessageSendDuration:(BOOL)duration;
+- (void)setHasAvgEncryptionDuration:(BOOL)duration;
+- (void)setHasCommand:(BOOL)command;
+- (void)setHasCompressPayloadDuration:(BOOL)duration;
+- (void)setHasCompressPayloadStart:(BOOL)start;
+- (void)setHasEncryptionCount:(BOOL)count;
+- (void)setHasIDQueryDuration:(BOOL)duration;
+- (void)setHasIDQueryStart:(BOOL)start;
+- (void)setHasMessageOnQueueDuration:(BOOL)duration;
+- (void)setHasMessageOnQueueStart:(BOOL)start;
+- (void)setHasMessagesOnQueue:(BOOL)queue;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasSendToDaemonDuration:(BOOL)duration;
+- (void)setHasSendToDaemonStart:(BOOL)start;
+- (void)setHasStoreInDatabaseDuration:(BOOL)duration;
+- (void)setHasStoreInDatabaseStart:(BOOL)start;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUncompressedMessageSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSOutgoingMessageDurationTrace
@@ -39,9 +39,9 @@
   [(AWDIDSOutgoingMessageDurationTrace *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -54,9 +54,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasSendToDaemonStart:(BOOL)a3
+- (void)setHasSendToDaemonStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x20000;
   }
@@ -69,9 +69,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasSendToDaemonDuration:(BOOL)a3
+- (void)setHasSendToDaemonDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x10000;
   }
@@ -84,9 +84,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasStoreInDatabaseStart:(BOOL)a3
+- (void)setHasStoreInDatabaseStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x80000;
   }
@@ -99,9 +99,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasStoreInDatabaseDuration:(BOOL)a3
+- (void)setHasStoreInDatabaseDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x40000;
   }
@@ -114,9 +114,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasCompressPayloadStart:(BOOL)a3
+- (void)setHasCompressPayloadStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 512;
   }
@@ -129,9 +129,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasCompressPayloadDuration:(BOOL)a3
+- (void)setHasCompressPayloadDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -144,9 +144,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasUncompressedMessageSize:(BOOL)a3
+- (void)setHasUncompressedMessageSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 8;
   }
@@ -159,9 +159,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasIDQueryStart:(BOOL)a3
+- (void)setHasIDQueryStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 4096;
   }
@@ -174,9 +174,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasIDQueryDuration:(BOOL)a3
+- (void)setHasIDQueryDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2048;
   }
@@ -189,9 +189,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasMessageOnQueueStart:(BOOL)a3
+- (void)setHasMessageOnQueueStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x4000;
   }
@@ -204,9 +204,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMessageOnQueueDuration:(BOOL)a3
+- (void)setHasMessageOnQueueDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x2000;
   }
@@ -219,9 +219,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasMessagesOnQueue:(BOOL)a3
+- (void)setHasMessagesOnQueue:(BOOL)queue
 {
-  if (a3)
+  if (queue)
   {
     v3 = 2;
   }
@@ -234,9 +234,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasEncryptionCount:(BOOL)a3
+- (void)setHasEncryptionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -249,9 +249,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasAvgEncryptionDuration:(BOOL)a3
+- (void)setHasAvgEncryptionDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -264,9 +264,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasAggregatedMessageSendCount:(BOOL)a3
+- (void)setHasAggregatedMessageSendCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -279,9 +279,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasAvgAggregatedMessageSendDuration:(BOOL)a3
+- (void)setHasAvgAggregatedMessageSendDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -294,9 +294,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasCommand:(BOOL)a3
+- (void)setHasCommand:(BOOL)command
 {
-  if (a3)
+  if (command)
   {
     v3 = 128;
   }
@@ -309,9 +309,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 0x8000;
   }
@@ -333,11 +333,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 0x20000) == 0)
     {
@@ -356,7 +356,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sendToDaemonStart), @"sendToDaemonStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sendToDaemonStart), @"sendToDaemonStart"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -370,7 +370,7 @@ LABEL_4:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sendToDaemonDuration), @"sendToDaemonDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sendToDaemonDuration), @"sendToDaemonDuration"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -384,7 +384,7 @@ LABEL_5:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_storeInDatabaseStart), @"storeInDatabaseStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_storeInDatabaseStart), @"storeInDatabaseStart"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -398,7 +398,7 @@ LABEL_6:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_storeInDatabaseDuration), @"storeInDatabaseDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_storeInDatabaseDuration), @"storeInDatabaseDuration"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -412,7 +412,7 @@ LABEL_7:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_compressPayloadStart), @"compressPayloadStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_compressPayloadStart), @"compressPayloadStart"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -426,7 +426,7 @@ LABEL_8:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_compressPayloadDuration), @"compressPayloadDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_compressPayloadDuration), @"compressPayloadDuration"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -440,7 +440,7 @@ LABEL_9:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_uncompressedMessageSize), @"uncompressedMessageSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_uncompressedMessageSize), @"uncompressedMessageSize"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -454,7 +454,7 @@ LABEL_10:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_compressedMessageSize), @"compressedMessageSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_compressedMessageSize), @"compressedMessageSize"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -468,7 +468,7 @@ LABEL_11:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_iDQueryStart), @"IDQueryStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_iDQueryStart), @"IDQueryStart"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -482,7 +482,7 @@ LABEL_12:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_iDQueryDuration), @"IDQueryDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_iDQueryDuration), @"IDQueryDuration"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -496,7 +496,7 @@ LABEL_13:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_messageOnQueueStart), @"messageOnQueueStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_messageOnQueueStart), @"messageOnQueueStart"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -510,7 +510,7 @@ LABEL_14:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_messageOnQueueDuration), @"messageOnQueueDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_messageOnQueueDuration), @"messageOnQueueDuration"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -524,7 +524,7 @@ LABEL_15:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_messagesOnQueue), @"messagesOnQueue"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_messagesOnQueue), @"messagesOnQueue"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -538,7 +538,7 @@ LABEL_16:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_encryptionCount), @"encryptionCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_encryptionCount), @"encryptionCount"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -552,7 +552,7 @@ LABEL_17:
   }
 
 LABEL_42:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgEncryptionDuration), @"avgEncryptionDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgEncryptionDuration), @"avgEncryptionDuration"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -566,36 +566,36 @@ LABEL_18:
   }
 
 LABEL_43:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_aggregatedMessageSendCount), @"aggregatedMessageSendCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_aggregatedMessageSendCount), @"aggregatedMessageSendCount"}];
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgAggregatedMessageSendDuration), @"avgAggregatedMessageSendDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgAggregatedMessageSendDuration), @"avgAggregatedMessageSendDuration"}];
   }
 
 LABEL_20:
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x80) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_command), @"command"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_command), @"command"}];
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x8000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_priority), @"priority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_priority), @"priority"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 4) != 0)
@@ -876,13 +876,13 @@ LABEL_20:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 28) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 28) |= 4u;
     has = self->_has;
     if ((*&has & 0x20000) == 0)
     {
@@ -901,8 +901,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 23) = self->_sendToDaemonStart;
-  *(a3 + 28) |= 0x20000u;
+  *(to + 23) = self->_sendToDaemonStart;
+  *(to + 28) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -916,8 +916,8 @@ LABEL_4:
   }
 
 LABEL_29:
-  *(a3 + 22) = self->_sendToDaemonDuration;
-  *(a3 + 28) |= 0x10000u;
+  *(to + 22) = self->_sendToDaemonDuration;
+  *(to + 28) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -931,8 +931,8 @@ LABEL_5:
   }
 
 LABEL_30:
-  *(a3 + 27) = self->_storeInDatabaseStart;
-  *(a3 + 28) |= 0x80000u;
+  *(to + 27) = self->_storeInDatabaseStart;
+  *(to + 28) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -946,8 +946,8 @@ LABEL_6:
   }
 
 LABEL_31:
-  *(a3 + 26) = self->_storeInDatabaseDuration;
-  *(a3 + 28) |= 0x40000u;
+  *(to + 26) = self->_storeInDatabaseDuration;
+  *(to + 28) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -961,8 +961,8 @@ LABEL_7:
   }
 
 LABEL_32:
-  *(a3 + 15) = self->_compressPayloadStart;
-  *(a3 + 28) |= 0x200u;
+  *(to + 15) = self->_compressPayloadStart;
+  *(to + 28) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -976,8 +976,8 @@ LABEL_8:
   }
 
 LABEL_33:
-  *(a3 + 14) = self->_compressPayloadDuration;
-  *(a3 + 28) |= 0x100u;
+  *(to + 14) = self->_compressPayloadDuration;
+  *(to + 28) |= 0x100u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -991,8 +991,8 @@ LABEL_9:
   }
 
 LABEL_34:
-  *(a3 + 4) = self->_uncompressedMessageSize;
-  *(a3 + 28) |= 8u;
+  *(to + 4) = self->_uncompressedMessageSize;
+  *(to + 28) |= 8u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1006,8 +1006,8 @@ LABEL_10:
   }
 
 LABEL_35:
-  *(a3 + 1) = self->_compressedMessageSize;
-  *(a3 + 28) |= 1u;
+  *(to + 1) = self->_compressedMessageSize;
+  *(to + 28) |= 1u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1021,8 +1021,8 @@ LABEL_11:
   }
 
 LABEL_36:
-  *(a3 + 18) = self->_iDQueryStart;
-  *(a3 + 28) |= 0x1000u;
+  *(to + 18) = self->_iDQueryStart;
+  *(to + 28) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1036,8 +1036,8 @@ LABEL_12:
   }
 
 LABEL_37:
-  *(a3 + 17) = self->_iDQueryDuration;
-  *(a3 + 28) |= 0x800u;
+  *(to + 17) = self->_iDQueryDuration;
+  *(to + 28) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1051,8 +1051,8 @@ LABEL_13:
   }
 
 LABEL_38:
-  *(a3 + 20) = self->_messageOnQueueStart;
-  *(a3 + 28) |= 0x4000u;
+  *(to + 20) = self->_messageOnQueueStart;
+  *(to + 28) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1066,8 +1066,8 @@ LABEL_14:
   }
 
 LABEL_39:
-  *(a3 + 19) = self->_messageOnQueueDuration;
-  *(a3 + 28) |= 0x2000u;
+  *(to + 19) = self->_messageOnQueueDuration;
+  *(to + 28) |= 0x2000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1081,8 +1081,8 @@ LABEL_15:
   }
 
 LABEL_40:
-  *(a3 + 2) = self->_messagesOnQueue;
-  *(a3 + 28) |= 2u;
+  *(to + 2) = self->_messagesOnQueue;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1096,8 +1096,8 @@ LABEL_16:
   }
 
 LABEL_41:
-  *(a3 + 16) = self->_encryptionCount;
-  *(a3 + 28) |= 0x400u;
+  *(to + 16) = self->_encryptionCount;
+  *(to + 28) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1111,8 +1111,8 @@ LABEL_17:
   }
 
 LABEL_42:
-  *(a3 + 12) = self->_avgEncryptionDuration;
-  *(a3 + 28) |= 0x40u;
+  *(to + 12) = self->_avgEncryptionDuration;
+  *(to + 28) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1126,39 +1126,39 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(a3 + 10) = self->_aggregatedMessageSendCount;
-  *(a3 + 28) |= 0x10u;
+  *(to + 10) = self->_aggregatedMessageSendCount;
+  *(to + 28) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_19:
-    *(a3 + 11) = self->_avgAggregatedMessageSendDuration;
-    *(a3 + 28) |= 0x20u;
+    *(to + 11) = self->_avgAggregatedMessageSendDuration;
+    *(to + 28) |= 0x20u;
   }
 
 LABEL_20:
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x80) != 0)
   {
-    *(a3 + 13) = self->_command;
-    *(a3 + 28) |= 0x80u;
+    *(to + 13) = self->_command;
+    *(to + 28) |= 0x80u;
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x8000) != 0)
   {
-    *(a3 + 21) = self->_priority;
-    *(a3 + 28) |= 0x8000u;
+    *(to + 21) = self->_priority;
+    *(to + 28) |= 0x8000u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 4) != 0)
@@ -1419,7 +1419,7 @@ LABEL_19:
 
 LABEL_20:
 
-  *(v6 + 96) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 96) = [(NSString *)self->_service copyWithZone:zone];
   v8 = self->_has;
   if ((*&v8 & 0x80) != 0)
   {
@@ -1437,16 +1437,16 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_104;
       }
@@ -1461,7 +1461,7 @@ LABEL_104:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_sendToDaemonStart != *(a3 + 23))
+      if ((v7 & 0x20000) == 0 || self->_sendToDaemonStart != *(equal + 23))
       {
         goto LABEL_104;
       }
@@ -1474,7 +1474,7 @@ LABEL_104:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_sendToDaemonDuration != *(a3 + 22))
+      if ((v7 & 0x10000) == 0 || self->_sendToDaemonDuration != *(equal + 22))
       {
         goto LABEL_104;
       }
@@ -1487,7 +1487,7 @@ LABEL_104:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_storeInDatabaseStart != *(a3 + 27))
+      if ((v7 & 0x80000) == 0 || self->_storeInDatabaseStart != *(equal + 27))
       {
         goto LABEL_104;
       }
@@ -1500,7 +1500,7 @@ LABEL_104:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_storeInDatabaseDuration != *(a3 + 26))
+      if ((v7 & 0x40000) == 0 || self->_storeInDatabaseDuration != *(equal + 26))
       {
         goto LABEL_104;
       }
@@ -1513,7 +1513,7 @@ LABEL_104:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_compressPayloadStart != *(a3 + 15))
+      if ((v7 & 0x200) == 0 || self->_compressPayloadStart != *(equal + 15))
       {
         goto LABEL_104;
       }
@@ -1526,7 +1526,7 @@ LABEL_104:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_compressPayloadDuration != *(a3 + 14))
+      if ((v7 & 0x100) == 0 || self->_compressPayloadDuration != *(equal + 14))
       {
         goto LABEL_104;
       }
@@ -1539,7 +1539,7 @@ LABEL_104:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_uncompressedMessageSize != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_uncompressedMessageSize != *(equal + 4))
       {
         goto LABEL_104;
       }
@@ -1552,7 +1552,7 @@ LABEL_104:
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_compressedMessageSize != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_compressedMessageSize != *(equal + 1))
       {
         goto LABEL_104;
       }
@@ -1565,7 +1565,7 @@ LABEL_104:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_iDQueryStart != *(a3 + 18))
+      if ((v7 & 0x1000) == 0 || self->_iDQueryStart != *(equal + 18))
       {
         goto LABEL_104;
       }
@@ -1578,7 +1578,7 @@ LABEL_104:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_iDQueryDuration != *(a3 + 17))
+      if ((v7 & 0x800) == 0 || self->_iDQueryDuration != *(equal + 17))
       {
         goto LABEL_104;
       }
@@ -1591,7 +1591,7 @@ LABEL_104:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_messageOnQueueStart != *(a3 + 20))
+      if ((v7 & 0x4000) == 0 || self->_messageOnQueueStart != *(equal + 20))
       {
         goto LABEL_104;
       }
@@ -1604,7 +1604,7 @@ LABEL_104:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_messageOnQueueDuration != *(a3 + 19))
+      if ((v7 & 0x2000) == 0 || self->_messageOnQueueDuration != *(equal + 19))
       {
         goto LABEL_104;
       }
@@ -1617,7 +1617,7 @@ LABEL_104:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_messagesOnQueue != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_messagesOnQueue != *(equal + 2))
       {
         goto LABEL_104;
       }
@@ -1630,7 +1630,7 @@ LABEL_104:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_encryptionCount != *(a3 + 16))
+      if ((v7 & 0x400) == 0 || self->_encryptionCount != *(equal + 16))
       {
         goto LABEL_104;
       }
@@ -1643,7 +1643,7 @@ LABEL_104:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_avgEncryptionDuration != *(a3 + 12))
+      if ((v7 & 0x40) == 0 || self->_avgEncryptionDuration != *(equal + 12))
       {
         goto LABEL_104;
       }
@@ -1656,7 +1656,7 @@ LABEL_104:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_aggregatedMessageSendCount != *(a3 + 10))
+      if ((v7 & 0x10) == 0 || self->_aggregatedMessageSendCount != *(equal + 10))
       {
         goto LABEL_104;
       }
@@ -1669,7 +1669,7 @@ LABEL_104:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_avgAggregatedMessageSendDuration != *(a3 + 11))
+      if ((v7 & 0x20) == 0 || self->_avgAggregatedMessageSendDuration != *(equal + 11))
       {
         goto LABEL_104;
       }
@@ -1681,7 +1681,7 @@ LABEL_104:
     }
 
     service = self->_service;
-    if (service | *(a3 + 12))
+    if (service | *(equal + 12))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -1692,10 +1692,10 @@ LABEL_104:
       has = self->_has;
     }
 
-    v9 = *(a3 + 28);
+    v9 = *(equal + 28);
     if ((*&has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_command != *(a3 + 13))
+      if ((v9 & 0x80) == 0 || self->_command != *(equal + 13))
       {
         goto LABEL_104;
       }
@@ -1706,10 +1706,10 @@ LABEL_104:
       goto LABEL_104;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 0x8000) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 0x8000) == 0;
     if ((*&has & 0x8000) != 0)
     {
-      if ((v9 & 0x8000) == 0 || self->_priority != *(a3 + 21))
+      if ((v9 & 0x8000) == 0 || self->_priority != *(equal + 21))
       {
         goto LABEL_104;
       }
@@ -1996,14 +1996,14 @@ LABEL_40:
   return v25 ^ v26 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v14 ^ v15 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 28);
+    v5 = *(from + 28);
     if ((v5 & 0x20000) == 0)
     {
 LABEL_3:
@@ -2021,9 +2021,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_sendToDaemonStart = *(a3 + 23);
+  self->_sendToDaemonStart = *(from + 23);
   *&self->_has |= 0x20000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_4:
@@ -2036,9 +2036,9 @@ LABEL_4:
   }
 
 LABEL_29:
-  self->_sendToDaemonDuration = *(a3 + 22);
+  self->_sendToDaemonDuration = *(from + 22);
   *&self->_has |= 0x10000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_5:
@@ -2051,9 +2051,9 @@ LABEL_5:
   }
 
 LABEL_30:
-  self->_storeInDatabaseStart = *(a3 + 27);
+  self->_storeInDatabaseStart = *(from + 27);
   *&self->_has |= 0x80000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_6:
@@ -2066,9 +2066,9 @@ LABEL_6:
   }
 
 LABEL_31:
-  self->_storeInDatabaseDuration = *(a3 + 26);
+  self->_storeInDatabaseDuration = *(from + 26);
   *&self->_has |= 0x40000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -2081,9 +2081,9 @@ LABEL_7:
   }
 
 LABEL_32:
-  self->_compressPayloadStart = *(a3 + 15);
+  self->_compressPayloadStart = *(from + 15);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -2096,9 +2096,9 @@ LABEL_8:
   }
 
 LABEL_33:
-  self->_compressPayloadDuration = *(a3 + 14);
+  self->_compressPayloadDuration = *(from + 14);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -2111,9 +2111,9 @@ LABEL_9:
   }
 
 LABEL_34:
-  self->_uncompressedMessageSize = *(a3 + 4);
+  self->_uncompressedMessageSize = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -2126,9 +2126,9 @@ LABEL_10:
   }
 
 LABEL_35:
-  self->_compressedMessageSize = *(a3 + 1);
+  self->_compressedMessageSize = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_11:
@@ -2141,9 +2141,9 @@ LABEL_11:
   }
 
 LABEL_36:
-  self->_iDQueryStart = *(a3 + 18);
+  self->_iDQueryStart = *(from + 18);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x800) == 0)
   {
 LABEL_12:
@@ -2156,9 +2156,9 @@ LABEL_12:
   }
 
 LABEL_37:
-  self->_iDQueryDuration = *(a3 + 17);
+  self->_iDQueryDuration = *(from + 17);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_13:
@@ -2171,9 +2171,9 @@ LABEL_13:
   }
 
 LABEL_38:
-  self->_messageOnQueueStart = *(a3 + 20);
+  self->_messageOnQueueStart = *(from + 20);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_14:
@@ -2186,9 +2186,9 @@ LABEL_14:
   }
 
 LABEL_39:
-  self->_messageOnQueueDuration = *(a3 + 19);
+  self->_messageOnQueueDuration = *(from + 19);
   *&self->_has |= 0x2000u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 2) == 0)
   {
 LABEL_15:
@@ -2201,9 +2201,9 @@ LABEL_15:
   }
 
 LABEL_40:
-  self->_messagesOnQueue = *(a3 + 2);
+  self->_messagesOnQueue = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x400) == 0)
   {
 LABEL_16:
@@ -2216,9 +2216,9 @@ LABEL_16:
   }
 
 LABEL_41:
-  self->_encryptionCount = *(a3 + 16);
+  self->_encryptionCount = *(from + 16);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x40) == 0)
   {
 LABEL_17:
@@ -2231,9 +2231,9 @@ LABEL_17:
   }
 
 LABEL_42:
-  self->_avgEncryptionDuration = *(a3 + 12);
+  self->_avgEncryptionDuration = *(from + 12);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_18:
@@ -2246,32 +2246,32 @@ LABEL_18:
   }
 
 LABEL_43:
-  self->_aggregatedMessageSendCount = *(a3 + 10);
+  self->_aggregatedMessageSendCount = *(from + 10);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 28) & 0x20) != 0)
+  if ((*(from + 28) & 0x20) != 0)
   {
 LABEL_19:
-    self->_avgAggregatedMessageSendDuration = *(a3 + 11);
+    self->_avgAggregatedMessageSendDuration = *(from + 11);
     *&self->_has |= 0x20u;
   }
 
 LABEL_20:
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(AWDIDSOutgoingMessageDurationTrace *)self setService:?];
   }
 
-  v6 = *(a3 + 28);
+  v6 = *(from + 28);
   if ((v6 & 0x80) != 0)
   {
-    self->_command = *(a3 + 13);
+    self->_command = *(from + 13);
     *&self->_has |= 0x80u;
-    v6 = *(a3 + 28);
+    v6 = *(from + 28);
   }
 
   if ((v6 & 0x8000) != 0)
   {
-    self->_priority = *(a3 + 21);
+    self->_priority = *(from + 21);
     *&self->_has |= 0x8000u;
   }
 }

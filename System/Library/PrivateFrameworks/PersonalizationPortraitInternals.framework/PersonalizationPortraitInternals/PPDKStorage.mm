@@ -1,53 +1,53 @@
 @interface PPDKStorage
 + (PPDKStorage)sharedInstance;
-- (BOOL)_isFutureCompatibilityVersionAttachedToEvent:(uint64_t)a1;
-- (BOOL)deleteAllEventsInEventStream:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllEventsInEventStream:(id)a3 matchingPredicate:(id)a4 error:(id *)a5;
-- (BOOL)deleteEvents:(id)a3 error:(id *)a4;
-- (BOOL)iterEventBatchesMatchingPredicate:(id)a3 streams:(id)a4 sortDescriptors:(id)a5 batchSize:(unint64_t)a6 readMetaData:(BOOL)a7 remoteOnly:(BOOL)a8 error:(id *)a9 block:(id)a10;
-- (BOOL)saveEvents:(id)a3 stream:(id)a4 maxRetries:(int64_t)a5 retryInterval:(double)a6 shouldContinueBlock:(id)a7;
+- (BOOL)_isFutureCompatibilityVersionAttachedToEvent:(uint64_t)event;
+- (BOOL)deleteAllEventsInEventStream:(id)stream error:(id *)error;
+- (BOOL)deleteAllEventsInEventStream:(id)stream matchingPredicate:(id)predicate error:(id *)error;
+- (BOOL)deleteEvents:(id)events error:(id *)error;
+- (BOOL)iterEventBatchesMatchingPredicate:(id)predicate streams:(id)streams sortDescriptors:(id)descriptors batchSize:(unint64_t)size readMetaData:(BOOL)data remoteOnly:(BOOL)only error:(id *)error block:(id)self0;
+- (BOOL)saveEvents:(id)events stream:(id)stream maxRetries:(int64_t)retries retryInterval:(double)interval shouldContinueBlock:(id)block;
 - (double)entityStreamCooldownTimeRemaining;
 - (double)topicStreamCooldownTimeRemaining;
 - (id)_readWriteKnowledgeStore;
 - (id)entityStream;
-- (id)eventForNamedEntityRecord:(id)a3 sourceDeviceID:(id)a4;
-- (id)eventForTopicRecord:(id)a3 sourceDeviceID:(id)a4;
-- (id)namedEntityRecordFromEvent:(id)a3;
-- (id)registerForNamedEntitiesRemoteAdditionWithBlock:(id)a3;
-- (id)registerForNamedEntitiesRemoteDeletionWithBlock:(id)a3;
-- (id)registerForTopicsRemoteAdditionWithBlock:(id)a3;
-- (id)registerForTopicsRemoteDeletionWithBlock:(id)a3;
+- (id)eventForNamedEntityRecord:(id)record sourceDeviceID:(id)d;
+- (id)eventForTopicRecord:(id)record sourceDeviceID:(id)d;
+- (id)namedEntityRecordFromEvent:(id)event;
+- (id)registerForNamedEntitiesRemoteAdditionWithBlock:(id)block;
+- (id)registerForNamedEntitiesRemoteDeletionWithBlock:(id)block;
+- (id)registerForTopicsRemoteAdditionWithBlock:(id)block;
+- (id)registerForTopicsRemoteDeletionWithBlock:(id)block;
 - (id)tombstoneStream;
-- (id)topicRecordFromEvent:(id)a3;
+- (id)topicRecordFromEvent:(id)event;
 - (id)topicStream;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PPDKStorage
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v3 = MEMORY[0x277CCA9A0];
-    v4 = a3;
-    v5 = [v3 defaultCenter];
-    [v5 removeObserver:v4];
+    observerCopy = observer;
+    defaultCenter = [v3 defaultCenter];
+    [defaultCenter removeObserver:observerCopy];
   }
 }
 
-- (id)registerForTopicsRemoteDeletionWithBlock:(id)a3
+- (id)registerForTopicsRemoteDeletionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v6 = [(PPDKStorage *)self topicStream];
-  v7 = [v6 name];
+  blockCopy = block;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  topicStream = [(PPDKStorage *)self topicStream];
+  name = [topicStream name];
 
-  if (v7)
+  if (name)
   {
     v8 = *MEMORY[0x277CFE2F8];
-    v9 = [v6 name];
-    v10 = [v5 addObserverForName:v8 object:v9 queue:0 usingBlock:v4];
+    name2 = [topicStream name];
+    v10 = [defaultCenter addObserverForName:v8 object:name2 queue:0 usingBlock:blockCopy];
   }
 
   else
@@ -65,18 +65,18 @@
   return v10;
 }
 
-- (id)registerForTopicsRemoteAdditionWithBlock:(id)a3
+- (id)registerForTopicsRemoteAdditionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v6 = [(PPDKStorage *)self topicStream];
-  v7 = [v6 name];
+  blockCopy = block;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  topicStream = [(PPDKStorage *)self topicStream];
+  name = [topicStream name];
 
-  if (v7)
+  if (name)
   {
     v8 = *MEMORY[0x277CFE2F0];
-    v9 = [v6 name];
-    v10 = [v5 addObserverForName:v8 object:v9 queue:0 usingBlock:v4];
+    name2 = [topicStream name];
+    v10 = [defaultCenter addObserverForName:v8 object:name2 queue:0 usingBlock:blockCopy];
   }
 
   else
@@ -94,18 +94,18 @@
   return v10;
 }
 
-- (id)registerForNamedEntitiesRemoteDeletionWithBlock:(id)a3
+- (id)registerForNamedEntitiesRemoteDeletionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v6 = [(PPDKStorage *)self entityStream];
-  v7 = [v6 name];
+  blockCopy = block;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  entityStream = [(PPDKStorage *)self entityStream];
+  name = [entityStream name];
 
-  if (v7)
+  if (name)
   {
     v8 = *MEMORY[0x277CFE2F8];
-    v9 = [v6 name];
-    v10 = [v5 addObserverForName:v8 object:v9 queue:0 usingBlock:v4];
+    name2 = [entityStream name];
+    v10 = [defaultCenter addObserverForName:v8 object:name2 queue:0 usingBlock:blockCopy];
   }
 
   else
@@ -123,18 +123,18 @@
   return v10;
 }
 
-- (id)registerForNamedEntitiesRemoteAdditionWithBlock:(id)a3
+- (id)registerForNamedEntitiesRemoteAdditionWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v6 = [(PPDKStorage *)self entityStream];
-  v7 = [v6 name];
+  blockCopy = block;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  entityStream = [(PPDKStorage *)self entityStream];
+  name = [entityStream name];
 
-  if (v7)
+  if (name)
   {
     v8 = *MEMORY[0x277CFE2F0];
-    v9 = [v6 name];
-    v10 = [v5 addObserverForName:v8 object:v9 queue:0 usingBlock:v4];
+    name2 = [entityStream name];
+    v10 = [defaultCenter addObserverForName:v8 object:name2 queue:0 usingBlock:blockCopy];
   }
 
   else
@@ -152,128 +152,128 @@
   return v10;
 }
 
-- (id)eventForTopicRecord:(id)a3 sourceDeviceID:(id)a4
+- (id)eventForTopicRecord:(id)record sourceDeviceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  dCopy = d;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CFE0F8] compatibilityVersion];
-  [v7 setObject:&unk_284783C48 forKeyedSubscript:v8];
+  compatibilityVersion = [MEMORY[0x277CFE0F8] compatibilityVersion];
+  [v7 setObject:&unk_284783C48 forKeyedSubscript:compatibilityVersion];
 
   [v7 setObject:&unk_284783C48 forKeyedSubscript:@"compatVersion"];
   v9 = MEMORY[0x277CCABB0];
-  [v5 decayRate];
+  [recordCopy decayRate];
   v10 = [v9 numberWithDouble:?];
-  v11 = [MEMORY[0x277CFE128] decayRate];
-  [v7 setObject:v10 forKeyedSubscript:v11];
+  decayRate = [MEMORY[0x277CFE128] decayRate];
+  [v7 setObject:v10 forKeyedSubscript:decayRate];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "algorithm")}];
-  v13 = [MEMORY[0x277CFE128] algorithm];
-  [v7 setObject:v12 forKeyedSubscript:v13];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(recordCopy, "algorithm")}];
+  algorithm = [MEMORY[0x277CFE128] algorithm];
+  [v7 setObject:v12 forKeyedSubscript:algorithm];
 
   v14 = MEMORY[0x277CCABB0];
-  [v5 initialScore];
+  [recordCopy initialScore];
   v15 = [v14 numberWithDouble:?];
-  v16 = [MEMORY[0x277CFE128] score];
-  [v7 setObject:v15 forKeyedSubscript:v16];
+  score = [MEMORY[0x277CFE128] score];
+  [v7 setObject:v15 forKeyedSubscript:score];
 
-  v17 = [v5 extractionOsBuild];
+  extractionOsBuild = [recordCopy extractionOsBuild];
 
-  if (v17)
+  if (extractionOsBuild)
   {
-    v18 = [v5 extractionOsBuild];
-    v19 = [MEMORY[0x277CFE128] osBuild];
-    [v7 setObject:v18 forKeyedSubscript:v19];
+    extractionOsBuild2 = [recordCopy extractionOsBuild];
+    osBuild = [MEMORY[0x277CFE128] osBuild];
+    [v7 setObject:extractionOsBuild2 forKeyedSubscript:osBuild];
   }
 
-  [v5 extractionAssetVersion];
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "extractionAssetVersion")}];
-  v21 = [MEMORY[0x277CFE128] assetVersion];
-  [v7 setObject:v20 forKeyedSubscript:v21];
+  [recordCopy extractionAssetVersion];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(recordCopy, "extractionAssetVersion")}];
+  assetVersion = [MEMORY[0x277CFE128] assetVersion];
+  [v7 setObject:v20 forKeyedSubscript:assetVersion];
 
-  v22 = [v5 metadata];
-  LODWORD(v21) = [v22 exactMatchInSourceText];
+  metadata = [recordCopy metadata];
+  LODWORD(assetVersion) = [metadata exactMatchInSourceText];
 
-  if (v21)
+  if (assetVersion)
   {
     v23 = MEMORY[0x277CCABB0];
-    v24 = [v5 metadata];
-    v25 = [v23 numberWithBool:{objc_msgSend(v24, "exactMatchInSourceText")}];
+    metadata2 = [recordCopy metadata];
+    v25 = [v23 numberWithBool:{objc_msgSend(metadata2, "exactMatchInSourceText")}];
     [v7 setObject:v25 forKeyedSubscript:@"exactMatchInSourceText"];
   }
 
-  v26 = [v5 source];
-  v27 = [v26 relevanceDate];
+  source = [recordCopy source];
+  relevanceDate = [source relevanceDate];
 
-  if (v27)
+  if (relevanceDate)
   {
     v28 = MEMORY[0x277CCABB0];
-    v29 = [v5 source];
-    v30 = [v29 relevanceDate];
-    [v30 timeIntervalSince1970];
+    source2 = [recordCopy source];
+    relevanceDate2 = [source2 relevanceDate];
+    [relevanceDate2 timeIntervalSince1970];
     v31 = [v28 numberWithDouble:?];
     [v7 setObject:v31 forKeyedSubscript:@"sourceRelevanceDate"];
   }
 
-  v32 = [v5 source];
-  v33 = [v32 language];
+  source3 = [recordCopy source];
+  language = [source3 language];
 
-  if (v33)
+  if (language)
   {
-    v34 = [v5 source];
-    v35 = [v34 language];
-    [v7 setObject:v35 forKeyedSubscript:@"sourceLanguage"];
+    source4 = [recordCopy source];
+    language2 = [source4 language];
+    [v7 setObject:language2 forKeyedSubscript:@"sourceLanguage"];
   }
 
   v36 = objc_alloc(MEMORY[0x277CFE268]);
-  v37 = [v5 source];
-  v38 = [v37 bundleId];
-  [v5 source];
+  source5 = [recordCopy source];
+  bundleId = [source5 bundleId];
+  [recordCopy source];
   v39 = v53 = v7;
-  v40 = [v39 documentId];
-  v41 = [v5 source];
-  v42 = [v41 groupId];
-  v43 = [v36 initWithIdentifier:@"portrait" bundleIdentifier:v38 itemIdentifier:v40 groupIdentifier:v42 deviceIdentifier:v6 userIdentifier:0];
+  documentId = [v39 documentId];
+  source6 = [recordCopy source];
+  groupId = [source6 groupId];
+  v43 = [v36 initWithIdentifier:@"portrait" bundleIdentifier:bundleId itemIdentifier:documentId groupIdentifier:groupId deviceIdentifier:dCopy userIdentifier:0];
 
   v44 = MEMORY[0x277CFE1D8];
-  v45 = [(PPDKStorage *)self topicStream];
-  v46 = [v5 source];
-  v47 = [v46 date];
-  v48 = [v5 source];
-  v49 = [v48 date];
-  v50 = [v5 topic];
-  v51 = [v50 topicIdentifier];
-  v55 = [v44 eventWithStream:v45 source:v43 startDate:v47 endDate:v49 identifierStringValue:v51 metadata:v53];
+  topicStream = [(PPDKStorage *)self topicStream];
+  source7 = [recordCopy source];
+  date = [source7 date];
+  source8 = [recordCopy source];
+  date2 = [source8 date];
+  topic = [recordCopy topic];
+  topicIdentifier = [topic topicIdentifier];
+  v55 = [v44 eventWithStream:topicStream source:v43 startDate:date endDate:date2 identifierStringValue:topicIdentifier metadata:v53];
 
   return v55;
 }
 
-- (id)topicRecordFromEvent:(id)a3
+- (id)topicRecordFromEvent:(id)event
 {
   v87 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [v5 bundleID];
+  eventCopy = event;
+  source = [eventCopy source];
+  bundleID = [source bundleID];
 
-  v7 = [v4 source];
-  v8 = [v7 itemID];
+  source2 = [eventCopy source];
+  itemID = [source2 itemID];
 
-  v9 = [v4 value];
-  v10 = [v9 stringValue];
+  value = [eventCopy value];
+  stringValue = [value stringValue];
 
-  v11 = [v4 startDate];
-  [v11 timeIntervalSinceReferenceDate];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v13 = v12;
 
-  if (!v6 || !v8)
+  if (!bundleID || !itemID)
   {
     v18 = pp_default_log_handle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v84 = v6;
+      v84 = bundleID;
       v85 = 2112;
-      v86 = v8;
+      v86 = itemID;
       v19 = "Warning: PPDKStorage failed to create topic record from _DKEvent with missing source field(s). bundleID: %@ documentID: %@";
 LABEL_12:
       v20 = v18;
@@ -287,9 +287,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v14 = [v4 startDate];
+  startDate2 = [eventCopy startDate];
   v15 = fabs(v13) != INFINITY;
-  if (!v14 || !v15)
+  if (!startDate2 || !v15)
   {
 
     v18 = pp_default_log_handle();
@@ -299,7 +299,7 @@ LABEL_21:
     }
 
     *buf = 138412290;
-    v84 = v6;
+    v84 = bundleID;
     v19 = "Warning: PPDKStorage failed to create topic record from _DKEvent with invalid start date. Source: %@";
 LABEL_19:
     v20 = v18;
@@ -307,9 +307,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = [v4 metadata];
+  metadata = [eventCopy metadata];
 
-  if (!v16)
+  if (!metadata)
   {
     v18 = pp_default_log_handle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -318,20 +318,20 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    v84 = v6;
+    v84 = bundleID;
     v19 = "Warning: PPDKStorage failed to create named entity record from _DKEvent with metadata==nil. Source: %@";
     goto LABEL_19;
   }
 
-  if (!v10 || ([v10 hasPrefix:@"Q"] & 1) == 0)
+  if (!stringValue || ([stringValue hasPrefix:@"Q"] & 1) == 0)
   {
     v18 = pp_default_log_handle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138740227;
-      v84 = v10;
+      v84 = stringValue;
       v85 = 2113;
-      v86 = v6;
+      v86 = bundleID;
       v19 = "Warning: PPDKStorage failed to create topic record from _DKEvent due to invalid topic identifier %{sensitive}@. Source: %{private}@";
       goto LABEL_12;
     }
@@ -339,27 +339,27 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if ([(PPDKStorage *)self _isFutureCompatibilityVersionAttachedToEvent:v4])
+  if ([(PPDKStorage *)self _isFutureCompatibilityVersionAttachedToEvent:eventCopy])
   {
     v17 = 0;
     goto LABEL_23;
   }
 
-  v24 = [v4 metadata];
-  v25 = [MEMORY[0x277CFE128] algorithm];
-  v18 = [v24 objectForKeyedSubscript:v25];
+  metadata2 = [eventCopy metadata];
+  algorithm = [MEMORY[0x277CFE128] algorithm];
+  v18 = [metadata2 objectForKeyedSubscript:algorithm];
 
-  v26 = [v4 metadata];
-  v27 = [MEMORY[0x277CFE128] score];
-  v28 = [v26 objectForKeyedSubscript:v27];
+  metadata3 = [eventCopy metadata];
+  score = [MEMORY[0x277CFE128] score];
+  v28 = [metadata3 objectForKeyedSubscript:score];
 
-  v29 = [v4 metadata];
-  v30 = [MEMORY[0x277CFE128] decayRate];
-  v31 = [v29 objectForKeyedSubscript:v30];
+  metadata4 = [eventCopy metadata];
+  decayRate = [MEMORY[0x277CFE128] decayRate];
+  v31 = [metadata4 objectForKeyedSubscript:decayRate];
 
-  v32 = [v4 metadata];
-  v33 = [MEMORY[0x277CFE128] sentimentScore];
-  v34 = [v32 objectForKeyedSubscript:v33];
+  metadata5 = [eventCopy metadata];
+  sentimentScore = [MEMORY[0x277CFE128] sentimentScore];
+  v34 = [metadata5 objectForKeyedSubscript:sentimentScore];
   v35 = v34;
   v82 = v31;
   if (v34)
@@ -369,36 +369,36 @@ LABEL_19:
 
   else
   {
-    [v4 metadata];
+    [eventCopy metadata];
     v37 = v36 = v28;
     v81 = [v37 objectForKeyedSubscript:@"sentimentScore"];
 
     v28 = v36;
   }
 
-  v38 = [v4 metadata];
-  v39 = [MEMORY[0x277CFE128] osBuild];
-  v40 = [v38 objectForKeyedSubscript:v39];
+  metadata6 = [eventCopy metadata];
+  osBuild = [MEMORY[0x277CFE128] osBuild];
+  v40 = [metadata6 objectForKeyedSubscript:osBuild];
 
-  v41 = [v4 metadata];
-  v42 = [MEMORY[0x277CFE128] assetVersion];
-  v80 = [v41 objectForKeyedSubscript:v42];
+  metadata7 = [eventCopy metadata];
+  assetVersion = [MEMORY[0x277CFE128] assetVersion];
+  v80 = [metadata7 objectForKeyedSubscript:assetVersion];
 
-  v43 = [v4 metadata];
-  v77 = [v43 objectForKeyedSubscript:@"exactMatchInSourceText"];
+  metadata8 = [eventCopy metadata];
+  v77 = [metadata8 objectForKeyedSubscript:@"exactMatchInSourceText"];
 
-  v44 = [v4 metadata];
-  v79 = [v44 objectForKeyedSubscript:@"sourceLanguage"];
+  metadata9 = [eventCopy metadata];
+  v79 = [metadata9 objectForKeyedSubscript:@"sourceLanguage"];
 
-  v45 = [v4 metadata];
-  v46 = [v45 objectForKeyedSubscript:@"sourceRelevanceDate"];
+  metadata10 = [eventCopy metadata];
+  v46 = [metadata10 objectForKeyedSubscript:@"sourceRelevanceDate"];
 
-  v47 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
   v48 = v82;
   v78 = v28;
   if (v18 && v28 && v82)
   {
-    v72 = v47;
+    v72 = unsignedIntegerValue;
     [v28 doubleValue];
     if (v49 <= 2.0)
     {
@@ -428,13 +428,13 @@ LABEL_19:
       v56 = 0;
     }
 
-    v75 = [objc_alloc(MEMORY[0x277D3A530]) initWithTopicIdentifier:v10];
+    v75 = [objc_alloc(MEMORY[0x277D3A530]) initWithTopicIdentifier:stringValue];
     v63 = objc_alloc(MEMORY[0x277D3A4D8]);
-    v64 = [v4 source];
-    v65 = [v64 groupID];
-    v66 = [v4 startDate];
+    source3 = [eventCopy source];
+    groupID = [source3 groupID];
+    startDate3 = [eventCopy startDate];
     v73 = v56;
-    v67 = [v63 initWithBundleId:v6 groupId:v65 documentId:v8 date:v66 relevanceDate:v56 contactHandles:0 language:v79 metadata:0];
+    v67 = [v63 initWithBundleId:bundleID groupId:groupID documentId:itemID date:startDate3 relevanceDate:v56 contactHandles:0 language:v79 metadata:0];
 
     v17 = objc_opt_new();
     [v17 setTopic:v75];
@@ -443,23 +443,23 @@ LABEL_19:
     [v17 setInitialScore:v50];
     [v17 setDecayRate:v52];
     [v17 setSentimentScore:v54];
-    v68 = [v4 source];
-    v69 = [v68 deviceID];
-    [v17 setIsLocal:v69 == 0];
+    source4 = [eventCopy source];
+    deviceID = [source4 deviceID];
+    [v17 setIsLocal:deviceID == 0];
 
     [v17 setExtractionOsBuild:v76];
     if (v80)
     {
-      v70 = [v80 unsignedLongValue];
+      unsignedLongValue = [v80 unsignedLongValue];
     }
 
     else
     {
-      v70 = 0xFFFFFFFFLL;
+      unsignedLongValue = 0xFFFFFFFFLL;
     }
 
     v48 = v82;
-    [v17 setExtractionAssetVersion:v70];
+    [v17 setExtractionAssetVersion:unsignedLongValue];
     v62 = v77;
     v71 = [objc_alloc(MEMORY[0x277D3A538]) initWithImpressionCount:1 occurrencesInSource:1 algorithmResultPosition:0 algorithmResultCount:0 exactMatchInSourceText:{objc_msgSend(v77, "BOOLValue")}];
     [v17 setMetadata:v71];
@@ -470,7 +470,7 @@ LABEL_19:
 
   else
   {
-    v57 = v47;
+    v57 = unsignedIntegerValue;
     v58 = pp_default_log_handle();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
@@ -478,7 +478,7 @@ LABEL_19:
       v59 = v46;
       v61 = v60 = v40;
       *buf = 138412546;
-      v84 = v6;
+      v84 = bundleID;
       v85 = 2112;
       v86 = v61;
       _os_log_impl(&dword_23224A000, v58, OS_LOG_TYPE_DEFAULT, "Warning: PPDKStorage failed to create topic record from _DKEvent with missing metadata field(s). Source: %@ (%@)", buf, 0x16u);
@@ -499,32 +499,32 @@ LABEL_23:
   return v17;
 }
 
-- (BOOL)_isFutureCompatibilityVersionAttachedToEvent:(uint64_t)a1
+- (BOOL)_isFutureCompatibilityVersionAttachedToEvent:(uint64_t)event
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!event)
   {
     v14 = 0;
     goto LABEL_12;
   }
 
-  v5 = [v3 metadata];
-  v6 = [MEMORY[0x277CFE0F8] compatibilityVersion];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  metadata = [v3 metadata];
+  compatibilityVersion = [MEMORY[0x277CFE0F8] compatibilityVersion];
+  v7 = [metadata objectForKeyedSubscript:compatibilityVersion];
 
-  v8 = [v4 metadata];
-  v9 = v8;
+  metadata2 = [v4 metadata];
+  metadata3 = metadata2;
   if (v7)
   {
-    v10 = [MEMORY[0x277CFE0F8] compatibilityVersion];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    compatibilityVersion2 = [MEMORY[0x277CFE0F8] compatibilityVersion];
+    v11 = [metadata3 objectForKeyedSubscript:compatibilityVersion2];
   }
 
   else
   {
-    v12 = [v8 objectForKeyedSubscript:@"compatVersion"];
+    v12 = [metadata2 objectForKeyedSubscript:@"compatVersion"];
 
     if (!v12)
     {
@@ -532,14 +532,14 @@ LABEL_23:
       goto LABEL_7;
     }
 
-    v9 = [v4 metadata];
-    v11 = [v9 objectForKeyedSubscript:@"compatVersion"];
+    metadata3 = [v4 metadata];
+    v11 = [metadata3 objectForKeyedSubscript:@"compatVersion"];
   }
 
 LABEL_7:
-  v13 = [v11 unsignedIntValue];
-  v14 = v13 > 2;
-  if (v13 >= 3)
+  unsignedIntValue = [v11 unsignedIntValue];
+  v14 = unsignedIntValue > 2;
+  if (unsignedIntValue >= 3)
   {
     v15 = pp_default_log_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -555,128 +555,128 @@ LABEL_12:
   return v14;
 }
 
-- (id)eventForNamedEntityRecord:(id)a3 sourceDeviceID:(id)a4
+- (id)eventForNamedEntityRecord:(id)record sourceDeviceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  dCopy = d;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CFE0F8] compatibilityVersion];
-  [v7 setObject:&unk_284783C48 forKeyedSubscript:v8];
+  compatibilityVersion = [MEMORY[0x277CFE0F8] compatibilityVersion];
+  [v7 setObject:&unk_284783C48 forKeyedSubscript:compatibilityVersion];
 
   [v7 setObject:&unk_284783C48 forKeyedSubscript:@"compatVersion"];
   v9 = MEMORY[0x277CCABB0];
-  [v5 decayRate];
+  [recordCopy decayRate];
   v10 = [v9 numberWithDouble:?];
-  v11 = [MEMORY[0x277CFE090] decayRate];
-  [v7 setObject:v10 forKeyedSubscript:v11];
+  decayRate = [MEMORY[0x277CFE090] decayRate];
+  [v7 setObject:v10 forKeyedSubscript:decayRate];
 
-  v12 = [v5 entity];
-  v13 = [v12 name];
-  v14 = [MEMORY[0x277CFE090] name];
-  [v7 setObject:v13 forKeyedSubscript:v14];
+  entity = [recordCopy entity];
+  name = [entity name];
+  name2 = [MEMORY[0x277CFE090] name];
+  [v7 setObject:name forKeyedSubscript:name2];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "algorithm")}];
-  v16 = [MEMORY[0x277CFE090] algorithm];
-  [v7 setObject:v15 forKeyedSubscript:v16];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(recordCopy, "algorithm")}];
+  algorithm = [MEMORY[0x277CFE090] algorithm];
+  [v7 setObject:v15 forKeyedSubscript:algorithm];
 
-  v17 = [v5 entity];
-  v18 = [v17 bestLanguage];
-  v19 = [MEMORY[0x277CFE090] bestLanguage];
-  [v7 setObject:v18 forKeyedSubscript:v19];
+  entity2 = [recordCopy entity];
+  bestLanguage = [entity2 bestLanguage];
+  bestLanguage2 = [MEMORY[0x277CFE090] bestLanguage];
+  [v7 setObject:bestLanguage forKeyedSubscript:bestLanguage2];
 
   v20 = MEMORY[0x277CCABB0];
-  [v5 initialScore];
+  [recordCopy initialScore];
   v21 = [v20 numberWithDouble:?];
-  v22 = [MEMORY[0x277CFE090] score];
-  [v7 setObject:v21 forKeyedSubscript:v22];
+  score = [MEMORY[0x277CFE090] score];
+  [v7 setObject:v21 forKeyedSubscript:score];
 
   v23 = MEMORY[0x277CCABB0];
-  [v5 sentimentScore];
+  [recordCopy sentimentScore];
   v24 = [v23 numberWithDouble:?];
-  v25 = [MEMORY[0x277CFE090] sentimentScore];
-  [v7 setObject:v24 forKeyedSubscript:v25];
+  sentimentScore = [MEMORY[0x277CFE090] sentimentScore];
+  [v7 setObject:v24 forKeyedSubscript:sentimentScore];
 
-  v26 = [v5 extractionOsBuild];
+  extractionOsBuild = [recordCopy extractionOsBuild];
 
-  if (v26)
+  if (extractionOsBuild)
   {
-    v27 = [v5 extractionOsBuild];
-    v28 = [MEMORY[0x277CFE090] osBuild];
-    [v7 setObject:v27 forKeyedSubscript:v28];
+    extractionOsBuild2 = [recordCopy extractionOsBuild];
+    osBuild = [MEMORY[0x277CFE090] osBuild];
+    [v7 setObject:extractionOsBuild2 forKeyedSubscript:osBuild];
   }
 
-  [v5 extractionAssetVersion];
-  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "extractionAssetVersion")}];
-  v30 = [MEMORY[0x277CFE090] assetVersion];
-  [v7 setObject:v29 forKeyedSubscript:v30];
+  [recordCopy extractionAssetVersion];
+  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(recordCopy, "extractionAssetVersion")}];
+  assetVersion = [MEMORY[0x277CFE090] assetVersion];
+  [v7 setObject:v29 forKeyedSubscript:assetVersion];
 
-  v31 = [v5 source];
-  v32 = [v31 relevanceDate];
+  source = [recordCopy source];
+  relevanceDate = [source relevanceDate];
 
-  if (v32)
+  if (relevanceDate)
   {
     v33 = MEMORY[0x277CCABB0];
-    v34 = [v5 source];
-    v35 = [v34 relevanceDate];
-    [v35 timeIntervalSince1970];
+    source2 = [recordCopy source];
+    relevanceDate2 = [source2 relevanceDate];
+    [relevanceDate2 timeIntervalSince1970];
     v36 = [v33 numberWithDouble:?];
     [v7 setObject:v36 forKeyedSubscript:@"sourceRelevanceDate"];
   }
 
-  v37 = [v5 source];
-  v38 = [v37 language];
+  source3 = [recordCopy source];
+  language = [source3 language];
 
-  if (v38)
+  if (language)
   {
-    v39 = [v5 source];
-    v40 = [v39 language];
-    [v7 setObject:v40 forKeyedSubscript:@"sourceLanguage"];
+    source4 = [recordCopy source];
+    language2 = [source4 language];
+    [v7 setObject:language2 forKeyedSubscript:@"sourceLanguage"];
   }
 
   v41 = objc_alloc(MEMORY[0x277CFE268]);
-  v42 = [v5 source];
-  v43 = [v42 bundleId];
-  v44 = [v5 source];
-  v45 = [v44 documentId];
-  v46 = [v5 source];
-  v47 = [v46 groupId];
-  v48 = [v41 initWithIdentifier:@"portrait" bundleIdentifier:v43 itemIdentifier:v45 groupIdentifier:v47 deviceIdentifier:v6 userIdentifier:0];
+  source5 = [recordCopy source];
+  bundleId = [source5 bundleId];
+  source6 = [recordCopy source];
+  documentId = [source6 documentId];
+  source7 = [recordCopy source];
+  groupId = [source7 groupId];
+  v48 = [v41 initWithIdentifier:@"portrait" bundleIdentifier:bundleId itemIdentifier:documentId groupIdentifier:groupId deviceIdentifier:dCopy userIdentifier:0];
 
   v49 = MEMORY[0x277CFE1D8];
-  v50 = [(PPDKStorage *)self entityStream];
-  v51 = [v5 source];
-  v52 = [v51 date];
-  v53 = [v5 source];
-  v54 = [v53 date];
-  v55 = [v5 entity];
-  v56 = [v49 eventWithStream:v50 source:v48 startDate:v52 endDate:v54 categoryIntegerValue:objc_msgSend(v55 confidence:"category") metadata:{v7, 1.0}];
+  entityStream = [(PPDKStorage *)self entityStream];
+  source8 = [recordCopy source];
+  date = [source8 date];
+  source9 = [recordCopy source];
+  date2 = [source9 date];
+  entity3 = [recordCopy entity];
+  v56 = [v49 eventWithStream:entityStream source:v48 startDate:date endDate:date2 categoryIntegerValue:objc_msgSend(entity3 confidence:"category") metadata:{v7, 1.0}];
 
   return v56;
 }
 
-- (id)namedEntityRecordFromEvent:(id)a3
+- (id)namedEntityRecordFromEvent:(id)event
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [v5 bundleID];
+  eventCopy = event;
+  source = [eventCopy source];
+  bundleID = [source bundleID];
 
-  v7 = [v4 source];
-  v8 = [v7 itemID];
+  source2 = [eventCopy source];
+  itemID = [source2 itemID];
 
-  v9 = [v4 startDate];
-  [v9 timeIntervalSinceReferenceDate];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v11 = v10;
 
-  if (!v6 || !v8)
+  if (!bundleID || !itemID)
   {
     v16 = pp_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v81 = v6;
+      v81 = bundleID;
       v82 = 2112;
-      v83 = v8;
+      v83 = itemID;
       v17 = "Warning: PPDKStorage failed to create topic record from _DKEvent with missing source field(s). bundleID: %@ documentID: %@";
       v18 = v16;
       v19 = 22;
@@ -688,15 +688,15 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = [v4 metadata];
+  metadata = [eventCopy metadata];
 
-  if (!v12)
+  if (!metadata)
   {
     v16 = pp_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v81 = v6;
+      v81 = bundleID;
       v17 = "Warning: PPDKStorage failed to create named entity record from _DKEvent with metadata==nil. Source: %@";
 LABEL_14:
       v18 = v16;
@@ -709,16 +709,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v4 startDate];
+  startDate2 = [eventCopy startDate];
   v14 = fabs(v11) != INFINITY;
-  if (!v13 || !v14)
+  if (!startDate2 || !v14)
   {
 
     v16 = pp_default_log_handle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v81 = v6;
+      v81 = bundleID;
       v17 = "Warning: PPDKStorage failed to create named entity record from _DKEvent with invalid start date. Source: %@";
       goto LABEL_14;
     }
@@ -726,35 +726,35 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([(PPDKStorage *)self _isFutureCompatibilityVersionAttachedToEvent:v4])
+  if ([(PPDKStorage *)self _isFutureCompatibilityVersionAttachedToEvent:eventCopy])
   {
     v15 = 0;
     goto LABEL_18;
   }
 
-  v22 = [v4 metadata];
-  v23 = [MEMORY[0x277CFE090] name];
-  v16 = [v22 objectForKeyedSubscript:v23];
+  metadata2 = [eventCopy metadata];
+  name = [MEMORY[0x277CFE090] name];
+  v16 = [metadata2 objectForKeyedSubscript:name];
 
-  v24 = [v4 metadata];
-  v25 = [MEMORY[0x277CFE090] bestLanguage];
-  v79 = [v24 objectForKeyedSubscript:v25];
+  metadata3 = [eventCopy metadata];
+  bestLanguage = [MEMORY[0x277CFE090] bestLanguage];
+  v79 = [metadata3 objectForKeyedSubscript:bestLanguage];
 
-  v26 = [v4 metadata];
-  v27 = [MEMORY[0x277CFE090] score];
-  v28 = [v26 objectForKeyedSubscript:v27];
+  metadata4 = [eventCopy metadata];
+  score = [MEMORY[0x277CFE090] score];
+  v28 = [metadata4 objectForKeyedSubscript:score];
 
-  v29 = [v4 metadata];
-  v30 = [MEMORY[0x277CFE090] decayRate];
-  v31 = [v29 objectForKeyedSubscript:v30];
+  metadata5 = [eventCopy metadata];
+  decayRate = [MEMORY[0x277CFE090] decayRate];
+  v31 = [metadata5 objectForKeyedSubscript:decayRate];
 
-  v32 = [v4 metadata];
-  v33 = [MEMORY[0x277CFE090] algorithm];
-  v34 = [v32 objectForKeyedSubscript:v33];
+  metadata6 = [eventCopy metadata];
+  algorithm = [MEMORY[0x277CFE090] algorithm];
+  v34 = [metadata6 objectForKeyedSubscript:algorithm];
 
-  v35 = [v4 metadata];
-  v36 = [MEMORY[0x277CFE090] sentimentScore];
-  v37 = [v35 objectForKeyedSubscript:v36];
+  metadata7 = [eventCopy metadata];
+  sentimentScore = [MEMORY[0x277CFE090] sentimentScore];
+  v37 = [metadata7 objectForKeyedSubscript:sentimentScore];
   v38 = v37;
   v78 = v28;
   if (v37)
@@ -764,25 +764,25 @@ LABEL_16:
 
   else
   {
-    v39 = [v4 metadata];
-    v77 = [v39 objectForKeyedSubscript:@"sentimentScore"];
+    metadata8 = [eventCopy metadata];
+    v77 = [metadata8 objectForKeyedSubscript:@"sentimentScore"];
   }
 
-  v40 = [v4 metadata];
-  v41 = [MEMORY[0x277CFE090] osBuild];
-  v42 = [v40 objectForKeyedSubscript:v41];
+  metadata9 = [eventCopy metadata];
+  osBuild = [MEMORY[0x277CFE090] osBuild];
+  v42 = [metadata9 objectForKeyedSubscript:osBuild];
 
-  v43 = [v4 metadata];
-  v44 = [MEMORY[0x277CFE090] assetVersion];
-  v76 = [v43 objectForKeyedSubscript:v44];
+  metadata10 = [eventCopy metadata];
+  assetVersion = [MEMORY[0x277CFE090] assetVersion];
+  v76 = [metadata10 objectForKeyedSubscript:assetVersion];
 
-  v45 = [v4 metadata];
-  v75 = [v45 objectForKeyedSubscript:@"sourceLanguage"];
+  metadata11 = [eventCopy metadata];
+  v75 = [metadata11 objectForKeyedSubscript:@"sourceLanguage"];
 
-  v46 = [v4 metadata];
-  v74 = [v46 objectForKeyedSubscript:@"sourceRelevanceDate"];
+  metadata12 = [eventCopy metadata];
+  v74 = [metadata12 objectForKeyedSubscript:@"sourceRelevanceDate"];
 
-  v72 = [v34 unsignedIntegerValue];
+  unsignedIntegerValue = [v34 unsignedIntegerValue];
   v48 = v78;
   v47 = v79;
   if (v16 && v79 && v34 && v78 && v31)
@@ -817,21 +817,21 @@ LABEL_16:
       v56 = 0;
     }
 
-    v59 = [v4 value];
-    v60 = [v59 integerValue];
+    value = [eventCopy value];
+    integerValue = [value integerValue];
 
-    v61 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v16 category:v60 language:v79];
+    v61 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v16 category:integerValue language:v79];
     v62 = objc_alloc(MEMORY[0x277D3A4D8]);
-    v63 = [v4 source];
-    v64 = [v63 groupID];
-    v65 = [v4 startDate];
+    source3 = [eventCopy source];
+    groupID = [source3 groupID];
+    startDate3 = [eventCopy startDate];
     v68 = v56;
-    v66 = [v62 initWithBundleId:v6 groupId:v64 documentId:v8 date:v65 relevanceDate:v56 contactHandles:0 language:v75 metadata:0];
+    v66 = [v62 initWithBundleId:bundleID groupId:groupID documentId:itemID date:startDate3 relevanceDate:v56 contactHandles:0 language:v75 metadata:0];
 
     v15 = objc_opt_new();
     [v15 setEntity:v61];
     [v15 setSource:v66];
-    [v15 setAlgorithm:v72];
+    [v15 setAlgorithm:unsignedIntegerValue];
     [v15 setInitialScore:v50];
     [v15 setDecayRate:v52];
     [v15 setSentimentScore:v54];
@@ -839,16 +839,16 @@ LABEL_16:
     [v15 setExtractionOsBuild:v70];
     if (v76)
     {
-      v67 = [v76 unsignedLongValue];
+      unsignedLongValue = [v76 unsignedLongValue];
     }
 
     else
     {
-      v67 = 0xFFFFFFFFLL;
+      unsignedLongValue = 0xFFFFFFFFLL;
     }
 
     v31 = v69;
-    [v15 setExtractionAssetVersion:v67];
+    [v15 setExtractionAssetVersion:unsignedLongValue];
 
     v48 = v78;
     v47 = v79;
@@ -860,10 +860,10 @@ LABEL_16:
     v57 = pp_default_log_handle();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
-      [MEMORY[0x277D3A438] describeAlgorithm:v72];
+      [MEMORY[0x277D3A438] describeAlgorithm:unsignedIntegerValue];
       v58 = v71 = v42;
       *buf = 138412546;
-      v81 = v6;
+      v81 = bundleID;
       v82 = 2112;
       v83 = v58;
       _os_log_impl(&dword_23224A000, v57, OS_LOG_TYPE_DEFAULT, "Warning: PPDKStorage failed to create named entity record from _DKEvent with missing metadata field(s). Source: %@ (%@)", buf, 0x16u);
@@ -882,28 +882,28 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)deleteAllEventsInEventStream:(id)a3 matchingPredicate:(id)a4 error:(id *)a5
+- (BOOL)deleteAllEventsInEventStream:(id)stream matchingPredicate:(id)predicate error:(id *)error
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  predicateCopy = predicate;
   v9 = MEMORY[0x277CFE260];
-  v10 = [a3 name];
-  v11 = [v9 predicateForEventsWithStreamName:v10];
+  name = [stream name];
+  v11 = [v9 predicateForEventsWithStreamName:name];
 
   v12 = MEMORY[0x277CCA920];
   v24[0] = v11;
-  v24[1] = v8;
+  v24[1] = predicateCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v15 = [(PPDKStorage *)self _readWriteKnowledgeStore];
+  _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
   v21 = 0;
-  v16 = [v15 deleteAllEventsMatchingPredicate:v14 error:&v21];
+  v16 = [_readWriteKnowledgeStore deleteAllEventsMatchingPredicate:v14 error:&v21];
   v17 = v21;
 
   v18 = pp_default_log_handle();
@@ -920,18 +920,18 @@ LABEL_18:
 
 - (id)_readWriteKnowledgeStore
 {
-  if (a1)
+  if (self)
   {
     if (_readWriteKnowledgeStore__pasOnceToken8 != -1)
     {
       dispatch_once(&_readWriteKnowledgeStore__pasOnceToken8, &__block_literal_global_108);
     }
 
-    a1 = _readWriteKnowledgeStore__pasExprOnceResult;
+    self = _readWriteKnowledgeStore__pasExprOnceResult;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __39__PPDKStorage__readWriteKnowledgeStore__block_invoke()
@@ -944,19 +944,19 @@ void __39__PPDKStorage__readWriteKnowledgeStore__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)deleteAllEventsInEventStream:(id)a3 error:(id *)a4
+- (BOOL)deleteAllEventsInEventStream:(id)stream error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PPDKStorage *)self _readWriteKnowledgeStore];
+  streamCopy = stream;
+  _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
   v14 = 0;
-  v8 = [v7 deleteAllEventsInEventStream:v6 error:&v14];
+  v8 = [_readWriteKnowledgeStore deleteAllEventsInEventStream:streamCopy error:&v14];
 
   v9 = v14;
-  if (a4)
+  if (error)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v11 = pp_default_log_handle();
@@ -971,50 +971,50 @@ void __39__PPDKStorage__readWriteKnowledgeStore__block_invoke()
   return v9 == 0;
 }
 
-- (BOOL)deleteEvents:(id)a3 error:(id *)a4
+- (BOOL)deleteEvents:(id)events error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PPDKStorage *)self _readWriteKnowledgeStore];
-  LOBYTE(a4) = [v7 deleteObjects:v6 error:a4];
+  eventsCopy = events;
+  _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
+  LOBYTE(error) = [_readWriteKnowledgeStore deleteObjects:eventsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)saveEvents:(id)a3 stream:(id)a4 maxRetries:(int64_t)a5 retryInterval:(double)a6 shouldContinueBlock:(id)a7
+- (BOOL)saveEvents:(id)events stream:(id)stream maxRetries:(int64_t)retries retryInterval:(double)interval shouldContinueBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (![v12 count])
+  eventsCopy = events;
+  streamCopy = stream;
+  blockCopy = block;
+  if (![eventsCopy count])
   {
     v30 = 1;
     goto LABEL_55;
   }
 
-  v15 = [(PPDKStorage *)self entityStream];
-  v16 = [v13 isEqual:v15];
+  entityStream = [(PPDKStorage *)self entityStream];
+  v16 = [streamCopy isEqual:entityStream];
 
   if (v16)
   {
-    v17 = v12;
-    v18 = v14;
+    v17 = eventsCopy;
+    v18 = blockCopy;
     if (self)
     {
-      v52 = v14;
-      v53 = v13;
-      v54 = v12;
-      if (a6 <= 1.0)
+      v52 = blockCopy;
+      v53 = streamCopy;
+      v54 = eventsCopy;
+      if (interval <= 1.0)
       {
-        v50 = [MEMORY[0x277CCA890] currentHandler];
-        [v50 handleFailureInMethod:sel__saveEntityEvents_maxRetries_retryInterval_shouldContinueBlock_ object:self file:@"PPDKStorage.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"retryInterval > 1.0"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__saveEntityEvents_maxRetries_retryInterval_shouldContinueBlock_ object:self file:@"PPDKStorage.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"retryInterval > 1.0"}];
       }
 
       v19 = 0;
-      if ((a5 & 0x8000000000000000) == 0)
+      if ((retries & 0x8000000000000000) == 0)
       {
 LABEL_7:
-        if (v19 < a5)
+        if (v19 < retries)
         {
           ++v19;
           goto LABEL_9;
@@ -1045,7 +1045,7 @@ LABEL_9:
               _os_log_impl(&dword_23224A000, v22, OS_LOG_TYPE_INFO, "PPDKStorage sending %tu events to named entity stream.", v60, 0xCu);
             }
 
-            v44 = [(PPDKStorage *)self _readWriteKnowledgeStore];
+            _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
             *&buf = MEMORY[0x277D85DD0];
             *(&buf + 1) = 3221225472;
             v45 = __33__PPDKStorage__saveEntityEvents___block_invoke;
@@ -1087,12 +1087,12 @@ LABEL_20:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
           LODWORD(buf) = 134217984;
-          *(&buf + 4) = a6;
+          *(&buf + 4) = interval;
           _os_log_impl(&dword_23224A000, v29, OS_LOG_TYPE_INFO, "PPDKStorage: duet write sleeping to stay within rate limits. Retrying in %f seconds.", &buf, 0xCu);
         }
 
-        [MEMORY[0x277CCACC8] sleepForTimeInterval:a6];
-        if ((a5 & 0x8000000000000000) == 0)
+        [MEMORY[0x277CCACC8] sleepForTimeInterval:interval];
+        if ((retries & 0x8000000000000000) == 0)
         {
           goto LABEL_7;
         }
@@ -1104,8 +1104,8 @@ LABEL_56:
     goto LABEL_53;
   }
 
-  v31 = [(PPDKStorage *)self topicStream];
-  v32 = [v13 isEqual:v31];
+  topicStream = [(PPDKStorage *)self topicStream];
+  v32 = [streamCopy isEqual:topicStream];
 
   if (!v32)
   {
@@ -1113,7 +1113,7 @@ LABEL_56:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v13;
+      *(&buf + 4) = streamCopy;
       _os_log_fault_impl(&dword_23224A000, v17, OS_LOG_TYPE_FAULT, "PPDKStorage: attempted save to unknown stream: %@", &buf, 0xCu);
     }
 
@@ -1121,27 +1121,27 @@ LABEL_56:
     goto LABEL_54;
   }
 
-  v17 = v12;
-  v18 = v14;
+  v17 = eventsCopy;
+  v18 = blockCopy;
   if (!self)
   {
     goto LABEL_56;
   }
 
-  v52 = v14;
-  v53 = v13;
-  v54 = v12;
-  if (a6 <= 1.0)
+  v52 = blockCopy;
+  v53 = streamCopy;
+  v54 = eventsCopy;
+  if (interval <= 1.0)
   {
-    v51 = [MEMORY[0x277CCA890] currentHandler];
-    [v51 handleFailureInMethod:sel__saveTopicEvents_maxRetries_retryInterval_shouldContinueBlock_ object:self file:@"PPDKStorage.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"retryInterval > 1.0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__saveTopicEvents_maxRetries_retryInterval_shouldContinueBlock_ object:self file:@"PPDKStorage.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"retryInterval > 1.0"}];
   }
 
   v33 = 0;
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((retries & 0x8000000000000000) == 0)
   {
 LABEL_27:
-    if (v33 < a5)
+    if (v33 < retries)
     {
       ++v33;
       goto LABEL_29;
@@ -1202,12 +1202,12 @@ LABEL_34:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a6;
+      *(&buf + 4) = interval;
       _os_log_impl(&dword_23224A000, v42, OS_LOG_TYPE_INFO, "PPDKStorage: duet write sleeping to stay within rate limits. Retrying in %f seconds.", &buf, 0xCu);
     }
 
-    [MEMORY[0x277CCACC8] sleepForTimeInterval:a6];
-    if ((a5 & 0x8000000000000000) == 0)
+    [MEMORY[0x277CCACC8] sleepForTimeInterval:interval];
+    if ((retries & 0x8000000000000000) == 0)
     {
       goto LABEL_27;
     }
@@ -1221,7 +1221,7 @@ LABEL_34:
     _os_log_impl(&dword_23224A000, v35, OS_LOG_TYPE_INFO, "PPDKStorage sending %tu events to topic stream", v60, 0xCu);
   }
 
-  v44 = [(PPDKStorage *)self _readWriteKnowledgeStore];
+  _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
   *&buf = MEMORY[0x277D85DD0];
   *(&buf + 1) = 3221225472;
   v45 = __32__PPDKStorage__saveTopicEvents___block_invoke;
@@ -1230,14 +1230,14 @@ LABEL_51:
   v57 = &unk_278973890;
   v47 = v20;
   v58 = v47;
-  v59 = self;
-  [v44 saveObjects:v47 responseQueue:0 withCompletion:&buf];
+  selfCopy = self;
+  [_readWriteKnowledgeStore saveObjects:v47 responseQueue:0 withCompletion:&buf];
 
   v30 = 1;
 LABEL_52:
-  v13 = v53;
-  v12 = v54;
-  v14 = v52;
+  streamCopy = v53;
+  eventsCopy = v54;
+  blockCopy = v52;
 LABEL_53:
 
 LABEL_54:
@@ -1323,38 +1323,38 @@ void __33__PPDKStorage__saveEntityEvents___block_invoke_134(uint64_t a1, void *a
   v2[1] = v3;
 }
 
-- (BOOL)iterEventBatchesMatchingPredicate:(id)a3 streams:(id)a4 sortDescriptors:(id)a5 batchSize:(unint64_t)a6 readMetaData:(BOOL)a7 remoteOnly:(BOOL)a8 error:(id *)a9 block:(id)a10
+- (BOOL)iterEventBatchesMatchingPredicate:(id)predicate streams:(id)streams sortDescriptors:(id)descriptors batchSize:(unint64_t)size readMetaData:(BOOL)data remoteOnly:(BOOL)only error:(id *)error block:(id)self0
 {
-  v29 = a7;
+  dataCopy = data;
   v28 = a2;
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v13 = a10;
+  predicateCopy = predicate;
+  streamsCopy = streams;
+  descriptorsCopy = descriptors;
+  blockCopy = block;
   v14 = 0;
   v15 = 0;
-  if (a6 <= 1)
+  if (size <= 1)
   {
-    v16 = 1;
+    sizeCopy = 1;
   }
 
   else
   {
-    v16 = a6;
+    sizeCopy = size;
   }
 
   while (1)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = [MEMORY[0x277CFE1E0] eventQueryWithPredicate:v34 eventStreams:v33 offset:v14 limit:v16 sortDescriptors:v32];
-    [v18 setReadMetadata:v29];
+    v18 = [MEMORY[0x277CFE1E0] eventQueryWithPredicate:predicateCopy eventStreams:streamsCopy offset:v14 limit:sizeCopy sortDescriptors:descriptorsCopy];
+    [v18 setReadMetadata:dataCopy];
     if (!v18)
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:v28 object:self file:@"PPDKStorage.m" lineNumber:238 description:@"unexpectedly nil query"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:v28 object:self file:@"PPDKStorage.m" lineNumber:238 description:@"unexpectedly nil query"];
     }
 
-    if (a8)
+    if (only)
     {
       [MEMORY[0x277CFE1E0] onlyRemoteDevice];
     }
@@ -1366,9 +1366,9 @@ void __33__PPDKStorage__saveEntityEvents___block_invoke_134(uint64_t a1, void *a
     v19 = ;
     [v18 setDeviceIDs:{v19, v28}];
 
-    v20 = [(PPDKStorage *)self _readWriteKnowledgeStore];
+    _readWriteKnowledgeStore = [(PPDKStorage *)self _readWriteKnowledgeStore];
     v36 = v15;
-    v21 = [v20 executeQuery:v18 error:&v36];
+    v21 = [_readWriteKnowledgeStore executeQuery:v18 error:&v36];
     v22 = v36;
 
     v23 = v21 != 0;
@@ -1380,7 +1380,7 @@ void __33__PPDKStorage__saveEntityEvents___block_invoke_134(uint64_t a1, void *a
     v24 = [v21 _pas_filteredArrayWithTest:&__block_literal_global_116];
 
     v35 = 0;
-    v13[2](v13, v24, &v35);
+    blockCopy[2](blockCopy, v24, &v35);
     if (v35 == 1)
     {
       goto LABEL_15;
@@ -1391,18 +1391,18 @@ void __33__PPDKStorage__saveEntityEvents___block_invoke_134(uint64_t a1, void *a
 
     objc_autoreleasePoolPop(v17);
     v15 = v22;
-    if (v25 < v16)
+    if (v25 < sizeCopy)
     {
       v23 = 1;
       goto LABEL_17;
     }
   }
 
-  if (a9)
+  if (error)
   {
     v22 = v22;
-    v24 = *a9;
-    *a9 = v22;
+    v24 = *error;
+    *error = v22;
 LABEL_15:
 
     goto LABEL_16;

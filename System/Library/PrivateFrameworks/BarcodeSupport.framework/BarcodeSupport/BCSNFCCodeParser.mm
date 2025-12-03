@@ -1,21 +1,21 @@
 @interface BCSNFCCodeParser
-- (void)postNotificationForURL:(id)a3 payload:(id)a4 completionHandler:(id)a5;
+- (void)postNotificationForURL:(id)l payload:(id)payload completionHandler:(id)handler;
 @end
 
 @implementation BCSNFCCodeParser
 
-- (void)postNotificationForURL:(id)a3 payload:(id)a4 completionHandler:(id)a5
+- (void)postNotificationForURL:(id)l payload:(id)payload completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [BCSURLDataParser parseURL:a3];
+  payloadCopy = payload;
+  handlerCopy = handler;
+  v10 = [BCSURLDataParser parseURL:l];
   if (v10)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v19 = [v10 type];
+      type = [v10 type];
       _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSNFCCodeParser: Detected NFC URL has type %ld", buf, 0xCu);
     }
 
@@ -26,13 +26,13 @@
       self->_notificationServiceConnection = v11;
     }
 
-    v13 = [[BCSNFCCodePayload alloc] initWithNFCPayload:v8];
+    v13 = [[BCSNFCCodePayload alloc] initWithNFCPayload:payloadCopy];
     v14 = self->_notificationServiceConnection;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__BCSNFCCodeParser_postNotificationForURL_payload_completionHandler___block_invoke;
     v16[3] = &unk_278CFF398;
-    v17 = v9;
+    v17 = handlerCopy;
     [(BCSNotificationServiceConnection *)v14 notifyParsedCodeWithData:v10 codePayload:v13 shouldReplacePreviousNotifications:0 withReply:v16];
   }
 
@@ -44,7 +44,7 @@
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BCSErrorDomain" code:3 userInfo:0];
-    (*(v9 + 2))(v9, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 
   v15 = *MEMORY[0x277D85DE8];

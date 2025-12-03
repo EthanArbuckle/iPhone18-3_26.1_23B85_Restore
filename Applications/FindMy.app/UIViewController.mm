@@ -1,12 +1,12 @@
 @interface UIViewController
-- (void)presentCard:(id)a3 completion:(id)a4;
+- (void)presentCard:(id)card completion:(id)completion;
 @end
 
 @implementation UIViewController
 
-- (void)presentCard:(id)a3 completion:(id)a4
+- (void)presentCard:(id)card completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -19,9 +19,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_100502158(v8, v6, v7);
+  cardCopy = card;
+  selfCopy = self;
+  sub_100502158(cardCopy, v6, v7);
   sub_10001835C(v6);
 }
 

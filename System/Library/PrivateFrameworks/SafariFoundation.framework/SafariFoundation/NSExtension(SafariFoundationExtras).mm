@@ -10,12 +10,12 @@
 
 - (id)sf_applicationRecordForContainingApp
 {
-  v1 = [a1 _plugIn];
-  v2 = [v1 containingUrl];
+  _plugIn = [self _plugIn];
+  containingUrl = [_plugIn containingUrl];
 
-  if (v2)
+  if (containingUrl)
   {
-    v3 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:v2 allowPlaceholder:0 error:0];
+    v3 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:containingUrl allowPlaceholder:0 error:0];
   }
 
   else
@@ -28,10 +28,10 @@
 
 - (id)sf_bundleIdentifierForContainingApp
 {
-  v1 = [a1 sf_applicationRecordForContainingApp];
-  v2 = [v1 bundleIdentifier];
+  sf_applicationRecordForContainingApp = [self sf_applicationRecordForContainingApp];
+  bundleIdentifier = [sf_applicationRecordForContainingApp bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 - (void)_sf_addHandlerForRequestIdentifier:()SafariFoundationExtras withBlock:
@@ -43,31 +43,31 @@
   {
     os_unfair_lock_lock(&registrationLock);
     v18 = 0;
-    v9 = getFinishHandlersForExtension(a1, &v18);
+    v9 = getFinishHandlersForExtension(self, &v18);
     v10 = _Block_copy(v8);
     [v9 setObject:v10 forKeyedSubscript:v6];
 
     if (v18 == 1)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __84__NSExtension_SafariFoundationExtras___sf_addHandlerForRequestIdentifier_withBlock___block_invoke;
       v15[3] = &unk_279B61BC0;
       objc_copyWeak(&v16, &location);
-      [a1 setRequestCompletionBlock:v15];
+      [self setRequestCompletionBlock:v15];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __84__NSExtension_SafariFoundationExtras___sf_addHandlerForRequestIdentifier_withBlock___block_invoke_2;
       v13[3] = &unk_279B61BE8;
       objc_copyWeak(&v14, &location);
-      [a1 setRequestCancellationBlock:v13];
+      [self setRequestCancellationBlock:v13];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __84__NSExtension_SafariFoundationExtras___sf_addHandlerForRequestIdentifier_withBlock___block_invoke_3;
       v11[3] = &unk_279B61C10;
       objc_copyWeak(&v12, &location);
-      [a1 setRequestInterruptionBlock:v11];
+      [self setRequestInterruptionBlock:v11];
       objc_destroyWeak(&v12);
       objc_destroyWeak(&v14);
       objc_destroyWeak(&v16);
@@ -81,9 +81,9 @@
 - (BOOL)_sf_credentialProviderExtensionNeedsToDeclarePasswordSupport
 {
   v2 = objc_alloc(MEMORY[0x277CC1E50]);
-  v3 = [a1 identifier];
+  identifier = [self identifier];
   v14 = 0;
-  v4 = [v2 initWithBundleIdentifier:v3 error:&v14];
+  v4 = [v2 initWithBundleIdentifier:identifier error:&v14];
   v5 = v14;
 
   if (v5)
@@ -106,13 +106,13 @@ LABEL_8:
   }
 
   v8 = qword_26453E550[v7];
-  v9 = [v4 SDKVersion];
-  v10 = [v9 componentsSeparatedByString:@"."];
-  v11 = [v10 firstObject];
+  sDKVersion = [v4 SDKVersion];
+  v10 = [sDKVersion componentsSeparatedByString:@"."];
+  firstObject = [v10 firstObject];
 
-  if ([v11 length])
+  if ([firstObject length])
   {
-    v12 = v8 <= [v11 intValue];
+    v12 = v8 <= [firstObject intValue];
   }
 
   else
@@ -128,7 +128,7 @@ LABEL_9:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26450F000, a2, OS_LOG_TYPE_ERROR, "Failed to get application extension record: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

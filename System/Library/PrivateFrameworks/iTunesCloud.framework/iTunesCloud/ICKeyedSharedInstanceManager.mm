@@ -1,70 +1,70 @@
 @interface ICKeyedSharedInstanceManager
-- (ICKeyedSharedInstanceManager)initWithInstantiationHandler:(id)a3;
-- (id)sharedInstanceForKey:(id)a3;
-- (void)decrementUsageCountForKey:(id)a3;
-- (void)incrementUsageCountForKey:(id)a3;
+- (ICKeyedSharedInstanceManager)initWithInstantiationHandler:(id)handler;
+- (id)sharedInstanceForKey:(id)key;
+- (void)decrementUsageCountForKey:(id)key;
+- (void)incrementUsageCountForKey:(id)key;
 @end
 
 @implementation ICKeyedSharedInstanceManager
 
-- (void)decrementUsageCountForKey:(id)a3
+- (void)decrementUsageCountForKey:(id)key
 {
-  v10 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NSMutableDictionary *)self->_usageCounts objectForKey:v10];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSMutableDictionary *)self->_usageCounts objectForKey:keyCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = v6 - 1;
-  if (v6 == 1)
+  v7 = unsignedIntegerValue - 1;
+  if (unsignedIntegerValue == 1)
   {
-    v9 = [(NSMutableDictionary *)self->_stronglyHeldSharedInstances objectForKey:v10];
-    [(NSMutableDictionary *)self->_stronglyHeldSharedInstances removeObjectForKey:v10];
-    [(NSMapTable *)self->_weaklyHeldSharedInstances setObject:v9 forKey:v10];
-    [(NSMutableDictionary *)self->_usageCounts removeObjectForKey:v10];
+    v9 = [(NSMutableDictionary *)self->_stronglyHeldSharedInstances objectForKey:keyCopy];
+    [(NSMutableDictionary *)self->_stronglyHeldSharedInstances removeObjectForKey:keyCopy];
+    [(NSMapTable *)self->_weaklyHeldSharedInstances setObject:v9 forKey:keyCopy];
+    [(NSMutableDictionary *)self->_usageCounts removeObjectForKey:keyCopy];
   }
 
   else
   {
     usageCounts = self->_usageCounts;
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-    [(NSMutableDictionary *)usageCounts setObject:v9 forKey:v10];
+    [(NSMutableDictionary *)usageCounts setObject:v9 forKey:keyCopy];
   }
 
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)incrementUsageCountForKey:(id)a3
+- (void)incrementUsageCountForKey:(id)key
 {
-  v10 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NSMutableDictionary *)self->_usageCounts objectForKey:v10];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSMutableDictionary *)self->_usageCounts objectForKey:keyCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
-    v7 = [(NSMapTable *)self->_weaklyHeldSharedInstances objectForKey:v10];
-    [(NSMapTable *)self->_weaklyHeldSharedInstances removeObjectForKey:v10];
-    [(NSMutableDictionary *)self->_stronglyHeldSharedInstances setObject:v7 forKey:v10];
+    v7 = [(NSMapTable *)self->_weaklyHeldSharedInstances objectForKey:keyCopy];
+    [(NSMapTable *)self->_weaklyHeldSharedInstances removeObjectForKey:keyCopy];
+    [(NSMutableDictionary *)self->_stronglyHeldSharedInstances setObject:v7 forKey:keyCopy];
   }
 
   usageCounts = self->_usageCounts;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 1];
-  [(NSMutableDictionary *)usageCounts setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [(NSMutableDictionary *)usageCounts setObject:v9 forKey:keyCopy];
 
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)sharedInstanceForKey:(id)a3
+- (id)sharedInstanceForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSMutableDictionary *)self->_stronglyHeldSharedInstances objectForKey:v4];
-  if (v6 || ([(NSMapTable *)self->_weaklyHeldSharedInstances objectForKey:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  v6 = [(NSMutableDictionary *)self->_stronglyHeldSharedInstances objectForKey:keyCopy];
+  if (v6 || ([(NSMapTable *)self->_weaklyHeldSharedInstances objectForKey:keyCopy], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
   }
@@ -72,7 +72,7 @@
   else
   {
     v7 = (*(self->_instantiationHandler + 2))();
-    [(NSMapTable *)self->_weaklyHeldSharedInstances setObject:v7 forKey:v4];
+    [(NSMapTable *)self->_weaklyHeldSharedInstances setObject:v7 forKey:keyCopy];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -81,9 +81,9 @@
   return v7;
 }
 
-- (ICKeyedSharedInstanceManager)initWithInstantiationHandler:(id)a3
+- (ICKeyedSharedInstanceManager)initWithInstantiationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = ICKeyedSharedInstanceManager;
   v5 = [(ICKeyedSharedInstanceManager *)&v16 init];
@@ -91,7 +91,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [handlerCopy copy];
     instantiationHandler = v6->_instantiationHandler;
     v6->_instantiationHandler = v7;
 
@@ -99,9 +99,9 @@
     stronglyHeldSharedInstances = v6->_stronglyHeldSharedInstances;
     v6->_stronglyHeldSharedInstances = v9;
 
-    v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     weaklyHeldSharedInstances = v6->_weaklyHeldSharedInstances;
-    v6->_weaklyHeldSharedInstances = v11;
+    v6->_weaklyHeldSharedInstances = strongToWeakObjectsMapTable;
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     usageCounts = v6->_usageCounts;

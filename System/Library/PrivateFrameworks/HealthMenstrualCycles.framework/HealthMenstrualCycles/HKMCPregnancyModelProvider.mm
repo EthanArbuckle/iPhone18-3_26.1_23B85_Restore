@@ -1,26 +1,26 @@
 @interface HKMCPregnancyModelProvider
-- (HKMCPregnancyModelProvider)initWithHealthStore:(id)a3 startQueryImmediately:(BOOL)a4;
+- (HKMCPregnancyModelProvider)initWithHealthStore:(id)store startQueryImmediately:(BOOL)immediately;
 - (NSString)description;
 - (id)getCurrentPregnancyModel;
-- (void)_handlePregnancyModelQueryResult:(id)a3 error:(id)a4;
+- (void)_handlePregnancyModelQueryResult:(id)result error:(id)error;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 isUserInitiated:(BOOL)a4;
+- (void)registerObserver:(id)observer isUserInitiated:(BOOL)initiated;
 - (void)startQuery;
 @end
 
 @implementation HKMCPregnancyModelProvider
 
-- (HKMCPregnancyModelProvider)initWithHealthStore:(id)a3 startQueryImmediately:(BOOL)a4
+- (HKMCPregnancyModelProvider)initWithHealthStore:(id)store startQueryImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v7 = a3;
+  immediatelyCopy = immediately;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = HKMCPregnancyModelProvider;
   v8 = [(HKMCPregnancyModelProvider *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_healthStore, a3);
+    objc_storeStrong(&v8->_healthStore, store);
     v10 = objc_alloc(MEMORY[0x277CCD738]);
     v11 = [v10 initWithName:@"HKMCPregnancyModelProviderObservers" loggingCategory:*MEMORY[0x277CCC2E8]];
     observers = v9->_observers;
@@ -31,7 +31,7 @@
     v9->_nextPregnancyModelQueryResultBlocks = v13;
 
     v9->_lock._os_unfair_lock_opaque = 0;
-    if (v4)
+    if (immediatelyCopy)
     {
       [(HKMCPregnancyModelProvider *)v9 startQuery];
     }
@@ -42,8 +42,8 @@
 
 - (void)startQuery
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKMCPregnancyModelProvider.m" lineNumber:53 description:@"Query can only be started once"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKMCPregnancyModelProvider.m" lineNumber:53 description:@"Query can only be started once"];
 }
 
 void __40__HKMCPregnancyModelProvider_startQuery__block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -54,15 +54,15 @@ void __40__HKMCPregnancyModelProvider_startQuery__block_invoke(uint64_t a1, uint
   [WeakRetained _handlePregnancyModelQueryResult:v7 error:v6];
 }
 
-- (void)_handlePregnancyModelQueryResult:(id)a3 error:(id)a4
+- (void)_handlePregnancyModelQueryResult:(id)result error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  if (v7)
+  if (resultCopy)
   {
-    objc_storeStrong(&self->_lastPregnancyModel, a3);
+    objc_storeStrong(&self->_lastPregnancyModel, result);
     lastError = self->_lastError;
     self->_lastError = 0;
 
@@ -71,7 +71,7 @@ void __40__HKMCPregnancyModelProvider_startQuery__block_invoke(uint64_t a1, uint
     v25[1] = 3221225472;
     v25[2] = __69__HKMCPregnancyModelProvider__handlePregnancyModelQueryResult_error___block_invoke;
     v25[3] = &unk_2796D4C48;
-    v26 = v7;
+    v26 = resultCopy;
     [(HKObserverSet *)observers notifyObservers:v25];
     v11 = v26;
 LABEL_3:
@@ -83,14 +83,14 @@ LABEL_3:
   v12 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
   {
-    [(HKMCPregnancyModelProvider *)v12 _handlePregnancyModelQueryResult:v8 error:?];
+    [(HKMCPregnancyModelProvider *)v12 _handlePregnancyModelQueryResult:errorCopy error:?];
   }
 
   if (!self->_lastPregnancyModel)
   {
-    if (v8)
+    if (errorCopy)
     {
-      v20 = v8;
+      v20 = errorCopy;
     }
 
     else
@@ -189,10 +189,10 @@ LABEL_7:
   return v3;
 }
 
-- (void)registerObserver:(id)a3 isUserInitiated:(BOOL)a4
+- (void)registerObserver:(id)observer isUserInitiated:(BOOL)initiated
 {
-  v5 = a3;
-  [(HKObserverSet *)self->_observers registerObserver:v5];
+  observerCopy = observer;
+  [(HKObserverSet *)self->_observers registerObserver:observerCopy];
   os_unfair_lock_lock(&self->_lock);
   v6 = [(HKMCPregnancyModel *)self->_lastPregnancyModel copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -204,7 +204,7 @@ LABEL_7:
     v8[2] = __63__HKMCPregnancyModelProvider_registerObserver_isUserInitiated___block_invoke;
     v8[3] = &unk_2796D4C48;
     v9 = v6;
-    [(HKObserverSet *)observers notifyObserver:v5 handler:v8];
+    [(HKObserverSet *)observers notifyObserver:observerCopy handler:v8];
   }
 }
 

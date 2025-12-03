@@ -1,26 +1,26 @@
 @interface ADDensifiedLiDARFocusAssistPipeline
 - (ADDensifiedLiDARFocusAssistPipeline)init;
-- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)a3;
-- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)a3 andParameters:(id)a4;
+- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)engine;
+- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)engine andParameters:(id)parameters;
 - (CGRect)expectedColorSensorROI;
 - (CGRect)validDepthRect;
 - (int64_t)getTeleAfPlatformType;
-- (int64_t)postProcessUncertainty:(__CVBuffer *)a3 outputConfidence:(__CVBuffer *)a4 confidenceUnits:(unint64_t)a5;
-- (int64_t)projectLidarPoints:(id)a3 crop:(CGRect)a4 projectedPointsBuffer:(__CVBuffer *)a5;
-- (uint64_t)changePointCloudPOV:(double)a3 targetCamera:(double)a4 lidarToCameraTransform:(uint64_t)a5 outputPointCloud:(uint64_t)a6;
+- (int64_t)postProcessUncertainty:(__CVBuffer *)uncertainty outputConfidence:(__CVBuffer *)confidence confidenceUnits:(unint64_t)units;
+- (int64_t)projectLidarPoints:(id)points crop:(CGRect)crop projectedPointsBuffer:(__CVBuffer *)buffer;
+- (uint64_t)changePointCloudPOV:(double)v targetCamera:(double)camera lidarToCameraTransform:(uint64_t)transform outputPointCloud:(uint64_t)cloud;
 @end
 
 @implementation ADDensifiedLiDARFocusAssistPipeline
 
-- (int64_t)postProcessUncertainty:(__CVBuffer *)a3 outputConfidence:(__CVBuffer *)a4 confidenceUnits:(unint64_t)a5
+- (int64_t)postProcessUncertainty:(__CVBuffer *)uncertainty outputConfidence:(__CVBuffer *)confidence confidenceUnits:(unint64_t)units
 {
   kdebug_trace();
-  v8 = [ADUtils postProcessConfidence:a3 confidenceOutput:a4 rawConfidenceUnits:3 outConfidenceUnits:a5 confidenceLevelRanges:0];
+  v8 = [ADUtils postProcessConfidence:uncertainty confidenceOutput:confidence rawConfidenceUnits:3 outConfidenceUnits:units confidenceLevelRanges:0];
   kdebug_trace();
   return v8;
 }
 
-- (uint64_t)changePointCloudPOV:(double)a3 targetCamera:(double)a4 lidarToCameraTransform:(uint64_t)a5 outputPointCloud:(uint64_t)a6
+- (uint64_t)changePointCloudPOV:(double)v targetCamera:(double)camera lidarToCameraTransform:(uint64_t)transform outputPointCloud:(uint64_t)cloud
 {
   v11 = a7;
   v12 = a8;
@@ -31,7 +31,7 @@
   kdebug_trace();
   if (v11 && v13)
   {
-    v14 = [v11 pointCloudByChangingPointOfViewByTransform:v12 to:{a1, a2, a3, a4}];
+    v14 = [v11 pointCloudByChangingPointOfViewByTransform:v12 to:{self, a2, v, camera}];
     if (v14)
     {
       [v13 appendPointsFrom:v14];
@@ -66,20 +66,20 @@
   return v15;
 }
 
-- (int64_t)projectLidarPoints:(id)a3 crop:(CGRect)a4 projectedPointsBuffer:(__CVBuffer *)a5
+- (int64_t)projectLidarPoints:(id)points crop:(CGRect)crop projectedPointsBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  pointsCopy = points;
   v18 = 335683544;
   v19 = 0u;
   v20 = 0u;
   kdebug_trace();
-  if (a5)
+  if (buffer)
   {
-    if (v11)
+    if (pointsCopy)
     {
       v21.origin.x = x;
       v21.origin.y = y;
@@ -87,8 +87,8 @@
       v21.size.height = height;
       if (!CGRectIsEmpty(v21))
       {
-        v15 = [(ADDensifiedLiDARFocusAssistPipelineParameters *)self->_pipelineParameters pointCloudFilter];
-        v14 = [v11 projectJasperPointsFilteredBy:v15 croppedBy:0 rotatedBy:a5 andScaledInto:{x, y, width, height}];
+        pointCloudFilter = [(ADDensifiedLiDARFocusAssistPipelineParameters *)self->_pipelineParameters pointCloudFilter];
+        v14 = [pointsCopy projectJasperPointsFilteredBy:pointCloudFilter croppedBy:0 rotatedBy:buffer andScaledInto:{x, y, width, height}];
 
         goto LABEL_11;
       }
@@ -129,9 +129,9 @@ LABEL_11:
   return v14;
 }
 
-- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)a3 andParameters:(id)a4
+- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)engine andParameters:(id)parameters
 {
-  v7 = a4;
+  parametersCopy = parameters;
   v19 = 335680992;
   v20 = 0u;
   v21 = 0u;
@@ -142,10 +142,10 @@ LABEL_11:
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pipelineParameters, a4);
-    v10 = [(ADDensifiedLiDARFocusAssistPipeline *)v9 getTeleAfPlatformType];
-    v9->_teleAfType = v10;
-    if (v10 == 1)
+    objc_storeStrong(&v8->_pipelineParameters, parameters);
+    getTeleAfPlatformType = [(ADDensifiedLiDARFocusAssistPipeline *)v9 getTeleAfPlatformType];
+    v9->_teleAfType = getTeleAfPlatformType;
+    if (getTeleAfPlatformType == 1)
     {
       v11 = @"TeleAFMemphis";
     }
@@ -155,7 +155,7 @@ LABEL_11:
       v11 = @"TeleAFNet";
     }
 
-    v12 = [ADNetworkProvider providerForNetwork:v11 espressoEngine:a3];
+    v12 = [ADNetworkProvider providerForNetwork:v11 espressoEngine:engine];
     networkProvider = v9->_networkProvider;
     v9->_networkProvider = v12;
 
@@ -165,7 +165,7 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v14 = [[ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor alloc] initWithNetworkProvider:v9->_networkProvider espressoEngine:a3];
+    v14 = [[ADEspressoDensifiedLiDARFocusAssistInferenceDescriptor alloc] initWithNetworkProvider:v9->_networkProvider espressoEngine:engine];
     inferenceDesc = v9->_inferenceDesc;
     v9->_inferenceDesc = v14;
   }
@@ -179,29 +179,29 @@ LABEL_9:
 
 - (int64_t)getTeleAfPlatformType
 {
-  v3 = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
-  v4 = [v3 deviceName];
-  v5 = [v4 uppercaseString];
-  v6 = [v5 hasPrefix:@"D8"];
+  pipelineParameters = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
+  deviceName = [pipelineParameters deviceName];
+  uppercaseString = [deviceName uppercaseString];
+  v6 = [uppercaseString hasPrefix:@"D8"];
 
   if (v6)
   {
     return 0;
   }
 
-  v8 = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
-  v9 = [v8 deviceName];
-  v10 = [v9 uppercaseString];
-  if ([v10 hasPrefix:@"V53"])
+  pipelineParameters2 = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
+  deviceName2 = [pipelineParameters2 deviceName];
+  uppercaseString2 = [deviceName2 uppercaseString];
+  if ([uppercaseString2 hasPrefix:@"V53"])
   {
   }
 
   else
   {
-    v11 = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
-    v12 = [v11 deviceName];
-    v13 = [v12 uppercaseString];
-    v14 = [v13 hasPrefix:@"V54"];
+    pipelineParameters3 = [(ADDensifiedLiDARFocusAssistPipeline *)self pipelineParameters];
+    deviceName3 = [pipelineParameters3 deviceName];
+    uppercaseString3 = [deviceName3 uppercaseString];
+    v14 = [uppercaseString3 hasPrefix:@"V54"];
 
     if (!v14)
     {
@@ -258,10 +258,10 @@ LABEL_9:
   return result;
 }
 
-- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)a3
+- (ADDensifiedLiDARFocusAssistPipeline)initWithEspressoEngine:(unint64_t)engine
 {
   v5 = objc_opt_new();
-  v6 = [(ADDensifiedLiDARFocusAssistPipeline *)self initWithEspressoEngine:a3 andParameters:v5];
+  v6 = [(ADDensifiedLiDARFocusAssistPipeline *)self initWithEspressoEngine:engine andParameters:v5];
 
   return v6;
 }

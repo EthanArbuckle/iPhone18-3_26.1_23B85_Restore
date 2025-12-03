@@ -1,12 +1,12 @@
 @interface SUClientDispatch
-+ (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4;
-+ (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4;
-+ (BOOL)hidePreviewOverlayAnimated:(BOOL)a3;
++ (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated;
++ (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated;
++ (BOOL)hidePreviewOverlayAnimated:(BOOL)animated;
 + (BOOL)isTabBarControllerLoaded;
-+ (BOOL)matchesClientApplication:(id)a3;
-+ (BOOL)presentOverlayBackgroundViewController:(id)a3;
-+ (BOOL)sendActionForDialog:(id)a3 button:(id)a4;
-+ (BOOL)showPreviewOverlayAnimated:(BOOL)a3;
++ (BOOL)matchesClientApplication:(id)application;
++ (BOOL)presentOverlayBackgroundViewController:(id)controller;
++ (BOOL)sendActionForDialog:(id)dialog button:(id)button;
++ (BOOL)showPreviewOverlayAnimated:(BOOL)animated;
 + (BOOL)wasLaunchedFromLibrary;
 + (id)clientInterface;
 + (id)exitStoreButtonTitle;
@@ -14,12 +14,12 @@
 + (id)imagePool;
 + (id)newScriptInterface;
 + (id)overlayBackgroundViewController;
-+ (id)overlayConfigurationForStorePage:(id)a3;
++ (id)overlayConfigurationForStorePage:(id)page;
 + (id)scriptExecutionContext;
 + (id)tabBarController;
-+ (void)composeEmailWithSubject:(id)a3 body:(id)a4;
++ (void)composeEmailWithSubject:(id)subject body:(id)body;
 + (void)dismissOverlayBackgroundViewController;
-+ (void)setClientBridge:(id)a3;
++ (void)setClientBridge:(id)bridge;
 @end
 
 @implementation SUClientDispatch
@@ -39,7 +39,7 @@
   return [v2 clientInterface];
 }
 
-+ (void)composeEmailWithSubject:(id)a3 body:(id)a4
++ (void)composeEmailWithSubject:(id)subject body:(id)body
 {
   v6 = __LegacyBridge;
   if (!__LegacyBridge)
@@ -51,12 +51,12 @@
     }
   }
 
-  [(SUStoreController *)v6 composeEmailWithSubject:a3 body:a4];
+  [(SUStoreController *)v6 composeEmailWithSubject:subject body:body];
 }
 
-+ (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4
++ (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = __LegacyBridge;
   if (!__LegacyBridge)
   {
@@ -67,7 +67,7 @@
     }
   }
 
-  return [v6 composeReviewWithViewController:a3 animated:v4];
+  return [v6 composeReviewWithViewController:controller animated:animatedCopy];
 }
 
 + (void)dismissOverlayBackgroundViewController
@@ -85,21 +85,21 @@
   [(SUStoreController *)v2 dismissOverlayBackgroundViewController];
 }
 
-+ (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4
++ (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = __LegacyBridge;
   if (__LegacyBridge || (v6 = +[SUClient sharedClient]) != 0)
   {
 
-    return [v6 enterAccountFlowWithViewController:a3 animated:v4];
+    return [v6 enterAccountFlowWithViewController:controller animated:animatedCopy];
   }
 
   else
   {
     v8 = +[SUClientController sharedController];
 
-    return [v8 presentAccountViewController:a3 animated:v4];
+    return [v8 presentAccountViewController:controller animated:animatedCopy];
   }
 }
 
@@ -120,12 +120,12 @@
   return [v2 exitStoreButtonTitle];
 }
 
-+ (BOOL)hidePreviewOverlayAnimated:(BOOL)a3
++ (BOOL)hidePreviewOverlayAnimated:(BOOL)animated
 {
   v3 = __LegacyBridge;
   if (__LegacyBridge)
   {
-    [__LegacyBridge hidePreviewOverlayAnimated:a3];
+    [__LegacyBridge hidePreviewOverlayAnimated:animated];
   }
 
   return v3 != 0;
@@ -182,25 +182,25 @@
   return [(SUStoreController *)v3 isTabBarControllerLoaded];
 }
 
-+ (BOOL)matchesClientApplication:(id)a3
++ (BOOL)matchesClientApplication:(id)application
 {
   if (__LegacyBridge)
   {
-    v4 = [__LegacyBridge clientInterface];
+    clientInterface = [__LegacyBridge clientInterface];
 LABEL_3:
-    v5 = [v4 clientIdentifier];
+    clientIdentifier = [clientInterface clientIdentifier];
 
-    return [v5 isEqualToString:a3];
+    return [clientIdentifier isEqualToString:application];
   }
 
   v7 = +[SUStoreController sharedInstance];
   if (!v7)
   {
-    v4 = +[SUClientController sharedController];
+    clientInterface = +[SUClientController sharedController];
     goto LABEL_3;
   }
 
-  return [(SUStoreController *)v7 matchesClientApplication:a3];
+  return [(SUStoreController *)v7 matchesClientApplication:application];
 }
 
 + (id)newScriptInterface
@@ -238,7 +238,7 @@ LABEL_3:
   return [(SUStoreController *)v2 overlayBackgroundViewController];
 }
 
-+ (id)overlayConfigurationForStorePage:(id)a3
++ (id)overlayConfigurationForStorePage:(id)page
 {
   if (__LegacyBridge)
   {
@@ -251,10 +251,10 @@ LABEL_3:
     v5 = +[SUClientController sharedController];
   }
 
-  return [(SUStoreController *)v5 overlayConfigurationForStorePage:a3];
+  return [(SUStoreController *)v5 overlayConfigurationForStorePage:page];
 }
 
-+ (BOOL)presentOverlayBackgroundViewController:(id)a3
++ (BOOL)presentOverlayBackgroundViewController:(id)controller
 {
   v4 = __LegacyBridge;
   if (!__LegacyBridge)
@@ -266,7 +266,7 @@ LABEL_3:
     }
   }
 
-  return [(SUStoreController *)v4 presentOverlayBackgroundViewController:a3];
+  return [(SUStoreController *)v4 presentOverlayBackgroundViewController:controller];
 }
 
 + (id)scriptExecutionContext
@@ -285,14 +285,14 @@ LABEL_3:
   return [v3 scriptExecutionContext];
 }
 
-+ (BOOL)sendActionForDialog:(id)a3 button:(id)a4
++ (BOOL)sendActionForDialog:(id)dialog button:(id)button
 {
   v6 = __LegacyBridge;
   if (__LegacyBridge)
   {
 LABEL_2:
 
-    return [v6 performActionForDialog:a3 button:a4];
+    return [v6 performActionForDialog:dialog button:button];
   }
 
   v8 = +[SUClient sharedClient];
@@ -302,24 +302,24 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  return [v8 sendActionForDialog:a3 button:a4];
+  return [v8 sendActionForDialog:dialog button:button];
 }
 
-+ (void)setClientBridge:(id)a3
++ (void)setClientBridge:(id)bridge
 {
-  if (__LegacyBridge != a3)
+  if (__LegacyBridge != bridge)
   {
 
-    __LegacyBridge = a3;
+    __LegacyBridge = bridge;
   }
 }
 
-+ (BOOL)showPreviewOverlayAnimated:(BOOL)a3
++ (BOOL)showPreviewOverlayAnimated:(BOOL)animated
 {
   v3 = __LegacyBridge;
   if (__LegacyBridge)
   {
-    [__LegacyBridge showPreviewOverlayAnimated:a3];
+    [__LegacyBridge showPreviewOverlayAnimated:animated];
   }
 
   return v3 != 0;

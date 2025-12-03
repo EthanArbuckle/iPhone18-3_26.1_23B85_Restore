@@ -1,5 +1,5 @@
 @interface EMDEModelWrapper
-- (BOOL)prepareInputsForText:(id)a3 error:(id *)a4;
+- (BOOL)prepareInputsForText:(id)text error:(id *)error;
 - (__CFArray)runEncoderForInput:()vector<float;
 - (basic_string<char,)allowedHelperWords;
 - (basic_string<char,)inputStringLowercased;
@@ -9,20 +9,20 @@
 - (id)runBeamInferenceForTitle;
 - (vector<float,)inputTokens;
 - (void)dealloc;
-- (void)loadConfigFromFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5;
+- (void)loadConfigFromFile:(id)file assetFolderPath:(id)path error:(id *)error;
 - (void)setInputTokens:()vector<float;
 @end
 
 @implementation EMDEModelWrapper
 
-- (void)loadConfigFromFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5
+- (void)loadConfigFromFile:(id)file assetFolderPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  fileCopy = file;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (fileCopy && pathCopy)
   {
-    [EMDEUtils loadConfigFromFile:v8 assetFolderPath:v9 error:a5];
+    [EMDEUtils loadConfigFromFile:fileCopy assetFolderPath:pathCopy error:error];
     self->_lexicon = 0;
     v11 = +[EMDEUtils config];
     v12 = [v11 objectForKeyedSubscript:@"EMDE_DISABLE_OVS_VALIDATION"];
@@ -71,25 +71,25 @@
       sub_10008BB98();
     }
 
-    if (a5)
+    if (error)
     {
       v22 = NSLocalizedDescriptionKey;
       v16 = [NSString stringWithFormat:@"Found nil in input parameters for loadConfigFromFile"];
       v23 = v16;
       v17 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
-      *a5 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v17];
+      *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v17];
     }
   }
 
 LABEL_17:
 }
 
-- (BOOL)prepareInputsForText:(id)a3 error:(id *)a4
+- (BOOL)prepareInputsForText:(id)text error:(id *)error
 {
-  v6 = a3;
-  v136 = v6;
-  if (!v6)
+  textCopy = text;
+  v136 = textCopy;
+  if (!textCopy)
   {
     v13 = modelLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@ LABEL_17:
       sub_10008BC5C();
     }
 
-    if (!a4)
+    if (!error)
     {
       v16 = 0;
       goto LABEL_212;
@@ -109,11 +109,11 @@ LABEL_17:
     v15 = [NSDictionary dictionaryWithObjects:&v185 forKeys:&v184 count:1];
 
     [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v15];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_211;
   }
 
-  v7 = [EMDEUtils preProcessInputMessage:v6];
+  v7 = [EMDEUtils preProcessInputMessage:textCopy];
   v143 = [v7 mutableCopy];
 
   v8 = +[EMDEUtils config];
@@ -122,9 +122,9 @@ LABEL_17:
   {
     v10 = +[EMDEUtils config];
     v11 = [v10 objectForKeyedSubscript:@"EMDE_TOKENISER_VERSION"];
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
 
-    if (v12 != 1)
+    if (intValue != 1)
     {
       goto LABEL_11;
     }
@@ -155,7 +155,7 @@ LABEL_11:
   {
     v20 = +[EMDEUtils config];
     v21 = [v20 objectForKeyedSubscript:@"EMDE_DISABLE_OVS_VALIDATION"];
-    v148 = self;
+    selfCopy = self;
     if (v21)
     {
       v22 = +[EMDEUtils config];
@@ -177,8 +177,8 @@ LABEL_11:
     v170 = 0u;
     v167 = 0u;
     v168 = 0u;
-    v28 = [v27 reverseObjectEnumerator];
-    v29 = [v28 countByEnumeratingWithState:&v167 objects:v181 count:16];
+    reverseObjectEnumerator = [v27 reverseObjectEnumerator];
+    v29 = [reverseObjectEnumerator countByEnumeratingWithState:&v167 objects:v181 count:16];
     if (v29)
     {
       v30 = *v168;
@@ -188,24 +188,24 @@ LABEL_11:
         {
           if (*v168 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v32 = [*(*(&v167 + 1) + 8 * i) rangeValue];
-          [v143 replaceCharactersInRange:v32 withString:{v33, &stru_1000AF768}];
+          rangeValue = [*(*(&v167 + 1) + 8 * i) rangeValue];
+          [v143 replaceCharactersInRange:rangeValue withString:{v33, &stru_1000AF768}];
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v167 objects:v181 count:16];
+        v29 = [reverseObjectEnumerator countByEnumeratingWithState:&v167 objects:v181 count:16];
       }
 
       while (v29);
     }
 
-    self = v148;
+    self = selfCopy;
 LABEL_31:
-    v34 = [v143 lowercaseString];
-    v35 = v34;
-    sub_100009A74(buf, [v34 UTF8String]);
+    lowercaseString = [v143 lowercaseString];
+    v35 = lowercaseString;
+    sub_100009A74(buf, [lowercaseString UTF8String]);
     if (*(&self->_inputStringLowercased.__rep_.__l + 23) < 0)
     {
       operator delete(self->_inputStringLowercased.__rep_.__l.__data_);
@@ -258,9 +258,9 @@ LABEL_31:
               if ([v46 isEqualToString:@"NSTextCheckingTypeDate"])
               {
                 v47 = [v45 objectForKeyedSubscript:@"containsContextualWords"];
-                v48 = [v47 BOOLValue];
+                bOOLValue = [v47 BOOLValue];
 
-                if ((v48 & 1) == 0)
+                if ((bOOLValue & 1) == 0)
                 {
                   v49 = modelLogHandle();
                   if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
@@ -273,13 +273,13 @@ LABEL_31:
 
                   v51 = [v45 objectForKeyedSubscript:@"range"];
                   v52 = [v51 objectForKeyedSubscript:@"start"];
-                  v53 = [v52 intValue];
+                  intValue2 = [v52 intValue];
 
                   v54 = [v45 objectForKeyedSubscript:@"range"];
                   v55 = [v54 objectForKeyedSubscript:@"end"];
                   LODWORD(v52) = [v55 intValue];
 
-                  [v143 replaceCharactersInRange:v53 withString:{v52 - v53, &stru_1000AF768}];
+                  [v143 replaceCharactersInRange:intValue2 withString:{v52 - intValue2, &stru_1000AF768}];
                 }
               }
 
@@ -295,9 +295,9 @@ LABEL_31:
         }
       }
 
-      v56 = [v143 lowercaseString];
-      v57 = v56;
-      sub_100009A74(buf, [v56 UTF8String]);
+      lowercaseString2 = [v143 lowercaseString];
+      v57 = lowercaseString2;
+      sub_100009A74(buf, [lowercaseString2 UTF8String]);
       if (*(&self->_inputStringLowercasedForTitles.__rep_.__l + 23) < 0)
       {
         operator delete(__s->__rep_.__l.__data_);
@@ -369,11 +369,11 @@ LABEL_31:
         }
 
         sub_10000C4D4(&__dst.__r_.__value_.__l.__data_, &v159, v173);
-        v68 = *(&v148->_inputStringLowercasedForTitles.__rep_.__l + 23);
+        v68 = *(&selfCopy->_inputStringLowercasedForTitles.__rep_.__l + 23);
         if (v68 < 0)
         {
-          data = v148->_inputStringLowercasedForTitles.__rep_.__l.__data_;
-          v68 = v148->_inputStringLowercasedForTitles.__rep_.__l.__size_;
+          data = selfCopy->_inputStringLowercasedForTitles.__rep_.__l.__data_;
+          v68 = selfCopy->_inputStringLowercasedForTitles.__rep_.__l.__size_;
         }
 
         else
@@ -555,7 +555,7 @@ LABEL_93:
 LABEL_118:
       __dst.__r_.__value_.__r.__words[0] = &__p;
       sub_10000CCE0(&__dst);
-      self = v148;
+      self = selfCopy;
     }
 
     std::string::operator=(&self->_allowedHelperWords, &__str);
@@ -687,11 +687,11 @@ LABEL_118:
             }
 
             sub_10000C4D4(v173, &__dst.__r_.__value_.__l.__data_, &v153);
-            v112 = *(&v148->_inputStringLowercasedForTitles.__rep_.__l + 23);
+            v112 = *(&selfCopy->_inputStringLowercasedForTitles.__rep_.__l + 23);
             if (v112 < 0)
             {
-              v113 = v148->_inputStringLowercasedForTitles.__rep_.__l.__data_;
-              v112 = v148->_inputStringLowercasedForTitles.__rep_.__l.__size_;
+              v113 = selfCopy->_inputStringLowercasedForTitles.__rep_.__l.__data_;
+              v112 = selfCopy->_inputStringLowercasedForTitles.__rep_.__l.__size_;
             }
 
             else
@@ -834,7 +834,7 @@ LABEL_166:
                     v134 = v173[1];
                   }
 
-                  std::string::append(&v148->_allowedHelperWords, v133, v134);
+                  std::string::append(&selfCopy->_allowedHelperWords, v133, v134);
                   if (SHIBYTE(v174) < 0)
                   {
                     operator delete(v173[0]);
@@ -913,12 +913,12 @@ LABEL_203:
     sub_10008BC1C();
   }
 
-  if (a4)
+  if (error)
   {
     v182 = NSLocalizedDescriptionKey;
     v183 = @"Tokenisation failed.";
     v26 = [NSDictionary dictionaryWithObjects:&v183 forKeys:&v182 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v26];
+    *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v26];
   }
 
   v16 = 0;
@@ -988,17 +988,17 @@ LABEL_212:
 LABEL_9:
   v23 = +[EMDEUtils config];
   v24 = [v23 objectForKeyedSubscript:@"EMDE_MAX_INPUT_LEN"];
-  v25 = [v24 intValue];
+  intValue = [v24 intValue];
   v26 = +[EMDEUtils config];
   v27 = [v26 objectForKeyedSubscript:@"EMDE_DATE_DECODER_LEN"];
-  v28 = [v27 intValue];
+  intValue2 = [v27 intValue];
 
   v30 = v66;
   v31 = (v66 - *buf) >> 2;
-  if (v31 > (v25 - v28))
+  if (v31 > (intValue - intValue2))
   {
-    v29 = v25 - v28;
-    if (*buf + 4 * (v25 - v28) != v66)
+    v29 = intValue - intValue2;
+    if (*buf + 4 * (intValue - intValue2) != v66)
     {
       v30 = *buf + 4 * v29;
       v66 = v30;
@@ -1023,15 +1023,15 @@ LABEL_9:
     v34 = v66;
     v59 = +[EMDEUtils config];
     v56 = [v59 objectForKeyedSubscript:@"EMDE_BEAM_WIDTH"];
-    v35 = [v56 intValue];
+    intValue3 = [v56 intValue];
     v58 = +[EMDEUtils config];
     v57 = [v58 objectForKeyedSubscript:@"EMDE_DATE_LENGTH_PENALTY"];
     [v57 floatValue];
     v37 = v36;
     v54 = +[EMDEUtils config];
     [v54 objectForKeyedSubscript:@"EMDE_DATE_DECODER_LEN"];
-    v55 = v38 = v35;
-    v39 = [v55 intValue];
+    v55 = v38 = intValue3;
+    intValue4 = [v55 intValue];
     v40 = +[EMDEUtils config];
     v41 = [v40 objectForKeyedSubscript:@"EMDE_DEFAULT_TOKEN_THRESHOLD"];
     [v41 floatValue];
@@ -1098,7 +1098,7 @@ LABEL_9:
     v50->__r_.__value_.__r.__words[2] = 0;
     v50->__r_.__value_.__r.__words[0] = 0;
     LODWORD(v51) = v37;
-    v52 = [(EMDEModelWrapper *)self runBeamDecodingOnStates:v32 startPosition:(v34 - v33) >> 2 beamWidth:v38 lengthPenalty:v39 maxDecoderLen:v43 tokenThreshold:v60 allowedWords:*&v51];
+    v52 = [(EMDEModelWrapper *)self runBeamDecodingOnStates:v32 startPosition:(v34 - v33) >> 2 beamWidth:v38 lengthPenalty:intValue4 maxDecoderLen:v43 tokenThreshold:v60 allowedWords:*&v51];
     if (SHIBYTE(v61) < 0)
     {
       operator delete(v60[0]);
@@ -1183,17 +1183,17 @@ LABEL_9:
 LABEL_9:
   v23 = +[EMDEUtils config];
   v24 = [v23 objectForKeyedSubscript:@"EMDE_MAX_INPUT_LEN"];
-  v25 = [v24 intValue];
+  intValue = [v24 intValue];
   v26 = +[EMDEUtils config];
   v27 = [v26 objectForKeyedSubscript:@"EMDE_TITLE_DECODER_LEN"];
-  v28 = [v27 intValue];
+  intValue2 = [v27 intValue];
 
   v30 = v74;
   v31 = (v74 - *buf) >> 2;
-  if (v31 > (v25 - v28))
+  if (v31 > (intValue - intValue2))
   {
-    v29 = v25 - v28;
-    if (*buf + 4 * (v25 - v28) != v74)
+    v29 = intValue - intValue2;
+    if (*buf + 4 * (intValue - intValue2) != v74)
     {
       v30 = *buf + 4 * v29;
       v74 = v30;
@@ -1218,14 +1218,14 @@ LABEL_9:
     v34 = v74;
     v67 = +[EMDEUtils config];
     v64 = [v67 objectForKeyedSubscript:@"EMDE_BEAM_WIDTH"];
-    v35 = [v64 intValue];
+    intValue3 = [v64 intValue];
     v66 = +[EMDEUtils config];
     v63 = [v66 objectForKeyedSubscript:@"EMDE_TITLE_LENGTH_PENALTY"];
     [v63 floatValue];
     v37 = v36;
     v65 = +[EMDEUtils config];
     v62 = [v65 objectForKeyedSubscript:@"EMDE_TITLE_DECODER_LEN"];
-    v38 = [v62 intValue];
+    intValue4 = [v62 intValue];
     v39 = +[EMDEUtils config];
     v40 = [v39 objectForKeyedSubscript:@"EMDE_DEFAULT_TOKEN_THRESHOLD"];
     [v40 floatValue];
@@ -1292,7 +1292,7 @@ LABEL_9:
     v49->__r_.__value_.__r.__words[2] = 0;
     v49->__r_.__value_.__r.__words[0] = 0;
     LODWORD(v50) = v37;
-    v51 = [(EMDEModelWrapper *)self runBeamDecodingOnStates:v32 startPosition:(v34 - v33) >> 2 beamWidth:v35 lengthPenalty:v38 maxDecoderLen:v42 tokenThreshold:v68 allowedWords:*&v50];
+    v51 = [(EMDEModelWrapper *)self runBeamDecodingOnStates:v32 startPosition:(v34 - v33) >> 2 beamWidth:intValue3 lengthPenalty:intValue4 maxDecoderLen:v42 tokenThreshold:v68 allowedWords:*&v50];
     if (SHIBYTE(v69) < 0)
     {
       operator delete(v68[0]);

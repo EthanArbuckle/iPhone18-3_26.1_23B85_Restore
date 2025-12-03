@@ -1,37 +1,37 @@
 @interface PLBatteryUIGraphLastChargeCell
 + (BOOL)isChargeTimeEnabled;
 + (id)dateComponentFormatter;
-- (PLBatteryUIGraphLastChargeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PLBatteryUIGraphLastChargeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (PLBatteryUITapDelegate)delegate;
 - (id)getLabelTextForSlowCharger;
-- (id)getLabelWithTitle:(id)a3 withRGB:(id)a4 withFont:(id)a5 andTextAlignment:(int64_t)a6;
-- (id)timeEstimateStringWithChargeTarget:(int)a3;
+- (id)getLabelWithTitle:(id)title withRGB:(id)b withFont:(id)font andTextAlignment:(int64_t)alignment;
+- (id)timeEstimateStringWithChargeTarget:(int)target;
 - (void)dealloc;
-- (void)handleTapGesture:(id)a3;
-- (void)infoSymbolTapped:(id)a3;
+- (void)handleTapGesture:(id)gesture;
+- (void)infoSymbolTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)populatePausedChargingStrings:(id)a3 percentLabel:(id)a4 lastChargeText:(id)a5 lastChargeDate:(id)a6;
+- (void)populatePausedChargingStrings:(id)strings percentLabel:(id)label lastChargeText:(id)text lastChargeDate:(id)date;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
-- (void)updateLabelsWithSpecifier:(id)a3;
+- (void)updateLabelsWithSpecifier:(id)specifier;
 @end
 
 @implementation PLBatteryUIGraphLastChargeCell
 
-- (id)getLabelWithTitle:(id)a3 withRGB:(id)a4 withFont:(id)a5 andTextAlignment:(int64_t)a6
+- (id)getLabelWithTitle:(id)title withRGB:(id)b withFont:(id)font andTextAlignment:(int64_t)alignment
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  fontCopy = font;
+  bCopy = b;
+  titleCopy = title;
   v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v12 setFont:v9];
+  [v12 setFont:fontCopy];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v12 setAccessibilityIdentifier:v11];
+  [v12 setAccessibilityIdentifier:titleCopy];
 
-  [v12 setTextColor:v10];
-  [v12 setTextAlignment:a6];
+  [v12 setTextColor:bCopy];
+  [v12 setTextAlignment:alignment];
   v13 = +[UIColor clearColor];
   [v12 setBackgroundColor:v13];
 
@@ -42,17 +42,17 @@
   return v12;
 }
 
-- (PLBatteryUIGraphLastChargeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLBatteryUIGraphLastChargeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  specifierCopy = specifier;
   v28.receiver = self;
   v28.super_class = PLBatteryUIGraphLastChargeCell;
-  v10 = [(PLBatteryUIGraphLastChargeCell *)&v28 initWithStyle:a3 reuseIdentifier:v8 specifier:v9];
+  v10 = [(PLBatteryUIGraphLastChargeCell *)&v28 initWithStyle:style reuseIdentifier:identifierCopy specifier:specifierCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [(PLBatteryUIGraphLastChargeCell *)v10 contentView];
+    contentView = [(PLBatteryUIGraphLastChargeCell *)v10 contentView];
     v13 = +[UIColor systemGrayColor];
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     v15 = [(PLBatteryUIGraphLastChargeCell *)v11 getLabelWithTitle:&stru_16CDB8 withRGB:v13 withFont:v14 andTextAlignment:+[PLBatteryUIUtilities localizedLeftTextAlignment]];
@@ -65,15 +65,15 @@
     lastChargeTitleLabel = v11->_lastChargeTitleLabel;
     v11->_lastChargeTitleLabel = v19;
 
-    [v12 addSubview:v11->_lastChargeTitleLabel];
-    [v12 addSubview:v11->_timeStrLabel];
+    [contentView addSubview:v11->_lastChargeTitleLabel];
+    [contentView addSubview:v11->_timeStrLabel];
     [(PLBatteryUIGraphLastChargeCell *)v11 setSeparatorInset:0.0, 0.0, 0.0, 0.0];
     v29[0] = v11->_lastChargeTitleLabel;
     v29[1] = v11->_timeStrLabel;
     v21 = [NSArray arrayWithObjects:v29 count:2];
-    [v12 setAccessibilityElements:v21];
+    [contentView setAccessibilityElements:v21];
 
-    [(PLBatteryUIGraphLastChargeCell *)v11 refreshCellContentsWithSpecifier:v9];
+    [(PLBatteryUIGraphLastChargeCell *)v11 refreshCellContentsWithSpecifier:specifierCopy];
     v22 = [[UITapGestureRecognizer alloc] initWithTarget:v11 action:"handleTapGesture:"];
     [v22 setNumberOfTapsRequired:1];
     [(PLBatteryUIGraphLastChargeCell *)v11 addGestureRecognizer:v22];
@@ -126,14 +126,14 @@
     [(PLBatteryUIGraphLastChargeCell *)self setSeparatorStyle:1];
     [(PLBatteryUIGraphLastChargeCell *)self setSeparatorInset:0.0, 15.0, 0.0, 0.0];
     v4 = _NSDictionaryOfVariableBindings(@"_lastChargeTitleLabel,_timeStrLabel", self->_lastChargeTitleLabel, self->_timeStrLabel, 0);
-    v5 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-    [v5 sizeToFit];
+    lastChargeTitleLabel = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    [lastChargeTitleLabel sizeToFit];
 
-    v6 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
-    [v6 sizeToFit];
+    percentLabel = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
+    [percentLabel sizeToFit];
 
-    v7 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-    [v7 sizeToFit];
+    timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+    [timeStrLabel sizeToFit];
 
     v17 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-15-[_lastChargeTitleLabel]|", 0, 0, v4);
     v8 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-15-[_timeStrLabel]|", 0, 0, v4);
@@ -148,13 +148,13 @@
     }
 
     v10 = [NSLayoutConstraint constraintsWithVisualFormat:v9 options:0 metrics:0 views:v4];
-    v11 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-    v12 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
-    v13 = [NSLayoutConstraint constraintWithItem:v11 attribute:7 relatedBy:0 toItem:v12 attribute:7 multiplier:1.2 constant:0.0];
+    lastChargeTitleLabel2 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    percentLabel2 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
+    v13 = [NSLayoutConstraint constraintWithItem:lastChargeTitleLabel2 attribute:7 relatedBy:0 toItem:percentLabel2 attribute:7 multiplier:1.2 constant:0.0];
 
-    v14 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-    v15 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
-    v16 = [NSLayoutConstraint constraintWithItem:v14 attribute:7 relatedBy:0 toItem:v15 attribute:7 multiplier:1.2 constant:0.0];
+    timeStrLabel2 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+    percentLabel3 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
+    v16 = [NSLayoutConstraint constraintWithItem:timeStrLabel2 attribute:7 relatedBy:0 toItem:percentLabel3 attribute:7 multiplier:1.2 constant:0.0];
 
     [v3 addObjectsFromArray:v17];
     [v3 addObjectsFromArray:v8];
@@ -191,7 +191,7 @@
   return v10;
 }
 
-- (void)infoSymbolTapped:(id)a3
+- (void)infoSymbolTapped:(id)tapped
 {
   v3 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -215,21 +215,21 @@
   [v6 openURL:v5 options:&__NSDictionary0__struct completionHandler:v8];
 }
 
-- (void)populatePausedChargingStrings:(id)a3 percentLabel:(id)a4 lastChargeText:(id)a5 lastChargeDate:(id)a6
+- (void)populatePausedChargingStrings:(id)strings percentLabel:(id)label lastChargeText:(id)text lastChargeDate:(id)date
 {
-  v10 = a3;
-  v124 = a4;
-  v123 = a5;
-  v11 = a6;
+  stringsCopy = strings;
+  labelCopy = label;
+  textCopy = text;
+  dateCopy = date;
   v12 = +[BatteryUIResourceClass get_log_handle_bui];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     sub_112770();
   }
 
-  v13 = [v10 propertyForKey:@"PLBatteryUIPausedChargingKey"];
+  v13 = [stringsCopy propertyForKey:@"PLBatteryUIPausedChargingKey"];
   v14 = [v13 objectForKeyedSubscript:@"PLBatteryUIPausedChargingStateKey"];
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
 
   v16 = [v13 objectForKeyedSubscript:@"PLBatteryUIPausedChargingCurrentPercentageKey"];
   [v16 doubleValue];
@@ -240,9 +240,9 @@
   if (v19)
   {
     v20 = [v13 objectForKeyedSubscript:@"PLBatteryUIPausedChargingFixedChargeLimitKey"];
-    v21 = [v20 intValue];
+    intValue2 = [v20 intValue];
 
-    v22 = v21;
+    v22 = intValue2;
   }
 
   else
@@ -327,7 +327,7 @@
     sub_1128B8();
   }
 
-  v111 = v11;
+  v111 = dateCopy;
 
   if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v33 = _CFPreferencesCopyValueWithContainer()) == 0))
   {
@@ -352,12 +352,12 @@
     v37 = v36;
     if (v36)
     {
-      v15 = [v36 intValue];
+      intValue = [v36 intValue];
       v38 = +[BatteryUIResourceClass get_log_handle_bui];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        v126 = v15;
+        v126 = intValue;
         _os_log_impl(&dword_0, v38, OS_LOG_TYPE_INFO, "Overriding Paused Charging State with BUICTL: %d", buf, 8u);
       }
     }
@@ -367,36 +367,36 @@
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v126 = v15;
+    v126 = intValue;
     _os_log_impl(&dword_0, v39, OS_LOG_TYPE_INFO, "Paused Charging State: %d", buf, 8u);
   }
 
   v40 = objc_opt_new();
-  v41 = [NSNumber numberWithInt:v15];
+  v41 = [NSNumber numberWithInt:intValue];
   [v40 setObject:v41 forKeyedSubscript:@"type"];
 
   v42 = v40;
   AnalyticsSendEventLazy();
-  if (v15 <= 400)
+  if (intValue <= 400)
   {
-    if (v15 > 204)
+    if (intValue > 204)
     {
-      if (v15 > 300)
+      if (intValue > 300)
       {
-        if (v15 != 301)
+        if (intValue != 301)
         {
-          if (v15 != 302)
+          if (intValue != 302)
           {
-            if (v15 == 306)
+            if (intValue == 306)
             {
-              v43 = v10;
+              v43 = stringsCopy;
               v51 = +[BatteryUIResourceClass get_log_handle_bui];
               if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
               {
                 sub_112C3C();
               }
 
-              v45 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+              lastChargeTitleLabel = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
               [NSString stringWithFormat:v122, v118];
               goto LABEL_81;
             }
@@ -404,7 +404,7 @@
             goto LABEL_174;
           }
 
-          v110 = v10;
+          v110 = stringsCopy;
           v101 = +[BatteryUIResourceClass get_log_handle_bui];
           if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
           {
@@ -412,12 +412,12 @@
           }
 
           AnalyticsSendEventLazy();
-          v50 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+          lastChargeTitleLabel2 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
           [NSString stringWithFormat:v122, v118];
           v102 = LABEL_158:;
-          [v50 setText:v102];
+          [lastChargeTitleLabel2 setText:v102];
 
-          v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+          timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
           if (+[BatteryUIResourceClass inDemoMode])
           {
             [UIDevice modelSpecificLocalizedStringKeyForKey:@"PREVIOUS_TLC"];
@@ -435,15 +435,15 @@ LABEL_161:
           v67 = BatteryUILocalization(v103);
 
 LABEL_162:
-          [v53 setText:v67];
+          [timeStrLabel setText:v67];
 
 LABEL_173:
-          v10 = v110;
+          stringsCopy = v110;
           v86 = v111;
           goto LABEL_178;
         }
 
-        v91 = v10;
+        v91 = stringsCopy;
         v92 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
         {
@@ -451,29 +451,29 @@ LABEL_173:
         }
 
         AnalyticsSendEventLazy();
-        v93 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        v94 = [NSString stringWithFormat:v122, v118];
-        [v93 setText:v94];
+        lastChargeTitleLabel3 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        v118 = [NSString stringWithFormat:v122, v118];
+        [lastChargeTitleLabel3 setText:v118];
 
-        v10 = v91;
+        stringsCopy = v91;
         v86 = v111;
         if (v120 && [v120 length])
         {
-          v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-          v95 = [NSString stringWithFormat:v115, v120];
+          timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+          v120 = [NSString stringWithFormat:v115, v120];
 LABEL_151:
-          v100 = v95;
-          [v53 setText:v95];
+          v100 = v120;
+          [timeStrLabel setText:v120];
 
-          v10 = v91;
+          stringsCopy = v91;
           goto LABEL_178;
         }
 
         goto LABEL_179;
       }
 
-      v110 = v10;
-      if (v15 == 205)
+      v110 = stringsCopy;
+      if (intValue == 205)
       {
         v79 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
@@ -484,7 +484,7 @@ LABEL_151:
 
       else
       {
-        if (v15 != 206)
+        if (intValue != 206)
         {
           goto LABEL_174;
         }
@@ -496,18 +496,18 @@ LABEL_151:
         }
       }
 
-      v105 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-      v106 = [NSString stringWithFormat:v33, v121];
-      [v105 setText:v106];
+      lastChargeTitleLabel4 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+      v121 = [NSString stringWithFormat:v33, v121];
+      [lastChargeTitleLabel4 setText:v121];
     }
 
     else
     {
-      if (v15 <= 200)
+      if (intValue <= 200)
       {
-        if (v15 == 100)
+        if (intValue == 100)
         {
-          v110 = v10;
+          v110 = stringsCopy;
           v90 = +[BatteryUIResourceClass get_log_handle_bui];
           if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
           {
@@ -517,7 +517,7 @@ LABEL_151:
           goto LABEL_176;
         }
 
-        if (v15 != 200)
+        if (intValue != 200)
         {
           goto LABEL_174;
         }
@@ -525,8 +525,8 @@ LABEL_151:
         goto LABEL_100;
       }
 
-      v110 = v10;
-      if (v15 == 201)
+      v110 = stringsCopy;
+      if (intValue == 201)
       {
         v90 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -537,7 +537,7 @@ LABEL_151:
         goto LABEL_176;
       }
 
-      if (v15 == 202)
+      if (intValue == 202)
       {
         v90 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -548,10 +548,10 @@ LABEL_151:
         goto LABEL_176;
       }
 
-      if (v15 != 203)
+      if (intValue != 203)
       {
 LABEL_174:
-        v110 = v10;
+        v110 = stringsCopy;
         v90 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
         {
@@ -561,8 +561,8 @@ LABEL_174:
 LABEL_176:
 
         AnalyticsSendEventLazy();
-        v104 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        [NSString stringWithFormat:v123, v124];
+        lastChargeTitleLabel5 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        [NSString stringWithFormat:textCopy, labelCopy];
         goto LABEL_177;
       }
 
@@ -573,29 +573,29 @@ LABEL_176:
       }
 
       AnalyticsSendEventLazy();
-      v47 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+      lastChargeTitleLabel6 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
       if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v48 = _CFPreferencesCopyValueWithContainer()) == 0))
       {
         v48 = BatteryUILocalization(@"CHARGING_COMPLETE_CONNECTED");
       }
 
-      [v47 setText:v48];
+      [lastChargeTitleLabel6 setText:v48];
     }
 
-    v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+    timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
     v107 = [PLBatteryUIUtilities getRelativeDateStringForDate:v119];
-    [v53 setText:v107];
+    [timeStrLabel setText:v107];
 
     goto LABEL_173;
   }
 
-  if (v15 > 502)
+  if (intValue > 502)
   {
-    if (v15 <= 506)
+    if (intValue <= 506)
     {
-      if (v15 == 503 || v15 == 505)
+      if (intValue == 503 || intValue == 505)
       {
-        v43 = v10;
+        v43 = stringsCopy;
         v80 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
         {
@@ -603,30 +603,30 @@ LABEL_176:
         }
 
         AnalyticsSendEventLazy();
-        v81 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        v82 = [NSString stringWithFormat:v123, v124];
-        [v81 setText:v82];
+        lastChargeTitleLabel7 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        labelCopy = [NSString stringWithFormat:textCopy, labelCopy];
+        [lastChargeTitleLabel7 setText:labelCopy];
 
-        v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-        [v53 setText:v117];
+        timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+        [timeStrLabel setText:v117];
         goto LABEL_130;
       }
 
-      if (v15 == 506)
+      if (intValue == 506)
       {
-        v43 = v10;
+        v43 = stringsCopy;
         v44 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
         {
           sub_112AD0();
         }
 
-        v45 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        [NSString stringWithFormat:v123, v124];
+        lastChargeTitleLabel = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        [NSString stringWithFormat:textCopy, labelCopy];
         v52 = LABEL_81:;
-        [v45 setText:v52];
+        [lastChargeTitleLabel setText:v52];
 
-        v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+        timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
         if (+[BatteryUIResourceClass inDemoMode])
         {
           +[BatteryUIResourceClass containerPath];
@@ -641,20 +641,20 @@ LABEL_176:
 LABEL_128:
         v54 = BatteryUILocalization(v55);
 LABEL_129:
-        [v53 setText:v54];
+        [timeStrLabel setText:v54];
 
 LABEL_130:
-        v10 = v43;
+        stringsCopy = v43;
         goto LABEL_131;
       }
 
       goto LABEL_174;
     }
 
-    switch(v15)
+    switch(intValue)
     {
       case 0x1FB:
-        v110 = v10;
+        v110 = stringsCopy;
         v96 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEBUG))
         {
@@ -663,7 +663,7 @@ LABEL_130:
 
         break;
       case 0x1FC:
-        v110 = v10;
+        v110 = stringsCopy;
         v96 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEBUG))
         {
@@ -680,21 +680,21 @@ LABEL_130:
             sub_112D74();
           }
 
-          v57 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-          v58 = [(PLBatteryUIGraphLastChargeCell *)self getLabelTextForSlowCharger];
-          [v57 setAttributedText:v58];
+          lastChargeTitleLabel8 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+          getLabelTextForSlowCharger = [(PLBatteryUIGraphLastChargeCell *)self getLabelTextForSlowCharger];
+          [lastChargeTitleLabel8 setAttributedText:getLabelTextForSlowCharger];
 
-          v59 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+          lastChargeTitleLabel9 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
           v60 = +[UIColor systemOrangeColor];
-          [v59 setTextColor:v60];
+          [lastChargeTitleLabel9 setTextColor:v60];
 
-          v61 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-          [v61 setUserInteractionEnabled:1];
+          lastChargeTitleLabel10 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+          [lastChargeTitleLabel10 setUserInteractionEnabled:1];
 
-          v53 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"infoSymbolTapped:"];
-          [v53 setNumberOfTapsRequired:1];
-          v62 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-          [v62 addGestureRecognizer:v53];
+          timeStrLabel = [[UITapGestureRecognizer alloc] initWithTarget:self action:"infoSymbolTapped:"];
+          [timeStrLabel setNumberOfTapsRequired:1];
+          lastChargeTitleLabel11 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+          [lastChargeTitleLabel11 addGestureRecognizer:timeStrLabel];
 
           goto LABEL_113;
         }
@@ -707,28 +707,28 @@ LABEL_100:
         }
 
         AnalyticsSendEventLazy();
-        v70 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        v71 = [NSString stringWithFormat:v122, v118];
-        [v70 setText:v71];
+        lastChargeTitleLabel12 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        v1182 = [NSString stringWithFormat:v122, v118];
+        [lastChargeTitleLabel12 setText:v1182];
 
-        v72 = [v10 objectForKeyedSubscript:@"PLBatteryUIGraphLastChargeCellSelectedChargeLimit"];
-        v53 = v72;
+        v72 = [stringsCopy objectForKeyedSubscript:@"PLBatteryUIGraphLastChargeCellSelectedChargeLimit"];
+        timeStrLabel = v72;
         if (v72)
         {
           if (v18 < [v72 intValue])
           {
-            [v10 objectForKeyedSubscript:@"PLBatteryUIGraphLastChargeCellSelectedChargeLimit"];
-            v74 = v73 = v10;
-            v75 = -[PLBatteryUIGraphLastChargeCell timeToChargeTo:](self, "timeToChargeTo:", [v74 intValue]);
+            [stringsCopy objectForKeyedSubscript:@"PLBatteryUIGraphLastChargeCellSelectedChargeLimit"];
+            v74 = v73 = stringsCopy;
+            timeStrLabel3 = -[PLBatteryUIGraphLastChargeCell timeToChargeTo:](self, "timeToChargeTo:", [v74 intValue]);
 
-            v10 = v73;
-            if (v75)
+            stringsCopy = v73;
+            if (timeStrLabel3)
             {
-              v76 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-              v77 = v76;
-              v78 = v75;
+              timeStrLabel2 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+              v77 = timeStrLabel2;
+              v78 = timeStrLabel3;
 LABEL_114:
-              [v76 setText:v78];
+              [timeStrLabel2 setText:v78];
 
 LABEL_131:
               v86 = v111;
@@ -740,39 +740,39 @@ LABEL_178:
         }
 
 LABEL_113:
-        v75 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+        timeStrLabel3 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
         v77 = [PLBatteryUIUtilities getRelativeDateStringForDate:v119];
-        v76 = v75;
+        timeStrLabel2 = timeStrLabel3;
         v78 = v77;
         goto LABEL_114;
       default:
         goto LABEL_174;
     }
 
-    v104 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    lastChargeTitleLabel5 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
     [NSString stringWithFormat:v34, v121];
     v108 = LABEL_177:;
-    [v104 setText:v108];
+    [lastChargeTitleLabel5 setText:v108];
 
-    v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+    timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
     v86 = v111;
     v109 = [PLBatteryUIUtilities getRelativeDateStringForDate:v111];
-    [v53 setText:v109];
+    [timeStrLabel setText:v109];
 
-    v10 = v110;
+    stringsCopy = v110;
     goto LABEL_178;
   }
 
-  if (v15 <= 405)
+  if (intValue <= 405)
   {
-    if (v15 != 401)
+    if (intValue != 401)
     {
-      if (v15 != 402)
+      if (intValue != 402)
       {
         goto LABEL_174;
       }
 
-      v110 = v10;
+      v110 = stringsCopy;
       v63 = +[BatteryUIResourceClass get_log_handle_bui];
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
       {
@@ -780,12 +780,12 @@ LABEL_113:
       }
 
       AnalyticsSendEventLazy();
-      v64 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+      lastChargeTitleLabel13 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
       v65 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"PAUSED_TLC"];
       v66 = BatteryUILocalization(v65);
-      [v64 setText:v66];
+      [lastChargeTitleLabel13 setText:v66];
 
-      v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+      timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
       if (+[BatteryUIResourceClass inDemoMode])
       {
         [UIDevice modelSpecificLocalizedStringKeyForKey:@"RESUME_TEMP"];
@@ -808,18 +808,18 @@ LABEL_113:
     }
 
     AnalyticsSendEventLazy();
-    v98 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    lastChargeTitleLabel14 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v99 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v99 = BatteryUILocalization(@"PAUSED_OBC");
     }
 
-    [v98 setText:v99];
+    [lastChargeTitleLabel14 setText:v99];
 
     v86 = v111;
     if (v120 && [v120 length])
     {
-      v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+      timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
       [NSString stringWithFormat:v115, v120];
       goto LABEL_150;
     }
@@ -827,11 +827,11 @@ LABEL_113:
 
   else
   {
-    if (v15 != 406)
+    if (intValue != 406)
     {
-      if (v15 == 501)
+      if (intValue == 501)
       {
-        v43 = v10;
+        v43 = stringsCopy;
         v87 = +[BatteryUIResourceClass get_log_handle_bui];
         if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
         {
@@ -839,11 +839,11 @@ LABEL_113:
         }
 
         AnalyticsSendEventLazy();
-        v88 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-        v89 = [NSString stringWithFormat:v123, v124];
-        [v88 setText:v89];
+        lastChargeTitleLabel15 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+        labelCopy2 = [NSString stringWithFormat:textCopy, labelCopy];
+        [lastChargeTitleLabel15 setText:labelCopy2];
 
-        v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+        timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
         if (+[BatteryUIResourceClass inDemoMode])
         {
           +[BatteryUIResourceClass containerPath];
@@ -858,12 +858,12 @@ LABEL_113:
         goto LABEL_128;
       }
 
-      if (v15 != 502)
+      if (intValue != 502)
       {
         goto LABEL_174;
       }
 
-      v110 = v10;
+      v110 = stringsCopy;
       v49 = +[BatteryUIResourceClass get_log_handle_bui];
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
       {
@@ -871,8 +871,8 @@ LABEL_113:
       }
 
       AnalyticsSendEventLazy();
-      v50 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-      [NSString stringWithFormat:v123, v124];
+      lastChargeTitleLabel2 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+      [NSString stringWithFormat:textCopy, labelCopy];
       goto LABEL_158;
     }
 
@@ -882,21 +882,21 @@ LABEL_113:
       sub_112BA0();
     }
 
-    v84 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    lastChargeTitleLabel16 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v85 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v85 = BatteryUILocalization(@"PAUSED_CEC");
     }
 
-    [v84 setText:v85];
+    [lastChargeTitleLabel16 setText:v85];
 
     v86 = v111;
     if (v116 && [v116 length])
     {
-      v53 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+      timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
       [NSString stringWithFormat:v114, v116];
-      v95 = LABEL_150:;
-      v91 = v10;
+      v120 = LABEL_150:;
+      v91 = stringsCopy;
       goto LABEL_151;
     }
   }
@@ -904,17 +904,17 @@ LABEL_113:
 LABEL_179:
 }
 
-- (void)updateLabelsWithSpecifier:(id)a3
+- (void)updateLabelsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->PSTableCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v6 = [WeakRetained propertyForKey:@"PLBatteryUIGraphTapDelegateWrapperKey"];
 
   if (v6)
   {
-    v7 = [v4 propertyForKey:@"PLBatteryUIGraphTapDelegateWrapperKey"];
-    v8 = [v7 buiViewController];
-    [(PLBatteryUIGraphLastChargeCell *)self setDelegate:v8];
+    v7 = [specifierCopy propertyForKey:@"PLBatteryUIGraphTapDelegateWrapperKey"];
+    buiViewController = [v7 buiViewController];
+    [(PLBatteryUIGraphLastChargeCell *)self setDelegate:buiViewController];
   }
 
   if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v9 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -922,15 +922,15 @@ LABEL_179:
     v9 = BatteryUILocalization(@"LAST_CHARGE");
   }
 
-  v10 = [v4 propertyForKey:@"PLBatteryUILastChargeKey"];
+  v10 = [specifierCopy propertyForKey:@"PLBatteryUILastChargeKey"];
   v11 = [v10 objectForKeyedSubscript:@"PLBatteryUILevelKey"];
   [v11 doubleValue];
   v12 = [PLBatteryUIUtilities localizedStringWithPercentage:?];
 
   v13 = [v10 objectForKeyedSubscript:@"PLBatteryUITimestampKey"];
-  v14 = [v13 unsignedLongValue];
+  unsignedLongValue = [v13 unsignedLongValue];
 
-  v15 = [NSDate dateWithTimeIntervalSince1970:v14];
+  v15 = [NSDate dateWithTimeIntervalSince1970:unsignedLongValue];
   v16 = _os_feature_enabled_impl();
   v17 = +[BatteryUIResourceClass get_log_handle_bui];
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
@@ -941,7 +941,7 @@ LABEL_179:
       sub_112E10();
     }
 
-    [(PLBatteryUIGraphLastChargeCell *)self populatePausedChargingStrings:v4 percentLabel:v12 lastChargeText:v9 lastChargeDate:v15];
+    [(PLBatteryUIGraphLastChargeCell *)self populatePausedChargingStrings:specifierCopy percentLabel:v12 lastChargeText:v9 lastChargeDate:v15];
   }
 
   else
@@ -951,36 +951,36 @@ LABEL_179:
       sub_112DDC();
     }
 
-    v19 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+    lastChargeTitleLabel = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
     v20 = [NSString stringWithFormat:v9, v12];
-    [v19 setText:v20];
+    [lastChargeTitleLabel setText:v20];
 
-    v21 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+    timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
     v22 = [PLBatteryUIUtilities getRelativeDateStringForDate:v15];
-    [v21 setText:v22];
+    [timeStrLabel setText:v22];
   }
 
   [(PLBatteryUIGraphLastChargeCell *)self setNeedsUpdateConstraints];
   [(PLBatteryUIGraphLastChargeCell *)self setNeedsDisplay];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = PLBatteryUIGraphLastChargeCell;
-  v4 = a3;
-  [(PLBatteryUIGraphLastChargeCell *)&v5 refreshCellContentsWithSpecifier:v4];
-  [(PLBatteryUIGraphLastChargeCell *)self updateLabelsWithSpecifier:v4, v5.receiver, v5.super_class];
+  specifierCopy = specifier;
+  [(PLBatteryUIGraphLastChargeCell *)&v5 refreshCellContentsWithSpecifier:specifierCopy];
+  [(PLBatteryUIGraphLastChargeCell *)self updateLabelsWithSpecifier:specifierCopy, v5.receiver, v5.super_class];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v4 = [(PLBatteryUIGraphLastChargeCell *)self delegate];
+  delegate = [(PLBatteryUIGraphLastChargeCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(PLBatteryUIGraphLastChargeCell *)self delegate];
-    [v5 didTappedBar:&off_173718];
+    delegate2 = [(PLBatteryUIGraphLastChargeCell *)self delegate];
+    [delegate2 didTappedBar:&off_173718];
   }
 }
 
@@ -996,18 +996,18 @@ LABEL_179:
   v9.receiver = self;
   v9.super_class = PLBatteryUIGraphLastChargeCell;
   [(PLBatteryUIGraphLastChargeCell *)&v9 prepareForReuse];
-  v4 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-  [v4 setText:&stru_16CDB8];
+  lastChargeTitleLabel = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+  [lastChargeTitleLabel setText:&stru_16CDB8];
 
   v5 = +[UIColor labelColor];
-  v6 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
-  [v6 setColor:v5];
+  lastChargeTitleLabel2 = [(PLBatteryUIGraphLastChargeCell *)self lastChargeTitleLabel];
+  [lastChargeTitleLabel2 setColor:v5];
 
-  v7 = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
-  [v7 setText:&stru_16CDB8];
+  percentLabel = [(PLBatteryUIGraphLastChargeCell *)self percentLabel];
+  [percentLabel setText:&stru_16CDB8];
 
-  v8 = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
-  [v8 setText:&stru_16CDB8];
+  timeStrLabel = [(PLBatteryUIGraphLastChargeCell *)self timeStrLabel];
+  [timeStrLabel setText:&stru_16CDB8];
 }
 
 + (BOOL)isChargeTimeEnabled
@@ -1032,18 +1032,18 @@ LABEL_179:
   return v3;
 }
 
-- (id)timeEstimateStringWithChargeTarget:(int)a3
+- (id)timeEstimateStringWithChargeTarget:(int)target
 {
   v5 = BatteryUILocalization(@"CHRAGE_TIME_ESTIMATE");
-  v6 = [(PLBatteryUIGraphLastChargeCell *)self estimatedChargedDate];
+  estimatedChargedDate = [(PLBatteryUIGraphLastChargeCell *)self estimatedChargedDate];
   v7 = +[NSDate date];
-  [v6 timeIntervalSinceDate:v7];
+  [estimatedChargedDate timeIntervalSinceDate:v7];
   v9 = v8;
 
   v10 = +[PLBatteryUIGraphLastChargeCell dateComponentFormatter];
   v11 = [v10 stringFromTimeInterval:v9];
 
-  if (a3 == 100)
+  if (target == 100)
   {
     v12 = BatteryUILocalization(@"NO_LIMIT_CHARGE_TARGET");
   }
@@ -1052,7 +1052,7 @@ LABEL_179:
   {
     v13 = [NSString alloc];
     v14 = BatteryUILocalization(@"CHARGE_TARGET");
-    v15 = [PLBatteryUIUtilities localizedStringWithPercentage:a3];
+    v15 = [PLBatteryUIUtilities localizedStringWithPercentage:target];
     v12 = [v13 initWithFormat:v14, v15];
   }
 

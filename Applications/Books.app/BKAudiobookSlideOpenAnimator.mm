@@ -5,8 +5,8 @@
 - (CGRect)zoomedCoverFrame;
 - (double)revealDuration;
 - (int64_t)coverContentMode;
-- (void)animateRevealWithCompletion:(id)a3;
-- (void)animateZoomWithCompletion:(id)a3;
+- (void)animateRevealWithCompletion:(id)completion;
+- (void)animateZoomWithCompletion:(id)completion;
 - (void)animationsDidFinish;
 - (void)setupViewsForReveal;
 - (void)setupViewsForZoom;
@@ -16,8 +16,8 @@
 
 - (BOOL)landscape
 {
-  v2 = [(BKBookOpenAnimator *)self containerView];
-  [v2 bounds];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
 
@@ -26,7 +26,7 @@
 
 - (BKAudiobookOpenTransitioning)audiobookViewController
 {
-  v2 = [(BKBookOpenAnimator *)self bookViewController];
+  bookViewController = [(BKBookOpenAnimator *)self bookViewController];
   objc_opt_class();
   v3 = BUClassAndProtocolCast();
 
@@ -35,19 +35,19 @@
 
 - (void)setupViewsForZoom
 {
-  v3 = [(BKBookOpenAnimator *)self bookViewController];
-  v4 = [v3 view];
-  [v4 setAlpha:0.0];
+  bookViewController = [(BKBookOpenAnimator *)self bookViewController];
+  view = [bookViewController view];
+  [view setAlpha:0.0];
 
-  v6 = [(BKBookOpenAnimator *)self containerView];
-  v5 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v6 addSubview:v5];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [containerView addSubview:coverContainerView];
 }
 
-- (void)animateZoomWithCompletion:(id)a3
+- (void)animateZoomWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKBookOpenAnimator *)self opening];
+  completionCopy = completion;
+  opening = [(BKBookOpenAnimator *)self opening];
   [(BKBookOpenAnimator *)self closedCoverFrame];
   v7 = v6;
   v9 = v8;
@@ -55,7 +55,7 @@
   v13 = v12;
   [(BKAudiobookSlideOpenAnimator *)self zoomedCoverFrame];
   v18 = v17;
-  if (v5)
+  if (opening)
   {
     v19 = 1.0;
     v20 = 0.0;
@@ -78,16 +78,16 @@
     [(BKBookOpenAnimator *)self moveCoverToFrame:v14, v15, v16, v17, *&v11, 0];
   }
 
-  v26 = [(BKBookOpenAnimator *)self bookshelfTintView];
-  [v26 setAlpha:v20];
+  bookshelfTintView = [(BKBookOpenAnimator *)self bookshelfTintView];
+  [bookshelfTintView setAlpha:v20];
 
   [(BKBookOpenAnimator *)self setBookshelfAlpha:v19];
-  v27 = [(BKBookOpenAnimator *)self coverShadowView];
-  [v27 setAlpha:v19];
+  coverShadowView = [(BKBookOpenAnimator *)self coverShadowView];
+  [coverShadowView setAlpha:v19];
 
   [(BKBookSlideOpenAnimator *)self zoomDuration];
   v29 = v28;
-  v30 = [(BKBookZoomRevealOpenAnimator *)self zoomTimingFunction];
+  zoomTimingFunction = [(BKBookZoomRevealOpenAnimator *)self zoomTimingFunction];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000AE78C;
@@ -100,7 +100,7 @@
   v33[9] = v32;
   *&v33[10] = v25;
   *&v33[11] = v25;
-  [UIView animateWithDuration:v30 delay:0 timingFunction:v33 options:v4 animations:v29 completion:0.0];
+  [UIView animateWithDuration:zoomTimingFunction delay:0 timingFunction:v33 options:completionCopy animations:v29 completion:0.0];
 }
 
 - (void)setupViewsForReveal
@@ -111,32 +111,32 @@
   v9 = [[UIView alloc] initWithFrame:{v7, v8, v3, v5}];
   [(BKAudiobookSlideOpenAnimator *)self setContentClipView:v9];
 
-  v10 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
-  [v10 setClipsToBounds:1];
+  contentClipView = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
+  [contentClipView setClipsToBounds:1];
 
-  v11 = [(BKBookOpenAnimator *)self containerView];
-  v12 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
-  [v11 addSubview:v12];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  contentClipView2 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
+  [containerView addSubview:contentClipView2];
 
-  v13 = [(BKBookOpenAnimator *)self bookViewController];
-  v14 = [v13 view];
-  [v14 layoutIfNeeded];
+  bookViewController = [(BKBookOpenAnimator *)self bookViewController];
+  view = [bookViewController view];
+  [view layoutIfNeeded];
 
-  v45 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-  v15 = [v45 transitionCoverViews];
-  [v15 enumerateObjectsUsingBlock:&stru_100A06168];
+  audiobookViewController = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+  transitionCoverViews = [audiobookViewController transitionCoverViews];
+  [transitionCoverViews enumerateObjectsUsingBlock:&stru_100A06168];
 
-  v16 = [(BKBookOpenAnimator *)self bookViewController];
-  v17 = [v16 transitionContentView];
+  bookViewController2 = [(BKBookOpenAnimator *)self bookViewController];
+  transitionContentView = [bookViewController2 transitionContentView];
 
-  v18 = [v17 snapshotViewAfterScreenUpdates:1];
+  v18 = [transitionContentView snapshotViewAfterScreenUpdates:1];
   [(BKAudiobookSlideOpenAnimator *)self setContentView:v18];
 
-  v19 = [v45 transitionCoverViews];
-  [v19 enumerateObjectsUsingBlock:&stru_100A06188];
+  transitionCoverViews2 = [audiobookViewController transitionCoverViews];
+  [transitionCoverViews2 enumerateObjectsUsingBlock:&stru_100A06188];
 
-  v20 = [(BKAudiobookSlideOpenAnimator *)self contentView];
-  [v20 frame];
+  contentView = [(BKAudiobookSlideOpenAnimator *)self contentView];
+  [contentView frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -153,12 +153,12 @@
     v24 = (v6 - v28) * 0.5;
   }
 
-  v29 = [(BKAudiobookSlideOpenAnimator *)self contentView];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  contentView2 = [(BKAudiobookSlideOpenAnimator *)self contentView];
+  [contentView2 setFrame:{v22, v24, v26, v28}];
 
-  v30 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
-  v31 = [(BKAudiobookSlideOpenAnimator *)self contentView];
-  [v30 addSubview:v31];
+  contentClipView3 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
+  contentView3 = [(BKAudiobookSlideOpenAnimator *)self contentView];
+  [contentClipView3 addSubview:contentView3];
 
   if (![(BKBookOpenAnimator *)self skipZoomPhase])
   {
@@ -167,47 +167,47 @@
 
   CGRectMakeWithSize();
   [(BKBookOpenAnimator *)self moveCoverToFrame:?];
-  v32 = [(BKBookOpenAnimator *)self coverContainerView];
-  v33 = [v32 layer];
-  [v33 setMasksToBounds:1];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  layer = [coverContainerView layer];
+  [layer setMasksToBounds:1];
 
-  v34 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
-  v35 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v34 addSubview:v35];
+  contentClipView4 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
+  coverContainerView2 = [(BKBookOpenAnimator *)self coverContainerView];
+  [contentClipView4 addSubview:coverContainerView2];
 
   v36 = [UIImageView alloc];
-  v37 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-  v38 = [v37 transitionCurrentCoverImage];
-  v39 = [v36 initWithImage:v38];
+  audiobookViewController2 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+  transitionCurrentCoverImage = [audiobookViewController2 transitionCurrentCoverImage];
+  v39 = [v36 initWithImage:transitionCurrentCoverImage];
 
   [v39 setClipsToBounds:1];
   [v39 setContentMode:{-[BKAudiobookSlideOpenAnimator coverContentMode](self, "coverContentMode")}];
-  v40 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v40 bounds];
+  coverContainerView3 = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView3 bounds];
   CGRectMakeWithSize();
   [v39 setFrame:?];
 
   [v39 setAutoresizingMask:18];
   [v39 setAlpha:0.0];
-  v41 = [(BKBookOpenAnimator *)self coverImageView];
-  v42 = [v41 superview];
+  coverImageView = [(BKBookOpenAnimator *)self coverImageView];
+  superview = [coverImageView superview];
 
-  if (!v42)
+  if (!superview)
   {
     sub_10078D0B0();
   }
 
-  v43 = [(BKBookOpenAnimator *)self coverImageView];
-  [v42 insertSubview:v39 aboveSubview:v43];
+  coverImageView2 = [(BKBookOpenAnimator *)self coverImageView];
+  [superview insertSubview:v39 aboveSubview:coverImageView2];
 
   [(BKAudiobookSlideOpenAnimator *)self setCurrentCoverView:v39];
-  v44 = [(BKBookOpenAnimator *)self coverShadowView];
-  [v44 setAlpha:0.0];
+  coverShadowView = [(BKBookOpenAnimator *)self coverShadowView];
+  [coverShadowView setAlpha:0.0];
 }
 
-- (void)animateRevealWithCompletion:(id)a3
+- (void)animateRevealWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -220,25 +220,25 @@
   {
     [(BKAudiobookSlideOpenAnimator *)self revealDuration];
     v8 = v7;
-    v9 = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
+    revealTimingFunction = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000AF124;
     v26[3] = &unk_100A061D0;
     v26[4] = self;
     v27 = &stru_100A061A8;
-    v28 = v4;
-    [UIView animateWithDuration:v9 delay:0 timingFunction:v6 options:v26 animations:v8 completion:0.0];
+    v28 = completionCopy;
+    [UIView animateWithDuration:revealTimingFunction delay:0 timingFunction:v6 options:v26 animations:v8 completion:0.0];
 
-    v10 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-    [v10 coverCornerRadius];
+    audiobookViewController = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+    [audiobookViewController coverCornerRadius];
     v12 = v11;
 
     +[CATransaction begin];
     [(BKAudiobookSlideOpenAnimator *)self revealDuration];
     [CATransaction setAnimationDuration:?];
-    v13 = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
-    [CATransaction setAnimationTimingFunction:v13];
+    revealTimingFunction2 = [(BKBookZoomRevealOpenAnimator *)self revealTimingFunction];
+    [CATransaction setAnimationTimingFunction:revealTimingFunction2];
 
     v14 = [CABasicAnimation animationWithKeyPath:@"cornerRadius"];
     if ([(BKBookOpenAnimator *)self opening])
@@ -267,9 +267,9 @@
 
     [v14 setFillMode:kCAFillModeForwards];
     [v14 setRemovedOnCompletion:0];
-    v21 = [(BKBookOpenAnimator *)self coverContainerView];
-    v22 = [v21 layer];
-    [v22 addAnimation:v14 forKey:@"cornerRadius"];
+    coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+    layer = [coverContainerView layer];
+    [layer addAnimation:v14 forKey:@"cornerRadius"];
 
     +[CATransaction commit];
   }
@@ -286,23 +286,23 @@
     v17 = &v24;
     v24 = v6;
     v18 = &v25;
-    v25 = v4;
+    v25 = completionCopy;
     [UIView animateWithDuration:&stru_100A061A8 animations:v23 completion:v16];
   }
 }
 
 - (void)animationsDidFinish
 {
-  v3 = [(BKAudiobookSlideOpenAnimator *)self currentCoverView];
-  [v3 removeFromSuperview];
+  currentCoverView = [(BKAudiobookSlideOpenAnimator *)self currentCoverView];
+  [currentCoverView removeFromSuperview];
 
   [(BKAudiobookSlideOpenAnimator *)self setCurrentCoverView:0];
-  v4 = [(BKAudiobookSlideOpenAnimator *)self contentView];
-  [v4 removeFromSuperview];
+  contentView = [(BKAudiobookSlideOpenAnimator *)self contentView];
+  [contentView removeFromSuperview];
 
   [(BKAudiobookSlideOpenAnimator *)self setContentView:0];
-  v5 = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
-  [v5 removeFromSuperview];
+  contentClipView = [(BKAudiobookSlideOpenAnimator *)self contentClipView];
+  [contentClipView removeFromSuperview];
 
   [(BKAudiobookSlideOpenAnimator *)self setContentClipView:0];
   v6.receiver = self;
@@ -312,11 +312,11 @@
 
 - (CGRect)zoomedCoverFrame
 {
-  v3 = [(BKBookOpenAnimator *)self containerView];
-  [v3 bounds];
+  containerView = [(BKBookOpenAnimator *)self containerView];
+  [containerView bounds];
 
-  v4 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-  [v4 transitionCoverFrame];
+  audiobookViewController = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+  [audiobookViewController transitionCoverFrame];
 
   CGSizeScaleThatFitsInCGSize();
   CGSizeScale();
@@ -340,19 +340,19 @@
 
 - (int64_t)coverContentMode
 {
-  v3 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-  if (v3)
+  audiobookViewController = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+  if (audiobookViewController)
   {
-    v4 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
-    v5 = [v4 coverContentMode];
+    audiobookViewController2 = [(BKAudiobookSlideOpenAnimator *)self audiobookViewController];
+    coverContentMode = [audiobookViewController2 coverContentMode];
   }
 
   else
   {
-    v5 = 2;
+    coverContentMode = 2;
   }
 
-  return v5;
+  return coverContentMode;
 }
 
 - (CGRect)contentFrame

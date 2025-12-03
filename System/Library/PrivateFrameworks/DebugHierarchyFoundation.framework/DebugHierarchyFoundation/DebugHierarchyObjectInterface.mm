@@ -1,27 +1,27 @@
 @interface DebugHierarchyObjectInterface
-+ (id)propertyDescriptionsForClass:(Class)a3 inContext:(id)a4;
-+ (id)valueAndOptionsForProperty:(id)a3 onObject:(id)a4 inContext:(id)a5;
-+ (id)valueForProperty:(id)a3 withOutOptions:(id *)a4 onObject:(id)a5 inContext:(id)a6 error:(id *)a7;
++ (id)propertyDescriptionsForClass:(Class)class inContext:(id)context;
++ (id)valueAndOptionsForProperty:(id)property onObject:(id)object inContext:(id)context;
++ (id)valueForProperty:(id)property withOutOptions:(id *)options onObject:(id)object inContext:(id)context error:(id *)error;
 @end
 
 @implementation DebugHierarchyObjectInterface
 
-+ (id)valueAndOptionsForProperty:(id)a3 onObject:(id)a4 inContext:(id)a5
++ (id)valueAndOptionsForProperty:(id)property onObject:(id)object inContext:(id)context
 {
-  v8 = a3;
+  propertyCopy = property;
   v31 = 0;
   v32 = 0;
-  v9 = [a1 valueForProperty:v8 withOutOptions:&v32 onObject:a4 inContext:a5 error:&v31];
+  v9 = [self valueForProperty:propertyCopy withOutOptions:&v32 onObject:object inContext:context error:&v31];
   v10 = v32;
   v11 = v31;
   if (v11)
   {
-    v12 = [v8 name];
-    v13 = v12;
+    name = [propertyCopy name];
+    v13 = name;
     v14 = @"<nil>";
-    if (v12)
+    if (name)
     {
-      v14 = v12;
+      v14 = name;
     }
 
     v15 = v14;
@@ -50,8 +50,8 @@
 
     v16 = v18;
     [v18 setObject:&off_2DBD0 forKeyedSubscript:@"fetchStatus"];
-    v19 = [v8 name];
-    [v16 setObject:v19 forKeyedSubscript:@"propertyName"];
+    name2 = [propertyCopy name];
+    [v16 setObject:name2 forKeyedSubscript:@"propertyName"];
 
     if (v9)
     {
@@ -62,10 +62,10 @@
 
     if (!v20)
     {
-      v21 = [v8 format];
-      if (v21)
+      format = [propertyCopy format];
+      if (format)
       {
-        [v16 setObject:v21 forKeyedSubscript:@"propertyFormat"];
+        [v16 setObject:format forKeyedSubscript:@"propertyFormat"];
       }
     }
 
@@ -76,12 +76,12 @@
 
     if (v15)
     {
-      v24 = [v8 name];
-      v25 = v24;
+      name3 = [propertyCopy name];
+      v25 = name3;
       v26 = @"<nil>";
-      if (v24)
+      if (name3)
       {
-        v26 = v24;
+        v26 = name3;
       }
 
       v27 = v26;
@@ -105,14 +105,14 @@
   return v17;
 }
 
-+ (id)valueForProperty:(id)a3 withOutOptions:(id *)a4 onObject:(id)a5 inContext:(id)a6 error:(id *)a7
++ (id)valueForProperty:(id)property withOutOptions:(id *)options onObject:(id)object inContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  propertyCopy = property;
+  objectCopy = object;
+  contextCopy = context;
   if ([DebugHierarchyObjectProtocolHelper classImplements_debugHierarchyValueForPropertyWithName:objc_opt_class()])
   {
-    v13 = v11;
+    v13 = objectCopy;
     v14 = objc_opt_class();
     v15 = v14;
     if (v14)
@@ -128,7 +128,7 @@
       }
     }
 
-    v16 = [v12 runtimeTypeWithName:v15];
+    v16 = [contextCopy runtimeTypeWithName:v15];
 
     v17 = v16;
     v69 = v17;
@@ -137,9 +137,9 @@
       v18 = v17;
       do
       {
-        v19 = [v18 instanceProperties];
-        v20 = [v10 name];
-        v21 = [v19 objectForKeyedSubscript:v20];
+        instanceProperties = [v18 instanceProperties];
+        name = [propertyCopy name];
+        v21 = [instanceProperties objectForKeyedSubscript:name];
 
         if (v21)
         {
@@ -151,28 +151,28 @@
           v22 = 0;
         }
 
-        v23 = [v18 parentType];
+        parentType = [v18 parentType];
 
         if (v22)
         {
           break;
         }
 
-        v18 = v23;
+        v18 = parentType;
       }
 
-      while (v23);
+      while (parentType);
     }
 
     else
     {
       v22 = 0;
-      v23 = 0;
+      parentType = 0;
     }
 
-    v24 = [v22 name];
-    v25 = NSClassFromString(v24);
-    v68 = a4;
+    name2 = [v22 name];
+    v25 = NSClassFromString(name2);
+    optionsCopy = options;
 
     if (!v25)
     {
@@ -182,14 +182,14 @@ LABEL_42:
       v70 = v30;
       v45 = v30;
       v28 = 0;
-      *v68 = v70;
+      *optionsCopy = v70;
       goto LABEL_43;
     }
 
-    v26 = [v10 name];
+    name3 = [propertyCopy name];
     v73 = 0;
     v74 = 0;
-    v27 = [DebugHierarchyObjectProtocolHelper debugHierarchyValueForPropertyWithName:v26 onObject:v13 vendingClass:v25 outOptions:&v74 outError:&v73];
+    v27 = [DebugHierarchyObjectProtocolHelper debugHierarchyValueForPropertyWithName:name3 onObject:v13 vendingClass:v25 outOptions:&v74 outError:&v73];
     v70 = v74;
     v28 = v73;
 
@@ -214,7 +214,7 @@ LABEL_43:
         else
         {
           v50 = v47;
-          *v68 = v47;
+          *optionsCopy = v47;
         }
       }
 
@@ -228,8 +228,8 @@ LABEL_43:
 
     if (v27)
     {
-      v31 = [v10 logicalType];
-      v32 = [v31 isEqualToString:@"DebugHierarchyLogicalPropertyTypeObjectInfo"];
+      logicalType = [propertyCopy logicalType];
+      v32 = [logicalType isEqualToString:@"DebugHierarchyLogicalPropertyTypeObjectInfo"];
 
       if (v32)
       {
@@ -269,8 +269,8 @@ LABEL_43:
 
       else
       {
-        v36 = [v10 logicalType];
-        v37 = [v36 isEqualToString:@"DebugHierarchyLogicalPropertyTypePointer"];
+        logicalType2 = [propertyCopy logicalType];
+        v37 = [logicalType2 isEqualToString:@"DebugHierarchyLogicalPropertyTypePointer"];
 
         if (v37)
         {
@@ -410,10 +410,10 @@ LABEL_43:
               goto LABEL_41;
             }
 
-            v51 = [v10 format];
+            format = [propertyCopy format];
             valuePtr = 1065353216;
             Mutable = CFDataCreateMutable(0, 0);
-            v52 = CGImageDestinationCreateWithData(Mutable, v51, 1uLL, 0);
+            v52 = CGImageDestinationCreateWithData(Mutable, format, 1uLL, 0);
             theStringa = CFNumberCreate(kCFAllocatorDefault, kCFNumberFloatType, &valuePtr);
             keys[0] = kCGImageDestinationLossyCompressionQuality;
             values[0] = theStringa;
@@ -424,7 +424,7 @@ LABEL_43:
             CFRelease(theStringa);
             CFRelease(v52);
 
-            v27 = v51;
+            v27 = format;
           }
         }
       }
@@ -446,12 +446,12 @@ LABEL_78:
   return v46;
 }
 
-+ (id)propertyDescriptionsForClass:(Class)a3 inContext:(id)a4
++ (id)propertyDescriptionsForClass:(Class)class inContext:(id)context
 {
-  v5 = a4;
-  if ([DebugHierarchyObjectProtocolHelper classOverrides_debugHierarchyPropertyDescriptions:a3])
+  contextCopy = context;
+  if ([DebugHierarchyObjectProtocolHelper classOverrides_debugHierarchyPropertyDescriptions:class])
   {
-    v6 = [DebugHierarchyObjectProtocolHelper debugHierarchyPropertyDescriptionsOfClass:a3];
+    v6 = [DebugHierarchyObjectProtocolHelper debugHierarchyPropertyDescriptionsOfClass:class];
   }
 
   else

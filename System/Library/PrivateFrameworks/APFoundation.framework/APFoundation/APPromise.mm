@@ -1,9 +1,9 @@
 @interface APPromise
 - (APPromise)init;
-- (void)catch:(id)a3;
-- (void)raceWithTimeout:(double)a3 queue:(id)a4;
+- (void)catch:(id)catch;
+- (void)raceWithTimeout:(double)timeout queue:(id)queue;
 - (void)resolve;
-- (void)then:(id)a3;
+- (void)then:(id)then;
 @end
 
 @implementation APPromise
@@ -23,25 +23,25 @@
   return v2;
 }
 
-- (void)then:(id)a3
+- (void)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v10 = objc_msgSend_innerPromise(self, v5, v6, v7);
-  objc_msgSend_then_(v10, v8, v4, v9);
+  objc_msgSend_then_(v10, v8, thenCopy, v9);
 }
 
-- (void)catch:(id)a3
+- (void)catch:(id)catch
 {
-  v4 = a3;
+  catchCopy = catch;
   v10 = objc_msgSend_innerPromise(self, v5, v6, v7);
-  objc_msgSend_catch_(v10, v8, v4, v9);
+  objc_msgSend_catch_(v10, v8, catchCopy, v9);
 }
 
-- (void)raceWithTimeout:(double)a3 queue:(id)a4
+- (void)raceWithTimeout:(double)timeout queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v12 = objc_msgSend_innerPromise(self, v7, v8, v9);
-  objc_msgSend_raceWithTimeout_queue_(v12, v10, v6, v11, a3);
+  objc_msgSend_raceWithTimeout_queue_(v12, v10, queueCopy, v11, timeout);
 }
 
 - (void)resolve

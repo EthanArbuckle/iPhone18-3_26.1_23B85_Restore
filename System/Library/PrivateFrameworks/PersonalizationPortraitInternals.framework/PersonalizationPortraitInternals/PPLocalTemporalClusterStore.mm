@@ -1,7 +1,7 @@
 @interface PPLocalTemporalClusterStore
 + (id)defaultStore;
 - (PPLocalTemporalClusterStore)init;
-- (PPLocalTemporalClusterStore)initWithStorage:(id)a3;
+- (PPLocalTemporalClusterStore)initWithStorage:(id)storage;
 @end
 
 @implementation PPLocalTemporalClusterStore
@@ -12,27 +12,27 @@
   if (v3)
   {
     self = [(PPLocalTemporalClusterStore *)self initWithStorage:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (PPLocalTemporalClusterStore)initWithStorage:(id)a3
+- (PPLocalTemporalClusterStore)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = PPLocalTemporalClusterStore;
   v6 = [(PPLocalTemporalClusterStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
   }
 
   return v7;

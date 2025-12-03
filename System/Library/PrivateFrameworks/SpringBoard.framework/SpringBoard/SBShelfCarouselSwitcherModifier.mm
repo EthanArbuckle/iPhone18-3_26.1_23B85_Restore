@@ -1,48 +1,48 @@
 @interface SBShelfCarouselSwitcherModifier
-- (BOOL)_isIndexVisible:(unint64_t)a3;
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3;
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGRect)_frameForIndex:(unint64_t)a3 applyCarousel:(BOOL)a4;
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4;
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)frameForShelf:(id)a3;
+- (BOOL)_isIndexVisible:(unint64_t)visible;
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout;
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGRect)_frameForIndex:(unint64_t)index applyCarousel:(BOOL)carousel;
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)frameForShelf:(id)shelf;
 - (CGRect)shelfBackgroundBlurFrame;
-- (CGSize)_cardSizeForAppLayout:(id)a3;
-- (CGSize)_cardSizeForIndex:(unint64_t)a3;
-- (CGSize)_centerCardSizeForOrientation:(int64_t)a3;
+- (CGSize)_cardSizeForAppLayout:(id)layout;
+- (CGSize)_cardSizeForIndex:(unint64_t)index;
+- (CGSize)_centerCardSizeForOrientation:(int64_t)orientation;
 - (CGSize)_contentSize;
 - (CGSize)_fittedContentSize;
-- (CGSize)_floatingCardSizeForOrientation:(int64_t)a3;
+- (CGSize)_floatingCardSizeForOrientation:(int64_t)orientation;
 - (SBShelfCarouselSwitcherModifier)init;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (_NSRange)_visibleRange;
 - (double)_effectiveMaxCarouselWidth;
-- (double)backgroundOpacityForIndex:(unint64_t)a3;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
+- (double)backgroundOpacityForIndex:(unint64_t)index;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
 - (id)_orderedVisibleAppLayouts;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
-- (id)handleInitialSetupEvent:(id)a3;
-- (id)handleShelfFocusedDisplayItemsChangedEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
+- (id)handleInitialSetupEvent:(id)event;
+- (id)handleShelfFocusedDisplayItemsChangedEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
 - (id)scrollViewAttributes;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3;
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3;
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index;
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index;
 - (unint64_t)transactionCompletionOptions;
 @end
 
@@ -87,26 +87,26 @@
 - (id)visibleAppLayouts
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(SBShelfCarouselSwitcherModifier *)self _orderedVisibleAppLayouts];
-  v4 = [v2 setWithArray:v3];
+  _orderedVisibleAppLayouts = [(SBShelfCarouselSwitcherModifier *)self _orderedVisibleAppLayouts];
+  v4 = [v2 setWithArray:_orderedVisibleAppLayouts];
 
   return v4;
 }
 
 - (id)_orderedVisibleAppLayouts
 {
-  v3 = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _visibleRange = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
+  if (_visibleRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = v3;
+    v6 = _visibleRange;
     v7 = v4;
-    v8 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-    v5 = [v8 subarrayWithRange:{v6, v7}];
+    appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+    v5 = [appLayouts subarrayWithRange:{v6, v7}];
   }
 
   return v5;
@@ -116,8 +116,8 @@
 {
   if (self->_hasReceivedInitialSetupEvent)
   {
-    v3 = [(SBShelfCarouselSwitcherModifier *)self appLayoutsGenerationCount];
-    v4 = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
+    appLayoutsGenerationCount = [(SBShelfCarouselSwitcherModifier *)self appLayoutsGenerationCount];
+    switcherInterfaceOrientation = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
     [(SBShelfCarouselSwitcherModifier *)self containerViewBounds];
     v6 = v5;
     v8 = v7;
@@ -131,7 +131,7 @@
     [(SBShelfCarouselSwitcherModifier *)self scrollViewContentOffset];
     v20 = v19;
     v22 = v21;
-    if (*&self->_visibleRange_lastAppLayoutsGenCount == __PAIR128__(v4, v3) && (v35.origin.x = v6, v35.origin.y = v8, v35.size.width = v10, v35.size.height = v12, CGRectEqualToRect(self->_visibleRange_lastContainerViewBounds, v35)) && (v36.origin.y = v32, v36.origin.x = v33, v36.size.width = v16, v36.size.height = v18, CGRectEqualToRect(self->_visibleRange_lastSwitcherViewBounds, v36)) && (self->_visibleRange_lastContentOffset.x == v20 ? (v23 = self->_visibleRange_lastContentOffset.y == v22) : (v23 = 0), v23))
+    if (*&self->_visibleRange_lastAppLayoutsGenCount == __PAIR128__(switcherInterfaceOrientation, appLayoutsGenerationCount) && (v35.origin.x = v6, v35.origin.y = v8, v35.size.width = v10, v35.size.height = v12, CGRectEqualToRect(self->_visibleRange_lastContainerViewBounds, v35)) && (v36.origin.y = v32, v36.origin.x = v33, v36.size.width = v16, v36.size.height = v18, CGRectEqualToRect(self->_visibleRange_lastSwitcherViewBounds, v36)) && (self->_visibleRange_lastContentOffset.x == v20 ? (v23 = self->_visibleRange_lastContentOffset.y == v22) : (v23 = 0), v23))
     {
       location = self->_visibleRange_lastRange.location;
       length = self->_visibleRange_lastRange.length;
@@ -139,8 +139,8 @@
 
     else
     {
-      self->_visibleRange_lastAppLayoutsGenCount = v3;
-      self->_visibleRange_lastOrientation = v4;
+      self->_visibleRange_lastAppLayoutsGenCount = appLayoutsGenerationCount;
+      self->_visibleRange_lastOrientation = switcherInterfaceOrientation;
       self->_visibleRange_lastContainerViewBounds.origin.x = v6;
       self->_visibleRange_lastContainerViewBounds.origin.y = v8;
       self->_visibleRange_lastContainerViewBounds.size.width = v10;
@@ -151,8 +151,8 @@
       self->_visibleRange_lastSwitcherViewBounds.size.height = v18;
       self->_visibleRange_lastContentOffset.x = v20;
       self->_visibleRange_lastContentOffset.y = v22;
-      v26 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-      v27 = [v26 count];
+      appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+      v27 = [appLayouts count];
 
       if (v27)
       {
@@ -216,16 +216,16 @@
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:?];
   v6 = v5;
-  v7 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v7 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   v9 = v8;
 
   v10 = (v6 - v9 * 0.75) * 0.25 / (v9 - v9 * 0.75) + 0.75;
-  [(SBShelfCarouselSwitcherModifier *)self frameForIndex:a3];
+  [(SBShelfCarouselSwitcherModifier *)self frameForIndex:index];
   UIRectGetCenter();
   v12 = v11;
   [(SBShelfCarouselSwitcherModifier *)self switcherViewBounds];
@@ -241,9 +241,9 @@
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:a3 applyCarousel:1];
+  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:index applyCarousel:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -251,18 +251,18 @@
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if ([v11 environment] == 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([layoutCopy environment] == 1)
   {
     v28.receiver = self;
     v28.super_class = SBShelfCarouselSwitcherModifier;
-    [(SBShelfCarouselSwitcherModifier *)&v28 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBShelfCarouselSwitcherModifier *)&v28 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -271,7 +271,7 @@
 
   else
   {
-    [(SBShelfCarouselSwitcherModifier *)self _cardSizeForAppLayout:v11];
+    [(SBShelfCarouselSwitcherModifier *)self _cardSizeForAppLayout:layoutCopy];
 
     SBRectWithSize();
     v13 = v20;
@@ -291,35 +291,35 @@
   return result;
 }
 
-- (CGRect)_frameForIndex:(unint64_t)a3 applyCarousel:(BOOL)a4
+- (CGRect)_frameForIndex:(unint64_t)index applyCarousel:(BOOL)carousel
 {
-  v4 = a4;
-  v7 = a3;
+  carouselCopy = carousel;
+  indexCopy = index;
   if (([(SBShelfCarouselSwitcherModifier *)self isRTLEnabled]& 1) == 0)
   {
-    v8 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-    v7 = [v8 count] + ~a3;
+    appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+    indexCopy = [appLayouts count] + ~index;
   }
 
-  [(SBShelfCarouselSwitcherModifier *)self _cardSizeForIndex:a3];
+  [(SBShelfCarouselSwitcherModifier *)self _cardSizeForIndex:index];
   v10 = v9;
-  v11 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v11 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   v13 = v12;
 
-  if (v7)
+  if (indexCopy)
   {
     v14 = 0;
     v15 = 0.0;
     v16 = -1;
-    v17 = v7;
+    v17 = indexCopy;
     do
     {
       v18 = v14;
       if (([(SBShelfCarouselSwitcherModifier *)self isRTLEnabled]& 1) == 0)
       {
-        v19 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-        v18 = [v19 count] + v16;
+        appLayouts2 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+        v18 = [appLayouts2 count] + v16;
       }
 
       [(SBShelfCarouselSwitcherModifier *)self _cardSizeForIndex:v18];
@@ -355,13 +355,13 @@
 
     else
     {
-      v32 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-      -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [v32 count] - 1);
+      appLayouts3 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+      -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [appLayouts3 count] - 1);
       v31 = v33;
     }
 
-    v34 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-    [v34 switcherShelfCardScale];
+    medusaSettings2 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+    [medusaSettings2 switcherShelfCardScale];
     v36 = v35;
 
     v29 = v28 * 0.5 - v28 * 0.899497487 * 0.5 + v31 * v36 * 0.5 - v31 * v36 * 0.5;
@@ -373,7 +373,7 @@
   }
 
   v37 = v24 + v29;
-  if (v4)
+  if (carouselCopy)
   {
     [(SBShelfCarouselSwitcherModifier *)self _effectiveMaxCarouselWidth];
     v38 = v28 * 0.5;
@@ -387,7 +387,7 @@
     v47 = v45 - v22;
     if (v37 <= v38)
     {
-      if (!v7 || (-[SBShelfCarouselSwitcherModifier appLayouts](self, "appLayouts"), v53 = objc_claimAutoreleasedReturnValue(), v54 = [v53 count] - 1, v53, v7 == v54))
+      if (!indexCopy || (-[SBShelfCarouselSwitcherModifier appLayouts](self, "appLayouts"), v53 = objc_claimAutoreleasedReturnValue(), v54 = [v53 count] - 1, v53, indexCopy == v54))
       {
         if (v44 >= v37)
         {
@@ -430,7 +430,7 @@
 
     else
     {
-      if (!v7 || (-[SBShelfCarouselSwitcherModifier appLayouts](self, "appLayouts"), v48 = objc_claimAutoreleasedReturnValue(), v49 = [v48 count] - 1, v48, v7 == v49))
+      if (!indexCopy || (-[SBShelfCarouselSwitcherModifier appLayouts](self, "appLayouts"), v48 = objc_claimAutoreleasedReturnValue(), v49 = [v48 count] - 1, v48, indexCopy == v49))
       {
         if (v46 >= v37)
         {
@@ -487,10 +487,10 @@ LABEL_48:
     }
 
     sin(fmin(v62, 1.0) * 1.57079633);
-    if (!BSFloatIsOne() && (BSFloatIsZero() & 1) == 0 && v7)
+    if (!BSFloatIsOne() && (BSFloatIsZero() & 1) == 0 && indexCopy)
     {
-      v67 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-      [v67 count];
+      appLayouts4 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+      [appLayouts4 count];
     }
   }
 
@@ -504,26 +504,26 @@ LABEL_48:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   [(SBShelfCarouselSwitcherModifier *)self switcherViewBounds];
   v6 = v5;
-  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:a3 applyCarousel:1];
+  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:index applyCarousel:1];
   UIRectGetCenter();
   v8 = v7;
   v9 = v6 * 0.5;
   if ([(SBShelfCarouselSwitcherModifier *)self isRTLEnabled]!= v7 <= v6 * 0.5)
   {
-    v10 = a3 - 1;
+    v10 = index - 1;
   }
 
   else
   {
-    v10 = a3 + 1;
+    v10 = index + 1;
   }
 
-  v11 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v12 = [v11 count] - 1;
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v12 = [appLayouts count] - 1;
   v13 = v10 & ~(v10 >> 63);
 
   if (v12 >= v13)
@@ -536,13 +536,13 @@ LABEL_48:
     v14 = v12;
   }
 
-  [(SBShelfCarouselSwitcherModifier *)self _cardSizeForIndex:a3];
+  [(SBShelfCarouselSwitcherModifier *)self _cardSizeForIndex:index];
   v16 = v15;
   [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:v14 applyCarousel:0];
   UIRectGetCenter();
   v18 = v17;
-  v19 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v19 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   v21 = v20;
 
   [(SBShelfCarouselSwitcherModifier *)self _effectiveMaxCarouselWidth];
@@ -620,8 +620,8 @@ LABEL_48:
   }
 
   v40 = sin(fmin(v39, 1.0) * 1.57079633) * -0.25 + 1.0;
-  v41 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v42 = [v41 count];
+  appLayouts2 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v42 = [appLayouts2 count];
 
   v43 = 0.76;
   if (v40 >= 0.76 || v42 >= 3)
@@ -632,11 +632,11 @@ LABEL_48:
   return v21 * v43;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:a5, a4];
-  v6 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v6 switcherShelfCardScale];
+  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:index, layout];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   if (BSFloatEqualToFloat())
   {
     v7 = 0.0;
@@ -650,12 +650,12 @@ LABEL_48:
   return v7;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v5 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
 
-  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:a3];
+  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:index];
   v6 = BSFloatLessThanOrEqualToFloat();
   result = 1.0;
   if (v6)
@@ -668,21 +668,21 @@ LABEL_48:
 
 - (id)topMostLayoutElements
 {
-  v3 = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _visibleRange = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
+  if (_visibleRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = v3;
+    v6 = _visibleRange;
     v7 = v4;
     v5 = objc_opt_new();
-    v8 = [(SBShelfCarouselSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBShelfCarouselSwitcherModifier *)self isRTLEnabled];
     if (v6 < v6 + v7)
     {
-      v9 = v8;
+      v9 = isRTLEnabled;
       do
       {
         [(SBShelfCarouselSwitcherModifier *)self switcherViewBounds];
@@ -691,8 +691,8 @@ LABEL_48:
         [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:v6 applyCarousel:1];
         UIRectGetCenter();
         v13 = v12;
-        v14 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-        v15 = [v14 objectAtIndex:v6];
+        appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+        v15 = [appLayouts objectAtIndex:v6];
 
         if ((v9 ^ (v13 <= v11)))
         {
@@ -717,34 +717,34 @@ LABEL_48:
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v2 = [(SBShelfCarouselSwitcherModifier *)self visibleAppLayouts];
-  v3 = [v2 allObjects];
+  visibleAppLayouts = [(SBShelfCarouselSwitcherModifier *)self visibleAppLayouts];
+  allObjects = [visibleAppLayouts allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v4 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings:a3];
+  v4 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings:role];
   [v4 switcherShelfCardScale];
   v6 = v5;
 
   return v6;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v4 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings:a3];
+  v4 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings:layout];
   [v4 switcherShelfCardScale];
   v6 = v5;
 
   return v6;
 }
 
-- (CGSize)_cardSizeForIndex:(unint64_t)a3
+- (CGSize)_cardSizeForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   [(SBShelfCarouselSwitcherModifier *)self _cardSizeForAppLayout:v6];
   v8 = v7;
@@ -757,12 +757,12 @@ LABEL_48:
   return result;
 }
 
-- (CGSize)_cardSizeForAppLayout:(id)a3
+- (CGSize)_cardSizeForAppLayout:(id)layout
 {
-  if (a3)
+  if (layout)
   {
-    v4 = [a3 environment];
-    if (v4 == 1)
+    environment = [layout environment];
+    if (environment == 1)
     {
       [(SBShelfCarouselSwitcherModifier *)self containerViewBounds];
       v6 = v5;
@@ -771,16 +771,16 @@ LABEL_48:
 
     else
     {
-      v9 = v4;
-      v10 = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
+      v9 = environment;
+      switcherInterfaceOrientation = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
       if (v9 == 2)
       {
-        [(SBShelfCarouselSwitcherModifier *)self _floatingCardSizeForOrientation:v10];
+        [(SBShelfCarouselSwitcherModifier *)self _floatingCardSizeForOrientation:switcherInterfaceOrientation];
       }
 
       else
       {
-        [(SBShelfCarouselSwitcherModifier *)self _centerCardSizeForOrientation:v10];
+        [(SBShelfCarouselSwitcherModifier *)self _centerCardSizeForOrientation:switcherInterfaceOrientation];
       }
     }
   }
@@ -796,18 +796,18 @@ LABEL_48:
   return result;
 }
 
-- (BOOL)isLayoutRoleKillable:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)isLayoutRoleKillable:(int64_t)killable inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v7 = a4;
-  if ([v7 type] == 5 || (-[SBShelfCarouselSwitcherModifier shelfFocusedDisplayItems](self, "shelfFocusedDisplayItems"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "containsAnyItemFromSet:", v8), v8, (v9 & 1) != 0))
+  layoutCopy = layout;
+  if ([layoutCopy type] == 5 || (-[SBShelfCarouselSwitcherModifier shelfFocusedDisplayItems](self, "shelfFocusedDisplayItems"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(layoutCopy, "containsAnyItemFromSet:", v8), v8, (v9 & 1) != 0))
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v7 isCenterOverSplit] ^ 1;
-    if (a3 == 4)
+    v11 = [layoutCopy isCenterOverSplit] ^ 1;
+    if (killable == 4)
     {
       v10 = 1;
     }
@@ -837,11 +837,11 @@ LABEL_48:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v3 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v3 switcherShelfCardCornerRadius];
-  [v3 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardCornerRadius];
+  [medusaSettings switcherShelfCardScale];
   SBRectCornerRadiiForRadius();
   v5 = v4;
   v7 = v6;
@@ -875,7 +875,7 @@ LABEL_48:
   return v3;
 }
 
-- (CGRect)frameForShelf:(id)a3
+- (CGRect)frameForShelf:(id)shelf
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -888,38 +888,38 @@ LABEL_48:
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v4 = objc_opt_new();
   [v4 setUpdateMode:1];
   [v4 setTitleAndIconOpacityUpdateMode:3];
-  v5 = [(SBShelfCarouselSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v4 setLayoutSettings:v7];
+  switcherSettings = [(SBShelfCarouselSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [v4 setLayoutSettings:layoutSettings];
 
-  v8 = [(SBShelfCarouselSwitcherModifier *)self switcherSettings];
-  v9 = [v8 animationSettings];
-  v10 = [v9 opacitySettings];
-  [v4 setOpacitySettings:v10];
+  switcherSettings2 = [(SBShelfCarouselSwitcherModifier *)self switcherSettings];
+  animationSettings2 = [switcherSettings2 animationSettings];
+  opacitySettings = [animationSettings2 opacitySettings];
+  [v4 setOpacitySettings:opacitySettings];
 
   return v4;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
-  [(SBShelfCarouselSwitcherModifier *)self frameForIndex:a3];
+  [(SBShelfCarouselSwitcherModifier *)self frameForIndex:index];
 
   return CGRectGetWidth(*&v3);
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v6 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v6 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   v8 = v7;
 
-  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:a4];
+  [(SBShelfCarouselSwitcherModifier *)self scaleForIndex:index];
   v10 = v9;
   result = 1.0;
   if (v10 < v8 * 0.765)
@@ -930,7 +930,7 @@ LABEL_48:
   return result;
 }
 
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
   v4 = *MEMORY[0x277CBF398];
   v5 = *(MEMORY[0x277CBF398] + 8);
@@ -943,7 +943,7 @@ LABEL_48:
   return result;
 }
 
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
   v6 = *MEMORY[0x277CBF398];
   v7 = *(MEMORY[0x277CBF398] + 8);
@@ -956,9 +956,9 @@ LABEL_48:
   return result;
 }
 
-- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)a3
+- (BOOL)shouldAccessoryDrawShadowForAppLayout:(id)layout
 {
-  v3 = [a3 itemForLayoutRole:2];
+  v3 = [layout itemForLayoutRole:2];
   v4 = v3 != 0;
 
   return v4;
@@ -966,12 +966,12 @@ LABEL_48:
 
 - (unint64_t)transactionCompletionOptions
 {
-  v3 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  if ([v3 count])
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
-    v4 = [(SBShelfCarouselSwitcherModifier *)self isReduceMotionEnabled];
+    isReduceMotionEnabled = [(SBShelfCarouselSwitcherModifier *)self isReduceMotionEnabled];
 
-    if (v4)
+    if (isReduceMotionEnabled)
     {
       return 6;
     }
@@ -989,23 +989,23 @@ LABEL_48:
   }
 }
 
-- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterInsertingAtIndex:(unint64_t)index
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
-  if (v5 > a3)
+  _visibleRange = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
+  if (_visibleRange > index)
   {
-    return a3;
+    return index;
   }
 
-  v7 = v5;
+  v7 = _visibleRange;
   v8 = v6;
-  if (v5 + v6 <= a3)
+  if (_visibleRange + v6 <= index)
   {
-    return a3;
+    return index;
   }
 
-  [(SBShelfCarouselSwitcherModifier *)self titleAndIconOpacityForIndex:a3];
-  i = a3;
+  [(SBShelfCarouselSwitcherModifier *)self titleAndIconOpacityForIndex:index];
+  i = index;
   if (BSFloatIsOne())
   {
     for (i = v7; ; ++i)
@@ -1018,28 +1018,28 @@ LABEL_48:
 
       if (!--v8)
       {
-        return a3;
+        return index;
       }
     }
   }
 
   if (i == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return index;
   }
 
   return i;
 }
 
-- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)a3
+- (unint64_t)indexToScrollToAfterRemovingIndex:(unint64_t)index
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
-  if (v5 >= v5 + v6)
+  _visibleRange = [(SBShelfCarouselSwitcherModifier *)self _visibleRange];
+  if (_visibleRange >= _visibleRange + v6)
   {
-    return a3;
+    return index;
   }
 
-  v7 = v5;
+  v7 = _visibleRange;
   v8 = v6;
   while (1)
   {
@@ -1052,29 +1052,29 @@ LABEL_48:
     ++v7;
     if (!--v8)
     {
-      return a3;
+      return index;
     }
   }
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return index;
   }
 
   return v7;
 }
 
-- (BOOL)isLayoutRoleDraggable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleDraggable:(int64_t)draggable inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 type] || (-[SBShelfCarouselSwitcherModifier shelfFocusedDisplayItems](self, "shelfFocusedDisplayItems"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "containsAnyItemFromSet:", v7), v7, (v8 & 1) != 0))
+  layoutCopy = layout;
+  if ([layoutCopy type] || (-[SBShelfCarouselSwitcherModifier shelfFocusedDisplayItems](self, "shelfFocusedDisplayItems"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(layoutCopy, "containsAnyItemFromSet:", v7), v7, (v8 & 1) != 0))
   {
     v9 = 0;
   }
 
   else
   {
-    v11 = [v6 leafAppLayoutForRole:a3];
+    v11 = [layoutCopy leafAppLayoutForRole:draggable];
     v12 = [v11 itemForLayoutRole:1];
     v9 = [(SBShelfCarouselSwitcherModifier *)self displayItemSupportsMedusa:v12];
   }
@@ -1082,18 +1082,18 @@ LABEL_48:
   return v9;
 }
 
-- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)a3
+- (BOOL)shouldTetherItemsAndAccessoriesInAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBShelfCarouselSwitcherModifier *)self shelfFocusedDisplayItems];
-  if ([v4 containsAnyItemFromSet:v5])
+  layoutCopy = layout;
+  shelfFocusedDisplayItems = [(SBShelfCarouselSwitcherModifier *)self shelfFocusedDisplayItems];
+  if ([layoutCopy containsAnyItemFromSet:shelfFocusedDisplayItems])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 itemForLayoutRole:4];
+    v7 = [layoutCopy itemForLayoutRole:4];
     v6 = v7 != 0;
   }
 
@@ -1104,23 +1104,23 @@ LABEL_48:
 {
   v2 = MEMORY[0x277CBEAC0];
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v5 = [v3 setWithArray:v4];
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v5 = [v3 setWithArray:appLayouts];
   v6 = [v2 dictionaryWithObject:v5 forKey:&unk_283372128];
 
   return v6;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
-  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:a3 applyCarousel:0];
+  [(SBShelfCarouselSwitcherModifier *)self _frameForIndex:index applyCarousel:0];
   v6 = v5;
   UIRectGetCenter();
   v8 = v7;
   [(SBShelfCarouselSwitcherModifier *)self scrollViewContentOffset];
   v10 = v8 + v9;
-  v11 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-  [v11 switcherShelfCardScale];
+  medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+  [medusaSettings switcherShelfCardScale];
   v13 = v10 + v6 * v12 * 0.5;
 
   [(SBShelfCarouselSwitcherModifier *)self switcherViewBounds];
@@ -1141,18 +1141,18 @@ LABEL_48:
   return result;
 }
 
-- (double)backgroundOpacityForIndex:(unint64_t)a3
+- (double)backgroundOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  v7 = [(SBShelfCarouselSwitcherModifier *)self shelfFocusedDisplayItems];
-  if ([v6 containsAnyItemFromSet:v7])
+  shelfFocusedDisplayItems = [(SBShelfCarouselSwitcherModifier *)self shelfFocusedDisplayItems];
+  if ([v6 containsAnyItemFromSet:shelfFocusedDisplayItems])
   {
-    v8 = [v6 isSplitConfiguration];
+    isSplitConfiguration = [v6 isSplitConfiguration];
 
     v9 = 1.0;
-    if (v8)
+    if (isSplitConfiguration)
     {
       goto LABEL_6;
     }
@@ -1168,19 +1168,19 @@ LABEL_6:
   return v9;
 }
 
-- (id)handleInitialSetupEvent:(id)a3
+- (id)handleInitialSetupEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = SBShelfCarouselSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v13 handleInitialSetupEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v13 handleInitialSetupEvent:event];
   self->_hasReceivedInitialSetupEvent = 1;
-  v5 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v6 = [v5 count];
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts count];
 
   if (v6)
   {
-    v7 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-    v8 = [v7 objectAtIndex:0];
+    appLayouts2 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+    v8 = [appLayouts2 objectAtIndex:0];
 
     if (v8)
     {
@@ -1195,40 +1195,40 @@ LABEL_6:
   return v4;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 appLayout];
-  if ([v5 type] == 5)
+  eventCopy = event;
+  appLayout = [eventCopy appLayout];
+  if ([appLayout type] == 5)
   {
     v6 = [SBNewWindowRequestSwitcherEventResponse alloc];
-    v7 = [v5 allItems];
-    v8 = [v7 firstObject];
-    v9 = [v8 bundleIdentifier];
-    v10 = [(SBNewWindowRequestSwitcherEventResponse *)v6 initWithBundleIdentifier:v9];
+    allItems = [appLayout allItems];
+    firstObject = [allItems firstObject];
+    bundleIdentifier = [firstObject bundleIdentifier];
+    v10 = [(SBNewWindowRequestSwitcherEventResponse *)v6 initWithBundleIdentifier:bundleIdentifier];
   }
 
   else
   {
-    v7 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4];
-    [v7 setRetainsSiri:{-[SBShelfCarouselSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
-    v10 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v7 gestureInitiated:0];
+    allItems = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy];
+    [allItems setRetainsSiri:{-[SBShelfCarouselSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
+    v10 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:allItems gestureInitiated:0];
   }
 
   v14.receiver = self;
   v14.super_class = SBShelfCarouselSwitcherModifier;
-  v11 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutEvent:v4];
+  v11 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutEvent:eventCopy];
 
   v12 = SBAppendSwitcherModifierResponse(v10, v11);
 
   return v12;
 }
 
-- (id)handleShelfFocusedDisplayItemsChangedEvent:(id)a3
+- (id)handleShelfFocusedDisplayItemsChangedEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBShelfCarouselSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v9 handleShelfFocusedDisplayItemsChangedEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v9 handleShelfFocusedDisplayItemsChangedEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
@@ -1252,15 +1252,15 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_isIndexVisible:(unint64_t)a3
+- (BOOL)_isIndexVisible:(unint64_t)visible
 {
-  v5 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:visible];
 
-  [(SBShelfCarouselSwitcherModifier *)self opacityForLayoutRole:1 inAppLayout:v6 atIndex:a3];
-  LOBYTE(a3) = BSFloatIsZero();
+  [(SBShelfCarouselSwitcherModifier *)self opacityForLayoutRole:1 inAppLayout:v6 atIndex:visible];
+  LOBYTE(visible) = BSFloatIsZero();
 
-  return a3 ^ 1;
+  return visible ^ 1;
 }
 
 - (CGSize)_contentSize
@@ -1272,8 +1272,8 @@ LABEL_6:
   v8 = v7;
   if (v4 >= v7)
   {
-    v9 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-    v10 = [v9 count];
+    appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+    v10 = [appLayouts count];
 
     if (v10)
     {
@@ -1285,16 +1285,16 @@ LABEL_6:
 
       else
       {
-        v13 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-        -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [v13 count] - 1);
+        appLayouts2 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+        -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [appLayouts2 count] - 1);
         v12 = v14;
       }
 
       v15 = v8 * 0.899497487;
       if (([(SBShelfCarouselSwitcherModifier *)self isRTLEnabled]& 1) != 0)
       {
-        v16 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-        -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [v16 count] - 1);
+        appLayouts3 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+        -[SBShelfCarouselSwitcherModifier _cardSizeForIndex:](self, "_cardSizeForIndex:", [appLayouts3 count] - 1);
         v18 = v17;
       }
 
@@ -1304,8 +1304,8 @@ LABEL_6:
         v18 = v19;
       }
 
-      v20 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-      [v20 switcherShelfCardScale];
+      medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+      [medusaSettings switcherShelfCardScale];
       v22 = v21;
 
       v23 = v12 * v22 * 0.5;
@@ -1333,8 +1333,8 @@ LABEL_6:
 
 - (CGSize)_fittedContentSize
 {
-  v3 = [(SBShelfCarouselSwitcherModifier *)self appLayoutsGenerationCount];
-  v4 = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
+  appLayoutsGenerationCount = [(SBShelfCarouselSwitcherModifier *)self appLayoutsGenerationCount];
+  switcherInterfaceOrientation = [(SBShelfCarouselSwitcherModifier *)self switcherInterfaceOrientation];
   [(SBShelfCarouselSwitcherModifier *)self containerViewBounds];
   v6 = v5;
   v8 = v7;
@@ -1345,7 +1345,7 @@ LABEL_6:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  if (*&self->_fittedContentSize_lastAppLayoutsGenCount == __PAIR128__(v4, v3) && (v34.origin.x = v6, v34.origin.y = v8, v34.size.width = v10, v34.size.height = v12, CGRectEqualToRect(self->_fittedContentSize_lastContainerViewBounds, v34)) && (v35.origin.x = v14, v35.origin.y = v16, v35.size.width = v18, v35.size.height = v20, CGRectEqualToRect(self->_fittedContentSize_lastSwitcherViewBounds, v35)))
+  if (*&self->_fittedContentSize_lastAppLayoutsGenCount == __PAIR128__(switcherInterfaceOrientation, appLayoutsGenerationCount) && (v34.origin.x = v6, v34.origin.y = v8, v34.size.width = v10, v34.size.height = v12, CGRectEqualToRect(self->_fittedContentSize_lastContainerViewBounds, v34)) && (v35.origin.x = v14, v35.origin.y = v16, v35.size.width = v18, v35.size.height = v20, CGRectEqualToRect(self->_fittedContentSize_lastSwitcherViewBounds, v35)))
   {
     width = self->_fittedContentSize_lastSize.width;
     height = self->_fittedContentSize_lastSize.height;
@@ -1353,8 +1353,8 @@ LABEL_6:
 
   else
   {
-    self->_fittedContentSize_lastAppLayoutsGenCount = v3;
-    self->_fittedContentSize_lastOrientation = v4;
+    self->_fittedContentSize_lastAppLayoutsGenCount = appLayoutsGenerationCount;
+    self->_fittedContentSize_lastOrientation = switcherInterfaceOrientation;
     self->_fittedContentSize_lastContainerViewBounds.origin.x = v6;
     self->_fittedContentSize_lastContainerViewBounds.origin.y = v8;
     self->_fittedContentSize_lastContainerViewBounds.size.width = v10;
@@ -1363,12 +1363,12 @@ LABEL_6:
     self->_fittedContentSize_lastSwitcherViewBounds.origin.y = v16;
     self->_fittedContentSize_lastSwitcherViewBounds.size.width = v18;
     self->_fittedContentSize_lastSwitcherViewBounds.size.height = v20;
-    v23 = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
-    [v23 switcherShelfCardScale];
+    medusaSettings = [(SBShelfCarouselSwitcherModifier *)self medusaSettings];
+    [medusaSettings switcherShelfCardScale];
     v25 = v24;
 
-    v26 = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
-    v27 = [v26 count];
+    appLayouts = [(SBShelfCarouselSwitcherModifier *)self appLayouts];
+    v27 = [appLayouts count];
 
     if (v27)
     {
@@ -1402,7 +1402,7 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_centerCardSizeForOrientation:(int64_t)a3
+- (CGSize)_centerCardSizeForOrientation:(int64_t)orientation
 {
   [(SBShelfCarouselSwitcherModifier *)self containerViewBounds];
   v6 = v5;
@@ -1429,7 +1429,7 @@ LABEL_6:
     self->_centerCardSize_portraitCardSize.height = v18;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v23 = &OBJC_IVAR___SBShelfCarouselSwitcherModifier__centerCardSize_landscapeCardSize;
   }
@@ -1447,7 +1447,7 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)_floatingCardSizeForOrientation:(int64_t)a3
+- (CGSize)_floatingCardSizeForOrientation:(int64_t)orientation
 {
   [(SBShelfCarouselSwitcherModifier *)self containerViewBounds];
   v6 = v5;
@@ -1476,7 +1476,7 @@ LABEL_6:
     self->_floatingCardSize_portraitCardSize.height = v18;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v23 = &OBJC_IVAR___SBShelfCarouselSwitcherModifier__floatingCardSize_landscapeCardSize;
   }

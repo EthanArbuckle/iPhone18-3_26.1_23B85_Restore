@@ -1,5 +1,5 @@
 @interface WFCloudKitSyncEvent
-- (WFCloudKitSyncEvent)initWithIdentifier:(int)a3 eventType:(int)a4 date:(id)a5 content:(id)a6;
+- (WFCloudKitSyncEvent)initWithIdentifier:(int)identifier eventType:(int)type date:(id)date content:(id)content;
 - (id)description;
 @end
 
@@ -8,7 +8,7 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFCloudKitSyncEvent *)self identifier];
+  identifier = [(WFCloudKitSyncEvent *)self identifier];
   v5 = [(WFCloudKitSyncEvent *)self eventType]- 1;
   if (v5 > 0xC)
   {
@@ -21,27 +21,27 @@
   }
 
   v7 = v6;
-  v8 = [(WFCloudKitSyncEvent *)self date];
-  v9 = [(WFCloudKitSyncEvent *)self content];
-  v10 = [v3 stringWithFormat:@"<%i: %@, date: %@ (%@)>", v4, v7, v8, v9];
+  date = [(WFCloudKitSyncEvent *)self date];
+  content = [(WFCloudKitSyncEvent *)self content];
+  v10 = [v3 stringWithFormat:@"<%i: %@, date: %@ (%@)>", identifier, v7, date, content];
 
   return v10;
 }
 
-- (WFCloudKitSyncEvent)initWithIdentifier:(int)a3 eventType:(int)a4 date:(id)a5 content:(id)a6
+- (WFCloudKitSyncEvent)initWithIdentifier:(int)identifier eventType:(int)type date:(id)date content:(id)content
 {
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  contentCopy = content;
   v17.receiver = self;
   v17.super_class = WFCloudKitSyncEvent;
   v13 = [(WFCloudKitSyncEvent *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    v13->_identifier = a3;
-    v13->_eventType = a4;
-    objc_storeStrong(&v13->_date, a5);
-    objc_storeStrong(&v14->_content, a6);
+    v13->_identifier = identifier;
+    v13->_eventType = type;
+    objc_storeStrong(&v13->_date, date);
+    objc_storeStrong(&v14->_content, content);
     v15 = v14;
   }
 

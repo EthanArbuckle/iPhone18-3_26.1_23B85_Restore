@@ -1,15 +1,15 @@
 @interface ArchiveInteractionRunner.Delegate
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithError:(id)a4 cancelled:(BOOL)a5;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithError:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation ArchiveInteractionRunner.Delegate
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithError:(id)a4 cancelled:(BOOL)a5
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithError:(id)error cancelled:(BOOL)cancelled
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_26A62AE70(v7, a4);
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_26A62AE70(clientCopy, error);
 }
 
 @end

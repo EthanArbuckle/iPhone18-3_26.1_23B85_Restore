@@ -6,7 +6,7 @@
 
 - (SUResponderChainInvocationRecorder)responderChainProxy:()SUInvocationAdditions
 {
-  v3 = [[SUResponderChainInvocationRecorder alloc] initWithTarget:a1 protocol:a3];
+  v3 = [[SUResponderChainInvocationRecorder alloc] initWithTarget:self protocol:a3];
 
   return v3;
 }

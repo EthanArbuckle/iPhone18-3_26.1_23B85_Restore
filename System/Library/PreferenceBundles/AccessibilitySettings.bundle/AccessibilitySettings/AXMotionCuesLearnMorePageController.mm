@@ -1,6 +1,6 @@
 @interface AXMotionCuesLearnMorePageController
-+ (id)fetchTitleForPage:(int64_t)a3;
-- (AXMotionCuesLearnMorePageController)initWithPage:(int64_t)a3;
++ (id)fetchTitleForPage:(int64_t)page;
+- (AXMotionCuesLearnMorePageController)initWithPage:(int64_t)page;
 - (id)fetchMainButtonTitle;
 - (id)fetchMovieName;
 - (id)setupAssetReader;
@@ -11,22 +11,22 @@
 - (void)playMovie;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AXMotionCuesLearnMorePageController
 
-+ (id)fetchTitleForPage:(int64_t)a3
++ (id)fetchTitleForPage:(int64_t)page
 {
-  if (a3 == 1)
+  if (page == 1)
   {
     v4 = @"MotionCuesLearnMorePageSideMotionTitle";
   }
 
   else
   {
-    if (a3 != 2)
+    if (page != 2)
     {
       goto LABEL_6;
     }
@@ -34,23 +34,23 @@
     v4 = @"MotionCuesLearnMorePageForwardBackwardMotionTitle";
   }
 
-  a1 = settingsLocString(v4, @"Accessibility-MotionCues");
+  self = settingsLocString(v4, @"Accessibility-MotionCues");
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-- (AXMotionCuesLearnMorePageController)initWithPage:(int64_t)a3
+- (AXMotionCuesLearnMorePageController)initWithPage:(int64_t)page
 {
   v5 = [AXMotionCuesLearnMorePageController fetchTitleForPage:?];
   v17.receiver = self;
   v17.super_class = AXMotionCuesLearnMorePageController;
   v6 = [(AXMotionCuesLearnMorePageController *)&v17 initWithTitle:v5 detailText:0 symbolName:0 contentLayout:1];
 
-  *(v6 + 12) = a3;
+  *(v6 + 12) = page;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v6 fetchMovieName];
-  v9 = [v7 URLForResource:v8 withExtension:@"mov"];
+  fetchMovieName = [v6 fetchMovieName];
+  v9 = [v7 URLForResource:fetchMovieName withExtension:@"mov"];
 
   v10 = [AVURLAsset assetWithURL:v9];
   v11 = *(v6 + 1);
@@ -75,16 +75,16 @@ LABEL_6:
   v11.super_class = AXMotionCuesLearnMorePageController;
   [(AXMotionCuesLearnMorePageController *)&v11 viewDidLayoutSubviews];
   IsPad = AXDeviceIsPad();
-  v4 = [(AXMotionCuesLearnMorePageController *)self contentView];
-  [v4 frame];
+  contentView = [(AXMotionCuesLearnMorePageController *)self contentView];
+  [contentView frame];
   v6 = v5;
   [(AXMotionCuesLearnMorePageController *)self contentView];
   if (IsPad)
     v7 = {;
     [v7 frame];
     v9 = v8 * 0.8;
-    v10 = [(AXMotionCuesLearnMorePageController *)self contentView];
-    [v10 frame];
+    contentView2 = [(AXMotionCuesLearnMorePageController *)self contentView];
+    [contentView2 frame];
     [(AVSampleBufferDisplayLayer *)self->_avsbdl setFrame:v6 * 0.1, 10.0, v9];
   }
 
@@ -100,24 +100,24 @@ LABEL_6:
   if (self->_page != 2)
   {
     v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelButtonTapped:"];
-    v4 = [(AXMotionCuesLearnMorePageController *)self navigationItem];
-    [v4 setRightBarButtonItem:v3];
+    navigationItem = [(AXMotionCuesLearnMorePageController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v3];
   }
 
   v22 = +[OBBoldTrayButton boldButton];
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(AXMotionCuesLearnMorePageController *)self fetchMainButtonTitle];
-  [v22 setTitle:v5 forState:0];
+  fetchMainButtonTitle = [(AXMotionCuesLearnMorePageController *)self fetchMainButtonTitle];
+  [v22 setTitle:fetchMainButtonTitle forState:0];
 
   [v22 addTarget:self action:"mainButtonTapped" forControlEvents:64];
   [(AXMotionCuesLearnMorePageController *)self setMainButton:v22];
-  v6 = [(AXMotionCuesLearnMorePageController *)self buttonTray];
-  [v6 addButton:v22];
+  buttonTray = [(AXMotionCuesLearnMorePageController *)self buttonTray];
+  [buttonTray addButton:v22];
 
   v7 = +[UIColor clearColor];
-  v8 = [(AXMotionCuesLearnMorePageController *)self navigationController];
-  v9 = [v8 navigationBar];
-  [v9 setBackgroundColor:v7];
+  navigationController = [(AXMotionCuesLearnMorePageController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBackgroundColor:v7];
 
   v10 = objc_alloc_init(AVSampleBufferDisplayLayer);
   avsbdl = self->_avsbdl;
@@ -140,16 +140,16 @@ LABEL_6:
   v16 = +[UIColor clearColor];
   -[AVSampleBufferDisplayLayer setBackgroundColor:](self->_avsbdl, "setBackgroundColor:", [v16 cgColor]);
 
-  v17 = [(AXMotionCuesLearnMorePageController *)self contentView];
-  v18 = [v17 layer];
-  [v18 addSublayer:self->_avsbdl];
+  contentView = [(AXMotionCuesLearnMorePageController *)self contentView];
+  layer = [contentView layer];
+  [layer addSublayer:self->_avsbdl];
 
-  v19 = [(AXMotionCuesLearnMorePageController *)self contentView];
-  [v19 setClipsToBounds:1];
+  contentView2 = [(AXMotionCuesLearnMorePageController *)self contentView];
+  [contentView2 setClipsToBounds:1];
 
   v20 = +[UIColor systemGroupedBackgroundColor];
-  v21 = [(AXMotionCuesLearnMorePageController *)self contentView];
-  [v21 setBackgroundColor:v20];
+  contentView3 = [(AXMotionCuesLearnMorePageController *)self contentView];
+  [contentView3 setBackgroundColor:v20];
 
   [(AXMotionCuesLearnMorePageController *)self configureTimebase];
 }
@@ -239,8 +239,8 @@ void __48__AXMotionCuesLearnMorePageController_loadMovie__block_invoke_2(uint64_
 
 - (id)setupAssetReader
 {
-  v3 = [(AVAsset *)self->_asset tracks];
-  v4 = [v3 objectAtIndex:0];
+  tracks = [(AVAsset *)self->_asset tracks];
+  v4 = [tracks objectAtIndex:0];
 
   v5 = [NSNumber numberWithUnsignedInt:32];
   v6 = kCVPixelBufferPixelFormatTypeKey;
@@ -257,20 +257,20 @@ void __48__AXMotionCuesLearnMorePageController_loadMovie__block_invoke_2(uint64_
   return v10;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AXMotionCuesLearnMorePageController;
-  [(AXMotionCuesLearnMorePageController *)&v5 viewWillDisappear:a3];
-  v4 = [(AVSampleBufferDisplayLayer *)self->_avsbdl sampleBufferRenderer];
-  [v4 stopRequestingMediaData];
+  [(AXMotionCuesLearnMorePageController *)&v5 viewWillDisappear:disappear];
+  sampleBufferRenderer = [(AVSampleBufferDisplayLayer *)self->_avsbdl sampleBufferRenderer];
+  [sampleBufferRenderer stopRequestingMediaData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXMotionCuesLearnMorePageController;
-  [(AXMotionCuesLearnMorePageController *)&v4 viewWillAppear:a3];
+  [(AXMotionCuesLearnMorePageController *)&v4 viewWillAppear:appear];
   [(AXMotionCuesLearnMorePageController *)self loadMovie];
 }
 
@@ -278,14 +278,14 @@ void __48__AXMotionCuesLearnMorePageController_loadMovie__block_invoke_2(uint64_
 {
   objc_initWeak(&location, self);
   [(AVAssetReader *)self->_primaryReader startReading];
-  v3 = [(AVSampleBufferDisplayLayer *)self->_avsbdl sampleBufferRenderer];
+  sampleBufferRenderer = [(AVSampleBufferDisplayLayer *)self->_avsbdl sampleBufferRenderer];
   avsbdlQueue = self->_avsbdlQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __48__AXMotionCuesLearnMorePageController_playMovie__block_invoke;
   v5[3] = &unk_255388;
   objc_copyWeak(&v6, &location);
-  [v3 requestMediaDataWhenReadyOnQueue:avsbdlQueue usingBlock:v5];
+  [sampleBufferRenderer requestMediaDataWhenReadyOnQueue:avsbdlQueue usingBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -346,8 +346,8 @@ LABEL_7:
 
 - (opaqueCMSampleBuffer)copyNextSampleBuffer
 {
-  v3 = [(AVAssetReaderOutput *)self->_primaryOutput copyNextSampleBuffer];
-  if (v3 && (v4 = v3, -[AVAssetReader status](self->_primaryReader, "status") != &dword_0 + 2) || (objc_storeStrong(&self->_primaryReader, self->_backupReader), objc_storeStrong(&self->_primaryOutput, self->_backupOutput), -[AXMotionCuesLearnMorePageController setupAssetReader](self, "setupAssetReader"), v5 = objc_claimAutoreleasedReturnValue(), backupReader = self->_backupReader, self->_backupReader = v5, backupReader, -[AVAssetReader outputs](self->_backupReader, "outputs"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectAtIndexedSubscript:0], v8 = objc_claimAutoreleasedReturnValue(), backupOutput = self->_backupOutput, self->_backupOutput = v8, backupOutput, v7, -[AVAssetReader startReading](self->_primaryReader, "startReading"), -[AVSampleBufferDisplayLayer sampleBufferRenderer](self->_avsbdl, "sampleBufferRenderer"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "flush"), v10, -[AXMotionCuesLearnMorePageController configureTimebase](self, "configureTimebase"), CMTimeMake(&rhs, 1, 1), lhs = self->_nextSampleOffset, CMTimeAdd(&outputPresentationTimeStamp, &lhs, &rhs), self->_nextSampleOffset = outputPresentationTimeStamp, (v4 = -[AVAssetReaderOutput copyNextSampleBuffer](self->_primaryOutput, "copyNextSampleBuffer")) != 0))
+  copyNextSampleBuffer = [(AVAssetReaderOutput *)self->_primaryOutput copyNextSampleBuffer];
+  if (copyNextSampleBuffer && (v4 = copyNextSampleBuffer, -[AVAssetReader status](self->_primaryReader, "status") != &dword_0 + 2) || (objc_storeStrong(&self->_primaryReader, self->_backupReader), objc_storeStrong(&self->_primaryOutput, self->_backupOutput), -[AXMotionCuesLearnMorePageController setupAssetReader](self, "setupAssetReader"), v5 = objc_claimAutoreleasedReturnValue(), backupReader = self->_backupReader, self->_backupReader = v5, backupReader, -[AVAssetReader outputs](self->_backupReader, "outputs"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectAtIndexedSubscript:0], v8 = objc_claimAutoreleasedReturnValue(), backupOutput = self->_backupOutput, self->_backupOutput = v8, backupOutput, v7, -[AVAssetReader startReading](self->_primaryReader, "startReading"), -[AVSampleBufferDisplayLayer sampleBufferRenderer](self->_avsbdl, "sampleBufferRenderer"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "flush"), v10, -[AXMotionCuesLearnMorePageController configureTimebase](self, "configureTimebase"), CMTimeMake(&rhs, 1, 1), lhs = self->_nextSampleOffset, CMTimeAdd(&outputPresentationTimeStamp, &lhs, &rhs), self->_nextSampleOffset = outputPresentationTimeStamp, (v4 = -[AVAssetReaderOutput copyNextSampleBuffer](self->_primaryOutput, "copyNextSampleBuffer")) != 0))
   {
     p_nextSampleOffset = &self->_nextSampleOffset;
     outputPresentationTimeStamp = *p_nextSampleOffset;
@@ -375,8 +375,8 @@ LABEL_7:
     v3 = @"phone";
   }
 
-  v4 = [(AXMotionCuesLearnMorePageController *)self traitCollection];
-  if ([v4 userInterfaceStyle] == &dword_0 + 2)
+  traitCollection = [(AXMotionCuesLearnMorePageController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == &dword_0 + 2)
   {
     v5 = @"dark";
   }
@@ -386,10 +386,10 @@ LABEL_7:
     v5 = @"light";
   }
 
-  v6 = [(AXMotionCuesLearnMorePageController *)self contentView];
-  v7 = [v6 effectiveUserInterfaceLayoutDirection];
+  contentView = [(AXMotionCuesLearnMorePageController *)self contentView];
+  effectiveUserInterfaceLayoutDirection = [contentView effectiveUserInterfaceLayoutDirection];
   v8 = @"ltr";
-  if (v7 == &dword_0 + 1)
+  if (effectiveUserInterfaceLayoutDirection == &dword_0 + 1)
   {
     v8 = @"rtl";
   }
@@ -438,8 +438,8 @@ LABEL_7:
   else if (page == 1)
   {
     v5 = [[AXMotionCuesLearnMorePageController alloc] initWithPage:2];
-    v4 = [(AXMotionCuesLearnMorePageController *)self navigationController];
-    [v4 pushViewController:v5 animated:1];
+    navigationController = [(AXMotionCuesLearnMorePageController *)self navigationController];
+    [navigationController pushViewController:v5 animated:1];
   }
 }
 

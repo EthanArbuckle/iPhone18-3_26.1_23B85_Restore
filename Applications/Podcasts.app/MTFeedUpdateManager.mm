@@ -1,22 +1,22 @@
 @interface MTFeedUpdateManager
-- (BOOL)isPodcastUpdatable:(id)a3 userInitiated:(BOOL)a4 forced:(BOOL)a5;
+- (BOOL)isPodcastUpdatable:(id)updatable userInitiated:(BOOL)initiated forced:(BOOL)forced;
 - (MTFeedUpdateManager)init;
-- (void)_fetchMediaAPIShowsExpectedToUpdate:(id)a3;
-- (void)_unsafe_updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 useBackgroundFetch:(BOOL)a5 source:(int64_t)a6 startedUpdatesCallback:(id)a7;
-- (void)_updateAllMediaAPIPodcastsUserInitiated:(BOOL)a3 source:(int64_t)a4 completion:(id)a5;
-- (void)_updateAllNonMediaAPIPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 source:(int64_t)a5 started:(id)a6;
-- (void)_updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 useBackgroundFetch:(BOOL)a5 source:(int64_t)a6 startedUpdatesCallback:(id)a7;
-- (void)_updatePodcastWithUUID:(id)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 forceBootstrap:(BOOL)a7 source:(int64_t)a8 completion:(id)a9;
-- (void)_updatePodcastWithUUID:(id)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 forceBootstrap:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9 tryRedirectURL:(BOOL)a10 startedUpdateCallback:(id)a11 completion:(id)a12;
-- (void)_updatePodcastsWithUUIDs:(id)a3 userInitiated:(BOOL)a4 forced:(BOOL)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7 startedUpdatesCallback:(id)a8;
-- (void)updateAllMediaAPIPodcastsWithSource:(int64_t)a3 started:(id)a4;
-- (void)updateAllPodcastsInBackgroundWithSource:(int64_t)a3 started:(id)a4;
-- (void)updateAllPodcastsNeedingRetry:(id)a3;
-- (void)updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 source:(int64_t)a5 started:(id)a6;
-- (void)updateMediaAPIPodcastsExpectedToUpdate:(id)a3;
-- (void)updateMediaAPIPodcastsExpectedToUpdateWithLimit:(int64_t)a3 started:(id)a4;
-- (void)updatePodcastWithStoreId:(int64_t)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 source:(int64_t)a7 completion:(id)a8;
-- (void)updatePodcastsWithUUIDs:(id)a3 userInitiated:(BOOL)a4 source:(int64_t)a5 started:(id)a6;
+- (void)_fetchMediaAPIShowsExpectedToUpdate:(id)update;
+- (void)_unsafe_updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback;
+- (void)_updateAllMediaAPIPodcastsUserInitiated:(BOOL)initiated source:(int64_t)source completion:(id)completion;
+- (void)_updateAllNonMediaAPIPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source started:(id)started;
+- (void)_updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback;
+- (void)_updatePodcastWithUUID:(id)d triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced forceBootstrap:(BOOL)bootstrap source:(int64_t)source completion:(id)completion;
+- (void)_updatePodcastWithUUID:(id)d triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)source tryRedirectURL:(BOOL)self0 startedUpdateCallback:(id)self1 completion:(id)self2;
+- (void)_updatePodcastsWithUUIDs:(id)ds userInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback;
+- (void)updateAllMediaAPIPodcastsWithSource:(int64_t)source started:(id)started;
+- (void)updateAllPodcastsInBackgroundWithSource:(int64_t)source started:(id)started;
+- (void)updateAllPodcastsNeedingRetry:(id)retry;
+- (void)updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source started:(id)started;
+- (void)updateMediaAPIPodcastsExpectedToUpdate:(id)update;
+- (void)updateMediaAPIPodcastsExpectedToUpdateWithLimit:(int64_t)limit started:(id)started;
+- (void)updatePodcastWithStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source completion:(id)completion;
+- (void)updatePodcastsWithUUIDs:(id)ds userInitiated:(BOOL)initiated source:(int64_t)source started:(id)started;
 @end
 
 @implementation MTFeedUpdateManager
@@ -40,231 +40,231 @@
   return v2;
 }
 
-- (void)updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 source:(int64_t)a5 started:(id)a6
+- (void)updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source started:(id)started
 {
-  v10 = a6;
-  v11 = [(MTFeedUpdateManager *)self workQueue];
+  startedCopy = started;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10010A41C;
   v13[3] = &unk_1004DC8A0;
-  v16 = a3;
-  v17 = a4;
-  v14 = v10;
-  v15 = a5;
+  initiatedCopy = initiated;
+  forcedCopy = forced;
+  v14 = startedCopy;
+  sourceCopy = source;
   v13[4] = self;
-  v12 = v10;
-  dispatch_async(v11, v13);
+  v12 = startedCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)updateAllPodcastsInBackgroundWithSource:(int64_t)a3 started:(id)a4
+- (void)updateAllPodcastsInBackgroundWithSource:(int64_t)source started:(id)started
 {
-  v6 = a4;
-  if (a3)
+  startedCopy = started;
+  if (source)
   {
     v7 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v14 = a3;
+      sourceCopy = source;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Updating all podcasts with non background source. %ld.", buf, 0xCu);
     }
   }
 
-  v8 = [(MTFeedUpdateManager *)self workQueue];
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010A574;
   block[3] = &unk_1004D8A70;
-  v11 = v6;
-  v12 = a3;
+  v11 = startedCopy;
+  sourceCopy2 = source;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = startedCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)updateAllPodcastsNeedingRetry:(id)a3
+- (void)updateAllPodcastsNeedingRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [(MTFeedUpdateManager *)self workQueue];
+  retryCopy = retry;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010A644;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = retryCopy;
+  v6 = retryCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_fetchMediaAPIShowsExpectedToUpdate:(id)a3
+- (void)_fetchMediaAPIShowsExpectedToUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 importContext];
+  importContext = [v4 importContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010AA98;
   v8[3] = &unk_1004D8520;
-  v9 = v5;
-  v10 = v3;
-  v6 = v3;
-  v7 = v5;
+  v9 = importContext;
+  v10 = updateCopy;
+  v6 = updateCopy;
+  v7 = importContext;
   [v7 performBlock:v8];
 }
 
-- (void)updateMediaAPIPodcastsExpectedToUpdateWithLimit:(int64_t)a3 started:(id)a4
+- (void)updateMediaAPIPodcastsExpectedToUpdateWithLimit:(int64_t)limit started:(id)started
 {
-  v6 = a4;
-  v7 = [(MTFeedUpdateManager *)self workQueue];
+  startedCopy = started;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B29C;
   block[3] = &unk_1004D8A70;
-  v10 = v6;
-  v11 = a3;
+  v10 = startedCopy;
+  limitCopy = limit;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = startedCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)updateMediaAPIPodcastsExpectedToUpdate:(id)a3
+- (void)updateMediaAPIPodcastsExpectedToUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(MTFeedUpdateManager *)self workQueue];
+  updateCopy = update;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010B888;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  v6 = updateCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_updateAllMediaAPIPodcastsUserInitiated:(BOOL)a3 source:(int64_t)a4 completion:(id)a5
+- (void)_updateAllMediaAPIPodcastsUserInitiated:(BOOL)initiated source:(int64_t)source completion:(id)completion
 {
-  v6 = a3;
+  initiatedCopy = initiated;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010BC30;
   v8[3] = &unk_1004DC990;
   v8[4] = self;
-  v9 = a5;
-  v11 = v6;
-  v10 = a4;
-  v7 = v9;
-  [_TtC18PodcastsFoundation26BatchFeedRequestController fetchOutOfDateShowUUIDsWithIncludeImplicit:v6 completionHandler:v8];
+  completionCopy = completion;
+  v11 = initiatedCopy;
+  sourceCopy = source;
+  v7 = completionCopy;
+  [_TtC18PodcastsFoundation26BatchFeedRequestController fetchOutOfDateShowUUIDsWithIncludeImplicit:initiatedCopy completionHandler:v8];
 }
 
-- (void)updateAllMediaAPIPodcastsWithSource:(int64_t)a3 started:(id)a4
+- (void)updateAllMediaAPIPodcastsWithSource:(int64_t)source started:(id)started
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010BF20;
   v7[3] = &unk_1004DC9B8;
-  v8 = a4;
-  v6 = v8;
-  [(MTFeedUpdateManager *)self _updateAllMediaAPIPodcastsUserInitiated:0 source:a3 completion:v7];
+  startedCopy = started;
+  v6 = startedCopy;
+  [(MTFeedUpdateManager *)self _updateAllMediaAPIPodcastsUserInitiated:0 source:source completion:v7];
 }
 
-- (void)_updateAllNonMediaAPIPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 source:(int64_t)a5 started:(id)a6
+- (void)_updateAllNonMediaAPIPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source started:(id)started
 {
-  v9 = a6;
+  startedCopy = started;
   v10 = +[MTDB sharedInstance];
-  v11 = [v10 importContext];
+  importContext = [v10 importContext];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10010C020;
   v14[3] = &unk_1004DC9E0;
-  v18 = a3;
-  v15 = v11;
-  v16 = self;
-  v19 = a4;
-  v17 = v9;
-  v12 = v9;
-  v13 = v11;
+  initiatedCopy = initiated;
+  v15 = importContext;
+  selfCopy = self;
+  forcedCopy = forced;
+  v17 = startedCopy;
+  v12 = startedCopy;
+  v13 = importContext;
   [v13 performBlock:v14];
 }
 
-- (void)updatePodcastsWithUUIDs:(id)a3 userInitiated:(BOOL)a4 source:(int64_t)a5 started:(id)a6
+- (void)updatePodcastsWithUUIDs:(id)ds userInitiated:(BOOL)initiated source:(int64_t)source started:(id)started
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MTFeedUpdateManager *)self workQueue];
+  dsCopy = ds;
+  startedCopy = started;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010C49C;
   block[3] = &unk_1004DC968;
   block[4] = self;
-  v16 = v10;
-  v19 = a4;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = dsCopy;
+  initiatedCopy = initiated;
+  v17 = startedCopy;
+  sourceCopy = source;
+  v13 = startedCopy;
+  v14 = dsCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_updatePodcastWithUUID:(id)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 forceBootstrap:(BOOL)a7 source:(int64_t)a8 completion:(id)a9
+- (void)_updatePodcastWithUUID:(id)d triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced forceBootstrap:(BOOL)bootstrap source:(int64_t)source completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = [(MTFeedUpdateManager *)self workQueue];
+  dCopy = d;
+  byCopy = by;
+  completionCopy = completion;
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10010C658;
   v22[3] = &unk_1004DCA08;
-  v27 = a5;
-  v28 = a6;
+  initiatedCopy = initiated;
+  forcedCopy = forced;
   v22[4] = self;
-  v23 = v15;
-  v24 = v16;
-  v25 = v17;
-  v29 = a7;
-  v26 = a8;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
-  dispatch_async(v18, v22);
+  v23 = dCopy;
+  v24 = byCopy;
+  v25 = completionCopy;
+  bootstrapCopy = bootstrap;
+  sourceCopy = source;
+  v19 = byCopy;
+  v20 = dCopy;
+  v21 = completionCopy;
+  dispatch_async(workQueue, v22);
 }
 
-- (void)updatePodcastWithStoreId:(int64_t)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 source:(int64_t)a7 completion:(id)a8
+- (void)updatePodcastWithStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced source:(int64_t)source completion:(id)completion
 {
-  v13 = a4;
-  v14 = a8;
+  byCopy = by;
+  completionCopy = completion;
   v15 = +[MTDB sharedInstance];
-  v16 = [v15 importContext];
+  importContext = [v15 importContext];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10010C930;
   v20[3] = &unk_1004DCA30;
-  v23 = v14;
-  v24 = a3;
-  v21 = v16;
-  v22 = v13;
-  v26 = a5;
-  v27 = a6;
-  v25 = a7;
-  v17 = v13;
-  v18 = v14;
-  v19 = v16;
+  v23 = completionCopy;
+  idCopy = id;
+  v21 = importContext;
+  v22 = byCopy;
+  initiatedCopy = initiated;
+  forcedCopy = forced;
+  sourceCopy = source;
+  v17 = byCopy;
+  v18 = completionCopy;
+  v19 = importContext;
   [v19 performBlock:v20];
 }
 
-- (BOOL)isPodcastUpdatable:(id)a3 userInitiated:(BOOL)a4 forced:(BOOL)a5
+- (BOOL)isPodcastUpdatable:(id)updatable userInitiated:(BOOL)initiated forced:(BOOL)forced
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v7 && (![v7 isImplicitlyFollowed] || v6))
+  initiatedCopy = initiated;
+  updatableCopy = updatable;
+  v8 = updatableCopy;
+  if (updatableCopy && (![updatableCopy isImplicitlyFollowed] || initiatedCopy))
   {
     v9 = 1;
-    if (!v6 && !a5)
+    if (!initiatedCopy && !forced)
     {
       if (+[MTStoreIdentifier isNotEmpty:](MTStoreIdentifier, "isNotEmpty:", [v8 storeCollectionId]) && ((objc_msgSend(v8, "importing") & 1) != 0 || (objc_msgSend(v8, "feedUpdateNeedsRetry") & 1) != 0))
       {
@@ -287,11 +287,11 @@
   return v9;
 }
 
-- (void)_unsafe_updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 useBackgroundFetch:(BOOL)a5 source:(int64_t)a6 startedUpdatesCallback:(id)a7
+- (void)_unsafe_updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback
 {
-  v10 = a3;
-  v12 = a7;
-  if (v10)
+  initiatedCopy = initiated;
+  callbackCopy = callback;
+  if (initiatedCopy)
   {
     +[MTPodcast predicateForNotHiddenPodcasts];
   }
@@ -302,7 +302,7 @@
   }
   v13 = ;
   v14 = +[MTDB sharedInstance];
-  v15 = [v14 importContext];
+  importContext = [v14 importContext];
 
   v29[0] = 0;
   v29[1] = v29;
@@ -314,32 +314,32 @@
   v19[1] = 3221225472;
   v19[2] = sub_10010CDC0;
   v19[3] = &unk_1004DCA80;
-  v16 = v15;
+  v16 = importContext;
   v20 = v16;
   v17 = v13;
   v21 = v17;
-  v22 = self;
-  v26 = v10;
-  v27 = a4;
-  v28 = a5;
+  selfCopy = self;
+  v26 = initiatedCopy;
+  forcedCopy = forced;
+  fetchCopy = fetch;
   v24 = v29;
-  v25 = a6;
-  v18 = v12;
+  sourceCopy = source;
+  v18 = callbackCopy;
   v23 = v18;
   [v16 performBlock:v19];
 
   _Block_object_dispose(v29, 8);
 }
 
-- (void)_updateAllPodcastsUserInitiated:(BOOL)a3 forced:(BOOL)a4 useBackgroundFetch:(BOOL)a5 source:(int64_t)a6 startedUpdatesCallback:(id)a7
+- (void)_updateAllPodcastsUserInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback
 {
-  v10 = a3;
+  initiatedCopy = initiated;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10010D2A0;
   v28[3] = &unk_1004D9870;
-  v12 = a7;
-  v29 = v12;
+  callbackCopy = callback;
+  v29 = callbackCopy;
   v13 = objc_retainBlock(v28);
   if (sub_100039618())
   {
@@ -355,25 +355,25 @@ LABEL_7:
 
   else
   {
-    v16 = [(MTFeedUpdateManager *)self feedManager];
-    v17 = [v16 abortUpdatesIfNetworkUnreachable:v10];
+    feedManager = [(MTFeedUpdateManager *)self feedManager];
+    v17 = [feedManager abortUpdatesIfNetworkUnreachable:initiatedCopy];
 
     if (!v17)
     {
       v18 = +[IMURLBag sharedInstance];
-      v19 = [v18 batchFeedFetchIsEnabled];
-      v20 = [(MTFeedUpdateManager *)self workQueue];
+      batchFeedFetchIsEnabled = [v18 batchFeedFetchIsEnabled];
+      workQueue = [(MTFeedUpdateManager *)self workQueue];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10010D350;
       v21[3] = &unk_1004DCB20;
-      v24 = v10;
-      v25 = a4;
-      v26 = a5;
+      v24 = initiatedCopy;
+      forcedCopy = forced;
+      fetchCopy = fetch;
       v21[4] = self;
-      v23 = a6;
-      v22 = v12;
-      [v19 asyncValueOnQueue:v20 withCompletion:v21];
+      sourceCopy = source;
+      v22 = callbackCopy;
+      [batchFeedFetchIsEnabled asyncValueOnQueue:workQueue withCompletion:v21];
 
       goto LABEL_10;
     }
@@ -391,44 +391,44 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_updatePodcastsWithUUIDs:(id)a3 userInitiated:(BOOL)a4 forced:(BOOL)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7 startedUpdatesCallback:(id)a8
+- (void)_updatePodcastsWithUUIDs:(id)ds userInitiated:(BOOL)initiated forced:(BOOL)forced useBackgroundFetch:(BOOL)fetch source:(int64_t)source startedUpdatesCallback:(id)callback
 {
-  v14 = a3;
+  dsCopy = ds;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10010D9FC;
   v27[3] = &unk_1004D9870;
-  v28 = a8;
-  v15 = v28;
+  callbackCopy = callback;
+  v15 = callbackCopy;
   v16 = objc_retainBlock(v27);
-  v17 = [(MTFeedUpdateManager *)self workQueue];
+  workQueue = [(MTFeedUpdateManager *)self workQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10010DAAC;
   v20[3] = &unk_1004DCB98;
-  v24 = a4;
+  initiatedCopy = initiated;
   v20[4] = self;
-  v21 = v14;
-  v25 = a5;
-  v26 = a6;
+  v21 = dsCopy;
+  forcedCopy = forced;
+  fetchCopy = fetch;
   v22 = v16;
-  v23 = a7;
-  v18 = v14;
+  sourceCopy = source;
+  v18 = dsCopy;
   v19 = v16;
-  dispatch_async(v17, v20);
+  dispatch_async(workQueue, v20);
 }
 
-- (void)_updatePodcastWithUUID:(id)a3 triggerBy:(id)a4 userInitiated:(BOOL)a5 forced:(BOOL)a6 forceBootstrap:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9 tryRedirectURL:(BOOL)a10 startedUpdateCallback:(id)a11 completion:(id)a12
+- (void)_updatePodcastWithUUID:(id)d triggerBy:(id)by userInitiated:(BOOL)initiated forced:(BOOL)forced forceBootstrap:(BOOL)bootstrap useBackgroundFetch:(BOOL)fetch source:(int64_t)source tryRedirectURL:(BOOL)self0 startedUpdateCallback:(id)self1 completion:(id)self2
 {
-  v15 = a3;
-  v41 = a4;
-  v16 = a11;
-  v17 = a12;
+  dCopy = d;
+  byCopy = by;
+  callbackCopy = callback;
+  completionCopy = completion;
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_10010E5A8;
   v73[3] = &unk_1004D8838;
-  v18 = v16;
+  v18 = callbackCopy;
   v74 = v18;
   v70[0] = _NSConcreteStackBlock;
   v70[1] = 3221225472;
@@ -436,7 +436,7 @@ LABEL_10:
   v70[3] = &unk_1004DCBC0;
   v19 = objc_retainBlock(v73);
   v71 = v19;
-  v20 = v17;
+  v20 = completionCopy;
   v72 = v20;
   v21 = objc_retainBlock(v70);
   if (sub_100039618())
@@ -475,9 +475,9 @@ LABEL_10:
     v25 = v24;
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
     {
-      v26 = [v35 UUIDString];
+      uUIDString = [v35 UUIDString];
       *buf = 138543362;
-      v76 = v26;
+      v76 = uUIDString;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MTFeedUpdateManagerFull", "identifier=%{public, name=identifier}@", buf, 0xCu);
     }
 
@@ -488,14 +488,14 @@ LABEL_10:
     v30 = v29;
     if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v29))
     {
-      v31 = [v35 UUIDString];
+      uUIDString2 = [v35 UUIDString];
       *buf = 138543362;
-      v76 = v31;
+      v76 = uUIDString2;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v30, OS_SIGNPOST_INTERVAL_BEGIN, v28, "CoreDataCongestion", "identifier=%{public, name=identifier}@", buf, 0xCu);
     }
 
     v32 = +[MTDB sharedInstance];
-    v33 = [v32 importContext];
+    importContext = [v32 importContext];
 
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
@@ -504,23 +504,23 @@ LABEL_10:
     v55 = v28;
     v36 = v35;
     v43 = v36;
-    v34 = v33;
+    v34 = importContext;
     v44 = v34;
-    v45 = v15;
-    v46 = self;
-    v58 = a5;
-    v59 = a6;
+    v45 = dCopy;
+    selfCopy = self;
+    initiatedCopy = initiated;
+    forcedCopy = forced;
     v51 = v68;
     v52 = v66;
-    v60 = a10;
+    lCopy = l;
     v53 = v63;
     v54 = v64;
-    v61 = a8;
-    v56 = a9;
+    fetchCopy = fetch;
+    sourceCopy = source;
     v48 = v21;
     v49 = v19;
-    v47 = v41;
-    v62 = a7;
+    v47 = byCopy;
+    bootstrapCopy = bootstrap;
     v50 = v20;
     v57 = spid;
     [v34 performBlock:v42];

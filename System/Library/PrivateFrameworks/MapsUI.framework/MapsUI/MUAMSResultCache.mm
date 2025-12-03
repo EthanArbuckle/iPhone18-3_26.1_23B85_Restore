@@ -1,29 +1,29 @@
 @interface MUAMSResultCache
-- (MUAMSResultCache)initWithAppAdamIdCacheCount:(unint64_t)a3 appAdamIdTimeToLive:(unint64_t)a4 bundleIdCacheCount:(unint64_t)a5 bundleIdTimeToLive:(unint64_t)a6;
-- (id)amsResultForAdamId:(id)a3;
-- (id)amsResultForBundleId:(id)a3;
-- (void)setAMSResult:(id)a3 forAdamId:(id)a4;
-- (void)setAMSResult:(id)a3 forBundleId:(id)a4;
+- (MUAMSResultCache)initWithAppAdamIdCacheCount:(unint64_t)count appAdamIdTimeToLive:(unint64_t)live bundleIdCacheCount:(unint64_t)cacheCount bundleIdTimeToLive:(unint64_t)toLive;
+- (id)amsResultForAdamId:(id)id;
+- (id)amsResultForBundleId:(id)id;
+- (void)setAMSResult:(id)result forAdamId:(id)id;
+- (void)setAMSResult:(id)result forBundleId:(id)id;
 @end
 
 @implementation MUAMSResultCache
 
-- (void)setAMSResult:(id)a3 forBundleId:(id)a4
+- (void)setAMSResult:(id)result forBundleId:(id)id
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 length])
+  resultCopy = result;
+  idCopy = id;
+  if ([idCopy length])
   {
-    [(MUTimeExpirableLRUCache *)self->_amsResultsByBundleIds setObject:v7 forKey:v6];
+    [(MUTimeExpirableLRUCache *)self->_amsResultsByBundleIds setObject:resultCopy forKey:idCopy];
   }
 }
 
-- (id)amsResultForBundleId:(id)a3
+- (id)amsResultForBundleId:(id)id
 {
-  v4 = a3;
-  if ([v4 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v5 = [(MUTimeExpirableLRUCache *)self->_amsResultsByBundleIds objectForKeyedSubscript:v4];
+    v5 = [(MUTimeExpirableLRUCache *)self->_amsResultsByBundleIds objectForKeyedSubscript:idCopy];
   }
 
   else
@@ -34,22 +34,22 @@
   return v5;
 }
 
-- (void)setAMSResult:(id)a3 forAdamId:(id)a4
+- (void)setAMSResult:(id)result forAdamId:(id)id
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 length])
+  resultCopy = result;
+  idCopy = id;
+  if ([idCopy length])
   {
-    [(MUTimeExpirableLRUCache *)self->_amsResultsByAdamIds setObject:v7 forKey:v6];
+    [(MUTimeExpirableLRUCache *)self->_amsResultsByAdamIds setObject:resultCopy forKey:idCopy];
   }
 }
 
-- (id)amsResultForAdamId:(id)a3
+- (id)amsResultForAdamId:(id)id
 {
-  v4 = a3;
-  if ([v4 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v5 = [(MUTimeExpirableLRUCache *)self->_amsResultsByAdamIds objectForKeyedSubscript:v4];
+    v5 = [(MUTimeExpirableLRUCache *)self->_amsResultsByAdamIds objectForKeyedSubscript:idCopy];
   }
 
   else
@@ -60,18 +60,18 @@
   return v5;
 }
 
-- (MUAMSResultCache)initWithAppAdamIdCacheCount:(unint64_t)a3 appAdamIdTimeToLive:(unint64_t)a4 bundleIdCacheCount:(unint64_t)a5 bundleIdTimeToLive:(unint64_t)a6
+- (MUAMSResultCache)initWithAppAdamIdCacheCount:(unint64_t)count appAdamIdTimeToLive:(unint64_t)live bundleIdCacheCount:(unint64_t)cacheCount bundleIdTimeToLive:(unint64_t)toLive
 {
   v16.receiver = self;
   v16.super_class = MUAMSResultCache;
   v10 = [(MUAMSResultCache *)&v16 init];
   if (v10)
   {
-    v11 = [[MUTimeExpirableLRUCache alloc] initWithMaxSize:a3 timeToLive:a4];
+    v11 = [[MUTimeExpirableLRUCache alloc] initWithMaxSize:count timeToLive:live];
     amsResultsByAdamIds = v10->_amsResultsByAdamIds;
     v10->_amsResultsByAdamIds = v11;
 
-    v13 = [[MUTimeExpirableLRUCache alloc] initWithMaxSize:a5 timeToLive:a6];
+    v13 = [[MUTimeExpirableLRUCache alloc] initWithMaxSize:cacheCount timeToLive:toLive];
     amsResultsByBundleIds = v10->_amsResultsByBundleIds;
     v10->_amsResultsByBundleIds = v13;
   }

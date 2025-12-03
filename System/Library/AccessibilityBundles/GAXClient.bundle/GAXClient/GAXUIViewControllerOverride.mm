@@ -1,33 +1,33 @@
 @interface GAXUIViewControllerOverride
-- (void)window:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4;
-- (void)window:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
+- (void)window:(id)window didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)window:(id)window willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation GAXUIViewControllerOverride
 
-- (void)window:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)window:(id)window willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v8 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = GAXUIViewControllerOverride;
-  [(GAXUIViewControllerOverride *)&v10 window:v8 willRotateToInterfaceOrientation:a4 duration:a5];
+  [(GAXUIViewControllerOverride *)&v10 window:windowCopy willRotateToInterfaceOrientation:orientation duration:duration];
   v9 = +[GAXClient sharedInstance];
   if ([v9 isInWorkspace])
   {
-    [v8 _gaxBeginOverridingBackgroundColorToClear];
+    [windowCopy _gaxBeginOverridingBackgroundColorToClear];
   }
 }
 
-- (void)window:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4
+- (void)window:(id)window didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v6 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = GAXUIViewControllerOverride;
-  [(GAXUIViewControllerOverride *)&v8 window:v6 didRotateFromInterfaceOrientation:a4];
+  [(GAXUIViewControllerOverride *)&v8 window:windowCopy didRotateFromInterfaceOrientation:orientation];
   v7 = +[GAXClient sharedInstance];
   if ([v7 isInWorkspace])
   {
-    [v6 _gaxEndOverridingBackgroundColorToClear];
+    [windowCopy _gaxEndOverridingBackgroundColorToClear];
   }
 }
 

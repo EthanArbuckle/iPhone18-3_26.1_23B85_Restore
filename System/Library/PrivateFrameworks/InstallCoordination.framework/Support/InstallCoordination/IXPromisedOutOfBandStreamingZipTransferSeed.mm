@@ -1,30 +1,30 @@
 @interface IXPromisedOutOfBandStreamingZipTransferSeed
-- (IXPromisedOutOfBandStreamingZipTransferSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPromisedOutOfBandStreamingZipTransferSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPromisedOutOfBandStreamingZipTransferSeed
 
-- (IXPromisedOutOfBandStreamingZipTransferSeed)initWithCoder:(id)a3
+- (IXPromisedOutOfBandStreamingZipTransferSeed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = IXPromisedOutOfBandStreamingZipTransferSeed;
-  v5 = [(IXOpaqueDataPromiseSeed *)&v13 initWithCoder:v4];
+  v5 = [(IXOpaqueDataPromiseSeed *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archiveBytesConsumed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archiveBytesConsumed"];
     v5->_archiveBytesConsumed = [v6 unsignedLongLongValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archiveSizeBytes"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archiveSizeBytes"];
     v5->_archiveSizeBytes = [v7 unsignedLongLongValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractionPath"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractionPath"];
     extractionPath = v5->_extractionPath;
     v5->_extractionPath = v8;
 
-    v10 = [v4 decodePropertyListForKey:@"szOptions"];
+    v10 = [coderCopy decodePropertyListForKey:@"szOptions"];
     szOptions = v5->_szOptions;
     v5->_szOptions = v10;
   }
@@ -32,37 +32,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = IXPromisedOutOfBandStreamingZipTransferSeed;
-  v4 = a3;
-  [(IXOpaqueDataPromiseSeed *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IXOpaqueDataPromiseSeed *)&v9 encodeWithCoder:coderCopy];
   v5 = [NSNumber numberWithUnsignedLongLong:[(IXPromisedOutOfBandStreamingZipTransferSeed *)self archiveBytesConsumed:v9.receiver]];
-  [v4 encodeObject:v5 forKey:@"archiveBytesConsumed"];
+  [coderCopy encodeObject:v5 forKey:@"archiveBytesConsumed"];
 
   v6 = [NSNumber numberWithUnsignedLongLong:[(IXPromisedOutOfBandStreamingZipTransferSeed *)self archiveSizeBytes]];
-  [v4 encodeObject:v6 forKey:@"archiveSizeBytes"];
+  [coderCopy encodeObject:v6 forKey:@"archiveSizeBytes"];
 
-  v7 = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self extractionPath];
-  [v4 encodeObject:v7 forKey:@"extractionPath"];
+  extractionPath = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self extractionPath];
+  [coderCopy encodeObject:extractionPath forKey:@"extractionPath"];
 
-  v8 = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self szOptions];
-  [v4 encodeObject:v8 forKey:@"szOptions"];
+  szOptions = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self szOptions];
+  [coderCopy encodeObject:szOptions forKey:@"szOptions"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IXPromisedOutOfBandStreamingZipTransferSeed;
-  v4 = [(IXOpaqueDataPromiseSeed *)&v8 copyWithZone:a3];
+  v4 = [(IXOpaqueDataPromiseSeed *)&v8 copyWithZone:zone];
   [v4 setArchiveBytesConsumed:{-[IXPromisedOutOfBandStreamingZipTransferSeed archiveBytesConsumed](self, "archiveBytesConsumed")}];
   [v4 setArchiveSizeBytes:{-[IXPromisedOutOfBandStreamingZipTransferSeed archiveSizeBytes](self, "archiveSizeBytes")}];
-  v5 = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self extractionPath];
-  [v4 setExtractionPath:v5];
+  extractionPath = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self extractionPath];
+  [v4 setExtractionPath:extractionPath];
 
-  v6 = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self szOptions];
-  [v4 setSzOptions:v6];
+  szOptions = [(IXPromisedOutOfBandStreamingZipTransferSeed *)self szOptions];
+  [v4 setSzOptions:szOptions];
 
   return v4;
 }

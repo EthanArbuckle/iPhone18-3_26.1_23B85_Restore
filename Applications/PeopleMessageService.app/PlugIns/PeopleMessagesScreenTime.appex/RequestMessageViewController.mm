@@ -1,12 +1,12 @@
 @interface RequestMessageViewController
-- (CGSize)contentSizeThatFits:(CGSize)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
 - (MSConversation)activeConversation;
-- (_TtC24PeopleMessagesScreenTime28RequestMessageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)setActiveConversation:(id)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
+- (_TtC24PeopleMessagesScreenTime28RequestMessageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)setActiveConversation:(id)conversation;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willResignActiveWithConversation:(id)conversation;
 @end
 
 @implementation RequestMessageViewController
@@ -15,26 +15,26 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for RequestMessageViewController();
-  v2 = [(RequestMessageViewController *)&v4 activeConversation];
+  activeConversation = [(RequestMessageViewController *)&v4 activeConversation];
 
-  return v2;
+  return activeConversation;
 }
 
-- (void)setActiveConversation:(id)a3
+- (void)setActiveConversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for RequestMessageViewController();
-  v4 = a3;
+  conversationCopy = conversation;
   v5 = v6.receiver;
-  [(RequestMessageViewController *)&v6 setActiveConversation:v4];
+  [(RequestMessageViewController *)&v6 setActiveConversation:conversationCopy];
   sub_10001B940();
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_10001BA98(width, height);
   v8 = v7;
 
@@ -45,36 +45,36 @@
   return result;
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001BDFC(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_10001BDFC(conversationCopy);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_10001D3E4(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10001D3E4(controller);
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001D770(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_10001D770(conversationCopy);
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
-  v4 = self;
-  sub_10001D8A4(a3);
+  selfCopy = self;
+  sub_10001D8A4(style);
 }
 
-- (_TtC24PeopleMessagesScreenTime28RequestMessageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24PeopleMessagesScreenTime28RequestMessageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100027154();
     v7 = v6;
@@ -86,8 +86,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10001E004(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10001E004(v5, v7, bundle);
 }
 
 @end

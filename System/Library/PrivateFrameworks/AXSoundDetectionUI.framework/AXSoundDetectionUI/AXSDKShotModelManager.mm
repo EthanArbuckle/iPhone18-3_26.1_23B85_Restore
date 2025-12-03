@@ -1,15 +1,15 @@
 @interface AXSDKShotModelManager
-+ (id)requestForDetector:(id)a3;
++ (id)requestForDetector:(id)detector;
 - (AXSDKShotModelManager)init;
 - (AXSDKShotModelManagerDelegate)delegate;
-- (BOOL)addCustomDetector:(id)a3;
-- (BOOL)removeCustomDetector:(id)a3;
-- (BOOL)startDetectionWithFormat:(id)a3;
-- (void)processAudioBuffer:(id)a3 atTime:(id)a4;
+- (BOOL)addCustomDetector:(id)detector;
+- (BOOL)removeCustomDetector:(id)detector;
+- (BOOL)startDetectionWithFormat:(id)format;
+- (void)processAudioBuffer:(id)buffer atTime:(id)time;
 - (void)removeAllDetectors;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 - (void)stopDetection;
 @end
 
@@ -22,9 +22,9 @@
   v2 = [(AXSDKShotModelManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentRequests = v2->_currentRequests;
-    v2->_currentRequests = v3;
+    v2->_currentRequests = dictionary;
 
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v6 = dispatch_queue_create("kshot_ultron_audio", v5);
@@ -35,10 +35,10 @@
   return v2;
 }
 
-- (BOOL)startDetectionWithFormat:(id)a3
+- (BOOL)startDetectionWithFormat:(id)format
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  formatCopy = format;
   _AXAssertIsMainThread();
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -46,12 +46,12 @@
     [AXSDKShotModelManager startDetectionWithFormat:];
   }
 
-  if ([v4 channelCount] && (objc_msgSend(v4, "sampleRate"), v6 != 0.0))
+  if ([formatCopy channelCount] && (objc_msgSend(formatCopy, "sampleRate"), v6 != 0.0))
   {
     streamAnalyzer = self->_streamAnalyzer;
     if (!streamAnalyzer)
     {
-      v12 = [objc_alloc(MEMORY[0x277CDC8F0]) initWithFormat:v4];
+      v12 = [objc_alloc(MEMORY[0x277CDC8F0]) initWithFormat:formatCopy];
       v13 = self->_streamAnalyzer;
       self->_streamAnalyzer = v12;
 
@@ -69,8 +69,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(NSMutableDictionary *)self->_currentRequests allValues];
-    v15 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    allValues = [(NSMutableDictionary *)self->_currentRequests allValues];
+    v15 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v15)
     {
       v16 = v15;
@@ -81,7 +81,7 @@
         {
           if (*v28 != v17)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v27 + 1) + 8 * i);
@@ -113,7 +113,7 @@
           }
         }
 
-        v16 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
         v8 = 1;
         if (v16)
         {
@@ -132,8 +132,8 @@
 
   else
   {
-    v7 = AXLogUltron();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    allValues = AXLogUltron();
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
     {
       [AXSDKShotModelManager startDetectionWithFormat:];
     }
@@ -154,18 +154,18 @@ LABEL_7:
   self->_streamAnalyzer = 0;
 }
 
-- (BOOL)addCustomDetector:(id)a3
+- (BOOL)addCustomDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   _AXAssertIsMainThread();
   p_currentRequests = &self->_currentRequests;
   currentRequests = self->_currentRequests;
-  v7 = [v4 identifier];
-  v8 = [(NSMutableDictionary *)currentRequests objectForKeyedSubscript:v7];
+  identifier = [detectorCopy identifier];
+  v8 = [(NSMutableDictionary *)currentRequests objectForKeyedSubscript:identifier];
 
   if (!v8)
   {
-    v9 = [AXSDKShotModelManager requestForDetector:v4];
+    v9 = [AXSDKShotModelManager requestForDetector:detectorCopy];
     if (v9)
     {
       if (![(AXSDKShotModelManager *)self streamAnalyzerIsRunning])
@@ -187,13 +187,13 @@ LABEL_7:
       {
 LABEL_12:
         v15 = *p_currentRequests;
-        v16 = [v4 identifier];
-        [v15 setObject:v9 forKeyedSubscript:v16];
+        identifier2 = [detectorCopy identifier];
+        [v15 setObject:v9 forKeyedSubscript:identifier2];
 
         v17 = AXLogUltron();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          [(AXSDKShotModelManager *)v4 addCustomDetector:?];
+          [(AXSDKShotModelManager *)detectorCopy addCustomDetector:?];
         }
 
         goto LABEL_15;
@@ -212,7 +212,7 @@ LABEL_12:
       v19 = AXLogUltron();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [AXSDKShotModelManager addCustomDetector:v4];
+        [AXSDKShotModelManager addCustomDetector:detectorCopy];
       }
     }
 
@@ -223,7 +223,7 @@ LABEL_12:
   v9 = AXLogUltron();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [AXSDKShotModelManager addCustomDetector:v4];
+    [AXSDKShotModelManager addCustomDetector:detectorCopy];
   }
 
 LABEL_15:
@@ -233,13 +233,13 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)removeCustomDetector:(id)a3
+- (BOOL)removeCustomDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   _AXAssertIsMainThread();
   currentRequests = self->_currentRequests;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)currentRequests objectForKeyedSubscript:v6];
+  identifier = [detectorCopy identifier];
+  v7 = [(NSMutableDictionary *)currentRequests objectForKeyedSubscript:identifier];
 
   if (v7)
   {
@@ -249,8 +249,8 @@ LABEL_20:
     }
 
     v8 = self->_currentRequests;
-    v9 = [v4 identifier];
-    [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+    identifier2 = [detectorCopy identifier];
+    [(NSMutableDictionary *)v8 removeObjectForKey:identifier2];
   }
 
   else
@@ -258,7 +258,7 @@ LABEL_20:
     v10 = AXLogUltron();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [AXSDKShotModelManager removeCustomDetector:v4];
+      [AXSDKShotModelManager removeCustomDetector:detectorCopy];
     }
   }
 
@@ -277,14 +277,14 @@ LABEL_20:
   }
 }
 
-+ (id)requestForDetector:(id)a3
++ (id)requestForDetector:(id)detector
 {
-  v3 = a3;
-  v4 = [v3 mlModel];
-  if (v4)
+  detectorCopy = detector;
+  mlModel = [detectorCopy mlModel];
+  if (mlModel)
   {
     v21 = 0;
-    v5 = [objc_alloc(MEMORY[0x277CDC900]) initWithMLModel:v4 error:&v21];
+    v5 = [objc_alloc(MEMORY[0x277CDC900]) initWithMLModel:mlModel error:&v21];
     v6 = v21;
     v7 = v6;
     if (v5)
@@ -299,18 +299,18 @@ LABEL_20:
 
     if (v8)
     {
-      v18 = [v4 modelDescription];
-      v11 = [v18 inputDescriptionsByName];
-      v12 = [v11 objectForKeyedSubscript:@"td_audio"];
-      v13 = [v12 multiArrayConstraint];
-      v14 = [v13 shape];
-      v15 = [v14 lastObject];
-      v16 = [v15 int64ValueSafe];
+      modelDescription = [mlModel modelDescription];
+      inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+      v12 = [inputDescriptionsByName objectForKeyedSubscript:@"td_audio"];
+      multiArrayConstraint = [v12 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
+      lastObject = [shape lastObject];
+      int64ValueSafe = [lastObject int64ValueSafe];
 
-      CMTimeMake(&v20, v16, 16000);
+      CMTimeMake(&v20, int64ValueSafe, 16000);
       v19 = v20;
       [v5 setWindowDuration:&v19];
-      [v5 setOverlapFactor:((v16 + -7800.0) / v16)];
+      [v5 setOverlapFactor:((int64ValueSafe + -7800.0) / int64ValueSafe)];
       v10 = v5;
     }
 
@@ -319,7 +319,7 @@ LABEL_20:
       v9 = AXLogUltron();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [AXSDKShotModelManager requestForDetector:v3];
+        [AXSDKShotModelManager requestForDetector:detectorCopy];
       }
 
       v10 = 0;
@@ -331,7 +331,7 @@ LABEL_20:
     v7 = AXLogUltron();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [AXSDKShotModelManager requestForDetector:v3];
+      [AXSDKShotModelManager requestForDetector:detectorCopy];
     }
 
     v10 = 0;
@@ -340,20 +340,20 @@ LABEL_20:
   return v10;
 }
 
-- (void)processAudioBuffer:(id)a3 atTime:(id)a4
+- (void)processAudioBuffer:(id)buffer atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  timeCopy = time;
   audioQueue = self->_audioQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__AXSDKShotModelManager_processAudioBuffer_atTime___block_invoke;
   block[3] = &unk_278BDD338;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bufferCopy;
+  v13 = timeCopy;
+  v9 = timeCopy;
+  v10 = bufferCopy;
   dispatch_async(audioQueue, block);
 }
 
@@ -366,14 +366,14 @@ uint64_t __51__AXSDKShotModelManager_processAudioBuffer_atTime___block_invoke(ui
   return [v2 analyzeAudioBuffer:v1 atAudioFramePosition:v3];
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  requestCopy = request;
+  resultCopy = result;
+  v8 = resultCopy;
+  if (resultCopy)
   {
-    [v7 timeRange];
+    [resultCopy timeRange];
     if ((v10 & 0x8000000000000000) != 0)
     {
       goto LABEL_6;
@@ -388,30 +388,30 @@ uint64_t __51__AXSDKShotModelManager_processAudioBuffer_atTime___block_invoke(ui
   }
 
   v9 = [(AXSDKShotModelManager *)self delegate:v10];
-  [v9 receivedObservation:v8 forDetector:v6];
+  [v9 receivedObservation:v8 forDetector:requestCopy];
 
 LABEL_6:
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  requestCopy = request;
   v8 = AXLogUltron();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     [AXSDKShotModelManager request:didFailWithError:];
   }
 
-  v9 = [(AXSDKShotModelManager *)self delegate];
-  [v9 receivedError:v6 fromDetector:v7];
+  delegate = [(AXSDKShotModelManager *)self delegate];
+  [delegate receivedError:errorCopy fromDetector:requestCopy];
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(AXSDKShotModelManager *)self delegate];
-  [v5 receivedCompletion:v4];
+  completeCopy = complete;
+  delegate = [(AXSDKShotModelManager *)self delegate];
+  [delegate receivedCompletion:completeCopy];
 }
 
 - (AXSDKShotModelManagerDelegate)delegate

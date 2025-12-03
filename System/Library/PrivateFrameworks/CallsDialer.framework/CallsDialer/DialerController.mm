@@ -16,58 +16,58 @@
 - (NSString)phoneNumberPrefixHint;
 - (TUCallProviderManager)callProviderManager;
 - (TUContactsDataProvider)contactsDataProvider;
-- (id)contactResultForPhoneNumber:(id)a3;
+- (id)contactResultForPhoneNumber:(id)number;
 - (id)defaultCallProvider;
-- (id)restrictedSubtitleForHandle:(id)a3;
+- (id)restrictedSubtitleForHandle:(id)handle;
 - (id)tabBarIconName;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_animateCallButton;
-- (void)_callButtonPressed:(id)a3;
-- (void)_callButtonPressedActionWithCallProvider:(id)a3;
-- (void)_callStatusChanged:(id)a3;
+- (void)_callButtonPressed:(id)pressed;
+- (void)_callButtonPressedActionWithCallProvider:(id)provider;
+- (void)_callStatusChanged:(id)changed;
 - (void)_clearDisplayIfNecessary;
-- (void)_deleteButtonClicked:(id)a3;
+- (void)_deleteButtonClicked:(id)clicked;
 - (void)_deleteRepeat;
 - (void)_dialVoicemail;
-- (void)_dialWithRequest:(id)a3;
-- (void)_fadeSubviewsOf:(id)a3 excludingViews:(id)a4 toValue:(double)a5;
+- (void)_dialWithRequest:(id)request;
+- (void)_fadeSubviewsOf:(id)of excludingViews:(id)views toValue:(double)value;
 - (void)_handleSIMInsertionOrRemoval;
-- (void)_phonePad:(id)a3 appendString:(id)a4 suppressClearingDialedNumber:(BOOL)a5;
+- (void)_phonePad:(id)pad appendString:(id)string suppressClearingDialedNumber:(BOOL)number;
 - (void)_resetButtonAnimation;
 - (void)_startDeleteTimer;
 - (void)_stopDeleteTimer;
 - (void)_stopLookupTimer;
-- (void)_updateCallButtonEnabledState:(id)a3;
-- (void)_updateCallButtonEnabledState:(id)a3 updateNameNow:(BOOL)a4;
-- (void)_updateLCDNameLabelWithAMatchingName:(BOOL)a3;
-- (void)_updateLCDNameLabelWithOriginallyPastedString:(id)a3;
+- (void)_updateCallButtonEnabledState:(id)state;
+- (void)_updateCallButtonEnabledState:(id)state updateNameNow:(BOOL)now;
+- (void)_updateLCDNameLabelWithAMatchingName:(BOOL)name;
+- (void)_updateLCDNameLabelWithOriginallyPastedString:(id)string;
 - (void)applicationDidResume;
 - (void)dealloc;
-- (void)dialerView:(id)a3 stringWasPasted:(id)a4;
-- (void)dialerViewTextDidChange:(id)a3;
-- (void)handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)handleApplicationWillEnterForegroundNotification:(id)a3;
-- (void)handleKeyCommand:(id)a3;
+- (void)dialerView:(id)view stringWasPasted:(id)pasted;
+- (void)dialerViewTextDidChange:(id)change;
+- (void)handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)handleApplicationWillEnterForegroundNotification:(id)notification;
+- (void)handleKeyCommand:(id)command;
 - (void)loadView;
-- (void)performCharacterAddAction:(id)a3;
+- (void)performCharacterAddAction:(id)action;
 - (void)performDeleteAction;
-- (void)phonePad:(id)a3 appendString:(id)a4;
-- (void)phonePad:(id)a3 appendString:(id)a4 playDTMFTone:(BOOL)a5;
-- (void)phonePad:(id)a3 dialerCharacterButtonWasHeld:(int64_t)a4;
-- (void)phonePad:(id)a3 replaceLastDigitWithString:(id)a4;
-- (void)phonePadDeleteLastDigit:(id)a3;
-- (void)phonePadDidEndSounds:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
+- (void)phonePad:(id)pad appendString:(id)string;
+- (void)phonePad:(id)pad appendString:(id)string playDTMFTone:(BOOL)tone;
+- (void)phonePad:(id)pad dialerCharacterButtonWasHeld:(int64_t)held;
+- (void)phonePad:(id)pad replaceLastDigitWithString:(id)string;
+- (void)phonePadDeleteLastDigit:(id)digit;
+- (void)phonePadDidEndSounds:(id)sounds;
+- (void)providersChangedForProviderManager:(id)manager;
 - (void)reloadButtons;
 - (void)restoreLastDialedNumber;
-- (void)searchAndUpdateResultsFor:(id)a3 shouldRefreshResult:(BOOL)a4 showPastedString:(id)a5;
-- (void)searchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5;
-- (void)setAudioServicesActivated:(BOOL)a3;
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShouldHideDeleteButtonWhenEmpty:(BOOL)a3;
+- (void)searchAndUpdateResultsFor:(id)for shouldRefreshResult:(BOOL)result showPastedString:(id)string;
+- (void)searchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler;
+- (void)setAudioServicesActivated:(BOOL)activated;
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setShouldHideDeleteButtonWhenEmpty:(BOOL)empty;
 - (void)showOrHideDeleteButton;
-- (void)showRestrictedAlertWithMessage:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)showRestrictedAlertWithMessage:(id)message;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateDialerViewDualSimMenu;
 - (void)updateIDSStatus;
 @end
@@ -103,36 +103,36 @@
   v19[2] = *MEMORY[0x277D85DE8];
   if ([(DialerController *)self shouldAnimateCallButton])
   {
-    v3 = [(DialerController *)self dialerView];
-    v4 = [v3 callButton];
+    dialerView = [(DialerController *)self dialerView];
+    callButton = [dialerView callButton];
 
-    v5 = [MEMORY[0x277D75348] systemGreenColor];
-    [v4 setBackgroundColor:v5];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    [callButton setBackgroundColor:systemGreenColor];
 
-    v6 = [v4 layer];
-    [v6 removeAllAnimations];
+    layer = [callButton layer];
+    [layer removeAllAnimations];
 
-    v7 = [v4 imageView];
-    v8 = [v7 layer];
-    [v8 removeAllAnimations];
+    imageView = [callButton imageView];
+    layer2 = [imageView layer];
+    [layer2 removeAllAnimations];
 
-    [v4 setUserInteractionEnabled:1];
-    v19[0] = v4;
-    v9 = [(DialerController *)self dialerView];
-    v10 = [v9 deleteButton];
-    v19[1] = v10;
+    [callButton setUserInteractionEnabled:1];
+    v19[0] = callButton;
+    dialerView2 = [(DialerController *)self dialerView];
+    deleteButton = [dialerView2 deleteButton];
+    v19[1] = deleteButton;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v12 = [v11 mutableCopy];
 
     if ([(DialerController *)self appType]== 1 && [(DialerController *)self enableSmartDialer])
     {
-      v13 = [(DialerController *)self dialerView];
-      v14 = [v13 addContactButton];
-      [v12 addObject:v14];
+      dialerView3 = [(DialerController *)self dialerView];
+      addContactButton = [dialerView3 addContactButton];
+      [v12 addObject:addContactButton];
     }
 
-    v15 = [v4 superview];
-    [(DialerController *)self _fadeSubviewsOf:v15 excludingViews:v12 toValue:1.0];
+    superview = [callButton superview];
+    [(DialerController *)self _fadeSubviewsOf:superview excludingViews:v12 toValue:1.0];
 
     [(DialerController *)self setBackgroundStyle:0 animated:0];
     [(DialerController *)self setWantsCallButtonAnimation:0];
@@ -151,8 +151,8 @@
 {
   if ([(DialerController *)self wantsCallButtonAnimation]&& [(DialerController *)self isViewLoaded]&& ![(DialerController *)self dialerType])
   {
-    v5 = [(DialerController *)self view];
-    v6 = [v5 window];
+    view = [(DialerController *)self view];
+    window = [view window];
     NSClassFromString(&cfstr_Uihostedwindow.isa);
     objc_opt_class();
     v3 = objc_opt_isKindOfClass() ^ 1;
@@ -170,8 +170,8 @@
 {
   if ((*(self + 1016) & 1) != 0 || ([MEMORY[0x277D6EDF8] sharedInstance], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "currentCallCount"), v3, v4))
   {
-    v5 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v5 setText:&stru_285532CB8 needsFormat:0];
+    lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [lcdView setText:&stru_285532CB8 needsFormat:0];
 
     [(DialerController *)self _updateName];
   }
@@ -194,24 +194,24 @@
 
 - (id)defaultCallProvider
 {
-  v2 = [(DialerController *)self callProviderManager];
-  v3 = [v2 telephonyProvider];
+  callProviderManager = [(DialerController *)self callProviderManager];
+  telephonyProvider = [callProviderManager telephonyProvider];
 
-  return v3;
+  return telephonyProvider;
 }
 
 - (void)reloadButtons
 {
-  v2 = [(PHAbstractDialerView *)self->_dialerView phonePadView];
-  [v2 reloadButtonImages];
+  phonePadView = [(PHAbstractDialerView *)self->_dialerView phonePadView];
+  [phonePadView reloadButtonImages];
 }
 
 - (void)loadView
 {
   v40[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
 
   if (![(DialerController *)self dialerType]|| [(DialerController *)self dialerType]== 1)
@@ -223,48 +223,48 @@
   if (!dialerView)
   {
     v7 = [PHHandsetDialerView alloc];
-    v8 = [(DialerController *)self appType];
-    v9 = [(DialerController *)self enableSmartDialer];
-    v10 = [(DialerController *)self enableSmartDialerExpandedSearch];
-    v11 = [(DialerController *)self enableDualSimMenu];
-    v12 = [(PHHandsetDialerView *)v7 initWithFrame:v8 appType:v9 enableSmartDialer:v10 enableSmartDialerExpandedSearch:v11 enableDualSimMenu:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    appType = [(DialerController *)self appType];
+    enableSmartDialer = [(DialerController *)self enableSmartDialer];
+    enableSmartDialerExpandedSearch = [(DialerController *)self enableSmartDialerExpandedSearch];
+    enableDualSimMenu = [(DialerController *)self enableDualSimMenu];
+    v12 = [(PHHandsetDialerView *)v7 initWithFrame:appType appType:enableSmartDialer enableSmartDialer:enableSmartDialerExpandedSearch enableSmartDialerExpandedSearch:enableDualSimMenu enableDualSimMenu:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v13 = self->_dialerView;
     self->_dialerView = v12;
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [v5 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v5 setBackgroundColor:clearColor];
 
     [v5 setOpaque:0];
     dialerView = self->_dialerView;
   }
 
   [(PHAbstractDialerView *)dialerView setDelegate:self];
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(DialerController *)self appType]== 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(DialerController *)self appType]== 1)
   {
     [(PHAbstractDialerView *)self->_dialerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(PHAbstractDialerView *)self->_dialerView backgroundColor];
-    [v5 setBackgroundColor:v17];
+    backgroundColor = [(PHAbstractDialerView *)self->_dialerView backgroundColor];
+    [v5 setBackgroundColor:backgroundColor];
 
     [v5 addSubview:self->_dialerView];
     v35 = MEMORY[0x277CCAAD0];
-    v39 = [(PHAbstractDialerView *)self->_dialerView topAnchor];
-    v38 = [v5 topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:0.0];
+    topAnchor = [(PHAbstractDialerView *)self->_dialerView topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v40[0] = v37;
-    v36 = [(PHAbstractDialerView *)self->_dialerView leadingAnchor];
-    v34 = [v5 leadingAnchor];
-    v33 = [v36 constraintEqualToAnchor:v34 constant:0.0];
+    leadingAnchor = [(PHAbstractDialerView *)self->_dialerView leadingAnchor];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v40[1] = v33;
-    v18 = [(PHAbstractDialerView *)self->_dialerView trailingAnchor];
-    v19 = [v5 trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:-0.0];
+    trailingAnchor = [(PHAbstractDialerView *)self->_dialerView trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-0.0];
     v40[2] = v20;
-    v21 = [(PHAbstractDialerView *)self->_dialerView bottomAnchor];
-    v22 = [v5 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-0.0];
+    bottomAnchor = [(PHAbstractDialerView *)self->_dialerView bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-0.0];
     v40[3] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
     [v35 activateConstraints:v24];
@@ -278,39 +278,39 @@
     [v5 addSubview:self->_dialerView];
   }
 
-  v25 = [(PHAbstractDialerView *)self->_dialerView callButton];
-  [v25 addTarget:self action:sel__callButtonPressed_ forControlEvents:64];
+  callButton = [(PHAbstractDialerView *)self->_dialerView callButton];
+  [callButton addTarget:self action:sel__callButtonPressed_ forControlEvents:64];
 
-  v26 = [(PHAbstractDialerView *)self->_dialerView deleteButton];
-  [v26 addTarget:self action:sel__deleteButtonClicked_ forControlEvents:64];
+  deleteButton = [(PHAbstractDialerView *)self->_dialerView deleteButton];
+  [deleteButton addTarget:self action:sel__deleteButtonClicked_ forControlEvents:64];
 
-  v27 = [(PHAbstractDialerView *)self->_dialerView deleteButton];
-  [v27 addTarget:self action:sel__deleteButtonDown_ forControlEvents:1];
+  deleteButton2 = [(PHAbstractDialerView *)self->_dialerView deleteButton];
+  [deleteButton2 addTarget:self action:sel__deleteButtonDown_ forControlEvents:1];
 
-  v28 = [(PHAbstractDialerView *)self->_dialerView deleteButton];
-  [v28 addTarget:self action:sel__stopDeleteTimer forControlEvents:32];
+  deleteButton3 = [(PHAbstractDialerView *)self->_dialerView deleteButton];
+  [deleteButton3 addTarget:self action:sel__stopDeleteTimer forControlEvents:32];
 
   v29 = [objc_alloc(MEMORY[0x277D75AE0]) initWithTarget:self action:sel_handleSwipeGesture_];
   [v29 setDirection:3];
   [v29 setDelegate:self];
-  v30 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  [v30 addGestureRecognizer:v29];
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  [lcdView addGestureRecognizer:v29];
 
-  v31 = [(PHAbstractDialerView *)self->_dialerView phonePadView];
-  [v31 setDelegate:self];
+  phonePadView = [(PHAbstractDialerView *)self->_dialerView phonePadView];
+  [phonePadView setDelegate:self];
 
   [(DialerController *)self setView:v5];
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = DialerController;
-  v6 = a4;
-  [(DialerController *)&v11 touchesBegan:a3 withEvent:v6];
-  v7 = [(PHAbstractDialerView *)self->_dialerView lcdView:v11.receiver];
-  v8 = [v6 touchesForView:v7];
+  eventCopy = event;
+  [(DialerController *)&v11 touchesBegan:began withEvent:eventCopy];
+  lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView:v11.receiver];
+  v8 = [eventCopy touchesForView:lcdView2];
 
   if (v8)
   {
@@ -318,7 +318,7 @@
 
   else
   {
-    v9 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -326,8 +326,8 @@
       return;
     }
 
-    v7 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v7 endEditing];
+    lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [lcdView2 endEditing];
   }
 }
 
@@ -335,10 +335,10 @@
 {
   if ([(DialerController *)self appType]== 1 && [(DialerController *)self enableSmartDialer])
   {
-    v3 = [(DialerController *)self presentedViewController];
-    if (v3)
+    presentedViewController = [(DialerController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v4 = [(DialerController *)self presentedViewController];
+      presentedViewController2 = [(DialerController *)self presentedViewController];
       objc_opt_class();
       v5 = objc_opt_isKindOfClass() ^ 1;
     }
@@ -357,20 +357,20 @@
   return v5 & 1;
 }
 
-- (void)_callStatusChanged:(id)a3
+- (void)_callStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ([(DialerController *)self shouldAnimateCallButton])
   {
-    v5 = [v4 object];
-    if ([v5 status] == 3)
+    object = [changedCopy object];
+    if ([object status] == 3)
     {
-      v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-      if ([v6 currentCallCount] == 1 && objc_msgSend(v5, "isEndpointOnCurrentDevice") && !objc_msgSend(v5, "isEmergency"))
+      mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+      if ([mEMORY[0x277D6EDF8] currentCallCount] == 1 && objc_msgSend(object, "isEndpointOnCurrentDevice") && !objc_msgSend(object, "isEmergency"))
       {
-        v7 = [*MEMORY[0x277D76620] isSuspendedEventsOnly];
+        isSuspendedEventsOnly = [*MEMORY[0x277D76620] isSuspendedEventsOnly];
 
-        if ((v7 & 1) == 0)
+        if ((isSuspendedEventsOnly & 1) == 0)
         {
           v8 = PHDefaultLog();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -392,15 +392,15 @@
 
 - (void)dealloc
 {
-  v3 = [(DialerController *)self callProviderManager];
-  [v3 removeDelegate:self];
+  callProviderManager = [(DialerController *)self callProviderManager];
+  [callProviderManager removeDelegate:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
   CTTelephonyCenterGetDefault();
   CTTelephonyCenterRemoveEveryObserver();
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(DialerController *)self _stopLookupTimer];
   [(DialerController *)self _stopDeleteTimer];
@@ -409,8 +409,8 @@
   dialerView = self->_dialerView;
   self->_dialerView = 0;
 
-  v7 = [(PHAbstractDialerView *)self->_dialerView phonePadView];
-  [v7 setDelegate:0];
+  phonePadView = [(PHAbstractDialerView *)self->_dialerView phonePadView];
+  [phonePadView setDelegate:0];
 
   v8.receiver = self;
   v8.super_class = DialerController;
@@ -427,8 +427,8 @@
 
 - (BOOL)shouldSnapshot
 {
-  v2 = [(DialerController *)self presentedViewController];
-  v3 = v2 == 0;
+  presentedViewController = [(DialerController *)self presentedViewController];
+  v3 = presentedViewController == 0;
 
   return v3;
 }
@@ -440,19 +440,19 @@
   self->_lookupTimer = 0;
 }
 
-- (id)contactResultForPhoneNumber:(id)a3
+- (id)contactResultForPhoneNumber:(id)number
 {
   v4 = MEMORY[0x277D6EE58];
-  v5 = a3;
+  numberCopy = number;
   v6 = [v4 alloc];
-  v7 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:2 value:v5];
+  v7 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:2 value:numberCopy];
 
   v8 = [v6 initWithHandle:v7];
-  v9 = [(DialerController *)self phoneNumberPrefixHint];
-  [v8 setPhoneNumberPrefixHint:v9];
+  phoneNumberPrefixHint = [(DialerController *)self phoneNumberPrefixHint];
+  [v8 setPhoneNumberPrefixHint:phoneNumberPrefixHint];
 
-  v10 = [(DialerController *)self contactsDataProvider];
-  v11 = [v10 executeFetchRequest:v8];
+  contactsDataProvider = [(DialerController *)self contactsDataProvider];
+  v11 = [contactsDataProvider executeFetchRequest:v8];
 
   return v11;
 }
@@ -489,14 +489,14 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
   v8 = [v3 predicateWithFormat:@"callType == %@ AND callStatus IN %@", v4, v7];
   v9 = [v2 recentCallsWithPredicate:v8];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [v10 remoteParticipantHandles];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  remoteParticipantHandles = [firstObject remoteParticipantHandles];
+  v12 = [remoteParticipantHandles countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -508,19 +508,19 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(remoteParticipantHandles);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
         if ([v17 type] == 2)
         {
-          v18 = [v17 value];
+          value = [v17 value];
 
-          v14 = v18;
+          v14 = value;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [remoteParticipantHandles countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
@@ -540,15 +540,15 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
 {
   if ([(DialerController *)self shouldSuppressShowingLastDialedNumber])
   {
-    v2 = 0;
+    mostRecentCallHandleValue = 0;
   }
 
   else
   {
-    v2 = [objc_opt_class() mostRecentCallHandleValue];
+    mostRecentCallHandleValue = [objc_opt_class() mostRecentCallHandleValue];
   }
 
-  return v2;
+  return mostRecentCallHandleValue;
 }
 
 - (BOOL)shouldSuppressShowingLastDialedNumber
@@ -576,9 +576,9 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
   return result;
 }
 
-- (void)setShouldHideDeleteButtonWhenEmpty:(BOOL)a3
+- (void)setShouldHideDeleteButtonWhenEmpty:(BOOL)empty
 {
-  self->_shouldHideDeleteButtonWhenEmpty = a3;
+  self->_shouldHideDeleteButtonWhenEmpty = empty;
   if ([(DialerController *)self shouldHideDeleteButtonWhenEmpty])
   {
 
@@ -588,40 +588,40 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
 
 - (void)showOrHideDeleteButton
 {
-  v3 = [(DialerController *)self dialerView];
-  v4 = [v3 lcdView];
-  v5 = [v4 text];
-  v6 = [v5 length] == 0;
-  v7 = [(DialerController *)self dialerView];
-  v8 = [v7 deleteButton];
-  [v8 setHidden:v6];
+  dialerView = [(DialerController *)self dialerView];
+  lcdView = [dialerView lcdView];
+  text = [lcdView text];
+  v6 = [text length] == 0;
+  dialerView2 = [(DialerController *)self dialerView];
+  deleteButton = [dialerView2 deleteButton];
+  [deleteButton setHidden:v6];
 
-  v12 = [(DialerController *)self dialerView];
-  v9 = [v12 deleteButton];
-  if ([v9 isHidden])
+  dialerView3 = [(DialerController *)self dialerView];
+  deleteButton2 = [dialerView3 deleteButton];
+  if ([deleteButton2 isHidden])
   {
-    v10 = [(DialerController *)self dialerType];
+    dialerType = [(DialerController *)self dialerType];
 
-    if (v10 != 1)
+    if (dialerType != 1)
     {
       return;
     }
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = [(DialerController *)self dialerView];
-    v11 = [v9 deleteButton];
-    [v12 postNotificationName:@"kPHCarPlayDeleteButtonHideNotification" object:v11];
+    dialerView3 = [MEMORY[0x277CCAB98] defaultCenter];
+    deleteButton2 = [(DialerController *)self dialerView];
+    v9DeleteButton = [deleteButton2 deleteButton];
+    [dialerView3 postNotificationName:@"kPHCarPlayDeleteButtonHideNotification" object:v9DeleteButton];
   }
 }
 
-- (void)dialerViewTextDidChange:(id)a3
+- (void)dialerViewTextDidChange:(id)change
 {
   dialerView = self->_dialerView;
-  if (dialerView == a3)
+  if (dialerView == change)
   {
-    v5 = [(PHAbstractDialerView *)dialerView lcdView];
-    v6 = [v5 text];
-    [(DialerController *)self _updateCallButtonEnabledState:v6 updateNameNow:1];
+    lcdView = [(PHAbstractDialerView *)dialerView lcdView];
+    text = [lcdView text];
+    [(DialerController *)self _updateCallButtonEnabledState:text updateNameNow:1];
 
     if ([(DialerController *)self shouldHideDeleteButtonWhenEmpty])
     {
@@ -631,21 +631,21 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
   }
 }
 
-- (void)dialerView:(id)a3 stringWasPasted:(id)a4
+- (void)dialerView:(id)view stringWasPasted:(id)pasted
 {
-  v29 = a3;
-  v6 = a4;
-  if (v6 && self->_dialerView == v29)
+  viewCopy = view;
+  pastedCopy = pasted;
+  if (pastedCopy && self->_dialerView == viewCopy)
   {
-    v7 = [v6 encodedDialerString];
-    v8 = [v6 isEqualToString:v7];
-    v9 = [(DialerController *)self contactResultForPhoneNumber:v7];
+    encodedDialerString = [pastedCopy encodedDialerString];
+    v8 = [pastedCopy isEqualToString:encodedDialerString];
+    v9 = [(DialerController *)self contactResultForPhoneNumber:encodedDialerString];
     if ([(DialerController *)self appType]== 1 && [(DialerController *)self enableSmartDialer])
     {
-      v10 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-      [v10 setText:v7 needsFormat:1];
+      lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+      [lcdView setText:encodedDialerString needsFormat:1];
 
-      [(DialerController *)self _updateCallButtonEnabledState:v7];
+      [(DialerController *)self _updateCallButtonEnabledState:encodedDialerString];
       [(DialerController *)self updateIDSStatus];
       if (v8)
       {
@@ -654,45 +654,45 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
 
       else
       {
-        v11 = v6;
+        v11 = pastedCopy;
       }
 
-      [(DialerController *)self searchAndUpdateResultsFor:v7 shouldRefreshResult:0 showPastedString:v11];
+      [(DialerController *)self searchAndUpdateResultsFor:encodedDialerString shouldRefreshResult:0 showPastedString:v11];
       goto LABEL_19;
     }
 
     if ((v8 & 1) == 0)
     {
-      v12 = [v9 contacts];
-      v13 = [v12 count];
+      contacts = [v9 contacts];
+      v13 = [contacts count];
 
       if (!v13)
       {
-        v24 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+        lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
         v25 = MEMORY[0x277CCACA8];
         v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v27 = [v26 localizedStringForKey:@"QUOTE_%@_QUOTE" value:&stru_285532CB8 table:@"Dialer"];
-        v28 = [v25 stringWithFormat:v27, v6];
-        [v24 setText:v7 needsFormat:1 name:v28 label:0];
+        pastedCopy = [v25 stringWithFormat:v27, pastedCopy];
+        [lcdView2 setText:encodedDialerString needsFormat:1 name:pastedCopy label:0];
 
-        [(DialerController *)self _updateCallButtonEnabledState:v7];
+        [(DialerController *)self _updateCallButtonEnabledState:encodedDialerString];
         goto LABEL_19;
       }
     }
 
-    v14 = [v9 contacts];
-    if ([v14 count])
+    contacts2 = [v9 contacts];
+    if ([contacts2 count])
     {
-      v15 = [v9 contacts];
-      v16 = [v15 firstObject];
-      v17 = [v16 isSuggested];
+      contacts3 = [v9 contacts];
+      firstObject = [contacts3 firstObject];
+      isSuggested = [firstObject isSuggested];
 
-      if ((v17 & 1) == 0)
+      if ((isSuggested & 1) == 0)
       {
-        v18 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-        v19 = [v9 localizedName];
-        v20 = [v9 contactLabel];
-        [v18 setText:v7 needsFormat:1 name:v19 label:v20];
+        lcdView3 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+        localizedName = [v9 localizedName];
+        contactLabel = [v9 contactLabel];
+        [lcdView3 setText:encodedDialerString needsFormat:1 name:localizedName label:contactLabel];
 
         goto LABEL_17;
       }
@@ -702,24 +702,24 @@ uint64_t __41__DialerController_callHistoryController__block_invoke()
     {
     }
 
-    v18 = [(DialerController *)self pseudoNameStringForDestinationID:v7];
-    v21 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v21 setText:v7 needsFormat:1 name:0 label:0];
+    lcdView3 = [(DialerController *)self pseudoNameStringForDestinationID:encodedDialerString];
+    lcdView4 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [lcdView4 setText:encodedDialerString needsFormat:1 name:0 label:0];
 
-    if (!v18)
+    if (!lcdView3)
     {
 LABEL_18:
 
-      v22 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-      v23 = [v22 text];
-      [(DialerController *)self _updateCallButtonEnabledState:v23];
+      lcdView5 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+      text = [lcdView5 text];
+      [(DialerController *)self _updateCallButtonEnabledState:text];
 
 LABEL_19:
       goto LABEL_20;
     }
 
-    v19 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v19 setName:v18 numberLabel:0 suggestion:1];
+    localizedName = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [localizedName setName:lcdView3 numberLabel:0 suggestion:1];
 LABEL_17:
 
     goto LABEL_18;
@@ -728,17 +728,17 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)_updateCallButtonEnabledState:(id)a3 updateNameNow:(BOOL)a4
+- (void)_updateCallButtonEnabledState:(id)state updateNameNow:(BOOL)now
 {
-  v4 = a4;
-  [(DialerController *)self _updateCallButtonEnabledState:a3];
+  nowCopy = now;
+  [(DialerController *)self _updateCallButtonEnabledState:state];
 
-  [(DialerController *)self _updateLCDNameLabelWithAMatchingName:!v4];
+  [(DialerController *)self _updateLCDNameLabelWithAMatchingName:!nowCopy];
 }
 
-- (void)_updateLCDNameLabelWithAMatchingName:(BOOL)a3
+- (void)_updateLCDNameLabelWithAMatchingName:(BOOL)name
 {
-  if (a3 && (-[PHAbstractDialerView lcdView](self->_dialerView, "lcdView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 text], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  if (name && (-[PHAbstractDialerView lcdView](self->_dialerView, "lcdView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 text], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__updateName selector:0 userInfo:0 repeats:0.2];
     lookupTimer = self->_lookupTimer;
@@ -754,22 +754,22 @@ LABEL_20:
   }
 }
 
-- (void)_updateLCDNameLabelWithOriginallyPastedString:(id)a3
+- (void)_updateLCDNameLabelWithOriginallyPastedString:(id)string
 {
-  v7 = a3;
-  v4 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  stringCopy = string;
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v6 setName:v7 numberLabel:&stru_285532CB8 suggestion:0];
+    lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [lcdView2 setName:stringCopy numberLabel:&stru_285532CB8 suggestion:0];
   }
 }
 
-- (void)_updateCallButtonEnabledState:(id)a3
+- (void)_updateCallButtonEnabledState:(id)state
 {
-  v10 = a3;
+  stateCopy = state;
   if (self->_lookupTimer)
   {
     [(DialerController *)self _stopLookupTimer];
@@ -777,8 +777,8 @@ LABEL_20:
 
   TUNetworkCountryCode();
   valid = PNIsValidPhoneNumberForCountry();
-  v5 = [(PHAbstractDialerView *)self->_dialerView callButton];
-  v7 = v5;
+  callButton = [(PHAbstractDialerView *)self->_dialerView callButton];
+  v7 = callButton;
   if (valid)
   {
     LODWORD(v6) = -1097229926;
@@ -786,7 +786,7 @@ LABEL_20:
 
   else
   {
-    [v5 charge];
+    [callButton charge];
     v9 = fabsf(v8);
 
     if (v9 < 2.2204e-16)
@@ -794,27 +794,27 @@ LABEL_20:
       goto LABEL_8;
     }
 
-    v5 = [(PHAbstractDialerView *)self->_dialerView callButton];
-    v7 = v5;
+    callButton = [(PHAbstractDialerView *)self->_dialerView callButton];
+    v7 = callButton;
     v6 = 0.0;
   }
 
-  [v5 setCharge:v6];
+  [callButton setCharge:v6];
 
 LABEL_8:
 }
 
-- (void)_fadeSubviewsOf:(id)a3 excludingViews:(id)a4 toValue:(double)a5
+- (void)_fadeSubviewsOf:(id)of excludingViews:(id)views toValue:(double)value
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  ofCopy = of;
+  viewsCopy = views;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 subviews];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  subviews = [ofCopy subviews];
+  v11 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -825,28 +825,28 @@ LABEL_8:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        if (([v9 containsObject:v15] & 1) == 0)
+        if (([viewsCopy containsObject:v15] & 1) == 0)
         {
-          [v15 setAlpha:a5];
+          [v15 setAlpha:value];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [v8 superview];
+  superview = [ofCopy superview];
 
-  if (v16)
+  if (superview)
   {
-    v17 = [v8 superview];
-    [(DialerController *)self _fadeSubviewsOf:v17 excludingViews:v9 toValue:a5];
+    superview2 = [ofCopy superview];
+    [(DialerController *)self _fadeSubviewsOf:superview2 excludingViews:viewsCopy toValue:value];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -857,10 +857,10 @@ LABEL_8:
   v25[2] = *MEMORY[0x277D85DE8];
   if ([(DialerController *)self shouldAnimateCallButton])
   {
-    v3 = [(DialerController *)self dialerView];
-    v4 = [v3 callButton];
+    dialerView = [(DialerController *)self dialerView];
+    callButton = [dialerView callButton];
 
-    [v4 setUserInteractionEnabled:0];
+    [callButton setUserInteractionEnabled:0];
     [(DialerController *)self setBackgroundStyle:4 animated:1];
     v5 = MEMORY[0x277D75D18];
     v23[0] = MEMORY[0x277D85DD0];
@@ -868,7 +868,7 @@ LABEL_8:
     v23[2] = __38__DialerController__animateCallButton__block_invoke;
     v23[3] = &unk_278D74AE8;
     v23[4] = self;
-    v6 = v4;
+    v6 = callButton;
     v24 = v6;
     [v5 animateWithDuration:v23 animations:0.50999999];
     if (objc_opt_respondsToSelector())
@@ -886,14 +886,14 @@ LABEL_8:
     [v7 setFillMode:*MEMORY[0x277CDA238]];
     [v7 setRemovedOnCompletion:0];
     v9 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"backgroundColor"];
-    v10 = [MEMORY[0x277D75348] systemGreenColor];
-    v11 = [v10 CGColor];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    cGColor = [systemGreenColor CGColor];
 
-    v12 = [MEMORY[0x277D75348] systemRedColor];
-    v13 = [v12 CGColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    cGColor2 = [systemRedColor CGColor];
 
-    v25[0] = v11;
-    v25[1] = v13;
+    v25[0] = cGColor;
+    v25[1] = cGColor2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     [v9 setValues:v14];
 
@@ -901,19 +901,19 @@ LABEL_8:
     [v9 setDuration:0.254999995];
     [v9 setFillMode:v8];
     [v9 setRemovedOnCompletion:0];
-    v15 = [v6 imageView];
-    [v15 setClipsToBounds:0];
+    imageView = [v6 imageView];
+    [imageView setClipsToBounds:0];
 
-    v16 = [v6 imageView];
-    [v16 setContentMode:4];
+    imageView2 = [v6 imageView];
+    [imageView2 setContentMode:4];
 
     [MEMORY[0x277CD9FF0] begin];
-    v17 = [v6 imageView];
-    v18 = [v17 layer];
-    [v18 addAnimation:v7 forKey:@"rollButtonAnimation"];
+    imageView3 = [v6 imageView];
+    layer = [imageView3 layer];
+    [layer addAnimation:v7 forKey:@"rollButtonAnimation"];
 
-    v19 = [v6 layer];
-    [v19 addAnimation:v9 forKey:@"buttonColorAnimation"];
+    layer2 = [v6 layer];
+    [layer2 addAnimation:v9 forKey:@"buttonColorAnimation"];
 
     [MEMORY[0x277CD9FF0] commit];
     v20 = PHDefaultLog();
@@ -946,7 +946,7 @@ void __38__DialerController__animateCallButton__block_invoke(uint64_t a1)
 - (void)updateIDSStatus
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -954,7 +954,7 @@ void __38__DialerController__animateCallButton__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchAndUpdateResultsFor:(id)a3 shouldRefreshResult:(BOOL)a4 showPastedString:(id)a5
+- (void)searchAndUpdateResultsFor:(id)for shouldRefreshResult:(BOOL)result showPastedString:(id)string
 {
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -963,7 +963,7 @@ void __38__DialerController__animateCallButton__block_invoke(uint64_t a1)
   }
 }
 
-- (void)searchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5
+- (void)searchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler
 {
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -972,77 +972,77 @@ void __38__DialerController__animateCallButton__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_callButtonPressed:(id)a3
+- (void)_callButtonPressed:(id)pressed
 {
   if ([MEMORY[0x277D6EDE8] supportsTelephonyCalls])
   {
     if ([MEMORY[0x277D6EDE8] isRelayCallingEnabled])
     {
-      v4 = 1;
+      isThumperCallingEnabled = 1;
     }
 
     else
     {
-      v4 = [MEMORY[0x277D6EDE8] isThumperCallingEnabled];
+      isThumperCallingEnabled = [MEMORY[0x277D6EDE8] isThumperCallingEnabled];
     }
   }
 
   else
   {
-    v4 = 0;
+    isThumperCallingEnabled = 0;
   }
 
-  v5 = [(DialerController *)self featureFlags];
-  if (![v5 phoneLargeFormatUIEnabled])
+  featureFlags = [(DialerController *)self featureFlags];
+  if (![featureFlags phoneLargeFormatUIEnabled])
   {
     goto LABEL_12;
   }
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1) | v4 & 1)
+  if (((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1) | isThumperCallingEnabled & 1)
   {
     goto LABEL_12;
   }
 
-  v8 = [(DialerController *)self featureFlags];
-  if (([v8 uplevelFTAEnabled] & 1) == 0)
+  featureFlags2 = [(DialerController *)self featureFlags];
+  if (([featureFlags2 uplevelFTAEnabled] & 1) == 0)
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [MEMORY[0x277D6EDE8] supportsDisplayingFaceTimeAudioCalls];
+  supportsDisplayingFaceTimeAudioCalls = [MEMORY[0x277D6EDE8] supportsDisplayingFaceTimeAudioCalls];
 
-  if (v9)
+  if (supportsDisplayingFaceTimeAudioCalls)
   {
-    v12 = [(DialerController *)self callProviderManager];
-    v10 = [v12 faceTimeProvider];
+    callProviderManager = [(DialerController *)self callProviderManager];
+    faceTimeProvider = [callProviderManager faceTimeProvider];
     goto LABEL_14;
   }
 
 LABEL_13:
-  v12 = [(DialerController *)self callProviderManager];
-  v10 = [v12 telephonyProvider];
+  callProviderManager = [(DialerController *)self callProviderManager];
+  faceTimeProvider = [callProviderManager telephonyProvider];
 LABEL_14:
-  v11 = v10;
-  [(DialerController *)self _callButtonPressedActionWithCallProvider:v10];
+  v11 = faceTimeProvider;
+  [(DialerController *)self _callButtonPressedActionWithCallProvider:faceTimeProvider];
 }
 
-- (void)_callButtonPressedActionWithCallProvider:(id)a3
+- (void)_callButtonPressedActionWithCallProvider:(id)provider
 {
-  v7 = a3;
+  providerCopy = provider;
   [(DialerController *)self setBackgroundStyle:4 animated:1];
   if ([(DialerController *)self digitsEntered])
   {
-    v4 = [(DialerController *)self dialerView];
-    v5 = [v4 lcdView];
-    [v5 endEditing];
+    dialerView = [(DialerController *)self dialerView];
+    lcdView = [dialerView lcdView];
+    [lcdView endEditing];
 
     [(DialerController *)self setWantsCallButtonAnimation:1];
-    [(DialerController *)self performCallActionForCallProvider:v7];
+    [(DialerController *)self performCallActionForCallProvider:providerCopy];
   }
 
   else
@@ -1050,20 +1050,20 @@ LABEL_14:
     [(DialerController *)self restoreLastDialedNumber];
   }
 
-  v6 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
   if (objc_opt_respondsToSelector())
   {
-    [v6 logWithCall];
+    [lcdView2 logWithCall];
   }
 }
 
-- (void)showRestrictedAlertWithMessage:(id)a3
+- (void)showRestrictedAlertWithMessage:(id)message
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
+  messageCopy = message;
   v6 = TUBundle();
   v7 = [v6 localizedStringForKey:@"RESTRICTED_CONTENT" value:&stru_285532CB8 table:@"TelephonyUtilities"];
-  v12 = [v4 alertControllerWithTitle:v7 message:v5 preferredStyle:1];
+  v12 = [v4 alertControllerWithTitle:v7 message:messageCopy preferredStyle:1];
 
   v8 = MEMORY[0x277D750F8];
   v9 = TUBundle();
@@ -1074,28 +1074,28 @@ LABEL_14:
   [(DialerController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (id)restrictedSubtitleForHandle:(id)a3
+- (id)restrictedSubtitleForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_alloc(MEMORY[0x277D6EE58]);
-  v6 = [MEMORY[0x277D6EEE8] handleWithDestinationID:v4];
+  v6 = [MEMORY[0x277D6EEE8] handleWithDestinationID:handleCopy];
   v7 = [v5 initWithHandle:v6];
 
-  v8 = [(DialerController *)self contactsDataProvider];
-  v9 = [v8 executeFetchRequest:v7];
+  contactsDataProvider = [(DialerController *)self contactsDataProvider];
+  v9 = [contactsDataProvider executeFetchRequest:v7];
 
-  v10 = [v9 localizedName];
-  if ([v10 length])
+  localizedName = [v9 localizedName];
+  if ([localizedName length])
   {
-    v11 = [v9 localizedName];
+    localizedName2 = [v9 localizedName];
   }
 
   else
   {
-    v11 = v4;
+    localizedName2 = handleCopy;
   }
 
-  v12 = v11;
+  v12 = localizedName2;
 
   if (![v12 length])
   {
@@ -1113,13 +1113,13 @@ LABEL_14:
   return v18;
 }
 
-- (void)phonePad:(id)a3 dialerCharacterButtonWasHeld:(int64_t)a4
+- (void)phonePad:(id)pad dialerCharacterButtonWasHeld:(int64_t)held
 {
-  if (!a4)
+  if (!held)
   {
-    v5 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    v6 = [v5 text];
-    v7 = [v6 length];
+    lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    text = [lcdView text];
+    v7 = [text length];
 
     if (v7 == 1)
     {
@@ -1129,104 +1129,104 @@ LABEL_14:
   }
 }
 
-- (void)performCharacterAddAction:(id)a3
+- (void)performCharacterAddAction:(id)action
 {
-  v4 = a3;
-  v6 = [(DialerController *)self dialerView];
-  v5 = [v6 phonePadView];
-  [(DialerController *)self phonePad:v5 appendString:v4 playDTMFTone:0];
+  actionCopy = action;
+  dialerView = [(DialerController *)self dialerView];
+  phonePadView = [dialerView phonePadView];
+  [(DialerController *)self phonePad:phonePadView appendString:actionCopy playDTMFTone:0];
 }
 
-- (void)phonePad:(id)a3 appendString:(id)a4
+- (void)phonePad:(id)pad appendString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  padCopy = pad;
   [(DialerController *)self setDialLastDialedNumberByDoubleTap:0];
-  [(DialerController *)self phonePad:v7 appendString:v6 playDTMFTone:[(DialerController *)self dialerType]== 2];
+  [(DialerController *)self phonePad:padCopy appendString:stringCopy playDTMFTone:[(DialerController *)self dialerType]== 2];
 }
 
-- (void)phonePad:(id)a3 appendString:(id)a4 playDTMFTone:(BOOL)a5
+- (void)phonePad:(id)pad appendString:(id)string playDTMFTone:(BOOL)tone
 {
-  v5 = a5;
+  toneCopy = tone;
   v13 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  [(DialerController *)self _phonePad:a3 appendString:v8 suppressClearingDialedNumber:0];
+  stringCopy = string;
+  [(DialerController *)self _phonePad:pad appendString:stringCopy suppressClearingDialedNumber:0];
   [(DialerController *)self setBackgroundStyle:4 animated:1];
-  if (v5)
+  if (toneCopy)
   {
     v9 = PHDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = stringCopy;
       _os_log_impl(&dword_2429BC000, v9, OS_LOG_TYPE_DEFAULT, "Will play DTMF tone due to string being appended (%@)", &v11, 0xCu);
     }
 
-    +[DialerController playDTMFToneForKey:](DialerController, "playDTMFToneForKey:", [v8 characterAtIndex:0]);
+    +[DialerController playDTMFToneForKey:](DialerController, "playDTMFToneForKey:", [stringCopy characterAtIndex:0]);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_phonePad:(id)a3 appendString:(id)a4 suppressClearingDialedNumber:(BOOL)a5
+- (void)_phonePad:(id)pad appendString:(id)string suppressClearingDialedNumber:(BOOL)number
 {
-  v7 = a4;
+  stringCopy = string;
   [(DialerController *)self setDialLastDialedNumberByDoubleTap:0];
-  v8 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v13 = [v8 text];
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text = [lcdView text];
 
-  v9 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  [v9 insertStringAtCurrentPosition:v7];
+  lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  [lcdView2 insertStringAtCurrentPosition:stringCopy];
 
-  v10 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v11 = [v10 text];
+  lcdView3 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text2 = [lcdView3 text];
 
-  if ([v11 length] == 1 && objc_msgSend(v11, "characterAtIndex:", 0) == 44)
+  if ([text2 length] == 1 && objc_msgSend(text2, "characterAtIndex:", 0) == 44)
   {
     v12 = @"*";
 LABEL_7:
 
-    v11 = v12;
+    text2 = v12;
     goto LABEL_8;
   }
 
-  if ([v11 length] == 1 && objc_msgSend(v11, "characterAtIndex:", 0) == 59)
+  if ([text2 length] == 1 && objc_msgSend(text2, "characterAtIndex:", 0) == 59)
   {
     v12 = @"#";
     goto LABEL_7;
   }
 
 LABEL_8:
-  -[DialerController _updateCallButtonEnabledState:updateNameNow:](self, "_updateCallButtonEnabledState:updateNameNow:", v11, [v13 length] == 0);
+  -[DialerController _updateCallButtonEnabledState:updateNameNow:](self, "_updateCallButtonEnabledState:updateNameNow:", text2, [text length] == 0);
   *(self + 1016) &= ~1u;
-  if (!a5)
+  if (!number)
   {
     [(DialerController *)self setShouldSuppressShowingLastDialedNumber:1];
   }
 }
 
-- (void)phonePad:(id)a3 replaceLastDigitWithString:(id)a4
+- (void)phonePad:(id)pad replaceLastDigitWithString:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   [(DialerController *)self setDialLastDialedNumberByDoubleTap:0];
-  v6 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  [v6 insertStringAtCurrentPosition:v5 deletingPreviousCharacter:1];
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  [lcdView insertStringAtCurrentPosition:stringCopy deletingPreviousCharacter:1];
 
-  v7 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v10 = [v7 text];
+  lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text = [lcdView2 text];
 
-  if ([v10 length] == 1 && objc_msgSend(v10, "characterAtIndex:", 0) == 44)
+  if ([text length] == 1 && objc_msgSend(text, "characterAtIndex:", 0) == 44)
   {
     v8 = @"*";
 LABEL_7:
-    v9 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-    [v9 setText:v8 needsFormat:1];
+    lcdView3 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+    [lcdView3 setText:v8 needsFormat:1];
 
     [(DialerController *)self _updateCallButtonEnabledState:v8 updateNameNow:0];
     goto LABEL_8;
   }
 
-  if ([v10 length] == 1 && objc_msgSend(v10, "characterAtIndex:", 0) == 59)
+  if ([text length] == 1 && objc_msgSend(text, "characterAtIndex:", 0) == 59)
   {
     v8 = @"#";
     goto LABEL_7;
@@ -1235,14 +1235,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)phonePadDeleteLastDigit:(id)a3
+- (void)phonePadDeleteLastDigit:(id)digit
 {
-  v4 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  [v4 deleteCharacter];
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  [lcdView deleteCharacter];
 
-  v5 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v6 = [v5 text];
-  [(DialerController *)self _updateCallButtonEnabledState:v6 updateNameNow:0];
+  lcdView2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text = [lcdView2 text];
+  [(DialerController *)self _updateCallButtonEnabledState:text updateNameNow:0];
 
   *(self + 1016) &= ~1u;
 
@@ -1251,8 +1251,8 @@ LABEL_8:
 
 - (NSString)phoneNumberPrefixHint
 {
-  v3 = [MEMORY[0x277D07DB0] sharedInstance];
-  if ([v3 isGreenTea] && objc_msgSend(v3, "deviceType") == 4)
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  if ([mEMORY[0x277D07DB0] isGreenTea] && objc_msgSend(mEMORY[0x277D07DB0], "deviceType") == 4)
   {
     v4 = PHDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1283,19 +1283,19 @@ LABEL_8:
   return v5;
 }
 
-- (void)handleKeyCommand:(id)a3
+- (void)handleKeyCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(DialerController *)self dialerView];
-  v6 = [v5 phonePadView];
+  commandCopy = command;
+  dialerView = [(DialerController *)self dialerView];
+  phonePadView = [dialerView phonePadView];
 
-  v7 = [(DialerController *)self keyCommandHandler];
+  keyCommandHandler = [(DialerController *)self keyCommandHandler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__DialerController_handleKeyCommand___block_invoke;
   v11[3] = &unk_278D74B10;
   v11[4] = self;
-  v12 = v6;
+  v12 = phonePadView;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__DialerController_handleKeyCommand___block_invoke_2;
@@ -1303,7 +1303,7 @@ LABEL_8:
   v9[4] = self;
   v10 = v12;
   v8 = v12;
-  [v7 handleKeyCommand:v4 receivedCharacterBlock:v11 receivedSpecialCharacterBlock:v9];
+  [keyCommandHandler handleKeyCommand:commandCopy receivedCharacterBlock:v11 receivedSpecialCharacterBlock:v9];
 }
 
 void __37__DialerController_handleKeyCommand___block_invoke(uint64_t a1, int a2)
@@ -1332,33 +1332,33 @@ uint64_t __37__DialerController_handleKeyCommand___block_invoke_2(uint64_t resul
   return result;
 }
 
-- (void)phonePadDidEndSounds:(id)a3
+- (void)phonePadDidEndSounds:(id)sounds
 {
-  v4 = a3;
+  soundsCopy = sounds;
   if (self->_dialerType == 2 && self->_dtmfPlaying)
   {
-    v5 = v4;
+    v5 = soundsCopy;
     CTDTMFPlayStop();
-    v4 = v5;
+    soundsCopy = v5;
     self->_dtmfPlaying = 0;
   }
 }
 
 - (void)_dialVoicemail
 {
-  v3 = [(PHAbstractDialerView *)self->_dialerView phonePadView];
-  [v3 cancelTouchTracking];
+  phonePadView = [(PHAbstractDialerView *)self->_dialerView phonePadView];
+  [phonePadView cancelTouchTracking];
 
-  v4 = [(DialerController *)self callProviderManager];
-  v5 = [v4 voicemailProvider];
+  callProviderManager = [(DialerController *)self callProviderManager];
+  voicemailProvider = [callProviderManager voicemailProvider];
 
-  if (v5)
+  if (voicemailProvider)
   {
-    v6 = [objc_alloc(MEMORY[0x277D6EED0]) initWithProvider:v5];
+    v6 = [objc_alloc(MEMORY[0x277D6EED0]) initWithProvider:voicemailProvider];
     [v6 setDialType:2];
-    v7 = [(DialerController *)self selectedSenderIdentity];
-    v8 = [v7 accountUUID];
-    [v6 setLocalSenderIdentityAccountUUID:v8];
+    selectedSenderIdentity = [(DialerController *)self selectedSenderIdentity];
+    accountUUID = [selectedSenderIdentity accountUUID];
+    [v6 setLocalSenderIdentityAccountUUID:accountUUID];
 
     [v6 setOriginatingUIType:41];
     [(DialerController *)self _dialWithRequest:v6];
@@ -1374,30 +1374,30 @@ uint64_t __37__DialerController_handleKeyCommand___block_invoke_2(uint64_t resul
   }
 }
 
-- (void)_dialWithRequest:(id)a3
+- (void)_dialWithRequest:(id)request
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = requestCopy;
     _os_log_impl(&dword_2429BC000, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   *(self + 1016) |= 1u;
   [(DialerController *)self dismissModalViewControllerAnimated:1];
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v4 URL];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v7 = [requestCopy URL];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__DialerController__dialWithRequest___block_invoke;
   v10[3] = &unk_278D74A08;
-  v11 = v4;
-  v12 = self;
-  v8 = v4;
-  [v6 openURL:v7 withCompletionHandler:v10];
+  v11 = requestCopy;
+  selfCopy = self;
+  v8 = requestCopy;
+  [mEMORY[0x277D75128] openURL:v7 withCompletionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1422,9 +1422,9 @@ uint64_t __37__DialerController__dialWithRequest___block_invoke(uint64_t result,
 - (void)_deleteRepeat
 {
   [(DialerController *)self phonePadDeleteLastDigit:0];
-  v3 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text = [lcdView text];
+  v5 = [text length];
 
   if (!v5)
   {
@@ -1451,7 +1451,7 @@ uint64_t __37__DialerController__dialWithRequest___block_invoke(uint64_t result,
   self->_deleteTimer = 0;
 }
 
-- (void)_deleteButtonClicked:(id)a3
+- (void)_deleteButtonClicked:(id)clicked
 {
   [(DialerController *)self setDialLastDialedNumberByDoubleTap:0];
   if ((*(self + 1016) & 2) != 0)
@@ -1469,9 +1469,9 @@ uint64_t __37__DialerController__dialWithRequest___block_invoke(uint64_t result,
 
 - (BOOL)digitsEntered
 {
-  v2 = [(PHAbstractDialerView *)self->_dialerView lcdView];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  lcdView = [(PHAbstractDialerView *)self->_dialerView lcdView];
+  text = [lcdView text];
+  v4 = [text length] != 0;
 
   return v4;
 }
@@ -1479,30 +1479,30 @@ uint64_t __37__DialerController__dialWithRequest___block_invoke(uint64_t result,
 - (void)restoreLastDialedNumber
 {
   *&v14[5] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  if ([v3 currentCallCount])
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  if ([mEMORY[0x277D6EDF8] currentCallCount])
   {
 
 LABEL_3:
     v4 = PHDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x277D6EDF8] sharedInstance];
-      v6 = [v5 currentCallCount] != 0;
-      v7 = [(DialerController *)self lastDialedNumber];
+      mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+      v6 = [mEMORY[0x277D6EDF8]2 currentCallCount] != 0;
+      lastDialedNumber = [(DialerController *)self lastDialedNumber];
       v13 = 67109376;
       v14[0] = v6;
       LOWORD(v14[1]) = 1024;
-      *(&v14[1] + 2) = v7 == 0;
+      *(&v14[1] + 2) = lastDialedNumber == 0;
       _os_log_impl(&dword_2429BC000, v4, OS_LOG_TYPE_DEFAULT, "Not updating visible number to saved redialed number because we are in call (%d) or we don't have a redialed number saved (%d)", &v13, 0xEu);
     }
 
     goto LABEL_10;
   }
 
-  v8 = [(DialerController *)self lastDialedNumber];
+  lastDialedNumber2 = [(DialerController *)self lastDialedNumber];
 
-  if (!v8)
+  if (!lastDialedNumber2)
   {
     goto LABEL_3;
   }
@@ -1510,14 +1510,14 @@ LABEL_3:
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(DialerController *)self lastDialedNumber];
+    lastDialedNumber3 = [(DialerController *)self lastDialedNumber];
     v13 = 138412290;
-    *v14 = v10;
+    *v14 = lastDialedNumber3;
     _os_log_impl(&dword_2429BC000, v9, OS_LOG_TYPE_DEFAULT, "Updating visible number to saved redialed number: %@", &v13, 0xCu);
   }
 
-  v11 = [(DialerController *)self lastDialedNumber];
-  [(DialerController *)self _phonePad:0 appendString:v11 suppressClearingDialedNumber:1];
+  lastDialedNumber4 = [(DialerController *)self lastDialedNumber];
+  [(DialerController *)self _phonePad:0 appendString:lastDialedNumber4 suppressClearingDialedNumber:1];
 
   [(DialerController *)self _updateName];
   [(DialerController *)self setDialLastDialedNumberByDoubleTap:1];
@@ -1539,25 +1539,25 @@ LABEL_10:
   [(DialerController *)self setContactsDataProvider:0];
 }
 
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
-    if (a4)
+    self->_backgroundStyle = style;
+    if (animated)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __48__DialerController_setBackgroundStyle_animated___block_invoke;
       v6[3] = &__block_descriptor_40_e5_v8__0l;
-      v6[4] = a3;
+      v6[4] = style;
       [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.5];
     }
 
     else
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
-      [v5 _setBackgroundStyle:a3];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] _setBackgroundStyle:style];
     }
   }
 }
@@ -1568,7 +1568,7 @@ void __48__DialerController_setBackgroundStyle_animated___block_invoke(uint64_t 
   [v2 _setBackgroundStyle:*(a1 + 32)];
 }
 
-- (void)handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)handleApplicationDidEnterBackgroundNotification:(id)notification
 {
   [(DialerController *)self deactivateAudioServices];
   v3 = PHDefaultLog();
@@ -1579,15 +1579,15 @@ void __48__DialerController_setBackgroundStyle_animated___block_invoke(uint64_t 
   }
 }
 
-- (void)handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleApplicationWillEnterForegroundNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(DialerController *)self requestAudioServicesActivate];
+  requestAudioServicesActivate = [(DialerController *)self requestAudioServicesActivate];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (requestAudioServicesActivate)
     {
       v5 = @"YES";
     }
@@ -1602,8 +1602,8 @@ void __48__DialerController_setBackgroundStyle_animated___block_invoke(uint64_t 
 
 - (BOOL)requestAudioServicesActivate
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  if ([v3 currentCallCount])
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  if ([mEMORY[0x277D6EDF8] currentCallCount])
   {
     v4 = self->_dialerType == 2;
   }
@@ -1617,14 +1617,14 @@ void __48__DialerController_setBackgroundStyle_animated___block_invoke(uint64_t 
   return v4;
 }
 
-- (void)setAudioServicesActivated:(BOOL)a3
+- (void)setAudioServicesActivated:(BOOL)activated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__DialerController_setAudioServicesActivated___block_invoke;
   v3[3] = &unk_278D74A98;
   v3[4] = self;
-  v4 = a3;
+  activatedCopy = activated;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1636,14 +1636,14 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
 
 - (CNContactStore)contactStore
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D6EF80]];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:*MEMORY[0x277D6EF80]];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v7 = [v6 displayedCallFromCalls:0];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    v7 = [mEMORY[0x277D6EDF8] displayedCallFromCalls:0];
 
     v8 = [MEMORY[0x277CBDAC0] tu_contactStoreConfigurationForCall:v7];
     [v8 setIncludeDonatedContacts:1];
@@ -1656,9 +1656,9 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
     contactStore = self->_contactStore;
     if (!contactStore)
     {
-      v11 = [MEMORY[0x277CBDAB8] suggestedContactStore];
+      suggestedContactStore = [MEMORY[0x277CBDAB8] suggestedContactStore];
       v12 = self->_contactStore;
-      self->_contactStore = v11;
+      self->_contactStore = suggestedContactStore;
 
       contactStore = self->_contactStore;
     }
@@ -1671,15 +1671,15 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
 
 - (TUContactsDataProvider)contactsDataProvider
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D6EF80]];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:*MEMORY[0x277D6EF80]];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D6EE50]);
-    v7 = [(DialerController *)self contactStore];
-    v8 = [v6 initWithContactsDataSource:v7];
+    contactStore = [(DialerController *)self contactStore];
+    v8 = [v6 initWithContactsDataSource:contactStore];
   }
 
   else
@@ -1688,8 +1688,8 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
     if (!contactsDataProvider)
     {
       v10 = objc_alloc(MEMORY[0x277D6EE50]);
-      v11 = [(DialerController *)self contactStore];
-      v12 = [v10 initWithContactsDataSource:v11];
+      contactStore2 = [(DialerController *)self contactStore];
+      v12 = [v10 initWithContactsDataSource:contactStore2];
       v13 = self->_contactsDataProvider;
       self->_contactsDataProvider = v12;
 
@@ -1704,14 +1704,14 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(DialerController *)self interfaceOrientationProvider];
+  interfaceOrientationProvider = [(DialerController *)self interfaceOrientationProvider];
 
-  if (v3)
+  if (interfaceOrientationProvider)
   {
-    v4 = [(DialerController *)self interfaceOrientationProvider];
-    v5 = [v4 dialerSupportedInterfaceOrientations];
+    interfaceOrientationProvider2 = [(DialerController *)self interfaceOrientationProvider];
+    dialerSupportedInterfaceOrientations = [interfaceOrientationProvider2 dialerSupportedInterfaceOrientations];
 
-    return v5;
+    return dialerSupportedInterfaceOrientations;
   }
 
   else
@@ -1724,12 +1724,12 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
 
 - (BOOL)deviceHasMultipleSIM
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 providerManager];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  providerManager = [mEMORY[0x277D6EDF8] providerManager];
 
-  v4 = [v3 telephonyProvider];
-  v5 = [v4 prioritizedSenderIdentities];
-  v6 = [v5 count] > 1;
+  telephonyProvider = [providerManager telephonyProvider];
+  prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+  v6 = [prioritizedSenderIdentities count] > 1;
 
   return v6;
 }
@@ -1748,18 +1748,18 @@ void __46__DialerController_setAudioServicesActivated___block_invoke(uint64_t a1
 
 - (void)updateDialerViewDualSimMenu
 {
-  v3 = [(DialerController *)self dialerView];
+  dialerView = [(DialerController *)self dialerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(DialerController *)self dialerView];
-    [v5 setEnableDualSimMenu:{-[DialerController enableDualSimMenu](self, "enableDualSimMenu")}];
+    dialerView2 = [(DialerController *)self dialerView];
+    [dialerView2 setEnableDualSimMenu:{-[DialerController enableDualSimMenu](self, "enableDualSimMenu")}];
   }
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

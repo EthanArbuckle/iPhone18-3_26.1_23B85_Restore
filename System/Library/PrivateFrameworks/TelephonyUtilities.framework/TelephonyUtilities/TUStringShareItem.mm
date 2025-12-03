@@ -1,19 +1,19 @@
 @interface TUStringShareItem
-- (TUStringShareItem)initWithMessage:(id)a3;
+- (TUStringShareItem)initWithMessage:(id)message;
 @end
 
 @implementation TUStringShareItem
 
-- (TUStringShareItem)initWithMessage:(id)a3
+- (TUStringShareItem)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8.receiver = self;
   v8.super_class = TUStringShareItem;
   v5 = [(TUStringShareItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TUStringShareItem *)v5 setMessage:v4];
+    [(TUStringShareItem *)v5 setMessage:messageCopy];
   }
 
   return v6;

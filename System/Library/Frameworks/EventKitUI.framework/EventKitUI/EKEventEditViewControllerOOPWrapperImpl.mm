@@ -2,7 +2,7 @@
 - (BOOL)hasUnsavedChanges;
 - (CGSize)preferredContentSize;
 - (EKEvent)event;
-- (EKEventEditViewControllerOOPWrapperImpl)initWithViewID:(id)a3;
+- (EKEventEditViewControllerOOPWrapperImpl)initWithViewID:(id)d;
 - (EKEventEditViewDelegate)editViewDelegate;
 - (EKEventStore)eventStore;
 - (UIColor)editorBackgroundColor;
@@ -10,26 +10,26 @@
 - (void)focusAndSelectStartDate;
 - (void)focusAndSelectTitle;
 - (void)focusTitle;
-- (void)setDefaultCalendar:(id)a3;
-- (void)setEditViewDelegate:(id)a3;
-- (void)setEditorBackgroundColor:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setEventStore:(id)a3;
+- (void)setDefaultCalendar:(id)calendar;
+- (void)setEditViewDelegate:(id)delegate;
+- (void)setEditorBackgroundColor:(id)color;
+- (void)setEvent:(id)event;
+- (void)setEventStore:(id)store;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventEditViewControllerOOPWrapperImpl
 
-- (EKEventEditViewControllerOOPWrapperImpl)initWithViewID:(id)a3
+- (EKEventEditViewControllerOOPWrapperImpl)initWithViewID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = EKEventEditViewControllerOOPWrapperImpl;
   v6 = [(EKEventEditViewControllerOOPWrapperImpl *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewID, a3);
+    objc_storeStrong(&v6->_viewID, d);
     v8 = objc_alloc_init(_TtC10EventKitUI32EKEventEditViewControllerOOPImpl);
     [(EKEventEditViewControllerOOPWrapperImpl *)v7 setVc:v8];
   }
@@ -46,73 +46,73 @@
   v3 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
   [(EKEventEditViewControllerOOPWrapperImpl *)self addChildViewController:v3];
 
-  v4 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
+  view = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  view2 = [v5 view];
+  [view addSubview:view2];
 
   v7 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
   [v7 didMoveToParentViewController:self];
 
   v8 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v9 = [v8 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v8 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v36 = MEMORY[0x1E696ACD8];
   v47 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v46 = [v47 view];
-  v44 = [v46 leadingAnchor];
-  v45 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
-  v43 = [v45 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  view4 = [v47 view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[0] = v42;
   v41 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v40 = [v41 view];
-  v38 = [v40 topAnchor];
-  v39 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
-  v37 = [v39 topAnchor];
-  v35 = [v38 constraintEqualToAnchor:v37];
+  view6 = [v41 view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[1] = v35;
   v34 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v33 = [v34 view];
-  v31 = [v33 trailingAnchor];
-  v32 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
-  v10 = [v32 trailingAnchor];
-  v11 = [v31 constraintEqualToAnchor:v10];
+  view8 = [v34 view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[2] = v11;
   v12 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v13 = [v12 view];
-  v14 = [v13 bottomAnchor];
-  v15 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  view10 = [v12 view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(EKEventEditViewControllerOOPWrapperImpl *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[3] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
   [v36 activateConstraints:v18];
 
   v19 = [MEMORY[0x1E6966A18] realAuthorizationStatusForEntityType:0];
-  v20 = [(EKEventEditViewControllerOOPWrapperImpl *)self event];
-  v21 = [v20 calendar];
-  if (v21)
+  event = [(EKEventEditViewControllerOOPWrapperImpl *)self event];
+  calendar = [event calendar];
+  if (calendar)
   {
 
 LABEL_10:
     return;
   }
 
-  v22 = [(EKEventEditViewControllerOOPWrapperImpl *)self event];
-  v23 = [v22 isNew];
+  event2 = [(EKEventEditViewControllerOOPWrapperImpl *)self event];
+  isNew = [event2 isNew];
 
-  if (v23 && v19 == 3)
+  if (isNew && v19 == 3)
   {
-    v24 = [(EKEventEditViewControllerOOPWrapperImpl *)self editViewDelegate];
-    if (!v24 || (v25 = v24, -[EKEventEditViewControllerOOPWrapperImpl editViewDelegate](self, "editViewDelegate"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_opt_respondsToSelector(), v26, v25, (v27 & 1) == 0) || (-[EKEventEditViewControllerOOPWrapperImpl editViewDelegate](self, "editViewDelegate"), v28 = objc_claimAutoreleasedReturnValue(), -[EKEventEditViewControllerOOPWrapperImpl _ekEventEditViewController](self, "_ekEventEditViewController"), v29 = objc_claimAutoreleasedReturnValue(), [v28 eventEditViewControllerDefaultCalendarForNewEvents:v29], v20 = objc_claimAutoreleasedReturnValue(), v29, v28, !v20))
+    editViewDelegate = [(EKEventEditViewControllerOOPWrapperImpl *)self editViewDelegate];
+    if (!editViewDelegate || (v25 = editViewDelegate, -[EKEventEditViewControllerOOPWrapperImpl editViewDelegate](self, "editViewDelegate"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_opt_respondsToSelector(), v26, v25, (v27 & 1) == 0) || (-[EKEventEditViewControllerOOPWrapperImpl editViewDelegate](self, "editViewDelegate"), v28 = objc_claimAutoreleasedReturnValue(), -[EKEventEditViewControllerOOPWrapperImpl _ekEventEditViewController](self, "_ekEventEditViewController"), v29 = objc_claimAutoreleasedReturnValue(), [v28 eventEditViewControllerDefaultCalendarForNewEvents:v29], event = objc_claimAutoreleasedReturnValue(), v29, v28, !event))
     {
-      v30 = [(EKEventEditViewControllerOOPWrapperImpl *)self eventStore];
-      v20 = [v30 defaultCalendarForNewEvents];
+      eventStore = [(EKEventEditViewControllerOOPWrapperImpl *)self eventStore];
+      event = [eventStore defaultCalendarForNewEvents];
     }
 
-    [(EKEventEditViewControllerOOPWrapperImpl *)self setDefaultCalendar:v20];
+    [(EKEventEditViewControllerOOPWrapperImpl *)self setDefaultCalendar:event];
     goto LABEL_10;
   }
 }
@@ -131,49 +131,49 @@ LABEL_10:
   return result;
 }
 
-- (void)setEditViewDelegate:(id)a3
+- (void)setEditViewDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  [v5 setEditViewDelegate:v4];
+  [v5 setEditViewDelegate:delegateCopy];
 }
 
 - (EKEventEditViewDelegate)editViewDelegate
 {
   v2 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 editViewDelegate];
+  editViewDelegate = [v2 editViewDelegate];
 
-  return v3;
+  return editViewDelegate;
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  [v5 setEventStore:v4];
+  [v5 setEventStore:storeCopy];
 }
 
 - (EKEventStore)eventStore
 {
   v2 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 eventStore];
+  eventStore = [v2 eventStore];
 
-  return v3;
+  return eventStore;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  [v5 setEvent:v4];
+  [v5 setEvent:eventCopy];
 }
 
 - (EKEvent)event
 {
   v2 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 event];
+  event = [v2 event];
 
-  return v3;
+  return event;
 }
 
 - (void)cancelEditing
@@ -182,34 +182,34 @@ LABEL_10:
   [v2 cancelEditing];
 }
 
-- (void)setDefaultCalendar:(id)a3
+- (void)setDefaultCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  [v5 setDefaultCalendar:v4];
+  [v5 setDefaultCalendar:calendarCopy];
 }
 
-- (void)setEditorBackgroundColor:(id)a3
+- (void)setEditorBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  [v5 setEditorBackgroundColor:v4];
+  [v5 setEditorBackgroundColor:colorCopy];
 }
 
 - (UIColor)editorBackgroundColor
 {
   v2 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 editorBackgroundColor];
+  editorBackgroundColor = [v2 editorBackgroundColor];
 
-  return v3;
+  return editorBackgroundColor;
 }
 
 - (BOOL)hasUnsavedChanges
 {
   v2 = [(EKEventEditViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 hasUnsavedChanges];
+  hasUnsavedChanges = [v2 hasUnsavedChanges];
 
-  return v3;
+  return hasUnsavedChanges;
 }
 
 - (void)focusAndSelectTitle

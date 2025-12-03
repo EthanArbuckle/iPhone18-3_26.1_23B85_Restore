@@ -8,7 +8,7 @@
 - (void)clearHistory
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC19NewsPersonalization29ClearableUserEmbeddingManager_userEmbeddingManager);
-  v3 = self;
+  selfCopy = self;
   UserEmbeddingManager.clearCachedUserEmbedding()();
 }
 

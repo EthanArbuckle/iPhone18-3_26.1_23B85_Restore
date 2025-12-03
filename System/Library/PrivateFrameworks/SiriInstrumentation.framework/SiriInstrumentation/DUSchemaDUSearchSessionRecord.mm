@@ -1,26 +1,26 @@
 @interface DUSchemaDUSearchSessionRecord
-- (BOOL)isEqual:(id)a3;
-- (DUSchemaDUSearchSessionRecord)initWithDictionary:(id)a3;
-- (DUSchemaDUSearchSessionRecord)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DUSchemaDUSearchSessionRecord)initWithDictionary:(id)dictionary;
+- (DUSchemaDUSearchSessionRecord)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DUSchemaDUSearchSessionRecord
 
-- (DUSchemaDUSearchSessionRecord)initWithDictionary:(id)a3
+- (DUSchemaDUSearchSessionRecord)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = DUSchemaDUSearchSessionRecord;
   v5 = [(DUSchemaDUSearchSessionRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(DUSchemaDUSearchSessionRecord *)v5 setSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sessionStartTimestampMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionStartTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (DUSchemaDUSearchSessionRecord)initWithJSON:(id)a3
+- (DUSchemaDUSearchSessionRecord)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DUSchemaDUSearchSessionRecord *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DUSchemaDUSearchSessionRecord *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DUSchemaDUSearchSessionRecord *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sessionId)
   {
-    v4 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    sessionId = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+    dictionaryRepresentation = [sessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"sessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"sessionId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"sessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"sessionId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DUSchemaDUSearchSessionRecord sessionStartTimestampMs](self, "sessionStartTimestampMs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"sessionStartTimestampMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"sessionStartTimestampMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
-  v6 = [v4 sessionId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  sessionId = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+  sessionId2 = [equalCopy sessionId];
+  v7 = sessionId2;
+  if ((sessionId != 0) == (sessionId2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
-  if (v8)
+  sessionId3 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+  if (sessionId3)
   {
-    v9 = v8;
-    v10 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
-    v11 = [v4 sessionId];
-    v12 = [v10 isEqual:v11];
+    v9 = sessionId3;
+    sessionId4 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+    sessionId5 = [equalCopy sessionId];
+    v12 = [sessionId4 isEqual:sessionId5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[24] & 1))
+  if ((*&self->_has & 1) != (equalCopy[24] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     sessionStartTimestampMs = self->_sessionStartTimestampMs;
-    if (sessionStartTimestampMs != [v4 sessionStartTimestampMs])
+    if (sessionStartTimestampMs != [equalCopy sessionStartTimestampMs])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+  toCopy = to;
+  sessionId = [(DUSchemaDUSearchSessionRecord *)self sessionId];
 
-  if (v4)
+  if (sessionId)
   {
-    v5 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
+    sessionId2 = [(DUSchemaDUSearchSessionRecord *)self sessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DUSchemaDUSearchSessionRecord;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DUSchemaDUSearchSessionRecord *)self sessionId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DUSchemaDUSearchSessionRecord *)self deleteSessionId];
   }

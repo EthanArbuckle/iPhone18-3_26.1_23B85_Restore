@@ -1,22 +1,22 @@
 @interface PixelSonifier
-- (void)handleGestureWithRecognizer:(id)a3;
-- (void)hoverTimerFiredWithTimer:(id)a3;
+- (void)handleGestureWithRecognizer:(id)recognizer;
+- (void)hoverTimerFiredWithTimer:(id)timer;
 @end
 
 @implementation PixelSonifier
 
-- (void)hoverTimerFiredWithTimer:(id)a3
+- (void)hoverTimerFiredWithTimer:(id)timer
 {
-  v3 = a3;
+  timerCopy = timer;
 
   sub_220EC8328();
 }
 
-- (void)handleGestureWithRecognizer:(id)a3
+- (void)handleGestureWithRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
 
-  sub_220EC8F44(v3);
+  sub_220EC8F44(recognizerCopy);
 }
 
 @end

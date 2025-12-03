@@ -1,16 +1,16 @@
 @interface InvertedGradientLayer
 - (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)init;
-- (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation InvertedGradientLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E93BC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1E93BC(contextCopy);
 }
 
 - (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)init
@@ -24,7 +24,7 @@
   return [(InvertedGradientLayer *)&v3 init];
 }
 
-- (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)initWithLayer:(id)a3
+- (_TtC18ASMessagesProviderP33_641AD3B9CC6D2F83FAB80978F020883021InvertedGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_76A510();

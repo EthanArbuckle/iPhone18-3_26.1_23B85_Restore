@@ -1,10 +1,10 @@
 @interface ICQInternetPrivacyLocationSharingSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (ICQInternetPrivacyLocationSharingSpecifierProvider)init;
-- (ICQInternetPrivacyLocationSharingSpecifierProvider)initWithAccountManager:(id)a3;
+- (ICQInternetPrivacyLocationSharingSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
 - (void)_reloadSpecifiers;
-- (void)_specifierWasTapped:(id)a3;
+- (void)_specifierWasTapped:(id)tapped;
 - (void)_startFetchingSharingLocationPreference;
 @end
 
@@ -31,14 +31,14 @@
   return v3;
 }
 
-- (ICQInternetPrivacyLocationSharingSpecifierProvider)initWithAccountManager:(id)a3
+- (ICQInternetPrivacyLocationSharingSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(ICQInternetPrivacyLocationSharingSpecifierProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -53,13 +53,13 @@
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = MEMORY[0x277D3FAD8];
-    v7 = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationEnabledTitle];
-    v8 = [v6 groupSpecifierWithID:v7];
+    iPAddressLocationEnabledTitle = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationEnabledTitle];
+    v8 = [v6 groupSpecifierWithID:iPAddressLocationEnabledTitle];
 
     [v5 addObject:v8];
     v9 = MEMORY[0x277D3FAD8];
-    v10 = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationEnabledTitle];
-    v11 = [v9 preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:3 edit:0];
+    iPAddressLocationEnabledTitle2 = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationEnabledTitle];
+    v11 = [v9 preferenceSpecifierNamed:iPAddressLocationEnabledTitle2 target:self set:0 get:0 detail:0 cell:3 edit:0];
     enableSpecifier = self->_enableSpecifier;
     self->_enableSpecifier = v11;
 
@@ -79,8 +79,8 @@
     [(PSSpecifier *)self->_enableSpecifier setUserInfo:MEMORY[0x277CBEC38]];
     [v5 addObject:self->_enableSpecifier];
     v15 = MEMORY[0x277D3FAD8];
-    v16 = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationDisabledTitle];
-    v17 = [v15 preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:3 edit:0];
+    iPAddressLocationDisabledTitle = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationDisabledTitle];
+    v17 = [v15 preferenceSpecifierNamed:iPAddressLocationDisabledTitle target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     if (self->_locationSharingEnabled)
     {
@@ -124,27 +124,27 @@
   return specifiers;
 }
 
-- (void)_specifierWasTapped:(id)a3
+- (void)_specifierWasTapped:(id)tapped
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = tappedCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Location Sharing Specifier Tapped: %@", buf, 0xCu);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [tappedCopy userInfo];
   viewModel = self->_viewModel;
-  v8 = [v6 BOOLValue];
+  bOOLValue = [userInfo BOOLValue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__ICQInternetPrivacyLocationSharingSpecifierProvider__specifierWasTapped___block_invoke;
   v9[3] = &unk_27A65AFF0;
   v9[4] = self;
-  [(ICQInternetPrivacyViewModel *)viewModel enableLocationSharing:v8 completion:v9];
+  [(ICQInternetPrivacyViewModel *)viewModel enableLocationSharing:bOOLValue completion:v9];
 }
 
 uint64_t __74__ICQInternetPrivacyLocationSharingSpecifierProvider__specifierWasTapped___block_invoke(uint64_t result, uint64_t a2)
@@ -184,8 +184,8 @@ uint64_t __74__ICQInternetPrivacyLocationSharingSpecifierProvider__specifierWasT
   specifiers = self->_specifiers;
   self->_specifiers = 0;
 
-  v4 = [(ICQInternetPrivacyLocationSharingSpecifierProvider *)self delegate];
-  [v4 reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:0];
+  delegate = [(ICQInternetPrivacyLocationSharingSpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:0];
 }
 
 - (AAUISpecifierProviderDelegate)delegate

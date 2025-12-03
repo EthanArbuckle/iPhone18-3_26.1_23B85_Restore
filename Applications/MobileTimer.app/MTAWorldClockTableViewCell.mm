@@ -1,28 +1,28 @@
 @interface MTAWorldClockTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTAWorldClockTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTAWorldClockTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCity:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setCity:(id)city;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation MTAWorldClockTableViewCell
 
-- (MTAWorldClockTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTAWorldClockTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = MTAWorldClockTableViewCell;
-  v4 = [(MTAWorldClockTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTAWorldClockTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(MTAWorldClockTableViewCell *)v4 setOpaque:0];
     [(MTAWorldClockTableViewCell *)v5 setSelectionStyle:0];
-    v6 = [(MTAWorldClockTableViewCell *)v5 contentView];
-    [v6 setOpaque:0];
+    contentView = [(MTAWorldClockTableViewCell *)v5 contentView];
+    [contentView setOpaque:0];
     v7 = [MTUIWorldClockCellView alloc];
     [(MTAWorldClockTableViewCell *)v5 bounds];
     v8 = [v7 initWithFrame:?];
@@ -31,7 +31,7 @@
 
     [(MTUIWorldClockCellView *)v5->_clockCellView setDelegate:v5];
     [(MTUIWorldClockCellView *)v5->_clockCellView setAutoresizingMask:18];
-    [v6 addSubview:v5->_clockCellView];
+    [contentView addSubview:v5->_clockCellView];
     v10 = v5;
   }
 
@@ -56,11 +56,11 @@
   [(MTAWorldClockTableViewCell *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v5 = [(MTAWorldClockTableViewCell *)self contentView];
-  [v5 bounds];
+  height = fits.height;
+  contentView = [(MTAWorldClockTableViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
 
   [(MTUIWorldClockCellView *)self->_clockCellView sizeThatFits:v7, height];
@@ -79,25 +79,25 @@
   v4.receiver = self;
   v4.super_class = MTAWorldClockTableViewCell;
   [(MTAWorldClockTableViewCell *)&v4 layoutSubviews];
-  v3 = [(MTAWorldClockTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTAWorldClockTableViewCell *)self contentView];
+  [contentView bounds];
   [(MTUIWorldClockCellView *)self->_clockCellView setFrame:?];
 }
 
-- (void)setCity:(id)a3
+- (void)setCity:(id)city
 {
-  v5 = a3;
-  if (self->_city != v5)
+  cityCopy = city;
+  if (self->_city != cityCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_city, a3);
-    v6 = [(MTUIWorldClockCellView *)self->_clockCellView nameLabel];
-    v7 = [(WorldClockCity *)self->_city name];
-    [v6 setText:v7];
+    v11 = cityCopy;
+    objc_storeStrong(&self->_city, city);
+    nameLabel = [(MTUIWorldClockCellView *)self->_clockCellView nameLabel];
+    name = [(WorldClockCity *)self->_city name];
+    [nameLabel setText:name];
 
     v8 = [NSTimeZone alloc];
-    v9 = [(WorldClockCity *)self->_city timeZone];
-    v10 = [v8 initWithName:v9];
+    timeZone = [(WorldClockCity *)self->_city timeZone];
+    v10 = [v8 initWithName:timeZone];
 
     [(MTUIWorldClockCellView *)self->_clockCellView setTimeZone:v10];
     if (!self->_city)
@@ -122,41 +122,41 @@ LABEL_5:
       [(MTUIWorldClockCellView *)self->_clockCellView start];
     }
 
-    v5 = v11;
+    cityCopy = v11;
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = MTAWorldClockTableViewCell;
   [MTAWorldClockTableViewCell setEditing:"setEditing:animated:" animated:?];
   clockCellView = self->_clockCellView;
-  if (v5)
+  if (editingCopy)
   {
-    v8 = [(MTAWorldClockTableViewCell *)self showsReorderControl];
+    showsReorderControl = [(MTAWorldClockTableViewCell *)self showsReorderControl];
   }
 
   else
   {
-    v8 = 0;
+    showsReorderControl = 0;
   }
 
-  [(MTUIWorldClockCellView *)clockCellView setEditing:v8 animated:v4];
+  [(MTUIWorldClockCellView *)clockCellView setEditing:showsReorderControl animated:animatedCopy];
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  if ((a3 & 1) == 0)
+  if ((state & 1) == 0)
   {
     [(MTAWorldClockTableViewCell *)self setShowsReorderControl:0];
   }
 
   v5.receiver = self;
   v5.super_class = MTAWorldClockTableViewCell;
-  [(MTAWorldClockTableViewCell *)&v5 willTransitionToState:a3];
+  [(MTAWorldClockTableViewCell *)&v5 willTransitionToState:state];
 }
 
 @end

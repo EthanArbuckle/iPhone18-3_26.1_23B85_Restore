@@ -1,17 +1,17 @@
 @interface MTMaterialLayerInvertColorsAccessibility
-- (void)_configureIfNecessaryWithSettingsInterpolator:(id)a3;
+- (void)_configureIfNecessaryWithSettingsInterpolator:(id)interpolator;
 @end
 
 @implementation MTMaterialLayerInvertColorsAccessibility
 
-- (void)_configureIfNecessaryWithSettingsInterpolator:(id)a3
+- (void)_configureIfNecessaryWithSettingsInterpolator:(id)interpolator
 {
-  v4 = a3;
+  interpolatorCopy = interpolator;
   v5 = [(MTMaterialLayerInvertColorsAccessibility *)self valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
 
   v7.receiver = self;
   v7.super_class = MTMaterialLayerInvertColorsAccessibility;
-  [(MTMaterialLayerInvertColorsAccessibility *)&v7 _configureIfNecessaryWithSettingsInterpolator:v4];
+  [(MTMaterialLayerInvertColorsAccessibility *)&v7 _configureIfNecessaryWithSettingsInterpolator:interpolatorCopy];
 
   if (!_AXSInvertColorsEnabledGlobalCached() && v5)
   {

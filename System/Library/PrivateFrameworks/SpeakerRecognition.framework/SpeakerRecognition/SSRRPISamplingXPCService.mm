@@ -1,36 +1,36 @@
 @interface SSRRPISamplingXPCService
 + (id)_createConnection;
-+ (id)getActiveRequestIdsForLocale:(id)a3 date:(id)a4 error:(id *)a5;
-+ (id)getAudioIdWithRequestId:(id)a3 languageCode:(id)a4 date:(id)a5 error:(id *)a6;
-+ (id)getRemoteObjectProxyWithConnection:(id)a3 errorHandler:(id)a4;
-+ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)a3 error:(id *)a4;
-+ (void)_invalidateConnection:(id)a3;
-+ (void)removeAllSamplingMetaDataWithCompletion:(id)a3;
-+ (void)removeMappingOnAndBefore:(id)a3 completion:(id)a4;
-+ (void)removeMappingWithLocale:(id)a3 date:(id)a4 completion:(id)a5;
-+ (void)removeRequestIdToAudioIdMappingWithCompletion:(id)a3;
-+ (void)updateStatus:(id)a3 languageCode:(id)a4 completion:(id)a5;
-+ (void)writeIntoMappingWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 locale:(id)a6 completion:(id)a7;
++ (id)getActiveRequestIdsForLocale:(id)locale date:(id)date error:(id *)error;
++ (id)getAudioIdWithRequestId:(id)id languageCode:(id)code date:(id)date error:(id *)error;
++ (id)getRemoteObjectProxyWithConnection:(id)connection errorHandler:(id)handler;
++ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)locale error:(id *)error;
++ (void)_invalidateConnection:(id)connection;
++ (void)removeAllSamplingMetaDataWithCompletion:(id)completion;
++ (void)removeMappingOnAndBefore:(id)before completion:(id)completion;
++ (void)removeMappingWithLocale:(id)locale date:(id)date completion:(id)completion;
++ (void)removeRequestIdToAudioIdMappingWithCompletion:(id)completion;
++ (void)updateStatus:(id)status languageCode:(id)code completion:(id)completion;
++ (void)writeIntoMappingWithRequestId:(id)id audioId:(id)audioId date:(id)date locale:(id)locale completion:(id)completion;
 @end
 
 @implementation SSRRPISamplingXPCService
 
-+ (id)getRemoteObjectProxyWithConnection:(id)a3 errorHandler:(id)a4
++ (id)getRemoteObjectProxyWithConnection:(id)connection errorHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (connectionCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76__SSRRPISamplingXPCService_getRemoteObjectProxyWithConnection_errorHandler___block_invoke;
     v19[3] = &unk_278577D88;
-    v9 = v7;
+    v9 = handlerCopy;
     v21 = v9;
-    v22 = a1;
-    v10 = v6;
+    selfCopy = self;
+    v10 = connectionCopy;
     v20 = v10;
     v11 = [v10 remoteObjectProxyWithErrorHandler:v19];
     v12 = v11;
@@ -57,7 +57,7 @@ LABEL_11:
     else if (!v9)
     {
 LABEL_10:
-      [a1 _invalidateConnection:v10];
+      [self _invalidateConnection:v10];
       goto LABEL_11;
     }
 
@@ -67,7 +67,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1107 userInfo:&unk_283932FC8];
     (v8)[2](v8, v14);
@@ -139,25 +139,25 @@ void __45__SSRRPISamplingXPCService__createConnection__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_invalidateConnection:(id)a3
++ (void)_invalidateConnection:(id)connection
 {
-  v3 = a3;
-  [v3 setInvalidationHandler:0];
-  [v3 invalidate];
+  connectionCopy = connection;
+  [connectionCopy setInvalidationHandler:0];
+  [connectionCopy invalidate];
 }
 
-+ (void)removeMappingOnAndBefore:(id)a3 completion:(id)a4
++ (void)removeMappingOnAndBefore:(id)before completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _createConnection];
+  beforeCopy = before;
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__SSRRPISamplingXPCService_removeMappingOnAndBefore_completion___block_invoke;
   v15[3] = &unk_278579690;
-  v9 = v7;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = [a1 getRemoteObjectProxyWithConnection:v8 errorHandler:v15];
+  v10 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v15];
   if (v10)
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -165,9 +165,9 @@ void __45__SSRRPISamplingXPCService__createConnection__block_invoke()
     v11[2] = __64__SSRRPISamplingXPCService_removeMappingOnAndBefore_completion___block_invoke_2;
     v11[3] = &unk_278577D88;
     v13 = v9;
-    v14 = a1;
-    v12 = v8;
-    [v10 removeMappingOnAndBefore:v6 completion:v11];
+    selfCopy = self;
+    v12 = _createConnection;
+    [v10 removeMappingOnAndBefore:beforeCopy completion:v11];
   }
 }
 
@@ -199,23 +199,23 @@ uint64_t __64__SSRRPISamplingXPCService_removeMappingOnAndBefore_completion___bl
   return [v3 _invalidateConnection:v4];
 }
 
-+ (id)getActiveRequestIdsForLocale:(id)a3 date:(id)a4 error:(id *)a5
++ (id)getActiveRequestIdsForLocale:(id)locale date:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  localeCopy = locale;
+  dateCopy = date;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy_;
   v35 = __Block_byref_object_dispose_;
   v36 = 0;
-  v10 = [a1 _createConnection];
+  _createConnection = [self _createConnection];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __68__SSRRPISamplingXPCService_getActiveRequestIdsForLocale_date_error___block_invoke;
   v30[3] = &unk_278577D38;
   v30[4] = &v31;
-  v11 = [a1 getRemoteObjectProxyWithConnection:v10 errorHandler:v30];
+  v11 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v30];
   if (v11)
   {
     v24 = 0;
@@ -233,27 +233,27 @@ uint64_t __64__SSRRPISamplingXPCService_removeMappingOnAndBefore_completion___bl
     v23 = &v31;
     v13 = v12;
     v21 = v13;
-    [v11 getActiveRequestIdsForLocale:v8 date:v9 completion:&v17];
+    [v11 getActiveRequestIdsForLocale:localeCopy date:dateCopy completion:&v17];
     v14 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v13, v14))
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932FA0, v17, v18, v19, v20}];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932FA0, v17, v18, v19, v20}];
       }
 
-      [a1 _invalidateConnection:{v10, v17, v18, v19, v20}];
+      [self _invalidateConnection:{_createConnection, v17, v18, v19, v20}];
       v15 = 0;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v32[5];
+        *error = v32[5];
       }
 
-      [a1 _invalidateConnection:{v10, v17, v18, v19, v20}];
+      [self _invalidateConnection:{_createConnection, v17, v18, v19, v20}];
       v15 = v25[5];
     }
 
@@ -263,9 +263,9 @@ uint64_t __64__SSRRPISamplingXPCService_removeMappingOnAndBefore_completion___bl
   else
   {
     v15 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v32[5];
+      *error = v32[5];
     }
   }
 
@@ -298,17 +298,17 @@ void __68__SSRRPISamplingXPCService_getActiveRequestIdsForLocale_date_error___bl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)removeAllSamplingMetaDataWithCompletion:(id)a3
++ (void)removeAllSamplingMetaDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _createConnection];
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__SSRRPISamplingXPCService_removeAllSamplingMetaDataWithCompletion___block_invoke;
   v12[3] = &unk_278579690;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
-  v7 = [a1 getRemoteObjectProxyWithConnection:v5 errorHandler:v12];
+  v7 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v12];
   if (v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -316,8 +316,8 @@ void __68__SSRRPISamplingXPCService_getActiveRequestIdsForLocale_date_error___bl
     v8[2] = __68__SSRRPISamplingXPCService_removeAllSamplingMetaDataWithCompletion___block_invoke_2;
     v8[3] = &unk_278577DD8;
     v10 = v6;
-    v11 = a1;
-    v9 = v5;
+    selfCopy = self;
+    v9 = _createConnection;
     [v7 removeAllSamplingMetaDataWithCompletion:v8];
   }
 }
@@ -350,17 +350,17 @@ uint64_t __68__SSRRPISamplingXPCService_removeAllSamplingMetaDataWithCompletion_
   return [v3 _invalidateConnection:v4];
 }
 
-+ (void)removeRequestIdToAudioIdMappingWithCompletion:(id)a3
++ (void)removeRequestIdToAudioIdMappingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _createConnection];
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__SSRRPISamplingXPCService_removeRequestIdToAudioIdMappingWithCompletion___block_invoke;
   v12[3] = &unk_278579690;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
-  v7 = [a1 getRemoteObjectProxyWithConnection:v5 errorHandler:v12];
+  v7 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v12];
   if (v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -368,8 +368,8 @@ uint64_t __68__SSRRPISamplingXPCService_removeAllSamplingMetaDataWithCompletion_
     v8[2] = __74__SSRRPISamplingXPCService_removeRequestIdToAudioIdMappingWithCompletion___block_invoke_2;
     v8[3] = &unk_278577DD8;
     v10 = v6;
-    v11 = a1;
-    v9 = v5;
+    selfCopy = self;
+    v9 = _createConnection;
     [v7 removeRequestIdToAudioIdMappingWithCompletion:v8];
   }
 }
@@ -402,19 +402,19 @@ uint64_t __74__SSRRPISamplingXPCService_removeRequestIdToAudioIdMappingWithCompl
   return [v3 _invalidateConnection:v4];
 }
 
-+ (void)removeMappingWithLocale:(id)a3 date:(id)a4 completion:(id)a5
++ (void)removeMappingWithLocale:(id)locale date:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _createConnection];
+  localeCopy = locale;
+  dateCopy = date;
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __68__SSRRPISamplingXPCService_removeMappingWithLocale_date_completion___block_invoke;
   v18[3] = &unk_278579690;
-  v12 = v10;
+  v12 = completionCopy;
   v19 = v12;
-  v13 = [a1 getRemoteObjectProxyWithConnection:v11 errorHandler:v18];
+  v13 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v18];
   if (v13)
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -422,9 +422,9 @@ uint64_t __74__SSRRPISamplingXPCService_removeRequestIdToAudioIdMappingWithCompl
     v14[2] = __68__SSRRPISamplingXPCService_removeMappingWithLocale_date_completion___block_invoke_2;
     v14[3] = &unk_278577D88;
     v16 = v12;
-    v17 = a1;
-    v15 = v11;
-    [v13 removeMappingWithLocale:v8 date:v9 completion:v14];
+    selfCopy = self;
+    v15 = _createConnection;
+    [v13 removeMappingWithLocale:localeCopy date:dateCopy completion:v14];
   }
 }
 
@@ -456,21 +456,21 @@ uint64_t __68__SSRRPISamplingXPCService_removeMappingWithLocale_date_completion_
   return [v3 _invalidateConnection:v4];
 }
 
-+ (void)writeIntoMappingWithRequestId:(id)a3 audioId:(id)a4 date:(id)a5 locale:(id)a6 completion:(id)a7
++ (void)writeIntoMappingWithRequestId:(id)id audioId:(id)audioId date:(id)date locale:(id)locale completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a1 _createConnection];
+  idCopy = id;
+  audioIdCopy = audioId;
+  dateCopy = date;
+  localeCopy = locale;
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __89__SSRRPISamplingXPCService_writeIntoMappingWithRequestId_audioId_date_locale_completion___block_invoke;
   v24[3] = &unk_278579690;
-  v18 = v16;
+  v18 = completionCopy;
   v25 = v18;
-  v19 = [a1 getRemoteObjectProxyWithConnection:v17 errorHandler:v24];
+  v19 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v24];
   if (v19)
   {
     v20[0] = MEMORY[0x277D85DD0];
@@ -478,9 +478,9 @@ uint64_t __68__SSRRPISamplingXPCService_removeMappingWithLocale_date_completion_
     v20[2] = __89__SSRRPISamplingXPCService_writeIntoMappingWithRequestId_audioId_date_locale_completion___block_invoke_2;
     v20[3] = &unk_278577D88;
     v22 = v18;
-    v23 = a1;
-    v21 = v17;
-    [v19 writeIntoMappingWithRequestId:v12 audioId:v13 date:v14 locale:v15 completion:v20];
+    selfCopy = self;
+    v21 = _createConnection;
+    [v19 writeIntoMappingWithRequestId:idCopy audioId:audioIdCopy date:dateCopy locale:localeCopy completion:v20];
   }
 }
 
@@ -512,24 +512,24 @@ uint64_t __89__SSRRPISamplingXPCService_writeIntoMappingWithRequestId_audioId_da
   return [v3 _invalidateConnection:v4];
 }
 
-+ (id)getAudioIdWithRequestId:(id)a3 languageCode:(id)a4 date:(id)a5 error:(id *)a6
++ (id)getAudioIdWithRequestId:(id)id languageCode:(id)code date:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  codeCopy = code;
+  dateCopy = date;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy_;
   v38 = __Block_byref_object_dispose_;
   v39 = 0;
-  v13 = [a1 _createConnection];
+  _createConnection = [self _createConnection];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __76__SSRRPISamplingXPCService_getAudioIdWithRequestId_languageCode_date_error___block_invoke;
   v33[3] = &unk_278577D38;
   v33[4] = &v34;
-  v14 = [a1 getRemoteObjectProxyWithConnection:v13 errorHandler:v33];
+  v14 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v33];
   if (v14)
   {
     v27 = 0;
@@ -547,27 +547,27 @@ uint64_t __89__SSRRPISamplingXPCService_writeIntoMappingWithRequestId_audioId_da
     v26 = &v27;
     v16 = v15;
     v24 = v16;
-    [v14 getAudioIdWithRequestId:v10 languageCode:v11 date:v12 completion:&v20];
+    [v14 getAudioIdWithRequestId:idCopy languageCode:codeCopy date:dateCopy completion:&v20];
     v17 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v16, v17))
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932F78, v20, v21, v22, v23}];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932F78, v20, v21, v22, v23}];
       }
 
-      [a1 _invalidateConnection:{v13, v20, v21, v22, v23}];
+      [self _invalidateConnection:{_createConnection, v20, v21, v22, v23}];
       v18 = 0;
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v35[5];
+        *error = v35[5];
       }
 
-      [a1 _invalidateConnection:{v13, v20, v21, v22, v23}];
+      [self _invalidateConnection:{_createConnection, v20, v21, v22, v23}];
       v18 = v28[5];
     }
 
@@ -577,9 +577,9 @@ uint64_t __89__SSRRPISamplingXPCService_writeIntoMappingWithRequestId_audioId_da
   else
   {
     v18 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v35[5];
+      *error = v35[5];
     }
   }
 
@@ -616,19 +616,19 @@ void __76__SSRRPISamplingXPCService_getAudioIdWithRequestId_languageCode_date_er
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)updateStatus:(id)a3 languageCode:(id)a4 completion:(id)a5
++ (void)updateStatus:(id)status languageCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _createConnection];
+  statusCopy = status;
+  codeCopy = code;
+  completionCopy = completion;
+  _createConnection = [self _createConnection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__SSRRPISamplingXPCService_updateStatus_languageCode_completion___block_invoke;
   v18[3] = &unk_278579690;
-  v12 = v10;
+  v12 = completionCopy;
   v19 = v12;
-  v13 = [a1 getRemoteObjectProxyWithConnection:v11 errorHandler:v18];
+  v13 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v18];
   if (v13)
   {
     v14[0] = MEMORY[0x277D85DD0];
@@ -636,9 +636,9 @@ void __76__SSRRPISamplingXPCService_getAudioIdWithRequestId_languageCode_date_er
     v14[2] = __65__SSRRPISamplingXPCService_updateStatus_languageCode_completion___block_invoke_2;
     v14[3] = &unk_278577D88;
     v16 = v12;
-    v17 = a1;
-    v15 = v11;
-    [v13 updateStatus:v8 languageCode:v9 completion:v14];
+    selfCopy = self;
+    v15 = _createConnection;
+    [v13 updateStatus:statusCopy languageCode:codeCopy completion:v14];
   }
 }
 
@@ -670,10 +670,10 @@ uint64_t __65__SSRRPISamplingXPCService_updateStatus_languageCode_completion___b
   return [v3 _invalidateConnection:v4];
 }
 
-+ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)a3 error:(id *)a4
++ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 _createConnection];
+  localeCopy = locale;
+  _createConnection = [self _createConnection];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -685,7 +685,7 @@ uint64_t __65__SSRRPISamplingXPCService_updateStatus_languageCode_completion___b
   v27[2] = __73__SSRRPISamplingXPCService_getEnrollmentSelectionStatusWithLocale_error___block_invoke;
   v27[3] = &unk_278577D38;
   v27[4] = &v28;
-  v8 = [a1 getRemoteObjectProxyWithConnection:v7 errorHandler:v27];
+  v8 = [self getRemoteObjectProxyWithConnection:_createConnection errorHandler:v27];
   if (v8)
   {
     v21 = 0;
@@ -703,27 +703,27 @@ uint64_t __65__SSRRPISamplingXPCService_updateStatus_languageCode_completion___b
     v20 = &v21;
     v10 = v9;
     v18 = v10;
-    [v8 getEnrollmentSelectionStatusWithLocale:v6 completion:&v14];
+    [v8 getEnrollmentSelectionStatusWithLocale:localeCopy completion:&v14];
     v11 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v10, v11))
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932F50, v14, v15, v16, v17}];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:1108 userInfo:{&unk_283932F50, v14, v15, v16, v17}];
       }
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v29[5];
+        *error = v29[5];
       }
 
       if (v22[5])
       {
-        [a1 _invalidateConnection:{v7, v14, v15, v16, v17}];
-        v12 = [v22[5] unsignedIntegerValue];
+        [self _invalidateConnection:{_createConnection, v14, v15, v16, v17}];
+        unsignedIntegerValue = [v22[5] unsignedIntegerValue];
 LABEL_13:
 
         _Block_object_dispose(&v21, 8);
@@ -731,21 +731,21 @@ LABEL_13:
       }
     }
 
-    [a1 _invalidateConnection:{v7, v14, v15, v16, v17}];
-    v12 = 5;
+    [self _invalidateConnection:{_createConnection, v14, v15, v16, v17}];
+    unsignedIntegerValue = 5;
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v29[5];
+    *error = v29[5];
   }
 
-  v12 = 5;
+  unsignedIntegerValue = 5;
 LABEL_14:
 
   _Block_object_dispose(&v28, 8);
-  return v12;
+  return unsignedIntegerValue;
 }
 
 void __73__SSRRPISamplingXPCService_getEnrollmentSelectionStatusWithLocale_error___block_invoke(uint64_t a1, void *a2)

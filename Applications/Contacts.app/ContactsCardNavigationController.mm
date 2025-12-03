@@ -1,5 +1,5 @@
 @interface ContactsCardNavigationController
-- (ContactsCardNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ContactsCardNavigationController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -11,15 +11,15 @@
   v5.super_class = ContactsCardNavigationController;
   [(ContactsCardNavigationController *)&v5 viewDidLoad];
   v3 = +[CNUIColorRepository contactStyleDefaultBackgroundColor];
-  v4 = [(ContactsCardNavigationController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(ContactsCardNavigationController *)self view];
+  [view setBackgroundColor:v3];
 }
 
-- (ContactsCardNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (ContactsCardNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = ContactsCardNavigationController;
-  v4 = [(ContactsCardNavigationController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(ContactsCardNavigationController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {

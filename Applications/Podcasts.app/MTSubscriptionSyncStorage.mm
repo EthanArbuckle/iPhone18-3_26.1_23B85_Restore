@@ -1,6 +1,6 @@
 @interface MTSubscriptionSyncStorage
 + (void)resetAllSubscriptionsSyncKeys;
-+ (void)resetForSyncType:(int64_t)a3;
++ (void)resetForSyncType:(int64_t)type;
 - (BOOL)syncDirtyFlag;
 - (MTSubscriptionSyncStorage)init;
 - (NSString)podcastsDomainVersion;
@@ -8,12 +8,12 @@
 - (double)subscriptionsLastSyncTimestamp;
 - (id)importContext;
 - (void)cleanUpOldHiddenPodcasts;
-- (void)disableSubscriptionsWithUuids:(id)a3 ctx:(id)a4;
-- (void)enableSubscriptionOnPodcastUuid:(id)a3 ctx:(id)a4;
+- (void)disableSubscriptionsWithUuids:(id)uuids ctx:(id)ctx;
+- (void)enableSubscriptionOnPodcastUuid:(id)uuid ctx:(id)ctx;
 - (void)immediatelyDeleteAllHiddenPodcasts;
-- (void)setPodcastsDomainVersion:(id)a3;
-- (void)setSyncDirtyFlag:(BOOL)a3;
-- (void)setSyncVersion:(id)a3;
+- (void)setPodcastsDomainVersion:(id)version;
+- (void)setSyncDirtyFlag:(BOOL)flag;
+- (void)setSyncVersion:(id)version;
 - (void)updateSubscriptionsLastSyncTimestamp;
 @end
 
@@ -34,26 +34,26 @@
   return v2;
 }
 
-- (void)setPodcastsDomainVersion:(id)a3
+- (void)setPodcastsDomainVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v4 setPodcastsDomainVersion:v3];
+  [v4 setPodcastsDomainVersion:versionCopy];
 }
 
 - (NSString)podcastsDomainVersion
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 podcastsDomainVersion];
+  podcastsDomainVersion = [v2 podcastsDomainVersion];
 
-  return v3;
+  return podcastsDomainVersion;
 }
 
-- (void)setSyncDirtyFlag:(BOOL)a3
+- (void)setSyncDirtyFlag:(BOOL)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   v5 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v5 markSubscriptionSyncDirty:v3 for:{-[MTSubscriptionSyncStorage syncType](self, "syncType")}];
+  [v5 markSubscriptionSyncDirty:flagCopy for:{-[MTSubscriptionSyncStorage syncType](self, "syncType")}];
 }
 
 - (BOOL)syncDirtyFlag
@@ -87,35 +87,35 @@
   return v4;
 }
 
-- (void)setSyncVersion:(id)a3
+- (void)setSyncVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v5 updateSubscriptionsSyncVersionFor:-[MTSubscriptionSyncStorage syncType](self newValue:{"syncType"), v4}];
+  [v5 updateSubscriptionsSyncVersionFor:-[MTSubscriptionSyncStorage syncType](self newValue:{"syncType"), versionCopy}];
 
   v6 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncClass];
-  v7 = [(MTSubscriptionSyncStorage *)self syncType];
+  syncType = [(MTSubscriptionSyncStorage *)self syncType];
 
-  [(objc_class *)v6 didUpdateSubscriptionsSyncVersionForSyncType:v7];
+  [(objc_class *)v6 didUpdateSubscriptionsSyncVersionForSyncType:syncType];
 }
 
 + (void)resetAllSubscriptionsSyncKeys
 {
-  [a1 resetForSyncType:0];
+  [self resetForSyncType:0];
 
-  [a1 resetForSyncType:1];
+  [self resetForSyncType:1];
 }
 
-+ (void)resetForSyncType:(int64_t)a3
++ (void)resetForSyncType:(int64_t)type
 {
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v4 resetSubscriptionsSyncVersionFor:a3];
+  [v4 resetSubscriptionsSyncVersionFor:type];
 
   v5 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v5 markSubscriptionSyncDirty:1 for:a3];
+  [v5 markSubscriptionSyncDirty:1 for:type];
 
   v6 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v6 resetSubscriptionsLastSyncTimestampFor:a3];
+  [v6 resetSubscriptionsLastSyncTimestampFor:type];
 }
 
 - (void)cleanUpOldHiddenPodcasts
@@ -130,28 +130,28 @@
   [v2 immediatelyDeleteAllHiddenPodcasts];
 }
 
-- (void)enableSubscriptionOnPodcastUuid:(id)a3 ctx:(id)a4
+- (void)enableSubscriptionOnPodcastUuid:(id)uuid ctx:(id)ctx
 {
-  v5 = a4;
-  v6 = a3;
+  ctxCopy = ctx;
+  uuidCopy = uuid;
   v7 = +[_TtC8Podcasts24PodcastsStateCoordinator shared];
-  [v7 unsafeEnableSubscriptionOnPodcastUUID:v6 from:0 context:v5];
+  [v7 unsafeEnableSubscriptionOnPodcastUUID:uuidCopy from:0 context:ctxCopy];
 }
 
-- (void)disableSubscriptionsWithUuids:(id)a3 ctx:(id)a4
+- (void)disableSubscriptionsWithUuids:(id)uuids ctx:(id)ctx
 {
-  v5 = a4;
-  v6 = a3;
+  ctxCopy = ctx;
+  uuidsCopy = uuids;
   v7 = +[_TtC8Podcasts24PodcastsStateCoordinator shared];
-  [v7 disableSubscriptionsOnPodcastUUIDs:v6 from:0 context:v5];
+  [v7 disableSubscriptionsOnPodcastUUIDs:uuidsCopy from:0 context:ctxCopy];
 }
 
 - (id)importContext
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 importContext];
+  importContext = [v2 importContext];
 
-  return v3;
+  return importContext;
 }
 
 @end

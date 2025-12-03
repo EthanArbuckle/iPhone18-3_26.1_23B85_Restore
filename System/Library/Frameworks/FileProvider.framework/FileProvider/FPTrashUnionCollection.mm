@@ -1,17 +1,17 @@
 @interface FPTrashUnionCollection
-- (FPTrashUnionCollection)initWithQueryCollection:(id)a3;
+- (FPTrashUnionCollection)initWithQueryCollection:(id)collection;
 - (id)scopedSearchQuery;
-- (void)fetchTrashItemsFromProvider:(id)a3 completionHandler:(id)a4;
-- (void)updateCollectionsForDomains:(id)a3;
+- (void)fetchTrashItemsFromProvider:(id)provider completionHandler:(id)handler;
+- (void)updateCollectionsForDomains:(id)domains;
 @end
 
 @implementation FPTrashUnionCollection
 
-- (FPTrashUnionCollection)initWithQueryCollection:(id)a3
+- (FPTrashUnionCollection)initWithQueryCollection:(id)collection
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v18[0] = v5;
+  collectionCopy = collection;
+  v18[0] = collectionCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v17.receiver = self;
   v17.super_class = FPTrashUnionCollection;
@@ -19,10 +19,10 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_trashQueryCollection, a3);
-    v8 = [(FPItemCollection *)v7->_trashQueryCollection updateQueue];
+    objc_storeStrong(&v7->_trashQueryCollection, collection);
+    updateQueue = [(FPItemCollection *)v7->_trashQueryCollection updateQueue];
     queue = v7->_queue;
-    v7->_queue = v8;
+    v7->_queue = updateQueue;
 
     objc_initWeak(&location, v7);
     v14[0] = MEMORY[0x1E69E9820];
@@ -71,20 +71,20 @@ BOOL __40__FPTrashUnionCollection_filterDomains___block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (void)fetchTrashItemsFromProvider:(id)a3 completionHandler:(id)a4
+- (void)fetchTrashItemsFromProvider:(id)provider completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  providerCopy = provider;
   v7 = +[FPItemManager defaultManager];
-  v8 = [v6 identifier];
+  identifier = [providerCopy identifier];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__FPTrashUnionCollection_fetchTrashItemsFromProvider_completionHandler___block_invoke;
   v10[3] = &unk_1E793DBC0;
-  v11 = v5;
-  v9 = v5;
-  [v7 fetchOperationServiceForProviderDomainID:v8 handler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v7 fetchOperationServiceForProviderDomainID:identifier handler:v10];
 }
 
 void __72__FPTrashUnionCollection_fetchTrashItemsFromProvider_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -109,24 +109,24 @@ void __72__FPTrashUnionCollection_fetchTrashItemsFromProvider_completionHandler_
   }
 }
 
-- (void)updateCollectionsForDomains:(id)a3
+- (void)updateCollectionsForDomains:(id)domains
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainsCopy = domains;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(FPTrashUnionCollection *)v4 updateCollectionsForDomains:v5];
+    [(FPTrashUnionCollection *)domainsCopy updateCollectionsForDomains:v5];
   }
 
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(domainsCopy, "count") + 1}];
   [v6 addObject:self->_trashQueryCollection];
   v7 = dispatch_group_create();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = domainsCopy;
   v8 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {

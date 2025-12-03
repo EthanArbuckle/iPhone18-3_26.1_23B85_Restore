@@ -3,10 +3,10 @@
 - (BOOL)isForAnApp;
 - (BOOL)isWiFiDataEnabled;
 - (NPHCSAppCellularDataUsageItem)init;
-- (NPHCSAppCellularDataUsageItem)initWithCTAppDataUsageItem:(id)a3;
-- (id)chinaSKUWirelessDataOptionForCellularSetup:(BOOL)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setUsagePoliciesForCellular:(BOOL)a3 andWifi:(BOOL)a4;
+- (NPHCSAppCellularDataUsageItem)initWithCTAppDataUsageItem:(id)item;
+- (id)chinaSKUWirelessDataOptionForCellularSetup:(BOOL)setup;
+- (void)setDisplayName:(id)name;
+- (void)setUsagePoliciesForCellular:(BOOL)cellular andWifi:(BOOL)wifi;
 @end
 
 @implementation NPHCSAppCellularDataUsageItem
@@ -18,39 +18,39 @@
   return [(NPHCSAppCellularDataUsageItem *)&v3 init];
 }
 
-- (NPHCSAppCellularDataUsageItem)initWithCTAppDataUsageItem:(id)a3
+- (NPHCSAppCellularDataUsageItem)initWithCTAppDataUsageItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = NPHCSAppCellularDataUsageItem;
   v5 = [(NPHCSAppCellularDataUsageItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 bundleId];
-    [(NPHCSAppCellularDataUsageItem *)v5 setBundleID:v6];
+    bundleId = [itemCopy bundleId];
+    [(NPHCSAppCellularDataUsageItem *)v5 setBundleID:bundleId];
 
-    v7 = [v4 displayName];
-    [(NPHCSAppCellularDataUsageItem *)v5 setDisplayName:v7];
+    displayName = [itemCopy displayName];
+    [(NPHCSAppCellularDataUsageItem *)v5 setDisplayName:displayName];
 
-    v8 = [v4 used];
-    v9 = [v8 native];
-    v10 = [v9 cellularHome];
-    v11 = [v4 used];
-    v12 = [v11 native];
-    -[NPHCSAppCellularDataUsageItem setBytesUsed:](v5, "setBytesUsed:", &v10[[v12 cellularRoaming]]);
+    used = [itemCopy used];
+    native = [used native];
+    cellularHome = [native cellularHome];
+    used2 = [itemCopy used];
+    native2 = [used2 native];
+    -[NPHCSAppCellularDataUsageItem setBytesUsed:](v5, "setBytesUsed:", &cellularHome[[native2 cellularRoaming]]);
 
     v13 = [CTDataUsagePolicies alloc];
-    v14 = [(NPHCSAppCellularDataUsageItem *)v5 bundleID];
-    v15 = [v13 init:v14 withCellularPolicy:1 wifiPolicy:1 isManaged:0 andIsRestricted:0];
+    bundleID = [(NPHCSAppCellularDataUsageItem *)v5 bundleID];
+    v15 = [v13 init:bundleID withCellularPolicy:1 wifiPolicy:1 isManaged:0 andIsRestricted:0];
     [(NPHCSAppCellularDataUsageItem *)v5 setDataUsagePolicy:v15];
   }
 
   return v5;
 }
 
-- (id)chinaSKUWirelessDataOptionForCellularSetup:(BOOL)a3
+- (id)chinaSKUWirelessDataOptionForCellularSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   if ([(NPHCSAppCellularDataUsageItem *)self isForAnApp])
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -59,7 +59,7 @@
     if ([(NPHCSAppCellularDataUsageItem *)self isWiFiDataEnabled])
     {
       v7 = @"WIFI_ON";
-      if (v3 && [(NPHCSAppCellularDataUsageItem *)self isCellularDataEnabled])
+      if (setupCopy && [(NPHCSAppCellularDataUsageItem *)self isCellularDataEnabled])
       {
         v7 = @"ALL_ON_SHORT";
       }
@@ -82,33 +82,33 @@
 
 - (BOOL)isForAnApp
 {
-  v2 = [(NPHCSAppCellularDataUsageItem *)self bundleID];
-  v3 = [v2 length] != 0;
+  bundleID = [(NPHCSAppCellularDataUsageItem *)self bundleID];
+  v3 = [bundleID length] != 0;
 
   return v3;
 }
 
 - (BOOL)isWiFiDataEnabled
 {
-  v2 = [(NPHCSAppCellularDataUsageItem *)self dataUsagePolicy];
-  v3 = [v2 wifi] == &dword_0 + 1;
+  dataUsagePolicy = [(NPHCSAppCellularDataUsageItem *)self dataUsagePolicy];
+  v3 = [dataUsagePolicy wifi] == &dword_0 + 1;
 
   return v3;
 }
 
 - (BOOL)isCellularDataEnabled
 {
-  v2 = [(NPHCSAppCellularDataUsageItem *)self dataUsagePolicy];
-  v3 = [v2 cellular] == &dword_0 + 1;
+  dataUsagePolicy = [(NPHCSAppCellularDataUsageItem *)self dataUsagePolicy];
+  v3 = [dataUsagePolicy cellular] == &dword_0 + 1;
 
   return v3;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  if (self->_displayName != a3)
+  if (self->_displayName != name)
   {
-    v4 = [a3 copy];
+    v4 = [name copy];
     displayName = self->_displayName;
     self->_displayName = v4;
 
@@ -126,28 +126,28 @@
   }
 }
 
-- (void)setUsagePoliciesForCellular:(BOOL)a3 andWifi:(BOOL)a4
+- (void)setUsagePoliciesForCellular:(BOOL)cellular andWifi:(BOOL)wifi
 {
-  v4 = a4;
-  v5 = a3;
+  wifiCopy = wifi;
+  cellularCopy = cellular;
   v7 = nph_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NPHCSAppCellularDataUsageItem *)self bundleID];
+    bundleID = [(NPHCSAppCellularDataUsageItem *)self bundleID];
     v16 = 136315906;
     v17 = "[NPHCSAppCellularDataUsageItem setUsagePoliciesForCellular:andWifi:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = bundleID;
     v20 = 1024;
-    v21 = v5;
+    v21 = cellularCopy;
     v22 = 1024;
-    v23 = v4;
+    v23 = wifiCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%s setting: %@, %i, %i", &v16, 0x22u);
   }
 
   v9 = [CTDataUsagePolicies alloc];
-  v10 = [(NPHCSAppCellularDataUsageItem *)self bundleID];
-  v11 = [v9 init:v10 withCellularPolicy:v5 wifiPolicy:v4 isManaged:0 andIsRestricted:0];
+  bundleID2 = [(NPHCSAppCellularDataUsageItem *)self bundleID];
+  v11 = [v9 init:bundleID2 withCellularPolicy:cellularCopy wifiPolicy:wifiCopy isManaged:0 andIsRestricted:0];
 
   [(NPHCSAppCellularDataUsageItem *)self setDataUsagePolicy:v11];
   v12 = [CoreTelephonyClient alloc];

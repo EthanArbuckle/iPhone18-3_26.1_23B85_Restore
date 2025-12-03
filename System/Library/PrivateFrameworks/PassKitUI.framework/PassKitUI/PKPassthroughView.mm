@@ -1,18 +1,18 @@
 @interface PKPassthroughView
-- (PKPassthroughView)initWithFrame:(CGRect)a3;
+- (PKPassthroughView)initWithFrame:(CGRect)frame;
 - (PKPassthroughView)portal;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)dealloc;
-- (void)setPortal:(id)a3;
+- (void)setPortal:(id)portal;
 @end
 
 @implementation PKPassthroughView
 
-- (PKPassthroughView)initWithFrame:(CGRect)a3
+- (PKPassthroughView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPassthroughView;
-  v3 = [(PKPassthroughView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPassthroughView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,11 +36,11 @@
   [(PKPassthroughView *)&v4 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (self->_inHitTest || self->_portalTargetCount && !self->_inPortalHitTest)
   {
     v9 = 0;
@@ -52,7 +52,7 @@
   {
     v28.receiver = self;
     v28.super_class = PKPassthroughView;
-    v8 = [(PKPassthroughView *)&v28 hitTest:v7 withEvent:x, y];
+    v8 = [(PKPassthroughView *)&v28 hitTest:eventCopy withEvent:x, y];
     v9 = v8;
     if (v8 == self)
     {
@@ -87,7 +87,7 @@
       if (CGRectEqualToRect(v30, v31))
       {
         v11[409] = 1;
-        v24 = [v11 hitTest:v7 withEvent:{x, y}];
+        v24 = [v11 hitTest:eventCopy withEvent:{x, y}];
         v9 = v24;
         v11[409] = 0;
         if (v24 != self)
@@ -112,7 +112,7 @@ LABEL_19:
 
   v27.receiver = self;
   v27.super_class = PKPassthroughView;
-  v25 = [(PKPassthroughView *)&v27 hitTest:v7 withEvent:x, y];
+  v25 = [(PKPassthroughView *)&v27 hitTest:eventCopy withEvent:x, y];
   v9 = v25;
   if (v25 == self)
   {
@@ -128,9 +128,9 @@ LABEL_25:
   return v9;
 }
 
-- (void)setPortal:(id)a3
+- (void)setPortal:(id)portal
 {
-  obj = a3;
+  obj = portal;
   WeakRetained = objc_loadWeakRetained(&self->_portal);
   v5 = WeakRetained;
   if (WeakRetained != obj)

@@ -1,20 +1,20 @@
 @interface TPSChecklistContent
 + (id)na_identity;
-- (TPSChecklistContent)initWithCoder:(id)a3;
-- (TPSChecklistContent)initWithDictionary:(id)a3 metadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSChecklistContent)initWithCoder:(id)coder;
+- (TPSChecklistContent)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSChecklistContent
 
-- (TPSChecklistContent)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSChecklistContent)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 TPSSafeDictionaryForKey:@"tipIcon"];
-  if (v8 && (v9 = [v6 mutableCopy], objc_msgSend(v9, "setObject:forKeyedSubscript:", v8, @"assets"), v9))
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  v8 = [dictionaryCopy TPSSafeDictionaryForKey:@"tipIcon"];
+  if (v8 && (v9 = [dictionaryCopy mutableCopy], objc_msgSend(v9, "setObject:forKeyedSubscript:", v8, @"assets"), v9))
   {
     v10 = [v9 copy];
 
@@ -24,19 +24,19 @@
   else
   {
     v11 = 1;
-    v10 = v6;
+    v10 = dictionaryCopy;
   }
 
   v16.receiver = self;
   v16.super_class = TPSChecklistContent;
-  v12 = [(TPSContent *)&v16 initWithDictionary:v10 metadata:v7];
+  v12 = [(TPSContent *)&v16 initWithDictionary:v10 metadata:metadataCopy];
   if ((v11 & 1) == 0)
   {
   }
 
   if (v12)
   {
-    v13 = [v6 TPSSafeStringForKey:@"subtitle"];
+    v13 = [dictionaryCopy TPSSafeStringForKey:@"subtitle"];
     subtitle = v12->_subtitle;
     v12->_subtitle = v13;
   }
@@ -44,15 +44,15 @@
   return v12;
 }
 
-- (TPSChecklistContent)initWithCoder:(id)a3
+- (TPSChecklistContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TPSChecklistContent;
-  v5 = [(TPSContent *)&v9 initWithCoder:v4];
+  v5 = [(TPSContent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v6;
   }
@@ -60,23 +60,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSChecklistContent;
-  v4 = a3;
-  [(TPSContent *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSContent *)&v6 encodeWithCoder:coderCopy];
   v5 = [(TPSChecklistContent *)self subtitle:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"subtitle"];
+  [coderCopy encodeObject:v5 forKey:@"subtitle"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TPSChecklistContent;
-  v4 = [(TPSContent *)&v7 copyWithZone:a3];
-  v5 = [(TPSChecklistContent *)self subtitle];
-  [v4 setSubtitle:v5];
+  v4 = [(TPSContent *)&v7 copyWithZone:zone];
+  subtitle = [(TPSChecklistContent *)self subtitle];
+  [v4 setSubtitle:subtitle];
 
   return v4;
 }
@@ -89,12 +89,12 @@
   v4 = [(TPSContent *)&v9 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSChecklistContent *)self subtitle];
+  subtitle = [(TPSChecklistContent *)self subtitle];
 
-  if (v6)
+  if (subtitle)
   {
-    v7 = [(TPSChecklistContent *)self subtitle];
-    [v5 appendFormat:@"  %@ = %@\n", @"subtitle", v7];
+    subtitle2 = [(TPSChecklistContent *)self subtitle];
+    [v5 appendFormat:@"  %@ = %@\n", @"subtitle", subtitle2];
   }
 
   return v5;
@@ -106,7 +106,7 @@
   v4[1] = 3221225472;
   v4[2] = __34__TPSChecklistContent_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __34__TPSChecklistContent_na_identity__block_invoke(v4);
 
   return v2;

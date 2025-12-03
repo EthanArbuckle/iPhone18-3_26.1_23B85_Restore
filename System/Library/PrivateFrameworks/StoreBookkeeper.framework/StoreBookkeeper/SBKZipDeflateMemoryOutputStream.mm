@@ -1,29 +1,29 @@
 @interface SBKZipDeflateMemoryOutputStream
-+ (id)dataByDeflatingData:(id)a3;
-- (BOOL)writeBuffer:(const char *)a3 size:(unint64_t)a4;
-- (SBKZipDeflateMemoryOutputStream)initWithBufferingSize:(int)a3 compressionType:(unint64_t)a4;
++ (id)dataByDeflatingData:(id)data;
+- (BOOL)writeBuffer:(const char *)buffer size:(unint64_t)size;
+- (SBKZipDeflateMemoryOutputStream)initWithBufferingSize:(int)size compressionType:(unint64_t)type;
 - (id)close;
 - (void)dealloc;
 @end
 
 @implementation SBKZipDeflateMemoryOutputStream
 
-- (BOOL)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (BOOL)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
   if (!self->zstream.next_out)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SBKZipDeflateMemoryOutputStream.m" lineNumber:94 description:@"stream is already closed."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBKZipDeflateMemoryOutputStream.m" lineNumber:94 description:@"stream is already closed."];
   }
 
-  if (a4 >= 0xFFFFFFFF)
+  if (size >= 0xFFFFFFFF)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SBKZipDeflateMemoryOutputStream.m" lineNumber:95 description:@"64-bit buffer writes not supported."];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SBKZipDeflateMemoryOutputStream.m" lineNumber:95 description:@"64-bit buffer writes not supported."];
   }
 
-  self->zstream.avail_in = a4;
-  self->zstream.next_in = a3;
+  self->zstream.avail_in = size;
+  self->zstream.next_in = buffer;
   while (1)
   {
     avail_in = self->zstream.avail_in;
@@ -118,7 +118,7 @@ LABEL_14:
   [(SBKZipDeflateMemoryOutputStream *)&v3 dealloc];
 }
 
-- (SBKZipDeflateMemoryOutputStream)initWithBufferingSize:(int)a3 compressionType:(unint64_t)a4
+- (SBKZipDeflateMemoryOutputStream)initWithBufferingSize:(int)size compressionType:(unint64_t)type
 {
   v14.receiver = self;
   v14.super_class = SBKZipDeflateMemoryOutputStream;
@@ -128,11 +128,11 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   deflatedData = v6->deflatedData;
-  v6->deflatedData = v7;
+  v6->deflatedData = data;
 
-  v9 = malloc_type_malloc(a3, 0x100004077774924uLL);
+  v9 = malloc_type_malloc(size, 0x100004077774924uLL);
   *&v6->zstream.next_in = 0u;
   v6->_outputBuffer = v9;
   *&v6->zstream.total_in = 0u;
@@ -143,8 +143,8 @@ LABEL_14:
   *&v6->zstream.adler = 0u;
   v6->zstream.avail_out = v6->_bufferingSize;
   v6->zstream.next_out = v9;
-  v10 = a4 == 1 ? 1 : -1;
-  v11 = a4 == 2 ? 9 : v10;
+  v10 = type == 1 ? 1 : -1;
+  v11 = type == 2 ? 9 : v10;
   if (deflateInit2_(&v6->zstream, v11, 8, -15, 9, 0, "1.2.12", 112))
   {
     NSLog(&cfstr_Deflateinit2Fa.isa, v6->zstream.msg);
@@ -160,17 +160,17 @@ LABEL_10:
   return v12;
 }
 
-+ (id)dataByDeflatingData:(id)a3
++ (id)dataByDeflatingData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [[SBKZipDeflateMemoryOutputStream alloc] initWithBufferingSize:0x4000 compressionType:2];
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
 
-  [(SBKZipDeflateMemoryOutputStream *)v4 writeBuffer:v5 size:v6];
-  v7 = [(SBKZipDeflateMemoryOutputStream *)v4 close];
+  [(SBKZipDeflateMemoryOutputStream *)v4 writeBuffer:bytes size:v6];
+  close = [(SBKZipDeflateMemoryOutputStream *)v4 close];
 
-  return v7;
+  return close;
 }
 
 @end

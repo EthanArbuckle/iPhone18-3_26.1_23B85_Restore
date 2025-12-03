@@ -1,16 +1,16 @@
 @interface AWDSpringBoardPressSequence
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSequence:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addSequence:(id)sequence;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDidTriggerSOS:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDidTriggerSOS:(BOOL)s;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardPressSequence
@@ -25,9 +25,9 @@
   [(AWDSpringBoardPressSequence *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -40,7 +40,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSequence:(id)a3
+- (void)addSequence:(id)sequence
 {
   sequences = self->_sequences;
   if (!sequences)
@@ -49,12 +49,12 @@
     self->_sequences = sequences;
   }
 
-  [(NSMutableArray *)sequences addObject:a3];
+  [(NSMutableArray *)sequences addObject:sequence];
 }
 
-- (void)setHasDidTriggerSOS:(BOOL)a3
+- (void)setHasDidTriggerSOS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 4;
   }
@@ -77,10 +77,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_sequences count])
@@ -114,38 +114,38 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sequence"];
+    [dictionary setObject:v4 forKey:@"sequence"];
   }
 
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"type"];
+    [dictionary setObject:type forKey:@"type"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didTriggerSOS), @"didTriggerSOS"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_didTriggerSOS), @"didTriggerSOS"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clickMax), @"clickMax"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_clickMax), @"clickMax"}];
   }
 
   uUID = self->_uUID;
   if (uUID)
   {
-    [v3 setObject:uUID forKey:@"UUID"];
+    [dictionary setObject:uUID forKey:@"UUID"];
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x29EDCA608];
   if ((*&self->_has & 2) != 0)
@@ -210,58 +210,58 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 52) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 52) |= 2u;
   }
 
   if ([(AWDSpringBoardPressSequence *)self sequencesCount])
   {
-    [a3 clearSequences];
-    v5 = [(AWDSpringBoardPressSequence *)self sequencesCount];
-    if (v5)
+    [to clearSequences];
+    sequencesCount = [(AWDSpringBoardPressSequence *)self sequencesCount];
+    if (sequencesCount)
     {
-      v6 = v5;
+      v6 = sequencesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSequence:{-[AWDSpringBoardPressSequence sequenceAtIndex:](self, "sequenceAtIndex:", i)}];
+        [to addSequence:{-[AWDSpringBoardPressSequence sequenceAtIndex:](self, "sequenceAtIndex:", i)}];
       }
     }
   }
 
   if (self->_type)
   {
-    [a3 setType:?];
+    [to setType:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 48) = self->_didTriggerSOS;
-    *(a3 + 52) |= 4u;
+    *(to + 48) = self->_didTriggerSOS;
+    *(to + 52) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_clickMax;
-    *(a3 + 52) |= 1u;
+    *(to + 1) = self->_clickMax;
+    *(to + 52) |= 1u;
   }
 
   if (self->_uUID)
   {
 
-    [a3 setUUID:?];
+    [to setUUID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -288,7 +288,7 @@
           objc_enumerationMutation(sequences);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSequence:v12];
       }
 
@@ -298,7 +298,7 @@
     while (v9);
   }
 
-  *(v6 + 32) = [(NSString *)self->_type copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_type copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -313,45 +313,45 @@
     *(v6 + 52) |= 1u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_uUID copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_uUID copyWithZone:zone];
   v14 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 52);
+    v6 = *(equal + 52);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 52) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
       goto LABEL_25;
     }
 
     sequences = self->_sequences;
-    if (!(sequences | *(a3 + 3)) || (v5 = [(NSMutableArray *)sequences isEqual:?]) != 0)
+    if (!(sequences | *(equal + 3)) || (v5 = [(NSMutableArray *)sequences isEqual:?]) != 0)
     {
       type = self->_type;
-      if (!(type | *(a3 + 4)) || (v5 = [(NSString *)type isEqual:?]) != 0)
+      if (!(type | *(equal + 4)) || (v5 = [(NSString *)type isEqual:?]) != 0)
       {
-        v9 = *(a3 + 52);
+        v9 = *(equal + 52);
         if ((*&self->_has & 4) != 0)
         {
-          if ((*(a3 + 52) & 4) != 0)
+          if ((*(equal + 52) & 4) != 0)
           {
-            v10 = *(a3 + 48);
+            v10 = *(equal + 48);
             if (self->_didTriggerSOS)
             {
-              if ((*(a3 + 48) & 1) == 0)
+              if ((*(equal + 48) & 1) == 0)
               {
                 goto LABEL_25;
               }
@@ -359,24 +359,24 @@
               goto LABEL_13;
             }
 
-            if ((*(a3 + 48) & 1) == 0)
+            if ((*(equal + 48) & 1) == 0)
             {
 LABEL_13:
               if (*&self->_has)
               {
-                if ((*(a3 + 52) & 1) == 0 || self->_clickMax != *(a3 + 1))
+                if ((*(equal + 52) & 1) == 0 || self->_clickMax != *(equal + 1))
                 {
                   goto LABEL_25;
                 }
               }
 
-              else if (*(a3 + 52))
+              else if (*(equal + 52))
               {
                 goto LABEL_25;
               }
 
               uUID = self->_uUID;
-              if (uUID | *(a3 + 5))
+              if (uUID | *(equal + 5))
               {
 
                 LOBYTE(v5) = [(NSString *)uUID isEqual:?];
@@ -392,7 +392,7 @@ LABEL_13:
           }
         }
 
-        else if ((*(a3 + 52) & 4) == 0)
+        else if ((*(equal + 52) & 4) == 0)
         {
           goto LABEL_13;
         }
@@ -444,12 +444,12 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_uUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if ((*(a3 + 52) & 2) != 0)
+  if ((*(from + 52) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
   }
 
@@ -457,7 +457,7 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -481,26 +481,26 @@ LABEL_6:
     while (v7);
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDSpringBoardPressSequence *)self setType:?];
   }
 
-  v10 = *(a3 + 52);
+  v10 = *(from + 52);
   if ((v10 & 4) != 0)
   {
-    self->_didTriggerSOS = *(a3 + 48);
+    self->_didTriggerSOS = *(from + 48);
     *&self->_has |= 4u;
-    v10 = *(a3 + 52);
+    v10 = *(from + 52);
   }
 
   if (v10)
   {
-    self->_clickMax = *(a3 + 1);
+    self->_clickMax = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDSpringBoardPressSequence *)self setUUID:?];
   }

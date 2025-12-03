@@ -1,70 +1,70 @@
 @interface TIKBUserModelValues
-- (TIKBUserModelValues)initWithInputMode:(id)a3 context:(id)a4 userModelDataStore:(id)a5 durableCounters:(id)a6 settingsDictionary:(id)a7;
-- (id)bucketCountsByWordLength:(id)a3;
+- (TIKBUserModelValues)initWithInputMode:(id)mode context:(id)context userModelDataStore:(id)store durableCounters:(id)counters settingsDictionary:(id)dictionary;
+- (id)bucketCountsByWordLength:(id)length;
 - (id)calcAutocorrectionEnabled;
-- (id)calcFloatingKeyboardUsageFromUserModel:(id)a3;
-- (id)calcTypingSpeedFromUserModel:(id)a3;
-- (id)computeValueFromExpression:(id)a3 precondition:(id)a4 defaultValue:(id)a5 bindings:(id)a6 bucketThresholds:(id)a7 bucketValues:(id)a8;
-- (id)settingValueFromName:(id)a3;
-- (void)persistForDate:(id)a3;
+- (id)calcFloatingKeyboardUsageFromUserModel:(id)model;
+- (id)calcTypingSpeedFromUserModel:(id)model;
+- (id)computeValueFromExpression:(id)expression precondition:(id)precondition defaultValue:(id)value bindings:(id)bindings bucketThresholds:(id)thresholds bucketValues:(id)values;
+- (id)settingValueFromName:(id)name;
+- (void)persistForDate:(id)date;
 @end
 
 @implementation TIKBUserModelValues
 
 - (id)calcAutocorrectionEnabled
 {
-  v3 = [(TIKBUserModelValues *)self kbContext];
-  v4 = [v3 keyboardType];
+  kbContext = [(TIKBUserModelValues *)self kbContext];
+  keyboardType = [kbContext keyboardType];
 
-  v5 = [(TIUserModelValues *)self settingsDictionary];
-  v6 = v5;
+  settingsDictionary = [(TIUserModelValues *)self settingsDictionary];
+  v6 = settingsDictionary;
   v7 = MEMORY[0x277D6F638];
-  if (v4 != 5)
+  if (keyboardType != 5)
   {
     v7 = MEMORY[0x277D6F7C0];
   }
 
-  v8 = [v5 objectForKey:*v7];
+  v8 = [settingsDictionary objectForKey:*v7];
 
   return v8;
 }
 
-- (id)calcTypingSpeedFromUserModel:(id)a3
+- (id)calcTypingSpeedFromUserModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = kFeatureCounterDurationPathedWords;
   v6 = MEMORY[0x277D6FD28];
   v7 = *MEMORY[0x277D6FD28];
-  v8 = [v4 loadedDate];
-  v9 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v5 forNumberOfDays:v7 fromLoadedDate:v8];
+  loadedDate = [modelCopy loadedDate];
+  v9 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v5 forNumberOfDays:v7 fromLoadedDate:loadedDate];
 
   v10 = kFeatureCounterDurationTappedWords;
   v11 = *v6;
-  v12 = [v4 loadedDate];
-  v71 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v10 forNumberOfDays:v11 fromLoadedDate:v12];
+  loadedDate2 = [modelCopy loadedDate];
+  v71 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v10 forNumberOfDays:v11 fromLoadedDate:loadedDate2];
 
   v13 = kFeatureValueWithWordLenWholeWordsPathed;
   v14 = *v6;
-  v15 = [v4 loadedDate];
+  loadedDate3 = [modelCopy loadedDate];
   v16 = v13;
   v17 = v9;
-  v18 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v16 forNumberOfDays:v14 fromLoadedDate:v15];
+  v18 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v16 forNumberOfDays:v14 fromLoadedDate:loadedDate3];
 
   v19 = kFeatureValueWithWordLenWordCompletionsPathed;
   v20 = *v6;
-  v21 = [v4 loadedDate];
-  v22 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v19 forNumberOfDays:v20 fromLoadedDate:v21];
+  loadedDate4 = [modelCopy loadedDate];
+  v22 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v19 forNumberOfDays:v20 fromLoadedDate:loadedDate4];
 
   v23 = kFeatureValueWithWordLenPathEligibleWordsTapped;
   v24 = *v6;
-  v25 = [v4 loadedDate];
-  v26 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v23 forNumberOfDays:v24 fromLoadedDate:v25];
+  loadedDate5 = [modelCopy loadedDate];
+  v26 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v23 forNumberOfDays:v24 fromLoadedDate:loadedDate5];
 
   v27 = kFeatureValueWithWordLenPathIneligibleWordsTapped;
   v28 = *v6;
-  v66 = v4;
-  v29 = [v4 loadedDate];
-  v30 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v27 forNumberOfDays:v28 fromLoadedDate:v29];
+  v66 = modelCopy;
+  loadedDate6 = [modelCopy loadedDate];
+  v30 = [(TIUserModelValues *)self countsFromTransientCounterWithName:v27 forNumberOfDays:v28 fromLoadedDate:loadedDate6];
 
   v31 = [v17 count];
   v69 = v26;
@@ -79,28 +79,28 @@
     do
     {
       v35 = [v18 objectAtIndex:v32];
-      v74 = [v35 intValue];
+      intValue = [v35 intValue];
       v36 = [v22 objectAtIndex:v32];
-      v73 = [v36 intValue];
+      intValue2 = [v36 intValue];
 
       v37 = [v17 objectAtIndex:v32];
-      v72 = [v37 intValue];
+      intValue3 = [v37 intValue];
 
       v38 = [v69 objectAtIndex:v32];
-      v39 = [v38 intValue];
+      intValue4 = [v38 intValue];
       [v68 objectAtIndex:v32];
       v41 = v40 = v17;
       v42 = v22;
-      v43 = [v41 intValue];
+      intValue5 = [v41 intValue];
 
       v44 = [v71 objectAtIndex:v32];
       LODWORD(v41) = [v44 intValue];
 
-      v45 = v39 + v43;
+      v45 = intValue4 + intValue5;
       v22 = v42;
-      v33 += (v73 + v74 + v45) * (v32 + 1);
+      v33 += (intValue2 + intValue + v45) * (v32 + 1);
       v18 = v70;
-      v34 += v72 + v41;
+      v34 += intValue3 + v41;
       v17 = v40;
       ++v32;
     }
@@ -140,25 +140,25 @@
   return v64;
 }
 
-- (id)calcFloatingKeyboardUsageFromUserModel:(id)a3
+- (id)calcFloatingKeyboardUsageFromUserModel:(id)model
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKBUserModelValues *)self kbContext];
-  v6 = [v5 userInterfaceIdiom];
+  modelCopy = model;
+  kbContext = [(TIKBUserModelValues *)self kbContext];
+  userInterfaceIdiom = [kbContext userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [(TIKBUserModelValues *)self kbContext];
-    v8 = [v7 keyboardType];
+    kbContext2 = [(TIKBUserModelValues *)self kbContext];
+    keyboardType = [kbContext2 keyboardType];
 
-    if (v8 == 3)
+    if (keyboardType == 3)
     {
       v9 = kFeatureCounterWithWordLenWordsTypedOnFloatingKeyboard;
       v10 = MEMORY[0x277D6FD28];
       v11 = *MEMORY[0x277D6FD28];
-      v12 = [v4 loadedDate];
-      v13 = [(TIUserModelValues *)self aggregatedCountFromTransientCounterWithName:v9 forNumberOfDays:v11 fromLoadedDate:v12];
+      loadedDate = [modelCopy loadedDate];
+      v13 = [(TIUserModelValues *)self aggregatedCountFromTransientCounterWithName:v9 forNumberOfDays:v11 fromLoadedDate:loadedDate];
       [v13 doubleValue];
       v15 = v14;
 
@@ -166,7 +166,7 @@
       v75 = 0u;
       v72 = 0u;
       v73 = 0u;
-      obj = [v4 contexts];
+      obj = [modelCopy contexts];
       v16 = [obj countByEnumeratingWithState:&v72 objects:v76 count:16];
       v17 = 0.0;
       if (v16)
@@ -185,32 +185,32 @@
             v21 = *(*(&v72 + 1) + 8 * i);
             if ([v21 userInterfaceIdiom] == 1)
             {
-              v22 = [v4 valuesFromContext:v21];
+              v22 = [modelCopy valuesFromContext:v21];
               v23 = kFeatureValueWithWordLenWholeWordsPathed;
               v24 = *v10;
-              v25 = [v4 loadedDate];
-              v26 = [v22 aggregatedCountFromTransientCounterWithName:v23 forNumberOfDays:v24 fromLoadedDate:v25];
+              loadedDate2 = [modelCopy loadedDate];
+              v26 = [v22 aggregatedCountFromTransientCounterWithName:v23 forNumberOfDays:v24 fromLoadedDate:loadedDate2];
               [v26 doubleValue];
               v28 = v17 + v27;
 
               v29 = kFeatureValueWithWordLenWordCompletionsPathed;
               v30 = *v10;
-              v31 = [v4 loadedDate];
-              v32 = [v22 aggregatedCountFromTransientCounterWithName:v29 forNumberOfDays:v30 fromLoadedDate:v31];
+              loadedDate3 = [modelCopy loadedDate];
+              v32 = [v22 aggregatedCountFromTransientCounterWithName:v29 forNumberOfDays:v30 fromLoadedDate:loadedDate3];
               [v32 doubleValue];
               v34 = v28 + v33;
 
               v35 = kFeatureValueWithWordLenPathEligibleWordsTapped;
               v36 = *v10;
-              v37 = [v4 loadedDate];
-              v38 = [v22 aggregatedCountFromTransientCounterWithName:v35 forNumberOfDays:v36 fromLoadedDate:v37];
+              loadedDate4 = [modelCopy loadedDate];
+              v38 = [v22 aggregatedCountFromTransientCounterWithName:v35 forNumberOfDays:v36 fromLoadedDate:loadedDate4];
               [v38 doubleValue];
               v40 = v34 + v39;
 
               v41 = kFeatureValueWithWordLenPathIneligibleWordsTapped;
               v42 = *v10;
-              v43 = [v4 loadedDate];
-              v44 = [v22 aggregatedCountFromTransientCounterWithName:v41 forNumberOfDays:v42 fromLoadedDate:v43];
+              loadedDate5 = [modelCopy loadedDate];
+              v44 = [v22 aggregatedCountFromTransientCounterWithName:v41 forNumberOfDays:v42 fromLoadedDate:loadedDate5];
               [v44 doubleValue];
               v17 = v40 + v45;
             }
@@ -250,20 +250,20 @@
 
       v61 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277D6FD60], *MEMORY[0x277D6FD58], *MEMORY[0x277D6FD38], *MEMORY[0x277D6FD40], *MEMORY[0x277D6FD30], *MEMORY[0x277D6FD50], *MEMORY[0x277D6FD48], 0}];
       v62 = MEMORY[0x277D6F320];
-      v63 = [MEMORY[0x277CCABB0] numberWithDouble:v47];
-      v64 = [v62 bucketNumber:v63 bucketThresholds:v60 bucketValues:v61];
+      value = [MEMORY[0x277CCABB0] numberWithDouble:v47];
+      v64 = [v62 bucketNumber:value bucketThresholds:v60 bucketValues:v61];
     }
 
     else
     {
       v60 = [*MEMORY[0x277D6FDB0] stringByAppendingString:kFeatureCounterTotalWordsTypedOnFloatingKeyboard];
-      v66 = [(TIUserModelValues *)self userModelDataStore];
-      v61 = [v66 getDurableValueForKey:v60];
+      userModelDataStore = [(TIUserModelValues *)self userModelDataStore];
+      v61 = [userModelDataStore getDurableValueForKey:v60];
 
-      v63 = [v61 value];
-      v67 = [v63 intValue];
+      value = [v61 value];
+      intValue = [value intValue];
       v68 = MEMORY[0x277D6FD60];
-      if (v67 <= 0)
+      if (intValue <= 0)
       {
         v68 = MEMORY[0x277D6FD78];
       }
@@ -284,31 +284,31 @@
   return v65;
 }
 
-- (id)computeValueFromExpression:(id)a3 precondition:(id)a4 defaultValue:(id)a5 bindings:(id)a6 bucketThresholds:(id)a7 bucketValues:(id)a8
+- (id)computeValueFromExpression:(id)expression precondition:(id)precondition defaultValue:(id)value bindings:(id)bindings bucketThresholds:(id)thresholds bucketValues:(id)values
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = v15;
-  if (!v14 || (v20 = v19, [v14 evaluateWithObject:v16]))
+  expressionCopy = expression;
+  preconditionCopy = precondition;
+  valueCopy = value;
+  bindingsCopy = bindings;
+  thresholdsCopy = thresholds;
+  valuesCopy = values;
+  v19 = valueCopy;
+  if (!preconditionCopy || (v20 = v19, [preconditionCopy evaluateWithObject:bindingsCopy]))
   {
-    v20 = [v13 expressionValueWithObject:v16 context:0];
+    v20 = [expressionCopy expressionValueWithObject:bindingsCopy context:0];
   }
 
-  v21 = [MEMORY[0x277D6F320] bucketNumber:v20 bucketThresholds:v17 bucketValues:v18];
+  v21 = [MEMORY[0x277D6F320] bucketNumber:v20 bucketThresholds:thresholdsCopy bucketValues:valuesCopy];
 
   return v21;
 }
 
-- (id)bucketCountsByWordLength:(id)a3
+- (id)bucketCountsByWordLength:(id)length
 {
-  v4 = a3;
-  v5 = [(TIKBUserModelValues *)self kbContext];
-  v6 = [v5 inputLanguage];
-  if ([v6 hasPrefix:@"zh"])
+  lengthCopy = length;
+  kbContext = [(TIKBUserModelValues *)self kbContext];
+  inputLanguage = [kbContext inputLanguage];
+  if ([inputLanguage hasPrefix:@"zh"])
   {
     v7 = &unk_28400BB98;
   }
@@ -326,15 +326,15 @@
     do
     {
       v11 = [v7 objectAtIndexedSubscript:v10];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
-      v13 = [v8 objectAtIndexedSubscript:v12];
-      v14 = [v13 integerValue];
-      v15 = [v4 objectAtIndexedSubscript:v10];
-      v16 = [v15 integerValue];
+      v13 = [v8 objectAtIndexedSubscript:integerValue];
+      integerValue2 = [v13 integerValue];
+      v15 = [lengthCopy objectAtIndexedSubscript:v10];
+      integerValue3 = [v15 integerValue];
 
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:v16 + v14];
-      [v8 setObject:v17 atIndexedSubscript:v12];
+      v17 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue3 + integerValue2];
+      [v8 setObject:v17 atIndexedSubscript:integerValue];
 
       ++v10;
     }
@@ -345,17 +345,17 @@
   return v8;
 }
 
-- (void)persistForDate:(id)a3
+- (void)persistForDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = TIKBUserModelValues;
-  [(TIUserModelValues *)&v17 persistForDate:a3];
+  [(TIUserModelValues *)&v17 persistForDate:date];
   v4 = IXADefaultLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(TIUserModelValues *)self inputMode];
+    inputMode = [(TIUserModelValues *)self inputMode];
     v5 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardLanguage];
     v6 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardRegion];
     v7 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardVariant];
@@ -364,7 +364,7 @@
     v10 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardLayout];
     v11 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardType];
     v12 = [(NSMutableDictionary *)self->_stringValues objectForKey:kFeatureStringKeyboardConfiguration];
-    v13 = [v15 stringWithFormat:@"%s TIKBUserModelValues persisted: %@ %@_%@-%@ %@_%@ %@ %@ %@", "-[TIKBUserModelValues persistForDate:]", v16, v5, v6, v7, v8, v9, v10, v11, v12];
+    v13 = [v15 stringWithFormat:@"%s TIKBUserModelValues persisted: %@ %@_%@-%@ %@_%@ %@ %@ %@", "-[TIKBUserModelValues persistForDate:]", inputMode, v5, v6, v7, v8, v9, v10, v11, v12];
     *buf = 138412290;
     v19 = v13;
     _os_log_impl(&dword_22CA55000, v4, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -373,79 +373,79 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingValueFromName:(id)a3
+- (id)settingValueFromName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kSettingValueAutocorrectionEnabled])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:kSettingValueAutocorrectionEnabled])
   {
-    v5 = [(TIKBUserModelValues *)self calcAutocorrectionEnabled];
+    calcAutocorrectionEnabled = [(TIKBUserModelValues *)self calcAutocorrectionEnabled];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TIKBUserModelValues;
-    v5 = [(TIUserModelValues *)&v8 settingValueFromName:v4];
+    calcAutocorrectionEnabled = [(TIUserModelValues *)&v8 settingValueFromName:nameCopy];
   }
 
-  v6 = v5;
+  v6 = calcAutocorrectionEnabled;
 
   return v6;
 }
 
-- (TIKBUserModelValues)initWithInputMode:(id)a3 context:(id)a4 userModelDataStore:(id)a5 durableCounters:(id)a6 settingsDictionary:(id)a7
+- (TIKBUserModelValues)initWithInputMode:(id)mode context:(id)context userModelDataStore:(id)store durableCounters:(id)counters settingsDictionary:(id)dictionary
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  modeCopy = mode;
+  contextCopy = context;
   v51.receiver = self;
   v51.super_class = TIKBUserModelValues;
-  v14 = [(TIUserModelValues *)&v51 initWithInputMode:v12 context:v13 userModelDataStore:a5 durableCounters:a6 settingsDictionary:a7];
+  v14 = [(TIUserModelValues *)&v51 initWithInputMode:modeCopy context:contextCopy userModelDataStore:store durableCounters:counters settingsDictionary:dictionary];
   if (v14)
   {
-    v50 = v12;
-    v15 = v13;
+    v50 = modeCopy;
+    v15 = contextCopy;
     v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:8];
     stringValues = v14->_stringValues;
     v14->_stringValues = v16;
 
     v18 = v14->_stringValues;
-    v19 = [v15 inputLanguage];
-    [(NSMutableDictionary *)v18 setObject:v19 forKey:kFeatureStringKeyboardLanguage];
+    inputLanguage = [v15 inputLanguage];
+    [(NSMutableDictionary *)v18 setObject:inputLanguage forKey:kFeatureStringKeyboardLanguage];
 
     v20 = v14->_stringValues;
-    v21 = [v15 inputRegion];
-    [(NSMutableDictionary *)v20 setObject:v21 forKey:kFeatureStringKeyboardRegion];
+    inputRegion = [v15 inputRegion];
+    [(NSMutableDictionary *)v20 setObject:inputRegion forKey:kFeatureStringKeyboardRegion];
 
     v22 = v14->_stringValues;
-    v23 = [v15 inputVariant];
-    [(NSMutableDictionary *)v22 setObject:v23 forKey:kFeatureStringKeyboardVariant];
+    inputVariant = [v15 inputVariant];
+    [(NSMutableDictionary *)v22 setObject:inputVariant forKey:kFeatureStringKeyboardVariant];
 
     v24 = v14->_stringValues;
-    v25 = [v15 secondaryLanguage];
-    [(NSMutableDictionary *)v24 setObject:v25 forKey:kFeatureStringKeyboardSecondaryLanguage];
+    secondaryLanguage = [v15 secondaryLanguage];
+    [(NSMutableDictionary *)v24 setObject:secondaryLanguage forKey:kFeatureStringKeyboardSecondaryLanguage];
 
     v26 = v14->_stringValues;
-    v27 = [v15 secondaryRegion];
-    [(NSMutableDictionary *)v26 setObject:v27 forKey:kFeatureStringKeyboardSecondaryRegion];
+    secondaryRegion = [v15 secondaryRegion];
+    [(NSMutableDictionary *)v26 setObject:secondaryRegion forKey:kFeatureStringKeyboardSecondaryRegion];
 
     v28 = v14->_stringValues;
-    v29 = [v15 layoutName];
-    [(NSMutableDictionary *)v28 setObject:v29 forKey:kFeatureStringKeyboardLayout];
+    layoutName = [v15 layoutName];
+    [(NSMutableDictionary *)v28 setObject:layoutName forKey:kFeatureStringKeyboardLayout];
 
     v30 = v14->_stringValues;
     v31 = +[TIKBAnalyticsMetricsContext keyboardTypeEnumToString:](TIKBAnalyticsMetricsContext, "keyboardTypeEnumToString:", [v15 keyboardType]);
     [(NSMutableDictionary *)v30 setObject:v31 forKey:kFeatureStringKeyboardType];
 
     v32 = v14->_stringValues;
-    v33 = [v15 keyboardConfiguration];
-    v34 = v33;
-    if (!v33)
+    keyboardConfiguration = [v15 keyboardConfiguration];
+    v34 = keyboardConfiguration;
+    if (!keyboardConfiguration)
     {
-      v33 = @"None";
+      keyboardConfiguration = @"None";
     }
 
-    v35 = [(__CFString *)v33 copy];
+    v35 = [(__CFString *)keyboardConfiguration copy];
     [(NSMutableDictionary *)v32 setObject:v35 forKey:kFeatureStringKeyboardConfiguration];
 
     v36 = IXADefaultLogFacility();
@@ -456,7 +456,7 @@
       v37 = [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardRegion];
       v38 = [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardVariant];
       [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardSecondaryLanguage];
-      v39 = v48 = v13;
+      v39 = v48 = contextCopy;
       v40 = [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardSecondaryRegion];
       v46 = [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardLayout];
       v41 = [(NSMutableDictionary *)v14->_stringValues objectForKey:kFeatureStringKeyboardType];
@@ -466,10 +466,10 @@
       v53 = v43;
       _os_log_impl(&dword_22CA55000, v36, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
 
-      v13 = v48;
+      contextCopy = v48;
     }
 
-    v12 = v50;
+    modeCopy = v50;
   }
 
   v44 = *MEMORY[0x277D85DE8];

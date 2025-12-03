@@ -2,18 +2,18 @@
 - (BOOL)suspended;
 - (FCOperationThrottlerDelegate)delegate;
 - (FCTimedOperationThrottler)init;
-- (FCTimedOperationThrottler)initWithDelegate:(id)a3;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (FCTimedOperationThrottler)initWithDelegate:(id)delegate;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 - (void)tickle;
-- (void)tickleWithCompletion:(id)a3;
+- (void)tickleWithCompletion:(id)completion;
 @end
 
 @implementation FCTimedOperationThrottler
 
 - (void)tickle
 {
-  v2 = [(FCTimedOperationThrottler *)self operationThrottler];
-  [v2 tickle];
+  operationThrottler = [(FCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickle];
 }
 
 - (FCTimedOperationThrottler)init
@@ -42,11 +42,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCTimedOperationThrottler)initWithDelegate:(id)a3
+- (FCTimedOperationThrottler)initWithDelegate:(id)delegate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "delegate"];
     *buf = 136315906;
@@ -66,7 +66,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[FCOperationThrottler alloc] initWithDelegate:v6];
     operationThrottler = v6->_operationThrottler;
     v6->_operationThrottler = v7;
@@ -76,30 +76,30 @@
   return v6;
 }
 
-- (void)tickleWithCompletion:(id)a3
+- (void)tickleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCTimedOperationThrottler *)self operationThrottler];
-  [v5 tickleWithCompletion:v4];
+  completionCopy = completion;
+  operationThrottler = [(FCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickleWithCompletion:completionCopy];
 }
 
 - (BOOL)suspended
 {
-  v2 = [(FCTimedOperationThrottler *)self operationThrottler];
-  v3 = [v2 suspended];
+  operationThrottler = [(FCTimedOperationThrottler *)self operationThrottler];
+  suspended = [operationThrottler suspended];
 
-  return v3;
+  return suspended;
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __84__FCTimedOperationThrottler_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v12 = &unk_1E7C37BC0;
-  v13 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = completionCopy;
   v14 = v6;
   v7 = _Block_copy(&v9);
   v8 = [(FCTimedOperationThrottler *)self delegate:v9];

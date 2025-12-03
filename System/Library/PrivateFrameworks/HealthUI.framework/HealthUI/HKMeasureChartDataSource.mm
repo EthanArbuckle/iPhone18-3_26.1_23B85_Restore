@@ -1,10 +1,10 @@
 @interface HKMeasureChartDataSource
 - (HKMeasureChartDataSource)init;
-- (HKMeasureChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4;
-- (HKMeasureChartDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)mappingFunctionForContext:(id)a3;
+- (HKMeasureChartDataSource)initWithDataType:(id)type healthStore:(id)store;
+- (HKMeasureChartDataSource)initWithDisplayType:(id)type healthStore:(id)store;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)mappingFunctionForContext:(id)context;
 - (id)queryDescription;
 @end
 
@@ -13,17 +13,17 @@
 - (id)queryDescription
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   sub_1C3D20CD4();
   MEMORY[0x1C692F800](58, 0xE100000000000000);
-  MEMORY[0x1C692F800](*(&v3->super.super.isa + OBJC_IVAR___HKMeasureChartDataSource_debugIdentifier), *(&v3->super._healthStore + OBJC_IVAR___HKMeasureChartDataSource_debugIdentifier));
+  MEMORY[0x1C692F800](*(&selfCopy->super.super.isa + OBJC_IVAR___HKMeasureChartDataSource_debugIdentifier), *(&selfCopy->super._healthStore + OBJC_IVAR___HKMeasureChartDataSource_debugIdentifier));
 
   v4 = sub_1C3D200C4();
 
   return v4;
 }
 
-- (id)mappingFunctionForContext:(id)a3
+- (id)mappingFunctionForContext:(id)context
 {
   swift_unknownObjectRetain();
   sub_1C3D20774();
@@ -33,15 +33,15 @@
   return 0;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  v13 = sub_1C3C304AC(v10, sub_1C3C31468, v9);
+  requestCopy = request;
+  storeCopy = store;
+  selfCopy = self;
+  v13 = sub_1C3C304AC(requestCopy, sub_1C3C31468, v9);
   v15 = v14;
 
   if (v13)
@@ -58,23 +58,23 @@
   return v13;
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1C3C30E9C(v5);
+  dataCopy = data;
+  selfCopy = self;
+  v7 = sub_1C3C30E9C(dataCopy);
 
   return v7;
 }
 
-- (HKMeasureChartDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4
+- (HKMeasureChartDataSource)initWithDisplayType:(id)type healthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (HKMeasureChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4
+- (HKMeasureChartDataSource)initWithDataType:(id)type healthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

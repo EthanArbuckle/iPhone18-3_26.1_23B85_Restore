@@ -12,12 +12,12 @@
   if ([v8 count] == 1)
   {
     v9 = [_GCDefaultLogicalDevice alloc];
-    v10 = [v8 anyObject];
-    v11 = [(_GCDefaultLogicalDevice *)v9 initWithPhysicalDevice:v10 configuration:v7 manager:a1];
+    anyObject = [v8 anyObject];
+    v11 = [(_GCDefaultLogicalDevice *)v9 initWithPhysicalDevice:anyObject configuration:v7 manager:self];
 
-    v12 = [v8 anyObject];
-    v13 = [v12 delegate];
-    [(_GCDefaultLogicalDevice *)v11 setDelegate:v13];
+    anyObject2 = [v8 anyObject];
+    delegate = [anyObject2 delegate];
+    [(_GCDefaultLogicalDevice *)v11 setDelegate:delegate];
 
     goto LABEL_21;
   }
@@ -36,7 +36,7 @@
       v36 = v8;
       obj = v14;
       v34 = a2;
-      v35 = a1;
+      selfCopy = self;
       v38 = v7;
       v17 = 0;
       v18 = 0;
@@ -51,10 +51,10 @@
           }
 
           v21 = *(*(&v39 + 1) + 8 * i);
-          v22 = [v21 identifier];
-          v23 = [v38 deviceDependencies];
-          v24 = [v23 firstObject];
-          v25 = [v22 isEqual:v24];
+          identifier = [v21 identifier];
+          deviceDependencies = [v38 deviceDependencies];
+          firstObject = [deviceDependencies firstObject];
+          v25 = [identifier isEqual:firstObject];
 
           v26 = v21;
           if (v25)
@@ -85,7 +85,7 @@
       v28 = obj;
 
       v7 = v38;
-      a1 = v35;
+      self = selfCopy;
       v8 = v36;
       a2 = v34;
       if (v17)
@@ -93,15 +93,15 @@
         if (v18)
         {
 LABEL_19:
-          v11 = [[_GCFusedLogicalDevice alloc] initWithPrimaryPhysicalDevice:v17 secondaryPhysicalDevice:v18 configuration:v7 manager:a1];
-          v29 = [v17 delegate];
-          [(_GCDefaultLogicalDevice *)v11 setDelegate:v29];
+          v11 = [[_GCFusedLogicalDevice alloc] initWithPrimaryPhysicalDevice:v17 secondaryPhysicalDevice:v18 configuration:v7 manager:self];
+          delegate2 = [v17 delegate];
+          [(_GCDefaultLogicalDevice *)v11 setDelegate:delegate2];
 
           goto LABEL_21;
         }
 
 LABEL_26:
-        [(_GCGenericDeviceManager(DeviceManager) *)a2 makeDeviceWithConfiguration:a1 dependencies:v28];
+        [(_GCGenericDeviceManager(DeviceManager) *)a2 makeDeviceWithConfiguration:self dependencies:v28];
         goto LABEL_19;
       }
     }
@@ -113,8 +113,8 @@ LABEL_26:
       v28 = v14;
     }
 
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"_GCGenericDeviceManager+DeviceManager.m" lineNumber:40 description:{@"Dependencies did not contain primary device. %@", v28}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager+DeviceManager.m" lineNumber:40 description:{@"Dependencies did not contain primary device. %@", v28}];
 
     v17 = 0;
     if (v18)
@@ -125,8 +125,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:a1 file:@"_GCGenericDeviceManager+DeviceManager.m" lineNumber:49 description:{@"Bad configuration: %@", v7}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager+DeviceManager.m" lineNumber:49 description:{@"Bad configuration: %@", v7}];
 
   v11 = 0;
 LABEL_21:

@@ -1,14 +1,14 @@
 @interface IMTransferServicesController
 + (id)sharedInstance;
-- (void)_receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 sourceAppID:(id)a8 signature:(id)a9 decryptionKey:(id)a10 retries:(int)a11 fileSize:(unint64_t)value progressBlock:(id)a13 completionBlock:(id)a14;
-- (void)cancelSendTransferID:(id)a3;
-- (void)deleteAllPersonalNicknamesWithCompletion:(id)a3;
-- (void)getNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 isKnownSender:(BOOL)a9 shouldDecodeImageFields:(BOOL)a10 completionBlock:(id)a11;
-- (void)preWarmMMCSForOwnerID:(id)a3;
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlock:(id)a5;
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlockWithWallpaperAndRecipeDataTags:(id)a5;
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlockWithWallpaperTags:(id)a5;
-- (void)updateUltraConstrainedAttachments:(BOOL)a3;
+- (void)_receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d sourceAppID:(id)iD signature:(id)signature decryptionKey:(id)self0 retries:(int)self1 fileSize:(unint64_t)value progressBlock:(id)self3 completionBlock:(id)self4;
+- (void)cancelSendTransferID:(id)d;
+- (void)deleteAllPersonalNicknamesWithCompletion:(id)completion;
+- (void)getNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag isKnownSender:(BOOL)sender shouldDecodeImageFields:(BOOL)self0 completionBlock:(id)self1;
+- (void)preWarmMMCSForOwnerID:(id)d;
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlock:(id)block;
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlockWithWallpaperAndRecipeDataTags:(id)tags;
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlockWithWallpaperTags:(id)tags;
+- (void)updateUltraConstrainedAttachments:(BOOL)attachments;
 @end
 
 @implementation IMTransferServicesController
@@ -23,7 +23,7 @@
   return qword_28141B768;
 }
 
-- (void)_receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 sourceAppID:(id)a8 signature:(id)a9 decryptionKey:(id)a10 retries:(int)a11 fileSize:(unint64_t)value progressBlock:(id)a13 completionBlock:(id)a14
+- (void)_receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d sourceAppID:(id)iD signature:(id)signature decryptionKey:(id)self0 retries:(int)self1 fileSize:(unint64_t)value progressBlock:(id)self3 completionBlock:(id)self4
 {
   v137 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -32,11 +32,11 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = a5;
+      *&buf[4] = path;
       *&buf[12] = 2112;
-      *&buf[14] = a3;
+      *&buf[14] = transfer;
       *&buf[22] = 2112;
-      v134 = a8;
+      iDCopy = iD;
       _os_log_impl(&dword_254879000, v18, OS_LOG_TYPE_INFO, "TransferServices received request to receive transfer %@  ID: %@ sourceAppID: %@", buf, 0x20u);
     }
   }
@@ -44,7 +44,7 @@
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3052000000;
-  v134 = sub_25487AE30;
+  iDCopy = sub_25487AE30;
   v135 = sub_25487AE40;
   im_primary_queue();
   v136 = IMXPCCreateConnectionForServiceWithQueue();
@@ -59,25 +59,25 @@
     v128[2] = 3221225472;
     v128[3] = sub_25487BE40;
     v128[4] = &unk_27978E330;
-    v128[5] = a13;
+    v128[5] = block;
     v128[6] = buf;
     IMXPCConfigureConnection();
     v19 = xpc_dictionary_create(0, 0, 0);
-    v120 = objc_msgSend_UTF8String(a4, v20, v21, v22, v23, v24, v25, v26);
+    v120 = objc_msgSend_UTF8String(topic, v20, v21, v22, v23, v24, v25, v26);
     IMInsertStringsToXPCDictionary();
-    objc_msgSend_UTF8String(a5, v27, v28, v29, v30, v31, v32, v33, v120, 0);
-    objc_msgSend_UTF8String(a3, v34, v35, v36, v37, v38, v39, v40);
-    v48 = objc_msgSend_UTF8String(a7, v41, v42, v43, v44, v45, v46, v47);
-    v122 = objc_msgSend_UTF8String(a6, v49, v50, v51, v52, v53, v54, v55);
+    objc_msgSend_UTF8String(path, v27, v28, v29, v30, v31, v32, v33, v120, 0);
+    objc_msgSend_UTF8String(transfer, v34, v35, v36, v37, v38, v39, v40);
+    v48 = objc_msgSend_UTF8String(d, v41, v42, v43, v44, v45, v46, v47);
+    v122 = objc_msgSend_UTF8String(string, v49, v50, v51, v52, v53, v54, v55);
     IMInsertStringsToXPCDictionary();
     IMInsertDatasToXPCDictionary();
     IMInsertBoolsToXPCDictionary();
-    v121 = objc_msgSend_UTF8String(a8, v56, v57, v58, v59, v60, v61, v62, 0, 0, a10, 0, v48, "urlString", v122, 0);
+    v121 = objc_msgSend_UTF8String(iD, v56, v57, v58, v59, v60, v61, v62, 0, 0, key, 0, v48, "urlString", v122, 0);
     IMInsertStringsToXPCDictionary();
     xpc_dictionary_set_uint64(v19, "file-size", value);
-    if (a5)
+    if (path)
     {
-      v69 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v63, a5, v64, v65, v66, v67, v68, v121, 0);
+      v69 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v63, path, v64, v65, v66, v67, v68, v121, 0);
       PathComponent = objc_msgSend_URLByDeletingLastPathComponent(v69, v70, v71, v72, v73, v74, v75, v76);
       v128[0] = 0;
       v85 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v78, v79, v80, v81, v82, v83, v84);
@@ -144,18 +144,18 @@
     handler[1] = 3221225472;
     handler[2] = sub_25487BFE0;
     handler[3] = &unk_27978E380;
-    v127 = a11;
+    retriesCopy = retries;
     handler[4] = self;
-    handler[5] = a3;
-    handler[6] = a4;
-    handler[7] = a5;
-    handler[8] = a6;
-    handler[9] = a7;
-    handler[10] = a8;
-    handler[11] = a9;
-    handler[12] = a10;
-    handler[13] = a13;
-    handler[14] = a14;
+    handler[5] = transfer;
+    handler[6] = topic;
+    handler[7] = path;
+    handler[8] = string;
+    handler[9] = d;
+    handler[10] = iD;
+    handler[11] = signature;
+    handler[12] = key;
+    handler[13] = block;
+    handler[14] = completionBlock;
     handler[15] = buf;
     handler[16] = value;
     xpc_connection_send_message_with_reply(v117, v19, v118, handler);
@@ -174,10 +174,10 @@
       }
     }
 
-    if (a14)
+    if (completionBlock)
     {
       v113 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v108, @"IMTransferServicesErrorDomain", -3, 0, v109, v110, v111);
-      (*(a14 + 2))(a14, a3, a5, 0, v113, 0);
+      (*(completionBlock + 2))(completionBlock, transfer, path, 0, v113, 0);
     }
   }
 
@@ -185,7 +185,7 @@
   v119 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateUltraConstrainedAttachments:(BOOL)a3
+- (void)updateUltraConstrainedAttachments:(BOOL)attachments
 {
   v6 = 0;
   v7 = &v6;
@@ -199,7 +199,7 @@
     IMXPCConfigureConnection();
     v4 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v4, "updateUCA", 1);
-    xpc_dictionary_set_BOOL(v4, "allowUCA", a3);
+    xpc_dictionary_set_BOOL(v4, "allowUCA", attachments);
     xpc_connection_send_message(v7[5], v4);
     xpc_release(v4);
     v5 = v7[5];
@@ -214,7 +214,7 @@
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)cancelSendTransferID:(id)a3
+- (void)cancelSendTransferID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -223,7 +223,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = d;
       _os_log_impl(&dword_254879000, v4, OS_LOG_TYPE_INFO, "TransferServices received request to cancel send: %@", &buf, 0xCu);
     }
   }
@@ -245,7 +245,7 @@
     IMXPCConfigureConnection();
     v5 = xpc_dictionary_create(0, 0, 0);
     IMInsertBoolsToXPCDictionary();
-    objc_msgSend_UTF8String(a3, v6, v7, v8, v9, v10, v11, v12, 1, 0);
+    objc_msgSend_UTF8String(d, v6, v7, v8, v9, v10, v11, v12, 1, 0);
     IMInsertStringsToXPCDictionary();
     xpc_connection_send_message(*(*(&buf + 1) + 40), v5);
     xpc_release(v5);
@@ -272,7 +272,7 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preWarmMMCSForOwnerID:(id)a3
+- (void)preWarmMMCSForOwnerID:(id)d
 {
   if (IMOSLoggingEnabled())
   {
@@ -341,7 +341,7 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)getNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 isKnownSender:(BOOL)a9 shouldDecodeImageFields:(BOOL)a10 completionBlock:(id)a11
+- (void)getNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag isKnownSender:(BOOL)sender shouldDecodeImageFields:(BOOL)self0 completionBlock:(id)self1
 {
   v48 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -350,7 +350,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = d;
       _os_log_impl(&dword_254879000, v12, OS_LOG_TYPE_INFO, "TransferServices received request to get nickname with record ID %@", &buf, 0xCu);
     }
   }
@@ -377,7 +377,7 @@
     IMXPCConfigureConnection();
     v13 = xpc_dictionary_create(0, 0, 0);
     IMInsertBoolsToXPCDictionary();
-    objc_msgSend_UTF8String(a3, v14, v15, v16, v17, v18, v19, v20, 1, 0);
+    objc_msgSend_UTF8String(d, v14, v15, v16, v17, v18, v19, v20, 1, 0);
     IMInsertStringsToXPCDictionary();
     IMInsertDatasToXPCDictionary();
     IMInsertDatasToXPCDictionary();
@@ -402,7 +402,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_25487D6DC;
     handler[3] = &unk_27978E3F0;
-    handler[4] = a11;
+    handler[4] = block;
     handler[5] = &buf;
     xpc_connection_send_message_with_reply(v22, v13, v23, handler);
     xpc_release(v13);
@@ -421,9 +421,9 @@
     }
 
     v29 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v24, @"IMTransferServicesErrorDomain", -3, 0, v25, v26, v27);
-    if (a11)
+    if (block)
     {
-      (*(a11 + 2))(a11, 0, v29);
+      (*(block + 2))(block, 0, v29);
     }
   }
 
@@ -431,27 +431,27 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlock:(id)a5
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlock:(id)block
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_25487DA6C;
   v8[3] = &unk_27978E418;
-  v8[4] = a5;
-  objc_msgSend_setPersonalNickname_oldRecordID_completionBlockWithWallpaperTags_(self, a2, a3, a4, v8, v5, v6, v7);
+  v8[4] = block;
+  objc_msgSend_setPersonalNickname_oldRecordID_completionBlockWithWallpaperTags_(self, a2, nickname, d, v8, v5, v6, v7);
 }
 
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlockWithWallpaperTags:(id)a5
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlockWithWallpaperTags:(id)tags
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_25487DAEC;
   v8[3] = &unk_27978E440;
-  v8[4] = a5;
-  objc_msgSend_setPersonalNickname_oldRecordID_completionBlockWithWallpaperAndRecipeDataTags_(self, a2, a3, a4, v8, v5, v6, v7);
+  v8[4] = tags;
+  objc_msgSend_setPersonalNickname_oldRecordID_completionBlockWithWallpaperAndRecipeDataTags_(self, a2, nickname, d, v8, v5, v6, v7);
 }
 
-- (void)setPersonalNickname:(id)a3 oldRecordID:(id)a4 completionBlockWithWallpaperAndRecipeDataTags:(id)a5
+- (void)setPersonalNickname:(id)nickname oldRecordID:(id)d completionBlockWithWallpaperAndRecipeDataTags:(id)tags
 {
   v36 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -460,9 +460,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *&buf[4] = a3;
+      *&buf[4] = nickname;
       *&buf[12] = 2112;
-      *&buf[14] = a4;
+      *&buf[14] = d;
       _os_log_impl(&dword_254879000, v8, OS_LOG_TYPE_INFO, "TransferServices received request to upload new personal nickname: %@ and delete record with ID: %@", buf, 0x16u);
     }
   }
@@ -507,7 +507,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_25487E09C;
     handler[3] = &unk_27978E3F0;
-    handler[4] = a5;
+    handler[4] = tags;
     handler[5] = buf;
     xpc_connection_send_message_with_reply(v11, v9, v12, handler);
     xpc_release(v9);
@@ -526,9 +526,9 @@
     }
 
     v18 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v13, @"IMTransferServicesErrorDomain", -3, 0, v14, v15, v16);
-    if (a5)
+    if (tags)
     {
-      (*(a5 + 2))(a5, 0, 0, 0, 0, 0, 0, 0, 0, v18);
+      (*(tags + 2))(tags, 0, 0, 0, 0, 0, 0, 0, 0, v18);
     }
   }
 
@@ -536,7 +536,7 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllPersonalNicknamesWithCompletion:(id)a3
+- (void)deleteAllPersonalNicknamesWithCompletion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -586,7 +586,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_25487E9A0;
     handler[3] = &unk_27978E3F0;
-    handler[4] = a3;
+    handler[4] = completion;
     handler[5] = buf;
     xpc_connection_send_message_with_reply(v7, v5, v8, handler);
     xpc_release(v5);
@@ -605,9 +605,9 @@
     }
 
     v14 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v9, @"IMTransferServicesErrorDomain", -3, 0, v10, v11, v12);
-    if (a3)
+    if (completion)
     {
-      (*(a3 + 2))(a3, 0, v14);
+      (*(completion + 2))(completion, 0, v14);
     }
   }
 

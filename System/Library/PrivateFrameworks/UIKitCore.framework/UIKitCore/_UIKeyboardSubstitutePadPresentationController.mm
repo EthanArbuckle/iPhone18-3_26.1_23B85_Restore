@@ -1,10 +1,10 @@
 @interface _UIKeyboardSubstitutePadPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1946_UIKeyboardSubstitutePadPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)animateTransition:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1946_UIKeyboardSubstitutePadPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)animateTransition:(id)transition;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
@@ -12,31 +12,31 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_189132DE0();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_189133164(a3);
+  selfCopy = self;
+  sub_189133164(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_189133444();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_189133720(a3);
+  selfCopy = self;
+  sub_189133720(end);
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_189133A88();
   v4 = v3;
   v6 = v5;
@@ -54,20 +54,20 @@
   return result;
 }
 
-- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1946_UIKeyboardSubstitutePadPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC5UIKitP33_0B439A980771A6A339CDA4EB17012E1946_UIKeyboardSubstitutePadPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_18913544C(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v7 = sub_18913544C(controllerCopy, viewController);
 
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18913464C(a3);
+  selfCopy = self;
+  sub_18913464C(transition);
   swift_unknownObjectRelease();
 }
 

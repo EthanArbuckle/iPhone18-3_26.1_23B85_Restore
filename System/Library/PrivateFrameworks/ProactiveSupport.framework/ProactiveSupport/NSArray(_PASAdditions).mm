@@ -32,21 +32,21 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _pas_overrideUnlazyArray];
+    _pas_overrideUnlazyArray = [self _pas_overrideUnlazyArray];
   }
 
   else
   {
-    v2 = [a1 copy];
+    _pas_overrideUnlazyArray = [self copy];
   }
 
-  return v2;
+  return _pas_overrideUnlazyArray;
 }
 
 - (id)_pas_proxyArrayReversed
 {
-  v1 = [a1 _pas_ensureImmutable];
-  v2 = [v1 count];
+  _pas_ensureImmutable = [self _pas_ensureImmutable];
+  v2 = [_pas_ensureImmutable count];
   if (v2 >= 2)
   {
     v3 = MEMORY[0x1E695DEC8];
@@ -54,18 +54,18 @@
     v7[1] = 3221225472;
     v7[2] = __49__NSArray__PASAdditions___pas_proxyArrayReversed__block_invoke;
     v7[3] = &unk_1E77F1988;
-    v8 = v1;
+    v8 = _pas_ensureImmutable;
     v9 = v2;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __49__NSArray__PASAdditions___pas_proxyArrayReversed__block_invoke_2;
     v6[3] = &__block_descriptor_40_e5_Q8__0l;
     v6[4] = v2;
-    v4 = v1;
-    v1 = [v3 _pas_proxyArrayUsingObjectAtIndexBlock:v7 andCountBlock:v6];
+    v4 = _pas_ensureImmutable;
+    _pas_ensureImmutable = [v3 _pas_proxyArrayUsingObjectAtIndexBlock:v7 andCountBlock:v6];
   }
 
-  return v1;
+  return _pas_ensureImmutable;
 }
 
 - (id)_pas_proxyArrayRevivingStrings
@@ -74,9 +74,9 @@
   v4[1] = 3221225472;
   v4[2] = __56__NSArray__PASAdditions___pas_proxyArrayRevivingStrings__block_invoke;
   v4[3] = &unk_1E77F19D8;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
-  v2 = [a1 _pas_proxyArrayWithMapping:v4];
+  v2 = [self _pas_proxyArrayWithMapping:v4];
 
   return v2;
 }
@@ -87,9 +87,9 @@
   v4[1] = 3221225472;
   v4[2] = __58__NSArray__PASAdditions___pas_proxyArrayDistillingStrings__block_invoke;
   v4[3] = &unk_1E77F19B0;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
-  v2 = [a1 _pas_proxyArrayWithMapping:v4];
+  v2 = [self _pas_proxyArrayWithMapping:v4];
 
   return v2;
 }
@@ -100,13 +100,13 @@
   {
     if (a3 == 1)
     {
-      v4 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = [a1 _pas_ensureImmutable];
-      v6 = [v5 count];
+      _pas_ensureImmutable = [self _pas_ensureImmutable];
+      v6 = [_pas_ensureImmutable count];
       if (v6)
       {
         v7 = v6;
@@ -117,56 +117,56 @@
         v11[3] = &unk_1E77F1918;
         v13 = v6;
         v14 = a3;
-        v12 = v5;
+        v12 = _pas_ensureImmutable;
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __57__NSArray__PASAdditions___pas_proxyArrayWithRepetitions___block_invoke_2;
         v10[3] = &__block_descriptor_48_e5_Q8__0l;
         v10[4] = v7;
         v10[5] = a3;
-        v4 = [v8 _pas_proxyArrayUsingObjectAtIndexBlock:v11 andCountBlock:v10];
+        selfCopy = [v8 _pas_proxyArrayUsingObjectAtIndexBlock:v11 andCountBlock:v10];
       }
 
       else
       {
-        v4 = MEMORY[0x1E695E0F0];
+        selfCopy = MEMORY[0x1E695E0F0];
       }
     }
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    selfCopy = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)_pas_proxyArrayByAppendingArray:()_PASAdditions
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
-    v12 = [a1 _pas_proxyArrayWithRepetitions:2];
+    v12 = [self _pas_proxyArrayWithRepetitions:2];
     goto LABEL_10;
   }
 
-  v5 = [a1 _pas_ensureImmutable];
-  v6 = [v5 count];
-  v7 = [v4 _pas_ensureImmutable];
-  v8 = v7;
+  _pas_ensureImmutable = [self _pas_ensureImmutable];
+  v6 = [_pas_ensureImmutable count];
+  _pas_ensureImmutable2 = [v4 _pas_ensureImmutable];
+  v8 = _pas_ensureImmutable2;
   if (!v6)
   {
-    v13 = v7;
+    v13 = _pas_ensureImmutable2;
 LABEL_8:
     v12 = v13;
     goto LABEL_9;
   }
 
-  v9 = [v7 count];
+  v9 = [_pas_ensureImmutable2 count];
   if (!v9)
   {
-    v13 = v5;
+    v13 = _pas_ensureImmutable;
     goto LABEL_8;
   }
 
@@ -177,7 +177,7 @@ LABEL_8:
   v16[2] = __58__NSArray__PASAdditions___pas_proxyArrayByAppendingArray___block_invoke;
   v16[3] = &unk_1E77F18D0;
   v19 = v6;
-  v17 = v5;
+  v17 = _pas_ensureImmutable;
   v18 = v8;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -196,8 +196,8 @@ LABEL_10:
 - (id)_pas_proxyArrayWithMapping:()_PASAdditions
 {
   v4 = a3;
-  v5 = [a1 _pas_ensureImmutable];
-  if ([v5 count])
+  _pas_ensureImmutable = [self _pas_ensureImmutable];
+  if ([_pas_ensureImmutable count])
   {
     v6 = [v4 copy];
     v7 = MEMORY[0x1E695DEC8];
@@ -206,7 +206,7 @@ LABEL_10:
     v13[2] = __53__NSArray__PASAdditions___pas_proxyArrayWithMapping___block_invoke;
     v13[3] = &unk_1E77F1960;
     v15 = v6;
-    v14 = v5;
+    v14 = _pas_ensureImmutable;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__NSArray__PASAdditions___pas_proxyArrayWithMapping___block_invoke_2;
@@ -231,18 +231,18 @@ LABEL_10:
   if (v6)
   {
     v7 = v6;
-    v8 = [a1 _pas_ensureImmutable];
-    v9 = [v8 count];
-    v10 = [v5 firstIndex];
-    v11 = [v5 lastIndex];
-    if (v11 >= v9)
+    _pas_ensureImmutable = [self _pas_ensureImmutable];
+    v9 = [_pas_ensureImmutable count];
+    firstIndex = [v5 firstIndex];
+    lastIndex = [v5 lastIndex];
+    if (lastIndex >= v9)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"index %tu from indexSet out of range for array with count %tu", v11, v9}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"index %tu from indexSet out of range for array with count %tu", lastIndex, v9}];
     }
 
-    if (v7 == v11 - v10 + 1)
+    if (v7 == lastIndex - firstIndex + 1)
     {
-      v12 = [a1 _pas_proxySubarrayWithRange:{v10, v7}];
+      v12 = [self _pas_proxySubarrayWithRange:{firstIndex, v7}];
     }
 
     else
@@ -259,8 +259,8 @@ LABEL_10:
       v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v14 length:8 * v7 freeWhenDone:1];
       if (v15 != v7)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"indexesGotten == indexSetCount"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"indexesGotten == indexSetCount"}];
       }
 
       v17 = MEMORY[0x1E695DEC8];
@@ -270,7 +270,7 @@ LABEL_10:
       v23[3] = &unk_1E77F18D0;
       v26 = v7;
       v24 = v16;
-      v25 = v8;
+      v25 = _pas_ensureImmutable;
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __62__NSArray__PASAdditions___pas_proxyArrayWithObjectsAtIndexes___block_invoke_2;
@@ -291,8 +291,8 @@ LABEL_10:
 
 - (id)_pas_proxySubarrayWithRange:()_PASAdditions
 {
-  v8 = [a1 _pas_ensureImmutable];
-  v9 = [v8 count];
+  _pas_ensureImmutable = [self _pas_ensureImmutable];
+  v9 = [_pas_ensureImmutable count];
   v24.location = 0;
   v24.length = v9;
   v27.location = a3;
@@ -300,14 +300,14 @@ LABEL_10:
   v10 = NSIntersectionRange(v24, v27);
   if (a3 != v10.location || a4 != v10.length)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25.location = a3;
     v25.length = a4;
     v15 = NSStringFromRange(v25);
     v26.location = 0;
     v26.length = v9;
     v16 = NSStringFromRange(v26);
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:272 description:{@"Range %@ out of array bounds %@", v15, v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:272 description:{@"Range %@ out of array bounds %@", v15, v16}];
 
     if (!a4)
     {
@@ -324,7 +324,7 @@ LABEL_7:
       v19[3] = &unk_1E77F1918;
       v21 = a3;
       v22 = a4;
-      v20 = v8;
+      v20 = _pas_ensureImmutable;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __54__NSArray__PASAdditions___pas_proxySubarrayWithRange___block_invoke_2;
@@ -336,7 +336,7 @@ LABEL_7:
 
     else
     {
-      v12 = v8;
+      v12 = _pas_ensureImmutable;
     }
 
     goto LABEL_13;
@@ -359,25 +359,25 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 copy];
+    selfCopy = [self copy];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)_pas_proxyComponentsJoinedByString:()_PASAdditions
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5)
   {
     v6 = v5;
-    v7 = [a1 copy];
+    v7 = [self copy];
     v8 = [v4 copy];
     v9 = 2 * v6 - 1;
     v10 = MEMORY[0x1E695DEC8];
@@ -426,7 +426,7 @@ LABEL_13:
     v4 = &stru_1F1B24B60;
   }
 
-  v5 = _PASJoinStrings(a1, v4);
+  v5 = _PASJoinStrings(self, v4);
 
   return v5;
 }
@@ -445,8 +445,8 @@ LABEL_13:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:177 description:@"Chunk size must be nonzero"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:177 description:@"Chunk size must be nonzero"];
 
     if (v8)
     {
@@ -454,23 +454,23 @@ LABEL_13:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
-  if ([a1 count])
+  if ([self count])
   {
-    if ([a1 count] <= a3)
+    if ([self count] <= a3)
     {
       v17 = 0;
-      (v8)[2](v8, a1, &v17);
+      (v8)[2](v8, self, &v17);
     }
 
     else
     {
-      v9 = [a1 count];
+      v9 = [self count];
       v16 = 0;
-      if ([a1 count])
+      if ([self count])
       {
         v10 = 0;
         do
@@ -481,7 +481,7 @@ LABEL_3:
           v19.location = 0;
           v19.length = v9;
           v12 = NSIntersectionRange(v18, v19);
-          v13 = [a1 subarrayWithRange:{v12.location, v12.length}];
+          v13 = [self subarrayWithRange:{v12.location, v12.length}];
           (v8)[2](v8, v13, &v16);
 
           LODWORD(v13) = v16;
@@ -494,7 +494,7 @@ LABEL_3:
           v10 += a3;
         }
 
-        while (v10 < [a1 count]);
+        while (v10 < [self count]);
       }
     }
   }
@@ -503,7 +503,7 @@ LABEL_3:
 - (id)_pas_shuffledArrayUsingRng:()_PASAdditions
 {
   v5 = a3;
-  if ([a1 count] > 1)
+  if ([self count] > 1)
   {
     if (v5)
     {
@@ -522,7 +522,7 @@ LABEL_3:
     }
 
     v8 = MEMORY[0x1AC566DD0](v7);
-    v9 = [a1 mutableCopy];
+    v9 = [self mutableCopy];
     v10 = [v9 count];
     v11 = v10 - 1;
     if (v10 != 1)
@@ -545,7 +545,7 @@ LABEL_3:
 
   else
   {
-    v6 = [a1 copy];
+    v6 = [self copy];
   }
 
   return v6;
@@ -557,8 +557,8 @@ LABEL_3:
   v8 = a4;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -567,7 +567,7 @@ LABEL_3:
   v13[3] = &unk_1E77F1860;
   v14 = v8;
   v9 = v8;
-  v10 = [a1 _pas_rightFoldWithInitialObject:v7 indexedAccumulate:v13];
+  v10 = [self _pas_rightFoldWithInitialObject:v7 indexedAccumulate:v13];
 
   return v10;
 }
@@ -579,18 +579,18 @@ LABEL_3:
   v8 = a4;
   if (!v8)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
   }
 
   v9 = v7;
-  v10 = [a1 count];
+  v10 = [self count];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [a1 reverseObjectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  reverseObjectEnumerator = [self reverseObjectEnumerator];
+  v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
   v13 = v9;
   if (v12)
   {
@@ -605,7 +605,7 @@ LABEL_3:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = v8[2](v8, v17, *(*(&v21 + 1) + 8 * v16), --v10);
@@ -615,7 +615,7 @@ LABEL_3:
       }
 
       while (v14 != v16);
-      v14 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
@@ -632,8 +632,8 @@ LABEL_3:
   v8 = a4;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -642,7 +642,7 @@ LABEL_3:
   v13[3] = &unk_1E77F1860;
   v14 = v8;
   v9 = v8;
-  v10 = [a1 _pas_leftFoldWithInitialObject:v7 indexedAccumulate:v13];
+  v10 = [self _pas_leftFoldWithInitialObject:v7 indexedAccumulate:v13];
 
   return v10;
 }
@@ -654,8 +654,8 @@ LABEL_3:
   v8 = a4;
   if (!v8)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"accumulate"}];
   }
 
   v9 = v7;
@@ -663,8 +663,8 @@ LABEL_3:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = a1;
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  selfCopy = self;
+  v11 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   v22 = v9;
   if (v11)
   {
@@ -679,7 +679,7 @@ LABEL_3:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(selfCopy);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v15);
@@ -693,7 +693,7 @@ LABEL_3:
       }
 
       while (v12 != v15);
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v12);
@@ -709,8 +709,8 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"test"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"test"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -719,7 +719,7 @@ LABEL_3:
   v10[3] = &unk_1E77F1838;
   v11 = v5;
   v6 = v5;
-  v7 = [a1 _pas_filteredArrayWithIndexedTest:v10];
+  v7 = [self _pas_filteredArrayWithIndexedTest:v10];
 
   return v7;
 }
@@ -730,17 +730,17 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"test"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"test"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -752,7 +752,7 @@ LABEL_3:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -766,7 +766,7 @@ LABEL_3:
         objc_autoreleasePoolPop(v14);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -783,8 +783,8 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -793,7 +793,7 @@ LABEL_3:
   v10[3] = &unk_1E77F1810;
   v11 = v5;
   v6 = v5;
-  v7 = [a1 _pas_mappedArrayWithIndexedTransform:v10];
+  v7 = [self _pas_mappedArrayWithIndexedTransform:v10];
 
   return v7;
 }
@@ -804,17 +804,17 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"NSArray+_PASAdditions.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+_PASAdditions.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -826,7 +826,7 @@ LABEL_3:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -842,7 +842,7 @@ LABEL_3:
         objc_autoreleasePoolPop(v14);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -858,11 +858,11 @@ LABEL_3:
 {
   v5 = a3;
   v6 = [_PASLazyPlistWithBPlistSupport arrayWithData:v5 error:a4];
-  v7 = [v6 _pas_unlazyArray];
+  _pas_unlazyArray = [v6 _pas_unlazyArray];
 
-  if (v7)
+  if (_pas_unlazyArray)
   {
-    v8 = v7;
+    v8 = _pas_unlazyArray;
   }
 
   else

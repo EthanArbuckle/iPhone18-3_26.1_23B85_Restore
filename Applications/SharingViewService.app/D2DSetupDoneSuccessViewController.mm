@@ -1,5 +1,5 @@
 @interface D2DSetupDoneSuccessViewController
-- (_TtC18SharingViewService33D2DSetupDoneSuccessViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService33D2DSetupDoneSuccessViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100075B24();
 }
 
-- (_TtC18SharingViewService33D2DSetupDoneSuccessViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService33D2DSetupDoneSuccessViewController)initWithContentView:(id)view
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for D2DSetupDoneSuccessViewController();
-  return [(D2DSetupBaseViewController *)&v5 initWithContentView:a3];
+  return [(D2DSetupBaseViewController *)&v5 initWithContentView:view];
 }
 
 @end

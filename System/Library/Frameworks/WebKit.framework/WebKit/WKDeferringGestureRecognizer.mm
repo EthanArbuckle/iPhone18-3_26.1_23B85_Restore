@@ -1,16 +1,16 @@
 @interface WKDeferringGestureRecognizer
-- (BOOL)shouldDeferGestureRecognizer:(id)a3;
-- (WKDeferringGestureRecognizer)initWithDeferringGestureDelegate:(id)a3;
-- (void)endDeferral:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (BOOL)shouldDeferGestureRecognizer:(id)recognizer;
+- (WKDeferringGestureRecognizer)initWithDeferringGestureDelegate:(id)delegate;
+- (void)endDeferral:(BOOL)deferral;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation WKDeferringGestureRecognizer
 
-- (WKDeferringGestureRecognizer)initWithDeferringGestureDelegate:(id)a3
+- (WKDeferringGestureRecognizer)initWithDeferringGestureDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = WKDeferringGestureRecognizer;
@@ -18,48 +18,48 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_deferringGestureDelegate.m_weakReference, a3);
+    objc_storeWeak(&v4->_deferringGestureDelegate.m_weakReference, delegate);
   }
 
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self willBeginTouchesWithEvent:a4];
+  v7 = [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self willBeginTouchesWithEvent:event];
   v8.receiver = self;
   v8.super_class = WKDeferringGestureRecognizer;
-  [(WKDeferringGestureRecognizer *)&v8 touchesBegan:a3 withEvent:a4];
+  [(WKDeferringGestureRecognizer *)&v8 touchesBegan:began withEvent:event];
   if ((v7 & 1) == 0)
   {
     [(WKDeferringGestureRecognizer *)self setState:5];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = WKDeferringGestureRecognizer;
-  [(WKDeferringGestureRecognizer *)&v6 touchesEnded:a3 withEvent:?];
+  [(WKDeferringGestureRecognizer *)&v6 touchesEnded:ended withEvent:?];
   if ([(WKDeferringGestureRecognizer *)self immediatelyFailsAfterTouchEnd])
   {
     [(WKDeferringGestureRecognizer *)self setState:5];
   }
 
-  [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self didEndTouchesWithEvent:a4];
+  [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self didEndTouchesWithEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = WKDeferringGestureRecognizer;
-  [(WKDeferringGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(WKDeferringGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(WKDeferringGestureRecognizer *)self setState:5];
 }
 
-- (void)endDeferral:(BOOL)a3
+- (void)endDeferral:(BOOL)deferral
 {
-  if (a3)
+  if (deferral)
   {
     v3 = 3;
   }
@@ -72,22 +72,22 @@
   [(WKDeferringGestureRecognizer *)self setState:v3];
 }
 
-- (BOOL)shouldDeferGestureRecognizer:(id)a3
+- (BOOL)shouldDeferGestureRecognizer:(id)recognizer
 {
   Weak = objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference);
 
-  return [Weak deferringGestureRecognizer:self shouldDeferOtherGestureRecognizer:a3];
+  return [Weak deferringGestureRecognizer:self shouldDeferOtherGestureRecognizer:recognizer];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(WKDeferringGestureRecognizer *)self state];
+  state = [(WKDeferringGestureRecognizer *)self state];
   v6.receiver = self;
   v6.super_class = WKDeferringGestureRecognizer;
-  [(WKDeferringGestureRecognizer *)&v6 setState:a3];
-  if (v5 != [(WKDeferringGestureRecognizer *)self state])
+  [(WKDeferringGestureRecognizer *)&v6 setState:state];
+  if (state != [(WKDeferringGestureRecognizer *)self state])
   {
-    [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self didTransitionToState:a3];
+    [objc_loadWeak(&self->_deferringGestureDelegate.m_weakReference) deferringGestureRecognizer:self didTransitionToState:state];
   }
 }
 

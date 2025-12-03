@@ -1,9 +1,9 @@
 @interface CaptureMTL4PipelineDataSetSerializer
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)serializeAsArchiveAndFlushToURL:(id)a3 error:(id *)a4;
-- (CaptureMTL4PipelineDataSetSerializer)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)serializeAsArchiveAndFlushToURL:(id)l error:(id *)error;
+- (CaptureMTL4PipelineDataSetSerializer)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
 - (NSString)description;
-- (id)serializeAsPipelinesScriptWithError:(id *)a3;
+- (id)serializeAsPipelinesScriptWithError:(id *)error;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)touch;
@@ -11,21 +11,21 @@
 
 @implementation CaptureMTL4PipelineDataSetSerializer
 
-- (id)serializeAsPipelinesScriptWithError:(id *)a3
+- (id)serializeAsPipelinesScriptWithError:(id *)error
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTL4PipelineDataSetSerializer_serializeAsPipelinesScriptWithError", "Metal 4 Harvesting Data Set", 0, 0);
   baseObject = self->_baseObject;
 
-  return [(MTL4PipelineDataSetSerializer *)baseObject serializeAsPipelinesScriptWithError:a3];
+  return [(MTL4PipelineDataSetSerializer *)baseObject serializeAsPipelinesScriptWithError:error];
 }
 
-- (BOOL)serializeAsArchiveAndFlushToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeAsArchiveAndFlushToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTL4PipelineDataSetSerializer_serializeAsArchiveAndFlushToURL_error", "Metal 4 Harvesting Data Set", 0, 0);
-  LOBYTE(a4) = [(MTL4PipelineDataSetSerializer *)self->_baseObject serializeAsArchiveAndFlushToURL:v6 error:a4];
+  LOBYTE(error) = [(MTL4PipelineDataSetSerializer *)self->_baseObject serializeAsArchiveAndFlushToURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)dealloc
@@ -36,13 +36,13 @@
   [(CaptureMTL4PipelineDataSetSerializer *)&v3 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4PipelineDataSetSerializer *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4PipelineDataSetSerializer *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -97,19 +97,19 @@
   }
 }
 
-- (CaptureMTL4PipelineDataSetSerializer)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTL4PipelineDataSetSerializer)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = CaptureMTL4PipelineDataSetSerializer;
   v8 = [(CaptureMTL4PipelineDataSetSerializer *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
   }
 
   return v9;

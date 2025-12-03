@@ -1,10 +1,10 @@
 @interface WFCompactImageThumbnailViewController
 - (UIImageView)imageView;
-- (WFCompactImageThumbnailViewController)initWithAspectRatio:(double)a3 imageGenerator:(id)a4;
-- (double)contentHeightForWidth:(double)a3;
+- (WFCompactImageThumbnailViewController)initWithAspectRatio:(double)ratio imageGenerator:(id)generator;
+- (double)contentHeightForWidth:(double)width;
 - (void)loadView;
 - (void)redrawImage;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -19,25 +19,25 @@
 
 - (void)redrawImage
 {
-  v3 = [(WFCompactImageThumbnailViewController *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(WFCompactImageThumbnailViewController *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(WFCompactImageThumbnailViewController *)self view];
-  [v6 bounds];
+  view = [(WFCompactImageThumbnailViewController *)self view];
+  [view bounds];
   v8 = v7;
 
   [(WFCompactImageThumbnailViewController *)self aspectRatio];
   v10 = v5 * v8;
   v11 = v5 * (v8 / v9);
-  v12 = [(WFCompactImageThumbnailViewController *)self imageGenerator];
+  imageGenerator = [(WFCompactImageThumbnailViewController *)self imageGenerator];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke;
   v13[3] = &unk_279EE84C8;
   v13[4] = self;
   *&v13[5] = v8;
-  (v12)[2](v12, v13, v10, v11);
+  (imageGenerator)[2](imageGenerator, v13, v10, v11);
 }
 
 void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke(uint64_t a1, void *a2)
@@ -73,17 +73,17 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = WFCompactImageThumbnailViewController;
-  v4 = a3;
-  [(WFCompactImageThumbnailViewController *)&v10 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(WFCompactImageThumbnailViewController *)&v10 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(WFCompactImageThumbnailViewController *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(WFCompactImageThumbnailViewController *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   if (v6 != v9)
@@ -97,8 +97,8 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   v7.receiver = self;
   v7.super_class = WFCompactImageThumbnailViewController;
   [(WFCompactImageThumbnailViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(WFCompactImageThumbnailViewController *)self view];
-  [v3 bounds];
+  view = [(WFCompactImageThumbnailViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   [(WFCompactImageThumbnailViewController *)self lastViewWidth];
@@ -109,7 +109,7 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   }
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
   [(WFCompactImageThumbnailViewController *)self aspectRatio];
   v5 = 0.0;
@@ -119,7 +119,7 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
     v5 = 1.0 / v7;
   }
 
-  return v5 * a3;
+  return v5 * width;
 }
 
 - (void)loadView
@@ -127,13 +127,13 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   v14.receiver = self;
   v14.super_class = WFCompactImageThumbnailViewController;
   [(WFCompactImageThumbnailViewController *)&v14 loadView];
-  v3 = [(WFCompactImageThumbnailViewController *)self view];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  view = [(WFCompactImageThumbnailViewController *)self view];
+  traitCollection = [view traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  v7 = [(WFCompactImageThumbnailViewController *)self view];
-  [v7 bounds];
+  view2 = [(WFCompactImageThumbnailViewController *)self view];
+  [view2 bounds];
   v16 = CGRectInset(v15, -1.0 / v6, -1.0 / v6);
   x = v16.origin.x;
   y = v16.origin.y;
@@ -144,19 +144,19 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   [v12 setContentMode:1];
   [v12 setFrame:{x, y, width, height}];
   [v12 setAutoresizingMask:18];
-  v13 = [(WFCompactImageThumbnailViewController *)self view];
-  [v13 addSubview:v12];
+  view3 = [(WFCompactImageThumbnailViewController *)self view];
+  [view3 addSubview:v12];
 
   [(WFCompactImageThumbnailViewController *)self setImageView:v12];
 }
 
-- (WFCompactImageThumbnailViewController)initWithAspectRatio:(double)a3 imageGenerator:(id)a4
+- (WFCompactImageThumbnailViewController)initWithAspectRatio:(double)ratio imageGenerator:(id)generator
 {
-  v7 = a4;
-  if (!v7)
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFCompactImageThumbnailViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"imageGenerator"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCompactImageThumbnailViewController.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"imageGenerator"}];
   }
 
   v15.receiver = self;
@@ -165,8 +165,8 @@ void __52__WFCompactImageThumbnailViewController_redrawImage__block_invoke_2(uin
   v9 = v8;
   if (v8)
   {
-    v8->_aspectRatio = a3;
-    v10 = [v7 copy];
+    v8->_aspectRatio = ratio;
+    v10 = [generatorCopy copy];
     imageGenerator = v9->_imageGenerator;
     v9->_imageGenerator = v10;
 

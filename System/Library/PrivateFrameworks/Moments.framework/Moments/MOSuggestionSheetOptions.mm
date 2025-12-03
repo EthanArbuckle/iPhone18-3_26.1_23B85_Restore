@@ -1,97 +1,97 @@
 @interface MOSuggestionSheetOptions
-- (BOOL)isEqual:(id)a3;
-- (MOSuggestionSheetOptions)initWithCoder:(id)a3;
-- (MOSuggestionSheetOptions)initWithShowCancelButton:(BOOL)a3 showBlankEntryButton:(BOOL)a4 peekDetentRatio:(double)a5 presentFullScreen:(BOOL)a6 presentationIsAnimated:(BOOL)a7 selectedTabIsRecommended:(BOOL)a8 selectedSuggestionId:(id)a9 contentOptions:(int64_t)a10;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOSuggestionSheetOptions)initWithCoder:(id)coder;
+- (MOSuggestionSheetOptions)initWithShowCancelButton:(BOOL)button showBlankEntryButton:(BOOL)entryButton peekDetentRatio:(double)ratio presentFullScreen:(BOOL)screen presentationIsAnimated:(BOOL)animated selectedTabIsRecommended:(BOOL)recommended selectedSuggestionId:(id)id contentOptions:(int64_t)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionSheetOptions
 
-- (MOSuggestionSheetOptions)initWithShowCancelButton:(BOOL)a3 showBlankEntryButton:(BOOL)a4 peekDetentRatio:(double)a5 presentFullScreen:(BOOL)a6 presentationIsAnimated:(BOOL)a7 selectedTabIsRecommended:(BOOL)a8 selectedSuggestionId:(id)a9 contentOptions:(int64_t)a10
+- (MOSuggestionSheetOptions)initWithShowCancelButton:(BOOL)button showBlankEntryButton:(BOOL)entryButton peekDetentRatio:(double)ratio presentFullScreen:(BOOL)screen presentationIsAnimated:(BOOL)animated selectedTabIsRecommended:(BOOL)recommended selectedSuggestionId:(id)id contentOptions:(int64_t)self0
 {
-  v18 = a9;
+  idCopy = id;
   v22.receiver = self;
   v22.super_class = MOSuggestionSheetOptions;
   v19 = [(MOSuggestionSheetOptions *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    v19->_showCancelButton = a3;
-    v19->_showBlankEntryButton = a4;
-    v19->_peekDetentRatio = a5;
-    v19->_presentFullScreen = a6;
-    v19->_presentationIsAnimated = a7;
-    v19->_selectedTabIsRecommended = a8;
-    objc_storeStrong(&v19->_selectedSuggestionId, a9);
-    v20->_contentOptions = a10;
+    v19->_showCancelButton = button;
+    v19->_showBlankEntryButton = entryButton;
+    v19->_peekDetentRatio = ratio;
+    v19->_presentFullScreen = screen;
+    v19->_presentationIsAnimated = animated;
+    v19->_selectedTabIsRecommended = recommended;
+    objc_storeStrong(&v19->_selectedSuggestionId, id);
+    v20->_contentOptions = options;
   }
 
   return v20;
 }
 
-- (MOSuggestionSheetOptions)initWithCoder:(id)a3
+- (MOSuggestionSheetOptions)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = MOSuggestionSheetOptions;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(MOSuggestionSheetOptions *)&v10 init];
-  v4->_showCancelButton = [v3 decodeBoolForKey:{@"showCancelButton", v10.receiver, v10.super_class}];
-  v4->_showBlankEntryButton = [v3 decodeBoolForKey:@"showBlankEntryButton"];
-  [v3 decodeDoubleForKey:@"peekDetentRatio"];
+  v4->_showCancelButton = [coderCopy decodeBoolForKey:{@"showCancelButton", v10.receiver, v10.super_class}];
+  v4->_showBlankEntryButton = [coderCopy decodeBoolForKey:@"showBlankEntryButton"];
+  [coderCopy decodeDoubleForKey:@"peekDetentRatio"];
   v4->_peekDetentRatio = v5;
-  v4->_presentFullScreen = [v3 decodeBoolForKey:@"presentFullScreen"];
-  v4->_presentationIsAnimated = [v3 decodeBoolForKey:@"presentationIsAnimated"];
-  v4->_selectedTabIsRecommended = [v3 decodeBoolForKey:@"selectedTabIsRecommended"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selectedSuggestionId"];
+  v4->_presentFullScreen = [coderCopy decodeBoolForKey:@"presentFullScreen"];
+  v4->_presentationIsAnimated = [coderCopy decodeBoolForKey:@"presentationIsAnimated"];
+  v4->_selectedTabIsRecommended = [coderCopy decodeBoolForKey:@"selectedTabIsRecommended"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedSuggestionId"];
   selectedSuggestionId = v4->_selectedSuggestionId;
   v4->_selectedSuggestionId = v6;
 
-  v8 = [v3 decodeIntegerForKey:@"contentOptions"];
+  v8 = [coderCopy decodeIntegerForKey:@"contentOptions"];
   v4->_contentOptions = v8;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   showCancelButton = self->_showCancelButton;
-  v5 = a3;
-  [v5 encodeBool:showCancelButton forKey:@"showCancelButton"];
-  [v5 encodeBool:self->_showBlankEntryButton forKey:@"showBlankEntryButton"];
-  [v5 encodeDouble:@"peekDetentRatio" forKey:self->_peekDetentRatio];
-  [v5 encodeBool:self->_presentFullScreen forKey:@"presentFullScreen"];
-  [v5 encodeBool:self->_presentationIsAnimated forKey:@"presentationIsAnimated"];
-  [v5 encodeBool:self->_selectedTabIsRecommended forKey:@"selectedTabIsRecommended"];
-  [v5 encodeObject:self->_selectedSuggestionId forKey:@"selectedSuggestionId"];
-  [v5 encodeInteger:self->_contentOptions forKey:@"contentOptions"];
+  coderCopy = coder;
+  [coderCopy encodeBool:showCancelButton forKey:@"showCancelButton"];
+  [coderCopy encodeBool:self->_showBlankEntryButton forKey:@"showBlankEntryButton"];
+  [coderCopy encodeDouble:@"peekDetentRatio" forKey:self->_peekDetentRatio];
+  [coderCopy encodeBool:self->_presentFullScreen forKey:@"presentFullScreen"];
+  [coderCopy encodeBool:self->_presentationIsAnimated forKey:@"presentationIsAnimated"];
+  [coderCopy encodeBool:self->_selectedTabIsRecommended forKey:@"selectedTabIsRecommended"];
+  [coderCopy encodeObject:self->_selectedSuggestionId forKey:@"selectedSuggestionId"];
+  [coderCopy encodeInteger:self->_contentOptions forKey:@"contentOptions"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5)
     {
       goto LABEL_12;
     }
 
-    v6 = [(MOSuggestionSheetOptions *)self showBlankEntryButton];
-    if (v6 != [v5 showBlankEntryButton])
+    showBlankEntryButton = [(MOSuggestionSheetOptions *)self showBlankEntryButton];
+    if (showBlankEntryButton != [v5 showBlankEntryButton])
     {
       goto LABEL_12;
     }
 
-    v7 = [(MOSuggestionSheetOptions *)self showCancelButton];
-    if (v7 == [v5 showCancelButton] && (v8 = -[MOSuggestionSheetOptions presentFullScreen](self, "presentFullScreen"), v8 == objc_msgSend(v5, "presentFullScreen")) && (v9 = -[MOSuggestionSheetOptions presentationIsAnimated](self, "presentationIsAnimated"), v9 == objc_msgSend(v5, "presentationIsAnimated")) && (v10 = -[MOSuggestionSheetOptions selectedTabIsRecommended](self, "selectedTabIsRecommended"), v10 == objc_msgSend(v5, "selectedTabIsRecommended")) && (-[MOSuggestionSheetOptions peekDetentRatio](self, "peekDetentRatio"), v12 = v11, objc_msgSend(v5, "peekDetentRatio"), v12 == v13))
+    showCancelButton = [(MOSuggestionSheetOptions *)self showCancelButton];
+    if (showCancelButton == [v5 showCancelButton] && (v8 = -[MOSuggestionSheetOptions presentFullScreen](self, "presentFullScreen"), v8 == objc_msgSend(v5, "presentFullScreen")) && (v9 = -[MOSuggestionSheetOptions presentationIsAnimated](self, "presentationIsAnimated"), v9 == objc_msgSend(v5, "presentationIsAnimated")) && (v10 = -[MOSuggestionSheetOptions selectedTabIsRecommended](self, "selectedTabIsRecommended"), v10 == objc_msgSend(v5, "selectedTabIsRecommended")) && (-[MOSuggestionSheetOptions peekDetentRatio](self, "peekDetentRatio"), v12 = v11, objc_msgSend(v5, "peekDetentRatio"), v12 == v13))
     {
-      v14 = [(MOSuggestionSheetOptions *)self selectedSuggestionId];
-      v15 = [v5 selectedSuggestionId];
-      if (v14 == v15)
+      selectedSuggestionId = [(MOSuggestionSheetOptions *)self selectedSuggestionId];
+      selectedSuggestionId2 = [v5 selectedSuggestionId];
+      if (selectedSuggestionId == selectedSuggestionId2)
       {
-        v18 = [(MOSuggestionSheetOptions *)self contentOptions];
-        v16 = v18 == [v5 contentOptions];
+        contentOptions = [(MOSuggestionSheetOptions *)self contentOptions];
+        v16 = contentOptions == [v5 contentOptions];
       }
 
       else

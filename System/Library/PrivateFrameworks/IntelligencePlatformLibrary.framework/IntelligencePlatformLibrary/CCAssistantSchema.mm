@@ -1,36 +1,36 @@
 @interface CCAssistantSchema
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAssistantSchema)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAssistantSchema)initWithType:(unsigned int)a3 version:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAssistantSchema)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAssistantSchema)initWithType:(unsigned int)type version:(id)version error:(id *)error;
 - (CCAssistantSchemaVersion)version;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAssistantSchema
 
-- (CCAssistantSchema)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAssistantSchema)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v19[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"version"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     if (v13)
     {
       v14 = v13;
@@ -52,7 +52,7 @@
       v15 = 0;
     }
 
-    v12 = [[CCAssistantSchema alloc] initWithType:v11 version:v15 error:a4];
+    v12 = [[CCAssistantSchema alloc] initWithType:unsignedIntegerValue version:v15 error:error];
     v14 = v15;
 LABEL_13:
 
@@ -74,9 +74,9 @@ LABEL_14:
 
   if (self->_version)
   {
-    v5 = [(CCAssistantSchema *)self version];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"version"];
+    version = [(CCAssistantSchema *)self version];
+    jsonDictionary = [version jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"version"];
   }
 
   v7 = [v3 copy];
@@ -84,16 +84,16 @@ LABEL_14:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:47357 enumValue:self->_type];
-  v7[2](v7, v5);
+  blockCopy[2](blockCopy, v5);
 
   if (self->_version)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:47358 subMessageValue:self->_version];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -104,10 +104,10 @@ LABEL_14:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -297,14 +297,14 @@ LABEL_46:
   return v40;
 }
 
-- (CCAssistantSchema)initWithType:(unsigned int)a3 version:(id)a4 error:(id *)a5
+- (CCAssistantSchema)initWithType:(unsigned int)type version:(id)version error:(id *)error
 {
-  v8 = a4;
+  versionCopy = version;
   v9 = objc_opt_new();
-  if (!a3)
+  if (!type)
   {
     v11 = 0;
-    if (!v8)
+    if (!versionCopy)
     {
       goto LABEL_8;
     }
@@ -318,12 +318,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v11 = v13;
       goto LABEL_11;
     }
 
-    v14 = [v8 data];
+    data = [versionCopy data];
     CCPBDataWriterWriteDataField();
 
     v11 = v13;
@@ -335,24 +335,24 @@ LABEL_6:
   if (!v10)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteUint32Field();
-  if (v8)
+  if (versionCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

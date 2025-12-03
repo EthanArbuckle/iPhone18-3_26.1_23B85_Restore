@@ -1,75 +1,75 @@
 @interface CAMOverlayServiceSlider
-- (BOOL)isContentEqual:(id)a3;
+- (BOOL)isContentEqual:(id)equal;
 - (BOOL)isEnabled;
-- (CAMOverlayServiceSlider)initWithCoder:(id)a3;
-- (CAMOverlayServiceSlider)initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5 rangeScale:(int64_t)a6 valueRange:(id)a7 primaryValues:(id)a8;
-- (CAMOverlayServiceSlider)sliderWithPrimaryValues:(id)a3;
-- (id)_initWithIdentifier:(id)a3 sliderType:(int64_t)a4 captureUniqueID:(id)a5 zoomRange:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initPhotoZoomSliderWithIdentifier:(id)a3 maximumZoomFactor:(double)a4 captureDeviceUniqueID:(id)a5;
-- (id)initVideoZoomSliderWithIdentifier:(id)a3 maximumZoomFactor:(double)a4 captureDeviceUniqueID:(id)a5;
+- (CAMOverlayServiceSlider)initWithCoder:(id)coder;
+- (CAMOverlayServiceSlider)initWithIdentifier:(id)identifier title:(id)title imageName:(id)name rangeScale:(int64_t)scale valueRange:(id)range primaryValues:(id)values;
+- (CAMOverlayServiceSlider)sliderWithPrimaryValues:(id)values;
+- (id)_initWithIdentifier:(id)identifier sliderType:(int64_t)type captureUniqueID:(id)d zoomRange:(id)range;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initPhotoZoomSliderWithIdentifier:(id)identifier maximumZoomFactor:(double)factor captureDeviceUniqueID:(id)d;
+- (id)initVideoZoomSliderWithIdentifier:(id)identifier maximumZoomFactor:(double)factor captureDeviceUniqueID:(id)d;
 - (id)sliderUnpackingDisplayValuesIfNeeded;
-- (id)updateWithFloatValue:(float)a3;
-- (id)updateWithStyleDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValueFormat:(id)a3;
+- (id)updateWithFloatValue:(float)value;
+- (id)updateWithStyleDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValueFormat:(id)format;
 @end
 
 @implementation CAMOverlayServiceSlider
 
-- (CAMOverlayServiceSlider)initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5 rangeScale:(int64_t)a6 valueRange:(id)a7 primaryValues:(id)a8
+- (CAMOverlayServiceSlider)initWithIdentifier:(id)identifier title:(id)title imageName:(id)name rangeScale:(int64_t)scale valueRange:(id)range primaryValues:(id)values
 {
-  v15 = a7;
-  v16 = a8;
+  rangeCopy = range;
+  valuesCopy = values;
   v20.receiver = self;
   v20.super_class = CAMOverlayServiceSlider;
-  v17 = [(CAMAbstractOverlayServiceControl *)&v20 _initWithIdentifier:a3 title:a4 imageName:a5];
+  v17 = [(CAMAbstractOverlayServiceControl *)&v20 _initWithIdentifier:identifier title:title imageName:name];
   v18 = v17;
   if (v17)
   {
-    v17->_rangeScale = a6;
-    objc_storeStrong(&v17->_valueRange, a7);
-    objc_storeStrong(&v18->_primaryValues, a8);
+    v17->_rangeScale = scale;
+    objc_storeStrong(&v17->_valueRange, range);
+    objc_storeStrong(&v18->_primaryValues, values);
     v18->_sliderType = 0;
   }
 
   return v18;
 }
 
-- (id)initPhotoZoomSliderWithIdentifier:(id)a3 maximumZoomFactor:(double)a4 captureDeviceUniqueID:(id)a5
+- (id)initPhotoZoomSliderWithIdentifier:(id)identifier maximumZoomFactor:(double)factor captureDeviceUniqueID:(id)d
 {
-  v7 = fmax(a4, 1.0);
-  v8 = a5;
-  v9 = a3;
+  v7 = fmax(factor, 1.0);
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = [[CAMOverlayContinuousFloatRange alloc] initWithMinimum:1.0 maximum:v7];
-  v11 = [(CAMOverlayServiceSlider *)self _initWithIdentifier:v9 sliderType:5 captureUniqueID:v8 zoomRange:v10];
+  v11 = [(CAMOverlayServiceSlider *)self _initWithIdentifier:identifierCopy sliderType:5 captureUniqueID:dCopy zoomRange:v10];
 
   return v11;
 }
 
-- (id)initVideoZoomSliderWithIdentifier:(id)a3 maximumZoomFactor:(double)a4 captureDeviceUniqueID:(id)a5
+- (id)initVideoZoomSliderWithIdentifier:(id)identifier maximumZoomFactor:(double)factor captureDeviceUniqueID:(id)d
 {
-  v7 = fmax(a4, 1.0);
-  v8 = a5;
-  v9 = a3;
+  v7 = fmax(factor, 1.0);
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = [[CAMOverlayContinuousFloatRange alloc] initWithMinimum:1.0 maximum:v7];
-  v11 = [(CAMOverlayServiceSlider *)self _initWithIdentifier:v9 sliderType:6 captureUniqueID:v8 zoomRange:v10];
+  v11 = [(CAMOverlayServiceSlider *)self _initWithIdentifier:identifierCopy sliderType:6 captureUniqueID:dCopy zoomRange:v10];
 
   return v11;
 }
 
-- (id)_initWithIdentifier:(id)a3 sliderType:(int64_t)a4 captureUniqueID:(id)a5 zoomRange:(id)a6
+- (id)_initWithIdentifier:(id)identifier sliderType:(int64_t)type captureUniqueID:(id)d zoomRange:(id)range
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 > 3)
+  identifierCopy = identifier;
+  dCopy = d;
+  rangeCopy = range;
+  if (type > 3)
   {
-    if ((a4 - 5) < 2)
+    if ((type - 5) < 2)
     {
-      objc_storeStrong(&self->_captureDeviceUniqueID, a5);
+      objc_storeStrong(&self->_captureDeviceUniqueID, d);
       self->_rangeScale = 1;
-      objc_storeStrong(&self->_valueRange, a6);
+      objc_storeStrong(&self->_valueRange, range);
       v14 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Camoverlayserv.isa)];
       v21 = [v14 localizedStringForKey:@"ZOOM_FACTOR_TEXT" value:&stru_28432BD98 table:@"CameraOverlayServices"];
       valueFormat = self->_valueFormat;
@@ -80,9 +80,9 @@
       goto LABEL_15;
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
-      objc_storeStrong(&self->_captureSessionUniqueID, a5);
+      objc_storeStrong(&self->_captureSessionUniqueID, d);
       v31 = [[CAMOverlayContinuousFloatRange alloc] initWithMinimum:-1.0 maximum:1.0];
       valueRange = self->_valueRange;
       self->_valueRange = v31;
@@ -97,9 +97,9 @@
       goto LABEL_15;
     }
 
-    if (a4 == 7)
+    if (type == 7)
     {
-      objc_storeStrong(&self->_captureDeviceUniqueID, a5);
+      objc_storeStrong(&self->_captureDeviceUniqueID, d);
       v17 = [[CAMOverlayDiscreteFloatRange alloc] initWithValues:&unk_28432E5B0];
       v18 = self->_valueRange;
       self->_valueRange = v17;
@@ -117,10 +117,10 @@
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 1:
-        objc_storeStrong(&self->_captureDeviceUniqueID, a5);
+        objc_storeStrong(&self->_captureDeviceUniqueID, d);
         v23 = [[CAMOverlayDiscreteFloatRange alloc] initWithMinimum:-2.0 maximum:2.0 step:0.333333333];
         v24 = self->_valueRange;
         self->_valueRange = v23;
@@ -138,7 +138,7 @@
         v16 = @"SLIDER_EXPOSURE";
         goto LABEL_15;
       case 2:
-        objc_storeStrong(&self->_captureSessionUniqueID, a5);
+        objc_storeStrong(&self->_captureSessionUniqueID, d);
         v29 = [[CAMOverlayContinuousFloatRange alloc] initWithMinimum:-1.0 maximum:1.0];
         v14 = self->_valueRange;
         self->_valueRange = v29;
@@ -146,7 +146,7 @@
         v16 = @"SLIDER_STYLE_COLOR";
         goto LABEL_15;
       case 3:
-        objc_storeStrong(&self->_captureSessionUniqueID, a5);
+        objc_storeStrong(&self->_captureSessionUniqueID, d);
         v13 = [[CAMOverlayContinuousFloatRange alloc] initWithMinimum:0.0 maximum:1.0];
         v14 = self->_valueRange;
         self->_valueRange = v13;
@@ -158,9 +158,9 @@ LABEL_15:
         v36 = [v35 localizedStringForKey:v16 value:&stru_28432BD98 table:@"CameraOverlayServices"];
         v38.receiver = self;
         v38.super_class = CAMOverlayServiceSlider;
-        v30 = [(CAMAbstractOverlayServiceControl *)&v38 _initWithIdentifier:v10 title:v36 imageName:v15];
+        v30 = [(CAMAbstractOverlayServiceControl *)&v38 _initWithIdentifier:identifierCopy title:v36 imageName:v15];
 
-        v30[9] = a4;
+        v30[9] = type;
         goto LABEL_16;
     }
   }
@@ -174,12 +174,12 @@ LABEL_16:
 - (id)sliderUnpackingDisplayValuesIfNeeded
 {
   v48 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(CAMOverlayServiceSlider *)v2 displayValuesByValue];
-  if ([v3 count])
+  selfCopy = self;
+  displayValuesByValue = [(CAMOverlayServiceSlider *)selfCopy displayValuesByValue];
+  if ([displayValuesByValue count])
   {
-    v4 = [v3 allKeys];
-    v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [displayValuesByValue allKeys];
+    v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v43 = 0u;
@@ -201,13 +201,13 @@ LABEL_16:
             objc_enumerationMutation(v7);
           }
 
-          values = [v3 objectForKeyedSubscript:{*(*(&v43 + 1) + 8 * i), v43}];
+          values = [displayValuesByValue objectForKeyedSubscript:{*(*(&v43 + 1) + 8 * i), v43}];
           if ([(NSArray *)v6 count])
           {
             [values doubleValue];
             v14 = v13;
-            v15 = [(NSArray *)v6 lastObject];
-            [v15 doubleValue];
+            lastObject = [(NSArray *)v6 lastObject];
+            [lastObject doubleValue];
             v17 = v16;
 
             if (v14 < v17)
@@ -233,9 +233,9 @@ LABEL_16:
 
     if (v6)
     {
-      v18 = [(CAMOverlayServiceSlider *)v2 copy];
+      v18 = [(CAMOverlayServiceSlider *)selfCopy copy];
 
-      if ([(CAMOverlayServiceSlider *)v2 sliderType]== 7)
+      if ([(CAMOverlayServiceSlider *)selfCopy sliderType]== 7)
       {
         v19 = [[CAMOverlayDiscreteFloatRange alloc] initWithValues:v7];
         valueRange = v18->_valueRange;
@@ -249,11 +249,11 @@ LABEL_16:
       else
       {
         v24 = [CAMOverlayContinuousFloatRange alloc];
-        v25 = [(NSArray *)v7 firstObject];
-        [v25 doubleValue];
+        firstObject = [(NSArray *)v7 firstObject];
+        [firstObject doubleValue];
         v27 = v26;
-        v28 = [(NSArray *)v7 lastObject];
-        [v28 doubleValue];
+        lastObject2 = [(NSArray *)v7 lastObject];
+        [lastObject2 doubleValue];
         v30 = [(CAMOverlayContinuousFloatRange *)v24 initWithMinimum:v27 maximum:v29];
         v31 = v18->_valueRange;
         v18->_valueRange = v30;
@@ -262,8 +262,8 @@ LABEL_16:
         displayValueRange = [(NSArray *)v6 firstObject];
         [displayValueRange doubleValue];
         v34 = v33;
-        v35 = [(NSArray *)v6 lastObject];
-        [v35 doubleValue];
+        lastObject3 = [(NSArray *)v6 lastObject];
+        [lastObject3 doubleValue];
         v37 = [(CAMOverlayContinuousFloatRange *)v32 initWithMinimum:v34 maximum:v36];
         v38 = v18->_displayValueRange;
         v18->_displayValueRange = v37;
@@ -276,83 +276,83 @@ LABEL_16:
       v40 = v7;
       values = v18->_values;
       v18->_values = v40;
-      v2 = v18;
+      selfCopy = v18;
 LABEL_17:
     }
   }
 
   v41 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return selfCopy;
 }
 
-- (CAMOverlayServiceSlider)sliderWithPrimaryValues:(id)a3
+- (CAMOverlayServiceSlider)sliderWithPrimaryValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v5 = [(CAMOverlayServiceSlider *)self copy];
   v6 = v5[14];
-  v5[14] = v4;
+  v5[14] = valuesCopy;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(CAMOverlayServiceSlider *)self sliderType];
+  sliderType = [(CAMOverlayServiceSlider *)self sliderType];
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(CAMAbstractOverlayServiceControl *)self identifier];
-  if (v4)
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+  if (sliderType)
   {
-    v7 = [(CAMOverlayServiceSlider *)self sliderType];
-    v8 = [(CAMOverlayServiceSlider *)self captureDeviceUniqueID];
-    if (v8)
+    sliderType2 = [(CAMOverlayServiceSlider *)self sliderType];
+    captureDeviceUniqueID = [(CAMOverlayServiceSlider *)self captureDeviceUniqueID];
+    if (captureDeviceUniqueID)
     {
-      v9 = [v5 initWithIdentifier:v6 sliderType:v7 captureUniqueID:v8];
+      v9 = [v5 initWithIdentifier:identifier sliderType:sliderType2 captureUniqueID:captureDeviceUniqueID];
     }
 
     else
     {
-      v15 = [(CAMOverlayServiceSlider *)self captureSessionUniqueID];
-      v9 = [v5 initWithIdentifier:v6 sliderType:v7 captureUniqueID:v15];
+      captureSessionUniqueID = [(CAMOverlayServiceSlider *)self captureSessionUniqueID];
+      v9 = [v5 initWithIdentifier:identifier sliderType:sliderType2 captureUniqueID:captureSessionUniqueID];
     }
 
-    v16 = [(CAMOverlayServiceSlider *)self primaryValues];
-    v6 = v9[14];
-    v9[14] = v16;
+    primaryValues = [(CAMOverlayServiceSlider *)self primaryValues];
+    identifier = v9[14];
+    v9[14] = primaryValues;
   }
 
   else
   {
-    v10 = [(CAMAbstractOverlayServiceControl *)self title];
-    v11 = [(CAMAbstractOverlayServiceControl *)self imageName];
-    v12 = [(CAMOverlayServiceSlider *)self rangeScale];
-    v13 = [(CAMOverlayServiceSlider *)self valueRange];
-    v14 = [(CAMOverlayServiceSlider *)self primaryValues];
-    v9 = [v5 initWithIdentifier:v6 title:v10 imageName:v11 rangeScale:v12 valueRange:v13 primaryValues:v14];
+    title = [(CAMAbstractOverlayServiceControl *)self title];
+    imageName = [(CAMAbstractOverlayServiceControl *)self imageName];
+    rangeScale = [(CAMOverlayServiceSlider *)self rangeScale];
+    valueRange = [(CAMOverlayServiceSlider *)self valueRange];
+    primaryValues2 = [(CAMOverlayServiceSlider *)self primaryValues];
+    v9 = [v5 initWithIdentifier:identifier title:title imageName:imageName rangeScale:rangeScale valueRange:valueRange primaryValues:primaryValues2];
   }
 
-  v17 = [(CAMOverlayServiceSlider *)self displayValuesByValue];
-  [v9 setDisplayValuesByValue:v17];
+  displayValuesByValue = [(CAMOverlayServiceSlider *)self displayValuesByValue];
+  [v9 setDisplayValuesByValue:displayValuesByValue];
 
-  v18 = [(CAMOverlayServiceSlider *)self valueFormat];
-  [v9 setValueFormat:v18];
+  valueFormat = [(CAMOverlayServiceSlider *)self valueFormat];
+  [v9 setValueFormat:valueFormat];
 
   [v9 setEnabled:self->super._enabled];
   return v9;
 }
 
-- (void)setValueFormat:(id)a3
+- (void)setValueFormat:(id)format
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     v11 = 0;
-    v5 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:&v11, @"test"];
+    v5 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%@" error:&v11, @"test"];
     v6 = v11;
     if (v5)
     {
-      v7 = [v4 copy];
+      v7 = [formatCopy copy];
       valueFormat = self->_valueFormat;
       self->_valueFormat = v7;
     }
@@ -363,9 +363,9 @@ LABEL_17:
       if (os_log_type_enabled(valueFormat, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v13 = v4;
+        v13 = formatCopy;
         v14 = 2114;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
         v17 = v6;
         _os_log_error_impl(&dword_22E684000, valueFormat, OS_LOG_TYPE_ERROR, "Invalid value format %{public}@ for %{public}@: %@", buf, 0x20u);
@@ -386,14 +386,14 @@ LABEL_17:
 {
   v12.receiver = self;
   v12.super_class = CAMOverlayServiceSlider;
-  v3 = [(CAMAbstractOverlayServiceControl *)&v12 isEnabled];
-  if (v3)
+  isEnabled = [(CAMAbstractOverlayServiceControl *)&v12 isEnabled];
+  if (isEnabled)
   {
-    v4 = [(CAMOverlayFloatValueRange *)self->_valueRange isDiscrete];
+    isDiscrete = [(CAMOverlayFloatValueRange *)self->_valueRange isDiscrete];
     valueRange = self->_valueRange;
-    if (v4)
+    if (isDiscrete)
     {
-      LOBYTE(v3) = [(CAMOverlayFloatValueRange *)valueRange count]> 1;
+      LOBYTE(isEnabled) = [(CAMOverlayFloatValueRange *)valueRange count]> 1;
     }
 
     else if ([(CAMOverlayFloatValueRange *)valueRange isFloatingPoint])
@@ -404,31 +404,31 @@ LABEL_17:
       [(CAMOverlayFloatValueRange *)v6 maximum];
       v10 = v9;
 
-      LOBYTE(v3) = v8 != v10;
+      LOBYTE(isEnabled) = v8 != v10;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isEnabled) = 1;
     }
   }
 
-  return v3;
+  return isEnabled;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = CAMOverlayServiceSlider;
-  if ([(CAMAbstractOverlayServiceControl *)&v19 isContentEqual:v4])
+  if ([(CAMAbstractOverlayServiceControl *)&v19 isContentEqual:equalCopy])
   {
     sliderType = self->_sliderType;
-    if (sliderType == [v4 sliderType])
+    if (sliderType == [equalCopy sliderType])
     {
       valueRange = self->_valueRange;
-      v7 = [v4 valueRange];
-      if (![(CAMOverlayFloatValueRange *)valueRange isEqualToRange:v7])
+      valueRange = [equalCopy valueRange];
+      if (![(CAMOverlayFloatValueRange *)valueRange isEqualToRange:valueRange])
       {
         v12 = 0;
 LABEL_17:
@@ -436,14 +436,14 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v8 = 112;
+      primaryValues2 = 112;
       primaryValues = self->_primaryValues;
-      v10 = [v4 primaryValues];
-      if (primaryValues != v10)
+      primaryValues = [equalCopy primaryValues];
+      if (primaryValues != primaryValues)
       {
         v11 = self->_primaryValues;
-        v8 = [v4 primaryValues];
-        if (![(CAMOverlayDiscreteFloatRange *)v11 isEqualToRange:v8])
+        primaryValues2 = [equalCopy primaryValues];
+        if (![(CAMOverlayDiscreteFloatRange *)v11 isEqualToRange:primaryValues2])
         {
           v12 = 0;
           goto LABEL_15;
@@ -452,12 +452,12 @@ LABEL_17:
 
       v13 = 128;
       valueFormat = self->_valueFormat;
-      v15 = [v4 valueFormat];
-      if (valueFormat == v15 || (v16 = self->_valueFormat, [v4 valueFormat], v13 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v16, "isEqualToString:", v13)))
+      valueFormat = [equalCopy valueFormat];
+      if (valueFormat == valueFormat || (v16 = self->_valueFormat, [equalCopy valueFormat], v13 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v16, "isEqualToString:", v13)))
       {
         rangeScale = self->_rangeScale;
-        v12 = rangeScale == [v4 rangeScale];
-        if (valueFormat == v15)
+        v12 = rangeScale == [equalCopy rangeScale];
+        if (valueFormat == valueFormat)
         {
           goto LABEL_14;
         }
@@ -469,7 +469,7 @@ LABEL_17:
       }
 
 LABEL_14:
-      if (primaryValues == v10)
+      if (primaryValues == primaryValues)
       {
 LABEL_16:
 
@@ -488,69 +488,69 @@ LABEL_18:
   return v12;
 }
 
-- (CAMOverlayServiceSlider)initWithCoder:(id)a3
+- (CAMOverlayServiceSlider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@.%@", v7, @"sliderType"];
-  v78 = [v4 decodeIntegerForKey:v8];
+  v78 = [coderCopy decodeIntegerForKey:v8];
 
   v9 = MEMORY[0x277CCACA8];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = [v9 stringWithFormat:@"%@.%@", v11, @"rangeScale"];
-  v77 = [v4 decodeIntegerForKey:v12];
+  v77 = [coderCopy decodeIntegerForKey:v12];
 
   v13 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v14 = MEMORY[0x277CCACA8];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v17 = [v14 stringWithFormat:@"%@.%@", v16, @"identifier"];
-  v79 = [v4 decodeObjectOfClasses:v13 forKey:v17];
+  v79 = [coderCopy decodeObjectOfClasses:v13 forKey:v17];
 
   v18 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v19 = MEMORY[0x277CCACA8];
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   v22 = [v19 stringWithFormat:@"%@.%@", v21, @"title"];
-  v82 = [v4 decodeObjectOfClasses:v18 forKey:v22];
+  v82 = [coderCopy decodeObjectOfClasses:v18 forKey:v22];
 
   v23 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v24 = MEMORY[0x277CCACA8];
   v25 = objc_opt_class();
   v26 = NSStringFromClass(v25);
   v27 = [v24 stringWithFormat:@"%@.%@", v26, @"imageName"];
-  v81 = [v4 decodeObjectOfClasses:v23 forKey:v27];
+  v81 = [coderCopy decodeObjectOfClasses:v23 forKey:v27];
 
   v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v29 = MEMORY[0x277CCACA8];
   v30 = objc_opt_class();
   v31 = NSStringFromClass(v30);
   v32 = [v29 stringWithFormat:@"%@.%@", v31, @"captureDeviceUniqueID"];
-  v84 = [v4 decodeObjectOfClasses:v28 forKey:v32];
+  v84 = [coderCopy decodeObjectOfClasses:v28 forKey:v32];
 
   v33 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v34 = MEMORY[0x277CCACA8];
   v35 = objc_opt_class();
   v36 = NSStringFromClass(v35);
   v37 = [v34 stringWithFormat:@"%@.%@", v36, @"captureSessionUniqueID"];
-  v80 = [v4 decodeObjectOfClasses:v33 forKey:v37];
+  v80 = [coderCopy decodeObjectOfClasses:v33 forKey:v37];
 
   v38 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v39 = MEMORY[0x277CCACA8];
   v40 = objc_opt_class();
   v41 = NSStringFromClass(v40);
   v42 = [v39 stringWithFormat:@"%@.%@", v41, @"primaryValues"];
-  v83 = [v4 decodeObjectOfClasses:v38 forKey:v42];
+  v83 = [coderCopy decodeObjectOfClasses:v38 forKey:v42];
 
   v43 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v44 = MEMORY[0x277CCACA8];
   v45 = objc_opt_class();
   v46 = NSStringFromClass(v45);
   v47 = [v44 stringWithFormat:@"%@.%@", v46, @"valueFormat"];
-  v48 = [v4 decodeObjectOfClasses:v43 forKey:v47];
+  v48 = [coderCopy decodeObjectOfClasses:v43 forKey:v47];
 
   v49 = MEMORY[0x277CBEB98];
   v50 = objc_opt_class();
@@ -559,7 +559,7 @@ LABEL_18:
   v53 = objc_opt_class();
   v54 = NSStringFromClass(v53);
   v55 = [v52 stringWithFormat:@"%@.%@", v54, @"valueRange"];
-  v56 = [v4 decodeObjectOfClasses:v51 forKey:v55];
+  v56 = [coderCopy decodeObjectOfClasses:v51 forKey:v55];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -593,7 +593,7 @@ LABEL_18:
         v69 = objc_opt_class();
         v70 = NSStringFromClass(v69);
         v71 = [v68 stringWithFormat:@"%@.%@", v70, @"displayValuesByValue"];
-        v72 = [v4 decodeObjectOfClasses:v67 forKey:v71];
+        v72 = [coderCopy decodeObjectOfClasses:v67 forKey:v71];
         displayValuesByValue = self->_displayValuesByValue;
         self->_displayValuesByValue = v72;
       }
@@ -614,7 +614,7 @@ LABEL_18:
     {
       if (v78 == 1 && v79 && v84)
       {
-        v63 = self;
+        selfCopy2 = self;
         v64 = v79;
         goto LABEL_18;
       }
@@ -635,10 +635,10 @@ LABEL_18:
     v61 = v82;
     if (v79 && v80)
     {
-      v63 = self;
+      selfCopy2 = self;
       v64 = v79;
 LABEL_18:
-      v74 = [CAMOverlayServiceSlider initWithIdentifier:v63 sliderType:"initWithIdentifier:sliderType:captureUniqueID:" captureUniqueID:v64];
+      v74 = [CAMOverlayServiceSlider initWithIdentifier:selfCopy2 sliderType:"initWithIdentifier:sliderType:captureUniqueID:" captureUniqueID:v64];
 LABEL_19:
       self = v74;
     }
@@ -649,9 +649,9 @@ LABEL_19:
     [(CAMOverlayServiceSlider *)self setValueFormat:v48];
   }
 
-  v75 = [(CAMAbstractOverlayServiceControl *)self identifier];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
 
-  if (!v75)
+  if (!identifier)
   {
 
     self = 0;
@@ -660,72 +660,72 @@ LABEL_19:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v45.receiver = self;
   v45.super_class = CAMOverlayServiceSlider;
-  v4 = a3;
-  [(CAMAbstractOverlayServiceControl *)&v45 encodeWithCoder:v4];
-  v5 = [(CAMOverlayServiceSlider *)self sliderType];
+  coderCopy = coder;
+  [(CAMAbstractOverlayServiceControl *)&v45 encodeWithCoder:coderCopy];
+  sliderType = [(CAMOverlayServiceSlider *)self sliderType];
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"%@.%@", v8, @"sliderType", v45.receiver, v45.super_class];
-  [v4 encodeInteger:v5 forKey:v9];
+  [coderCopy encodeInteger:sliderType forKey:v9];
 
-  v10 = [(CAMOverlayServiceSlider *)self rangeScale];
+  rangeScale = [(CAMOverlayServiceSlider *)self rangeScale];
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v11 stringWithFormat:@"%@.%@", v13, @"rangeScale"];
-  [v4 encodeInteger:v10 forKey:v14];
+  [coderCopy encodeInteger:rangeScale forKey:v14];
 
-  v15 = [(CAMOverlayServiceSlider *)self valueRange];
+  valueRange = [(CAMOverlayServiceSlider *)self valueRange];
   v16 = MEMORY[0x277CCACA8];
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
   v19 = [v16 stringWithFormat:@"%@.%@", v18, @"valueRange"];
-  [v4 encodeObject:v15 forKey:v19];
+  [coderCopy encodeObject:valueRange forKey:v19];
 
-  v20 = [(CAMOverlayServiceSlider *)self primaryValues];
+  primaryValues = [(CAMOverlayServiceSlider *)self primaryValues];
   v21 = MEMORY[0x277CCACA8];
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
   v24 = [v21 stringWithFormat:@"%@.%@", v23, @"primaryValues"];
-  [v4 encodeObject:v20 forKey:v24];
+  [coderCopy encodeObject:primaryValues forKey:v24];
 
-  v25 = [(CAMOverlayServiceSlider *)self displayValuesByValue];
+  displayValuesByValue = [(CAMOverlayServiceSlider *)self displayValuesByValue];
   v26 = MEMORY[0x277CCACA8];
   v27 = objc_opt_class();
   v28 = NSStringFromClass(v27);
   v29 = [v26 stringWithFormat:@"%@.%@", v28, @"displayValuesByValue"];
-  [v4 encodeObject:v25 forKey:v29];
+  [coderCopy encodeObject:displayValuesByValue forKey:v29];
 
-  v30 = [(CAMOverlayServiceSlider *)self captureDeviceUniqueID];
+  captureDeviceUniqueID = [(CAMOverlayServiceSlider *)self captureDeviceUniqueID];
   v31 = MEMORY[0x277CCACA8];
   v32 = objc_opt_class();
   v33 = NSStringFromClass(v32);
   v34 = [v31 stringWithFormat:@"%@.%@", v33, @"captureDeviceUniqueID"];
-  [v4 encodeObject:v30 forKey:v34];
+  [coderCopy encodeObject:captureDeviceUniqueID forKey:v34];
 
-  v35 = [(CAMOverlayServiceSlider *)self captureSessionUniqueID];
+  captureSessionUniqueID = [(CAMOverlayServiceSlider *)self captureSessionUniqueID];
   v36 = MEMORY[0x277CCACA8];
   v37 = objc_opt_class();
   v38 = NSStringFromClass(v37);
   v39 = [v36 stringWithFormat:@"%@.%@", v38, @"captureSessionUniqueID"];
-  [v4 encodeObject:v35 forKey:v39];
+  [coderCopy encodeObject:captureSessionUniqueID forKey:v39];
 
-  v40 = [(CAMOverlayServiceSlider *)self valueFormat];
+  valueFormat = [(CAMOverlayServiceSlider *)self valueFormat];
   v41 = MEMORY[0x277CCACA8];
   v42 = objc_opt_class();
   v43 = NSStringFromClass(v42);
   v44 = [v41 stringWithFormat:@"%@.%@", v43, @"valueFormat"];
-  [v4 encodeObject:v40 forKey:v44];
+  [coderCopy encodeObject:valueFormat forKey:v44];
 }
 
-- (id)updateWithStyleDictionary:(id)a3
+- (id)updateWithStyleDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (([(CAMOverlayServiceSlider *)self sliderType]- 2) > 2)
   {
     v7 = 0;
@@ -734,19 +734,19 @@ LABEL_19:
   else
   {
     v5 = [CAMOverlayServiceControlUpdate alloc];
-    v6 = [(CAMAbstractOverlayServiceControl *)self identifier];
-    v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:v6 styleDictionary:v4];
+    identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+    v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:identifier styleDictionary:dictionaryCopy];
   }
 
   return v7;
 }
 
-- (id)updateWithFloatValue:(float)a3
+- (id)updateWithFloatValue:(float)value
 {
   v5 = [CAMOverlayServiceControlUpdate alloc];
-  v6 = [(CAMAbstractOverlayServiceControl *)self identifier];
-  *&v7 = a3;
-  v8 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:v6 floatValue:v7];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+  *&v7 = value;
+  v8 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:identifier floatValue:v7];
 
   return v8;
 }

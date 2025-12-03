@@ -1,14 +1,14 @@
 @interface HDHeadphoneAudioExposureStatisticsSnapshot
-- (HDHeadphoneAudioExposureStatisticsSnapshot)initWithStatistics:(id)a3 includesPrunableData:(BOOL)a4 previousNotificationDate:(id)a5;
+- (HDHeadphoneAudioExposureStatisticsSnapshot)initWithStatistics:(id)statistics includesPrunableData:(BOOL)data previousNotificationDate:(id)date;
 @end
 
 @implementation HDHeadphoneAudioExposureStatisticsSnapshot
 
-- (HDHeadphoneAudioExposureStatisticsSnapshot)initWithStatistics:(id)a3 includesPrunableData:(BOOL)a4 previousNotificationDate:(id)a5
+- (HDHeadphoneAudioExposureStatisticsSnapshot)initWithStatistics:(id)statistics includesPrunableData:(BOOL)data previousNotificationDate:(id)date
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  statisticsCopy = statistics;
+  dateCopy = date;
+  if (!statisticsCopy)
   {
     [HDHeadphoneAudioExposureStatisticsSnapshot initWithStatistics:includesPrunableData:previousNotificationDate:];
   }
@@ -19,9 +19,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_statistics, a3);
-    v12->_includesPrunableData = a4;
-    objc_storeStrong(&v12->_previousNotificationDate, a5);
+    objc_storeStrong(&v11->_statistics, statistics);
+    v12->_includesPrunableData = data;
+    objc_storeStrong(&v12->_previousNotificationDate, date);
     v13 = v12;
   }
 

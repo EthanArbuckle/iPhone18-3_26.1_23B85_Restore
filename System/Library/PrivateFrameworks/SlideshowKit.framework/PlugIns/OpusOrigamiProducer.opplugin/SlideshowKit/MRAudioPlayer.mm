@@ -1,28 +1,28 @@
 @interface MRAudioPlayer
-- (MRAudioPlayer)initWithAudioItems:(id)a3 andAudioPlaylist:(id)a4;
+- (MRAudioPlayer)initWithAudioItems:(id)items andAudioPlaylist:(id)playlist;
 - (double)currentDuckLevel;
 - (void)dealloc;
-- (void)processWithDuckLevel:(double)a3;
+- (void)processWithDuckLevel:(double)level;
 - (void)resyncAudioItem;
-- (void)setShouldBePlaying:(BOOL)a3;
-- (void)syncVolumeToAudioPlaylist:(id)a3;
+- (void)setShouldBePlaying:(BOOL)playing;
+- (void)syncVolumeToAudioPlaylist:(id)playlist;
 @end
 
 @implementation MRAudioPlayer
 
-- (MRAudioPlayer)initWithAudioItems:(id)a3 andAudioPlaylist:(id)a4
+- (MRAudioPlayer)initWithAudioItems:(id)items andAudioPlaylist:(id)playlist
 {
   v6 = [(MRAudioPlayer *)self init];
   if (v6)
   {
     v6->_avPlayer = objc_alloc_init(AVPlayer);
-    v7 = a3;
-    v6->_audioItems = v7;
+    itemsCopy = items;
+    v6->_audioItems = itemsCopy;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [(NSArray *)itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -34,7 +34,7 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(itemsCopy);
           }
 
           [*(*(&v14 + 1) + 8 * v11) duration];
@@ -43,13 +43,13 @@
         }
 
         while (v9 != v11);
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [(NSArray *)itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
-    [(MRAudioPlayer *)v6 syncVolumeToAudioPlaylist:a4];
+    [(MRAudioPlayer *)v6 syncVolumeToAudioPlaylist:playlist];
   }
 
   return v6;
@@ -65,26 +65,26 @@
   [(MRAudioPlayer *)&v3 dealloc];
 }
 
-- (void)syncVolumeToAudioPlaylist:(id)a3
+- (void)syncVolumeToAudioPlaylist:(id)playlist
 {
-  [a3 volume];
+  [playlist volume];
   self->_volume = v5;
-  [a3 fadeInDuration];
+  [playlist fadeInDuration];
   self->_fadeInDuration = v6;
-  [a3 fadeOutDuration];
+  [playlist fadeOutDuration];
   self->_fadeOutDuration = v7;
-  [a3 duckLevel];
+  [playlist duckLevel];
   self->_duckLevel = v8;
-  [a3 duckInDuration];
+  [playlist duckInDuration];
   self->_duckInDuration = v9;
-  [a3 duckOutDuration];
+  [playlist duckOutDuration];
   self->_duckOutDuration = v10;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [a3 songs];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  songs = [playlist songs];
+  v12 = [songs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -96,7 +96,7 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(songs);
         }
 
         [-[NSArray objectAtIndex:](self->_audioItems objectAtIndex:{objc_msgSend(*(*(&v16 + 1) + 8 * v15), "index")), "syncVolumeToSong:", *(*(&v16 + 1) + 8 * v15)}];
@@ -104,7 +104,7 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [songs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
@@ -164,10 +164,10 @@
   return 1.0 - (1.0 - self->_duckLevel) * v10;
 }
 
-- (void)setShouldBePlaying:(BOOL)a3
+- (void)setShouldBePlaying:(BOOL)playing
 {
-  self->_shouldBePlaying = a3;
-  if (!a3)
+  self->_shouldBePlaying = playing;
+  if (!playing)
   {
     [(AVPlayer *)self->_avPlayer rate];
     if (v4 > 0.0)
@@ -179,7 +179,7 @@
   }
 }
 
-- (void)processWithDuckLevel:(double)a3
+- (void)processWithDuckLevel:(double)level
 {
   fadeInDuration = self->_fadeInDuration;
   v6 = 1.0;
@@ -262,9 +262,9 @@ LABEL_11:
     v17 = 0.0;
   }
 
-  v23 = volume * a3;
-  v24 = [v19 avPlayerItem];
-  if (v24 != [(AVPlayer *)self->_avPlayer currentItem])
+  v23 = volume * level;
+  avPlayerItem = [v19 avPlayerItem];
+  if (avPlayerItem != [(AVPlayer *)self->_avPlayer currentItem])
   {
     v25 = self->_localTime - v17;
     [v19 startTime];
@@ -273,7 +273,7 @@ LABEL_11:
     v29[1] = 3221225472;
     v29[2] = sub_12B8D4;
     v29[3] = &unk_1AAB08;
-    v29[4] = v24;
+    v29[4] = avPlayerItem;
     v29[5] = self;
     dispatch_async(&_dispatch_main_q, v29);
   }
@@ -343,14 +343,14 @@ LABEL_3:
   v13 = self->_localTime - v7;
   [v9 startTime];
   [v9 gotoTime:v13 + v14];
-  v15 = [v9 avPlayerItem];
-  if (v15 != [(AVPlayer *)self->_avPlayer currentItem])
+  avPlayerItem = [v9 avPlayerItem];
+  if (avPlayerItem != [(AVPlayer *)self->_avPlayer currentItem])
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_12BAE8;
     v16[3] = &unk_1AAB08;
-    v16[4] = v15;
+    v16[4] = avPlayerItem;
     v16[5] = self;
     dispatch_async(&_dispatch_main_q, v16);
   }

@@ -1,30 +1,30 @@
 @interface PreferencesAssistantSetVoiceControl
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetVoiceControl
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PSCommandAndControlSettingsDetail isEnabled];
   if ([(PreferencesAssistantSetVoiceControl *)self toggle])
   {
-    v6 = (v5 ^ 1);
+    value = (v5 ^ 1);
   }
 
   else
   {
-    v6 = [(PreferencesAssistantSetVoiceControl *)self value];
+    value = [(PreferencesAssistantSetVoiceControl *)self value];
   }
 
-  v7 = [(PreferencesAssistantSetVoiceControl *)self dryRun];
+  dryRun = [(PreferencesAssistantSetVoiceControl *)self dryRun];
   v8 = +[CACPreferences sharedPreferences];
-  v9 = [v8 didShowOnboarding];
+  didShowOnboarding = [v8 didShowOnboarding];
 
-  if (v9)
+  if (didShowOnboarding)
   {
-    if (v5 != v6)
+    if (v5 != value)
     {
       v10 = 0;
       goto LABEL_10;
@@ -51,19 +51,19 @@ LABEL_10:
 
   else
   {
-    v13 = v7;
+    v13 = dryRun;
   }
 
   if ((v13 & 1) == 0)
   {
-    [PSCommandAndControlSettingsDetail setEnabled:v6];
+    [PSCommandAndControlSettingsDetail setEnabled:value];
   }
 
   v14 = PALogForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"Set";
-    if (v7)
+    if (dryRun)
     {
       v15 = @"Dry Run";
     }
@@ -83,7 +83,7 @@ LABEL_10:
     *&v23[12] = 2112;
     *&v23[14] = v16;
     *&v23[22] = 2112;
-    if (v6)
+    if (value)
     {
       v17 = @"ON";
     }
@@ -104,7 +104,7 @@ LABEL_10:
   if (!v10)
   {
     v20 = objc_alloc_init(SASettingBooleanEntity);
-    [v20 setValue:v6];
+    [v20 setValue:value];
     v21 = [NSNumber numberWithBool:v5];
     [v20 setPreviousValue:v21];
 
@@ -112,8 +112,8 @@ LABEL_10:
     [v19 setSetting:v20];
   }
 
-  v22 = [v19 dictionary];
-  v4[2](v4, v22);
+  dictionary = [v19 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

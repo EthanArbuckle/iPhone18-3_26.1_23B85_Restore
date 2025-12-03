@@ -1,45 +1,45 @@
 @interface _SFPBLinkPresentationCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBLinkPresentationCardSection)initWithDictionary:(id)a3;
-- (_SFPBLinkPresentationCardSection)initWithFacade:(id)a3;
-- (_SFPBLinkPresentationCardSection)initWithJSON:(id)a3;
+- (_SFPBLinkPresentationCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBLinkPresentationCardSection)initWithFacade:(id)facade;
+- (_SFPBLinkPresentationCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPeopleToBadge:(id)a3;
-- (void)setCoreSpotlightIdentifier:(id)a3;
-- (void)setPeopleToBadge:(id)a3;
-- (void)setUrl:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPeopleToBadge:(id)badge;
+- (void)setCoreSpotlightIdentifier:(id)identifier;
+- (void)setPeopleToBadge:(id)badge;
+- (void)setUrl:(id)url;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBLinkPresentationCardSection
 
-- (_SFPBLinkPresentationCardSection)initWithFacade:(id)a3
+- (_SFPBLinkPresentationCardSection)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBLinkPresentationCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [facadeCopy coreSpotlightIdentifier];
 
-    if (v6)
+    if (coreSpotlightIdentifier)
     {
-      v7 = [v4 coreSpotlightIdentifier];
-      [(_SFPBLinkPresentationCardSection *)v5 setCoreSpotlightIdentifier:v7];
+      coreSpotlightIdentifier2 = [facadeCopy coreSpotlightIdentifier];
+      [(_SFPBLinkPresentationCardSection *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
-    v8 = [v4 url];
+    v8 = [facadeCopy url];
 
     if (v8)
     {
-      v9 = [v4 url];
+      v9 = [facadeCopy url];
       [(_SFPBLinkPresentationCardSection *)v5 setUrl:v9];
     }
 
-    v10 = [v4 peopleToBadge];
-    if (v10)
+    peopleToBadge = [facadeCopy peopleToBadge];
+    if (peopleToBadge)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -53,8 +53,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 peopleToBadge];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    peopleToBadge2 = [facadeCopy peopleToBadge];
+    v13 = [peopleToBadge2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -65,7 +65,7 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(peopleToBadge2);
           }
 
           v17 = [[_SFPBPerson alloc] initWithFacade:*(*(&v21 + 1) + 8 * i)];
@@ -75,16 +75,16 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [peopleToBadge2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
     }
 
     [(_SFPBLinkPresentationCardSection *)v5 setPeopleToBadges:v11];
-    if ([v4 hasIsHighlighted])
+    if ([facadeCopy hasIsHighlighted])
     {
-      -[_SFPBLinkPresentationCardSection setIsHighlighted:](v5, "setIsHighlighted:", [v4 isHighlighted]);
+      -[_SFPBLinkPresentationCardSection setIsHighlighted:](v5, "setIsHighlighted:", [facadeCopy isHighlighted]);
     }
 
     v18 = v5;
@@ -94,16 +94,16 @@
   return v5;
 }
 
-- (_SFPBLinkPresentationCardSection)initWithDictionary:(id)a3
+- (_SFPBLinkPresentationCardSection)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = _SFPBLinkPresentationCardSection;
   v5 = [(_SFPBLinkPresentationCardSection *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coreSpotlightIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coreSpotlightIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       [(_SFPBLinkPresentationCardSection *)v5 setCoreSpotlightIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"url"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
       [(_SFPBLinkPresentationCardSection *)v5 setUrl:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"peopleToBadge"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"peopleToBadge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,7 +167,7 @@
       v6 = v23;
     }
 
-    v18 = [v4 objectForKeyedSubscript:{@"isHighlighted", v22, v23, v24}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"isHighlighted", v22, v23, v24}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,30 +181,30 @@
   return v5;
 }
 
-- (_SFPBLinkPresentationCardSection)initWithJSON:(id)a3
+- (_SFPBLinkPresentationCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBLinkPresentationCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBLinkPresentationCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBLinkPresentationCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -218,23 +218,23 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coreSpotlightIdentifier)
   {
-    v4 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"coreSpotlightIdentifier"];
+    coreSpotlightIdentifier = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
+    v5 = [coreSpotlightIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"coreSpotlightIdentifier"];
   }
 
   if (self->_isHighlighted)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBLinkPresentationCardSection isHighlighted](self, "isHighlighted")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isHighlighted"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isHighlighted"];
   }
 
   if ([(NSArray *)self->_peopleToBadges count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -254,16 +254,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -273,19 +273,19 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"peopleToBadge"];
+    [dictionary setObject:array forKeyedSubscript:@"peopleToBadge"];
   }
 
   if (self->_url)
   {
     v15 = [(_SFPBLinkPresentationCardSection *)self url];
     v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"url"];
+    [dictionary setObject:v16 forKeyedSubscript:@"url"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -302,28 +302,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
-  v6 = [v4 coreSpotlightIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  coreSpotlightIdentifier = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
+  coreSpotlightIdentifier2 = [equalCopy coreSpotlightIdentifier];
+  if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
-  if (v7)
+  coreSpotlightIdentifier3 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
+  if (coreSpotlightIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
-    v10 = [v4 coreSpotlightIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = coreSpotlightIdentifier3;
+    coreSpotlightIdentifier4 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
+    coreSpotlightIdentifier5 = [equalCopy coreSpotlightIdentifier];
+    v11 = [coreSpotlightIdentifier4 isEqual:coreSpotlightIdentifier5];
 
     if (!v11)
     {
@@ -335,9 +335,9 @@
   {
   }
 
-  v5 = [(_SFPBLinkPresentationCardSection *)self url];
-  v6 = [v4 url];
-  if ((v5 != 0) == (v6 == 0))
+  coreSpotlightIdentifier = [(_SFPBLinkPresentationCardSection *)self url];
+  coreSpotlightIdentifier2 = [equalCopy url];
+  if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
   {
     goto LABEL_16;
   }
@@ -347,7 +347,7 @@
   {
     v13 = v12;
     v14 = [(_SFPBLinkPresentationCardSection *)self url];
-    v15 = [v4 url];
+    v15 = [equalCopy url];
     v16 = [v14 isEqual:v15];
 
     if (!v16)
@@ -360,24 +360,24 @@
   {
   }
 
-  v5 = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
-  v6 = [v4 peopleToBadges];
-  if ((v5 != 0) != (v6 == 0))
+  coreSpotlightIdentifier = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
+  coreSpotlightIdentifier2 = [equalCopy peopleToBadges];
+  if ((coreSpotlightIdentifier != 0) != (coreSpotlightIdentifier2 == 0))
   {
-    v17 = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
-    if (!v17)
+    peopleToBadges = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
+    if (!peopleToBadges)
     {
 
 LABEL_20:
       isHighlighted = self->_isHighlighted;
-      v22 = isHighlighted == [v4 isHighlighted];
+      v22 = isHighlighted == [equalCopy isHighlighted];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
-    v20 = [v4 peopleToBadges];
-    v21 = [v19 isEqual:v20];
+    v18 = peopleToBadges;
+    peopleToBadges2 = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
+    peopleToBadges3 = [equalCopy peopleToBadges];
+    v21 = [peopleToBadges2 isEqual:peopleToBadges3];
 
     if (v21)
     {
@@ -397,12 +397,12 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
-  if (v5)
+  toCopy = to;
+  coreSpotlightIdentifier = [(_SFPBLinkPresentationCardSection *)self coreSpotlightIdentifier];
+  if (coreSpotlightIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -413,12 +413,12 @@ LABEL_18:
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
+  peopleToBadges = [(_SFPBLinkPresentationCardSection *)self peopleToBadges];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [peopleToBadges countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -430,7 +430,7 @@ LABEL_18:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(peopleToBadges);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -439,7 +439,7 @@ LABEL_18:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [peopleToBadges countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -453,45 +453,45 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPeopleToBadge:(id)a3
+- (void)addPeopleToBadge:(id)badge
 {
-  v4 = a3;
+  badgeCopy = badge;
   peopleToBadges = self->_peopleToBadges;
-  v8 = v4;
+  v8 = badgeCopy;
   if (!peopleToBadges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_peopleToBadges;
-    self->_peopleToBadges = v6;
+    self->_peopleToBadges = array;
 
-    v4 = v8;
+    badgeCopy = v8;
     peopleToBadges = self->_peopleToBadges;
   }
 
-  [(NSArray *)peopleToBadges addObject:v4];
+  [(NSArray *)peopleToBadges addObject:badgeCopy];
 }
 
-- (void)setPeopleToBadge:(id)a3
+- (void)setPeopleToBadge:(id)badge
 {
-  v4 = [a3 copy];
+  v4 = [badge copy];
   peopleToBadges = self->_peopleToBadges;
   self->_peopleToBadges = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = [a3 copy];
+  v4 = [url copy];
   url = self->_url;
   self->_url = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCoreSpotlightIdentifier:(id)a3
+- (void)setCoreSpotlightIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   coreSpotlightIdentifier = self->_coreSpotlightIdentifier;
   self->_coreSpotlightIdentifier = v4;
 

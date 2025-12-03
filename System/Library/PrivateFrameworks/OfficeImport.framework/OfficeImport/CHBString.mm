@@ -1,22 +1,22 @@
 @interface CHBString
-+ (id)edRunsFromXlChartTextFrame:(const void *)a3 state:(id)a4;
-+ (id)edStringFromXlChartTextFrame:(const void *)a3 state:(id)a4;
-+ (id)nsStringWithHandlingMultilevelCategoryDataFromOCText:(const OcText *)a3 chdFormula:(id)a4 state:(id)a5;
-+ (unint64_t)edFontIndexForXlChartTextFrame:(void *)a3 state:(id)a4;
++ (id)edRunsFromXlChartTextFrame:(const void *)frame state:(id)state;
++ (id)edStringFromXlChartTextFrame:(const void *)frame state:(id)state;
++ (id)nsStringWithHandlingMultilevelCategoryDataFromOCText:(const OcText *)text chdFormula:(id)formula state:(id)state;
++ (unint64_t)edFontIndexForXlChartTextFrame:(void *)frame state:(id)state;
 @end
 
 @implementation CHBString
 
-+ (id)edRunsFromXlChartTextFrame:(const void *)a3 state:(id)a4
++ (id)edRunsFromXlChartTextFrame:(const void *)frame state:(id)state
 {
-  v20 = a4;
-  v5 = [v20 resources];
-  if (((*(a3 + 38) - *(a3 + 36)) & 0x3FFFC) != 0)
+  stateCopy = state;
+  resources = [stateCopy resources];
+  if (((*(frame + 38) - *(frame + 36)) & 0x3FFFC) != 0)
   {
     v6 = +[(EDCollection *)EDRunsCollection];
     v7 = v6;
-    v8 = *(a3 + 18);
-    v9 = *(a3 + 19) - v8;
+    v8 = *(frame + 18);
+    v9 = *(frame + 19) - v8;
     if ((v9 & 0x3FFFC) != 0)
     {
       v21 = v6;
@@ -30,37 +30,37 @@
           std::vector<TSU::UUIDData<TSP::UUIDData>>::__throw_out_of_range[abi:ne200100]();
         }
 
-        if ((v9 & 0x3FFFC) != 4 || *(a3 + 93) < 0)
+        if ((v9 & 0x3FFFC) != 4 || *(frame + 93) < 0)
         {
-          v17 = [EDRun runWithCharIndex:*(v8 + v10) fontIndex:[EBFontTable edFontIndexFromXlFontIndex:*(v8 + v10 + 2)] resources:v5];
+          v17 = [EDRun runWithCharIndex:*(v8 + v10) fontIndex:[EBFontTable edFontIndexFromXlFontIndex:*(v8 + v10 + 2)] resources:resources];
         }
 
         else
         {
-          v13 = [v5 fonts];
-          v14 = [v13 objectAtIndex:{+[EBFontTable edFontIndexFromXlFontIndex:](EBFontTable, "edFontIndexFromXlFontIndex:", *(v8 + v10 + 2))}];
+          fonts = [resources fonts];
+          v14 = [fonts objectAtIndex:{+[EBFontTable edFontIndexFromXlFontIndex:](EBFontTable, "edFontIndexFromXlFontIndex:", *(v8 + v10 + 2))}];
           v15 = [v14 copy];
-          if (*([v20 xlReader] + 1344) == 1 && *(a3 + 93) >= 64)
+          if (*([stateCopy xlReader] + 1344) == 1 && *(frame + 93) >= 64)
           {
-            v22 = *(a3 + 12);
+            v22 = *(frame + 12);
             v16 = [OITSUColor colorWithCsColour:&v22];
           }
 
           else
           {
-            v18 = [v5 colors];
-            v16 = [v18 colorWithIndex:*(a3 + 93)];
+            colors = [resources colors];
+            v16 = [colors colorWithIndex:*(frame + 93)];
           }
 
           [v15 setColor:v16];
-          v17 = [EDRun runWithCharIndex:*(v8 + v10) font:v15 resources:v5];
+          v17 = [EDRun runWithCharIndex:*(v8 + v10) font:v15 resources:resources];
         }
 
         [v21 addObject:v17];
 
         ++v11;
-        v8 = *(a3 + 18);
-        v9 = *(a3 + 19) - v8;
+        v8 = *(frame + 18);
+        v9 = *(frame + 19) - v8;
         v12 = v9 >> 2;
         v10 += 4;
       }
@@ -78,13 +78,13 @@
   return v7;
 }
 
-+ (id)edStringFromXlChartTextFrame:(const void *)a3 state:(id)a4
++ (id)edStringFromXlChartTextFrame:(const void *)frame state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (frame)
   {
     v7 = objc_alloc_init(EDString);
-    v8 = CXGetRootElement(*(a3 + 14), *(a3 + 45));
+    v8 = CXGetRootElement(*(frame + 14), *(frame + 45));
     v9 = v8;
     if (v8)
     {
@@ -92,8 +92,8 @@
       {
         v10 = [(OAXDrawingState *)[EXOfficeArtState alloc] initWithClient:0];
         v11 = [[CHXReadState alloc] initWithDrawingState:v10];
-        v12 = [v6 resources];
-        [(CHXReadState *)v11 setResources:v12];
+        resources = [stateCopy resources];
+        [(CHXReadState *)v11 setResources:resources];
 
         v13 = [CHXFont edRunCollectionFromXmlTextPropertiesElement:v9 state:v11];
         if (v13)
@@ -115,7 +115,7 @@
       v13 = 0;
     }
 
-    if (*(a3 + 11))
+    if (*(frame + 11))
     {
       v14 = [MEMORY[0x277CCACA8] stringWithOcText:?];
       [(EDString *)v7 setString:v14];
@@ -123,7 +123,7 @@
 
     if (v13)
     {
-      v15 = [a1 edRunsFromXlChartTextFrame:a3 state:v6];
+      v15 = [self edRunsFromXlChartTextFrame:frame state:stateCopy];
       v16 = [v15 count];
       if (v16 >= [v13 count])
       {
@@ -134,8 +134,8 @@
           {
             v19 = [v13 objectAtIndex:i];
             v20 = [v15 objectAtIndex:i];
-            v21 = [v20 font];
-            [v19 overrideFont:v21];
+            font = [v20 font];
+            [v19 overrideFont:font];
           }
         }
       }
@@ -143,7 +143,7 @@
 
     else
     {
-      v15 = [a1 edRunsFromXlChartTextFrame:a3 state:v6];
+      v15 = [self edRunsFromXlChartTextFrame:frame state:stateCopy];
       [(EDString *)v7 setRuns:v15];
     }
   }
@@ -156,44 +156,44 @@
   return v7;
 }
 
-+ (unint64_t)edFontIndexForXlChartTextFrame:(void *)a3 state:(id)a4
++ (unint64_t)edFontIndexForXlChartTextFrame:(void *)frame state:(id)state
 {
-  v5 = a4;
-  v6 = [CHBString edStringFromXlChartTextFrame:a3 state:v5];
+  stateCopy = state;
+  v6 = [CHBString edStringFromXlChartTextFrame:frame state:stateCopy];
   if ([v6 areThereRuns])
   {
-    v7 = [v6 runs];
-    v8 = [v7 objectAtIndex:0];
-    v9 = [v8 fontIndex];
+    runs = [v6 runs];
+    v8 = [runs objectAtIndex:0];
+    fontIndex = [v8 fontIndex];
   }
 
   else
   {
-    v7 = [v5 chart];
-    v9 = [v7 defaultFontIndex];
+    runs = [stateCopy chart];
+    fontIndex = [runs defaultFontIndex];
   }
 
-  return v9;
+  return fontIndex;
 }
 
-+ (id)nsStringWithHandlingMultilevelCategoryDataFromOCText:(const OcText *)a3 chdFormula:(id)a4 state:(id)a5
++ (id)nsStringWithHandlingMultilevelCategoryDataFromOCText:(const OcText *)text chdFormula:(id)formula state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  if (!v7 || [v7 tokenCount] != 1)
+  formulaCopy = formula;
+  stateCopy = state;
+  if (!formulaCopy || [formulaCopy tokenCount] != 1)
   {
     goto LABEL_18;
   }
 
   v26 = 0;
-  v9 = [v7 lastExtendedDataForTokenAtIndex:0 length:&v26];
+  v9 = [formulaCopy lastExtendedDataForTokenAtIndex:0 length:&v26];
   v10 = 0;
   if (!v9 || v26 < 8)
   {
     goto LABEL_19;
   }
 
-  v11 = [v7 tokenTypeAtIndex:0];
+  v11 = [formulaCopy tokenTypeAtIndex:0];
   v12 = 1;
   v13 = 6;
   v14 = 4;
@@ -259,7 +259,7 @@ LABEL_18:
 
   v10 = v12 > v18 || v17 != v19;
 LABEL_19:
-  v20 = [MEMORY[0x277CCACA8] stringWithOcText:a3];
+  v20 = [MEMORY[0x277CCACA8] stringWithOcText:text];
   v21 = v20;
   if (v10)
   {

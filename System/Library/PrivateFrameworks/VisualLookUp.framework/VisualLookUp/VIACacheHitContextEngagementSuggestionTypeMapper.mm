@@ -1,22 +1,22 @@
 @interface VIACacheHitContextEngagementSuggestionTypeMapper
-- (id)updateBuilder:(id)a3 withDictionary:(id)a4;
+- (id)updateBuilder:(id)builder withDictionary:(id)dictionary;
 @end
 
 @implementation VIACacheHitContextEngagementSuggestionTypeMapper
 
-- (id)updateBuilder:(id)a3 withDictionary:(id)a4
+- (id)updateBuilder:(id)builder withDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.engagement_suggestion_type"];
+  builderCopy = builder;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.engagement_suggestion_type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.engagement_suggestion_type"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"com.apple.argos.cache_hit_context_key.engagement_suggestion_type"];
 
     if (v8)
     {
-      v9 = [v5 setEngagementSuggestionType:v8];
+      v9 = [builderCopy setEngagementSuggestionType:v8];
 
       v10 = 0;
       goto LABEL_6;

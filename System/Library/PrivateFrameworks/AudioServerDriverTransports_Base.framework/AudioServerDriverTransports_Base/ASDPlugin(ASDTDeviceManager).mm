@@ -10,13 +10,13 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 audioDevices];
-    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+    audioDevices = [self audioDevices];
+    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(audioDevices, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v5;
+    v7 = audioDevices;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -32,8 +32,8 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 deviceUID];
-          v14 = [v4 containsObject:v13];
+          deviceUID = [v12 deviceUID];
+          v14 = [v4 containsObject:deviceUID];
 
           if (v14)
           {

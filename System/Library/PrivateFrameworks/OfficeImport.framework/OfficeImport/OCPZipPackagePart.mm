@@ -1,5 +1,5 @@
 @interface OCPZipPackagePart
-- (OCPZipPackagePart)initWithArchive:(id)a3 location:(id)a4 package:(id)a5;
+- (OCPZipPackagePart)initWithArchive:(id)archive location:(id)location package:(id)package;
 - (_xmlDoc)xmlDocument;
 @end
 
@@ -10,61 +10,61 @@
   result = self->super.mDocument;
   if (!result)
   {
-    v4 = [(OISFUDataRepresentation *)self->mEntry xmlDocument];
-    self->super.mDocument = v4;
-    v4->_private = self;
+    xmlDocument = [(OISFUDataRepresentation *)self->mEntry xmlDocument];
+    self->super.mDocument = xmlDocument;
+    xmlDocument->_private = self;
     return self->super.mDocument;
   }
 
   return result;
 }
 
-- (OCPZipPackagePart)initWithArchive:(id)a3 location:(id)a4 package:(id)a5
+- (OCPZipPackagePart)initWithArchive:(id)archive location:(id)location package:(id)package
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 path];
-  v12 = [v11 substringFromIndex:1];
+  archiveCopy = archive;
+  locationCopy = location;
+  packageCopy = package;
+  path = [locationCopy path];
+  v12 = [path substringFromIndex:1];
 
-  v13 = [v8 entryWithName:v12];
+  v13 = [archiveCopy entryWithName:v12];
   mEntry = self->mEntry;
   self->mEntry = v13;
 
   if (self->mEntry)
   {
-    v15 = [v12 stringByDeletingLastPathComponent];
-    v16 = [v15 stringByAppendingPathComponent:@"_rels"];
+    stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
+    v16 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"_rels"];
 
-    v17 = [v12 lastPathComponent];
-    v18 = [v17 stringByAppendingPathExtension:@"rels"];
+    lastPathComponent = [v12 lastPathComponent];
+    v18 = [lastPathComponent stringByAppendingPathExtension:@"rels"];
 
     v19 = [v16 stringByAppendingPathComponent:v18];
-    v20 = [v8 entryWithName:v19];
+    v20 = [archiveCopy entryWithName:v19];
     v21 = v20;
     if (v20)
     {
-      v22 = [v20 xmlDocument];
+      xmlDocument = [v20 xmlDocument];
     }
 
     else
     {
-      v22 = 0;
+      xmlDocument = 0;
     }
 
-    v24 = [(OCPPackagePart *)self initWithLocation:v9 relationshipsXml:v22 package:v10];
-    xmlFreeDoc(v22);
+    v24 = [(OCPPackagePart *)self initWithLocation:locationCopy relationshipsXml:xmlDocument package:packageCopy];
+    xmlFreeDoc(xmlDocument);
     self = v24;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface MFHTMLParser
-+ (id)plainTextFromHTML:(id)a3 limit:(unint64_t)a4 preserveNewlines:(BOOL)a5;
-+ (id)plainTextFromHTMLSnippet:(id)a3;
++ (id)plainTextFromHTML:(id)l limit:(unint64_t)limit preserveNewlines:(BOOL)newlines;
++ (id)plainTextFromHTMLSnippet:(id)snippet;
 @end
 
 @implementation MFHTMLParser
 
-+ (id)plainTextFromHTML:(id)a3 limit:(unint64_t)a4 preserveNewlines:(BOOL)a5
++ (id)plainTextFromHTML:(id)l limit:(unint64_t)limit preserveNewlines:(BOOL)newlines
 {
-  v5 = a5;
+  newlinesCopy = newlines;
   v46 = *MEMORY[0x1E69E9840];
-  v8 = [a3 length];
-  theString = a3;
+  v8 = [l length];
+  theString = l;
   v40 = 0;
   v41 = v8;
-  CharactersPtr = CFStringGetCharactersPtr(a3);
+  CharactersPtr = CFStringGetCharactersPtr(l);
   CStringPtr = 0;
   v38 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a3, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(l, 0x600u);
   }
 
   v42 = 0;
@@ -167,7 +167,7 @@ LABEL_34:
     v45 = -21846;
     v48.location = v12 + 1;
     v48.length = 4;
-    CFStringGetCharacters(a3, v48, buffer);
+    CFStringGetCharacters(l, v48, buffer);
     v30 = ustrncasecmp(buffer, "body", 4) == 0;
 LABEL_38:
     ++v12;
@@ -191,14 +191,14 @@ LABEL_52:
 
   v33 = v12 - 1;
 LABEL_53:
-  result = copyMutablePlainTextFromPoint(a3, v33, a4, v5);
+  result = copyMutablePlainTextFromPoint(l, v33, limit, newlinesCopy);
   v35 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)plainTextFromHTMLSnippet:(id)a3
++ (id)plainTextFromHTMLSnippet:(id)snippet
 {
-  v3 = copyMutablePlainTextFromPoint(a3, 0, 0xFFFFFFFFuLL, 0);
+  v3 = copyMutablePlainTextFromPoint(snippet, 0, 0xFFFFFFFFuLL, 0);
 
   return v3;
 }

@@ -1,18 +1,18 @@
 @interface PSSharedStreamManager
-- (BOOL)closeStreamWithKey:(id)a3;
-- (BOOL)isValidStream:(id)a3;
-- (BOOL)openStreamWithKey:(id)a3;
-- (BOOL)startStreamWithKey:(id)a3;
-- (BOOL)stopStreamWithKey:(id)a3;
-- (PSSharedStreamManager)initWithServer:(PSCommsServer *)a3 device:(id)a4 machPortName:(id)a5 gsm:(ps_gsm_s *)a6;
+- (BOOL)closeStreamWithKey:(id)key;
+- (BOOL)isValidStream:(id)stream;
+- (BOOL)openStreamWithKey:(id)key;
+- (BOOL)startStreamWithKey:(id)key;
+- (BOOL)stopStreamWithKey:(id)key;
+- (PSSharedStreamManager)initWithServer:(PSCommsServer *)server device:(id)device machPortName:(id)name gsm:(ps_gsm_s *)gsm;
 @end
 
 @implementation PSSharedStreamManager
 
-- (PSSharedStreamManager)initWithServer:(PSCommsServer *)a3 device:(id)a4 machPortName:(id)a5 gsm:(ps_gsm_s *)a6
+- (PSSharedStreamManager)initWithServer:(PSCommsServer *)server device:(id)device machPortName:(id)name gsm:(ps_gsm_s *)gsm
 {
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = PSSharedStreamManager;
   v12 = [(PSSharedStreamManager *)&v19 init];
@@ -26,9 +26,9 @@
     creatorQueue = v12->_creatorQueue;
     v12->_creatorQueue = v15;
 
-    objc_storeStrong(&v12->_currDevice, a4);
-    v12->_gsm = a6;
-    [v11 UTF8String];
+    objc_storeStrong(&v12->_currDevice, device);
+    v12->_gsm = gsm;
+    [nameCopy UTF8String];
     ps_comms_register_callback_with_entitlements();
     v17 = v12;
   }
@@ -36,13 +36,13 @@
   return v12;
 }
 
-- (BOOL)isValidStream:(id)a3
+- (BOOL)isValidStream:(id)stream
 {
-  v4 = a3;
-  if ([(PLSDevice *)self->_currDevice hasSensor:v4])
+  streamCopy = stream;
+  if ([(PLSDevice *)self->_currDevice hasSensor:streamCopy])
   {
-    v5 = [(PLSDevice *)self->_currDevice propertiesForKey:v4];
-    v6 = [v5 isSharedStream];
+    v5 = [(PLSDevice *)self->_currDevice propertiesForKey:streamCopy];
+    isSharedStream = [v5 isSharedStream];
   }
 
   else
@@ -51,44 +51,44 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = streamCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No stream on this device for key (%@)", &v9, 0xCu);
     }
 
-    v6 = 0;
+    isSharedStream = 0;
   }
 
-  return v6;
+  return isSharedStream;
 }
 
-- (BOOL)startStreamWithKey:(id)a3
+- (BOOL)startStreamWithKey:(id)key
 {
-  v4 = a3;
-  if ([(PSSharedStreamManager *)self isValidStream:v4])
+  keyCopy = key;
+  if ([(PSSharedStreamManager *)self isValidStream:keyCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:keyCopy];
     v6 = v5;
     if (v5)
     {
       if ([v5 startCount])
       {
         [v6 setStartCount:{objc_msgSend(v6, "startCount") + 1}];
-        v7 = 1;
+        start = 1;
       }
 
       else
       {
-        v9 = [v6 stream];
+        stream = [v6 stream];
 
-        if (v9)
+        if (stream)
         {
-          v10 = [v6 stream];
-          v7 = [v10 start];
+          stream2 = [v6 stream];
+          start = [stream2 start];
         }
 
         else
         {
-          v7 = 1;
+          start = 1;
         }
 
         [v6 setStartCount:1];
@@ -110,24 +110,24 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "No stream for key to start", buf, 2u);
       }
 
-      v7 = 0;
+      start = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    start = 0;
   }
 
-  return v7;
+  return start;
 }
 
-- (BOOL)stopStreamWithKey:(id)a3
+- (BOOL)stopStreamWithKey:(id)key
 {
-  v4 = a3;
-  if ([(PSSharedStreamManager *)self isValidStream:v4])
+  keyCopy = key;
+  if ([(PSSharedStreamManager *)self isValidStream:keyCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:keyCopy];
     v6 = v5;
     if (v5)
     {
@@ -136,17 +136,17 @@
         if ([v6 startCount] == 1)
         {
           [v6 setStartCount:0];
-          v7 = [v6 stream];
+          stream = [v6 stream];
 
-          if (v7)
+          if (stream)
           {
-            v8 = [v6 stream];
-            v9 = [v8 stop];
+            stream2 = [v6 stream];
+            stop = [stream2 stop];
           }
 
           else
           {
-            v9 = 1;
+            stop = 1;
           }
 
           v13 = sub_100013BF4();
@@ -160,7 +160,7 @@
         else
         {
           [v6 setStartCount:{objc_msgSend(v6, "startCount") - 1}];
-          v9 = 1;
+          stop = 1;
         }
 
         goto LABEL_19;
@@ -189,46 +189,46 @@ LABEL_12:
       }
     }
 
-    v9 = 0;
+    stop = 0;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v9 = 0;
+  stop = 0;
 LABEL_20:
 
-  return v9;
+  return stop;
 }
 
-- (BOOL)closeStreamWithKey:(id)a3
+- (BOOL)closeStreamWithKey:(id)key
 {
-  v4 = a3;
-  if ([(PSSharedStreamManager *)self isValidStream:v4])
+  keyCopy = key;
+  if ([(PSSharedStreamManager *)self isValidStream:keyCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:keyCopy];
     v6 = v5;
     if (v5)
     {
       if ([v5 openCount] > 1)
       {
         [v6 setOpenCount:{objc_msgSend(v6, "openCount") - 1}];
-        v9 = 1;
+        close = 1;
       }
 
       else
       {
-        v7 = [v6 stream];
+        stream = [v6 stream];
 
-        if (v7)
+        if (stream)
         {
-          v8 = [v6 stream];
-          v9 = [v8 close];
+          stream2 = [v6 stream];
+          close = [stream2 close];
         }
 
         else
         {
-          v9 = 1;
+          close = 1;
         }
 
         v11 = sub_100013BF4();
@@ -238,7 +238,7 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Closing stream for key", v13, 2u);
         }
 
-        [(NSMutableDictionary *)self->_sharedStreams removeObjectForKey:v4];
+        [(NSMutableDictionary *)self->_sharedStreams removeObjectForKey:keyCopy];
       }
     }
 
@@ -251,25 +251,25 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Stream for key is already closed", buf, 2u);
       }
 
-      v9 = 0;
+      close = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    close = 0;
   }
 
-  return v9;
+  return close;
 }
 
-- (BOOL)openStreamWithKey:(id)a3
+- (BOOL)openStreamWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PSSharedStreamManager *)self isValidStream:v4];
+  keyCopy = key;
+  v5 = [(PSSharedStreamManager *)self isValidStream:keyCopy];
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_sharedStreams objectForKeyedSubscript:keyCopy];
     if (v6)
     {
       v7 = v6;
@@ -278,9 +278,9 @@ LABEL_20:
 
     else
     {
-      v7 = [[StreamInfo alloc] initWithKey:v4 device:self->_currDevice manager:self];
+      v7 = [[StreamInfo alloc] initWithKey:keyCopy device:self->_currDevice manager:self];
       [(StreamInfo *)v7 setOpenCount:[(StreamInfo *)v7 openCount]+ 1];
-      [(NSMutableDictionary *)self->_sharedStreams setObject:v7 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_sharedStreams setObject:v7 forKeyedSubscript:keyCopy];
     }
   }
 

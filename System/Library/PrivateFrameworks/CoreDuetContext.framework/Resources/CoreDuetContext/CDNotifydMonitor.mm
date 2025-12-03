@@ -1,18 +1,18 @@
 @interface CDNotifydMonitor
-+ (id)xpcDictionaryToFoundation:(id)a3;
++ (id)xpcDictionaryToFoundation:(id)foundation;
 - (CDNotifydMonitor)init;
 @end
 
 @implementation CDNotifydMonitor
 
-+ (id)xpcDictionaryToFoundation:(id)a3
++ (id)xpcDictionaryToFoundation:(id)foundation
 {
-  v3 = a3;
-  string = xpc_dictionary_get_string(v3, [@"Notification" UTF8String]);
+  foundationCopy = foundation;
+  string = xpc_dictionary_get_string(foundationCopy, [@"Notification" UTF8String]);
   if (string)
   {
     v5 = string;
-    uint64 = xpc_dictionary_get_uint64(v3, [@"_State" UTF8String]);
+    uint64 = xpc_dictionary_get_uint64(foundationCopy, [@"_State" UTF8String]);
     v11[0] = @"Notification";
     v7 = [NSString stringWithUTF8String:v5];
     v11[1] = @"_State";

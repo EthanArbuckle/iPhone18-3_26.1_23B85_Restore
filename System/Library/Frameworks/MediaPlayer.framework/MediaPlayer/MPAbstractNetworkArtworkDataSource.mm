@@ -1,48 +1,48 @@
 @interface MPAbstractNetworkArtworkDataSource
-+ (void)_applyImageURLCachePolicy:(unint64_t)a3 cacheDiskPath:(id)a4 toConfiguration:(id)a5;
-+ (void)_applyVideoCacheURL:(id)a3 toConfiguration:(id)a4;
-- (BOOL)_isRepresentationSize:(CGSize)a3 validForCatalog:(id)a4;
-- (BOOL)_subclassImplementsSelector:(SEL)a3;
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3;
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGSize)_bestAvailableSizeForCatalog:(id)a3 kind:(int64_t)a4;
-- (CGSize)bestAvailableSizeForCatalog:(id)a3;
++ (void)_applyImageURLCachePolicy:(unint64_t)policy cacheDiskPath:(id)path toConfiguration:(id)configuration;
++ (void)_applyVideoCacheURL:(id)l toConfiguration:(id)configuration;
+- (BOOL)_isRepresentationSize:(CGSize)size validForCatalog:(id)catalog;
+- (BOOL)_subclassImplementsSelector:(SEL)selector;
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog;
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGSize)_bestAvailableSizeForCatalog:(id)catalog kind:(int64_t)kind;
+- (CGSize)bestAvailableSizeForCatalog:(id)catalog;
 - (MPAbstractNetworkArtworkDataSource)init;
 - (NSCache)fallbackImageArtworkRepresentationCache;
 - (NSURLCache)videoURLCache;
 - (NSURLSessionDataDelegate)URLSessionDataDelegateProxy;
-- (id)_artworkRepresentationWithImageFromData:(id)a3 forURLResponse:(id)a4 catalog:(id)a5 size:(CGSize)a6 immediateImageDecompressionAllowed:(BOOL)a7;
-- (id)_bestVideoArtworkRepresentationForCatalog:(id)a3;
-- (id)_cacheKeyForCatalog:(id)a3 kind:(int64_t)a4 size:(CGSize)a5;
-- (id)_existingRepresentationFromURLCacheForArtworkCatalog:(id)a3 immediateImageDecompressionAllowed:(BOOL)a4;
-- (id)_existingRepresentativeObjectForArtworkCatalog:(id)a3 kind:(int64_t)a4 handler:(id)a5;
-- (id)_requestForCatalog:(id)a3 kind:(int64_t)a4 size:(CGSize)a5;
-- (id)cacheKeyForCatalog:(id)a3 size:(CGSize)a4;
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5;
-- (id)existingRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4;
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4;
-- (id)supportedSizesForCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (id)_artworkRepresentationWithImageFromData:(id)data forURLResponse:(id)response catalog:(id)catalog size:(CGSize)size immediateImageDecompressionAllowed:(BOOL)allowed;
+- (id)_bestVideoArtworkRepresentationForCatalog:(id)catalog;
+- (id)_cacheKeyForCatalog:(id)catalog kind:(int64_t)kind size:(CGSize)size;
+- (id)_existingRepresentationFromURLCacheForArtworkCatalog:(id)catalog immediateImageDecompressionAllowed:(BOOL)allowed;
+- (id)_existingRepresentativeObjectForArtworkCatalog:(id)catalog kind:(int64_t)kind handler:(id)handler;
+- (id)_requestForCatalog:(id)catalog kind:(int64_t)kind size:(CGSize)size;
+- (id)cacheKeyForCatalog:(id)catalog size:(CGSize)size;
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options;
+- (id)existingRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog;
+- (id)requestForCatalog:(id)catalog size:(CGSize)size;
+- (id)supportedSizesForCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)_disableVideoCache;
-- (void)_onImageAccessQueue_cancelLoadingContextForCatalogUUID:(id)a3 withLoadingURL:(id)a4;
-- (void)_performSyncBlockOnQueue:(id)a3 block:(id)a4;
+- (void)_onImageAccessQueue_cancelLoadingContextForCatalogUUID:(id)d withLoadingURL:(id)l;
+- (void)_performSyncBlockOnQueue:(id)queue block:(id)block;
 - (void)_reEnableVideoCache;
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3;
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog;
 - (void)dealloc;
-- (void)loadArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5 systemEffectHandler:(id)a6 completionHandler:(id)a7;
-- (void)loadRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4 completionHandler:(id)a5;
-- (void)prewarmURLSessionWithCompletion:(id)a3;
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4;
-- (void)setVideoArtworkCacheURL:(id)a3;
+- (void)loadArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options systemEffectHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)loadRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog completionHandler:(id)handler;
+- (void)prewarmURLSessionWithCompletion:(id)completion;
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request;
+- (void)setVideoArtworkCacheURL:(id)l;
 - (void)startListeningForMemoryPressureNotifications;
 - (void)stopListeningForMemoryPressureNotifications;
-- (void)updateURLSessionWithCachePolicy:(unint64_t)a3 cachePath:(id)a4;
+- (void)updateURLSessionWithCachePolicy:(unint64_t)policy cachePath:(id)path;
 @end
 
 @implementation MPAbstractNetworkArtworkDataSource
@@ -67,25 +67,25 @@
     v8 = *(v2 + 6);
     *(v2 + 6) = v7;
 
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v10 = *(v2 + 9);
-    *(v2 + 9) = v9;
+    *(v2 + 9) = weakToStrongObjectsMapTable;
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = *(v2 + 8);
     *(v2 + 8) = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = *(v2 + 10);
-    *(v2 + 10) = v13;
+    *(v2 + 10) = dictionary;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v16 = *(v2 + 11);
-    *(v2 + 11) = v15;
+    *(v2 + 11) = dictionary2;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v18 = *(v2 + 12);
-    *(v2 + 12) = v17;
+    *(v2 + 12) = dictionary3;
 
     if (([v2 _subclassImplementsSelector:sel_cacheKeyForCatalog_kind_size_] & 1) != 0 || objc_msgSend(v2, "_subclassImplementsSelector:", sel_cacheKeyForCatalog_size_))
     {
@@ -95,28 +95,28 @@
       *(v2 + 7) = v19;
     }
 
-    v21 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    [objc_opt_class() _applyImageURLCachePolicy:0 cacheDiskPath:0 toConfiguration:v21];
-    v22 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v21];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    [objc_opt_class() _applyImageURLCachePolicy:0 cacheDiskPath:0 toConfiguration:defaultSessionConfiguration];
+    v22 = [MEMORY[0x1E696AF78] sessionWithConfiguration:defaultSessionConfiguration];
     v23 = *(v2 + 13);
     *(v2 + 13) = v22;
 
-    v24 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    [objc_opt_class() _applyVideoCacheURL:0 toConfiguration:v24];
-    v25 = [v24 URLCache];
-    objc_storeWeak(v2 + 15, v25);
+    defaultSessionConfiguration2 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    [objc_opt_class() _applyVideoCacheURL:0 toConfiguration:defaultSessionConfiguration2];
+    uRLCache = [defaultSessionConfiguration2 URLCache];
+    objc_storeWeak(v2 + 15, uRLCache);
 
     v26 = [MEMORY[0x1E69B14E8] proxyWithObject:v2 protocol:&unk_1F150FD68];
     objc_storeWeak(v2 + 16, v26);
-    v27 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v24 delegate:v26 delegateQueue:0];
+    v27 = [MEMORY[0x1E696AF78] sessionWithConfiguration:defaultSessionConfiguration2 delegate:v26 delegateQueue:0];
     v28 = *(v2 + 14);
     *(v2 + 14) = v27;
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v2 selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v2 selector:sel__didReceiveWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__didReceiveWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   return v2;
@@ -138,12 +138,12 @@
 
 - (void)stopListeningForMemoryPressureNotifications
 {
-  v3 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
+  memoryPressureNotificationSource = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
 
-  if (v3)
+  if (memoryPressureNotificationSource)
   {
-    v4 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
-    dispatch_source_cancel(v4);
+    memoryPressureNotificationSource2 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
+    dispatch_source_cancel(memoryPressureNotificationSource2);
 
     [(MPAbstractNetworkArtworkDataSource *)self setMemoryPressureNotificationSource:0];
   }
@@ -154,18 +154,18 @@
   v3 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, 7uLL, MEMORY[0x1E69E96A0]);
   [(MPAbstractNetworkArtworkDataSource *)self setMemoryPressureNotificationSource:v3];
 
-  v4 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
+  memoryPressureNotificationSource = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
 
-  if (v4)
+  if (memoryPressureNotificationSource)
   {
     objc_initWeak(&location, self);
-    v5 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
+    memoryPressureNotificationSource2 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource];
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNotifications__block_invoke;
     v10 = &unk_1E76825E8;
     objc_copyWeak(&v11, &location);
-    dispatch_source_set_event_handler(v5, &v7);
+    dispatch_source_set_event_handler(memoryPressureNotificationSource2, &v7);
 
     v6 = [(MPAbstractNetworkArtworkDataSource *)self memoryPressureNotificationSource:v7];
     dispatch_resume(v6);
@@ -207,10 +207,10 @@ void __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNot
 
 - (void)_reEnableVideoCache
 {
-  v2 = [(MPAbstractNetworkArtworkDataSource *)self videoURLCache];
-  if (![v2 memoryCapacity])
+  videoURLCache = [(MPAbstractNetworkArtworkDataSource *)self videoURLCache];
+  if (![videoURLCache memoryCapacity])
   {
-    [v2 setMemoryCapacity:83886080];
+    [videoURLCache setMemoryCapacity:83886080];
     v3 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -222,10 +222,10 @@ void __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNot
 
 - (void)_disableVideoCache
 {
-  v2 = [(MPAbstractNetworkArtworkDataSource *)self videoURLCache];
-  [v2 _CFURLCache];
+  videoURLCache = [(MPAbstractNetworkArtworkDataSource *)self videoURLCache];
+  [videoURLCache _CFURLCache];
   _CFURLCachePurgeMemoryCache();
-  [v2 setMemoryCapacity:0];
+  [videoURLCache setMemoryCapacity:0];
   v3 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -234,28 +234,28 @@ void __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNot
   }
 }
 
-- (BOOL)_subclassImplementsSelector:(SEL)a3
+- (BOOL)_subclassImplementsSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodForSelector:selector];
   if (v4)
   {
-    LOBYTE(v4) = [objc_opt_class() instanceMethodForSelector:a3] != v4;
+    LOBYTE(v4) = [objc_opt_class() instanceMethodForSelector:selector] != v4;
   }
 
   return v4;
 }
 
-- (CGSize)_bestAvailableSizeForCatalog:(id)a3 kind:(int64_t)a4
+- (CGSize)_bestAvailableSizeForCatalog:(id)catalog kind:(int64_t)kind
 {
-  v6 = a3;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    [(MPAbstractNetworkArtworkDataSource *)self bestAvailableSizeForCatalog:v6];
+    [(MPAbstractNetworkArtworkDataSource *)self bestAvailableSizeForCatalog:catalogCopy];
     v8 = v7;
     v10 = v9;
   }
 
-  else if (a4)
+  else if (kind)
   {
     v8 = *MEMORY[0x1E695F060];
     v10 = *(MEMORY[0x1E695F060] + 8);
@@ -263,14 +263,14 @@ void __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNot
 
   else
   {
-    v11 = [(MPAbstractNetworkArtworkDataSource *)self sortedSupportedSizesForCatalog:v6];
+    v11 = [(MPAbstractNetworkArtworkDataSource *)self sortedSupportedSizesForCatalog:catalogCopy];
     if (!v11)
     {
-      v12 = [(MPAbstractNetworkArtworkDataSource *)self supportedSizesForCatalog:v6];
+      v12 = [(MPAbstractNetworkArtworkDataSource *)self supportedSizesForCatalog:catalogCopy];
       v11 = [v12 sortedArrayUsingComparator:&__block_literal_global_390];
     }
 
-    [v6 scaledFittingSize];
+    [catalogCopy scaledFittingSize];
     v8 = MPArtworkRepresentationBestSizeMatchingSize(v11, v13, v14);
     v10 = v15;
   }
@@ -282,43 +282,43 @@ void __82__MPAbstractNetworkArtworkDataSource_startListeningForMemoryPressureNot
   return result;
 }
 
-- (id)_cacheKeyForCatalog:(id)a3 kind:(int64_t)a4 size:(CGSize)a5
+- (id)_cacheKeyForCatalog:(id)catalog kind:(int64_t)kind size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:v9 kind:a4 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:catalogCopy kind:kind size:width, height];
   }
 
   else
   {
-    if (a4)
+    if (kind)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:v9 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:catalogCopy size:width, height];
   }
 
-  v11 = v10;
+  v11 = height;
 LABEL_7:
 
   return v11;
 }
 
-- (id)_bestVideoArtworkRepresentationForCatalog:(id)a3
+- (id)_bestVideoArtworkRepresentationForCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__MPAbstractNetworkArtworkDataSource__bestVideoArtworkRepresentationForCatalog___block_invoke;
   v8[3] = &unk_1E7675B20;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = catalogCopy;
+  v5 = catalogCopy;
   v6 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentativeObjectForArtworkCatalog:v5 kind:1 handler:v8];
 
   return v6;
@@ -378,13 +378,13 @@ void __80__MPAbstractNetworkArtworkDataSource__bestVideoArtworkRepresentationFor
   [v2 setObject:v3 forKey:*(a1 + 48)];
 }
 
-- (void)_performSyncBlockOnQueue:(id)a3 block:(id)a4
+- (void)_performSyncBlockOnQueue:(id)queue block:(id)block
 {
-  queue = a3;
-  v6 = a4;
-  v7 = queue;
-  v8 = v6;
-  if (self->_imageAccessQueue == queue && (specific = dispatch_get_specific(_MPAbstractNetworkArtworkDataSourceQueueSpecificIsAccessQueue), v7 = queue, specific))
+  queue = queue;
+  blockCopy = block;
+  queueCopy = queue;
+  v8 = blockCopy;
+  if (self->_imageAccessQueue == queue && (specific = dispatch_get_specific(_MPAbstractNetworkArtworkDataSourceQueueSpecificIsAccessQueue), queueCopy = queue, specific))
   {
     if (v8)
     {
@@ -394,32 +394,32 @@ void __80__MPAbstractNetworkArtworkDataSource__bestVideoArtworkRepresentationFor
 
   else
   {
-    dispatch_sync(v7, v8);
+    dispatch_sync(queueCopy, v8);
   }
 }
 
-- (id)_requestForCatalog:(id)a3 kind:(int64_t)a4 size:(CGSize)a5
+- (id)_requestForCatalog:(id)catalog kind:(int64_t)kind size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:v9 kind:a4 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:catalogCopy kind:kind size:width, height];
   }
 
   else
   {
-    if (a4)
+    if (kind)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:v9 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:catalogCopy size:width, height];
   }
 
-  v11 = v10;
+  v11 = height;
 LABEL_7:
   if (_requestForCatalog_kind_size__onceToken != -1)
   {
@@ -441,17 +441,17 @@ void __67__MPAbstractNetworkArtworkDataSource__requestForCatalog_kind_size___blo
   _requestForCatalog_kind_size__userAgent = v0;
 }
 
-- (id)_existingRepresentativeObjectForArtworkCatalog:(id)a3 kind:(int64_t)a4 handler:(id)a5
+- (id)_existingRepresentativeObjectForArtworkCatalog:(id)catalog kind:(int64_t)kind handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  [(MPAbstractNetworkArtworkDataSource *)self _bestAvailableSizeForCatalog:v8 kind:a4];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  [(MPAbstractNetworkArtworkDataSource *)self _bestAvailableSizeForCatalog:catalogCopy kind:kind];
   v11 = v10;
   v13 = v12;
   v28 = 0;
-  v14 = v9[2](v9, &v28);
+  v14 = handlerCopy[2](handlerCopy, &v28);
   v15 = v14;
-  if (a4 || v14)
+  if (kind || v14)
   {
     goto LABEL_16;
   }
@@ -462,10 +462,10 @@ void __67__MPAbstractNetworkArtworkDataSource__requestForCatalog_kind_size___blo
     goto LABEL_16;
   }
 
-  v16 = [(MPAbstractNetworkArtworkDataSource *)self sortedSupportedSizesForCatalog:v8];
+  v16 = [(MPAbstractNetworkArtworkDataSource *)self sortedSupportedSizesForCatalog:catalogCopy];
   if (!v16)
   {
-    v17 = [(MPAbstractNetworkArtworkDataSource *)self supportedSizesForCatalog:v8];
+    v17 = [(MPAbstractNetworkArtworkDataSource *)self supportedSizesForCatalog:catalogCopy];
     v16 = [v17 sortedArrayUsingComparator:&__block_literal_global_390];
   }
 
@@ -487,13 +487,13 @@ LABEL_13:
     v23 = v22;
     v25 = v24;
 
-    if (![(MPAbstractNetworkArtworkDataSource *)self _isRepresentationSize:v8 validForCatalog:v23, v25])
+    if (![(MPAbstractNetworkArtworkDataSource *)self _isRepresentationSize:catalogCopy validForCatalog:v23, v25])
     {
       goto LABEL_12;
     }
 
     v28 = 1;
-    v26 = (v9[2])(v9, &v28, v23, v25);
+    v26 = (handlerCopy[2])(handlerCopy, &v28, v23, v25);
     if (v26)
     {
       break;
@@ -519,32 +519,32 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_isRepresentationSize:(CGSize)a3 validForCatalog:(id)a4
+- (BOOL)_isRepresentationSize:(CGSize)size validForCatalog:(id)catalog
 {
-  height = a3.height;
-  width = a3.width;
-  [a4 scaledFittingSize];
+  height = size.height;
+  width = size.width;
+  [catalog scaledFittingSize];
   return height <= v7 + v7 && width <= v6 + v6;
 }
 
-- (id)_existingRepresentationFromURLCacheForArtworkCatalog:(id)a3 immediateImageDecompressionAllowed:(BOOL)a4
+- (id)_existingRepresentationFromURLCacheForArtworkCatalog:(id)catalog immediateImageDecompressionAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = a3;
+  allowedCopy = allowed;
+  catalogCopy = catalog;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __126__MPAbstractNetworkArtworkDataSource__existingRepresentationFromURLCacheForArtworkCatalog_immediateImageDecompressionAllowed___block_invoke;
   v19 = &unk_1E7675AD8;
-  v20 = self;
-  v21 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v21 = catalogCopy;
+  v7 = catalogCopy;
   v8 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentativeObjectForArtworkCatalog:v7 kind:0 handler:&v16];
-  v9 = [v8 data];
-  v10 = [v8 response];
-  v11 = [v8 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"representationSize"];
+  data = [v8 data];
+  response = [v8 response];
+  userInfo = [v8 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:@"representationSize"];
   v13 = CGSizeFromString(v12);
-  v14 = [(MPAbstractNetworkArtworkDataSource *)self _artworkRepresentationWithImageFromData:v9 forURLResponse:v10 catalog:v7 size:v4 immediateImageDecompressionAllowed:v13.width, v13.height];
+  v14 = [(MPAbstractNetworkArtworkDataSource *)self _artworkRepresentationWithImageFromData:data forURLResponse:response catalog:v7 size:allowedCopy immediateImageDecompressionAllowed:v13.width, v13.height];
 
   return v14;
 }
@@ -568,42 +568,42 @@ id __126__MPAbstractNetworkArtworkDataSource__existingRepresentationFromURLCache
   return v6;
 }
 
-- (void)_onImageAccessQueue_cancelLoadingContextForCatalogUUID:(id)a3 withLoadingURL:(id)a4
+- (void)_onImageAccessQueue_cancelLoadingContextForCatalogUUID:(id)d withLoadingURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   dispatch_assert_queue_barrier(self->_imageAccessQueue);
-  v8 = [(NSMutableDictionary *)self->_loadingContexts objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_loadingContexts objectForKey:lCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 catalogIdentifierToCompletionHandlerMap];
-    v11 = [v10 objectForKey:v6];
+    catalogIdentifierToCompletionHandlerMap = [v8 catalogIdentifierToCompletionHandlerMap];
+    v11 = [catalogIdentifierToCompletionHandlerMap objectForKey:dCopy];
 
     if (v11)
     {
-      v12 = [v9 catalogIdentifierToCompletionHandlerMap];
-      [v12 removeObjectForKey:v6];
+      catalogIdentifierToCompletionHandlerMap2 = [v9 catalogIdentifierToCompletionHandlerMap];
+      [catalogIdentifierToCompletionHandlerMap2 removeObjectForKey:dCopy];
 
-      v13 = [(MPAbstractNetworkArtworkDataSource *)self callbackQueue];
+      callbackQueue = [(MPAbstractNetworkArtworkDataSource *)self callbackQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __108__MPAbstractNetworkArtworkDataSource__onImageAccessQueue_cancelLoadingContextForCatalogUUID_withLoadingURL___block_invoke;
       block[3] = &unk_1E7682370;
       v20 = v11;
-      dispatch_async(v13, block);
+      dispatch_async(callbackQueue, block);
     }
 
-    v14 = [v9 catalogIdentifierToCompletionHandlerMap];
-    v15 = [v14 count];
+    catalogIdentifierToCompletionHandlerMap3 = [v9 catalogIdentifierToCompletionHandlerMap];
+    v15 = [catalogIdentifierToCompletionHandlerMap3 count];
 
     if (!v15)
     {
-      v16 = [v9 dataTask];
-      [v16 cancel];
+      dataTask = [v9 dataTask];
+      [dataTask cancel];
 
-      [(NSMutableDictionary *)self->_loadingContexts removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_loadingContexts removeObjectForKey:lCopy];
     }
   }
 
@@ -617,9 +617,9 @@ id __126__MPAbstractNetworkArtworkDataSource__existingRepresentationFromURLCache
       *buf = 138412802;
       v22 = v18;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v7;
+      v26 = lCopy;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_ERROR, "<%@: %p> _cancelLoadingContextForCatalogUUID:withLoadingURL: No loading context for url=%@", buf, 0x20u);
     }
   }
@@ -632,39 +632,39 @@ void __108__MPAbstractNetworkArtworkDataSource__onImageAccessQueue_cancelLoading
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)_artworkRepresentationWithImageFromData:(id)a3 forURLResponse:(id)a4 catalog:(id)a5 size:(CGSize)a6 immediateImageDecompressionAllowed:(BOOL)a7
+- (id)_artworkRepresentationWithImageFromData:(id)data forURLResponse:(id)response catalog:(id)catalog size:(CGSize)size immediateImageDecompressionAllowed:(BOOL)allowed
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  v12 = a5;
-  if (a3)
+  allowedCopy = allowed;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
+  if (data)
   {
-    v13 = [MEMORY[0x1E69DCAB8] imageWithData:a3];
-    v14 = [v12 visualIdenticalityIdentifier];
-    v15 = [MPArtworkRepresentation representationForVisualIdentity:v14 withSize:v13 image:width, height];
+    v13 = [MEMORY[0x1E69DCAB8] imageWithData:data];
+    visualIdenticalityIdentifier = [catalogCopy visualIdenticalityIdentifier];
+    height = [MPArtworkRepresentation representationForVisualIdentity:visualIdenticalityIdentifier withSize:v13 image:width, height];
 
-    if (v7 && [(MPAbstractNetworkArtworkDataSource *)self wantsBackgroundImageDecompression])
+    if (allowedCopy && [(MPAbstractNetworkArtworkDataSource *)self wantsBackgroundImageDecompression])
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __141__MPAbstractNetworkArtworkDataSource__artworkRepresentationWithImageFromData_forURLResponse_catalog_size_immediateImageDecompressionAllowed___block_invoke;
       v17[3] = &unk_1E7675AB0;
       v17[4] = self;
-      v18 = v12;
+      v18 = catalogCopy;
       v20 = width;
       v21 = height;
-      v19 = v15;
+      v19 = height;
       [v13 prepareForDisplayWithCompletionHandler:v17];
     }
   }
 
   else
   {
-    v15 = 0;
+    height = 0;
   }
 
-  return v15;
+  return height;
 }
 
 void __141__MPAbstractNetworkArtworkDataSource__artworkRepresentationWithImageFromData_forURLResponse_catalog_size_immediateImageDecompressionAllowed___block_invoke(uint64_t a1, void *a2)
@@ -684,15 +684,15 @@ void __141__MPAbstractNetworkArtworkDataSource__artworkRepresentationWithImageFr
   }
 }
 
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
-  dispatch_assert_queue_V2(v8);
+  loaderCopy = loader;
+  requestCopy = request;
+  videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+  dispatch_assert_queue_V2(videoAccessQueue);
 
-  if (v7)
+  if (requestCopy)
   {
     v21 = 0;
     v22 = &v21;
@@ -700,22 +700,22 @@ void __141__MPAbstractNetworkArtworkDataSource__artworkRepresentationWithImageFr
     v24 = __Block_byref_object_copy__1554;
     v25 = __Block_byref_object_dispose__1555;
     v26 = 0;
-    v9 = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToResourceLoadingRequest];
+    videoTaskToResourceLoadingRequest = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToResourceLoadingRequest];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __77__MPAbstractNetworkArtworkDataSource_resourceLoader_didCancelLoadingRequest___block_invoke;
     v18 = &unk_1E7675A88;
-    v10 = v7;
+    v10 = requestCopy;
     v19 = v10;
     v20 = &v21;
-    [v9 enumerateKeysAndObjectsUsingBlock:&v15];
+    [videoTaskToResourceLoadingRequest enumerateKeysAndObjectsUsingBlock:&v15];
 
     v11 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v22[5];
-      v13 = [v10 request];
-      v14 = [v13 URL];
+      request = [v10 request];
+      v14 = [request URL];
       *buf = 138543874;
       v28 = v12;
       v29 = 2048;
@@ -742,43 +742,43 @@ void __77__MPAbstractNetworkArtworkDataSource_resourceLoader_didCancelLoadingReq
   }
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
-  dispatch_assert_queue_V2(v8);
+  loaderCopy = loader;
+  resourceCopy = resource;
+  videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+  dispatch_assert_queue_V2(videoAccessQueue);
 
-  if (v7)
+  if (resourceCopy)
   {
-    v9 = [v7 request];
-    v10 = [v9 mutableCopy];
+    request = [resourceCopy request];
+    v10 = [request mutableCopy];
 
     [v10 setValue:0 forHTTPHeaderField:@"Range"];
     [v10 setCachePolicy:2];
-    v11 = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
+    videoURLSession = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
     v12 = [v10 copy];
-    v13 = [v11 dataTaskWithRequest:v12];
+    v13 = [videoURLSession dataTaskWithRequest:v12];
 
-    v14 = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToResourceLoadingRequest];
-    [v14 setObject:v7 forKey:v13];
+    videoTaskToResourceLoadingRequest = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToResourceLoadingRequest];
+    [videoTaskToResourceLoadingRequest setObject:resourceCopy forKey:v13];
 
-    v15 = [(MPAbstractNetworkArtworkDataSource *)self resourceLoaderStoragePolicyMap];
-    v16 = [v15 objectForKey:v6];
+    resourceLoaderStoragePolicyMap = [(MPAbstractNetworkArtworkDataSource *)self resourceLoaderStoragePolicyMap];
+    v16 = [resourceLoaderStoragePolicyMap objectForKey:loaderCopy];
 
-    v17 = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToCacheStoragePolicy];
-    [v17 setObject:v16 forKey:v13];
+    videoTaskToCacheStoragePolicy = [(MPAbstractNetworkArtworkDataSource *)self videoTaskToCacheStoragePolicy];
+    [videoTaskToCacheStoragePolicy setObject:v16 forKey:v13];
 
     v18 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v7 request];
-      v20 = [v19 URL];
+      request2 = [resourceCopy request];
+      v20 = [request2 URL];
       v22 = 138543874;
       v23 = v13;
       v24 = 2048;
-      v25 = v7;
+      v25 = resourceCopy;
       v26 = 2114;
       v27 = v20;
       _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_DEBUG, "MPAbstractNetworkArtworkDataSource: -resourceLoader:shouldWaitForLoadingOfRequestedResource: starting data task: %{public}@. loadingRequest=%p URL=%{public}@", &v22, 0x20u);
@@ -790,24 +790,24 @@ void __77__MPAbstractNetworkArtworkDataSource_resourceLoader_didCancelLoadingReq
   return 1;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+    v9 = taskCopy;
+    videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __75__MPAbstractNetworkArtworkDataSource_URLSession_task_didCompleteWithError___block_invoke;
     v11[3] = &unk_1E767C7D0;
-    v12 = v8;
+    v12 = errorCopy;
     v13 = v9;
-    v14 = self;
+    selfCopy = self;
     v15 = v13;
-    [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:v10 block:v11];
+    [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:videoAccessQueue block:v11];
   }
 }
 
@@ -884,24 +884,24 @@ void __75__MPAbstractNetworkArtworkDataSource_URLSession_task_didCompleteWithErr
   [v16 removeObjectForKey:*(a1 + 56)];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __94__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_willCacheResponse_completionHandler___block_invoke;
   v16[3] = &unk_1E7681770;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:v12 block:v16];
+  v17 = taskCopy;
+  v18 = responseCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = responseCopy;
+  v15 = taskCopy;
+  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:videoAccessQueue block:v16];
 }
 
 void __94__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_willCacheResponse_completionHandler___block_invoke(uint64_t a1)
@@ -963,21 +963,21 @@ void __94__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_willCacheRespo
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+  taskCopy = task;
+  dataCopy = data;
+  videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_didReceiveData___block_invoke;
   v12[3] = &unk_1E76800A0;
-  v13 = v8;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:v9 block:v12];
+  v13 = dataCopy;
+  selfCopy = self;
+  v15 = taskCopy;
+  v10 = taskCopy;
+  v11 = dataCopy;
+  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:videoAccessQueue block:v12];
 }
 
 void __73__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_didReceiveData___block_invoke(uint64_t a1)
@@ -1100,24 +1100,24 @@ void __73__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_didReceiveData
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  videoAccessQueue = [(MPAbstractNetworkArtworkDataSource *)self videoAccessQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   v16[3] = &unk_1E7681770;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:v12 block:v16];
+  v17 = taskCopy;
+  selfCopy = self;
+  v19 = responseCopy;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = responseCopy;
+  v15 = taskCopy;
+  [(MPAbstractNetworkArtworkDataSource *)self _performSyncBlockOnQueue:videoAccessQueue block:v16];
 }
 
 void __95__MPAbstractNetworkArtworkDataSource_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke(uint64_t a1)
@@ -1275,84 +1275,84 @@ LABEL_23:
   (*(*(a1 + 56) + 16))();
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_isEqual(a3, sel_areRepresentationsOfKind_availableForCatalog_) || sel_isEqual(a3, sel_requestForCatalog_kind_size_) || sel_isEqual(a3, sel_cacheKeyForCatalog_kind_size_) || sel_isEqual(a3, sel_bestAvailableSizeForCatalog_))
+  if (sel_isEqual(selector, sel_areRepresentationsOfKind_availableForCatalog_) || sel_isEqual(selector, sel_requestForCatalog_kind_size_) || sel_isEqual(selector, sel_cacheKeyForCatalog_kind_size_) || sel_isEqual(selector, sel_bestAvailableSizeForCatalog_))
   {
 
-    return [(MPAbstractNetworkArtworkDataSource *)self _subclassImplementsSelector:a3];
+    return [(MPAbstractNetworkArtworkDataSource *)self _subclassImplementsSelector:selector];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MPAbstractNetworkArtworkDataSource;
-    return [(MPAbstractNetworkArtworkDataSource *)&v6 respondsToSelector:a3];
+    return [(MPAbstractNetworkArtworkDataSource *)&v6 respondsToSelector:selector];
   }
 }
 
-- (void)loadRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4 completionHandler:(id)a5
+- (void)loadRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  catalogCopy = catalog;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v61 = self;
+    selfCopy7 = self;
     v62 = 2048;
-    v63 = a3;
+    kindCopy = kind;
     v64 = 2114;
-    v65 = v8;
+    kindCopy2 = catalogCopy;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Calling loadRepresentationOfKind: %ld, for artwork catalog: %{public}@", buf, 0x20u);
   }
 
-  if (a3 == 1)
+  if (kind == 1)
   {
-    v11 = [(MPAbstractNetworkArtworkDataSource *)self _bestVideoArtworkRepresentationForCatalog:v8];
-    v12 = [v8 videoCache];
-    if (v12)
+    v11 = [(MPAbstractNetworkArtworkDataSource *)self _bestVideoArtworkRepresentationForCatalog:catalogCopy];
+    videoCache = [catalogCopy videoCache];
+    if (videoCache)
     {
       [v11 representationSize];
-      v13 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:v8 kind:1 size:?];
+      v13 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:catalogCopy kind:1 size:?];
       if (v13)
       {
         if (v11)
         {
-          [v12 setObject:v11 forKey:v13];
+          [videoCache setObject:v11 forKey:v13];
         }
 
         else
         {
-          v37 = [MEMORY[0x1E695DFB0] null];
-          [v12 setObject:v37 forKey:v13];
+          null = [MEMORY[0x1E695DFB0] null];
+          [videoCache setObject:null forKey:v13];
         }
       }
     }
 
-    v9[2](v9, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
     goto LABEL_41;
   }
 
-  v14 = [v8 cache];
-  v15 = v14;
-  if (v14)
+  cache = [catalogCopy cache];
+  v15 = cache;
+  if (cache)
   {
-    v16 = v14;
+    fallbackImageArtworkRepresentationCache = cache;
   }
 
   else
   {
-    v16 = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
+    fallbackImageArtworkRepresentationCache = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
   }
 
-  v11 = v16;
+  v11 = fallbackImageArtworkRepresentationCache;
 
-  v17 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentationFromURLCacheForArtworkCatalog:v8 immediateImageDecompressionAllowed:1];
+  v17 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentationFromURLCacheForArtworkCatalog:catalogCopy immediateImageDecompressionAllowed:1];
   if (!v17)
   {
-    [(MPAbstractNetworkArtworkDataSource *)self _bestAvailableSizeForCatalog:v8 kind:a3];
+    [(MPAbstractNetworkArtworkDataSource *)self _bestAvailableSizeForCatalog:catalogCopy kind:kind];
     v26 = *&v24;
     v27 = *&v25;
     if (v24 == *MEMORY[0x1E695F060] && v25 == *(MEMORY[0x1E695F060] + 8))
@@ -1361,11 +1361,11 @@ LABEL_23:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543874;
-        v61 = self;
+        selfCopy7 = self;
         v62 = 2114;
-        v63 = v8;
+        kindCopy = catalogCopy;
         v64 = 2048;
-        v65 = a3;
+        kindCopy2 = kind;
         _os_log_impl(&dword_1A238D000, v31, OS_LOG_TYPE_FAULT, "%{public}@ Artwork request cannot have a size of zero, catalog: %{public}@, representation kind: %ld", buf, 0x20u);
       }
 
@@ -1374,16 +1374,16 @@ LABEL_23:
 
     else
     {
-      v29 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:v8 kind:a3 size:v24, v25];
+      v29 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:catalogCopy kind:kind size:v24, v25];
       v30 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v61 = self;
+        selfCopy7 = self;
         v62 = 2048;
-        v63 = v26;
+        kindCopy = v26;
         v64 = 2048;
-        v65 = v27;
+        kindCopy2 = v27;
         _os_log_impl(&dword_1A238D000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Created request for size: %f, %f", buf, 0x20u);
       }
 
@@ -1397,9 +1397,9 @@ LABEL_23:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v61 = self;
+      selfCopy7 = self;
       v62 = 2114;
-      v63 = v33;
+      kindCopy = v33;
       _os_log_impl(&dword_1A238D000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting artwork request for url: %{public}@", buf, 0x16u);
     }
 
@@ -1410,10 +1410,10 @@ LABEL_23:
       v46[1] = 3221225472;
       v46[2] = __99__MPAbstractNetworkArtworkDataSource_loadRepresentationOfKind_forArtworkCatalog_completionHandler___block_invoke;
       v46[3] = &unk_1E7675A60;
-      v47 = v8;
+      v47 = catalogCopy;
       v48 = v33;
-      v49 = self;
-      v52 = v9;
+      selfCopy5 = self;
+      v52 = handlerCopy;
       v53 = v26;
       v54 = v27;
       v50 = v32;
@@ -1421,95 +1421,95 @@ LABEL_23:
       v51 = v11;
       [(MPAbstractNetworkArtworkDataSource *)self _performAsyncBarrierBlockOnQueue:imageAccessQueue block:v46];
 
-      v36 = v47;
+      catalogCopy = v47;
     }
 
     else if (v32)
     {
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Artwork request must have a non-nil URL. catalog=%@", v8];
+      catalogCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Artwork request must have a non-nil URL. catalog=%@", catalogCopy];
       v39 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
       if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543618;
-        v61 = self;
+        selfCopy7 = self;
         v62 = 2114;
-        v63 = v36;
+        kindCopy = catalogCopy;
         _os_log_impl(&dword_1A238D000, v39, OS_LOG_TYPE_FAULT, "%{public}@ -loadRepresentationOfKind:forArtworkCatalog:completionHandler: %{public}@", buf, 0x16u);
       }
 
-      if (v9)
+      if (handlerCopy)
       {
         v40 = MEMORY[0x1E696ABC0];
         v58 = *MEMORY[0x1E696A278];
-        v59 = v36;
+        v59 = catalogCopy;
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
         v42 = [v40 errorWithDomain:@"MPAbstractNetworkArtworkDataSourceErrorDomain" code:1 userInfo:v41];
 
-        (v9)[2](v9, 0, v42);
+        (handlerCopy)[2](handlerCopy, 0, v42);
       }
     }
 
     else
     {
-      if (!v9)
+      if (!handlerCopy)
       {
         goto LABEL_32;
       }
 
       v43 = MEMORY[0x1E696ABC0];
       v56 = *MEMORY[0x1E696A278];
-      v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create URL request for catalog: %@", v8];
-      v57 = v44;
+      catalogCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create URL request for catalog: %@", catalogCopy];
+      v57 = catalogCopy2;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-      v36 = [v43 errorWithDomain:@"MPAbstractNetworkArtworkDataSource" code:0 userInfo:v45];
+      catalogCopy = [v43 errorWithDomain:@"MPAbstractNetworkArtworkDataSource" code:0 userInfo:v45];
 
-      (v9)[2](v9, 0, v36);
+      (handlerCopy)[2](handlerCopy, 0, catalogCopy);
     }
 
 LABEL_32:
-    v12 = 0;
+    videoCache = 0;
     goto LABEL_41;
   }
 
-  v12 = v17;
+  videoCache = v17;
   v18 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v61 = self;
+    selfCopy7 = self;
     v62 = 2114;
-    v63 = v12;
+    kindCopy = videoCache;
     v64 = 2114;
-    v65 = v8;
+    kindCopy2 = catalogCopy;
     _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Found existing representation: %{public}@ from url cache for catalog: %{public}@", buf, 0x20u);
   }
 
   if (v11)
   {
-    v19 = [v12 kind];
-    [v12 representationSize];
-    v20 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:v8 kind:v19 size:?];
-    v21 = [v8 cache];
-    v22 = v21;
-    if (v21)
+    kind = [videoCache kind];
+    [videoCache representationSize];
+    v20 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:catalogCopy kind:kind size:?];
+    cache2 = [catalogCopy cache];
+    v22 = cache2;
+    if (cache2)
     {
-      v23 = v21;
+      fallbackImageArtworkRepresentationCache2 = cache2;
     }
 
     else
     {
-      v23 = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
+      fallbackImageArtworkRepresentationCache2 = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
     }
 
-    v38 = v23;
+    v38 = fallbackImageArtworkRepresentationCache2;
 
     if (v20)
     {
-      [v38 setObject:v12 forKey:v20];
+      [v38 setObject:videoCache forKey:v20];
     }
   }
 
-  v9[2](v9, v12, 0);
+  handlerCopy[2](handlerCopy, videoCache, 0);
 LABEL_41:
 }
 
@@ -1899,14 +1899,14 @@ void __99__MPAbstractNetworkArtworkDataSource_loadRepresentationOfKind_forArtwor
   }
 }
 
-- (id)existingRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4
+- (id)existingRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 1)
+  catalogCopy = catalog;
+  v7 = catalogCopy;
+  if (kind == 1)
   {
-    v11 = [v6 videoCache];
-    if (v11)
+    videoCache = [catalogCopy videoCache];
+    if (videoCache)
     {
 LABEL_10:
       v17[0] = MEMORY[0x1E69E9820];
@@ -1915,9 +1915,9 @@ LABEL_10:
       v17[3] = &unk_1E76759E8;
       v17[4] = self;
       v18 = v7;
-      v20 = a3;
-      v19 = v11;
-      v12 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentativeObjectForArtworkCatalog:v18 kind:a3 handler:v17];
+      kindCopy = kind;
+      v19 = videoCache;
+      v12 = [(MPAbstractNetworkArtworkDataSource *)self _existingRepresentativeObjectForArtworkCatalog:v18 kind:kind handler:v17];
 
       goto LABEL_11;
     }
@@ -1925,28 +1925,28 @@ LABEL_10:
 
   else
   {
-    if (a3)
+    if (kind)
     {
-      v11 = 0;
+      videoCache = 0;
       v12 = 0;
       goto LABEL_18;
     }
 
-    v8 = [v6 cache];
-    v9 = v8;
-    if (v8)
+    cache = [catalogCopy cache];
+    v9 = cache;
+    if (cache)
     {
-      v10 = v8;
+      fallbackImageArtworkRepresentationCache = cache;
     }
 
     else
     {
-      v10 = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
+      fallbackImageArtworkRepresentationCache = [(MPAbstractNetworkArtworkDataSource *)self fallbackImageArtworkRepresentationCache];
     }
 
-    v11 = v10;
+    videoCache = fallbackImageArtworkRepresentationCache;
 
-    if (v11)
+    if (videoCache)
     {
       goto LABEL_10;
     }
@@ -1954,20 +1954,20 @@ LABEL_10:
 
   v12 = 0;
 LABEL_11:
-  if (a3 == 1 && !v12)
+  if (kind == 1 && !v12)
   {
     v13 = [(MPAbstractNetworkArtworkDataSource *)self _bestVideoArtworkRepresentationForCatalog:v7];
     v12 = v13;
-    if (v11)
+    if (videoCache)
     {
       if (v13)
       {
-        v14 = [v13 kind];
+        kind = [v13 kind];
         [v12 representationSize];
-        v15 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:v7 kind:v14 size:?];
+        v15 = [(MPAbstractNetworkArtworkDataSource *)self _cacheKeyForCatalog:v7 kind:kind size:?];
         if (v15)
         {
-          [v11 setObject:v12 forKey:v15];
+          [videoCache setObject:v12 forKey:v15];
         }
       }
     }
@@ -2003,25 +2003,25 @@ id __85__MPAbstractNetworkArtworkDataSource_existingRepresentationOfKind_forArtw
   return v5;
 }
 
-- (void)loadArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5 systemEffectHandler:(id)a6 completionHandler:(id)a7
+- (void)loadArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options systemEffectHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a7;
+  completionHandlerCopy = completionHandler;
   v12 = MPArtworkCatalogOriginalSize;
-  v13 = a6;
-  v14 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:a4 kind:0 size:v12];
+  handlerCopy = handler;
+  v14 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:catalog kind:0 size:v12];
   v15 = [v14 URL];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __129__MPAbstractNetworkArtworkDataSource_loadArtworkEffectResultForEffectType_catalog_options_systemEffectHandler_completionHandler___block_invoke;
   v19[3] = &unk_1E76759C0;
-  v21 = v11;
-  v22 = a3;
+  v21 = completionHandlerCopy;
+  typeCopy = type;
   v20 = v15;
-  v16 = v13[2];
-  v17 = v11;
+  v16 = handlerCopy[2];
+  v17 = completionHandlerCopy;
   v18 = v15;
-  v16(v13, v19);
+  v16(handlerCopy, v19);
 }
 
 void __129__MPAbstractNetworkArtworkDataSource_loadArtworkEffectResultForEffectType_catalog_options_systemEffectHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2384,24 +2384,24 @@ uint64_t __129__MPAbstractNetworkArtworkDataSource_loadArtworkEffectResultForEff
   return v7;
 }
 
-- (id)existingArtworkEffectResultForEffectType:(int64_t)a3 catalog:(id)a4 options:(id)a5
+- (id)existingArtworkEffectResultForEffectType:(int64_t)type catalog:(id)catalog options:(id)options
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:v8 kind:0 size:MPArtworkCatalogOriginalSize];
+  catalogCopy = catalog;
+  optionsCopy = options;
+  v10 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:catalogCopy kind:0 size:MPArtworkCatalogOriginalSize];
   v11 = [v10 URL];
 
   v12 = 0;
-  if (a3 == 3)
+  if (type == 3)
   {
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:0];
 
     v15 = [v14 URLByAppendingPathComponent:@"Radiosity" isDirectory:1];
-    v16 = [v11 absoluteString];
+    absoluteString = [v11 absoluteString];
     v17 = *MEMORY[0x1E69B1360];
-    v18 = v16;
+    v18 = absoluteString;
     v85 = 0u;
     v84 = 0u;
     v83 = 0u;
@@ -2612,9 +2612,9 @@ LABEL_50:
         }
 
 LABEL_57:
-        v70 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v71 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-        [v70 handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
         v66 = &stru_1F149ECA8;
         goto LABEL_50;
@@ -2677,44 +2677,44 @@ LABEL_54:
   return v12;
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 token];
-  v6 = [v5 conformsToProtocol:&unk_1F1511378];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  v6 = [token conformsToProtocol:&unk_1F1511378];
 
   if (v6)
   {
-    v7 = [v4 token];
+    token2 = [catalogCopy token];
   }
 
   else
   {
-    v7 = objc_alloc_init(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier);
+    token2 = objc_alloc_init(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier);
     v8 = *MEMORY[0x1E695F060];
     v9 = *(MEMORY[0x1E695F060] + 8);
-    v10 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:v4 kind:0 size:*MEMORY[0x1E695F060], v9];
+    v10 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:catalogCopy kind:0 size:*MEMORY[0x1E695F060], v9];
     v11 = [v10 URL];
-    v12 = [v11 absoluteString];
-    [(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier *)v7 setImageArtworkIdentifier:v12];
+    absoluteString = [v11 absoluteString];
+    [(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier *)token2 setImageArtworkIdentifier:absoluteString];
 
-    v13 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:v4 kind:1 size:v8, v9];
+    v13 = [(MPAbstractNetworkArtworkDataSource *)self _requestForCatalog:catalogCopy kind:1 size:v8, v9];
     v14 = [v13 URL];
-    v15 = [v14 absoluteString];
-    [(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier *)v7 setVideoArtworkIdentifier:v15];
+    absoluteString2 = [v14 absoluteString];
+    [(_MPAbstractNetworkArtworkDataSourceVisualIdenticalityIdentifier *)token2 setVideoArtworkIdentifier:absoluteString2];
   }
 
-  return v7;
+  return token2;
 }
 
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [v4 loadingKey];
-  [v4 setLoadingKey:0];
+  catalogCopy = catalog;
+  uUID = [catalogCopy UUID];
+  loadingKey = [catalogCopy loadingKey];
+  [catalogCopy setLoadingKey:0];
 
-  if (v6)
+  if (loadingKey)
   {
     imageAccessQueue = self->_imageAccessQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -2722,35 +2722,35 @@ LABEL_54:
     v8[2] = __83__MPAbstractNetworkArtworkDataSource_cancelLoadingRepresentationForArtworkCatalog___block_invoke;
     v8[3] = &unk_1E76800A0;
     v8[4] = self;
-    v9 = v5;
-    v10 = v6;
+    v9 = uUID;
+    v10 = loadingKey;
     [(MPAbstractNetworkArtworkDataSource *)self _performAsyncBarrierBlockOnQueue:imageAccessQueue block:v8];
   }
 }
 
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog
 {
-  v6 = a3;
-  v7 = a4;
-  -[MPAbstractNetworkArtworkDataSource _bestAvailableSizeForCatalog:kind:](self, "_bestAvailableSizeForCatalog:kind:", v7, [v6 kind]);
+  representationCopy = representation;
+  catalogCopy = catalog;
+  -[MPAbstractNetworkArtworkDataSource _bestAvailableSizeForCatalog:kind:](self, "_bestAvailableSizeForCatalog:kind:", catalogCopy, [representationCopy kind]);
   v9 = v8;
   v11 = v10;
 
-  if (!v6 && (v9 == *MEMORY[0x1E695F060] ? (v12 = v11 == *(MEMORY[0x1E695F060] + 8)) : (v12 = 0), v12))
+  if (!representationCopy && (v9 == *MEMORY[0x1E695F060] ? (v12 = v11 == *(MEMORY[0x1E695F060] + 8)) : (v12 = 0), v12))
   {
     v15 = 1;
   }
 
   else
   {
-    [v6 representationSize];
+    [representationCopy representationSize];
     v15 = v14 == v11 && v13 == v9;
   }
 
   return v15;
 }
 
-- (CGSize)bestAvailableSizeForCatalog:(id)a3
+- (CGSize)bestAvailableSizeForCatalog:(id)catalog
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -2759,32 +2759,32 @@ LABEL_54:
   return result;
 }
 
-- (id)cacheKeyForCatalog:(id)a3 size:(CGSize)a4
+- (id)cacheKeyForCatalog:(id)catalog size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:v7 kind:0 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self cacheKeyForCatalog:catalogCopy kind:0 size:width, height];
   }
 
   else
   {
-    v8 = 0;
+    height = 0;
   }
 
-  return v8;
+  return height;
 }
 
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4
+- (id)requestForCatalog:(id)catalog size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:v8 kind:0 size:width, height];
+    height = [(MPAbstractNetworkArtworkDataSource *)self requestForCatalog:catalogCopy kind:0 size:width, height];
   }
 
   else
@@ -2792,40 +2792,40 @@ LABEL_54:
     v10 = [objc_opt_class() instanceMethodForSelector:a2];
     if (v10 == [objc_opt_class() instanceMethodForSelector:a2])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = NSStringFromSelector(a2);
-      [v12 handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:306 description:{@"Subclass %@ must implement -%@ defined in %@.", v14, v15, @"[MPAbstractNetworkArtworkDataSource class]"}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:306 description:{@"Subclass %@ must implement -%@ defined in %@.", v14, v15, @"[MPAbstractNetworkArtworkDataSource class]"}];
     }
 
-    v9 = 0;
+    height = 0;
   }
 
-  return v9;
+  return height;
 }
 
-- (id)supportedSizesForCatalog:(id)a3
+- (id)supportedSizesForCatalog:(id)catalog
 {
   v5 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v5 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:297 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPAbstractNetworkArtworkDataSource class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:297 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPAbstractNetworkArtworkDataSource class]"}];
   }
 
   return 0;
 }
 
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog
 {
-  v5 = a3;
+  catalogCopy = catalog;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(MPAbstractNetworkArtworkDataSource *)self areRepresentationsOfKind:0 availableForCatalog:v5];
+    v6 = [(MPAbstractNetworkArtworkDataSource *)self areRepresentationsOfKind:0 availableForCatalog:catalogCopy];
   }
 
   else
@@ -2833,11 +2833,11 @@ LABEL_54:
     v7 = [objc_opt_class() instanceMethodForSelector:a2];
     if (v7 == [objc_opt_class() instanceMethodForSelector:a2])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
-      [v9 handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:291 description:{@"Subclass %@ must implement -%@ defined in %@.", v11, v12, @"[MPAbstractNetworkArtworkDataSource class]"}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPAbstractNetworkArtworkDataSource.m" lineNumber:291 description:{@"Subclass %@ must implement -%@ defined in %@.", v11, v12, @"[MPAbstractNetworkArtworkDataSource class]"}];
     }
 
     v6 = 0;
@@ -2846,19 +2846,19 @@ LABEL_54:
   return v6;
 }
 
-- (void)setVideoArtworkCacheURL:(id)a3
+- (void)setVideoArtworkCacheURL:(id)l
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_videoArtworkCacheURL != v5)
+  lCopy = l;
+  if (self->_videoArtworkCacheURL != lCopy)
   {
-    objc_storeStrong(&self->_videoArtworkCacheURL, a3);
-    if (v5)
+    objc_storeStrong(&self->_videoArtworkCacheURL, l);
+    if (lCopy)
     {
-      v6 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v23 = 0;
-      v7 = [(NSURL *)v5 path];
-      v8 = [v6 fileExistsAtPath:v7 isDirectory:&v23];
+      path = [(NSURL *)lCopy path];
+      v8 = [defaultManager fileExistsAtPath:path isDirectory:&v23];
 
       if (v8)
       {
@@ -2867,11 +2867,11 @@ LABEL_54:
           v9 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            v10 = [(NSURL *)self->_videoArtworkCacheURL absoluteString];
+            absoluteString = [(NSURL *)self->_videoArtworkCacheURL absoluteString];
             *buf = 134218242;
-            v25 = self;
+            selfCopy2 = self;
             v26 = 2114;
-            v27 = v10;
+            v27 = absoluteString;
             _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_ERROR, "MPAbstractNetworkArtworkDataSource: %p setVideoArtworkCacheURL: Can't use videoArtworkCacheURL as cache directory [Non-directory file already exists at path] videoArtworkCacheURL=%{public}@", buf, 0x16u);
           }
 
@@ -2882,63 +2882,63 @@ LABEL_54:
       else
       {
         v22 = 0;
-        [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v22];
+        [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v22];
         v11 = v22;
         if (v11)
         {
           v12 = os_log_create("com.apple.amp.mediaplayer", "Artwork");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v13 = [(MPAbstractNetworkArtworkDataSource *)self videoArtworkCacheURL];
-            v14 = [v13 absoluteString];
+            videoArtworkCacheURL = [(MPAbstractNetworkArtworkDataSource *)self videoArtworkCacheURL];
+            absoluteString2 = [videoArtworkCacheURL absoluteString];
             *buf = 134218242;
-            v25 = self;
+            selfCopy2 = self;
             v26 = 2114;
-            v27 = v14;
+            v27 = absoluteString2;
             _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_ERROR, "MPAbstractNetworkArtworkDataSource: %p setVideoArtworkCacheURL: error creating directory at URL %{public}@", buf, 0x16u);
           }
         }
       }
     }
 
-    v15 = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
-    v16 = [v15 configuration];
-    v6 = [v16 copy];
+    videoURLSession = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
+    configuration = [videoURLSession configuration];
+    defaultManager = [configuration copy];
 
-    [objc_opt_class() _applyVideoCacheURL:v5 toConfiguration:v6];
-    v17 = [v6 URLCache];
-    [(MPAbstractNetworkArtworkDataSource *)self setVideoURLCache:v17];
+    [objc_opt_class() _applyVideoCacheURL:lCopy toConfiguration:defaultManager];
+    uRLCache = [defaultManager URLCache];
+    [(MPAbstractNetworkArtworkDataSource *)self setVideoURLCache:uRLCache];
 
-    v18 = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
-    [v18 finishTasksAndInvalidate];
+    videoURLSession2 = [(MPAbstractNetworkArtworkDataSource *)self videoURLSession];
+    [videoURLSession2 finishTasksAndInvalidate];
 
     v19 = MEMORY[0x1E696AF78];
     WeakRetained = objc_loadWeakRetained(&self->_URLSessionDataDelegateProxy);
-    v21 = [v19 sessionWithConfiguration:v6 delegate:WeakRetained delegateQueue:0];
+    v21 = [v19 sessionWithConfiguration:defaultManager delegate:WeakRetained delegateQueue:0];
     [(MPAbstractNetworkArtworkDataSource *)self setVideoURLSession:v21];
 
 LABEL_15:
   }
 }
 
-- (void)prewarmURLSessionWithCompletion:(id)a3
+- (void)prewarmURLSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x1E69E4618]);
-  v6 = [MEMORY[0x1E69E4680] activeAccount];
-  v7 = [v5 initWithIdentity:v6];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v7 = [v5 initWithIdentity:activeAccount];
 
-  v8 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__MPAbstractNetworkArtworkDataSource_prewarmURLSessionWithCompletion___block_invoke;
   v11[3] = &unk_1E767D258;
   v11[4] = self;
   v12 = v7;
-  v13 = v4;
-  v9 = v4;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
-  [v8 getBagForRequestContext:v10 withCompletionHandler:v11];
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v10 withCompletionHandler:v11];
 }
 
 void __70__MPAbstractNetworkArtworkDataSource_prewarmURLSessionWithCompletion___block_invoke(id *a1, void *a2, void *a3)
@@ -3088,14 +3088,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)updateURLSessionWithCachePolicy:(unint64_t)a3 cachePath:(id)a4
+- (void)updateURLSessionWithCachePolicy:(unint64_t)policy cachePath:(id)path
 {
-  v6 = a4;
-  v7 = [(MPAbstractNetworkArtworkDataSource *)self imageURLSession];
-  v8 = [v7 configuration];
-  v11 = [v8 copy];
+  pathCopy = path;
+  imageURLSession = [(MPAbstractNetworkArtworkDataSource *)self imageURLSession];
+  configuration = [imageURLSession configuration];
+  v11 = [configuration copy];
 
-  [objc_opt_class() _applyImageURLCachePolicy:a3 cacheDiskPath:v6 toConfiguration:v11];
+  [objc_opt_class() _applyImageURLCachePolicy:policy cacheDiskPath:pathCopy toConfiguration:v11];
   [(NSURLSession *)self->_imageURLSession finishTasksAndInvalidate];
   v9 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v11];
   imageURLSession = self->_imageURLSession;
@@ -3104,26 +3104,26 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
   v5.receiver = self;
   v5.super_class = MPAbstractNetworkArtworkDataSource;
   [(MPAbstractNetworkArtworkDataSource *)&v5 dealloc];
 }
 
-+ (void)_applyVideoCacheURL:(id)a3 toConfiguration:(id)a4
++ (void)_applyVideoCacheURL:(id)l toConfiguration:(id)configuration
 {
-  v10 = a3;
+  lCopy = l;
   v5 = MEMORY[0x1E696AF18];
-  v6 = a4;
+  configurationCopy = configuration;
   v7 = [v5 alloc];
-  if (v10)
+  if (lCopy)
   {
-    v8 = [v7 initWithMemoryCapacity:83886080 diskCapacity:104857600 directoryURL:v10];
+    v8 = [v7 initWithMemoryCapacity:83886080 diskCapacity:104857600 directoryURL:lCopy];
   }
 
   else
@@ -3133,17 +3133,17 @@ LABEL_6:
 
   v9 = v8;
   [v8 set_maxCacheableEntrySizeRatio:1.0];
-  [v6 setURLCache:v9];
+  [configurationCopy setURLCache:v9];
 }
 
-+ (void)_applyImageURLCachePolicy:(unint64_t)a3 cacheDiskPath:(id)a4 toConfiguration:(id)a5
++ (void)_applyImageURLCachePolicy:(unint64_t)policy cacheDiskPath:(id)path toConfiguration:(id)configuration
 {
-  v10 = a4;
-  v7 = a5;
-  [v7 setRequestCachePolicy:a3];
-  if (v10)
+  pathCopy = path;
+  configurationCopy = configuration;
+  [configurationCopy setRequestCachePolicy:policy];
+  if (pathCopy)
   {
-    v8 = [[_MPArtworkDataSourceURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:v10];
+    v8 = [[_MPArtworkDataSourceURLCache alloc] initWithMemoryCapacity:0 diskCapacity:0 diskPath:pathCopy];
   }
 
   else
@@ -3154,7 +3154,7 @@ LABEL_6:
   v9 = v8;
   [(NSURLCache *)v8 setMemoryCapacity:0];
   [(NSURLCache *)v9 setDiskCapacity:419430400];
-  [v7 setURLCache:v9];
+  [configurationCopy setURLCache:v9];
 }
 
 @end

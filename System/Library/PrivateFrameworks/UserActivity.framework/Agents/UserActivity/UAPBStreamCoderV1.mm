@@ -1,33 +1,33 @@
 @interface UAPBStreamCoderV1
-- (UAPBStreamCoderV1)initWithInputStream:(id)a3 outputStream:(id)a4;
-- (id)headerForData:(id)a3;
-- (id)trimFirstBytes:(unint64_t)a3 ofData:(id)a4;
+- (UAPBStreamCoderV1)initWithInputStream:(id)stream outputStream:(id)outputStream;
+- (id)headerForData:(id)data;
+- (id)trimFirstBytes:(unint64_t)bytes ofData:(id)data;
 - (void)cancelReceive;
 - (void)dealloc;
 - (void)processReceivedData;
-- (void)receivePasteboardToFile:(id)a3 withProgress:(id)a4 infoReceivedHandler:(id)a5 completionHandler:(id)a6 returnInfoEarly:(BOOL)a7;
-- (void)receivedDataBack:(id)a3;
+- (void)receivePasteboardToFile:(id)file withProgress:(id)progress infoReceivedHandler:(id)handler completionHandler:(id)completionHandler returnInfoEarly:(BOOL)early;
+- (void)receivedDataBack:(id)back;
 - (void)sendNextChunk;
-- (void)sendPasteboard:(id)a3 withCompletion:(id)a4;
-- (void)shutdownTimerFired:(id)a3;
-- (void)streamDoneWithInfo:(id)a3 error:(id)a4;
-- (void)streams:(id)a3 didReadRawData:(id)a4;
-- (void)streamsDidClose:(id)a3 withError:(id)a4;
-- (void)streamsDidWriteRawDataBuffer:(id)a3;
+- (void)sendPasteboard:(id)pasteboard withCompletion:(id)completion;
+- (void)shutdownTimerFired:(id)fired;
+- (void)streamDoneWithInfo:(id)info error:(id)error;
+- (void)streams:(id)streams didReadRawData:(id)data;
+- (void)streamsDidClose:(id)close withError:(id)error;
+- (void)streamsDidWriteRawDataBuffer:(id)buffer;
 @end
 
 @implementation UAPBStreamCoderV1
 
-- (UAPBStreamCoderV1)initWithInputStream:(id)a3 outputStream:(id)a4
+- (UAPBStreamCoderV1)initWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v11.receiver = self;
   v11.super_class = UAPBStreamCoderV1;
   v8 = [(UAPBStreamCoderV1 *)&v11 init];
   if (v8)
   {
-    v9 = [[UAStreamHandler alloc] initWithInputStream:v6 outputStream:v7 delegate:v8];
+    v9 = [[UAStreamHandler alloc] initWithInputStream:streamCopy outputStream:outputStreamCopy delegate:v8];
     [(UAPBStreamCoderV1 *)v8 setStreamHandler:v9];
   }
 
@@ -36,34 +36,34 @@
 
 - (void)dealloc
 {
-  v3 = [(UAPBStreamCoderV1 *)self streamHandler];
-  [v3 stop];
+  streamHandler = [(UAPBStreamCoderV1 *)self streamHandler];
+  [streamHandler stop];
 
   v4.receiver = self;
   v4.super_class = UAPBStreamCoderV1;
   [(UAPBStreamCoderV1 *)&v4 dealloc];
 }
 
-- (void)streams:(id)a3 didReadRawData:(id)a4
+- (void)streams:(id)streams didReadRawData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   if ([(UAPBStreamCoderV1 *)self isSendMode])
   {
-    [(UAPBStreamCoderV1 *)self receivedDataBack:v6];
+    [(UAPBStreamCoderV1 *)self receivedDataBack:dataCopy];
   }
 
   else
   {
-    v5 = [(UAPBStreamCoderV1 *)self receivedData];
-    [v5 appendData:v6];
+    receivedData = [(UAPBStreamCoderV1 *)self receivedData];
+    [receivedData appendData:dataCopy];
 
-    -[UAPBStreamCoderV1 setBytesReceived:](self, "setBytesReceived:", [v6 length] + -[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived"));
-    -[UAPBStreamCoderV1 setTotalBytesReceived:](self, "setTotalBytesReceived:", [v6 length] + -[UAPBStreamCoderV1 totalBytesReceived](self, "totalBytesReceived"));
+    -[UAPBStreamCoderV1 setBytesReceived:](self, "setBytesReceived:", [dataCopy length] + -[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived"));
+    -[UAPBStreamCoderV1 setTotalBytesReceived:](self, "setTotalBytesReceived:", [dataCopy length] + -[UAPBStreamCoderV1 totalBytesReceived](self, "totalBytesReceived"));
     [(UAPBStreamCoderV1 *)self processReceivedData];
   }
 }
 
-- (void)streamsDidWriteRawDataBuffer:(id)a3
+- (void)streamsDidWriteRawDataBuffer:(id)buffer
 {
   if ([(UAPBStreamCoderV1 *)self isSendMode])
   {
@@ -72,24 +72,24 @@
   }
 }
 
-- (void)streamsDidClose:(id)a3 withError:(id)a4
+- (void)streamsDidClose:(id)close withError:(id)error
 {
-  v6 = a4;
-  v5 = [(UAPBStreamCoderV1 *)self isSendMode];
-  if (v6 && (v5 & 1) == 0)
+  errorCopy = error;
+  isSendMode = [(UAPBStreamCoderV1 *)self isSendMode];
+  if (errorCopy && (isSendMode & 1) == 0)
   {
-    v5 = [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:v6];
+    isSendMode = [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:errorCopy];
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(isSendMode);
 }
 
-- (void)receivePasteboardToFile:(id)a3 withProgress:(id)a4 infoReceivedHandler:(id)a5 completionHandler:(id)a6 returnInfoEarly:(BOOL)a7
+- (void)receivePasteboardToFile:(id)file withProgress:(id)progress infoReceivedHandler:(id)handler completionHandler:(id)completionHandler returnInfoEarly:(BOOL)early
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  fileCopy = file;
+  progressCopy = progress;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v15 = sub_100001A30(@"pasteboard-streams");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,26 +97,26 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Starting to receive pasteboard", buf, 2u);
   }
 
-  [(UAPBStreamCoderV1 *)self setProgress:v12];
+  [(UAPBStreamCoderV1 *)self setProgress:progressCopy];
   objc_initWeak(buf, self);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000631B0;
   v20[3] = &unk_1000C5FF8;
-  v16 = v13;
+  v16 = handlerCopy;
   v21 = v16;
-  v17 = v14;
+  v17 = completionHandlerCopy;
   v22 = v17;
   objc_copyWeak(&v23, buf);
   [(UAPBStreamCoderV1 *)self setRecvHandler:v20];
   v18 = objc_alloc_init(NSMutableData);
   [(UAPBStreamCoderV1 *)self setReceivedData:v18];
 
-  [(UAPBStreamCoderV1 *)self setFile:v11];
+  [(UAPBStreamCoderV1 *)self setFile:fileCopy];
   [(UAPBStreamCoderV1 *)self setState:0];
   [(UAPBStreamCoderV1 *)self setExpectedLength:7];
-  v19 = [(UAPBStreamCoderV1 *)self streamHandler];
-  [v19 start];
+  streamHandler = [(UAPBStreamCoderV1 *)self streamHandler];
+  [streamHandler start];
 
   [(UAPBStreamCoderV1 *)self setStreamStartTime:mach_absolute_time()];
   objc_destroyWeak(&v23);
@@ -137,38 +137,38 @@
   [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:v4];
 }
 
-- (void)streamDoneWithInfo:(id)a3 error:(id)a4
+- (void)streamDoneWithInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([(UAPBStreamCoderV1 *)v8 state]!= 3)
+  infoCopy = info;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(UAPBStreamCoderV1 *)selfCopy state]!= 3)
   {
     v9 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = infoCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Done with input stream: %@, %@", &v14, 0x16u);
     }
 
-    v10 = [(UAPBStreamCoderV1 *)v8 streamHandler];
+    streamHandler = [(UAPBStreamCoderV1 *)selfCopy streamHandler];
     v11 = [@"PBDONE" dataUsingEncoding:4];
-    [v10 writeRawData:v11];
+    [streamHandler writeRawData:v11];
 
-    v12 = [(UAPBStreamCoderV1 *)v8 streamHandler];
-    [v12 stop];
+    streamHandler2 = [(UAPBStreamCoderV1 *)selfCopy streamHandler];
+    [streamHandler2 stop];
 
-    v13 = [(UAPBStreamCoderV1 *)v8 recvHandler];
-    (v13)[2](v13, v6, v7);
+    recvHandler = [(UAPBStreamCoderV1 *)selfCopy recvHandler];
+    (recvHandler)[2](recvHandler, infoCopy, errorCopy);
 
-    [(UAPBStreamCoderV1 *)v8 setState:3];
+    [(UAPBStreamCoderV1 *)selfCopy setState:3];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)processReceivedData
@@ -176,34 +176,34 @@
   v3 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(UAPBStreamCoderV1 *)self receivedData];
+    receivedData = [(UAPBStreamCoderV1 *)self receivedData];
     v71 = 134217984;
-    v72 = [v4 length];
+    v72 = [receivedData length];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[CODER_V1] Processing Received data with length: %ld", &v71, 0xCu);
   }
 
-  v5 = [(UAPBStreamCoderV1 *)self receivedData];
-  v6 = [v5 length];
+  receivedData2 = [(UAPBStreamCoderV1 *)self receivedData];
+  v6 = [receivedData2 length];
 
   if (!v6)
   {
     return;
   }
 
-  v7 = [(UAPBStreamCoderV1 *)self state];
-  if (v7 != 2)
+  state = [(UAPBStreamCoderV1 *)self state];
+  if (state != 2)
   {
-    if (v7 != 1)
+    if (state != 1)
     {
-      if (v7)
+      if (state)
       {
         return;
       }
 
-      v8 = [(UAPBStreamCoderV1 *)self receivedData];
-      v9 = [v8 bytes];
+      receivedData3 = [(UAPBStreamCoderV1 *)self receivedData];
+      bytes = [receivedData3 bytes];
 
-      if (*v9 == 61 && v9[1] == 61 && v9[2] == 61)
+      if (*bytes == 61 && bytes[1] == 61 && bytes[2] == 61)
       {
         v10 = sub_100001A30(@"pasteboard-server");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -212,12 +212,12 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[CODER_V1] Receiving Header Info", &v71, 2u);
         }
 
-        [(UAPBStreamCoderV1 *)self setExpectedLength:(*(v9 + 3) + 3)];
+        [(UAPBStreamCoderV1 *)self setExpectedLength:(*(bytes + 3) + 3)];
         [(UAPBStreamCoderV1 *)self setState:1];
         [(UAPBStreamCoderV1 *)self setBytesReceived:[(UAPBStreamCoderV1 *)self bytesReceived]- 7];
         [(UAPBStreamCoderV1 *)self setReceivedDelem:0];
-        v11 = [(UAPBStreamCoderV1 *)self receivedData];
-        v12 = [(UAPBStreamCoderV1 *)self trimFirstBytes:7 ofData:v11];
+        receivedData4 = [(UAPBStreamCoderV1 *)self receivedData];
+        v12 = [(UAPBStreamCoderV1 *)self trimFirstBytes:7 ofData:receivedData4];
         [(UAPBStreamCoderV1 *)self setReceivedData:v12];
 LABEL_34:
 
@@ -236,13 +236,13 @@ LABEL_57:
       v79 = NSLocalizedDescriptionKey;
       v80 = @"Invalid message header";
       v47 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-      v11 = [NSError errorWithDomain:v46 code:-122 userInfo:v47];
+      receivedData4 = [NSError errorWithDomain:v46 code:-122 userInfo:v47];
 
-      v48 = self;
+      selfCopy2 = self;
       v49 = 0;
-      v50 = v11;
+      v50 = receivedData4;
 LABEL_56:
-      [(UAPBStreamCoderV1 *)v48 streamDoneWithInfo:v49 error:v50];
+      [(UAPBStreamCoderV1 *)selfCopy2 streamDoneWithInfo:v49 error:v50];
       goto LABEL_57;
     }
 
@@ -253,10 +253,10 @@ LABEL_56:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[CODER_V1] Receiving Header", &v71, 2u);
     }
 
-    v14 = [(UAPBStreamCoderV1 *)self receivedData];
-    v15 = [v14 bytes];
+    receivedData5 = [(UAPBStreamCoderV1 *)self receivedData];
+    bytes2 = [receivedData5 bytes];
 
-    if (*v15 == 61 && v15[1] == 61 && v15[2] == 61)
+    if (*bytes2 == 61 && bytes2[1] == 61 && bytes2[2] == 61)
     {
       v16 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -265,8 +265,8 @@ LABEL_56:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Started receiving header", &v71, 2u);
       }
 
-      v17 = [(UAPBStreamCoderV1 *)self receivedData];
-      v18 = [(UAPBStreamCoderV1 *)self trimFirstBytes:3 ofData:v17];
+      receivedData6 = [(UAPBStreamCoderV1 *)self receivedData];
+      v18 = [(UAPBStreamCoderV1 *)self trimFirstBytes:3 ofData:receivedData6];
       [(UAPBStreamCoderV1 *)self setReceivedData:v18];
 
       [(UAPBStreamCoderV1 *)self setReceivedDelem:1];
@@ -292,35 +292,35 @@ LABEL_56:
       [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:v34];
     }
 
-    v35 = [(UAPBStreamCoderV1 *)self bytesReceived];
-    if (v35 >= [(UAPBStreamCoderV1 *)self expectedLength])
+    bytesReceived = [(UAPBStreamCoderV1 *)self bytesReceived];
+    if (bytesReceived >= [(UAPBStreamCoderV1 *)self expectedLength])
     {
-      v36 = [(UAPBStreamCoderV1 *)self receivedData];
-      v11 = [v36 subdataWithRange:{0, -[UAPBStreamCoderV1 expectedLength](self, "expectedLength")}];
+      receivedData7 = [(UAPBStreamCoderV1 *)self receivedData];
+      receivedData4 = [receivedData7 subdataWithRange:{0, -[UAPBStreamCoderV1 expectedLength](self, "expectedLength")}];
 
-      v12 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v11 error:0];
+      v12 = [[NSKeyedUnarchiver alloc] initForReadingFromData:receivedData4 error:0];
       v37 = [v12 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
       [(UAPBStreamCoderV1 *)self setRecvRap:v37];
 
       [(UAPBStreamCoderV1 *)self setState:2];
-      v38 = [(UAPBStreamCoderV1 *)self recvRap];
-      v39 = [v38 pbinfo];
-      -[UAPBStreamCoderV1 setExpectedLength:](self, "setExpectedLength:", [v39 dataSize] + 3);
+      recvRap = [(UAPBStreamCoderV1 *)self recvRap];
+      pbinfo = [recvRap pbinfo];
+      -[UAPBStreamCoderV1 setExpectedLength:](self, "setExpectedLength:", [pbinfo dataSize] + 3);
 
-      -[UAPBStreamCoderV1 setBytesReceived:](self, "setBytesReceived:", -[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived") - [v11 length]);
+      -[UAPBStreamCoderV1 setBytesReceived:](self, "setBytesReceived:", -[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived") - [receivedData4 length]);
       [(UAPBStreamCoderV1 *)self setReceivedDelem:0];
       [v12 finishDecoding];
-      v40 = [v11 length];
-      v41 = [(UAPBStreamCoderV1 *)self receivedData];
-      v42 = [(UAPBStreamCoderV1 *)self trimFirstBytes:v40 ofData:v41];
+      v40 = [receivedData4 length];
+      receivedData8 = [(UAPBStreamCoderV1 *)self receivedData];
+      v42 = [(UAPBStreamCoderV1 *)self trimFirstBytes:v40 ofData:receivedData8];
       [(UAPBStreamCoderV1 *)self setReceivedData:v42];
 
       v43 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(UAPBStreamCoderV1 *)self recvRap];
+        recvRap2 = [(UAPBStreamCoderV1 *)self recvRap];
         v71 = 138412290;
-        v72 = v44;
+        v72 = recvRap2;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Received Header: %@", &v71, 0xCu);
       }
 
@@ -332,17 +332,17 @@ LABEL_56:
 
   if ([(UAPBStreamCoderV1 *)self receivedDelem])
   {
-    v19 = [(UAPBStreamCoderV1 *)self progress];
-    [v19 setCompletedUnitCount:{-[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived")}];
+    progress = [(UAPBStreamCoderV1 *)self progress];
+    [progress setCompletedUnitCount:{-[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived")}];
 
     v20 = [UADiagnosticUtils absoluteToNSec:mach_absolute_time() - [(UAPBStreamCoderV1 *)self streamStartTime]]/ 1000000000.0;
     v21 = [(UAPBStreamCoderV1 *)self bytesReceived]/ v20;
-    v22 = [(UAPBStreamCoderV1 *)self progress];
+    progress2 = [(UAPBStreamCoderV1 *)self progress];
     v23 = [NSNumber numberWithDouble:v21];
-    [v22 setUserInfoObject:v23 forKey:NSProgressThroughputKey];
+    [progress2 setUserInfoObject:v23 forKey:NSProgressThroughputKey];
 
-    v24 = [(UAPBStreamCoderV1 *)self expectedLength];
-    v25 = (v24 - [(UAPBStreamCoderV1 *)self bytesReceived]) / v21;
+    expectedLength = [(UAPBStreamCoderV1 *)self expectedLength];
+    v25 = (expectedLength - [(UAPBStreamCoderV1 *)self bytesReceived]) / v21;
     if (*&qword_1000E5DD8 != 0.0)
     {
       v25 = v25 * 0.5 + *&qword_1000E5DD8 * 0.5;
@@ -355,9 +355,9 @@ LABEL_56:
 
     if (v20 > v28)
     {
-      v29 = [(UAPBStreamCoderV1 *)self progress];
+      progress3 = [(UAPBStreamCoderV1 *)self progress];
       v30 = [NSNumber numberWithDouble:*&qword_1000E5DD8];
-      [v29 setUserInfoObject:v30 forKey:NSProgressEstimatedTimeRemainingKey];
+      [progress3 setUserInfoObject:v30 forKey:NSProgressEstimatedTimeRemainingKey];
 
 LABEL_47:
     }
@@ -365,10 +365,10 @@ LABEL_47:
 
   else
   {
-    v51 = [(UAPBStreamCoderV1 *)self receivedData];
-    v52 = [v51 bytes];
+    receivedData9 = [(UAPBStreamCoderV1 *)self receivedData];
+    bytes3 = [receivedData9 bytes];
 
-    if (*v52 != 61 || v52[1] != 61 || v52[2] != 61)
+    if (*bytes3 != 61 || bytes3[1] != 61 || bytes3[2] != 61)
     {
       v58 = sub_100001A30(@"pasteboard-server");
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
@@ -381,17 +381,17 @@ LABEL_47:
       v75 = NSLocalizedDescriptionKey;
       v76 = @"Invalid delimiter before pb data";
       v60 = [NSDictionary dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-      v29 = [NSError errorWithDomain:v59 code:-122 userInfo:v60];
+      progress3 = [NSError errorWithDomain:v59 code:-122 userInfo:v60];
 
-      [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:v29];
+      [(UAPBStreamCoderV1 *)self streamDoneWithInfo:0 error:progress3];
       goto LABEL_47;
     }
 
-    v53 = [(UAPBStreamCoderV1 *)self progress];
-    [v53 setTotalUnitCount:{-[UAPBStreamCoderV1 expectedLength](self, "expectedLength")}];
+    progress4 = [(UAPBStreamCoderV1 *)self progress];
+    [progress4 setTotalUnitCount:{-[UAPBStreamCoderV1 expectedLength](self, "expectedLength")}];
 
-    v54 = [(UAPBStreamCoderV1 *)self progress];
-    [v54 setCompletedUnitCount:{-[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived")}];
+    progress5 = [(UAPBStreamCoderV1 *)self progress];
+    [progress5 setCompletedUnitCount:{-[UAPBStreamCoderV1 bytesReceived](self, "bytesReceived")}];
 
     v55 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -400,40 +400,40 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Started receiving data file", &v71, 2u);
     }
 
-    v56 = [(UAPBStreamCoderV1 *)self receivedData];
-    v57 = [(UAPBStreamCoderV1 *)self trimFirstBytes:3 ofData:v56];
+    receivedData10 = [(UAPBStreamCoderV1 *)self receivedData];
+    v57 = [(UAPBStreamCoderV1 *)self trimFirstBytes:3 ofData:receivedData10];
     [(UAPBStreamCoderV1 *)self setReceivedData:v57];
 
     [(UAPBStreamCoderV1 *)self setReceivedDelem:1];
   }
 
-  v61 = [(UAPBStreamCoderV1 *)self receivedData];
-  v62 = [v61 length];
+  receivedData11 = [(UAPBStreamCoderV1 *)self receivedData];
+  v62 = [receivedData11 length];
 
   if (v62)
   {
-    v63 = [(UAPBStreamCoderV1 *)self file];
-    v64 = [(UAPBStreamCoderV1 *)self receivedData];
-    [v63 writeData:v64];
+    file = [(UAPBStreamCoderV1 *)self file];
+    receivedData12 = [(UAPBStreamCoderV1 *)self receivedData];
+    [file writeData:receivedData12];
 
-    v65 = [(UAPBStreamCoderV1 *)self receivedData];
-    [v65 setLength:0];
+    receivedData13 = [(UAPBStreamCoderV1 *)self receivedData];
+    [receivedData13 setLength:0];
   }
 
   v66 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
   {
-    v67 = [(UAPBStreamCoderV1 *)self bytesReceived];
-    v68 = [(UAPBStreamCoderV1 *)self expectedLength];
+    bytesReceived2 = [(UAPBStreamCoderV1 *)self bytesReceived];
+    expectedLength2 = [(UAPBStreamCoderV1 *)self expectedLength];
     v71 = 134218240;
-    v72 = v67;
+    v72 = bytesReceived2;
     v73 = 2048;
-    v74 = v68;
+    v74 = expectedLength2;
     _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_INFO, "[CODER_V1] Recived %ld of %ld", &v71, 0x16u);
   }
 
-  v69 = [(UAPBStreamCoderV1 *)self bytesReceived];
-  if (v69 >= [(UAPBStreamCoderV1 *)self expectedLength])
+  bytesReceived3 = [(UAPBStreamCoderV1 *)self bytesReceived];
+  if (bytesReceived3 >= [(UAPBStreamCoderV1 *)self expectedLength])
   {
     v70 = sub_100001A30(@"pasteboard-server");
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
@@ -442,31 +442,31 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "[CODER_V1] Received data file", &v71, 2u);
     }
 
-    v11 = [(UAPBStreamCoderV1 *)self recvRap];
-    v48 = self;
-    v49 = v11;
+    receivedData4 = [(UAPBStreamCoderV1 *)self recvRap];
+    selfCopy2 = self;
+    v49 = receivedData4;
     v50 = 0;
     goto LABEL_56;
   }
 }
 
-- (void)sendPasteboard:(id)a3 withCompletion:(id)a4
+- (void)sendPasteboard:(id)pasteboard withCompletion:(id)completion
 {
-  v6 = a3;
-  v33 = a4;
+  pasteboardCopy = pasteboard;
+  completionCopy = completion;
   [(UAPBStreamCoderV1 *)self setIsSendMode:1];
-  v34 = v6;
-  [(UAPBStreamCoderV1 *)self setSendRap:v6];
+  v34 = pasteboardCopy;
+  [(UAPBStreamCoderV1 *)self setSendRap:pasteboardCopy];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
   val = self;
-  v7 = [(UAPBStreamCoderV1 *)self sendRap];
-  v8 = [v7 pbinfo];
-  v9 = [v8 items];
+  sendRap = [(UAPBStreamCoderV1 *)self sendRap];
+  pbinfo = [sendRap pbinfo];
+  items = [pbinfo items];
 
-  v10 = [v9 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v10 = [items countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v10)
   {
     v11 = *v41;
@@ -476,18 +476,18 @@ LABEL_47:
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         v13 = *(*(&v40 + 1) + 8 * i);
-        v14 = [v13 types];
-        v15 = [v14 allKeys];
-        v16 = [v15 containsObject:@"public.file-url"];
+        types = [v13 types];
+        allKeys = [types allKeys];
+        v16 = [allKeys containsObject:@"public.file-url"];
 
         if (v16)
         {
-          v17 = [v13 types];
-          v18 = [v17 mutableCopy];
+          types2 = [v13 types];
+          v18 = [types2 mutableCopy];
 
           [v18 removeObjectForKey:@"public.file-url"];
           [v18 removeObjectForKey:@"com.apple.security.sandbox-extension-dict"];
@@ -496,7 +496,7 @@ LABEL_47:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v10 = [items countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v10);
@@ -507,44 +507,44 @@ LABEL_47:
   v36[1] = 3221225472;
   v36[2] = sub_100064508;
   v36[3] = &unk_1000C6020;
-  v19 = v33;
+  v19 = completionCopy;
   v37 = v19;
   objc_copyWeak(&v38, &location);
   [(UAPBStreamCoderV1 *)val setSendErrorHandler:v36];
-  v20 = [v34 pbinfo];
-  v21 = [v20 dataFile];
-  [(UAPBStreamCoderV1 *)val setDataFile:v21];
+  pbinfo2 = [v34 pbinfo];
+  dataFile = [pbinfo2 dataFile];
+  [(UAPBStreamCoderV1 *)val setDataFile:dataFile];
 
-  v22 = [(UAPBStreamCoderV1 *)val sendRap];
-  v23 = [v22 pbinfo];
-  [v23 setDataFile:0];
+  sendRap2 = [(UAPBStreamCoderV1 *)val sendRap];
+  pbinfo3 = [sendRap2 pbinfo];
+  [pbinfo3 setDataFile:0];
 
   [(UAPBStreamCoderV1 *)val setDataSent:0];
-  v24 = [(UAPBStreamCoderV1 *)val sendRap];
-  v25 = [NSKeyedArchiver archivedDataWithRootObject:v24 requiringSecureCoding:1 error:0];
+  sendRap3 = [(UAPBStreamCoderV1 *)val sendRap];
+  v25 = [NSKeyedArchiver archivedDataWithRootObject:sendRap3 requiringSecureCoding:1 error:0];
 
   v26 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(UAPBStreamCoderV1 *)val sendRap];
+    sendRap4 = [(UAPBStreamCoderV1 *)val sendRap];
     *buf = 138412290;
-    v45 = v27;
+    v45 = sendRap4;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[OUT STREAM] Sending pboard info: %@", buf, 0xCu);
   }
 
   v28 = [(UAPBStreamCoderV1 *)val headerForData:v25];
   [(UAPBStreamCoderV1 *)val setCurrentSendData:v28];
 
-  v29 = [(UAPBStreamCoderV1 *)val streamHandler];
-  v30 = [(UAPBStreamCoderV1 *)val currentSendData];
-  [v29 writeRawData:v30];
+  streamHandler = [(UAPBStreamCoderV1 *)val streamHandler];
+  currentSendData = [(UAPBStreamCoderV1 *)val currentSendData];
+  [streamHandler writeRawData:currentSendData];
 
-  v31 = [(UAPBStreamCoderV1 *)val currentSendData];
-  -[UAPBStreamCoderV1 setDataSent:](val, "setDataSent:", [v31 length] + -[UAPBStreamCoderV1 dataSent](val, "dataSent"));
+  currentSendData2 = [(UAPBStreamCoderV1 *)val currentSendData];
+  -[UAPBStreamCoderV1 setDataSent:](val, "setDataSent:", [currentSendData2 length] + -[UAPBStreamCoderV1 dataSent](val, "dataSent"));
 
   [(UAPBStreamCoderV1 *)val setCurrentSendData:0];
-  v32 = [(UAPBStreamCoderV1 *)val streamHandler];
-  [v32 start];
+  streamHandler2 = [(UAPBStreamCoderV1 *)val streamHandler];
+  [streamHandler2 start];
 
   objc_destroyWeak(&v38);
   objc_destroyWeak(&location);
@@ -552,8 +552,8 @@ LABEL_47:
 
 - (void)sendNextChunk
 {
-  v3 = [(UAPBStreamCoderV1 *)self dataFile];
-  v4 = [v3 readDataOfLength:0x10000];
+  dataFile = [(UAPBStreamCoderV1 *)self dataFile];
+  v4 = [dataFile readDataOfLength:0x10000];
 
   -[UAPBStreamCoderV1 setDataSent:](self, "setDataSent:", [v4 length] + -[UAPBStreamCoderV1 dataSent](self, "dataSent"));
   v5 = [v4 length];
@@ -568,8 +568,8 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[CODER_V1] Queuing next chunk to send: %ld", &v11, 0xCu);
     }
 
-    v8 = [(UAPBStreamCoderV1 *)self streamHandler];
-    [v8 writeRawData:v4];
+    streamHandler = [(UAPBStreamCoderV1 *)self streamHandler];
+    [streamHandler writeRawData:v4];
   }
 
   else
@@ -583,16 +583,16 @@ LABEL_47:
     v9 = [NSTimer timerWithTimeInterval:self target:"shutdownTimerFired:" selector:0 userInfo:0 repeats:30.0];
     [(UAPBStreamCoderV1 *)self setBackupTimer:v9];
 
-    v8 = +[NSRunLoop mainRunLoop];
-    v10 = [(UAPBStreamCoderV1 *)self backupTimer];
-    [v8 addTimer:v10 forMode:NSRunLoopCommonModes];
+    streamHandler = +[NSRunLoop mainRunLoop];
+    backupTimer = [(UAPBStreamCoderV1 *)self backupTimer];
+    [streamHandler addTimer:backupTimer forMode:NSRunLoopCommonModes];
   }
 }
 
-- (void)receivedDataBack:(id)a3
+- (void)receivedDataBack:(id)back
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithData:v4 encoding:4];
+  backCopy = back;
+  v5 = [[NSString alloc] initWithData:backCopy encoding:4];
 
   v6 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -605,28 +605,28 @@ LABEL_47:
   v7 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(UAPBStreamCoderV1 *)self dataSent];
-    v9 = [(UAPBStreamCoderV1 *)self streamHandler];
-    v10 = [v9 totalBytesSent];
+    dataSent = [(UAPBStreamCoderV1 *)self dataSent];
+    streamHandler = [(UAPBStreamCoderV1 *)self streamHandler];
+    totalBytesSent = [streamHandler totalBytesSent];
     v15 = 134218240;
-    v16 = v8;
+    v16 = dataSent;
     v17 = 2048;
-    v18 = v10;
+    v18 = totalBytesSent;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[OUT STREAM] Data sent: %ld - %ld", &v15, 0x16u);
   }
 
-  v11 = [(UAPBStreamCoderV1 *)self streamHandler];
-  [v11 stop];
+  streamHandler2 = [(UAPBStreamCoderV1 *)self streamHandler];
+  [streamHandler2 stop];
 
-  v12 = [(UAPBStreamCoderV1 *)self backupTimer];
-  [v12 invalidate];
+  backupTimer = [(UAPBStreamCoderV1 *)self backupTimer];
+  [backupTimer invalidate];
 
-  v13 = [(UAPBStreamCoderV1 *)self sendErrorHandler];
-  v14 = [(UAPBStreamCoderV1 *)self streamHandler];
-  (v13)[2](v13, [v14 totalBytesSent], 0);
+  sendErrorHandler = [(UAPBStreamCoderV1 *)self sendErrorHandler];
+  streamHandler3 = [(UAPBStreamCoderV1 *)self streamHandler];
+  (sendErrorHandler)[2](sendErrorHandler, [streamHandler3 totalBytesSent], 0);
 }
 
-- (void)shutdownTimerFired:(id)a3
+- (void)shutdownTimerFired:(id)fired
 {
   v4 = sub_100001A30(@"pasteboard-server");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -635,33 +635,33 @@ LABEL_47:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[OUT STREAM] Stream Timer Fired, shutting down", v8, 2u);
   }
 
-  v5 = [(UAPBStreamCoderV1 *)self streamHandler];
-  [v5 stop];
+  streamHandler = [(UAPBStreamCoderV1 *)self streamHandler];
+  [streamHandler stop];
 
-  v6 = [(UAPBStreamCoderV1 *)self sendErrorHandler];
-  v7 = [(UAPBStreamCoderV1 *)self streamHandler];
-  (v6)[2](v6, [v7 totalBytesSent], 0);
+  sendErrorHandler = [(UAPBStreamCoderV1 *)self sendErrorHandler];
+  streamHandler2 = [(UAPBStreamCoderV1 *)self streamHandler];
+  (sendErrorHandler)[2](sendErrorHandler, [streamHandler2 totalBytesSent], 0);
 }
 
-- (id)trimFirstBytes:(unint64_t)a3 ofData:(id)a4
+- (id)trimFirstBytes:(unint64_t)bytes ofData:(id)data
 {
-  v5 = a4;
-  v6 = [v5 subdataWithRange:{a3, objc_msgSend(v5, "length") - a3}];
+  dataCopy = data;
+  v6 = [dataCopy subdataWithRange:{bytes, objc_msgSend(dataCopy, "length") - bytes}];
 
   v7 = [NSMutableData dataWithData:v6];
 
   return v7;
 }
 
-- (id)headerForData:(id)a3
+- (id)headerForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableData);
-  v6 = [v3 length];
+  v6 = [dataCopy length];
   [v4 appendBytes:"===" length:3];
   [v4 appendBytes:&v6 length:4];
   [v4 appendBytes:"===" length:3];
-  [v4 appendData:v3];
+  [v4 appendData:dataCopy];
 
   [v4 appendBytes:"===" length:3];
 

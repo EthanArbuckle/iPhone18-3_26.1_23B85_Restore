@@ -1,10 +1,10 @@
 @interface CHBState
 - (CHBState)init;
-- (unsigned)chartGroupIndexForType:(int)a3 isForPrimary:(BOOL)a4;
+- (unsigned)chartGroupIndexForType:(int)type isForPrimary:(BOOL)primary;
 - (void)dealloc;
 - (void)deleteXlChartDataSeriesCollection;
-- (void)setChart:(id)a3;
-- (void)xlChartDataSeriesAtIndex:(int)a3;
+- (void)setChart:(id)chart;
+- (void)xlChartDataSeriesAtIndex:(int)index;
 - (void)xlCurrentChartDataSeries;
 @end
 
@@ -58,20 +58,20 @@
   [(CHBState *)&v3 dealloc];
 }
 
-- (void)setChart:(id)a3
+- (void)setChart:(id)chart
 {
-  v5 = a3;
+  chartCopy = chart;
   mChart = self->mChart;
   p_mChart = &self->mChart;
-  if (mChart != v5)
+  if (mChart != chartCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mChart, a3);
-    v5 = v8;
+    v8 = chartCopy;
+    objc_storeStrong(p_mChart, chart);
+    chartCopy = v8;
   }
 }
 
-- (void)xlChartDataSeriesAtIndex:(int)a3
+- (void)xlChartDataSeriesAtIndex:(int)index
 {
   if (self->mXlCurrentSeriesIndex < 0 || !CFArrayGetCount(self->mXlChartDataSeriesCollection))
   {
@@ -80,7 +80,7 @@
 
   mXlChartDataSeriesCollection = self->mXlChartDataSeriesCollection;
 
-  return CFArrayGetValueAtIndex(mXlChartDataSeriesCollection, a3);
+  return CFArrayGetValueAtIndex(mXlChartDataSeriesCollection, index);
 }
 
 - (void)xlCurrentChartDataSeries
@@ -103,18 +103,18 @@
   }
 }
 
-- (unsigned)chartGroupIndexForType:(int)a3 isForPrimary:(BOOL)a4
+- (unsigned)chartGroupIndexForType:(int)type isForPrimary:(BOOL)primary
 {
-  if (a3 == 3 && a4)
+  if (type == 3 && primary)
   {
     return 0;
   }
 
-  v7 = [(CHBState *)self hasPrimaryMixedArea];
-  if (a3 != 3 || a4)
+  hasPrimaryMixedArea = [(CHBState *)self hasPrimaryMixedArea];
+  if (type != 3 || primary)
   {
-    v8 = [(CHBState *)self hasSecondaryMixedArea];
-    if (v7)
+    hasSecondaryMixedArea = [(CHBState *)self hasSecondaryMixedArea];
+    if (hasPrimaryMixedArea)
     {
       v9 = 2;
     }
@@ -124,26 +124,26 @@
       v9 = 1;
     }
 
-    if (v8)
+    if (hasSecondaryMixedArea)
     {
-      v7 = v9;
+      hasPrimaryMixedArea = v9;
     }
 
-    if (a3 != 2 || !a4)
+    if (type != 2 || !primary)
     {
-      v7 += [(CHBState *)self hasPrimaryMixedColumn];
-      if (a3 != 2 || a4)
+      hasPrimaryMixedArea += [(CHBState *)self hasPrimaryMixedColumn];
+      if (type != 2 || primary)
       {
-        v7 += [(CHBState *)self hasSecondaryMixedColumn];
-        if (a3 != 1 || !a4)
+        hasPrimaryMixedArea += [(CHBState *)self hasSecondaryMixedColumn];
+        if (type != 1 || !primary)
         {
-          v7 += [(CHBState *)self hasPrimaryMixedLine];
+          hasPrimaryMixedArea += [(CHBState *)self hasPrimaryMixedLine];
         }
       }
     }
   }
 
-  return v7;
+  return hasPrimaryMixedArea;
 }
 
 @end

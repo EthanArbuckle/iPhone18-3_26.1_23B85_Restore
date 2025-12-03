@@ -1,10 +1,10 @@
 @interface KatanaSubscriptionCoordinator
 + (_TtC9appstored29KatanaSubscriptionCoordinator)shared;
-- (BOOL)migrateSubscriptionStateWithAccount:(id)a3 logKey:(id)a4;
-- (BOOL)removeStaleSubscriptionInfoWithLogKey:(id)a3;
-- (BOOL)updateSubscriptionInfoWithEntitlement:(id)a3 account:(id)a4 bag:(id)a5 logKey:(id)a6;
+- (BOOL)migrateSubscriptionStateWithAccount:(id)account logKey:(id)key;
+- (BOOL)removeStaleSubscriptionInfoWithLogKey:(id)key;
+- (BOOL)updateSubscriptionInfoWithEntitlement:(id)entitlement account:(id)account bag:(id)bag logKey:(id)key;
 - (_TtC9appstored29KatanaSubscriptionCoordinator)init;
-- (id)subscriptionInfoDictionaryWithAccount:(id)a3 onlyReturnForPreviouslySubscribedAccount:(BOOL)a4 logKey:(id)a5;
+- (id)subscriptionInfoDictionaryWithAccount:(id)account onlyReturnForPreviouslySubscribedAccount:(BOOL)subscribedAccount logKey:(id)key;
 @end
 
 @implementation KatanaSubscriptionCoordinator
@@ -31,31 +31,31 @@
   return v3;
 }
 
-- (BOOL)migrateSubscriptionStateWithAccount:(id)a3 logKey:(id)a4
+- (BOOL)migrateSubscriptionStateWithAccount:(id)account logKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1000E81A4(v6, v7);
+  accountCopy = account;
+  keyCopy = key;
+  selfCopy = self;
+  v9 = sub_1000E81A4(accountCopy, keyCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)removeStaleSubscriptionInfoWithLogKey:(id)a3
+- (BOOL)removeStaleSubscriptionInfoWithLogKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1000E9288(v4);
+  keyCopy = key;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000E9288(keyCopy);
 
   return self & 1;
 }
 
-- (id)subscriptionInfoDictionaryWithAccount:(id)a3 onlyReturnForPreviouslySubscribedAccount:(BOOL)a4 logKey:(id)a5
+- (id)subscriptionInfoDictionaryWithAccount:(id)account onlyReturnForPreviouslySubscribedAccount:(BOOL)subscribedAccount logKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  v11 = sub_1000EA524(v8, a4, v9);
+  accountCopy = account;
+  keyCopy = key;
+  selfCopy = self;
+  v11 = sub_1000EA524(accountCopy, subscribedAccount, keyCopy);
 
   if (v11)
   {
@@ -70,16 +70,16 @@
   return v12.super.isa;
 }
 
-- (BOOL)updateSubscriptionInfoWithEntitlement:(id)a3 account:(id)a4 bag:(id)a5 logKey:(id)a6
+- (BOOL)updateSubscriptionInfoWithEntitlement:(id)entitlement account:(id)account bag:(id)bag logKey:(id)key
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  LOBYTE(a5) = sub_1000EADAC(a3, v12, a5, v14);
+  entitlementCopy = entitlement;
+  accountCopy = account;
+  bagCopy = bag;
+  keyCopy = key;
+  selfCopy = self;
+  LOBYTE(bag) = sub_1000EADAC(entitlement, accountCopy, bag, keyCopy);
 
-  return a5 & 1;
+  return bag & 1;
 }
 
 @end

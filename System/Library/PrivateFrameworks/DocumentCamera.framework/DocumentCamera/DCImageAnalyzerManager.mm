@@ -1,7 +1,7 @@
 @interface DCImageAnalyzerManager
 + (id)sharedInstance;
 - (DCImageAnalyzerManager)init;
-- (void)analysisForImage:(id)a3 completionHandler:(id)a4;
+- (void)analysisForImage:(id)image completionHandler:(id)handler;
 - (void)cleanup;
 @end
 
@@ -99,20 +99,20 @@ void __33__DCImageAnalyzerManager_cleanup__block_invoke(uint64_t a1)
   }
 }
 
-- (void)analysisForImage:(id)a3 completionHandler:(id)a4
+- (void)analysisForImage:(id)image completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  handlerCopy = handler;
   operationQueue = self->_operationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__DCImageAnalyzerManager_analysisForImage_completionHandler___block_invoke;
   block[3] = &unk_278F93178;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = imageCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = imageCopy;
   dispatch_async(operationQueue, block);
 }
 

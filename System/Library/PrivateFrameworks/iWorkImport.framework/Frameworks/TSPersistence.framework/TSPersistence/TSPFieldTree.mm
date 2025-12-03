@@ -1,7 +1,7 @@
 @interface TSPFieldTree
-- (BOOL)addField:(id)a3;
+- (BOOL)addField:(id)field;
 - (TSPFieldTree)init;
-- (void)saveToArchiver:(id)a3;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPFieldTree
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (BOOL)addField:(id)a3
+- (BOOL)addField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v5 = self->_rootNode;
-  v8 = objc_msgSend_fieldInfo(v4, v6, v7);
+  v8 = objc_msgSend_fieldInfo(fieldCopy, v6, v7);
   if (*(v8 + 104))
   {
     v10 = *(v8 + 104);
@@ -56,7 +56,7 @@
         if (v14 >= (v11 - 1))
         {
           v19 = objc_alloc_init(TSPFieldTreeNodeWithUnknownField);
-          objc_msgSend_setField_(v19, v20, v4);
+          objc_msgSend_setField_(v19, v20, fieldCopy);
           objc_msgSend_addChildNode_forFieldNumber_(v15, v21, v19, v16);
 
           v13 = 1;
@@ -88,12 +88,12 @@ LABEL_18:
   return v13;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   rootNode = self->_rootNode;
-  v10 = v4;
-  v8 = objc_msgSend_message(v4, v6, v7);
+  v10 = archiverCopy;
+  v8 = objc_msgSend_message(archiverCopy, v6, v7);
   objc_msgSend_saveToArchiver_message_(rootNode, v9, v10, v8);
 }
 

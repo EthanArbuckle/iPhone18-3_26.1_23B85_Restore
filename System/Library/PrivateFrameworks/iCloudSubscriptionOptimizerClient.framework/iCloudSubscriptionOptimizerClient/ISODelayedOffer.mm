@@ -7,10 +7,10 @@
 
 - (id)serverDict
 {
-  v2 = [(ISODelayedOffer *)self newOfferResponse];
-  v3 = [v2 toContext];
+  newOfferResponse = [(ISODelayedOffer *)self newOfferResponse];
+  toContext = [newOfferResponse toContext];
 
-  return v3;
+  return toContext;
 }
 
 - (id)newOfferResponse

@@ -1,29 +1,29 @@
 @interface HUConfigurator
 - (HUConfigurationViewController)currentViewController;
-- (HUConfigurator)initWithConfiguratorDelegate:(id)a3 initialViewController:(id)a4;
+- (HUConfigurator)initWithConfiguratorDelegate:(id)delegate initialViewController:(id)controller;
 - (HUConfiguratorDelegate)configuratorDelegate;
 - (void)_removeDisplayedViewController;
-- (void)pushViewControllerForResults:(id)a3;
+- (void)pushViewControllerForResults:(id)results;
 @end
 
 @implementation HUConfigurator
 
-- (HUConfigurator)initWithConfiguratorDelegate:(id)a3 initialViewController:(id)a4
+- (HUConfigurator)initWithConfiguratorDelegate:(id)delegate initialViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = HUConfigurator;
   v8 = [(HUConfigurator *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_configuratorDelegate, v6);
+    objc_storeWeak(&v8->_configuratorDelegate, delegateCopy);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     displayedViewControllers = v9->_displayedViewControllers;
     v9->_displayedViewControllers = v10;
 
-    [(HUConfigurator *)v9 _addViewControllerToDisplay:v7];
+    [(HUConfigurator *)v9 _addViewControllerToDisplay:controllerCopy];
   }
 
   return v9;
@@ -31,15 +31,15 @@
 
 - (HUConfigurationViewController)currentViewController
 {
-  v2 = [(HUConfigurator *)self displayedViewControllers];
-  v3 = [v2 lastObject];
+  displayedViewControllers = [(HUConfigurator *)self displayedViewControllers];
+  lastObject = [displayedViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)pushViewControllerForResults:(id)a3
+- (void)pushViewControllerForResults:(id)results
 {
-  v4 = [(HUConfigurator *)self _nextViewControllerForResults:a3];
+  v4 = [(HUConfigurator *)self _nextViewControllerForResults:results];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__HUConfigurator_pushViewControllerForResults___block_invoke;

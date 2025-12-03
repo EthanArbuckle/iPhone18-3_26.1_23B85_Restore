@@ -1,18 +1,18 @@
 @interface FMRenameItemDataSource
 - (_TtC6FindMy22FMRenameItemDataSource)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)numberOfComponentsInPickerView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)numberOfComponentsInPickerView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation FMRenameItemDataSource
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_10010412C(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10010412C(row, component);
   v11 = v10;
 
   if (v11)
@@ -28,14 +28,14 @@
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_100104290(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100104290(row, component);
 }
 
-- (int64_t)numberOfComponentsInPickerView:(id)a3
+- (int64_t)numberOfComponentsInPickerView:(id)view
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC6FindMy22FMRenameItemDataSource_beaconRoles);
   if (v3 >> 62)
@@ -49,18 +49,18 @@
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = self;
+  selfCopy = self;
   v5 = *(self + OBJC_IVAR____TtC6FindMy22FMRenameItemDataSource_beaconRoles);
   if ((v5 & 0xC000000000000001) != 0)
   {
-    v12 = self;
+    selfCopy2 = self;
 
     v8 = specialized _ArrayBuffer._getElementSlowPath(_:)();
 
 LABEL_5:
-    v9 = [v8 roles];
+    roles = [v8 roles];
 
     sub_10000905C(0, &unk_1006B20A0);
     v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -78,16 +78,16 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (a4 < 0)
+  if (component < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
-  if (*((v5 & 0xFFFFFFFFFFFFFF8) + 0x10) > a4)
+  if (*((v5 & 0xFFFFFFFFFFFFFF8) + 0x10) > component)
   {
-    v6 = *(v5 + 8 * a4 + 32);
-    v7 = self;
+    v6 = *(v5 + 8 * component + 32);
+    selfCopy3 = self;
     v8 = v6;
     goto LABEL_5;
   }

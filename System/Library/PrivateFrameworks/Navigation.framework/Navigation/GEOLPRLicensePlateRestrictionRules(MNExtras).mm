@@ -7,8 +7,8 @@
 - (id)plateRegionsContainingLatLngs:()MNExtras inRadius:
 {
   v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "licensePlateRegionsCount")}];
-  v8 = [a1 licensePlateRegions];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "licensePlateRegionsCount")}];
+  licensePlateRegions = [self licensePlateRegions];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__GEOLPRLicensePlateRestrictionRules_MNExtras__plateRegionsContainingLatLngs_inRadius___block_invoke;
@@ -18,7 +18,7 @@
   v9 = v7;
   v16 = v9;
   v10 = v6;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [licensePlateRegions enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;

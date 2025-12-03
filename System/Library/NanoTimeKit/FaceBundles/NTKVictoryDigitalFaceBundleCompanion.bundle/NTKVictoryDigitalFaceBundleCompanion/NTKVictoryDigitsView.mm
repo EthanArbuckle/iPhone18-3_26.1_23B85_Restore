@@ -1,39 +1,39 @@
 @interface NTKVictoryDigitsView
-+ (id)_fontForAppearance:(int64_t)a3 forDevice:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (id)_fontForAppearance:(int64_t)appearance forDevice:(id)device;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_createLabel;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (void)_updateDimmingOverlayColors;
 - (void)_updateFonts;
 - (void)applyColor;
 - (void)layoutSubviews;
-- (void)setAppearance:(int64_t)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setDigitText:(id)a3;
-- (void)setDimmingFactor:(double)a3 isUpper:(BOOL)a4;
-- (void)setScale:(double)a3;
+- (void)setAppearance:(int64_t)appearance;
+- (void)setBackgroundColor:(id)color;
+- (void)setColor:(id)color;
+- (void)setDigitText:(id)text;
+- (void)setDimmingFactor:(double)factor isUpper:(BOOL)upper;
+- (void)setScale:(double)scale;
 @end
 
 @implementation NTKVictoryDigitsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = NTKVictoryDigitsView;
   v6 = [(NTKVictoryDigitsView *)&v12 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[UIColor blackColor];
     [(NTKVictoryDigitsView *)v7 setBackgroundColor:v8];
 
     [(NTKVictoryDigitsView *)v7 setOpaque:1];
-    v9 = [(NTKVictoryDigitsView *)v7 _createLabel];
+    _createLabel = [(NTKVictoryDigitsView *)v7 _createLabel];
     label = v7->_label;
-    v7->_label = v9;
+    v7->_label = _createLabel;
 
     [(NTKVictoryDigitsView *)v7 addSubview:v7->_label];
     v7->_hasSetAppearance = 0;
@@ -43,11 +43,11 @@
   return v7;
 }
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
-  if (!self->_hasSetAppearance || self->_appearance != a3)
+  if (!self->_hasSetAppearance || self->_appearance != appearance)
   {
-    self->_appearance = a3;
+    self->_appearance = appearance;
     self->_hasSetAppearance = 1;
     [(NTKVictoryDigitsView *)self prepareAppearance:?];
     [(NTKVictoryDigitsView *)self _updateFonts];
@@ -56,10 +56,10 @@
   }
 }
 
-- (void)setDimmingFactor:(double)a3 isUpper:(BOOL)a4
+- (void)setDimmingFactor:(double)factor isUpper:(BOOL)upper
 {
-  v4 = a4;
-  v5 = a3;
+  upperCopy = upper;
+  factorCopy = factor;
   dimmingOverlay = self->_dimmingOverlay;
   if (!dimmingOverlay)
   {
@@ -87,29 +87,29 @@
     [(NTKVictoryDigitsView *)self bounds];
     [(CAGradientLayer *)self->_dimmingOverlay setFrame:?];
     [(NTKVictoryDigitsView *)self _updateDimmingOverlayColors];
-    v12 = [(NTKVictoryDigitsView *)self layer];
-    [v12 addSublayer:self->_dimmingOverlay];
+    layer = [(NTKVictoryDigitsView *)self layer];
+    [layer addSublayer:self->_dimmingOverlay];
 
     dimmingOverlay = self->_dimmingOverlay;
   }
 
-  if (self->_dimIsUpper != v4)
+  if (self->_dimIsUpper != upperCopy)
   {
-    [(CAGradientLayer *)dimmingOverlay setStartPoint:0.0, v4];
-    [(CAGradientLayer *)self->_dimmingOverlay setEndPoint:0.0, (v4 ^ 1)];
-    self->_dimIsUpper = v4;
+    [(CAGradientLayer *)dimmingOverlay setStartPoint:0.0, upperCopy];
+    [(CAGradientLayer *)self->_dimmingOverlay setEndPoint:0.0, (upperCopy ^ 1)];
+    self->_dimIsUpper = upperCopy;
     dimmingOverlay = self->_dimmingOverlay;
   }
 
-  *&a3 = v5;
-  [(CAGradientLayer *)dimmingOverlay setOpacity:a3];
+  *&factor = factorCopy;
+  [(CAGradientLayer *)dimmingOverlay setOpacity:factor];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = NTKVictoryDigitsView;
-  [(NTKVictoryDigitsView *)&v4 setBackgroundColor:a3];
+  [(NTKVictoryDigitsView *)&v4 setBackgroundColor:color];
   [(NTKVictoryDigitsView *)self _updateDimmingOverlayColors];
 }
 
@@ -117,25 +117,25 @@
 {
   if (self->_dimmingOverlay)
   {
-    v3 = [(NTKVictoryDigitsView *)self backgroundColor];
-    v4 = [v3 colorWithAlphaComponent:0.9];
+    backgroundColor = [(NTKVictoryDigitsView *)self backgroundColor];
+    v4 = [backgroundColor colorWithAlphaComponent:0.9];
     v8[0] = [v4 CGColor];
-    v5 = [(NTKVictoryDigitsView *)self backgroundColor];
-    v6 = [v5 colorWithAlphaComponent:0.7];
+    backgroundColor2 = [(NTKVictoryDigitsView *)self backgroundColor];
+    v6 = [backgroundColor2 colorWithAlphaComponent:0.7];
     v8[1] = [v6 CGColor];
     v7 = [NSArray arrayWithObjects:v8 count:2];
     [(CAGradientLayer *)self->_dimmingOverlay setColors:v7];
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v7 = a3;
-  v5 = [(UIColor *)self->_color CGColor];
-  v6 = v7;
-  if (!CGColorEqualToColor(v5, [v7 CGColor]))
+  colorCopy = color;
+  cGColor = [(UIColor *)self->_color CGColor];
+  v6 = colorCopy;
+  if (!CGColorEqualToColor(cGColor, [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(NTKVictoryDigitsView *)self applyColor];
   }
 }
@@ -144,8 +144,8 @@
 {
   if ((self->_appearance & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v3 = [(NTKVictoryDigitsView *)self outlineBackgroundColor];
-    [(NTKVictoryLabel *)self->_label setFillColor:v3];
+    outlineBackgroundColor = [(NTKVictoryDigitsView *)self outlineBackgroundColor];
+    [(NTKVictoryLabel *)self->_label setFillColor:outlineBackgroundColor];
 
     color = self->_color;
     label = self->_label;
@@ -162,15 +162,15 @@
   }
 }
 
-- (void)setDigitText:(id)a3
+- (void)setDigitText:(id)text
 {
-  v7 = a3;
-  v4 = [(NTKVictoryLabel *)self->_label text];
-  v5 = [v4 length];
-  if (v5 == [v7 length])
+  textCopy = text;
+  text = [(NTKVictoryLabel *)self->_label text];
+  v5 = [text length];
+  if (v5 == [textCopy length])
   {
 
-    [(NTKVictoryLabel *)self->_label setText:v7];
+    [(NTKVictoryLabel *)self->_label setText:textCopy];
     [(NTKVictoryLabel *)self->_label sizeToFit];
   }
 
@@ -178,7 +178,7 @@
   {
     tritiumOnFraction = self->_tritiumOnFraction;
 
-    [(NTKVictoryLabel *)self->_label setText:v7];
+    [(NTKVictoryLabel *)self->_label setText:textCopy];
     [(NTKVictoryLabel *)self->_label sizeToFit];
     if (tritiumOnFraction < 1.0)
     {
@@ -187,10 +187,10 @@
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  self->_scale = a3;
-  CGAffineTransformMakeScale(&v6, a3, a3);
+  self->_scale = scale;
+  CGAffineTransformMakeScale(&v6, scale, scale);
   label = self->_label;
   v5 = v6;
   [(NTKVictoryLabel *)label setTransform:&v5];
@@ -215,7 +215,7 @@
   [(CAGradientLayer *)self->_dimmingOverlay setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   memset(v5, 0, sizeof(v5));
   sub_5F2C(self->_device, v5);
@@ -242,10 +242,10 @@
   [(NTKVictoryDigitsView *)self applyColor];
 }
 
-+ (id)_fontForAppearance:(int64_t)a3 forDevice:(id)a4
++ (id)_fontForAppearance:(int64_t)appearance forDevice:(id)device
 {
-  v4 = a3 != 1;
-  sub_5F2C(a4, &v7);
+  v4 = appearance != 1;
+  sub_5F2C(device, &v7);
   v5 = v8;
 
   return [NTKVictoryLabel victoryFontWithSize:v4 style:v5];

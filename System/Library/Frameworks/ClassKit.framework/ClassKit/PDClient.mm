@@ -1,23 +1,23 @@
 @interface PDClient
-+ (BOOL)isSchoolworkAppVersionGreaterThanOrEqualTo:(id)a3;
++ (BOOL)isSchoolworkAppVersionGreaterThanOrEqualTo:(id)to;
 @end
 
 @implementation PDClient
 
-+ (BOOL)isSchoolworkAppVersionGreaterThanOrEqualTo:(id)a3
++ (BOOL)isSchoolworkAppVersionGreaterThanOrEqualTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   v4 = objc_autoreleasePoolPush();
   v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.schoolwork.ClassKitApp" allowPlaceholder:0 error:0];
-  v6 = [v5 applicationState];
-  v7 = [v6 isInstalled];
+  applicationState = [v5 applicationState];
+  isInstalled = [applicationState isInstalled];
 
   v8 = 0;
-  if (v7)
+  if (isInstalled)
   {
-    v9 = [v5 shortVersionString];
+    shortVersionString = [v5 shortVersionString];
     v10 = +[LSApplicationWorkspace defaultWorkspace];
-    v8 = [v10 isVersion:v9 greaterThanOrEqualToVersion:v3];
+    v8 = [v10 isVersion:shortVersionString greaterThanOrEqualToVersion:toCopy];
   }
 
   objc_autoreleasePoolPop(v4);

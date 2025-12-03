@@ -1,31 +1,31 @@
 @interface BWFanOutNode
-- (BWFanOutNode)initWithFanOutCount:(int)a3 mediaType:(unsigned int)a4;
+- (BWFanOutNode)initWithFanOutCount:(int)count mediaType:(unsigned int)type;
 - (id)addExtendedOutput;
-- (void)activateExtendedOutput:(id)a3;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)activateExtendedOutput:(id)output;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)removeExtendedOutput:(id)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setAllowedAttachedMediaKeys:(id)a3 forOutputIndex:(int)a4;
-- (void)setDisallowedAttachedMediaKeys:(id)a3 forOutputIndex:(int)a4;
-- (void)setDiscardsAttachedMedia:(BOOL)a3 forOutputIndex:(int)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)removeExtendedOutput:(id)output;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setAllowedAttachedMediaKeys:(id)keys forOutputIndex:(int)index;
+- (void)setDisallowedAttachedMediaKeys:(id)keys forOutputIndex:(int)index;
+- (void)setDiscardsAttachedMedia:(BOOL)media forOutputIndex:(int)index;
 @end
 
 @implementation BWFanOutNode
 
-- (BWFanOutNode)initWithFanOutCount:(int)a3 mediaType:(unsigned int)a4
+- (BWFanOutNode)initWithFanOutCount:(int)count mediaType:(unsigned int)type
 {
-  if (a3 < 0)
+  if (count < 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Negative fan count" userInfo:0]);
   }
 
-  v4 = *&a4;
+  v4 = *&type;
   v15.receiver = self;
   v15.super_class = BWFanOutNode;
   v6 = [(BWNode *)&v15 init];
@@ -43,12 +43,12 @@
     [(BWNodeInput *)v8 setPassthroughMode:1];
     [(BWNode *)v7 addInput:v8];
 
-    v10 = a3;
-    v7->_outputsCArray = malloc_type_malloc(8 * a3, 0x80040B8603338uLL);
-    v7->_outputsDiscardsAttachedMedia = malloc_type_malloc(a3, 0x100004077774924uLL);
-    v7->_outputsAllowedAttachedMediaKeys = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
-    v7->_outputsCount = a3;
-    if (a3)
+    countCopy = count;
+    v7->_outputsCArray = malloc_type_malloc(8 * count, 0x80040B8603338uLL);
+    v7->_outputsDiscardsAttachedMedia = malloc_type_malloc(count, 0x100004077774924uLL);
+    v7->_outputsAllowedAttachedMediaKeys = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:count];
+    v7->_outputsCount = count;
+    if (count)
     {
       v11 = 0;
       do
@@ -68,7 +68,7 @@
         v7->_outputsDiscardsAttachedMedia[v11++] = 0;
       }
 
-      while (v10 != v11);
+      while (countCopy != v11);
     }
 
     v7->_extendedOutputsLock._os_unfair_lock_opaque = 0;
@@ -88,20 +88,20 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)setDiscardsAttachedMedia:(BOOL)a3 forOutputIndex:(int)a4
+- (void)setDiscardsAttachedMedia:(BOOL)media forOutputIndex:(int)index
 {
-  v5 = a3;
-  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:a4];
+  mediaCopy = media;
+  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:index];
   v8 = v7;
-  if (v5 && ![v7 unspecifiedAttachedMediaConfiguration])
+  if (mediaCopy && ![v7 unspecifiedAttachedMediaConfiguration])
   {
     [v8 setUnspecifiedAttachedMediaConfiguration:objc_alloc_init(BWNodeOutputMediaConfiguration)];
   }
 
-  self->_outputsDiscardsAttachedMedia[a4] = v5;
-  v9 = [v8 unspecifiedAttachedMediaConfiguration];
+  self->_outputsDiscardsAttachedMedia[index] = mediaCopy;
+  unspecifiedAttachedMediaConfiguration = [v8 unspecifiedAttachedMediaConfiguration];
 
-  [v9 setPassthroughMode:!v5];
+  [unspecifiedAttachedMediaConfiguration setPassthroughMode:!mediaCopy];
 }
 
 - (id)addExtendedOutput
@@ -115,11 +115,11 @@
   return v3;
 }
 
-- (void)activateExtendedOutput:(id)a3
+- (void)activateExtendedOutput:(id)output
 {
-  if (![a3 liveFormat])
+  if (![output liveFormat])
   {
-    [a3 makeConfiguredFormatLive];
+    [output makeConfiguredFormatLive];
   }
 
   os_unfair_lock_lock(&self->_extendedOutputsLock);
@@ -130,21 +130,21 @@
     self->_extendedOutputs = extendedOutputs;
   }
 
-  if (([(NSMutableArray *)extendedOutputs containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)extendedOutputs containsObject:output]& 1) == 0)
   {
-    [(NSMutableArray *)self->_extendedOutputs addObject:a3];
+    [(NSMutableArray *)self->_extendedOutputs addObject:output];
   }
 
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BWNode *)self outputs:a3];
+  v5 = [(BWNode *)self outputs:format];
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -160,7 +160,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setFormat:a3];
+        [*(*(&v11 + 1) + 8 * v9++) setFormat:format];
       }
 
       while (v7 != v9);
@@ -171,28 +171,28 @@
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
 
-    [(BWFanOutNode *)self didSelectFormat:a3 forInput:a4];
+    [(BWFanOutNode *)self didSelectFormat:format forInput:input];
   }
 
   else
   {
-    v9 = [(BWNode *)self outputs];
-    if ([(NSArray *)v9 count])
+    outputs = [(BWNode *)self outputs];
+    if ([(NSArray *)outputs count])
     {
       v10 = 0;
       do
       {
-        v11 = [(NSArray *)v9 objectAtIndexedSubscript:v10];
-        v12 = [v11 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+        v11 = [(NSArray *)outputs objectAtIndexedSubscript:v10];
+        v12 = [v11 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
         if (v12)
         {
           v13 = v12;
-          if ((![-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "count"}] || objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "containsObject:", a5)) && (objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsDisallowedAttachedMediaKeys, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "containsObject:", a5) & 1) == 0)
+          if ((![-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "count"}] || objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "containsObject:", key)) && (objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_outputsDisallowedAttachedMediaKeys, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v10)), "containsObject:", key) & 1) == 0)
           {
             v14 = [v11 mediaPropertiesForAttachedMediaKey:v13];
             if (!v14)
@@ -201,19 +201,19 @@
               [v11 _setMediaProperties:v14 forAttachedMediaKey:v13];
             }
 
-            [(BWNodeOutputMediaProperties *)v14 setResolvedFormat:a3];
+            [(BWNodeOutputMediaProperties *)v14 setResolvedFormat:format];
           }
         }
 
         ++v10;
       }
 
-      while (v10 < [(NSArray *)v9 count]);
+      while (v10 < [(NSArray *)outputs count]);
     }
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_outputsCount >= 1)
   {
@@ -258,14 +258,14 @@
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (self->_outputsCount >= 1)
   {
     v6 = 0;
     do
     {
-      [self->_outputsCArray[v6++] markEndOfLiveOutputForConfigurationID:{a3, a4}];
+      [self->_outputsCArray[v6++] markEndOfLiveOutputForConfigurationID:{d, input}];
     }
 
     while (v6 < self->_outputsCount);
@@ -291,7 +291,7 @@
           objc_enumerationMutation(extendedOutputs);
         }
 
-        [*(*(&v13 + 1) + 8 * i) markEndOfLiveOutputForConfigurationID:a3];
+        [*(*(&v13 + 1) + 8 * i) markEndOfLiveOutputForConfigurationID:d];
       }
 
       v9 = [(NSMutableArray *)extendedOutputs countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -303,7 +303,7 @@
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_extendedOutputsLock);
   if (self->_outputsCount >= 1)
@@ -314,16 +314,16 @@
       if (([self->_outputsCArray[v6] discardsSampleData] & 1) == 0)
       {
         sampleBufferOut[0] = 0;
-        if (a3)
+        if (buffer)
         {
           if (v6 < self->_outputsCount - 1 || [(NSMutableArray *)self->_extendedOutputs count])
           {
-            BWCMSampleBufferCreateCopyIncludingMetadata(a3, sampleBufferOut);
+            BWCMSampleBufferCreateCopyIncludingMetadata(buffer, sampleBufferOut);
           }
 
           else
           {
-            sampleBufferOut[0] = CFRetain(a3);
+            sampleBufferOut[0] = CFRetain(buffer);
           }
 
           if (self->_outputsDiscardsAttachedMedia[v6])
@@ -381,17 +381,17 @@
         if (([v12 discardsSampleData] & 1) == 0)
         {
           sampleBufferOut[0] = 0;
-          if (a3)
+          if (buffer)
           {
             if (v12 == [(NSMutableArray *)self->_extendedOutputs lastObject])
             {
-              sampleBufferOut[0] = a3;
-              CFRetain(a3);
+              sampleBufferOut[0] = buffer;
+              CFRetain(buffer);
             }
 
             else
             {
-              BWCMSampleBufferCreateCopyIncludingMetadata(a3, sampleBufferOut);
+              BWCMSampleBufferCreateCopyIncludingMetadata(buffer, sampleBufferOut);
             }
 
             if (sampleBufferOut[0])
@@ -415,14 +415,14 @@
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if (self->_outputsCount >= 1)
   {
     v6 = 0;
     do
     {
-      [self->_outputsCArray[v6++] emitNodeError:{a3, a4}];
+      [self->_outputsCArray[v6++] emitNodeError:{error, input}];
     }
 
     while (v6 < self->_outputsCount);
@@ -448,7 +448,7 @@
           objc_enumerationMutation(extendedOutputs);
         }
 
-        [*(*(&v13 + 1) + 8 * i) emitNodeError:a3];
+        [*(*(&v13 + 1) + 8 * i) emitNodeError:error];
       }
 
       v9 = [(NSMutableArray *)extendedOutputs countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -460,14 +460,14 @@
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_outputsCount >= 1)
   {
     v6 = 0;
     do
     {
-      [self->_outputsCArray[v6++] emitDroppedSample:{a3, a4}];
+      [self->_outputsCArray[v6++] emitDroppedSample:{sample, input}];
     }
 
     while (v6 < self->_outputsCount);
@@ -493,7 +493,7 @@
           objc_enumerationMutation(extendedOutputs);
         }
 
-        [*(*(&v13 + 1) + 8 * i) emitDroppedSample:a3];
+        [*(*(&v13 + 1) + 8 * i) emitDroppedSample:sample];
       }
 
       v9 = [(NSMutableArray *)extendedOutputs countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -505,10 +505,10 @@
   os_unfair_lock_unlock(&self->_extendedOutputsLock);
 }
 
-- (void)setAllowedAttachedMediaKeys:(id)a3 forOutputIndex:(int)a4
+- (void)setAllowedAttachedMediaKeys:(id)keys forOutputIndex:(int)index
 {
-  v4 = *&a4;
-  if ([a3 count])
+  v4 = *&index;
+  if ([keys count])
   {
     v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:v4];
     v15 = OUTLINED_FUNCTION_2_0(v7, v8, v9, v10, v11, v12, v13, v14, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, 0);
@@ -522,7 +522,7 @@
         {
           if (MEMORY[0] != v17)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(keys);
           }
 
           v19 = *(8 * i);
@@ -543,14 +543,14 @@
     }
 
     [objc_msgSend(v7 "unspecifiedAttachedMediaConfiguration")];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithInt:v4]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_outputsAllowedAttachedMediaKeys, "setObject:forKeyedSubscript:", keys, [MEMORY[0x1E696AD98] numberWithInt:v4]);
   }
 }
 
-- (void)setDisallowedAttachedMediaKeys:(id)a3 forOutputIndex:(int)a4
+- (void)setDisallowedAttachedMediaKeys:(id)keys forOutputIndex:(int)index
 {
-  v4 = *&a4;
-  if ([a3 count])
+  v4 = *&index;
+  if ([keys count])
   {
     outputsDisallowedAttachedMediaKeys = self->_outputsDisallowedAttachedMediaKeys;
     if (!outputsDisallowedAttachedMediaKeys)
@@ -561,17 +561,17 @@
 
     v8 = [MEMORY[0x1E696AD98] numberWithInt:v4];
 
-    [(NSMutableDictionary *)outputsDisallowedAttachedMediaKeys setObject:a3 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)outputsDisallowedAttachedMediaKeys setObject:keys forKeyedSubscript:v8];
   }
 }
 
-- (void)removeExtendedOutput:(id)a3
+- (void)removeExtendedOutput:(id)output
 {
-  if ([(NSArray *)[(BWNode *)self outputs] containsObject:a3])
+  if ([(NSArray *)[(BWNode *)self outputs] containsObject:output])
   {
-    [(BWNode *)self removeOutput:a3];
+    [(BWNode *)self removeOutput:output];
     os_unfair_lock_lock(&self->_extendedOutputsLock);
-    [(NSMutableArray *)self->_extendedOutputs removeObject:a3];
+    [(NSMutableArray *)self->_extendedOutputs removeObject:output];
     if (![(NSMutableArray *)self->_extendedOutputs count])
     {
 
@@ -579,10 +579,10 @@
     }
 
     os_unfair_lock_unlock(&self->_extendedOutputsLock);
-    if ([a3 liveFormat])
+    if ([output liveFormat])
     {
 
-      [a3 markEndOfLiveOutput];
+      [output markEndOfLiveOutput];
     }
   }
 }

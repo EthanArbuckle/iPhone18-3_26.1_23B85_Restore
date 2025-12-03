@@ -4,48 +4,48 @@
 - (void)_updateSummaryContentProvider;
 - (void)_updateSummaryPlatterView;
 - (void)atxLogRemoval;
-- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)a3;
-- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)a3;
-- (void)generateDigestForATXUserNotificationArrays:(id)a3 withCompletionBlock:(id)a4;
-- (void)setDeviceAuthenticated:(BOOL)a3;
+- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)upcoming;
+- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)upcoming;
+- (void)generateDigestForATXUserNotificationArrays:(id)arrays withCompletionBlock:(id)block;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
 @end
 
 @implementation NCNotificationMissedSummaryOrderProvider
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
   v4.receiver = self;
   v4.super_class = NCNotificationMissedSummaryOrderProvider;
-  [(NCNotificationSummaryOrderProvider *)&v4 setDeviceAuthenticated:a3];
+  [(NCNotificationSummaryOrderProvider *)&v4 setDeviceAuthenticated:authenticated];
   [(NCNotificationMissedSummaryOrderProvider *)self _updateSummaryPlatterView];
 }
 
 - (id)atxUUID
 {
-  v2 = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
-  v3 = [v2 uuid];
+  missedNotificationRanking = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
+  uuid = [missedNotificationRanking uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)a3
+- (void)atxLogSummaryPlatterShownIsUpcoming:(BOOL)upcoming
 {
-  v3 = a3;
-  v4 = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
-  [v4 logCollapsedViewWithIsUpcoming:v3];
+  upcomingCopy = upcoming;
+  missedNotificationRanking = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
+  [missedNotificationRanking logCollapsedViewWithIsUpcoming:upcomingCopy];
 }
 
-- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)a3
+- (void)atxLogSummaryPlatterExpandedIsUpcoming:(BOOL)upcoming
 {
-  v3 = a3;
-  v4 = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
-  [v4 logExpandedViewWithIsUpcoming:v3];
+  upcomingCopy = upcoming;
+  missedNotificationRanking = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
+  [missedNotificationRanking logExpandedViewWithIsUpcoming:upcomingCopy];
 }
 
 - (void)atxLogRemoval
 {
-  v2 = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
-  [v2 logRemoval];
+  missedNotificationRanking = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
+  [missedNotificationRanking logRemoval];
 }
 
 - (id)leadingSummaryPlatterViewConfigureIfNecessary
@@ -59,12 +59,12 @@
 
     [(NCNotificationSummaryPlatterView *)self->_summaryPlatterView setFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v6 = self->_summaryPlatterView;
-    v7 = [(NCNotificationSummaryOrderProvider *)self materialGroupNameBase];
-    [(PLPlatterView *)v6 setMaterialGroupNameBase:v7];
+    materialGroupNameBase = [(NCNotificationSummaryOrderProvider *)self materialGroupNameBase];
+    [(PLPlatterView *)v6 setMaterialGroupNameBase:materialGroupNameBase];
 
     v8 = self->_summaryPlatterView;
-    v9 = [(NCNotificationSummaryOrderProvider *)self summaryPlatterViewTapGestureRecognizer];
-    [(NCNotificationSummaryPlatterView *)v8 addGestureRecognizer:v9];
+    summaryPlatterViewTapGestureRecognizer = [(NCNotificationSummaryOrderProvider *)self summaryPlatterViewTapGestureRecognizer];
+    [(NCNotificationSummaryPlatterView *)v8 addGestureRecognizer:summaryPlatterViewTapGestureRecognizer];
 
     [(NCNotificationMissedSummaryOrderProvider *)self _updateSummaryPlatterView];
     summaryPlatterView = self->_summaryPlatterView;
@@ -73,30 +73,30 @@
   return summaryPlatterView;
 }
 
-- (void)generateDigestForATXUserNotificationArrays:(id)a3 withCompletionBlock:(id)a4
+- (void)generateDigestForATXUserNotificationArrays:(id)arrays withCompletionBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arraysCopy = arrays;
+  blockCopy = block;
   v8 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
+    summaryHeading = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
     *buf = 138543362;
-    v16 = v10;
+    v16 = summaryHeading;
     _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Generating new missed notification ranking for %{public}@", buf, 0xCu);
   }
 
-  v11 = [objc_opt_class() atxDigestGeneratorClient];
+  atxDigestGeneratorClient = [objc_opt_class() atxDigestGeneratorClient];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __107__NCNotificationMissedSummaryOrderProvider_generateDigestForATXUserNotificationArrays_withCompletionBlock___block_invoke;
   v13[3] = &unk_278370C68;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 generateMissedNotificationRankingForNotificationArrays:v6 modeUUID:0 reply:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [atxDigestGeneratorClient generateMissedNotificationRankingForNotificationArrays:arraysCopy modeUUID:0 reply:v13];
 }
 
 void __107__NCNotificationMissedSummaryOrderProvider_generateDigestForATXUserNotificationArrays_withCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -144,26 +144,26 @@ uint64_t __107__NCNotificationMissedSummaryOrderProvider_generateDigestForATXUse
 {
   [(NCNotificationMissedSummaryOrderProvider *)self _updateSummaryContentProvider];
   [(NCNotificationSummaryOrderProvider *)self configureSummaryContentDisplaying:self->_summaryPlatterView withSummaryContentProviding:self->_summaryContentProvider];
-  v3 = [(NCNotificationSummaryOrderProvider *)self delegate];
-  [v3 notificationSummaryOrderProviderRequestsReloadingLeadingSummaryPlatterView:self];
+  delegate = [(NCNotificationSummaryOrderProvider *)self delegate];
+  [delegate notificationSummaryOrderProviderRequestsReloadingLeadingSummaryPlatterView:self];
 }
 
 - (void)_updateSummaryContentProvider
 {
-  v16 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
-  v3 = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
-  v4 = [v3 rankedGroups];
+  cachedOrderedNotificationGroupLists = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
+  missedNotificationRanking = [(NCNotificationMissedSummaryOrderProvider *)self missedNotificationRanking];
+  rankedGroups = [missedNotificationRanking rankedGroups];
 
-  v5 = [(NCNotificationSummaryOrderProvider *)self orderedNotificationGroupLists:v16 forATXUserNotificationDigestNotificationGroup:v4 orderGroupNotifications:0];
+  v5 = [(NCNotificationSummaryOrderProvider *)self orderedNotificationGroupLists:cachedOrderedNotificationGroupLists forATXUserNotificationDigestNotificationGroup:rankedGroups orderGroupNotifications:0];
   if (![v5 count])
   {
-    v6 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
+    cachedOrderedNotificationGroupLists2 = [(NCNotificationSummaryOrderProvider *)self cachedOrderedNotificationGroupLists];
 
-    v5 = v6;
+    v5 = cachedOrderedNotificationGroupLists2;
   }
 
-  v7 = [(NCNotificationSummaryOrderProvider *)self titlesForSectionListsInSummary];
-  if ([v5 count] || objc_msgSend(v7, "count"))
+  titlesForSectionListsInSummary = [(NCNotificationSummaryOrderProvider *)self titlesForSectionListsInSummary];
+  if ([v5 count] || objc_msgSend(titlesForSectionListsInSummary, "count"))
   {
     v8 = [(NCNotificationSummaryOrderProvider *)self representativeNotificationRequestsForNotificationGroupLists:v5];
     v9 = [NCNotificationSummaryContentProvider summaryContentProviderOfType:2 notificationRequests:v8];
@@ -172,15 +172,15 @@ uint64_t __107__NCNotificationMissedSummaryOrderProvider_generateDigestForATXUse
 
     [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setDeviceAuthenticated:[(NCNotificationSummaryOrderProvider *)self isDeviceAuthenticated]];
     v11 = self->_summaryContentProvider;
-    v12 = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
-    [(NCNotificationSummaryContentProvider *)v11 setSummaryTitle:v12];
+    summaryHeading = [(NCNotificationSummaryOrderProvider *)self summaryHeading];
+    [(NCNotificationSummaryContentProvider *)v11 setSummaryTitle:summaryHeading];
 
     v13 = self->_summaryContentProvider;
-    v14 = [(NCNotificationSummaryOrderProvider *)self dndMode];
-    v15 = [v14 symbolImageName];
-    [(NCNotificationSummaryContentProvider *)v13 setSummaryIconSymbolName:v15];
+    dndMode = [(NCNotificationSummaryOrderProvider *)self dndMode];
+    symbolImageName = [dndMode symbolImageName];
+    [(NCNotificationSummaryContentProvider *)v13 setSummaryIconSymbolName:symbolImageName];
 
-    [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setTitlesForSectionListsInSummary:v7];
+    [(NCNotificationSummaryContentProvider *)self->_summaryContentProvider setTitlesForSectionListsInSummary:titlesForSectionListsInSummary];
   }
 
   else

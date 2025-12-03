@@ -1,22 +1,22 @@
 @interface TUIReportManager
-- (TUIReportManager)initWithStaticIdentityManager:(id)a3;
+- (TUIReportManager)initWithStaticIdentityManager:(id)manager;
 - (id)reportDetails;
-- (void)fetchDataWithUUID:(id)a3;
-- (void)sendReport:(id)a3;
+- (void)fetchDataWithUUID:(id)d;
+- (void)sendReport:(id)report;
 @end
 
 @implementation TUIReportManager
 
-- (TUIReportManager)initWithStaticIdentityManager:(id)a3
+- (TUIReportManager)initWithStaticIdentityManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = TUIReportManager;
   v6 = [(TUIReportManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_staticIdentityManager, a3);
+    objc_storeStrong(&v6->_staticIdentityManager, manager);
     v8 = [objc_alloc(MEMORY[0x277D73590]) initWithAuditorId:0];
     auditor = v7->_auditor;
     v7->_auditor = v8;
@@ -25,11 +25,11 @@
   return v7;
 }
 
-- (void)sendReport:(id)a3
+- (void)sendReport:(id)report
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  reportCopy = report;
+  v5 = reportCopy;
   reportData = self->_reportData;
   if (reportData)
   {
@@ -40,7 +40,7 @@
     v13[1] = 3221225472;
     v13[2] = __31__TUIReportManager_sendReport___block_invoke_3;
     v13[3] = &unk_279DDAEF0;
-    v14 = v4;
+    v14 = reportCopy;
     [(NSString *)v8 makeReport:reportData additionalData:additionalDetails completionBlock:v13];
   }
 
@@ -112,19 +112,19 @@ uint64_t __31__TUIReportManager_sendReport___block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)fetchDataWithUUID:(id)a3
+- (void)fetchDataWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     auditor = self->_auditor;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __38__TUIReportManager_fetchDataWithUUID___block_invoke_11;
     v10[3] = &unk_279DDAF18;
-    v11 = v4;
-    v12 = self;
+    v11 = dCopy;
+    selfCopy = self;
     [(TransparencyAuditorReport *)auditor getReportForUUID:v11 completionBlock:v10];
     reportDataError = v11;
   }
@@ -208,16 +208,16 @@ uint64_t __38__TUIReportManager_fetchDataWithUUID___block_invoke_2()
 
 - (id)reportDetails
 {
-  v3 = [(TUIStaticIdentityManager *)self->_staticIdentityManager selfAccountKeyDisplayString];
-  v4 = [v3 length];
+  selfAccountKeyDisplayString = [(TUIStaticIdentityManager *)self->_staticIdentityManager selfAccountKeyDisplayString];
+  v4 = [selfAccountKeyDisplayString length];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"REPORTING_ACCOUNT_KEY" value:&stru_287F92480 table:@"Localizable"];
-    v8 = [(TUIStaticIdentityManager *)self->_staticIdentityManager selfAccountKeyDisplayString];
-    v9 = [v5 stringWithFormat:@"%@\n%@", v7, v8];
+    selfAccountKeyDisplayString2 = [(TUIStaticIdentityManager *)self->_staticIdentityManager selfAccountKeyDisplayString];
+    v9 = [v5 stringWithFormat:@"%@\n%@", v7, selfAccountKeyDisplayString2];
   }
 
   else
@@ -225,16 +225,16 @@ uint64_t __38__TUIReportManager_fetchDataWithUUID___block_invoke_2()
     v9 = &stru_287F92480;
   }
 
-  v10 = [(TUIStaticIdentityManager *)self->_staticIdentityManager peerAccountKeyDisplayString];
-  v11 = [v10 length];
+  peerAccountKeyDisplayString = [(TUIStaticIdentityManager *)self->_staticIdentityManager peerAccountKeyDisplayString];
+  v11 = [peerAccountKeyDisplayString length];
 
   if (v11)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"CONTACT_ACCOUNT_KEY" value:&stru_287F92480 table:@"Localizable"];
-    v15 = [(TUIStaticIdentityManager *)self->_staticIdentityManager peerAccountKeyDisplayString];
-    v16 = [v12 stringWithFormat:@"%@\n\n%@\n%@", v9, v14, v15];
+    peerAccountKeyDisplayString2 = [(TUIStaticIdentityManager *)self->_staticIdentityManager peerAccountKeyDisplayString];
+    v16 = [v12 stringWithFormat:@"%@\n\n%@\n%@", v9, v14, peerAccountKeyDisplayString2];
 
     v9 = v16;
   }

@@ -1,27 +1,27 @@
 @interface DDPersonAction
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4;
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result;
 - (BOOL)menuHasHeaderView;
 - (CGSize)suggestedContentSize;
-- (DDPersonAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-- (_BYTE)_appendActionsForPhoneNumbers:(void *)a3 emailAddresses:(void *)a4 class:(void *)a5 filter:(void *)a6 scheme:;
-- (id)_menuActionsForBusinessWithNumber:(void *)a1;
-- (id)_menuActionsForPersonWithNumber:(void *)a3 email:;
+- (DDPersonAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
+- (_BYTE)_appendActionsForPhoneNumbers:(void *)numbers emailAddresses:(void *)addresses class:(void *)class filter:(void *)filter scheme:;
+- (id)_menuActionsForBusinessWithNumber:(void *)number;
+- (id)_menuActionsForPersonWithNumber:(void *)number email:;
 - (id)_menuHeaderBizViewController;
-- (id)_trackAppleSupportAnalytics:(id)a3;
+- (id)_trackAppleSupportAnalytics:(id)analytics;
 - (id)handleString;
 - (id)menuActions;
 - (id)menuHeaderView;
 - (uint64_t)_menuHasBizHeaderView;
-- (uint64_t)_phoneNumberIsBusiness:(uint64_t)a1;
+- (uint64_t)_phoneNumberIsBusiness:(uint64_t)business;
 - (void)dealloc;
 @end
 
 @implementation DDPersonAction
 
-+ (BOOL)handlesUrl:(id)a3 result:(__DDResult *)a4
++ (BOOL)handlesUrl:(id)url result:(__DDResult *)result
 {
-  v5 = a3;
-  if (!a4)
+  urlCopy = url;
+  if (!result)
   {
     goto LABEL_11;
   }
@@ -32,7 +32,7 @@
     v8 = *MEMORY[0x277D040C8];
     if (DDResultHasType())
     {
-      v9 = [MEMORY[0x277D04218] resultFromCoreResult:a4];
+      v9 = [MEMORY[0x277D04218] resultFromCoreResult:result];
       v18 = 0;
       [v9 getMailValue:&v18 label:0];
       v7 = v18;
@@ -52,24 +52,24 @@
         {
           v12 = [MEMORY[0x277CBEBC0] URLWithString:v11];
 
-          v5 = v12;
+          urlCopy = v12;
         }
       }
 
 LABEL_11:
-      if (v5)
+      if (urlCopy)
       {
-        v13 = [v5 scheme];
-        v14 = [v13 lowercaseString];
+        scheme = [urlCopy scheme];
+        lowercaseString = [scheme lowercaseString];
 
-        if (v14)
+        if (lowercaseString)
         {
           v15 = DDPersonActionsSupportedSchemes();
-          v16 = [v15 containsObject:v14];
+          v16 = [v15 containsObject:lowercaseString];
 
           if (v16)
           {
-            LODWORD(v7) = ![DDTextMessageAction isShowMessageURL:v5];
+            LODWORD(v7) = ![DDTextMessageAction isShowMessageURL:urlCopy];
 
             goto LABEL_17;
           }
@@ -87,24 +87,24 @@ LABEL_17:
   return v7;
 }
 
-- (DDPersonAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDPersonAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  lCopy = l;
+  contextCopy = context;
+  if (lCopy)
   {
-    v10 = v8;
+    v10 = lCopy;
   }
 
   else
   {
-    v10 = _DDURLFromResult(a4);
+    v10 = _DDURLFromResult(result);
   }
 
   v11 = v10;
   v17.receiver = self;
   v17.super_class = DDPersonAction;
-  v12 = [(DDAction *)&v17 initWithURL:v10 result:a4 context:v9];
+  v12 = [(DDAction *)&v17 initWithURL:v10 result:result context:contextCopy];
   v13 = v12;
   if (v12)
   {
@@ -116,7 +116,7 @@ LABEL_17:
     else
     {
       [(DDAction *)v12 associatedResults];
-      v14 = DDContactFromResult(a4, v8, v13->super.super.super._associatedVisualResults, &v13->_fromCNContact + 5);
+      v14 = DDContactFromResult(result, lCopy, v13->super.super.super._associatedVisualResults, &v13->_fromCNContact + 5);
       contact = v13->super.super.super._contact;
       v13->super.super.super._contact = v14;
     }
@@ -188,22 +188,22 @@ LABEL_4:
   return v4;
 }
 
-- (id)_trackAppleSupportAnalytics:(id)a3
+- (id)_trackAppleSupportAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__DDPersonAction__trackAppleSupportAnalytics___block_invoke;
   v13[3] = &unk_278290CF8;
   v15 = &v16;
-  v6 = v5;
+  v6 = array;
   v14 = v6;
-  [(DDActionGroup *)v4 enumerateActionsUsingBlock:v13];
+  [(DDActionGroup *)analyticsCopy enumerateActionsUsingBlock:v13];
   if (*(v17 + 24) == 1)
   {
     v7 = objc_alloc_init(DDDataDetectorInterceptReporter);
@@ -218,12 +218,12 @@ LABEL_4:
     v11[3] = &unk_278290D20;
     v9 = v7;
     v12 = v9;
-    [(DDActionGroup *)v4 enumerateActionsUsingBlock:v11];
+    [(DDActionGroup *)analyticsCopy enumerateActionsUsingBlock:v11];
   }
 
   _Block_object_dispose(&v16, 8);
 
-  return v4;
+  return analyticsCopy;
 }
 
 void __46__DDPersonAction__trackAppleSupportAnalytics___block_invoke(uint64_t a1, void *a2)
@@ -308,9 +308,9 @@ void __46__DDPersonAction__trackAppleSupportAnalytics___block_invoke(uint64_t a1
     gotLoadHelper_x8__OBJC_CLASS___BCError(v2);
     v7 = *(v6 + 2736);
     objc_opt_class();
-    v8 = [(BCSBusinessItem *)self->_bizItem makeBrandedHeaderViewController];
+    makeBrandedHeaderViewController = [(BCSBusinessItem *)self->_bizItem makeBrandedHeaderViewController];
     v9 = self->_menuHeaderBizViewController;
-    self->_menuHeaderBizViewController = v8;
+    self->_menuHeaderBizViewController = makeBrandedHeaderViewController;
 
     menuHeaderBizViewController = self->_menuHeaderBizViewController;
   }
@@ -340,27 +340,27 @@ void __46__DDPersonAction__trackAppleSupportAnalytics___block_invoke(uint64_t a1
 
     else
     {
-      v5 = [(DDPersonAction *)self _menuHeaderBizViewController];
-      v6 = [v5 view];
+      _menuHeaderBizViewController = [(DDPersonAction *)self _menuHeaderBizViewController];
+      view = [_menuHeaderBizViewController view];
 
-      if (!v6)
+      if (!view)
       {
         goto LABEL_20;
       }
 
       v7 = objc_alloc_init(MEMORY[0x277D75D18]);
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(UIView *)v7 addSubview:v6];
-      v8 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:3 relatedBy:0 toItem:v6 attribute:3 multiplier:1.0 constant:-16.0];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(UIView *)v7 addSubview:view];
+      v8 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:-16.0];
       [v8 setActive:1];
 
-      v9 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:4 relatedBy:0 toItem:v6 attribute:4 multiplier:1.0 constant:16.0];
+      v9 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:16.0];
       [v9 setActive:1];
 
-      v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:1 relatedBy:0 toItem:v6 attribute:1 multiplier:1.0 constant:-16.0];
+      v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:-16.0];
       [v10 setActive:1];
 
-      v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:2 relatedBy:0 toItem:v6 attribute:2 multiplier:1.0 constant:16.0];
+      v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v7 attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:16.0];
       [v11 setActive:1];
 
       v12 = v7;
@@ -424,26 +424,26 @@ LABEL_20:
 - (id)handleString
 {
   v2 = [[DDTelephoneNumberAction alloc] initWithURL:self->super.super.super._url result:self->super.super.super._result context:self->super.super.super._context];
-  v3 = [(DDTelephoneNumberAction *)v2 handleString];
+  handleString = [(DDTelephoneNumberAction *)v2 handleString];
 
-  return v3;
+  return handleString;
 }
 
-- (_BYTE)_appendActionsForPhoneNumbers:(void *)a3 emailAddresses:(void *)a4 class:(void *)a5 filter:(void *)a6 scheme:
+- (_BYTE)_appendActionsForPhoneNumbers:(void *)numbers emailAddresses:(void *)addresses class:(void *)class filter:(void *)filter scheme:
 {
   v111 = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a3;
-  v12 = a5;
-  v100 = a6;
-  if (!a1)
+  numbersCopy = numbers;
+  classCopy = class;
+  filterCopy = filter;
+  if (!self)
   {
     goto LABEL_65;
   }
 
   if ([v10 count])
   {
-    if (!v100)
+    if (!filterCopy)
     {
       goto LABEL_65;
     }
@@ -451,22 +451,22 @@ LABEL_20:
 
   else
   {
-    v13 = [v11 count];
+    v13 = [numbersCopy count];
     v98 = 0;
-    if (!v100 || !v13)
+    if (!filterCopy || !v13)
     {
       goto LABEL_66;
     }
   }
 
-  if (![a4 isAvailable])
+  if (![addresses isAvailable])
   {
 LABEL_65:
     v98 = 0;
     goto LABEL_66;
   }
 
-  v87 = v11;
+  v87 = numbersCopy;
   v98 = +[DDActionGroup emptyGroup];
   v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
   v105 = 0u;
@@ -476,8 +476,8 @@ LABEL_65:
   v86 = v10;
   obj = v10;
   v15 = [obj countByEnumeratingWithState:&v105 objects:v110 count:16];
-  v89 = v12;
-  v95 = a1;
+  v89 = classCopy;
+  selfCopy = self;
   if (v15)
   {
     v16 = v15;
@@ -494,42 +494,42 @@ LABEL_65:
         }
 
         v19 = *(*(&v105 + 1) + 8 * i);
-        v20 = [v19 value];
-        v21 = [v20 stringValue];
+        value = [v19 value];
+        stringValue = [value stringValue];
 
-        if (v21)
+        if (stringValue)
         {
-          if ([v14 containsObject:v21])
+          if ([v14 containsObject:stringValue])
           {
-            v22 = v21;
+            v22 = stringValue;
           }
 
           else
           {
-            [v14 addObject:v21];
-            v23 = [a1 context];
-            if (v23)
+            [v14 addObject:stringValue];
+            context = [self context];
+            if (context)
             {
-              v24 = [a1 context];
-              v25 = [v24 mutableCopy];
+              context2 = [self context];
+              dictionary = [context2 mutableCopy];
             }
 
             else
             {
-              v25 = [MEMORY[0x277CBEB38] dictionary];
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
             }
 
-            v26 = [v19 label];
+            label = [v19 label];
 
-            if (v26)
+            if (label)
             {
               [v19 label];
               objc_claimAutoreleasedReturnValue();
               v27 = [OUTLINED_FUNCTION_2() localizedStringForLabel:v19];
-              [v25 setObject:v27 forKey:@"ContactLabel"];
+              [dictionary setObject:v27 forKey:@"ContactLabel"];
             }
 
-            [v25 setObject:v21 forKey:@"ContactValue"];
+            [dictionary setObject:stringValue forKey:@"ContactValue"];
             v28 = TUUnformattedPhoneNumber();
             v29 = v28;
             if (v28)
@@ -539,7 +539,7 @@ LABEL_65:
 
             else
             {
-              v30 = v21;
+              v30 = stringValue;
             }
 
             v22 = v30;
@@ -548,46 +548,46 @@ LABEL_65:
             v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@"];
             v33 = [v31 URLWithString:v32];
 
-            if (v12 && [DDContactUtils phoneNumber:v22 isEqualToPhoneNumber:v12])
+            if (classCopy && [DDContactUtils phoneNumber:v22 isEqualToPhoneNumber:classCopy])
             {
               v34 = v33;
-              v35 = [a1[8] scheme];
-              v36 = [v35 lowercaseString];
+              scheme = [self[8] scheme];
+              lowercaseString = [scheme lowercaseString];
 
-              if (v36 && ([a4 matchingSchemes], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "containsObject:", v36), v37, v38))
+              if (lowercaseString && ([addresses matchingSchemes], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "containsObject:", lowercaseString), v37, v38))
               {
-                a1 = v95;
+                self = selfCopy;
                 v39 = v34;
-                v34 = v95[8];
+                v34 = selfCopy[8];
               }
 
               else
               {
-                v39 = [a4 patchedSchemeForScheme:v36];
+                v39 = [addresses patchedSchemeForScheme:lowercaseString];
                 if (v39)
                 {
-                  v40 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v95[8] resolvingAgainstBaseURL:0];
+                  v40 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:selfCopy[8] resolvingAgainstBaseURL:0];
                   [v40 setScheme:v39];
                   v88 = [v40 URL];
 
-                  a1 = v95;
+                  self = selfCopy;
                   v34 = v88;
-                  v12 = v89;
+                  classCopy = v89;
                 }
 
                 else
                 {
-                  a1 = v95;
+                  self = selfCopy;
                 }
               }
 
-              v41 = [a4 actionsWithURL:v34 result:0 context:v25];
-              OUTLINED_FUNCTION_5(v41, v42, v43, v44, v45, v46, v47, v48, v100, v22, v85, v86, v87, v88, v89, v90, v93, v95, obj, v98);
+              v41 = [addresses actionsWithURL:v34 result:0 context:dictionary];
+              OUTLINED_FUNCTION_5(v41, v42, v43, v44, v45, v46, v47, v48, filterCopy, v22, v85, v86, v87, v88, v89, v90, v93, selfCopy, obj, v98);
             }
 
             else
             {
-              v34 = [a4 actionsWithURL:v33 result:0 context:v25];
+              v34 = [addresses actionsWithURL:v33 result:0 context:dictionary];
               [(DDActionGroup *)v98 appendActions:v34];
             }
 
@@ -631,65 +631,65 @@ LABEL_65:
         }
 
         v55 = *(*(&v101 + 1) + 8 * j);
-        v56 = [v55 value];
-        if (v56)
+        value2 = [v55 value];
+        if (value2)
         {
-          if (([v49 containsObject:v56] & 1) == 0)
+          if (([v49 containsObject:value2] & 1) == 0)
           {
-            [v49 addObject:v56];
-            if (![v100 isEqualToString:@"mailto"] || (dd_handleIsChatBot(v56) & 1) == 0)
+            [v49 addObject:value2];
+            if (![filterCopy isEqualToString:@"mailto"] || (dd_handleIsChatBot(value2) & 1) == 0)
             {
               v57 = MEMORY[0x277CBEBC0];
               v58 = MEMORY[0x277CCACA8];
-              v84 = dd_encodedEmail(v56);
+              v84 = dd_encodedEmail(value2);
               v59 = [v58 stringWithFormat:@"%@:%@"];
               v60 = [v57 URLWithString:v59];
 
-              v61 = v95;
-              v62 = [v95 context];
-              if (v62)
+              context4 = selfCopy;
+              context3 = [selfCopy context];
+              if (context3)
               {
-                v61 = [v95 context];
-                v63 = [v61 mutableCopy];
+                context4 = [selfCopy context];
+                dictionary2 = [context4 mutableCopy];
               }
 
               else
               {
-                v63 = [MEMORY[0x277CBEB38] dictionary];
+                dictionary2 = [MEMORY[0x277CBEB38] dictionary];
               }
 
-              v64 = [v55 label];
+              label2 = [v55 label];
 
-              if (v64)
+              if (label2)
               {
                 [v55 label];
                 objc_claimAutoreleasedReturnValue();
-                v65 = [OUTLINED_FUNCTION_2() localizedStringForLabel:v61];
-                [v63 setObject:v65 forKey:@"ContactLabel"];
+                v65 = [OUTLINED_FUNCTION_2() localizedStringForLabel:context4];
+                [dictionary2 setObject:v65 forKey:@"ContactLabel"];
               }
 
-              [v63 setObject:v56 forKey:@"ContactValue"];
-              if (v12 && [v56 isEqualToString:v12])
+              [dictionary2 setObject:value2 forKey:@"ContactValue"];
+              if (classCopy && [value2 isEqualToString:classCopy])
               {
                 v66 = v60;
-                v67 = [v95[8] scheme];
-                v68 = [v67 lowercaseString];
+                scheme2 = [selfCopy[8] scheme];
+                lowercaseString2 = [scheme2 lowercaseString];
 
-                v91 = v68;
-                if (v68 && ([a4 matchingSchemes], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "containsObject:", v68), v69, v70))
+                v91 = lowercaseString2;
+                if (lowercaseString2 && ([addresses matchingSchemes], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "containsObject:", lowercaseString2), v69, v70))
                 {
-                  v71 = v95;
+                  v71 = selfCopy;
                   v72 = v66;
-                  v66 = v95[8];
+                  v66 = selfCopy[8];
                 }
 
                 else
                 {
-                  v72 = [a4 patchedSchemeForScheme:v68];
-                  v71 = v95;
+                  v72 = [addresses patchedSchemeForScheme:lowercaseString2];
+                  v71 = selfCopy;
                   if (v72)
                   {
-                    v73 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v95[8] resolvingAgainstBaseURL:0];
+                    v73 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:selfCopy[8] resolvingAgainstBaseURL:0];
                     [v73 setScheme:v72];
                     v88 = [v73 URL];
 
@@ -697,15 +697,15 @@ LABEL_65:
                   }
                 }
 
-                v74 = [a4 actionsWithURL:v66 result:objc_msgSend(v71 context:{"result"), v63}];
-                OUTLINED_FUNCTION_5(v74, v75, v76, v77, v78, v79, v80, v81, v100, v84, v85, v86, v87, v88, v89, v91, v94, v95, obja, v98);
+                v74 = [addresses actionsWithURL:v66 result:objc_msgSend(v71 context:{"result"), dictionary2}];
+                OUTLINED_FUNCTION_5(v74, v75, v76, v77, v78, v79, v80, v81, filterCopy, v84, v85, v86, v87, v88, v89, v91, v94, selfCopy, obja, v98);
 
-                v12 = v89;
+                classCopy = v89;
               }
 
               else
               {
-                v66 = [a4 actionsWithURL:v60 result:0 context:v63];
+                v66 = [addresses actionsWithURL:v60 result:0 context:dictionary2];
                 [(DDActionGroup *)v98 appendActions:v66];
               }
 
@@ -723,7 +723,7 @@ LABEL_65:
   }
 
   v10 = v86;
-  v11 = v87;
+  numbersCopy = v87;
 LABEL_66:
 
   v82 = *MEMORY[0x277D85DE8];
@@ -731,15 +731,15 @@ LABEL_66:
   return v98;
 }
 
-- (uint64_t)_phoneNumberIsBusiness:(uint64_t)a1
+- (uint64_t)_phoneNumberIsBusiness:(uint64_t)business
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (business)
   {
     if (v4)
     {
-      v6 = *(a1 + 160);
+      v6 = *(business + 160);
       if (!v6 || ([v6 isEqualToString:v5] & 1) == 0)
       {
         if (dd_isLSTrusted() && ([MEMORY[0x277CC1E80] defaultWorkspace], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "applicationIsInstalled:", @"com.apple.MobileSMS"), v7, !v8))
@@ -753,51 +753,51 @@ LABEL_66:
         {
           v7 = +[DDDetectionController sharedController];
           v16 = 0;
-          v9 = [v7 _businessItemForNumber:v5 messageable:a1 + 152 brand:&v16];
+          v9 = [v7 _businessItemForNumber:v5 messageable:business + 152 brand:&v16];
           v10 = v16;
           v11 = 1;
         }
 
-        objc_storeStrong((a1 + 136), v9);
+        objc_storeStrong((business + 136), v9);
         if (v11)
         {
         }
 
-        objc_storeStrong((a1 + 160), a2);
-        v14 = *(a1 + 144);
-        *(a1 + 144) = v10;
+        objc_storeStrong((business + 160), a2);
+        v14 = *(business + 144);
+        *(business + 144) = v10;
       }
     }
 
     else
     {
-      v12 = *(a1 + 136);
-      *(a1 + 136) = 0;
+      v12 = *(business + 136);
+      *(business + 136) = 0;
 
-      v13 = *(a1 + 160);
-      *(a1 + 160) = 0;
+      v13 = *(business + 160);
+      *(business + 160) = 0;
 
-      *(a1 + 152) = 0;
+      *(business + 152) = 0;
     }
 
-    a1 = *(a1 + 136) != 0;
+    business = *(business + 136) != 0;
   }
 
-  return a1;
+  return business;
 }
 
-- (id)_menuActionsForBusinessWithNumber:(void *)a1
+- (id)_menuActionsForBusinessWithNumber:(void *)number
 {
   v45 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1 && [(DDPersonAction *)a1 _phoneNumberIsBusiness:v3])
+  if (number && [(DDPersonAction *)number _phoneNumberIsBusiness:v3])
   {
     v43 = v3;
     v4 = +[DDActionGroup emptyGroup];
-    v5 = a1[18];
-    v6 = a1[17];
-    v7 = [a1 context];
-    v8 = DDOnDeviceSupportActionWithBrand(v5, v6, v7);
+    v5 = number[18];
+    v6 = number[17];
+    context = [number context];
+    v8 = DDOnDeviceSupportActionWithBrand(v5, v6, context);
 
     if (v8)
     {
@@ -806,11 +806,11 @@ LABEL_66:
 
     v42 = v8;
     v44 = v4;
-    v9 = [a1 url];
-    v10 = [a1 result];
-    v11 = a1;
-    v12 = [a1 context];
-    v13 = [DDCallKitAudioAction actionsWithURL:v9 result:v10 context:v12 defaultAppsOnly:0];
+    v9 = [number url];
+    result = [number result];
+    numberCopy = number;
+    context2 = [number context];
+    v13 = [DDCallKitAudioAction actionsWithURL:v9 result:result context:context2 defaultAppsOnly:0];
 
     v18 = OUTLINED_FUNCTION_6(v14, v15, v16, v17);
     if (v18)
@@ -827,13 +827,13 @@ LABEL_66:
           }
 
           v22 = *(8 * i);
-          v23 = [v22 callProvider];
-          v24 = [v23 identifier];
-          v25 = [v24 isEqualToString:@"com.apple.coretelephony"];
+          callProvider = [v22 callProvider];
+          identifier = [callProvider identifier];
+          v25 = [identifier isEqualToString:@"com.apple.coretelephony"];
 
           if (v25)
           {
-            [v22 setBizItem:v11[17]];
+            [v22 setBizItem:numberCopy[17]];
             [(DDActionGroup *)v44 appendAction:v22];
           }
         }
@@ -844,34 +844,34 @@ LABEL_66:
       while (v19);
     }
 
-    if (*(v11 + 152) == 1 && +[(DDAction *)DDTextMessageAction])
+    if (*(numberCopy + 152) == 1 && +[(DDAction *)DDTextMessageAction])
     {
-      v30 = [v11[17] messagesOpenURL];
-      v31 = [v11 context];
-      v32 = [(DDAction *)DDTextMessageAction actionWithURL:v30 result:0 context:v31];
+      messagesOpenURL = [numberCopy[17] messagesOpenURL];
+      context3 = [numberCopy context];
+      v32 = [(DDAction *)DDTextMessageAction actionWithURL:messagesOpenURL result:0 context:context3];
 
-      [v32 setBizItem:v11[17]];
+      [v32 setBizItem:numberCopy[17]];
       [(DDActionGroup *)v44 appendAction:v32];
     }
 
-    v33 = [v11 url];
-    v34 = [v11 result];
-    v35 = [v11 context];
-    [DDCopyAction actionWithURL:v33 result:v34 context:v35];
+    v33 = [numberCopy url];
+    result2 = [numberCopy result];
+    context4 = [numberCopy context];
+    [DDCopyAction actionWithURL:v33 result:result2 context:context4];
     objc_claimAutoreleasedReturnValue();
     v36 = OUTLINED_FUNCTION_2();
     [(DDActionGroup *)v36 appendAction:?];
 
-    if (*(v11 + 135) == 1)
+    if (*(numberCopy + 135) == 1)
     {
-      v37 = [v11 context];
-      [(DDAction *)DDShareAction actionWithURL:0 result:0 context:v37];
+      context5 = [numberCopy context];
+      [(DDAction *)DDShareAction actionWithURL:0 result:0 context:context5];
       objc_claimAutoreleasedReturnValue();
       v38 = OUTLINED_FUNCTION_2();
       [(DDActionGroup *)v38 appendAction:?];
     }
 
-    v39 = [v11 _trackAppleSupportAnalytics:v44];
+    v39 = [numberCopy _trackAppleSupportAnalytics:v44];
 
     v3 = v43;
   }
@@ -886,12 +886,12 @@ LABEL_66:
   return v39;
 }
 
-- (id)_menuActionsForPersonWithNumber:(void *)a3 email:
+- (id)_menuActionsForPersonWithNumber:(void *)number email:
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  v6 = a3;
-  if (!a1)
+  context = a2;
+  numberCopy = number;
+  if (!self)
   {
     v65 = 0;
     goto LABEL_63;
@@ -901,49 +901,49 @@ LABEL_66:
   [(DDActionGroup *)v73 setInlinedGroup:?];
   v7 = OUTLINED_FUNCTION_3();
   isAnySimpleTelephonyScheme = dd_isAnySimpleTelephonyScheme(v7);
-  v9 = [OUTLINED_FUNCTION_3() scheme];
-  v72 = [v9 lowercaseString];
+  scheme = [OUTLINED_FUNCTION_3() scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v74 = a1;
-  v70 = v6;
-  v71 = v5;
+  selfCopy = self;
+  v70 = numberCopy;
+  v71 = context;
   LODWORD(v69) = isAnySimpleTelephonyScheme;
-  HIDWORD(v69) = [(DDAction *)a1 calloutFlavor];
+  HIDWORD(v69) = [(DDAction *)self calloutFlavor];
   if (!HIDWORD(v69))
   {
-    v75 = [OUTLINED_FUNCTION_3() phoneNumbers];
-    v76 = [OUTLINED_FUNCTION_3() emailAddresses];
+    phoneNumbers = [OUTLINED_FUNCTION_3() phoneNumbers];
+    emailAddresses = [OUTLINED_FUNCTION_3() emailAddresses];
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!context)
   {
-    v75 = 0;
-    if (v6)
+    phoneNumbers = 0;
+    if (numberCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
-    v76 = 0;
+    emailAddresses = 0;
     goto LABEL_9;
   }
 
   v10 = MEMORY[0x277CBDB20];
-  v11 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v5];
+  v11 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:context];
   v12 = [v10 labeledValueWithLabel:0 value:v11];
   v87[0] = v12;
-  v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:1];
+  phoneNumbers = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:1];
 
-  if (!v6)
+  if (!numberCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  v13 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:{v6, v69}];
+  v13 = [MEMORY[0x277CBDB20] labeledValueWithLabel:0 value:{numberCopy, v69}];
   v86 = v13;
-  v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
+  emailAddresses = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
 
 LABEL_9:
   v79 = 0u;
@@ -959,17 +959,17 @@ LABEL_9:
   {
     v16 = v15;
     v17 = *v78;
-    if (v5)
+    if (context)
     {
-      v18 = v5;
+      v18 = context;
     }
 
     else
     {
-      v18 = v6;
+      v18 = numberCopy;
     }
 
-    if (v72)
+    if (lowercaseString)
     {
       v19 = 0;
       v20 = 0;
@@ -983,17 +983,17 @@ LABEL_9:
             objc_enumerationMutation(v14);
           }
 
-          v5 = *(*(&v77 + 1) + 8 * v21);
-          v22 = [v5 isAvailable];
-          if (v22)
+          context = *(*(&v77 + 1) + 8 * v21);
+          isAvailable = [context isAvailable];
+          if (isAvailable)
           {
-            v30 = [(DDPersonAction *)v74 _appendActionsForPhoneNumbers:v75 emailAddresses:v76 class:v5 filter:v18 scheme:@"tel"];
+            v30 = [(DDPersonAction *)selfCopy _appendActionsForPhoneNumbers:phoneNumbers emailAddresses:emailAddresses class:context filter:v18 scheme:@"tel"];
             if ([(DDActionGroup *)v30 count])
             {
-              v31 = [v5 matchingSchemes];
-              v32 = [v31 containsObject:v72];
+              matchingSchemes = [context matchingSchemes];
+              v32 = [matchingSchemes containsObject:lowercaseString];
 
-              v5 = (v20 + (v32 & 1));
+              context = (v20 + (v32 & 1));
               if (v32)
               {
                 v33 = v20;
@@ -1014,7 +1014,7 @@ LABEL_9:
         }
 
         while (v16 != v21);
-        v34 = OUTLINED_FUNCTION_4(v22, v23, v24, v25, v26, v27, v28, v29, v69, v70, v71, v72, v73, v74, v75, v76, v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85[0]);
+        v34 = OUTLINED_FUNCTION_4(isAvailable, v23, v24, v25, v26, v27, v28, v29, v69, v70, v71, lowercaseString, v73, selfCopy, phoneNumbers, emailAddresses, v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85[0]);
         v16 = v34;
       }
 
@@ -1034,14 +1034,14 @@ LABEL_9:
             objc_enumerationMutation(v14);
           }
 
-          v5 = *(*(&v77 + 1) + 8 * v36);
-          v37 = [v5 isAvailable];
-          if (v37)
+          context = *(*(&v77 + 1) + 8 * v36);
+          isAvailable2 = [context isAvailable];
+          if (isAvailable2)
           {
-            v5 = [(DDPersonAction *)v74 _appendActionsForPhoneNumbers:v75 emailAddresses:v76 class:v5 filter:v18 scheme:@"tel"];
-            if ([(DDActionGroup *)v5 count])
+            context = [(DDPersonAction *)selfCopy _appendActionsForPhoneNumbers:phoneNumbers emailAddresses:emailAddresses class:context filter:v18 scheme:@"tel"];
+            if ([(DDActionGroup *)context count])
             {
-              [(DDActionGroup *)v73 insertGroup:v5 atIndex:v35++];
+              [(DDActionGroup *)v73 insertGroup:context atIndex:v35++];
             }
           }
 
@@ -1049,7 +1049,7 @@ LABEL_9:
         }
 
         while (v16 != v36);
-        v45 = OUTLINED_FUNCTION_4(v37, v38, v39, v40, v41, v42, v43, v44, v69, v70, v71, v72, v73, v74, v75, v76, v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85[0]);
+        v45 = OUTLINED_FUNCTION_4(isAvailable2, v38, v39, v40, v41, v42, v43, v44, v69, v70, v71, lowercaseString, v73, selfCopy, phoneNumbers, emailAddresses, v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85[0]);
         v16 = v45;
       }
 
@@ -1058,14 +1058,14 @@ LABEL_9:
   }
 
   v46 = 0x280B11000;
-  v6 = v70;
+  numberCopy = v70;
   if (+[(DDAction *)DDSendMailAction])
   {
     v68 = objc_opt_class();
-    v46 = [(DDPersonAction *)v74 _appendActionsForPhoneNumbers:v76 emailAddresses:v68 class:v70 filter:@"mailto" scheme:?];
+    v46 = [(DDPersonAction *)selfCopy _appendActionsForPhoneNumbers:emailAddresses emailAddresses:v68 class:v70 filter:@"mailto" scheme:?];
     if ([(DDActionGroup *)v46 count])
     {
-      if ((v69 & 1) != 0 || ![v72 isEqualToString:@"mailto"])
+      if ((v69 & 1) != 0 || ![lowercaseString isEqualToString:@"mailto"])
       {
         [(DDActionGroup *)v73 appendGroup:v46];
       }
@@ -1079,10 +1079,10 @@ LABEL_9:
 
   [(DDActionGroup *)v73 regroupByService];
   v47 = +[DDActionGroup emptyGroup];
-  v48 = *(v74 + 144);
+  v48 = *(selfCopy + 144);
   if (v48)
   {
-    v46 = DDOnDeviceSupportActionWithBrand(v48, *(v74 + 136), *(v74 + 56));
+    v46 = DDOnDeviceSupportActionWithBrand(v48, *(selfCopy + 136), *(selfCopy + 56));
     if (v46)
     {
       [(DDActionGroup *)v47 appendAction:v46];
@@ -1098,15 +1098,15 @@ LABEL_9:
   }
 
   [(DDActionGroup *)v47 appendGroup:v73];
-  if ((*(v74 + 134) & 1) == 0 && +[DDAddToAddressBookAction isAvailable])
+  if ((*(selfCopy + 134) & 1) == 0 && +[DDAddToAddressBookAction isAvailable])
   {
-    v51 = [v74 url];
-    [v74 result];
-    [v74 context];
+    v51 = [selfCopy url];
+    [selfCopy result];
+    [selfCopy context];
     objc_claimAutoreleasedReturnValue();
     v52 = [OUTLINED_FUNCTION_1() actionWithURL:? result:? context:?];
 
-    if (*(v74 + 135) == 1)
+    if (*(selfCopy + 135) == 1)
     {
       [(DDActionGroup *)v47 insertAction:v52 atIndex:0];
     }
@@ -1117,9 +1117,9 @@ LABEL_9:
     }
   }
 
-  if (dd_phoneNumberResultCanBeRdarLink([v74 result]))
+  if (dd_phoneNumberResultCanBeRdarLink([selfCopy result]))
   {
-    v53 = [v74 url];
+    v53 = [selfCopy url];
     v54 = v53;
     if (v53)
     {
@@ -1128,40 +1128,40 @@ LABEL_9:
 
     else
     {
-      v56 = [MEMORY[0x277D04218] resultFromCoreResult:{objc_msgSend(v74, "result")}];
+      v56 = [MEMORY[0x277D04218] resultFromCoreResult:{objc_msgSend(selfCopy, "result")}];
       v55 = [v56 url];
     }
 
-    v57 = [(NSURL *)v55 dd_rdarLinkFromTelScheme];
-    if (v57)
+    dd_rdarLinkFromTelScheme = [(NSURL *)v55 dd_rdarLinkFromTelScheme];
+    if (dd_rdarLinkFromTelScheme)
     {
-      v5 = [v74 context];
-      v58 = [(DDAction *)DDOpenURLAction actionWithURL:v57 result:0 context:v5];
+      context = [selfCopy context];
+      v58 = [(DDAction *)DDOpenURLAction actionWithURL:dd_rdarLinkFromTelScheme result:0 context:context];
       [(DDActionGroup *)v47 appendAction:v58];
     }
   }
 
-  v59 = [v74 url];
-  [v74 result];
-  [v74 context];
+  v59 = [selfCopy url];
+  [selfCopy result];
+  [selfCopy context];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_1() actionWithURL:? result:? context:?];
   objc_claimAutoreleasedReturnValue();
   v60 = OUTLINED_FUNCTION_0();
   [(DDActionGroup *)v60 appendAction:v61];
 
-  if (*(v74 + 135) == 1)
+  if (*(selfCopy + 135) == 1)
   {
-    v62 = [v74 context];
-    [(DDAction *)DDShareAction actionWithURL:0 result:0 context:v62];
+    context2 = [selfCopy context];
+    [(DDAction *)DDShareAction actionWithURL:0 result:0 context:context2];
     objc_claimAutoreleasedReturnValue();
     v63 = OUTLINED_FUNCTION_0();
     [(DDActionGroup *)v63 appendAction:v64];
   }
 
-  v65 = [v74 _trackAppleSupportAnalytics:v47];
+  v65 = [selfCopy _trackAppleSupportAnalytics:v47];
 
-  v5 = v71;
+  context = v71;
 LABEL_63:
 
   v66 = *MEMORY[0x277D85DE8];
@@ -1171,10 +1171,10 @@ LABEL_63:
 
 - (uint64_t)_menuHasBizHeaderView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 url];
+    v2 = [self url];
     if (v2)
     {
       v4 = DDPersonActionsSupportedSchemes();
@@ -1186,27 +1186,27 @@ LABEL_63:
       v3 = 0;
     }
 
-    if ([(DDPersonAction *)v1 _phoneNumberIsBusiness:v3]&& *(v1 + 136) && *(v1 + 152) == 1)
+    if ([(DDPersonAction *)selfCopy _phoneNumberIsBusiness:v3]&& *(selfCopy + 136) && *(selfCopy + 152) == 1)
     {
       if (dd_isDeviceLocked())
       {
-        v5 = [v1 _menuHeaderBizViewController];
-        v1 = [v5 _canShowWhileLocked];
+        _menuHeaderBizViewController = [selfCopy _menuHeaderBizViewController];
+        selfCopy = [_menuHeaderBizViewController _canShowWhileLocked];
       }
 
       else
       {
-        v1 = 1;
+        selfCopy = 1;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

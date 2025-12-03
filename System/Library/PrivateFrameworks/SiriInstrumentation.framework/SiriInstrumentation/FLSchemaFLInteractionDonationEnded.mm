@@ -1,32 +1,32 @@
 @interface FLSchemaFLInteractionDonationEnded
-- (BOOL)isEqual:(id)a3;
-- (FLSchemaFLInteractionDonationEnded)initWithDictionary:(id)a3;
-- (FLSchemaFLInteractionDonationEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLSchemaFLInteractionDonationEnded)initWithDictionary:(id)dictionary;
+- (FLSchemaFLInteractionDonationEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCandidates:(id)a3;
-- (void)setHasActionStatementId:(BOOL)a3;
-- (void)setHasDonationTime:(BOOL)a3;
-- (void)setHasDonationTrigger:(BOOL)a3;
-- (void)setHasWasTupleDonated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidates:(id)candidates;
+- (void)setHasActionStatementId:(BOOL)id;
+- (void)setHasDonationTime:(BOOL)time;
+- (void)setHasDonationTrigger:(BOOL)trigger;
+- (void)setHasWasTupleDonated:(BOOL)donated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLInteractionDonationEnded
 
-- (FLSchemaFLInteractionDonationEnded)initWithDictionary:(id)a3
+- (FLSchemaFLInteractionDonationEnded)initWithDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = FLSchemaFLInteractionDonationEnded;
   v5 = [(FLSchemaFLInteractionDonationEnded *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"absoluteTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(FLSchemaFLInteractionDonationEnded *)v5 setAbsoluteTime:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"donationTime"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"donationTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(FLSchemaFLInteractionDonationEnded *)v5 setDonationTime:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ifSessionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ifSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,21 +50,21 @@
       [(FLSchemaFLInteractionDonationEnded *)v5 setIfSessionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"actionStatementId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"actionStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLSchemaFLInteractionDonationEnded setActionStatementId:](v5, "setActionStatementId:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"donationTrigger"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"donationTrigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLSchemaFLInteractionDonationEnded setDonationTrigger:](v5, "setDonationTrigger:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"wasTupleDonated"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"wasTupleDonated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
     }
 
     v33 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"tuple"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"tuple"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       v13 = v15;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"candidates"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"candidates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,30 +142,30 @@
   return v5;
 }
 
-- (FLSchemaFLInteractionDonationEnded)initWithJSON:(id)a3
+- (FLSchemaFLInteractionDonationEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLInteractionDonationEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLInteractionDonationEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLInteractionDonationEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -179,14 +179,14 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = MEMORY[0x1E696AD98];
     [(FLSchemaFLInteractionDonationEnded *)self absoluteTime];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"absoluteTime"];
+    [dictionary setObject:v6 forKeyedSubscript:@"absoluteTime"];
 
     has = self->_has;
   }
@@ -194,12 +194,12 @@
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLSchemaFLInteractionDonationEnded actionStatementId](self, "actionStatementId")}];
-    [v3 setObject:v7 forKeyedSubscript:@"actionStatementId"];
+    [dictionary setObject:v7 forKeyedSubscript:@"actionStatementId"];
   }
 
   if ([(NSArray *)self->_candidates count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -219,16 +219,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -238,7 +238,7 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"candidates"];
+    [dictionary setObject:array forKeyedSubscript:@"candidates"];
   }
 
   v16 = self->_has;
@@ -247,7 +247,7 @@
     v17 = MEMORY[0x1E696AD98];
     [(FLSchemaFLInteractionDonationEnded *)self donationTime];
     v18 = [v17 numberWithDouble:?];
-    [v3 setObject:v18 forKeyedSubscript:@"donationTime"];
+    [dictionary setObject:v18 forKeyedSubscript:@"donationTime"];
 
     v16 = self->_has;
   }
@@ -265,50 +265,50 @@
       v20 = off_1E78D6DA0[v19];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"donationTrigger"];
+    [dictionary setObject:v20 forKeyedSubscript:@"donationTrigger"];
   }
 
   if (self->_ifSessionId)
   {
-    v21 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+    dictionaryRepresentation2 = [ifSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"ifSessionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ifSessionId"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"ifSessionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ifSessionId"];
     }
   }
 
   if (self->_tuple)
   {
-    v24 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    tuple = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+    dictionaryRepresentation3 = [tuple dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"tuple"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"tuple"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"tuple"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"tuple"];
     }
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLSchemaFLInteractionDonationEnded wasTupleDonated](self, "wasTupleDonated")}];
-    [v3 setObject:v27 forKeyedSubscript:@"wasTupleDonated"];
+    [dictionary setObject:v27 forKeyedSubscript:@"wasTupleDonated"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -422,16 +422,16 @@ LABEL_24:
   return v17 ^ v18 ^ [(NSArray *)self->_candidates hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_35;
@@ -440,14 +440,14 @@ LABEL_24:
   if (*&has)
   {
     absoluteTime = self->_absoluteTime;
-    [v4 absoluteTime];
+    [equalCopy absoluteTime];
     if (absoluteTime != v8)
     {
       goto LABEL_35;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -459,27 +459,27 @@ LABEL_24:
   if (v9)
   {
     donationTime = self->_donationTime;
-    [v4 donationTime];
+    [equalCopy donationTime];
     if (donationTime != v11)
     {
       goto LABEL_35;
     }
   }
 
-  v12 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
-  v13 = [v4 ifSessionId];
-  if ((v12 != 0) == (v13 == 0))
+  ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+  ifSessionId2 = [equalCopy ifSessionId];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v14 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
-  if (v14)
+  ifSessionId3 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+  if (ifSessionId3)
   {
-    v15 = v14;
-    v16 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
-    v17 = [v4 ifSessionId];
-    v18 = [v16 isEqual:v17];
+    v15 = ifSessionId3;
+    ifSessionId4 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+    ifSessionId5 = [equalCopy ifSessionId];
+    v18 = [ifSessionId4 isEqual:ifSessionId5];
 
     if (!v18)
     {
@@ -493,7 +493,7 @@ LABEL_24:
 
   v19 = self->_has;
   v20 = (*&v19 >> 2) & 1;
-  v21 = v4[64];
+  v21 = equalCopy[64];
   if (v20 != ((v21 >> 2) & 1))
   {
     goto LABEL_35;
@@ -502,13 +502,13 @@ LABEL_24:
   if (v20)
   {
     actionStatementId = self->_actionStatementId;
-    if (actionStatementId != [v4 actionStatementId])
+    if (actionStatementId != [equalCopy actionStatementId])
     {
       goto LABEL_35;
     }
 
     v19 = self->_has;
-    v21 = v4[64];
+    v21 = equalCopy[64];
   }
 
   v23 = (*&v19 >> 3) & 1;
@@ -520,13 +520,13 @@ LABEL_24:
   if (v23)
   {
     donationTrigger = self->_donationTrigger;
-    if (donationTrigger != [v4 donationTrigger])
+    if (donationTrigger != [equalCopy donationTrigger])
     {
       goto LABEL_35;
     }
 
     v19 = self->_has;
-    v21 = v4[64];
+    v21 = equalCopy[64];
   }
 
   v25 = (*&v19 >> 4) & 1;
@@ -538,26 +538,26 @@ LABEL_24:
   if (v25)
   {
     wasTupleDonated = self->_wasTupleDonated;
-    if (wasTupleDonated != [v4 wasTupleDonated])
+    if (wasTupleDonated != [equalCopy wasTupleDonated])
     {
       goto LABEL_35;
     }
   }
 
-  v12 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
-  v13 = [v4 tuple];
-  if ((v12 != 0) == (v13 == 0))
+  ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+  ifSessionId2 = [equalCopy tuple];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v27 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
-  if (v27)
+  tuple = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+  if (tuple)
   {
-    v28 = v27;
-    v29 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
-    v30 = [v4 tuple];
-    v31 = [v29 isEqual:v30];
+    v28 = tuple;
+    tuple2 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+    tuple3 = [equalCopy tuple];
+    v31 = [tuple2 isEqual:tuple3];
 
     if (!v31)
     {
@@ -569,17 +569,17 @@ LABEL_24:
   {
   }
 
-  v12 = [(FLSchemaFLInteractionDonationEnded *)self candidates];
-  v13 = [v4 candidates];
-  if ((v12 != 0) == (v13 == 0))
+  ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self candidates];
+  ifSessionId2 = [equalCopy candidates];
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v32 = [(FLSchemaFLInteractionDonationEnded *)self candidates];
-  if (!v32)
+  candidates = [(FLSchemaFLInteractionDonationEnded *)self candidates];
+  if (!candidates)
   {
 
 LABEL_38:
@@ -587,10 +587,10 @@ LABEL_38:
     goto LABEL_36;
   }
 
-  v33 = v32;
-  v34 = [(FLSchemaFLInteractionDonationEnded *)self candidates];
-  v35 = [v4 candidates];
-  v36 = [v34 isEqual:v35];
+  v33 = candidates;
+  candidates2 = [(FLSchemaFLInteractionDonationEnded *)self candidates];
+  candidates3 = [equalCopy candidates];
+  v36 = [candidates2 isEqual:candidates3];
 
   if (v36)
   {
@@ -604,10 +604,10 @@ LABEL_36:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -620,11 +620,11 @@ LABEL_36:
     PBDataWriterWriteDoubleField();
   }
 
-  v6 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+  ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
 
-  if (v6)
+  if (ifSessionId)
   {
-    v7 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+    ifSessionId2 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -658,11 +658,11 @@ LABEL_10:
   }
 
 LABEL_11:
-  v9 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+  tuple = [(FLSchemaFLInteractionDonationEnded *)self tuple];
 
-  if (v9)
+  if (tuple)
   {
-    v10 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+    tuple2 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
     PBDataWriterWriteSubmessage();
   }
 
@@ -695,27 +695,27 @@ LABEL_11:
   }
 }
 
-- (void)addCandidates:(id)a3
+- (void)addCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   candidates = self->_candidates;
-  v8 = v4;
+  v8 = candidatesCopy;
   if (!candidates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidates;
-    self->_candidates = v6;
+    self->_candidates = array;
 
-    v4 = v8;
+    candidatesCopy = v8;
     candidates = self->_candidates;
   }
 
-  [(NSArray *)candidates addObject:v4];
+  [(NSArray *)candidates addObject:candidatesCopy];
 }
 
-- (void)setHasWasTupleDonated:(BOOL)a3
+- (void)setHasWasTupleDonated:(BOOL)donated
 {
-  if (a3)
+  if (donated)
   {
     v3 = 16;
   }
@@ -728,9 +728,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDonationTrigger:(BOOL)a3
+- (void)setHasDonationTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 8;
   }
@@ -743,9 +743,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasActionStatementId:(BOOL)a3
+- (void)setHasActionStatementId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -758,9 +758,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDonationTime:(BOOL)a3
+- (void)setHasDonationTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -773,32 +773,32 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = FLSchemaFLInteractionDonationEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  ifSessionId = [(FLSchemaFLInteractionDonationEnded *)self ifSessionId];
+  v7 = [ifSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLSchemaFLInteractionDonationEnded *)self deleteIfSessionId];
   }
 
-  v9 = [(FLSchemaFLInteractionDonationEnded *)self tuple];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  tuple = [(FLSchemaFLInteractionDonationEnded *)self tuple];
+  v10 = [tuple applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLSchemaFLInteractionDonationEnded *)self deleteTuple];
   }
 
-  v12 = [(FLSchemaFLInteractionDonationEnded *)self candidates];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  candidates = [(FLSchemaFLInteractionDonationEnded *)self candidates];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:candidates underConditions:policyCopy];
   [(FLSchemaFLInteractionDonationEnded *)self setCandidates:v13];
 
   return v5;

@@ -1,12 +1,12 @@
 @interface CHMarkNoWhiteSpaceColumnsChangeableStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHMarkNoWhiteSpaceColumnsChangeableStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v4 = a3;
+  processCopy = process;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -19,7 +19,7 @@
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "CHMarkNoWhiteSpaceColumnsChangeableStep is running", v49, 2u);
   }
 
-  v11 = objc_msgSend_result(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_result(processCopy, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_tokenColumnCount(v11, v12, v13, v14, v15, v16);
   v23 = 0;
   v24 = v17 & ~(v17 >> 63);
@@ -44,7 +44,7 @@
 LABEL_10:
   objc_msgSend_setChangeableTokenColumnCount_(v11, v18, v23, v20, v21, v22);
 
-  return v4;
+  return processCopy;
 }
 
 @end

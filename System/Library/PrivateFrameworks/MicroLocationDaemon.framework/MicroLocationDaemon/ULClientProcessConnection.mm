@@ -1,64 +1,64 @@
 @interface ULClientProcessConnection
 - (NSString)description;
-- (ULClientProcessConnection)initWithXPCConnection:(id)a3 delegate:(id)a4 serviceHandling:(id)a5 legacyServiceHandling:(id)a6 diagnosticsHandling:(id)a7 queue:(id)a8;
+- (ULClientProcessConnection)initWithXPCConnection:(id)connection delegate:(id)delegate serviceHandling:(id)handling legacyServiceHandling:(id)serviceHandling diagnosticsHandling:(id)diagnosticsHandling queue:(id)queue;
 - (ULClientProcessConnectionDelegate)delegate;
-- (void)addLabel:(id)a3;
-- (void)addLabel:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5;
-- (void)createCustomLocationOfInterestAtCurrentLocationWithConfiguration:(id)a3;
-- (void)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 reply:(id)a5;
+- (void)addLabel:(id)label;
+- (void)addLabel:(id)label betweenStartDate:(id)date andEndDate:(id)endDate;
+- (void)createCustomLocationOfInterestAtCurrentLocationWithConfiguration:(id)configuration;
+- (void)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types reply:(id)reply;
 - (void)dealloc;
-- (void)deleteServiceWithIdentifier:(id)a3 reply:(id)a4;
-- (void)disconnectWithRequestIdentifier:(id)a3;
-- (void)exportDatabaseWithReply:(id)a3;
-- (void)getMicroLocationInternalVersionWithReply:(id)a3;
-- (void)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4 reply:(id)a5;
-- (void)polarisDebugWithTask:(unint64_t)a3 reply:(id)a4;
-- (void)purgeDatabaseWithReply:(id)a3;
-- (void)queryServicesWithReply:(id)a3;
-- (void)removeCustomLocationOfInterestWithIdentifier:(id)a3;
-- (void)requestAllModelsLearningWithRequestIdentifier:(id)a3;
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 reply:(id)a4;
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 reply:(id)a4;
-- (void)requestObservationWithRequestIdentifier:(id)a3;
-- (void)requestPredictionWithRequestIdentifier:(id)a3;
-- (void)runWithConfiguration:(id)a3 serviceIdentifier:(id)a4 legacyServiceIdentifier:(id)a5 andRequestIdentifier:(id)a6;
+- (void)deleteServiceWithIdentifier:(id)identifier reply:(id)reply;
+- (void)disconnectWithRequestIdentifier:(id)identifier;
+- (void)exportDatabaseWithReply:(id)reply;
+- (void)getMicroLocationInternalVersionWithReply:(id)reply;
+- (void)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information reply:(id)reply;
+- (void)polarisDebugWithTask:(unint64_t)task reply:(id)reply;
+- (void)purgeDatabaseWithReply:(id)reply;
+- (void)queryServicesWithReply:(id)reply;
+- (void)removeCustomLocationOfInterestWithIdentifier:(id)identifier;
+- (void)requestAllModelsLearningWithRequestIdentifier:(id)identifier;
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information reply:(id)reply;
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information reply:(id)reply;
+- (void)requestObservationWithRequestIdentifier:(id)identifier;
+- (void)requestPredictionWithRequestIdentifier:(id)identifier;
+- (void)runWithConfiguration:(id)configuration serviceIdentifier:(id)identifier legacyServiceIdentifier:(id)serviceIdentifier andRequestIdentifier:(id)requestIdentifier;
 @end
 
 @implementation ULClientProcessConnection
 
-- (ULClientProcessConnection)initWithXPCConnection:(id)a3 delegate:(id)a4 serviceHandling:(id)a5 legacyServiceHandling:(id)a6 diagnosticsHandling:(id)a7 queue:(id)a8
+- (ULClientProcessConnection)initWithXPCConnection:(id)connection delegate:(id)delegate serviceHandling:(id)handling legacyServiceHandling:(id)serviceHandling diagnosticsHandling:(id)diagnosticsHandling queue:(id)queue
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  handlingCopy = handling;
+  serviceHandlingCopy = serviceHandling;
+  diagnosticsHandlingCopy = diagnosticsHandling;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = ULClientProcessConnection;
   v20 = [(ULClientProcessConnection *)&v34 init];
   if (v20)
   {
-    if (![ULServerEntitlements allowConnection:v14])
+    if (![ULServerEntitlements allowConnection:connectionCopy])
     {
       v27 = 0;
       goto LABEL_6;
     }
 
-    v21 = [v14 signingIdentity];
-    [(ULClientProcessConnection *)v20 setSigningIdentity:v21];
+    signingIdentity = [connectionCopy signingIdentity];
+    [(ULClientProcessConnection *)v20 setSigningIdentity:signingIdentity];
 
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    [(ULClientProcessConnection *)v20 setConnectionToken:v22];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(ULClientProcessConnection *)v20 setConnectionToken:uUID];
 
-    v23 = [MEMORY[0x277D28820] responseInterface];
-    [v14 setRemoteObjectInterface:v23];
+    responseInterface = [MEMORY[0x277D28820] responseInterface];
+    [connectionCopy setRemoteObjectInterface:responseInterface];
 
-    v24 = [MEMORY[0x277D28820] requestInterface];
-    [v14 setExportedInterface:v24];
+    requestInterface = [MEMORY[0x277D28820] requestInterface];
+    [connectionCopy setExportedInterface:requestInterface];
 
     v25 = [objc_alloc(MEMORY[0x277D28888]) initWithObject:v20];
-    [v14 setExportedObject:v25];
+    [connectionCopy setExportedObject:v25];
 
     objc_initWeak(&location, v20);
     v31[0] = MEMORY[0x277D85DD0];
@@ -66,23 +66,23 @@
     v31[2] = __124__ULClientProcessConnection_initWithXPCConnection_delegate_serviceHandling_legacyServiceHandling_diagnosticsHandling_queue___block_invoke;
     v31[3] = &unk_2798D4348;
     objc_copyWeak(&v32, &location);
-    [v14 setInterruptionHandler:v31];
+    [connectionCopy setInterruptionHandler:v31];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __124__ULClientProcessConnection_initWithXPCConnection_delegate_serviceHandling_legacyServiceHandling_diagnosticsHandling_queue___block_invoke_4;
     v29[3] = &unk_2798D4348;
     objc_copyWeak(&v30, &location);
-    [v14 setInvalidationHandler:v29];
-    v26 = [v14 remoteObjectProxy];
-    [(ULClientProcessConnection *)v20 setRemoteObjectProxy:v26];
+    [connectionCopy setInvalidationHandler:v29];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    [(ULClientProcessConnection *)v20 setRemoteObjectProxy:remoteObjectProxy];
 
-    [(ULClientProcessConnection *)v20 setXpcConnection:v14];
-    [(ULClientProcessConnection *)v20 setDelegate:v15];
-    [(ULClientProcessConnection *)v20 setServiceHandling:v16];
-    [(ULClientProcessConnection *)v20 setLegacyServiceHandling:v17];
-    [(ULClientProcessConnection *)v20 setDiagnosticsHandling:v18];
-    [(ULClientProcessConnection *)v20 setQueue:v19];
-    [v14 resume];
+    [(ULClientProcessConnection *)v20 setXpcConnection:connectionCopy];
+    [(ULClientProcessConnection *)v20 setDelegate:delegateCopy];
+    [(ULClientProcessConnection *)v20 setServiceHandling:handlingCopy];
+    [(ULClientProcessConnection *)v20 setLegacyServiceHandling:serviceHandlingCopy];
+    [(ULClientProcessConnection *)v20 setDiagnosticsHandling:diagnosticsHandlingCopy];
+    [(ULClientProcessConnection *)v20 setQueue:queueCopy];
+    [connectionCopy resume];
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
@@ -150,8 +150,8 @@ void __124__ULClientProcessConnection_initWithXPCConnection_delegate_serviceHand
 
 - (void)dealloc
 {
-  v3 = [(ULClientProcessConnection *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(ULClientProcessConnection *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = ULClientProcessConnection;
@@ -165,33 +165,33 @@ void __124__ULClientProcessConnection_initWithXPCConnection_delegate_serviceHand
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(ULClientProcessConnection *)self signingIdentity];
-  [v6 appendFormat:@", signingIdentity: %@", v7];
+  signingIdentity = [(ULClientProcessConnection *)self signingIdentity];
+  [v6 appendFormat:@", signingIdentity: %@", signingIdentity];
 
-  v8 = [(ULClientProcessConnection *)self connectionToken];
-  [v6 appendFormat:@", connectionToken: %@", v8];
+  connectionToken = [(ULClientProcessConnection *)self connectionToken];
+  [v6 appendFormat:@", connectionToken: %@", connectionToken];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (void)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 reply:(id)a5
+- (void)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ULClientProcessConnection *)self queue];
+  typesCopy = types;
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__ULClientProcessConnection_createServiceWithServiceType_locationTypes_reply___block_invoke;
   v13[3] = &unk_2798D56D0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = typesCopy;
+  selfCopy = self;
+  v16 = replyCopy;
+  typeCopy = type;
+  v11 = replyCopy;
+  v12 = typesCopy;
+  dispatch_async(queue, v13);
 }
 
 void __78__ULClientProcessConnection_createServiceWithServiceType_locationTypes_reply___block_invoke(uint64_t a1)
@@ -259,21 +259,21 @@ void __78__ULClientProcessConnection_createServiceWithServiceType_locationTypes_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteServiceWithIdentifier:(id)a3 reply:(id)a4
+- (void)deleteServiceWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ULClientProcessConnection_deleteServiceWithIdentifier_reply___block_invoke;
   block[3] = &unk_2798D56F8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__ULClientProcessConnection_deleteServiceWithIdentifier_reply___block_invoke(uint64_t a1)
@@ -305,18 +305,18 @@ void __63__ULClientProcessConnection_deleteServiceWithIdentifier_reply___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryServicesWithReply:(id)a3
+- (void)queryServicesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__ULClientProcessConnection_queryServicesWithReply___block_invoke;
   v7[3] = &unk_2798D5720;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__ULClientProcessConnection_queryServicesWithReply___block_invoke(uint64_t a1)
@@ -340,21 +340,21 @@ void __52__ULClientProcessConnection_queryServicesWithReply___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 reply:(id)a4
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULClientProcessConnection *)self queue];
+  informationCopy = information;
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__ULClientProcessConnection_requestCurrentMicroLocationWithAdditionalInformation_reply___block_invoke;
   block[3] = &unk_2798D56F8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = informationCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = informationCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __88__ULClientProcessConnection_requestCurrentMicroLocationWithAdditionalInformation_reply___block_invoke(uint64_t a1)
@@ -384,21 +384,21 @@ uint64_t __88__ULClientProcessConnection_requestCurrentMicroLocationWithAddition
   return result;
 }
 
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 reply:(id)a4
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULClientProcessConnection *)self queue];
+  informationCopy = information;
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__ULClientProcessConnection_requestMicroLocationRecordingScanWithAdditionalInformation_reply___block_invoke;
   block[3] = &unk_2798D56F8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = informationCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = informationCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __94__ULClientProcessConnection_requestMicroLocationRecordingScanWithAdditionalInformation_reply___block_invoke(uint64_t a1)
@@ -428,18 +428,18 @@ uint64_t __94__ULClientProcessConnection_requestMicroLocationRecordingScanWithAd
   return result;
 }
 
-- (void)getMicroLocationInternalVersionWithReply:(id)a3
+- (void)getMicroLocationInternalVersionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  replyCopy = reply;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__ULClientProcessConnection_getMicroLocationInternalVersionWithReply___block_invoke;
   v7[3] = &unk_2798D5720;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(queue, v7);
 }
 
 void __70__ULClientProcessConnection_getMicroLocationInternalVersionWithReply___block_invoke(uint64_t a1)
@@ -462,18 +462,18 @@ void __70__ULClientProcessConnection_getMicroLocationInternalVersionWithReply___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)disconnectWithRequestIdentifier:(id)a3
+- (void)disconnectWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ULClientProcessConnection_disconnectWithRequestIdentifier___block_invoke;
   v7[3] = &unk_2798D44B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __61__ULClientProcessConnection_disconnectWithRequestIdentifier___block_invoke(uint64_t a1)
@@ -497,27 +497,27 @@ void __61__ULClientProcessConnection_disconnectWithRequestIdentifier___block_inv
   [v3 disconnectWithConnectionToken:v4 clientIdentifier:v5 requestIdentifier:*(a1 + 40)];
 }
 
-- (void)runWithConfiguration:(id)a3 serviceIdentifier:(id)a4 legacyServiceIdentifier:(id)a5 andRequestIdentifier:(id)a6
+- (void)runWithConfiguration:(id)configuration serviceIdentifier:(id)identifier legacyServiceIdentifier:(id)serviceIdentifier andRequestIdentifier:(id)requestIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ULClientProcessConnection *)self queue];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
+  requestIdentifierCopy = requestIdentifier;
+  queue = [(ULClientProcessConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __113__ULClientProcessConnection_runWithConfiguration_serviceIdentifier_legacyServiceIdentifier_andRequestIdentifier___block_invoke;
   block[3] = &unk_2798D5748;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = configurationCopy;
+  v21 = identifierCopy;
+  v22 = serviceIdentifierCopy;
+  selfCopy = self;
+  v24 = requestIdentifierCopy;
+  v15 = requestIdentifierCopy;
+  v16 = serviceIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
 void __113__ULClientProcessConnection_runWithConfiguration_serviceIdentifier_legacyServiceIdentifier_andRequestIdentifier___block_invoke(uint64_t a1)
@@ -555,18 +555,18 @@ void __113__ULClientProcessConnection_runWithConfiguration_serviceIdentifier_leg
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabel:(id)a3
+- (void)addLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  labelCopy = label;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ULClientProcessConnection_addLabel___block_invoke;
   v7[3] = &unk_2798D44B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = labelCopy;
+  selfCopy = self;
+  v6 = labelCopy;
+  dispatch_async(queue, v7);
 }
 
 void __38__ULClientProcessConnection_addLabel___block_invoke(uint64_t a1)
@@ -596,24 +596,24 @@ void __38__ULClientProcessConnection_addLabel___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabel:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5
+- (void)addLabel:(id)label betweenStartDate:(id)date andEndDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ULClientProcessConnection *)self queue];
+  labelCopy = label;
+  dateCopy = date;
+  endDateCopy = endDate;
+  queue = [(ULClientProcessConnection *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__ULClientProcessConnection_addLabel_betweenStartDate_andEndDate___block_invoke;
   v15[3] = &unk_2798D5770;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = labelCopy;
+  v17 = dateCopy;
+  v18 = endDateCopy;
+  selfCopy = self;
+  v12 = endDateCopy;
+  v13 = dateCopy;
+  v14 = labelCopy;
+  dispatch_async(queue, v15);
 }
 
 void __66__ULClientProcessConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint64_t a1)
@@ -649,18 +649,18 @@ void __66__ULClientProcessConnection_addLabel_betweenStartDate_andEndDate___bloc
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestObservationWithRequestIdentifier:(id)a3
+- (void)requestObservationWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ULClientProcessConnection_requestObservationWithRequestIdentifier___block_invoke;
   v7[3] = &unk_2798D44B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __69__ULClientProcessConnection_requestObservationWithRequestIdentifier___block_invoke(uint64_t a1)
@@ -688,18 +688,18 @@ void __69__ULClientProcessConnection_requestObservationWithRequestIdentifier___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPredictionWithRequestIdentifier:(id)a3
+- (void)requestPredictionWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ULClientProcessConnection_requestPredictionWithRequestIdentifier___block_invoke;
   v7[3] = &unk_2798D44B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __68__ULClientProcessConnection_requestPredictionWithRequestIdentifier___block_invoke(uint64_t a1)
@@ -727,18 +727,18 @@ void __68__ULClientProcessConnection_requestPredictionWithRequestIdentifier___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCustomLocationOfInterestAtCurrentLocationWithConfiguration:(id)a3
+- (void)createCustomLocationOfInterestAtCurrentLocationWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  configurationCopy = configuration;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __94__ULClientProcessConnection_createCustomLocationOfInterestAtCurrentLocationWithConfiguration___block_invoke;
   v7[3] = &unk_2798D44B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __94__ULClientProcessConnection_createCustomLocationOfInterestAtCurrentLocationWithConfiguration___block_invoke(uint64_t a1)
@@ -760,18 +760,18 @@ void __94__ULClientProcessConnection_createCustomLocationOfInterestAtCurrentLoca
   [v3 createCustomLoiAtCurrentLocationForConnectionToken:v4 withConfiguration:*(a1 + 40)];
 }
 
-- (void)removeCustomLocationOfInterestWithIdentifier:(id)a3
+- (void)removeCustomLocationOfInterestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__ULClientProcessConnection_removeCustomLocationOfInterestWithIdentifier___block_invoke;
   v7[3] = &unk_2798D44B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __74__ULClientProcessConnection_removeCustomLocationOfInterestWithIdentifier___block_invoke(uint64_t a1)
@@ -799,18 +799,18 @@ void __74__ULClientProcessConnection_removeCustomLocationOfInterestWithIdentifie
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAllModelsLearningWithRequestIdentifier:(id)a3
+- (void)requestAllModelsLearningWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self queue];
+  identifierCopy = identifier;
+  queue = [(ULClientProcessConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__ULClientProcessConnection_requestAllModelsLearningWithRequestIdentifier___block_invoke;
   v7[3] = &unk_2798D44B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __75__ULClientProcessConnection_requestAllModelsLearningWithRequestIdentifier___block_invoke(uint64_t a1)
@@ -837,26 +837,26 @@ void __75__ULClientProcessConnection_requestAllModelsLearningWithRequestIdentifi
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4 reply:(id)a5
+- (void)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information reply:(id)reply
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ULClientProcessConnection *)self xpcConnection];
-  v11 = [ULServerEntitlements allowPrivateDataAccess:v10];
+  informationCopy = information;
+  replyCopy = reply;
+  xpcConnection = [(ULClientProcessConnection *)self xpcConnection];
+  v11 = [ULServerEntitlements allowPrivateDataAccess:xpcConnection];
 
   if (v11)
   {
-    v12 = [(ULClientProcessConnection *)self queue];
+    queue = [(ULClientProcessConnection *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__ULClientProcessConnection_imageFeaturesDebugWithTask_additionalInformation_reply___block_invoke;
     block[3] = &unk_2798D56D0;
     block[4] = self;
-    v20 = a3;
-    v18 = v8;
-    v19 = v9;
-    dispatch_async(v12, block);
+    taskCopy = task;
+    v18 = informationCopy;
+    v19 = replyCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -867,7 +867,7 @@ void __75__ULClientProcessConnection_requestAllModelsLearningWithRequestIdentifi
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v15 = [v13 initWithDomain:@"ULClientProcessConnection" code:41 userInfo:v14];
 
-    (*(v9 + 2))(v9, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -893,24 +893,24 @@ void __84__ULClientProcessConnection_imageFeaturesDebugWithTask_additionalInform
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)polarisDebugWithTask:(unint64_t)a3 reply:(id)a4
+- (void)polarisDebugWithTask:(unint64_t)task reply:(id)reply
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(ULClientProcessConnection *)self xpcConnection];
-  v8 = [ULServerEntitlements allowPrivateDataAccess:v7];
+  replyCopy = reply;
+  xpcConnection = [(ULClientProcessConnection *)self xpcConnection];
+  v8 = [ULServerEntitlements allowPrivateDataAccess:xpcConnection];
 
   if (v8)
   {
-    v9 = [(ULClientProcessConnection *)self queue];
+    queue = [(ULClientProcessConnection *)self queue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__ULClientProcessConnection_polarisDebugWithTask_reply___block_invoke;
     v14[3] = &unk_2798D5798;
-    v16 = a3;
+    taskCopy = task;
     v14[4] = self;
-    v15 = v6;
-    dispatch_async(v9, v14);
+    v15 = replyCopy;
+    dispatch_async(queue, v14);
   }
 
   else
@@ -921,7 +921,7 @@ void __84__ULClientProcessConnection_imageFeaturesDebugWithTask_additionalInform
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v12 = [v10 initWithDomain:@"ULClientProcessConnection" code:41 userInfo:v11];
 
-    (*(v6 + 2))(v6, v12);
+    (*(replyCopy + 2))(replyCopy, v12);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -952,23 +952,23 @@ void __56__ULClientProcessConnection_polarisDebugWithTask_reply___block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)exportDatabaseWithReply:(id)a3
+- (void)exportDatabaseWithReply:(id)reply
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self xpcConnection];
-  v6 = [ULServerEntitlements allowPrivateDataAccess:v5];
+  replyCopy = reply;
+  xpcConnection = [(ULClientProcessConnection *)self xpcConnection];
+  v6 = [ULServerEntitlements allowPrivateDataAccess:xpcConnection];
 
   if (v6)
   {
-    v7 = [(ULClientProcessConnection *)self queue];
+    queue = [(ULClientProcessConnection *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__ULClientProcessConnection_exportDatabaseWithReply___block_invoke;
     block[3] = &unk_2798D5720;
     block[4] = self;
-    v13 = v4;
-    dispatch_async(v7, block);
+    v13 = replyCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -979,7 +979,7 @@ void __56__ULClientProcessConnection_polarisDebugWithTask_reply___block_invoke(u
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v10 = [v8 initWithDomain:@"ULClientProcessConnection" code:41 userInfo:v9];
 
-    (*(v4 + 2))(v4, 0, v10);
+    (*(replyCopy + 2))(replyCopy, 0, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1008,23 +1008,23 @@ void __53__ULClientProcessConnection_exportDatabaseWithReply___block_invoke(uint
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (void)purgeDatabaseWithReply:(id)a3
+- (void)purgeDatabaseWithReply:(id)reply
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULClientProcessConnection *)self xpcConnection];
-  v6 = [ULServerEntitlements allowPrivateDataAccess:v5];
+  replyCopy = reply;
+  xpcConnection = [(ULClientProcessConnection *)self xpcConnection];
+  v6 = [ULServerEntitlements allowPrivateDataAccess:xpcConnection];
 
   if (v6)
   {
-    v7 = [(ULClientProcessConnection *)self queue];
+    queue = [(ULClientProcessConnection *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__ULClientProcessConnection_purgeDatabaseWithReply___block_invoke;
     block[3] = &unk_2798D5720;
     block[4] = self;
-    v13 = v4;
-    dispatch_async(v7, block);
+    v13 = replyCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1035,7 +1035,7 @@ void __53__ULClientProcessConnection_exportDatabaseWithReply___block_invoke(uint
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v10 = [v8 initWithDomain:@"ULClientProcessConnection" code:41 userInfo:v9];
 
-    (*(v4 + 2))(v4, v10);
+    (*(replyCopy + 2))(replyCopy, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];

@@ -1,42 +1,42 @@
 @interface DNDAppInfo
-- (BOOL)isEqual:(id)a3;
-- (DNDAppInfo)initWithCoder:(id)a3;
-- (DNDAppInfo)initWithSource:(int64_t)a3 applicationIdentifier:(id)a4 displayName:(id)a5 storeIconURL:(id)a6 cachedIconURL:(id)a7;
-- (id)_initWithAppInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDAppInfo)initWithCoder:(id)coder;
+- (DNDAppInfo)initWithSource:(int64_t)source applicationIdentifier:(id)identifier displayName:(id)name storeIconURL:(id)l cachedIconURL:(id)rL;
+- (id)_initWithAppInfo:(id)info;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDAppInfo
 
-- (DNDAppInfo)initWithSource:(int64_t)a3 applicationIdentifier:(id)a4 displayName:(id)a5 storeIconURL:(id)a6 cachedIconURL:(id)a7
+- (DNDAppInfo)initWithSource:(int64_t)source applicationIdentifier:(id)identifier displayName:(id)name storeIconURL:(id)l cachedIconURL:(id)rL
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lCopy = l;
+  rLCopy = rL;
   v27.receiver = self;
   v27.super_class = DNDAppInfo;
   v16 = [(DNDAppInfo *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_source = a3;
-    v18 = [v12 copy];
+    v16->_source = source;
+    v18 = [identifierCopy copy];
     applicationIdentifier = v17->_applicationIdentifier;
     v17->_applicationIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [nameCopy copy];
     displayName = v17->_displayName;
     v17->_displayName = v20;
 
-    v22 = [v14 copy];
+    v22 = [lCopy copy];
     storeIconURL = v17->_storeIconURL;
     v17->_storeIconURL = v22;
 
-    v24 = [v15 copy];
+    v24 = [rLCopy copy];
     cachedIconURL = v17->_cachedIconURL;
     v17->_cachedIconURL = v24;
   }
@@ -44,38 +44,38 @@
   return v17;
 }
 
-- (id)_initWithAppInfo:(id)a3
+- (id)_initWithAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [v4 applicationIdentifier];
-  v7 = [v4 displayName];
-  v8 = [v4 storeIconURL];
-  v9 = [v4 cachedIconURL];
+  infoCopy = info;
+  source = [infoCopy source];
+  applicationIdentifier = [infoCopy applicationIdentifier];
+  displayName = [infoCopy displayName];
+  storeIconURL = [infoCopy storeIconURL];
+  cachedIconURL = [infoCopy cachedIconURL];
 
-  v10 = [(DNDAppInfo *)self initWithSource:v5 applicationIdentifier:v6 displayName:v7 storeIconURL:v8 cachedIconURL:v9];
+  v10 = [(DNDAppInfo *)self initWithSource:source applicationIdentifier:applicationIdentifier displayName:displayName storeIconURL:storeIconURL cachedIconURL:cachedIconURL];
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DNDAppInfo *)self source];
-  v4 = [(DNDAppInfo *)self applicationIdentifier];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(DNDAppInfo *)self displayName];
-  v7 = [v6 hash];
-  v8 = [(DNDAppInfo *)self storeIconURL];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(DNDAppInfo *)self cachedIconURL];
-  v11 = [v10 hash];
+  source = [(DNDAppInfo *)self source];
+  applicationIdentifier = [(DNDAppInfo *)self applicationIdentifier];
+  v5 = [applicationIdentifier hash] ^ source;
+  displayName = [(DNDAppInfo *)self displayName];
+  v7 = [displayName hash];
+  storeIconURL = [(DNDAppInfo *)self storeIconURL];
+  v9 = v5 ^ v7 ^ [storeIconURL hash];
+  cachedIconURL = [(DNDAppInfo *)self cachedIconURL];
+  v11 = [cachedIconURL hash];
 
   return v9 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -85,9 +85,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDAppInfo *)self source];
-      if (v7 != [(DNDAppInfo *)v6 source])
+      v6 = equalCopy;
+      source = [(DNDAppInfo *)self source];
+      if (source != [(DNDAppInfo *)v6 source])
       {
         v15 = 0;
 LABEL_53:
@@ -95,20 +95,20 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      v8 = [(DNDAppInfo *)self applicationIdentifier];
-      v9 = [(DNDAppInfo *)v6 applicationIdentifier];
-      if (v8 != v9)
+      applicationIdentifier = [(DNDAppInfo *)self applicationIdentifier];
+      applicationIdentifier2 = [(DNDAppInfo *)v6 applicationIdentifier];
+      if (applicationIdentifier != applicationIdentifier2)
       {
-        v10 = [(DNDAppInfo *)self applicationIdentifier];
-        if (!v10)
+        applicationIdentifier3 = [(DNDAppInfo *)self applicationIdentifier];
+        if (!applicationIdentifier3)
         {
           v15 = 0;
           goto LABEL_52;
         }
 
-        v11 = v10;
-        v12 = [(DNDAppInfo *)v6 applicationIdentifier];
-        if (!v12)
+        v11 = applicationIdentifier3;
+        applicationIdentifier4 = [(DNDAppInfo *)v6 applicationIdentifier];
+        if (!applicationIdentifier4)
         {
           v15 = 0;
 LABEL_51:
@@ -116,10 +116,10 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v13 = v12;
-        v14 = [(DNDAppInfo *)self applicationIdentifier];
-        v3 = [(DNDAppInfo *)v6 applicationIdentifier];
-        if (![v14 isEqual:v3])
+        v13 = applicationIdentifier4;
+        applicationIdentifier5 = [(DNDAppInfo *)self applicationIdentifier];
+        applicationIdentifier6 = [(DNDAppInfo *)v6 applicationIdentifier];
+        if (![applicationIdentifier5 isEqual:applicationIdentifier6])
         {
           v15 = 0;
 LABEL_50:
@@ -127,34 +127,34 @@ LABEL_50:
           goto LABEL_51;
         }
 
-        v50 = v3;
-        v51 = v14;
+        v50 = applicationIdentifier6;
+        v51 = applicationIdentifier5;
         v52 = v13;
         v53 = v11;
       }
 
-      v16 = [(DNDAppInfo *)self displayName];
-      v17 = [(DNDAppInfo *)v6 displayName];
-      if (v16 != v17)
+      displayName = [(DNDAppInfo *)self displayName];
+      displayName2 = [(DNDAppInfo *)v6 displayName];
+      if (displayName != displayName2)
       {
-        v18 = [(DNDAppInfo *)self displayName];
-        if (v18)
+        displayName3 = [(DNDAppInfo *)self displayName];
+        if (displayName3)
         {
-          v19 = v18;
-          v20 = [(DNDAppInfo *)v6 displayName];
-          if (v20)
+          v19 = displayName3;
+          displayName4 = [(DNDAppInfo *)v6 displayName];
+          if (displayName4)
           {
-            v21 = v20;
-            v49 = v16;
-            v22 = [(DNDAppInfo *)self displayName];
-            v3 = [(DNDAppInfo *)v6 displayName];
-            if (([v22 isEqual:v3] & 1) == 0)
+            v21 = displayName4;
+            v49 = displayName;
+            displayName5 = [(DNDAppInfo *)self displayName];
+            applicationIdentifier6 = [(DNDAppInfo *)v6 displayName];
+            if (([displayName5 isEqual:applicationIdentifier6] & 1) == 0)
             {
 
               goto LABEL_40;
             }
 
-            v43 = v22;
+            v43 = displayName5;
             v44 = v21;
             v45 = v19;
             goto LABEL_19;
@@ -164,39 +164,39 @@ LABEL_50:
         goto LABEL_40;
       }
 
-      v49 = v16;
+      v49 = displayName;
 LABEL_19:
-      v23 = [(DNDAppInfo *)self storeIconURL];
-      v48 = [(DNDAppInfo *)v6 storeIconURL];
-      if (v23 == v48)
+      storeIconURL = [(DNDAppInfo *)self storeIconURL];
+      storeIconURL2 = [(DNDAppInfo *)v6 storeIconURL];
+      if (storeIconURL == storeIconURL2)
       {
-        v46 = v23;
-        v47 = v3;
+        v46 = storeIconURL;
+        v47 = applicationIdentifier6;
         goto LABEL_27;
       }
 
-      v24 = [(DNDAppInfo *)self storeIconURL];
-      if (v24)
+      storeIconURL3 = [(DNDAppInfo *)self storeIconURL];
+      if (storeIconURL3)
       {
-        v25 = v24;
-        v26 = [(DNDAppInfo *)v6 storeIconURL];
-        if (v26)
+        v25 = storeIconURL3;
+        storeIconURL4 = [(DNDAppInfo *)v6 storeIconURL];
+        if (storeIconURL4)
         {
-          v47 = v3;
-          v42 = v26;
-          v27 = [(DNDAppInfo *)self storeIconURL];
-          v28 = [(DNDAppInfo *)v6 storeIconURL];
-          if ([v27 isEqual:v28])
+          v47 = applicationIdentifier6;
+          v42 = storeIconURL4;
+          storeIconURL5 = [(DNDAppInfo *)self storeIconURL];
+          storeIconURL6 = [(DNDAppInfo *)v6 storeIconURL];
+          if ([storeIconURL5 isEqual:storeIconURL6])
           {
-            v39 = v28;
-            v40 = v27;
+            v39 = storeIconURL6;
+            v40 = storeIconURL5;
             v41 = v25;
-            v46 = v23;
+            v46 = storeIconURL;
 LABEL_27:
-            v29 = [(DNDAppInfo *)self cachedIconURL];
-            v30 = [(DNDAppInfo *)v6 cachedIconURL];
-            v31 = v30;
-            if (v29 == v30)
+            cachedIconURL = [(DNDAppInfo *)self cachedIconURL];
+            cachedIconURL2 = [(DNDAppInfo *)v6 cachedIconURL];
+            v31 = cachedIconURL2;
+            if (cachedIconURL == cachedIconURL2)
             {
 
               v15 = 1;
@@ -204,19 +204,19 @@ LABEL_27:
 
             else
             {
-              v32 = [(DNDAppInfo *)self cachedIconURL];
-              if (v32)
+              cachedIconURL3 = [(DNDAppInfo *)self cachedIconURL];
+              if (cachedIconURL3)
               {
-                v38 = v32;
-                v33 = [(DNDAppInfo *)v6 cachedIconURL];
-                if (v33)
+                v38 = cachedIconURL3;
+                cachedIconURL4 = [(DNDAppInfo *)v6 cachedIconURL];
+                if (cachedIconURL4)
                 {
-                  v37 = v33;
-                  v34 = [(DNDAppInfo *)self cachedIconURL];
-                  v35 = [(DNDAppInfo *)v6 cachedIconURL];
-                  v15 = [v34 isEqual:v35];
+                  v37 = cachedIconURL4;
+                  cachedIconURL5 = [(DNDAppInfo *)self cachedIconURL];
+                  cachedIconURL6 = [(DNDAppInfo *)v6 cachedIconURL];
+                  v15 = [cachedIconURL5 isEqual:cachedIconURL6];
 
-                  v33 = v37;
+                  cachedIconURL4 = v37;
                 }
 
                 else
@@ -232,20 +232,20 @@ LABEL_27:
               }
             }
 
-            if (v46 != v48)
+            if (v46 != storeIconURL2)
             {
             }
 
-            if (v49 != v17)
+            if (v49 != displayName2)
             {
             }
 
 LABEL_49:
             v13 = v52;
             v11 = v53;
-            v14 = v51;
-            v3 = v50;
-            if (v8 != v9)
+            applicationIdentifier5 = v51;
+            applicationIdentifier6 = v50;
+            if (applicationIdentifier != applicationIdentifier2)
             {
               goto LABEL_50;
             }
@@ -255,12 +255,12 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          v26 = v42;
-          v3 = v47;
+          storeIconURL4 = v42;
+          applicationIdentifier6 = v47;
         }
       }
 
-      if (v49 != v17)
+      if (v49 != displayName2)
       {
       }
 
@@ -282,35 +282,35 @@ LABEL_54:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DNDAppInfo source](self, "source")}];
-  v6 = [(DNDAppInfo *)self applicationIdentifier];
-  v7 = [(DNDAppInfo *)self displayName];
-  v8 = [(DNDAppInfo *)self storeIconURL];
-  v9 = [v8 absoluteString];
-  v10 = [(DNDAppInfo *)self cachedIconURL];
-  v11 = [v10 path];
-  v12 = [v3 stringWithFormat:@"<%@: %p source: %@; applicationIdentifier: %@; displayName: %@; storeIconURL: %@; cachedIconURL: %@>", v4, self, v5, v6, v7, v9, v11];;
+  applicationIdentifier = [(DNDAppInfo *)self applicationIdentifier];
+  displayName = [(DNDAppInfo *)self displayName];
+  storeIconURL = [(DNDAppInfo *)self storeIconURL];
+  absoluteString = [storeIconURL absoluteString];
+  cachedIconURL = [(DNDAppInfo *)self cachedIconURL];
+  path = [cachedIconURL path];
+  v12 = [v3 stringWithFormat:@"<%@: %p source: %@; applicationIdentifier: %@; displayName: %@; storeIconURL: %@; cachedIconURL: %@>", v4, self, v5, applicationIdentifier, displayName, absoluteString, path];;
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDMutableAppInfo allocWithZone:a3];
+  v4 = [DNDMutableAppInfo allocWithZone:zone];
 
   return [(DNDAppInfo *)v4 _initWithAppInfo:self];
 }
 
-- (DNDAppInfo)initWithCoder:(id)a3
+- (DNDAppInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"source"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"source"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeIconURL"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeIconURL"];
   v10 = [v8 URLWithString:v9];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cachedIconURL"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cachedIconURL"];
 
   if (v11)
   {
@@ -327,23 +327,23 @@ LABEL_54:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[DNDAppInfo source](self forKey:{"source"), @"source"}];
-  v5 = [(DNDAppInfo *)self applicationIdentifier];
-  [v4 encodeObject:v5 forKey:@"applicationIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DNDAppInfo source](self forKey:{"source"), @"source"}];
+  applicationIdentifier = [(DNDAppInfo *)self applicationIdentifier];
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
 
-  v6 = [(DNDAppInfo *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(DNDAppInfo *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(DNDAppInfo *)self storeIconURL];
-  v8 = [v7 absoluteString];
-  [v4 encodeObject:v8 forKey:@"storeIconURL"];
+  storeIconURL = [(DNDAppInfo *)self storeIconURL];
+  absoluteString = [storeIconURL absoluteString];
+  [coderCopy encodeObject:absoluteString forKey:@"storeIconURL"];
 
-  v10 = [(DNDAppInfo *)self cachedIconURL];
-  v9 = [v10 path];
-  [v4 encodeObject:v9 forKey:@"cachedIconURL"];
+  cachedIconURL = [(DNDAppInfo *)self cachedIconURL];
+  path = [cachedIconURL path];
+  [coderCopy encodeObject:path forKey:@"cachedIconURL"];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface ENExposureWindow
-- (ENExposureWindow)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureWindow)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureWindow
 
-- (ENExposureWindow)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureWindow)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureWindow *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_30;
     }
 
 LABEL_29:
     ENErrorF(2);
-    *a4 = v20 = 0;
+    *error = v20 = 0;
     goto LABEL_25;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -99,7 +99,7 @@ LABEL_30:
 
 LABEL_18:
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = xpc_dictionary_get_array(v6, "scanInst");
+  v15 = xpc_dictionary_get_array(objectCopy, "scanInst");
   v16 = v15;
   if (!v15)
   {
@@ -122,10 +122,10 @@ LABEL_18:
   v17 = v25[5];
   if (v17)
   {
-    if (a4)
+    if (error)
     {
       v22 = v17;
-      *a4 = v17;
+      *error = v17;
     }
   }
 
@@ -184,14 +184,14 @@ BOOL __44__ENExposureWindow_initWithXPCObject_error___block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_calibrationConfidence)
   {
-    xpc_dictionary_set_uint64(v4, "caliConf", self->_calibrationConfidence);
+    xpc_dictionary_set_uint64(objectCopy, "caliConf", self->_calibrationConfidence);
   }
 
   v6 = self->_date;

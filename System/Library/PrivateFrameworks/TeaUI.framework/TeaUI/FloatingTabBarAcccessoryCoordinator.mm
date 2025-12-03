@@ -1,21 +1,21 @@
 @interface FloatingTabBarAcccessoryCoordinator
 - (void)accessoryViewTapped;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation FloatingTabBarAcccessoryCoordinator
 
 - (void)accessoryViewTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D808A60C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  FloatingTabBarAcccessoryCoordinator.presentationControllerDidDismiss(_:)(v5);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  FloatingTabBarAcccessoryCoordinator.presentationControllerDidDismiss(_:)(selfCopy);
 }
 
 @end

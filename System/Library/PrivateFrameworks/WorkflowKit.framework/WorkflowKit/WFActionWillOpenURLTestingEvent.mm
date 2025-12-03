@@ -1,28 +1,28 @@
 @interface WFActionWillOpenURLTestingEvent
-- (WFActionWillOpenURLTestingEvent)initWithAction:(id)a3 URL:(id)a4 bundleIdentifier:(id)a5;
+- (WFActionWillOpenURLTestingEvent)initWithAction:(id)action URL:(id)l bundleIdentifier:(id)identifier;
 @end
 
 @implementation WFActionWillOpenURLTestingEvent
 
-- (WFActionWillOpenURLTestingEvent)initWithAction:(id)a3 URL:(id)a4 bundleIdentifier:(id)a5
+- (WFActionWillOpenURLTestingEvent)initWithAction:(id)action URL:(id)l bundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  actionCopy = action;
+  lCopy = l;
+  identifierCopy = identifier;
+  if (!lCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFActionWillOpenURLTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionWillOpenURLTestingEvent.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
   v17.receiver = self;
   v17.super_class = WFActionWillOpenURLTestingEvent;
-  v12 = [(WFActionTestingEvent *)&v17 initWithAction:v9];
+  v12 = [(WFActionTestingEvent *)&v17 initWithAction:actionCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_URL, a4);
-    objc_storeStrong(&v13->_bundleIdentifier, a5);
+    objc_storeStrong(&v12->_URL, l);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
     v14 = v13;
   }
 

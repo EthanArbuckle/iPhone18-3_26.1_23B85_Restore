@@ -1,9 +1,9 @@
 @interface NSSQLIndex
-- (BOOL)isEqual:(id)a3;
-- (id)bulkUpdateStatementsForStore:(id)a3;
-- (id)dropStatementsForStore:(id)a3;
-- (id)generateStatementsForStore:(id)a3;
-- (id)initForIndexDescription:(id)a3 sqlEntity:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)bulkUpdateStatementsForStore:(id)store;
+- (id)dropStatementsForStore:(id)store;
+- (id)generateStatementsForStore:(id)store;
+- (id)initForIndexDescription:(id)description sqlEntity:(id)entity;
 - (void)dealloc;
 @end
 
@@ -23,23 +23,23 @@
   [(NSSQLIndex *)&v3 dealloc];
 }
 
-- (id)initForIndexDescription:(id)a3 sqlEntity:(id)a4
+- (id)initForIndexDescription:(id)description sqlEntity:(id)entity
 {
   v8.receiver = self;
   v8.super_class = NSSQLIndex;
   v6 = [(NSSQLIndex *)&v8 init];
   if (v6)
   {
-    v6->_indexDescription = a3;
-    v6->_sqlEntity = a4;
+    v6->_indexDescription = description;
+    v6->_sqlEntity = entity;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -51,19 +51,19 @@
   }
 
   sqlEntity = self->_sqlEntity;
-  if (sqlEntity != [a3 sqlEntity])
+  if (sqlEntity != [equal sqlEntity])
   {
     return 0;
   }
 
   indexDescription = self->_indexDescription;
-  v8 = [a3 indexDescription];
-  if (indexDescription == v8)
+  indexDescription = [equal indexDescription];
+  if (indexDescription == indexDescription)
   {
     return 1;
   }
 
-  v9 = v8;
+  v9 = indexDescription;
   result = 0;
   if (indexDescription && v9)
   {
@@ -74,21 +74,21 @@
   return result;
 }
 
-- (id)generateStatementsForStore:(id)a3
+- (id)generateStatementsForStore:(id)store
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)dropStatementsForStore:(id)a3
+- (id)dropStatementsForStore:(id)store
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)bulkUpdateStatementsForStore:(id)a3
+- (id)bulkUpdateStatementsForStore:(id)store
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

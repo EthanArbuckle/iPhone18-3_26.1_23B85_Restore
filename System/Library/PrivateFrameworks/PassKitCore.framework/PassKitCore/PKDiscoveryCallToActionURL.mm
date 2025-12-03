@@ -1,15 +1,15 @@
 @interface PKDiscoveryCallToActionURL
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryCallToActionURL)initWithURL:(id)a3 isSensitive:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryCallToActionURL)initWithURL:(id)l isSensitive:(BOOL)sensitive;
 - (unint64_t)hash;
 @end
 
 @implementation PKDiscoveryCallToActionURL
 
-- (PKDiscoveryCallToActionURL)initWithURL:(id)a3 isSensitive:(BOOL)a4
+- (PKDiscoveryCallToActionURL)initWithURL:(id)l isSensitive:(BOOL)sensitive
 {
-  v7 = a3;
-  if (v7)
+  lCopy = l;
+  if (lCopy)
   {
     v12.receiver = self;
     v12.super_class = PKDiscoveryCallToActionURL;
@@ -17,25 +17,25 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_url, a3);
-      v9->_isSensitive = a4;
+      objc_storeStrong(&v8->_url, l);
+      v9->_isSensitive = sensitive;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,7 +43,7 @@
   }
 
   url = self->_url;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!url || !v6)
   {
     if (url == v6)
@@ -62,7 +62,7 @@ LABEL_7:
   }
 
 LABEL_5:
-  v7 = self->_isSensitive == *(v4 + 8);
+  v7 = self->_isSensitive == *(equalCopy + 8);
 LABEL_8:
 
   return v7;

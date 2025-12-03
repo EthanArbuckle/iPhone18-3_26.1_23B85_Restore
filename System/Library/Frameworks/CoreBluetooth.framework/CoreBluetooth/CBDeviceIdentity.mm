@@ -1,20 +1,20 @@
 @interface CBDeviceIdentity
-- (BOOL)isEqual:(id)a3;
-- (CBDeviceIdentity)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CBDeviceIdentity)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBDeviceIdentity
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSString *)self->_accountID UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_accountID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "acID", v5);
+    xpc_dictionary_set_string(objectCopy, "acID", uTF8String);
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
@@ -22,17 +22,17 @@
   {
     *uuid = 0;
     v33 = 0;
-    v7 = v4;
+    v7 = objectCopy;
     [(NSUUID *)bluetoothIdentifier getUUIDBytes:uuid];
     xpc_dictionary_set_uuid(v7, "btID", uuid);
   }
 
   contactID = self->_contactID;
-  v9 = v4;
-  v10 = [(NSString *)contactID UTF8String];
-  if (v10)
+  v9 = objectCopy;
+  uTF8String2 = [(NSString *)contactID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v9, "cnID", v10);
+    xpc_dictionary_set_string(v9, "cnID", uTF8String2);
   }
 
   irkData = self->_irkData;
@@ -41,10 +41,10 @@
     v12 = irkData;
     v13 = v9;
     v14 = irkData;
-    v15 = [(NSData *)v14 bytes];
-    if (v15)
+    bytes = [(NSData *)v14 bytes];
+    if (bytes)
     {
-      v16 = v15;
+      v16 = bytes;
     }
 
     else
@@ -59,34 +59,34 @@
 
   identifier = self->_identifier;
   v19 = v9;
-  v20 = [(NSString *)identifier UTF8String];
-  if (v20)
+  uTF8String3 = [(NSString *)identifier UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v19, "id", v20);
+    xpc_dictionary_set_string(v19, "id", uTF8String3);
   }
 
   idsDeviceID = self->_idsDeviceID;
   v22 = v19;
-  v23 = [(NSString *)idsDeviceID UTF8String];
-  if (v23)
+  uTF8String4 = [(NSString *)idsDeviceID UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v22, "idsI", v23);
+    xpc_dictionary_set_string(v22, "idsI", uTF8String4);
   }
 
   model = self->_model;
   v25 = v22;
-  v26 = [(NSString *)model UTF8String];
-  if (v26)
+  uTF8String5 = [(NSString *)model UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(v25, "md", v26);
+    xpc_dictionary_set_string(v25, "md", uTF8String5);
   }
 
   name = self->_name;
   v28 = v25;
-  v29 = [(NSString *)name UTF8String];
-  if (v29)
+  uTF8String6 = [(NSString *)name UTF8String];
+  if (uTF8String6)
   {
-    xpc_dictionary_set_string(v28, "nm", v29);
+    xpc_dictionary_set_string(v28, "nm", uTF8String6);
   }
 
   type = self->_type;
@@ -98,7 +98,7 @@
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   type = self->_type;
   if (type > 7)
@@ -148,7 +148,7 @@ LABEL_9:
   if (bluetoothIdentifier)
   {
     v14 = bluetoothIdentifier;
-    v31 = [(NSUUID *)v14 UUIDString];
+    uUIDString = [(NSUUID *)v14 UUIDString];
     NSAppendPrintF_safe();
     v15 = v7;
 
@@ -206,7 +206,7 @@ LABEL_9:
     v7 = v26;
   }
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     NSAppendPrintF_safe();
     v27 = v7;
@@ -219,10 +219,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -232,10 +232,10 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CBDeviceIdentity *)v5 accountID];
+      v5 = equalCopy;
+      accountID = [(CBDeviceIdentity *)v5 accountID];
       accountID = self->_accountID;
-      v8 = v6;
+      v8 = accountID;
       v9 = accountID;
       if (v8 == v9)
       {
@@ -257,9 +257,9 @@ LABEL_9:
         }
       }
 
-      v13 = [(CBDeviceIdentity *)v5 bluetoothIdentifier];
+      bluetoothIdentifier = [(CBDeviceIdentity *)v5 bluetoothIdentifier];
       bluetoothIdentifier = self->_bluetoothIdentifier;
-      v8 = v13;
+      v8 = bluetoothIdentifier;
       v9 = bluetoothIdentifier;
       if (v8 == v9)
       {
@@ -281,9 +281,9 @@ LABEL_9:
         }
       }
 
-      v17 = [(CBDeviceIdentity *)v5 contactID];
+      contactID = [(CBDeviceIdentity *)v5 contactID];
       contactID = self->_contactID;
-      v8 = v17;
+      v8 = contactID;
       v9 = contactID;
       if (v8 == v9)
       {
@@ -305,9 +305,9 @@ LABEL_9:
         }
       }
 
-      v21 = [(CBDeviceIdentity *)v5 identifier];
+      identifier = [(CBDeviceIdentity *)v5 identifier];
       identifier = self->_identifier;
-      v8 = v21;
+      v8 = identifier;
       v9 = identifier;
       if (v8 == v9)
       {
@@ -329,9 +329,9 @@ LABEL_9:
         }
       }
 
-      v25 = [(CBDeviceIdentity *)v5 idsDeviceID];
+      idsDeviceID = [(CBDeviceIdentity *)v5 idsDeviceID];
       idsDeviceID = self->_idsDeviceID;
-      v8 = v25;
+      v8 = idsDeviceID;
       v9 = idsDeviceID;
       if (v8 == v9)
       {
@@ -353,9 +353,9 @@ LABEL_9:
         }
       }
 
-      v29 = [(CBDeviceIdentity *)v5 irkData];
+      irkData = [(CBDeviceIdentity *)v5 irkData];
       irkData = self->_irkData;
-      v8 = v29;
+      v8 = irkData;
       v9 = irkData;
       if (v8 == v9)
       {
@@ -377,9 +377,9 @@ LABEL_9:
         }
       }
 
-      v33 = [(CBDeviceIdentity *)v5 model];
+      model = [(CBDeviceIdentity *)v5 model];
       model = self->_model;
-      v8 = v33;
+      v8 = model;
       v9 = model;
       if (v8 == v9)
       {
@@ -401,9 +401,9 @@ LABEL_9:
         }
       }
 
-      v37 = [(CBDeviceIdentity *)v5 name];
+      name = [(CBDeviceIdentity *)v5 name];
       name = self->_name;
-      v8 = v37;
+      v8 = name;
       v9 = name;
       if (v8 == v9)
       {
@@ -443,15 +443,15 @@ LABEL_47:
   return v12;
 }
 
-- (CBDeviceIdentity)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBDeviceIdentity)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v19.receiver = self;
   v19.super_class = CBDeviceIdentity;
   v13 = [(CBDeviceIdentity *)&v19 init];
   if (!v13)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -459,13 +459,13 @@ LABEL_47:
     v17 = "CBDeviceIdentity super init failed";
 LABEL_20:
     CBErrorF(-6756, v17, v7, v8, v9, v10, v11, v12, v18);
-    *a4 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_15;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }

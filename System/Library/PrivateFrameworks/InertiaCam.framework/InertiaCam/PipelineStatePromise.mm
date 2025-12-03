@@ -1,37 +1,37 @@
 @interface PipelineStatePromise
-- (BOOL)timesOutWaitingForPipelineStates:(double)a3;
-- (PipelineStatePromise)initWithDispatchGroup:(id)a3 pipelineStates:(id)a4 errors:(id)a5;
-- (id)errorForFunction:(id)a3;
-- (id)pipelineStateForFunction:(id)a3;
+- (BOOL)timesOutWaitingForPipelineStates:(double)states;
+- (PipelineStatePromise)initWithDispatchGroup:(id)group pipelineStates:(id)states errors:(id)errors;
+- (id)errorForFunction:(id)function;
+- (id)pipelineStateForFunction:(id)function;
 @end
 
 @implementation PipelineStatePromise
 
-- (PipelineStatePromise)initWithDispatchGroup:(id)a3 pipelineStates:(id)a4 errors:(id)a5
+- (PipelineStatePromise)initWithDispatchGroup:(id)group pipelineStates:(id)states errors:(id)errors
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  statesCopy = states;
+  errorsCopy = errors;
   v15.receiver = self;
   v15.super_class = PipelineStatePromise;
   v12 = [(PipelineStatePromise *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->group, a3);
-    objc_storeStrong(&v13->pipelineStates, a4);
-    objc_storeStrong(&v13->errors, a5);
+    objc_storeStrong(&v12->group, group);
+    objc_storeStrong(&v13->pipelineStates, states);
+    objc_storeStrong(&v13->errors, errors);
   }
 
   return v13;
 }
 
-- (BOOL)timesOutWaitingForPipelineStates:(double)a3
+- (BOOL)timesOutWaitingForPipelineStates:(double)states
 {
   v3 = atomic_load(&self->initialization_completed);
   if ((v3 & 1) == 0)
   {
-    v5 = dispatch_group_wait(self->group, a3);
+    v5 = dispatch_group_wait(self->group, states);
     result = 1;
     if (v5)
     {
@@ -44,20 +44,20 @@
   return 0;
 }
 
-- (id)pipelineStateForFunction:(id)a3
+- (id)pipelineStateForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   [(PipelineStatePromise *)self timesOutWaitingForPipelineStates:1.84467441e19];
-  v5 = [(NSMapTable *)self->pipelineStates objectForKey:v4];
+  v5 = [(NSMapTable *)self->pipelineStates objectForKey:functionCopy];
 
   return v5;
 }
 
-- (id)errorForFunction:(id)a3
+- (id)errorForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   [(PipelineStatePromise *)self timesOutWaitingForPipelineStates:1.84467441e19];
-  v5 = [(NSMapTable *)self->errors objectForKey:v4];
+  v5 = [(NSMapTable *)self->errors objectForKey:functionCopy];
 
   return v5;
 }

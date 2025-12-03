@@ -1,51 +1,51 @@
 @interface CSAudioTapProvider
 - (BOOL)_isRecording;
-- (BOOL)_setupRecordingAudioQueueIfNeededWithOption:(id)a3;
+- (BOOL)_setupRecordingAudioQueueIfNeededWithOption:(id)option;
 - (BOOL)_shouldStopRecording;
 - (BOOL)isRecording;
-- (CSAudioTapProvider)initWithTappingType:(unint64_t)a3;
-- (id)_streamStateName:(unint64_t)a3;
-- (id)audioStreamWithRequest:(id)a3 streamName:(id)a4 error:(id *)a5;
-- (unsigned)_calculateBufferSize:(OpaqueAudioQueue *)a3 audioStreamBasicDescription:(AudioStreamBasicDescription *)a4 frameSizeInSec:(float)a5;
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
+- (CSAudioTapProvider)initWithTappingType:(unint64_t)type;
+- (id)_streamStateName:(unint64_t)name;
+- (id)audioStreamWithRequest:(id)request streamName:(id)name error:(id *)error;
+- (unsigned)_calculateBufferSize:(OpaqueAudioQueue *)size audioStreamBasicDescription:(AudioStreamBasicDescription *)description frameSizeInSec:(float)sec;
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
 - (void)_cancelAudioPacketWatchDog;
 - (void)_clearDidStartRecordingDelegateWatchDog;
 - (void)_clearDidStopRecordingDelegateWatchDog;
 - (void)_destroyRecordingAudioQueue;
-- (void)_handleAudioQueueDidStartWithResult:(BOOL)a3 error:(id)a4;
-- (void)_handleAudioQueueDidStopWithError:(id)a3 reason:(int64_t)a4;
+- (void)_handleAudioQueueDidStartWithResult:(BOOL)result error:(id)error;
+- (void)_handleAudioQueueDidStopWithError:(id)error reason:(int64_t)reason;
 - (void)_holdTransactionForStartListening;
 - (void)_onAudioPacketWatchdogFire;
 - (void)_postEpilogueAudioStream;
 - (void)_releaseTransactionForStopListeningIfNeeded;
-- (void)_saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5;
-- (void)_schduleDidStartRecordingDelegateWatchDogWithToken:(id)a3;
+- (void)_saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l;
+- (void)_schduleDidStartRecordingDelegateWatchDogWithToken:(id)token;
 - (void)_scheduleAudioPacketWatchDog;
 - (void)_scheduleDidStartRecordingDelegateWatchDog;
 - (void)_scheduleDidStopRecordingDelegateWatchDog;
-- (void)_scheduleDidStopRecordingDelegateWatchDog:(id)a3;
-- (void)_stopAndDestroyRecordingAudioQueueWithCompletion:(id)a3;
-- (void)_stopRecordingAudioQueueIfNeeded:(id)a3 completion:(id)a4;
-- (void)attachTandemStream:(id)a3 withConfig:(id)a4 toPrimaryStream:(id)a5 completion:(id)a6;
-- (void)audioStreamWithRequest:(id)a3 streamName:(id)a4 completion:(id)a5;
+- (void)_scheduleDidStopRecordingDelegateWatchDog:(id)dog;
+- (void)_stopAndDestroyRecordingAudioQueueWithCompletion:(id)completion;
+- (void)_stopRecordingAudioQueueIfNeeded:(id)needed completion:(id)completion;
+- (void)attachTandemStream:(id)stream withConfig:(id)config toPrimaryStream:(id)primaryStream completion:(id)completion;
+- (void)audioStreamWithRequest:(id)request streamName:(id)name completion:(id)completion;
 - (void)dealloc;
-- (void)prepareAudioStream:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5;
-- (void)saveRecordingBufferToEndFrom:(unint64_t)a3 toURL:(id)a4;
-- (void)setStreamState:(unint64_t)a3;
+- (void)prepareAudioStream:(id)stream request:(id)request completion:(id)completion;
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l;
+- (void)saveRecordingBufferToEndFrom:(unint64_t)from toURL:(id)l;
+- (void)setStreamState:(unint64_t)state;
 - (void)setup;
-- (void)startAudioStream:(id)a3 option:(id)a4 completion:(id)a5;
-- (void)stopAudioStream:(id)a3 option:(id)a4 completion:(id)a5;
+- (void)startAudioStream:(id)stream option:(id)option completion:(id)completion;
+- (void)stopAudioStream:(id)stream option:(id)option completion:(id)completion;
 @end
 
 @implementation CSAudioTapProvider
 
-- (void)_saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5
+- (void)_saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l
 {
-  v8 = a5;
+  lCopy = l;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [(CSAudioCircularBuffer *)self->_circularBuffer copySamplesFrom:a3 to:a4];
+  v9 = [(CSAudioCircularBuffer *)self->_circularBuffer copySamplesFrom:from to:to];
   v10 = v9;
   if (v9)
   {
@@ -55,10 +55,10 @@
     block[2] = __56__CSAudioTapProvider__saveRecordingBufferFrom_to_toURL___block_invoke;
     block[3] = &unk_1E865C378;
     block[4] = self;
-    v15 = a3;
-    v16 = a4;
+    fromCopy = from;
+    toCopy = to;
     v13 = v9;
-    v14 = v8;
+    v14 = lCopy;
     dispatch_async(loggingQueue, block);
   }
 }
@@ -91,18 +91,18 @@ uint64_t __56__CSAudioTapProvider__saveRecordingBufferFrom_to_toURL___block_invo
   return result;
 }
 
-- (void)saveRecordingBufferToEndFrom:(unint64_t)a3 toURL:(id)a4
+- (void)saveRecordingBufferToEndFrom:(unint64_t)from toURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CSAudioTapProvider_saveRecordingBufferToEndFrom_toURL___block_invoke;
   block[3] = &unk_1E865C350;
-  v10 = v6;
-  v11 = a3;
+  v10 = lCopy;
+  fromCopy = from;
   block[4] = self;
-  v8 = v6;
+  v8 = lCopy;
   dispatch_async(queue, block);
 }
 
@@ -122,61 +122,61 @@ void *__57__CSAudioTapProvider_saveRecordingBufferToEndFrom_toURL___block_invoke
   return result;
 }
 
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l
 {
-  v8 = a5;
+  lCopy = l;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__CSAudioTapProvider_saveRecordingBufferFrom_to_toURL___block_invoke;
   v11[3] = &unk_1E865C328;
-  v13 = a3;
-  v14 = a4;
+  fromCopy = from;
+  toCopy = to;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = lCopy;
+  v10 = lCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)prepareAudioStream:(id)a3 request:(id)a4 completion:(id)a5
+- (void)prepareAudioStream:(id)stream request:(id)request completion:(id)completion
 {
-  v5 = a5;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5[2](v5, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)attachTandemStream:(id)a3 withConfig:(id)a4 toPrimaryStream:(id)a5 completion:(id)a6
+- (void)attachTandemStream:(id)stream withConfig:(id)config toPrimaryStream:(id)primaryStream completion:(id)completion
 {
-  v6 = a6;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v6;
+    v8 = completionCopy;
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:2058 userInfo:0];
     v8[2](v8, 0, v7);
 
-    v6 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)audioStreamWithRequest:(id)a3 streamName:(id)a4 completion:(id)a5
+- (void)audioStreamWithRequest:(id)request streamName:(id)name completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  requestCopy = request;
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:v8 streamRequest:v11];
-    v9[2](v9, v10, 0);
+    v10 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:nameCopy streamRequest:requestCopy];
+    completionCopy[2](completionCopy, v10, 0);
   }
 }
 
-- (id)audioStreamWithRequest:(id)a3 streamName:(id)a4 error:(id *)a5
+- (id)audioStreamWithRequest:(id)request streamName:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 requiresHistoricalBuffer])
+  requestCopy = request;
+  nameCopy = name;
+  if ([requestCopy requiresHistoricalBuffer])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -187,7 +187,7 @@ void *__57__CSAudioTapProvider_saveRecordingBufferToEndFrom_toURL___block_invoke
     dispatch_async(queue, block);
   }
 
-  v10 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:v8 streamRequest:v7];
+  v10 = [[CSAudioStream alloc] initWithAudioStreamProvider:self streamName:nameCopy streamRequest:requestCopy];
 
   return v10;
 }
@@ -226,38 +226,38 @@ void __62__CSAudioTapProvider_audioStreamWithRequest_streamName_error___block_in
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSAudioTapProvider *)self UUID];
+    uUID = [(CSAudioTapProvider *)self UUID];
     v7 = 136315650;
     v8 = "[CSAudioTapProvider CSAudioServerCrashMonitorDidReceiveServerRestart:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = uUID;
     v11 = 2048;
-    v12 = [(CSAudioTapProvider *)self tappingType];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:audiomxd/bridgeaudiod restarted", &v7, 0x20u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSAudioTapProvider *)self UUID];
+    uUID = [(CSAudioTapProvider *)self UUID];
     *buf = 136315650;
     v10 = "[CSAudioTapProvider CSAudioServerCrashMonitorDidReceiveServerCrash:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = uUID;
     v13 = 2048;
-    v14 = [(CSAudioTapProvider *)self tappingType];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:audiomxd/bridgeaudiod crashed", buf, 0x20u);
   }
 
@@ -285,15 +285,15 @@ uint64_t __69__CSAudioTapProvider_CSAudioServerCrashMonitorDidReceiveServerCrash
   v3 = CSLogCategoryAudio;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CSAudioTapProvider *)self UUID];
-    v5 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     stopRecordingWatchDogToken = self->_stopRecordingWatchDogToken;
     v9 = 136315906;
     v10 = "[CSAudioTapProvider _clearDidStopRecordingDelegateWatchDog]";
     v11 = 2114;
-    v12 = v4;
+    v12 = uUID;
     v13 = 2048;
-    v14 = v5;
+    v14 = tappingType;
     v15 = 2114;
     v16 = stopRecordingWatchDogToken;
     _os_log_impl(&dword_1DDA4B000, v3, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Clearing didStopRecordingDelegate WatchDogTimer : %{public}@", &v9, 0x2Au);
@@ -305,30 +305,30 @@ uint64_t __69__CSAudioTapProvider_CSAudioServerCrashMonitorDidReceiveServerCrash
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleDidStopRecordingDelegateWatchDog:(id)a3
+- (void)_scheduleDidStopRecordingDelegateWatchDog:(id)dog
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dogCopy = dog;
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSAudioTapProvider *)self UUID];
-    v7 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     stopRecordingWatchDogToken = self->_stopRecordingWatchDogToken;
     v13 = 136316162;
     v14 = "[CSAudioTapProvider _scheduleDidStopRecordingDelegateWatchDog:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = uUID;
     v17 = 2048;
-    v18 = v7;
+    v18 = tappingType;
     v19 = 2114;
-    v20 = v4;
+    v20 = dogCopy;
     v21 = 2114;
     v22 = stopRecordingWatchDogToken;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:stopRecordingWatchDogDidFire : %{public}@, currentToken : %{public}@", &v13, 0x34u);
   }
 
-  if ([v4 isEqual:self->_stopRecordingWatchDogToken])
+  if ([dogCopy isEqual:self->_stopRecordingWatchDogToken])
   {
     [(CSAudioTapProvider *)self _handleAudioQueueDidStopWithError:0 reason:5];
     [(CSAudioTapProvider *)self _handleAudioSystemFailure];
@@ -339,14 +339,14 @@ uint64_t __69__CSAudioTapProvider_CSAudioServerCrashMonitorDidReceiveServerCrash
     v9 = CSLogCategoryAudio;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CSAudioTapProvider *)self UUID];
-      v11 = [(CSAudioTapProvider *)self tappingType];
+      uUID2 = [(CSAudioTapProvider *)self UUID];
+      tappingType2 = [(CSAudioTapProvider *)self tappingType];
       v13 = 136315650;
       v14 = "[CSAudioTapProvider _scheduleDidStopRecordingDelegateWatchDog:]";
       v15 = 2114;
-      v16 = v10;
+      v16 = uUID2;
       v17 = 2048;
-      v18 = v11;
+      v18 = tappingType2;
       _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:stopRecordingWatchDogToken doesn't match. Ignore this WDT fire", &v13, 0x20u);
     }
   }
@@ -363,15 +363,15 @@ uint64_t __69__CSAudioTapProvider_CSAudioServerCrashMonitorDidReceiveServerCrash
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSAudioTapProvider *)self UUID];
-    v6 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     stopRecordingWatchDogToken = self->_stopRecordingWatchDogToken;
     *buf = 136316162;
     v17 = "[CSAudioTapProvider _scheduleDidStopRecordingDelegateWatchDog]";
     v18 = 2114;
-    v19 = v5;
+    v19 = uUID;
     v20 = 2048;
-    v21 = v6;
+    v21 = tappingType;
     v22 = 2114;
     v23 = stopRecordingWatchDogToken;
     v24 = 2050;
@@ -407,15 +407,15 @@ void __63__CSAudioTapProvider__scheduleDidStopRecordingDelegateWatchDog__block_i
   v3 = CSLogCategoryAudio;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CSAudioTapProvider *)self UUID];
-    v5 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     startRecordingWatchDogToken = self->_startRecordingWatchDogToken;
     v9 = 136315906;
     v10 = "[CSAudioTapProvider _clearDidStartRecordingDelegateWatchDog]";
     v11 = 2114;
-    v12 = v4;
+    v12 = uUID;
     v13 = 2048;
-    v14 = v5;
+    v14 = tappingType;
     v15 = 2114;
     v16 = startRecordingWatchDogToken;
     _os_log_impl(&dword_1DDA4B000, v3, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Clearing didStartRecordingDelegate WatchDogTimer : %{public}@", &v9, 0x2Au);
@@ -427,30 +427,30 @@ void __63__CSAudioTapProvider__scheduleDidStopRecordingDelegateWatchDog__block_i
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_schduleDidStartRecordingDelegateWatchDogWithToken:(id)a3
+- (void)_schduleDidStartRecordingDelegateWatchDogWithToken:(id)token
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSAudioTapProvider *)self UUID];
-    v7 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     startRecordingWatchDogToken = self->_startRecordingWatchDogToken;
     v14 = 136316162;
     v15 = "[CSAudioTapProvider _schduleDidStartRecordingDelegateWatchDogWithToken:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = uUID;
     v18 = 2048;
-    v19 = v7;
+    v19 = tappingType;
     v20 = 2114;
-    v21 = v4;
+    v21 = tokenCopy;
     v22 = 2114;
     v23 = startRecordingWatchDogToken;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:startRecordingWatchDogDidFire : %{public}@, currentToken : %{public}@", &v14, 0x34u);
   }
 
-  if ([v4 isEqual:self->_startRecordingWatchDogToken])
+  if ([tokenCopy isEqual:self->_startRecordingWatchDogToken])
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:2068 userInfo:0];
     [(CSAudioTapProvider *)self _handleAudioQueueDidStartWithResult:0 error:v9];
@@ -463,14 +463,14 @@ void __63__CSAudioTapProvider__scheduleDidStopRecordingDelegateWatchDog__block_i
     v10 = CSLogCategoryAudio;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CSAudioTapProvider *)self UUID];
-      v12 = [(CSAudioTapProvider *)self tappingType];
+      uUID2 = [(CSAudioTapProvider *)self UUID];
+      tappingType2 = [(CSAudioTapProvider *)self tappingType];
       v14 = 136315650;
       v15 = "[CSAudioTapProvider _schduleDidStartRecordingDelegateWatchDogWithToken:]";
       v16 = 2114;
-      v17 = v11;
+      v17 = uUID2;
       v18 = 2048;
-      v19 = v12;
+      v19 = tappingType2;
       _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:startRecordingWatchDogToken doesn't match. Ignore this WDT fire", &v14, 0x20u);
     }
   }
@@ -487,15 +487,15 @@ void __63__CSAudioTapProvider__scheduleDidStopRecordingDelegateWatchDog__block_i
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSAudioTapProvider *)self UUID];
-    v6 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     startRecordingWatchDogToken = self->_startRecordingWatchDogToken;
     *buf = 136316162;
     v17 = "[CSAudioTapProvider _scheduleDidStartRecordingDelegateWatchDog]";
     v18 = 2114;
-    v19 = v5;
+    v19 = uUID;
     v20 = 2048;
-    v21 = v6;
+    v21 = tappingType;
     v22 = 2114;
     v23 = startRecordingWatchDogToken;
     v24 = 2050;
@@ -538,13 +538,13 @@ void __64__CSAudioTapProvider__scheduleDidStartRecordingDelegateWatchDog__block_
     v3 = CSLogCategoryAudio;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
-      v5 = [(CSAudioTapProvider *)self UUID];
+      uUID = [(CSAudioTapProvider *)self UUID];
       v6 = 136315650;
       v7 = "[CSAudioTapProvider _onAudioPacketWatchdogFire]";
       v8 = 2114;
-      v9 = v5;
+      v9 = uUID;
       v10 = 2048;
-      v11 = [(CSAudioTapProvider *)self tappingType];
+      tappingType = [(CSAudioTapProvider *)self tappingType];
       _os_log_fault_impl(&dword_1DDA4B000, v3, OS_LOG_TYPE_FAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Audio Packet Delivery WatchDog fired, trying to recover", &v6, 0x20u);
     }
 
@@ -596,7 +596,7 @@ void __50__CSAudioTapProvider__scheduleAudioPacketWatchDog__block_invoke(uint64_
   [WeakRetained _onAudioPacketWatchdogFire];
 }
 
-- (id)_streamStateName:(unint64_t)a3
+- (id)_streamStateName:(unint64_t)name
 {
   v13[4] = *MEMORY[0x1E69E9840];
   v12[0] = &unk_1F5916A18;
@@ -608,38 +608,38 @@ void __50__CSAudioTapProvider__scheduleAudioPacketWatchDog__block_invoke(uint64_
   v13[2] = @"StreamStreaming";
   v13[3] = @"StreamStopping";
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:4];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:name];
   v6 = [v4 objectForKeyedSubscript:v5];
   v7 = v6 == 0;
 
   if (v7)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%tu)", a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%tu)", name];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v9 = [v4 objectForKeyedSubscript:v8];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:name];
+    name = [v4 objectForKeyedSubscript:v8];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return name;
 }
 
-- (unsigned)_calculateBufferSize:(OpaqueAudioQueue *)a3 audioStreamBasicDescription:(AudioStreamBasicDescription *)a4 frameSizeInSec:(float)a5
+- (unsigned)_calculateBufferSize:(OpaqueAudioQueue *)size audioStreamBasicDescription:(AudioStreamBasicDescription *)description frameSizeInSec:(float)sec
 {
-  mBytesPerPacket = a4->mBytesPerPacket;
+  mBytesPerPacket = description->mBytesPerPacket;
   outData = mBytesPerPacket;
   if (!mBytesPerPacket)
   {
     ioDataSize = 4;
-    AudioQueueGetProperty(a3, 0x786F7073u, &outData, &ioDataSize);
+    AudioQueueGetProperty(size, 0x786F7073u, &outData, &ioDataSize);
     mBytesPerPacket = outData;
   }
 
-  return fmin(a4->mSampleRate * mBytesPerPacket * a5, 57344.0);
+  return fmin(description->mSampleRate * mBytesPerPacket * sec, 57344.0);
 }
 
 - (BOOL)_isRecording
@@ -679,31 +679,31 @@ uint64_t __33__CSAudioTapProvider_isRecording__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_stopRecordingAudioQueueIfNeeded:(id)a3 completion:(id)a4
+- (void)_stopRecordingAudioQueueIfNeeded:(id)needed completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  completionCopy = completion;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___block_invoke;
   v26[3] = &unk_1E865C2D8;
   v26[4] = self;
   v8 = MEMORY[0x1E12BA300](v26);
-  v9 = [(CSAudioTapProvider *)self streams];
-  [v9 removeAllObjects];
+  streams = [(CSAudioTapProvider *)self streams];
+  [streams removeAllObjects];
 
-  if (v6)
+  if (neededCopy)
   {
-    v10 = [(CSAudioTapProvider *)self stopPendingStreams];
-    [v10 addObject:v6];
+    stopPendingStreams = [(CSAudioTapProvider *)self stopPendingStreams];
+    [stopPendingStreams addObject:neededCopy];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v11 = [(CSAudioTapProvider *)self pendingStopCompletions];
-    v12 = MEMORY[0x1E12BA300](v7);
-    [v11 addObject:v12];
+    pendingStopCompletions = [(CSAudioTapProvider *)self pendingStopCompletions];
+    v12 = MEMORY[0x1E12BA300](completionCopy);
+    [pendingStopCompletions addObject:v12];
   }
 
   if (self->_recordingAudioQueue)
@@ -715,14 +715,14 @@ uint64_t __33__CSAudioTapProvider_isRecording__block_invoke(uint64_t a1)
       v14 = CSLogCategoryAudio;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v24 = [(CSAudioTapProvider *)self UUID];
-        v25 = [(CSAudioTapProvider *)self tappingType];
+        uUID = [(CSAudioTapProvider *)self UUID];
+        tappingType = [(CSAudioTapProvider *)self tappingType];
         *buf = 136315650;
         v28 = "[CSAudioTapProvider _stopRecordingAudioQueueIfNeeded:completion:]";
         v29 = 2114;
-        v30 = v24;
+        v30 = uUID;
         v31 = 2048;
-        v32 = v25;
+        v32 = tappingType;
         _os_log_error_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to stop Audio Queue", buf, 0x20u);
       }
 
@@ -736,15 +736,15 @@ uint64_t __33__CSAudioTapProvider_isRecording__block_invoke(uint64_t a1)
       v19 = CSLogCategoryAudio;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(CSAudioTapProvider *)self UUID];
-        v21 = [(CSAudioTapProvider *)self tappingType];
+        uUID2 = [(CSAudioTapProvider *)self UUID];
+        tappingType2 = [(CSAudioTapProvider *)self tappingType];
         v22 = [(CSAudioTapProvider *)self _streamStateName:self->_streamState];
         *buf = 136315906;
         v28 = "[CSAudioTapProvider _stopRecordingAudioQueueIfNeeded:completion:]";
         v29 = 2114;
-        v30 = v20;
+        v30 = uUID2;
         v31 = 2048;
-        v32 = v21;
+        v32 = tappingType2;
         v33 = 2114;
         v34 = v22;
         _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Stopped Audio Queue successfully, moving stream state to %{public}@", buf, 0x2Au);
@@ -759,14 +759,14 @@ uint64_t __33__CSAudioTapProvider_isRecording__block_invoke(uint64_t a1)
     v16 = CSLogCategoryAudio;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(CSAudioTapProvider *)self UUID];
-      v18 = [(CSAudioTapProvider *)self tappingType];
+      uUID3 = [(CSAudioTapProvider *)self UUID];
+      tappingType3 = [(CSAudioTapProvider *)self tappingType];
       *buf = 136315650;
       v28 = "[CSAudioTapProvider _stopRecordingAudioQueueIfNeeded:completion:]";
       v29 = 2114;
-      v30 = v17;
+      v30 = uUID3;
       v31 = 2048;
-      v32 = v18;
+      v32 = tappingType3;
       _os_log_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Recording queue does not exist, return as stopped successfully", buf, 0x20u);
     }
 
@@ -829,9 +829,9 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CSAudioTapProvider *)self streams];
+  streams = [(CSAudioTapProvider *)self streams];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v13 objects:v25 count:16];
+  v5 = [streams countByEnumeratingWithState:&v13 objects:v25 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -842,7 +842,7 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(streams);
         }
 
         if (*(*(&v13 + 1) + 8 * v7))
@@ -854,7 +854,7 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v25 count:16];
+      v5 = [streams countByEnumeratingWithState:&v13 objects:v25 count:16];
     }
 
     while (v5);
@@ -863,14 +863,14 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
   v8 = CSLogCategoryAudio;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CSAudioTapProvider *)self UUID];
-    v10 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     *buf = 136315906;
     v18 = "[CSAudioTapProvider _shouldStopRecording]";
     v19 = 2114;
-    v20 = v9;
+    v20 = uUID;
     v21 = 2048;
-    v22 = v10;
+    v22 = tappingType;
     v23 = 2050;
     v24 = v4;
     _os_log_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:There are %{public}tu streams", buf, 0x2Au);
@@ -881,15 +881,15 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
   return result;
 }
 
-- (void)stopAudioStream:(id)a3 option:(id)a4 completion:(id)a5
+- (void)stopAudioStream:(id)stream option:(id)option completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  streamCopy = stream;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __56__CSAudioTapProvider_stopAudioStream_option_completion___block_invoke;
   v19[3] = &unk_1E865CAB8;
-  v9 = v8;
+  v9 = completionCopy;
   v20 = v9;
   v10 = MEMORY[0x1E12BA300](v19);
   queue = self->_queue;
@@ -898,12 +898,12 @@ void __66__CSAudioTapProvider__stopRecordingAudioQueueIfNeeded_completion___bloc
   block[2] = __56__CSAudioTapProvider_stopAudioStream_option_completion___block_invoke_2;
   block[3] = &unk_1E865C2B0;
   block[4] = self;
-  v16 = v7;
+  v16 = streamCopy;
   v17 = v10;
   v18 = v9;
   v12 = v9;
   v13 = v10;
-  v14 = v7;
+  v14 = streamCopy;
   dispatch_async(queue, block);
 }
 
@@ -1087,16 +1087,16 @@ LABEL_28:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startAudioStream:(id)a3 option:(id)a4 completion:(id)a5
+- (void)startAudioStream:(id)stream option:(id)option completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  streamCopy = stream;
+  optionCopy = option;
+  completionCopy = completion;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __57__CSAudioTapProvider_startAudioStream_option_completion___block_invoke;
   v23[3] = &unk_1E865CAB8;
-  v11 = v10;
+  v11 = completionCopy;
   v24 = v11;
   v12 = MEMORY[0x1E12BA300](v23);
   queue = self->_queue;
@@ -1105,14 +1105,14 @@ LABEL_28:
   v18[2] = __57__CSAudioTapProvider_startAudioStream_option_completion___block_invoke_2;
   v18[3] = &unk_1E865C288;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
+  v19 = streamCopy;
+  v20 = optionCopy;
   v21 = v12;
   v22 = v11;
   v14 = v11;
   v15 = v12;
-  v16 = v9;
-  v17 = v8;
+  v16 = optionCopy;
+  v17 = streamCopy;
   dispatch_async(queue, v18);
 }
 
@@ -1317,14 +1317,14 @@ LABEL_26:
           v8 = CSLogCategoryAudio;
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            v9 = [(CSAudioTapProvider *)self UUID];
-            v10 = [(CSAudioTapProvider *)self tappingType];
+            uUID = [(CSAudioTapProvider *)self UUID];
+            tappingType = [(CSAudioTapProvider *)self tappingType];
             *buf = v19;
             v21 = "[CSAudioTapProvider _destroyRecordingAudioQueue]";
             v22 = 2114;
-            v23 = v9;
+            v23 = uUID;
             v24 = 2048;
-            v25 = v10;
+            v25 = tappingType;
             v26 = 1024;
             v27 = v7;
             _os_log_error_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:AudioQueueFreeBuffer error: %i", buf, 0x26u);
@@ -1343,14 +1343,14 @@ LABEL_26:
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(CSAudioTapProvider *)self UUID];
-        v15 = [(CSAudioTapProvider *)self tappingType];
+        uUID2 = [(CSAudioTapProvider *)self UUID];
+        tappingType2 = [(CSAudioTapProvider *)self tappingType];
         *buf = v19;
         v21 = "[CSAudioTapProvider _destroyRecordingAudioQueue]";
         v22 = 2114;
-        v23 = v14;
+        v23 = uUID2;
         v24 = 2048;
-        v25 = v15;
+        v25 = tappingType2;
         v26 = 1024;
         v27 = v11;
         _os_log_error_impl(&dword_1DDA4B000, v13, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to dispose Audio Queue with error: %i", buf, 0x26u);
@@ -1359,14 +1359,14 @@ LABEL_26:
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(CSAudioTapProvider *)self UUID];
-      v17 = [(CSAudioTapProvider *)self tappingType];
+      uUID3 = [(CSAudioTapProvider *)self UUID];
+      tappingType3 = [(CSAudioTapProvider *)self tappingType];
       *buf = 136315650;
       v21 = "[CSAudioTapProvider _destroyRecordingAudioQueue]";
       v22 = 2114;
-      v23 = v16;
+      v23 = uUID3;
       v24 = 2048;
-      v25 = v17;
+      v25 = tappingType3;
       _os_log_impl(&dword_1DDA4B000, v13, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Audio Queue has been disposed", buf, 0x20u);
     }
 
@@ -1378,19 +1378,19 @@ LABEL_26:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopAndDestroyRecordingAudioQueueWithCompletion:(id)a3
+- (void)_stopAndDestroyRecordingAudioQueueWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSAudioTapProvider *)self _isRecording];
+  completionCopy = completion;
+  _isRecording = [(CSAudioTapProvider *)self _isRecording];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompletion___block_invoke;
   block[3] = &unk_1E865C260;
-  v10 = v5;
+  v10 = _isRecording;
   block[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -1454,7 +1454,7 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
   return result;
 }
 
-- (BOOL)_setupRecordingAudioQueueIfNeededWithOption:(id)a3
+- (BOOL)_setupRecordingAudioQueueIfNeededWithOption:(id)option
 {
   v53 = *MEMORY[0x1E69E9840];
   if ([(CSAudioTapProvider *)self recordingAudioQueue])
@@ -1462,11 +1462,11 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
     v4 = CSLogCategoryAudio;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CSAudioTapProvider *)self UUID];
+      uUID = [(CSAudioTapProvider *)self UUID];
       LODWORD(buf.mSampleRate) = 136315650;
       *(&buf.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
       LOWORD(buf.mFormatFlags) = 2114;
-      *(&buf.mFormatFlags + 2) = v5;
+      *(&buf.mFormatFlags + 2) = uUID;
       HIWORD(buf.mFramesPerPacket) = 2048;
       *&buf.mBytesPerFrame = [(CSAudioTapProvider *)self tappingType];
       _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Audio Queue already exists, skip setup", &buf, 0x20u);
@@ -1489,14 +1489,14 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
     {
       if (v11)
       {
-        v12 = [(CSAudioTapProvider *)self UUID];
-        v13 = [(CSAudioTapProvider *)self tappingType];
+        uUID2 = [(CSAudioTapProvider *)self UUID];
+        tappingType = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v12;
+        *(&v51.mFormatFlags + 2) = uUID2;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v13;
+        *&v51.mBytesPerFrame = tappingType;
         _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Tapping telephony", &v51, 0x20u);
       }
 
@@ -1507,14 +1507,14 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
     {
       if (v11)
       {
-        v15 = [(CSAudioTapProvider *)self UUID];
-        v16 = [(CSAudioTapProvider *)self tappingType];
+        uUID3 = [(CSAudioTapProvider *)self UUID];
+        tappingType2 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v15;
+        *(&v51.mFormatFlags + 2) = uUID3;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v16;
+        *&v51.mBytesPerFrame = tappingType2;
         _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Tapping system", &v51, 0x20u);
       }
 
@@ -1528,14 +1528,14 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
       v21 = CSLogCategoryAudio;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v40 = [(CSAudioTapProvider *)self UUID];
-        v41 = [(CSAudioTapProvider *)self tappingType];
+        uUID4 = [(CSAudioTapProvider *)self UUID];
+        tappingType3 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v40;
+        *(&v51.mFormatFlags + 2) = uUID4;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v41;
+        *&v51.mBytesPerFrame = tappingType3;
         _os_log_error_impl(&dword_1DDA4B000, v21, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to create ATAudioTap!", &v51, 0x20u);
       }
 
@@ -1549,14 +1549,14 @@ uint64_t __71__CSAudioTapProvider__stopAndDestroyRecordingAudioQueueWithCompleti
       v21 = CSLogCategoryAudio;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(CSAudioTapProvider *)self UUID];
-        v23 = [(CSAudioTapProvider *)self tappingType];
+        uUID5 = [(CSAudioTapProvider *)self UUID];
+        tappingType4 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v22;
+        *(&v51.mFormatFlags + 2) = uUID5;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v23;
+        *&v51.mBytesPerFrame = tappingType4;
         _os_log_error_impl(&dword_1DDA4B000, v21, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to set Audio Queue Process Tap!", &v51, 0x20u);
       }
 
@@ -1578,8 +1578,8 @@ LABEL_24:
       _os_log_impl(&dword_1DDA4B000, v20, OS_LOG_TYPE_DEFAULT, "%s Creating auxiliary session and associate Audio Queue with it", &v51, 0xCu);
     }
 
-    v24 = [MEMORY[0x1E6958468] auxiliarySession];
-    inData = [v24 opaqueSessionID];
+    auxiliarySession = [MEMORY[0x1E6958468] auxiliarySession];
+    inData = [auxiliarySession opaqueSessionID];
     if (AudioQueueSetProperty(outAQ, 0x72736573u, &inData, 4u))
     {
       v25 = CSLogCategoryAudio;
@@ -1609,14 +1609,14 @@ LABEL_41:
       v28 = CSLogCategoryAudio;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v44 = [(CSAudioTapProvider *)self UUID];
-        v45 = [(CSAudioTapProvider *)self tappingType];
+        uUID6 = [(CSAudioTapProvider *)self UUID];
+        tappingType5 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v44;
+        *(&v51.mFormatFlags + 2) = uUID6;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v45;
+        *&v51.mBytesPerFrame = tappingType5;
         _os_log_error_impl(&dword_1DDA4B000, v28, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to get data format size!", &v51, 0x20u);
       }
 
@@ -1631,11 +1631,11 @@ LABEL_41:
     if (outAQ)
     {
       [(CSAudioTapProvider *)self setRecordingAudioQueue:?];
-      v31 = [(CSAudioTapProvider *)self recordingAudioQueue];
+      recordingAudioQueue = [(CSAudioTapProvider *)self recordingAudioQueue];
       v51 = buf;
       +[CSConfig inputRecordingBufferDuration];
       *&v32 = v32;
-      v33 = [(CSAudioTapProvider *)self _calculateBufferSize:v31 audioStreamBasicDescription:&v51 frameSizeInSec:v32];
+      v33 = [(CSAudioTapProvider *)self _calculateBufferSize:recordingAudioQueue audioStreamBasicDescription:&v51 frameSizeInSec:v32];
       for (i = 8; i != 40; i += 8)
       {
         AudioQueueAllocateBuffer([(CSAudioTapProvider *)self recordingAudioQueue], v33, (self + i));
@@ -1648,14 +1648,14 @@ LABEL_41:
       {
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = [(CSAudioTapProvider *)self UUID];
-          v43 = [(CSAudioTapProvider *)self tappingType];
+          uUID7 = [(CSAudioTapProvider *)self UUID];
+          tappingType6 = [(CSAudioTapProvider *)self tappingType];
           LODWORD(v51.mSampleRate) = 136315650;
           *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
           LOWORD(v51.mFormatFlags) = 2114;
-          *(&v51.mFormatFlags + 2) = v42;
+          *(&v51.mFormatFlags + 2) = uUID7;
           HIWORD(v51.mFramesPerPacket) = 2048;
-          *&v51.mBytesPerFrame = v43;
+          *&v51.mBytesPerFrame = tappingType6;
           _os_log_impl(&dword_1DDA4B000, v37, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:Successfully created audio Queue for tapping", &v51, 0x20u);
         }
 
@@ -1665,14 +1665,14 @@ LABEL_41:
 
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v38 = [(CSAudioTapProvider *)self UUID];
-        v39 = [(CSAudioTapProvider *)self tappingType];
+        uUID8 = [(CSAudioTapProvider *)self UUID];
+        tappingType7 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v38;
+        *(&v51.mFormatFlags + 2) = uUID8;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v39;
+        *&v51.mBytesPerFrame = tappingType7;
         _os_log_error_impl(&dword_1DDA4B000, v37, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to add isRunning listener!", &v51, 0x20u);
       }
     }
@@ -1682,14 +1682,14 @@ LABEL_41:
       v37 = CSLogCategoryAudio;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v46 = [(CSAudioTapProvider *)self UUID];
-        v47 = [(CSAudioTapProvider *)self tappingType];
+        uUID9 = [(CSAudioTapProvider *)self UUID];
+        tappingType8 = [(CSAudioTapProvider *)self tappingType];
         LODWORD(v51.mSampleRate) = 136315650;
         *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
         LOWORD(v51.mFormatFlags) = 2114;
-        *(&v51.mFormatFlags + 2) = v46;
+        *(&v51.mFormatFlags + 2) = uUID9;
         HIWORD(v51.mFramesPerPacket) = 2048;
-        *&v51.mBytesPerFrame = v47;
+        *&v51.mBytesPerFrame = tappingType8;
         _os_log_error_impl(&dword_1DDA4B000, v37, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:recordingAudioQueue is nil!", &v51, 0x20u);
       }
     }
@@ -1703,14 +1703,14 @@ LABEL_55:
   v7 = CSLogCategoryAudio;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v26 = [(CSAudioTapProvider *)self UUID];
-    v27 = [(CSAudioTapProvider *)self tappingType];
+    uUID10 = [(CSAudioTapProvider *)self UUID];
+    tappingType9 = [(CSAudioTapProvider *)self tappingType];
     LODWORD(v51.mSampleRate) = 136315650;
     *(&v51.mSampleRate + 4) = "[CSAudioTapProvider _setupRecordingAudioQueueIfNeededWithOption:]";
     LOWORD(v51.mFormatFlags) = 2114;
-    *(&v51.mFormatFlags + 2) = v26;
+    *(&v51.mFormatFlags + 2) = uUID10;
     HIWORD(v51.mFramesPerPacket) = 2048;
-    *&v51.mBytesPerFrame = v27;
+    *&v51.mBytesPerFrame = tappingType9;
     _os_log_error_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_ERROR, "%s CSAudioTapProvider[%{public}@][%lu]:Failed to create AudioQueue input!", &v51, 0x20u);
   }
 
@@ -1737,22 +1737,22 @@ LABEL_42:
   [(CSAudioTapProvider *)self _releaseTransactionForStopListeningIfNeeded];
 }
 
-- (void)setStreamState:(unint64_t)a3
+- (void)setStreamState:(unint64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = CSLogCategoryAudio;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSAudioTapProvider *)self UUID];
-    v7 = [(CSAudioTapProvider *)self tappingType];
+    uUID = [(CSAudioTapProvider *)self UUID];
+    tappingType = [(CSAudioTapProvider *)self tappingType];
     v8 = [(CSAudioTapProvider *)self _streamStateName:self->_streamState];
-    v9 = [(CSAudioTapProvider *)self _streamStateName:a3];
+    v9 = [(CSAudioTapProvider *)self _streamStateName:state];
     v11 = 136316162;
     v12 = "[CSAudioTapProvider setStreamState:]";
     v13 = 2114;
-    v14 = v6;
+    v14 = uUID;
     v15 = 2048;
-    v16 = v7;
+    v16 = tappingType;
     v17 = 2114;
     v18 = v8;
     v19 = 2114;
@@ -1760,7 +1760,7 @@ LABEL_42:
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:StreamState changed from : %{public}@ to : %{public}@", &v11, 0x34u);
   }
 
-  self->_streamState = a3;
+  self->_streamState = state;
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -1788,7 +1788,7 @@ LABEL_42:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (CSAudioTapProvider)initWithTappingType:(unint64_t)a3
+- (CSAudioTapProvider)initWithTappingType:(unint64_t)type
 {
   v35 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
@@ -1805,45 +1805,45 @@ LABEL_42:
     loggingQueue = v4->_loggingQueue;
     v4->_loggingQueue = v8;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     UUIDString = v4->_UUIDString;
-    v4->_UUIDString = v11;
+    v4->_UUIDString = uUIDString;
 
     v4->_processedSampleCount = 0;
-    v13 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     startPendingStreams = v4->_startPendingStreams;
-    v4->_startPendingStreams = v13;
+    v4->_startPendingStreams = weakObjectsHashTable;
 
-    v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     stopPendingStreams = v4->_stopPendingStreams;
-    v4->_stopPendingStreams = v15;
+    v4->_stopPendingStreams = weakObjectsHashTable2;
 
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     streams = v4->_streams;
-    v4->_streams = v17;
+    v4->_streams = weakObjectsHashTable3;
 
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingStartCompletions = v4->_pendingStartCompletions;
-    v4->_pendingStartCompletions = v19;
+    v4->_pendingStartCompletions = array;
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     pendingStopCompletions = v4->_pendingStopCompletions;
-    v4->_pendingStopCompletions = v21;
+    v4->_pendingStopCompletions = array2;
 
     [(CSAudioTapProvider *)v4 setStreamState:0];
-    v4->_tappingType = a3;
+    v4->_tappingType = type;
     v23 = CSLogCategoryAudio;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(CSAudioTapProvider *)v4 UUID];
-      v25 = [(CSAudioTapProvider *)v4 tappingType];
+      uUID2 = [(CSAudioTapProvider *)v4 UUID];
+      tappingType = [(CSAudioTapProvider *)v4 tappingType];
       *buf = 136315650;
       v30 = "[CSAudioTapProvider initWithTappingType:]";
       v31 = 2114;
-      v32 = v24;
+      v32 = uUID2;
       v33 = 2048;
-      v34 = v25;
+      v34 = tappingType;
       _os_log_impl(&dword_1DDA4B000, v23, OS_LOG_TYPE_DEFAULT, "%s CSAudioTapProvider[%{public}@][%lu]:", buf, 0x20u);
     }
   }
@@ -1852,23 +1852,23 @@ LABEL_42:
   return v4;
 }
 
-- (void)_handleAudioQueueDidStopWithError:(id)a3 reason:(int64_t)a4
+- (void)_handleAudioQueueDidStopWithError:(id)error reason:(int64_t)reason
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   [(CSAudioTapProvider *)self _cancelAudioPacketWatchDog];
   [(CSAudioTapProvider *)self _clearDidStopRecordingDelegateWatchDog];
   if ([(CSAudioTapProvider *)self streamState]== 4)
   {
-    v7 = [(CSAudioTapProvider *)self stopPendingStreams];
-    [v7 removeAllObjects];
+    stopPendingStreams = [(CSAudioTapProvider *)self stopPendingStreams];
+    [stopPendingStreams removeAllObjects];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [(CSAudioTapProvider *)self pendingStopCompletions];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    pendingStopCompletions = [(CSAudioTapProvider *)self pendingStopCompletions];
+    v9 = [pendingStopCompletions countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v9)
     {
       v10 = *v34;
@@ -1879,21 +1879,21 @@ LABEL_42:
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(pendingStopCompletions);
           }
 
           (*(*(*(&v33 + 1) + 8 * v11++) + 16))();
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v9 = [pendingStopCompletions countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v9);
     }
 
-    v12 = [(CSAudioTapProvider *)self pendingStopCompletions];
-    [v12 removeAllObjects];
+    pendingStopCompletions2 = [(CSAudioTapProvider *)self pendingStopCompletions];
+    [pendingStopCompletions2 removeAllObjects];
 LABEL_28:
 
     goto LABEL_29;
@@ -1902,15 +1902,15 @@ LABEL_28:
   if ([(CSAudioTapProvider *)self streamState]== 2)
   {
     [(CSAudioTapProvider *)self _clearDidStartRecordingDelegateWatchDog];
-    v13 = [(CSAudioTapProvider *)self startPendingStreams];
-    [v13 removeAllObjects];
+    startPendingStreams = [(CSAudioTapProvider *)self startPendingStreams];
+    [startPendingStreams removeAllObjects];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [(CSAudioTapProvider *)self pendingStartCompletions];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    pendingStartCompletions = [(CSAudioTapProvider *)self pendingStartCompletions];
+    v15 = [pendingStartCompletions countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v15)
     {
       v16 = *v30;
@@ -1921,7 +1921,7 @@ LABEL_28:
         {
           if (*v30 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(pendingStartCompletions);
           }
 
           v18 = *(*(&v29 + 1) + 8 * v17);
@@ -1932,14 +1932,14 @@ LABEL_28:
         }
 
         while (v15 != v17);
-        v15 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v15 = [pendingStartCompletions countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v15);
     }
 
-    v12 = [(CSAudioTapProvider *)self pendingStartCompletions];
-    [v12 removeAllObjects];
+    pendingStopCompletions2 = [(CSAudioTapProvider *)self pendingStartCompletions];
+    [pendingStopCompletions2 removeAllObjects];
     goto LABEL_28;
   }
 
@@ -1949,8 +1949,8 @@ LABEL_28:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v20 = [(CSAudioTapProvider *)self streams];
-    v21 = [v20 countByEnumeratingWithState:&v25 objects:v37 count:16];
+    streams = [(CSAudioTapProvider *)self streams];
+    v21 = [streams countByEnumeratingWithState:&v25 objects:v37 count:16];
     if (v21)
     {
       v22 = *v26;
@@ -1961,21 +1961,21 @@ LABEL_28:
         {
           if (*v26 != v22)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(streams);
           }
 
-          [*(*(&v25 + 1) + 8 * v23++) audioStreamProvider:self didStopStreamUnexpectedly:a4];
+          [*(*(&v25 + 1) + 8 * v23++) audioStreamProvider:self didStopStreamUnexpectedly:reason];
         }
 
         while (v21 != v23);
-        v21 = [v20 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v21 = [streams countByEnumeratingWithState:&v25 objects:v37 count:16];
       }
 
       while (v21);
     }
 
-    v12 = [(CSAudioTapProvider *)self streams];
-    [v12 removeAllObjects];
+    pendingStopCompletions2 = [(CSAudioTapProvider *)self streams];
+    [pendingStopCompletions2 removeAllObjects];
     goto LABEL_28;
   }
 
@@ -1986,12 +1986,12 @@ LABEL_29:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAudioQueueDidStartWithResult:(BOOL)a3 error:(id)a4
+- (void)_handleAudioQueueDidStartWithResult:(BOOL)result error:(id)error
 {
-  v4 = a3;
+  resultCopy = result;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v4)
+  errorCopy = error;
+  if (!resultCopy)
   {
     [(CSAudioTapProvider *)self _cancelAudioPacketWatchDog];
   }
@@ -1999,14 +1999,14 @@ LABEL_29:
   [(CSAudioTapProvider *)self _clearDidStartRecordingDelegateWatchDog];
   if ([(CSAudioTapProvider *)self streamState]== 2)
   {
-    if (v4)
+    if (resultCopy)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = [(CSAudioTapProvider *)self startPendingStreams];
-      v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      startPendingStreams = [(CSAudioTapProvider *)self startPendingStreams];
+      v8 = [startPendingStreams countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v8)
       {
         v9 = *v25;
@@ -2017,33 +2017,33 @@ LABEL_29:
           {
             if (*v25 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(startPendingStreams);
             }
 
             v11 = *(*(&v24 + 1) + 8 * v10);
-            v12 = [(CSAudioTapProvider *)self streams];
-            [v12 addObject:v11];
+            streams = [(CSAudioTapProvider *)self streams];
+            [streams addObject:v11];
 
             ++v10;
           }
 
           while (v8 != v10);
-          v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v8 = [startPendingStreams countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v8);
       }
     }
 
-    v13 = [(CSAudioTapProvider *)self startPendingStreams];
-    [v13 removeAllObjects];
+    startPendingStreams2 = [(CSAudioTapProvider *)self startPendingStreams];
+    [startPendingStreams2 removeAllObjects];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [(CSAudioTapProvider *)self pendingStartCompletions];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    pendingStartCompletions = [(CSAudioTapProvider *)self pendingStartCompletions];
+    v15 = [pendingStartCompletions countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v15)
     {
       v16 = *v21;
@@ -2054,23 +2054,23 @@ LABEL_29:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(pendingStartCompletions);
           }
 
           (*(*(*(&v20 + 1) + 8 * v17++) + 16))();
         }
 
         while (v15 != v17);
-        v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v15 = [pendingStartCompletions countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v15);
     }
 
-    v18 = [(CSAudioTapProvider *)self pendingStartCompletions];
-    [v18 removeAllObjects];
+    pendingStartCompletions2 = [(CSAudioTapProvider *)self pendingStartCompletions];
+    [pendingStartCompletions2 removeAllObjects];
 
-    if (v4)
+    if (resultCopy)
     {
       [(CSAudioTapProvider *)self setStreamState:3];
     }

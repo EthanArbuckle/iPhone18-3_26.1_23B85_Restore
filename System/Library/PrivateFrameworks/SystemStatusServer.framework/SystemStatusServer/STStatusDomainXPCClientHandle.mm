@@ -1,20 +1,20 @@
 @interface STStatusDomainXPCClientHandle
-- (STStatusDomainXPCClientHandle)initWithXPCConnection:(id)a3 serverHandle:(id)a4;
-- (void)_internalQueue_stopObservingDomain:(uint64_t)a1;
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5;
-- (void)observeDomain:(id)a3 withPreferredLocalizations:(id)a4;
-- (void)reportUserInteraction:(id)a3 forDomain:(unint64_t)a4;
-- (void)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4 reply:(id)a5;
-- (void)stopObservingDomain:(id)a3;
+- (STStatusDomainXPCClientHandle)initWithXPCConnection:(id)connection serverHandle:(id)handle;
+- (void)_internalQueue_stopObservingDomain:(uint64_t)domain;
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context;
+- (void)observeDomain:(id)domain withPreferredLocalizations:(id)localizations;
+- (void)reportUserInteraction:(id)interaction forDomain:(unint64_t)domain;
+- (void)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations reply:(id)reply;
+- (void)stopObservingDomain:(id)domain;
 @end
 
 @implementation STStatusDomainXPCClientHandle
 
-- (STStatusDomainXPCClientHandle)initWithXPCConnection:(id)a3 serverHandle:(id)a4
+- (STStatusDomainXPCClientHandle)initWithXPCConnection:(id)connection serverHandle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 valueForEntitlement:*MEMORY[0x277D6BEA0]];
+  connectionCopy = connection;
+  handleCopy = handle;
+  v9 = [connectionCopy valueForEntitlement:*MEMORY[0x277D6BEA0]];
   v10 = STEntitledDomainsForEntitlementValue(v9);
   if ([v10 count])
   {
@@ -24,12 +24,12 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeWeak(&v11->_serverHandle, v8);
+      objc_storeWeak(&v11->_serverHandle, handleCopy);
       v33 = 0u;
       v34 = 0u;
-      if (v7)
+      if (connectionCopy)
       {
-        [v7 auditToken];
+        [connectionCopy auditToken];
       }
 
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.systemstatus.observerqueue.client-%d", BSPIDForAuditToken()];
@@ -54,42 +54,42 @@
       v12->_observingDomains = v22;
 
       v24 = STStatusDomainXPCClientInterface();
-      [v7 setRemoteObjectInterface:v24];
+      [connectionCopy setRemoteObjectInterface:v24];
 
       v25 = STStatusDomainXPCServerInterface();
-      [v7 setExportedInterface:v25];
+      [connectionCopy setExportedInterface:v25];
 
-      [v7 setExportedObject:v12];
+      [connectionCopy setExportedObject:v12];
       objc_initWeak(&location, v12);
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __68__STStatusDomainXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke;
       v30[3] = &unk_279D35070;
       objc_copyWeak(&v31, &location);
-      [v7 setInterruptionHandler:v30];
+      [connectionCopy setInterruptionHandler:v30];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __68__STStatusDomainXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke_3;
       v28[3] = &unk_279D35070;
       objc_copyWeak(&v29, &location);
-      [v7 setInvalidationHandler:v28];
-      objc_storeStrong(&v12->_clientXPCConnection, a3);
-      [v7 resume];
+      [connectionCopy setInvalidationHandler:v28];
+      objc_storeStrong(&v12->_clientXPCConnection, connection);
+      [connectionCopy resume];
       objc_destroyWeak(&v29);
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
     }
 
     self = v12;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 void __68__STStatusDomainXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke(uint64_t a1)
@@ -199,34 +199,34 @@ void __68__STStatusDomainXPCClientHandle_initWithXPCConnection_serverHandle___bl
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_internalQueue_stopObservingDomain:(uint64_t)a1
+- (void)_internalQueue_stopObservingDomain:(uint64_t)domain
 {
-  if (a1)
+  if (domain)
   {
-    v3 = *(a1 + 16);
+    v3 = *(domain + 16);
     v4 = a2;
     dispatch_assert_queue_V2(v3);
-    v10 = *(a1 + 56);
+    v10 = *(domain + 56);
     v5 = [v10 containsObject:v4];
     [v10 removeObject:v4];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [v4 unsignedIntegerValue];
+    WeakRetained = objc_loadWeakRetained((domain + 8));
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-    v8 = *(a1 + 40);
-    v9 = [v8 objectForKey:v7];
-    [v8 removeObjectForKey:v7];
+    v8 = *(domain + 40);
+    v9 = [v8 objectForKey:unsignedIntegerValue];
+    [v8 removeObjectForKey:unsignedIntegerValue];
 
     if (v5 && v9)
     {
-      [WeakRetained removeClient:v9 forDomain:v7];
+      [WeakRetained removeClient:v9 forDomain:unsignedIntegerValue];
     }
   }
 }
 
-- (void)observeDomain:(id)a3 withPreferredLocalizations:(id)a4
+- (void)observeDomain:(id)domain withPreferredLocalizations:(id)localizations
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  localizationsCopy = localizations;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -242,10 +242,10 @@ void __68__STStatusDomainXPCClientHandle_initWithXPCConnection_serverHandle___bl
   block[2] = __74__STStatusDomainXPCClientHandle_observeDomain_withPreferredLocalizations___block_invoke;
   block[3] = &unk_279D34E60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = domainCopy;
+  v13 = localizationsCopy;
+  v9 = localizationsCopy;
+  v10 = domainCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -311,9 +311,9 @@ LABEL_8:
   }
 }
 
-- (void)stopObservingDomain:(id)a3
+- (void)stopObservingDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -329,14 +329,14 @@ LABEL_8:
   v7[2] = __53__STStatusDomainXPCClientHandle_stopObservingDomain___block_invoke;
   v7[3] = &unk_279D34B18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainCopy;
+  v6 = domainCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (void)reportUserInteraction:(id)a3 forDomain:(unint64_t)a4
+- (void)reportUserInteraction:(id)interaction forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if (STIsValidUserInteractionForStatusDomain())
   {
     if (self)
@@ -354,8 +354,8 @@ LABEL_8:
     block[2] = __65__STStatusDomainXPCClientHandle_reportUserInteraction_forDomain___block_invoke;
     block[3] = &unk_279D34D48;
     block[4] = self;
-    v10 = a4;
-    v9 = v6;
+    domainCopy = domain;
+    v9 = interactionCopy;
     dispatch_sync(internalQueue, block);
   }
 }
@@ -409,11 +409,11 @@ void __65__STStatusDomainXPCClientHandle_reportUserInteraction_forDomain___block
   }
 }
 
-- (void)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4 reply:(id)a5
+- (void)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainsCopy = domains;
+  localizationsCopy = localizations;
+  replyCopy = reply;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -428,13 +428,13 @@ void __65__STStatusDomainXPCClientHandle_reportUserInteraction_forDomain___block
   v15[1] = 3221225472;
   v15[2] = __83__STStatusDomainXPCClientHandle_serverDataForDomains_preferredLocalizations_reply___block_invoke;
   v15[3] = &unk_279D34D70;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = domainsCopy;
+  selfCopy = self;
+  v18 = localizationsCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = localizationsCopy;
+  v14 = domainsCopy;
   dispatch_sync(internalQueue, v15);
 }
 
@@ -515,17 +515,17 @@ void __83__STStatusDomainXPCClientHandle_serverDataForDomains_preferredLocalizat
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || STIsValidDataForStatusDomain())
+  dataCopy = data;
+  contextCopy = context;
+  if (!dataCopy || STIsValidDataForStatusDomain())
   {
-    if (v9)
+    if (contextCopy)
     {
       if (STIsValidDataChangeContextForStatusDomain())
       {
-        v10 = v9;
+        v10 = contextCopy;
       }
 
       else
@@ -556,10 +556,10 @@ void __83__STStatusDomainXPCClientHandle_serverDataForDomains_preferredLocalizat
     v13[2] = __73__STStatusDomainXPCClientHandle_observeData_forDomain_withChangeContext___block_invoke;
     v13[3] = &unk_279D34D20;
     v13[4] = self;
-    v16 = a4;
-    v14 = v8;
-    v9 = v11;
-    v15 = v9;
+    domainCopy = domain;
+    v14 = dataCopy;
+    contextCopy = v11;
+    v15 = contextCopy;
     dispatch_sync(internalQueue, v13);
   }
 }

@@ -1,37 +1,37 @@
 @interface _CDInteraction
 + (id)_internPool;
 + (id)conversationIdPercentEscapes;
-+ (id)generateConversationIdFromHandle:(id)a3;
-+ (id)generateConversationIdFromObjectsWithIdentifiers:(id)a3;
++ (id)generateConversationIdFromHandle:(id)handle;
++ (id)generateConversationIdFromObjectsWithIdentifiers:(id)identifiers;
 + (id)inverseConversationIdPercentEscapes;
-+ (id)recipientIdentifiersFromMobileMailConversationId:(id)a3;
-+ (id)shareSheetInteractionFromINInteraction:(id)a3 bundleID:(id)a4 nsUserName:(id)a5 knowledgeStore:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)recipientIdentifiersFromMobileMailConversationId:(id)id;
++ (id)shareSheetInteractionFromINInteraction:(id)interaction bundleID:(id)d nsUserName:(id)name knowledgeStore:(id)store;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGroupChat;
 - (BOOL)isValidInteraction;
 - (NSArray)peopleIdentifiers;
 - (NSArray)recipients;
 - (NSString)title;
 - (_CDInteraction)init;
-- (_CDInteraction)initWithCoder:(id)a3;
-- (_CDInteraction)initWithINInteraction:(id)a3 bundleID:(id)a4 nsUserName:(id)a5;
+- (_CDInteraction)initWithCoder:(id)coder;
+- (_CDInteraction)initWithINInteraction:(id)interaction bundleID:(id)d nsUserName:(id)name;
 - (id)dateInterval;
-- (id)metadataFromFeedbackEvent:(id)a3;
+- (id)metadataFromFeedbackEvent:(id)event;
 - (unint64_t)hash;
 - (unint64_t)recipientsCount;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:(id)store;
 - (void)isValidInteraction;
-- (void)setAccount:(id)a3;
-- (void)setBundleId:(id)a3;
-- (void)setContentURL:(id)a3;
-- (void)setDerivedIntentIdentifier:(id)a3;
-- (void)setDomainIdentifier:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setNsUserName:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSender:(id)a3;
-- (void)setTargetBundleId:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBundleId:(id)id;
+- (void)setContentURL:(id)l;
+- (void)setDerivedIntentIdentifier:(id)identifier;
+- (void)setDomainIdentifier:(id)identifier;
+- (void)setGroupName:(id)name;
+- (void)setNsUserName:(id)name;
+- (void)setRecipients:(id)recipients;
+- (void)setSender:(id)sender;
+- (void)setTargetBundleId:(id)id;
 @end
 
 @implementation _CDInteraction
@@ -67,16 +67,16 @@
   v2 = [(_CDInteraction *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = *(v2 + 12);
-    *(v2 + 12) = v3;
+    *(v2 + 12) = date;
 
     objc_storeStrong(v2 + 13, *(v2 + 12));
     objc_storeStrong(v2 + 14, *(v2 + 12));
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v7 = *(v2 + 15);
-    *(v2 + 15) = v6;
+    *(v2 + 15) = uUIDString;
 
     *(v2 + 136) = xmmword_19190EBE0;
     v2[88] = 0;
@@ -116,76 +116,76 @@
   return v3;
 }
 
-- (_CDInteraction)initWithCoder:(id)a3
+- (_CDInteraction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = _CDInteraction;
   v5 = [(_CDInteraction *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateDate"];
     updateDate = v5->_updateDate;
     v5->_updateDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationUUID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationUUID"];
     locationUUID = v5->_locationUUID;
     v5->_locationUUID = v14;
 
-    v5->_mechanism = [v4 decodeInt64ForKey:@"mechanism"];
-    v5->_direction = [v4 decodeInt64ForKey:@"direction"];
-    v5->_isResponse = [v4 decodeBoolForKey:@"isResponse"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v5->_mechanism = [coderCopy decodeInt64ForKey:@"mechanism"];
+    v5->_direction = [coderCopy decodeInt64ForKey:@"direction"];
+    v5->_isResponse = [coderCopy decodeBoolForKey:@"isResponse"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     [(_CDInteraction *)v5 setBundleId:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetBundleId"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetBundleId"];
     [(_CDInteraction *)v5 setTargetBundleId:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
     [(_CDInteraction *)v5 setGroupName:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentURL"];
     [(_CDInteraction *)v5 setContentURL:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"derivedIntentIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"derivedIntentIdentifier"];
     [(_CDInteraction *)v5 setDerivedIntentIdentifier:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
     [(_CDInteraction *)v5 setDomainIdentifier:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     [(_CDInteraction *)v5 setAccount:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
     [(_CDInteraction *)v5 setSender:v23];
 
-    v24 = [v4 decodeObjectForKey:@"recipients"];
+    v24 = [coderCopy decodeObjectForKey:@"recipients"];
     [(_CDInteraction *)v5 setRecipients:v24];
 
-    v25 = [v4 decodeObjectForKey:@"keywords"];
+    v25 = [coderCopy decodeObjectForKey:@"keywords"];
     keywords = v5->_keywords;
     v5->_keywords = v25;
 
-    v27 = [v4 decodeObjectForKey:@"attachments"];
+    v27 = [coderCopy decodeObjectForKey:@"attachments"];
     attachments = v5->_attachments;
     v5->_attachments = v27;
 
-    v5->_selfParticipantStatus = [v4 decodeInt64ForKey:@"selfParticipantStatus"];
-    v5->_forcePersistInteraction = [v4 decodeBoolForKey:@"forcePersistInteraction"];
-    v5->_mailShareSheetDeletionCandidate = [v4 decodeBoolForKey:@"mailShareSheetDeletionCandidate"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nsUserName"];
+    v5->_selfParticipantStatus = [coderCopy decodeInt64ForKey:@"selfParticipantStatus"];
+    v5->_forcePersistInteraction = [coderCopy decodeBoolForKey:@"forcePersistInteraction"];
+    v5->_mailShareSheetDeletionCandidate = [coderCopy decodeBoolForKey:@"mailShareSheetDeletionCandidate"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nsUserName"];
     [(_CDInteraction *)v5 setNsUserName:v29];
 
     v30 = v5;
@@ -194,50 +194,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v6 = a3;
-  [v6 encodeObject:startDate forKey:@"startDate"];
-  [v6 encodeObject:self->_updateDate forKey:@"updateDate"];
-  [v6 encodeObject:self->_endDate forKey:@"endDate"];
-  [v6 encodeObject:self->_uuid forKey:@"uuid"];
-  [v6 encodeObject:self->_locationUUID forKey:@"locationUUID"];
-  [v6 encodeInt64:self->_mechanism forKey:@"mechanism"];
-  [v6 encodeInt64:self->_direction forKey:@"direction"];
-  [v6 encodeBool:self->_isResponse forKey:@"isResponse"];
-  [v6 encodeObject:self->_bundleId forKey:@"bundleId"];
-  [v6 encodeObject:self->_targetBundleId forKey:@"targetBundleId"];
-  [v6 encodeObject:self->_groupName forKey:@"groupName"];
-  [v6 encodeObject:self->_contentURL forKey:@"contentURL"];
-  [v6 encodeObject:self->_derivedIntentIdentifier forKey:@"derivedIntentIdentifier"];
-  [v6 encodeObject:self->_domainIdentifier forKey:@"domainIdentifier"];
-  [v6 encodeObject:self->_account forKey:@"account"];
-  v5 = [(_CDInteraction *)self recipients];
-  [v6 encodeObject:v5 forKey:@"recipients"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_updateDate forKey:@"updateDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_locationUUID forKey:@"locationUUID"];
+  [coderCopy encodeInt64:self->_mechanism forKey:@"mechanism"];
+  [coderCopy encodeInt64:self->_direction forKey:@"direction"];
+  [coderCopy encodeBool:self->_isResponse forKey:@"isResponse"];
+  [coderCopy encodeObject:self->_bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_targetBundleId forKey:@"targetBundleId"];
+  [coderCopy encodeObject:self->_groupName forKey:@"groupName"];
+  [coderCopy encodeObject:self->_contentURL forKey:@"contentURL"];
+  [coderCopy encodeObject:self->_derivedIntentIdentifier forKey:@"derivedIntentIdentifier"];
+  [coderCopy encodeObject:self->_domainIdentifier forKey:@"domainIdentifier"];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
+  recipients = [(_CDInteraction *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"recipients"];
 
-  [v6 encodeObject:self->_sender forKey:@"sender"];
-  [v6 encodeObject:self->_keywords forKey:@"keywords"];
-  [v6 encodeObject:self->_attachments forKey:@"attachments"];
-  [v6 encodeBool:self->_forcePersistInteraction forKey:@"forcePersistInteraction"];
-  [v6 encodeBool:self->_mailShareSheetDeletionCandidate forKey:@"mailShareSheetDeletionCandidate"];
-  [v6 encodeInt64:self->_selfParticipantStatus forKey:@"selfParticipantStatus"];
-  [v6 encodeObject:self->_nsUserName forKey:@"nsUserName"];
+  [coderCopy encodeObject:self->_sender forKey:@"sender"];
+  [coderCopy encodeObject:self->_keywords forKey:@"keywords"];
+  [coderCopy encodeObject:self->_attachments forKey:@"attachments"];
+  [coderCopy encodeBool:self->_forcePersistInteraction forKey:@"forcePersistInteraction"];
+  [coderCopy encodeBool:self->_mailShareSheetDeletionCandidate forKey:@"mailShareSheetDeletionCandidate"];
+  [coderCopy encodeInt64:self->_selfParticipantStatus forKey:@"selfParticipantStatus"];
+  [coderCopy encodeObject:self->_nsUserName forKey:@"nsUserName"];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  recipientsCopy = recipients;
+  if ([recipientsCopy count] == 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [recipientsCopy objectAtIndexedSubscript:0];
     recipients = self->_recipients;
     self->_recipients = v5;
-    obj = v4;
+    obj = recipientsCopy;
     goto LABEL_19;
   }
 
-  obj = [v4 copy];
+  obj = [recipientsCopy copy];
 
   v7 = +[_CDInteraction _internPool];
   recipients = [v7 intern:obj];
@@ -262,34 +262,34 @@
     while (1)
     {
       v10 = [v9 objectAtIndexedSubscript:v8];
-      v11 = [v10 displayName];
-      v12 = v11;
-      if (v11)
+      displayName = [v10 displayName];
+      v12 = displayName;
+      if (displayName)
       {
-        v13 = v11;
+        null = displayName;
       }
 
       else
       {
-        v13 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v14 = v13;
+      v14 = null;
 
       v15 = [recipients objectAtIndexedSubscript:v8];
-      v16 = [v15 displayName];
-      v17 = v16;
-      if (v16)
+      displayName2 = [v15 displayName];
+      v17 = displayName2;
+      if (displayName2)
       {
-        v18 = v16;
+        null2 = displayName2;
       }
 
       else
       {
-        v18 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
-      v19 = v18;
+      v19 = null2;
 
       if (([v14 isEqual:v19] & 1) == 0)
       {
@@ -324,10 +324,10 @@ LABEL_19:
   return [v4 count];
 }
 
-- (void)setBundleId:(id)a3
+- (void)setBundleId:(id)id
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  idCopy = id;
+  if (idCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -339,17 +339,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     v7 = [v5 intern:v6];
     bundleId = self->_bundleId;
     self->_bundleId = v7;
   }
 }
 
-- (void)setTargetBundleId:(id)a3
+- (void)setTargetBundleId:(id)id
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  idCopy = id;
+  if (idCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -361,17 +361,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     v7 = [v5 intern:v6];
     targetBundleId = self->_targetBundleId;
     self->_targetBundleId = v7;
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  accountCopy = account;
+  if (accountCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -383,17 +383,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [accountCopy copy];
     v7 = [v5 intern:v6];
     account = self->_account;
     self->_account = v7;
   }
 }
 
-- (void)setDerivedIntentIdentifier:(id)a3
+- (void)setDerivedIntentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  identifierCopy = identifier;
+  if (identifierCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -405,17 +405,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = [v5 intern:v6];
     derivedIntentIdentifier = self->_derivedIntentIdentifier;
     self->_derivedIntentIdentifier = v7;
   }
 }
 
-- (void)setDomainIdentifier:(id)a3
+- (void)setDomainIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  identifierCopy = identifier;
+  if (identifierCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -427,17 +427,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = [v5 intern:v6];
     domainIdentifier = self->_domainIdentifier;
     self->_domainIdentifier = v7;
   }
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  nameCopy = name;
+  if (nameCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -449,17 +449,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     v7 = [v5 intern:v6];
     groupName = self->_groupName;
     self->_groupName = v7;
   }
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  senderCopy = sender;
+  if (senderCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -471,17 +471,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [senderCopy copy];
     v7 = [v5 intern:v6];
     sender = self->_sender;
     self->_sender = v7;
   }
 }
 
-- (void)setContentURL:(id)a3
+- (void)setContentURL:(id)l
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  lCopy = l;
+  if (lCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -493,17 +493,17 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     v7 = [v5 intern:v6];
     contentURL = self->_contentURL;
     self->_contentURL = v7;
   }
 }
 
-- (void)setNsUserName:(id)a3
+- (void)setNsUserName:(id)name
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  nameCopy = name;
+  if (nameCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -515,7 +515,7 @@ LABEL_19:
   else
   {
     v5 = +[_CDInteraction _internPool];
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     v7 = [v5 intern:v6];
     nsUserName = self->_nsUserName;
     self->_nsUserName = v7;
@@ -524,26 +524,26 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v2 = [(_CDInteraction *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(_CDInteraction *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(_CDInteraction *)v5 uuid];
-    v7 = [(_CDInteraction *)self uuid];
-    v8 = [v6 isEqualToString:v7];
+    uuid = [(_CDInteraction *)v5 uuid];
+    uuid2 = [(_CDInteraction *)self uuid];
+    v8 = [uuid isEqualToString:uuid2];
   }
 
   else
@@ -627,17 +627,17 @@ LABEL_19:
   return v3;
 }
 
-+ (id)generateConversationIdFromObjectsWithIdentifiers:(id)a3
++ (id)generateConversationIdFromObjectsWithIdentifiers:(id)identifiers
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy count];
   v5 = v4 - 1;
   if (v4 == 1)
   {
-    v26 = [v3 objectAtIndexedSubscript:0];
-    v27 = [v26 identifier];
-    v25 = [_CDInteraction generateConversationIdFromHandle:v27];
+    v26 = [identifiersCopy objectAtIndexedSubscript:0];
+    identifier = [v26 identifier];
+    v25 = [_CDInteraction generateConversationIdFromHandle:identifier];
 
     goto LABEL_29;
   }
@@ -666,18 +666,18 @@ LABEL_19:
     bzero(v8, v7);
   }
 
-  v34 = v3;
-  [v3 getObjects:v8 range:{0, v6}];
+  v34 = identifiersCopy;
+  [identifiersCopy getObjects:v8 range:{0, v6}];
   qsort_b(v8, v6, 8uLL, &__block_literal_global_757);
   v9 = 0;
   v10 = 0;
   do
   {
     v11 = v5;
-    v12 = [*&v8[8 * v10] identifier];
-    v13 = [_CDInteraction generateConversationIdFromHandle:v12];
+    identifier2 = [*&v8[8 * v10] identifier];
+    v13 = [_CDInteraction generateConversationIdFromHandle:identifier2];
     v14 = v13;
-    if (v12 != v13)
+    if (identifier2 != v13)
     {
       v9 = 1;
     }
@@ -721,16 +721,16 @@ LABEL_19:
     if (v9)
     {
       [(_CDInteraction *)v8 generateConversationIdFromObjectsWithIdentifiers:v18, &v36];
-      v20 = v36;
+      identifier3 = v36;
     }
 
     else
     {
-      v20 = [*&v8[8 * v18] identifier];
+      identifier3 = [*&v8[8 * v18] identifier];
     }
 
-    v21 = [v20 length];
-    [v20 getCharacters:&v17[2 * v19] range:{0, v21}];
+    v21 = [identifier3 length];
+    [identifier3 getCharacters:&v17[2 * v19] range:{0, v21}];
     v19 += v21;
 
     ++v18;
@@ -781,7 +781,7 @@ LABEL_21:
   }
 
 LABEL_27:
-  v3 = v34;
+  identifiersCopy = v34;
   objc_autoreleasePoolPop(v33);
 LABEL_29:
 
@@ -790,22 +790,22 @@ LABEL_29:
   return v25;
 }
 
-+ (id)generateConversationIdFromHandle:(id)a3
++ (id)generateConversationIdFromHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = +[_CDInteraction conversationIdPercentEscapes];
-  v5 = [v3 rangeOfCharacterFromSet:v4 options:2];
+  v5 = [handleCopy rangeOfCharacterFromSet:v4 options:2];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v3;
+    v6 = handleCopy;
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
     v8 = +[_CDInteraction inverseConversationIdPercentEscapes];
-    v9 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    v9 = [handleCopy stringByAddingPercentEncodingWithAllowedCharacters:v8];
     v10 = v9;
     v11 = &stru_1F05B9908;
     if (v9)
@@ -821,9 +821,9 @@ LABEL_29:
   return v6;
 }
 
-+ (id)recipientIdentifiersFromMobileMailConversationId:(id)a3
++ (id)recipientIdentifiersFromMobileMailConversationId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -831,186 +831,186 @@ LABEL_29:
   v7[3] = &unk_1E7368148;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateLinesUsingBlock:v7];
+  [idCopy enumerateLinesUsingBlock:v7];
 
   return v5;
 }
 
-- (id)metadataFromFeedbackEvent:(id)a3
+- (id)metadataFromFeedbackEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 derivedIntentIdentifier];
+  derivedIntentIdentifier = [eventCopy derivedIntentIdentifier];
 
-  if (v5)
+  if (derivedIntentIdentifier)
   {
-    v6 = [v3 derivedIntentIdentifier];
+    derivedIntentIdentifier2 = [eventCopy derivedIntentIdentifier];
     v7 = +[_DKShareSheetFeedbackMetadataKey derivedIntentIdentifier];
-    [v4 setObject:v6 forKeyedSubscript:v7];
+    [v4 setObject:derivedIntentIdentifier2 forKeyedSubscript:v7];
   }
 
-  v8 = [v3 targetBundleID];
+  targetBundleID = [eventCopy targetBundleID];
 
-  if (v8)
+  if (targetBundleID)
   {
-    v9 = [v3 targetBundleID];
+    targetBundleID2 = [eventCopy targetBundleID];
     v10 = +[_DKShareSheetFeedbackMetadataKey targetBundleID];
-    [v4 setObject:v9 forKeyedSubscript:v10];
+    [v4 setObject:targetBundleID2 forKeyedSubscript:v10];
   }
 
-  v11 = [v3 extensionContextUUID];
+  extensionContextUUID = [eventCopy extensionContextUUID];
 
-  if (v11)
+  if (extensionContextUUID)
   {
-    v12 = [v3 extensionContextUUID];
+    extensionContextUUID2 = [eventCopy extensionContextUUID];
     v13 = +[_DKShareSheetFeedbackMetadataKey extensionContextUUID];
-    [v4 setObject:v12 forKeyedSubscript:v13];
+    [v4 setObject:extensionContextUUID2 forKeyedSubscript:v13];
   }
 
-  v14 = [v3 attachments];
+  attachments = [eventCopy attachments];
 
-  if (v14)
+  if (attachments)
   {
-    v15 = [v3 attachments];
+    attachments2 = [eventCopy attachments];
     v16 = +[_DKShareSheetFeedbackMetadataKey attachments];
-    [v4 setObject:v15 forKeyedSubscript:v16];
+    [v4 setObject:attachments2 forKeyedSubscript:v16];
   }
 
-  v17 = [v3 locationUUIDs];
+  locationUUIDs = [eventCopy locationUUIDs];
 
-  if (v17)
+  if (locationUUIDs)
   {
-    v18 = [v3 locationUUIDs];
+    locationUUIDs2 = [eventCopy locationUUIDs];
     v19 = +[_DKShareSheetFeedbackMetadataKey locationUUIDs];
-    [v4 setObject:v18 forKeyedSubscript:v19];
+    [v4 setObject:locationUUIDs2 forKeyedSubscript:v19];
   }
 
-  v20 = [v3 photoSuggestedContacts];
+  photoSuggestedContacts = [eventCopy photoSuggestedContacts];
 
-  if (v20)
+  if (photoSuggestedContacts)
   {
-    v21 = [v3 photoSuggestedContacts];
+    photoSuggestedContacts2 = [eventCopy photoSuggestedContacts];
     v22 = +[_DKShareSheetFeedbackMetadataKey photoSuggestedContacts];
-    [v4 setObject:v21 forKeyedSubscript:v22];
+    [v4 setObject:photoSuggestedContacts2 forKeyedSubscript:v22];
   }
 
-  v23 = [v3 sourceBundleID];
+  sourceBundleID = [eventCopy sourceBundleID];
 
-  if (v23)
+  if (sourceBundleID)
   {
-    v24 = [v3 sourceBundleID];
+    sourceBundleID2 = [eventCopy sourceBundleID];
     v25 = +[_DKShareSheetFeedbackMetadataKey sourceBundleID];
-    [v4 setObject:v24 forKeyedSubscript:v25];
+    [v4 setObject:sourceBundleID2 forKeyedSubscript:v25];
   }
 
-  v26 = [v3 modelSuggestionProxies];
+  modelSuggestionProxies = [eventCopy modelSuggestionProxies];
 
-  if (v26)
+  if (modelSuggestionProxies)
   {
-    v27 = [v3 modelSuggestionProxies];
+    modelSuggestionProxies2 = [eventCopy modelSuggestionProxies];
     v28 = +[_DKShareSheetFeedbackMetadataKey modelSuggestionProxies];
-    [v4 setObject:v27 forKeyedSubscript:v28];
+    [v4 setObject:modelSuggestionProxies2 forKeyedSubscript:v28];
   }
 
-  v29 = [v3 adaptedModelRecipeID];
+  adaptedModelRecipeID = [eventCopy adaptedModelRecipeID];
 
-  if (v29)
+  if (adaptedModelRecipeID)
   {
-    v30 = [v3 adaptedModelRecipeID];
+    adaptedModelRecipeID2 = [eventCopy adaptedModelRecipeID];
     v31 = +[_DKShareSheetFeedbackMetadataKey adaptedModelRecipeID];
-    [v4 setObject:v30 forKeyedSubscript:v31];
+    [v4 setObject:adaptedModelRecipeID2 forKeyedSubscript:v31];
   }
 
-  v32 = [v3 supportedBundleIDs];
+  supportedBundleIDs = [eventCopy supportedBundleIDs];
 
-  if (v32)
+  if (supportedBundleIDs)
   {
-    v33 = [v3 supportedBundleIDs];
+    supportedBundleIDs2 = [eventCopy supportedBundleIDs];
     v34 = +[_DKShareSheetFeedbackMetadataKey supportedBundleIDs];
-    [v4 setObject:v33 forKeyedSubscript:v34];
+    [v4 setObject:supportedBundleIDs2 forKeyedSubscript:v34];
   }
 
-  v35 = [v3 reasonType];
+  reasonType = [eventCopy reasonType];
 
-  if (v35)
+  if (reasonType)
   {
-    v36 = [v3 reasonType];
+    reasonType2 = [eventCopy reasonType];
     v37 = +[_DKShareSheetFeedbackMetadataKey reasonType];
-    [v4 setObject:v36 forKeyedSubscript:v37];
+    [v4 setObject:reasonType2 forKeyedSubscript:v37];
   }
 
-  v38 = [v3 reason];
+  reason = [eventCopy reason];
 
-  if (v38)
+  if (reason)
   {
-    v39 = [v3 reason];
+    reason2 = [eventCopy reason];
     v40 = +[_DKShareSheetFeedbackMetadataKey reason];
-    [v4 setObject:v39 forKeyedSubscript:v40];
+    [v4 setObject:reason2 forKeyedSubscript:v40];
   }
 
-  v41 = [v3 transportBundleID];
+  transportBundleID = [eventCopy transportBundleID];
 
-  if (v41)
+  if (transportBundleID)
   {
-    v42 = [v3 transportBundleID];
+    transportBundleID2 = [eventCopy transportBundleID];
     v43 = +[_DKShareSheetFeedbackMetadataKey transportBundleID];
-    [v4 setObject:v42 forKeyedSubscript:v43];
+    [v4 setObject:transportBundleID2 forKeyedSubscript:v43];
   }
 
-  v44 = [v3 trackingID];
+  trackingID = [eventCopy trackingID];
 
-  if (v44)
+  if (trackingID)
   {
-    v45 = [v3 trackingID];
+    trackingID2 = [eventCopy trackingID];
     v46 = +[_DKShareSheetFeedbackMetadataKey trackingID];
-    [v4 setObject:v45 forKeyedSubscript:v46];
+    [v4 setObject:trackingID2 forKeyedSubscript:v46];
   }
 
-  v47 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isAdaptedModelUsed")}];
+  v47 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(eventCopy, "isAdaptedModelUsed")}];
   v48 = +[_DKShareSheetFeedbackMetadataKey isAdaptedModelUsed];
   [v4 setObject:v47 forKeyedSubscript:v48];
 
-  v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isAdaptedModelCreated")}];
+  v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(eventCopy, "isAdaptedModelCreated")}];
   v50 = +[_DKShareSheetFeedbackMetadataKey isAdaptedModelCreated];
   [v4 setObject:v49 forKeyedSubscript:v50];
 
-  v51 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "indexSelected")}];
+  v51 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "indexSelected")}];
   v52 = +[_DKShareSheetFeedbackMetadataKey indexSelected];
   [v4 setObject:v51 forKeyedSubscript:v52];
 
-  v53 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "engagementType")}];
+  v53 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "engagementType")}];
   v54 = +[_DKShareSheetFeedbackMetadataKey engagementType];
   [v4 setObject:v53 forKeyedSubscript:v54];
 
   v55 = MEMORY[0x1E696AD98];
-  [v3 numberOfVisibleSuggestions];
+  [eventCopy numberOfVisibleSuggestions];
   v56 = [v55 numberWithDouble:?];
   v57 = +[_DKShareSheetFeedbackMetadataKey numberOfVisibleSuggestions];
   [v4 setObject:v56 forKeyedSubscript:v57];
 
-  v58 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "iCloudFamilyInvocation")}];
+  v58 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(eventCopy, "iCloudFamilyInvocation")}];
   v59 = +[_DKShareSheetFeedbackMetadataKey iCloudFamilyInvocation];
   [v4 setObject:v58 forKeyedSubscript:v59];
 
-  v60 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "peopleSuggestionsDisabled")}];
+  v60 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "peopleSuggestionsDisabled")}];
   v61 = +[_DKShareSheetFeedbackMetadataKey peopleSuggestionsDisabled];
   [v4 setObject:v60 forKeyedSubscript:v61];
 
   return v4;
 }
 
-- (void)fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:(id)a3
+- (void)fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:(id)store
 {
   v147 = *MEMORY[0x1E69E9840];
-  v101 = a3;
-  v110 = self;
+  storeCopy = store;
+  selfCopy = self;
   if (self->_mechanism == 13)
   {
     targetBundleId = self->_targetBundleId;
     v5 = +[_CDConstants shareSheetTargetBundleIdMessages];
     LODWORD(targetBundleId) = [(NSString *)targetBundleId isEqualToString:v5];
 
-    v6 = v110->_bundleId;
+    v6 = selfCopy->_bundleId;
     if (targetBundleId)
     {
       v7 = +[_CDConstants mobileMessagesBundleId];
@@ -1038,8 +1038,8 @@ LABEL_6:
     v142 = 0u;
     v139 = 0u;
     v140 = 0u;
-    v9 = [v109 plugInKitPlugins];
-    v10 = [v9 countByEnumeratingWithState:&v139 objects:v146 count:16];
+    plugInKitPlugins = [v109 plugInKitPlugins];
+    v10 = [plugInKitPlugins countByEnumeratingWithState:&v139 objects:v146 count:16];
     if (v10)
     {
       v11 = *v140;
@@ -1049,24 +1049,24 @@ LABEL_6:
         {
           if (*v140 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(plugInKitPlugins);
           }
 
           v13 = *(*(&v139 + 1) + 8 * i);
-          v14 = [v13 bundleIdentifier];
-          if (v14)
+          bundleIdentifier = [v13 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            v15 = [v13 protocol];
-            v16 = [v15 isEqualToString:@"com.apple.share-services"];
+            protocol = [v13 protocol];
+            v16 = [protocol isEqualToString:@"com.apple.share-services"];
 
             if (v16)
             {
-              [v8 addObject:v14];
+              [v8 addObject:bundleIdentifier];
             }
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v139 objects:v146 count:16];
+        v10 = [plugInKitPlugins countByEnumeratingWithState:&v139 objects:v146 count:16];
       }
 
       while (v10);
@@ -1083,16 +1083,16 @@ LABEL_6:
   }
 
   v20 = BiomeLibrary();
-  v21 = [v20 ShareSheet];
-  v107 = [v21 Feedback];
+  shareSheet = [v20 ShareSheet];
+  feedback = [shareSheet Feedback];
 
   v22 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v23 = [(_CDInteraction *)v110 startDate];
-  v24 = [(_CDInteraction *)v110 startDate];
-  v25 = [v24 dateByAddingTimeInterval:-60.0];
-  v26 = [v22 initWithStartDate:v23 endDate:v25 maxEvents:0 lastN:0 reversed:1];
+  startDate = [(_CDInteraction *)selfCopy startDate];
+  startDate2 = [(_CDInteraction *)selfCopy startDate];
+  v25 = [startDate2 dateByAddingTimeInterval:-60.0];
+  v26 = [v22 initWithStartDate:startDate endDate:v25 maxEvents:0 lastN:0 reversed:1];
 
-  v106 = [v107 publisherWithUseCase:@"ShareSheetFeedback" options:v26];
+  v106 = [feedback publisherWithUseCase:@"ShareSheetFeedback" options:v26];
 
   v133 = 0;
   v134 = &v133;
@@ -1106,20 +1106,20 @@ LABEL_6:
   v129[3] = &unk_1E7368190;
   v100 = v8;
   v130 = v100;
-  v131 = v110;
+  v131 = selfCopy;
   v132 = &v133;
   v27 = [v106 sinkWithCompletion:&__block_literal_global_779 shouldContinue:v129];
   v28 = v134[5];
   if (v28)
   {
-    v29 = [v28 source];
-    v103 = [v29 bundleID];
+    source = [v28 source];
+    bundleID = [source bundleID];
 
-    v30 = [v134[5] metadata];
+    metadata = [v134[5] metadata];
     v31 = +[_DKShareSheetFeedbackMetadataKey targetBundleID];
-    v102 = [v30 objectForKeyedSubscript:v31];
+    v102 = [metadata objectForKeyedSubscript:v31];
 
-    if (!v102 || ![v102 length] || !v103 || !-[NSObject length](v103, "length"))
+    if (!v102 || ![v102 length] || !bundleID || !-[NSObject length](bundleID, "length"))
     {
       v99 = +[_CDLogging interactionChannel];
       if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
@@ -1130,9 +1130,9 @@ LABEL_6:
       goto LABEL_44;
     }
 
-    v32 = [v134[5] metadata];
+    metadata2 = [v134[5] metadata];
     v33 = +[_DKShareSheetFeedbackMetadataKey attachments];
-    v99 = [v32 objectForKeyedSubscript:v33];
+    v99 = [metadata2 objectForKeyedSubscript:v33];
 
     if (v99)
     {
@@ -1191,27 +1191,27 @@ LABEL_44:
 
             v45 = *(*(&v124 + 1) + 8 * j);
             v46 = [_CDAttachment alloc];
-            v47 = [v45 identifier];
-            v48 = [v45 cloudIdentifier];
-            v49 = [v45 photoLocalIdentifier];
+            identifier = [v45 identifier];
+            cloudIdentifier = [v45 cloudIdentifier];
+            photoLocalIdentifier = [v45 photoLocalIdentifier];
             v50 = [v45 UTI];
-            v51 = [v45 creationDate];
-            v52 = [v45 contentURL];
-            v53 = [v45 contentText];
-            v104 = [(_CDAttachment *)v46 initWithIdentifier:v47 cloudIdentifier:v48 photoLocalIdentifier:v49 type:v50 sizeInBytes:0 creationDate:v51 contentURL:v52 contentText:v53 photoSceneDescriptor:0 personInPhoto:0];
+            creationDate = [v45 creationDate];
+            contentURL = [v45 contentURL];
+            contentText = [v45 contentText];
+            v104 = [(_CDAttachment *)v46 initWithIdentifier:identifier cloudIdentifier:cloudIdentifier photoLocalIdentifier:photoLocalIdentifier type:v50 sizeInBytes:0 creationDate:creationDate contentURL:contentURL contentText:contentText photoSceneDescriptor:0 personInPhoto:0];
             v115 = v45;
 
             [v114 addObject:v104];
-            v54 = [v45 peopleInPhoto];
+            peopleInPhoto = [v45 peopleInPhoto];
 
-            if (v54)
+            if (peopleInPhoto)
             {
               v122 = 0u;
               v123 = 0u;
               v120 = 0u;
               v121 = 0u;
-              v55 = [v45 peopleInPhoto];
-              v56 = [v55 countByEnumeratingWithState:&v120 objects:v144 count:16];
+              peopleInPhoto2 = [v45 peopleInPhoto];
+              v56 = [peopleInPhoto2 countByEnumeratingWithState:&v120 objects:v144 count:16];
               if (v56)
               {
                 v57 = *v121;
@@ -1221,40 +1221,40 @@ LABEL_44:
                   {
                     if (*v121 != v57)
                     {
-                      objc_enumerationMutation(v55);
+                      objc_enumerationMutation(peopleInPhoto2);
                     }
 
                     v59 = *(*(&v120 + 1) + 8 * k);
                     v60 = [_CDAttachment alloc];
-                    v61 = [v115 identifier];
-                    v62 = [v115 cloudIdentifier];
-                    v63 = [v115 photoLocalIdentifier];
+                    identifier2 = [v115 identifier];
+                    cloudIdentifier2 = [v115 cloudIdentifier];
+                    photoLocalIdentifier2 = [v115 photoLocalIdentifier];
                     v64 = [v115 UTI];
-                    v65 = [(_CDAttachment *)v60 initWithIdentifier:v61 cloudIdentifier:v62 photoLocalIdentifier:v63 type:v64 sizeInBytes:0 creationDate:0 contentURL:0 contentText:0 photoSceneDescriptor:0 personInPhoto:v59];
+                    v65 = [(_CDAttachment *)v60 initWithIdentifier:identifier2 cloudIdentifier:cloudIdentifier2 photoLocalIdentifier:photoLocalIdentifier2 type:v64 sizeInBytes:0 creationDate:0 contentURL:0 contentText:0 photoSceneDescriptor:0 personInPhoto:v59];
 
                     [v114 addObject:v65];
                   }
 
-                  v56 = [v55 countByEnumeratingWithState:&v120 objects:v144 count:16];
+                  v56 = [peopleInPhoto2 countByEnumeratingWithState:&v120 objects:v144 count:16];
                 }
 
                 while (v56);
               }
             }
 
-            v66 = [v115 photoSceneDescriptors];
+            photoSceneDescriptors = [v115 photoSceneDescriptors];
 
-            if (v66)
+            if (photoSceneDescriptors)
             {
               v118 = 0u;
               v119 = 0u;
               v116 = 0u;
               v117 = 0u;
-              v67 = [v115 photoSceneDescriptors];
-              v68 = [v67 countByEnumeratingWithState:&v116 objects:v143 count:16];
+              photoSceneDescriptors2 = [v115 photoSceneDescriptors];
+              v68 = [photoSceneDescriptors2 countByEnumeratingWithState:&v116 objects:v143 count:16];
               if (v68)
               {
-                v111 = v67;
+                v111 = photoSceneDescriptors2;
                 v112 = *v117;
                 do
                 {
@@ -1268,19 +1268,19 @@ LABEL_44:
 
                     v70 = *(*(&v116 + 1) + 8 * m);
                     v71 = [_CDAttachment alloc];
-                    v72 = [v115 identifier];
-                    v73 = [v115 cloudIdentifier];
-                    v74 = [v115 photoLocalIdentifier];
+                    identifier3 = [v115 identifier];
+                    cloudIdentifier3 = [v115 cloudIdentifier];
+                    photoLocalIdentifier3 = [v115 photoLocalIdentifier];
                     v75 = [v115 UTI];
-                    v76 = [v115 creationDate];
-                    v77 = [v115 contentURL];
-                    v78 = [v115 contentText];
-                    v79 = [(_CDAttachment *)v71 initWithIdentifier:v72 cloudIdentifier:v73 photoLocalIdentifier:v74 type:v75 sizeInBytes:0 creationDate:v76 contentURL:v77 contentText:v78 photoSceneDescriptor:v70 personInPhoto:0];
+                    creationDate2 = [v115 creationDate];
+                    contentURL2 = [v115 contentURL];
+                    contentText2 = [v115 contentText];
+                    v79 = [(_CDAttachment *)v71 initWithIdentifier:identifier3 cloudIdentifier:cloudIdentifier3 photoLocalIdentifier:photoLocalIdentifier3 type:v75 sizeInBytes:0 creationDate:creationDate2 contentURL:contentURL2 contentText:contentText2 photoSceneDescriptor:v70 personInPhoto:0];
 
                     [v114 addObject:v79];
                   }
 
-                  v67 = v111;
+                  photoSceneDescriptors2 = v111;
                   v68 = [v111 countByEnumeratingWithState:&v116 objects:v143 count:16];
                 }
 
@@ -1288,13 +1288,13 @@ LABEL_44:
               }
             }
 
-            v80 = [v115 contentURL];
-            v81 = [v80 host];
+            contentURL3 = [v115 contentURL];
+            host = [contentURL3 host];
 
-            v82 = [v115 contentURL];
-            if (v82)
+            contentURL4 = [v115 contentURL];
+            if (contentURL4)
             {
-              v83 = v81 == 0;
+              v83 = host == 0;
             }
 
             else
@@ -1307,14 +1307,14 @@ LABEL_44:
             if (v84)
             {
               v85 = [_CDAttachment alloc];
-              v86 = [v115 identifier];
-              v87 = [v115 cloudIdentifier];
-              v88 = [v115 photoLocalIdentifier];
+              identifier4 = [v115 identifier];
+              cloudIdentifier4 = [v115 cloudIdentifier];
+              photoLocalIdentifier4 = [v115 photoLocalIdentifier];
               v89 = [v115 UTI];
-              v90 = [v115 creationDate];
-              v91 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v81];
-              v92 = [v115 contentText];
-              v93 = [(_CDAttachment *)v85 initWithIdentifier:v86 cloudIdentifier:v87 photoLocalIdentifier:v88 type:v89 sizeInBytes:0 creationDate:v90 contentURL:v91 contentText:v92];
+              creationDate3 = [v115 creationDate];
+              v91 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:host];
+              contentText3 = [v115 contentText];
+              v93 = [(_CDAttachment *)v85 initWithIdentifier:identifier4 cloudIdentifier:cloudIdentifier4 photoLocalIdentifier:photoLocalIdentifier4 type:v89 sizeInBytes:0 creationDate:creationDate3 contentURL:v91 contentText:contentText3];
 
               [v114 addObject:v93];
             }
@@ -1337,26 +1337,26 @@ LABEL_44:
 
     if (v40)
     {
-      [(_CDInteraction *)v110 setDerivedIntentIdentifier:0];
+      [(_CDInteraction *)selfCopy setDerivedIntentIdentifier:0];
     }
 
     v41 = [v114 copy];
-    [(_CDInteraction *)v110 setAttachments:v41];
+    [(_CDInteraction *)selfCopy setAttachments:v41];
 
-    v42 = [v134[5] source];
-    v43 = [v42 bundleID];
-    [(_CDInteraction *)v110 setBundleId:v43];
+    source2 = [v134[5] source];
+    bundleID2 = [source2 bundleID];
+    [(_CDInteraction *)selfCopy setBundleId:bundleID2];
 
     if ((v98 & 1) == 0)
     {
-      [(_CDInteraction *)v110 setTargetBundleId:v102];
+      [(_CDInteraction *)selfCopy setTargetBundleId:v102];
     }
 
     goto LABEL_43;
   }
 
-  v103 = +[_CDLogging interactionChannel];
-  if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
+  bundleID = +[_CDLogging interactionChannel];
+  if (os_log_type_enabled(bundleID, OS_LOG_TYPE_ERROR))
   {
     [_CDInteraction fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:];
   }
@@ -1371,15 +1371,15 @@ LABEL_45:
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(_CDInteraction *)self recipients];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count") + 1}];
+  recipients = [(_CDInteraction *)self recipients];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(recipients, "count") + 1}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(_CDInteraction *)self recipients];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  recipients2 = [(_CDInteraction *)self recipients];
+  v7 = [recipients2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1390,40 +1390,40 @@ LABEL_45:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recipients2);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 length];
+        identifier = [v11 identifier];
+        v13 = [identifier length];
 
         if (v13)
         {
-          v14 = [v11 identifier];
-          [v5 addObject:v14];
+          identifier2 = [v11 identifier];
+          [v5 addObject:identifier2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [recipients2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [(_CDInteraction *)self sender];
-  v16 = [v15 identifier];
-  if ([v16 length])
+  sender = [(_CDInteraction *)self sender];
+  identifier3 = [sender identifier];
+  if ([identifier3 length])
   {
-    v17 = [(_CDInteraction *)self direction];
+    direction = [(_CDInteraction *)self direction];
 
-    if (v17)
+    if (direction)
     {
       goto LABEL_14;
     }
 
-    v15 = [(_CDInteraction *)self sender];
-    v16 = [v15 identifier];
-    [v5 addObject:v16];
+    sender = [(_CDInteraction *)self sender];
+    identifier3 = [sender identifier];
+    [v5 addObject:identifier3];
   }
 
 LABEL_14:
@@ -1434,30 +1434,30 @@ LABEL_14:
 
 - (NSString)title
 {
-  v2 = [(_CDInteraction *)self keywords];
-  v3 = [v2 componentsJoinedByString:{@", "}];
+  keywords = [(_CDInteraction *)self keywords];
+  v3 = [keywords componentsJoinedByString:{@", "}];
 
   return v3;
 }
 
-- (_CDInteraction)initWithINInteraction:(id)a3 bundleID:(id)a4 nsUserName:(id)a5
+- (_CDInteraction)initWithINInteraction:(id)interaction bundleID:(id)d nsUserName:(id)name
 {
   v82 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  dCopy = d;
+  nameCopy = name;
   v11 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [_CDInteraction(INInteraction) initWithINInteraction:v8 bundleID:v9 nsUserName:v11];
+    [_CDInteraction(INInteraction) initWithINInteraction:interactionCopy bundleID:dCopy nsUserName:v11];
   }
 
-  if (v8)
+  if (interactionCopy)
   {
     self = [(_CDInteraction *)self init];
-    v12 = [v8 intent];
-    v13 = +[_CDConstants mobileMessagesBundleId];
-    if ([v9 isEqualToString:v13])
+    intent = [interactionCopy intent];
+    donationMetadata = +[_CDConstants mobileMessagesBundleId];
+    if ([dCopy isEqualToString:donationMetadata])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1467,11 +1467,11 @@ LABEL_14:
         goto LABEL_10;
       }
 
-      v13 = [v12 donationMetadata];
+      donationMetadata = [intent donationMetadata];
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isBusinessChat])
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([donationMetadata isBusinessChat])
       {
-        v15 = 0;
+        selfCopy = 0;
 
 LABEL_50:
         goto LABEL_51;
@@ -1479,21 +1479,21 @@ LABEL_50:
     }
 
 LABEL_10:
-    -[_CDInteraction setMechanism:](self, "setMechanism:", [v12 cd_interactionMechanism]);
-    v16 = [v8 identifier];
-    if (!v16)
+    -[_CDInteraction setMechanism:](self, "setMechanism:", [intent cd_interactionMechanism]);
+    identifier = [interactionCopy identifier];
+    if (!identifier)
     {
-      v17 = v9;
+      v17 = dCopy;
       v18 = +[_CDLogging interactionChannel];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         [_CDInteraction(INInteraction) initWithINInteraction:v18 bundleID:? nsUserName:?];
       }
 
-      v19 = [MEMORY[0x1E696AFB0] UUID];
-      v16 = [v19 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      identifier = [uUID UUIDString];
 
-      v9 = v17;
+      dCopy = v17;
     }
 
     if ([(_CDInteraction *)self mechanism]== 11 || [(_CDInteraction *)self mechanism]== 17)
@@ -1504,119 +1504,119 @@ LABEL_10:
 
     else
     {
-      [(_CDInteraction *)self setBundleId:v9];
+      [(_CDInteraction *)self setBundleId:dCopy];
     }
 
-    v21 = [(_CDInteraction *)self bundleId];
-    v22 = [_CDSpotlightItemUtils interactionUUIDForSearchableItemWithUID:v16 bundleID:v21];
+    bundleId = [(_CDInteraction *)self bundleId];
+    v22 = [_CDSpotlightItemUtils interactionUUIDForSearchableItemWithUID:identifier bundleID:bundleId];
     [(_CDInteraction *)self setUuid:v22];
 
-    v23 = [v8 dateInterval];
-    v24 = [v23 startDate];
-    [(_CDInteraction *)self setStartDate:v24];
+    dateInterval = [interactionCopy dateInterval];
+    startDate = [dateInterval startDate];
+    [(_CDInteraction *)self setStartDate:startDate];
 
-    v25 = [v8 dateInterval];
-    v26 = [v25 endDate];
-    [(_CDInteraction *)self setEndDate:v26];
+    dateInterval2 = [interactionCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    [(_CDInteraction *)self setEndDate:endDate];
 
-    v27 = [v12 imageForParameterNamed:@"speakableGroupName"];
-    v28 = [v27 _uri];
+    v27 = [intent imageForParameterNamed:@"speakableGroupName"];
+    _uri = [v27 _uri];
 
-    v76 = v16;
+    v76 = identifier;
     v74 = v27;
-    if (v28)
+    if (_uri)
     {
-      v29 = [v27 _uri];
-      [(_CDInteraction *)self setContentURL:v29];
+      _uri2 = [v27 _uri];
+      [(_CDInteraction *)self setContentURL:_uri2];
       goto LABEL_26;
     }
 
-    v30 = [v27 _identifier];
+    _identifier = [v27 _identifier];
 
-    if (v30)
+    if (_identifier)
     {
       v31 = MEMORY[0x1E695DFF8];
-      v29 = [v27 _identifier];
-      v32 = [v31 URLWithString:v29];
+      _uri2 = [v27 _identifier];
+      _uri4 = [v31 URLWithString:_uri2];
     }
 
     else
     {
-      v33 = [v12 _keyImage];
-      v34 = [v33 _uri];
+      _keyImage = [intent _keyImage];
+      _uri3 = [_keyImage _uri];
 
-      v35 = [v12 _keyImage];
-      v29 = v35;
-      if (!v34)
+      _keyImage2 = [intent _keyImage];
+      _uri2 = _keyImage2;
+      if (!_uri3)
       {
-        v68 = [v35 _identifier];
+        _identifier2 = [_keyImage2 _identifier];
 
-        if (!v68)
+        if (!_identifier2)
         {
           goto LABEL_27;
         }
 
         v69 = MEMORY[0x1E695DFF8];
-        v29 = [v12 _keyImage];
-        v70 = [v29 _identifier];
-        v71 = [v69 URLWithString:v70];
+        _uri2 = [intent _keyImage];
+        _identifier3 = [_uri2 _identifier];
+        v71 = [v69 URLWithString:_identifier3];
         [(_CDInteraction *)self setContentURL:v71];
 
 LABEL_26:
 LABEL_27:
-        v75 = v10;
-        v37 = [v8 groupIdentifier];
-        [(_CDInteraction *)self setDomainIdentifier:v37];
+        v75 = nameCopy;
+        groupIdentifier = [interactionCopy groupIdentifier];
+        [(_CDInteraction *)self setDomainIdentifier:groupIdentifier];
 
-        v38 = [v12 cd_groupName];
-        [(_CDInteraction *)self setGroupName:v38];
+        cd_groupName = [intent cd_groupName];
+        [(_CDInteraction *)self setGroupName:cd_groupName];
 
-        v39 = [v12 cd_derivedIntentIdentifier];
-        [(_CDInteraction *)self setDerivedIntentIdentifier:v39];
+        cd_derivedIntentIdentifier = [intent cd_derivedIntentIdentifier];
+        [(_CDInteraction *)self setDerivedIntentIdentifier:cd_derivedIntentIdentifier];
 
         v40 = [MEMORY[0x1E695E0F0] mutableCopy];
-        v41 = [v12 _className];
+        _className = [intent _className];
         v42 = 0x1E696E000uLL;
         v43 = objc_opt_class();
         v44 = NSStringFromClass(v43);
-        if ([v41 isEqualToString:v44] && objc_msgSend(v8, "direction") == 2)
+        if ([_className isEqualToString:v44] && objc_msgSend(interactionCopy, "direction") == 2)
         {
-          v45 = [v12 cd_recipients];
-          v46 = [v45 count];
+          cd_recipients = [intent cd_recipients];
+          v46 = [cd_recipients count];
 
           v42 = 0x1E696E000;
           if (v46 == 1)
           {
             v47 = [_CDContact alloc];
-            v48 = [v12 cd_sender];
-            v49 = [(_CDContact *)v47 initWithINPerson:v48];
+            cd_sender = [intent cd_sender];
+            v49 = [(_CDContact *)v47 initWithINPerson:cd_sender];
             [(_CDInteraction *)self setSender:v49];
 
 LABEL_42:
-            v55 = [v12 _className];
+            _className2 = [intent _className];
             v56 = *(v42 + 2656);
             v57 = objc_opt_class();
             v58 = NSStringFromClass(v57);
-            v59 = [v55 isEqualToString:v58];
+            v59 = [_className2 isEqualToString:v58];
 
-            v10 = v75;
+            nameCopy = v75;
             if ((v59 & 1) == 0)
             {
               v60 = [_CDContact alloc];
-              v61 = [v12 cd_sender];
-              v62 = [(_CDContact *)v60 initWithINPerson:v61];
+              cd_sender2 = [intent cd_sender];
+              v62 = [(_CDContact *)v60 initWithINPerson:cd_sender2];
               [(_CDInteraction *)self setSender:v62];
             }
 
             [(_CDInteraction *)self setRecipients:v40];
-            v63 = [v8 direction];
+            direction = [interactionCopy direction];
             v64 = 3;
-            if (v63 == 1)
+            if (direction == 1)
             {
               v64 = 1;
             }
 
-            if (v63 == 2)
+            if (direction == 2)
             {
               v65 = 0;
             }
@@ -1628,7 +1628,7 @@ LABEL_42:
 
             [(_CDInteraction *)self setDirection:v65];
             [(_CDInteraction *)self setNsUserName:v75];
-            v15 = self;
+            selfCopy = self;
 
             goto LABEL_50;
           }
@@ -1642,13 +1642,13 @@ LABEL_42:
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v48 = [v12 cd_recipients];
-        v50 = [v48 countByEnumeratingWithState:&v77 objects:v81 count:16];
+        cd_sender = [intent cd_recipients];
+        v50 = [cd_sender countByEnumeratingWithState:&v77 objects:v81 count:16];
         if (v50)
         {
           v51 = v50;
-          v72 = v9;
-          v73 = v8;
+          v72 = dCopy;
+          v73 = interactionCopy;
           v52 = *v78;
           do
           {
@@ -1656,7 +1656,7 @@ LABEL_42:
             {
               if (*v78 != v52)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(cd_sender);
               }
 
               v54 = [[_CDContact alloc] initWithINPerson:*(*(&v77 + 1) + 8 * i)];
@@ -1666,50 +1666,50 @@ LABEL_42:
               }
             }
 
-            v51 = [v48 countByEnumeratingWithState:&v77 objects:v81 count:16];
+            v51 = [cd_sender countByEnumeratingWithState:&v77 objects:v81 count:16];
           }
 
           while (v51);
-          v9 = v72;
-          v8 = v73;
+          dCopy = v72;
+          interactionCopy = v73;
           v42 = 0x1E696E000uLL;
         }
 
         goto LABEL_42;
       }
 
-      v32 = [v35 _uri];
+      _uri4 = [_keyImage2 _uri];
     }
 
-    v36 = v32;
-    [(_CDInteraction *)self setContentURL:v32];
+    v36 = _uri4;
+    [(_CDInteraction *)self setContentURL:_uri4];
 
     goto LABEL_26;
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_51:
 
   v66 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-+ (id)shareSheetInteractionFromINInteraction:(id)a3 bundleID:(id)a4 nsUserName:(id)a5 knowledgeStore:(id)a6
++ (id)shareSheetInteractionFromINInteraction:(id)interaction bundleID:(id)d nsUserName:(id)name knowledgeStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  interactionCopy = interaction;
+  dCopy = d;
+  nameCopy = name;
+  storeCopy = store;
+  v13 = storeCopy;
   v14 = 0;
-  if (v9 && v10 && v12)
+  if (interactionCopy && dCopy && storeCopy)
   {
-    v15 = [v9 _contextExtensionUUID];
-    v16 = [v15 UUIDString];
+    _contextExtensionUUID = [interactionCopy _contextExtensionUUID];
+    uUIDString = [_contextExtensionUUID UUIDString];
 
-    if (v16)
+    if (uUIDString)
     {
-      v14 = [[_CDInteraction alloc] initWithINInteraction:v9 bundleID:v10 nsUserName:v11];
+      v14 = [[_CDInteraction alloc] initWithINInteraction:interactionCopy bundleID:dCopy nsUserName:nameCopy];
       [(_CDInteraction *)v14 setMechanism:13];
       [(_CDInteraction *)v14 fetchAndAddShareSheetContentToInteractionWithKnowledgeStore:v13];
     }

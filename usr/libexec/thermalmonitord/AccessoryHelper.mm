@@ -1,17 +1,17 @@
 @interface AccessoryHelper
-- (AccessoryHelper)initWithProduct:(id)a3;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4;
-- (void)applyUpdatedAccessoryState:(int)a3;
-- (void)handleAccessoryEventForEndpointUUID:(id)a3 andAttachedState:(BOOL)a4;
-- (void)initializeFilteredAttachedState:(BOOL)a3;
-- (void)updateFilter:(BOOL)a3;
+- (AccessoryHelper)initWithProduct:(id)product;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection;
+- (void)applyUpdatedAccessoryState:(int)state;
+- (void)handleAccessoryEventForEndpointUUID:(id)d andAttachedState:(BOOL)state;
+- (void)initializeFilteredAttachedState:(BOOL)state;
+- (void)updateFilter:(BOOL)filter;
 @end
 
 @implementation AccessoryHelper
 
-- (AccessoryHelper)initWithProduct:(id)a3
+- (AccessoryHelper)initWithProduct:(id)product
 {
   v35.receiver = self;
   v35.super_class = AccessoryHelper;
@@ -19,9 +19,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (product)
     {
-      v4->_product = a3;
+      v4->_product = product;
     }
 
     else
@@ -89,10 +89,10 @@
   return v5;
 }
 
-- (void)updateFilter:(BOOL)a3
+- (void)updateFilter:(BOOL)filter
 {
   filteredAttachValue = self->_filteredAttachValue;
-  if (a3)
+  if (filter)
   {
     [(AccessoryHelper *)self initializeFilteredAttachedState:self->_accessoryAttached];
   }
@@ -143,18 +143,18 @@
   [(AccessoryHelper *)self applyUpdatedAccessoryState:filteredAttachValue];
 }
 
-- (void)initializeFilteredAttachedState:(BOOL)a3
+- (void)initializeFilteredAttachedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   self->_filterCount = 6;
-  self->_previousAttachedState = a3;
+  self->_previousAttachedState = state;
   if (byte_1000AB2F8 == 1)
   {
     v5 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "false";
-      if (v3)
+      if (stateCopy)
       {
         v6 = "true";
       }
@@ -165,7 +165,7 @@
     }
   }
 
-  if (v3)
+  if (stateCopy)
   {
     v7 = 100;
   }
@@ -178,9 +178,9 @@
   [(AccessoryHelper *)self applyUpdatedAccessoryState:v7];
 }
 
-- (void)applyUpdatedAccessoryState:(int)a3
+- (void)applyUpdatedAccessoryState:(int)state
 {
-  if (self->_filteredAttachValue != a3)
+  if (self->_filteredAttachValue != state)
   {
     if (byte_1000AB2F8 == 1)
     {
@@ -188,22 +188,22 @@
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v6[0] = 67109120;
-        v6[1] = a3;
+        v6[1] = state;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Applying alternate HS targets for attached state: %d", v6, 8u);
       }
     }
 
-    [(CommonProduct *)self->_product applyAlternateHotSpotTargets:a3 != 0];
+    [(CommonProduct *)self->_product applyAlternateHotSpotTargets:state != 0];
   }
 
-  self->_filteredAttachValue = a3;
-  *&dword_1000AB954 = (a3 / 100);
+  self->_filteredAttachValue = state;
+  *&dword_1000AB954 = (state / 100);
 }
 
-- (void)handleAccessoryEventForEndpointUUID:(id)a3 andAttachedState:(BOOL)a4
+- (void)handleAccessoryEventForEndpointUUID:(id)d andAttachedState:(BOOL)state
 {
-  v4 = a4;
-  v7 = [(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] objectForKeyedSubscript:a3];
+  stateCopy = state;
+  v7 = [(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] objectForKeyedSubscript:d];
   if (v7)
   {
     v8 = [objc_msgSend(v7 objectForKeyedSubscript:{@"AccessoryType", "charValue"}];
@@ -211,7 +211,7 @@
     v10 = v8 - 67 > 0x3E || ((1 << (v8 - 67)) & 0x6000800460470E07) == 0;
     if (!v10 || v8 - 133 <= 0x10 && ((1 << (v8 + 123)) & 0x11801) != 0)
     {
-      self->_accessoryAttached = v4;
+      self->_accessoryAttached = stateCopy;
       v11 = qword_1000AB718;
       if (!os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
@@ -224,7 +224,7 @@ LABEL_9:
       v18[0] = 67109376;
       v18[1] = v9;
       v19 = 1024;
-      v20 = v4;
+      v20 = stateCopy;
       v13 = "<Notice> Got accessory event with type: %d and attached state: %d";
       v14 = v11;
       v15 = 14;
@@ -251,39 +251,39 @@ LABEL_9:
   v16 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
-    sub_100056FF4(a3, v16);
+    sub_100056FF4(d, v16);
   }
 }
 
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection
 {
   v7 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = a4;
+    detachedCopy3 = connection;
     v12 = 2112;
-    v13 = a3;
+    detachedCopy2 = detached;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> Accessory detached: %@, %@", &v10, 0x16u);
   }
 
-  if ([(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] objectForKeyedSubscript:detached])
   {
-    [(AccessoryHelper *)self handleAccessoryEventForEndpointUUID:a3 andAttachedState:0];
+    [(AccessoryHelper *)self handleAccessoryEventForEndpointUUID:detached andAttachedState:0];
     if (byte_1000AB2F8 == 1)
     {
       v8 = qword_1000AB718;
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412546;
-        v11 = a4;
+        detachedCopy3 = connection;
         v12 = 2112;
-        v13 = a3;
+        detachedCopy2 = detached;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<Notice> Removing connected endpoints dict entry: %@, %@", &v10, 0x16u);
       }
     }
 
-    [(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] setObject:0 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)[(AccessoryHelper *)self connectedEndpoints] setObject:0 forKeyedSubscript:detached];
   }
 
   else
@@ -292,21 +292,21 @@ LABEL_9:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = a3;
+      detachedCopy3 = detached;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "<Notice> Accessory properties do not exist: %@", &v10, 0xCu);
     }
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
   v3 = @"Accessory Attached Filtered";
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }
@@ -317,16 +317,16 @@ LABEL_9:
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = kCFAllocatorDefault;
     filteredAttachValue = self->_filteredAttachValue;
     return CFStringCreateWithFormat(v3, 0, @"%d", filteredAttachValue);
   }
 
-  if (!a3)
+  if (!index)
   {
     v3 = kCFAllocatorDefault;
     filteredAttachValue = 100;

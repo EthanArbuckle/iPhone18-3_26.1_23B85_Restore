@@ -1,16 +1,16 @@
 @interface SRSecureWindow
-- (void)didAddSubview:(id)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation SRSecureWindow
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = SRSecureWindow;
-  v4 = a3;
-  [(SRSecureWindow *)&v6 didAddSubview:v4];
+  subviewCopy = subview;
+  [(SRSecureWindow *)&v6 didAddSubview:subviewCopy];
   NSClassFromString(@"_UIContextMenuContainerView");
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -20,12 +20,12 @@
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = SRSecureWindow;
-  v4 = a3;
-  [(SRSecureWindow *)&v6 willRemoveSubview:v4];
+  subviewCopy = subview;
+  [(SRSecureWindow *)&v6 willRemoveSubview:subviewCopy];
   NSClassFromString(@"_UIContextMenuContainerView");
   isKindOfClass = objc_opt_isKindOfClass();
 

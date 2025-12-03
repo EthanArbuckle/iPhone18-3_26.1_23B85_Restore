@@ -1,20 +1,20 @@
 @interface PRSL2FeatureVectorProcessingContext
-- (PRSL2FeatureVectorProcessingContext)initWithFeatureOrder:(id)a3 withInflation:(unint64_t)a4 withInflatedIndexToSize:(id)a5;
+- (PRSL2FeatureVectorProcessingContext)initWithFeatureOrder:(id)order withInflation:(unint64_t)inflation withInflatedIndexToSize:(id)size;
 - (void)dealloc;
 @end
 
 @implementation PRSL2FeatureVectorProcessingContext
 
-- (PRSL2FeatureVectorProcessingContext)initWithFeatureOrder:(id)a3 withInflation:(unint64_t)a4 withInflatedIndexToSize:(id)a5
+- (PRSL2FeatureVectorProcessingContext)initWithFeatureOrder:(id)order withInflation:(unint64_t)inflation withInflatedIndexToSize:(id)size
 {
-  v8 = a3;
-  v9 = a5;
+  orderCopy = order;
+  sizeCopy = size;
   v28.receiver = self;
   v28.super_class = PRSL2FeatureVectorProcessingContext;
   v10 = [(PRSL2FeatureVectorProcessingContext *)&v28 init];
   if (v10)
   {
-    v11 = [v8 count] + a4;
+    v11 = [orderCopy count] + inflation;
     v25 = v10;
     v10->_expandedFeatureCount = v11;
     v12 = malloc_type_malloc(2 * v11, 0x5D7163CBuLL);
@@ -25,7 +25,7 @@
     }
 
     v14 = +[PRSL2FeatureVector getL2FeatureSet];
-    v15 = [v8 count];
+    v15 = [orderCopy count];
     if (v15)
     {
       v16 = v15;
@@ -35,7 +35,7 @@
       {
         value = 0;
         v27 = 0;
-        value = [v8 objectAtIndexedSubscript:v17];
+        value = [orderCopy objectAtIndexedSubscript:v17];
         LOWORD(v27) = 0;
         BYTE2(v27) = 0;
         v19 = CFSetGetValue(v14, &value);
@@ -43,7 +43,7 @@
         {
           v20 = v19[4];
           v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
-          v22 = [v9 objectForKeyedSubscript:v21];
+          v22 = [sizeCopy objectForKeyedSubscript:v21];
 
           if (v22)
           {

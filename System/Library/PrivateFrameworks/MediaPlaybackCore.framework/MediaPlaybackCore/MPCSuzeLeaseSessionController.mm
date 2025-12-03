@@ -1,27 +1,27 @@
 @interface MPCSuzeLeaseSessionController
 + (MPCSuzeLeaseSessionController)sharedController;
 - (id)_init;
-- (void)startLeaseSessionWithConfiguration:(id)a3 completion:(id)a4;
-- (void)stopLeaseSession:(id)a3 completion:(id)a4;
-- (void)suzeLeaseSession:(id)a3 leaseRenewalDidFailWithError:(id)a4;
+- (void)startLeaseSessionWithConfiguration:(id)configuration completion:(id)completion;
+- (void)stopLeaseSession:(id)session completion:(id)completion;
+- (void)suzeLeaseSession:(id)session leaseRenewalDidFailWithError:(id)error;
 @end
 
 @implementation MPCSuzeLeaseSessionController
 
-- (void)suzeLeaseSession:(id)a3 leaseRenewalDidFailWithError:(id)a4
+- (void)suzeLeaseSession:(id)session leaseRenewalDidFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MPCSuzeLeaseSessionController_suzeLeaseSession_leaseRenewalDidFailWithError___block_invoke;
   block[3] = &unk_1E82391C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = sessionCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -106,20 +106,20 @@ void __79__MPCSuzeLeaseSessionController_suzeLeaseSession_leaseRenewalDidFailWit
   [v4 postNotificationName:@"MPCSuzeLeaseSessionControllerLeaseSessionRenewDidFailNotification" object:*(a1 + 48) userInfo:v5];
 }
 
-- (void)stopLeaseSession:(id)a3 completion:(id)a4
+- (void)stopLeaseSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MPCSuzeLeaseSessionController_stopLeaseSession_completion___block_invoke;
   block[3] = &unk_1E8239198;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = sessionCopy;
   dispatch_after(v8, MEMORY[0x1E69E96A0], block);
 }
 
@@ -243,20 +243,20 @@ void __61__MPCSuzeLeaseSessionController_stopLeaseSession_completion___block_inv
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)startLeaseSessionWithConfiguration:(id)a3 completion:(id)a4
+- (void)startLeaseSessionWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MPCSuzeLeaseSessionController_startLeaseSessionWithConfiguration_completion___block_invoke;
   block[3] = &unk_1E8239198;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = configurationCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 

@@ -1,40 +1,40 @@
 @interface ACDKeychainCache
-- (ACDKeychainCache)initWithValidityDuration:(unsigned int)a3;
-- (id)dataForService:(id)a3 username:(id)a4 syncState:(unint64_t)a5;
-- (void)cacheData:(id)a3 forService:(id)a4 username:(id)a5 syncState:(unint64_t)a6;
-- (void)clearCacheForSyncState:(unint64_t)a3;
-- (void)clearDataForService:(id)a3 username:(id)a4 syncState:(unint64_t)a5;
+- (ACDKeychainCache)initWithValidityDuration:(unsigned int)duration;
+- (id)dataForService:(id)service username:(id)username syncState:(unint64_t)state;
+- (void)cacheData:(id)data forService:(id)service username:(id)username syncState:(unint64_t)state;
+- (void)clearCacheForSyncState:(unint64_t)state;
+- (void)clearDataForService:(id)service username:(id)username syncState:(unint64_t)state;
 @end
 
 @implementation ACDKeychainCache
 
-- (ACDKeychainCache)initWithValidityDuration:(unsigned int)a3
+- (ACDKeychainCache)initWithValidityDuration:(unsigned int)duration
 {
   v10.receiver = self;
   v10.super_class = ACDKeychainCache;
   v4 = [(ACDKeychainCache *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     cachesByUsername = v4->_cachesByUsername;
-    v4->_cachesByUsername = v5;
+    v4->_cachesByUsername = dictionary;
 
     v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:10];
     expirersByUsername = v4->_expirersByUsername;
     v4->_expirersByUsername = v7;
 
     *&v4->_cachesLock._os_unfair_lock_opaque = 0;
-    v4->_cacheValidityDuration = a3;
+    v4->_cacheValidityDuration = duration;
   }
 
   return v4;
 }
 
-- (void)cacheData:(id)a3 forService:(id)a4 username:(id)a5 syncState:(unint64_t)a6
+- (void)cacheData:(id)data forService:(id)service username:(id)username syncState:(unint64_t)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  serviceCopy = service;
+  usernameCopy = username;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -46,13 +46,13 @@
   v26 = __60__ACDKeychainCache_cacheData_forService_username_syncState___block_invoke;
   v27 = &unk_27848BEB0;
   v32 = v34;
-  v28 = self;
-  v13 = v12;
+  selfCopy = self;
+  v13 = usernameCopy;
   v29 = v13;
-  v33 = a6;
-  v14 = v10;
+  stateCopy = state;
+  v14 = dataCopy;
   v30 = v14;
-  v15 = v11;
+  v15 = serviceCopy;
   v31 = v15;
   v16 = v25;
   os_unfair_lock_lock(&self->_cachesLock);
@@ -63,7 +63,7 @@
   v19[1] = 3221225472;
   v20 = __60__ACDKeychainCache_cacheData_forService_username_syncState___block_invoke_2;
   v21 = &unk_27848BF28;
-  v22 = self;
+  selfCopy2 = self;
   v17 = v13;
   v23 = v17;
   v24 = v34;
@@ -188,19 +188,19 @@ void __60__ACDKeychainCache_cacheData_forService_username_syncState___block_invo
   [v4 removeAllObjects];
 }
 
-- (id)dataForService:(id)a3 username:(id)a4 syncState:(unint64_t)a5
+- (id)dataForService:(id)service username:(id)username syncState:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  usernameCopy = username;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v16 = __54__ACDKeychainCache_dataForService_username_syncState___block_invoke;
   v17 = &unk_27848BF50;
-  v18 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = usernameCopy;
   v19 = v10;
-  v21 = a5;
-  v11 = v8;
+  stateCopy = state;
+  v11 = serviceCopy;
   v20 = v11;
   v12 = v15;
   os_unfair_lock_lock(&self->_cachesLock);
@@ -300,19 +300,19 @@ LABEL_21:
   return v1;
 }
 
-- (void)clearDataForService:(id)a3 username:(id)a4 syncState:(unint64_t)a5
+- (void)clearDataForService:(id)service username:(id)username syncState:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  usernameCopy = username;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v14 = __59__ACDKeychainCache_clearDataForService_username_syncState___block_invoke;
   v15 = &unk_27848BE10;
-  v16 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = usernameCopy;
   v17 = v10;
-  v19 = a5;
-  v11 = v8;
+  stateCopy = state;
+  v11 = serviceCopy;
   v18 = v11;
   v12 = v13;
   os_unfair_lock_lock(&self->_cachesLock);
@@ -362,14 +362,14 @@ void __59__ACDKeychainCache_clearDataForService_username_syncState___block_invok
 LABEL_9:
 }
 
-- (void)clearCacheForSyncState:(unint64_t)a3
+- (void)clearCacheForSyncState:(unint64_t)state
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v11 = __43__ACDKeychainCache_clearCacheForSyncState___block_invoke;
   v12 = &unk_27848BD20;
-  v13 = self;
-  v14 = a3;
+  selfCopy = self;
+  stateCopy = state;
   v4 = v10;
   os_unfair_lock_lock(&self->_cachesLock);
   v11(v4);
@@ -379,7 +379,7 @@ LABEL_9:
   v6[1] = 3221225472;
   v7 = __43__ACDKeychainCache_clearCacheForSyncState___block_invoke_2;
   v8 = &unk_27848BF78;
-  v9 = self;
+  selfCopy2 = self;
   v5 = v6;
   os_unfair_lock_lock(&self->_expirersLock);
   v7(v5);

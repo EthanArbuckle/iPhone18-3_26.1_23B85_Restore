@@ -1,10 +1,10 @@
 @interface HDPrimaryProfile
-- (HDPrimaryProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5;
-- (id)_initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6;
+- (HDPrimaryProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon;
+- (id)_initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier;
 - (id)_newAWDSubmissionManager;
 - (id)_newDataCollectionManager;
 - (id)_newNanoSyncManager;
-- (id)_newPeriodicCountryMonitorWithNanoSyncManager:(id)a3;
+- (id)_newPeriodicCountryMonitorWithNanoSyncManager:(id)manager;
 - (id)_newRapportMessenger;
 - (id)_newSummarySharingEntryIDSManager;
 - (id)_newWorkoutManager;
@@ -20,31 +20,31 @@
 - (id)fitnessMachineManager
 {
   v2 = [(HDProfile *)self profileExtensionsConformingToProtocol:&unk_283D71318];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 fitnessManager];
+  fitnessManager = [firstObject fitnessManager];
 
-  return v4;
+  return fitnessManager;
 }
 
-- (HDPrimaryProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5
+- (HDPrimaryProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon
 {
   v8 = MEMORY[0x277CCD7C8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 primaryProfile];
-  v13 = [(HDPrimaryProfile *)self _initWithDirectoryPath:v11 medicalIDDirectoryPath:v10 daemon:v9 profileIdentifier:v12];
+  daemonCopy = daemon;
+  directoryPathCopy = directoryPath;
+  pathCopy = path;
+  primaryProfile = [v8 primaryProfile];
+  v13 = [(HDPrimaryProfile *)self _initWithDirectoryPath:pathCopy medicalIDDirectoryPath:directoryPathCopy daemon:daemonCopy profileIdentifier:primaryProfile];
 
   return v13;
 }
 
-- (id)_initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6
+- (id)_initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier
 {
-  v10 = a5;
+  daemonCopy = daemon;
   v79.receiver = self;
   v79.super_class = HDPrimaryProfile;
-  v11 = [(HDProfile *)&v79 initWithDirectoryPath:a3 medicalIDDirectoryPath:a4 daemon:v10 profileIdentifier:a6];
+  v11 = [(HDProfile *)&v79 initWithDirectoryPath:path medicalIDDirectoryPath:directoryPath daemon:daemonCopy profileIdentifier:identifier];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277D10AC0]);
@@ -59,11 +59,11 @@
     alarmScheduler = v11->_alarmScheduler;
     v11->_alarmScheduler = v16;
 
-    v18 = [(HDProfile *)v11 daemon];
-    v19 = [v18 behavior];
-    v20 = [v19 supportsAppSubscriptions];
+    daemon = [(HDProfile *)v11 daemon];
+    behavior = [daemon behavior];
+    supportsAppSubscriptions = [behavior supportsAppSubscriptions];
 
-    if (v20)
+    if (supportsAppSubscriptions)
     {
       v21 = [HDAppSubscriptionManager alloc];
       v22 = objc_alloc_init(HDBackgroundActivityScheduler);
@@ -86,9 +86,9 @@
     attachmentManager = v11->_attachmentManager;
     v11->_attachmentManager = v27;
 
-    v29 = [(HDPrimaryProfile *)v11 _newAWDSubmissionManager];
+    _newAWDSubmissionManager = [(HDPrimaryProfile *)v11 _newAWDSubmissionManager];
     awdSubmissionManager = v11->_awdSubmissionManager;
-    v11->_awdSubmissionManager = v29;
+    v11->_awdSubmissionManager = _newAWDSubmissionManager;
 
     v31 = [[HDCurrentActivitySummaryHelper alloc] initWithProfile:v11];
     currentActivitySummaryHelper = v11->_currentActivitySummaryHelper;
@@ -98,13 +98,13 @@
     protectedDataOperationScheduler = v11->_protectedDataOperationScheduler;
     v11->_protectedDataOperationScheduler = v33;
 
-    v35 = [(HDPrimaryProfile *)v11 _newDataCollectionManager];
+    _newDataCollectionManager = [(HDPrimaryProfile *)v11 _newDataCollectionManager];
     dataCollectionManager = v11->_dataCollectionManager;
-    v11->_dataCollectionManager = v35;
+    v11->_dataCollectionManager = _newDataCollectionManager;
 
-    v37 = [(HDPrimaryProfile *)v11 _newNanoSyncManager];
+    _newNanoSyncManager = [(HDPrimaryProfile *)v11 _newNanoSyncManager];
     nanoSyncManager = v11->_nanoSyncManager;
-    v11->_nanoSyncManager = v37;
+    v11->_nanoSyncManager = _newNanoSyncManager;
 
     v39 = [[HDNotificationManager alloc] initWithProfile:v11 bundle:0];
     notificationManager = v11->_notificationManager;
@@ -114,42 +114,42 @@
     notificationSyncManager = v11->_notificationSyncManager;
     v11->_notificationSyncManager = v41;
 
-    v43 = [v10 behavior];
-    v44 = [v43 supportsPeriodicCountryMonitoring];
+    behavior2 = [daemonCopy behavior];
+    supportsPeriodicCountryMonitoring = [behavior2 supportsPeriodicCountryMonitoring];
 
-    if (v44)
+    if (supportsPeriodicCountryMonitoring)
     {
       v45 = [(HDPrimaryProfile *)v11 _newPeriodicCountryMonitorWithNanoSyncManager:v11->_nanoSyncManager];
       periodicCountryMonitor = v11->_periodicCountryMonitor;
       v11->_periodicCountryMonitor = v45;
     }
 
-    v47 = [(HDPrimaryProfile *)v11 _newRapportMessenger];
+    _newRapportMessenger = [(HDPrimaryProfile *)v11 _newRapportMessenger];
     rapportMessenger = v11->_rapportMessenger;
-    v11->_rapportMessenger = v47;
+    v11->_rapportMessenger = _newRapportMessenger;
 
-    v49 = [v10 behavior];
-    v50 = [v49 tinkerModeEnabled];
+    behavior3 = [daemonCopy behavior];
+    tinkerModeEnabled = [behavior3 tinkerModeEnabled];
 
-    if (v50)
+    if (tinkerModeEnabled)
     {
       v51 = [[HDTinkerPrivacyAlertCoordinator alloc] initWithProfile:v11];
       tinkerPrivacyAlertCoordinator = v11->_tinkerPrivacyAlertCoordinator;
       v11->_tinkerPrivacyAlertCoordinator = v51;
     }
 
-    v53 = [v10 behavior];
-    v54 = [v53 supportsSharedSummarySync];
+    behavior4 = [daemonCopy behavior];
+    supportsSharedSummarySync = [behavior4 supportsSharedSummarySync];
 
-    if (v54)
+    if (supportsSharedSummarySync)
     {
       v55 = [[HDSummarySharingEntryManager alloc] initWithProfile:v11];
       summarySharingEntryManager = v11->_summarySharingEntryManager;
       v11->_summarySharingEntryManager = v55;
 
-      v57 = [(HDPrimaryProfile *)v11 _newSummarySharingEntryIDSManager];
+      _newSummarySharingEntryIDSManager = [(HDPrimaryProfile *)v11 _newSummarySharingEntryIDSManager];
       summarySharingEntryIDSManager = v11->_summarySharingEntryIDSManager;
-      v11->_summarySharingEntryIDSManager = v57;
+      v11->_summarySharingEntryIDSManager = _newSummarySharingEntryIDSManager;
     }
 
     if ([MEMORY[0x277CCDD68] shouldGenerateDemoData])
@@ -159,13 +159,13 @@
       v11->_demoDataManager = v59;
     }
 
-    v61 = [(HDPrimaryProfile *)v11 _newWorkoutManager];
+    _newWorkoutManager = [(HDPrimaryProfile *)v11 _newWorkoutManager];
     workoutManager = v11->_workoutManager;
-    v11->_workoutManager = v61;
+    v11->_workoutManager = _newWorkoutManager;
 
-    v63 = [(HDProfile *)v11 daemon];
-    v64 = [v63 behavior];
-    if ([v64 performsWorkoutCondensation])
+    daemon2 = [(HDProfile *)v11 daemon];
+    behavior5 = [daemon2 behavior];
+    if ([behavior5 performsWorkoutCondensation])
     {
       v65 = [[HDWorkoutCondenser alloc] initWithProfile:v11];
     }
@@ -178,25 +178,25 @@
     workoutCondenser = v11->_workoutCondenser;
     v11->_workoutCondenser = v65;
 
-    v67 = [(HDProfile *)v11 daemon];
-    v68 = [v67 behavior];
-    v69 = [v68 isAppleInternalInstall];
+    daemon3 = [(HDProfile *)v11 daemon];
+    behavior6 = [daemon3 behavior];
+    isAppleInternalInstall = [behavior6 isAppleInternalInstall];
 
-    if (v69)
+    if (isAppleInternalInstall)
     {
-      v70 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v71 = [v70 BOOLForKey:@"HDPPTTestRunning"];
-      v72 = [v70 BOOLForKey:@"HDPPTTestDataUpdateApplied"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v71 = [standardUserDefaults BOOLForKey:@"HDPPTTestRunning"];
+      v72 = [standardUserDefaults BOOLForKey:@"HDPPTTestDataUpdateApplied"];
       if (v71 && (v72 & 1) == 0)
       {
         v73 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:410255999.0];
-        v74 = [MEMORY[0x277CBEAA8] date];
-        [v74 timeIntervalSinceDate:v73];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSinceDate:v73];
         v76 = v75;
-        v77 = [(HDProfile *)v11 database];
-        [v77 setOffsetTimeInterval:v76];
+        database = [(HDProfile *)v11 database];
+        [database setOffsetTimeInterval:v76];
 
-        [v70 setBool:1 forKey:@"HDPPTTestDataUpdateApplied"];
+        [standardUserDefaults setBool:1 forKey:@"HDPPTTestDataUpdateApplied"];
       }
     }
   }
@@ -207,39 +207,39 @@
 - (void)terminationCleanup
 {
   v2 = [(HDProfile *)self profileExtensionsConformingToProtocol:&unk_283D71318];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  [v3 terminationCleanup];
+  [firstObject terminationCleanup];
 }
 
 - (id)activityCacheInterface
 {
   v2 = [(HDProfile *)self profileExtensionsConformingToProtocol:&unk_283D71378];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 activityCacheInterface];
+  activityCacheInterface = [firstObject activityCacheInterface];
 
-  return v4;
+  return activityCacheInterface;
 }
 
 - (id)serviceConnectionManager
 {
   v2 = [(HDProfile *)self profileExtensionsConformingToProtocol:&unk_283D71318];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 serviceConnectionManager];
+  serviceConnectionManager = [firstObject serviceConnectionManager];
 
-  return v4;
+  return serviceConnectionManager;
 }
 
 - (id)serviceManager
 {
   v2 = [(HDProfile *)self profileExtensionsConformingToProtocol:&unk_283D71318];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 serviceManager];
+  serviceManager = [firstObject serviceManager];
 
-  return v4;
+  return serviceManager;
 }
 
 - (id)_newAWDSubmissionManager
@@ -258,12 +258,12 @@
 
 - (id)_newNanoSyncManager
 {
-  v3 = [(HDProfile *)self daemon];
-  v4 = [v3 behavior];
+  daemon = [(HDProfile *)self daemon];
+  behavior = [daemon behavior];
 
-  if ([v4 supportsNanoSync])
+  if ([behavior supportsNanoSync])
   {
-    v5 = -[HDNanoSyncManager initWithProfile:isMaster:]([HDNanoSyncManager alloc], "initWithProfile:isMaster:", self, [v4 isAppleWatch] ^ 1);
+    v5 = -[HDNanoSyncManager initWithProfile:isMaster:]([HDNanoSyncManager alloc], "initWithProfile:isMaster:", self, [behavior isAppleWatch] ^ 1);
   }
 
   else
@@ -274,10 +274,10 @@
   return v5;
 }
 
-- (id)_newPeriodicCountryMonitorWithNanoSyncManager:(id)a3
+- (id)_newPeriodicCountryMonitorWithNanoSyncManager:(id)manager
 {
-  v4 = a3;
-  v5 = [[HDPeriodicCountryMonitor alloc] initWithProfile:self nanoSyncManager:v4];
+  managerCopy = manager;
+  v5 = [[HDPeriodicCountryMonitor alloc] initWithProfile:self nanoSyncManager:managerCopy];
 
   return v5;
 }

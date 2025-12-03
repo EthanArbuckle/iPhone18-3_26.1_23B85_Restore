@@ -1,11 +1,11 @@
 @interface _NSInflectionRuleAutomatic
-- (_NSInflectionRuleAutomatic)initWithCoder:(id)a3;
+- (_NSInflectionRuleAutomatic)initWithCoder:(id)coder;
 - (id)description;
 @end
 
 @implementation _NSInflectionRuleAutomatic
 
-- (_NSInflectionRuleAutomatic)initWithCoder:(id)a3
+- (_NSInflectionRuleAutomatic)initWithCoder:(id)coder
 {
   v3 = +[NSInflectionRule automaticRule];
 

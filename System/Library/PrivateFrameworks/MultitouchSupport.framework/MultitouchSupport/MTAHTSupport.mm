@@ -1,8 +1,8 @@
 @interface MTAHTSupport
 + (id)allDevices;
 + (id)allInterfaces;
-+ (id)getDeviceInServiceTree:(unsigned int)a3;
-+ (id)getInterfaceInServiceTree:(unsigned int)a3;
++ (id)getDeviceInServiceTree:(unsigned int)tree;
++ (id)getInterfaceInServiceTree:(unsigned int)tree;
 + (id)sharedInstance;
 - (MTAHTSupport)init;
 @end
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __30__MTAHTSupport_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -61,13 +61,13 @@ uint64_t __30__MTAHTSupport_sharedInstance__block_invoke(uint64_t a1)
 
 + (id)allDevices
 {
-  v2 = [a1 sharedInstance];
-  v3 = [objc_msgSend(v2 "AHTDevice")];
+  sharedInstance = [self sharedInstance];
+  v3 = [objc_msgSend(sharedInstance "AHTDevice")];
 
   return v3;
 }
 
-+ (id)getDeviceInServiceTree:(unsigned int)a3
++ (id)getDeviceInServiceTree:(unsigned int)tree
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
@@ -93,21 +93,21 @@ LABEL_3:
 
       v7 = *(*(&v19 + 1) + 8 * v9);
 
-      parent = a3;
-      v11 = a3;
-      if (a3)
+      parent = tree;
+      treeCopy = tree;
+      if (tree)
       {
         do
         {
           v17 = 0;
-          IORegistryEntryGetParentEntry(v11, "IOService", &parent);
+          IORegistryEntryGetParentEntry(treeCopy, "IOService", &parent);
           IORegistryEntryGetRegistryEntryID(parent, &v17);
           v12 = v17;
-          v13 = [v7 registryID];
-          v11 = parent;
+          registryID = [v7 registryID];
+          treeCopy = parent;
         }
 
-        while (v12 != v13 && parent != 0);
+        while (v12 != registryID && parent != 0);
         if (parent)
         {
           break;
@@ -142,13 +142,13 @@ LABEL_16:
 
 + (id)allInterfaces
 {
-  v2 = [a1 sharedInstance];
-  v3 = [objc_msgSend(v2 "AHTInterface")];
+  sharedInstance = [self sharedInstance];
+  v3 = [objc_msgSend(sharedInstance "AHTInterface")];
 
   return v3;
 }
 
-+ (id)getInterfaceInServiceTree:(unsigned int)a3
++ (id)getInterfaceInServiceTree:(unsigned int)tree
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
@@ -174,21 +174,21 @@ LABEL_3:
 
       v7 = *(*(&v19 + 1) + 8 * v9);
 
-      parent = a3;
-      v11 = a3;
-      if (a3)
+      parent = tree;
+      treeCopy = tree;
+      if (tree)
       {
         do
         {
           v17 = 0;
-          IORegistryEntryGetParentEntry(v11, "IOService", &parent);
+          IORegistryEntryGetParentEntry(treeCopy, "IOService", &parent);
           IORegistryEntryGetRegistryEntryID(parent, &v17);
           v12 = v17;
-          v13 = [v7 registryID];
-          v11 = parent;
+          registryID = [v7 registryID];
+          treeCopy = parent;
         }
 
-        while (v12 != v13 && parent != 0);
+        while (v12 != registryID && parent != 0);
         if (parent)
         {
           break;

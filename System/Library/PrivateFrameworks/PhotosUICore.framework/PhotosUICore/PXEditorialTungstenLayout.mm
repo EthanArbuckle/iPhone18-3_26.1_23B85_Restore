@@ -1,9 +1,9 @@
 @interface PXEditorialTungstenLayout
 - (PXEditorialTungstenLayout)init;
-- (id)_inputItemAtIndex:(unsigned int)a3;
+- (id)_inputItemAtIndex:(unsigned int)index;
 - (id)diagnosticDescription;
 - (id)newGenerator;
-- (void)setNumberOfColumns:(int64_t)a3;
+- (void)setNumberOfColumns:(int64_t)columns;
 @end
 
 @implementation PXEditorialTungstenLayout
@@ -12,18 +12,18 @@
 {
   v6.receiver = self;
   v6.super_class = PXEditorialTungstenLayout;
-  v3 = [(PXGGeneratedLayout *)&v6 diagnosticDescription];
-  v4 = [v3 stringByAppendingFormat:@" numberOfColumns: %li", -[PXEditorialTungstenLayout numberOfColumns](self, "numberOfColumns")];;
+  diagnosticDescription = [(PXGGeneratedLayout *)&v6 diagnosticDescription];
+  v4 = [diagnosticDescription stringByAppendingFormat:@" numberOfColumns: %li", -[PXEditorialTungstenLayout numberOfColumns](self, "numberOfColumns")];;
 
   return v4;
 }
 
-- (void)setNumberOfColumns:(int64_t)a3
+- (void)setNumberOfColumns:(int64_t)columns
 {
-  if (self->_numberOfColumns != a3)
+  if (self->_numberOfColumns != columns)
   {
     v3 = 3;
-    if (a3 == 5)
+    if (columns == 5)
     {
       v3 = 5;
     }
@@ -33,11 +33,11 @@
   }
 }
 
-- (id)_inputItemAtIndex:(unsigned int)a3
+- (id)_inputItemAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(PXGItemsLayout *)self delegate];
-  v6 = [v5 generatedLayout:self inputItemAtIndex:v3];
+  v3 = *&index;
+  delegate = [(PXGItemsLayout *)self delegate];
+  v6 = [delegate generatedLayout:self inputItemAtIndex:v3];
 
   return v6;
 }

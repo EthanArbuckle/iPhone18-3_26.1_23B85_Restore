@@ -1,6 +1,6 @@
 @interface PKRingGradientView
 - (CGPoint)_center;
-- (CGPoint)_centerPointForMaskViewWithAngle:(double)a3 adjustToCover:(BOOL)a4;
+- (CGPoint)_centerPointForMaskViewWithAngle:(double)angle adjustToCover:(BOOL)cover;
 - (PKRingGradientView)init;
 - (double)_maskRadius;
 - (double)_radius;
@@ -12,13 +12,13 @@
 - (void)_updateGradient;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCurrentAngle:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFillColor:(id)a3;
-- (void)setGradientEndColor:(id)a3;
-- (void)setGradientStartColor:(id)a3;
-- (void)setMinimumAngle:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setCurrentAngle:(double)angle;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFillColor:(id)color;
+- (void)setGradientEndColor:(id)color;
+- (void)setGradientStartColor:(id)color;
+- (void)setMinimumAngle:(double)angle;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation PKRingGradientView
@@ -51,8 +51,8 @@
 
     [(CAShapeLayer *)v3->_gradientMaskLayer setFillColor:0];
     v10 = v3->_gradientMaskLayer;
-    v11 = [MEMORY[0x1E69DC888] blackColor];
-    -[CAShapeLayer setStrokeColor:](v10, "setStrokeColor:", [v11 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CAShapeLayer setStrokeColor:](v10, "setStrokeColor:", [blackColor CGColor]);
 
     v12 = v3->_gradientMaskLayer;
     v13 = PKLayerNullActions();
@@ -95,12 +95,12 @@
     v29 = PKLayerNullActions();
     [(CAShapeLayer *)v28 setActions:v29];
 
-    v30 = [(PKRingGradientView *)v3 layer];
-    [v30 addSublayer:v3->_strokeLayer];
-    [v30 addSublayer:v3->_backgroundLayer];
-    [v30 addSublayer:v3->_gradientLayer];
-    [v30 addSublayer:v3->_backgroundCap];
-    [v30 addSublayer:v3->_gradientCap];
+    layer = [(PKRingGradientView *)v3 layer];
+    [layer addSublayer:v3->_strokeLayer];
+    [layer addSublayer:v3->_backgroundLayer];
+    [layer addSublayer:v3->_gradientLayer];
+    [layer addSublayer:v3->_backgroundCap];
+    [layer addSublayer:v3->_gradientCap];
   }
 
   return v3;
@@ -192,12 +192,12 @@
   [(PKRingGradientView *)self _updateGradient];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    [(CAGradientLayer *)self->_gradientLayer setHidden:!a3];
+    self->_enabled = enabled;
+    [(CAGradientLayer *)self->_gradientLayer setHidden:!enabled];
     gradientCap = self->_gradientCap;
     v5 = !self->_enabled;
 
@@ -205,12 +205,12 @@
   }
 }
 
-- (void)setGradientStartColor:(id)a3
+- (void)setGradientStartColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     gradientStartColor = self->_gradientStartColor;
     self->_gradientStartColor = v4;
 
@@ -218,12 +218,12 @@
   }
 }
 
-- (void)setGradientEndColor:(id)a3
+- (void)setGradientEndColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     gradientEndColor = self->_gradientEndColor;
     self->_gradientEndColor = v4;
 
@@ -231,40 +231,40 @@
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_strokeColor, a3);
+    objc_storeStrong(&self->_strokeColor, color);
     [(PKRingGradientView *)self _updateEffectiveColors];
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(PKRingGradientView *)self _updateEffectiveColors];
   }
 }
 
-- (void)setMinimumAngle:(double)a3
+- (void)setMinimumAngle:(double)angle
 {
-  if (self->_minimumAngle != a3)
+  if (self->_minimumAngle != angle)
   {
-    self->_minimumAngle = a3;
+    self->_minimumAngle = angle;
     [(PKRingGradientView *)self setNeedsLayout];
   }
 }
 
-- (void)setCurrentAngle:(double)a3
+- (void)setCurrentAngle:(double)angle
 {
-  if (self->_currentAngle != a3)
+  if (self->_currentAngle != angle)
   {
-    self->_currentAngle = a3;
+    self->_currentAngle = angle;
     [(PKRingGradientView *)self setNeedsLayout];
   }
 }
@@ -299,13 +299,13 @@
   CGColorRelease(self->_effectiveEndColor);
   CGColorRelease(self->_effectiveFillColor);
   CGColorRelease(self->_effectiveStrokeColor);
-  v3 = [(PKRingGradientView *)self traitCollection];
+  traitCollection = [(PKRingGradientView *)self traitCollection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PKRingGradientView__updateEffectiveColors__block_invoke;
   v7[3] = &unk_1E8010970;
   v7[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v7);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v7);
 
   effectiveStrokeColor = self->_effectiveStrokeColor;
   effectiveFillColor = self->_effectiveFillColor;
@@ -433,9 +433,9 @@ CGColorRef __44__PKRingGradientView__updateEffectiveColors__block_invoke(uint64_
   return (v4 + v5) * 0.5;
 }
 
-- (CGPoint)_centerPointForMaskViewWithAngle:(double)a3 adjustToCover:(BOOL)a4
+- (CGPoint)_centerPointForMaskViewWithAngle:(double)angle adjustToCover:(BOOL)cover
 {
-  v4 = a4;
+  coverCopy = cover;
   [(PKRingGradientView *)self _center];
   v8 = v7;
   v10 = v9;
@@ -445,13 +445,13 @@ CGColorRef __44__PKRingGradientView__updateEffectiveColors__block_invoke(uint64_
   v14 = v13 - v12;
   [(PKRingGradientView *)self strokeWidth];
   v16 = v14 + v15 * -0.5;
-  if (v4)
+  if (coverCopy)
   {
     v17 = PKUIPixelLength();
-    a3 = a3 + asin(v17 / v16) * -5.0;
+    angle = angle + asin(v17 / v16) * -5.0;
   }
 
-  v18 = __sincos_stret(a3);
+  v18 = __sincos_stret(angle);
   v19 = v10 + v16 * v18.__sinval;
   v20 = v8 + v16 * v18.__cosval;
   result.y = v19;

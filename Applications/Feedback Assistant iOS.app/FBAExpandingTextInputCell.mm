@@ -3,12 +3,12 @@
 - (NSString)itemIdentifier;
 - (UILabel)characterCountLabel;
 - (_TtC18Feedback_Assistant20FBAExpandingTextView)commentsTextView;
-- (_TtC18Feedback_Assistant25FBAExpandingTextInputCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18Feedback_Assistant25FBAExpandingTextInputCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
-- (void)setItemIdentifier:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setItemIdentifier:(id)identifier;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation FBAExpandingTextInputCell
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant25FBAExpandingTextInputCell_itemIdentifier);
@@ -55,22 +55,22 @@
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000814A4();
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v8 = self;
-    v6 = [v5 tableView];
-    if (v6)
+    selfCopy = self;
+    tableView = [v5 tableView];
+    if (tableView)
     {
-      v7 = v6;
-      [v6 flashScrollIndicators];
+      v7 = tableView;
+      [tableView flashScrollIndicators];
     }
 
     else
@@ -80,20 +80,20 @@
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008198C(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10008198C(changeCopy);
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = self;
+    selfCopy = self;
     sub_10005CDE4();
     v7 = objc_opt_self();
     v8 = swift_allocObject();
@@ -121,11 +121,11 @@
   }
 }
 
-- (_TtC18Feedback_Assistant25FBAExpandingTextInputCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant25FBAExpandingTextInputCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -134,7 +134,7 @@
     v6 = 0;
   }
 
-  return sub_100081D74(a3, a4, v6);
+  return sub_100081D74(style, identifier, v6);
 }
 
 @end

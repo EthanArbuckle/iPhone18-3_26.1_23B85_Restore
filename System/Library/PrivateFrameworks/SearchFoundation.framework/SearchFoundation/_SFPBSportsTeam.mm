@@ -1,81 +1,81 @@
 @interface _SFPBSportsTeam
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSportsTeam)initWithDictionary:(id)a3;
-- (_SFPBSportsTeam)initWithFacade:(id)a3;
-- (_SFPBSportsTeam)initWithJSON:(id)a3;
+- (_SFPBSportsTeam)initWithDictionary:(id)dictionary;
+- (_SFPBSportsTeam)initWithFacade:(id)facade;
+- (_SFPBSportsTeam)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRecord:(id)a3;
-- (void)setScore:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setName:(id)name;
+- (void)setRecord:(id)record;
+- (void)setScore:(id)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSportsTeam
 
-- (_SFPBSportsTeam)initWithFacade:(id)a3
+- (_SFPBSportsTeam)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSportsTeam *)self init];
   if (v5)
   {
-    v6 = [v4 logo];
+    logo = [facadeCopy logo];
 
-    if (v6)
+    if (logo)
     {
       v7 = [_SFPBImage alloc];
-      v8 = [v4 logo];
-      v9 = [(_SFPBImage *)v7 initWithFacade:v8];
+      logo2 = [facadeCopy logo];
+      v9 = [(_SFPBImage *)v7 initWithFacade:logo2];
       [(_SFPBSportsTeam *)v5 setLogo:v9];
     }
 
-    v10 = [v4 record];
+    record = [facadeCopy record];
 
-    if (v10)
+    if (record)
     {
-      v11 = [v4 record];
-      [(_SFPBSportsTeam *)v5 setRecord:v11];
+      record2 = [facadeCopy record];
+      [(_SFPBSportsTeam *)v5 setRecord:record2];
     }
 
-    v12 = [v4 score];
+    score = [facadeCopy score];
 
-    if (v12)
+    if (score)
     {
-      v13 = [v4 score];
-      [(_SFPBSportsTeam *)v5 setScore:v13];
+      score2 = [facadeCopy score];
+      [(_SFPBSportsTeam *)v5 setScore:score2];
     }
 
-    v14 = [v4 accessibilityDescription];
+    accessibilityDescription = [facadeCopy accessibilityDescription];
 
-    if (v14)
+    if (accessibilityDescription)
     {
-      v15 = [v4 accessibilityDescription];
-      [(_SFPBSportsTeam *)v5 setAccessibilityDescription:v15];
+      accessibilityDescription2 = [facadeCopy accessibilityDescription];
+      [(_SFPBSportsTeam *)v5 setAccessibilityDescription:accessibilityDescription2];
     }
 
-    v16 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v16)
+    if (name)
     {
-      v17 = [v4 name];
-      [(_SFPBSportsTeam *)v5 setName:v17];
+      name2 = [facadeCopy name];
+      [(_SFPBSportsTeam *)v5 setName:name2];
     }
 
-    v18 = [v4 button];
+    button = [facadeCopy button];
 
-    if (v18)
+    if (button)
     {
       v19 = [_SFPBButtonItem alloc];
-      v20 = [v4 button];
-      v21 = [(_SFPBButtonItem *)v19 initWithFacade:v20];
+      button2 = [facadeCopy button];
+      v21 = [(_SFPBButtonItem *)v19 initWithFacade:button2];
       [(_SFPBSportsTeam *)v5 setButton:v21];
     }
 
-    if ([v4 hasIsWinner])
+    if ([facadeCopy hasIsWinner])
     {
-      -[_SFPBSportsTeam setIsWinner:](v5, "setIsWinner:", [v4 isWinner]);
+      -[_SFPBSportsTeam setIsWinner:](v5, "setIsWinner:", [facadeCopy isWinner]);
     }
 
     v22 = v5;
@@ -84,15 +84,15 @@
   return v5;
 }
 
-- (_SFPBSportsTeam)initWithDictionary:(id)a3
+- (_SFPBSportsTeam)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = _SFPBSportsTeam;
   v5 = [(_SFPBSportsTeam *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"logo"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"logo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBSportsTeam *)v5 setLogo:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"record"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"record"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBSportsTeam *)v5 setRecord:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"score"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
       [(_SFPBSportsTeam *)v5 setScore:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"accessibilityDescription"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"accessibilityDescription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(_SFPBSportsTeam *)v5 setAccessibilityDescription:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"name"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
       [(_SFPBSportsTeam *)v5 setName:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"button"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"button"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
       [(_SFPBSportsTeam *)v5 setButton:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isWinner"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isWinner"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (_SFPBSportsTeam)initWithJSON:(id)a3
+- (_SFPBSportsTeam)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSportsTeam *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSportsTeam *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSportsTeam *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,74 +189,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accessibilityDescription)
   {
-    v4 = [(_SFPBSportsTeam *)self accessibilityDescription];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accessibilityDescription"];
+    accessibilityDescription = [(_SFPBSportsTeam *)self accessibilityDescription];
+    v5 = [accessibilityDescription copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accessibilityDescription"];
   }
 
   if (self->_button)
   {
-    v6 = [(_SFPBSportsTeam *)self button];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    button = [(_SFPBSportsTeam *)self button];
+    dictionaryRepresentation = [button dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"button"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"button"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"button"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"button"];
     }
   }
 
   if (self->_isWinner)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSportsTeam isWinner](self, "isWinner")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isWinner"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isWinner"];
   }
 
   if (self->_logo)
   {
-    v10 = [(_SFPBSportsTeam *)self logo];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    logo = [(_SFPBSportsTeam *)self logo];
+    dictionaryRepresentation2 = [logo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"logo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"logo"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"logo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"logo"];
     }
   }
 
   if (self->_name)
   {
-    v13 = [(_SFPBSportsTeam *)self name];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"name"];
+    name = [(_SFPBSportsTeam *)self name];
+    v14 = [name copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"name"];
   }
 
   if (self->_record)
   {
-    v15 = [(_SFPBSportsTeam *)self record];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"record"];
+    record = [(_SFPBSportsTeam *)self record];
+    v16 = [record copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"record"];
   }
 
   if (self->_score)
   {
-    v17 = [(_SFPBSportsTeam *)self score];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"score"];
+    score = [(_SFPBSportsTeam *)self score];
+    v18 = [score copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"score"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -276,28 +276,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_SFPBSportsTeam *)self logo];
-  v6 = [v4 logo];
-  if ((v5 != 0) == (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self logo];
+  logo2 = [equalCopy logo];
+  if ((logo != 0) == (logo2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_SFPBSportsTeam *)self logo];
-  if (v7)
+  logo3 = [(_SFPBSportsTeam *)self logo];
+  if (logo3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSportsTeam *)self logo];
-    v10 = [v4 logo];
-    v11 = [v9 isEqual:v10];
+    v8 = logo3;
+    logo4 = [(_SFPBSportsTeam *)self logo];
+    logo5 = [equalCopy logo];
+    v11 = [logo4 isEqual:logo5];
 
     if (!v11)
     {
@@ -309,20 +309,20 @@
   {
   }
 
-  v5 = [(_SFPBSportsTeam *)self record];
-  v6 = [v4 record];
-  if ((v5 != 0) == (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self record];
+  logo2 = [equalCopy record];
+  if ((logo != 0) == (logo2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_SFPBSportsTeam *)self record];
-  if (v12)
+  record = [(_SFPBSportsTeam *)self record];
+  if (record)
   {
-    v13 = v12;
-    v14 = [(_SFPBSportsTeam *)self record];
-    v15 = [v4 record];
-    v16 = [v14 isEqual:v15];
+    v13 = record;
+    record2 = [(_SFPBSportsTeam *)self record];
+    record3 = [equalCopy record];
+    v16 = [record2 isEqual:record3];
 
     if (!v16)
     {
@@ -334,20 +334,20 @@
   {
   }
 
-  v5 = [(_SFPBSportsTeam *)self score];
-  v6 = [v4 score];
-  if ((v5 != 0) == (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self score];
+  logo2 = [equalCopy score];
+  if ((logo != 0) == (logo2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_SFPBSportsTeam *)self score];
-  if (v17)
+  score = [(_SFPBSportsTeam *)self score];
+  if (score)
   {
-    v18 = v17;
-    v19 = [(_SFPBSportsTeam *)self score];
-    v20 = [v4 score];
-    v21 = [v19 isEqual:v20];
+    v18 = score;
+    score2 = [(_SFPBSportsTeam *)self score];
+    score3 = [equalCopy score];
+    v21 = [score2 isEqual:score3];
 
     if (!v21)
     {
@@ -359,20 +359,20 @@
   {
   }
 
-  v5 = [(_SFPBSportsTeam *)self accessibilityDescription];
-  v6 = [v4 accessibilityDescription];
-  if ((v5 != 0) == (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self accessibilityDescription];
+  logo2 = [equalCopy accessibilityDescription];
+  if ((logo != 0) == (logo2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_SFPBSportsTeam *)self accessibilityDescription];
-  if (v22)
+  accessibilityDescription = [(_SFPBSportsTeam *)self accessibilityDescription];
+  if (accessibilityDescription)
   {
-    v23 = v22;
-    v24 = [(_SFPBSportsTeam *)self accessibilityDescription];
-    v25 = [v4 accessibilityDescription];
-    v26 = [v24 isEqual:v25];
+    v23 = accessibilityDescription;
+    accessibilityDescription2 = [(_SFPBSportsTeam *)self accessibilityDescription];
+    accessibilityDescription3 = [equalCopy accessibilityDescription];
+    v26 = [accessibilityDescription2 isEqual:accessibilityDescription3];
 
     if (!v26)
     {
@@ -384,20 +384,20 @@
   {
   }
 
-  v5 = [(_SFPBSportsTeam *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self name];
+  logo2 = [equalCopy name];
+  if ((logo != 0) == (logo2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_SFPBSportsTeam *)self name];
-  if (v27)
+  name = [(_SFPBSportsTeam *)self name];
+  if (name)
   {
-    v28 = v27;
-    v29 = [(_SFPBSportsTeam *)self name];
-    v30 = [v4 name];
-    v31 = [v29 isEqual:v30];
+    v28 = name;
+    name2 = [(_SFPBSportsTeam *)self name];
+    name3 = [equalCopy name];
+    v31 = [name2 isEqual:name3];
 
     if (!v31)
     {
@@ -409,24 +409,24 @@
   {
   }
 
-  v5 = [(_SFPBSportsTeam *)self button];
-  v6 = [v4 button];
-  if ((v5 != 0) != (v6 == 0))
+  logo = [(_SFPBSportsTeam *)self button];
+  logo2 = [equalCopy button];
+  if ((logo != 0) != (logo2 == 0))
   {
-    v32 = [(_SFPBSportsTeam *)self button];
-    if (!v32)
+    button = [(_SFPBSportsTeam *)self button];
+    if (!button)
     {
 
 LABEL_35:
       isWinner = self->_isWinner;
-      v37 = isWinner == [v4 isWinner];
+      v37 = isWinner == [equalCopy isWinner];
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_SFPBSportsTeam *)self button];
-    v35 = [v4 button];
-    v36 = [v34 isEqual:v35];
+    v33 = button;
+    button2 = [(_SFPBSportsTeam *)self button];
+    button3 = [equalCopy button];
+    v36 = [button2 isEqual:button3];
 
     if (v36)
     {
@@ -446,41 +446,41 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(_SFPBSportsTeam *)self logo];
-  if (v4)
+  toCopy = to;
+  logo = [(_SFPBSportsTeam *)self logo];
+  if (logo)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBSportsTeam *)self record];
-  if (v5)
+  record = [(_SFPBSportsTeam *)self record];
+  if (record)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBSportsTeam *)self score];
-  if (v6)
+  score = [(_SFPBSportsTeam *)self score];
+  if (score)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBSportsTeam *)self accessibilityDescription];
-  if (v7)
+  accessibilityDescription = [(_SFPBSportsTeam *)self accessibilityDescription];
+  if (accessibilityDescription)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBSportsTeam *)self name];
-  if (v8)
+  name = [(_SFPBSportsTeam *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBSportsTeam *)self button];
-  if (v9)
+  button = [(_SFPBSportsTeam *)self button];
+  if (button)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -491,36 +491,36 @@ LABEL_33:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   accessibilityDescription = self->_accessibilityDescription;
   self->_accessibilityDescription = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setScore:(id)a3
+- (void)setScore:(id)score
 {
-  v4 = [a3 copy];
+  v4 = [score copy];
   score = self->_score;
   self->_score = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setRecord:(id)a3
+- (void)setRecord:(id)record
 {
-  v4 = [a3 copy];
+  v4 = [record copy];
   record = self->_record;
   self->_record = v4;
 

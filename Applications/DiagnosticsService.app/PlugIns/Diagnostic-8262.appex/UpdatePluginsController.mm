@@ -1,47 +1,47 @@
 @interface UpdatePluginsController
 - (id)diskPluginsMap;
-- (int64_t)_downloadPDIWithCDN:(id *)a3;
-- (int64_t)_downloadPDIWithMobileAsset:(id *)a3;
-- (int64_t)_performPluginsUpdateWithError:(id *)a3;
-- (int64_t)_requestUpdateURLAndDigestFromAST2WithError:(id *)a3;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (int64_t)_downloadPDIWithCDN:(id *)n;
+- (int64_t)_downloadPDIWithMobileAsset:(id *)asset;
+- (int64_t)_performPluginsUpdateWithError:(id *)error;
+- (int64_t)_requestUpdateURLAndDigestFromAST2WithError:(id *)error;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation UpdatePluginsController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315650;
     v13 = "[UpdatePluginsController setupWithInputs:responder:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = inputsCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v12, 0x20u);
   }
 
-  [(UpdatePluginsController *)self setInputs:v6];
+  [(UpdatePluginsController *)self setInputs:inputsCopy];
   diagsReponder = self->diagsReponder;
-  self->diagsReponder = v7;
+  self->diagsReponder = responderCopy;
 
-  v10 = [(UpdatePluginsController *)self inputs];
+  inputs = [(UpdatePluginsController *)self inputs];
 
-  if (!v10)
+  if (!inputs)
   {
-    v11 = [(UpdatePluginsController *)self result];
-    [v11 setStatusCode:&off_100008CB8];
+    result = [(UpdatePluginsController *)self result];
+    [result setStatusCode:&off_100008CB8];
 
     [(UpdatePluginsController *)self setFinished:1];
   }
 }
 
-- (int64_t)_downloadPDIWithMobileAsset:(id *)a3
+- (int64_t)_downloadPDIWithMobileAsset:(id *)asset
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -109,13 +109,13 @@ LABEL_56:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Start to download assetType: %@, assetSpecifier: %@", v60, 0x16u);
     }
 
-    v15 = [(UpdatePluginsController *)self inputs];
-    v16 = [v15 timeoutPeriod];
-    v17 = [v16 intValue];
+    inputs = [(UpdatePluginsController *)self inputs];
+    timeoutPeriod = [inputs timeoutPeriod];
+    intValue = [timeoutPeriod intValue];
     v18 = *(&buf + 1);
     obj = *(*(&buf + 1) + 40);
     v56 = v10;
-    v19 = [v11 lockContentSync:@"lockRepairUpdateContent" withUsagePolicy:v6 withTimeout:v17 lockedAssetSelector:&v56 newerInProgress:0 error:&obj];
+    v19 = [v11 lockContentSync:@"lockRepairUpdateContent" withUsagePolicy:v6 withTimeout:intValue lockedAssetSelector:&v56 newerInProgress:0 error:&obj];
     v49 = v56;
 
     objc_storeStrong((v18 + 40), obj);
@@ -137,9 +137,9 @@ LABEL_56:
 
       else
       {
-        v38 = [v35 code];
+        code = [v35 code];
         v39 = *(*(&buf + 1) + 40);
-        if (v38 == 59)
+        if (code == 59)
         {
           v40 = @"Can not find host";
           v41 = -13;
@@ -147,10 +147,10 @@ LABEL_56:
 
         else
         {
-          v43 = [*(*(&buf + 1) + 40) code];
+          code2 = [*(*(&buf + 1) + 40) code];
           v39 = *(*(&buf + 1) + 40);
-          v44 = v43 == 6505;
-          if (v43 == 6505)
+          v44 = code2 == 6505;
+          if (code2 == 6505)
           {
             v41 = -2;
           }
@@ -200,8 +200,8 @@ LABEL_56:
         }
 
         mkdir("/private/var/mobile/RepairDiskImage/", 0x1C0u);
-        v26 = [v19 absoluteString];
-        v27 = [NSString stringWithFormat:@"%@/FactoryDiskImagePersonalized.dmg", v26];
+        absoluteString = [v19 absoluteString];
+        v27 = [NSString stringWithFormat:@"%@/FactoryDiskImagePersonalized.dmg", absoluteString];
 
         if ([v51 fileExistsAtPath:v27])
         {
@@ -279,27 +279,27 @@ LABEL_45:
   v19 = 0;
   v27 = 0;
 LABEL_46:
-  if (a3)
+  if (asset)
   {
     v45 = v37;
-    *a3 = v37;
+    *asset = v37;
   }
 
   if (v37)
   {
-    v46 = [v37 code];
+    code3 = [v37 code];
   }
 
   else
   {
-    v46 = 0;
+    code3 = 0;
   }
 
   _Block_object_dispose(&buf, 8);
-  return v46;
+  return code3;
 }
 
-- (int64_t)_requestUpdateURLAndDigestFromAST2WithError:(id *)a3
+- (int64_t)_requestUpdateURLAndDigestFromAST2WithError:(id *)error
 {
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -343,9 +343,9 @@ LABEL_46:
   v8 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v9 = [NSURLSession sessionWithConfiguration:v8 delegate:self delegateQueue:0];
 
-  v10 = [(UpdatePluginsController *)self inputs];
-  v11 = [v10 ast2RequestURL];
-  v12 = [NSURL URLWithString:v11];
+  inputs = [(UpdatePluginsController *)self inputs];
+  ast2RequestURL = [inputs ast2RequestURL];
+  v12 = [NSURL URLWithString:ast2RequestURL];
   v13 = [NSMutableURLRequest requestWithURL:v12];
 
   [v13 setHTTPMethod:@"POST"];
@@ -388,7 +388,7 @@ LABEL_10:
     v22 = 0;
     v23 = 0;
     v25 = 1;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -408,24 +408,24 @@ LABEL_10:
     [(UpdatePluginsController *)self setPdiURL:v29];
 
     [(UpdatePluginsController *)self setPdiDigest:v22];
-    v30 = [(UpdatePluginsController *)self pdiURL];
-    if (v30)
+    pdiURL = [(UpdatePluginsController *)self pdiURL];
+    if (pdiURL)
     {
-      v40 = [(UpdatePluginsController *)self pdiURL];
-      v39 = [v40 host];
-      if (v39)
+      pdiURL2 = [(UpdatePluginsController *)self pdiURL];
+      host = [pdiURL2 host];
+      if (host)
       {
-        v38 = [(UpdatePluginsController *)self pdiURL];
-        v37 = [v38 scheme];
-        if ([v37 caseInsensitiveCompare:@"http"])
+        pdiURL3 = [(UpdatePluginsController *)self pdiURL];
+        scheme = [pdiURL3 scheme];
+        if ([scheme caseInsensitiveCompare:@"http"])
         {
 
           goto LABEL_28;
         }
 
-        v36 = [(UpdatePluginsController *)self pdiURL];
-        v34 = [v36 scheme];
-        v35 = [v34 caseInsensitiveCompare:@"https"] == 0;
+        pdiURL4 = [(UpdatePluginsController *)self pdiURL];
+        scheme2 = [pdiURL4 scheme];
+        v35 = [scheme2 caseInsensitiveCompare:@"https"] == 0;
 
         if (!v35)
         {
@@ -471,10 +471,10 @@ LABEL_31:
   v25 = 0;
 LABEL_11:
 
-  if (a3)
+  if (error)
   {
 LABEL_12:
-    *a3 = v46[5];
+    *error = v46[5];
   }
 
 LABEL_13:
@@ -485,7 +485,7 @@ LABEL_13:
   return v25;
 }
 
-- (int64_t)_downloadPDIWithCDN:(id *)a3
+- (int64_t)_downloadPDIWithCDN:(id *)n
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -556,7 +556,7 @@ LABEL_13:
     v14 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
     v15 = objc_opt_new();
     v16 = [NSURLSession sessionWithConfiguration:v14 delegate:v15 delegateQueue:0];
-    v17 = [(UpdatePluginsController *)self pdiURL];
+    pdiURL = [(UpdatePluginsController *)self pdiURL];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_100003344;
@@ -566,19 +566,19 @@ LABEL_13:
     v42[6] = v53;
     v42[7] = &v43;
     v42[8] = &v55;
-    v18 = [v16 downloadTaskWithURL:v17 completionHandler:v42];
+    v18 = [v16 downloadTaskWithURL:pdiURL completionHandler:v42];
     [v18 resume];
 
     v19 = v56[5];
-    v20 = [(UpdatePluginsController *)self inputs];
-    v21 = [v20 timeoutPeriod];
-    v22 = dispatch_time(0, 1000000000 * [v21 intValue]);
+    inputs = [(UpdatePluginsController *)self inputs];
+    timeoutPeriod = [inputs timeoutPeriod];
+    v22 = dispatch_time(0, 1000000000 * [timeoutPeriod intValue]);
     v23 = dispatch_semaphore_wait(v19, v22);
 
     if (v23 || !*(*(&buf + 1) + 40) || v44[5] || (v50[3] & 1) == 0)
     {
-      v24 = [(UpdatePluginsController *)self pdiDigest];
-      v25 = [NSString stringWithFormat:@"Failed to download Disk Image::location:%@:error:%@", v24, v6];
+      pdiDigest = [(UpdatePluginsController *)self pdiDigest];
+      v25 = [NSString stringWithFormat:@"Failed to download Disk Image::location:%@:error:%@", pdiDigest, v6];
 
       v26 = sub_10000425C(0xFFFFFFFFFFFFFFE9, v25, 0);
       v27 = v44[5];
@@ -596,10 +596,10 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Asset download success", v61, 2u);
       }
 
-      v32 = [v41 SHA256DigestString];
+      sHA256DigestString = [v41 SHA256DigestString];
 
-      v33 = [(UpdatePluginsController *)self pdiDigest];
-      v34 = [v33 caseInsensitiveCompare:v32] == 0;
+      pdiDigest2 = [(UpdatePluginsController *)self pdiDigest];
+      v34 = [pdiDigest2 caseInsensitiveCompare:sHA256DigestString] == 0;
 
       if (v34)
       {
@@ -616,8 +616,8 @@ LABEL_13:
 
       else
       {
-        v35 = [(UpdatePluginsController *)self pdiDigest];
-        v25 = [NSString stringWithFormat:@"Digest Mismatched, Download Failure:%@:%@", v35, v32];
+        pdiDigest3 = [(UpdatePluginsController *)self pdiDigest];
+        v25 = [NSString stringWithFormat:@"Digest Mismatched, Download Failure:%@:%@", pdiDigest3, sHA256DigestString];
 
         v36 = sub_10000425C(0xFFFFFFFFFFFFFFE9, v25, 0);
         v37 = v44[5];
@@ -626,7 +626,7 @@ LABEL_13:
         v28 = 0;
       }
 
-      v6 = v32;
+      v6 = sHA256DigestString;
     }
 
     objc_autoreleasePoolPop(v8);
@@ -644,9 +644,9 @@ LABEL_13:
   }
 
   while (v30 != 1);
-  if (a3)
+  if (n)
   {
-    *a3 = v44[5];
+    *n = v44[5];
   }
 
   _Block_object_dispose(&v43, 8);
@@ -659,7 +659,7 @@ LABEL_13:
   return v39;
 }
 
-- (int64_t)_performPluginsUpdateWithError:(id *)a3
+- (int64_t)_performPluginsUpdateWithError:(id *)error
 {
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -672,8 +672,8 @@ LABEL_13:
   v34 = 0;
   v35 = 0;
   v6 = +[CRPersonalizationManager getDefaultAMAuthInstallRef];
-  v7 = [(UpdatePluginsController *)self inputs];
-  if ([v7 useAppleConnect])
+  inputs = [(UpdatePluginsController *)self inputs];
+  if ([inputs useAppleConnect])
   {
   }
 
@@ -696,10 +696,10 @@ LABEL_39:
   }
 
 LABEL_7:
-  v9 = [(UpdatePluginsController *)self inputs];
-  v10 = [v9 tatsuURL];
+  inputs2 = [(UpdatePluginsController *)self inputs];
+  tatsuURL = [inputs2 tatsuURL];
 
-  if (v10)
+  if (tatsuURL)
   {
     v11 = handleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -708,8 +708,8 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting Custom signing URL", buf, 2u);
     }
 
-    v12 = [(UpdatePluginsController *)self inputs];
-    v13 = [v12 tatsuURL];
+    inputs3 = [(UpdatePluginsController *)self inputs];
+    tatsuURL2 = [inputs3 tatsuURL];
     v14 = AMAuthInstallSetSigningServerURL();
 
     if (v14)
@@ -829,10 +829,10 @@ LABEL_32:
   }
 
 LABEL_34:
-  if (a3)
+  if (error)
   {
     v29 = v25;
-    *a3 = v25;
+    *error = v25;
   }
 
   return v26;
@@ -863,10 +863,10 @@ LABEL_34:
   v7 = objc_alloc_init(NSFileManager);
   v8 = [v7 enumeratorAtPath:v4];
 
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     v11 = 0;
     v35 = v8;
     v36 = v4;
@@ -888,10 +888,10 @@ LABEL_34:
 
       v17 = v11;
 LABEL_26:
-      v31 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v10 = v31;
-      if (!v31)
+      v10 = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_30;
       }
@@ -955,8 +955,8 @@ LABEL_25:
         v20 = [v28 objectForKeyedSubscript:@"DKDiagnosticIdentifier"];
 
         v29 = [v16 objectForKeyedSubscript:@"CFBundleShortVersionString"];
-        v30 = [v20 stringValue];
-        [v34 setObject:v29 forKeyedSubscript:v30];
+        stringValue = [v20 stringValue];
+        [v34 setObject:v29 forKeyedSubscript:stringValue];
       }
 
       else
@@ -1008,20 +1008,20 @@ LABEL_30:
   if ((MGGetBoolAnswer() & 1) == 0)
   {
     v9 = sub_10000425C(0xFFFFFFFFFFFFFFB8, @"Device should reboot to Diagnostics mode", 0);
-    v16 = 0;
-    v8 = -20;
+    diskPluginsMap = 0;
+    pdiDigest = -20;
     goto LABEL_21;
   }
 
-  v6 = [(UpdatePluginsController *)self inputs];
-  v7 = [v6 useMobileAsset];
+  inputs = [(UpdatePluginsController *)self inputs];
+  useMobileAsset = [inputs useMobileAsset];
 
-  if (v7)
+  if (useMobileAsset)
   {
     v45 = 0;
-    v8 = [(UpdatePluginsController *)self _downloadPDIWithMobileAsset:&v45];
+    pdiDigest = [(UpdatePluginsController *)self _downloadPDIWithMobileAsset:&v45];
     v9 = v45;
-    if (v8)
+    if (pdiDigest)
     {
       v37 = handleForCategory();
       if (sub_100004244(v37))
@@ -1054,15 +1054,15 @@ LABEL_49:
 
   else
   {
-    v13 = [(UpdatePluginsController *)self inputs];
-    v7 = [v13 needRequestURL];
+    inputs2 = [(UpdatePluginsController *)self inputs];
+    useMobileAsset = [inputs2 needRequestURL];
 
-    if (v7)
+    if (useMobileAsset)
     {
       v44 = 0;
-      v8 = [(UpdatePluginsController *)self _requestUpdateURLAndDigestFromAST2WithError:&v44];
+      pdiDigest = [(UpdatePluginsController *)self _requestUpdateURLAndDigestFromAST2WithError:&v44];
       v9 = v44;
-      if (v8)
+      if (pdiDigest)
       {
         v39 = handleForCategory();
         if (sub_100004244(v39))
@@ -1075,44 +1075,44 @@ LABEL_49:
         goto LABEL_49;
       }
 
-      v14 = [(UpdatePluginsController *)self pdiURL];
-      if (!v14)
+      pdiURL = [(UpdatePluginsController *)self pdiURL];
+      if (!pdiURL)
       {
 LABEL_41:
-        v8 = 0;
+        pdiDigest = 0;
         goto LABEL_14;
       }
 
-      v15 = v14;
-      v8 = [(UpdatePluginsController *)self pdiDigest];
+      v15 = pdiURL;
+      pdiDigest = [(UpdatePluginsController *)self pdiDigest];
 
-      if (!v8)
+      if (!pdiDigest)
       {
 LABEL_14:
-        v16 = 0;
+        diskPluginsMap = 0;
         goto LABEL_21;
       }
     }
 
     else
     {
-      v17 = [(UpdatePluginsController *)self inputs];
-      v18 = [v17 PDIURL];
-      [(UpdatePluginsController *)self setPdiURL:v18];
+      inputs3 = [(UpdatePluginsController *)self inputs];
+      pDIURL = [inputs3 PDIURL];
+      [(UpdatePluginsController *)self setPdiURL:pDIURL];
 
-      v19 = [(UpdatePluginsController *)self inputs];
-      v20 = [v19 PDIDigest];
-      [(UpdatePluginsController *)self setPdiDigest:v20];
+      inputs4 = [(UpdatePluginsController *)self inputs];
+      pDIDigest = [inputs4 PDIDigest];
+      [(UpdatePluginsController *)self setPdiDigest:pDIDigest];
 
       v9 = 0;
     }
 
-    v7 = v9;
+    useMobileAsset = v9;
     v43 = v9;
-    v8 = [(UpdatePluginsController *)self _downloadPDIWithCDN:&v43];
+    pdiDigest = [(UpdatePluginsController *)self _downloadPDIWithCDN:&v43];
     v9 = v43;
 
-    if (v8)
+    if (pdiDigest)
     {
       v38 = handleForCategory();
       if (sub_100004244(v38))
@@ -1126,12 +1126,12 @@ LABEL_14:
     }
   }
 
-  v7 = v9;
+  useMobileAsset = v9;
   v42 = v9;
-  v8 = [(UpdatePluginsController *)self _performPluginsUpdateWithError:&v42];
+  pdiDigest = [(UpdatePluginsController *)self _performPluginsUpdateWithError:&v42];
   v9 = v42;
 
-  if (v8)
+  if (pdiDigest)
   {
     v35 = handleForCategory();
     if (sub_100004244(v35))
@@ -1139,14 +1139,14 @@ LABEL_14:
       sub_100004238(5.7779e-34);
       v36 = "Failed to update plugins, error: %@";
 LABEL_48:
-      _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, v36, buf, 0xCu);
+      _os_log_error_impl(&_mh_execute_header, useMobileAsset, OS_LOG_TYPE_ERROR, v36, buf, 0xCu);
       goto LABEL_49;
     }
 
     goto LABEL_49;
   }
 
-  v16 = [(UpdatePluginsController *)self diskPluginsMap];
+  diskPluginsMap = [(UpdatePluginsController *)self diskPluginsMap];
   v21 = handleForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -1155,13 +1155,13 @@ LABEL_48:
   }
 
   [(DKResponder *)self->diagsReponder requestPluginReloadOnFinishWithCompletion:&stru_1000082C8];
-  v8 = 0;
+  pdiDigest = 0;
 LABEL_21:
   v22 = [CRUtils getInnermostNSError:v9];
 
-  v23 = [NSNumber numberWithInteger:v8];
-  v24 = [(UpdatePluginsController *)self result];
-  [v24 setStatusCode:v23];
+  v23 = [NSNumber numberWithInteger:pdiDigest];
+  result = [(UpdatePluginsController *)self result];
+  [result setStatusCode:v23];
 
   v46[0] = @"MountPath";
   pdiMountPath = self->pdiMountPath;
@@ -1194,17 +1194,17 @@ LABEL_21:
 
   v47[3] = v30;
   v46[4] = @"newPluginVersions";
-  v31 = v16;
-  v32 = v16;
-  if (!v16)
+  v31 = diskPluginsMap;
+  v32 = diskPluginsMap;
+  if (!diskPluginsMap)
   {
     v31 = +[NSNull null];
   }
 
   v47[4] = v31;
   v33 = [NSDictionary dictionaryWithObjects:v47 forKeys:v46 count:5];
-  v34 = [(UpdatePluginsController *)self result];
-  [v34 setData:v33];
+  result2 = [(UpdatePluginsController *)self result];
+  [result2 setData:v33];
 
   if (v32)
   {

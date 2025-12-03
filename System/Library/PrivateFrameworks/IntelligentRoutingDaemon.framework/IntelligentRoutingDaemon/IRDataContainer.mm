@@ -1,7 +1,7 @@
 @interface IRDataContainer
-+ (id)containerForPersona:(id)a3;
++ (id)containerForPersona:(id)persona;
 + (id)containerForPrimaryPersona;
-- (id)_initWithPersona:(id)a3;
+- (id)_initWithPersona:(id)persona;
 - (id)description;
 - (void)dealloc;
 @end
@@ -10,17 +10,17 @@
 
 + (id)containerForPrimaryPersona
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D85ED0]];
   v4 = [v2 _initWithPersona:v3];
 
   return v4;
 }
 
-+ (id)containerForPersona:(id)a3
++ (id)containerForPersona:(id)persona
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithPersona:v4];
+  personaCopy = persona;
+  v5 = [[self alloc] _initWithPersona:personaCopy];
 
   return v5;
 }
@@ -32,11 +32,11 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(IRDataContainer *)self persona];
-  [v6 appendFormat:@", persona: %@", v7];
+  persona = [(IRDataContainer *)self persona];
+  [v6 appendFormat:@", persona: %@", persona];
 
-  v8 = [(IRDataContainer *)self containerBaseURL];
-  [v6 appendFormat:@", containerBaseURL: %@", v8];
+  containerBaseURL = [(IRDataContainer *)self containerBaseURL];
+  [v6 appendFormat:@", containerBaseURL: %@", containerBaseURL];
 
   v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[IRDataContainer extensionHandle](self, "extensionHandle")}];
   [v6 appendFormat:@", extensionHandle: %@", v9];
@@ -55,9 +55,9 @@
   [(IRDataContainer *)&v3 dealloc];
 }
 
-- (id)_initWithPersona:(id)a3
+- (id)_initWithPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v40.receiver = self;
   v40.super_class = IRDataContainer;
   v5 = [(IRDataContainer *)&v40 init];
@@ -67,13 +67,13 @@
     goto LABEL_8;
   }
 
-  [(IRDataContainer *)v5 setPersona:v4];
+  [(IRDataContainer *)v5 setPersona:personaCopy];
   if (!container_query_create())
   {
     v15 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
-      [(IRDataContainer *)v4 _initWithPersona:v15, v16, v17, v18, v19, v20, v21];
+      [(IRDataContainer *)personaCopy _initWithPersona:v15, v16, v17, v18, v19, v20, v21];
     }
 
     goto LABEL_22;
@@ -81,7 +81,7 @@
 
   container_query_set_class();
   container_query_operation_set_flags();
-  [v4 UTF8String];
+  [personaCopy UTF8String];
   container_query_set_persona_unique_string();
   if (!container_query_get_single_result())
   {
@@ -90,7 +90,7 @@
     v23 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
-      [(IRDataContainer *)v4 _initWithPersona:v23, v22];
+      [(IRDataContainer *)personaCopy _initWithPersona:v23, v22];
     }
 
     free(v22);
@@ -103,7 +103,7 @@
     v24 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
-      [(IRDataContainer *)v4 _initWithPersona:v24, v25, v26, v27, v28, v29, v30];
+      [(IRDataContainer *)personaCopy _initWithPersona:v24, v25, v26, v27, v28, v29, v30];
     }
 
     goto LABEL_21;
@@ -117,7 +117,7 @@
     v31 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
-      [(IRDataContainer *)v4 _initWithPersona:v31];
+      [(IRDataContainer *)personaCopy _initWithPersona:v31];
     }
 
     goto LABEL_21;
@@ -129,14 +129,14 @@
   v12 = [v10 fileURLWithPath:v11 isDirectory:1];
   [(IRDataContainer *)v6 setContainerBaseURL:v12];
 
-  v13 = [(IRDataContainer *)v6 containerBaseURL];
+  containerBaseURL = [(IRDataContainer *)v6 containerBaseURL];
 
-  if (!v13)
+  if (!containerBaseURL)
   {
     v32 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
-      [(IRDataContainer *)v4 _initWithPersona:v32, v33, v34, v35, v36, v37, v38];
+      [(IRDataContainer *)personaCopy _initWithPersona:v32, v33, v34, v35, v36, v37, v38];
     }
 
     [(IRDataContainer *)v6 extensionHandle];

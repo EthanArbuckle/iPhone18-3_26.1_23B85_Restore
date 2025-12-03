@@ -1,30 +1,30 @@
 @interface SBAppExposeToHomeWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (SBAppExposeToHomeWindowingModifier)initWithTransitionModifier:(id)a3 appExposeModifier:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (SBAppExposeToHomeWindowingModifier)initWithTransitionModifier:(id)modifier appExposeModifier:(id)exposeModifier;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (void)didComplete;
-- (void)transitionWillBegin:(id)a3;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
 @implementation SBAppExposeToHomeWindowingModifier
 
-- (SBAppExposeToHomeWindowingModifier)initWithTransitionModifier:(id)a3 appExposeModifier:(id)a4
+- (SBAppExposeToHomeWindowingModifier)initWithTransitionModifier:(id)modifier appExposeModifier:(id)exposeModifier
 {
-  v7 = a3;
-  v8 = a4;
+  modifierCopy = modifier;
+  exposeModifierCopy = exposeModifier;
   v11.receiver = self;
   v11.super_class = SBAppExposeToHomeWindowingModifier;
   v9 = [(SBWindowingModifier *)&v11 init];
   if (v9)
   {
-    if (v7)
+    if (modifierCopy)
     {
-      if (v8)
+      if (exposeModifierCopy)
       {
 LABEL_4:
-        [(SBChainableModifier *)v9 addChildModifier:v7];
-        objc_storeStrong(&v9->_appExposeModifier, a4);
+        [(SBChainableModifier *)v9 addChildModifier:modifierCopy];
+        objc_storeStrong(&v9->_appExposeModifier, exposeModifier);
         goto LABEL_5;
       }
     }
@@ -32,7 +32,7 @@ LABEL_4:
     else
     {
       [SBAppExposeToHomeWindowingModifier initWithTransitionModifier:a2 appExposeModifier:v9];
-      if (v8)
+      if (exposeModifierCopy)
       {
         goto LABEL_4;
       }
@@ -47,30 +47,30 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
 - (void)willBegin
@@ -102,21 +102,21 @@ void __47__SBAppExposeToHomeWindowingModifier_willBegin__block_invoke(uint64_t a
   [(SBWindowingModifier *)self appendResponse:v3];
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   if (self->_adjustedAppLayoutsBeforeTransition && [(SBWindowingModifier *)self transitionPhase]== 2)
   {
     v17.receiver = self;
     v17.super_class = SBAppExposeToHomeWindowingModifier;
-    v5 = [(SBAppExposeToHomeWindowingModifier *)&v17 adjustedAppLayoutsForAppLayouts:v4];
+    v5 = [(SBAppExposeToHomeWindowingModifier *)&v17 adjustedAppLayoutsForAppLayouts:layoutsCopy];
     v6 = objc_opt_new();
     adjustedAppLayoutsBeforeTransition = self->_adjustedAppLayoutsBeforeTransition;
     v14[0] = MEMORY[0x277D85DD0];
@@ -136,7 +136,7 @@ void __47__SBAppExposeToHomeWindowingModifier_willBegin__block_invoke(uint64_t a
   {
     v13.receiver = self;
     v13.super_class = SBAppExposeToHomeWindowingModifier;
-    v11 = [(SBAppExposeToHomeWindowingModifier *)&v13 adjustedAppLayoutsForAppLayouts:v4];
+    v11 = [(SBAppExposeToHomeWindowingModifier *)&v13 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   return v11;

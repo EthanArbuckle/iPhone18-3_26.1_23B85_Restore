@@ -1,34 +1,34 @@
 @interface BWImageQueueSinkNode
 + (void)initialize;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSAtHostTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSDisplayedAtHostTime:(SEL)a3 allowingExtrapolation:(unint64_t)a4;
-- (BWImageQueueSinkNode)initWithHFRSupport:(BOOL)a3 ispJitterCompensationEnabled:(BOOL)a4 clientAuditToken:(id *)a5 sinkID:(id)a6;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSAtHostTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSDisplayedAtHostTime:(SEL)time allowingExtrapolation:(unint64_t)extrapolation;
+- (BWImageQueueSinkNode)initWithHFRSupport:(BOOL)support ispJitterCompensationEnabled:(BOOL)enabled clientAuditToken:(id *)token sinkID:(id)d;
 - (FigCaptureVideoTransform)transform;
-- (_DWORD)_createContextForBuffer:(uint64_t)a3 bufferId:(__int128 *)a4 framePTS:;
+- (_DWORD)_createContextForBuffer:(uint64_t)buffer bufferId:(__int128 *)id framePTS:;
 - (__n128)_createFrameSender;
-- (double)_displayTimeSyncedWithFramePTS:(uint64_t)a1;
-- (double)_processBufferContext:(uint64_t)a1;
+- (double)_displayTimeSyncedWithFramePTS:(uint64_t)s;
+- (double)_processBufferContext:(uint64_t)context;
 - (double)_processReleasedContexts;
-- (uint64_t)_bufferIDForSurface:(uint64_t)a1;
+- (uint64_t)_bufferIDForSurface:(uint64_t)surface;
 - (uint64_t)_cleanupImageQueueContext;
 - (uint64_t)_collectUnconsumedBuffersWithReason:(uint64_t)result collectMostFutureBuffers:;
 - (uint64_t)_ensureImageQueue;
-- (uint64_t)_removeBufferFromInternalQueues:(uint64_t)a3 bufferId:;
+- (uint64_t)_removeBufferFromInternalQueues:(uint64_t)queues bufferId:;
 - (uint64_t)_updateInputRequirements;
 - (void)_cleanupIOSurfaces;
-- (void)_storePreviewPTS:(uint64_t)a3 withHostTime:(int)a4 isOverCaptureFrame:;
+- (void)_storePreviewPTS:(uint64_t)s withHostTime:(int)time isOverCaptureFrame:;
 - (void)_transferIOSurfaceOwnershipToEnqueuedBufferContext;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
 - (void)fencePortGenerationIDWillChange;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)inputConnectionWillBeEnabled;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)registerSurfacesFromSourcePool:(id)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMaxLossyCompressionLevel:(int)a3;
-- (void)updateClientAuditToken:(id *)a3;
+- (void)registerSurfacesFromSourcePool:(id)pool;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMaxLossyCompressionLevel:(int)level;
+- (void)updateClientAuditToken:(id *)token;
 @end
 
 @implementation BWImageQueueSinkNode
@@ -54,15 +54,15 @@
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 8) formatRequirements];
+    formatRequirements = [*(result + 8) formatRequirements];
     FigGetAlignmentForIOSurfaceOutput();
-    [v2 setBytesPerRowAlignment:0];
-    [v2 setPlaneAlignment:0];
-    v3 = [MEMORY[0x1E695DF70] array];
-    [v3 addObjectsFromArray:&unk_1F2249C00];
-    [v3 addObjectsFromArray:{FigCaptureSupportedPixelFormatsForCompressionType(4, 1, 0, *(v1 + 648))}];
-    [v2 setSupportedPixelFormats:v3];
-    return [v2 setMemoryPoolUseAllowed:0];
+    [formatRequirements setBytesPerRowAlignment:0];
+    [formatRequirements setPlaneAlignment:0];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:&unk_1F2249C00];
+    [array addObjectsFromArray:{FigCaptureSupportedPixelFormatsForCompressionType(4, 1, 0, *(v1 + 648))}];
+    [formatRequirements setSupportedPixelFormats:array];
+    return [formatRequirements setMemoryPoolUseAllowed:0];
   }
 
   return result;
@@ -103,17 +103,17 @@
 
 - (__n128)_createFrameSender
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 724));
-    v2 = *(a1 + 708);
-    v17 = *(a1 + 692);
+    os_unfair_lock_lock((self + 724));
+    v2 = *(self + 708);
+    v17 = *(self + 692);
     v18 = v2;
-    v3 = *(a1 + 280);
-    v15 = *(a1 + 264);
+    v3 = *(self + 280);
+    v15 = *(self + 264);
     v16 = v3;
-    v4 = *(a1 + 688);
-    os_unfair_lock_unlock((a1 + 724));
+    v4 = *(self + 688);
+    os_unfair_lock_unlock((self + 724));
     v13 = v17;
     v14 = v18;
     if (FigCaptureAuditTokenIsValid(&v13))
@@ -140,14 +140,14 @@
           v8 = [MEMORY[0x1E695DEF0] dataWithBytes:&v13 length:{32, FigCaptureGetCurrentProcessAuditToken(&v13)}];
         }
 
-        v10 = -[CMCaptureFrameSenderService initWithEndpointType:endpointPID:endpointProxyPID:endpointAuditToken:endpointProxyAuditToken:endpointCameraUniqueID:]([CMCaptureFrameSenderService alloc], "initWithEndpointType:endpointPID:endpointProxyPID:endpointAuditToken:endpointProxyAuditToken:endpointCameraUniqueID:", @"VideoPreview", *(a1 + 688), v9, v6, v8, [objc_msgSend(*(a1 + 680) "captureStream")]);
-        os_unfair_lock_lock((a1 + 724));
+        v10 = -[CMCaptureFrameSenderService initWithEndpointType:endpointPID:endpointProxyPID:endpointAuditToken:endpointProxyAuditToken:endpointCameraUniqueID:]([CMCaptureFrameSenderService alloc], "initWithEndpointType:endpointPID:endpointProxyPID:endpointAuditToken:endpointProxyAuditToken:endpointCameraUniqueID:", @"VideoPreview", *(self + 688), v9, v6, v8, [objc_msgSend(*(self + 680) "captureStream")]);
+        os_unfair_lock_lock((self + 724));
 
-        *(a1 + 256) = v10;
+        *(self + 256) = v10;
         v11 = v18;
-        *(a1 + 264) = v17;
-        *(a1 + 280) = v11;
-        os_unfair_lock_unlock((a1 + 724));
+        *(self + 264) = v17;
+        *(self + 280) = v11;
+        os_unfair_lock_unlock((self + 724));
       }
     }
   }
@@ -165,7 +165,7 @@
 
 - (double)_processReleasedContexts
 {
-  if (a1 && *(a1 + 480))
+  if (self && *(self + 480))
   {
     do
     {
@@ -174,12 +174,12 @@
       v4 = 0;
       do
       {
-        v5 = *(*(a1 + 472) + 8 * v2);
+        v5 = *(*(self + 472) + 8 * v2);
         if (*(v5 + 24) && *(v5 + 120) == 1)
         {
           if (!v3 || (time1 = *(v3 + 32), v7 = *(v5 + 32), CMTimeCompare(&time1, &v7) >= 1))
           {
-            v3 = *(*(a1 + 472) + 8 * v2);
+            v3 = *(*(self + 472) + 8 * v2);
           }
 
           v4 = 1;
@@ -188,10 +188,10 @@
         ++v2;
       }
 
-      while (*(a1 + 480) > v2);
+      while (*(self + 480) > v2);
       if (v3)
       {
-        result = [(BWImageQueueSinkNode *)a1 _processBufferContext:v3];
+        result = [(BWImageQueueSinkNode *)self _processBufferContext:v3];
         if ((v4 & 1) == 0)
         {
           return result;
@@ -204,7 +204,7 @@
       }
     }
 
-    while (*(a1 + 480));
+    while (*(self + 480));
   }
 
   return result;
@@ -212,7 +212,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -221,17 +221,17 @@
   }
 }
 
-- (BWImageQueueSinkNode)initWithHFRSupport:(BOOL)a3 ispJitterCompensationEnabled:(BOOL)a4 clientAuditToken:(id *)a5 sinkID:(id)a6
+- (BWImageQueueSinkNode)initWithHFRSupport:(BOOL)support ispJitterCompensationEnabled:(BOOL)enabled clientAuditToken:(id *)token sinkID:(id)d
 {
-  v7 = a4;
-  v8 = a3;
+  enabledCopy = enabled;
+  supportCopy = support;
   v23.receiver = self;
   v23.super_class = BWImageQueueSinkNode;
-  v9 = [(BWSinkNode *)&v23 initWithSinkID:a6];
+  v9 = [(BWSinkNode *)&v23 initWithSinkID:d];
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (supportCopy)
     {
       v12 = 5;
     }
@@ -241,7 +241,7 @@
       v12 = 3;
     }
 
-    v13 = v12 + (v8 && v7);
+    v13 = v12 + (supportCopy && enabledCopy);
     v9->_imageQueueCapacity = v13;
     v9->_imageQueueRequiredFreeSlots = v13 - 3;
     v9->_imageQueueCurrentFreeSlots = v9->_imageQueueCapacity;
@@ -253,8 +253,8 @@
     *(v10 + 496) = FigSimpleMutexCreate();
     *(v10 + 504) = FigDispatchQueueCreateWithPriority();
     *(v10 + 408) = 40;
-    v14 = *&a5->var0[4];
-    v21 = *a5->var0;
+    v14 = *&token->var0[4];
+    v21 = *token->var0;
     v22 = v14;
     if (FigCaptureClientIsRunningInXCTest(&v21))
     {
@@ -278,12 +278,12 @@
     [v10 setSupportsPrepareWhileRunning:1];
     *(v10 + 456) = FigSimpleMutexCreate();
     *(v10 + 672) = objc_alloc_init(BWStats);
-    v18 = *&a5->var0[4];
-    v21 = *a5->var0;
+    v18 = *&token->var0[4];
+    v21 = *token->var0;
     v22 = v18;
     *(v10 + 688) = FigCaptureGetPIDFromAuditToken(&v21);
-    v19 = *&a5->var0[4];
-    *(v10 + 692) = *a5->var0;
+    v19 = *&token->var0[4];
+    *(v10 + 692) = *token->var0;
     *(v10 + 708) = v19;
     *(v10 + 724) = 0;
     *&v19 = -1;
@@ -358,11 +358,11 @@
   [(BWSinkNode *)&v9 dealloc];
 }
 
-- (void)setMaxLossyCompressionLevel:(int)a3
+- (void)setMaxLossyCompressionLevel:(int)level
 {
-  if (self->_maxLossyCompressionLevel != a3)
+  if (self->_maxLossyCompressionLevel != level)
   {
-    self->_maxLossyCompressionLevel = a3;
+    self->_maxLossyCompressionLevel = level;
     [(BWImageQueueSinkNode *)self _updateInputRequirements];
   }
 }
@@ -378,7 +378,7 @@
   return result;
 }
 
-- (void)registerSurfacesFromSourcePool:(id)a3
+- (void)registerSurfacesFromSourcePool:(id)pool
 {
   if (self->_imageQueue)
   {
@@ -387,7 +387,7 @@
     v4[2] = __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invoke;
     v4[3] = &unk_1E799C940;
     v4[4] = self;
-    [a3 enumerateSurfacesUsingBlock:v4];
+    [pool enumerateSurfacesUsingBlock:v4];
     FigSimpleMutexLock();
     if ([(BWVideoFormat *)[(BWNodeInput *)self->super.super._input videoFormat] colorSpaceProperties])
     {
@@ -414,7 +414,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSDisplayedAtHostTime:(SEL)a3 allowingExtrapolation:(unint64_t)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSDisplayedAtHostTime:(SEL)time allowingExtrapolation:(unint64_t)extrapolation
 {
   v20 = a5;
   *retstr = **&MEMORY[0x1E6960C70];
@@ -424,9 +424,9 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = self;
-  v8 = [(NSMutableArray *)self->_previewPTSHistory reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+  selfCopy = self;
+  reverseObjectEnumerator = [(NSMutableArray *)self->_previewPTSHistory reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -441,7 +441,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v15 = *(*(&v30 + 1) + 8 * v13);
@@ -449,8 +449,8 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
         v28 = 0u;
         [v15 getValue:&v27];
         v16 = *(&v28 + 1);
-        v17 = a4 - *(&v28 + 1);
-        if (a4 >= *(&v28 + 1))
+        v17 = extrapolation - *(&v28 + 1);
+        if (extrapolation >= *(&v28 + 1))
         {
           *&retstr->var0 = v27;
           retstr->var3 = v28;
@@ -458,7 +458,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
           {
             v27 = 0u;
             v28 = 0u;
-            [-[NSMutableArray objectAtIndexedSubscript:](v22->_previewPTSHistory objectAtIndexedSubscript:{(v14 - 2)), "getValue:", &v27}];
+            [-[NSMutableArray objectAtIndexedSubscript:](selfCopy->_previewPTSHistory objectAtIndexedSubscript:{(v14 - 2)), "getValue:", &v27}];
             *&rhs.value = v27;
             rhs.epoch = v28;
             memset(&v26, 0, sizeof(v26));
@@ -485,7 +485,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v29 count:16];
       v12 = 0;
       if (v10)
       {
@@ -499,7 +499,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
   return FigSimpleMutexUnlock();
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSAtHostTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)previewPTSAtHostTime:(SEL)time
 {
   *retstr = **&MEMORY[0x1E6960C70];
   FigSimpleMutexLock();
@@ -507,8 +507,8 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(NSMutableArray *)self->_previewPTSHistory reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_previewPTSHistory reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -519,7 +519,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -534,7 +534,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v9)
       {
         continue;
@@ -547,7 +547,7 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
   return FigSimpleMutexUnlock();
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if ([(BWSinkNode *)self isActive])
   {
@@ -563,9 +563,9 @@ uint64_t __55__BWImageQueueSinkNode_registerSurfacesFromSourcePool___block_invok
     return;
   }
 
-  if (a4)
+  if (format)
   {
-    [BWImageQueueSinkNode configurationWithID:a4 updatedFormat:self didBecomeLiveForInput:?];
+    [BWImageQueueSinkNode configurationWithID:format updatedFormat:self didBecomeLiveForInput:?];
   }
 
   else if (!self)
@@ -615,12 +615,12 @@ LABEL_7:
 
   v11.receiver = self;
   v11.super_class = BWImageQueueSinkNode;
-  [(BWSinkNode *)&v11 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWSinkNode *)&v11 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (a3)
+  if (d)
   {
     v12.receiver = self;
     v12.super_class = BWImageQueueSinkNode;
@@ -669,12 +669,12 @@ LABEL_7:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v43, 0, sizeof(v43));
-  if (a3)
+  if (buffer)
   {
-    v6 = CMGetAttachment(a3, *off_1E798A420, 0);
+    v6 = CMGetAttachment(buffer, *off_1E798A420, 0);
     CMTimeMakeFromDictionary(&v43, v6);
   }
 
@@ -685,7 +685,7 @@ LABEL_7:
 
   if ((v43.flags & 1) == 0)
   {
-    CMSampleBufferGetPresentationTimeStamp(&time, a3);
+    CMSampleBufferGetPresentationTimeStamp(&time, buffer);
     v43 = time;
   }
 
@@ -697,15 +697,15 @@ LABEL_7:
     kdebug_trace();
   }
 
-  if (a3)
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     IOSurface = CVPixelBufferGetIOSurface(ImageBuffer);
     FigSimpleMutexLock();
     v38 = [(BWImageQueueSinkNode *)self _bufferIDForSurface:?];
     FigSimpleMutexUnlock();
     ++self->_numFramesReceived;
-    v10 = CMGetAttachment(a3, @"FrameIsBlackened", 0);
+    v10 = CMGetAttachment(buffer, @"FrameIsBlackened", 0);
     if ([v10 BOOLValue])
     {
       v11 = 1;
@@ -839,7 +839,7 @@ LABEL_7:
         self->_resetPreviewSynchronizerOnNextFrame = 0;
       }
 
-      InsertionTime = BWPreviewSynchronizerGetInsertionTime(self->_previewSynchronizer, a3);
+      InsertionTime = BWPreviewSynchronizerGetInsertionTime(self->_previewSynchronizer, buffer);
     }
 
     else
@@ -876,8 +876,8 @@ LABEL_57:
           [(BWFigVideoCaptureDevice *)self->_captureDevice setCinematicVideoWorstCaseRenderingTime:v23];
         }
 
-        v24 = CMGetAttachment(a3, @"CAContextFencePortSendRight", 0);
-        v25 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+        v24 = CMGetAttachment(buffer, @"CAContextFencePortSendRight", 0);
+        v25 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
         v26 = [objc_msgSend(v25 objectForKeyedSubscript:{*off_1E798A8B8), "BOOLValue"}];
         [objc_msgSend(v25 objectForKeyedSubscript:{*off_1E798B210), "floatValue"}];
         if (self->_imageQueueNominalFrameRate != v27)
@@ -889,12 +889,12 @@ LABEL_57:
         v29 = self->_imageQueueCurrentFreeSlots > self->_imageQueueRequiredFreeSlots || v24 != 0;
         if ((v29 | v26))
         {
-          BWSampleBufferRemoveAllAttachedMedia(a3);
+          BWSampleBufferRemoveAllAttachedMedia(buffer);
           time = v43;
-          v32 = [(BWImageQueueSinkNode *)self _createContextForBuffer:a3 bufferId:v38 framePTS:&time.value];
+          v32 = [(BWImageQueueSinkNode *)self _createContextForBuffer:buffer bufferId:v38 framePTS:&time.value];
           if (self->_fenceSupportEnabled)
           {
-            [(BWImageQueueSinkNode *)a3 renderSampleBuffer:self forInput:&time];
+            [(BWImageQueueSinkNode *)buffer renderSampleBuffer:self forInput:&time];
           }
 
           if (*v7 == 1)
@@ -928,7 +928,7 @@ LABEL_57:
             frameSender = self->_frameSender;
             if (frameSender)
             {
-              [(CMCaptureFrameSenderService *)frameSender sendFrame:a3];
+              [(CMCaptureFrameSenderService *)frameSender sendFrame:buffer];
             }
 
             else
@@ -977,7 +977,7 @@ LABEL_74:
         previewTapDelegate = self->_previewTapDelegate;
         if (previewTapDelegate)
         {
-          [(BWImageQueueSinkNodePreviewTapDelegate *)previewTapDelegate imageQueueSinkNode:self didAttemptToEnqueuePreviewSampleBuffer:a3 withSuccess:inserted];
+          [(BWImageQueueSinkNodePreviewTapDelegate *)previewTapDelegate imageQueueSinkNode:self didAttemptToEnqueuePreviewSampleBuffer:buffer withSuccess:inserted];
         }
 
         return;
@@ -993,39 +993,39 @@ LABEL_74:
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if ([objc_msgSend(a3 "reason")])
+  if ([objc_msgSend(sample "reason")])
   {
     [BWImageQueueSinkNode _collectUnconsumedBuffersWithReason:? collectMostFutureBuffers:?];
   }
 
   v7.receiver = self;
   v7.super_class = BWImageQueueSinkNode;
-  [(BWNode *)&v7 handleDroppedSample:a3 forInput:a4];
+  [(BWNode *)&v7 handleDroppedSample:sample forInput:input];
 }
 
 - (void)_cleanupIOSurfaces
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 448);
+    v2 = *(self + 448);
     if (v2)
     {
       for (i = 0; i != v2; ++i)
       {
-        if (([*(a1 + 464) containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", *(*(a1 + 440) + 8 * i))}] & 1) == 0)
+        if (([*(self + 464) containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", *(*(self + 440) + 8 * i))}] & 1) == 0)
         {
           CAImageQueueUnregisterBuffer();
         }
       }
     }
 
-    *(a1 + 448) = 0;
-    free(*(a1 + 440));
-    *(a1 + 440) = 0;
+    *(self + 448) = 0;
+    free(*(self + 440));
+    *(self + 440) = 0;
 
-    *(a1 + 432) = 0;
+    *(self + 432) = 0;
   }
 }
 
@@ -1049,17 +1049,17 @@ LABEL_74:
   return result;
 }
 
-- (uint64_t)_bufferIDForSurface:(uint64_t)a1
+- (uint64_t)_bufferIDForSurface:(uint64_t)surface
 {
-  if (!a1)
+  if (!surface)
   {
     return 0;
   }
 
-  v4 = *(a1 + 432);
+  v4 = *(surface + 432);
   if (!v4)
   {
-    *(a1 + 432) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *(surface + 432) = objc_alloc_init(MEMORY[0x1E695DF70]);
     goto LABEL_6;
   }
 
@@ -1068,26 +1068,26 @@ LABEL_74:
   {
 LABEL_6:
     v6 = CAImageQueueRegisterIOSurfaceBuffer();
-    v7 = *(a1 + 448) + 1;
-    *(a1 + 448) = v7;
-    v8 = malloc_type_realloc(*(a1 + 440), 8 * v7, 0x100004000313F17uLL);
-    *(a1 + 440) = v8;
-    v8[*(a1 + 448) - 1] = v6;
-    [*(a1 + 432) addObject:a2];
+    v7 = *(surface + 448) + 1;
+    *(surface + 448) = v7;
+    v8 = malloc_type_realloc(*(surface + 440), 8 * v7, 0x100004000313F17uLL);
+    *(surface + 440) = v8;
+    v8[*(surface + 448) - 1] = v6;
+    [*(surface + 432) addObject:a2];
     return v6;
   }
 
-  return *(*(a1 + 440) + 8 * v5);
+  return *(*(surface + 440) + 8 * v5);
 }
 
-- (void)updateClientAuditToken:(id *)a3
+- (void)updateClientAuditToken:(id *)token
 {
   os_unfair_lock_lock(&self->_clientPIDLock);
-  v5 = *&a3->var0[4];
-  *self->_clientAuditToken.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *self->_clientAuditToken.val = *token->var0;
   *&self->_clientAuditToken.val[4] = v5;
-  v6 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v6;
   self->_clientPID = FigCaptureGetPIDFromAuditToken(v8);
   holdingBuffersForClientAssertion = self->_holdingBuffersForClientAssertion;
@@ -1119,12 +1119,12 @@ LABEL_6:
 
 - (void)_transferIOSurfaceOwnershipToEnqueuedBufferContext
 {
-  if (a1 && *(a1 + 480))
+  if (self && *(self + 480))
   {
     v2 = 0;
     do
     {
-      v3 = *(*(a1 + 472) + 8 * v2);
+      v3 = *(*(self + 472) + 8 * v2);
       if (v3 && *v3)
       {
         ImageBuffer = CMSampleBufferGetImageBuffer(*v3);
@@ -1145,20 +1145,20 @@ LABEL_6:
       ++v2;
     }
 
-    while (*(a1 + 480) > v2);
+    while (*(self + 480) > v2);
   }
 }
 
-- (double)_displayTimeSyncedWithFramePTS:(uint64_t)a1
+- (double)_displayTimeSyncedWithFramePTS:(uint64_t)s
 {
-  if (!a1)
+  if (!s)
   {
     return 0.0;
   }
 
   v4 = CACurrentMediaTime();
-  v5 = a2 - *(a1 + 344);
-  v6 = v5 + *(a1 + 352);
+  v5 = a2 - *(s + 344);
+  v6 = v5 + *(s + 352);
   Times = CAImageQueueGetTimes();
   if (Times)
   {
@@ -1173,20 +1173,20 @@ LABEL_6:
       OUTLINED_FUNCTION_33();
       if (v15)
       {
-        v19 = *(a1 + 320);
+        v19 = *(s + 320);
         if (v19 > 0.0)
         {
           v20 = v18 - v19;
           v21 = round(v20 / v8);
-          v22 = v21 >= 1.0 ? v20 / v21 : *(a1 + 328);
+          v22 = v21 >= 1.0 ? v20 / v21 : *(s + 328);
           if (vabdd_f64(v22, v8) / v8 <= 0.1)
           {
-            *(a1 + 328) = v22;
+            *(s + 328) = v22;
             v8 = v22;
           }
         }
 
-        *(a1 + 320) = v18;
+        *(s + 320) = v18;
       }
 
       if (v8 <= 0.001)
@@ -1199,7 +1199,7 @@ LABEL_6:
 LABEL_7:
         v10 = v5 / v8;
         v11 = round(v5 / v8);
-        v12 = *(a1 + 352);
+        v12 = *(s + 352);
         if (v5 / v8 >= 1.0)
         {
           v13 = v11;
@@ -1211,12 +1211,12 @@ LABEL_7:
         }
 
         v6 = v12 + v8 * v13;
-        v14 = vabdd_f64(1.0 / *(a1 + 368), 1.0 / v5);
+        v14 = vabdd_f64(1.0 / *(s + 368), 1.0 / v5);
         if (v6 - a2 > 0.166 || ((OUTLINED_FUNCTION_33(), v15) ? (v16 = v6 - v4 <= v5 * 3.0) : (v16 = 1), !v16))
         {
           if (v12 > 0.0)
           {
-            if (v10 < 1.5 && (*(a1 + 386) & 1) != 0)
+            if (v10 < 1.5 && (*(s + 386) & 1) != 0)
             {
               v17 = v12 + v8 * 0.01;
               if (v17 <= v44[0])
@@ -1252,9 +1252,9 @@ LABEL_7:
             if (v15)
             {
               v38 = v10 - v13;
-              v39 = *(a1 + 336);
+              v39 = *(s + 336);
               v40 = BWModifiedMovingAverage(fabsf(v38), v39, 0.01);
-              *(a1 + 336) = v40;
+              *(s + 336) = v40;
             }
 
             else
@@ -1263,11 +1263,11 @@ LABEL_7:
             }
 
             v41 = 1.0;
-            v42 = *(a1 + 376) + 1;
-            *(a1 + 376) = v42;
+            v42 = *(s + 376) + 1;
+            *(s + 376) = v42;
             if (vcvtad_u64_f64(1.0 / v40) - 1 < v42)
             {
-              *(a1 + 376) = 0;
+              *(s + 376) = 0;
               if (v13 > 1.0)
               {
                 v41 = -1.0;
@@ -1279,21 +1279,21 @@ LABEL_7:
 
           else
           {
-            v32 = *(a1 + 376) + 1;
-            *(a1 + 376) = v32;
-            if (*(a1 + 387) == 1)
+            v32 = *(s + 376) + 1;
+            *(s + 376) = v32;
+            if (*(s + 387) == 1)
             {
               v33 = v31;
-              v34 = *(a1 + 336);
+              v34 = *(s + 336);
               v31 = BWModifiedMovingAverage(v33, v34, 0.01);
-              *(a1 + 336) = v31;
-              v32 = *(a1 + 376);
+              *(s + 336) = v31;
+              v32 = *(s + 376);
             }
 
             v35 = vcvtad_u64_f64(1.0 / v31);
             if (v32 >= v35)
             {
-              *(a1 + 376) = 0;
+              *(s + 376) = 0;
               v36 = v35 <= 2 || v13 > 1.0;
               v37 = -1.0;
               if (!v36)
@@ -1308,8 +1308,8 @@ LABEL_7:
 
         else
         {
-          *(a1 + 376) = 0;
-          *(a1 + 336) = 0x7FF8000000000000;
+          *(s + 376) = 0;
+          *(s + 336) = 0x7FF8000000000000;
         }
 
         v24 = 0;
@@ -1333,14 +1333,14 @@ LABEL_7:
 
         if (v24 < 2 || (v29 = *(v26 - 1), v4 >= v29 + v25 * 0.5))
         {
-          v30 = (a1 + 360);
+          v30 = (s + 360);
           v29 = *v26;
         }
 
         else
         {
-          v30 = (a1 + 360);
-          if (a2 - *(a1 + 360) <= 2.0)
+          v30 = (s + 360);
+          if (a2 - *(s + 360) <= 2.0)
           {
             goto LABEL_55;
           }
@@ -1366,26 +1366,26 @@ LABEL_55:
   }
 
 LABEL_70:
-  *(a1 + 344) = a2;
-  *(a1 + 352) = v6;
-  *(a1 + 368) = v5;
+  *(s + 344) = a2;
+  *(s + 352) = v6;
+  *(s + 368) = v5;
   return v6;
 }
 
-- (_DWORD)_createContextForBuffer:(uint64_t)a3 bufferId:(__int128 *)a4 framePTS:
+- (_DWORD)_createContextForBuffer:(uint64_t)buffer bufferId:(__int128 *)id framePTS:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = *(a1 + 480);
+  v8 = *(self + 480);
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  v9 = *(a1 + 472);
+  v9 = *(self + 472);
   v10 = 1;
   do
   {
@@ -1414,32 +1414,32 @@ LABEL_70:
   {
 LABEL_10:
     v14 = v8 + 1;
-    *(a1 + 480) = v14;
-    *(a1 + 472) = malloc_type_realloc(*(a1 + 472), 8 * v14, 0x2004093837F09uLL);
+    *(self + 480) = v14;
+    *(self + 472) = malloc_type_realloc(*(self + 472), 8 * v14, 0x2004093837F09uLL);
     v13 = malloc_type_calloc(0x80uLL, 1uLL, 0x10A00403843775EuLL);
-    *(*(a1 + 472) + 8 * *(a1 + 480) - 8) = v13;
+    *(*(self + 472) + 8 * *(self + 480) - 8) = v13;
     v13[30] = 1;
   }
 
   *v13 = cf;
   CFRetain(cf);
-  *(v13 + 2) = a3;
-  *(v13 + 3) = a1;
+  *(v13 + 2) = buffer;
+  *(v13 + 3) = self;
   *(v13 + 1) = 0;
-  v15 = *a4;
-  *(v13 + 6) = *(a4 + 2);
+  v15 = *id;
+  *(v13 + 6) = *(id + 2);
   *(v13 + 2) = v15;
   ++v13[30];
   return v13;
 }
 
-- (uint64_t)_removeBufferFromInternalQueues:(uint64_t)a3 bufferId:
+- (uint64_t)_removeBufferFromInternalQueues:(uint64_t)queues bufferId:
 {
   if (result)
   {
     v5 = result;
     FigSimpleMutexLock();
-    v6 = [*(v5 + 464) indexOfObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", a3)}];
+    v6 = [*(v5 + 464) indexOfObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", queues)}];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [*(v5 + 464) removeObjectAtIndex:v6];
@@ -1459,25 +1459,25 @@ LABEL_10:
   return result;
 }
 
-- (void)_storePreviewPTS:(uint64_t)a3 withHostTime:(int)a4 isOverCaptureFrame:
+- (void)_storePreviewPTS:(uint64_t)s withHostTime:(int)time isOverCaptureFrame:
 {
-  HIDWORD(v38) = a4;
-  if (a1)
+  HIDWORD(v38) = time;
+  if (self)
   {
     contexta = objc_autoreleasePoolPush();
     v56 = *&a2->value;
     epoch = a2->epoch;
-    v58 = a3;
+    sCopy = s;
     v7 = [MEMORY[0x1E696B098] valueWithBytes:&v56 objCType:"{_PreviewPTSInfo={?=qiIq}Q}"];
     FigSimpleMutexLock();
-    [*(a1 + 488) addObject:v7];
-    v8 = [MEMORY[0x1E695DF70] array];
+    [*(self + 488) addObject:v7];
+    array = [MEMORY[0x1E695DF70] array];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v9 = *(a1 + 488);
-    v17 = OUTLINED_FUNCTION_4_89(v8, v10, v11, v12, v13, v14, v15, v16, v38, contexta, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, v47.value, *&v47.timescale, v47.epoch, v48, v49, *(&v49 + 1), v50, *(&v50 + 1), v51);
+    v9 = *(self + 488);
+    v17 = OUTLINED_FUNCTION_4_89(array, v10, v11, v12, v13, v14, v15, v16, v38, contexta, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, v47.value, *&v47.timescale, v47.epoch, v48, v49, *(&v49 + 1), v50, *(&v50 + 1), v51);
     if (v17)
     {
       v18 = v17;
@@ -1507,7 +1507,7 @@ LABEL_4:
           break;
         }
 
-        v22 = [v8 addObject:v21];
+        v22 = [array addObject:v21];
         if (v18 == ++v20)
         {
           v18 = OUTLINED_FUNCTION_4_89(v22, v23, v24, v25, v26, v27, v28, v29, v39, context, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, v47.value, *&v47.timescale, v47.epoch, v48, v49, *(&v49 + 1), v50, *(&v50 + 1), v51);
@@ -1521,22 +1521,22 @@ LABEL_4:
       }
     }
 
-    v30 = [*(a1 + 488) removeObjectsInArray:v8];
-    if (!*(a1 + 536))
+    v30 = [*(self + 488) removeObjectsInArray:array];
+    if (!*(self + 536))
     {
       v30 = OUTLINED_FUNCTION_0_113(v30, v31, v32, v33, v34, v35, v36, v37, v39, context, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, *&v47.value, v47.epoch, v48, v49, v50);
       if ((v30 & 0x80000000) == 0)
       {
-        *(a1 + 536) = a3;
+        *(self + 536) = s;
         OUTLINED_FUNCTION_1_122(544);
       }
     }
 
-    if (!*(a1 + 600) && (OUTLINED_FUNCTION_0_113(v30, v31, v32, v33, v34, v35, v36, v37, v39, context, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, *&v47.value, v47.epoch, v48, v49, v50) & 0x80000000) == 0)
+    if (!*(self + 600) && (OUTLINED_FUNCTION_0_113(v30, v31, v32, v33, v34, v35, v36, v37, v39, context, rhs.value, *&rhs.timescale, rhs.epoch, v44, lhs.value, *&lhs.timescale, lhs.epoch, v46, *&v47.value, v47.epoch, v48, v49, v50) & 0x80000000) == 0)
     {
       if (v40)
       {
-        *(a1 + 600) = a3;
+        *(self + 600) = s;
         OUTLINED_FUNCTION_1_122(572);
       }
     }
@@ -1546,12 +1546,12 @@ LABEL_4:
   }
 }
 
-- (double)_processBufferContext:(uint64_t)a1
+- (double)_processBufferContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     v3 = *(a2 + 24);
-    if (v3 == a1)
+    if (v3 == context)
     {
       v18 = *(a2 + 32);
       v5 = *(a2 + 80);

@@ -1,27 +1,27 @@
 @interface PTFilterEMA_LKT
-- (PTFilterEMA_LKT)initWithMetalContext:(id)a3;
-- (PTFilterEMA_LKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9;
-- (int)emaFilter:(id)a3 inDisplacement:(id)a4 inTexPrev:(id)a5 inTex:(id)a6 outTex:(id)a7 frameIndex:(int)a8 scale:(float)a9;
-- (int)emaFilterDisparityNormal:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 inNormalPrev:(id)a8 inNormal:(id)a9 outNormal:(id)a10 frameIndex:(int)a11;
-- (int)gaussEMAFilter:(id)a3 inDisplacement:(id)a4 inTexPrev:(id)a5 inTex:(id)a6 outTex:(id)a7 frameIndex:(int)a8;
-- (int)gaussEMAFilterNormal:(id)a3 inDisplacement:(id)a4 inNormalPrev:(id)a5 inNormal:(id)a6 outNormal:(id)a7 frameIndex:(int)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8;
+- (PTFilterEMA_LKT)initWithMetalContext:(id)context;
+- (PTFilterEMA_LKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port;
+- (int)emaFilter:(id)filter inDisplacement:(id)displacement inTexPrev:(id)prev inTex:(id)tex outTex:(id)outTex frameIndex:(int)index scale:(float)scale;
+- (int)emaFilterDisparityNormal:(id)normal inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity inNormalPrev:(id)normalPrev inNormal:(id)inNormal outNormal:(id)self0 frameIndex:(int)self1;
+- (int)gaussEMAFilter:(id)filter inDisplacement:(id)displacement inTexPrev:(id)prev inTex:(id)tex outTex:(id)outTex frameIndex:(int)index;
+- (int)gaussEMAFilterNormal:(id)normal inDisplacement:(id)displacement inNormalPrev:(id)prev inNormal:(id)inNormal outNormal:(id)outNormal frameIndex:(int)index;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state;
 @end
 
 @implementation PTFilterEMA_LKT
 
-- (PTFilterEMA_LKT)initWithMetalContext:(id)a3
+- (PTFilterEMA_LKT)initWithMetalContext:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v69.receiver = self;
   v69.super_class = PTFilterEMA_LKT;
   v6 = [(PTFilterEMA_LKT *)&v69 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
+    objc_storeStrong(&v6->_metalContext, context);
     v67 = 0x408000003F800000;
     v68 = 0x3F8000003E6B851FLL;
     HIDWORD(v66) = 1069547520;
@@ -79,13 +79,13 @@
     v25 = objc_opt_new();
     [v25 setConstantValue:&v68 type:4 withName:{@"kIIRUpdateCoefficients", v65, v66, v67}];
     [v25 setConstantValue:&v67 type:4 withName:@"kMotionThresholdMinMax"];
-    v26 = [v5 computePipelineStateFor:@"temporalFilterEMA_LKT" withConstants:v25];
+    v26 = [contextCopy computePipelineStateFor:@"temporalFilterEMA_LKT" withConstants:v25];
     temporalFilterEMA_LKT = v7->_temporalFilterEMA_LKT;
     v7->_temporalFilterEMA_LKT = v26;
 
     if (v7->_temporalFilterEMA_LKT)
     {
-      v28 = [v5 computePipelineStateFor:@"temporalFilterEMA_LKTDisparityNormal" withConstants:v25];
+      v28 = [contextCopy computePipelineStateFor:@"temporalFilterEMA_LKTDisparityNormal" withConstants:v25];
       temporalFilterEMA_LKTDisparityNormal = v7->_temporalFilterEMA_LKTDisparityNormal;
       v7->_temporalFilterEMA_LKTDisparityNormal = v28;
 
@@ -94,13 +94,13 @@
         [v25 setConstantValue:&v66 + 4 type:3 withName:@"kGaussianWidth"];
         [v25 setConstantValue:&v65 + 6 type:18 withName:@"kWeights2DRow0"];
         [v25 setConstantValue:&v65 type:18 withName:@"kWeights2DRow1"];
-        v30 = [v5 computePipelineStateFor:@"temporalFilterGaussEMA_LKTNormal" withConstants:v25];
+        v30 = [contextCopy computePipelineStateFor:@"temporalFilterGaussEMA_LKTNormal" withConstants:v25];
         temporalFilterGaussEMA_LKTNormal = v7->_temporalFilterGaussEMA_LKTNormal;
         v7->_temporalFilterGaussEMA_LKTNormal = v30;
 
         if (v7->_temporalFilterGaussEMA_LKTNormal)
         {
-          v32 = [v5 computePipelineStateFor:@"temporalFilterGaussEMA_LKT" withConstants:v25];
+          v32 = [contextCopy computePipelineStateFor:@"temporalFilterGaussEMA_LKT" withConstants:v25];
           temporalFilterGaussEMA_LKT = v7->_temporalFilterGaussEMA_LKT;
           v7->_temporalFilterGaussEMA_LKT = v32;
 
@@ -158,19 +158,19 @@ LABEL_24:
   return v34;
 }
 
-- (PTFilterEMA_LKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9
+- (PTFilterEMA_LKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port
 {
-  v13 = a3;
-  v14 = [(PTFilterEMA_LKT *)self initWithMetalContext:v13];
+  contextCopy = context;
+  v14 = [(PTFilterEMA_LKT *)self initWithMetalContext:contextCopy];
   v15 = v14;
   if (v14)
   {
     v14->_frameIndex = 0;
-    v16 = *&a4->var0;
-    v14->_disparitySize.depth = a4->var2;
+    v16 = *&size->var0;
+    v14->_disparitySize.depth = size->var2;
     *&v14->_disparitySize.width = v16;
-    v17 = *&a5->var0;
-    v14->_disparityFilteredSize.depth = a5->var2;
+    v17 = *&filteredSize->var0;
+    v14->_disparityFilteredSize.depth = filteredSize->var2;
     *&v14->_disparityFilteredSize.width = v17;
     v18 = PTDefaultsGetDictionary();
     v19 = [v18 objectForKeyedSubscript:@"PortraitDump"];
@@ -185,18 +185,18 @@ LABEL_24:
 
     if (v22)
     {
-      v23 = [v22 intValue];
+      intValue = [v22 intValue];
     }
 
     else
     {
-      v23 = 1;
+      intValue = 1;
     }
 
     v24 = [PTOpticalFlow alloc];
-    v29 = *&a7->var0;
-    var2 = a7->var2;
-    v25 = [(PTOpticalFlow *)v24 initWithMetalContext:v13 colorSize:&v29 lktPreset:v23 allocateDisplacementFWD:0 needConversionBGRA2YUVA:0 inverseFlow:1];
+    v29 = *&colorSize->var0;
+    var2 = colorSize->var2;
+    v25 = [(PTOpticalFlow *)v24 initWithMetalContext:contextCopy colorSize:&v29 lktPreset:intValue allocateDisplacementFWD:0 needConversionBGRA2YUVA:0 inverseFlow:1];
     opticalFlow = v15->_opticalFlow;
     v15->_opticalFlow = v25;
 
@@ -206,7 +206,7 @@ LABEL_24:
   return v15;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state
 {
   v8 = _PTLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -217,9 +217,9 @@ LABEL_24:
   return -1;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias
 {
-  if (a5 == a7)
+  if (prev == outDisparity)
   {
     v11 = _PTLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -233,25 +233,25 @@ LABEL_24:
   else
   {
     LODWORD(v9) = 1.0;
-    result = [PTFilterEMA_LKT emaFilter:"emaFilter:inDisplacement:inTexPrev:inTex:outTex:frameIndex:scale:" inDisplacement:a3 inTexPrev:a4 inTex:a5 outTex:a6 frameIndex:v9 scale:?];
+    result = [PTFilterEMA_LKT emaFilter:"emaFilter:inDisplacement:inTexPrev:inTex:outTex:frameIndex:scale:" inDisplacement:filter inTexPrev:displacement inTex:prev outTex:disparity frameIndex:v9 scale:?];
     ++self->_frameIndex;
   }
 
   return result;
 }
 
-- (int)emaFilter:(id)a3 inDisplacement:(id)a4 inTexPrev:(id)a5 inTex:(id)a6 outTex:(id)a7 frameIndex:(int)a8 scale:(float)a9
+- (int)emaFilter:(id)filter inDisplacement:(id)displacement inTexPrev:(id)prev inTex:(id)tex outTex:(id)outTex frameIndex:(int)index scale:(float)scale
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v36 = a9;
-  if (a8)
+  filterCopy = filter;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  texCopy = tex;
+  outTexCopy = outTex;
+  scaleCopy = scale;
+  if (index)
   {
-    v21 = [v16 computeCommandEncoder];
-    if (!v21)
+    computeCommandEncoder = [filterCopy computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       v22 = _PTLogSystem();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -260,52 +260,52 @@ LABEL_24:
       }
     }
 
-    [v21 setComputePipelineState:self->_temporalFilterEMA_LKT];
-    [v21 setTexture:v17 atIndex:0];
-    [v21 setTexture:v18 atIndex:1];
-    [v21 setTexture:v19 atIndex:2];
-    [v21 setTexture:v20 atIndex:3];
-    [v21 setBytes:&v36 length:4 atIndex:0];
-    v35[0] = [v20 width];
-    v35[1] = [v20 height];
+    [computeCommandEncoder setComputePipelineState:self->_temporalFilterEMA_LKT];
+    [computeCommandEncoder setTexture:displacementCopy atIndex:0];
+    [computeCommandEncoder setTexture:prevCopy atIndex:1];
+    [computeCommandEncoder setTexture:texCopy atIndex:2];
+    [computeCommandEncoder setTexture:outTexCopy atIndex:3];
+    [computeCommandEncoder setBytes:&scaleCopy length:4 atIndex:0];
+    v35[0] = [outTexCopy width];
+    v35[1] = [outTexCopy height];
     v35[2] = 1;
     v33 = xmmword_2244A5230;
     v34 = 1;
-    [v21 dispatchThreads:v35 threadsPerThreadgroup:&v33];
-    [v21 endEncoding];
+    [computeCommandEncoder dispatchThreads:v35 threadsPerThreadgroup:&v33];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
-    v30 = [(PTMetalContext *)self->_metalContext textureUtil];
-    v21 = v30;
-    if (a9 == 1.0)
+    textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+    computeCommandEncoder = textureUtil;
+    if (scale == 1.0)
     {
-      [v30 copy:v16 inTex:v19 outTex:v20];
+      [textureUtil copy:filterCopy inTex:texCopy outTex:outTexCopy];
     }
 
     else
     {
-      *&v31 = a9;
-      [v30 multiply:v16 inTex:v19 outTex:v20 multiplier:v31];
+      *&v31 = scale;
+      [textureUtil multiply:filterCopy inTex:texCopy outTex:outTexCopy multiplier:v31];
     }
   }
 
   return 0;
 }
 
-- (int)gaussEMAFilter:(id)a3 inDisplacement:(id)a4 inTexPrev:(id)a5 inTex:(id)a6 outTex:(id)a7 frameIndex:(int)a8
+- (int)gaussEMAFilter:(id)filter inDisplacement:(id)displacement inTexPrev:(id)prev inTex:(id)tex outTex:(id)outTex frameIndex:(int)index
 {
-  v14 = a4;
-  v15 = a5;
-  if (a8)
+  displacementCopy = displacement;
+  prevCopy = prev;
+  if (index)
   {
-    v16 = a7;
-    v17 = a6;
-    v18 = a3;
-    v19 = [v18 computeCommandEncoder];
+    outTexCopy = outTex;
+    texCopy = tex;
+    filterCopy = filter;
+    computeCommandEncoder = [filterCopy computeCommandEncoder];
 
-    if (!v19)
+    if (!computeCommandEncoder)
     {
       v20 = _PTLogSystem();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -314,49 +314,49 @@ LABEL_24:
       }
     }
 
-    [v19 setComputePipelineState:self->_temporalFilterGaussEMA_LKT];
-    [v19 setTexture:v14 atIndex:0];
-    [v19 setTexture:v15 atIndex:1];
-    [v19 setTexture:v17 atIndex:2];
+    [computeCommandEncoder setComputePipelineState:self->_temporalFilterGaussEMA_LKT];
+    [computeCommandEncoder setTexture:displacementCopy atIndex:0];
+    [computeCommandEncoder setTexture:prevCopy atIndex:1];
+    [computeCommandEncoder setTexture:texCopy atIndex:2];
 
-    [v19 setTexture:v16 atIndex:3];
-    v28 = [v16 width];
-    v29 = [v16 height];
+    [computeCommandEncoder setTexture:outTexCopy atIndex:3];
+    width = [outTexCopy width];
+    height = [outTexCopy height];
 
-    v38[0] = v28;
-    v38[1] = v29;
+    v38[0] = width;
+    v38[1] = height;
     v38[2] = 1;
     v36 = xmmword_2244A5230;
     v37 = 1;
-    [v19 dispatchThreads:v38 threadsPerThreadgroup:&v36];
-    [v19 endEncoding];
+    [computeCommandEncoder dispatchThreads:v38 threadsPerThreadgroup:&v36];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
     metalContext = self->_metalContext;
-    v31 = a7;
-    v32 = a6;
-    v33 = a3;
-    v34 = [(PTMetalContext *)metalContext textureUtil];
-    [v34 copy:v33 inTex:v32 outTex:v31];
+    outTexCopy2 = outTex;
+    texCopy2 = tex;
+    filterCopy2 = filter;
+    textureUtil = [(PTMetalContext *)metalContext textureUtil];
+    [textureUtil copy:filterCopy2 inTex:texCopy2 outTex:outTexCopy2];
   }
 
   return 0;
 }
 
-- (int)gaussEMAFilterNormal:(id)a3 inDisplacement:(id)a4 inNormalPrev:(id)a5 inNormal:(id)a6 outNormal:(id)a7 frameIndex:(int)a8
+- (int)gaussEMAFilterNormal:(id)normal inDisplacement:(id)displacement inNormalPrev:(id)prev inNormal:(id)inNormal outNormal:(id)outNormal frameIndex:(int)index
 {
-  v14 = a4;
-  v15 = a5;
-  if (a8)
+  displacementCopy = displacement;
+  prevCopy = prev;
+  if (index)
   {
-    v16 = a7;
-    v17 = a6;
-    v18 = a3;
-    v19 = [v18 computeCommandEncoder];
+    outNormalCopy = outNormal;
+    inNormalCopy = inNormal;
+    normalCopy = normal;
+    computeCommandEncoder = [normalCopy computeCommandEncoder];
 
-    if (!v19)
+    if (!computeCommandEncoder)
     {
       v20 = _PTLogSystem();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -365,52 +365,52 @@ LABEL_24:
       }
     }
 
-    [v19 setComputePipelineState:self->_temporalFilterGaussEMA_LKTNormal];
-    [v19 setTexture:v14 atIndex:0];
-    [v19 setTexture:v15 atIndex:1];
-    [v19 setTexture:v17 atIndex:2];
+    [computeCommandEncoder setComputePipelineState:self->_temporalFilterGaussEMA_LKTNormal];
+    [computeCommandEncoder setTexture:displacementCopy atIndex:0];
+    [computeCommandEncoder setTexture:prevCopy atIndex:1];
+    [computeCommandEncoder setTexture:inNormalCopy atIndex:2];
 
-    [v19 setTexture:v16 atIndex:3];
-    v28 = [v16 width];
-    v29 = [v16 height];
+    [computeCommandEncoder setTexture:outNormalCopy atIndex:3];
+    width = [outNormalCopy width];
+    height = [outNormalCopy height];
 
-    v38[0] = v28;
-    v38[1] = v29;
+    v38[0] = width;
+    v38[1] = height;
     v38[2] = 1;
     v36 = xmmword_2244A5230;
     v37 = 1;
-    [v19 dispatchThreads:v38 threadsPerThreadgroup:&v36];
-    [v19 endEncoding];
+    [computeCommandEncoder dispatchThreads:v38 threadsPerThreadgroup:&v36];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
     metalContext = self->_metalContext;
-    v31 = a7;
-    v32 = a6;
-    v33 = a3;
-    v34 = [(PTMetalContext *)metalContext textureUtil];
-    [v34 copy:v33 inTex:v32 outTex:v31];
+    outNormalCopy2 = outNormal;
+    inNormalCopy2 = inNormal;
+    normalCopy2 = normal;
+    textureUtil = [(PTMetalContext *)metalContext textureUtil];
+    [textureUtil copy:normalCopy2 inTex:inNormalCopy2 outTex:outNormalCopy2];
   }
 
   return 0;
 }
 
-- (int)emaFilterDisparityNormal:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 inNormalPrev:(id)a8 inNormal:(id)a9 outNormal:(id)a10 frameIndex:(int)a11
+- (int)emaFilterDisparityNormal:(id)normal inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity inNormalPrev:(id)normalPrev inNormal:(id)inNormal outNormal:(id)self0 frameIndex:(int)self1
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  if (a11)
+  displacementCopy = displacement;
+  prevCopy = prev;
+  normalPrevCopy = normalPrev;
+  if (index)
   {
-    v20 = a10;
-    v21 = a9;
-    v22 = a7;
-    v23 = a6;
-    v24 = a3;
-    v25 = [v24 computeCommandEncoder];
+    outNormalCopy = outNormal;
+    inNormalCopy = inNormal;
+    outDisparityCopy = outDisparity;
+    disparityCopy = disparity;
+    normalCopy = normal;
+    computeCommandEncoder = [normalCopy computeCommandEncoder];
 
-    if (!v25)
+    if (!computeCommandEncoder)
     {
       v26 = _PTLogSystem();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -419,42 +419,42 @@ LABEL_24:
       }
     }
 
-    [v25 setComputePipelineState:self->_temporalFilterEMA_LKTDisparityNormal];
-    [v25 setTexture:v17 atIndex:0];
-    [v25 setTexture:v18 atIndex:1];
-    [v25 setTexture:v23 atIndex:2];
+    [computeCommandEncoder setComputePipelineState:self->_temporalFilterEMA_LKTDisparityNormal];
+    [computeCommandEncoder setTexture:displacementCopy atIndex:0];
+    [computeCommandEncoder setTexture:prevCopy atIndex:1];
+    [computeCommandEncoder setTexture:disparityCopy atIndex:2];
 
-    [v25 setTexture:v19 atIndex:3];
-    [v25 setTexture:v21 atIndex:4];
+    [computeCommandEncoder setTexture:normalPrevCopy atIndex:3];
+    [computeCommandEncoder setTexture:inNormalCopy atIndex:4];
 
-    [v25 setTexture:v22 atIndex:5];
-    [v25 setTexture:v20 atIndex:6];
+    [computeCommandEncoder setTexture:outDisparityCopy atIndex:5];
+    [computeCommandEncoder setTexture:outNormalCopy atIndex:6];
 
-    v34 = [v22 width];
-    v35 = [v22 height];
+    width = [outDisparityCopy width];
+    height = [outDisparityCopy height];
 
-    v47[0] = v34;
-    v47[1] = v35;
+    v47[0] = width;
+    v47[1] = height;
     v47[2] = 1;
     v45 = xmmword_2244A5230;
     v46 = 1;
-    [v25 dispatchThreads:v47 threadsPerThreadgroup:&v45];
-    [v25 endEncoding];
+    [computeCommandEncoder dispatchThreads:v47 threadsPerThreadgroup:&v45];
+    [computeCommandEncoder endEncoding];
   }
 
   else
   {
     metalContext = self->_metalContext;
-    v37 = a10;
-    v38 = a9;
-    v39 = a7;
-    v40 = a6;
-    v41 = a3;
-    v42 = [(PTMetalContext *)metalContext textureUtil];
-    [v42 copy:v41 inTex:v40 outTex:v39];
+    outNormalCopy2 = outNormal;
+    inNormalCopy2 = inNormal;
+    outDisparityCopy2 = outDisparity;
+    disparityCopy2 = disparity;
+    normalCopy2 = normal;
+    textureUtil = [(PTMetalContext *)metalContext textureUtil];
+    [textureUtil copy:normalCopy2 inTex:disparityCopy2 outTex:outDisparityCopy2];
 
-    v43 = [(PTMetalContext *)self->_metalContext textureUtil];
-    [v43 copy:v41 inTex:v38 outTex:v37];
+    textureUtil2 = [(PTMetalContext *)self->_metalContext textureUtil];
+    [textureUtil2 copy:normalCopy2 inTex:inNormalCopy2 outTex:outNormalCopy2];
   }
 
   return 0;

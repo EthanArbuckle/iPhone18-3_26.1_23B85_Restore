@@ -1,6 +1,6 @@
 @interface VisualEffectSceneManager
 - (_TtC23ImagePlaygroundInternal24VisualEffectSceneManager)init;
-- (void)renderer:(id)a3 updateAtTime:(double)a4;
+- (void)renderer:(id)renderer updateAtTime:(double)time;
 @end
 
 @implementation VisualEffectSceneManager
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)renderer:(id)a3 updateAtTime:(double)a4
+- (void)renderer:(id)renderer updateAtTime:(double)time
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1D27756A4(a4);
+  selfCopy = self;
+  sub_1D27756A4(time);
   swift_unknownObjectRelease();
 }
 

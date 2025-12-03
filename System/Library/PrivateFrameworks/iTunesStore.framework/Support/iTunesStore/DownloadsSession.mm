@@ -1,12 +1,12 @@
 @interface DownloadsSession
-- (BOOL)placeholderDownloadCanceledForPurchaseIdentifier:(int64_t)a3;
-- (DownloadsSession)initWithSessionDescriptor:(id)a3;
-- (id)downloadForStoreDownload:(id)a3;
-- (id)newEventDictionaryWithDownloadIdentifier:(int64_t)a3 assetIdentifier:(int64_t)a4;
-- (id)placeholderDownloadForPurchase:(id)a3;
-- (id)placeholderDownloadForPurchaseIdentifier:(int64_t)a3;
-- (id)valueForExternalProperty:(id)a3 ofAssetID:(int64_t)a4;
-- (id)valueForExternalProperty:(id)a3 ofDownloadID:(int64_t)a4;
+- (BOOL)placeholderDownloadCanceledForPurchaseIdentifier:(int64_t)identifier;
+- (DownloadsSession)initWithSessionDescriptor:(id)descriptor;
+- (id)downloadForStoreDownload:(id)download;
+- (id)newEventDictionaryWithDownloadIdentifier:(int64_t)identifier assetIdentifier:(int64_t)assetIdentifier;
+- (id)placeholderDownloadForPurchase:(id)purchase;
+- (id)placeholderDownloadForPurchaseIdentifier:(int64_t)identifier;
+- (id)valueForExternalProperty:(id)property ofAssetID:(int64_t)d;
+- (id)valueForExternalProperty:(id)property ofDownloadID:(int64_t)d;
 - (void)dealloc;
 @end
 
@@ -19,28 +19,28 @@
   [(DownloadsSession *)&v3 dealloc];
 }
 
-- (DownloadsSession)initWithSessionDescriptor:(id)a3
+- (DownloadsSession)initWithSessionDescriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = DownloadsSession;
   v4 = [(DownloadsSession *)&v6 init];
   if (v4)
   {
-    v4->_database = [a3 database];
-    v4->_externalState = [a3 externalState];
-    v4->_pipeline = [a3 pipeline];
-    v4->_policyManager = [a3 policyManager];
+    v4->_database = [descriptor database];
+    v4->_externalState = [descriptor externalState];
+    v4->_pipeline = [descriptor pipeline];
+    v4->_policyManager = [descriptor policyManager];
   }
 
   return v4;
 }
 
-- (id)downloadForStoreDownload:(id)a3
+- (id)downloadForStoreDownload:(id)download
 {
-  result = [a3 transactionIdentifier];
+  result = [download transactionIdentifier];
   if (result)
   {
-    v6 = +[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate, "predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", +[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"store_item_id", [a3 itemIdentifier]), +[SSSQLiteComparisonPredicate predicateWithProperty:equalToValue:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToValue:", @"store_transaction_id", result), 0));
+    v6 = +[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate, "predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", +[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"store_item_id", [download itemIdentifier]), +[SSSQLiteComparisonPredicate predicateWithProperty:equalToValue:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToValue:", @"store_transaction_id", result), 0));
     database = self->_database;
 
     return [DownloadEntity anyInDatabase:database predicate:v6];
@@ -49,14 +49,14 @@
   return result;
 }
 
-- (id)newEventDictionaryWithDownloadIdentifier:(int64_t)a3 assetIdentifier:(int64_t)a4
+- (id)newEventDictionaryWithDownloadIdentifier:(int64_t)identifier assetIdentifier:(int64_t)assetIdentifier
 {
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [NSNumber numberWithLongLong:a4];
+  v8 = [NSNumber numberWithLongLong:assetIdentifier];
   [v7 setObject:v8 forKey:SSEventKeyDownloadAssetIdentifier];
-  v9 = [NSNumber numberWithLongLong:a3];
+  v9 = [NSNumber numberWithLongLong:identifier];
   [v7 setObject:v9 forKey:SSEventKeyDownloadIdentifier];
-  v10 = [[DownloadAssetEntity alloc] initWithPersistentID:a4 inDatabase:self->_database];
+  v10 = [[DownloadAssetEntity alloc] initWithPersistentID:assetIdentifier inDatabase:self->_database];
   v23 = [[NSArray alloc] initWithObjects:{@"bytes_total", @"url", 0}];
   v24 = v10;
   v11 = [[SSMemoryEntity alloc] initWithDatabaseEntity:v10 properties:v23];
@@ -72,7 +72,7 @@
     [v7 setObject:v13 forKey:SSEventKeyURLString];
   }
 
-  v14 = [[DownloadEntity alloc] initWithPersistentID:a3 inDatabase:self->_database];
+  v14 = [[DownloadEntity alloc] initWithPersistentID:identifier inDatabase:self->_database];
   v15 = [[NSArray alloc] initWithObjects:{@"is_automatic", @"client_id", @"is_restore", @"kind", 0}];
   v16 = [[SSMemoryEntity alloc] initWithDatabaseEntity:v14 properties:v15];
   v17 = SSEventDownloadClassUserInitiated;
@@ -118,66 +118,66 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)placeholderDownloadCanceledForPurchaseIdentifier:(int64_t)a3
+- (BOOL)placeholderDownloadCanceledForPurchaseIdentifier:(int64_t)identifier
 {
-  v3 = [-[DownloadsSession placeholderDownloadForPurchaseIdentifier:](self placeholderDownloadForPurchaseIdentifier:{a3), "valueForProperty:", @"download_state.phase"}];
+  v3 = [-[DownloadsSession placeholderDownloadForPurchaseIdentifier:](self placeholderDownloadForPurchaseIdentifier:{identifier), "valueForProperty:", @"download_state.phase"}];
   v4 = SSDownloadPhaseCanceled;
 
   return [v3 isEqualToString:v4];
 }
 
-- (id)placeholderDownloadForPurchase:(id)a3
+- (id)placeholderDownloadForPurchase:(id)purchase
 {
-  v5 = [a3 valueForDownloadProperty:SSSQLEntityPropertyPersistentID];
+  v5 = [purchase valueForDownloadProperty:SSSQLEntityPropertyPersistentID];
   if (!v5 || (result = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v5 longLongValue], self->_database)) == 0)
   {
-    v7 = [a3 uniqueIdentifier];
+    uniqueIdentifier = [purchase uniqueIdentifier];
 
-    return [(DownloadsSession *)self placeholderDownloadForPurchaseIdentifier:v7];
+    return [(DownloadsSession *)self placeholderDownloadForPurchaseIdentifier:uniqueIdentifier];
   }
 
   return result;
 }
 
-- (id)placeholderDownloadForPurchaseIdentifier:(int64_t)a3
+- (id)placeholderDownloadForPurchaseIdentifier:(int64_t)identifier
 {
-  v4 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"is_purchase" equalToLongLong:1], [SSSQLiteComparisonPredicate predicateWithProperty:@"purchase_id" equalToLongLong:a3], 0]];
+  v4 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"is_purchase" equalToLongLong:1], [SSSQLiteComparisonPredicate predicateWithProperty:@"purchase_id" equalToLongLong:identifier], 0]];
   database = self->_database;
 
   return [DownloadEntity anyInDatabase:database predicate:v4];
 }
 
-- (id)valueForExternalProperty:(id)a3 ofAssetID:(int64_t)a4
+- (id)valueForExternalProperty:(id)property ofAssetID:(int64_t)d
 {
-  if ([a3 isEqualToString:SSDownloadAssetExternalPropertySINFs])
+  if ([property isEqualToString:SSDownloadAssetExternalPropertySINFs])
   {
-    v7 = [[DownloadAssetEntity alloc] initWithPersistentID:a4 inDatabase:self->_database];
-    v8 = [(DownloadAssetEntity *)v7 sinfs];
+    v7 = [[DownloadAssetEntity alloc] initWithPersistentID:d inDatabase:self->_database];
+    sinfs = [(DownloadAssetEntity *)v7 sinfs];
 
-    return v8;
+    return sinfs;
   }
 
   else
   {
     externalState = self->_externalState;
 
-    return [(ExternalDownloadState *)externalState valueForExternalProperty:a3 ofAssetID:a4];
+    return [(ExternalDownloadState *)externalState valueForExternalProperty:property ofAssetID:d];
   }
 }
 
-- (id)valueForExternalProperty:(id)a3 ofDownloadID:(int64_t)a4
+- (id)valueForExternalProperty:(id)property ofDownloadID:(int64_t)d
 {
-  if ([a3 isEqualToString:SSDownloadExternalPropertyRentalInformation])
+  if ([property isEqualToString:SSDownloadExternalPropertyRentalInformation])
   {
-    v7 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:self->_database];
-    v8 = [(DownloadEntity *)v7 rentalInformation];
+    v7 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:self->_database];
+    rentalInformation = [(DownloadEntity *)v7 rentalInformation];
 
-    return v8;
+    return rentalInformation;
   }
 
-  if ([a3 isEqualToString:SSDownloadExternalPropertyPolicy])
+  if ([property isEqualToString:SSDownloadExternalPropertyPolicy])
   {
-    v10 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:self->_database];
+    v10 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:self->_database];
     v11 = [(DownloadEntity *)v10 valueForProperty:@"policy_id"];
     if (v11)
     {
@@ -192,15 +192,15 @@ LABEL_12:
           v14 = +[SSLogConfig sharedConfig];
         }
 
-        v15 = [v14 shouldLog];
+        shouldLog = [v14 shouldLog];
         if ([v14 shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog;
         }
 
         if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -236,39 +236,39 @@ LABEL_12:
     return v13;
   }
 
-  if ([a3 isEqualToString:SSDownloadExternalPropertyPolicySizeLimit])
+  if ([property isEqualToString:SSDownloadExternalPropertyPolicySizeLimit])
   {
-    v20 = [(DownloadPolicyManager *)self->_policyManager overrideDownloadSizeLimitForDownloadIdentifier:a4];
+    v20 = [(DownloadPolicyManager *)self->_policyManager overrideDownloadSizeLimitForDownloadIdentifier:d];
     if (v20)
     {
-      v21 = [v20 longLongValue];
+      longLongValue = [v20 longLongValue];
     }
 
     else
     {
-      v22 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:self->_database];
+      v22 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:self->_database];
       v23 = [(DownloadEntity *)v22 valueForProperty:@"policy_id"];
       if (v23)
       {
-        v21 = -[DownloadPolicyManager downloadSizeLimitForPolicyWithID:](self->_policyManager, "downloadSizeLimitForPolicyWithID:", [v23 longLongValue]);
+        longLongValue = -[DownloadPolicyManager downloadSizeLimitForPolicyWithID:](self->_policyManager, "downloadSizeLimitForPolicyWithID:", [v23 longLongValue]);
       }
 
       else
       {
-        v21 = SSDownloadSizeLimitNoLimit;
+        longLongValue = SSDownloadSizeLimitNoLimit;
       }
     }
 
-    return [NSNumber numberWithLongLong:v21];
+    return [NSNumber numberWithLongLong:longLongValue];
   }
 
-  v13 = [(ExternalDownloadState *)self->_externalState valueForExternalProperty:a3 ofDownloadID:a4];
+  v13 = [(ExternalDownloadState *)self->_externalState valueForExternalProperty:property ofDownloadID:d];
   if (v13)
   {
     return v13;
   }
 
-  if (![a3 isEqualToString:SSDownloadExternalPropertyPercentComplete])
+  if (![property isEqualToString:SSDownloadExternalPropertyPercentComplete])
   {
     return 0;
   }

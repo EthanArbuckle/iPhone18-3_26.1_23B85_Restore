@@ -12,11 +12,11 @@
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v6 setProperty:@"Client data usage is only shown in internal builds." forKey:*MEMORY[0x277D3FF88]];
-    [v5 addObject:v6];
-    v7 = [(HotspotClientUsageController *)self getSpecifiersForClients];
-    [v5 addObjectsFromArray:v7];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:@"Client data usage is only shown in internal builds." forKey:*MEMORY[0x277D3FF88]];
+    [v5 addObject:emptyGroupSpecifier];
+    getSpecifiersForClients = [(HotspotClientUsageController *)self getSpecifiersForClients];
+    [v5 addObjectsFromArray:getSpecifiersForClients];
 
     v8 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v5;
@@ -30,7 +30,7 @@
 - (id)getSpecifiersForClients
 {
   v53 = *MEMORY[0x277D85DE8];
-  v41 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v2 = WiFiManagerClientCreate();
   if (v2)
   {
@@ -98,8 +98,8 @@
 
                   v7 = [v15 objectForKey:v36];
 
-                  v18 = [v17 unsignedIntegerValue];
-                  v19 = [v16 unsignedIntegerValue] + v18;
+                  unsignedIntegerValue = [v17 unsignedIntegerValue];
+                  v19 = [v16 unsignedIntegerValue] + unsignedIntegerValue;
                   if (v7)
                   {
                     v20 = v7;
@@ -126,7 +126,7 @@
                   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
                   [v22 setProperty:v24 forKey:@"ClientUsageBytes"];
 
-                  [v41 addObject:v22];
+                  [array addObject:v22];
                   ++v12;
                   v13 = v6;
                   v14 = v7;
@@ -156,11 +156,11 @@
     CFRelease(v3);
   }
 
-  [v41 sortUsingFunction:_CompareUsages context:0];
-  v25 = [v41 reverseObjectEnumerator];
-  v26 = [v25 allObjects];
+  [array sortUsingFunction:_CompareUsages context:0];
+  reverseObjectEnumerator = [array reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v26;
+  return allObjects;
 }
 
 @end

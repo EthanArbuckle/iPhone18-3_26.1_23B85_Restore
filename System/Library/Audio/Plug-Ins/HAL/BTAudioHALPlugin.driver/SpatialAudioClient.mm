@@ -1,6 +1,6 @@
 @interface SpatialAudioClient
 - ($09AED28DA01A4B4CD63B1271B5E0322A)HighestQualityFormat;
-- (SpatialAudioClient)initWithPid:(int)a3 deviceID:(unsigned int)a4;
+- (SpatialAudioClient)initWithPid:(int)pid deviceID:(unsigned int)d;
 - (void)ReleaseSpatialAudioQueueInfo;
 - (void)cancelExitHandler;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 - (void)resetRefCount;
 - (void)setNonUIRefCount;
 - (void)updateHighestQualityFormat;
-- (void)updateHostProcess:(int)a3;
+- (void)updateHostProcess:(int)process;
 @end
 
 @implementation SpatialAudioClient
 
-- (SpatialAudioClient)initWithPid:(int)a3 deviceID:(unsigned int)a4
+- (SpatialAudioClient)initWithPid:(int)pid deviceID:(unsigned int)d
 {
   v17.receiver = self;
   v17.super_class = SpatialAudioClient;
@@ -27,8 +27,8 @@
     *(v6 + 28) = 0;
     v6[96] = 0;
     *(v6 + 116) = 0xFF000000FFLL;
-    *(v6 + 4) = a3;
-    *(v6 + 5) = a4;
+    *(v6 + 4) = pid;
+    *(v6 + 5) = d;
     *(v6 + 1) = 0;
     *(v6 + 124) = 0;
     *(v6 + 33) = 0;
@@ -37,7 +37,7 @@
     if (os_log_type_enabled(qword_D8508, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = a3;
+      *&buf[4] = pid;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Allocating Audio Client for PID %d", buf, 8u);
     }
 
@@ -47,7 +47,7 @@
     v9 = sub_51524(qword_D8DF0, v7->deviceID);
     if (v9)
     {
-      v10 = dispatch_source_create(&_dispatch_source_type_proc, a3, 0x80000000uLL, v9);
+      v10 = dispatch_source_create(&_dispatch_source_type_proc, pid, 0x80000000uLL, v9);
       v11 = v10;
       if (v10)
       {
@@ -55,7 +55,7 @@
         handler[1] = 3221225472;
         handler[2] = sub_29AFC;
         handler[3] = &unk_AE130;
-        v16 = a3;
+        pidCopy = pid;
         handler[4] = v7;
         handler[5] = v10;
         dispatch_source_set_event_handler(v10, handler);
@@ -65,7 +65,7 @@
         v13[3] = &unk_AE130;
         v13[4] = v11;
         v13[5] = v7;
-        v14 = a3;
+        pidCopy2 = pid;
         dispatch_source_set_cancel_handler(v11, v13);
         dispatch_resume(v11);
       }
@@ -105,8 +105,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMutableDictionary *)self->audioQueueDict allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->audioQueueDict allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -116,7 +116,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -126,7 +126,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -135,12 +135,12 @@
   sub_70C40(buf);
 }
 
-- (void)updateHostProcess:(int)a3
+- (void)updateHostProcess:(int)process
 {
   v5[0] = 0;
   v5[1] = 0;
   sub_70AF4(v5, &self->clientMutex);
-  self->_hostProcess = a3;
+  self->_hostProcess = process;
   sub_70C40(v5);
 }
 
@@ -300,13 +300,13 @@ LABEL_21:
       v13 = qword_D8508;
       if (os_log_type_enabled(qword_D8508, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 streamInfo];
+        streamInfo = [v9 streamInfo];
         [v9 streamInfo];
         v16 = v15;
         [v9 streamInfo];
         disableControlCentreUpdate = self->_disableControlCentreUpdate;
         *buf = 67109888;
-        v56 = v14;
+        v56 = streamInfo;
         v57 = 1024;
         v58 = HIBYTE(v16) & 1;
         v59 = 1024;
@@ -330,10 +330,10 @@ LABEL_22:
   *&self->_HighestQualityFormat.mClientProcessID = 0;
   if (v5)
   {
-    v43 = [v5 streamInfo];
-    v44 = HIDWORD(v43);
+    streamInfo2 = [v5 streamInfo];
+    v44 = HIDWORD(streamInfo2);
     v46 = v45;
-    *&self->_HighestQualityFormat.mClientProcessID = v43;
+    *&self->_HighestQualityFormat.mClientProcessID = streamInfo2;
     *&self->_HighestQualityFormat.mSpatializationStatus = v45;
     v47 = qword_D8508;
     if (os_log_type_enabled(qword_D8508, OS_LOG_TYPE_DEFAULT))

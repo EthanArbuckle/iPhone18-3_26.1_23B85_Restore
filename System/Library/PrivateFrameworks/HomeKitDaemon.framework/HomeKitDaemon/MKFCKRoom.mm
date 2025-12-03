@@ -1,15 +1,15 @@
 @interface MKFCKRoom
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
 @end
 
 @implementation MKFCKRoom
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MKFCKModel *)self copyPropertiesFromLocalModel:v7 context:v8];
+  modelCopy = model;
+  contextCopy = context;
+  v9 = [(MKFCKModel *)self copyPropertiesFromLocalModel:modelCopy context:contextCopy];
   if (self)
   {
     v10 = v9;
@@ -22,15 +22,15 @@
 
   if (v10)
   {
-    v11 = [(MKFCKRoom *)self homeZone];
+    homeZone = [(MKFCKRoom *)self homeZone];
 
-    if (v11)
+    if (homeZone)
     {
       [(MKFCKRoom *)self setHomeZone:0];
     }
 
-    v12 = [_MKFApplicationData appDataDictionaryForContainer:v7];
-    v13 = [(MKFCKRoom *)self applicationData];
+    v12 = [_MKFApplicationData appDataDictionaryForContainer:modelCopy];
+    applicationData = [(MKFCKRoom *)self applicationData];
     v14 = HMFEqualObjects();
 
     if ((v14 & 1) == 0)
@@ -42,14 +42,14 @@
   return v10;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  v8 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:v7 context:a5];
+  modelCopy = model;
+  v8 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:context];
   if (v8)
   {
-    v9 = [(MKFCKRoom *)self applicationData];
-    [_MKFApplicationData setAppDataDictionary:v9 forContainer:v7];
+    applicationData = [(MKFCKRoom *)self applicationData];
+    [_MKFApplicationData setAppDataDictionary:applicationData forContainer:modelCopy];
   }
 
   return v8;

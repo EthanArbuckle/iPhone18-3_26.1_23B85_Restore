@@ -1,15 +1,15 @@
 @interface MFBufferedQueue
 - (BOOL)_flush;
-- (BOOL)addItem:(id)a3;
+- (BOOL)addItem:(id)item;
 - (BOOL)flushIfNecessary;
-- (MFBufferedQueue)initWithMaximumSize:(unsigned int)a3 latency:(double)a4;
+- (MFBufferedQueue)initWithMaximumSize:(unsigned int)size latency:(double)latency;
 - (void)dealloc;
 - (void)removeAllObjects;
 @end
 
 @implementation MFBufferedQueue
 
-- (MFBufferedQueue)initWithMaximumSize:(unsigned int)a3 latency:(double)a4
+- (MFBufferedQueue)initWithMaximumSize:(unsigned int)size latency:(double)latency
 {
   v9.receiver = self;
   v9.super_class = MFBufferedQueue;
@@ -17,8 +17,8 @@
   if (v6)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v6->_maximumSize = a3;
-    v6->_maximumLatency = a4;
+    v6->_maximumSize = size;
+    v6->_maximumLatency = latency;
     v6->_timeOfLastFlush = Current;
   }
 
@@ -32,7 +32,7 @@
   [(MFBufferedQueue *)&v3 dealloc];
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
   self->_currentSize += [(MFBufferedQueue *)self sizeForItem:?];
   queue = self->_queue;
@@ -42,7 +42,7 @@
     self->_queue = queue;
   }
 
-  [(NSMutableArray *)queue addObject:a3];
+  [(NSMutableArray *)queue addObject:item];
   [(MFBufferedQueue *)self flushIfNecessary];
   return 1;
 }

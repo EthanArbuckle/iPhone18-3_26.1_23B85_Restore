@@ -1,26 +1,26 @@
 @interface PLCloudPhotoLibraryUploadTracker
 - ($3CC19D079FD0B010EE84973AA846B91B)currentTransferProgress;
-- (BOOL)_isMasterRecordUploaded:(id)a3;
+- (BOOL)_isMasterRecordUploaded:(id)uploaded;
 - (PLCloudPhotoLibraryUploadTracker)init;
-- (id)_constructKeyForScopedIdentifier:(id)a3 type:(int)a4;
+- (id)_constructKeyForScopedIdentifier:(id)identifier type:(int)type;
 - (id)currentStateForDebug;
 - (unint64_t)totalNumberOfDeferredAssets;
 - (unint64_t)totalNumberOfUnpushedMasters;
 - (unint64_t)totalNumberOfUploadedMasters;
 - (unint64_t)totalSizeOfUnpushedOriginals;
 - (unint64_t)totalUploadedOriginalSize;
-- (void)_setBatchUploadStateForTrackedMasters:(id)a3 withState:(BOOL)a4;
-- (void)_stopTrackingResourceWithScopedIdentifier:(id)a3 fileSize:(unint64_t)a4 type:(int)a5;
-- (void)addSizeForUnpushedOriginals:(unint64_t)a3 forMasterScopedIdentifier:(id)a4 forAssetScopedIdentifier:(id)a5;
+- (void)_setBatchUploadStateForTrackedMasters:(id)masters withState:(BOOL)state;
+- (void)_stopTrackingResourceWithScopedIdentifier:(id)identifier fileSize:(unint64_t)size type:(int)type;
+- (void)addSizeForUnpushedOriginals:(unint64_t)originals forMasterScopedIdentifier:(id)identifier forAssetScopedIdentifier:(id)scopedIdentifier;
 - (void)reset;
-- (void)resetIfNeededWithLibrary:(id)a3 isInitialUpload:(BOOL)a4;
-- (void)setupFromCPLManager:(id)a3;
-- (void)setupFromLibrary:(id)a3 isInitialUpload:(BOOL)a4;
-- (void)stopTrackingMaster:(id)a3;
-- (void)trackDeferredAssetForScopedIdentifier:(id)a3;
-- (void)updateForMasterResourceUploadWithScopedIdentifier:(id)a3 progress:(float)a4 fileSize:(unint64_t)a5 type:(int)a6;
-- (void)uploadFinishedForMasterRecordWithScopedIdentifier:(id)a3 didUpdateStatus:(BOOL *)a4;
-- (void)uploadFinishedForMasterResourceWithScopedIdentifier:(id)a3 fileSize:(unint64_t)a4 type:(int)a5 withError:(BOOL)a6;
+- (void)resetIfNeededWithLibrary:(id)library isInitialUpload:(BOOL)upload;
+- (void)setupFromCPLManager:(id)manager;
+- (void)setupFromLibrary:(id)library isInitialUpload:(BOOL)upload;
+- (void)stopTrackingMaster:(id)master;
+- (void)trackDeferredAssetForScopedIdentifier:(id)identifier;
+- (void)updateForMasterResourceUploadWithScopedIdentifier:(id)identifier progress:(float)progress fileSize:(unint64_t)size type:(int)type;
+- (void)uploadFinishedForMasterRecordWithScopedIdentifier:(id)identifier didUpdateStatus:(BOOL *)status;
+- (void)uploadFinishedForMasterResourceWithScopedIdentifier:(id)identifier fileSize:(unint64_t)size type:(int)type withError:(BOOL)error;
 @end
 
 @implementation PLCloudPhotoLibraryUploadTracker
@@ -60,10 +60,10 @@ double __41__PLCloudPhotoLibraryUploadTracker_reset__block_invoke(uint64_t a1, u
   return v4;
 }
 
-- (void)resetIfNeededWithLibrary:(id)a3 isInitialUpload:(BOOL)a4
+- (void)resetIfNeededWithLibrary:(id)library isInitialUpload:(BOOL)upload
 {
-  v4 = a4;
-  v6 = a3;
+  uploadCopy = upload;
+  libraryCopy = library;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -78,7 +78,7 @@ double __41__PLCloudPhotoLibraryUploadTracker_reset__block_invoke(uint64_t a1, u
   if (*(v10 + 24) == 1)
   {
     [(PLCloudPhotoLibraryUploadTracker *)self reset];
-    [(PLCloudPhotoLibraryUploadTracker *)self setupFromLibrary:v6 isInitialUpload:v4];
+    [(PLCloudPhotoLibraryUploadTracker *)self setupFromLibrary:libraryCopy isInitialUpload:uploadCopy];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -100,21 +100,21 @@ void __77__PLCloudPhotoLibraryUploadTracker_resetIfNeededWithLibrary_isInitialUp
   *(*(*(a1 + 32) + 8) + 24) = v4;
 }
 
-- (void)setupFromCPLManager:(id)a3
+- (void)setupFromCPLManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 sizeOfOriginalResourcesToUpload];
-  v6 = [v4 numberOfImagesToUpload];
-  v7 = [v4 numberOfVideosToUpload] + v6;
-  v8 = [v4 numberOfOtherItemsToUpload];
+  managerCopy = manager;
+  sizeOfOriginalResourcesToUpload = [managerCopy sizeOfOriginalResourcesToUpload];
+  numberOfImagesToUpload = [managerCopy numberOfImagesToUpload];
+  v7 = [managerCopy numberOfVideosToUpload] + numberOfImagesToUpload;
+  numberOfOtherItemsToUpload = [managerCopy numberOfOtherItemsToUpload];
 
   atomicProgress = self->_atomicProgress;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__PLCloudPhotoLibraryUploadTracker_setupFromCPLManager___block_invoke;
   v10[3] = &__block_descriptor_48_e43_v16__0__PLCloudPhotoLibraryUploadProgress_8l;
-  v10[4] = v5;
-  v10[5] = v7 + v8;
+  v10[4] = sizeOfOriginalResourcesToUpload;
+  v10[5] = v7 + numberOfOtherItemsToUpload;
   [(PLAtomicObject *)atomicProgress atomicallyPerformBlockAndWait:v10];
 }
 
@@ -128,25 +128,25 @@ void __56__PLCloudPhotoLibraryUploadTracker_setupFromCPLManager___block_invoke(u
   }
 }
 
-- (void)setupFromLibrary:(id)a3 isInitialUpload:(BOOL)a4
+- (void)setupFromLibrary:(id)library isInitialUpload:(BOOL)upload
 {
-  v4 = a4;
-  v7 = a3;
+  uploadCopy = upload;
+  libraryCopy = library;
   if (!self->_mastersToUpload)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:244 description:@"_mastersToUpload must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:244 description:@"_mastersToUpload must not be nil"];
   }
 
   if (!self->_deferredAssetsToUpload)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:245 description:@"_deferredAssetsToUpload must not be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:245 description:@"_deferredAssetsToUpload must not be nil"];
   }
 
-  if (v4)
+  if (uploadCopy)
   {
-    v8 = [PLManagedAsset totalSizeOfUnpushedOriginalsInPhotoLibrary:v7 outMasterList:self->_mastersToUpload isInitialUpload:1];
+    v8 = [PLManagedAsset totalSizeOfUnpushedOriginalsInPhotoLibrary:libraryCopy outMasterList:self->_mastersToUpload isInitialUpload:1];
     v9 = [(NSMutableSet *)self->_mastersToUpload count];
     [(PLCloudPhotoLibraryUploadTracker *)self _setBatchUploadStateForTrackedMasters:self->_mastersToUpload withState:0];
   }
@@ -157,7 +157,7 @@ void __56__PLCloudPhotoLibraryUploadTracker_setupFromCPLManager___block_invoke(u
     v8 = 0;
   }
 
-  v10 = [PLManagedAsset countOfDeferredAssetsToSyncInPhotoLibrary:v7 outAssetList:self->_deferredAssetsToUpload];
+  v10 = [PLManagedAsset countOfDeferredAssetsToSyncInPhotoLibrary:libraryCopy outAssetList:self->_deferredAssetsToUpload];
   atomicProgress = self->_atomicProgress;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -181,17 +181,17 @@ void __69__PLCloudPhotoLibraryUploadTracker_setupFromLibrary_isInitialUpload___b
   }
 }
 
-- (void)trackDeferredAssetForScopedIdentifier:(id)a3
+- (void)trackDeferredAssetForScopedIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   if (!self->_deferredAssetsToUpload)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:230 description:@"_deferredAssetsToUpload must not be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:230 description:@"_deferredAssetsToUpload must not be nil"];
   }
 
-  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:v5])
+  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:identifierCopy])
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
@@ -199,7 +199,7 @@ void __69__PLCloudPhotoLibraryUploadTracker_setupFromLibrary_isInitialUpload___b
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v5;
+        v12 = identifierCopy;
         v7 = "Deferred processing asset (%@) already tracked with a master change, ignoring in tracker";
         v8 = v6;
         v9 = OS_LOG_TYPE_ERROR;
@@ -214,9 +214,9 @@ LABEL_11:
 
   else
   {
-    if (![(NSMutableSet *)self->_deferredAssetsToUpload containsObject:v5])
+    if (![(NSMutableSet *)self->_deferredAssetsToUpload containsObject:identifierCopy])
     {
-      [(NSMutableSet *)self->_deferredAssetsToUpload addObject:v5];
+      [(NSMutableSet *)self->_deferredAssetsToUpload addObject:identifierCopy];
       [(PLAtomicObject *)self->_atomicProgress atomicallyPerformBlockAndWait:&__block_literal_global_51_72627];
       goto LABEL_14;
     }
@@ -227,7 +227,7 @@ LABEL_11:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v11 = 138412290;
-        v12 = v5;
+        v12 = identifierCopy;
         v7 = "Deferred processing asset (%@) already tracked as pending, ignoring in tracker";
         v8 = v6;
         v9 = OS_LOG_TYPE_DEBUG;
@@ -250,20 +250,20 @@ void __74__PLCloudPhotoLibraryUploadTracker_trackDeferredAssetForScopedIdentifie
   }
 }
 
-- (void)addSizeForUnpushedOriginals:(unint64_t)a3 forMasterScopedIdentifier:(id)a4 forAssetScopedIdentifier:(id)a5
+- (void)addSizeForUnpushedOriginals:(unint64_t)originals forMasterScopedIdentifier:(id)identifier forAssetScopedIdentifier:(id)scopedIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  if (![(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:v8])
+  identifierCopy = identifier;
+  scopedIdentifierCopy = scopedIdentifier;
+  if (![(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:identifierCopy])
   {
-    [(NSMutableSet *)self->_mastersToUpload addObject:v8];
-    [(NSMutableDictionary *)self->_masterRecordUploadState setObject:MEMORY[0x1E695E110] forKey:v8];
-    [(NSMutableSet *)self->_mastersToUploadTrackingSize addObject:v8];
-    v10 = [(NSMutableSet *)self->_deferredAssetsToUpload containsObject:v9];
+    [(NSMutableSet *)self->_mastersToUpload addObject:identifierCopy];
+    [(NSMutableDictionary *)self->_masterRecordUploadState setObject:MEMORY[0x1E695E110] forKey:identifierCopy];
+    [(NSMutableSet *)self->_mastersToUploadTrackingSize addObject:identifierCopy];
+    v10 = [(NSMutableSet *)self->_deferredAssetsToUpload containsObject:scopedIdentifierCopy];
     v11 = v10;
     if (v10)
     {
-      [(NSMutableSet *)self->_deferredAssetsToUpload removeObject:v9];
+      [(NSMutableSet *)self->_deferredAssetsToUpload removeObject:scopedIdentifierCopy];
     }
 
     atomicProgress = self->_atomicProgress;
@@ -271,7 +271,7 @@ void __74__PLCloudPhotoLibraryUploadTracker_trackDeferredAssetForScopedIdentifie
     v13[1] = 3221225472;
     v13[2] = __115__PLCloudPhotoLibraryUploadTracker_addSizeForUnpushedOriginals_forMasterScopedIdentifier_forAssetScopedIdentifier___block_invoke;
     v13[3] = &__block_descriptor_41_e43_v16__0__PLCloudPhotoLibraryUploadProgress_8l;
-    v13[4] = a3;
+    v13[4] = originals;
     v14 = v11;
     [(PLAtomicObject *)atomicProgress atomicallyPerformBlockAndWait:v13];
   }
@@ -291,21 +291,21 @@ void __115__PLCloudPhotoLibraryUploadTracker_addSizeForUnpushedOriginals_forMast
   }
 }
 
-- (void)updateForMasterResourceUploadWithScopedIdentifier:(id)a3 progress:(float)a4 fileSize:(unint64_t)a5 type:(int)a6
+- (void)updateForMasterResourceUploadWithScopedIdentifier:(id)identifier progress:(float)progress fileSize:(unint64_t)size type:(int)type
 {
-  v9 = [(PLCloudPhotoLibraryUploadTracker *)self _constructKeyForScopedIdentifier:a3 type:*&a6];
-  v10 = (a5 * a4);
+  v9 = [(PLCloudPhotoLibraryUploadTracker *)self _constructKeyForScopedIdentifier:identifier type:*&type];
+  v10 = (size * progress);
   trackedResourceProgressSize = self->_trackedResourceProgressSize;
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
   [(NSMutableDictionary *)trackedResourceProgressSize setObject:v12 forKey:v9];
 
-  v13 = a4;
-  if (a4 > 0.99)
+  progressCopy = progress;
+  if (progress > 0.99)
   {
-    v14 = [(NSMutableDictionary *)self->_trackedResourceMasterUploaded objectForKey:v9, v13];
-    v15 = [v14 BOOLValue];
+    progressCopy = [(NSMutableDictionary *)self->_trackedResourceMasterUploaded objectForKey:v9, progressCopy];
+    bOOLValue = [progressCopy BOOLValue];
 
-    if ((v15 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(NSMutableDictionary *)self->_trackedResourceMasterUploaded setObject:MEMORY[0x1E695E118] forKey:v9];
     }
@@ -370,16 +370,16 @@ void __109__PLCloudPhotoLibraryUploadTracker_updateForMasterResourceUploadWithSc
   }
 }
 
-- (void)uploadFinishedForMasterResourceWithScopedIdentifier:(id)a3 fileSize:(unint64_t)a4 type:(int)a5 withError:(BOOL)a6
+- (void)uploadFinishedForMasterResourceWithScopedIdentifier:(id)identifier fileSize:(unint64_t)size type:(int)type withError:(BOOL)error
 {
-  v9 = [(PLCloudPhotoLibraryUploadTracker *)self _constructKeyForScopedIdentifier:a3 type:*&a5];
+  v9 = [(PLCloudPhotoLibraryUploadTracker *)self _constructKeyForScopedIdentifier:identifier type:*&type];
   atomicProgress = self->_atomicProgress;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __112__PLCloudPhotoLibraryUploadTracker_uploadFinishedForMasterResourceWithScopedIdentifier_fileSize_type_withError___block_invoke;
   v11[3] = &__block_descriptor_41_e43_v16__0__PLCloudPhotoLibraryUploadProgress_8l;
-  v12 = a6;
-  v11[4] = a4;
+  errorCopy = error;
+  v11[4] = size;
   [(PLAtomicObject *)atomicProgress atomicallyPerformBlockAndWait:v11];
   [(NSMutableDictionary *)self->_trackedResourceProgressSize removeObjectForKey:v9];
   [(NSMutableDictionary *)self->_trackedResourceMasterUploaded removeObjectForKey:v9];
@@ -405,18 +405,18 @@ void __112__PLCloudPhotoLibraryUploadTracker_uploadFinishedForMasterResourceWith
   }
 }
 
-- (void)uploadFinishedForMasterRecordWithScopedIdentifier:(id)a3 didUpdateStatus:(BOOL *)a4
+- (void)uploadFinishedForMasterRecordWithScopedIdentifier:(id)identifier didUpdateStatus:(BOOL *)status
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:?])
   {
-    if (![(PLCloudPhotoLibraryUploadTracker *)self _isMasterRecordUploaded:v6])
+    if (![(PLCloudPhotoLibraryUploadTracker *)self _isMasterRecordUploaded:identifierCopy])
     {
       [(PLAtomicObject *)self->_atomicProgress atomicallyPerformBlockAndWait:&__block_literal_global_45_72631];
-      [(NSMutableDictionary *)self->_masterRecordUploadState setObject:MEMORY[0x1E695E118] forKey:v6];
-      if (a4)
+      [(NSMutableDictionary *)self->_masterRecordUploadState setObject:MEMORY[0x1E695E118] forKey:identifierCopy];
+      if (status)
       {
-        *a4 = 1;
+        *status = 1;
       }
     }
   }
@@ -431,19 +431,19 @@ void __102__PLCloudPhotoLibraryUploadTracker_uploadFinishedForMasterRecordWithSc
   }
 }
 
-- (void)_stopTrackingResourceWithScopedIdentifier:(id)a3 fileSize:(unint64_t)a4 type:(int)a5
+- (void)_stopTrackingResourceWithScopedIdentifier:(id)identifier fileSize:(unint64_t)size type:(int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:v8])
+  v5 = *&type;
+  identifierCopy = identifier;
+  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:identifierCopy])
   {
-    [(PLCloudPhotoLibraryUploadTracker *)self uploadFinishedForMasterResourceWithScopedIdentifier:v8 fileSize:a4 type:v5 withError:1];
+    [(PLCloudPhotoLibraryUploadTracker *)self uploadFinishedForMasterResourceWithScopedIdentifier:identifierCopy fileSize:size type:v5 withError:1];
     atomicProgress = self->_atomicProgress;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __92__PLCloudPhotoLibraryUploadTracker__stopTrackingResourceWithScopedIdentifier_fileSize_type___block_invoke;
     v10[3] = &__block_descriptor_40_e43_v16__0__PLCloudPhotoLibraryUploadProgress_8l;
-    v10[4] = a4;
+    v10[4] = size;
     [(PLAtomicObject *)atomicProgress atomicallyPerformBlockAndWait:v10];
   }
 }
@@ -466,20 +466,20 @@ void __92__PLCloudPhotoLibraryUploadTracker__stopTrackingResourceWithScopedIdent
   }
 }
 
-- (void)stopTrackingMaster:(id)a3
+- (void)stopTrackingMaster:(id)master
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 scopedIdentifier];
-  if ([(NSMutableSet *)self->_mastersToUploadTrackingSize containsObject:v5])
+  masterCopy = master;
+  scopedIdentifier = [masterCopy scopedIdentifier];
+  if ([(NSMutableSet *)self->_mastersToUploadTrackingSize containsObject:scopedIdentifier])
   {
-    v13 = v5;
-    v6 = [v4 allAssetAttachedResources];
+    v13 = scopedIdentifier;
+    allAssetAttachedResources = [masterCopy allAssetAttachedResources];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [allAssetAttachedResources countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -490,30 +490,30 @@ void __92__PLCloudPhotoLibraryUploadTracker__stopTrackingResourceWithScopedIdent
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allAssetAttachedResources);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           if ([MEMORY[0x1E6994B90] resourceTypeTrackedForUpload:{objc_msgSend(v11, "cplType")}])
           {
-            v12 = [v4 scopedIdentifier];
-            -[PLCloudPhotoLibraryUploadTracker _stopTrackingResourceWithScopedIdentifier:fileSize:type:](self, "_stopTrackingResourceWithScopedIdentifier:fileSize:type:", v12, [v11 dataLength], objc_msgSend(v11, "cplType"));
+            scopedIdentifier2 = [masterCopy scopedIdentifier];
+            -[PLCloudPhotoLibraryUploadTracker _stopTrackingResourceWithScopedIdentifier:fileSize:type:](self, "_stopTrackingResourceWithScopedIdentifier:fileSize:type:", scopedIdentifier2, [v11 dataLength], objc_msgSend(v11, "cplType"));
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [allAssetAttachedResources countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    v5 = v13;
+    scopedIdentifier = v13;
     [(NSMutableSet *)self->_mastersToUploadTrackingSize removeObject:v13];
   }
 
-  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:v5])
+  if ([(PLCloudPhotoLibraryUploadTracker *)self _trackingMasterForScopedIdentifier:scopedIdentifier])
   {
-    [(NSMutableSet *)self->_mastersToUpload removeObject:v5];
+    [(NSMutableSet *)self->_mastersToUpload removeObject:scopedIdentifier];
     [(PLAtomicObject *)self->_atomicProgress atomicallyPerformBlockAndWait:&__block_literal_global_72635];
   }
 }
@@ -527,15 +527,15 @@ void __55__PLCloudPhotoLibraryUploadTracker_stopTrackingMaster___block_invoke(ui
   }
 }
 
-- (void)_setBatchUploadStateForTrackedMasters:(id)a3 withState:(BOOL)a4
+- (void)_setBatchUploadStateForTrackedMasters:(id)masters withState:(BOOL)state
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __84__PLCloudPhotoLibraryUploadTracker__setBatchUploadStateForTrackedMasters_withState___block_invoke;
   v4[3] = &unk_1E7571190;
   v4[4] = self;
-  v5 = a4;
-  [a3 enumerateObjectsUsingBlock:v4];
+  stateCopy = state;
+  [masters enumerateObjectsUsingBlock:v4];
 }
 
 void __84__PLCloudPhotoLibraryUploadTracker__setBatchUploadStateForTrackedMasters_withState___block_invoke(uint64_t a1, void *a2)
@@ -548,23 +548,23 @@ void __84__PLCloudPhotoLibraryUploadTracker__setBatchUploadStateForTrackedMaster
   [v2 setObject:v6 forKey:v5];
 }
 
-- (BOOL)_isMasterRecordUploaded:(id)a3
+- (BOOL)_isMasterRecordUploaded:(id)uploaded
 {
-  v3 = [(NSMutableDictionary *)self->_masterRecordUploadState objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_masterRecordUploadState objectForKey:uploaded];
   v4 = [v3 isEqualToNumber:MEMORY[0x1E695E118]];
 
   return v4;
 }
 
-- (id)_constructKeyForScopedIdentifier:(id)a3 type:(int)a4
+- (id)_constructKeyForScopedIdentifier:(id)identifier type:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 scopeIdentifier];
+  identifierCopy = identifier;
+  identifier = [identifierCopy identifier];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
 
-  v9 = [v5 stringWithFormat:@"%@#%@-%d", v7, v8, v4];
+  v9 = [v5 stringWithFormat:@"%@#%@-%d", identifier, scopeIdentifier, v4];
 
   return v9;
 }
@@ -796,8 +796,8 @@ uint64_t __64__PLCloudPhotoLibraryUploadTracker_totalNumberOfUnpushedMasters__bl
   {
     if ((PLIsAssetsd() & 1) == 0)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v3 file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:40 description:@"only assetsd"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"PLCloudPhotoLibraryUploadTracker.m" lineNumber:40 description:@"only assetsd"];
     }
 
     v4 = objc_alloc_init(PLCloudPhotoLibraryUploadProgress);
@@ -813,17 +813,17 @@ uint64_t __64__PLCloudPhotoLibraryUploadTracker_totalNumberOfUnpushedMasters__bl
     deferredAssetsToUpload = v3->_deferredAssetsToUpload;
     v3->_deferredAssetsToUpload = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     trackedResourceProgressSize = v3->_trackedResourceProgressSize;
-    v3->_trackedResourceProgressSize = v11;
+    v3->_trackedResourceProgressSize = dictionary;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     trackedResourceMasterUploaded = v3->_trackedResourceMasterUploaded;
-    v3->_trackedResourceMasterUploaded = v13;
+    v3->_trackedResourceMasterUploaded = dictionary2;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     masterRecordUploadState = v3->_masterRecordUploadState;
-    v3->_masterRecordUploadState = v15;
+    v3->_masterRecordUploadState = dictionary3;
 
     v17 = [MEMORY[0x1E695DFA8] set];
     mastersToUploadTrackingSize = v3->_mastersToUploadTrackingSize;

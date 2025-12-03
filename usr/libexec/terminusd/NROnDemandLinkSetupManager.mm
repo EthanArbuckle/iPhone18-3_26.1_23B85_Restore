@@ -1,13 +1,13 @@
 @interface NROnDemandLinkSetupManager
-- (void)didUpdatePHSState:(BOOL)a3 llphsActive:(BOOL)a4;
+- (void)didUpdatePHSState:(BOOL)state llphsActive:(BOOL)active;
 @end
 
 @implementation NROnDemandLinkSetupManager
 
-- (void)didUpdatePHSState:(BOOL)a3 llphsActive:(BOOL)a4
+- (void)didUpdatePHSState:(BOOL)state llphsActive:(BOOL)active
 {
-  v4 = a4;
-  v5 = a3;
+  activeCopy = active;
+  stateCopy = state;
   if (qword_100228EC8 != -1)
   {
     dispatch_once(&qword_100228EC8, &stru_1001FA448);
@@ -23,11 +23,11 @@
     _NRLogWithArgs();
   }
 
-  if (self && self->_subscribedForPHSStateUpdates && (self->_isPHSActive != v5 || self->_isLLPHSActive != v4))
+  if (self && self->_subscribedForPHSStateUpdates && (self->_isPHSActive != stateCopy || self->_isLLPHSActive != activeCopy))
   {
-    self->_isPHSActive = v5;
-    self->_isLLPHSActive = v4;
-    if (!v5 && !v4)
+    self->_isPHSActive = stateCopy;
+    self->_isLLPHSActive = activeCopy;
+    if (!stateCopy && !activeCopy)
     {
       objc_initWeak(&location, self);
       v7 = dispatch_time(0, 5000000000);
@@ -89,7 +89,7 @@ LABEL_14:
       v38 = 3221225472;
       v39 = sub_100019F84;
       v40 = &unk_1001FD0D8;
-      objc_copyWeak(&v42, from);
+      objc_copyWeak(&selfCopy, from);
       v20 = v18;
       v41 = v20;
       dispatch_source_set_event_handler(v20, &location);
@@ -98,7 +98,7 @@ LABEL_14:
       self->_phsSource = v20;
       v22 = v20;
 
-      objc_destroyWeak(&v42);
+      objc_destroyWeak(&selfCopy);
       objc_destroyWeak(from);
     }
 
@@ -123,7 +123,7 @@ LABEL_14:
         objc_copyWeak(&v43, &v44);
         v24 = v23;
         v41 = v24;
-        v42 = self;
+        selfCopy = self;
         [v24 setDeviceFoundHandler:&location];
         from[0] = _NSConcreteStackBlock;
         from[1] = 3221225472;

@@ -1,24 +1,24 @@
 @interface SafariSettingsEditableTableCell
 - (BOOL)canReload;
-- (SafariSettingsEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_textFieldChanged:(id)a3;
-- (void)copy:(id)a3;
+- (SafariSettingsEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_textFieldChanged:(id)changed;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SafariSettingsEditableTableCell
 
-- (SafariSettingsEditableTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SafariSettingsEditableTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = SafariSettingsEditableTableCell;
-  v5 = [(SafariSettingsEditableTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(SafariSettingsEditableTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SafariSettingsEditableTableCell *)v5 textField];
-    [v7 addTarget:v6 action:"_textFieldChanged:" forControlEvents:0x20000];
+    textField = [(SafariSettingsEditableTableCell *)v5 textField];
+    [textField addTarget:v6 action:"_textFieldChanged:" forControlEvents:0x20000];
 
     v8 = v6;
   }
@@ -28,45 +28,45 @@
 
 - (void)dealloc
 {
-  v3 = [(SafariSettingsEditableTableCell *)self textField];
-  [v3 removeTarget:self action:"_textFieldChanged:" forControlEvents:0x20000];
+  textField = [(SafariSettingsEditableTableCell *)self textField];
+  [textField removeTarget:self action:"_textFieldChanged:" forControlEvents:0x20000];
 
   v4.receiver = self;
   v4.super_class = SafariSettingsEditableTableCell;
   [(SafariSettingsEditableTableCell *)&v4 dealloc];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(SafariSettingsEditableTableCell *)self specifier];
-  v5 = [v4 cellType];
+  specifier = [(SafariSettingsEditableTableCell *)self specifier];
+  cellType = [specifier cellType];
 
   v8 = +[UIPasteboard generalPasteboard];
-  v6 = [(SafariSettingsEditableTableCell *)self textField];
-  v7 = [v6 text];
-  if (v5 == &dword_C)
+  textField = [(SafariSettingsEditableTableCell *)self textField];
+  text = [textField text];
+  if (cellType == &dword_C)
   {
-    [v8 safari_setSensitiveString:v7];
+    [v8 safari_setSensitiveString:text];
   }
 
   else
   {
-    [v8 setString:v7];
+    [v8 setString:text];
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = SafariSettingsEditableTableCell;
-  v4 = a3;
-  [(SafariSettingsEditableTableCell *)&v13 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"SafariEditing", v13.receiver, v13.super_class}];
+  specifierCopy = specifier;
+  [(SafariSettingsEditableTableCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"SafariEditing", v13.receiver, v13.super_class}];
 
-  v6 = [v5 BOOLValue];
-  v7 = [(SafariSettingsEditableTableCell *)self textField];
-  [v7 setEnabled:v6];
-  if (v6)
+  bOOLValue = [v5 BOOLValue];
+  textField = [(SafariSettingsEditableTableCell *)self textField];
+  [textField setEnabled:bOOLValue];
+  if (bOOLValue)
   {
     +[UIColor tableCellBlueTextColor];
   }
@@ -76,11 +76,11 @@
     +[UIColor secondaryLabelColor];
   }
   v8 = ;
-  [v7 setTextColor:v8];
+  [textField setTextColor:v8];
 
   v9 = +[UIApplication sharedApplication];
-  v10 = [v9 preferredContentSizeCategory];
-  v11 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryAccessibilityMedium, v10);
+  preferredContentSizeCategory = [v9 preferredContentSizeCategory];
+  v11 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryAccessibilityMedium, preferredContentSizeCategory);
 
   if (v11 == NSOrderedDescending)
   {
@@ -94,19 +94,19 @@
       v12 = 0;
     }
 
-    [v7 setTextAlignment:v12];
+    [textField setTextAlignment:v12];
   }
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
-  v4 = [(SafariSettingsEditableTableCell *)self specifier];
-  v6 = [v4 propertyForKey:@"SafariTextChangeHandler"];
+  specifier = [(SafariSettingsEditableTableCell *)self specifier];
+  v6 = [specifier propertyForKey:@"SafariTextChangeHandler"];
 
   if (v6)
   {
-    v5 = [(SafariSettingsEditableTableCell *)self textField];
-    v6[2](v6, v5);
+    textField = [(SafariSettingsEditableTableCell *)self textField];
+    v6[2](v6, textField);
   }
 }
 

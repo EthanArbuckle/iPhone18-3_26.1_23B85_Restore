@@ -6,9 +6,9 @@
 
 + (id)grant
 {
-  v2 = [[a1 alloc] _init];
+  _init = [[self alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 @end

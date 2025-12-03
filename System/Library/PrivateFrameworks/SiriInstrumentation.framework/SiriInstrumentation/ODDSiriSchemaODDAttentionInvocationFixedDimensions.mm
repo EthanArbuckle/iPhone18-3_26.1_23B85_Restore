@@ -1,36 +1,36 @@
 @interface ODDSiriSchemaODDAttentionInvocationFixedDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithJSON:(id)a3;
-- (float)snrOfEnrollmentUtterancesAtIndex:(unint64_t)a3;
-- (float)werEnrollmentUtterancesAtIndex:(unint64_t)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithJSON:(id)n;
+- (float)snrOfEnrollmentUtterancesAtIndex:(unint64_t)index;
+- (float)werEnrollmentUtterancesAtIndex:(unint64_t)index;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSnrOfEnrollmentUtterances:(float)a3;
-- (void)addWerEnrollmentUtterances:(float)a3;
-- (void)setHasAgeOfProfileInMonths:(BOOL)a3;
-- (void)setHasEnrollmentPitchEstimation:(BOOL)a3;
-- (void)setHasEnrollmentUtteranceCount:(BOOL)a3;
-- (void)setHasJsEnrollmentUtteranceCount:(BOOL)a3;
-- (void)setHasLowEnrollmentSpeakerSimilarityScoreCounts:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSnrOfEnrollmentUtterances:(float)utterances;
+- (void)addWerEnrollmentUtterances:(float)utterances;
+- (void)setHasAgeOfProfileInMonths:(BOOL)months;
+- (void)setHasEnrollmentPitchEstimation:(BOOL)estimation;
+- (void)setHasEnrollmentUtteranceCount:(BOOL)count;
+- (void)setHasJsEnrollmentUtteranceCount:(BOOL)count;
+- (void)setHasLowEnrollmentSpeakerSimilarityScoreCounts:(BOOL)counts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAttentionInvocationFixedDimensions
 
-- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = ODDSiriSchemaODDAttentionInvocationFixedDimensions;
   v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)&v50 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fixedDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fixedDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)v5 setFixedDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,14 +46,14 @@
       [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)v5 setSystemBuild:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dataSharingOptInStatus"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingOptInStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationFixedDimensions setDataSharingOptInStatus:](v5, "setDataSharingOptInStatus:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,14 +61,14 @@
       [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)v5 setSiriInputLocale:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"ageOfProfileInMonths"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"ageOfProfileInMonths"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationFixedDimensions setAgeOfProfileInMonths:](v5, "setAgeOfProfileInMonths:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"enrollmentPitchEstimation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentPitchEstimation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)v5 setEnrollmentPitchEstimation:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"enrollmentUtteranceCount"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentUtteranceCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     v36 = v15;
     v37 = v14;
     v38 = v13;
-    v16 = [v4 objectForKeyedSubscript:@"jsEnrollmentUtteranceCount"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"jsEnrollmentUtteranceCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
     }
 
     v35 = v16;
-    v17 = [v4 objectForKeyedSubscript:@"snrOfEnrollmentUtterances"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"snrOfEnrollmentUtterances"];
     objc_opt_class();
     v40 = v10;
     v41 = v8;
@@ -144,7 +144,7 @@
       v11 = v39;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"werEnrollmentUtterances"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"werEnrollmentUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -193,7 +193,7 @@
       v11 = v39;
     }
 
-    v31 = [v4 objectForKeyedSubscript:{@"lowEnrollmentSpeakerSimilarityScoreCounts", v34}];
+    v31 = [dictionaryCopy objectForKeyedSubscript:{@"lowEnrollmentSpeakerSimilarityScoreCounts", v34}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -206,30 +206,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationFixedDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -242,12 +242,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationFixedDimensions ageOfProfileInMonths](self, "ageOfProfileInMonths")}];
-    [v3 setObject:v8 forKeyedSubscript:@"ageOfProfileInMonths"];
+    [dictionary setObject:v8 forKeyedSubscript:@"ageOfProfileInMonths"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -278,7 +278,7 @@ LABEL_3:
     v10 = off_1E78DD1C0[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"dataSharingOptInStatus"];
+  [dictionary setObject:v10 forKeyedSubscript:@"dataSharingOptInStatus"];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -295,29 +295,29 @@ LABEL_14:
   v11 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self enrollmentPitchEstimation];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"enrollmentPitchEstimation"];
+  [dictionary setObject:v12 forKeyedSubscript:@"enrollmentPitchEstimation"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationFixedDimensions enrollmentUtteranceCount](self, "enrollmentUtteranceCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"enrollmentUtteranceCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"enrollmentUtteranceCount"];
   }
 
 LABEL_6:
   if (self->_fixedDimensions)
   {
-    v6 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+    dictionaryRepresentation = [fixedDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"fixedDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fixedDimensions"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"fixedDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"fixedDimensions"];
     }
   }
 
@@ -325,7 +325,7 @@ LABEL_6:
   if ((v14 & 0x10) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationFixedDimensions jsEnrollmentUtteranceCount](self, "jsEnrollmentUtteranceCount")}];
-    [v3 setObject:v15 forKeyedSubscript:@"jsEnrollmentUtteranceCount"];
+    [dictionary setObject:v15 forKeyedSubscript:@"jsEnrollmentUtteranceCount"];
 
     v14 = self->_has;
   }
@@ -333,49 +333,49 @@ LABEL_6:
   if ((v14 & 0x20) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationFixedDimensions lowEnrollmentSpeakerSimilarityScoreCounts](self, "lowEnrollmentSpeakerSimilarityScoreCounts")}];
-    [v3 setObject:v16 forKeyedSubscript:@"lowEnrollmentSpeakerSimilarityScoreCounts"];
+    [dictionary setObject:v16 forKeyedSubscript:@"lowEnrollmentSpeakerSimilarityScoreCounts"];
   }
 
   if (self->_siriInputLocale)
   {
-    v17 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+    dictionaryRepresentation2 = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"siriInputLocale"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
   if ([(NSArray *)self->_snrOfEnrollmentUtterances count])
   {
-    v20 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"snrOfEnrollmentUtterances"];
+    snrOfEnrollmentUtterances = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
+    v21 = [snrOfEnrollmentUtterances copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"snrOfEnrollmentUtterances"];
   }
 
   if (self->_systemBuild)
   {
-    v22 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
+    v23 = [systemBuild copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"systemBuild"];
   }
 
   if ([(NSArray *)self->_werEnrollmentUtterances count])
   {
-    v24 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"werEnrollmentUtterances"];
+    werEnrollmentUtterances = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
+    v25 = [werEnrollmentUtterances copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"werEnrollmentUtterances"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -481,28 +481,28 @@ LABEL_18:
   return v20 ^ v21 ^ v3 ^ v4 ^ v7 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
-  v6 = [v4 fixedDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+  fixedDimensions2 = [equalCopy fixedDimensions];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
     goto LABEL_44;
   }
 
-  v7 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
-  if (v7)
+  fixedDimensions3 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+  if (fixedDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
-    v10 = [v4 fixedDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = fixedDimensions3;
+    fixedDimensions4 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+    fixedDimensions5 = [equalCopy fixedDimensions];
+    v11 = [fixedDimensions4 isEqual:fixedDimensions5];
 
     if (!v11)
     {
@@ -514,20 +514,20 @@ LABEL_18:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
-  v6 = [v4 systemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
+  fixedDimensions2 = [equalCopy systemBuild];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
     goto LABEL_44;
   }
 
-  v12 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
-  if (v12)
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
+  if (systemBuild)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
-    v15 = [v4 systemBuild];
-    v16 = [v14 isEqual:v15];
+    v13 = systemBuild;
+    systemBuild2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
+    systemBuild3 = [equalCopy systemBuild];
+    v16 = [systemBuild2 isEqual:systemBuild3];
 
     if (!v16)
     {
@@ -539,7 +539,7 @@ LABEL_18:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[76] & 1))
+  if ((*&self->_has & 1) != (equalCopy[76] & 1))
   {
     goto LABEL_45;
   }
@@ -547,26 +547,26 @@ LABEL_18:
   if (*&self->_has)
   {
     dataSharingOptInStatus = self->_dataSharingOptInStatus;
-    if (dataSharingOptInStatus != [v4 dataSharingOptInStatus])
+    if (dataSharingOptInStatus != [equalCopy dataSharingOptInStatus])
     {
       goto LABEL_45;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
-  v6 = [v4 siriInputLocale];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+  fixedDimensions2 = [equalCopy siriInputLocale];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
     goto LABEL_44;
   }
 
-  v18 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
-  if (v18)
+  siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+  if (siriInputLocale)
   {
-    v19 = v18;
-    v20 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
-    v21 = [v4 siriInputLocale];
-    v22 = [v20 isEqual:v21];
+    v19 = siriInputLocale;
+    siriInputLocale2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+    siriInputLocale3 = [equalCopy siriInputLocale];
+    v22 = [siriInputLocale2 isEqual:siriInputLocale3];
 
     if (!v22)
     {
@@ -580,7 +580,7 @@ LABEL_18:
 
   has = self->_has;
   v24 = (*&has >> 1) & 1;
-  v25 = v4[76];
+  v25 = equalCopy[76];
   if (v24 != ((v25 >> 1) & 1))
   {
     goto LABEL_45;
@@ -589,13 +589,13 @@ LABEL_18:
   if (v24)
   {
     ageOfProfileInMonths = self->_ageOfProfileInMonths;
-    if (ageOfProfileInMonths != [v4 ageOfProfileInMonths])
+    if (ageOfProfileInMonths != [equalCopy ageOfProfileInMonths])
     {
       goto LABEL_45;
     }
 
     has = self->_has;
-    v25 = v4[76];
+    v25 = equalCopy[76];
   }
 
   v27 = (*&has >> 2) & 1;
@@ -607,14 +607,14 @@ LABEL_18:
   if (v27)
   {
     enrollmentPitchEstimation = self->_enrollmentPitchEstimation;
-    [v4 enrollmentPitchEstimation];
+    [equalCopy enrollmentPitchEstimation];
     if (enrollmentPitchEstimation != v29)
     {
       goto LABEL_45;
     }
 
     has = self->_has;
-    v25 = v4[76];
+    v25 = equalCopy[76];
   }
 
   v30 = (*&has >> 3) & 1;
@@ -626,13 +626,13 @@ LABEL_18:
   if (v30)
   {
     enrollmentUtteranceCount = self->_enrollmentUtteranceCount;
-    if (enrollmentUtteranceCount != [v4 enrollmentUtteranceCount])
+    if (enrollmentUtteranceCount != [equalCopy enrollmentUtteranceCount])
     {
       goto LABEL_45;
     }
 
     has = self->_has;
-    v25 = v4[76];
+    v25 = equalCopy[76];
   }
 
   v32 = (*&has >> 4) & 1;
@@ -644,26 +644,26 @@ LABEL_18:
   if (v32)
   {
     jsEnrollmentUtteranceCount = self->_jsEnrollmentUtteranceCount;
-    if (jsEnrollmentUtteranceCount != [v4 jsEnrollmentUtteranceCount])
+    if (jsEnrollmentUtteranceCount != [equalCopy jsEnrollmentUtteranceCount])
     {
       goto LABEL_45;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
-  v6 = [v4 snrOfEnrollmentUtterances];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
+  fixedDimensions2 = [equalCopy snrOfEnrollmentUtterances];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
     goto LABEL_44;
   }
 
-  v34 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
-  if (v34)
+  snrOfEnrollmentUtterances = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
+  if (snrOfEnrollmentUtterances)
   {
-    v35 = v34;
-    v36 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
-    v37 = [v4 snrOfEnrollmentUtterances];
-    v38 = [v36 isEqual:v37];
+    v35 = snrOfEnrollmentUtterances;
+    snrOfEnrollmentUtterances2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self snrOfEnrollmentUtterances];
+    snrOfEnrollmentUtterances3 = [equalCopy snrOfEnrollmentUtterances];
+    v38 = [snrOfEnrollmentUtterances2 isEqual:snrOfEnrollmentUtterances3];
 
     if (!v38)
     {
@@ -675,22 +675,22 @@ LABEL_18:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
-  v6 = [v4 werEnrollmentUtterances];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
+  fixedDimensions2 = [equalCopy werEnrollmentUtterances];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
 LABEL_44:
 
     goto LABEL_45;
   }
 
-  v39 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
-  if (v39)
+  werEnrollmentUtterances = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
+  if (werEnrollmentUtterances)
   {
-    v40 = v39;
-    v41 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
-    v42 = [v4 werEnrollmentUtterances];
-    v43 = [v41 isEqual:v42];
+    v40 = werEnrollmentUtterances;
+    werEnrollmentUtterances2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self werEnrollmentUtterances];
+    werEnrollmentUtterances3 = [equalCopy werEnrollmentUtterances];
+    v43 = [werEnrollmentUtterances2 isEqual:werEnrollmentUtterances3];
 
     if (!v43)
     {
@@ -703,9 +703,9 @@ LABEL_44:
   }
 
   v46 = (*&self->_has >> 5) & 1;
-  if (v46 == ((v4[76] >> 5) & 1))
+  if (v46 == ((equalCopy[76] >> 5) & 1))
   {
-    if (!v46 || (lowEnrollmentSpeakerSimilarityScoreCounts = self->_lowEnrollmentSpeakerSimilarityScoreCounts, lowEnrollmentSpeakerSimilarityScoreCounts == [v4 lowEnrollmentSpeakerSimilarityScoreCounts]))
+    if (!v46 || (lowEnrollmentSpeakerSimilarityScoreCounts = self->_lowEnrollmentSpeakerSimilarityScoreCounts, lowEnrollmentSpeakerSimilarityScoreCounts == [equalCopy lowEnrollmentSpeakerSimilarityScoreCounts]))
     {
       v44 = 1;
       goto LABEL_46;
@@ -719,21 +719,21 @@ LABEL_46:
   return v44;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+  toCopy = to;
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
 
-  if (v5)
+  if (fixedDimensions)
   {
-    v6 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+    fixedDimensions2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self systemBuild];
 
-  if (v7)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
@@ -743,11 +743,11 @@ LABEL_46:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+  siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
 
-  if (v8)
+  if (siriInputLocale)
   {
-    v9 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+    siriInputLocale2 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -859,9 +859,9 @@ LABEL_14:
   }
 }
 
-- (void)setHasLowEnrollmentSpeakerSimilarityScoreCounts:(BOOL)a3
+- (void)setHasLowEnrollmentSpeakerSimilarityScoreCounts:(BOOL)counts
 {
-  if (a3)
+  if (counts)
   {
     v3 = 32;
   }
@@ -874,61 +874,61 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (float)werEnrollmentUtterancesAtIndex:(unint64_t)a3
+- (float)werEnrollmentUtterancesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_werEnrollmentUtterances objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_werEnrollmentUtterances objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addWerEnrollmentUtterances:(float)a3
+- (void)addWerEnrollmentUtterances:(float)utterances
 {
   werEnrollmentUtterances = self->_werEnrollmentUtterances;
   if (!werEnrollmentUtterances)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_werEnrollmentUtterances;
-    self->_werEnrollmentUtterances = v6;
+    self->_werEnrollmentUtterances = array;
 
     werEnrollmentUtterances = self->_werEnrollmentUtterances;
   }
 
-  *&v8 = a3;
+  *&v8 = utterances;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)werEnrollmentUtterances addObject:v9];
 }
 
-- (float)snrOfEnrollmentUtterancesAtIndex:(unint64_t)a3
+- (float)snrOfEnrollmentUtterancesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_snrOfEnrollmentUtterances objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_snrOfEnrollmentUtterances objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addSnrOfEnrollmentUtterances:(float)a3
+- (void)addSnrOfEnrollmentUtterances:(float)utterances
 {
   snrOfEnrollmentUtterances = self->_snrOfEnrollmentUtterances;
   if (!snrOfEnrollmentUtterances)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_snrOfEnrollmentUtterances;
-    self->_snrOfEnrollmentUtterances = v6;
+    self->_snrOfEnrollmentUtterances = array;
 
     snrOfEnrollmentUtterances = self->_snrOfEnrollmentUtterances;
   }
 
-  *&v8 = a3;
+  *&v8 = utterances;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)snrOfEnrollmentUtterances addObject:v9];
 }
 
-- (void)setHasJsEnrollmentUtteranceCount:(BOOL)a3
+- (void)setHasJsEnrollmentUtteranceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -941,9 +941,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEnrollmentUtteranceCount:(BOOL)a3
+- (void)setHasEnrollmentUtteranceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -956,9 +956,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEnrollmentPitchEstimation:(BOOL)a3
+- (void)setHasEnrollmentPitchEstimation:(BOOL)estimation
 {
-  if (a3)
+  if (estimation)
   {
     v3 = 4;
   }
@@ -971,9 +971,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAgeOfProfileInMonths:(BOOL)a3
+- (void)setHasAgeOfProfileInMonths:(BOOL)months
 {
-  if (a3)
+  if (months)
   {
     v3 = 2;
   }
@@ -986,26 +986,26 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDAttentionInvocationFixedDimensions;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  fixedDimensions = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self fixedDimensions];
+  v7 = [fixedDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self deleteFixedDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self siriInputLocale];
+  v10 = [siriInputLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDAttentionInvocationFixedDimensions *)self deleteSiriInputLocale];
   }

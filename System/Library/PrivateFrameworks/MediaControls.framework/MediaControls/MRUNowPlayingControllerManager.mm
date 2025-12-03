@@ -1,8 +1,8 @@
 @interface MRUNowPlayingControllerManager
 - (MRUNowPlayingControllerManager)init;
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4;
-- (void)notifyObserversDidChangeActiveController:(id)a3;
-- (void)setActiveController:(id)a3;
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement;
+- (void)notifyObserversDidChangeActiveController:(id)controller;
+- (void)setActiveController:(id)controller;
 - (void)updateActiveController;
 - (void)updateAutomaticResponseLoading;
 - (void)updateDiscoveryMode;
@@ -18,13 +18,13 @@
   v2 = [(MRUNowPlayingControllerManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     controllerMap = v2->_controllerMap;
-    v2->_controllerMap = v3;
+    v2->_controllerMap = dictionary;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     if (MRAVOutputContextGetSharedAudioPresentationContext())
     {
@@ -48,21 +48,21 @@
   return v2;
 }
 
-- (void)setActiveController:(id)a3
+- (void)setActiveController:(id)controller
 {
-  v5 = a3;
-  if (self->_activeController != v5)
+  controllerCopy = controller;
+  if (self->_activeController != controllerCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_activeController, a3);
-    v6 = [(MRUNowPlayingController *)v9 endpointController];
-    v7 = [v6 route];
+    v9 = controllerCopy;
+    objc_storeStrong(&self->_activeController, controller);
+    endpointController = [(MRUNowPlayingController *)v9 endpointController];
+    route = [endpointController route];
 
     v8 = [objc_alloc(MEMORY[0x1E69B0AE0]) initWithName:@"collectionView:didSelectItemAtIndexPath:" requestID:0 reason:@"User selected active system endpoint" userInitiated:1];
-    [(MediaControlsEndpointsManager *)self->_endpointsManager setActiveSystemRoute:v7 requestDetails:v8];
+    [(MediaControlsEndpointsManager *)self->_endpointsManager setActiveSystemRoute:route requestDetails:v8];
     [(MRUNowPlayingControllerManager *)self notifyObserversDidChangeActiveController:v9];
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
@@ -89,10 +89,10 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) discoveryMode];
-        if (v6 <= v9)
+        discoveryMode = [*(*(&v11 + 1) + 8 * i) discoveryMode];
+        if (v6 <= discoveryMode)
         {
-          v6 = v9;
+          v6 = discoveryMode;
         }
       }
 
@@ -154,9 +154,9 @@
   }
 }
 
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement
 {
-  v5 = (*(a4 + 2))(a4, a2, a3);
+  v5 = (*(replacement + 2))(replacement, a2, manager);
   [(MRUNowPlayingControllerManager *)self updateNowPlayingControllers];
 
   [(MRUNowPlayingControllerManager *)self updateActiveController];
@@ -164,19 +164,19 @@
 
 - (void)updateNowPlayingControllers
 {
-  v2 = self;
+  selfCopy = self;
   v51 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(routes, "count")}];
 
-  v6 = [(NSDictionary *)v2->_controllerMap mutableCopy];
+  v6 = [(NSDictionary *)selfCopy->_controllerMap mutableCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [(MediaControlsEndpointsManager *)v2->_endpointsManager routes];
-  v8 = [v7 copy];
+  routes2 = [(MediaControlsEndpointsManager *)selfCopy->_endpointsManager routes];
+  v8 = [routes2 copy];
 
   v9 = [v8 countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v9)
@@ -197,23 +197,23 @@
         }
 
         v14 = *(*(&v41 + 1) + 8 * v13);
-        v15 = [v14 routeUID];
-        if (v15)
+        routeUID = [v14 routeUID];
+        if (routeUID)
         {
-          v16 = [v6 objectForKeyedSubscript:v15];
+          v16 = [v6 objectForKeyedSubscript:routeUID];
           if (!v16)
           {
-            v17 = [(MediaControlsEndpointsManager *)v2->_endpointsManager endpointControllerForRoute:v14];
+            v17 = [(MediaControlsEndpointsManager *)selfCopy->_endpointsManager endpointControllerForRoute:v14];
             v18 = v12;
             v19 = v6;
             v20 = v5;
-            v21 = v2;
+            v21 = selfCopy;
             v22 = v8;
             v23 = [[MRUEndpointController alloc] initWithEndpointController:v17];
             v16 = [[MRUNowPlayingController alloc] initWithEndpointController:v23];
 
             v8 = v22;
-            v2 = v21;
+            selfCopy = v21;
             v5 = v20;
             v6 = v19;
             v12 = v18;
@@ -221,7 +221,7 @@
           }
 
           [v5 addObject:v16];
-          [v6 setObject:v16 forKeyedSubscript:v15];
+          [v6 setObject:v16 forKeyedSubscript:routeUID];
         }
 
         else
@@ -248,14 +248,14 @@
     while (v11);
   }
 
-  v25 = [(NSArray *)v2->_controllers isEqualToArray:v5];
+  v25 = [(NSArray *)selfCopy->_controllers isEqualToArray:v5];
   v26 = [v5 copy];
-  controllers = v2->_controllers;
-  v2->_controllers = v26;
+  controllers = selfCopy->_controllers;
+  selfCopy->_controllers = v26;
 
   v28 = [v6 copy];
-  controllerMap = v2->_controllerMap;
-  v2->_controllerMap = v28;
+  controllerMap = selfCopy->_controllerMap;
+  selfCopy->_controllerMap = v28;
 
   if (!v25)
   {
@@ -263,7 +263,7 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v30 = [(NSHashTable *)v2->_observers copy];
+    v30 = [(NSHashTable *)selfCopy->_observers copy];
     v31 = [v30 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v31)
     {
@@ -278,7 +278,7 @@
             objc_enumerationMutation(v30);
           }
 
-          [*(*(&v37 + 1) + 8 * i) nowPlayingControllerManager:v2 didChangeControllers:v5];
+          [*(*(&v37 + 1) + 8 * i) nowPlayingControllerManager:selfCopy didChangeControllers:v5];
         }
 
         v32 = [v30 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -291,9 +291,9 @@
 
 - (void)updateActiveController
 {
-  v3 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
-  v4 = [v3 routeUID];
-  obj = [(MRUNowPlayingControllerManager *)self controllerForIdentifier:v4];
+  activeSystemRoute = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
+  routeUID = [activeSystemRoute routeUID];
+  obj = [(MRUNowPlayingControllerManager *)self controllerForIdentifier:routeUID];
 
   if (self->_activeController != obj)
   {
@@ -302,10 +302,10 @@
   }
 }
 
-- (void)notifyObserversDidChangeActiveController:(id)a3
+- (void)notifyObserversDidChangeActiveController:(id)controller
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -326,7 +326,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) nowPlayingControllerManager:self didChangeActiveController:v4];
+        [*(*(&v10 + 1) + 8 * v9++) nowPlayingControllerManager:self didChangeActiveController:controllerCopy];
       }
 
       while (v7 != v9);

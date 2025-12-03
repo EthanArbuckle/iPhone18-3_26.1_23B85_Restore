@@ -1,21 +1,21 @@
 @interface EMFContextBuilderRightHand
-- (void)enumerateWindowsForContext:(id)a3 range:(_NSRange)a4 searchAnchors:(id)a5 usingBlock:(id)a6;
+- (void)enumerateWindowsForContext:(id)context range:(_NSRange)range searchAnchors:(id)anchors usingBlock:(id)block;
 @end
 
 @implementation EMFContextBuilderRightHand
 
-- (void)enumerateWindowsForContext:(id)a3 range:(_NSRange)a4 searchAnchors:(id)a5 usingBlock:(id)a6
+- (void)enumerateWindowsForContext:(id)context range:(_NSRange)range searchAnchors:(id)anchors usingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  contextCopy = context;
+  anchorsCopy = anchors;
+  blockCopy = block;
   v31 = 0;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v9;
+  obj = anchorsCopy;
   v23 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v23)
   {
@@ -35,13 +35,13 @@ LABEL_3:
       }
 
       v12 = *(*(&v27 + 1) + 8 * v11);
-      v13 = [v8 rangeOfString:v12 options:1 range:a4.location locale:{a4.length, 0}];
+      v13 = [contextCopy rangeOfString:v12 options:1 range:range.location locale:{range.length, 0}];
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = v13;
         v16 = v14;
-        location = a4.location;
-        length = a4.length;
+        location = range.location;
+        length = range.length;
         do
         {
           v19 = v15 + v16;
@@ -51,7 +51,7 @@ LABEL_3:
           }
 
           v20 = kEMFContextBuilderContextWindowLengthDefault;
-          if (v19 >= [v8 length])
+          if (v19 >= [contextCopy length])
           {
             goto LABEL_16;
           }
@@ -62,9 +62,9 @@ LABEL_3:
             v21 = location + length;
           }
 
-          v10[2](v10, v15 + v16, v21 - v19, v15, v16, &v31);
-          length = [v8 length] - v19;
-          v15 = [v8 rangeOfString:v12 options:1 range:v15 + v16 locale:{length, 0}];
+          blockCopy[2](blockCopy, v15 + v16, v21 - v19, v15, v16, &v31);
+          length = [contextCopy length] - v19;
+          v15 = [contextCopy rangeOfString:v12 options:1 range:v15 + v16 locale:{length, 0}];
           v16 = v22;
           location = v19;
         }

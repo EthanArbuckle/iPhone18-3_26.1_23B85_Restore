@@ -1,13 +1,13 @@
 @interface NEHelperRelayManager
-- (NEHelperRelayManager)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperRelayManager)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperRelayManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -16,20 +16,20 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ processing Relay Manager message", buf, 0xCu);
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, "relay-command");
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "relay-command");
   v7 = uint64;
   if (uint64 - 1 <= 1)
   {
     length = 0;
-    data = xpc_dictionary_get_data(v4, "relay-persistent-reference", &length);
+    data = xpc_dictionary_get_data(messageCopy, "relay-persistent-reference", &length);
     if (data && length)
     {
       v9 = [NSData dataWithBytes:data length:?];
-      v10 = xpc_dictionary_get_value(v4, "relay-identity-domain");
+      v10 = xpc_dictionary_get_value(messageCopy, "relay-identity-domain");
       v11 = v10;
       if (!v10)
       {
-        uuid = xpc_dictionary_get_uuid(v4, "relay-config-id");
+        uuid = xpc_dictionary_get_uuid(messageCopy, "relay-config-id");
         if (uuid)
         {
           v17 = [[NSUUID alloc] initWithUUIDBytes:uuid];
@@ -39,7 +39,7 @@
           v43[2] = sub_100001D9C;
           v43[3] = &unk_10003CC48;
           v43[4] = self;
-          v44 = v4;
+          v44 = messageCopy;
           v46 = v7;
           v45 = v9;
           [v18 loadConfigurationWithID:v17 withCompletionQueue:&_dispatch_main_q handler:v43];
@@ -49,7 +49,7 @@ LABEL_20:
         }
 
 LABEL_19:
-        sub_10000BA0C(NEHelperServer, v4, 22, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
         goto LABEL_20;
       }
 
@@ -86,7 +86,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v20 = xpc_dictionary_get_remote_connection(v4);
+      v20 = xpc_dictionary_get_remote_connection(messageCopy);
       v42 = v20;
       if (v20)
       {
@@ -102,7 +102,7 @@ LABEL_18:
       v23 = [NSNumber numberWithInt:pid];
       [v22 setObject:v23 forKeyedSubscript:kNRIPCOptionPID];
 
-      v24 = xpc_dictionary_get_value(v4, "relay-options");
+      v24 = xpc_dictionary_get_value(messageCopy, "relay-options");
       v25 = v24;
       if (v24)
       {
@@ -122,20 +122,20 @@ LABEL_18:
       if (v7 == 1)
       {
         v28 = [v27 initWithIdentityReference:v9 options:v22];
-        v29 = [v28 copySecKeyProxy];
-        v30 = v29;
-        if (v29)
+        copySecKeyProxy = [v28 copySecKeyProxy];
+        v30 = copySecKeyProxy;
+        if (copySecKeyProxy)
         {
-          v31 = [v29 endpoint];
+          endpoint = [copySecKeyProxy endpoint];
 
-          if (v31)
+          if (endpoint)
           {
-            v32 = [v30 endpoint];
-            v33 = [v32 _endpoint];
+            endpoint2 = [v30 endpoint];
+            _endpoint = [endpoint2 _endpoint];
 
             v34 = xpc_dictionary_create(0, 0, 0);
-            xpc_dictionary_set_value(v34, "relay-identity-xpc-endpoint", v33);
-            sub_10000BA0C(NEHelperServer, v4, 0, v34);
+            xpc_dictionary_set_value(v34, "relay-identity-xpc-endpoint", _endpoint);
+            sub_10000BA0C(NEHelperServer, messageCopy, 0, v34);
 
 LABEL_43:
             goto LABEL_20;
@@ -152,21 +152,21 @@ LABEL_43:
           _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%@ key proxy creation failed for %s", buf, 0x16u);
         }
 
-        v39 = v4;
+        v39 = messageCopy;
         v40 = 12;
       }
 
       else
       {
         v28 = [v27 initWithCertificateReference:v9 options:v22];
-        v35 = [v28 copyCertificateData];
-        v30 = v35;
-        if (v35 && [v35 length])
+        copyCertificateData = [v28 copyCertificateData];
+        v30 = copyCertificateData;
+        if (copyCertificateData && [copyCertificateData length])
         {
           v36 = _CFXPCCreateXPCObjectFromCFObject();
           v37 = xpc_dictionary_create(0, 0, 0);
           xpc_dictionary_set_value(v37, "relay-certificate-data", v36);
-          sub_10000BA0C(NEHelperServer, v4, 0, v37);
+          sub_10000BA0C(NEHelperServer, messageCopy, 0, v37);
 
           goto LABEL_43;
         }
@@ -181,7 +181,7 @@ LABEL_43:
           _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "%@ requested certificate not found for %s", buf, 0x16u);
         }
 
-        v39 = v4;
+        v39 = messageCopy;
         v40 = 2;
       }
 
@@ -189,14 +189,14 @@ LABEL_43:
       goto LABEL_43;
     }
 
-    v14 = v4;
+    v14 = messageCopy;
     v15 = 22;
     goto LABEL_13;
   }
 
   if (uint64 == 3)
   {
-    v14 = v4;
+    v14 = messageCopy;
     v15 = 0;
 LABEL_13:
     sub_10000BA0C(NEHelperServer, v14, v15, 0);
@@ -205,9 +205,9 @@ LABEL_13:
 LABEL_21:
 }
 
-- (NEHelperRelayManager)initWithFirstMessage:(id)a3
+- (NEHelperRelayManager)initWithFirstMessage:(id)message
 {
-  v4 = xpc_dictionary_get_remote_connection(a3);
+  v4 = xpc_dictionary_get_remote_connection(message);
   objc_opt_self();
   v7.receiver = self;
   v7.super_class = NEHelperRelayManager;

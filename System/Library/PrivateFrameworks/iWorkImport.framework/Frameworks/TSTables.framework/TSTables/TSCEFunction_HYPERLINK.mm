@@ -1,20 +1,20 @@
 @interface TSCEFunction_HYPERLINK
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_HYPERLINK
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   v233 = 0;
   v234 = 0;
   v235 = 0;
-  v8 = **a5;
+  v8 = **arguments;
   v12 = v8;
   v225 = v8;
   if (v8)
   {
-    objc_msgSend_formatWithContext_(v8, v9, a3, v10, v11);
+    objc_msgSend_formatWithContext_(v8, v9, context, v10, v11);
   }
 
   else
@@ -24,12 +24,12 @@
 
   sub_22114F414(&v233, &v232);
   v231 = 0;
-  v14 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v12, v13, a3, a4, 0, &v231);
+  v14 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v12, v13, context, spec, 0, &v231);
   v15 = v231;
   if (v15)
   {
     v20 = v15;
-    v21 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v15, v18, v19);
+    v21 = objc_msgSend_raiseErrorOrConvert_(context, v16, v15, v18, v19);
     goto LABEL_34;
   }
 
@@ -85,14 +85,14 @@
         v48 = v60;
 LABEL_17:
         sub_221077074(&v228);
-        if (*(a5 + 1) - *a5 >= 9uLL)
+        if (*(arguments + 1) - *arguments >= 9uLL)
         {
-          v88 = *(*a5 + 8);
+          v88 = *(*arguments + 8);
           if ((objc_msgSend_isTokenOrEmptyArg(v88, v89, v90, v91, v92) & 1) == 0)
           {
             if (v88)
             {
-              objc_msgSend_formatWithContext_(v88, v93, a3, v94, v95);
+              objc_msgSend_formatWithContext_(v88, v93, context, v94, v95);
             }
 
             else
@@ -104,7 +104,7 @@ LABEL_17:
             v227 = 0;
             if (v88)
             {
-              objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v88, v201, a3, a4, 1, &v227);
+              objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v88, v201, context, spec, 1, &v227);
               v125 = v227;
               tskFormat = v232._tskFormat;
             }
@@ -129,15 +129,15 @@ LABEL_17:
             durationFormat = v232._durationFormat;
             if (v125)
             {
-              v21 = objc_msgSend_raiseErrorOrConvert_(a3, v206, v125, v208, v209);
+              v21 = objc_msgSend_raiseErrorOrConvert_(context, v206, v125, v208, v209);
               goto LABEL_32;
             }
 
             if (!sub_221078910(&v228, v206, v207, v208, v209))
             {
-              v105 = objc_msgSend_functionName(a4, v210, v211, v212, v213);
+              v105 = objc_msgSend_functionName(spec, v210, v211, v212, v213);
               v222 = objc_msgSend_nonEmptyStringRequiredErrorForFunctionName_(TSCEError, v214, v105, v215, v216);
-              v21 = objc_msgSend_raiseErrorOrConvert_(a3, v217, v222, v218, v219);
+              v21 = objc_msgSend_raiseErrorOrConvert_(context, v217, v222, v218, v219);
 LABEL_31:
 
 LABEL_32:
@@ -146,7 +146,7 @@ LABEL_32:
           }
         }
 
-        v96 = objc_msgSend_calcEngine(a3, v84, v85, v86, v87);
+        v96 = objc_msgSend_calcEngine(context, v84, v85, v86, v87);
         v88 = objc_msgSend_documentRoot(v96, v97, v98, v99, v100);
 
         v105 = objc_msgSend_context(v88, v101, v102, v103, v104);
@@ -173,13 +173,13 @@ LABEL_32:
           v220 = v47;
           v221 = v105;
           v126 = sub_2210772BC(&v228, v110, v111, v112, v113);
-          v131 = objc_msgSend_calcEngine(a3, v127, v128, v129, v130);
-          v136 = objc_msgSend_containingTable(a3, v132, v133, v134, v135);
+          v131 = objc_msgSend_calcEngine(context, v127, v128, v129, v130);
+          v136 = objc_msgSend_containingTable(context, v132, v133, v134, v135);
           v140 = objc_msgSend_tableResolverForTableUID_(v131, v137, v136, v138, v139);
 
           if (v140)
           {
-            v145 = objc_msgSend_containingCell(a3, v141, v142, v143, v144);
+            v145 = objc_msgSend_containingCell(context, v141, v142, v143, v144);
             v149 = objc_msgSend_cellTextStyle_(v140, v146, v145, v147, v148);
           }
 
@@ -230,7 +230,7 @@ LABEL_32:
   }
 
   v47 = objc_msgSend_invalidHyperlinkError(TSCEError, v65, v66, v67, v68);
-  v21 = objc_msgSend_raiseErrorOrConvert_(a3, v122, v47, v123, v124);
+  v21 = objc_msgSend_raiseErrorOrConvert_(context, v122, v47, v123, v124);
   v125 = 0;
   v14 = v53;
   v48 = v60;

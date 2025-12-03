@@ -1,6 +1,6 @@
 @interface LibDataSourceManager
 - (void)appDidEnterBackground;
-- (void)isLibraryOnlyCountryChanged:(id)a3;
+- (void)isLibraryOnlyCountryChanged:(id)changed;
 @end
 
 @implementation LibDataSourceManager
@@ -11,7 +11,7 @@
   sub_1E3B879F8();
 }
 
-- (void)isLibraryOnlyCountryChanged:(id)a3
+- (void)isLibraryOnlyCountryChanged:(id)changed
 {
   OUTLINED_FUNCTION_106();
   v4 = sub_1E41FDF34();

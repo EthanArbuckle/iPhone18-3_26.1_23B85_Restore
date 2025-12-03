@@ -1,18 +1,18 @@
 @interface CNQuickActionButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_labelText;
 - (id)button;
 @end
 
 @implementation CNQuickActionButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNQuickActionButton" hasInstanceMethod:@"showTitle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNQuickActionButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNQuickActionButton" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNQuickAction" hasInstanceMethod:@"titleForContext:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNQuickActionButton" hasInstanceMethod:@"showTitle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNQuickActionButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNQuickActionButton" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNQuickAction" hasInstanceMethod:@"titleForContext:" withFullSignature:{"@", "q", 0}];
 }
 
 - (id)_labelText
@@ -43,11 +43,11 @@ void __46__CNQuickActionButtonAccessibility__labelText__block_invoke(uint64_t a1
 {
   v6.receiver = self;
   v6.super_class = CNQuickActionButtonAccessibility;
-  v3 = [(CNQuickActionButtonAccessibility *)&v6 button];
-  v4 = [(CNQuickActionButtonAccessibility *)self _labelText];
-  [v3 setAccessibilityLabel:v4];
+  button = [(CNQuickActionButtonAccessibility *)&v6 button];
+  _labelText = [(CNQuickActionButtonAccessibility *)self _labelText];
+  [button setAccessibilityLabel:_labelText];
 
-  return v3;
+  return button;
 }
 
 @end

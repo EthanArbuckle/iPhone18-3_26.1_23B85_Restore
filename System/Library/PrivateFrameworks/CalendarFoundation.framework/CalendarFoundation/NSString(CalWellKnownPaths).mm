@@ -7,7 +7,7 @@
 - (id)stringByExpandingTildeToNonSandboxHome
 {
   v2 = +[CalWellKnownPaths realHomeDirectoryPath];
-  v3 = [a1 stringByReplacingOccurrencesOfString:@"~" withString:v2];
+  v3 = [self stringByReplacingOccurrencesOfString:@"~" withString:v2];
 
   return v3;
 }

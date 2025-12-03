@@ -1,17 +1,17 @@
 @interface _NTKRenegadeSwatchStripeDefinition
-+ (id)definitionWithColor:(id)a3 height:(double)a4;
++ (id)definitionWithColor:(id)color height:(double)height;
 @end
 
 @implementation _NTKRenegadeSwatchStripeDefinition
 
-+ (id)definitionWithColor:(id)a3 height:(double)a4
++ (id)definitionWithColor:(id)color height:(double)height
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_opt_new();
   v7 = *(v6 + 8);
-  *(v6 + 8) = v5;
+  *(v6 + 8) = colorCopy;
 
-  *(v6 + 16) = a4;
+  *(v6 + 16) = height;
 
   return v6;
 }

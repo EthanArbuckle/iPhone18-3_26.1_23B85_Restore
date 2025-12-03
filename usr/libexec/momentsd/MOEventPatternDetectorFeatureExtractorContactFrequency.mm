@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorFeatureExtractorContactFrequency
 - (MOEventPatternDetectorFeatureExtractorContactFrequency)init;
-- (id)extractFeaturesFromEvents:(id)a3;
+- (id)extractFeaturesFromEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorFeatureExtractorContactFrequency
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (id)extractFeaturesFromEvents:(id)a3
+- (id)extractFeaturesFromEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v23 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v24 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v24)
   {
@@ -69,8 +69,8 @@
               v29 = 0u;
               v30 = 0u;
               v31 = 0u;
-              v11 = [v10 interactions];
-              v12 = [v11 countByEnumeratingWithState:&v28 objects:v40 count:16];
+              interactions = [v10 interactions];
+              v12 = [interactions countByEnumeratingWithState:&v28 objects:v40 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -82,17 +82,17 @@
                   {
                     if (*v29 != v15)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(interactions);
                     }
 
-                    v17 = [*(*(&v28 + 1) + 8 * j) mechanism];
-                    if (v17 <= 0x11 && ((1 << v17) & 0x33B1F) != 0)
+                    mechanism = [*(*(&v28 + 1) + 8 * j) mechanism];
+                    if (mechanism <= 0x11 && ((1 << mechanism) & 0x33B1F) != 0)
                     {
                       v14 = (v14 + 1);
                     }
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                  v13 = [interactions countByEnumeratingWithState:&v28 objects:v40 count:16];
                 }
 
                 while (v13);

@@ -1,13 +1,13 @@
 @interface AVTCoreModelFramingModeOverrides
-- (AVTCoreModelFramingModeOverrides)initWithCameraOverrides:(id)a3;
+- (AVTCoreModelFramingModeOverrides)initWithCameraOverrides:(id)overrides;
 @end
 
 @implementation AVTCoreModelFramingModeOverrides
 
-- (AVTCoreModelFramingModeOverrides)initWithCameraOverrides:(id)a3
+- (AVTCoreModelFramingModeOverrides)initWithCameraOverrides:(id)overrides
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  overridesCopy = overrides;
   v47.receiver = self;
   v47.super_class = AVTCoreModelFramingModeOverrides;
   v5 = [(AVTCoreModelFramingModeOverrides *)&v47 init];
@@ -15,15 +15,15 @@
   if (v5)
   {
     v30 = v5;
-    v7 = [v4 count];
+    v7 = [overridesCopy count];
     v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
     v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v31 = v4;
-    obj = v4;
+    v31 = overridesCopy;
+    obj = overridesCopy;
     v36 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v36)
     {
@@ -42,8 +42,8 @@
           v38 = v8;
           v9 = [v37 objectForKeyedSubscript:@"tags"];
           v10 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
-          v11 = [v9 allKeys];
-          v12 = [v11 copy];
+          allKeys = [v9 allKeys];
+          v12 = [allKeys copy];
 
           v41 = 0u;
           v42 = 0u;
@@ -103,7 +103,7 @@
     orderedFramingModeOverrides = v30->_orderedFramingModeOverrides;
     v30->_orderedFramingModeOverrides = v27;
 
-    v4 = v31;
+    overridesCopy = v31;
   }
 
   return v6;

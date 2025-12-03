@@ -1,36 +1,36 @@
 @interface _INPBCreateNoteIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateNoteIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateNoteIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateNoteIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateNoteIntentResponse *)self createdNote];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"createdNote"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  createdNote = [(_INPBCreateNoteIntentResponse *)self createdNote];
+  dictionaryRepresentation = [createdNote dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"createdNote"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBCreateNoteIntentResponse *)self createdNote];
-    v6 = [v4 createdNote];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    createdNote = [(_INPBCreateNoteIntentResponse *)self createdNote];
+    createdNote2 = [equalCopy createdNote];
+    v7 = createdNote2;
+    if ((createdNote != 0) != (createdNote2 == 0))
     {
-      v8 = [(_INPBCreateNoteIntentResponse *)self createdNote];
-      if (!v8)
+      createdNote3 = [(_INPBCreateNoteIntentResponse *)self createdNote];
+      if (!createdNote3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBCreateNoteIntentResponse *)self createdNote];
-      v11 = [v4 createdNote];
-      v12 = [v10 isEqual:v11];
+      v9 = createdNote3;
+      createdNote4 = [(_INPBCreateNoteIntentResponse *)self createdNote];
+      createdNote5 = [equalCopy createdNote];
+      v12 = [createdNote4 isEqual:createdNote5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateNoteIntentResponse allocWithZone:](_INPBCreateNoteIntentResponse init];
-  v6 = [(_INPBNote *)self->_createdNote copyWithZone:a3];
+  v6 = [(_INPBNote *)self->_createdNote copyWithZone:zone];
   [(_INPBCreateNoteIntentResponse *)v5 setCreatedNote:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateNoteIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateNoteIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateNoteIntentResponse)initWithCoder:(id)a3
+- (_INPBCreateNoteIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateNoteIntentResponse *)self initWithData:v6];
+    self = [(_INPBCreateNoteIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBCreateNoteIntentResponse *)self createdNote];
+  toCopy = to;
+  createdNote = [(_INPBCreateNoteIntentResponse *)self createdNote];
 
-  if (v4)
+  if (createdNote)
   {
-    v5 = [(_INPBCreateNoteIntentResponse *)self createdNote];
+    createdNote2 = [(_INPBCreateNoteIntentResponse *)self createdNote];
     PBDataWriterWriteSubmessage();
   }
 }

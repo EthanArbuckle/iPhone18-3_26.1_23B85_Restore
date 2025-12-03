@@ -1,36 +1,36 @@
 @interface RTNextPredictedLocationsOfInterestCache
-- (RTNextPredictedLocationsOfInterestCache)initWithQueue:(id)a3 dataProtectionManager:(id)a4 starkManager:(id)a5;
+- (RTNextPredictedLocationsOfInterestCache)initWithQueue:(id)queue dataProtectionManager:(id)manager starkManager:(id)starkManager;
 - (RTNextPredictedLocationsOfInterestCacheDelegate)delegate;
-- (void)cacheNextPredictedLocationsOfInterest:(id)a3;
+- (void)cacheNextPredictedLocationsOfInterest:(id)interest;
 - (void)clear;
 - (void)dealloc;
-- (void)handleUnlockedSinceBoot:(BOOL)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)onStarkNotification:(id)a3;
-- (void)purgeWithReferenceDate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)handleUnlockedSinceBoot:(BOOL)boot;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)onStarkNotification:(id)notification;
+- (void)purgeWithReferenceDate:(id)date;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RTNextPredictedLocationsOfInterestCache
 
-- (RTNextPredictedLocationsOfInterestCache)initWithQueue:(id)a3 dataProtectionManager:(id)a4 starkManager:(id)a5
+- (RTNextPredictedLocationsOfInterestCache)initWithQueue:(id)queue dataProtectionManager:(id)manager starkManager:(id)starkManager
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
+  starkManagerCopy = starkManager;
   v33.receiver = self;
   v33.super_class = RTNextPredictedLocationsOfInterestCache;
   v12 = [(RTNextPredictedLocationsOfInterestCache *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    objc_storeStrong(&v13->_dataProtectionManager, a4);
-    objc_storeStrong(&v13->_starkManager, a5);
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_dataProtectionManager, manager);
+    objc_storeStrong(&v13->_starkManager, starkManager);
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v15 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-    v16 = [v14 fileExistsAtPath:v15];
+    v16 = [defaultManager fileExistsAtPath:v15];
 
     if (v16)
     {
@@ -78,15 +78,15 @@
   [(RTNextPredictedLocationsOfInterestCache *)&v3 dealloc];
 }
 
-- (void)cacheNextPredictedLocationsOfInterest:(id)a3
+- (void)cacheNextPredictedLocationsOfInterest:(id)interest
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  interestCopy = interest;
+  if ([interestCopy count])
   {
     v5 = MEMORY[0x277CBEA60];
-    v6 = [v4 firstObject];
-    v7 = [v5 arrayWithObject:v6];
+    firstObject = [interestCopy firstObject];
+    v7 = [v5 arrayWithObject:firstObject];
     [(RTNextPredictedLocationsOfInterestCache *)self setNextPredictedLocationsOfInterest:v7];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -95,28 +95,28 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-        v10 = [(RTNextPredictedLocationsOfInterestCache *)self nextPredictedLocationsOfInterest];
-        v11 = [v10 firstObject];
+        nextPredictedLocationsOfInterest = [(RTNextPredictedLocationsOfInterestCache *)self nextPredictedLocationsOfInterest];
+        firstObject2 = [nextPredictedLocationsOfInterest firstObject];
         *buf = 138740227;
         v24 = v9;
         v25 = 2112;
-        v26 = v11;
+        v26 = firstObject2;
         _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "caching next predicted location of interest, %{sensitive}@, at, %@", buf, 0x16u);
       }
     }
 
     v12 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    v13 = [(RTNextPredictedLocationsOfInterestCache *)self nextPredictedLocationsOfInterest];
-    [v12 encodeObject:v13 forKey:*MEMORY[0x277CCA308]];
+    nextPredictedLocationsOfInterest2 = [(RTNextPredictedLocationsOfInterestCache *)self nextPredictedLocationsOfInterest];
+    [v12 encodeObject:nextPredictedLocationsOfInterest2 forKey:*MEMORY[0x277CCA308]];
 
     [v12 finishEncoding];
     v21 = *MEMORY[0x277CCA1B0];
     v22 = *MEMORY[0x277CCA1A0];
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v16 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-    v17 = [v12 encodedData];
-    v18 = [v15 createFileAtPath:v16 contents:v17 attributes:v14];
+    encodedData = [v12 encodedData];
+    v18 = [defaultManager createFileAtPath:v16 contents:encodedData attributes:v14];
 
     if ((v18 & 1) == 0)
     {
@@ -146,9 +146,9 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   [(RTNextPredictedLocationsOfInterestCache *)self setNextPredictedLocationsOfInterest:0];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   if (v4)
   {
@@ -164,39 +164,39 @@
       }
     }
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v8 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-    [v7 removeItemAtPath:v8 error:0];
+    [defaultManager2 removeItemAtPath:v8 error:0];
   }
 }
 
-- (void)purgeWithReferenceDate:(id)a3
+- (void)purgeWithReferenceDate:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  dateCopy = date;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-  v7 = [v5 fileExistsAtPath:v6];
+  v7 = [defaultManager fileExistsAtPath:v6];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v9 = +[RTNextPredictedLocationsOfInterestCache cachePath];
-    v10 = [v8 attributesOfItemAtPath:v9 error:0];
+    v10 = [defaultManager2 attributesOfItemAtPath:v9 error:0];
 
-    v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v4 sinceDate:-86400.0];
+    v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-86400.0];
     v12 = [v10 objectForKey:*MEMORY[0x277CCA108]];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = _rt_log_facility_get_os_log(RTLogFacilityDeviceLocationPredictor);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v11 stringFromDate];
-        v15 = [v12 stringFromDate];
+        stringFromDate = [v11 stringFromDate];
+        stringFromDate2 = [v12 stringFromDate];
         v18 = 138412546;
-        v19 = v14;
+        v19 = stringFromDate;
         v20 = 2112;
-        v21 = v15;
+        v21 = stringFromDate2;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "purge cache predating, %@, file date, %@", &v18, 0x16u);
       }
     }
@@ -211,23 +211,23 @@
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTDataProtectionManagerNotificationUnlockedSinceBoot];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNextPredictedLocationsOfInterestCache *)self queue];
+    queue = [(RTNextPredictedLocationsOfInterestCache *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __72__RTNextPredictedLocationsOfInterestCache_onDataProtectionNotification___block_invoke;
     v9[3] = &unk_2788C4A70;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = notificationCopy;
+    dispatch_async(queue, v9);
   }
 }
 
@@ -239,9 +239,9 @@ uint64_t __72__RTNextPredictedLocationsOfInterestCache_onDataProtectionNotificat
   return [v1 handleUnlockedSinceBoot:v2];
 }
 
-- (void)handleUnlockedSinceBoot:(BOOL)a3
+- (void)handleUnlockedSinceBoot:(BOOL)boot
 {
-  if (a3)
+  if (boot)
   {
     dataProtectionManager = self->_dataProtectionManager;
     v5 = +[(RTNotification *)RTDataProtectionManagerNotificationUnlockedSinceBoot];
@@ -253,23 +253,23 @@ uint64_t __72__RTNextPredictedLocationsOfInterestCache_onDataProtectionNotificat
   }
 }
 
-- (void)onStarkNotification:(id)a3
+- (void)onStarkNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTStarkManagerNotificationTrustedConnectionEstablished];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(RTNextPredictedLocationsOfInterestCache *)self queue];
+    queue = [(RTNextPredictedLocationsOfInterestCache *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__RTNextPredictedLocationsOfInterestCache_onStarkNotification___block_invoke;
     v9[3] = &unk_2788C4A70;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = notificationCopy;
+    dispatch_async(queue, v9);
   }
 }
 
@@ -281,12 +281,12 @@ uint64_t __63__RTNextPredictedLocationsOfInterestCache_onStarkNotification___blo
   return [v1 handleStarkTrustedConnectionEstablished:v2];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v4 = _rt_log_facility_get_os_log(RTLogFacilityDeviceLocationPredictor);
@@ -308,10 +308,10 @@ uint64_t __63__RTNextPredictedLocationsOfInterestCache_onStarkNotification___blo
       }
     }
 
-    v6 = [(RTNextPredictedLocationsOfInterestCache *)self delegate];
+    delegate = [(RTNextPredictedLocationsOfInterestCache *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 onCacheEnabledDidChange:self->_enabled];
+      [delegate onCacheEnabledDidChange:self->_enabled];
     }
   }
 }

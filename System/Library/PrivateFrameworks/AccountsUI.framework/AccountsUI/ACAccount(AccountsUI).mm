@@ -6,14 +6,14 @@
 
 - (id)displayUsername
 {
-  v6 = a1;
+  selfCopy = self;
   v5[1] = a2;
-  v4 = [a1 accountProperties];
-  v5[0] = [v4 objectForKey:@"ACUIDisplayUsername"];
-  MEMORY[0x277D82BD8](v4);
+  accountProperties = [self accountProperties];
+  v5[0] = [accountProperties objectForKey:@"ACUIDisplayUsername"];
+  MEMORY[0x277D82BD8](accountProperties);
   if (!v5[0])
   {
-    v5[0] = [v6 username];
+    v5[0] = [selfCopy username];
     MEMORY[0x277D82BD8](0);
   }
 

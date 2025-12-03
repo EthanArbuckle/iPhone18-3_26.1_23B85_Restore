@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPMediaLibraryAlbumAppData
 - (MusicKit_SoftLinking_MPMediaLibraryAlbumAppData)init;
-- (void)setSongPopularity:(double)a3 forAdamID:(int64_t)a4;
+- (void)setSongPopularity:(double)popularity forAdamID:(int64_t)d;
 @end
 
 @implementation MusicKit_SoftLinking_MPMediaLibraryAlbumAppData
@@ -34,17 +34,17 @@
     underlyingAlbumAppData = v2->_underlyingAlbumAppData;
     v2->_underlyingAlbumAppData = v5;
 
-    v7 = [(MPMediaLibraryAlbumAppData *)v2->_underlyingAlbumAppData createAppDataDictionary];
+    createAppDataDictionary = [(MPMediaLibraryAlbumAppData *)v2->_underlyingAlbumAppData createAppDataDictionary];
   }
 
   return v2;
 }
 
-- (void)setSongPopularity:(double)a3 forAdamID:(int64_t)a4
+- (void)setSongPopularity:(double)popularity forAdamID:(int64_t)d
 {
   underlyingAlbumAppData = self->_underlyingAlbumAppData;
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(MPMediaLibraryAlbumAppData *)underlyingAlbumAppData setSongPopularity:v6 forAdamID:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:popularity];
+  [(MPMediaLibraryAlbumAppData *)underlyingAlbumAppData setSongPopularity:v6 forAdamID:d];
 }
 
 @end

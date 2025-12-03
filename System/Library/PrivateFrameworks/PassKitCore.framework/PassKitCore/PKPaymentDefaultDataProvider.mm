@@ -1,39 +1,39 @@
 @interface PKPaymentDefaultDataProvider
 + (id)defaultDataProvider;
-- (BOOL)supportsInAppPaymentsForPass:(id)a3;
-- (BOOL)supportsTransactionsForPass:(id)a3;
+- (BOOL)supportsInAppPaymentsForPass:(id)pass;
+- (BOOL)supportsTransactionsForPass:(id)pass;
 - (PKPaymentDataProviderDelegate)delegate;
 - (PKPaymentDefaultDataProvider)init;
-- (PKPaymentDefaultDataProvider)initWithPaymentService:(id)a3 secureElement:(id)a4;
+- (PKPaymentDefaultDataProvider)initWithPaymentService:(id)service secureElement:(id)element;
 - (PKPaymentWebService)paymentWebService;
-- (void)_accessDelegatesWithHandler:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)credential:(id)a3 forPaymentApplication:(id)a4 didUpdateRangingSuspensionReasons:(unint64_t)a5;
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6;
+- (void)_accessDelegatesWithHandler:(id)handler;
+- (void)addDelegate:(id)delegate;
+- (void)credential:(id)credential forPaymentApplication:(id)application didUpdateRangingSuspensionReasons:(unint64_t)reasons;
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons;
 - (void)dealloc;
-- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)a3;
-- (void)didUpdateDefaultPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)featureApplicationAdded:(id)a3;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)passUniqueIdentifiersForTransactionSourceIdentifiers:(id)a3 completion:(id)a4;
-- (void)passUpgradeWithRequest:(id)a3 pass:(id)a4 visibleViewController:(id)a5 completion:(id)a6;
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5;
-- (void)paymentOfferConfirmationRecordChanged:(id)a3 forTransactionWithPaymentHash:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveMessage:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalanceWithIdentifier:(id)a5;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4;
-- (void)transactionWithIdentifier:(id)a3 didDownloadTransactionReceipt:(id)a4;
+- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)mapping;
+- (void)didUpdateDefaultPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)featureApplicationAdded:(id)added;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)passUniqueIdentifiersForTransactionSourceIdentifiers:(id)identifiers completion:(id)completion;
+- (void)passUpgradeWithRequest:(id)request pass:(id)pass visibleViewController:(id)controller completion:(id)completion;
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context;
+- (void)paymentOfferConfirmationRecordChanged:(id)changed forTransactionWithPaymentHash:(id)hash;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveMessage:(id)message;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalanceWithIdentifier:(id)withIdentifier;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)removeDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier;
+- (void)transactionWithIdentifier:(id)identifier didDownloadTransactionReceipt:(id)receipt;
 @end
 
 @implementation PKPaymentDefaultDataProvider
@@ -70,21 +70,21 @@
   return WeakRetained;
 }
 
-- (PKPaymentDefaultDataProvider)initWithPaymentService:(id)a3 secureElement:(id)a4
+- (PKPaymentDefaultDataProvider)initWithPaymentService:(id)service secureElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = PKPaymentDefaultDataProvider;
   v9 = [(PKPaymentDefaultDataProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_secureElement, a4);
-    objc_storeStrong(&v10->_paymentService, a3);
-    v11 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    objc_storeStrong(&v9->_secureElement, element);
+    objc_storeStrong(&v10->_paymentService, service);
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     delegates = v10->_delegates;
-    v10->_delegates = v11;
+    v10->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v10->_delegateLock._os_unfair_lock_opaque = 0;
     v13 = dispatch_queue_create("com.apple.passkitcore.paymentdataprovider.replyQueue", 0);
@@ -118,9 +118,9 @@
   return paymentWebService;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
   if (WeakRetained != obj)
@@ -138,48 +138,48 @@
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = v4;
+    v5 = delegateCopy;
     os_unfair_lock_lock(&self->_delegateLock);
     [(NSHashTable *)self->_delegates addObject:v5];
     os_unfair_lock_unlock(&self->_delegateLock);
-    v4 = v5;
+    delegateCopy = v5;
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v5 = v4;
+    v5 = delegateCopy;
     os_unfair_lock_lock(&self->_delegateLock);
     [(NSHashTable *)self->_delegates removeObject:v5];
     os_unfair_lock_unlock(&self->_delegateLock);
-    v4 = v5;
+    delegateCopy = v5;
   }
 }
 
-- (void)_accessDelegatesWithHandler:(id)a3
+- (void)_accessDelegatesWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_delegateLock);
-    v5 = [(NSHashTable *)self->_delegates allObjects];
+    allObjects = [(NSHashTable *)self->_delegates allObjects];
     os_unfair_lock_unlock(&self->_delegateLock);
     replyQueue = self->_replyQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__PKPaymentDefaultDataProvider__accessDelegatesWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(replyQueue, v8);
   }
 }
@@ -219,23 +219,23 @@ void __60__PKPaymentDefaultDataProvider__accessDelegatesWithHandler___block_invo
   }
 }
 
-- (void)passUpgradeWithRequest:(id)a3 pass:(id)a4 visibleViewController:(id)a5 completion:(id)a6
+- (void)passUpgradeWithRequest:(id)request pass:(id)pass visibleViewController:(id)controller completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  passCopy = pass;
+  requestCopy = request;
   v11 = +[PKPaymentWebService sharedService];
-  v12 = [v11 targetDevice];
-  [v12 noteProvisioningDidBegin];
+  targetDevice = [v11 targetDevice];
+  [targetDevice noteProvisioningDidBegin];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__PKPaymentDefaultDataProvider_passUpgradeWithRequest_pass_visibleViewController_completion___block_invoke;
   v15[3] = &unk_1E79D9880;
-  v16 = v12;
-  v17 = v8;
-  v13 = v12;
-  v14 = v8;
-  [v13 paymentWebService:v11 requestPassUpgrade:v10 pass:v9 completion:v15];
+  v16 = targetDevice;
+  v17 = completionCopy;
+  v13 = targetDevice;
+  v14 = completionCopy;
+  [v13 paymentWebService:v11 requestPassUpgrade:requestCopy pass:passCopy completion:v15];
 }
 
 uint64_t __93__PKPaymentDefaultDataProvider_passUpgradeWithRequest_pass_visibleViewController_completion___block_invoke(uint64_t a1)
@@ -251,60 +251,60 @@ uint64_t __93__PKPaymentDefaultDataProvider_passUpgradeWithRequest_pass_visibleV
   return [v3 noteProvisioningDidEnd];
 }
 
-- (void)passUniqueIdentifiersForTransactionSourceIdentifiers:(id)a3 completion:(id)a4
+- (void)passUniqueIdentifiersForTransactionSourceIdentifiers:(id)identifiers completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v7 count])
+    if ([identifiersCopy count])
     {
-      [(PKPaymentService *)self->_paymentService passUniqueIdentifiersForTransactionSourceIdentifiers:v7 completion:v6];
+      [(PKPaymentService *)self->_paymentService passUniqueIdentifiersForTransactionSourceIdentifiers:identifiersCopy completion:completionCopy];
     }
 
     else
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (BOOL)supportsTransactionsForPass:(id)a3
+- (BOOL)supportsTransactionsForPass:(id)pass
 {
-  v4 = [a3 secureElementPass];
-  if ([v4 isAccessPass])
+  secureElementPass = [pass secureElementPass];
+  if ([secureElementPass isAccessPass])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
-    v7 = [v6 secureElementIdentifiers];
-    v5 = [v4 isPrecursorPass:v7] ^ 1;
+    targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+    secureElementIdentifiers = [targetDevice secureElementIdentifiers];
+    v5 = [secureElementPass isPrecursorPass:secureElementIdentifiers] ^ 1;
   }
 
   return v5;
 }
 
-- (BOOL)supportsInAppPaymentsForPass:(id)a3
+- (BOOL)supportsInAppPaymentsForPass:(id)pass
 {
-  v3 = [a3 paymentPass];
-  v4 = [v3 deviceInAppPaymentApplications];
-  v5 = [v4 count] != 0;
+  paymentPass = [pass paymentPass];
+  deviceInAppPaymentApplications = [paymentPass deviceInAppPaymentApplications];
+  v5 = [deviceInAppPaymentApplications count] != 0;
 
   return v5;
 }
 
-- (void)didUpdateDefaultPaymentPassWithUniqueIdentifier:(id)a3
+- (void)didUpdateDefaultPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__PKPaymentDefaultDataProvider_didUpdateDefaultPaymentPassWithUniqueIdentifier___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -317,16 +317,16 @@ void __80__PKPaymentDefaultDataProvider_didUpdateDefaultPaymentPassWithUniqueIde
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didEnableMessageService___block_invoke;
   v8[3] = &unk_1E79D98D0;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  serviceCopy = service;
+  v7 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v8];
 }
 
@@ -339,18 +339,18 @@ void __88__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didEnabl
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveMessage:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  messageCopy = message;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didReceiveMessage___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -363,19 +363,19 @@ void __82__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didRecei
   }
 }
 
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  tilesCopy = tiles;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__PKPaymentDefaultDataProvider_passWithUniqueIdentifier_didUpdateTiles_forContext___block_invoke;
   v12[3] = &unk_1E79D9920;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  v14 = tilesCopy;
+  contextCopy = context;
+  v10 = tilesCopy;
+  v11 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v12];
 }
 
@@ -388,16 +388,16 @@ void __83__PKPaymentDefaultDataProvider_passWithUniqueIdentifier_didUpdateTiles_
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __92__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didEnableTransactionService___block_invoke;
   v8[3] = &unk_1E79D98D0;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  serviceCopy = service;
+  v7 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v8];
 }
 
@@ -410,18 +410,18 @@ void __92__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didEnabl
   }
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PKPaymentDefaultDataProvider_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = transactionCopy;
+  v8 = transactionCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -434,18 +434,18 @@ void __82__PKPaymentDefaultDataProvider_transactionSourceIdentifier_didReceiveTr
   }
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__PKPaymentDefaultDataProvider_transactionSourceIdentifier_didRemoveTransactionWithIdentifier___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = withIdentifierCopy;
+  v8 = withIdentifierCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -458,15 +458,15 @@ void __95__PKPaymentDefaultDataProvider_transactionSourceIdentifier_didRemoveTra
   }
 }
 
-- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)a3
+- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__PKPaymentDefaultDataProvider_didRemoveTransactionsWithSourceIdentifierMapping___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = mappingCopy;
+  v5 = mappingCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -479,18 +479,18 @@ void __81__PKPaymentDefaultDataProvider_didRemoveTransactionsWithSourceIdentifie
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = propertiesCopy;
+  v8 = propertiesCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -510,18 +510,18 @@ void __99__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didUpdat
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -534,18 +534,18 @@ void __88__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didRecei
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didReceivePlanUpdate___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -558,21 +558,21 @@ void __85__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didRecei
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalanceWithIdentifier:(id)a5
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalanceWithIdentifier:(id)withIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  reminderCopy = reminder;
+  withIdentifierCopy = withIdentifier;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __114__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didUpdateBalanceReminder_forBalanceWithIdentifier___block_invoke;
   v14[3] = &unk_1E79D9948;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = identifierCopy;
+  v16 = reminderCopy;
+  v17 = withIdentifierCopy;
+  v11 = withIdentifierCopy;
+  v12 = reminderCopy;
+  v13 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v14];
 }
 
@@ -585,15 +585,15 @@ void __114__PKPaymentDefaultDataProvider_paymentPassWithUniqueIdentifier_didUpda
   }
 }
 
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__PKPaymentDefaultDataProvider_sharesDidUpdateWithPaymentPassWithUniqueIdentifier___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -606,19 +606,19 @@ void __83__PKPaymentDefaultDataProvider_sharesDidUpdateWithPaymentPassWithUnique
   }
 }
 
-- (void)credential:(id)a3 forPaymentApplication:(id)a4 didUpdateRangingSuspensionReasons:(unint64_t)a5
+- (void)credential:(id)credential forPaymentApplication:(id)application didUpdateRangingSuspensionReasons:(unint64_t)reasons
 {
-  v8 = a3;
-  v9 = a4;
+  credentialCopy = credential;
+  applicationCopy = application;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__PKPaymentDefaultDataProvider_credential_forPaymentApplication_didUpdateRangingSuspensionReasons___block_invoke;
   v12[3] = &unk_1E79D9920;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = credentialCopy;
+  v14 = applicationCopy;
+  reasonsCopy = reasons;
+  v10 = applicationCopy;
+  v11 = credentialCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v12];
 }
 
@@ -631,22 +631,22 @@ void __99__PKPaymentDefaultDataProvider_credential_forPaymentApplication_didUpda
   }
 }
 
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  elementIdentifierCopy = elementIdentifier;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __140__PKPaymentDefaultDataProvider_credentialIdentifier_paymentApplicationIdentifier_secureElementIdentifier_didUpdateRangingSuspensionReasons___block_invoke;
   v16[3] = &unk_1E79D9970;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20 = a6;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = identifierCopy;
+  v18 = applicationIdentifierCopy;
+  v19 = elementIdentifierCopy;
+  reasonsCopy = reasons;
+  v13 = elementIdentifierCopy;
+  v14 = applicationIdentifierCopy;
+  v15 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v16];
 }
 
@@ -659,18 +659,18 @@ void __140__PKPaymentDefaultDataProvider_credentialIdentifier_paymentApplication
   }
 }
 
-- (void)transactionWithIdentifier:(id)a3 didDownloadTransactionReceipt:(id)a4
+- (void)transactionWithIdentifier:(id)identifier didDownloadTransactionReceipt:(id)receipt
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  receiptCopy = receipt;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__PKPaymentDefaultDataProvider_transactionWithIdentifier_didDownloadTransactionReceipt___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = receiptCopy;
+  v8 = receiptCopy;
+  v9 = identifierCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 
@@ -683,15 +683,15 @@ void __88__PKPaymentDefaultDataProvider_transactionWithIdentifier_didDownloadTra
   }
 }
 
-- (void)featureApplicationAdded:(id)a3
+- (void)featureApplicationAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PKPaymentDefaultDataProvider_featureApplicationAdded___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = addedCopy;
+  v5 = addedCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -704,15 +704,15 @@ void __56__PKPaymentDefaultDataProvider_featureApplicationAdded___block_invoke(u
   }
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKPaymentDefaultDataProvider_featureApplicationChanged___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -725,15 +725,15 @@ void __58__PKPaymentDefaultDataProvider_featureApplicationChanged___block_invoke
   }
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKPaymentDefaultDataProvider_featureApplicationRemoved___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -746,15 +746,15 @@ void __58__PKPaymentDefaultDataProvider_featureApplicationRemoved___block_invoke
   }
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PKPaymentDefaultDataProvider_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E79D98A8;
-  v7 = v4;
-  v5 = v4;
+  v7 = membersCopy;
+  v5 = membersCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v6];
 }
 
@@ -767,18 +767,18 @@ void __55__PKPaymentDefaultDataProvider_didUpdateFamilyMembers___block_invoke(ui
   }
 }
 
-- (void)paymentOfferConfirmationRecordChanged:(id)a3 forTransactionWithPaymentHash:(id)a4
+- (void)paymentOfferConfirmationRecordChanged:(id)changed forTransactionWithPaymentHash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  hashCopy = hash;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __100__PKPaymentDefaultDataProvider_paymentOfferConfirmationRecordChanged_forTransactionWithPaymentHash___block_invoke;
   v10[3] = &unk_1E79D98F8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = changedCopy;
+  v12 = hashCopy;
+  v8 = hashCopy;
+  v9 = changedCopy;
   [(PKPaymentDefaultDataProvider *)self _accessDelegatesWithHandler:v10];
 }
 

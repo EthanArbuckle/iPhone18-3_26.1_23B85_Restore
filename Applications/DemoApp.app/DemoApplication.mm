@@ -1,11 +1,11 @@
 @interface DemoApplication
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)sendEvent:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation DemoApplication
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   v4 = [UIWindow alloc];
   v5 = +[UIScreen mainScreen];
@@ -24,15 +24,15 @@
   [(UIWindow *)v10 makeKeyAndVisible];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = DemoApplication;
-  v4 = a3;
-  [(DemoApplication *)&v6 sendEvent:v4];
-  v5 = [v4 type];
+  eventCopy = event;
+  [(DemoApplication *)&v6 sendEvent:eventCopy];
+  type = [eventCopy type];
 
-  if (!v5)
+  if (!type)
   {
     [(DemoApplication *)self suspend];
   }

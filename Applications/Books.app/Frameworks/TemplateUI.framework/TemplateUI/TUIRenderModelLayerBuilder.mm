@@ -1,37 +1,37 @@
 @interface TUIRenderModelLayerBuilder
-- (void)_updateFromPreviousSubmodels:(id)a3 newSubmodels:(id)a4;
-- (void)_updateLayerWithPreviousModel:(id)a3 newModel:(id)a4;
+- (void)_updateFromPreviousSubmodels:(id)submodels newSubmodels:(id)newSubmodels;
+- (void)_updateLayerWithPreviousModel:(id)model newModel:(id)newModel;
 - (void)_updateSubmodelLayers;
 - (void)dynamicUserInterfaceTraitDidChange;
-- (void)setModel:(id)a3;
+- (void)setModel:(id)model;
 @end
 
 @implementation TUIRenderModelLayerBuilder
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   p_model = &self->_model;
   model = self->_model;
-  if (model != v5)
+  if (model != modelCopy)
   {
-    v34 = v5;
-    v8 = model;
-    [(TUIRenderModelLayerBuilder *)self _updateLayerWithPreviousModel:v8 newModel:v34];
-    v9 = [(TUIRenderModelLayer *)v8 submodels];
-    v10 = [(TUIRenderModelLayer *)v34 submodels];
-    [(TUIRenderModelLayerBuilder *)self _updateFromPreviousSubmodels:v9 newSubmodels:v10];
+    v34 = modelCopy;
+    modelCopy2 = model;
+    [(TUIRenderModelLayerBuilder *)self _updateLayerWithPreviousModel:modelCopy2 newModel:v34];
+    submodels = [(TUIRenderModelLayer *)modelCopy2 submodels];
+    submodels2 = [(TUIRenderModelLayer *)v34 submodels];
+    [(TUIRenderModelLayerBuilder *)self _updateFromPreviousSubmodels:submodels newSubmodels:submodels2];
 
-    objc_storeStrong(&self->_model, a3);
-    if (![(TUIRenderModelLayer *)v8 isEqual:v34])
+    objc_storeStrong(&self->_model, model);
+    if (![(TUIRenderModelLayer *)modelCopy2 isEqual:v34])
     {
       [(TUIRenderModelLayerBuilder *)self _updateSubmodelLayers];
-      v11 = [(TUIRenderModelLayer *)self->_model config];
+      config = [(TUIRenderModelLayer *)self->_model config];
 
-      if (v11)
+      if (config)
       {
-        v12 = [(TUIRenderModelLayer *)self->_model config];
-        [v12 configureSublayers:self->_sublayers forLayer:self->_layer];
+        config2 = [(TUIRenderModelLayer *)self->_model config];
+        [config2 configureSublayers:self->_sublayers forLayer:self->_layer];
       }
 
       else
@@ -88,40 +88,40 @@
       [(CALayer *)layer setAnchorPoint:v33, v32];
     }
 
-    v5 = v34;
+    modelCopy = v34;
   }
 }
 
 - (void)dynamicUserInterfaceTraitDidChange
 {
-  v3 = [(TUIRenderModelLayer *)self->_model config];
-  [v3 dynamicUserInterfaceTraitDidChangeForLayer:self->_layer];
+  config = [(TUIRenderModelLayer *)self->_model config];
+  [config dynamicUserInterfaceTraitDidChangeForLayer:self->_layer];
 }
 
-- (void)_updateLayerWithPreviousModel:(id)a3 newModel:(id)a4
+- (void)_updateLayerWithPreviousModel:(id)model newModel:(id)newModel
 {
-  v46 = a3;
-  v6 = a4;
-  v7 = [v6 config];
-  v8 = [v46 config];
-  if (v8 == v7)
+  modelCopy = model;
+  newModelCopy = newModel;
+  config = [newModelCopy config];
+  config2 = [modelCopy config];
+  if (config2 == config)
   {
     goto LABEL_23;
   }
 
-  [v6 size];
+  [newModelCopy size];
   v10 = v9;
   v12 = v11;
-  v13 = [v7 layerClassForSize:?];
-  [v6 eraseableInsets];
+  v13 = [config layerClassForSize:?];
+  [newModelCopy eraseableInsets];
   v15 = v14 + 0.0;
   v17 = v16 + 0.0;
   v19 = v10 - (v14 + v18);
   v21 = v12 - (v16 + v20);
   layer = self->_layer;
-  if (layer && ((-[CALayer bounds](layer, "bounds"), v51.origin.x = v15, v51.origin.y = v17, v51.size.width = v19, v51.size.height = v21, !(v23 = CGRectEqualToRect(v50, v51))) ? (v24 = [v8 reuseLayerForBoundsChange]) : (v24 = 1), self->_layer && v13 == objc_opt_class() && (v25 = objc_opt_class(), v25 == objc_opt_class()) && (objc_msgSend(v46, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "identifier"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqual:", v27) & v24, v27, v26, (v28 & 1) != 0)))
+  if (layer && ((-[CALayer bounds](layer, "bounds"), v51.origin.x = v15, v51.origin.y = v17, v51.size.width = v19, v51.size.height = v21, !(v23 = CGRectEqualToRect(v50, v51))) ? (v24 = [config2 reuseLayerForBoundsChange]) : (v24 = 1), self->_layer && v13 == objc_opt_class() && (v25 = objc_opt_class(), v25 == objc_opt_class()) && (objc_msgSend(modelCopy, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(newModelCopy, "identifier"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqual:", v27) & v24, v27, v26, (v28 & 1) != 0)))
   {
-    v29 = [v8 isEqualToConfig:v7];
+    v29 = [config2 isEqualToConfig:config];
     v30 = v29;
     if (v23)
     {
@@ -136,7 +136,7 @@
       [(CALayer *)self->_layer setBounds:v15, v17, v19, v21];
       if (v30)
       {
-        [v7 configureBounds:self->_layer];
+        [config configureBounds:self->_layer];
         goto LABEL_18;
       }
     }
@@ -154,18 +154,18 @@
       v31 = CALayer;
     }
 
-    v32 = [v31 layer];
+    layer = [v31 layer];
     v33 = self->_layer;
-    self->_layer = v32;
+    self->_layer = layer;
 
     [(CALayer *)self->_layer setBounds:v15, v17, v19, v21];
   }
 
-  [v7 configureLayer:{self->_layer, v46}];
+  [config configureLayer:{self->_layer, modelCopy}];
 LABEL_18:
-  [v7 configureDelegate:{self->_layer, v46}];
-  v34 = [(CALayer *)self->_layer delegate];
-  if (v34 && (v35 = v34, [(CALayer *)self->_layer delegate], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_opt_respondsToSelector(), v36, v35, (v37 & 1) == 0))
+  [config configureDelegate:{self->_layer, modelCopy}];
+  delegate = [(CALayer *)self->_layer delegate];
+  if (delegate && (v35 = delegate, [(CALayer *)self->_layer delegate], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_opt_respondsToSelector(), v36, v35, (v37 & 1) == 0))
   {
     if (_TUIDeviceHasInternalInstall())
     {
@@ -180,8 +180,8 @@ LABEL_18:
 
       v47[1] = @"config";
       v48[0] = v41;
-      v42 = v7;
-      if (!v7)
+      v42 = config;
+      if (!config)
       {
         v42 = +[NSNull null];
       }
@@ -191,7 +191,7 @@ LABEL_18:
       v44 = [v39 initWithName:@"LayerWithoutAnimationDelegate" reason:@"A layer without an animation delegate will result in the wrong animations" userInfo:v43];
       v45 = v44;
 
-      if (!v7)
+      if (!config)
       {
       }
 
@@ -205,9 +205,9 @@ LABEL_18:
 
   else
   {
-    v38 = [(CALayer *)self->_layer delegate];
+    delegate2 = [(CALayer *)self->_layer delegate];
 
-    if (!v38)
+    if (!delegate2)
     {
       [(CALayer *)self->_layer setDelegate:self];
     }
@@ -216,21 +216,21 @@ LABEL_18:
 LABEL_23:
 }
 
-- (void)_updateFromPreviousSubmodels:(id)a3 newSubmodels:(id)a4
+- (void)_updateFromPreviousSubmodels:(id)submodels newSubmodels:(id)newSubmodels
 {
-  if (a3 != a4)
+  if (submodels != newSubmodels)
   {
     v17 = v4;
     v18 = v5;
-    v7 = a4;
+    newSubmodelsCopy = newSubmodels;
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_CF5D4;
     v14 = &unk_261570;
-    v15 = self;
+    selfCopy = self;
     v16 = objc_opt_new();
     v8 = v16;
-    [v7 enumerateObjectsUsingBlock:&v11];
+    [newSubmodelsCopy enumerateObjectsUsingBlock:&v11];
 
     v9 = [v8 copy];
     builderMap = self->_builderMap;
@@ -241,15 +241,15 @@ LABEL_23:
 - (void)_updateSubmodelLayers
 {
   v3 = objc_opt_new();
-  v4 = [(TUIRenderModelLayer *)self->_model submodels];
+  submodels = [(TUIRenderModelLayer *)self->_model submodels];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_CF770;
   v11 = &unk_261570;
-  v12 = self;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [submodels enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 count];
   if (v6)

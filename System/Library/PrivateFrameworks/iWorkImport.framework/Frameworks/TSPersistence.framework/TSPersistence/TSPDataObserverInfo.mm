@@ -1,9 +1,9 @@
 @interface TSPDataObserverInfo
-- (BOOL)shouldClearObserverForStatus:(int64_t)a3;
-- (BOOL)shouldNotifyStatus:(int64_t)a3;
+- (BOOL)shouldClearObserverForStatus:(int64_t)status;
+- (BOOL)shouldNotifyStatus:(int64_t)status;
 - (TSPDataObserverInfo)init;
-- (TSPDataObserverInfo)initWithObserver:(id)a3 data:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)notifyWithStatus:(int64_t)a3 info:(id)a4;
+- (TSPDataObserverInfo)initWithObserver:(id)observer data:(id)data options:(unint64_t)options completionHandler:(id)handler;
+- (void)notifyWithStatus:(int64_t)status info:(id)info;
 @end
 
 @implementation TSPDataObserverInfo
@@ -25,21 +25,21 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDataObserverInfo)initWithObserver:(id)a3 data:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (TSPDataObserverInfo)initWithObserver:(id)observer data:(id)data options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  observerCopy = observer;
+  dataCopy = data;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = TSPDataObserverInfo;
   v13 = [(TSPDataObserverInfo *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_observer, v10);
-    objc_storeWeak(&v14->_data, v11);
-    v14->_options = a5;
-    v17 = objc_msgSend_copy(v12, v15, v16);
+    objc_storeWeak(&v13->_observer, observerCopy);
+    objc_storeWeak(&v14->_data, dataCopy);
+    v14->_options = options;
+    v17 = objc_msgSend_copy(handlerCopy, v15, v16);
     completionHandler = v14->_completionHandler;
     v14->_completionHandler = v17;
   }
@@ -47,7 +47,7 @@
   return v14;
 }
 
-- (BOOL)shouldNotifyStatus:(int64_t)a3
+- (BOOL)shouldNotifyStatus:(int64_t)status
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDataObserverInfo shouldNotifyStatus:]");
@@ -69,7 +69,7 @@
   objc_exception_throw(v20);
 }
 
-- (BOOL)shouldClearObserverForStatus:(int64_t)a3
+- (BOOL)shouldClearObserverForStatus:(int64_t)status
 {
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   v4 = WeakRetained == 0;
@@ -77,10 +77,10 @@
   return v4;
 }
 
-- (void)notifyWithStatus:(int64_t)a3 info:(id)a4
+- (void)notifyWithStatus:(int64_t)status info:(id)info
 {
-  v12 = a4;
-  if (objc_msgSend_shouldNotifyStatus_(self, v6, a3))
+  infoCopy = info;
+  if (objc_msgSend_shouldNotifyStatus_(self, v6, status))
   {
     WeakRetained = objc_loadWeakRetained(&self->_data);
     if (WeakRetained)
@@ -91,13 +91,13 @@
         completionHandler = self->_completionHandler;
         if (completionHandler)
         {
-          completionHandler[2](completionHandler, v9, WeakRetained, a3, v12);
+          completionHandler[2](completionHandler, v9, WeakRetained, status, infoCopy);
         }
       }
     }
   }
 
-  if (objc_msgSend_shouldClearObserverForStatus_(self, v7, a3))
+  if (objc_msgSend_shouldClearObserverForStatus_(self, v7, status))
   {
     v11 = self->_completionHandler;
     self->_completionHandler = 0;

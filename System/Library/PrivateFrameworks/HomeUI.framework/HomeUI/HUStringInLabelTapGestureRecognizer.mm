@@ -1,25 +1,25 @@
 @interface HUStringInLabelTapGestureRecognizer
-- (BOOL)_didTapAttributedTextInLabel:(id)a3 targetRange:(_NSRange)a4 event:(id)a5;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (HUStringInLabelTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 hitBoxString:(id)a5 userInfo:(id)a6;
+- (BOOL)_didTapAttributedTextInLabel:(id)label targetRange:(_NSRange)range event:(id)event;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (HUStringInLabelTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action hitBoxString:(id)string userInfo:(id)info;
 @end
 
 @implementation HUStringInLabelTapGestureRecognizer
 
-- (HUStringInLabelTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 hitBoxString:(id)a5 userInfo:(id)a6
+- (HUStringInLabelTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action hitBoxString:(id)string userInfo:(id)info
 {
-  v11 = a5;
-  v12 = a6;
+  stringCopy = string;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = HUStringInLabelTapGestureRecognizer;
-  v13 = [(HUStringInLabelTapGestureRecognizer *)&v17 initWithTarget:a3 action:a4];
+  v13 = [(HUStringInLabelTapGestureRecognizer *)&v17 initWithTarget:target action:action];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_hitboxString, a5);
-    if (v12)
+    objc_storeStrong(&v13->_hitboxString, string);
+    if (infoCopy)
     {
-      v15 = v12;
+      v15 = infoCopy;
     }
 
     else
@@ -33,14 +33,14 @@
   return v14;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
-  v5 = [(HUStringInLabelTapGestureRecognizer *)self view];
+  view = [(HUStringInLabelTapGestureRecognizer *)self view];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = view;
   }
 
   else
@@ -52,16 +52,16 @@
 
   if (v7)
   {
-    v8 = [v7 attributedText];
-    v9 = v8;
-    if (v8)
+    attributedText = [v7 attributedText];
+    v9 = attributedText;
+    if (attributedText)
     {
-      v10 = [v8 string];
-      v11 = [(HUStringInLabelTapGestureRecognizer *)self hitboxString];
-      v12 = [v10 rangeOfString:v11 options:4];
+      string = [attributedText string];
+      hitboxString = [(HUStringInLabelTapGestureRecognizer *)self hitboxString];
+      v12 = [string rangeOfString:hitboxString options:4];
       v14 = v13;
 
-      v15 = [(HUStringInLabelTapGestureRecognizer *)self _didTapAttributedTextInLabel:v7 targetRange:v12 event:v14, v4];
+      eventCopy = [(HUStringInLabelTapGestureRecognizer *)self _didTapAttributedTextInLabel:v7 targetRange:v12 event:v14, eventCopy];
     }
 
     else
@@ -74,7 +74,7 @@
       }
 
       NSLog(&cfstr_ThisClassCurre_0.isa);
-      v15 = 0;
+      eventCopy = 0;
     }
   }
 
@@ -88,37 +88,37 @@
     }
 
     NSLog(&cfstr_ThisClassCurre.isa);
-    v15 = 0;
+    eventCopy = 0;
   }
 
-  return v15;
+  return eventCopy;
 }
 
-- (BOOL)_didTapAttributedTextInLabel:(id)a3 targetRange:(_NSRange)a4 event:(id)a5
+- (BOOL)_didTapAttributedTextInLabel:(id)label targetRange:(_NSRange)range event:(id)event
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  labelCopy = label;
+  eventCopy = event;
   v10 = objc_alloc_init(MEMORY[0x277D74238]);
   v11 = objc_alloc(MEMORY[0x277D74278]);
   v12 = [v11 initWithSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-  v13 = [v8 attributedText];
-  if (v13)
+  attributedText = [labelCopy attributedText];
+  if (attributedText)
   {
-    v14 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:v13];
+    v14 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:attributedText];
     [v10 addTextContainer:v12];
     [v14 addLayoutManager:v10];
     [v12 setLineFragmentPadding:0.0];
-    [v12 setLineBreakMode:{objc_msgSend(v8, "lineBreakMode")}];
-    [v12 setMaximumNumberOfLines:{objc_msgSend(v8, "numberOfLines")}];
-    [v8 bounds];
+    [v12 setLineBreakMode:{objc_msgSend(labelCopy, "lineBreakMode")}];
+    [v12 setMaximumNumberOfLines:{objc_msgSend(labelCopy, "numberOfLines")}];
+    [labelCopy bounds];
     v16 = v15;
     v18 = v17;
     [v12 setSize:{v15, v17}];
-    v19 = [v9 allTouches];
-    v20 = [v19 anyObject];
-    [v20 locationInView:v8];
+    allTouches = [eventCopy allTouches];
+    anyObject = [allTouches anyObject];
+    [anyObject locationInView:labelCopy];
     v22 = v21;
     v24 = v23;
 

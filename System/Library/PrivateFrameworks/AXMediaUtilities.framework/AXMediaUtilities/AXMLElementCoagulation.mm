@@ -1,54 +1,54 @@
 @interface AXMLElementCoagulation
 + (id)sharedInstance;
 - (AXMLElementCoagulation)init;
-- (BOOL)_allTabGroupsHaveSingleSubfeature:(id)a3;
-- (BOOL)_hasXOverlap:(CGRect)a3 obj2:(CGRect)a4;
-- (BOOL)_hasYOverlap:(CGRect)a3 obj2:(CGRect)a4;
-- (BOOL)_isInTopBar:(id)a3;
-- (BOOL)_shouldBeTabBar:(BOOL)a3 groupedTabButtons:(id)a4;
+- (BOOL)_allTabGroupsHaveSingleSubfeature:(id)subfeature;
+- (BOOL)_hasXOverlap:(CGRect)overlap obj2:(CGRect)obj2;
+- (BOOL)_hasYOverlap:(CGRect)overlap obj2:(CGRect)obj2;
+- (BOOL)_isInTopBar:(id)bar;
+- (BOOL)_shouldBeTabBar:(BOOL)bar groupedTabButtons:(id)buttons;
 - (CGRect)appFrame;
 - (CGSize)canvasSize;
-- (double)_getXOverlap:(CGRect)a3 obj2:(CGRect)a4;
-- (double)_getYOverlap:(CGRect)a3 obj2:(CGRect)a4;
-- (id)_applyCrossUITypeNMS:(id)a3;
-- (id)_applyHorizontalMirrorToFeatures:(id)a3;
-- (id)_compareForX:(id)a3;
-- (id)_compareForY:(id)a3;
-- (id)_createToggleGroup:(id)a3 toGroup:(id)a4;
-- (id)_featuresByReorderingTwoRows:(id)a3 minY:(double)a4 maxY:(double)a5;
-- (id)_flattenFeatures:(id)a3;
-- (id)_getCandidateTabBarFeatures:(id)a3 screenSize:(CGSize)a4;
-- (id)_getClickableTextButtons:(id)a3;
-- (id)_getClosestDetectionBelow:(id)a3 target:(id)a4 maxDistance:(int64_t)a5;
-- (id)_getFeaturesForAXMLTabButtonGroups:(id)a3;
-- (id)_getFlattenedChildFeatures:(id)a3;
-- (id)_getGroupedPictureAndSubtitleFeature:(id)a3;
-- (id)_getGroupedSegmentedControlFeatures:(id)a3;
-- (id)_getGroupedTabBarFeatures:(id)a3;
-- (id)_getGroupedTextButtonFeatures:(id)a3;
-- (id)_getGroupedTextFeatures:(id)a3;
-- (id)_getGroupedTextFields:(id)a3;
-- (id)_getGroupedToggleCheckboxWithText:(id)a3;
-- (id)_getHorizontalSegmentationPointDict:(id)a3;
-- (id)_getTabGroupSubfeatureUIClassTypes:(id)a3;
-- (id)_getTopLevelFeatureGroups:(id)a3;
-- (id)_groupFeatures:(id)a3;
-- (id)_groupFeaturesByContainment:(id)a3;
-- (id)_groupSingleContainerAsButton:(id)a3 featureToGroup:(id)a4;
-- (id)_mergeTopLeftButton:(id)a3;
-- (id)_removeExtraOCRAndIconFromTextField:(id)a3;
-- (id)_removeTextContainingOnlyToggles:(id)a3 toggleCheckboxTypes:(id)a4;
-- (id)_reorderByXCut:(id)a3;
-- (id)_reorderByYCut:(id)a3;
-- (id)_reorderSimilarTopNeighbors:(id)a3;
-- (id)_reorderedTabsForSortedFeatures:(id)a3 screenSize:(CGSize)a4;
-- (id)_repairTextInTabItems:(id)a3;
-- (id)coagulateElements:(id)a3;
-- (int64_t)_compareX:(CGRect)a3 frame2:(CGRect)a4;
-- (int64_t)_compareY:(CGRect)a3 frame2:(CGRect)a4;
-- (void)_improveFeatureFrames:(id)a3;
-- (void)_mergeFeatureIntoGroup:(id)a3 feature:(id)a4;
-- (void)_removeFeatureFromGroup:(id)a3 feature:(id)a4;
+- (double)_getXOverlap:(CGRect)overlap obj2:(CGRect)obj2;
+- (double)_getYOverlap:(CGRect)overlap obj2:(CGRect)obj2;
+- (id)_applyCrossUITypeNMS:(id)s;
+- (id)_applyHorizontalMirrorToFeatures:(id)features;
+- (id)_compareForX:(id)x;
+- (id)_compareForY:(id)y;
+- (id)_createToggleGroup:(id)group toGroup:(id)toGroup;
+- (id)_featuresByReorderingTwoRows:(id)rows minY:(double)y maxY:(double)maxY;
+- (id)_flattenFeatures:(id)features;
+- (id)_getCandidateTabBarFeatures:(id)features screenSize:(CGSize)size;
+- (id)_getClickableTextButtons:(id)buttons;
+- (id)_getClosestDetectionBelow:(id)below target:(id)target maxDistance:(int64_t)distance;
+- (id)_getFeaturesForAXMLTabButtonGroups:(id)groups;
+- (id)_getFlattenedChildFeatures:(id)features;
+- (id)_getGroupedPictureAndSubtitleFeature:(id)feature;
+- (id)_getGroupedSegmentedControlFeatures:(id)features;
+- (id)_getGroupedTabBarFeatures:(id)features;
+- (id)_getGroupedTextButtonFeatures:(id)features;
+- (id)_getGroupedTextFeatures:(id)features;
+- (id)_getGroupedTextFields:(id)fields;
+- (id)_getGroupedToggleCheckboxWithText:(id)text;
+- (id)_getHorizontalSegmentationPointDict:(id)dict;
+- (id)_getTabGroupSubfeatureUIClassTypes:(id)types;
+- (id)_getTopLevelFeatureGroups:(id)groups;
+- (id)_groupFeatures:(id)features;
+- (id)_groupFeaturesByContainment:(id)containment;
+- (id)_groupSingleContainerAsButton:(id)button featureToGroup:(id)group;
+- (id)_mergeTopLeftButton:(id)button;
+- (id)_removeExtraOCRAndIconFromTextField:(id)field;
+- (id)_removeTextContainingOnlyToggles:(id)toggles toggleCheckboxTypes:(id)types;
+- (id)_reorderByXCut:(id)cut;
+- (id)_reorderByYCut:(id)cut;
+- (id)_reorderSimilarTopNeighbors:(id)neighbors;
+- (id)_reorderedTabsForSortedFeatures:(id)features screenSize:(CGSize)size;
+- (id)_repairTextInTabItems:(id)items;
+- (id)coagulateElements:(id)elements;
+- (int64_t)_compareX:(CGRect)x frame2:(CGRect)frame2;
+- (int64_t)_compareY:(CGRect)y frame2:(CGRect)frame2;
+- (void)_improveFeatureFrames:(id)frames;
+- (void)_mergeFeatureIntoGroup:(id)group feature:(id)feature;
+- (void)_removeFeatureFromGroup:(id)group feature:(id)feature;
 @end
 
 @implementation AXMLElementCoagulation
@@ -98,17 +98,17 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)_hasXOverlap:(CGRect)a3 obj2:(CGRect)a4
+- (BOOL)_hasXOverlap:(CGRect)overlap obj2:(CGRect)obj2
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = obj2.size.height;
+  width = obj2.size.width;
+  y = obj2.origin.y;
+  x = obj2.origin.x;
+  v8 = overlap.size.height;
+  v9 = overlap.size.width;
+  v10 = overlap.origin.y;
+  v11 = overlap.origin.x;
+  MinX = CGRectGetMinX(overlap);
   v17.origin.x = v11;
   v17.origin.y = v10;
   v17.size.width = v9;
@@ -127,17 +127,17 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
   return MaxX > v13 && v14;
 }
 
-- (double)_getXOverlap:(CGRect)a3 obj2:(CGRect)a4
+- (double)_getXOverlap:(CGRect)overlap obj2:(CGRect)obj2
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = obj2.size.height;
+  width = obj2.size.width;
+  y = obj2.origin.y;
+  x = obj2.origin.x;
+  v8 = overlap.size.height;
+  v9 = overlap.size.width;
+  v10 = overlap.origin.y;
+  v11 = overlap.origin.x;
+  MinX = CGRectGetMinX(overlap);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
@@ -155,17 +155,17 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
   return fmax(fmin(MaxX, CGRectGetMaxX(v18)) - fmax(MinX, v14) + 1.0, 0.0);
 }
 
-- (BOOL)_hasYOverlap:(CGRect)a3 obj2:(CGRect)a4
+- (BOOL)_hasYOverlap:(CGRect)overlap obj2:(CGRect)obj2
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  height = obj2.size.height;
+  width = obj2.size.width;
+  y = obj2.origin.y;
+  x = obj2.origin.x;
+  v8 = overlap.size.height;
+  v9 = overlap.size.width;
+  v10 = overlap.origin.y;
+  v11 = overlap.origin.x;
+  MinY = CGRectGetMinY(overlap);
   v17.origin.x = v11;
   v17.origin.y = v10;
   v17.size.width = v9;
@@ -184,17 +184,17 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
   return MaxY > v13 && v14;
 }
 
-- (double)_getYOverlap:(CGRect)a3 obj2:(CGRect)a4
+- (double)_getYOverlap:(CGRect)overlap obj2:(CGRect)obj2
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  height = obj2.size.height;
+  width = obj2.size.width;
+  y = obj2.origin.y;
+  x = obj2.origin.x;
+  v8 = overlap.size.height;
+  v9 = overlap.size.width;
+  v10 = overlap.origin.y;
+  v11 = overlap.origin.x;
+  MinY = CGRectGetMinY(overlap);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
@@ -212,10 +212,10 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
   return fmax(fmin(MaxY, CGRectGetMaxY(v18)) - fmax(MinY, v14) + 1.0, 0.0);
 }
 
-- (id)coagulateElements:(id)a3
+- (id)coagulateElements:(id)elements
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   [(AXMLElementCoagulation *)self screenScale];
   v6 = v5;
   [(AXMLElementCoagulation *)self appFrame];
@@ -232,10 +232,10 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
     [(AXMLElementCoagulation *)self setCanvasSize:v13, v14];
   }
 
-  v15 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_117];
+  v15 = [elementsCopy ax_filteredArrayUsingBlock:&__block_literal_global_117];
   if ([v15 count])
   {
-    v71 = v4;
+    v71 = elementsCopy;
     v16 = [(AXMLElementCoagulation *)self _applyCrossUITypeNMS:v15];
 
     [(AXMLElementCoagulation *)self screenScale];
@@ -263,7 +263,7 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
     v30 = [(AXMLElementCoagulation *)self _sortFeaturesReadingOrder:v29];
 
     v31 = [(AXMLElementCoagulation *)self _getGroupedTabBarFeatures:v30];
-    v70 = self;
+    selfCopy = self;
     v68 = v27;
     v32 = [(AXMLElementCoagulation *)self _getAXMLElementGroupsForFeatures:v27];
     v33 = [v32 mutableCopy];
@@ -274,7 +274,7 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
     }
 
     v66 = v30;
-    v34 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -323,7 +323,7 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
                 [v38 frame];
                 if (AXMIsContainedBy(v46, v48, v50, v52, v53, v54, v55, v56, 0.7))
                 {
-                  [v34 addObject:v38];
+                  [array addObject:v38];
                 }
               }
 
@@ -342,22 +342,22 @@ void __40__AXMLElementCoagulation_sharedInstance__block_invoke()
       while (v36);
     }
 
-    [obj removeObjectsInArray:v34];
-    v57 = [(AXMLElementCoagulation *)v70 _groupFeatures:obj];
-    v58 = [(AXMLElementCoagulation *)v70 _flattenFeatures:v57];
+    [obj removeObjectsInArray:array];
+    v57 = [(AXMLElementCoagulation *)selfCopy _groupFeatures:obj];
+    v58 = [(AXMLElementCoagulation *)selfCopy _flattenFeatures:v57];
 
     v59 = [v58 ax_filteredArrayUsingBlock:&__block_literal_global_120];
 
-    [(AXMLElementCoagulation *)v70 _improveFeatureFrames:v59];
-    if ([(AXMLElementCoagulation *)v70 isRTL])
+    [(AXMLElementCoagulation *)selfCopy _improveFeatureFrames:v59];
+    if ([(AXMLElementCoagulation *)selfCopy isRTL])
     {
-      v60 = [v31 reverseObjectEnumerator];
-      v61 = [v60 allObjects];
+      reverseObjectEnumerator = [v31 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v31 = v61;
+      v31 = allObjects;
     }
 
-    v4 = v71;
+    elementsCopy = v71;
     v62 = [v59 arrayByAddingObjectsFromArray:v31];
 
     v63 = [v62 ax_mappedArrayUsingBlock:&__block_literal_global_123_0];
@@ -416,11 +416,11 @@ AXMMLElementGroup *__59__AXMLElementCoagulation__getAXMLElementGroupsForFeatures
   return v3;
 }
 
-- (id)_applyCrossUITypeNMS:(id)a3
+- (id)_applyCrossUITypeNMS:(id)s
 {
   v56[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v36 = [MEMORY[0x1E695DF70] array];
+  sCopy = s;
+  array = [MEMORY[0x1E695DF70] array];
   v55[0] = &unk_1F240A900;
   v55[1] = &unk_1F240A948;
   v56[0] = &unk_1F240B490;
@@ -436,8 +436,8 @@ AXMMLElementGroup *__59__AXMLElementCoagulation__getAXMLElementGroupsForFeatures
   v55[6] = &unk_1F240A9A8;
   v56[6] = &unk_1F240B520;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:7];
-  v33 = v3;
-  [v3 sortedArrayUsingComparator:&__block_literal_global_163];
+  v33 = sCopy;
+  [sCopy sortedArrayUsingComparator:&__block_literal_global_163];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -462,7 +462,7 @@ AXMMLElementGroup *__59__AXMLElementCoagulation__getAXMLElementGroupsForFeatures
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v8 = v36;
+        v8 = array;
         v44 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
         if (!v44)
         {
@@ -547,7 +547,7 @@ LABEL_22:
     while (v37);
   }
 
-  return v36;
+  return array;
 }
 
 uint64_t __47__AXMLElementCoagulation__applyCrossUITypeNMS___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -583,16 +583,16 @@ uint64_t __47__AXMLElementCoagulation__applyCrossUITypeNMS___block_invoke(uint64
   return v12;
 }
 
-- (BOOL)_isInTopBar:(id)a3
+- (BOOL)_isInTopBar:(id)bar
 {
-  v4 = a3;
-  [v4 frame];
+  barCopy = bar;
+  [barCopy frame];
   MinX = CGRectGetMinX(v25);
-  [v4 frame];
+  [barCopy frame];
   v6 = MinX + CGRectGetWidth(v26) * 0.5;
-  [v4 frame];
+  [barCopy frame];
   MinY = CGRectGetMinY(v27);
-  [v4 frame];
+  [barCopy frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -613,26 +613,26 @@ uint64_t __47__AXMLElementCoagulation__applyCrossUITypeNMS___block_invoke(uint64
   return v22 < v23 / 20.0 && v20;
 }
 
-- (id)_getClickableTextButtons:(id)a3
+- (id)_getClickableTextButtons:(id)buttons
 {
-  v4 = a3;
-  if ([v4 count])
+  buttonsCopy = buttons;
+  if ([buttonsCopy count])
   {
     v5 = 0;
     v6 = 0x1E695D000uLL;
     while (1)
     {
-      v7 = [v4 objectAtIndex:v5];
-      v8 = [v7 feature];
-      if ([v8 uiClass] != 11 || -[AXMLElementCoagulation _isInTopBar:](self, "_isInTopBar:", v7))
+      v7 = [buttonsCopy objectAtIndex:v5];
+      feature = [v7 feature];
+      if ([feature uiClass] != 11 || -[AXMLElementCoagulation _isInTopBar:](self, "_isInTopBar:", v7))
       {
         goto LABEL_10;
       }
 
-      v9 = [v7 feature];
-      v10 = [v9 value];
-      v11 = [*(v6 + 4016) null];
-      v12 = [v10 isEqual:v11];
+      feature2 = [v7 feature];
+      value = [feature2 value];
+      null = [*(v6 + 4016) null];
+      v12 = [value isEqual:null];
 
       if ((v12 & 1) == 0)
       {
@@ -641,25 +641,25 @@ uint64_t __47__AXMLElementCoagulation__applyCrossUITypeNMS___block_invoke(uint64
 
 LABEL_11:
 
-      if (++v5 >= [v4 count])
+      if (++v5 >= [buttonsCopy count])
       {
         goto LABEL_12;
       }
     }
 
-    v13 = [(AXMLElementCoagulation *)self nonAlphaCharactersRegex];
-    v14 = [v7 feature];
-    v15 = [v14 value];
-    v16 = [v7 feature];
-    v17 = [v16 value];
-    v18 = [v13 stringByReplacingMatchesInString:v15 options:0 range:0 withTemplate:{objc_msgSend(v17, "length"), &stru_1F23EA908}];
+    nonAlphaCharactersRegex = [(AXMLElementCoagulation *)self nonAlphaCharactersRegex];
+    feature3 = [v7 feature];
+    value2 = [feature3 value];
+    feature4 = [v7 feature];
+    value3 = [feature4 value];
+    v18 = [nonAlphaCharactersRegex stringByReplacingMatchesInString:value2 options:0 range:0 withTemplate:{objc_msgSend(value3, "length"), &stru_1F23EA908}];
 
-    v8 = [v18 lowercaseString];
+    feature = [v18 lowercaseString];
 
-    if ([v8 length])
+    if ([feature length])
     {
-      v19 = [(AXMLElementCoagulation *)self clickableTextKeywords];
-      v20 = [v19 containsObject:v8];
+      clickableTextKeywords = [(AXMLElementCoagulation *)self clickableTextKeywords];
+      v20 = [clickableTextKeywords containsObject:feature];
 
       if (v20)
       {
@@ -668,16 +668,16 @@ LABEL_11:
         v24 = v23;
         v26 = v25;
         v28 = v27;
-        v29 = [v7 feature];
-        [v29 confidence];
+        feature5 = [v7 feature];
+        [feature5 confidence];
         v31 = v30;
-        v32 = [v7 feature];
-        v33 = [v32 value];
+        feature6 = [v7 feature];
+        value4 = [feature6 value];
         [(AXMLElementCoagulation *)self canvasSize];
         v35 = v34;
         v37 = v36;
-        v38 = [MEMORY[0x1E695DEC8] array];
-        v39 = [AXMVisionFeature groupedFeatureWithElementRect:17 uiClass:v33 confidence:v38 label:v22 canvasSize:v24 subElements:v26, v28, v31, v35, v37];
+        array = [MEMORY[0x1E695DEC8] array];
+        v39 = [AXMVisionFeature groupedFeatureWithElementRect:17 uiClass:value4 confidence:array label:v22 canvasSize:v24 subElements:v26, v28, v31, v35, v37];
 
         [v7 setFeature:v39];
       }
@@ -691,19 +691,19 @@ LABEL_10:
 
 LABEL_12:
 
-  return v4;
+  return buttonsCopy;
 }
 
-- (id)_flattenFeatures:(id)a3
+- (id)_flattenFeatures:(id)features
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  featuresCopy = features;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = featuresCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -719,19 +719,19 @@ LABEL_12:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        [v5 addObject:{v11, v15}];
-        v12 = [v11 subfeatures];
-        if ([v12 count])
+        [array addObject:{v11, v15}];
+        subfeatures = [v11 subfeatures];
+        if ([subfeatures count])
         {
-          v13 = [v11 includeChildren];
+          includeChildren = [v11 includeChildren];
 
-          if (!v13)
+          if (!includeChildren)
           {
             continue;
           }
 
-          v12 = [(AXMLElementCoagulation *)self _getFlattenedChildFeatures:v11];
-          [v5 addObjectsFromArray:v12];
+          subfeatures = [(AXMLElementCoagulation *)self _getFlattenedChildFeatures:v11];
+          [array addObjectsFromArray:subfeatures];
         }
       }
 
@@ -741,20 +741,20 @@ LABEL_12:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_getFlattenedChildFeatures:(id)a3
+- (id)_getFlattenedChildFeatures:(id)features
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  featuresCopy = features;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 subfeatures];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subfeatures = [featuresCopy subfeatures];
+  v7 = [subfeatures countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -765,38 +765,38 @@ LABEL_12:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subfeatures);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        [v5 addObject:v11];
-        v12 = [v11 subfeatures];
-        if ([v12 count])
+        [array addObject:v11];
+        subfeatures2 = [v11 subfeatures];
+        if ([subfeatures2 count])
         {
-          v13 = [v11 includeChildren];
+          includeChildren = [v11 includeChildren];
 
-          if (!v13)
+          if (!includeChildren)
           {
             continue;
           }
 
-          v12 = [(AXMLElementCoagulation *)self _getFlattenedChildFeatures:v11];
-          [v5 addObjectsFromArray:v12];
+          subfeatures2 = [(AXMLElementCoagulation *)self _getFlattenedChildFeatures:v11];
+          [array addObjectsFromArray:subfeatures2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [subfeatures countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_groupFeatures:(id)a3
+- (id)_groupFeatures:(id)features
 {
-  v4 = [(AXMLElementCoagulation *)self _getClickableTextButtons:a3];
+  v4 = [(AXMLElementCoagulation *)self _getClickableTextButtons:features];
   v5 = [(AXMLElementCoagulation *)self _sortFeaturesReadingOrder:v4];
   v6 = [v5 mutableCopy];
 
@@ -833,15 +833,15 @@ LABEL_12:
   return v17;
 }
 
-- (id)_applyHorizontalMirrorToFeatures:(id)a3
+- (id)_applyHorizontalMirrorToFeatures:(id)features
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [featuresCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -852,7 +852,7 @@ LABEL_12:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(featuresCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -870,28 +870,28 @@ LABEL_12:
         [v9 setFrame:{v13, MinY, Width, CGRectGetHeight(v28)}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [featuresCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return featuresCopy;
 }
 
-- (id)_getGroupedTextFeatures:(id)a3
+- (id)_getGroupedTextFeatures:(id)features
 {
   v237 = *MEMORY[0x1E69E9840];
-  v192 = [a3 mutableCopy];
+  v192 = [features mutableCopy];
   v4 = [v192 ax_filteredArrayUsingBlock:&__block_literal_global_168];
   v5 = [v4 mutableCopy];
 
-  v206 = self;
+  selfCopy = self;
   v6 = [(AXMLElementCoagulation *)self _compareForY:v5];
   v7 = [v6 mutableCopy];
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v10 = [v7 count];
   v205 = v7;
   if (!v10)
@@ -918,12 +918,12 @@ LABEL_12:
         v22 = v21;
         v24 = v23;
         [v16 frame];
-        v29 = [(AXMLElementCoagulation *)v206 _hasXOverlap:v18 obj2:v20, v22, v24, v25, v26, v27, v28];
+        v29 = [(AXMLElementCoagulation *)selfCopy _hasXOverlap:v18 obj2:v20, v22, v24, v25, v26, v27, v28];
         [v16 frame];
         MinY = CGRectGetMinY(v239);
         [v14 frame];
         v31 = CGRectGetMinY(v240);
-        v32 = [v8 indexOfObject:v16];
+        v32 = [array indexOfObject:v16];
         if (v29 && MinY > v31 && v32 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
@@ -946,7 +946,7 @@ LABEL_15:
     v38 = v37;
     v40 = v39;
     [v16 frame];
-    [(AXMLElementCoagulation *)v206 _getXOverlap:v34 obj2:v36, v38, v40, v41, v42, v43, v44];
+    [(AXMLElementCoagulation *)selfCopy _getXOverlap:v34 obj2:v36, v38, v40, v41, v42, v43, v44];
     v46 = v45;
     [v14 frame];
     Width = CGRectGetWidth(v241);
@@ -970,26 +970,26 @@ LABEL_15:
     [v16 frame];
     if (v50 <= fmin(Height, CGRectGetHeight(v246)) / v48)
     {
-      v52 = v8;
-      [v8 addObject:v16];
+      v52 = array;
+      [array addObject:v16];
       v53 = [*(v13 + 3480) numberWithUnsignedInteger:v12];
-      v54 = [v9 objectForKey:v53];
+      v54 = [dictionary objectForKey:v53];
 
       if (!v54)
       {
-        v55 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v56 = [*(v13 + 3480) numberWithUnsignedInteger:v12];
-        [v9 setObject:v55 forKeyedSubscript:v56];
+        [dictionary setObject:array2 forKeyedSubscript:v56];
       }
 
       v57 = [*(v13 + 3480) numberWithUnsignedInteger:v12];
-      v58 = [v9 objectForKey:v57];
+      v58 = [dictionary objectForKey:v57];
       [*(v13 + 3480) numberWithUnsignedInteger:v15];
       v60 = v59 = v13;
       [v58 addObject:v60];
 
       v13 = v59;
-      v8 = v52;
+      array = v52;
       v11 = v202;
       goto LABEL_15;
     }
@@ -1002,8 +1002,8 @@ LABEL_18:
 
   while (v12 != v11);
 LABEL_19:
-  v191 = v8;
-  [v9 allKeys];
+  v191 = array;
+  [dictionary allKeys];
   v227 = 0u;
   v228 = 0u;
   v229 = 0u;
@@ -1023,32 +1023,32 @@ LABEL_19:
         }
 
         v64 = *(*(&v227 + 1) + 8 * i);
-        v65 = [v9 objectForKey:v64];
+        v65 = [dictionary objectForKey:v64];
         if ([v65 count])
         {
           v66 = 0;
           do
           {
             v67 = [v65 objectAtIndex:v66];
-            v68 = [v67 intValue];
+            intValue = [v67 intValue];
 
-            v69 = [v7 objectAtIndex:v68];
+            v69 = [v7 objectAtIndex:intValue];
             if (++v66 < [v65 count])
             {
               v70 = v66;
               while (1)
               {
                 v71 = [v65 objectAtIndex:v70];
-                v72 = [v71 intValue];
+                intValue2 = [v71 intValue];
 
-                v73 = [v205 objectAtIndex:v72];
+                v73 = [v205 objectAtIndex:intValue2];
                 [v69 frame];
                 v75 = v74;
                 v77 = v76;
                 v79 = v78;
                 v81 = v80;
                 [v73 frame];
-                if ([(AXMLElementCoagulation *)v206 _hasYOverlap:v75 obj2:v77, v79, v81, v82, v83, v84, v85])
+                if ([(AXMLElementCoagulation *)selfCopy _hasYOverlap:v75 obj2:v77, v79, v81, v82, v83, v84, v85])
                 {
                   [v69 frame];
                   v87 = v86;
@@ -1056,7 +1056,7 @@ LABEL_19:
                   v91 = v90;
                   v93 = v92;
                   [v73 frame];
-                  if (![(AXMLElementCoagulation *)v206 _hasXOverlap:v87 obj2:v89, v91, v93, v94, v95, v96, v97])
+                  if (![(AXMLElementCoagulation *)selfCopy _hasXOverlap:v87 obj2:v89, v91, v93, v94, v95, v96, v97])
                   {
                     break;
                   }
@@ -1068,8 +1068,8 @@ LABEL_19:
                 }
               }
 
-              v98 = [MEMORY[0x1E695DF70] array];
-              [v9 setObject:v98 forKeyedSubscript:v64];
+              array3 = [MEMORY[0x1E695DF70] array];
+              [dictionary setObject:array3 forKeyedSubscript:v64];
             }
 
 LABEL_33:
@@ -1087,7 +1087,7 @@ LABEL_33:
     while (v62);
   }
 
-  v204 = v9;
+  v204 = dictionary;
   v225 = 0u;
   v226 = 0u;
   v223 = 0u;
@@ -1112,7 +1112,7 @@ LABEL_33:
 
         if (v105)
         {
-          v106 = [MEMORY[0x1E695DF70] array];
+          array4 = [MEMORY[0x1E695DF70] array];
           v107 = [v204 objectForKey:v104];
           v108 = v107;
           while ([v107 count])
@@ -1128,13 +1128,13 @@ LABEL_33:
               [v204 removeObjectForKey:v109];
             }
 
-            [v106 addObject:v109];
+            [array4 addObject:v109];
             [v108 removeObjectAtIndex:0];
 
             v107 = v108;
           }
 
-          [v204 setObject:v106 forKeyedSubscript:v104];
+          [v204 setObject:array4 forKeyedSubscript:v104];
 
           v7 = v205;
         }
@@ -1146,16 +1146,16 @@ LABEL_33:
     while (v101);
   }
 
-  v112 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
   v113 = v204;
-  v114 = [v204 allKeys];
+  allKeys = [v204 allKeys];
 
-  v197 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
   v219 = 0u;
   v220 = 0u;
   v221 = 0u;
   v222 = 0u;
-  v194 = v114;
+  v194 = allKeys;
   obja = [v194 countByEnumeratingWithState:&v219 objects:v234 count:16];
   if (obja)
   {
@@ -1172,9 +1172,9 @@ LABEL_33:
         v116 = *(*(&v219 + 1) + 8 * k);
         v117 = [v7 objectAtIndex:{objc_msgSend(v116, "intValue")}];
         v118 = objc_alloc_init(AXMMLElementGroup);
-        [(AXMLElementCoagulation *)v206 _mergeFeatureIntoGroup:v118 feature:v117];
+        [(AXMLElementCoagulation *)selfCopy _mergeFeatureIntoGroup:v118 feature:v117];
         v119 = v117;
-        [v112 addObject:v117];
+        [array5 addObject:v117];
         v120 = [v113 objectForKey:v116];
         v215 = 0u;
         v216 = 0u;
@@ -1195,8 +1195,8 @@ LABEL_33:
               }
 
               v125 = [v7 objectAtIndex:{objc_msgSend(*(*(&v215 + 1) + 8 * m), "intValue")}];
-              [(AXMLElementCoagulation *)v206 _mergeFeatureIntoGroup:v118 feature:v125];
-              [v112 addObject:v125];
+              [(AXMLElementCoagulation *)selfCopy _mergeFeatureIntoGroup:v118 feature:v125];
+              [array5 addObject:v125];
             }
 
             v122 = [v120 countByEnumeratingWithState:&v215 objects:v233 count:16];
@@ -1205,8 +1205,8 @@ LABEL_33:
           while (v122);
         }
 
-        v126 = [(AXMMLElementGroup *)v118 subfeatures];
-        v127 = [(AXMLElementCoagulation *)v206 _sortFeaturesReadingOrder:v126];
+        subfeatures = [(AXMMLElementGroup *)v118 subfeatures];
+        v127 = [(AXMLElementCoagulation *)selfCopy _sortFeaturesReadingOrder:subfeatures];
         v128 = [v127 mutableCopy];
         [(AXMMLElementGroup *)v118 setSubfeatures:v128];
 
@@ -1215,20 +1215,20 @@ LABEL_33:
         v132 = v131;
         v134 = v133;
         v136 = v135;
-        v137 = [(AXMMLElementGroup *)v118 feature];
-        [v137 confidence];
+        feature = [(AXMMLElementGroup *)v118 feature];
+        [feature confidence];
         v139 = v138;
-        v140 = [(AXMMLElementGroup *)v118 textLabel];
-        [(AXMLElementCoagulation *)v206 canvasSize];
+        textLabel = [(AXMMLElementGroup *)v118 textLabel];
+        [(AXMLElementCoagulation *)selfCopy canvasSize];
         v142 = v141;
         v144 = v143;
-        v145 = [(AXMMLElementGroup *)v118 childFeatures];
-        v146 = [AXMVisionFeature groupedFeatureWithElementRect:11 uiClass:v140 confidence:v145 label:v130 canvasSize:v132 subElements:v134, v136, v139, v142, v144];
+        childFeatures = [(AXMMLElementGroup *)v118 childFeatures];
+        v144 = [AXMVisionFeature groupedFeatureWithElementRect:11 uiClass:textLabel confidence:childFeatures label:v130 canvasSize:v132 subElements:v134, v136, v139, v142, v144];
 
         v7 = v205;
-        [(AXMMLElementGroup *)v118 setFeature:v146];
+        [(AXMMLElementGroup *)v118 setFeature:v144];
         [(AXMMLElementGroup *)v118 setIncludeChildren:0];
-        [v197 addObject:v118];
+        [array6 addObject:v118];
 
         v113 = v204;
       }
@@ -1239,12 +1239,12 @@ LABEL_33:
     while (obja);
   }
 
-  [v7 removeObjectsInArray:v112];
+  [v7 removeObjectsInArray:array5];
   v213 = 0u;
   v214 = 0u;
   v211 = 0u;
   v212 = 0u;
-  v193 = v197;
+  v193 = array6;
   v198 = [v193 countByEnumeratingWithState:&v211 objects:v232 count:16];
   if (v198)
   {
@@ -1289,15 +1289,15 @@ LABEL_33:
               [v154 frame];
               if (AXMIsContainedBy(v156, v158, v160, v162, v163, v164, v165, v166, 0.7))
               {
-                v167 = [v148 subfeatures];
-                v168 = [v167 indexOfObject:v154];
+                subfeatures2 = [v148 subfeatures];
+                v168 = [subfeatures2 indexOfObject:v154];
 
                 if (v168 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  [(AXMLElementCoagulation *)v206 _mergeFeatureIntoGroup:v148 feature:v154];
-                  [v112 addObject:v154];
-                  v169 = [v148 subfeatures];
-                  v170 = [(AXMLElementCoagulation *)v206 _sortFeaturesReadingOrder:v169];
+                  [(AXMLElementCoagulation *)selfCopy _mergeFeatureIntoGroup:v148 feature:v154];
+                  [array5 addObject:v154];
+                  subfeatures3 = [v148 subfeatures];
+                  v170 = [(AXMLElementCoagulation *)selfCopy _sortFeaturesReadingOrder:subfeatures3];
                   v171 = [v170 mutableCopy];
                   [v148 setSubfeatures:v171];
 
@@ -1306,17 +1306,17 @@ LABEL_33:
                   v175 = v174;
                   v177 = v176;
                   v179 = v178;
-                  v180 = [v148 feature];
-                  [v180 confidence];
+                  feature2 = [v148 feature];
+                  [feature2 confidence];
                   v182 = v181;
-                  v183 = [v148 textLabel];
-                  [(AXMLElementCoagulation *)v206 canvasSize];
+                  textLabel2 = [v148 textLabel];
+                  [(AXMLElementCoagulation *)selfCopy canvasSize];
                   v185 = v184;
                   v187 = v186;
-                  v188 = [v148 childFeatures];
-                  v189 = [AXMVisionFeature groupedFeatureWithElementRect:11 uiClass:v183 confidence:v188 label:v173 canvasSize:v175 subElements:v177, v179, v182, v185, v187];
+                  childFeatures2 = [v148 childFeatures];
+                  v187 = [AXMVisionFeature groupedFeatureWithElementRect:11 uiClass:textLabel2 confidence:childFeatures2 label:v173 canvasSize:v175 subElements:v177, v179, v182, v185, v187];
 
-                  [v148 setFeature:v189];
+                  [v148 setFeature:v187];
                 }
               }
             }
@@ -1337,7 +1337,7 @@ LABEL_33:
     while (v198);
   }
 
-  [v192 removeObjectsInArray:v112];
+  [v192 removeObjectsInArray:array5];
   [v192 addObjectsFromArray:v193];
 
   return v192;
@@ -1361,11 +1361,11 @@ BOOL __50__AXMLElementCoagulation__getGroupedTextFeatures___block_invoke(uint64_
   return v4;
 }
 
-- (id)_mergeTopLeftButton:(id)a3
+- (id)_mergeTopLeftButton:(id)button
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  buttonCopy = button;
+  v5 = [buttonCopy mutableCopy];
   [(AXMLElementCoagulation *)self canvasSize];
   v7 = v6;
   [(AXMLElementCoagulation *)self canvasSize];
@@ -1373,7 +1373,7 @@ BOOL __50__AXMLElementCoagulation__getGroupedTextFeatures___block_invoke(uint64_
   v71[1] = 3221225472;
   v71[2] = __46__AXMLElementCoagulation__mergeTopLeftButton___block_invoke;
   v71[3] = &unk_1E7A1DC18;
-  v60 = self;
+  selfCopy = self;
   v71[4] = self;
   v9 = vdup_n_s32(v7 > v8);
   v10.i64[0] = v9.u32[0];
@@ -1404,17 +1404,17 @@ BOOL __50__AXMLElementCoagulation__getGroupedTextFeatures___block_invoke(uint64_
       }
 
       v17 = *(*(&v67 + 1) + 8 * i);
-      v18 = [v17 feature];
-      if ([v18 uiClass] == 16)
+      feature = [v17 feature];
+      if ([feature uiClass] == 16)
       {
       }
 
       else
       {
-        v19 = [v17 feature];
-        v20 = [v19 uiClass];
+        feature2 = [v17 feature];
+        uiClass = [feature2 uiClass];
 
-        if (v20 != 5)
+        if (uiClass != 5)
         {
           continue;
         }
@@ -1432,12 +1432,12 @@ BOOL __50__AXMLElementCoagulation__getGroupedTextFeatures___block_invoke(uint64_
   if (!v14)
   {
 LABEL_29:
-    v57 = v4;
+    v57 = buttonCopy;
     v56 = v61;
     goto LABEL_33;
   }
 
-  v59 = v4;
+  v59 = buttonCopy;
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
@@ -1464,17 +1464,17 @@ LABEL_29:
       }
 
       v27 = *(*(&v63 + 1) + 8 * v26);
-      v28 = [v27 feature];
-      if ([v28 uiClass] == 11)
+      feature3 = [v27 feature];
+      if ([feature3 uiClass] == 11)
       {
 
         goto LABEL_21;
       }
 
-      v29 = [v27 feature];
-      v30 = [v29 uiClass];
+      feature4 = [v27 feature];
+      uiClass2 = [feature4 uiClass];
 
-      if (v30 == 17)
+      if (uiClass2 == 17)
       {
 LABEL_21:
         [v27 frame];
@@ -1519,21 +1519,21 @@ LABEL_21:
 
   if (v62)
   {
-    [(AXMLElementCoagulation *)v60 _mergeFeatureIntoGroup:v14 feature:v62];
+    [(AXMLElementCoagulation *)selfCopy _mergeFeatureIntoGroup:v14 feature:v62];
     [v14 frame];
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
-    v43 = [v14 feature];
-    [v43 confidence];
+    feature5 = [v14 feature];
+    [feature5 confidence];
     v45 = v44;
-    v46 = [v14 textLabel];
-    [(AXMLElementCoagulation *)v60 canvasSize];
+    textLabel = [v14 textLabel];
+    [(AXMLElementCoagulation *)selfCopy canvasSize];
     v48 = v47;
     v50 = v49;
-    v51 = [v14 childFeatures];
-    v52 = [AXMVisionFeature groupedFeatureWithElementRect:16 uiClass:v46 confidence:v51 label:v36 canvasSize:v38 subElements:v40, v42, v45, v48, v50];
+    childFeatures = [v14 childFeatures];
+    v52 = [AXMVisionFeature groupedFeatureWithElementRect:16 uiClass:textLabel confidence:childFeatures label:v36 canvasSize:v38 subElements:v40, v42, v45, v48, v50];
 
     [v14 setFeature:v52];
     [v14 setIncludeChildren:0];
@@ -1541,19 +1541,19 @@ LABEL_21:
     MidX = CGRectGetMidX(v83);
     [v14 frame];
     v54 = CGRectGetMidY(v84);
-    v55 = [v14 feature];
-    [v55 setActivationPoint:{MidX, v54}];
+    feature6 = [v14 feature];
+    [feature6 setActivationPoint:{MidX, v54}];
 
     v56 = v61;
     [v61 removeObject:v62];
     v57 = v61;
 
-    v4 = v59;
+    buttonCopy = v59;
     goto LABEL_32;
   }
 
 LABEL_31:
-  v4 = v59;
+  buttonCopy = v59;
   v57 = v59;
   v56 = v61;
 LABEL_32:
@@ -1615,14 +1615,14 @@ uint64_t __46__AXMLElementCoagulation__mergeTopLeftButton___block_invoke(uint64_
   return v5 & v13;
 }
 
-- (id)_removeExtraOCRAndIconFromTextField:(id)a3
+- (id)_removeExtraOCRAndIconFromTextField:(id)field
 {
-  v70 = a3;
-  v71 = self;
+  fieldCopy = field;
+  selfCopy = self;
   v4 = [(AXMLElementCoagulation *)self _compareArea:?];
   v5 = [v4 mutableCopy];
 
-  v75 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v5 count])
   {
     v6 = 0;
@@ -1675,36 +1675,36 @@ LABEL_38:
         goto LABEL_12;
       }
 
-      v36 = [v7 feature];
-      if ([v36 uiClass] != 5)
+      feature = [v7 feature];
+      if ([feature uiClass] != 5)
       {
         break;
       }
 
-      v37 = [v7 feature];
-      v38 = [v37 value];
+      feature2 = [v7 feature];
+      value = [feature2 value];
       v39 = axMLElementsUnknownIconType;
 
-      if (v38 == v39)
+      if (value == v39)
       {
         v40 = 1;
       }
 
       else
       {
-        [v75 addObject:v10];
+        [array addObject:v10];
         v40 = 0;
       }
 
 LABEL_14:
-      v41 = [v7 feature];
-      v42 = [v41 uiClass];
-      if (v42 != 5)
+      feature3 = [v7 feature];
+      uiClass = [feature3 uiClass];
+      if (uiClass != 5)
       {
-        v74 = [v7 feature];
-        if ([v74 uiClass] != 16)
+        feature4 = [v7 feature];
+        if ([feature4 uiClass] != 16)
         {
-          v68 = v74;
+          v68 = feature4;
 LABEL_34:
 
 LABEL_35:
@@ -1712,17 +1712,17 @@ LABEL_35:
         }
       }
 
-      v43 = [v10 feature];
-      if ([v43 uiClass] != 11)
+      feature5 = [v10 feature];
+      if ([feature5 uiClass] != 11)
       {
-        v44 = [v10 feature];
-        if ([v44 uiClass] != 17)
+        feature6 = [v10 feature];
+        if ([feature6 uiClass] != 17)
         {
           v40 = 0;
         }
       }
 
-      if (v42 == 5)
+      if (uiClass == 5)
       {
 
         if (!v40)
@@ -1731,11 +1731,11 @@ LABEL_35:
         }
 
 LABEL_24:
-        v45 = [v10 feature];
-        v41 = [v45 value];
+        feature7 = [v10 feature];
+        feature3 = [feature7 value];
 
-        v46 = [v41 rangeOfString:@"Q " options:1];
-        v47 = [v41 rangeOfString:@"O " options:1];
+        v46 = [feature3 rangeOfString:@"Q " options:1];
+        v47 = [feature3 rangeOfString:@"O " options:1];
         if (v46)
         {
           v48 = v47 == 0;
@@ -1747,27 +1747,27 @@ LABEL_24:
         }
 
         v49 = !v48;
-        if ([v41 length] >= 3 && (v49 & 1) == 0)
+        if ([feature3 length] >= 3 && (v49 & 1) == 0)
         {
-          v72 = [v41 substringFromIndex:2];
+          v72 = [feature3 substringFromIndex:2];
 
           [v10 frame];
           v51 = v50;
           v53 = v52;
           v55 = v54;
           v57 = v56;
-          v73 = [v10 feature];
-          v58 = [v73 uiClass];
-          v59 = [v10 feature];
-          [v59 confidence];
+          feature8 = [v10 feature];
+          uiClass2 = [feature8 uiClass];
+          feature9 = [v10 feature];
+          [feature9 confidence];
           v61 = v60;
-          [(AXMLElementCoagulation *)v71 canvasSize];
+          [(AXMLElementCoagulation *)selfCopy canvasSize];
           v63 = v62;
           v65 = v64;
-          v66 = [v10 feature];
-          v67 = [v66 subfeatures];
-          v41 = v72;
-          v68 = [AXMVisionFeature groupedFeatureWithElementRect:v58 uiClass:v72 confidence:v67 label:v51 canvasSize:v53 subElements:v55, v57, v61, v63, v65];
+          feature10 = [v10 feature];
+          subfeatures = [feature10 subfeatures];
+          feature3 = v72;
+          v68 = [AXMVisionFeature groupedFeatureWithElementRect:uiClass2 uiClass:v72 confidence:subfeatures label:v51 canvasSize:v53 subElements:v55, v57, v61, v63, v65];
 
           [v10 setFeature:v68];
           goto LABEL_34;
@@ -1782,7 +1782,7 @@ LABEL_24:
       }
 
 LABEL_36:
-      [v75 addObject:v7];
+      [array addObject:v7];
 LABEL_37:
 
       if (++v8 >= [v5 count])
@@ -1797,18 +1797,18 @@ LABEL_12:
   }
 
 LABEL_39:
-  [v5 removeObjectsInArray:v75];
+  [v5 removeObjectsInArray:array];
 
   return v5;
 }
 
-- (id)_getGroupedTextFields:(id)a3
+- (id)_getGroupedTextFields:(id)fields
 {
   v117 = *MEMORY[0x1E69E9840];
-  v93 = a3;
-  v90 = [v93 mutableCopy];
+  fieldsCopy = fields;
+  v90 = [fieldsCopy mutableCopy];
   v4 = [v90 ax_filteredArrayUsingBlock:&__block_literal_global_177];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
@@ -1830,12 +1830,12 @@ LABEL_39:
 
         v95 = v6;
         v7 = *(*(&v110 + 1) + 8 * v6);
-        v100 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v106 = 0u;
         v107 = 0u;
         v108 = 0u;
         v109 = 0u;
-        v101 = v93;
+        v101 = fieldsCopy;
         v8 = [v101 countByEnumeratingWithState:&v106 objects:v115 count:16];
         if (v8)
         {
@@ -1863,20 +1863,20 @@ LABEL_39:
               [v12 frame];
               if (AXMIsContainedBy(v14, v16, v18, v20, v21, v22, v23, v24, 0.8))
               {
-                v25 = [v12 feature];
-                if ([v25 uiClass] == 11)
+                feature = [v12 feature];
+                if ([feature uiClass] == 11)
                 {
                   goto LABEL_17;
                 }
 
-                v26 = [v12 feature];
-                if ([v26 uiClass] == 17)
+                feature2 = [v12 feature];
+                if ([feature2 uiClass] == 17)
                 {
                   goto LABEL_16;
                 }
 
-                v27 = [v12 feature];
-                if ([v27 uiClass] == 5)
+                feature3 = [v12 feature];
+                if ([feature3 uiClass] == 5)
                 {
 
                   v9 = v98;
@@ -1887,11 +1887,11 @@ LABEL_17:
 
                 else
                 {
-                  v55 = [v12 feature];
-                  v56 = [v55 uiClass];
+                  feature4 = [v12 feature];
+                  uiClass = [feature4 uiClass];
 
                   v10 = v96;
-                  v57 = v56 == 16;
+                  v57 = uiClass == 16;
                   v7 = v97;
                   v9 = v98;
                   if (!v57)
@@ -1907,10 +1907,10 @@ LABEL_17:
                 [v7 frame];
                 if (MinX >= v29 + CGRectGetMaxX(v121) * 0.5)
                 {
-                  v30 = [v12 feature];
-                  v31 = [v30 uiClass];
+                  feature5 = [v12 feature];
+                  uiClass2 = [feature5 uiClass];
                   v32 = 16;
-                  if (v31 != 5)
+                  if (uiClass2 != 5)
                   {
                     v32 = 17;
                   }
@@ -1922,22 +1922,22 @@ LABEL_17:
                   v36 = v35;
                   v38 = v37;
                   v40 = v39;
-                  v41 = [v12 feature];
-                  [v41 confidence];
+                  feature6 = [v12 feature];
+                  [feature6 confidence];
                   v43 = v42;
-                  v44 = [v12 feature];
-                  v45 = [v44 value];
+                  feature7 = [v12 feature];
+                  value = [feature7 value];
                   [(AXMLElementCoagulation *)self canvasSize];
                   v47 = v46;
                   v49 = v48;
                   [v12 feature];
-                  v50 = v5;
+                  v50 = array;
                   v52 = v51 = self;
-                  v53 = [v52 subfeatures];
-                  v54 = [AXMVisionFeature groupedFeatureWithElementRect:v99 uiClass:v45 confidence:v53 label:v34 canvasSize:v36 subElements:v38, v40, v43, v47, v49];
+                  subfeatures = [v52 subfeatures];
+                  v54 = [AXMVisionFeature groupedFeatureWithElementRect:v99 uiClass:value confidence:subfeatures label:v34 canvasSize:v36 subElements:v38, v40, v43, v47, v49];
 
                   self = v51;
-                  v5 = v50;
+                  array = v50;
                   v10 = v96;
 
                   v7 = v97;
@@ -1946,8 +1946,8 @@ LABEL_17:
                   [v12 setFeature:v54];
                 }
 
-                [v100 addObject:v12];
-                [v5 addObject:v12];
+                [array2 addObject:v12];
+                [array addObject:v12];
               }
 
 LABEL_23:
@@ -1962,7 +1962,7 @@ LABEL_23:
           while (v58);
         }
 
-        v59 = [(AXMLElementCoagulation *)self _removeExtraOCRAndIconFromTextField:v100];
+        v59 = [(AXMLElementCoagulation *)self _removeExtraOCRAndIconFromTextField:array2];
         v60 = [v59 mutableCopy];
 
         v104 = 0u;
@@ -1993,13 +1993,13 @@ LABEL_23:
           while (v63);
         }
 
-        v66 = [v7 subfeatures];
-        v67 = [v66 count];
+        subfeatures2 = [v7 subfeatures];
+        v67 = [subfeatures2 count];
 
         if (v67)
         {
-          v68 = [v7 subfeatures];
-          v69 = [(AXMLElementCoagulation *)self _compareForX:v68];
+          subfeatures3 = [v7 subfeatures];
+          v69 = [(AXMLElementCoagulation *)self _compareForX:subfeatures3];
           v70 = [v69 mutableCopy];
           [v7 setSubfeatures:v70];
 
@@ -2008,15 +2008,15 @@ LABEL_23:
           v74 = v73;
           v76 = v75;
           v78 = v77;
-          v79 = [v7 feature];
-          [v79 confidence];
+          feature8 = [v7 feature];
+          [feature8 confidence];
           v81 = v80;
-          v82 = [v7 textLabel];
+          textLabel = [v7 textLabel];
           [(AXMLElementCoagulation *)self canvasSize];
           v84 = v83;
           v86 = v85;
-          v87 = [v7 childFeatures];
-          v88 = [AXMVisionFeature groupedFeatureWithElementRect:12 uiClass:v82 confidence:v87 label:v72 canvasSize:v74 subElements:v76, v78, v81, v84, v86];
+          childFeatures = [v7 childFeatures];
+          v88 = [AXMVisionFeature groupedFeatureWithElementRect:12 uiClass:textLabel confidence:childFeatures label:v72 canvasSize:v74 subElements:v76, v78, v81, v84, v86];
 
           [v7 setFeature:v88];
           [v7 setIncludeChildren:0];
@@ -2032,7 +2032,7 @@ LABEL_23:
     while (v94);
   }
 
-  [v90 removeObjectsInArray:v5];
+  [v90 removeObjectsInArray:array];
 
   return v90;
 }
@@ -2045,22 +2045,22 @@ BOOL __48__AXMLElementCoagulation__getGroupedTextFields___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)_getGroupedSegmentedControlFeatures:(id)a3
+- (id)_getGroupedSegmentedControlFeatures:(id)features
 {
   v149 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_179];
-  v7 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_181];
+  featuresCopy = features;
+  v5 = [featuresCopy mutableCopy];
+  v6 = [featuresCopy ax_filteredArrayUsingBlock:&__block_literal_global_179];
+  v7 = [featuresCopy ax_filteredArrayUsingBlock:&__block_literal_global_181];
   if ([v6 count])
   {
-    v113 = v4;
+    v113 = featuresCopy;
     v8 = [(AXMLElementCoagulation *)self _compareForY:v6];
 
     v115 = [(AXMLElementCoagulation *)self _compareForY:v7];
 
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
@@ -2082,30 +2082,30 @@ BOOL __48__AXMLElementCoagulation__getGroupedTextFields___block_invoke(uint64_t 
           }
 
           v16 = *(*(&v140 + 1) + 8 * i);
-          if ([v10 count])
+          if ([array2 count])
           {
-            v17 = [v10 lastObject];
+            lastObject = [array2 lastObject];
             [v16 frame];
             v19 = v18;
             v21 = v20;
             v23 = v22;
             v25 = v24;
-            [v17 frame];
+            [lastObject frame];
             [(AXMLElementCoagulation *)self _getYOverlap:v19 obj2:v21, v23, v25, v26, v27, v28, v29];
             if (v30 <= 0.0)
             {
-              [v9 addObject:v10];
-              v31 = [MEMORY[0x1E695DF70] array];
-              v32 = v10;
-              v10 = v31;
+              [array addObject:array2];
+              array3 = [MEMORY[0x1E695DF70] array];
+              v32 = array2;
+              array2 = array3;
             }
 
-            [v10 addObject:v16];
+            [array2 addObject:v16];
           }
 
           else
           {
-            [v10 addObject:v16];
+            [array2 addObject:v16];
           }
         }
 
@@ -2117,14 +2117,14 @@ BOOL __48__AXMLElementCoagulation__getGroupedTextFields___block_invoke(uint64_t 
 
     v111 = v11;
 
-    v110 = v10;
-    [v9 addObject:v10];
-    v33 = [MEMORY[0x1E695DF70] array];
+    v110 = array2;
+    [array addObject:array2];
+    array4 = [MEMORY[0x1E695DF70] array];
     v136 = 0u;
     v137 = 0u;
     v138 = 0u;
     v139 = 0u;
-    v34 = v9;
+    v34 = array;
     v116 = [v34 countByEnumeratingWithState:&v136 objects:v147 count:16];
     v117 = v34;
     if (v116)
@@ -2217,7 +2217,7 @@ LABEL_37:
                       {
                         [v63 setIncludeChildren:0];
                         [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v63 feature:v41];
-                        [v33 addObject:v41];
+                        [array4 addObject:v41];
                         v60 = 1;
                       }
                     }
@@ -2318,28 +2318,28 @@ LABEL_38:
             MinX = CGRectGetMinX(v154);
             [v91 frame];
             Width = CGRectGetWidth(v155);
-            v94 = [v91 textLabel];
-            v95 = [v91 feature];
-            v96 = [v95 uiClass];
+            textLabel = [v91 textLabel];
+            feature = [v91 feature];
+            uiClass = [feature uiClass];
 
-            if (v96 == 11)
+            if (uiClass == 11)
             {
-              v97 = [v91 feature];
-              v98 = [v97 value];
+              feature2 = [v91 feature];
+              value = [feature2 value];
 
-              v94 = v98;
+              textLabel = value;
             }
 
-            v99 = [v91 feature];
-            [v99 confidence];
+            feature3 = [v91 feature];
+            [feature3 confidence];
             v101 = v100;
             [(AXMLElementCoagulation *)self canvasSize];
             v103 = v102;
             v105 = v104;
-            v106 = [v91 childFeatures];
-            v107 = [AXMVisionFeature groupedFeatureWithElementRect:8 uiClass:v94 confidence:v106 label:MinX canvasSize:v81 subElements:Width, v90, v101, v103, v105];
+            childFeatures = [v91 childFeatures];
+            v105 = [AXMVisionFeature groupedFeatureWithElementRect:8 uiClass:textLabel confidence:childFeatures label:MinX canvasSize:v81 subElements:Width, v90, v101, v103, v105];
 
-            [v91 setFeature:v107];
+            [v91 setFeature:v105];
             [v91 setIncludeChildren:0];
 
             ++v89;
@@ -2356,17 +2356,17 @@ LABEL_38:
     }
 
     v5 = v112;
-    [v112 removeObjectsInArray:v33];
+    [v112 removeObjectsInArray:array4];
     v108 = v112;
 
     v6 = v111;
     v7 = v115;
-    v4 = v113;
+    featuresCopy = v113;
   }
 
   else
   {
-    v108 = v4;
+    v108 = featuresCopy;
   }
 
   return v108;
@@ -2398,20 +2398,20 @@ BOOL __62__AXMLElementCoagulation__getGroupedSegmentedControlFeatures___block_in
   return v4;
 }
 
-- (id)_createToggleGroup:(id)a3 toGroup:(id)a4
+- (id)_createToggleGroup:(id)group toGroup:(id)toGroup
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 frame];
+  groupCopy = group;
+  toGroupCopy = toGroup;
+  [groupCopy frame];
   MidX = CGRectGetMidX(v43);
-  [v6 frame];
+  [groupCopy frame];
   MidY = CGRectGetMidY(v44);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = v7;
+  v9 = toGroupCopy;
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v10)
   {
@@ -2426,7 +2426,7 @@ BOOL __62__AXMLElementCoagulation__getGroupedSegmentedControlFeatures___block_in
           objc_enumerationMutation(v9);
         }
 
-        [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v6 feature:*(*(&v36 + 1) + 8 * i)];
+        [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:groupCopy feature:*(*(&v36 + 1) + 8 * i)];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -2435,37 +2435,37 @@ BOOL __62__AXMLElementCoagulation__getGroupedSegmentedControlFeatures___block_in
     while (v11);
   }
 
-  [v6 frame];
+  [groupCopy frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v6 feature];
-  v23 = [v22 uiClass];
-  v24 = [v6 feature];
-  [v24 confidence];
+  feature = [groupCopy feature];
+  uiClass = [feature uiClass];
+  feature2 = [groupCopy feature];
+  [feature2 confidence];
   v26 = v25;
-  v27 = [v6 textLabel];
+  textLabel = [groupCopy textLabel];
   [(AXMLElementCoagulation *)self canvasSize];
   v29 = v28;
   v31 = v30;
-  v32 = [v6 childFeatures];
-  v33 = [AXMVisionFeature groupedFeatureWithElementRect:v23 uiClass:v27 confidence:v32 label:v15 canvasSize:v17 subElements:v19, v21, v26, v29, v31];
+  childFeatures = [groupCopy childFeatures];
+  v33 = [AXMVisionFeature groupedFeatureWithElementRect:uiClass uiClass:textLabel confidence:childFeatures label:v15 canvasSize:v17 subElements:v19, v21, v26, v29, v31];
 
   [v33 setActivationPoint:{MidX, MidY}];
-  [v6 setFeature:v33];
-  [v6 setIncludeChildren:0];
+  [groupCopy setFeature:v33];
+  [groupCopy setIncludeChildren:0];
 
-  return v6;
+  return groupCopy;
 }
 
-- (id)_removeTextContainingOnlyToggles:(id)a3 toggleCheckboxTypes:(id)a4
+- (id)_removeTextContainingOnlyToggles:(id)toggles toggleCheckboxTypes:(id)types
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  typesCopy = types;
+  v6 = [toggles mutableCopy];
   v7 = [v6 ax_filteredArrayUsingBlock:&__block_literal_global_183];
-  v34 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -2519,9 +2519,9 @@ BOOL __62__AXMLElementCoagulation__getGroupedSegmentedControlFeatures___block_in
                 if (AXMIsContainedBy(v18, v20, v22, v24, v25, v26, v27, v28, 1.0))
                 {
                   v29 = MEMORY[0x1E696AD98];
-                  v30 = [v16 feature];
-                  v31 = [v29 numberWithInteger:{objc_msgSend(v30, "uiClass")}];
-                  v32 = [v5 indexOfObject:v31];
+                  feature = [v16 feature];
+                  v31 = [v29 numberWithInteger:{objc_msgSend(feature, "uiClass")}];
+                  v32 = [typesCopy indexOfObject:v31];
 
                   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
                   {
@@ -2549,7 +2549,7 @@ BOOL __62__AXMLElementCoagulation__getGroupedSegmentedControlFeatures___block_in
           i = v39;
           if (v13)
           {
-            [v34 addObject:v9];
+            [array addObject:v9];
           }
         }
 
@@ -2567,7 +2567,7 @@ LABEL_21:
     while (v38);
   }
 
-  [v6 removeObjectsInArray:v34];
+  [v6 removeObjectsInArray:array];
 
   return v6;
 }
@@ -2580,11 +2580,11 @@ BOOL __79__AXMLElementCoagulation__removeTextContainingOnlyToggles_toggleCheckbo
   return v3;
 }
 
-- (id)_getGroupedToggleCheckboxWithText:(id)a3
+- (id)_getGroupedToggleCheckboxWithText:(id)text
 {
   v213 = *MEMORY[0x1E69E9840];
   v4 = &unk_1F240B538;
-  v157 = a3;
+  textCopy = text;
   v5 = [AXMLElementCoagulation _removeTextContainingOnlyToggles:"_removeTextContainingOnlyToggles:toggleCheckboxTypes:" toggleCheckboxTypes:?];
   v205[0] = MEMORY[0x1E69E9820];
   v205[1] = 3221225472;
@@ -2596,24 +2596,24 @@ BOOL __79__AXMLElementCoagulation__removeTextContainingOnlyToggles_toggleCheckbo
 
   v8 = v7;
   v158 = [v5 ax_filteredArrayUsingBlock:&__block_literal_global_196];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v163 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v159 = v5;
   v166 = v7;
-  v161 = v9;
+  v161 = array;
   if ([v7 count])
   {
     v10 = 0;
     v11 = 0x1E696A000uLL;
-    v167 = self;
+    selfCopy = self;
     do
     {
       v12 = [v8 objectAtIndex:v10];
-      if (([v9 containsObject:v12] & 1) == 0)
+      if (([array containsObject:v12] & 1) == 0)
       {
         v160 = v10;
         v169 = v12;
-        [v9 addObject:v12];
+        [array addObject:v12];
         v203 = 0u;
         v204 = 0u;
         v201 = 0u;
@@ -2660,7 +2660,7 @@ BOOL __79__AXMLElementCoagulation__removeTextContainingOnlyToggles_toggleCheckbo
           v16 = 0;
         }
 
-        v33 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
         v197 = 0u;
         v198 = 0u;
         v199 = 0u;
@@ -2683,7 +2683,7 @@ BOOL __79__AXMLElementCoagulation__removeTextContainingOnlyToggles_toggleCheckbo
               }
 
               v39 = *(*(&v197 + 1) + 8 * j);
-              if (([v39 isEqual:v35] & 1) == 0 && (objc_msgSend(v9, "containsObject:", v39) & 1) == 0)
+              if (([v39 isEqual:v35] & 1) == 0 && (objc_msgSend(array, "containsObject:", v39) & 1) == 0)
               {
                 if (v16)
                 {
@@ -2701,8 +2701,8 @@ BOOL __79__AXMLElementCoagulation__removeTextContainingOnlyToggles_toggleCheckbo
 
                 else
                 {
-                  v52 = [v39 feature];
-                  if ([v52 uiClass] != 3)
+                  feature = [v39 feature];
+                  if ([feature uiClass] != 3)
                   {
 
                     v35 = v169;
@@ -2713,13 +2713,13 @@ LABEL_29:
                     v72 = v71;
                     v74 = v73;
                     [v35 frame];
-                    if (![(AXMLElementCoagulation *)v167 _hasYOverlap:v68 obj2:v70, v72, v74, v75, v76, v77, v78])
+                    if (![(AXMLElementCoagulation *)selfCopy _hasYOverlap:v68 obj2:v70, v72, v74, v75, v76, v77, v78])
                     {
                       continue;
                     }
 
 LABEL_30:
-                    [v33 addObject:v39];
+                    [array3 addObject:v39];
                     continue;
                   }
 
@@ -2754,7 +2754,7 @@ LABEL_30:
         v195[3] = &unk_1E7A1DC40;
         v79 = v35;
         v196 = v79;
-        v80 = [v33 ax_filteredArrayUsingBlock:v195];
+        v80 = [array3 ax_filteredArrayUsingBlock:v195];
         v81 = [v80 mutableCopy];
 
         v193[0] = MEMORY[0x1E69E9820];
@@ -2777,8 +2777,8 @@ LABEL_30:
             {
               v164 = v84;
               v173 = [v83 objectAtIndex:v84];
-              [v9 addObject:?];
-              v170 = [MEMORY[0x1E695DF70] array];
+              [array addObject:?];
+              array4 = [MEMORY[0x1E695DF70] array];
               v189 = 0u;
               v190 = 0u;
               v191 = 0u;
@@ -2803,8 +2803,8 @@ LABEL_30:
 
                     v89 = *(*(&v189 + 1) + 8 * v88);
                     v90 = *(v11 + 3480);
-                    v91 = [v89 feature];
-                    v92 = [v90 numberWithInteger:{objc_msgSend(v91, "uiClass")}];
+                    feature2 = [v89 feature];
+                    v92 = [v90 numberWithInteger:{objc_msgSend(feature2, "uiClass")}];
                     v93 = [v4 indexOfObject:v92];
 
                     if (v93 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2862,7 +2862,7 @@ LABEL_30:
 
                       if ([v98 isEqual:v95])
                       {
-                        [v170 addObject:v89];
+                        [array4 addObject:v89];
                       }
 
                       v4 = v94;
@@ -2881,12 +2881,12 @@ LABEL_30:
                 while (v86);
               }
 
-              v129 = [(AXMLElementCoagulation *)v167 _createToggleGroup:v173 toGroup:v170];
-              [obj removeObjectsInArray:v170];
+              v129 = [(AXMLElementCoagulation *)selfCopy _createToggleGroup:v173 toGroup:array4];
+              [obj removeObjectsInArray:array4];
 
               v84 = v164 + 1;
               v83 = v172;
-              v9 = v161;
+              array = v161;
               v81 = v162;
             }
 
@@ -2896,7 +2896,7 @@ LABEL_30:
 
         else
         {
-          v130 = [(AXMLElementCoagulation *)v167 _createToggleGroup:v79 toGroup:v81];
+          v130 = [(AXMLElementCoagulation *)selfCopy _createToggleGroup:v79 toGroup:v81];
           [obj removeObjectsInArray:v81];
         }
 
@@ -2974,7 +2974,7 @@ LABEL_30:
           v8 = v166;
           if (v139 >= 2)
           {
-            [v163 addObject:v135];
+            [array2 addObject:v135];
           }
         }
 
@@ -2989,7 +2989,7 @@ LABEL_30:
     while (v132);
   }
 
-  [v159 removeObjectsInArray:v163];
+  [v159 removeObjectsInArray:array2];
 
   return v159;
 }
@@ -3034,15 +3034,15 @@ BOOL __60__AXMLElementCoagulation__getGroupedToggleCheckboxWithText___block_invo
   return v6;
 }
 
-- (id)_groupFeaturesByContainment:(id)a3
+- (id)_groupFeaturesByContainment:(id)containment
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  containmentCopy = containment;
+  v5 = [containmentCopy mutableCopy];
   v53 = [(AXMLElementCoagulation *)self _compareArea:v5];
 
-  v52 = v4;
-  v54 = [v4 count];
+  v52 = containmentCopy;
+  v54 = [containmentCopy count];
   if (!v54)
   {
     goto LABEL_27;
@@ -3062,14 +3062,14 @@ LABEL_19:
     }
 
     v8 = [v53 objectAtIndex:v7];
-    v9 = [v8 feature];
-    [v9 frame];
+    feature = [v8 feature];
+    [feature frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v6 feature];
-    [v18 frame];
+    feature2 = [v6 feature];
+    [feature2 frame];
     v23 = AXMIsContainedBy(v11, v13, v15, v17, v19, v20, v21, v22, 0.7);
 
     if (!v23)
@@ -3077,28 +3077,28 @@ LABEL_19:
       goto LABEL_18;
     }
 
-    v24 = [v6 feature];
-    [v24 frame];
+    feature3 = [v6 feature];
+    [feature3 frame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [v8 feature];
-    [v33 frame];
+    feature4 = [v8 feature];
+    [feature4 frame];
     AXMIntersectionOverUnion(v26, v28, v30, v32, v34, v35, v36, v37);
     if (v38 <= 0.7)
     {
       goto LABEL_22;
     }
 
-    v39 = [v6 feature];
-    if ([v39 uiClass] == 7)
+    feature5 = [v6 feature];
+    if ([feature5 uiClass] == 7)
     {
-      v40 = [v8 feature];
+      feature6 = [v8 feature];
       v41 = v8;
-      v42 = [v40 uiClass];
+      uiClass = [feature6 uiClass];
 
-      v43 = v42 == 3;
+      v43 = uiClass == 3;
       v8 = v41;
       if (!v43)
       {
@@ -3110,8 +3110,8 @@ LABEL_19:
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v44 = [v41 subfeatures];
-      v45 = [v44 countByEnumeratingWithState:&v56 objects:v60 count:16];
+      subfeatures = [v41 subfeatures];
+      v45 = [subfeatures countByEnumeratingWithState:&v56 objects:v60 count:16];
       if (v45)
       {
         v46 = v45;
@@ -3122,13 +3122,13 @@ LABEL_19:
           {
             if (*v57 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(subfeatures);
             }
 
             [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v6 feature:*(*(&v56 + 1) + 8 * j)];
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v56 objects:v60 count:16];
+          v46 = [subfeatures countByEnumeratingWithState:&v56 objects:v60 count:16];
         }
 
         while (v46);
@@ -3143,10 +3143,10 @@ LABEL_18:
 LABEL_22:
 LABEL_23:
     [v6 setTopLevel:0];
-    v49 = [v8 feature];
-    v50 = [v49 uiClass];
+    feature7 = [v8 feature];
+    uiClass2 = [feature7 uiClass];
 
-    if (v50 != 11)
+    if (uiClass2 != 11)
     {
       [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v8 feature:v6];
     }
@@ -3159,18 +3159,18 @@ LABEL_27:
   return v52;
 }
 
-- (id)_getClosestDetectionBelow:(id)a3 target:(id)a4 maxDistance:(int64_t)a5
+- (id)_getClosestDetectionBelow:(id)below target:(id)target maxDistance:(int64_t)distance
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [v8 frame];
+  belowCopy = below;
+  targetCopy = target;
+  [targetCopy frame];
   MaxY = CGRectGetMaxY(v47);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v7;
+  v10 = belowCopy;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v11)
   {
@@ -3193,12 +3193,12 @@ LABEL_27:
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        [v8 frame];
+        [targetCopy frame];
         [(AXMLElementCoagulation *)self _getXOverlap:v19 obj2:v21, v23, v25, v26, v27, v28, v29];
         v31 = v30;
         [v17 frame];
         Width = CGRectGetWidth(v48);
-        [v8 frame];
+        [targetCopy frame];
         if (fmin(Width, CGRectGetWidth(v49)) * 0.5 < v31)
         {
           [v17 frame];
@@ -3208,7 +3208,7 @@ LABEL_27:
           if (v33 > v14)
           {
             v35 = MinY;
-            if (MinY - v14 < a5)
+            if (MinY - v14 < distance)
             {
               [v13 frame];
               v36 = CGRectGetMinY(v52);
@@ -3237,16 +3237,16 @@ LABEL_27:
   return v13;
 }
 
-- (id)_getGroupedPictureAndSubtitleFeature:(id)a3
+- (id)_getGroupedPictureAndSubtitleFeature:(id)feature
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v65 = [MEMORY[0x1E695DF70] array];
-  v61 = v4;
-  v5 = [v4 mutableCopy];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v64 = [MEMORY[0x1E695DF70] array];
+  featureCopy = feature;
+  array = [MEMORY[0x1E695DF70] array];
+  v61 = featureCopy;
+  v5 = [featureCopy mutableCopy];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
@@ -3267,47 +3267,47 @@ LABEL_27:
         }
 
         v12 = *(*(&v75 + 1) + 8 * i);
-        v13 = [v12 feature];
-        if ([v13 uiClass] == 11)
+        feature = [v12 feature];
+        if ([feature uiClass] == 11)
         {
 
-          v14 = v7;
+          v14 = array3;
         }
 
         else
         {
-          v15 = [v12 feature];
-          v16 = [v15 uiClass];
+          feature2 = [v12 feature];
+          uiClass = [feature2 uiClass];
 
-          if (v16 == 17)
+          if (uiClass == 17)
           {
-            v14 = v7;
+            v14 = array3;
           }
 
           else
           {
-            v14 = v64;
+            v14 = array4;
           }
         }
 
         [v14 addObject:v12];
-        v17 = [v12 feature];
-        if ([v17 uiClass] == 7)
+        feature3 = [v12 feature];
+        if ([feature3 uiClass] == 7)
         {
         }
 
         else
         {
-          v18 = [v12 feature];
-          v19 = [v18 uiClass];
+          feature4 = [v12 feature];
+          uiClass2 = [feature4 uiClass];
 
-          if (v19 != 15)
+          if (uiClass2 != 15)
           {
             continue;
           }
         }
 
-        [v6 addObject:v12];
+        [array2 addObject:v12];
       }
 
       v9 = [obj countByEnumeratingWithState:&v75 objects:v80 count:16];
@@ -3320,7 +3320,7 @@ LABEL_27:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v62 = v6;
+  v62 = array2;
   v67 = [v62 countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (!v67)
   {
@@ -3339,22 +3339,22 @@ LABEL_27:
 
       v21 = *(*(&v71 + 1) + 8 * j);
       [(AXMLElementCoagulation *)self canvasSize];
-      v23 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:v7 target:v21 maxDistance:(v22 * 0.03)];
-      if (v23 && [v65 indexOfObject:v23] == 0x7FFFFFFFFFFFFFFFLL)
+      v23 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:array3 target:v21 maxDistance:(v22 * 0.03)];
+      if (v23 && [array indexOfObject:v23] == 0x7FFFFFFFFFFFFFFFLL)
       {
         [v23 frame];
         MinY = CGRectGetMinY(v83);
         [v21 frame];
-        v25 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:v64 target:v23 maxDistance:(MinY - CGRectGetMaxY(v84))];
+        v25 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:array4 target:v23 maxDistance:(MinY - CGRectGetMaxY(v84))];
         if (!v25)
         {
-          [v65 addObject:v23];
+          [array addObject:v23];
           [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v21 feature:v23];
           [(AXMLElementCoagulation *)self canvasSize];
-          v27 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:v7 target:v23 maxDistance:(v26 * 0.03)];
+          v27 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:array3 target:v23 maxDistance:(v26 * 0.03)];
           if (v27)
           {
-            if ([v65 indexOfObject:v27] != 0x7FFFFFFFFFFFFFFFLL)
+            if ([array indexOfObject:v27] != 0x7FFFFFFFFFFFFFFFLL)
             {
               goto LABEL_34;
             }
@@ -3365,23 +3365,23 @@ LABEL_27:
             v29 = [(AXMLElementCoagulation *)self _getClosestDetectionBelow:v61 target:v27 maxDistance:(v28 - CGRectGetMaxY(v86))];
             if (!v29)
             {
-              [v65 addObject:v27];
+              [array addObject:v27];
               [(AXMLElementCoagulation *)self _mergeFeatureIntoGroup:v21 feature:v27];
             }
           }
         }
       }
 
-      v30 = [v21 subfeatures];
-      v31 = [v30 count];
+      subfeatures = [v21 subfeatures];
+      v31 = [subfeatures count];
 
       if (!v31)
       {
         goto LABEL_35;
       }
 
-      v32 = [v21 subfeatures];
-      v33 = [(AXMLElementCoagulation *)self _reorderByYCut:v32];
+      subfeatures2 = [v21 subfeatures];
+      v33 = [(AXMLElementCoagulation *)self _reorderByYCut:subfeatures2];
       v34 = [v33 mutableCopy];
       [v21 setSubfeatures:v34];
 
@@ -3390,10 +3390,10 @@ LABEL_27:
       v38 = v37;
       v40 = v39;
       v42 = v41;
-      v43 = [v21 feature];
-      v44 = [v43 uiClass];
+      feature5 = [v21 feature];
+      uiClass3 = [feature5 uiClass];
       [v21 feature];
-      v46 = v45 = v7;
+      v46 = v45 = array3;
       [v46 confidence];
       v48 = v47;
       [v21 textLabel];
@@ -3401,18 +3401,18 @@ LABEL_27:
       [(AXMLElementCoagulation *)self canvasSize];
       v51 = v50;
       v53 = v52;
-      v54 = [v21 childFeatures];
-      v27 = [AXMVisionFeature groupedFeatureWithElementRect:v44 uiClass:v49 confidence:v54 label:v36 canvasSize:v38 subElements:v40, v42, v48, v51, v53];
+      childFeatures = [v21 childFeatures];
+      v27 = [AXMVisionFeature groupedFeatureWithElementRect:uiClass3 uiClass:v49 confidence:childFeatures label:v36 canvasSize:v38 subElements:v40, v42, v48, v51, v53];
 
-      v7 = v45;
+      array3 = v45;
       [v21 setFeature:v27];
       [v21 setIncludeChildren:0];
       [v21 frame];
       MidX = CGRectGetMidX(v87);
       [v21 frame];
       MidY = CGRectGetMidY(v88);
-      v57 = [v21 feature];
-      [v57 setActivationPoint:{MidX, MidY}];
+      feature6 = [v21 feature];
+      [feature6 setActivationPoint:{MidX, MidY}];
 
       v23 = v68;
 LABEL_34:
@@ -3430,23 +3430,23 @@ LABEL_37:
   v69[1] = 3221225472;
   v69[2] = __63__AXMLElementCoagulation__getGroupedPictureAndSubtitleFeature___block_invoke;
   v69[3] = &unk_1E7A1DC40;
-  v70 = v65;
-  v58 = v65;
+  v70 = array;
+  v58 = array;
   v59 = [v61 ax_filteredArrayUsingBlock:v69];
 
   return v59;
 }
 
-- (id)_getTopLevelFeatureGroups:(id)a3
+- (id)_getTopLevelFeatureGroups:(id)groups
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  groupsCopy = groups;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -3464,26 +3464,26 @@ LABEL_37:
         v11 = *(*(&v21 + 1) + 8 * i);
         if ([v11 topLevel])
         {
-          v12 = [v11 subfeatures];
-          v13 = [v12 count];
+          subfeatures = [v11 subfeatures];
+          v13 = [subfeatures count];
 
           if (v13)
           {
-            v14 = [v11 subfeatures];
-            v15 = [(AXMLElementCoagulation *)self _reorderByXCut:v14];
+            subfeatures2 = [v11 subfeatures];
+            v15 = [(AXMLElementCoagulation *)self _reorderByXCut:subfeatures2];
             v16 = [v15 mutableCopy];
             [v11 setSubfeatures:v16];
           }
 
-          [v5 addObject:v11];
-          v17 = [v11 feature];
-          v18 = [v17 uiClass];
+          [array addObject:v11];
+          feature = [v11 feature];
+          uiClass = [feature uiClass];
 
-          if (v18 == 4)
+          if (uiClass == 4)
           {
             [v11 setIncludeChildren:0];
-            v19 = [v11 subfeatures];
-            [v5 addObjectsFromArray:v19];
+            subfeatures3 = [v11 subfeatures];
+            [array addObjectsFromArray:subfeatures3];
           }
         }
       }
@@ -3494,37 +3494,37 @@ LABEL_37:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_groupSingleContainerAsButton:(id)a3 featureToGroup:(id)a4
+- (id)_groupSingleContainerAsButton:(id)button featureToGroup:(id)group
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v6 mutableCopy];
-  v10 = [v7 feature];
-  if ([v10 uiClass] == 3)
+  buttonCopy = button;
+  groupCopy = group;
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = [buttonCopy mutableCopy];
+  feature = [groupCopy feature];
+  if ([feature uiClass] == 3)
   {
     goto LABEL_4;
   }
 
-  v11 = [v7 feature];
-  if ([v11 uiClass] == 7)
+  feature2 = [groupCopy feature];
+  if ([feature2 uiClass] == 7)
   {
 
 LABEL_4:
 LABEL_5:
-    v12 = [v7 feature];
-    if ([v12 uiClass] == 3)
+    feature3 = [groupCopy feature];
+    if ([feature3 uiClass] == 3)
     {
-      v13 = [v7 subfeatures];
-      v14 = [v13 count];
+      subfeatures = [groupCopy subfeatures];
+      v14 = [subfeatures count];
 
       if (!v14)
       {
-        [v8 addObject:v7];
+        [array addObject:groupCopy];
         goto LABEL_20;
       }
     }
@@ -3533,117 +3533,117 @@ LABEL_5:
     {
     }
 
-    v15 = [v7 feature];
-    v16 = [v15 uiClass];
+    feature4 = [groupCopy feature];
+    uiClass = [feature4 uiClass];
 
-    v17 = [v7 feature];
-    v18 = [v17 uiClass];
+    feature5 = [groupCopy feature];
+    uiClass2 = [feature5 uiClass];
 
-    if (v18 == 3)
+    if (uiClass2 == 3)
     {
       v19 = 17;
     }
 
     else
     {
-      v19 = v16;
+      v19 = uiClass;
     }
 
     if ([(AXMLElementCoagulation *)self isRTL])
     {
-      v20 = [v7 subfeatures];
-      v21 = [v20 count];
+      subfeatures2 = [groupCopy subfeatures];
+      v21 = [subfeatures2 count];
 
       if (v21 >= 2)
       {
-        v22 = [v7 subfeatures];
-        v23 = [(AXMLElementCoagulation *)self _applyHorizontalMirrorToFeatures:v22];
+        subfeatures3 = [groupCopy subfeatures];
+        v23 = [(AXMLElementCoagulation *)self _applyHorizontalMirrorToFeatures:subfeatures3];
       }
     }
 
-    v24 = [v7 subfeatures];
-    v25 = [(AXMLElementCoagulation *)self _reorderByYCut:v24];
+    subfeatures4 = [groupCopy subfeatures];
+    v25 = [(AXMLElementCoagulation *)self _reorderByYCut:subfeatures4];
     v26 = [v25 mutableCopy];
-    [v7 setSubfeatures:v26];
+    [groupCopy setSubfeatures:v26];
 
     if ([(AXMLElementCoagulation *)self isRTL])
     {
-      v27 = [v7 subfeatures];
-      v28 = [v27 count];
+      subfeatures5 = [groupCopy subfeatures];
+      v28 = [subfeatures5 count];
 
       if (v28 >= 2)
       {
-        v29 = [v7 subfeatures];
-        v30 = [(AXMLElementCoagulation *)self _applyHorizontalMirrorToFeatures:v29];
+        subfeatures6 = [groupCopy subfeatures];
+        v30 = [(AXMLElementCoagulation *)self _applyHorizontalMirrorToFeatures:subfeatures6];
       }
     }
 
-    [v7 frame];
+    [groupCopy frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [v7 feature];
-    [v39 confidence];
+    feature6 = [groupCopy feature];
+    [feature6 confidence];
     v41 = v40;
-    v42 = [v7 textLabel];
+    textLabel = [groupCopy textLabel];
     [(AXMLElementCoagulation *)self canvasSize];
     v44 = v43;
     v46 = v45;
-    v47 = [v7 childFeatures];
-    v48 = [AXMVisionFeature groupedFeatureWithElementRect:v19 uiClass:v42 confidence:v47 label:v32 canvasSize:v34 subElements:v36, v38, v41, v44, v46];
+    childFeatures = [groupCopy childFeatures];
+    v48 = [AXMVisionFeature groupedFeatureWithElementRect:v19 uiClass:textLabel confidence:childFeatures label:v32 canvasSize:v34 subElements:v36, v38, v41, v44, v46];
 
-    v49 = [v7 subfeatures];
-    [v8 addObjectsFromArray:v49];
+    subfeatures7 = [groupCopy subfeatures];
+    [array addObjectsFromArray:subfeatures7];
 
-    [v7 setFeature:v48];
-    [v7 setIncludeChildren:0];
+    [groupCopy setFeature:v48];
+    [groupCopy setIncludeChildren:0];
     goto LABEL_19;
   }
 
-  v56 = [v7 feature];
-  v57 = [v56 uiClass];
+  feature7 = [groupCopy feature];
+  uiClass3 = [feature7 uiClass];
 
-  if (v57 == 15)
+  if (uiClass3 == 15)
   {
     goto LABEL_5;
   }
 
-  v58 = [v7 feature];
-  if ([v58 uiClass] == 5)
+  feature8 = [groupCopy feature];
+  if ([feature8 uiClass] == 5)
   {
   }
 
   else
   {
-    v59 = [v7 feature];
-    v60 = [v59 uiClass];
+    feature9 = [groupCopy feature];
+    uiClass4 = [feature9 uiClass];
 
-    if (v60 != 16)
+    if (uiClass4 != 16)
     {
       goto LABEL_20;
     }
   }
 
-  v61 = [v7 subfeatures];
-  v62 = [v61 count];
+  subfeatures8 = [groupCopy subfeatures];
+  v62 = [subfeatures8 count];
 
   if (v62 == 1)
   {
-    v63 = [v7 subfeatures];
-    v48 = [v63 objectAtIndex:0];
+    subfeatures9 = [groupCopy subfeatures];
+    v48 = [subfeatures9 objectAtIndex:0];
 
-    v64 = [v48 feature];
-    if ([v64 uiClass] == 11)
+    feature10 = [v48 feature];
+    if ([feature10 uiClass] == 11)
     {
     }
 
     else
     {
-      v65 = [v48 feature];
-      v66 = [v65 uiClass];
+      feature11 = [v48 feature];
+      uiClass5 = [feature11 uiClass];
 
-      if (v66 != 17)
+      if (uiClass5 != 17)
       {
 LABEL_19:
 
@@ -3651,9 +3651,9 @@ LABEL_19:
       }
     }
 
-    [v7 setIncludeChildren:0];
-    [(AXMLElementCoagulation *)self _removeFeatureFromGroup:v7 feature:v48];
-    [v8 addObject:v48];
+    [groupCopy setIncludeChildren:0];
+    [(AXMLElementCoagulation *)self _removeFeatureFromGroup:groupCopy feature:v48];
+    [array addObject:v48];
     goto LABEL_19;
   }
 
@@ -3662,7 +3662,7 @@ LABEL_20:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v50 = v8;
+  v50 = array;
   v51 = [v50 countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v51)
   {
@@ -3689,18 +3689,18 @@ LABEL_20:
   return v9;
 }
 
-- (id)_getGroupedTextButtonFeatures:(id)a3
+- (id)_getGroupedTextButtonFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [v4 copy];
+  featuresCopy = features;
+  v5 = [featuresCopy count];
+  v6 = [featuresCopy copy];
   v7 = v6;
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v9 = [v4 objectAtIndex:i];
-      v10 = [(AXMLElementCoagulation *)self _groupSingleContainerAsButton:v4 featureToGroup:v9];
+      v9 = [featuresCopy objectAtIndex:i];
+      v10 = [(AXMLElementCoagulation *)self _groupSingleContainerAsButton:featuresCopy featureToGroup:v9];
 
       v7 = v10;
     }
@@ -3714,25 +3714,25 @@ LABEL_20:
   return v10;
 }
 
-- (void)_mergeFeatureIntoGroup:(id)a3 feature:(id)a4
+- (void)_mergeFeatureIntoGroup:(id)group feature:(id)feature
 {
-  v23 = a3;
-  v5 = a4;
-  [v5 setTopLevel:0];
-  [v23 frame];
+  groupCopy = group;
+  featureCopy = feature;
+  [featureCopy setTopLevel:0];
+  [groupCopy frame];
   if (CGRectIsEmpty(v25))
   {
-    [v5 frame];
+    [featureCopy frame];
   }
 
   else
   {
-    [v23 frame];
+    [groupCopy frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v5 frame];
+    [featureCopy frame];
     v27.origin.x = v18;
     v27.origin.y = v19;
     v27.size.width = v20;
@@ -3744,22 +3744,22 @@ LABEL_20:
     *&v6 = CGRectUnion(v26, v27);
   }
 
-  [v23 setFrame:{v6, v7, v8, v9}];
-  v22 = [v23 subfeatures];
-  [v22 addObject:v5];
+  [groupCopy setFrame:{v6, v7, v8, v9}];
+  subfeatures = [groupCopy subfeatures];
+  [subfeatures addObject:featureCopy];
 }
 
-- (void)_removeFeatureFromGroup:(id)a3 feature:(id)a4
+- (void)_removeFeatureFromGroup:(id)group feature:(id)feature
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  [v6 setTopLevel:{objc_msgSend(v5, "topLevel")}];
-  v7 = [v5 subfeatures];
-  [v7 removeObject:v6];
+  groupCopy = group;
+  featureCopy = feature;
+  [featureCopy setTopLevel:{objc_msgSend(groupCopy, "topLevel")}];
+  subfeatures = [groupCopy subfeatures];
+  [subfeatures removeObject:featureCopy];
 
-  v8 = [v5 subfeatures];
-  if ([v8 count])
+  subfeatures2 = [groupCopy subfeatures];
+  if ([subfeatures2 count])
   {
     v9 = *MEMORY[0x1E695F058];
     v10 = *(MEMORY[0x1E695F058] + 8);
@@ -3769,8 +3769,8 @@ LABEL_20:
 
   else
   {
-    v13 = [v5 feature];
-    [v13 frame];
+    feature = [groupCopy feature];
+    [feature frame];
     v9 = v14;
     v10 = v15;
     v11 = v16;
@@ -3781,8 +3781,8 @@ LABEL_20:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v18 = [v5 subfeatures];
-  v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  subfeatures3 = [groupCopy subfeatures];
+  v19 = [subfeatures3 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v19)
   {
     v20 = v19;
@@ -3794,7 +3794,7 @@ LABEL_20:
       {
         if (*v34 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(subfeatures3);
         }
 
         v23 = *(*(&v33 + 1) + 8 * v22);
@@ -3825,24 +3825,24 @@ LABEL_20:
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v20 = [subfeatures3 countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v20);
   }
 
-  [v5 setFrame:{v9, v10, v11, v12}];
+  [groupCopy setFrame:{v9, v10, v11, v12}];
 }
 
-- (BOOL)_allTabGroupsHaveSingleSubfeature:(id)a3
+- (BOOL)_allTabGroupsHaveSingleSubfeature:(id)subfeature
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subfeatureCopy = subfeature;
+  v4 = [subfeatureCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3853,11 +3853,11 @@ LABEL_20:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subfeatureCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) subfeatures];
-        v9 = [v8 count];
+        subfeatures = [*(*(&v12 + 1) + 8 * i) subfeatures];
+        v9 = [subfeatures count];
 
         if (v9 > 1)
         {
@@ -3866,7 +3866,7 @@ LABEL_20:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [subfeatureCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -3882,16 +3882,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)_getTabGroupSubfeatureUIClassTypes:(id)a3
+- (id)_getTabGroupSubfeatureUIClassTypes:(id)types
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
@@ -3911,8 +3911,8 @@ LABEL_11:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v8 subfeatures];
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        subfeatures = [v8 subfeatures];
+        v10 = [subfeatures countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -3923,16 +3923,16 @@ LABEL_11:
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(subfeatures);
               }
 
               v14 = MEMORY[0x1E696AD98];
-              v15 = [*(*(&v20 + 1) + 8 * j) feature];
-              v16 = [v14 numberWithInteger:{objc_msgSend(v15, "uiClass")}];
+              feature = [*(*(&v20 + 1) + 8 * j) feature];
+              v16 = [v14 numberWithInteger:{objc_msgSend(feature, "uiClass")}];
               [v4 addObject:v16];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [subfeatures countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v11);
@@ -3948,25 +3948,25 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_shouldBeTabBar:(BOOL)a3 groupedTabButtons:(id)a4
+- (BOOL)_shouldBeTabBar:(BOOL)bar groupedTabButtons:(id)buttons
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(AXMLElementCoagulation *)self _getTabGroupSubfeatureUIClassTypes:v6];
-  v11 = (!v4 || [v7 count] == 1 && (objc_msgSend(v8, "anyObject"), v9 = v8 = v7;
+  barCopy = bar;
+  buttonsCopy = buttons;
+  v7 = [(AXMLElementCoagulation *)self _getTabGroupSubfeatureUIClassTypes:buttonsCopy];
+  v11 = (!barCopy || [v7 count] == 1 && (objc_msgSend(v8, "anyObject"), v9 = v8 = v7;
 
   return v11;
 }
 
-- (void)_improveFeatureFrames:(id)a3
+- (void)_improveFeatureFrames:(id)frames
 {
   v109 = *MEMORY[0x1E69E9840];
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v103 objects:v108 count:16];
+  framesCopy = frames;
+  v5 = [framesCopy countByEnumeratingWithState:&v103 objects:v108 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3979,7 +3979,7 @@ LABEL_11:
       {
         if (*v104 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(framesCopy);
         }
 
         v9 = *(*(&v103 + 1) + 8 * v8);
@@ -3987,10 +3987,10 @@ LABEL_11:
         v11 = v10;
         [(AXMLElementCoagulation *)self canvasSize];
         v13 = v12;
-        v14 = [v9 feature];
-        v15 = [v14 uiClass];
+        feature = [v9 feature];
+        uiClass = [feature uiClass];
 
-        if (v15 != 8)
+        if (uiClass != 8)
         {
           [(AXMLElementCoagulation *)self canvasSize];
           v17 = v16 * 0.125;
@@ -4001,7 +4001,7 @@ LABEL_11:
             v102 = 0u;
             v99 = 0u;
             v100 = 0u;
-            v18 = v4;
+            v18 = framesCopy;
             v19 = [v18 countByEnumeratingWithState:&v99 objects:v107 count:16];
             if (v19)
             {
@@ -4119,25 +4119,25 @@ LABEL_11:
             v82 = v80 - v77;
             v83 = fmin(v76, v81) - v78;
             [v9 setFrame:{v77, v78, v82, v83}];
-            v97 = [v9 feature];
-            v84 = [v97 uiClass];
+            feature2 = [v9 feature];
+            uiClass2 = [feature2 uiClass];
             [v9 confidence];
             v86 = v85;
-            v87 = [v9 feature];
-            v88 = [v87 value];
+            feature3 = [v9 feature];
+            value = [feature3 value];
             [(AXMLElementCoagulation *)self canvasSize];
             v90 = v89;
             v92 = v91;
             [v9 childFeatures];
             v93 = v7;
-            v95 = v94 = v4;
-            v18 = [AXMVisionFeature groupedFeatureWithElementRect:v84 uiClass:v88 confidence:v95 label:v77 canvasSize:v78 subElements:v82, v83, v86, v90, v92];
+            v95 = v94 = framesCopy;
+            v18 = [AXMVisionFeature groupedFeatureWithElementRect:uiClass2 uiClass:value confidence:v95 label:v77 canvasSize:v78 subElements:v82, v83, v86, v90, v92];
 
-            v4 = v94;
+            framesCopy = v94;
             v7 = v93;
 
-            v96 = [v9 feature];
-            [v96 activationPoint];
+            feature4 = [v9 feature];
+            [feature4 activationPoint];
             [v18 setActivationPoint:?];
 
             [v9 setFeature:v18];
@@ -4151,25 +4151,25 @@ LABEL_31:
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v103 objects:v108 count:16];
+      v6 = [framesCopy countByEnumeratingWithState:&v103 objects:v108 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_getFeaturesForAXMLTabButtonGroups:(id)a3
+- (id)_getFeaturesForAXMLTabButtonGroups:(id)groups
 {
   v102 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  groupsCopy = groups;
+  v5 = [groupsCopy count];
   [(AXMLElementCoagulation *)self canvasSize];
   v7 = v6;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v8 = v4;
+  v8 = groupsCopy;
   v9 = [v8 countByEnumeratingWithState:&v96 objects:v101 count:16];
   if (v9)
   {
@@ -4192,8 +4192,8 @@ LABEL_31:
         v7 = fmin(v7, CGRectGetMinY(v104));
         [v15 frame];
         v12 = fmax(v12, CGRectGetMaxY(v105));
-        v16 = [v15 subfeatures];
-        v17 = [v16 count] == 1;
+        subfeatures = [v15 subfeatures];
+        v17 = [subfeatures count] == 1;
 
         v11 |= v17;
       }
@@ -4225,8 +4225,8 @@ LABEL_31:
             }
 
             v23 = *(*(&v92 + 1) + 8 * j);
-            v24 = [v23 subfeatures];
-            v25 = [v24 count];
+            subfeatures2 = [v23 subfeatures];
+            v25 = [subfeatures2 count];
 
             if (v25 == 1)
             {
@@ -4244,8 +4244,8 @@ LABEL_31:
               [v23 setFrame:{v26, v27, (v30 - v26), (fmin(v32, CGRectGetMaxY(v109) + 20.0) - v27)}];
             }
 
-            v33 = [v23 subfeatures];
-            v34 = [(AXMLElementCoagulation *)self _compareForY:v33];
+            subfeatures3 = [v23 subfeatures];
+            v34 = [(AXMLElementCoagulation *)self _compareForY:subfeatures3];
             v35 = [v34 mutableCopy];
             [v23 setSubfeatures:v35];
 
@@ -4257,12 +4257,12 @@ LABEL_31:
             v43 = v42;
             [v23 confidence];
             v45 = v44;
-            v46 = [v23 textLabel];
+            textLabel = [v23 textLabel];
             [(AXMLElementCoagulation *)self canvasSize];
             v48 = v47;
             v50 = v49;
-            v51 = [v23 childFeatures];
-            v52 = [AXMVisionFeature groupedFeatureWithElementRect:18 uiClass:v46 confidence:v51 label:v37 canvasSize:v39 subElements:v41, v43, v45, v48, v50];
+            childFeatures = [v23 childFeatures];
+            v52 = [AXMVisionFeature groupedFeatureWithElementRect:18 uiClass:textLabel confidence:childFeatures label:v37 canvasSize:v39 subElements:v41, v43, v45, v48, v50];
 
             [v23 setFeature:v52];
           }
@@ -4342,8 +4342,8 @@ LABEL_31:
         [v55 setFrame:{v64, v54, v66 - v64, fmin(v67, v91) - v54}];
       }
 
-      v68 = [v55 subfeatures];
-      v69 = [(AXMLElementCoagulation *)self _compareForY:v68];
+      subfeatures4 = [v55 subfeatures];
+      v69 = [(AXMLElementCoagulation *)self _compareForY:subfeatures4];
       v70 = [v69 mutableCopy];
       [v55 setSubfeatures:v70];
 
@@ -4355,12 +4355,12 @@ LABEL_31:
       v78 = v77;
       [v55 confidence];
       v80 = v79;
-      v81 = [v55 textLabel];
+      textLabel2 = [v55 textLabel];
       [(AXMLElementCoagulation *)self canvasSize];
       v83 = v82;
       v85 = v84;
-      v86 = [v55 childFeatures];
-      v87 = [AXMVisionFeature groupedFeatureWithElementRect:18 uiClass:v81 confidence:v86 label:v72 canvasSize:v74 subElements:v76, v78, v80, v83, v85];
+      childFeatures2 = [v55 childFeatures];
+      v87 = [AXMVisionFeature groupedFeatureWithElementRect:18 uiClass:textLabel2 confidence:childFeatures2 label:v72 canvasSize:v74 subElements:v76, v78, v80, v83, v85];
 
       [v55 setFeature:v87];
       ++v53;
@@ -4374,14 +4374,14 @@ LABEL_31:
   return v8;
 }
 
-- (id)_getGroupedTabBarFeatures:(id)a3
+- (id)_getGroupedTabBarFeatures:(id)features
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  featuresCopy = features;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([featuresCopy count])
   {
-    v6 = [(AXMLElementCoagulation *)self _compareForX:v4];
+    v6 = [(AXMLElementCoagulation *)self _compareForX:featuresCopy];
 
     if ([(AXMLElementCoagulation *)self isiPad])
     {
@@ -4430,20 +4430,20 @@ LABEL_31:
     v44[2] = __52__AXMLElementCoagulation__getGroupedTabBarFeatures___block_invoke;
     v44[3] = &unk_1E7A1DC68;
     v44[4] = self;
-    v5 = v5;
-    v45 = v5;
+    array = array;
+    v45 = array;
     [v17 enumerateKeysAndObjectsUsingBlock:v44];
-    if ([v5 count] > 1)
+    if ([array count] > 1)
     {
-      v33 = self;
+      selfCopy = self;
       v34 = v17;
       v35 = v6;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v5 = v5;
-      v24 = [v5 countByEnumeratingWithState:&v36 objects:v50 count:16];
+      array = array;
+      v24 = [array countByEnumeratingWithState:&v36 objects:v50 count:16];
       if (v24)
       {
         v25 = v24;
@@ -4455,11 +4455,11 @@ LABEL_31:
           {
             if (*v37 != v26)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(array);
             }
 
-            v29 = [*(*(&v36 + 1) + 8 * j) subfeatures];
-            v30 = [v29 ax_mappedArrayUsingBlock:&__block_literal_global_201];
+            subfeatures = [*(*(&v36 + 1) + 8 * j) subfeatures];
+            v30 = [subfeatures ax_mappedArrayUsingBlock:&__block_literal_global_201];
 
             if (([v30 containsObject:&unk_1F240A960] & 1) == 0)
             {
@@ -4467,7 +4467,7 @@ LABEL_31:
             }
           }
 
-          v25 = [v5 countByEnumeratingWithState:&v36 objects:v50 count:16];
+          v25 = [array countByEnumeratingWithState:&v36 objects:v50 count:16];
         }
 
         while (v25);
@@ -4478,17 +4478,17 @@ LABEL_31:
         LOBYTE(v27) = 1;
       }
 
-      if ([v5 count] < 6 || (v27 & 1) != 0)
+      if ([array count] < 6 || (v27 & 1) != 0)
       {
-        v31 = [(AXMLElementCoagulation *)v33 _reorderByXCut:v5];
+        v31 = [(AXMLElementCoagulation *)selfCopy _reorderByXCut:array];
 
-        v23 = [(AXMLElementCoagulation *)v33 _getFeaturesForAXMLTabButtonGroups:v31];
-        v5 = v31;
+        array2 = [(AXMLElementCoagulation *)selfCopy _getFeaturesForAXMLTabButtonGroups:v31];
+        array = v31;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
       }
 
       v17 = v34;
@@ -4525,17 +4525,17 @@ LABEL_31:
         while (v20);
       }
 
-      v23 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
   }
 
   else
   {
-    v6 = v4;
-    v23 = v6;
+    v6 = featuresCopy;
+    array2 = v6;
   }
 
-  return v23;
+  return array2;
 }
 
 void __52__AXMLElementCoagulation__getGroupedTabBarFeatures___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -4588,14 +4588,14 @@ id __52__AXMLElementCoagulation__getGroupedTabBarFeatures___block_invoke_2(uint6
   return v4;
 }
 
-- (id)_compareForY:(id)a3
+- (id)_compareForY:(id)y
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__AXMLElementCoagulation__compareForY___block_invoke;
   v5[3] = &unk_1E7A1DC90;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [y sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -4618,14 +4618,14 @@ uint64_t __39__AXMLElementCoagulation__compareForY___block_invoke(uint64_t a1, v
   return [v4 _compareY:v7 frame2:{v9, v11, v13, v15, v17, v19, v21}];
 }
 
-- (id)_compareForX:(id)a3
+- (id)_compareForX:(id)x
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__AXMLElementCoagulation__compareForX___block_invoke;
   v5[3] = &unk_1E7A1DC90;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [x sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -4706,15 +4706,15 @@ uint64_t __52__AXMLElementCoagulation__sortFeaturesReadingOrder___block_invoke(u
   return v17;
 }
 
-- (id)_getCandidateTabBarFeatures:(id)a3 screenSize:(CGSize)a4
+- (id)_getCandidateTabBarFeatures:(id)features screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
+  featuresCopy = features;
+  array = [MEMORY[0x1E695DF70] array];
   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:{&unk_1F240A960, &unk_1F240AA20, &unk_1F240A918, &unk_1F240A930, 0}];
-  if (![v7 count])
+  if (![featuresCopy count])
   {
     goto LABEL_41;
   }
@@ -4733,13 +4733,13 @@ uint64_t __52__AXMLElementCoagulation__sortFeaturesReadingOrder___block_invoke(u
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v7 = v7;
-  v10 = [v7 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  featuresCopy = featuresCopy;
+  v10 = [featuresCopy countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (!v10)
   {
 
 LABEL_41:
-    v44 = v8;
+    v44 = array;
     goto LABEL_45;
   }
 
@@ -4753,7 +4753,7 @@ LABEL_41:
     {
       if (*v56 != v14)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(featuresCopy);
       }
 
       v16 = *(*(&v55 + 1) + 8 * i);
@@ -4772,7 +4772,7 @@ LABEL_41:
       }
     }
 
-    v11 = [v7 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    v11 = [featuresCopy countByEnumeratingWithState:&v55 objects:v61 count:16];
   }
 
   while (v11);
@@ -4784,14 +4784,14 @@ LABEL_41:
 
   [v12 frame];
   MinY = CGRectGetMinY(v65);
-  v22 = [v7 sortedArrayUsingComparator:&__block_literal_global_210];
+  v22 = [featuresCopy sortedArrayUsingComparator:&__block_literal_global_210];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v7 = v22;
-  v23 = [v7 countByEnumeratingWithState:&v51 objects:v60 count:16];
+  featuresCopy = v22;
+  v23 = [featuresCopy countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v23)
   {
     v24 = v23;
@@ -4803,7 +4803,7 @@ LABEL_41:
       {
         if (*v52 != v26)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(featuresCopy);
         }
 
         v28 = *(*(&v51 + 1) + 8 * j);
@@ -4818,13 +4818,13 @@ LABEL_41:
             [v28 frame];
             if (AXMIsContainedBy(0.0, MinY, width, v25, v31, v32, v33, v34, 0.5))
             {
-              [v8 addObject:v28];
+              [array addObject:v28];
             }
           }
         }
       }
 
-      v24 = [v7 countByEnumeratingWithState:&v51 objects:v60 count:16];
+      v24 = [featuresCopy countByEnumeratingWithState:&v51 objects:v60 count:16];
     }
 
     while (v24);
@@ -4834,14 +4834,14 @@ LABEL_41:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v35 = v8;
+  v35 = array;
   v36 = [v35 countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (!v36)
   {
 
     v40 = 0x1E695D000uLL;
 LABEL_43:
-    v43 = [*(v40 + 3952) array];
+    array2 = [*(v40 + 3952) array];
     goto LABEL_44;
   }
 
@@ -4875,9 +4875,9 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v43 = v35;
+  array2 = v35;
 LABEL_44:
-  v44 = v43;
+  v44 = array2;
 
 LABEL_45:
 
@@ -4917,10 +4917,10 @@ uint64_t __65__AXMLElementCoagulation__getCandidateTabBarFeatures_screenSize___b
   return v12;
 }
 
-- (id)_repairTextInTabItems:(id)a3
+- (id)_repairTextInTabItems:(id)items
 {
   v74 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [items mutableCopy];
   v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_212];
   v60 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_214];
   v68 = 0u;
@@ -5000,24 +5000,24 @@ uint64_t __65__AXMLElementCoagulation__getCandidateTabBarFeatures_screenSize___b
                   v42 = CGRectGetMaxX(v81);
                   [v6 frame];
                   Height = CGRectGetHeight(v82);
-                  v44 = [v6 value];
-                  v45 = [v44 rangeOfString:@" "];
-                  if (v45 != 0x7FFFFFFFFFFFFFFFLL && [v44 length] > (v45 + 1))
+                  value = [v6 value];
+                  v45 = [value rangeOfString:@" "];
+                  if (v45 != 0x7FFFFFFFFFFFFFFFLL && [value length] > (v45 + 1))
                   {
-                    v46 = [v44 substringFromIndex:?];
+                    v46 = [value substringFromIndex:?];
 
-                    v44 = v46;
+                    value = v46;
                   }
 
                   v47 = v41 - v42;
-                  v48 = [v6 uiClass];
+                  uiClass = [v6 uiClass];
                   [v6 confidence];
                   v50 = v49;
                   [(AXMLElementCoagulation *)self canvasSize];
                   v52 = v51;
                   v54 = v53;
-                  v55 = [v6 subfeatures];
-                  v56 = [AXMVisionFeature groupedFeatureWithElementRect:v48 uiClass:v44 confidence:v55 label:v39 canvasSize:MinY subElements:v47, Height, v50, v52, v54];
+                  subfeatures = [v6 subfeatures];
+                  v56 = [AXMVisionFeature groupedFeatureWithElementRect:uiClass uiClass:value confidence:subfeatures label:v39 canvasSize:MinY subElements:v47, Height, v50, v52, v54];
 
                   [v3 removeObject:v6];
                   [v3 addObject:v56];
@@ -5066,18 +5066,18 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
   return v3;
 }
 
-- (id)_reorderedTabsForSortedFeatures:(id)a3 screenSize:(CGSize)a4
+- (id)_reorderedTabsForSortedFeatures:(id)features screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(AXMLElementCoagulation *)self _getCandidateTabBarFeatures:v7 screenSize:width, height];
+  featuresCopy = features;
+  height = [(AXMLElementCoagulation *)self _getCandidateTabBarFeatures:featuresCopy screenSize:width, height];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [height countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -5090,7 +5090,7 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(height);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
@@ -5100,7 +5100,7 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
         v12 = fmax(v12, CGRectGetMaxY(v28));
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [height countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -5114,23 +5114,23 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
     v16 = 1.79769313e308;
   }
 
-  v18 = [(AXMLElementCoagulation *)self _featuresByReorderingTwoRows:v7 minY:v16 maxY:v17];
+  v18 = [(AXMLElementCoagulation *)self _featuresByReorderingTwoRows:featuresCopy minY:v16 maxY:v17];
 
   return v18;
 }
 
-- (id)_featuresByReorderingTwoRows:(id)a3 minY:(double)a4 maxY:(double)a5
+- (id)_featuresByReorderingTwoRows:(id)rows minY:(double)y maxY:(double)maxY
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  rowsCopy = rows;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v8;
+  v12 = rowsCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -5148,18 +5148,18 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
         v17 = *(*(&v22 + 1) + 8 * i);
         [v17 frame];
         MinY = CGRectGetMinY(v29);
-        v19 = v9;
-        if (MinY >= a4)
+        v19 = array;
+        if (MinY >= y)
         {
           [v17 frame];
-          if (CGRectGetMaxY(v30) <= a5)
+          if (CGRectGetMaxY(v30) <= maxY)
           {
-            v19 = v10;
+            v19 = array2;
           }
 
           else
           {
-            v19 = v11;
+            v19 = array3;
           }
         }
 
@@ -5172,19 +5172,19 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
     while (v14);
   }
 
-  v20 = [(AXMLElementCoagulation *)self _reorderByXCut:v10];
-  [v9 addObjectsFromArray:v20];
+  v20 = [(AXMLElementCoagulation *)self _reorderByXCut:array2];
+  [array addObjectsFromArray:v20];
 
-  [v9 addObjectsFromArray:v11];
+  [array addObjectsFromArray:array3];
 
-  return v9;
+  return array;
 }
 
-- (id)_reorderSimilarTopNeighbors:(id)a3
+- (id)_reorderSimilarTopNeighbors:(id)neighbors
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 mutableCopy];
+  neighborsCopy = neighbors;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [neighborsCopy mutableCopy];
   if ([v5 count] != 1)
   {
     v8 = 0;
@@ -5197,35 +5197,35 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
       [v10 frame];
       if (MinY <= CGRectGetMinY(v22) && ([v9 frame], MaxY = CGRectGetMaxY(v23), objc_msgSend(v9, "frame"), v13 = fmin(MaxY, CGRectGetMaxY(v24)), objc_msgSend(v9, "frame"), v14 = CGRectGetMinY(v25), objc_msgSend(v10, "frame"), v15 = v13 - fmax(v14, CGRectGetMinY(v26)), objc_msgSend(v9, "frame"), v17 = v16, objc_msgSend(v10, "frame"), v15 >= fmin(v17, v18) * 0.9) && (objc_msgSend(v9, "frame"), MinX = CGRectGetMinX(v27), objc_msgSend(v10, "frame"), MinX >= CGRectGetMaxX(v28)))
       {
-        [v4 addObject:v10];
+        [array addObject:v10];
         [v5 setObject:v9 atIndexedSubscript:v8];
       }
 
       else
       {
-        [v4 addObject:v9];
+        [array addObject:v9];
       }
     }
 
     while (v8 < [v5 count] - 1);
   }
 
-  v6 = [v5 lastObject];
-  [v4 addObject:v6];
+  lastObject = [v5 lastObject];
+  [array addObject:lastObject];
 
-  return v4;
+  return array;
 }
 
-- (id)_reorderByYCut:(id)a3
+- (id)_reorderByYCut:(id)cut
 {
   v71 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v50 = [v4 array];
-  v49 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v47 = self;
-  v7 = [(AXMLElementCoagulation *)self _compareForY:v5];
+  cutCopy = cut;
+  array = [v4 array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array2 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  v7 = [(AXMLElementCoagulation *)self _compareForY:cutCopy];
 
   v65 = 0u;
   v66 = 0u;
@@ -5263,7 +5263,7 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
           v15 = MEMORY[0x1E696AD98];
           [v14 frame];
           v16 = [v15 numberWithDouble:(MaxY + CGRectGetMinY(v74)) * 0.5];
-          [v50 addObject:v16];
+          [array addObject:v16];
         }
 
         [v14 frame];
@@ -5276,11 +5276,11 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
     while (v10);
   }
 
-  v17 = [v50 sortedArrayUsingComparator:&__block_literal_global_220];
+  v17 = [array sortedArrayUsingComparator:&__block_literal_global_220];
   v18 = MEMORY[0x1E696AD98];
-  [(AXMLElementCoagulation *)v47 canvasSize];
+  [(AXMLElementCoagulation *)selfCopy canvasSize];
   v20 = [v18 numberWithDouble:v19 + 1.0];
-  [v50 addObject:v20];
+  [array addObject:v20];
 
   v61 = 0u;
   v62 = 0u;
@@ -5306,7 +5306,7 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v26 = v50;
+        v26 = array;
         v27 = [v26 countByEnumeratingWithState:&v55 objects:v68 count:16];
         if (v27)
         {
@@ -5327,15 +5327,15 @@ BOOL __48__AXMLElementCoagulation__repairTextInTabItems___block_invoke_2(uint64_
               [v25 frame];
               if (CGRectGetMinY(v77) < v33)
               {
-                v34 = [v49 objectForKey:v31];
+                v34 = [dictionary objectForKey:v31];
 
                 if (!v34)
                 {
-                  v35 = [MEMORY[0x1E695DF70] array];
-                  [v49 setObject:v35 forKeyedSubscript:v31];
+                  array3 = [MEMORY[0x1E695DF70] array];
+                  [dictionary setObject:array3 forKeyedSubscript:v31];
                 }
 
-                v36 = [v49 objectForKey:v31];
+                v36 = [dictionary objectForKey:v31];
                 [v36 addObject:v25];
 
                 goto LABEL_29;
@@ -5365,17 +5365,17 @@ LABEL_29:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v37 = v50;
+  v37 = array;
   v38 = [v37 countByEnumeratingWithState:&v51 objects:v67 count:16];
   if (v38)
   {
     v39 = v38;
     v40 = *v52;
-    v41 = v49;
+    v41 = dictionary;
     do
     {
       v42 = 0;
-      v43 = v6;
+      v43 = array2;
       do
       {
         if (*v52 != v40)
@@ -5383,12 +5383,12 @@ LABEL_29:
           objc_enumerationMutation(v37);
         }
 
-        v44 = [v49 objectForKey:*(*(&v51 + 1) + 8 * v42)];
-        v45 = [(AXMLElementCoagulation *)v47 _reorderByXCut:v44];
-        v6 = [v43 arrayByAddingObjectsFromArray:v45];
+        v44 = [dictionary objectForKey:*(*(&v51 + 1) + 8 * v42)];
+        v45 = [(AXMLElementCoagulation *)selfCopy _reorderByXCut:v44];
+        array2 = [v43 arrayByAddingObjectsFromArray:v45];
 
         ++v42;
-        v43 = v6;
+        v43 = array2;
       }
 
       while (v39 != v42);
@@ -5400,46 +5400,46 @@ LABEL_29:
 
   else
   {
-    v41 = v49;
+    v41 = dictionary;
   }
 
-  return v6;
+  return array2;
 }
 
-- (int64_t)_compareY:(CGRect)a3 frame2:(CGRect)a4
+- (int64_t)_compareY:(CGRect)y frame2:(CGRect)frame2
 {
-  if (a3.origin.y < a4.origin.y)
+  if (y.origin.y < frame2.origin.y)
   {
     return -1;
   }
 
   else
   {
-    return a3.origin.y > a4.origin.y;
+    return y.origin.y > frame2.origin.y;
   }
 }
 
-- (int64_t)_compareX:(CGRect)a3 frame2:(CGRect)a4
+- (int64_t)_compareX:(CGRect)x frame2:(CGRect)frame2
 {
-  if (a3.origin.x < a4.origin.x)
+  if (x.origin.x < frame2.origin.x)
   {
     return -1;
   }
 
   else
   {
-    return a3.origin.x > a4.origin.x;
+    return x.origin.x > frame2.origin.x;
   }
 }
 
-- (id)_getHorizontalSegmentationPointDict:(id)a3
+- (id)_getHorizontalSegmentationPointDict:(id)dict
 {
   v61 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v45 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [(AXMLElementCoagulation *)self _compareForX:v5];
+  dictCopy = dict;
+  array = [v4 array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = [(AXMLElementCoagulation *)self _compareForX:dictCopy];
 
   v56 = 0u;
   v57 = 0u;
@@ -5479,7 +5479,7 @@ LABEL_29:
           v20 = (MaxX + CGRectGetMinX(*&v16)) * 0.5;
           *&v20 = v20;
           v21 = [MEMORY[0x1E696AD98] numberWithFloat:v20];
-          [v6 addObject:v21];
+          [array addObject:v21];
           [v14 frame];
           MaxX = CGRectGetMaxX(v64);
         }
@@ -5491,13 +5491,13 @@ LABEL_29:
     while (v10);
   }
 
-  v22 = [v6 sortedArrayUsingComparator:&__block_literal_global_222];
+  v22 = [array sortedArrayUsingComparator:&__block_literal_global_222];
   v23 = MEMORY[0x1E696AD98];
   [(AXMLElementCoagulation *)self canvasSize];
   v25 = v24 + 1.0;
   *&v25 = v25;
   v43 = [v23 numberWithFloat:v25];
-  [v6 addObject:?];
+  [array addObject:?];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -5522,7 +5522,7 @@ LABEL_29:
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v31 = v6;
+        v31 = array;
         v32 = [v31 countByEnumeratingWithState:&v46 objects:v58 count:16];
         if (v32)
         {
@@ -5543,15 +5543,15 @@ LABEL_29:
               [v30 frame];
               if (CGRectGetMinX(v66) < v38)
               {
-                v39 = [v45 objectForKey:v36];
+                v39 = [dictionary objectForKey:v36];
 
                 if (!v39)
                 {
-                  v40 = [MEMORY[0x1E695DF70] array];
-                  [v45 setObject:v40 forKeyedSubscript:v36];
+                  array2 = [MEMORY[0x1E695DF70] array];
+                  [dictionary setObject:array2 forKeyedSubscript:v36];
                 }
 
-                v41 = [v45 objectForKey:v36];
+                v41 = [dictionary objectForKey:v36];
                 [v41 addObject:v30];
 
                 goto LABEL_29;
@@ -5577,17 +5577,17 @@ LABEL_29:
     while (v27);
   }
 
-  return v45;
+  return dictionary;
 }
 
-- (id)_reorderByXCut:(id)a3
+- (id)_reorderByXCut:(id)cut
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(AXMLElementCoagulation *)self _getHorizontalSegmentationPointDict:a3];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_225];
+  v4 = [(AXMLElementCoagulation *)self _getHorizontalSegmentationPointDict:cut];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_225];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -5601,7 +5601,7 @@ LABEL_29:
     do
     {
       v12 = 0;
-      v13 = v7;
+      v13 = array;
       do
       {
         if (*v18 != v11)
@@ -5611,10 +5611,10 @@ LABEL_29:
 
         v14 = [v4 objectForKey:{*(*(&v17 + 1) + 8 * v12), v17}];
         v15 = [(AXMLElementCoagulation *)self _sortFeaturesReadingOrder:v14];
-        v7 = [v13 arrayByAddingObjectsFromArray:v15];
+        array = [v13 arrayByAddingObjectsFromArray:v15];
 
         ++v12;
-        v13 = v7;
+        v13 = array;
       }
 
       while (v10 != v12);
@@ -5624,7 +5624,7 @@ LABEL_29:
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __41__AXMLElementCoagulation__reorderByXCut___block_invoke(uint64_t a1, void *a2, void *a3)

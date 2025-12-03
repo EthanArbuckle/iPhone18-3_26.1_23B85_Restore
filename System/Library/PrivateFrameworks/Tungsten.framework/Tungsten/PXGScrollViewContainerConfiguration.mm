@@ -1,7 +1,7 @@
 @interface PXGScrollViewContainerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXGScrollViewContainerDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXGScrollViewContainerConfiguration
@@ -13,27 +13,27 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 scrollViewModel];
-    v7 = [(PXGScrollViewContainerConfiguration *)self scrollViewModel];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    scrollViewModel = [v5 scrollViewModel];
+    scrollViewModel2 = [(PXGScrollViewContainerConfiguration *)self scrollViewModel];
+    if (scrollViewModel == scrollViewModel2 || [scrollViewModel isEqual:scrollViewModel2])
     {
-      v8 = [v5 delegate];
-      v9 = [(PXGScrollViewContainerConfiguration *)self delegate];
-      if (v8 == v9)
+      delegate = [v5 delegate];
+      delegate2 = [(PXGScrollViewContainerConfiguration *)self delegate];
+      if (delegate == delegate2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [delegate isEqual:delegate2];
       }
     }
 
@@ -51,7 +51,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 1, self->_scrollViewModel);

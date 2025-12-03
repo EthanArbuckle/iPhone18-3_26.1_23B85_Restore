@@ -3,7 +3,7 @@
 - (ICAnalyticsObserver)init;
 - (ICNAEventReporter)eventReporter;
 - (void)dealloc;
-- (void)noteAddAttachment:(id)a3;
+- (void)noteAddAttachment:(id)attachment;
 @end
 
 @implementation ICAnalyticsObserver
@@ -44,19 +44,19 @@
   [(ICAnalyticsObserver *)&v4 dealloc];
 }
 
-- (void)noteAddAttachment:(id)a3
+- (void)noteAddAttachment:(id)attachment
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:ICNoteAnalyticsAddAttachmentNotificationAttachmentKey];
+  userInfo = [attachment userInfo];
+  v7 = [userInfo objectForKeyedSubscript:ICNoteAnalyticsAddAttachmentNotificationAttachmentKey];
 
   if (v7)
   {
-    v5 = [v7 parentAttachment];
+    parentAttachment = [v7 parentAttachment];
 
-    if (!v5)
+    if (!parentAttachment)
     {
-      v6 = [(ICAnalyticsObserver *)self eventReporter];
-      [v6 submitAttachmentAddEventForAttachment:v7];
+      eventReporter = [(ICAnalyticsObserver *)self eventReporter];
+      [eventReporter submitAttachmentAddEventForAttachment:v7];
     }
   }
 }

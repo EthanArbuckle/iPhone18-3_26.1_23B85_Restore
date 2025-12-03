@@ -1,7 +1,7 @@
 @interface MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep
 + (id)log;
 - (BOOL)performMigrationStep;
-- (MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep)initWithBaseAttachmentsDirectory:(id)a3;
+- (MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep)initWithBaseAttachmentsDirectory:(id)directory;
 @end
 
 @implementation MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __68__MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_22 != -1)
   {
     dispatch_once(&log_onceToken_22, block);
@@ -31,16 +31,16 @@ void __68__MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep_log__bl
   log_log_22 = v1;
 }
 
-- (MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep)initWithBaseAttachmentsDirectory:(id)a3
+- (MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep)initWithBaseAttachmentsDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v9.receiver = self;
   v9.super_class = MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep;
   v6 = [(MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseAttachmentsDirectory, a3);
+    objc_storeStrong(&v6->_baseAttachmentsDirectory, directory);
   }
 
   return v7;
@@ -57,11 +57,11 @@ void __68__MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep_log__bl
   }
 
   obja = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep *)self baseAttachmentsDirectory];
+  baseAttachmentsDirectory = [(MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep *)self baseAttachmentsDirectory];
   v33 = *MEMORY[0x1E695DB78];
   v45[0] = *MEMORY[0x1E695DB78];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-  v6 = [obja enumeratorAtURL:v4 includingPropertiesForKeys:v5 options:0 errorHandler:&__block_literal_global_48];
+  v6 = [obja enumeratorAtURL:baseAttachmentsDirectory includingPropertiesForKeys:v5 options:0 errorHandler:&__block_literal_global_48];
 
   v38 = 0u;
   v39 = 0u;
@@ -94,15 +94,15 @@ void __68__MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep_log__bl
         if (v11 && ([v12 BOOLValue] & 1) == 0)
         {
           v14 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v10 options:0 error:0];
-          v15 = [v14 fileAttributes];
-          v16 = [v15 objectForKey:v29];
+          fileAttributes = [v14 fileAttributes];
+          v16 = [fileAttributes objectForKey:v29];
 
           if (([v28 isEqualToString:v16] & 1) == 0)
           {
-            v17 = [MEMORY[0x1E696AC08] defaultManager];
-            v18 = [v10 path];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            path = [v10 path];
             v34 = 0;
-            v19 = [v17 mf_protectFileAtPath:v18 withClass:2 error:&v34];
+            v19 = [defaultManager mf_protectFileAtPath:path withClass:2 error:&v34];
             v20 = v34;
 
             if ((v19 & 1) == 0)
@@ -110,12 +110,12 @@ void __68__MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep_log__bl
               v21 = +[MFMessageLibrarySetContentProtectionForAttachmentsUpgradeStep log];
               if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
               {
-                v22 = [v10 path];
-                v23 = [v20 ef_publicDescription];
+                path2 = [v10 path];
+                ef_publicDescription = [v20 ef_publicDescription];
                 *buf = v27;
-                v41 = v22;
+                v41 = path2;
                 v42 = 2114;
-                v43 = v23;
+                v43 = ef_publicDescription;
                 _os_log_error_impl(&dword_1B0389000, v21, OS_LOG_TYPE_ERROR, "Error setting the protection class on %@: %{public}@", buf, 0x16u);
               }
             }

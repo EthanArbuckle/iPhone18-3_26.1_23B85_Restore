@@ -1,20 +1,20 @@
 @interface TSWReviewWidgetData
 - (int64_t)currentPage;
-- (void)setCurrentPage:(int64_t)a3;
+- (void)setCurrentPage:(int64_t)page;
 @end
 
 @implementation TSWReviewWidgetData
 
 - (int64_t)currentPage
 {
-  v2 = [(TSWReviewWidgetData *)self currentPageNumber];
+  currentPageNumber = [(TSWReviewWidgetData *)self currentPageNumber];
 
-  return [v2 integerValue];
+  return [currentPageNumber integerValue];
 }
 
-- (void)setCurrentPage:(int64_t)a3
+- (void)setCurrentPage:(int64_t)page
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:page];
 
   [(TSWReviewWidgetData *)self setCurrentPageNumber:v4];
 }

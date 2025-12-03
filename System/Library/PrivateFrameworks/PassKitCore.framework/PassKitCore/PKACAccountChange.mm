@@ -1,19 +1,19 @@
 @interface PKACAccountChange
-- (PKACAccountChange)initWithChangeType:(int)a3 event:(int64_t)a4 newAccount:(id)a5 oldAccount:(id)a6;
-- (PKACAccountChange)initWithCoder:(id)a3;
+- (PKACAccountChange)initWithChangeType:(int)type event:(int64_t)event newAccount:(id)account oldAccount:(id)oldAccount;
+- (PKACAccountChange)initWithCoder:(id)coder;
 - (id)description;
-- (int64_t)_operationTypeForChangeType:(int)a3 newAccount:(id)a4 oldAccount:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_operationTypeForChangeType:(int)type newAccount:(id)account oldAccount:(id)oldAccount;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKACAccountChange
 
-- (PKACAccountChange)initWithChangeType:(int)a3 event:(int64_t)a4 newAccount:(id)a5 oldAccount:(id)a6
+- (PKACAccountChange)initWithChangeType:(int)type event:(int64_t)event newAccount:(id)account oldAccount:(id)oldAccount
 {
-  v8 = *&a3;
+  v8 = *&type;
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
   v41.receiver = self;
   v41.super_class = PKACAccountChange;
   v12 = [(PKACAccountChange *)&v41 init];
@@ -24,21 +24,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v10)
+  if (accountCopy)
   {
-    v13 = v10;
+    v13 = accountCopy;
   }
 
   else
   {
-    v13 = v11;
+    v13 = oldAccountCopy;
   }
 
   v14 = v13;
-  v15 = [v14 accountType];
-  v16 = [v15 identifier];
+  accountType = [v14 accountType];
+  identifier = [accountType identifier];
   v17 = *MEMORY[0x1E69597F8];
-  v18 = v16;
+  v18 = identifier;
   v19 = v18;
   if (v18 == v17)
   {
@@ -57,23 +57,23 @@ LABEL_18:
       v21 = 0;
 LABEL_19:
       v12->_type = v21;
-      v12->_operation = [(PKACAccountChange *)v12 _operationTypeForChangeType:v8 newAccount:v10 oldAccount:v11];
-      v12->_event = a4;
+      v12->_operation = [(PKACAccountChange *)v12 _operationTypeForChangeType:v8 newAccount:accountCopy oldAccount:oldAccountCopy];
+      v12->_event = event;
       v26 = *MEMORY[0x1E6959700];
-      v27 = [v10 isEnabledForDataclass:*MEMORY[0x1E6959700]];
-      v12->_enablementOfWalletDataclassChanged = v27 ^ [v11 isEnabledForDataclass:v26];
+      v27 = [accountCopy isEnabledForDataclass:*MEMORY[0x1E6959700]];
+      v12->_enablementOfWalletDataclassChanged = v27 ^ [oldAccountCopy isEnabledForDataclass:v26];
       v28 = *MEMORY[0x1E6959718];
-      v29 = [v10 isEnabledForDataclass:*MEMORY[0x1E6959718]];
-      v12->_enablementOfUbiquityDataclassChanged = v29 ^ [v11 isEnabledForDataclass:v28];
-      LOBYTE(v28) = [v10 aa_isManagedAppleID];
-      v12->_accountManagedStateChanged = v28 ^ [v11 aa_isManagedAppleID];
+      v29 = [accountCopy isEnabledForDataclass:*MEMORY[0x1E6959718]];
+      v12->_enablementOfUbiquityDataclassChanged = v29 ^ [oldAccountCopy isEnabledForDataclass:v28];
+      LOBYTE(v28) = [accountCopy aa_isManagedAppleID];
+      v12->_accountManagedStateChanged = v28 ^ [oldAccountCopy aa_isManagedAppleID];
       v30 = *MEMORY[0x1E698B760];
-      v31 = [v10 aa_isAccountClass:*MEMORY[0x1E698B760]];
-      v12->_accountOrderChanged = v31 ^ [v11 aa_isAccountClass:v30];
-      v32 = [v10 ams_storefront];
-      v33 = [v11 ams_storefront];
-      v34 = v32;
-      v35 = v33;
+      v31 = [accountCopy aa_isAccountClass:*MEMORY[0x1E698B760]];
+      v12->_accountOrderChanged = v31 ^ [oldAccountCopy aa_isAccountClass:v30];
+      ams_storefront = [accountCopy ams_storefront];
+      ams_storefront2 = [oldAccountCopy ams_storefront];
+      v34 = ams_storefront;
+      v35 = ams_storefront2;
       v36 = v35;
       if (v34 == v35)
       {
@@ -98,10 +98,10 @@ LABEL_19:
   {
   }
 
-  v15 = [v14 accountType];
-  v22 = [v15 identifier];
+  accountType = [v14 accountType];
+  identifier2 = [accountType identifier];
   v23 = *MEMORY[0x1E6959930];
-  v24 = v22;
+  v24 = identifier2;
   v19 = v24;
   if (v24 == v23)
   {
@@ -138,52 +138,52 @@ LABEL_26:
   return v38;
 }
 
-- (PKACAccountChange)initWithCoder:(id)a3
+- (PKACAccountChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKACAccountChange;
   v5 = [(PKACAccountChange *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operation"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operation"];
     v5->_operation = [v7 integerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     v5->_event = [v8 integerValue];
 
-    v5->_enablementOfWalletDataclassChanged = [v4 decodeBoolForKey:@"walletDataclassChanged"];
-    v5->_enablementOfUbiquityDataclassChanged = [v4 decodeBoolForKey:@"ubiquityDataclassChanged"];
-    v5->_accountManagedStateChanged = [v4 decodeBoolForKey:@"managedStateChanged"];
-    v5->_accountOrderChanged = [v4 decodeBoolForKey:@"orderChanged"];
-    v5->_accountStorefrontChanged = [v4 decodeBoolForKey:@"storefrontChanged"];
+    v5->_enablementOfWalletDataclassChanged = [coderCopy decodeBoolForKey:@"walletDataclassChanged"];
+    v5->_enablementOfUbiquityDataclassChanged = [coderCopy decodeBoolForKey:@"ubiquityDataclassChanged"];
+    v5->_accountManagedStateChanged = [coderCopy decodeBoolForKey:@"managedStateChanged"];
+    v5->_accountOrderChanged = [coderCopy decodeBoolForKey:@"orderChanged"];
+    v5->_accountStorefrontChanged = [coderCopy decodeBoolForKey:@"storefrontChanged"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v9 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:type];
-  [v9 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_operation];
-  [v9 encodeObject:v7 forKey:@"operation"];
+  [coderCopy encodeObject:v7 forKey:@"operation"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_event];
-  [v9 encodeObject:v8 forKey:@"event"];
+  [coderCopy encodeObject:v8 forKey:@"event"];
 
-  [v9 encodeBool:self->_enablementOfWalletDataclassChanged forKey:@"walletDataclassChanged"];
-  [v9 encodeBool:self->_enablementOfUbiquityDataclassChanged forKey:@"ubiquityDataclassChanged"];
-  [v9 encodeBool:self->_accountManagedStateChanged forKey:@"managedStateChanged"];
-  [v9 encodeBool:self->_accountOrderChanged forKey:@"orderChanged"];
-  [v9 encodeBool:self->_accountStorefrontChanged forKey:@"storefrontChanged"];
+  [coderCopy encodeBool:self->_enablementOfWalletDataclassChanged forKey:@"walletDataclassChanged"];
+  [coderCopy encodeBool:self->_enablementOfUbiquityDataclassChanged forKey:@"ubiquityDataclassChanged"];
+  [coderCopy encodeBool:self->_accountManagedStateChanged forKey:@"managedStateChanged"];
+  [coderCopy encodeBool:self->_accountOrderChanged forKey:@"orderChanged"];
+  [coderCopy encodeBool:self->_accountStorefrontChanged forKey:@"storefrontChanged"];
 }
 
 - (id)description
@@ -274,11 +274,11 @@ LABEL_23:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"type: %@, operation: %@, event: %@, wallet dataclass changed: %@, ubiquity dataclass changed: %@, managed state changed: %@, order changed: %@, storefront changed: %@", v7, v10, v11, v12, v13, v14, v15, v16, v2, v3];
 }
 
-- (int64_t)_operationTypeForChangeType:(int)a3 newAccount:(id)a4 oldAccount:(id)a5
+- (int64_t)_operationTypeForChangeType:(int)type newAccount:(id)account oldAccount:(id)oldAccount
 {
-  LODWORD(v6) = a3;
-  v8 = a4;
-  v9 = a5;
+  LODWORD(v6) = type;
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
   type = self->_type;
   if (type == 1)
   {
@@ -301,8 +301,8 @@ LABEL_23:
   else
   {
     v11 = *MEMORY[0x1E698B760];
-    v12 = [v8 aa_isAccountClass:*MEMORY[0x1E698B760]];
-    v13 = [v9 aa_isAccountClass:v11];
+    v12 = [accountCopy aa_isAccountClass:*MEMORY[0x1E698B760]];
+    v13 = [oldAccountCopy aa_isAccountClass:v11];
     if (((v12 ^ 1) & 1) != 0 || v13)
     {
       v14 = 3;

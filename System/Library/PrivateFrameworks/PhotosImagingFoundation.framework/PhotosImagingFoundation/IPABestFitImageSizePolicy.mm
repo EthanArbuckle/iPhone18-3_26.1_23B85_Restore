@@ -1,30 +1,30 @@
 @interface IPABestFitImageSizePolicy
 - (CGSize)transformSize:(CGSize)result;
-- (IPABestFitImageSizePolicy)initWithCoder:(id)a3;
-- (IPABestFitImageSizePolicy)initWithFitSize:(CGSize)a3;
-- (double)transformScaleForSize:(CGSize)a3;
+- (IPABestFitImageSizePolicy)initWithCoder:(id)coder;
+- (IPABestFitImageSizePolicy)initWithFitSize:(CGSize)size;
+- (double)transformScaleForSize:(CGSize)size;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPABestFitImageSizePolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IPABestFitImageSizePolicy;
-  v4 = a3;
-  [(IPAImageSizePolicy *)&v5 encodeWithCoder:v4];
-  [v4 encodeSize:@"fit size" forKey:{self->_fitSize.width, self->_fitSize.height, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(IPAImageSizePolicy *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeSize:@"fit size" forKey:{self->_fitSize.width, self->_fitSize.height, v5.receiver, v5.super_class}];
 }
 
-- (IPABestFitImageSizePolicy)initWithCoder:(id)a3
+- (IPABestFitImageSizePolicy)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = IPABestFitImageSizePolicy;
-  v3 = a3;
-  v4 = [(IPAImageSizePolicy *)&v10 initWithCoder:v3];
-  [v3 decodeSizeForKey:{@"fit size", v10.receiver, v10.super_class}];
+  coderCopy = coder;
+  v4 = [(IPAImageSizePolicy *)&v10 initWithCoder:coderCopy];
+  [coderCopy decodeSizeForKey:{@"fit size", v10.receiver, v10.super_class}];
   v6 = v5;
   v8 = v7;
 
@@ -43,10 +43,10 @@
   return v6;
 }
 
-- (double)transformScaleForSize:(CGSize)a3
+- (double)transformScaleForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(IPABestFitImageSizePolicy *)self transformSize:?];
   v7 = v6;
   result = v6 / width;
@@ -117,13 +117,13 @@
   return result;
 }
 
-- (IPABestFitImageSizePolicy)initWithFitSize:(CGSize)a3
+- (IPABestFitImageSizePolicy)initWithFitSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.height <= 0.0 || a3.width <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.height <= 0.0 || size.width <= 0.0)
   {
-    NSStringFromSize(a3);
+    NSStringFromSize(size);
     objc_claimAutoreleasedReturnValue();
     v6 = _PFAssertFailHandler();
     return [(IPAImageSizePolicy *)v6 scalePolicyWithScale:v7, v8];

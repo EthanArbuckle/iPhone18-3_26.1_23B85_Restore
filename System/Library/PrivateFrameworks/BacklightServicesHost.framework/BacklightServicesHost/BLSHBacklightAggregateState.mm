@@ -1,10 +1,10 @@
 @interface BLSHBacklightAggregateState
-+ (BOOL)isState:(id)a3 equalToObject:(id)a4;
-+ (id)bls_debugLoggingDescriptionForState:(id)a3;
-+ (id)bls_loggingStringForState:(id)a3;
-+ (id)bls_shortLoggingStringForState:(id)a3;
-+ (unint64_t)stateHash:(id)a3;
-- (BLSHBacklightAggregateState)initWithDisplayModeSource:(id)a3;
++ (BOOL)isState:(id)state equalToObject:(id)object;
++ (id)bls_debugLoggingDescriptionForState:(id)state;
++ (id)bls_loggingStringForState:(id)state;
++ (id)bls_shortLoggingStringForState:(id)state;
++ (unint64_t)stateHash:(id)hash;
+- (BLSHBacklightAggregateState)initWithDisplayModeSource:(id)source;
 - (BLSHBacklightEnvironmentPresentation)presentation;
 @end
 
@@ -12,48 +12,48 @@
 
 - (BLSHBacklightEnvironmentPresentation)presentation
 {
-  v2 = [(BLSHBacklightAggregateState *)self presentationSource];
-  v3 = [v2 presentation];
+  presentationSource = [(BLSHBacklightAggregateState *)self presentationSource];
+  presentation = [presentationSource presentation];
 
-  return v3;
+  return presentation;
 }
 
-- (BLSHBacklightAggregateState)initWithDisplayModeSource:(id)a3
+- (BLSHBacklightAggregateState)initWithDisplayModeSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = BLSHBacklightAggregateState;
   v6 = [(BLSHBacklightAggregateState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayModeSource, a3);
+    objc_storeStrong(&v6->_displayModeSource, source);
   }
 
   return v7;
 }
 
-+ (BOOL)isState:(id)a3 equalToObject:(id)a4
++ (BOOL)isState:(id)state equalToObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  objectCopy = object;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v7 = v6;
-    v8 = [v5 displayMode];
-    if (v8 == [v7 displayMode])
+    v7 = objectCopy;
+    displayMode = [stateCopy displayMode];
+    if (displayMode == [v7 displayMode])
     {
-      v9 = [v5 presentation];
-      v10 = [v7 presentation];
-      v11 = v10;
-      if (v9)
+      presentation = [stateCopy presentation];
+      presentation2 = [v7 presentation];
+      v11 = presentation2;
+      if (presentation)
       {
-        v12 = [v9 isEqual:v10];
+        v12 = [presentation isEqual:presentation2];
       }
 
       else
       {
-        v12 = v10 == 0;
+        v12 = presentation2 == 0;
       }
     }
 
@@ -71,67 +71,67 @@
   return v12;
 }
 
-+ (unint64_t)stateHash:(id)a3
++ (unint64_t)stateHash:(id)hash
 {
   v3 = MEMORY[0x277CF0C40];
-  v4 = a3;
-  v5 = [v3 builder];
-  v6 = [v5 appendInteger:{objc_msgSend(v4, "displayMode")}];
-  v7 = [v4 presentation];
+  hashCopy = hash;
+  builder = [v3 builder];
+  v6 = [builder appendInteger:{objc_msgSend(hashCopy, "displayMode")}];
+  presentation = [hashCopy presentation];
 
-  v8 = [v5 appendObject:v7];
-  v9 = [v5 hash];
+  v8 = [builder appendObject:presentation];
+  v9 = [builder hash];
 
   return v9;
 }
 
-+ (id)bls_loggingStringForState:(id)a3
++ (id)bls_loggingStringForState:(id)state
 {
   v3 = MEMORY[0x277CF0C00];
-  v4 = a3;
-  v5 = [v3 builderWithObject:v4];
-  v6 = NSStringFromBLSBacklightDisplayMode([v4 displayMode]);
+  stateCopy = state;
+  v5 = [v3 builderWithObject:stateCopy];
+  v6 = NSStringFromBLSBacklightDisplayMode([stateCopy displayMode]);
   [v5 appendString:v6 withName:@"displayMode"];
 
-  v7 = [v4 presentation];
+  presentation = [stateCopy presentation];
 
-  v8 = [v5 appendObject:v7 withName:@"presentation"];
-  v9 = [v5 build];
+  v8 = [v5 appendObject:presentation withName:@"presentation"];
+  build = [v5 build];
 
-  return v9;
+  return build;
 }
 
-+ (id)bls_shortLoggingStringForState:(id)a3
++ (id)bls_shortLoggingStringForState:(id)state
 {
   v3 = MEMORY[0x277CF0C00];
-  v4 = a3;
-  v5 = [v3 builderWithObject:v4];
-  v6 = [v4 displayMode];
+  stateCopy = state;
+  v5 = [v3 builderWithObject:stateCopy];
+  displayMode = [stateCopy displayMode];
 
-  v7 = NSStringFromBLSBacklightDisplayMode(v6);
+  v7 = NSStringFromBLSBacklightDisplayMode(displayMode);
   [v5 appendString:v7 withName:@"displayMode"];
 
-  v8 = [v5 build];
+  build = [v5 build];
 
-  return v8;
+  return build;
 }
 
-+ (id)bls_debugLoggingDescriptionForState:(id)a3
++ (id)bls_debugLoggingDescriptionForState:(id)state
 {
   v3 = MEMORY[0x277CF0C00];
-  v4 = a3;
-  v5 = [v3 builderWithObject:v4];
-  v6 = NSStringFromBLSBacklightDisplayMode([v4 displayMode]);
+  stateCopy = state;
+  v5 = [v3 builderWithObject:stateCopy];
+  v6 = NSStringFromBLSBacklightDisplayMode([stateCopy displayMode]);
   [v5 appendString:v6 withName:@"displayMode"];
 
-  v7 = [v4 presentation];
+  presentation = [stateCopy presentation];
 
-  v8 = [v7 debugDescription];
+  v8 = [presentation debugDescription];
   v9 = [v5 appendObject:v8 withName:@"presentation"];
 
-  v10 = [v5 build];
+  build = [v5 build];
 
-  return v10;
+  return build;
 }
 
 @end

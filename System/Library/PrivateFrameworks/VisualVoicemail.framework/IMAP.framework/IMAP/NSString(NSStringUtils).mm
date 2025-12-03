@@ -17,24 +17,24 @@
 
 + (id)mf_UUID
 {
-  v0 = [MEMORY[0x277CCAD78] UUID];
-  v1 = [v0 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v1;
+  return uUIDString;
 }
 
 + (id)mf_messageIDStringWithDomainHint:()NSStringUtils
 {
   v3 = MEMORY[0x277CCAD78];
   v4 = a3;
-  v5 = [v3 UUID];
-  v6 = [v5 UUIDString];
+  uUID = [v3 UUID];
+  uUIDString = [uUID UUIDString];
 
   v7 = [VCIDNAEncoder stringByEncodingDomainName:v4];
 
-  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(v6, "length") + objc_msgSend(v7, "length") + 3}];
+  v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(uUIDString, "length") + objc_msgSend(v7, "length") + 3}];
   [v8 appendString:@"<"];
-  [v8 appendString:v6];
+  [v8 appendString:uUIDString];
   if (v4)
   {
     [v8 appendString:@"@"];
@@ -48,7 +48,7 @@
 
 - (id)mf_stringByLocalizingReOrFwdPrefix
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = mf_stringByLocalizingReOrFwdPrefix_localizedRePrefix;
   if (mf_stringByLocalizingReOrFwdPrefix_localizedRePrefix == -1)
   {
@@ -59,32 +59,32 @@
     v2 = mf_stringByLocalizingReOrFwdPrefix_localizedRePrefix;
   }
 
-  if (v2 == 1 && ![v1 compare:@"Re:" options:1 range:{0, mf_stringByLocalizingReOrFwdPrefix_nonLocalizedReLength}])
+  if (v2 == 1 && ![selfCopy compare:@"Re:" options:1 range:{0, mf_stringByLocalizingReOrFwdPrefix_nonLocalizedReLength}])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [v1 substringFromIndex:mf_stringByLocalizingReOrFwdPrefix_nonLocalizedReLength];
+    v4 = [selfCopy substringFromIndex:mf_stringByLocalizingReOrFwdPrefix_nonLocalizedReLength];
     v5 = [v3 stringWithFormat:@"%@⁨%@⁩", @"Re:", v4];
 
-    v1 = v5;
+    selfCopy = v5;
   }
 
-  if (mf_stringByLocalizingReOrFwdPrefix_localizedFwdPrefix == 1 && ![v1 compare:@"Fwd:" options:1 range:{0, mf_stringByLocalizingReOrFwdPrefix_nonLocalizedFwdLength}])
+  if (mf_stringByLocalizingReOrFwdPrefix_localizedFwdPrefix == 1 && ![selfCopy compare:@"Fwd:" options:1 range:{0, mf_stringByLocalizingReOrFwdPrefix_nonLocalizedFwdLength}])
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v1 substringFromIndex:mf_stringByLocalizingReOrFwdPrefix_nonLocalizedFwdLength];
+    v7 = [selfCopy substringFromIndex:mf_stringByLocalizingReOrFwdPrefix_nonLocalizedFwdLength];
     v8 = [v6 stringWithFormat:@"%@⁨%@⁩", @"Fwd:", v7];
 
-    v1 = v8;
+    selfCopy = v8;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)mf_fileSystemString
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = a1;
-  if ([v1 length] && objc_msgSend(v1, "getFileSystemRepresentation:maxLength:", v7, 1023))
+  selfCopy = self;
+  if ([selfCopy length] && objc_msgSend(selfCopy, "getFileSystemRepresentation:maxLength:", v7, 1023))
   {
     v7[1023] = 0;
     v2 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithUTF8String:v7];
@@ -92,7 +92,7 @@
 
   else
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   if (v2)
@@ -102,7 +102,7 @@
 
   else
   {
-    v3 = v1;
+    v3 = selfCopy;
   }
 
   v4 = v3;
@@ -114,7 +114,7 @@
 
 - (id)mf_stringWithNoExtraSpaces
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   if ([v1 length])
   {
     v2 = 0;
@@ -172,21 +172,21 @@
   v25 = *MEMORY[0x277D85DE8];
   v4 = a3;
   LODWORD(v5) = 0;
-  v6 = 0;
-  v7 = 0;
-  v8 = 0;
+  pathExtension = 0;
+  stringByDeletingPathExtension = 0;
+  selfCopy = 0;
   do
   {
 LABEL_2:
-    if (!v8)
+    if (!selfCopy)
     {
-      v8 = a1;
+      selfCopy = self;
       goto LABEL_12;
     }
 
-    if (v7)
+    if (stringByDeletingPathExtension)
     {
-      if (!v6)
+      if (!pathExtension)
       {
         goto LABEL_9;
       }
@@ -194,27 +194,27 @@ LABEL_2:
 
     else
     {
-      v7 = [a1 stringByDeletingPathExtension];
-      if (!v6)
+      stringByDeletingPathExtension = [self stringByDeletingPathExtension];
+      if (!pathExtension)
       {
 LABEL_9:
-        v6 = [a1 pathExtension];
+        pathExtension = [self pathExtension];
       }
     }
 
     v5 = (v5 + 1);
-    if ([v6 length])
+    if ([pathExtension length])
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%d.%@", v7, v5, v6];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%d.%@", stringByDeletingPathExtension, v5, pathExtension];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%d", v7, v5, v19];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%d", stringByDeletingPathExtension, v5, v19];
     }
     v9 = ;
 
-    v8 = v9;
+    selfCopy = v9;
 LABEL_12:
     v22 = 0u;
     v23 = 0u;
@@ -235,7 +235,7 @@ LABEL_12:
             objc_enumerationMutation(v10);
           }
 
-          if ([*(*(&v20 + 1) + 8 * i) isEqualToString:v8])
+          if ([*(*(&v20 + 1) + 8 * i) isEqualToString:selfCopy])
           {
 
             goto LABEL_2;
@@ -252,19 +252,19 @@ LABEL_12:
       }
     }
 
-    v15 = v8;
+    v15 = selfCopy;
   }
 
   while (!v15);
-  v16 = v8;
+  v16 = selfCopy;
 
   v17 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 - (id)mf_stringByEscapingForXML
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -277,9 +277,9 @@ LABEL_12:
 - (__CFString)mf_stringByEscapingHTMLCodes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAB68] string];
-  v15 = a1;
-  v3 = [a1 length];
+  string = [MEMORY[0x277CCAB68] string];
+  selfCopy = self;
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
@@ -288,7 +288,7 @@ LABEL_12:
     while (1)
     {
       v7 = v4 - v5 >= 0x1FF ? 511 : v4 - v5;
-      [v15 getCharacters:chars range:{v5, v7}];
+      [selfCopy getCharacters:chars range:{v5, v7}];
       if (v4 != v5)
       {
         break;
@@ -321,15 +321,15 @@ LABEL_7:
         switch(v10)
         {
           case '&':
-            v11 = v2;
+            v11 = string;
             v12 = @"&amp;";
             goto LABEL_28;
           case '>':
-            v11 = v2;
+            v11 = string;
             v12 = @"&gt;";
             goto LABEL_28;
           case '<':
-            v11 = v2;
+            v11 = string;
             v12 = @"&lt;";
 LABEL_28:
             [(__CFString *)v11 appendString:v12];
@@ -342,31 +342,31 @@ LABEL_28:
         switch(v10)
         {
           case 9u:
-            v11 = v2;
+            v11 = string;
             v12 = @"&nbsp;&nbsp;&nbsp;&nbsp;";
             goto LABEL_28;
           case 0xAu:
-            v11 = v2;
+            v11 = string;
             v12 = @"<br>";
             goto LABEL_28;
           case 0x20u:
             if (v6)
             {
-              [(__CFString *)v2 appendString:@"&nbsp;"];
+              [(__CFString *)string appendString:@"&nbsp;"];
               v6 = 1;
             }
 
             else
             {
               v6 = 1;
-              CFStringAppendCharacters(v2, v9, 1);
+              CFStringAppendCharacters(string, v9, 1);
             }
 
             goto LABEL_30;
         }
       }
 
-      CFStringAppendCharacters(v2, v9, 1);
+      CFStringAppendCharacters(string, v9, 1);
 LABEL_29:
       v6 = 0;
 LABEL_30:
@@ -381,7 +381,7 @@ LABEL_30:
 LABEL_33:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return string;
 }
 
 + (id)mf_stringForMimeTypeFromFileName:()NSStringUtils
@@ -389,35 +389,35 @@ LABEL_33:
   v3 = MEMORY[0x277D24FB0];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 pathExtension];
-  [v5 setPathExtension:v6];
+  pathExtension = [v4 pathExtension];
+  [v5 setPathExtension:pathExtension];
 
   [v5 setFilename:v4];
-  v7 = [v5 mimeType];
+  mimeType = [v5 mimeType];
   if (MFGetTypeInfo())
   {
-    v8 = [v5 mimeType];
+    mimeType2 = [v5 mimeType];
 
-    v7 = v8;
+    mimeType = mimeType2;
   }
 
-  return v7;
+  return mimeType;
 }
 
 - (id)mf_stringByTrimmingWhitespaceAndNewlineCharacters
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (id)mf_prefixToString:()NSStringUtils
 {
-  v2 = [a1 rangeOfString:?];
+  v2 = [self rangeOfString:?];
   if (v3)
   {
-    v4 = [a1 substringWithRange:{0, v2}];
+    v4 = [self substringWithRange:{0, v2}];
   }
 
   else

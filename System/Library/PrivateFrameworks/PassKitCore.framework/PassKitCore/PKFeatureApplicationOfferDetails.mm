@@ -1,19 +1,19 @@
 @interface PKFeatureApplicationOfferDetails
-- (BOOL)isEqual:(id)a3;
-- (PKFeatureApplicationOfferDetails)initWithCoder:(id)a3;
-- (PKFeatureApplicationOfferDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFeatureApplicationOfferDetails)initWithCoder:(id)coder;
+- (PKFeatureApplicationOfferDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureApplicationOfferDetails
 
-- (PKFeatureApplicationOfferDetails)initWithDictionary:(id)a3
+- (PKFeatureApplicationOfferDetails)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKFeatureApplicationOfferDetails;
   v5 = [(PKFeatureApplicationOfferDetails *)&v29 init];
@@ -24,37 +24,37 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v6 = [v4 PKStringForKey:@"offerTermsIdentifier"];
+  v6 = [dictionaryCopy PKStringForKey:@"offerTermsIdentifier"];
   offerTermsIdentifier = v5->_offerTermsIdentifier;
   v5->_offerTermsIdentifier = v6;
 
   if (v5->_offerTermsIdentifier)
   {
-    v8 = [v4 PKDateForKey:@"expiryDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v8;
 
-    v10 = [v4 PKDecimalNumberFromStringForKey:@"creditLimit"];
+    v10 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"creditLimit"];
     creditLimit = v5->_creditLimit;
     v5->_creditLimit = v10;
 
-    v12 = [v4 PKDecimalNumberFromStringForKey:@"fees"];
+    v12 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"fees"];
     annualFee = v5->_annualFee;
     v5->_annualFee = v12;
 
-    v14 = [v4 PKDecimalNumberFromStringForKey:@"aprForPurchase"];
+    v14 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"aprForPurchase"];
     aprForPurchase = v5->_aprForPurchase;
     v5->_aprForPurchase = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"balance"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v16;
 
-    v18 = [v4 PKStringForKey:@"currencyCode"];
+    v18 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v18;
 
-    v20 = [v4 PKDictionaryForKey:@"detailsInfo"];
+    v20 = [dictionaryCopy PKDictionaryForKey:@"detailsInfo"];
     v21 = v20;
     if (v20 && [v20 count])
     {
@@ -82,43 +82,43 @@ LABEL_11:
   return v24;
 }
 
-- (PKFeatureApplicationOfferDetails)initWithCoder:(id)a3
+- (PKFeatureApplicationOfferDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKFeatureApplicationOfferDetails;
   v5 = [(PKFeatureApplicationOfferDetails *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerTermsIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerTermsIdentifier"];
     offerTermsIdentifier = v5->_offerTermsIdentifier;
     v5->_offerTermsIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
     creditLimit = v5->_creditLimit;
     v5->_creditLimit = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"annualFee"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"annualFee"];
     annualFee = v5->_annualFee;
     v5->_annualFee = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aprForPurchase"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aprForPurchase"];
     aprForPurchase = v5->_aprForPurchase;
     v5->_aprForPurchase = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balance = v5->_balance;
     v5->_balance = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detailsInfo"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detailsInfo"];
     detailsInfo = v5->_detailsInfo;
     v5->_detailsInfo = v20;
   }
@@ -126,18 +126,18 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   offerTermsIdentifier = self->_offerTermsIdentifier;
-  v5 = a3;
-  [v5 encodeObject:offerTermsIdentifier forKey:@"offerTermsIdentifier"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
-  [v5 encodeObject:self->_creditLimit forKey:@"creditLimit"];
-  [v5 encodeObject:self->_annualFee forKey:@"annualFee"];
-  [v5 encodeObject:self->_aprForPurchase forKey:@"aprForPurchase"];
-  [v5 encodeObject:self->_balance forKey:@"balance"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_detailsInfo forKey:@"detailsInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:offerTermsIdentifier forKey:@"offerTermsIdentifier"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  [coderCopy encodeObject:self->_creditLimit forKey:@"creditLimit"];
+  [coderCopy encodeObject:self->_annualFee forKey:@"annualFee"];
+  [coderCopy encodeObject:self->_aprForPurchase forKey:@"aprForPurchase"];
+  [coderCopy encodeObject:self->_balance forKey:@"balance"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_detailsInfo forKey:@"detailsInfo"];
 }
 
 - (id)description
@@ -155,9 +155,9 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -165,7 +165,7 @@ LABEL_11:
   }
 
   offerTermsIdentifier = self->_offerTermsIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (offerTermsIdentifier && v6)
   {
     if (([(NSString *)offerTermsIdentifier isEqual:?]& 1) == 0)
@@ -180,7 +180,7 @@ LABEL_11:
   }
 
   expiryDate = self->_expiryDate;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (expiryDate && v8)
   {
     if (([(NSDate *)expiryDate isEqual:?]& 1) == 0)
@@ -195,7 +195,7 @@ LABEL_11:
   }
 
   creditLimit = self->_creditLimit;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (creditLimit && v10)
   {
     if (([(NSDecimalNumber *)creditLimit isEqual:?]& 1) == 0)
@@ -210,7 +210,7 @@ LABEL_11:
   }
 
   annualFee = self->_annualFee;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (annualFee && v12)
   {
     if (([(NSDecimalNumber *)annualFee isEqual:?]& 1) == 0)
@@ -225,7 +225,7 @@ LABEL_11:
   }
 
   aprForPurchase = self->_aprForPurchase;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (aprForPurchase && v14)
   {
     if (([(NSDecimalNumber *)aprForPurchase isEqual:?]& 1) == 0)
@@ -240,7 +240,7 @@ LABEL_11:
   }
 
   balance = self->_balance;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (balance && v16)
   {
     if (([(NSDecimalNumber *)balance isEqual:?]& 1) == 0)
@@ -255,7 +255,7 @@ LABEL_11:
   }
 
   currencyCode = self->_currencyCode;
-  v18 = v4[7];
+  v18 = equalCopy[7];
   if (!currencyCode || !v18)
   {
     if (currencyCode == v18)
@@ -275,7 +275,7 @@ LABEL_39:
 
 LABEL_35:
   detailsInfo = self->_detailsInfo;
-  v20 = v4[8];
+  v20 = equalCopy[8];
   if (detailsInfo && v20)
   {
     v21 = [(PKFeatureApplicationOfferDetailsInfo *)detailsInfo isEqual:?];
@@ -293,52 +293,52 @@ LABEL_40:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_offerTermsIdentifier];
-  [v3 safelyAddObject:self->_expiryDate];
-  [v3 safelyAddObject:self->_creditLimit];
-  [v3 safelyAddObject:self->_annualFee];
-  [v3 safelyAddObject:self->_aprForPurchase];
-  [v3 safelyAddObject:self->_balance];
-  [v3 safelyAddObject:self->_currencyCode];
-  [v3 safelyAddObject:self->_detailsInfo];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_offerTermsIdentifier];
+  [array safelyAddObject:self->_expiryDate];
+  [array safelyAddObject:self->_creditLimit];
+  [array safelyAddObject:self->_annualFee];
+  [array safelyAddObject:self->_aprForPurchase];
+  [array safelyAddObject:self->_balance];
+  [array safelyAddObject:self->_currencyCode];
+  [array safelyAddObject:self->_detailsInfo];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFeatureApplicationOfferDetails allocWithZone:](PKFeatureApplicationOfferDetails init];
-  v6 = [(NSString *)self->_offerTermsIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_offerTermsIdentifier copyWithZone:zone];
   offerTermsIdentifier = v5->_offerTermsIdentifier;
   v5->_offerTermsIdentifier = v6;
 
-  v8 = [(NSDate *)self->_expiryDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_expiryDate copyWithZone:zone];
   expiryDate = v5->_expiryDate;
   v5->_expiryDate = v8;
 
-  v10 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:zone];
   creditLimit = v5->_creditLimit;
   v5->_creditLimit = v10;
 
-  v12 = [(NSDecimalNumber *)self->_annualFee copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_annualFee copyWithZone:zone];
   annualFee = v5->_annualFee;
   v5->_annualFee = v12;
 
-  v14 = [(NSDecimalNumber *)self->_aprForPurchase copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_aprForPurchase copyWithZone:zone];
   aprForPurchase = v5->_aprForPurchase;
   v5->_aprForPurchase = v14;
 
-  v16 = [(NSDecimalNumber *)self->_balance copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_balance copyWithZone:zone];
   balance = v5->_balance;
   v5->_balance = v16;
 
-  v18 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v18 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v18;
 
-  v20 = [(PKFeatureApplicationOfferDetailsInfo *)self->_detailsInfo copyWithZone:a3];
+  v20 = [(PKFeatureApplicationOfferDetailsInfo *)self->_detailsInfo copyWithZone:zone];
   detailsInfo = v5->_detailsInfo;
   v5->_detailsInfo = v20;
 

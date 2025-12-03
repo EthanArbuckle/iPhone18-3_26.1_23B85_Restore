@@ -1,24 +1,24 @@
 @interface CRKOSTransactionAssertionProvider
-- (CRKOSTransactionAssertionProvider)initWithReverseDNSReason:(id)a3 primitives:(id)a4;
+- (CRKOSTransactionAssertionProvider)initWithReverseDNSReason:(id)reason primitives:(id)primitives;
 - (id)acquireAssertion;
 @end
 
 @implementation CRKOSTransactionAssertionProvider
 
-- (CRKOSTransactionAssertionProvider)initWithReverseDNSReason:(id)a3 primitives:(id)a4
+- (CRKOSTransactionAssertionProvider)initWithReverseDNSReason:(id)reason primitives:(id)primitives
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  primitivesCopy = primitives;
   v12.receiver = self;
   v12.super_class = CRKOSTransactionAssertionProvider;
   v8 = [(CRKOSTransactionAssertionProvider *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    objc_storeStrong(&v8->_primitives, a4);
+    objc_storeStrong(&v8->_primitives, primitives);
   }
 
   return v8;
@@ -26,9 +26,9 @@
 
 - (id)acquireAssertion
 {
-  v3 = [(CRKOSTransactionAssertionProvider *)self primitives];
-  v4 = [(CRKOSTransactionAssertionProvider *)self reason];
-  v5 = [v3 transactionWithReverseDNSReason:v4];
+  primitives = [(CRKOSTransactionAssertionProvider *)self primitives];
+  reason = [(CRKOSTransactionAssertionProvider *)self reason];
+  v5 = [primitives transactionWithReverseDNSReason:reason];
 
   v6 = objc_alloc(MEMORY[0x277CF9528]);
   v10[0] = MEMORY[0x277D85DD0];

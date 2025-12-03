@@ -1,58 +1,58 @@
 @interface ISBundleIcon
-- (ISBundleIcon)initWithBundleURL:(id)a3 type:(id)a4 tag:(id)a5 tagClass:(id)a6;
-- (ISBundleIcon)initWithCoder:(id)a3;
+- (ISBundleIcon)initWithBundleURL:(id)l type:(id)type tag:(id)tag tagClass:(id)class;
+- (ISBundleIcon)initWithCoder:(id)coder;
 - (id)_makeAppResourceProvider;
 - (id)_makeDocumentResourceProvider;
 - (id)description;
 - (id)makeResourceProvider;
 - (void)_makeAppResourceProvider;
 - (void)_makeDocumentResourceProvider;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISBundleIcon
 
-- (ISBundleIcon)initWithBundleURL:(id)a3 type:(id)a4 tag:(id)a5 tagClass:(id)a6
+- (ISBundleIcon)initWithBundleURL:(id)l type:(id)type tag:(id)tag tagClass:(id)class
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v41 = a6;
-  v12 = a6;
-  v13 = [v9 absoluteString];
-  v14 = v13;
-  if (v10)
+  obj = l;
+  lCopy = l;
+  typeCopy = type;
+  tagCopy = tag;
+  classCopy = class;
+  classCopy2 = class;
+  absoluteString = [lCopy absoluteString];
+  v14 = absoluteString;
+  if (typeCopy)
   {
-    v15 = [v13 stringByAppendingString:{v10, obj, a6}];
+    v15 = [absoluteString stringByAppendingString:{typeCopy, obj, class}];
 
     v14 = v15;
   }
 
-  if (v11)
+  if (tagCopy)
   {
-    v16 = [v14 stringByAppendingString:v11];
+    v16 = [v14 stringByAppendingString:tagCopy];
 
     v14 = v16;
   }
 
-  v44 = v10;
-  if (v12)
+  v44 = typeCopy;
+  if (classCopy2)
   {
-    v17 = [v14 stringByAppendingString:v12];
+    v17 = [v14 stringByAppendingString:classCopy2];
 
     v14 = v17;
   }
 
-  v18 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:v9 allowPlaceholder:1 error:0];
+  v18 = [objc_alloc(MEMORY[0x1E69635F8]) initWithURL:lCopy allowPlaceholder:1 error:0];
   if (!v18)
   {
-    v19 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+    bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v19 URL], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqual:", v9), v20, v21))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([bundleRecordForCurrentProcess URL], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqual:", lCopy), v20, v21))
     {
-      v18 = v19;
+      v18 = bundleRecordForCurrentProcess;
     }
 
     else
@@ -61,19 +61,19 @@
     }
   }
 
-  v22 = [v18 alternateIconName];
-  v43 = v12;
-  if (v22)
+  alternateIconName = [v18 alternateIconName];
+  v43 = classCopy2;
+  if (alternateIconName)
   {
-    v23 = [v14 stringByAppendingString:v22];
+    v23 = [v14 stringByAppendingString:alternateIconName];
 
     v14 = v23;
   }
 
-  v24 = [v9 __is__contentModifiedDate];
+  __is__contentModifiedDate = [lCopy __is__contentModifiedDate];
   v25 = [MEMORY[0x1E696AFB0] _IF_UUIDWithString:v14];
   v26 = MEMORY[0x1E696AFB0];
-  [v24 timeIntervalSinceReferenceDate];
+  [__is__contentModifiedDate timeIntervalSinceReferenceDate];
   v27 = [v26 _IF_UUIDWithDouble:?];
   v28 = MEMORY[0x1E696AFB0];
   v46[0] = v25;
@@ -88,11 +88,11 @@
   if (v31)
   {
     objc_storeStrong(&v31->_url, obja);
-    v33 = [v11 copy];
+    v33 = [tagCopy copy];
     tag = v32->_tag;
     v32->_tag = v33;
 
-    objc_storeStrong(&v32->_tagClass, v41);
+    objc_storeStrong(&v32->_tagClass, classCopy);
     v35 = [v44 copy];
     type = v32->_type;
     v32->_type = v35;
@@ -102,28 +102,28 @@
   return v32;
 }
 
-- (ISBundleIcon)initWithCoder:(id)a3
+- (ISBundleIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ISBundleIcon;
-  v5 = [(ISConcreteIcon *)&v16 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURLString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURLString"];
     url = v5->_url;
     v5->_url = v6;
     v8 = v6;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v5->_tag;
     v5->_tag = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tagClass"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tagClass"];
     tagClass = v5->_tagClass;
     v5->_tagClass = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v13;
   }
@@ -131,16 +131,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ISBundleIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"bundleURLString", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_tag forKey:@"tag"];
-  [v4 encodeObject:self->_tagClass forKey:@"tagClass"];
-  [v4 encodeObject:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"bundleURLString", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_tag forKey:@"tag"];
+  [coderCopy encodeObject:self->_tagClass forKey:@"tagClass"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
 }
 
 - (id)_makeDocumentResourceProvider
@@ -152,12 +152,12 @@
     v4 = objc_alloc(MEMORY[0x1E69635F8]);
     url = self->_url;
     v24 = 0;
-    v6 = [v4 initWithURL:url allowPlaceholder:1 error:&v24];
+    containingBundleRecord = [v4 initWithURL:url allowPlaceholder:1 error:&v24];
     v7 = v24;
-    if (v6)
+    if (containingBundleRecord)
     {
 LABEL_16:
-      v8 = v6;
+      v8 = containingBundleRecord;
       goto LABEL_17;
     }
 
@@ -208,13 +208,13 @@ LABEL_15:
       _os_log_impl(&dword_1A77B8000, v8, OS_LOG_TYPE_DEFAULT, "ApplicationExtension record not found for URL %@ with error: %@", buf, 0x16u);
     }
 
-    v6 = 0;
+    containingBundleRecord = 0;
     goto LABEL_15;
   }
 
   if (([v8 _is_canProvideIconResources]& 1) == 0)
   {
-    v6 = [v8 containingBundleRecord];
+    containingBundleRecord = [v8 containingBundleRecord];
     goto LABEL_15;
   }
 
@@ -259,9 +259,9 @@ LABEL_22:
 LABEL_27:
   if (![(ISResourceProvider *)v13 options])
   {
-    v18 = [(ISBundleResourceProvider *)v13 iconResource];
+    iconResource = [(ISBundleResourceProvider *)v13 iconResource];
 
-    if (!v18)
+    if (!iconResource)
     {
       v19 = _ISDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -320,14 +320,14 @@ LABEL_16:
         v17 = v5;
 LABEL_17:
         v7 = 0;
-        v18 = v5;
+        containingBundleRecord = v5;
         goto LABEL_18;
       }
 
       v7 = v5;
       v9 = +[ISCustomIconManager sharedInstance];
-      v10 = [v7 bundleIdentifier];
-      v11 = [v9 overrideResourceForBundleIdentifier:v10];
+      bundleIdentifier = [v7 bundleIdentifier];
+      v11 = [v9 overrideResourceForBundleIdentifier:bundleIdentifier];
 
       if (v11)
       {
@@ -389,7 +389,7 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v18 = [v5 containingBundleRecord];
+    containingBundleRecord = [v5 containingBundleRecord];
   }
 
   else
@@ -406,13 +406,13 @@ LABEL_21:
     }
 
     v7 = 0;
-    v18 = 0;
+    containingBundleRecord = 0;
   }
 
 LABEL_18:
 
   v19 = v6;
-  v6 = v18;
+  v6 = containingBundleRecord;
 LABEL_19:
 
   if (!v6)
@@ -427,16 +427,16 @@ LABEL_19:
   }
 
 LABEL_27:
-  v22 = [(ISBundleResourceProvider *)v12 iconResource];
-  if (v22)
+  iconResource = [(ISBundleResourceProvider *)v12 iconResource];
+  if (iconResource)
   {
   }
 
   else
   {
-    v23 = [(ISResourceProvider *)v12 customRecipe];
+    customRecipe = [(ISResourceProvider *)v12 customRecipe];
 
-    if (!v23)
+    if (!customRecipe)
     {
       v24 = _ISDefaultLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -468,15 +468,15 @@ LABEL_36:
 {
   if (self->_tag && self->_tagClass || self->_type)
   {
-    v2 = [(ISBundleIcon *)self _makeDocumentResourceProvider];
+    _makeDocumentResourceProvider = [(ISBundleIcon *)self _makeDocumentResourceProvider];
   }
 
   else
   {
-    v2 = [(ISBundleIcon *)self _makeAppResourceProvider];
+    _makeDocumentResourceProvider = [(ISBundleIcon *)self _makeAppResourceProvider];
   }
 
-  return v2;
+  return _makeDocumentResourceProvider;
 }
 
 - (id)description
@@ -488,8 +488,8 @@ LABEL_36:
   type = self->_type;
   tag = self->_tag;
   tagClass = self->_tagClass;
-  v10 = [(ISConcreteIcon *)self digest];
-  v11 = [v3 initWithFormat:@"<%s %p> Bundle URL: %@ type: %@ tag: %@ tag class: %@ digest:%@", Name, self, url, type, tag, tagClass, v10];
+  digest = [(ISConcreteIcon *)self digest];
+  v11 = [v3 initWithFormat:@"<%s %p> Bundle URL: %@ type: %@ tag: %@ tag class: %@ digest:%@", Name, self, url, type, tag, tagClass, digest];
 
   return v11;
 }
@@ -497,7 +497,7 @@ LABEL_36:
 - (void)_makeDocumentResourceProvider
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [*a1 path];
+  path = [*self path];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_1_3(&dword_1A77B8000, v2, v3, "Failed to find document icon resources for %@ - %@. Creating placeholder provider", v4, v5, v6, v7, v9);
 
@@ -507,7 +507,7 @@ LABEL_36:
 - (void)_makeAppResourceProvider
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [*a1 path];
+  path = [*self path];
   OUTLINED_FUNCTION_0_3();
   OUTLINED_FUNCTION_1_3(&dword_1A77B8000, v2, v3, "Failed to find icon resources for %@ - %@. Creating placeholder provider", v4, v5, v6, v7, v9);
 

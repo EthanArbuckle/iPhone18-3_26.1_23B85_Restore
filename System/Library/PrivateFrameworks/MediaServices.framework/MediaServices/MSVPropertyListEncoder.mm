@@ -1,5 +1,5 @@
 @interface MSVPropertyListEncoder
-- (MSVPropertyListEncoder)initWithOutputFileHandle:(id)a3;
+- (MSVPropertyListEncoder)initWithOutputFileHandle:(id)handle;
 - (NSData)BOOLFalseTagData;
 - (NSData)BOOLTrueTagData;
 - (NSData)arrayClosingTagData;
@@ -13,46 +13,46 @@
 - (NSData)stringClosingTagData;
 - (NSData)stringOpeningTagData;
 - (NSDateFormatter)dateFormatter;
-- (void)_addObject:(id)a3;
+- (void)_addObject:(id)object;
 - (void)_decrementTabPrefix;
-- (void)_encodeData:(id)a3;
-- (void)_encodeDate:(id)a3;
-- (void)_encodeNumber:(id)a3;
-- (void)_encodeString:(id)a3;
+- (void)_encodeData:(id)data;
+- (void)_encodeDate:(id)date;
+- (void)_encodeNumber:(id)number;
+- (void)_encodeString:(id)string;
 - (void)_flushOutputBuffer;
 - (void)_incrementTabPrefix;
 - (void)_startArray;
 - (void)_startDictionary;
-- (void)_writeData:(id)a3;
-- (void)_writeDictionaryKey:(id)a3;
-- (void)_writeString:(id)a3;
-- (void)addObject:(id)a3;
+- (void)_writeData:(id)data;
+- (void)_writeDictionaryKey:(id)key;
+- (void)_writeString:(id)string;
+- (void)addObject:(id)object;
 - (void)close;
 - (void)endArray;
 - (void)endDictionary;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)startArray;
-- (void)startArrayForKey:(id)a3;
-- (void)startDictionaryForKey:(id)a3;
+- (void)startArrayForKey:(id)key;
+- (void)startDictionaryForKey:(id)key;
 @end
 
 @implementation MSVPropertyListEncoder
 
-- (void)_writeString:(id)a3
+- (void)_writeString:(id)string
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF88] dataWithCapacity:{-[__CFString length](v4, "length")}];
-  v6 = [(__CFString *)v4 length];
-  theString = v4;
+  stringCopy = string;
+  v5 = [MEMORY[0x1E695DF88] dataWithCapacity:{-[__CFString length](stringCopy, "length")}];
+  v6 = [(__CFString *)stringCopy length];
+  theString = stringCopy;
   v38 = 0;
   v39 = v6;
-  CharactersPtr = CFStringGetCharactersPtr(v4);
+  CharactersPtr = CFStringGetCharactersPtr(stringCopy);
   CStringPtr = 0;
   v36 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v4, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(stringCopy, 0x600u);
   }
 
   v33 = 0u;
@@ -68,7 +68,7 @@
   v37 = CStringPtr;
   if (v6)
   {
-    v26 = self;
+    selfCopy = self;
     v9 = 0;
     v10 = 0;
     v11 = 0;
@@ -186,7 +186,7 @@ LABEL_36:
       ++v12;
       if (v6 == v11)
       {
-        self = v26;
+        self = selfCopy;
         if (v10)
         {
           _MSVPropertyListEncoderAppendCharacters(v5, v42, v10);
@@ -208,90 +208,90 @@ LABEL_48:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_writeDictionaryKey:(id)a3
+- (void)_writeDictionaryKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v5];
+  keyCopy = key;
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v6 = [(MSVPropertyListEncoder *)self keyOpeningTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v6];
+  keyOpeningTagData = [(MSVPropertyListEncoder *)self keyOpeningTagData];
+  [(MSVPropertyListEncoder *)self _writeData:keyOpeningTagData];
 
-  [(MSVPropertyListEncoder *)self _writeString:v4];
-  v7 = [(MSVPropertyListEncoder *)self keyClosingTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v7];
+  [(MSVPropertyListEncoder *)self _writeString:keyCopy];
+  keyClosingTagData = [(MSVPropertyListEncoder *)self keyClosingTagData];
+  [(MSVPropertyListEncoder *)self _writeData:keyClosingTagData];
 }
 
 - (void)_decrementTabPrefix
 {
-  v3 = [(MSVPropertyListEncoder *)self tabPrefix];
-  v4 = [(MSVPropertyListEncoder *)self tabPrefix];
-  [v3 deleteCharactersInRange:{objc_msgSend(v4, "length") - 1, 1}];
+  tabPrefix = [(MSVPropertyListEncoder *)self tabPrefix];
+  tabPrefix2 = [(MSVPropertyListEncoder *)self tabPrefix];
+  [tabPrefix deleteCharactersInRange:{objc_msgSend(tabPrefix2, "length") - 1, 1}];
 
-  v6 = [(MSVPropertyListEncoder *)self tabPrefix];
-  v5 = [v6 dataUsingEncoding:4];
+  tabPrefix3 = [(MSVPropertyListEncoder *)self tabPrefix];
+  v5 = [tabPrefix3 dataUsingEncoding:4];
   [(MSVPropertyListEncoder *)self setTabPrefixData:v5];
 }
 
 - (void)_incrementTabPrefix
 {
-  v3 = [(MSVPropertyListEncoder *)self tabPrefix];
-  [v3 appendString:@"\t"];
+  tabPrefix = [(MSVPropertyListEncoder *)self tabPrefix];
+  [tabPrefix appendString:@"\t"];
 
-  v5 = [(MSVPropertyListEncoder *)self tabPrefix];
-  v4 = [v5 dataUsingEncoding:4];
+  tabPrefix2 = [(MSVPropertyListEncoder *)self tabPrefix];
+  v4 = [tabPrefix2 dataUsingEncoding:4];
   [(MSVPropertyListEncoder *)self setTabPrefixData:v4];
 }
 
 - (void)_startDictionary
 {
-  v3 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v3];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v4 = [(MSVPropertyListEncoder *)self dictionaryOpeningTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v4];
+  dictionaryOpeningTagData = [(MSVPropertyListEncoder *)self dictionaryOpeningTagData];
+  [(MSVPropertyListEncoder *)self _writeData:dictionaryOpeningTagData];
 
-  v5 = [(MSVPropertyListEncoder *)self containerStack];
-  [v5 addObject:objc_opt_class()];
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  [containerStack addObject:objc_opt_class()];
 
   [(MSVPropertyListEncoder *)self _incrementTabPrefix];
 }
 
 - (void)_startArray
 {
-  v3 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v3];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v4 = [(MSVPropertyListEncoder *)self arrayOpeningTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v4];
+  arrayOpeningTagData = [(MSVPropertyListEncoder *)self arrayOpeningTagData];
+  [(MSVPropertyListEncoder *)self _writeData:arrayOpeningTagData];
 
-  v5 = [(MSVPropertyListEncoder *)self containerStack];
-  [v5 addObject:objc_opt_class()];
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  [containerStack addObject:objc_opt_class()];
 
   [(MSVPropertyListEncoder *)self _incrementTabPrefix];
 }
 
-- (void)_encodeData:(id)a3
+- (void)_encodeData:(id)data
 {
-  v20 = a3;
-  v4 = [(MSVPropertyListEncoder *)self tabPrefix];
-  if ([(__CFString *)v4 length]>= 9)
+  dataCopy = data;
+  tabPrefix = [(MSVPropertyListEncoder *)self tabPrefix];
+  if ([(__CFString *)tabPrefix length]>= 9)
   {
 
-    v4 = @"\t\t\t\t\t\t\t\t";
+    tabPrefix = @"\t\t\t\t\t\t\t\t";
   }
 
-  v5 = [(__CFString *)v4 dataUsingEncoding:4];
+  v5 = [(__CFString *)tabPrefix dataUsingEncoding:4];
   v6 = [@"\n" dataUsingEncoding:4];
-  v19 = v4;
-  v7 = [(__CFString *)v4 length];
-  v8 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v8];
+  v19 = tabPrefix;
+  v7 = [(__CFString *)tabPrefix length];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v9 = [(MSVPropertyListEncoder *)self dataOpeningTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v9];
+  dataOpeningTagData = [(MSVPropertyListEncoder *)self dataOpeningTagData];
+  [(MSVPropertyListEncoder *)self _writeData:dataOpeningTagData];
 
-  v10 = [v20 base64EncodedStringWithOptions:0];
+  v10 = [dataCopy base64EncodedStringWithOptions:0];
   v11 = [v10 length];
   if ([v10 length])
   {
@@ -323,36 +323,36 @@ LABEL_48:
     while (v12 < [v10 length]);
   }
 
-  v17 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v17];
+  tabPrefixData2 = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData2];
 
-  v18 = [(MSVPropertyListEncoder *)self dataClosingTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v18];
+  dataClosingTagData = [(MSVPropertyListEncoder *)self dataClosingTagData];
+  [(MSVPropertyListEncoder *)self _writeData:dataClosingTagData];
 }
 
-- (void)_encodeDate:(id)a3
+- (void)_encodeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v5];
+  dateCopy = date;
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v8 = [(MSVPropertyListEncoder *)self dateFormatter];
-  v6 = [v8 stringFromDate:v4];
+  dateFormatter = [(MSVPropertyListEncoder *)self dateFormatter];
+  v6 = [dateFormatter stringFromDate:dateCopy];
 
   v7 = [v6 dataUsingEncoding:4];
   [(MSVPropertyListEncoder *)self _writeData:v7];
 }
 
-- (void)_encodeNumber:(id)a3
+- (void)_encodeNumber:(id)number
 {
-  v4 = a3;
-  v5 = CFGetTypeID(v4);
+  numberCopy = number;
+  v5 = CFGetTypeID(numberCopy);
   if (v5 != CFBooleanGetTypeID())
   {
-    if (CFNumberIsFloatType(v4))
+    if (CFNumberIsFloatType(numberCopy))
     {
       valuePtr = 0.0;
-      CFNumberGetValue(v4, kCFNumberFloat64Type, &valuePtr);
+      CFNumberGetValue(numberCopy, kCFNumberFloat64Type, &valuePtr);
       v6 = valuePtr;
       if (valuePtr == 0.0)
       {
@@ -390,14 +390,14 @@ LABEL_18:
 
     else
     {
-      v9 = CFStringCreateWithFormat(*MEMORY[0x1E695E4A8], 0, @"<integer>%@</integer>\n", v4);
+      v9 = CFStringCreateWithFormat(*MEMORY[0x1E695E4A8], 0, @"<integer>%@</integer>\n", numberCopy);
     }
 
     v7 = v9;
     goto LABEL_18;
   }
 
-  if (CFBooleanGetValue(v4))
+  if (CFBooleanGetValue(numberCopy))
   {
     [(MSVPropertyListEncoder *)self BOOLTrueTagData];
   }
@@ -408,34 +408,34 @@ LABEL_18:
   }
   v8 = ;
 LABEL_19:
-  v12 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v12];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
   [(MSVPropertyListEncoder *)self _writeData:v8];
 }
 
-- (void)_encodeString:(id)a3
+- (void)_encodeString:(id)string
 {
-  v4 = a3;
-  v5 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v5];
+  stringCopy = string;
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v6 = [(MSVPropertyListEncoder *)self stringOpeningTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v6];
+  stringOpeningTagData = [(MSVPropertyListEncoder *)self stringOpeningTagData];
+  [(MSVPropertyListEncoder *)self _writeData:stringOpeningTagData];
 
-  [(MSVPropertyListEncoder *)self _writeString:v4];
-  v7 = [(MSVPropertyListEncoder *)self stringClosingTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v7];
+  [(MSVPropertyListEncoder *)self _writeString:stringCopy];
+  stringClosingTagData = [(MSVPropertyListEncoder *)self stringClosingTagData];
+  [(MSVPropertyListEncoder *)self _writeData:stringClosingTagData];
 }
 
-- (void)_addObject:(id)a3
+- (void)_addObject:(id)object
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MSVPropertyListEncoder *)self _encodeString:v5];
+    [(MSVPropertyListEncoder *)self _encodeString:objectCopy];
   }
 
   else
@@ -443,7 +443,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(MSVPropertyListEncoder *)self _encodeNumber:v5];
+      [(MSVPropertyListEncoder *)self _encodeNumber:objectCopy];
     }
 
     else
@@ -451,7 +451,7 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(MSVPropertyListEncoder *)self _encodeDate:v5];
+        [(MSVPropertyListEncoder *)self _encodeDate:objectCopy];
       }
 
       else
@@ -459,7 +459,7 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(MSVPropertyListEncoder *)self _encodeData:v5];
+          [(MSVPropertyListEncoder *)self _encodeData:objectCopy];
         }
 
         else
@@ -468,9 +468,9 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             [(MSVPropertyListEncoder *)self _startDictionary];
-            v6 = v5;
-            v7 = [v6 allKeys];
-            v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+            v6 = objectCopy;
+            allKeys = [v6 allKeys];
+            v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
             v28 = 0u;
             v29 = 0u;
@@ -510,14 +510,14 @@ LABEL_19:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v20 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v20 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:299 description:{@"Cannot encode object of type %@", objc_opt_class()}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:299 description:{@"Cannot encode object of type %@", objc_opt_class()}];
 
               goto LABEL_29;
             }
 
             [(MSVPropertyListEncoder *)self _startArray];
-            v6 = v5;
+            v6 = objectCopy;
             v22 = 0u;
             v23 = 0u;
             v24 = 0u;
@@ -559,28 +559,28 @@ LABEL_29:
 
 - (void)_flushOutputBuffer
 {
-  v3 = [(MSVPropertyListEncoder *)self outputFileHandle];
-  v4 = [(MSVPropertyListEncoder *)self outputBuffer];
-  [v3 writeData:v4];
+  outputFileHandle = [(MSVPropertyListEncoder *)self outputFileHandle];
+  outputBuffer = [(MSVPropertyListEncoder *)self outputBuffer];
+  [outputFileHandle writeData:outputBuffer];
 
-  v5 = [(MSVPropertyListEncoder *)self outputBuffer];
-  [v5 setLength:0];
+  outputBuffer2 = [(MSVPropertyListEncoder *)self outputBuffer];
+  [outputBuffer2 setLength:0];
 }
 
-- (void)_writeData:(id)a3
+- (void)_writeData:(id)data
 {
-  v8 = a3;
-  v4 = [(MSVPropertyListEncoder *)self outputBuffer];
-  v5 = [v4 length];
-  v6 = [v8 length] + v5;
+  dataCopy = data;
+  outputBuffer = [(MSVPropertyListEncoder *)self outputBuffer];
+  v5 = [outputBuffer length];
+  v6 = [dataCopy length] + v5;
 
   if (v6 > 0x2000)
   {
     [(MSVPropertyListEncoder *)self _flushOutputBuffer];
   }
 
-  v7 = [(MSVPropertyListEncoder *)self outputBuffer];
-  [v7 appendData:v8];
+  outputBuffer2 = [(MSVPropertyListEncoder *)self outputBuffer];
+  [outputBuffer2 appendData:dataCopy];
 }
 
 - (NSData)BOOLFalseTagData
@@ -788,15 +788,15 @@ LABEL_29:
 - (void)close
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(MSVPropertyListEncoder *)self containerStack];
-  v5 = [v4 copy];
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  v5 = [containerStack copy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -807,7 +807,7 @@ LABEL_29:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -823,12 +823,12 @@ LABEL_29:
 
         else
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v12 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:147 description:{@"Invalid container type: %@", v11}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:147 description:{@"Invalid container type: %@", v11}];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -838,144 +838,144 @@ LABEL_29:
   [(MSVPropertyListEncoder *)self _writeData:v13];
 
   [(MSVPropertyListEncoder *)self _flushOutputBuffer];
-  v14 = [(MSVPropertyListEncoder *)self outputFileHandle];
-  [v14 closeFile];
+  outputFileHandle = [(MSVPropertyListEncoder *)self outputFileHandle];
+  [outputFileHandle closeFile];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
 - (void)endDictionary
 {
-  v4 = [(MSVPropertyListEncoder *)self containerStack];
-  v5 = [v4 lastObject];
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v6 = objc_opt_class();
 
-  if (v5 != v6)
+  if (lastObject != v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:128 description:@"Can only end a dictionary if the current parent is a dictionary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:128 description:@"Can only end a dictionary if the current parent is a dictionary"];
   }
 
-  v7 = [(MSVPropertyListEncoder *)self containerStack];
-  [v7 removeLastObject];
+  containerStack2 = [(MSVPropertyListEncoder *)self containerStack];
+  [containerStack2 removeLastObject];
 
   [(MSVPropertyListEncoder *)self _decrementTabPrefix];
-  v8 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v8];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v10 = [(MSVPropertyListEncoder *)self dictionaryClosingTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v10];
+  dictionaryClosingTagData = [(MSVPropertyListEncoder *)self dictionaryClosingTagData];
+  [(MSVPropertyListEncoder *)self _writeData:dictionaryClosingTagData];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v12 = a4;
-  v7 = a3;
-  v8 = [(MSVPropertyListEncoder *)self containerStack];
-  v9 = [v8 lastObject];
+  keyCopy = key;
+  objectCopy = object;
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v10 = objc_opt_class();
 
-  if (v9 != v10)
+  if (lastObject != v10)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:121 description:@"Can only set an object for a key if the current parent is a dictionary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:121 description:@"Can only set an object for a key if the current parent is a dictionary"];
   }
 
-  [(MSVPropertyListEncoder *)self _writeDictionaryKey:v12];
-  [(MSVPropertyListEncoder *)self _addObject:v7];
+  [(MSVPropertyListEncoder *)self _writeDictionaryKey:keyCopy];
+  [(MSVPropertyListEncoder *)self _addObject:objectCopy];
 }
 
-- (void)startDictionaryForKey:(id)a3
+- (void)startDictionaryForKey:(id)key
 {
-  v9 = a3;
-  v5 = [(MSVPropertyListEncoder *)self containerStack];
-  v6 = [v5 lastObject];
+  keyCopy = key;
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v7 = objc_opt_class();
 
-  if (v6 != v7)
+  if (lastObject != v7)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:113 description:@"Can only start a dictionary for a key if the current parent is a dictionary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:113 description:@"Can only start a dictionary for a key if the current parent is a dictionary"];
   }
 
-  [(MSVPropertyListEncoder *)self _writeDictionaryKey:v9];
+  [(MSVPropertyListEncoder *)self _writeDictionaryKey:keyCopy];
   [(MSVPropertyListEncoder *)self _startDictionary];
 }
 
 - (void)endArray
 {
-  v4 = [(MSVPropertyListEncoder *)self containerStack];
-  v5 = [v4 lastObject];
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v6 = objc_opt_class();
 
-  if (v5 != v6)
+  if (lastObject != v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:99 description:@"Can only end an array if the current parent is an array."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:99 description:@"Can only end an array if the current parent is an array."];
   }
 
-  v7 = [(MSVPropertyListEncoder *)self containerStack];
-  [v7 removeLastObject];
+  containerStack2 = [(MSVPropertyListEncoder *)self containerStack];
+  [containerStack2 removeLastObject];
 
   [(MSVPropertyListEncoder *)self _decrementTabPrefix];
-  v8 = [(MSVPropertyListEncoder *)self tabPrefixData];
-  [(MSVPropertyListEncoder *)self _writeData:v8];
+  tabPrefixData = [(MSVPropertyListEncoder *)self tabPrefixData];
+  [(MSVPropertyListEncoder *)self _writeData:tabPrefixData];
 
-  v10 = [(MSVPropertyListEncoder *)self arrayClosingTagData];
-  [(MSVPropertyListEncoder *)self _writeData:v10];
+  arrayClosingTagData = [(MSVPropertyListEncoder *)self arrayClosingTagData];
+  [(MSVPropertyListEncoder *)self _writeData:arrayClosingTagData];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v9 = a3;
-  v5 = [(MSVPropertyListEncoder *)self containerStack];
-  v6 = [v5 lastObject];
+  objectCopy = object;
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v7 = objc_opt_class();
 
-  if (v6 != v7)
+  if (lastObject != v7)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:93 description:@"Can only add an object if the current parent is an array."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:93 description:@"Can only add an object if the current parent is an array."];
   }
 
-  [(MSVPropertyListEncoder *)self _addObject:v9];
+  [(MSVPropertyListEncoder *)self _addObject:objectCopy];
 }
 
-- (void)startArrayForKey:(id)a3
+- (void)startArrayForKey:(id)key
 {
-  v9 = a3;
-  v5 = [(MSVPropertyListEncoder *)self containerStack];
-  v6 = [v5 lastObject];
+  keyCopy = key;
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
   v7 = objc_opt_class();
 
-  if (v6 != v7)
+  if (lastObject != v7)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:85 description:@"Can only start an array for a key if the current parent is a dictionary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:85 description:@"Can only start an array for a key if the current parent is a dictionary"];
   }
 
-  [(MSVPropertyListEncoder *)self _writeDictionaryKey:v9];
+  [(MSVPropertyListEncoder *)self _writeDictionaryKey:keyCopy];
   [(MSVPropertyListEncoder *)self _startArray];
 }
 
 - (void)startArray
 {
-  v4 = [(MSVPropertyListEncoder *)self containerStack];
-  v5 = [v4 lastObject];
-  if (v5)
+  containerStack = [(MSVPropertyListEncoder *)self containerStack];
+  lastObject = [containerStack lastObject];
+  if (lastObject)
   {
-    v6 = v5;
-    v7 = [(MSVPropertyListEncoder *)self containerStack];
-    v8 = [v7 lastObject];
+    v6 = lastObject;
+    containerStack2 = [(MSVPropertyListEncoder *)self containerStack];
+    lastObject2 = [containerStack2 lastObject];
     v9 = objc_opt_class();
 
-    if (v8 == v9)
+    if (lastObject2 == v9)
     {
       goto LABEL_5;
     }
 
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:79 description:@"Can only start an array as the root object or if the current parent is an array. To stream an array into the value of a dictionary key use startArrayForKey:"];
+    containerStack = [MEMORY[0x1E696AAA8] currentHandler];
+    [containerStack handleFailureInMethod:a2 object:self file:@"MSVPropertyListEncoder.m" lineNumber:79 description:@"Can only start an array as the root object or if the current parent is an array. To stream an array into the value of a dictionary key use startArrayForKey:"];
   }
 
 LABEL_5:
@@ -983,16 +983,16 @@ LABEL_5:
   [(MSVPropertyListEncoder *)self _startArray];
 }
 
-- (MSVPropertyListEncoder)initWithOutputFileHandle:(id)a3
+- (MSVPropertyListEncoder)initWithOutputFileHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = MSVPropertyListEncoder;
   v6 = [(MSVPropertyListEncoder *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputFileHandle, a3);
+    objc_storeStrong(&v6->_outputFileHandle, handle);
     v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:0x2000];
     outputBuffer = v7->_outputBuffer;
     v7->_outputBuffer = v8;

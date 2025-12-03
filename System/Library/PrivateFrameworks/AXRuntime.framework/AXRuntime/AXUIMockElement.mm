@@ -1,85 +1,85 @@
 @interface AXUIMockElement
-+ (id)uiElementAtCoordinate:(CGPoint)a3;
++ (id)uiElementAtCoordinate:(CGPoint)coordinate;
 - (AXUIMockElement)init;
-- (BOOL)BOOLWithAXAttribute:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performAXAction:(int)a3;
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4;
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
-- (CGPoint)pointForLineNumber:(unint64_t)a3;
-- (CGPoint)pointWithAXAttribute:(int64_t)a3;
-- (CGRect)rectWithAXAttribute:(int64_t)a3;
-- (CGSize)sizeWithAXAttribute:(int64_t)a3;
-- (_NSRange)rangeWithAXAttribute:(int64_t)a3;
-- (float)floatWithAXAttribute:(int64_t)a3;
-- (id)_valueForAttribute:(int64_t)a3;
+- (BOOL)BOOLWithAXAttribute:(int64_t)attribute;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performAXAction:(int)action;
+- (BOOL)performAXAction:(int)action withValue:(id)value;
+- (BOOL)performAXAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
+- (CGPoint)pointForLineNumber:(unint64_t)number;
+- (CGPoint)pointWithAXAttribute:(int64_t)attribute;
+- (CGRect)rectWithAXAttribute:(int64_t)attribute;
+- (CGSize)sizeWithAXAttribute:(int64_t)attribute;
+- (_NSRange)rangeWithAXAttribute:(int64_t)attribute;
+- (float)floatWithAXAttribute:(int64_t)attribute;
+- (id)_valueForAttribute:(int64_t)attribute;
 - (id)cachedAttributes;
 - (id)copyCachedAttributes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)endLoggingActions;
-- (id)nextElementsWithCount:(unint64_t)a3;
-- (id)nextElementsWithParameters:(id)a3;
-- (id)numberWithAXAttribute:(int64_t)a3;
-- (id)objectWithAXAttribute:(int64_t)a3 parameter:(void *)a4;
-- (id)performBlockWhileLoggingPerformedActions:(id)a3;
-- (id)previousElementsWithCount:(unint64_t)a3;
-- (id)previousElementsWithParameters:(id)a3;
-- (id)stringWithAXAttribute:(int64_t)a3;
-- (id)uiElementWithAXAttribute:(int64_t)a3;
-- (int64_t)longWithAXAttribute:(int64_t)a3;
-- (unint64_t)arrayCountWithAXAttribute:(int64_t)a3;
+- (id)nextElementsWithCount:(unint64_t)count;
+- (id)nextElementsWithParameters:(id)parameters;
+- (id)numberWithAXAttribute:(int64_t)attribute;
+- (id)objectWithAXAttribute:(int64_t)attribute parameter:(void *)parameter;
+- (id)performBlockWhileLoggingPerformedActions:(id)actions;
+- (id)previousElementsWithCount:(unint64_t)count;
+- (id)previousElementsWithParameters:(id)parameters;
+- (id)stringWithAXAttribute:(int64_t)attribute;
+- (id)uiElementWithAXAttribute:(int64_t)attribute;
+- (int64_t)longWithAXAttribute:(int64_t)attribute;
+- (unint64_t)arrayCountWithAXAttribute:(int64_t)attribute;
 - (unint64_t)hash;
-- (void)setAXAttribute:(int64_t)a3 withArray:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withBOOL:(BOOL)a4;
-- (void)setAXAttribute:(int64_t)a3 withFloat:(float)a4;
-- (void)setAXAttribute:(int64_t)a3 withLong:(int64_t)a4;
-- (void)setAXAttribute:(int64_t)a3 withNumber:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4 synchronous:(BOOL)a5;
-- (void)setAXAttribute:(int64_t)a3 withPoint:(CGPoint)a4;
-- (void)setAXAttribute:(int64_t)a3 withRange:(_NSRange)a4;
-- (void)setAXAttribute:(int64_t)a3 withSize:(CGSize)a4;
-- (void)setAXAttribute:(int64_t)a3 withString:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withUIElement:(id)a4;
-- (void)setAXAttribute:(int64_t)a3 withUIElementArray:(id)a4;
-- (void)setValue:(id)a3 forAXAttribute:(int64_t)a4;
-- (void)setValue:(id)a3 forAXParameterizedAttribute:(int64_t)a4;
-- (void)setWritable:(BOOL)a3 forAXAttribute:(int64_t)a4;
+- (void)setAXAttribute:(int64_t)attribute withArray:(id)array;
+- (void)setAXAttribute:(int64_t)attribute withBOOL:(BOOL)l;
+- (void)setAXAttribute:(int64_t)attribute withFloat:(float)float;
+- (void)setAXAttribute:(int64_t)attribute withLong:(int64_t)long;
+- (void)setAXAttribute:(int64_t)attribute withNumber:(id)number;
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object;
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object synchronous:(BOOL)synchronous;
+- (void)setAXAttribute:(int64_t)attribute withPoint:(CGPoint)point;
+- (void)setAXAttribute:(int64_t)attribute withRange:(_NSRange)range;
+- (void)setAXAttribute:(int64_t)attribute withSize:(CGSize)size;
+- (void)setAXAttribute:(int64_t)attribute withString:(id)string;
+- (void)setAXAttribute:(int64_t)attribute withUIElement:(id)element;
+- (void)setAXAttribute:(int64_t)attribute withUIElementArray:(id)array;
+- (void)setValue:(id)value forAXAttribute:(int64_t)attribute;
+- (void)setValue:(id)value forAXParameterizedAttribute:(int64_t)attribute;
+- (void)setWritable:(BOOL)writable forAXAttribute:(int64_t)attribute;
 - (void)startLoggingActions;
-- (void)updateCache:(int64_t)a3;
+- (void)updateCache:(int64_t)cache;
 @end
 
 @implementation AXUIMockElement
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXUIMockElement);
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_attributes mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_attributes mutableCopy];
   attributes = v4->_attributes;
   v4->_attributes = v6;
 
-  v8 = [(NSMutableDictionary *)v5->_writableAttributes mutableCopy];
+  v8 = [(NSMutableDictionary *)selfCopy->_writableAttributes mutableCopy];
   writableAttributes = v4->_writableAttributes;
   v4->_writableAttributes = v8;
 
-  v10 = [(NSMutableDictionary *)v5->_performActionLog mutableCopy];
+  v10 = [(NSMutableDictionary *)selfCopy->_performActionLog mutableCopy];
   performActionLog = v4->_performActionLog;
   v4->_performActionLog = v10;
 
-  v12 = _Block_copy(v5->_handleActionBlock);
+  v12 = _Block_copy(selfCopy->_handleActionBlock);
   handleActionBlock = v4->_handleActionBlock;
   v4->_handleActionBlock = v12;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-+ (id)uiElementAtCoordinate:(CGPoint)a3
++ (id)uiElementAtCoordinate:(CGPoint)coordinate
 {
-  v3 = [a1 init];
+  v3 = [self init];
 
   return v3;
 }
@@ -127,11 +127,11 @@
   return performActionLog;
 }
 
-- (id)performBlockWhileLoggingPerformedActions:(id)a3
+- (id)performBlockWhileLoggingPerformedActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   [(AXUIMockElement *)self startLoggingActions];
-  v4[2](v4);
+  actionsCopy[2](actionsCopy);
 
   return [(AXUIMockElement *)self endLoggingActions];
 }
@@ -155,27 +155,27 @@
   return v17;
 }
 
-- (id)_valueForAttribute:(int64_t)a3
+- (id)_valueForAttribute:(int64_t)attribute
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  attributes = v4->_attributes;
-  v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attributes = selfCopy->_attributes;
+  v6 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
   v7 = [(NSMutableDictionary *)attributes objectForKey:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class() || (v6 = objc_opt_class(), ([v6 isSubclassOfClass:objc_opt_class()] & 1) != 0) || (v7 = objc_opt_class(), objc_msgSend(v7, "isSubclassOfClass:", objc_opt_class())))
   {
     v8 = [(AXUIMockElement *)self hash];
-    v9 = v8 == [v4 hash];
+    v9 = v8 == [equalCopy hash];
   }
 
   else
@@ -186,14 +186,14 @@
   return v9;
 }
 
-- (void)setWritable:(BOOL)a3 forAXAttribute:(int64_t)a4
+- (void)setWritable:(BOOL)writable forAXAttribute:(int64_t)attribute
 {
-  v5 = a3;
+  writableCopy = writable;
   obj = self;
   objc_sync_enter(obj);
   writableAttributes = obj->_writableAttributes;
-  v7 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-  if (v5)
+  v7 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
+  if (writableCopy)
   {
     v8 = MEMORY[0x1E695E118];
   }
@@ -208,9 +208,9 @@
   objc_sync_exit(obj);
 }
 
-- (id)uiElementWithAXAttribute:(int64_t)a3
+- (id)uiElementWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   NSClassFromString(@"AXUIElement");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -226,16 +226,16 @@
   return v4;
 }
 
-- (void)setValue:(id)a3 forAXAttribute:(int64_t)a4
+- (void)setValue:(id)value forAXAttribute:(int64_t)attribute
 {
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  attributes = v6->_attributes;
-  v8 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-  if (v9)
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attributes = selfCopy->_attributes;
+  v8 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)attributes setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)attributes setObject:valueCopy forKey:v8];
   }
 
   else
@@ -243,19 +243,19 @@
     [(NSMutableDictionary *)attributes removeObjectForKey:v8];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setValue:(id)a3 forAXParameterizedAttribute:(int64_t)a4
+- (void)setValue:(id)value forAXParameterizedAttribute:(int64_t)attribute
 {
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  attributes = v6->_attributes;
-  v8 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-  if (v9)
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attributes = selfCopy->_attributes;
+  v8 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)attributes setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)attributes setObject:valueCopy forKey:v8];
   }
 
   else
@@ -263,12 +263,12 @@
     [(NSMutableDictionary *)attributes removeObjectForKey:v8];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)stringWithAXAttribute:(int64_t)a3
+- (id)stringWithAXAttribute:(int64_t)attribute
 {
-  v4 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v4 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   if ([(AXUIMockElement *)self usesCarriageReturnAsLinesSeparator])
   {
     v5 = [v4 stringByReplacingOccurrencesOfString:@"\r" withString:&stru_1F3E63FB0];
@@ -279,36 +279,36 @@
   return v4;
 }
 
-- (BOOL)BOOLWithAXAttribute:(int64_t)a3
+- (BOOL)BOOLWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (float)floatWithAXAttribute:(int64_t)a3
+- (float)floatWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (int64_t)longWithAXAttribute:(int64_t)a3
+- (int64_t)longWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
-  v4 = [v3 longValue];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
-- (id)numberWithAXAttribute:(int64_t)a3
+- (id)numberWithAXAttribute:(int64_t)attribute
 {
-  if ((a3 - 4001) > 1)
+  if ((attribute - 4001) > 1)
   {
-    v7 = [(AXUIMockElement *)self _valueForAttribute:a3];
+    v7 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   }
 
   else
@@ -317,7 +317,7 @@
     v9 = xmmword_1BF7DE640;
     AXValueGetValue(-[AXUIMockElement objectWithAXAttribute:parameter:](self, "objectWithAXAttribute:parameter:", 94009, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5]), kAXValueTypeCFRange, &v9);
     v6 = *(&v9 + 1);
-    if (a3 == 4001)
+    if (attribute == 4001)
     {
       v6 = 0;
     }
@@ -328,9 +328,9 @@
   return v7;
 }
 
-- (CGPoint)pointWithAXAttribute:(int64_t)a3
+- (CGPoint)pointWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   [v3 pointValue];
   v5 = v4;
   v7 = v6;
@@ -342,9 +342,9 @@
   return result;
 }
 
-- (CGSize)sizeWithAXAttribute:(int64_t)a3
+- (CGSize)sizeWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   [v3 sizeValue];
   v5 = v4;
   v7 = v6;
@@ -356,14 +356,14 @@
   return result;
 }
 
-- (_NSRange)rangeWithAXAttribute:(int64_t)a3
+- (_NSRange)rangeWithAXAttribute:(int64_t)attribute
 {
   v4 = [(AXUIMockElement *)self _valueForAttribute:?];
   if (v4)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (a3 == 2005 && (isKindOfClass & 1) != 0)
+    if (attribute == 2005 && (isKindOfClass & 1) != 0)
     {
       v9 = 0uLL;
       AXValueGetValue([v4 firstObject], kAXValueTypeCFRange, &v9);
@@ -388,9 +388,9 @@
   return result;
 }
 
-- (CGRect)rectWithAXAttribute:(int64_t)a3
+- (CGRect)rectWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   [v3 rectValue];
   v5 = v4;
   v7 = v6;
@@ -408,24 +408,24 @@
   return result;
 }
 
-- (unint64_t)arrayCountWithAXAttribute:(int64_t)a3
+- (unint64_t)arrayCountWithAXAttribute:(int64_t)attribute
 {
-  v3 = [(AXUIMockElement *)self _valueForAttribute:a3];
+  v3 = [(AXUIMockElement *)self _valueForAttribute:attribute];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)objectWithAXAttribute:(int64_t)a3 parameter:(void *)a4
+- (id)objectWithAXAttribute:(int64_t)attribute parameter:(void *)parameter
 {
   v6 = 0;
-  if (a3 <= 94008)
+  if (attribute <= 94008)
   {
-    if (a3 <= 92504)
+    if (attribute <= 92504)
     {
-      if (a3 <= 2705)
+      if (attribute <= 2705)
       {
-        if (a3 <= 2703 && a3 != 2702 && a3 != 2703)
+        if (attribute <= 2703 && attribute != 2702 && attribute != 2703)
         {
           goto LABEL_67;
         }
@@ -433,11 +433,11 @@
         goto LABEL_65;
       }
 
-      if (a3 <= 92502)
+      if (attribute <= 92502)
       {
-        if (a3 != 2706)
+        if (attribute != 2706)
         {
-          if (a3 != 3000)
+          if (attribute != 3000)
           {
             goto LABEL_67;
           }
@@ -446,16 +446,16 @@
         }
 
 LABEL_65:
-        v15 = [(AXUIMockElement *)self _valueForAttribute:a3];
+        v15 = [(AXUIMockElement *)self _valueForAttribute:attribute];
         goto LABEL_66;
       }
 
-      if (a3 == 92503)
+      if (attribute == 92503)
       {
         if ([(AXUIMockElement *)self usesCarriageReturnAsLinesSeparator])
         {
           valuePtr = *MEMORY[0x1E695EFF8];
-          AXValueGetValue(a4, kAXValueTypeCGPoint, &valuePtr);
+          AXValueGetValue(parameter, kAXValueTypeCGPoint, &valuePtr);
           v16 = [(AXUIMockElement *)self _lineNumberForPoint:valuePtr];
           v7 = [(AXUIMockElement *)self _valueForAttribute:2006];
           v13 = [v7 componentsSeparatedByString:@"\r"];
@@ -478,17 +478,17 @@ LABEL_65:
 
       else if ([(AXUIMockElement *)self usesCarriageReturnAsLinesSeparator])
       {
-        v11 = [a4 objectForKey:@"lineNumber"];
-        v12 = [v11 unsignedIntegerValue];
+        v11 = [parameter objectForKey:@"lineNumber"];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
 
         v7 = [(AXUIMockElement *)self _valueForAttribute:2006];
         v13 = [v7 componentsSeparatedByString:@"\r"];
         valuePtr = xmmword_1BF7DE640;
-        if (v12 < [v13 count])
+        if (unsignedIntegerValue < [v13 count])
         {
-          if (v12)
+          if (unsignedIntegerValue)
           {
-            v14 = [v13 subarrayWithRange:{0, v12}];
+            v14 = [v13 subarrayWithRange:{0, unsignedIntegerValue}];
           }
 
           else
@@ -498,7 +498,7 @@ LABEL_65:
 
           v35 = [v14 componentsJoinedByString:&stru_1F3E63FB0];
           v36 = [v35 length];
-          v37 = [v13 objectAtIndex:v12];
+          v37 = [v13 objectAtIndex:unsignedIntegerValue];
           *&valuePtr = v36;
           *(&valuePtr + 1) = [v37 length];
         }
@@ -511,13 +511,13 @@ LABEL_65:
       goto LABEL_67;
     }
 
-    if (a3 > 92508)
+    if (attribute > 92508)
     {
-      if (a3 > 92701)
+      if (attribute > 92701)
       {
-        if (a3 != 92702)
+        if (attribute != 92702)
         {
-          if (a3 != 92704)
+          if (attribute != 92704)
           {
             goto LABEL_67;
           }
@@ -526,29 +526,29 @@ LABEL_65:
           goto LABEL_66;
         }
 
-        a3 = 92702;
+        attribute = 92702;
         goto LABEL_63;
       }
 
-      if ((a3 - 92509) >= 2)
+      if ((attribute - 92509) >= 2)
       {
-        if (a3 != 92517)
+        if (attribute != 92517)
         {
           goto LABEL_67;
         }
 
-        a3 = 92517;
+        attribute = 92517;
         goto LABEL_65;
       }
 
       goto LABEL_63;
     }
 
-    switch(a3)
+    switch(attribute)
     {
       case 92505:
         valuePtr = 0uLL;
-        AXValueGetValue(a4, kAXValueTypeCFRange, &valuePtr);
+        AXValueGetValue(parameter, kAXValueTypeCFRange, &valuePtr);
         v7 = [(AXUIMockElement *)self stringWithAXAttribute:2006];
         v20 = valuePtr;
         v41.length = [v7 length];
@@ -563,7 +563,7 @@ LABEL_66:
         goto LABEL_67;
       case 92508:
         valuePtr = 0uLL;
-        AXValueGetValue(a4, kAXValueTypeCFRange, &valuePtr);
+        AXValueGetValue(parameter, kAXValueTypeCFRange, &valuePtr);
         v7 = [(AXUIMockElement *)self stringWithAXAttribute:2006];
         v8 = valuePtr;
         v40.length = [v7 length];
@@ -595,15 +595,15 @@ LABEL_87:
     goto LABEL_67;
   }
 
-  if (a3 > 95231)
+  if (attribute > 95231)
   {
-    if (a3 > 95241)
+    if (attribute > 95241)
     {
-      if (a3 > 95243)
+      if (attribute > 95243)
       {
-        if (a3 != 95244)
+        if (attribute != 95244)
         {
-          if (a3 != 95253)
+          if (attribute != 95253)
           {
             goto LABEL_67;
           }
@@ -611,88 +611,88 @@ LABEL_87:
           goto LABEL_63;
         }
 
-        a3 = 95244;
+        attribute = 95244;
       }
 
-      else if (a3 == 95242)
+      else if (attribute == 95242)
       {
-        a3 = 95242;
+        attribute = 95242;
       }
 
       else
       {
-        a3 = 95243;
+        attribute = 95243;
       }
 
       goto LABEL_65;
     }
 
-    if (a3 > 95239)
+    if (attribute > 95239)
     {
-      if (a3 == 95240)
+      if (attribute == 95240)
       {
-        a3 = 95240;
+        attribute = 95240;
       }
 
       else
       {
-        a3 = 95241;
+        attribute = 95241;
       }
 
       goto LABEL_65;
     }
 
-    if (a3 != 95232)
+    if (attribute != 95232)
     {
-      if (a3 != 95239)
+      if (attribute != 95239)
       {
         goto LABEL_67;
       }
 
-      a3 = 95239;
+      attribute = 95239;
       goto LABEL_65;
     }
 
 LABEL_63:
-    v15 = [(AXUIMockElement *)self objectWithAXAttribute:a3];
+    v15 = [(AXUIMockElement *)self objectWithAXAttribute:attribute];
     goto LABEL_66;
   }
 
-  if (a3 <= 95226)
+  if (attribute <= 95226)
   {
-    if (a3 != 94009)
+    if (attribute != 94009)
     {
-      if (a3 == 94500)
+      if (attribute == 94500)
       {
-        a3 = 94500;
+        attribute = 94500;
       }
 
       else
       {
-        if (a3 != 95225)
+        if (attribute != 95225)
         {
           goto LABEL_67;
         }
 
-        a3 = 95225;
+        attribute = 95225;
       }
 
       goto LABEL_65;
     }
 
-    v23 = [a4 unsignedIntegerValue];
+    unsignedIntegerValue2 = [parameter unsignedIntegerValue];
     v7 = [(AXUIMockElement *)self stringWithAXAttribute:2006];
     v24 = [v7 length];
     valuePtr = xmmword_1BF7DE640;
-    v25 = v24 - v23;
-    if (v24 > v23)
+    v25 = v24 - unsignedIntegerValue2;
+    if (v24 > unsignedIntegerValue2)
     {
       v26 = v24;
-      v27 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v28 = [v7 rangeOfCharacterFromSet:v27 options:4 range:{0, v23}];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v28 = [v7 rangeOfCharacterFromSet:newlineCharacterSet options:4 range:{0, unsignedIntegerValue2}];
 
-      v29 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v30 = [v7 rangeOfCharacterFromSet:v29 options:0 range:{v23, v25}];
+      newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v30 = [v7 rangeOfCharacterFromSet:newlineCharacterSet2 options:0 range:{unsignedIntegerValue2, v25}];
 
       if (v28 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -722,7 +722,7 @@ LABEL_63:
     goto LABEL_79;
   }
 
-  if ((a3 - 95227) < 2 || (a3 - 95230) < 2)
+  if ((attribute - 95227) < 2 || (attribute - 95230) < 2)
   {
     goto LABEL_63;
   }
@@ -734,53 +734,53 @@ LABEL_67:
 
 - (id)cachedAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_attributes copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_attributes copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)copyCachedAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_attributes ax_deepMutableCopy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ax_deepMutableCopy = [(NSMutableDictionary *)selfCopy->_attributes ax_deepMutableCopy];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return ax_deepMutableCopy;
 }
 
-- (BOOL)performAXAction:(int)a3
+- (BOOL)performAXAction:(int)action
 {
-  v3 = *&a3;
-  v5 = [MEMORY[0x1E695DFB0] null];
+  v3 = *&action;
+  null = [MEMORY[0x1E695DFB0] null];
   performActionLog = self->_performActionLog;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-  [(NSMutableDictionary *)performActionLog setObject:v5 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)performActionLog setObject:null forKeyedSubscript:v7];
 
-  v8 = [(AXUIMockElement *)self handleActionBlock];
+  handleActionBlock = [(AXUIMockElement *)self handleActionBlock];
 
-  if (!v8)
+  if (!handleActionBlock)
   {
     return 0;
   }
 
-  v9 = [(AXUIMockElement *)self handleActionBlock];
-  v10 = v9[2](v9, v3, 0);
+  handleActionBlock2 = [(AXUIMockElement *)self handleActionBlock];
+  v10 = handleActionBlock2[2](handleActionBlock2, v3, 0);
 
   return v10;
 }
 
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4
+- (BOOL)performAXAction:(int)action withValue:(id)value
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&action;
+  valueCopy = value;
   if (v4 == 2505)
   {
     v7 = [(AXUIMockElement *)self _valueForAttribute:2006];
-    v8 = v6;
+    v8 = valueCopy;
     v9 = [v8 objectForKeyedSubscript:@"range"];
     v10 = NSRangeFromString(v9);
     v11 = [v8 objectForKeyedSubscript:@"replacement"];
@@ -791,14 +791,14 @@ LABEL_67:
 
   performActionLog = self->_performActionLog;
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-  [(NSMutableDictionary *)performActionLog setObject:v6 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)performActionLog setObject:valueCopy forKeyedSubscript:v14];
 
-  v15 = [(AXUIMockElement *)self handleActionBlock];
+  handleActionBlock = [(AXUIMockElement *)self handleActionBlock];
 
-  if (v15)
+  if (handleActionBlock)
   {
-    v16 = [(AXUIMockElement *)self handleActionBlock];
-    v17 = (v16)[2](v16, v4, v6);
+    handleActionBlock2 = [(AXUIMockElement *)self handleActionBlock];
+    v17 = (handleActionBlock2)[2](handleActionBlock2, v4, valueCopy);
   }
 
   else
@@ -809,16 +809,16 @@ LABEL_67:
   return v17;
 }
 
-- (BOOL)performAXAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)performAXAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
-  v5 = *&a3;
-  v7 = a4;
-  v8 = [(AXUIMockElement *)self handleActionBlock];
+  v5 = *&action;
+  valueCopy = value;
+  handleActionBlock = [(AXUIMockElement *)self handleActionBlock];
 
-  if (v8)
+  if (handleActionBlock)
   {
-    v9 = [(AXUIMockElement *)self handleActionBlock];
-    v10 = (v9)[2](v9, v5, v7);
+    handleActionBlock2 = [(AXUIMockElement *)self handleActionBlock];
+    v10 = (handleActionBlock2)[2](handleActionBlock2, v5, valueCopy);
   }
 
   else
@@ -829,203 +829,203 @@ LABEL_67:
   return v10;
 }
 
-- (id)previousElementsWithCount:(unint64_t)a3
+- (id)previousElementsWithCount:(unint64_t)count
 {
   [(AXUIMockElement *)self updateCache:92502];
 
   return [(AXUIMockElement *)self _valueForAttribute:92502];
 }
 
-- (id)nextElementsWithCount:(unint64_t)a3
+- (id)nextElementsWithCount:(unint64_t)count
 {
   [(AXUIMockElement *)self updateCache:92501];
 
   return [(AXUIMockElement *)self _valueForAttribute:92501];
 }
 
-- (id)nextElementsWithParameters:(id)a3
+- (id)nextElementsWithParameters:(id)parameters
 {
   [(AXUIMockElement *)self updateCache:92501];
 
   return [(AXUIMockElement *)self _valueForAttribute:92501];
 }
 
-- (id)previousElementsWithParameters:(id)a3
+- (id)previousElementsWithParameters:(id)parameters
 {
   [(AXUIMockElement *)self updateCache:92502];
 
   return [(AXUIMockElement *)self _valueForAttribute:92502];
 }
 
-- (void)updateCache:(int64_t)a3
+- (void)updateCache:(int64_t)cache
 {
-  v5 = [(AXUIMockElement *)self cacheUpdatedCallback];
+  cacheUpdatedCallback = [(AXUIMockElement *)self cacheUpdatedCallback];
 
-  if (v5)
+  if (cacheUpdatedCallback)
   {
-    v6 = [(AXUIMockElement *)self cacheUpdatedCallback];
-    v6[2](v6, self, a3);
+    cacheUpdatedCallback2 = [(AXUIMockElement *)self cacheUpdatedCallback];
+    cacheUpdatedCallback2[2](cacheUpdatedCallback2, self, cache);
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withBOOL:(BOOL)a4
+- (void)setAXAttribute:(int64_t)attribute withBOOL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   writableAttributes = self->_writableAttributes;
   v8 = [MEMORY[0x1E696AD98] numberWithLong:?];
   v9 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v8];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-    [(AXUIMockElement *)self setValue:v11 forAXAttribute:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:lCopy];
+    [(AXUIMockElement *)self setValue:v11 forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withString:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withString:(id)string
 {
-  v10 = a4;
+  stringCopy = string;
   writableAttributes = self->_writableAttributes;
-  v7 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
   v8 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    [(AXUIMockElement *)self setValue:v10 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:stringCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withLong:(int64_t)a4
+- (void)setAXAttribute:(int64_t)attribute withLong:(int64_t)long
 {
   writableAttributes = self->_writableAttributes;
   v8 = [MEMORY[0x1E696AD98] numberWithLong:?];
   v9 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v8];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithLong:a4];
-    [(AXUIMockElement *)self setValue:v11 forAXAttribute:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithLong:long];
+    [(AXUIMockElement *)self setValue:v11 forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withFloat:(float)a4
+- (void)setAXAttribute:(int64_t)attribute withFloat:(float)float
 {
   writableAttributes = self->_writableAttributes;
   v8 = [MEMORY[0x1E696AD98] numberWithLong:?];
   v9 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v8];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    *&v11 = a4;
+    *&v11 = float;
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-    [(AXUIMockElement *)self setValue:v12 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:v12 forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withNumber:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withNumber:(id)number
 {
-  v10 = a4;
+  numberCopy = number;
   writableAttributes = self->_writableAttributes;
-  v7 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithLong:attribute];
   v8 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    [(AXUIMockElement *)self setValue:v10 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:numberCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withPoint:(CGPoint)a4
+- (void)setAXAttribute:(int64_t)attribute withPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   writableAttributes = self->_writableAttributes;
   v9 = [MEMORY[0x1E696AD98] numberWithLong:?];
   v10 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v9];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = [MEMORY[0x1E696B098] valueWithPoint:{x, y}];
-    [(AXUIMockElement *)self setValue:v12 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:v12 forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withSize:(CGSize)a4
+- (void)setAXAttribute:(int64_t)attribute withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   writableAttributes = self->_writableAttributes;
   v9 = [MEMORY[0x1E696AD98] numberWithLong:?];
   v10 = [(NSMutableDictionary *)writableAttributes objectForKeyedSubscript:v9];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = [MEMORY[0x1E696B098] valueWithSize:{width, height}];
-    [(AXUIMockElement *)self setValue:v12 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:v12 forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withRange:(_NSRange)a4
+- (void)setAXAttribute:(int64_t)attribute withRange:(_NSRange)range
 {
-  v6 = [MEMORY[0x1E696B098] valueWithRange:{a4.location, a4.length}];
-  [(AXUIMockElement *)self setValue:v6 forAXAttribute:a3];
+  v6 = [MEMORY[0x1E696B098] valueWithRange:{range.location, range.length}];
+  [(AXUIMockElement *)self setValue:v6 forAXAttribute:attribute];
 }
 
-- (void)setAXAttribute:(int64_t)a3 withUIElement:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withUIElement:(id)element
 {
-  v6 = a4;
-  if ([(AXUIMockElement *)self canSetAXAttribute:a3])
+  elementCopy = element;
+  if ([(AXUIMockElement *)self canSetAXAttribute:attribute])
   {
-    [(AXUIMockElement *)self setValue:v6 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:elementCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withUIElementArray:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withUIElementArray:(id)array
 {
-  v6 = a4;
-  if ([(AXUIMockElement *)self canSetAXAttribute:a3])
+  arrayCopy = array;
+  if ([(AXUIMockElement *)self canSetAXAttribute:attribute])
   {
-    [(AXUIMockElement *)self setValue:v6 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:arrayCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withArray:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withArray:(id)array
 {
-  v6 = a4;
-  if ([(AXUIMockElement *)self canSetAXAttribute:a3])
+  arrayCopy = array;
+  if ([(AXUIMockElement *)self canSetAXAttribute:attribute])
   {
-    [(AXUIMockElement *)self setValue:v6 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:arrayCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object
 {
-  v6 = a4;
-  if ([(AXUIMockElement *)self canSetAXAttribute:a3])
+  objectCopy = object;
+  if ([(AXUIMockElement *)self canSetAXAttribute:attribute])
   {
-    [(AXUIMockElement *)self setValue:v6 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:objectCopy forAXAttribute:attribute];
   }
 }
 
-- (void)setAXAttribute:(int64_t)a3 withObject:(id)a4 synchronous:(BOOL)a5
+- (void)setAXAttribute:(int64_t)attribute withObject:(id)object synchronous:(BOOL)synchronous
 {
-  v7 = a4;
-  if ([(AXUIMockElement *)self canSetAXAttribute:a3])
+  objectCopy = object;
+  if ([(AXUIMockElement *)self canSetAXAttribute:attribute])
   {
-    [(AXUIMockElement *)self setValue:v7 forAXAttribute:a3];
+    [(AXUIMockElement *)self setValue:objectCopy forAXAttribute:attribute];
   }
 }
 
-- (CGPoint)pointForLineNumber:(unint64_t)a3
+- (CGPoint)pointForLineNumber:(unint64_t)number
 {
-  v3 = a3 * 20.0;
+  v3 = number * 20.0;
   v4 = 100.0;
   result.y = v3;
   result.x = v4;

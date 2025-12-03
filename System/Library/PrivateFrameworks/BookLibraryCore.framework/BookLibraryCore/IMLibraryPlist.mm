@@ -1,92 +1,92 @@
 @interface IMLibraryPlist
-+ (BOOL)isPDFFromPlistEntry:(id)a3;
-+ (BOOL)isSupplementalContentFromPlistEntry:(id)a3;
-+ (IMLibraryPlist)libraryPlistWithKind:(int64_t)a3;
-+ (id)accessDateFromPlistEntry:(id)a3;
-+ (id)albumFromPlistEntry:(id)a3;
-+ (id)assetIDFromItunesMetadataEntry:(id)a3;
-+ (id)assetIDFromPlistEntry:(id)a3;
-+ (id)assetIDFromPlistEntry:(id)a3 forAssetAtPath:(id)a4;
-+ (id)assetTypeFromPlistEntry:(id)a3;
-+ (id)authorFromPlistEntry:(id)a3;
-+ (id)backupFolderNameFromPlistEntry:(id)a3;
-+ (id)bookEpubIdFromPlistEntry:(id)a3;
-+ (id)booksArrayFromPlistEntry:(id)a3;
++ (BOOL)isPDFFromPlistEntry:(id)entry;
++ (BOOL)isSupplementalContentFromPlistEntry:(id)entry;
++ (IMLibraryPlist)libraryPlistWithKind:(int64_t)kind;
++ (id)accessDateFromPlistEntry:(id)entry;
++ (id)albumFromPlistEntry:(id)entry;
++ (id)assetIDFromItunesMetadataEntry:(id)entry;
++ (id)assetIDFromPlistEntry:(id)entry;
++ (id)assetIDFromPlistEntry:(id)entry forAssetAtPath:(id)path;
++ (id)assetTypeFromPlistEntry:(id)entry;
++ (id)authorFromPlistEntry:(id)entry;
++ (id)backupFolderNameFromPlistEntry:(id)entry;
++ (id)bookEpubIdFromPlistEntry:(id)entry;
++ (id)booksArrayFromPlistEntry:(id)entry;
 + (id)booksRepositoryPath;
-+ (id)collectionIdFromPlistEntry:(id)a3;
-+ (id)coverPathFromPlistEntry:(id)a3;
-+ (id)coverWritingModeFromPlistEntry:(id)a3;
-+ (id)deletesArrayFromPlistEntry:(id)a3;
-+ (id)endOfBookExperiencesFromItunesMetadataEntry:(id)a3;
-+ (id)entryForAssetID:(id)a3 contents:(id)a4;
-+ (id)entryForAssetURL:(id)a3 contents:(id)a4;
-+ (id)experienceConfidenceFromExperienceParamEntry:(id)a3;
-+ (id)experienceKindFromExperienceEntry:(id)a3;
-+ (id)experienceLocationFromExperienceEntry:(id)a3;
-+ (id)experienceLocationTypeFromExperienceEntry:(id)a3;
-+ (id)experienceParamsFromExperienceEntry:(id)a3;
-+ (id)experienceVersionFromExperienceEntry:(id)a3;
-+ (id)extensionFromPlistEntry:(id)a3;
-+ (id)feedURLFromPlistEntry:(id)a3;
-+ (id)folderNameFromPlistEntry:(id)a3;
-+ (id)genreFromPlistEntry:(id)a3;
-+ (id)humanReadablePublicationVersionFromPlistEntry:(id)a3;
-+ (id)importDateFromPlistEntry:(id)a3;
-+ (id)isEphemeralFromPlistEntry:(id)a3;
-+ (id)isExplicitContentFromPlistEntry:(id)a3;
-+ (id)isItunesUFromPlistEntry:(id)a3;
-+ (id)isManagedBookFromURL:(id)a3;
-+ (id)isProofedAssetFromPlistEntry:(id)a3;
-+ (id)isSampleFromPlistEntry:(id)a3;
-+ (id)languageFromPlistEntry:(id)a3;
-+ (id)languagesFromPlistEntry:(id)a3;
-+ (id)lookupBackupFolderNameFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupCoverWritingModeFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupFolderNameFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupHumanReadablePublicationVersionFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupLanguageFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupPageProgressionFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupPublicationVersionFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupPublicationVersionNumberFromAssetID:(id)a3 contents:(id)a4;
-+ (id)lookupScrollDirectionFromAssetID:(id)a3 contents:(id)a4;
++ (id)collectionIdFromPlistEntry:(id)entry;
++ (id)coverPathFromPlistEntry:(id)entry;
++ (id)coverWritingModeFromPlistEntry:(id)entry;
++ (id)deletesArrayFromPlistEntry:(id)entry;
++ (id)endOfBookExperiencesFromItunesMetadataEntry:(id)entry;
++ (id)entryForAssetID:(id)d contents:(id)contents;
++ (id)entryForAssetURL:(id)l contents:(id)contents;
++ (id)experienceConfidenceFromExperienceParamEntry:(id)entry;
++ (id)experienceKindFromExperienceEntry:(id)entry;
++ (id)experienceLocationFromExperienceEntry:(id)entry;
++ (id)experienceLocationTypeFromExperienceEntry:(id)entry;
++ (id)experienceParamsFromExperienceEntry:(id)entry;
++ (id)experienceVersionFromExperienceEntry:(id)entry;
++ (id)extensionFromPlistEntry:(id)entry;
++ (id)feedURLFromPlistEntry:(id)entry;
++ (id)folderNameFromPlistEntry:(id)entry;
++ (id)genreFromPlistEntry:(id)entry;
++ (id)humanReadablePublicationVersionFromPlistEntry:(id)entry;
++ (id)importDateFromPlistEntry:(id)entry;
++ (id)isEphemeralFromPlistEntry:(id)entry;
++ (id)isExplicitContentFromPlistEntry:(id)entry;
++ (id)isItunesUFromPlistEntry:(id)entry;
++ (id)isManagedBookFromURL:(id)l;
++ (id)isProofedAssetFromPlistEntry:(id)entry;
++ (id)isSampleFromPlistEntry:(id)entry;
++ (id)languageFromPlistEntry:(id)entry;
++ (id)languagesFromPlistEntry:(id)entry;
++ (id)lookupBackupFolderNameFromAssetID:(id)d contents:(id)contents;
++ (id)lookupCoverWritingModeFromAssetID:(id)d contents:(id)contents;
++ (id)lookupFolderNameFromAssetID:(id)d contents:(id)contents;
++ (id)lookupHumanReadablePublicationVersionFromAssetID:(id)d contents:(id)contents;
++ (id)lookupLanguageFromAssetID:(id)d contents:(id)contents;
++ (id)lookupPageProgressionFromAssetID:(id)d contents:(id)contents;
++ (id)lookupPublicationVersionFromAssetID:(id)d contents:(id)contents;
++ (id)lookupPublicationVersionNumberFromAssetID:(id)d contents:(id)contents;
++ (id)lookupScrollDirectionFromAssetID:(id)d contents:(id)contents;
 + (id)managedRepositoryPath;
-+ (id)mimeTypeFromPlistEntry:(id)a3;
-+ (id)pageProgressionFromPlistEntry:(id)a3;
-+ (id)permlinkFromPlistEntry:(id)a3;
-+ (id)persistentIDFromPlistEntry:(id)a3;
-+ (id)primaryLanguageFromPlistEntry:(id)a3;
-+ (id)publicationVersionFromPlistEntry:(id)a3;
-+ (id)publicationVersionNumberFromPlistEntry:(id)a3;
-+ (id)publisherUniqueIDFromItunesMetadataEntry:(id)a3;
++ (id)mimeTypeFromPlistEntry:(id)entry;
++ (id)pageProgressionFromPlistEntry:(id)entry;
++ (id)permlinkFromPlistEntry:(id)entry;
++ (id)persistentIDFromPlistEntry:(id)entry;
++ (id)primaryLanguageFromPlistEntry:(id)entry;
++ (id)publicationVersionFromPlistEntry:(id)entry;
++ (id)publicationVersionNumberFromPlistEntry:(id)entry;
++ (id)publisherUniqueIDFromItunesMetadataEntry:(id)entry;
 + (id)purchasesRepositoryPath;
-+ (id)scrollDirectionFromPlistEntry:(id)a3;
++ (id)scrollDirectionFromPlistEntry:(id)entry;
 + (id)sharedContainerURL;
 + (id)sharedRepositoryPath;
-+ (id)sortAuthorFromPlistEntry:(id)a3;
-+ (id)sortTitleFromPlistEntry:(id)a3;
++ (id)sortAuthorFromPlistEntry:(id)entry;
++ (id)sortTitleFromPlistEntry:(id)entry;
 + (id)stashedSampleRepositoryPath;
-+ (id)storeIdFromPlistEntry:(id)a3;
-+ (id)storePlaylistIdFromPlistEntry:(id)a3;
-+ (id)temporaryItemIdentifierFromPlistEntry:(id)a3;
-+ (id)titleFromItunesMetadataEntry:(id)a3;
-+ (id)titleFromPlistEntry:(id)a3;
-+ (id)uniqueIDFromItunesMetadataEntry:(id)a3;
-+ (id)uniqueIdFromPlistEntry:(id)a3;
-+ (void)setAccessDate:(id)a3 toPlistEntry:(id)a4;
-+ (void)setBooksArray:(id)a3 toPlistEntry:(id)a4;
-+ (void)setDeletesArray:(id)a3 toPlistEntry:(id)a4;
++ (id)storeIdFromPlistEntry:(id)entry;
++ (id)storePlaylistIdFromPlistEntry:(id)entry;
++ (id)temporaryItemIdentifierFromPlistEntry:(id)entry;
++ (id)titleFromItunesMetadataEntry:(id)entry;
++ (id)titleFromPlistEntry:(id)entry;
++ (id)uniqueIDFromItunesMetadataEntry:(id)entry;
++ (id)uniqueIdFromPlistEntry:(id)entry;
++ (void)setAccessDate:(id)date toPlistEntry:(id)entry;
++ (void)setBooksArray:(id)array toPlistEntry:(id)entry;
++ (void)setDeletesArray:(id)array toPlistEntry:(id)entry;
 - (BOOL)bumpModificationDate;
-- (BOOL)isPathInDirectory:(id)a3;
+- (BOOL)isPathInDirectory:(id)directory;
 - (NSString)sidecarPath;
-- (id)_initWithDirectory:(id)a3 fileName:(id)a4;
+- (id)_initWithDirectory:(id)directory fileName:(id)name;
 - (id)calculateChecksum;
 - (id)contents;
-- (id)p_contents:(id)a3;
+- (id)p_contents:(id)p_contents;
 - (id)unfilteredContents;
 - (id)unfilteredSidecarContents;
-- (void)addDeletedFiles:(id)a3;
-- (void)p_rewriteSidecarWithDeletes:(id)a3;
-- (void)removeDeletedPaths:(id)a3;
+- (void)addDeletedFiles:(id)files;
+- (void)p_rewriteSidecarWithDeletes:(id)deletes;
+- (void)removeDeletedPaths:(id)paths;
 @end
 
 @implementation IMLibraryPlist
@@ -110,9 +110,9 @@
     sub_241D21C40();
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(IMLibraryPlist *)self path];
-  v5 = [v3 attributesOfItemAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(IMLibraryPlist *)self path];
+  v5 = [defaultManager attributesOfItemAtPath:path error:0];
 
   v6 = [v5 objectForKey:*MEMORY[0x277CCA150]];
   if (v6)
@@ -148,31 +148,31 @@
   return v3;
 }
 
-- (id)_initWithDirectory:(id)a3 fileName:(id)a4
+- (id)_initWithDirectory:(id)directory fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  nameCopy = name;
   v8 = [(IMLibraryPlist *)self init];
   if (v8)
   {
-    v9 = [v6 stringByAppendingPathComponent:v7];
+    v9 = [directoryCopy stringByAppendingPathComponent:nameCopy];
     [(IMLibraryPlist *)v8 setPath:v9];
 
-    [(IMLibraryPlist *)v8 setDirectory:v6];
+    [(IMLibraryPlist *)v8 setDirectory:directoryCopy];
   }
 
   return v8;
 }
 
-+ (IMLibraryPlist)libraryPlistWithKind:(int64_t)a3
++ (IMLibraryPlist)libraryPlistWithKind:(int64_t)kind
 {
-  if (a3 > 2)
+  if (kind > 2)
   {
-    if (a3 == 3)
+    if (kind == 3)
     {
       if (+[BLLibraryUtility _isMultiUser])
       {
-        v4 = +[IMLibraryPlist sharedRepositoryPath];
+        path = +[IMLibraryPlist sharedRepositoryPath];
         v5 = @"Shared.plist";
         goto LABEL_20;
       }
@@ -180,11 +180,11 @@
       goto LABEL_16;
     }
 
-    if (a3 != 4)
+    if (kind != 4)
     {
-      if (a3 == 5)
+      if (kind == 5)
       {
-        v4 = +[IMLibraryPlist stashedSampleRepositoryPath];
+        path = +[IMLibraryPlist stashedSampleRepositoryPath];
         v5 = @"Samples.plist";
         goto LABEL_20;
       }
@@ -197,20 +197,20 @@
 
   else
   {
-    if (!a3)
+    if (!kind)
     {
-      v6 = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
-      v4 = [v6 path];
+      bu_booksRepositoryURL = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
+      path = [bu_booksRepositoryURL path];
 
       v5 = @"Books.plist";
       goto LABEL_20;
     }
 
-    if (a3 != 1)
+    if (kind != 1)
     {
-      if (a3 == 2)
+      if (kind == 2)
       {
-        v4 = +[IMLibraryPlist managedRepositoryPath];
+        path = +[IMLibraryPlist managedRepositoryPath];
         v5 = @"Managed.plist";
         goto LABEL_20;
       }
@@ -225,20 +225,20 @@ LABEL_13:
 
 LABEL_16:
       v5 = 0;
-      v4 = 0;
+      path = 0;
       goto LABEL_20;
     }
 
     v8 = +[IMLibraryPlist purchasesRepositoryPath];
   }
 
-  v4 = v8;
+  path = v8;
   v5 = @"Purchases.plist";
 LABEL_20:
   if ([(__CFString *)v5 length])
   {
-    v9 = [[IMLibraryPlist alloc] _initWithDirectory:v4 fileName:v5];
-    [v9 setKind:a3];
+    v9 = [[IMLibraryPlist alloc] _initWithDirectory:path fileName:v5];
+    [v9 setKind:kind];
   }
 
   else
@@ -251,20 +251,20 @@ LABEL_20:
 
 - (NSString)sidecarPath
 {
-  v2 = [(IMLibraryPlist *)self directory];
-  v3 = [v2 stringByAppendingPathComponent:@"Deletes.plist"];
+  directory = [(IMLibraryPlist *)self directory];
+  v3 = [directory stringByAppendingPathComponent:@"Deletes.plist"];
 
   return v3;
 }
 
-- (void)p_rewriteSidecarWithDeletes:(id)a3
+- (void)p_rewriteSidecarWithDeletes:(id)deletes
 {
-  v4 = a3;
-  v5 = [(IMLibraryPlist *)self unfilteredSidecarContents];
-  v6 = v5;
-  if (v5)
+  deletesCopy = deletes;
+  unfilteredSidecarContents = [(IMLibraryPlist *)self unfilteredSidecarContents];
+  v6 = unfilteredSidecarContents;
+  if (unfilteredSidecarContents)
   {
-    v7 = [v5 mutableCopyWithZone:0];
+    v7 = [unfilteredSidecarContents mutableCopyWithZone:0];
   }
 
   else
@@ -274,28 +274,28 @@ LABEL_20:
 
   v9 = v7;
 
-  [IMLibraryPlist setDeletesArray:v4 toPlistEntry:v9];
-  v8 = [(IMLibraryPlist *)self sidecarPath];
-  [v9 writeToFile:v8 atomically:1];
+  [IMLibraryPlist setDeletesArray:deletesCopy toPlistEntry:v9];
+  sidecarPath = [(IMLibraryPlist *)self sidecarPath];
+  [v9 writeToFile:sidecarPath atomically:1];
 }
 
-- (id)p_contents:(id)a3
+- (id)p_contents:(id)p_contents
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v3];
+  p_contentsCopy = p_contents;
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:p_contentsCopy];
   if (!v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v3];
+    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:p_contentsCopy];
     if (!v5 || ([MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:0 error:0], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v12 = 0;
-      v7 = [v6 attributesOfItemAtPath:v3 error:&v12];
+      v7 = [defaultManager attributesOfItemAtPath:p_contentsCopy error:&v12];
       v8 = v12;
 
       if ([v8 code] == 257 && (objc_msgSend(v8, "domain"), v9 = objc_claimAutoreleasedReturnValue(), v10 = *MEMORY[0x277CCA050], v9, v9 == v10))
       {
-        [MEMORY[0x277CBEAD8] raise:@"NSFileReadNoPermissionError" format:{@"Permission denied: %@", v3}];
+        [MEMORY[0x277CBEAD8] raise:@"NSFileReadNoPermissionError" format:{@"Permission denied: %@", p_contentsCopy}];
       }
 
       else if ([v8 code] == 260)
@@ -312,54 +312,54 @@ LABEL_20:
 
 - (id)unfilteredContents
 {
-  v3 = [(IMLibraryPlist *)self path];
-  v4 = [(IMLibraryPlist *)self p_contents:v3];
+  path = [(IMLibraryPlist *)self path];
+  v4 = [(IMLibraryPlist *)self p_contents:path];
 
   return v4;
 }
 
 - (id)unfilteredSidecarContents
 {
-  v3 = [(IMLibraryPlist *)self sidecarPath];
-  v4 = [(IMLibraryPlist *)self p_contents:v3];
+  sidecarPath = [(IMLibraryPlist *)self sidecarPath];
+  v4 = [(IMLibraryPlist *)self p_contents:sidecarPath];
 
   return v4;
 }
 
 - (id)contents
 {
-  v2 = self;
+  selfCopy = self;
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [(IMLibraryPlist *)self unfilteredContents];
-  v4 = [(IMLibraryPlist *)v2 unfilteredSidecarContents];
-  v5 = [IMLibraryPlist deletesArrayFromPlistEntry:v4];
-  v6 = [IMLibraryPlist booksArrayFromPlistEntry:v3];
+  unfilteredContents = [(IMLibraryPlist *)self unfilteredContents];
+  unfilteredSidecarContents = [(IMLibraryPlist *)selfCopy unfilteredSidecarContents];
+  v5 = [IMLibraryPlist deletesArrayFromPlistEntry:unfilteredSidecarContents];
+  v6 = [IMLibraryPlist booksArrayFromPlistEntry:unfilteredContents];
   if ([v5 count] && objc_msgSend(v6, "count"))
   {
-    v36 = v2;
+    v36 = selfCopy;
     v37 = v6;
-    v39 = v4;
+    v39 = unfilteredSidecarContents;
     v7 = [v6 sortedArrayUsingFunction:sub_241D31F1C context:0];
     v38 = v5;
-    v8 = [v5 sortedArrayUsingSelector:sel_compare_];
-    v9 = [v8 count];
-    v10 = [v8 objectAtIndex:0];
-    v42 = [MEMORY[0x277CBEB18] array];
-    v45 = [MEMORY[0x277CBEB18] array];
-    v40 = v3;
-    v41 = [v3 mutableCopyWithZone:0];
+    sidecarPath2 = [v5 sortedArrayUsingSelector:sel_compare_];
+    v9 = [sidecarPath2 count];
+    v10 = [sidecarPath2 objectAtIndex:0];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v40 = unfilteredContents;
+    v41 = [unfilteredContents mutableCopyWithZone:0];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v11 = v7;
-    v12 = [v11 countByEnumeratingWithState:&v46 objects:v56 count:16];
+    defaultManager = v7;
+    v12 = [defaultManager countByEnumeratingWithState:&v46 objects:v56 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = 0;
       v43 = 0;
-      obj = v11;
+      obj = defaultManager;
       v15 = *v47;
       do
       {
@@ -386,7 +386,7 @@ LABEL_20:
           if (v19)
           {
 LABEL_20:
-            [v45 addObject:v17];
+            [array2 addObject:v17];
           }
 
           else
@@ -406,7 +406,7 @@ LABEL_20:
                 goto LABEL_20;
               }
 
-              v21 = [v8 objectAtIndex:v14];
+              v21 = [sidecarPath2 objectAtIndex:v14];
 
               v10 = v21;
             }
@@ -418,7 +418,7 @@ LABEL_20:
 
             if (!v20)
             {
-              [v42 addObject:v18];
+              [array addObject:v18];
               ++v43;
               if (v14 >= v9)
               {
@@ -428,7 +428,7 @@ LABEL_20:
 
               else
               {
-                v22 = [v8 objectAtIndex:v14];
+                v22 = [sidecarPath2 objectAtIndex:v14];
 
                 v10 = v22;
               }
@@ -439,7 +439,7 @@ LABEL_20:
         }
 
         while (v16 != v13);
-        v11 = obj;
+        defaultManager = obj;
         v23 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
         v13 = v23;
       }
@@ -459,7 +459,7 @@ LABEL_20:
     {
       v28 = [v37 count];
       v29 = [v38 count];
-      v30 = [v45 count];
+      v30 = [array2 count];
       *buf = 67109888;
       *v51 = v28;
       *&v51[4] = 1024;
@@ -473,40 +473,40 @@ LABEL_20:
 
     if (v43)
     {
-      v4 = v39;
-      v3 = v40;
-      if ([v8 count] > v43)
+      unfilteredSidecarContents = v39;
+      unfilteredContents = v40;
+      if ([sidecarPath2 count] > v43)
       {
-        [(IMLibraryPlist *)v36 p_rewriteSidecarWithDeletes:v42];
+        [(IMLibraryPlist *)v36 p_rewriteSidecarWithDeletes:array];
       }
 
-      [IMLibraryPlist setBooksArray:v45 toPlistEntry:v41];
+      [IMLibraryPlist setBooksArray:array2 toPlistEntry:v41];
 
 LABEL_44:
       v25 = v41;
       goto LABEL_45;
     }
 
-    [IMLibraryPlist setBooksArray:v45 toPlistEntry:v41];
+    [IMLibraryPlist setBooksArray:array2 toPlistEntry:v41];
 
     v25 = v41;
-    v4 = v39;
-    v3 = v40;
-    v2 = v36;
+    unfilteredSidecarContents = v39;
+    unfilteredContents = v40;
+    selfCopy = v36;
 LABEL_41:
     v41 = v25;
     v31 = BLDefaultLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [(IMLibraryPlist *)v2 sidecarPath];
+      sidecarPath = [(IMLibraryPlist *)selfCopy sidecarPath];
       *buf = 138412290;
-      *v51 = v32;
+      *v51 = sidecarPath;
       _os_log_impl(&dword_241D1F000, v31, OS_LOG_TYPE_DEBUG, "IMLibraryPlist: Removing sidecar; %@", buf, 0xCu);
     }
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [(IMLibraryPlist *)v2 sidecarPath];
-    [v11 removeItemAtPath:v8 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    sidecarPath2 = [(IMLibraryPlist *)selfCopy sidecarPath];
+    [defaultManager removeItemAtPath:sidecarPath2 error:0];
     goto LABEL_44;
   }
 
@@ -520,7 +520,7 @@ LABEL_41:
     v24 = 0;
   }
 
-  v25 = v3;
+  v25 = unfilteredContents;
   v26 = BLDefaultLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
@@ -541,26 +541,26 @@ LABEL_45:
   return v25;
 }
 
-- (BOOL)isPathInDirectory:(id)a3
+- (BOOL)isPathInDirectory:(id)directory
 {
-  v4 = [a3 stringByDeletingLastPathComponent];
-  v5 = [(IMLibraryPlist *)self directory];
-  v6 = [v4 isEqualToString:v5];
+  stringByDeletingLastPathComponent = [directory stringByDeletingLastPathComponent];
+  directory = [(IMLibraryPlist *)self directory];
+  v6 = [stringByDeletingLastPathComponent isEqualToString:directory];
 
   return v6;
 }
 
-- (void)addDeletedFiles:(id)a3
+- (void)addDeletedFiles:(id)files
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  filesCopy = files;
+  if ([filesCopy count])
   {
-    v5 = [(IMLibraryPlist *)self unfilteredSidecarContents];
-    v6 = v5;
-    if (v5)
+    unfilteredSidecarContents = [(IMLibraryPlist *)self unfilteredSidecarContents];
+    v6 = unfilteredSidecarContents;
+    if (unfilteredSidecarContents)
     {
-      v7 = [v5 mutableCopyWithZone:0];
+      v7 = [unfilteredSidecarContents mutableCopyWithZone:0];
     }
 
     else
@@ -587,7 +587,7 @@ LABEL_45:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = v4;
+    v13 = filesCopy;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v14)
     {
@@ -612,8 +612,8 @@ LABEL_45:
     }
 
     v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v12];
-    v19 = [v18 allObjects];
-    [IMLibraryPlist setDeletesArray:v19 toPlistEntry:v8];
+    allObjects = [v18 allObjects];
+    [IMLibraryPlist setDeletesArray:allObjects toPlistEntry:v8];
 
     v20 = BLDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -624,8 +624,8 @@ LABEL_45:
       _os_log_impl(&dword_241D1F000, v20, OS_LOG_TYPE_DEBUG, "addDeletedPaths -- rewritePlist %d entries", buf, 8u);
     }
 
-    v22 = [(IMLibraryPlist *)self sidecarPath];
-    [v8 writeToFile:v22 atomically:1];
+    sidecarPath = [(IMLibraryPlist *)self sidecarPath];
+    [v8 writeToFile:sidecarPath atomically:1];
 
     [(IMLibraryPlist *)self bumpModificationDate];
   }
@@ -633,17 +633,17 @@ LABEL_45:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDeletedPaths:(id)a3
+- (void)removeDeletedPaths:(id)paths
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
-    v5 = [(IMLibraryPlist *)self unfilteredSidecarContents];
-    v6 = v5;
-    if (v5)
+    unfilteredSidecarContents = [(IMLibraryPlist *)self unfilteredSidecarContents];
+    v6 = unfilteredSidecarContents;
+    if (unfilteredSidecarContents)
     {
-      v7 = [v5 mutableCopy];
+      v7 = [unfilteredSidecarContents mutableCopy];
       v8 = [IMLibraryPlist deletesArrayFromPlistEntry:v7];
       v9 = v8;
       if (v8)
@@ -653,14 +653,14 @@ LABEL_45:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v11 = v4;
+        v11 = pathsCopy;
         v12 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
         if (v12)
         {
           v13 = v12;
           v24 = v7;
-          v23 = self;
-          v25 = v4;
+          selfCopy = self;
+          v25 = pathsCopy;
           v14 = 0;
           v15 = *v28;
           do
@@ -678,7 +678,7 @@ LABEL_45:
               v26[2] = sub_241D3251C;
               v26[3] = &unk_278D17548;
               v26[4] = v17;
-              v18 = [v10 indexesOfObjectsPassingTest:{v26, v23}];
+              v18 = [v10 indexesOfObjectsPassingTest:{v26, selfCopy}];
               if ([v18 count])
               {
                 [v10 removeObjectsAtIndexes:v18];
@@ -691,7 +691,7 @@ LABEL_45:
 
           while (v13);
 
-          v4 = v25;
+          pathsCopy = v25;
           v7 = v24;
           if (v14)
           {
@@ -705,10 +705,10 @@ LABEL_45:
             }
 
             [IMLibraryPlist setDeletesArray:v10 toPlistEntry:v24];
-            v21 = [(IMLibraryPlist *)v23 sidecarPath];
-            [v24 writeToFile:v21 atomically:1];
+            sidecarPath = [(IMLibraryPlist *)selfCopy sidecarPath];
+            [v24 writeToFile:sidecarPath atomically:1];
 
-            [(IMLibraryPlist *)v23 bumpModificationDate];
+            [(IMLibraryPlist *)selfCopy bumpModificationDate];
           }
         }
 
@@ -722,11 +722,11 @@ LABEL_45:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)entryForAssetID:(id)a3 contents:(id)a4
++ (id)entryForAssetID:(id)d contents:(id)contents
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [IMLibraryPlist booksArrayFromPlistEntry:a4];
+  dCopy = d;
+  [IMLibraryPlist booksArrayFromPlistEntry:contents];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -750,14 +750,14 @@ LABEL_45:
         v12 = BUDynamicCast();
         v13 = [IMLibraryPlist storeIdFromPlistEntry:v12, v19];
         v14 = v13;
-        if (v13 && ([v13 isEqualToString:v5] & 1) != 0)
+        if (v13 && ([v13 isEqualToString:dCopy] & 1) != 0)
         {
           goto LABEL_17;
         }
 
         v15 = [IMLibraryPlist bookEpubIdFromPlistEntry:v12];
 
-        if (v15 && ([v15 isEqualToString:v5] & 1) != 0)
+        if (v15 && ([v15 isEqualToString:dCopy] & 1) != 0)
         {
           v14 = v15;
 LABEL_17:
@@ -768,7 +768,7 @@ LABEL_17:
 
         v14 = [IMLibraryPlist uniqueIdFromPlistEntry:v12];
 
-        if (v14 && [v14 isEqualToString:v5])
+        if (v14 && [v14 isEqualToString:dCopy])
         {
           goto LABEL_17;
         }
@@ -797,11 +797,11 @@ LABEL_18:
   return v16;
 }
 
-+ (id)entryForAssetURL:(id)a3 contents:(id)a4
++ (id)entryForAssetURL:(id)l contents:(id)contents
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [IMLibraryPlist booksArrayFromPlistEntry:a4];
+  lCopy = l;
+  [IMLibraryPlist booksArrayFromPlistEntry:contents];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -826,8 +826,8 @@ LABEL_18:
         v13 = [IMLibraryPlist folderNameFromPlistEntry:v12, v18];
         if (v13)
         {
-          v14 = [v5 lastPathComponent];
-          v15 = [v13 isEqualToString:v14];
+          lastPathComponent = [lCopy lastPathComponent];
+          v15 = [v13 isEqualToString:lastPathComponent];
 
           if (v15)
           {
@@ -855,13 +855,13 @@ LABEL_12:
   return v12;
 }
 
-+ (id)isManagedBookFromURL:(id)a3
++ (id)isManagedBookFromURL:(id)l
 {
-  v4 = [a3 path];
-  if (v4)
+  path = [l path];
+  if (path)
   {
-    v5 = [a1 managedRepositoryPath];
-    v6 = [v4 hasPrefix:v5];
+    managedRepositoryPath = [self managedRepositoryPath];
+    v6 = [path hasPrefix:managedRepositoryPath];
   }
 
   else
@@ -878,14 +878,14 @@ LABEL_12:
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v18 = *MEMORY[0x277CCA150];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v19[0] = v3;
+  date = [MEMORY[0x277CBEAA8] date];
+  v19[0] = date;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(IMLibraryPlist *)self path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(IMLibraryPlist *)self path];
   v13 = 0;
-  v7 = [v5 setAttributes:v4 ofItemAtPath:v6 error:&v13];
+  v7 = [defaultManager setAttributes:v4 ofItemAtPath:path error:&v13];
   v8 = v13;
 
   if ((v7 & 1) == 0)
@@ -893,9 +893,9 @@ LABEL_12:
     v9 = BLDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(IMLibraryPlist *)self path];
+      path2 = [(IMLibraryPlist *)self path];
       *buf = 138412546;
-      v15 = v10;
+      v15 = path2;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_241D1F000, v9, OS_LOG_TYPE_ERROR, "Error changing modification date of %@ --  %@", buf, 0x16u);
@@ -906,9 +906,9 @@ LABEL_12:
   return v7;
 }
 
-+ (id)lookupPublicationVersionFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupPublicationVersionFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist publicationVersionFromPlistEntry:v4];
@@ -922,9 +922,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupPublicationVersionNumberFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupPublicationVersionNumberFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist publicationVersionNumberFromPlistEntry:v4];
@@ -938,9 +938,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupHumanReadablePublicationVersionFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupHumanReadablePublicationVersionFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist humanReadablePublicationVersionFromPlistEntry:v4];
@@ -954,9 +954,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupPageProgressionFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupPageProgressionFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist pageProgressionFromPlistEntry:v4];
@@ -970,9 +970,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupLanguageFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupLanguageFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist languageFromPlistEntry:v4];
@@ -986,9 +986,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupCoverWritingModeFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupCoverWritingModeFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist coverWritingModeFromPlistEntry:v4];
@@ -1002,9 +1002,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupScrollDirectionFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupScrollDirectionFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist scrollDirectionFromPlistEntry:v4];
@@ -1018,9 +1018,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupFolderNameFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupFolderNameFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist folderNameFromPlistEntry:v4];
@@ -1034,9 +1034,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)lookupBackupFolderNameFromAssetID:(id)a3 contents:(id)a4
++ (id)lookupBackupFolderNameFromAssetID:(id)d contents:(id)contents
 {
-  v4 = [a1 entryForAssetID:a3 contents:a4];
+  v4 = [self entryForAssetID:d contents:contents];
   if (v4)
   {
     v5 = [IMLibraryPlist backupFolderNameFromPlistEntry:v4];
@@ -1050,146 +1050,146 @@ LABEL_12:
   return v5;
 }
 
-+ (id)authorFromPlistEntry:(id)a3
++ (id)authorFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForAuthor];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)sortAuthorFromPlistEntry:(id)a3
++ (id)sortAuthorFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForSortAuthor];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)titleFromPlistEntry:(id)a3
++ (id)titleFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForTitle];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)sortTitleFromPlistEntry:(id)a3
++ (id)sortTitleFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForSortTitle];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)genreFromPlistEntry:(id)a3
++ (id)genreFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForGenre];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)isExplicitContentFromPlistEntry:(id)a3
++ (id)isExplicitContentFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForExplicitContent];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)isProofedAssetFromPlistEntry:(id)a3
++ (id)isProofedAssetFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForProofedAsset];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)isEphemeralFromPlistEntry:(id)a3
++ (id)isEphemeralFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForIsEphemeral];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)deletesArrayFromPlistEntry:(id)a3
++ (id)deletesArrayFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForDeletesArray];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (void)setDeletesArray:(id)a3 toPlistEntry:(id)a4
++ (void)setDeletesArray:(id)array toPlistEntry:(id)entry
 {
-  v5 = a4;
-  v7 = [a3 copy];
+  entryCopy = entry;
+  v7 = [array copy];
   v6 = +[IMLibraryPlist keyNameForDeletesArray];
-  [v5 setObject:v7 forKey:v6];
+  [entryCopy setObject:v7 forKey:v6];
 }
 
-+ (id)booksArrayFromPlistEntry:(id)a3
++ (id)booksArrayFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForBooksArray];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (void)setBooksArray:(id)a3 toPlistEntry:(id)a4
++ (void)setBooksArray:(id)array toPlistEntry:(id)entry
 {
-  v5 = a4;
-  v7 = [a3 copy];
+  entryCopy = entry;
+  v7 = [array copy];
   v6 = +[IMLibraryPlist keyNameForBooksArray];
-  [v5 setObject:v7 forKey:v6];
+  [entryCopy setObject:v7 forKey:v6];
 }
 
-+ (BOOL)isPDFFromPlistEntry:(id)a3
++ (BOOL)isPDFFromPlistEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [IMLibraryPlist folderNameFromPlistEntry:v3];
+  entryCopy = entry;
+  v4 = [IMLibraryPlist folderNameFromPlistEntry:entryCopy];
   v5 = v4;
   if (v4)
   {
@@ -1198,7 +1198,7 @@ LABEL_12:
 
   else
   {
-    v6 = [IMLibraryPlist backupFolderNameFromPlistEntry:v3];
+    v6 = [IMLibraryPlist backupFolderNameFromPlistEntry:entryCopy];
   }
 
   v7 = v6;
@@ -1206,11 +1206,11 @@ LABEL_12:
   v10 = 0;
   if ([v7 length])
   {
-    v8 = [v7 pathExtension];
-    v9 = [v8 lowercaseString];
+    pathExtension = [v7 pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
 
-    LOBYTE(v8) = [v9 isEqualToString:@"pdf"];
-    if (v8)
+    LOBYTE(pathExtension) = [lowercaseString isEqualToString:@"pdf"];
+    if (pathExtension)
     {
       v10 = 1;
     }
@@ -1219,21 +1219,21 @@ LABEL_12:
   return v10;
 }
 
-+ (id)temporaryItemIdentifierFromPlistEntry:(id)a3
++ (id)temporaryItemIdentifierFromPlistEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [IMLibraryPlist permlinkFromPlistEntry:v3];
-  v5 = [v4 identifierFromPermlink];
-  if (!v5)
+  entryCopy = entry;
+  v4 = [IMLibraryPlist permlinkFromPlistEntry:entryCopy];
+  identifierFromPermlink = [v4 identifierFromPermlink];
+  if (!identifierFromPermlink)
   {
-    v6 = [IMLibraryPlist isSupplementalContentFromPlistEntry:v3];
-    v7 = [IMLibraryPlist isPDFFromPlistEntry:v3];
+    v6 = [IMLibraryPlist isSupplementalContentFromPlistEntry:entryCopy];
+    v7 = [IMLibraryPlist isPDFFromPlistEntry:entryCopy];
     if (v6 && v7)
     {
-      v5 = [IMLibraryPlist storeIdFromPlistEntry:v3];
-      if ([v5 length])
+      identifierFromPermlink = [IMLibraryPlist storeIdFromPlistEntry:entryCopy];
+      if ([identifierFromPermlink length])
       {
-        if (v5)
+        if (identifierFromPermlink)
         {
           goto LABEL_11;
         }
@@ -1245,97 +1245,97 @@ LABEL_12:
     }
 
     objc_opt_class();
-    v9 = [v3 objectForKey:@"Persistent ID"];
-    v5 = BUDynamicCast();
+    v9 = [entryCopy objectForKey:@"Persistent ID"];
+    identifierFromPermlink = BUDynamicCast();
   }
 
 LABEL_11:
 
-  return v5;
+  return identifierFromPermlink;
 }
 
-+ (id)persistentIDFromPlistEntry:(id)a3
++ (id)persistentIDFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Persistent ID"];
+  v4 = [entryCopy objectForKey:@"Persistent ID"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)bookEpubIdFromPlistEntry:(id)a3
++ (id)bookEpubIdFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForPublisherUniqueID];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)albumFromPlistEntry:(id)a3
++ (id)albumFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Album"];
+  v4 = [entryCopy objectForKey:@"Album"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)isItunesUFromPlistEntry:(id)a3
++ (id)isItunesUFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Is iTunes U"];
+  v4 = [entryCopy objectForKey:@"Is iTunes U"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)feedURLFromPlistEntry:(id)a3
++ (id)feedURLFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Feed URL"];
+  v4 = [entryCopy objectForKey:@"Feed URL"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)mimeTypeFromPlistEntry:(id)a3
++ (id)mimeTypeFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"MIME Type"];
+  v4 = [entryCopy objectForKey:@"MIME Type"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)extensionFromPlistEntry:(id)a3
++ (id)extensionFromPlistEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"Extension"];
+  v5 = [entryCopy objectForKey:@"Extension"];
   v6 = BUDynamicCast();
 
   if (!v6)
   {
-    v6 = [a1 folderNameFromPlistEntry:v4];
+    v6 = [self folderNameFromPlistEntry:entryCopy];
     if ([v6 length])
     {
-      v7 = [v6 pathExtension];
+      pathExtension = [v6 pathExtension];
 
-      v6 = v7;
+      v6 = pathExtension;
     }
 
     if (![v6 length])
@@ -1348,25 +1348,25 @@ LABEL_11:
   return v6;
 }
 
-+ (id)publicationVersionFromPlistEntry:(id)a3
++ (id)publicationVersionFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = +[IMLibraryPlist keyNameForPublicationVersion];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    stringValue = v5;
 LABEL_5:
-    v7 = v6;
+    v7 = stringValue;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
     goto LABEL_5;
   }
 
@@ -1376,11 +1376,11 @@ LABEL_7:
   return v7;
 }
 
-+ (id)publicationVersionNumberFromPlistEntry:(id)a3
++ (id)publicationVersionNumberFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = +[IMLibraryPlist keyNameForPublicationVersion];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1406,46 +1406,46 @@ LABEL_7:
   return v8;
 }
 
-+ (id)humanReadablePublicationVersionFromPlistEntry:(id)a3
++ (id)humanReadablePublicationVersionFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForHumanReadablePublicationVersion];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)pageProgressionFromPlistEntry:(id)a3
++ (id)pageProgressionFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForPageProgression];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)assetTypeFromPlistEntry:(id)a3
++ (id)assetTypeFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForAssetType];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)languageFromPlistEntry:(id)a3
++ (id)languageFromPlistEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [a1 languagesFromPlistEntry:v4];
+  entryCopy = entry;
+  v5 = [self languagesFromPlistEntry:entryCopy];
   if ([v5 count])
   {
     objc_opt_class();
@@ -1465,8 +1465,8 @@ LABEL_7:
     }
   }
 
-  v8 = [a1 primaryLanguageFromPlistEntry:v4];
-  v9 = [v8 lowercaseString];
+  v8 = [self primaryLanguageFromPlistEntry:entryCopy];
+  lowercaseString = [v8 lowercaseString];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1476,7 +1476,7 @@ LABEL_7:
       sub_241D76DDC();
     }
 
-    v7 = [qword_27EC71F98 objectForKey:v9];
+    v7 = [qword_27EC71F98 objectForKey:lowercaseString];
   }
 
   else
@@ -1489,21 +1489,21 @@ LABEL_12:
   return v7;
 }
 
-+ (id)assetIDFromPlistEntry:(id)a3
++ (id)assetIDFromPlistEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [IMLibraryPlist folderNameFromPlistEntry:v4];
-  v6 = [a1 assetIDFromPlistEntry:v4 forAssetAtPath:v5];
+  entryCopy = entry;
+  v5 = [IMLibraryPlist folderNameFromPlistEntry:entryCopy];
+  v6 = [self assetIDFromPlistEntry:entryCopy forAssetAtPath:v5];
 
   return v6;
 }
 
-+ (id)assetIDFromPlistEntry:(id)a3 forAssetAtPath:(id)a4
++ (id)assetIDFromPlistEntry:(id)entry forAssetAtPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [IMLibraryPlist isSupplementalContentFromPlistEntry:v5];
-  v8 = [IMLibraryPlist isPDFFromPlistEntry:v5];
+  entryCopy = entry;
+  pathCopy = path;
+  v7 = [IMLibraryPlist isSupplementalContentFromPlistEntry:entryCopy];
+  v8 = [IMLibraryPlist isPDFFromPlistEntry:entryCopy];
   if (v7 && v8)
   {
     v9 = 0;
@@ -1511,12 +1511,12 @@ LABEL_12:
 
   else
   {
-    v9 = [IMLibraryPlist storeIdFromPlistEntry:v5];
+    v9 = [IMLibraryPlist storeIdFromPlistEntry:entryCopy];
   }
 
   if (![v9 length])
   {
-    v10 = [BLLibraryUtility dcIdentifierFromBookPath:v6];
+    v10 = [BLLibraryUtility dcIdentifierFromBookPath:pathCopy];
     v11 = v10;
     if (v10)
     {
@@ -1525,14 +1525,14 @@ LABEL_12:
 
     else
     {
-      v12 = [IMLibraryPlist uniqueIdFromPlistEntry:v5];
+      v12 = [IMLibraryPlist uniqueIdFromPlistEntry:entryCopy];
     }
 
     v13 = v12;
 
     if (![v13 length])
     {
-      v14 = [BLLibraryUtility generateFileUniqueIdFromPath:v6];
+      v14 = [BLLibraryUtility generateFileUniqueIdFromPath:pathCopy];
 
       v13 = v14;
     }
@@ -1543,72 +1543,72 @@ LABEL_12:
   return v9;
 }
 
-+ (id)coverWritingModeFromPlistEntry:(id)a3
++ (id)coverWritingModeFromPlistEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [a1 keyNameForCoverWritingMode];
-  v6 = [v4 objectForKey:v5];
+  keyNameForCoverWritingMode = [self keyNameForCoverWritingMode];
+  v6 = [entryCopy objectForKey:keyNameForCoverWritingMode];
 
   v7 = BUDynamicCast();
 
   return v7;
 }
 
-+ (id)scrollDirectionFromPlistEntry:(id)a3
++ (id)scrollDirectionFromPlistEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [a1 keyNameForScrollDirection];
-  v6 = [v4 objectForKey:v5];
+  keyNameForScrollDirection = [self keyNameForScrollDirection];
+  v6 = [entryCopy objectForKey:keyNameForScrollDirection];
 
   v7 = BUDynamicCast();
 
   return v7;
 }
 
-+ (id)languagesFromPlistEntry:(id)a3
++ (id)languagesFromPlistEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [a1 keyNameForLanguages];
-  v6 = [v4 objectForKey:v5];
+  keyNameForLanguages = [self keyNameForLanguages];
+  v6 = [entryCopy objectForKey:keyNameForLanguages];
 
   v7 = BUDynamicCast();
 
   return v7;
 }
 
-+ (id)primaryLanguageFromPlistEntry:(id)a3
++ (id)primaryLanguageFromPlistEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [a1 keyNameForPrimaryLanguage];
-  v6 = [v4 objectForKey:v5];
+  keyNameForPrimaryLanguage = [self keyNameForPrimaryLanguage];
+  v6 = [entryCopy objectForKey:keyNameForPrimaryLanguage];
 
   v7 = BUDynamicCast();
 
   return v7;
 }
 
-+ (id)uniqueIdFromPlistEntry:(id)a3
++ (id)uniqueIdFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForUniqueId];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
   v6 = BUDynamicCast();
 
   if (!v6)
   {
     objc_opt_class();
-    v7 = [v3 objectForKey:@"iBooks-UniqueId"];
+    v7 = [entryCopy objectForKey:@"iBooks-UniqueId"];
     v6 = BUDynamicCast();
 
     if (!v6)
     {
       objc_opt_class();
-      v8 = [v3 objectForKey:@"PersistentID"];
+      v8 = [entryCopy objectForKey:@"PersistentID"];
       v6 = BUDynamicCast();
     }
   }
@@ -1622,86 +1622,86 @@ LABEL_12:
   return v6;
 }
 
-+ (id)accessDateFromPlistEntry:(id)a3
++ (id)accessDateFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForAccessDate];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (void)setAccessDate:(id)a3 toPlistEntry:(id)a4
++ (void)setAccessDate:(id)date toPlistEntry:(id)entry
 {
-  v5 = a4;
-  v6 = a3;
+  entryCopy = entry;
+  dateCopy = date;
   v7 = +[IMLibraryPlist keyNameForAccessDate];
-  [v5 setObject:v6 forKey:v7];
+  [entryCopy setObject:dateCopy forKey:v7];
 }
 
-+ (id)folderNameFromPlistEntry:(id)a3
++ (id)folderNameFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForPath];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)backupFolderNameFromPlistEntry:(id)a3
++ (id)backupFolderNameFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForBackupPath];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)isSampleFromPlistEntry:(id)a3
++ (id)isSampleFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForSampleAsset];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)coverPathFromPlistEntry:(id)a3
++ (id)coverPathFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"Cover Path"];
+  v4 = [entryCopy objectForKey:@"Cover Path"];
   v5 = BUDynamicCast();
 
   if (!v5)
   {
     objc_opt_class();
-    v6 = [v3 valueForKeyPath:@"book-info.cover-image-path"];
+    v6 = [entryCopy valueForKeyPath:@"book-info.cover-image-path"];
     v5 = BUDynamicCast();
   }
 
   return v5;
 }
 
-+ (id)collectionIdFromPlistEntry:(id)a3
++ (id)collectionIdFromPlistEntry:(id)entry
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entryCopy = entry;
   v4 = +[IMLibraryPlist keyNameForCollectionId];
   objc_opt_class();
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [entryCopy objectForKeyedSubscript:v4];
 
   v6 = BUDynamicCast();
 
@@ -1714,7 +1714,7 @@ LABEL_12:
     if (v8)
     {
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
-      v10 = [v9 stringValue];
+      stringValue = [v9 stringValue];
     }
 
     else
@@ -1729,45 +1729,45 @@ LABEL_12:
         _os_log_impl(&dword_241D1F000, v9, OS_LOG_TYPE_ERROR, "Failed to convert key '%{public}@' hex->decimal: [%@]", buf, 0x16u);
       }
 
-      v10 = 0;
+      stringValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    stringValue = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return stringValue;
 }
 
-+ (id)storePlaylistIdFromPlistEntry:(id)a3
++ (id)storePlaylistIdFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = +[IMLibraryPlist keyNameForStorePlaylistId];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [entryCopy objectForKeyedSubscript:v4];
 
   if (!v5)
   {
-    v6 = [IMLibraryPlist collectionIdFromPlistEntry:v3];
+    stringValue = [IMLibraryPlist collectionIdFromPlistEntry:entryCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
 LABEL_7:
-    v7 = v6;
+    v7 = stringValue;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    stringValue = v5;
     goto LABEL_7;
   }
 
@@ -1777,64 +1777,64 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)isSupplementalContentFromPlistEntry:(id)a3
++ (BOOL)isSupplementalContentFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForIsSupplementalContent];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [entryCopy objectForKeyedSubscript:v4];
   v6 = BUDynamicCast();
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [IMLibraryPlist collectionIdFromPlistEntry:v3];
-    v9 = [IMLibraryPlist isPDFFromPlistEntry:v3];
-    v7 = [v8 length] != 0 && v9;
+    v8 = [IMLibraryPlist collectionIdFromPlistEntry:entryCopy];
+    v9 = [IMLibraryPlist isPDFFromPlistEntry:entryCopy];
+    bOOLValue = [v8 length] != 0 && v9;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (id)storeIdFromPlistEntry:(id)a3
++ (id)storeIdFromPlistEntry:(id)entry
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForStoreId2];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
   v6 = BUDynamicCast();
 
   if (!v6)
   {
     v11 = +[IMLibraryPlist keyNameForStoreId];
-    v6 = [v3 objectForKey:v11];
+    v6 = [entryCopy objectForKey:v11];
 
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v6 stringValue];
+        stringValue = [v6 stringValue];
 LABEL_13:
-        v10 = v12;
+        stringValue2 = stringValue;
         goto LABEL_15;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v6;
-        v6 = v12;
+        stringValue = v6;
+        v6 = stringValue;
         goto LABEL_13;
       }
     }
 
-    v10 = 0;
+    stringValue2 = 0;
     goto LABEL_15;
   }
 
@@ -1845,7 +1845,7 @@ LABEL_13:
   if (v8)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
-    v10 = [v9 stringValue];
+    stringValue2 = [v9 stringValue];
   }
 
   else
@@ -1858,26 +1858,26 @@ LABEL_13:
       _os_log_impl(&dword_241D1F000, v9, OS_LOG_TYPE_ERROR, "Failed to hex->decimal: [%@]", buf, 0xCu);
     }
 
-    v10 = 0;
+    stringValue2 = 0;
   }
 
 LABEL_15:
-  if ([v10 length] <= 1)
+  if ([stringValue2 length] <= 1)
   {
 
-    v10 = 0;
+    stringValue2 = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return stringValue2;
 }
 
-+ (id)permlinkFromPlistEntry:(id)a3
++ (id)permlinkFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"iTunesU Permlink"];
+  v4 = [entryCopy objectForKey:@"iTunesU Permlink"];
 
   v5 = BUDynamicCast();
 
@@ -1894,28 +1894,28 @@ LABEL_15:
   return v6;
 }
 
-+ (id)importDateFromPlistEntry:(id)a3
++ (id)importDateFromPlistEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
   v4 = +[IMLibraryPlist keyNameForImportDate];
-  v5 = [v3 objectForKey:v4];
+  v5 = [entryCopy objectForKey:v4];
 
   v6 = BUDynamicCast();
 
   return v6;
 }
 
-+ (id)assetIDFromItunesMetadataEntry:(id)a3
++ (id)assetIDFromItunesMetadataEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [IMLibraryPlist publisherUniqueIDFromItunesMetadataEntry:v3];
+  entryCopy = entry;
+  v4 = [IMLibraryPlist publisherUniqueIDFromItunesMetadataEntry:entryCopy];
   if (!v4)
   {
-    v4 = [IMLibraryPlist uniqueIDFromItunesMetadataEntry:v3];
+    v4 = [IMLibraryPlist uniqueIDFromItunesMetadataEntry:entryCopy];
     if (!v4)
     {
-      v4 = [IMLibraryPlist packageFileHashFromItunesMetadataEntry:v3];
+      v4 = [IMLibraryPlist packageFileHashFromItunesMetadataEntry:entryCopy];
     }
   }
 
@@ -1924,111 +1924,111 @@ LABEL_15:
   return v5;
 }
 
-+ (id)publisherUniqueIDFromItunesMetadataEntry:(id)a3
++ (id)publisherUniqueIDFromItunesMetadataEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 valueForKeyPath:@"book-info.publisher-unique-id"];
+  v4 = [entryCopy valueForKeyPath:@"book-info.publisher-unique-id"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)uniqueIDFromItunesMetadataEntry:(id)a3
++ (id)uniqueIDFromItunesMetadataEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 valueForKeyPath:@"book-info.unique-id"];
+  v4 = [entryCopy valueForKeyPath:@"book-info.unique-id"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)titleFromItunesMetadataEntry:(id)a3
++ (id)titleFromItunesMetadataEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"itemName"];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKey:@"itemName"];
   if (!v4)
   {
-    v4 = [v3 valueForKeyPath:@"playlistName"];
+    v4 = [entryCopy valueForKeyPath:@"playlistName"];
   }
 
   return v4;
 }
 
-+ (id)endOfBookExperiencesFromItunesMetadataEntry:(id)a3
++ (id)endOfBookExperiencesFromItunesMetadataEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"experiences"];
+  v4 = [entryCopy objectForKey:@"experiences"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceKindFromExperienceEntry:(id)a3
++ (id)experienceKindFromExperienceEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"kind"];
+  v4 = [entryCopy objectForKey:@"kind"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceLocationFromExperienceEntry:(id)a3
++ (id)experienceLocationFromExperienceEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"loc"];
+  v4 = [entryCopy objectForKey:@"loc"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceLocationTypeFromExperienceEntry:(id)a3
++ (id)experienceLocationTypeFromExperienceEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"locType"];
+  v4 = [entryCopy objectForKey:@"locType"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceVersionFromExperienceEntry:(id)a3
++ (id)experienceVersionFromExperienceEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"version"];
+  v4 = [entryCopy objectForKey:@"version"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceParamsFromExperienceEntry:(id)a3
++ (id)experienceParamsFromExperienceEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"params"];
+  v4 = [entryCopy objectForKey:@"params"];
 
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-+ (id)experienceConfidenceFromExperienceParamEntry:(id)a3
++ (id)experienceConfidenceFromExperienceParamEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v4 = [v3 objectForKey:@"confidence"];
+  v4 = [entryCopy objectForKey:@"confidence"];
 
   v5 = BUDynamicCast();
 
@@ -2037,10 +2037,10 @@ LABEL_15:
 
 + (id)booksRepositoryPath
 {
-  v2 = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
-  v3 = [v2 path];
+  bu_booksRepositoryURL = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
+  path = [bu_booksRepositoryURL path];
 
-  return v3;
+  return path;
 }
 
 + (id)sharedContainerURL
@@ -2061,7 +2061,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_241D35AEC;
   block[3] = &unk_278D16940;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27EC71FA8 != -1)
   {
     dispatch_once(&qword_27EC71FA8, block);

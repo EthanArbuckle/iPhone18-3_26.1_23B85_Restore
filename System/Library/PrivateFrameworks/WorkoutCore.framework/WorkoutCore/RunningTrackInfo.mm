@@ -1,10 +1,10 @@
 @interface RunningTrackInfo
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation RunningTrackInfo
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   RunningTrackInfo.copy(with:)(v5);

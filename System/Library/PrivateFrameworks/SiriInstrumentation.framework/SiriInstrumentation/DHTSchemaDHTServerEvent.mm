@@ -1,31 +1,31 @@
 @interface DHTSchemaDHTServerEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (DHTSchemaDHTDeleteTrigger)deleteTrigger;
-- (DHTSchemaDHTServerEvent)initWithDictionary:(id)a3;
-- (DHTSchemaDHTServerEvent)initWithJSON:(id)a3;
+- (DHTSchemaDHTServerEvent)initWithDictionary:(id)dictionary;
+- (DHTSchemaDHTServerEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (void)deleteDeleteTrigger;
-- (void)setDeleteTrigger:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDeleteTrigger:(id)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DHTSchemaDHTServerEvent
 
-- (DHTSchemaDHTServerEvent)initWithDictionary:(id)a3
+- (DHTSchemaDHTServerEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = DHTSchemaDHTServerEvent;
   v5 = [(DHTSchemaDHTServerEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deleteTrigger"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deleteTrigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (DHTSchemaDHTServerEvent)initWithJSON:(id)a3
+- (DHTSchemaDHTServerEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DHTSchemaDHTServerEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DHTSchemaDHTServerEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DHTSchemaDHTServerEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,43 +75,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deleteTrigger)
   {
-    v4 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deleteTrigger = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+    dictionaryRepresentation = [deleteTrigger dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deleteTrigger"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deleteTrigger"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deleteTrigger"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deleteTrigger"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type])
+    if (whichEvent_Type == [equalCopy whichEvent_Type])
     {
-      v6 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
-      v7 = [v4 deleteTrigger];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      deleteTrigger = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+      deleteTrigger2 = [equalCopy deleteTrigger];
+      v8 = deleteTrigger2;
+      if ((deleteTrigger != 0) != (deleteTrigger2 == 0))
       {
-        v9 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
-        if (!v9)
+        deleteTrigger3 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+        if (!deleteTrigger3)
         {
 
 LABEL_11:
@@ -119,10 +119,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
-        v12 = [v4 deleteTrigger];
-        v13 = [v11 isEqual:v12];
+        v10 = deleteTrigger3;
+        deleteTrigger4 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+        deleteTrigger5 = [equalCopy deleteTrigger];
+        v13 = [deleteTrigger4 isEqual:deleteTrigger5];
 
         if (v13)
         {
@@ -142,14 +142,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+  toCopy = to;
+  deleteTrigger = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
 
-  if (v4)
+  if (deleteTrigger)
   {
-    v5 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
+    deleteTrigger2 = [(DHTSchemaDHTServerEvent *)self deleteTrigger];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -179,16 +179,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)setDeleteTrigger:(id)a3
+- (void)setDeleteTrigger:(id)trigger
 {
   v3 = 101;
-  if (!a3)
+  if (!trigger)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_deleteTrigger, a3);
+  objc_storeStrong(&self->_deleteTrigger, trigger);
 }
 
 - (id)qualifiedMessageName
@@ -204,17 +204,17 @@ LABEL_9:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DHTSchemaDHTServerEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DHTSchemaDHTServerEvent *)self deleteTrigger:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(DHTSchemaDHTServerEvent *)self deleteDeleteTrigger];
   }
@@ -245,9 +245,9 @@ LABEL_9:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"deleteTrigger";
   }

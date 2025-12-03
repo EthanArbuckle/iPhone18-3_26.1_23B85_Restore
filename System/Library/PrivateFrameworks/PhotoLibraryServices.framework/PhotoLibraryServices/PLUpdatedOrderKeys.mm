@@ -1,11 +1,11 @@
 @interface PLUpdatedOrderKeys
-- (BOOL)_inq_registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)a3;
+- (BOOL)_inq_registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)context;
 - (BOOL)isObservingOrderKeys;
-- (BOOL)registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)a3;
+- (BOOL)registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)context;
 - (PLUpdatedOrderKeys)init;
-- (id)_persistentStoresForContext:(id)a3;
+- (id)_persistentStoresForContext:(id)context;
 - (id)getAndClearUpdatedOrderKeys;
-- (void)persistentStoreDidUpdateOrderKeys:(id)a3;
+- (void)persistentStoreDidUpdateOrderKeys:(id)keys;
 @end
 
 @implementation PLUpdatedOrderKeys
@@ -67,10 +67,10 @@ id __49__PLUpdatedOrderKeys_getAndClearUpdatedOrderKeys__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)persistentStoreDidUpdateOrderKeys:(id)a3
+- (void)persistentStoreDidUpdateOrderKeys:(id)keys
 {
-  v4 = a3;
-  v3 = v4;
+  keysCopy = keys;
+  v3 = keysCopy;
   PLRunWithUnfairLock();
 }
 
@@ -221,20 +221,20 @@ void __56__PLUpdatedOrderKeys_persistentStoreDidUpdateOrderKeys___block_invoke(u
   objc_autoreleasePoolPop(context);
 }
 
-- (id)_persistentStoresForContext:(id)a3
+- (id)_persistentStoresForContext:(id)context
 {
-  v3 = [a3 persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
-  return v4;
+  return persistentStores;
 }
 
-- (BOOL)_inq_registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)a3
+- (BOOL)_inq_registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)context
 {
   v42 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v31 = [v34 persistentStoreCoordinator];
-  [v31 persistentStores];
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  [persistentStoreCoordinator persistentStores];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -256,11 +256,11 @@ void __56__PLUpdatedOrderKeys_persistentStoreDidUpdateOrderKeys___block_invoke(u
 
         v6 = *(*(&v37 + 1) + 8 * i);
         v7 = [v6 URL];
-        v8 = [v7 path];
-        v9 = [v34 photoLibrary];
-        v10 = [v9 pathManager];
-        v11 = [v10 photosDatabasePath];
-        v12 = [v8 isEqualToString:v11];
+        path = [v7 path];
+        photoLibrary = [contextCopy photoLibrary];
+        pathManager = [photoLibrary pathManager];
+        photosDatabasePath = [pathManager photosDatabasePath];
+        v12 = [path isEqualToString:photosDatabasePath];
 
         if (v12)
         {
@@ -269,17 +269,17 @@ void __56__PLUpdatedOrderKeys_persistentStoreDidUpdateOrderKeys___block_invoke(u
           self->_updatedOrderKeyObjectIDs = v13;
 
           v15 = [MEMORY[0x1E695DFA8] set];
-          v16 = [v31 managedObjectModel];
-          v17 = [v16 entitiesByName];
-          v18 = [v17 objectForKey:@"Album"];
-          v19 = [v18 relationshipsByName];
-          v20 = [v19 objectForKey:@"assets"];
+          managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+          entitiesByName = [managedObjectModel entitiesByName];
+          v18 = [entitiesByName objectForKey:@"Album"];
+          relationshipsByName = [v18 relationshipsByName];
+          v20 = [relationshipsByName objectForKey:@"assets"];
 
           [v15 addObject:v20];
-          v21 = [v16 entitiesByName];
-          v22 = [v21 objectForKey:@"Folder"];
-          v23 = [v22 relationshipsByName];
-          v24 = [v23 objectForKey:@"childCollections"];
+          entitiesByName2 = [managedObjectModel entitiesByName];
+          v22 = [entitiesByName2 objectForKey:@"Folder"];
+          relationshipsByName2 = [v22 relationshipsByName];
+          v24 = [relationshipsByName2 objectForKey:@"childCollections"];
 
           [v15 addObject:v24];
           v25 = [v15 copy];
@@ -293,8 +293,8 @@ void __56__PLUpdatedOrderKeys_persistentStoreDidUpdateOrderKeys___block_invoke(u
             _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEBUG, "PLChangeNode registering for order key change notifications.", buf, 2u);
           }
 
-          v28 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v28 addObserver:self selector:sel_persistentStoreDidUpdateOrderKeys_ name:v30 object:v6];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_persistentStoreDidUpdateOrderKeys_ name:v30 object:v6];
 
           v4 = 1;
         }
@@ -309,13 +309,13 @@ void __56__PLUpdatedOrderKeys_persistentStoreDidUpdateOrderKeys___block_invoke(u
   return v4 & 1;
 }
 
-- (BOOL)registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)a3
+- (BOOL)registerForStoreOrderKeyUpdateNotificationFromManagedObjectContext:(id)context
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  contextCopy = context;
   PLRunWithUnfairLock();
   v3 = *(v7 + 24);
 

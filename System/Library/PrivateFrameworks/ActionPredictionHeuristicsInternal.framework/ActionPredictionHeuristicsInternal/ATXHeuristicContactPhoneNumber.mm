@@ -1,8 +1,8 @@
 @interface ATXHeuristicContactPhoneNumber
-- (BOOL)_containsPhonePunctuation:(id)a3;
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (BOOL)_containsPhonePunctuation:(id)punctuation;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
-- (id)phonesFromDataDetectorResults:(id)a3;
+- (id)phonesFromDataDetectorResults:(id)results;
 @end
 
 @implementation ATXHeuristicContactPhoneNumber
@@ -17,20 +17,20 @@
   return v4;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [ATXHeuristicClipboardUtilities alloc];
-  v6 = [v4 heuristicDevice];
+  heuristicDevice = [environmentCopy heuristicDevice];
 
-  v7 = [(ATXHeuristicClipboardUtilities *)v5 initWithDevice:v6];
+  v7 = [(ATXHeuristicClipboardUtilities *)v5 initWithDevice:heuristicDevice];
   [(ATXHeuristicClipboardUtilities *)v7 fetchContents];
-  v8 = [(ATXHeuristicClipboardUtilities *)v7 dataDetectors];
+  dataDetectors = [(ATXHeuristicClipboardUtilities *)v7 dataDetectors];
   v9 = objc_opt_new();
   if ([v9 telephonyCapability])
   {
-    v10 = [(ATXHeuristicContactPhoneNumber *)self phonesFromDataDetectorResults:v8];
+    v10 = [(ATXHeuristicContactPhoneNumber *)self phonesFromDataDetectorResults:dataDetectors];
     v11 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -41,34 +41,34 @@
 
     if ([v10 count] == 1)
     {
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v37 = v8;
+      v37 = dataDetectors;
       v14 = MEMORY[0x277CCACA8];
       v15 = v13;
       v16 = [v13 localizedStringForKey:@"CALL_CLIPBOARD_NUMBER_TITLE" value:&stru_2850AD368 table:0];
-      [v14 localizedStringWithFormat:v16, v12];
+      [v14 localizedStringWithFormat:v16, firstObject];
       v17 = v36 = v10;
 
       v18 = MEMORY[0x277CCACA8];
       v19 = v15;
       v35 = v15;
       v20 = [v15 localizedStringForKey:@"MESSAGE_CLIPBOARD_NUMBER_TITLE" value:&stru_2850AD368 table:0];
-      v21 = [v18 localizedStringWithFormat:v20, v12];
+      v21 = [v18 localizedStringWithFormat:v20, firstObject];
 
       v22 = MEMORY[0x277CCACA8];
       v23 = [v19 localizedStringForKey:@"CLIPBOARD_NUMBER_SUBTITLE" value:&stru_2850AD368 table:0];
-      v24 = [(ATXHeuristicClipboardUtilities *)v7 appName];
-      v25 = [v22 localizedStringWithFormat:v23, v24];
+      appName = [(ATXHeuristicClipboardUtilities *)v7 appName];
+      v25 = [v22 localizedStringWithFormat:v23, appName];
 
-      v26 = [MEMORY[0x277CEB2C8] atx_startAudioCallActionWithTitle:v17 subtitle:v25 recipientName:0 recipientHandle:v12 callService:@"phone" contactIdentifier:0 eventIdentifier:0 heuristicName:@"contactPhoneNumber"];
-      v27 = [MEMORY[0x277CEB2C8] atx_sendMessageActionWithTitle:v21 subtitle:v25 recipientName:0 recipientHandle:v12 text:0 contactIdentifier:0 conversationIdentifier:0 eventIdentifier:0 heuristicName:@"contactPhoneNumber"];
+      v26 = [MEMORY[0x277CEB2C8] atx_startAudioCallActionWithTitle:v17 subtitle:v25 recipientName:0 recipientHandle:firstObject callService:@"phone" contactIdentifier:0 eventIdentifier:0 heuristicName:@"contactPhoneNumber"];
+      v27 = [MEMORY[0x277CEB2C8] atx_sendMessageActionWithTitle:v21 subtitle:v25 recipientName:0 recipientHandle:firstObject text:0 contactIdentifier:0 conversationIdentifier:0 eventIdentifier:0 heuristicName:@"contactPhoneNumber"];
       v38[0] = v26;
       v38[1] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
       v29 = [(ATXHeuristicClipboardUtilities *)v7 resultWithActions:v28 predictionReasons:0x10000000];
 
-      v8 = v37;
+      dataDetectors = v37;
       v10 = v36;
     }
 
@@ -104,16 +104,16 @@
   return v29;
 }
 
-- (id)phonesFromDataDetectorResults:(id)a3
+- (id)phonesFromDataDetectorResults:(id)results
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v15 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v3;
+  v4 = resultsCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -157,12 +157,12 @@
   return v15;
 }
 
-- (BOOL)_containsPhonePunctuation:(id)a3
+- (BOOL)_containsPhonePunctuation:(id)punctuation
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
+  punctuationCopy = punctuation;
   v5 = [v3 characterSetWithCharactersInString:{@" (), -."}];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  v6 = [punctuationCopy componentsSeparatedByCharactersInSet:v5];
 
   v7 = [v6 count];
   return v7 > 2;

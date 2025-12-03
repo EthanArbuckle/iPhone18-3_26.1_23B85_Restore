@@ -1,10 +1,10 @@
 @interface BISeqPredictorCommon
 + (id)sharedInstance;
 - (BISeqPredictorCommon)init;
-- (id)_copyFeaturesWithParams:(id)a3 modelName:(id)a4 error:(id *)a5;
-- (id)getInputNamesAndDimensionsForModel:(id)a3;
-- (id)getOutputNamesAndDimensionsForModel:(id)a3;
-- (id)runInferenceForModel:(id)a3 withParams:(id)a4 outputFeatureType:(int64_t)a5;
+- (id)_copyFeaturesWithParams:(id)params modelName:(id)name error:(id *)error;
+- (id)getInputNamesAndDimensionsForModel:(id)model;
+- (id)getOutputNamesAndDimensionsForModel:(id)model;
+- (id)runInferenceForModel:(id)model withParams:(id)params outputFeatureType:(int64_t)type;
 @end
 
 @implementation BISeqPredictorCommon
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004980;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000578B0 != -1)
   {
     dispatch_once(&qword_1000578B0, block);
@@ -48,9 +48,9 @@
   v5 = +[BIFeatures sharedInstance];
   [v2 setFeatureGen:v5];
 
-  v6 = [v2 featureGen];
+  featureGen = [v2 featureGen];
 
-  if (!v6)
+  if (!featureGen)
   {
     if (os_log_type_enabled(*(v2 + 2), OS_LOG_TYPE_ERROR))
     {
@@ -68,17 +68,17 @@ LABEL_9:
   return v7;
 }
 
-- (id)_copyFeaturesWithParams:(id)a3 modelName:(id)a4 error:(id *)a5
+- (id)_copyFeaturesWithParams:(id)params modelName:(id)name error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([&off_10004CB38 containsObject:v8])
+  paramsCopy = params;
+  nameCopy = name;
+  if ([&off_10004CB38 containsObject:nameCopy])
   {
     v9 = objc_alloc_init(NSMutableDictionary);
     v10 = v9;
-    if (v7)
+    if (paramsCopy)
     {
-      [v9 addEntriesFromDictionary:v7];
+      [v9 addEntriesFromDictionary:paramsCopy];
     }
 
     logger = self->_logger;
@@ -116,14 +116,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, v16, v32, 2u);
 LABEL_14:
     v18 = objc_alloc_init(NSMutableDictionary);
-    if ([v8 isEqualToString:@"nccp_wra_qmaxp_seq_model"])
+    if ([nameCopy isEqualToString:@"nccp_wra_qmaxp_seq_model"])
     {
       v19 = &off_10004CB50;
     }
 
     else
     {
-      if (([v8 isEqualToString:@"state_estimation_model"] & 1) == 0)
+      if (([nameCopy isEqualToString:@"state_estimation_model"] & 1) == 0)
       {
         if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
         {
@@ -137,12 +137,12 @@ LABEL_14:
       v19 = &off_10004CB68;
     }
 
-    v20 = [(BISeqPredictorCommon *)self getInputNamesAndDimensionsForModel:v8, *v32];
+    v20 = [(BISeqPredictorCommon *)self getInputNamesAndDimensionsForModel:nameCopy, *v32];
     v21 = [(BIFeatures *)self->_featureGen copyDailyHealthHistoryForFeatures:v19 withFeatureDimensions:v20 withParams:v10];
     if (v21)
     {
       [v18 addEntriesFromDictionary:v21];
-      if (([v8 isEqualToString:@"nccp_wra_qmaxp_seq_model"] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"state_estimation_model"))
+      if (([nameCopy isEqualToString:@"nccp_wra_qmaxp_seq_model"] & 1) == 0 && !objc_msgSend(nameCopy, "isEqualToString:", @"state_estimation_model"))
       {
         goto LABEL_23;
       }
@@ -155,9 +155,9 @@ LABEL_14:
 
 LABEL_23:
         v24 = [v10 objectForKeyedSubscript:@"UseCachedFeatures"];
-        v25 = [v24 BOOLValue];
+        bOOLValue = [v24 BOOLValue];
 
-        if ((v25 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v26 = +[NSDate now];
           v27 = qword_1000578B8;
@@ -211,10 +211,10 @@ LABEL_39:
   return v30;
 }
 
-- (id)getInputNamesAndDimensionsForModel:(id)a3
+- (id)getInputNamesAndDimensionsForModel:(id)model
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"qmaxp_seq_model"])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:@"qmaxp_seq_model"])
   {
     v25 = @"daily_history_input";
     v23[0] = &off_10004D168;
@@ -231,7 +231,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"nccp_wra_qmaxp_seq_model"])
+  if ([modelCopy isEqualToString:@"nccp_wra_qmaxp_seq_model"])
   {
     v21[0] = @"daily_history_input";
     v19[0] = &off_10004D168;
@@ -269,7 +269,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"state_estimation_model"])
+  if ([modelCopy isEqualToString:@"state_estimation_model"])
   {
     v15[0] = @"daily_history_input";
     v13[0] = &off_10004D168;
@@ -309,10 +309,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)getOutputNamesAndDimensionsForModel:(id)a3
+- (id)getOutputNamesAndDimensionsForModel:(id)model
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"nccp_wra_qmaxp_seq_model"])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:@"nccp_wra_qmaxp_seq_model"])
   {
     v24[0] = &off_10004D168;
     v24[1] = &off_10004D180;
@@ -365,7 +365,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"state_estimation_model"])
+  if ([modelCopy isEqualToString:@"state_estimation_model"])
   {
     v12[0] = &off_10004D168;
     v12[1] = &off_10004D180;
@@ -391,24 +391,24 @@ LABEL_9:
   return v10;
 }
 
-- (id)runInferenceForModel:(id)a3 withParams:(id)a4 outputFeatureType:(int64_t)a5
+- (id)runInferenceForModel:(id)model withParams:(id)params outputFeatureType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  modelCopy = model;
+  paramsCopy = params;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v11 = logger;
-    v12 = [v9 objectForKeyedSubscript:@"PredictionDurationDays"];
+    v12 = [paramsCopy objectForKeyedSubscript:@"PredictionDurationDays"];
     *buf = 138412546;
-    v79 = v8;
+    v79 = modelCopy;
     v80 = 2112;
     v81 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Running inference for model %@ for prediction duration = %@ days", buf, 0x16u);
   }
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
-  v14 = [v13 pathForResource:v8 ofType:@"mlmodelc"];
+  v14 = [v13 pathForResource:modelCopy ofType:@"mlmodelc"];
 
   v15 = objc_alloc_init(MLModelConfiguration);
   [v15 setComputeUnits:1];
@@ -416,7 +416,7 @@ LABEL_9:
   v17 = [MLModel modelWithContentsOfURL:v16 configuration:v15 error:0];
 
   v75 = 0;
-  v18 = [(BISeqPredictorCommon *)self _copyFeaturesWithParams:v9 modelName:v8 error:&v75];
+  v18 = [(BISeqPredictorCommon *)self _copyFeaturesWithParams:paramsCopy modelName:modelCopy error:&v75];
   v19 = v75;
   v20 = v19;
   if (!v18)
@@ -455,7 +455,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v58 = a5;
+  typeCopy = type;
   v73 = v24;
   [v17 predictionFromFeatures:v23 error:&v73];
   v26 = v25 = v23;
@@ -470,11 +470,11 @@ LABEL_9:
     v53 = v17;
     v54 = v15;
     v55 = v14;
-    v56 = v9;
+    v56 = paramsCopy;
     v28 = objc_alloc_init(NSMutableDictionary);
-    v62 = [(BISeqPredictorCommon *)self getInputNamesAndDimensionsForModel:v8];
-    v57 = v8;
-    v61 = [(BISeqPredictorCommon *)self getOutputNamesAndDimensionsForModel:v8];
+    v62 = [(BISeqPredictorCommon *)self getInputNamesAndDimensionsForModel:modelCopy];
+    v57 = modelCopy;
+    v61 = [(BISeqPredictorCommon *)self getOutputNamesAndDimensionsForModel:modelCopy];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -498,16 +498,16 @@ LABEL_9:
           v34 = *(*(&v69 + 1) + 8 * i);
           v35 = [v34 isEqualToString:@"scalar_input"];
           v36 = [v31 featureValueForName:v34];
-          v37 = [v36 multiArrayValue];
+          multiArrayValue = [v36 multiArrayValue];
           v38 = [v62 objectForKey:v34];
           if (v35)
           {
-            [BITensor getValuesFrom2DMultiArray:v37 withFeatureNamesForDimensions:v38];
+            [BITensor getValuesFrom2DMultiArray:multiArrayValue withFeatureNamesForDimensions:v38];
           }
 
           else
           {
-            [BITensor getValuesFrom3DMultiArray:v37 withFeatureNamesForDimensions:v38];
+            [BITensor getValuesFrom3DMultiArray:multiArrayValue withFeatureNamesForDimensions:v38];
           }
           v39 = ;
 
@@ -525,8 +525,8 @@ LABEL_9:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v40 = [v64 featureNames];
-    v41 = [v40 countByEnumeratingWithState:&v65 objects:v76 count:16];
+    featureNames = [v64 featureNames];
+    v41 = [featureNames countByEnumeratingWithState:&v65 objects:v76 count:16];
     if (v41)
     {
       v42 = v41;
@@ -537,30 +537,30 @@ LABEL_9:
         {
           if (*v66 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(featureNames);
           }
 
           v45 = *(*(&v65 + 1) + 8 * j);
           v46 = [v64 featureValueForName:v45];
-          v47 = [v46 multiArrayValue];
+          multiArrayValue2 = [v46 multiArrayValue];
           v48 = [v61 objectForKey:v45];
-          v49 = [BITensor getValuesFrom3DMultiArray:v47 withFeatureNamesForDimensions:v48];
+          v49 = [BITensor getValuesFrom3DMultiArray:multiArrayValue2 withFeatureNamesForDimensions:v48];
 
           [v28 addEntriesFromDictionary:v49];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v65 objects:v76 count:16];
+        v42 = [featureNames countByEnumeratingWithState:&v65 objects:v76 count:16];
       }
 
       while (v42);
     }
 
-    sub_10001E3BC(v28, v58);
+    sub_10001E3BC(v28, typeCopy);
     v21 = v64;
     v50 = v64;
 
-    v9 = v56;
-    v8 = v57;
+    paramsCopy = v56;
+    modelCopy = v57;
     v15 = v54;
     v14 = v55;
     v18 = v52;

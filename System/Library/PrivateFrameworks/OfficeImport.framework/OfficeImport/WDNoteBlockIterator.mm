@@ -1,24 +1,24 @@
 @interface WDNoteBlockIterator
-- (id)childIteratorFrom:(id)a3;
-- (id)newChildIteratorFrom:(id)a3;
+- (id)childIteratorFrom:(id)from;
+- (id)newChildIteratorFrom:(id)from;
 @end
 
 @implementation WDNoteBlockIterator
 
-- (id)childIteratorFrom:(id)a3
+- (id)childIteratorFrom:(id)from
 {
-  v3 = [a3 text];
-  v4 = [v3 blockIterator];
+  text = [from text];
+  blockIterator = [text blockIterator];
 
-  return v4;
+  return blockIterator;
 }
 
-- (id)newChildIteratorFrom:(id)a3
+- (id)newChildIteratorFrom:(id)from
 {
-  v3 = [a3 text];
-  v4 = [v3 newBlockIterator];
+  text = [from text];
+  newBlockIterator = [text newBlockIterator];
 
-  return v4;
+  return newBlockIterator;
 }
 
 @end

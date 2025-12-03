@@ -10,7 +10,7 @@
 - (NSArray)applicableRenderingAlgorithms;
 - (float)outputVolume;
 - (void)setListenerAngularOrientation:(AVAudio3DAngularOrientation)listenerAngularOrientation;
-- (void)setListenerHeadTrackingEnabled:(BOOL)a3;
+- (void)setListenerHeadTrackingEnabled:(BOOL)enabled;
 - (void)setListenerPosition:(AVAudio3DPoint)listenerPosition;
 - (void)setListenerVectorOrientation:(AVAudio3DVectorOrientation *)listenerVectorOrientation;
 - (void)setOutputType:(AVAudioEnvironmentOutputType)outputType;
@@ -645,14 +645,14 @@ LABEL_58:
   return result;
 }
 
-- (void)setListenerHeadTrackingEnabled:(BOOL)a3
+- (void)setListenerHeadTrackingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v20 = *MEMORY[0x1E69E9840];
   p_impl = &self->super._impl;
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v9, self->super._impl);
   v5 = *p_impl;
-  v13 = v3;
+  v13 = enabledCopy;
   if (((*(*v5 + 144))(v5, 3111, 0, 0, &v13, 4) & 1) == 0)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)

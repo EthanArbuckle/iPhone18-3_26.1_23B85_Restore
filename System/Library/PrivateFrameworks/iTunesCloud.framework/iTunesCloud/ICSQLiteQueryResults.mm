@@ -1,9 +1,9 @@
 @interface ICSQLiteQueryResults
-- (ICSQLiteQueryResults)initWithStatement:(id)a3;
+- (ICSQLiteQueryResults)initWithStatement:(id)statement;
 - (NSNumber)firstNumberValue;
 - (NSString)firstStringValue;
 - (int64_t)firstInt64Value;
-- (void)enumerateRowsUsingBlock:(id)a3;
+- (void)enumerateRowsUsingBlock:(id)block;
 @end
 
 @implementation ICSQLiteQueryResults
@@ -104,17 +104,17 @@ uint64_t __39__ICSQLiteQueryResults_firstInt64Value__block_invoke(uint64_t resul
   return result;
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [[ICSQLiteRow alloc] initWithStatement:self->_statement];
-  v6 = [(ICSQLiteStatement *)self->_statement sqlite3_stmt];
+  sqlite3_stmt = [(ICSQLiteStatement *)self->_statement sqlite3_stmt];
   v7 = 0;
   while (1)
   {
     v8 = objc_autoreleasePoolPush();
     v14 = 0;
-    v9 = sqlite3_step(v6);
+    v9 = sqlite3_step(sqlite3_stmt);
     if (v9 > 9)
     {
       break;
@@ -138,7 +138,7 @@ uint64_t __39__ICSQLiteQueryResults_firstInt64Value__block_invoke(uint64_t resul
     }
 
 LABEL_10:
-    v4[2](v4, v5, 0, &v14);
+    blockCopy[2](blockCopy, v5, 0, &v14);
 LABEL_11:
     v10 = v14;
     objc_autoreleasePoolPop(v8);
@@ -170,8 +170,8 @@ LABEL_20:
   if (v9 == 10)
   {
     objc_autoreleasePoolPop(v8);
-    v11 = [(ICSQLiteStatement *)self->_statement connection];
-    [v11 resetAfterIOError];
+    connection = [(ICSQLiteStatement *)self->_statement connection];
+    [connection resetAfterIOError];
   }
 
   else
@@ -179,31 +179,31 @@ LABEL_20:
     if (v9 != 11 && v9 != 26)
     {
 LABEL_18:
-      v12 = [(ICSQLiteStatement *)self->_statement connection];
-      v13 = [v12 currentError];
+      connection2 = [(ICSQLiteStatement *)self->_statement connection];
+      currentError = [connection2 currentError];
 
-      (v4)[2](v4, 0, v13, &v14);
+      (blockCopy)[2](blockCopy, 0, currentError, &v14);
       goto LABEL_19;
     }
 
     objc_autoreleasePoolPop(v8);
-    v11 = [(ICSQLiteStatement *)self->_statement connection];
-    [v11 resetAfterCorruptionError];
+    connection = [(ICSQLiteStatement *)self->_statement connection];
+    [connection resetAfterCorruptionError];
   }
 
 LABEL_23:
 }
 
-- (ICSQLiteQueryResults)initWithStatement:(id)a3
+- (ICSQLiteQueryResults)initWithStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v9.receiver = self;
   v9.super_class = ICSQLiteQueryResults;
   v6 = [(ICSQLiteQueryResults *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_statement, a3);
+    objc_storeStrong(&v6->_statement, statement);
   }
 
   return v7;

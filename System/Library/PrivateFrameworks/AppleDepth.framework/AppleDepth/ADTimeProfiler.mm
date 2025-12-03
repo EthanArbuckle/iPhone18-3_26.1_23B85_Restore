@@ -2,13 +2,13 @@
 - (ADTimeProfiler)init;
 - (id)log;
 - (id)stringLog;
-- (id)valueDictForOperationName:(id)a3;
+- (id)valueDictForOperationName:(id)name;
 - (void)printLog;
 - (void)reset;
-- (void)startForOperationWithName:(id)a3;
-- (void)startWithUTFString:(const char *)a3;
-- (void)stopForOperationWithName:(id)a3;
-- (void)stopWithUTFString:(const char *)a3;
+- (void)startForOperationWithName:(id)name;
+- (void)startWithUTFString:(const char *)string;
+- (void)stopForOperationWithName:(id)name;
+- (void)stopWithUTFString:(const char *)string;
 @end
 
 @implementation ADTimeProfiler
@@ -17,7 +17,7 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v15 = [(ADTimeProfiler *)self log];
-  v2 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -37,15 +37,15 @@
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
-        v8 = [v7 allKeys];
-        if ([v8 count])
+        allKeys = [v7 allKeys];
+        if ([allKeys count])
         {
-          v9 = [v7 allKeys];
-          v10 = [v9 objectAtIndexedSubscript:0];
+          allKeys2 = [v7 allKeys];
+          v10 = [allKeys2 objectAtIndexedSubscript:0];
 
           v11 = [v7 valueForKey:v10];
           [v11 doubleValue];
-          [v2 appendFormat:@"%@: %.02fms\n", v10, v12];
+          [string appendFormat:@"%@: %.02fms\n", v10, v12];
         }
       }
 
@@ -55,7 +55,7 @@
     while (v4);
   }
 
-  v13 = [v2 copy];
+  v13 = [string copy];
 
   return v13;
 }
@@ -82,11 +82,11 @@
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 allKeys];
-        if ([v7 count])
+        allKeys = [v6 allKeys];
+        if ([allKeys count])
         {
-          v8 = [v6 allKeys];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          allKeys2 = [v6 allKeys];
+          v9 = [allKeys2 objectAtIndexedSubscript:0];
 
           v10 = [v6 valueForKey:v9];
           [v10 doubleValue];
@@ -101,24 +101,24 @@
   }
 }
 
-- (id)valueDictForOperationName:(id)a3
+- (id)valueDictForOperationName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(ADTimeProfiler *)self logArray];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  logArray = [(ADTimeProfiler *)self logArray];
+  v6 = [logArray countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v6)
   {
 LABEL_11:
 
 LABEL_13:
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    v16 = [(ADTimeProfiler *)self logArray];
-    [v16 addObject:v15];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    logArray2 = [(ADTimeProfiler *)self logArray];
+    [logArray2 addObject:dictionary];
     goto LABEL_15;
   }
 
@@ -129,20 +129,20 @@ LABEL_3:
   {
     if (*v19 != v7)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(logArray);
     }
 
     v9 = *(*(&v18 + 1) + 8 * v8);
-    v10 = [v9 allKeys];
-    if (![v10 count])
+    allKeys = [v9 allKeys];
+    if (![allKeys count])
     {
       goto LABEL_9;
     }
 
-    v11 = [v9 allKeys];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    allKeys2 = [v9 allKeys];
+    v12 = [allKeys2 objectAtIndexedSubscript:0];
 
-    if ([v12 isEqualToString:v4])
+    if ([v12 isEqualToString:nameCopy])
     {
       break;
     }
@@ -150,7 +150,7 @@ LABEL_3:
 LABEL_9:
     if (v6 == ++v8)
     {
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [logArray countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -160,64 +160,64 @@ LABEL_9:
     }
   }
 
-  v13 = [(ADTimeProfiler *)self logArray];
-  v14 = [v13 indexOfObject:v9];
+  logArray3 = [(ADTimeProfiler *)self logArray];
+  v14 = [logArray3 indexOfObject:v9];
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_13;
   }
 
-  v16 = [(ADTimeProfiler *)self logArray];
-  v15 = [v16 objectAtIndex:v14];
+  logArray2 = [(ADTimeProfiler *)self logArray];
+  dictionary = [logArray2 objectAtIndex:v14];
 LABEL_15:
 
-  return v15;
+  return dictionary;
 }
 
-- (void)stopForOperationWithName:(id)a3
+- (void)stopForOperationWithName:(id)name
 {
-  v9 = a3;
+  nameCopy = name;
   v4 = +[ADTimeProfiler currentTimeUsec];
-  v5 = [(ADTimeProfiler *)self valueDictForOperationName:v9];
-  v6 = [v5 valueForKey:v9];
-  v7 = [v6 longValue];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:(v4 - v7) / 1000.0];
-  [v5 setObject:v8 forKey:v9];
+  v5 = [(ADTimeProfiler *)self valueDictForOperationName:nameCopy];
+  v6 = [v5 valueForKey:nameCopy];
+  longValue = [v6 longValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:(v4 - longValue) / 1000.0];
+  [v5 setObject:v8 forKey:nameCopy];
 }
 
-- (void)startForOperationWithName:(id)a3
+- (void)startForOperationWithName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   v4 = +[ADTimeProfiler currentTimeUsec];
   v5 = [MEMORY[0x277CCABB0] numberWithLong:v4];
-  v6 = [(ADTimeProfiler *)self valueDictForOperationName:v7];
-  [v6 setObject:v5 forKey:v7];
+  v6 = [(ADTimeProfiler *)self valueDictForOperationName:nameCopy];
+  [v6 setObject:v5 forKey:nameCopy];
 }
 
 - (id)log
 {
-  v2 = [(ADTimeProfiler *)self logArray];
-  v3 = [v2 copy];
+  logArray = [(ADTimeProfiler *)self logArray];
+  v3 = [logArray copy];
 
   return v3;
 }
 
-- (void)stopWithUTFString:(const char *)a3
+- (void)stopWithUTFString:(const char *)string
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
   [(ADTimeProfiler *)self stopForOperationWithName:?];
 }
 
-- (void)startWithUTFString:(const char *)a3
+- (void)startWithUTFString:(const char *)string
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
   [(ADTimeProfiler *)self startForOperationWithName:?];
 }
 
 - (void)reset
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(ADTimeProfiler *)self setLogArray:?];
 }
 

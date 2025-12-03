@@ -1,19 +1,19 @@
 @interface _CPSearchViewDisappearFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSearchViewDisappearFeedback)init;
-- (_CPSearchViewDisappearFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPSearchViewDisappearFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSearchViewDisappearFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(v4, "timestamp")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(equalCopy, "timestamp")))
   {
     viewDisappearEvent = self->_viewDisappearEvent;
-    v7 = viewDisappearEvent == [v4 viewDisappearEvent];
+    v7 = viewDisappearEvent == [equalCopy viewDisappearEvent];
   }
 
   else
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_CPSearchViewDisappearFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -54,16 +54,16 @@
   return v2;
 }
 
-- (_CPSearchViewDisappearFeedback)initWithFacade:(id)a3
+- (_CPSearchViewDisappearFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v8.receiver = self;
   v8.super_class = _CPSearchViewDisappearFeedback;
   v5 = [(_CPSearchViewDisappearFeedback *)&v8 init];
   if (v5)
   {
-    -[_CPSearchViewDisappearFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    -[_CPSearchViewDisappearFeedback setViewDisappearEvent:](v5, "setViewDisappearEvent:", [v4 viewDisappearEvent]);
+    -[_CPSearchViewDisappearFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    -[_CPSearchViewDisappearFeedback setViewDisappearEvent:](v5, "setViewDisappearEvent:", [facadeCopy viewDisappearEvent]);
     v6 = v5;
   }
 

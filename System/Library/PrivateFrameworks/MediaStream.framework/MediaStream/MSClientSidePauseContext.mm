@@ -1,5 +1,5 @@
 @interface MSClientSidePauseContext
-- (MSClientSidePauseContext)initWithServer:(id)a3;
+- (MSClientSidePauseContext)initWithServer:(id)server;
 - (void)resume;
 - (void)timerQueuePing;
 - (void)timerQueueTimerFired;
@@ -13,23 +13,23 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Pause context %p pinging server.", &v6, 0xCu);
   }
 
-  v3 = [(MSClientSidePauseContext *)self server];
-  v4 = [v3 remoteObjectProxy];
-  [v4 pauseForUUID:self->_UUID];
+  server = [(MSClientSidePauseContext *)self server];
+  remoteObjectProxy = [server remoteObjectProxy];
+  [remoteObjectProxy pauseForUUID:self->_UUID];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
 - (void)timerQueueTimerFired
 {
-  v3 = [(MSClientSidePauseContext *)self gate];
-  v4 = [v3 enabled];
+  gate = [(MSClientSidePauseContext *)self gate];
+  enabled = [gate enabled];
 
-  if (v4)
+  if (enabled)
   {
     [(MSClientSidePauseContext *)self timerQueuePing];
     v5 = dispatch_time(0, 5000000000);
@@ -57,7 +57,7 @@ void __48__MSClientSidePauseContext_timerQueueTimerFired__block_invoke(uint64_t 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Pause context %p ended.", buf, 0xCu);
   }
 
@@ -83,10 +83,10 @@ void __34__MSClientSidePauseContext_resume__block_invoke(uint64_t a1)
   *(v4 + 8) = 0;
 }
 
-- (MSClientSidePauseContext)initWithServer:(id)a3
+- (MSClientSidePauseContext)initWithServer:(id)server
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serverCopy = server;
   v25.receiver = self;
   v25.super_class = MSClientSidePauseContext;
   v6 = [(MSClientSidePauseContext *)&v25 init];
@@ -99,10 +99,10 @@ void __34__MSClientSidePauseContext_resume__block_invoke(uint64_t a1)
       _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Pause context %p started.", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_server, a3);
-    v7 = [MEMORY[0x277CCACA8] MSMakeUUID];
+    objc_storeStrong(&v6->_server, server);
+    mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
     UUID = v6->_UUID;
-    v6->_UUID = v7;
+    v6->_UUID = mSMakeUUID;
 
     v9 = dispatch_queue_create("MSClientSidePauseContext timer queue", 0);
     timerQueue = v6->_timerQueue;

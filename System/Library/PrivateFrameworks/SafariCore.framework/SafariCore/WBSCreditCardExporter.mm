@@ -1,18 +1,18 @@
 @interface WBSCreditCardExporter
-- (WBSCreditCardExporter)initWithJSONWriter:(id)a3 error:(id *)a4;
-- (void)addEntryWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8;
-- (void)finishWithCompletionHandler:(id)a3;
+- (WBSCreditCardExporter)initWithJSONWriter:(id)writer error:(id *)error;
+- (void)addEntryWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date;
+- (void)finishWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSCreditCardExporter
 
-- (WBSCreditCardExporter)initWithJSONWriter:(id)a3 error:(id *)a4
+- (WBSCreditCardExporter)initWithJSONWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
+  writerCopy = writer;
   v10.receiver = self;
   v10.super_class = WBSCreditCardExporter;
-  v7 = [(WBSJSONExporter *)&v10 initWithJSONWriter:v6 error:a4];
-  if (v7 && [v6 beginArrayForKey:@"payment_cards" error:a4])
+  v7 = [(WBSJSONExporter *)&v10 initWithJSONWriter:writerCopy error:error];
+  if (v7 && [writerCopy beginArrayForKey:@"payment_cards" error:error])
   {
     v8 = v7;
   }
@@ -25,80 +25,80 @@
   return v8;
 }
 
-- (void)addEntryWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8
+- (void)addEntryWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a3;
-  v20 = [(WBSJSONExporter *)self jsonWriter];
+  nameCopy = name;
+  cardholderNameCopy = cardholderName;
+  monthCopy = month;
+  yearCopy = year;
+  dateCopy = date;
+  numberCopy = number;
+  jsonWriter = [(WBSJSONExporter *)self jsonWriter];
   v47 = 0;
-  [v20 appendAndBeginObjectWithError:&v47];
+  [jsonWriter appendAndBeginObjectWithError:&v47];
   v21 = v47;
 
-  v22 = [(WBSJSONExporter *)self jsonWriter];
+  jsonWriter2 = [(WBSJSONExporter *)self jsonWriter];
   v46 = v21;
-  [v22 addEntry:v19 forKey:@"card_number" error:&v46];
+  [jsonWriter2 addEntry:numberCopy forKey:@"card_number" error:&v46];
 
   v23 = v46;
-  if ([v14 length])
+  if ([nameCopy length])
   {
-    v24 = [(WBSJSONExporter *)self jsonWriter];
+    jsonWriter3 = [(WBSJSONExporter *)self jsonWriter];
     v45 = v23;
-    [v24 addEntry:v14 forKey:@"card_name" error:&v45];
+    [jsonWriter3 addEntry:nameCopy forKey:@"card_name" error:&v45];
     v25 = v45;
 
     v23 = v25;
   }
 
-  if ([v15 length])
+  if ([cardholderNameCopy length])
   {
-    v26 = [(WBSJSONExporter *)self jsonWriter];
+    jsonWriter4 = [(WBSJSONExporter *)self jsonWriter];
     v44 = v23;
-    [v26 addEntry:v15 forKey:@"cardholder_name" error:&v44];
+    [jsonWriter4 addEntry:cardholderNameCopy forKey:@"cardholder_name" error:&v44];
     v27 = v44;
 
     v23 = v27;
   }
 
-  if (v16 && [v16 intValue])
+  if (monthCopy && [monthCopy intValue])
   {
-    v28 = [(WBSJSONExporter *)self jsonWriter];
+    jsonWriter5 = [(WBSJSONExporter *)self jsonWriter];
     v43 = v23;
-    [v28 addEntry:v16 forKey:@"card_expiration_month" error:&v43];
+    [jsonWriter5 addEntry:monthCopy forKey:@"card_expiration_month" error:&v43];
     v29 = v43;
 
     v23 = v29;
   }
 
-  if (v17 && [v17 intValue])
+  if (yearCopy && [yearCopy intValue])
   {
-    v30 = [(WBSJSONExporter *)self jsonWriter];
+    jsonWriter6 = [(WBSJSONExporter *)self jsonWriter];
     v42 = v23;
-    [v30 addEntry:v17 forKey:@"card_expiration_year" error:&v42];
+    [jsonWriter6 addEntry:yearCopy forKey:@"card_expiration_year" error:&v42];
     v31 = v42;
 
     v23 = v31;
   }
 
-  if (v18)
+  if (dateCopy)
   {
-    [v18 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v33 = v32 * 1000000.0;
-    v34 = [(WBSJSONExporter *)self jsonWriter];
+    jsonWriter7 = [(WBSJSONExporter *)self jsonWriter];
     v35 = [MEMORY[0x1E696AD98] numberWithDouble:v33];
     v41 = v23;
-    [v34 addEntry:v35 forKey:@"card_last_used_time_usec" error:&v41];
+    [jsonWriter7 addEntry:v35 forKey:@"card_last_used_time_usec" error:&v41];
     v36 = v41;
 
     v23 = v36;
   }
 
-  v37 = [(WBSJSONExporter *)self jsonWriter];
+  jsonWriter8 = [(WBSJSONExporter *)self jsonWriter];
   v40 = v23;
-  [v37 closeCurrentEntryWithError:&v40];
+  [jsonWriter8 closeCurrentEntryWithError:&v40];
   v38 = v40;
 
   if (v38)
@@ -111,17 +111,17 @@
   }
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__WBSCreditCardExporter_finishWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF2CC0;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WBSCreditCardExporter;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WBSJSONExporter *)&v6 finishWithCompletionHandler:v7];
 }
 

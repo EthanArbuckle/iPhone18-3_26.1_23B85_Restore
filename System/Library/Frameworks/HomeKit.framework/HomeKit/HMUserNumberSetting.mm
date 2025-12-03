@@ -1,17 +1,17 @@
 @interface HMUserNumberSetting
-- (BOOL)doesValueConformToConstraints:(id)a3;
-- (void)updateValue:(id)a3 completionHandler:(id)a4;
+- (BOOL)doesValueConformToConstraints:(id)constraints;
+- (void)updateValue:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMUserNumberSetting
 
-- (BOOL)doesValueConformToConstraints:(id)a3
+- (BOOL)doesValueConformToConstraints:(id)constraints
 {
-  v4 = a3;
+  constraintsCopy = constraints;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = constraintsCopy;
   }
 
   else
@@ -22,19 +22,19 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMNumberSetting *)self minimumValue];
-    if (v7)
+    minimumValue = [(HMNumberSetting *)self minimumValue];
+    if (minimumValue)
     {
-      v8 = [v6 intValue];
-      v9 = [(HMNumberSetting *)self minimumValue];
-      if (v8 >= [v9 intValue])
+      intValue = [v6 intValue];
+      minimumValue2 = [(HMNumberSetting *)self minimumValue];
+      if (intValue >= [minimumValue2 intValue])
       {
-        v11 = [(HMNumberSetting *)self maximumValue];
-        if (v11)
+        maximumValue = [(HMNumberSetting *)self maximumValue];
+        if (maximumValue)
         {
-          v12 = [v6 intValue];
-          v13 = [(HMNumberSetting *)self maximumValue];
-          v10 = v12 <= [v13 intValue];
+          intValue2 = [v6 intValue];
+          maximumValue2 = [(HMNumberSetting *)self maximumValue];
+          v10 = intValue2 <= [maximumValue2 intValue];
         }
 
         else
@@ -63,12 +63,12 @@
   return v10;
 }
 
-- (void)updateValue:(id)a3 completionHandler:(id)a4
+- (void)updateValue:(id)value completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMSetting *)self settingManager];
-  [v8 updateValueForSetting:self value:v7 completionHandler:v6];
+  handlerCopy = handler;
+  valueCopy = value;
+  settingManager = [(HMSetting *)self settingManager];
+  [settingManager updateValueForSetting:self value:valueCopy completionHandler:handlerCopy];
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface PaletteScrollViewController
 - (ActivitySummaryProviding)activitySummaryProvider;
-- (BOOL)scrollOrRelayoutWeekIfNeededToDate:(id)a3;
-- (CGPoint)_centerForRingAtIndex:(unint64_t)a3;
+- (BOOL)scrollOrRelayoutWeekIfNeededToDate:(id)date;
+- (CGPoint)_centerForRingAtIndex:(unint64_t)index;
 - (FIPauseRingsCoordinator)pauseRingsCoordinator;
-- (PaletteScrollViewController)initWithPauseRingsCoordinator:(id)a3;
+- (PaletteScrollViewController)initWithPauseRingsCoordinator:(id)coordinator;
 - (PaletteScrollViewDelegate)delegate;
 - (id)_currentWeekStartDate;
-- (id)_getDayWithTouches:(id)a3;
-- (id)startOfFitnessWeekAfterWeekStarting:(id)a3;
-- (id)startOfFitnessWeekBeforeWeekStarting:(id)a3;
-- (void)_add:(BOOL)a3;
+- (id)_getDayWithTouches:(id)touches;
+- (id)startOfFitnessWeekAfterWeekStarting:(id)starting;
+- (id)startOfFitnessWeekBeforeWeekStarting:(id)starting;
+- (void)_add:(BOOL)_add;
 - (void)_createRingsView;
-- (void)_paletteActivitySummaryCacheChanged:(id)a3;
+- (void)_paletteActivitySummaryCacheChanged:(id)changed;
 - (void)_prepareForScrollAnimationStart;
 - (void)_readjustOffsetIfNecessary;
-- (void)_rearrangeWeeks:(BOOL)a3;
+- (void)_rearrangeWeeks:(BOOL)weeks;
 - (void)_reloadActivitySummariesFromCache;
 - (void)_scrollAnimationFinished;
-- (void)_setDataForGroups:(id)a3 withStartingDate:(id)a4;
+- (void)_setDataForGroups:(id)groups withStartingDate:(id)date;
 - (void)dealloc;
-- (void)reloadViewDataAtDate:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setActivitySummaryProvider:(id)a3;
-- (void)setIsUserInteractionEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)reloadViewDataAtDate:(id)date;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setActivitySummaryProvider:(id)provider;
+- (void)setIsUserInteractionEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateScrollviewOnTodayChanged;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -32,9 +32,9 @@
 
 @implementation PaletteScrollViewController
 
-- (PaletteScrollViewController)initWithPauseRingsCoordinator:(id)a3
+- (PaletteScrollViewController)initWithPauseRingsCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = PaletteScrollViewController;
   v5 = [(PaletteScrollViewController *)&v11 init];
@@ -43,7 +43,7 @@
     v6 = +[ActivitySummaryCache sharedInstance];
     objc_storeWeak(&v5->_activitySummaryProvider, v6);
 
-    objc_storeWeak(&v5->_pauseRingsCoordinator, v4);
+    objc_storeWeak(&v5->_pauseRingsCoordinator, coordinatorCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     v8 = +[FIPauseRingsCoordinator didUpdatePauseStateNotification];
     [v7 addObserver:v5 selector:"_paletteActivitySummaryCacheChanged:" name:v8 object:0];
@@ -68,16 +68,16 @@
 - (void)updateScrollviewOnTodayChanged
 {
   v15 = +[NSDate date];
-  v3 = [(PaletteScrollViewController *)self view];
-  [v3 bounds];
+  view = [(PaletteScrollViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   v6 = v5 + self->_panAmount.x;
   [(UIScrollView *)self->_scrollView contentSize];
   if (v6 == v7)
   {
-    v8 = [(NSMutableArray *)self->_weekStartingDates lastObject];
-    v9 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v8];
+    lastObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
+    v9 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:lastObject];
 
     [v15 timeIntervalSinceReferenceDate];
     v11 = v10;
@@ -100,14 +100,14 @@
   v12.receiver = self;
   v12.super_class = PaletteScrollViewController;
   [(PaletteScrollViewController *)&v12 viewDidLoad];
-  v3 = [(PaletteScrollViewController *)self view];
-  [v3 bounds];
+  view = [(PaletteScrollViewController *)self view];
+  [view bounds];
   self->_panAmount.x = v4 + v4;
   self->_panAmount.y = 0.0;
 
   [(PaletteScrollViewController *)self _createRingsView];
-  v5 = [(PaletteScrollViewController *)self view];
-  [v5 addSubview:self->_ringsView];
+  view2 = [(PaletteScrollViewController *)self view];
+  [view2 addSubview:self->_ringsView];
 
   [(ARUIRingsView *)self->_ringsView setOpaque:0];
   ringsView = self->_ringsView;
@@ -123,8 +123,8 @@
   [(UIScrollView *)self->_scrollView setPagingEnabled:1];
   [(UIScrollView *)self->_scrollView setDirectionalLockEnabled:1];
   [(ARUIRingsView *)self->_ringsView addSubview:self->_scrollView];
-  v10 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-  [(ARUIRingsView *)self->_ringsView addGestureRecognizer:v10];
+  panGestureRecognizer = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+  [(ARUIRingsView *)self->_ringsView addGestureRecognizer:panGestureRecognizer];
   self->_wasTouched = 0;
   v11 = +[NSDate date];
   [(PaletteScrollViewController *)self reloadViewDataAtDate:v11];
@@ -144,8 +144,8 @@
     v9 = floor(v8 * 0.1);
     *&v9 = v9;
     [v5 setThickness:v9];
-    v10 = [v5 rings];
-    v11 = [v10 count];
+    rings = [v5 rings];
+    v11 = [rings count];
 
     if (v11)
     {
@@ -154,8 +154,8 @@
       {
         LODWORD(v12) = ARUIRingPercentageValueNoRing;
         [v5 setPercentage:v13++ ofRingAtIndex:0 animated:v12];
-        v14 = [v5 rings];
-        v15 = [v14 count];
+        rings2 = [v5 rings];
+        v15 = [rings2 count];
       }
 
       while (v13 < v15);
@@ -177,19 +177,19 @@
   [(ARUIRingsView *)self->_ringsView setAutoresizingMask:0];
 }
 
-- (void)_paletteActivitySummaryCacheChanged:(id)a3
+- (void)_paletteActivitySummaryCacheChanged:(id)changed
 {
   weekStartingDates = self->_weekStartingDates;
-  v5 = a3;
-  v12 = [(NSMutableArray *)weekStartingDates firstObject];
-  v6 = [(NSMutableArray *)self->_weekStartingDates lastObject];
-  v7 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v6];
+  changedCopy = changed;
+  firstObject = [(NSMutableArray *)weekStartingDates firstObject];
+  lastObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
+  v7 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:lastObject];
 
-  v8 = sub_1000EA7A8(v12);
+  v8 = sub_1000EA7A8(firstObject);
   v9 = sub_1000EA7A8(v7);
-  v10 = [v5 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  v11 = [v10 objectForKeyedSubscript:@"range"];
+  v11 = [userInfo objectForKeyedSubscript:@"range"];
 
   if (sub_1000EA830(v11, v8, v9, @"Palette") || !v11)
   {
@@ -197,24 +197,24 @@
   }
 }
 
-- (void)setActivitySummaryProvider:(id)a3
+- (void)setActivitySummaryProvider:(id)provider
 {
-  objc_storeWeak(&self->_activitySummaryProvider, a3);
+  objc_storeWeak(&self->_activitySummaryProvider, provider);
   v4 = +[NSDate date];
   [(PaletteScrollViewController *)self reloadViewDataAtDate:v4];
 }
 
-- (void)setIsUserInteractionEnabled:(BOOL)a3
+- (void)setIsUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_isUserInteractionEnabled = a3;
-  v4 = [(PaletteScrollViewController *)self view];
-  [v4 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  self->_isUserInteractionEnabled = enabled;
+  view = [(PaletteScrollViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 }
 
 - (void)_reloadActivitySummariesFromCache
 {
-  v3 = [(NSMutableArray *)self->_weekStartingDates firstObject];
+  firstObject = [(NSMutableArray *)self->_weekStartingDates firstObject];
   v4 = +[NSCalendar currentCalendar];
   ringGroups = self->_ringGroups;
   v8[0] = _NSConcreteStackBlock;
@@ -222,44 +222,44 @@
   v8[2] = sub_100102A0C;
   v8[3] = &unk_10083C4B8;
   v9 = v4;
-  v10 = v3;
-  v11 = self;
-  v6 = v3;
+  v10 = firstObject;
+  selfCopy = self;
+  v6 = firstObject;
   v7 = v4;
   [(NSMutableArray *)ringGroups enumerateObjectsUsingBlock:v8];
 }
 
-- (id)startOfFitnessWeekBeforeWeekStarting:(id)a3
+- (id)startOfFitnessWeekBeforeWeekStarting:(id)starting
 {
-  v3 = a3;
+  startingCopy = starting;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 dateByAddingUnit:0x2000 value:-1 toDate:v3 options:0];
+  v5 = [v4 dateByAddingUnit:0x2000 value:-1 toDate:startingCopy options:0];
 
   return v5;
 }
 
-- (id)startOfFitnessWeekAfterWeekStarting:(id)a3
+- (id)startOfFitnessWeekAfterWeekStarting:(id)starting
 {
-  v3 = a3;
+  startingCopy = starting;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 dateByAddingUnit:0x2000 value:1 toDate:v3 options:0];
+  v5 = [v4 dateByAddingUnit:0x2000 value:1 toDate:startingCopy options:0];
 
   return v5;
 }
 
-- (CGPoint)_centerForRingAtIndex:(unint64_t)a3
+- (CGPoint)_centerForRingAtIndex:(unint64_t)index
 {
-  v5 = -7 * (a3 / 7);
-  v6 = (a3 / 7);
-  v7 = [(PaletteScrollViewController *)self view];
-  [v7 frame];
+  v5 = -7 * (index / 7);
+  v6 = (index / 7);
+  view = [(PaletteScrollViewController *)self view];
+  [view frame];
   v9 = (40.0 - v8) * 0.5;
 
-  v10 = [(PaletteScrollViewController *)self view];
-  [v10 frame];
+  view2 = [(PaletteScrollViewController *)self view];
+  [view2 frame];
   v12 = v9 + v6 * v11;
-  v13 = [(PaletteScrollViewController *)self view];
-  [v13 centerXForElementAt:a3 + v5 width:40.0 percent:0.0];
+  view3 = [(PaletteScrollViewController *)self view];
+  [view3 centerXForElementAt:index + v5 width:40.0 percent:0.0];
   v15 = v12 + v14 - self->_panAmount.x;
 
   v16 = 10.0;
@@ -274,8 +274,8 @@
   v17.receiver = self;
   v17.super_class = PaletteScrollViewController;
   [(PaletteScrollViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(PaletteScrollViewController *)self view];
-  [v3 bounds];
+  view = [(PaletteScrollViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -291,8 +291,8 @@
   [(UIScrollView *)self->_scrollView setFrame:?];
   [(ARUIRingsView *)self->_ringsView frame];
   v14 = v13 * 3.0;
-  v15 = [(PaletteScrollViewController *)self view];
-  [v15 frame];
+  view2 = [(PaletteScrollViewController *)self view];
+  [view2 frame];
   [(UIScrollView *)self->_scrollView setContentSize:v14, v16];
 
   [(UIScrollView *)self->_scrollView setContentOffset:self->_panAmount.x, self->_panAmount.y];
@@ -300,8 +300,8 @@
 
 - (void)_prepareForScrollAnimationStart
 {
-  v2 = [(PaletteScrollViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(PaletteScrollViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)_scrollAnimationFinished
@@ -330,23 +330,23 @@
     }
   }
 
-  v6 = [(PaletteScrollViewController *)self view];
-  [v6 setUserInteractionEnabled:1];
+  view = [(PaletteScrollViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)_readjustOffsetIfNecessary
 {
   [(UIScrollView *)self->_scrollView contentOffset];
   v4 = v3;
-  v5 = [(PaletteScrollViewController *)self view];
-  [v5 bounds];
+  view = [(PaletteScrollViewController *)self view];
+  [view bounds];
   v7 = v6;
 
   previousContentOffsetX = self->_previousContentOffsetX;
   if (v4 != previousContentOffsetX)
   {
-    v9 = [(NSMutableArray *)self->_weekStartingDates lastObject];
-    v20 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v9];
+    lastObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
+    v20 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:lastObject];
 
     [v20 timeIntervalSinceReferenceDate];
     v11 = v10;
@@ -364,8 +364,8 @@
 
     if (self->_wasTouched)
     {
-      v17 = [(PaletteScrollViewController *)self delegate];
-      [v17 paletteScrolledInDirection:v4 < previousContentOffsetX];
+      delegate = [(PaletteScrollViewController *)self delegate];
+      [delegate paletteScrolledInDirection:v4 < previousContentOffsetX];
     }
 
     [(UIScrollView *)self->_scrollView contentOffset];
@@ -378,8 +378,8 @@
 - (id)_currentWeekStartDate
 {
   previousContentOffsetX = self->_previousContentOffsetX;
-  v4 = [(PaletteScrollViewController *)self view];
-  [v4 bounds];
+  view = [(PaletteScrollViewController *)self view];
+  [view bounds];
   v6 = (previousContentOffsetX / v5);
 
   weekStartingDates = self->_weekStartingDates;
@@ -387,33 +387,33 @@
   return [(NSMutableArray *)weekStartingDates objectAtIndexedSubscript:v6];
 }
 
-- (BOOL)scrollOrRelayoutWeekIfNeededToDate:(id)a3
+- (BOOL)scrollOrRelayoutWeekIfNeededToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_weekStartingDates firstObject];
-  v6 = [(NSMutableArray *)self->_weekStartingDates lastObject];
-  v7 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v6];
+  dateCopy = date;
+  firstObject = [(NSMutableArray *)self->_weekStartingDates firstObject];
+  lastObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
+  v7 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:lastObject];
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
-  v10 = [(PaletteScrollViewController *)self _currentWeekStartDate];
-  v11 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v10];
-  [v5 timeIntervalSinceReferenceDate];
+  _currentWeekStartDate = [(PaletteScrollViewController *)self _currentWeekStartDate];
+  v11 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:_currentWeekStartDate];
+  [firstObject timeIntervalSinceReferenceDate];
   if (v9 < v12 || ([v7 timeIntervalSinceReferenceDate], v9 >= v13))
   {
-    [(PaletteScrollViewController *)self reloadViewDataAtDate:v4];
+    [(PaletteScrollViewController *)self reloadViewDataAtDate:dateCopy];
     v16 = 1;
   }
 
   else
   {
-    [v10 timeIntervalSinceReferenceDate];
+    [_currentWeekStartDate timeIntervalSinceReferenceDate];
     if (v9 < v14 || ([v11 timeIntervalSinceReferenceDate], v9 >= v15))
     {
-      [v10 timeIntervalSinceReferenceDate];
+      [_currentWeekStartDate timeIntervalSinceReferenceDate];
       v19 = v18;
-      v20 = [(PaletteScrollViewController *)self view];
-      [v20 bounds];
+      view = [(PaletteScrollViewController *)self view];
+      [view bounds];
       v22 = v21;
 
       v23 = 1.0;
@@ -436,39 +436,39 @@
   return v16;
 }
 
-- (void)_rearrangeWeeks:(BOOL)a3
+- (void)_rearrangeWeeks:(BOOL)weeks
 {
-  v3 = a3;
-  v7 = [(NSMutableArray *)self->_weekStartingDates firstObject];
-  v5 = [(NSMutableArray *)self->_weekStartingDates lastObject];
-  if (v3)
+  weeksCopy = weeks;
+  firstObject = [(NSMutableArray *)self->_weekStartingDates firstObject];
+  lastObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
+  if (weeksCopy)
   {
     [(NSMutableArray *)self->_weekStartingDates removeLastObject];
-    v6 = [(PaletteScrollViewController *)self startOfFitnessWeekBeforeWeekStarting:v7];
+    v6 = [(PaletteScrollViewController *)self startOfFitnessWeekBeforeWeekStarting:firstObject];
     [(NSMutableArray *)self->_weekStartingDates insertObject:v6 atIndex:0];
   }
 
   else
   {
-    v6 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:v5];
+    v6 = [(PaletteScrollViewController *)self startOfFitnessWeekAfterWeekStarting:lastObject];
     [(NSMutableArray *)self->_weekStartingDates removeObjectAtIndex:0];
     [(NSMutableArray *)self->_weekStartingDates addObject:v6];
   }
 }
 
-- (void)_add:(BOOL)a3
+- (void)_add:(BOOL)_add
 {
-  v3 = a3;
+  _addCopy = _add;
   v5 = [(NSMutableArray *)self->_ringGroups count];
   v6 = HKDaysInAWeek;
   v7 = &v5[-HKDaysInAWeek];
   ringGroups = self->_ringGroups;
-  if (v3)
+  if (_addCopy)
   {
-    v9 = [(NSMutableArray *)ringGroups subarrayWithRange:v7, HKDaysInAWeek];
+    hKDaysInAWeek = [(NSMutableArray *)ringGroups subarrayWithRange:v7, HKDaysInAWeek];
     [(NSMutableArray *)self->_ringGroups removeObjectsInRange:v7, v6];
     v10 = [NSIndexSet indexSetWithIndexesInRange:0, v6];
-    [(NSMutableArray *)self->_ringGroups insertObjects:v9 atIndexes:v10];
+    [(NSMutableArray *)self->_ringGroups insertObjects:hKDaysInAWeek atIndexes:v10];
     v11 = self->_ringGroups;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -476,15 +476,15 @@
     v16[3] = &unk_10083C4E0;
     v16[4] = self;
     [(NSMutableArray *)v11 enumerateObjectsUsingBlock:v16];
-    v12 = [(NSMutableArray *)self->_weekStartingDates firstObject];
+    firstObject = [(NSMutableArray *)self->_weekStartingDates firstObject];
   }
 
   else
   {
-    v9 = [(NSMutableArray *)ringGroups subarrayWithRange:0, HKDaysInAWeek];
+    hKDaysInAWeek = [(NSMutableArray *)ringGroups subarrayWithRange:0, HKDaysInAWeek];
     [(NSMutableArray *)self->_ringGroups removeObjectsInRange:0, v6];
     v10 = [NSIndexSet indexSetWithIndexesInRange:v7, v6];
-    [(NSMutableArray *)self->_ringGroups insertObjects:v9 atIndexes:v10];
+    [(NSMutableArray *)self->_ringGroups insertObjects:hKDaysInAWeek atIndexes:v10];
     v13 = self->_ringGroups;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -492,43 +492,43 @@
     v15[3] = &unk_10083C4E0;
     v15[4] = self;
     [(NSMutableArray *)v13 enumerateObjectsUsingBlock:v15];
-    v12 = [(NSMutableArray *)self->_weekStartingDates lastObject];
+    firstObject = [(NSMutableArray *)self->_weekStartingDates lastObject];
   }
 
-  v14 = v12;
-  [(PaletteScrollViewController *)self _setDataForGroups:v9 withStartingDate:v12];
+  v14 = firstObject;
+  [(PaletteScrollViewController *)self _setDataForGroups:hKDaysInAWeek withStartingDate:firstObject];
 }
 
-- (void)_setDataForGroups:(id)a3 withStartingDate:(id)a4
+- (void)_setDataForGroups:(id)groups withStartingDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  groupsCopy = groups;
   +[NSCalendar currentCalendar];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100103908;
   v11 = v10[3] = &unk_10083C4B8;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
+  v12 = dateCopy;
+  selfCopy = self;
+  v8 = dateCopy;
   v9 = v11;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [groupsCopy enumerateObjectsUsingBlock:v10];
 }
 
-- (void)reloadViewDataAtDate:(id)a3
+- (void)reloadViewDataAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   _HKInitializeLogging();
   v5 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v4;
+    v35 = dateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[PaletteScrollView] Reloading data from cache at date: %@", buf, 0xCu);
   }
 
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 hk_startOfFitnessWeekBeforeDate:v4];
+  v7 = [v6 hk_startOfFitnessWeekBeforeDate:dateCopy];
   WeakRetained = objc_loadWeakRetained(&self->_activitySummaryProvider);
   v9 = [v6 hk_dateByAddingDays:-objc_msgSend(WeakRetained toDate:{"fitnessStartOfWeekOffset"), v7}];
 
@@ -554,8 +554,8 @@
 
     [(PaletteScrollViewController *)self _reloadActivitySummariesFromCache];
     p_panAmount = &self->_panAmount;
-    v22 = [(PaletteScrollViewController *)self view];
-    [v22 bounds];
+    view = [(PaletteScrollViewController *)self view];
+    [view bounds];
     self->_panAmount.x = v29 + v29;
   }
 
@@ -572,8 +572,8 @@
 
     [(PaletteScrollViewController *)self _reloadActivitySummariesFromCache];
     p_panAmount = &self->_panAmount;
-    v22 = [(PaletteScrollViewController *)self view];
-    [v22 bounds];
+    view = [(PaletteScrollViewController *)self view];
+    [view bounds];
     self->_panAmount.x = v23;
   }
 
@@ -587,7 +587,7 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   p_panAmount = &self->_panAmount;
   [(UIScrollView *)self->_scrollView contentOffset];
@@ -609,19 +609,19 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(PaletteScrollViewController *)self _getDayWithTouches:a3, a4];
+  event = [(PaletteScrollViewController *)self _getDayWithTouches:began, event];
   dateTouched = self->_dateTouched;
-  self->_dateTouched = v5;
+  self->_dateTouched = event;
 
-  _objc_release_x1(v5, dateTouched);
+  _objc_release_x1(event, dateTouched);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v14 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   dateTouched = self->_dateTouched;
   if (dateTouched)
   {
@@ -633,26 +633,26 @@
 
     if (v9 <= v12)
     {
-      v13 = [(PaletteScrollViewController *)self delegate];
-      [v13 paletteDateSelected:self->_dateTouched];
+      delegate = [(PaletteScrollViewController *)self delegate];
+      [delegate paletteDateSelected:self->_dateTouched];
     }
   }
 }
 
-- (id)_getDayWithTouches:(id)a3
+- (id)_getDayWithTouches:(id)touches
 {
-  v4 = [a3 anyObject];
-  v5 = [(PaletteScrollViewController *)self view];
-  [v4 locationInView:v5];
+  anyObject = [touches anyObject];
+  view = [(PaletteScrollViewController *)self view];
+  [anyObject locationInView:view];
   v7 = v6;
 
-  v8 = [(PaletteScrollViewController *)self view];
-  [v8 bounds];
+  view2 = [(PaletteScrollViewController *)self view];
+  [view2 bounds];
   v10 = v9 / 7.0;
 
-  v11 = [(PaletteScrollViewController *)self _currentWeekStartDate];
+  _currentWeekStartDate = [(PaletteScrollViewController *)self _currentWeekStartDate];
   v12 = +[NSCalendar currentCalendar];
-  v13 = [v12 dateByAddingUnit:16 value:vcvtmd_s64_f64(v7 / v10) toDate:v11 options:0];
+  v13 = [v12 dateByAddingUnit:16 value:vcvtmd_s64_f64(v7 / v10) toDate:_currentWeekStartDate options:0];
 
   return v13;
 }

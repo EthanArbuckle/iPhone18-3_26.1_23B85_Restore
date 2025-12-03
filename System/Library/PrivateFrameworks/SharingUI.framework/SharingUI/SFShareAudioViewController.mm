@@ -1,18 +1,18 @@
 @interface SFShareAudioViewController
 + (id)instantiateViewController;
-- (void)_reportCompletion:(id)a3 mediaRouteID:(id)a4;
-- (void)_sessionProgressEvent:(int)a3 info:(id)a4;
+- (void)_reportCompletion:(id)completion mediaRouteID:(id)d;
+- (void)_sessionProgressEvent:(int)event info:(id)info;
 - (void)_sessionStart;
 - (void)_showBringClose;
-- (void)_showConfirm:(id)a3;
-- (void)_showConnecting:(id)a3;
-- (void)_showError:(id)a3;
-- (void)_showPairInstructions:(id)a3;
-- (void)_transitionToViewController:(id)a3 animate:(BOOL)a4;
-- (void)reportError:(id)a3;
+- (void)_showConfirm:(id)confirm;
+- (void)_showConnecting:(id)connecting;
+- (void)_showError:(id)error;
+- (void)_showPairInstructions:(id)instructions;
+- (void)_transitionToViewController:(id)controller animate:(BOOL)animate;
+- (void)reportError:(id)error;
 - (void)reportUserCancelled;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioViewController
@@ -26,7 +26,7 @@
   [v4 setMainStoryboard:v3];
   [v4 setModalPresentationStyle:6];
   [v4 setModalTransitionStyle:2];
-  v5 = [v4 view];
+  view = [v4 view];
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     +[SFShareAudioViewController instantiateViewController];
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioViewController viewWillAppear:];
@@ -45,14 +45,14 @@
 
   v5.receiver = self;
   v5.super_class = SFShareAudioViewController;
-  [(SFShareAudioViewController *)&v5 viewWillAppear:v3];
+  [(SFShareAudioViewController *)&v5 viewWillAppear:appearCopy];
   [(SFShareAudioViewController *)self _showBringClose];
   [(SFShareAudioViewController *)self _sessionStart];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioViewController viewWillDisappear:];
@@ -60,7 +60,7 @@
 
   v7.receiver = self;
   v7.super_class = SFShareAudioViewController;
-  [(SFShareAudioViewController *)&v7 viewWillDisappear:v3];
+  [(SFShareAudioViewController *)&v7 viewWillDisappear:disappearCopy];
   [(SFShareAudioSessionClient *)self->_shareAudioSession invalidate];
   shareAudioSession = self->_shareAudioSession;
   self->_shareAudioSession = 0;
@@ -69,10 +69,10 @@
   [(SFShareAudioViewController *)self _reportCompletion:v6 mediaRouteID:0];
 }
 
-- (void)_reportCompletion:(id)a3 mediaRouteID:(id)a4
+- (void)_reportCompletion:(id)completion mediaRouteID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  dCopy = d;
   [(SFShareAudioSessionClient *)self->_shareAudioSession invalidate];
   shareAudioSession = self->_shareAudioSession;
   self->_shareAudioSession = 0;
@@ -83,17 +83,17 @@
     completion = self->_completion;
     self->_completion = 0;
 
-    if (v6)
+    if (dCopy)
     {
       v10 = objc_alloc_init(SFSharedAudioDeviceInfo);
-      [(SFSharedAudioDeviceInfo *)v10 setMediaRouteIdentifier:v6];
+      [(SFSharedAudioDeviceInfo *)v10 setMediaRouteIdentifier:dCopy];
       v8[2](v8, v10, 0);
 LABEL_4:
 
       goto LABEL_7;
     }
 
-    if (!v11)
+    if (!completionCopy)
     {
       v10 = NSErrorF();
       (v8)[2](v8, 0, v10);
@@ -106,24 +106,24 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
-  v4 = a3;
-  v7 = v4;
-  if (gLogCategory_SFShareAudioViewController <= 90 && (gLogCategory_SFShareAudioViewController != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5)))
+  errorCopy = error;
+  v7 = errorCopy;
+  if (gLogCategory_SFShareAudioViewController <= 90 && (gLogCategory_SFShareAudioViewController != -1 || (v5 = _LogCategory_Initialize(), errorCopy = v7, v5)))
   {
     [SFShareAudioViewController reportError:];
-    v4 = v7;
+    errorCopy = v7;
     if (v7)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v4)
+  else if (errorCopy)
   {
 LABEL_5:
-    [(SFShareAudioViewController *)self _reportCompletion:v4 mediaRouteID:0];
+    [(SFShareAudioViewController *)self _reportCompletion:errorCopy mediaRouteID:0];
     goto LABEL_8;
   }
 
@@ -173,17 +173,17 @@ void *__43__SFShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)_sessionProgressEvent:(int)a3 info:(id)a4
+- (void)_sessionProgressEvent:(int)event info:(id)info
 {
-  v4 = *&a3;
-  v6 = a4;
-  v13 = v6;
+  v4 = *&event;
+  infoCopy = info;
+  v13 = infoCopy;
   if (gLogCategory_SFShareAudioViewController <= 30)
   {
-    if (gLogCategory_SFShareAudioViewController != -1 || (v7 = _LogCategory_Initialize(), v6 = v13, v7))
+    if (gLogCategory_SFShareAudioViewController != -1 || (v7 = _LogCategory_Initialize(), infoCopy = v13, v7))
     {
       [SFShareAudioViewController _sessionProgressEvent:info:];
-      v6 = v13;
+      infoCopy = v13;
     }
   }
 
@@ -212,7 +212,7 @@ void *__43__SFShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
   {
     CFStringGetTypeID();
     v8 = CFDictionaryGetTypedValue();
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
     v11 = v8;
     goto LABEL_19;
@@ -223,7 +223,7 @@ void *__43__SFShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
     CFErrorGetTypeID();
     v8 = CFDictionaryGetTypedValue();
     v12 = [v8 code] - 299008;
-    v9 = self;
+    selfCopy2 = self;
     v10 = v8;
     if (v12 != 2023)
     {
@@ -233,13 +233,13 @@ void *__43__SFShareAudioViewController__sessionStart__block_invoke(uint64_t a1, 
 
     v11 = 0;
 LABEL_19:
-    [(SFShareAudioViewController *)v9 _reportCompletion:v10 mediaRouteID:v11];
+    [(SFShareAudioViewController *)selfCopy2 _reportCompletion:v10 mediaRouteID:v11];
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v6 = v13;
+  infoCopy = v13;
   if (v4 != 100)
   {
     goto LABEL_23;
@@ -247,7 +247,7 @@ LABEL_21:
 
   [(SFShareAudioViewController *)self _showConfirm:v13];
 LABEL_22:
-  v6 = v13;
+  infoCopy = v13;
 LABEL_23:
 }
 
@@ -263,9 +263,9 @@ LABEL_23:
   [(SFShareAudioViewController *)self _transitionToViewController:v3 animate:0];
 }
 
-- (void)_showError:(id)a3
+- (void)_showError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioViewController _showError:];
@@ -273,13 +273,13 @@ LABEL_23:
 
   v4 = [(UIStoryboard *)self->_mainStoryboard instantiateViewControllerWithIdentifier:@"Error"];
   [v4 setMainController:self];
-  [v4 setError:v5];
+  [v4 setError:errorCopy];
   [(SFShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showConfirm:(id)a3
+- (void)_showConfirm:(id)confirm
 {
-  v5 = a3;
+  confirmCopy = confirm;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioViewController _showConfirm:];
@@ -292,9 +292,9 @@ LABEL_23:
   [(SFShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showPairInstructions:(id)a3
+- (void)_showPairInstructions:(id)instructions
 {
-  v5 = a3;
+  instructionsCopy = instructions;
   if (gLogCategory_SFShareAudioViewController <= 30 && (gLogCategory_SFShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [SFShareAudioViewController _showPairInstructions:];
@@ -307,9 +307,9 @@ LABEL_23:
   [(SFShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_showConnecting:(id)a3
+- (void)_showConnecting:(id)connecting
 {
-  v5 = a3;
+  connectingCopy = connecting;
   v4 = self->_vcConnecting;
   if (!v4)
   {
@@ -323,38 +323,38 @@ LABEL_23:
   [(SFShareAudioViewController *)self _transitionToViewController:v4 animate:0];
 }
 
-- (void)_transitionToViewController:(id)a3 animate:(BOOL)a4
+- (void)_transitionToViewController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v15 = a3;
-  if (v4)
+  animateCopy = animate;
+  controllerCopy = controller;
+  if (animateCopy)
   {
-    v6 = [MEMORY[0x1E6979538] animation];
-    [v6 setDuration:0.5];
-    [v6 setType:*MEMORY[0x1E697A030]];
+    animation = [MEMORY[0x1E6979538] animation];
+    [animation setDuration:0.5];
+    [animation setType:*MEMORY[0x1E697A030]];
     v7 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    [v6 setTimingFunction:v7];
+    [animation setTimingFunction:v7];
 
-    v8 = [(SFShareAudioViewController *)self view];
-    v9 = [v8 layer];
-    [v9 addAnimation:v6 forKey:0];
+    view = [(SFShareAudioViewController *)self view];
+    layer = [view layer];
+    [layer addAnimation:animation forKey:0];
 
-    v10 = [v15 view];
-    v11 = [v10 layer];
-    [v11 addAnimation:v6 forKey:0];
+    view2 = [controllerCopy view];
+    layer2 = [view2 layer];
+    [layer2 addAnimation:animation forKey:0];
   }
 
-  v12 = [(SFShareAudioViewController *)self viewControllers];
-  v13 = [v12 containsObject:v15];
+  viewControllers = [(SFShareAudioViewController *)self viewControllers];
+  v13 = [viewControllers containsObject:controllerCopy];
 
   if (v13)
   {
-    v14 = [(SFShareAudioViewController *)self popToViewController:v15 animated:0];
+    v14 = [(SFShareAudioViewController *)self popToViewController:controllerCopy animated:0];
   }
 
   else
   {
-    [(SFShareAudioViewController *)self pushViewController:v15 animated:0];
+    [(SFShareAudioViewController *)self pushViewController:controllerCopy animated:0];
   }
 }
 

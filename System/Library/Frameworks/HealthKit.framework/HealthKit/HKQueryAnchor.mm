@@ -1,19 +1,19 @@
 @interface HKQueryAnchor
-+ (id)_anchorWithRowid:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKQueryAnchor)initWithCoder:(id)a3;
++ (id)_anchorWithRowid:(int64_t)rowid;
+- (BOOL)isEqual:(id)equal;
+- (HKQueryAnchor)initWithCoder:(id)coder;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKQueryAnchor
 
-+ (id)_anchorWithRowid:(int64_t)a3
++ (id)_anchorWithRowid:(int64_t)rowid
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v4[2] = a3;
+  v4[2] = rowid;
 
   return v4;
 }
@@ -27,16 +27,16 @@
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_8;
   }
@@ -69,10 +69,10 @@ LABEL_10:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   rowid = self->_rowid;
-  v4 = *(a3 + 2);
+  v4 = *(compare + 2);
   v5 = rowid < v4;
   v6 = rowid > v4;
   if (v5)
@@ -86,15 +86,15 @@ LABEL_10:
   }
 }
 
-- (HKQueryAnchor)initWithCoder:(id)a3
+- (HKQueryAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
 
   if (v5)
   {
-    v5->_rowid = [v4 decodeInt64ForKey:@"rowid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientToken"];
+    v5->_rowid = [coderCopy decodeInt64ForKey:@"rowid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientToken"];
     clientToken = v5->_clientToken;
     v5->_clientToken = v6;
   }
@@ -102,12 +102,12 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rowid = self->_rowid;
-  v5 = a3;
-  [v5 encodeInt64:rowid forKey:@"rowid"];
-  [v5 encodeObject:self->_clientToken forKey:@"clientToken"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:rowid forKey:@"rowid"];
+  [coderCopy encodeObject:self->_clientToken forKey:@"clientToken"];
 }
 
 - (id)description

@@ -1,18 +1,18 @@
 @interface CRLImageRepSizingState
 - (CGSize)desiredSize;
-- (CRLImageRepSizingState)initWithDesiredSize:(CGSize)a3 provider:(id)a4 maskPath:(CGPath *)a5 wideGamutCanvas:(BOOL)a6;
+- (CRLImageRepSizingState)initWithDesiredSize:(CGSize)size provider:(id)provider maskPath:(CGPath *)path wideGamutCanvas:(BOOL)canvas;
 - (void)dealloc;
 - (void)generateSizedImage;
 @end
 
 @implementation CRLImageRepSizingState
 
-- (CRLImageRepSizingState)initWithDesiredSize:(CGSize)a3 provider:(id)a4 maskPath:(CGPath *)a5 wideGamutCanvas:(BOOL)a6
+- (CRLImageRepSizingState)initWithDesiredSize:(CGSize)size provider:(id)provider maskPath:(CGPath *)path wideGamutCanvas:(BOOL)canvas
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a4;
-  if (!v12)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  if (!providerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -49,12 +49,12 @@
   {
     v16->_desiredSize.width = width;
     v16->_desiredSize.height = height;
-    objc_storeStrong(&v16->_provider, a4);
+    objc_storeStrong(&v16->_provider, provider);
     v17->_status = 0;
-    v17->_wideGamutCanvas = a6;
-    if (a5)
+    v17->_wideGamutCanvas = canvas;
+    if (path)
     {
-      v17->_maskPath = CGPathRetain(a5);
+      v17->_maskPath = CGPathRetain(path);
     }
   }
 
@@ -168,8 +168,8 @@
     }
 
     v16 = objc_opt_class();
-    v17 = [(CRLImageRepSizingState *)self provider];
-    v18 = sub_100014370(v16, v17);
+    provider = [(CRLImageRepSizingState *)self provider];
+    v18 = sub_100014370(v16, provider);
 
     if (v18 && (([v18 naturalSize], width == v20) ? (v21 = height == v19) : (v21 = 0), v21 && !-[CRLImageRepSizingState maskPath](self, "maskPath")))
     {
@@ -181,10 +181,10 @@
     {
       if (-[CRLImageRepSizingState wideGamut](self, "wideGamut") && (-[CRLImageRepSizingState provider](self, "provider"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 isError], v22, (v23 & 1) == 0))
       {
-        v25 = [(CRLImageRepSizingState *)self provider];
-        v26 = [v25 imageGamut];
+        provider2 = [(CRLImageRepSizingState *)self provider];
+        imageGamut = [provider2 imageGamut];
 
-        if (v26 == 2)
+        if (imageGamut == 2)
         {
           v24 = 11;
         }
@@ -215,8 +215,8 @@
           CGContextClip(v28);
         }
 
-        v36 = [(CRLImageRepSizingState *)self provider];
-        [v36 drawImageInContext:v28 rect:{v29, v31, v33, v35}];
+        provider3 = [(CRLImageRepSizingState *)self provider];
+        [provider3 drawImageInContext:v28 rect:{v29, v31, v33, v35}];
 
         self->_sizedImage = CGBitmapContextCreateImage(v28);
         self->_sizedImageOrientation = 0;

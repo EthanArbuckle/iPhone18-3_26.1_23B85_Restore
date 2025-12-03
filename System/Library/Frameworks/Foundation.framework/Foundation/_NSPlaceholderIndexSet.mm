@@ -1,10 +1,10 @@
 @interface _NSPlaceholderIndexSet
 - (_NSPlaceholderIndexSet)init;
-- (_NSPlaceholderIndexSet)initWithBitfield:(unint64_t)a3;
-- (_NSPlaceholderIndexSet)initWithCoder:(id)a3;
-- (_NSPlaceholderIndexSet)initWithIndex:(unint64_t)a3;
-- (_NSPlaceholderIndexSet)initWithIndexSet:(id)a3;
-- (_NSPlaceholderIndexSet)initWithIndexesInRange:(_NSRange)a3;
+- (_NSPlaceholderIndexSet)initWithBitfield:(unint64_t)bitfield;
+- (_NSPlaceholderIndexSet)initWithCoder:(id)coder;
+- (_NSPlaceholderIndexSet)initWithIndex:(unint64_t)index;
+- (_NSPlaceholderIndexSet)initWithIndexSet:(id)set;
+- (_NSPlaceholderIndexSet)initWithIndexesInRange:(_NSRange)range;
 @end
 
 @implementation _NSPlaceholderIndexSet
@@ -26,25 +26,25 @@
   return result;
 }
 
-- (_NSPlaceholderIndexSet)initWithIndex:(unint64_t)a3
+- (_NSPlaceholderIndexSet)initWithIndex:(unint64_t)index
 {
-  if (a3 > 0x3F)
+  if (index > 0x3F)
   {
     return [(_NSPlaceholderIndexSet *)self initWithIndexesInRange:?];
   }
 
   else
   {
-    return [(_NSPlaceholderIndexSet *)self initWithBitfield:1 << a3];
+    return [(_NSPlaceholderIndexSet *)self initWithBitfield:1 << index];
   }
 }
 
-- (_NSPlaceholderIndexSet)initWithIndexesInRange:(_NSRange)a3
+- (_NSPlaceholderIndexSet)initWithIndexesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = a3.location + a3.length;
-  if (a3.length && (v5 & 0x8000000000000000) != 0)
+  length = range.length;
+  location = range.location;
+  v5 = range.location + range.length;
+  if (range.length && (v5 & 0x8000000000000000) != 0)
   {
     v9 = _NSMethodExceptionProem(self, a2);
     v12.location = location;
@@ -53,7 +53,7 @@
     objc_exception_throw(v10);
   }
 
-  if (a3.length && (a3.location > 0x3F || v5 > 0x40 || v5 < a3.location))
+  if (range.length && (range.location > 0x3F || v5 > 0x40 || v5 < range.location))
   {
     objc_opt_self();
     if (length == 1 && location < 0xA)
@@ -71,9 +71,9 @@
 
   else
   {
-    if (a3.length)
+    if (range.length)
     {
-      v6 = 0xFFFFFFFFFFFFFFFFLL >> -LOBYTE(a3.length) << SLOBYTE(a3.location);
+      v6 = 0xFFFFFFFFFFFFFFFFLL >> -LOBYTE(range.length) << SLOBYTE(range.location);
     }
 
     else
@@ -85,18 +85,18 @@
   }
 }
 
-- (_NSPlaceholderIndexSet)initWithBitfield:(unint64_t)a3
+- (_NSPlaceholderIndexSet)initWithBitfield:(unint64_t)bitfield
 {
-  if (_NSTaggedIndexSetAllowed != 1 || a3 && (__clz(a3) ^ 0x3C) > 0x33)
+  if (_NSTaggedIndexSetAllowed != 1 || bitfield && (__clz(bitfield) ^ 0x3C) > 0x33)
   {
     v6 = +[NSIndexSet _alloc];
 
-    return [v6 initWithBitfield:a3];
+    return [v6 initWithBitfield:bitfield];
   }
 
   else
   {
-    result = ((8 * (a3 & 0xFFFFFFFFFFFFFLL)) | 0x8580000000000007);
+    result = ((8 * (bitfield & 0xFFFFFFFFFFFFFLL)) | 0x8580000000000007);
     v5 = *MEMORY[0x1E69E5910] ^ result;
     if ((~v5 & 0xC000000000000007) != 0)
     {
@@ -107,21 +107,21 @@
   return result;
 }
 
-- (_NSPlaceholderIndexSet)initWithIndexSet:(id)a3
+- (_NSPlaceholderIndexSet)initWithIndexSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 count];
+  v5 = [set count];
   if (_NSTaggedIndexSetAllowed == 1 && v5 == 0)
   {
-    v3 = 0x8580000000000007;
+    setCopy = 0x8580000000000007;
     v10 = *MEMORY[0x1E69E5910] ^ 0x8580000000000007;
     if ((~v10 & 0xC000000000000007) != 0)
     {
       return (v10 & 0xFFFFFFFFFFFFFFF8 | *(MEMORY[0x1E69E5900] + (v10 & 7)));
     }
 
-    return v3;
+    return setCopy;
   }
 
   v7 = v5;
@@ -131,7 +131,7 @@
     if (NSIndexSet == v11 || _NSConstantIndexSet == v11 || NSMutableIndexSet == v11)
     {
       v14[0] = 0;
-      if ([(NSIndexSet *)v3 getBitfield:v14])
+      if ([(NSIndexSet *)setCopy getBitfield:v14])
       {
         return [(_NSPlaceholderIndexSet *)self initWithBitfield:v14[0]];
       }
@@ -144,24 +144,24 @@
       return &_NSEmptyIndexSet_struct;
     }
 
-    if (v3 && v13 == _NSConstantIndexSet)
+    if (setCopy && v13 == _NSConstantIndexSet)
     {
-      return v3;
+      return setCopy;
     }
 
     return [+[NSIndexSet _alloc](NSIndexSet "_alloc")];
   }
 
-  v8 = [(NSIndexSet *)v3 firstIndex];
+  firstIndex = [(NSIndexSet *)setCopy firstIndex];
 
-  return [(_NSPlaceholderIndexSet *)self initWithIndex:v8];
+  return [(_NSPlaceholderIndexSet *)self initWithIndex:firstIndex];
 }
 
-- (_NSPlaceholderIndexSet)initWithCoder:(id)a3
+- (_NSPlaceholderIndexSet)initWithCoder:(id)coder
 {
   v4 = +[NSIndexSet _alloc];
 
-  return [v4 initWithCoder:a3];
+  return [v4 initWithCoder:coder];
 }
 
 @end

@@ -6,14 +6,14 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_28258D150;
   v2 = objc_msgSendSuper2(&v6, sel_hf_stateDumpBuilderWithContext_);
-  v3 = [a1 characteristic];
-  [v2 setObject:v3 forKeyedSubscript:@"characteristic"];
+  characteristic = [self characteristic];
+  [v2 setObject:characteristic forKeyedSubscript:@"characteristic"];
 
-  v4 = [a1 thresholdRange];
-  [v2 setObject:v4 forKeyedSubscript:@"range"];
+  thresholdRange = [self thresholdRange];
+  [v2 setObject:thresholdRange forKeyedSubscript:@"range"];
 
   return v2;
 }

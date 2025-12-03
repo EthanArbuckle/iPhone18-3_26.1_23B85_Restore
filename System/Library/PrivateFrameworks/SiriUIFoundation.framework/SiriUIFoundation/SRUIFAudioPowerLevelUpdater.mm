@@ -1,9 +1,9 @@
 @interface SRUIFAudioPowerLevelUpdater
-- (SRUIFAudioPowerLevelUpdater)initWithDelegate:(id)a3;
+- (SRUIFAudioPowerLevelUpdater)initWithDelegate:(id)delegate;
 - (SRUIFAudioPowerLevelUpdaterDelegate)_delegate;
-- (void)audioPowerDidUpdateWithType:(unint64_t)a3 averagePower:(float)a4 peakPower:(float)a5;
+- (void)audioPowerDidUpdateWithType:(unint64_t)type averagePower:(float)power peakPower:(float)peakPower;
 - (void)dealloc;
-- (void)sessionStateDidChangeTo:(int64_t)a3 isAttending:(BOOL)a4;
+- (void)sessionStateDidChangeTo:(int64_t)to isAttending:(BOOL)attending;
 - (void)startObservingUpdates;
 - (void)stopObservingUpdates;
 @end
@@ -36,42 +36,42 @@
   self->_averageAudioPower = 0.0;
 }
 
-- (SRUIFAudioPowerLevelUpdater)initWithDelegate:(id)a3
+- (SRUIFAudioPowerLevelUpdater)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SRUIFAudioPowerLevelUpdater;
   v5 = [(SRUIFAudioPowerLevelUpdater *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)sessionStateDidChangeTo:(int64_t)a3 isAttending:(BOOL)a4
+- (void)sessionStateDidChangeTo:(int64_t)to isAttending:(BOOL)attending
 {
-  v4 = a4;
+  attendingCopy = attending;
   v17 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = SRUIFSiriSessionStateGetDescription(a3);
+    v9 = SRUIFSiriSessionStateGetDescription(to);
     v11 = 136315650;
     v12 = "[SRUIFAudioPowerLevelUpdater sessionStateDidChangeTo:isAttending:]";
     v13 = 2112;
     v14 = v9;
     v15 = 1024;
-    v16 = v4;
+    v16 = attendingCopy;
     _os_log_impl(&dword_26951F000, v8, OS_LOG_TYPE_DEFAULT, "%s #IntuitiveConversation state=%@ attending=%d", &v11, 0x1Cu);
   }
 
-  if (a3 != 3)
+  if (to != 3)
   {
-    if (a3 != 1 && (a3 || !v4))
+    if (to != 1 && (to || !attendingCopy))
     {
       goto LABEL_7;
     }
@@ -81,7 +81,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (attendingCopy)
   {
     goto LABEL_9;
   }
@@ -92,12 +92,12 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioPowerDidUpdateWithType:(unint64_t)a3 averagePower:(float)a4 peakPower:(float)a5
+- (void)audioPowerDidUpdateWithType:(unint64_t)type averagePower:(float)power peakPower:(float)peakPower
 {
-  self->_averageAudioPower = a4;
+  self->_averageAudioPower = power;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  *&v8 = a4;
-  *&v9 = a5;
+  *&v8 = power;
+  *&v9 = peakPower;
   [WeakRetained audioPowerUpdaterDidUpdate:self averagePower:v8 peakPower:v9];
 }
 

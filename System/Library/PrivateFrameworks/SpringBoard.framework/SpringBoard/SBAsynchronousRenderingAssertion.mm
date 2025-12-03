@@ -1,14 +1,14 @@
 @interface SBAsynchronousRenderingAssertion
-- (SBAsynchronousRenderingAssertion)initWithReason:(id)a3 wantsMinificationFilter:(BOOL)a4;
-- (void)setWantsMinificationFilter:(BOOL)a3;
+- (SBAsynchronousRenderingAssertion)initWithReason:(id)reason wantsMinificationFilter:(BOOL)filter;
+- (void)setWantsMinificationFilter:(BOOL)filter;
 @end
 
 @implementation SBAsynchronousRenderingAssertion
 
-- (SBAsynchronousRenderingAssertion)initWithReason:(id)a3 wantsMinificationFilter:(BOOL)a4
+- (SBAsynchronousRenderingAssertion)initWithReason:(id)reason wantsMinificationFilter:(BOOL)filter
 {
-  v7 = a3;
-  if (!v7)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBAsynchronousRenderingAssertion initWithReason:a2 wantsMinificationFilter:self];
   }
@@ -17,11 +17,11 @@
   v9 = NSStringFromClass(v8);
   v13.receiver = self;
   v13.super_class = SBAsynchronousRenderingAssertion;
-  v10 = [(BSSimpleAssertion *)&v13 initWithIdentifier:v9 forReason:v7 queue:MEMORY[0x277D85CD0] invalidationBlock:&__block_literal_global_139];
+  v10 = [(BSSimpleAssertion *)&v13 initWithIdentifier:v9 forReason:reasonCopy queue:MEMORY[0x277D85CD0] invalidationBlock:&__block_literal_global_139];
 
   if (v10)
   {
-    v10->_wantsMinificationFilter = a4;
+    v10->_wantsMinificationFilter = filter;
     v11 = +[SBMainSwitcherControllerCoordinator sharedInstance];
     [v11 _acquireAssertion:v10];
   }
@@ -39,11 +39,11 @@ void __75__SBAsynchronousRenderingAssertion_initWithReason_wantsMinificationFilt
   [v4 _reqlinquishAssertion:v5];
 }
 
-- (void)setWantsMinificationFilter:(BOOL)a3
+- (void)setWantsMinificationFilter:(BOOL)filter
 {
-  if (self->_wantsMinificationFilter != a3)
+  if (self->_wantsMinificationFilter != filter)
   {
-    self->_wantsMinificationFilter = a3;
+    self->_wantsMinificationFilter = filter;
     v5 = +[SBMainSwitcherControllerCoordinator sharedInstance];
     [v5 _updateAssertion:self];
   }

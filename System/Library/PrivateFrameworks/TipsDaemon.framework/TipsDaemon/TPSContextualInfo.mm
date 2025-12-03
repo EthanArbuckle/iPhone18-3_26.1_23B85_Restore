@@ -1,78 +1,78 @@
 @interface TPSContextualInfo
-+ (id)contentDictionaryWithTipDeliveryInfoId:(id)a3 deliveryInfoMap:(id)a4;
-+ (void)eventsInfoArrayForContextualInfoDictionary:(id)a3 triggerEvents:(id *)a4 desiredOutcomeEvents:(id *)a5;
-- (TPSContextualInfo)initWithCoder:(id)a3;
-- (TPSContextualInfo)initWithDictionary:(id)a3;
-- (id)conditionForType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)contentDictionaryWithTipDeliveryInfoId:(id)id deliveryInfoMap:(id)map;
++ (void)eventsInfoArrayForContextualInfoDictionary:(id)dictionary triggerEvents:(id *)events desiredOutcomeEvents:(id *)outcomeEvents;
+- (TPSContextualInfo)initWithCoder:(id)coder;
+- (TPSContextualInfo)initWithDictionary:(id)dictionary;
+- (id)conditionForType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSContextualInfo
 
-+ (id)contentDictionaryWithTipDeliveryInfoId:(id)a3 deliveryInfoMap:(id)a4
++ (id)contentDictionaryWithTipDeliveryInfoId:(id)id deliveryInfoMap:(id)map
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [map objectForKeyedSubscript:id];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = [v4 TPSSafeStringForKey:@"documentId"];
-  [v5 setObject:v6 forKeyedSubscript:@"documentId"];
+  [dictionary setObject:v6 forKeyedSubscript:@"documentId"];
 
   v7 = [v4 TPSSafeNumberForKey:@"lastModified"];
-  [v5 setObject:v7 forKeyedSubscript:@"lastModified"];
+  [dictionary setObject:v7 forKeyedSubscript:@"lastModified"];
 
   v8 = [v4 TPSSafeDictionaryForKey:@"triggers"];
-  [v5 setObject:v8 forKeyedSubscript:@"triggers"];
+  [dictionary setObject:v8 forKeyedSubscript:@"triggers"];
 
   v9 = [v4 TPSSafeDictionaryForKey:@"desiredOutcome"];
-  [v5 setObject:v9 forKeyedSubscript:@"desiredOutcome"];
+  [dictionary setObject:v9 forKeyedSubscript:@"desiredOutcome"];
 
   v10 = [v4 TPSSafeArrayForKey:@"usageEvents"];
-  [v5 setObject:v10 forKeyedSubscript:@"usageEvents"];
+  [dictionary setObject:v10 forKeyedSubscript:@"usageEvents"];
 
-  v11 = [v5 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-+ (void)eventsInfoArrayForContextualInfoDictionary:(id)a3 triggerEvents:(id *)a4 desiredOutcomeEvents:(id *)a5
++ (void)eventsInfoArrayForContextualInfoDictionary:(id)dictionary triggerEvents:(id *)events desiredOutcomeEvents:(id *)outcomeEvents
 {
-  v7 = a3;
-  v10 = v7;
-  if (a4)
+  dictionaryCopy = dictionary;
+  v10 = dictionaryCopy;
+  if (events)
   {
-    v8 = [v7 TPSSafeDictionaryForKey:@"triggers"];
-    *a4 = [MEMORY[0x277D71720] eventsForConditionDictionary:v8];
+    v8 = [dictionaryCopy TPSSafeDictionaryForKey:@"triggers"];
+    *events = [MEMORY[0x277D71720] eventsForConditionDictionary:v8];
 
-    v7 = v10;
+    dictionaryCopy = v10;
   }
 
-  if (a5)
+  if (outcomeEvents)
   {
     v9 = [v10 TPSSafeDictionaryForKey:@"desiredOutcome"];
-    *a5 = [MEMORY[0x277D71720] eventsForConditionDictionary:v9];
+    *outcomeEvents = [MEMORY[0x277D71720] eventsForConditionDictionary:v9];
 
-    v7 = v10;
+    dictionaryCopy = v10;
   }
 }
 
-- (TPSContextualInfo)initWithDictionary:(id)a3
+- (TPSContextualInfo)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = TPSContextualInfo;
-  v5 = [(TPSSerializableObject *)&v36 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v36 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_35;
   }
 
-  v6 = [TPSContextualInfo identifierFromDictionary:v4];
+  v6 = [TPSContextualInfo identifierFromDictionary:dictionaryCopy];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(TPSContextualInfo *)v5 _lastModifiedDateFromDictionary:v4];
+  v8 = [(TPSContextualInfo *)v5 _lastModifiedDateFromDictionary:dictionaryCopy];
   v5->_lastModifiedDate = v8;
   if (v8)
   {
@@ -90,8 +90,8 @@
     goto LABEL_36;
   }
 
-  v31 = v4;
-  v11 = [v4 TPSSafeArrayForKey:@"usageEvents"];
+  v31 = dictionaryCopy;
+  v11 = [dictionaryCopy TPSSafeArrayForKey:@"usageEvents"];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -160,7 +160,7 @@ LABEL_25:
     v22 = 0;
   }
 
-  v4 = v31;
+  dictionaryCopy = v31;
   objc_storeStrong(&v5->_usageEvents, v22);
   if (v21)
   {
@@ -190,33 +190,33 @@ LABEL_36:
   return v10;
 }
 
-- (TPSContextualInfo)initWithCoder:(id)a3
+- (TPSContextualInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = TPSContextualInfo;
-  v5 = [(TPSSerializableObject *)&v19 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentId"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"usageEvents"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"usageEvents"];
     usageEvents = v5->_usageEvents;
     v5->_usageEvents = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastModified"];
     v5->_lastModifiedDate = [v13 integerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"triggers"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"triggers"];
     triggerCondition = v5->_triggerCondition;
     v5->_triggerCondition = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desiredOutcome"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desiredOutcome"];
     desiredOutcomeCondition = v5->_desiredOutcomeCondition;
     v5->_desiredOutcomeCondition = v16;
   }
@@ -224,26 +224,26 @@ LABEL_36:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSContextualInfo;
-  v4 = a3;
-  [(TPSSerializableObject *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:{@"documentId", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_usageEvents forKey:@"usageEvents"];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:{@"documentId", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_usageEvents forKey:@"usageEvents"];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_lastModifiedDate];
-  [v4 encodeObject:v5 forKey:@"lastModified"];
+  [coderCopy encodeObject:v5 forKey:@"lastModified"];
 
-  [v4 encodeObject:self->_triggerCondition forKey:@"triggers"];
-  [v4 encodeObject:self->_desiredOutcomeCondition forKey:@"desiredOutcome"];
+  [coderCopy encodeObject:self->_triggerCondition forKey:@"triggers"];
+  [coderCopy encodeObject:self->_desiredOutcomeCondition forKey:@"desiredOutcome"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualInfo;
-  v4 = [(TPSSerializableObject *)&v6 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v6 copyWithZone:zone];
   [v4 setIdentifier:self->_identifier];
   [v4 setUsageEvents:self->_usageEvents];
   [v4 setLastModifiedDate:self->_lastModifiedDate];
@@ -252,10 +252,10 @@ LABEL_36:
   return v4;
 }
 
-- (id)conditionForType:(unint64_t)a3
+- (id)conditionForType:(unint64_t)type
 {
   v3 = &OBJC_IVAR___TPSContextualInfo__triggerCondition;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = &OBJC_IVAR___TPSContextualInfo__desiredOutcomeCondition;
   }

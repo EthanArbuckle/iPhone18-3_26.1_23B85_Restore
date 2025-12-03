@@ -1,16 +1,16 @@
 @interface BRLoadingView
-- (BRLoadingView)initWithCoder:(id)a3;
-- (BRLoadingView)initWithFrame:(CGRect)a3;
+- (BRLoadingView)initWithCoder:(id)coder;
+- (BRLoadingView)initWithFrame:(CGRect)frame;
 - (void)initCommon;
 @end
 
 @implementation BRLoadingView
 
-- (BRLoadingView)initWithFrame:(CGRect)a3
+- (BRLoadingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BRLoadingView;
-  v3 = [(BRLoadingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BRLoadingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,11 +20,11 @@
   return v4;
 }
 
-- (BRLoadingView)initWithCoder:(id)a3
+- (BRLoadingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BRLoadingView;
-  v3 = [(BRLoadingView *)&v6 initWithCoder:a3];
+  v3 = [(BRLoadingView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -52,11 +52,11 @@
   [(UILabel *)self->_loadingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BRLoadingView *)self setAxis:0];
   [(BRLoadingView *)self setSpacing:8.0];
-  v8 = [(BRLoadingView *)self loadingView];
-  [(BRLoadingView *)self addArrangedSubview:v8];
+  loadingView = [(BRLoadingView *)self loadingView];
+  [(BRLoadingView *)self addArrangedSubview:loadingView];
 
-  v9 = [(BRLoadingView *)self loadingLabel];
-  [(BRLoadingView *)self addArrangedSubview:v9];
+  loadingLabel = [(BRLoadingView *)self loadingLabel];
+  [(BRLoadingView *)self addArrangedSubview:loadingLabel];
 
   LODWORD(v10) = 1144750080;
   [(BRLoadingView *)self setContentHuggingPriority:1 forAxis:v10];

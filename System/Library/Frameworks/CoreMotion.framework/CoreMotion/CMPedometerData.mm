@@ -1,12 +1,12 @@
 @interface CMPedometerData
-- (CMPedometerData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMPedometerData)initWithCoder:(id)a3;
+- (CMPedometerData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMPedometerData)initWithCoder:(id)coder;
 - (NSNumber)averageActivePace;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMPedometerData
@@ -18,10 +18,10 @@
   [(CMPedometerData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {
@@ -49,7 +49,7 @@
   return v12;
 }
 
-- (CMPedometerData)initWithCoder:(id)a3
+- (CMPedometerData)initWithCoder:(id)coder
 {
   v44.receiver = self;
   v44.super_class = CMPedometerData;
@@ -57,71 +57,71 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMPedometerDataCodingKeyStartDate");
+    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMPedometerDataCodingKeyStartDate");
     v7 = objc_opt_class();
-    v4->fEndDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMPedometerDataCodingKeyEndDate");
+    v4->fEndDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMPedometerDataCodingKeyEndDate");
     v9 = objc_opt_class();
-    v4->fNumberOfSteps = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMPedometerDataCodingKeyNumberOfSteps");
+    v4->fNumberOfSteps = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMPedometerDataCodingKeyNumberOfSteps");
     v11 = objc_opt_class();
-    v4->fDistance = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMPedometerDataCodingKeyDistance");
+    v4->fDistance = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMPedometerDataCodingKeyDistance");
     v13 = objc_opt_class();
-    v4->fFloorsAscended = objc_msgSend_decodeObjectOfClass_forKey_(a3, v14, v13, @"kCMPedometerDataCodingKeyFloorAscended");
+    v4->fFloorsAscended = objc_msgSend_decodeObjectOfClass_forKey_(coder, v14, v13, @"kCMPedometerDataCodingKeyFloorAscended");
     v15 = objc_opt_class();
-    v4->fFloorsDescended = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"kCMPedometerDataCodingKeyFloorDescended");
+    v4->fFloorsDescended = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"kCMPedometerDataCodingKeyFloorDescended");
     v17 = objc_opt_class();
-    v4->fRecordId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v17, @"kCMPedometerDataCodingKeyRecordId");
+    v4->fRecordId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v17, @"kCMPedometerDataCodingKeyRecordId");
     v19 = objc_opt_class();
-    v4->fCurrentPace = objc_msgSend_decodeObjectOfClass_forKey_(a3, v20, v19, @"kCMPedometerDataCodingKeyPace");
+    v4->fCurrentPace = objc_msgSend_decodeObjectOfClass_forKey_(coder, v20, v19, @"kCMPedometerDataCodingKeyPace");
     v21 = objc_opt_class();
-    v4->fCurrentCadence = objc_msgSend_decodeObjectOfClass_forKey_(a3, v22, v21, @"kCMPedometerDataCodingKeyCurrentCadence");
+    v4->fCurrentCadence = objc_msgSend_decodeObjectOfClass_forKey_(coder, v22, v21, @"kCMPedometerDataCodingKeyCurrentCadence");
     v23 = objc_opt_class();
-    v4->fFirstStepTime = objc_msgSend_decodeObjectOfClass_forKey_(a3, v24, v23, @"kCMPedometerDataCodingKeyFirstStepTime");
+    v4->fFirstStepTime = objc_msgSend_decodeObjectOfClass_forKey_(coder, v24, v23, @"kCMPedometerDataCodingKeyFirstStepTime");
     v25 = objc_opt_class();
-    v4->fActiveTime = objc_msgSend_decodeObjectOfClass_forKey_(a3, v26, v25, @"kCMPedometerDataCodingKeyActiveTime");
+    v4->fActiveTime = objc_msgSend_decodeObjectOfClass_forKey_(coder, v26, v25, @"kCMPedometerDataCodingKeyActiveTime");
     v27 = objc_opt_class();
-    v4->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v28, v27, @"kCMPedometerDatacodingKeyUUID");
+    v4->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v28, v27, @"kCMPedometerDatacodingKeyUUID");
     v29 = objc_opt_class();
-    v4->fIsOdometerDistance = objc_msgSend_decodeObjectOfClass_forKey_(a3, v30, v29, @"kCMPedometerDataCodingKeyIsOdometerDistance");
+    v4->fIsOdometerDistance = objc_msgSend_decodeObjectOfClass_forKey_(coder, v30, v29, @"kCMPedometerDataCodingKeyIsOdometerDistance");
     v31 = objc_opt_class();
-    v4->fIsOdometerPace = objc_msgSend_decodeObjectOfClass_forKey_(a3, v32, v31, @"kCMPedometerDataCodingKeyIsOdometerPace");
+    v4->fIsOdometerPace = objc_msgSend_decodeObjectOfClass_forKey_(coder, v32, v31, @"kCMPedometerDataCodingKeyIsOdometerPace");
     v33 = objc_opt_class();
-    v4->fNumberOfPushes = objc_msgSend_decodeObjectOfClass_forKey_(a3, v34, v33, @"kCMPedometerDataCodingKeyNumberOfPushes");
+    v4->fNumberOfPushes = objc_msgSend_decodeObjectOfClass_forKey_(coder, v34, v33, @"kCMPedometerDataCodingKeyNumberOfPushes");
     v35 = objc_opt_class();
-    v4->fWorkoutType = objc_msgSend_decodeObjectOfClass_forKey_(a3, v36, v35, @"kCMPedometerDataCodingKeyWorkoutType");
+    v4->fWorkoutType = objc_msgSend_decodeObjectOfClass_forKey_(coder, v36, v35, @"kCMPedometerDataCodingKeyWorkoutType");
     v37 = objc_opt_class();
-    v4->fElevationAscended = objc_msgSend_decodeObjectOfClass_forKey_(a3, v38, v37, @"kCMPedometerDataCodingKeyElevationAscended");
+    v4->fElevationAscended = objc_msgSend_decodeObjectOfClass_forKey_(coder, v38, v37, @"kCMPedometerDataCodingKeyElevationAscended");
     v39 = objc_opt_class();
-    v4->fElevationDescended = objc_msgSend_decodeObjectOfClass_forKey_(a3, v40, v39, @"kCMPedometerDataCodingKeyElevationDescended");
+    v4->fElevationDescended = objc_msgSend_decodeObjectOfClass_forKey_(coder, v40, v39, @"kCMPedometerDataCodingKeyElevationDescended");
     v41 = objc_opt_class();
-    v4->fDistanceSource = objc_msgSend_decodeObjectOfClass_forKey_(a3, v42, v41, @"kCMPedometerDataCodingKeyDistanceSource");
+    v4->fDistanceSource = objc_msgSend_decodeObjectOfClass_forKey_(coder, v42, v41, @"kCMPedometerDataCodingKeyDistanceSource");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fStartDate, @"kCMPedometerDataCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fEndDate, @"kCMPedometerDataCodingKeyEndDate");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fNumberOfSteps, @"kCMPedometerDataCodingKeyNumberOfSteps");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->fDistance, @"kCMPedometerDataCodingKeyDistance");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->fFloorsAscended, @"kCMPedometerDataCodingKeyFloorAscended");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->fFloorsDescended, @"kCMPedometerDataCodingKeyFloorDescended");
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->fRecordId, @"kCMPedometerDataCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v11, self->fCurrentPace, @"kCMPedometerDataCodingKeyPace");
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->fCurrentCadence, @"kCMPedometerDataCodingKeyCurrentCadence");
-  objc_msgSend_encodeObject_forKey_(a3, v13, self->fFirstStepTime, @"kCMPedometerDataCodingKeyFirstStepTime");
-  objc_msgSend_encodeObject_forKey_(a3, v14, self->fActiveTime, @"kCMPedometerDataCodingKeyActiveTime");
-  objc_msgSend_encodeObject_forKey_(a3, v15, self->fSourceId, @"kCMPedometerDatacodingKeyUUID");
-  objc_msgSend_encodeObject_forKey_(a3, v16, self->fIsOdometerDistance, @"kCMPedometerDataCodingKeyIsOdometerDistance");
-  objc_msgSend_encodeObject_forKey_(a3, v17, self->fIsOdometerPace, @"kCMPedometerDataCodingKeyIsOdometerPace");
-  objc_msgSend_encodeObject_forKey_(a3, v18, self->fNumberOfPushes, @"kCMPedometerDataCodingKeyNumberOfPushes");
-  objc_msgSend_encodeObject_forKey_(a3, v19, self->fWorkoutType, @"kCMPedometerDataCodingKeyWorkoutType");
-  objc_msgSend_encodeObject_forKey_(a3, v20, self->fElevationAscended, @"kCMPedometerDataCodingKeyElevationAscended");
-  objc_msgSend_encodeObject_forKey_(a3, v21, self->fElevationDescended, @"kCMPedometerDataCodingKeyElevationDescended");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fStartDate, @"kCMPedometerDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fEndDate, @"kCMPedometerDataCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fNumberOfSteps, @"kCMPedometerDataCodingKeyNumberOfSteps");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->fDistance, @"kCMPedometerDataCodingKeyDistance");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->fFloorsAscended, @"kCMPedometerDataCodingKeyFloorAscended");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->fFloorsDescended, @"kCMPedometerDataCodingKeyFloorDescended");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->fRecordId, @"kCMPedometerDataCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v11, self->fCurrentPace, @"kCMPedometerDataCodingKeyPace");
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->fCurrentCadence, @"kCMPedometerDataCodingKeyCurrentCadence");
+  objc_msgSend_encodeObject_forKey_(coder, v13, self->fFirstStepTime, @"kCMPedometerDataCodingKeyFirstStepTime");
+  objc_msgSend_encodeObject_forKey_(coder, v14, self->fActiveTime, @"kCMPedometerDataCodingKeyActiveTime");
+  objc_msgSend_encodeObject_forKey_(coder, v15, self->fSourceId, @"kCMPedometerDatacodingKeyUUID");
+  objc_msgSend_encodeObject_forKey_(coder, v16, self->fIsOdometerDistance, @"kCMPedometerDataCodingKeyIsOdometerDistance");
+  objc_msgSend_encodeObject_forKey_(coder, v17, self->fIsOdometerPace, @"kCMPedometerDataCodingKeyIsOdometerPace");
+  objc_msgSend_encodeObject_forKey_(coder, v18, self->fNumberOfPushes, @"kCMPedometerDataCodingKeyNumberOfPushes");
+  objc_msgSend_encodeObject_forKey_(coder, v19, self->fWorkoutType, @"kCMPedometerDataCodingKeyWorkoutType");
+  objc_msgSend_encodeObject_forKey_(coder, v20, self->fElevationAscended, @"kCMPedometerDataCodingKeyElevationAscended");
+  objc_msgSend_encodeObject_forKey_(coder, v21, self->fElevationDescended, @"kCMPedometerDataCodingKeyElevationDescended");
   fDistanceSource = self->fDistanceSource;
 
-  objc_msgSend_encodeObject_forKey_(a3, v22, fDistanceSource, @"kCMPedometerDataCodingKeyDistanceSource");
+  objc_msgSend_encodeObject_forKey_(coder, v22, fDistanceSource, @"kCMPedometerDataCodingKeyDistanceSource");
 }
 
 - (NSString)description
@@ -167,9 +167,9 @@
   return v5;
 }
 
-- (CMPedometerData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMPedometerData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMPedometerData;
@@ -178,7 +178,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

@@ -8,8 +8,8 @@
 {
   v4 = MEMORY[0x277CCA8D8];
   v5 = a3;
-  v6 = [v4 cps_clipUIServicesBundle];
-  v7 = [a1 colorNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  cps_clipUIServicesBundle = [v4 cps_clipUIServicesBundle];
+  v7 = [self colorNamed:v5 inBundle:cps_clipUIServicesBundle compatibleWithTraitCollection:0];
 
   return v7;
 }

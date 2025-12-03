@@ -8,26 +8,26 @@
 {
   v26[12] = *MEMORY[0x277D85DE8];
   v25[0] = @"lockscreenId";
-  v3 = [(ATXLockscreenEditMetric *)self lockscreenId];
-  v4 = v3;
-  if (!v3)
+  lockscreenId = [(ATXLockscreenEditMetric *)self lockscreenId];
+  v4 = lockscreenId;
+  if (!lockscreenId)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    lockscreenId = [MEMORY[0x277CBEB68] null];
   }
 
   v24 = v4;
-  v21 = v3;
-  v26[0] = v3;
+  v21 = lockscreenId;
+  v26[0] = lockscreenId;
   v25[1] = @"entryPoint";
-  v5 = [(ATXLockscreenEditMetric *)self entryPoint];
-  v6 = v5;
-  if (!v5)
+  entryPoint = [(ATXLockscreenEditMetric *)self entryPoint];
+  v6 = entryPoint;
+  if (!entryPoint)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    entryPoint = [MEMORY[0x277CBEB68] null];
   }
 
-  v20 = v5;
-  v26[1] = v5;
+  v20 = entryPoint;
+  v26[1] = entryPoint;
   v25[2] = @"isNew";
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXLockscreenEditMetric isNew](self, "isNew")}];
   v26[2] = v23;
@@ -35,16 +35,16 @@
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXLockscreenEditMetric secondsSinceLastEdit](self, "secondsSinceLastEdit")}];
   v26[3] = v22;
   v25[4] = @"outcome";
-  v7 = [(ATXLockscreenEditMetric *)self outcome];
-  v8 = v7;
-  if (!v7)
+  outcome = [(ATXLockscreenEditMetric *)self outcome];
+  v8 = outcome;
+  if (!outcome)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    outcome = [MEMORY[0x277CBEB68] null];
   }
 
-  v26[4] = v7;
+  v26[4] = outcome;
   v25[5] = @"timeSpentEditing";
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ATXLockscreenEditMetric duration](self, "duration", v7)}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ATXLockscreenEditMetric duration](self, "duration", outcome)}];
   v26[5] = v9;
   v25[6] = @"userChangedColor";
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXLockscreenEditMetric userChangedColor](self, "userChangedColor")}];

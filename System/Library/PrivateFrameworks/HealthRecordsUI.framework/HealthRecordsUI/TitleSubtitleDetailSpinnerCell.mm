@@ -1,10 +1,10 @@
 @interface TitleSubtitleDetailSpinnerCell
-- (_TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell)initWithCoder:(id)coder;
 @end
 
 @implementation TitleSubtitleDetailSpinnerCell
 
-- (_TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI30TitleSubtitleDetailSpinnerCell____lazy_storage___subtitleLabel) = 0;

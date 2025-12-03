@@ -12,8 +12,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 filters];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  filters = [self filters];
+  v6 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,20 +25,20 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filters);
         }
 
         v10 = [*(*(&v14 + 1) + 8 * v9) ekPredicateFilterMatches:v4];
-        v11 = [a1 operation];
+        operation = [self operation];
         if (v10)
         {
-          if (v11 == 1)
+          if (operation == 1)
           {
             goto LABEL_13;
           }
         }
 
-        else if (!v11)
+        else if (!operation)
         {
 LABEL_13:
 
@@ -49,7 +49,7 @@ LABEL_13:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -59,7 +59,7 @@ LABEL_13:
     }
   }
 
-  v10 = [a1 operation] == 0;
+  v10 = [self operation] == 0;
 LABEL_14:
 
   v12 = *MEMORY[0x1E69E9840];

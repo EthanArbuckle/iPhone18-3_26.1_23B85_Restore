@@ -1,94 +1,94 @@
 @interface UIPrintOptionListViewController
 - (UIPrintOptionListDelegate)listDelegate;
-- (UIPrintOptionListViewController)initWithListDelegate:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (UIPrintOptionListViewController)initWithListDelegate:(id)delegate;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation UIPrintOptionListViewController
 
-- (UIPrintOptionListViewController)initWithListDelegate:(id)a3
+- (UIPrintOptionListViewController)initWithListDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = UIPrintOptionListViewController;
   v5 = [(UIPrintOptionListViewController *)&v9 initWithStyle:2];
   v6 = v5;
   if (v5)
   {
-    [(UIPrintOptionListViewController *)v5 setListDelegate:v4];
-    v7 = [v4 itemList];
-    [(UIPrintOptionListViewController *)v6 setItemList:v7];
+    [(UIPrintOptionListViewController *)v5 setListDelegate:delegateCopy];
+    itemList = [delegateCopy itemList];
+    [(UIPrintOptionListViewController *)v6 setItemList:itemList];
   }
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(UIPrintOptionListViewController *)self itemList];
-  v4 = [v3 count];
+  itemList = [(UIPrintOptionListViewController *)self itemList];
+  v4 = [itemList count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(UIPrintOptionListViewController *)self itemList];
-  v6 = [v5 objectAtIndex:a4];
+  itemList = [(UIPrintOptionListViewController *)self itemList];
+  v6 = [itemList objectAtIndex:section];
 
   v7 = [v6 count];
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PrintOptionListViewCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PrintOptionListViewCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"PrintOptionListViewCell"];
   }
 
-  v8 = [(UIPrintOptionListViewController *)self itemList];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "section")}];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  itemList = [(UIPrintOptionListViewController *)self itemList];
+  v9 = [itemList objectAtIndex:{objc_msgSend(pathCopy, "section")}];
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [MEMORY[0x277D756E0] cellConfiguration];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
   v12 = [v10 objectForKey:@"Title"];
-  [v11 setText:v12];
+  [cellConfiguration setText:v12];
 
   v13 = [v10 objectForKey:@"Image"];
-  [v11 setImage:v13];
+  [cellConfiguration setImage:v13];
 
   v14 = [v10 objectForKey:@"SubTitle"];
-  [v11 setSecondaryText:v14];
+  [cellConfiguration setSecondaryText:v14];
 
-  v15 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v16 = [v11 secondaryTextProperties];
-  [v16 setColor:v15];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v7 setContentConfiguration:v11];
-  v17 = [(UIPrintOptionListViewController *)self listDelegate];
-  LOBYTE(v16) = objc_opt_respondsToSelector();
+  [v7 setContentConfiguration:cellConfiguration];
+  listDelegate = [(UIPrintOptionListViewController *)self listDelegate];
+  LOBYTE(secondaryTextProperties) = objc_opt_respondsToSelector();
 
-  v18 = [(UIPrintOptionListViewController *)self listDelegate];
-  v19 = v18;
-  if (v16)
+  listDelegate2 = [(UIPrintOptionListViewController *)self listDelegate];
+  v19 = listDelegate2;
+  if (secondaryTextProperties)
   {
-    v20 = [v18 selectedItems];
+    selectedItems = [listDelegate2 selectedItems];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v21 = v20;
-    v22 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    selectedItem = selectedItems;
+    v22 = [selectedItem countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v22)
     {
       v23 = *v32;
@@ -98,14 +98,14 @@
         {
           if (*v32 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(selectedItem);
           }
 
           v25 = *(*(&v31 + 1) + 8 * i);
-          v26 = [v6 section];
-          if (v26 == [v25 section])
+          section = [pathCopy section];
+          if (section == [v25 section])
           {
-            v27 = [v6 row];
+            v27 = [pathCopy row];
             if (v27 == [v25 row])
             {
               LODWORD(v22) = 1;
@@ -114,7 +114,7 @@
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v22 = [selectedItem countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v22)
         {
           continue;
@@ -129,12 +129,12 @@ LABEL_19:
 
   else
   {
-    v21 = [v18 selectedItem];
+    selectedItem = [listDelegate2 selectedItem];
 
-    if (v21 && (v28 = [v6 section], v28 == objc_msgSend(v21, "section")))
+    if (selectedItem && (v28 = [pathCopy section], v28 == objc_msgSend(selectedItem, "section")))
     {
-      v22 = [v6 row];
-      LODWORD(v22) = v22 == [v21 row];
+      v22 = [pathCopy row];
+      LODWORD(v22) = v22 == [selectedItem row];
     }
 
     else
@@ -159,34 +159,34 @@ LABEL_19:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(UIPrintOptionListViewController *)self listDelegate];
+  viewCopy = view;
+  pathCopy = path;
+  listDelegate = [(UIPrintOptionListViewController *)self listDelegate];
   v8 = objc_opt_respondsToSelector();
 
-  if ((v8 & 1) != 0 && (-[UIPrintOptionListViewController listDelegate](self, "listDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 listItemSelected:v6], v9, v10) || (-[UIPrintOptionListViewController navigationController](self, "navigationController"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "topViewController"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12 != self))
+  if ((v8 & 1) != 0 && (-[UIPrintOptionListViewController listDelegate](self, "listDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 listItemSelected:pathCopy], v9, v10) || (-[UIPrintOptionListViewController navigationController](self, "navigationController"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "topViewController"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12 != self))
   {
-    [v15 reloadData];
+    [viewCopy reloadData];
   }
 
   else
   {
-    v13 = [(UIPrintOptionListViewController *)self navigationController];
-    v14 = [v13 popViewControllerAnimated:1];
+    navigationController = [(UIPrintOptionListViewController *)self navigationController];
+    v14 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(UIPrintOptionListViewController *)self listDelegate];
+  listDelegate = [(UIPrintOptionListViewController *)self listDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UIPrintOptionListViewController *)self listDelegate];
-    v9 = [v8 titleForHeaderInSection:a4];
+    listDelegate2 = [(UIPrintOptionListViewController *)self listDelegate];
+    v9 = [listDelegate2 titleForHeaderInSection:section];
   }
 
   else
@@ -197,15 +197,15 @@ LABEL_19:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(UIPrintOptionListViewController *)self listDelegate];
+  listDelegate = [(UIPrintOptionListViewController *)self listDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UIPrintOptionListViewController *)self listDelegate];
-    v9 = [v8 titleForFooterInSection:a4];
+    listDelegate2 = [(UIPrintOptionListViewController *)self listDelegate];
+    v9 = [listDelegate2 titleForFooterInSection:section];
   }
 
   else

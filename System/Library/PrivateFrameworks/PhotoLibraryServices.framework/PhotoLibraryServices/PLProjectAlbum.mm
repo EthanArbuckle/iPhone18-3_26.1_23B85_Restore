@@ -1,11 +1,11 @@
 @interface PLProjectAlbum
-+ (BOOL)cleanupOrphanedProjectPreviewImagesInLibrary:(id)a3 error:(id *)a4;
-+ (id)insertIntoPhotoLibrary:(id)a3 withUUID:(id)a4 documentType:(id)a5 projectExtensionIdentifier:(id)a6;
++ (BOOL)cleanupOrphanedProjectPreviewImagesInLibrary:(id)library error:(id *)error;
++ (id)insertIntoPhotoLibrary:(id)library withUUID:(id)d documentType:(id)type projectExtensionIdentifier:(id)identifier;
 + (id)validKindsForPersistence;
-- (BOOL)setProjectPreviewImageData:(id)a3 error:(id *)a4;
+- (BOOL)setProjectPreviewImageData:(id)data error:(id *)error;
 - (id)_previewImageFilename;
-- (id)duplicateProjectPreviewImageData:(id)a3 error:(id *)a4;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)duplicateProjectPreviewImageData:(id)data error:(id *)error;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)projectPreviewImageData;
 - (void)awakeFromInsert;
 - (void)prepareForDeletion;
@@ -14,12 +14,12 @@
 
 @implementation PLProjectAlbum
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLManagedAlbum *)self isValidForPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLProjectAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLProjectAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else
@@ -32,43 +32,43 @@
 
 - (id)_previewImageFilename
 {
-  v2 = [(PLProjectAlbum *)self projectRenderUuid];
-  v3 = [v2 stringByAppendingPathExtension:@"tiff"];
+  projectRenderUuid = [(PLProjectAlbum *)self projectRenderUuid];
+  v3 = [projectRenderUuid stringByAppendingPathExtension:@"tiff"];
 
   return v3;
 }
 
-- (BOOL)setProjectPreviewImageData:(id)a3 error:(id *)a4
+- (BOOL)setProjectPreviewImageData:(id)data error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLGenericAlbum *)self photoLibrary];
-  v8 = [v7 pathManager];
+  dataCopy = data;
+  photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+  pathManager = [photoLibrary pathManager];
   v39 = 0;
   v9 = 1;
-  v10 = [v8 photoDirectoryWithType:16 createIfNeeded:1 error:&v39];
+  v10 = [pathManager photoDirectoryWithType:16 createIfNeeded:1 error:&v39];
   v11 = v39;
 
   if (!v10)
   {
 LABEL_23:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
 
 LABEL_24:
     v36 = v11;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_25;
   }
 
-  if (!v6)
+  if (!dataCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = CGImageSourceCreateWithData(v6, 0);
+  v12 = CGImageSourceCreateWithData(dataCopy, 0);
   if (!v12)
   {
     v31 = MEMORY[0x1E696ABC0];
@@ -107,8 +107,8 @@ LABEL_22:
     v38 = v19;
     v20 = MEMORY[0x1E696ABC0];
     v44 = *MEMORY[0x1E696A578];
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid image size, project preview images must be %ld x %ld", 1024, 1024];
-    v45[0] = v21;
+    1024 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid image size, project preview images must be %ld x %ld", 1024, 1024];
+    v45[0] = 1024;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v23 = [v20 errorWithDomain:@"com.apple.photos.backend" code:0 userInfo:v22];
 
@@ -121,7 +121,7 @@ LABEL_22:
   if (!v19)
   {
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -130,32 +130,32 @@ LABEL_22:
   }
 
 LABEL_14:
-  v24 = [(PLProjectAlbum *)self projectRenderUuid];
+  projectRenderUuid = [(PLProjectAlbum *)self projectRenderUuid];
 
-  if (v24)
+  if (projectRenderUuid)
   {
-    v25 = [(PLProjectAlbum *)self _previewImageFilename];
-    v26 = [v10 stringByAppendingPathComponent:v25];
+    _previewImageFilename = [(PLProjectAlbum *)self _previewImageFilename];
+    v26 = [v10 stringByAppendingPathComponent:_previewImageFilename];
 
-    v27 = [MEMORY[0x1E696AC08] defaultManager];
-    [v27 removeItemAtPath:v26 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:v26 error:0];
 
     [(PLProjectAlbum *)self setProjectRenderUuid:0];
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    v28 = [MEMORY[0x1E69BF320] UUIDString];
-    [(PLProjectAlbum *)self setProjectRenderUuid:v28];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+    [(PLProjectAlbum *)self setProjectRenderUuid:uUIDString];
 
-    v29 = [(PLProjectAlbum *)self _previewImageFilename];
-    v30 = [v10 stringByAppendingPathComponent:v29];
+    _previewImageFilename2 = [(PLProjectAlbum *)self _previewImageFilename];
+    v30 = [v10 stringByAppendingPathComponent:_previewImageFilename2];
 
-    [(__CFData *)v6 writeToFile:v30 atomically:0];
+    [(__CFData *)dataCopy writeToFile:v30 atomically:0];
   }
 
   v9 = 1;
-  if (a4)
+  if (error)
   {
     goto LABEL_24;
   }
@@ -165,28 +165,28 @@ LABEL_25:
   return v9;
 }
 
-- (id)duplicateProjectPreviewImageData:(id)a3 error:(id *)a4
+- (id)duplicateProjectPreviewImageData:(id)data error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLProjectAlbum *)self _previewImageFilename];
-  if (v7)
+  dataCopy = data;
+  _previewImageFilename = [(PLProjectAlbum *)self _previewImageFilename];
+  if (_previewImageFilename)
   {
-    v8 = v6;
-    v9 = [(PLGenericAlbum *)self photoLibrary];
-    v10 = [v9 pathManager];
-    v11 = [v10 photoDirectoryWithType:16 createIfNeeded:1 error:a4];
+    v8 = dataCopy;
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    v11 = [pathManager photoDirectoryWithType:16 createIfNeeded:1 error:error];
 
     if (v11)
     {
-      v12 = [v11 stringByAppendingPathComponent:v7];
-      v13 = [v12 pathExtension];
-      v14 = [v8 stringByAppendingPathExtension:v13];
+      v12 = [v11 stringByAppendingPathComponent:_previewImageFilename];
+      pathExtension = [v12 pathExtension];
+      v14 = [v8 stringByAppendingPathExtension:pathExtension];
       v15 = [v11 stringByAppendingPathComponent:v14];
 
-      v16 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v23 = 0;
-      v17 = [v16 copyItemAtPath:v12 toPath:v15 error:&v23];
+      v17 = [defaultManager copyItemAtPath:v12 toPath:v15 error:&v23];
       v18 = v23;
 
       if ((v17 & 1) == 0)
@@ -199,11 +199,11 @@ LABEL_25:
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Unable to copy rendered preview data with error %@", buf, 0xCu);
         }
 
-        if (a4)
+        if (error)
         {
           v20 = v18;
           v8 = 0;
-          *a4 = v18;
+          *error = v18;
         }
 
         else
@@ -232,16 +232,16 @@ LABEL_25:
 
 - (id)projectPreviewImageData
 {
-  v3 = [(PLProjectAlbum *)self projectRenderUuid];
+  projectRenderUuid = [(PLProjectAlbum *)self projectRenderUuid];
 
-  if (v3)
+  if (projectRenderUuid)
   {
-    v4 = [(PLGenericAlbum *)self photoLibrary];
-    v5 = [v4 pathManager];
-    v6 = [v5 photoDirectoryWithType:16];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    v6 = [pathManager photoDirectoryWithType:16];
 
-    v7 = [(PLProjectAlbum *)self _previewImageFilename];
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    _previewImageFilename = [(PLProjectAlbum *)self _previewImageFilename];
+    v8 = [v6 stringByAppendingPathComponent:_previewImageFilename];
 
     v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v8];
   }
@@ -265,9 +265,9 @@ LABEL_25:
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(PLProjectAlbum *)self uuid];
+      uuid = [(PLProjectAlbum *)self uuid];
       *buf = 138412546;
-      v10 = v6;
+      v10 = uuid;
       v11 = 2112;
       v12 = v4;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "Clean up project preview image failed for project %@, error %@", buf, 0x16u);
@@ -284,18 +284,18 @@ LABEL_25:
   v9.receiver = self;
   v9.super_class = PLProjectAlbum;
   [(PLManagedAlbum *)&v9 willSave];
-  v3 = [(PLProjectAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLProjectAlbum *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
-    v5 = [v3 photoLibrary];
-    v6 = [v4 projectAlbumRootFolderInLibrary:v5];
+    photoLibrary = [managedObjectContext photoLibrary];
+    v6 = [v4 projectAlbumRootFolderInLibrary:photoLibrary];
 
     if ([(PLProjectAlbum *)self isInserted])
     {
-      v7 = [v6 childCollections];
-      v8 = [v7 containsObject:self];
+      childCollections = [v6 childCollections];
+      v8 = [childCollections containsObject:self];
 
       if ((v8 & 1) == 0)
       {
@@ -328,12 +328,12 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
   validKindsForPersistence_pl_once_object_21 = v0;
 }
 
-+ (BOOL)cleanupOrphanedProjectPreviewImagesInLibrary:(id)a3 error:(id *)a4
++ (BOOL)cleanupOrphanedProjectPreviewImagesInLibrary:(id)library error:(id *)error
 {
   v82[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 pathManager];
-  v7 = [v6 photoDirectoryWithType:16 createIfNeeded:0 error:0];
+  libraryCopy = library;
+  pathManager = [libraryCopy pathManager];
+  v7 = [pathManager photoDirectoryWithType:16 createIfNeeded:0 error:0];
 
   v8 = PLBackendGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -344,14 +344,14 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
   }
 
   v73 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v7 isDirectory:&v73];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v7 isDirectory:&v73];
 
   if (!v10)
   {
     v22 = 0;
     v43 = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_44;
     }
@@ -384,9 +384,9 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
     [v11 setPropertiesToFetch:v19];
 
     [v11 setFetchBatchSize:100];
-    v20 = [v5 managedObjectContext];
+    managedObjectContext = [libraryCopy managedObjectContext];
     v72 = 0;
-    v21 = [v20 executeFetchRequest:v11 error:&v72];
+    v21 = [managedObjectContext executeFetchRequest:v11 error:&v72];
     v22 = v72;
 
     v58 = v12;
@@ -394,9 +394,9 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
     v57 = v15;
     if (v21)
     {
-      v23 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v71 = v22;
-      v24 = [v23 contentsOfDirectoryAtPath:v7 error:&v71];
+      v24 = [defaultManager2 contentsOfDirectoryAtPath:v7 error:&v71];
       v25 = v71;
 
       v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v24];
@@ -405,8 +405,8 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
         v53 = v25;
         v54 = v11;
         v61 = v7;
-        v55 = a4;
-        v56 = v5;
+        errorCopy = error;
+        v56 = libraryCopy;
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
@@ -429,10 +429,10 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
 
               v32 = *(*(&v67 + 1) + 8 * i);
               v33 = objc_autoreleasePoolPush();
-              v34 = [v32 _previewImageFilename];
-              if ([v26 containsObject:v34])
+              _previewImageFilename = [v32 _previewImageFilename];
+              if ([v26 containsObject:_previewImageFilename])
               {
-                [v26 removeObject:v34];
+                [v26 removeObject:_previewImageFilename];
               }
 
               else
@@ -500,9 +500,9 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
                   _os_log_impl(&dword_19BF1F000, v48, OS_LOG_TYPE_DEFAULT, "Removing orphaned project render image: %@", buf, 0xCu);
                 }
 
-                v49 = [MEMORY[0x1E696AC08] defaultManager];
+                defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
                 v62 = v44;
-                v43 = [v49 removeItemAtPath:v47 error:&v62];
+                v43 = [defaultManager3 removeItemAtPath:v47 error:&v62];
                 v50 = v62;
 
                 v44 = v50;
@@ -522,8 +522,8 @@ void __42__PLProjectAlbum_validKindsForPersistence__block_invoke()
         }
 
         v22 = v44;
-        a4 = v55;
-        v5 = v56;
+        error = errorCopy;
+        libraryCopy = v56;
         v11 = v54;
         v7 = v61;
         goto LABEL_41;
@@ -555,11 +555,11 @@ LABEL_41:
   v43 = 1;
 LABEL_42:
 
-  if (a4)
+  if (error)
   {
 LABEL_43:
     v51 = v22;
-    *a4 = v22;
+    *error = v22;
   }
 
 LABEL_44:
@@ -567,19 +567,19 @@ LABEL_44:
   return v43 & 1;
 }
 
-+ (id)insertIntoPhotoLibrary:(id)a3 withUUID:(id)a4 documentType:(id)a5 projectExtensionIdentifier:(id)a6
++ (id)insertIntoPhotoLibrary:(id)library withUUID:(id)d documentType:(id)type projectExtensionIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 managedObjectContext];
-  v13 = [(PLManagedObject *)PLProjectAlbum insertInManagedObjectContext:v12];
+  dCopy = d;
+  typeCopy = type;
+  identifierCopy = identifier;
+  managedObjectContext = [library managedObjectContext];
+  v13 = [(PLManagedObject *)PLProjectAlbum insertInManagedObjectContext:managedObjectContext];
 
   if (v13)
   {
-    [v13 setUuid:v9];
-    [v13 setProjectDocumentType:v10];
-    [v13 setProjectExtensionIdentifier:v11];
+    [v13 setUuid:dCopy];
+    [v13 setProjectDocumentType:typeCopy];
+    [v13 setProjectExtensionIdentifier:identifierCopy];
   }
 
   return v13;

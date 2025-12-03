@@ -1,7 +1,7 @@
 @interface _CDPeopleSuggesterSettings
 + (id)defaultSettings;
 - (_CDPeopleSuggesterSettings)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -22,9 +22,9 @@
   if (v2)
   {
     v3 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-    v4 = [v3 resultLimit];
+    resultLimit = [v3 resultLimit];
     constrainMechanisms = v2->_constrainMechanisms;
-    v2->_maxNumberOfPeopleSuggested = v4;
+    v2->_maxNumberOfPeopleSuggested = resultLimit;
     v2->_constrainMechanisms = 0;
 
     constrainBundleIds = v2->_constrainBundleIds;
@@ -43,40 +43,40 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
   {
     [v4 setMaxNumberOfPeopleSuggested:{-[_CDPeopleSuggesterSettings maxNumberOfPeopleSuggested](self, "maxNumberOfPeopleSuggested")}];
-    v5 = [(_CDPeopleSuggesterSettings *)self constrainMechanisms];
-    [v4 setConstrainMechanisms:v5];
+    constrainMechanisms = [(_CDPeopleSuggesterSettings *)self constrainMechanisms];
+    [v4 setConstrainMechanisms:constrainMechanisms];
 
-    v6 = [(_CDPeopleSuggesterSettings *)self constrainBundleIds];
-    [v4 setConstrainBundleIds:v6];
+    constrainBundleIds = [(_CDPeopleSuggesterSettings *)self constrainBundleIds];
+    [v4 setConstrainBundleIds:constrainBundleIds];
 
-    v7 = [(_CDPeopleSuggesterSettings *)self constrainAccounts];
-    [v4 setConstrainAccounts:v7];
+    constrainAccounts = [(_CDPeopleSuggesterSettings *)self constrainAccounts];
+    [v4 setConstrainAccounts:constrainAccounts];
 
-    v8 = [(_CDPeopleSuggesterSettings *)self constrainDomainIdentifiers];
-    [v4 setConstrainDomainIdentifiers:v8];
+    constrainDomainIdentifiers = [(_CDPeopleSuggesterSettings *)self constrainDomainIdentifiers];
+    [v4 setConstrainDomainIdentifiers:constrainDomainIdentifiers];
 
-    v9 = [(_CDPeopleSuggesterSettings *)self constrainIdentifiers];
-    [v4 setConstrainIdentifiers:v9];
+    constrainIdentifiers = [(_CDPeopleSuggesterSettings *)self constrainIdentifiers];
+    [v4 setConstrainIdentifiers:constrainIdentifiers];
 
-    v10 = [(_CDPeopleSuggesterSettings *)self constrainPersonIds];
-    [v4 setConstrainPersonIds:v10];
+    constrainPersonIds = [(_CDPeopleSuggesterSettings *)self constrainPersonIds];
+    [v4 setConstrainPersonIds:constrainPersonIds];
 
-    v11 = [(_CDPeopleSuggesterSettings *)self constrainPersonIdType];
-    [v4 setConstrainPersonIdType:v11];
+    constrainPersonIdType = [(_CDPeopleSuggesterSettings *)self constrainPersonIdType];
+    [v4 setConstrainPersonIdType:constrainPersonIdType];
 
     [v4 setConstrainMaxRecipientCount:{-[_CDPeopleSuggesterSettings constrainMaxRecipientCount](self, "constrainMaxRecipientCount")}];
     [v4 setUseFuture:{-[_CDPeopleSuggesterSettings useFuture](self, "useFuture")}];
     [v4 setAggregateByIdentifier:{-[_CDPeopleSuggesterSettings aggregateByIdentifier](self, "aggregateByIdentifier")}];
     [v4 setRequireOutgoingInteraction:{-[_CDPeopleSuggesterSettings requireOutgoingInteraction](self, "requireOutgoingInteraction")}];
     [v4 setUseTitleToContrainKeywords:{-[_CDPeopleSuggesterSettings useTitleToContrainKeywords](self, "useTitleToContrainKeywords")}];
-    v12 = [(_CDPeopleSuggesterSettings *)self ignoreContactIdentifiers];
-    [v4 setIgnoreContactIdentifiers:v12];
+    ignoreContactIdentifiers = [(_CDPeopleSuggesterSettings *)self ignoreContactIdentifiers];
+    [v4 setIgnoreContactIdentifiers:ignoreContactIdentifiers];
 
     [v4 setInferActiveInteractions:{-[_CDPeopleSuggesterSettings inferActiveInteractions](self, "inferActiveInteractions")}];
   }
@@ -105,32 +105,32 @@
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_CDPeopleSuggesterSettings inferActiveInteractions](self, "inferActiveInteractions")}];
   [v3 appendFormat:@"       inferActiveInteractions: %@\n", v9];
 
-  v10 = [(_CDPeopleSuggesterSettings *)self constrainMechanisms];
-  [v3 appendFormat:@"           constrainMechanisms: %@\n", v10];
+  constrainMechanisms = [(_CDPeopleSuggesterSettings *)self constrainMechanisms];
+  [v3 appendFormat:@"           constrainMechanisms: %@\n", constrainMechanisms];
 
-  v11 = [(_CDPeopleSuggesterSettings *)self constrainBundleIds];
-  [v3 appendFormat:@"            constrainBundleIds: %@\n", v11];
+  constrainBundleIds = [(_CDPeopleSuggesterSettings *)self constrainBundleIds];
+  [v3 appendFormat:@"            constrainBundleIds: %@\n", constrainBundleIds];
 
-  v12 = [(_CDPeopleSuggesterSettings *)self constrainAccounts];
-  [v3 appendFormat:@"             constrainAccounts: %@\n", v12];
+  constrainAccounts = [(_CDPeopleSuggesterSettings *)self constrainAccounts];
+  [v3 appendFormat:@"             constrainAccounts: %@\n", constrainAccounts];
 
-  v13 = [(_CDPeopleSuggesterSettings *)self constrainDomainIdentifiers];
-  [v3 appendFormat:@"    constrainDomainIdentifiers: %@\n", v13];
+  constrainDomainIdentifiers = [(_CDPeopleSuggesterSettings *)self constrainDomainIdentifiers];
+  [v3 appendFormat:@"    constrainDomainIdentifiers: %@\n", constrainDomainIdentifiers];
 
-  v14 = [(_CDPeopleSuggesterSettings *)self constrainIdentifiers];
-  [v3 appendFormat:@"          constrainIdentifiers: %@\n", v14];
+  constrainIdentifiers = [(_CDPeopleSuggesterSettings *)self constrainIdentifiers];
+  [v3 appendFormat:@"          constrainIdentifiers: %@\n", constrainIdentifiers];
 
-  v15 = [(_CDPeopleSuggesterSettings *)self constrainPersonIds];
-  [v3 appendFormat:@"            constrainPersonIds: %@\n", v15];
+  constrainPersonIds = [(_CDPeopleSuggesterSettings *)self constrainPersonIds];
+  [v3 appendFormat:@"            constrainPersonIds: %@\n", constrainPersonIds];
 
-  v16 = [(_CDPeopleSuggesterSettings *)self constrainPersonIdType];
-  [v3 appendFormat:@"         constrainPersonIdType: %@\n", v16];
+  constrainPersonIdType = [(_CDPeopleSuggesterSettings *)self constrainPersonIdType];
+  [v3 appendFormat:@"         constrainPersonIdType: %@\n", constrainPersonIdType];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_CDPeopleSuggesterSettings constrainMaxRecipientCount](self, "constrainMaxRecipientCount")}];
   [v3 appendFormat:@"    constrainMaxRecipientCount: %@\n", v17];
 
-  v18 = [(_CDPeopleSuggesterSettings *)self ignoreContactIdentifiers];
-  [v3 appendFormat:@"      ignoreContactIdentifiers: %@\n", v18];
+  ignoreContactIdentifiers = [(_CDPeopleSuggesterSettings *)self ignoreContactIdentifiers];
+  [v3 appendFormat:@"      ignoreContactIdentifiers: %@\n", ignoreContactIdentifiers];
 
   [v3 appendFormat:@"}\n"];
 

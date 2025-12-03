@@ -1,21 +1,21 @@
 @interface FigCaptureTrie
-- (BOOL)containsParentPath:(id)a3;
-- (BOOL)containsPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsParentPath:(id)path;
+- (BOOL)containsPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (FigCaptureTrie)init;
-- (FigCaptureTrie)initWithPath:(id)a3;
-- (FigCaptureTrie)initWithPathArray:(id)a3;
+- (FigCaptureTrie)initWithPath:(id)path;
+- (FigCaptureTrie)initWithPathArray:(id)array;
 - (NSDictionary)children;
-- (id)_extractFrom:(id)a3 writeTarget:(id)a4 destinationMutability:(int)a5 overwrite:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_extractFrom:(id)from writeTarget:(id)target destinationMutability:(int)mutability overwrite:(BOOL)overwrite;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)extractFrom:(id)a3;
+- (id)extractFrom:(id)from;
 - (id)generatePathArray;
-- (id)getSubTrie:(id)a3;
-- (void)_addPath:(id)a3 index:(unint64_t)a4;
-- (void)_enumeratePathsWithPrefix:(id)a3 stop:(BOOL *)a4 processLeaf:(id)a5;
+- (id)getSubTrie:(id)trie;
+- (void)_addPath:(id)path index:(unint64_t)index;
+- (void)_enumeratePathsWithPrefix:(id)prefix stop:(BOOL *)stop processLeaf:(id)leaf;
 - (void)dealloc;
-- (void)extractFrom:(id)a3 writeInto:(id)a4 assumeMutable:(BOOL)a5 overwrite:(BOOL)a6;
+- (void)extractFrom:(id)from writeInto:(id)into assumeMutable:(BOOL)mutable overwrite:(BOOL)overwrite;
 @end
 
 @implementation FigCaptureTrie
@@ -27,7 +27,7 @@
   return [(FigCaptureTrie *)&v3 init];
 }
 
-- (FigCaptureTrie)initWithPath:(id)a3
+- (FigCaptureTrie)initWithPath:(id)path
 {
   v4 = [(FigCaptureTrie *)self init];
   if (v4)
@@ -36,7 +36,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    v5 = [path countByEnumeratingWithState:&v14 objects:v13 count:16];
     v6 = v4;
     if (v5)
     {
@@ -51,7 +51,7 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(path);
           }
 
           v11 = *(*(&v14 + 1) + 8 * v9);
@@ -63,7 +63,7 @@
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v7 = [path countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v7);
@@ -75,7 +75,7 @@
   return v4;
 }
 
-- (FigCaptureTrie)initWithPathArray:(id)a3
+- (FigCaptureTrie)initWithPathArray:(id)array
 {
   v4 = [(FigCaptureTrie *)self init];
   if (v4)
@@ -84,7 +84,7 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v5 = [array countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v5)
     {
       v6 = v5;
@@ -96,14 +96,14 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
           [(FigCaptureTrie *)v4 addPath:*(*(&v11 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v6 = [array countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v6);
@@ -139,7 +139,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[FigCaptureTrie allocWithZone:](FigCaptureTrie init];
   v5->_complete = self->_complete;
@@ -152,7 +152,7 @@
     v8[2] = __31__FigCaptureTrie_copyWithZone___block_invoke;
     v8[3] = &unk_1E798F668;
     v8[4] = v5;
-    v8[5] = a3;
+    v8[5] = zone;
     [(NSMutableDictionary *)subTries enumerateKeysAndObjectsUsingBlock:v8];
   }
 
@@ -165,9 +165,9 @@ void __31__FigCaptureTrie_copyWithZone___block_invoke(uint64_t a1, uint64_t a2, 
   [*(*(a1 + 32) + 16) setObject:v5 forKeyedSubscript:a2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -175,7 +175,7 @@ void __31__FigCaptureTrie_copyWithZone___block_invoke(uint64_t a1, uint64_t a2, 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_complete == *(a3 + 8) && (subTries = self->_subTries, (subTries == 0) != (*(a3 + 2) != 0)))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_complete == *(equal + 8) && (subTries = self->_subTries, (subTries == 0) != (*(equal + 2) != 0)))
     {
       if (!subTries || (v6 = [(NSMutableDictionary *)subTries isEqual:?]) != 0)
       {
@@ -199,16 +199,16 @@ void __31__FigCaptureTrie_copyWithZone___block_invoke(uint64_t a1, uint64_t a2, 
   return v2;
 }
 
-- (void)_addPath:(id)a3 index:(unint64_t)a4
+- (void)_addPath:(id)path index:(unint64_t)index
 {
-  if ([a3 count] == a4)
+  if ([path count] == index)
   {
     self->_complete = 1;
   }
 
   else
   {
-    v7 = [a3 objectAtIndexedSubscript:a4];
+    v7 = [path objectAtIndexedSubscript:index];
     subTries = self->_subTries;
     if (!subTries)
     {
@@ -223,13 +223,13 @@ void __31__FigCaptureTrie_copyWithZone___block_invoke(uint64_t a1, uint64_t a2, 
       [(NSMutableDictionary *)self->_subTries setObject:v9 forKeyedSubscript:v7];
     }
 
-    [(FigCaptureTrie *)v9 _addPath:a3 index:a4 + 1];
+    [(FigCaptureTrie *)v9 _addPath:path index:index + 1];
   }
 }
 
-- (BOOL)containsPath:(id)a3
+- (BOOL)containsPath:(id)path
 {
-  v3 = [(FigCaptureTrie *)self getSubTrie:a3];
+  v3 = [(FigCaptureTrie *)self getSubTrie:path];
   if (v3)
   {
     LOBYTE(v3) = v3[8];
@@ -238,13 +238,13 @@ void __31__FigCaptureTrie_copyWithZone___block_invoke(uint64_t a1, uint64_t a2, 
   return v3;
 }
 
-- (BOOL)containsParentPath:(id)a3
+- (BOOL)containsParentPath:(id)path
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v5 = [path countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v5)
   {
     v6 = v5;
@@ -255,7 +255,7 @@ LABEL_3:
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(path);
       }
 
       complete = self->_complete;
@@ -273,7 +273,7 @@ LABEL_3:
       self = v10;
       if (v6 == ++v8)
       {
-        v6 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v6 = [path countByEnumeratingWithState:&v13 objects:v12 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -292,13 +292,13 @@ LABEL_3:
   return complete;
 }
 
-- (id)getSubTrie:(id)a3
+- (id)getSubTrie:(id)trie
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [trie countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -309,7 +309,7 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(trie);
       }
 
       self = [(NSMutableDictionary *)self->_subTries objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v8)];
@@ -320,7 +320,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v6 = [trie countByEnumeratingWithState:&v11 objects:v10 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -334,18 +334,18 @@ LABEL_3:
   return self;
 }
 
-- (void)_enumeratePathsWithPrefix:(id)a3 stop:(BOOL *)a4 processLeaf:(id)a5
+- (void)_enumeratePathsWithPrefix:(id)prefix stop:(BOOL *)stop processLeaf:(id)leaf
 {
-  if (!self->_complete || (v11 = 0, (*(a5 + 2))(a5, a3, &v11, a4), !*a4) && (v11 & 1) == 0)
+  if (!self->_complete || (v11 = 0, (*(leaf + 2))(leaf, prefix, &v11, stop), !*stop) && (v11 & 1) == 0)
   {
     subTries = self->_subTries;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block_invoke;
     v10[3] = &unk_1E798F690;
-    v10[5] = a5;
-    v10[6] = a4;
-    v10[4] = a3;
+    v10[5] = leaf;
+    v10[6] = stop;
+    v10[4] = prefix;
     [(NSMutableDictionary *)subTries enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
@@ -357,9 +357,9 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
   return result;
 }
 
-- (id)extractFrom:(id)a3
+- (id)extractFrom:(id)from
 {
-  result = [(FigCaptureTrie *)self _extractFrom:a3 writeTarget:0 destinationMutability:2 overwrite:1];
+  result = [(FigCaptureTrie *)self _extractFrom:from writeTarget:0 destinationMutability:2 overwrite:1];
   if (!result)
   {
     v4 = MEMORY[0x1E695DF90];
@@ -370,21 +370,21 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
   return result;
 }
 
-- (void)extractFrom:(id)a3 writeInto:(id)a4 assumeMutable:(BOOL)a5 overwrite:(BOOL)a6
+- (void)extractFrom:(id)from writeInto:(id)into assumeMutable:(BOOL)mutable overwrite:(BOOL)overwrite
 {
   if (self->_complete)
   {
-    if (a6)
+    if (overwrite)
     {
-      [a4 removeAllObjects];
+      [into removeAllObjects];
 
-      [a4 addEntriesFromDictionary:a3];
+      [into addEntriesFromDictionary:from];
     }
   }
 
   else
   {
-    if (a5)
+    if (mutable)
     {
       v8 = 2;
     }
@@ -394,11 +394,11 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
       v8 = 1;
     }
 
-    [(FigCaptureTrie *)self _extractFrom:a3 writeTarget:a4 destinationMutability:v8 overwrite:a6];
+    [(FigCaptureTrie *)self _extractFrom:from writeTarget:into destinationMutability:v8 overwrite:overwrite];
   }
 }
 
-- (id)_extractFrom:(id)a3 writeTarget:(id)a4 destinationMutability:(int)a5 overwrite:(BOOL)a6
+- (id)_extractFrom:(id)from writeTarget:(id)target destinationMutability:(int)mutability overwrite:(BOOL)overwrite
 {
   if (!self->_complete)
   {
@@ -413,26 +413,26 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (!target || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          if (a5)
+          if (mutability)
           {
-            v12 = a4;
-            v21[5] = v12;
-            if (a5 == 1)
+            targetCopy = target;
+            v21[5] = targetCopy;
+            if (mutability == 1)
             {
-              v13 = 0;
+              mutabilityCopy = 0;
             }
 
             else
             {
-              v13 = a5;
+              mutabilityCopy = mutability;
             }
           }
 
           else
           {
-            v13 = 0;
+            mutabilityCopy = 0;
           }
 
           subTries = self->_subTries;
@@ -440,10 +440,10 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
           v17[1] = 3221225472;
           v17[2] = __75__FigCaptureTrie__extractFrom_writeTarget_destinationMutability_overwrite___block_invoke;
           v17[3] = &unk_1E798F6B8;
-          v17[4] = a3;
-          v17[5] = a4;
-          v18 = v13;
-          v19 = a6;
+          v17[4] = from;
+          v17[5] = target;
+          v18 = mutabilityCopy;
+          overwriteCopy = overwrite;
           v17[6] = self;
           v17[7] = &v20;
           [(NSMutableDictionary *)subTries enumerateKeysAndObjectsUsingBlock:v17];
@@ -456,14 +456,14 @@ uint64_t __61__FigCaptureTrie__enumeratePathsWithPrefix_stop_processLeaf___block
     return v9;
   }
 
-  if (a4 && !a6)
+  if (target && !overwrite)
   {
     return 0;
   }
 
-  v14 = a3;
+  fromCopy = from;
 
-  return v14;
+  return fromCopy;
 }
 
 uint64_t __75__FigCaptureTrie__extractFrom_writeTarget_destinationMutability_overwrite___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -502,14 +502,14 @@ uint64_t __75__FigCaptureTrie__extractFrom_writeTarget_destinationMutability_ove
 
 - (id)generatePathArray
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__FigCaptureTrie_generatePathArray__block_invoke;
   v5[3] = &unk_1E798F6E0;
-  v5[4] = v3;
+  v5[4] = array;
   [(FigCaptureTrie *)self enumeratePaths:v5];
-  return v3;
+  return array;
 }
 
 @end

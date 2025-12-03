@@ -1,38 +1,38 @@
 @interface WFSettingsClientBiomeReversalArbiter
 + (id)reversePublisherOptions;
-- (BOOL)lastEventEquals:(id)a3;
-- (WFSettingsClientBiomeReversalArbiter)initWithBiomeStream:(id)a3;
-- (WFSettingsClientBiomeReversalArbiter)initWithPublisher:(id)a3 reversePublisher:(id)a4;
-- (void)_pollBiomeForBookmarkForFirstEventAfterBookmark:(id)a3 trial:(unint64_t)a4 completionHandler:(id)a5;
-- (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3;
-- (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4;
-- (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4;
+- (BOOL)lastEventEquals:(id)equals;
+- (WFSettingsClientBiomeReversalArbiter)initWithBiomeStream:(id)stream;
+- (WFSettingsClientBiomeReversalArbiter)initWithPublisher:(id)publisher reversePublisher:(id)reversePublisher;
+- (void)_pollBiomeForBookmarkForFirstEventAfterBookmark:(id)bookmark trial:(unint64_t)trial completionHandler:(id)handler;
+- (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler;
+- (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler;
+- (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler;
 @end
 
 @implementation WFSettingsClientBiomeReversalArbiter
 
-- (BOOL)lastEventEquals:(id)a3
+- (BOOL)lastEventEquals:(id)equals
 {
-  v4 = a3;
+  equalsCopy = equals;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__72201;
   v14 = __Block_byref_object_dispose__72202;
   v15 = 0;
-  v5 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
-  v6 = [v5 last];
+  publisher = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
+  last = [publisher last];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2;
   v9[3] = &unk_1E837F610;
   v9[4] = &v10;
-  v7 = [v6 sinkWithCompletion:&__block_literal_global_194_72203 receiveInput:v9];
+  v7 = [last sinkWithCompletion:&__block_literal_global_194_72203 receiveInput:v9];
 
-  LOBYTE(v5) = [v11[5] isEqual:v4];
+  LOBYTE(publisher) = [v11[5] isEqual:equalsCopy];
   _Block_object_dispose(&v10, 8);
 
-  return v5;
+  return publisher;
 }
 
 void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2(uint64_t a1, void *a2)
@@ -43,15 +43,15 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
   *(v4 + 40) = v3;
 }
 
-- (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4
+- (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
+  if (!bookmarkCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFSettingsClientBiomeReversalArbiter.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"bookmark"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSettingsClientBiomeReversalArbiter.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"bookmark"}];
   }
 
   v39 = 0;
@@ -66,18 +66,18 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
     *buf = 136315394;
     *&buf[4] = "[WFSettingsClientBiomeReversalArbiter getReversalStateWithBookmark:completionHandler:]";
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = bookmarkCopy;
     _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_DEBUG, "%s Got bookmark %@", buf, 0x16u);
   }
 
-  v10 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
-  v11 = [v10 last];
+  publisher = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
+  last = [publisher last];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __87__WFSettingsClientBiomeReversalArbiter_getReversalStateWithBookmark_completionHandler___block_invoke_2;
   v38[3] = &unk_1E837F610;
   v38[4] = &v39;
-  v12 = [v11 sinkWithCompletion:&__block_literal_global_183_72212 receiveInput:v38];
+  v12 = [last sinkWithCompletion:&__block_literal_global_183_72212 receiveInput:v38];
 
   v13 = v40[5];
   v14 = getWFBiomeReversalArbiterLogObject();
@@ -89,7 +89,7 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
       *buf = 136315394;
       *&buf[4] = "[WFSettingsClientBiomeReversalArbiter getReversalStateWithBookmark:completionHandler:]";
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = bookmarkCopy;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_DEBUG, "%s Walking forward from %@", buf, 0x16u);
     }
 
@@ -97,13 +97,13 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
     v35 = &v34;
     v36 = 0x2020000000;
     v37 = 0;
-    v16 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
+    publisher2 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __87__WFSettingsClientBiomeReversalArbiter_getReversalStateWithBookmark_completionHandler___block_invoke_2_187;
     v33[3] = &unk_1E837F6C0;
     v33[4] = &v34;
-    v17 = [v16 drivableSinkWithBookmark:v7 completion:&__block_literal_global_186_72216 shouldContinue:v33];
+    v17 = [publisher2 drivableSinkWithBookmark:bookmarkCopy completion:&__block_literal_global_186_72216 shouldContinue:v33];
 
     v18 = getWFBiomeReversalArbiterLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -123,8 +123,8 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
         _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_INFO, "%s State has been invalidated -- something wrote after our bookmark. Cancelling.", buf, 0xCu);
       }
 
-      v20 = [MEMORY[0x1E696ABC0] userCancelledError];
-      v8[2](v8, 0, v20);
+      userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
+      handlerCopy[2](handlerCopy, 0, userCancelledError);
     }
 
     else
@@ -147,7 +147,7 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
         _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_DEBUG, "%s Walking back from last event", v45, 0xCu);
       }
 
-      v23 = [(WFSettingsClientBiomeReversalArbiter *)self reversePublisher];
+      reversePublisher = [(WFSettingsClientBiomeReversalArbiter *)self reversePublisher];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __87__WFSettingsClientBiomeReversalArbiter_getReversalStateWithBookmark_completionHandler___block_invoke_2_192;
@@ -155,13 +155,13 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
       v30[4] = v31;
       v30[5] = buf;
       v30[6] = &v39;
-      v24 = [v23 drivableSinkWithBookmark:0 completion:&__block_literal_global_191_72220 shouldContinue:v30];
+      v24 = [reversePublisher drivableSinkWithBookmark:0 completion:&__block_literal_global_191_72220 shouldContinue:v30];
 
       v25 = *(*&buf[8] + 40);
       if (v25)
       {
-        v26 = [v25 eventBody];
-        (v8)[2](v8, v26, 0);
+        eventBody = [v25 eventBody];
+        (handlerCopy)[2](handlerCopy, eventBody, 0);
       }
 
       else
@@ -174,8 +174,8 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
           _os_log_impl(&dword_1CA256000, v27, OS_LOG_TYPE_ERROR, "%s The only record in the Biome stream is the one we bookmarked — there's nothing to restore to before that", v45, 0xCu);
         }
 
-        v26 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.shortcuts.biomereversalarbiter" code:100 userInfo:0];
-        v8[2](v8, 0, v26);
+        eventBody = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.shortcuts.biomereversalarbiter" code:100 userInfo:0];
+        handlerCopy[2](handlerCopy, 0, eventBody);
       }
 
       _Block_object_dispose(buf, 8);
@@ -195,7 +195,7 @@ void __56__WFSettingsClientBiomeReversalArbiter_lastEventEquals___block_invoke_2
     }
 
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.shortcuts.biomereversalarbiter" code:100 userInfo:0];
-    v8[2](v8, 0, v21);
+    handlerCopy[2](handlerCopy, 0, v21);
   }
 
   _Block_object_dispose(&v39, 8);
@@ -297,28 +297,28 @@ uint64_t __87__WFSettingsClientBiomeReversalArbiter_getReversalStateWithBookmark
   return v7 ^ 1u;
 }
 
-- (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3
+- (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__72201;
   v16 = __Block_byref_object_dispose__72202;
   v17 = 0;
-  v5 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
+  publisher = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__WFSettingsClientBiomeReversalArbiter_getBookmarkForCurrentStateWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E837F638;
   v11[4] = &v12;
-  v6 = [v5 sinkWithBookmark:0 completion:v11 receiveInput:&__block_literal_global_170];
+  v6 = [publisher sinkWithBookmark:0 completion:v11 receiveInput:&__block_literal_global_170];
 
   v7 = v13[5];
   if (v7)
   {
-    v4[2](v4, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
@@ -332,7 +332,7 @@ uint64_t __87__WFSettingsClientBiomeReversalArbiter_getReversalStateWithBookmark
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.shortcuts.biomereversalarbiter" code:100 userInfo:0];
-    (v4)[2](v4, 0, v9);
+    (handlerCopy)[2](handlerCopy, 0, v9);
   }
 
   _Block_object_dispose(&v12, 8);
@@ -358,39 +358,39 @@ void __88__WFSettingsClientBiomeReversalArbiter_getBookmarkForCurrentStateWithCo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pollBiomeForBookmarkForFirstEventAfterBookmark:(id)a3 trial:(unint64_t)a4 completionHandler:(id)a5
+- (void)_pollBiomeForBookmarkForFirstEventAfterBookmark:(id)bookmark trial:(unint64_t)trial completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 < 0xA)
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
+  if (trial < 0xA)
   {
     v18[0] = 0;
     v18[1] = v18;
     v18[2] = 0x2020000000;
     v19 = 0;
-    v11 = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
+    publisher = [(WFSettingsClientBiomeReversalArbiter *)self publisher];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __112__WFSettingsClientBiomeReversalArbiter__pollBiomeForBookmarkForFirstEventAfterBookmark_trial_completionHandler___block_invoke;
     v14[3] = &unk_1E837F5E8;
     v16 = v18;
-    v17 = a4;
+    trialCopy = trial;
     v14[4] = self;
-    v15 = v9;
+    v15 = handlerCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __112__WFSettingsClientBiomeReversalArbiter__pollBiomeForBookmarkForFirstEventAfterBookmark_trial_completionHandler___block_invoke_2;
     v13[3] = &unk_1E837F610;
     v13[4] = v18;
-    v12 = [v11 sinkWithBookmark:v8 completion:v14 receiveInput:v13];
+    v12 = [publisher sinkWithBookmark:bookmarkCopy completion:v14 receiveInput:v13];
 
     _Block_object_dispose(v18, 8);
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696ABC0] userCancelledError];
-    (*(v9 + 2))(v9, 0, v10);
+    userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
+    (*(handlerCopy + 2))(handlerCopy, 0, userCancelledError);
   }
 }
 
@@ -456,29 +456,29 @@ void __112__WFSettingsClientBiomeReversalArbiter__pollBiomeForBookmarkForFirstEv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4
+- (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  handlerCopy = handler;
   v8 = getWFBiomeReversalArbiterLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 136315394;
     v11 = "[WFSettingsClientBiomeReversalArbiter getBookmarkForFirstEventAfterBookmark:completionHandler:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = bookmarkCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEBUG, "%s Trying to see what's next after %@", &v10, 0x16u);
   }
 
-  [(WFSettingsClientBiomeReversalArbiter *)self _pollBiomeForBookmarkForFirstEventAfterBookmark:v6 trial:0 completionHandler:v7];
+  [(WFSettingsClientBiomeReversalArbiter *)self _pollBiomeForBookmarkForFirstEventAfterBookmark:bookmarkCopy trial:0 completionHandler:handlerCopy];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (WFSettingsClientBiomeReversalArbiter)initWithPublisher:(id)a3 reversePublisher:(id)a4
+- (WFSettingsClientBiomeReversalArbiter)initWithPublisher:(id)publisher reversePublisher:(id)reversePublisher
 {
-  v7 = a3;
-  v8 = a4;
+  publisherCopy = publisher;
+  reversePublisherCopy = reversePublisher;
   v17.receiver = self;
   v17.super_class = WFSettingsClientBiomeReversalArbiter;
   v9 = [(WFSettingsClientBiomeReversalArbiter *)&v17 init];
@@ -492,22 +492,22 @@ void __112__WFSettingsClientBiomeReversalArbiter__pollBiomeForBookmarkForFirstEv
     queue = v9->_queue;
     v9->_queue = v13;
 
-    objc_storeStrong(&v9->_publisher, a3);
-    objc_storeStrong(&v9->_reversePublisher, a4);
+    objc_storeStrong(&v9->_publisher, publisher);
+    objc_storeStrong(&v9->_reversePublisher, reversePublisher);
     v15 = v9;
   }
 
   return v9;
 }
 
-- (WFSettingsClientBiomeReversalArbiter)initWithBiomeStream:(id)a3
+- (WFSettingsClientBiomeReversalArbiter)initWithBiomeStream:(id)stream
 {
-  v4 = a3;
-  v5 = [v4 publisher];
-  v6 = [objc_opt_class() reversePublisherOptions];
-  v7 = [v4 publisherWithOptions:v6];
+  streamCopy = stream;
+  publisher = [streamCopy publisher];
+  reversePublisherOptions = [objc_opt_class() reversePublisherOptions];
+  v7 = [streamCopy publisherWithOptions:reversePublisherOptions];
 
-  v8 = [(WFSettingsClientBiomeReversalArbiter *)self initWithPublisher:v5 reversePublisher:v7];
+  v8 = [(WFSettingsClientBiomeReversalArbiter *)self initWithPublisher:publisher reversePublisher:v7];
   return v8;
 }
 

@@ -1,48 +1,48 @@
 @interface BLSHBacklightOSInterfaceProvider
 + (BLSHBacklightOSInterfaceProvider)sharedProvider;
-+ (void)setSharedProvider:(id)a3;
-- (BLSHBacklightOSInterfaceProvider)initWithPlatformProvider:(id)a3;
++ (void)setSharedProvider:(id)provider;
+- (BLSHBacklightOSInterfaceProvider)initWithPlatformProvider:(id)provider;
 - (BLSHSuppressionEvent)lastSuppressionEvent;
 - (BOOL)isFlipbookTransparent;
 - (BOOL)isSuppressionServiceActive;
-- (double)timeoutForWatchdogType:(void *)a1;
-- (id)abortContextForTimer:(id)a3;
-- (id)acquireDisplayPowerAssertionForReason:(int64_t)a3;
-- (id)addSceneObserver:(id)a3 forSceneIdentityToken:(id)a4;
-- (id)createDisplayPowerResourceHintWithState:(unint64_t)a3;
-- (id)createPowerAssertionWithIdentifier:(id)a3;
-- (id)createSystemActivityAssertionWithIdentifier:(id)a3 configurator:(id)a4;
+- (double)timeoutForWatchdogType:(void *)type;
+- (id)abortContextForTimer:(id)timer;
+- (id)acquireDisplayPowerAssertionForReason:(int64_t)reason;
+- (id)addSceneObserver:(id)observer forSceneIdentityToken:(id)token;
+- (id)createDisplayPowerResourceHintWithState:(unint64_t)state;
+- (id)createPowerAssertionWithIdentifier:(id)identifier;
+- (id)createSystemActivityAssertionWithIdentifier:(id)identifier configurator:(id)configurator;
 - (id)identifier;
-- (id)observeSignificantTimeChangeWithIdentifier:(id)a3 handler:(id)a4;
-- (id)removeSceneObserver:(id)a3 forSceneIdentityToken:(id)a4;
-- (id)sceneWithIdentityToken:(id)a3;
+- (id)observeSignificantTimeChangeWithIdentifier:(id)identifier handler:(id)handler;
+- (id)removeSceneObserver:(id)observer forSceneIdentityToken:(id)token;
+- (id)sceneWithIdentityToken:(id)token;
 - (int64_t)caDisplayState;
 - (int64_t)cbDisplayMode;
 - (int64_t)cbFlipbookState;
-- (void)_didCompleteTransitionToDisplayMode:(void *)a3 withError:;
-- (void)abortForWatchdog:(unint64_t)a3 payload:(void *)a4 payloadSize:(unsigned int)a5 explanation:(id)a6;
+- (void)_didCompleteTransitionToDisplayMode:(void *)mode withError:;
+- (void)abortForWatchdog:(unint64_t)watchdog payload:(void *)payload payloadSize:(unsigned int)size explanation:(id)explanation;
 - (void)clearCAWatchdog;
-- (void)deregisterSceneWorkspace:(id)a3;
-- (void)didCompleteSwitchToFlipbookState:(int64_t)a3 withError:(id)a4;
-- (void)didCompleteTransitionToDisplayMode:(int64_t)a3 withError:(id)a4;
+- (void)deregisterSceneWorkspace:(id)workspace;
+- (void)didCompleteSwitchToFlipbookState:(int64_t)state withError:(id)error;
+- (void)didCompleteTransitionToDisplayMode:(int64_t)mode withError:(id)error;
 - (void)didDetectSignificantUserInteraction;
-- (void)dispatchToMainQueueAfterSecondsDelay:(double)a3 identifier:(id)a4 block:(id)a5;
+- (void)dispatchToMainQueueAfterSecondsDelay:(double)delay identifier:(id)identifier block:(id)block;
 - (void)endSuppressionService;
-- (void)notifyDisplayBlankedIfChangedForCADisplayState:(uint64_t)a1;
-- (void)panicForWatchdog:(id)a3 withDelay:(double)a4 completion:(id)a5;
-- (void)registerHandlersForService:(id)a3;
-- (void)registerSceneWorkspace:(id)a3;
-- (void)scheduleOSIPWatchdogWithExplanation:(unint64_t)a3 type:;
-- (void)setCATransitionsDelayForTesting:(double)a3;
-- (void)setCBTransitionsDelayForTesting:(double)a3;
-- (void)setFlipbookTransparent:(BOOL)a3;
-- (void)setLastSuppressionEvent:(uint64_t)a1;
-- (void)setSuppressionServiceActive:(uint64_t)a1;
-- (void)startSuppressionServiceWithHandler:(id)a3;
-- (void)switchToFlipbookState:(int64_t)a3;
-- (void)transitionToCADisplayState:(int64_t)a3;
-- (void)transitionToDisplayMode:(int64_t)a3 withDuration:(double)a4;
-- (void)writeTailspinForWatchdog:(id)a3 completion:(id)a4;
+- (void)notifyDisplayBlankedIfChangedForCADisplayState:(uint64_t)state;
+- (void)panicForWatchdog:(id)watchdog withDelay:(double)delay completion:(id)completion;
+- (void)registerHandlersForService:(id)service;
+- (void)registerSceneWorkspace:(id)workspace;
+- (void)scheduleOSIPWatchdogWithExplanation:(unint64_t)explanation type:;
+- (void)setCATransitionsDelayForTesting:(double)testing;
+- (void)setCBTransitionsDelayForTesting:(double)testing;
+- (void)setFlipbookTransparent:(BOOL)transparent;
+- (void)setLastSuppressionEvent:(uint64_t)event;
+- (void)setSuppressionServiceActive:(uint64_t)active;
+- (void)startSuppressionServiceWithHandler:(id)handler;
+- (void)switchToFlipbookState:(int64_t)state;
+- (void)transitionToCADisplayState:(int64_t)state;
+- (void)transitionToDisplayMode:(int64_t)mode withDuration:(double)duration;
+- (void)writeTailspinForWatchdog:(id)watchdog completion:(id)completion;
 @end
 
 @implementation BLSHBacklightOSInterfaceProvider
@@ -99,14 +99,14 @@
 
 - (void)clearCAWatchdog
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 88));
-    [*(a1 + 152) invalidate:2];
-    v2 = *(a1 + 152);
-    *(a1 + 152) = 0;
+    os_unfair_lock_lock((self + 88));
+    [*(self + 152) invalidate:2];
+    v2 = *(self + 152);
+    *(self + 152) = 0;
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
   }
 }
 
@@ -119,20 +119,20 @@
   return v2;
 }
 
-+ (void)setSharedProvider:(id)a3
++ (void)setSharedProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&_classLock);
   v4 = _sharedProvider;
-  _sharedProvider = v3;
+  _sharedProvider = providerCopy;
 
   os_unfair_lock_unlock(&_classLock);
 }
 
-- (BLSHBacklightOSInterfaceProvider)initWithPlatformProvider:(id)a3
+- (BLSHBacklightOSInterfaceProvider)initWithPlatformProvider:(id)provider
 {
   v79[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   v67.receiver = self;
   v67.super_class = BLSHBacklightOSInterfaceProvider;
   v7 = [(BLSHBacklightOSInterfaceProvider *)&v67 init];
@@ -140,15 +140,15 @@
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v12 = *(v8 + 32);
-    *(v8 + 32) = v11;
+    *(v8 + 32) = dictionary;
 
     v13 = [MEMORY[0x277CBEB58] set];
     v14 = *(v8 + 40);
     *(v8 + 40) = v13;
 
-    objc_storeStrong((v8 + 8), a3);
+    objc_storeStrong((v8 + 8), provider);
     v15 = [[BLSHWatchdogProvider alloc] initWithDelegate:v8];
     v16 = *(v8 + 16);
     *(v8 + 16) = v15;
@@ -161,20 +161,20 @@
     LODWORD(v20) = 1.0;
     if (v19)
     {
-      [v6 backlightDimmedFactor];
+      [providerCopy backlightDimmedFactor];
     }
 
     *(v8 + 136) = LODWORD(v20);
     if (MGGetBoolAnswer())
     {
-      LOBYTE(v21) = MGGetBoolAnswer();
-      LOBYTE(v22) = 1;
+      LOBYTE(bOOLValue2) = MGGetBoolAnswer();
+      LOBYTE(bOOLValue) = 1;
     }
 
     else
     {
-      LOBYTE(v21) = MGGetBoolAnswer();
-      LOBYTE(v22) = v21;
+      LOBYTE(bOOLValue2) = MGGetBoolAnswer();
+      LOBYTE(bOOLValue) = bOOLValue2;
     }
 
     if (os_variant_has_internal_diagnostics())
@@ -183,14 +183,14 @@
       v24 = [v23 valueForKey:@"deviceSupportsAlwaysOnOverride"];
       if (v24 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v22 = [v24 BOOLValue];
+        bOOLValue = [v24 BOOLValue];
         v25 = bls_backlight_log();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
           v69 = v8;
           v70 = 1024;
-          LODWORD(v71) = v22;
+          LODWORD(v71) = bOOLValue;
           _os_log_impl(&dword_21FD11000, v25, OS_LOG_TYPE_DEFAULT, "OSIP:%p deviceSupportsAlwaysOnOverride set to %{BOOL}u - use 'login -f mobile defaults delete com.apple.BacklightServices deviceSupportsAlwaysOnOverride' to remove", buf, 0x12u);
         }
       }
@@ -199,14 +199,14 @@
 
       if (v26 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v21 = [v26 BOOLValue];
+        bOOLValue2 = [v26 BOOLValue];
         v27 = bls_backlight_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
           v69 = v8;
           v70 = 1024;
-          LODWORD(v71) = v21;
+          LODWORD(v71) = bOOLValue2;
           _os_log_impl(&dword_21FD11000, v27, OS_LOG_TYPE_DEFAULT, "OSIP:%p deviceSupportsAlwaysOnFlipbookOverride set to %{BOOL}u - use 'login -f mobile defaults delete com.apple.BacklightServices deviceSupportsAlwaysOnFlipbookOverride' to remove", buf, 0x12u);
         }
       }
@@ -222,13 +222,13 @@
       *(v8 + 200) = [v23 integerForKey:@"flipbookDiagnosticsMemoryLimit"] << 20;
     }
 
-    *(v8 + 130) = v22;
-    *(v8 + 131) = v21;
-    *(v8 + 132) = v21;
-    v29 = [MEMORY[0x277CD9E40] mainDisplay];
-    v30 = [v29 stateControl];
+    *(v8 + 130) = bOOLValue;
+    *(v8 + 131) = bOOLValue2;
+    *(v8 + 132) = bOOLValue2;
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    stateControl = [mainDisplay stateControl];
     v31 = *(v8 + 64);
-    *(v8 + 64) = v30;
+    *(v8 + 64) = stateControl;
 
     *(v8 + 96) = [*(v8 + 64) displayState];
     if (!*(v8 + 64))
@@ -238,12 +238,12 @@
 
     v32 = objc_alloc_init(MEMORY[0x277CFD3B0]);
     [v32 activate];
-    v33 = [v32 supported];
-    v34 = v33;
-    if (v33)
+    supported = [v32 supported];
+    v34 = supported;
+    if (supported)
     {
       v35 = (v8 + 133);
-      *(v8 + 133) = v33;
+      *(v8 + 133) = supported;
       *(v8 + 120) = 3;
       objc_storeStrong((v8 + 56), v32);
       *(v8 + 112) = [*(v8 + 56) displayMode];
@@ -278,7 +278,7 @@
 
     *(v8 + 104) = *(v8 + 96) != 1;
     [(BLSHBacklightOSInterfaceProvider *)v8 notifyDisplayBlankedIfChangedForCADisplayState:?];
-    v41 = [MEMORY[0x277CC1D50] isAvailable];
+    isAvailable = [MEMORY[0x277CC1D50] isAvailable];
     v42 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.BacklightServices"];
     v43 = [v42 BOOLForKey:@"disableSuppression"];
 
@@ -292,7 +292,7 @@
         _os_log_impl(&dword_21FD11000, v44, OS_LOG_TYPE_DEFAULT, "OSIP:%p disableSuppression set to YES - use 'login -f mobile defaults delete com.apple.BacklightServices disableSuppression' to remove", buf, 0xCu);
       }
 
-      v41 = 0;
+      isAvailable = 0;
     }
 
     v45 = bls_backlight_log();
@@ -323,7 +323,7 @@
       v74 = 1024;
       v75 = v50;
       v76 = 1024;
-      v77 = v41;
+      v77 = isAvailable;
       _os_log_impl(&dword_21FD11000, v45, OS_LOG_TYPE_DEFAULT, "OSIP:%p startup cbDisplayMode:%{public}@ dsao:%{BOOL}u dsaof:%{BOOL}u dscs:%{BOOL}u sup:%{BOOL}u", buf, 0x2Eu);
     }
 
@@ -331,7 +331,7 @@
     v52 = *(v8 + 48);
     *(v8 + 48) = v51;
 
-    if (v41)
+    if (isAvailable)
     {
       v53 = [objc_alloc(MEMORY[0x277CC1D50]) initWithClientType:1];
       v54 = *(v8 + 72);
@@ -374,13 +374,13 @@
             v64 = off_27841E908[v63];
           }
 
-          v65 = [v61 bls_loggingString];
+          bls_loggingString = [v61 bls_loggingString];
           *buf = 134218498;
           v69 = v8;
           v70 = 2114;
           v71 = v64;
           v72 = 2114;
-          *v73 = v65;
+          *v73 = bls_loggingString;
           _os_log_fault_impl(&dword_21FD11000, v62, OS_LOG_TYPE_FAULT, "OSIP:%p could not transitionToDisplayMode:%{public}@ during init error:%{public}@", buf, 0x20u);
         }
       }
@@ -406,9 +406,9 @@
   return v8;
 }
 
-- (void)registerHandlersForService:(id)a3
+- (void)registerHandlersForService:(id)service
 {
-  v7 = a3;
+  serviceCopy = service;
   v5 = [BLSHTransparentFlipbookAttributeHandler registerHandlerForService:"registerHandlerForService:provider:" provider:?];
   if (!v5)
   {
@@ -416,31 +416,31 @@
   }
 
   v6 = v5;
-  [(BLSHWatchdogProvider *)self->_watchdogProvider registerHandlersForService:v7];
+  [(BLSHWatchdogProvider *)self->_watchdogProvider registerHandlersForService:serviceCopy];
 }
 
-- (void)registerSceneWorkspace:(id)a3
+- (void)registerSceneWorkspace:(id)workspace
 {
-  v4 = a3;
+  workspaceCopy = workspace;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_sceneWorkspaces addObject:v4];
+  [(NSMutableSet *)self->_lock_sceneWorkspaces addObject:workspaceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)deregisterSceneWorkspace:(id)a3
+- (void)deregisterSceneWorkspace:(id)workspace
 {
-  v4 = a3;
+  workspaceCopy = workspace;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_sceneWorkspaces removeObject:v4];
+  [(NSMutableSet *)self->_lock_sceneWorkspaces removeObject:workspaceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)sceneWithIdentityToken:(id)a3
+- (id)sceneWithIdentityToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
@@ -461,7 +461,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) sceneWithIdentityToken:{v4, v15}];
+        v10 = [*(*(&v15 + 1) + 8 * i) sceneWithIdentityToken:{tokenCopy, v15}];
         if (v10)
         {
           v11 = v10;
@@ -485,8 +485,8 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
   if (!v11)
   {
-    v12 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v11 = [v12 sceneFromIdentityToken:v4];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v11 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:tokenCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -494,28 +494,28 @@ LABEL_11:
   return v11;
 }
 
-- (void)dispatchToMainQueueAfterSecondsDelay:(double)a3 identifier:(id)a4 block:(id)a5
+- (void)dispatchToMainQueueAfterSecondsDelay:(double)delay identifier:(id)identifier block:(id)block
 {
-  v5 = (a3 * 1000000000.0);
-  block = a5;
+  v5 = (delay * 1000000000.0);
+  block = block;
   v6 = dispatch_time(0, v5);
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)transitionToDisplayMode:(int64_t)a3 withDuration:(double)a4
+- (void)transitionToDisplayMode:(int64_t)mode withDuration:(double)duration
 {
   v45 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   if (self->_displayStateClientSupported && (self->_lock_cbFlipbookState & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
-    if (a3 > 4)
+    if (mode > 4)
     {
       v31 = @"Invalid";
     }
 
     else
     {
-      v31 = off_27841E908[a3];
+      v31 = off_27841E908[mode];
     }
 
     v32 = self->_lock_cbFlipbookState - 1;
@@ -542,7 +542,7 @@ LABEL_11:
   }
 
   lock_cbDisplayMode = self->_lock_cbDisplayMode;
-  v9 = a3 - 1;
+  v9 = mode - 1;
   if ((lock_cbDisplayMode - 1) > 3)
   {
     v36 = 0;
@@ -564,74 +564,74 @@ LABEL_11:
   }
 
   deviceSupportsAlwaysOn = self->_deviceSupportsAlwaysOn;
-  self->_lock_cbDisplayMode = a3;
+  self->_lock_cbDisplayMode = mode;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_cbDisplayMode != a3)
+  if (lock_cbDisplayMode != mode)
   {
-    v12 = (((a3 - 1) < 2) ^ ((lock_cbDisplayMode - 1) < 2)) & deviceSupportsAlwaysOn;
+    v12 = (((mode - 1) < 2) ^ ((lock_cbDisplayMode - 1) < 2)) & deviceSupportsAlwaysOn;
     if (self->_displayStateClientSupported)
     {
       v20 = bls_backlight_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        if (a3 > 4)
+        if (mode > 4)
         {
           v21 = @"Invalid";
         }
 
         else
         {
-          v21 = off_27841E908[a3];
+          v21 = off_27841E908[mode];
         }
 
         *buf = 134218498;
-        v40 = self;
+        selfCopy4 = self;
         v41 = 2114;
         *v42 = v21;
         *&v42[8] = 2048;
-        *&v42[10] = a4;
+        *&v42[10] = duration;
         _os_log_debug_impl(&dword_21FD11000, v20, OS_LOG_TYPE_DEBUG, "OSIP:%p transitionToDisplayMode:%{public}@ withDuration:%fs", buf, 0x20u);
       }
 
-      if (a3 > 4)
+      if (mode > 4)
       {
         v24 = @"Invalid";
       }
 
       else
       {
-        v24 = off_27841E908[a3];
+        v24 = off_27841E908[mode];
       }
 
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"OSIP:%p transitionToDisplayMode:%@ withDuration:%fs", self, v24, *&a4];
+      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"OSIP:%p transitionToDisplayMode:%@ withDuration:%fs", self, v24, *&duration];
       [(BLSHBacklightOSInterfaceProvider *)self scheduleOSIPWatchdogWithExplanation:v25 type:0];
       displayStateClient = self->_displayStateClient;
       v38 = 0;
-      [(CBDisplayStateClient *)displayStateClient transitionToDisplayMode:a3 withDuration:&v38 error:a4];
+      [(CBDisplayStateClient *)displayStateClient transitionToDisplayMode:mode withDuration:&v38 error:duration];
       v27 = v38;
       if (v27)
       {
         v28 = bls_backlight_log();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
         {
-          if (a3 > 4)
+          if (mode > 4)
           {
             v29 = @"Invalid";
           }
 
           else
           {
-            v29 = off_27841E908[a3];
+            v29 = off_27841E908[mode];
           }
 
           v35 = v29;
-          v30 = [v27 bls_loggingString];
+          bls_loggingString = [v27 bls_loggingString];
           *buf = 134218498;
-          v40 = self;
+          selfCopy4 = self;
           v41 = 2114;
           *v42 = v35;
           *&v42[8] = 2114;
-          *&v42[10] = v30;
+          *&v42[10] = bls_loggingString;
           _os_log_fault_impl(&dword_21FD11000, v28, OS_LOG_TYPE_FAULT, "OSIP:%p could not transitionToDisplayMode:%{public}@ error:%{public}@", buf, 0x20u);
         }
       }
@@ -663,12 +663,12 @@ LABEL_16:
 
         if (v12)
         {
-          v16 = 0.0;
+          durationCopy = 0.0;
         }
 
         else
         {
-          v16 = a4;
+          durationCopy = duration;
         }
 
         v17 = bls_backlight_log();
@@ -676,7 +676,7 @@ LABEL_16:
         {
           displayStateClientSupported = self->_displayStateClientSupported;
           *buf = 134218754;
-          v40 = self;
+          selfCopy4 = self;
           if (displayStateClientSupported)
           {
             v23 = "Notify";
@@ -692,7 +692,7 @@ LABEL_16:
           *&v42[8] = 2048;
           *&v42[10] = backlightDimmedFactor;
           v43 = 2048;
-          v44 = v16;
+          v44 = durationCopy;
           _os_log_debug_impl(&dword_21FD11000, v17, OS_LOG_TYPE_DEBUG, "OSIP:%p %sBacklightFactor:%f WithFadeDuration:%fs", buf, 0x2Au);
         }
 
@@ -715,8 +715,8 @@ LABEL_16:
         v37[2] = __73__BLSHBacklightOSInterfaceProvider_transitionToDisplayMode_withDuration___block_invoke;
         v37[3] = &unk_27841E728;
         v37[4] = self;
-        v37[5] = a3;
-        [(BSContinuousMachTimer *)setCBDisplayModeTimer scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v37 queue:a4 handler:0.016];
+        v37[5] = mode;
+        [(BSContinuousMachTimer *)setCBDisplayModeTimer scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v37 queue:duration handler:0.016];
       }
 
       goto LABEL_30;
@@ -729,15 +729,15 @@ LABEL_16:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
-        v40 = self;
+        selfCopy4 = self;
         v41 = 1024;
         *v42 = v9 < 2;
         *&v42[4] = 2048;
-        *&v42[6] = a4;
+        *&v42[6] = duration;
         _os_log_debug_impl(&dword_21FD11000, v14, OS_LOG_TYPE_DEBUG, "OSIP:%p (platformProvider) useAlwaysOnBrightnessCurve:%{BOOL}u withDuration:%fs", buf, 0x1Cu);
       }
 
-      [(BLSHBacklightPlatformProvider *)self->_platformProvider useAlwaysOnBrightnessCurve:v9 < 2 withRampDuration:a4];
+      [(BLSHBacklightPlatformProvider *)self->_platformProvider useAlwaysOnBrightnessCurve:v9 < 2 withRampDuration:duration];
     }
 
     goto LABEL_16;
@@ -747,16 +747,16 @@ LABEL_30:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)switchToFlipbookState:(int64_t)a3
+- (void)switchToFlipbookState:(int64_t)state
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_cbFlipbookState = a3;
+  self->_lock_cbFlipbookState = state;
   os_unfair_lock_unlock(&self->_lock);
   if (self->_displayStateClientSupported)
   {
-    v7 = a3 - 1;
-    if ((a3 - 1) > 2)
+    v7 = state - 1;
+    if ((state - 1) > 2)
     {
       v8 = @"WillTurnOn";
     }
@@ -770,7 +770,7 @@ LABEL_30:
     [(BLSHBacklightOSInterfaceProvider *)self scheduleOSIPWatchdogWithExplanation:v5 type:1uLL];
     displayStateClient = self->_displayStateClient;
     v14 = 0;
-    [(CBDisplayStateClient *)displayStateClient switchToFlipbookState:a3 error:&v14];
+    [(CBDisplayStateClient *)displayStateClient switchToFlipbookState:state error:&v14];
     v10 = v14;
     if (v10)
     {
@@ -787,13 +787,13 @@ LABEL_30:
           v12 = off_27841E930[v7];
         }
 
-        v13 = [v10 bls_loggingString];
+        bls_loggingString = [v10 bls_loggingString];
         *buf = 134218498;
-        v16 = self;
+        selfCopy = self;
         v17 = 2114;
         v18 = v12;
         v19 = 2114;
-        v20 = v13;
+        v20 = bls_loggingString;
         _os_log_fault_impl(&dword_21FD11000, v11, OS_LOG_TYPE_FAULT, "OSIP:%p could not switchToFlipbookState:%{public}@ error:%{public}@", buf, 0x20u);
       }
     }
@@ -804,16 +804,16 @@ LABEL_30:
     v5 = bls_backlight_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(BLSHBacklightOSInterfaceProvider *)self switchToFlipbookState:a3, v5];
+      [(BLSHBacklightOSInterfaceProvider *)self switchToFlipbookState:state, v5];
     }
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)acquireDisplayPowerAssertionForReason:(int64_t)a3
+- (id)acquireDisplayPowerAssertionForReason:(int64_t)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
     kdebug_trace();
   }
@@ -929,51 +929,51 @@ uint64_t __63__BLSHBacklightOSInterfaceProvider_transitionToCADisplayState___blo
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)createDisplayPowerResourceHintWithState:(unint64_t)a3
+- (id)createDisplayPowerResourceHintWithState:(unint64_t)state
 {
-  v3 = [objc_alloc(MEMORY[0x277D3F038]) initWithResourceType:2 andState:a3];
+  v3 = [objc_alloc(MEMORY[0x277D3F038]) initWithResourceType:2 andState:state];
   v4 = [BLSHAsyncDisplayPowerResourceHint hintWithHint:v3];
 
   return v4;
 }
 
-- (id)createPowerAssertionWithIdentifier:(id)a3
+- (id)createPowerAssertionWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D6C090];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)createSystemActivityAssertionWithIdentifier:(id)a3 configurator:(id)a4
+- (id)createSystemActivityAssertionWithIdentifier:(id)identifier configurator:(id)configurator
 {
   v5 = MEMORY[0x277D6C098];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithIdentifier:v7 configurator:v6];
+  configuratorCopy = configurator;
+  identifierCopy = identifier;
+  v8 = [[v5 alloc] initWithIdentifier:identifierCopy configurator:configuratorCopy];
 
   return v8;
 }
 
-- (id)observeSignificantTimeChangeWithIdentifier:(id)a3 handler:(id)a4
+- (id)observeSignificantTimeChangeWithIdentifier:(id)identifier handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__0;
   v16[4] = __Block_byref_object_dispose__0;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = *MEMORY[0x277D766F0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__BLSHBacklightOSInterfaceProvider_observeSignificantTimeChangeWithIdentifier_handler___block_invoke;
   v14[3] = &unk_27841E7A0;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v17 = [v7 addObserverForName:v8 object:0 queue:0 usingBlock:v14];
+  v17 = [defaultCenter addObserverForName:v8 object:0 queue:0 usingBlock:v14];
 
   v10 = objc_alloc(MEMORY[0x277CF0CE8]);
   v13[0] = MEMORY[0x277D85DD0];
@@ -981,7 +981,7 @@ uint64_t __63__BLSHBacklightOSInterfaceProvider_transitionToCADisplayState___blo
   v13[2] = __87__BLSHBacklightOSInterfaceProvider_observeSignificantTimeChangeWithIdentifier_handler___block_invoke_2;
   v13[3] = &unk_27841E7C8;
   v13[4] = v16;
-  v11 = [v10 initWithIdentifier:v5 forReason:@"observeSignificantTimeChange" invalidationBlock:v13];
+  v11 = [v10 initWithIdentifier:identifierCopy forReason:@"observeSignificantTimeChange" invalidationBlock:v13];
   _Block_object_dispose(v16, 8);
 
   return v11;
@@ -1037,33 +1037,33 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addSceneObserver:(id)a3 forSceneIdentityToken:(id)a4
+- (id)addSceneObserver:(id)observer forSceneIdentityToken:(id)token
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  tokenCopy = token;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BLSHBacklightOSInterfaceProvider addSceneObserver:a2 forSceneIdentityToken:?];
   }
 
-  v9 = [(BLSHBacklightOSInterfaceProvider *)self sceneWithIdentityToken:v8];
+  v9 = [(BLSHBacklightOSInterfaceProvider *)self sceneWithIdentityToken:tokenCopy];
   if (v9)
   {
-    v10 = [BLSHSceneEnvironmentObserverToken tokenWithObserver:v7 sceneIdentityToken:v8];
-    v11 = [BLSHSceneEnvironmentObserver observerWithObserver:v7];
+    v10 = [BLSHSceneEnvironmentObserverToken tokenWithObserver:observerCopy sceneIdentityToken:tokenCopy];
+    v11 = [BLSHSceneEnvironmentObserver observerWithObserver:observerCopy];
     os_unfair_lock_lock(&self->_lock);
     v12 = bls_assertions_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v18 = [(NSMutableDictionary *)self->_lock_sceneObservers objectForKey:v10];
       *buf = 134218754;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
-      v22 = v7;
+      v22 = observerCopy;
       v23 = 2114;
-      v24 = v8;
+      v24 = tokenCopy;
       v25 = 2114;
       v26 = v18;
       _os_log_debug_impl(&dword_21FD11000, v12, OS_LOG_TYPE_DEBUG, "OSIP:%p addSceneObserver:%{public}@ forSceneIdentityToken:%{public}@ existing:%{public}@", buf, 0x2Au);
@@ -1073,7 +1073,7 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
 
     if (v13)
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"cannot add the same observer twice for the same scene observer:%@ scene:%@", v7, v9];;
+      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"cannot add the same observer twice for the same scene observer:%@ scene:%@", observerCopy, v9];;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [(BLSHBacklightOSInterfaceProvider *)a2 addSceneObserver:v17 forSceneIdentityToken:?];
@@ -1088,7 +1088,7 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
     [(NSMutableDictionary *)self->_lock_sceneObservers setObject:v11 forKey:v10];
     os_unfair_lock_unlock(&self->_lock);
     [v9 addObserver:v11];
-    v14 = [v9 backlightSceneHostEnvironment];
+    backlightSceneHostEnvironment = [v9 backlightSceneHostEnvironment];
   }
 
   else
@@ -1099,39 +1099,39 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
       [BLSHBacklightOSInterfaceProvider addSceneObserver:forSceneIdentityToken:];
     }
 
-    v14 = 0;
+    backlightSceneHostEnvironment = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return backlightSceneHostEnvironment;
 }
 
-- (id)removeSceneObserver:(id)a3 forSceneIdentityToken:(id)a4
+- (id)removeSceneObserver:(id)observer forSceneIdentityToken:(id)token
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  tokenCopy = token;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BLSHBacklightOSInterfaceProvider removeSceneObserver:a2 forSceneIdentityToken:?];
   }
 
-  v9 = [(BLSHBacklightOSInterfaceProvider *)self sceneWithIdentityToken:v8];
+  v9 = [(BLSHBacklightOSInterfaceProvider *)self sceneWithIdentityToken:tokenCopy];
   os_unfair_lock_lock(&self->_lock);
-  v10 = [BLSHSceneEnvironmentObserverToken tokenWithObserver:v7 sceneIdentityToken:v8];
+  v10 = [BLSHSceneEnvironmentObserverToken tokenWithObserver:observerCopy sceneIdentityToken:tokenCopy];
   v11 = [(NSMutableDictionary *)self->_lock_sceneObservers objectForKey:v10];
   v12 = bls_assertions_log();
   v13 = 2 * (v9 != 0);
   if (os_log_type_enabled(v12, v13))
   {
     v17 = 134219010;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v7;
+    v20 = observerCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = tokenCopy;
     v23 = 1024;
     v24 = v9 != 0;
     v25 = 2114;
@@ -1147,50 +1147,50 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
       [v9 removeObserver:v11];
     }
 
-    v14 = [v9 backlightSceneHostEnvironment];
+    backlightSceneHostEnvironment = [v9 backlightSceneHostEnvironment];
   }
 
   else
   {
-    v14 = 0;
+    backlightSceneHostEnvironment = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return backlightSceneHostEnvironment;
 }
 
-- (void)didCompleteTransitionToDisplayMode:(int64_t)a3 withError:(id)a4
+- (void)didCompleteTransitionToDisplayMode:(int64_t)mode withError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = bls_backlight_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (a3 > 4)
+    if (mode > 4)
     {
       v8 = @"Invalid";
     }
 
     else
     {
-      v8 = off_27841E908[a3];
+      v8 = off_27841E908[mode];
     }
 
     *buf = 134218498;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2114;
     v19 = *&v8;
     v20 = 2112;
-    v21 = v6;
+    v21 = errorCopy;
     _os_log_impl(&dword_21FD11000, v7, OS_LOG_TYPE_INFO, "OSIP:%p got didCompleteTransitionToDisplayMode:%{public}@ error:%@", buf, 0x20u);
   }
 
   if (self->_cbTransitionsDelayForTesting <= 0.1)
   {
-    [(BLSHBacklightOSInterfaceProvider *)self _didCompleteTransitionToDisplayMode:a3 withError:v6];
+    [(BLSHBacklightOSInterfaceProvider *)self _didCompleteTransitionToDisplayMode:mode withError:errorCopy];
   }
 
   else
@@ -1200,7 +1200,7 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
     {
       cbTransitionsDelayForTesting = self->_cbTransitionsDelayForTesting;
       *buf = 134218240;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2048;
       v19 = cbTransitionsDelayForTesting;
       _os_log_impl(&dword_21FD11000, v9, OS_LOG_TYPE_DEFAULT, "OSIP:%p delayCompletionsForTesting:YES, delaying didCompleteCBTransitionToDisplayMode by %.2fs", buf, 0x16u);
@@ -1212,8 +1212,8 @@ void __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler__
     block[2] = __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_withError___block_invoke;
     block[3] = &unk_27841E510;
     block[4] = self;
-    v15 = a3;
-    v14 = v6;
+    modeCopy = mode;
+    v14 = errorCopy;
     dispatch_after(v11, MEMORY[0x277D85CD0], block);
   }
 
@@ -1231,29 +1231,29 @@ void __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_w
   [(BLSHBacklightOSInterfaceProvider *)*(a1 + 32) _didCompleteTransitionToDisplayMode:*(a1 + 40) withError:?];
 }
 
-- (void)didCompleteSwitchToFlipbookState:(int64_t)a3 withError:(id)a4
+- (void)didCompleteSwitchToFlipbookState:(int64_t)state withError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = bls_backlight_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 2)
+    if ((state - 1) > 2)
     {
       v8 = @"WillTurnOn";
     }
 
     else
     {
-      v8 = off_27841E930[a3 - 1];
+      v8 = off_27841E930[state - 1];
     }
 
     v12 = 134218498;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v8;
     v16 = 2112;
-    v17 = v6;
+    v17 = errorCopy;
     _os_log_impl(&dword_21FD11000, v7, OS_LOG_TYPE_INFO, "OSIP:%p got didCompleteSwitchToFlipbookState:%{public}@ error:%@", &v12, 0x20u);
   }
 
@@ -1266,8 +1266,8 @@ void __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_w
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [(BLSHBacklightOSInterfaceProvider *)self displayStateDelegate];
-  [v10 osInterfaceProvider:self didCompleteSwitchToCBFlipbookState:a3 withError:v6];
+  displayStateDelegate = [(BLSHBacklightOSInterfaceProvider *)self displayStateDelegate];
+  [displayStateDelegate osInterfaceProvider:self didCompleteSwitchToCBFlipbookState:state withError:errorCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1280,25 +1280,25 @@ void __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_w
   return lock_flipbookTransparent;
 }
 
-- (void)setFlipbookTransparent:(BOOL)a3
+- (void)setFlipbookTransparent:(BOOL)transparent
 {
-  v3 = a3;
+  transparentCopy = transparent;
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   lock_flipbookTransparent = self->_lock_flipbookTransparent;
-  self->_lock_flipbookTransparent = v3;
+  self->_lock_flipbookTransparent = transparentCopy;
   lock_caDisplayState = self->_lock_caDisplayState;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_flipbookTransparent != v3 && lock_caDisplayState == 2)
+  if (lock_flipbookTransparent != transparentCopy && lock_caDisplayState == 2)
   {
     v8 = bls_backlight_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (transparentCopy)
     {
       if (v9)
       {
         *buf = 134217984;
-        v16 = self;
+        selfCopy2 = self;
         v10 = 1;
         _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_INFO, "OSIP:%p flipbook set transparent, will transition to active", buf, 0xCu);
       }
@@ -1314,7 +1314,7 @@ void __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_w
       if (v9)
       {
         *buf = 134217984;
-        v16 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_INFO, "OSIP:%p flipbook no longer transparent, will transition to real flipbook", buf, 0xCu);
       }
 
@@ -1327,7 +1327,7 @@ void __81__BLSHBacklightOSInterfaceProvider_didCompleteTransitionToDisplayMode_w
     v13[2] = __59__BLSHBacklightOSInterfaceProvider_setFlipbookTransparent___block_invoke;
     v13[3] = &unk_27841E818;
     v13[4] = self;
-    v14 = v3;
+    v14 = transparentCopy;
     [(CADisplayStateControl *)displayStateControl transitionToDisplayState:v10 withCompletion:v13];
   }
 
@@ -1359,14 +1359,14 @@ void __59__BLSHBacklightOSInterfaceProvider_setFlipbookTransparent___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)abortContextForTimer:(id)a3
+- (id)abortContextForTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   os_unfair_lock_lock(&self->_lock);
   lock_CAWatchdogTimer = self->_lock_CAWatchdogTimer;
 
   v6 = &OBJC_IVAR___BLSHBacklightOSInterfaceProvider__lock_CBWatchdogType;
-  if (lock_CAWatchdogTimer == v4)
+  if (lock_CAWatchdogTimer == timerCopy)
   {
     v6 = &OBJC_IVAR___BLSHBacklightOSInterfaceProvider__lock_CAWatchdogType;
   }
@@ -1386,45 +1386,45 @@ void __59__BLSHBacklightOSInterfaceProvider_setFlipbookTransparent___block_invok
 - (id)identifier
 {
   v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (void)setCBTransitionsDelayForTesting:(double)a3
+- (void)setCBTransitionsDelayForTesting:(double)testing
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = bls_diagnostics_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    testingCopy = testing;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_DEFAULT, "OSIP: setCBTransitionsDelayForTesting:%.02fs", &v7, 0xCu);
   }
 
-  self->_cbTransitionsDelayForTesting = a3;
+  self->_cbTransitionsDelayForTesting = testing;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCATransitionsDelayForTesting:(double)a3
+- (void)setCATransitionsDelayForTesting:(double)testing
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = bls_diagnostics_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    testingCopy = testing;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_DEFAULT, "OSIP: setCATransitionsDelayForTesting:%.02fs", &v7, 0xCu);
   }
 
-  self->_caTransitionsDelayForTesting = a3;
+  self->_caTransitionsDelayForTesting = testing;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)abortForWatchdog:(unint64_t)a3 payload:(void *)a4 payloadSize:(unsigned int)a5 explanation:(id)a6
+- (void)abortForWatchdog:(unint64_t)watchdog payload:(void *)payload payloadSize:(unsigned int)size explanation:(id)explanation
 {
-  [a6 UTF8String];
-  if (a4 && a5)
+  [explanation UTF8String];
+  if (payload && size)
   {
     abort_with_payload();
   }
@@ -1433,10 +1433,10 @@ void __59__BLSHBacklightOSInterfaceProvider_setFlipbookTransparent___block_invok
   [(BLSHBacklightOSInterfaceProvider *)v8 panicForWatchdog:v9 withDelay:v10 completion:v12, v11];
 }
 
-- (void)panicForWatchdog:(id)a3 withDelay:(double)a4 completion:(id)a5
+- (void)panicForWatchdog:(id)watchdog withDelay:(double)delay completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  watchdogCopy = watchdog;
+  completionCopy = completion;
   v9 = bls_diagnostics_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -1454,21 +1454,21 @@ void __59__BLSHBacklightOSInterfaceProvider_setFlipbookTransparent___block_invok
   v17[1] = 3221225472;
   v17[2] = __74__BLSHBacklightOSInterfaceProvider_panicForWatchdog_withDelay_completion___block_invoke;
   v17[3] = &unk_27841E5B0;
-  v20 = a4;
-  v18 = v7;
-  v19 = v8;
-  v12 = v8;
-  v13 = v7;
+  delayCopy = delay;
+  v18 = watchdogCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = watchdogCopy;
   v14 = MEMORY[0x223D70730](v17);
   v15 = v14;
-  if (a4 <= 0.0)
+  if (delay <= 0.0)
   {
     (*(v14 + 16))(v14);
   }
 
   else
   {
-    v16 = dispatch_time(0, (a4 * 1000000000.0));
+    v16 = dispatch_time(0, (delay * 1000000000.0));
     dispatch_after(v16, MEMORY[0x277D85CD0], v15);
   }
 }
@@ -1511,22 +1511,22 @@ uint64_t __74__BLSHBacklightOSInterfaceProvider_panicForWatchdog_withDelay_compl
   return result;
 }
 
-- (void)writeTailspinForWatchdog:(id)a3 completion:(id)a4
+- (void)writeTailspinForWatchdog:(id)watchdog completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  watchdogCopy = watchdog;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
-  v17 = [[BLSHTailspinLogWriter alloc] initWithReason:v5];
+  v17 = [[BLSHTailspinLogWriter alloc] initWithReason:watchdogCopy];
   v7 = v13[5];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion___block_invoke;
   v9[3] = &unk_27841E840;
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
   v11 = &v12;
   [v7 writeTailspinLogWithCompletion:v9];
@@ -1542,14 +1542,14 @@ void __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion_
   *(v2 + 40) = 0;
 }
 
-- (void)notifyDisplayBlankedIfChangedForCADisplayState:(uint64_t)a1
+- (void)notifyDisplayBlankedIfChangedForCADisplayState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    os_unfair_lock_lock((a1 + 88));
-    v4 = (a2 != 1) ^ (*(a1 + 104) == 1);
-    *(a1 + 104) = a2;
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_lock((state + 88));
+    v4 = (a2 != 1) ^ (*(state + 104) == 1);
+    *(state + 104) = a2;
+    os_unfair_lock_unlock((state + 88));
     if ((v4 & 1) == 0)
     {
       kdebug_trace();
@@ -1559,33 +1559,33 @@ void __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion_
   }
 }
 
-- (void)scheduleOSIPWatchdogWithExplanation:(unint64_t)a3 type:
+- (void)scheduleOSIPWatchdogWithExplanation:(unint64_t)explanation type:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    os_unfair_lock_lock(a1 + 22);
-    obj = [(os_unfair_lock_s *)a1 scheduleWatchdogWithDelegate:a1 explanation:v5 timeout:[(BLSHBacklightOSInterfaceProvider *)a1 timeoutForWatchdogType:a3]];
+    os_unfair_lock_lock(self + 22);
+    obj = [(os_unfair_lock_s *)self scheduleWatchdogWithDelegate:self explanation:v5 timeout:[(BLSHBacklightOSInterfaceProvider *)self timeoutForWatchdogType:explanation]];
 
-    if (a3 <= 2)
+    if (explanation <= 2)
     {
-      v6 = off_27841E8D8[a3];
-      v7 = off_27841E8F0[a3];
-      [*(&a1->_os_unfair_lock_opaque + *v6) invalidate:1];
-      objc_storeStrong((a1 + *v6), obj);
-      *(&a1->_os_unfair_lock_opaque + *v7) = a3;
+      v6 = off_27841E8D8[explanation];
+      v7 = off_27841E8F0[explanation];
+      [*(&self->_os_unfair_lock_opaque + *v6) invalidate:1];
+      objc_storeStrong((self + *v6), obj);
+      *(&self->_os_unfair_lock_opaque + *v7) = explanation;
     }
 
-    os_unfair_lock_unlock(a1 + 22);
+    os_unfair_lock_unlock(self + 22);
   }
 }
 
-- (void)transitionToCADisplayState:(int64_t)a3
+- (void)transitionToCADisplayState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_caDisplayState = a3;
-  if (a3 == 2)
+  self->_lock_caDisplayState = state;
+  if (state == 2)
   {
     lock_flipbookTransparent = self->_lock_flipbookTransparent;
     os_unfair_lock_unlock(&self->_lock);
@@ -1595,16 +1595,16 @@ void __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion_
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21FD11000, v6, OS_LOG_TYPE_INFO, "OSIP:%p flipbook transparent, will transition to CADisplayStateOn not CADisplayStateFlipBook", buf, 0xCu);
       }
 
-      a3 = 1;
+      state = 1;
     }
 
     else
     {
-      a3 = 2;
+      state = 2;
     }
   }
 
@@ -1621,7 +1621,7 @@ void __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion_
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v15 = v9;
+    selfCopy = v9;
     _os_log_debug_impl(&dword_21FD11000, v10, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
   }
 
@@ -1632,72 +1632,72 @@ void __72__BLSHBacklightOSInterfaceProvider_writeTailspinForWatchdog_completion_
   v13[2] = __63__BLSHBacklightOSInterfaceProvider_transitionToCADisplayState___block_invoke;
   v13[3] = &unk_27841E778;
   v13[4] = self;
-  v13[5] = a3;
-  [(CADisplayStateControl *)displayStateControl transitionToDisplayState:a3 withCompletion:v13];
+  v13[5] = state;
+  [(CADisplayStateControl *)displayStateControl transitionToDisplayState:state withCompletion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSuppressionServiceActive:(uint64_t)a1
+- (void)setSuppressionServiceActive:(uint64_t)active
 {
-  if (a1)
+  if (active)
   {
-    os_unfair_lock_lock((a1 + 88));
-    *(a1 + 128) = a2;
+    os_unfair_lock_lock((active + 88));
+    *(active + 128) = a2;
 
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((active + 88));
   }
 }
 
-- (void)setLastSuppressionEvent:(uint64_t)a1
+- (void)setLastSuppressionEvent:(uint64_t)event
 {
   v4 = a2;
-  if (a1)
+  if (event)
   {
-    os_unfair_lock_lock((a1 + 88));
-    objc_storeStrong((a1 + 48), a2);
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_lock((event + 88));
+    objc_storeStrong((event + 48), a2);
+    os_unfair_lock_unlock((event + 88));
   }
 }
 
-- (void)startSuppressionServiceWithHandler:(id)a3
+- (void)startSuppressionServiceWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(BLSHBacklightOSInterfaceProvider *)self setSuppressionServiceActive:?];
   [(CMSuppressionManager *)self->_suppressionManager startService];
   suppressionManager = self->_suppressionManager;
-  v6 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__BLSHBacklightOSInterfaceProvider_startSuppressionServiceWithHandler___block_invoke;
   v8[3] = &unk_27841E7F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(CMSuppressionManager *)suppressionManager startSuppressionUpdatesToQueue:v6 withHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(CMSuppressionManager *)suppressionManager startSuppressionUpdatesToQueue:mainQueue withHandler:v8];
 }
 
-- (double)timeoutForWatchdogType:(void *)a1
+- (double)timeoutForWatchdogType:(void *)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0.0;
   }
 
-  v3 = [a1 systemSleepMonitor];
-  v4 = [v3 isSleepImminent];
+  systemSleepMonitor = [type systemSleepMonitor];
+  isSleepImminent = [systemSleepMonitor isSleepImminent];
 
   if (a2 < 2)
   {
     v6 = &BLSHBacklightCoreBrightnessCallbackSleepImminentWatchdogTimeout;
     v7 = &BLSHBacklightCoreBrightnessCallbackWatchdogTimeout;
-    v8 = v4 == 0;
+    v8 = isSleepImminent == 0;
     goto LABEL_4;
   }
 
   if (a2 == 2)
   {
-    if (v4)
+    if (isSleepImminent)
     {
       v6 = &BLSHBacklightCoreAnimationCallbackSleepImminentWatchdogTimeout;
       return *v6;
@@ -1719,22 +1719,22 @@ LABEL_4:
   return result;
 }
 
-- (void)_didCompleteTransitionToDisplayMode:(void *)a3 withError:
+- (void)_didCompleteTransitionToDisplayMode:(void *)mode withError:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    os_unfair_lock_lock((a1 + 88));
-    if (!*(a1 + 160))
+    modeCopy = mode;
+    os_unfair_lock_lock((self + 88));
+    if (!*(self + 160))
     {
-      [*(a1 + 144) invalidate:2];
-      v6 = *(a1 + 144);
-      *(a1 + 144) = 0;
+      [*(self + 144) invalidate:2];
+      v6 = *(self + 144);
+      *(self + 144) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 88));
-    v7 = [a1 displayStateDelegate];
-    [v7 osInterfaceProvider:a1 didCompleteTransitionToCBDisplayMode:a2 withError:v5];
+    os_unfair_lock_unlock((self + 88));
+    displayStateDelegate = [self displayStateDelegate];
+    [displayStateDelegate osInterfaceProvider:self didCompleteTransitionToCBDisplayMode:a2 withError:modeCopy];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface WFFocusConfigurationOptions
-- (WFFocusConfigurationOptions)initWithFocusConfigurationAction:(id)a3;
-- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)a3 action:(id)a4;
-- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)a3 action:(id)a4 suggestionContext:(id)a5 footerButtons:(id)a6 showsEnablementButton:(BOOL)a7 isEnabled:(BOOL)a8;
+- (WFFocusConfigurationOptions)initWithFocusConfigurationAction:(id)action;
+- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)identifier action:(id)action;
+- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)identifier action:(id)action suggestionContext:(id)context footerButtons:(id)buttons showsEnablementButton:(BOOL)button isEnabled:(BOOL)enabled;
 @end
 
 @implementation WFFocusConfigurationOptions
 
-- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)a3 action:(id)a4
+- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)identifier action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  actionCopy = action;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -29,20 +29,20 @@
   v9 = v8;
   _Block_object_dispose(&v14, 8);
   v10 = objc_opt_new();
-  v11 = [(WFFocusConfigurationOptions *)self initWithFocusConfigurationActionIdentifier:v6 action:v7 suggestionContext:v10];
+  v11 = [(WFFocusConfigurationOptions *)self initWithFocusConfigurationActionIdentifier:identifierCopy action:actionCopy suggestionContext:v10];
 
   return v11;
 }
 
-- (WFFocusConfigurationOptions)initWithFocusConfigurationAction:(id)a3
+- (WFFocusConfigurationOptions)initWithFocusConfigurationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [v4 identifier];
-  v7 = [v6 componentsSeparatedByString:@"."];
+  identifier = [actionCopy identifier];
+  v7 = [identifier componentsSeparatedByString:@"."];
   v8 = [v5 arrayWithArray:v7];
 
-  v9 = [v8 lastObject];
+  lastObject = [v8 lastObject];
   [v8 removeLastObject];
   v10 = [v8 componentsJoinedByString:@"."];
   v17 = 0;
@@ -63,33 +63,33 @@
 
   v12 = v11;
   _Block_object_dispose(&v17, 8);
-  v13 = [[v11 alloc] initWithActionIdentifier:v9 bundleIdentifier:v10];
-  v14 = [(WFFocusConfigurationOptions *)self initWithFocusConfigurationActionIdentifier:v13 action:v4];
+  v13 = [[v11 alloc] initWithActionIdentifier:lastObject bundleIdentifier:v10];
+  v14 = [(WFFocusConfigurationOptions *)self initWithFocusConfigurationActionIdentifier:v13 action:actionCopy];
 
   return v14;
 }
 
-- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)a3 action:(id)a4 suggestionContext:(id)a5 footerButtons:(id)a6 showsEnablementButton:(BOOL)a7 isEnabled:(BOOL)a8
+- (WFFocusConfigurationOptions)initWithFocusConfigurationActionIdentifier:(id)identifier action:(id)action suggestionContext:(id)context footerButtons:(id)buttons showsEnablementButton:(BOOL)button isEnabled:(BOOL)enabled
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  identifierCopy = identifier;
+  actionCopy = action;
+  contextCopy = context;
+  buttonsCopy = buttons;
   v25.receiver = self;
   v25.super_class = WFFocusConfigurationOptions;
   v19 = [(WFFocusConfigurationOptions *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_actionIdentifier, a3);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_actionIdentifier, identifier);
+    v21 = [actionCopy copy];
     action = v20->_action;
     v20->_action = v21;
 
-    objc_storeStrong(&v20->_suggestionContext, a5);
-    objc_storeStrong(&v20->_footerButtons, a6);
-    v20->_showsEnablementButton = a7;
-    v20->_enabled = a8;
+    objc_storeStrong(&v20->_suggestionContext, context);
+    objc_storeStrong(&v20->_footerButtons, buttons);
+    v20->_showsEnablementButton = button;
+    v20->_enabled = enabled;
     v23 = v20;
   }
 

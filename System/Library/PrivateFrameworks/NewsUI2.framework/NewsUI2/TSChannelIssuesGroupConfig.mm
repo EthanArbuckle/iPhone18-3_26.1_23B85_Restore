@@ -1,17 +1,17 @@
 @interface TSChannelIssuesGroupConfig
 - (TSChannelIssuesGroupConfig)init;
-- (TSChannelIssuesGroupConfig)initWithIssueIDs:(id)a3 channel:(id)a4 title:(id)a5;
+- (TSChannelIssuesGroupConfig)initWithIssueIDs:(id)ds channel:(id)channel title:(id)title;
 @end
 
 @implementation TSChannelIssuesGroupConfig
 
-- (TSChannelIssuesGroupConfig)initWithIssueIDs:(id)a3 channel:(id)a4 title:(id)a5
+- (TSChannelIssuesGroupConfig)initWithIssueIDs:(id)ds channel:(id)channel title:(id)title
 {
   ObjectType = swift_getObjectType();
   v8 = sub_219BF5924();
   v9 = sub_219BF5414();
   *(&self->super.isa + OBJC_IVAR___TSChannelIssuesGroupConfig_issueIDs) = v8;
-  *(&self->super.isa + OBJC_IVAR___TSChannelIssuesGroupConfig_channel) = a4;
+  *(&self->super.isa + OBJC_IVAR___TSChannelIssuesGroupConfig_channel) = channel;
   v10 = (self + OBJC_IVAR___TSChannelIssuesGroupConfig_title);
   *v10 = v9;
   v10[1] = v11;

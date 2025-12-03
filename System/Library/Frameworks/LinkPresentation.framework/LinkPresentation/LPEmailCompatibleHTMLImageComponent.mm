@@ -1,86 +1,86 @@
 @interface LPEmailCompatibleHTMLImageComponent
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLImageComponent)initWithImage:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLImageComponent)initWithImage:(id)image style:(id)style themePath:(id)path generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLImageComponent
 
-- (LPEmailCompatibleHTMLImageComponent)initWithImage:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6
+- (LPEmailCompatibleHTMLImageComponent)initWithImage:(id)image style:(id)style themePath:(id)path generator:(id)generator
 {
-  v10 = a3;
-  v77 = a4;
-  v11 = a5;
-  v12 = a6;
+  imageCopy = image;
+  styleCopy = style;
+  pathCopy = path;
+  generatorCopy = generator;
   v80.receiver = self;
   v80.super_class = LPEmailCompatibleHTMLImageComponent;
-  v13 = [(LPHTMLComponent *)&v80 initWithTagName:@"img" themePath:v11 generator:v12];
+  v13 = [(LPHTMLComponent *)&v80 initWithTagName:@"img" themePath:pathCopy generator:generatorCopy];
   v15 = v13;
   if (v13)
   {
     LPWebLock(v13, v14);
-    v16 = [v10 _alternateHTMLImageGenerator];
+    _alternateHTMLImageGenerator = [imageCopy _alternateHTMLImageGenerator];
 
-    if (v16)
+    if (_alternateHTMLImageGenerator)
     {
-      v17 = [v10 _alternateHTMLImageGenerator];
-      v18 = v17[2]();
+      _alternateHTMLImageGenerator2 = [imageCopy _alternateHTMLImageGenerator];
+      v18 = _alternateHTMLImageGenerator2[2]();
 
-      v10 = v18;
+      imageCopy = v18;
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __79__LPEmailCompatibleHTMLImageComponent_initWithImage_style_themePath_generator___block_invoke;
     aBlock[3] = &unk_1E7A357A0;
-    v19 = v11;
+    v19 = pathCopy;
     v79 = v19;
     v75 = _Block_copy(aBlock);
-    v10 = v10;
-    v20 = [v10 _remoteURLsForEmailCompatibleOutput];
+    imageCopy = imageCopy;
+    _remoteURLsForEmailCompatibleOutput = [imageCopy _remoteURLsForEmailCompatibleOutput];
 
-    if (v20)
+    if (_remoteURLsForEmailCompatibleOutput)
     {
-      v21 = [(LPHTMLComponent *)v15 element];
-      v22 = [v10 _remoteURLsForEmailCompatibleOutput];
-      v23 = [v22 firstObject];
-      v24 = [v23 URL];
-      v25 = [v24 absoluteString];
-      [v21 setAttribute:@"src" value:v25];
+      element = [(LPHTMLComponent *)v15 element];
+      _remoteURLsForEmailCompatibleOutput2 = [imageCopy _remoteURLsForEmailCompatibleOutput];
+      firstObject = [_remoteURLsForEmailCompatibleOutput2 firstObject];
+      v24 = [firstObject URL];
+      absoluteString = [v24 absoluteString];
+      [element setAttribute:@"src" value:absoluteString];
 
-      v26 = [(LPHTMLComponent *)v15 element];
-      v27 = [v10 _srcsetForRemoteURLs];
-      [v26 setAttribute:@"srcset" value:v27];
-      v76 = v10;
+      element2 = [(LPHTMLComponent *)v15 element];
+      _srcsetForRemoteURLs = [imageCopy _srcsetForRemoteURLs];
+      [element2 setAttribute:@"srcset" value:_srcsetForRemoteURLs];
+      v76 = imageCopy;
     }
 
     else
     {
-      v76 = v10;
-      if ([v77 filter] == 4)
+      v76 = imageCopy;
+      if ([styleCopy filter] == 4)
       {
-        v28 = [v77 maskColor];
-        v76 = flatImageWithColor(v10, v28);
+        maskColor = [styleCopy maskColor];
+        v76 = flatImageWithColor(imageCopy, maskColor);
       }
 
-      v26 = [(LPHTMLComponent *)v15 element];
-      v27 = [v12 _URLForImage:v76];
-      [v26 setAttribute:@"src" value:v27];
+      element2 = [(LPHTMLComponent *)v15 element];
+      _srcsetForRemoteURLs = [generatorCopy _URLForImage:v76];
+      [element2 setAttribute:@"src" value:_srcsetForRemoteURLs];
     }
 
-    v29 = [(LPHTMLComponent *)v15 element];
-    v30 = [v10 properties];
-    v31 = [v30 accessibilityText];
+    element3 = [(LPHTMLComponent *)v15 element];
+    properties = [imageCopy properties];
+    accessibilityText = [properties accessibilityText];
     v74 = v19;
-    [v29 setAttribute:@"alt" value:v31];
+    [element3 setAttribute:@"alt" value:accessibilityText];
 
-    v32 = [v77 fixedSize];
-    if (v32 && ([v77 fixedSize], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isEmpty"), v33, v32, (v34 & 1) == 0))
+    fixedSize = [styleCopy fixedSize];
+    if (fixedSize && ([styleCopy fixedSize], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "isEmpty"), v33, fixedSize, (v34 & 1) == 0))
     {
-      v47 = [v77 fixedSize];
-      v45 = [v47 width];
+      fixedSize2 = [styleCopy fixedSize];
+      width = [fixedSize2 width];
 
-      v48 = [v77 fixedSize];
-      v46 = [v48 height];
+      fixedSize3 = [styleCopy fixedSize];
+      height = [fixedSize3 height];
     }
 
     else
@@ -88,33 +88,33 @@
       [v76 _pixelSize];
       v36 = v35;
       v38 = v37;
-      v39 = [v12 rootWidth];
-      [v39 value];
+      rootWidth = [generatorCopy rootWidth];
+      [rootWidth value];
       sizeFittingInsideSizeMaintainingAspectRatio(v36, v38, v40, 500.0);
       v42 = v41;
       v44 = v43;
 
-      v45 = [[LPPointUnit alloc] initWithValue:v42];
-      v46 = [[LPPointUnit alloc] initWithValue:v44];
+      width = [[LPPointUnit alloc] initWithValue:v42];
+      height = [[LPPointUnit alloc] initWithValue:v44];
     }
 
-    v49 = [(LPPointUnit *)v45 _lp_CSSText];
-    v50 = [v12 cssResolver];
-    v51 = [v50 localVariables];
+    _lp_CSSText = [(LPPointUnit *)width _lp_CSSText];
+    cssResolver = [generatorCopy cssResolver];
+    localVariables = [cssResolver localVariables];
     v52 = v75[2](v75, @"local", @"width");
-    [v51 setObject:v49 forKeyedSubscript:v52];
+    [localVariables setObject:_lp_CSSText forKeyedSubscript:v52];
 
-    v53 = [(LPPointUnit *)v46 _lp_CSSText];
-    v54 = [v12 cssResolver];
-    v55 = [v54 localVariables];
+    _lp_CSSText2 = [(LPPointUnit *)height _lp_CSSText];
+    cssResolver2 = [generatorCopy cssResolver];
+    localVariables2 = [cssResolver2 localVariables];
     v56 = v75[2](v75, @"local", @"height");
-    [v55 setObject:v53 forKeyedSubscript:v56];
+    [localVariables2 setObject:_lp_CSSText2 forKeyedSubscript:v56];
 
-    v57 = [v77 filter];
+    filter = [styleCopy filter];
     v58 = 0.0;
-    if (v57 == 2)
+    if (filter == 2)
     {
-      [v77 darkeningAmount];
+      [styleCopy darkeningAmount];
     }
 
     v59 = v58;
@@ -128,30 +128,30 @@
       v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"brightness(%g)", (1.0 - v59)];
     }
 
-    v61 = [v12 cssResolver];
-    v62 = [v61 localVariables];
+    cssResolver3 = [generatorCopy cssResolver];
+    localVariables3 = [cssResolver3 localVariables];
     v63 = v75[2](v75, @"local", @"filter");
-    [v62 setObject:v60 forKeyedSubscript:v63];
+    [localVariables3 setObject:v60 forKeyedSubscript:v63];
 
     if (v59 != 0.0)
     {
     }
 
-    v64 = [v12 cssResolver];
+    cssResolver4 = [generatorCopy cssResolver];
     v65 = [@"lp-rich-link-" stringByAppendingString:v74];
-    v66 = [(LPHTMLComponent *)v15 element];
-    [v64 addStyle:v65 toElement:v66 inComponent:v15];
+    element4 = [(LPHTMLComponent *)v15 element];
+    [cssResolver4 addStyle:v65 toElement:element4 inComponent:v15];
 
-    v67 = [(LPHTMLComponent *)v15 element];
-    v68 = [(LPPointUnit *)v45 _lp_HTMLAttributeText];
-    [v67 setAttribute:@"width" value:v68];
+    element5 = [(LPHTMLComponent *)v15 element];
+    _lp_HTMLAttributeText = [(LPPointUnit *)width _lp_HTMLAttributeText];
+    [element5 setAttribute:@"width" value:_lp_HTMLAttributeText];
 
-    v69 = [(LPHTMLComponent *)v15 element];
-    v70 = [(LPPointUnit *)v46 _lp_HTMLAttributeText];
-    [v69 setAttribute:@"height" value:v70];
+    element6 = [(LPHTMLComponent *)v15 element];
+    _lp_HTMLAttributeText2 = [(LPPointUnit *)height _lp_HTMLAttributeText];
+    [element6 setAttribute:@"height" value:_lp_HTMLAttributeText2];
 
-    v71 = [(LPHTMLComponent *)v15 element];
-    [v71 setAttribute:@"draggable" value:@"false"];
+    element7 = [(LPHTMLComponent *)v15 element];
+    [element7 setAttribute:@"draggable" value:@"false"];
 
     v72 = v15;
   }
@@ -177,7 +177,7 @@ id __79__LPEmailCompatibleHTMLImageComponent_initWithImage_style_themePath_gener
   return v7;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v8[0] = @"width";

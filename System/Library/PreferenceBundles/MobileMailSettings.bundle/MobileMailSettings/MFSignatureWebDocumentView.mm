@@ -1,14 +1,14 @@
 @interface MFSignatureWebDocumentView
 + (id)standardTextViewPreferences;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 @end
 
 @implementation MFSignatureWebDocumentView
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("paste:" == a3)
+  senderCopy = sender;
+  if ("paste:" == action)
   {
     v7 = +[UIPasteboard generalPasteboard];
     LODWORD(self) = [v7 hasImages] ^ 1;
@@ -18,7 +18,7 @@
   {
     v9.receiver = self;
     v9.super_class = MFSignatureWebDocumentView;
-    LOBYTE(self) = [(MFSignatureWebDocumentView *)&v9 canPerformAction:a3 withSender:v6];
+    LOBYTE(self) = [(MFSignatureWebDocumentView *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return self;

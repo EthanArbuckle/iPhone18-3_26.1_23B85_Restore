@@ -1,14 +1,14 @@
 @interface HUTimerTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation HUTimerTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUTimerTableViewCell" hasInstanceMethod:@"timerNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUTimerTableViewCell" hasInstanceMethod:@"timerTimeLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUTimerTableViewCell" hasInstanceMethod:@"timerNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUTimerTableViewCell" hasInstanceMethod:@"timerTimeLabel" withFullSignature:{"@", 0}];
 }
 
 @end

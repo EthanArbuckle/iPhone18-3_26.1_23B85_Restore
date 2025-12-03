@@ -1,5 +1,5 @@
 @interface PersonCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,20 +7,20 @@
 
 @implementation PersonCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.PersonCell" hasInstanceMethod:@"personName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.PersonCell" isKindOfClass:@"MusicApplication.HorizontalLockupCollectionViewCell"];
-  [v3 validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasProperty:@"accessoryView" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.PersonCell" hasInstanceMethod:@"personName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.PersonCell" isKindOfClass:@"MusicApplication.HorizontalLockupCollectionViewCell"];
+  [validationsCopy validateClass:@"MusicApplication.HorizontalLockupCollectionViewCell" hasProperty:@"accessoryView" withType:"@"];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PersonCellAccessibility *)self safeValueForKey:@"accessoryView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -44,17 +44,17 @@
     AXPerformSafeBlock();
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 
-    v5 = 1;
+    accessibilityActivate = 1;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PersonCellAccessibility;
-    v5 = [(PersonCellAccessibility *)&v7 accessibilityActivate];
+    accessibilityActivate = [(PersonCellAccessibility *)&v7 accessibilityActivate];
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
 @end

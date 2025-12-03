@@ -1,23 +1,23 @@
 @interface MPMediaQuerySectionInfo
-- (MPMediaQuerySectionInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (MPMediaQuerySectionInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (unint64_t)indexOfSectionForSectionIndexTitleAtIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSectionIndexTitles:(id)a3;
+- (unint64_t)indexOfSectionForSectionIndexTitleAtIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSectionIndexTitles:(id)titles;
 @end
 
 @implementation MPMediaQuerySectionInfo
 
 - (unint64_t)count
 {
-  v2 = [(NSArray *)self->_sections lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSArray *)self->_sections lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = [v2 range];
-    v6 = v4 + v5;
+    range = [lastObject range];
+    v6 = range + v5;
   }
 
   else
@@ -28,7 +28,7 @@
   return v6;
 }
 
-- (unint64_t)indexOfSectionForSectionIndexTitleAtIndex:(unint64_t)a3
+- (unint64_t)indexOfSectionForSectionIndexTitleAtIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -36,7 +36,7 @@
   v13 = 0x7FFFFFFFFFFFFFFFLL;
   v5 = [(NSArray *)self->_sectionIndexTitles count]- 1;
   sections = self->_sections;
-  if (v5 == a3)
+  if (v5 == index)
   {
     v7 = [(NSArray *)sections count]- 1;
     v11[3] = v7;
@@ -49,7 +49,7 @@
     v9[2] = __69__MPMediaQuerySectionInfo_indexOfSectionForSectionIndexTitleAtIndex___block_invoke;
     v9[3] = &unk_1E7679EB8;
     v9[4] = &v10;
-    v9[5] = a3;
+    v9[5] = index;
     [(NSArray *)sections enumerateObjectsUsingBlock:v9];
     v7 = v11[3];
   }
@@ -81,7 +81,7 @@ unint64_t __69__MPMediaQuerySectionInfo_indexOfSectionForSectionIndexTitleAtInde
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPMediaQueryMutableSectionInfo);
   v5 = [(NSArray *)self->_sections mutableCopy];
@@ -95,26 +95,26 @@ unint64_t __69__MPMediaQuerySectionInfo_indexOfSectionForSectionIndexTitleAtInde
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeObject:self->_sections forKey:@"MPSections"];
-    [v4 encodeObject:self->_sectionIndexTitles forKey:@"MPSectionIndexTitles"];
+    [coderCopy encodeObject:self->_sections forKey:@"MPSections"];
+    [coderCopy encodeObject:self->_sectionIndexTitles forKey:@"MPSectionIndexTitles"];
   }
 }
 
-- (MPMediaQuerySectionInfo)initWithCoder:(id)a3
+- (MPMediaQuerySectionInfo)initWithCoder:(id)coder
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"MPSections"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"MPSections"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -173,7 +173,7 @@ LABEL_11:
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"MPSectionIndexTitles"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"MPSectionIndexTitles"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -229,7 +229,7 @@ LABEL_25:
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPMediaQuerySectionInfo);
   v5 = [(NSArray *)self->_sections copy];
@@ -243,25 +243,25 @@ LABEL_25:
   return v4;
 }
 
-- (void)setSectionIndexTitles:(id)a3
+- (void)setSectionIndexTitles:(id)titles
 {
-  v11 = a3;
-  v4 = [v11 copy];
+  titlesCopy = titles;
+  v4 = [titlesCopy copy];
   sectionIndexTitles = self->_sectionIndexTitles;
   self->_sectionIndexTitles = v4;
 
-  v6 = [(NSArray *)self->_sections lastObject];
-  v7 = [v6 sectionIndexTitleIndex];
-  if (v7 == [v11 count] - 1 && (objc_msgSend(v6, "range"), v8))
+  lastObject = [(NSArray *)self->_sections lastObject];
+  sectionIndexTitleIndex = [lastObject sectionIndexTitleIndex];
+  if (sectionIndexTitleIndex == [titlesCopy count] - 1 && (objc_msgSend(lastObject, "range"), v8))
   {
     self->_hasUnknownSection = 1;
-    v9 = [v11 copy];
+    v9 = [titlesCopy copy];
   }
 
   else
   {
     self->_hasUnknownSection = 0;
-    v9 = [v11 subarrayWithRange:{0, objc_msgSend(v11, "count") - 1}];
+    v9 = [titlesCopy subarrayWithRange:{0, objc_msgSend(titlesCopy, "count") - 1}];
   }
 
   v10 = self->_sectionIndexTitles;

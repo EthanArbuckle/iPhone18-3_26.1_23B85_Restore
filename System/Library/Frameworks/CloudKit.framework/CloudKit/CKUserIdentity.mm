@@ -1,20 +1,20 @@
 @interface CKUserIdentity
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToUserIdentity:(id)a3;
-- (BOOL)isEquivalentToUserIdentityOrPublicKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToUserIdentity:(id)identity;
+- (BOOL)isEquivalentToUserIdentityOrPublicKey:(id)key;
 - (BOOL)isOutOfNetwork;
-- (CKUserIdentity)initWithCoder:(id)a3;
-- (CKUserIdentity)initWithUserRecordID:(id)a3;
+- (CKUserIdentity)initWithCoder:(id)coder;
+- (CKUserIdentity)initWithUserRecordID:(id)d;
 - (CKUserIdentityLookupInfo)lookupInfo;
 - (NSArray)contactIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContactIdentifiers:(id)a3;
-- (void)setLookupInfo:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContactIdentifiers:(id)identifiers;
+- (void)setLookupInfo:(id)info;
 @end
 
 @implementation CKUserIdentity
@@ -46,13 +46,13 @@
   return v3;
 }
 
-- (CKUserIdentity)initWithUserRecordID:(id)a3
+- (CKUserIdentity)initWithUserRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (inited)
   {
-    v10 = objc_msgSend_copy(v4, v7, v8);
+    v10 = objc_msgSend_copy(dCopy, v7, v8);
     userRecordID = inited->_userRecordID;
     inited->_userRecordID = v10;
 
@@ -64,37 +64,37 @@
 
 - (CKUserIdentityLookupInfo)lookupInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lookupInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lookupInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLookupInfo:(id)a3
+- (void)setLookupInfo:(id)info
 {
-  v18 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v9 = objc_msgSend_userRecordID(v18, v5, v6);
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_userRecordID(infoCopy, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_userRecordID(v4, v7, v8);
+    v10 = objc_msgSend_userRecordID(selfCopy, v7, v8);
 
     if (!v10)
     {
-      v11 = objc_msgSend_userRecordID(v18, v7, v8);
+      v11 = objc_msgSend_userRecordID(infoCopy, v7, v8);
       v14 = objc_msgSend_copy(v11, v12, v13);
-      objc_msgSend_setUserRecordID_(v4, v15, v14);
+      objc_msgSend_setUserRecordID_(selfCopy, v15, v14);
     }
   }
 
-  v16 = objc_msgSend_copy(v18, v7, v8);
-  lookupInfo = v4->_lookupInfo;
-  v4->_lookupInfo = v16;
+  v16 = objc_msgSend_copy(infoCopy, v7, v8);
+  lookupInfo = selfCopy->_lookupInfo;
+  selfCopy->_lookupInfo = v16;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isOutOfNetwork
@@ -112,39 +112,39 @@
 
 - (NSArray)contactIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  contactIdentifiers = v2->_contactIdentifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  contactIdentifiers = selfCopy->_contactIdentifiers;
   if (!contactIdentifiers)
   {
     contactIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   v4 = contactIdentifiers;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setContactIdentifiers:(id)a3
+- (void)setContactIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  contactIdentifiers = v4->_contactIdentifiers;
-  v4->_contactIdentifiers = v7;
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(identifiersCopy, v5, v6);
+  contactIdentifiers = selfCopy->_contactIdentifiers;
+  selfCopy->_contactIdentifiers = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_userRecordID(self, v6, v7);
     v11 = objc_msgSend_userRecordID(v5, v9, v10);
     if (CKObjectsAreBothNilOrEqual(v8, v11))
@@ -201,7 +201,7 @@
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_userRecordID(self, v5, v6);
@@ -258,11 +258,11 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEquivalentToUserIdentity:(id)a3
+- (BOOL)isEquivalentToUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v7 = objc_msgSend_userRecordID(self, v5, v6);
-  v10 = objc_msgSend_userRecordID(v4, v8, v9);
+  v10 = objc_msgSend_userRecordID(identityCopy, v8, v9);
   isEqual = objc_msgSend_isEqual_(v7, v11, v10);
 
   if (isEqual)
@@ -273,18 +273,18 @@
   else
   {
     v16 = objc_msgSend_lookupInfo(self, v13, v14);
-    v19 = objc_msgSend_lookupInfo(v4, v17, v18);
+    v19 = objc_msgSend_lookupInfo(identityCopy, v17, v18);
     v15 = objc_msgSend_isEqual_(v16, v20, v19);
   }
 
   return v15;
 }
 
-- (BOOL)isEquivalentToUserIdentityOrPublicKey:(id)a3
+- (BOOL)isEquivalentToUserIdentityOrPublicKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_publicSharingKey(self, v5, v6);
-  v10 = objc_msgSend_publicSharingKey(v4, v8, v9);
+  v10 = objc_msgSend_publicSharingKey(keyCopy, v8, v9);
   isEqual = objc_msgSend_isEqual_(v7, v11, v10);
 
   if (isEqual)
@@ -294,20 +294,20 @@
 
   else
   {
-    isEquivalentToUserIdentity = objc_msgSend_isEquivalentToUserIdentity_(self, v13, v4);
+    isEquivalentToUserIdentity = objc_msgSend_isEquivalentToUserIdentity_(self, v13, keyCopy);
   }
 
   return isEquivalentToUserIdentity;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v41 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_userRecordID(self, v4, v5);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v41, v7, @"userID", v6, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v7, @"userID", v6, 0);
 
   v10 = objc_msgSend_nameComponents(self, v8, v9);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v41, v11, @"nameComponents", v10, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v11, @"nameComponents", v10, 1);
 
   v14 = objc_msgSend_contactIdentifiers(self, v12, v13);
   v17 = objc_msgSend_count(v14, v15, v16);
@@ -315,95 +315,95 @@
   if (v17)
   {
     v20 = objc_msgSend_contactIdentifiers(self, v18, v19);
-    objc_msgSend_addProperty_value_shouldRedact_(v41, v21, @"contactIdentifiers", v20, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v21, @"contactIdentifiers", v20, 0);
   }
 
   v22 = objc_msgSend_lookupInfo(self, v18, v19);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v41, v23, @"lookupInfo", v22, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v23, @"lookupInfo", v22, 0);
 
   if (objc_msgSend_isCached(self, v24, v25))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v41, v26, @"cached", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v26, @"cached", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v41, v26, @"cached", @"false", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v26, @"cached", @"false", 0);
   }
 
   v29 = MEMORY[0x1E696AD98];
   v30 = objc_msgSend_publicKeyVersion(self, v27, v28);
   v32 = objc_msgSend_numberWithUnsignedInteger_(v29, v31, v30);
-  objc_msgSend_addProperty_value_shouldRedact_(v41, v33, @"publicKeyVersion", v32, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v33, @"publicKeyVersion", v32, 0);
 
   v36 = objc_msgSend_publicSharingKey(self, v34, v35);
-  objc_msgSend_addProperty_value_shouldRedact_(v41, v37, @"publicSharingKey", v36, 1);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v37, @"publicSharingKey", v36, 1);
 
   if (objc_msgSend_hasiCloudAccount(self, v38, v39))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v41, v40, @"hasiCloudAccount", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v40, @"hasiCloudAccount", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v41, v40, @"hasiCloudAccount", @"false", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v40, @"hasiCloudAccount", @"false", 0);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v45 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_userRecordID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v45, v8, v7, @"UserRecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"UserRecordID");
 
   v11 = objc_msgSend_nameComponents(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v45, v12, v11, @"NameComponents");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"NameComponents");
 
   v15 = objc_msgSend_lookupInfo(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v45, v16, v15, @"LookupInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"LookupInfo");
 
   v19 = objc_msgSend_contactIdentifiers(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v45, v20, v19, @"ContactIdentifiers");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"ContactIdentifiers");
 
   v23 = objc_msgSend_publicSharingKey(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v45, v24, v23, @"ProtectionData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"ProtectionData");
 
   v27 = objc_msgSend_outOfNetworkPrivateKey(self, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v45, v28, v27, @"OONProtectionData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"OONProtectionData");
 
   isCached = objc_msgSend_isCached(self, v29, v30);
-  objc_msgSend_encodeBool_forKey_(v45, v32, isCached, @"IsCached");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v32, isCached, @"IsCached");
   v35 = objc_msgSend_hasiCloudAccount(self, v33, v34);
-  objc_msgSend_encodeBool_forKey_(v45, v36, v35, @"HasICloudAccount");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v36, v35, @"HasICloudAccount");
   v39 = objc_msgSend_encryptedPersonalInfo(self, v37, v38);
-  objc_msgSend_encodeObject_forKey_(v45, v40, v39, @"EncryptedPersonalInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v40, v39, @"EncryptedPersonalInfo");
 
   v43 = objc_msgSend_publicKeyVersion(self, v41, v42);
-  objc_msgSend_encodeInt64_forKey_(v45, v44, v43, @"PublicKeyVersion");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v44, v43, @"PublicKeyVersion");
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKUserIdentity)initWithCoder:(id)a3
+- (CKUserIdentity)initWithCoder:(id)coder
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   inited = objc_msgSend_initInternal(self, v5, v6);
   if (inited)
   {
     v8 = objc_autoreleasePoolPush();
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v10, v9, @"UserRecordID");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v10, v9, @"UserRecordID");
     userRecordID = inited->_userRecordID;
     inited->_userRecordID = v11;
 
     v13 = objc_opt_class();
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"NameComponents");
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"NameComponents");
     nameComponents = inited->_nameComponents;
     inited->_nameComponents = v15;
 
     v17 = objc_opt_class();
-    v19 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v18, v17, @"LookupInfo");
+    v19 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v18, v17, @"LookupInfo");
     lookupInfo = inited->_lookupInfo;
     inited->_lookupInfo = v19;
 
@@ -412,28 +412,28 @@
     v46[1] = objc_opt_class();
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v22, v46, 2);
     v25 = objc_msgSend_setWithArray_(v21, v24, v23);
-    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v26, v25, @"ContactIdentifiers");
+    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v26, v25, @"ContactIdentifiers");
     contactIdentifiers = inited->_contactIdentifiers;
     inited->_contactIdentifiers = v27;
 
     v29 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v29, @"ProtectionData");
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v29, @"ProtectionData");
     publicSharingKey = inited->_publicSharingKey;
     inited->_publicSharingKey = v31;
 
     v33 = objc_opt_class();
-    v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v34, v33, @"OONProtectionData");
+    v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v34, v33, @"OONProtectionData");
     outOfNetworkPrivateKey = inited->_outOfNetworkPrivateKey;
     inited->_outOfNetworkPrivateKey = v35;
 
-    inited->_isCached = objc_msgSend_decodeBoolForKey_(v4, v37, @"IsCached");
-    inited->_hasiCloudAccount = objc_msgSend_decodeBoolForKey_(v4, v38, @"HasICloudAccount");
+    inited->_isCached = objc_msgSend_decodeBoolForKey_(coderCopy, v37, @"IsCached");
+    inited->_hasiCloudAccount = objc_msgSend_decodeBoolForKey_(coderCopy, v38, @"HasICloudAccount");
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"EncryptedPersonalInfo");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"EncryptedPersonalInfo");
     encryptedPersonalInfo = inited->_encryptedPersonalInfo;
     inited->_encryptedPersonalInfo = v41;
 
-    inited->_publicKeyVersion = objc_msgSend_decodeInt64ForKey_(v4, v43, @"PublicKeyVersion");
+    inited->_publicKeyVersion = objc_msgSend_decodeInt64ForKey_(coderCopy, v43, @"PublicKeyVersion");
     objc_autoreleasePoolPop(v8);
   }
 

@@ -1,16 +1,16 @@
 @interface IMWatchfacePreviewGenerator
-+ (BOOL)decorateWatchfacePreview:(id)a3 andWriteToURL:(id)a4 imagePxSize:(CGSize *)a5;
++ (BOOL)decorateWatchfacePreview:(id)preview andWriteToURL:(id)l imagePxSize:(CGSize *)size;
 + (BOOL)writesToDisk;
 + (Class)greenfieldUtilitiesClass;
 + (id)UTITypes;
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8;
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error;
 @end
 
 @implementation IMWatchfacePreviewGenerator
 
 + (id)UTITypes
 {
-  if ([a1 _isAvailable])
+  if ([self _isAvailable])
   {
     return &unk_1F1BFABF8;
   }
@@ -24,14 +24,14 @@
 + (BOOL)writesToDisk
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _isAvailable];
+  _isAvailable = [self _isAvailable];
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = @"NO";
-      if (v2)
+      if (_isAvailable)
       {
         v4 = @"YES";
       }
@@ -42,7 +42,7 @@
     }
   }
 
-  return v2;
+  return _isAvailable;
 }
 
 + (Class)greenfieldUtilitiesClass
@@ -57,16 +57,16 @@
   return v3;
 }
 
-+ (BOOL)decorateWatchfacePreview:(id)a3 andWriteToURL:(id)a4 imagePxSize:(CGSize *)a5
++ (BOOL)decorateWatchfacePreview:(id)preview andWriteToURL:(id)l imagePxSize:(CGSize *)size
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  *a5 = *MEMORY[0x1E695F060];
+  previewCopy = preview;
+  lCopy = l;
+  *size = *MEMORY[0x1E695F060];
   MEMORY[0x1AC570AA0](@"BlastDoorWatchfacePreview", @"BlastDoor");
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = previewCopy;
   }
 
   else
@@ -75,13 +75,13 @@
   }
 
   v10 = v9;
-  v11 = [v10 image];
-  v12 = [v11 cgImage];
+  image = [v10 image];
+  cgImage = [image cgImage];
 
-  if (v12)
+  if (cgImage)
   {
     v18 = 0;
-    v13 = [IMImageUtilities persistPreviewToDiskCache:v12 previewURL:v8 error:&v18];
+    v13 = [IMImageUtilities persistPreviewToDiskCache:cgImage previewURL:lCopy error:&v18];
     v14 = v18;
     if (!v13 && IMOSLoggingEnabled())
     {
@@ -89,7 +89,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v20 = v8;
+        v20 = lCopy;
         v21 = 2112;
         v22 = v14;
         _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, "IMWatchfacePreviewGenerator - Failed to write decorated image to URL %@: %@", buf, 0x16u);
@@ -115,19 +115,19 @@
   return v13;
 }
 
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error
 {
   v62[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
   v16 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewWatchFace", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v16, &state);
-  if (v13 && a7 && a8)
+  if (lCopy && size && error)
   {
-    v37 = a8;
+    errorCopy = error;
     if (IMOSLoggingEnabled())
     {
       v17 = OSLogHandleForIMFoundationCategory();
@@ -140,22 +140,22 @@
 
     v18 = MEMORY[0x1E695DFF8];
     v19 = IMSafeTemporaryDirectory();
-    v20 = [v19 path];
-    v62[0] = v20;
+    path = [v19 path];
+    v62[0] = path;
     v62[1] = @"ImagePreview";
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:2];
     v22 = [v18 fileURLWithPathComponents:v21];
 
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    [v23 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v24 = [MEMORY[0x1E696AEC0] stringGUID];
-    v25 = [v22 URLByAppendingPathComponent:v24 isDirectory:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v25 = [v22 URLByAppendingPathComponent:stringGUID isDirectory:0];
     v26 = [v25 URLByAppendingPathExtension:@"ktx"];
 
     if (v26)
     {
-      if ([a1 _isAvailable])
+      if ([self _isAvailable])
       {
         v52 = 0;
         v53 = &v52;
@@ -175,25 +175,25 @@
         v51 = 0;
         v27 = dispatch_group_create();
         dispatch_group_enter(v27);
-        var0 = a6->var0;
-        var2 = a6->var2;
+        var0 = constraints->var0;
+        var2 = constraints->var2;
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = sub_1A862F994;
         v39[3] = &unk_1E7826950;
         v42 = &v52;
-        v45 = a1;
+        selfCopy = self;
         v30 = v26;
         v40 = v30;
         p_buf = &buf;
         v44 = &v46;
         v31 = v27;
         v41 = v31;
-        [IMAttachmentBlastdoor generatePreview:v13 senderContext:v14 maxPxWidth:v39 scale:var0 withCompletionBlock:var2];
+        [IMAttachmentBlastdoor generatePreview:lCopy senderContext:contextCopy maxPxWidth:v39 scale:var0 withCompletionBlock:var2];
         dispatch_group_wait(v31, 0xFFFFFFFFFFFFFFFFLL);
         if (*(v53 + 24) == 1 && !v47[5])
         {
-          *a7 = *(*(&buf + 1) + 32);
+          *size = *(*(&buf + 1) + 32);
         }
 
         else
@@ -203,7 +203,7 @@
           v30 = 0;
           if (v32)
           {
-            *v37 = v32;
+            *errorCopy = v32;
           }
         }
 
@@ -229,14 +229,14 @@
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v24;
+          *(&buf + 4) = stringGUID;
           _os_log_impl(&dword_1A85E5000, v35, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL %@", &buf, 0xCu);
         }
       }
 
       [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
       v26 = 0;
-      *v37 = v34 = 0;
+      *errorCopy = v34 = 0;
     }
   }
 

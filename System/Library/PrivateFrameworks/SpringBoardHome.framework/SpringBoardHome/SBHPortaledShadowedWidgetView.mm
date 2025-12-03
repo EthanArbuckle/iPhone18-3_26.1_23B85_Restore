@@ -1,34 +1,34 @@
 @interface SBHPortaledShadowedWidgetView
 - (BOOL)hidesSourceViews;
-- (SBHPortaledShadowedWidgetView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5;
-- (void)setHidesSourceViews:(BOOL)a3;
+- (SBHPortaledShadowedWidgetView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled;
+- (void)setHidesSourceViews:(BOOL)views;
 @end
 
 @implementation SBHPortaledShadowedWidgetView
 
-- (SBHPortaledShadowedWidgetView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5
+- (SBHPortaledShadowedWidgetView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled
 {
   v6.receiver = self;
   v6.super_class = SBHPortaledShadowedWidgetView;
-  return [(SBHShadowedWidgetView *)&v6 initWithContentView:a3 shadowView:a4 perspectiveEnabled:a5];
+  return [(SBHShadowedWidgetView *)&v6 initWithContentView:view shadowView:shadowView perspectiveEnabled:enabled];
 }
 
-- (void)setHidesSourceViews:(BOOL)a3
+- (void)setHidesSourceViews:(BOOL)views
 {
-  v3 = a3;
-  v5 = [(SBHShadowedWidgetView *)self contentView];
-  [v5 setHidesSourceView:v3];
+  viewsCopy = views;
+  contentView = [(SBHShadowedWidgetView *)self contentView];
+  [contentView setHidesSourceView:viewsCopy];
 
-  v6 = [(SBHShadowedWidgetView *)self shadowView];
-  [v6 setHidesSourceView:v3];
+  shadowView = [(SBHShadowedWidgetView *)self shadowView];
+  [shadowView setHidesSourceView:viewsCopy];
 }
 
 - (BOOL)hidesSourceViews
 {
-  v2 = [(SBHShadowedWidgetView *)self contentView];
-  v3 = [v2 hidesSourceView];
+  contentView = [(SBHShadowedWidgetView *)self contentView];
+  hidesSourceView = [contentView hidesSourceView];
 
-  return v3;
+  return hidesSourceView;
 }
 
 @end

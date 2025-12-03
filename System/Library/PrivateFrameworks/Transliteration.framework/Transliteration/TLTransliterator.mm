@@ -1,55 +1,55 @@
 @interface TLTransliterator
-- (TLTransliterator)initWithLocale:(id)a3;
-- (TLTransliterator)initWithParameters:(id)a3;
-- (id)generateCandidatesForInputWord:(id)a3 candidateContext:(id)a4 maxCandidatesCount:(int64_t)a5;
-- (id)generateCandidatesForInputWord:(id)a3 candidateContextStrings:(id)a4 maxCandidatesCount:(int64_t)a5;
+- (TLTransliterator)initWithLocale:(id)locale;
+- (TLTransliterator)initWithParameters:(id)parameters;
+- (id)generateCandidatesForInputWord:(id)word candidateContext:(id)context maxCandidatesCount:(int64_t)count;
+- (id)generateCandidatesForInputWord:(id)word candidateContextStrings:(id)strings maxCandidatesCount:(int64_t)count;
 @end
 
 @implementation TLTransliterator
 
-- (TLTransliterator)initWithLocale:(id)a3
+- (TLTransliterator)initWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [[TLTransliteratorInitParameters alloc] initWithLocale:v4];
+  localeCopy = locale;
+  v5 = [[TLTransliteratorInitParameters alloc] initWithLocale:localeCopy];
   v6 = [(TLTransliterator *)self initWithParameters:v5];
 
   return v6;
 }
 
-- (TLTransliterator)initWithParameters:(id)a3
+- (TLTransliterator)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v6.receiver = self;
   v6.super_class = TLTransliterator;
   if ([(TLTransliterator *)&v6 init])
   {
-    [v4 locale];
+    [parametersCopy locale];
     objc_claimAutoreleasedReturnValue();
-    [v4 modelURL];
+    [parametersCopy modelURL];
     objc_claimAutoreleasedReturnValue();
-    [v4 useLanguageModel];
-    [v4 useSeq2SeqModel];
+    [parametersCopy useLanguageModel];
+    [parametersCopy useSeq2SeqModel];
     operator new();
   }
 
   return 0;
 }
 
-- (id)generateCandidatesForInputWord:(id)a3 candidateContext:(id)a4 maxCandidatesCount:(int64_t)a5
+- (id)generateCandidatesForInputWord:(id)word candidateContext:(id)context maxCandidatesCount:(int64_t)count
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  wordCopy = word;
+  contextCopy = context;
   v10 = objc_alloc(MEMORY[0x277CBEB18]);
-  v11 = [v9 candidates];
-  v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  candidates = [contextCopy candidates];
+  v12 = [v10 initWithCapacity:{objc_msgSend(candidates, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [v9 candidates];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  candidates2 = [contextCopy candidates];
+  v14 = [candidates2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = *v22;
@@ -59,30 +59,30 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(candidates2);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * i) transliteratedWord];
-        [v12 addObject:v17];
+        transliteratedWord = [*(*(&v21 + 1) + 8 * i) transliteratedWord];
+        [v12 addObject:transliteratedWord];
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [candidates2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(TLTransliterator *)self generateCandidatesForInputWord:v8 candidateContextStrings:v12 maxCandidatesCount:a5];
+  v18 = [(TLTransliterator *)self generateCandidatesForInputWord:wordCopy candidateContextStrings:v12 maxCandidatesCount:count];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (id)generateCandidatesForInputWord:(id)a3 candidateContextStrings:(id)a4 maxCandidatesCount:(int64_t)a5
+- (id)generateCandidatesForInputWord:(id)word candidateContextStrings:(id)strings maxCandidatesCount:(int64_t)count
 {
   v43 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  wordCopy = word;
   v38 = 0;
   v39 = 0;
   v40 = 0;
@@ -90,7 +90,7 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = a4;
+  obj = strings;
   v6 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v6)
   {
@@ -179,20 +179,20 @@
   }
 
   ptr = self->_compositeTransliterator.__ptr_;
-  v21 = v30;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v30 UTF8String]);
-  TLCompositeTransliterator::getTransliterationCandidates(ptr, &v38, __p, a5, &v41);
+  v21 = wordCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [wordCopy UTF8String]);
+  TLCompositeTransliterator::getTransliterationCandidates(ptr, &v38, __p, count, &v41);
   if (SHIBYTE(v33) < 0)
   {
     operator delete(__p[0]);
   }
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   first = v41.__first_;
   for (j = v41.__begin_; first != j; first = (first + 80))
   {
     v25 = [TLTransliteratorCandidate createWithCompositeTransliteratorCandidate:first];
-    [v22 addObject:v25];
+    [array addObject:v25];
   }
 
   __p[0] = &v41;
@@ -202,7 +202,7 @@
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array;
 }
 
 @end

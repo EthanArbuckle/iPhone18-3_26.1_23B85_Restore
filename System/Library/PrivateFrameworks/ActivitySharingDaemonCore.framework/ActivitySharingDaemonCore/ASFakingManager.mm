@@ -4,65 +4,65 @@
 - (ASCloudKitManager)cloudKitManager;
 - (ASCompetitionManager)competitionManager;
 - (ASContactsManager)contactsManager;
-- (ASFakingManager)initWithDatabaseClient:(id)a3;
+- (ASFakingManager)initWithDatabaseClient:(id)client;
 - (_HKFitnessFriendAchievement)fakeFriendAchievement;
 - (_HKFitnessFriendWorkout)fakeGuidedRunWorkout;
 - (_HKFitnessFriendWorkout)fakeGuidedWalkWorkout;
 - (_HKFitnessFriendWorkout)fakeVideoWorkout;
-- (id)_contactWithFakeCompetitionStatus:(int64_t)a3;
+- (id)_contactWithFakeCompetitionStatus:(int64_t)status;
 - (id)_fakeCompetitionHistory;
-- (id)_fakeCompetitionWithStartDate:(id)a3 opponentScores:(id)a4 scores:(id)a5;
-- (id)_fakeSnapshotWithCompleteRings:(BOOL)a3;
-- (id)fakeCompetitionWithStartDate:(id)a3 winningParticipant:(int64_t)a4;
-- (id)fakeFriendWithCompetitionStatus:(int64_t)a3 competition:(id)a4;
-- (id)fakeWorkoutWithSeymourCatalogWorkoutIdentifier:(id)a3 seymourMediaType:(id)a4;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)a3;
+- (id)_fakeCompetitionWithStartDate:(id)date opponentScores:(id)scores scores:(id)a5;
+- (id)_fakeSnapshotWithCompleteRings:(BOOL)rings;
+- (id)fakeCompetitionWithStartDate:(id)date winningParticipant:(int64_t)participant;
+- (id)fakeFriendWithCompetitionStatus:(int64_t)status competition:(id)competition;
+- (id)fakeWorkoutWithSeymourCatalogWorkoutIdentifier:(id)identifier seymourMediaType:(id)type;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)completion;
 @end
 
 @implementation ASFakingManager
 
-- (ASFakingManager)initWithDatabaseClient:(id)a3
+- (ASFakingManager)initWithDatabaseClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = ASFakingManager;
   v6 = [(ASFakingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseClient, a3);
+    objc_storeStrong(&v6->_databaseClient, client);
   }
 
   return v7;
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 activityDataManager];
-  [(ASFakingManager *)self setActivityDataManager:v5];
+  readyCopy = ready;
+  activityDataManager = [readyCopy activityDataManager];
+  [(ASFakingManager *)self setActivityDataManager:activityDataManager];
 
-  v6 = [v4 cloudKitManager];
-  [(ASFakingManager *)self setCloudKitManager:v6];
+  cloudKitManager = [readyCopy cloudKitManager];
+  [(ASFakingManager *)self setCloudKitManager:cloudKitManager];
 
-  v7 = [v4 competitionManager];
-  [(ASFakingManager *)self setCompetitionManager:v7];
+  competitionManager = [readyCopy competitionManager];
+  [(ASFakingManager *)self setCompetitionManager:competitionManager];
 
-  v8 = [v4 contactsManager];
+  contactsManager = [readyCopy contactsManager];
 
-  [(ASFakingManager *)self setContactsManager:v8];
+  [(ASFakingManager *)self setContactsManager:contactsManager];
 }
 
-- (id)fakeFriendWithCompetitionStatus:(int64_t)a3 competition:(id)a4
+- (id)fakeFriendWithCompetitionStatus:(int64_t)status competition:(id)competition
 {
-  v6 = a4;
-  v7 = [(ASFakingManager *)self _contactWithFakeCompetitionStatus:a3];
-  v8 = [(ASFakingManager *)self _fakeCompetitionHistory];
-  v9 = v8;
-  if (v6)
+  competitionCopy = competition;
+  v7 = [(ASFakingManager *)self _contactWithFakeCompetitionStatus:status];
+  _fakeCompetitionHistory = [(ASFakingManager *)self _fakeCompetitionHistory];
+  v9 = _fakeCompetitionHistory;
+  if (competitionCopy)
   {
-    v10 = [v8 arrayByAddingObject:v6];
+    v10 = [_fakeCompetitionHistory arrayByAddingObject:competitionCopy];
 
     v9 = v10;
   }
@@ -72,9 +72,9 @@
   return v11;
 }
 
-- (id)fakeCompetitionWithStartDate:(id)a3 winningParticipant:(int64_t)a4
+- (id)fakeCompetitionWithStartDate:(id)date winningParticipant:(int64_t)participant
 {
-  if (a4 == 1)
+  if (participant == 1)
   {
     v4 = &unk_2850F51F8;
   }
@@ -84,7 +84,7 @@
     v4 = &unk_2850F5210;
   }
 
-  if (a4)
+  if (participant)
   {
     v5 = &unk_2850F5210;
   }
@@ -94,25 +94,25 @@
     v5 = &unk_2850F51F8;
   }
 
-  return [(ASFakingManager *)self _fakeCompetitionWithStartDate:a3 opponentScores:v4 scores:v5];
+  return [(ASFakingManager *)self _fakeCompetitionWithStartDate:date opponentScores:v4 scores:v5];
 }
 
-- (id)_fakeCompetitionWithStartDate:(id)a3 opponentScores:(id)a4 scores:(id)a5
+- (id)_fakeCompetitionWithStartDate:(id)date opponentScores:(id)scores scores:(id)a5
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CE90D8];
   v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  scoresCopy = scores;
+  dateCopy = date;
   v11 = objc_alloc_init(v7);
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  [v11 setUUID:v12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [v11 setUUID:uUID];
 
-  [v11 setOpponentScores:v9];
+  [v11 setOpponentScores:scoresCopy];
   [v11 setScores:v8];
 
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
-  v14 = [v13 components:*MEMORY[0x277CCE1D0] fromDate:v10];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v14 = [currentCalendar components:*MEMORY[0x277CCE1D0] fromDate:dateCopy];
 
   [v11 setStartDateComponents:v14];
   v15 = ASCompetitionDurationDateComponentsForNewCompetitions();
@@ -120,10 +120,10 @@
 
   v16 = [MEMORY[0x277CBEB98] set];
   v17 = ASPreferredCompetitionVictoryBadgeStylesForFriend();
-  v18 = [v17 firstObject];
+  firstObject = [v17 firstObject];
 
   v19 = _ActivitySharingDefaults();
-  v20 = _LoadValueFromDefaultsWithFallback(v19, @"fakeCompetitionBadgeStyle", v18);
+  v20 = _LoadValueFromDefaultsWithFallback(v19, @"fakeCompetitionBadgeStyle", firstObject);
 
   v24[0] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
@@ -165,52 +165,52 @@
   return v5;
 }
 
-- (id)fakeWorkoutWithSeymourCatalogWorkoutIdentifier:(id)a3 seymourMediaType:(id)a4
+- (id)fakeWorkoutWithSeymourCatalogWorkoutIdentifier:(id)identifier seymourMediaType:(id)type
 {
-  v43 = a4;
-  v42 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   v5 = _ActivitySharingDefaults();
   v6 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutType", &unk_2850F5108);
-  v41 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v7 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutGoalType", &unk_2850F5120);
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
   v9 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutEnergyBurned", &unk_2850F5258);
-  v10 = [v9 integerValue];
+  integerValue3 = [v9 integerValue];
 
   v11 = MEMORY[0x277CCD7E8];
-  v12 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  v39 = [v11 quantityWithUnit:v12 doubleValue:v10];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  v39 = [v11 quantityWithUnit:kilocalorieUnit doubleValue:integerValue3];
 
   v13 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutDistance", &unk_2850F5268);
   [v13 doubleValue];
   v15 = v14;
 
   v16 = MEMORY[0x277CCD7E8];
-  v17 = [MEMORY[0x277CCDAB0] mileUnit];
-  v40 = [v16 quantityWithUnit:v17 doubleValue:v15];
+  mileUnit = [MEMORY[0x277CCDAB0] mileUnit];
+  v40 = [v16 quantityWithUnit:mileUnit doubleValue:v15];
 
   v18 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutGoal", &unk_2850F5278);
   [v18 doubleValue];
   v20 = v19;
 
-  switch(v8)
+  switch(integerValue2)
   {
     case 1:
       v21 = MEMORY[0x277CCD7E8];
-      v22 = [MEMORY[0x277CCDAB0] mileUnit];
+      mileUnit2 = [MEMORY[0x277CCDAB0] mileUnit];
       goto LABEL_7;
     case 3:
       v21 = MEMORY[0x277CCD7E8];
-      v22 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+      mileUnit2 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
       goto LABEL_7;
     case 2:
       v21 = MEMORY[0x277CCD7E8];
-      v22 = [MEMORY[0x277CCDAB0] minuteUnit];
+      mileUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
 LABEL_7:
-      v23 = v22;
-      v24 = [v21 quantityWithUnit:v22 doubleValue:v20];
+      v23 = mileUnit2;
+      v24 = [v21 quantityWithUnit:mileUnit2 doubleValue:v20];
 
       goto LABEL_9;
   }
@@ -218,18 +218,18 @@ LABEL_7:
   v24 = 0;
 LABEL_9:
   v25 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutIsIndoor", MEMORY[0x277CBEC28]);
-  v26 = [v25 BOOLValue];
+  bOOLValue = [v25 BOOLValue];
 
   v27 = _LoadValueFromDefaultsWithFallback(v5, @"fakeWorkoutDuration", &unk_2850F5288);
   [v27 doubleValue];
   v29 = v28;
 
-  v30 = [MEMORY[0x277CBEAA8] date];
-  v31 = [v30 dateByAddingTimeInterval:-v29];
+  date = [MEMORY[0x277CBEAA8] date];
+  v31 = [date dateByAddingTimeInterval:-v29];
   v32 = _FriendUUIDFromDefaults(v5);
-  BYTE1(v38) = v26;
+  BYTE1(v38) = bOOLValue;
   LOBYTE(v38) = 1;
-  v33 = [MEMORY[0x277CCDDD0] fitnessFriendworkoutWithActivityType:v41 friendUUID:v32 startDate:v31 endDate:v30 duration:v39 totalActiveEnergyBurned:v39 totalBasalEnergyBurned:v29 totalDistance:v40 goalType:v8 goal:v24 bundleID:@"com.apple.SessionTracker" isWatchWorkout:v38 isIndoorWorkout:0 deviceManufacturer:0 deviceModel:1 amm:v42 seymourCatalogWorkoutIdentifier:v43 seymourMediaType:?];
+  v33 = [MEMORY[0x277CCDDD0] fitnessFriendworkoutWithActivityType:integerValue friendUUID:v32 startDate:v31 endDate:date duration:v39 totalActiveEnergyBurned:v39 totalBasalEnergyBurned:v29 totalDistance:v40 goalType:integerValue2 goal:v24 bundleID:@"com.apple.SessionTracker" isWatchWorkout:v38 isIndoorWorkout:0 deviceManufacturer:0 deviceModel:1 amm:identifierCopy seymourCatalogWorkoutIdentifier:typeCopy seymourMediaType:?];
 
   if ([MEMORY[0x277CCDD30] isAppleInternalInstall])
   {
@@ -256,8 +256,8 @@ LABEL_9:
   v4 = _LoadValueFromDefaultsWithFallback(v2, @"fakeAchievementValue", &unk_2850F5298);
   v5 = _FriendUUIDFromDefaults(v2);
   v6 = MEMORY[0x277CCDDC0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 achievementWithTemplateUniqueName:v3 completedDate:v7 value:v4 friendUUID:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 achievementWithTemplateUniqueName:v3 completedDate:date value:v4 friendUUID:v5];
 
   return v8;
 }
@@ -272,9 +272,9 @@ LABEL_9:
     v5 = [MEMORY[0x277CBEB98] set];
     v6 = ASPreferredCompetitionVictoryBadgeStylesForFriend();
 
-    v7 = [v6 firstObject];
-    [v7 unsignedIntValue];
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    firstObject = [v6 firstObject];
+    [firstObject unsignedIntValue];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v9 = ASEphemeralCompetitionVictoryAchievementForStyle();
   }
 
@@ -292,7 +292,7 @@ LABEL_9:
     v9 = [v11 hk_firstObjectPassingTest:&v16];
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v14 = ASEphemeralEarnedAchievement();
 
   return v14;
@@ -307,20 +307,20 @@ uint64_t __34__ASFakingManager_fakeAchievement__block_invoke(uint64_t a1, void *
   return v5;
 }
 
-- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)a3
+- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASFakingManager *)self fakeSnapshot];
-  v26[0] = v5;
+  completionCopy = completion;
+  fakeSnapshot = [(ASFakingManager *)self fakeSnapshot];
+  v26[0] = fakeSnapshot;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
 
-  v7 = [(ASFakingManager *)self fakeFriendAchievement];
-  v25 = v7;
+  fakeFriendAchievement = [(ASFakingManager *)self fakeFriendAchievement];
+  v25 = fakeFriendAchievement;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
 
-  v9 = [(ASFakingManager *)self fakeWorkout];
-  v24 = v9;
+  fakeWorkout = [(ASFakingManager *)self fakeWorkout];
+  v24 = fakeWorkout;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
 
   v11 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
@@ -328,8 +328,8 @@ uint64_t __34__ASFakingManager_fakeAchievement__block_invoke(uint64_t a1, void *
 
   v13 = [v12 arrayByAddingObjectsFromArray:v10];
 
-  v14 = [(ASFakingManager *)self activityDataManager];
-  v15 = [v14 recordsFromActivityDataCodables:v13];
+  activityDataManager = [(ASFakingManager *)self activityDataManager];
+  v15 = [activityDataManager recordsFromActivityDataCodables:v13];
 
   ASLoggingInitialize();
   v16 = *MEMORY[0x277CE8FC8];
@@ -339,16 +339,16 @@ uint64_t __34__ASFakingManager_fakeAchievement__block_invoke(uint64_t a1, void *
     _os_log_impl(&dword_23E5E3000, v16, OS_LOG_TYPE_DEFAULT, "FakingManager saving activity records", buf, 2u);
   }
 
-  v17 = [(ASFakingManager *)self cloudKitManager];
+  cloudKitManager = [(ASFakingManager *)self cloudKitManager];
   v18 = ASCloudKitGroupUserActionExplicit();
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__ASFakingManager_pushFakeActivityDataToAllFriendsWithCompletion___block_invoke;
   v21[3] = &unk_278C4DB48;
   v21[4] = self;
-  v22 = v4;
-  v19 = v4;
-  [v17 forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:v15 recordIDsToDelete:0 priority:2 activity:0 group:v18 completion:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [cloudKitManager forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:v15 recordIDsToDelete:0 priority:2 activity:0 group:v18 completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -400,7 +400,7 @@ void __66__ASFakingManager_pushFakeActivityDataToAllFriendsWithCompletion___bloc
   }
 }
 
-- (id)_contactWithFakeCompetitionStatus:(int64_t)a3
+- (id)_contactWithFakeCompetitionStatus:(int64_t)status
 {
   v4 = objc_opt_new();
   v5 = _ActivitySharingDefaults();
@@ -416,9 +416,9 @@ void __66__ASFakingManager_pushFakeActivityDataToAllFriendsWithCompletion___bloc
   [v7 insertEventWithType:103];
   v10 = 105;
   v11 = 10;
-  if (a3 != 1)
+  if (status != 1)
   {
-    if (a3 == 2)
+    if (status == 2)
     {
       v13 = 11;
       v12 = 106;
@@ -426,7 +426,7 @@ void __66__ASFakingManager_pushFakeActivityDataToAllFriendsWithCompletion___bloc
 
     else
     {
-      if (a3 != 3)
+      if (status != 3)
       {
         goto LABEL_8;
       }
@@ -486,7 +486,7 @@ LABEL_8:
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__12;
   v16[4] = __Block_byref_object_dispose__12;
-  v17 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__ASFakingManager__fakeCompetitionHistory__block_invoke;
@@ -557,11 +557,11 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)_fakeSnapshotWithCompleteRings:(BOOL)a3
+- (id)_fakeSnapshotWithCompleteRings:(BOOL)rings
 {
-  v3 = a3;
+  ringsCopy = rings;
   v4 = _ActivitySharingDefaults();
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = ASCacheIndexForLocalDate();
 
   v7 = objc_alloc_init(MEMORY[0x277CCCFB0]);
@@ -593,9 +593,9 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
 
   v24 = arc4random_uniform(v23);
   v25 = _LoadValueFromDefaultsWithFallback(v4, @"fakeSnapshotMoveMinuteEnabled", MEMORY[0x277CBEC28]);
-  v26 = [v25 BOOLValue];
+  bOOLValue = [v25 BOOLValue];
 
-  if (v3)
+  if (ringsCopy)
   {
     v27 = v12;
   }
@@ -608,7 +608,7 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
   ASLoggingInitialize();
   v28 = *MEMORY[0x277CE8FE8];
   v29 = os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT);
-  if (v26)
+  if (bOOLValue)
   {
     if (v29)
     {
@@ -618,13 +618,13 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
 
     [v7 setActivityMoveMode:2];
     v30 = MEMORY[0x277CCD7E8];
-    v31 = [MEMORY[0x277CCDAB0] minuteUnit];
-    v32 = [v30 quantityWithUnit:v31 doubleValue:v24];
+    minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+    v32 = [v30 quantityWithUnit:minuteUnit doubleValue:v24];
     [v7 setAppleMoveTime:v32];
 
     v33 = MEMORY[0x277CCD7E8];
-    v34 = [MEMORY[0x277CCDAB0] minuteUnit];
-    v35 = [v33 quantityWithUnit:v34 doubleValue:v23];
+    minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+    v35 = [v33 quantityWithUnit:minuteUnit2 doubleValue:v23];
     [v7 setAppleMoveTimeGoal:v35];
 
     v36 = 0.0;
@@ -644,17 +644,17 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
   }
 
   v37 = MEMORY[0x277CCD7E8];
-  v38 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  v39 = [v37 quantityWithUnit:v38 doubleValue:v36];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  v39 = [v37 quantityWithUnit:kilocalorieUnit doubleValue:v36];
   [v7 setActiveEnergyBurned:v39];
 
   v40 = MEMORY[0x277CCD7E8];
-  v41 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  v42 = [v40 quantityWithUnit:v41 doubleValue:v12];
+  kilocalorieUnit2 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  v42 = [v40 quantityWithUnit:kilocalorieUnit2 doubleValue:v12];
   [v7 setActiveEnergyBurnedGoal:v42];
 
   v43 = -0.0;
-  if (v3)
+  if (ringsCopy)
   {
     v44 = v16;
   }
@@ -665,45 +665,45 @@ void __42__ASFakingManager__fakeCompetitionHistory__block_invoke(uint64_t a1, ui
   }
 
   v45 = v44 + v73;
-  if (v3)
+  if (ringsCopy)
   {
     v43 = v19;
   }
 
   v46 = v43 + v20;
   v47 = MEMORY[0x277CCD7E8];
-  v48 = [MEMORY[0x277CCDAB0] minuteUnit];
-  v49 = [v47 quantityWithUnit:v48 doubleValue:v45];
+  minuteUnit3 = [MEMORY[0x277CCDAB0] minuteUnit];
+  v49 = [v47 quantityWithUnit:minuteUnit3 doubleValue:v45];
   [v7 setAppleExerciseTime:v49];
 
   v50 = MEMORY[0x277CCD7E8];
-  v51 = [MEMORY[0x277CCDAB0] minuteUnit];
-  v52 = [v50 quantityWithUnit:v51 doubleValue:v16];
+  minuteUnit4 = [MEMORY[0x277CCDAB0] minuteUnit];
+  v52 = [v50 quantityWithUnit:minuteUnit4 doubleValue:v16];
   [v7 setAppleExerciseTimeGoal:v52];
 
   v53 = MEMORY[0x277CCD7E8];
-  v54 = [MEMORY[0x277CCDAB0] countUnit];
-  v55 = [v53 quantityWithUnit:v54 doubleValue:v46];
+  countUnit = [MEMORY[0x277CCDAB0] countUnit];
+  v55 = [v53 quantityWithUnit:countUnit doubleValue:v46];
   [v7 setAppleStandHours:v55];
 
   v56 = MEMORY[0x277CCD7E8];
-  v57 = [MEMORY[0x277CCDAB0] countUnit];
-  v58 = [v56 quantityWithUnit:v57 doubleValue:v19];
+  countUnit2 = [MEMORY[0x277CCDAB0] countUnit];
+  v58 = [v56 quantityWithUnit:countUnit2 doubleValue:v19];
   [v7 setAppleStandHoursGoal:v58];
 
   v59 = MEMORY[0x277CCD7E8];
-  v60 = [MEMORY[0x277CCDAB0] meterUnit];
-  v61 = [v59 quantityWithUnit:v60 doubleValue:arc4random_uniform(0x2710u)];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  v61 = [v59 quantityWithUnit:meterUnit doubleValue:arc4random_uniform(0x2710u)];
   [v7 setDistanceWalkingRunning:v61];
 
   v62 = MEMORY[0x277CCD7E8];
-  v63 = [MEMORY[0x277CCDAB0] countUnit];
-  v64 = [v62 quantityWithUnit:v63 doubleValue:arc4random_uniform(0x3A98u)];
+  countUnit3 = [MEMORY[0x277CCDAB0] countUnit];
+  v64 = [v62 quantityWithUnit:countUnit3 doubleValue:arc4random_uniform(0x3A98u)];
   [v7 setStepCount:v64];
 
   v65 = MEMORY[0x277CCD7E8];
-  v66 = [MEMORY[0x277CCDAB0] countUnit];
-  v67 = [v65 quantityWithUnit:v66 doubleValue:arc4random_uniform(0xBB8u)];
+  countUnit4 = [MEMORY[0x277CCDAB0] countUnit];
+  v67 = [v65 quantityWithUnit:countUnit4 doubleValue:arc4random_uniform(0xBB8u)];
   [v7 _setPushCount:v67];
 
   [v7 _setWheelchairUse:1];

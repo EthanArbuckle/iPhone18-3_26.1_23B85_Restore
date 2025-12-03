@@ -1,6 +1,6 @@
 @interface FundingSourcesModel
 - (void)dealloc;
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4;
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier;
 @end
 
 @implementation FundingSourcesModel
@@ -15,7 +15,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5.receiver = self;
@@ -23,18 +23,18 @@
   [(FundingSourcesModel *)&v5 dealloc];
 }
 
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (a3)
+  sourcesCopy = sources;
+  if (sources)
   {
     sub_1BD0E5E8C(0, &qword_1EBD4E090);
-    v5 = sub_1BE052744();
+    sourcesCopy = sub_1BE052744();
   }
 
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1BE052434();
+    identifier = sub_1BE052434();
     v8 = v7;
   }
 
@@ -43,8 +43,8 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_1BD648238(v5, a4, v8);
+  selfCopy = self;
+  sub_1BD648238(sourcesCopy, identifier, v8);
 }
 
 @end

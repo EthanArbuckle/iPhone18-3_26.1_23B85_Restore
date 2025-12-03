@@ -1,55 +1,55 @@
 @interface SBHomePeekWindowingModifier
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)_perspectiveAngleForPeekingEdge:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (CGRect)_frameForContinuousExposePeekingDisplayItem:(id)a3 inAppLayout:(id)a4 bounds:(CGRect)a5;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBHomePeekWindowingModifier)initWithPeekingAppLayout:(id)a3 configuration:(int64_t)a4;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemShadow)shadowForItem:(id)a3;
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3;
-- (double)opacityForItem:(id)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)_perspectiveAngleForPeekingEdge:(unint64_t)edge;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (CGRect)_frameForContinuousExposePeekingDisplayItem:(id)item inAppLayout:(id)layout bounds:(CGRect)bounds;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBHomePeekWindowingModifier)initWithPeekingAppLayout:(id)layout configuration:(int64_t)configuration;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemShadow)shadowForItem:(id)item;
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item;
+- (double)opacityForItem:(id)item;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)keyboardSuppressionMode;
 - (id)topMostItems;
 - (id)visibleItems;
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 inAppLayout:(id)a4 bounds:(CGRect)a5;
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 peekingOnEdge:(unint64_t)a4 autoLayoutSpace:(id)a5 zOrderedItems:(id)a6 bounds:(CGRect)a7;
-- (unint64_t)_peekEdgeForDisplayItem:(id)a3 withZOrderedItems:(id)a4 autoLayoutSpace:(id)a5 bounds:(CGRect)a6;
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item inAppLayout:(id)layout bounds:(CGRect)bounds;
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item peekingOnEdge:(unint64_t)edge autoLayoutSpace:(id)space zOrderedItems:(id)items bounds:(CGRect)bounds;
+- (unint64_t)_peekEdgeForDisplayItem:(id)item withZOrderedItems:(id)items autoLayoutSpace:(id)space bounds:(CGRect)bounds;
 - (unint64_t)transactionCompletionOptions;
-- (void)_configureAndAddDismissalTransitionRequest:(id)a3;
+- (void)_configureAndAddDismissalTransitionRequest:(id)request;
 - (void)_updateForcePeekingEdgeIfNeeded;
-- (void)appLayoutTapped:(id)a3;
+- (void)appLayoutTapped:(id)tapped;
 - (void)layoutViewModelsIfNeeded;
-- (void)tappedOutsideToDismiss:(id)a3;
-- (void)transitionDidUpdate:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)tappedOutsideToDismiss:(id)dismiss;
+- (void)transitionDidUpdate:(id)update;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBHomePeekWindowingModifier
 
-- (SBHomePeekWindowingModifier)initWithPeekingAppLayout:(id)a3 configuration:(int64_t)a4
+- (SBHomePeekWindowingModifier)initWithPeekingAppLayout:(id)layout configuration:(int64_t)configuration
 {
-  v8 = a3;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBHomePeekWindowingModifier;
   v9 = [(SBWindowingModifier *)&v12 init];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBHomePeekWindowingModifier initWithPeekingAppLayout:a2 configuration:v9];
     }
 
-    if (!SBPeekConfigurationIsValid(a4))
+    if (!SBPeekConfigurationIsValid(configuration))
     {
       [SBHomePeekWindowingModifier initWithPeekingAppLayout:a2 configuration:v9];
     }
 
-    objc_storeStrong(&v9->_peekingAppLayout, a3);
-    v9->_configuration = a4;
+    objc_storeStrong(&v9->_peekingAppLayout, layout);
+    v9->_configuration = configuration;
     v10 = objc_opt_new();
     [(SBChainableModifier *)v9 addChildModifier:v10];
   }
@@ -70,58 +70,58 @@
   if (!self->_hasUpdatedForcePeekingEdge)
   {
     self->_hasUpdatedForcePeekingEdge = 1;
-    v4 = [(SBHomePeekWindowingModifier *)self windowManagementContext];
-    if (([v4 isAutomaticStageCreationEnabled] & 1) == 0 && objc_msgSend(v4, "restoresPreviouslyOpenWindows") && !self->_forcePeekingTrailingEdge)
+    windowManagementContext = [(SBHomePeekWindowingModifier *)self windowManagementContext];
+    if (([windowManagementContext isAutomaticStageCreationEnabled] & 1) == 0 && objc_msgSend(windowManagementContext, "restoresPreviouslyOpenWindows") && !self->_forcePeekingTrailingEdge)
     {
       self->_forcePeekingTrailingEdge = self->_configuration == 3;
     }
   }
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   [(SBWindowingModifier *)self appendResponse:v4];
 }
 
-- (void)transitionDidUpdate:(id)a3
+- (void)transitionDidUpdate:(id)update
 {
-  v7 = a3;
-  IsValid = SBPeekConfigurationIsValid([v7 fromPeekConfiguration]);
-  if (IsValid != SBPeekConfigurationIsValid([v7 toPeekConfiguration]))
+  updateCopy = update;
+  IsValid = SBPeekConfigurationIsValid([updateCopy fromPeekConfiguration]);
+  if (IsValid != SBPeekConfigurationIsValid([updateCopy toPeekConfiguration]))
   {
     v5 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
     [(SBWindowingModifier *)self appendResponse:v5];
-    v6 = -[SBRequestDismissalForHomeScreenBackgroundTapsEventResponse initWithDismissalRequested:]([SBRequestDismissalForHomeScreenBackgroundTapsEventResponse alloc], "initWithDismissalRequested:", SBPeekConfigurationIsValid([v7 toPeekConfiguration]));
+    v6 = -[SBRequestDismissalForHomeScreenBackgroundTapsEventResponse initWithDismissalRequested:]([SBRequestDismissalForHomeScreenBackgroundTapsEventResponse alloc], "initWithDismissalRequested:", SBPeekConfigurationIsValid([updateCopy toPeekConfiguration]));
     [(SBWindowingModifier *)self appendResponse:v6];
   }
 }
 
-- (void)appLayoutTapped:(id)a3
+- (void)appLayoutTapped:(id)tapped
 {
-  v6 = a3;
-  v4 = [v6 appLayout];
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v4])
+  tappedCopy = tapped;
+  appLayout = [tappedCopy appLayout];
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:appLayout])
   {
-    v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v6];
+    v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:tappedCopy];
     [(SBHomePeekWindowingModifier *)self _configureAndAddDismissalTransitionRequest:v5];
   }
 }
 
-- (void)tappedOutsideToDismiss:(id)a3
+- (void)tappedOutsideToDismiss:(id)dismiss
 {
-  v4 = [(SBHomePeekWindowingModifier *)self peekingAppLayout];
-  v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v4];
+  peekingAppLayout = [(SBHomePeekWindowingModifier *)self peekingAppLayout];
+  v5 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:peekingAppLayout];
 
   [(SBHomePeekWindowingModifier *)self _configureAndAddDismissalTransitionRequest:v5];
 }
 
-- (void)_configureAndAddDismissalTransitionRequest:(id)a3
+- (void)_configureAndAddDismissalTransitionRequest:(id)request
 {
-  v4 = a3;
-  [v4 setPeekConfiguration:1];
-  [v4 setRetainsSiri:{-[SBHomePeekWindowingModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
-  v5 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v4 gestureInitiated:0];
+  requestCopy = request;
+  [requestCopy setPeekConfiguration:1];
+  [requestCopy setRetainsSiri:{-[SBHomePeekWindowingModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
+  v5 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:requestCopy gestureInitiated:0];
 
   [(SBWindowingModifier *)self appendResponse:v5];
 }
@@ -130,8 +130,8 @@
 {
   v6.receiver = self;
   v6.super_class = SBHomePeekWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v6 visibleItems];
-  v4 = [v3 setByAddingObject:self->_peekingAppLayout];
+  visibleItems = [(SBWindowingModifier *)&v6 visibleItems];
+  v4 = [visibleItems setByAddingObject:self->_peekingAppLayout];
 
   return v4;
 }
@@ -141,17 +141,17 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObject:self->_peekingAppLayout];
   v7.receiver = self;
   v7.super_class = SBHomePeekWindowingModifier;
-  v4 = [(SBWindowingModifier *)&v7 topMostItems];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  topMostItems = [(SBWindowingModifier *)&v7 topMostItems];
+  v5 = [v3 arrayByAddingObjectsFromArray:topMostItems];
 
   return v5;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
-  v7 = [v6 appLayout];
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v7])
+  appLayout = [v6 appLayout];
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:appLayout])
   {
     [(SBHomePeekWindowingModifier *)self containerViewBounds];
     SBWindowingItemFrameMakeWithBounds(retstr, v8, v9, v10, v11);
@@ -170,24 +170,24 @@
 - (id)keyboardSuppressionMode
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(SBHomePeekWindowingModifier *)self appLayouts];
-  v4 = [v2 setWithArray:v3];
+  appLayouts = [(SBHomePeekWindowingModifier *)self appLayouts];
+  v4 = [v2 setWithArray:appLayouts];
   v5 = [SBSwitcherKeyboardSuppressionMode newSuppressionModeForSwitcherScenesFromAppLayouts:v4];
 
   return v5;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v11])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:layoutCopy])
   {
-    v12 = [v11 itemForLayoutRole:a3];
-    [(SBHomePeekWindowingModifier *)self _frameForContinuousExposePeekingDisplayItem:v12 inAppLayout:v11 bounds:x, y, width, height];
+    v12 = [layoutCopy itemForLayoutRole:role];
+    [(SBHomePeekWindowingModifier *)self _frameForContinuousExposePeekingDisplayItem:v12 inAppLayout:layoutCopy bounds:x, y, width, height];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -198,7 +198,7 @@
   {
     v29.receiver = self;
     v29.super_class = SBHomePeekWindowingModifier;
-    [(SBHomePeekWindowingModifier *)&v29 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBHomePeekWindowingModifier *)&v29 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v14 = v21;
     v16 = v22;
     v18 = v23;
@@ -216,13 +216,13 @@
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v6 = a4;
-  v7 = [v6 appLayout];
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v7])
+  appLayout = [v6 appLayout];
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:appLayout])
   {
-    [(SBHomePeekWindowingModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v7];
+    [(SBHomePeekWindowingModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:appLayout];
     [(SBHomePeekWindowingModifier *)self frameForItem:v6];
     SBRectCornerRadiiForRadius();
     SBWindowingItemCornersMake(15, retstr, v8, v9, v10, v11);
@@ -238,10 +238,10 @@
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBHomePeekWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBHomePeekWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v6])
   {
@@ -252,18 +252,18 @@
   {
     v9.receiver = self;
     v9.super_class = SBHomePeekWindowingModifier;
-    v7 = [(SBHomePeekWindowingModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBHomePeekWindowingModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (SBWindowingItemShadow)shadowForItem:(id)a3
+- (SBWindowingItemShadow)shadowForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   peekingAppLayout = self->_peekingAppLayout;
-  v6 = [v4 appLayout];
-  LODWORD(peekingAppLayout) = [(SBAppLayout *)peekingAppLayout isOrContainsAppLayout:v6];
+  appLayout = [itemCopy appLayout];
+  LODWORD(peekingAppLayout) = [(SBAppLayout *)peekingAppLayout isOrContainsAppLayout:appLayout];
 
   if (peekingAppLayout)
   {
@@ -274,7 +274,7 @@
   {
     v13.receiver = self;
     v13.super_class = SBHomePeekWindowingModifier;
-    v7 = [(SBWindowingModifier *)&v13 shadowForItem:v4];
+    v7 = [(SBWindowingModifier *)&v13 shadowForItem:itemCopy];
   }
 
   v9 = *&v7;
@@ -287,11 +287,11 @@
   return result;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
   peekingAppLayout = self->_peekingAppLayout;
-  v4 = [a3 appLayout];
-  LODWORD(peekingAppLayout) = [(SBAppLayout *)peekingAppLayout isOrContainsAppLayout:v4];
+  appLayout = [item appLayout];
+  LODWORD(peekingAppLayout) = [(SBAppLayout *)peekingAppLayout isOrContainsAppLayout:appLayout];
 
   result = 0.0;
   if (peekingAppLayout)
@@ -302,16 +302,16 @@
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v9])
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:layoutCopy])
   {
-    v10 = [v9 itemForLayoutRole:a3];
-    v11 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:v9];
-    v12 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v9];
+    v10 = [layoutCopy itemForLayoutRole:role];
+    v11 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:layoutCopy];
+    v12 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
     [(SBHomePeekWindowingModifier *)self containerViewBounds];
     [(SBHomePeekWindowingModifier *)self _perspectiveAngleForPeekingEdge:[(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v10 withZOrderedItems:v11 autoLayoutSpace:v12 bounds:?]];
     v14 = v13;
@@ -322,7 +322,7 @@
   {
     v21.receiver = self;
     v21.super_class = SBHomePeekWindowingModifier;
-    [(SBHomePeekWindowingModifier *)&v21 perspectiveAngleForLayoutRole:a3 inAppLayout:v9 withPerspectiveAngle:x, y];
+    [(SBHomePeekWindowingModifier *)&v21 perspectiveAngleForLayoutRole:role inAppLayout:layoutCopy withPerspectiveAngle:x, y];
     v14 = v17;
     v16 = v18;
   }
@@ -334,12 +334,12 @@
   return result;
 }
 
-- (CGPoint)_perspectiveAngleForPeekingEdge:(unint64_t)a3
+- (CGPoint)_perspectiveAngleForPeekingEdge:(unint64_t)edge
 {
-  v4 = [(SBHomePeekWindowingModifier *)self switcherSettings];
-  [v4 peekingAbsolutePerspectiveAngle];
+  switcherSettings = [(SBHomePeekWindowingModifier *)self switcherSettings];
+  [switcherSettings peekingAbsolutePerspectiveAngle];
 
-  if (a3 == 8 || a3 == 2)
+  if (edge == 8 || edge == 2)
   {
     BSDegreesToRadians();
     v6 = v5;
@@ -357,13 +357,13 @@
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_peekingAppLayout isOrContainsAppLayout:layoutCopy])
   {
-    v7 = [(SBHomePeekWindowingModifier *)self switcherSettings];
-    [v7 peekingCardScale];
+    switcherSettings = [(SBHomePeekWindowingModifier *)self switcherSettings];
+    [switcherSettings peekingCardScale];
     v9 = v8;
   }
 
@@ -371,14 +371,14 @@
   {
     v12.receiver = self;
     v12.super_class = SBHomePeekWindowingModifier;
-    [(SBHomePeekWindowingModifier *)&v12 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBHomePeekWindowingModifier *)&v12 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item
 {
   v6 = a4;
   if ([v6 isAppLayout] && (peekingAppLayout = self->_peekingAppLayout, objc_msgSend(v6, "appLayout"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(peekingAppLayout) = -[SBAppLayout isOrContainsAppLayout:](peekingAppLayout, "isOrContainsAppLayout:", v8), v8, peekingAppLayout))
@@ -409,12 +409,12 @@
   }
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v21.receiver = self;
   v21.super_class = SBHomePeekWindowingModifier;
-  v5 = [(SBHomePeekWindowingModifier *)&v21 adjustedAppLayoutsForAppLayouts:v4];
+  v5 = [(SBHomePeekWindowingModifier *)&v21 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   if ([v5 containsObject:self->_peekingAppLayout])
   {
     v6 = v5;
@@ -491,38 +491,38 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
   }
 }
 
-- (CGRect)_frameForContinuousExposePeekingDisplayItem:(id)a3 inAppLayout:(id)a4 bounds:(CGRect)a5
+- (CGRect)_frameForContinuousExposePeekingDisplayItem:(id)item inAppLayout:(id)layout bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v12];
-  v14 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:v12];
-  v15 = [(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v11 withZOrderedItems:v14 autoLayoutSpace:v13 bounds:x, y, width, height];
-  v16 = [v13 flexibleAutoLayoutItemForDisplayItem:v11];
-  -[SBHomePeekWindowingModifier scaleForLayoutRole:inAppLayout:](self, "scaleForLayoutRole:inAppLayout:", [v12 layoutRoleForItem:v11], v12);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  itemCopy = item;
+  layoutCopy = layout;
+  v13 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
+  v14 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:layoutCopy];
+  height = [(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:itemCopy withZOrderedItems:v14 autoLayoutSpace:v13 bounds:x, y, width, height];
+  v16 = [v13 flexibleAutoLayoutItemForDisplayItem:itemCopy];
+  -[SBHomePeekWindowingModifier scaleForLayoutRole:inAppLayout:](self, "scaleForLayoutRole:inAppLayout:", [layoutCopy layoutRoleForItem:itemCopy], layoutCopy);
   v18 = v17;
   [v16 exposePosition];
   [v16 size];
   v20 = v19;
   v44 = v21;
-  v22 = [(SBHomePeekWindowingModifier *)self switcherSettings];
-  [v22 peekInsetWidth];
+  switcherSettings = [(SBHomePeekWindowingModifier *)self switcherSettings];
+  [switcherSettings peekInsetWidth];
   v24 = v23;
 
-  if (v15 == 8 || (v25 = v24, v15 == 2))
+  if (height == 8 || (v25 = v24, height == 2))
   {
-    v26 = [(SBHomePeekWindowingModifier *)self _numberOfPeekingItemsAboveDisplayItem:v11 inAppLayout:v12 bounds:x, y, width, height];
-    v27 = [(SBHomePeekWindowingModifier *)self switcherSettings];
-    [v27 peekCascadingOffset];
-    v25 = v24 - v26 * v28;
+    height2 = [(SBHomePeekWindowingModifier *)self _numberOfPeekingItemsAboveDisplayItem:itemCopy inAppLayout:layoutCopy bounds:x, y, width, height];
+    switcherSettings2 = [(SBHomePeekWindowingModifier *)self switcherSettings];
+    [switcherSettings2 peekCascadingOffset];
+    v25 = v24 - height2 * v28;
   }
 
-  v29 = [(SBHomePeekWindowingModifier *)self switcherSettings];
-  [v29 minPeekDistance];
+  switcherSettings3 = [(SBHomePeekWindowingModifier *)self switcherSettings];
+  [switcherSettings3 minPeekDistance];
   v31 = v30;
 
   if (v25 >= v31)
@@ -540,11 +540,11 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
     v24 = v32;
   }
 
-  [(SBHomePeekWindowingModifier *)self _perspectiveAngleForPeekingEdge:v15];
+  [(SBHomePeekWindowingModifier *)self _perspectiveAngleForPeekingEdge:height];
   v34 = cos(v33);
   v35 = x + width + v34 * v20 * ((1.0 - v18) * -0.5) - v24;
   v36 = v24 + (v18 + 1.0) * (v20 * v34) * -0.5;
-  if (v15 == 2)
+  if (height == 2)
   {
     v37 = v36;
   }
@@ -568,40 +568,40 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
   return result;
 }
 
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 inAppLayout:(id)a4 bounds:(CGRect)a5
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item inAppLayout:(id)layout bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:v12];
-  v14 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v12];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  itemCopy = item;
+  layoutCopy = layout;
+  v13 = [(SBHomePeekWindowingModifier *)self zOrderedItemsInAppLayout:layoutCopy];
+  v14 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
 
-  v15 = [(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v11 withZOrderedItems:v13 autoLayoutSpace:v14 bounds:x, y, width, height];
-  if (v15 == 8 || v15 == 2)
+  height = [(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:itemCopy withZOrderedItems:v13 autoLayoutSpace:v14 bounds:x, y, width, height];
+  if (height == 8 || height == 2)
   {
-    v16 = [(SBHomePeekWindowingModifier *)self _numberOfPeekingItemsAboveDisplayItem:v11 peekingOnEdge:v15 autoLayoutSpace:v14 zOrderedItems:v13 bounds:x, y, width, height];
+    height2 = [(SBHomePeekWindowingModifier *)self _numberOfPeekingItemsAboveDisplayItem:itemCopy peekingOnEdge:height autoLayoutSpace:v14 zOrderedItems:v13 bounds:x, y, width, height];
   }
 
   else
   {
-    v16 = 0;
+    height2 = 0;
   }
 
-  return v16;
+  return height2;
 }
 
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 peekingOnEdge:(unint64_t)a4 autoLayoutSpace:(id)a5 zOrderedItems:(id)a6 bounds:(CGRect)a7
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item peekingOnEdge:(unint64_t)edge autoLayoutSpace:(id)space zOrderedItems:(id)items bounds:(CGRect)bounds
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a5;
-  v16 = a6;
-  v17 = [v16 indexOfObject:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  spaceCopy = space;
+  itemsCopy = items;
+  v17 = [itemsCopy indexOfObject:item];
   if (v17 > 0x7FFFFFFFFFFFFFFELL)
   {
     v19 = 0;
@@ -613,8 +613,8 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
     v19 = 0;
     do
     {
-      v20 = [v16 objectAtIndex:v18];
-      if ([(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v20 withZOrderedItems:v16 autoLayoutSpace:v15 bounds:x, y, width, height]== a4)
+      v20 = [itemsCopy objectAtIndex:v18];
+      if ([(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v20 withZOrderedItems:itemsCopy autoLayoutSpace:spaceCopy bounds:x, y, width, height]== edge)
       {
         ++v19;
       }
@@ -628,16 +628,16 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
   return v19;
 }
 
-- (unint64_t)_peekEdgeForDisplayItem:(id)a3 withZOrderedItems:(id)a4 autoLayoutSpace:(id)a5 bounds:(CGRect)a6
+- (unint64_t)_peekEdgeForDisplayItem:(id)item withZOrderedItems:(id)items autoLayoutSpace:(id)space bounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = v15;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  itemCopy = item;
+  itemsCopy = items;
+  spaceCopy = space;
+  v16 = spaceCopy;
   if (self->_forcePeekingTrailingEdge)
   {
     v17 = 8;
@@ -645,23 +645,23 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
 
   else
   {
-    v18 = [v15 flexibleAutoLayoutItemForDisplayItem:v13];
+    v18 = [spaceCopy flexibleAutoLayoutItemForDisplayItem:itemCopy];
     [v18 position];
     v20 = v19;
-    v21 = [v16 configuration];
-    [v21 containerBounds];
+    configuration = [v16 configuration];
+    [configuration containerBounds];
     UIRectGetCenter();
     v23 = v22;
 
     if (v20 == v23)
     {
-      v24 = [v14 indexOfObject:v13];
-      v25 = [v14 count];
+      v24 = [itemsCopy indexOfObject:itemCopy];
+      v25 = [itemsCopy count];
       v17 = 8;
       if (v24 != 0x7FFFFFFFFFFFFFFFLL && v24 != v25 - 1)
       {
-        v26 = [v14 objectAtIndex:v24 + 1];
-        if ([(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v26 withZOrderedItems:v14 autoLayoutSpace:v16 bounds:x, y, width, height]== 8)
+        v26 = [itemsCopy objectAtIndex:v24 + 1];
+        if ([(SBHomePeekWindowingModifier *)self _peekEdgeForDisplayItem:v26 withZOrderedItems:itemsCopy autoLayoutSpace:v16 bounds:x, y, width, height]== 8)
         {
           v17 = 2;
         }
@@ -675,8 +675,8 @@ void __63__SBHomePeekWindowingModifier_adjustedAppLayoutsForAppLayouts___block_i
 
     else
     {
-      v27 = [v16 configuration];
-      [v27 containerBounds];
+      configuration2 = [v16 configuration];
+      [configuration2 containerBounds];
       UIRectGetCenter();
       v29 = v28;
 

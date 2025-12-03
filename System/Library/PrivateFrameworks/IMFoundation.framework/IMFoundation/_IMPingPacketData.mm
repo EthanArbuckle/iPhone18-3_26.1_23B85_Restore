@@ -1,29 +1,29 @@
 @interface _IMPingPacketData
-- (_IMPingPacketData)initWithSequeneceNumber:(int)a3 timesent:(timeval *)a4 error:(int)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_IMPingPacketData)initWithSequeneceNumber:(int)number timesent:(timeval *)timesent error:(int)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (timeval)timeSent;
 @end
 
 @implementation _IMPingPacketData
 
-- (_IMPingPacketData)initWithSequeneceNumber:(int)a3 timesent:(timeval *)a4 error:(int)a5
+- (_IMPingPacketData)initWithSequeneceNumber:(int)number timesent:(timeval *)timesent error:(int)error
 {
   v9.receiver = self;
   v9.super_class = _IMPingPacketData;
   result = [(_IMPingPacketData *)&v9 init];
   if (result)
   {
-    result->_sequenceNumber = a3;
-    result->_timeSent = *a4;
-    result->_error = a5;
+    result->_sequenceNumber = number;
+    result->_timeSent = *timesent;
+    result->_error = error;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(_IMPingPacketData, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(_IMPingPacketData, a2, zone);
   result = objc_msgSend_init(v4, v5, v6);
   if (result)
   {

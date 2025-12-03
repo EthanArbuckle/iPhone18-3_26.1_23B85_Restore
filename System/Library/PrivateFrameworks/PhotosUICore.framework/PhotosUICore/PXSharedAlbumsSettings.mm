@@ -224,8 +224,8 @@ void __40__PXSharedAlbumsSettings_sharedInstance__block_invoke()
   v94 = [v92 rowWithTitle:@"Activity Prototype" action:v93];
   v128[0] = v94;
   v95 = MEMORY[0x1E69C65E8];
-  v96 = [MEMORY[0x1E69C6640] action];
-  v97 = [v95 rowWithTitle:@"Restore Defaults Settings" action:v96];
+  action = [MEMORY[0x1E69C6640] action];
+  v97 = [v95 rowWithTitle:@"Restore Defaults Settings" action:action];
   v128[1] = v97;
   v98 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:2];
   v99 = [v91 sectionWithRows:v98];

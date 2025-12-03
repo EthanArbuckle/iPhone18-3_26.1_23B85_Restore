@@ -1,21 +1,21 @@
 @interface SCNPhysicsVehicleWheel
 + (SCNPhysicsVehicleWheel)wheelWithNode:(SCNNode *)node;
 - (SCNPhysicsVehicleWheel)init;
-- (SCNPhysicsVehicleWheel)initWithCoder:(id)a3;
+- (SCNPhysicsVehicleWheel)initWithCoder:(id)coder;
 - (SCNVector3)axle;
 - (SCNVector3)connectionPosition;
 - (SCNVector3)steeringAxis;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setVehicle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setVehicle:(id)vehicle;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAxle:(SCNVector3)axle;
 - (void)setConnectionPosition:(SCNVector3)connectionPosition;
 - (void)setFrictionSlip:(CGFloat)frictionSlip;
-- (void)setIsFront:(BOOL)a3;
+- (void)setIsFront:(BOOL)front;
 - (void)setMaximumSuspensionForce:(CGFloat)maximumSuspensionForce;
 - (void)setMaximumSuspensionTravel:(CGFloat)maximumSuspensionTravel;
-- (void)setNode:(id)a3;
+- (void)setNode:(id)node;
 - (void)setRadius:(CGFloat)radius;
 - (void)setSteeringAxis:(SCNVector3)steeringAxis;
 - (void)setSuspensionCompression:(CGFloat)suspensionCompression;
@@ -52,24 +52,24 @@
   [(SCNPhysicsVehicleWheel *)&v3 dealloc];
 }
 
-- (void)setNode:(id)a3
+- (void)setNode:(id)node
 {
   node = self->_node;
-  if (node != a3)
+  if (node != node)
   {
 
-    self->_node = a3;
+    self->_node = node;
   }
 }
 
-- (void)_setVehicle:(id)a3
+- (void)_setVehicle:(id)vehicle
 {
-  if (a3)
+  if (vehicle)
   {
     vehicle = self->_vehicle;
     if (vehicle)
     {
-      v6 = vehicle == a3;
+      v6 = vehicle == vehicle;
     }
 
     else
@@ -87,7 +87,7 @@
     }
   }
 
-  self->_vehicle = a3;
+  self->_vehicle = vehicle;
 }
 
 + (SCNPhysicsVehicleWheel)wheelWithNode:(SCNNode *)node
@@ -121,14 +121,14 @@
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__SCNPhysicsVehicleWheel_setSuspensionStiffness___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = suspensionStiffness;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -146,14 +146,14 @@ float __49__SCNPhysicsVehicleWheel_setSuspensionStiffness___block_invoke(uint64_
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__SCNPhysicsVehicleWheel_setSuspensionCompression___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = suspensionCompression;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -171,14 +171,14 @@ float __51__SCNPhysicsVehicleWheel_setSuspensionCompression___block_invoke(uint6
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__SCNPhysicsVehicleWheel_setSuspensionDamping___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = suspensionDamping;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -196,14 +196,14 @@ float __47__SCNPhysicsVehicleWheel_setSuspensionDamping___block_invoke(uint64_t 
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__SCNPhysicsVehicleWheel_setMaximumSuspensionTravel___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = maximumSuspensionTravel;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -221,14 +221,14 @@ float __53__SCNPhysicsVehicleWheel_setMaximumSuspensionTravel___block_invoke(uin
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __42__SCNPhysicsVehicleWheel_setFrictionSlip___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = frictionSlip;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -246,14 +246,14 @@ float __42__SCNPhysicsVehicleWheel_setFrictionSlip___block_invoke(uint64_t a1)
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52__SCNPhysicsVehicleWheel_setMaximumSuspensionForce___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = maximumSuspensionForce;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -285,7 +285,7 @@ float __52__SCNPhysicsVehicleWheel_setMaximumSuspensionForce___block_invoke(uint
     z = connectionPosition.z;
     y = connectionPosition.y;
     x = connectionPosition.x;
-    v8 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__SCNPhysicsVehicleWheel_setConnectionPosition___block_invoke;
@@ -294,7 +294,7 @@ float __52__SCNPhysicsVehicleWheel_setMaximumSuspensionForce___block_invoke(uint
     v10 = x;
     v11 = y;
     v12 = z;
-    [v8 _postCommandWithBlock:v9];
+    [physicsWorld _postCommandWithBlock:v9];
   }
 }
 
@@ -327,7 +327,7 @@ float __48__SCNPhysicsVehicleWheel_setConnectionPosition___block_invoke(uint64_t
     z = steeringAxis.z;
     y = steeringAxis.y;
     x = steeringAxis.x;
-    v8 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __42__SCNPhysicsVehicleWheel_setSteeringAxis___block_invoke;
@@ -336,7 +336,7 @@ float __48__SCNPhysicsVehicleWheel_setConnectionPosition___block_invoke(uint64_t
     v10 = x;
     v11 = y;
     v12 = z;
-    [v8 _postCommandWithBlock:v9];
+    [physicsWorld _postCommandWithBlock:v9];
   }
 }
 
@@ -369,7 +369,7 @@ float __42__SCNPhysicsVehicleWheel_setSteeringAxis___block_invoke(uint64_t a1)
     z = axle.z;
     y = axle.y;
     x = axle.x;
-    v8 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __34__SCNPhysicsVehicleWheel_setAxle___block_invoke;
@@ -378,7 +378,7 @@ float __42__SCNPhysicsVehicleWheel_setSteeringAxis___block_invoke(uint64_t a1)
     v10 = x;
     v11 = y;
     v12 = z;
-    [v8 _postCommandWithBlock:v9];
+    [physicsWorld _postCommandWithBlock:v9];
   }
 }
 
@@ -397,14 +397,14 @@ float __34__SCNPhysicsVehicleWheel_setAxle___block_invoke(uint64_t a1)
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SCNPhysicsVehicleWheel_setRadius___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = radius;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -422,14 +422,14 @@ float __36__SCNPhysicsVehicleWheel_setRadius___block_invoke(uint64_t a1)
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNPhysicsVehicleWheel_setSuspensionRestLength___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = suspensionRestLength;
-    [v6 _postCommandWithBlock:v7];
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -441,20 +441,20 @@ float __50__SCNPhysicsVehicleWheel_setSuspensionRestLength___block_invoke(uint64
   return result;
 }
 
-- (void)setIsFront:(BOOL)a3
+- (void)setIsFront:(BOOL)front
 {
-  self->_isFront = a3;
+  self->_isFront = front;
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    v6 = [(SCNPhysicsVehicle *)vehicle physicsWorld];
+    physicsWorld = [(SCNPhysicsVehicle *)vehicle physicsWorld];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNPhysicsVehicleWheel_setIsFront___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
-    v8 = a3;
-    [v6 _postCommandWithBlock:v7];
+    frontCopy = front;
+    [physicsWorld _postCommandWithBlock:v7];
   }
 }
 
@@ -465,7 +465,7 @@ uint64_t __37__SCNPhysicsVehicleWheel_setIsFront___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SCNPhysicsVehicleWheel wheelWithNode:self->_node];
   [(SCNPhysicsVehicleWheel *)self suspensionStiffness];
@@ -495,38 +495,38 @@ uint64_t __37__SCNPhysicsVehicleWheel_setIsFront___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   node = self->_node;
   if (node)
   {
-    [a3 encodeObject:node forKey:@"node"];
+    [coder encodeObject:node forKey:@"node"];
   }
 
   vehicle = self->_vehicle;
   if (vehicle)
   {
-    [a3 encodeObject:vehicle forKey:@"vehicle"];
+    [coder encodeObject:vehicle forKey:@"vehicle"];
   }
 
-  [a3 encodeInt:self->_wheelIndex forKey:@"wheelIndex"];
-  [a3 encodeDouble:@"suspensionStiffness" forKey:self->_suspensionStiffness];
-  [a3 encodeDouble:@"suspensionCompression" forKey:self->_suspensionCompression];
-  [a3 encodeDouble:@"suspensionDamping" forKey:self->_suspensionDamping];
-  [a3 encodeDouble:@"maximumSuspensionTravel" forKey:self->_maximumSuspensionTravel];
-  [a3 encodeDouble:@"frictionSlip" forKey:self->_frictionSlip];
-  [a3 encodeDouble:@"maximumSuspensionForce" forKey:self->_maximumSuspensionForce];
-  SCNEncodeVector3(a3, @"connectionPosition", self->_connectionPosition.x, self->_connectionPosition.y, self->_connectionPosition.z);
-  SCNEncodeVector3(a3, @"steeringAxis", self->_steeringAxis.x, self->_steeringAxis.y, self->_steeringAxis.z);
-  SCNEncodeVector3(a3, @"axle", self->_axle.x, self->_axle.y, self->_axle.z);
-  [a3 encodeDouble:@"radius" forKey:self->_radius];
-  [a3 encodeDouble:@"suspensionRestLength" forKey:self->_suspensionRestLength];
+  [coder encodeInt:self->_wheelIndex forKey:@"wheelIndex"];
+  [coder encodeDouble:@"suspensionStiffness" forKey:self->_suspensionStiffness];
+  [coder encodeDouble:@"suspensionCompression" forKey:self->_suspensionCompression];
+  [coder encodeDouble:@"suspensionDamping" forKey:self->_suspensionDamping];
+  [coder encodeDouble:@"maximumSuspensionTravel" forKey:self->_maximumSuspensionTravel];
+  [coder encodeDouble:@"frictionSlip" forKey:self->_frictionSlip];
+  [coder encodeDouble:@"maximumSuspensionForce" forKey:self->_maximumSuspensionForce];
+  SCNEncodeVector3(coder, @"connectionPosition", self->_connectionPosition.x, self->_connectionPosition.y, self->_connectionPosition.z);
+  SCNEncodeVector3(coder, @"steeringAxis", self->_steeringAxis.x, self->_steeringAxis.y, self->_steeringAxis.z);
+  SCNEncodeVector3(coder, @"axle", self->_axle.x, self->_axle.y, self->_axle.z);
+  [coder encodeDouble:@"radius" forKey:self->_radius];
+  [coder encodeDouble:@"suspensionRestLength" forKey:self->_suspensionRestLength];
   isFront = self->_isFront;
 
-  [a3 encodeBool:isFront forKey:@"isFront"];
+  [coder encodeBool:isFront forKey:@"isFront"];
 }
 
-- (SCNPhysicsVehicleWheel)initWithCoder:(id)a3
+- (SCNPhysicsVehicleWheel)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = SCNPhysicsVehicleWheel;
@@ -535,32 +535,32 @@ uint64_t __37__SCNPhysicsVehicleWheel_setIsFront___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    -[SCNPhysicsVehicleWheel setNode:](v4, "setNode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"node"]);
-    v4->_vehicle = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"vehicle"];
-    v4->_wheelIndex = [a3 decodeIntForKey:@"wheelIndex"];
-    [a3 decodeDoubleForKey:@"suspensionStiffness"];
+    -[SCNPhysicsVehicleWheel setNode:](v4, "setNode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"node"]);
+    v4->_vehicle = [coder decodeObjectOfClass:objc_opt_class() forKey:@"vehicle"];
+    v4->_wheelIndex = [coder decodeIntForKey:@"wheelIndex"];
+    [coder decodeDoubleForKey:@"suspensionStiffness"];
     [(SCNPhysicsVehicleWheel *)v4 setSuspensionStiffness:?];
-    [a3 decodeDoubleForKey:@"suspensionCompression"];
+    [coder decodeDoubleForKey:@"suspensionCompression"];
     [(SCNPhysicsVehicleWheel *)v4 setSuspensionCompression:?];
-    [a3 decodeDoubleForKey:@"suspensionDamping"];
+    [coder decodeDoubleForKey:@"suspensionDamping"];
     [(SCNPhysicsVehicleWheel *)v4 setSuspensionDamping:?];
-    [a3 decodeDoubleForKey:@"maximumSuspensionTravel"];
+    [coder decodeDoubleForKey:@"maximumSuspensionTravel"];
     [(SCNPhysicsVehicleWheel *)v4 setMaximumSuspensionTravel:?];
-    [a3 decodeDoubleForKey:@"frictionSlip"];
+    [coder decodeDoubleForKey:@"frictionSlip"];
     [(SCNPhysicsVehicleWheel *)v4 setFrictionSlip:?];
-    [a3 decodeDoubleForKey:@"maximumSuspensionForce"];
+    [coder decodeDoubleForKey:@"maximumSuspensionForce"];
     [(SCNPhysicsVehicleWheel *)v4 setMaximumSuspensionForce:?];
-    *&v6 = SCNDecodeVector3(a3, @"connectionPosition");
+    *&v6 = SCNDecodeVector3(coder, @"connectionPosition");
     [(SCNPhysicsVehicleWheel *)v4 setConnectionPosition:v6];
-    *&v7 = SCNDecodeVector3(a3, @"steeringAxis");
+    *&v7 = SCNDecodeVector3(coder, @"steeringAxis");
     [(SCNPhysicsVehicleWheel *)v4 setSteeringAxis:v7];
-    *&v8 = SCNDecodeVector3(a3, @"axle");
+    *&v8 = SCNDecodeVector3(coder, @"axle");
     [(SCNPhysicsVehicleWheel *)v4 setAxle:v8];
-    [a3 decodeDoubleForKey:@"radius"];
+    [coder decodeDoubleForKey:@"radius"];
     [(SCNPhysicsVehicleWheel *)v4 setRadius:?];
-    [a3 decodeDoubleForKey:@"suspensionRestLength"];
+    [coder decodeDoubleForKey:@"suspensionRestLength"];
     [(SCNPhysicsVehicleWheel *)v4 setSuspensionRestLength:?];
-    -[SCNPhysicsVehicleWheel setIsFront:](v4, "setIsFront:", [a3 decodeBoolForKey:@"isFront"]);
+    -[SCNPhysicsVehicleWheel setIsFront:](v4, "setIsFront:", [coder decodeBoolForKey:@"isFront"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

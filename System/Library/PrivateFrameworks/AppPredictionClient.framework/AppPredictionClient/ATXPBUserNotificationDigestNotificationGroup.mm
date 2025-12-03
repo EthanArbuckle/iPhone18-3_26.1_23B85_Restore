@@ -1,35 +1,35 @@
 @interface ATXPBUserNotificationDigestNotificationGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)addRankedNotifications:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRankedNotifications:(id)notifications;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotificationDigestNotificationGroup
 
-- (void)addRankedNotifications:(id)a3
+- (void)addRankedNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   rankedNotifications = self->_rankedNotifications;
-  v8 = v4;
+  v8 = notificationsCopy;
   if (!rankedNotifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rankedNotifications;
     self->_rankedNotifications = v6;
 
-    v4 = v8;
+    notificationsCopy = v8;
     rankedNotifications = self->_rankedNotifications;
   }
 
-  [(NSMutableArray *)rankedNotifications addObject:v4];
+  [(NSMutableArray *)rankedNotifications addObject:notificationsCopy];
 }
 
 - (id)description
@@ -38,8 +38,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotificationDigestNotificationGroup;
   v4 = [(ATXPBUserNotificationDigestNotificationGroup *)&v8 description];
-  v5 = [(ATXPBUserNotificationDigestNotificationGroup *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotificationDigestNotificationGroup *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -47,12 +47,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   groupId = self->_groupId;
   if (groupId)
   {
-    [v3 setObject:groupId forKey:@"groupId"];
+    [dictionary setObject:groupId forKey:@"groupId"];
   }
 
   title = self->_title;
@@ -101,8 +101,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -117,17 +117,17 @@
   sharedEngagementTracker = self->_sharedEngagementTracker;
   if (sharedEngagementTracker)
   {
-    v18 = [(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"sharedEngagementTracker"];
+    dictionaryRepresentation2 = [(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"sharedEngagementTracker"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_groupId)
   {
     PBDataWriterWriteStringField();
@@ -190,32 +190,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_groupId)
   {
-    [v4 setGroupId:?];
-    v4 = v9;
+    [toCopy setGroupId:?];
+    toCopy = v9;
   }
 
   if (self->_title)
   {
     [v9 setTitle:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_groupDescription)
   {
     [v9 setGroupDescription:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_priority;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_priority;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_representativeNotificationUUID)
@@ -226,10 +226,10 @@
   if ([(ATXPBUserNotificationDigestNotificationGroup *)self rankedNotificationsCount])
   {
     [v9 clearRankedNotifications];
-    v5 = [(ATXPBUserNotificationDigestNotificationGroup *)self rankedNotificationsCount];
-    if (v5)
+    rankedNotificationsCount = [(ATXPBUserNotificationDigestNotificationGroup *)self rankedNotificationsCount];
+    if (rankedNotificationsCount)
     {
-      v6 = v5;
+      v6 = rankedNotificationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBUserNotificationDigestNotificationGroup *)self rankedNotificationsAtIndex:i];
@@ -244,19 +244,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_groupId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_groupId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_groupDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_groupDescription copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -266,7 +266,7 @@
     *(v5 + 64) |= 1u;
   }
 
-  v12 = [(NSString *)self->_representativeNotificationUUID copyWithZone:a3];
+  v12 = [(NSString *)self->_representativeNotificationUUID copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{zone, v23}];
         [v5 addRankedNotifications:v19];
 
         ++v18;
@@ -303,23 +303,23 @@
     while (v16);
   }
 
-  v20 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self->_sharedEngagementTracker copyWithZone:a3];
+  v20 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self->_sharedEngagementTracker copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   groupId = self->_groupId;
-  if (groupId | *(v4 + 3))
+  if (groupId | *(equalCopy + 3))
   {
     if (![(NSString *)groupId isEqual:?])
     {
@@ -328,7 +328,7 @@
   }
 
   title = self->_title;
-  if (title | *(v4 + 7))
+  if (title | *(equalCopy + 7))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -337,7 +337,7 @@
   }
 
   groupDescription = self->_groupDescription;
-  if (groupDescription | *(v4 + 2))
+  if (groupDescription | *(equalCopy + 2))
   {
     if (![(NSString *)groupDescription isEqual:?])
     {
@@ -347,13 +347,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_priority != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_priority != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v11 = 0;
@@ -361,13 +361,13 @@ LABEL_19:
   }
 
   representativeNotificationUUID = self->_representativeNotificationUUID;
-  if (representativeNotificationUUID | *(v4 + 5) && ![(NSString *)representativeNotificationUUID isEqual:?])
+  if (representativeNotificationUUID | *(equalCopy + 5) && ![(NSString *)representativeNotificationUUID isEqual:?])
   {
     goto LABEL_19;
   }
 
   rankedNotifications = self->_rankedNotifications;
-  if (rankedNotifications | *(v4 + 4))
+  if (rankedNotifications | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)rankedNotifications isEqual:?])
     {
@@ -376,7 +376,7 @@ LABEL_19:
   }
 
   sharedEngagementTracker = self->_sharedEngagementTracker;
-  if (sharedEngagementTracker | *(v4 + 6))
+  if (sharedEngagementTracker | *(equalCopy + 6))
   {
     v11 = [(ATXPBSharedDigestEngagementTrackingMetrics *)sharedEngagementTracker isEqual:?];
   }
@@ -435,32 +435,32 @@ LABEL_20:
   return v12 ^ v14 ^ [(ATXPBSharedDigestEngagementTrackingMetrics *)self->_sharedEngagementTracker hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(ATXPBUserNotificationDigestNotificationGroup *)self setGroupId:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ATXPBUserNotificationDigestNotificationGroup *)self setTitle:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBUserNotificationDigestNotificationGroup *)self setGroupDescription:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_priority = *(v4 + 1);
+    self->_priority = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXPBUserNotificationDigestNotificationGroup *)self setRepresentativeNotificationUUID:?];
   }
@@ -469,7 +469,7 @@ LABEL_20:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -494,7 +494,7 @@ LABEL_20:
   }
 
   sharedEngagementTracker = self->_sharedEngagementTracker;
-  v11 = *(v4 + 6);
+  v11 = *(fromCopy + 6);
   if (sharedEngagementTracker)
   {
     if (v11)
@@ -509,14 +509,14 @@ LABEL_20:
   }
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotificationDigestNotificationGroup *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = nCopy;
     v7 = [v6 objectForKeyedSubscript:@"groupID"];
     v8 = [ATXJSONHelper unwrapObject:v7];
     [(ATXPBUserNotificationDigestNotificationGroup *)v5 setGroupId:v8];
@@ -610,9 +610,9 @@ LABEL_20:
   v8 = [ATXJSONHelper wrapObject:v7];
   v17[5] = v8;
   v16[6] = @"sharedDigestEngagementTracker";
-  v9 = [(ATXPBUserNotificationDigestNotificationGroup *)self sharedEngagementTracker];
-  v10 = [v9 jsonRepresentation];
-  v11 = [ATXJSONHelper wrapObject:v10];
+  sharedEngagementTracker = [(ATXPBUserNotificationDigestNotificationGroup *)self sharedEngagementTracker];
+  jsonRepresentation = [sharedEngagementTracker jsonRepresentation];
+  v11 = [ATXJSONHelper wrapObject:jsonRepresentation];
   v17[6] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:7];
 

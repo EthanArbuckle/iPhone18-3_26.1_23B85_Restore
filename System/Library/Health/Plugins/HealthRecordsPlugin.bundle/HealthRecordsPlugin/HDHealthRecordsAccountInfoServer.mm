@@ -1,21 +1,21 @@
 @interface HDHealthRecordsAccountInfoServer
 + (id)requiredEntitlements;
-- (void)remote_determineMedicalRecordsAccountInfoStatusWithCompletion:(id)a3;
+- (void)remote_determineMedicalRecordsAccountInfoStatusWithCompletion:(id)completion;
 @end
 
 @implementation HDHealthRecordsAccountInfoServer
 
-- (void)remote_determineMedicalRecordsAccountInfoStatusWithCompletion:(id)a3
+- (void)remote_determineMedicalRecordsAccountInfoStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDHealthRecordsAccountInfoServer *)self profile];
-  v6 = [v5 healthRecordsExtension];
-  v7 = [v6 accountManager];
+  completionCopy = completion;
+  profile = [(HDHealthRecordsAccountInfoServer *)self profile];
+  healthRecordsExtension = [profile healthRecordsExtension];
+  accountManager = [healthRecordsExtension accountManager];
 
-  if (v7)
+  if (accountManager)
   {
     v13 = 0;
-    v8 = [v7 highPriorityTransactionHasGatewayBackedAccountsWithError:&v13];
+    v8 = [accountManager highPriorityTransactionHasGatewayBackedAccountsWithError:&v13];
     v9 = v13;
     if (v8)
     {
@@ -35,7 +35,7 @@
         sub_A6838();
       }
 
-      v4[2](v4, v10, 0);
+      completionCopy[2](completionCopy, v10, 0);
     }
 
     else
@@ -47,7 +47,7 @@
       }
 
       v12 = [NSError hk_error:100 description:@"Unable to determine account info status" underlyingError:v9];
-      (v4)[2](v4, 0, v12);
+      (completionCopy)[2](completionCopy, 0, v12);
     }
   }
 
@@ -61,7 +61,7 @@
     }
 
     v9 = [NSError hk_error:100 format:@"Unable to determine account info status"];
-    (v4)[2](v4, 0, v9);
+    (completionCopy)[2](completionCopy, 0, v9);
   }
 }
 

@@ -1,15 +1,15 @@
 @interface ULConfigurationStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (id)insertDataObjects:;
-- (optional<ULConfigurationDO>)fetchMostRecentAnchorAppearancesAtLoi:(int)a3;
-- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(int)a3 atLoiGroupId:(Configuration *)a4 beforeTime:;
-- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(optional<ULConfigurationDO> *__return_ptr)retstr atLoiType:(ULConfigurationStore *)self loiGroupId:(int)a3 beforeTime:(Configuration *)a4;
-- (optional<ULConfigurationDO>)fetchMostRecentWifiChannelHistogramAtLoi:(int)a3;
+- (optional<ULConfigurationDO>)fetchMostRecentAnchorAppearancesAtLoi:(int)loi;
+- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(int)configuration atLoiGroupId:(Configuration *)id beforeTime:;
+- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(optional<ULConfigurationDO> *__return_ptr)retstr atLoiType:(ULConfigurationStore *)self loiGroupId:(int)id beforeTime:(Configuration *)time;
+- (optional<ULConfigurationDO>)fetchMostRecentWifiChannelHistogramAtLoi:(int)loi;
 - (uint64_t)insertDataObjects:;
-- (vector<ULConfigurationDO,)fetchAllConfigurationsOfType:(ULConfigurationStore *)self loiGroupId:(SEL)a3 withLimit:(optional<const CLMicroLocationProto:(const uuid *)a5 :(unsigned int)a6 ConfigurationType>)a4;
-- (vector<ULConfigurationDO,)fetchLatestConfigurationPerTypeAtLoi:(ULConfigurationStore *)self withLimit:(SEL)a3;
+- (vector<ULConfigurationDO,)fetchAllConfigurationsOfType:(ULConfigurationStore *)self loiGroupId:(SEL)id withLimit:(optional<const CLMicroLocationProto:(const uuid *)limit :(unsigned int)a6 ConfigurationType>)a4;
+- (vector<ULConfigurationDO,)fetchLatestConfigurationPerTypeAtLoi:(ULConfigurationStore *)self withLimit:(SEL)limit;
 @end
 
 @implementation ULConfigurationStore
@@ -17,39 +17,39 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULConfigurationTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A717D8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A717D8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A55B78;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULConfigurationDO,ULConfigurationMO_deprecated>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULConfigurationDO,ULConfigurationMO_deprecated>(self, objects, v7);
   std::__function::__value_func<ULConfigurationMO_deprecated * ()(ULConfigurationDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(optional<ULConfigurationDO> *__return_ptr)retstr atLoiType:(ULConfigurationStore *)self loiGroupId:(int)a3 beforeTime:(Configuration *)a4
+- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(optional<ULConfigurationDO> *__return_ptr)retstr atLoiType:(ULConfigurationStore *)self loiGroupId:(int)id beforeTime:(Configuration *)time
 {
   v8 = v7;
   v9 = v6;
@@ -59,11 +59,11 @@
   v42 = 0uLL;
   v43 = 0;
   context = objc_autoreleasePoolPush();
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = MEMORY[0x277CCAC30];
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:LODWORD(a4->var0)];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:LODWORD(time->var0)];
   v18 = [v16 predicateWithFormat:@"%K=%@", @"configurationType", v17];
-  [v15 addObject:v18];
+  [array addObject:v18];
 
   if (*(v11 + 24) == 1)
   {
@@ -80,7 +80,7 @@
 
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:v20];
     v22 = [v19 predicateWithFormat:@"%K=%@", @"loiType", v21];
-    [v15 addObject:v22];
+    [array addObject:v22];
   }
 
   if (v8)
@@ -88,13 +88,13 @@
     v23 = MEMORY[0x277CCAC30];
     v24 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
     v25 = [v23 predicateWithFormat:@"%K<=%@", @"generationTimestamp", v24];
-    [v15 addObject:v25];
+    [array addObject:v25];
   }
 
   if (*(v10 + 16) == 1)
   {
-    v26 = [(ULStore *)self dbStore];
-    v27 = (*(v26->var0 + 8))(v26);
+    dbStore = [(ULStore *)self dbStore];
+    v27 = (*(dbStore->var0 + 8))(dbStore);
     v28 = v27;
     if ((*(v10 + 16) & 1) == 0)
     {
@@ -104,13 +104,13 @@
     v29 = [v27 getLoiIdsInLoiGroupId:v10];
 
     v30 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v29];
-    [v15 addObject:v30];
+    [array addObject:v30];
   }
 
   v31 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v45[0] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
-  [(ULConfigurationStore *)self _fetchConfigurationsByAndPredicates:v15 sortDescriptors:v32 andLimit:1];
+  [(ULConfigurationStore *)self _fetchConfigurationsByAndPredicates:array sortDescriptors:v32 andLimit:1];
   std::vector<ULConfigurationDO>::__vdeallocate(&v42);
   v42 = v40;
   v43 = v41;
@@ -150,14 +150,14 @@
   return result;
 }
 
-- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(int)a3 atLoiGroupId:(Configuration *)a4 beforeTime:
+- (optional<ULConfigurationDO>)fetchMostRecentConfiguration:(int)configuration atLoiGroupId:(Configuration *)id beforeTime:
 {
   v13 = *MEMORY[0x277D85DE8];
   LOBYTE(__p) = 0;
   v10 = 0;
   v11 = *v4;
   v12 = 1;
-  result = [(ULConfigurationStore *)self fetchMostRecentConfiguration:a4 atLoiType:&__p loiGroupId:&v11 beforeTime:v5, 1];
+  result = [(ULConfigurationStore *)self fetchMostRecentConfiguration:id atLoiType:&__p loiGroupId:&v11 beforeTime:v5, 1];
   if (v10 == 1 && v9 < 0)
   {
     operator delete(__p);
@@ -167,7 +167,7 @@
   return result;
 }
 
-- (optional<ULConfigurationDO>)fetchMostRecentAnchorAppearancesAtLoi:(int)a3
+- (optional<ULConfigurationDO>)fetchMostRecentAnchorAppearancesAtLoi:(int)loi
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 1;
@@ -185,7 +185,7 @@
   return result;
 }
 
-- (optional<ULConfigurationDO>)fetchMostRecentWifiChannelHistogramAtLoi:(int)a3
+- (optional<ULConfigurationDO>)fetchMostRecentWifiChannelHistogramAtLoi:(int)loi
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
@@ -203,15 +203,15 @@
   return result;
 }
 
-- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)a3 andLimit:(unint64_t)a4 intoTargetStore:(id)a5
+- (BOOL)batchTransferRecordsUsingBatchSize:(unint64_t)size andLimit:(unint64_t)limit intoTargetStore:(id)store
 {
-  v8 = a5;
+  storeCopy = store;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
-  v10 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke;
@@ -220,16 +220,16 @@
   v14[4] = self;
   v11 = v9;
   v15 = v11;
-  v18 = a3;
-  v19 = a4;
-  v12 = v8;
+  sizeCopy = size;
+  limitCopy = limit;
+  v12 = storeCopy;
   v16 = v12;
-  [v10 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(storeCopy) = *(v21 + 24);
   _Block_object_dispose(&v20, 8);
 
-  return v8;
+  return storeCopy;
 }
 
 void __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_intoTargetStore___block_invoke(void *a1)
@@ -245,7 +245,7 @@ void __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_into
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (vector<ULConfigurationDO,)fetchLatestConfigurationPerTypeAtLoi:(ULConfigurationStore *)self withLimit:(SEL)a3
+- (vector<ULConfigurationDO,)fetchLatestConfigurationPerTypeAtLoi:(ULConfigurationStore *)self withLimit:(SEL)limit
 {
   v42[1] = *MEMORY[0x277D85DE8];
   v34 = 0;
@@ -256,7 +256,7 @@ void __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_into
   v39 = &unk_25929B3B7;
   memset(v40, 0, sizeof(v40));
   context = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = objc_alloc_init(MEMORY[0x277CBE410]);
   [v10 setName:@"maxGenTimestamp"];
   v11 = MEMORY[0x277CCA9C0];
@@ -267,15 +267,15 @@ void __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_into
   [v10 setExpression:v14];
 
   [v10 setExpressionResultType:500];
-  v15 = [(ULStore *)self dbStore];
-  v16 = (*(v15->var0 + 8))(v15);
+  dbStore = [(ULStore *)self dbStore];
+  v16 = (*(dbStore->var0 + 8))(dbStore);
   v17 = [v16 getLoiIdsInLoiGroupId:a4];
 
   v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v17];
-  [v9 addObject:v18];
+  [array addObject:v18];
 
   v19 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
-  v20 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __71__ULConfigurationStore_fetchLatestConfigurationPerTypeAtLoi_withLimit___block_invoke;
@@ -283,13 +283,13 @@ void __84__ULConfigurationStore_batchTransferRecordsUsingBatchSize_andLimit_into
   v28[4] = self;
   v21 = v10;
   v29 = v21;
-  v22 = v9;
+  v22 = array;
   v30 = v22;
   v23 = v19;
   v33 = a5;
   v31 = v23;
   v32 = &v34;
-  [v20 performBlockAndWait:v28];
+  [managedObjectContext performBlockAndWait:v28];
 
   objc_autoreleasePoolPop(context);
   v24 = v35;
@@ -336,33 +336,33 @@ void __71__ULConfigurationStore_fetchLatestConfigurationPerTypeAtLoi_withLimit__
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (vector<ULConfigurationDO,)fetchAllConfigurationsOfType:(ULConfigurationStore *)self loiGroupId:(SEL)a3 withLimit:(optional<const CLMicroLocationProto:(const uuid *)a5 :(unsigned int)a6 ConfigurationType>)a4
+- (vector<ULConfigurationDO,)fetchAllConfigurationsOfType:(ULConfigurationStore *)self loiGroupId:(SEL)id withLimit:(optional<const CLMicroLocationProto:(const uuid *)limit :(unsigned int)a6 ConfigurationType>)a4
 {
   v27[1] = *MEMORY[0x277D85DE8];
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
   v11 = objc_autoreleasePoolPush();
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ((*&a4 & 0x100000000) != 0)
   {
     v13 = MEMORY[0x277CCAC30];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a4];
     v15 = [v13 predicateWithFormat:@"%K=%@", @"configurationType", v14];
-    [v12 addObject:v15];
+    [array addObject:v15];
   }
 
-  v16 = [(ULStore *)self dbStore];
-  v17 = (*(v16->var0 + 8))(v16);
-  v18 = [v17 getLoiIdsInLoiGroupId:a5];
+  dbStore = [(ULStore *)self dbStore];
+  v17 = (*(dbStore->var0 + 8))(dbStore);
+  v18 = [v17 getLoiIdsInLoiGroupId:limit];
 
   v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"loiId", v18];
-  [v12 addObject:v19];
+  [array addObject:v19];
 
   v20 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v27[0] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-  [(ULConfigurationStore *)self _fetchConfigurationsByAndPredicates:v12 sortDescriptors:v21 andLimit:a6];
+  [(ULConfigurationStore *)self _fetchConfigurationsByAndPredicates:array sortDescriptors:v21 andLimit:a6];
   std::vector<ULConfigurationDO>::__vdeallocate(&retstr->var0);
   *&retstr->var0 = v24;
   retstr->var2 = v25;
@@ -379,7 +379,7 @@ void __71__ULConfigurationStore_fetchLatestConfigurationPerTypeAtLoi_withLimit__
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -390,8 +390,8 @@ void __71__ULConfigurationStore_fetchLatestConfigurationPerTypeAtLoi_withLimit__
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULConfigurationMO_deprecated createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULConfigurationMO_deprecated createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

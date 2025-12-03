@@ -1,36 +1,36 @@
 @interface CRXFAppClipCodeTranscoder
 + (id)sharedInstance;
-- (BOOL)encodeAppClipCode:(id)a3 toBytes:(char *)a4 length:(unint64_t)a5 error:(id *)a6;
-- (BOOL)encodeAppClipCode:(id)a3 toData:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV1:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV2:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV3:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV4:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV5:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)encodeAppClipCodeV6:(id)a3 toBuffer:(id)a4 error:(id *)a5;
-- (BOOL)getIndexForQuarterDiopterValue:(float)a3 minValue:(float)a4 maxValue:(float)a5 index:(unint64_t *)a6;
-- (BOOL)getQuarterDiopterValueForIndex:(unint64_t)a3 minValue:(float)a4 maxValue:(float)a5 value:(float *)a6;
-- (BOOL)isACCVersionSupported:(unint64_t)a3;
+- (BOOL)encodeAppClipCode:(id)code toBytes:(char *)bytes length:(unint64_t)length error:(id *)error;
+- (BOOL)encodeAppClipCode:(id)code toData:(id)data error:(id *)error;
+- (BOOL)encodeAppClipCodeV1:(id)v1 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)encodeAppClipCodeV2:(id)v2 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)encodeAppClipCodeV3:(id)v3 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)encodeAppClipCodeV4:(id)v4 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)encodeAppClipCodeV5:(id)v5 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)encodeAppClipCodeV6:(id)v6 toBuffer:(id)buffer error:(id *)error;
+- (BOOL)getIndexForQuarterDiopterValue:(float)value minValue:(float)minValue maxValue:(float)maxValue index:(unint64_t *)index;
+- (BOOL)getQuarterDiopterValueForIndex:(unint64_t)index minValue:(float)value maxValue:(float)maxValue value:(float *)a6;
+- (BOOL)isACCVersionSupported:(unint64_t)supported;
 - (CRXFAppClipCodeTranscoder)init;
-- (id)decodeAppClipCodeV1FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)decodeAppClipCodeV2FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)decodeAppClipCodeV3FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)decodeAppClipCodeV4FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)decodeAppClipCodeV5FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)decodeAppClipCodeV6FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5;
-- (id)deriveCanonicalPayloadFromPayload:(id)a3;
-- (id)derivePayloadWithLensTypeZeroed:(id)a3 ifLensTypeIs:(unint64_t)a4;
-- (id)encodeAppClipCodeToHexString:(id)a3 error:(id *)a4;
-- (id)errorForStatus:(unint64_t)a3 leftLens:(BOOL)a4;
-- (id)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 haveLeftLens:(BOOL)a5 leftSphere:(float)a6 leftCylinder:(float)a7 leftAxis:(unint64_t)a8 leftAddVR:(float)a9 haveRightLens:(BOOL)a10 rightSphere:(float)a11 rightCylinder:(float)a12 rightAxis:(unint64_t)a13 rightAddVR:(float)a14 identifyingColor:(unint64_t)a15 secret:(id)a16 error:(id *)a17;
-- (id)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 haveLeftLens:(BOOL)a5 leftSphere:(float)a6 leftCylinder:(float)a7 leftAxis:(unint64_t)a8 leftAddVR:(float)a9 leftHorizPrismBaseDirection:(unint64_t)a10 leftHorizPrism:(float)a11 leftVertPrismBaseDirection:(unint64_t)a12 leftVertPrism:(float)a13 haveRightLens:(BOOL)a14 rightSphere:(float)a15 rightCylinder:(float)a16 rightAxis:(unint64_t)a17 rightAddVR:(float)a18 rightHorizPrismBaseDirection:(unint64_t)a19 rightHorizPrism:(float)a20 rightVertPrismBaseDirection:(unint64_t)a21 rightVertPrism:(float)a22 identifyingColor:(unint64_t)a23 secret:(id)a24 error:(id *)a25;
-- (id)mergeLeftAppClipCode:(id)a3 withRightAppClipCode:(id)a4 error:(id *)a5;
-- (unint64_t)decodeAppClipCodeVersionFromBuffer:(id)a3 error:(id *)a4;
-- (unint64_t)decodeCalibrationRXID:(unint64_t *)a3 calibrationSphere:(float *)a4 calibrationCylinder:(float *)a5 calibrationAxis:(unint64_t *)a6 addVR:(float *)a7 clampingStatus:(unint64_t *)a8 displaySphere:(float *)a9 displayCylinder:(float *)a10 displayAxis:(unint64_t *)a11 fromRXID:(unint64_t)a12 RXOffsetID:(unint64_t)a13 cylinderSignFlipped:(BOOL)a14 axisID:(unint64_t)a15 allowUnsupportedRX:(BOOL)a16;
-- (unint64_t)encodeSphere:(float)a3 cylinder:(float)a4 axis:(unint64_t)a5 toRXID:(unint64_t *)a6 axisID:(unint64_t *)a7;
-- (unint64_t)lookUpRXID:(unint64_t *)a3 forSphereValue:(float)a4 cylinderValue:(float)a5;
-- (unint64_t)lookupBestValidRXID:(unint64_t *)a3 andSphere:(float *)a4 matchingCylinder:(float)a5 nearSphere:(float)a6;
-- (unint64_t)payloadLengthForAppClipCodeVersion:(unint64_t)a3;
+- (id)decodeAppClipCodeV1FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)decodeAppClipCodeV2FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)decodeAppClipCodeV3FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)decodeAppClipCodeV4FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)decodeAppClipCodeV5FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)decodeAppClipCodeV6FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error;
+- (id)deriveCanonicalPayloadFromPayload:(id)payload;
+- (id)derivePayloadWithLensTypeZeroed:(id)zeroed ifLensTypeIs:(unint64_t)is;
+- (id)encodeAppClipCodeToHexString:(id)string error:(id *)error;
+- (id)errorForStatus:(unint64_t)status leftLens:(BOOL)lens;
+- (id)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type haveLeftLens:(BOOL)lens leftSphere:(float)sphere leftCylinder:(float)cylinder leftAxis:(unint64_t)axis leftAddVR:(float)r haveRightLens:(BOOL)self0 rightSphere:(float)self1 rightCylinder:(float)self2 rightAxis:(unint64_t)self3 rightAddVR:(float)self4 identifyingColor:(unint64_t)self5 secret:(id)self6 error:(id *)self7;
+- (id)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type haveLeftLens:(BOOL)lens leftSphere:(float)sphere leftCylinder:(float)cylinder leftAxis:(unint64_t)axis leftAddVR:(float)r leftHorizPrismBaseDirection:(unint64_t)self0 leftHorizPrism:(float)self1 leftVertPrismBaseDirection:(unint64_t)self2 leftVertPrism:(float)self3 haveRightLens:(BOOL)self4 rightSphere:(float)self5 rightCylinder:(float)self6 rightAxis:(unint64_t)self7 rightAddVR:(float)self8 rightHorizPrismBaseDirection:(unint64_t)self9 rightHorizPrism:(float)horizPrism rightVertPrismBaseDirection:(unint64_t)vertPrismBaseDirection rightVertPrism:(float)rightVertPrism identifyingColor:(unint64_t)color secret:(id)secret error:(id *)error;
+- (id)mergeLeftAppClipCode:(id)code withRightAppClipCode:(id)clipCode error:(id *)error;
+- (unint64_t)decodeAppClipCodeVersionFromBuffer:(id)buffer error:(id *)error;
+- (unint64_t)decodeCalibrationRXID:(unint64_t *)d calibrationSphere:(float *)sphere calibrationCylinder:(float *)cylinder calibrationAxis:(unint64_t *)axis addVR:(float *)r clampingStatus:(unint64_t *)status displaySphere:(float *)displaySphere displayCylinder:(float *)self0 displayAxis:(unint64_t *)self1 fromRXID:(unint64_t)self2 RXOffsetID:(unint64_t)self3 cylinderSignFlipped:(BOOL)self4 axisID:(unint64_t)self5 allowUnsupportedRX:(BOOL)self6;
+- (unint64_t)encodeSphere:(float)sphere cylinder:(float)cylinder axis:(unint64_t)axis toRXID:(unint64_t *)d axisID:(unint64_t *)iD;
+- (unint64_t)lookUpRXID:(unint64_t *)d forSphereValue:(float)value cylinderValue:(float)cylinderValue;
+- (unint64_t)lookupBestValidRXID:(unint64_t *)d andSphere:(float *)sphere matchingCylinder:(float)cylinder nearSphere:(float)nearSphere;
+- (unint64_t)payloadLengthForAppClipCodeVersion:(unint64_t)version;
 @end
 
 @implementation CRXFAppClipCodeTranscoder
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __43__CRXFAppClipCodeTranscoder_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance___once__LINE__ != -1)
   {
     dispatch_once(&sharedInstance___once__LINE__, block);
@@ -74,9 +74,9 @@ uint64_t __43__CRXFAppClipCodeTranscoder_sharedInstance__block_invoke(uint64_t a
   return v2;
 }
 
-- (unint64_t)payloadLengthForAppClipCodeVersion:(unint64_t)a3
+- (unint64_t)payloadLengthForAppClipCodeVersion:(unint64_t)version
 {
-  if (a3 <= 5)
+  if (version <= 5)
   {
     return 16;
   }
@@ -87,13 +87,13 @@ uint64_t __43__CRXFAppClipCodeTranscoder_sharedInstance__block_invoke(uint64_t a
   }
 }
 
-- (unint64_t)decodeAppClipCodeVersionFromBuffer:(id)a3 error:(id *)a4
+- (unint64_t)decodeAppClipCodeVersionFromBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v10 = 0;
-  if ([v5 byteCount] != 16)
+  if ([bufferCopy byteCount] != 16)
   {
-    if ([v5 byteCount] != 19)
+    if ([bufferCopy byteCount] != 19)
     {
       v6 = 101;
 LABEL_6:
@@ -106,7 +106,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if (([v5 skipBits:145] & 1) == 0)
+    if (([bufferCopy skipBits:145] & 1) == 0)
     {
       v6 = 97;
       goto LABEL_6;
@@ -114,7 +114,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  if ([v5 readUInteger:&v10 bitWidth:4])
+  if ([bufferCopy readUInteger:&v10 bitWidth:4])
   {
     v7 = 0;
     goto LABEL_13;
@@ -122,10 +122,10 @@ LABEL_7:
 
   v7 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:107 userInfo:MEMORY[0x277CBEC10]];
 LABEL_10:
-  if (a4 && v7)
+  if (error && v7)
   {
     v7 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_13:
@@ -134,14 +134,14 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isACCVersionSupported:(unint64_t)a3
+- (BOOL)isACCVersionSupported:(unint64_t)supported
 {
-  if (a3 - 1 < 5)
+  if (supported - 1 < 5)
   {
     return 1;
   }
 
-  if (a3 == 6)
+  if (supported == 6)
   {
     return MEMORY[0x282203478]("SeaLevel", "SeaUrchin");
   }
@@ -149,81 +149,81 @@ LABEL_13:
   return 0;
 }
 
-- (BOOL)encodeAppClipCode:(id)a3 toBytes:(char *)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)encodeAppClipCode:(id)code toBytes:(char *)bytes length:(unint64_t)length error:(id *)error
 {
   v10 = MEMORY[0x277CBEB28];
-  v11 = a3;
-  v12 = [[v10 alloc] initWithBytesNoCopy:a4 length:a5 freeWhenDone:0];
-  LOBYTE(a6) = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:v11 toData:v12 error:a6];
+  codeCopy = code;
+  v12 = [[v10 alloc] initWithBytesNoCopy:bytes length:length freeWhenDone:0];
+  LOBYTE(error) = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:codeCopy toData:v12 error:error];
 
-  return a6;
+  return error;
 }
 
-- (id)encodeAppClipCodeToHexString:(id)a3 error:(id *)a4
+- (id)encodeAppClipCodeToHexString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [v6 version]);
+  stringCopy = string;
+  v7 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [stringCopy version]);
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v7];
-  LODWORD(a4) = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:v6 toData:v8 error:a4];
+  LODWORD(error) = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:stringCopy toData:v8 error:error];
 
-  if (a4)
+  if (error)
   {
-    v9 = [v8 crxu_asHexString];
+    crxu_asHexString = [v8 crxu_asHexString];
   }
 
   else
   {
-    v9 = 0;
+    crxu_asHexString = 0;
   }
 
-  return v9;
+  return crxu_asHexString;
 }
 
-- (BOOL)encodeAppClipCode:(id)a3 toData:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCode:(id)code toData:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[CRXUBitBuffer alloc] initWithMutableData:v9];
+  codeCopy = code;
+  dataCopy = data;
+  v10 = [[CRXUBitBuffer alloc] initWithMutableData:dataCopy];
 
-  v11 = [v8 version];
-  if (v11 > 3)
+  version = [codeCopy version];
+  if (version > 3)
   {
-    switch(v11)
+    switch(version)
     {
       case 4:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV4:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV4:codeCopy toBuffer:v10 error:error];
         goto LABEL_16;
       case 5:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV5:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV5:codeCopy toBuffer:v10 error:error];
         goto LABEL_16;
       case 6:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV6:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV6:codeCopy toBuffer:v10 error:error];
         goto LABEL_16;
     }
   }
 
   else
   {
-    switch(v11)
+    switch(version)
     {
       case 1:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV1:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV1:codeCopy toBuffer:v10 error:error];
         goto LABEL_16;
       case 2:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV2:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV2:codeCopy toBuffer:v10 error:error];
         goto LABEL_16;
       case 3:
-        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV3:v8 toBuffer:v10 error:a5];
+        v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCodeV3:codeCopy toBuffer:v10 error:error];
 LABEL_16:
         v13 = v12;
         goto LABEL_17;
     }
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:2 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:301 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -236,48 +236,48 @@ LABEL_17:
   return v13;
 }
 
-- (id)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 haveLeftLens:(BOOL)a5 leftSphere:(float)a6 leftCylinder:(float)a7 leftAxis:(unint64_t)a8 leftAddVR:(float)a9 haveRightLens:(BOOL)a10 rightSphere:(float)a11 rightCylinder:(float)a12 rightAxis:(unint64_t)a13 rightAddVR:(float)a14 identifyingColor:(unint64_t)a15 secret:(id)a16 error:(id *)a17
+- (id)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type haveLeftLens:(BOOL)lens leftSphere:(float)sphere leftCylinder:(float)cylinder leftAxis:(unint64_t)axis leftAddVR:(float)r haveRightLens:(BOOL)self0 rightSphere:(float)self1 rightCylinder:(float)self2 rightAxis:(unint64_t)self3 rightAddVR:(float)self4 identifyingColor:(unint64_t)self5 secret:(id)self6 error:(id *)self7
 {
-  v18 = a10;
-  v20 = a5;
-  v28 = a16;
-  v56 = a6;
-  v57 = a7;
-  v58 = a8;
-  v29 = vrx_apply_eye_rx_cylinder_sign_flip(&v56);
+  rightLensCopy = rightLens;
+  lensCopy = lens;
+  secretCopy = secret;
+  sphereCopy = sphere;
+  cylinderCopy = cylinder;
+  axisCopy = axis;
+  v29 = vrx_apply_eye_rx_cylinder_sign_flip(&sphereCopy);
   if (v29)
   {
-    a6 = v56;
-    a7 = v57;
-    a8 = v58;
+    sphere = sphereCopy;
+    cylinder = cylinderCopy;
+    axis = axisCopy;
   }
 
-  v53 = a11;
-  v54 = a12;
-  v55 = a13;
-  v30 = vrx_apply_eye_rx_cylinder_sign_flip(&v53);
+  rightSphereCopy = rightSphere;
+  rightCylinderCopy = rightCylinder;
+  rightAxisCopy = rightAxis;
+  v30 = vrx_apply_eye_rx_cylinder_sign_flip(&rightSphereCopy);
   if (v30)
   {
-    HIDWORD(v32) = HIDWORD(v54);
-    a11 = v53;
-    a12 = v54;
-    HIDWORD(v31) = HIDWORD(v55);
-    a13 = v55;
+    HIDWORD(v32) = HIDWORD(rightCylinderCopy);
+    rightSphere = rightSphereCopy;
+    rightCylinder = rightCylinderCopy;
+    HIDWORD(v31) = HIDWORD(rightAxisCopy);
+    rightAxis = rightAxisCopy;
   }
 
-  if (!v28)
+  if (!secretCopy)
   {
-    v28 = [MEMORY[0x277CBEA90] crxu_randomDataWithLength:10];
+    secretCopy = [MEMORY[0x277CBEA90] crxu_randomDataWithLength:10];
   }
 
   v52 = 0;
   v50 = 0;
   v51 = 0;
   v49 = 0;
-  if (!v20)
+  if (!lensCopy)
   {
     v34 = 1;
-    if (v18)
+    if (rightLensCopy)
     {
       goto LABEL_12;
     }
@@ -287,30 +287,30 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  *&v31 = a6;
-  *&v32 = a7;
-  v33 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:a8 cylinder:&v52 axis:&v50 toRXID:v31 axisID:v32];
+  *&v31 = sphere;
+  *&v32 = cylinder;
+  v33 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:axis cylinder:&v52 axis:&v50 toRXID:v31 axisID:v32];
   v34 = v33 == 0;
-  if (a17 && v33)
+  if (error && v33)
   {
     [(CRXFAppClipCodeTranscoder *)self errorForStatus:v33 leftLens:1];
-    *a17 = v34 = 0;
+    *error = v34 = 0;
   }
 
-  if (!v18)
+  if (!rightLensCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_12:
-  *&v31 = a11;
-  *&v32 = a12;
-  v35 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:a13 cylinder:&v51 axis:&v49 toRXID:v31 axisID:v32];
+  *&v31 = rightSphere;
+  *&v32 = rightCylinder;
+  v35 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:rightAxis cylinder:&v51 axis:&v49 toRXID:v31 axisID:v32];
   v36 = v35 == 0;
-  if (a17 && v35)
+  if (error && v35)
   {
     [(CRXFAppClipCodeTranscoder *)self errorForStatus:v35 leftLens:0];
-    *a17 = v37 = 0;
+    *error = v37 = 0;
     goto LABEL_20;
   }
 
@@ -320,12 +320,12 @@ LABEL_17:
     v38 = [CRXFAppClipCode alloc];
     LODWORD(v46) = 0;
     LODWORD(v45) = 0;
-    *&v39 = a7;
-    *&v40 = a6;
-    *&v41 = a7;
-    *&v42 = a9;
-    *&v43 = a11;
-    v37 = [(CRXFAppClipCode *)v38 initWithVersion:a3 lensType:a4 cylLeftSignFlipped:v29 != 0 cylRightSignFlipped:v30 != 0 leftRXID:v52 leftCalibrationRXID:v52 leftDisplaySphere:COERCE_DOUBLE(LODWORD(a6)) leftDisplayCylinder:v39 leftCalibrationSphere:v40 leftCalibrationCylinder:v41 leftAddVR:v42 leftAxisID:0.0 leftDisplayAxis:0.0 leftCalibrationAxis:v43 leftClamping:v50 leftHorizPrismBaseDirection:a8 leftHorizPrism:a8 leftVertPrismBaseDirection:0 leftVertPrism:0 rightRXID:0 rightCalibrationRXID:v51 rightDisplaySphere:v51 rightDisplayCylinder:__PAIR64__(LODWORD(a11) rightCalibrationSphere:LODWORD(a12)) rightCalibrationCylinder:__PAIR64__(LODWORD(a14) rightAddVR:LODWORD(a12)) rightAxisID:v49 rightDisplayAxis:a13 rightCalibrationAxis:a13 rightClamping:0 rightHorizPrismBaseDirection:0 rightHorizPrism:v45 rightVertPrismBaseDirection:0 rightVertPrism:v46 identifyingColor:a15 secret:v28 randomBits:0];
+    *&v39 = cylinder;
+    *&v40 = sphere;
+    *&v41 = cylinder;
+    *&v42 = r;
+    *&v43 = rightSphere;
+    v37 = [(CRXFAppClipCode *)v38 initWithVersion:version lensType:type cylLeftSignFlipped:v29 != 0 cylRightSignFlipped:v30 != 0 leftRXID:v52 leftCalibrationRXID:v52 leftDisplaySphere:COERCE_DOUBLE(LODWORD(sphere)) leftDisplayCylinder:v39 leftCalibrationSphere:v40 leftCalibrationCylinder:v41 leftAddVR:v42 leftAxisID:0.0 leftDisplayAxis:0.0 leftCalibrationAxis:v43 leftClamping:v50 leftHorizPrismBaseDirection:axis leftHorizPrism:axis leftVertPrismBaseDirection:0 leftVertPrism:0 rightRXID:0 rightCalibrationRXID:v51 rightDisplaySphere:v51 rightDisplayCylinder:__PAIR64__(LODWORD(rightSphere) rightCalibrationSphere:LODWORD(rightCylinder)) rightCalibrationCylinder:__PAIR64__(LODWORD(vR) rightAddVR:LODWORD(rightCylinder)) rightAxisID:v49 rightDisplayAxis:rightAxis rightCalibrationAxis:rightAxis rightClamping:0 rightHorizPrismBaseDirection:0 rightHorizPrism:v45 rightVertPrismBaseDirection:0 rightVertPrism:v46 identifyingColor:color secret:secretCopy randomBits:0];
   }
 
   else
@@ -338,48 +338,48 @@ LABEL_20:
   return v37;
 }
 
-- (id)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 haveLeftLens:(BOOL)a5 leftSphere:(float)a6 leftCylinder:(float)a7 leftAxis:(unint64_t)a8 leftAddVR:(float)a9 leftHorizPrismBaseDirection:(unint64_t)a10 leftHorizPrism:(float)a11 leftVertPrismBaseDirection:(unint64_t)a12 leftVertPrism:(float)a13 haveRightLens:(BOOL)a14 rightSphere:(float)a15 rightCylinder:(float)a16 rightAxis:(unint64_t)a17 rightAddVR:(float)a18 rightHorizPrismBaseDirection:(unint64_t)a19 rightHorizPrism:(float)a20 rightVertPrismBaseDirection:(unint64_t)a21 rightVertPrism:(float)a22 identifyingColor:(unint64_t)a23 secret:(id)a24 error:(id *)a25
+- (id)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type haveLeftLens:(BOOL)lens leftSphere:(float)sphere leftCylinder:(float)cylinder leftAxis:(unint64_t)axis leftAddVR:(float)r leftHorizPrismBaseDirection:(unint64_t)self0 leftHorizPrism:(float)self1 leftVertPrismBaseDirection:(unint64_t)self2 leftVertPrism:(float)self3 haveRightLens:(BOOL)self4 rightSphere:(float)self5 rightCylinder:(float)self6 rightAxis:(unint64_t)self7 rightAddVR:(float)self8 rightHorizPrismBaseDirection:(unint64_t)self9 rightHorizPrism:(float)horizPrism rightVertPrismBaseDirection:(unint64_t)vertPrismBaseDirection rightVertPrism:(float)rightVertPrism identifyingColor:(unint64_t)color secret:(id)secret error:(id *)error
 {
-  v26 = a5;
-  v34 = a17;
-  v35 = a24;
-  v70 = a6;
-  v71 = a7;
-  v72 = a8;
-  v36 = vrx_apply_eye_rx_cylinder_sign_flip(&v70);
+  lensCopy = lens;
+  rightAxisCopy = rightAxis;
+  secretCopy = secret;
+  sphereCopy = sphere;
+  cylinderCopy = cylinder;
+  axisCopy = axis;
+  v36 = vrx_apply_eye_rx_cylinder_sign_flip(&sphereCopy);
   if (v36)
   {
-    a6 = v70;
-    a7 = v71;
-    a8 = v72;
+    sphere = sphereCopy;
+    cylinder = cylinderCopy;
+    axis = axisCopy;
   }
 
-  v67 = a15;
-  v68 = a16;
-  v69 = a17;
-  v37 = vrx_apply_eye_rx_cylinder_sign_flip(&v67);
+  rightSphereCopy = rightSphere;
+  rightCylinderCopy = rightCylinder;
+  rightAxisCopy2 = rightAxis;
+  v37 = vrx_apply_eye_rx_cylinder_sign_flip(&rightSphereCopy);
   if (v37)
   {
-    HIDWORD(v39) = HIDWORD(v68);
-    a15 = v67;
-    a16 = v68;
-    HIDWORD(v38) = HIDWORD(v69);
-    v34 = v69;
+    HIDWORD(v39) = HIDWORD(rightCylinderCopy);
+    rightSphere = rightSphereCopy;
+    rightCylinder = rightCylinderCopy;
+    HIDWORD(v38) = HIDWORD(rightAxisCopy2);
+    rightAxisCopy = rightAxisCopy2;
   }
 
-  if (!v35)
+  if (!secretCopy)
   {
-    v35 = [MEMORY[0x277CBEA90] crxu_randomDataWithLength:10];
+    secretCopy = [MEMORY[0x277CBEA90] crxu_randomDataWithLength:10];
   }
 
   v65 = 0;
   v66 = 0;
   v64 = 0;
   v63 = 0;
-  if (!v26)
+  if (!lensCopy)
   {
     v41 = 1;
-    if (a14)
+    if (rightLens)
     {
       goto LABEL_12;
     }
@@ -389,30 +389,30 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  *&v38 = a6;
-  *&v39 = a7;
-  v40 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:a8 cylinder:&v66 axis:&v64 toRXID:v38 axisID:v39];
+  *&v38 = sphere;
+  *&v39 = cylinder;
+  v40 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:axis cylinder:&v66 axis:&v64 toRXID:v38 axisID:v39];
   v41 = v40 == 0;
-  if (a25 && v40)
+  if (error && v40)
   {
     [(CRXFAppClipCodeTranscoder *)self errorForStatus:v40 leftLens:1];
-    *a25 = v41 = 0;
+    *error = v41 = 0;
   }
 
-  if (!a14)
+  if (!rightLens)
   {
     goto LABEL_16;
   }
 
 LABEL_12:
-  *&v38 = a15;
-  *&v39 = a16;
-  v42 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:v34 cylinder:&v65 axis:&v63 toRXID:v38 axisID:v39];
+  *&v38 = rightSphere;
+  *&v39 = rightCylinder;
+  v42 = [(CRXFAppClipCodeTranscoder *)self encodeSphere:rightAxisCopy cylinder:&v65 axis:&v63 toRXID:v38 axisID:v39];
   v43 = v42 == 0;
-  if (a25 && v42)
+  if (error && v42)
   {
     [(CRXFAppClipCodeTranscoder *)self errorForStatus:v42 leftLens:0];
-    *a25 = v44 = 0;
+    *error = v44 = 0;
     goto LABEL_20;
   }
 
@@ -420,17 +420,17 @@ LABEL_17:
   if (v41 && v43)
   {
     v45 = [CRXFAppClipCode alloc];
-    *&v56 = a22;
-    *&v55 = a20;
-    *&v46 = a6;
-    *&v47 = a7;
-    *&v48 = a6;
-    *&v49 = a7;
-    *&v50 = a9;
-    *&v51 = a11;
-    *&v52 = a13;
-    *&v53 = a15;
-    v44 = [(CRXFAppClipCode *)v45 initWithVersion:a3 lensType:a4 cylLeftSignFlipped:v36 != 0 cylRightSignFlipped:v37 != 0 leftRXID:v66 leftCalibrationRXID:v66 leftDisplaySphere:v46 leftDisplayCylinder:v47 leftCalibrationSphere:v48 leftCalibrationCylinder:v49 leftAddVR:v50 leftAxisID:v51 leftDisplayAxis:v52 leftCalibrationAxis:v53 leftClamping:v64 leftHorizPrismBaseDirection:a8 leftHorizPrism:a8 leftVertPrismBaseDirection:0 leftVertPrism:a10 rightRXID:a12 rightCalibrationRXID:v65 rightDisplaySphere:v65 rightDisplayCylinder:__PAIR64__(LODWORD(a15) rightCalibrationSphere:LODWORD(a16)) rightCalibrationCylinder:__PAIR64__(LODWORD(a18) rightAddVR:LODWORD(a16)) rightAxisID:v63 rightDisplayAxis:v34 rightCalibrationAxis:v34 rightClamping:0 rightHorizPrismBaseDirection:a19 rightHorizPrism:v55 rightVertPrismBaseDirection:a21 rightVertPrism:v56 identifyingColor:a23 secret:v35 randomBits:0];
+    *&v56 = rightVertPrism;
+    *&v55 = horizPrism;
+    *&v46 = sphere;
+    *&v47 = cylinder;
+    *&v48 = sphere;
+    *&v49 = cylinder;
+    *&v50 = r;
+    *&v51 = prism;
+    *&v52 = vertPrism;
+    *&v53 = rightSphere;
+    v44 = [(CRXFAppClipCode *)v45 initWithVersion:version lensType:type cylLeftSignFlipped:v36 != 0 cylRightSignFlipped:v37 != 0 leftRXID:v66 leftCalibrationRXID:v66 leftDisplaySphere:v46 leftDisplayCylinder:v47 leftCalibrationSphere:v48 leftCalibrationCylinder:v49 leftAddVR:v50 leftAxisID:v51 leftDisplayAxis:v52 leftCalibrationAxis:v53 leftClamping:v64 leftHorizPrismBaseDirection:axis leftHorizPrism:axis leftVertPrismBaseDirection:0 leftVertPrism:direction rightRXID:baseDirection rightCalibrationRXID:v65 rightDisplaySphere:v65 rightDisplayCylinder:__PAIR64__(LODWORD(rightSphere) rightCalibrationSphere:LODWORD(rightCylinder)) rightCalibrationCylinder:__PAIR64__(LODWORD(vR) rightAddVR:LODWORD(rightCylinder)) rightAxisID:v63 rightDisplayAxis:rightAxisCopy rightCalibrationAxis:rightAxisCopy rightClamping:0 rightHorizPrismBaseDirection:prismBaseDirection rightHorizPrism:v55 rightVertPrismBaseDirection:vertPrismBaseDirection rightVertPrism:v56 identifyingColor:color secret:secretCopy randomBits:0];
   }
 
   else
@@ -443,16 +443,16 @@ LABEL_20:
   return v44;
 }
 
-- (id)mergeLeftAppClipCode:(id)a3 withRightAppClipCode:(id)a4 error:(id *)a5
+- (id)mergeLeftAppClipCode:(id)code withRightAppClipCode:(id)clipCode error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 version];
-  if (v9 == [v8 version])
+  codeCopy = code;
+  clipCodeCopy = clipCode;
+  version = [codeCopy version];
+  if (version == [clipCodeCopy version])
   {
-    if ([v7 rightRXID] || objc_msgSend(v8, "leftRXID"))
+    if ([codeCopy rightRXID] || objc_msgSend(clipCodeCopy, "leftRXID"))
     {
-      if (a5)
+      if (error)
       {
         v10 = MEMORY[0x277CCA9B8];
         v11 = MEMORY[0x277CBEC10];
@@ -460,65 +460,65 @@ LABEL_20:
         v13 = 561;
 LABEL_8:
         [v10 crxf_errorWithCode:v12 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:v13 userInfo:v11];
-        *a5 = v14 = 0;
+        *error = v14 = 0;
         goto LABEL_14;
       }
     }
 
     else
     {
-      v15 = [v7 lensType];
-      if (v15 == [v8 lensType])
+      lensType = [codeCopy lensType];
+      if (lensType == [clipCodeCopy lensType])
       {
         v16 = [MEMORY[0x277CBEA90] crxu_randomDataWithLength:10];
         v73 = [CRXFAppClipCode alloc];
-        v71 = [v7 version];
-        v75 = [v7 lensType];
-        v74 = [v7 cylLeftSignFlipped];
-        v72 = [v7 cylRightSignFlipped];
-        v70 = [v7 leftRXID];
-        v69 = [v7 leftCalibrationRXID];
-        [v7 leftDisplaySphere];
+        version2 = [codeCopy version];
+        lensType2 = [codeCopy lensType];
+        cylLeftSignFlipped = [codeCopy cylLeftSignFlipped];
+        cylRightSignFlipped = [codeCopy cylRightSignFlipped];
+        leftRXID = [codeCopy leftRXID];
+        leftCalibrationRXID = [codeCopy leftCalibrationRXID];
+        [codeCopy leftDisplaySphere];
         v68 = v17;
-        [v7 leftDisplayCylinder];
+        [codeCopy leftDisplayCylinder];
         v67 = v18;
-        [v7 leftCalibrationSphere];
+        [codeCopy leftCalibrationSphere];
         v66 = v19;
-        [v7 leftCalibrationCylinder];
+        [codeCopy leftCalibrationCylinder];
         v65 = v20;
-        [v7 leftAddVR];
+        [codeCopy leftAddVR];
         v64 = v21;
-        v63 = [v7 leftAxisID];
-        v62 = [v7 leftDisplayAxis];
-        v61 = [v7 leftCalibrationAxis];
-        v60 = [v7 leftClamping];
-        v59 = [v7 leftHorizPrismBaseDirection];
-        [v7 leftHorizPrism];
+        leftAxisID = [codeCopy leftAxisID];
+        leftDisplayAxis = [codeCopy leftDisplayAxis];
+        leftCalibrationAxis = [codeCopy leftCalibrationAxis];
+        leftClamping = [codeCopy leftClamping];
+        leftHorizPrismBaseDirection = [codeCopy leftHorizPrismBaseDirection];
+        [codeCopy leftHorizPrism];
         v23 = v22;
-        v58 = [v7 leftVertPrismBaseDirection];
-        [v7 leftVertPrism];
+        leftVertPrismBaseDirection = [codeCopy leftVertPrismBaseDirection];
+        [codeCopy leftVertPrism];
         v25 = v24;
-        v57 = [v8 rightRXID];
-        v26 = [v8 rightCalibrationRXID];
-        [v8 rightDisplaySphere];
+        rightRXID = [clipCodeCopy rightRXID];
+        rightCalibrationRXID = [clipCodeCopy rightCalibrationRXID];
+        [clipCodeCopy rightDisplaySphere];
         v28 = v27;
-        [v8 rightDisplayCylinder];
+        [clipCodeCopy rightDisplayCylinder];
         v30 = v29;
-        [v7 rightCalibrationSphere];
+        [codeCopy rightCalibrationSphere];
         v32 = v31;
-        [v7 rightCalibrationCylinder];
+        [codeCopy rightCalibrationCylinder];
         v34 = v33;
-        [v8 rightAddVR];
+        [clipCodeCopy rightAddVR];
         v36 = v35;
-        v37 = [v8 rightAxisID];
-        v38 = [v8 rightDisplayAxis];
-        v39 = [v8 rightCalibrationAxis];
-        v40 = [v8 rightClamping];
-        v41 = [v7 rightHorizPrismBaseDirection];
-        [v7 rightHorizPrism];
+        rightAxisID = [clipCodeCopy rightAxisID];
+        rightDisplayAxis = [clipCodeCopy rightDisplayAxis];
+        rightCalibrationAxis = [clipCodeCopy rightCalibrationAxis];
+        rightClamping = [clipCodeCopy rightClamping];
+        rightHorizPrismBaseDirection = [codeCopy rightHorizPrismBaseDirection];
+        [codeCopy rightHorizPrism];
         v43 = v42;
-        v44 = [v7 rightVertPrismBaseDirection];
-        [v7 rightVertPrism];
+        rightVertPrismBaseDirection = [codeCopy rightVertPrismBaseDirection];
+        [codeCopy rightVertPrism];
         LODWORD(v56) = v45;
         LODWORD(v55) = v43;
         LODWORD(v47) = v67;
@@ -529,12 +529,12 @@ LABEL_8:
         LODWORD(v51) = v23;
         LODWORD(v52) = v25;
         LODWORD(v53) = v28;
-        v14 = [(CRXFAppClipCode *)v73 initWithVersion:v71 lensType:v75 cylLeftSignFlipped:v74 cylRightSignFlipped:v72 leftRXID:v70 leftCalibrationRXID:v69 leftDisplaySphere:v46 leftDisplayCylinder:v47 leftCalibrationSphere:v48 leftCalibrationCylinder:v49 leftAddVR:v50 leftAxisID:v51 leftDisplayAxis:v52 leftCalibrationAxis:v53 leftClamping:v63 leftHorizPrismBaseDirection:v62 leftHorizPrism:v61 leftVertPrismBaseDirection:v60 leftVertPrism:v59 rightRXID:v58 rightCalibrationRXID:v57 rightDisplaySphere:v26 rightDisplayCylinder:__PAIR64__(v32 rightCalibrationSphere:v30) rightCalibrationCylinder:__PAIR64__(v36 rightAddVR:v34) rightAxisID:v37 rightDisplayAxis:v38 rightCalibrationAxis:v39 rightClamping:v40 rightHorizPrismBaseDirection:v41 rightHorizPrism:v55 rightVertPrismBaseDirection:v44 rightVertPrism:v56 identifyingColor:0 secret:v16 randomBits:0];
+        v14 = [(CRXFAppClipCode *)v73 initWithVersion:version2 lensType:lensType2 cylLeftSignFlipped:cylLeftSignFlipped cylRightSignFlipped:cylRightSignFlipped leftRXID:leftRXID leftCalibrationRXID:leftCalibrationRXID leftDisplaySphere:v46 leftDisplayCylinder:v47 leftCalibrationSphere:v48 leftCalibrationCylinder:v49 leftAddVR:v50 leftAxisID:v51 leftDisplayAxis:v52 leftCalibrationAxis:v53 leftClamping:leftAxisID leftHorizPrismBaseDirection:leftDisplayAxis leftHorizPrism:leftCalibrationAxis leftVertPrismBaseDirection:leftClamping leftVertPrism:leftHorizPrismBaseDirection rightRXID:leftVertPrismBaseDirection rightCalibrationRXID:rightRXID rightDisplaySphere:rightCalibrationRXID rightDisplayCylinder:__PAIR64__(v32 rightCalibrationSphere:v30) rightCalibrationCylinder:__PAIR64__(v36 rightAddVR:v34) rightAxisID:rightAxisID rightDisplayAxis:rightDisplayAxis rightCalibrationAxis:rightCalibrationAxis rightClamping:rightClamping rightHorizPrismBaseDirection:rightHorizPrismBaseDirection rightHorizPrism:v55 rightVertPrismBaseDirection:rightVertPrismBaseDirection rightVertPrism:v56 identifyingColor:0 secret:v16 randomBits:0];
 
         goto LABEL_14;
       }
 
-      if (a5)
+      if (error)
       {
         v10 = MEMORY[0x277CCA9B8];
         v11 = MEMORY[0x277CBEC10];
@@ -545,7 +545,7 @@ LABEL_8:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = MEMORY[0x277CBEC10];
@@ -560,19 +560,19 @@ LABEL_14:
   return v14;
 }
 
-- (unint64_t)decodeCalibrationRXID:(unint64_t *)a3 calibrationSphere:(float *)a4 calibrationCylinder:(float *)a5 calibrationAxis:(unint64_t *)a6 addVR:(float *)a7 clampingStatus:(unint64_t *)a8 displaySphere:(float *)a9 displayCylinder:(float *)a10 displayAxis:(unint64_t *)a11 fromRXID:(unint64_t)a12 RXOffsetID:(unint64_t)a13 cylinderSignFlipped:(BOOL)a14 axisID:(unint64_t)a15 allowUnsupportedRX:(BOOL)a16
+- (unint64_t)decodeCalibrationRXID:(unint64_t *)d calibrationSphere:(float *)sphere calibrationCylinder:(float *)cylinder calibrationAxis:(unint64_t *)axis addVR:(float *)r clampingStatus:(unint64_t *)status displaySphere:(float *)displaySphere displayCylinder:(float *)self0 displayAxis:(unint64_t *)self1 fromRXID:(unint64_t)self2 RXOffsetID:(unint64_t)self3 cylinderSignFlipped:(BOOL)self4 axisID:(unint64_t)self5 allowUnsupportedRX:(BOOL)self6
 {
   v50 = *MEMORY[0x277D85DE8];
   v47 = 0;
-  v48 = a12;
-  if (a8)
+  iDCopy = iD;
+  if (status)
   {
-    *a8 = 0;
+    *status = 0;
   }
 
-  if (a12 == 1023)
+  if (iD == 1023)
   {
-    if (a16)
+    if (x)
     {
       v22 = 0;
     }
@@ -613,7 +613,7 @@ LABEL_14:
       _os_log_impl(&dword_24732C000, v23, OS_LOG_TYPE_INFO, "%s @%d: rxID is in range", buf, 0x12u);
     }
 
-    v24 = [(CRXFAppClipCodeTranscoder *)self lookUpSphereValue:&v47 + 4 cylinderValue:&v47 forRXID:a12];
+    v24 = [(CRXFAppClipCodeTranscoder *)self lookUpSphereValue:&v47 + 4 cylinderValue:&v47 forRXID:iD];
     v22 = v24;
     LODWORD(v25) = HIDWORD(v47);
     if (v24)
@@ -638,7 +638,7 @@ LABEL_14:
   }
 
   v46 = 0;
-  v29 = [(CRXFAppClipCodeTranscoder *)self lookUpAxisValue:&v46 forAxisID:a15, v25];
+  v29 = [(CRXFAppClipCodeTranscoder *)self lookUpAxisValue:&v46 forAxisID:axisID, v25];
   v32 = v46;
   if (v29)
   {
@@ -650,7 +650,7 @@ LABEL_14:
     v33 = 0;
   }
 
-  v34 = vcvts_n_f32_u64(a13, 2uLL);
+  v34 = vcvts_n_f32_u64(offsetID, 2uLL);
   v35 = *(&v47 + 1);
   LODWORD(v30) = v47;
   v36 = v29 | v22;
@@ -664,7 +664,7 @@ LABEL_14:
     *buf = *(&v47 + 1);
     *&buf[8] = *&v47;
     *&buf[16] = v46;
-    if (a14)
+    if (flipped)
     {
       v44 = *buf;
       v45 = *&buf[16];
@@ -674,7 +674,7 @@ LABEL_14:
       v32 = v45;
     }
 
-    if (a13)
+    if (offsetID)
     {
       vrx_apply_eye_rx_vr_add(buf, v34, 15.0);
     }
@@ -688,9 +688,9 @@ LABEL_14:
   }
 
   *&v31 = v35;
-  if ([(CRXFAppClipCodeTranscoder *)self lookupBestValidRXID:&v48 andSphere:&v47 + 4 matchingCylinder:v30 nearSphere:v31])
+  if ([(CRXFAppClipCodeTranscoder *)self lookupBestValidRXID:&iDCopy andSphere:&v47 + 4 matchingCylinder:v30 nearSphere:v31])
   {
-    if (a13)
+    if (offsetID)
     {
       v36 |= 0x20uLL;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -709,8 +709,8 @@ LABEL_14:
       v36 |= 8uLL;
     }
 
-    v38 = a7;
-    if (a8)
+    rCopy4 = r;
+    if (status)
     {
       v39 = 3;
       goto LABEL_45;
@@ -719,7 +719,7 @@ LABEL_14:
     goto LABEL_52;
   }
 
-  if (!a13)
+  if (!offsetID)
   {
     if (v27 != *(&v47 + 1))
     {
@@ -733,8 +733,8 @@ LABEL_14:
         _os_log_impl(&dword_24732C000, v40, OS_LOG_TYPE_INFO, "%s @%d: RX clamped successfully!", buf, 0x12u);
       }
 
-      v38 = a7;
-      if (a8)
+      rCopy4 = r;
+      if (status)
       {
         v39 = 1;
         goto LABEL_45;
@@ -744,7 +744,7 @@ LABEL_14:
     }
 
 LABEL_51:
-    v38 = a7;
+    rCopy4 = r;
     goto LABEL_52;
   }
 
@@ -763,65 +763,65 @@ LABEL_51:
     _os_log_impl(&dword_24732C000, v37, OS_LOG_TYPE_INFO, "%s @%d: AddVR clamped successfully!", buf, 0x12u);
   }
 
-  v38 = a7;
-  if (a8)
+  rCopy4 = r;
+  if (status)
   {
     v39 = 2;
 LABEL_45:
-    *a8 = v39;
+    *status = v39;
   }
 
 LABEL_52:
-  if (a3)
+  if (d)
   {
-    *a3 = v48;
+    *d = iDCopy;
   }
 
-  if (a4)
+  if (sphere)
   {
-    *a4 = *(&v47 + 1);
+    *sphere = *(&v47 + 1);
   }
 
-  if (a5)
+  if (cylinder)
   {
-    *a5 = v47;
+    *cylinder = v47;
   }
 
-  if (a9)
+  if (displaySphere)
   {
-    *a9 = v27;
+    *displaySphere = v27;
   }
 
-  if (a10)
+  if (displayCylinder)
   {
-    *a10 = v26;
+    *displayCylinder = v26;
   }
 
-  if (a11)
+  if (displayAxis)
   {
-    *a11 = v32;
+    *displayAxis = v32;
   }
 
-  if (a6)
+  if (axis)
   {
-    *a6 = v46;
+    *axis = v46;
   }
 
-  if (v38)
+  if (rCopy4)
   {
-    *v38 = v34;
+    *rCopy4 = v34;
   }
 
   v41 = *MEMORY[0x277D85DE8];
   return v36;
 }
 
-- (unint64_t)encodeSphere:(float)a3 cylinder:(float)a4 axis:(unint64_t)a5 toRXID:(unint64_t *)a6 axisID:(unint64_t *)a7
+- (unint64_t)encodeSphere:(float)sphere cylinder:(float)cylinder axis:(unint64_t)axis toRXID:(unint64_t *)d axisID:(unint64_t *)iD
 {
-  if (!a6)
+  if (!d)
   {
     v11 = 0;
-    if (!a7)
+    if (!iD)
     {
       return v11;
     }
@@ -829,19 +829,19 @@ LABEL_52:
     goto LABEL_7;
   }
 
-  v11 = [CRXFAppClipCodeTranscoder lookUpRXID:"lookUpRXID:forSphereValue:cylinderValue:" forSphereValue:a6 cylinderValue:?];
+  v11 = [CRXFAppClipCodeTranscoder lookUpRXID:"lookUpRXID:forSphereValue:cylinderValue:" forSphereValue:d cylinderValue:?];
   if (v11)
   {
-    *a6 = 0;
+    *d = 0;
   }
 
-  if (a7)
+  if (iD)
   {
 LABEL_7:
-    v12 = [(CRXFAppClipCodeTranscoder *)self lookUpAxisID:a7 forAxisValue:a5];
+    v12 = [(CRXFAppClipCodeTranscoder *)self lookUpAxisID:iD forAxisValue:axis];
     if (v12)
     {
-      *a7 = 0;
+      *iD = 0;
       v11 |= v12;
     }
   }
@@ -849,27 +849,27 @@ LABEL_7:
   return v11;
 }
 
-- (id)errorForStatus:(unint64_t)a3 leftLens:(BOOL)a4
+- (id)errorForStatus:(unint64_t)status leftLens:(BOOL)lens
 {
-  v4 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  lensCopy = lens;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
   v8 = kCRXFErrorKeyLeftLensDecodeStatus;
-  if (!v4)
+  if (!lensCopy)
   {
     v8 = kCRXFErrorKeyRightLensDecodeStatus;
   }
 
-  [v6 setObject:v7 forKeyedSubscript:*v8];
+  [dictionary setObject:v7 forKeyedSubscript:*v8];
 
-  v9 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:835 userInfo:v6];
+  v9 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:835 userInfo:dictionary];
 
   return v9;
 }
 
-- (unint64_t)lookUpRXID:(unint64_t *)a3 forSphereValue:(float)a4 cylinderValue:(float)a5
+- (unint64_t)lookUpRXID:(unint64_t *)d forSphereValue:(float)value cylinderValue:(float)cylinderValue
 {
-  result = [RXIDLookup sphere:"sphere:cylinder:toRXID:" cylinder:a3 toRXID:?];
+  result = [RXIDLookup sphere:"sphere:cylinder:toRXID:" cylinder:d toRXID:?];
   if (result >= 3)
   {
     return 1;
@@ -878,9 +878,9 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)lookupBestValidRXID:(unint64_t *)a3 andSphere:(float *)a4 matchingCylinder:(float)a5 nearSphere:(float)a6
+- (unint64_t)lookupBestValidRXID:(unint64_t *)d andSphere:(float *)sphere matchingCylinder:(float)cylinder nearSphere:(float)nearSphere
 {
-  v6 = [RXIDLookup bestValidRXID:"bestValidRXID:andSphere:matchingCylinder:nearSphere:" andSphere:a3 matchingCylinder:a4 nearSphere:?];
+  v6 = [RXIDLookup bestValidRXID:"bestValidRXID:andSphere:matchingCylinder:nearSphere:" andSphere:d matchingCylinder:sphere nearSphere:?];
   v7 = 1;
   if (v6 != 1)
   {
@@ -898,18 +898,18 @@ LABEL_7:
   }
 }
 
-- (id)decodeAppClipCodeV1FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV1FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 128)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 128)
   {
     v43 = 0;
     v44 = 0;
     v41 = 0;
     v42 = 0;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:10];
-    if ([v8 skipBits:4] && objc_msgSend(v8, "skipBits:", 12) && objc_msgSend(v8, "readUInteger:bitWidth:", &v44, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v42, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v43, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v41, 6) && (objc_msgSend(v8, "readData:bitWidth:", v9, 80) & 1) != 0)
+    if ([bufferCopy skipBits:4] && objc_msgSend(bufferCopy, "skipBits:", 12) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v44, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v42, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v43, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v41, 6) && (objc_msgSend(bufferCopy, "readData:bitWidth:", v9, 80) & 1) != 0)
     {
       v39 = 0;
       v40 = 0;
@@ -919,7 +919,7 @@ LABEL_7:
       v36 = 0;
       if (v44)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = 0;
         v10 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:0 calibrationSphere:0 calibrationCylinder:0 calibrationAxis:0 addVR:0 clampingStatus:&v40 displaySphere:&v38 + 4 displayCylinder:&v38 displayAxis:&v36 fromRXID:v44 RXOffsetID:0 cylinderSignFlipped:v19 axisID:v42 allowUnsupportedRX:v20];
       }
@@ -931,7 +931,7 @@ LABEL_7:
 
       if (v43)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = 0;
         v12 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:0 calibrationSphere:0 calibrationCylinder:0 calibrationAxis:0 addVR:0 clampingStatus:&v39 displaySphere:&v37 + 4 displayCylinder:&v37 displayAxis:&v35 fromRXID:v43 RXOffsetID:0 cylinderSignFlipped:v19 axisID:v41 allowUnsupportedRX:v20];
       }
@@ -965,7 +965,7 @@ LABEL_7:
         goto LABEL_29;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v45[0] = @"leftLensDecodeStatus";
@@ -975,7 +975,7 @@ LABEL_7:
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         v46[1] = v15;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
-        *a5 = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:985 userInfo:v16];
+        *error = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:985 userInfo:v16];
 
         v11 = 0;
 LABEL_29:
@@ -984,10 +984,10 @@ LABEL_29:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:934 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
 LABEL_24:
 
       goto LABEL_25;
@@ -997,10 +997,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:918 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1050,14 +1050,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
   [v11 setSecret:*(a1 + 32)];
 }
 
-- (BOOL)encodeAppClipCodeV1:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV1:(id)v1 toBuffer:(id)buffer error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 writeUInteger:objc_msgSend(v7 bitWidth:{"version"), 4}] && objc_msgSend(v8, "skipBits:", 12) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "leftRXID"), 10) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "leftAxisID"), 6) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "rightRXID"), 10) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "rightAxisID"), 6))
+  v1Copy = v1;
+  bufferCopy = buffer;
+  if ([bufferCopy writeUInteger:objc_msgSend(v1Copy bitWidth:{"version"), 4}] && objc_msgSend(bufferCopy, "skipBits:", 12) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v1Copy, "leftRXID"), 10) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v1Copy, "leftAxisID"), 6) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v1Copy, "rightRXID"), 10) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v1Copy, "rightAxisID"), 6))
   {
-    v9 = [v7 secret];
-    v10 = [v8 writeData:v9 bitWidth:80];
+    secret = [v1Copy secret];
+    v10 = [bufferCopy writeData:secret bitWidth:80];
   }
 
   else
@@ -1065,19 +1065,19 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
     v10 = 0;
   }
 
-  if (a5 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
-    *a5 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:4 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1027 userInfo:MEMORY[0x277CBEC10]];
+    *error = [MEMORY[0x277CCA9B8] crxf_errorWithCode:4 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1027 userInfo:MEMORY[0x277CBEC10]];
   }
 
   return v10;
 }
 
-- (id)decodeAppClipCodeV2FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV2FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 128)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 128)
   {
     v50 = 0;
     v51 = 0;
@@ -1086,7 +1086,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
     v46 = 0;
     v47 = 0;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:10];
-    if ([v8 skipBits:4] && objc_msgSend(v8, "skipBits:", 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v47, 4) && objc_msgSend(v8, "readUInteger:bitWidth:", &v46, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v51, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v49, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v50, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v48, 6) && (objc_msgSend(v8, "readData:bitWidth:", v9, 80) & 1) != 0)
+    if ([bufferCopy skipBits:4] && objc_msgSend(bufferCopy, "skipBits:", 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v47, 4) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v46, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v51, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v49, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v50, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v48, 6) && (objc_msgSend(bufferCopy, "readData:bitWidth:", v9, 80) & 1) != 0)
     {
       v44 = 0;
       v45 = 0;
@@ -1099,7 +1099,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
       v38 = 0;
       if (v51)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = 0;
         v10 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v45 calibrationSphere:0 calibrationCylinder:0 calibrationAxis:0 addVR:0 clampingStatus:&v43 displaySphere:&v41 + 4 displayCylinder:&v41 displayAxis:&v38 fromRXID:v51 RXOffsetID:0 cylinderSignFlipped:v19 axisID:v49 allowUnsupportedRX:v20];
       }
@@ -1111,7 +1111,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
 
       if (v50)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = 0;
         v12 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v44 calibrationSphere:0 calibrationCylinder:0 calibrationAxis:0 addVR:0 clampingStatus:&v42 displaySphere:&v40 displayCylinder:&v39 displayAxis:&v37 fromRXID:v50 RXOffsetID:0 cylinderSignFlipped:v19 axisID:v48 allowUnsupportedRX:v20];
       }
@@ -1147,7 +1147,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
         goto LABEL_31;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v52[0] = @"leftLensDecodeStatus";
@@ -1157,7 +1157,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV1FromBuffer_allowUnsuppor
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         v53[1] = v15;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
-        *a5 = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1131 userInfo:v16];
+        *error = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1131 userInfo:v16];
 
         v11 = 0;
 LABEL_31:
@@ -1166,10 +1166,10 @@ LABEL_31:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1079 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
 LABEL_26:
 
       goto LABEL_27;
@@ -1179,10 +1179,10 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1059 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1234,14 +1234,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
   [v11 setRandomBits:*(a1 + 112)];
 }
 
-- (BOOL)encodeAppClipCodeV2:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV2:(id)v2 toBuffer:(id)buffer error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 writeUInteger:objc_msgSend(v7 bitWidth:{"version"), 4}] && objc_msgSend(v8, "skipBits:", 2) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "identifyingColor"), 4) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "randomBits"), 6) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "leftRXID"), 10) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "leftAxisID"), 6) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "rightRXID"), 10) && objc_msgSend(v8, "writeUInteger:bitWidth:", objc_msgSend(v7, "rightAxisID"), 6))
+  v2Copy = v2;
+  bufferCopy = buffer;
+  if ([bufferCopy writeUInteger:objc_msgSend(v2Copy bitWidth:{"version"), 4}] && objc_msgSend(bufferCopy, "skipBits:", 2) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "identifyingColor"), 4) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "randomBits"), 6) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "leftRXID"), 10) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "leftAxisID"), 6) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "rightRXID"), 10) && objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v2Copy, "rightAxisID"), 6))
   {
-    v9 = [v7 secret];
-    v10 = [v8 writeData:v9 bitWidth:80];
+    secret = [v2Copy secret];
+    v10 = [bufferCopy writeData:secret bitWidth:80];
   }
 
   else
@@ -1249,19 +1249,19 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
     v10 = 0;
   }
 
-  if (a5 && (v10 & 1) == 0)
+  if (error && (v10 & 1) == 0)
   {
-    *a5 = [MEMORY[0x277CCA9B8] crxf_errorWithCode:4 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1177 userInfo:MEMORY[0x277CBEC10]];
+    *error = [MEMORY[0x277CCA9B8] crxf_errorWithCode:4 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1177 userInfo:MEMORY[0x277CBEC10]];
   }
 
   return v10;
 }
 
-- (id)decodeAppClipCodeV3FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV3FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 128)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 128)
   {
     v70 = 0;
     v68 = 0;
@@ -1273,7 +1273,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
     v62 = 0;
     v63 = 0;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:10];
-    if ([v8 skipBits:4] && objc_msgSend(v8, "readUInteger:bitWidth:", &v65, 4) && objc_msgSend(v8, "readBool:", &v70 + 1) && objc_msgSend(v8, "readBool:", &v70) && objc_msgSend(v8, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v63, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v69, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v68, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v66, 6) && (objc_msgSend(v8, "readData:bitWidth:", v9, 80) & 1) != 0)
+    if ([bufferCopy skipBits:4] && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v65, 4) && objc_msgSend(bufferCopy, "readBool:", &v70 + 1) && objc_msgSend(bufferCopy, "readBool:", &v70) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v63, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v69, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v68, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v66, 6) && (objc_msgSend(bufferCopy, "readData:bitWidth:", v9, 80) & 1) != 0)
     {
       v60 = 0;
       v61 = 0;
@@ -1290,7 +1290,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
       v49 = 0;
       if (v69)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = HIBYTE(v70);
         v10 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v50 calibrationSphere:&v57 + 4 calibrationCylinder:&v57 calibrationAxis:&v52 addVR:&v55 + 4 clampingStatus:&v61 displaySphere:&v59 + 4 displayCylinder:&v59 displayAxis:&v54 fromRXID:v69 RXOffsetID:v64 cylinderSignFlipped:v19 axisID:v67 allowUnsupportedRX:v20];
       }
@@ -1302,7 +1302,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
 
       if (v68)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = v70;
         v12 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v49 calibrationSphere:&v56 + 4 calibrationCylinder:&v56 calibrationAxis:&v51 addVR:&v55 clampingStatus:&v60 displaySphere:&v58 + 4 displayCylinder:&v58 displayAxis:&v53 fromRXID:v68 RXOffsetID:v63 cylinderSignFlipped:v19 axisID:v66 allowUnsupportedRX:v20];
       }
@@ -1350,7 +1350,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
         goto LABEL_34;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v71[0] = @"leftLensDecodeStatus";
@@ -1360,7 +1360,7 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV2FromBuffer_allowUnsuppor
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         v72[1] = v15;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:2];
-        *a5 = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1289 userInfo:v16];
+        *error = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1289 userInfo:v16];
 
         v11 = 0;
 LABEL_34:
@@ -1369,10 +1369,10 @@ LABEL_34:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1233 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
 LABEL_29:
 
       goto LABEL_30;
@@ -1382,10 +1382,10 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1208 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1443,16 +1443,16 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV3FromBuffer_allowUnsuppor
   [v13 setRandomBits:*(a1 + 144)];
 }
 
-- (BOOL)encodeAppClipCodeV3:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV3:(id)v3 toBuffer:(id)buffer error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  v3Copy = v3;
+  bufferCopy = buffer;
   v18 = 0;
   v19 = 0;
-  [v8 leftAddVR];
+  [v3Copy leftAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v19 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1463,14 +1463,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV3FromBuffer_allowUnsuppor
     v16 = 1336;
 LABEL_22:
     [v13 crxf_errorWithCode:v15 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:v16 userInfo:v14];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_24;
   }
 
-  [v8 rightAddVR];
+  [v3Copy rightAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v18 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1482,9 +1482,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (![v9 writeUInteger:objc_msgSend(v8 bitWidth:{"version"), 4}] || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "identifyingColor"), 4) || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylLeftSignFlipped")) || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylRightSignFlipped")) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "randomBits"), 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftRXID"), 10) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightRXID"), 10) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightAxisID"), 6) || (objc_msgSend(v8, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
+  if (![bufferCopy writeUInteger:objc_msgSend(v3Copy bitWidth:{"version"), 4}] || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "identifyingColor"), 4) || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v3Copy, "cylLeftSignFlipped")) || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v3Copy, "cylRightSignFlipped")) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "randomBits"), 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "leftRXID"), 10) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "leftAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "rightRXID"), 10) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v3Copy, "rightAxisID"), 6) || (objc_msgSend(v3Copy, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(bufferCopy, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = MEMORY[0x277CBEC10];
@@ -1504,11 +1504,11 @@ LABEL_24:
   return v12;
 }
 
-- (id)decodeAppClipCodeV4FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV4FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 128)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 128)
   {
     v70 = 0;
     v68 = 0;
@@ -1520,7 +1520,7 @@ LABEL_24:
     v63 = 0;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:10];
     v62 = 0;
-    if ([v8 skipBits:4] && objc_msgSend(v8, "readUInteger:bitWidth:", &v65, 4) && objc_msgSend(v8, "readBool:", &v70 + 1) && objc_msgSend(v8, "readBool:", &v70) && objc_msgSend(v8, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v63, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v69, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v68, 10) && objc_msgSend(v8, "readUInteger:bitWidth:", &v66, 6) && (objc_msgSend(v8, "readData:bitWidth:", v9, 80) & 1) != 0)
+    if ([bufferCopy skipBits:4] && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v65, 4) && objc_msgSend(bufferCopy, "readBool:", &v70 + 1) && objc_msgSend(bufferCopy, "readBool:", &v70) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v63, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v69, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v68, 10) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v66, 6) && (objc_msgSend(bufferCopy, "readData:bitWidth:", v9, 80) & 1) != 0)
     {
       v60 = 0;
       v61 = 0;
@@ -1537,7 +1537,7 @@ LABEL_24:
       v49 = 0;
       if (v69)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = HIBYTE(v70);
         v10 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v50 calibrationSphere:&v57 + 4 calibrationCylinder:&v57 calibrationAxis:&v52 addVR:&v55 + 4 clampingStatus:&v61 displaySphere:&v59 + 4 displayCylinder:&v59 displayAxis:&v54 fromRXID:v69 RXOffsetID:v64 cylinderSignFlipped:v19 axisID:v67 allowUnsupportedRX:v20];
       }
@@ -1549,7 +1549,7 @@ LABEL_24:
 
       if (v68)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = v70;
         v12 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v49 calibrationSphere:&v56 + 4 calibrationCylinder:&v56 calibrationAxis:&v51 addVR:&v55 clampingStatus:&v60 displaySphere:&v58 + 4 displayCylinder:&v58 displayAxis:&v53 fromRXID:v68 RXOffsetID:v63 cylinderSignFlipped:v19 axisID:v66 allowUnsupportedRX:v20];
       }
@@ -1597,7 +1597,7 @@ LABEL_24:
         goto LABEL_34;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v71[0] = @"leftLensDecodeStatus";
@@ -1607,7 +1607,7 @@ LABEL_24:
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         v72[1] = v15;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:2];
-        *a5 = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1460 userInfo:v16];
+        *error = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1460 userInfo:v16];
 
         v11 = 0;
 LABEL_34:
@@ -1616,10 +1616,10 @@ LABEL_34:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1404 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
 LABEL_29:
 
       goto LABEL_30;
@@ -1629,10 +1629,10 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1379 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1690,16 +1690,16 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV4FromBuffer_allowUnsuppor
   [v13 setSecret:*(a1 + 32)];
 }
 
-- (BOOL)encodeAppClipCodeV4:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV4:(id)v4 toBuffer:(id)buffer error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  v4Copy = v4;
+  bufferCopy = buffer;
   v18 = 0;
   v19 = 0;
-  [v8 leftAddVR];
+  [v4Copy leftAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v19 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1710,14 +1710,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV4FromBuffer_allowUnsuppor
     v16 = 1507;
 LABEL_22:
     [v13 crxf_errorWithCode:v15 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:v16 userInfo:v14];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_24;
   }
 
-  [v8 rightAddVR];
+  [v4Copy rightAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v18 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1729,9 +1729,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (![v9 writeUInteger:objc_msgSend(v8 bitWidth:{"version"), 4}] || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "identifyingColor"), 4) || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylLeftSignFlipped")) || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylRightSignFlipped")) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "lensType"), 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftRXID"), 10) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightRXID"), 10) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightAxisID"), 6) || (objc_msgSend(v8, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
+  if (![bufferCopy writeUInteger:objc_msgSend(v4Copy bitWidth:{"version"), 4}] || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "identifyingColor"), 4) || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v4Copy, "cylLeftSignFlipped")) || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v4Copy, "cylRightSignFlipped")) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "lensType"), 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "leftRXID"), 10) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "leftAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "rightRXID"), 10) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v4Copy, "rightAxisID"), 6) || (objc_msgSend(v4Copy, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(bufferCopy, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = MEMORY[0x277CBEC10];
@@ -1751,11 +1751,11 @@ LABEL_24:
   return v12;
 }
 
-- (id)decodeAppClipCodeV5FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV5FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 128)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 128)
   {
     v70 = 0;
     v68 = 0;
@@ -1767,7 +1767,7 @@ LABEL_24:
     v63 = 0;
     v9 = [MEMORY[0x277CBEB28] dataWithLength:10];
     v62 = 0;
-    if ([v8 skipBits:4] && objc_msgSend(v8, "readBool:", &v70 + 1) && objc_msgSend(v8, "readBool:", &v70) && objc_msgSend(v8, "readUInteger:bitWidth:", &v65, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v69, 11) && objc_msgSend(v8, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v68, 11) && objc_msgSend(v8, "readUInteger:bitWidth:", &v66, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v63, 2) && (objc_msgSend(v8, "readData:bitWidth:", v9, 80) & 1) != 0)
+    if ([bufferCopy skipBits:4] && objc_msgSend(bufferCopy, "readBool:", &v70 + 1) && objc_msgSend(bufferCopy, "readBool:", &v70) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v65, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v64, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v62, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v69, 11) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v67, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v68, 11) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v66, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v63, 2) && (objc_msgSend(bufferCopy, "readData:bitWidth:", v9, 80) & 1) != 0)
     {
       v60 = 0;
       v61 = 0;
@@ -1784,7 +1784,7 @@ LABEL_24:
       v49 = 0;
       if (v69)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = HIBYTE(v70);
         v10 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v50 calibrationSphere:&v57 + 4 calibrationCylinder:&v57 calibrationAxis:&v52 addVR:&v55 + 4 clampingStatus:&v61 displaySphere:&v59 + 4 displayCylinder:&v59 displayAxis:&v54 fromRXID:v69 RXOffsetID:v65 cylinderSignFlipped:v19 axisID:v67 allowUnsupportedRX:v20];
       }
@@ -1796,7 +1796,7 @@ LABEL_24:
 
       if (v68)
       {
-        LOBYTE(v20) = a4;
+        LOBYTE(v20) = x;
         LOBYTE(v19) = v70;
         v12 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v49 calibrationSphere:&v56 + 4 calibrationCylinder:&v56 calibrationAxis:&v51 addVR:&v55 clampingStatus:&v60 displaySphere:&v58 + 4 displayCylinder:&v58 displayAxis:&v53 fromRXID:v68 RXOffsetID:v64 cylinderSignFlipped:v19 axisID:v66 allowUnsupportedRX:v20];
       }
@@ -1844,7 +1844,7 @@ LABEL_24:
         goto LABEL_34;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v71[0] = @"leftLensDecodeStatus";
@@ -1854,7 +1854,7 @@ LABEL_24:
         v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
         v72[1] = v15;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:2];
-        *a5 = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1650 userInfo:v16];
+        *error = [v13 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1650 userInfo:v16];
 
         v11 = 0;
 LABEL_34:
@@ -1863,10 +1863,10 @@ LABEL_34:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1594 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
 LABEL_29:
 
       goto LABEL_30;
@@ -1876,10 +1876,10 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1568 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1938,16 +1938,16 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV5FromBuffer_allowUnsuppor
   [v13 setRandomBits:*(a1 + 144)];
 }
 
-- (BOOL)encodeAppClipCodeV5:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV5:(id)v5 toBuffer:(id)buffer error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  v5Copy = v5;
+  bufferCopy = buffer;
   v18 = 0;
   v19 = 0;
-  [v8 leftAddVR];
+  [v5Copy leftAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v19 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1958,14 +1958,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV5FromBuffer_allowUnsuppor
     v16 = 1699;
 LABEL_22:
     [v13 crxf_errorWithCode:v15 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:v16 userInfo:v14];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_24;
   }
 
-  [v8 rightAddVR];
+  [v5Copy rightAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v18 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1977,9 +1977,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (![v9 writeUInteger:objc_msgSend(v8 bitWidth:{"version"), 4}] || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylLeftSignFlipped")) || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylRightSignFlipped")) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "lensType"), 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftRXID"), 11) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightRXID"), 11) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "randomBits"), 2) || (objc_msgSend(v8, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
+  if (![bufferCopy writeUInteger:objc_msgSend(v5Copy bitWidth:{"version"), 4}] || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v5Copy, "cylLeftSignFlipped")) || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v5Copy, "cylRightSignFlipped")) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v19, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v18, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "lensType"), 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "leftRXID"), 11) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "leftAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "rightRXID"), 11) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "rightAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v5Copy, "randomBits"), 2) || (objc_msgSend(v5Copy, "secret"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(bufferCopy, "writeData:bitWidth:", v10, 80), v10, (v11 & 1) == 0))
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = MEMORY[0x277CBEC10];
@@ -1999,11 +1999,11 @@ LABEL_24:
   return v12;
 }
 
-- (id)decodeAppClipCodeV6FromBuffer:(id)a3 allowUnsupportedRX:(BOOL)a4 error:(id *)a5
+- (id)decodeAppClipCodeV6FromBuffer:(id)buffer allowUnsupportedRX:(BOOL)x error:(id *)error
 {
   v94[6] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 bitCount] == 152)
+  bufferCopy = buffer;
+  if ([bufferCopy bitCount] == 152)
   {
     v92 = 0;
     v90 = 0;
@@ -2022,7 +2022,7 @@ LABEL_24:
     v78 = 2;
     v79 = 2;
     v77 = 2;
-    if ([v8 readData:v9 bitWidth:80] && objc_msgSend(v8, "readBool:", &v92) && objc_msgSend(v8, "readUInteger:bitWidth:", &v87, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v86, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v81, 2) && objc_msgSend(v8, "readUInteger:bitWidth:", &v91, 11) && objc_msgSend(v8, "readUInteger:bitWidth:", &v89, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v90, 11) && objc_msgSend(v8, "readUInteger:bitWidth:", &v88, 6) && objc_msgSend(v8, "readUInteger:bitWidth:", &v85, 5) && objc_msgSend(v8, "readUInteger:bitWidth:", &v84, 5) && objc_msgSend(v8, "readUInteger:bitWidth:", &v78, 1) && objc_msgSend(v8, "readUInteger:bitWidth:", &v77, 1) && objc_msgSend(v8, "readUInteger:bitWidth:", &v83, 5) && objc_msgSend(v8, "readUInteger:bitWidth:", &v82, 5) && objc_msgSend(v8, "readUInteger:bitWidth:", &v80, 1) && objc_msgSend(v8, "readUInteger:bitWidth:", &v79, 1) && objc_msgSend(v8, "skipBits:", 4) && (objc_msgSend(v8, "skipBits:", 3) & 1) != 0)
+    if ([bufferCopy readData:v9 bitWidth:80] && objc_msgSend(bufferCopy, "readBool:", &v92) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v87, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v86, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v81, 2) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v91, 11) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v89, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v90, 11) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v88, 6) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v85, 5) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v84, 5) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v78, 1) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v77, 1) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v83, 5) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v82, 5) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v80, 1) && objc_msgSend(bufferCopy, "readUInteger:bitWidth:", &v79, 1) && objc_msgSend(bufferCopy, "skipBits:", 4) && (objc_msgSend(bufferCopy, "skipBits:", 3) & 1) != 0)
     {
       v75 = 0;
       v76 = 0;
@@ -2041,7 +2041,7 @@ LABEL_24:
       v62 = 0;
       if (v91)
       {
-        LOBYTE(v26) = a4;
+        LOBYTE(v26) = x;
         LOBYTE(v25) = v92;
         v11 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v63 calibrationSphere:&v72 + 4 calibrationCylinder:&v72 calibrationAxis:&v65 addVR:&v68 + 4 clampingStatus:&v76 displaySphere:&v74 + 4 displayCylinder:&v74 displayAxis:&v67 fromRXID:v91 RXOffsetID:v87 cylinderSignFlipped:v25 axisID:v89 allowUnsupportedRX:v26];
       }
@@ -2053,7 +2053,7 @@ LABEL_24:
 
       if (v90)
       {
-        LOBYTE(v26) = a4;
+        LOBYTE(v26) = x;
         LOBYTE(v25) = v92;
         v13 = [(CRXFAppClipCodeTranscoder *)self decodeCalibrationRXID:&v62 calibrationSphere:&v71 + 4 calibrationCylinder:&v71 calibrationAxis:&v64 addVR:&v68 clampingStatus:&v75 displaySphere:&v73 + 4 displayCylinder:&v73 displayAxis:&v66 fromRXID:v90 RXOffsetID:v86 cylinderSignFlipped:v25 axisID:v88 allowUnsupportedRX:v26];
       }
@@ -2124,7 +2124,7 @@ LABEL_42:
         v13 |= 0x40uLL;
       }
 
-      if (a5)
+      if (error)
       {
         v27 = MEMORY[0x277CCA9B8];
         v93[0] = @"leftLensDecodeStatus";
@@ -2146,17 +2146,17 @@ LABEL_42:
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v88];
         v94[5] = v21;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v94 forKeys:v93 count:6];
-        *a5 = [v27 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1863 userInfo:v22];
+        *error = [v27 crxf_errorWithCode:5 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1863 userInfo:v22];
 
         v12 = 0;
         goto LABEL_42;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1780 userInfo:MEMORY[0x277CBEC10]];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
 LABEL_44:
 
       goto LABEL_45;
@@ -2166,10 +2166,10 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] crxf_errorWithCode:3 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:1743 userInfo:MEMORY[0x277CBEC10]];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -2239,16 +2239,16 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV6FromBuffer_allowUnsuppor
   [v17 setSecret:*(a1 + 32)];
 }
 
-- (BOOL)encodeAppClipCodeV6:(id)a3 toBuffer:(id)a4 error:(id *)a5
+- (BOOL)encodeAppClipCodeV6:(id)v6 toBuffer:(id)buffer error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  v6Copy = v6;
+  bufferCopy = buffer;
   v22 = 0;
   v23 = 0;
-  [v8 leftAddVR];
+  [v6Copy leftAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v23 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -2259,14 +2259,14 @@ void __84__CRXFAppClipCodeTranscoder_decodeAppClipCodeV6FromBuffer_allowUnsuppor
     v16 = 1919;
 LABEL_33:
     [v13 crxf_errorWithCode:v15 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ACC/CRXFAppClipCodeTranscoder.m" line:v16 userInfo:v14];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_40;
   }
 
-  [v8 rightAddVR];
+  [v6Copy rightAddVR];
   if (![CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:"getIndexForQuarterDiopterValue:minValue:maxValue:index:" minValue:&v22 maxValue:? index:?])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -2282,10 +2282,10 @@ LABEL_33:
   v21 = 0;
   v18 = 0;
   v19 = 0;
-  [v8 leftHorizPrism];
-  if (!-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v21) || ([v8 leftVertPrism], !-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v19)))
+  [v6Copy leftHorizPrism];
+  if (!-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v21) || ([v6Copy leftVertPrism], !-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v19)))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -2297,10 +2297,10 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [v8 rightHorizPrism];
-  if (!-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v20) || ([v8 rightVertPrism], !-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v18)))
+  [v6Copy rightHorizPrism];
+  if (!-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v20) || ([v6Copy rightVertPrism], !-[CRXFAppClipCodeTranscoder getIndexForQuarterDiopterValue:minValue:maxValue:index:](self, "getIndexForQuarterDiopterValue:minValue:maxValue:index:", &v18)))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -2312,12 +2312,12 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v10 = [v8 secret];
-  if (![v9 writeData:v10 bitWidth:80] || !objc_msgSend(v9, "writeBool:", objc_msgSend(v8, "cylRightSignFlipped")) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v23, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v22, 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "lensType"), 2) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftRXID"), 11) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightRXID"), 11) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightAxisID"), 6) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v21, 5) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v20, 5) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftHorizPrismBaseDirection"), 1) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightHorizPrismBaseDirection"), 1) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v19, 5) || !objc_msgSend(v9, "writeUInteger:bitWidth:", v18, 5) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "leftVertPrismBaseDirection"), 1) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "rightVertPrismBaseDirection"), 1) || !objc_msgSend(v9, "writeUInteger:bitWidth:", objc_msgSend(v8, "version"), 4))
+  secret = [v6Copy secret];
+  if (![bufferCopy writeData:secret bitWidth:80] || !objc_msgSend(bufferCopy, "writeBool:", objc_msgSend(v6Copy, "cylRightSignFlipped")) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v23, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v22, 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "lensType"), 2) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "leftRXID"), 11) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "leftAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "rightRXID"), 11) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "rightAxisID"), 6) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v21, 5) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v20, 5) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "leftHorizPrismBaseDirection"), 1) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "rightHorizPrismBaseDirection"), 1) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v19, 5) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", v18, 5) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "leftVertPrismBaseDirection"), 1) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "rightVertPrismBaseDirection"), 1) || !objc_msgSend(bufferCopy, "writeUInteger:bitWidth:", objc_msgSend(v6Copy, "version"), 4))
   {
 
 LABEL_37:
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = MEMORY[0x277CBEC10];
@@ -2331,7 +2331,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v11 = [v9 skipBits:3];
+  v11 = [bufferCopy skipBits:3];
 
   if ((v11 & 1) == 0)
   {
@@ -2344,33 +2344,33 @@ LABEL_40:
   return v12;
 }
 
-- (BOOL)getQuarterDiopterValueForIndex:(unint64_t)a3 minValue:(float)a4 maxValue:(float)a5 value:(float *)a6
+- (BOOL)getQuarterDiopterValueForIndex:(unint64_t)index minValue:(float)value maxValue:(float)maxValue value:(float *)a6
 {
-  v6 = a4 + (a3 * 0.25);
-  if (v6 <= a5)
+  v6 = value + (index * 0.25);
+  if (v6 <= maxValue)
   {
     *a6 = v6;
   }
 
-  return v6 <= a5;
+  return v6 <= maxValue;
 }
 
-- (BOOL)getIndexForQuarterDiopterValue:(float)a3 minValue:(float)a4 maxValue:(float)a5 index:(unint64_t *)a6
+- (BOOL)getIndexForQuarterDiopterValue:(float)value minValue:(float)minValue maxValue:(float)maxValue index:(unint64_t *)index
 {
-  v6 = a3 <= a5 && a3 >= a4;
+  v6 = value <= maxValue && value >= minValue;
   if (v6)
   {
-    *a6 = (((a3 - a4) * 100.0) + 24) / 0x19;
+    *index = (((value - minValue) * 100.0) + 24) / 0x19;
   }
 
   return v6;
 }
 
-- (id)deriveCanonicalPayloadFromPayload:(id)a3
+- (id)deriveCanonicalPayloadFromPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v17 = 0;
-  v5 = [(CRXFAppClipCodeTranscoder *)self decodeAppClipCodeFromData:v4 allowUnsupportedRX:0 error:&v17];
+  v5 = [(CRXFAppClipCodeTranscoder *)self decodeAppClipCodeFromData:payloadCopy allowUnsupportedRX:0 error:&v17];
   v6 = v17;
   if (!v5)
   {
@@ -2380,7 +2380,7 @@ LABEL_40:
 
   if ([v5 version] < 5)
   {
-    v8 = v5;
+    build = v5;
     v12 = v6;
   }
 
@@ -2388,12 +2388,12 @@ LABEL_40:
   {
     v7 = [[CRXFAppClipCodeBuilder alloc] initWithAppClipCode:v5];
     [(CRXFAppClipCodeBuilder *)v7 setVersion:5];
-    v8 = [(CRXFAppClipCodeBuilder *)v7 build];
+    build = [(CRXFAppClipCodeBuilder *)v7 build];
 
-    v9 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [v8 version]);
+    v9 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [build version]);
     v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v9];
     v16 = v6;
-    v11 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:v8 toData:v10 error:&v16];
+    v11 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:build toData:v10 error:&v16];
     v12 = v16;
 
     if (!v11)
@@ -2405,11 +2405,11 @@ LABEL_40:
 
     v13 = [MEMORY[0x277CBEA90] dataWithData:v10];
 
-    v4 = v13;
+    payloadCopy = v13;
   }
 
-  v4 = v4;
-  v14 = v4;
+  payloadCopy = payloadCopy;
+  v14 = payloadCopy;
 LABEL_9:
 
   v6 = v12;
@@ -2418,21 +2418,21 @@ LABEL_10:
   return v14;
 }
 
-- (id)derivePayloadWithLensTypeZeroed:(id)a3 ifLensTypeIs:(unint64_t)a4
+- (id)derivePayloadWithLensTypeZeroed:(id)zeroed ifLensTypeIs:(unint64_t)is
 {
   v17 = 0;
-  v6 = [(CRXFAppClipCodeTranscoder *)self decodeAppClipCodeFromData:a3 allowUnsupportedRX:0 error:&v17];
+  v6 = [(CRXFAppClipCodeTranscoder *)self decodeAppClipCodeFromData:zeroed allowUnsupportedRX:0 error:&v17];
   v7 = v17;
-  if (v6 && [v6 lensType] == a4)
+  if (v6 && [v6 lensType] == is)
   {
     v8 = [[CRXFAppClipCodeBuilder alloc] initWithAppClipCode:v6];
     [(CRXFAppClipCodeBuilder *)v8 setLensType:0];
-    v9 = [(CRXFAppClipCodeBuilder *)v8 build];
+    build = [(CRXFAppClipCodeBuilder *)v8 build];
 
-    v10 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [v9 version]);
+    v10 = -[CRXFAppClipCodeTranscoder payloadLengthForAppClipCodeVersion:](self, "payloadLengthForAppClipCodeVersion:", [build version]);
     v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v10];
     v16 = v7;
-    v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:v9 toData:v11 error:&v16];
+    v12 = [(CRXFAppClipCodeTranscoder *)self encodeAppClipCode:build toData:v11 error:&v16];
     v13 = v16;
 
     v14 = 0;
@@ -2441,7 +2441,7 @@ LABEL_10:
       v14 = [MEMORY[0x277CBEA90] dataWithData:v11];
     }
 
-    v6 = v9;
+    v6 = build;
     v7 = v13;
   }
 

@@ -7,22 +7,22 @@
 
 - (id)hf_displayName
 {
-  v1 = [a1 hf_serviceNameComponents];
-  v2 = [v1 composedString];
+  hf_serviceNameComponents = [self hf_serviceNameComponents];
+  composedString = [hf_serviceNameComponents composedString];
 
-  return v2;
+  return composedString;
 }
 
 - (HFServiceNameComponents)hf_serviceNameComponents
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [a1 name];
+  name = [self name];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a1 services];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  services = [self services];
+  v4 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -34,17 +34,17 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) accessory];
-        v10 = [v9 room];
+        accessory = [*(*(&v15 + 1) + 8 * i) accessory];
+        room = [accessory room];
 
-        if (v10)
+        if (room)
         {
           if (v6)
           {
-            if (([v6 isEqual:v10] & 1) == 0)
+            if (([v6 isEqual:room] & 1) == 0)
             {
 
               goto LABEL_14;
@@ -53,12 +53,12 @@
 
           else
           {
-            v6 = v10;
+            v6 = room;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -70,8 +70,8 @@ LABEL_14:
     v6 = 0;
   }
 
-  v11 = [v6 name];
-  v12 = [[HFServiceNameComponents alloc] initWithRawServiceName:v2 rawRoomName:v11];
+  name2 = [v6 name];
+  v12 = [[HFServiceNameComponents alloc] initWithRawServiceName:name rawRoomName:name2];
 
   v13 = *MEMORY[0x277D85DE8];
 

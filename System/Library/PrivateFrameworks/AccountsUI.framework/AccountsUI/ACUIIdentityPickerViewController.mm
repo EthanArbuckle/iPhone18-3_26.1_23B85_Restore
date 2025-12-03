@@ -1,17 +1,17 @@
 @interface ACUIIdentityPickerViewController
 - (BOOL)_allowIdentitySelection;
 - (BOOL)_isPropertyEnabled;
-- (__SecIdentity)_identityToAutoselectWithEnabled:(BOOL)a3;
+- (__SecIdentity)_identityToAutoselectWithEnabled:(BOOL)enabled;
 - (__SecIdentity)_selectedIdentity;
 - (id)_identitySpecifiers;
-- (id)_specifiersForIdentities:(id)a3;
-- (id)_valueForSwitchSpecifier:(id)a3;
+- (id)_specifiersForIdentities:(id)identities;
+- (id)_valueForSwitchSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_finishedFetchingIdentities:(id)a3;
-- (void)_setPropertyEnabled:(BOOL)a3 identity:(__SecIdentity *)a4;
-- (void)_setValue:(id)a3 forSwitchSpecifier:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_finishedFetchingIdentities:(id)identities;
+- (void)_setPropertyEnabled:(BOOL)enabled identity:(__SecIdentity *)identity;
+- (void)_setValue:(id)value forSwitchSpecifier:(id)specifier;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,27 +19,27 @@
 
 - (void)viewDidLoad
 {
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) target];
+  target = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) target];
   v45 = MEMORY[0x277D82BE0](&unk_285035A60);
   v28 = 0;
-  if (v46)
+  if (target)
   {
-    v28 = [v46 conformsToProtocol:v45];
+    v28 = [target conformsToProtocol:v45];
   }
 
   if ((v28 & 1) == 0)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v26 = NSStringFromProtocol(v45);
-    [v27 handleFailureInMethod:v47 object:v48 file:@"ACUIIdentityPickerViewController.m" lineNumber:126 description:{@"target must conform to %@", v26}];
+    [currentHandler handleFailureInMethod:v47 object:selfCopy file:@"ACUIIdentityPickerViewController.m" lineNumber:126 description:{@"target must conform to %@", v26}];
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](currentHandler);
   }
 
-  objc_storeWeak(&v48->_delegate, v46);
-  v44 = [*(&v48->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) propertyForKey:*MEMORY[0x277D3FFF0]];
+  objc_storeWeak(&selfCopy->_delegate, target);
+  v44 = [*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) propertyForKey:*MEMORY[0x277D3FFF0]];
   isKindOfClass = 0;
   if (v44)
   {
@@ -49,35 +49,35 @@
 
   if ((isKindOfClass & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:v47 object:v48 file:@"ACUIIdentityPickerViewController.m" lineNumber:130 description:{@"%@ must be an NSString", v44}];
-    MEMORY[0x277D82BD8](v24);
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:v47 object:selfCopy file:@"ACUIIdentityPickerViewController.m" lineNumber:130 description:{@"%@ must be an NSString", v44}];
+    MEMORY[0x277D82BD8](currentHandler2);
   }
 
   v2 = [v44 copy];
-  property = v48->_property;
-  v48->_property = v2;
+  property = selfCopy->_property;
+  selfCopy->_property = v2;
   MEMORY[0x277D82BD8](property);
   v43 = 0;
-  WeakRetained = objc_loadWeakRetained(&v48->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v23 = objc_opt_respondsToSelector();
   MEMORY[0x277D82BD8](WeakRetained);
   if (v23)
   {
-    v21 = objc_loadWeakRetained(&v48->_delegate);
-    v43 = [v21 configurationOptionsForIdentityPickerController:v48];
+    v21 = objc_loadWeakRetained(&selfCopy->_delegate);
+    v43 = [v21 configurationOptionsForIdentityPickerController:selfCopy];
     MEMORY[0x277D82BD8](v21);
   }
 
   else
   {
-    v19 = objc_loadWeakRetained(&v48->_delegate);
+    v19 = objc_loadWeakRetained(&selfCopy->_delegate);
     v20 = objc_opt_respondsToSelector();
     MEMORY[0x277D82BD8](v19);
     if (v20)
     {
-      v17 = objc_loadWeakRetained(&v48->_delegate);
-      v18 = [v17 allowEditingForIdentityPickerController:v48];
+      v17 = objc_loadWeakRetained(&selfCopy->_delegate);
+      v18 = [v17 allowEditingForIdentityPickerController:selfCopy];
       MEMORY[0x277D82BD8](v17);
       v42 = v18;
       v4 = 3;
@@ -90,27 +90,27 @@
     }
   }
 
-  v48->_userInteractiveSwitch = (v43 & 1) != 0;
-  v48->_userInteractiveIdentityList = (v43 & 2) != 0;
-  v48->_allowIdentitySelectionForDisabledSwitch = (v43 & 4) != 0;
-  v13 = objc_loadWeakRetained(&v48->_delegate);
-  v12 = [v13 emailAddressesForIdentityPickerController:v48];
+  selfCopy->_userInteractiveSwitch = (v43 & 1) != 0;
+  selfCopy->_userInteractiveIdentityList = (v43 & 2) != 0;
+  selfCopy->_allowIdentitySelectionForDisabledSwitch = (v43 & 4) != 0;
+  v13 = objc_loadWeakRetained(&selfCopy->_delegate);
+  v12 = [v13 emailAddressesForIdentityPickerController:selfCopy];
   v5 = [v12 copy];
-  emailAddresses = v48->_emailAddresses;
-  v48->_emailAddresses = v5;
+  emailAddresses = selfCopy->_emailAddresses;
+  selfCopy->_emailAddresses = v5;
   MEMORY[0x277D82BD8](emailAddresses);
   MEMORY[0x277D82BD8](v12);
   MEMORY[0x277D82BD8](v13);
-  v16 = [(ACUIIdentityPickerViewController *)v48 table];
+  table = [(ACUIIdentityPickerViewController *)selfCopy table];
   v14 = objc_opt_class();
   v15 = +[(PSTableCell *)ACUIIdentityPickerCell];
-  [v16 registerClass:v14 forCellReuseIdentifier:?];
+  [table registerClass:v14 forCellReuseIdentifier:?];
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  v41.receiver = v48;
+  MEMORY[0x277D82BD8](table);
+  v41.receiver = selfCopy;
   v41.super_class = ACUIIdentityPickerViewController;
   [(ACUIIdentityPickerViewController *)&v41 viewDidLoad];
-  if (v48->_userInteractiveIdentityList || v48->_userInteractiveSwitch)
+  if (selfCopy->_userInteractiveIdentityList || selfCopy->_userInteractiveSwitch)
   {
     queue = dispatch_get_global_queue(0, 0);
     v35 = MEMORY[0x277D85DD0];
@@ -118,7 +118,7 @@
     v37 = 0;
     v38 = __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke;
     v39 = &unk_278BFA730;
-    v40 = MEMORY[0x277D82BE0](v48);
+    v40 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_async(queue, &v35);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(&v40, 0);
@@ -126,14 +126,14 @@
 
   else
   {
-    v34 = [(ACUIIdentityPickerViewController *)v48 _selectedIdentity];
-    if ([(ACUIIdentityPickerViewController *)v48 _isPropertyEnabled])
+    _selectedIdentity = [(ACUIIdentityPickerViewController *)selfCopy _selectedIdentity];
+    if ([(ACUIIdentityPickerViewController *)selfCopy _isPropertyEnabled])
     {
-      v10 = v48;
+      v10 = selfCopy;
       v31 = 0;
-      if (v34)
+      if (_selectedIdentity)
       {
-        v32 = [MEMORY[0x277CBEA60] arrayWithObject:v34];
+        v32 = [MEMORY[0x277CBEA60] arrayWithObject:_selectedIdentity];
         v31 = 1;
         v9 = v32;
       }
@@ -152,16 +152,16 @@
 
     else
     {
-      v30 = [(ACUIIdentityPickerViewController *)v48 specifierForID:@"CertificatesGroup"];
+      v30 = [(ACUIIdentityPickerViewController *)selfCopy specifierForID:@"CertificatesGroup"];
       v29 = 0;
       if (v30)
       {
-        [(ACUIIdentityPickerViewController *)v48 getGroup:&v29 row:0 ofSpecifier:v30];
-        v7 = v48;
-        v8 = [(ACUIIdentityPickerViewController *)v48 specifiersInGroup:v29];
+        [(ACUIIdentityPickerViewController *)selfCopy getGroup:&v29 row:0 ofSpecifier:v30];
+        v7 = selfCopy;
+        v8 = [(ACUIIdentityPickerViewController *)selfCopy specifiersInGroup:v29];
         [ACUIIdentityPickerViewController removeContiguousSpecifiers:v7 animated:"removeContiguousSpecifiers:animated:"];
         MEMORY[0x277D82BD8](v8);
-        [(ACUIIdentityPickerViewController *)v48 removeSpecifier:v30];
+        [(ACUIIdentityPickerViewController *)selfCopy removeSpecifier:v30];
       }
 
       objc_storeStrong(&v30, 0);
@@ -170,7 +170,7 @@
 
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&target, 0);
 }
 
 void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
@@ -200,25 +200,25 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
 
 - (id)specifiers
 {
-  v43 = self;
+  selfCopy = self;
   v42[1] = a2;
   if (!*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
   {
-    WeakRetained = objc_loadWeakRetained(&v43->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     v37 = v42;
-    v42[0] = [WeakRetained localizedSwitchNameForIdentityPickerController:v43];
+    v42[0] = [WeakRetained localizedSwitchNameForIdentityPickerController:selfCopy];
     MEMORY[0x277D82BD8](WeakRetained);
     v22 = 0x277D3F000uLL;
     v38 = 0;
-    v2 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v42[0] target:v43 set:sel__setValue_forSwitchSpecifier_ get:sel__valueForSwitchSpecifier_ detail:0 cell:? edit:?];
+    v2 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v42[0] target:selfCopy set:sel__setValue_forSwitchSpecifier_ get:sel__valueForSwitchSpecifier_ detail:0 cell:? edit:?];
     v36 = &v41;
     v41 = v2;
     v15 = v2;
-    v16 = [(ACUIIdentityPickerViewController *)v43 property];
+    property = [(ACUIIdentityPickerViewController *)selfCopy property];
     v33 = MEMORY[0x277D3FFF0];
     v3 = *MEMORY[0x277D3FFF0];
     [v15 setProperty:? forKey:?];
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](property);
     v21 = MEMORY[0x277D3FFB8];
     [v41 setProperty:@"Switch" forKey:*MEMORY[0x277D3FFB8]];
     v31 = MEMORY[0x277D3FF38];
@@ -253,7 +253,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
     [v39 setProperty:@"CertificatesLoading" forKey:*v33];
     v8 = objc_alloc(MEMORY[0x277CBEA60]);
     v9 = [v8 initWithObjects:{v41, v40, v39, 0}];
-    v10 = (v43 + *MEMORY[0x277D3FC48]);
+    v10 = (selfCopy + *MEMORY[0x277D3FC48]);
     v11 = *v10;
     *v10 = v9;
     MEMORY[0x277D82BD8](v11);
@@ -263,61 +263,61 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
     objc_storeStrong(v37, v38);
   }
 
-  v12 = *(&v43->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
+  v12 = *(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
 
   return v12;
 }
 
-- (void)_finishedFetchingIdentities:(id)a3
+- (void)_finishedFetchingIdentities:(id)identities
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v14->_identities, location[0]);
-  v12 = [(ACUIIdentityPickerViewController *)v14 _specifiersForIdentities:location[0]];
-  v11 = [(ACUIIdentityPickerViewController *)v14 _isPropertyEnabled];
-  v10 = [(ACUIIdentityPickerViewController *)v14 _identityToAutoselectWithEnabled:v11];
-  if (v14->_userInteractiveIdentityList && !v10)
+  objc_storeStrong(location, identities);
+  objc_storeStrong(&selfCopy->_identities, location[0]);
+  v12 = [(ACUIIdentityPickerViewController *)selfCopy _specifiersForIdentities:location[0]];
+  _isPropertyEnabled = [(ACUIIdentityPickerViewController *)selfCopy _isPropertyEnabled];
+  _selectedIdentity = [(ACUIIdentityPickerViewController *)selfCopy _identityToAutoselectWithEnabled:_isPropertyEnabled];
+  if (selfCopy->_userInteractiveIdentityList && !_selectedIdentity)
   {
-    v11 = 0;
-    if (v14->_allowIdentitySelectionForDisabledSwitch)
+    _isPropertyEnabled = 0;
+    if (selfCopy->_allowIdentitySelectionForDisabledSwitch)
     {
-      v10 = [(ACUIIdentityPickerViewController *)v14 _selectedIdentity];
+      _selectedIdentity = [(ACUIIdentityPickerViewController *)selfCopy _selectedIdentity];
     }
   }
 
-  [(ACUIIdentityPickerViewController *)v14 _setPropertyEnabled:v11 identity:v10];
-  v9 = [(ACUIIdentityPickerViewController *)v14 specifierForID:@"Switch"];
-  if (v14->_userInteractiveSwitch && [location[0] count])
+  [(ACUIIdentityPickerViewController *)selfCopy _setPropertyEnabled:_isPropertyEnabled identity:_selectedIdentity];
+  v9 = [(ACUIIdentityPickerViewController *)selfCopy specifierForID:@"Switch"];
+  if (selfCopy->_userInteractiveSwitch && [location[0] count])
   {
     [v9 setProperty:@"YES" forKey:*MEMORY[0x277D3FF38]];
   }
 
   v8 = 0;
-  [(ACUIIdentityPickerViewController *)v14 beginUpdates];
-  [(ACUIIdentityPickerViewController *)v14 reloadSpecifier:v9 animated:1];
-  v4 = v14;
-  v5 = [(ACUIIdentityPickerViewController *)v14 specifierForID:@"CertificatesGroup"];
+  [(ACUIIdentityPickerViewController *)selfCopy beginUpdates];
+  [(ACUIIdentityPickerViewController *)selfCopy reloadSpecifier:v9 animated:1];
+  v4 = selfCopy;
+  v5 = [(ACUIIdentityPickerViewController *)selfCopy specifierForID:@"CertificatesGroup"];
   [ACUIIdentityPickerViewController getGroup:v4 row:"getGroup:row:ofSpecifier:" ofSpecifier:v3];
   MEMORY[0x277D82BD8](v5);
-  v6 = v14;
-  v7 = [(ACUIIdentityPickerViewController *)v14 specifiersInGroup:v8];
+  v6 = selfCopy;
+  v7 = [(ACUIIdentityPickerViewController *)selfCopy specifiersInGroup:v8];
   [ACUIIdentityPickerViewController replaceContiguousSpecifiers:v6 withSpecifiers:"replaceContiguousSpecifiers:withSpecifiers:animated:" animated:?];
   MEMORY[0x277D82BD8](v7);
-  [(ACUIIdentityPickerViewController *)v14 endUpdates];
+  [(ACUIIdentityPickerViewController *)selfCopy endUpdates];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_specifiersForIdentities:(id)a3
+- (id)_specifiersForIdentities:(id)identities
 {
   v45 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, identities);
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = MEMORY[0x277D3FAD8];
   v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -329,7 +329,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
   [v36 addObject:v35];
   if ([location count])
   {
-    v34 = [(ACUIIdentityPickerViewController *)v39 _selectedIdentity];
+    _selectedIdentity = [(ACUIIdentityPickerViewController *)selfCopy _selectedIdentity];
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x277D82BE0](location);
     v22 = [obj countByEnumeratingWithState:__b objects:v44 count:16];
@@ -364,14 +364,14 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
           v29 = v15;
           if (v29)
           {
-            v28 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v29 target:v39 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+            v28 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v29 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
             v42[0] = @"Identity";
             v43[0] = identityRef;
             v42[1] = @"identitySelected";
-            v14 = [MEMORY[0x277CCABB0] numberWithBool:{_SecIdentityEqual(v34, identityRef)}];
+            v14 = [MEMORY[0x277CCABB0] numberWithBool:{_SecIdentityEqual(_selectedIdentity, identityRef)}];
             v43[1] = v14;
             v42[2] = @"allowSelection";
-            v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACUIIdentityPickerViewController _allowIdentitySelection](v39, "_allowIdentitySelection")}];
+            v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACUIIdentityPickerViewController _allowIdentitySelection](selfCopy, "_allowIdentitySelection")}];
             v43[2] = v13;
             v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:3];
             [v28 setUserInfo:?];
@@ -440,11 +440,11 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
 - (id)_identitySpecifiers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](*(&v15->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
+  obj = MEMORY[0x277D82BE0](*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
   v11 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
   if (v11)
   {
@@ -460,10 +460,10 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
       }
 
       v13 = *(__b[1] + 8 * v8);
-      v4 = [v13 userInfo];
-      v5 = [v4 objectForKey:@"Identity"];
+      userInfo = [v13 userInfo];
+      v5 = [userInfo objectForKey:@"Identity"];
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](userInfo);
       if (v5)
       {
         [v14[0] addObject:v13];
@@ -490,33 +490,33 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
   return v3;
 }
 
-- (__SecIdentity)_identityToAutoselectWithEnabled:(BOOL)a3
+- (__SecIdentity)_identityToAutoselectWithEnabled:(BOOL)enabled
 {
-  v4 = [(ACUIIdentityPickerViewController *)self _selectedIdentity];
-  if (self->_userInteractiveIdentityList && a3 && !v4 && [(NSArray *)self->_identities count])
+  _selectedIdentity = [(ACUIIdentityPickerViewController *)self _selectedIdentity];
+  if (self->_userInteractiveIdentityList && enabled && !_selectedIdentity && [(NSArray *)self->_identities count])
   {
     return [(NSArray *)self->_identities objectAtIndex:0];
   }
 
-  return v4;
+  return _selectedIdentity;
 }
 
-- (void)_setValue:(id)a3 forSwitchSpecifier:(id)a4
+- (void)_setValue:(id)value forSwitchSpecifier:(id)specifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18 = [location[0] BOOLValue];
-  v17 = [(ACUIIdentityPickerViewController *)v21 _identityToAutoselectWithEnabled:v18 & 1];
-  [(ACUIIdentityPickerViewController *)v21 _setPropertyEnabled:v18 & 1 identity:v17];
-  v16 = [(ACUIIdentityPickerViewController *)v21 _allowIdentitySelection];
+  objc_storeStrong(&v19, specifier);
+  bOOLValue = [location[0] BOOLValue];
+  v17 = [(ACUIIdentityPickerViewController *)selfCopy _identityToAutoselectWithEnabled:bOOLValue & 1];
+  [(ACUIIdentityPickerViewController *)selfCopy _setPropertyEnabled:bOOLValue & 1 identity:v17];
+  _allowIdentitySelection = [(ACUIIdentityPickerViewController *)selfCopy _allowIdentitySelection];
   memset(__b, 0, sizeof(__b));
-  v11 = [(ACUIIdentityPickerViewController *)v21 _identitySpecifiers];
-  v12 = [v11 countByEnumeratingWithState:__b objects:v22 count:16];
+  _identitySpecifiers = [(ACUIIdentityPickerViewController *)selfCopy _identitySpecifiers];
+  v12 = [_identitySpecifiers countByEnumeratingWithState:__b objects:v22 count:16];
   if (v12)
   {
     v7 = *__b[2];
@@ -527,14 +527,14 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
       v6 = v8;
       if (*__b[2] != v7)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(_identitySpecifiers);
       }
 
       v15 = *(__b[1] + 8 * v8);
-      v4 = [v15 userInfo];
-      v13 = [v4 mutableCopy];
-      MEMORY[0x277D82BD8](v4);
-      v5 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+      userInfo = [v15 userInfo];
+      v13 = [userInfo mutableCopy];
+      MEMORY[0x277D82BD8](userInfo);
+      v5 = [MEMORY[0x277CCABB0] numberWithBool:_allowIdentitySelection];
       [v13 setObject:? forKeyedSubscript:?];
       MEMORY[0x277D82BD8](v5);
       [v15 setUserInfo:v13];
@@ -543,7 +543,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
       if (v6 + 1 >= v9)
       {
         v8 = 0;
-        v9 = [v11 countByEnumeratingWithState:__b objects:v22 count:16];
+        v9 = [_identitySpecifiers countByEnumeratingWithState:__b objects:v22 count:16];
         if (!v9)
         {
           break;
@@ -552,27 +552,27 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
     }
   }
 
-  MEMORY[0x277D82BD8](v11);
-  [(ACUIIdentityPickerViewController *)v21 reload];
+  MEMORY[0x277D82BD8](_identitySpecifiers);
+  [(ACUIIdentityPickerViewController *)selfCopy reload];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPropertyEnabled:(BOOL)a3 identity:(__SecIdentity *)a4
+- (void)_setPropertyEnabled:(BOOL)enabled identity:(__SecIdentity *)identity
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained identityPickerController:self setPropertyEnabled:a3 withIdentity:a4];
+  [WeakRetained identityPickerController:self setPropertyEnabled:enabled withIdentity:identity];
   MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (id)_valueForSwitchSpecifier:(id)a3
+- (id)_valueForSwitchSpecifier:(id)specifier
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACUIIdentityPickerViewController _isPropertyEnabled](v6, "_isPropertyEnabled")}];
+  objc_storeStrong(location, specifier);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACUIIdentityPickerViewController _isPropertyEnabled](selfCopy, "_isPropertyEnabled")}];
   objc_storeStrong(location, 0);
 
   return v4;
@@ -594,46 +594,46 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
   return v4;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = [(ACUIIdentityPickerViewController *)v23 specifierAtIndex:[(ACUIIdentityPickerViewController *)v23 indexForIndexPath:v21]];
-  v12 = [v20 userInfo];
-  v13 = [v12 objectForKey:@"Identity"];
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&v21, path);
+  v20 = [(ACUIIdentityPickerViewController *)selfCopy specifierAtIndex:[(ACUIIdentityPickerViewController *)selfCopy indexForIndexPath:v21]];
+  userInfo = [v20 userInfo];
+  v13 = [userInfo objectForKey:@"Identity"];
+  MEMORY[0x277D82BD8](userInfo);
   v19 = v13;
   if (v13)
   {
-    WeakRetained = objc_loadWeakRetained(&v23->_delegate);
-    v10 = [WeakRetained copyTrustForIdentityPickerController:v23 identity:v19];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    v10 = [WeakRetained copyTrustForIdentityPickerController:selfCopy identity:v19];
     MEMORY[0x277D82BD8](WeakRetained);
     v18 = v10;
     if (v10)
     {
-      v17 = [MEMORY[0x277CF9710] defaultTrustManager];
-      v6 = v17;
+      defaultTrustManager = [MEMORY[0x277CF9710] defaultTrustManager];
+      v6 = defaultTrustManager;
       v5 = v18;
-      v7 = [(NSArray *)v23->_emailAddresses objectAtIndex:0];
+      v7 = [(NSArray *)selfCopy->_emailAddresses objectAtIndex:0];
       v8 = [v6 actionForSMIMETrust:v5 sender:?];
       MEMORY[0x277D82BD8](v7);
       v16 = v8;
       v4 = objc_alloc(MEMORY[0x277CF96F8]);
       v15 = [v4 initWithTrust:v18 action:v8];
-      [(ACUIIdentityPickerViewController *)v23 showController:v15 animate:1];
+      [(ACUIIdentityPickerViewController *)selfCopy showController:v15 animate:1];
       CFRelease(v18);
       objc_storeStrong(&v15, 0);
-      objc_storeStrong(&v17, 0);
+      objc_storeStrong(&defaultTrustManager, 0);
     }
   }
 
   else
   {
-    v14.receiver = v23;
+    v14.receiver = selfCopy;
     v14.super_class = ACUIIdentityPickerViewController;
     [(ACUIIdentityPickerViewController *)&v14 tableView:location[0] accessoryButtonTappedForRowWithIndexPath:v21];
   }
@@ -643,29 +643,29 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v35 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  v30 = [(ACUIIdentityPickerViewController *)v33 specifierAtIndex:[(ACUIIdentityPickerViewController *)v33 indexForIndexPath:v31]];
-  v18 = [v30 userInfo];
-  v19 = [v18 objectForKey:@"Identity"];
-  MEMORY[0x277D82BD8](v18);
+  objc_storeStrong(&v31, path);
+  v30 = [(ACUIIdentityPickerViewController *)selfCopy specifierAtIndex:[(ACUIIdentityPickerViewController *)selfCopy indexForIndexPath:v31]];
+  userInfo = [v30 userInfo];
+  v19 = [userInfo objectForKey:@"Identity"];
+  MEMORY[0x277D82BD8](userInfo);
   v29 = v19;
-  v28 = [(ACUIIdentityPickerViewController *)v33 _selectedIdentity];
+  _selectedIdentity = [(ACUIIdentityPickerViewController *)selfCopy _selectedIdentity];
   if (v19)
   {
-    if ([(ACUIIdentityPickerViewController *)v33 _allowIdentitySelection]&& !_SecIdentityEqual(v29, v28))
+    if ([(ACUIIdentityPickerViewController *)selfCopy _allowIdentitySelection]&& !_SecIdentityEqual(v29, _selectedIdentity))
     {
-      [(ACUIIdentityPickerViewController *)v33 _setPropertyEnabled:[(ACUIIdentityPickerViewController *)v33 _isPropertyEnabled] identity:v29];
+      [(ACUIIdentityPickerViewController *)selfCopy _setPropertyEnabled:[(ACUIIdentityPickerViewController *)selfCopy _isPropertyEnabled] identity:v29];
       memset(__b, 0, sizeof(__b));
-      v15 = [(ACUIIdentityPickerViewController *)v33 _identitySpecifiers];
-      v16 = [v15 countByEnumeratingWithState:__b objects:v34 count:16];
+      _identitySpecifiers = [(ACUIIdentityPickerViewController *)selfCopy _identitySpecifiers];
+      v16 = [_identitySpecifiers countByEnumeratingWithState:__b objects:v34 count:16];
       if (v16)
       {
         v12 = *__b[2];
@@ -676,22 +676,22 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
           v11 = v13;
           if (*__b[2] != v12)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(_identitySpecifiers);
           }
 
           v27 = *(__b[1] + 8 * v13);
           v8 = v29;
-          v9 = [v27 userInfo];
-          v10 = _SecIdentityEqual(v8, [v9 objectForKey:@"Identity"]);
-          MEMORY[0x277D82BD8](v9);
+          userInfo2 = [v27 userInfo];
+          v10 = _SecIdentityEqual(v8, [userInfo2 objectForKey:@"Identity"]);
+          MEMORY[0x277D82BD8](userInfo2);
           v25 = v10;
           v22 = 0;
-          if (v28)
+          if (_selectedIdentity)
           {
-            v6 = v28;
-            v23 = [v27 userInfo];
+            v6 = _selectedIdentity;
+            userInfo3 = [v27 userInfo];
             v22 = 1;
-            v7 = _SecIdentityEqual(v6, [v23 objectForKey:@"Identity"]);
+            v7 = _SecIdentityEqual(v6, [userInfo3 objectForKey:@"Identity"]);
           }
 
           else
@@ -701,20 +701,20 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
 
           if (v22)
           {
-            MEMORY[0x277D82BD8](v23);
+            MEMORY[0x277D82BD8](userInfo3);
           }
 
           v24 = v7;
           if (v25 || v24)
           {
-            v4 = [v27 userInfo];
-            v21 = [v4 mutableCopy];
-            MEMORY[0x277D82BD8](v4);
+            userInfo4 = [v27 userInfo];
+            v21 = [userInfo4 mutableCopy];
+            MEMORY[0x277D82BD8](userInfo4);
             v5 = [MEMORY[0x277CCABB0] numberWithBool:v25];
             [v21 setObject:? forKeyedSubscript:?];
             MEMORY[0x277D82BD8](v5);
             [v27 setUserInfo:v21];
-            [(ACUIIdentityPickerViewController *)v33 reloadSpecifier:v27];
+            [(ACUIIdentityPickerViewController *)selfCopy reloadSpecifier:v27];
             objc_storeStrong(&v21, 0);
           }
 
@@ -722,7 +722,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
           if (v11 + 1 >= v14)
           {
             v13 = 0;
-            v14 = [v15 countByEnumeratingWithState:__b objects:v34 count:16];
+            v14 = [_identitySpecifiers countByEnumeratingWithState:__b objects:v34 count:16];
             if (!v14)
             {
               break;
@@ -731,7 +731,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
         }
       }
 
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](_identitySpecifiers);
     }
 
     [location[0] selectRowAtIndexPath:0 animated:1 scrollPosition:0];
@@ -739,7 +739,7 @@ void __47__ACUIIdentityPickerViewController_viewDidLoad__block_invoke(void *a1)
 
   else
   {
-    v20.receiver = v33;
+    v20.receiver = selfCopy;
     v20.super_class = ACUIIdentityPickerViewController;
     [(ACUIIdentityPickerViewController *)&v20 tableView:location[0] didSelectRowAtIndexPath:v31];
   }

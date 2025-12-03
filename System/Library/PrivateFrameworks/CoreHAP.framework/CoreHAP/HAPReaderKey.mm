@@ -1,12 +1,12 @@
 @interface HAPReaderKey
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPReaderKey)init;
-- (HAPReaderKey)initWithType:(id)a3 key:(id)a4 keyIdentifier:(id)a5 readerIdentifier:(id)a6;
+- (HAPReaderKey)initWithType:(id)type key:(id)key keyIdentifier:(id)identifier readerIdentifier:(id)readerIdentifier;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPReaderKey
@@ -14,19 +14,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPReaderKey *)self type];
+  type = [(HAPReaderKey *)self type];
   v5 = [(HAPReaderKey *)self key];
-  v6 = [(HAPReaderKey *)self keyIdentifier];
-  v7 = [(HAPReaderKey *)self readerIdentifier];
-  v8 = [v3 stringWithFormat:@"<HAPReaderKey type=%@, key=%@, keyIdentifier=%@, readerIdentifier=%@>", v4, v5, v6, v7];
+  keyIdentifier = [(HAPReaderKey *)self keyIdentifier];
+  readerIdentifier = [(HAPReaderKey *)self readerIdentifier];
+  v8 = [v3 stringWithFormat:@"<HAPReaderKey type=%@, key=%@, keyIdentifier=%@, readerIdentifier=%@>", type, v5, keyIdentifier, readerIdentifier];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,15 +36,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPReaderKey *)self type];
-      v8 = [(HAPReaderKey *)v6 type];
-      if (v7 != v8)
+      v6 = equalCopy;
+      type = [(HAPReaderKey *)self type];
+      type2 = [(HAPReaderKey *)v6 type];
+      if (type != type2)
       {
-        v9 = [(HAPReaderKey *)self type];
+        type3 = [(HAPReaderKey *)self type];
         [(HAPReaderKey *)v6 type];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = type3;
+        if (![type3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
@@ -63,7 +63,7 @@
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (type == type2)
           {
 LABEL_25:
 
@@ -76,11 +76,11 @@ LABEL_24:
         }
       }
 
-      v13 = [(HAPReaderKey *)self keyIdentifier];
-      v14 = [(HAPReaderKey *)v6 keyIdentifier];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      keyIdentifier = [(HAPReaderKey *)self keyIdentifier];
+      keyIdentifier2 = [(HAPReaderKey *)v6 keyIdentifier];
+      v31 = keyIdentifier;
+      v15 = keyIdentifier == keyIdentifier2;
+      v16 = keyIdentifier2;
       if (v15)
       {
         v28 = v3;
@@ -89,10 +89,10 @@ LABEL_24:
 
       else
       {
-        v17 = [(HAPReaderKey *)self keyIdentifier];
-        v25 = [(HAPReaderKey *)v6 keyIdentifier];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        keyIdentifier3 = [(HAPReaderKey *)self keyIdentifier];
+        keyIdentifier4 = [(HAPReaderKey *)v6 keyIdentifier];
+        v26 = keyIdentifier3;
+        if (![keyIdentifier3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
@@ -104,10 +104,10 @@ LABEL_24:
       }
 
       v27 = v16;
-      v18 = [(HAPReaderKey *)self readerIdentifier];
-      v19 = [(HAPReaderKey *)v6 readerIdentifier];
-      v20 = v19;
-      if (v18 == v19)
+      readerIdentifier = [(HAPReaderKey *)self readerIdentifier];
+      readerIdentifier2 = [(HAPReaderKey *)v6 readerIdentifier];
+      v20 = readerIdentifier2;
+      if (readerIdentifier == readerIdentifier2)
       {
 
         v10 = 1;
@@ -115,9 +115,9 @@ LABEL_24:
 
       else
       {
-        v21 = [(HAPReaderKey *)self readerIdentifier];
-        v22 = [(HAPReaderKey *)v6 readerIdentifier];
-        v10 = [v21 isEqual:v22];
+        readerIdentifier3 = [(HAPReaderKey *)self readerIdentifier];
+        readerIdentifier4 = [(HAPReaderKey *)v6 readerIdentifier];
+        v10 = [readerIdentifier3 isEqual:readerIdentifier4];
       }
 
       v23 = v31;
@@ -149,19 +149,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPReaderKey allocWithZone:a3];
-  v5 = [(HAPReaderKey *)self type];
+  v4 = [HAPReaderKey allocWithZone:zone];
+  type = [(HAPReaderKey *)self type];
   v6 = [(HAPReaderKey *)self key];
-  v7 = [(HAPReaderKey *)self keyIdentifier];
-  v8 = [(HAPReaderKey *)self readerIdentifier];
-  v9 = [(HAPReaderKey *)v4 initWithType:v5 key:v6 keyIdentifier:v7 readerIdentifier:v8];
+  keyIdentifier = [(HAPReaderKey *)self keyIdentifier];
+  readerIdentifier = [(HAPReaderKey *)self readerIdentifier];
+  v9 = [(HAPReaderKey *)v4 initWithType:type key:v6 keyIdentifier:keyIdentifier readerIdentifier:readerIdentifier];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
   v56 = 0u;
@@ -186,13 +186,13 @@ LABEL_26:
   v39 = 0u;
   v37 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPReaderKey *)self type];
+  type = [(HAPReaderKey *)self type];
 
-  if (v5)
+  if (type)
   {
-    v6 = [(HAPReaderKey *)self type];
+    type2 = [(HAPReaderKey *)self type];
     v36 = 0;
-    v7 = [v6 serializeWithError:&v36];
+    v7 = [type2 serializeWithError:&v36];
     v8 = v36;
 
     if (v8)
@@ -207,11 +207,11 @@ LABEL_26:
     if (v9)
     {
 LABEL_27:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v9);
         v8 = 0;
-        *a3 = v24 = 0;
+        *error = v24 = 0;
         goto LABEL_31;
       }
 
@@ -231,19 +231,19 @@ LABEL_27:
 
     if (!v8)
     {
-      v12 = [v7 bytes];
-      v13 = v12 + [v7 length];
+      bytes = [v7 bytes];
+      v13 = bytes + [v7 length];
       while (1)
       {
-        v14 = (v13 - v12) >= 255 ? 255 : v13 - v12;
+        v14 = (v13 - bytes) >= 255 ? 255 : v13 - bytes;
         v15 = TLV8BufferAppend();
         if (v15)
         {
           goto LABEL_26;
         }
 
-        v12 += v14;
-        if (v12 >= v13)
+        bytes += v14;
+        if (bytes >= v13)
         {
 
           goto LABEL_13;
@@ -255,30 +255,30 @@ LABEL_27:
   }
 
 LABEL_13:
-  v16 = [(HAPReaderKey *)self keyIdentifier];
+  keyIdentifier = [(HAPReaderKey *)self keyIdentifier];
 
-  if (v16)
+  if (keyIdentifier)
   {
-    v17 = [(HAPReaderKey *)self keyIdentifier];
+    keyIdentifier2 = [(HAPReaderKey *)self keyIdentifier];
     v34 = 0;
-    v7 = [v17 serializeWithError:&v34];
+    v7 = [keyIdentifier2 serializeWithError:&v34];
     v8 = v34;
 
     if (!v8)
     {
-      v18 = [v7 bytes];
-      v19 = v18 + [v7 length];
+      bytes2 = [v7 bytes];
+      v19 = bytes2 + [v7 length];
       while (1)
       {
-        v20 = (v19 - v18) >= 255 ? 255 : v19 - v18;
+        v20 = (v19 - bytes2) >= 255 ? 255 : v19 - bytes2;
         v15 = TLV8BufferAppend();
         if (v15)
         {
           break;
         }
 
-        v18 += v20;
-        if (v18 >= v19)
+        bytes2 += v20;
+        if (bytes2 >= v19)
         {
 
           goto LABEL_22;
@@ -293,11 +293,11 @@ LABEL_26:
 
 LABEL_24:
 
-    if (a3)
+    if (error)
     {
       v23 = v8;
       v24 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_31;
     }
 
@@ -307,13 +307,13 @@ LABEL_30:
   }
 
 LABEL_22:
-  v21 = [(HAPReaderKey *)self readerIdentifier];
+  readerIdentifier = [(HAPReaderKey *)self readerIdentifier];
 
-  if (v21)
+  if (readerIdentifier)
   {
-    v22 = [(HAPReaderKey *)self readerIdentifier];
+    readerIdentifier2 = [(HAPReaderKey *)self readerIdentifier];
     v33 = 0;
-    v7 = [v22 serializeWithError:&v33];
+    v7 = [readerIdentifier2 serializeWithError:&v33];
     v8 = v33;
 
     if (v8)
@@ -321,18 +321,18 @@ LABEL_22:
       goto LABEL_24;
     }
 
-    v27 = [v7 bytes];
-    v28 = v27 + [v7 length];
+    bytes3 = [v7 bytes];
+    v28 = bytes3 + [v7 length];
     do
     {
-      if ((v28 - v27) >= 255)
+      if ((v28 - bytes3) >= 255)
       {
         v29 = 255;
       }
 
       else
       {
-        v29 = v28 - v27;
+        v29 = v28 - bytes3;
       }
 
       v30 = TLV8BufferAppend();
@@ -346,7 +346,7 @@ LABEL_22:
         v31 = v29;
       }
 
-      v27 += v31;
+      bytes3 += v31;
       if (v30)
       {
         v32 = 1;
@@ -354,7 +354,7 @@ LABEL_22:
 
       else
       {
-        v32 = v27 >= v28;
+        v32 = bytes3 >= v28;
       }
     }
 
@@ -377,20 +377,20 @@ LABEL_31:
   return v24;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v28 = a4;
+    errorCopy = error;
     v29 = 0;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v13 = v7 + v8;
+    v13 = bytes + v8;
     while (1)
     {
       v39 = 0;
@@ -400,10 +400,10 @@ LABEL_31:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v28)
+        if (errorCopy)
         {
           HMErrorFromOSStatus(Next);
-          *v28 = v25 = 0;
+          *errorCopy = v25 = 0;
         }
 
         else
@@ -433,7 +433,7 @@ LABEL_31:
         if (v39 == 3)
         {
           v33 = v9;
-          v15 = HAPTLVParseContiguousTlvs(3, v7, v13, v37, &v33);
+          v15 = HAPTLVParseContiguousTlvs(3, bytes, v13, v37, &v33);
           v16 = v33;
 
           if (v16)
@@ -452,7 +452,7 @@ LABEL_31:
         if (v39 == 4)
         {
           v31 = v9;
-          v15 = HAPTLVParseContiguousTlvs(4, v7, v13, v37, &v31);
+          v15 = HAPTLVParseContiguousTlvs(4, bytes, v13, v37, &v31);
           v16 = v31;
 
           if (!v16)
@@ -491,7 +491,7 @@ LABEL_18:
         if (v39 == 2)
         {
           v35 = v9;
-          v15 = HAPTLVParseContiguousTlvs(2, v7, v13, v37, &v35);
+          v15 = HAPTLVParseContiguousTlvs(2, bytes, v13, v37, &v35);
           v16 = v35;
 
           if (!v16)
@@ -508,18 +508,18 @@ LABEL_18:
         }
       }
 
-      v7 = v37[0];
+      bytes = v37[0];
       if (v37[0] >= v13)
       {
         if (v9)
         {
 LABEL_22:
           v23 = v29;
-          if (v28)
+          if (errorCopy)
           {
             v24 = v9;
             v25 = 0;
-            *v28 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -553,22 +553,22 @@ LABEL_33:
   return v25;
 }
 
-- (HAPReaderKey)initWithType:(id)a3 key:(id)a4 keyIdentifier:(id)a5 readerIdentifier:(id)a6
+- (HAPReaderKey)initWithType:(id)type key:(id)key keyIdentifier:(id)identifier readerIdentifier:(id)readerIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  keyCopy = key;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
   v18.receiver = self;
   v18.super_class = HAPReaderKey;
   v15 = [(HAPReaderKey *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_type, a3);
-    objc_storeStrong(&v16->_key, a4);
-    objc_storeStrong(&v16->_keyIdentifier, a5);
-    objc_storeStrong(&v16->_readerIdentifier, a6);
+    objc_storeStrong(&v15->_type, type);
+    objc_storeStrong(&v16->_key, key);
+    objc_storeStrong(&v16->_keyIdentifier, identifier);
+    objc_storeStrong(&v16->_readerIdentifier, readerIdentifier);
   }
 
   return v16;
@@ -581,24 +581,24 @@ LABEL_33:
   return [(HAPReaderKey *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPReaderKey);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPReaderKey *)v6 parseFromData:v5 error:&v11];
+    [(HAPReaderKey *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

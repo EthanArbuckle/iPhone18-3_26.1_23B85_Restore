@@ -1,40 +1,40 @@
 @interface PGFeatureTransformerMultiplyByScalar
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-- (PGFeatureTransformerMultiplyByScalar)initWithScalarToMultiply:(float)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5;
-- (id)applyTransformationToFloatVector:(id)a3 error:(id *)a4;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
+- (PGFeatureTransformerMultiplyByScalar)initWithScalarToMultiply:(float)multiply fromIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (id)applyTransformationToFloatVector:(id)vector error:(id *)error;
 @end
 
 @implementation PGFeatureTransformerMultiplyByScalar
 
-- (id)applyTransformationToFloatVector:(id)a3 error:(id *)a4
+- (id)applyTransformationToFloatVector:(id)vector error:(id *)error
 {
-  v5 = a3;
+  vectorCopy = vector;
   [(PGFeatureTransformerMultiplyByScalar *)self scalarToMultiply];
-  v6 = [v5 vectorByMultiplyingByScalar:?];
+  v6 = [vectorCopy vectorByMultiplyingByScalar:?];
 
   return v6;
 }
 
-- (PGFeatureTransformerMultiplyByScalar)initWithScalarToMultiply:(float)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5
+- (PGFeatureTransformerMultiplyByScalar)initWithScalarToMultiply:(float)multiply fromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v7.receiver = self;
   v7.super_class = PGFeatureTransformerMultiplyByScalar;
-  result = [(PGFeatureSliceTransformer *)&v7 initFromIndex:a4 toIndex:a5];
+  result = [(PGFeatureSliceTransformer *)&v7 initFromIndex:index toIndex:toIndex];
   if (result)
   {
-    result->_scalarToMultiply = a3;
+    result->_scalarToMultiply = multiply;
   }
 
   return result;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  parametersCopy = parameters;
   v26[0] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  if ([PGFeatureTransformerHelper validParameters:v5 ofTypes:v6])
+  if ([PGFeatureTransformerHelper validParameters:parametersCopy ofTypes:v6])
   {
 
     goto LABEL_4;
@@ -44,23 +44,23 @@
   v25[1] = objc_opt_class();
   v25[2] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
-  v8 = [PGFeatureTransformerHelper validParameters:v5 ofTypes:v7];
+  v8 = [PGFeatureTransformerHelper validParameters:parametersCopy ofTypes:v7];
 
   if (v8)
   {
 LABEL_4:
-    v9 = [v5 objectAtIndexedSubscript:0];
-    if ([v5 count] == 3)
+    v9 = [parametersCopy objectAtIndexedSubscript:0];
+    if ([parametersCopy count] == 3)
     {
-      v10 = [v5 objectAtIndexedSubscript:1];
-      v11 = [v5 objectAtIndexedSubscript:2];
+      v10 = [parametersCopy objectAtIndexedSubscript:1];
+      v11 = [parametersCopy objectAtIndexedSubscript:2];
       v12 = [PGFeatureTransformerMultiplyByScalar alloc];
       [v9 floatValue];
       v14 = v13;
-      v15 = [v10 integerValue];
-      v16 = [v11 integerValue];
+      integerValue = [v10 integerValue];
+      integerValue2 = [v11 integerValue];
       LODWORD(v17) = v14;
-      v18 = [(PGFeatureTransformerMultiplyByScalar *)v12 initWithScalarToMultiply:v15 fromIndex:v16 toIndex:v17];
+      v18 = [(PGFeatureTransformerMultiplyByScalar *)v12 initWithScalarToMultiply:integerValue fromIndex:integerValue2 toIndex:v17];
     }
 
     else
@@ -73,14 +73,14 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = MEMORY[0x277CCA9B8];
     v23 = *MEMORY[0x277CCA450];
     v24 = @"Failed to instantiate PGFeatureTransformerMultiplyByScalar: incorrect parameters.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     [v20 errorWithDomain:@"com.apple.PhotosGraph.PGFeatureTransformerMultiplyByScalar" code:0 userInfo:v9];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
 LABEL_9:
 
     goto LABEL_10;

@@ -1,11 +1,11 @@
 @interface MREmulatedGameController
-- (MREmulatedGameController)initWithProperties:(id)a3;
+- (MREmulatedGameController)initWithProperties:(id)properties;
 - (MREmulatedGameControllerDelegate)delegate;
 @end
 
 @implementation MREmulatedGameController
 
-- (MREmulatedGameController)initWithProperties:(id)a3
+- (MREmulatedGameController)initWithProperties:(id)properties
 {
   v4.receiver = self;
   v4.super_class = MREmulatedGameController;

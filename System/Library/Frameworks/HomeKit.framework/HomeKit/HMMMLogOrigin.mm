@@ -1,30 +1,30 @@
 @interface HMMMLogOrigin
 + (id)logCategory;
-+ (id)originWithLogIdentifier:(id)a3;
-- (HMMMLogOrigin)initWithLogIdentifier:(id)a3;
++ (id)originWithLogIdentifier:(id)identifier;
+- (HMMMLogOrigin)initWithLogIdentifier:(id)identifier;
 @end
 
 @implementation HMMMLogOrigin
 
-- (HMMMLogOrigin)initWithLogIdentifier:(id)a3
+- (HMMMLogOrigin)initWithLogIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HMMMLogOrigin;
   v6 = [(HMMMLogOrigin *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logId, a3);
+    objc_storeStrong(&v6->_logId, identifier);
   }
 
   return v7;
 }
 
-+ (id)originWithLogIdentifier:(id)a3
++ (id)originWithLogIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HMMMLogOrigin alloc] initWithLogIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HMMMLogOrigin alloc] initWithLogIdentifier:identifierCopy];
 
   return v4;
 }

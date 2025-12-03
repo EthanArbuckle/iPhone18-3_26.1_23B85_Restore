@@ -1,28 +1,28 @@
 @interface LSDatabaseBlockingFetchClient
-- (LSDatabaseBlockingFetchClient)initWithXPCConnection:(id)a3;
-- (void)getServerStoreBlockingWithCompletionHandler:(id)a3;
+- (LSDatabaseBlockingFetchClient)initWithXPCConnection:(id)connection;
+- (void)getServerStoreBlockingWithCompletionHandler:(id)handler;
 @end
 
 @implementation LSDatabaseBlockingFetchClient
 
-- (LSDatabaseBlockingFetchClient)initWithXPCConnection:(id)a3
+- (LSDatabaseBlockingFetchClient)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = LSDatabaseBlockingFetchClient;
   v6 = [(LSDatabaseBlockingFetchClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)getServerStoreBlockingWithCompletionHandler:(id)a3
+- (void)getServerStoreBlockingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[LSDatabaseBlockingFetchClient getServerStoreBlockingWithCompletionHandler:]");
   if (getServerStoreBlockingWithCompletionHandler__onceToken != -1)
   {
@@ -30,9 +30,9 @@
   }
 
   v5 = +[LSDatabaseBlockingFetchServer sharedInstance];
-  v6 = [v5 isForManualRebuild];
+  isForManualRebuild = [v5 isForManualRebuild];
 
-  if (v6)
+  if (isForManualRebuild)
   {
     __LAUNCH_SERVICES_CLIENTS_ARE_WAITING_FOR_A_MANUAL_DATABASE_REBUILD_TO_COMPLETE__();
   }
@@ -49,8 +49,8 @@
   v11[2] = __77__LSDatabaseBlockingFetchClient_getServerStoreBlockingWithCompletionHandler___block_invoke_2;
   v11[3] = &unk_1E6A1D3F0;
   v12 = v7;
-  v13 = v4;
-  v9 = v4;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
   [(LSDBExecutionContext *)v8 syncRead:v11];
 }

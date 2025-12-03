@@ -1,181 +1,181 @@
 @interface MKIconManager
-+ (CGColor)newFillColorForStyleAttributes:(id)a3 forScale:(double)a4;
-+ (CGColor)newGlyphColorForStyleAttributes:(id)a3 forScale:(double)a4;
-+ (CGColor)newHaloColorForStyleAttributes:(id)a3 forScale:(double)a4;
-+ (id)_imageForFeatureStyleAttributes:(id)a3 iconText:(id)a4 size:(unint64_t)a5 forScale:(double)a6 navMode:(BOOL)a7 nightMode:(BOOL)a8;
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5;
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 navMode:(BOOL)a6;
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 navMode:(BOOL)a6 nightMode:(BOOL)a7;
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 nightMode:(BOOL)a6;
-+ (id)_markerStyleAttributesForCustomStyleAttributes:(id)a3 selected:(BOOL)a4;
-+ (id)imageForIconID:(unsigned int)a3 contentScale:(double)a4 sizeGroup:(unint64_t)a5 nightMode:(BOOL)a6;
-+ (id)imageForMapItem:(id)a3 forScale:(double)a4;
-+ (id)imageForMapItem:(id)a3 forScale:(double)a4 fallbackToBundleIcon:(BOOL)a5;
-+ (id)imageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6;
-+ (id)imageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 fallbackToBundleIcon:(BOOL)a7;
-+ (id)imageForRouteAnnotationStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 nightMode:(BOOL)a9;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 nightMode:(BOOL)a10;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 isCarplay:(BOOL)a12;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 isCarplay:(BOOL)a12 nightMode:(BOOL)a13;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 nightMode:(BOOL)a12;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 nightMode:(BOOL)a11;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 nightMode:(BOOL)a8;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 nightMode:(BOOL)a7;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 nightMode:(BOOL)a8;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 interactive:(BOOL)a9;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 interactive:(BOOL)a9 nightMode:(BOOL)a10;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 isCarplay:(BOOL)a9;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 isCarplay:(BOOL)a9 nightMode:(BOOL)a10;
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 nightMode:(BOOL)a9;
-+ (id)imageForTrafficIncidentType:(int64_t)a3 size:(unint64_t)a4 forScale:(double)a5 nightMode:(BOOL)a6;
-+ (id)markerBalloonIconForConfiguration:(id)a3;
-+ (id)poiBalloonIconForConfiguration:(id)a3;
-+ (void)_updatePickingStateStyleAttribute:(id)a3 selected:(BOOL)a4;
-+ (void)requestImageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 completionHandler:(id)a6;
-+ (void)requestImageForStyleAttributes:(id)a3 size:(unint64_t)a4 scale:(double)a5 completionHandler:(id)a6;
++ (CGColor)newFillColorForStyleAttributes:(id)attributes forScale:(double)scale;
++ (CGColor)newGlyphColorForStyleAttributes:(id)attributes forScale:(double)scale;
++ (CGColor)newHaloColorForStyleAttributes:(id)attributes forScale:(double)scale;
++ (id)_imageForFeatureStyleAttributes:(id)attributes iconText:(id)text size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode nightMode:(BOOL)nightMode;
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale;
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode;
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode nightMode:(BOOL)nightMode;
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale nightMode:(BOOL)mode;
++ (id)_markerStyleAttributesForCustomStyleAttributes:(id)attributes selected:(BOOL)selected;
++ (id)imageForIconID:(unsigned int)d contentScale:(double)scale sizeGroup:(unint64_t)group nightMode:(BOOL)mode;
++ (id)imageForMapItem:(id)item forScale:(double)scale;
++ (id)imageForMapItem:(id)item forScale:(double)scale fallbackToBundleIcon:(BOOL)icon;
++ (id)imageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale format:(int)format;
++ (id)imageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale format:(int)format fallbackToBundleIcon:(BOOL)icon;
++ (id)imageForRouteAnnotationStyle:(id)style size:(unint64_t)size forScale:(double)scale;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon nightMode:(BOOL)mode;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent nightMode:(BOOL)self0;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 isCarplay:(BOOL)self2;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 isCarplay:(BOOL)self2 nightMode:(BOOL)self3;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 nightMode:(BOOL)self2;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 nightMode:(BOOL)self1;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d nightMode:(BOOL)mode;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format nightMode:(BOOL)mode;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent nightMode:(BOOL)mode;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode interactive:(BOOL)interactive;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode interactive:(BOOL)interactive nightMode:(BOOL)self0;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode isCarplay:(BOOL)carplay;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode isCarplay:(BOOL)carplay nightMode:(BOOL)self0;
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode nightMode:(BOOL)nightMode;
++ (id)imageForTrafficIncidentType:(int64_t)type size:(unint64_t)size forScale:(double)scale nightMode:(BOOL)mode;
++ (id)markerBalloonIconForConfiguration:(id)configuration;
++ (id)poiBalloonIconForConfiguration:(id)configuration;
++ (void)_updatePickingStateStyleAttribute:(id)attribute selected:(BOOL)selected;
++ (void)requestImageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale completionHandler:(id)handler;
++ (void)requestImageForStyleAttributes:(id)attributes size:(unint64_t)size scale:(double)scale completionHandler:(id)handler;
 @end
 
 @implementation MKIconManager
 
-+ (id)_markerStyleAttributesForCustomStyleAttributes:(id)a3 selected:(BOOL)a4
++ (id)_markerStyleAttributesForCustomStyleAttributes:(id)attributes selected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  attributesCopy = attributes;
+  v6 = attributesCopy;
+  if (attributesCopy)
   {
-    v7 = [v5 copy];
+    v7 = [attributesCopy copy];
 
     if ([v7 poiType] == -1)
     {
-      v8 = 348;
+      poiType = 348;
     }
 
     else
     {
-      v8 = [v7 poiType];
+      poiType = [v7 poiType];
     }
 
     v10 = 0x300000005;
     v11 = 6;
-    v12 = v8;
+    v12 = poiType;
     v13 = xmmword_1A30F7100;
     v14 = 65617;
     v15 = 65573;
-    v16 = v4;
+    v16 = selectedCopy;
     [v7 replaceAttributes:&v10 count:6];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithAttributes:{5, 3, 6, 348, 65572, 1, 65567, 3, 65617, 0, 65573, v4, 0}];
+    v7 = [objc_alloc(MEMORY[0x1E69A1DB0]) initWithAttributes:{5, 3, 6, 348, 65572, 1, 65567, 3, 65617, 0, 65573, selectedCopy, 0}];
   }
 
   return v7;
 }
 
-+ (void)_updatePickingStateStyleAttribute:(id)a3 selected:(BOOL)a4
++ (void)_updatePickingStateStyleAttribute:(id)attribute selected:(BOOL)selected
 {
   v4[1] = *MEMORY[0x1E69E9840];
   v4[0] = 0x100010025;
-  [a3 replaceAttributes:v4 count:1];
+  [attribute replaceAttributes:v4 count:1];
 }
 
-+ (id)markerBalloonIconForConfiguration:(id)a3
++ (id)markerBalloonIconForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69DF438]) initSearchResultModifiers];
-  [v5 setNightMode:{objc_msgSend(v4, "darkMode")}];
-  [v5 setGlyphHidden:{objc_msgSend(v4, "glyphHidden")}];
-  [v5 setIncreaseContrast:{objc_msgSend(v4, "increasedContrast")}];
+  configurationCopy = configuration;
+  initSearchResultModifiers = [objc_alloc(MEMORY[0x1E69DF438]) initSearchResultModifiers];
+  [initSearchResultModifiers setNightMode:{objc_msgSend(configurationCopy, "darkMode")}];
+  [initSearchResultModifiers setGlyphHidden:{objc_msgSend(configurationCopy, "glyphHidden")}];
+  [initSearchResultModifiers setIncreaseContrast:{objc_msgSend(configurationCopy, "increasedContrast")}];
   v6 = +[MKSystemController sharedInstance];
-  [v5 setNewInterfaceEnabled:{objc_msgSend(v6, "isGlassEnabled")}];
+  [initSearchResultModifiers setNewInterfaceEnabled:{objc_msgSend(v6, "isGlassEnabled")}];
 
-  v7 = [v4 glyphColor];
+  glyphColor = [configurationCopy glyphColor];
 
-  if (v7)
+  if (glyphColor)
   {
-    v8 = [v4 glyphColor];
-    *&v9 = MKGetVKColorForMKColor(v8);
-    [v5 setGlyphColor:v9];
+    glyphColor2 = [configurationCopy glyphColor];
+    *&v9 = MKGetVKColorForMKColor(glyphColor2);
+    [initSearchResultModifiers setGlyphColor:v9];
   }
 
-  v10 = [v4 fillColor];
+  fillColor = [configurationCopy fillColor];
 
-  if (v10)
+  if (fillColor)
   {
-    v11 = [v4 fillColor];
-    *&v12 = MKGetVKColorForMKColor(v11);
-    [v5 setFillColor:v12];
+    fillColor2 = [configurationCopy fillColor];
+    *&v12 = MKGetVKColorForMKColor(fillColor2);
+    [initSearchResultModifiers setFillColor:v12];
   }
 
-  v13 = [v4 styleAttributes];
-  v14 = [a1 _markerStyleAttributesForCustomStyleAttributes:v13 selected:{objc_msgSend(v4, "selected")}];
+  styleAttributes = [configurationCopy styleAttributes];
+  v14 = [self _markerStyleAttributesForCustomStyleAttributes:styleAttributes selected:{objc_msgSend(configurationCopy, "selected")}];
 
-  v15 = [MEMORY[0x1E69DF430] sharedManager];
-  [v4 scale];
+  mEMORY[0x1E69DF430] = [MEMORY[0x1E69DF430] sharedManager];
+  [configurationCopy scale];
   *&v16 = v16;
-  v17 = [v15 balloonIconForStyleAttributes:v14 withStylesheetName:@"default" contentScale:8 sizeGroup:v5 modifiers:v16];
+  styleAttributes2 = [mEMORY[0x1E69DF430] balloonIconForStyleAttributes:v14 withStylesheetName:@"default" contentScale:8 sizeGroup:initSearchResultModifiers modifiers:v16];
 
-  if (!v17)
+  if (!styleAttributes2)
   {
-    v17 = [v4 styleAttributes];
+    styleAttributes2 = [configurationCopy styleAttributes];
 
-    if (v17)
+    if (styleAttributes2)
     {
-      v18 = [a1 _markerStyleAttributesForCustomStyleAttributes:0 selected:{objc_msgSend(v4, "selected")}];
+      v18 = [self _markerStyleAttributesForCustomStyleAttributes:0 selected:{objc_msgSend(configurationCopy, "selected")}];
 
-      v19 = [MEMORY[0x1E69DF430] sharedManager];
-      [v4 scale];
+      mEMORY[0x1E69DF430]2 = [MEMORY[0x1E69DF430] sharedManager];
+      [configurationCopy scale];
       *&v20 = v20;
-      v17 = [v19 balloonIconForStyleAttributes:v18 withStylesheetName:@"default" contentScale:8 sizeGroup:v5 modifiers:v20];
+      styleAttributes2 = [mEMORY[0x1E69DF430]2 balloonIconForStyleAttributes:v18 withStylesheetName:@"default" contentScale:8 sizeGroup:initSearchResultModifiers modifiers:v20];
 
       v14 = v18;
     }
   }
 
-  return v17;
+  return styleAttributes2;
 }
 
-+ (id)poiBalloonIconForConfiguration:(id)a3
++ (id)poiBalloonIconForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(MEMORY[0x1E69DF438]);
-  [v5 setNightMode:{objc_msgSend(v4, "darkMode")}];
-  [v5 setIncreaseContrast:{objc_msgSend(v4, "increasedContrast")}];
-  [v5 setElevated:{objc_msgSend(v4, "elevated")}];
+  [v5 setNightMode:{objc_msgSend(configurationCopy, "darkMode")}];
+  [v5 setIncreaseContrast:{objc_msgSend(configurationCopy, "increasedContrast")}];
+  [v5 setElevated:{objc_msgSend(configurationCopy, "elevated")}];
   v6 = +[MKSystemController sharedInstance];
   [v5 setNewInterfaceEnabled:{objc_msgSend(v6, "isGlassEnabled")}];
 
-  v7 = [v4 styleAttributes];
-  v8 = [v7 copy];
+  styleAttributes = [configurationCopy styleAttributes];
+  v8 = [styleAttributes copy];
 
-  [a1 _updatePickingStateStyleAttribute:v8 selected:{objc_msgSend(v4, "selected")}];
-  v9 = [MEMORY[0x1E69DF430] sharedManager];
-  [v4 scale];
+  [self _updatePickingStateStyleAttribute:v8 selected:{objc_msgSend(configurationCopy, "selected")}];
+  mEMORY[0x1E69DF430] = [MEMORY[0x1E69DF430] sharedManager];
+  [configurationCopy scale];
   *&v10 = v10;
-  v11 = [v9 balloonIconForStyleAttributes:v8 withStylesheetName:@"default" contentScale:8 sizeGroup:v5 modifiers:v10];
+  v11 = [mEMORY[0x1E69DF430] balloonIconForStyleAttributes:v8 withStylesheetName:@"default" contentScale:8 sizeGroup:v5 modifiers:v10];
 
   return v11;
 }
 
-+ (void)requestImageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 completionHandler:(id)a6
++ (void)requestImageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 _identifier];
+  itemCopy = item;
+  handlerCopy = handler;
+  _identifier = [itemCopy _identifier];
 
-  if (v11)
+  if (_identifier)
   {
     *buf = 0;
     v21 = buf;
@@ -189,10 +189,10 @@
     block[2] = __72__MKIconManager_requestImageForMapItem_size_forScale_completionHandler___block_invoke;
     block[3] = &unk_1E76C7E40;
     v17 = buf;
-    v15 = v9;
-    v18 = a4;
-    v19 = a5;
-    v16 = v10;
+    v15 = itemCopy;
+    sizeCopy = size;
+    scaleCopy = scale;
+    v16 = handlerCopy;
     dispatch_async(v12, block);
 
     _Block_object_dispose(buf, 8);
@@ -207,7 +207,7 @@
       _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_INFO, "Cannot request an image for MapItem with no identifier.", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -229,10 +229,10 @@ void __72__MKIconManager_requestImageForMapItem_size_forScale_completionHandler_
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
-+ (void)requestImageForStyleAttributes:(id)a3 size:(unint64_t)a4 scale:(double)a5 completionHandler:(id)a6
++ (void)requestImageForStyleAttributes:(id)attributes size:(unint64_t)size scale:(double)scale completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   v11 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.MapKit.SnapshotService"];
   v12 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F16E54D0];
   [v11 setRemoteObjectInterface:v12];
@@ -242,7 +242,7 @@ void __72__MKIconManager_requestImageForMapItem_size_forScale_completionHandler_
   v21[1] = 3221225472;
   v21[2] = __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHandler___block_invoke;
   v21[3] = &unk_1E76C7DF0;
-  v13 = v10;
+  v13 = handlerCopy;
   v23 = v13;
   v14 = v11;
   v22 = v14;
@@ -255,7 +255,7 @@ void __72__MKIconManager_requestImageForMapItem_size_forScale_completionHandler_
   v20 = v16;
   v17 = v14;
   v19 = v17;
-  [v15 requestIconWithStyleAttributes:v9 size:a4 scale:v18 completionHandler:a5];
+  [v15 requestIconWithStyleAttributes:attributesCopy size:size scale:v18 completionHandler:scale];
 }
 
 uint64_t __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHandler___block_invoke(uint64_t a1)
@@ -273,25 +273,25 @@ void __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHan
   [*(a1 + 32) invalidate];
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 isCarplay:(BOOL)a12 nightMode:(BOOL)a13
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 isCarplay:(BOOL)self2 nightMode:(BOOL)self3
 {
-  v13 = a9;
-  v14 = a8;
-  v16 = *&a6;
-  v20 = a3;
+  transparentCopy = transparent;
+  iconCopy = icon;
+  v16 = *&format;
+  styleCopy = style;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __142__MKIconManager_imageForStyle_size_forScale_format_customIconID_fallbackToBundleIcon_transparent_transitmode_interactive_isCarplay_nightMode___block_invoke;
   v36[3] = &unk_1E76C7DC8;
-  v41 = a12;
-  v42 = a10;
-  v43 = v13;
-  v44 = a13;
-  v34 = v20;
+  carplayCopy = carplay;
+  transitmodeCopy = transitmode;
+  v43 = transparentCopy;
+  modeCopy = mode;
+  v34 = styleCopy;
   v37 = v34;
-  v38 = a1;
-  v39 = a5;
-  v40 = a4;
+  selfCopy = self;
+  scaleCopy = scale;
+  sizeCopy = size;
   v21 = MEMORY[0x1A58E9F30](v36);
   if (_diskCache(void)::once != -1)
   {
@@ -300,9 +300,9 @@ void __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHan
 
   v22 = _diskCache(void)::singleton;
   v23 = v22;
-  if (!a7 && v22 && GEOConfigGetBOOL())
+  if (!d && v22 && GEOConfigGetBOOL())
   {
-    v24 = [v23 imageForStyleAttributes:v34 size:a4 scale:a12 isCarplay:a10 isTransit:v13 isTransparent:a13 isNightMode:a5 drawingBlock:v21];
+    v24 = [v23 imageForStyleAttributes:v34 size:size scale:carplay isCarplay:transitmode isTransit:transparentCopy isTransparent:mode isNightMode:scale drawingBlock:v21];
   }
 
   else
@@ -311,12 +311,12 @@ void __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHan
   }
 
   v25 = v24;
-  if (!v24 && v14)
+  if (!v24 && iconCopy)
   {
-    v35 = a5;
-    v26 = [MEMORY[0x1E69DCAB8] _iconVariantForUIApplicationIconFormat:v16 scale:&v35];
-    v27 = [MEMORY[0x1E696AAE8] _mapkitBundle];
-    v28 = [v27 _cfBundle];
+    scaleCopy2 = scale;
+    v26 = [MEMORY[0x1E69DCAB8] _iconVariantForUIApplicationIconFormat:v16 scale:&scaleCopy2];
+    _mapkitBundle = [MEMORY[0x1E696AAE8] _mapkitBundle];
+    _cfBundle = [_mapkitBundle _cfBundle];
 
     v50 = 0;
     v51 = &v50;
@@ -346,10 +346,10 @@ void __77__MKIconManager_requestImageForStyleAttributes_size_scale_completionHan
       return result;
     }
 
-    v32 = (v29)(v28, 0, v26, 0);
+    v32 = (v29)(_cfBundle, 0, v26, 0);
     if (v32)
     {
-      v25 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v32 scale:0 orientation:v35];
+      v25 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v32 scale:0 orientation:scaleCopy2];
       CGImageRelease(v32);
     }
 
@@ -449,350 +449,350 @@ id __142__MKIconManager_imageForStyle_size_forScale_format_customIconID_fallback
   return v4;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 isCarplay:(BOOL)a12
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 isCarplay:(BOOL)self2
 {
   BYTE3(v14) = 0;
-  *(&v14 + 1) = __PAIR16__(a12, a11);
-  LOBYTE(v14) = a10;
-  v12 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:a3 forScale:a4 format:*&a6 customIconID:a7 fallbackToBundleIcon:a8 transparent:a9 transitmode:a5 interactive:v14 isCarplay:? nightMode:?];
+  *(&v14 + 1) = __PAIR16__(carplay, interactive);
+  LOBYTE(v14) = transitmode;
+  v12 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:style forScale:size format:*&format customIconID:d fallbackToBundleIcon:icon transparent:transparent transitmode:scale interactive:v14 isCarplay:? nightMode:?];
 
   return v12;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11 nightMode:(BOOL)a12
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1 nightMode:(BOOL)self2
 {
-  BYTE3(v14) = a12;
+  BYTE3(v14) = mode;
   BYTE2(v14) = 0;
-  LOWORD(v14) = __PAIR16__(a11, a10);
-  v12 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:a3 forScale:a4 format:*&a6 customIconID:a7 fallbackToBundleIcon:a8 transparent:a9 transitmode:a5 interactive:v14 isCarplay:? nightMode:?];
+  LOWORD(v14) = __PAIR16__(interactive, transitmode);
+  v12 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:style forScale:size format:*&format customIconID:d fallbackToBundleIcon:icon transparent:transparent transitmode:scale interactive:v14 isCarplay:? nightMode:?];
 
   return v12;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 interactive:(BOOL)a11
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 interactive:(BOOL)self1
 {
   BYTE2(v13) = 0;
-  LOWORD(v13) = __PAIR16__(a11, a10);
-  v11 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:" size:a3 forScale:a4 format:*&a6 customIconID:a7 fallbackToBundleIcon:a8 transparent:a9 transitmode:a5 interactive:v13 isCarplay:?];
+  LOWORD(v13) = __PAIR16__(interactive, transitmode);
+  v11 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:" size:style forScale:size format:*&format customIconID:d fallbackToBundleIcon:icon transparent:transparent transitmode:scale interactive:v13 isCarplay:?];
 
   return v11;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10 nightMode:(BOOL)a11
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0 nightMode:(BOOL)self1
 {
-  BYTE2(v13) = a11;
-  LOWORD(v13) = a10;
-  v11 = [a1 imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:a9 transparent:a5 transitmode:v13 interactive:? nightMode:?];
+  BYTE2(v13) = mode;
+  LOWORD(v13) = transitmode;
+  v11 = [self imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:transparent transparent:scale transitmode:v13 interactive:? nightMode:?];
 
   return v11;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 transitmode:(BOOL)a10
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent transitmode:(BOOL)self0
 {
-  LOWORD(v12) = a10;
-  v10 = [a1 imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:a9 transparent:a5 transitmode:v12 interactive:?];
+  LOWORD(v12) = transitmode;
+  v10 = [self imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:transparent transparent:scale transitmode:v12 interactive:?];
 
   return v10;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9 nightMode:(BOOL)a10
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent nightMode:(BOOL)self0
 {
-  BYTE1(v12) = a10;
+  BYTE1(v12) = mode;
   LOBYTE(v12) = 0;
-  v10 = [a1 imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:a9 transparent:a5 transitmode:v12 nightMode:?];
+  v10 = [self imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:transparent transparent:scale transitmode:v12 nightMode:?];
 
   return v10;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 transparent:(BOOL)a9
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon transparent:(BOOL)transparent
 {
   LOBYTE(v11) = 0;
-  v9 = [a1 imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:a9 transparent:a5 transitmode:v11];
+  v9 = [self imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:transparent transparent:scale transitmode:v11];
 
   return v9;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8 nightMode:(BOOL)a9
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon nightMode:(BOOL)mode
 {
-  LOBYTE(v11) = a9;
-  v9 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:0 transparent:a5 nightMode:v11];
+  LOBYTE(v11) = mode;
+  v9 = [MKIconManager imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:0 transparent:scale nightMode:v11];
 
   return v9;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 fallbackToBundleIcon:(BOOL)a8
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d fallbackToBundleIcon:(BOOL)icon
 {
-  v8 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:a8 fallbackToBundleIcon:0 transparent:a5];
+  v8 = [MKIconManager imageForStyle:style size:size forScale:*&format format:d customIconID:icon fallbackToBundleIcon:0 transparent:scale];
 
   return v8;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7 nightMode:(BOOL)a8
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d nightMode:(BOOL)mode
 {
-  v8 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:0 fallbackToBundleIcon:a8 nightMode:a5];
+  v8 = [MKIconManager imageForStyle:style size:size forScale:*&format format:d customIconID:0 fallbackToBundleIcon:mode nightMode:scale];
 
   return v8;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 customIconID:(unint64_t)a7
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format customIconID:(unint64_t)d
 {
-  v7 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 customIconID:0 fallbackToBundleIcon:a5];
+  v7 = [MKIconManager imageForStyle:style size:size forScale:*&format format:d customIconID:0 fallbackToBundleIcon:scale];
 
   return v7;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 interactive:(BOOL)a9 nightMode:(BOOL)a10
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode interactive:(BOOL)interactive nightMode:(BOOL)self0
 {
-  BYTE2(v12) = a10;
-  BYTE1(v12) = a9;
-  LOBYTE(v12) = a8;
-  v10 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:nightMode:" size:a3 forScale:a4 format:*&a6 customIconID:0 fallbackToBundleIcon:0 transparent:a7 transitmode:a5 interactive:v12 nightMode:?];
+  BYTE2(v12) = nightMode;
+  BYTE1(v12) = interactive;
+  LOBYTE(v12) = mode;
+  v10 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:nightMode:" size:style forScale:size format:*&format customIconID:0 fallbackToBundleIcon:0 transparent:transparent transitmode:scale interactive:v12 nightMode:?];
 
   return v10;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 interactive:(BOOL)a9
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode interactive:(BOOL)interactive
 {
-  BYTE1(v11) = a9;
-  LOBYTE(v11) = a8;
-  v9 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:0 customIconID:0 fallbackToBundleIcon:a7 transparent:a5 transitmode:v11 interactive:?];
+  BYTE1(v11) = interactive;
+  LOBYTE(v11) = mode;
+  v9 = [MKIconManager imageForStyle:style size:size forScale:*&format format:0 customIconID:0 fallbackToBundleIcon:transparent transparent:scale transitmode:v11 interactive:?];
 
   return v9;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 isCarplay:(BOOL)a9 nightMode:(BOOL)a10
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode isCarplay:(BOOL)carplay nightMode:(BOOL)self0
 {
-  BYTE3(v12) = a10;
-  BYTE2(v12) = a9;
-  LOWORD(v12) = a8;
-  v10 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:a3 forScale:a4 format:*&a6 customIconID:0 fallbackToBundleIcon:0 transparent:a7 transitmode:a5 interactive:v12 isCarplay:? nightMode:?];
+  BYTE3(v12) = nightMode;
+  BYTE2(v12) = carplay;
+  LOWORD(v12) = mode;
+  v10 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:nightMode:" size:style forScale:size format:*&format customIconID:0 fallbackToBundleIcon:0 transparent:transparent transitmode:scale interactive:v12 isCarplay:? nightMode:?];
 
   return v10;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 isCarplay:(BOOL)a9
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode isCarplay:(BOOL)carplay
 {
-  BYTE2(v11) = a9;
-  LOWORD(v11) = a8;
-  v9 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:" size:a3 forScale:a4 format:*&a6 customIconID:0 fallbackToBundleIcon:0 transparent:a7 transitmode:a5 interactive:v11 isCarplay:?];
+  BYTE2(v11) = carplay;
+  LOWORD(v11) = mode;
+  v9 = [MKIconManager imageForStyle:"imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:transparent:transitmode:interactive:isCarplay:" size:style forScale:size format:*&format customIconID:0 fallbackToBundleIcon:0 transparent:transparent transitmode:scale interactive:v11 isCarplay:?];
 
   return v9;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8 nightMode:(BOOL)a9
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode nightMode:(BOOL)nightMode
 {
-  LOBYTE(v11) = a9;
-  v9 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 transparent:a8 transitMode:0 isCarplay:a5 nightMode:v11];
+  LOBYTE(v11) = nightMode;
+  v9 = [MKIconManager imageForStyle:style size:size forScale:*&format format:transparent transparent:mode transitMode:0 isCarplay:scale nightMode:v11];
 
   return v9;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 transitMode:(BOOL)a8
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent transitMode:(BOOL)mode
 {
-  v8 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:a7 transparent:a8 transitMode:0 isCarplay:a5];
+  v8 = [MKIconManager imageForStyle:style size:size forScale:*&format format:transparent transparent:mode transitMode:0 isCarplay:scale];
 
   return v8;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7 nightMode:(BOOL)a8
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent nightMode:(BOOL)mode
 {
-  LOBYTE(v10) = a8;
-  v8 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:0 customIconID:0 fallbackToBundleIcon:a7 transparent:a5 nightMode:v10];
+  LOBYTE(v10) = mode;
+  v8 = [MKIconManager imageForStyle:style size:size forScale:*&format format:0 customIconID:0 fallbackToBundleIcon:transparent transparent:scale nightMode:v10];
 
   return v8;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 transparent:(BOOL)a7
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format transparent:(BOOL)transparent
 {
-  v7 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:0 customIconID:0 fallbackToBundleIcon:a7 transparent:a5];
+  v7 = [MKIconManager imageForStyle:style size:size forScale:*&format format:0 customIconID:0 fallbackToBundleIcon:transparent transparent:scale];
 
   return v7;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 nightMode:(BOOL)a7
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format nightMode:(BOOL)mode
 {
-  v7 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:0 customIconID:0 fallbackToBundleIcon:a7 nightMode:a5];
+  v7 = [MKIconManager imageForStyle:style size:size forScale:*&format format:0 customIconID:0 fallbackToBundleIcon:mode nightMode:scale];
 
   return v7;
 }
 
-+ (id)imageForStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6
++ (id)imageForStyle:(id)style size:(unint64_t)size forScale:(double)scale format:(int)format
 {
-  v6 = [MKIconManager imageForStyle:a3 size:a4 forScale:*&a6 format:0 customIconID:0 fallbackToBundleIcon:a5];
+  v6 = [MKIconManager imageForStyle:style size:size forScale:*&format format:0 customIconID:0 fallbackToBundleIcon:scale];
 
   return v6;
 }
 
-+ (id)imageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6 fallbackToBundleIcon:(BOOL)a7
++ (id)imageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale format:(int)format fallbackToBundleIcon:(BOOL)icon
 {
-  v7 = a7;
-  v8 = *&a6;
-  v11 = a3;
-  v12 = [v11 _styleAttributes];
-  v13 = +[MKIconManager imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:](MKIconManager, "imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:", v12, a4, v8, [v11 _customIconID], v7, a5);
+  iconCopy = icon;
+  v8 = *&format;
+  itemCopy = item;
+  _styleAttributes = [itemCopy _styleAttributes];
+  v13 = +[MKIconManager imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:](MKIconManager, "imageForStyle:size:forScale:format:customIconID:fallbackToBundleIcon:", _styleAttributes, size, v8, [itemCopy _customIconID], iconCopy, scale);
 
   return v13;
 }
 
-+ (id)imageForMapItem:(id)a3 size:(unint64_t)a4 forScale:(double)a5 format:(int)a6
++ (id)imageForMapItem:(id)item size:(unint64_t)size forScale:(double)scale format:(int)format
 {
-  v6 = [MKIconManager imageForMapItem:a3 size:a4 forScale:*&a6 format:1 fallbackToBundleIcon:a5];
+  v6 = [MKIconManager imageForMapItem:item size:size forScale:*&format format:1 fallbackToBundleIcon:scale];
 
   return v6;
 }
 
-+ (id)imageForMapItem:(id)a3 forScale:(double)a4 fallbackToBundleIcon:(BOOL)a5
++ (id)imageForMapItem:(id)item forScale:(double)scale fallbackToBundleIcon:(BOOL)icon
 {
-  v5 = [MKIconManager imageForMapItem:a3 size:3 forScale:0 format:a5 fallbackToBundleIcon:a4];
+  v5 = [MKIconManager imageForMapItem:item size:3 forScale:0 format:icon fallbackToBundleIcon:scale];
 
   return v5;
 }
 
-+ (id)imageForMapItem:(id)a3 forScale:(double)a4
++ (id)imageForMapItem:(id)item forScale:(double)scale
 {
-  v4 = [MKIconManager imageForMapItem:a3 forScale:1 fallbackToBundleIcon:a4];
+  v4 = [MKIconManager imageForMapItem:item forScale:1 fallbackToBundleIcon:scale];
 
   return v4;
 }
 
-+ (id)imageForIconID:(unsigned int)a3 contentScale:(double)a4 sizeGroup:(unint64_t)a5 nightMode:(BOOL)a6
++ (id)imageForIconID:(unsigned int)d contentScale:(double)scale sizeGroup:(unint64_t)group nightMode:(BOOL)mode
 {
-  v6 = a6;
-  v9 = *&a3;
+  modeCopy = mode;
+  v9 = *&d;
   v11 = objc_alloc_init(MEMORY[0x1E69DF438]);
-  [v11 setNightMode:v6];
+  [v11 setNightMode:modeCopy];
   v12 = +[MKSystemController sharedInstance];
   [v11 setNewInterfaceEnabled:{objc_msgSend(v12, "isGlassEnabled")}];
 
-  v13 = [a1 iconManager];
-  v15 = v13;
-  if (a5 > 5)
+  iconManager = [self iconManager];
+  v15 = iconManager;
+  if (group > 5)
   {
     v16 = 5;
   }
 
   else
   {
-    v16 = qword_1A30F75E8[a5];
+    v16 = qword_1A30F75E8[group];
   }
 
-  *&v14 = a4;
-  v17 = [v13 imageForIconID:v9 contentScale:v16 sizeGroup:v11 modifiers:v14];
+  *&v14 = scale;
+  v17 = [iconManager imageForIconID:v9 contentScale:v16 sizeGroup:v11 modifiers:v14];
 
   if (v17)
   {
-    v18 = [v17 image];
-    if (v18)
+    image = [v17 image];
+    if (image)
     {
       v19 = objc_alloc(MEMORY[0x1E69DCAB8]);
       [v17 contentScale];
-      v18 = [v19 initWithCGImage:v18 scale:0 orientation:v20];
+      image = [v19 initWithCGImage:image scale:0 orientation:v20];
     }
   }
 
   else
   {
-    v18 = 0;
+    image = 0;
   }
 
-  return v18;
+  return image;
 }
 
-+ (id)imageForRouteAnnotationStyle:(id)a3 size:(unint64_t)a4 forScale:(double)a5
++ (id)imageForRouteAnnotationStyle:(id)style size:(unint64_t)size forScale:(double)scale
 {
-  v5 = [a1 _imageForFeatureStyleAttributes:a3 size:a4 forScale:0 nightMode:a5];
+  v5 = [self _imageForFeatureStyleAttributes:style size:size forScale:0 nightMode:scale];
 
   return v5;
 }
 
-+ (id)imageForTrafficIncidentType:(int64_t)a3 size:(unint64_t)a4 forScale:(double)a5 nightMode:(BOOL)a6
++ (id)imageForTrafficIncidentType:(int64_t)type size:(unint64_t)size forScale:(double)scale nightMode:(BOOL)mode
 {
-  v6 = a6;
-  v10 = [MEMORY[0x1E69A1DB0] styleAttributesForTrafficIncidentType:a3];
-  v11 = [a1 _imageForFeatureStyleAttributes:v10 size:a4 forScale:v6 nightMode:a5];
+  modeCopy = mode;
+  v10 = [MEMORY[0x1E69A1DB0] styleAttributesForTrafficIncidentType:type];
+  v11 = [self _imageForFeatureStyleAttributes:v10 size:size forScale:modeCopy nightMode:scale];
 
   return v11;
 }
 
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 nightMode:(BOOL)a6
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale nightMode:(BOOL)mode
 {
-  v6 = [a1 _imageForFeatureStyleAttributes:a3 size:a4 forScale:0 navMode:a6 nightMode:a5];
+  v6 = [self _imageForFeatureStyleAttributes:attributes size:size forScale:0 navMode:mode nightMode:scale];
 
   return v6;
 }
 
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale
 {
-  v5 = [a1 _imageForFeatureStyleAttributes:a3 size:a4 forScale:0 navMode:a5];
+  v5 = [self _imageForFeatureStyleAttributes:attributes size:size forScale:0 navMode:scale];
 
   return v5;
 }
 
-+ (id)_imageForFeatureStyleAttributes:(id)a3 iconText:(id)a4 size:(unint64_t)a5 forScale:(double)a6 navMode:(BOOL)a7 nightMode:(BOOL)a8
++ (id)_imageForFeatureStyleAttributes:(id)attributes iconText:(id)text size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode nightMode:(BOOL)nightMode
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = [objc_alloc(MEMORY[0x1E69DF438]) initNavigationModifiers];
-  [v15 setNightMode:v8];
-  [v15 setText:v14];
+  nightModeCopy = nightMode;
+  attributesCopy = attributes;
+  textCopy = text;
+  initNavigationModifiers = [objc_alloc(MEMORY[0x1E69DF438]) initNavigationModifiers];
+  [initNavigationModifiers setNightMode:nightModeCopy];
+  [initNavigationModifiers setText:textCopy];
   v16 = +[MKSystemController sharedInstance];
-  [v15 setNewInterfaceEnabled:{objc_msgSend(v16, "isGlassEnabled")}];
+  [initNavigationModifiers setNewInterfaceEnabled:{objc_msgSend(v16, "isGlassEnabled")}];
 
-  v17 = [a1 iconManager];
-  v19 = v17;
-  if (a5 > 5)
+  iconManager = [self iconManager];
+  v19 = iconManager;
+  if (size > 5)
   {
     v20 = 5;
   }
 
   else
   {
-    v20 = qword_1A30F75E8[a5];
+    v20 = qword_1A30F75E8[size];
   }
 
-  *&v18 = a6;
-  v21 = [v17 imageForStyleAttributes:v13 withStylesheetName:@"default-search" contentScale:v20 sizeGroup:v15 modifiers:v18];
+  *&v18 = scale;
+  v21 = [iconManager imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:v20 sizeGroup:initNavigationModifiers modifiers:v18];
 
   if (v21)
   {
-    v22 = [v21 image];
-    if (v22)
+    image = [v21 image];
+    if (image)
     {
       v23 = objc_alloc(MEMORY[0x1E69DCAB8]);
       [v21 contentScale];
-      v22 = [v23 initWithCGImage:v22 scale:0 orientation:v24];
+      image = [v23 initWithCGImage:image scale:0 orientation:v24];
     }
   }
 
   else
   {
-    v22 = 0;
+    image = 0;
   }
 
-  return v22;
+  return image;
 }
 
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 navMode:(BOOL)a6 nightMode:(BOOL)a7
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode nightMode:(BOOL)nightMode
 {
-  v7 = [a1 _imageForFeatureStyleAttributes:a3 iconText:0 size:a4 forScale:a6 navMode:a7 nightMode:a5];
+  v7 = [self _imageForFeatureStyleAttributes:attributes iconText:0 size:size forScale:mode navMode:nightMode nightMode:scale];
 
   return v7;
 }
 
-+ (id)_imageForFeatureStyleAttributes:(id)a3 size:(unint64_t)a4 forScale:(double)a5 navMode:(BOOL)a6
++ (id)_imageForFeatureStyleAttributes:(id)attributes size:(unint64_t)size forScale:(double)scale navMode:(BOOL)mode
 {
-  v6 = [a1 _imageForFeatureStyleAttributes:a3 iconText:0 size:a4 forScale:a6 navMode:0 nightMode:a5];
+  v6 = [self _imageForFeatureStyleAttributes:attributes iconText:0 size:size forScale:mode navMode:0 nightMode:scale];
 
   return v6;
 }
 
-+ (CGColor)newGlyphColorForStyleAttributes:(id)a3 forScale:(double)a4
++ (CGColor)newGlyphColorForStyleAttributes:(id)attributes forScale:(double)scale
 {
-  v6 = a3;
-  v7 = [a1 iconManager];
-  *&v8 = a4;
-  v9 = [v7 imageForStyleAttributes:v6 withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
+  attributesCopy = attributes;
+  iconManager = [self iconManager];
+  *&v8 = scale;
+  v9 = [iconManager imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
 
   if (v9)
   {
@@ -807,12 +807,12 @@ id __142__MKIconManager_imageForStyle_size_forScale_format_customIconID_fallback
   return v10;
 }
 
-+ (CGColor)newHaloColorForStyleAttributes:(id)a3 forScale:(double)a4
++ (CGColor)newHaloColorForStyleAttributes:(id)attributes forScale:(double)scale
 {
-  v6 = a3;
-  v7 = [a1 iconManager];
-  *&v8 = a4;
-  v9 = [v7 imageForStyleAttributes:v6 withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
+  attributesCopy = attributes;
+  iconManager = [self iconManager];
+  *&v8 = scale;
+  v9 = [iconManager imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
 
   if (v9)
   {
@@ -827,12 +827,12 @@ id __142__MKIconManager_imageForStyle_size_forScale_format_customIconID_fallback
   return v10;
 }
 
-+ (CGColor)newFillColorForStyleAttributes:(id)a3 forScale:(double)a4
++ (CGColor)newFillColorForStyleAttributes:(id)attributes forScale:(double)scale
 {
-  v6 = a3;
-  v7 = [a1 iconManager];
-  *&v8 = a4;
-  v9 = [v7 imageForStyleAttributes:v6 withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
+  attributesCopy = attributes;
+  iconManager = [self iconManager];
+  *&v8 = scale;
+  v9 = [iconManager imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:4 sizeGroup:0 modifiers:v8];
 
   if (v9)
   {

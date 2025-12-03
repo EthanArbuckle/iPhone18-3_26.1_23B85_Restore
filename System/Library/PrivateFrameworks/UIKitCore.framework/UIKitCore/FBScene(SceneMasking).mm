@@ -9,7 +9,7 @@
 - (void)_sceneMaskingHostProvider
 {
   v2 = objc_opt_class();
-  v3 = [a1 componentForExtension:v2 ofClass:objc_opt_class()];
+  v3 = [self componentForExtension:v2 ofClass:objc_opt_class()];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -33,16 +33,16 @@
 - (void)_setSceneMaskingDelegate:()SceneMasking
 {
   v4 = a3;
-  v5 = [a1 _sceneMaskingHostProvider];
-  [v5 set_sceneMaskingHost:v4];
+  _sceneMaskingHostProvider = [self _sceneMaskingHostProvider];
+  [_sceneMaskingHostProvider set_sceneMaskingHost:v4];
 }
 
 - (id)_sceneMaskingDelegate
 {
-  v1 = [a1 _sceneMaskingHostProvider];
-  v2 = [v1 _sceneMaskingHost];
+  _sceneMaskingHostProvider = [self _sceneMaskingHostProvider];
+  _sceneMaskingHost = [_sceneMaskingHostProvider _sceneMaskingHost];
 
-  return v2;
+  return _sceneMaskingHost;
 }
 
 @end

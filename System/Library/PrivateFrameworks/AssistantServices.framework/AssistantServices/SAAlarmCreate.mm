@@ -1,19 +1,19 @@
 @interface SAAlarmCreate
-- (id)_ad_alarmResponseForResponse:(id)a3;
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3;
+- (id)_ad_alarmResponseForResponse:(id)response;
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation SAAlarmCreate
 
-- (id)_ad_alarmResponseForResponse:(id)a3
+- (id)_ad_alarmResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_alloc_init(SAAlarmCreateCompleted);
-    v5 = [v3 alarmIdentifier];
-    v6 = sub_10024AE44(v5);
+    alarmIdentifier = [responseCopy alarmIdentifier];
+    v6 = sub_10024AE44(alarmIdentifier);
     [v4 setAlarmId:v6];
   }
 
@@ -25,15 +25,15 @@
   return v4;
 }
 
-- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)a3
+- (void)_ad_getAlarmRequestRepresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_alloc_init(AFCreateAlarmRequest);
-  v5 = [(SAAlarmCreate *)self alarmToCreate];
-  v6 = [v5 _ad_alarm];
-  [v7 setAlarm:v6];
+  alarmToCreate = [(SAAlarmCreate *)self alarmToCreate];
+  _ad_alarm = [alarmToCreate _ad_alarm];
+  [v7 setAlarm:_ad_alarm];
 
-  v4[2](v4, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
 @end

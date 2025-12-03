@@ -1,13 +1,13 @@
 @interface PGROIFeatureExtractor
-+ (id)_labelsForVersion:(int64_t)a3;
-- (PGROIFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelsForVersion:(int64_t)version;
+- (PGROIFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGROIFeatureExtractor
 
-- (PGROIFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGROIFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v5 = [objc_opt_class() _labelsForVersion:a3];
+  v5 = [objc_opt_class() _labelsForVersion:version];
   v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
   v7 = +[PGGraphMomentNode roiOfMoment];
   v12[0] = MEMORY[0x277D85DD0];
@@ -36,10 +36,10 @@ __CFString *__47__PGROIFeatureExtractor_initWithVersion_error___block_invoke(uin
   return v3;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (version == 2)
   {
     v8 = *MEMORY[0x277D27588];
     v13 = *MEMORY[0x277D27590];
@@ -55,7 +55,7 @@ __CFString *__47__PGROIFeatureExtractor_initWithVersion_error___block_invoke(uin
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     v3 = *MEMORY[0x277D27588];
     v19 = *MEMORY[0x277D27590];

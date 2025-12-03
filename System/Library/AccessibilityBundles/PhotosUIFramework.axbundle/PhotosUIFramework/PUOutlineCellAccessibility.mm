@@ -1,16 +1,16 @@
 @interface PUOutlineCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PUOutlineCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUOutlineCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXNavigationListItem" hasRequiredInstanceMethod:@"title"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUOutlineCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXNavigationListItem" hasRequiredInstanceMethod:@"title"];
 }
 
 - (id)accessibilityLabel

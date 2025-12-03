@@ -1,10 +1,10 @@
 @interface TodayListCardLockupContainer
 - (CGRect)frame;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)applySizeCategoryUpdates;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation TodayListCardLockupContainer
@@ -21,38 +21,38 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_6F7EC0(x, y, width, height);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_6F80F0();
 }
 
 - (void)applySizeCategoryUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_6F8A8C();
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_6F9A24();
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_6FC690();
 }
 

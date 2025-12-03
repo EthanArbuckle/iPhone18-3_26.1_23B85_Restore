@@ -1,22 +1,22 @@
 @interface SUUIMenuPageSectionContext
-- (id)sectionsForIndex:(int64_t)a3;
-- (void)setSections:(id)a3 forIndex:(int64_t)a4;
+- (id)sectionsForIndex:(int64_t)index;
+- (void)setSections:(id)sections forIndex:(int64_t)index;
 @end
 
 @implementation SUUIMenuPageSectionContext
 
-- (id)sectionsForIndex:(int64_t)a3
+- (id)sectionsForIndex:(int64_t)index
 {
   sections = self->_sections;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)sections objectForKey:v4];
 
   return v5;
 }
 
-- (void)setSections:(id)a3 forIndex:(int64_t)a4
+- (void)setSections:(id)sections forIndex:(int64_t)index
 {
-  v10 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
   if (!sections)
   {
@@ -27,8 +27,8 @@
     sections = self->_sections;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)sections setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  [(NSMutableDictionary *)sections setObject:sectionsCopy forKey:v9];
 }
 
 @end

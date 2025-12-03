@@ -1,46 +1,46 @@
 @interface DMDiphoneOSAppController
-+ (id)_appStoreAccountIdentifierForPersona:(id)a3;
-+ (id)_appleAccountForPersona:(id)a3;
-+ (id)changeTypeAsString:(int64_t)a3;
++ (id)_appStoreAccountIdentifierForPersona:(id)persona;
++ (id)_appleAccountForPersona:(id)persona;
++ (id)changeTypeAsString:(int64_t)string;
 - (ASDJobManager)jobManager;
 - (ASDUpdatesService)updatesService;
-- (BOOL)setConfiguration:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setFeedback:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)setConfiguration:(id)configuration forBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setFeedback:(id)feedback forBundleIdentifier:(id)identifier error:(id *)error;
 - (BOOL)userIsSignedIn;
-- (BOOL)writeManagementInformationToDiskWithError:(id *)a3;
+- (BOOL)writeManagementInformationToDiskWithError:(id *)error;
 - (id)_allPropertyKeys;
-- (id)_managedDefaultsForBundleIdentifier:(id)a3;
-- (id)configurationForBundleIdentifier:(id)a3;
-- (id)feedbackForBundleIdentifier:(id)a3;
+- (id)_managedDefaultsForBundleIdentifier:(id)identifier;
+- (id)configurationForBundleIdentifier:(id)identifier;
+- (id)feedbackForBundleIdentifier:(id)identifier;
 - (id)initPrivate;
-- (unint64_t)appTypeFromProxy:(id)a3;
-- (void)_applyStoreDictionary:(id)a3 toAppMetadata:(id)a4;
-- (void)_downloadAppForRequest:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)_getMetadataForBundleIdentifier:(id)a3 storeItemIdentifier:(id)a4 personaIdentifier:(id)a5 completion:(id)a6;
-- (void)_installDeviceLicensedAppForRequest:(id)a3 completion:(id)a4;
-- (void)_installUserAppForRequest:(id)a3 completion:(id)a4;
-- (void)_startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)_uninstallAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_updateEndedForLifeCycle:(id)a3;
+- (unint64_t)appTypeFromProxy:(id)proxy;
+- (void)_applyStoreDictionary:(id)dictionary toAppMetadata:(id)metadata;
+- (void)_downloadAppForRequest:(id)request type:(int64_t)type completion:(id)completion;
+- (void)_getMetadataForBundleIdentifier:(id)identifier storeItemIdentifier:(id)itemIdentifier personaIdentifier:(id)personaIdentifier completion:(id)completion;
+- (void)_installDeviceLicensedAppForRequest:(id)request completion:(id)completion;
+- (void)_installUserAppForRequest:(id)request completion:(id)completion;
+- (void)_startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion;
+- (void)_uninstallAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_updateEndedForLifeCycle:(id)cycle;
 - (void)_updateForegroundBundleIdentifiers;
-- (void)_withSandboxExtensionForApp:(id)a3 do:(id)a4;
-- (void)addTerminationAssertion:(id)a3 forBundleIdentifier:(id)a4;
-- (void)cancelAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)didCancelUpdatingForLifeCycle:(id)a3;
-- (void)didFailUpdatingForLifeCycle:(id)a3;
-- (void)didFinishUpdatingForLifeCycle:(id)a3;
-- (void)getBundleIdentifierForStoreItemIdentifier:(id)a3 personaIdentifier:(id)a4 completion:(id)a5;
-- (void)getMetadataForNonEnterpriseAppRequest:(id)a3 completion:(id)a4;
-- (void)handleFetchRequest:(id)a3 completion:(id)a4;
-- (void)installSystemAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)promptUserToSignInWithCompletion:(id)a3;
-- (void)removeTerminationAssertionForBundleIdentifier:(id)a3;
-- (void)resumeAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)startInstallingEnterpriseAppWithManifestURL:(id)a3 completion:(id)a4;
-- (void)startInstallingNonEnterpriseAppForRequest:(id)a3 completion:(id)a4;
-- (void)startRedeemingAppWithCode:(id)a3 completion:(id)a4;
-- (void)startUninstallingAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5;
+- (void)_withSandboxExtensionForApp:(id)app do:(id)do;
+- (void)addTerminationAssertion:(id)assertion forBundleIdentifier:(id)identifier;
+- (void)cancelAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)didCancelUpdatingForLifeCycle:(id)cycle;
+- (void)didFailUpdatingForLifeCycle:(id)cycle;
+- (void)didFinishUpdatingForLifeCycle:(id)cycle;
+- (void)getBundleIdentifierForStoreItemIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completion:(id)completion;
+- (void)getMetadataForNonEnterpriseAppRequest:(id)request completion:(id)completion;
+- (void)handleFetchRequest:(id)request completion:(id)completion;
+- (void)installSystemAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)promptUserToSignInWithCompletion:(id)completion;
+- (void)removeTerminationAssertionForBundleIdentifier:(id)identifier;
+- (void)resumeAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)startInstallingEnterpriseAppWithManifestURL:(id)l completion:(id)completion;
+- (void)startInstallingNonEnterpriseAppForRequest:(id)request completion:(id)completion;
+- (void)startRedeemingAppWithCode:(id)code completion:(id)completion;
+- (void)startUninstallingAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion;
 @end
 
 @implementation DMDiphoneOSAppController
@@ -52,16 +52,16 @@
     sub_10007D9F0();
   }
 
-  v3 = [(DMDiphoneOSAppController *)self layoutMonitor];
-  v4 = [v3 currentLayout];
-  v5 = [v4 elements];
+  layoutMonitor = [(DMDiphoneOSAppController *)self layoutMonitor];
+  currentLayout = [layoutMonitor currentLayout];
+  elements = [currentLayout elements];
 
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [elements count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = elements;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -77,10 +77,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) bundleIdentifier];
-        if (v12)
+        bundleIdentifier = [*(*(&v15 + 1) + 8 * v11) bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v6 addObject:v12];
+          [v6 addObject:bundleIdentifier];
         }
 
         v11 = v11 + 1;
@@ -103,41 +103,41 @@
   }
 }
 
-- (void)handleFetchRequest:(id)a3 completion:(id)a4
+- (void)handleFetchRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  v9 = [(DMDiphoneOSAppController *)self updatesService];
-  [v6 storeItemIdentifier];
+  updatesService = [(DMDiphoneOSAppController *)self updatesService];
+  [requestCopy storeItemIdentifier];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100016CBC;
   v15[3] = &unk_1000CE120;
   v16 = v8;
-  v17 = v9;
-  v18 = v6;
+  v17 = updatesService;
+  v18 = requestCopy;
   v20 = v19 = self;
-  v21 = v7;
-  v10 = v7;
+  v21 = completionCopy;
+  v10 = completionCopy;
   v11 = v20;
-  v12 = v6;
-  v13 = v9;
+  v12 = requestCopy;
+  v13 = updatesService;
   v14 = v8;
   [v13 getManagedUpdatesWithCompletionBlock:v15];
 }
 
-- (unint64_t)appTypeFromProxy:(id)a3
+- (unint64_t)appTypeFromProxy:(id)proxy
 {
-  v3 = [a3 applicationType];
-  if ([v3 isEqualToString:LSUserApplicationType])
+  applicationType = [proxy applicationType];
+  if ([applicationType isEqualToString:LSUserApplicationType])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:LSSystemApplicationType];
+    v4 = [applicationType isEqualToString:LSSystemApplicationType];
   }
 
   return v4;
@@ -155,11 +155,11 @@
   return v3;
 }
 
-- (void)startInstallingEnterpriseAppWithManifestURL:(id)a3 completion:(id)a4
+- (void)startInstallingEnterpriseAppWithManifestURL:(id)l completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ASDExternalManifestRequestOptions alloc] initWithURL:v6];
+  completionCopy = completion;
+  lCopy = l;
+  v7 = [[ASDExternalManifestRequestOptions alloc] initWithURL:lCopy];
 
   [v7 setShouldHideUserPrompts:1];
   v8 = [[ASDExternalManifestRequest alloc] initWithOptions:v7];
@@ -167,22 +167,22 @@
   v10[1] = 3221225472;
   v10[2] = sub_100017D8C;
   v10[3] = &unk_1000CE168;
-  v11 = v5;
-  v9 = v5;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 startWithCompletionBlock:v10];
 }
 
-- (void)startInstallingNonEnterpriseAppForRequest:(id)a3 completion:(id)a4
+- (void)startInstallingNonEnterpriseAppForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
-  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v8 error:0];
-  v10 = [v9 compatibilityObject];
-  v11 = v10;
+  requestCopy = request;
+  completionCopy = completion;
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
+  compatibilityObject = [v9 compatibilityObject];
+  v11 = compatibilityObject;
   if (v9)
   {
-    v12 = v10 == 0;
+    v12 = compatibilityObject == 0;
   }
 
   else
@@ -192,47 +192,47 @@
 
   if (v12)
   {
-    v13 = [v6 licenseType];
-    if (v13)
+    licenseType = [requestCopy licenseType];
+    if (licenseType)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100018054;
       v15[3] = &unk_1000CE190;
-      v18 = (v13 & 2) >> 1;
+      v18 = (licenseType & 2) >> 1;
       v15[4] = self;
-      v16 = v6;
-      v17 = v7;
+      v16 = requestCopy;
+      v17 = completionCopy;
       [(DMDiphoneOSAppController *)self _installDeviceLicensedAppForRequest:v16 completion:v15];
     }
 
-    else if ((v13 & 2) != 0)
+    else if ((licenseType & 2) != 0)
     {
-      [(DMDiphoneOSAppController *)self _installUserAppForRequest:v6 completion:v7];
+      [(DMDiphoneOSAppController *)self _installUserAppForRequest:requestCopy completion:completionCopy];
     }
 
     else
     {
       v14 = DMFErrorWithCodeAndUserInfo();
-      (*(v7 + 2))(v7, v14);
+      (*(completionCopy + 2))(completionCopy, v14);
     }
   }
 
   else
   {
-    [(DMDiphoneOSAppController *)self installSystemAppWithBundleIdentifier:v8 completion:v7];
+    [(DMDiphoneOSAppController *)self installSystemAppWithBundleIdentifier:bundleIdentifier completion:completionCopy];
   }
 }
 
-- (void)resumeAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)resumeAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = DMFAppLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resume app installation for bundle identifier: %{public}@", buf, 0xCu);
   }
 
@@ -241,38 +241,38 @@
   v12[1] = 3221225472;
   v12[2] = sub_10001822C;
   v14 = v12[3] = &unk_1000CE1E0;
-  v15 = v7;
-  v13 = v6;
+  v15 = completionCopy;
+  v13 = identifierCopy;
   v9 = v14;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   [v9 getJobsUsingBlock:v12];
 }
 
-- (void)_installDeviceLicensedAppForRequest:(id)a3 completion:(id)a4
+- (void)_installDeviceLicensedAppForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = DMFAppLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v6;
+    v10 = requestCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Install device licensed app for request: %{public}@", &v9, 0xCu);
   }
 
-  [(DMDiphoneOSAppController *)self _downloadAppForRequest:v6 type:2 completion:v7];
+  [(DMDiphoneOSAppController *)self _downloadAppForRequest:requestCopy type:2 completion:completionCopy];
 }
 
-- (void)_installUserAppForRequest:(id)a3 completion:(id)a4
+- (void)_installUserAppForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = DMFAppLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v6;
+    v16 = requestCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Install user licensed app for request: %{public}@", buf, 0xCu);
   }
 
@@ -280,41 +280,41 @@
   v11[1] = 3221225472;
   v11[2] = sub_10001878C;
   v11[3] = &unk_1000CDE60;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(DMDiphoneOSAppController *)self _downloadAppForRequest:v10 type:1 completion:v11];
 }
 
-- (void)_downloadAppForRequest:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)_downloadAppForRequest:(id)request type:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 bundleIdentifier];
-  v11 = [v9 storeItemIdentifier];
-  v12 = [v9 personaIdentifier];
+  completionCopy = completion;
+  requestCopy = request;
+  bundleIdentifier = [requestCopy bundleIdentifier];
+  storeItemIdentifier = [requestCopy storeItemIdentifier];
+  personaIdentifier = [requestCopy personaIdentifier];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100018990;
   v14[3] = &unk_1000CE208;
-  v15 = v8;
-  v13 = v8;
-  [(DMDiphoneOSAppController *)self sendAppRequestWithBundleIdentifier:v10 storeItemIdentifier:v11 personaIdentifier:v12 type:a4 skipDownloads:0 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(DMDiphoneOSAppController *)self sendAppRequestWithBundleIdentifier:bundleIdentifier storeItemIdentifier:storeItemIdentifier personaIdentifier:personaIdentifier type:type skipDownloads:0 completion:v14];
 }
 
 - (id)initPrivate
 {
   v14.receiver = self;
   v14.super_class = DMDiphoneOSAppController;
-  v2 = [(DMDAppController *)&v14 initPrivate];
-  if (v2)
+  initPrivate = [(DMDAppController *)&v14 initPrivate];
+  if (initPrivate)
   {
-    objc_initWeak(&location, v2);
-    v3 = v2[7];
-    v2[7] = &__NSArray0__struct;
+    objc_initWeak(&location, initPrivate);
+    v3 = initPrivate[7];
+    initPrivate[7] = &__NSArray0__struct;
 
     v4 = +[FBSDisplayLayoutMonitorConfiguration configurationForDefaultMainDisplayMonitor];
     v8 = _NSConcreteStackBlock;
@@ -324,14 +324,14 @@
     objc_copyWeak(&v12, &location);
     [v4 setTransitionHandler:&v8];
     v5 = [FBSDisplayLayoutMonitor monitorWithConfiguration:v4, v8, v9, v10, v11];
-    v6 = v2[6];
-    v2[6] = v5;
+    v6 = initPrivate[6];
+    initPrivate[6] = v5;
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  return v2;
+  return initPrivate;
 }
 
 - (ASDJobManager)jobManager
@@ -358,67 +358,67 @@
   return v3;
 }
 
-- (void)addTerminationAssertion:(id)a3 forBundleIdentifier:(id)a4
+- (void)addTerminationAssertion:(id)assertion forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  assertionCopy = assertion;
   v8 = DMFAppLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Add termination assertion for bundle identifier: %{public}@", &v12, 0xCu);
   }
 
-  v9 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
+  bundleIDsToAssertions = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
 
-  if (!v9)
+  if (!bundleIDsToAssertions)
   {
     v10 = objc_opt_new();
     [(DMDiphoneOSAppController *)self setBundleIDsToAssertions:v10];
   }
 
-  v11 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
-  [v11 setObject:v7 forKeyedSubscript:v6];
+  bundleIDsToAssertions2 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
+  [bundleIDsToAssertions2 setObject:assertionCopy forKeyedSubscript:identifierCopy];
 }
 
-- (void)removeTerminationAssertionForBundleIdentifier:(id)a3
+- (void)removeTerminationAssertionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remove termination assertion for bundle identifier: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  bundleIDsToAssertions = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
+  v7 = [bundleIDsToAssertions objectForKeyedSubscript:identifierCopy];
   [v7 invalidate];
 
-  v8 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
-  [v8 setObject:0 forKeyedSubscript:v4];
+  bundleIDsToAssertions2 = [(DMDiphoneOSAppController *)self bundleIDsToAssertions];
+  [bundleIDsToAssertions2 setObject:0 forKeyedSubscript:identifierCopy];
 }
 
 - (BOOL)userIsSignedIn
 {
   v2 = +[SSAccountStore defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = v3 != 0;
+  activeAccount = [v2 activeAccount];
+  v4 = activeAccount != 0;
 
   return v4;
 }
 
-- (void)promptUserToSignInWithCompletion:(id)a3
+- (void)promptUserToSignInWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 activeAccount];
+  activeAccount = [v4 activeAccount];
 
-  if (v5)
+  if (activeAccount)
   {
-    v6 = [[SSMutableAuthenticationContext alloc] initWithAccount:v5];
+    v6 = [[SSMutableAuthenticationContext alloc] initWithAccount:activeAccount];
   }
 
   else
@@ -435,28 +435,28 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000190A4;
   v10[3] = &unk_1000CE298;
-  v11 = v3;
-  v9 = v3;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 startWithAuthenticateResponseBlock:v10];
 }
 
-+ (id)_appStoreAccountIdentifierForPersona:(id)a3
++ (id)_appStoreAccountIdentifierForPersona:(id)persona
 {
-  v3 = a3;
-  if (v3)
+  personaCopy = persona;
+  if (personaCopy)
   {
-    v4 = [objc_opt_class() _appleAccountForPersona:v3];
+    v4 = [objc_opt_class() _appleAccountForPersona:personaCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 ams_DSID];
+      ams_DSID = [v4 ams_DSID];
       v7 = DMFAppLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543618;
-        v10 = v3;
+        v10 = personaCopy;
         v11 = 2114;
-        v12 = v6;
+        v12 = ams_DSID;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "persona:%{public}@ -> accountIdentifier:%{public}@", &v9, 0x16u);
       }
     }
@@ -467,25 +467,25 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = v3;
+        v10 = personaCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "persona:%{public}@ -> accountIdentifier:<none>", &v9, 0xCu);
       }
 
-      v6 = 0;
+      ams_DSID = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    ams_DSID = 0;
   }
 
-  return v6;
+  return ams_DSID;
 }
 
-+ (id)_appleAccountForPersona:(id)a3
++ (id)_appleAccountForPersona:(id)persona
 {
-  v3 = a3;
+  personaCopy = persona;
   v4 = +[ACAccountStore defaultStore];
   v5 = [v4 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierAppleAccount];
   [v4 accountsWithAccountType:v5];
@@ -512,7 +512,7 @@
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:v10];
         objc_opt_class();
-        if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isEqualToString:v3])
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([v13 isEqualToString:personaCopy])
         {
           v14 = v12;
 
@@ -542,24 +542,24 @@ LABEL_12:
   return v14;
 }
 
-+ (id)changeTypeAsString:(int64_t)a3
++ (id)changeTypeAsString:(int64_t)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"default";
   }
 
   else
   {
-    return off_1000CE3C0[a3];
+    return off_1000CE3C0[string];
   }
 }
 
-- (void)installSystemAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)installSystemAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
     sub_10007D5EC();
   }
@@ -568,25 +568,25 @@ LABEL_12:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Installing system app with bundle id: %{public}@", buf, 0xCu);
   }
 
-  v8 = [[ASDSystemAppRequest alloc] initWithBundleID:v5];
+  v8 = [[ASDSystemAppRequest alloc] initWithBundleID:identifierCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000199C4;
   v10[3] = &unk_1000CE2E8;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 startWithErrorHandler:v10];
 }
 
-- (BOOL)writeManagementInformationToDiskWithError:(id *)a3
+- (BOOL)writeManagementInformationToDiskWithError:(id *)error
 {
   v6.receiver = self;
   v6.super_class = DMDiphoneOSAppController;
-  v3 = [(DMDAppController *)&v6 writeManagementInformationToDiskWithError:a3];
+  v3 = [(DMDAppController *)&v6 writeManagementInformationToDiskWithError:error];
   if (v3)
   {
     v4 = +[MCProfileConnection sharedConnection];
@@ -596,25 +596,25 @@ LABEL_12:
   return v3;
 }
 
-- (void)getBundleIdentifierForStoreItemIdentifier:(id)a3 personaIdentifier:(id)a4 completion:(id)a5
+- (void)getBundleIdentifierForStoreItemIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100019BDC;
   v9[3] = &unk_1000CDE10;
-  v10 = a5;
-  v8 = v10;
-  [(DMDiphoneOSAppController *)self _getMetadataForBundleIdentifier:0 storeItemIdentifier:a3 personaIdentifier:a4 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(DMDiphoneOSAppController *)self _getMetadataForBundleIdentifier:0 storeItemIdentifier:identifier personaIdentifier:personaIdentifier completion:v9];
 }
 
-- (void)getMetadataForNonEnterpriseAppRequest:(id)a3 completion:(id)a4
+- (void)getMetadataForNonEnterpriseAppRequest:(id)request completion:(id)completion
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = v19;
-  if (v19)
+  requestCopy = request;
+  completionCopy = completion;
+  v7 = requestCopy;
+  if (requestCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -624,22 +624,22 @@ LABEL_12:
   {
     sub_10007D658();
     v7 = 0;
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
   }
 
   sub_10007D6CC();
-  v7 = v19;
+  v7 = requestCopy;
 LABEL_3:
-  v8 = [v7 bundleIdentifier];
-  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v8 error:0];
-  v10 = [v9 compatibilityObject];
-  v11 = v10;
+  bundleIdentifier = [v7 bundleIdentifier];
+  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
+  compatibilityObject = [v9 compatibilityObject];
+  v11 = compatibilityObject;
   if (v9)
   {
-    v12 = v10 == 0;
+    v12 = compatibilityObject == 0;
   }
 
   else
@@ -649,55 +649,55 @@ LABEL_3:
 
   if (v12)
   {
-    v14 = [v19 storeItemIdentifier];
-    v13 = [v19 personaIdentifier];
-    [(DMDiphoneOSAppController *)self _getMetadataForBundleIdentifier:v8 storeItemIdentifier:v14 personaIdentifier:v13 completion:v6];
+    storeItemIdentifier = [requestCopy storeItemIdentifier];
+    personaIdentifier = [requestCopy personaIdentifier];
+    [(DMDiphoneOSAppController *)self _getMetadataForBundleIdentifier:bundleIdentifier storeItemIdentifier:storeItemIdentifier personaIdentifier:personaIdentifier completion:completionCopy];
   }
 
   else
   {
-    v14 = objc_opt_new();
-    [v14 setBundleIdentifier:v8];
-    v15 = [v11 itemID];
-    [v14 setStoreItemIdentifier:v15];
+    storeItemIdentifier = objc_opt_new();
+    [storeItemIdentifier setBundleIdentifier:bundleIdentifier];
+    itemID = [v11 itemID];
+    [storeItemIdentifier setStoreItemIdentifier:itemID];
 
-    v16 = [v11 localizedName];
-    v17 = v16;
-    if (v16)
+    localizedName = [v11 localizedName];
+    v17 = localizedName;
+    if (localizedName)
     {
-      [v14 setDisplayName:v16];
+      [storeItemIdentifier setDisplayName:localizedName];
     }
 
     else
     {
-      v18 = [v11 itemName];
-      [v14 setDisplayName:v18];
+      itemName = [v11 itemName];
+      [storeItemIdentifier setDisplayName:itemName];
     }
 
-    [v14 setIsStoreApp:0];
-    [v14 setIsFree:1];
-    [v14 setIsUserLicensed:1];
-    v6[2](v6, v14, 0);
+    [storeItemIdentifier setIsStoreApp:0];
+    [storeItemIdentifier setIsFree:1];
+    [storeItemIdentifier setIsUserLicensed:1];
+    completionCopy[2](completionCopy, storeItemIdentifier, 0);
   }
 }
 
-- (id)configurationForBundleIdentifier:(id)a3
+- (id)configurationForBundleIdentifier:(id)identifier
 {
-  v3 = [(DMDiphoneOSAppController *)self _managedDefaultsForBundleIdentifier:a3];
+  v3 = [(DMDiphoneOSAppController *)self _managedDefaultsForBundleIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:@"com.apple.configuration.managed"];
 
   return v4;
 }
 
-- (BOOL)setConfiguration:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setConfiguration:(id)configuration forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v9 = DMFAppLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"non-nil";
-    if (!v7)
+    if (!configurationCopy)
     {
       v10 = @"nil";
     }
@@ -705,11 +705,11 @@ LABEL_3:
     *buf = 138543618;
     v17 = v10;
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Set configuration: %{public}@, for bundle identifier: %{public}@", buf, 0x16u);
   }
 
-  v11 = [(DMDiphoneOSAppController *)self _managedDefaultsForBundleIdentifier:v8];
+  v11 = [(DMDiphoneOSAppController *)self _managedDefaultsForBundleIdentifier:identifierCopy];
   v12 = [v11 mutableCopy];
 
   if (!v12)
@@ -717,9 +717,9 @@ LABEL_3:
     v12 = objc_opt_new();
   }
 
-  [v12 setObject:v7 forKeyedSubscript:@"com.apple.configuration.managed"];
+  [v12 setObject:configurationCopy forKeyedSubscript:@"com.apple.configuration.managed"];
   _CFPreferencesWriteManagedDomain();
-  v15 = v8;
+  v15 = identifierCopy;
   v13 = [NSArray arrayWithObjects:&v15 count:1];
   _CFPreferencesManagementStatusChangedForDomains();
   _CFPreferencesPostValuesChangedInDomains();
@@ -727,13 +727,13 @@ LABEL_3:
   return 1;
 }
 
-- (void)_withSandboxExtensionForApp:(id)a3 do:(id)a4
+- (void)_withSandboxExtensionForApp:(id)app do:(id)do
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  appCopy = app;
+  doCopy = do;
+  if (doCopy)
   {
-    [v5 UTF8String];
+    [appCopy UTF8String];
     if (container_create_or_lookup_for_current_user())
     {
       v7 = container_copy_path();
@@ -752,7 +752,7 @@ LABEL_3:
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v14 = v5;
+              v14 = appCopy;
               v15 = 2114;
               v16 = v9;
               _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "container_acquire_sandbox_extension %{public}@ succeeded for path '%{public}@'", buf, 0x16u);
@@ -762,7 +762,7 @@ LABEL_3:
           else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543874;
-            v14 = v5;
+            v14 = appCopy;
             v15 = 2048;
             v16 = 1;
             v17 = 2114;
@@ -770,13 +770,13 @@ LABEL_3:
             _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "container_acquire_sandbox_extension %{public}@ failed, error %llu, path '%{public}@'", buf, 0x20u);
           }
 
-          v6[2](v6, v9, 1);
+          doCopy[2](doCopy, v9, 1);
           container_free_object();
         }
 
         else
         {
-          v6[2](v6, 0, 1);
+          doCopy[2](doCopy, 0, 1);
           container_free_object();
           free(v8);
         }
@@ -784,19 +784,19 @@ LABEL_3:
 
       else
       {
-        v6[2](v6, 0, 1);
+        doCopy[2](doCopy, 0, 1);
         container_free_object();
       }
     }
 
     else
     {
-      v6[2](v6, 0, 1);
+      doCopy[2](doCopy, 0, 1);
     }
   }
 }
 
-- (id)feedbackForBundleIdentifier:(id)a3
+- (id)feedbackForBundleIdentifier:(id)identifier
 {
   v10 = 0;
   v11 = &v10;
@@ -808,10 +808,10 @@ LABEL_3:
   v7[1] = 3221225472;
   v7[2] = sub_10001A3CC;
   v7[3] = &unk_1000CE310;
-  v4 = a3;
-  v8 = v4;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   v9 = &v10;
-  [(DMDiphoneOSAppController *)self _withSandboxExtensionForApp:v4 do:v7];
+  [(DMDiphoneOSAppController *)self _withSandboxExtensionForApp:identifierCopy do:v7];
   v5 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -819,15 +819,15 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)setFeedback:(id)a3 forBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setFeedback:(id)feedback forBundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  feedbackCopy = feedback;
+  identifierCopy = identifier;
   v10 = DMFAppLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"non-nil";
-    if (!v8)
+    if (!feedbackCopy)
     {
       v11 = @"nil";
     }
@@ -835,7 +835,7 @@ LABEL_3:
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Set feedback: %{public}@, for bundle identifier: %{public}@", buf, 0x16u);
   }
 
@@ -847,10 +847,10 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_10001A6C0;
   v16[3] = &unk_1000CE338;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v20 = a5;
-  v13 = v8;
+  errorCopy = error;
+  v13 = feedbackCopy;
   v18 = v13;
   v19 = buf;
   [(DMDiphoneOSAppController *)self _withSandboxExtensionForApp:v12 do:v16];
@@ -860,7 +860,7 @@ LABEL_3:
   return v14 & 1;
 }
 
-- (id)_managedDefaultsForBundleIdentifier:(id)a3
+- (id)_managedDefaultsForBundleIdentifier:(id)identifier
 {
   v3 = _CFPreferencesCopyPathForManagedDomain();
   v4 = [NSDictionary dictionaryWithContentsOfFile:v3];
@@ -868,58 +868,58 @@ LABEL_3:
   return v4;
 }
 
-- (void)_applyStoreDictionary:(id)a3 toAppMetadata:(id)a4
+- (void)_applyStoreDictionary:(id)dictionary toAppMetadata:(id)metadata
 {
-  v13 = a3;
-  v5 = a4;
-  v6 = [v13 objectForKeyedSubscript:ASDManagedLookupBundleID];
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  v6 = [dictionaryCopy objectForKeyedSubscript:ASDManagedLookupBundleID];
   if (v6)
   {
-    [v5 setBundleIdentifier:v6];
+    [metadataCopy setBundleIdentifier:v6];
   }
 
-  v7 = [v13 objectForKeyedSubscript:ASDManagedLookupItemID];
+  v7 = [dictionaryCopy objectForKeyedSubscript:ASDManagedLookupItemID];
   if (v7)
   {
-    [v5 setStoreItemIdentifier:v7];
+    [metadataCopy setStoreItemIdentifier:v7];
   }
 
-  v8 = [v13 objectForKeyedSubscript:ASDManagedLookupBundleDisplayName];
+  v8 = [dictionaryCopy objectForKeyedSubscript:ASDManagedLookupBundleDisplayName];
   if (v8)
   {
-    [v5 setDisplayName:v8];
+    [metadataCopy setDisplayName:v8];
   }
 
-  v9 = [v13 objectForKeyedSubscript:ASDManagedLookupIsAppFree];
+  v9 = [dictionaryCopy objectForKeyedSubscript:ASDManagedLookupIsAppFree];
   v10 = v9;
   if (v9)
   {
-    [v5 setIsFree:{objc_msgSend(v9, "BOOLValue")}];
+    [metadataCopy setIsFree:{objc_msgSend(v9, "BOOLValue")}];
   }
 
-  v11 = [v13 objectForKeyedSubscript:ASDManagedLookupIsActiveAccountAppOwner];
+  v11 = [dictionaryCopy objectForKeyedSubscript:ASDManagedLookupIsActiveAccountAppOwner];
   v12 = v11;
   if (v11)
   {
-    [v5 setIsUserLicensed:{objc_msgSend(v11, "BOOLValue")}];
+    [metadataCopy setIsUserLicensed:{objc_msgSend(v11, "BOOLValue")}];
   }
 }
 
-- (void)_getMetadataForBundleIdentifier:(id)a3 storeItemIdentifier:(id)a4 personaIdentifier:(id)a5 completion:(id)a6
+- (void)_getMetadataForBundleIdentifier:(id)identifier storeItemIdentifier:(id)itemIdentifier personaIdentifier:(id)personaIdentifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  personaIdentifierCopy = personaIdentifier;
+  completionCopy = completion;
   v14 = DMFAppLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = v10;
+    v27 = identifierCopy;
     v28 = 2114;
-    v29 = v11;
+    v29 = itemIdentifierCopy;
     v30 = 2114;
-    v31 = v12;
+    v31 = personaIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Get metadata for bundle identifier: %{public}@, store item identifier: %{public}@, persona: %{public}@", buf, 0x20u);
   }
 
@@ -927,72 +927,72 @@ LABEL_3:
   v20[1] = 3221225472;
   v20[2] = sub_10001AB2C;
   v20[3] = &unk_1000CE388;
-  v21 = v10;
-  v22 = v11;
-  v24 = v12;
-  v25 = v13;
-  v23 = self;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v21 = identifierCopy;
+  v22 = itemIdentifierCopy;
+  v24 = personaIdentifierCopy;
+  v25 = completionCopy;
+  selfCopy = self;
+  v15 = personaIdentifierCopy;
+  v16 = completionCopy;
+  v17 = itemIdentifierCopy;
+  v18 = identifierCopy;
   v19 = objc_retainBlock(v20);
   [(DMDiphoneOSAppController *)self sendAppRequestWithBundleIdentifier:v18 storeItemIdentifier:v17 personaIdentifier:v15 type:3 skipDownloads:1 completion:v19];
 }
 
-- (void)startRedeemingAppWithCode:(id)a3 completion:(id)a4
+- (void)startRedeemingAppWithCode:(id)code completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001B008;
   v8[3] = &unk_1000CE420;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  v7 = v10;
+  codeCopy = code;
+  completionCopy = completion;
+  v6 = codeCopy;
+  v7 = completionCopy;
   [(DMDiphoneOSAppController *)self promptUserToSignInWithCompletion:v8];
 }
 
-- (void)cancelAppInstallationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)cancelAppInstallationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(DMDiphoneOSAppController *)self jobManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001B3E4;
   v13 = v11[3] = &unk_1000CE1E0;
-  v14 = v7;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = identifierCopy;
   v8 = v13;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   [v8 getJobsUsingBlock:v11];
 }
 
-- (void)startUninstallingAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)startUninstallingAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9 = [BKSTerminationAssertion alloc];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10001B828;
   v16 = &unk_1000CE448;
-  v17 = self;
-  v18 = v7;
-  v19 = v8;
+  selfCopy = self;
+  v18 = identifierCopy;
+  v19 = completionCopy;
   v20 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   v12 = [v9 initWithBundleIdentifier:v11 efficacy:3 name:@"com.apple.dmd.remove-foreground-app" withHandler:&v13];
-  [(DMDiphoneOSAppController *)self addTerminationAssertion:v12 forBundleIdentifier:v11, v13, v14, v15, v16, v17];
+  [(DMDiphoneOSAppController *)self addTerminationAssertion:v12 forBundleIdentifier:v11, v13, v14, v15, v16, selfCopy];
 }
 
-- (void)_uninstallAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_uninstallAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = objc_alloc_init(IXUninstallOptions);
   [v7 setRequestUserConfirmation:0];
   [v7 setWaitForDeletion:0];
@@ -1007,12 +1007,12 @@ LABEL_3:
     v15[2] = sub_10001BB20;
     v15[3] = &unk_1000CE498;
     v9 = &v16;
-    v16 = v5;
+    v16 = identifierCopy;
     v17 = v7;
     v10 = v8;
     v18 = v10;
-    v19 = v6;
-    v11 = v6;
+    v19 = completionCopy;
+    v11 = completionCopy;
     [v10 terminateSyncWithCompletionHandler:v15];
   }
 
@@ -1023,20 +1023,20 @@ LABEL_3:
     v13[2] = sub_10001BC40;
     v13[3] = &unk_1000CE4C0;
     v9 = &v14;
-    v14 = v6;
-    v12 = v6;
-    [IXAppInstallCoordinator uninstallAppWithBundleID:v5 options:v7 completion:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [IXAppInstallCoordinator uninstallAppWithBundleID:identifierCopy options:v7 completion:v13];
   }
 }
 
-- (void)startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 bundleIdentifier];
-  v12 = [(DMDiphoneOSAppController *)self foregroundBundleIdentifiers];
-  v13 = [v12 containsObject:v11];
+  requestCopy = request;
+  metadataCopy = metadata;
+  completionCopy = completion;
+  bundleIdentifier = [metadataCopy bundleIdentifier];
+  foregroundBundleIdentifiers = [(DMDiphoneOSAppController *)self foregroundBundleIdentifiers];
+  v13 = [foregroundBundleIdentifiers containsObject:bundleIdentifier];
 
   if (v13)
   {
@@ -1044,107 +1044,107 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v8;
+      v20 = requestCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Updating foreground app for request: %{public}@, so will take termination assertion", &v19, 0xCu);
     }
 
     v15 = +[DMDDeviceController shared];
-    v16 = [v15 isInSingleAppMode];
-    v17 = [v16 BOOLValue];
+    isInSingleAppMode = [v15 isInSingleAppMode];
+    bOOLValue = [isInSingleAppMode BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       v18 = DMFAppLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = v11;
+        v20 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "We will need to restart the app after updating bundle identifier: %{public}@", &v19, 0xCu);
       }
 
-      [(DMDiphoneOSAppController *)self setSingleAppModeBundleIndentifier:v11];
+      [(DMDiphoneOSAppController *)self setSingleAppModeBundleIndentifier:bundleIdentifier];
     }
   }
 
-  [(DMDiphoneOSAppController *)self _startUpdatingAppForRequest:v8 metadata:v9 completion:v10];
+  [(DMDiphoneOSAppController *)self _startUpdatingAppForRequest:requestCopy metadata:metadataCopy completion:completionCopy];
 }
 
-- (void)didCancelUpdatingForLifeCycle:(id)a3
+- (void)didCancelUpdatingForLifeCycle:(id)cycle
 {
   v5.receiver = self;
   v5.super_class = DMDiphoneOSAppController;
-  v4 = a3;
-  [(DMDAppController *)&v5 didCancelUpdatingForLifeCycle:v4];
-  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:v4, v5.receiver, v5.super_class];
+  cycleCopy = cycle;
+  [(DMDAppController *)&v5 didCancelUpdatingForLifeCycle:cycleCopy];
+  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:cycleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)didFailUpdatingForLifeCycle:(id)a3
+- (void)didFailUpdatingForLifeCycle:(id)cycle
 {
   v5.receiver = self;
   v5.super_class = DMDiphoneOSAppController;
-  v4 = a3;
-  [(DMDAppController *)&v5 didFailUpdatingForLifeCycle:v4];
-  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:v4, v5.receiver, v5.super_class];
+  cycleCopy = cycle;
+  [(DMDAppController *)&v5 didFailUpdatingForLifeCycle:cycleCopy];
+  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:cycleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)didFinishUpdatingForLifeCycle:(id)a3
+- (void)didFinishUpdatingForLifeCycle:(id)cycle
 {
   v5.receiver = self;
   v5.super_class = DMDiphoneOSAppController;
-  v4 = a3;
-  [(DMDAppController *)&v5 didFinishUpdatingForLifeCycle:v4];
-  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:v4, v5.receiver, v5.super_class];
+  cycleCopy = cycle;
+  [(DMDAppController *)&v5 didFinishUpdatingForLifeCycle:cycleCopy];
+  [(DMDiphoneOSAppController *)self _updateEndedForLifeCycle:cycleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_startUpdatingAppForRequest:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)_startUpdatingAppForRequest:(id)request metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 lifeCycle];
-  [v10 addObserver:self];
+  requestCopy = request;
+  completionCopy = completion;
+  lifeCycle = [metadata lifeCycle];
+  [lifeCycle addObserver:self];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10001C204;
   v22[3] = &unk_1000CDE60;
   v22[4] = self;
-  v11 = v10;
+  v11 = lifeCycle;
   v23 = v11;
-  v12 = v9;
+  v12 = completionCopy;
   v24 = v12;
   v13 = objc_retainBlock(v22);
-  v14 = [v8 manifestURL];
-  if (v14)
+  manifestURL = [requestCopy manifestURL];
+  if (manifestURL)
   {
     v15 = DMFAppLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 host];
+      host = [manifestURL host];
       *buf = 138543362;
-      v26 = v16;
+      v26 = host;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Start updating enterprise app with manifest URL from: %{public}@", buf, 0xCu);
     }
 
-    [(DMDiphoneOSAppController *)self startInstallingEnterpriseAppWithManifestURL:v14 completion:v13];
+    [(DMDiphoneOSAppController *)self startInstallingEnterpriseAppWithManifestURL:manifestURL completion:v13];
   }
 
   else
   {
     v17 = objc_opt_new();
     [v17 setLicenseType:3];
-    v18 = [v8 bundleIdentifier];
-    [v17 setBundleIdentifier:v18];
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    [v17 setBundleIdentifier:bundleIdentifier];
 
-    v19 = [v8 storeItemIdentifier];
-    [v17 setStoreItemIdentifier:v19];
+    storeItemIdentifier = [requestCopy storeItemIdentifier];
+    [v17 setStoreItemIdentifier:storeItemIdentifier];
 
-    v20 = [v8 personaIdentifier];
-    [v17 setPersonaIdentifier:v20];
+    personaIdentifier = [requestCopy personaIdentifier];
+    [v17 setPersonaIdentifier:personaIdentifier];
 
     v21 = DMFAppLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = v8;
+      v26 = requestCopy;
       v27 = 2114;
       v28 = v17;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Start updating non-enterprise app for request: %{public}@, new install request: %{public}@", buf, 0x16u);
@@ -1154,19 +1154,19 @@ LABEL_3:
   }
 }
 
-- (void)_updateEndedForLifeCycle:(id)a3
+- (void)_updateEndedForLifeCycle:(id)cycle
 {
-  v4 = [a3 bundleIdentifier];
+  bundleIdentifier = [cycle bundleIdentifier];
   v5 = DMFAppLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DMF registered app update complete for bundle identifier: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(DMDiphoneOSAppController *)self singleAppModeBundleIndentifier];
-  v7 = [v4 isEqualToString:v6];
+  singleAppModeBundleIndentifier = [(DMDiphoneOSAppController *)self singleAppModeBundleIndentifier];
+  v7 = [bundleIdentifier isEqualToString:singleAppModeBundleIndentifier];
 
   v8 = DMFAppLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -1175,7 +1175,7 @@ LABEL_3:
     if (v9)
     {
       *buf = 138543362;
-      v17 = v4;
+      v17 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DMF restarting app with bundle identifier: %{public}@...", buf, 0xCu);
     }
 
@@ -1193,7 +1193,7 @@ LABEL_3:
     v12[1] = 3221225472;
     v12[2] = sub_10001C4F0;
     v12[3] = &unk_1000CE4E8;
-    v13 = v4;
+    v13 = bundleIdentifier;
     [v11 openApplication:v13 withOptions:v8 completion:v12];
 
     [(DMDiphoneOSAppController *)self setSingleAppModeBundleIndentifier:0];
@@ -1202,7 +1202,7 @@ LABEL_3:
   else if (v9)
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DMF ignoring app restart for bundle identifier: %{public}@", buf, 0xCu);
   }
 }

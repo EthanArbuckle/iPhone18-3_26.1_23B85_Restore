@@ -1,19 +1,19 @@
 @interface BWOverlaidRectangle
-- (BWOverlaidRectangle)initWithDisplayStyle:(int)a3;
+- (BWOverlaidRectangle)initWithDisplayStyle:(int)style;
 - (CGRect)bounds;
 - (void)dealloc;
 @end
 
 @implementation BWOverlaidRectangle
 
-- (BWOverlaidRectangle)initWithDisplayStyle:(int)a3
+- (BWOverlaidRectangle)initWithDisplayStyle:(int)style
 {
   v5.receiver = self;
   v5.super_class = BWOverlaidRectangle;
   result = [(BWOverlaidRectangle *)&v5 init];
   if (result)
   {
-    result->_displayStyle = a3;
+    result->_displayStyle = style;
   }
 
   return result;

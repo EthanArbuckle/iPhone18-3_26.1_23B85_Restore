@@ -1,128 +1,128 @@
 @interface SXJSONObjectMerger
-- (SXJSONObjectMerger)initWithClassProvider:(id)a3 exclusionKeys:(id)a4;
-- (SXJSONObjectMerger)initWithObjectClass:(Class)a3 exclusionKeys:(id)a4;
-- (id)appendKey:(id)a3 keyPath:(id)a4;
-- (id)mergeDictionary:(id)a3 withDictionary:(id)a4 keyPath:(id)a5;
-- (id)mergeObjects:(id)a3;
-- (id)replaceLastKeyOfKeyPath:(id)a3 withKey:(id)a4;
-- (void)addTransformer:(id)a3 keyPath:(id)a4;
-- (void)removeTransformerForKeyPath:(id)a3;
-- (void)transformObject:(id)a3 otherObject:(id)a4 transformer:(id)a5 key:(id)a6 keyPath:(id)a7 dictionary:(id)a8;
+- (SXJSONObjectMerger)initWithClassProvider:(id)provider exclusionKeys:(id)keys;
+- (SXJSONObjectMerger)initWithObjectClass:(Class)class exclusionKeys:(id)keys;
+- (id)appendKey:(id)key keyPath:(id)path;
+- (id)mergeDictionary:(id)dictionary withDictionary:(id)withDictionary keyPath:(id)path;
+- (id)mergeObjects:(id)objects;
+- (id)replaceLastKeyOfKeyPath:(id)path withKey:(id)key;
+- (void)addTransformer:(id)transformer keyPath:(id)path;
+- (void)removeTransformerForKeyPath:(id)path;
+- (void)transformObject:(id)object otherObject:(id)otherObject transformer:(id)transformer key:(id)key keyPath:(id)path dictionary:(id)dictionary;
 @end
 
 @implementation SXJSONObjectMerger
 
-- (SXJSONObjectMerger)initWithObjectClass:(Class)a3 exclusionKeys:(id)a4
+- (SXJSONObjectMerger)initWithObjectClass:(Class)class exclusionKeys:(id)keys
 {
-  v6 = a4;
-  v7 = [[SXJSONObjectMergerClassProvider alloc] initWithObjectClass:a3];
-  v8 = [(SXJSONObjectMerger *)self initWithClassProvider:v7 exclusionKeys:v6];
+  keysCopy = keys;
+  v7 = [[SXJSONObjectMergerClassProvider alloc] initWithObjectClass:class];
+  v8 = [(SXJSONObjectMerger *)self initWithClassProvider:v7 exclusionKeys:keysCopy];
 
   return v8;
 }
 
-- (SXJSONObjectMerger)initWithClassProvider:(id)a3 exclusionKeys:(id)a4
+- (SXJSONObjectMerger)initWithClassProvider:(id)provider exclusionKeys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  keysCopy = keys;
   v16.receiver = self;
   v16.super_class = SXJSONObjectMerger;
   v9 = [(SXJSONObjectMerger *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_classProvider, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_classProvider, provider);
+    v11 = [keysCopy copy];
     exclusionKeys = v10->_exclusionKeys;
     v10->_exclusionKeys = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     transformers = v10->_transformers;
-    v10->_transformers = v13;
+    v10->_transformers = dictionary;
   }
 
   return v10;
 }
 
-- (id)mergeObjects:(id)a3
+- (id)mergeObjects:(id)objects
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  objectsCopy = objects;
+  if ([objectsCopy count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [objectsCopy firstObject];
   }
 
   else
   {
-    v6 = [v4 reverseObjectEnumerator];
-    v7 = [MEMORY[0x1E695DF20] dictionary];
-    v8 = [v6 nextObject];
-    v9 = [v8 JSONRepresentation];
+    reverseObjectEnumerator = [objectsCopy reverseObjectEnumerator];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    nextObject = [reverseObjectEnumerator nextObject];
+    jSONRepresentation = [nextObject JSONRepresentation];
 
-    if (v9)
+    if (jSONRepresentation)
     {
       do
       {
-        v10 = [(SXJSONObjectMerger *)self mergeDictionary:v7 withDictionary:v9 keyPath:&stru_1F532F6C0];
+        v10 = [(SXJSONObjectMerger *)self mergeDictionary:dictionary withDictionary:jSONRepresentation keyPath:&stru_1F532F6C0];
 
-        v11 = [v6 nextObject];
-        v12 = [v11 JSONRepresentation];
+        nextObject2 = [reverseObjectEnumerator nextObject];
+        jSONRepresentation2 = [nextObject2 JSONRepresentation];
 
-        v9 = v12;
-        v7 = v10;
+        jSONRepresentation = jSONRepresentation2;
+        dictionary = v10;
       }
 
-      while (v12);
+      while (jSONRepresentation2);
     }
 
     else
     {
-      v10 = v7;
+      v10 = dictionary;
     }
 
-    v13 = [v4 firstObject];
-    v14 = [v13 specificationVersion];
+    firstObject2 = [objectsCopy firstObject];
+    specificationVersion = [firstObject2 specificationVersion];
 
-    v5 = [objc_alloc(-[SXJSONObjectMergerClassProviding classForObject:specVersion:](self->_classProvider classForObject:v10 specVersion:{v14)), "initWithJSONObject:andVersion:", v10, v14}];
+    firstObject = [objc_alloc(-[SXJSONObjectMergerClassProviding classForObject:specVersion:](self->_classProvider classForObject:v10 specVersion:{specificationVersion)), "initWithJSONObject:andVersion:", v10, specificationVersion}];
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (void)addTransformer:(id)a3 keyPath:(id)a4
+- (void)addTransformer:(id)transformer keyPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && [v6 length])
+  transformerCopy = transformer;
+  pathCopy = path;
+  if (transformerCopy && [pathCopy length])
   {
-    [(NSMutableDictionary *)self->_transformers setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_transformers setObject:transformerCopy forKey:pathCopy];
   }
 }
 
-- (void)removeTransformerForKeyPath:(id)a3
+- (void)removeTransformerForKeyPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    [(NSMutableDictionary *)self->_transformers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_transformers removeObjectForKey:pathCopy];
   }
 }
 
-- (id)mergeDictionary:(id)a3 withDictionary:(id)a4 keyPath:(id)a5
+- (id)mergeDictionary:(id)dictionary withDictionary:(id)withDictionary keyPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 mutableCopy];
+  pathCopy = path;
+  withDictionaryCopy = withDictionary;
+  v10 = [dictionary mutableCopy];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__SXJSONObjectMerger_mergeDictionary_withDictionary_keyPath___block_invoke;
   v16[3] = &unk_1E8500050;
   v16[4] = self;
-  v17 = v8;
+  v17 = pathCopy;
   v11 = v10;
   v18 = v11;
-  v12 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v16];
+  v12 = pathCopy;
+  [withDictionaryCopy enumerateKeysAndObjectsUsingBlock:v16];
 
   [v11 removeObjectsForKeys:self->_exclusionKeys];
   v13 = v18;
@@ -176,90 +176,90 @@ LABEL_8:
   }
 }
 
-- (void)transformObject:(id)a3 otherObject:(id)a4 transformer:(id)a5 key:(id)a6 keyPath:(id)a7 dictionary:(id)a8
+- (void)transformObject:(id)object otherObject:(id)otherObject transformer:(id)transformer key:(id)key keyPath:(id)path dictionary:(id)dictionary
 {
-  v24 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v16 transformKey:v24];
-  v20 = [v16 transformObject:v18 otherObject:v17];
+  keyCopy = key;
+  pathCopy = path;
+  dictionaryCopy = dictionary;
+  transformerCopy = transformer;
+  otherObjectCopy = otherObject;
+  objectCopy = object;
+  v19 = [transformerCopy transformKey:keyCopy];
+  v20 = [transformerCopy transformObject:objectCopy otherObject:otherObjectCopy];
 
-  v21 = [v15 objectForKey:v19];
-  if ([v19 isEqualToString:v24])
+  v21 = [dictionaryCopy objectForKey:v19];
+  if ([v19 isEqualToString:keyCopy])
   {
     if (v20)
     {
-      [v15 setObject:v20 forKey:v24];
+      [dictionaryCopy setObject:v20 forKey:keyCopy];
     }
   }
 
   else if (v21)
   {
-    v22 = [(SXJSONObjectMerger *)self appendKey:v19 keyPath:v14];
+    v22 = [(SXJSONObjectMerger *)self appendKey:v19 keyPath:pathCopy];
     v23 = [(NSMutableDictionary *)self->_transformers objectForKey:v22];
     if (v23)
     {
-      [(SXJSONObjectMerger *)self transformObject:v21 otherObject:v20 transformer:v23 key:v19 keyPath:v22 dictionary:v15];
+      [(SXJSONObjectMerger *)self transformObject:v21 otherObject:v20 transformer:v23 key:v19 keyPath:v22 dictionary:dictionaryCopy];
     }
   }
 
   else if (v20)
   {
-    [v15 setObject:v20 forKey:v19];
-    [v15 removeObjectForKey:v24];
+    [dictionaryCopy setObject:v20 forKey:v19];
+    [dictionaryCopy removeObjectForKey:keyCopy];
   }
 }
 
-- (id)appendKey:(id)a3 keyPath:(id)a4
+- (id)appendKey:(id)key keyPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] string];
-  if ([v6 length])
+  keyCopy = key;
+  pathCopy = path;
+  string = [MEMORY[0x1E696AD60] string];
+  if ([pathCopy length])
   {
-    [v7 appendString:v6];
+    [string appendString:pathCopy];
   }
 
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  if ([pathCopy length] && objc_msgSend(keyCopy, "length"))
   {
-    [v7 appendString:@"."];
+    [string appendString:@"."];
   }
 
-  if ([v5 length])
+  if ([keyCopy length])
   {
-    [v7 appendString:v5];
+    [string appendString:keyCopy];
   }
 
-  v8 = [v7 copy];
+  v8 = [string copy];
 
   return v8;
 }
 
-- (id)replaceLastKeyOfKeyPath:(id)a3 withKey:(id)a4
+- (id)replaceLastKeyOfKeyPath:(id)path withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v5 length])
+  pathCopy = path;
+  keyCopy = key;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([pathCopy length])
   {
-    v8 = [v5 componentsSeparatedByString:@"."];
-    [v7 addObjectsFromArray:v8];
+    v8 = [pathCopy componentsSeparatedByString:@"."];
+    [array addObjectsFromArray:v8];
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    [v7 replaceObjectAtIndex:objc_msgSend(v7 withObject:{"count") - 1, v6}];
+    [array replaceObjectAtIndex:objc_msgSend(array withObject:{"count") - 1, keyCopy}];
   }
 
-  else if ([v6 length])
+  else if ([keyCopy length])
   {
-    [v7 addObject:v6];
+    [array addObject:keyCopy];
   }
 
-  v9 = [v7 componentsJoinedByString:@"."];
+  v9 = [array componentsJoinedByString:@"."];
 
   return v9;
 }

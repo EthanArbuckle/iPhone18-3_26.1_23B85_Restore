@@ -1,20 +1,20 @@
 @interface _VTKColor
-- (_VTKColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
+- (_VTKColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation _VTKColor
 
-- (_VTKColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (_VTKColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v11.receiver = self;
   v11.super_class = _VTKColor;
   result = [(_VTKColor *)&v11 init];
   if (result)
   {
-    result->_red = a3;
-    result->_green = a4;
-    result->_blue = a5;
-    result->_alpha = a6;
+    result->_red = red;
+    result->_green = green;
+    result->_blue = blue;
+    result->_alpha = alpha;
   }
 
   return result;

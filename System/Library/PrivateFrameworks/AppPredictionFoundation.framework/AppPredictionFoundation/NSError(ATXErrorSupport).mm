@@ -16,7 +16,7 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v9 = [a1 atx_errorWithCode:a3 userInfo:v8];
+  v9 = [self atx_errorWithCode:a3 userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -36,7 +36,7 @@
   v11 = a4;
   v12 = [v9 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v13 = [a1 atx_errorWithCode:a3 userInfo:v12];
+  v13 = [self atx_errorWithCode:a3 userInfo:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -56,7 +56,7 @@
   v11 = a4;
   v12 = [v9 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v13 = [a1 atx_errorWithCode:a3 userInfo:v12];
+  v13 = [self atx_errorWithCode:a3 userInfo:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -71,7 +71,7 @@
   v7[2](v7, v8);
 
   v9 = [v8 copy];
-  v10 = [a1 atx_errorWithCode:a3 userInfo:v9];
+  v10 = [self atx_errorWithCode:a3 userInfo:v9];
 
   return v10;
 }

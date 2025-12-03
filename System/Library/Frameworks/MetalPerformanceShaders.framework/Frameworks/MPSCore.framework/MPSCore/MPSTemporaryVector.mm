@@ -1,15 +1,15 @@
 @interface MPSTemporaryVector
 + (MPSTemporaryVector)temporaryVectorWithCommandBuffer:(id)commandBuffer descriptor:(MPSVectorDescriptor *)descriptor;
 + (void)prefetchStorageWithCommandBuffer:(id)commandBuffer descriptorList:(NSArray *)descriptorList;
-- (MPSTemporaryVector)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
+- (MPSTemporaryVector)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
 - (void)setReadCount:(NSUInteger)readCount;
 @end
 
 @implementation MPSTemporaryVector
 
-- (MPSTemporaryVector)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (MPSTemporaryVector)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
-  if (!a3)
+  if (!buffer)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -19,7 +19,7 @@
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -29,12 +29,12 @@
     goto LABEL_20;
   }
 
-  objc_msgSend_vectorBytes(a4, a2, a3, a4, v4);
-  objc_msgSend_length(a4, v8, v9, v10, v11);
-  objc_msgSend_dataType(a4, v12, v13, v14, v15);
-  v20 = objc_msgSend_vectorBytes(a4, v16, v17, v18, v19);
-  v25 = objc_msgSend_length(a4, v21, v22, v23, v24);
-  if (v20 < v25 * (objc_msgSend_dataType(a4, v26, v27, v28, v29) >> 3))
+  objc_msgSend_vectorBytes(descriptor, a2, buffer, descriptor, v4);
+  objc_msgSend_length(descriptor, v8, v9, v10, v11);
+  objc_msgSend_dataType(descriptor, v12, v13, v14, v15);
+  v20 = objc_msgSend_vectorBytes(descriptor, v16, v17, v18, v19);
+  v25 = objc_msgSend_length(descriptor, v21, v22, v23, v24);
+  if (v20 < v25 * (objc_msgSend_dataType(descriptor, v26, v27, v28, v29) >> 3))
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -44,10 +44,10 @@
     goto LABEL_20;
   }
 
-  objc_msgSend_vectorBytes(a4, v30, v31, v32, v33);
-  objc_msgSend_dataType(a4, v34, v35, v36, v37);
-  v42 = objc_msgSend_vectorBytes(a4, v38, v39, v40, v41);
-  if (v42 % (objc_msgSend_dataType(a4, v43, v44, v45, v46) >> 3))
+  objc_msgSend_vectorBytes(descriptor, v30, v31, v32, v33);
+  objc_msgSend_dataType(descriptor, v34, v35, v36, v37);
+  v42 = objc_msgSend_vectorBytes(descriptor, v38, v39, v40, v41);
+  if (v42 % (objc_msgSend_dataType(descriptor, v43, v44, v45, v46) >> 3))
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -60,7 +60,7 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v51 = objc_msgSend_device(a3, v47, v48, v49, v50);
+  v51 = objc_msgSend_device(buffer, v47, v48, v49, v50);
   MPSDevice = MPSDevice::GetMPSDevice(v51);
   if (!MPSDevice)
   {
@@ -73,7 +73,7 @@ LABEL_12:
 
     v57 = objc_opt_class();
     NSStringFromClass(v57);
-    v62 = objc_msgSend_device(a3, v58, v59, v60, v61);
+    v62 = objc_msgSend_device(buffer, v58, v59, v60, v61);
     objc_msgSend_name(v62, v63, v64, v65, v66);
 LABEL_11:
     MTLReportFailure();
@@ -82,11 +82,11 @@ LABEL_11:
 
   v68.receiver = self;
   v68.super_class = MPSTemporaryVector;
-  result = [(MPSVector *)&v68 initPrivateWithDescriptor:a4 device:MPSDevice];
+  result = [(MPSVector *)&v68 initPrivateWithDescriptor:descriptor device:MPSDevice];
   if (result)
   {
     v56 = result;
-    MPSAutoBuffer::InitDeferredUsingTextureCache(&result->super._buffer, (result->super._vectorBytes * result->super._vectors), a3, v54, v55);
+    MPSAutoBuffer::InitDeferredUsingTextureCache(&result->super._buffer, (result->super._vectorBytes * result->super._vectors), buffer, v54, v55);
     result = v56;
     v56->super._offset = 0;
     v56->_readCount = 1;
@@ -132,17 +132,17 @@ LABEL_11:
   {
     if (!v3)
     {
-      v5 = self;
+      selfCopy = self;
       v6 = readCount;
       v7 = MTLReportFailureTypeEnabled();
       readCount = v6;
       v8 = v7;
-      self = v5;
+      self = selfCopy;
       if (v8)
       {
         MTLReportFailure();
         readCount = v6;
-        self = v5;
+        self = selfCopy;
       }
     }
 

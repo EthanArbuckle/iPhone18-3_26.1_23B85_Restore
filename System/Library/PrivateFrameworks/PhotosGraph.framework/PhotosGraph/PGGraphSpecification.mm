@@ -4,32 +4,32 @@
 - (id)edgeClassByDomainAndLabel;
 - (id)nodeClassByDomain;
 - (id)nodeClassByDomainAndLabel;
-- (void)enumerateEdgeClassesUsingBlock:(id)a3;
-- (void)enumerateNodeClassesUsingBlock:(id)a3;
+- (void)enumerateEdgeClassesUsingBlock:(id)block;
+- (void)enumerateNodeClassesUsingBlock:(id)block;
 @end
 
 @implementation PGGraphSpecification
 
-- (void)enumerateEdgeClassesUsingBlock:(id)a3
+- (void)enumerateEdgeClassesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGGraphSpecification *)self edgeClassByDomainAndLabel];
+  blockCopy = block;
+  edgeClassByDomainAndLabel = [(PGGraphSpecification *)self edgeClassByDomainAndLabel];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__PGGraphSpecification_enumerateEdgeClassesUsingBlock___block_invoke;
   v11[3] = &unk_27887FFE0;
-  v6 = v4;
+  v6 = blockCopy;
   v12 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [edgeClassByDomainAndLabel enumerateKeysAndObjectsUsingBlock:v11];
 
-  v7 = [(PGGraphSpecification *)self edgeClassByDomain];
+  edgeClassByDomain = [(PGGraphSpecification *)self edgeClassByDomain];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__PGGraphSpecification_enumerateEdgeClassesUsingBlock___block_invoke_3;
   v9[3] = &unk_278880008;
   v10 = v6;
   v8 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  [edgeClassByDomain enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __55__PGGraphSpecification_enumerateEdgeClassesUsingBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -435,26 +435,26 @@ void __49__PGGraphSpecification_edgeClassByDomainAndLabel__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodeClassesUsingBlock:(id)a3
+- (void)enumerateNodeClassesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGGraphSpecification *)self nodeClassByDomainAndLabel];
+  blockCopy = block;
+  nodeClassByDomainAndLabel = [(PGGraphSpecification *)self nodeClassByDomainAndLabel];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__PGGraphSpecification_enumerateNodeClassesUsingBlock___block_invoke;
   v11[3] = &unk_27887FFE0;
-  v6 = v4;
+  v6 = blockCopy;
   v12 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [nodeClassByDomainAndLabel enumerateKeysAndObjectsUsingBlock:v11];
 
-  v7 = [(PGGraphSpecification *)self nodeClassByDomain];
+  nodeClassByDomain = [(PGGraphSpecification *)self nodeClassByDomain];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__PGGraphSpecification_enumerateNodeClassesUsingBlock___block_invoke_3;
   v9[3] = &unk_278880008;
   v10 = v6;
   v8 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  [nodeClassByDomain enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __55__PGGraphSpecification_enumerateNodeClassesUsingBlock___block_invoke(uint64_t a1, void *a2, void *a3)

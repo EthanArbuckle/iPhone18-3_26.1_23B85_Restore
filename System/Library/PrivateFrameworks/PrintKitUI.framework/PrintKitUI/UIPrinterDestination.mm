@@ -1,8 +1,8 @@
 @interface UIPrinterDestination
-- (UIPrinterDestination)initWithCoder:(id)a3;
+- (UIPrinterDestination)initWithCoder:(id)coder;
 - (UIPrinterDestination)initWithURL:(NSURL *)url;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIPrinterDestination
@@ -16,8 +16,8 @@
   if (v5)
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(NSURL *)v4 absoluteString];
-    v8 = [v6 URLWithString:v7];
+    absoluteString = [(NSURL *)v4 absoluteString];
+    v8 = [v6 URLWithString:absoluteString];
     v9 = v5->_URL;
     v5->_URL = v8;
   }
@@ -28,8 +28,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(NSURL *)self->_URL absoluteString];
-  [v3 setObject:v4 forKeyedSubscript:@"uri"];
+  absoluteString = [(NSURL *)self->_URL absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"uri"];
 
   txtRecord = self->_txtRecord;
   if (txtRecord)
@@ -46,16 +46,16 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UIPrinterDestination *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"asDict"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(UIPrinterDestination *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"asDict"];
 }
 
-- (UIPrinterDestination)initWithCoder:(id)a3
+- (UIPrinterDestination)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"asDict"];
+  v4 = [coder decodeObjectForKey:@"asDict"];
   v5 = v4;
   if (v4)
   {
@@ -75,21 +75,21 @@
       }
 
       self = v8;
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

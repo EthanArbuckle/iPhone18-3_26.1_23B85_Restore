@@ -1,44 +1,44 @@
 @interface TUNearbySuggestionAdvertisement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSuggestionAdvertisement:(id)a3;
-- (TUNearbySuggestionAdvertisement)initWithCoder:(id)a3;
-- (TUNearbySuggestionAdvertisement)initWithSuggestion:(id)a3;
-- (TUNearbySuggestionAdvertisement)initWithSuggestionIdentifier:(id)a3 deviceIdentifier:(id)a4 type:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSuggestionAdvertisement:(id)advertisement;
+- (TUNearbySuggestionAdvertisement)initWithCoder:(id)coder;
+- (TUNearbySuggestionAdvertisement)initWithSuggestion:(id)suggestion;
+- (TUNearbySuggestionAdvertisement)initWithSuggestionIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier type:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbySuggestionAdvertisement
 
-- (TUNearbySuggestionAdvertisement)initWithSuggestionIdentifier:(id)a3 deviceIdentifier:(id)a4 type:(int64_t)a5
+- (TUNearbySuggestionAdvertisement)initWithSuggestionIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier type:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
   v14.receiver = self;
   v14.super_class = TUNearbySuggestionAdvertisement;
   v11 = [(TUNearbySuggestionAdvertisement *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_suggestionIdentifier, a3);
-    objc_storeStrong(&v12->_deviceIdentifier, a4);
-    v12->_type = a5;
+    objc_storeStrong(&v11->_suggestionIdentifier, identifier);
+    objc_storeStrong(&v12->_deviceIdentifier, deviceIdentifier);
+    v12->_type = type;
   }
 
   return v12;
 }
 
-- (TUNearbySuggestionAdvertisement)initWithSuggestion:(id)a3
+- (TUNearbySuggestionAdvertisement)initWithSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 deviceHandle];
-  v6 = [v5 identifierWithType:2];
+  suggestionCopy = suggestion;
+  deviceHandle = [suggestionCopy deviceHandle];
+  v6 = [deviceHandle identifierWithType:2];
 
-  v7 = [v4 identifier];
-  v8 = [v4 type];
+  identifier = [suggestionCopy identifier];
+  type = [suggestionCopy type];
 
-  v9 = [(TUNearbySuggestionAdvertisement *)self initWithSuggestionIdentifier:v7 deviceIdentifier:v6 type:v8];
+  v9 = [(TUNearbySuggestionAdvertisement *)self initWithSuggestionIdentifier:identifier deviceIdentifier:v6 type:type];
   return v9;
 }
 
@@ -58,63 +58,63 @@
   return v7;
 }
 
-- (TUNearbySuggestionAdvertisement)initWithCoder:(id)a3
+- (TUNearbySuggestionAdvertisement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_suggestionIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_deviceIdentifier);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = NSStringFromSelector(sel_type);
-  v12 = [v4 decodeIntegerForKey:v11];
+  v12 = [coderCopy decodeIntegerForKey:v11];
 
   v13 = [(TUNearbySuggestionAdvertisement *)self initWithSuggestionIdentifier:v7 deviceIdentifier:v10 type:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suggestionIdentifier = self->_suggestionIdentifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_suggestionIdentifier);
-  [v5 encodeObject:suggestionIdentifier forKey:v6];
+  [coderCopy encodeObject:suggestionIdentifier forKey:v6];
 
   deviceIdentifier = self->_deviceIdentifier;
   v8 = NSStringFromSelector(sel_deviceIdentifier);
-  [v5 encodeObject:deviceIdentifier forKey:v8];
+  [coderCopy encodeObject:deviceIdentifier forKey:v8];
 
   type = self->_type;
   v10 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v10];
+  [coderCopy encodeInteger:type forKey:v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbySuggestionAdvertisement *)self isEqualToSuggestionAdvertisement:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbySuggestionAdvertisement *)self isEqualToSuggestionAdvertisement:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSuggestionAdvertisement:(id)a3
+- (BOOL)isEqualToSuggestionAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  v5 = [(TUNearbySuggestionAdvertisement *)self suggestionIdentifier];
-  v6 = [v4 suggestionIdentifier];
+  advertisementCopy = advertisement;
+  suggestionIdentifier = [(TUNearbySuggestionAdvertisement *)self suggestionIdentifier];
+  suggestionIdentifier2 = [advertisementCopy suggestionIdentifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(advertisementCopy) = [suggestionIdentifier isEqual:suggestionIdentifier2];
+  return advertisementCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TUNearbySuggestionAdvertisement *)self suggestionIdentifier];
-  v3 = [v2 hash];
+  suggestionIdentifier = [(TUNearbySuggestionAdvertisement *)self suggestionIdentifier];
+  v3 = [suggestionIdentifier hash];
 
   return v3;
 }

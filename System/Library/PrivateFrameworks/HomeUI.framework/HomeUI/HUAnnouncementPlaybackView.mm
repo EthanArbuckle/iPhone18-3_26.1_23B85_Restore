@@ -1,28 +1,28 @@
 @interface HUAnnouncementPlaybackView
-- (HUAnnouncementPlaybackView)initWithFrame:(CGRect)a3;
+- (HUAnnouncementPlaybackView)initWithFrame:(CGRect)frame;
 - (id)_avatarImageSymbolConfiguration;
-- (id)_imageOrViewForServiceType:(id)a3;
+- (id)_imageOrViewForServiceType:(id)type;
 - (id)_requiredKeyDescriptors;
 - (id)description;
-- (void)_animateLayerWaveAtIndex:(unint64_t)a3 forAveragePower:(double)a4;
-- (void)_configureAnnounceSender:(id)a3;
-- (void)_generateRippleForAveragePower:(double)a3;
+- (void)_animateLayerWaveAtIndex:(unint64_t)index forAveragePower:(double)power;
+- (void)_configureAnnounceSender:(id)sender;
+- (void)_generateRippleForAveragePower:(double)power;
 - (void)_setupAudioWaveLayers;
-- (void)_updateIconViewForServiceType:(id)a3;
-- (void)didUpdateAveragePower:(double)a3;
+- (void)_updateIconViewForServiceType:(id)type;
+- (void)didUpdateAveragePower:(double)power;
 - (void)playbackStopped;
 - (void)resumePlaybackAnimation;
-- (void)setAnnouncementInfo:(id)a3;
+- (void)setAnnouncementInfo:(id)info;
 - (void)updateConstraints;
 @end
 
 @implementation HUAnnouncementPlaybackView
 
-- (HUAnnouncementPlaybackView)initWithFrame:(CGRect)a3
+- (HUAnnouncementPlaybackView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HUAnnouncementPlaybackView;
-  v3 = [(HUAnnouncementPlaybackView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUAnnouncementPlaybackView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -65,13 +65,13 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HUAnnouncementPlaybackView *)self announcementInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
-  v6 = [(HUAnnouncementPlaybackView *)self announcementInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
-  v8 = [(HUAnnouncementPlaybackView *)self fullyPlayed];
-  v9 = [(HUAnnouncementPlaybackView *)self audioPlayer];
-  v10 = [v3 stringWithFormat:@"ID [%@], index [%@] - isFullyPlayed [%d] - isPlaying [%d]", v5, v7, v8, objc_msgSend(v9, "isPlaying")];
+  announcementInfo = [(HUAnnouncementPlaybackView *)self announcementInfo];
+  v5 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+  announcementInfo2 = [(HUAnnouncementPlaybackView *)self announcementInfo];
+  v7 = [announcementInfo2 objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
+  fullyPlayed = [(HUAnnouncementPlaybackView *)self fullyPlayed];
+  audioPlayer = [(HUAnnouncementPlaybackView *)self audioPlayer];
+  v10 = [v3 stringWithFormat:@"ID [%@], index [%@] - isFullyPlayed [%d] - isPlaying [%d]", v5, v7, fullyPlayed, objc_msgSend(audioPlayer, "isPlaying")];
 
   return v10;
 }
@@ -82,107 +82,107 @@
   v58.super_class = HUAnnouncementPlaybackView;
   [(HUAnnouncementPlaybackView *)&v58 updateConstraints];
   v3 = objc_opt_new();
-  v4 = [(HUAnnouncementPlaybackView *)self avatarView];
-  v5 = [v4 centerXAnchor];
-  v6 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  avatarView = [(HUAnnouncementPlaybackView *)self avatarView];
+  centerXAnchor = [avatarView centerXAnchor];
+  centerXAnchor2 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v3 addObject:v7];
 
-  v8 = [(HUAnnouncementPlaybackView *)self avatarView];
-  v9 = [v8 centerYAnchor];
-  v10 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  avatarView2 = [(HUAnnouncementPlaybackView *)self avatarView];
+  centerYAnchor = [avatarView2 centerYAnchor];
+  centerYAnchor2 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v3 addObject:v11];
 
-  v12 = [(HUAnnouncementPlaybackView *)self avatarView];
-  v13 = [v12 heightAnchor];
-  v14 = [(HUAnnouncementPlaybackView *)self heightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  avatarView3 = [(HUAnnouncementPlaybackView *)self avatarView];
+  heightAnchor = [avatarView3 heightAnchor];
+  heightAnchor2 = [(HUAnnouncementPlaybackView *)self heightAnchor];
+  v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(HUAnnouncementPlaybackView *)self avatarView];
-  v17 = [v16 widthAnchor];
-  v18 = [(HUAnnouncementPlaybackView *)self avatarView];
-  v19 = [v18 heightAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  avatarView4 = [(HUAnnouncementPlaybackView *)self avatarView];
+  widthAnchor = [avatarView4 widthAnchor];
+  avatarView5 = [(HUAnnouncementPlaybackView *)self avatarView];
+  heightAnchor3 = [avatarView5 heightAnchor];
+  v20 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   [v3 addObject:v20];
 
-  v21 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-  v22 = [v21 centerXAnchor];
-  v23 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  genericAvatarView = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+  centerXAnchor3 = [genericAvatarView centerXAnchor];
+  centerXAnchor4 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
+  v24 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v3 addObject:v24];
 
-  v25 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-  v26 = [v25 centerYAnchor];
-  v27 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  genericAvatarView2 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+  centerYAnchor3 = [genericAvatarView2 centerYAnchor];
+  centerYAnchor4 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
+  v28 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v3 addObject:v28];
 
-  v29 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-  v30 = [v29 widthAnchor];
-  v31 = [(HUAnnouncementPlaybackView *)self heightAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  genericAvatarView3 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+  widthAnchor2 = [genericAvatarView3 widthAnchor];
+  heightAnchor4 = [(HUAnnouncementPlaybackView *)self heightAnchor];
+  v32 = [widthAnchor2 constraintEqualToAnchor:heightAnchor4];
   [v3 addObject:v32];
 
-  v33 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-  v34 = [v33 heightAnchor];
-  v35 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-  v36 = [v35 widthAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  genericAvatarView4 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+  heightAnchor5 = [genericAvatarView4 heightAnchor];
+  genericAvatarView5 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+  widthAnchor3 = [genericAvatarView5 widthAnchor];
+  v37 = [heightAnchor5 constraintEqualToAnchor:widthAnchor3];
   [v3 addObject:v37];
 
-  v38 = [(HUAnnouncementPlaybackView *)self iconView];
-  v39 = [v38 centerXAnchor];
-  v40 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  iconView = [(HUAnnouncementPlaybackView *)self iconView];
+  centerXAnchor5 = [iconView centerXAnchor];
+  centerXAnchor6 = [(HUAnnouncementPlaybackView *)self centerXAnchor];
+  v41 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v3 addObject:v41];
 
-  v42 = [(HUAnnouncementPlaybackView *)self iconView];
-  v43 = [v42 centerYAnchor];
-  v44 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  iconView2 = [(HUAnnouncementPlaybackView *)self iconView];
+  centerYAnchor5 = [iconView2 centerYAnchor];
+  centerYAnchor6 = [(HUAnnouncementPlaybackView *)self centerYAnchor];
+  v45 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v3 addObject:v45];
 
-  v46 = [(HUAnnouncementPlaybackView *)self iconView];
-  v47 = [v46 widthAnchor];
-  v48 = [(HUAnnouncementPlaybackView *)self heightAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  iconView3 = [(HUAnnouncementPlaybackView *)self iconView];
+  widthAnchor4 = [iconView3 widthAnchor];
+  heightAnchor6 = [(HUAnnouncementPlaybackView *)self heightAnchor];
+  v49 = [widthAnchor4 constraintEqualToAnchor:heightAnchor6];
   [v3 addObject:v49];
 
-  v50 = [(HUAnnouncementPlaybackView *)self iconView];
-  v51 = [v50 heightAnchor];
-  v52 = [(HUAnnouncementPlaybackView *)self iconView];
-  v53 = [v52 widthAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53];
+  iconView4 = [(HUAnnouncementPlaybackView *)self iconView];
+  heightAnchor7 = [iconView4 heightAnchor];
+  iconView5 = [(HUAnnouncementPlaybackView *)self iconView];
+  widthAnchor5 = [iconView5 widthAnchor];
+  v54 = [heightAnchor7 constraintEqualToAnchor:widthAnchor5];
   [v3 addObject:v54];
 
   CGAffineTransformMakeScale(&v57, 0.75, 0.75);
-  v55 = [(HUAnnouncementPlaybackView *)self iconView];
+  iconView6 = [(HUAnnouncementPlaybackView *)self iconView];
   v56 = v57;
-  [v55 setTransform:&v56];
+  [iconView6 setTransform:&v56];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v3];
 }
 
-- (void)_configureAnnounceSender:(id)a3
+- (void)_configureAnnounceSender:(id)sender
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  senderCopy = sender;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HUAnnouncementPlaybackView *)self avatarView];
-    [v5 setAlpha:1.0];
+    avatarView = [(HUAnnouncementPlaybackView *)self avatarView];
+    [avatarView setAlpha:1.0];
 
-    v6 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-    [v6 setAlpha:0.0];
+    genericAvatarView = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+    [genericAvatarView setAlpha:0.0];
 
-    v7 = [(HUAnnouncementPlaybackView *)self iconView];
-    [v7 setAlpha:0.0];
+    iconView = [(HUAnnouncementPlaybackView *)self iconView];
+    [iconView setAlpha:0.0];
 
-    v8 = [(HUAnnouncementPlaybackView *)self avatarView];
-    [v8 setContact:v4];
+    avatarView2 = [(HUAnnouncementPlaybackView *)self avatarView];
+    [avatarView2 setContact:senderCopy];
   }
 
   else
@@ -196,24 +196,24 @@
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Now Configuring AvatarView for SiriEndpointAccessory", &v34, 2u);
       }
 
-      v10 = [(HUAnnouncementPlaybackView *)self avatarView];
-      [v10 setAlpha:0.0];
+      avatarView3 = [(HUAnnouncementPlaybackView *)self avatarView];
+      [avatarView3 setAlpha:0.0];
 
-      v11 = [(HUAnnouncementPlaybackView *)self iconView];
-      [v11 setAlpha:0.0];
+      iconView2 = [(HUAnnouncementPlaybackView *)self iconView];
+      [iconView2 setAlpha:0.0];
 
-      v12 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-      [v12 setAlpha:1.0];
+      genericAvatarView2 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+      [genericAvatarView2 setAlpha:1.0];
 
-      v13 = [(HUAnnouncementPlaybackView *)self announcementInfo];
-      v8 = [v13 objectForKeyedSubscript:*MEMORY[0x277CEAA90]];
+      announcementInfo = [(HUAnnouncementPlaybackView *)self announcementInfo];
+      avatarView2 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEAA90]];
 
-      v14 = [(HUAnnouncementPlaybackView *)self _imageOrViewForServiceType:v8];
+      v14 = [(HUAnnouncementPlaybackView *)self _imageOrViewForServiceType:avatarView2];
       v15 = HFLogForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v34 = 138412546;
-        v35 = v8;
+        v35 = avatarView2;
         v36 = 2112;
         v37 = v14;
         _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "imageOrViewForServiceType [%@] = [%@]", &v34, 0x16u);
@@ -231,7 +231,7 @@
         v17 = 0;
       }
 
-      v18 = v17;
+      whiteColor = v17;
 
       objc_opt_class();
       v19 = v16;
@@ -251,42 +251,42 @@
       {
         v22 = [MEMORY[0x277D755B8] hu_circleImageWithDiameter:120.0];
 
-        [(HUAnnouncementPlaybackView *)self _updateIconViewForServiceType:v8];
-        v23 = [(HUAnnouncementPlaybackView *)self iconView];
-        [v23 setAlpha:1.0];
+        [(HUAnnouncementPlaybackView *)self _updateIconViewForServiceType:avatarView2];
+        iconView3 = [(HUAnnouncementPlaybackView *)self iconView];
+        [iconView3 setAlpha:1.0];
 
-        v18 = v22;
+        whiteColor = v22;
       }
 
-      v24 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-      v25 = v24;
-      v26 = v18;
+      genericAvatarView3 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+      v25 = genericAvatarView3;
+      v26 = whiteColor;
     }
 
     else
     {
-      v27 = [(HUAnnouncementPlaybackView *)self avatarView];
-      [v27 setAlpha:0.0];
+      avatarView4 = [(HUAnnouncementPlaybackView *)self avatarView];
+      [avatarView4 setAlpha:0.0];
 
-      v28 = [(HUAnnouncementPlaybackView *)self iconView];
-      [v28 setAlpha:0.0];
+      iconView4 = [(HUAnnouncementPlaybackView *)self iconView];
+      [iconView4 setAlpha:0.0];
 
-      v29 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-      [v29 setAlpha:1.0];
+      genericAvatarView4 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+      [genericAvatarView4 setAlpha:1.0];
 
-      v8 = [(HUAnnouncementPlaybackView *)self _avatarImageSymbolConfiguration];
-      v30 = [(HUAnnouncementPlaybackView *)self announcementInfo];
-      v19 = [v30 objectForKeyedSubscript:*MEMORY[0x277CEAAB0]];
+      avatarView2 = [(HUAnnouncementPlaybackView *)self _avatarImageSymbolConfiguration];
+      announcementInfo2 = [(HUAnnouncementPlaybackView *)self announcementInfo];
+      v19 = [announcementInfo2 objectForKeyedSubscript:*MEMORY[0x277CEAAB0]];
 
-      v18 = [MEMORY[0x277D75348] whiteColor];
-      v21 = [MEMORY[0x277D755B8] hu_avatarImageWithSymbolNamed:v19 configuration:v8 backgroundColor:v18 diameter:120.0];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v21 = [MEMORY[0x277D755B8] hu_avatarImageWithSymbolNamed:v19 configuration:avatarView2 backgroundColor:whiteColor diameter:120.0];
       if (!v21)
       {
         if ([(HUAnnouncementPlaybackView *)self _isProductTypeHomePod])
         {
-          v31 = [(HUAnnouncementPlaybackView *)self productType];
+          productType = [(HUAnnouncementPlaybackView *)self productType];
           v32 = MEMORY[0x277D755B8];
-          if (v31 == 3348380076)
+          if (productType == 3348380076)
           {
             v33 = @"homepod.mini.fill";
           }
@@ -303,33 +303,33 @@
           v33 = @"person.crop.circle.fill";
         }
 
-        v21 = [v32 hu_avatarImageWithSymbolNamed:v33 configuration:v8 backgroundColor:v18 diameter:120.0];
+        v21 = [v32 hu_avatarImageWithSymbolNamed:v33 configuration:avatarView2 backgroundColor:whiteColor diameter:120.0];
       }
 
-      v24 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
-      v25 = v24;
+      genericAvatarView3 = [(HUAnnouncementPlaybackView *)self genericAvatarView];
+      v25 = genericAvatarView3;
       v26 = v21;
     }
 
-    [v24 setImage:v26];
+    [genericAvatarView3 setImage:v26];
   }
 
   [(HUAnnouncementPlaybackView *)self setNeedsLayout];
 }
 
-- (void)setAnnouncementInfo:(id)a3
+- (void)setAnnouncementInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_announcementInfo, a3);
+  infoCopy = info;
+  objc_storeStrong(&self->_announcementInfo, info);
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
   v8 = [v6 fileURLWithPath:v7];
 
   [(HUAnnouncementPlaybackView *)self setAnnouncementURL:v8];
-  v9 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEA7D0]];
-  v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEA7D0]];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (v11)
   {
@@ -341,7 +341,7 @@
     v12 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEAA70]];
+  v13 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEAA70]];
   -[HUAnnouncementPlaybackView setIsSiriEndpointAccessory:](self, "setIsSiriEndpointAccessory:", [v13 integerValue] == 1);
 
   v14 = HFLogForCategory();
@@ -352,16 +352,16 @@
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "isSiriEndpointAccessory = %{BOOL}d", v22, 8u);
   }
 
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEAA60]];
-  v16 = [v15 integerValue];
+  v15 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEAA60]];
+  integerValue = [v15 integerValue];
 
   if (v12)
   {
     if ([v11 hf_isEmail])
     {
-      v17 = [MEMORY[0x277D145B0] defaultStore];
-      v18 = [(HUAnnouncementPlaybackView *)self _requiredKeyDescriptors];
-      v19 = [v17 contactForEmailAddress:v11 withKeys:v18];
+      defaultStore = [MEMORY[0x277D145B0] defaultStore];
+      _requiredKeyDescriptors = [(HUAnnouncementPlaybackView *)self _requiredKeyDescriptors];
+      v19 = [defaultStore contactForEmailAddress:v11 withKeys:_requiredKeyDescriptors];
     }
 
     else
@@ -372,9 +372,9 @@
         goto LABEL_21;
       }
 
-      v17 = [MEMORY[0x277D145B0] defaultStore];
-      v18 = [(HUAnnouncementPlaybackView *)self _requiredKeyDescriptors];
-      v19 = [v17 contactForPhoneNumber:v11 withKeys:v18];
+      defaultStore = [MEMORY[0x277D145B0] defaultStore];
+      _requiredKeyDescriptors = [(HUAnnouncementPlaybackView *)self _requiredKeyDescriptors];
+      v19 = [defaultStore contactForPhoneNumber:v11 withKeys:_requiredKeyDescriptors];
     }
 
     v21 = v19;
@@ -385,27 +385,27 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v16 <= 3348380075)
+  if (integerValue <= 3348380075)
   {
-    if (v16 != 1540760353)
+    if (integerValue != 1540760353)
     {
       v20 = 2702125347;
       goto LABEL_17;
     }
 
 LABEL_18:
-    [(HUAnnouncementPlaybackView *)self setProductType:v16];
+    [(HUAnnouncementPlaybackView *)self setProductType:integerValue];
     goto LABEL_19;
   }
 
-  if (v16 == 4240173202)
+  if (integerValue == 4240173202)
   {
     goto LABEL_18;
   }
 
   v20 = 3348380076;
 LABEL_17:
-  if (v16 == v20)
+  if (integerValue == v20)
   {
     goto LABEL_18;
   }
@@ -415,16 +415,16 @@ LABEL_19:
 LABEL_22:
 }
 
-- (void)didUpdateAveragePower:(double)a3
+- (void)didUpdateAveragePower:(double)power
 {
-  v5 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-  v6 = [v5 count];
+  audioWaveLayers = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+  v6 = [audioWaveLayers count];
 
   if (!v6)
   {
     [(HUAnnouncementPlaybackView *)self _setupAudioWaveLayers];
 
-    [(HUAnnouncementPlaybackView *)self _generateRippleForAveragePower:a3];
+    [(HUAnnouncementPlaybackView *)self _generateRippleForAveragePower:power];
   }
 }
 
@@ -435,8 +435,8 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  audioWaveLayers = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+  v4 = [audioWaveLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -447,26 +447,26 @@ LABEL_22:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(audioWaveLayers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 removeAllAnimations];
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [v8 setStrokeColor:{objc_msgSend(v9, "CGColor")}];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v8 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [audioWaveLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-  [v10 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+  audioWaveLayers2 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+  [audioWaveLayers2 makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
-  v11 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-  [v11 removeAllObjects];
+  audioWaveLayers3 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+  [audioWaveLayers3 removeAllObjects];
 }
 
 - (void)resumePlaybackAnimation
@@ -490,7 +490,7 @@ LABEL_22:
 
 - (void)_setupAudioWaveLayers
 {
-  v17 = self;
+  selfCopy = self;
   v2 = *MEMORY[0x277CBF348];
   v3 = *(MEMORY[0x277CBF348] + 8);
   v4 = *MEMORY[0x277CDA780];
@@ -499,26 +499,26 @@ LABEL_22:
   {
     v6 = objc_opt_new();
     v7 = MEMORY[0x277D75208];
-    [(HUAnnouncementPlaybackView *)v17 bounds];
+    [(HUAnnouncementPlaybackView *)selfCopy bounds];
     v9 = [v7 bezierPathWithArcCenter:1 radius:v2 startAngle:v3 endAngle:v8 * 0.5 clockwise:{0.0, 6.28318531}];
     [v6 setPath:{objc_msgSend(v9, "CGPath")}];
     [v6 setLineWidth:2.0];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v6 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v6 setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v6 setFillColor:{objc_msgSend(v11, "CGColor")}];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v6 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
     [v6 setLineCap:v4];
-    [(HUAnnouncementPlaybackView *)v17 frame];
+    [(HUAnnouncementPlaybackView *)selfCopy frame];
     v13 = v12 * 0.5;
-    [(HUAnnouncementPlaybackView *)v17 frame];
+    [(HUAnnouncementPlaybackView *)selfCopy frame];
     [v6 setPosition:{v13, v14 * 0.5}];
-    v15 = [(HUAnnouncementPlaybackView *)v17 layer];
-    [v15 addSublayer:v6];
+    layer = [(HUAnnouncementPlaybackView *)selfCopy layer];
+    [layer addSublayer:v6];
 
-    v16 = [(HUAnnouncementPlaybackView *)v17 audioWaveLayers];
-    [v16 addObject:v6];
+    audioWaveLayers = [(HUAnnouncementPlaybackView *)selfCopy audioWaveLayers];
+    [audioWaveLayers addObject:v6];
 
     --v5;
   }
@@ -526,7 +526,7 @@ LABEL_22:
   while (v5);
 }
 
-- (void)_generateRippleForAveragePower:(double)a3
+- (void)_generateRippleForAveragePower:(double)power
 {
   [(HUAnnouncementPlaybackView *)self _animateLayerWaveAtIndex:0 forAveragePower:?];
   v5 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 400000000);
@@ -535,7 +535,7 @@ LABEL_22:
   v6[2] = __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_invoke;
   v6[3] = &unk_277DB7BA8;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = power;
   dispatch_after(v5, MEMORY[0x277D85CD0], v6);
 }
 
@@ -552,20 +552,20 @@ void __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_inv
   dispatch_after(v2, MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_animateLayerWaveAtIndex:(unint64_t)a3 forAveragePower:(double)a4
+- (void)_animateLayerWaveAtIndex:(unint64_t)index forAveragePower:(double)power
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v6 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-  v7 = [v6 count];
+  audioWaveLayers = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+  v7 = [audioWaveLayers count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    audioWaveLayers2 = [(HUAnnouncementPlaybackView *)self audioWaveLayers];
+    v9 = [audioWaveLayers2 objectAtIndexedSubscript:index];
 
     [v9 removeAllAnimations];
-    v10 = [(HUAnnouncementPlaybackView *)self traitCollection];
-    if ([v10 userInterfaceStyle] == 2)
+    traitCollection = [(HUAnnouncementPlaybackView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] lightGrayColor];
     }
@@ -604,28 +604,28 @@ void __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_inv
     [v17 setTimingFunction:v18];
 
     [v17 setRepeatCount:3.53369517e72];
-    v19 = [MEMORY[0x277CD9E00] animation];
+    animation = [MEMORY[0x277CD9E00] animation];
     v21[0] = v12;
     v21[1] = v15;
     v21[2] = v17;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
-    [v19 setAnimations:v20];
+    [animation setAnimations:v20];
 
-    [v9 addAnimation:v19 forKey:@"groupAnimation"];
+    [v9 addAnimation:animation forKey:@"groupAnimation"];
   }
 }
 
-- (id)_imageOrViewForServiceType:(id)a3
+- (id)_imageOrViewForServiceType:(id)type
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75348] whiteColor];
+  typeCopy = type;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   v6 = MEMORY[0x277D755B8];
-  v7 = [(HUAnnouncementPlaybackView *)self _avatarImageSymbolConfiguration];
-  v8 = [v6 hu_avatarImageWithSymbolNamed:@"hifispeaker.fill" configuration:v7 backgroundColor:v5 diameter:120.0];
+  _avatarImageSymbolConfiguration = [(HUAnnouncementPlaybackView *)self _avatarImageSymbolConfiguration];
+  v8 = [v6 hu_avatarImageWithSymbolNamed:@"hifispeaker.fill" configuration:_avatarImageSymbolConfiguration backgroundColor:whiteColor diameter:120.0];
 
-  if (v4)
+  if (typeCopy)
   {
-    v9 = [MEMORY[0x277D14AC0] defaultIconDescriptorForServiceType:v4 serviceSubtype:*MEMORY[0x277CD0DB8]];
+    v9 = [MEMORY[0x277D14AC0] defaultIconDescriptorForServiceType:typeCopy serviceSubtype:*MEMORY[0x277CD0DB8]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -638,7 +638,7 @@ void __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_inv
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v15 = [(HUAnnouncementPlaybackView *)self iconView];
+        iconView = [(HUAnnouncementPlaybackView *)self iconView];
 
         goto LABEL_15;
       }
@@ -646,11 +646,11 @@ void __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_inv
       v10 = v9;
       if ([v10 isSystemImage])
       {
-        v12 = [v10 imageSymbolConfiguration];
-        v13 = v12;
-        if (v12)
+        imageSymbolConfiguration = [v10 imageSymbolConfiguration];
+        v13 = imageSymbolConfiguration;
+        if (imageSymbolConfiguration)
         {
-          v14 = v12;
+          v14 = imageSymbolConfiguration;
         }
 
         else
@@ -658,54 +658,54 @@ void __61__HUAnnouncementPlaybackView__generateRippleForAveragePower___block_inv
           v14 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:36.0];
         }
 
-        v16 = v14;
+        imageIdentifier2 = v14;
 
         v17 = MEMORY[0x277D755B8];
-        v18 = [v10 imageIdentifier];
-        v11 = [v17 systemImageNamed:v18 withConfiguration:v16];
+        imageIdentifier = [v10 imageIdentifier];
+        v11 = [v17 systemImageNamed:imageIdentifier withConfiguration:imageIdentifier2];
 
-        v8 = v18;
+        v8 = imageIdentifier;
       }
 
       else
       {
-        v16 = [v10 imageIdentifier];
-        v11 = HUImageNamed(v16);
+        imageIdentifier2 = [v10 imageIdentifier];
+        v11 = HUImageNamed(imageIdentifier2);
       }
 
-      v8 = v16;
+      v8 = imageIdentifier2;
     }
 
     v8 = v11;
   }
 
   v8 = v8;
-  v15 = v8;
+  iconView = v8;
 LABEL_15:
 
-  return v15;
+  return iconView;
 }
 
-- (void)_updateIconViewForServiceType:(id)a3
+- (void)_updateIconViewForServiceType:(id)type
 {
-  v10 = [MEMORY[0x277D14AC0] defaultIconDescriptorForServiceType:a3 serviceSubtype:*MEMORY[0x277CD0DB8]];
+  v10 = [MEMORY[0x277D14AC0] defaultIconDescriptorForServiceType:type serviceSubtype:*MEMORY[0x277CD0DB8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x277D14440];
     v5 = v10;
     v6 = [v4 alloc];
-    v7 = [v5 packageIdentifier];
+    packageIdentifier = [v5 packageIdentifier];
 
-    v8 = [v6 initWithPackageIdentifier:v7 state:*MEMORY[0x277D13758]];
-    v9 = [(HUAnnouncementPlaybackView *)self iconView];
-    [v9 updateWithIconDescriptor:v8 displayStyle:1 animated:1];
+    iconView2 = [v6 initWithPackageIdentifier:packageIdentifier state:*MEMORY[0x277D13758]];
+    iconView = [(HUAnnouncementPlaybackView *)self iconView];
+    [iconView updateWithIconDescriptor:iconView2 displayStyle:1 animated:1];
   }
 
   else
   {
-    v8 = [(HUAnnouncementPlaybackView *)self iconView];
-    [v8 updateWithIconDescriptor:v10 displayStyle:1 animated:1];
+    iconView2 = [(HUAnnouncementPlaybackView *)self iconView];
+    [iconView2 updateWithIconDescriptor:v10 displayStyle:1 animated:1];
   }
 }
 

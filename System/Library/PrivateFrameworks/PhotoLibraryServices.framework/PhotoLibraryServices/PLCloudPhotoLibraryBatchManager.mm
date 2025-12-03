@@ -1,8 +1,8 @@
 @interface PLCloudPhotoLibraryBatchManager
 - (PLCloudPhotoLibraryBatchManager)init;
 - (id)drainBatches;
-- (void)addComputeSyncRelevantAsset:(id)a3;
-- (void)addRecord:(id)a3 ignoreBatchSize:(BOOL)a4;
+- (void)addComputeSyncRelevantAsset:(id)asset;
+- (void)addRecord:(id)record ignoreBatchSize:(BOOL)size;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -32,42 +32,42 @@
   self->_resourceBudget = 0;
 }
 
-- (void)addComputeSyncRelevantAsset:(id)a3
+- (void)addComputeSyncRelevantAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
     currentBatch = self->_currentBatch;
     if (currentBatch)
     {
-      v4 = a3;
-      v5 = [(PLCloudPhotoLibraryBatchContainer *)currentBatch computeSyncRelevantAssetsInBatch];
-      [v5 addObject:v4];
+      assetCopy = asset;
+      computeSyncRelevantAssetsInBatch = [(PLCloudPhotoLibraryBatchContainer *)currentBatch computeSyncRelevantAssetsInBatch];
+      [computeSyncRelevantAssetsInBatch addObject:assetCopy];
     }
   }
 }
 
-- (void)addRecord:(id)a3 ignoreBatchSize:(BOOL)a4
+- (void)addRecord:(id)record ignoreBatchSize:(BOOL)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLCloudPhotoLibraryBatchContainer *)v6 scopedIdentifier];
+  recordCopy = record;
+  scopedIdentifier = [(PLCloudPhotoLibraryBatchContainer *)recordCopy scopedIdentifier];
 
-  if (!v7)
+  if (!scopedIdentifier)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempted to add a CPLRecordChange with nil scopedIdentifier: %@", v6];
+    recordCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempted to add a CPLRecordChange with nil scopedIdentifier: %@", recordCopy];
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v11 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v31 = v10;
+        v31 = recordCopy;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
       }
     }
 
-    [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: Attempting to add a cloud record with nil scopedIdentifier to the upload batch" radarDescription:v10];
+    [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: Attempting to add a cloud record with nil scopedIdentifier to the upload batch" radarDescription:recordCopy];
     goto LABEL_14;
   }
 
@@ -81,15 +81,15 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_16:
-    if (v4 && [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch count]<= 0xC8)
+    if (sizeCopy && [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch count]<= 0xC8)
     {
       if ((*MEMORY[0x1E6994D48] & 1) == 0)
       {
-        v14 = __CPLAssetsdOSLogDomain();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        lastAddedRecord = __CPLAssetsdOSLogDomain();
+        if (os_log_type_enabled(lastAddedRecord, OS_LOG_TYPE_DEBUG))
         {
           *buf = 0;
-          _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "Skip splitting batch, ignoreBatchSize = YES", buf, 2u);
+          _os_log_impl(&dword_19BF1F000, lastAddedRecord, OS_LOG_TYPE_DEBUG, "Skip splitting batch, ignoreBatchSize = YES", buf, 2u);
         }
 
         goto LABEL_51;
@@ -112,12 +112,12 @@ LABEL_52:
         [(NSMutableArray *)self->_batches addObject:self->_currentBatch];
       }
 
-      if ([(PLCloudPhotoLibraryBatchContainer *)v6 supportsResources])
+      if ([(PLCloudPhotoLibraryBatchContainer *)recordCopy supportsResources])
       {
-        self->_resourceBudget += [(PLCloudPhotoLibraryBatchContainer *)v6 realResourceSize];
+        self->_resourceBudget += [(PLCloudPhotoLibraryBatchContainer *)recordCopy realResourceSize];
       }
 
-      [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch addRecord:v6];
+      [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch addRecord:recordCopy];
       goto LABEL_59;
     }
 
@@ -129,7 +129,7 @@ LABEL_52:
 
     if ([(PLCloudPhotoLibraryBatchContainer *)v15 count]>= 0x32)
     {
-      v14 = [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch lastAddedRecord];
+      lastAddedRecord = [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch lastAddedRecord];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -219,7 +219,7 @@ LABEL_43:
         if ((objc_opt_isKindOfClass() & 1) == 0 || [(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch count]< 0xA)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || [(PLCloudPhotoLibraryBatchContainer *)v6 albumType]!= 7 || ![(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch count])
+          if ((objc_opt_isKindOfClass() & 1) == 0 || [(PLCloudPhotoLibraryBatchContainer *)recordCopy albumType]!= 7 || ![(PLCloudPhotoLibraryBatchContainer *)self->_currentBatch count])
           {
             goto LABEL_52;
           }
@@ -252,26 +252,26 @@ LABEL_44:
   }
 
   masterHistory = self->_masterHistory;
-  v9 = [(PLCloudPhotoLibraryBatchContainer *)v6 scopedIdentifier];
-  LOBYTE(masterHistory) = [(NSMutableSet *)masterHistory containsObject:v9];
+  scopedIdentifier2 = [(PLCloudPhotoLibraryBatchContainer *)recordCopy scopedIdentifier];
+  LOBYTE(masterHistory) = [(NSMutableSet *)masterHistory containsObject:scopedIdentifier2];
 
   if ((masterHistory & 1) == 0)
   {
     v12 = self->_masterHistory;
-    v13 = [(PLCloudPhotoLibraryBatchContainer *)v6 scopedIdentifier];
-    [(NSMutableSet *)v12 addObject:v13];
+    scopedIdentifier3 = [(PLCloudPhotoLibraryBatchContainer *)recordCopy scopedIdentifier];
+    [(NSMutableSet *)v12 addObject:scopedIdentifier3];
 
     goto LABEL_16;
   }
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    v10 = __CPLAssetsdOSLogDomain();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    recordCopy = __CPLAssetsdOSLogDomain();
+    if (os_log_type_enabled(recordCopy, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v31 = v6;
-      _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "Duplicate master detected, dropping this second master record %@", buf, 0xCu);
+      v31 = recordCopy;
+      _os_log_impl(&dword_19BF1F000, recordCopy, OS_LOG_TYPE_DEBUG, "Duplicate master detected, dropping this second master record %@", buf, 0xCu);
     }
 
 LABEL_14:

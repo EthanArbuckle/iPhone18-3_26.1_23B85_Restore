@@ -6,14 +6,14 @@
 
 - (uint64_t)isAddressBookLabel
 {
-  if ([a1 _appearsToBePhoneNumber])
+  if ([self _appearsToBePhoneNumber])
   {
     return 0;
   }
 
   else
   {
-    return [a1 _appearsToBeEmail] ^ 1;
+    return [self _appearsToBeEmail] ^ 1;
   }
 }
 

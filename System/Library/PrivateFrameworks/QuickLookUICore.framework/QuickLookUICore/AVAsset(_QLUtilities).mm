@@ -34,8 +34,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v1 = [a1 tracks];
-  v2 = [v1 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tracks = [self tracks];
+  v2 = [tracks countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v2)
   {
     v3 = v2;
@@ -47,12 +47,12 @@
       {
         if (*v16 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(tracks);
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 mediaType];
-        if ([v8 isEqualToString:v5] && (objc_msgSend(v7, "naturalSize"), v9 > 0.0))
+        mediaType = [v7 mediaType];
+        if ([mediaType isEqualToString:v5] && (objc_msgSend(v7, "naturalSize"), v9 > 0.0))
         {
           [v7 naturalSize];
           v11 = v10;
@@ -69,7 +69,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v3 = [tracks countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v3);
@@ -85,16 +85,16 @@ LABEL_14:
 - (double)ql_imageSizeOfFirstVideoTrack
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [a1 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
-  v3 = [v2 firstObject];
+  v2 = [self tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 naturalSize];
+    [firstObject naturalSize];
     v5 = v4;
     v7 = v6;
     memset(v13, 0, sizeof(v13));
-    [v3 preferredTransform];
+    [firstObject preferredTransform];
     if (vabdd_f64(1.57079633, fabsf(atan2f(0.0, 0.0))) < 0.0001)
     {
       v5 = v7;
@@ -114,7 +114,7 @@ LABEL_14:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v13[0]) = 138412290;
-      *(v13 + 4) = a1;
+      *(v13 + 4) = self;
       _os_log_impl(&dword_261653000, v9, OS_LOG_TYPE_ERROR, "Could not determine image size of video because could not obtain track of asset: %@ #Generic", v13, 0xCu);
     }
 

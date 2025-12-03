@@ -1,7 +1,7 @@
 @interface CLKComplicationServer
 + (CLKComplicationServer)sharedInstance;
 - (CLKComplicationServer)init;
-- (CLKComplicationServer)initWithClientIdentifier:(id)a3;
+- (CLKComplicationServer)initWithClientIdentifier:(id)identifier;
 - (NSDate)earliestTimeTravelDate;
 - (NSDate)latestTimeTravelDate;
 - (id)_init;
@@ -13,24 +13,24 @@
 - (void)_init;
 - (void)dealloc;
 - (void)extendTimelineForComplication:(CLKComplication *)complication;
-- (void)getAlwaysOnTemplateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getComplicationDescriptorsWithHandler:(id)a3;
-- (void)getCurrentTimelineEntryForComplication:(id)a3 withHandler:(id)a4;
-- (void)getLocalizableSampleTemplateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getNextRequestedUpdateDateWithHandler:(id)a3;
-- (void)getPrivacyBehaviorForComplication:(id)a3 withHandler:(id)a4;
-- (void)getSupportedTimeTravelDirectionsForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineAnimationBehaviorForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineEndDateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 withHandler:(id)a6;
-- (void)getWidgetMigrationConfigurationFrom:(id)a3 withHandler:(id)a4;
-- (void)handleSharedComplicationDescriptors:(id)a3;
-- (void)notifyDebugTimeoutWithCharging:(BOOL)a3;
+- (void)getAlwaysOnTemplateForComplication:(id)complication withHandler:(id)handler;
+- (void)getComplicationDescriptorsWithHandler:(id)handler;
+- (void)getCurrentTimelineEntryForComplication:(id)complication withHandler:(id)handler;
+- (void)getLocalizableSampleTemplateForComplication:(id)complication withHandler:(id)handler;
+- (void)getNextRequestedUpdateDateWithHandler:(id)handler;
+- (void)getPrivacyBehaviorForComplication:(id)complication withHandler:(id)handler;
+- (void)getSupportedTimeTravelDirectionsForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineAnimationBehaviorForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineEndDateForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
+- (void)getWidgetMigrationConfigurationFrom:(id)from withHandler:(id)handler;
+- (void)handleSharedComplicationDescriptors:(id)descriptors;
+- (void)notifyDebugTimeoutWithCharging:(BOOL)charging;
 - (void)reloadComplicationDescriptors;
 - (void)reloadTimelineForComplication:(CLKComplication *)complication;
 - (void)requestedUpdateBudgetExhausted;
 - (void)requestedUpdateDidBegin;
-- (void)setActiveComplications:(id)a3;
+- (void)setActiveComplications:(id)complications;
 @end
 
 @implementation CLKComplicationServer
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __39__CLKComplicationServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -68,21 +68,21 @@ uint64_t __39__CLKComplicationServer_sharedInstance__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (CLKComplicationServer)initWithClientIdentifier:(id)a3
+- (CLKComplicationServer)initWithClientIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = CLKLoggingObjectForDomain(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = identifierCopy;
     _os_log_impl(&dword_23702D000, v5, OS_LOG_TYPE_DEFAULT, "CLKComplicationServer initWithClientIdentifier: %@", &v8, 0xCu);
   }
 
-  v6 = [objc_opt_class() sharedInstance];
+  sharedInstance = [objc_opt_class() sharedInstance];
 
-  return v6;
+  return sharedInstance;
 }
 
 - (id)_init
@@ -93,12 +93,12 @@ uint64_t __39__CLKComplicationServer_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(CLKComplicationServer *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     clientIdentifier = v2->_clientIdentifier;
-    v2->_clientIdentifier = v4;
+    v2->_clientIdentifier = bundleIdentifier;
 
-    v6 = [v3 objectForInfoDictionaryKey:@"CLKComplicationPrincipalClass"];
+    v6 = [mainBundle objectForInfoDictionaryKey:@"CLKComplicationPrincipalClass"];
     v2->_connectionLock._os_unfair_lock_opaque = 0;
     v7 = NSClassFromString(v6);
     v8 = v7;
@@ -115,14 +115,14 @@ uint64_t __39__CLKComplicationServer_sharedInstance__block_invoke(uint64_t a1)
       v2->_dataSourceClass = v8;
       objc_initWeak(buf, v2);
       v2->_restartNotificationToken = -1;
-      v10 = [@"com.apple.ClockKit.complicationservicedidstart" UTF8String];
+      uTF8String = [@"com.apple.ClockKit.complicationservicedidstart" UTF8String];
       v11 = MEMORY[0x277D85CD0];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __30__CLKComplicationServer__init__block_invoke;
       handler[3] = &unk_278A1F218;
       objc_copyWeak(&v23, buf);
-      v12 = notify_register_dispatch(v10, &v2->_restartNotificationToken, MEMORY[0x277D85CD0], handler);
+      v12 = notify_register_dispatch(uTF8String, &v2->_restartNotificationToken, MEMORY[0x277D85CD0], handler);
 
       if (v12)
       {
@@ -195,38 +195,38 @@ void __30__CLKComplicationServer__init__block_invoke(uint64_t a1)
 - (id)serverProxy
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_serverConnection remoteObjectProxy];
   os_unfair_lock_unlock(&self->_connectionLock);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)reloadTimelineForComplication:(CLKComplication *)complication
 {
   v4 = complication;
-  v5 = [(CLKComplicationServer *)self serverProxy];
-  [v5 reloadTimelineForComplication:v4];
+  serverProxy = [(CLKComplicationServer *)self serverProxy];
+  [serverProxy reloadTimelineForComplication:v4];
 }
 
 - (void)extendTimelineForComplication:(CLKComplication *)complication
 {
   v4 = complication;
-  v5 = [(CLKComplicationServer *)self serverProxy];
-  [v5 extendTimelineForComplication:v4];
+  serverProxy = [(CLKComplicationServer *)self serverProxy];
+  [serverProxy extendTimelineForComplication:v4];
 }
 
 - (void)reloadComplicationDescriptors
 {
-  v2 = [(CLKComplicationServer *)self serverProxy];
-  [v2 reloadComplicationDescriptors];
+  serverProxy = [(CLKComplicationServer *)self serverProxy];
+  [serverProxy reloadComplicationDescriptors];
 }
 
 - (NSDate)earliestTimeTravelDate
 {
   v2 = +[CLKDate complicationDate];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateByAddingUnit:16 value:-1 toDate:v2 options:0];
-  v5 = [v3 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:v2 options:0];
+  v5 = [currentCalendar startOfDayForDate:v4];
 
   return v5;
 }
@@ -234,9 +234,9 @@ void __30__CLKComplicationServer__init__block_invoke(uint64_t a1)
 - (NSDate)latestTimeTravelDate
 {
   v2 = +[CLKDate complicationDate];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateByAddingUnit:16 value:2 toDate:v2 options:0];
-  v5 = [v3 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateByAddingUnit:16 value:2 toDate:v2 options:0];
+  v5 = [currentCalendar startOfDayForDate:v4];
 
   return v5;
 }
@@ -326,11 +326,11 @@ void __42__CLKComplicationServer__createConnection__block_invoke_91()
 
 - (void)_checkinWithServer
 {
-  v6 = [(CLKComplicationServer *)self serverProxy];
+  serverProxy = [(CLKComplicationServer *)self serverProxy];
   clientIdentifier = self->_clientIdentifier;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundlePath];
-  [v6 checkinWithClientIdentifier:clientIdentifier bundlePath:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundlePath = [mainBundle bundlePath];
+  [serverProxy checkinWithClientIdentifier:clientIdentifier bundlePath:bundlePath];
 }
 
 - (void)_createDataSourceIfNecessary
@@ -358,8 +358,8 @@ void __42__CLKComplicationServer__createConnection__block_invoke_91()
     self->_dataSourceFlags.supportsHandleSharedComplicationDescriptors = objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(CLKComplicationDataSource *)self->_dataSource widgetMigrator];
-      if (v5)
+      widgetMigrator = [(CLKComplicationDataSource *)self->_dataSource widgetMigrator];
+      if (widgetMigrator)
       {
         v6 = objc_opt_respondsToSelector();
         v7 = CLKLoggingObjectForDomain(3);
@@ -394,12 +394,12 @@ void __42__CLKComplicationServer__createConnection__block_invoke_91()
   }
 }
 
-- (void)setActiveComplications:(id)a3
+- (void)setActiveComplications:(id)complications
 {
-  v4 = a3;
-  if (!v4)
+  complicationsCopy = complications;
+  if (!complicationsCopy)
   {
-    v4 = [MEMORY[0x277CBEB98] set];
+    complicationsCopy = [MEMORY[0x277CBEB98] set];
   }
 
   v6[0] = MEMORY[0x277D85DD0];
@@ -407,8 +407,8 @@ void __42__CLKComplicationServer__createConnection__block_invoke_91()
   v6[2] = __48__CLKComplicationServer_setActiveComplications___block_invoke;
   v6[3] = &unk_278A1F590;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = complicationsCopy;
+  v5 = complicationsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -437,19 +437,19 @@ void __48__CLKComplicationServer_setActiveComplications___block_invoke(uint64_t 
   }
 }
 
-- (void)getSupportedTimeTravelDirectionsForComplication:(id)a3 withHandler:(id)a4
+- (void)getSupportedTimeTravelDirectionsForComplication:(id)complication withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__CLKComplicationServer_getSupportedTimeTravelDirectionsForComplication_withHandler___block_invoke;
   block[3] = &unk_278A1FA58;
-  v11 = v6;
-  v12 = v7;
+  v11 = complicationCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = complicationCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -474,19 +474,19 @@ void __85__CLKComplicationServer_getSupportedTimeTravelDirectionsForComplication
   }
 }
 
-- (void)getTimelineEndDateForComplication:(id)a3 withHandler:(id)a4
+- (void)getTimelineEndDateForComplication:(id)complication withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CLKComplicationServer_getTimelineEndDateForComplication_withHandler___block_invoke;
   block[3] = &unk_278A1FAD0;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = complicationCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = complicationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -562,19 +562,19 @@ void __71__CLKComplicationServer_getTimelineEndDateForComplication_withHandler__
   }
 }
 
-- (void)getPrivacyBehaviorForComplication:(id)a3 withHandler:(id)a4
+- (void)getPrivacyBehaviorForComplication:(id)complication withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CLKComplicationServer_getPrivacyBehaviorForComplication_withHandler___block_invoke;
   block[3] = &unk_278A1FA58;
-  v11 = v6;
-  v12 = v7;
+  v11 = complicationCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = complicationCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -601,19 +601,19 @@ void __71__CLKComplicationServer_getPrivacyBehaviorForComplication_withHandler__
   }
 }
 
-- (void)getTimelineAnimationBehaviorForComplication:(id)a3 withHandler:(id)a4
+- (void)getTimelineAnimationBehaviorForComplication:(id)complication withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__CLKComplicationServer_getTimelineAnimationBehaviorForComplication_withHandler___block_invoke;
   block[3] = &unk_278A1FA58;
-  v11 = v6;
-  v12 = v7;
+  v11 = complicationCopy;
+  v12 = handlerCopy;
   block[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = complicationCopy;
+  v9 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -640,20 +640,20 @@ void __81__CLKComplicationServer_getTimelineAnimationBehaviorForComplication_wit
   }
 }
 
-- (void)getAlwaysOnTemplateForComplication:(id)a3 withHandler:(id)a4
+- (void)getAlwaysOnTemplateForComplication:(id)complication withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__CLKComplicationServer_getAlwaysOnTemplateForComplication_withHandler___block_invoke;
   v11[3] = &unk_278A1FB20;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = complicationCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = complicationCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -704,10 +704,10 @@ void __72__CLKComplicationServer_getAlwaysOnTemplateForComplication_withHandler_
   }
 }
 
-- (void)getCurrentTimelineEntryForComplication:(id)a3 withHandler:(id)a4
+- (void)getCurrentTimelineEntryForComplication:(id)complication withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   v8 = CLKLoggingObjectForDomain(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -720,10 +720,10 @@ void __72__CLKComplicationServer_getAlwaysOnTemplateForComplication_withHandler_
   block[2] = __76__CLKComplicationServer_getCurrentTimelineEntryForComplication_withHandler___block_invoke;
   block[3] = &unk_278A1FAD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = complicationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = complicationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -772,11 +772,11 @@ void __76__CLKComplicationServer_getCurrentTimelineEntryForComplication_withHand
   }
 }
 
-- (void)getTimelineEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 withHandler:(id)a6
+- (void)getTimelineEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  complicationCopy = complication;
+  dateCopy = date;
+  handlerCopy = handler;
   v14 = CLKLoggingObjectForDomain(1);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -789,14 +789,14 @@ void __76__CLKComplicationServer_getCurrentTimelineEntryForComplication_withHand
   v18[2] = __87__CLKComplicationServer_getTimelineEntriesForComplication_afterDate_limit_withHandler___block_invoke;
   v18[3] = &unk_278A1FBC0;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
-  v22 = a5;
+  v19 = complicationCopy;
+  v20 = dateCopy;
+  v21 = handlerCopy;
+  limitCopy = limit;
   v23 = a2;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
+  v15 = dateCopy;
+  v16 = complicationCopy;
+  v17 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 }
 
@@ -1028,16 +1028,16 @@ void __87__CLKComplicationServer_getTimelineEntriesForComplication_afterDate_lim
   }
 }
 
-- (void)getNextRequestedUpdateDateWithHandler:(id)a3
+- (void)getNextRequestedUpdateDateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__CLKComplicationServer_getNextRequestedUpdateDateWithHandler___block_invoke;
   v6[3] = &unk_278A1FBE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1109,20 +1109,20 @@ uint64_t __55__CLKComplicationServer_requestedUpdateBudgetExhausted__block_invok
   return result;
 }
 
-- (void)getLocalizableSampleTemplateForComplication:(id)a3 withHandler:(id)a4
+- (void)getLocalizableSampleTemplateForComplication:(id)complication withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  complicationCopy = complication;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__CLKComplicationServer_getLocalizableSampleTemplateForComplication_withHandler___block_invoke;
   v11[3] = &unk_278A1FB20;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = complicationCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v7;
-  v10 = v8;
+  v9 = complicationCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
@@ -1263,9 +1263,9 @@ void __81__CLKComplicationServer_getLocalizableSampleTemplateForComplication_wit
   }
 }
 
-- (void)getComplicationDescriptorsWithHandler:(id)a3
+- (void)getComplicationDescriptorsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = CLKLoggingObjectForDomain(1);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1277,9 +1277,9 @@ void __81__CLKComplicationServer_getLocalizableSampleTemplateForComplication_wit
   v12[1] = 3221225472;
   v12[2] = __63__CLKComplicationServer_getComplicationDescriptorsWithHandler___block_invoke;
   v12[3] = &unk_278A1FC10;
-  v13 = v5;
+  v13 = handlerCopy;
   v14 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   v8 = MEMORY[0x2383C4AF0](v12);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1417,16 +1417,16 @@ void __63__CLKComplicationServer_getComplicationDescriptorsWithHandler___block_i
   }
 }
 
-- (void)handleSharedComplicationDescriptors:(id)a3
+- (void)handleSharedComplicationDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__CLKComplicationServer_handleSharedComplicationDescriptors___block_invoke;
   v6[3] = &unk_278A1F590;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = descriptorsCopy;
+  v5 = descriptorsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1445,12 +1445,12 @@ uint64_t __61__CLKComplicationServer_handleSharedComplicationDescriptors___block
   return result;
 }
 
-- (void)notifyDebugTimeoutWithCharging:(BOOL)a3
+- (void)notifyDebugTimeoutWithCharging:(BOOL)charging
 {
-  v3 = a3;
+  chargingCopy = charging;
   v4 = CLKLoggingObjectForDomain(7);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
-  if (v3)
+  if (chargingCopy)
   {
     if (v5)
     {
@@ -1464,10 +1464,10 @@ uint64_t __61__CLKComplicationServer_handleSharedComplicationDescriptors___block
   }
 }
 
-- (void)getWidgetMigrationConfigurationFrom:(id)a3 withHandler:(id)a4
+- (void)getWidgetMigrationConfigurationFrom:(id)from withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  handlerCopy = handler;
   v8 = CLKLoggingObjectForDomain(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1479,11 +1479,11 @@ uint64_t __61__CLKComplicationServer_handleSharedComplicationDescriptors___block
   block[1] = 3221225472;
   block[2] = __73__CLKComplicationServer_getWidgetMigrationConfigurationFrom_withHandler___block_invoke;
   block[3] = &unk_278A1FA58;
-  v12 = v6;
-  v13 = v7;
+  v12 = fromCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = fromCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1571,7 +1571,7 @@ void __73__CLKComplicationServer_getWidgetMigrationConfigurationFrom_withHandler
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_23702D000, a2, OS_LOG_TYPE_ERROR, "complication server failed to register for restart notifications: %d", v2, 8u);
 }
 

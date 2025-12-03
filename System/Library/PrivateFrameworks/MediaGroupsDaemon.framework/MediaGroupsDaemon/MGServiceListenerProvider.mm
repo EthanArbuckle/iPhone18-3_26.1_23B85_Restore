@@ -1,24 +1,24 @@
 @interface MGServiceListenerProvider
-- (BOOL)serviceShouldAcceptNewConnection:(id)a3;
-- (MGServiceListenerProvider)initWithServiceName:(id)a3 entitlement:(id)a4;
+- (BOOL)serviceShouldAcceptNewConnection:(id)connection;
+- (MGServiceListenerProvider)initWithServiceName:(id)name entitlement:(id)entitlement;
 - (OS_dispatch_queue)dispatchQueue;
 - (id)serviceListener;
 @end
 
 @implementation MGServiceListenerProvider
 
-- (MGServiceListenerProvider)initWithServiceName:(id)a3 entitlement:(id)a4
+- (MGServiceListenerProvider)initWithServiceName:(id)name entitlement:(id)entitlement
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  entitlementCopy = entitlement;
   v12.receiver = self;
   v12.super_class = MGServiceListenerProvider;
   v9 = [(MGServiceListenerProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceName, a3);
-    objc_storeStrong(&v10->_entitlement, a4);
+    objc_storeStrong(&v9->_serviceName, name);
+    objc_storeStrong(&v10->_entitlement, entitlement);
   }
 
   return v10;
@@ -29,10 +29,10 @@
   dispatchQueue = self->_dispatchQueue;
   if (!dispatchQueue)
   {
-    v4 = [(MGServiceListenerProvider *)self serviceName];
-    v5 = [v4 UTF8String];
+    serviceName = [(MGServiceListenerProvider *)self serviceName];
+    uTF8String = [serviceName UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     v8 = self->_dispatchQueue;
     self->_dispatchQueue = v7;
 
@@ -45,30 +45,30 @@
 - (id)serviceListener
 {
   v3 = objc_alloc(MEMORY[0x277CCAE98]);
-  v4 = [(MGServiceListenerProvider *)self serviceName];
-  v5 = [v3 initWithMachServiceName:v4];
+  serviceName = [(MGServiceListenerProvider *)self serviceName];
+  v5 = [v3 initWithMachServiceName:serviceName];
 
   return v5;
 }
 
-- (BOOL)serviceShouldAcceptNewConnection:(id)a3
+- (BOOL)serviceShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(MGServiceListenerProvider *)self entitlement];
-  if (v5)
+  connectionCopy = connection;
+  entitlement = [(MGServiceListenerProvider *)self entitlement];
+  if (entitlement)
   {
-    v6 = v5;
-    v7 = [(MGServiceListenerProvider *)self entitlement];
-    v8 = [v4 valueForEntitlement:v7];
-    v9 = [v8 BOOLValue];
+    v6 = entitlement;
+    entitlement2 = [(MGServiceListenerProvider *)self entitlement];
+    v8 = [connectionCopy valueForEntitlement:entitlement2];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 1;
+    bOOLValue = 1;
   }
 
-  return v9 & 1;
+  return bOOLValue & 1;
 }
 
 @end

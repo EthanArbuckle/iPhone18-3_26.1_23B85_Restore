@@ -1,21 +1,21 @@
 @interface HDHealthServiceOOBInfo
-- (HDHealthServiceOOBInfo)initWithOOBData:(id)a3 btAddress:(id)a4;
+- (HDHealthServiceOOBInfo)initWithOOBData:(id)data btAddress:(id)address;
 - (id)description;
 @end
 
 @implementation HDHealthServiceOOBInfo
 
-- (HDHealthServiceOOBInfo)initWithOOBData:(id)a3 btAddress:(id)a4
+- (HDHealthServiceOOBInfo)initWithOOBData:(id)data btAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] != &stru_20.cmd + 2)
+  dataCopy = data;
+  addressCopy = address;
+  if ([dataCopy length] != &stru_20.cmd + 2)
   {
     _HKInitializeLogging();
     v19 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
     {
-      sub_2E9CC(v7, v19);
+      sub_2E9CC(dataCopy, v19);
     }
 
     goto LABEL_11;
@@ -27,15 +27,15 @@
   self = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_oobData, a3);
-    v10 = sub_EA0C(HDHealthServiceOOBInfo, v8);
+    objc_storeStrong(&v9->_oobData, data);
+    v10 = sub_EA0C(HDHealthServiceOOBInfo, addressCopy);
     btAddress = self->_btAddress;
     self->_btAddress = v10;
 
     v25 = 0;
     v23 = 0u;
     v24 = 0u;
-    [v7 getBytes:&v23 length:34];
+    [dataCopy getBytes:&v23 length:34];
     if (v23 == 114 && BYTE1(v24) == 99)
     {
       v12 = [NSData dataWithBytes:&v23 + 1 length:16];
@@ -55,28 +55,28 @@
     v20 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
     {
-      sub_2E9CC(v7, v20);
+      sub_2E9CC(dataCopy, v20);
     }
 
 LABEL_11:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
 LABEL_6:
   self = self;
-  v18 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(HDHealthServiceOOBInfo *)self randomValue];
-  v4 = [(HDHealthServiceOOBInfo *)self confirmationValue];
-  v5 = [(HDHealthServiceOOBInfo *)self btAddress];
-  v6 = [NSString stringWithFormat:@"OOBInfo: randomValue=%@, confirmationValue=%@, btAddress=%@", v3, v4, v5];
+  randomValue = [(HDHealthServiceOOBInfo *)self randomValue];
+  confirmationValue = [(HDHealthServiceOOBInfo *)self confirmationValue];
+  btAddress = [(HDHealthServiceOOBInfo *)self btAddress];
+  v6 = [NSString stringWithFormat:@"OOBInfo: randomValue=%@, confirmationValue=%@, btAddress=%@", randomValue, confirmationValue, btAddress];
 
   return v6;
 }

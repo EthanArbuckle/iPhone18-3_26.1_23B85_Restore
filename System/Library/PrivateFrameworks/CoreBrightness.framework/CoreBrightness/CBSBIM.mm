@@ -1,22 +1,22 @@
 @interface CBSBIM
 + (BOOL)needsSBIM;
 - (BOOL)initialiseLimits;
-- (CBSBIM)initWithQueue:(id)a3 andDisplayModule:(id)a4 andEDRModule:(id)a5;
-- (const)mitigationStageToString:(int)a3;
+- (CBSBIM)initWithQueue:(id)queue andDisplayModule:(id)module andEDRModule:(id)rModule;
+- (const)mitigationStageToString:(int)string;
 - (float)mitigatedHeadroomFromRequestedHeadroom;
 - (void)dataTimerHandler;
 - (void)dealloc;
 - (void)disable;
 - (void)enable;
-- (void)enableSBIM:(BOOL)a3;
+- (void)enableSBIM:(BOOL)m;
 - (void)enterEDR;
 - (void)exitEDR;
 - (void)mitigationTimerHandler;
 - (void)resetMitigationState;
-- (void)sendEDRHeadroomRequest:(float)a3;
+- (void)sendEDRHeadroomRequest:(float)request;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)updateMitigationStateWithData:(IOMFBShortTermBIM *)a3 andCurrentHeadroom:(float)a4 andRequestedHeadroom:(float)a5 andSDRBrightness:(float)a6 andReset:(BOOL)a7;
+- (void)updateMitigationStateWithData:(IOMFBShortTermBIM *)data andCurrentHeadroom:(float)headroom andRequestedHeadroom:(float)requestedHeadroom andSDRBrightness:(float)brightness andReset:(BOOL)reset;
 @end
 
 @implementation CBSBIM
@@ -150,14 +150,14 @@ LABEL_22:
 - (void)dataTimerHandler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
   dispatch_assert_queue_V2(self->_timerQueue);
-  v40 = v42->mitigation.sbim_read_stage == 0;
-  v37 = os_signpost_id_generate(v42->_log);
-  if (v42->_log)
+  v40 = selfCopy->mitigation.sbim_read_stage == 0;
+  v37 = os_signpost_id_generate(selfCopy->_log);
+  if (selfCopy->_log)
   {
-    v14 = v42->_log;
+    v14 = selfCopy->_log;
   }
 
   else
@@ -187,13 +187,13 @@ LABEL_22:
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, log, type, spid, "SBIM Request", &unk_1DEAD656F, v33, 2u);
   }
 
-  iomfb = v42->_iomfb;
+  iomfb = selfCopy->_iomfb;
   v32 = IOMobileFramebufferGetBlock();
   if (v32)
   {
-    if (v42->_log)
+    if (selfCopy->_log)
     {
-      v9 = v42->_log;
+      v9 = selfCopy->_log;
     }
 
     else
@@ -219,9 +219,9 @@ LABEL_22:
       _os_log_error_impl(&dword_1DE8E5000, v31, v30, "SBIM Sampling | Reading SBIM state from IOMFB failed | ErrorCode=0x%x", v45, 8u);
     }
 
-    if (v42->_log)
+    if (selfCopy->_log)
     {
-      v7 = v42->_log;
+      v7 = selfCopy->_log;
     }
 
     else
@@ -251,14 +251,14 @@ LABEL_22:
 
   else
   {
-    for (i = 0; i < v42->mitigation.sbim_size; ++i)
+    for (i = 0; i < selfCopy->mitigation.sbim_size; ++i)
     {
       *(&v38 + i + 2) *= 2;
     }
 
-    if (v42->_log)
+    if (selfCopy->_log)
     {
-      v5 = v42->_log;
+      v5 = selfCopy->_log;
     }
 
     else
@@ -285,13 +285,13 @@ LABEL_22:
       _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v25, v24, v23, "SBIM Request", "Violation RGB=(%u,%u,%u) over %{xcode:duration}llu", v43, 0x1Eu);
     }
 
-    queue = v42->_queue;
+    queue = selfCopy->_queue;
     block = MEMORY[0x1E69E9820];
     v16 = -1073741824;
     v17 = 0;
     v18 = __26__CBSBIM_dataTimerHandler__block_invoke;
     v19 = &unk_1E867B458;
-    v20 = v42;
+    v20 = selfCopy;
     v21 = v38;
     v22 = v39;
     dispatch_async(queue, &block);
@@ -359,33 +359,33 @@ void __26__CBSBIM_dataTimerHandler__block_invoke(uint64_t a1, double a2, double 
   *MEMORY[0x1E69E9840];
 }
 
-- (CBSBIM)initWithQueue:(id)a3 andDisplayModule:(id)a4 andEDRModule:(id)a5
+- (CBSBIM)initWithQueue:(id)queue andDisplayModule:(id)module andEDRModule:(id)rModule
 {
   v51 = *MEMORY[0x1E69E9840];
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
-  v44 = a5;
+  queueCopy = queue;
+  moduleCopy = module;
+  rModuleCopy = rModule;
   v43.receiver = self;
   v43.super_class = CBSBIM;
-  v48 = [(CBSBIM *)&v43 init];
-  if (v48)
+  selfCopy = [(CBSBIM *)&v43 init];
+  if (selfCopy)
   {
     v5 = os_log_create("com.apple.CoreBrightness.SBIM", "default");
-    *(v48 + 3) = v5;
-    *(v48 + 1) = v46;
-    dispatch_retain(*(v48 + 1));
+    *(selfCopy + 3) = v5;
+    *(selfCopy + 1) = queueCopy;
+    dispatch_retain(*(selfCopy + 1));
     v6 = dispatch_queue_create("com.apple.CoreBrightness.SBIM", 0);
-    *(v48 + 2) = v6;
-    *(v48 + 4) = v45;
-    v7 = MEMORY[0x1E69E5928](v44);
-    *(v48 + 6) = v7;
+    *(selfCopy + 2) = v6;
+    *(selfCopy + 4) = moduleCopy;
+    v7 = MEMORY[0x1E69E5928](rModuleCopy);
+    *(selfCopy + 6) = v7;
     if (!+[CBSBIM needsSBIM])
     {
-      if (*(v48 + 3))
+      if (*(selfCopy + 3))
       {
-        v27 = *(v48 + 3);
+        v27 = *(selfCopy + 3);
       }
 
       else
@@ -414,7 +414,7 @@ void __26__CBSBIM_dataTimerHandler__block_invoke(uint64_t a1, double a2, double 
       }
 
 LABEL_52:
-      MEMORY[0x1E69E5920](v48);
+      MEMORY[0x1E69E5920](selfCopy);
       v49 = 0;
       goto LABEL_53;
     }
@@ -422,9 +422,9 @@ LABEL_52:
     MainDisplay = IOMobileFramebufferGetMainDisplay();
     if (MainDisplay)
     {
-      if (*(v48 + 3))
+      if (*(selfCopy + 3))
       {
-        v23 = *(v48 + 3);
+        v23 = *(selfCopy + 3);
       }
 
       else
@@ -453,13 +453,13 @@ LABEL_52:
       goto LABEL_52;
     }
 
-    v8 = *(v48 + 8);
-    *(v48 + 18) = IOMobileFramebufferGetServiceObject();
-    if (!*(v48 + 18))
+    v8 = *(selfCopy + 8);
+    *(selfCopy + 18) = IOMobileFramebufferGetServiceObject();
+    if (!*(selfCopy + 18))
     {
-      if (*(v48 + 3))
+      if (*(selfCopy + 3))
       {
-        v21 = *(v48 + 3);
+        v21 = *(selfCopy + 3);
       }
 
       else
@@ -490,11 +490,11 @@ LABEL_52:
       goto LABEL_52;
     }
 
-    if (([v48 initialiseLimits] & 1) == 0)
+    if (([selfCopy initialiseLimits] & 1) == 0)
     {
-      if (*(v48 + 3))
+      if (*(selfCopy + 3))
       {
-        v17 = *(v48 + 3);
+        v17 = *(selfCopy + 3);
       }
 
       else
@@ -525,9 +525,9 @@ LABEL_52:
       goto LABEL_52;
     }
 
-    if (*(v48 + 3))
+    if (*(selfCopy + 3))
     {
-      v13 = *(v48 + 3);
+      v13 = *(selfCopy + 3);
     }
 
     else
@@ -555,15 +555,15 @@ LABEL_52:
       _os_log_impl(&dword_1DE8E5000, v10, v11, "SBIM Initialization | SBIM supported", v28, 2u);
     }
 
-    *(v48 + 57) = 1.0;
-    *(v48 + 58) = 1.0;
-    *(v48 + 40) = 1;
-    *(v48 + 41) = 0;
-    *(v48 + 56) = 0;
-    [v48 resetMitigationState];
+    *(selfCopy + 57) = 1.0;
+    *(selfCopy + 58) = 1.0;
+    *(selfCopy + 40) = 1;
+    *(selfCopy + 41) = 0;
+    *(selfCopy + 56) = 0;
+    [selfCopy resetMitigationState];
   }
 
-  v49 = v48;
+  v49 = selfCopy;
 LABEL_53:
   *MEMORY[0x1E69E9840];
   return v49;
@@ -673,22 +673,22 @@ LABEL_53:
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(CBSBIM *)self stopMonitoring];
-  MEMORY[0x1E69E5920](v5->_edr);
-  v2 = MEMORY[0x1E69E5920](v5->_timerQueue).n128_u64[0];
-  if (v5->_queue)
+  MEMORY[0x1E69E5920](selfCopy->_edr);
+  v2 = MEMORY[0x1E69E5920](selfCopy->_timerQueue).n128_u64[0];
+  if (selfCopy->_queue)
   {
-    dispatch_release(v5->_queue);
+    dispatch_release(selfCopy->_queue);
   }
 
-  if (v5->_log)
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBSBIM;
   [(CBSBIM *)&v3 dealloc];
 }
@@ -696,11 +696,11 @@ LABEL_53:
 - (void)startMonitoring
 {
   v52 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
   if (self->_log)
   {
-    log = v50->_log;
+    log = selfCopy->_log;
   }
 
   else
@@ -722,7 +722,7 @@ LABEL_53:
   v47 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    if (v50->_isMonitoring)
+    if (selfCopy->_isMonitoring)
     {
       v2 = "YES";
     }
@@ -736,44 +736,44 @@ LABEL_53:
     _os_log_impl(&dword_1DE8E5000, v48, v47, "SBIM Monitoring | Start=YES IsMonitoring=%s", v51, 0xCu);
   }
 
-  if (!v50->_isMonitoring)
+  if (!selfCopy->_isMonitoring)
   {
-    [(CBSBIM *)v50 enableSBIM:1];
-    [(CBSBIM *)v50 resetMitigationState];
-    v50->_dataTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v50->_timerQueue);
-    if (v50->_dataTimer)
+    [(CBSBIM *)selfCopy enableSBIM:1];
+    [(CBSBIM *)selfCopy resetMitigationState];
+    selfCopy->_dataTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_timerQueue);
+    if (selfCopy->_dataTimer)
     {
-      source = v50->_dataTimer;
+      source = selfCopy->_dataTimer;
       v3 = dispatch_time(0, 1000000000);
-      dispatch_source_set_timer(source, v3, 1000000000 * v50->mitigation.sbim_timer_interval, 1000000000 * v50->mitigation.sbim_timer_interval);
-      dataTimer = v50->_dataTimer;
+      dispatch_source_set_timer(source, v3, 1000000000 * selfCopy->mitigation.sbim_timer_interval, 1000000000 * selfCopy->mitigation.sbim_timer_interval);
+      dataTimer = selfCopy->_dataTimer;
       handler = MEMORY[0x1E69E9820];
       v42 = -1073741824;
       v43 = 0;
       v44 = __25__CBSBIM_startMonitoring__block_invoke;
       v45 = &unk_1E867B480;
-      v46 = v50;
+      v46 = selfCopy;
       dispatch_source_set_event_handler(dataTimer, &handler);
-      dispatch_resume(v50->_dataTimer);
-      v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v50->_queue);
-      v50->_mitigationTimer = v5;
-      if (v50->_mitigationTimer)
+      dispatch_resume(selfCopy->_dataTimer);
+      v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+      selfCopy->_mitigationTimer = v5;
+      if (selfCopy->_mitigationTimer)
       {
-        mitigationTimer = v50->_mitigationTimer;
+        mitigationTimer = selfCopy->_mitigationTimer;
         v6 = dispatch_time(0, 1000000000);
-        dispatch_source_set_timer(mitigationTimer, v6, 1000000000 * v50->mitigation.mitigation_timer_interval, 1000000000 * v50->mitigation.mitigation_timer_interval);
-        v7 = v50->_mitigationTimer;
+        dispatch_source_set_timer(mitigationTimer, v6, 1000000000 * selfCopy->mitigation.mitigation_timer_interval, 1000000000 * selfCopy->mitigation.mitigation_timer_interval);
+        v7 = selfCopy->_mitigationTimer;
         v32 = MEMORY[0x1E69E9820];
         v33 = -1073741824;
         v34 = 0;
         v35 = __25__CBSBIM_startMonitoring__block_invoke_57;
         v36 = &unk_1E867B480;
-        v37 = v50;
+        v37 = selfCopy;
         dispatch_source_set_event_handler(v7, &v32);
-        dispatch_resume(v50->_mitigationTimer);
-        if (v50->_log)
+        dispatch_resume(selfCopy->_mitigationTimer);
+        if (selfCopy->_log)
         {
-          v12 = v50->_log;
+          v12 = selfCopy->_log;
         }
 
         else
@@ -803,14 +803,14 @@ LABEL_53:
           _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v8, v9, spid, "SBIM Monitoring", &unk_1DEAD656F, v25, 2u);
         }
 
-        v50->_isMonitoring = 1;
+        selfCopy->_isMonitoring = 1;
       }
 
       else
       {
-        if (v50->_log)
+        if (selfCopy->_log)
         {
-          v16 = v50->_log;
+          v16 = selfCopy->_log;
         }
 
         else
@@ -838,15 +838,15 @@ LABEL_53:
           _os_log_error_impl(&dword_1DE8E5000, v13, v14, "SBIM Mitigation | Unable to create a timer", v29, 2u);
         }
 
-        [(CBSBIM *)v50 stopMonitoring];
+        [(CBSBIM *)selfCopy stopMonitoring];
       }
     }
 
     else
     {
-      if (v50->_log)
+      if (selfCopy->_log)
       {
-        v21 = v50->_log;
+        v21 = selfCopy->_log;
       }
 
       else
@@ -874,7 +874,7 @@ LABEL_53:
         _os_log_error_impl(&dword_1DE8E5000, v18, v19, "SBIM Data | Unable to create a timer", v38, 2u);
       }
 
-      [(CBSBIM *)v50 stopMonitoring];
+      [(CBSBIM *)selfCopy stopMonitoring];
     }
   }
 
@@ -884,11 +884,11 @@ LABEL_53:
 - (void)stopMonitoring
 {
   v19 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   if (self->_log)
   {
-    log = v17->_log;
+    log = selfCopy->_log;
   }
 
   else
@@ -910,7 +910,7 @@ LABEL_53:
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    if (v17->_isMonitoring)
+    if (selfCopy->_isMonitoring)
     {
       v2 = "YES";
     }
@@ -924,11 +924,11 @@ LABEL_53:
     _os_log_impl(&dword_1DE8E5000, v15, v14, "SBIM Monitoring | Stop=YES IsMonitoring=%s", v18, 0xCu);
   }
 
-  if (v17->_isMonitoring)
+  if (selfCopy->_isMonitoring)
   {
-    if (v17->_log)
+    if (selfCopy->_log)
     {
-      v7 = v17->_log;
+      v7 = selfCopy->_log;
     }
 
     else
@@ -958,23 +958,23 @@ LABEL_53:
       _os_signpost_emit_with_name_impl(&dword_1DE8E5000, v3, v4, spid, "SBIM Monitoring", &unk_1DEAD656F, v10, 2u);
     }
 
-    if (v17->_dataTimer)
+    if (selfCopy->_dataTimer)
     {
-      dispatch_source_cancel(v17->_dataTimer);
-      dispatch_release(v17->_dataTimer);
-      v17->_dataTimer = 0;
+      dispatch_source_cancel(selfCopy->_dataTimer);
+      dispatch_release(selfCopy->_dataTimer);
+      selfCopy->_dataTimer = 0;
     }
 
-    if (v17->_mitigationTimer)
+    if (selfCopy->_mitigationTimer)
     {
-      dispatch_source_cancel(v17->_mitigationTimer);
-      dispatch_release(v17->_mitigationTimer);
-      v17->_mitigationTimer = 0;
+      dispatch_source_cancel(selfCopy->_mitigationTimer);
+      dispatch_release(selfCopy->_mitigationTimer);
+      selfCopy->_mitigationTimer = 0;
     }
 
-    [(CBSBIM *)v17 resetMitigationState];
-    [(CBSBIM *)v17 enableSBIM:0];
-    v17->_isMonitoring = 0;
+    [(CBSBIM *)selfCopy resetMitigationState];
+    [(CBSBIM *)selfCopy enableSBIM:0];
+    selfCopy->_isMonitoring = 0;
   }
 
   *MEMORY[0x1E69E9840];
@@ -982,11 +982,11 @@ LABEL_53:
 
 - (void)enable
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_log)
   {
-    v5 = v10->_log;
+    v5 = selfCopy->_log;
   }
 
   else
@@ -1014,20 +1014,20 @@ LABEL_53:
     _os_log_impl(&dword_1DE8E5000, log, type, "SBIM State | Enabled=YES", v6, 2u);
   }
 
-  v10->_sbimEnabled = 1;
-  if (v10->_edrOn)
+  selfCopy->_sbimEnabled = 1;
+  if (selfCopy->_edrOn)
   {
-    [(CBSBIM *)v10 startMonitoring];
+    [(CBSBIM *)selfCopy startMonitoring];
   }
 }
 
 - (void)disable
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   if (self->_log)
   {
-    v6 = v12->_log;
+    v6 = selfCopy->_log;
   }
 
   else
@@ -1055,17 +1055,17 @@ LABEL_53:
     _os_log_impl(&dword_1DE8E5000, log, type, "SBIM State | Disabled=YES", v8, 2u);
   }
 
-  v12->_sbimEnabled = 0;
-  if (v12->_edrOn)
+  selfCopy->_sbimEnabled = 0;
+  if (selfCopy->_edrOn)
   {
-    [(CBSBIM *)v12 stopMonitoring];
-    cap = v12->_cap;
-    [(CBEDR *)v12->_edr maxHeadroom];
-    v12->_cap = *&v2;
-    if (v12->_currentHeadroomRequest > cap)
+    [(CBSBIM *)selfCopy stopMonitoring];
+    cap = selfCopy->_cap;
+    [(CBEDR *)selfCopy->_edr maxHeadroom];
+    selfCopy->_cap = *&v2;
+    if (selfCopy->_currentHeadroomRequest > cap)
     {
-      *&v2 = v12->_currentHeadroomRequest;
-      [(CBSBIM *)v12 sendEDRHeadroomRequest:v2];
+      *&v2 = selfCopy->_currentHeadroomRequest;
+      [(CBSBIM *)selfCopy sendEDRHeadroomRequest:v2];
     }
   }
 }
@@ -1088,11 +1088,11 @@ LABEL_53:
   }
 }
 
-- (void)enableSBIM:(BOOL)a3
+- (void)enableSBIM:(BOOL)m
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = "Enabling";
-  if (!a3)
+  if (!m)
   {
     v3 = "Disabling";
   }
@@ -1125,7 +1125,7 @@ LABEL_53:
   }
 
   entry = self->_iomfbService;
-  if (a3)
+  if (m)
   {
     v4 = IORegistryEntrySetCFProperty(entry, @"enableSBIM", *MEMORY[0x1E695E4D0]);
   }
@@ -1171,29 +1171,29 @@ LABEL_53:
 - (void)resetMitigationState
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   self->mitigation.scalingFactor = 0.0;
-  [(CBEDR *)v15->_edr maxHeadroom];
-  v15->_cap = v2;
-  if (v15->mitigation.stage)
+  [(CBEDR *)selfCopy->_edr maxHeadroom];
+  selfCopy->_cap = v2;
+  if (selfCopy->mitigation.stage)
   {
     v3 = mach_time_now_in_milliseconds();
-    v4 = (60 * v15->mitigation.sbim_timer_interval);
-    v5 = (v3 - v15->mitigation.lastStateUpdate_) / v4;
+    v4 = (60 * selfCopy->mitigation.sbim_timer_interval);
+    v5 = (v3 - selfCopy->mitigation.lastStateUpdate_) / v4;
     v13 = std::__math::fmin[abi:de200100]<int,unsigned int,0>(6, vcvtad_u64_f64(v5), v5, v4);
     for (i = 0; i < v13; ++i)
     {
-      v10 = *&v15->mitigation.lastSBIMBlock_.version;
-      v11 = *&v15->mitigation.lastSBIMBlock_.var0.v1.sbim[2];
+      v10 = *&selfCopy->mitigation.lastSBIMBlock_.version;
+      v11 = *&selfCopy->mitigation.lastSBIMBlock_.var0.v1.sbim[2];
       LODWORD(v6) = 1.0;
       LODWORD(v7) = 1120403456;
-      [(CBSBIM *)v15 updateMitigationStateWithData:&v10 andCurrentHeadroom:0 andRequestedHeadroom:COERCE_DOUBLE(__PAIR64__(DWORD1(v11) andSDRBrightness:1.0)) andReset:v6, v7];
+      [(CBSBIM *)selfCopy updateMitigationStateWithData:&v10 andCurrentHeadroom:0 andRequestedHeadroom:COERCE_DOUBLE(__PAIR64__(DWORD1(v11) andSDRBrightness:1.0)) andReset:v6, v7];
     }
 
-    if (v15->_log)
+    if (selfCopy->_log)
     {
-      log = v15->_log;
+      log = selfCopy->_log;
     }
 
     else
@@ -1213,7 +1213,7 @@ LABEL_53:
 
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_32(v16, [(CBSBIM *)v15 mitigationStageToString:v15->mitigation.stage]);
+      __os_log_helper_16_2_1_8_32(v16, [(CBSBIM *)selfCopy mitigationStageToString:selfCopy->mitigation.stage]);
       _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "SBIM Reset | CurrentStage=%s", v16, 0xCu);
     }
   }
@@ -1221,9 +1221,9 @@ LABEL_53:
   *MEMORY[0x1E69E9840];
 }
 
-- (const)mitigationStageToString:(int)a3
+- (const)mitigationStageToString:(int)string
 {
-  switch(a3)
+  switch(string)
   {
     case 0:
       return "NoMitigation";
@@ -1238,32 +1238,32 @@ LABEL_53:
   return "UnknownMitigationStage";
 }
 
-- (void)updateMitigationStateWithData:(IOMFBShortTermBIM *)a3 andCurrentHeadroom:(float)a4 andRequestedHeadroom:(float)a5 andSDRBrightness:(float)a6 andReset:(BOOL)a7
+- (void)updateMitigationStateWithData:(IOMFBShortTermBIM *)data andCurrentHeadroom:(float)headroom andRequestedHeadroom:(float)requestedHeadroom andSDRBrightness:(float)brightness andReset:(BOOL)reset
 {
   v56 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
-  v47 = a4;
-  v46 = a5;
-  v45 = a6;
-  v44 = a7;
+  dataCopy = data;
+  headroomCopy = headroom;
+  requestedHeadroomCopy = requestedHeadroom;
+  brightnessCopy = brightness;
+  resetCopy = reset;
   dispatch_assert_queue_V2(self->_queue);
   {
     v43 = 0.0;
-    std::valarray<float>::valarray(&[CBSBIM updateMitigationStateWithData:andCurrentHeadroom:andRequestedHeadroom:andSDRBrightness:andReset:]::previousAccumulatedSBIM, &v43, v50->mitigation.sbim_size);
+    std::valarray<float>::valarray(&[CBSBIM updateMitigationStateWithData:andCurrentHeadroom:andRequestedHeadroom:andSDRBrightness:andReset:]::previousAccumulatedSBIM, &v43, selfCopy->mitigation.sbim_size);
     __cxa_atexit(std::valarray<float>::~valarray, &[CBSBIM updateMitigationStateWithData:andCurrentHeadroom:andRequestedHeadroom:andSDRBrightness:andReset:]::previousAccumulatedSBIM, &dword_1DE8E5000);
   }
 
-  std::valarray<float>::valarray(v42, v50->mitigation.sbim_size);
-  std::valarray<float>::valarray(v41, v50->mitigation.sbim_size);
+  std::valarray<float>::valarray(v42, selfCopy->mitigation.sbim_size);
+  std::valarray<float>::valarray(v41, selfCopy->mitigation.sbim_size);
   for (i = 0; i < std::valarray<float>::size[abi:de200100](v41); ++i)
   {
-    v30 = a3->var0.v1.sbim[i];
+    v30 = data->var0.v1.sbim[i];
     *std::valarray<float>::operator[][abi:de200100](v41, i) = v30;
   }
 
-  if (v44)
+  if (resetCopy)
   {
     v39 = 1107296256;
     std::operator/[abi:de200100]<std::valarray<float>,0>(v41, &v39, v55);
@@ -1278,17 +1278,17 @@ LABEL_53:
     std::valarray<float>::operator=<std::_BinaryOp<std::divides<float>,std::__val_expr<std::_BinaryOp<std::minus<float>,std::valarray<float>,std::valarray<float>>>,std::__scalar_expr<float>>>(v42, v54);
   }
 
-  v36 = v50->_limitsSize - 1;
+  v36 = selfCopy->_limitsSize - 1;
   v35 = 0;
-  v34 = vcvtmd_s64_f64(v45 / 10.0 + 0.5);
+  v34 = vcvtmd_s64_f64(brightnessCopy / 10.0 + 0.5);
   v29 = std::max[abi:de200100]<int>(&v35, &v34);
   v37 = *std::min[abi:de200100]<int>(&v36, v29);
-  std::valarray<float>::valarray(v33, v50->_limits[v37], v50->mitigation.sbim_size);
+  std::valarray<float>::valarray(v33, selfCopy->_limits[v37], selfCopy->mitigation.sbim_size);
   std::operator>[abi:de200100]<std::valarray<float>,std::valarray<float>,0>(v42, v33, &v52);
-  v50->mitigation.violation = std::__val_expr<std::_BinaryOp<std::greater<float>,std::valarray<float>,std::valarray<float>>>::max[abi:de200100](&v52);
-  if (v50->_log)
+  selfCopy->mitigation.violation = std::__val_expr<std::_BinaryOp<std::greater<float>,std::valarray<float>,std::valarray<float>>>::max[abi:de200100](&v52);
+  if (selfCopy->_log)
   {
-    log = v50->_log;
+    log = selfCopy->_log;
   }
 
   else
@@ -1325,71 +1325,71 @@ LABEL_53:
   }
 
   std::valarray<float>::operator=(&[CBSBIM updateMitigationStateWithData:andCurrentHeadroom:andRequestedHeadroom:andSDRBrightness:andReset:]::previousAccumulatedSBIM, v41);
-  stage = v50->mitigation.stage;
+  stage = selfCopy->mitigation.stage;
   if (stage)
   {
     switch(stage)
     {
       case 1:
-        if (!v50->mitigation.violation)
+        if (!selfCopy->mitigation.violation)
         {
-          v50->mitigation.stage = 2;
-          v50->mitigation.sbim_sustain_num = v50->mitigation.sbim_sustain_max;
+          selfCopy->mitigation.stage = 2;
+          selfCopy->mitigation.sbim_sustain_num = selfCopy->mitigation.sbim_sustain_max;
         }
 
         break;
       case 2:
-        if (!--v50->mitigation.sbim_sustain_num)
+        if (!--selfCopy->mitigation.sbim_sustain_num)
         {
-          v50->mitigation.stage = 3;
-          v50->mitigation.sbim_sustain_num = v50->mitigation.sbim_sustain_max;
-          v50->mitigation.sbim_above_num = v50->mitigation.sbim_above_max;
+          selfCopy->mitigation.stage = 3;
+          selfCopy->mitigation.sbim_sustain_num = selfCopy->mitigation.sbim_sustain_max;
+          selfCopy->mitigation.sbim_above_num = selfCopy->mitigation.sbim_above_max;
         }
 
         break;
       case 3:
-        v32 = (v50->mitigation.delta_factor * v50->mitigation.mitigation_timer_interval) / (std::__math::fmin[abi:de200100](v50->mitigation.minutes_per_stop_mitigate, v50->mitigation.minutes_per_stop_recovery) * 60.0);
-        *&v8 = v47;
+        v32 = (selfCopy->mitigation.delta_factor * selfCopy->mitigation.mitigation_timer_interval) / (std::__math::fmin[abi:de200100](selfCopy->mitigation.minutes_per_stop_mitigate, selfCopy->mitigation.minutes_per_stop_recovery) * 60.0);
+        *&v8 = headroomCopy;
         [CBEDR headroomToStops:v8];
         v13 = v9;
-        *&v10 = v46;
+        *&v10 = requestedHeadroomCopy;
         [CBEDR headroomToStops:v10];
         if (std::__math::fabs[abi:de200100](v13 - v11) < v32)
         {
-          v50->mitigation.stage = 0;
+          selfCopy->mitigation.stage = 0;
         }
 
         break;
     }
   }
 
-  else if (v50->mitigation.violation)
+  else if (selfCopy->mitigation.violation)
   {
-    if (!--v50->mitigation.sbim_above_num)
+    if (!--selfCopy->mitigation.sbim_above_num)
     {
-      v50->mitigation.stage = 1;
-      v50->mitigation.sbim_above_num = v50->mitigation.sbim_above_max;
-      *&v7 = v50->_sdrBrightness;
+      selfCopy->mitigation.stage = 1;
+      selfCopy->mitigation.sbim_above_num = selfCopy->mitigation.sbim_above_max;
+      *&v7 = selfCopy->_sdrBrightness;
       [CBAnalytics sbimMitigationTriggeredWithBrightness:v7];
     }
   }
 
   else
   {
-    v50->mitigation.sbim_above_num = v50->mitigation.sbim_above_max;
+    selfCopy->mitigation.sbim_above_num = selfCopy->mitigation.sbim_above_max;
   }
 
-  v50->mitigation.lastStateUpdate_ = mach_time_now_in_milliseconds();
-  v12 = v50;
-  *&v50->mitigation.lastSBIMBlock_.version = *&a3->version;
-  *&v12->mitigation.lastSBIMBlock_.var0.v1.sbim[2] = *&a3->var0.v1.sbim[2];
+  selfCopy->mitigation.lastStateUpdate_ = mach_time_now_in_milliseconds();
+  v12 = selfCopy;
+  *&selfCopy->mitigation.lastSBIMBlock_.version = *&data->version;
+  *&v12->mitigation.lastSBIMBlock_.var0.v1.sbim[2] = *&data->var0.v1.sbim[2];
   std::valarray<float>::~valarray(v33);
   std::valarray<float>::~valarray(v41);
   std::valarray<float>::~valarray(v42);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEDRHeadroomRequest:(float)a3
+- (void)sendEDRHeadroomRequest:(float)request
 {
   v12 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1415,13 +1415,13 @@ LABEL_53:
 
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v11, COERCE__INT64(a3));
+    __os_log_helper_16_0_1_8_0(v11, COERCE__INT64(request));
     _os_log_impl(&dword_1DE8E5000, log, OS_LOG_TYPE_DEFAULT, "SBIM EDR | Sending headroom request with headroom=%f", v11, 0xCu);
   }
 
   displayModule = self->_displayModule;
   v9 = *MEMORY[0x1E6979618];
-  *&v3 = a3;
+  *&v3 = request;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v3];
   -[CBDisplayModuleiOS setProperty:forKey:](displayModule, "setProperty:forKey:", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1], @"EDRHeadroomRequest");
   *MEMORY[0x1E69E9840];

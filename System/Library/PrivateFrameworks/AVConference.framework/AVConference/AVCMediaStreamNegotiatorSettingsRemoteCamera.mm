@@ -1,13 +1,13 @@
 @interface AVCMediaStreamNegotiatorSettingsRemoteCamera
-- (AVCMediaStreamNegotiatorSettingsRemoteCamera)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsRemoteCamera)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (unint64_t)minBandwidth;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsRemoteCamera
 
-- (AVCMediaStreamNegotiatorSettingsRemoteCamera)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsRemoteCamera)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = AVCMediaStreamNegotiatorSettingsRemoteCamera;
@@ -26,27 +26,27 @@
   }
 
   v8->super._tilesPerFrame = +[VCVideoRuleCollectionsRemoteCamera tilesPerFrame];
-  if (v6 != 1)
+  if (roleCopy != 1)
   {
-    if (v6 != 2)
+    if (roleCopy != 2)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    if (a3 && [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorRemoteCameraDisparityFormat", "BOOLValue"}])
+    if (options && [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorRemoteCameraDisparityFormat", "BOOLValue"}])
     {
       v8->_isDisparityPixelFormat = 1;
     }
 
     v11 = 2;
-    if (v6 == 1)
+    if (roleCopy == 1)
     {
       v11 = 3;
     }
 
     v8->_captureSource = v11;
-    v12 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3];
+    v12 = [AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options];
     if (v12 > 1)
     {
       v10 = @"HDR mode is not supported";
@@ -90,9 +90,9 @@ LABEL_7:
 LABEL_5:
   v10 = @"Hardware does not support offerer device role";
 LABEL_21:
-  if (a5)
+  if (error)
   {
-    *a5 = v10;
+    *error = v10;
   }
 
   return 0;

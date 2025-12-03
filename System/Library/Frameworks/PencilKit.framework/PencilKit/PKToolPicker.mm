@@ -1,39 +1,39 @@
 @interface PKToolPicker
 + (BOOL)_canShowHandwritingTool;
 + (BOOL)_defaultValueForToolStatePersistenceEnabled;
-+ (BOOL)_internalClassWantsToolPicker:(id)a3 visibleForResponder:(id)a4;
-+ (BOOL)_textInputWantsToolPickerVisible:(id)a3 forFirstResponder:(id)a4;
-+ (BOOL)isActiveToolPickerVisibleForWindow:(id)a3;
++ (BOOL)_internalClassWantsToolPicker:(id)picker visibleForResponder:(id)responder;
++ (BOOL)_textInputWantsToolPickerVisible:(id)visible forFirstResponder:(id)responder;
++ (BOOL)isActiveToolPickerVisibleForWindow:(id)window;
 + (NSArray)defaultToolItems;
 + (PKToolPicker)sharedToolPickerForWindow:(UIWindow *)window;
-+ (id)_existingToolPickerForWindow:(id)a3;
-+ (id)_keyEncodedToolsByIdentifier:(id)a3;
-+ (id)_toolPickersForWindow:(uint64_t)a3 includeHidden:;
-+ (id)_windowForToolPicker:(id)a3;
-+ (id)_windowSceneForToolPicker:(id)a3;
-+ (id)_windowScenesForToolPicker:(id)a3;
-+ (id)activeToolPickerForWindow:(id)a3;
-+ (id)existingPaletteViewForWindow:(id)a3;
-+ (void)_cycleToolPickersForResponder:(uint64_t)a1;
-+ (void)_dockToolPickerForWindowScene:(uint64_t)a3 toAutoHideCornerAnimated:;
-+ (void)_performWithVisibilityUpdatesEnabled:(BOOL)a3 window:(id)a4 block:(id)a5;
-+ (void)_setCanBecomeVisible:(BOOL)a3;
-+ (void)_setPrefersHoverPreviewEnabled:(BOOL)a3 withCompletion:(id)a4;
-+ (void)_setPrefersPencilOnlyDrawingForiWork:(BOOL)a3;
-+ (void)_updateToolPickerVisibilityForFirstResponder:(id)a3;
-- (BOOL)_canInsertTool:(id)a3;
-- (BOOL)_canRemoveTool:(id)a3;
-- (BOOL)_hasResponderRegisteredForWindow:(id)a3;
-- (BOOL)_hasToolPassingTest:(id)a3;
++ (id)_existingToolPickerForWindow:(id)window;
++ (id)_keyEncodedToolsByIdentifier:(id)identifier;
++ (id)_toolPickersForWindow:(uint64_t)window includeHidden:;
++ (id)_windowForToolPicker:(id)picker;
++ (id)_windowSceneForToolPicker:(id)picker;
++ (id)_windowScenesForToolPicker:(id)picker;
++ (id)activeToolPickerForWindow:(id)window;
++ (id)existingPaletteViewForWindow:(id)window;
++ (void)_cycleToolPickersForResponder:(uint64_t)responder;
++ (void)_dockToolPickerForWindowScene:(uint64_t)scene toAutoHideCornerAnimated:;
++ (void)_performWithVisibilityUpdatesEnabled:(BOOL)enabled window:(id)window block:(id)block;
++ (void)_setCanBecomeVisible:(BOOL)visible;
++ (void)_setPrefersHoverPreviewEnabled:(BOOL)enabled withCompletion:(id)completion;
++ (void)_setPrefersPencilOnlyDrawingForiWork:(BOOL)work;
++ (void)_updateToolPickerVisibilityForFirstResponder:(id)responder;
+- (BOOL)_canInsertTool:(id)tool;
+- (BOOL)_canRemoveTool:(id)tool;
+- (BOOL)_hasResponderRegisteredForWindow:(id)window;
+- (BOOL)_hasToolPassingTest:(id)test;
 - (BOOL)_interactionIsValid;
-- (BOOL)_internalClassesAcceptingFirstResponderContainsObject:(id)a3;
-- (BOOL)_isActiveToolPickerForWindow:(id)a3;
+- (BOOL)_internalClassesAcceptingFirstResponderContainsObject:(id)object;
+- (BOOL)_isActiveToolPickerForWindow:(id)window;
 - (BOOL)_isCanvasGenerationToolSelected;
 - (BOOL)_isHandwritingToolSelected;
 - (BOOL)_isToolStatePersistenceEnabled;
-- (BOOL)_squeezePaletteVisibleInWindowScene:(id)a3;
+- (BOOL)_squeezePaletteVisibleInWindowScene:(id)scene;
 - (BOOL)_startOpacityEditing;
-- (BOOL)_wantsVisibleForFirstResponder:(id)a3 includeHidden:(BOOL)a4;
+- (BOOL)_wantsVisibleForFirstResponder:(id)responder includeHidden:(BOOL)hidden;
 - (BOOL)isVisible;
 - (CGRect)frameObscuredInView:(UIView *)view;
 - (CGSize)_contentSize;
@@ -48,7 +48,7 @@
 - (PKPaletteHostView)_paletteHostView;
 - (PKPaletteViewAnnotationDelegate)_annotationDelegate;
 - (PKToolPicker)init;
-- (PKToolPicker)initWithToolItems:(id)a3;
+- (PKToolPicker)initWithToolItems:(id)items;
 - (PKToolPickerDelegate)delegate;
 - (PKToolPickerItem)selectedToolItem;
 - (PKToolPickerPopoverPresentationConfiguring)_popoverPresentationConfiguration;
@@ -64,127 +64,127 @@
 - (double)_scalingFactor;
 - (id)_applicationWindow;
 - (id)_currentFirstResponder;
-- (id)_delegateForSelector:(SEL)a3;
+- (id)_delegateForSelector:(SEL)selector;
 - (id)_handwritingTool;
 - (id)_paletteAccessibilityIdentifier;
-- (id)_validatedEncodedToolsArray:(id)a3;
+- (id)_validatedEncodedToolsArray:(id)array;
 - (id)_windowScene;
 - (int64_t)_numberOfToolsAfterRuler;
 - (int64_t)_palettePosition;
 - (unint64_t)_edgeForContextualEditingView;
-- (unint64_t)_indexOfTool:(id)a3 tools:(id)a4;
-- (unint64_t)_indexOfToolPassingTest:(id)a3;
+- (unint64_t)_indexOfTool:(id)tool tools:(id)tools;
+- (unint64_t)_indexOfToolPassingTest:(id)test;
 - (unint64_t)permittedArrowDirections;
-- (void)_addTool:(id)a3;
-- (void)_addTool:(id)a3 updateUI:(BOOL)a4;
-- (void)_canvasViewWillBeginDrawing:(id)a3;
-- (void)_createPaletteViewIfNecessaryInWindow:(id)a3;
+- (void)_addTool:(id)tool;
+- (void)_addTool:(id)tool updateUI:(BOOL)i;
+- (void)_canvasViewWillBeginDrawing:(id)drawing;
+- (void)_createPaletteViewIfNecessaryInWindow:(id)window;
 - (void)_disableTapInteractionWhenNotVisible;
 - (void)_dismissPopovers;
-- (void)_enableTapInteractionForWindow:(id)a3;
-- (void)_enableTapInteractionForWindow:(id)a3 createPaletteView:(BOOL)a4;
+- (void)_enableTapInteractionForWindow:(id)window;
+- (void)_enableTapInteractionForWindow:(id)window createPaletteView:(BOOL)view;
 - (void)_endOpacityEditing;
 - (void)_handleDidInvokeAddTextBox;
-- (void)_handleFirstResponderDidChangeNotification:(id)a3;
-- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)a3;
-- (void)_handleInsertStickerFromItemProvider:(uint64_t)a1;
-- (void)_handleSqueezeInteractionWillShowPaletteViewNotification:(id)a3;
+- (void)_handleFirstResponderDidChangeNotification:(id)notification;
+- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)change;
+- (void)_handleInsertStickerFromItemProvider:(uint64_t)provider;
+- (void)_handleSqueezeInteractionWillShowPaletteViewNotification:(id)notification;
 - (void)_insertHandwritingTool;
-- (void)_insertTool:(id)a3 atIndex:(unint64_t)a4 updateUI:(BOOL)a5;
-- (void)_lockHiddenNotify:(BOOL)a3;
+- (void)_insertTool:(id)tool atIndex:(unint64_t)index updateUI:(BOOL)i;
+- (void)_lockHiddenNotify:(BOOL)notify;
 - (void)_notifyScaleFactorDidChange;
 - (void)_notifySelectedToolDidChange;
-- (void)_notifyVisibilityDidChangeIsAnimationFinished:(BOOL)a3;
+- (void)_notifyVisibilityDidChangeIsAnimationFinished:(BOOL)finished;
 - (void)_performPencilPreferredActionShowColorPalette;
 - (void)_performPencilPreferredActionSwitchEraser;
 - (void)_performPencilPreferredActionSwitchPrevious;
-- (void)_performWithVisibilityUpdatesEnabled:(BOOL)a3 block:(id)a4;
-- (void)_presentViewController:(id)a3 asPopoverFromItem:(id)a4;
+- (void)_performWithVisibilityUpdatesEnabled:(BOOL)enabled block:(id)block;
+- (void)_presentViewController:(id)controller asPopoverFromItem:(id)item;
 - (void)_removeHandwritingTool;
-- (void)_removeTool:(id)a3 updateUI:(BOOL)a4;
-- (void)_removeToolsAtIndexes:(id)a3 updateUI:(BOOL)a4;
-- (void)_resetTools:(id)a3 selectedTool:(id)a4 notify:(BOOL)a5;
-- (void)_restoreToolPickerStateFromRepresentation:(id)a3 notify:(BOOL)a4;
-- (void)_restoreToolPickerStateNotify:(BOOL)a3;
+- (void)_removeTool:(id)tool updateUI:(BOOL)i;
+- (void)_removeToolsAtIndexes:(id)indexes updateUI:(BOOL)i;
+- (void)_resetTools:(id)tools selectedTool:(id)tool notify:(BOOL)notify;
+- (void)_restoreToolPickerStateFromRepresentation:(id)representation notify:(BOOL)notify;
+- (void)_restoreToolPickerStateNotify:(BOOL)notify;
 - (void)_saveStateIfNecessary;
 - (void)_saveToolPickerState;
-- (void)_setAnnotationDelegate:(id)a3;
-- (void)_setBackgroundVisible:(BOOL)a3;
-- (void)_setCloseButtonVisible:(BOOL)a3;
-- (void)_setContextMenuPresented:(BOOL)a3;
-- (void)_setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)_setDoneButtonVisible:(BOOL)a3;
-- (void)_setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setIgnoresSafeAreaInsetsInCompactSize:(BOOL)a3;
-- (void)_setInterItemToolsSpacingInCompactSize:(double)a3;
-- (void)_setInterItemUndoRedoButtonsSpacingInCompactSize:(double)a3;
-- (void)_setInteraction:(id)a3;
-- (void)_setLassoToolEditingViewVisible:(BOOL)a3;
-- (void)_setNumberOfToolsAfterRuler:(int64_t)a3;
-- (void)_setOverlapsWindow:(BOOL)a3;
-- (void)_setPlusButtonMenu:(id)a3;
-- (void)_setPlusButtonViewController:(id)a3;
-- (void)_setPresentationController:(id)a3;
-- (void)_setPresentsDetached:(BOOL)a3;
-- (void)_setSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4;
-- (void)_setSelectedTool:(id)a3 saveState:(BOOL)a4 updateUI:(BOOL)a5 updateLastSelectedTool:(BOOL)a6;
-- (void)_setSelectionMask:(unint64_t)a3 updateUI:(BOOL)a4;
-- (void)_setShadowVisible:(BOOL)a3;
-- (void)_setShapeButtonViewController:(id)a3;
-- (void)_setShouldAlwaysShowAutoRefineControls:(BOOL)a3;
-- (void)_setShouldHideHoverPreviewToggle:(BOOL)a3;
-- (void)_setShowsHandwritingTool:(BOOL)a3;
-- (void)_setShowsPlusButton:(BOOL)a3;
-- (void)_setShowsRuler:(BOOL)a3;
-- (void)_setShowsShapeButton:(BOOL)a3;
-- (void)_setShowsTextButton:(BOOL)a3;
-- (void)_setTextButtonViewController:(id)a3;
-- (void)_setUseEqualSpacingLayoutInCompactSize:(BOOL)a3;
-- (void)_setVisibilityUpdatesEnabled:(BOOL)a3;
-- (void)_setVisibleInWindow:(id)a3 forFirstResponder:(id)a4 animated:(BOOL)a5 notify:(BOOL)a6 completion:(id)a7;
-- (void)_setWantsBottomLineDividerVisibleInCompactSize:(BOOL)a3;
-- (void)_setWantsClearBackgroundColorInCompactSize:(BOOL)a3;
-- (void)_setWantsEllipsisButtonVisibleInCompactSize:(BOOL)a3;
-- (void)_setWantsExternalVisibility:(BOOL)a3;
-- (void)_setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)a3;
-- (void)_showImageWandTipWithController:(id)a3;
+- (void)_setAnnotationDelegate:(id)delegate;
+- (void)_setBackgroundVisible:(BOOL)visible;
+- (void)_setCloseButtonVisible:(BOOL)visible;
+- (void)_setContextMenuPresented:(BOOL)presented;
+- (void)_setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)_setDoneButtonVisible:(BOOL)visible;
+- (void)_setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)size;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setIgnoresSafeAreaInsetsInCompactSize:(BOOL)size;
+- (void)_setInterItemToolsSpacingInCompactSize:(double)size;
+- (void)_setInterItemUndoRedoButtonsSpacingInCompactSize:(double)size;
+- (void)_setInteraction:(id)interaction;
+- (void)_setLassoToolEditingViewVisible:(BOOL)visible;
+- (void)_setNumberOfToolsAfterRuler:(int64_t)ruler;
+- (void)_setOverlapsWindow:(BOOL)window;
+- (void)_setPlusButtonMenu:(id)menu;
+- (void)_setPlusButtonViewController:(id)controller;
+- (void)_setPresentationController:(id)controller;
+- (void)_setPresentsDetached:(BOOL)detached;
+- (void)_setSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker;
+- (void)_setSelectedTool:(id)tool saveState:(BOOL)state updateUI:(BOOL)i updateLastSelectedTool:(BOOL)selectedTool;
+- (void)_setSelectionMask:(unint64_t)mask updateUI:(BOOL)i;
+- (void)_setShadowVisible:(BOOL)visible;
+- (void)_setShapeButtonViewController:(id)controller;
+- (void)_setShouldAlwaysShowAutoRefineControls:(BOOL)controls;
+- (void)_setShouldHideHoverPreviewToggle:(BOOL)toggle;
+- (void)_setShowsHandwritingTool:(BOOL)tool;
+- (void)_setShowsPlusButton:(BOOL)button;
+- (void)_setShowsRuler:(BOOL)ruler;
+- (void)_setShowsShapeButton:(BOOL)button;
+- (void)_setShowsTextButton:(BOOL)button;
+- (void)_setTextButtonViewController:(id)controller;
+- (void)_setUseEqualSpacingLayoutInCompactSize:(BOOL)size;
+- (void)_setVisibilityUpdatesEnabled:(BOOL)enabled;
+- (void)_setVisibleInWindow:(id)window forFirstResponder:(id)responder animated:(BOOL)animated notify:(BOOL)notify completion:(id)completion;
+- (void)_setWantsBottomLineDividerVisibleInCompactSize:(BOOL)size;
+- (void)_setWantsClearBackgroundColorInCompactSize:(BOOL)size;
+- (void)_setWantsEllipsisButtonVisibleInCompactSize:(BOOL)size;
+- (void)_setWantsExternalVisibility:(BOOL)visibility;
+- (void)_setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)size;
+- (void)_showImageWandTipWithController:(id)controller;
 - (void)_tellDelegateToHideToolPicker;
-- (void)_textInputResponderDidReloadNotification:(id)a3;
-- (void)_unlockHiddenNotify:(BOOL)a3;
+- (void)_textInputResponderDidReloadNotification:(id)notification;
+- (void)_unlockHiddenNotify:(BOOL)notify;
 - (void)_updateGenerationToolInstallation;
 - (void)_updateHandwritingInputAssistantItems;
 - (void)_updateHandwritingToolInstallation;
-- (void)_updatePaletteTraitCollection:(id)a3;
-- (void)_updatePaletteUserInterfaceStyle:(int64_t)a3;
-- (void)_updatePaletteView:(id)a3 onUpdateLink:(BOOL)a4;
-- (void)_updateToolPickerVisibilityContextMenuPresentedDidChange:(BOOL)a3;
-- (void)_updateToolPickerVisibilityForFirstResponder:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)_updateUIOnUpdateLink:(BOOL)a3;
+- (void)_updatePaletteTraitCollection:(id)collection;
+- (void)_updatePaletteUserInterfaceStyle:(int64_t)style;
+- (void)_updatePaletteView:(id)view onUpdateLink:(BOOL)link;
+- (void)_updateToolPickerVisibilityContextMenuPresentedDidChange:(BOOL)change;
+- (void)_updateToolPickerVisibilityForFirstResponder:(id)responder withContext:(id)context completion:(id)completion;
+- (void)_updateUIOnUpdateLink:(BOOL)link;
 - (void)_updateUserInterfaceStyle;
 - (void)addObserver:(id)observer;
 - (void)calculateIsVisibleBeforeResponderChangesForCurrentRunLoopIfNecessary;
 - (void)dealloc;
-- (void)imageWandTipControllerTipStatusDidUpdate:(id)a3;
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5;
+- (void)imageWandTipControllerTipStatusDidUpdate:(id)update;
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset;
 - (void)removeObserver:(id)observer;
-- (void)setAccessoryItem:(id)a3;
-- (void)setColorMaximumLinearExposure:(double)a3;
-- (void)setColorSwatchesVisible:(BOOL)a3;
+- (void)setAccessoryItem:(id)item;
+- (void)setColorMaximumLinearExposure:(double)exposure;
+- (void)setColorSwatchesVisible:(BOOL)visible;
 - (void)setColorUserInterfaceStyle:(UIUserInterfaceStyle)colorUserInterfaceStyle;
 - (void)setMaximumSupportedContentVersion:(PKContentVersion)maximumSupportedContentVersion;
 - (void)setOverrideUserInterfaceStyle:(UIUserInterfaceStyle)overrideUserInterfaceStyle;
-- (void)setPrefersLargeContextualEditingUI:(BOOL)a3;
+- (void)setPrefersLargeContextualEditingUI:(BOOL)i;
 - (void)setRulerActive:(BOOL)rulerActive;
-- (void)setSelectedToolItem:(id)a3;
-- (void)setSelectedToolItemIdentifier:(id)a3;
+- (void)setSelectedToolItem:(id)item;
+- (void)setSelectedToolItemIdentifier:(id)identifier;
 - (void)setShowsDrawingPolicyControls:(BOOL)showsDrawingPolicyControls;
 - (void)setStateAutosaveName:(NSString *)stateAutosaveName;
-- (void)setVisibility:(int64_t)a3 whenFirstResponderIsDescendantOf:(id)a4;
+- (void)setVisibility:(int64_t)visibility whenFirstResponderIsDescendantOf:(id)of;
 - (void)setVisible:(BOOL)visible forFirstResponder:(UIResponder *)responder;
-- (void)set_temporarySelectionDelegate:(id)a3;
-- (void)toolPickerItemDidChange:(id)a3;
-- (void)toolPickerItemReloadImage:(id)a3;
+- (void)set_temporarySelectionDelegate:(id)delegate;
+- (void)toolPickerItemDidChange:(id)change;
+- (void)toolPickerItemReloadImage:(id)image;
 @end
 
 @implementation PKToolPicker
@@ -240,14 +240,14 @@
 - (NSArray)_toolsState
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PKToolPicker *)self toolItems];
-  v4 = [(PKToolPicker *)self selectedToolItemIdentifier];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  toolItems = [(PKToolPicker *)self toolItems];
+  selectedToolItemIdentifier = [(PKToolPicker *)self selectedToolItemIdentifier];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(toolItems, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = toolItems;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -263,25 +263,25 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 _dictionaryRepresentation];
-        if (v4)
+        _dictionaryRepresentation = [v11 _dictionaryRepresentation];
+        if (selectedToolItemIdentifier)
         {
-          v13 = [v11 identifier];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v11 identifier];
+          v14 = [identifier isEqualToString:selectedToolItemIdentifier];
 
           if (v14)
           {
-            v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
+            v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:_dictionaryRepresentation];
             [v15 setValue:MEMORY[0x1E695E118] forKey:@"isSelected"];
             v16 = [v15 copy];
 
-            v12 = v16;
+            _dictionaryRepresentation = v16;
           }
         }
 
-        if ([v12 count] >= 2)
+        if ([_dictionaryRepresentation count] >= 2)
         {
-          [v5 addObject:v12];
+          [v5 addObject:_dictionaryRepresentation];
         }
       }
 
@@ -300,22 +300,22 @@
 {
   if (-[PKToolPicker _useNewAutosaveNameBehavior](self, "_useNewAutosaveNameBehavior") && (-[PKToolPicker stateAutosaveName](self, "stateAutosaveName"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [@"PKPaletteNamedDefaults" isEqualToString:v3], v3, v4))
   {
-    v5 = [(PKToolPicker *)self stateAutosaveName];
+    stateAutosaveName = [(PKToolPicker *)self stateAutosaveName];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AD60] stringWithString:@"PKPaletteNamedDefaults"];
-    v6 = [(PKToolPicker *)self stateAutosaveName];
+    stateAutosaveName = [MEMORY[0x1E696AD60] stringWithString:@"PKPaletteNamedDefaults"];
+    stateAutosaveName2 = [(PKToolPicker *)self stateAutosaveName];
 
-    if (v6)
+    if (stateAutosaveName2)
     {
-      v7 = [(PKToolPicker *)self stateAutosaveName];
-      [v5 appendFormat:@"-%@", v7];
+      stateAutosaveName3 = [(PKToolPicker *)self stateAutosaveName];
+      [stateAutosaveName appendFormat:@"-%@", stateAutosaveName3];
     }
   }
 
-  return v5;
+  return stateAutosaveName;
 }
 
 - (NSArray)_tools
@@ -327,10 +327,10 @@
 
 - (NSString)selectedToolItemIdentifier
 {
-  v2 = [(PKToolPicker *)self selectedToolItem];
-  v3 = [v2 identifier];
+  selectedToolItem = [(PKToolPicker *)self selectedToolItem];
+  identifier = [selectedToolItem identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (PKToolPickerItem)selectedToolItem
@@ -346,10 +346,10 @@
 
 - (BOOL)_isToolStatePersistenceEnabled
 {
-  v3 = [objc_opt_class() _defaultValueForToolStatePersistenceEnabled];
+  _defaultValueForToolStatePersistenceEnabled = [objc_opt_class() _defaultValueForToolStatePersistenceEnabled];
   v4 = ![(PKToolPicker *)self _useNewAutosaveNameBehavior];
-  result = v4 & v3;
-  if (v4 & 1) == 0 && (v3)
+  result = v4 & _defaultValueForToolStatePersistenceEnabled;
+  if (v4 & 1) == 0 && (_defaultValueForToolStatePersistenceEnabled)
   {
     return self->_stateAutosaveName != 0;
   }
@@ -362,12 +362,12 @@
   v10 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_diagnostics())
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"PKShouldRestoreToolPickerState"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"PKShouldRestoreToolPickerState"];
 
     if (v5)
     {
-      v2 = [v4 BOOLForKey:@"PKShouldRestoreToolPickerState"];
+      v2 = [standardUserDefaults BOOLForKey:@"PKShouldRestoreToolPickerState"];
     }
 
     else
@@ -398,18 +398,18 @@
   return v2;
 }
 
-- (BOOL)_hasResponderRegisteredForWindow:(id)a3
+- (BOOL)_hasResponderRegisteredForWindow:(id)window
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-  v6 = [v5 keyEnumerator];
+  _firstRespondersForVisibleUI = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+  keyEnumerator = [_firstRespondersForVisibleUI keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v7)
   {
     goto LABEL_16;
@@ -422,14 +422,14 @@
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v15 + 1) + 8 * i);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        view = v10;
       }
 
       else
@@ -440,15 +440,15 @@
           continue;
         }
 
-        v11 = [v10 view];
+        view = [v10 view];
       }
 
-      v12 = v11;
-      if (v11)
+      v12 = view;
+      if (view)
       {
-        v13 = [v11 window];
+        window = [view window];
 
-        if (v13 == v4)
+        if (window == windowCopy)
         {
           LOBYTE(v7) = 1;
           goto LABEL_16;
@@ -456,7 +456,7 @@
       }
     }
 
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       continue;
@@ -474,54 +474,54 @@ LABEL_16:
 {
   if (self->_toolPickerVisibility)
   {
-    v2 = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility currentFirstResponder];
+    currentFirstResponder = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility currentFirstResponder];
   }
 
   else
   {
-    v3 = [(PKToolPicker *)self _interaction];
-    v4 = [v3 hostingWindow];
-    v2 = [v4 firstResponder];
+    _interaction = [(PKToolPicker *)self _interaction];
+    hostingWindow = [_interaction hostingWindow];
+    currentFirstResponder = [hostingWindow firstResponder];
   }
 
-  return v2;
+  return currentFirstResponder;
 }
 
-- (id)_delegateForSelector:(SEL)a3
+- (id)_delegateForSelector:(SEL)selector
 {
-  v4 = [(PKToolPicker *)self _temporarySelectionDelegate];
+  _temporarySelectionDelegate = [(PKToolPicker *)self _temporarySelectionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKToolPicker *)self _temporarySelectionDelegate];
+    _temporarySelectionDelegate2 = [(PKToolPicker *)self _temporarySelectionDelegate];
   }
 
   else
   {
-    v7 = [(PKToolPicker *)self _delegate];
+    _delegate = [(PKToolPicker *)self _delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v6 = [(PKToolPicker *)self _delegate];
+      _temporarySelectionDelegate2 = [(PKToolPicker *)self _delegate];
     }
 
     else
     {
-      v6 = 0;
+      _temporarySelectionDelegate2 = 0;
     }
   }
 
-  return v6;
+  return _temporarySelectionDelegate2;
 }
 
-- (BOOL)_wantsVisibleForFirstResponder:(id)a3 includeHidden:(BOOL)a4
+- (BOOL)_wantsVisibleForFirstResponder:(id)responder includeHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [PKToolPicker _internalClassWantsToolPicker:self visibleForResponder:v6];
-  v8 = [PKToolPicker _textInputWantsToolPickerVisible:self forFirstResponder:v6];
+  hiddenCopy = hidden;
+  responderCopy = responder;
+  v7 = [PKToolPicker _internalClassWantsToolPicker:self visibleForResponder:responderCopy];
+  v8 = [PKToolPicker _textInputWantsToolPickerVisible:self forFirstResponder:responderCopy];
   LOBYTE(v9) = 1;
   if (v7 || v8)
   {
@@ -529,13 +529,13 @@ LABEL_16:
   }
 
   v10 = objc_opt_class();
-  v11 = PKDynamicCast(v10, v6);
+  v11 = PKDynamicCast(v10, responderCopy);
   if (!v11)
   {
-    v22 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-    v23 = [v22 objectForKey:v6];
+    _firstRespondersForVisibleUI = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+    _currentActiveToolPicker = [_firstRespondersForVisibleUI objectForKey:responderCopy];
 
-    if (v23 && [(PKToolPicker *)v23 integerValue]< 2)
+    if (_currentActiveToolPicker && [(PKToolPicker *)_currentActiveToolPicker integerValue]< 2)
     {
 LABEL_32:
 
@@ -543,18 +543,18 @@ LABEL_32:
     }
 
 LABEL_26:
-    v24 = [v6 pencilKitResponderState];
-    v23 = [v24 _currentActiveToolPicker];
+    pencilKitResponderState = [responderCopy pencilKitResponderState];
+    _currentActiveToolPicker = [pencilKitResponderState _currentActiveToolPicker];
 
-    if (v23 == self)
+    if (_currentActiveToolPicker == self)
     {
-      v25 = [v6 pencilKitResponderState];
-      v26 = [v25 _currentToolPickerVisibility];
-      LOBYTE(v9) = v26 == 3;
-      if (v26 != 3 && v4)
+      pencilKitResponderState2 = [responderCopy pencilKitResponderState];
+      _currentToolPickerVisibility = [pencilKitResponderState2 _currentToolPickerVisibility];
+      LOBYTE(v9) = _currentToolPickerVisibility == 3;
+      if (_currentToolPickerVisibility != 3 && hiddenCopy)
       {
-        v27 = [v6 pencilKitResponderState];
-        LOBYTE(v9) = [v27 _currentToolPickerVisibility] == 2;
+        pencilKitResponderState3 = [responderCopy pencilKitResponderState];
+        LOBYTE(v9) = [pencilKitResponderState3 _currentToolPickerVisibility] == 2;
       }
     }
 
@@ -571,14 +571,14 @@ LABEL_26:
   v9 = 0;
   do
   {
-    v14 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-    v15 = [v14 objectForKey:v12];
+    _firstRespondersForVisibleUI2 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+    v15 = [_firstRespondersForVisibleUI2 objectForKey:v12];
 
     if (v15)
     {
-      v16 = [v15 integerValue];
-      v17 = (v12 != v6) & v9;
-      if (v16 == 3)
+      integerValue = [v15 integerValue];
+      v17 = (v12 != responderCopy) & v9;
+      if (integerValue == 3)
       {
         v18 = 0;
       }
@@ -588,13 +588,13 @@ LABEL_26:
         v18 = v9;
       }
 
-      if (v16 != 2)
+      if (integerValue != 2)
       {
         v17 = v18;
       }
 
-      v19 = (v12 == v6) | v9;
-      if (v16 == 1)
+      v19 = (v12 == responderCopy) | v9;
+      if (integerValue == 1)
       {
         v20 = 1;
       }
@@ -604,12 +604,12 @@ LABEL_26:
         v20 = v9;
       }
 
-      if (v16)
+      if (integerValue)
       {
         v19 = v20;
       }
 
-      if (v16 <= 1)
+      if (integerValue <= 1)
       {
         v9 = v19;
       }
@@ -622,12 +622,12 @@ LABEL_26:
       v13 = 1;
     }
 
-    v21 = [v12 superview];
+    superview = [v12 superview];
 
-    v12 = v21;
+    v12 = superview;
   }
 
-  while (v21);
+  while (superview);
   if ((v13 & 1) == 0)
   {
     goto LABEL_26;
@@ -638,15 +638,15 @@ LABEL_33:
   return v9 & 1;
 }
 
-+ (void)_cycleToolPickersForResponder:(uint64_t)a1
++ (void)_cycleToolPickersForResponder:(uint64_t)responder
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 _responderWindow];
-  if (v2 && v3)
+  _responderWindow = [v2 _responderWindow];
+  if (v2 && _responderWindow)
   {
-    v15 = v3;
+    v15 = _responderWindow;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -667,14 +667,14 @@ LABEL_33:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v16 + 1) + 8 * v8) toolPicker];
-          v10 = v9;
-          if (v9)
+          toolPicker = [*(*(&v16 + 1) + 8 * v8) toolPicker];
+          v10 = toolPicker;
+          if (toolPicker)
           {
-            v11 = [v9 _firstRespondersForVisibleUI];
-            v12 = [v11 keyEnumerator];
-            v13 = [v12 allObjects];
-            v14 = [v13 containsObject:v2];
+            _firstRespondersForVisibleUI = [toolPicker _firstRespondersForVisibleUI];
+            keyEnumerator = [_firstRespondersForVisibleUI keyEnumerator];
+            allObjects = [keyEnumerator allObjects];
+            v14 = [allObjects containsObject:v2];
 
             if (v14)
             {
@@ -693,11 +693,11 @@ LABEL_33:
       while (v6);
     }
 
-    v3 = v15;
+    _responderWindow = v15;
   }
 }
 
-+ (id)_toolPickersForWindow:(uint64_t)a3 includeHidden:
++ (id)_toolPickersForWindow:(uint64_t)window includeHidden:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -709,8 +709,8 @@ LABEL_33:
 
   else
   {
-    v6 = [v4 firstResponder];
-    if (v6)
+    firstResponder = [v4 firstResponder];
+    if (firstResponder)
     {
       v7 = [_allToolPickers copy];
       v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -733,9 +733,9 @@ LABEL_33:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [*(*(&v16 + 1) + 8 * i) toolPicker];
-            v14 = v13;
-            if (v13 && [v13 _wantsVisibleForFirstResponder:v6 includeHidden:a3])
+            toolPicker = [*(*(&v16 + 1) + 8 * i) toolPicker];
+            v14 = toolPicker;
+            if (toolPicker && [toolPicker _wantsVisibleForFirstResponder:firstResponder includeHidden:window])
             {
               [v5 addObject:v14];
             }
@@ -757,19 +757,19 @@ LABEL_33:
   return v5;
 }
 
-+ (id)_windowScenesForToolPicker:(id)a3
++ (id)_windowScenesForToolPicker:(id)picker
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pickerCopy = picker;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 _firstRespondersForVisibleUI];
-  v6 = [v5 keyEnumerator];
+  _firstRespondersForVisibleUI = [pickerCopy _firstRespondersForVisibleUI];
+  keyEnumerator = [_firstRespondersForVisibleUI keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -780,19 +780,19 @@ LABEL_33:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) _responderWindow];
-        v12 = [v11 windowScene];
+        _responderWindow = [*(*(&v15 + 1) + 8 * i) _responderWindow];
+        windowScene = [_responderWindow windowScene];
 
-        if (v12)
+        if (windowScene)
         {
-          [v4 addObject:v12];
+          [v4 addObject:windowScene];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -803,43 +803,43 @@ LABEL_33:
   return v13;
 }
 
-+ (id)_windowSceneForToolPicker:(id)a3
++ (id)_windowSceneForToolPicker:(id)picker
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 _firstRespondersForVisibleUI];
-  v4 = [v3 keyEnumerator];
+  _firstRespondersForVisibleUI = [picker _firstRespondersForVisibleUI];
+  keyEnumerator = [_firstRespondersForVisibleUI keyEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v5)
+  windowScene = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (windowScene)
   {
     v6 = *v13;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != windowScene; i = i + 1)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 _responderWindow];
+        _responderWindow = [v8 _responderWindow];
 
-        if (v9)
+        if (_responderWindow)
         {
-          v10 = [v8 _responderWindow];
-          v5 = [v10 windowScene];
+          _responderWindow2 = [v8 _responderWindow];
+          windowScene = [_responderWindow2 windowScene];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v5)
+      windowScene = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (windowScene)
       {
         continue;
       }
@@ -850,14 +850,14 @@ LABEL_33:
 
 LABEL_11:
 
-  return v5;
+  return windowScene;
 }
 
-+ (id)_windowForToolPicker:(id)a3
++ (id)_windowForToolPicker:(id)picker
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [v3 calculateIsVisibleBeforeResponderChangesForCurrentRunLoopIfNecessary];
+  pickerCopy = picker;
+  [pickerCopy calculateIsVisibleBeforeResponderChangesForCurrentRunLoopIfNecessary];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -887,8 +887,8 @@ LABEL_11:
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v10 = [v9 _allWindows];
-        v11 = [v10 countByEnumeratingWithState:&v52 objects:v63 count:16];
+        _allWindows = [v9 _allWindows];
+        v11 = [_allWindows countByEnumeratingWithState:&v52 objects:v63 count:16];
         if (v11)
         {
           v12 = v11;
@@ -899,7 +899,7 @@ LABEL_11:
             {
               if (*v53 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(_allWindows);
               }
 
               v15 = *(*(&v52 + 1) + 8 * i);
@@ -929,7 +929,7 @@ LABEL_11:
 
                       v19 = *(*(&v48 + 1) + 8 * v21);
 
-                      if (v19 == v3)
+                      if (v19 == pickerCopy)
                       {
 LABEL_44:
                         v32 = v15;
@@ -961,7 +961,7 @@ LABEL_44:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v52 objects:v63 count:16];
+            v12 = [_allWindows countByEnumeratingWithState:&v52 objects:v63 count:16];
             if (v12)
             {
               continue;
@@ -977,8 +977,8 @@ LABEL_25:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v10 = [v9 _allWindows];
-        v23 = [v10 countByEnumeratingWithState:&v44 objects:v61 count:16];
+        _allWindows = [v9 _allWindows];
+        v23 = [_allWindows countByEnumeratingWithState:&v44 objects:v61 count:16];
         if (v23)
         {
           v24 = v23;
@@ -992,7 +992,7 @@ LABEL_25:
             {
               if (*v45 != v25)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(_allWindows);
               }
 
               v15 = *(*(&v44 + 1) + 8 * v26);
@@ -1019,7 +1019,7 @@ LABEL_32:
 
                   v19 = *(*(&v40 + 1) + 8 * v30);
 
-                  if (v19 == v3)
+                  if (v19 == pickerCopy)
                   {
                     goto LABEL_44;
                   }
@@ -1048,7 +1048,7 @@ LABEL_32:
             }
 
             while (v26 != v24);
-            v24 = [v10 countByEnumeratingWithState:&v44 objects:v61 count:16];
+            v24 = [_allWindows countByEnumeratingWithState:&v44 objects:v61 count:16];
             if (v24)
             {
               continue;
@@ -1079,7 +1079,7 @@ LABEL_46:
   return v32;
 }
 
-+ (void)_dockToolPickerForWindowScene:(uint64_t)a3 toAutoHideCornerAnimated:
++ (void)_dockToolPickerForWindowScene:(uint64_t)scene toAutoHideCornerAnimated:
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -1095,8 +1095,8 @@ LABEL_46:
     _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Dock toolPicker for windowScene: %{private}@, paletteViewInteraction: %{private}@", &v8, 0x16u);
   }
 
-  v7 = [v5 paletteHostView];
-  [v7 _dockPaletteToAutoHideCornerAnimated:a3];
+  paletteHostView = [v5 paletteHostView];
+  [paletteHostView _dockPaletteToAutoHideCornerAnimated:scene];
 }
 
 - (id)_applicationWindow
@@ -1107,16 +1107,16 @@ LABEL_46:
     toolPickerVisibility = self->_toolPickerVisibility;
     if (toolPickerVisibility)
     {
-      v4 = [(PKToolPickerVisibilityProtocol *)toolPickerVisibility windowScene];
-      if (v4)
+      windowScene = [(PKToolPickerVisibilityProtocol *)toolPickerVisibility windowScene];
+      if (windowScene)
       {
-        v5 = v4;
+        _interaction = windowScene;
         v17 = 0u;
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
-        v6 = [v4 windows];
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        windows = [windowScene windows];
+        v7 = [windows countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           v8 = v7;
@@ -1127,18 +1127,18 @@ LABEL_46:
             {
               if (*v16 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(windows);
               }
 
               v11 = *(*(&v15 + 1) + 8 * i);
               if (([(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility isActiveToolPickerForWindow:v11]& 1) != 0)
               {
-                v13 = v11;
+                hostingWindow = v11;
                 goto LABEL_19;
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+            v8 = [windows countByEnumeratingWithState:&v15 objects:v19 count:16];
             if (v8)
             {
               continue;
@@ -1155,13 +1155,13 @@ LABEL_46:
 
   else
   {
-    v5 = [(PKToolPicker *)self _interaction];
-    if (v5 && [(PKToolPicker *)self isVisible])
+    _interaction = [(PKToolPicker *)self _interaction];
+    if (_interaction && [(PKToolPicker *)self isVisible])
     {
-      v6 = [(PKToolPicker *)self _interaction];
-      v13 = [v6 hostingWindow];
+      windows = [(PKToolPicker *)self _interaction];
+      hostingWindow = [windows hostingWindow];
 LABEL_19:
-      v12 = v13;
+      v12 = hostingWindow;
     }
 
     else
@@ -1177,8 +1177,8 @@ LABEL_19:
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = observer;
-  v5 = [(PKToolPicker *)self _observers];
-  [v5 addObject:v4];
+  _observers = [(PKToolPicker *)self _observers];
+  [_observers addObject:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1211,22 +1211,22 @@ LABEL_19:
 - (void)removeObserver:(id)observer
 {
   v4 = observer;
-  v5 = [(PKToolPicker *)self _observers];
-  [v5 removeObject:v4];
+  _observers = [(PKToolPicker *)self _observers];
+  [_observers removeObject:v4];
 }
 
 - (void)_saveStateIfNecessary
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 saveOptionsIfNecessary];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView saveOptionsIfNecessary];
 }
 
-+ (void)_setCanBecomeVisible:(BOOL)a3
++ (void)_setCanBecomeVisible:(BOOL)visible
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (__canBecomeVisible != a3)
+  if (__canBecomeVisible != visible)
   {
-    __canBecomeVisible = a3;
+    __canBecomeVisible = visible;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -1247,11 +1247,11 @@ LABEL_19:
             objc_enumerationMutation(v3);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * v7) toolPicker];
-          if (v8)
+          toolPicker = [*(*(&v10 + 1) + 8 * v7) toolPicker];
+          if (toolPicker)
           {
-            v9 = [PKToolPicker _windowForToolPicker:v8];
-            [v8 _setVisibleInWindow:v9];
+            v9 = [PKToolPicker _windowForToolPicker:toolPicker];
+            [toolPicker _setVisibleInWindow:v9];
           }
 
           ++v7;
@@ -1271,39 +1271,39 @@ LABEL_19:
   v4 = visible;
   v23 = *MEMORY[0x1E69E9840];
   v6 = responder;
-  v7 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-  v8 = [v7 objectForKey:v6];
+  _firstRespondersForVisibleUI = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+  v8 = [_firstRespondersForVisibleUI objectForKey:v6];
 
   if ((v8 != 0) != v4)
   {
     v9 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 _pkDebugStringRepresentation];
-      v11 = [(PKToolPicker *)self _currentFirstResponder];
-      v12 = [v11 _pkDebugStringRepresentation];
+      _pkDebugStringRepresentation = [v6 _pkDebugStringRepresentation];
+      _currentFirstResponder = [(PKToolPicker *)self _currentFirstResponder];
+      _pkDebugStringRepresentation2 = [_currentFirstResponder _pkDebugStringRepresentation];
       v15 = 134218754;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
       v18 = v4;
       v19 = 2112;
-      v20 = v10;
+      v20 = _pkDebugStringRepresentation;
       v21 = 2112;
-      v22 = v12;
+      v22 = _pkDebugStringRepresentation2;
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, should setVisible %{BOOL}d for responder: %@, current: %@", &v15, 0x26u);
     }
   }
 
-  v13 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-  v14 = v13;
+  _firstRespondersForVisibleUI2 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+  v14 = _firstRespondersForVisibleUI2;
   if (v4)
   {
-    [v13 setObject:&unk_1F47C1010 forKey:v6];
+    [_firstRespondersForVisibleUI2 setObject:&unk_1F47C1010 forKey:v6];
   }
 
   else
   {
-    [v13 removeObjectForKey:v6];
+    [_firstRespondersForVisibleUI2 removeObjectForKey:v6];
   }
 
   if ([(UIResponder *)v6 isFirstResponder])
@@ -1312,81 +1312,81 @@ LABEL_19:
   }
 }
 
-- (void)setVisibility:(int64_t)a3 whenFirstResponderIsDescendantOf:(id)a4
+- (void)setVisibility:(int64_t)visibility whenFirstResponderIsDescendantOf:(id)of
 {
-  v9 = a4;
-  if (a3 == 2)
+  ofCopy = of;
+  if (visibility == 2)
   {
-    v7 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-    [v7 removeObjectForKey:v9];
+    _firstRespondersForVisibleUI = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+    [_firstRespondersForVisibleUI removeObjectForKey:ofCopy];
   }
 
   else
   {
-    if (a3 == 1)
+    if (visibility == 1)
     {
-      v6 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-      v7 = v6;
+      _firstRespondersForVisibleUI2 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+      _firstRespondersForVisibleUI = _firstRespondersForVisibleUI2;
       v8 = &unk_1F47C1040;
     }
 
     else
     {
-      if (a3)
+      if (visibility)
       {
         goto LABEL_9;
       }
 
-      v6 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
-      v7 = v6;
+      _firstRespondersForVisibleUI2 = [(PKToolPicker *)self _firstRespondersForVisibleUI];
+      _firstRespondersForVisibleUI = _firstRespondersForVisibleUI2;
       v8 = &unk_1F47C1028;
     }
 
-    [v6 setObject:v8 forKey:v9];
+    [_firstRespondersForVisibleUI2 setObject:v8 forKey:ofCopy];
   }
 
 LABEL_9:
   [(PKToolPicker *)self _updateToolPickerVisibility];
 }
 
-- (void)_handleFirstResponderDidChangeNotification:(id)a3
+- (void)_handleFirstResponderDidChangeNotification:(id)notification
 {
   *&v25[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKToolPicker *)self _currentFirstResponder];
-    v7 = [v6 _pkDebugStringRepresentation];
+    _currentFirstResponder = [(PKToolPicker *)self _currentFirstResponder];
+    _pkDebugStringRepresentation = [_currentFirstResponder _pkDebugStringRepresentation];
     v22 = 138412546;
-    v23 = v4;
+    selfCopy2 = notificationCopy;
     v24 = 2112;
-    *v25 = v7;
+    *v25 = _pkDebugStringRepresentation;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "first responder did change notification: %@, firstResponder: %@", &v22, 0x16u);
   }
 
-  v8 = [(PKToolPicker *)v4 userInfo];
-  v9 = [v8 objectForKey:@"_UIWindowHostDidPromoteFirstResponderUserInfoKey"];
-  v10 = [v9 BOOLValue];
+  userInfo = [(PKToolPicker *)notificationCopy userInfo];
+  v9 = [userInfo objectForKey:@"_UIWindowHostDidPromoteFirstResponderUserInfoKey"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [(PKToolPicker *)v4 userInfo];
-  v12 = [v11 objectForKey:@"UIWindowFirstResponderUserInfoKey"];
+  userInfo2 = [(PKToolPicker *)notificationCopy userInfo];
+  v12 = [userInfo2 objectForKey:@"UIWindowFirstResponderUserInfoKey"];
 
-  if (!v10 || v12)
+  if (!bOOLValue || v12)
   {
-    v13 = [(PKToolPicker *)self _paletteView];
-    v14 = [v13 isExtendedColorPickerVisible];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    isExtendedColorPickerVisible = [_paletteView isExtendedColorPickerVisible];
 
-    if (PKIsPhoneDevice() && ([(PKToolPicker *)self isVisible]& v14) == 1)
+    if (PKIsPhoneDevice() && ([(PKToolPicker *)self isVisible]& isExtendedColorPickerVisible) == 1)
     {
       v15 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [(PKToolPicker *)self isVisible];
+        isVisible = [(PKToolPicker *)self isVisible];
         v22 = 134218496;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 1024;
-        *v25 = v16;
+        *v25 = isVisible;
         v25[2] = 1024;
         *&v25[3] = 1;
         v17 = "Skip processing FR notification, toolPicker: %p, isVisible: %{BOOL}d, isExtendedColorPickerVisible: %{BOOL}d";
@@ -1407,11 +1407,11 @@ LABEL_16:
       v15 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v21 = [(PKToolPicker *)self isVisible];
+        isVisible2 = [(PKToolPicker *)self isVisible];
         v22 = 134218496;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 1024;
-        *v25 = v21;
+        *v25 = isVisible2;
         v25[2] = 1024;
         *&v25[3] = 1;
         v17 = "Skip processing FR notification, toolPicker: %p, isVisible: %{BOOL}d, hasPresentedViewController: %{BOOL}d";
@@ -1435,16 +1435,16 @@ LABEL_20:
 {
   if (self->_toolPickerVisibility)
   {
-    v2 = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility paletteView];
+    paletteView = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility paletteView];
   }
 
   else
   {
-    v3 = [(PKToolPicker *)self _interaction];
-    v2 = [v3 paletteView];
+    _interaction = [(PKToolPicker *)self _interaction];
+    paletteView = [_interaction paletteView];
   }
 
-  return v2;
+  return paletteView;
 }
 
 - (PKToolPickerDelegate)delegate
@@ -1454,17 +1454,17 @@ LABEL_20:
   return WeakRetained;
 }
 
-- (void)_setSelectedTool:(id)a3 saveState:(BOOL)a4 updateUI:(BOOL)a5 updateLastSelectedTool:(BOOL)a6
+- (void)_setSelectedTool:(id)tool saveState:(BOOL)state updateUI:(BOOL)i updateLastSelectedTool:(BOOL)selectedTool
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  selectedToolCopy = selectedTool;
+  iCopy = i;
+  stateCopy = state;
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = v11;
-  if (v11)
+  toolCopy = tool;
+  v12 = toolCopy;
+  if (toolCopy)
   {
-    if ([(PKTool *)v11 _isRulerTool])
+    if ([(PKTool *)toolCopy _isRulerTool])
     {
       v13 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1505,7 +1505,7 @@ LABEL_20:
           *buf = 138412546;
           v32 = v19;
           v33 = 2112;
-          v34 = v22;
+          selectedToolCopy2 = v22;
           _os_log_impl(&dword_1C7CCA000, v21, OS_LOG_TYPE_DEFAULT, "Can't select tool: %@. Tool not found in tools: %@", buf, 0x16u);
         }
       }
@@ -1521,7 +1521,7 @@ LABEL_20:
           *buf = 138412802;
           v32 = v19;
           v33 = 2112;
-          v34 = v21;
+          selectedToolCopy2 = v21;
           v35 = 2048;
           v36 = v20;
           _os_log_impl(&dword_1C7CCA000, v23, OS_LOG_TYPE_DEFAULT, "An equal but not identical tool: %@, replaced tool: %@, at index: %lu", buf, 0x20u);
@@ -1536,13 +1536,13 @@ LABEL_17:
         if (self->_selectedTool != v12)
         {
           [(PKToolPicker *)self _setSelectionMask:0 updateUI:0];
-          if (v6)
+          if (selectedToolCopy)
           {
             objc_storeStrong(&self->_lastSelectedTool, self->_selectedTool);
           }
 
           v24 = self->_selectedTool;
-          objc_storeStrong(&self->_selectedTool, a3);
+          objc_storeStrong(&self->_selectedTool, tool);
           [(NSMutableArray *)self->_mutableTools replaceObjectAtIndex:v15 withObject:v12];
           [(PKToolPickerItemManager *)self->_toolItemManager updateItemForTool:v12];
           v25 = os_log_create("com.apple.pencilkit", "ToolPicker");
@@ -1552,17 +1552,17 @@ LABEL_17:
             *buf = 138478083;
             v32 = v24;
             v33 = 2113;
-            v34 = selectedTool;
+            selectedToolCopy2 = selectedTool;
             _os_log_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEFAULT, "Did change selected tool from %{private}@ to %{private}@", buf, 0x16u);
           }
 
           [(PKToolPicker *)self _dismissPopovers];
-          if (v7)
+          if (iCopy)
           {
             [(PKToolPicker *)self _updateUI];
           }
 
-          if (v8)
+          if (stateCopy)
           {
             [(PKToolPicker *)self _saveToolPickerState];
           }
@@ -1677,8 +1677,8 @@ LABEL_21:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(PKToolPicker *)self _observers];
-  v3 = [v2 copy];
+  _observers = [(PKToolPicker *)self _observers];
+  v3 = [_observers copy];
 
   obj = v3;
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -1777,7 +1777,7 @@ void __84__PKToolPicker_calculateIsVisibleBeforeResponderChangesForCurrentRunLoo
       return;
     }
 
-    v6 = [(PKToolPicker *)self _showsRuler];
+    _showsRuler = [(PKToolPicker *)self _showsRuler];
     v7 = 0;
   }
 
@@ -1789,12 +1789,12 @@ void __84__PKToolPicker_calculateIsVisibleBeforeResponderChangesForCurrentRunLoo
       return;
     }
 
-    v6 = 0;
+    _showsRuler = 0;
     v7 = 1;
   }
 
-  *p_rulerActive = v6;
-  if (v7 == v6)
+  *p_rulerActive = _showsRuler;
+  if (v7 == _showsRuler)
   {
     return;
   }
@@ -1803,8 +1803,8 @@ void __84__PKToolPicker_calculateIsVisibleBeforeResponderChangesForCurrentRunLoo
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(PKToolPicker *)self _observers];
-  v4 = [v8 copy];
+  _observers = [(PKToolPicker *)self _observers];
+  v4 = [_observers copy];
 
   v9 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v9)
@@ -1836,9 +1836,9 @@ void __84__PKToolPicker_calculateIsVisibleBeforeResponderChangesForCurrentRunLoo
 LABEL_19:
 }
 
-- (void)_setShowsRuler:(BOOL)a3
+- (void)_setShowsRuler:(BOOL)ruler
 {
-  if (!a3)
+  if (!ruler)
   {
     if (![(PKToolPicker *)self _showsRuler])
     {
@@ -1896,7 +1896,7 @@ void __31__PKToolPicker__setShowsRuler___block_invoke_2(uint64_t a1, uint64_t a2
   return result;
 }
 
-- (void)_setNumberOfToolsAfterRuler:(int64_t)a3
+- (void)_setNumberOfToolsAfterRuler:(int64_t)ruler
 {
   if (PKIsVisionDevice())
   {
@@ -1919,7 +1919,7 @@ void __31__PKToolPicker__setShowsRuler___block_invoke_2(uint64_t a1, uint64_t a2
     [v6 enumerateIndexesUsingBlock:v8];
 
     v7 = objc_alloc_init(PKRulerTool);
-    [(PKToolPicker *)self _insertTool:v7 atIndex:[(NSMutableArray *)self->_mutableTools count]- a3 updateUI:0];
+    [(PKToolPicker *)self _insertTool:v7 atIndex:[(NSMutableArray *)self->_mutableTools count]- ruler updateUI:0];
     [(PKToolPicker *)self _updateUI];
     [(PKToolPicker *)self _saveToolPickerState];
   }
@@ -1931,35 +1931,35 @@ void __44__PKToolPicker__setNumberOfToolsAfterRuler___block_invoke_2(uint64_t a1
   [*(a1 + 32) _removeTool:v3 updateUI:0];
 }
 
-- (void)_setShouldHideHoverPreviewToggle:(BOOL)a3
+- (void)_setShouldHideHoverPreviewToggle:(BOOL)toggle
 {
-  if (self->__shouldHideHoverPreviewToggle != a3)
+  if (self->__shouldHideHoverPreviewToggle != toggle)
   {
-    self->__shouldHideHoverPreviewToggle = a3;
+    self->__shouldHideHoverPreviewToggle = toggle;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setShouldAlwaysShowAutoRefineControls:(BOOL)a3
+- (void)_setShouldAlwaysShowAutoRefineControls:(BOOL)controls
 {
-  if (self->__shouldAlwaysShowAutoRefineControls != a3)
+  if (self->__shouldAlwaysShowAutoRefineControls != controls)
   {
-    self->__shouldAlwaysShowAutoRefineControls = a3;
+    self->__shouldAlwaysShowAutoRefineControls = controls;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)setAccessoryItem:(id)a3
+- (void)setAccessoryItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKPaletteBarButton *)self->_accessoryBarButton barButtonItem];
-  v6 = v4;
-  if (v6 | v5)
+  itemCopy = item;
+  barButtonItem = [(PKPaletteBarButton *)self->_accessoryBarButton barButtonItem];
+  v6 = itemCopy;
+  if (v6 | barButtonItem)
   {
     v11 = v6;
-    if (v6 && v5)
+    if (v6 && barButtonItem)
     {
-      v7 = [v5 isEqual:v6];
+      v7 = [barButtonItem isEqual:v6];
 
       v6 = v11;
       if (v7)
@@ -1993,12 +1993,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_setShowsPlusButton:(BOOL)a3
+- (void)_setShowsPlusButton:(BOOL)button
 {
-  if (self->__showsPlusButton != a3)
+  if (self->__showsPlusButton != button)
   {
-    self->__showsPlusButton = a3;
-    if (a3)
+    self->__showsPlusButton = button;
+    if (button)
     {
       v5 = objc_alloc(MEMORY[0x1E69DC708]);
       v6 = +[UIImage _pk_plusButtonImage];
@@ -2014,76 +2014,76 @@ LABEL_10:
   }
 }
 
-- (void)_setPlusButtonMenu:(id)a3
+- (void)_setPlusButtonMenu:(id)menu
 {
-  v5 = a3;
-  if (self->__plusButtonMenu != v5)
+  menuCopy = menu;
+  if (self->__plusButtonMenu != menuCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->__plusButtonMenu, a3);
+    v8 = menuCopy;
+    objc_storeStrong(&self->__plusButtonMenu, menu);
     accessoryBarButton = self->_accessoryBarButton;
     if (accessoryBarButton)
     {
-      v7 = [(PKPaletteBarButton *)accessoryBarButton barButtonItem];
-      [v7 setMenu:v8];
+      barButtonItem = [(PKPaletteBarButton *)accessoryBarButton barButtonItem];
+      [barButtonItem setMenu:v8];
     }
 
     [(PKToolPicker *)self _updateUI];
-    v5 = v8;
+    menuCopy = v8;
   }
 }
 
-- (void)_setPlusButtonViewController:(id)a3
+- (void)_setPlusButtonViewController:(id)controller
 {
-  v5 = a3;
-  if (self->__plusButtonViewController != v5)
+  controllerCopy = controller;
+  if (self->__plusButtonViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__plusButtonViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->__plusButtonViewController, controller);
     [(PKToolPicker *)self _updateUI];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)_setShowsTextButton:(BOOL)a3
+- (void)_setShowsTextButton:(BOOL)button
 {
-  if (self->__showsTextButton != a3)
+  if (self->__showsTextButton != button)
   {
-    self->__showsTextButton = a3;
-    [(PKToolPicker *)self _updateUI];
-  }
-}
-
-- (void)_setTextButtonViewController:(id)a3
-{
-  v5 = a3;
-  if (self->__textButtonViewController != v5)
-  {
-    v6 = v5;
-    objc_storeStrong(&self->__textButtonViewController, a3);
-    [(PKToolPicker *)self _updateUI];
-    v5 = v6;
-  }
-}
-
-- (void)_setShowsShapeButton:(BOOL)a3
-{
-  if (self->__showsShapeButton != a3)
-  {
-    self->__showsShapeButton = a3;
+    self->__showsTextButton = button;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setShapeButtonViewController:(id)a3
+- (void)_setTextButtonViewController:(id)controller
 {
-  v5 = a3;
-  if (self->__shapeButtonViewController != v5)
+  controllerCopy = controller;
+  if (self->__textButtonViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__shapeButtonViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->__textButtonViewController, controller);
     [(PKToolPicker *)self _updateUI];
-    v5 = v6;
+    controllerCopy = v6;
+  }
+}
+
+- (void)_setShowsShapeButton:(BOOL)button
+{
+  if (self->__showsShapeButton != button)
+  {
+    self->__showsShapeButton = button;
+    [(PKToolPicker *)self _updateUI];
+  }
+}
+
+- (void)_setShapeButtonViewController:(id)controller
+{
+  controllerCopy = controller;
+  if (self->__shapeButtonViewController != controllerCopy)
+  {
+    v6 = controllerCopy;
+    objc_storeStrong(&self->__shapeButtonViewController, controller);
+    [(PKToolPicker *)self _updateUI];
+    controllerCopy = v6;
   }
 }
 
@@ -2091,32 +2091,32 @@ LABEL_10:
 {
   if ([(PKToolPicker *)self isVisible])
   {
-    v3 = [(PKToolPicker *)self _paletteView];
-    v4 = [v3 contextualEditingView];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    contextualEditingView = [_paletteView contextualEditingView];
   }
 
   else
   {
-    v4 = 0;
+    contextualEditingView = 0;
   }
 
-  return v4;
+  return contextualEditingView;
 }
 
 - (unint64_t)_edgeForContextualEditingView
 {
   v3 = [(PKToolPicker *)self _palettePosition]- 1;
-  v4 = [(PKToolPicker *)self _palettePosition];
+  _palettePosition = [(PKToolPicker *)self _palettePosition];
   if (v3 > 3)
   {
-    if ((v4 - 5) > 3)
+    if ((_palettePosition - 5) > 3)
     {
       return 4;
     }
 
     else
     {
-      v6 = [(PKToolPicker *)self _paletteView];
+      _paletteView = [(PKToolPicker *)self _paletteView];
       v7 = [(PKToolPicker *)self _palettePosition]- 5;
       if (v7 > 3)
       {
@@ -2128,28 +2128,28 @@ LABEL_10:
         v8 = qword_1C801C380[v7];
       }
 
-      v9 = [v6 edgeLocationToDockFromCorner:v8];
+      v9 = [_paletteView edgeLocationToDockFromCorner:v8];
 
       return v9;
     }
   }
 
-  else if ((v4 - 1) >= 4)
+  else if ((_palettePosition - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1C801C3A0[v4 - 1];
+    return qword_1C801C3A0[_palettePosition - 1];
   }
 }
 
-- (void)_setLassoToolEditingViewVisible:(BOOL)a3
+- (void)_setLassoToolEditingViewVisible:(BOOL)visible
 {
-  if (self->_lassoToolEditingViewVisible != a3)
+  if (self->_lassoToolEditingViewVisible != visible)
   {
-    self->_lassoToolEditingViewVisible = a3;
+    self->_lassoToolEditingViewVisible = visible;
     [(PKToolPicker *)self _updateUIOnUpdateLink:1];
   }
 }
@@ -2158,91 +2158,91 @@ LABEL_10:
 {
   if ([(PKToolPicker *)self isVisible])
   {
-    v3 = [(PKToolPicker *)self _paletteView];
-    v4 = [v3 lassoToolEditingView];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    lassoToolEditingView = [_paletteView lassoToolEditingView];
   }
 
   else
   {
-    v4 = 0;
+    lassoToolEditingView = 0;
   }
 
-  return v4;
+  return lassoToolEditingView;
 }
 
-- (void)_setWantsEllipsisButtonVisibleInCompactSize:(BOOL)a3
+- (void)_setWantsEllipsisButtonVisibleInCompactSize:(BOOL)size
 {
-  v3 = a3;
-  if ([(PKToolPicker *)self _canShowEllipsisButtonInCompactSize]&& self->__wantsEllipsisButtonVisibleInCompactSize != v3)
+  sizeCopy = size;
+  if ([(PKToolPicker *)self _canShowEllipsisButtonInCompactSize]&& self->__wantsEllipsisButtonVisibleInCompactSize != sizeCopy)
   {
-    self->__wantsEllipsisButtonVisibleInCompactSize = v3;
+    self->__wantsEllipsisButtonVisibleInCompactSize = sizeCopy;
 
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setWantsBottomLineDividerVisibleInCompactSize:(BOOL)a3
+- (void)_setWantsBottomLineDividerVisibleInCompactSize:(BOOL)size
 {
-  if (self->__wantsBottomLineDividerVisibleInCompactSize != a3)
+  if (self->__wantsBottomLineDividerVisibleInCompactSize != size)
   {
-    self->__wantsBottomLineDividerVisibleInCompactSize = a3;
+    self->__wantsBottomLineDividerVisibleInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setIgnoresSafeAreaInsetsInCompactSize:(BOOL)a3
+- (void)_setIgnoresSafeAreaInsetsInCompactSize:(BOOL)size
 {
-  if (self->__ignoresSafeAreaInsetsInCompactSize != a3)
+  if (self->__ignoresSafeAreaInsetsInCompactSize != size)
   {
-    self->__ignoresSafeAreaInsetsInCompactSize = a3;
+    self->__ignoresSafeAreaInsetsInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)a3
+- (void)_setEdgeInsetsInCompactSize:(NSDirectionalEdgeInsets)size
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = size.top;
+  v3.f64[1] = size.leading;
+  v4.f64[0] = size.bottom;
+  v4.f64[1] = size.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->__edgeInsetsInCompactSize.top, v3), vceqq_f64(*&self->__edgeInsetsInCompactSize.bottom, v4)))) & 1) == 0)
   {
-    self->__edgeInsetsInCompactSize = a3;
+    self->__edgeInsetsInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setInterItemToolsSpacingInCompactSize:(double)a3
+- (void)_setInterItemToolsSpacingInCompactSize:(double)size
 {
-  if (vabdd_f64(self->__interItemToolsSpacingInCompactSize, a3) >= 0.00999999978)
+  if (vabdd_f64(self->__interItemToolsSpacingInCompactSize, size) >= 0.00999999978)
   {
-    self->__interItemToolsSpacingInCompactSize = a3;
+    self->__interItemToolsSpacingInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setInterItemUndoRedoButtonsSpacingInCompactSize:(double)a3
+- (void)_setInterItemUndoRedoButtonsSpacingInCompactSize:(double)size
 {
-  if (self->__interItemUndoRedoButtonsSpacingInCompactSize != a3)
+  if (self->__interItemUndoRedoButtonsSpacingInCompactSize != size)
   {
-    self->__interItemUndoRedoButtonsSpacingInCompactSize = a3;
+    self->__interItemUndoRedoButtonsSpacingInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setUseEqualSpacingLayoutInCompactSize:(BOOL)a3
+- (void)_setUseEqualSpacingLayoutInCompactSize:(BOOL)size
 {
-  if (self->__useEqualSpacingLayoutInCompactSize != a3)
+  if (self->__useEqualSpacingLayoutInCompactSize != size)
   {
-    self->__useEqualSpacingLayoutInCompactSize = a3;
+    self->__useEqualSpacingLayoutInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
 - (BOOL)_interactionIsValid
 {
-  v2 = [(PKToolPicker *)self _interaction];
-  v3 = v2 != 0;
+  _interaction = [(PKToolPicker *)self _interaction];
+  v3 = _interaction != 0;
 
   return v3;
 }
@@ -2254,8 +2254,8 @@ LABEL_10:
     return 1.0;
   }
 
-  v3 = [(PKToolPicker *)self _paletteView];
-  [v3 paletteScaleFactor];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView paletteScaleFactor];
   v5 = v4;
 
   return v5;
@@ -2268,8 +2268,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PKToolPicker *)self _observers];
-  v4 = [v3 copy];
+  _observers = [(PKToolPicker *)self _observers];
+  v4 = [_observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
@@ -2325,33 +2325,33 @@ LABEL_10:
 {
   if (self->_toolPickerVisibility)
   {
-    v2 = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility windowScene];
+    windowScene = [(PKToolPickerVisibilityProtocol *)self->_toolPickerVisibility windowScene];
   }
 
   else
   {
-    v3 = [(PKToolPicker *)self _interaction];
-    v4 = [v3 view];
-    v5 = [v4 window];
-    v2 = [v5 windowScene];
+    _interaction = [(PKToolPicker *)self _interaction];
+    view = [_interaction view];
+    window = [view window];
+    windowScene = [window windowScene];
   }
 
-  return v2;
+  return windowScene;
 }
 
-- (void)_setVisibilityUpdatesEnabled:(BOOL)a3
+- (void)_setVisibilityUpdatesEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->__visibilityUpdatesEnabled != a3)
+  if (self->__visibilityUpdatesEnabled != enabled)
   {
-    self->__visibilityUpdatesEnabled = a3;
+    self->__visibilityUpdatesEnabled = enabled;
     v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134218240;
-      v6 = self;
+      selfCopy = self;
       v7 = 1024;
-      v8 = [(PKToolPicker *)self _visibilityUpdatesEnabled];
+      _visibilityUpdatesEnabled = [(PKToolPicker *)self _visibilityUpdatesEnabled];
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, visibility updates did change, visibilityUpdatesEnabled: %{BOOL}d", &v5, 0x12u);
     }
 
@@ -2359,38 +2359,38 @@ LABEL_10:
   }
 }
 
-- (void)_performWithVisibilityUpdatesEnabled:(BOOL)a3 block:(id)a4
+- (void)_performWithVisibilityUpdatesEnabled:(BOOL)enabled block:(id)block
 {
-  v4 = a3;
+  enabledCopy = enabled;
   visibilityUpdatesEnabled = self->__visibilityUpdatesEnabled;
-  v7 = a4;
-  [(PKToolPicker *)self _setVisibilityUpdatesEnabled:v4];
-  v7[2](v7);
+  blockCopy = block;
+  [(PKToolPicker *)self _setVisibilityUpdatesEnabled:enabledCopy];
+  blockCopy[2](blockCopy);
 
   [(PKToolPicker *)self _setVisibilityUpdatesEnabled:visibilityUpdatesEnabled];
 }
 
-+ (void)_performWithVisibilityUpdatesEnabled:(BOOL)a3 window:(id)a4 block:(id)a5
++ (void)_performWithVisibilityUpdatesEnabled:(BOOL)enabled window:(id)window block:(id)block
 {
-  v6 = a3;
-  v10 = a4;
-  v7 = a5;
-  if (v10 && ([PKToolPicker activeToolPickerForWindow:v10], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  enabledCopy = enabled;
+  windowCopy = window;
+  blockCopy = block;
+  if (windowCopy && ([PKToolPicker activeToolPickerForWindow:windowCopy], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    [v8 _performWithVisibilityUpdatesEnabled:v6 block:v7];
+    [v8 _performWithVisibilityUpdatesEnabled:enabledCopy block:blockCopy];
   }
 
   else
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 }
 
-+ (void)_updateToolPickerVisibilityForFirstResponder:(id)a3
++ (void)_updateToolPickerVisibilityForFirstResponder:(id)responder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responderCopy = responder;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -2411,11 +2411,11 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) toolPicker];
-        v10 = v9;
-        if (v9)
+        toolPicker = [*(*(&v11 + 1) + 8 * v8) toolPicker];
+        v10 = toolPicker;
+        if (toolPicker)
         {
-          [v9 _updateToolPickerVisibilityForFirstResponder:v3];
+          [toolPicker _updateToolPickerVisibilityForFirstResponder:responderCopy];
         }
 
         ++v8;
@@ -2429,13 +2429,13 @@ LABEL_10:
   }
 }
 
-- (void)_updateToolPickerVisibilityContextMenuPresentedDidChange:(BOOL)a3
+- (void)_updateToolPickerVisibilityContextMenuPresentedDidChange:(BOOL)change
 {
   v5 = objc_alloc_init(PKToolPickerVisibilityContext);
   v6 = v5;
   if (v5)
   {
-    v5->_contextMenuPresentedDidChange = a3;
+    v5->_contextMenuPresentedDidChange = change;
   }
 
   if (self)
@@ -2446,11 +2446,11 @@ LABEL_10:
   }
 }
 
-- (void)_updateToolPickerVisibilityForFirstResponder:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)_updateToolPickerVisibilityForFirstResponder:(id)responder withContext:(id)context completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  responderCopy = responder;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(PKToolPicker *)self _visibilityUpdatesEnabled])
   {
     if ([(PKToolPicker *)self _isContextMenuPresented])
@@ -2463,11 +2463,11 @@ LABEL_10:
       v10 = [PKToolPicker _windowForToolPicker:self];
     }
 
-    if (v8)
+    if (contextCopy)
     {
-      if (v8[8] == 1)
+      if (contextCopy[8] == 1)
       {
-        v11 = v8[10];
+        v11 = contextCopy[10];
       }
 
       else
@@ -2475,10 +2475,10 @@ LABEL_10:
         v11 = 1;
       }
 
-      if (![(PKToolPicker *)self _isContextMenuPresented]&& v8[9] == 1)
+      if (![(PKToolPicker *)self _isContextMenuPresented]&& contextCopy[9] == 1)
       {
-        v12 = [v10 windowScene];
-        v13 = [(PKToolPicker *)self _squeezePaletteVisibleInWindowScene:v12];
+        windowScene = [v10 windowScene];
+        v13 = [(PKToolPicker *)self _squeezePaletteVisibleInWindowScene:windowScene];
 
         if (v13)
         {
@@ -2496,50 +2496,50 @@ LABEL_10:
       v11 = 1;
     }
 
-    [(PKToolPicker *)self _setVisibleInWindow:v10 forFirstResponder:v14 animated:1 notify:v11 & 1 completion:v9];
+    [(PKToolPicker *)self _setVisibleInWindow:v10 forFirstResponder:responderCopy animated:1 notify:v11 & 1 completion:completionCopy];
   }
 }
 
-- (BOOL)_squeezePaletteVisibleInWindowScene:(id)a3
+- (BOOL)_squeezePaletteVisibleInWindowScene:(id)scene
 {
-  if (!a3)
+  if (!scene)
   {
     return 0;
   }
 
   v3 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:?];
-  v4 = [v3 _paletteViewVisible];
+  _paletteViewVisible = [v3 _paletteViewVisible];
 
-  return v4;
+  return _paletteViewVisible;
 }
 
-- (void)_setVisibleInWindow:(id)a3 forFirstResponder:(id)a4 animated:(BOOL)a5 notify:(BOOL)a6 completion:(id)a7
+- (void)_setVisibleInWindow:(id)window forFirstResponder:(id)responder animated:(BOOL)animated notify:(BOOL)notify completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  notifyCopy = notify;
+  animatedCopy = animated;
   v89 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  windowCopy = window;
+  responderCopy = responder;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notify_completion___block_invoke;
   aBlock[3] = &unk_1E82D6F70;
-  v15 = v14;
+  v15 = completionCopy;
   v81 = v15;
   v16 = _Block_copy(aBlock);
-  if (!v13 || ([v13 isFirstResponder] & 1) != 0)
+  if (!responderCopy || ([responderCopy isFirstResponder] & 1) != 0)
   {
     if (__canBecomeVisible && ![(PKToolPicker *)self _isLockedHidden])
     {
-      v18 = [(PKToolPicker *)self _isEnabled];
-      if (!v12 || v18)
+      _isEnabled = [(PKToolPicker *)self _isEnabled];
+      if (!windowCopy || _isEnabled)
       {
         goto LABEL_15;
       }
     }
 
-    else if (!v12)
+    else if (!windowCopy)
     {
       goto LABEL_15;
     }
@@ -2548,31 +2548,31 @@ LABEL_10:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = +[PKToolPicker _canBecomeVisible];
-      v21 = [(PKToolPicker *)self _isLockedHidden];
-      v22 = [(PKToolPicker *)self _isEnabled];
+      _isLockedHidden = [(PKToolPicker *)self _isLockedHidden];
+      _isEnabled2 = [(PKToolPicker *)self _isEnabled];
       *buf = 134218752;
-      v85 = self;
+      selfCopy7 = self;
       v86 = 1024;
       *v87 = v20;
       *&v87[4] = 1024;
-      *&v87[6] = v21;
+      *&v87[6] = _isLockedHidden;
       LOWORD(v88[0]) = 1024;
-      *(v88 + 2) = v22;
+      *(v88 + 2) = _isEnabled2;
       _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, skip making tool picker visible, canBecomeVisible: %{BOOL}d, isLockedHidden: %{BOOL}d, isEnabled: %{BOOL}d", buf, 0x1Eu);
     }
 
-    v12 = 0;
+    windowCopy = 0;
 LABEL_15:
     if (![(PKToolPicker *)self _visibilityUpdatesEnabled])
     {
       v24 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(PKToolPicker *)self _visibilityUpdatesEnabled];
+        _visibilityUpdatesEnabled = [(PKToolPicker *)self _visibilityUpdatesEnabled];
         *buf = 134218240;
-        v85 = self;
+        selfCopy7 = self;
         v86 = 1024;
-        *v87 = v25;
+        *v87 = _visibilityUpdatesEnabled;
         _os_log_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, skip updating tool picker visibility, _visibilityUpdatesEnabled: %{BOOL}d", buf, 0x12u);
       }
 
@@ -2584,26 +2584,26 @@ LABEL_15:
       toolPickerVisibility = self->_toolPickerVisibility;
       if (toolPickerVisibility)
       {
-        [(PKToolPickerVisibilityProtocol *)toolPickerVisibility setVisibleInWindow:v12 animated:v9 notify:v8 completion:v15];
+        [(PKToolPickerVisibilityProtocol *)toolPickerVisibility setVisibleInWindow:windowCopy animated:animatedCopy notify:notifyCopy completion:v15];
         goto LABEL_64;
       }
     }
 
-    v26 = [v12 windowScene];
-    v27 = [(PKToolPicker *)self _squeezePaletteVisibleInWindowScene:v26];
+    windowScene = [windowCopy windowScene];
+    v27 = [(PKToolPicker *)self _squeezePaletteVisibleInWindowScene:windowScene];
 
     if (v27)
     {
-      v28 = [(PKToolPicker *)self isVisible];
-      if (v12)
+      isVisible = [(PKToolPicker *)self isVisible];
+      if (windowCopy)
       {
-        if (!v28)
+        if (!isVisible)
         {
           v24 = os_log_create("com.apple.pencilkit", "ToolPicker");
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218240;
-            v85 = self;
+            selfCopy7 = self;
             v86 = 1024;
             *v87 = 1;
             _os_log_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p can't become visible, isSqueezePaletteVisible: %{BOOL}d", buf, 0x12u);
@@ -2617,42 +2617,42 @@ LABEL_22:
       }
     }
 
-    v66 = v9;
+    v66 = animatedCopy;
     [(PKToolPicker *)self calculateIsVisibleBeforeResponderChangesForCurrentRunLoopIfNecessary];
-    v29 = [v12 windowScene];
-    v30 = [PKPaletteViewInteraction paletteViewInteractionForWindow:v12 windowScene:v29];
+    windowScene2 = [windowCopy windowScene];
+    v30 = [PKPaletteViewInteraction paletteViewInteractionForWindow:windowCopy windowScene:windowScene2];
 
     if (v30)
     {
       [v30 setDelegate:self];
-      v31 = [(PKToolPicker *)self _paletteViewDelegateProxy];
-      v32 = [v30 paletteView];
-      [v32 setDelegate:v31];
+      _paletteViewDelegateProxy = [(PKToolPicker *)self _paletteViewDelegateProxy];
+      paletteView = [v30 paletteView];
+      [paletteView setDelegate:_paletteViewDelegateProxy];
 LABEL_30:
 
 LABEL_31:
       goto LABEL_32;
     }
 
-    if (v13)
+    if (responderCopy)
     {
-      v41 = [v13 pencilKitResponderState];
-      v42 = [v41 _currentActiveToolPicker];
+      pencilKitResponderState = [responderCopy pencilKitResponderState];
+      _currentActiveToolPicker = [pencilKitResponderState _currentActiveToolPicker];
 
-      if (v42 == self)
+      if (_currentActiveToolPicker == self)
       {
-        v43 = [v13 pencilKitResponderState];
-        if ([v43 _currentToolPickerVisibility] == 1)
+        pencilKitResponderState2 = [responderCopy pencilKitResponderState];
+        if ([pencilKitResponderState2 _currentToolPickerVisibility] == 1)
         {
-          v44 = [(PKToolPicker *)self _isPencilInteractionEnabledWhenNotVisible];
+          _isPencilInteractionEnabledWhenNotVisible = [(PKToolPicker *)self _isPencilInteractionEnabledWhenNotVisible];
 
-          if (v44)
+          if (_isPencilInteractionEnabledWhenNotVisible)
           {
             v45 = os_log_create("com.apple.pencilkit", "ToolPicker");
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v85 = self;
+              selfCopy7 = self;
               _os_log_impl(&dword_1C7CCA000, v45, OS_LOG_TYPE_DEFAULT, "%p disable tap interaction", buf, 0xCu);
             }
 
@@ -2665,39 +2665,39 @@ LABEL_31:
         {
         }
 
-        v31 = [v13 pencilKitResponderState];
-        if ([v31 _currentToolPickerVisibility] != 2)
+        _paletteViewDelegateProxy = [responderCopy pencilKitResponderState];
+        if ([_paletteViewDelegateProxy _currentToolPickerVisibility] != 2)
         {
           goto LABEL_31;
         }
 
-        v59 = [(PKToolPicker *)self _isPencilInteractionEnabledWhenNotVisible];
+        _isPencilInteractionEnabledWhenNotVisible2 = [(PKToolPicker *)self _isPencilInteractionEnabledWhenNotVisible];
 
-        if (!v59)
+        if (!_isPencilInteractionEnabledWhenNotVisible2)
         {
           v60 = os_log_create("com.apple.pencilkit", "ToolPicker");
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v85 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_1C7CCA000, v60, OS_LOG_TYPE_DEFAULT, "%p enable tap interaction", buf, 0xCu);
           }
 
-          v31 = [v13 _responderWindow];
-          v32 = [(PKToolPicker *)self _interaction];
-          [(PKToolPicker *)self _enableTapInteractionForWindow:v31 createPaletteView:v32 == 0];
+          _paletteViewDelegateProxy = [responderCopy _responderWindow];
+          paletteView = [(PKToolPicker *)self _interaction];
+          [(PKToolPicker *)self _enableTapInteractionForWindow:_paletteViewDelegateProxy createPaletteView:paletteView == 0];
           goto LABEL_30;
         }
       }
     }
 
 LABEL_32:
-    v33 = [(PKToolPicker *)self _interaction];
+    _interaction = [(PKToolPicker *)self _interaction];
 
-    if (v30 == v33)
+    if (v30 == _interaction)
     {
-      v46 = [v30 paletteView];
-      [v46 updateUndoRedo];
+      paletteView2 = [v30 paletteView];
+      [paletteView2 updateUndoRedo];
 
       v16[2](v16);
 LABEL_63:
@@ -2705,16 +2705,16 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v69 = v8;
-    v34 = [v12 windowScene];
-    if (!v34)
+    v69 = notifyCopy;
+    windowScene3 = [windowCopy windowScene];
+    if (!windowScene3)
     {
-      v35 = [(PKToolPicker *)self _interaction];
-      v36 = [v35 view];
-      v37 = [v36 window];
-      v38 = [v37 windowScene];
+      _interaction2 = [(PKToolPicker *)self _interaction];
+      view = [_interaction2 view];
+      window = [view window];
+      windowScene4 = [window windowScene];
 
-      if (!v38)
+      if (!windowScene4)
       {
         v67 = 0;
         v65 = 0;
@@ -2727,26 +2727,26 @@ LABEL_63:
         goto LABEL_47;
       }
 
-      v34 = v38;
+      windowScene3 = windowScene4;
     }
 
     v82 = @"PKToolPickerNotificationWindowSceneUserInfoKey";
-    v83 = v34;
-    v65 = v34;
+    v83 = windowScene3;
+    v65 = windowScene3;
     v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     v39 = 0;
     if (v30)
     {
 LABEL_37:
-      v40 = [v30 hostingWindow];
-      v68 = [v40 firstResponder];
+      hostingWindow = [v30 hostingWindow];
+      firstResponder = [hostingWindow firstResponder];
       goto LABEL_48;
     }
 
 LABEL_47:
-    v40 = [(PKToolPicker *)self _interaction];
-    v47 = [v40 hostingWindow];
-    v68 = [v47 firstResponder];
+    hostingWindow = [(PKToolPicker *)self _interaction];
+    v40HostingWindow = [hostingWindow hostingWindow];
+    firstResponder = [v40HostingWindow firstResponder];
 
 LABEL_48:
     v48 = v69 && [(PKToolPicker *)self _visibilityUpdatesEnabled];
@@ -2758,11 +2758,11 @@ LABEL_48:
       v49 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [v68 _pkDebugStringRepresentation];
+        _pkDebugStringRepresentation = [firstResponder _pkDebugStringRepresentation];
         *buf = 134218498;
-        v85 = self;
+        selfCopy7 = self;
         v86 = 2112;
-        *v87 = v50;
+        *v87 = _pkDebugStringRepresentation;
         *&v87[8] = 1024;
         v88[0] = v69;
         _os_log_impl(&dword_1C7CCA000, v49, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, interaction should show palette, currentFirstResponder: %@, notify: %{BOOL}d", buf, 0x1Cu);
@@ -2771,8 +2771,8 @@ LABEL_48:
       [(PKToolPicker *)self set_toolPickerVisible:1];
       if (v64)
       {
-        v51 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v51 postNotificationName:@"PKToolPickerWillShowNotification" object:self userInfo:v67];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"PKToolPickerWillShowNotification" object:self userInfo:v67];
 
         self->__animatingToVisible = 1;
         [(PKToolPicker *)self _notifyVisibilityDidChangeIsAnimationFinished:0];
@@ -2798,11 +2798,11 @@ LABEL_48:
       if ((v39 & 1) != 0 || (-[PKToolPicker _interaction](self, "_interaction"), v54 = objc_claimAutoreleasedReturnValue(), [v54 paletteView], v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "delegate"), v56 = objc_claimAutoreleasedReturnValue(), -[PKToolPicker _paletteViewDelegateProxy](self, "_paletteViewDelegateProxy"), v57 = objc_claimAutoreleasedReturnValue(), v57, v56, v55, v54, v56 != v57))
       {
         v52 = v67;
-        if (!v12)
+        if (!windowCopy)
         {
           [(PKToolPicker *)self set_toolPickerVisible:0];
-          v58 = [(PKToolPicker *)self _selectionContext];
-          [v58 setSelectionMask:0];
+          _selectionContext = [(PKToolPicker *)self _selectionContext];
+          [_selectionContext setSelectionMask:0];
 
           v16[2](v16);
         }
@@ -2813,11 +2813,11 @@ LABEL_48:
       v61 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
-        v62 = [v68 _pkDebugStringRepresentation];
+        _pkDebugStringRepresentation2 = [firstResponder _pkDebugStringRepresentation];
         *buf = 134218498;
-        v85 = self;
+        selfCopy7 = self;
         v86 = 2112;
-        *v87 = v62;
+        *v87 = _pkDebugStringRepresentation2;
         *&v87[8] = 1024;
         v88[0] = v69;
         _os_log_impl(&dword_1C7CCA000, v61, OS_LOG_TYPE_DEFAULT, "ToolPicker: %p, interaction should hide palette, currentFirstResponder: %@, notify: %{BOOL}d", buf, 0x1Cu);
@@ -2830,7 +2830,7 @@ LABEL_48:
         [(PKToolPicker *)self _notifyVisibilityDidChangeIsAnimationFinished:0];
       }
 
-      v63 = [(PKToolPicker *)self _interaction];
+      _interaction3 = [(PKToolPicker *)self _interaction];
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
       v70[2] = __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notify_completion___block_invoke_80;
@@ -2840,7 +2840,7 @@ LABEL_48:
       v71 = v67;
       v74 = v69;
       v72 = v16;
-      [v63 hidePaletteViewAnimated:v66 completion:v70];
+      [_interaction3 hidePaletteViewAnimated:v66 completion:v70];
 
       v53 = v71;
     }
@@ -2925,16 +2925,16 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_notifyVisibilityDidChangeIsAnimationFinished:(BOOL)a3
+- (void)_notifyVisibilityDidChangeIsAnimationFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(PKToolPicker *)self _observers];
-  v6 = [v5 copy];
+  _observers = [(PKToolPicker *)self _observers];
+  v6 = [_observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -2954,10 +2954,10 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 _toolPickerVisibilityDidChange:self isAnimationFinished:v3];
+          [v11 _toolPickerVisibilityDidChange:self isAnimationFinished:finishedCopy];
         }
 
-        else if (!v3 && (objc_opt_respondsToSelector() & 1) != 0)
+        else if (!finishedCopy && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v11 toolPickerVisibilityDidChange:self];
         }
@@ -2973,13 +2973,13 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
   }
 }
 
-- (void)_setInteraction:(id)a3
+- (void)_setInteraction:(id)interaction
 {
-  v5 = a3;
-  if (self->__interaction != v5)
+  interactionCopy = interaction;
+  if (self->__interaction != interactionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->__interaction, a3);
+    v9 = interactionCopy;
+    objc_storeStrong(&self->__interaction, interaction);
     if (self->__interaction)
     {
       [(PKToolPicker *)self _restoreToolPickerStateNotify:1];
@@ -2991,23 +2991,23 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
       interaction = 0;
     }
 
-    v7 = [(PKPaletteViewInteraction *)interaction hostingWindow];
-    v8 = [v7 rootViewController];
-    [(PKToolPicker *)self _setPresentationController:v8];
+    hostingWindow = [(PKPaletteViewInteraction *)interaction hostingWindow];
+    rootViewController = [hostingWindow rootViewController];
+    [(PKToolPicker *)self _setPresentationController:rootViewController];
 
-    v5 = v9;
+    interactionCopy = v9;
   }
 }
 
-- (void)_updateUIOnUpdateLink:(BOOL)a3
+- (void)_updateUIOnUpdateLink:(BOOL)link
 {
-  v3 = a3;
+  linkCopy = link;
   v10 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.pencilkit", "ToolPickerLayout");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = linkCopy;
     _os_log_debug_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEBUG, "PKToolPicker._updateUIOnUpdateLink: %d", v9, 8u);
   }
 
@@ -3035,17 +3035,17 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
       [(PKToolPicker *)self setRulerActive:0];
     }
 
-    v8 = [(PKToolPicker *)self _paletteView];
-    [(PKToolPicker *)self _updatePaletteView:v8 onUpdateLink:v3];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    [(PKToolPicker *)self _updatePaletteView:_paletteView onUpdateLink:linkCopy];
   }
 
   else
   {
-    v8 = os_log_create("com.apple.pencilkit", "");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    _paletteView = os_log_create("com.apple.pencilkit", "");
+    if (os_log_type_enabled(_paletteView, OS_LOG_TYPE_FAULT))
     {
       LOWORD(v9[0]) = 0;
-      _os_log_fault_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_FAULT, "This should only be called from the main thread!", v9, 2u);
+      _os_log_fault_impl(&dword_1C7CCA000, _paletteView, OS_LOG_TYPE_FAULT, "This should only be called from the main thread!", v9, 2u);
     }
   }
 }
@@ -3053,9 +3053,9 @@ uint64_t __81__PKToolPicker__setVisibleInWindow_forFirstResponder_animated_notif
 - (void)_updateGenerationToolInstallation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PKImageGenerationController *)self->_imageGenerationController shouldAddMagicWand];
-  v4 = [(PKToolPicker *)self _hasGenerationTool];
-  if (v3 && !v4)
+  shouldAddMagicWand = [(PKImageGenerationController *)self->_imageGenerationController shouldAddMagicWand];
+  _hasGenerationTool = [(PKToolPicker *)self _hasGenerationTool];
+  if (shouldAddMagicWand && !_hasGenerationTool)
   {
     v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3071,24 +3071,24 @@ LABEL_6:
     return;
   }
 
-  if (!v3 && v4)
+  if (!shouldAddMagicWand && _hasGenerationTool)
   {
-    v7 = [(PKToolPicker *)self _indexOfGenerationTool];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    _indexOfGenerationTool = [(PKToolPicker *)self _indexOfGenerationTool];
+    if (_indexOfGenerationTool != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      v8 = _indexOfGenerationTool;
       v9 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(PKImageGenerationController *)self->_imageGenerationController isGenerationToolEnabled];
-        v11 = [(PKImageGenerationController *)self->_imageGenerationController isImageGenerationAllowed];
-        v12 = [(PKImageGenerationController *)self->_imageGenerationController isGenerationModelAvailable];
+        isGenerationToolEnabled = [(PKImageGenerationController *)self->_imageGenerationController isGenerationToolEnabled];
+        isImageGenerationAllowed = [(PKImageGenerationController *)self->_imageGenerationController isImageGenerationAllowed];
+        isGenerationModelAvailable = [(PKImageGenerationController *)self->_imageGenerationController isGenerationModelAvailable];
         v13[0] = 67109632;
-        v13[1] = v10;
+        v13[1] = isGenerationToolEnabled;
         v14 = 1024;
-        v15 = v11;
+        v15 = isImageGenerationAllowed;
         v16 = 1024;
-        v17 = v12;
+        v17 = isGenerationModelAvailable;
         _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Remove generation tool, isGenerationToolEnabled: %{BOOL}d, isImageGenerationAllowed: %{BOOL}d, isGenerationModelAvailable: %{BOOL}d", v13, 0x14u);
       }
 
@@ -3103,28 +3103,28 @@ LABEL_6:
 {
   if (self->__showsHandwritingTool)
   {
-    v3 = [objc_opt_class() _canShowHandwritingTool];
+    _canShowHandwritingTool = [objc_opt_class() _canShowHandwritingTool];
   }
 
   else
   {
-    v3 = 0;
+    _canShowHandwritingTool = 0;
   }
 
-  v4 = [(PKToolPicker *)self _hasHandwritingTool];
-  v5 = !v4;
-  if (v3 & 1) != 0 || (v5)
+  _hasHandwritingTool = [(PKToolPicker *)self _hasHandwritingTool];
+  v5 = !_hasHandwritingTool;
+  if (_canShowHandwritingTool & 1) != 0 || (v5)
   {
-    if ((v3 ^ 1 | v4))
+    if ((_canShowHandwritingTool ^ 1 | _hasHandwritingTool))
     {
-      if (((v3 ^ 1 | v5) & 1) == 0)
+      if (((_canShowHandwritingTool ^ 1 | v5) & 1) == 0)
       {
         v6 = +[PKTextInputSettings sharedSettings];
-        v10 = [v6 recognitionLocaleIdentifier];
+        recognitionLocaleIdentifier = [v6 recognitionLocaleIdentifier];
 
-        v7 = [(PKToolPicker *)self _handwritingTool];
-        v8 = [v7 localeIdentifier];
-        v9 = [v8 isEqualToString:v10];
+        _handwritingTool = [(PKToolPicker *)self _handwritingTool];
+        localeIdentifier = [_handwritingTool localeIdentifier];
+        v9 = [localeIdentifier isEqualToString:recognitionLocaleIdentifier];
 
         if ((v9 & 1) == 0)
         {
@@ -3151,9 +3151,9 @@ LABEL_6:
 - (void)_insertHandwritingTool
 {
   v3 = +[PKTextInputSettings sharedSettings];
-  v5 = [v3 recognitionLocaleIdentifier];
+  recognitionLocaleIdentifier = [v3 recognitionLocaleIdentifier];
 
-  v4 = [[PKHandwritingTool alloc] initWithLocaleIdentifier:v5];
+  v4 = [[PKHandwritingTool alloc] initWithLocaleIdentifier:recognitionLocaleIdentifier];
   [(PKToolPicker *)self _insertTool:v4 atIndex:self->_indexForHandwritingTool updateUI:0];
 }
 
@@ -3182,26 +3182,26 @@ void __38__PKToolPicker__removeHandwritingTool__block_invoke_2(uint64_t a1, uint
   [*(a1 + 32) _removeTool:v3 updateUI:0];
 }
 
-- (void)_updatePaletteView:(id)a3 onUpdateLink:(BOOL)a4
+- (void)_updatePaletteView:(id)view onUpdateLink:(BOOL)link
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  linkCopy = link;
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = [(PKToolPicker *)self _paletteHostView];
+    _paletteHostView = [(PKToolPicker *)self _paletteHostView];
     objc_initWeak(&location, self);
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __48__PKToolPicker__updatePaletteView_onUpdateLink___block_invoke;
     v15 = &unk_1E82D6FC0;
     objc_copyWeak(&v18, &location);
-    v8 = v6;
+    v8 = viewCopy;
     v16 = v8;
-    v9 = v7;
+    v9 = _paletteHostView;
     v17 = v9;
     v10 = _Block_copy(&v12);
     v11 = v10;
-    if (v4)
+    if (linkCopy)
     {
       [v8 performOnUpdateLink:{v10, v12, v13, v14, v15, v16}];
     }
@@ -3384,16 +3384,16 @@ uint64_t __34__PKToolPicker__hasGenerationTool__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (BOOL)_hasToolPassingTest:(id)a3
+- (BOOL)_hasToolPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   mutableTools = self->_mutableTools;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__PKToolPicker__hasToolPassingTest___block_invoke;
   v8[3] = &unk_1E82D6FE8;
-  v9 = v4;
-  v6 = v4;
+  v9 = testCopy;
+  v6 = testCopy;
   LOBYTE(mutableTools) = [(NSMutableArray *)mutableTools indexOfObjectPassingTest:v8]!= 0x7FFFFFFFFFFFFFFFLL;
 
   return mutableTools;
@@ -3407,16 +3407,16 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (unint64_t)_indexOfToolPassingTest:(id)a3
+- (unint64_t)_indexOfToolPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   mutableTools = self->_mutableTools;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__PKToolPicker__indexOfToolPassingTest___block_invoke;
   v9[3] = &unk_1E82D6FE8;
-  v10 = v4;
-  v6 = v4;
+  v10 = testCopy;
+  v6 = testCopy;
   v7 = [(NSMutableArray *)mutableTools indexOfObjectPassingTest:v9];
 
   return v7;
@@ -3424,24 +3424,24 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
 
 - (int64_t)_palettePosition
 {
-  v3 = [(PKToolPicker *)self _paletteView];
-  if (v3)
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  if (_paletteView)
   {
-    v4 = [(PKToolPicker *)self _paletteView];
-    v5 = [v4 palettePosition];
+    _paletteView2 = [(PKToolPicker *)self _paletteView];
+    palettePosition = [_paletteView2 palettePosition];
   }
 
   else
   {
-    v5 = 0;
+    palettePosition = 0;
   }
 
-  return v5;
+  return palettePosition;
 }
 
-- (void)_setPresentationController:(id)a3
+- (void)_setPresentationController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->__presentationController);
 
   v5 = obj;
@@ -3453,9 +3453,9 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_setAnnotationDelegate:(id)a3
+- (void)_setAnnotationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->__annotationDelegate);
 
   v5 = obj;
@@ -3467,12 +3467,12 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_setShadowVisible:(BOOL)a3
+- (void)_setShadowVisible:(BOOL)visible
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->__shadowVisible != a3)
+  if (self->__shadowVisible != visible)
   {
-    self->__shadowVisible = a3;
+    self->__shadowVisible = visible;
     v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -3486,12 +3486,12 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_setBackgroundVisible:(BOOL)a3
+- (void)_setBackgroundVisible:(BOOL)visible
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->__backgroundVisible != a3)
+  if (self->__backgroundVisible != visible)
   {
-    self->__backgroundVisible = a3;
+    self->__backgroundVisible = visible;
     v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -3505,20 +3505,20 @@ uint64_t __38__PKToolPicker__indexOfGenerationTool__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_setWantsClearBackgroundColorInCompactSize:(BOOL)a3
+- (void)_setWantsClearBackgroundColorInCompactSize:(BOOL)size
 {
-  if (self->__wantsClearBackgroundColorInCompactSize != a3)
+  if (self->__wantsClearBackgroundColorInCompactSize != size)
   {
-    self->__wantsClearBackgroundColorInCompactSize = a3;
+    self->__wantsClearBackgroundColorInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)_setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)a3
+- (void)_setWantsUndoRedoButtonsVisibleInCompactSize:(BOOL)size
 {
-  if (self->__wantsUndoRedoButtonsVisibleInCompactSize != a3)
+  if (self->__wantsUndoRedoButtonsVisibleInCompactSize != size)
   {
-    self->__wantsUndoRedoButtonsVisibleInCompactSize = a3;
+    self->__wantsUndoRedoButtonsVisibleInCompactSize = size;
     [(PKToolPicker *)self _updateUI];
   }
 }
@@ -3613,10 +3613,10 @@ LABEL_13:
   v4 = view;
   if (v4 && (-[PKToolPicker _paletteView](self, "_paletteView"), (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, -[PKToolPicker _paletteView](self, "_paletteView"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 _pk_useCompactLayout], v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(PKToolPicker *)self _paletteView];
-    v10 = [(PKToolPicker *)self _paletteView];
-    [v10 bounds];
-    [v9 convertRect:v4 toView:?];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    _paletteView2 = [(PKToolPicker *)self _paletteView];
+    [_paletteView2 bounds];
+    [_paletteView convertRect:v4 toView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -3661,20 +3661,20 @@ LABEL_13:
 {
   if (-[PKToolPicker isVisible](self, "isVisible") && (-[PKToolPicker _paletteView](self, "_paletteView"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 _pk_useCompactLayout], v3, !v4))
   {
-    v7 = [(PKToolPicker *)self _paletteView];
-    v8 = [v7 palettePosition];
-    if ((v8 - 1) > 3)
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    palettePosition = [_paletteView palettePosition];
+    if ((palettePosition - 1) > 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = qword_1C801C3A0[v8 - 1];
+      v9 = qword_1C801C3A0[palettePosition - 1];
     }
 
-    v10 = [(PKToolPicker *)self _paletteView];
-    [v10 paletteSizeForEdge:v9];
+    _paletteView2 = [(PKToolPicker *)self _paletteView];
+    [_paletteView2 paletteSizeForEdge:v9];
     v5 = v11;
     v6 = v12;
   }
@@ -3692,10 +3692,10 @@ LABEL_13:
   return result;
 }
 
-- (void)_enableTapInteractionForWindow:(id)a3
+- (void)_enableTapInteractionForWindow:(id)window
 {
-  v4 = a3;
-  [(PKToolPicker *)self _enableTapInteractionForWindow:v4 createPaletteView:0];
+  windowCopy = window;
+  [(PKToolPicker *)self _enableTapInteractionForWindow:windowCopy createPaletteView:0];
   v5 = os_log_create("com.apple.pencilkit", "ToolPickerLayout");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3709,8 +3709,8 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __47__PKToolPicker__enableTapInteractionForWindow___block_invoke;
   v8[3] = &unk_1E82D7010;
-  v9 = v4;
-  v7 = v4;
+  v9 = windowCopy;
+  v7 = windowCopy;
   objc_copyWeak(&v10, location);
   dispatch_after(v6, MEMORY[0x1E69E96A0], v8);
   objc_destroyWeak(&v10);
@@ -3747,22 +3747,22 @@ void __47__PKToolPicker__enableTapInteractionForWindow___block_invoke(uint64_t a
   }
 }
 
-- (void)_createPaletteViewIfNecessaryInWindow:(id)a3
+- (void)_createPaletteViewIfNecessaryInWindow:(id)window
 {
   if (self)
   {
-    [(PKToolPicker *)self _setVisibleInWindow:a3 forFirstResponder:0 animated:0 notify:0 completion:0];
+    [(PKToolPicker *)self _setVisibleInWindow:window forFirstResponder:0 animated:0 notify:0 completion:0];
 
     [(PKToolPicker *)self _setVisibleInWindow:0 forFirstResponder:0 animated:0 notify:0 completion:0];
   }
 }
 
-- (void)_enableTapInteractionForWindow:(id)a3 createPaletteView:(BOOL)a4
+- (void)_enableTapInteractionForWindow:(id)window createPaletteView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  windowCopy = window;
+  if (windowCopy)
   {
     if (!PKIsVisionDevice())
     {
@@ -3770,16 +3770,16 @@ void __47__PKToolPicker__enableTapInteractionForWindow___block_invoke(uint64_t a
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 134218240;
-        v10 = v6;
+        v10 = windowCopy;
         v11 = 1024;
-        v12 = v4;
+        v12 = viewCopy;
         _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Enable tap interaction for window: %p, createPaletteView: %{BOOL}d", &v9, 0x12u);
       }
 
       [(PKToolPicker *)self set_pencilInteractionEnabledWhenNotVisible:1];
-      if (v4)
+      if (viewCopy)
       {
-        [(PKToolPicker *)self _createPaletteViewIfNecessaryInWindow:v6];
+        [(PKToolPicker *)self _createPaletteViewIfNecessaryInWindow:windowCopy];
       }
     }
   }
@@ -3810,10 +3810,10 @@ void __47__PKToolPicker__enableTapInteractionForWindow___block_invoke(uint64_t a
   [(PKToolPicker *)self set_pencilInteractionEnabledWhenNotVisible:0];
 }
 
-+ (id)activeToolPickerForWindow:(id)a3
++ (id)activeToolPickerForWindow:(id)window
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  windowCopy = window;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -3833,8 +3833,8 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v9 = [*(*(&v11 + 1) + 8 * v8) toolPicker];
-      if ([v9 _isActiveToolPickerForWindow:v3])
+      toolPicker = [*(*(&v11 + 1) + 8 * v8) toolPicker];
+      if ([toolPicker _isActiveToolPickerForWindow:windowCopy])
       {
         break;
       }
@@ -3855,16 +3855,16 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v9 = 0;
+    toolPicker = 0;
   }
 
-  return v9;
+  return toolPicker;
 }
 
-+ (id)_existingToolPickerForWindow:(id)a3
++ (id)_existingToolPickerForWindow:(id)window
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -3884,21 +3884,21 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) toolPicker];
-        if ([v10 _isActiveToolPickerForWindow:v4])
+        toolPicker = [*(*(&v15 + 1) + 8 * i) toolPicker];
+        if ([toolPicker _isActiveToolPickerForWindow:windowCopy])
         {
-          v12 = v10;
+          v12 = toolPicker;
 LABEL_16:
 
           goto LABEL_17;
         }
 
-        if (v4)
+        if (windowCopy)
         {
-          v11 = [a1 existingPaletteViewForWindow:v4];
-          if (v11 && ([v10 _hasResponderRegisteredForWindow:v4] & 1) != 0)
+          v11 = [self existingPaletteViewForWindow:windowCopy];
+          if (v11 && ([toolPicker _hasResponderRegisteredForWindow:windowCopy] & 1) != 0)
           {
-            v13 = v10;
+            v13 = toolPicker;
 
             goto LABEL_16;
           }
@@ -3915,31 +3915,31 @@ LABEL_16:
     }
   }
 
-  v10 = 0;
+  toolPicker = 0;
 LABEL_17:
 
-  return v10;
+  return toolPicker;
 }
 
-- (BOOL)_isActiveToolPickerForWindow:(id)a3
+- (BOOL)_isActiveToolPickerForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [v4 windowScene];
-  if (v5)
+  windowCopy = window;
+  windowScene = [windowCopy windowScene];
+  if (windowScene)
   {
     toolPickerVisibility = self->_toolPickerVisibility;
     if (toolPickerVisibility)
     {
-      v7 = [(PKToolPickerVisibilityProtocol *)toolPickerVisibility isActiveToolPickerForWindow:v4];
+      v7 = [(PKToolPickerVisibilityProtocol *)toolPickerVisibility isActiveToolPickerForWindow:windowCopy];
     }
 
     else
     {
-      v8 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:v5];
+      v8 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:windowScene];
       if (v8)
       {
-        v9 = [(PKToolPicker *)self _interaction];
-        v7 = v9 == v8;
+        _interaction = [(PKToolPicker *)self _interaction];
+        v7 = _interaction == v8;
       }
 
       else
@@ -3957,66 +3957,66 @@ LABEL_17:
   return v7;
 }
 
-+ (id)existingPaletteViewForWindow:(id)a3
++ (id)existingPaletteViewForWindow:(id)window
 {
-  v3 = [a3 windowScene];
-  if (v3)
+  windowScene = [window windowScene];
+  if (windowScene)
   {
-    v4 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:v3];
-    v5 = [v4 paletteView];
+    v4 = [PKPaletteViewInteraction existingPaletteViewInteractionForWindowScene:windowScene];
+    paletteView = [v4 paletteView];
   }
 
   else
   {
-    v5 = 0;
+    paletteView = 0;
   }
 
-  return v5;
+  return paletteView;
 }
 
-+ (BOOL)isActiveToolPickerVisibleForWindow:(id)a3
++ (BOOL)isActiveToolPickerVisibleForWindow:(id)window
 {
-  v3 = [a1 activeToolPickerForWindow:a3];
+  v3 = [self activeToolPickerForWindow:window];
   if ([v3 isVisible])
   {
-    v4 = 1;
+    _isAnimatingToVisible = 1;
   }
 
   else
   {
-    v4 = [v3 _isAnimatingToVisible];
+    _isAnimatingToVisible = [v3 _isAnimatingToVisible];
   }
 
-  return v4;
+  return _isAnimatingToVisible;
 }
 
 + (PKToolPicker)sharedToolPickerForWindow:(UIWindow *)window
 {
   v3 = window;
-  v4 = [(UIWindow *)v3 windowScene];
-  if (v4)
+  windowScene = [(UIWindow *)v3 windowScene];
+  if (windowScene)
   {
     v5 = _perCanvasToolPickers;
     if (!_perCanvasToolPickers)
     {
-      v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
       v7 = _perCanvasToolPickers;
-      _perCanvasToolPickers = v6;
+      _perCanvasToolPickers = weakToStrongObjectsMapTable;
 
       v5 = _perCanvasToolPickers;
     }
 
-    v8 = [v5 objectForKey:v4];
+    v8 = [v5 objectForKey:windowScene];
     if (!v8)
     {
-      v9 = [PKPaletteViewInteraction paletteViewInteractionForWindow:v3 windowScene:v4];
+      v9 = [PKPaletteViewInteraction paletteViewInteractionForWindow:v3 windowScene:windowScene];
       if (v9)
       {
         v8 = objc_alloc_init(PKToolPicker);
         [(PKToolPicker *)v8 setStateAutosaveName:@"com.apple.PencilKit.shared"];
         [(PKToolPicker *)v8 _setInteraction:v9];
         [(PKToolPicker *)v8 _updateUI];
-        [_perCanvasToolPickers setObject:v8 forKey:v4];
+        [_perCanvasToolPickers setObject:v8 forKey:windowScene];
         [v9 setDelegate:v8];
       }
 
@@ -4026,21 +4026,21 @@ LABEL_17:
       }
     }
 
-    v10 = [(PKToolPicker *)v8 _interaction];
-    v11 = [v10 paletteView];
-    v12 = [v11 delegate];
+    _interaction = [(PKToolPicker *)v8 _interaction];
+    paletteView = [_interaction paletteView];
+    delegate = [paletteView delegate];
 
-    if (!v12)
+    if (!delegate)
     {
-      v13 = [(PKToolPicker *)v8 _paletteViewDelegateProxy];
-      v14 = [(PKToolPicker *)v8 _interaction];
-      v15 = [v14 paletteView];
-      [v15 setDelegate:v13];
+      _paletteViewDelegateProxy = [(PKToolPicker *)v8 _paletteViewDelegateProxy];
+      _interaction2 = [(PKToolPicker *)v8 _interaction];
+      paletteView2 = [_interaction2 paletteView];
+      [paletteView2 setDelegate:_paletteViewDelegateProxy];
 
-      v16 = [(PKToolPicker *)v8 _paletteView];
-      LOBYTE(v14) = [v16 isAnnotationSupportEnabled];
+      _paletteView = [(PKToolPicker *)v8 _paletteView];
+      LOBYTE(_interaction2) = [_paletteView isAnnotationSupportEnabled];
 
-      if ((v14 & 1) == 0)
+      if ((_interaction2 & 1) == 0)
       {
         [(PKToolPicker *)v8 setColorUserInterfaceStyle:0];
       }
@@ -4055,16 +4055,16 @@ LABEL_17:
   return v8;
 }
 
-- (PKToolPicker)initWithToolItems:(id)a3
+- (PKToolPicker)initWithToolItems:(id)items
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v71.receiver = self;
   v71.super_class = PKToolPicker;
   v5 = [(PKToolPicker *)&v71 init];
   if (v5)
   {
-    v6 = [[PKToolPickerItemManager alloc] initWithToolItems:v4];
+    v6 = [[PKToolPickerItemManager alloc] initWithToolItems:itemsCopy];
     v7 = *(v5 + 7);
     *(v5 + 7) = v6;
 
@@ -4076,15 +4076,15 @@ LABEL_17:
     v8 = +[PKContentVersionUtility sharedUtility];
     *(v5 + 20) = [(PKContentVersionUtility *)v8 contentVersionForCurrentSDK];
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v11 = *(v5 + 3);
-    *(v5 + 3) = v10;
+    *(v5 + 3) = uUIDString;
 
     v5[95] = 1;
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = *(v5 + 1);
-    *(v5 + 1) = v12;
+    *(v5 + 1) = array;
 
     v69 = 0u;
     v70 = 0u;
@@ -4117,8 +4117,8 @@ LABEL_17:
 
           v20 = *(*(&v67 + 1) + 8 * i);
           v21 = *(v5 + 1);
-          v22 = [v20 _tool];
-          [v21 addObject:v22];
+          _tool = [v20 _tool];
+          [v21 addObject:_tool];
 
           if (v20)
           {
@@ -4149,28 +4149,28 @@ LABEL_17:
     v26 = *(v5 + 1);
     if (v25 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v27 = [v26 firstObject];
+      firstObject = [v26 firstObject];
       v28 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138477827;
-        v73 = v27;
+        v73 = firstObject;
         _os_log_error_impl(&dword_1C7CCA000, v28, OS_LOG_TYPE_ERROR, "Unable to find a suitable tool to select by default, select: %{private}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v27 = [v26 objectAtIndex:?];
+      firstObject = [v26 objectAtIndex:?];
     }
 
     v29 = *(v5 + 16);
-    *(v5 + 16) = v27;
+    *(v5 + 16) = firstObject;
 
-    v30 = [objc_opt_class() _defaultValueForToolStatePersistenceEnabled];
+    _defaultValueForToolStatePersistenceEnabled = [objc_opt_class() _defaultValueForToolStatePersistenceEnabled];
     if ([v5 _useNewAutosaveNameBehavior])
     {
-      if (v30)
+      if (_defaultValueForToolStatePersistenceEnabled)
       {
         v31 = @"PKPaletteNamedDefaults";
       }
@@ -4202,44 +4202,44 @@ LABEL_17:
     *(v5 + 328) = v32;
     *(v5 + 91) = 1;
     *(v5 + 37) = 0x4028000000000000;
-    v33 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v34 = *(v5 + 25);
-    *(v5 + 25) = v33;
+    *(v5 + 25) = weakObjectsHashTable;
 
-    v35 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v36 = *(v5 + 23);
-    *(v5 + 23) = v35;
+    *(v5 + 23) = weakToStrongObjectsMapTable;
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v5 selector:sel__handleFirstResponderDidChangeNotification_ name:*MEMORY[0x1E69DEB18] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleFirstResponderDidChangeNotification_ name:*MEMORY[0x1E69DEB18] object:0];
 
     if (!PKIsVisionDevice())
     {
-      v38 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v38 addObserver:v5 selector:sel__handleWindowDidBecomeKeyNotification_ name:*MEMORY[0x1E69DE7B0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v5 selector:sel__handleWindowDidBecomeKeyNotification_ name:*MEMORY[0x1E69DE7B0] object:0];
     }
 
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v5 selector:sel__handleHandwritingEducationPaneSettingsDidChange_ name:@"PKHandwritingEducationPaneSettingsDidChangeNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v5 selector:sel__handleHandwritingEducationPaneSettingsDidChange_ name:@"PKHandwritingEducationPaneSettingsDidChangeNotification" object:0];
 
-    v40 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v40 addObserver:v5 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v5 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
 
-    v41 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v41 addObserver:v5 selector:sel__hasSeenPencilPairingUIDidChange_ name:*MEMORY[0x1E69DEA20] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v5 selector:sel__hasSeenPencilPairingUIDidChange_ name:*MEMORY[0x1E69DEA20] object:0];
 
-    v42 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v42 addObserver:v5 selector:sel__textInputResponderDidReloadNotification_ name:*MEMORY[0x1E69DE6E8] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v5 selector:sel__textInputResponderDidReloadNotification_ name:*MEMORY[0x1E69DE6E8] object:0];
 
-    v43 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v43 addObserver:v5 selector:sel__handleSqueezeInteractionWillShowPaletteViewNotification_ name:@"PKPencilSqueezeInteractionWillShowPaletteViewNotification" object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:v5 selector:sel__handleSqueezeInteractionWillShowPaletteViewNotification_ name:@"PKPencilSqueezeInteractionWillShowPaletteViewNotification" object:0];
 
     v44 = _allToolPickers;
     if (!_allToolPickers)
     {
-      v45 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v46 = _allToolPickers;
-      _allToolPickers = v45;
+      _allToolPickers = array2;
 
       v44 = _allToolPickers;
     }
@@ -4249,13 +4249,13 @@ LABEL_17:
     v48 = objc_alloc_init(PKToolPickerWeak);
     [(PKToolPickerWeak *)v48 setToolPicker:v5];
     [_allToolPickers addObject:v48];
-    v49 = [v5 _tools];
-    v50 = [v49 count];
-    v51 = [v5 _paletteView];
-    v52 = [v51 showsPlusButton];
+    _tools = [v5 _tools];
+    v50 = [_tools count];
+    _paletteView = [v5 _paletteView];
+    showsPlusButton = [_paletteView showsPlusButton];
     v53 = 5.0;
     v54 = 2.0;
-    if (!v52)
+    if (!showsPlusButton)
     {
       v54 = 5.0;
     }
@@ -4271,9 +4271,9 @@ LABEL_17:
     v56 = *(v5 + 26);
     *(v5 + 26) = v55;
 
-    v57 = [v5 _toolsState];
+    _toolsState = [v5 _toolsState];
     v58 = *(v5 + 9);
-    *(v5 + 9) = v57;
+    *(v5 + 9) = _toolsState;
 
     [v5 _restoreToolPickerStateNotify:0];
     v59 = objc_alloc_init(PKImageGenerationController);
@@ -4310,27 +4310,27 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKToolPicker;
   [(PKToolPicker *)&v4 dealloc];
 }
 
-- (void)_setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)_setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->__directionalLayoutMargins.top, v3), vceqq_f64(*&self->__directionalLayoutMargins.bottom, v4)))) & 1) == 0)
   {
-    top = a3.top;
-    leading = a3.leading;
-    bottom = a3.bottom;
-    trailing = a3.trailing;
+    top = margins.top;
+    leading = margins.leading;
+    bottom = margins.bottom;
+    trailing = margins.trailing;
     v6 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -4352,25 +4352,25 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
   }
 }
 
-- (void)_setCloseButtonVisible:(BOOL)a3
+- (void)_setCloseButtonVisible:(BOOL)visible
 {
-  if (self->__closeButtonVisible != a3)
+  if (self->__closeButtonVisible != visible)
   {
-    self->__closeButtonVisible = a3;
+    self->__closeButtonVisible = visible;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)setColorMaximumLinearExposure:(double)a3
+- (void)setColorMaximumLinearExposure:(double)exposure
 {
-  if (vabdd_f64(self->_colorMaximumLinearExposure, a3) >= 0.00999999978)
+  if (vabdd_f64(self->_colorMaximumLinearExposure, exposure) >= 0.00999999978)
   {
-    self->_colorMaximumLinearExposure = a3;
+    self->_colorMaximumLinearExposure = exposure;
     [(PKToolPicker *)self _updateUIOnUpdateLink:1];
   }
 }
 
-- (void)_handleSqueezeInteractionWillShowPaletteViewNotification:(id)a3
+- (void)_handleSqueezeInteractionWillShowPaletteViewNotification:(id)notification
 {
   v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4379,21 +4379,21 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Handle squeeze interaction will show palette view notification", v6, 2u);
   }
 
-  v5 = [(PKToolPicker *)self _paletteView];
-  [v5 _dismissEyeDropper];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _dismissEyeDropper];
 }
 
-- (void)setSelectedToolItem:(id)a3
+- (void)setSelectedToolItem:(id)item
 {
-  v4 = [a3 identifier];
-  [(PKToolPicker *)self setSelectedToolItemIdentifier:v4];
+  identifier = [item identifier];
+  [(PKToolPicker *)self setSelectedToolItemIdentifier:identifier];
 }
 
-- (void)setSelectedToolItemIdentifier:(id)a3
+- (void)setSelectedToolItemIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = [(PKToolPickerItemManager *)self->_toolItemManager toolForIdentifier:a3];
+    v4 = [(PKToolPickerItemManager *)self->_toolItemManager toolForIdentifier:identifier];
     if (v4)
     {
       v5 = v4;
@@ -4403,12 +4403,12 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
   }
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->__enabled != a3)
+  if (self->__enabled != enabled)
   {
-    self->__enabled = a3;
+    self->__enabled = enabled;
     v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -4422,7 +4422,7 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
   }
 }
 
-- (void)_setWantsExternalVisibility:(BOOL)a3
+- (void)_setWantsExternalVisibility:(BOOL)visibility
 {
   if (!PKIsVisionDevice())
   {
@@ -4434,7 +4434,7 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
   }
 }
 
-- (void)_lockHiddenNotify:(BOOL)a3
+- (void)_lockHiddenNotify:(BOOL)notify
 {
   v15 = *MEMORY[0x1E69E9840];
   ++self->_wantsToolPickerHiddenCount;
@@ -4443,11 +4443,11 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
   {
     wantsToolPickerHiddenCount = self->_wantsToolPickerHiddenCount;
     v9 = 134218496;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = wantsToolPickerHiddenCount;
     v13 = 1024;
-    v14 = [(PKToolPicker *)self isVisible];
+    isVisible = [(PKToolPicker *)self isVisible];
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_INFO, "ToolPicker: %p, locking tool picker visibility hidden, count: %ld, isVisible: %{BOOL}d", &v9, 0x1Cu);
   }
 
@@ -4457,14 +4457,14 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
     v8 = v7;
     if (v7)
     {
-      v7->_shouldNotifyDuringUpdate = a3;
+      v7->_shouldNotifyDuringUpdate = notify;
     }
 
     [(PKToolPicker *)self _updateToolPickerVisibilityForFirstResponder:0 withContext:v7 completion:0];
   }
 }
 
-- (void)_unlockHiddenNotify:(BOOL)a3
+- (void)_unlockHiddenNotify:(BOOL)notify
 {
   v18 = *MEMORY[0x1E69E9840];
   wantsToolPickerHiddenCount = self->_wantsToolPickerHiddenCount;
@@ -4478,11 +4478,11 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
     {
       v9 = self->_wantsToolPickerHiddenCount;
       v12 = 134218496;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
       v15 = v9;
       v16 = 1024;
-      v17 = [(PKToolPicker *)self isVisible];
+      isVisible = [(PKToolPicker *)self isVisible];
       _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_INFO, "ToolPicker: %p, unlocking tool picker visibility hidden, count: %ld, isVisible: %{BOOL}d", &v12, 0x1Cu);
     }
 
@@ -4492,7 +4492,7 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
       v11 = v10;
       if (v10)
       {
-        v10->_shouldNotifyDuringUpdate = a3;
+        v10->_shouldNotifyDuringUpdate = notify;
       }
 
       [(PKToolPicker *)self _updateToolPickerVisibilityForFirstResponder:0 withContext:v10 completion:0];
@@ -4503,13 +4503,13 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
 - (void)setMaximumSupportedContentVersion:(PKContentVersion)maximumSupportedContentVersion
 {
   self->_maximumSupportedContentVersion = maximumSupportedContentVersion;
-  v4 = [(PKToolPicker *)self _tools];
-  v5 = [v4 count];
-  v6 = [(PKToolPicker *)self _paletteView];
-  v7 = [v6 showsPlusButton];
+  _tools = [(PKToolPicker *)self _tools];
+  v5 = [_tools count];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  showsPlusButton = [_paletteView showsPlusButton];
   v8 = 5.0;
   v9 = 2.0;
-  if (!v7)
+  if (!showsPlusButton)
   {
     v9 = 5.0;
   }
@@ -4521,13 +4521,13 @@ BOOL __34__PKToolPicker_initWithToolItems___block_invoke_135(uint64_t a1, void *
 
   self->__interItemToolsSpacingInCompactSize = v8;
 
-  v10 = [(PKToolPicker *)self _tools];
+  _tools2 = [(PKToolPicker *)self _tools];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke;
   v12[3] = &unk_1E82D7058;
   v12[4] = self;
-  v11 = [v10 indexesOfObjectsPassingTest:v12];
+  v11 = [_tools2 indexesOfObjectsPassingTest:v12];
 
   [(PKToolPicker *)self _removeToolsAtIndexes:v11];
   [(PKToolPicker *)self _updateUI];
@@ -4542,7 +4542,7 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
   return v5;
 }
 
-- (void)_setPresentsDetached:(BOOL)a3
+- (void)_setPresentsDetached:(BOOL)detached
 {
   if (!PKIsVisionDevice())
   {
@@ -4554,7 +4554,7 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
   }
 }
 
-- (void)_setDoneButtonVisible:(BOOL)a3
+- (void)_setDoneButtonVisible:(BOOL)visible
 {
   if (!PKIsVisionDevice())
   {
@@ -4566,27 +4566,27 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
   }
 }
 
-- (void)_restoreToolPickerStateNotify:(BOOL)a3
+- (void)_restoreToolPickerStateNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(PKToolPicker *)self _isToolStatePersistenceEnabled];
+  _isToolStatePersistenceEnabled = [(PKToolPicker *)self _isToolStatePersistenceEnabled];
   v6 = os_log_create("com.apple.pencilkit", "ToolPicker");
-  v7 = v6;
-  if (v5)
+  standardUserDefaults = v6;
+  if (_isToolStatePersistenceEnabled)
   {
     v8 = v6;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+      _paletteViewStateRestorationDefaultsKey = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
       v17 = 138477827;
-      v18 = v9;
+      v18 = _paletteViewStateRestorationDefaultsKey;
       _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Restore state for name: %{private}@", &v17, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
-    v11 = [v7 dictionaryForKey:v10];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _paletteViewStateRestorationDefaultsKey2 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+    v11 = [standardUserDefaults dictionaryForKey:_paletteViewStateRestorationDefaultsKey2];
 
     if (v11)
     {
@@ -4594,7 +4594,7 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
       if (v12)
       {
         v13 = v12;
-        [(PKToolPicker *)self _restoreToolPickerStateFromRepresentation:v12 notify:v3];
+        [(PKToolPicker *)self _restoreToolPickerStateFromRepresentation:v12 notify:notifyCopy];
       }
 
       else
@@ -4602,9 +4602,9 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
         v14 = os_log_create("com.apple.pencilkit", "ToolPicker");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v16 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+          _paletteViewStateRestorationDefaultsKey3 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
           v17 = 138412290;
-          v18 = v16;
+          v18 = _paletteViewStateRestorationDefaultsKey3;
           _os_log_error_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_ERROR, "Missing tools array to restore state for: %@", &v17, 0xCu);
         }
 
@@ -4617,9 +4617,9 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
       v13 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+        _paletteViewStateRestorationDefaultsKey4 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
         v17 = 138412290;
-        v18 = v15;
+        v18 = _paletteViewStateRestorationDefaultsKey4;
         _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Missing defaults dictionary to restore state for: %@", &v17, 0xCu);
       }
     }
@@ -4628,31 +4628,31 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v17) = 0;
-    _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Tried to restore state but persistence is disabled.", &v17, 2u);
+    _os_log_impl(&dword_1C7CCA000, standardUserDefaults, OS_LOG_TYPE_DEFAULT, "Tried to restore state but persistence is disabled.", &v17, 2u);
   }
 }
 
-- (void)_restoreToolPickerStateFromRepresentation:(id)a3 notify:(BOOL)a4
+- (void)_restoreToolPickerStateFromRepresentation:(id)representation notify:(BOOL)notify
 {
-  v43 = a4;
+  notifyCopy = notify;
   v59 = *MEMORY[0x1E69E9840];
-  v46 = a3;
+  representationCopy = representation;
   v45 = [(PKToolPicker *)self _validatedEncodedToolsArray:?];
   v5 = [PKToolPicker _keyEncodedToolsByIdentifier:?];
-  v6 = [(PKToolPicker *)self toolItems];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v44 = self;
+  toolItems = [(PKToolPicker *)self toolItems];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   v51 = self->_selectedTool;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v6;
+  obj = toolItems;
   v53 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v53)
   {
     v52 = *v55;
-    v48 = v7;
+    v48 = array;
     v49 = v5;
     do
     {
@@ -4664,16 +4664,16 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
         }
 
         v9 = *(*(&v54 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v5 objectForKeyedSubscript:v10];
+        identifier = [v9 identifier];
+        v11 = [v5 objectForKeyedSubscript:identifier];
 
-        v12 = [v9 _tool];
-        v13 = [v12 ink];
-        v14 = [v13 identifier];
+        _tool = [v9 _tool];
+        v13 = [_tool ink];
+        identifier2 = [v13 identifier];
 
         if (!v11)
         {
-          if ((-[__CFString isEqualToString:](v14, "isEqualToString:", @"com.apple.ink.custom") & 1) != 0 || ([v5 objectForKeyedSubscript:v14], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+          if ((-[__CFString isEqualToString:](identifier2, "isEqualToString:", @"com.apple.ink.custom") & 1) != 0 || ([v5 objectForKeyedSubscript:identifier2], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -4688,24 +4688,24 @@ BOOL __50__PKToolPicker_setMaximumSupportedContentVersion___block_invoke(uint64_
             if (v17)
             {
               v11 = v17;
-              v14 = v16;
+              identifier2 = v16;
               goto LABEL_15;
             }
 
-            v14 = @"com.apple.ink.eraser";
+            identifier2 = @"com.apple.ink.eraser";
 
-            v15 = [v5 objectForKeyedSubscript:v14];
+            v15 = [v5 objectForKeyedSubscript:identifier2];
           }
 
           v11 = v15;
         }
 
 LABEL_15:
-        v18 = [v9 _tool];
-        v19 = v18;
+        _tool2 = [v9 _tool];
+        v19 = _tool2;
         if (!v11)
         {
-          v23 = v18;
+          v23 = _tool2;
           goto LABEL_32;
         }
 
@@ -4720,64 +4720,64 @@ LABEL_15:
           if (v24)
           {
             v25 = [v19 ink];
-            v26 = [v25 version];
+            version = [v25 version];
           }
 
           else
           {
-            v26 = -1;
+            version = -1;
           }
 
-          v27 = [PKInk inkWithIdentifier:v14 properties:v22 inkVersion:v26];
+          v27 = [PKInk inkWithIdentifier:identifier2 properties:v22 inkVersion:version];
           v28 = objc_opt_class();
           v29 = PKDynamicCast(v28, v19);
           if (v29)
           {
-            v30 = [v27 color];
-            v31 = [v29 copyWithScrubbedColor:v30];
+            color = [v27 color];
+            v31 = [v29 copyWithScrubbedColor:color];
 
             [v27 weight];
             v23 = [v31 copyWithScrubbedWeight:?];
-            v32 = v19;
+            _configuration2 = v19;
             goto LABEL_27;
           }
 
-          v33 = [v27 identifier];
-          v34 = [v33 isEqualToString:@"com.apple.ink.custom"];
+          identifier3 = [v27 identifier];
+          v34 = [identifier3 isEqualToString:@"com.apple.ink.custom"];
 
           v23 = v19;
           if ((v34 & 1) == 0)
           {
             v31 = v27;
-            v35 = [v19 _configuration];
-            v36 = [v35 supportsColor];
+            _configuration = [v19 _configuration];
+            supportsColor = [_configuration supportsColor];
 
-            if ((v36 & 1) == 0)
+            if ((supportsColor & 1) == 0)
             {
               v37 = [v19 ink];
-              v38 = [v37 color];
-              v47 = [PKInk inkFromInk:v31 color:v38];
+              color2 = [v37 color];
+              v47 = [PKInk inkFromInk:v31 color:color2];
 
               v31 = v47;
             }
 
-            v32 = [v19 _configuration];
-            v23 = [PKTool _toolWithInk:v31 configuration:v32];
+            _configuration2 = [v19 _configuration];
+            v23 = [PKTool _toolWithInk:v31 configuration:_configuration2];
 
 LABEL_27:
           }
 
-          v39 = [v19 _toolPickerItemIdentifier];
-          [v23 _setToolPickerItemIdentifier:v39];
+          _toolPickerItemIdentifier = [v19 _toolPickerItemIdentifier];
+          [v23 _setToolPickerItemIdentifier:_toolPickerItemIdentifier];
 
-          v7 = v48;
+          array = v48;
           v5 = v49;
         }
 
         v40 = [v11 objectForKeyedSubscript:@"isSelected"];
-        v41 = [v40 BOOLValue];
+        bOOLValue = [v40 BOOLValue];
 
-        if (v41)
+        if (bOOLValue)
         {
           v42 = v23;
 
@@ -4785,7 +4785,7 @@ LABEL_27:
         }
 
 LABEL_32:
-        [v7 addObject:v23];
+        [array addObject:v23];
       }
 
       v53 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
@@ -4794,20 +4794,20 @@ LABEL_32:
     while (v53);
   }
 
-  [(PKToolPicker *)v44 _resetTools:v7 selectedTool:v51 notify:v43];
-  [(PKToolPicker *)v44 _updateUI];
+  [(PKToolPicker *)selfCopy _resetTools:array selectedTool:v51 notify:notifyCopy];
+  [(PKToolPicker *)selfCopy _updateUI];
 }
 
-+ (id)_keyEncodedToolsByIdentifier:(id)a3
++ (id)_keyEncodedToolsByIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  identifierCopy = identifier;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = identifierCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -4829,11 +4829,11 @@ LABEL_32:
 
         if (v13)
         {
-          v14 = [v4 objectForKeyedSubscript:v13];
+          v14 = [dictionary objectForKeyedSubscript:v13];
 
           if (!v14)
           {
-            [v4 setObject:v10 forKeyedSubscript:v13];
+            [dictionary setObject:v10 forKeyedSubscript:v13];
           }
         }
       }
@@ -4844,22 +4844,22 @@ LABEL_32:
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_validatedEncodedToolsArray:(id)a3
+- (id)_validatedEncodedToolsArray:(id)array
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v4 = v3;
+    v4 = arrayCopy;
     v5 = [v4 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (!v5)
     {
@@ -4867,7 +4867,7 @@ LABEL_32:
     }
 
     v6 = v5;
-    v30 = v3;
+    v30 = arrayCopy;
     v7 = *v37;
     v8 = v4;
     while (1)
@@ -4898,12 +4898,12 @@ LABEL_32:
                 {
                   v21 = objc_opt_class();
                   v32 = NSStringFromClass(v21);
-                  v22 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+                  _paletteViewStateRestorationDefaultsKey = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
                   *buf = 138543618;
                   v42 = v32;
                   v43 = 2112;
-                  v44 = v22;
-                  v23 = v22;
+                  v44 = _paletteViewStateRestorationDefaultsKey;
+                  v23 = _paletteViewStateRestorationDefaultsKey;
                   _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Skipping decode of tool dictionary with wrong class for properties dictionary: %{public}@ from: %@", buf, 0x16u);
                 }
               }
@@ -4918,18 +4918,18 @@ LABEL_32:
                   {
                     v24 = objc_opt_class();
                     v33 = NSStringFromClass(v24);
-                    v31 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+                    _paletteViewStateRestorationDefaultsKey2 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
                     *buf = 138543618;
                     v42 = v33;
                     v43 = 2112;
-                    v44 = v31;
+                    v44 = _paletteViewStateRestorationDefaultsKey2;
                     _os_log_error_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_ERROR, "Skipping decode of tool dictionary with wrong class for selected bit: %{public}@ from: %@", buf, 0x16u);
                   }
                 }
 
                 else
                 {
-                  [v35 addObject:v10];
+                  [array addObject:v10];
                 }
               }
 
@@ -4948,12 +4948,12 @@ LABEL_22:
             }
 
             v19 = objc_opt_class();
-            v14 = NSStringFromClass(v19);
-            v20 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+            _paletteViewStateRestorationDefaultsKey4 = NSStringFromClass(v19);
+            _paletteViewStateRestorationDefaultsKey3 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
             *buf = 138543618;
-            v42 = v14;
+            v42 = _paletteViewStateRestorationDefaultsKey4;
             v43 = 2112;
-            v44 = v20;
+            v44 = _paletteViewStateRestorationDefaultsKey3;
             _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Skipping decode of tool dictionary with wrong class for identifier: %{public}@ from: %@", buf, 0x16u);
           }
 
@@ -4965,9 +4965,9 @@ LABEL_22:
               goto LABEL_21;
             }
 
-            v14 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+            _paletteViewStateRestorationDefaultsKey4 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
             *buf = 138412290;
-            v42 = v14;
+            v42 = _paletteViewStateRestorationDefaultsKey4;
             _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Skipping decode of tool dictionary missing identifier from: %@", buf, 0xCu);
           }
 
@@ -4979,11 +4979,11 @@ LABEL_22:
         {
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
-          v18 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+          _paletteViewStateRestorationDefaultsKey5 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
           *buf = 138543618;
           v42 = v17;
           v43 = 2112;
-          v44 = v18;
+          v44 = _paletteViewStateRestorationDefaultsKey5;
           _os_log_error_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_ERROR, "Skipping decode of tool dictionary with wrong class: %{public}@ from: %@", buf, 0x16u);
 
           v4 = v8;
@@ -5000,7 +5000,7 @@ LABEL_23:
       v6 = v25;
       if (!v25)
       {
-        v3 = v30;
+        arrayCopy = v30;
         goto LABEL_38;
       }
     }
@@ -5011,18 +5011,18 @@ LABEL_23:
   {
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    v29 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+    _paletteViewStateRestorationDefaultsKey6 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
     *buf = 138543618;
     v42 = v28;
     v43 = 2112;
-    v44 = v29;
+    v44 = _paletteViewStateRestorationDefaultsKey6;
     _os_log_error_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_ERROR, "Encoded tools array has wrong class: %{public}@ from: %@", buf, 0x16u);
   }
 
-  v35 = MEMORY[0x1E695E0F0];
+  array = MEMORY[0x1E695E0F0];
 LABEL_38:
 
-  return v35;
+  return array;
 }
 
 - (void)_saveToolPickerState
@@ -5030,56 +5030,56 @@ LABEL_38:
   v13 = *MEMORY[0x1E69E9840];
   if ([(PKToolPicker *)self _isToolStatePersistenceEnabled])
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
-    v5 = [v3 dictionaryForKey:v4];
-    v6 = [v5 mutableCopy];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _paletteViewStateRestorationDefaultsKey = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+    v5 = [standardUserDefaults dictionaryForKey:_paletteViewStateRestorationDefaultsKey];
+    dictionary = [v5 mutableCopy];
 
-    if (!v6)
+    if (!dictionary)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v7 = [(PKToolPicker *)self _toolsState];
-    [v6 setObject:v7 forKey:@"PKPaletteTools"];
+    _toolsState = [(PKToolPicker *)self _toolsState];
+    [dictionary setObject:_toolsState forKey:@"PKPaletteTools"];
 
-    v8 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
-    [v3 setObject:v6 forKey:v8];
+    _paletteViewStateRestorationDefaultsKey2 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+    [standardUserDefaults setObject:dictionary forKey:_paletteViewStateRestorationDefaultsKey2];
 
     v9 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
+      _paletteViewStateRestorationDefaultsKey3 = [(PKToolPicker *)self _paletteViewStateRestorationDefaultsKey];
       v11 = 138477827;
-      v12 = v10;
+      v12 = _paletteViewStateRestorationDefaultsKey3;
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Did save state for name: %{private}@", &v11, 0xCu);
     }
   }
 
   else
   {
-    v3 = os_log_create("com.apple.pencilkit", "ToolPicker");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    standardUserDefaults = os_log_create("com.apple.pencilkit", "ToolPicker");
+    if (os_log_type_enabled(standardUserDefaults, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v11) = 0;
-      _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEFAULT, "Tried to save state but persistence is disabled.", &v11, 2u);
+      _os_log_impl(&dword_1C7CCA000, standardUserDefaults, OS_LOG_TYPE_DEFAULT, "Tried to save state but persistence is disabled.", &v11, 2u);
     }
   }
 }
 
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset
 {
-  v5 = a5;
-  v6 = a4;
+  resetCopy = reset;
+  changeCopy = change;
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  delegateCopy = delegate;
   v9 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109376;
-    v12[1] = v6;
+    v12[1] = changeCopy;
     v13 = 1024;
-    v14 = v5;
+    v14 = resetCopy;
     _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "keyboardSceneDelegate inputViewSetVisibilityDidChange isVisible: %d, includedReset: %d", v12, 0xEu);
   }
 
@@ -5087,11 +5087,11 @@ LABEL_38:
   if (WeakRetained)
   {
     v11 = objc_loadWeakRetained(&self->_keyboardSceneDelegateVisibilityObserver);
-    [v11 keyboardSceneDelegate:v8 inputViewSetVisibilityDidChange:v6 includedReset:v5];
+    [v11 keyboardSceneDelegate:delegateCopy inputViewSetVisibilityDidChange:changeCopy includedReset:resetCopy];
   }
 }
 
-- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)a3
+- (void)_handleHandwritingEducationPaneSettingsDidChange:(id)change
 {
   if ([(PKToolPicker *)self isVisible])
   {
@@ -5102,8 +5102,8 @@ LABEL_38:
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Handle handwriting education pane settings did change notification", v6, 2u);
     }
 
-    v5 = [(PKToolPicker *)self _paletteView];
-    [v5 handwritingEducationPaneSettingsDidChange];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    [_paletteView handwritingEducationPaneSettingsDidChange];
   }
 }
 
@@ -5115,21 +5115,21 @@ LABEL_38:
     toolPickerVisibility = self->__interaction;
   }
 
-  v4 = [toolPickerVisibility paletteHostView];
+  paletteHostView = [toolPickerVisibility paletteHostView];
 
-  return v4;
+  return paletteHostView;
 }
 
-- (void)_updatePaletteTraitCollection:(id)a3
+- (void)_updatePaletteTraitCollection:(id)collection
 {
-  v4 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
 
-  [(PKToolPicker *)self _updatePaletteUserInterfaceStyle:v4];
+  [(PKToolPicker *)self _updatePaletteUserInterfaceStyle:userInterfaceStyle];
 }
 
-- (void)_updatePaletteUserInterfaceStyle:(int64_t)a3
+- (void)_updatePaletteUserInterfaceStyle:(int64_t)style
 {
-  [(PKPaletteViewInteraction *)self->__interaction _updatePaletteUserInterfaceStyle:a3];
+  [(PKPaletteViewInteraction *)self->__interaction _updatePaletteUserInterfaceStyle:style];
 
   [(PKToolPicker *)self _updateUserInterfaceStyle];
 }
@@ -5147,9 +5147,9 @@ LABEL_38:
   }
 }
 
-- (BOOL)_internalClassesAcceptingFirstResponderContainsObject:(id)a3
+- (BOOL)_internalClassesAcceptingFirstResponderContainsObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -5165,28 +5165,28 @@ LABEL_38:
   return isKindOfClass & 1;
 }
 
-+ (BOOL)_internalClassWantsToolPicker:(id)a3 visibleForResponder:(id)a4
++ (BOOL)_internalClassWantsToolPicker:(id)picker visibleForResponder:(id)responder
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pickerCopy = picker;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 _wantsToolPickerVisible:v5];
+    v7 = [responderCopy _wantsToolPickerVisible:pickerCopy];
     goto LABEL_35;
   }
 
-  if (![v5 _internalClassesAcceptingFirstResponderContainsObject:v6])
+  if (![pickerCopy _internalClassesAcceptingFirstResponderContainsObject:responderCopy])
   {
-    v22 = [v6 pencilKitResponderState];
-    v23 = [v22 _currentActiveToolPicker];
-    v24 = v23;
-    if (v23 == v5)
+    pencilKitResponderState = [responderCopy pencilKitResponderState];
+    _currentActiveToolPicker = [pencilKitResponderState _currentActiveToolPicker];
+    v24 = _currentActiveToolPicker;
+    if (_currentActiveToolPicker == pickerCopy)
     {
-      v25 = [v6 pencilKitResponderState];
-      v26 = [v25 _currentToolPickerVisibility];
+      pencilKitResponderState2 = [responderCopy pencilKitResponderState];
+      _currentToolPickerVisibility = [pencilKitResponderState2 _currentToolPickerVisibility];
 
-      if (v26 == 3)
+      if (_currentToolPickerVisibility == 3)
       {
         v7 = 1;
         goto LABEL_35;
@@ -5201,15 +5201,15 @@ LABEL_38:
     goto LABEL_35;
   }
 
-  v29 = v6;
+  v29 = responderCopy;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [v5 _firstRespondersForVisibleUI];
-  v9 = [v8 keyEnumerator];
+  _firstRespondersForVisibleUI = [pickerCopy _firstRespondersForVisibleUI];
+  keyEnumerator = [_firstRespondersForVisibleUI keyEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v10 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v10)
   {
     v7 = 0;
@@ -5217,7 +5217,7 @@ LABEL_38:
   }
 
   v11 = v10;
-  v28 = v6;
+  v28 = responderCopy;
   v12 = *v31;
   v13 = v29;
   while (2)
@@ -5226,14 +5226,14 @@ LABEL_38:
     {
       if (*v31 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v15 = *(*(&v30 + 1) + 8 * i);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v15;
+        view = v15;
       }
 
       else
@@ -5245,20 +5245,20 @@ LABEL_38:
           goto LABEL_23;
         }
 
-        v16 = [v15 view];
+        view = [v15 view];
       }
 
-      v17 = v16;
-      if (v16)
+      v17 = view;
+      if (view)
       {
-        v18 = [v16 window];
-        v19 = [v13 window];
-        v20 = v19;
-        if (v18 == v19)
+        window = [view window];
+        window2 = [v13 window];
+        v20 = window2;
+        if (window == window2)
         {
-          v21 = [v5 _wasVisibleBeforeResponderChanges];
+          _wasVisibleBeforeResponderChanges = [pickerCopy _wasVisibleBeforeResponderChanges];
 
-          if (v21)
+          if (_wasVisibleBeforeResponderChanges)
           {
             v13 = v29;
             if ([v29 isDescendantOfView:v17] & 1) != 0 || (NSClassFromString(&cfstr_Icinktoolpicke.isa), objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -5283,7 +5283,7 @@ LABEL_38:
 LABEL_23:
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v11)
     {
       continue;
@@ -5294,51 +5294,51 @@ LABEL_23:
 
   v7 = 0;
 LABEL_29:
-  v6 = v28;
+  responderCopy = v28;
 LABEL_31:
 
 LABEL_35:
   return v7;
 }
 
-+ (BOOL)_textInputWantsToolPickerVisible:(id)a3 forFirstResponder:(id)a4
++ (BOOL)_textInputWantsToolPickerVisible:(id)visible forFirstResponder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v9 isEqual:@"com.apple.mobilenotes"];
+  visibleCopy = visible;
+  responderCopy = responder;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v10 = [bundleIdentifier isEqual:@"com.apple.mobilenotes"];
 
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  v11 = [v6 _paletteView];
-  v12 = [v11 windowFirstResponder];
+  _paletteView = [visibleCopy _paletteView];
+  windowFirstResponder = [_paletteView windowFirstResponder];
 
-  if (v12)
+  if (windowFirstResponder)
   {
-    v13 = [v6 _paletteView];
-    v14 = [v13 windowFirstResponder];
-    v15 = [v14 textInputSource];
+    _paletteView2 = [visibleCopy _paletteView];
+    windowFirstResponder2 = [_paletteView2 windowFirstResponder];
+    textInputSource = [windowFirstResponder2 textInputSource];
   }
 
   else
   {
-    v15 = [PKTextInputUtilities responderTextInputSource:v7];
+    textInputSource = [PKTextInputUtilities responderTextInputSource:responderCopy];
   }
 
-  if (v15 != 3 || ![v6 _isHandwritingToolSelected])
+  if (textInputSource != 3 || ![visibleCopy _isHandwritingToolSelected])
   {
-    [v6 _isHandwritingToolSelected];
+    [visibleCopy _isHandwritingToolSelected];
 LABEL_12:
     LOBYTE(v18) = 0;
     goto LABEL_13;
   }
 
   NSClassFromString(&cfstr_Ictextview.isa);
-  v16 = v7;
+  v16 = responderCopy;
   if (!v16)
   {
     goto LABEL_15;
@@ -5346,23 +5346,23 @@ LABEL_12:
 
   while ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [v16 nextResponder];
+    nextResponder = [v16 nextResponder];
 
-    v16 = v17;
-    if (!v17)
+    v16 = nextResponder;
+    if (!nextResponder)
     {
       goto LABEL_15;
     }
   }
 
-  v20 = [v16 _responderWindow];
-  v21 = [v20 windowScene];
-  v22 = [a1 _windowSceneForToolPicker:v6];
+  _responderWindow = [v16 _responderWindow];
+  windowScene = [_responderWindow windowScene];
+  v22 = [self _windowSceneForToolPicker:visibleCopy];
 
-  if (v21 == v22)
+  if (windowScene == v22)
   {
-    v23 = [v16 findInteraction];
-    v18 = [v23 isFindNavigatorVisible] ^ 1;
+    findInteraction = [v16 findInteraction];
+    v18 = [findInteraction isFindNavigatorVisible] ^ 1;
   }
 
   else
@@ -5390,53 +5390,53 @@ LABEL_13:
 {
   if ([(PKToolPicker *)self isVisible])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_presentViewController:(id)a3 asPopoverFromItem:(id)a4
+- (void)_presentViewController:(id)controller asPopoverFromItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKToolPicker *)self _paletteView];
-  [v8 _presentViewController:v7 asPopoverFromItem:v6];
+  itemCopy = item;
+  controllerCopy = controller;
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _presentViewController:controllerCopy asPopoverFromItem:itemCopy];
 }
 
 - (UIViewController)presentationViewController
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  v3 = [v2 palettePopoverPresentingController];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  palettePopoverPresentingController = [_paletteView palettePopoverPresentingController];
 
-  return v3;
+  return palettePopoverPresentingController;
 }
 
 - (NSArray)passthroughViews
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  v3 = [v2 palettePopoverPassthroughViews];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  palettePopoverPassthroughViews = [_paletteView palettePopoverPassthroughViews];
 
-  return v3;
+  return palettePopoverPassthroughViews;
 }
 
 - (unint64_t)permittedArrowDirections
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  v3 = [v2 palettePopoverPermittedArrowDirections];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  palettePopoverPermittedArrowDirections = [_paletteView palettePopoverPermittedArrowDirections];
 
-  return v3;
+  return palettePopoverPermittedArrowDirections;
 }
 
 - (UIEdgeInsets)layoutSceneMargins
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 palettePopoverLayoutSceneMargins];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView palettePopoverLayoutSceneMargins];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -5460,10 +5460,10 @@ LABEL_13:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 _supportsPencil];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  _supportsPencil = [currentDevice _supportsPencil];
 
-  if (!v3)
+  if (!_supportsPencil)
   {
     return 0;
   }
@@ -5475,15 +5475,15 @@ LABEL_13:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v8 BOOLForKey:@"PKForceShowHandwritingTool"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults BOOLForKey:@"PKForceShowHandwritingTool"];
   }
 
   if (os_variant_has_internal_diagnostics())
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.dt.xctest.tool"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v11 = [bundleIdentifier isEqualToString:@"com.apple.dt.xctest.tool"];
 
     if (v11)
     {
@@ -5492,15 +5492,15 @@ LABEL_13:
   }
 
   v4 = +[PKTextInputSettings sharedSettings];
-  v5 = [v4 recognitionLocaleIdentifier];
-  v6 = v5 != 0;
+  recognitionLocaleIdentifier = [v4 recognitionLocaleIdentifier];
+  v6 = recognitionLocaleIdentifier != 0;
 
   return v6;
 }
 
-- (void)_setShowsHandwritingTool:(BOOL)a3
+- (void)_setShowsHandwritingTool:(BOOL)tool
 {
-  v3 = a3;
+  toolCopy = tool;
   v13 = *MEMORY[0x1E69E9840];
   if (PKIsVisionDevice())
   {
@@ -5514,15 +5514,15 @@ LABEL_13:
     self->__showsHandwritingTool = 0;
   }
 
-  else if (self->__showsHandwritingTool != v3)
+  else if (self->__showsHandwritingTool != toolCopy)
   {
-    self->__showsHandwritingTool = v3;
-    if (v3)
+    self->__showsHandwritingTool = toolCopy;
+    if (toolCopy)
     {
-      v3 = [objc_opt_class() _canShowHandwritingTool];
+      toolCopy = [objc_opt_class() _canShowHandwritingTool];
     }
 
-    v6 = [(PKToolPicker *)self _hasHandwritingTool];
+    _hasHandwritingTool = [(PKToolPicker *)self _hasHandwritingTool];
     v7 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -5532,13 +5532,13 @@ LABEL_13:
       _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Should show handwriting tool: %d", &v11, 8u);
     }
 
-    if (v3 != v6)
+    if (toolCopy != _hasHandwritingTool)
     {
       v9 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = @"HIDDEN";
-        if (v3)
+        if (toolCopy)
         {
           v10 = @"VISIBLE";
         }
@@ -5581,87 +5581,87 @@ uint64_t __32__PKToolPicker__handwritingTool__block_invoke(uint64_t a1, void *a2
 - (BOOL)_isHandwritingToolSelected
 {
   v2 = [(PKTool *)self->_selectedTool ink];
-  v3 = [v2 _isHandwritingInk];
+  _isHandwritingInk = [v2 _isHandwritingInk];
 
-  return v3;
+  return _isHandwritingInk;
 }
 
 - (void)_updateHandwritingInputAssistantItems
 {
-  v3 = [(PKToolPicker *)self _isHandwritingToolSelected];
-  v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  _isHandwritingToolSelected = [(PKToolPicker *)self _isHandwritingToolSelected];
+  _paletteView = os_log_create("com.apple.pencilkit", "ToolPicker");
+  v5 = os_log_type_enabled(_paletteView, OS_LOG_TYPE_DEFAULT);
+  if (_isHandwritingToolSelected)
   {
     if (v5)
     {
       *v6 = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Update handwriting assistant items.", v6, 2u);
+      _os_log_impl(&dword_1C7CCA000, _paletteView, OS_LOG_TYPE_DEFAULT, "Update handwriting assistant items.", v6, 2u);
     }
 
-    v4 = [(PKToolPicker *)self _paletteView];
-    [v4 updateHandwritingAssistantItems];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    [_paletteView updateHandwritingAssistantItems];
   }
 
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Can't update handwriting assistant items if handwriting tool isn't the selected tool.", buf, 2u);
+    _os_log_impl(&dword_1C7CCA000, _paletteView, OS_LOG_TYPE_DEFAULT, "Can't update handwriting assistant items if handwriting tool isn't the selected tool.", buf, 2u);
   }
 }
 
 - (BOOL)_isCanvasGenerationToolSelected
 {
   v2 = [(PKTool *)self->_selectedTool ink];
-  v3 = [v2 _isGenerationTool];
+  _isGenerationTool = [v2 _isGenerationTool];
 
-  return v3;
+  return _isGenerationTool;
 }
 
-- (void)_textInputResponderDidReloadNotification:(id)a3
+- (void)_textInputResponderDidReloadNotification:(id)notification
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Received notification: %@", &v6, 0xCu);
   }
 
   [(PKToolPicker *)self _updateHandwritingInputAssistantItems];
 }
 
-- (void)_addTool:(id)a3
+- (void)_addTool:(id)tool
 {
   mutableTools = self->_mutableTools;
-  v5 = a3;
-  [(PKToolPicker *)self _insertTool:v5 atIndex:[(NSMutableArray *)mutableTools count]];
+  toolCopy = tool;
+  [(PKToolPicker *)self _insertTool:toolCopy atIndex:[(NSMutableArray *)mutableTools count]];
 }
 
-- (void)_addTool:(id)a3 updateUI:(BOOL)a4
+- (void)_addTool:(id)tool updateUI:(BOOL)i
 {
-  v4 = a4;
+  iCopy = i;
   mutableTools = self->_mutableTools;
-  v7 = a3;
-  [(PKToolPicker *)self _insertTool:v7 atIndex:[(NSMutableArray *)mutableTools count] updateUI:v4];
+  toolCopy = tool;
+  [(PKToolPicker *)self _insertTool:toolCopy atIndex:[(NSMutableArray *)mutableTools count] updateUI:iCopy];
 }
 
-- (void)_insertTool:(id)a3 atIndex:(unint64_t)a4 updateUI:(BOOL)a5
+- (void)_insertTool:(id)tool atIndex:(unint64_t)index updateUI:(BOOL)i
 {
-  v5 = a5;
+  iCopy = i;
   v12 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([(PKToolPicker *)self _canInsertTool:v8])
+  toolCopy = tool;
+  if ([(PKToolPicker *)self _canInsertTool:toolCopy])
   {
-    [(NSMutableArray *)self->_mutableTools insertObject:v8 atIndex:a4];
-    if (v5)
+    [(NSMutableArray *)self->_mutableTools insertObject:toolCopy atIndex:index];
+    if (iCopy)
     {
       [(PKToolPicker *)self _updateUI];
     }
 
-    [(PKToolPickerItemManager *)self->_toolItemManager _addTool:v8];
+    [(PKToolPickerItemManager *)self->_toolItemManager _addTool:toolCopy];
   }
 
   else
@@ -5670,44 +5670,44 @@ uint64_t __32__PKToolPicker__handwritingTool__block_invoke(uint64_t a1, void *a2
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v8;
+      v11 = toolCopy;
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Can't insert tool: %@", &v10, 0xCu);
     }
   }
 }
 
-- (BOOL)_canInsertTool:(id)a3
+- (BOOL)_canInsertTool:(id)tool
 {
-  v4 = a3;
-  v5 = [v4 _isLassoTool];
-  v6 = [(PKToolPicker *)self _hasLassoTool];
-  if (v5 || ([v4 ink], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_isEraserInk"), v7, v6 = -[PKToolPicker _hasEraserTool](self, "_hasEraserTool"), v8) || (objc_msgSend(v4, "ink"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_isHandwritingInk"), v9, v6 = -[PKToolPicker _hasHandwritingTool](self, "_hasHandwritingTool"), v10))
+  toolCopy = tool;
+  _isLassoTool = [toolCopy _isLassoTool];
+  _hasLassoTool = [(PKToolPicker *)self _hasLassoTool];
+  if (_isLassoTool || ([toolCopy ink], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_isEraserInk"), v7, _hasLassoTool = -[PKToolPicker _hasEraserTool](self, "_hasEraserTool"), v8) || (objc_msgSend(toolCopy, "ink"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_isHandwritingInk"), v9, _hasLassoTool = -[PKToolPicker _hasHandwritingTool](self, "_hasHandwritingTool"), v10))
   {
-    v11 = !v6;
+    v11 = !_hasLassoTool;
   }
 
   else
   {
-    v11 = [(PKToolPicker *)self _indexOfTool:v4]== 0x7FFFFFFFFFFFFFFFLL;
+    v11 = [(PKToolPicker *)self _indexOfTool:toolCopy]== 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v11;
 }
 
-- (void)_removeTool:(id)a3 updateUI:(BOOL)a4
+- (void)_removeTool:(id)tool updateUI:(BOOL)i
 {
-  v4 = a4;
+  iCopy = i;
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(PKToolPicker *)self _canRemoveTool:v6])
+  toolCopy = tool;
+  if ([(PKToolPicker *)self _canRemoveTool:toolCopy])
   {
-    [(NSMutableArray *)self->_mutableTools removeObjectAtIndex:[(PKToolPicker *)self _indexOfTool:v6]];
-    if (v4)
+    [(NSMutableArray *)self->_mutableTools removeObjectAtIndex:[(PKToolPicker *)self _indexOfTool:toolCopy]];
+    if (iCopy)
     {
       [(PKToolPicker *)self _updateUI];
     }
 
-    [(PKToolPickerItemManager *)self->_toolItemManager _removeTool:v6];
+    [(PKToolPickerItemManager *)self->_toolItemManager _removeTool:toolCopy];
   }
 
   else
@@ -5716,17 +5716,17 @@ uint64_t __32__PKToolPicker__handwritingTool__block_invoke(uint64_t a1, void *a2
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = toolCopy;
       _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Can't remove tool: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)_removeToolsAtIndexes:(id)a3 updateUI:(BOOL)a4
+- (void)_removeToolsAtIndexes:(id)indexes updateUI:(BOOL)i
 {
-  v4 = a4;
+  iCopy = i;
   mutableTools = self->_mutableTools;
-  v7 = a3;
+  indexesCopy = indexes;
   v8 = [(NSMutableArray *)mutableTools copy];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
@@ -5734,11 +5734,11 @@ uint64_t __32__PKToolPicker__handwritingTool__block_invoke(uint64_t a1, void *a2
   v14 = &unk_1E82D7080;
   v9 = v8;
   v15 = v9;
-  v16 = self;
-  [v7 enumerateIndexesUsingBlock:&v11];
-  v10 = [v7 count];
+  selfCopy = self;
+  [indexesCopy enumerateIndexesUsingBlock:&v11];
+  v10 = [indexesCopy count];
 
-  if (v10 && v4)
+  if (v10 && iCopy)
   {
     [(PKToolPicker *)self _updateUI];
   }
@@ -5750,39 +5750,39 @@ void __47__PKToolPicker__removeToolsAtIndexes_updateUI___block_invoke(uint64_t a
   [*(a1 + 40) _removeTool:v3 updateUI:0];
 }
 
-- (BOOL)_canRemoveTool:(id)a3
+- (BOOL)_canRemoveTool:(id)tool
 {
-  v4 = a3;
-  if ([(PKToolPicker *)self _indexOfTool:v4]== 0x7FFFFFFFFFFFFFFFLL)
+  toolCopy = tool;
+  if ([(PKToolPicker *)self _indexOfTool:toolCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    _isGenerationTool = 0;
   }
 
-  else if (self->_selectedTool == v4)
+  else if (self->_selectedTool == toolCopy)
   {
-    v6 = [(PKTool *)v4 ink];
-    v5 = [v6 _isGenerationTool];
+    v6 = [(PKTool *)toolCopy ink];
+    _isGenerationTool = [v6 _isGenerationTool];
   }
 
   else
   {
-    v5 = 1;
+    _isGenerationTool = 1;
   }
 
-  return v5;
+  return _isGenerationTool;
 }
 
-- (void)_resetTools:(id)a3 selectedTool:(id)a4 notify:(BOOL)a5
+- (void)_resetTools:(id)tools selectedTool:(id)tool notify:(BOOL)notify
 {
-  v5 = a5;
+  notifyCopy = notify;
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  toolsCopy = tools;
+  toolCopy = tool;
   p_selectedTool = &self->_selectedTool;
   v11 = self->_selectedTool;
-  if (([(NSMutableArray *)self->_mutableTools isEqual:v8]& 1) != 0)
+  if (([(NSMutableArray *)self->_mutableTools isEqual:toolsCopy]& 1) != 0)
   {
-    v12 = [(PKToolPicker *)self _indexOfTool:v9 tools:v8];
+    v12 = [(PKToolPicker *)self _indexOfTool:toolCopy tools:toolsCopy];
     mutableTools = self->_mutableTools;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -5798,7 +5798,7 @@ void __47__PKToolPicker__removeToolsAtIndexes_updateUI___block_invoke(uint64_t a
     *p_selectedTool = v14;
 
 LABEL_28:
-    if (v11 != *p_selectedTool && v5)
+    if (v11 != *p_selectedTool && notifyCopy)
     {
       v33 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -5815,11 +5815,11 @@ LABEL_28:
     goto LABEL_36;
   }
 
-  if ([(PKToolPicker *)self _canResetToolsFrom:v8])
+  if ([(PKToolPicker *)self _canResetToolsFrom:toolsCopy])
   {
     v37 = v11;
     v36 = [(NSMutableArray *)self->_mutableTools copy];
-    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[PKTool count](v8, "count")}];
+    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[PKTool count](toolsCopy, "count")}];
     v16 = self->_mutableTools;
     self->_mutableTools = v15;
 
@@ -5827,7 +5827,7 @@ LABEL_28:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v17 = v8;
+    v17 = toolsCopy;
     v18 = [(PKTool *)v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v18)
     {
@@ -5845,7 +5845,7 @@ LABEL_28:
           v22 = *(*(&v38 + 1) + 8 * i);
           [(PKToolPicker *)self _addTool:v22 updateUI:0];
           v23 = [(PKToolPicker *)self _indexOfTool:v22];
-          if (v22 == v9 && v23 != 0x7FFFFFFFFFFFFFFFLL)
+          if (v22 == toolCopy && v23 != 0x7FFFFFFFFFFFFFFFLL)
           {
             objc_storeStrong(&self->_selectedTool, v22);
           }
@@ -5874,9 +5874,9 @@ LABEL_28:
 
     if ([(PKToolPicker *)self _indexOfTool:self->_selectedTool]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v28 = [(NSMutableArray *)self->_mutableTools firstObject];
+      firstObject = [(NSMutableArray *)self->_mutableTools firstObject];
       selectedTool = self->_selectedTool;
-      self->_selectedTool = v28;
+      self->_selectedTool = firstObject;
 
       v30 = os_log_create("com.apple.pencilkit", "ToolPicker");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -5895,33 +5895,33 @@ LABEL_28:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v8;
+    v44 = toolsCopy;
     _os_log_impl(&dword_1C7CCA000, v35, OS_LOG_TYPE_DEFAULT, "Can't reset tools to: %@", buf, 0xCu);
   }
 
 LABEL_36:
 }
 
-- (unint64_t)_indexOfTool:(id)a3 tools:(id)a4
+- (unint64_t)_indexOfTool:(id)tool tools:(id)tools
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  toolCopy = tool;
+  toolsCopy = tools;
+  if ([toolsCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
-      v9 = [v8 _toolPickerItemIdentifier];
-      v10 = [v5 _toolPickerItemIdentifier];
-      v11 = [v9 isEqualToString:v10];
+      v8 = [toolsCopy objectAtIndexedSubscript:v7];
+      _toolPickerItemIdentifier = [v8 _toolPickerItemIdentifier];
+      _toolPickerItemIdentifier2 = [toolCopy _toolPickerItemIdentifier];
+      v11 = [_toolPickerItemIdentifier isEqualToString:_toolPickerItemIdentifier2];
 
       if (v11)
       {
         break;
       }
 
-      if (++v7 >= [v6 count])
+      if (++v7 >= [toolsCopy count])
       {
         goto LABEL_5;
       }
@@ -5939,48 +5939,48 @@ LABEL_5:
 
 - (void)_performPencilPreferredActionSwitchEraser
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 _performPencilPreferredActionSwitchEraser];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _performPencilPreferredActionSwitchEraser];
 }
 
 - (void)_performPencilPreferredActionSwitchPrevious
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 _performPencilPreferredActionSwitchPrevious];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _performPencilPreferredActionSwitchPrevious];
 }
 
 - (void)_performPencilPreferredActionShowColorPalette
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 _performPencilPreferredActionShowColorPalette];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _performPencilPreferredActionShowColorPalette];
 }
 
-- (void)_setSelectionMask:(unint64_t)a3 updateUI:(BOOL)a4
+- (void)_setSelectionMask:(unint64_t)mask updateUI:(BOOL)i
 {
-  if (self->_selectionMask != a3)
+  if (self->_selectionMask != mask)
   {
-    self->_selectionMask = a3;
-    if (a4)
+    self->_selectionMask = mask;
+    if (i)
     {
       [(PKToolPicker *)self _updateUI];
     }
   }
 }
 
-- (void)setColorSwatchesVisible:(BOOL)a3
+- (void)setColorSwatchesVisible:(BOOL)visible
 {
-  if (self->_colorSwatchesVisible != a3)
+  if (self->_colorSwatchesVisible != visible)
   {
-    self->_colorSwatchesVisible = a3;
+    self->_colorSwatchesVisible = visible;
     [(PKToolPicker *)self _updateUI];
   }
 }
 
-- (void)setPrefersLargeContextualEditingUI:(BOOL)a3
+- (void)setPrefersLargeContextualEditingUI:(BOOL)i
 {
-  if (self->_prefersLargeContextualEditingUI != a3)
+  if (self->_prefersLargeContextualEditingUI != i)
   {
-    self->_prefersLargeContextualEditingUI = a3;
+    self->_prefersLargeContextualEditingUI = i;
     [(PKToolPicker *)self _updateUI];
   }
 }
@@ -5992,8 +5992,8 @@ LABEL_5:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(PKToolPicker *)self _observers];
-  v4 = [v3 copy];
+  _observers = [(PKToolPicker *)self _observers];
+  v4 = [_observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
@@ -6031,12 +6031,12 @@ LABEL_3:
 
     if (v11)
     {
-      v12 = [(PKToolPicker *)self _paletteView];
-      [v12 startOpacityEditing];
+      _paletteView = [(PKToolPicker *)self _paletteView];
+      [_paletteView startOpacityEditing];
 
-      v13 = [(PKToolPicker *)self _paletteView];
-      v14 = [v13 opacityEditingView];
-      [v11 _toolPicker:self startEditingOpacityWithAccessoryView:v14];
+      _paletteView2 = [(PKToolPicker *)self _paletteView];
+      opacityEditingView = [_paletteView2 opacityEditingView];
+      [v11 _toolPicker:self startEditingOpacityWithAccessoryView:opacityEditingView];
 
       v10 = 1;
       v4 = v11;
@@ -6058,21 +6058,21 @@ LABEL_12:
 
 - (void)_endOpacityEditing
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 endOpacityEditing];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView endOpacityEditing];
 }
 
-- (void)set_temporarySelectionDelegate:(id)a3
+- (void)set_temporarySelectionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->__temporarySelectionDelegate);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->__temporarySelectionDelegate, obj);
-    v6 = [(PKToolPicker *)self _paletteView];
-    [v6 updateColorPickerSelectedColor];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    [_paletteView updateColorPickerSelectedColor];
 
     v5 = obj;
   }
@@ -6080,11 +6080,11 @@ LABEL_12:
 
 - (void)_dismissPopovers
 {
-  v2 = [(PKToolPicker *)self _paletteView];
-  [v2 dismissPalettePopoverWithCompletion:0];
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView dismissPalettePopoverWithCompletion:0];
 }
 
-- (void)_canvasViewWillBeginDrawing:(id)a3
+- (void)_canvasViewWillBeginDrawing:(id)drawing
 {
   if (PKIsVisionDevice())
   {
@@ -6093,12 +6093,12 @@ LABEL_12:
   }
 }
 
-- (void)_setContextMenuPresented:(BOOL)a3
+- (void)_setContextMenuPresented:(BOOL)presented
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->__contextMenuPresented != a3)
+  if (self->__contextMenuPresented != presented)
   {
-    self->__contextMenuPresented = a3;
+    self->__contextMenuPresented = presented;
     v4 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -6112,10 +6112,10 @@ LABEL_12:
   }
 }
 
-- (void)_setOverlapsWindow:(BOOL)a3
+- (void)_setOverlapsWindow:(BOOL)window
 {
-  v3 = a3;
-  if (PKIsVisionDevice() && self->__overlapsMainWindow != v3)
+  windowCopy = window;
+  if (PKIsVisionDevice() && self->__overlapsMainWindow != windowCopy)
   {
     v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -6125,18 +6125,18 @@ LABEL_12:
   }
 }
 
-- (void)_setSelectedColor:(id)a3 isFromExtendedColorPicker:(BOOL)a4
+- (void)_setSelectedColor:(id)color isFromExtendedColorPicker:(BOOL)picker
 {
-  v5 = [(PKTool *)self->_selectedTool _copyWithColor:a3, a4];
-  [(PKToolPicker *)self _setSelectedTool:v5 saveState:1 updateUI:1 updateLastSelectedTool:0];
+  picker = [(PKTool *)self->_selectedTool _copyWithColor:color, picker];
+  [(PKToolPicker *)self _setSelectedTool:picker saveState:1 updateUI:1 updateLastSelectedTool:0];
 }
 
 - (void)_handleDidInvokeAddTextBox
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     v2 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
@@ -6148,7 +6148,7 @@ LABEL_12:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [*(v1 + 200) copy];
+    v3 = [*(selfCopy + 200) copy];
     v4 = [v3 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v4)
     {
@@ -6175,7 +6175,7 @@ LABEL_12:
               v12 = v5;
               v13 = v6;
               v14 = v3;
-              v15 = v1;
+              v15 = selfCopy;
               v16 = v8;
               v18 = v17 = v7;
               *buf = 138412290;
@@ -6184,13 +6184,13 @@ LABEL_12:
 
               v7 = v17;
               v8 = v16;
-              v1 = v15;
+              selfCopy = v15;
               v3 = v14;
               v6 = v13;
               v5 = v12;
             }
 
-            [v10 _toolPickerDidInvokeAddTextBox:v1];
+            [v10 _toolPickerDidInvokeAddTextBox:selfCopy];
           }
         }
 
@@ -6202,11 +6202,11 @@ LABEL_12:
   }
 }
 
-- (void)_handleInsertStickerFromItemProvider:(uint64_t)a1
+- (void)_handleInsertStickerFromItemProvider:(uint64_t)provider
 {
   v25 = *MEMORY[0x1E69E9840];
   v17 = a2;
-  if (a1)
+  if (provider)
   {
     v2 = os_log_create("com.apple.pencilkit", "ToolPicker");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -6220,7 +6220,7 @@ LABEL_12:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v3 = [*(a1 + 200) copy];
+    v3 = [*(provider + 200) copy];
     v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v4)
     {
@@ -6257,7 +6257,7 @@ LABEL_12:
               v5 = v15;
             }
 
-            [v10 _toolPickerDidInvokeInsertSticker:a1 fromItemProvider:v17];
+            [v10 _toolPickerDidInvokeInsertSticker:provider fromItemProvider:v17];
           }
 
           ++v9;
@@ -6274,51 +6274,51 @@ LABEL_12:
 
 - (double)_fullScreenWindowScaleFactor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
   v11 = +[PKPaletteView _makeScaleFactorPolicy];
-  v12 = [a1 _paletteView];
-  [v11 scaleFactorForWindowBounds:v12 paletteView:{v4, v6, v8, v10}];
+  _paletteView = [self _paletteView];
+  [v11 scaleFactorForWindowBounds:_paletteView paletteView:{v4, v6, v8, v10}];
   v14 = v13;
 
   return v14;
 }
 
-- (void)toolPickerItemDidChange:(id)a3
+- (void)toolPickerItemDidChange:(id)change
 {
-  v14 = a3;
-  v4 = [v14 _tool];
-  v5 = [(PKToolPicker *)self _indexOfTool:v4];
+  changeCopy = change;
+  _tool = [changeCopy _tool];
+  v5 = [(PKToolPicker *)self _indexOfTool:_tool];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
     v7 = [(NSMutableArray *)self->_mutableTools objectAtIndexedSubscript:v5];
-    if (([v4 isEqual:v7] & 1) == 0)
+    if (([_tool isEqual:v7] & 1) == 0)
     {
       [(PKToolPicker *)self _dismissPopovers];
       mutableTools = self->_mutableTools;
-      v9 = [v14 _tool];
-      [(NSMutableArray *)mutableTools replaceObjectAtIndex:v6 withObject:v9];
+      _tool2 = [changeCopy _tool];
+      [(NSMutableArray *)mutableTools replaceObjectAtIndex:v6 withObject:_tool2];
 
-      v10 = [v14 identifier];
-      v11 = [(PKTool *)self->_selectedTool _toolPickerItemIdentifier];
-      LODWORD(v9) = [v10 isEqualToString:v11];
+      identifier = [changeCopy identifier];
+      _toolPickerItemIdentifier = [(PKTool *)self->_selectedTool _toolPickerItemIdentifier];
+      LODWORD(_tool2) = [identifier isEqualToString:_toolPickerItemIdentifier];
 
-      if (v9)
+      if (_tool2)
       {
-        v12 = [v14 _tool];
+        _tool3 = [changeCopy _tool];
         selectedTool = self->_selectedTool;
-        self->_selectedTool = v12;
+        self->_selectedTool = _tool3;
       }
 
       [(PKToolPicker *)self _saveToolPickerState];
@@ -6327,11 +6327,11 @@ LABEL_12:
   }
 }
 
-- (void)toolPickerItemReloadImage:(id)a3
+- (void)toolPickerItemReloadImage:(id)image
 {
-  v4 = a3;
-  v5 = [(PKToolPicker *)self _paletteView];
-  [v5 _reloadImageForToolItem:v4];
+  imageCopy = image;
+  _paletteView = [(PKToolPicker *)self _paletteView];
+  [_paletteView _reloadImageForToolItem:imageCopy];
 }
 
 - (UIViewController)_presentationController
@@ -6395,28 +6395,28 @@ LABEL_12:
   return result;
 }
 
-+ (void)_setPrefersPencilOnlyDrawingForiWork:(BOOL)a3
++ (void)_setPrefersPencilOnlyDrawingForiWork:(BOOL)work
 {
-  v3 = a3;
+  workCopy = work;
   if (PKIsiWork())
   {
 
-    [PKSettingsDaemon setPrefersPencilOnlyDrawing:v3];
+    [PKSettingsDaemon setPrefersPencilOnlyDrawing:workCopy];
   }
 }
 
-+ (void)_setPrefersHoverPreviewEnabled:(BOOL)a3 withCompletion:(id)a4
++ (void)_setPrefersHoverPreviewEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = a4;
+  enabledCopy = enabled;
+  completionCopy = completion;
   if ((PKIsiWork() & 1) != 0 || ([MEMORY[0x1E696AAE8] mainBundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.freeform"), v7, v6, v8))
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__PKToolPicker_iWorkSPI___setPrefersHoverPreviewEnabled_withCompletion___block_invoke;
     v9[3] = &unk_1E82D6F70;
-    v10 = v5;
-    [PKSettingsDaemon setPrefersPencilHoverPreviewEnabled:v4 withCompletion:v9];
+    v10 = completionCopy;
+    [PKSettingsDaemon setPrefersPencilHoverPreviewEnabled:enabledCopy withCompletion:v9];
   }
 }
 
@@ -6431,17 +6431,17 @@ uint64_t __72__PKToolPicker_iWorkSPI___setPrefersHoverPreviewEnabled_withComplet
   return result;
 }
 
-- (void)_showImageWandTipWithController:(id)a3
+- (void)_showImageWandTipWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(PKToolPicker *)self isVisible])
   {
-    v5 = [(PKToolPicker *)self _paletteView];
-    [v5 showImageWandTipWithController:v4];
+    _paletteView = [(PKToolPicker *)self _paletteView];
+    [_paletteView showImageWandTipWithController:controllerCopy];
 
-    if (([v4 tipStatusIsInvalid] & 1) == 0)
+    if (([controllerCopy tipStatusIsInvalid] & 1) == 0)
     {
-      [v4 setDelegate:self];
+      [controllerCopy setDelegate:self];
     }
   }
 
@@ -6456,30 +6456,30 @@ uint64_t __72__PKToolPicker_iWorkSPI___setPrefersHoverPreviewEnabled_withComplet
   }
 }
 
-- (void)imageWandTipControllerTipStatusDidUpdate:(id)a3
+- (void)imageWandTipControllerTipStatusDidUpdate:(id)update
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = os_log_create("com.apple.pencilkit", "ToolPicker");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109632;
-    v6[1] = [v4 tipStatusIsInvalid];
+    v6[1] = [updateCopy tipStatusIsInvalid];
     v7 = 1024;
-    v8 = [v4 tipStatusIsPending];
+    tipStatusIsPending = [updateCopy tipStatusIsPending];
     v9 = 1024;
-    v10 = [v4 tipStatusIsAvailable];
+    tipStatusIsAvailable = [updateCopy tipStatusIsAvailable];
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Image Wand Tip status did update, invalid: %{BOOL}d, pending: %{BOOL}d, available: %{BOOL}d", v6, 0x14u);
   }
 
-  if ([v4 tipStatusIsInvalid])
+  if ([updateCopy tipStatusIsInvalid])
   {
-    [v4 setDelegate:0];
+    [updateCopy setDelegate:0];
   }
 
   else
   {
-    [(PKToolPicker *)self _showImageWandTipWithController:v4];
+    [(PKToolPicker *)self _showImageWandTipWithController:updateCopy];
   }
 }
 

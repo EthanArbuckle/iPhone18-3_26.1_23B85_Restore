@@ -7,30 +7,30 @@
 - (CGFloat)sizeThatFits:()CKBalloonTextView textAlignmentInsets:isSingleLine:
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = [a1 layoutManager];
-  v8 = [v7 textStorage];
-  [v7 ensureLayoutForTextContainer:a1];
-  [v7 glyphRangeForTextContainer:a1];
-  [v7 usedRectForTextContainer:a1];
+  layoutManager = [self layoutManager];
+  textStorage = [layoutManager textStorage];
+  [layoutManager ensureLayoutForTextContainer:self];
+  [layoutManager glyphRangeForTextContainer:self];
+  [layoutManager usedRectForTextContainer:self];
   size.width = v9;
   v11 = v10;
-  if (![v8 length] || !(a3 | a4))
+  if (![textStorage length] || !(a3 | a4))
   {
     goto LABEL_42;
   }
 
   v72[0] = 0;
   v72[1] = 0;
-  [v7 lineFragmentUsedRectForGlyphAtIndex:0 effectiveRange:v72];
+  [layoutManager lineFragmentUsedRectForGlyphAtIndex:0 effectiveRange:v72];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [MEMORY[0x1E69DB870] sharedSystemTypesetter];
-  [v20 baselineOffsetInLayoutManager:v7 glyphIndex:0];
+  mEMORY[0x1E69DB870] = [MEMORY[0x1E69DB870] sharedSystemTypesetter];
+  [mEMORY[0x1E69DB870] baselineOffsetInLayoutManager:layoutManager glyphIndex:0];
   v22 = v21;
 
-  v23 = [v8 attribute:*MEMORY[0x1E69DB680] atIndex:0 effectiveRange:0];
+  v23 = [textStorage attribute:*MEMORY[0x1E69DB680] atIndex:0 effectiveRange:0];
   v24 = v23;
   if (v23)
   {
@@ -39,7 +39,7 @@
 
   else
   {
-    v25 = [v8 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+    v25 = [textStorage attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
   }
 
   v26 = v25;
@@ -81,13 +81,13 @@
     }
   }
 
-  v34 = [v7 numberOfGlyphs];
-  if (v34)
+  numberOfGlyphs = [layoutManager numberOfGlyphs];
+  if (numberOfGlyphs)
   {
     size.height = 0.0;
     v71 = 0;
-    v35 = [a1 maximumNumberOfLines];
-    if (v35)
+    maximumNumberOfLines = [self maximumNumberOfLines];
+    if (maximumNumberOfLines)
     {
       v36 = 0;
       v37 = *MEMORY[0x1E695F058];
@@ -99,7 +99,7 @@
       v43 = 1;
       do
       {
-        [v7 lineFragmentUsedRectForGlyphAtIndex:v36 effectiveRange:&size.height];
+        [layoutManager lineFragmentUsedRectForGlyphAtIndex:v36 effectiveRange:&size.height];
         if (v46 != v41 || v47 != v42)
         {
           v40 = v47;
@@ -112,21 +112,21 @@
         v36 = v71 + *&size.height;
       }
 
-      while (v71 + *&size.height < v34 && v43++ < v35);
+      while (v71 + *&size.height < numberOfGlyphs && v43++ < maximumNumberOfLines);
     }
 
     else
     {
-      *&height = v34 - 1;
-      [v7 lineFragmentUsedRectForGlyphAtIndex:v34 - 1 effectiveRange:&size.height];
+      *&height = numberOfGlyphs - 1;
+      [layoutManager lineFragmentUsedRectForGlyphAtIndex:numberOfGlyphs - 1 effectiveRange:&size.height];
       v37 = v52;
       v38 = v53;
       v39 = v54;
       v40 = v55;
     }
 
-    v56 = [MEMORY[0x1E69DB870] sharedSystemTypesetter];
-    [v56 baselineOffsetInLayoutManager:v7 glyphIndex:*&height];
+    mEMORY[0x1E69DB870]2 = [MEMORY[0x1E69DB870] sharedSystemTypesetter];
+    [mEMORY[0x1E69DB870]2 baselineOffsetInLayoutManager:layoutManager glyphIndex:*&height];
     v58 = v57;
 
     v88.origin.x = v37;
@@ -161,7 +161,7 @@
       }
     }
 
-    LOBYTE(v34) = v71 == v34;
+    LOBYTE(numberOfGlyphs) = v71 == numberOfGlyphs;
     if (!a3)
     {
       goto LABEL_36;
@@ -174,7 +174,7 @@
   if (a3)
   {
 LABEL_32:
-    [a1 lineFragmentPadding];
+    [self lineFragmentPadding];
     *a3 = v29;
     *(a3 + 8) = v62;
     *(a3 + 16) = v11 - v51;
@@ -195,7 +195,7 @@ LABEL_32:
 LABEL_36:
   if (a4)
   {
-    *a4 = v34;
+    *a4 = numberOfGlyphs;
     if (IMOSLoggingEnabled())
     {
       v65 = OSLogHandleForIMFoundationCategory();

@@ -1,77 +1,77 @@
 @interface CCUILabeledRoundButtonViewController
-- (CCUILabeledRoundButtonViewController)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6;
-- (CCUILabeledRoundButtonViewController)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5;
+- (CCUILabeledRoundButtonViewController)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style;
+- (CCUILabeledRoundButtonViewController)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style;
 - (UIControl)button;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)loadView;
-- (void)setContentSizeCategoryThreshold:(id)a3;
-- (void)setDynamicLayoutEnabled:(BOOL)a3;
-- (void)setDynamicLayoutUnbounded:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseAlternateBackground:(BOOL)a3;
-- (void)setUseAutomaticSymbolColors:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setContentSizeCategoryThreshold:(id)threshold;
+- (void)setDynamicLayoutEnabled:(BOOL)enabled;
+- (void)setDynamicLayoutUnbounded:(BOOL)unbounded;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphState:(id)state;
+- (void)setHighlightColor:(id)color;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUseAlternateBackground:(BOOL)background;
+- (void)setUseAutomaticSymbolColors:(BOOL)colors;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation CCUILabeledRoundButtonViewController
 
-- (CCUILabeledRoundButtonViewController)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6
+- (CCUILabeledRoundButtonViewController)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  imageCopy = image;
+  colorCopy = color;
+  tintColorCopy = tintColor;
   v21.receiver = self;
   v21.super_class = CCUILabeledRoundButtonViewController;
   v14 = [(CCUILabeledRoundButtonViewController *)&v21 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_glyphImage, a3);
+    objc_storeStrong(&v14->_glyphImage, image);
     v15->_glyphScale = 1.0;
-    v16 = [v12 copy];
+    v16 = [colorCopy copy];
     highlightColor = v15->_highlightColor;
     v15->_highlightColor = v16;
 
-    v18 = [v13 copy];
+    v18 = [tintColorCopy copy];
     highlightTintColor = v15->_highlightTintColor;
     v15->_highlightTintColor = v18;
 
     v15->_toggleStateOnTap = 1;
-    v15->_useLightStyle = a6;
+    v15->_useLightStyle = style;
     v15->_contentSizeCategoryThreshold = *MEMORY[0x1E69DDC60];
   }
 
   return v15;
 }
 
-- (CCUILabeledRoundButtonViewController)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5
+- (CCUILabeledRoundButtonViewController)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style
 {
-  v9 = a3;
-  v10 = a4;
+  descriptionCopy = description;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = CCUILabeledRoundButtonViewController;
   v11 = [(CCUILabeledRoundButtonViewController *)&v14 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_glyphPackageDescription, a3);
+    objc_storeStrong(&v11->_glyphPackageDescription, description);
     v12->_glyphScale = 1.0;
-    objc_storeStrong(&v12->_highlightColor, a4);
+    objc_storeStrong(&v12->_highlightColor, color);
     v12->_toggleStateOnTap = 1;
-    v12->_useLightStyle = a5;
+    v12->_useLightStyle = style;
     v12->_contentSizeCategoryThreshold = *MEMORY[0x1E69DDC60];
   }
 
   return v12;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
   if (self->_toggleStateOnTap)
   {
@@ -82,91 +82,91 @@
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  objc_storeStrong(&self->_highlightColor, a3);
-  v5 = a3;
-  [(CCUILabeledRoundButton *)self->_buttonContainer setHighlightColor:v5];
+  objc_storeStrong(&self->_highlightColor, color);
+  colorCopy = color;
+  [(CCUILabeledRoundButton *)self->_buttonContainer setHighlightColor:colorCopy];
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v5 = a3;
-  if (self->_glyphImage != v5)
+  imageCopy = image;
+  if (self->_glyphImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_glyphImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_glyphImage, image);
     [(CCUILabeledRoundButton *)self->_buttonContainer setGlyphImage:v7];
-    v6 = [(CCUILabeledRoundButtonViewController *)self view];
-    [v6 setNeedsLayout];
+    view = [(CCUILabeledRoundButtonViewController *)self view];
+    [view setNeedsLayout];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphPackageDescription, a3);
-    [(CCUILabeledRoundButton *)self->_buttonContainer setGlyphPackageDescription:v5];
+    objc_storeStrong(&self->_glyphPackageDescription, description);
+    [(CCUILabeledRoundButton *)self->_buttonContainer setGlyphPackageDescription:descriptionCopy];
   }
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  objc_storeStrong(&self->_glyphState, a3);
-  v5 = a3;
-  [(CCUILabeledRoundButton *)self->_buttonContainer setGlyphState:v5];
+  objc_storeStrong(&self->_glyphState, state);
+  stateCopy = state;
+  [(CCUILabeledRoundButton *)self->_buttonContainer setGlyphState:stateCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   [(UIControl *)self->_button setSelected:?];
-  v4 = [(CCUILabeledRoundButtonViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(CCUILabeledRoundButtonViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = CCUILabeledRoundButtonViewController;
-  v4 = a3;
-  [(CCUILabeledRoundButtonViewController *)&v5 setTitle:v4];
-  [(CCUILabeledRoundButton *)self->_buttonContainer setTitle:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(CCUILabeledRoundButtonViewController *)&v5 setTitle:titleCopy];
+  [(CCUILabeledRoundButton *)self->_buttonContainer setTitle:titleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  subtitleCopy = subtitle;
+  v4 = [subtitleCopy copy];
   subtitle = self->_subtitle;
   self->_subtitle = v4;
 
-  [(CCUILabeledRoundButton *)self->_buttonContainer setSubtitle:v6];
+  [(CCUILabeledRoundButton *)self->_buttonContainer setSubtitle:subtitleCopy];
 }
 
-- (void)setUseAlternateBackground:(BOOL)a3
+- (void)setUseAlternateBackground:(BOOL)background
 {
-  if (self->_useAlternateBackground != a3)
+  if (self->_useAlternateBackground != background)
   {
-    self->_useAlternateBackground = a3;
+    self->_useAlternateBackground = background;
     [(CCUILabeledRoundButton *)self->_buttonContainer setUseAlternateBackground:?];
-    v5 = [(CCUILabeledRoundButtonViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(CCUILabeledRoundButtonViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setUseAutomaticSymbolColors:(BOOL)a3
+- (void)setUseAutomaticSymbolColors:(BOOL)colors
 {
-  if (self->_useAutomaticSymbolColors != a3)
+  if (self->_useAutomaticSymbolColors != colors)
   {
-    self->_useAutomaticSymbolColors = a3;
+    self->_useAutomaticSymbolColors = colors;
     [(CCUILabeledRoundButton *)self->_buttonContainer setUseAutomaticSymbolColors:?];
-    v5 = [(CCUILabeledRoundButtonViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(CCUILabeledRoundButtonViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -178,34 +178,34 @@
   return button;
 }
 
-- (void)setContentSizeCategoryThreshold:(id)a3
+- (void)setContentSizeCategoryThreshold:(id)threshold
 {
-  if (self->_contentSizeCategoryThreshold != a3)
+  if (self->_contentSizeCategoryThreshold != threshold)
   {
-    self->_contentSizeCategoryThreshold = a3;
+    self->_contentSizeCategoryThreshold = threshold;
     [(CCUILabeledRoundButton *)self->_buttonContainer setContentSizeCategoryThreshold:?];
   }
 }
 
-- (void)setDynamicLayoutEnabled:(BOOL)a3
+- (void)setDynamicLayoutEnabled:(BOOL)enabled
 {
-  if (self->_dynamicLayoutEnabled != a3)
+  if (self->_dynamicLayoutEnabled != enabled)
   {
-    self->_dynamicLayoutEnabled = a3;
+    self->_dynamicLayoutEnabled = enabled;
     [(CCUILabeledRoundButton *)self->_buttonContainer setDynamicLayoutEnabled:?];
-    v5 = [(CCUILabeledRoundButtonViewController *)self viewIfLoaded];
-    [v5 setNeedsLayout];
+    viewIfLoaded = [(CCUILabeledRoundButtonViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setDynamicLayoutUnbounded:(BOOL)a3
+- (void)setDynamicLayoutUnbounded:(BOOL)unbounded
 {
-  if (self->_dynamicLayoutUnbounded != a3)
+  if (self->_dynamicLayoutUnbounded != unbounded)
   {
-    self->_dynamicLayoutUnbounded = a3;
+    self->_dynamicLayoutUnbounded = unbounded;
     [(CCUILabeledRoundButton *)self->_buttonContainer setDynamicLayoutUnbounded:?];
-    v5 = [(CCUILabeledRoundButtonViewController *)self viewIfLoaded];
-    [v5 setNeedsLayout];
+    viewIfLoaded = [(CCUILabeledRoundButtonViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
@@ -234,17 +234,17 @@ LABEL_6:
   [(CCUILabeledRoundButton *)self->_buttonContainer setUseAutomaticSymbolColors:self->_useAutomaticSymbolColors];
   [(CCUILabeledRoundButton *)self->_buttonContainer setLabelsVisible:self->_labelsVisible];
   v5 = self->_buttonContainer;
-  v6 = [(CCUILabeledRoundButtonViewController *)self title];
-  [(CCUILabeledRoundButton *)v5 setTitle:v6];
+  title = [(CCUILabeledRoundButtonViewController *)self title];
+  [(CCUILabeledRoundButton *)v5 setTitle:title];
 
   v7 = self->_buttonContainer;
-  v8 = [(CCUILabeledRoundButtonViewController *)self subtitle];
-  [(CCUILabeledRoundButton *)v7 setSubtitle:v8];
+  subtitle = [(CCUILabeledRoundButtonViewController *)self subtitle];
+  [(CCUILabeledRoundButton *)v7 setSubtitle:subtitle];
 
   [(CCUILabeledRoundButton *)self->_buttonContainer setContentSizeCategoryThreshold:self->_contentSizeCategoryThreshold];
-  v9 = [(CCUILabeledRoundButton *)self->_buttonContainer buttonView];
+  buttonView = [(CCUILabeledRoundButton *)self->_buttonContainer buttonView];
   button = self->_button;
-  self->_button = v9;
+  self->_button = buttonView;
 
   [(UIControl *)self->_button addTarget:self action:sel_buttonTapped_ forControlEvents:64];
   v11 = self->_buttonContainer;
@@ -252,17 +252,17 @@ LABEL_6:
   [(CCUILabeledRoundButtonViewController *)self setView:v11];
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v9 = a3;
-  v6 = [(CCUILabeledRoundButtonViewController *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(CCUILabeledRoundButtonViewController *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8)
   {
     [(CCUILabeledRoundButtonViewController *)self loadViewIfNeeded];
-    [(CCUILabeledRoundButton *)self->_buttonContainer setVisualStylingProvider:v9 forCategory:a4];
+    [(CCUILabeledRoundButton *)self->_buttonContainer setVisualStylingProvider:providerCopy forCategory:category];
   }
 }
 

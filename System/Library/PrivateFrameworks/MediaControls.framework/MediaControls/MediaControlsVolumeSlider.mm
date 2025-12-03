@@ -1,27 +1,27 @@
 @interface MediaControlsVolumeSlider
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (MediaControlsVolumeSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)_thumbImageForStyle:(int64_t)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (MediaControlsVolumeSlider)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)_thumbImageForStyle:(int64_t)style;
 - (id)createThumbView;
-- (void)providedStylesDidChangeForProvider:(id)a3;
-- (void)setMaximumTrackVisualProvider:(id)a3;
-- (void)setMinimumTrackVisualProvider:(id)a3;
-- (void)setVisualStylingProvider:(id)a3;
+- (void)providedStylesDidChangeForProvider:(id)provider;
+- (void)setMaximumTrackVisualProvider:(id)provider;
+- (void)setMinimumTrackVisualProvider:(id)provider;
+- (void)setVisualStylingProvider:(id)provider;
 - (void)tintColorDidChange;
 @end
 
 @implementation MediaControlsVolumeSlider
 
-- (MediaControlsVolumeSlider)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (MediaControlsVolumeSlider)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = MediaControlsVolumeSlider;
-  v4 = [(MPVolumeSlider *)&v6 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MPVolumeSlider *)&v6 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   UIEdgeInsetsMakeWithEdges();
   [(MPVolumeSlider *)v4 setHitRectInsets:?];
 
@@ -32,59 +32,59 @@
 {
   v20.receiver = self;
   v20.super_class = MediaControlsVolumeSlider;
-  v3 = [(MPVolumeSlider *)&v20 createThumbView];
-  v4 = [(MediaControlsVolumeSlider *)self traitCollection];
-  [v4 displayScale];
+  createThumbView = [(MPVolumeSlider *)&v20 createThumbView];
+  traitCollection = [(MediaControlsVolumeSlider *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   if (v6 <= 0.00000011920929)
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
   }
 
-  [v3 setClipsToBounds:0];
-  v8 = [MEMORY[0x1E69DC888] blackColor];
-  v9 = [v8 CGColor];
-  v10 = [v3 layer];
-  [v10 setShadowColor:v9];
+  [createThumbView setClipsToBounds:0];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
+  layer = [createThumbView layer];
+  [layer setShadowColor:cGColor];
 
   UIRoundToScale();
   v12 = v11;
-  v13 = [v3 layer];
-  [v13 setShadowOffset:{0.0, v12}];
+  layer2 = [createThumbView layer];
+  [layer2 setShadowOffset:{0.0, v12}];
 
   UIRoundToScale();
   v15 = v14;
-  v16 = [v3 layer];
-  [v16 setShadowRadius:v15];
+  layer3 = [createThumbView layer];
+  [layer3 setShadowRadius:v15];
 
-  v17 = [v3 layer];
+  layer4 = [createThumbView layer];
   LODWORD(v18) = 1045220557;
-  [v17 setShadowOpacity:v18];
+  [layer4 setShadowOpacity:v18];
 
-  return v3;
+  return createThumbView;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
   v26.receiver = self;
   v26.super_class = MediaControlsVolumeSlider;
-  [(MediaControlsVolumeSlider *)&v26 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, LODWORD(a5)];
+  [(MediaControlsVolumeSlider *)&v26 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, LODWORD(value)];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(MediaControlsVolumeSlider *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(MediaControlsVolumeSlider *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v16 = v9 - v15;
 
   v17 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{0.0, 0.0, v11, v13}];
-  v18 = [v17 CGPath];
-  v19 = [(MPVolumeSlider *)self thumbView];
-  v20 = [v19 layer];
-  [v20 setShadowPath:v18];
+  cGPath = [v17 CGPath];
+  thumbView = [(MPVolumeSlider *)self thumbView];
+  layer = [thumbView layer];
+  [layer setShadowPath:cGPath];
 
   v21 = v7;
   v22 = v16;
@@ -97,21 +97,21 @@
   return result;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
   v12.receiver = self;
   v12.super_class = MediaControlsVolumeSlider;
   [(MediaControlsVolumeSlider *)&v12 trackRectForBounds:?];
-  v4 = [(MediaControlsVolumeSlider *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(MediaControlsVolumeSlider *)self traitCollection];
+  [traitCollection displayScale];
 
-  v5 = [(MediaControlsVolumeSlider *)self minimumValueImage];
-  if (v5)
+  minimumValueImage = [(MediaControlsVolumeSlider *)self minimumValueImage];
+  if (minimumValueImage)
   {
-    v6 = v5;
-    v7 = [(MediaControlsVolumeSlider *)self maximumValueImage];
+    v6 = minimumValueImage;
+    maximumValueImage = [(MediaControlsVolumeSlider *)self maximumValueImage];
 
-    if (v7)
+    if (maximumValueImage)
     {
       UIRoundToScale();
     }
@@ -126,7 +126,7 @@
   return result;
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
   UIRectCenteredYInRect();
 
@@ -138,7 +138,7 @@
   return result;
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
   UIRectCenteredYInRect();
 
@@ -150,7 +150,7 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   [(MediaControlsVolumeSlider *)self bounds];
   v6 = v5;
@@ -177,17 +177,17 @@
   v37 = v23 + v32;
   v38 = v31;
   v39 = v34;
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
 
   return CGRectContainsPoint(*&v37, *&x);
 }
 
-- (id)_thumbImageForStyle:(int64_t)a3
+- (id)_thumbImageForStyle:(int64_t)style
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [MEMORY[0x1E696AAE8] mediaControlsBundle];
-  v5 = [v3 imageNamed:@"CC-Volume-Knob" inBundle:v4];
+  mediaControlsBundle = [MEMORY[0x1E696AAE8] mediaControlsBundle];
+  v5 = [v3 imageNamed:@"CC-Volume-Knob" inBundle:mediaControlsBundle];
 
   return v5;
 }
@@ -204,85 +204,85 @@
 
   else
   {
-    v3 = [(MediaControlsVolumeSlider *)self tintColor];
-    [(MediaControlsVolumeSlider *)self setMinimumTrackTintColor:v3];
+    tintColor = [(MediaControlsVolumeSlider *)self tintColor];
+    [(MediaControlsVolumeSlider *)self setMinimumTrackTintColor:tintColor];
 
-    v4 = [(MediaControlsVolumeSlider *)self tintColor];
-    v5 = [(MediaControlsVolumeSlider *)self traitCollection];
-    v6 = [v4 secondaryColorForInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+    tintColor2 = [(MediaControlsVolumeSlider *)self tintColor];
+    traitCollection = [(MediaControlsVolumeSlider *)self traitCollection];
+    v6 = [tintColor2 secondaryColorForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    v7 = [(MediaControlsVolumeSlider *)self _minValueView];
-    [v7 setTintColor:v6];
+    _minValueView = [(MediaControlsVolumeSlider *)self _minValueView];
+    [_minValueView setTintColor:v6];
 
-    v8 = [(MediaControlsVolumeSlider *)self _maxValueView];
-    [v8 setTintColor:v6];
+    _maxValueView = [(MediaControlsVolumeSlider *)self _maxValueView];
+    [_maxValueView setTintColor:v6];
 
-    v9 = [(MediaControlsVolumeSlider *)self tintColor];
-    v10 = [(MediaControlsVolumeSlider *)self traitCollection];
-    v11 = [v9 tertiaryColorForInterfaceStyle:{objc_msgSend(v10, "userInterfaceStyle")}];
+    tintColor3 = [(MediaControlsVolumeSlider *)self tintColor];
+    traitCollection2 = [(MediaControlsVolumeSlider *)self traitCollection];
+    v11 = [tintColor3 tertiaryColorForInterfaceStyle:{objc_msgSend(traitCollection2, "userInterfaceStyle")}];
 
     [(MediaControlsVolumeSlider *)self setMaximumTrackTintColor:v11];
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v15 = v5;
+    v15 = providerCopy;
     [(MTVisualStylingProvider *)visualStylingProvider _removeObserver:self];
     v7 = self->_visualStylingProvider;
-    v8 = [(MediaControlsVolumeSlider *)self _minValueView];
-    [(MTVisualStylingProvider *)v7 stopAutomaticallyUpdatingView:v8];
+    _minValueView = [(MediaControlsVolumeSlider *)self _minValueView];
+    [(MTVisualStylingProvider *)v7 stopAutomaticallyUpdatingView:_minValueView];
 
     v9 = self->_visualStylingProvider;
-    v10 = [(MediaControlsVolumeSlider *)self _maxValueView];
-    [(MTVisualStylingProvider *)v9 stopAutomaticallyUpdatingView:v10];
+    _maxValueView = [(MediaControlsVolumeSlider *)self _maxValueView];
+    [(MTVisualStylingProvider *)v9 stopAutomaticallyUpdatingView:_maxValueView];
 
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(MTVisualStylingProvider *)self->_visualStylingProvider _addObserver:self];
     v11 = self->_visualStylingProvider;
-    v12 = [(MediaControlsVolumeSlider *)self _minValueView];
-    [(MTVisualStylingProvider *)v11 automaticallyUpdateView:v12 withStyle:1];
+    _minValueView2 = [(MediaControlsVolumeSlider *)self _minValueView];
+    [(MTVisualStylingProvider *)v11 automaticallyUpdateView:_minValueView2 withStyle:1];
 
     v13 = self->_visualStylingProvider;
-    v14 = [(MediaControlsVolumeSlider *)self _maxValueView];
-    [(MTVisualStylingProvider *)v13 automaticallyUpdateView:v14 withStyle:1];
+    _maxValueView2 = [(MediaControlsVolumeSlider *)self _maxValueView];
+    [(MTVisualStylingProvider *)v13 automaticallyUpdateView:_maxValueView2 withStyle:1];
 
     visualStylingProvider = [(MediaControlsVolumeSlider *)self providedStylesDidChangeForProvider:self->_visualStylingProvider];
-    v5 = v15;
+    providerCopy = v15;
   }
 
-  MEMORY[0x1EEE66BB8](visualStylingProvider, v5);
+  MEMORY[0x1EEE66BB8](visualStylingProvider, providerCopy);
 }
 
-- (void)setMinimumTrackVisualProvider:(id)a3
+- (void)setMinimumTrackVisualProvider:(id)provider
 {
-  v6 = [a3 _visualStylingForStyle:0];
-  v4 = [v6 color];
-  [(MediaControlsVolumeSlider *)self setMinimumTrackTintColor:v4];
+  v6 = [provider _visualStylingForStyle:0];
+  color = [v6 color];
+  [(MediaControlsVolumeSlider *)self setMinimumTrackTintColor:color];
 
-  v5 = [(MediaControlsVolumeSlider *)self _minTrackView];
-  [v5 mt_replaceVisualStyling:v6];
+  _minTrackView = [(MediaControlsVolumeSlider *)self _minTrackView];
+  [_minTrackView mt_replaceVisualStyling:v6];
 }
 
-- (void)setMaximumTrackVisualProvider:(id)a3
+- (void)setMaximumTrackVisualProvider:(id)provider
 {
-  v6 = [a3 _visualStylingForStyle:1];
-  v4 = [v6 color];
-  [(MediaControlsVolumeSlider *)self setMaximumTrackTintColor:v4];
+  v6 = [provider _visualStylingForStyle:1];
+  color = [v6 color];
+  [(MediaControlsVolumeSlider *)self setMaximumTrackTintColor:color];
 
-  v5 = [(MediaControlsVolumeSlider *)self _maxTrackView];
-  [v5 mt_replaceVisualStyling:v6];
+  _maxTrackView = [(MediaControlsVolumeSlider *)self _maxTrackView];
+  [_maxTrackView mt_replaceVisualStyling:v6];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v6.receiver = self;
   v6.super_class = MediaControlsVolumeSlider;
-  v4 = [(MediaControlsVolumeSlider *)&v6 gestureRecognizerShouldBegin:a3];
+  v4 = [(MediaControlsVolumeSlider *)&v6 gestureRecognizerShouldBegin:begin];
   if (v4)
   {
     LOBYTE(v4) = ![(MPVolumeSlider *)self isTracking];
@@ -291,11 +291,11 @@
   return v4;
 }
 
-- (void)providedStylesDidChangeForProvider:(id)a3
+- (void)providedStylesDidChangeForProvider:(id)provider
 {
-  v4 = a3;
-  [(MediaControlsVolumeSlider *)self setMinimumTrackVisualProvider:v4];
-  [(MediaControlsVolumeSlider *)self setMaximumTrackVisualProvider:v4];
+  providerCopy = provider;
+  [(MediaControlsVolumeSlider *)self setMinimumTrackVisualProvider:providerCopy];
+  [(MediaControlsVolumeSlider *)self setMaximumTrackVisualProvider:providerCopy];
 }
 
 @end

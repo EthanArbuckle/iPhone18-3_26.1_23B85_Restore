@@ -1,10 +1,10 @@
 @interface ContactValueTableViewCell
-- (ContactValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ContactValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_contentSizeDidChange;
 - (void)prepareForReuse;
-- (void)setCapabilityColor:(id)a3;
-- (void)setContactCapability:(id)a3;
-- (void)setContactHandle:(id)a3;
+- (void)setCapabilityColor:(id)color;
+- (void)setContactCapability:(id)capability;
+- (void)setContactHandle:(id)handle;
 - (void)updateConstraintConstants;
 - (void)updateContactLabel;
 - (void)updateFonts;
@@ -12,12 +12,12 @@
 
 @implementation ContactValueTableViewCell
 
-- (void)setCapabilityColor:(id)a3
+- (void)setCapabilityColor:(id)color
 {
-  objc_storeStrong(&self->_capabilityColor, a3);
-  v5 = a3;
-  [(UILabel *)self->_contactHandleLabel setTextColor:v5];
-  [(UILabel *)self->_contactNameLabel setTextColor:v5];
+  objc_storeStrong(&self->_capabilityColor, color);
+  colorCopy = color;
+  [(UILabel *)self->_contactHandleLabel setTextColor:colorCopy];
+  [(UILabel *)self->_contactNameLabel setTextColor:colorCopy];
 }
 
 - (void)updateContactLabel
@@ -37,16 +37,16 @@
   }
 }
 
-- (void)setContactCapability:(id)a3
+- (void)setContactCapability:(id)capability
 {
-  objc_storeStrong(&self->_contactCapability, a3);
+  objc_storeStrong(&self->_contactCapability, capability);
 
   [(ContactValueTableViewCell *)self updateContactLabel];
 }
 
-- (void)setContactHandle:(id)a3
+- (void)setContactHandle:(id)handle
 {
-  objc_storeStrong(&self->_contactHandle, a3);
+  objc_storeStrong(&self->_contactHandle, handle);
 
   [(ContactValueTableViewCell *)self updateContactLabel];
 }
@@ -92,11 +92,11 @@
   [(ContactValueTableViewCell *)self updateFonts];
 }
 
-- (ContactValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ContactValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v54.receiver = self;
   v54.super_class = ContactValueTableViewCell;
-  v4 = [(ContactValueTableViewCell *)&v54 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ContactValueTableViewCell *)&v54 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -111,8 +111,8 @@
 
     [(UILabel *)v5->_contactNameLabel setAccessibilityIdentifier:@"ContactNameLabel"];
     [(UILabel *)v5->_contactNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(ContactValueTableViewCell *)v5 contentView];
-    [v12 addSubview:v5->_contactNameLabel];
+    contentView = [(ContactValueTableViewCell *)v5 contentView];
+    [contentView addSubview:v5->_contactNameLabel];
 
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     contactHandleLabel = v5->_contactHandleLabel;
@@ -120,55 +120,55 @@
 
     [(UILabel *)v5->_contactHandleLabel setAccessibilityIdentifier:@"ContactHandleLabel"];
     [(UILabel *)v5->_contactHandleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(ContactValueTableViewCell *)v5 contentView];
-    [v15 addSubview:v5->_contactHandleLabel];
+    contentView2 = [(ContactValueTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_contactHandleLabel];
 
-    v16 = [(UILabel *)v5->_contactNameLabel firstBaselineAnchor];
-    v17 = [(ContactValueTableViewCell *)v5 contentView];
-    v18 = [v17 topAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:0.0];
+    firstBaselineAnchor = [(UILabel *)v5->_contactNameLabel firstBaselineAnchor];
+    contentView3 = [(ContactValueTableViewCell *)v5 contentView];
+    topAnchor = [contentView3 topAnchor];
+    v19 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:0.0];
     nameFirstBaselineToTopConstraint = v5->_nameFirstBaselineToTopConstraint;
     v5->_nameFirstBaselineToTopConstraint = v19;
 
-    v21 = [(UILabel *)v5->_contactHandleLabel firstBaselineAnchor];
-    v22 = [(UILabel *)v5->_contactNameLabel lastBaselineAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+    firstBaselineAnchor2 = [(UILabel *)v5->_contactHandleLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_contactNameLabel lastBaselineAnchor];
+    v23 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:0.0];
     handleFirstBaselineToNameLastBaselineConstraint = v5->_handleFirstBaselineToNameLastBaselineConstraint;
     v5->_handleFirstBaselineToNameLastBaselineConstraint = v23;
 
-    v25 = [(UILabel *)v5->_contactHandleLabel lastBaselineAnchor];
-    v26 = [(ContactValueTableViewCell *)v5 contentView];
-    v27 = [v26 bottomAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27 constant:0.0];
+    lastBaselineAnchor2 = [(UILabel *)v5->_contactHandleLabel lastBaselineAnchor];
+    contentView4 = [(ContactValueTableViewCell *)v5 contentView];
+    bottomAnchor = [contentView4 bottomAnchor];
+    v28 = [lastBaselineAnchor2 constraintEqualToAnchor:bottomAnchor constant:0.0];
     handleLastBaselineToBottomConstraint = v5->_handleLastBaselineToBottomConstraint;
     v5->_handleLastBaselineToBottomConstraint = v28;
 
     v55[0] = v5->_nameFirstBaselineToTopConstraint;
     v55[1] = v5->_handleFirstBaselineToNameLastBaselineConstraint;
     v55[2] = v5->_handleLastBaselineToBottomConstraint;
-    v52 = [(UILabel *)v5->_contactNameLabel leadingAnchor];
-    v53 = [(ContactValueTableViewCell *)v5 contentView];
-    v51 = [v53 layoutMarginsGuide];
-    v50 = [v51 leadingAnchor];
-    v49 = [v52 constraintEqualToAnchor:v50];
+    leadingAnchor = [(UILabel *)v5->_contactNameLabel leadingAnchor];
+    contentView5 = [(ContactValueTableViewCell *)v5 contentView];
+    layoutMarginsGuide = [contentView5 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v55[3] = v49;
-    v47 = [(UILabel *)v5->_contactNameLabel trailingAnchor];
-    v48 = [(ContactValueTableViewCell *)v5 contentView];
-    v46 = [v48 layoutMarginsGuide];
-    v45 = [v46 trailingAnchor];
-    v44 = [v47 constraintEqualToAnchor:v45];
+    trailingAnchor = [(UILabel *)v5->_contactNameLabel trailingAnchor];
+    contentView6 = [(ContactValueTableViewCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView6 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v55[4] = v44;
-    v42 = [(UILabel *)v5->_contactHandleLabel leadingAnchor];
-    v43 = [(ContactValueTableViewCell *)v5 contentView];
-    v30 = [v43 layoutMarginsGuide];
-    v31 = [v30 leadingAnchor];
-    v32 = [v42 constraintEqualToAnchor:v31];
+    leadingAnchor3 = [(UILabel *)v5->_contactHandleLabel leadingAnchor];
+    contentView7 = [(ContactValueTableViewCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView7 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v55[5] = v32;
-    v33 = [(UILabel *)v5->_contactHandleLabel trailingAnchor];
-    v34 = [(ContactValueTableViewCell *)v5 contentView];
-    v35 = [v34 layoutMarginsGuide];
-    v36 = [v35 trailingAnchor];
-    v37 = [v33 constraintEqualToAnchor:v36];
+    trailingAnchor3 = [(UILabel *)v5->_contactHandleLabel trailingAnchor];
+    contentView8 = [(ContactValueTableViewCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView8 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+    v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v55[6] = v37;
     v38 = [NSArray arrayWithObjects:v55 count:7];
     [NSLayoutConstraint activateConstraints:v38];

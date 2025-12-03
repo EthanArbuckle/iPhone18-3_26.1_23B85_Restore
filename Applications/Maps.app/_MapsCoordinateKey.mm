@@ -1,6 +1,6 @@
 @interface _MapsCoordinateKey
-+ (id)coordinateKeyFromCoordinate:(CLLocationCoordinate2D)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)coordinateKeyFromCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)coordinate;
 @end
 
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     latitude = self->_coordinate.latitude;
     [v5 coordinate];
     if (vabdd_f64(latitude, v7) <= 0.000000999999997)
@@ -45,11 +45,11 @@
   return v8;
 }
 
-+ (id)coordinateKeyFromCoordinate:(CLLocationCoordinate2D)a3
++ (id)coordinateKeyFromCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = objc_alloc_init(a1);
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  v5 = objc_alloc_init(self);
   [v5 setCoordinate:{latitude, longitude}];
 
   return v5;

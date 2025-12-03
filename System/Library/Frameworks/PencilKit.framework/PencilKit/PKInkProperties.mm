@@ -1,22 +1,22 @@
 @interface PKInkProperties
-+ ($01BB1521EC52D44A8E7628F5261DCEC8)controlPointsForFunctionType:(unint64_t)a3;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInkProperty:(unint64_t)a3;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInput:(unint64_t)a3;
-+ (BOOL)bezierControlPoints:(id)a3 isEqual:(id)a4;
-+ (double)defaultValueForInput:(unint64_t)a3;
-+ (id)arrayForBezierControlPoints:(id)a3;
-+ (unint64_t)functionTypeForBezierControlPoints:(id)a3;
-+ (unint64_t)functionTypeForName:(id)a3;
++ ($01BB1521EC52D44A8E7628F5261DCEC8)controlPointsForFunctionType:(unint64_t)type;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInkProperty:(unint64_t)property;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInput:(unint64_t)input;
++ (BOOL)bezierControlPoints:(id)points isEqual:(id)equal;
++ (double)defaultValueForInput:(unint64_t)input;
++ (id)arrayForBezierControlPoints:(id)points;
++ (unint64_t)functionTypeForBezierControlPoints:(id)points;
++ (unint64_t)functionTypeForName:(id)name;
 @end
 
 @implementation PKInkProperties
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInkProperty:(unint64_t)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInkProperty:(unint64_t)property
 {
   v3 = 1.0;
-  if (a3 <= 4)
+  if (property <= 4)
   {
-    v3 = dbl_1C801D918[a3];
+    v3 = dbl_1C801D918[property];
   }
 
   v4 = 0.0;
@@ -25,10 +25,10 @@
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInput:(unint64_t)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)rangeForInput:(unint64_t)input
 {
-  v3 = a3 - 1;
-  if (a3 - 1 > 0xA)
+  v3 = input - 1;
+  if (input - 1 > 0xA)
   {
     v5 = 1.0;
     v4 = 0.0;
@@ -45,35 +45,35 @@
   return result;
 }
 
-+ (double)defaultValueForInput:(unint64_t)a3
++ (double)defaultValueForInput:(unint64_t)input
 {
   result = 0.0;
-  if (a3 - 1 <= 8)
+  if (input - 1 <= 8)
   {
-    return dbl_1C801D9F0[a3 - 1];
+    return dbl_1C801D9F0[input - 1];
   }
 
   return result;
 }
 
-+ (unint64_t)functionTypeForName:(id)a3
++ (unint64_t)functionTypeForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PKInkProperties functionNames];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:nameCopy];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-+ ($01BB1521EC52D44A8E7628F5261DCEC8)controlPointsForFunctionType:(unint64_t)a3
++ ($01BB1521EC52D44A8E7628F5261DCEC8)controlPointsForFunctionType:(unint64_t)type
 {
-  v3 = a3 - 1;
+  v3 = type - 1;
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (a3 - 1 <= 4)
+  if (type - 1 <= 4)
   {
     v5 = dbl_1C801DA38[v3];
     v6 = dbl_1C801DA60[v3];
@@ -88,12 +88,12 @@
   return result;
 }
 
-+ (unint64_t)functionTypeForBezierControlPoints:(id)a3
++ (unint64_t)functionTypeForBezierControlPoints:(id)points
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = points.var3;
+  var2 = points.var2;
+  var1 = points.var1;
+  var0 = points.var0;
   v7 = 2;
   [PKInkProperties controlPointsForFunctionType:2];
   if (![PKInkProperties bezierControlPoints:var0 isEqual:var1, var2, var3, v8, v9, v10, v11])
@@ -120,28 +120,28 @@
   return v7;
 }
 
-+ (BOOL)bezierControlPoints:(id)a3 isEqual:(id)a4
++ (BOOL)bezierControlPoints:(id)points isEqual:(id)equal
 {
-  if (a3.var0 != a4.var0 && vabdd_f64(a3.var0, a4.var0) >= fabs(a4.var0 * 0.000000999999997) || a3.var1 != a4.var1 && vabdd_f64(a3.var1, a4.var1) >= fabs(a4.var1 * 0.000000999999997) || a3.var2 != a4.var2 && vabdd_f64(a3.var2, a4.var2) >= fabs(a4.var2 * 0.000000999999997))
+  if (points.var0 != equal.var0 && vabdd_f64(points.var0, equal.var0) >= fabs(equal.var0 * 0.000000999999997) || points.var1 != equal.var1 && vabdd_f64(points.var1, equal.var1) >= fabs(equal.var1 * 0.000000999999997) || points.var2 != equal.var2 && vabdd_f64(points.var2, equal.var2) >= fabs(equal.var2 * 0.000000999999997))
   {
     return 0;
   }
 
-  if (a3.var3 == a4.var3)
+  if (points.var3 == equal.var3)
   {
     return 1;
   }
 
-  return vabdd_f64(a3.var3, a4.var3) < fabs(a4.var3 * 0.000000999999997);
+  return vabdd_f64(points.var3, equal.var3) < fabs(equal.var3 * 0.000000999999997);
 }
 
-+ (id)arrayForBezierControlPoints:(id)a3
++ (id)arrayForBezierControlPoints:(id)points
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
+  var3 = points.var3;
+  var2 = points.var2;
+  var1 = points.var1;
   v12[4] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3.var0];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:points.var0];
   v12[0] = v6;
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:var1];
   v12[1] = v7;

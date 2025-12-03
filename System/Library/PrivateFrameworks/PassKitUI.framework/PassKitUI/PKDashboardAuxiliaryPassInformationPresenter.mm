@@ -1,12 +1,12 @@
 @interface PKDashboardAuxiliaryPassInformationPresenter
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardAuxiliaryPassInformationPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardAuxiliaryPassInformationPresenter
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v15 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v15 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }
@@ -69,81 +69,81 @@
 LABEL_7:
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 item];
-  v6 = [v5 mapsURL];
-  if (v6)
+  item = [item item];
+  mapsURL = [item mapsURL];
+  if (mapsURL)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 sections];
-    v7 = v8 != 0;
+    sections = [item sections];
+    v7 = sections != 0;
   }
 
   return v7;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v8 = a6;
-  v9 = a3;
+  controllerCopy = controller;
+  itemCopy = item;
   v10 = [PKDashboardAuxiliaryPassInformationViewController alloc];
-  v11 = [v9 item];
-  v12 = [v9 pass];
+  item = [itemCopy item];
+  pass = [itemCopy pass];
 
-  v13 = [(PKDashboardAuxiliaryPassInformationViewController *)v10 initWithItem:v11 forPass:v12];
-  [v8 pushViewController:v13 animated:1];
+  v13 = [(PKDashboardAuxiliaryPassInformationViewController *)v10 initWithItem:item forPass:pass];
+  [controllerCopy pushViewController:v13 animated:1];
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"AuxiliaryPassInformationItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardAuxiliaryPassInformationPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"AuxiliaryPassInformationItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardAuxiliaryPassInformationPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardAuxiliaryPassInformationPresenter *)self _configureCell:self->_sampleCell forItem:a3 inCollectionView:a4 forIndexPath:a6];
+  [(PKDashboardAuxiliaryPassInformationPresenter *)self _configureCell:self->_sampleCell forItem:item inCollectionView:view forIndexPath:path];
   sampleCell = self->_sampleCell;
 
-  [(PKPassInformationDashboardCollectionViewCell *)sampleCell sizeThatFits:a5, 1.79769313e308];
+  [(PKPassInformationDashboardCollectionViewCell *)sampleCell sizeThatFits:width, 1.79769313e308];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v13 = a3;
-  v7 = [a4 item];
-  v8 = [v7 title];
-  [v13 setTitle:v8];
+  cellCopy = cell;
+  item = [item item];
+  title = [item title];
+  [cellCopy setTitle:title];
 
-  v9 = [v7 subtitle];
-  [v13 setSecondaryText:v9];
+  subtitle = [item subtitle];
+  [cellCopy setSecondaryText:subtitle];
 
-  v10 = [v7 subtitle2];
-  [v13 setTertiaryText:v10];
+  subtitle2 = [item subtitle2];
+  [cellCopy setTertiaryText:subtitle2];
 
-  v11 = [v7 mapsURL];
-  if (v11)
+  mapsURL = [item mapsURL];
+  if (mapsURL)
   {
-    [v13 setShowsDisclosureView:1];
+    [cellCopy setShowsDisclosureView:1];
   }
 
   else
   {
-    v12 = [v7 sections];
-    [v13 setShowsDisclosureView:v12 != 0];
+    sections = [item sections];
+    [cellCopy setShowsDisclosureView:sections != 0];
   }
 }
 

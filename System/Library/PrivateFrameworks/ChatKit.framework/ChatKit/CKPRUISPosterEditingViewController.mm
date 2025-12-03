@@ -1,52 +1,52 @@
 @interface CKPRUISPosterEditingViewController
 - (BOOL)_isGradientPoster;
 - (BOOL)_isPhotosPoster;
-- (CKPRUISPosterEditingViewController)initWithEditingConfiguration:(id)a3;
-- (CKPRUISPosterEditingViewController)initWithExistingConfiguration:(id)a3 context:(id)a4 extensionIdentifier:(id)a5;
-- (CKPRUISPosterEditingViewController)initWithExtensionIdentifier:(id)a3 configuration:(id)a4 context:(id)a5;
+- (CKPRUISPosterEditingViewController)initWithEditingConfiguration:(id)configuration;
+- (CKPRUISPosterEditingViewController)initWithExistingConfiguration:(id)configuration context:(id)context extensionIdentifier:(id)identifier;
+- (CKPRUISPosterEditingViewController)initWithExtensionIdentifier:(id)identifier configuration:(id)configuration context:(id)context;
 - (PRUISPosterEditingViewControllerDelegate)delegate;
-- (id)_colorButtonImageForColor:(id)a3;
-- (id)_fallbackColorsForLook:(id)a3;
+- (id)_colorButtonImageForColor:(id)color;
+- (id)_fallbackColorsForLook:(id)look;
 - (id)_photosColorPaletteForCurrentLook;
 - (id)keyCommands;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_cancelButtonTapped;
-- (void)_colorButtonTappedAtIndex:(unint64_t)a3;
+- (void)_colorButtonTappedAtIndex:(unint64_t)index;
 - (void)_commonInit;
-- (void)_editingLookSelected:(id)a3;
-- (void)_lookSelected:(id)a3;
-- (void)_selectedColorsChanged:(id)a3 notifyPoster:(BOOL)a4;
+- (void)_editingLookSelected:(id)selected;
+- (void)_lookSelected:(id)selected;
+- (void)_selectedColorsChanged:(id)changed notifyPoster:(BOOL)poster;
 - (void)_setButtonTapped;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEditingLooks:(id)a3;
-- (void)setLooks:(id)a3;
-- (void)setSelectedColors:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setDelegate:(id)delegate;
+- (void)setEditingLooks:(id)looks;
+- (void)setLooks:(id)looks;
+- (void)setSelectedColors:(id)colors;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation CKPRUISPosterEditingViewController
 
-- (CKPRUISPosterEditingViewController)initWithEditingConfiguration:(id)a3
+- (CKPRUISPosterEditingViewController)initWithEditingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(CKPRUISPosterEditingViewController *)self initWithNibName:0 bundle:0];
   if (v5)
   {
     gotLoadHelper_x8__OBJC_CLASS___PRUISPosterEditingViewController(v6);
-    v8 = [objc_alloc(*(v7 + 192)) initWithEditingConfiguration:v4];
+    v8 = [objc_alloc(*(v7 + 192)) initWithEditingConfiguration:configurationCopy];
     [(CKPRUISPosterEditingViewController *)v5 setEditor:v8];
 
-    v9 = [v4 posterContents];
-    v10 = [v9 _path];
-    v11 = [v10 serverIdentity];
-    v12 = [v11 provider];
+    posterContents = [configurationCopy posterContents];
+    _path = [posterContents _path];
+    serverIdentity = [_path serverIdentity];
+    provider = [serverIdentity provider];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
-    v5->_extensionBundleIdentifier = v12;
+    v5->_extensionBundleIdentifier = provider;
 
-    v14 = [(CKPRUISPosterEditingViewController *)v5 editor];
-    [v14 setInjectedClientSettingsDelegate:v5];
+    editor = [(CKPRUISPosterEditingViewController *)v5 editor];
+    [editor setInjectedClientSettingsDelegate:v5];
 
     [(CKPRUISPosterEditingViewController *)v5 _commonInit];
   }
@@ -54,24 +54,24 @@
   return v5;
 }
 
-- (CKPRUISPosterEditingViewController)initWithExtensionIdentifier:(id)a3 configuration:(id)a4 context:(id)a5
+- (CKPRUISPosterEditingViewController)initWithExtensionIdentifier:(id)identifier configuration:(id)configuration context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  contextCopy = context;
   v11 = [(CKPRUISPosterEditingViewController *)self initWithNibName:0 bundle:0];
   if (v11)
   {
     gotLoadHelper_x8__OBJC_CLASS___PRUISPosterEditingViewController(v12);
-    v14 = [objc_alloc(*(v13 + 192)) initWithExtensionIdentifier:v8 configuration:v9 context:v10];
+    v14 = [objc_alloc(*(v13 + 192)) initWithExtensionIdentifier:identifierCopy configuration:configurationCopy context:contextCopy];
     [(CKPRUISPosterEditingViewController *)v11 setEditor:v14];
 
-    v15 = [v8 copy];
+    v15 = [identifierCopy copy];
     extensionBundleIdentifier = v11->_extensionBundleIdentifier;
     v11->_extensionBundleIdentifier = v15;
 
-    v17 = [(CKPRUISPosterEditingViewController *)v11 editor];
-    [v17 setInjectedClientSettingsDelegate:v11];
+    editor = [(CKPRUISPosterEditingViewController *)v11 editor];
+    [editor setInjectedClientSettingsDelegate:v11];
 
     [(CKPRUISPosterEditingViewController *)v11 _commonInit];
   }
@@ -79,24 +79,24 @@
   return v11;
 }
 
-- (CKPRUISPosterEditingViewController)initWithExistingConfiguration:(id)a3 context:(id)a4 extensionIdentifier:(id)a5
+- (CKPRUISPosterEditingViewController)initWithExistingConfiguration:(id)configuration context:(id)context extensionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  contextCopy = context;
+  identifierCopy = identifier;
   v11 = [(CKPRUISPosterEditingViewController *)self initWithNibName:0 bundle:0];
   if (v11)
   {
     gotLoadHelper_x8__OBJC_CLASS___PRUISPosterEditingViewController(v12);
-    v14 = [objc_alloc(*(v13 + 192)) initWithExistingConfiguration:v8 context:v9];
+    v14 = [objc_alloc(*(v13 + 192)) initWithExistingConfiguration:configurationCopy context:contextCopy];
     [(CKPRUISPosterEditingViewController *)v11 setEditor:v14];
 
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     extensionBundleIdentifier = v11->_extensionBundleIdentifier;
     v11->_extensionBundleIdentifier = v15;
 
-    v17 = [(CKPRUISPosterEditingViewController *)v11 editor];
-    [v17 setInjectedClientSettingsDelegate:v11];
+    editor = [(CKPRUISPosterEditingViewController *)v11 editor];
+    [editor setInjectedClientSettingsDelegate:v11];
 
     [(CKPRUISPosterEditingViewController *)v11 _commonInit];
   }
@@ -106,23 +106,23 @@
 
 - (void)_commonInit
 {
-  v2 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v2 setAcceptButtonType:3];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setAcceptButtonType:3];
 }
 
 - (PRUISPosterEditingViewControllerDelegate)delegate
 {
-  v2 = [(CKPRUISPosterEditingViewController *)self editor];
-  v3 = [v2 delegate];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  delegate = [editor delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setDelegate:delegateCopy];
 }
 
 - (void)viewDidLoad
@@ -131,16 +131,16 @@
   v8.super_class = CKPRUISPosterEditingViewController;
   [(CKPRUISPosterEditingViewController *)&v8 viewDidLoad];
   [(CKPRUISPosterEditingViewController *)self setOverrideUserInterfaceStyle:2];
-  v3 = [(CKPRUISPosterEditingViewController *)self editor];
-  [(CKPRUISPosterEditingViewController *)self addChildViewController:v3];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [(CKPRUISPosterEditingViewController *)self addChildViewController:editor];
 
-  v4 = [(CKPRUISPosterEditingViewController *)self view];
-  v5 = [(CKPRUISPosterEditingViewController *)self editor];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  view = [(CKPRUISPosterEditingViewController *)self view];
+  editor2 = [(CKPRUISPosterEditingViewController *)self editor];
+  view2 = [editor2 view];
+  [view addSubview:view2];
 
-  v7 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v7 didMoveToParentViewController:self];
+  editor3 = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor3 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -148,16 +148,16 @@
   v14.receiver = self;
   v14.super_class = CKPRUISPosterEditingViewController;
   [(CKPRUISPosterEditingViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(CKPRUISPosterEditingViewController *)self view];
-  [v3 bounds];
+  view = [(CKPRUISPosterEditingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKPRUISPosterEditingViewController *)self editor];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  view2 = [editor view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -182,24 +182,24 @@
   return v3;
 }
 
-- (void)setLooks:(id)a3
+- (void)setLooks:(id)looks
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_looks isEqualToArray:v4])
+  looksCopy = looks;
+  if (![(NSArray *)self->_looks isEqualToArray:looksCopy])
   {
-    v25 = v4;
-    v5 = [v4 copy];
+    v25 = looksCopy;
+    v5 = [looksCopy copy];
     looks = self->_looks;
     self->_looks = v5;
 
     v7 = [(NSArray *)self->_looks count]< 2;
     val = self;
-    v8 = [(CKPRUISPosterEditingViewController *)self looksButton];
-    v9 = v8;
+    looksButton = [(CKPRUISPosterEditingViewController *)self looksButton];
+    v9 = looksButton;
     if (v7)
     {
-      [v8 removeFromSuperview];
+      [looksButton removeFromSuperview];
 
       [(CKPRUISPosterEditingViewController *)val setLooksButton:0];
     }
@@ -212,9 +212,9 @@
         v10 = [MEMORY[0x1E69DC738] buttonWithType:1];
         [(CKPRUISPosterEditingViewController *)val setLooksButton:v10];
 
-        v11 = [(CKPRUISPosterEditingViewController *)val view];
-        v12 = [(CKPRUISPosterEditingViewController *)val looksButton];
-        [v11 addSubview:v12];
+        view = [(CKPRUISPosterEditingViewController *)val view];
+        looksButton2 = [(CKPRUISPosterEditingViewController *)val looksButton];
+        [view addSubview:looksButton2];
       }
 
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -247,8 +247,8 @@
             objc_copyWeak(&v29, &location);
             v28[4] = v17;
             v19 = [v18 actionWithTitle:v17 image:0 identifier:0 handler:v28];
-            v20 = [(CKPRUISPosterEditingViewController *)val selectedLook];
-            LODWORD(v17) = [v17 isEqualToString:v20];
+            selectedLook = [(CKPRUISPosterEditingViewController *)val selectedLook];
+            LODWORD(v17) = [v17 isEqualToString:selectedLook];
 
             if (v17)
             {
@@ -269,19 +269,19 @@
       }
 
       v21 = [MEMORY[0x1E69DCC60] menuWithChildren:v13];
-      v22 = [(CKPRUISPosterEditingViewController *)val looksButton];
-      [v22 setMenu:v21];
+      looksButton3 = [(CKPRUISPosterEditingViewController *)val looksButton];
+      [looksButton3 setMenu:v21];
 
-      v23 = [(CKPRUISPosterEditingViewController *)val looksButton];
-      [v23 setShowsMenuAsPrimaryAction:1];
+      looksButton4 = [(CKPRUISPosterEditingViewController *)val looksButton];
+      [looksButton4 setShowsMenuAsPrimaryAction:1];
 
-      v24 = [(CKPRUISPosterEditingViewController *)val looksButton];
-      [v24 setChangesSelectionAsPrimaryAction:1];
+      looksButton5 = [(CKPRUISPosterEditingViewController *)val looksButton];
+      [looksButton5 setChangesSelectionAsPrimaryAction:1];
 
       objc_destroyWeak(&location);
     }
 
-    v4 = v25;
+    looksCopy = v25;
   }
 }
 
@@ -291,23 +291,23 @@ void __47__CKPRUISPosterEditingViewController_setLooks___block_invoke(uint64_t a
   [WeakRetained _lookSelected:*(a1 + 32)];
 }
 
-- (void)setEditingLooks:(id)a3
+- (void)setEditingLooks:(id)looks
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_editingLooks isEqualToArray:v4])
+  looksCopy = looks;
+  if (![(NSArray *)self->_editingLooks isEqualToArray:looksCopy])
   {
-    v33 = v4;
-    v5 = [v4 copy];
+    v33 = looksCopy;
+    v5 = [looksCopy copy];
     editingLooks = self->_editingLooks;
     self->_editingLooks = v5;
 
     v7 = [(NSArray *)self->_editingLooks count]< 2;
-    v8 = [(CKPRUISPosterEditingViewController *)self looksButton];
-    v9 = v8;
+    looksButton = [(CKPRUISPosterEditingViewController *)self looksButton];
+    v9 = looksButton;
     if (v7)
     {
-      [v8 removeFromSuperview];
+      [looksButton removeFromSuperview];
 
       [(CKPRUISPosterEditingViewController *)self setLooksButton:0];
     }
@@ -317,26 +317,26 @@ void __47__CKPRUISPosterEditingViewController_setLooks___block_invoke(uint64_t a
 
       if (!v9)
       {
-        v10 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-        v11 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-        v12 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-        [v11 setBackgroundColor:v12];
+        filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+        clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+        secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+        [clearConfiguration setBackgroundColor:secondarySystemFillColor];
 
-        [v10 setBackground:v11];
-        v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v10 primaryAction:0];
+        [filledButtonConfiguration setBackground:clearConfiguration];
+        v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
         v14 = [MEMORY[0x1E69DC738] buttonWithType:1];
         [(CKPRUISPosterEditingViewController *)self setLooksButton:v14];
 
         [(CKPRUISPosterEditingViewController *)self setLooksButtonBackground:v13];
-        v15 = [(CKPRUISPosterEditingViewController *)self looksButton];
-        [v15 addSubview:v13];
+        looksButton2 = [(CKPRUISPosterEditingViewController *)self looksButton];
+        [looksButton2 addSubview:v13];
 
-        v16 = [(CKPRUISPosterEditingViewController *)self looksButton];
-        [v16 setClipsToBounds:1];
+        looksButton3 = [(CKPRUISPosterEditingViewController *)self looksButton];
+        [looksButton3 setClipsToBounds:1];
 
-        v17 = [(CKPRUISPosterEditingViewController *)self view];
-        v18 = [(CKPRUISPosterEditingViewController *)self looksButton];
-        [v17 addSubview:v18];
+        view = [(CKPRUISPosterEditingViewController *)self view];
+        looksButton4 = [(CKPRUISPosterEditingViewController *)self looksButton];
+        [view addSubview:looksButton4];
       }
 
       v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -361,17 +361,17 @@ void __47__CKPRUISPosterEditingViewController_setLooks___block_invoke(uint64_t a
 
             v22 = *(*(&v38 + 1) + 8 * i);
             v23 = MEMORY[0x1E69DC628];
-            v24 = [v22 displayName];
+            displayName = [v22 displayName];
             v36[0] = MEMORY[0x1E69E9820];
             v36[1] = 3221225472;
             v36[2] = __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke;
             v36[3] = &unk_1E72EBF48;
             objc_copyWeak(&v37, &location);
             v36[4] = v22;
-            v25 = [v23 actionWithTitle:v24 image:0 identifier:0 handler:v36];
+            v25 = [v23 actionWithTitle:displayName image:0 identifier:0 handler:v36];
 
-            v26 = [(CKPRUISPosterEditingViewController *)self selectedEditingLook];
-            LODWORD(v22) = [v22 isEqual:v26];
+            selectedEditingLook = [(CKPRUISPosterEditingViewController *)self selectedEditingLook];
+            LODWORD(v22) = [v22 isEqual:selectedEditingLook];
 
             if (v22)
             {
@@ -390,23 +390,23 @@ void __47__CKPRUISPosterEditingViewController_setLooks___block_invoke(uint64_t a
       }
 
       v27 = [MEMORY[0x1E69DCC60] menuWithChildren:v35];
-      v28 = [(CKPRUISPosterEditingViewController *)self looksButton];
-      [v28 setMenu:v27];
+      looksButton5 = [(CKPRUISPosterEditingViewController *)self looksButton];
+      [looksButton5 setMenu:v27];
 
-      v29 = [(CKPRUISPosterEditingViewController *)self looksButton];
-      [v29 setShowsMenuAsPrimaryAction:1];
+      looksButton6 = [(CKPRUISPosterEditingViewController *)self looksButton];
+      [looksButton6 setShowsMenuAsPrimaryAction:1];
 
-      v30 = [(CKPRUISPosterEditingViewController *)self looksButton];
-      [v30 setChangesSelectionAsPrimaryAction:1];
+      looksButton7 = [(CKPRUISPosterEditingViewController *)self looksButton];
+      [looksButton7 setChangesSelectionAsPrimaryAction:1];
 
-      v31 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-      v32 = [(CKPRUISPosterEditingViewController *)self looksButton];
-      [v32 setTintColor:v31];
+      secondarySystemFillColor2 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+      looksButton8 = [(CKPRUISPosterEditingViewController *)self looksButton];
+      [looksButton8 setTintColor:secondarySystemFillColor2];
 
       objc_destroyWeak(&location);
     }
 
-    v4 = v33;
+    looksCopy = v33;
   }
 }
 
@@ -416,14 +416,14 @@ void __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke(uin
   [WeakRetained _editingLookSelected:*(a1 + 32)];
 }
 
-- (void)setSelectedColors:(id)a3
+- (void)setSelectedColors:(id)colors
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_selectedColors isEqualToArray:v4])
+  colorsCopy = colors;
+  if (![(NSArray *)self->_selectedColors isEqualToArray:colorsCopy])
   {
-    v20 = v4;
-    v5 = [v4 copy];
+    v20 = colorsCopy;
+    v5 = [colorsCopy copy];
     selectedColors = self->_selectedColors;
     self->_selectedColors = v5;
 
@@ -431,8 +431,8 @@ void __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke(uin
     v33 = 0u;
     v31 = 0u;
     v30 = 0u;
-    v7 = [(CKPRUISPosterEditingViewController *)self colorButtons];
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    colorButtons = [(CKPRUISPosterEditingViewController *)self colorButtons];
+    v8 = [colorButtons countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v8)
     {
       v9 = *v31;
@@ -443,21 +443,21 @@ void __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke(uin
         {
           if (*v31 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(colorButtons);
           }
 
           [*(*(&v30 + 1) + 8 * v10++) removeFromSuperview];
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v8 = [colorButtons countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v8);
     }
 
     [(CKPRUISPosterEditingViewController *)self setColorButtons:0];
-    v4 = v20;
+    colorsCopy = v20;
     if ([(NSArray *)self->_selectedColors count])
     {
       v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_selectedColors, "count")}];
@@ -493,8 +493,8 @@ void __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke(uin
             v17 = [v16 actionWithHandler:v23];
             v18 = [MEMORY[0x1E69DC738] buttonWithType:0 primaryAction:v17];
             [v18 setImage:v15 forState:0];
-            v19 = [(CKPRUISPosterEditingViewController *)self view];
-            [v19 addSubview:v18];
+            view = [(CKPRUISPosterEditingViewController *)self view];
+            [view addSubview:v18];
 
             [v22 addObject:v18];
             objc_destroyWeak(v24);
@@ -512,7 +512,7 @@ void __54__CKPRUISPosterEditingViewController_setEditingLooks___block_invoke(uin
       }
 
       [(CKPRUISPosterEditingViewController *)self setColorButtons:v22];
-      v4 = v20;
+      colorsCopy = v20;
     }
   }
 }
@@ -527,41 +527,41 @@ void __56__CKPRUISPosterEditingViewController_setSelectedColors___block_invoke(u
 {
   gotLoadHelper_x8__OBJC_CLASS___PRInjectedEditingSettings(v2);
   v6 = [objc_alloc(*(v4 + 696)) initWithState:2];
-  v5 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v5 setInjectedEditingSettings:v6];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setInjectedEditingSettings:v6];
 }
 
 - (void)_cancelButtonTapped
 {
   gotLoadHelper_x8__OBJC_CLASS___PRInjectedEditingSettings(v2);
   v6 = [objc_alloc(*(v4 + 696)) initWithState:1];
-  v5 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v5 setInjectedEditingSettings:v6];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setInjectedEditingSettings:v6];
 }
 
-- (void)_lookSelected:(id)a3
+- (void)_lookSelected:(id)selected
 {
   gotLoadHelper_x8__OBJC_CLASS___PRInjectedEditingSettings(v3);
   v6 = *(v5 + 696);
   v8 = v7;
   v14 = [[v6 alloc] initWithState:0];
   [v14 setCurrentLook:v8];
-  v9 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v9 setInjectedEditingSettings:v14];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setInjectedEditingSettings:v14];
 
   [(CKPRUISPosterEditingViewController *)self setSelectedLook:v8];
-  v10 = [(CKPRUISPosterEditingViewController *)self selectedColors];
-  v11 = [v10 count];
+  selectedColors = [(CKPRUISPosterEditingViewController *)self selectedColors];
+  v11 = [selectedColors count];
 
   if (!v11)
   {
-    v12 = [(CKPRUISPosterEditingViewController *)self selectedLook];
-    v13 = [(CKPRUISPosterEditingViewController *)self _fallbackColorsForLook:v12];
+    selectedLook = [(CKPRUISPosterEditingViewController *)self selectedLook];
+    v13 = [(CKPRUISPosterEditingViewController *)self _fallbackColorsForLook:selectedLook];
     [(CKPRUISPosterEditingViewController *)self setSelectedColors:v13];
   }
 }
 
-- (void)_editingLookSelected:(id)a3
+- (void)_editingLookSelected:(id)selected
 {
   gotLoadHelper_x8__OBJC_CLASS___PRInjectedEditingSettings(v3);
   v6 = *(v5 + 696);
@@ -570,50 +570,50 @@ void __56__CKPRUISPosterEditingViewController_setSelectedColors___block_invoke(u
   [v10 setCurrentEditingLook:v8];
   [(CKPRUISPosterEditingViewController *)self setSelectedEditingLook:v8];
 
-  v9 = [(CKPRUISPosterEditingViewController *)self editor];
-  [v9 setInjectedEditingSettings:v10];
+  editor = [(CKPRUISPosterEditingViewController *)self editor];
+  [editor setInjectedEditingSettings:v10];
 }
 
-- (void)_selectedColorsChanged:(id)a3 notifyPoster:(BOOL)a4
+- (void)_selectedColorsChanged:(id)changed notifyPoster:(BOOL)poster
 {
-  v4 = a4;
-  v10 = a3;
-  if (v4)
+  posterCopy = poster;
+  changedCopy = changed;
+  if (posterCopy)
   {
     gotLoadHelper_x8__OBJC_CLASS___PRInjectedEditingSettings(v6);
     v8 = [objc_alloc(*(v7 + 696)) initWithState:0];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setSelectedColors:v10];
+      [v8 setSelectedColors:changedCopy];
     }
 
-    v9 = [(CKPRUISPosterEditingViewController *)self editor];
-    [v9 setInjectedEditingSettings:v8];
+    editor = [(CKPRUISPosterEditingViewController *)self editor];
+    [editor setInjectedEditingSettings:v8];
   }
 
-  [(CKPRUISPosterEditingViewController *)self setSelectedColors:v10];
+  [(CKPRUISPosterEditingViewController *)self setSelectedColors:changedCopy];
 }
 
-- (void)_colorButtonTappedAtIndex:(unint64_t)a3
+- (void)_colorButtonTappedAtIndex:(unint64_t)index
 {
-  v41 = [(CKPRUISPosterEditingViewController *)self selectedColors];
-  if ([v41 count] <= a3)
+  selectedColors = [(CKPRUISPosterEditingViewController *)self selectedColors];
+  if ([selectedColors count] <= index)
   {
   }
 
   else
   {
-    v5 = [(CKPRUISPosterEditingViewController *)self colorButtons];
-    v6 = [v5 count];
+    colorButtons = [(CKPRUISPosterEditingViewController *)self colorButtons];
+    v6 = [colorButtons count];
 
-    if (v6 > a3)
+    if (v6 > index)
     {
-      v7 = [(CKPRUISPosterEditingViewController *)self _isPhotosPoster];
-      v8 = [(CKPRUISPosterEditingViewController *)self selectedColors];
-      v9 = [v8 objectAtIndex:a3];
+      _isPhotosPoster = [(CKPRUISPosterEditingViewController *)self _isPhotosPoster];
+      selectedColors2 = [(CKPRUISPosterEditingViewController *)self selectedColors];
+      v9 = [selectedColors2 objectAtIndex:index];
 
-      v10 = [(CKPRUISPosterEditingViewController *)self colorButtons];
-      v11 = [v10 objectAtIndex:a3];
+      colorButtons2 = [(CKPRUISPosterEditingViewController *)self colorButtons];
+      v11 = [colorButtons2 objectAtIndex:index];
 
       gotLoadHelper_x8__OBJC_CLASS___PREditorColorPickerConfiguration(v12);
       v14 = objc_alloc_init(*(v13 + 672));
@@ -622,11 +622,11 @@ void __56__CKPRUISPosterEditingViewController_setSelectedColors___block_invoke(u
       [v14 setSelectedColor:v17];
 
       [v14 setColorPickerSourceItem:v11];
-      if (v7)
+      if (_isPhotosPoster)
       {
         [v14 setColorWellDisplayMode:0];
-        v19 = [(CKPRUISPosterEditingViewController *)self _photosColorPaletteForCurrentLook];
-        [v14 setColorPalette:v19];
+        _photosColorPaletteForCurrentLook = [(CKPRUISPosterEditingViewController *)self _photosColorPaletteForCurrentLook];
+        [v14 setColorPalette:_photosColorPaletteForCurrentLook];
 
         [v14 setShowsSlider:0];
       }
@@ -642,12 +642,12 @@ void __56__CKPRUISPosterEditingViewController_setSelectedColors___block_invoke(u
       v42[2] = __64__CKPRUISPosterEditingViewController__colorButtonTappedAtIndex___block_invoke;
       v42[3] = &unk_1E72F49D8;
       objc_copyWeak(v43, &location);
-      v43[1] = a3;
+      v43[1] = index;
       [v26 setChangeHandler:v42];
       [v26 setDelegate:self];
       v27 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v26];
       v28 = CKFrameworkBundle();
-      if (v7)
+      if (_isPhotosPoster)
       {
         [v28 localizedStringForKey:@"STYLE_COLOR" value:&stru_1F04268F8 table:@"ChatKit"];
       }
@@ -660,19 +660,19 @@ void __56__CKPRUISPosterEditingViewController_setSelectedColors___block_invoke(u
       [v26 setTitle:v29];
 
       [v27 setModalPresentationStyle:7];
-      v30 = [v27 popoverPresentationController];
-      [v30 setSourceView:v11];
+      popoverPresentationController = [v27 popoverPresentationController];
+      [popoverPresentationController setSourceView:v11];
 
       [v11 bounds];
       v32 = v31;
       v34 = v33;
       v36 = v35;
       v38 = v37;
-      v39 = [v27 popoverPresentationController];
-      [v39 setSourceRect:{v32, v34, v36, v38}];
+      popoverPresentationController2 = [v27 popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v32, v34, v36, v38}];
 
-      v40 = [v27 popoverPresentationController];
-      [v40 setDelegate:self];
+      popoverPresentationController3 = [v27 popoverPresentationController];
+      [popoverPresentationController3 setDelegate:self];
 
       [(CKPRUISPosterEditingViewController *)self setColorPickerNavigationController:v27];
       [(CKPRUISPosterEditingViewController *)self presentViewController:v27 animated:1 completion:0];
@@ -701,32 +701,32 @@ void __64__CKPRUISPosterEditingViewController__colorButtonTappedAtIndex___block_
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
-  v5 = [(CKPRUISPosterEditingViewController *)self colorPickerNavigationController];
+  presentedViewController = [dismiss presentedViewController];
+  colorPickerNavigationController = [(CKPRUISPosterEditingViewController *)self colorPickerNavigationController];
 
-  if (v4 == v5)
+  if (presentedViewController == colorPickerNavigationController)
   {
-    v6 = [(CKPRUISPosterEditingViewController *)self selectedColors];
-    [(CKPRUISPosterEditingViewController *)self _selectedColorsChanged:v6 notifyPoster:1];
+    selectedColors = [(CKPRUISPosterEditingViewController *)self selectedColors];
+    [(CKPRUISPosterEditingViewController *)self _selectedColorsChanged:selectedColors notifyPoster:1];
 
     [(CKPRUISPosterEditingViewController *)self setColorPickerNavigationController:0];
   }
 }
 
-- (id)_colorButtonImageForColor:(id)a3
+- (id)_colorButtonImageForColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{35.0, 35.0}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__CKPRUISPosterEditingViewController__colorButtonImageForColor___block_invoke;
   v8[3] = &unk_1E72F38B0;
-  v9 = v3;
+  v9 = colorCopy;
   v10 = xmmword_190DD0EE0;
   v11 = 0x403D000000000000;
-  v5 = v3;
+  v5 = colorCopy;
   v6 = [v4 imageWithActions:v8];
 
   return v6;
@@ -752,20 +752,20 @@ void __64__CKPRUISPosterEditingViewController__colorButtonImageForColor___block_
   CGContextDrawPath(v3, kCGPathFillStroke);
 }
 
-- (id)_fallbackColorsForLook:(id)a3
+- (id)_fallbackColorsForLook:(id)look
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
     if ([(CKPRUISPosterEditingViewController *)self _isGradientPoster])
     {
-      v6 = [MEMORY[0x1E69DC888] redColor];
-      v16[0] = v6;
-      v7 = [MEMORY[0x1E69DC888] blueColor];
-      v16[1] = v7;
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      v16[0] = redColor;
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      v16[1] = blueColor;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
 LABEL_9:
 
@@ -774,24 +774,24 @@ LABEL_9:
 
     if ([(CKPRUISPosterEditingViewController *)self _isPhotosPoster])
     {
-      v9 = [(CKPRUISPosterEditingViewController *)self selectedLook];
-      if ([v9 containsString:@"Duotone"])
+      selectedLook = [(CKPRUISPosterEditingViewController *)self selectedLook];
+      if ([selectedLook containsString:@"Duotone"])
       {
 
 LABEL_8:
-        v6 = [(CKPRUISPosterEditingViewController *)self _photosColorPaletteForCurrentLook];
-        v12 = [v6 colors];
-        v7 = [v12 firstObject];
+        redColor = [(CKPRUISPosterEditingViewController *)self _photosColorPaletteForCurrentLook];
+        colors = [redColor colors];
+        blueColor = [colors firstObject];
 
-        v13 = [v7 color];
-        v15 = v13;
+        color = [blueColor color];
+        v15 = color;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
 
         goto LABEL_9;
       }
 
-      v10 = [(CKPRUISPosterEditingViewController *)self selectedLook];
-      v11 = [v10 containsString:@"Color"];
+      selectedLook2 = [(CKPRUISPosterEditingViewController *)self selectedLook];
+      v11 = [selectedLook2 containsString:@"Color"];
 
       if (v11)
       {
@@ -808,16 +808,16 @@ LABEL_11:
 
 - (BOOL)_isGradientPoster
 {
-  v2 = [(CKPRUISPosterEditingViewController *)self extensionBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.transcriptBackgroundPoster.GradientExtension"];
+  extensionBundleIdentifier = [(CKPRUISPosterEditingViewController *)self extensionBundleIdentifier];
+  v3 = [extensionBundleIdentifier isEqualToString:@"com.apple.transcriptBackgroundPoster.GradientExtension"];
 
   return v3;
 }
 
 - (BOOL)_isPhotosPoster
 {
-  v2 = [(CKPRUISPosterEditingViewController *)self extensionBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+  extensionBundleIdentifier = [(CKPRUISPosterEditingViewController *)self extensionBundleIdentifier];
+  v3 = [extensionBundleIdentifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
 
   return v3;
 }
@@ -831,35 +831,35 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v4 = [(CKPRUISPosterEditingViewController *)self selectedEditingLook];
-  v5 = [v4 identifier];
+  selectedEditingLook = [(CKPRUISPosterEditingViewController *)self selectedEditingLook];
+  identifier = [selectedEditingLook identifier];
 
-  if ([v5 isEqualToString:@"ColorWashDuotone"])
+  if ([identifier isEqualToString:@"ColorWashDuotone"])
   {
-    v6 = [MEMORY[0x1E69BDE98] colorWashDuotonePalette];
+    colorWashDuotonePalette = [MEMORY[0x1E69BDE98] colorWashDuotonePalette];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"ColorWashSingle"])
+    if (![identifier isEqualToString:@"ColorWashSingle"])
     {
       goto LABEL_16;
     }
 
-    v6 = [MEMORY[0x1E69BDE98] colorWashSinglePalette];
+    colorWashDuotonePalette = [MEMORY[0x1E69BDE98] colorWashSinglePalette];
   }
 
-  v8 = v6;
-  if (v6)
+  v8 = colorWashDuotonePalette;
+  if (colorWashDuotonePalette)
   {
-    v25 = v5;
+    v25 = identifier;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [v8 primaryColors];
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    primaryColors = [v8 primaryColors];
+    v11 = [primaryColors countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v11)
     {
       v13 = v11;
@@ -871,7 +871,7 @@ LABEL_11:
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(primaryColors);
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
@@ -882,7 +882,7 @@ LABEL_11:
           [v9 addObject:v19];
         }
 
-        v13 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v13 = [primaryColors countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v13);
@@ -893,7 +893,7 @@ LABEL_11:
     v23 = [v9 copy];
     v7 = [v22 initWithColors:v23 localizedName:0 showsColorWell:0];
 
-    v5 = v25;
+    identifier = v25;
     goto LABEL_17;
   }
 

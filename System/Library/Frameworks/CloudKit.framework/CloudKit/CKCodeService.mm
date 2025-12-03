@@ -4,8 +4,8 @@
 - (NSString)serviceName;
 - (NSURL)serviceInstanceURL;
 - (id)boxedDatabaseScope;
-- (id)initInternalWithImplementation:(id)a3 container:(id)a4;
-- (void)addOperation:(id)a3;
+- (id)initInternalWithImplementation:(id)implementation container:(id)container;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation CKCodeService
@@ -18,18 +18,18 @@
   return 0;
 }
 
-- (id)initInternalWithImplementation:(id)a3 container:(id)a4
+- (id)initInternalWithImplementation:(id)implementation container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  implementationCopy = implementation;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = CKCodeService;
   v9 = [(CKCodeService *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_implementation, a3);
-    objc_storeWeak(p_isa + 1, v8);
+    objc_storeStrong(&v9->_implementation, implementation);
+    objc_storeWeak(p_isa + 1, containerCopy);
   }
 
   return p_isa;
@@ -59,13 +59,13 @@
   return v6;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v14 = objc_msgSend_implementation(self, v5, v6);
   v9 = objc_msgSend_container(self, v7, v8);
   v12 = objc_msgSend_convenienceConfiguration(v9, v10, v11);
-  objc_msgSend_addOperation_wrappingCodeService_convenienceConfiguration_(v14, v13, v4, self, v12);
+  objc_msgSend_addOperation_wrappingCodeService_convenienceConfiguration_(v14, v13, operationCopy, self, v12);
 }
 
 - (CKContainer)container

@@ -1,66 +1,66 @@
 @interface OctagonAPSReceiver
 + (id)apsDeliveryQueue;
-+ (id)receiverForNamedDelegatePort:(id)a3 apsConnectionClass:(Class)a4;
-+ (id)resettableSynchronizedGlobalDelegatePortMap:(BOOL)a3;
++ (id)receiverForNamedDelegatePort:(id)port apsConnectionClass:(Class)class;
++ (id)resettableSynchronizedGlobalDelegatePortMap:(BOOL)map;
 + (void)resetGlobalDelegatePortMap;
 - (BOOL)haveStalePushes;
-- (OctagonAPSReceiver)initWithNamedDelegatePort:(id)a3 apsConnectionClass:(Class)a4 stalePushTimeout:(unint64_t)a5;
+- (OctagonAPSReceiver)initWithNamedDelegatePort:(id)port apsConnectionClass:(Class)class stalePushTimeout:(unint64_t)timeout;
 - (id)cuttlefishPushTopics;
-- (id)registerCKKSReceiver:(id)a3 contextID:(id)a4;
-- (id)registerCuttlefishReceiver:(id)a3 forContainerName:(id)a4 contextID:(id)a5;
+- (id)registerCKKSReceiver:(id)receiver contextID:(id)d;
+- (id)registerCuttlefishReceiver:(id)receiver forContainerName:(id)name contextID:(id)d;
 - (id)registeredPushEnvironments;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)registerForEnvironment:(id)a3;
-- (void)reportDroppedPushes:(id)a3;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)registerForEnvironment:(id)environment;
+- (void)reportDroppedPushes:(id)pushes;
 @end
 
 @implementation OctagonAPSReceiver
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = sub_100019104(@"octagonpush", 0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 topic];
-    v10 = [v7 userInfo];
+    topic = [messageCopy topic];
+    userInfo = [messageCopy userInfo];
     *buf = 138412546;
-    v64 = v9;
+    v64 = topic;
     v65 = 2112;
-    v66 = v10;
+    v66 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "OctagonAPSDelegate received a message(%@): %@ ", buf, 0x16u);
   }
 
-  if ([v7 isTracingEnabled])
+  if ([messageCopy isTracingEnabled])
   {
-    [v6 confirmReceiptForMessage:v7];
+    [connectionCopy confirmReceiptForMessage:messageCopy];
   }
 
-  v11 = [v7 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"cf"];
+  userInfo2 = [messageCopy userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:@"cf"];
   v13 = v12 == 0;
 
   if (v13)
   {
-    v32 = [v7 userInfo];
-    v15 = [CKNotification notificationFromRemoteNotificationDictionary:v32];
+    userInfo3 = [messageCopy userInfo];
+    v15 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo3];
 
     if ([v15 notificationType]== 2)
     {
       v16 = v15;
-      -[NSObject setCkksPushTracingEnabled:](v16, "setCkksPushTracingEnabled:", [v7 isTracingEnabled]);
-      v33 = [v7 tracingUUID];
-      if (v33)
+      -[NSObject setCkksPushTracingEnabled:](v16, "setCkksPushTracingEnabled:", [messageCopy isTracingEnabled]);
+      tracingUUID = [messageCopy tracingUUID];
+      if (tracingUUID)
       {
         v34 = [NSUUID alloc];
-        v35 = [v7 tracingUUID];
-        v36 = v35;
-        v37 = [v34 initWithUUIDBytes:{objc_msgSend(v35, "bytes")}];
-        v38 = [v37 UUIDString];
-        [v16 setCkksPushTracingUUID:v38];
+        tracingUUID2 = [messageCopy tracingUUID];
+        v36 = tracingUUID2;
+        v37 = [v34 initWithUUIDBytes:{objc_msgSend(tracingUUID2, "bytes")}];
+        uUIDString = [v37 UUIDString];
+        [v16 setCkksPushTracingUUID:uUIDString];
       }
 
       else
@@ -75,10 +75,10 @@
       v41 = +[NSDate date];
       [v40 setDateProperty:v41 forKey:@"lastCKKSPush"];
 
-      v42 = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
-      objc_sync_enter(v42);
-      v43 = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
-      v44 = [v43 count] == 0;
+      zoneUpdateReceiverDictionary = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
+      objc_sync_enter(zoneUpdateReceiverDictionary);
+      zoneUpdateReceiverDictionary2 = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
+      v44 = [zoneUpdateReceiverDictionary2 count] == 0;
 
       if (v44)
       {
@@ -90,21 +90,21 @@
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "received push for unregistered receiver: %@", buf, 0xCu);
         }
 
-        v46 = [(OctagonAPSReceiver *)self undeliveredUpdates];
-        [v46 addObject:v16];
+        undeliveredUpdates = [(OctagonAPSReceiver *)self undeliveredUpdates];
+        [undeliveredUpdates addObject:v16];
 
-        v47 = [(OctagonAPSReceiver *)self clearStalePushNotifications];
-        [v47 trigger];
+        clearStalePushNotifications = [(OctagonAPSReceiver *)self clearStalePushNotifications];
+        [clearStalePushNotifications trigger];
       }
 
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v48 = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
-      v49 = [v48 objectEnumerator];
+      zoneUpdateReceiverDictionary3 = [(OctagonAPSReceiver *)self zoneUpdateReceiverDictionary];
+      objectEnumerator = [zoneUpdateReceiverDictionary3 objectEnumerator];
 
-      v50 = [v49 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      v50 = [objectEnumerator countByEnumeratingWithState:&v53 objects:v61 count:16];
       if (v50)
       {
         v51 = *v54;
@@ -114,19 +114,19 @@
           {
             if (*v54 != v51)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             [*(*(&v53 + 1) + 8 * i) notifyZoneChange:v16];
           }
 
-          v50 = [v49 countByEnumeratingWithState:&v53 objects:v61 count:16];
+          v50 = [objectEnumerator countByEnumeratingWithState:&v53 objects:v61 count:16];
         }
 
         while (v50);
       }
 
-      objc_sync_exit(v42);
+      objc_sync_exit(zoneUpdateReceiverDictionary);
       v15 = v16;
     }
 
@@ -144,8 +144,8 @@
 
   else
   {
-    v14 = [v7 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"cf"];
+    userInfo4 = [messageCopy userInfo];
+    v15 = [userInfo4 objectForKeyedSubscript:@"cf"];
 
     v16 = [v15 objectForKeyedSubscript:@"c"];
     v17 = sub_100019104(@"octagonpush", 0);
@@ -162,10 +162,10 @@
 
     if (v16)
     {
-      v20 = [(OctagonAPSReceiver *)self octagonContainerMap];
-      objc_sync_enter(v20);
-      v21 = [(OctagonAPSReceiver *)self octagonContainerMap];
-      v22 = [v21 count] == 0;
+      octagonContainerMap = [(OctagonAPSReceiver *)self octagonContainerMap];
+      objc_sync_enter(octagonContainerMap);
+      octagonContainerMap2 = [(OctagonAPSReceiver *)self octagonContainerMap];
+      v22 = [octagonContainerMap2 count] == 0;
 
       if (v22)
       {
@@ -177,26 +177,26 @@
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "received cuttlefish push for unregistered container: %@", buf, 0xCu);
         }
 
-        v24 = [(OctagonAPSReceiver *)self undeliveredCuttlefishUpdates];
-        [v24 addObject:v16];
+        undeliveredCuttlefishUpdates = [(OctagonAPSReceiver *)self undeliveredCuttlefishUpdates];
+        [undeliveredCuttlefishUpdates addObject:v16];
 
-        v25 = [(OctagonAPSReceiver *)self clearStalePushNotifications];
-        [v25 trigger];
+        clearStalePushNotifications2 = [(OctagonAPSReceiver *)self clearStalePushNotifications];
+        [clearStalePushNotifications2 trigger];
       }
 
-      objc_sync_exit(v20);
+      objc_sync_exit(octagonContainerMap);
     }
 
-    v26 = [(OctagonAPSReceiver *)self octagonContainerMap];
-    objc_sync_enter(v26);
+    octagonContainerMap3 = [(OctagonAPSReceiver *)self octagonContainerMap];
+    objc_sync_enter(octagonContainerMap3);
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v27 = [(OctagonAPSReceiver *)self octagonContainerMap];
-    v28 = [v27 objectEnumerator];
+    octagonContainerMap4 = [(OctagonAPSReceiver *)self octagonContainerMap];
+    objectEnumerator2 = [octagonContainerMap4 objectEnumerator];
 
-    v29 = [v28 countByEnumeratingWithState:&v57 objects:v62 count:16];
+    v29 = [objectEnumerator2 countByEnumeratingWithState:&v57 objects:v62 count:16];
     if (v29)
     {
       v30 = *v58;
@@ -206,60 +206,60 @@
         {
           if (*v58 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           [*(*(&v57 + 1) + 8 * j) notifyContainerChange:0];
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v57 objects:v62 count:16];
+        v29 = [objectEnumerator2 countByEnumeratingWithState:&v57 objects:v62 count:16];
       }
 
       while (v29);
     }
 
-    objc_sync_exit(v26);
+    objc_sync_exit(octagonContainerMap3);
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v13 = sub_100019104(@"octagonpush", 0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138413058;
-    v15 = v10;
+    v15 = tokenCopy;
     v16 = 2112;
-    v17 = v11;
+    v17 = topicCopy;
     v18 = 2112;
-    v19 = v12;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received per-topic push token %@ for topic %@ identifier %@ on connection %@", &v14, 0x2Au);
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = sub_100019104(@"octagonpush", 0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "OctagonAPSDelegate initiated: %@", &v6, 0xCu);
   }
 }
 
-- (id)registerCuttlefishReceiver:(id)a3 forContainerName:(id)a4 contextID:(id)a5
+- (id)registerCuttlefishReceiver:(id)receiver forContainerName:(id)name contextID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  receiverCopy = receiver;
+  nameCopy = name;
+  dCopy = d;
   v11 = objc_alloc_init(CKKSCondition);
   objc_initWeak(&location, self);
   v12 = +[OctagonAPSReceiver apsDeliveryQueue];
@@ -268,14 +268,14 @@
   v20[2] = sub_1001E4AB4;
   v20[3] = &unk_100344658;
   objc_copyWeak(&v25, &location);
-  v21 = v8;
-  v22 = v10;
-  v23 = v9;
+  v21 = receiverCopy;
+  v22 = dCopy;
+  v23 = nameCopy;
   v13 = v11;
   v24 = v13;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
+  v14 = nameCopy;
+  v15 = dCopy;
+  v16 = receiverCopy;
   dispatch_async(v12, v20);
 
   v17 = v24;
@@ -287,10 +287,10 @@
   return v18;
 }
 
-- (id)registerCKKSReceiver:(id)a3 contextID:(id)a4
+- (id)registerCKKSReceiver:(id)receiver contextID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  receiverCopy = receiver;
+  dCopy = d;
   v8 = objc_alloc_init(CKKSCondition);
   objc_initWeak(&location, self);
   v9 = +[OctagonAPSReceiver apsDeliveryQueue];
@@ -299,12 +299,12 @@
   block[2] = sub_1001E4DC0;
   block[3] = &unk_100344970;
   objc_copyWeak(&v20, &location);
-  v17 = v6;
-  v18 = v7;
+  v17 = receiverCopy;
+  v18 = dCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
+  v11 = dCopy;
+  v12 = receiverCopy;
   dispatch_async(v9, block);
 
   v13 = v19;
@@ -316,9 +316,9 @@
   return v14;
 }
 
-- (void)reportDroppedPushes:(id)a3
+- (void)reportDroppedPushes:(id)pushes
 {
-  v3 = a3;
+  pushesCopy = pushes;
   cf = 0;
   *buf = -1431655766;
   lock_state = aks_get_lock_state();
@@ -345,7 +345,7 @@
 
   v20 = 0uLL;
   v21 = 0uLL;
-  v9 = v3;
+  v9 = pushesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v10)
   {
@@ -372,11 +372,11 @@
           }
 
           v16 = [[SecEventMetric alloc] initWithEventName:@"APNSPushMetrics"];
-          v17 = [v14 ckksPushTracingUUID];
-          [(SecEventMetric *)v16 setObject:v17 forKeyedSubscript:@"push_token_uuid"];
+          ckksPushTracingUUID = [v14 ckksPushTracingUUID];
+          [(SecEventMetric *)v16 setObject:ckksPushTracingUUID forKeyedSubscript:@"push_token_uuid"];
 
-          v18 = [v14 ckksPushReceivedDate];
-          [(SecEventMetric *)v16 setObject:v18 forKeyedSubscript:@"push_received_date"];
+          ckksPushReceivedDate = [v14 ckksPushReceivedDate];
+          [(SecEventMetric *)v16 setObject:ckksPushReceivedDate forKeyedSubscript:@"push_received_date"];
 
           [(SecEventMetric *)v16 setObject:v8 forKeyedSubscript:@"push_event_name"];
           v19 = +[SecMetrics managerObject];
@@ -391,9 +391,9 @@
   }
 }
 
-- (void)registerForEnvironment:(id)a3
+- (void)registerForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   objc_initWeak(&location, self);
   v5 = +[OctagonAPSReceiver apsDeliveryQueue];
   block[0] = _NSConcreteStackBlock;
@@ -401,24 +401,24 @@
   block[2] = sub_1001E53D8;
   block[3] = &unk_100344D38;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = environmentCopy;
+  v6 = environmentCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (OctagonAPSReceiver)initWithNamedDelegatePort:(id)a3 apsConnectionClass:(Class)a4 stalePushTimeout:(unint64_t)a5
+- (OctagonAPSReceiver)initWithNamedDelegatePort:(id)port apsConnectionClass:(Class)class stalePushTimeout:(unint64_t)timeout
 {
-  v9 = a3;
+  portCopy = port;
   v33.receiver = self;
   v33.super_class = OctagonAPSReceiver;
   v10 = [(OctagonAPSReceiver *)&v33 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_apsConnectionClass, a4);
+    objc_storeStrong(&v10->_apsConnectionClass, class);
     v12 = +[NSMutableSet set];
     undeliveredUpdates = v11->_undeliveredUpdates;
     v11->_undeliveredUpdates = v12;
@@ -427,7 +427,7 @@
     undeliveredCuttlefishUpdates = v11->_undeliveredCuttlefishUpdates;
     v11->_undeliveredCuttlefishUpdates = v14;
 
-    objc_storeStrong(&v11->_namedDelegatePort, a3);
+    objc_storeStrong(&v11->_namedDelegatePort, port);
     v16 = +[NSMutableDictionary dictionary];
     environmentMap = v11->_environmentMap;
     v11->_environmentMap = v16;
@@ -448,7 +448,7 @@
     objc_copyWeak(&v31, &location);
     v22 = objc_retainBlock(&v27);
     v23 = [CKKSNearFutureScheduler alloc];
-    v24 = [(CKKSNearFutureScheduler *)v23 initWithName:@"clearStalePushNotifications" delay:a5 keepProcessAlive:0 dependencyDescriptionCode:0 block:v22, v27, v28, v29, v30];
+    v24 = [(CKKSNearFutureScheduler *)v23 initWithName:@"clearStalePushNotifications" delay:timeout keepProcessAlive:0 dependencyDescriptionCode:0 block:v22, v27, v28, v29, v30];
     clearStalePushNotifications = v11->_clearStalePushNotifications;
     v11->_clearStalePushNotifications = v24;
 
@@ -525,12 +525,12 @@
   return v3;
 }
 
-+ (id)resettableSynchronizedGlobalDelegatePortMap:(BOOL)a3
++ (id)resettableSynchronizedGlobalDelegatePortMap:(BOOL)map
 {
   v3 = qword_10039E2A8;
   if (qword_10039E2A8)
   {
-    v4 = !a3;
+    v4 = !map;
   }
 
   else
@@ -552,23 +552,23 @@
 
 + (void)resetGlobalDelegatePortMap
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = [obj resettableSynchronizedGlobalDelegatePortMap:1];
   objc_sync_exit(obj);
 }
 
-+ (id)receiverForNamedDelegatePort:(id)a3 apsConnectionClass:(Class)a4
++ (id)receiverForNamedDelegatePort:(id)port apsConnectionClass:(Class)class
 {
-  v6 = a3;
+  portCopy = port;
   v7 = objc_opt_class();
   objc_sync_enter(v7);
-  v8 = [a1 synchronizedGlobalDelegatePortMap];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  synchronizedGlobalDelegatePortMap = [self synchronizedGlobalDelegatePortMap];
+  v9 = [synchronizedGlobalDelegatePortMap objectForKeyedSubscript:portCopy];
   if (!v9)
   {
-    v9 = [[OctagonAPSReceiver alloc] initWithNamedDelegatePort:v6 apsConnectionClass:a4];
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    v9 = [[OctagonAPSReceiver alloc] initWithNamedDelegatePort:portCopy apsConnectionClass:class];
+    [synchronizedGlobalDelegatePortMap setObject:v9 forKeyedSubscript:portCopy];
   }
 
   objc_sync_exit(v7);

@@ -1,5 +1,5 @@
 @interface AVTAvatarAttributeEditorLayout
-- (AVTAvatarAttributeEditorLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 userInfoViewHeight:(double)a5 screenScale:(double)a6 RTL:(BOOL)a7 showSideGroupPicker:(BOOL)a8 maxGroupLabelWidth:(double)a9;
+- (AVTAvatarAttributeEditorLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets userInfoViewHeight:(double)height screenScale:(double)scale RTL:(BOOL)l showSideGroupPicker:(BOOL)picker maxGroupLabelWidth:(double)width;
 - (CGRect)attributesContentViewFrame;
 - (CGRect)avatarContainerFrame;
 - (CGRect)groupDialContainerFrame;
@@ -11,19 +11,19 @@
 - (UIEdgeInsets)attributesContentViewInsets;
 - (UIEdgeInsets)attributesContentViewScrollIndicatorInsets;
 - (UIEdgeInsets)edgeInsets;
-- (void)raiseExceptionForPropertyString:(id)a3;
+- (void)raiseExceptionForPropertyString:(id)string;
 @end
 
 @implementation AVTAvatarAttributeEditorLayout
 
-- (AVTAvatarAttributeEditorLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 userInfoViewHeight:(double)a5 screenScale:(double)a6 RTL:(BOOL)a7 showSideGroupPicker:(BOOL)a8 maxGroupLabelWidth:(double)a9
+- (AVTAvatarAttributeEditorLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets userInfoViewHeight:(double)height screenScale:(double)scale RTL:(BOOL)l showSideGroupPicker:(BOOL)picker maxGroupLabelWidth:(double)width
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v26.receiver = self;
   v26.super_class = AVTAvatarAttributeEditorLayout;
   v19 = [(AVTAvatarAttributeEditorLayout *)&v26 init];
@@ -36,17 +36,17 @@
     v19->_edgeInsets.left = left;
     v19->_edgeInsets.bottom = bottom;
     v19->_edgeInsets.right = right;
-    v19->_userInfoViewHeight = a5;
-    v19->_screenScale = a6;
-    v21 = [MEMORY[0x1E69DC668] sharedApplication];
-    v22 = [v21 preferredContentSizeCategory];
-    v23 = [v22 copy];
+    v19->_userInfoViewHeight = height;
+    v19->_screenScale = scale;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+    v23 = [preferredContentSizeCategory copy];
     contentSizeCategory = v20->_contentSizeCategory;
     v20->_contentSizeCategory = v23;
 
-    v20->_RTL = a7;
-    v20->_showSideGroupPicker = a8;
-    v20->_maxGroupLabelWidth = a9;
+    v20->_RTL = l;
+    v20->_showSideGroupPicker = picker;
+    v20->_maxGroupLabelWidth = width;
   }
 
   return v20;
@@ -178,10 +178,10 @@
   return result;
 }
 
-- (void)raiseExceptionForPropertyString:(id)a3
+- (void)raiseExceptionForPropertyString:(id)string
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<AVTAvatarAttributeEditorLayout:%p> Property getter for %@ called on abstract superclass", self, a3];
-  v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v4 userInfo:0];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"<AVTAvatarAttributeEditorLayout:%p> Property getter for %@ called on abstract superclass", self, string];
+  v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:string userInfo:0];
   [v3 raise];
 }
 

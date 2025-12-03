@@ -1,12 +1,12 @@
 @interface MUStackView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (MUStackView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (MUStackView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
 - (void)_setupStackView;
-- (void)addArrangedSubview:(id)a3 withCustomSpacing:(double)a4;
-- (void)removeArrangedSubview:(id)a3;
+- (void)addArrangedSubview:(id)subview withCustomSpacing:(double)spacing;
+- (void)removeArrangedSubview:(id)subview;
 @end
 
 @implementation MUStackView
@@ -29,36 +29,36 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)removeArrangedSubview:(id)a3
+- (void)removeArrangedSubview:(id)subview
 {
   stackView = self->_stackView;
-  v4 = a3;
-  [(UIStackView *)stackView removeArrangedSubview:v4];
-  [v4 removeFromSuperview];
+  subviewCopy = subview;
+  [(UIStackView *)stackView removeArrangedSubview:subviewCopy];
+  [subviewCopy removeFromSuperview];
 }
 
-- (void)addArrangedSubview:(id)a3 withCustomSpacing:(double)a4
+- (void)addArrangedSubview:(id)subview withCustomSpacing:(double)spacing
 {
   stackView = self->_stackView;
-  v7 = a3;
-  [(UIStackView *)stackView addArrangedSubview:v7];
-  [(MUStackView *)self setCustomSpacing:v7 afterView:a4];
+  subviewCopy = subview;
+  [(UIStackView *)stackView addArrangedSubview:subviewCopy];
+  [(MUStackView *)self setCustomSpacing:subviewCopy afterView:spacing];
 }
 
 - (void)_setupStackView
@@ -73,21 +73,21 @@
   [(UIStackView *)self->_stackView set_mapsui_axis:1];
   [(MUStackView *)self addSubview:self->_stackView];
   v17 = MEMORY[0x1E696ACD8];
-  v20 = [(UIStackView *)self->_stackView leadingAnchor];
-  v19 = [(MUStackView *)self leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(MUStackView *)self leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v18;
-  v6 = [(UIStackView *)self->_stackView trailingAnchor];
-  v7 = [(MUStackView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(MUStackView *)self trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v8;
-  v9 = [(UIStackView *)self->_stackView topAnchor];
-  v10 = [(MUStackView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(MUStackView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v11;
-  v12 = [(UIStackView *)self->_stackView bottomAnchor];
-  v13 = [(MUStackView *)self bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(MUStackView *)self bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
   [v17 activateConstraints:v15];
@@ -95,11 +95,11 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MUStackView)initWithFrame:(CGRect)a3
+- (MUStackView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MUStackView;
-  v3 = [(MUStackView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUStackView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

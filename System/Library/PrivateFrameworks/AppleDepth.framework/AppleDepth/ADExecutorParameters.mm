@@ -1,6 +1,6 @@
 @interface ADExecutorParameters
 - (ADExecutorParameters)init;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADExecutorParameters
@@ -13,7 +13,7 @@
   return v4;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v14.receiver = self;
   v14.super_class = ADExecutorParameters;
@@ -24,18 +24,18 @@
     *(v3 + 24) = xmmword_240406F70;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v6 lowercaseString];
+    lowercaseString = [v6 lowercaseString];
 
-    if ([v7 hasPrefix:@"ad"])
+    if ([lowercaseString hasPrefix:@"ad"])
     {
-      v8 = [v7 substringFromIndex:2];
+      v8 = [lowercaseString substringFromIndex:2];
 
       v9 = v8;
     }
 
     else
     {
-      v9 = v7;
+      v9 = lowercaseString;
     }
 
     v10 = [v9 stringByReplacingOccurrencesOfString:@"parameters" withString:&stru_285231EA0];

@@ -1,12 +1,12 @@
 @interface UPResultCandidate
-+ (id)_buildCandidateEntitiesByStartIndex:(id)a3;
++ (id)_buildCandidateEntitiesByStartIndex:(id)index;
 - (NSString)annotatedString;
 - (SIRINLUEXTERNALUserParse)protobufRepresentation;
-- (UPResultCandidate)initWithUncalibratedProbability:(double)a3 calibratedProbability:(id)a4 utterance:(id)a5 intent:(id)a6 entities:(id)a7 modelIdentifier:(id)a8 task:(id)a9;
+- (UPResultCandidate)initWithUncalibratedProbability:(double)probability calibratedProbability:(id)calibratedProbability utterance:(id)utterance intent:(id)intent entities:(id)entities modelIdentifier:(id)identifier task:(id)task;
 - (double)bestAvailableProbability;
 - (double)probability;
-- (id)_intermediateNodeRepresentations:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_intermediateNodeRepresentations:(id)representations;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UPResultCandidate
@@ -14,26 +14,26 @@
 - (double)bestAvailableProbability
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(UPResultCandidate *)self calibratedProbability];
+  calibratedProbability = [(UPResultCandidate *)self calibratedProbability];
 
   v4 = SNLPOSLoggerForCategory(3);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (calibratedProbability)
   {
     if (v5)
     {
       [(UPResultCandidate *)self uncalibratedProbability];
       v7 = v6;
-      v8 = [(UPResultCandidate *)self calibratedProbability];
+      calibratedProbability2 = [(UPResultCandidate *)self calibratedProbability];
       v16 = 134218242;
       v17 = v7;
       v18 = 2112;
-      v19 = v8;
+      v19 = calibratedProbability2;
       _os_log_impl(&dword_22284A000, v4, OS_LOG_TYPE_DEBUG, "Result candidate has uncalibrated probability %f and calibrated probability %@. Using calibrated value.", &v16, 0x16u);
     }
 
-    v9 = [(UPResultCandidate *)self calibratedProbability];
-    [v9 doubleValue];
+    calibratedProbability3 = [(UPResultCandidate *)self calibratedProbability];
+    [calibratedProbability3 doubleValue];
     v11 = v10;
   }
 
@@ -62,8 +62,8 @@
   [v3 setProbability:?];
   v4 = MEMORY[0x277CBEB18];
   v5 = MEMORY[0x277D5DEF0];
-  v6 = [(UPResultCandidate *)self task];
-  v7 = [v5 convertFromUserDialogAct:v6];
+  task = [(UPResultCandidate *)self task];
+  v7 = [v5 convertFromUserDialogAct:task];
   v8 = [v4 arrayWithObject:v7];
   [v3 setUserDialogActs:v8];
 
@@ -75,32 +75,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [UPResultCandidate allocWithZone:a3];
+  v4 = [UPResultCandidate allocWithZone:zone];
   [(UPResultCandidate *)self uncalibratedProbability];
   v6 = v5;
-  v7 = [(UPResultCandidate *)self calibratedProbability];
-  v8 = [(UPResultCandidate *)self utterance];
-  v9 = [(UPResultCandidate *)self intent];
-  v10 = [(UPResultCandidate *)self entities];
-  v11 = [(UPResultCandidate *)self modelIdentifier];
-  v12 = [(UPResultCandidate *)self task];
-  v13 = [(UPResultCandidate *)v4 initWithUncalibratedProbability:v7 calibratedProbability:v8 utterance:v9 intent:v10 entities:v11 modelIdentifier:v12 task:v6];
+  calibratedProbability = [(UPResultCandidate *)self calibratedProbability];
+  utterance = [(UPResultCandidate *)self utterance];
+  intent = [(UPResultCandidate *)self intent];
+  entities = [(UPResultCandidate *)self entities];
+  modelIdentifier = [(UPResultCandidate *)self modelIdentifier];
+  task = [(UPResultCandidate *)self task];
+  v13 = [(UPResultCandidate *)v4 initWithUncalibratedProbability:calibratedProbability calibratedProbability:utterance utterance:intent intent:entities entities:modelIdentifier modelIdentifier:task task:v6];
 
   return v13;
 }
 
-- (id)_intermediateNodeRepresentations:(id)a3
+- (id)_intermediateNodeRepresentations:(id)representations
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  representationsCopy = representations;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v3;
+  obj = representationsCopy;
   v5 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v5)
   {
@@ -116,24 +116,24 @@
         }
 
         v9 = *(*(&v48 + 1) + 8 * i);
-        v10 = [v9 higherLevelParentLabel];
-        v11 = [v9 higherLevelChildLabel];
+        higherLevelParentLabel = [v9 higherLevelParentLabel];
+        higherLevelChildLabel = [v9 higherLevelChildLabel];
         v12 = [UPResultLeafNode alloc];
-        v13 = [v9 text];
-        v14 = [v9 semanticValue];
-        v15 = [(UPResultLeafNode *)v12 initWithLabel:v11 andText:v13 andSemanticValue:v14];
+        text = [v9 text];
+        semanticValue = [v9 semanticValue];
+        v15 = [(UPResultLeafNode *)v12 initWithLabel:higherLevelChildLabel andText:text andSemanticValue:semanticValue];
 
-        v16 = [v4 objectForKey:v10];
+        v16 = [dictionary objectForKey:higherLevelParentLabel];
 
         if (!v16)
         {
-          v17 = [MEMORY[0x277CBEB38] dictionary];
-          [v4 setObject:v17 forKey:v10];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:dictionary2 forKey:higherLevelParentLabel];
         }
 
-        v18 = [v4 objectForKey:v10];
-        v19 = [v9 groupId];
-        if (v19)
+        v18 = [dictionary objectForKey:higherLevelParentLabel];
+        groupId = [v9 groupId];
+        if (groupId)
         {
           [v9 groupId];
         }
@@ -148,8 +148,8 @@
 
         if (!v21)
         {
-          v22 = [MEMORY[0x277CBEB18] array];
-          [v18 setObject:v22 forKey:v20];
+          array = [MEMORY[0x277CBEB18] array];
+          [v18 setObject:array forKey:v20];
         }
 
         v23 = [v18 objectForKey:v20];
@@ -167,7 +167,7 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v39 = v4;
+  v39 = dictionary;
   v38 = [v39 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v38)
   {
@@ -224,31 +224,31 @@
   return v24;
 }
 
-- (UPResultCandidate)initWithUncalibratedProbability:(double)a3 calibratedProbability:(id)a4 utterance:(id)a5 intent:(id)a6 entities:(id)a7 modelIdentifier:(id)a8 task:(id)a9
+- (UPResultCandidate)initWithUncalibratedProbability:(double)probability calibratedProbability:(id)calibratedProbability utterance:(id)utterance intent:(id)intent entities:(id)entities modelIdentifier:(id)identifier task:(id)task
 {
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  calibratedProbabilityCopy = calibratedProbability;
+  utteranceCopy = utterance;
+  intentCopy = intent;
+  entitiesCopy = entities;
+  identifierCopy = identifier;
+  taskCopy = task;
   v28.receiver = self;
   v28.super_class = UPResultCandidate;
   v20 = [(UPResultCandidate *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    v20->_uncalibratedProbability = a3;
-    objc_storeStrong(&v20->_calibratedProbability, a4);
-    objc_storeStrong(&v21->_utterance, a5);
-    objc_storeStrong(&v21->_intent, a6);
-    objc_storeStrong(&v21->_entities, a7);
+    v20->_uncalibratedProbability = probability;
+    objc_storeStrong(&v20->_calibratedProbability, calibratedProbability);
+    objc_storeStrong(&v21->_utterance, utterance);
+    objc_storeStrong(&v21->_intent, intent);
+    objc_storeStrong(&v21->_entities, entities);
     v22 = [UPResultCandidate _buildCandidateEntitiesByStartIndex:v21->_entities];
     candidateEntitiesByStartIndex = v21->__candidateEntitiesByStartIndex;
     v21->__candidateEntitiesByStartIndex = v22;
 
-    objc_storeStrong(&v21->_modelIdentifier, a8);
-    objc_storeStrong(&v21->_task, a9);
+    objc_storeStrong(&v21->_modelIdentifier, identifier);
+    objc_storeStrong(&v21->_task, task);
   }
 
   return v21;
@@ -282,11 +282,11 @@
 
       if (v9)
       {
-        v10 = [v9 annotatedEntityFragmentString];
-        [v3 appendString:v10];
+        annotatedEntityFragmentString = [v9 annotatedEntityFragmentString];
+        [v3 appendString:annotatedEntityFragmentString];
 
-        v11 = [v9 text];
-        v12 = [v11 length];
+        text = [v9 text];
+        v12 = [text length];
       }
 
       else
@@ -312,16 +312,16 @@
   return v3;
 }
 
-+ (id)_buildCandidateEntitiesByStartIndex:(id)a3
++ (id)_buildCandidateEntitiesByStartIndex:(id)index
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  indexCopy = index;
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(indexCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = indexCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

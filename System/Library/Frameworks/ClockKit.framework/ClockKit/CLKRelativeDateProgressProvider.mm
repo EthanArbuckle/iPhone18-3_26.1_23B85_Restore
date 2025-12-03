@@ -1,42 +1,42 @@
 @interface CLKRelativeDateProgressProvider
-+ (id)relativeDateProgressProviderWithStartDate:(id)a3 endDate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CLKRelativeDateProgressProvider)initWithCoder:(id)a3;
-- (double)_progressFractionForNow:(id)a3;
++ (id)relativeDateProgressProviderWithStartDate:(id)date endDate:(id)endDate;
+- (BOOL)isEqual:(id)equal;
+- (CLKRelativeDateProgressProvider)initWithCoder:(id)coder;
+- (double)_progressFractionForNow:(id)now;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_validate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKRelativeDateProgressProvider
 
-+ (id)relativeDateProgressProviderWithStartDate:(id)a3 endDate:(id)a4
++ (id)relativeDateProgressProviderWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setStartDate:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v8 = objc_alloc_init(self);
+  [v8 setStartDate:dateCopy];
 
-  [v8 setEndDate:v6];
+  [v8 setEndDate:endDateCopy];
 
   return v8;
 }
 
-- (double)_progressFractionForNow:(id)a3
+- (double)_progressFractionForNow:(id)now
 {
-  v4 = a3;
-  v5 = [(CLKRelativeDateProgressProvider *)self startDate];
-  [v4 timeIntervalSinceDate:v5];
+  nowCopy = now;
+  startDate = [(CLKRelativeDateProgressProvider *)self startDate];
+  [nowCopy timeIntervalSinceDate:startDate];
   v7 = v6;
 
   result = 0.0;
   if (v7 >= 0.00000011920929)
   {
-    v9 = [(CLKRelativeDateProgressProvider *)self endDate];
-    v10 = [(CLKRelativeDateProgressProvider *)self startDate];
-    [v9 timeIntervalSinceDate:v10];
+    endDate = [(CLKRelativeDateProgressProvider *)self endDate];
+    startDate2 = [(CLKRelativeDateProgressProvider *)self startDate];
+    [endDate timeIntervalSinceDate:startDate2];
     v12 = v11;
 
     result = 1.0;
@@ -76,11 +76,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKRelativeDateProgressProvider;
-  v4 = [(CLKProgressProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKProgressProvider *)&v7 copyWithZone:zone];
   p_isa = &v4->super.super.isa;
   if (v4 != self)
   {
@@ -91,14 +91,14 @@
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKRelativeDateProgressProvider;
-  if ([(CLKProgressProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_startDate, v4[7]))
+  if ([(CLKProgressProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_startDate, equalCopy[7]))
   {
-    v5 = CLKEqualObjects(self->_endDate, v4[8]);
+    v5 = CLKEqualObjects(self->_endDate, equalCopy[8]);
   }
 
   else
@@ -118,29 +118,29 @@
   return (v4 + [(NSDate *)self->_endDate hash]* 1000.0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKRelativeDateProgressProvider;
-  v4 = a3;
-  [(CLKProgressProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_startDate forKey:{@"_startDate", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_endDate forKey:@"_endDate"];
+  coderCopy = coder;
+  [(CLKProgressProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_startDate forKey:{@"_startDate", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_endDate forKey:@"_endDate"];
 }
 
-- (CLKRelativeDateProgressProvider)initWithCoder:(id)a3
+- (CLKRelativeDateProgressProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKRelativeDateProgressProvider;
-  v5 = [(CLKProgressProvider *)&v11 initWithCoder:v4];
+  v5 = [(CLKProgressProvider *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
   }
@@ -152,14 +152,14 @@
 {
   v7.receiver = self;
   v7.super_class = CLKRelativeDateProgressProvider;
-  v3 = [(CLKProgressProvider *)&v7 JSONObjectRepresentation];
-  v4 = [(NSDate *)self->_startDate JSONObjectRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"startDate"];
+  jSONObjectRepresentation = [(CLKProgressProvider *)&v7 JSONObjectRepresentation];
+  jSONObjectRepresentation2 = [(NSDate *)self->_startDate JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation2 forKeyedSubscript:@"startDate"];
 
-  v5 = [(NSDate *)self->_endDate JSONObjectRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"endDate"];
+  jSONObjectRepresentation3 = [(NSDate *)self->_endDate JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation3 forKeyedSubscript:@"endDate"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 @end

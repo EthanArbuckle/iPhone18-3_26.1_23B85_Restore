@@ -1,47 +1,47 @@
 @interface TTRIRemindersListSmallImageAttachmentsView
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithContentView:(id)a3;
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithDocumentView:(id)a3;
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithFrame:(CGRect)a3;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4 uncroppedSourceFrame:(CGRect *)a5;
-- (void)didTapImage:(id)a3;
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithContentView:(id)view;
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithDocumentView:(id)view;
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithFrame:(CGRect)frame;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item uncroppedSourceFrame:(CGRect *)frame;
+- (void)didTapImage:(id)image;
 @end
 
 @implementation TTRIRemindersListSmallImageAttachmentsView
 
-- (void)didTapImage:(id)a3
+- (void)didTapImage:(id)image
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D6C0920(v4);
+  imageCopy = image;
+  selfCopy = self;
+  sub_21D6C0920(imageCopy);
 }
 
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithDocumentView:(id)a3
-{
-  result = _swift_stdlib_reportUnimplementedInitializer();
-  __break(1u);
-  return result;
-}
-
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithContentView:(id)a3
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithDocumentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4 uncroppedSourceFrame:(CGRect *)a5
+- (_TtC15RemindersUICore42TTRIRemindersListSmallImageAttachmentsView)initWithFrame:(CGRect)frame
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item uncroppedSourceFrame:(CGRect *)frame
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_21D6C142C(a4, &a5->origin.x);
+  selfCopy = self;
+  v9 = sub_21D6C142C(item, &frame->origin.x);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 

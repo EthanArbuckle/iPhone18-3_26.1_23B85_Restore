@@ -1,50 +1,50 @@
 @interface MTLLegacySVBuffer
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 device:(id)a4;
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 heap:(id)a4 device:(id)a5;
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 heap:(id)a4 device:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 track:(BOOL)a8;
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5;
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer device:(id)device;
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer heap:(id)heap device:(id)device;
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer heap:(id)heap device:(id)device offset:(unint64_t)offset length:(unint64_t)length track:(BOOL)track;
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
 - (void)dealloc;
-- (void)setBufferIndex:(unint64_t)a3;
+- (void)setBufferIndex:(unint64_t)index;
 @end
 
 @implementation MTLLegacySVBuffer
 
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 device:(id)a4
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer device:(id)device
 {
-  v7 = [a3 length];
+  v7 = [buffer length];
 
-  return [(MTLLegacySVBuffer *)self initWithBuffer:a3 device:a4 offset:0 length:v7 track:1];
+  return [(MTLLegacySVBuffer *)self initWithBuffer:buffer device:device offset:0 length:v7 track:1];
 }
 
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 heap:(id)a4 device:(id)a5
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer heap:(id)heap device:(id)device
 {
-  v9 = [a3 length];
+  v9 = [buffer length];
 
-  return [(MTLLegacySVBuffer *)self initWithBuffer:a3 heap:a4 device:a5 offset:0 length:v9 track:1];
+  return [(MTLLegacySVBuffer *)self initWithBuffer:buffer heap:heap device:device offset:0 length:v9 track:1];
 }
 
-- (MTLLegacySVBuffer)initWithBuffer:(id)a3 heap:(id)a4 device:(id)a5 offset:(unint64_t)a6 length:(unint64_t)a7 track:(BOOL)a8
+- (MTLLegacySVBuffer)initWithBuffer:(id)buffer heap:(id)heap device:(id)device offset:(unint64_t)offset length:(unint64_t)length track:(BOOL)track
 {
-  v8 = a8;
-  v12 = a4;
-  if (!a4)
+  trackCopy = track;
+  heapCopy = heap;
+  if (!heap)
   {
-    a4 = a5;
+    heap = device;
   }
 
   v16.receiver = self;
   v16.super_class = MTLLegacySVBuffer;
-  v13 = [(MTLToolsResource *)&v16 initWithBaseObject:a3 parent:a4 heap:v12];
+  v13 = [(MTLToolsResource *)&v16 initWithBaseObject:buffer parent:heap heap:heapCopy];
   v14 = v13;
   if (v13)
   {
-    v13->_offset = a6;
-    v13->_length = a7;
-    if (v8 && (*(a5 + 286) & 0x80) != 0)
+    v13->_offset = offset;
+    v13->_length = length;
+    if (trackCopy && (*(device + 286) & 0x80) != 0)
     {
-      v13->_descriptorHeap = a5 + 296;
-      [(MTLLegacySVBuffer *)v13 setBufferIndex:LegacySVBufferDescriptorHeap::createHandle((a5 + 296), v13)];
+      v13->_descriptorHeap = device + 296;
+      [(MTLLegacySVBuffer *)v13 setBufferIndex:LegacySVBufferDescriptorHeap::createHandle((device + 296), v13)];
     }
   }
 
@@ -63,9 +63,9 @@
   [(MTLToolsBuffer *)&v3 dealloc];
 }
 
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newLinearTextureWithDescriptor:a3 offset:a4 bytesPerRow:a5 bytesPerImage:a6];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newLinearTextureWithDescriptor:descriptor offset:offset bytesPerRow:row bytesPerImage:image];
   if (result)
   {
 
@@ -75,9 +75,9 @@
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureWithDescriptor:a3 offset:a4 bytesPerRow:a5];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureWithDescriptor:descriptor offset:offset bytesPerRow:row];
   if (result)
   {
 
@@ -87,10 +87,10 @@
   return result;
 }
 
-- (void)setBufferIndex:(unint64_t)a3
+- (void)setBufferIndex:(unint64_t)index
 {
   bufferIndex = self->_bufferIndex;
-  if (bufferIndex != a3)
+  if (bufferIndex != index)
   {
     if (bufferIndex)
     {
@@ -98,12 +98,12 @@
       LegacySVBufferDescriptorHeap::freeBufferHandle(self->_descriptorHeap, self->_bufferIndex);
     }
 
-    self->_bufferIndex = a3;
-    if (a3)
+    self->_bufferIndex = index;
+    if (index)
     {
       device = self->super.super.super._device;
 
-      MTLLegacySVSetBufferForResourceHandle(device, a3, self);
+      MTLLegacySVSetBufferForResourceHandle(device, index, self);
     }
   }
 }

@@ -1,18 +1,18 @@
 @interface OKSynopsisInterpreter
-- (OKSynopsisInterpreter)initWithSynopsis:(id)a3;
-- (id)guidelineSynopsisItemFromObjectView:(id)a3;
-- (id)guidelineSynopsisItemsFromObjectViews:(id)a3;
-- (id)objectViewFromGuidelineSynopsisItem:(id)a3;
-- (id)objectViewsFromGuidelineSynopsisItems:(id)a3;
+- (OKSynopsisInterpreter)initWithSynopsis:(id)synopsis;
+- (id)guidelineSynopsisItemFromObjectView:(id)view;
+- (id)guidelineSynopsisItemsFromObjectViews:(id)views;
+- (id)objectViewFromGuidelineSynopsisItem:(id)item;
+- (id)objectViewsFromGuidelineSynopsisItems:(id)items;
 - (void)dealloc;
-- (void)registerComparatorForItemType:(unint64_t)a3 compareBlock:(id)a4;
-- (void)registerCreatorForItemType:(unint64_t)a3 initBlock:(id)a4;
-- (void)setSynopsis:(id)a3;
+- (void)registerComparatorForItemType:(unint64_t)type compareBlock:(id)block;
+- (void)registerCreatorForItemType:(unint64_t)type initBlock:(id)block;
+- (void)setSynopsis:(id)synopsis;
 @end
 
 @implementation OKSynopsisInterpreter
 
-- (OKSynopsisInterpreter)initWithSynopsis:(id)a3
+- (OKSynopsisInterpreter)initWithSynopsis:(id)synopsis
 {
   v6.receiver = self;
   v6.super_class = OKSynopsisInterpreter;
@@ -22,7 +22,7 @@
     v4->_objectCreators = objc_alloc_init(MEMORY[0x277CBEB38]);
     v4->_objectComparators = objc_alloc_init(MEMORY[0x277CBEB38]);
     v4->_guidelineItems = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(OKSynopsisInterpreter *)v4 setSynopsis:a3];
+    [(OKSynopsisInterpreter *)v4 setSynopsis:synopsis];
   }
 
   return v4;
@@ -63,7 +63,7 @@
   [(OKSynopsisInterpreter *)&v7 dealloc];
 }
 
-- (void)setSynopsis:(id)a3
+- (void)setSynopsis:(id)synopsis
 {
   v37 = *MEMORY[0x277D85DE8];
   synopsis = self->_synopsis;
@@ -78,7 +78,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v16 = [a3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  v16 = [synopsis countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v16)
   {
     v15 = *v31;
@@ -89,7 +89,7 @@
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(synopsis);
         }
 
         v17 = v5;
@@ -157,39 +157,39 @@
       }
 
       while (v17 + 1 != v16);
-      v16 = [a3 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v16 = [synopsis countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v16);
   }
 
-  self->_synopsis = a3;
+  self->_synopsis = synopsis;
 }
 
-- (void)registerCreatorForItemType:(unint64_t)a3 initBlock:(id)a4
+- (void)registerCreatorForItemType:(unint64_t)type initBlock:(id)block
 {
-  v6 = [(NSMutableDictionary *)self->_objectCreators allKeys];
-  if (([v6 containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a3)}] & 1) == 0)
+  allKeys = [(NSMutableDictionary *)self->_objectCreators allKeys];
+  if (([allKeys containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", type)}] & 1) == 0)
   {
-    -[NSMutableDictionary setObject:forKey:](self->_objectCreators, "setObject:forKey:", a4, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3]);
+    -[NSMutableDictionary setObject:forKey:](self->_objectCreators, "setObject:forKey:", block, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type]);
   }
 }
 
-- (void)registerComparatorForItemType:(unint64_t)a3 compareBlock:(id)a4
+- (void)registerComparatorForItemType:(unint64_t)type compareBlock:(id)block
 {
-  v6 = [(NSMutableDictionary *)self->_objectComparators allKeys];
-  if (([v6 containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a3)}] & 1) == 0)
+  allKeys = [(NSMutableDictionary *)self->_objectComparators allKeys];
+  if (([allKeys containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", type)}] & 1) == 0)
   {
-    -[NSMutableDictionary setObject:forKey:](self->_objectComparators, "setObject:forKey:", a4, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3]);
+    -[NSMutableDictionary setObject:forKey:](self->_objectComparators, "setObject:forKey:", block, [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type]);
   }
 }
 
-- (id)objectViewFromGuidelineSynopsisItem:(id)a3
+- (id)objectViewFromGuidelineSynopsisItem:(id)item
 {
-  v5 = [(NSMutableDictionary *)self->_objectCreators allKeys];
-  if ([v5 containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(a3, "type"))}])
+  allKeys = [(NSMutableDictionary *)self->_objectCreators allKeys];
+  if ([allKeys containsObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(item, "type"))}])
   {
-    v6 = *(-[NSMutableDictionary objectForKeyedSubscript:](self->_objectCreators, "objectForKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a3, "type")}]) + 16);
+    v6 = *(-[NSMutableDictionary objectForKeyedSubscript:](self->_objectCreators, "objectForKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(item, "type")}]) + 16);
 
     return v6();
   }
@@ -198,22 +198,22 @@
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Synopsis/OKSynopsisInterpreter.m" line:122 andFormat:@"No interpretor for %@", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(a3, "type"))];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Synopsis/OKSynopsisInterpreter.m" line:122 andFormat:@"No interpretor for %@", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(item, "type"))];
     }
 
     return 0;
   }
 }
 
-- (id)objectViewsFromGuidelineSynopsisItems:(id)a3
+- (id)objectViewsFromGuidelineSynopsisItems:(id)items
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -225,29 +225,29 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v10 = [(OKSynopsisInterpreter *)self objectViewFromGuidelineSynopsisItem:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)guidelineSynopsisItemFromObjectView:(id)a3
+- (id)guidelineSynopsisItemFromObjectView:(id)view
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -273,7 +273,7 @@
         v11 = -[NSMutableDictionary objectForKeyedSubscript:](self->_objectComparators, "objectForKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "type")}]);
         if (v11)
         {
-          if ((*(v11 + 16))(v11, v10, a3))
+          if ((*(v11 + 16))(v11, v10, view))
           {
             return v10;
           }
@@ -294,15 +294,15 @@
   return 0;
 }
 
-- (id)guidelineSynopsisItemsFromObjectViews:(id)a3
+- (id)guidelineSynopsisItemsFromObjectViews:(id)views
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [views countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -314,26 +314,26 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(views);
         }
 
         v10 = [(OKSynopsisInterpreter *)self guidelineSynopsisItemFromObjectView:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [views countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
 @end

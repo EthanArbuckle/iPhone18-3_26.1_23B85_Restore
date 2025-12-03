@@ -1,21 +1,21 @@
 @interface _PUVideoView
-- (void)setPlayer:(id)a3;
+- (void)setPlayer:(id)player;
 @end
 
 @implementation _PUVideoView
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v8 = a3;
-  objc_storeStrong(&self->_player, a3);
-  v5 = [(_PUVideoView *)self layer];
-  [v8 attachToPlayerLayerIfNeeded:v5];
+  playerCopy = player;
+  objc_storeStrong(&self->_player, player);
+  layer = [(_PUVideoView *)self layer];
+  [playerCopy attachToPlayerLayerIfNeeded:layer];
 
-  v6 = v8;
-  if (!v8)
+  v6 = playerCopy;
+  if (!playerCopy)
   {
-    v7 = [(_PUVideoView *)self layer];
-    [v7 setWrappedPlayer:0];
+    layer2 = [(_PUVideoView *)self layer];
+    [layer2 setWrappedPlayer:0];
 
     v6 = 0;
   }

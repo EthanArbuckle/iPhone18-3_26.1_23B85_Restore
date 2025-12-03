@@ -8,7 +8,7 @@
 - (char)CA_copyRenderKeyPathValueArray
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = v2;
   v4 = 8 * v2;
   if ((8 * v2) > 0x1000)
@@ -34,7 +34,7 @@
     if (v9)
     {
       v19 = v9;
-      [a1 getObjects:v5 andKeys:v7 count:v3];
+      [self getObjects:v5 andKeys:v7 count:v3];
       if (!v3)
       {
         return v19;
@@ -46,7 +46,7 @@
       {
         v20[0] = 0;
         CA::Render::key_path_set(v20, v7[v11], v10);
-        v13 = [*&v5[8 * v11] CA_copyRenderValue];
+        cA_copyRenderValue = [*&v5[8 * v11] CA_copyRenderValue];
         if (x_malloc_get_zone::once != -1)
         {
           dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -60,13 +60,13 @@
           ++dword_1ED4EAAA8;
           *v14 = &unk_1EF1F57E8;
           *(v14 + 2) = v20[0];
-          if (v13)
+          if (cA_copyRenderValue)
           {
-            v15 = v13;
-            if (!atomic_fetch_add(v13 + 2, 1u))
+            v15 = cA_copyRenderValue;
+            if (!atomic_fetch_add(cA_copyRenderValue + 2, 1u))
             {
               v15 = 0;
-              atomic_fetch_add(v13 + 2, 0xFFFFFFFF);
+              atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF);
             }
           }
 
@@ -79,9 +79,9 @@
         }
 
         *&v12[8 * v11] = v14;
-        if (v13 && atomic_fetch_add(v13 + 2, 0xFFFFFFFF) == 1)
+        if (cA_copyRenderValue && atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
         {
-          (*(*v13 + 16))(v13);
+          (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
         }
 
         v11 = (v11 + 1);
@@ -115,7 +115,7 @@
 - (uint64_t)CA_copyRenderKeyValueArray
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = v2;
   v4 = 8 * v2;
   if ((8 * v2) > 0x1000)
@@ -141,7 +141,7 @@
     if (v9)
     {
       v18[0] = v9;
-      [a1 getObjects:v5 andKeys:v7 count:v3];
+      [self getObjects:v5 andKeys:v7 count:v3];
       if (!v3)
       {
         return v18[0];
@@ -152,7 +152,7 @@
       do
       {
         v12 = CAInternAtom(v7[v10], 1);
-        v13 = [*&v5[8 * v10] CA_copyRenderValue];
+        cA_copyRenderValue = [*&v5[8 * v10] CA_copyRenderValue];
         if (x_malloc_get_zone::once != -1)
         {
           dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -166,13 +166,13 @@
           ++dword_1ED4EAAAC;
           *v14 = &unk_1EF203140;
           v14[4] = v12;
-          if (v13)
+          if (cA_copyRenderValue)
           {
-            v15 = v13;
-            if (!atomic_fetch_add(v13 + 2, 1u))
+            v15 = cA_copyRenderValue;
+            if (!atomic_fetch_add(cA_copyRenderValue + 2, 1u))
             {
               v15 = 0;
-              atomic_fetch_add(v13 + 2, 0xFFFFFFFF);
+              atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF);
             }
           }
 
@@ -185,9 +185,9 @@
         }
 
         *(v11 + 8 * v10) = v14;
-        if (v13 && atomic_fetch_add(v13 + 2, 0xFFFFFFFF) == 1)
+        if (cA_copyRenderValue && atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
         {
-          (*(*v13 + 16))(v13);
+          (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
         }
 
         v10 = (v10 + 1);

@@ -40,21 +40,21 @@
   if (v2 && [(CRUDetailViewComponent *)v2 deviceClass]== 3)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(CRUDetailViewComponent *)v3 locale];
-    v6 = [v5 localizedStringWithKey:@"TOUCHID_KB_URL_IPAD" defaultString:@"TOUCHID_KB_URL_IPAD"];
+    locale = [(CRUDetailViewComponent *)v3 locale];
+    v6 = [locale localizedStringWithKey:@"TOUCHID_KB_URL_IPAD" defaultString:@"TOUCHID_KB_URL_IPAD"];
     v7 = [v4 URLWithString:v6];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v7];
 
-    v8 = [(CRUDetailViewComponent *)v3 locale];
-    v9 = [v8 localizedStringWithKey:@"TOUCHID_DESC_IPAD" defaultString:@"TOUCHID_DESC_IPAD"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v9 = [locale2 localizedStringWithKey:@"TOUCHID_DESC_IPAD" defaultString:@"TOUCHID_DESC_IPAD"];
     [(CRUDetailViewComponent *)v3 setInformativeText:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"TOUCHID_SETTINGS_TITLE" defaultString:@"TOUCHID_SETTINGS_TITLE"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"TOUCHID_SETTINGS_TITLE" defaultString:@"TOUCHID_SETTINGS_TITLE"];
     [(CRUDetailViewComponent *)v3 setTitleText:v11];
 
-    v12 = [(CRUDetailViewComponent *)v3 locale];
-    v13 = [v12 localizedStringWithKey:@"LEARN_MORE_UNKNWON_PART" defaultString:@"LEARN_MORE_UNKNWON_PART"];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v13 = [locale4 localizedStringWithKey:@"LEARN_MORE_UNKNWON_PART" defaultString:@"LEARN_MORE_UNKNWON_PART"];
     [(CRUDetailViewComponent *)v3 setFooterText:v13];
   }
 

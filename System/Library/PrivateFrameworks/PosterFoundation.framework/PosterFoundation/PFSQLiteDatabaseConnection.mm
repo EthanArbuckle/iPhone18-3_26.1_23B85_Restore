@@ -1,28 +1,28 @@
 @interface PFSQLiteDatabaseConnection
-+ (uint64_t)_sqliteOpenFlagsForDataProtectionClass:(uint64_t)a1;
-- (BOOL)executeQuery:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5 error:(id *)a6;
-- (BOOL)executeQuery:(id)a3 error:(id *)a4;
++ (uint64_t)_sqliteOpenFlagsForDataProtectionClass:(uint64_t)class;
+- (BOOL)executeQuery:(id)query bindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
+- (BOOL)executeQuery:(id)query error:(id *)error;
 - (BOOL)isReadonly;
-- (BOOL)truncateDatabaseAndReturnError:(id *)a3;
+- (BOOL)truncateDatabaseAndReturnError:(id *)error;
 - (PFSQLiteDatabaseConnection)init;
-- (PFSQLiteDatabaseConnection)initWithFileURL:(id)a3 dataProtectionClass:(unint64_t)a4;
-- (PFSQLiteDatabaseConnection)initWithFileURL:(id)a3 options:(int)a4 dataProtectionClass:(unint64_t)a5 error:(id *)a6;
+- (PFSQLiteDatabaseConnection)initWithFileURL:(id)l dataProtectionClass:(unint64_t)class;
+- (PFSQLiteDatabaseConnection)initWithFileURL:(id)l options:(int)options dataProtectionClass:(unint64_t)class error:(id *)error;
 - (PFSQLiteDatabaseConnection)initWithInMemoryDatabase;
-- (id)dataDumpForTable:(uint64_t)a3 error:;
-- (id)dataDumpResultOfAllTablesWithError:(id *)a3;
-- (id)dataDumpResultOfQuery:(id)a3 error:(id *)a4;
-- (id)dataDumpResultOfTable:(id)a3 error:(id *)a4;
+- (id)dataDumpForTable:(uint64_t)table error:;
+- (id)dataDumpResultOfAllTablesWithError:(id *)error;
+- (id)dataDumpResultOfQuery:(id)query error:(id *)error;
+- (id)dataDumpResultOfTable:(id)table error:(id *)error;
 - (id)lastErrorMessage;
-- (id)prepareStatement:(id)a3;
+- (id)prepareStatement:(id)statement;
 - (id)tableNames;
 - (void)_closeConnection;
 - (void)_queue_close;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performSyncWithDatabase:(uint64_t)a1;
-- (void)performWithDatabase:(uint64_t)a1;
-- (void)removeObserver:(id)a3;
+- (void)performSyncWithDatabase:(uint64_t)database;
+- (void)performWithDatabase:(uint64_t)database;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PFSQLiteDatabaseConnection
@@ -40,7 +40,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"PFSQLiteDatabaseConnection.m";
     v17 = 1024;
@@ -70,13 +70,13 @@
   return v4;
 }
 
-- (PFSQLiteDatabaseConnection)initWithFileURL:(id)a3 dataProtectionClass:(unint64_t)a4
+- (PFSQLiteDatabaseConnection)initWithFileURL:(id)l dataProtectionClass:(unint64_t)class
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PFSQLiteDatabaseConnection;
   v6 = [(PFSQLiteDatabaseConnection *)&v11 init];
-  if (!v6 || ([v5 path], v7 = objc_claimAutoreleasedReturnValue(), v8 = PFSQLiteDatabaseConnectionSharedInit(v6, v7, 6, 2, 0), v7, v9 = 0, v8))
+  if (!v6 || ([lCopy path], v7 = objc_claimAutoreleasedReturnValue(), v8 = PFSQLiteDatabaseConnectionSharedInit(v6, v7, 6, 2, 0), v7, v9 = 0, v8))
   {
     v9 = v6;
   }
@@ -84,13 +84,13 @@
   return v9;
 }
 
-- (PFSQLiteDatabaseConnection)initWithFileURL:(id)a3 options:(int)a4 dataProtectionClass:(unint64_t)a5 error:(id *)a6
+- (PFSQLiteDatabaseConnection)initWithFileURL:(id)l options:(int)options dataProtectionClass:(unint64_t)class error:(id *)error
 {
-  v10 = a3;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = PFSQLiteDatabaseConnection;
   v11 = [(PFSQLiteDatabaseConnection *)&v16 init];
-  if (v11 && ([v10 path], v12 = objc_claimAutoreleasedReturnValue(), v13 = PFSQLiteDatabaseConnectionSharedInit(v11, v12, a4, a5, a6), v12, !v13))
+  if (v11 && ([lCopy path], v12 = objc_claimAutoreleasedReturnValue(), v13 = PFSQLiteDatabaseConnectionSharedInit(v11, v12, options, class, error), v12, !v13))
   {
     v14 = 0;
   }
@@ -103,7 +103,7 @@
   return v14;
 }
 
-+ (uint64_t)_sqliteOpenFlagsForDataProtectionClass:(uint64_t)a1
++ (uint64_t)_sqliteOpenFlagsForDataProtectionClass:(uint64_t)class
 {
   objc_opt_self();
   if ((a2 - 1) >= 3)
@@ -124,55 +124,55 @@
   [(PFSQLiteDatabaseConnection *)&v2 dealloc];
 }
 
-- (id)prepareStatement:(id)a3
+- (id)prepareStatement:(id)statement
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSCache *)self->_queue_queryCache objectForKey:v4];
+  statementCopy = statement;
+  v5 = [(NSCache *)self->_queue_queryCache objectForKey:statementCopy];
   if (!v5)
   {
-    v5 = [PFSQLitePreparedStatement _newPreparedStatementForDatabaseConnection:v4 withSQLQuery:?];
-    v6 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    [(PFSQLitePreparedStatement *)v5 setLoggingCategory:v6];
+    v5 = [PFSQLitePreparedStatement _newPreparedStatementForDatabaseConnection:statementCopy withSQLQuery:?];
+    loggingCategory = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    [(PFSQLitePreparedStatement *)v5 setLoggingCategory:loggingCategory];
 
-    v7 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    loggingCategory2 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_INFO))
     {
-      v8 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+      lastPathComponent = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
       v14 = 134218498;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v8;
+      v17 = lastPathComponent;
       v18 = 2112;
-      v19 = v4;
-      _os_log_impl(&dword_1C269D000, v7, OS_LOG_TYPE_INFO, "[%p/'%{public}@'] preparing new statement %@", &v14, 0x20u);
+      v19 = statementCopy;
+      _os_log_impl(&dword_1C269D000, loggingCategory2, OS_LOG_TYPE_INFO, "[%p/'%{public}@'] preparing new statement %@", &v14, 0x20u);
     }
 
-    v9 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    v10 = v9;
+    loggingCategory3 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    v10 = loggingCategory3;
     if (v5)
     {
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingCategory3, OS_LOG_TYPE_INFO))
       {
-        v11 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+        lastPathComponent2 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
         v14 = 134218498;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2114;
-        v17 = v11;
+        v17 = lastPathComponent2;
         v18 = 2112;
-        v19 = v4;
+        v19 = statementCopy;
         _os_log_impl(&dword_1C269D000, v10, OS_LOG_TYPE_INFO, "[%p/'%{public}@'] prepared new statement %@", &v14, 0x20u);
       }
 
-      v10 = [v4 copy];
+      v10 = [statementCopy copy];
       [(NSCache *)self->_queue_queryCache setObject:v5 forKey:v10];
     }
 
     else
     {
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingCategory3, OS_LOG_TYPE_ERROR))
       {
-        [(PFSQLiteDatabaseConnection *)self prepareStatement:v4, v10];
+        [(PFSQLiteDatabaseConnection *)self prepareStatement:statementCopy, v10];
       }
 
       v5 = 0;
@@ -184,9 +184,9 @@
   return v5;
 }
 
-- (BOOL)executeQuery:(id)a3 error:(id *)a4
+- (BOOL)executeQuery:(id)query error:(id *)error
 {
-  v7 = a3;
+  queryCopy = query;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -202,7 +202,7 @@
   v18[2] = __49__PFSQLiteDatabaseConnection_executeQuery_error___block_invoke;
   v18[3] = &unk_1E818A030;
   v20 = &v28;
-  v8 = v7;
+  v8 = queryCopy;
   v19 = v8;
   v21 = &v22;
   [(PFSQLiteDatabaseConnection *)self performSyncWithDatabase:v18];
@@ -227,9 +227,9 @@
       v23[5] = v14;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v23[5];
+      *error = v23[5];
     }
   }
 
@@ -251,52 +251,52 @@ void __49__PFSQLiteDatabaseConnection_executeQuery_error___block_invoke(void *a1
   *(*(a1[5] + 8) + 24) = v6;
 }
 
-- (BOOL)executeQuery:(id)a3 bindings:(id)a4 resultRowHandler:(id)a5 error:(id *)a6
+- (BOOL)executeQuery:(id)query bindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [PFSQLitePreparedStatement _newPreparedStatementForDatabaseConnection:v10 withSQLQuery:?];
-  v14 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+  queryCopy = query;
+  handlerCopy = handler;
+  bindingsCopy = bindings;
+  v13 = [PFSQLitePreparedStatement _newPreparedStatementForDatabaseConnection:queryCopy withSQLQuery:?];
+  loggingCategory = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+  if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_INFO))
   {
-    v15 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+    lastPathComponent = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
     *buf = 134218498;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
-    v28 = v15;
+    v28 = lastPathComponent;
     v29 = 2112;
-    v30 = v10;
-    _os_log_impl(&dword_1C269D000, v14, OS_LOG_TYPE_INFO, "[%p/'%{public}@'] executing statement %@", buf, 0x20u);
+    v30 = queryCopy;
+    _os_log_impl(&dword_1C269D000, loggingCategory, OS_LOG_TYPE_INFO, "[%p/'%{public}@'] executing statement %@", buf, 0x20u);
   }
 
   v24 = 0;
-  v16 = [v13 executeWithBindings:v12 resultRowHandler:v11 error:&v24];
+  v16 = [v13 executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:&v24];
 
   v17 = v24;
   v18 = v17;
   if (v17)
   {
-    if (a6)
+    if (error)
     {
       v19 = v17;
-      *a6 = v18;
+      *error = v18;
     }
 
-    v20 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    loggingCategory2 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_ERROR))
     {
-      v23 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+      lastPathComponent2 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
       *buf = 134218754;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
-      v28 = v23;
+      v28 = lastPathComponent2;
       v29 = 2112;
-      v30 = v10;
+      v30 = queryCopy;
       v31 = 2112;
       v32 = v18;
-      _os_log_error_impl(&dword_1C269D000, v20, OS_LOG_TYPE_ERROR, "[%p/'%{public}@'] failed to execute SQL statement %@: %@", buf, 0x2Au);
+      _os_log_error_impl(&dword_1C269D000, loggingCategory2, OS_LOG_TYPE_ERROR, "[%p/'%{public}@'] failed to execute SQL statement %@: %@", buf, 0x2Au);
     }
   }
 
@@ -341,7 +341,7 @@ uint64_t __46__PFSQLiteDatabaseConnection_lastErrorMessage__block_invoke(uint64_
 - (void)invalidate
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [*(a1 + 8) lastPathComponent];
+  lastPathComponent = [*(self + 8) lastPathComponent];
   OUTLINED_FUNCTION_4_1();
   OUTLINED_FUNCTION_7_2(&dword_1C269D000, v2, v3, "[%p/'%{public}@'] invalidating", v4, v5, v6, v7, 2u);
 
@@ -359,17 +359,17 @@ void __40__PFSQLiteDatabaseConnection_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__PFSQLiteDatabaseConnection_addObserver___block_invoke;
   v7[3] = &unk_1E8189AC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -391,23 +391,23 @@ uint64_t __42__PFSQLiteDatabaseConnection_addObserver___block_invoke(uint64_t a1
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFSQLiteDatabaseConnection_removeObserver___block_invoke;
   v7[3] = &unk_1E8189AC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)dataDumpResultOfQuery:(id)a3 error:(id *)a4
+- (id)dataDumpResultOfQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   v7 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -415,7 +415,7 @@ uint64_t __42__PFSQLiteDatabaseConnection_addObserver___block_invoke(uint64_t a1
   v10[3] = &unk_1E818A0A8;
   v8 = v7;
   v11 = v8;
-  [(PFSQLiteDatabaseConnection *)self executeQuery:v6 resultRowHandler:v10 error:a4];
+  [(PFSQLiteDatabaseConnection *)self executeQuery:queryCopy resultRowHandler:v10 error:error];
 
   return v8;
 }
@@ -445,10 +445,10 @@ void __58__PFSQLiteDatabaseConnection_dataDumpResultOfQuery_error___block_invoke
   [*(a1 + 32) bs_safeAddObject:v3];
 }
 
-- (id)dataDumpResultOfTable:(id)a3 error:(id *)a4
+- (id)dataDumpResultOfTable:(id)table error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT * FROM '%@'", a3];
-  v7 = [(PFSQLiteDatabaseConnection *)self dataDumpResultOfQuery:v6 error:a4];
+  table = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT * FROM '%@'", table];
+  v7 = [(PFSQLiteDatabaseConnection *)self dataDumpResultOfQuery:table error:error];
 
   return v7;
 }
@@ -478,7 +478,7 @@ void __53__PFSQLiteDatabaseConnection_dataDumpForTable_error___block_invoke(uint
   [*(a1 + 32) bs_safeAddObject:v3];
 }
 
-- (id)dataDumpResultOfAllTablesWithError:(id *)a3
+- (id)dataDumpResultOfAllTablesWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -486,8 +486,8 @@ void __53__PFSQLiteDatabaseConnection_dataDumpForTable_error___block_invoke(uint
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(PFSQLiteDatabaseConnection *)self tableNames];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  tableNames = [(PFSQLiteDatabaseConnection *)self tableNames];
+  v7 = [tableNames countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -498,7 +498,7 @@ void __53__PFSQLiteDatabaseConnection_dataDumpForTable_error___block_invoke(uint
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tableNames);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -508,10 +508,10 @@ void __53__PFSQLiteDatabaseConnection_dataDumpForTable_error___block_invoke(uint
         if (v13)
         {
           v14 = v13;
-          if (a3)
+          if (error)
           {
             v15 = v13;
-            *a3 = v14;
+            *error = v14;
           }
 
           goto LABEL_13;
@@ -520,7 +520,7 @@ void __53__PFSQLiteDatabaseConnection_dataDumpForTable_error___block_invoke(uint
         [v5 setObject:v12 forKey:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [tableNames countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -561,23 +561,23 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
 - (void)_closeConnection
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     if (v2)
     {
       v3 = sqlite3_close_v2(v2);
-      v4 = [a1 loggingCategory];
-      v5 = v4;
+      loggingCategory = [self loggingCategory];
+      v5 = loggingCategory;
       if (v3)
       {
-        if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_ERROR))
         {
-          v6 = [*(a1 + 8) lastPathComponent];
+          lastPathComponent = [*(self + 8) lastPathComponent];
           sqlite3_errstr(v3);
-          v7 = *(a1 + 24);
+          v7 = *(self + 24);
           OUTLINED_FUNCTION_5_2();
-          v16 = v6;
+          v16 = lastPathComponent;
           v17 = 2080;
           v18 = "[PFSQLiteDatabaseConnection _closeConnection]";
           v19 = 1024;
@@ -590,10 +590,10 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
         }
       }
 
-      else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      else if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [*(a1 + 8) lastPathComponent];
-        v11 = *(a1 + 24);
+        lastPathComponent2 = [*(self + 8) lastPathComponent];
+        v11 = *(self + 24);
         OUTLINED_FUNCTION_5_2();
         v16 = v12;
         v17 = 2080;
@@ -603,29 +603,29 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
         _os_log_impl(&dword_1C269D000, v5, OS_LOG_TYPE_DEFAULT, "[%p/'%@'] %s: successfully closed database connection %p", v15, 0x2Au);
       }
 
-      *(a1 + 24) = 0;
+      *(self + 24) = 0;
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performSyncWithDatabase:(uint64_t)a1
+- (void)performSyncWithDatabase:(uint64_t)database
 {
   v4 = a2;
-  if (a1)
+  if (database)
   {
     OUTLINED_FUNCTION_0_6();
     v5[1] = 3221225472;
     v5[2] = __54__PFSQLiteDatabaseConnection_performSyncWithDatabase___block_invoke;
     v5[3] = &unk_1E818A080;
-    v5[4] = a1;
+    v5[4] = database;
     v6 = v4;
     dispatch_sync(v2, v5);
   }
 }
 
-- (BOOL)truncateDatabaseAndReturnError:(id *)a3
+- (BOOL)truncateDatabaseAndReturnError:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -649,58 +649,58 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
   [(PFSQLiteDatabaseConnection *)v8 performSyncWithDatabase:?];
   if (v34[5])
   {
-    v9 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    loggingCategory = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+      lastPathComponent = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
       v11 = v34[5];
       *buf = 134218498;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2114;
-      v42 = v10;
+      v42 = lastPathComponent;
       v43 = 2112;
       v44 = v11;
-      _os_log_error_impl(&dword_1C269D000, v9, OS_LOG_TYPE_ERROR, "[%p/'%{public}@'] failed to truncate database w/ error: %@", buf, 0x20u);
+      _os_log_error_impl(&dword_1C269D000, loggingCategory, OS_LOG_TYPE_ERROR, "[%p/'%{public}@'] failed to truncate database w/ error: %@", buf, 0x20u);
     }
   }
 
   else
   {
-    v9 = [(PFSQLiteDatabaseConnection *)self loggingCategory];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    loggingCategory = [(PFSQLiteDatabaseConnection *)self loggingCategory];
+    if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
+      lastPathComponent2 = [(NSString *)self->_sqliteDatabasePath lastPathComponent];
       *buf = 134218242;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2114;
-      v42 = v22;
-      _os_log_debug_impl(&dword_1C269D000, v9, OS_LOG_TYPE_DEBUG, "[%p/'%{public}@'] successfully truncated database", buf, 0x16u);
+      v42 = lastPathComponent2;
+      _os_log_debug_impl(&dword_1C269D000, loggingCategory, OS_LOG_TYPE_DEBUG, "[%p/'%{public}@'] successfully truncated database", buf, 0x16u);
     }
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v34[5];
-    *a3 = v12;
+    *error = v12;
   }
 
   OUTLINED_FUNCTION_6_1(v12, v13, v14, v15, v16, v17, v18, v19, v23, v24, v25, v26, v27, v28, v29, v30);
   _Block_object_dispose(&v33, 8);
 
   v20 = *MEMORY[0x1E69E9840];
-  return a3 & 1;
+  return error & 1;
 }
 
-- (void)performWithDatabase:(uint64_t)a1
+- (void)performWithDatabase:(uint64_t)database
 {
   v4 = a2;
-  if (a1)
+  if (database)
   {
     OUTLINED_FUNCTION_0_6();
     v5[1] = 3221225472;
     v5[2] = __50__PFSQLiteDatabaseConnection_performWithDatabase___block_invoke;
     v5[3] = &unk_1E818A080;
-    v5[4] = a1;
+    v5[4] = database;
     v6 = v4;
     dispatch_async(v2, v5);
   }
@@ -747,14 +747,14 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
 - (void)_queue_close
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
     v3 = [v2 countByEnumeratingWithState:&v13 objects:v21 count:16];
     if (v3)
     {
@@ -773,7 +773,7 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
           v7 = *(*(&v13 + 1) + 8 * v6);
           if (objc_opt_respondsToSelector())
           {
-            [v7 sqliteDatabaseConnectionWillClose:{a1, v13}];
+            [v7 sqliteDatabaseConnectionWillClose:{self, v13}];
           }
 
           ++v6;
@@ -786,33 +786,33 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
       while (v4);
     }
 
-    v8 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v8 = *(self + 40);
+    *(self + 40) = 0;
 
-    [*(a1 + 32) removeAllObjects];
-    v9 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(self + 32) removeAllObjects];
+    v9 = *(self + 32);
+    *(self + 32) = 0;
 
     v10 = PFLogSQLite();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = NSStringFromSelector(sel__queue_close);
       *buf = 134218242;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_1C269D000, v10, OS_LOG_TYPE_INFO, "<%p> Closing connection from %@", buf, 0x16u);
     }
 
-    [(PFSQLiteDatabaseConnection *)a1 _closeConnection];
+    [(PFSQLiteDatabaseConnection *)self _closeConnection];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataDumpForTable:(uint64_t)a3 error:
+- (id)dataDumpForTable:(uint64_t)table error:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
     v6 = objc_opt_new();
@@ -824,7 +824,7 @@ void __40__PFSQLiteDatabaseConnection_tableNames__block_invoke(uint64_t a1, void
     v10[3] = &unk_1E818A0A8;
     v8 = v6;
     v11 = v8;
-    [a1 executeQuery:v7 resultRowHandler:v10 error:a3];
+    [self executeQuery:v7 resultRowHandler:v10 error:table];
   }
 
   else

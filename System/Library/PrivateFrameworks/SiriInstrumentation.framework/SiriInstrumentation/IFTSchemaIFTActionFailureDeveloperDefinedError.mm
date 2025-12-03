@@ -1,32 +1,32 @@
 @interface IFTSchemaIFTActionFailureDeveloperDefinedError
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionFailureDeveloperDefinedError
 
-- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTActionFailureDeveloperDefinedError;
   v5 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"code"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"code"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureDeveloperDefinedError setCode:](v5, "setCode:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"domain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithJSON:(id)a3
+- (IFTSchemaIFTActionFailureDeveloperDefinedError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,23 +76,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTActionFailureDeveloperDefinedError code](self, "code")}];
-    [v3 setObject:v4 forKeyedSubscript:@"code"];
+    [dictionary setObject:v4 forKeyedSubscript:@"code"];
   }
 
   if (self->_domain)
   {
-    v5 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"domain"];
+    domain = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
+    v6 = [domain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"domain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -110,22 +110,22 @@
   return [(NSString *)self->_domain hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (code = self->_code, code == [v4 code]))
+      if ((*&self->_has & 1) == 0 || (code = self->_code, code == [equalCopy code]))
       {
-        v6 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
-        v7 = [v4 domain];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        domain = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
+        domain2 = [equalCopy domain];
+        v8 = domain2;
+        if ((domain != 0) != (domain2 == 0))
         {
-          v9 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
-          if (!v9)
+          domain3 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
+          if (!domain3)
           {
 
 LABEL_13:
@@ -133,10 +133,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
-          v12 = [v4 domain];
-          v13 = [v11 isEqual:v12];
+          v10 = domain3;
+          domain4 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
+          domain5 = [equalCopy domain];
+          v13 = [domain4 isEqual:domain5];
 
           if (v13)
           {
@@ -157,21 +157,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
   }
 
-  v4 = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
+  domain = [(IFTSchemaIFTActionFailureDeveloperDefinedError *)self domain];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (domain)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

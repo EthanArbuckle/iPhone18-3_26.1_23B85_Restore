@@ -8,20 +8,20 @@
 
 - (void)runLaunchTask
 {
-  v3 = [(ICWorkerContextLaunchTask *)self workerContext];
+  workerContext = [(ICWorkerContextLaunchTask *)self workerContext];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10008AC44;
   v4[3] = &unk_100645E30;
   v4[4] = self;
-  [v3 performBlockAndWait:v4];
+  [workerContext performBlockAndWait:v4];
 }
 
 - (id)fetchPasswordProtectedNotesInSharedFolders
 {
-  v3 = [(ICFixPasswordProtectedNotesInSharedFoldersLaunchTask *)self passwordProtectedNoteInSharedFolderPredicate];
-  v4 = [(ICWorkerContextLaunchTask *)self workerContext];
-  v5 = [ICNote ic_objectsMatchingPredicate:v3 context:v4];
+  passwordProtectedNoteInSharedFolderPredicate = [(ICFixPasswordProtectedNotesInSharedFoldersLaunchTask *)self passwordProtectedNoteInSharedFolderPredicate];
+  workerContext = [(ICWorkerContextLaunchTask *)self workerContext];
+  v5 = [ICNote ic_objectsMatchingPredicate:passwordProtectedNoteInSharedFolderPredicate context:workerContext];
 
   return v5;
 }

@@ -1,27 +1,27 @@
 @interface ASUSQLiteDatabase
-- (ASUSQLiteDatabase)initWithConnection:(id)a3;
-- (ASUSQLiteDatabase)initWithConnectionOptions:(id)a3;
-- (BOOL)connectionNeedsResetForCorruption:(id)a3;
-- (BOOL)connectionNeedsResetForReopen:(id)a3;
-- (BOOL)tableExists:(id)a3;
-- (dispatch_queue_t)_readUsingSession:(void *)a3 withBlock:;
-- (uint64_t)_performMigrationIfNeededForStore:(char)a3 calledAfterTransaction:;
-- (void)_modifyUsingTransactionClass:(void *)a3 withBlock:;
-- (void)_reentrantSafePerformBlock:(NSObject *)a1;
-- (void)modifyStore:(id)a3 usingTransaction:(id)a4;
-- (void)modifyStore:(id)a3 usingTransaction:(id)a4 completion:(id)a5;
-- (void)modifyStore:(id)a3 usingTransactionClass:(Class)a4 withBlock:(id)a5;
-- (void)modifyStore:(id)a3 usingTransactionClass:(Class)a4 withBlock:(id)a5 completion:(id)a6;
-- (void)readStore:(id)a3 usingSession:(id)a4;
-- (void)readStore:(id)a3 usingSession:(id)a4 completion:(id)a5;
+- (ASUSQLiteDatabase)initWithConnection:(id)connection;
+- (ASUSQLiteDatabase)initWithConnectionOptions:(id)options;
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption;
+- (BOOL)connectionNeedsResetForReopen:(id)reopen;
+- (BOOL)tableExists:(id)exists;
+- (dispatch_queue_t)_readUsingSession:(void *)session withBlock:;
+- (uint64_t)_performMigrationIfNeededForStore:(char)store calledAfterTransaction:;
+- (void)_modifyUsingTransactionClass:(void *)class withBlock:;
+- (void)_reentrantSafePerformBlock:(NSObject *)block;
+- (void)modifyStore:(id)store usingTransaction:(id)transaction;
+- (void)modifyStore:(id)store usingTransaction:(id)transaction completion:(id)completion;
+- (void)modifyStore:(id)store usingTransactionClass:(Class)class withBlock:(id)block;
+- (void)modifyStore:(id)store usingTransactionClass:(Class)class withBlock:(id)block completion:(id)completion;
+- (void)readStore:(id)store usingSession:(id)session;
+- (void)readStore:(id)store usingSession:(id)session completion:(id)completion;
 - (void)verifyDatabaseIntegrity;
 @end
 
 @implementation ASUSQLiteDatabase
 
-- (ASUSQLiteDatabase)initWithConnection:(id)a3
+- (ASUSQLiteDatabase)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = ASUSQLiteDatabase;
   v6 = [(ASUSQLiteDatabase *)&v13 init];
@@ -37,35 +37,35 @@
     v11 = *(v6 + 3);
     *(v6 + 3) = v10;
 
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, connection);
     [*(v6 + 1) setDelegate:v6];
   }
 
   return v6;
 }
 
-- (ASUSQLiteDatabase)initWithConnectionOptions:(id)a3
+- (ASUSQLiteDatabase)initWithConnectionOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[ASUSQLiteConnection alloc] initWithOptions:v4];
+  optionsCopy = options;
+  v5 = [[ASUSQLiteConnection alloc] initWithOptions:optionsCopy];
 
   v6 = [(ASUSQLiteDatabase *)self initWithConnection:v5];
   return v6;
 }
 
-- (void)modifyStore:(id)a3 usingTransaction:(id)a4
+- (void)modifyStore:(id)store usingTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  transactionCopy = transaction;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__ASUSQLiteDatabase_modifyStore_usingTransaction___block_invoke;
   v10[3] = &unk_278C97B10;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = storeCopy;
+  v12 = transactionCopy;
+  v8 = transactionCopy;
+  v9 = storeCopy;
   [(ASUSQLiteDatabase *)self _reentrantSafePerformBlock:v10];
 }
 
@@ -82,33 +82,33 @@ void __50__ASUSQLiteDatabase_modifyStore_usingTransaction___block_invoke(uint64_
   -[ASUSQLiteDatabase _modifyUsingTransactionClass:withBlock:](*(a1 + 32), [v4 transactionClass], *(a1 + 48));
 }
 
-- (void)_modifyUsingTransactionClass:(void *)a3 withBlock:
+- (void)_modifyUsingTransactionClass:(void *)class withBlock:
 {
-  v5 = a3;
-  if (a1)
+  classCopy = class;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v6 = [[a2 alloc] initWithConnection:*(a1 + 8)];
-    v7 = *(a1 + 8);
+    dispatch_assert_queue_V2(*(self + 16));
+    v6 = [[a2 alloc] initWithConnection:*(self + 8)];
+    v7 = *(self + 8);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __60__ASUSQLiteDatabase__modifyUsingTransactionClass_withBlock___block_invoke;
     v9[3] = &unk_278C97C50;
     v10 = v6;
-    v11 = v5;
+    v11 = classCopy;
     v8 = v6;
     [v7 performTransaction:v9 error:0];
   }
 }
 
-- (void)_reentrantSafePerformBlock:(NSObject *)a1
+- (void)_reentrantSafePerformBlock:(NSObject *)block
 {
   block = a2;
-  if (a1)
+  if (block)
   {
     specific = dispatch_get_specific("_ASUSQLiteDispatchQueueTag");
-    v4 = a1[2];
-    if (specific == a1)
+    v4 = block[2];
+    if (specific == block)
     {
       dispatch_assert_queue_V2(v4);
       block[2]();
@@ -117,28 +117,28 @@ void __50__ASUSQLiteDatabase_modifyStore_usingTransaction___block_invoke(uint64_
     else
     {
       dispatch_assert_queue_not_V2(v4);
-      dispatch_sync(a1[2], block);
+      dispatch_sync(block[2], block);
     }
   }
 }
 
-- (void)modifyStore:(id)a3 usingTransaction:(id)a4 completion:(id)a5
+- (void)modifyStore:(id)store usingTransaction:(id)transaction completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  transactionCopy = transaction;
+  completionCopy = completion;
   transactionQueue = self->_transactionQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__ASUSQLiteDatabase_modifyStore_usingTransaction_completion___block_invoke;
   v15[3] = &unk_278C97B38;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = storeCopy;
+  v17 = transactionCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = transactionCopy;
+  v14 = storeCopy;
   dispatch_async(transactionQueue, v15);
 }
 
@@ -157,20 +157,20 @@ void __61__ASUSQLiteDatabase_modifyStore_usingTransaction_completion___block_inv
   dispatch_async(v4, *(a1 + 56));
 }
 
-- (void)modifyStore:(id)a3 usingTransactionClass:(Class)a4 withBlock:(id)a5
+- (void)modifyStore:(id)store usingTransactionClass:(Class)class withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  storeCopy = store;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__ASUSQLiteDatabase_modifyStore_usingTransactionClass_withBlock___block_invoke;
   v12[3] = &unk_278C97B60;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = storeCopy;
+  v14 = blockCopy;
+  classCopy = class;
+  v10 = blockCopy;
+  v11 = storeCopy;
   [(ASUSQLiteDatabase *)self _reentrantSafePerformBlock:v12];
 }
 
@@ -189,24 +189,24 @@ void __65__ASUSQLiteDatabase_modifyStore_usingTransactionClass_withBlock___block
   [(ASUSQLiteDatabase *)v2 _modifyUsingTransactionClass:v3 withBlock:v4];
 }
 
-- (void)modifyStore:(id)a3 usingTransactionClass:(Class)a4 withBlock:(id)a5 completion:(id)a6
+- (void)modifyStore:(id)store usingTransactionClass:(Class)class withBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  storeCopy = store;
+  blockCopy = block;
+  completionCopy = completion;
   transactionQueue = self->_transactionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__ASUSQLiteDatabase_modifyStore_usingTransactionClass_withBlock_completion___block_invoke;
   block[3] = &unk_278C97B88;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = storeCopy;
+  v20 = completionCopy;
+  classCopy = class;
+  v19 = blockCopy;
+  v14 = completionCopy;
+  v15 = blockCopy;
+  v16 = storeCopy;
   dispatch_async(transactionQueue, block);
 }
 
@@ -224,19 +224,19 @@ void __76__ASUSQLiteDatabase_modifyStore_usingTransactionClass_withBlock_complet
   dispatch_async(v3, *(a1 + 56));
 }
 
-- (void)readStore:(id)a3 usingSession:(id)a4
+- (void)readStore:(id)store usingSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  sessionCopy = session;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__ASUSQLiteDatabase_readStore_usingSession___block_invoke;
   v10[3] = &unk_278C97B10;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = storeCopy;
+  v12 = sessionCopy;
+  v8 = sessionCopy;
+  v9 = storeCopy;
   [(ASUSQLiteDatabase *)self _reentrantSafePerformBlock:v10];
 }
 
@@ -260,26 +260,26 @@ void __44__ASUSQLiteDatabase_readStore_usingSession___block_invoke(uint64_t a1)
   v7 = [(ASUSQLiteDatabase *)v6 _readUsingSession:v5 withBlock:v8];
 }
 
-- (dispatch_queue_t)_readUsingSession:(void *)a3 withBlock:
+- (dispatch_queue_t)_readUsingSession:(void *)session withBlock:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sessionCopy = session;
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[2]);
+    dispatch_assert_queue_V2(self[2]);
     v14 = 0;
     v15 = &v14;
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__0;
     v18 = __Block_byref_object_dispose__0;
     v19 = 0;
-    v7 = a1[1];
+    v7 = self[1];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__ASUSQLiteDatabase__readUsingSession_withBlock___block_invoke;
     v10[3] = &unk_278C97CC8;
     v13 = &v14;
-    v12 = v6;
+    v12 = sessionCopy;
     v11 = v5;
     if ([v7 performTransaction:v10 error:0])
     {
@@ -291,31 +291,31 @@ void __44__ASUSQLiteDatabase_readStore_usingSession___block_invoke(uint64_t a1)
       v8 = 0;
     }
 
-    a1 = v8;
+    self = v8;
 
     _Block_object_dispose(&v14, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)readStore:(id)a3 usingSession:(id)a4 completion:(id)a5
+- (void)readStore:(id)store usingSession:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  sessionCopy = session;
+  completionCopy = completion;
   transactionQueue = self->_transactionQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke;
   v15[3] = &unk_278C97B38;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = storeCopy;
+  v17 = sessionCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = sessionCopy;
+  v14 = storeCopy;
   dispatch_async(transactionQueue, v15);
 }
 
@@ -343,18 +343,18 @@ void __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke(ui
   dispatch_async(v7, v10);
 }
 
-- (BOOL)connectionNeedsResetForReopen:(id)a3
+- (BOOL)connectionNeedsResetForReopen:(id)reopen
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reopenCopy = reopen;
   dispatch_assert_queue_V2(self->_transactionQueue);
   v5 = ASULogHandleForCategory(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v4 options];
-    v9 = [v8 databasePath];
+    options = [reopenCopy options];
+    databasePath = [options databasePath];
     v10 = 138543362;
-    v11 = v9;
+    v11 = databasePath;
     _os_log_error_impl(&dword_2400F8000, v5, OS_LOG_TYPE_ERROR, "Requiring all stores to migrate after truncating corrupt database at: %{public}@", &v10, 0xCu);
   }
 
@@ -363,25 +363,25 @@ void __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke(ui
   return 1;
 }
 
-- (BOOL)connectionNeedsResetForCorruption:(id)a3
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  corruptionCopy = corruption;
   dispatch_assert_queue_V2(self->_transactionQueue);
-  v5 = [v4 options];
-  v6 = [v5 databasePath];
+  options = [corruptionCopy options];
+  databasePath = [options databasePath];
 
   v7 = ASULogHandleForCategory(1);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = databasePath;
     _os_log_error_impl(&dword_2400F8000, v7, OS_LOG_TYPE_ERROR, "Exiting after deleting corrupt database at: %{public}@", buf, 0xCu);
   }
 
-  [v4 close];
+  [corruptionCopy close];
   v15 = 0;
-  ASUSQLiteDeleteDatabase(v6, &v15);
+  ASUSQLiteDeleteDatabase(databasePath, &v15);
   v8 = v15;
   if (v8)
   {
@@ -395,7 +395,7 @@ void __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke(ui
     }
 
     v14 = 0;
-    ASUSQLiteTrashDatabaseName(v6, &v14);
+    ASUSQLiteTrashDatabaseName(databasePath, &v14);
     v11 = v14;
     if (v11)
     {
@@ -413,9 +413,9 @@ void __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke(ui
   exit(0);
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -426,7 +426,7 @@ void __55__ASUSQLiteDatabase_readStore_usingSession_completion___block_invoke(ui
   v7[3] = &unk_278C97C00;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = existsCopy;
   v8 = v5;
   [(ASUSQLiteDatabase *)self _reentrantSafePerformBlock:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -484,36 +484,36 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_performMigrationIfNeededForStore:(char)a3 calledAfterTransaction:
+- (uint64_t)_performMigrationIfNeededForStore:(char)store calledAfterTransaction:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (NSHashGet(*(a1 + 24), v5))
+    if (NSHashGet(*(self + 24), v5))
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [objc_opt_class() storeDescriptor];
+      storeDescriptor = [objc_opt_class() storeDescriptor];
       v8 = [ASUSQLiteDatabaseStoreSchema alloc];
-      v9 = *(a1 + 8);
-      v10 = [v7 schemaName];
-      v11 = [v7 tableNames];
-      v12 = [(ASUSQLiteDatabaseStoreSchema *)v8 initWithConnection:v9 schemaName:v10 tableNames:v11];
+      v9 = *(self + 8);
+      schemaName = [storeDescriptor schemaName];
+      tableNames = [storeDescriptor tableNames];
+      v12 = [(ASUSQLiteDatabaseStoreSchema *)v8 initWithConnection:v9 schemaName:schemaName tableNames:tableNames];
 
-      v13 = *(a1 + 8);
+      v13 = *(self + 8);
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __78__ASUSQLiteDatabase__performMigrationIfNeededForStore_calledAfterTransaction___block_invoke;
       v17[3] = &unk_278C97CA0;
       v18 = v5;
       v19 = v12;
-      v22 = a3;
-      v20 = a1;
-      v21 = v7;
-      v14 = v7;
+      storeCopy = store;
+      selfCopy = self;
+      v21 = storeDescriptor;
+      v14 = storeDescriptor;
       v15 = v12;
       v6 = [v13 performTransaction:v17 error:0];
     }

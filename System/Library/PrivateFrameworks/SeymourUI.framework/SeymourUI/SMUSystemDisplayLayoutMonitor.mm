@@ -1,11 +1,11 @@
 @interface SMUSystemDisplayLayoutMonitor
-+ (id)externalDisplayLayoutMonitorWithIdentity:(id)a3;
++ (id)externalDisplayLayoutMonitorWithIdentity:(id)identity;
 + (id)mainDisplayLayoutMonitor;
 - (NSArray)currentLayout;
 - (SMUSystemDisplayLayoutMonitor)init;
-- (SMUSystemDisplayLayoutMonitor)initWithConfiguration:(id)a3;
+- (SMUSystemDisplayLayoutMonitor)initWithConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)handleUpdatedLayout:(id)a3 transitionContext:(id)a4;
+- (void)handleUpdatedLayout:(id)layout transitionContext:(id)context;
 @end
 
 @implementation SMUSystemDisplayLayoutMonitor
@@ -19,25 +19,25 @@
 
 - (SMUSystemDisplayLayoutMonitor)init
 {
-  v3 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-  v4 = [(SMUSystemDisplayLayoutMonitor *)self initWithConfiguration:v3];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  v4 = [(SMUSystemDisplayLayoutMonitor *)self initWithConfiguration:configurationForDefaultMainDisplayMonitor];
 
   return v4;
 }
 
 - (void)dealloc
 {
-  v3 = [(SMUSystemDisplayLayoutMonitor *)self layoutMonitor];
-  [v3 invalidate];
+  layoutMonitor = [(SMUSystemDisplayLayoutMonitor *)self layoutMonitor];
+  [layoutMonitor invalidate];
 
   v4.receiver = self;
   v4.super_class = SMUSystemDisplayLayoutMonitor;
   [(SMUSystemDisplayLayoutMonitor *)&v4 dealloc];
 }
 
-+ (id)externalDisplayLayoutMonitorWithIdentity:(id)a3
++ (id)externalDisplayLayoutMonitorWithIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,9 +54,9 @@
   return v6;
 }
 
-- (SMUSystemDisplayLayoutMonitor)initWithConfiguration:(id)a3
+- (SMUSystemDisplayLayoutMonitor)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = SMUSystemDisplayLayoutMonitor;
   v5 = [(SMUSystemDisplayLayoutMonitor *)&v15 init];
@@ -68,8 +68,8 @@
     v11 = __55__SMUSystemDisplayLayoutMonitor_initWithConfiguration___block_invoke;
     v12 = &unk_277D97DF0;
     objc_copyWeak(&v13, &location);
-    [v4 setTransitionHandler:&v9];
-    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v4, v9, v10, v11, v12}];
+    [configurationCopy setTransitionHandler:&v9];
+    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationCopy, v9, v10, v11, v12}];
     layoutMonitor = v5->_layoutMonitor;
     v5->_layoutMonitor = v6;
 
@@ -90,29 +90,29 @@ void __55__SMUSystemDisplayLayoutMonitor_initWithConfiguration___block_invoke(ui
 
 - (NSArray)currentLayout
 {
-  v2 = [(SMUSystemDisplayLayoutMonitor *)self layoutMonitor];
-  v3 = [v2 currentLayout];
-  v4 = [v3 elements];
+  layoutMonitor = [(SMUSystemDisplayLayoutMonitor *)self layoutMonitor];
+  currentLayout = [layoutMonitor currentLayout];
+  elements = [currentLayout elements];
 
-  return v4;
+  return elements;
 }
 
-- (void)handleUpdatedLayout:(id)a3 transitionContext:(id)a4
+- (void)handleUpdatedLayout:(id)layout transitionContext:(id)context
 {
-  v12 = a3;
-  v5 = [(SMUSystemDisplayLayoutMonitor *)self transitionHandler];
-  if (v5)
+  layoutCopy = layout;
+  transitionHandler = [(SMUSystemDisplayLayoutMonitor *)self transitionHandler];
+  if (transitionHandler)
   {
-    v6 = v5;
-    v7 = [v12 elements];
-    v8 = [v7 count];
+    v6 = transitionHandler;
+    elements = [layoutCopy elements];
+    v8 = [elements count];
 
     if (v8)
     {
-      v9 = [(SMUSystemDisplayLayoutMonitor *)self transitionHandler];
-      v10 = [v12 displayConfiguration];
-      v11 = [v12 elements];
-      (v9)[2](v9, v10, v11);
+      transitionHandler2 = [(SMUSystemDisplayLayoutMonitor *)self transitionHandler];
+      displayConfiguration = [layoutCopy displayConfiguration];
+      elements2 = [layoutCopy elements];
+      (transitionHandler2)[2](transitionHandler2, displayConfiguration, elements2);
     }
   }
 }

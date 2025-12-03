@@ -1,8 +1,8 @@
 @interface PalmspringCrashlog
-+ (BOOL)writeToDirectory:(id)a3 crashlogData:(id)a4 options:(unint64_t)a5 error:(id *)a6;
++ (BOOL)writeToDirectory:(id)directory crashlogData:(id)data options:(unint64_t)options error:(id *)error;
 + (OS_os_log)log;
-- (BOOL)writeToDirectory:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (PalmspringCrashlog)initWithInfoEntry:(id)a3 data:(id)a4;
+- (BOOL)writeToDirectory:(id)directory options:(unint64_t)options error:(id *)error;
+- (PalmspringCrashlog)initWithInfoEntry:(id)entry data:(id)data;
 - (id)description;
 @end
 
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (PalmspringCrashlog)initWithInfoEntry:(id)a3 data:(id)a4
+- (PalmspringCrashlog)initWithInfoEntry:(id)entry data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = PalmspringCrashlog;
   v9 = [(PalmspringCrashlog *)&v30 init];
@@ -35,32 +35,32 @@
       sub_58C8(a2, v10);
     }
 
-    if ([v8 length] > 7)
+    if ([dataCopy length] > 7)
     {
-      v13 = [v8 bytes];
+      bytes = [dataCopy bytes];
       v14 = [objc_opt_class() log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        sub_595C(v7, v13, v14);
+        sub_595C(entryCopy, bytes, v14);
       }
 
-      v15 = [v8 length] - 8;
-      v16 = [v8 length];
-      if (v16 == [v7 headerAndRawBlobSize] && v15 == *(v13 + 1))
+      v15 = [dataCopy length] - 8;
+      v16 = [dataCopy length];
+      if (v16 == [entryCopy headerAndRawBlobSize] && v15 == *(bytes + 1))
       {
-        v11 = [v8 subdataWithRange:{8, v15}];
+        v11 = [dataCopy subdataWithRange:{8, v15}];
         v17 = crc16_compute([v11 bytes], [v11 length]);
-        if (v17 == v13[3])
+        if (v17 == bytes[3])
         {
           v18 = [v11 copy];
           data = v9->_data;
           v9->_data = v18;
 
-          v20 = [v7 copy];
+          v20 = [entryCopy copy];
           info = v9->_info;
           v9->_info = v20;
 
-          v9->_blobVersion = *v13;
+          v9->_blobVersion = *bytes;
           v12 = v9;
 LABEL_17:
 
@@ -71,12 +71,12 @@ LABEL_17:
         v24 = [objc_opt_class() log];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v7 name];
-          v29 = v13[3];
+          name = [entryCopy name];
+          v29 = bytes[3];
           *buf = 67109634;
           *v32 = v23;
           *&v32[4] = 2112;
-          *&v32[6] = v28;
+          *&v32[6] = name;
           v33 = 1024;
           LODWORD(v34) = v29;
           _os_log_error_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "CRC (0x%04x) of crashlog %@ did not match CRC in header (0x%04x)", buf, 0x18u);
@@ -88,13 +88,13 @@ LABEL_17:
         v11 = [objc_opt_class() log];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v8 length];
-          v26 = [v7 headerAndRawBlobSize];
-          v27 = *(v13 + 1);
+          v25 = [dataCopy length];
+          headerAndRawBlobSize = [entryCopy headerAndRawBlobSize];
+          v27 = *(bytes + 1);
           *buf = 134218752;
           *v32 = v25;
           *&v32[8] = 1024;
-          *&v32[10] = v26;
+          *&v32[10] = headerAndRawBlobSize;
           v33 = 2048;
           v34 = v15;
           v35 = 1024;
@@ -109,7 +109,7 @@ LABEL_17:
       v11 = [objc_opt_class() log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_5A20(v7, v11);
+        sub_5A20(entryCopy, v11);
       }
     }
 
@@ -123,34 +123,34 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)writeToDirectory:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToDirectory:(id)directory options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [(PalmspringCrashlog *)self data];
-  LOBYTE(a5) = [PalmspringCrashlog writeToDirectory:v8 crashlogData:v9 options:a4 error:a5];
+  directoryCopy = directory;
+  data = [(PalmspringCrashlog *)self data];
+  LOBYTE(error) = [PalmspringCrashlog writeToDirectory:directoryCopy crashlogData:data options:options error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)writeToDirectory:(id)a3 crashlogData:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (BOOL)writeToDirectory:(id)directory crashlogData:(id)data options:(unint64_t)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  directoryCopy = directory;
+  dataCopy = data;
   v13 = [objc_opt_class() log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v26 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v28 = v26;
+    selfCopy = v26;
     v29 = 2112;
-    v30 = v11;
+    v30 = directoryCopy;
     v31 = 2048;
-    v32 = a5;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_0, v13, OS_LOG_TYPE_DEBUG, "%@, directory %@, options %lu", buf, 0x20u);
   }
 
   v14 = +[NSFileManager defaultManager];
-  v15 = [v14 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:a6];
+  v15 = [v14 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:error];
 
   if (v15)
   {
@@ -159,9 +159,9 @@ LABEL_18:
     v17 = +[NSDate date];
     v18 = [v16 stringFromDate:v17];
     v19 = +[PalmspringCrashlog crashlogPathExtension];
-    v20 = [NSString stringWithFormat:@"%@/PalmspringCrashlog_%@.%@", v11, v18, v19];
+    v20 = [NSString stringWithFormat:@"%@/PalmspringCrashlog_%@.%@", directoryCopy, v18, v19];
 
-    v21 = [v12 writeToFile:v20 options:a5 error:a6];
+    v21 = [dataCopy writeToFile:v20 options:options error:error];
     v22 = [objc_opt_class() log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -171,9 +171,9 @@ LABEL_18:
         v23 = @"succeeded";
       }
 
-      if (a6)
+      if (error)
       {
-        v24 = *a6;
+        v24 = *error;
       }
 
       else
@@ -182,11 +182,11 @@ LABEL_18:
       }
 
       *buf = 138413058;
-      v28 = a1;
+      selfCopy = self;
       v29 = 2112;
       v30 = v20;
       v31 = 2112;
-      v32 = v23;
+      optionsCopy = v23;
       v33 = 2112;
       v34 = v24;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Writing crashlog %@ to %@ %@, error %@", buf, 0x2Au);
@@ -198,7 +198,7 @@ LABEL_18:
     v16 = [objc_opt_class() log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_5AE0(v11, a6);
+      sub_5AE0(directoryCopy, error);
     }
 
     LOBYTE(v21) = 0;
@@ -209,8 +209,8 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [(PalmspringCrashlog *)self info];
-  v4 = [NSString stringWithFormat:@"(%@, Palmspring Crashlog Header: [blob version: %d])", v3, [(PalmspringCrashlog *)self blobVersion]];
+  info = [(PalmspringCrashlog *)self info];
+  v4 = [NSString stringWithFormat:@"(%@, Palmspring Crashlog Header: [blob version: %d])", info, [(PalmspringCrashlog *)self blobVersion]];
 
   return v4;
 }

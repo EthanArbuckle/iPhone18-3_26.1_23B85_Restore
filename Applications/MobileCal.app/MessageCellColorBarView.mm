@@ -1,6 +1,6 @@
 @interface MessageCellColorBarView
 - (MessageCellColorBarView)init;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation MessageCellColorBarView
@@ -14,23 +14,23 @@
   {
     CalRoundToScreenScale();
     v4 = v3 * 0.5;
-    v5 = [(MessageCellColorBarView *)v2 layer];
-    [v5 setCornerRadius:v4];
+    layer = [(MessageCellColorBarView *)v2 layer];
+    [layer setCornerRadius:v4];
 
-    v6 = [(MessageCellColorBarView *)v2 layer];
-    [v6 setMasksToBounds:1];
+    layer2 = [(MessageCellColorBarView *)v2 layer];
+    [layer2 setMasksToBounds:1];
   }
 
   return v2;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = MessageCellColorBarView;
-  [(MessageCellColorBarView *)&v6 setBackgroundColor:v5];
+  [(MessageCellColorBarView *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

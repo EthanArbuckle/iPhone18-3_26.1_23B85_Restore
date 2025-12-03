@@ -1,8 +1,8 @@
 @interface AFPreferencesNotificationCenter
 - (AFPreferencesNotificationCenter)init;
-- (id)addObserverForDarwinName:(__CFString *)a3 usingBlock:(id)a4;
+- (id)addObserverForDarwinName:(__CFString *)name usingBlock:(id)block;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AFPreferencesNotificationCenter
@@ -30,22 +30,22 @@
   return v2;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [(NSLock *)self->instanceLock lock];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v4];
-  v6 = [(NSMutableDictionary *)self->darwinRegistrationsByObserver objectForKey:v5];
+  observerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", observerCopy];
+  v6 = [(NSMutableDictionary *)self->darwinRegistrationsByObserver objectForKey:observerCopy];
   if (v6)
   {
     v7 = [(NSMutableDictionary *)self->darwinRegistrationsByName objectForKey:v6];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 intValue];
+      intValue = [v7 intValue];
       darwinRegistrationsByName = self->darwinRegistrationsByName;
-      if (v9 < 2)
+      if (intValue < 2)
       {
         [(NSMutableDictionary *)darwinRegistrationsByName removeObjectForKey:v6];
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -72,47 +72,47 @@
       }
     }
 
-    [(NSMutableDictionary *)self->darwinRegistrationsByObserver removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->darwinRegistrationsByObserver removeObjectForKey:observerCopy];
   }
 
   [(NSLock *)self->instanceLock unlock];
   v15.receiver = self;
   v15.super_class = AFPreferencesNotificationCenter;
-  [(AFPreferencesNotificationCenter *)&v15 removeObserver:v4];
+  [(AFPreferencesNotificationCenter *)&v15 removeObserver:observerCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addObserverForDarwinName:(__CFString *)a3 usingBlock:(id)a4
+- (id)addObserverForDarwinName:(__CFString *)name usingBlock:(id)block
 {
-  v6 = a3;
+  nameCopy = name;
   instanceLock = self->instanceLock;
-  v8 = a4;
+  blockCopy = block;
   [(NSLock *)instanceLock lock];
-  v9 = [(NSMutableDictionary *)self->darwinRegistrationsByName objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->darwinRegistrationsByName objectForKey:nameCopy];
   v10 = v9;
   darwinRegistrationsByName = self->darwinRegistrationsByName;
   if (v9)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v9, "intValue") + 1}];
-    [(NSMutableDictionary *)darwinRegistrationsByName setObject:v12 forKey:v6];
+    [(NSMutableDictionary *)darwinRegistrationsByName setObject:v12 forKey:nameCopy];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInt:1];
-    [(NSMutableDictionary *)darwinRegistrationsByName setObject:v13 forKey:v6];
+    [(NSMutableDictionary *)darwinRegistrationsByName setObject:v13 forKey:nameCopy];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AFPreferencesNotificationCenterTrampoline, v6, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AFPreferencesNotificationCenterTrampoline, nameCopy, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
   v18.receiver = self;
   v18.super_class = AFPreferencesNotificationCenter;
-  v15 = [(AFPreferencesNotificationCenter *)&v18 addObserverForName:v6 object:0 queue:0 usingBlock:v8];
+  v15 = [(AFPreferencesNotificationCenter *)&v18 addObserverForName:nameCopy object:0 queue:0 usingBlock:blockCopy];
 
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v15];
-  [(NSMutableDictionary *)self->darwinRegistrationsByObserver setObject:v6 forKey:v16];
+  [(NSMutableDictionary *)self->darwinRegistrationsByObserver setObject:nameCopy forKey:v16];
   [(NSLock *)self->instanceLock unlock];
 
   return v15;

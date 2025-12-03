@@ -1,7 +1,7 @@
 @interface GuideHomeCompositionalLayout
-- (GuideHomeCompositionalLayout)initWithSectionProvider:(id)a3 dataProvider:(id)a4;
+- (GuideHomeCompositionalLayout)initWithSectionProvider:(id)provider dataProvider:(id)dataProvider;
 - (GuideHomeDataProvider)dataProvider;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation GuideHomeCompositionalLayout
@@ -13,15 +13,15 @@
   return WeakRetained;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v24.receiver = self;
   v24.super_class = GuideHomeCompositionalLayout;
-  v4 = [(GuideHomeCompositionalLayout *)&v24 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(GuideHomeCompositionalLayout *)self dataProvider];
-  v6 = [v5 isCuratedGuidesHome];
+  v4 = [(GuideHomeCompositionalLayout *)&v24 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  dataProvider = [(GuideHomeCompositionalLayout *)self dataProvider];
+  isCuratedGuidesHome = [dataProvider isCuratedGuidesHome];
 
-  if (v6)
+  if (isCuratedGuidesHome)
   {
     v22 = 0u;
     v23 = 0u;
@@ -46,27 +46,27 @@
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 indexPath];
-        if ([v13 section])
+        indexPath = [v12 indexPath];
+        if ([indexPath section])
         {
           goto LABEL_8;
         }
 
-        v14 = [v12 indexPath];
-        v15 = [v14 item];
+        indexPath2 = [v12 indexPath];
+        item = [indexPath2 item];
 
-        if (!v15)
+        if (!item)
         {
-          v16 = [(GuideHomeCompositionalLayout *)self collectionView];
-          [v16 contentOffset];
+          collectionView = [(GuideHomeCompositionalLayout *)self collectionView];
+          [collectionView contentOffset];
           v18 = v17;
 
           if (v18 < 0.0)
           {
             [v12 frame];
             CGRectGetMaxY(v27);
-            v13 = [(GuideHomeCompositionalLayout *)self collectionView];
-            [v13 frame];
+            indexPath = [(GuideHomeCompositionalLayout *)self collectionView];
+            [indexPath frame];
             [v12 setFrame:{0.0, v18}];
 LABEL_8:
 
@@ -88,16 +88,16 @@ LABEL_14:
   return v4;
 }
 
-- (GuideHomeCompositionalLayout)initWithSectionProvider:(id)a3 dataProvider:(id)a4
+- (GuideHomeCompositionalLayout)initWithSectionProvider:(id)provider dataProvider:(id)dataProvider
 {
-  v6 = a4;
+  dataProviderCopy = dataProvider;
   v14.receiver = self;
   v14.super_class = GuideHomeCompositionalLayout;
-  v7 = [(GuideHomeCompositionalLayout *)&v14 initWithSectionProvider:a3];
+  v7 = [(GuideHomeCompositionalLayout *)&v14 initWithSectionProvider:provider];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_dataProvider, v6);
+    objc_storeWeak(&v7->_dataProvider, dataProviderCopy);
     v9 = objc_opt_class();
     v10 = +[GuidesSectionBackground decorationViewKind];
     [(GuideHomeCompositionalLayout *)v8 registerClass:v9 forDecorationViewOfKind:v10];

@@ -1,19 +1,19 @@
 @interface PKAMPCardInfoForMerchantRequest
-- (PKAMPCardInfoForMerchantRequest)initWithMerchantIdentifier:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKAMPCardInfoForMerchantRequest)initWithMerchantIdentifier:(id)identifier;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKAMPCardInfoForMerchantRequest
 
-- (PKAMPCardInfoForMerchantRequest)initWithMerchantIdentifier:(id)a3
+- (PKAMPCardInfoForMerchantRequest)initWithMerchantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKAMPCardInfoForMerchantRequest;
   v5 = [(PKOverlayableWebServiceRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v6;
   }
@@ -21,22 +21,22 @@
   return v5;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = @"devices";
-  v18 = a4;
+  identifierCopy = identifier;
   merchantIdentifier = self->_merchantIdentifier;
   v19 = @"merchant";
   v20 = merchantIdentifier;
   v21 = @"cardInfo";
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  informationCopy = information;
+  identifierCopy2 = identifier;
+  lCopy = l;
   v13 = [v9 arrayWithObjects:&v17 count:5];
 
-  v14 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v12 endpointComponents:v13 queryParameters:0 appleAccountInformation:v10, v17, v18, v19, v20, v21, v22];
+  v14 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v13 queryParameters:0 appleAccountInformation:informationCopy, v17, identifierCopy, v19, v20, v21, v22];
 
   [v14 setHTTPMethod:@"GET"];
   [v14 setCachePolicy:1];

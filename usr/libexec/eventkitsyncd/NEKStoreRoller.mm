@@ -1,16 +1,16 @@
 @interface NEKStoreRoller
-- (NEKStoreRoller)initWithEventStore:(id)a3 cause:(id)a4;
-- (id)fetch:(id)a3;
+- (NEKStoreRoller)initWithEventStore:(id)store cause:(id)cause;
+- (id)fetch:(id)fetch;
 - (id)someStore;
 - (void)_bump;
 @end
 
 @implementation NEKStoreRoller
 
-- (NEKStoreRoller)initWithEventStore:(id)a3 cause:(id)a4
+- (NEKStoreRoller)initWithEventStore:(id)store cause:(id)cause
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  causeCopy = cause;
   v13.receiver = self;
   v13.super_class = NEKStoreRoller;
   v9 = [(NEKStoreRoller *)&v13 init];
@@ -18,8 +18,8 @@
   if (v9)
   {
     v9->_counter = 49;
-    objc_storeStrong(&v9->_eventStore, a3);
-    objc_storeStrong(&v10->_cause, a4);
+    objc_storeStrong(&v9->_eventStore, store);
+    objc_storeStrong(&v10->_cause, cause);
     lastStore = v10->_lastStore;
     v10->_lastStore = 0;
   }
@@ -45,11 +45,11 @@
   }
 }
 
-- (id)fetch:(id)a3
+- (id)fetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   [(NEKStoreRoller *)self _bump];
-  v5 = [(EKEventStore *)self->_lastStore publicObjectWithObjectID:v4];
+  v5 = [(EKEventStore *)self->_lastStore publicObjectWithObjectID:fetchCopy];
 
   return v5;
 }

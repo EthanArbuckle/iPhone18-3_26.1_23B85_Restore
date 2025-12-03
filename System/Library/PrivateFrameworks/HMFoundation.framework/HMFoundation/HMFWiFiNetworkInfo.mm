@@ -1,24 +1,24 @@
 @interface HMFWiFiNetworkInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNetworkInfo:(id)a3;
-- (HMFWiFiNetworkInfo)initWithCoder:(id)a3;
-- (HMFWiFiNetworkInfo)initWithMACAddress:(id)a3 SSID:(id)a4 BSSID:(id)a5 gatewayIPAddress:(id)a6 gatewayMACAddress:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNetworkInfo:(id)info;
+- (HMFWiFiNetworkInfo)initWithCoder:(id)coder;
+- (HMFWiFiNetworkInfo)initWithMACAddress:(id)address SSID:(id)d BSSID:(id)iD gatewayIPAddress:(id)pAddress gatewayMACAddress:(id)cAddress;
 - (NSString)propertyDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFWiFiNetworkInfo
 
-- (HMFWiFiNetworkInfo)initWithMACAddress:(id)a3 SSID:(id)a4 BSSID:(id)a5 gatewayIPAddress:(id)a6 gatewayMACAddress:(id)a7
+- (HMFWiFiNetworkInfo)initWithMACAddress:(id)address SSID:(id)d BSSID:(id)iD gatewayIPAddress:(id)pAddress gatewayMACAddress:(id)cAddress
 {
   v33 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v25 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13 || v14 && ![v14 length])
+  addressCopy = address;
+  dCopy = d;
+  iDCopy = iD;
+  pAddressCopy = pAddress;
+  cAddressCopy = cAddress;
+  if (!addressCopy || dCopy && ![dCopy length])
   {
     v20 = objc_autoreleasePoolPush();
     v21 = HMFGetOSLogHandle();
@@ -28,9 +28,9 @@
       *buf = 138543874;
       v28 = v22;
       v29 = 2112;
-      v30 = v13;
+      v30 = addressCopy;
       v31 = 2112;
-      v32 = v14;
+      v32 = dCopy;
       _os_log_impl(&dword_22ADEC000, v21, OS_LOG_TYPE_ERROR, "%{public}@Cannot create HMFWiFiNetworkInfo with MACAddress: %@ and SSID: %@", buf, 0x20u);
     }
 
@@ -45,11 +45,11 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_MACAddress, a3);
-    objc_storeStrong(&v18->_SSID, a4);
-    objc_storeStrong(&v18->_networkBSSID, a5);
-    objc_storeStrong(&v18->_networkGatewayIPAddress, a6);
-    v19 = v16;
+    objc_storeStrong(&v17->_MACAddress, address);
+    objc_storeStrong(&v18->_SSID, d);
+    objc_storeStrong(&v18->_networkBSSID, iD);
+    objc_storeStrong(&v18->_networkGatewayIPAddress, pAddress);
+    v19 = cAddressCopy;
     self = v18->_networkGatewayMACAddress;
     v18->_networkGatewayMACAddress = v19;
 LABEL_9:
@@ -62,32 +62,32 @@ LABEL_9:
 - (NSString)propertyDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMFWiFiNetworkInfo *)self MACAddress];
-  v5 = [(HMFWiFiNetworkInfo *)self SSID];
-  v6 = [v3 stringWithFormat:@" MACAddress=%@ SSID=%@", v4, v5];
+  mACAddress = [(HMFWiFiNetworkInfo *)self MACAddress];
+  sSID = [(HMFWiFiNetworkInfo *)self SSID];
+  v6 = [v3 stringWithFormat:@" MACAddress=%@ SSID=%@", mACAddress, sSID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HMFWiFiNetworkInfo *)self isEqualToNetworkInfo:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HMFWiFiNetworkInfo *)self isEqualToNetworkInfo:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToNetworkInfo:(id)a3
+- (BOOL)isEqualToNetworkInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HMFWiFiNetworkInfo *)self MACAddress];
-  v6 = [v4 MACAddress];
-  if ([v5 isEqualToAddress:v6])
+  infoCopy = info;
+  mACAddress = [(HMFWiFiNetworkInfo *)self MACAddress];
+  mACAddress2 = [infoCopy MACAddress];
+  if ([mACAddress isEqualToAddress:mACAddress2])
   {
-    v7 = [(HMFWiFiNetworkInfo *)self SSID];
-    v8 = [v4 SSID];
-    v9 = HMFEqualObjects(v7, v8);
+    sSID = [(HMFWiFiNetworkInfo *)self SSID];
+    sSID2 = [infoCopy SSID];
+    v9 = HMFEqualObjects(sSID, sSID2);
   }
 
   else
@@ -100,33 +100,33 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(HMFWiFiNetworkInfo *)self MACAddress];
-  v4 = [v3 hash];
+  mACAddress = [(HMFWiFiNetworkInfo *)self MACAddress];
+  v4 = [mACAddress hash];
 
-  v5 = [(HMFWiFiNetworkInfo *)self SSID];
-  v6 = [v5 hash];
+  sSID = [(HMFWiFiNetworkInfo *)self SSID];
+  v6 = [sSID hash];
 
   return v6 ^ v4;
 }
 
-- (HMFWiFiNetworkInfo)initWithCoder:(id)a3
+- (HMFWiFiNetworkInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.MACAddress"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.SSID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.MACAddress"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.SSID"];
 
   v7 = [(HMFWiFiNetworkInfo *)self initWithMACAddress:v5 SSID:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFWiFiNetworkInfo *)self MACAddress];
-  [v4 encodeObject:v5 forKey:@"HMF.MACAddress"];
+  coderCopy = coder;
+  mACAddress = [(HMFWiFiNetworkInfo *)self MACAddress];
+  [coderCopy encodeObject:mACAddress forKey:@"HMF.MACAddress"];
 
-  v6 = [(HMFWiFiNetworkInfo *)self SSID];
-  [v4 encodeObject:v6 forKey:@"HMF.SSID"];
+  sSID = [(HMFWiFiNetworkInfo *)self SSID];
+  [coderCopy encodeObject:sSID forKey:@"HMF.SSID"];
 }
 
 @end

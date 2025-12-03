@@ -1,26 +1,26 @@
 @interface VCPExifAnalyzer
-- (CGAffineTransform)transformUprightAboutTopLeft:(SEL)a3;
-- (VCPExifAnalyzer)initWithProperties:(id)a3 forAnalysisTypes:(unint64_t)a4;
-- (int)addFaceResults:(id)a3 flags:(unint64_t *)a4;
-- (int)analyzeAsset:(unint64_t *)a3 results:(id *)a4;
+- (CGAffineTransform)transformUprightAboutTopLeft:(SEL)left;
+- (VCPExifAnalyzer)initWithProperties:(id)properties forAnalysisTypes:(unint64_t)types;
+- (int)addFaceResults:(id)results flags:(unint64_t *)flags;
+- (int)analyzeAsset:(unint64_t *)asset results:(id *)results;
 @end
 
 @implementation VCPExifAnalyzer
 
-- (VCPExifAnalyzer)initWithProperties:(id)a3 forAnalysisTypes:(unint64_t)a4
+- (VCPExifAnalyzer)initWithProperties:(id)properties forAnalysisTypes:(unint64_t)types
 {
-  v7 = a3;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = VCPExifAnalyzer;
   v8 = [(VCPExifAnalyzer *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (propertiesCopy)
     {
-      objc_storeStrong(&v8->_properties, a3);
+      objc_storeStrong(&v8->_properties, properties);
       results = v9->_results;
-      v9->_requestedAnalyses = a4;
+      v9->_requestedAnalyses = types;
       v9->_results = 0;
 
       v11 = v9;
@@ -42,7 +42,7 @@
   return v12;
 }
 
-- (CGAffineTransform)transformUprightAboutTopLeft:(SEL)a3
+- (CGAffineTransform)transformUprightAboutTopLeft:(SEL)left
 {
   if (a4 <= 4)
   {
@@ -132,14 +132,14 @@ LABEL_14:
   return self;
 }
 
-- (int)addFaceResults:(id)a3 flags:(unint64_t *)a4
+- (int)addFaceResults:(id)results flags:(unint64_t *)flags
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v61 = v4;
-  if (v4)
+  resultsCopy = results;
+  v61 = resultsCopy;
+  if (resultsCopy)
   {
-    v5 = [v4 objectForKey:@"Orientation"];
+    v5 = [resultsCopy objectForKey:@"Orientation"];
     v6 = *(MEMORY[0x1E695EFD0] + 16);
     *&v75.a = *MEMORY[0x1E695EFD0];
     *&v75.c = v6;
@@ -187,8 +187,8 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    v53 = [MEMORY[0x1E695DF70] array];
-    if (v53)
+    array = [MEMORY[0x1E695DF70] array];
+    if (array)
     {
       v71 = 0u;
       v72 = 0u;
@@ -288,7 +288,7 @@ LABEL_10:
               v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v82 forKeys:v81 count:2];
               v84[1] = v42;
               v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:2];
-              [v53 addObject:v43];
+              [array addObject:v43];
             }
 
             if (!v63)
@@ -316,13 +316,13 @@ LABEL_10:
         v10 = 0.0;
 LABEL_44:
 
-        if (![v53 count])
+        if (![array count])
         {
           goto LABEL_47;
         }
 
-        *a4 |= 0x20uLL;
-        [(NSMutableDictionary *)self->_results setObject:v53 forKey:@"FaceResults"];
+        *flags |= 0x20uLL;
+        [(NSMutableDictionary *)self->_results setObject:array forKey:@"FaceResults"];
         v44 = MediaAnalysisShotType(v10);
         results = self->_results;
         v78 = @"attributes";
@@ -354,12 +354,12 @@ LABEL_51:
   return v62;
 }
 
-- (int)analyzeAsset:(unint64_t *)a3 results:(id *)a4
+- (int)analyzeAsset:(unint64_t *)asset results:(id *)results
 {
-  *a4 = 0;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  *results = 0;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   results = self->_results;
-  self->_results = v6;
+  self->_results = dictionary;
 
   v8 = self->_results;
   if (!v8)
@@ -379,7 +379,7 @@ LABEL_51:
 LABEL_6:
     v10 = v8;
     v9 = 0;
-    *a4 = v10;
+    *results = v10;
   }
 
   return v9;

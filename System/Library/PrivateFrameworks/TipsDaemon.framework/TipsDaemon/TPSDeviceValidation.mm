@@ -1,21 +1,21 @@
 @interface TPSDeviceValidation
-- (BOOL)_matchesDevices:(id)a3;
-- (TPSDeviceValidation)initWithTargetDevices:(id)a3 excludeDevices:(id)a4;
-- (void)validateWithCompletion:(id)a3;
+- (BOOL)_matchesDevices:(id)devices;
+- (TPSDeviceValidation)initWithTargetDevices:(id)devices excludeDevices:(id)excludeDevices;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSDeviceValidation
 
-- (TPSDeviceValidation)initWithTargetDevices:(id)a3 excludeDevices:(id)a4
+- (TPSDeviceValidation)initWithTargetDevices:(id)devices excludeDevices:(id)excludeDevices
 {
   v5.receiver = self;
   v5.super_class = TPSDeviceValidation;
-  return [(TPSInclusivityValidation *)&v5 initWithTargetValues:a3 excludeValues:a4];
+  return [(TPSInclusivityValidation *)&v5 initWithTargetValues:devices excludeValues:excludeDevices];
 }
 
-- (BOOL)_matchesDevices:(id)a3
+- (BOOL)_matchesDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -31,7 +31,7 @@
   v13 = &v14;
   v7 = v5;
   v12 = v7;
-  [v3 enumerateObjectsUsingBlock:v10];
+  [devicesCopy enumerateObjectsUsingBlock:v10];
   v8 = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
@@ -73,19 +73,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSDeviceValidation *)self targetDevices];
-  if ([v5 count])
+  completionCopy = completion;
+  targetDevices = [(TPSDeviceValidation *)self targetDevices];
+  if ([targetDevices count])
   {
 
 LABEL_4:
-    v8 = [(TPSDeviceValidation *)self targetDevices];
-    if ([v8 count])
+    targetDevices2 = [(TPSDeviceValidation *)self targetDevices];
+    if ([targetDevices2 count])
     {
-      v9 = [(TPSDeviceValidation *)self targetDevices];
-      v10 = [(TPSDeviceValidation *)self _matchesDevices:v9];
+      targetDevices3 = [(TPSDeviceValidation *)self targetDevices];
+      v10 = [(TPSDeviceValidation *)self _matchesDevices:targetDevices3];
     }
 
     else
@@ -93,37 +93,37 @@ LABEL_4:
       v10 = 1;
     }
 
-    v11 = [(TPSDeviceValidation *)self excludeDevices];
-    v12 = [(TPSDeviceValidation *)self _matchesDevices:v11];
+    excludeDevices = [(TPSDeviceValidation *)self excludeDevices];
+    v12 = [(TPSDeviceValidation *)self _matchesDevices:excludeDevices];
 
     v13 = v10 && !v12;
-    v14 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSDeviceValidation *)self validateWithCompletion:v13, v14];
+      [(TPSDeviceValidation *)self validateWithCompletion:v13, targeting];
     }
 
     goto LABEL_9;
   }
 
-  v6 = [(TPSInclusivityValidation *)self excludeValues];
-  v7 = [v6 count];
+  excludeValues = [(TPSInclusivityValidation *)self excludeValues];
+  v7 = [excludeValues count];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v14 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDeviceValidation *)self validateWithCompletion:v14];
+    [(TPSDeviceValidation *)self validateWithCompletion:targeting];
   }
 
   v13 = 1;
 LABEL_9:
 
-  v4[2](v4, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
 - (void)validateWithCompletion:(NSObject *)a3 .cold.1(void *a1, char a2, NSObject *a3)

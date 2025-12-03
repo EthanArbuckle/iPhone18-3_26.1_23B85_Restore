@@ -1,21 +1,21 @@
 @interface SCATCustomizeDeviceMenuController
 - (id)itemsFromPreferences;
 - (id)originalItemsFromPreference;
-- (id)titleForItem:(id)a3;
-- (void)updateItemsInPreferences:(id)a3;
+- (id)titleForItem:(id)item;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation SCATCustomizeDeviceMenuController
 
 - (id)itemsFromPreferences
 {
-  v3 = [(SCATCustomizeDeviceMenuController *)self originalItemsFromPreference];
+  originalItemsFromPreference = [(SCATCustomizeDeviceMenuController *)self originalItemsFromPreference];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __57__SCATCustomizeDeviceMenuController_itemsFromPreferences__block_invoke;
   v6[3] = &unk_256D30;
   v6[4] = self;
-  v4 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:v6 allItems:v3];
+  v4 = [(SCATCustomizeMenuBaseController *)self filterAndTrackMenuItemsMatchingBlock:v6 allItems:originalItemsFromPreference];
 
   return v4;
 }
@@ -93,10 +93,10 @@ LABEL_8:
   return v4;
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
+  itemCopy = item;
+  v5 = [itemCopy objectForKeyedSubscript:AXSSwitchControlMenuItemTypeKey];
   if ([v5 isEqualToString:AXSSwitchControlMenuItemDeviceSiriVoiceControl])
   {
     if (![(SCATCustomizeDeviceMenuController *)self _isSiriAvailable]&& ![(SCATCustomizeDeviceMenuController *)self _isVoiceControlAvailable])
@@ -118,7 +118,7 @@ LABEL_8:
   {
     v9.receiver = self;
     v9.super_class = SCATCustomizeDeviceMenuController;
-    v7 = [(SCATCustomizeMenuBaseController *)&v9 titleForItem:v4];
+    v7 = [(SCATCustomizeMenuBaseController *)&v9 titleForItem:itemCopy];
     goto LABEL_17;
   }
 
@@ -130,9 +130,9 @@ LABEL_18:
   return v6;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v4 = [(SCATCustomizeMenuBaseController *)self restorePreviouslyFilteredItemsToItems:a3];
+  v4 = [(SCATCustomizeMenuBaseController *)self restorePreviouslyFilteredItemsToItems:preferences];
   v3 = +[AXSettings sharedInstance];
   [v3 setSwitchControlDeviceMenuItems:v4];
 }
@@ -140,9 +140,9 @@ LABEL_18:
 - (id)originalItemsFromPreference
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlDeviceMenuItems];
+  switchControlDeviceMenuItems = [v2 switchControlDeviceMenuItems];
 
-  return v3;
+  return switchControlDeviceMenuItems;
 }
 
 @end

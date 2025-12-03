@@ -1,33 +1,33 @@
 @interface PRCompanionRangingSession
-- (BOOL)startCompanionRanging:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)stopCompanionRanging:(id)a3 error:(id *)a4;
-- (PRCompanionRangingSession)initWithDelegate:(id)a3 queue:(id)a4;
+- (BOOL)startCompanionRanging:(id)ranging options:(id)options error:(id *)error;
+- (BOOL)stopCompanionRanging:(id)ranging error:(id *)error;
+- (PRCompanionRangingSession)initWithDelegate:(id)delegate queue:(id)queue;
 - (PRGenericRangingSessionDelegate)delegate;
 - (id)remoteObject;
 - (id)synchronousRemoteObject;
-- (void)configureForCompanionRanging:(id)a3 options:(id)a4;
+- (void)configureForCompanionRanging:(id)ranging options:(id)options;
 - (void)connectToDaemon;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
 - (void)handleInterruption;
 - (void)handleInvalidation;
 - (void)invalidate;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
-- (void)recordUsageOfCompanionRanging:(id)a3 usageParameters:(id)a4;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
+- (void)recordUsageOfCompanionRanging:(id)ranging usageParameters:(id)parameters;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
 @end
 
 @implementation PRCompanionRangingSession
 
-- (PRCompanionRangingSession)initWithDelegate:(id)a3 queue:(id)a4
+- (PRCompanionRangingSession)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (delegateCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -53,8 +53,8 @@ LABEL_3:
     logger = v10->_logger;
     v10->_logger = v11;
 
-    objc_storeWeak(&v10->_delegate, v7);
-    objc_storeStrong(&v10->_sessionQueue, a4);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_sessionQueue, queue);
     [(PRCompanionRangingSession *)v10 connectToDaemon];
   }
 
@@ -106,11 +106,11 @@ LABEL_3:
   objc_copyWeak(&v17, &location);
   [(NSXPCConnection *)v12 setInvalidationHandler:v16];
   [(NSXPCConnection *)self->_connection resume];
-  v13 = [(PRCompanionRangingSession *)self remoteObject];
+  remoteObject = [(PRCompanionRangingSession *)self remoteObject];
   v15.receiver = self;
   v15.super_class = PRCompanionRangingSession;
-  v14 = [(PRRangingDevice *)&v15 clientInfo];
-  [v13 connectWithClientInfo:v14];
+  clientInfo = [(PRRangingDevice *)&v15 clientInfo];
+  [remoteObject connectWithClientInfo:clientInfo];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -235,63 +235,63 @@ void __52__PRCompanionRangingSession_synchronousRemoteObject__block_invoke(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didFailWithError:v4];
+  [WeakRetained didFailWithError:errorCopy];
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v5 = a3;
-  WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (objc_opt_respondsToSelector())
-  {
-    [WeakRetained didReceiveNewSolutions:v5];
-  }
-}
-
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
-{
-  v7 = a3;
+  solutionsCopy = solutions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteDevice:v7 didChangeState:a4];
+    [WeakRetained didReceiveNewSolutions:solutionsCopy];
   }
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained rangingRequestDidUpdateStatus:a3];
+    [WeakRetained remoteDevice:deviceCopy didChangeState:state];
   }
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained rangingServiceDidUpdateState:a3 cause:a4];
+    [WeakRetained rangingRequestDidUpdateStatus:status];
   }
 }
 
-- (void)configureForCompanionRanging:(id)a3 options:(id)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
-  v6 = a3;
-  v7 = a4;
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  if (objc_opt_respondsToSelector())
+  {
+    [WeakRetained rangingServiceDidUpdateState:state cause:cause];
+  }
+}
+
+- (void)configureForCompanionRanging:(id)ranging options:(id)options
+{
+  rangingCopy = ranging;
+  optionsCopy = options;
   objc_initWeak(&location, self);
-  v8 = [(PRCompanionRangingSession *)self remoteObject];
+  remoteObject = [(PRCompanionRangingSession *)self remoteObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__PRCompanionRangingSession_configureForCompanionRanging_options___block_invoke;
   v9[3] = &unk_2788F3AE8;
   objc_copyWeak(&v10, &location);
-  [v8 configureForCompanionRanging:v6 options:v7 reply:v9];
+  [remoteObject configureForCompanionRanging:rangingCopy options:optionsCopy reply:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -315,10 +315,10 @@ void __66__PRCompanionRangingSession_configureForCompanionRanging_options___bloc
   }
 }
 
-- (BOOL)startCompanionRanging:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)startCompanionRanging:(id)ranging options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  rangingCopy = ranging;
+  optionsCopy = options;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -329,18 +329,18 @@ void __66__PRCompanionRangingSession_configureForCompanionRanging_options___bloc
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  v10 = [(PRCompanionRangingSession *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(PRCompanionRangingSession *)self synchronousRemoteObject];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__PRCompanionRangingSession_startCompanionRanging_options_error___block_invoke;
   v13[3] = &unk_2788F3CE0;
   v13[4] = &v14;
   v13[5] = &v20;
-  [v10 startCompanionRanging:v8 options:v9 reply:v13];
+  [synchronousRemoteObject startCompanionRanging:rangingCopy options:optionsCopy reply:v13];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v15[5];
+    *error = v15[5];
   }
 
   v11 = *(v21 + 24);
@@ -357,9 +357,9 @@ void __65__PRCompanionRangingSession_startCompanionRanging_options_error___block
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)stopCompanionRanging:(id)a3 error:(id *)a4
+- (BOOL)stopCompanionRanging:(id)ranging error:(id *)error
 {
-  v6 = a3;
+  rangingCopy = ranging;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -370,18 +370,18 @@ void __65__PRCompanionRangingSession_startCompanionRanging_options_error___block
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
-  v7 = [(PRCompanionRangingSession *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(PRCompanionRangingSession *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__PRCompanionRangingSession_stopCompanionRanging_error___block_invoke;
   v10[3] = &unk_2788F3CE0;
   v10[4] = &v11;
   v10[5] = &v17;
-  [v7 stopCompanionRanging:v6 reply:v10];
+  [synchronousRemoteObject stopCompanionRanging:rangingCopy reply:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12[5];
+    *error = v12[5];
   }
 
   v8 = *(v18 + 24);
@@ -398,12 +398,12 @@ void __56__PRCompanionRangingSession_stopCompanionRanging_error___block_invoke(u
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)recordUsageOfCompanionRanging:(id)a3 usageParameters:(id)a4
+- (void)recordUsageOfCompanionRanging:(id)ranging usageParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PRCompanionRangingSession *)self remoteObject];
-  [v8 recordUsageOfCompanionRanging:v7 usageParameters:v6];
+  parametersCopy = parameters;
+  rangingCopy = ranging;
+  remoteObject = [(PRCompanionRangingSession *)self remoteObject];
+  [remoteObject recordUsageOfCompanionRanging:rangingCopy usageParameters:parametersCopy];
 }
 
 - (PRGenericRangingSessionDelegate)delegate

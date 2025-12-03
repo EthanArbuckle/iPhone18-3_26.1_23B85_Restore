@@ -4,20 +4,20 @@
 - (void)_applicationWillTerminate;
 - (void)_windowDidBecomeBackground;
 - (void)_windowDidBecomeForeground;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)performOnApplicationDidEnterBackground:(id)a3;
-- (void)performOnApplicationWillEnterForeground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3;
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)performOnApplicationDidEnterBackground:(id)background;
+- (void)performOnApplicationWillEnterForeground:(id)foreground;
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background;
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground;
+- (void)removeObserver:(id)observer;
 - (void)sceneDidBecomeActive;
-- (void)sceneDidBecomeActiveWithURL:(id)a3 sourceApplication:(id)a4 sceneID:(id)a5;
+- (void)sceneDidBecomeActiveWithURL:(id)l sourceApplication:(id)application sceneID:(id)d;
 - (void)sceneDidEnterBackground;
-- (void)sceneDidEnterBackgroundWithSceneID:(id)a3;
+- (void)sceneDidEnterBackgroundWithSceneID:(id)d;
 - (void)sceneWillConnect;
 - (void)sceneWillEnterForeground;
-- (void)sceneWillResignActiveWithSceneID:(id)a3;
+- (void)sceneWillResignActiveWithSceneID:(id)d;
 @end
 
 @implementation NUApplicationAppActivityMonitorIOS
@@ -49,8 +49,8 @@
     windowForegroundObserverBlocks = v2->_windowForegroundObserverBlocks;
     v2->_windowForegroundObserverBlocks = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel__applicationWillTerminate name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillTerminate name:*MEMORY[0x277D76770] object:0];
   }
 
   return v2;
@@ -58,10 +58,10 @@
 
 - (int64_t)currentApplicationState
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 applicationState];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  applicationState = [mEMORY[0x277D75128] applicationState];
 
-  return v3;
+  return applicationState;
 }
 
 - (void)sceneWillConnect
@@ -71,8 +71,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v3 = [v2 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v3 = [observers copy];
 
   v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
@@ -115,8 +115,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v4 = [v3 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v5)
@@ -153,8 +153,8 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(NUApplicationAppActivityMonitorIOS *)self foregroundObserverBlocks];
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  foregroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self foregroundObserverBlocks];
+  v11 = [foregroundObserverBlocks countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
@@ -166,14 +166,14 @@
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(foregroundObserverBlocks);
         }
 
         (*(*(*(&v27 + 1) + 8 * v14++) + 16))();
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v12 = [foregroundObserverBlocks countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v12);
@@ -183,8 +183,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v16 = [v15 copy];
+  observers2 = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v16 = [observers2 copy];
 
   v17 = [v16 countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v17)
@@ -227,8 +227,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v4 = [v3 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -272,8 +272,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v4 = [v3 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
@@ -310,8 +310,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(NUApplicationAppActivityMonitorIOS *)self windowForegroundObserverBlocks];
-  v11 = [v10 copy];
+  windowForegroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self windowForegroundObserverBlocks];
+  v11 = [windowForegroundObserverBlocks copy];
 
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
@@ -343,26 +343,26 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NUApplicationAppActivityMonitorIOS;
   [(NUApplicationAppActivityMonitorIOS *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)sceneDidEnterBackground
@@ -373,8 +373,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  backgroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
+  v4 = [backgroundObserverBlocks countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -386,14 +386,14 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(backgroundObserverBlocks);
         }
 
         (*(*(*(&v20 + 1) + 8 * v7++) + 16))();
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [backgroundObserverBlocks countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -403,8 +403,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v9 = [v8 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v10)
@@ -440,17 +440,17 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sceneDidEnterBackgroundWithSceneID:(id)a3
+- (void)sceneDidEnterBackgroundWithSceneID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(NUApplicationAppActivityMonitorIOS *)self _windowDidBecomeBackground];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  backgroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
+  v6 = [backgroundObserverBlocks countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -462,14 +462,14 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(backgroundObserverBlocks);
         }
 
         (*(*(*(&v22 + 1) + 8 * v9++) + 16))();
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [backgroundObserverBlocks countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -479,8 +479,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v11 = [v10 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v11 = [observers copy];
 
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
@@ -500,7 +500,7 @@
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 activityObservingApplicationDidEnterBackgroundWithSceneID:v4];
+          [v16 activityObservingApplicationDidEnterBackgroundWithSceneID:dCopy];
         }
 
         ++v15;
@@ -516,19 +516,19 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sceneDidBecomeActiveWithURL:(id)a3 sourceApplication:(id)a4 sceneID:(id)a5
+- (void)sceneDidBecomeActiveWithURL:(id)l sourceApplication:(id)application sceneID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
-  v11 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v12 = [v11 copy];
+  selfCopy = self;
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v12 = [observers copy];
 
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
@@ -548,7 +548,7 @@
         v17 = *(*(&v20 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          [v17 activityObservingApplicationDidBecomeActiveWithURL:v8 sourceApplication:v9 sceneID:v10];
+          [v17 activityObservingApplicationDidBecomeActiveWithURL:lCopy sourceApplication:applicationCopy sceneID:dCopy];
         }
 
         ++v16;
@@ -561,20 +561,20 @@
     while (v14);
   }
 
-  [(NUApplicationAppActivityMonitorIOS *)v19 _windowDidBecomeForeground];
+  [(NUApplicationAppActivityMonitorIOS *)selfCopy _windowDidBecomeForeground];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sceneWillResignActiveWithSceneID:(id)a3
+- (void)sceneWillResignActiveWithSceneID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v6 = [v5 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v6 = [observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -594,7 +594,7 @@
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 activityObservingApplicationWillResignActiveWithSceneID:v4];
+          [v11 activityObservingApplicationWillResignActiveWithSceneID:dCopy];
         }
 
         ++v10;
@@ -610,51 +610,51 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performOnApplicationWillEnterForeground:(id)a3
+- (void)performOnApplicationWillEnterForeground:(id)foreground
 {
-  if (a3)
+  if (foreground)
   {
-    v4 = a3;
-    v6 = [(NUApplicationAppActivityMonitorIOS *)self foregroundObserverBlocks];
-    v5 = [v4 copy];
+    foregroundCopy = foreground;
+    foregroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self foregroundObserverBlocks];
+    v5 = [foregroundCopy copy];
 
-    [v6 addObject:v5];
+    [foregroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationDidEnterBackground:(id)a3
+- (void)performOnApplicationDidEnterBackground:(id)background
 {
-  if (a3)
+  if (background)
   {
-    v4 = a3;
-    v6 = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
-    v5 = [v4 copy];
+    backgroundCopy = background;
+    backgroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self backgroundObserverBlocks];
+    v5 = [backgroundCopy copy];
 
-    [v6 addObject:v5];
+    [backgroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationWindowDidBecomeBackground:(id)a3
+- (void)performOnApplicationWindowDidBecomeBackground:(id)background
 {
-  if (a3)
+  if (background)
   {
-    v4 = a3;
-    v6 = [(NUApplicationAppActivityMonitorIOS *)self windowBackgroundObserverBlocks];
-    v5 = MEMORY[0x25F883F30](v4);
+    backgroundCopy = background;
+    windowBackgroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self windowBackgroundObserverBlocks];
+    v5 = MEMORY[0x25F883F30](backgroundCopy);
 
-    [v6 addObject:v5];
+    [windowBackgroundObserverBlocks addObject:v5];
   }
 }
 
-- (void)performOnApplicationWindowDidBecomeForeground:(id)a3
+- (void)performOnApplicationWindowDidBecomeForeground:(id)foreground
 {
-  if (a3)
+  if (foreground)
   {
-    v4 = a3;
-    v6 = [(NUApplicationAppActivityMonitorIOS *)self windowForegroundObserverBlocks];
-    v5 = MEMORY[0x25F883F30](v4);
+    foregroundCopy = foreground;
+    windowForegroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self windowForegroundObserverBlocks];
+    v5 = MEMORY[0x25F883F30](foregroundCopy);
 
-    [v6 addObject:v5];
+    [windowForegroundObserverBlocks addObject:v5];
   }
 }
 
@@ -665,8 +665,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v4 = [v3 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
@@ -703,8 +703,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(NUApplicationAppActivityMonitorIOS *)self windowBackgroundObserverBlocks];
-  v11 = [v10 copy];
+  windowBackgroundObserverBlocks = [(NUApplicationAppActivityMonitorIOS *)self windowBackgroundObserverBlocks];
+  v11 = [windowBackgroundObserverBlocks copy];
 
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
@@ -741,8 +741,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NUApplicationAppActivityMonitorIOS *)self observers];
-  v3 = [v2 copy];
+  observers = [(NUApplicationAppActivityMonitorIOS *)self observers];
+  v3 = [observers copy];
 
   v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)

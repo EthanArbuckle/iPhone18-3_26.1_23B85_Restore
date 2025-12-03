@@ -1,23 +1,23 @@
 @interface HKCDADocumentTableViewCell
-- (HKCDADocumentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKCDADocumentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HKCDADocumentTableViewCellDelegate)delegate;
-- (id)_createDocumentCellLabelWithTag:(int64_t)a3 fontSizePts:(double)a4 flexibleHeight:(BOOL)a5;
-- (void)_selectedCheckbox:(id)a3;
-- (void)_setDocumentLabelWithTag:(int64_t)a3 text:(id)a4 view:(id)a5;
+- (id)_createDocumentCellLabelWithTag:(int64_t)tag fontSizePts:(double)pts flexibleHeight:(BOOL)height;
+- (void)_selectedCheckbox:(id)checkbox;
+- (void)_setDocumentLabelWithTag:(int64_t)tag text:(id)text view:(id)view;
 - (void)_setupCellStructure;
 - (void)_updateForCurrentSizeCategory;
-- (void)setCellValuesForDocumentSample:(id)a3;
-- (void)setShowsCheckbox:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCellValuesForDocumentSample:(id)sample;
+- (void)setShowsCheckbox:(BOOL)checkbox;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKCDADocumentTableViewCell
 
-- (HKCDADocumentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKCDADocumentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKCDADocumentTableViewCell;
-  v4 = [(HKCDADocumentTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKCDADocumentTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -29,52 +29,52 @@
   return v5;
 }
 
-- (void)setShowsCheckbox:(BOOL)a3
+- (void)setShowsCheckbox:(BOOL)checkbox
 {
-  self->_showsCheckbox = a3;
-  [(HKAdjustableTapTargetButton *)self->_checkboxButton setHidden:!a3];
+  self->_showsCheckbox = checkbox;
+  [(HKAdjustableTapTargetButton *)self->_checkboxButton setHidden:!checkbox];
 
   [(HKCDADocumentTableViewCell *)self setNeedsLayout];
 }
 
-- (void)setCellValuesForDocumentSample:(id)a3
+- (void)setCellValuesForDocumentSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 document];
-  v19 = [v5 title];
+  sampleCopy = sample;
+  document = [sampleCopy document];
+  title = [document title];
 
-  v6 = [(HKCDADocumentTableViewCell *)self contentView];
-  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:101 text:v19 view:v6];
+  contentView = [(HKCDADocumentTableViewCell *)self contentView];
+  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:101 text:title view:contentView];
 
-  v7 = [v4 document];
-  v8 = [v7 patientName];
+  document2 = [sampleCopy document];
+  patientName = [document2 patientName];
 
-  v9 = [(HKCDADocumentTableViewCell *)self contentView];
-  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:105 text:v8 view:v9];
+  contentView2 = [(HKCDADocumentTableViewCell *)self contentView];
+  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:105 text:patientName view:contentView2];
 
-  v10 = [v4 endDate];
-  v11 = HKLocalizedStringForDateAndTemplate(v10, 35);
-  v12 = [(HKCDADocumentTableViewCell *)self contentView];
-  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:102 text:v11 view:v12];
+  endDate = [sampleCopy endDate];
+  v11 = HKLocalizedStringForDateAndTemplate(endDate, 35);
+  contentView3 = [(HKCDADocumentTableViewCell *)self contentView];
+  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:102 text:v11 view:contentView3];
 
-  v13 = [v4 document];
-  v14 = [v13 custodianName];
+  document3 = [sampleCopy document];
+  custodianName = [document3 custodianName];
 
-  v15 = [(HKCDADocumentTableViewCell *)self contentView];
-  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:103 text:v14 view:v15];
+  contentView4 = [(HKCDADocumentTableViewCell *)self contentView];
+  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:103 text:custodianName view:contentView4];
 
-  v16 = [v4 document];
+  document4 = [sampleCopy document];
 
-  v17 = [v16 authorName];
+  authorName = [document4 authorName];
 
-  v18 = [(HKCDADocumentTableViewCell *)self contentView];
-  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:104 text:v17 view:v18];
+  contentView5 = [(HKCDADocumentTableViewCell *)self contentView];
+  [(HKCDADocumentTableViewCell *)self _setDocumentLabelWithTag:104 text:authorName view:contentView5];
 }
 
 - (void)_setupCellStructure
 {
   v73[4] = *MEMORY[0x1E69E9840];
-  v67 = [(HKCDADocumentTableViewCell *)self contentView];
+  contentView = [(HKCDADocumentTableViewCell *)self contentView];
   v3 = objc_alloc(MEMORY[0x1E69DCF90]);
   v4 = [v3 initWithArrangedSubviews:MEMORY[0x1E695E0F0]];
   [v4 setAxis:0];
@@ -112,8 +112,8 @@
   [(UIStackView *)v17 setDistribution:0];
   [(UIStackView *)v17 setSpacing:8.0];
   v18 = MEMORY[0x1E69DCAB8];
-  v19 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-  v20 = [v18 systemImageNamed:@"text.document" withConfiguration:v19];
+  configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+  v20 = [v18 systemImageNamed:@"text.document" withConfiguration:configurationPreferringMulticolor];
   v21 = MEMORY[0x1E69DCAD8];
   v22 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v23 = [v21 configurationWithFont:v22 scale:-1];
@@ -137,8 +137,8 @@
   self->_titleLabel = v30;
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"UIA.Health.CDA.ReportTitle"];
-  v32 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_titleLabel setTextColor:v32];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
   v33 = [(HKCDADocumentTableViewCell *)self _createDocumentCellLabelWithTag:105 fontSizePts:0 flexibleHeight:14.0];
   v73[0] = v33;
@@ -174,8 +174,8 @@
         }
 
         v44 = *(*(&v68 + 1) + 8 * v43);
-        v45 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v44 setTextColor:v45];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [v44 setTextColor:secondaryLabelColor];
 
         [v29 addArrangedSubview:v44];
         ++v43;
@@ -193,25 +193,25 @@
   [v29 setContentHuggingPriority:0 forAxis:v46];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 addArrangedSubview:v64];
-  [v67 addSubview:v4];
-  v47 = [v4 leadingAnchor];
-  v48 = [v67 leadingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48 constant:16.0];
+  [contentView addSubview:v4];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v49 setActive:1];
 
-  v50 = [v4 trailingAnchor];
-  v51 = [v67 trailingAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51 constant:-12.0];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
   [v52 setActive:1];
 
-  v53 = [v4 topAnchor];
-  v54 = [v67 topAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54 constant:11.0];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v55 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:11.0];
   [v55 setActive:1];
 
-  v56 = [v4 bottomAnchor];
-  v57 = [v67 bottomAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57 constant:-11.0];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
   [v58 setActive:1];
 
   [(HKCDADocumentTableViewCell *)self setAccessoryType:1];
@@ -281,19 +281,19 @@
   }
 }
 
-- (id)_createDocumentCellLabelWithTag:(int64_t)a3 fontSizePts:(double)a4 flexibleHeight:(BOOL)a5
+- (id)_createDocumentCellLabelWithTag:(int64_t)tag fontSizePts:(double)pts flexibleHeight:(BOOL)height
 {
-  v5 = a5;
+  heightCopy = height;
   v8 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 0.0, 1.0, 1.0}];
-  [v8 setTag:a3];
+  [v8 setTag:tag];
   [v8 setNumberOfLines:1];
   LODWORD(v9) = 1055286886;
   [v8 _setHyphenationFactor:v9];
-  v10 = [MEMORY[0x1E69DB878] systemFontOfSize:a4];
+  v10 = [MEMORY[0x1E69DB878] systemFontOfSize:pts];
   [v8 setFont:v10];
 
   LODWORD(v11) = 1144750080;
-  if (v5)
+  if (heightCopy)
   {
     *&v11 = 250.0;
   }
@@ -303,17 +303,17 @@
   return v8;
 }
 
-- (void)_setDocumentLabelWithTag:(int64_t)a3 text:(id)a4 view:(id)a5
+- (void)_setDocumentLabelWithTag:(int64_t)tag text:(id)text view:(id)view
 {
-  v7 = a4;
-  v8 = [a5 viewWithTag:a3];
-  [v8 setText:v7];
+  textCopy = text;
+  v8 = [view viewWithTag:tag];
+  [v8 setText:textCopy];
 }
 
-- (void)_selectedCheckbox:(id)a3
+- (void)_selectedCheckbox:(id)checkbox
 {
   checkboxButton = self->_checkboxButton;
-  if (checkboxButton == a3)
+  if (checkboxButton == checkbox)
   {
     [(HKAdjustableTapTargetButton *)self->_checkboxButton setSelected:[(HKAdjustableTapTargetButton *)checkboxButton isSelected]^ 1];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -326,18 +326,18 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKCDADocumentTableViewCell;
-  [(HKCDADocumentTableViewCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKCDADocumentTableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKCDADocumentTableViewCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKCDADocumentTableViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

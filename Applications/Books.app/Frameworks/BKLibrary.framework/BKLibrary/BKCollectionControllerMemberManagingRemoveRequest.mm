@@ -1,11 +1,11 @@
 @interface BKCollectionControllerMemberManagingRemoveRequest
 - (BKCollectionControllerMemberManagingRemoveRequest)init;
-- (BKCollectionControllerMemberManagingRemoveRequest)initWithStoreID:(id)a3 collectionID:(id)a4;
+- (BKCollectionControllerMemberManagingRemoveRequest)initWithStoreID:(id)d collectionID:(id)iD;
 @end
 
 @implementation BKCollectionControllerMemberManagingRemoveRequest
 
-- (BKCollectionControllerMemberManagingRemoveRequest)initWithStoreID:(id)a3 collectionID:(id)a4
+- (BKCollectionControllerMemberManagingRemoveRequest)initWithStoreID:(id)d collectionID:(id)iD
 {
   ObjectType = swift_getObjectType();
   v6 = sub_9202C();

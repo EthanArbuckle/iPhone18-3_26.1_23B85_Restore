@@ -2,8 +2,8 @@
 - (void)_dismiss;
 - (void)_dismissViewService;
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation NearbyDevicesRemoteViewController
@@ -18,22 +18,22 @@
   [(NearbyDevicesRemoteViewController *)self dismissViewControllerAnimated:1 completion:v2];
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = ax_remote_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v6 userInfo];
+    userInfo = [contextCopy userInfo];
     v18 = 138412802;
     v19 = v10;
     v20 = 2112;
-    v21 = v6;
+    v21 = contextCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ - Did prepare for alert activation context: %@, userInfo: %@", &v18, 0x20u);
   }
 
@@ -41,59 +41,59 @@
   v13 = [[_NearbyDevicesNavigationController alloc] initWithRootViewController:v12];
   [(NearbyDevicesRemoteViewController *)self setNavigationController:v13];
 
-  v14 = [(NearbyDevicesRemoteViewController *)self navigationController];
-  [v14 setDismissObserver:self];
+  navigationController = [(NearbyDevicesRemoteViewController *)self navigationController];
+  [navigationController setDismissObserver:self];
 
-  v15 = [(NearbyDevicesRemoteViewController *)self navigationController];
-  [v15 setModalPresentationStyle:1];
+  navigationController2 = [(NearbyDevicesRemoteViewController *)self navigationController];
+  [navigationController2 setModalPresentationStyle:1];
 
   v16 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_dismissViewService"];
-  v17 = [v12 navigationItem];
-  [v17 setRightBarButtonItem:v16];
+  navigationItem = [v12 navigationItem];
+  [navigationItem setRightBarButtonItem:v16];
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = ax_remote_general_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v5 userInfo];
+    userInfo = [contextCopy userInfo];
     v11 = 138412802;
     v12 = v9;
     v13 = 2112;
-    v14 = v5;
+    v14 = contextCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = userInfo;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ - Did configure with alert configuration context : %@, userInfo : %@", &v11, 0x20u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(NearbyDevicesRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 setWallpaperTunnelActive:0];
-  [v2 setWallpaperStyle:0 withDuration:0.3];
+  _remoteViewControllerProxy = [(NearbyDevicesRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.3];
 }
 
 - (void)_dismiss
 {
-  v2 = [(NearbyDevicesRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 deactivate];
-  [v2 invalidate];
+  _remoteViewControllerProxy = [(NearbyDevicesRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy deactivate];
+  [_remoteViewControllerProxy invalidate];
   dispatch_async(&_dispatch_main_q, &stru_1000041A8);
 }
 

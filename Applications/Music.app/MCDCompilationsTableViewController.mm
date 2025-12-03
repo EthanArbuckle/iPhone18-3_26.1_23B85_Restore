@@ -1,18 +1,18 @@
 @interface MCDCompilationsTableViewController
-- (MCDCompilationsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (MCDCompilationsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (id)textForHeaderViewInContentManager:(id)manager;
 @end
 
 @implementation MCDCompilationsTableViewController
 
-- (MCDCompilationsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDCompilationsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDCompilationsTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -22,12 +22,12 @@
   return v8;
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDCompilationsTableViewController *)self traitCollection];
-  v5 = [v4 shouldLimitMusicLists];
+  traitCollection = [(MCDCompilationsTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v5)
+  if (shouldLimitMusicLists)
   {
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"RECENTLY_PLAYED_ALBUMS" value:&stru_101107168 table:@"MusicCarDisplayUI"];

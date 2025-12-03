@@ -1,10 +1,10 @@
 @interface CPSSharingResponse
-- (CPSSharingResponse)initWithCoder:(id)a3;
+- (CPSSharingResponse)initWithCoder:(id)coder;
 @end
 
 @implementation CPSSharingResponse
 
-- (CPSSharingResponse)initWithCoder:(id)a3
+- (CPSSharingResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CPSSharingResponse;

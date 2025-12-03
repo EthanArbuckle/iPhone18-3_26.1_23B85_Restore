@@ -1,8 +1,8 @@
 @interface STTestGroupSpecifierProvider
 - (STTestGroupSpecifierProvider)init;
 - (void)dealloc;
-- (void)setIsHidden:(BOOL)a3;
-- (void)timerFired:(id)a3;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation STTestGroupSpecifierProvider
@@ -29,14 +29,14 @@
   return v3;
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(STTestGroupSpecifierProvider *)self timer];
-  v6 = v5;
-  if (v3)
+  hiddenCopy = hidden;
+  timer = [(STTestGroupSpecifierProvider *)self timer];
+  v6 = timer;
+  if (hiddenCopy)
   {
-    [v5 invalidate];
+    [timer invalidate];
 
     [(STTestGroupSpecifierProvider *)self setTimer:0];
   }
@@ -61,7 +61,7 @@
     }
   }
 
-  self->_isHidden = v3;
+  self->_isHidden = hiddenCopy;
 }
 
 void __44__STTestGroupSpecifierProvider_setIsHidden___block_invoke(uint64_t a1, void *a2)
@@ -71,58 +71,58 @@ void __44__STTestGroupSpecifierProvider_setIsHidden___block_invoke(uint64_t a1, 
   [WeakRetained timerFired:v3];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v25 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-  if ([v25 count])
+  mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+  if ([mutableSpecifiers count])
   {
-    v4 = objc_opt_new();
-    v5 = [v25 count];
+    lastObject = objc_opt_new();
+    v5 = [mutableSpecifiers count];
     if (v5)
     {
       v6 = v5;
       v7 = v5 - 1;
-      [v4 addIndex:v5 - 1];
+      [lastObject addIndex:v5 - 1];
       if (v7)
       {
-        [v4 addIndex:v6 - 2];
+        [lastObject addIndex:v6 - 2];
       }
     }
 
-    [v25 removeObjectsAtIndexes:v4];
+    [mutableSpecifiers removeObjectsAtIndexes:lastObject];
   }
 
-  else if ([v25 count] < 5)
+  else if ([mutableSpecifiers count] < 5)
   {
-    v4 = objc_opt_new();
+    lastObject = objc_opt_new();
     v8 = MEMORY[0x277D3FAD8];
     v9 = MEMORY[0x277CCACA8];
     v10 = MEMORY[0x277CCABB0];
-    v11 = [(STGroupSpecifierProvider *)self specifiers];
-    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+    specifiers = [(STGroupSpecifierProvider *)self specifiers];
+    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(specifiers, "count")}];
     v13 = [v9 stringWithFormat:@"%@", v12];
     v14 = [v8 preferenceSpecifierNamed:v13 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
 
-    [v4 addObject:v14];
+    [lastObject addObject:v14];
     v15 = MEMORY[0x277D3FAD8];
     v16 = MEMORY[0x277CCACA8];
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(STGroupSpecifierProvider *)self specifiers];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "count") + 1}];
+    specifiers2 = [(STGroupSpecifierProvider *)self specifiers];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(specifiers2, "count") + 1}];
     v20 = [v16 stringWithFormat:@"%@", v19];
     v21 = [v15 preferenceSpecifierNamed:v20 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
 
-    [v4 addObject:v21];
+    [lastObject addObject:v21];
     v22 = MEMORY[0x277CCAA78];
-    v23 = [(STGroupSpecifierProvider *)self specifiers];
-    v24 = [v22 indexSetWithIndexesInRange:{objc_msgSend(v23, "count"), objc_msgSend(v4, "count")}];
-    [v25 insertObjects:v4 atIndexes:v24];
+    specifiers3 = [(STGroupSpecifierProvider *)self specifiers];
+    v24 = [v22 indexSetWithIndexesInRange:{objc_msgSend(specifiers3, "count"), objc_msgSend(lastObject, "count")}];
+    [mutableSpecifiers insertObjects:lastObject atIndexes:v24];
   }
 
   else
   {
-    v4 = [v25 lastObject];
-    [v25 removeObject:v4];
+    lastObject = [mutableSpecifiers lastObject];
+    [mutableSpecifiers removeObject:lastObject];
   }
 }
 

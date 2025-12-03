@@ -1,23 +1,23 @@
 @interface BLS1HzFlipbookAttribute
-+ (id)set1HzFlipbooForFBSSceneIdentityToken:(id)a3;
++ (id)set1HzFlipbooForFBSSceneIdentityToken:(id)token;
 + (id)set1HzFlipbook;
-+ (id)set1HzFlipbookForFBSScene:(id)a3;
++ (id)set1HzFlipbookForFBSScene:(id)scene;
 @end
 
 @implementation BLS1HzFlipbookAttribute
 
-+ (id)set1HzFlipbookForFBSScene:(id)a3
++ (id)set1HzFlipbookForFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBSScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBSScene:sceneCopy];
 
   return v5;
 }
 
-+ (id)set1HzFlipbooForFBSSceneIdentityToken:(id)a3
++ (id)set1HzFlipbooForFBSSceneIdentityToken:(id)token
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSceneIdentityToken:v4];
+  tokenCopy = token;
+  v5 = [[self alloc] initWithSceneIdentityToken:tokenCopy];
 
   return v5;
 }

@@ -6,7 +6,7 @@
 - (OSLogPosition)positionWithTimeIntervalSinceEnd:(NSTimeInterval)seconds;
 - (OSLogPosition)positionWithTimeIntervalSinceLatestBoot:(NSTimeInterval)seconds;
 - (OSLogStore)init;
-- (id)_constrainedEntriesEnumeratorWithOptions:(unint64_t)a3 position:(id)a4 predicate:(id)a5 error:(id *)a6;
+- (id)_constrainedEntriesEnumeratorWithOptions:(unint64_t)options position:(id)position predicate:(id)predicate error:(id *)error;
 - (id)initForFactory;
 @end
 
@@ -61,11 +61,11 @@
   return v12;
 }
 
-- (id)_constrainedEntriesEnumeratorWithOptions:(unint64_t)a3 position:(id)a4 predicate:(id)a5 error:(id *)a6
+- (id)_constrainedEntriesEnumeratorWithOptions:(unint64_t)options position:(id)position predicate:(id)predicate error:(id *)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[OSLogCurrentProcessEnumerator alloc] initWithOptions:a3 predicate:v8 position:v9];
+  predicateCopy = predicate;
+  positionCopy = position;
+  v10 = [[OSLogCurrentProcessEnumerator alloc] initWithOptions:options predicate:predicateCopy position:positionCopy];
 
   return v10;
 }
@@ -94,8 +94,8 @@
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v5 = url;
-  v6 = [[OSLogStore alloc] initForFactory];
-  if (v6)
+  initForFactory = [[OSLogStore alloc] initForFactory];
+  if (initForFactory)
   {
     v7 = [MEMORY[0x277D24438] storeWithArchiveURL:v5];
     if (v7)
@@ -105,7 +105,7 @@
       v13[2] = __33__OSLogStore_storeWithURL_error___block_invoke;
       v13[3] = &unk_278B462D0;
       v15 = error;
-      v8 = v6;
+      v8 = initForFactory;
       v14 = v8;
       [v7 prepareWithCompletionHandler:v13];
       if (v8[1])
@@ -183,19 +183,19 @@ void __33__OSLogStore_storeWithURL_error___block_invoke(uint64_t a1, void *a2, v
 {
   if (scope == OSLogStoreCurrentProcessIdentifier)
   {
-    v6 = [[OSLogStore alloc] initForFactory];
-    if (v6)
+    initForFactory = [[OSLogStore alloc] initForFactory];
+    if (initForFactory)
     {
-      v6[4] = 1;
+      initForFactory[4] = 1;
     }
   }
 
   else
   {
-    v6 = 0;
+    initForFactory = 0;
   }
 
-  return v6;
+  return initForFactory;
 }
 
 @end

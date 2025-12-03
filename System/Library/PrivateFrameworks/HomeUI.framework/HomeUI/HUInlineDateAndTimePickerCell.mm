@@ -1,30 +1,30 @@
 @interface HUInlineDateAndTimePickerCell
-- (HUInlineDateAndTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUInlineDateAndTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUInlineDateAndTimePickerCellDelegate)delegate;
 - (NSDateComponents)timeComponents;
 - (double)datePickerHeight;
-- (void)_valueChanged:(id)a3;
-- (void)setDateAndTimePickerDate:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHideTitleLabel:(BOOL)a3;
-- (void)setTimeComponents:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)toggleTimePickerOptionVisibility:(BOOL)a3;
+- (void)_valueChanged:(id)changed;
+- (void)setDateAndTimePickerDate:(id)date;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHideTitleLabel:(BOOL)label;
+- (void)setTimeComponents:(id)components;
+- (void)setTitle:(id)title;
+- (void)toggleTimePickerOptionVisibility:(BOOL)visibility;
 - (void)updateConstraints;
 @end
 
 @implementation HUInlineDateAndTimePickerCell
 
-- (HUInlineDateAndTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUInlineDateAndTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = HUInlineDateAndTimePickerCell;
-  v4 = [(HUInlineDateAndTimePickerCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUInlineDateAndTimePickerCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HUInlineDateAndTimePickerCell *)v4 textLabel];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textLabel = [(HUInlineDateAndTimePickerCell *)v4 textLabel];
+    [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = objc_alloc_init(MEMORY[0x277D753E8]);
     datePicker = v5->_datePicker;
@@ -34,9 +34,9 @@
     [(UIDatePicker *)v5->_datePicker setDatePickerMode:2];
     [(UIDatePicker *)v5->_datePicker setPreferredDatePickerStyle:3];
     [(UIDatePicker *)v5->_datePicker addTarget:v5 action:sel__valueChanged_ forControlEvents:4096];
-    v9 = [(HUInlineDateAndTimePickerCell *)v5 contentView];
-    v10 = [(HUInlineDateAndTimePickerCell *)v5 datePicker];
-    [v9 addSubview:v10];
+    contentView = [(HUInlineDateAndTimePickerCell *)v5 contentView];
+    datePicker = [(HUInlineDateAndTimePickerCell *)v5 datePicker];
+    [contentView addSubview:datePicker];
   }
 
   return v5;
@@ -44,79 +44,79 @@
 
 - (void)updateConstraints
 {
-  v3 = [(HUInlineDateAndTimePickerCell *)self allConstraints];
+  allConstraints = [(HUInlineDateAndTimePickerCell *)self allConstraints];
 
-  if (!v3)
+  if (!allConstraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(HUInlineDateAndTimePickerCell *)self hideTitleLabel])
     {
-      v5 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-      v6 = [v5 leadingAnchor];
-      v7 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v8 = [v7 leadingAnchor];
+      datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+      leadingAnchor = [datePicker leadingAnchor];
+      contentView = [(HUInlineDateAndTimePickerCell *)self contentView];
+      leadingAnchor2 = [contentView leadingAnchor];
       [(HUInlineDateAndTimePickerCell *)self leftMargin];
-      v9 = [v6 constraintEqualToAnchor:v8 constant:?];
-      [v4 addObject:v9];
+      v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
+      [array addObject:v9];
 
-      v10 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-      v11 = [v10 trailingAnchor];
-      v12 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v13 = [v12 trailingAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13];
-      [v4 addObject:v14];
+      datePicker2 = [(HUInlineDateAndTimePickerCell *)self datePicker];
+      trailingAnchor = [datePicker2 trailingAnchor];
+      contentView2 = [(HUInlineDateAndTimePickerCell *)self contentView];
+      trailingAnchor2 = [contentView2 trailingAnchor];
+      v13TrailingAnchor = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      [array addObject:v13TrailingAnchor];
     }
 
     else
     {
-      v15 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-      v16 = [v15 topAnchor];
-      v17 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v18 = [v17 readableContentGuide];
-      v19 = [v18 topAnchor];
-      v20 = [v16 constraintEqualToAnchor:v19];
-      [v4 addObject:v20];
+      textLabel = [(HUInlineDateAndTimePickerCell *)self textLabel];
+      topAnchor = [textLabel topAnchor];
+      contentView3 = [(HUInlineDateAndTimePickerCell *)self contentView];
+      readableContentGuide = [contentView3 readableContentGuide];
+      topAnchor2 = [readableContentGuide topAnchor];
+      v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
+      [array addObject:v20];
 
-      v21 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-      v22 = [v21 bottomAnchor];
-      v23 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v24 = [v23 readableContentGuide];
-      v25 = [v24 bottomAnchor];
-      v26 = [v22 constraintEqualToAnchor:v25];
-      [v4 addObject:v26];
+      textLabel2 = [(HUInlineDateAndTimePickerCell *)self textLabel];
+      bottomAnchor = [textLabel2 bottomAnchor];
+      contentView4 = [(HUInlineDateAndTimePickerCell *)self contentView];
+      readableContentGuide2 = [contentView4 readableContentGuide];
+      bottomAnchor2 = [readableContentGuide2 bottomAnchor];
+      v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      [array addObject:v26];
 
-      v27 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-      v28 = [v27 leadingAnchor];
-      v29 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v30 = [v29 readableContentGuide];
-      v31 = [v30 leadingAnchor];
+      textLabel3 = [(HUInlineDateAndTimePickerCell *)self textLabel];
+      leadingAnchor3 = [textLabel3 leadingAnchor];
+      contentView5 = [(HUInlineDateAndTimePickerCell *)self contentView];
+      readableContentGuide3 = [contentView5 readableContentGuide];
+      leadingAnchor4 = [readableContentGuide3 leadingAnchor];
       [(HUInlineDateAndTimePickerCell *)self leftMargin];
-      v32 = [v28 constraintEqualToAnchor:v31 constant:?];
-      [v4 addObject:v32];
+      v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
+      [array addObject:v32];
 
-      v33 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-      v34 = [v33 leadingAnchor];
-      v35 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-      v36 = [v35 trailingAnchor];
-      v37 = [v34 constraintEqualToAnchor:v36];
-      [v4 addObject:v37];
+      datePicker3 = [(HUInlineDateAndTimePickerCell *)self datePicker];
+      leadingAnchor5 = [datePicker3 leadingAnchor];
+      textLabel4 = [(HUInlineDateAndTimePickerCell *)self textLabel];
+      trailingAnchor3 = [textLabel4 trailingAnchor];
+      v37 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3];
+      [array addObject:v37];
 
-      v10 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-      v11 = [v10 trailingAnchor];
-      v12 = [(HUInlineDateAndTimePickerCell *)self contentView];
-      v13 = [v12 readableContentGuide];
-      v14 = [v13 trailingAnchor];
-      v38 = [v11 constraintEqualToAnchor:v14];
-      [v4 addObject:v38];
+      datePicker2 = [(HUInlineDateAndTimePickerCell *)self datePicker];
+      trailingAnchor = [datePicker2 trailingAnchor];
+      contentView2 = [(HUInlineDateAndTimePickerCell *)self contentView];
+      trailingAnchor2 = [contentView2 readableContentGuide];
+      v13TrailingAnchor = [trailingAnchor2 trailingAnchor];
+      v38 = [trailingAnchor constraintEqualToAnchor:v13TrailingAnchor];
+      [array addObject:v38];
     }
 
-    v39 = [(HUInlineDateAndTimePickerCell *)self contentView];
-    v40 = [v39 heightAnchor];
-    v41 = [v40 constraintGreaterThanOrEqualToConstant:216.0];
+    contentView6 = [(HUInlineDateAndTimePickerCell *)self contentView];
+    heightAnchor = [contentView6 heightAnchor];
+    v41 = [heightAnchor constraintGreaterThanOrEqualToConstant:216.0];
 
-    [v4 addObject:v41];
-    [MEMORY[0x277CCAAD0] activateConstraints:v4];
-    [(HUInlineDateAndTimePickerCell *)self setAllConstraints:v4];
+    [array addObject:v41];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
+    [(HUInlineDateAndTimePickerCell *)self setAllConstraints:array];
   }
 
   v42.receiver = self;
@@ -124,9 +124,9 @@
   [(HUInlineDateAndTimePickerCell *)&v42 updateConstraints];
 }
 
-- (void)toggleTimePickerOptionVisibility:(BOOL)a3
+- (void)toggleTimePickerOptionVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
     v3 = 2;
   }
@@ -136,89 +136,89 @@
     v3 = 1;
   }
 
-  v4 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  [v4 setDatePickerMode:v3];
+  datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  [datePicker setDatePickerMode:v3];
 }
 
 - (double)datePickerHeight
 {
-  v2 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  [v2 frame];
+  datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  [datePicker frame];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDateAndTimePickerDate:(id)a3
+- (void)setDateAndTimePickerDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = a3;
-    v5 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-    [v5 setDate:v4];
+    dateCopy = date;
+    datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+    [datePicker setDate:dateCopy];
   }
 }
 
 - (NSDateComponents)timeComponents
 {
-  v3 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  v4 = [v3 calendar];
-  v5 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  v6 = [v5 date];
-  v7 = [v4 components:96 fromDate:v6];
+  datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  calendar = [datePicker calendar];
+  datePicker2 = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  date = [datePicker2 date];
+  v7 = [calendar components:96 fromDate:date];
 
   return v7;
 }
 
-- (void)setTimeComponents:(id)a3
+- (void)setTimeComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  v6 = [v5 calendar];
-  v8 = [v6 dateFromComponents:v4];
+  componentsCopy = components;
+  datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  calendar = [datePicker calendar];
+  v8 = [calendar dateFromComponents:componentsCopy];
 
   if (v8)
   {
-    v7 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-    [v7 setDate:v8];
+    datePicker2 = [(HUInlineDateAndTimePickerCell *)self datePicker];
+    [datePicker2 setDate:v8];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  v6 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  textLabel = [(HUInlineDateAndTimePickerCell *)self textLabel];
+  [textLabel setText:titleCopy];
 }
 
-- (void)setHideTitleLabel:(BOOL)a3
+- (void)setHideTitleLabel:(BOOL)label
 {
-  if (self->_hideTitleLabel != a3)
+  if (self->_hideTitleLabel != label)
   {
-    self->_hideTitleLabel = a3;
+    self->_hideTitleLabel = label;
     [(HUInlineDateAndTimePickerCell *)self setAllConstraints:0];
 
     [(HUInlineDateAndTimePickerCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)_valueChanged:(id)a3
+- (void)_valueChanged:(id)changed
 {
-  v6 = [(HUInlineDateAndTimePickerCell *)self delegate];
-  v4 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-  v5 = [v4 date];
-  [v6 dateAndTimePickerCell:self didSelectDate:v5];
+  delegate = [(HUInlineDateAndTimePickerCell *)self delegate];
+  datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+  date = [datePicker date];
+  [delegate dateAndTimePickerCell:self didSelectDate:date];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
-    v5 = !a3;
-    v6 = [(HUInlineDateAndTimePickerCell *)self datePicker];
-    [v6 setUserInteractionEnabled:v5];
+    self->_disabled = disabled;
+    v5 = !disabled;
+    datePicker = [(HUInlineDateAndTimePickerCell *)self datePicker];
+    [datePicker setUserInteractionEnabled:v5];
 
     if (v5)
     {
@@ -230,8 +230,8 @@
       [MEMORY[0x277D75348] systemGrayColor];
     }
     v8 = ;
-    v7 = [(HUInlineDateAndTimePickerCell *)self textLabel];
-    [v7 setTextColor:v8];
+    textLabel = [(HUInlineDateAndTimePickerCell *)self textLabel];
+    [textLabel setTextColor:v8];
   }
 }
 

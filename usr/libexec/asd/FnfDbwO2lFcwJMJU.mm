@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000F56C;
   block[3] = &unk_10068EEE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006D7CC8 != -1)
   {
     dispatch_once(&qword_1006D7CC8, block);
@@ -50,28 +50,28 @@
 
 - (void)OiM1BBSmKozL6ooU
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  QSDcma8s0bThnyOF = v2->QSDcma8s0bThnyOF;
-  v2->QSDcma8s0bThnyOF = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  QSDcma8s0bThnyOF = selfCopy->QSDcma8s0bThnyOF;
+  selfCopy->QSDcma8s0bThnyOF = 0;
 
-  VeKeMRBxEIiHlARL = v2->VeKeMRBxEIiHlARL;
+  VeKeMRBxEIiHlARL = selfCopy->VeKeMRBxEIiHlARL;
   v11 = 0;
   v5 = [(CoreTelephonyClient *)VeKeMRBxEIiHlARL getActiveContexts:&v11];
   v6 = v11;
   if (!v6)
   {
-    v7 = [v5 voicePreferred];
-    if (v7)
+    voicePreferred = [v5 voicePreferred];
+    if (voicePreferred)
     {
-      v8 = [v5 findForUuid:v7];
-      v9 = [v8 phoneNumber];
-      v10 = v2->QSDcma8s0bThnyOF;
-      v2->QSDcma8s0bThnyOF = v9;
+      v8 = [v5 findForUuid:voicePreferred];
+      phoneNumber = [v8 phoneNumber];
+      v10 = selfCopy->QSDcma8s0bThnyOF;
+      selfCopy->QSDcma8s0bThnyOF = phoneNumber;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

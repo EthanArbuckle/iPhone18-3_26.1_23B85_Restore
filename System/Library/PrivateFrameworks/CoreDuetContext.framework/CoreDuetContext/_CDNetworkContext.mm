@@ -1,20 +1,20 @@
 @interface _CDNetworkContext
-+ (BOOL)cellInterfaceUp:(id)a3;
-+ (BOOL)inexpensiveNetworkingAvailable:(id)a3;
-+ (BOOL)networkingAvailable:(id)a3;
++ (BOOL)cellInterfaceUp:(id)up;
++ (BOOL)inexpensiveNetworkingAvailable:(id)available;
++ (BOOL)networkingAvailable:(id)available;
 + (id)keyPathForCellConnectionStatus;
 + (id)keyPathForWiFiConnectionStatus;
 + (id)keyPathForWiredConnectionStatus;
-+ (int64_t)cellDownloadCost:(id)a3;
-+ (int64_t)cellInterfaceClass:(id)a3;
-+ (int64_t)cellQuality:(id)a3;
-+ (int64_t)cellUploadCost:(id)a3;
-+ (int64_t)interfaceClassForPath:(id)a3 inContext:(id)a4;
-+ (int64_t)qualityForPath:(id)a3 inContext:(id)a4;
-+ (int64_t)wifiInterfaceClass:(id)a3;
-+ (int64_t)wifiQuality:(id)a3;
-+ (int64_t)wiredInterfaceClass:(id)a3;
-+ (int64_t)wiredQuality:(id)a3;
++ (int64_t)cellDownloadCost:(id)cost;
++ (int64_t)cellInterfaceClass:(id)class;
++ (int64_t)cellQuality:(id)quality;
++ (int64_t)cellUploadCost:(id)cost;
++ (int64_t)interfaceClassForPath:(id)path inContext:(id)context;
++ (int64_t)qualityForPath:(id)path inContext:(id)context;
++ (int64_t)wifiInterfaceClass:(id)class;
++ (int64_t)wifiQuality:(id)quality;
++ (int64_t)wiredInterfaceClass:(id)class;
++ (int64_t)wiredQuality:(id)quality;
 @end
 
 @implementation _CDNetworkContext
@@ -55,145 +55,145 @@
   return v3;
 }
 
-+ (int64_t)qualityForPath:(id)a3 inContext:(id)a4
++ (int64_t)qualityForPath:(id)path inContext:(id)context
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [context objectForKeyedSubscript:path];
   v5 = +[_CDNetworkContext connectionQualityKey];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-+ (int64_t)wiredQuality:(id)a3
++ (int64_t)wiredQuality:(id)quality
 {
-  v3 = a3;
+  qualityCopy = quality;
   v4 = +[_CDNetworkContext keyPathForWiredConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [qualityCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext connectionQualityKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-+ (int64_t)wifiQuality:(id)a3
++ (int64_t)wifiQuality:(id)quality
 {
-  v3 = a3;
+  qualityCopy = quality;
   v4 = +[_CDNetworkContext keyPathForWiFiConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [qualityCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext connectionQualityKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-+ (int64_t)cellQuality:(id)a3
++ (int64_t)cellQuality:(id)quality
 {
-  v3 = a3;
+  qualityCopy = quality;
   v4 = +[_CDNetworkContext keyPathForCellConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [qualityCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext connectionQualityKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-+ (int64_t)interfaceClassForPath:(id)a3 inContext:(id)a4
++ (int64_t)interfaceClassForPath:(id)path inContext:(id)context
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [context objectForKeyedSubscript:path];
   v5 = +[_CDNetworkContext interfaceClassKey];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-+ (int64_t)wiredInterfaceClass:(id)a3
++ (int64_t)wiredInterfaceClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[_CDNetworkContext keyPathForWiredConnectionStatus];
-  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:v3];
+  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:classCopy];
 
   return v5;
 }
 
-+ (int64_t)wifiInterfaceClass:(id)a3
++ (int64_t)wifiInterfaceClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[_CDNetworkContext keyPathForWiFiConnectionStatus];
-  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:v3];
+  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:classCopy];
 
   return v5;
 }
 
-+ (int64_t)cellInterfaceClass:(id)a3
++ (int64_t)cellInterfaceClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[_CDNetworkContext keyPathForCellConnectionStatus];
-  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:v3];
+  v5 = [_CDNetworkContext interfaceClassForPath:v4 inContext:classCopy];
 
   return v5;
 }
 
-+ (BOOL)inexpensiveNetworkingAvailable:(id)a3
++ (BOOL)inexpensiveNetworkingAvailable:(id)available
 {
-  v3 = a3;
-  v4 = [_CDNetworkContext wifiQuality:v3]> 0 || [_CDNetworkContext wiredQuality:v3]> 0;
+  availableCopy = available;
+  v4 = [_CDNetworkContext wifiQuality:availableCopy]> 0 || [_CDNetworkContext wiredQuality:availableCopy]> 0;
 
   return v4;
 }
 
-+ (BOOL)networkingAvailable:(id)a3
++ (BOOL)networkingAvailable:(id)available
 {
-  v3 = a3;
-  v4 = [_CDNetworkContext inexpensiveNetworkingAvailable:v3]|| [_CDNetworkContext cellQuality:v3]> 0;
+  availableCopy = available;
+  v4 = [_CDNetworkContext inexpensiveNetworkingAvailable:availableCopy]|| [_CDNetworkContext cellQuality:availableCopy]> 0;
 
   return v4;
 }
 
-+ (BOOL)cellInterfaceUp:(id)a3
++ (BOOL)cellInterfaceUp:(id)up
 {
-  v3 = a3;
+  upCopy = up;
   v4 = +[_CDNetworkContext keyPathForCellConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [upCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext interfaceUpKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (int64_t)cellDownloadCost:(id)a3
++ (int64_t)cellDownloadCost:(id)cost
 {
-  v3 = a3;
+  costCopy = cost;
   v4 = +[_CDNetworkContext keyPathForCellConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [costCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext downloadPowerCostKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-+ (int64_t)cellUploadCost:(id)a3
++ (int64_t)cellUploadCost:(id)cost
 {
-  v3 = a3;
+  costCopy = cost;
   v4 = +[_CDNetworkContext keyPathForCellConnectionStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [costCopy objectForKeyedSubscript:v4];
 
   v6 = +[_CDNetworkContext uploadPowerCostKey];
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 @end

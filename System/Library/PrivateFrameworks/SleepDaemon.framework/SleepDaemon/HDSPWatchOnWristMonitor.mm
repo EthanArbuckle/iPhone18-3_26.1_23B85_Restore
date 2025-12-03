@@ -1,38 +1,38 @@
 @interface HDSPWatchOnWristMonitor
 - (BOOL)isOnWrist;
-- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)a3;
-- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)a3 callbackScheduler:(id)a4;
+- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)defaults;
+- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)defaults callbackScheduler:(id)scheduler;
 - (NSDate)lastOnWristDate;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change;
 @end
 
 @implementation HDSPWatchOnWristMonitor
 
-- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)a3
+- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)defaults
 {
   v4 = MEMORY[0x277D2C938];
-  v5 = a3;
-  v6 = [v4 hkspMainThreadScheduler];
-  v7 = [(HDSPWatchOnWristMonitor *)self initWithUserDefaults:v5 callbackScheduler:v6];
+  defaultsCopy = defaults;
+  hkspMainThreadScheduler = [v4 hkspMainThreadScheduler];
+  v7 = [(HDSPWatchOnWristMonitor *)self initWithUserDefaults:defaultsCopy callbackScheduler:hkspMainThreadScheduler];
 
   return v7;
 }
 
-- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)a3 callbackScheduler:(id)a4
+- (HDSPWatchOnWristMonitor)initWithUserDefaults:(id)defaults callbackScheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  schedulerCopy = scheduler;
   v17.receiver = self;
   v17.super_class = HDSPWatchOnWristMonitor;
   v9 = [(HDSPWatchOnWristMonitor *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userDefaults, a3);
-    v11 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:v8];
+    objc_storeStrong(&v9->_userDefaults, defaults);
+    v11 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:schedulerCopy];
     observers = v10->_observers;
     v10->_observers = v11;
 
@@ -47,29 +47,29 @@
   return v10;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v4 = 0;
-  [(HKSPObserverSet *)self->_observers addObserver:a3 wasFirst:&v4];
+  [(HKSPObserverSet *)self->_observers addObserver:observer wasFirst:&v4];
   if (v4 == 1)
   {
     [(HKWristDetectionSettingManager *)self->_wristDetectionSettingsManager registerObserver:self];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v4 = 0;
-  [(HKSPObserverSet *)self->_observers removeObserver:a3 wasLast:&v4];
+  [(HKSPObserverSet *)self->_observers removeObserver:observer wasLast:&v4];
   if (v4 == 1)
   {
     [(HKWristDetectionSettingManager *)self->_wristDetectionSettingsManager unregisterObserver:self];
@@ -132,7 +132,7 @@ uint64_t __42__HDSPWatchOnWristMonitor_lastOnWristDate__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)a3
+- (void)wristDetectionSettingManagerDidObserveWristDetectChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();

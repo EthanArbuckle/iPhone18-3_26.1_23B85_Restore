@@ -1,30 +1,30 @@
 @interface RedeemCodesOperation
 - (BOOL)_canPerformExtendedBiometricActions;
-- (BOOL)_didUserCancelWithError:(id)a3;
-- (BOOL)_fetchRedeemCodeMetadataWithError:(id *)a3;
-- (BOOL)_processDictionary:(id)a3 dialog:(id *)a4 error:(id *)a5;
+- (BOOL)_didUserCancelWithError:(id)error;
+- (BOOL)_fetchRedeemCodeMetadataWithError:(id *)error;
+- (BOOL)_processDictionary:(id)dictionary dialog:(id *)dialog error:(id *)error;
 - (BOOL)_useLegacyRedeem;
 - (NSString)userAgent;
-- (RedeemCodesOperation)initWithRedeemCodes:(id)a3;
+- (RedeemCodesOperation)initWithRedeemCodes:(id)codes;
 - (SSAuthenticationContext)authenticationContext;
 - (SSRedeemCodesResponse)redeemResponse;
-- (id)_authenticateAppleAccount:(id)a3 withTitle:(id)a4 error:(id *)a5;
-- (id)_installedExternalVersionForRedeemCodeMetadata:(id)a3;
-- (id)_newURLRequestPropertiesForCode:(id)a3;
-- (id)_newURLRequestPropertiesForServiceActionButton:(id)a3;
-- (void)_postNotificationWithResponse:(id)a3;
+- (id)_authenticateAppleAccount:(id)account withTitle:(id)title error:(id *)error;
+- (id)_installedExternalVersionForRedeemCodeMetadata:(id)metadata;
+- (id)_newURLRequestPropertiesForCode:(id)code;
+- (id)_newURLRequestPropertiesForServiceActionButton:(id)button;
+- (void)_postNotificationWithResponse:(id)response;
 - (void)_runHeadless;
 - (void)_runNonHeadless;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation RedeemCodesOperation
 
-- (RedeemCodesOperation)initWithRedeemCodes:(id)a3
+- (RedeemCodesOperation)initWithRedeemCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   v13.receiver = self;
   v13.super_class = RedeemCodesOperation;
   v5 = [(RedeemCodesOperation *)&v13 init];
@@ -34,7 +34,7 @@
     biometricStore = v5->_biometricStore;
     v5->_biometricStore = v6;
 
-    v8 = [v4 copy];
+    v8 = [codesCopy copy];
     redeemCodes = v5->_redeemCodes;
     v5->_redeemCodes = v8;
 
@@ -65,13 +65,13 @@
   return v3;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   [(RedeemCodesOperation *)self lock];
-  if (self->_authenticationContext != v6)
+  if (self->_authenticationContext != contextCopy)
   {
-    v4 = [(SSAuthenticationContext *)v6 copy];
+    v4 = [(SSAuthenticationContext *)contextCopy copy];
     authenticationContext = self->_authenticationContext;
     self->_authenticationContext = v4;
   }
@@ -79,13 +79,13 @@
   [(RedeemCodesOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v6 = a3;
+  agentCopy = agent;
   [(RedeemCodesOperation *)self lock];
-  if (self->_userAgent != v6)
+  if (self->_userAgent != agentCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)agentCopy copy];
     userAgent = self->_userAgent;
     self->_userAgent = v4;
   }
@@ -115,34 +115,34 @@
   }
 }
 
-- (id)_authenticateAppleAccount:(id)a3 withTitle:(id)a4 error:(id *)a5
+- (id)_authenticateAppleAccount:(id)account withTitle:(id)title error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 aa_altDSID];
-  v10 = [v8 aa_personID];
-  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v10 longLongValue]);
+  titleCopy = title;
+  accountCopy = account;
+  aa_altDSID = [accountCopy aa_altDSID];
+  aa_personID = [accountCopy aa_personID];
+  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [aa_personID longLongValue]);
 
-  v12 = [v8 username];
+  username = [accountCopy username];
 
   v13 = +[SSAccountStore defaultStore];
-  v14 = [v13 accountWithAltDSID:v9 uniqueIdentifier:v11 accountName:v12];
+  v14 = [v13 accountWithAltDSID:aa_altDSID uniqueIdentifier:v11 accountName:username];
 
   if (!v14)
   {
     v14 = objc_alloc_init(SSAccount);
-    [v14 setAccountName:v12];
-    [v14 setAltDSID:v9];
+    [v14 setAccountName:username];
+    [v14 setAltDSID:aa_altDSID];
     [v14 setUniqueIdentifier:v11];
   }
 
-  v65 = v12;
+  v65 = username;
   v66 = v11;
-  v68 = v9;
+  v68 = aa_altDSID;
   v15 = [[SSMutableAuthenticationContext alloc] initWithAccount:v14];
   [v15 setCanSetActiveAccount:0];
   [v15 setPromptStyle:1];
-  [v15 setPromptTitle:v7];
+  [v15 setPromptTitle:titleCopy];
 
   [v15 setValue:@"1" forHTTPHeaderField:SSHTTPHeaderXAppleAllowLiteAccountConversion];
   v16 = +[SSLogConfig sharedDaemonConfig];
@@ -151,19 +151,19 @@
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
+  shouldLog = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog;
   }
 
-  v19 = [v16 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v20 = v18;
   }
@@ -182,13 +182,13 @@
   v22 = v21;
   [(RedeemCodesOperation *)self logCorrelationKey];
   v24 = v23 = self;
-  v25 = [v14 hashedDescription];
+  hashedDescription = [v14 hashedDescription];
   v69 = 138543874;
   v70 = v21;
   v71 = 2114;
   v72 = v24;
   v73 = 2114;
-  v74 = v25;
+  v74 = hashedDescription;
   LODWORD(v61) = 32;
   v60 = &v69;
   v26 = _os_log_send_and_compose_impl();
@@ -196,33 +196,33 @@
   self = v23;
   if (v26)
   {
-    v19 = [NSString stringWithCString:v26 encoding:4, &v69, v61];
+    oSLogObject = [NSString stringWithCString:v26 encoding:4, &v69, v61];
     free(v26);
-    v60 = v19;
+    v60 = oSLogObject;
     SSFileLog();
 LABEL_14:
   }
 
   v27 = objc_alloc_init(SSPromise);
   v28 = [[SSAuthenticateRequest alloc] initWithAuthenticationContext:v15];
-  v29 = [v27 completionHandlerAdapter];
-  [v28 startWithAuthenticateResponseBlock:v29];
+  completionHandlerAdapter = [v27 completionHandlerAdapter];
+  [v28 startWithAuthenticateResponseBlock:completionHandlerAdapter];
 
   v64 = [v27 resultWithError:0];
-  v30 = [v64 error];
-  v31 = [v30 domain];
-  if ([v31 isEqualToString:SSErrorDomain] && objc_msgSend(v30, "code") == 140)
+  error = [v64 error];
+  domain = [error domain];
+  if ([domain isEqualToString:SSErrorDomain] && objc_msgSend(error, "code") == 140)
   {
 
     goto LABEL_20;
   }
 
-  v32 = [v30 domain];
-  if ([v32 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  domain2 = [error domain];
+  if ([domain2 isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
-    v33 = [v30 code];
+    code = [error code];
 
-    if (v33 == -7003)
+    if (code == -7003)
     {
 LABEL_20:
       v34 = +[SSLogConfig sharedDaemonConfig];
@@ -231,19 +231,19 @@ LABEL_20:
         v34 = +[SSLogConfig sharedConfig];
       }
 
-      v35 = [v34 shouldLog];
+      shouldLog2 = [v34 shouldLog];
       if ([v34 shouldLogToDisk])
       {
-        v36 = v35 | 2;
+        v36 = shouldLog2 | 2;
       }
 
       else
       {
-        v36 = v35;
+        v36 = shouldLog2;
       }
 
-      v37 = [v34 OSLogObject];
-      if (!os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v34 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v36 &= 2u;
       }
@@ -256,7 +256,7 @@ LABEL_20:
         v41 = v27;
         v42 = objc_opt_class();
         v62 = v42;
-        v43 = [(RedeemCodesOperation *)self logCorrelationKey];
+        logCorrelationKey = [(RedeemCodesOperation *)self logCorrelationKey];
         v69 = 138543874;
         v70 = v42;
         v27 = v41;
@@ -264,9 +264,9 @@ LABEL_20:
         v28 = v39;
         v15 = v38;
         v71 = 2114;
-        v72 = v43;
+        v72 = logCorrelationKey;
         v73 = 2114;
-        v74 = v30;
+        v74 = error;
         LODWORD(v61) = 32;
         v60 = &v69;
         v44 = _os_log_send_and_compose_impl();
@@ -276,14 +276,14 @@ LABEL_20:
 LABEL_44:
 
           SSError();
-          v30 = v45 = v30;
+          error = v45 = error;
           v55 = v65;
           goto LABEL_48;
         }
 
-        v37 = [NSString stringWithCString:v44 encoding:4, &v69, v61];
+        oSLogObject2 = [NSString stringWithCString:v44 encoding:4, &v69, v61];
         free(v44);
-        v60 = v37;
+        v60 = oSLogObject2;
         SSFileLog();
       }
 
@@ -295,7 +295,7 @@ LABEL_44:
   {
   }
 
-  if (!v30)
+  if (!error)
   {
     v55 = v65;
     v56 = v66;
@@ -308,19 +308,19 @@ LABEL_44:
     v45 = +[SSLogConfig sharedConfig];
   }
 
-  v46 = [v45 shouldLog];
+  shouldLog3 = [v45 shouldLog];
   if ([v45 shouldLogToDisk])
   {
-    v47 = v46 | 2;
+    v47 = shouldLog3 | 2;
   }
 
   else
   {
-    v47 = v46;
+    v47 = shouldLog3;
   }
 
-  v48 = [v45 OSLogObject];
-  if (!os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [v45 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v47 &= 2u;
   }
@@ -330,15 +330,15 @@ LABEL_44:
     v63 = v27;
     v49 = objc_opt_class();
     v50 = v49;
-    v51 = self;
+    selfCopy = self;
     v52 = v50;
-    v53 = [(RedeemCodesOperation *)v51 logCorrelationKey];
+    logCorrelationKey2 = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
     v69 = 138543874;
     v70 = v49;
     v71 = 2114;
-    v72 = v53;
+    v72 = logCorrelationKey2;
     v73 = 2114;
-    v74 = v30;
+    v74 = error;
     LODWORD(v61) = 32;
     v60 = &v69;
     v54 = _os_log_send_and_compose_impl();
@@ -350,9 +350,9 @@ LABEL_44:
       goto LABEL_48;
     }
 
-    v48 = [NSString stringWithCString:v54 encoding:4, &v69, v61];
+    oSLogObject3 = [NSString stringWithCString:v54 encoding:4, &v69, v61];
     free(v54);
-    v60 = v48;
+    v60 = oSLogObject3;
     SSFileLog();
     v55 = v65;
     v27 = v63;
@@ -366,15 +366,15 @@ LABEL_44:
 LABEL_48:
   v56 = v66;
 LABEL_49:
-  if (a5)
+  if (error)
   {
-    v57 = v30;
-    *a5 = v30;
+    v57 = error;
+    *error = error;
   }
 
-  v58 = [v64 authenticatedAccount];
+  authenticatedAccount = [v64 authenticatedAccount];
 
-  return v58;
+  return authenticatedAccount;
 }
 
 - (void)_runHeadless
@@ -382,15 +382,15 @@ LABEL_49:
   v65 = objc_alloc_init(NSMutableDictionary);
   v64 = objc_alloc_init(NSMutableDictionary);
   v73 = objc_alloc_init(NSMutableDictionary);
-  v3 = [(RedeemCodesOperation *)self userAgent];
-  v67 = self;
-  v4 = [(RedeemCodesOperation *)self authenticationContext];
-  v5 = [v4 mutableCopy];
+  userAgent = [(RedeemCodesOperation *)self userAgent];
+  selfCopy = self;
+  authenticationContext = [(RedeemCodesOperation *)self authenticationContext];
+  v5 = [authenticationContext mutableCopy];
 
   v71 = v5;
-  v72 = v3;
+  v72 = userAgent;
   v70 = SSHTTPHeaderUserAgent;
-  [v5 setValue:v3 forHTTPHeaderField:?];
+  [v5 setValue:userAgent forHTTPHeaderField:?];
   v6 = &CFDictionaryGetValue_ptr;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
@@ -398,19 +398,19 @@ LABEL_49:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 &= 2u;
   }
@@ -422,12 +422,12 @@ LABEL_49:
 
   v11 = objc_opt_class();
   v12 = v11;
-  v13 = [(RedeemCodesOperation *)v67 logCorrelationKey];
-  v14 = [(NSArray *)v67->_redeemCodes count];
+  logCorrelationKey = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
+  v14 = [(NSArray *)selfCopy->_redeemCodes count];
   v80 = 138543874;
   v81 = v11;
   v82 = 2114;
-  v83 = v13;
+  v83 = logCorrelationKey;
   v84 = 2048;
   v85 = v14;
   LODWORD(v60) = 32;
@@ -436,9 +436,9 @@ LABEL_49:
 
   if (v15)
   {
-    v10 = [NSString stringWithCString:v15 encoding:4, &v80, v60];
+    oSLogObject = [NSString stringWithCString:v15 encoding:4, &v80, v60];
     free(v15);
-    v59 = v10;
+    v59 = oSLogObject;
     SSFileLog();
 LABEL_11:
   }
@@ -447,8 +447,8 @@ LABEL_11:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v16 = v67;
-  obj = v67->_redeemCodes;
+  v16 = selfCopy;
+  obj = selfCopy->_redeemCodes;
   v17 = v65;
   v69 = [(NSArray *)obj countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (!v69)
@@ -486,13 +486,13 @@ LABEL_11:
       v23 = v75;
       if (v21)
       {
-        v24 = [v20 dataProvider];
-        v25 = [v24 output];
+        dataProvider = [v20 dataProvider];
+        output = [dataProvider output];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = v25;
+          v26 = output;
           v27 = [v26 objectForKey:@"failureType"];
           if (v27)
           {
@@ -510,9 +510,9 @@ LABEL_11:
               if (objc_opt_isKindOfClass())
               {
                 v62 = [[ISDialog alloc] initWithDialogDictionary:v33];
-                v61 = [v62 title];
+                title = [v62 title];
 
-                v32 = v61;
+                v32 = title;
               }
             }
 
@@ -524,12 +524,12 @@ LABEL_11:
           v35 = [v26 objectForKey:{@"cancel-purchase-batch", v59}];
           if (objc_opt_respondsToSelector())
           {
-            v28 = [v35 BOOLValue];
+            bOOLValue = [v35 BOOLValue];
           }
 
           else
           {
-            v28 = 0;
+            bOOLValue = 0;
           }
 
           v17 = v65;
@@ -539,17 +539,17 @@ LABEL_11:
         else
         {
           v26 = 0;
-          v28 = 0;
+          bOOLValue = 0;
           v31 = 1;
         }
 
         [v73 setObject:v26 forKey:v19];
         if (v31)
         {
-          v16 = v67;
+          v16 = selfCopy;
           if (v26)
           {
-            [(RedeemCodesOperation *)v67 _postNotificationWithResponse:v26];
+            [(RedeemCodesOperation *)selfCopy _postNotificationWithResponse:v26];
             v29 = v64;
             v30 = v26;
             goto LABEL_40;
@@ -558,20 +558,20 @@ LABEL_11:
 
         else
         {
-          v16 = v67;
+          v16 = selfCopy;
         }
       }
 
       else
       {
         [v73 setObject:0 forKey:v19];
-        v28 = 0;
+        bOOLValue = 0;
         v26 = 0;
       }
 
       if (v23)
       {
-        v28 |= ISErrorIsEqual();
+        bOOLValue |= ISErrorIsEqual();
       }
 
       else
@@ -585,7 +585,7 @@ LABEL_40:
       [v29 setObject:v30 forKey:{v19, v59}];
 
       objc_autoreleasePoolPop(context);
-      if (v28)
+      if (bOOLValue)
       {
         v6 = &CFDictionaryGetValue_ptr;
         v37 = +[SSLogConfig sharedDaemonConfig];
@@ -594,19 +594,19 @@ LABEL_40:
           v37 = +[SSLogConfig sharedConfig];
         }
 
-        v38 = [v37 shouldLog];
+        shouldLog2 = [v37 shouldLog];
         if ([v37 shouldLogToDisk])
         {
-          v39 = v38 | 2;
+          v39 = shouldLog2 | 2;
         }
 
         else
         {
-          v39 = v38;
+          v39 = shouldLog2;
         }
 
-        v40 = [v37 OSLogObject];
-        if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v37 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v39 &= 2u;
         }
@@ -615,11 +615,11 @@ LABEL_40:
         {
           v41 = objc_opt_class();
           v42 = v41;
-          v43 = [v16 logCorrelationKey];
+          logCorrelationKey2 = [v16 logCorrelationKey];
           v80 = 138543618;
           v81 = v41;
           v82 = 2114;
-          v83 = v43;
+          v83 = logCorrelationKey2;
           LODWORD(v60) = 22;
           v59 = &v80;
           v44 = _os_log_send_and_compose_impl();
@@ -631,9 +631,9 @@ LABEL_57:
             goto LABEL_58;
           }
 
-          v40 = [NSString stringWithCString:v44 encoding:4, &v80, v60];
+          oSLogObject2 = [NSString stringWithCString:v44 encoding:4, &v80, v60];
           free(v44);
-          v59 = v40;
+          v59 = oSLogObject2;
           SSFileLog();
         }
 
@@ -652,25 +652,25 @@ LABEL_57:
   while (v36);
 LABEL_58:
 
-  v45 = [v6[412] sharedDaemonConfig];
-  if (!v45)
+  sharedDaemonConfig = [v6[412] sharedDaemonConfig];
+  if (!sharedDaemonConfig)
   {
-    v45 = [v6[412] sharedConfig];
+    sharedDaemonConfig = [v6[412] sharedConfig];
   }
 
-  v46 = [v45 shouldLog];
-  if ([v45 shouldLogToDisk])
+  shouldLog3 = [sharedDaemonConfig shouldLog];
+  if ([sharedDaemonConfig shouldLogToDisk])
   {
-    v47 = v46 | 2;
+    v47 = shouldLog3 | 2;
   }
 
   else
   {
-    v47 = v46;
+    v47 = shouldLog3;
   }
 
-  v48 = [v45 OSLogObject];
-  if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [sharedDaemonConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v49 = v47;
   }
@@ -684,17 +684,17 @@ LABEL_58:
   {
     v50 = objc_opt_class();
     v51 = v50;
-    v52 = [v16 logCorrelationKey];
+    logCorrelationKey3 = [v16 logCorrelationKey];
     v53 = [v64 count];
     v54 = v65;
     v55 = [v65 count];
     v80 = 138544130;
     v81 = v50;
     v82 = 2114;
-    v83 = v52;
+    v83 = logCorrelationKey3;
     v84 = 2048;
     v85 = v53;
-    v16 = v67;
+    v16 = selfCopy;
     v86 = 2048;
     v87 = v55;
     LODWORD(v60) = 42;
@@ -702,7 +702,7 @@ LABEL_58:
 
     if (v56)
     {
-      v48 = [NSString stringWithCString:v56 encoding:4, &v80, v60];
+      oSLogObject3 = [NSString stringWithCString:v56 encoding:4, &v80, v60];
       free(v56);
       SSFileLog();
       goto LABEL_70;
@@ -732,9 +732,9 @@ LABEL_70:
   v103 = objc_alloc_init(NSMutableDictionary);
   v101 = objc_alloc_init(NSMutableDictionary);
   v105 = objc_alloc_init(NSMutableDictionary);
-  v3 = [(RedeemCodesOperation *)self userAgent];
-  v4 = [(RedeemCodesOperation *)self authenticationContext];
-  v5 = [v4 mutableCopy];
+  userAgent = [(RedeemCodesOperation *)self userAgent];
+  authenticationContext = [(RedeemCodesOperation *)self authenticationContext];
+  v5 = [authenticationContext mutableCopy];
 
   if (!v5)
   {
@@ -742,9 +742,9 @@ LABEL_70:
   }
 
   v109 = v5;
-  [v5 setValue:v3 forHTTPHeaderField:SSHTTPHeaderUserAgent];
-  v112 = self;
-  v99 = v3;
+  [v5 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  selfCopy = self;
+  v99 = userAgent;
   if (![(RedeemCodesOperation *)self _useLegacyRedeem])
   {
     v100 = 0;
@@ -755,19 +755,19 @@ LABEL_27:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
+    shouldLog = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog;
     }
 
-    v25 = [v22 OSLogObject];
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v22 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v24 &= 2u;
     }
@@ -776,12 +776,12 @@ LABEL_27:
     {
       v26 = objc_opt_class();
       v27 = v26;
-      v28 = [(RedeemCodesOperation *)v112 logCorrelationKey];
-      v29 = [(NSArray *)v112->_redeemCodes count];
+      logCorrelationKey = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
+      v29 = [(NSArray *)selfCopy->_redeemCodes count];
       v131 = 138543874;
       v132 = v26;
       v133 = 2114;
-      v134 = v28;
+      v134 = logCorrelationKey;
       v135 = 2048;
       v136 = v29;
       LODWORD(v98) = 32;
@@ -796,8 +796,8 @@ LABEL_38:
         v125 = 0u;
         v122 = 0u;
         v123 = 0u;
-        v31 = v112;
-        obj = v112->_redeemCodes;
+        v31 = selfCopy;
+        obj = selfCopy->_redeemCodes;
         v106 = [(NSArray *)obj countByEnumeratingWithState:&v122 objects:v139 count:16];
         if (!v106)
         {
@@ -838,22 +838,22 @@ LABEL_38:
               v33 = v121;
               if (v38)
               {
-                v39 = [v36 dataProvider];
-                v40 = [v39 output];
+                dataProvider = [v36 dataProvider];
+                output = [dataProvider output];
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v34 = v40;
+                  v34 = output;
                   v119 = v33;
                   v120 = 0;
-                  v41 = [(RedeemCodesOperation *)v112 _processDictionary:v34 dialog:&v120 error:&v119];
+                  v41 = [(RedeemCodesOperation *)selfCopy _processDictionary:v34 dialog:&v120 error:&v119];
                   v35 = v120;
                   v42 = v119;
 
                   v43 = v41;
                   v44 = v42;
-                  v31 = v112;
+                  v31 = selfCopy;
                   v33 = v44;
                 }
 
@@ -862,7 +862,7 @@ LABEL_38:
                   v43 = 0;
                   v35 = 0;
                   v34 = 0;
-                  v31 = v112;
+                  v31 = selfCopy;
                 }
               }
 
@@ -873,9 +873,9 @@ LABEL_38:
                 v34 = 0;
               }
 
-              v45 = [v37 dialogButton];
+              dialogButton = [v37 dialogButton];
               v46 = v31[15];
-              v31[15] = v45;
+              v31[15] = dialogButton;
 
               if ((v43 & 1) != 0 || [v33 code] != 3580)
               {
@@ -885,21 +885,21 @@ LABEL_38:
               v110 = v43;
               v113 = v34;
               v47 = +[SSVAppleAccountStore sharedAccountStore];
-              v48 = [v47 primaryAppleAccount];
+              primaryAppleAccount = [v47 primaryAppleAccount];
 
               [v33 userInfo];
               v50 = v49 = v33;
               v51 = [v50 objectForKeyedSubscript:NSLocalizedDescriptionKey];
               v118 = 0;
-              v52 = [v31 _authenticateAppleAccount:v48 withTitle:v51 error:&v118];
+              v52 = [v31 _authenticateAppleAccount:primaryAppleAccount withTitle:v51 error:&v118];
               v53 = v118;
 
               if (v52)
               {
                 v54 = v49;
-                v55 = [v52 uniqueIdentifier];
+                uniqueIdentifier = [v52 uniqueIdentifier];
                 v18 = v109;
-                [v109 setRequiredUniqueIdentifier:v55];
+                [v109 setRequiredUniqueIdentifier:uniqueIdentifier];
               }
 
               else
@@ -907,11 +907,11 @@ LABEL_38:
 
                 v35 = 0;
                 v54 = v53;
-                v55 = v49;
+                uniqueIdentifier = v49;
                 v18 = v109;
               }
 
-              v31 = v112;
+              v31 = selfCopy;
               v34 = v113;
               v33 = v54;
               if (!v52)
@@ -941,7 +941,7 @@ LABEL_59:
               v57 = v117;
 
               v33 = v57;
-              v31 = v112;
+              v31 = selfCopy;
             }
 
 LABEL_61:
@@ -967,13 +967,13 @@ LABEL_61:
                 if (v64)
                 {
                   v66 = v35;
-                  v67 = [v62 dataProvider];
-                  v68 = [v67 output];
+                  dataProvider2 = [v62 dataProvider];
+                  output2 = [dataProvider2 output];
 
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v69 = v68;
+                    v69 = output2;
 
                     v115 = v65;
                     v59 = [v31 _processDictionary:v69 dialog:0 error:&v115];
@@ -981,7 +981,7 @@ LABEL_61:
 
                     v34 = v69;
                     v65 = v70;
-                    v31 = v112;
+                    v31 = selfCopy;
                   }
 
                   v35 = v66;
@@ -1049,19 +1049,19 @@ LABEL_80:
               v74 = +[SSLogConfig sharedConfig];
             }
 
-            v75 = [v74 shouldLog];
+            shouldLog2 = [v74 shouldLog];
             if ([v74 shouldLogToDisk])
             {
-              v75 |= 2u;
+              shouldLog2 |= 2u;
             }
 
-            v76 = [v74 OSLogObject];
-            if (!os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [v74 OSLogObject];
+            if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
-              v75 &= 2u;
+              shouldLog2 &= 2u;
             }
 
-            if (!v75)
+            if (!shouldLog2)
             {
               goto LABEL_89;
             }
@@ -1069,14 +1069,14 @@ LABEL_80:
             v77 = objc_opt_class();
             v78 = v33;
             v79 = v77;
-            v80 = [(RedeemCodesOperation *)v112 logCorrelationKey];
+            logCorrelationKey2 = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
             v81 = AMSLogableError();
             v131 = 138544130;
             v132 = v77;
             v133 = 2114;
-            v134 = v80;
+            v134 = logCorrelationKey2;
             v135 = 2112;
-            v31 = v112;
+            v31 = selfCopy;
             v136 = v111;
             v137 = 2114;
             v138 = v81;
@@ -1089,9 +1089,9 @@ LABEL_80:
 
             if (v82)
             {
-              v76 = [NSString stringWithCString:v82 encoding:4, &v131, v98];
+              oSLogObject2 = [NSString stringWithCString:v82 encoding:4, &v131, v98];
               free(v82);
-              v97 = v76;
+              v97 = oSLogObject2;
               SSFileLog();
 LABEL_89:
             }
@@ -1112,9 +1112,9 @@ LABEL_91:
         }
       }
 
-      v25 = [NSString stringWithCString:v30 encoding:4, &v131, v98, v99];
+      oSLogObject = [NSString stringWithCString:v30 encoding:4, &v131, v98, v99];
       free(v30);
-      v97 = v25;
+      v97 = oSLogObject;
       SSFileLog();
     }
 
@@ -1135,19 +1135,19 @@ LABEL_91:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog3 = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog3 | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog3;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v9;
   }
@@ -1161,12 +1161,12 @@ LABEL_91:
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(RedeemCodesOperation *)v112 logCorrelationKey];
+    logCorrelationKey3 = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
     v15 = AMSLogableError();
     v131 = 138543874;
     v132 = v12;
     v133 = 2114;
-    v134 = v14;
+    v134 = logCorrelationKey3;
     v135 = 2114;
     v136 = v15;
     LODWORD(v98) = 32;
@@ -1178,9 +1178,9 @@ LABEL_91:
       goto LABEL_17;
     }
 
-    v10 = [NSString stringWithCString:v16 encoding:4, &v131, v98, v99];
+    oSLogObject3 = [NSString stringWithCString:v16 encoding:4, &v131, v98, v99];
     free(v16);
-    v97 = v10;
+    v97 = oSLogObject3;
     SSFileLog();
   }
 
@@ -1191,7 +1191,7 @@ LABEL_17:
     v129 = 0u;
     v127 = 0u;
     v126 = 0u;
-    obj = v112->_redeemCodes;
+    obj = selfCopy->_redeemCodes;
     v17 = [(NSArray *)obj countByEnumeratingWithState:&v126 objects:v140 count:16];
     v18 = v109;
     if (v17)
@@ -1231,19 +1231,19 @@ LABEL_95:
     v83 = +[SSLogConfig sharedConfig];
   }
 
-  v84 = [v83 shouldLog];
+  shouldLog4 = [v83 shouldLog];
   if ([v83 shouldLogToDisk])
   {
-    v85 = v84 | 2;
+    v85 = shouldLog4 | 2;
   }
 
   else
   {
-    v85 = v84;
+    v85 = shouldLog4;
   }
 
-  v86 = [v83 OSLogObject];
-  if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v83 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
     v87 = v85;
   }
@@ -1255,20 +1255,20 @@ LABEL_95:
 
   if (!v87)
   {
-    v88 = v112;
+    v88 = selfCopy;
     goto LABEL_108;
   }
 
-  v88 = v112;
+  v88 = selfCopy;
   v89 = objc_opt_class();
   v90 = v89;
-  v91 = [(RedeemCodesOperation *)v112 logCorrelationKey];
+  logCorrelationKey4 = [(RedeemCodesOperation *)selfCopy logCorrelationKey];
   v92 = [v101 count];
   v93 = [v103 count];
   v131 = 138544130;
   v132 = v89;
   v133 = 2114;
-  v134 = v91;
+  v134 = logCorrelationKey4;
   v135 = 2048;
   v136 = v92;
   v137 = 2048;
@@ -1279,7 +1279,7 @@ LABEL_95:
   v18 = v109;
   if (v94)
   {
-    v86 = [NSString stringWithCString:v94 encoding:4, &v131, v98];
+    oSLogObject4 = [NSString stringWithCString:v94 encoding:4, &v131, v98];
     free(v94);
     SSFileLog();
 LABEL_108:
@@ -1297,21 +1297,21 @@ LABEL_108:
   [v88 setSuccess:1];
 }
 
-- (BOOL)_processDictionary:(id)a3 dialog:(id *)a4 error:(id *)a5
+- (BOOL)_processDictionary:(id)dictionary dialog:(id *)dialog error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 objectForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKey:@"status"];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v9 = [v8 integerValue];
-  v10 = v9 >= 0;
-  if (v9 < 0)
+  integerValue = [v8 integerValue];
+  v10 = integerValue >= 0;
+  if (integerValue < 0)
   {
-    v11 = [v7 objectForKey:@"userPresentableErrorMessage"];
+    v11 = [dictionaryCopy objectForKey:@"userPresentableErrorMessage"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1324,37 +1324,37 @@ LABEL_108:
       v12 = 0;
     }
 
-    v8 = [v7 objectForKey:@"errorNumber"];
+    v8 = [dictionaryCopy objectForKey:@"errorNumber"];
 
     if (objc_opt_respondsToSelector())
     {
       [v8 integerValue];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    *a5 = SSError();
+    *error = SSError();
     goto LABEL_12;
   }
 
 LABEL_13:
   v13 = v8;
-  v8 = [v7 objectForKey:kISDialogKey];
+  v8 = [dictionaryCopy objectForKey:kISDialogKey];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (a4 && (isKindOfClass & 1) != 0)
+  if (dialog && (isKindOfClass & 1) != 0)
   {
-    *a4 = [[ISDialog alloc] initWithDialogDictionary:v8];
+    *dialog = [[ISDialog alloc] initWithDialogDictionary:v8];
   }
 
 LABEL_16:
@@ -1362,22 +1362,22 @@ LABEL_16:
   return v10;
 }
 
-- (id)_newURLRequestPropertiesForCode:(id)a3
+- (id)_newURLRequestPropertiesForCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = +[ISDevice sharedInstance];
-  v7 = [v6 guid];
-  [v5 setObject:v7 forKeyedSubscript:@"guid"];
+  guid = [v6 guid];
+  [v5 setObject:guid forKeyedSubscript:@"guid"];
 
-  [v5 setObject:v4 forKeyedSubscript:@"code"];
+  [v5 setObject:codeCopy forKeyedSubscript:@"code"];
   [v5 setObject:@"application/json" forKeyedSubscript:@"response-content-type"];
   v8 = [NSNumber numberWithBool:self->_cameraRecognized];
   [v5 setObject:v8 forKeyedSubscript:@"cameraRecognizedCode"];
 
   if ([(RedeemCodesOperation *)self _useLegacyRedeem])
   {
-    v9 = [(NSDictionary *)self->_redeemMetadataByCode valueForKey:v4];
+    v9 = [(NSDictionary *)self->_redeemMetadataByCode valueForKey:codeCopy];
     v10 = [(RedeemCodesOperation *)self _installedExternalVersionForRedeemCodeMetadata:v9];
     if (v10)
     {
@@ -1397,17 +1397,17 @@ LABEL_16:
   [v11 setHTTPMethod:@"POST"];
   [v11 setURLBagKey:@"redeemCodeSrv"];
   [v11 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v13 = [(RedeemCodesOperation *)self userAgent];
-  [v11 setValue:v13 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(RedeemCodesOperation *)self userAgent];
+  [v11 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
   return v11;
 }
 
-- (id)_newURLRequestPropertiesForServiceActionButton:(id)a3
+- (id)_newURLRequestPropertiesForServiceActionButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 dictionary];
-  v6 = [v5 objectForKey:@"url"];
+  buttonCopy = button;
+  dictionary = [buttonCopy dictionary];
+  v6 = [dictionary objectForKey:@"url"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1424,8 +1424,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v4 dictionary];
-  v9 = [v8 objectForKey:@"dialogData"];
+  dictionary2 = [buttonCopy dictionary];
+  v9 = [dictionary2 objectForKey:@"dialogData"];
 
   v10 = [[SSMutableURLRequestProperties alloc] initWithURL:v7];
   v11 = [NSJSONSerialization dataWithJSONObject:v9 options:0 error:0];
@@ -1433,8 +1433,8 @@ LABEL_5:
 
   [v10 setHTTPMethod:@"POST"];
   [v10 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v12 = [(RedeemCodesOperation *)self userAgent];
-  [v10 setValue:v12 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(RedeemCodesOperation *)self userAgent];
+  [v10 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
 
 LABEL_6:
   return v10;
@@ -1443,16 +1443,16 @@ LABEL_6:
 - (BOOL)_canPerformExtendedBiometricActions
 {
   [(RedeemCodesOperation *)self lock];
-  v3 = [(SSAuthenticationContext *)self->_authenticationContext requiredUniqueIdentifier];
-  v4 = [(ISBiometricStore *)self->_biometricStore canPerformExtendedBiometricActionsForAccountIdentifier:v3];
+  requiredUniqueIdentifier = [(SSAuthenticationContext *)self->_authenticationContext requiredUniqueIdentifier];
+  v4 = [(ISBiometricStore *)self->_biometricStore canPerformExtendedBiometricActionsForAccountIdentifier:requiredUniqueIdentifier];
   [(RedeemCodesOperation *)self unlock];
 
   return v4;
 }
 
-- (BOOL)_didUserCancelWithError:(id)a3
+- (BOOL)_didUserCancelWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = ISWeakLinkedStringConstantForString();
   if (ISErrorIsEqual())
   {
@@ -1467,17 +1467,17 @@ LABEL_6:
   return IsEqual;
 }
 
-- (BOOL)_fetchRedeemCodeMetadataWithError:(id *)a3
+- (BOOL)_fetchRedeemCodeMetadataWithError:(id *)error
 {
   v106 = objc_alloc_init(NSMutableDictionary);
   v125 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RedeemCodesOperation *)self userAgent];
-  v5 = [(RedeemCodesOperation *)self authenticationContext];
-  v6 = [v5 mutableCopy];
+  userAgent = [(RedeemCodesOperation *)self userAgent];
+  authenticationContext = [(RedeemCodesOperation *)self authenticationContext];
+  v6 = [authenticationContext mutableCopy];
 
   v7 = SSHTTPHeaderUserAgent;
   v120 = v6;
-  [v6 setValue:v4 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  [v6 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   v128 = objc_alloc_init(NSMutableArray);
   v8 = +[SSLogConfig sharedDaemonConfig];
   if (!v8)
@@ -1486,21 +1486,21 @@ LABEL_6:
   }
 
   v108 = v7;
-  v109 = v4;
-  v9 = [v8 shouldLog];
+  v109 = userAgent;
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v9 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v10 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v9 &= 2u;
+    shouldLog &= 2u;
   }
 
   v11 = &OBJC_INSTANCE_METHODS_NSMutableCopying;
-  if (!v9)
+  if (!shouldLog)
   {
     goto LABEL_10;
   }
@@ -1520,9 +1520,9 @@ LABEL_6:
 
   if (v16)
   {
-    v10 = [NSString stringWithCString:v16 encoding:4, &v144, v104];
+    oSLogObject = [NSString stringWithCString:v16 encoding:4, &v144, v104];
     free(v16);
-    v102 = v10;
+    v102 = oSLogObject;
     SSFileLog();
 LABEL_10:
   }
@@ -1532,7 +1532,7 @@ LABEL_10:
   v139 = 0u;
   v140 = 0u;
   obj = self->_redeemCodes;
-  v122 = self;
+  selfCopy = self;
   v121 = [(NSArray *)obj countByEnumeratingWithState:&v139 objects:v151 count:16];
   if (!v121)
   {
@@ -1577,22 +1577,22 @@ LABEL_10:
       v126 = v25;
       if (v23)
       {
-        v26 = [v22 dataProvider];
-        v27 = [v26 output];
+        dataProvider = [v22 dataProvider];
+        output = [dataProvider output];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v123 = v21;
-          v28 = v27;
-          v29 = [v28 objectForKey:@"failureType"];
+          oSLogObject2 = output;
+          v29 = [oSLogObject2 objectForKey:@"failureType"];
           if (v29)
           {
           }
 
           else
           {
-            v36 = [[SSVRedeemCodeMetadata alloc] initWithRedeemCodeDictionary:v28];
+            v36 = [[SSVRedeemCodeMetadata alloc] initWithRedeemCodeDictionary:oSLogObject2];
             if (v36)
             {
               v37 = v36;
@@ -1602,8 +1602,8 @@ LABEL_10:
               v134 = 0u;
               v135 = 0u;
               v114 = v37;
-              v38 = [v37 items];
-              v39 = [v38 countByEnumeratingWithState:&v134 objects:v150 count:16];
+              items = [v37 items];
+              v39 = [items countByEnumeratingWithState:&v134 objects:v150 count:16];
               if (v39)
               {
                 v40 = v39;
@@ -1614,21 +1614,21 @@ LABEL_10:
                   {
                     if (*v135 != v41)
                     {
-                      objc_enumerationMutation(v38);
+                      objc_enumerationMutation(items);
                     }
 
                     v43 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [*(*(&v134 + 1) + 8 * i) itemIdentifier]);
                     [v128 addObject:v43];
                   }
 
-                  v40 = [v38 countByEnumeratingWithState:&v134 objects:v150 count:16];
+                  v40 = [items countByEnumeratingWithState:&v134 objects:v150 count:16];
                 }
 
                 while (v40);
               }
 
               v30 = 0;
-              v27 = v28;
+              output = oSLogObject2;
               v18 = v108;
               v17 = v109;
               goto LABEL_33;
@@ -1636,7 +1636,7 @@ LABEL_10:
           }
 
           v30 = 0;
-          v27 = v28;
+          output = oSLogObject2;
 LABEL_33:
 
           v21 = v123;
@@ -1659,25 +1659,25 @@ LABEL_33:
         }
 
         v123 = v21;
-        v27 = [SSLogConfig sharedDaemonConfig:v102];
-        if (!v27)
+        output = [SSLogConfig sharedDaemonConfig:v102];
+        if (!output)
         {
-          v27 = +[SSLogConfig sharedConfig];
+          output = +[SSLogConfig sharedConfig];
         }
 
-        v32 = [v27 shouldLog];
-        if ([v27 shouldLogToDisk])
+        shouldLog2 = [output shouldLog];
+        if ([output shouldLogToDisk])
         {
-          v32 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        v28 = [v27 OSLogObject];
-        if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [output OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
-          v32 &= 2u;
+          shouldLog2 &= 2u;
         }
 
-        if (!v32)
+        if (!shouldLog2)
         {
           goto LABEL_32;
         }
@@ -1697,9 +1697,9 @@ LABEL_33:
 
         if (v35)
         {
-          v28 = [NSString stringWithCString:v35 encoding:4, &v144, v104];
+          oSLogObject2 = [NSString stringWithCString:v35 encoding:4, &v144, v104];
           free(v35);
-          v102 = v28;
+          v102 = oSLogObject2;
           SSFileLog();
           v18 = v108;
           v17 = v109;
@@ -1720,26 +1720,26 @@ LABEL_36:
       if (v30)
       {
         v45 = +[SSLogConfig sharedDaemonConfig];
-        self = v122;
+        self = selfCopy;
         v11 = &OBJC_INSTANCE_METHODS_NSMutableCopying;
         if (!v45)
         {
           v45 = +[SSLogConfig sharedConfig];
         }
 
-        v46 = [v45 shouldLog];
+        shouldLog3 = [v45 shouldLog];
         if ([v45 shouldLogToDisk])
         {
-          v46 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        v47 = [v45 OSLogObject];
-        if (!os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [v45 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v46 &= 2u;
+          shouldLog3 &= 2u;
         }
 
-        if (v46)
+        if (shouldLog3)
         {
           v48 = objc_opt_class();
           v144 = 138543362;
@@ -1756,9 +1756,9 @@ LABEL_60:
             goto LABEL_62;
           }
 
-          v47 = [NSString stringWithCString:v50 encoding:4, &v144, v104];
+          oSLogObject3 = [NSString stringWithCString:v50 encoding:4, &v144, v104];
           free(v50);
-          v102 = v47;
+          v102 = oSLogObject3;
           SSFileLog();
         }
 
@@ -1766,7 +1766,7 @@ LABEL_60:
       }
 
       v19 = v19 + 1;
-      self = v122;
+      self = selfCopy;
       v11 = &OBJC_INSTANCE_METHODS_NSMutableCopying;
     }
 
@@ -1785,19 +1785,19 @@ LABEL_62:
     v52 = +[SSLogConfig sharedConfig];
   }
 
-  v53 = [v52 shouldLog];
+  shouldLog4 = [v52 shouldLog];
   if ([v52 shouldLogToDisk])
   {
-    v53 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  v54 = [v52 OSLogObject];
-  if (!os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v52 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
-    v53 &= 2u;
+    shouldLog4 &= 2u;
   }
 
-  if (v53)
+  if (shouldLog4)
   {
     v55 = objc_opt_class();
     v144 = 138543362;
@@ -1809,9 +1809,9 @@ LABEL_62:
 
     if (v57)
     {
-      v54 = [NSString stringWithCString:v57 encoding:4, &v144, v104];
+      oSLogObject4 = [NSString stringWithCString:v57 encoding:4, &v144, v104];
       free(v57);
-      v103 = v54;
+      v103 = oSLogObject4;
       SSFileLog();
       goto LABEL_71;
     }
@@ -1879,25 +1879,25 @@ LABEL_71:
 
       if (!v66)
       {
-        v70 = [v51[412] sharedDaemonConfig];
-        if (!v70)
+        sharedDaemonConfig = [v51[412] sharedDaemonConfig];
+        if (!sharedDaemonConfig)
         {
-          v70 = [v51[412] sharedConfig];
+          sharedDaemonConfig = [v51[412] sharedConfig];
         }
 
-        v71 = [v70 shouldLog];
-        if ([v70 shouldLogToDisk])
+        shouldLog5 = [sharedDaemonConfig shouldLog];
+        if ([sharedDaemonConfig shouldLogToDisk])
         {
-          v72 = v71 | 2;
+          v72 = shouldLog5 | 2;
         }
 
         else
         {
-          v72 = v71;
+          v72 = shouldLog5;
         }
 
-        v73 = [v70 OSLogObject];
-        if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+        oSLogObject5 = [sharedDaemonConfig OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
         {
           v74 = v72;
         }
@@ -1923,9 +1923,9 @@ LABEL_71:
             goto LABEL_99;
           }
 
-          v73 = [NSString stringWithCString:v77 encoding:4, &v144, v104];
+          oSLogObject5 = [NSString stringWithCString:v77 encoding:4, &v144, v104];
           free(v77);
-          v103 = v73;
+          v103 = oSLogObject5;
           SSFileLog();
         }
 
@@ -1947,25 +1947,25 @@ LABEL_99:
       if (!v67)
       {
 LABEL_100:
-        v78 = [v51[412] sharedDaemonConfig];
-        if (!v78)
+        sharedDaemonConfig2 = [v51[412] sharedDaemonConfig];
+        if (!sharedDaemonConfig2)
         {
-          v78 = [v51[412] sharedConfig];
+          sharedDaemonConfig2 = [v51[412] sharedConfig];
         }
 
-        v79 = [v78 shouldLog];
-        if ([v78 shouldLogToDisk])
+        shouldLog6 = [sharedDaemonConfig2 shouldLog];
+        if ([sharedDaemonConfig2 shouldLogToDisk])
         {
-          v80 = v79 | 2;
+          v80 = shouldLog6 | 2;
         }
 
         else
         {
-          v80 = v79;
+          v80 = shouldLog6;
         }
 
-        v81 = [v78 OSLogObject];
-        if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
+        oSLogObject6 = [sharedDaemonConfig2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
         {
           v82 = v80;
         }
@@ -1988,9 +1988,9 @@ LABEL_100:
           v51 = &CFDictionaryGetValue_ptr;
           if (v85)
           {
-            v81 = [NSString stringWithCString:v85 encoding:4, &v144, v104];
+            oSLogObject6 = [NSString stringWithCString:v85 encoding:4, &v144, v104];
             free(v85);
-            v103 = v81;
+            v103 = oSLogObject6;
             SSFileLog();
             goto LABEL_112;
           }
@@ -2026,28 +2026,28 @@ LABEL_114:
 
 LABEL_116:
 
-  self = v122;
+  self = selfCopy;
   v11 = &OBJC_INSTANCE_METHODS_NSMutableCopying;
 LABEL_117:
-  v86 = [v51[412] sharedDaemonConfig];
-  if (!v86)
+  sharedDaemonConfig3 = [v51[412] sharedDaemonConfig];
+  if (!sharedDaemonConfig3)
   {
-    v86 = [v51[412] sharedConfig];
+    sharedDaemonConfig3 = [v51[412] sharedConfig];
   }
 
-  v87 = [v86 shouldLog];
-  if ([v86 shouldLogToDisk])
+  shouldLog7 = [sharedDaemonConfig3 shouldLog];
+  if ([sharedDaemonConfig3 shouldLogToDisk])
   {
-    v87 |= 2u;
+    shouldLog7 |= 2u;
   }
 
-  v88 = [v86 OSLogObject];
-  if (!os_log_type_enabled(v88, OS_LOG_TYPE_INFO))
+  oSLogObject7 = [sharedDaemonConfig3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_INFO))
   {
-    v87 &= 2u;
+    shouldLog7 &= 2u;
   }
 
-  if (v87)
+  if (shouldLog7)
   {
     v89 = objc_opt_class();
     v90 = v11;
@@ -2064,7 +2064,7 @@ LABEL_117:
     v95 = v110;
     if (v93)
     {
-      v88 = [NSString stringWithCString:v93 encoding:4, &v144, v104];
+      oSLogObject7 = [NSString stringWithCString:v93 encoding:4, &v144, v104];
       free(v93);
       SSFileLog();
       goto LABEL_127;
@@ -2088,23 +2088,23 @@ LABEL_127:
   self->_installedExternalVersionByiTunesIdentifier = v98;
 
   [(RedeemCodesOperation *)self unlock];
-  if (a3 && v95)
+  if (error && v95)
   {
     v100 = v95;
-    *a3 = v95;
+    *error = v95;
   }
 
   return v107 & 1;
 }
 
-- (id)_installedExternalVersionForRedeemCodeMetadata:(id)a3
+- (id)_installedExternalVersionForRedeemCodeMetadata:(id)metadata
 {
-  v4 = [a3 items];
-  v5 = [v4 firstObject];
+  items = [metadata items];
+  firstObject = [items firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 itemIdentifier]);
+    v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [firstObject itemIdentifier]);
     v7 = [(NSDictionary *)self->_installedExternalVersionByiTunesIdentifier objectForKey:v6];
   }
 
@@ -2139,19 +2139,19 @@ LABEL_127:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 &= 2u;
     }
@@ -2173,9 +2173,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v10 = [NSString stringWithCString:v13 encoding:4, &v22, v19];
+      oSLogObject = [NSString stringWithCString:v13 encoding:4, &v22, v19];
       free(v13);
-      v18 = v10;
+      v18 = oSLogObject;
       SSFileLog();
     }
 
@@ -2183,35 +2183,35 @@ LABEL_13:
   }
 
 LABEL_14:
-  v14 = [v3 URLBag];
-  v15 = [v14 valueForKey:@"redeemCodeLanding"];
+  uRLBag = [v3 URLBag];
+  v15 = [uRLBag valueForKey:@"redeemCodeLanding"];
   v16 = v15 == 0;
 
   return v16;
 }
 
-- (void)_postNotificationWithResponse:(id)a3
+- (void)_postNotificationWithResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -2230,15 +2230,15 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    v7 = [NSString stringWithCString:v9 encoding:4, &v25, v21];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v25, v21];
     free(v9);
-    v20 = v7;
+    v20 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
   v22 = 0;
-  v10 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v22];
+  v10 = [NSKeyedArchiver archivedDataWithRootObject:responseCopy requiringSecureCoding:1 error:&v22];
 
   v11 = v22;
   if (!v11)
@@ -2248,8 +2248,8 @@ LABEL_12:
     v12 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterPostNotification(DistributedCenter, kSSPurchaseRequestSucceededNotification, 0, v12, 1u);
-    v15 = +[EventDispatcher eventDispatcher];
-    [v15 postEventWithName:SSEventNamePurchaseSucceeded userInfo:v12];
+    oSLogObject2 = +[EventDispatcher eventDispatcher];
+    [oSLogObject2 postEventWithName:SSEventNamePurchaseSucceeded userInfo:v12];
     goto LABEL_24;
   }
 
@@ -2259,19 +2259,19 @@ LABEL_12:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [(__CFDictionary *)v12 shouldLog];
+  shouldLog2 = [(__CFDictionary *)v12 shouldLog];
   if ([(__CFDictionary *)v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog2 | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog2;
   }
 
-  v15 = [(__CFDictionary *)v12 OSLogObject];
-  if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [(__CFDictionary *)v12 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v14 &= 2u;
   }
@@ -2292,7 +2292,7 @@ LABEL_12:
 
   if (v18)
   {
-    v15 = [NSString stringWithCString:v18 encoding:4, &v25, v21];
+    oSLogObject2 = [NSString stringWithCString:v18 encoding:4, &v25, v21];
     free(v18);
     SSFileLog();
 LABEL_24:

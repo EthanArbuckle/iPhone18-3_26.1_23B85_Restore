@@ -1,15 +1,15 @@
 @interface UISApplicationStateClient
 - (BOOL)usesBackgroundNetwork;
 - (NSString)badgeValue;
-- (UISApplicationStateClient)initWithBundleIdentifier:(id)a3;
+- (UISApplicationStateClient)initWithBundleIdentifier:(id)identifier;
 - (double)nextWakeIntervalSinceReferenceDate;
 - (id)_remoteTarget;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setBadgeValue:(id)a3;
-- (void)setMinimumBackgroundFetchInterval:(double)a3;
-- (void)setNextWakeIntervalSinceReferenceDate:(double)a3;
-- (void)setUsesBackgroundNetwork:(BOOL)a3;
+- (void)setBadgeValue:(id)value;
+- (void)setMinimumBackgroundFetchInterval:(double)interval;
+- (void)setNextWakeIntervalSinceReferenceDate:(double)date;
+- (void)setUsesBackgroundNetwork:(BOOL)network;
 @end
 
 @implementation UISApplicationStateClient
@@ -49,13 +49,13 @@ void __42__UISApplicationStateClient__remoteTarget__block_invoke(void *a1)
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(UISApplicationStateClient *)self _remoteTarget];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__UISApplicationStateClient_badgeValue__block_invoke;
   v5[3] = &unk_1E7458DD8;
   v5[4] = &v6;
-  [v2 badgeValueWithCompletion:v5];
+  [_remoteTarget badgeValueWithCompletion:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -123,8 +123,8 @@ void __39__UISApplicationStateClient_invalidate__block_invoke(uint64_t a1)
 {
   if (!self->_queue_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:37 description:@"UISApplicationStateClient must be invalidated before deallocation."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:37 description:@"UISApplicationStateClient must be invalidated before deallocation."];
   }
 
   v5.receiver = self;
@@ -153,13 +153,13 @@ void __39__UISApplicationStateClient_badgeValue__block_invoke(uint64_t a1, void 
   dispatch_async(queue, block);
 }
 
-- (UISApplicationStateClient)initWithBundleIdentifier:(id)a3
+- (UISApplicationStateClient)initWithBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v14.receiver = self;
@@ -168,7 +168,7 @@ void __39__UISApplicationStateClient_badgeValue__block_invoke(uint64_t a1, void 
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_bundleIdentifier, a3);
+    objc_storeStrong(&v7->_bundleIdentifier, identifier);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.uikit.applicationStateClient", v9);
     queue = v8->_queue;
@@ -178,15 +178,15 @@ void __39__UISApplicationStateClient_badgeValue__block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v13 = a3;
+  valueCopy = value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
-  v7 = v13;
-  if (!v13 || (isKindOfClass & 1) != 0 || (v6 & 1) != 0)
+  v7 = valueCopy;
+  if (!valueCopy || (isKindOfClass & 1) != 0 || (v6 & 1) != 0)
   {
     if ((isKindOfClass & 1) == 0)
     {
@@ -196,10 +196,10 @@ void __39__UISApplicationStateClient_badgeValue__block_invoke(uint64_t a1, void 
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:65 description:{@"Badge must be nil, a NSNumber (integer), or a NSString *."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateClient.m" lineNumber:65 description:{@"Badge must be nil, a NSNumber (integer), or a NSString *."}];
 
-    v7 = v13;
+    v7 = valueCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_8;
@@ -213,10 +213,10 @@ void __39__UISApplicationStateClient_badgeValue__block_invoke(uint64_t a1, void 
     v8 = &unk_1F0A84370;
   }
 
-  v9 = [(UISApplicationStateClient *)self _remoteTarget];
-  [v9 setBadgeNumber:v8];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
+  [_remoteTarget setBadgeNumber:v8];
 
-  v7 = v13;
+  v7 = valueCopy;
 LABEL_8:
   if (((v7 != 0) & (v6 ^ 1)) == 0)
   {
@@ -227,10 +227,10 @@ LABEL_8:
       v10 = 0;
     }
 
-    v11 = [(UISApplicationStateClient *)self _remoteTarget];
-    [v11 setBadgeString:v10];
+    _remoteTarget2 = [(UISApplicationStateClient *)self _remoteTarget];
+    [_remoteTarget2 setBadgeString:v10];
 
-    v7 = v13;
+    v7 = valueCopy;
   }
 }
 
@@ -240,17 +240,17 @@ LABEL_8:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(UISApplicationStateClient *)self _remoteTarget];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __50__UISApplicationStateClient_usesBackgroundNetwork__block_invoke;
   v4[3] = &unk_1E7458E00;
   v4[4] = &v5;
-  [v2 usesBackgroundNetworkWithCompletion:v4];
+  [_remoteTarget usesBackgroundNetworkWithCompletion:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(_remoteTarget) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return _remoteTarget;
 }
 
 uint64_t __50__UISApplicationStateClient_usesBackgroundNetwork__block_invoke(uint64_t a1, void *a2)
@@ -260,19 +260,19 @@ uint64_t __50__UISApplicationStateClient_usesBackgroundNetwork__block_invoke(uin
   return result;
 }
 
-- (void)setUsesBackgroundNetwork:(BOOL)a3
+- (void)setUsesBackgroundNetwork:(BOOL)network
 {
-  v3 = a3;
-  v5 = [(UISApplicationStateClient *)self _remoteTarget];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setUsesBackgroundNetwork:v4];
+  networkCopy = network;
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:networkCopy];
+  [_remoteTarget setUsesBackgroundNetwork:v4];
 }
 
-- (void)setMinimumBackgroundFetchInterval:(double)a3
+- (void)setMinimumBackgroundFetchInterval:(double)interval
 {
-  v5 = [(UISApplicationStateClient *)self _remoteTarget];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setMinimumBackgroundFetchInterval:v4];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
+  [_remoteTarget setMinimumBackgroundFetchInterval:v4];
 }
 
 - (double)nextWakeIntervalSinceReferenceDate
@@ -281,13 +281,13 @@ uint64_t __50__UISApplicationStateClient_usesBackgroundNetwork__block_invoke(uin
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(UISApplicationStateClient *)self _remoteTarget];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__UISApplicationStateClient_nextWakeIntervalSinceReferenceDate__block_invoke;
   v5[3] = &unk_1E7458E00;
   v5[4] = &v6;
-  [v2 nextWakeIntervalSinceReferenceDateWithCompletion:v5];
+  [_remoteTarget nextWakeIntervalSinceReferenceDateWithCompletion:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -301,11 +301,11 @@ uint64_t __63__UISApplicationStateClient_nextWakeIntervalSinceReferenceDate__blo
   return result;
 }
 
-- (void)setNextWakeIntervalSinceReferenceDate:(double)a3
+- (void)setNextWakeIntervalSinceReferenceDate:(double)date
 {
-  v5 = [(UISApplicationStateClient *)self _remoteTarget];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setNextWakeIntervalSinceReferenceDate:v4];
+  _remoteTarget = [(UISApplicationStateClient *)self _remoteTarget];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:date];
+  [_remoteTarget setNextWakeIntervalSinceReferenceDate:v4];
 }
 
 void __42__UISApplicationStateClient__remoteTarget__block_invoke_5(uint64_t a1, void *a2)

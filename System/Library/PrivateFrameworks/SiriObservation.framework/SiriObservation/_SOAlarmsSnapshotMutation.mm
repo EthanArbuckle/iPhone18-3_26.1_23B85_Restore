@@ -1,5 +1,5 @@
 @interface _SOAlarmsSnapshotMutation
-- (_SOAlarmsSnapshotMutation)initWithBase:(id)a3;
+- (_SOAlarmsSnapshotMutation)initWithBase:(id)base;
 - (id)getAlarmsByID;
 - (id)getDate;
 - (id)getDismissedAlarmIDs;
@@ -12,72 +12,72 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_dismissedAlarmIDs;
+    dismissedAlarmIDs = self->_dismissedAlarmIDs;
   }
 
   else
   {
-    v2 = [(SOAlarmsSnapshot *)self->_base dismissedAlarmIDs];
+    dismissedAlarmIDs = [(SOAlarmsSnapshot *)self->_base dismissedAlarmIDs];
   }
 
-  return v2;
+  return dismissedAlarmIDs;
 }
 
 - (id)getFiringAlarmIDs
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_firingAlarmIDs;
+    firingAlarmIDs = self->_firingAlarmIDs;
   }
 
   else
   {
-    v2 = [(SOAlarmsSnapshot *)self->_base firingAlarmIDs];
+    firingAlarmIDs = [(SOAlarmsSnapshot *)self->_base firingAlarmIDs];
   }
 
-  return v2;
+  return firingAlarmIDs;
 }
 
 - (id)getAlarmsByID
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_alarmsByID;
+    alarmsByID = self->_alarmsByID;
   }
 
   else
   {
-    v2 = [(SOAlarmsSnapshot *)self->_base alarmsByID];
+    alarmsByID = [(SOAlarmsSnapshot *)self->_base alarmsByID];
   }
 
-  return v2;
+  return alarmsByID;
 }
 
 - (id)getDate
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(SOAlarmsSnapshot *)self->_base date];
+    date = [(SOAlarmsSnapshot *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
-- (_SOAlarmsSnapshotMutation)initWithBase:(id)a3
+- (_SOAlarmsSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SOAlarmsSnapshotMutation;
   v6 = [(_SOAlarmsSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

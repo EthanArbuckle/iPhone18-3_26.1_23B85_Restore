@@ -1,55 +1,55 @@
 @interface FigIOSurfaceData
-+ (id)dataWithIOSurface:(__IOSurface *)a3;
-+ (id)dataWithIOSurface:(__IOSurface *)a3 length:(unint64_t)a4;
-- (FigIOSurfaceData)initWithIOSurface:(__IOSurface *)a3 length:(unint64_t)a4;
++ (id)dataWithIOSurface:(__IOSurface *)surface;
++ (id)dataWithIOSurface:(__IOSurface *)surface length:(unint64_t)length;
+- (FigIOSurfaceData)initWithIOSurface:(__IOSurface *)surface length:(unint64_t)length;
 - (const)bytes;
 - (void)dealloc;
 @end
 
 @implementation FigIOSurfaceData
 
-+ (id)dataWithIOSurface:(__IOSurface *)a3
++ (id)dataWithIOSurface:(__IOSurface *)surface
 {
-  v3 = [[a1 alloc] initWithIOSurface:a3];
+  v3 = [[self alloc] initWithIOSurface:surface];
 
   return v3;
 }
 
-+ (id)dataWithIOSurface:(__IOSurface *)a3 length:(unint64_t)a4
++ (id)dataWithIOSurface:(__IOSurface *)surface length:(unint64_t)length
 {
-  v4 = [[a1 alloc] initWithIOSurface:a3 length:a4];
+  v4 = [[self alloc] initWithIOSurface:surface length:length];
 
   return v4;
 }
 
-- (FigIOSurfaceData)initWithIOSurface:(__IOSurface *)a3 length:(unint64_t)a4
+- (FigIOSurfaceData)initWithIOSurface:(__IOSurface *)surface length:(unint64_t)length
 {
-  if (a3)
+  if (surface)
   {
     v11.receiver = self;
     v11.super_class = FigIOSurfaceData;
     v6 = [(FigIOSurfaceData *)&v11 init];
     if (v6)
     {
-      v7 = CFRetain(a3);
+      v7 = CFRetain(surface);
       v6->_surface = v7;
       AllocSize = IOSurfaceGetAllocSize(v7);
-      if (AllocSize >= a4)
+      if (AllocSize >= length)
       {
-        v9 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v9 = AllocSize;
+        lengthCopy = AllocSize;
       }
 
-      if (!a4)
+      if (!length)
       {
-        v9 = AllocSize;
+        lengthCopy = AllocSize;
       }
 
-      v6->_length = v9;
+      v6->_length = lengthCopy;
     }
   }
 

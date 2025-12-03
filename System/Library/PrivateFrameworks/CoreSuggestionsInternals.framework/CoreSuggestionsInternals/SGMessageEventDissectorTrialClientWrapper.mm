@@ -128,19 +128,19 @@
 
   if (!v3)
   {
-    v4 = sgEventsLogHandle();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    defaultManager = sgEventsLogHandle();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_231E60000, v4, OS_LOG_TYPE_ERROR, "SGMessageEventDissectorTrialClientWrapper: trialEventClassifierModelPath is nil, bailing", buf, 2u);
+      _os_log_error_impl(&dword_231E60000, defaultManager, OS_LOG_TYPE_ERROR, "SGMessageEventDissectorTrialClientWrapper: trialEventClassifierModelPath is nil, bailing", buf, 2u);
     }
 
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  if (![v4 fileExistsAtPath:v3 isDirectory:&v11]|| v11 != 1)
+  if (![defaultManager fileExistsAtPath:v3 isDirectory:&v11]|| v11 != 1)
   {
     v7 = sgEventsLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -200,19 +200,19 @@ LABEL_12:
 
   if (!v3)
   {
-    v4 = sgEventsLogHandle();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    defaultManager = sgEventsLogHandle();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_231E60000, v4, OS_LOG_TYPE_ERROR, "SGMessageEventDissectorTrialClientWrapper: trialEventExtractionAssetsPath is nil, bailing", buf, 2u);
+      _os_log_error_impl(&dword_231E60000, defaultManager, OS_LOG_TYPE_ERROR, "SGMessageEventDissectorTrialClientWrapper: trialEventExtractionAssetsPath is nil, bailing", buf, 2u);
     }
 
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  if (![v4 fileExistsAtPath:v3 isDirectory:&v11]|| v11 != 1)
+  if (![defaultManager fileExistsAtPath:v3 isDirectory:&v11]|| v11 != 1)
   {
     v7 = sgEventsLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))

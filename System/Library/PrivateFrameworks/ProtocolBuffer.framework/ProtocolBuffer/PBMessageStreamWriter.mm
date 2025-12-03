@@ -1,15 +1,15 @@
 @interface PBMessageStreamWriter
-- (BOOL)writeMessage:(id)a3;
-- (PBMessageStreamWriter)initWithOutputStream:(id)a3;
+- (BOOL)writeMessage:(id)message;
+- (PBMessageStreamWriter)initWithOutputStream:(id)stream;
 @end
 
 @implementation PBMessageStreamWriter
 
-- (BOOL)writeMessage:(id)a3
+- (BOOL)writeMessage:(id)message
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 data];
-  v5 = [v4 length];
+  data = [message data];
+  v5 = [data length];
   v6 = v13;
   if (v5 < 0x80)
   {
@@ -32,10 +32,10 @@
   *v6 = v7;
   if ([(NSOutputStream *)self->_stream write:v13 maxLength:v6 - v13 + 1]== v6 - v13 + 1)
   {
-    if ([v4 length])
+    if ([data length])
     {
-      v9 = -[NSOutputStream write:maxLength:](self->_stream, "write:maxLength:", [v4 bytes], objc_msgSend(v4, "length"));
-      v10 = v9 == [v4 length];
+      v9 = -[NSOutputStream write:maxLength:](self->_stream, "write:maxLength:", [data bytes], objc_msgSend(data, "length"));
+      v10 = v9 == [data length];
     }
 
     else
@@ -53,16 +53,16 @@
   return v10;
 }
 
-- (PBMessageStreamWriter)initWithOutputStream:(id)a3
+- (PBMessageStreamWriter)initWithOutputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = PBMessageStreamWriter;
   v6 = [(PBMessageStreamWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;

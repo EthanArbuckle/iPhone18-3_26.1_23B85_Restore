@@ -1,16 +1,16 @@
 @interface _DPDPGaussianMechanismParameter
 - (BOOL)isValid;
-- (_DPDPGaussianMechanismParameter)initWithV1Metadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5;
-- (_DPDPGaussianMechanismParameter)initWithV2Metadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5;
+- (_DPDPGaussianMechanismParameter)initWithV1Metadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta;
+- (_DPDPGaussianMechanismParameter)initWithV2Metadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta;
 - (id)auditedMetadata;
 - (void)isValid;
 @end
 
 @implementation _DPDPGaussianMechanismParameter
 
-- (_DPDPGaussianMechanismParameter)initWithV1Metadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5
+- (_DPDPGaussianMechanismParameter)initWithV1Metadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta
 {
-  v8 = a3;
+  metadataCopy = metadata;
   v51.receiver = self;
   v51.super_class = _DPDPGaussianMechanismParameter;
   v9 = [(_DPDPGaussianMechanismParameter *)&v51 init];
@@ -20,9 +20,9 @@
     goto LABEL_23;
   }
 
-  v9->_maxCentralEpsilon = a4;
-  v9->_maxCentralDelta = a5;
-  v11 = [v8 objectForKeyedSubscript:@"AlgorithmParameters"];
+  v9->_maxCentralEpsilon = epsilon;
+  v9->_maxCentralDelta = delta;
+  v11 = [metadataCopy objectForKeyedSubscript:@"AlgorithmParameters"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -142,7 +142,7 @@ LABEL_30:
   v10->_overallClippingBound = v30;
 
   *&v10->_isMomentsAccountantAlgorithm = 0;
-  v31 = [v8 copy];
+  v31 = [metadataCopy copy];
   metadata = v10->_metadata;
   v10->_metadata = v31;
 
@@ -238,9 +238,9 @@ LABEL_37:
   return v43;
 }
 
-- (_DPDPGaussianMechanismParameter)initWithV2Metadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5
+- (_DPDPGaussianMechanismParameter)initWithV2Metadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta
 {
-  v8 = a3;
+  metadataCopy = metadata;
   v56.receiver = self;
   v56.super_class = _DPDPGaussianMechanismParameter;
   v9 = [(_DPDPGaussianMechanismParameter *)&v56 init];
@@ -250,9 +250,9 @@ LABEL_37:
     goto LABEL_17;
   }
 
-  v9->_maxCentralEpsilon = a4;
-  v9->_maxCentralDelta = a5;
-  v11 = [v8 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v9->_maxCentralEpsilon = epsilon;
+  v9->_maxCentralDelta = delta;
+  v11 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v12 = [v11 objectForKeyedSubscript:@"DPConfig"];
 
   objc_opt_class();
@@ -377,7 +377,7 @@ LABEL_24:
   v10->_overallClippingBound = v33;
 
   v10->_isMomentsAccountantAlgorithm = 1;
-  v34 = [v8 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v34 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v35 = [v34 objectForKeyedSubscript:@"MinBatchSize"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -435,7 +435,7 @@ LABEL_33:
     goto LABEL_36;
   }
 
-  v41 = [v8 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v41 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v42 = [v41 objectForKeyedSubscript:@"MinBatchSize"];
   v10->_currentCohortSize = [v42 longLongValue];
 
@@ -452,7 +452,7 @@ LABEL_33:
   v10->_renyiOrder = [v46 intValue];
 
   v10->_isV2 = 1;
-  v47 = [v8 copy];
+  v47 = [metadataCopy copy];
   metadata = v10->_metadata;
   v10->_metadata = v47;
 
@@ -575,8 +575,8 @@ LABEL_20:
       goto LABEL_12;
     }
 
-    v28 = [(_DPDPGaussianMechanismParameter *)self currentCohortSize];
-    if (v28 > [(_DPDPGaussianMechanismParameter *)self maxCohortSize])
+    currentCohortSize = [(_DPDPGaussianMechanismParameter *)self currentCohortSize];
+    if (currentCohortSize > [(_DPDPGaussianMechanismParameter *)self maxCohortSize])
     {
       v9 = +[_DPLog framework];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -587,8 +587,8 @@ LABEL_20:
       goto LABEL_12;
     }
 
-    v32 = [(_DPDPGaussianMechanismParameter *)self maxCohortSize];
-    if (v32 > [(_DPDPGaussianMechanismParameter *)self populationSize])
+    maxCohortSize = [(_DPDPGaussianMechanismParameter *)self maxCohortSize];
+    if (maxCohortSize > [(_DPDPGaussianMechanismParameter *)self populationSize])
     {
       v9 = +[_DPLog framework];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -733,12 +733,12 @@ LABEL_75:
 {
   if ([(_DPDPGaussianMechanismParameter *)self isValid])
   {
-    v3 = [(_DPDPGaussianMechanismParameter *)self isV2];
-    v4 = [(_DPDPGaussianMechanismParameter *)self metadata];
-    v5 = v4;
-    if (v3)
+    isV2 = [(_DPDPGaussianMechanismParameter *)self isV2];
+    metadata = [(_DPDPGaussianMechanismParameter *)self metadata];
+    v5 = metadata;
+    if (isV2)
     {
-      v6 = [v4 objectForKeyedSubscript:@"DediscoTaskConfig"];
+      v6 = [metadata objectForKeyedSubscript:@"DediscoTaskConfig"];
       v7 = [v6 objectForKeyedSubscript:@"DPConfig"];
       v8 = [v7 mutableCopy];
 
@@ -747,13 +747,13 @@ LABEL_75:
       v10 = [v9 numberWithDouble:?];
       [v8 setObject:v10 forKeyedSubscript:@"CohortSigma"];
 
-      v11 = [(_DPDPGaussianMechanismParameter *)self metadata];
-      v12 = [v11 objectForKeyedSubscript:@"DediscoTaskConfig"];
+      metadata2 = [(_DPDPGaussianMechanismParameter *)self metadata];
+      v12 = [metadata2 objectForKeyedSubscript:@"DediscoTaskConfig"];
       v13 = [v12 mutableCopy];
 
       [v13 setObject:v8 forKeyedSubscript:@"DPConfig"];
-      v14 = [(_DPDPGaussianMechanismParameter *)self metadata];
-      v5 = [v14 mutableCopy];
+      metadata3 = [(_DPDPGaussianMechanismParameter *)self metadata];
+      v5 = [metadata3 mutableCopy];
 
       [v5 setObject:v13 forKeyedSubscript:@"DediscoTaskConfig"];
     }

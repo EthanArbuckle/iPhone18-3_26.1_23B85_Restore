@@ -2,18 +2,18 @@
 - (CGSize)contentSize;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (UICollectionView)_collectionView;
-- (_UICollectionViewEnvironmentAdapter)initWithCollectionView:(id)a3;
+- (_UICollectionViewEnvironmentAdapter)initWithCollectionView:(id)view;
 - (id)createEnvironment;
 @end
 
 @implementation _UICollectionViewEnvironmentAdapter
 
-- (_UICollectionViewEnvironmentAdapter)initWithCollectionView:(id)a3
+- (_UICollectionViewEnvironmentAdapter)initWithCollectionView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListLayoutSection.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
   }
 
   v10.receiver = self;
@@ -22,7 +22,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, a3);
+    objc_storeWeak(&v5->_collectionView, view);
   }
 
   return v6;
@@ -51,11 +51,11 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
-  v13 = [v12 traitCollection];
-  v14 = [v13 layoutDirection];
+  _collectionView = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
+  traitCollection = [_collectionView traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v14 == 1)
+  if (layoutDirection == 1)
   {
     v15 = v11;
   }
@@ -65,7 +65,7 @@
     v15 = v7;
   }
 
-  if (v14 == 1)
+  if (layoutDirection == 1)
   {
     v16 = v7;
   }
@@ -92,14 +92,14 @@
   v7 = v6;
   [(_UICollectionViewEnvironmentAdapter *)self contentInsets];
   v12 = [(_UICollectionLayoutContainer *)v3 initWithContentSize:v5 contentInsets:v7, v8, v9, v10, v11];
-  v13 = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
-  v14 = [off_1E70ECC48 snapshotterForDataSourceBackedView:v13];
+  _collectionView = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
+  v14 = [off_1E70ECC48 snapshotterForDataSourceBackedView:_collectionView];
 
   v15 = [_UICollectionLayoutEnvironment alloc];
-  v16 = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
-  v17 = [v16 traitCollection];
-  v18 = [v14 snapshot];
-  v19 = [(_UICollectionLayoutEnvironment *)v15 initWithContainer:v12 traitCollection:v17 dataSourceSnapshot:v18];
+  _collectionView2 = [(_UICollectionViewEnvironmentAdapter *)self _collectionView];
+  traitCollection = [_collectionView2 traitCollection];
+  snapshot = [v14 snapshot];
+  v19 = [(_UICollectionLayoutEnvironment *)v15 initWithContainer:v12 traitCollection:traitCollection dataSourceSnapshot:snapshot];
 
   return v19;
 }

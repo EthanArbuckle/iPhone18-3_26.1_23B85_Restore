@@ -1,8 +1,8 @@
 @interface NNMKSyncSessionController
 - (NNMKSyncSessionController)init;
-- (unint64_t)standaloneStateForAccountId:(id)a3;
-- (void)deleteStandaloneStateForAccountId:(id)a3;
-- (void)updateStandaloneState:(unint64_t)a3 forAccountId:(id)a4;
+- (unint64_t)standaloneStateForAccountId:(id)id;
+- (void)deleteStandaloneStateForAccountId:(id)id;
+- (void)updateStandaloneState:(unint64_t)state forAccountId:(id)id;
 @end
 
 @implementation NNMKSyncSessionController
@@ -26,8 +26,8 @@
     syncingAccountIdentityByUsername = v2->_syncingAccountIdentityByUsername;
     v2->_syncingAccountIdentityByUsername = v7;
 
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 objectForKey:@"kSessionControllerStandaloneState"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v10 = [standardUserDefaults objectForKey:@"kSessionControllerStandaloneState"];
     v11 = [v10 mutableCopy];
     standaloneStateByAccountId = v2->_standaloneStateByAccountId;
     v2->_standaloneStateByAccountId = v11;
@@ -43,32 +43,32 @@
   return v2;
 }
 
-- (unint64_t)standaloneStateForAccountId:(id)a3
+- (unint64_t)standaloneStateForAccountId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_standaloneStateByAccountId objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMutableDictionary *)self->_standaloneStateByAccountId objectForKeyedSubscript:id];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)updateStandaloneState:(unint64_t)a3 forAccountId:(id)a4
+- (void)updateStandaloneState:(unint64_t)state forAccountId:(id)id
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:a3];
-  [(NSMutableDictionary *)self->_standaloneStateByAccountId setObject:v8 forKeyedSubscript:v7];
+  idCopy = id;
+  v8 = [v6 numberWithUnsignedInteger:state];
+  [(NSMutableDictionary *)self->_standaloneStateByAccountId setObject:v8 forKeyedSubscript:idCopy];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v9 setObject:self->_standaloneStateByAccountId forKey:@"kSessionControllerStandaloneState"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:self->_standaloneStateByAccountId forKey:@"kSessionControllerStandaloneState"];
 }
 
-- (void)deleteStandaloneStateForAccountId:(id)a3
+- (void)deleteStandaloneStateForAccountId:(id)id
 {
-  if (a3)
+  if (id)
   {
     [(NSMutableDictionary *)self->_standaloneStateByAccountId removeObjectForKey:?];
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 setObject:self->_standaloneStateByAccountId forKey:@"kSessionControllerStandaloneState"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:self->_standaloneStateByAccountId forKey:@"kSessionControllerStandaloneState"];
   }
 }
 

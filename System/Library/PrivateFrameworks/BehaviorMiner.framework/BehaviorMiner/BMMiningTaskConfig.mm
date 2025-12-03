@@ -1,10 +1,10 @@
 @interface BMMiningTaskConfig
 - (BMMiningTaskConfig)init;
-- (BOOL)loadBMMiningTaskConfig:(id)a3;
+- (BOOL)loadBMMiningTaskConfig:(id)config;
 - (void)loadDefaultConfig;
 - (void)registerWithTrial;
 - (void)updateFactorLevels;
-- (void)updateFactorLevelsFromFilePath:(id)a3;
+- (void)updateFactorLevelsFromFilePath:(id)path;
 @end
 
 @implementation BMMiningTaskConfig
@@ -92,9 +92,9 @@ void __39__BMMiningTaskConfig_registerWithTrial__block_invoke(uint64_t a1)
     _os_log_impl(&dword_241ACA000, v3, OS_LOG_TYPE_INFO, "Try to load psConfig", buf, 2u);
   }
 
-  v4 = [(TRIClient *)self->_trialClient newTrackingId];
+  newTrackingId = [(TRIClient *)self->_trialClient newTrackingId];
   trialTrackingID = self->_trialTrackingID;
-  self->_trialTrackingID = v4;
+  self->_trialTrackingID = newTrackingId;
 
   v28 = -1;
   trialClient = self->_trialClient;
@@ -129,18 +129,18 @@ void __39__BMMiningTaskConfig_registerWithTrial__block_invoke(uint64_t a1)
   if (v7)
   {
     v17 = [(TRIClient *)self->_trialClient levelForFactor:@"psConfigFactor" withNamespaceName:@"COREML_SYSTEMS_PEOPLE_SUGGESTER"];
-    v18 = [v17 fileValue];
-    v19 = [v18 path];
+    fileValue = [v17 fileValue];
+    path = [fileValue path];
 
     v20 = BMLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v19;
+      v30 = path;
       _os_log_impl(&dword_241ACA000, v20, OS_LOG_TYPE_INFO, "Get config path:%@", buf, 0xCu);
     }
 
-    if (![(BMMiningTaskConfig *)self loadBMMiningTaskConfig:v19])
+    if (![(BMMiningTaskConfig *)self loadBMMiningTaskConfig:path])
     {
       v21 = BMLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -171,19 +171,19 @@ void __39__BMMiningTaskConfig_registerWithTrial__block_invoke(uint64_t a1)
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateFactorLevelsFromFilePath:(id)a3
+- (void)updateFactorLevelsFromFilePath:(id)path
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = BMLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = pathCopy;
     _os_log_impl(&dword_241ACA000, v5, OS_LOG_TYPE_INFO, "Updating from override config path:%@", &v9, 0xCu);
   }
 
-  if ([(BMMiningTaskConfig *)self loadBMMiningTaskConfig:v4])
+  if ([(BMMiningTaskConfig *)self loadBMMiningTaskConfig:pathCopy])
   {
     trialID = self->_trialID;
     self->_trialID = @"Override";
@@ -212,32 +212,32 @@ void __39__BMMiningTaskConfig_registerWithTrial__block_invoke(uint64_t a1)
   self->_trialID = @"Default";
 }
 
-- (BOOL)loadBMMiningTaskConfig:(id)a3
+- (BOOL)loadBMMiningTaskConfig:(id)config
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  configCopy = config;
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:configCopy];
   v15 = 0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5 error:&v15];
   v7 = v15;
   [(BMMiningTaskConfig *)self setBmMiningTaskConfig:v6];
 
-  v8 = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
+  bmMiningTaskConfig = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
 
-  if (v8)
+  if (bmMiningTaskConfig)
   {
-    v9 = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
-    v10 = [v9 objectForKeyedSubscript:@"interactionExtractedTopicFromAttachmentFactorInUse"];
+    bmMiningTaskConfig2 = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
+    v10 = [bmMiningTaskConfig2 objectForKeyedSubscript:@"interactionExtractedTopicFromAttachmentFactorInUse"];
     -[BMMiningTaskConfig setInteractionExtractedTopicFromAttachmentFactorInUse:](self, "setInteractionExtractedTopicFromAttachmentFactorInUse:", [v10 BOOLValue]);
 
     v11 = BMLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
+      bmMiningTaskConfig3 = [(BMMiningTaskConfig *)self bmMiningTaskConfig];
       *buf = 138412546;
-      v17 = v12;
+      v17 = bmMiningTaskConfig3;
       v18 = 2112;
-      v19 = v4;
+      v19 = configCopy;
       _os_log_impl(&dword_241ACA000, v11, OS_LOG_TYPE_INFO, "Loaded bmMiningTaskConfig with contents:%@, loaded from path:%@", buf, 0x16u);
     }
   }
@@ -247,12 +247,12 @@ void __39__BMMiningTaskConfig_registerWithTrial__block_invoke(uint64_t a1)
     v11 = BMLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(BMMiningTaskConfig *)v4 loadBMMiningTaskConfig:v7, v11];
+      [(BMMiningTaskConfig *)configCopy loadBMMiningTaskConfig:v7, v11];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v8 != 0;
+  return bmMiningTaskConfig != 0;
 }
 
 - (void)loadBMMiningTaskConfig:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

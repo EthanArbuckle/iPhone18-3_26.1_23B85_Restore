@@ -1,6 +1,6 @@
 @interface SearchUITrailerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SearchUITrailerViewAccessibility)initWithMediaItem:(id)a3 cardSectionView:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SearchUITrailerViewAccessibility)initWithMediaItem:(id)item cardSectionView:(id)view;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,12 +8,12 @@
 
 @implementation SearchUITrailerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUITrailerView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUITrailerView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUITrailerView" hasInstanceMethod:@"initWithMediaItem: cardSectionView:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUITrailerView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUITrailerView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUITrailerView" hasInstanceMethod:@"initWithMediaItem: cardSectionView:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,9 +31,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(SearchUITrailerViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -43,11 +43,11 @@
   return *MEMORY[0x29EDC7F70] | [(SearchUITrailerViewAccessibility *)&v3 accessibilityTraits];
 }
 
-- (SearchUITrailerViewAccessibility)initWithMediaItem:(id)a3 cardSectionView:(id)a4
+- (SearchUITrailerViewAccessibility)initWithMediaItem:(id)item cardSectionView:(id)view
 {
   v7.receiver = self;
   v7.super_class = SearchUITrailerViewAccessibility;
-  v4 = [(SearchUITrailerViewAccessibility *)&v7 initWithMediaItem:a3 cardSectionView:a4];
+  v4 = [(SearchUITrailerViewAccessibility *)&v7 initWithMediaItem:item cardSectionView:view];
   v5 = v4;
   if (v4)
   {

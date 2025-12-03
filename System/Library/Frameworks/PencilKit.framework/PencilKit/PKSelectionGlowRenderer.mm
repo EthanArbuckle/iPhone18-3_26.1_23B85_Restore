@@ -2,151 +2,151 @@
 + (id)sharedStrokePathCache;
 + (void)invalidateSharedStrokePathCache;
 - (CGPoint)editMenuLocation;
-- (PKSelectionGlowRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4;
-- (PKSelectionModificationKnob)_newKnobWithLocation:(uint64_t)a1;
-- (double)_widthForStroke:(double)a3 withDrawingScale:;
+- (PKSelectionGlowRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate;
+- (PKSelectionModificationKnob)_newKnobWithLocation:(uint64_t)location;
+- (double)_widthForStroke:(double)stroke withDrawingScale:;
 - (id)_accessibilityUserTestingChildren;
-- (id)_affordanceForLocationInSelectionView:(double)a3 inputType:(double)a4;
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3;
+- (id)_affordanceForLocationInSelectionView:(double)view inputType:(double)type;
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate;
 - (id)setKnobsVisible:(id *)result;
-- (uint64_t)_didEndDragKnobLocation:(uint64_t)a3 knobDragMode:(unint64_t)a4;
+- (uint64_t)_didEndDragKnobLocation:(uint64_t)location knobDragMode:(unint64_t)mode;
 - (uint64_t)_highlightColor;
 - (uint64_t)_resetKnobAppearance;
-- (void)_createPathAroundStrokes:(id *)a1 inDrawing:(void *)a2 isLive:(void *)a3 liveScrollOffset:(int)a4;
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6;
+- (void)_createPathAroundStrokes:(id *)strokes inDrawing:(void *)drawing isLive:(void *)live liveScrollOffset:(int)offset;
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset;
 - (void)_setupHighlightIfNecessary;
-- (void)_updateKnobAppearanceForDragAtKnobLocation:(double)a3 point:(double)a4 otherKnobPoint:(double)a5 selectionType:(double)a6 touchType:;
-- (void)_updateKnobAppearanceForDragAtKnobLocation:(unint64_t)a3 point:(uint64_t)a4 knobDragMode:(uint64_t)a5 selectionType:(double)a6 touchType:(double)a7;
-- (void)_willBeginDragKnobLocation:(unint64_t)a3 atPoint:(double)a4 knobDragMode:(double)a5;
+- (void)_updateKnobAppearanceForDragAtKnobLocation:(double)location point:(double)point otherKnobPoint:(double)knobPoint selectionType:(double)type touchType:;
+- (void)_updateKnobAppearanceForDragAtKnobLocation:(unint64_t)location point:(uint64_t)point knobDragMode:(uint64_t)mode selectionType:(double)type touchType:(double)touchType;
+- (void)_willBeginDragKnobLocation:(unint64_t)location atPoint:(double)point knobDragMode:(double)mode;
 @end
 
 @implementation PKSelectionGlowRenderer
 
 - (void)_setupHighlightIfNecessary
 {
-  if (a1 && !*(a1 + 8))
+  if (self && !*(self + 8))
   {
-    v2 = [MEMORY[0x1E6979398] layer];
-    v3 = *(a1 + 8);
-    *(a1 + 8) = v2;
+    layer = [MEMORY[0x1E6979398] layer];
+    v3 = *(self + 8);
+    *(self + 8) = layer;
 
-    v4 = [MEMORY[0x1E6979398] layer];
-    v5 = *(a1 + 16);
-    *(a1 + 16) = v4;
+    layer2 = [MEMORY[0x1E6979398] layer];
+    v5 = *(self + 16);
+    *(self + 16) = layer2;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 88));
-    v7 = [*(a1 + 80) drawing];
-    [WeakRetained scaleForDrawing:v7];
+    WeakRetained = objc_loadWeakRetained((self + 88));
+    drawing = [*(self + 80) drawing];
+    [WeakRetained scaleForDrawing:drawing];
     v9 = v8;
 
-    [*(a1 + 8) setContentsScale:v9];
-    [*(a1 + 8) addSublayer:*(a1 + 16)];
-    if (!*(a1 + 24))
+    [*(self + 8) setContentsScale:v9];
+    [*(self + 8) addSublayer:*(self + 16)];
+    if (!*(self + 24))
     {
-      v10 = [(PKSelectionGlowRenderer *)a1 _newKnobWithLocation:?];
-      v11 = *(a1 + 24);
-      *(a1 + 24) = v10;
+      v10 = [(PKSelectionGlowRenderer *)self _newKnobWithLocation:?];
+      v11 = *(self + 24);
+      *(self + 24) = v10;
 
-      [*(a1 + 8) addSublayer:*(a1 + 24)];
+      [*(self + 8) addSublayer:*(self + 24)];
     }
 
-    if (!*(a1 + 32))
+    if (!*(self + 32))
     {
-      v12 = [(PKSelectionGlowRenderer *)a1 _newKnobWithLocation:?];
-      v13 = *(a1 + 32);
-      *(a1 + 32) = v12;
+      v12 = [(PKSelectionGlowRenderer *)self _newKnobWithLocation:?];
+      v13 = *(self + 32);
+      *(self + 32) = v12;
 
-      [*(a1 + 8) addSublayer:*(a1 + 32)];
+      [*(self + 8) addSublayer:*(self + 32)];
     }
 
-    v14 = [*(a1 + 80) strokes];
-    -[PKSelectionGlowRenderer setKnobsVisible:](a1, [v14 count] != 0);
+    strokes = [*(self + 80) strokes];
+    -[PKSelectionGlowRenderer setKnobsVisible:](self, [strokes count] != 0);
 
-    v15 = *(a1 + 80);
+    v15 = *(self + 80);
     if (v15)
     {
       [v15 bounds];
       v18 = [MEMORY[0x1E69DC728] bezierPathWithRect:{0.0, 0.0, v9 * v16, v9 * v17}];
-      v19 = *(a1 + 72);
-      *(a1 + 72) = v18;
+      v19 = *(self + 72);
+      *(self + 72) = v18;
       v20 = v18;
 
-      v22 = [*(a1 + 80) strokes];
-      v21 = [*(a1 + 80) drawing];
+      strokes2 = [*(self + 80) strokes];
+      drawing2 = [*(self + 80) drawing];
 
-      [PKSelectionGlowRenderer _createPathAroundStrokes:a1 inDrawing:v22 isLive:v21 liveScrollOffset:0];
+      [PKSelectionGlowRenderer _createPathAroundStrokes:self inDrawing:strokes2 isLive:drawing2 liveScrollOffset:0];
     }
   }
 }
 
 - (uint64_t)_highlightColor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
-  v3 = [WeakRetained selectionColor];
+  WeakRetained = objc_loadWeakRetained((self + 88));
+  selectionColor = [WeakRetained selectionColor];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"internalSettings.drawing.enableLassolessSelectionDebugColors"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.enableLassolessSelectionDebugColors"];
 
   if (v5)
   {
-    v6 = objc_loadWeakRetained((a1 + 88));
-    v7 = [v6 currentIntersectionAlgorithm];
+    v6 = objc_loadWeakRetained((self + 88));
+    currentIntersectionAlgorithm = [v6 currentIntersectionAlgorithm];
 
-    if (v7 > 1)
+    if (currentIntersectionAlgorithm > 1)
     {
-      if (v7 == 2)
+      if (currentIntersectionAlgorithm == 2)
       {
-        v8 = [MEMORY[0x1E69DC888] systemOrangeColor];
+        systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
         goto LABEL_12;
       }
 
-      if (v7 == 3)
+      if (currentIntersectionAlgorithm == 3)
       {
-        v8 = [MEMORY[0x1E69DC888] systemYellowColor];
+        systemOrangeColor = [MEMORY[0x1E69DC888] systemYellowColor];
         goto LABEL_12;
       }
     }
 
     else
     {
-      if (!v7)
+      if (!currentIntersectionAlgorithm)
       {
-        v8 = [MEMORY[0x1E69DC888] systemRedColor];
+        systemOrangeColor = [MEMORY[0x1E69DC888] systemRedColor];
         goto LABEL_12;
       }
 
-      if (v7 == 1)
+      if (currentIntersectionAlgorithm == 1)
       {
-        v8 = [MEMORY[0x1E69DC888] systemBlueColor];
+        systemOrangeColor = [MEMORY[0x1E69DC888] systemBlueColor];
 LABEL_12:
-        v9 = v8;
-        v10 = [v8 CGColor];
+        v9 = systemOrangeColor;
+        cGColor = [systemOrangeColor CGColor];
 
-        return v10;
+        return cGColor;
       }
     }
   }
 
-  return v3;
+  return selectionColor;
 }
 
-- (PKSelectionGlowRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4
+- (PKSelectionGlowRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  selectionCopy = selection;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKSelectionGlowRenderer;
   v9 = [(PKSelectionGlowRenderer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_strokeSelection, a3);
-    objc_storeWeak(&v10->_renderingDelegate, v8);
+    objc_storeStrong(&v9->_strokeSelection, selection);
+    objc_storeWeak(&v10->_renderingDelegate, delegateCopy);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     tiles = v10->_tiles;
     v10->_tiles = v11;
@@ -155,16 +155,16 @@ LABEL_12:
   return v10;
 }
 
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = PKSelectionGlowRenderer;
   v5 = [(PKSelectionGlowRenderer *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_renderingDelegate, v4);
+    objc_storeWeak(&v5->_renderingDelegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     tiles = v6->_tiles;
     v6->_tiles = v7;
@@ -207,13 +207,13 @@ void __48__PKSelectionGlowRenderer_sharedStrokePathCache__block_invoke()
   [(PKLRUCache *)v0 removeAllObjects];
 }
 
-- (id)_affordanceForLocationInSelectionView:(double)a3 inputType:(double)a4
+- (id)_affordanceForLocationInSelectionView:(double)view inputType:(double)type
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 32);
-    v28[0] = *(a1 + 24);
+    v7 = *(self + 32);
+    v28[0] = *(self + 24);
     v28[1] = v7;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v23 = 0u;
@@ -258,7 +258,7 @@ void __48__PKSelectionGlowRenderer_sharedStrokePathCache__block_invoke()
             v31.size.height = height;
             MidY = CGRectGetMidY(v31);
             [v13 frame];
-            if (sqrt((a4 - (MidY + v21)) * (a4 - (MidY + v21)) + (a3 - (MidX + v20)) * (a3 - (MidX + v20))) < v11 + width * 0.5 && ![v13 isHidden])
+            if (sqrt((type - (MidY + v21)) * (type - (MidY + v21)) + (view - (MidX + v20)) * (view - (MidX + v20))) < v11 + width * 0.5 && ![v13 isHidden])
             {
               v9 = v13;
               goto LABEL_16;
@@ -296,19 +296,19 @@ LABEL_16:
   return result;
 }
 
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [(PKSelectionModificationKnob *)self->_leftKnob isHidden];
-  if (v10 && v8)
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  isHidden = [(PKSelectionModificationKnob *)self->_leftKnob isHidden];
+  if (strokesCopy && drawingCopy)
   {
-    if (v9)
+    if (isHidden)
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
       [(PKSelectionGlowRenderer *)self _setupHighlightIfNecessary];
-      [PKSelectionGlowRenderer _createPathAroundStrokes:v10 inDrawing:v8 isLive:1 liveScrollOffset:?];
+      [PKSelectionGlowRenderer _createPathAroundStrokes:strokesCopy inDrawing:drawingCopy isLive:1 liveScrollOffset:?];
       [(PKSelectionGlowRenderer *)&self->super.isa setKnobsVisible:?];
       [MEMORY[0x1E6979518] commit];
     }
@@ -316,7 +316,7 @@ LABEL_16:
     else
     {
       [(PKSelectionGlowRenderer *)self _setupHighlightIfNecessary];
-      [PKSelectionGlowRenderer _createPathAroundStrokes:v10 inDrawing:v8 isLive:1 liveScrollOffset:?];
+      [PKSelectionGlowRenderer _createPathAroundStrokes:strokesCopy inDrawing:drawingCopy isLive:1 liveScrollOffset:?];
       [(PKSelectionGlowRenderer *)&self->super.isa setKnobsVisible:?];
     }
   }
@@ -336,35 +336,35 @@ LABEL_16:
     v3 = result;
     [result[3] setHidden:a2 ^ 1u];
     [*(v3 + 32) setHidden:a2 ^ 1u];
-    v4 = [(PKSelectionGlowRenderer *)v3 _highlightColor];
-    [(PKSelectionModificationKnob *)*(v3 + 24) setKnobColor:v4];
-    v5 = [(PKSelectionGlowRenderer *)v3 _highlightColor];
+    _highlightColor = [(PKSelectionGlowRenderer *)v3 _highlightColor];
+    [(PKSelectionModificationKnob *)*(v3 + 24) setKnobColor:_highlightColor];
+    _highlightColor2 = [(PKSelectionGlowRenderer *)v3 _highlightColor];
     v6 = *(v3 + 32);
 
-    return [(PKSelectionModificationKnob *)v6 setKnobColor:v5];
+    return [(PKSelectionModificationKnob *)v6 setKnobColor:_highlightColor2];
   }
 
   return result;
 }
 
-- (void)_createPathAroundStrokes:(id *)a1 inDrawing:(void *)a2 isLive:(void *)a3 liveScrollOffset:(int)a4
+- (void)_createPathAroundStrokes:(id *)strokes inDrawing:(void *)drawing isLive:(void *)live liveScrollOffset:(int)offset
 {
   v232 = *MEMORY[0x1E69E9840];
-  v7 = a2;
-  v8 = a3;
-  if (a1)
+  drawingCopy = drawing;
+  liveCopy = live;
+  if (strokes)
   {
-    if (v7 && [v7 count])
+    if (drawingCopy && [drawingCopy count])
     {
-      v159 = v8;
-      v9 = v8;
+      v159 = liveCopy;
+      v9 = liveCopy;
       v10 = *(MEMORY[0x1E695EFD0] + 16);
       *&v222.a = *MEMORY[0x1E695EFD0];
       *&v222.c = v10;
       *&v222.tx = *(MEMORY[0x1E695EFD0] + 32);
-      if (a4)
+      if (offset)
       {
-        WeakRetained = objc_loadWeakRetained(a1 + 11);
+        WeakRetained = objc_loadWeakRetained(strokes + 11);
         v12 = WeakRetained;
         if (WeakRetained)
         {
@@ -381,12 +381,12 @@ LABEL_16:
 
       else
       {
-        [a1[10] bounds];
+        [strokes[10] bounds];
         v14 = v13;
         v16 = v15;
-        v17 = objc_loadWeakRetained(a1 + 11);
-        v18 = [a1[10] drawing];
-        [v17 scaleForDrawing:v18];
+        v17 = objc_loadWeakRetained(strokes + 11);
+        drawing = [strokes[10] drawing];
+        [v17 scaleForDrawing:drawing];
         v20 = v19;
 
         memset(&v225, 0, sizeof(v225));
@@ -396,7 +396,7 @@ LABEL_16:
         CGAffineTransformConcat(&v222, &t1, &t2);
       }
 
-      v21 = objc_loadWeakRetained(a1 + 11);
+      v21 = objc_loadWeakRetained(strokes + 11);
       [v21 scaleForDrawing:v9];
       v23 = v22;
 
@@ -404,18 +404,18 @@ LABEL_16:
       aBlock[1] = 3221225472;
       aBlock[2] = __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liveScrollOffset___block_invoke;
       aBlock[3] = &unk_1E82D6DF8;
-      aBlock[4] = a1;
+      aBlock[4] = strokes;
       *&aBlock[5] = v23;
       v221 = v222;
       v174 = _Block_copy(aBlock);
-      v24 = objc_loadWeakRetained(a1 + 11);
+      v24 = objc_loadWeakRetained(strokes + 11);
       [v24 attachmentBoundsForDrawing:v9];
       r2_24 = v26;
       v190 = v25;
       r2_8 = v28;
       r2_16 = v27;
 
-      v29 = objc_loadWeakRetained(a1 + 11);
+      v29 = objc_loadWeakRetained(strokes + 11);
       v161 = v29;
       if (v29)
       {
@@ -427,13 +427,13 @@ LABEL_16:
         v30 = 0;
       }
 
-      v31 = [v9 uuid];
-      v32 = [v30 _attachmentForUUID:v31];
+      uuid = [v9 uuid];
+      v32 = [v30 _attachmentForUUID:uuid];
 
-      if (a4 && [v32 isExternalAttachment])
+      if (offset && [v32 isExternalAttachment])
       {
-        v33 = [v32 viewRep];
-        [v33 frame];
+        viewRep = [v32 viewRep];
+        [viewRep frame];
         r2_24 = v35;
         v190 = v34;
         r2_8 = v37;
@@ -449,7 +449,7 @@ LABEL_16:
       v219 = 0u;
       v216 = 0u;
       v217 = 0u;
-      v41 = v7;
+      v41 = drawingCopy;
       v42 = [v41 countByEnumeratingWithState:&v216 objects:v231 count:16];
       if (v42)
       {
@@ -497,8 +497,8 @@ LABEL_16:
         while (v43);
       }
 
-      v157 = a4;
-      v160 = v7;
+      offsetCopy = offset;
+      v160 = drawingCopy;
       v165 = v41;
 
       v236.origin.y = r2_24;
@@ -515,12 +515,12 @@ LABEL_16:
       r2_16a = v237.size.width;
       v51 = v237.size.height;
       v52 = MEMORY[0x1E695DFA8];
-      v53 = [a1[8] allKeys];
-      v163 = [v52 setWithArray:v53];
+      allKeys = [strokes[8] allKeys];
+      v163 = [v52 setWithArray:allKeys];
 
-      r2_24a = a1;
+      r2_24a = strokes;
       LODWORD(v54) = 1050253722;
-      [a1[2] setOpacity:v54];
+      [strokes[2] setOpacity:v54];
       v164 = [MEMORY[0x1E695DFA8] set];
       r2a = vcvtpd_s64_f64(v51 * 0.00390625);
       if (r2a >= 1)
@@ -549,7 +549,7 @@ LABEL_16:
               v61 = v239.size.height;
               if (!CGRectIsNull(v239))
               {
-                v62 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
                 v212 = 0u;
                 v213 = 0u;
                 v214 = 0u;
@@ -577,7 +577,7 @@ LABEL_16:
                       v253.size.height = v61;
                       if (CGRectIntersectsRect(v240, v253))
                       {
-                        [v62 addObject:v68];
+                        [array addObject:v68];
                       }
                     }
 
@@ -587,9 +587,9 @@ LABEL_16:
                   while (v65);
                 }
 
-                if ([v62 count])
+                if ([array count])
                 {
-                  v69 = [[PKSelectionTileProperties alloc] initWithFrame:v62 strokes:v58, v59, v60, v61];
+                  v69 = [[PKSelectionTileProperties alloc] initWithFrame:array strokes:v58, v59, v60, v61];
                   [v164 addObject:v69];
                 }
               }
@@ -718,8 +718,8 @@ LABEL_16:
 
                   v93 = *(*(&v196 + 1) + 8 * ii);
                   v94 = +[PKSelectionGlowRenderer sharedStrokePathCache];
-                  v95 = [v93 _strokeUUID];
-                  v96 = [(PKLRUCache *)v94 objectForKey:v95];
+                  _strokeUUID = [v93 _strokeUUID];
+                  v96 = [(PKLRUCache *)v94 objectForKey:_strokeUUID];
 
                   if (v96)
                   {
@@ -732,11 +732,11 @@ LABEL_16:
                     v97 = [v93 newSelectionPathRepresentationWithPointsCount:&v225];
                     v98 = +[PKSelectionGlowRenderer sharedStrokePathCache];
                     v99 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v97];
-                    v100 = [v93 _strokeUUID];
-                    [(PKLRUCache *)v98 setObject:v99 forKey:v100 cost:16 * SLODWORD(v225.a)];
+                    _strokeUUID2 = [v93 _strokeUUID];
+                    [(PKLRUCache *)v98 setObject:v99 forKey:_strokeUUID2 cost:16 * SLODWORD(v225.a)];
                   }
 
-                  v101 = [MEMORY[0x1E69794A0] layer];
+                  layer = [MEMORY[0x1E69794A0] layer];
                   memset(&v225, 0, sizeof(v225));
                   [v88 frame];
                   v103 = -v102;
@@ -760,35 +760,35 @@ LABEL_16:
                   CGAffineTransformConcat(&t1, &v195, &v194);
                   t2 = t1;
                   v105 = CGPathCreateMutableCopyByTransformingPath(v97, &t2);
-                  v106 = [MEMORY[0x1E69DCEB0] mainScreen];
-                  [v106 scale];
-                  [v101 setContentsScale:?];
+                  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+                  [mainScreen scale];
+                  [layer setContentsScale:?];
 
-                  [v101 setPath:v105];
-                  v107 = [v93 _strokeMask];
+                  [layer setPath:v105];
+                  _strokeMask = [v93 _strokeMask];
 
-                  if (v107)
+                  if (_strokeMask)
                   {
                     v86 = r2_24a;
-                    [v101 setFillColor:-[PKSelectionGlowRenderer _highlightColor](r2_24a)];
+                    [layer setFillColor:-[PKSelectionGlowRenderer _highlightColor](r2_24a)];
                     v108 = 10.0;
                   }
 
                   else
                   {
-                    [v101 setFillColor:0];
+                    [layer setFillColor:0];
                     v109 = v93;
                     v86 = r2_24a;
                     v108 = [(PKSelectionGlowRenderer *)r2_24a _widthForStroke:v109 withDrawingScale:v23]+ 10.0;
                   }
 
-                  [v101 setLineWidth:v108];
-                  [v101 setLineCap:r2_16b];
-                  [v101 setLineJoin:r2_8b];
-                  [v101 setStrokeColor:-[PKSelectionGlowRenderer _highlightColor](v86)];
+                  [layer setLineWidth:v108];
+                  [layer setLineCap:r2_16b];
+                  [layer setLineJoin:r2_8b];
+                  [layer setStrokeColor:-[PKSelectionGlowRenderer _highlightColor](v86)];
                   CGPathRelease(v97);
                   CGPathRelease(v105);
-                  [v192 addSublayer:v101];
+                  [v192 addSublayer:layer];
                 }
 
                 v90 = [r2b countByEnumeratingWithState:&v196 objects:v226 count:16];
@@ -807,19 +807,19 @@ LABEL_16:
         while (v170);
       }
 
-      v7 = v160;
+      drawingCopy = v160;
       v110 = v162;
-      if (v157 && v162 && [v162 isExternalAttachment])
+      if (offsetCopy && v162 && [v162 isExternalAttachment])
       {
-        v111 = [v86 adornmentLayer];
-        v112 = v111;
-        if (v161 && v111 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
+        adornmentLayer = [v86 adornmentLayer];
+        v112 = adornmentLayer;
+        if (v161 && adornmentLayer && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v113 = [v162 contentWindowCoordinateSpace];
-          v114 = [v162 contentScaledCoordinateSpace];
+          contentWindowCoordinateSpace = [v162 contentWindowCoordinateSpace];
+          contentScaledCoordinateSpace = [v162 contentScaledCoordinateSpace];
           v115 = objc_loadWeakRetained(v161 + 15);
           [v115 frame];
-          [v113 convertRect:v114 toCoordinateSpace:?];
+          [contentWindowCoordinateSpace convertRect:contentScaledCoordinateSpace toCoordinateSpace:?];
           [v112 setFrame:?];
 
           if (objc_opt_respondsToSelector())
@@ -942,9 +942,9 @@ LABEL_16:
         v144 = tx + r2c * MinY + r2_24b * MaxX;
         v145 = r2_8c + r2_16c * MinY + b * MaxX;
         v146 = objc_loadWeakRetained((v86 + 88));
-        v147 = [v146 isRTL];
+        isRTL = [v146 isRTL];
 
-        if (v147)
+        if (isRTL)
         {
           v148 = -1.0;
         }
@@ -962,26 +962,26 @@ LABEL_16:
         v110 = v162;
       }
 
-      v8 = v159;
+      liveCopy = v159;
     }
 
     else
     {
-      [a1[2] setSublayers:0];
-      [a1[8] removeAllObjects];
+      [strokes[2] setSublayers:0];
+      [strokes[8] removeAllObjects];
     }
   }
 }
 
-- (PKSelectionModificationKnob)_newKnobWithLocation:(uint64_t)a1
+- (PKSelectionModificationKnob)_newKnobWithLocation:(uint64_t)location
 {
   v4 = [PKSelectionModificationKnob alloc];
-  v5 = [(PKSelectionGlowRenderer *)a1 _highlightColor];
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
-  v7 = [WeakRetained isRTL];
+  _highlightColor = [(PKSelectionGlowRenderer *)location _highlightColor];
+  WeakRetained = objc_loadWeakRetained((location + 88));
+  isRTL = [WeakRetained isRTL];
   if (v4)
   {
-    v8 = v7;
+    v8 = isRTL;
     v19.receiver = v4;
     v19.super_class = PKSelectionModificationKnob;
     v9 = objc_msgSendSuper2(&v19, sel_init);
@@ -990,15 +990,15 @@ LABEL_16:
     {
       LODWORD(v10) = 1.0;
       [(PKSelectionModificationKnob *)v9 setOpacity:v10];
-      v11 = [MEMORY[0x1E6979398] layer];
+      layer = [MEMORY[0x1E6979398] layer];
       knobLayer = v4->_knobLayer;
-      v4->_knobLayer = v11;
+      v4->_knobLayer = layer;
 
-      v13 = [MEMORY[0x1E6979398] layer];
+      layer2 = [MEMORY[0x1E6979398] layer];
       knobTailLayer = v4->_knobTailLayer;
-      v4->_knobTailLayer = v13;
+      v4->_knobTailLayer = layer2;
 
-      v4->_knobColor = CGColorRetain(v5);
+      v4->_knobColor = CGColorRetain(_highlightColor);
       [(PKSelectionModificationKnob *)&v4->super.super.isa _updateKnobAppearance];
       v4->_isRTL = v8;
       v4->_knobLocation = a2;
@@ -1008,8 +1008,8 @@ LABEL_16:
     }
   }
 
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v15 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v16 = 14.0;
   }
@@ -1020,23 +1020,23 @@ LABEL_16:
   }
 
   [(PKSelectionModificationKnob *)v4 setFrame:0.0, 0.0, v16, v16 + v16];
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [(PKSelectionModificationKnob *)v4 setContentsScale:?];
 
   return v4;
 }
 
-- (double)_widthForStroke:(double)a3 withDrawingScale:
+- (double)_widthForStroke:(double)stroke withDrawingScale:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 _maxWidthForStroke];
     v8 = v7;
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     v10 = 0.0;
     v11 = 0.0;
@@ -1049,16 +1049,16 @@ LABEL_16:
 
     v12 = sqrt(v10 * v10 + v11 * v11);
     v13 = [v6 ink];
-    v14 = [v13 behavior];
-    v15 = [v14 renderingDescriptor];
-    v16 = [v15 type];
+    behavior = [v13 behavior];
+    renderingDescriptor = [behavior renderingDescriptor];
+    type = [renderingDescriptor type];
     v17 = 2.0;
-    if (v16)
+    if (type)
     {
       v17 = 0.0;
     }
 
-    v18 = (v17 + v8 * v12) * a3;
+    v18 = (v17 + v8 * v12) * stroke;
   }
 
   else
@@ -1091,35 +1091,35 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
   CGRectApplyAffineTransform(v16, &v14);
 }
 
-- (void)_willBeginDragKnobLocation:(unint64_t)a3 atPoint:(double)a4 knobDragMode:(double)a5
+- (void)_willBeginDragKnobLocation:(unint64_t)location atPoint:(double)point knobDragMode:(double)mode
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 40) = a3;
-    *(a1 + 56) = a2;
-    *(a1 + 48) = 1;
-    if (a3 <= 2)
+    *(self + 40) = location;
+    *(self + 56) = a2;
+    *(self + 48) = 1;
+    if (location <= 2)
     {
-      [(PKSelectionModificationKnob *)*(a1 + 32) didBeginBrushSelection];
-      [(PKSelectionModificationKnob *)*(a1 + 24) didBeginBrushSelection];
-      [(PKSelectionGlowRenderer *)a1 _updateKnobAppearanceForDragAtKnobLocation:a2 point:a3 knobDragMode:1 selectionType:2 touchType:a4, a5];
+      [(PKSelectionModificationKnob *)*(self + 32) didBeginBrushSelection];
+      [(PKSelectionModificationKnob *)*(self + 24) didBeginBrushSelection];
+      [(PKSelectionGlowRenderer *)self _updateKnobAppearanceForDragAtKnobLocation:a2 point:location knobDragMode:1 selectionType:2 touchType:point, mode];
       v11 = 32;
       if (!a2)
       {
         v11 = 24;
       }
 
-      v13 = *(a1 + v11);
+      v13 = *(self + v11);
       [v13 setHidden:0];
-      v12 = [(PKSelectionGlowRenderer *)a1 _highlightColor];
-      [(PKSelectionModificationKnob *)v13 setKnobColor:v12];
+      _highlightColor = [(PKSelectionGlowRenderer *)self _highlightColor];
+      [(PKSelectionModificationKnob *)v13 setKnobColor:_highlightColor];
     }
   }
 }
 
-- (void)_updateKnobAppearanceForDragAtKnobLocation:(unint64_t)a3 point:(uint64_t)a4 knobDragMode:(uint64_t)a5 selectionType:(double)a6 touchType:(double)a7
+- (void)_updateKnobAppearanceForDragAtKnobLocation:(unint64_t)location point:(uint64_t)point knobDragMode:(uint64_t)mode selectionType:(double)type touchType:(double)touchType
 {
-  if (a1)
+  if (self)
   {
     v13 = 32;
     if (!a2)
@@ -1127,41 +1127,41 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
       v13 = 24;
     }
 
-    v14 = *(a1 + v13);
-    if (a3 > 2)
+    v14 = *(self + v13);
+    if (location > 2)
     {
-      [(PKSelectionGlowRenderer *)a1 _resetKnobAppearance];
+      [(PKSelectionGlowRenderer *)self _resetKnobAppearance];
       [v14 frame];
       v25 = v24;
       v27 = v26;
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      [v14 setFrame:{a6 - v25 * 0.5, a7 - v27 * 0.5, v25, v27}];
+      [v14 setFrame:{type - v25 * 0.5, touchType - v27 * 0.5, v25, v27}];
       [MEMORY[0x1E6979518] commit];
     }
 
     else
     {
       v16 = 5.75;
-      if (a5 == 2)
+      if (mode == 2)
       {
         v16 = 3.5;
       }
 
       v17 = 6.5;
       v18 = 5.0;
-      if (a5 == 2)
+      if (mode == 2)
       {
         v17 = 5.0;
         v18 = 2.0;
       }
 
-      if (a4 == 1)
+      if (point == 1)
       {
         v17 = v18;
       }
 
-      if (a4 != 2)
+      if (point != 2)
       {
         v16 = v17;
       }
@@ -1173,12 +1173,12 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
       v22 = v21;
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      [v14 setFrame:{a6 - v20 * 0.5, a7 - v22 * 0.5, v20, v22}];
+      [v14 setFrame:{type - v20 * 0.5, touchType - v22 * 0.5, v20, v22}];
       [MEMORY[0x1E6979518] commit];
-      v23 = *(a1 + 24);
+      v23 = *(self + 24);
       if (v23 == v14)
       {
-        v23 = *(a1 + 32);
+        v23 = *(self + 32);
       }
 
       [v23 setOpacity:0.0];
@@ -1186,9 +1186,9 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
   }
 }
 
-- (void)_updateKnobAppearanceForDragAtKnobLocation:(double)a3 point:(double)a4 otherKnobPoint:(double)a5 selectionType:(double)a6 touchType:
+- (void)_updateKnobAppearanceForDragAtKnobLocation:(double)location point:(double)point otherKnobPoint:(double)knobPoint selectionType:(double)type touchType:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
@@ -1200,7 +1200,7 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
       v12 = 24;
     }
 
-    v13 = *(a1 + v12);
+    v13 = *(self + v12);
     if (a2)
     {
       v14 = 24;
@@ -1212,16 +1212,16 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
     }
 
     v28 = v13;
-    v15 = *(a1 + v14);
-    [(PKSelectionGlowRenderer *)a1 _resetKnobAppearance];
+    v15 = *(self + v14);
+    [(PKSelectionGlowRenderer *)self _resetKnobAppearance];
     v17 = 1.0;
     if (a2 == 1)
     {
       v17 = -1.0;
     }
 
-    v18 = a5 + v17;
-    v19 = a6 + v17;
+    v18 = knobPoint + v17;
+    v19 = type + v17;
     [v28 frame];
     v21 = v20;
     v23 = v22;
@@ -1230,7 +1230,7 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
     v27 = v26;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [v28 setFrame:{a3 - v21 * 0.5, a4 - v23 * 0.5, v21, v23}];
+    [v28 setFrame:{location - v21 * 0.5, point - v23 * 0.5, v21, v23}];
     [v15 setFrame:{v18 - v25 * 0.5, v19 - v27 * 0.5, v25, v27}];
     [MEMORY[0x1E6979518] commit];
   }
@@ -1278,19 +1278,19 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
   return result;
 }
 
-- (uint64_t)_didEndDragKnobLocation:(uint64_t)a3 knobDragMode:(unint64_t)a4
+- (uint64_t)_didEndDragKnobLocation:(uint64_t)location knobDragMode:(unint64_t)mode
 {
   if (result)
   {
     v4 = result;
-    if (a4 <= 2)
+    if (mode <= 2)
     {
       [(PKSelectionModificationKnob *)*(result + 32) didEndBrushSelection];
       [(PKSelectionModificationKnob *)*(v4 + 24) didEndBrushSelection];
     }
 
-    v6 = [*(v4 + 80) strokes];
-    -[PKSelectionGlowRenderer setKnobsVisible:](v4, [v6 count] != 0);
+    strokes = [*(v4 + 80) strokes];
+    -[PKSelectionGlowRenderer setKnobsVisible:](v4, [strokes count] != 0);
 
     *(v4 + 48) = 0;
 
@@ -1305,8 +1305,8 @@ void __86__PKSelectionGlowRenderer__createPathAroundStrokes_inDrawing_isLive_liv
   v3 = MEMORY[0x1E695DF70];
   v11.receiver = self;
   v11.super_class = PKSelectionGlowRenderer;
-  v4 = [(PKSelectionGlowRenderer *)&v11 _accessibilityUserTestingChildren];
-  v5 = [v3 arrayWithArray:v4];
+  _accessibilityUserTestingChildren = [(PKSelectionGlowRenderer *)&v11 _accessibilityUserTestingChildren];
+  v5 = [v3 arrayWithArray:_accessibilityUserTestingChildren];
 
   leftKnob = self->_leftKnob;
   if (leftKnob)

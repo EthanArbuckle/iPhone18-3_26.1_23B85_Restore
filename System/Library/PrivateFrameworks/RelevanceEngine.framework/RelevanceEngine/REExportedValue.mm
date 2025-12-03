@@ -1,21 +1,21 @@
 @interface REExportedValue
-+ (id)_exportedValueForTable:(id)a3;
-+ (id)exportedValueForArray:(id)a3;
-+ (id)exportedValueForDate:(id)a3;
-+ (id)exportedValueForDictionary:(id)a3;
-+ (id)exportedValueForNumber:(id)a3;
-+ (id)exportedValueForObject:(id)a3;
-+ (id)exportedValueForString:(id)a3;
++ (id)_exportedValueForTable:(id)table;
++ (id)exportedValueForArray:(id)array;
++ (id)exportedValueForDate:(id)date;
++ (id)exportedValueForDictionary:(id)dictionary;
++ (id)exportedValueForNumber:(id)number;
++ (id)exportedValueForObject:(id)object;
++ (id)exportedValueForString:(id)string;
 @end
 
 @implementation REExportedValue
 
-+ (id)exportedValueForArray:(id)a3
++ (id)exportedValueForArray:(id)array
 {
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [[REExportedArrayValue alloc] initWithArray:v3];
+    v4 = [[REExportedArrayValue alloc] initWithArray:arrayCopy];
   }
 
   else
@@ -28,12 +28,12 @@
   return v5;
 }
 
-+ (id)exportedValueForDictionary:(id)a3
++ (id)exportedValueForDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [[REExportedDictionaryValue alloc] initWithDictionary:v3];
+    v4 = [[REExportedDictionaryValue alloc] initWithDictionary:dictionaryCopy];
   }
 
   else
@@ -46,12 +46,12 @@
   return v5;
 }
 
-+ (id)exportedValueForDate:(id)a3
++ (id)exportedValueForDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v4 = [[REExportedDateValue alloc] initWithDate:v3];
+    v4 = [[REExportedDateValue alloc] initWithDate:dateCopy];
   }
 
   else
@@ -64,12 +64,12 @@
   return v5;
 }
 
-+ (id)exportedValueForNumber:(id)a3
++ (id)exportedValueForNumber:(id)number
 {
-  v3 = a3;
-  if (v3)
+  numberCopy = number;
+  if (numberCopy)
   {
-    v4 = [[REExportedNumberValue alloc] initWithNumber:v3];
+    v4 = [[REExportedNumberValue alloc] initWithNumber:numberCopy];
   }
 
   else
@@ -82,12 +82,12 @@
   return v5;
 }
 
-+ (id)exportedValueForString:(id)a3
++ (id)exportedValueForString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [[REExportedStringValue alloc] initWithString:v3];
+    v4 = [[REExportedStringValue alloc] initWithString:stringCopy];
   }
 
   else
@@ -100,16 +100,16 @@
   return v5;
 }
 
-+ (id)exportedValueForObject:(id)a3
++ (id)exportedValueForObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v5 = +[REExportedNullValue sharedInstance];
     goto LABEL_26;
   }
 
-  v5 = v4;
+  v5 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -126,7 +126,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 _exportedValueForTable:v5];
+    v7 = [self _exportedValueForTable:v5];
 LABEL_24:
     v9 = v7;
     goto LABEL_25;
@@ -135,35 +135,35 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 exportedValueForString:v5];
+    v7 = [self exportedValueForString:v5];
     goto LABEL_24;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 exportedValueForNumber:v5];
+    v7 = [self exportedValueForNumber:v5];
     goto LABEL_24;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 exportedValueForArray:v5];
+    v7 = [self exportedValueForArray:v5];
     goto LABEL_24;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 exportedValueForDictionary:v5];
+    v7 = [self exportedValueForDictionary:v5];
     goto LABEL_24;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 exportedValueForDate:v5];
+    v7 = [self exportedValueForDate:v5];
     goto LABEL_24;
   }
 
@@ -187,8 +187,8 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v8 = [(objc_class *)v5 allObjects];
-  v9 = [a1 exportedValueForArray:v8];
+  allObjects = [(objc_class *)v5 allObjects];
+  v9 = [self exportedValueForArray:allObjects];
 
 LABEL_25:
   v5 = v9;
@@ -197,36 +197,36 @@ LABEL_26:
   return v5;
 }
 
-+ (id)_exportedValueForTable:(id)a3
++ (id)_exportedValueForTable:(id)table
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  tableCopy = table;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = [@"$attrib-" stringByAppendingString:@"type"];
-  [v5 setObject:@"table" forKeyedSubscript:v6];
+  [dictionary setObject:@"table" forKeyedSubscript:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "sortable")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(tableCopy, "sortable")}];
   v8 = [@"$attrib-" stringByAppendingString:@"sortable"];
-  [v5 setObject:v7 forKeyedSubscript:v8];
+  [dictionary setObject:v7 forKeyedSubscript:v8];
 
-  v9 = [v4 header];
-  [v5 setObject:v9 forKeyedSubscript:@"header"];
+  header = [tableCopy header];
+  [dictionary setObject:header forKeyedSubscript:@"header"];
 
-  if ([v4 rowsCount])
+  if ([tableCopy rowsCount])
   {
     v10 = 0;
     do
     {
-      v11 = [v4 rowAtIndex:v10];
+      v11 = [tableCopy rowAtIndex:v10];
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v10];
-      [v5 setObject:v11 forKeyedSubscript:v12];
+      [dictionary setObject:v11 forKeyedSubscript:v12];
 
       ++v10;
     }
 
-    while (v10 < [v4 rowsCount]);
+    while (v10 < [tableCopy rowsCount]);
   }
 
-  v13 = [a1 exportedValueForDictionary:v5];
+  v13 = [self exportedValueForDictionary:dictionary];
 
   return v13;
 }

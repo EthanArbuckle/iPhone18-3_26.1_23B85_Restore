@@ -1,6 +1,6 @@
 @interface HMDPreferredResidentsList
-- (BOOL)isEqual:(id)a3;
-- (HMDPreferredResidentsList)initWithResidentIDSIdentifiers:(id)a3 modifiedTimestamp:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDPreferredResidentsList)initWithResidentIDSIdentifiers:(id)identifiers modifiedTimestamp:(id)timestamp;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,11 +9,11 @@
 
 - (id)description
 {
-  v3 = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
-  v4 = [v3 count];
+  residentIDSIdentifiers = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
+  v4 = [residentIDSIdentifiers count];
 
-  v5 = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
-  v6 = v5;
+  residentIDSIdentifiers2 = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
+  v6 = residentIDSIdentifiers2;
   if (v4 >= 3)
   {
     v7 = 3;
@@ -24,31 +24,31 @@
     v7 = v4;
   }
 
-  v8 = [v5 subarrayWithRange:{0, v7}];
+  v8 = [residentIDSIdentifiers2 subarrayWithRange:{0, v7}];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(HMDPreferredResidentsList *)self modifiedTimestamp];
-  v11 = [v10 localTimeDescription];
-  v12 = [v9 stringWithFormat:@"modifiedTimestamp %@ residentIDSIdentifiers (%lu) %@", v11, v4, v8];
+  modifiedTimestamp = [(HMDPreferredResidentsList *)self modifiedTimestamp];
+  localTimeDescription = [modifiedTimestamp localTimeDescription];
+  v12 = [v9 stringWithFormat:@"modifiedTimestamp %@ residentIDSIdentifiers (%lu) %@", localTimeDescription, v4, v8];
 
   return v12;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
-  v3 = [v2 hash];
+  residentIDSIdentifiers = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
+  v3 = [residentIDSIdentifiers hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -59,13 +59,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
-    v8 = [v6 residentIDSIdentifiers];
-    if ([v7 isEqualToArray:v8])
+    residentIDSIdentifiers = [(HMDPreferredResidentsList *)self residentIDSIdentifiers];
+    residentIDSIdentifiers2 = [v6 residentIDSIdentifiers];
+    if ([residentIDSIdentifiers isEqualToArray:residentIDSIdentifiers2])
     {
-      v9 = [(HMDPreferredResidentsList *)self modifiedTimestamp];
-      v10 = [v6 modifiedTimestamp];
-      v11 = [v9 isEqualToDate:v10];
+      modifiedTimestamp = [(HMDPreferredResidentsList *)self modifiedTimestamp];
+      modifiedTimestamp2 = [v6 modifiedTimestamp];
+      v11 = [modifiedTimestamp isEqualToDate:modifiedTimestamp2];
     }
 
     else
@@ -82,20 +82,20 @@
   return v11;
 }
 
-- (HMDPreferredResidentsList)initWithResidentIDSIdentifiers:(id)a3 modifiedTimestamp:(id)a4
+- (HMDPreferredResidentsList)initWithResidentIDSIdentifiers:(id)identifiers modifiedTimestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  timestampCopy = timestamp;
   v12.receiver = self;
   v12.super_class = HMDPreferredResidentsList;
   v8 = [(HMDPreferredResidentsList *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     residentIDSIdentifiers = v8->_residentIDSIdentifiers;
     v8->_residentIDSIdentifiers = v9;
 
-    objc_storeStrong(&v8->_modifiedTimestamp, a4);
+    objc_storeStrong(&v8->_modifiedTimestamp, timestamp);
   }
 
   return v8;

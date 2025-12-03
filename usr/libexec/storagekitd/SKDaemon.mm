@@ -1,8 +1,8 @@
 @interface SKDaemon
 + (id)sharedDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SKDaemon)init;
-- (void)handleWithMatchingEvent:(id)a3;
+- (void)handleWithMatchingEvent:(id)event;
 - (void)setupSigtermHandler;
 - (void)startServer;
 @end
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (void)handleWithMatchingEvent:(id)a3
+- (void)handleWithMatchingEvent:(id)event
 {
-  string = xpc_dictionary_get_string(a3, _xpc_event_key_name);
+  string = xpc_dictionary_get_string(event, _xpc_event_key_name);
   v4 = string;
   if (string && !strcmp(string, "com.apple.storagekit.resize-match"))
   {
@@ -158,8 +158,8 @@ LABEL_25:
   v4 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.storagekitd"];
   [(SKDaemon *)self setListener:v4];
 
-  v5 = [(SKDaemon *)self listener];
-  [v5 setDelegate:self];
+  listener = [(SKDaemon *)self listener];
+  [listener setDelegate:self];
 
   v6 = +[SKDaemonManager sharedManager];
   handler[0] = _NSConcreteStackBlock;
@@ -168,20 +168,20 @@ LABEL_25:
   handler[3] = &unk_1000491C0;
   handler[4] = self;
   xpc_set_event_stream_handler("com.apple.iokit.matching", 0, handler);
-  v7 = [(SKDaemon *)self listener];
-  [v7 resume];
+  listener2 = [(SKDaemon *)self listener];
+  [listener2 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKDaemon *)self listener];
+  connectionCopy = connection;
+  listenerCopy = listener;
+  listener = [(SKDaemon *)self listener];
 
-  v9 = v8 == v7;
+  v9 = listener == listenerCopy;
   if (v9)
   {
-    v11 = [[SKDaemonConnection alloc] initWithConnection:v6];
+    v11 = [[SKDaemonConnection alloc] initWithConnection:connectionCopy];
     if (!v11)
     {
       v9 = 0;
@@ -196,7 +196,7 @@ LABEL_25:
       *buf = 138412546;
       v23 = v12;
       v24 = 1024;
-      v25 = [(SKDaemon *)self numConnectedClients];
+      numConnectedClients = [(SKDaemon *)self numConnectedClients];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ added. There are now %u client(s) connected to storagekitd", buf, 0x12u);
     }
 
@@ -206,8 +206,8 @@ LABEL_25:
     v19 = &unk_100048F38;
     v10 = v12;
     v20 = v10;
-    v21 = self;
-    [v6 setInvalidationHandler:&v16];
+    selfCopy = self;
+    [connectionCopy setInvalidationHandler:&v16];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -215,7 +215,7 @@ LABEL_25:
       [v14 addListener:v10];
     }
 
-    [v6 resume];
+    [connectionCopy resume];
   }
 
   else

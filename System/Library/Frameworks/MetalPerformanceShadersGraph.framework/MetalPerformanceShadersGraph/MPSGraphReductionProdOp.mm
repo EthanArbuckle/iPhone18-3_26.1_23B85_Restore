@@ -1,20 +1,20 @@
 @interface MPSGraphReductionProdOp
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphReductionProdOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphReductionProdOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphReductionOps.mm", __p);
-  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::ReductionProdOp>(a4, a3, __p, 0xCCu, v10);
+  v11 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::ReductionProdOp>(table, builder, __p, 0xCCu, nameCopy);
   if (v21 < 0)
   {
     operator delete(__p[0]);
-    v12 = *a5;
-    v13 = *(a5 + 1);
-    if (v13 - *a5 >= 9)
+    v12 = *values;
+    v13 = *(values + 1);
+    if (v13 - *values >= 9)
     {
       goto LABEL_3;
     }
@@ -22,9 +22,9 @@
 
   else
   {
-    v12 = *a5;
-    v13 = *(a5 + 1);
-    if (v13 - *a5 >= 9)
+    v12 = *values;
+    v13 = *(values + 1);
+    if (v13 - *values >= 9)
     {
 LABEL_3:
       v14 = v12[1];
@@ -41,7 +41,7 @@ LABEL_6:
   }
 
   v17 = 1;
-  v18 = mlir::OpBuilder::create<mlir::mps::ReductionProdOp,mlir::Value &,mlir::Value &,BOOL>(a3, v11, v12, &v19, &v17) - 16;
+  v18 = mlir::OpBuilder::create<mlir::mps::ReductionProdOp,mlir::Value &,mlir::Value &,BOOL>(builder, v11, v12, &v19, &v17) - 16;
   DefiningOp = mlir::Value::getDefiningOp(&v18);
 
   return DefiningOp;

@@ -1,20 +1,20 @@
 @interface CMContinuityCaptureTransportDeviceSidecarStream
-- (CMContinuityCaptureTransportDeviceSidecarStream)initWithSidecarStream:(id)a3 entity:(int64_t)a4 messageDelegate:(id)a5;
+- (CMContinuityCaptureTransportDeviceSidecarStream)initWithSidecarStream:(id)stream entity:(int64_t)entity messageDelegate:(id)delegate;
 - (NSString)description;
-- (id)cipherKeyforSessionID:(id)a3;
-- (void)activate:(id)a3;
-- (void)sendMessage:(id)a3 message:(id)a4 completion:(id)a5;
+- (id)cipherKeyforSessionID:(id)d;
+- (void)activate:(id)activate;
+- (void)sendMessage:(id)message message:(id)a4 completion:(id)completion;
 @end
 
 @implementation CMContinuityCaptureTransportDeviceSidecarStream
 
-- (id)cipherKeyforSessionID:(id)a3
+- (id)cipherKeyforSessionID:(id)d
 {
   stream = self->_stream;
-  v4 = a3;
-  v5 = [(SidecarStream *)stream rapportStream];
-  v6 = [v5 streamKey];
-  v7 = CMContinuityCaptureCreateCipherKey(v6, v4);
+  dCopy = d;
+  rapportStream = [(SidecarStream *)stream rapportStream];
+  streamKey = [rapportStream streamKey];
+  v7 = CMContinuityCaptureCreateCipherKey(streamKey, dCopy);
 
   return v7;
 }
@@ -24,17 +24,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CMContinuityCaptureTransportDeviceSidecarStream *)self streamIdentifier];
-  v7 = [v3 stringWithFormat:@"%@: %@ entity:%u [%p]", v5, v6, self->_entity, self];
+  streamIdentifier = [(CMContinuityCaptureTransportDeviceSidecarStream *)self streamIdentifier];
+  v7 = [v3 stringWithFormat:@"%@: %@ entity:%u [%p]", v5, streamIdentifier, self->_entity, self];
 
   return v7;
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   objc_initWeak(&location, self);
-  v5 = [(CMContinuityCaptureTransportDeviceSidecarStream *)self streamIdentifier];
+  streamIdentifier = [(CMContinuityCaptureTransportDeviceSidecarStream *)self streamIdentifier];
   if (self->_active == -1)
   {
     self->_active = 0;
@@ -42,7 +42,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Activate", buf, 0xCu);
     }
 
@@ -54,7 +54,7 @@
       v13[2] = __60__CMContinuityCaptureTransportDeviceSidecarStream_activate___block_invoke;
       v13[3] = &unk_278D5D130;
       objc_copyWeak(&v15, &location);
-      v14 = v5;
+      v14 = streamIdentifier;
       [(SidecarStream *)stream setHandler:v13];
 
       objc_destroyWeak(&v15);
@@ -66,7 +66,7 @@
     v10[2] = __60__CMContinuityCaptureTransportDeviceSidecarStream_activate___block_invoke_6;
     v10[3] = &unk_278D5C260;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = activateCopy;
     [(SidecarStream *)v9 activateWithCompletion:v10];
 
     objc_destroyWeak(&v12);
@@ -75,7 +75,7 @@
   else
   {
     v6 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:-536870911 userInfo:0];
-    (*(v4 + 2))(v4, v6);
+    (*(activateCopy + 2))(activateCopy, v6);
   }
 
   objc_destroyWeak(&location);
@@ -138,11 +138,11 @@ void __60__CMContinuityCaptureTransportDeviceSidecarStream_activate___block_invo
   }
 }
 
-- (void)sendMessage:(id)a3 message:(id)a4 completion:(id)a5
+- (void)sendMessage:(id)message message:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  messageCopy = message;
   v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
   objc_initWeak(location, self);
   v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v9];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:CMContinuityCaptureGetMessageGenerationID()];
@@ -153,9 +153,9 @@ void __60__CMContinuityCaptureTransportDeviceSidecarStream_activate___block_invo
   block[2] = __82__CMContinuityCaptureTransportDeviceSidecarStream_sendMessage_message_completion___block_invoke;
   block[3] = &unk_278D5C490;
   objc_copyWeak(&v35, location);
-  v13 = v8;
+  v13 = messageCopy;
   v33 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v34 = v14;
   v15 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
   v23 = MEMORY[0x277D85DD0];
@@ -235,26 +235,26 @@ void __82__CMContinuityCaptureTransportDeviceSidecarStream_sendMessage_message_c
   }
 }
 
-- (CMContinuityCaptureTransportDeviceSidecarStream)initWithSidecarStream:(id)a3 entity:(int64_t)a4 messageDelegate:(id)a5
+- (CMContinuityCaptureTransportDeviceSidecarStream)initWithSidecarStream:(id)stream entity:(int64_t)entity messageDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  streamCopy = stream;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = CMContinuityCaptureTransportDeviceSidecarStream;
   v11 = [(CMContinuityCaptureTransportDeviceSidecarStream *)&v25 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_messageDelegate, v10);
-    objc_storeStrong(&v12->_stream, a3);
-    v12->_entity = a4;
+    objc_storeWeak(&v11->_messageDelegate, delegateCopy);
+    objc_storeStrong(&v12->_stream, stream);
+    v12->_entity = entity;
     stream = v12->_stream;
     if (stream)
     {
       v14 = *MEMORY[0x277CBECE8];
-      v15 = [(SidecarStream *)stream nwClientID];
+      nwClientID = [(SidecarStream *)stream nwClientID];
       v17 = v16;
-      *&v26.byte0 = v15;
+      *&v26.byte0 = nwClientID;
       *&v26.byte8 = v17;
       v18 = CFUUIDCreateFromUUIDBytes(v14, v26);
       v19 = CFUUIDCreateString(v14, v18);

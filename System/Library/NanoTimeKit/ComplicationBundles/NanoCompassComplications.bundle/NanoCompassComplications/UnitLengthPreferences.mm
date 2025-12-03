@@ -28,7 +28,7 @@
 
 - (BOOL)usesMetric
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UnitLengthPreferences.usesMetric()();
 
   return v3;

@@ -1,93 +1,93 @@
 @interface HMDSettingModel
 + (id)hmbProperties;
-- (BOOL)setSettingValue:(id)a3;
-- (id)copyWithNewParentModelID:(id)a3;
+- (BOOL)setSettingValue:(id)value;
+- (id)copyWithNewParentModelID:(id)d;
 @end
 
 @implementation HMDSettingModel
 
-- (id)copyWithNewParentModelID:(id)a3
+- (id)copyWithNewParentModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDSettingModel alloc];
-  v6 = [(HMBModel *)self hmbModelID];
-  v7 = [(HMBModel *)v5 initWithModelID:v6 parentModelID:v4];
+  hmbModelID = [(HMBModel *)self hmbModelID];
+  v7 = [(HMBModel *)v5 initWithModelID:hmbModelID parentModelID:dCopy];
 
-  v8 = [(HMDSettingModel *)self type];
-  [(HMDSettingModel *)v7 setType:v8];
+  type = [(HMDSettingModel *)self type];
+  [(HMDSettingModel *)v7 setType:type];
 
-  v9 = [(HMDSettingModel *)self properties];
-  [(HMDSettingModel *)v7 setProperties:v9];
+  properties = [(HMDSettingModel *)self properties];
+  [(HMDSettingModel *)v7 setProperties:properties];
 
-  v10 = [(HMDSettingModel *)self name];
-  [(HMDSettingModel *)v7 setName:v10];
+  name = [(HMDSettingModel *)self name];
+  [(HMDSettingModel *)v7 setName:name];
 
-  v11 = [(HMDSettingModel *)self numberValue];
-  [(HMDSettingModel *)v7 setNumberValue:v11];
+  numberValue = [(HMDSettingModel *)self numberValue];
+  [(HMDSettingModel *)v7 setNumberValue:numberValue];
 
-  v12 = [(HMDSettingModel *)self stringValue];
-  [(HMDSettingModel *)v7 setStringValue:v12];
+  stringValue = [(HMDSettingModel *)self stringValue];
+  [(HMDSettingModel *)v7 setStringValue:stringValue];
 
-  v13 = [(HMDSettingModel *)self dataValue];
-  [(HMDSettingModel *)v7 setDataValue:v13];
+  dataValue = [(HMDSettingModel *)self dataValue];
+  [(HMDSettingModel *)v7 setDataValue:dataValue];
 
-  v14 = [(HMDSettingModel *)self selectionIdentifier];
-  [(HMDSettingModel *)v7 setSelectionIdentifier:v14];
+  selectionIdentifier = [(HMDSettingModel *)self selectionIdentifier];
+  [(HMDSettingModel *)v7 setSelectionIdentifier:selectionIdentifier];
 
-  v15 = [(HMDSettingModel *)self selectionValue];
-  [(HMDSettingModel *)v7 setSelectionValue:v15];
+  selectionValue = [(HMDSettingModel *)self selectionValue];
+  [(HMDSettingModel *)v7 setSelectionValue:selectionValue];
 
   return v7;
 }
 
-- (BOOL)setSettingValue:(id)a3
+- (BOOL)setSettingValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 <= 2)
+  valueCopy = value;
+  type = [valueCopy type];
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
-      v7 = [v4 dataValue];
-      [(HMDSettingModel *)self setDataValue:v7];
+      dataValue = [valueCopy dataValue];
+      [(HMDSettingModel *)self setDataValue:dataValue];
     }
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         v6 = 0;
         goto LABEL_12;
       }
 
-      v7 = [v4 numberValue];
-      [(HMDSettingModel *)self setNumberValue:v7];
+      dataValue = [valueCopy numberValue];
+      [(HMDSettingModel *)self setNumberValue:dataValue];
     }
 
     goto LABEL_11;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
-    v7 = [v4 stringValue];
-    [(HMDSettingModel *)self setStringValue:v7];
+    dataValue = [valueCopy stringValue];
+    [(HMDSettingModel *)self setStringValue:dataValue];
 LABEL_11:
 
     v6 = 1;
     goto LABEL_12;
   }
 
-  if (v5 == 4)
+  if (type == 4)
   {
-    v8 = [v4 selectionIdentifier];
-    [(HMDSettingModel *)self setSelectionIdentifier:v8];
+    selectionIdentifier = [valueCopy selectionIdentifier];
+    [(HMDSettingModel *)self setSelectionIdentifier:selectionIdentifier];
 
-    v7 = [v4 selectionValue];
-    [(HMDSettingModel *)self setSelectionValue:v7];
+    dataValue = [valueCopy selectionValue];
+    [(HMDSettingModel *)self setSelectionValue:dataValue];
     goto LABEL_11;
   }
 
-  v6 = v5 == 5;
+  v6 = type == 5;
 LABEL_12:
 
   return v6;

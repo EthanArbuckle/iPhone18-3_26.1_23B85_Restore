@@ -1,14 +1,14 @@
 @interface PIVTokenDriver
-- (id)tokenDriver:(id)a3 createTokenForSmartCard:(id)a4 AID:(id)a5 error:(id *)a6;
+- (id)tokenDriver:(id)driver createTokenForSmartCard:(id)card AID:(id)d error:(id *)error;
 @end
 
 @implementation PIVTokenDriver
 
-- (id)tokenDriver:(id)a3 createTokenForSmartCard:(id)a4 AID:(id)a5 error:(id *)a6
+- (id)tokenDriver:(id)driver createTokenForSmartCard:(id)card AID:(id)d error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = [[PIVToken alloc] initWithSmartCard:v10 AID:v9 PIVDriver:self error:a6];
+  dCopy = d;
+  cardCopy = card;
+  v11 = [[PIVToken alloc] initWithSmartCard:cardCopy AID:dCopy PIVDriver:self error:error];
 
   return v11;
 }

@@ -1,59 +1,59 @@
 @interface _SSSAnimatableBorderCornerRadiusView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIColor)borderColor;
 - (double)borderWidth;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
 @end
 
 @implementation _SSSAnimatableBorderCornerRadiusView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _SSSAnimatableBorderCornerRadiusView;
-  if ([(_SSSAnimatableBorderCornerRadiusView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(_SSSAnimatableBorderCornerRadiusView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"cornerRadius"];
+    v5 = [keyCopy isEqualToString:@"cornerRadius"];
   }
 
   return v5;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
-  [v4 setBorderWidth:a3];
+  layer = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
+  [layer setBorderWidth:width];
 }
 
 - (double)borderWidth
 {
-  v2 = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
-  [v2 borderWidth];
+  layer = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v4 = a3;
-  v6 = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  layer = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setBorderColor:v5];
+  [layer setBorderColor:cGColor];
 }
 
 - (UIColor)borderColor
 {
-  v2 = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 borderColor]);
+  layer = [(_SSSAnimatableBorderCornerRadiusView *)self layer];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [layer borderColor]);
 
   return v3;
 }

@@ -1,18 +1,18 @@
 @interface VISObjectSelectionConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISObjectSelectionConfig)initWithDictionary:(id)a3;
-- (VISObjectSelectionConfig)initWithJSON:(id)a3;
+- (VISObjectSelectionConfig)initWithDictionary:(id)dictionary;
+- (VISObjectSelectionConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISObjectSelectionConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   [(VISObjectSelectionConfig *)self unknown_label_threshold];
   if (v4 != 0.0)
   {
@@ -47,13 +47,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (unknown_label_threshold = self->_unknown_label_threshold, objc_msgSend(v4, "unknown_label_threshold"), unknown_label_threshold == v6) && (enable_text_state_selection = self->_enable_text_state_selection, enable_text_state_selection == objc_msgSend(v4, "enable_text_state_selection")) && (max_number_of_text_entities = self->_max_number_of_text_entities, max_number_of_text_entities == objc_msgSend(v4, "max_number_of_text_entities")) && (text_book_world_distance_threshold = self->_text_book_world_distance_threshold, objc_msgSend(v4, "text_book_world_distance_threshold"), text_book_world_distance_threshold == v10) && (bounding_box_padding_for_cropping = self->_bounding_box_padding_for_cropping, objc_msgSend(v4, "bounding_box_padding_for_cropping"), bounding_box_padding_for_cropping == v12))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (unknown_label_threshold = self->_unknown_label_threshold, objc_msgSend(equalCopy, "unknown_label_threshold"), unknown_label_threshold == v6) && (enable_text_state_selection = self->_enable_text_state_selection, enable_text_state_selection == objc_msgSend(equalCopy, "enable_text_state_selection")) && (max_number_of_text_entities = self->_max_number_of_text_entities, max_number_of_text_entities == objc_msgSend(equalCopy, "max_number_of_text_entities")) && (text_book_world_distance_threshold = self->_text_book_world_distance_threshold, objc_msgSend(equalCopy, "text_book_world_distance_threshold"), text_book_world_distance_threshold == v10) && (bounding_box_padding_for_cropping = self->_bounding_box_padding_for_cropping, objc_msgSend(equalCopy, "bounding_box_padding_for_cropping"), bounding_box_padding_for_cropping == v12))
   {
     enable_object_selection = self->_enable_object_selection;
-    v13 = enable_object_selection == [v4 enable_object_selection];
+    v13 = enable_object_selection == [equalCopy enable_object_selection];
   }
 
   else
@@ -194,31 +194,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bounding_box_padding_for_cropping != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISObjectSelectionConfig *)self bounding_box_padding_for_cropping];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"boundingBoxPaddingForCropping"];
+    [dictionary setObject:v5 forKeyedSubscript:@"boundingBoxPaddingForCropping"];
   }
 
   if (self->_enable_object_selection)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISObjectSelectionConfig enable_object_selection](self, "enable_object_selection")}];
-    [v3 setObject:v6 forKeyedSubscript:@"enableObjectSelection"];
+    [dictionary setObject:v6 forKeyedSubscript:@"enableObjectSelection"];
   }
 
   if (self->_enable_text_state_selection)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISObjectSelectionConfig enable_text_state_selection](self, "enable_text_state_selection")}];
-    [v3 setObject:v7 forKeyedSubscript:@"enableTextStateSelection"];
+    [dictionary setObject:v7 forKeyedSubscript:@"enableTextStateSelection"];
   }
 
   if (self->_max_number_of_text_entities)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[VISObjectSelectionConfig max_number_of_text_entities](self, "max_number_of_text_entities")}];
-    [v3 setObject:v8 forKeyedSubscript:@"maxNumberOfTextEntities"];
+    [dictionary setObject:v8 forKeyedSubscript:@"maxNumberOfTextEntities"];
   }
 
   if (self->_text_book_world_distance_threshold != 0.0)
@@ -226,7 +226,7 @@
     v9 = MEMORY[0x1E696AD98];
     [(VISObjectSelectionConfig *)self text_book_world_distance_threshold];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"textBookWorldDistanceThreshold"];
+    [dictionary setObject:v10 forKeyedSubscript:@"textBookWorldDistanceThreshold"];
   }
 
   if (self->_unknown_label_threshold != 0.0)
@@ -234,18 +234,18 @@
     v11 = MEMORY[0x1E696AD98];
     [(VISObjectSelectionConfig *)self unknown_label_threshold];
     v12 = [v11 numberWithFloat:?];
-    [v3 setObject:v12 forKeyedSubscript:@"unknownLabelThreshold"];
+    [dictionary setObject:v12 forKeyedSubscript:@"unknownLabelThreshold"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISObjectSelectionConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISObjectSelectionConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -256,33 +256,33 @@
   return v3;
 }
 
-- (VISObjectSelectionConfig)initWithJSON:(id)a3
+- (VISObjectSelectionConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISObjectSelectionConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISObjectSelectionConfig)initWithDictionary:(id)a3
+- (VISObjectSelectionConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = VISObjectSelectionConfig;
   v5 = [(VISObjectSelectionConfig *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"unknownLabelThreshold"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"unknownLabelThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -290,21 +290,21 @@
       [(VISObjectSelectionConfig *)v5 setUnknown_label_threshold:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"enableTextStateSelection"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enableTextStateSelection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISObjectSelectionConfig setEnable_text_state_selection:](v5, "setEnable_text_state_selection:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"maxNumberOfTextEntities"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maxNumberOfTextEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISObjectSelectionConfig setMax_number_of_text_entities:](v5, "setMax_number_of_text_entities:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"textBookWorldDistanceThreshold"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"textBookWorldDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -312,7 +312,7 @@
       [(VISObjectSelectionConfig *)v5 setText_book_world_distance_threshold:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"boundingBoxPaddingForCropping"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"boundingBoxPaddingForCropping"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,7 +320,7 @@
       [(VISObjectSelectionConfig *)v5 setBounding_box_padding_for_cropping:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"enableObjectSelection"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"enableObjectSelection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

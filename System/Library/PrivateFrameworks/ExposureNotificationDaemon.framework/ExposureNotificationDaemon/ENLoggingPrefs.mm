@@ -2,7 +2,7 @@
 + (id)sharedENLoggingPrefs;
 - (ENLoggingPrefs)init;
 - (void)loadLoggingPrefs;
-- (void)setLoggingEntitledApp:(BOOL)a3;
+- (void)setLoggingEntitledApp:(BOOL)app;
 @end
 
 @implementation ENLoggingPrefs
@@ -41,10 +41,10 @@ void __38__ENLoggingPrefs_sharedENLoggingPrefs__block_invoke()
   return v3;
 }
 
-- (void)setLoggingEntitledApp:(BOOL)a3
+- (void)setLoggingEntitledApp:(BOOL)app
 {
   v4 = MEMORY[0x277CBED20];
-  if (!a3)
+  if (!app)
   {
     v4 = MEMORY[0x277CBED18];
   }

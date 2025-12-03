@@ -1,22 +1,22 @@
 @interface SBCenterWindowToSlideOverSwitcherModifier
-- (BOOL)_shouldBlurAndStretchLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBCenterWindowToSlideOverSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 fromFloatingAppLayout:(id)a6 toFloatingAppLayout:(id)a7 toFloatingConfiguration:(int64_t)a8 direction:(unint64_t)a9;
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (BOOL)_shouldBlurAndStretchLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBCenterWindowToSlideOverSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout fromFloatingAppLayout:(id)floatingAppLayout toFloatingAppLayout:(id)toFloatingAppLayout toFloatingConfiguration:(int64_t)configuration direction:(unint64_t)direction;
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -24,16 +24,16 @@
 
 @implementation SBCenterWindowToSlideOverSwitcherModifier
 
-- (SBCenterWindowToSlideOverSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 fromFloatingAppLayout:(id)a6 toFloatingAppLayout:(id)a7 toFloatingConfiguration:(int64_t)a8 direction:(unint64_t)a9
+- (SBCenterWindowToSlideOverSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout fromFloatingAppLayout:(id)floatingAppLayout toFloatingAppLayout:(id)toFloatingAppLayout toFloatingConfiguration:(int64_t)configuration direction:(unint64_t)direction
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v36 = a7;
-  if (v17)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  floatingAppLayoutCopy = floatingAppLayout;
+  toFloatingAppLayoutCopy = toFloatingAppLayout;
+  if (layoutCopy)
   {
-    if (v18)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -42,7 +42,7 @@
   else
   {
     [SBCenterWindowToSlideOverSwitcherModifier initWithTransitionID:a2 fromAppLayout:self toAppLayout:? fromFloatingAppLayout:? toFloatingAppLayout:? toFloatingConfiguration:? direction:?];
-    if (v18)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -52,34 +52,34 @@
 LABEL_3:
   v40.receiver = self;
   v40.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v20 = [(SBTransitionSwitcherModifier *)&v40 initWithTransitionID:v16, v36];
-  v21 = v20;
-  if (v20)
+  toFloatingAppLayoutCopy = [(SBTransitionSwitcherModifier *)&v40 initWithTransitionID:dCopy, toFloatingAppLayoutCopy];
+  v21 = toFloatingAppLayoutCopy;
+  if (toFloatingAppLayoutCopy)
   {
-    if (a9 == 1)
+    if (direction == 1)
     {
-      v22 = v18;
+      v22 = appLayoutCopy;
     }
 
     else
     {
-      v22 = v17;
+      v22 = layoutCopy;
     }
 
-    objc_storeStrong(&v20->_fullScreenWithCenterAppLayout, v22);
-    v21->_floatingConfiguration = a8;
-    if (a9 != 1)
+    objc_storeStrong(&toFloatingAppLayoutCopy->_fullScreenWithCenterAppLayout, v22);
+    v21->_floatingConfiguration = configuration;
+    if (direction != 1)
     {
-      if (!v19 || a9)
+      if (!floatingAppLayoutCopy || direction)
       {
         v21->_kind = 0;
-        if (a9)
+        if (direction)
         {
           goto LABEL_17;
         }
 
         p_movingAppLayout = &v21->_movingAppLayout;
-        v34 = a7;
+        floatingAppLayoutCopy2 = toFloatingAppLayout;
       }
 
       else
@@ -89,21 +89,21 @@ LABEL_3:
         movingAppLayout = v21->_movingAppLayout;
         v21->_movingAppLayout = v31;
 
-        objc_storeStrong(&v21->_fullScreenWithoutCenterAppLayout, a5);
+        objc_storeStrong(&v21->_fullScreenWithoutCenterAppLayout, appLayout);
         p_movingAppLayout = &v21->_outgoingFloatingAppLayout;
-        v34 = a6;
+        floatingAppLayoutCopy2 = floatingAppLayout;
       }
 
-      objc_storeStrong(p_movingAppLayout, v34);
+      objc_storeStrong(p_movingAppLayout, floatingAppLayoutCopy2);
       goto LABEL_17;
     }
 
-    v23 = [v17 itemForLayoutRole:4];
+    v23 = [layoutCopy itemForLayoutRole:4];
 
     if (v23)
     {
       v21->_kind = 1;
-      v24 = [v18 leafAppLayoutForRole:4];
+      v24 = [appLayoutCopy leafAppLayoutForRole:4];
       v25 = v21->_movingAppLayout;
       v21->_movingAppLayout = v24;
 
@@ -113,11 +113,11 @@ LABEL_3:
       v38[3] = &unk_2783A8C90;
       v26 = v21;
       v39 = v26;
-      v27 = [v18 appLayoutWithItemsPassingTest:v38];
+      v27 = [appLayoutCopy appLayoutWithItemsPassingTest:v38];
       fullScreenWithoutCenterAppLayout = v26->_fullScreenWithoutCenterAppLayout;
       v26->_fullScreenWithoutCenterAppLayout = v27;
 
-      v29 = [v17 leafAppLayoutForRole:4];
+      v29 = [layoutCopy leafAppLayoutForRole:4];
       outgoingCenterWindowAppLayout = v26->_outgoingCenterWindowAppLayout;
       v26->_outgoingCenterWindowAppLayout = v29;
     }
@@ -133,11 +133,11 @@ LABEL_17:
   return v21;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
@@ -148,17 +148,17 @@ LABEL_17:
 {
   v21.receiver = self;
   v21.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v21 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v21 transitionWillBegin];
   if (self->_kind)
   {
     v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
     if (self->_kind == 2 && !self->_isInSecondStageOfDosidoAnimation)
     {
-      v6 = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
-      v7 = [v6 floatingSwitcherSettings];
-      [v7 overshootPullbackDelayOnscreen];
+      switcherSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
+      floatingSwitcherSettings = [switcherSettings floatingSwitcherSettings];
+      [floatingSwitcherSettings overshootPullbackDelayOnscreen];
       v9 = v8;
 
       UIAnimationDragCoefficient();
@@ -171,7 +171,7 @@ LABEL_17:
       v18 = &unk_2783AD4A0;
       objc_copyWeak(&v19, &location);
       v13 = [(SBTimerEventSwitcherEventResponse *)v12 initWithDelay:&v15 validator:@"kSBCenterWindowToSlideOverSwitcherModifierDosidoReason" reason:v9 * v11];
-      v3 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v13 toResponse:v5, v15, v16, v17, v18];
+      transitionWillBegin = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v13 toResponse:v5, v15, v16, v17, v18];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -179,11 +179,11 @@ LABEL_17:
 
     else
     {
-      v3 = v5;
+      transitionWillBegin = v5;
     }
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
 BOOL __64__SBCenterWindowToSlideOverSwitcherModifier_transitionWillBegin__block_invoke(uint64_t a1)
@@ -195,16 +195,16 @@ BOOL __64__SBCenterWindowToSlideOverSwitcherModifier_transitionWillBegin__block_
   return v3;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"kSBCenterWindowToSlideOverSwitcherModifierDosidoReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"kSBCenterWindowToSlideOverSwitcherModifierDosidoReason"];
+  if (eventCopy)
   {
     self->_isInSecondStageOfDosidoAnimation = 1;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -216,11 +216,11 @@ BOOL __64__SBCenterWindowToSlideOverSwitcherModifier_transitionWillBegin__block_
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v11.receiver = self;
   v11.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v11 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v11 adjustedAppLayoutsForAppLayouts:layouts];
   v5 = v4;
   if (self->_kind == 1)
   {
@@ -246,8 +246,8 @@ BOOL __64__SBCenterWindowToSlideOverSwitcherModifier_transitionWillBegin__block_
 {
   v8.receiver = self;
   v8.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v3 = [(SBCenterWindowToSlideOverSwitcherModifier *)&v8 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBCenterWindowToSlideOverSwitcherModifier *)&v8 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   kind = self->_kind;
   if (kind == 2)
@@ -274,7 +274,7 @@ LABEL_6:
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v36.receiver = self;
   v36.super_class = SBCenterWindowToSlideOverSwitcherModifier;
@@ -286,19 +286,19 @@ LABEL_6:
   kind = self->_kind;
   if (kind == 2)
   {
-    v25 = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
-    v15 = [v25 objectAtIndex:a3];
+    appLayouts = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
+    v15 = [appLayouts objectAtIndex:index];
 
     if (v15 == self->_outgoingFloatingAppLayout && !self->_isInSecondStageOfDosidoAnimation)
     {
-      v26 = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
-      [v26 switcherSlideOverDosidoLayoutOvershootMultiplicationFactor];
+      medusaSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
+      [medusaSettings switcherSlideOverDosidoLayoutOvershootMultiplicationFactor];
       v28 = v27;
       v29 = v10 * v27;
 
-      v30 = [(SBCenterWindowToSlideOverSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled = [(SBCenterWindowToSlideOverSwitcherModifier *)self isRTLEnabled];
       v31 = -(v10 * v28);
-      if (!v30)
+      if (!isRTLEnabled)
       {
         v31 = v29;
       }
@@ -316,8 +316,8 @@ LABEL_6:
 
   if (kind == 1)
   {
-    v14 = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
-    v15 = [v14 objectAtIndex:a3];
+    appLayouts2 = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
+    v15 = [appLayouts2 objectAtIndex:index];
 
     if (v15 == self->_outgoingCenterWindowAppLayout || v15 == self->_movingAppLayout)
     {
@@ -344,21 +344,21 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v24.receiver = self;
   v24.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v24 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v24 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (self->_kind == 1 && (self->_outgoingCenterWindowAppLayout == v11 || self->_movingAppLayout == v11 || self->_fullScreenWithoutCenterAppLayout == v11))
+  if (self->_kind == 1 && (self->_outgoingCenterWindowAppLayout == layoutCopy || self->_movingAppLayout == layoutCopy || self->_fullScreenWithoutCenterAppLayout == layoutCopy))
   {
     v19 = height;
     v17 = width;
@@ -381,8 +381,8 @@ LABEL_13:
 {
   v12.receiver = self;
   v12.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v3 = [(SBCenterWindowToSlideOverSwitcherModifier *)&v12 topMostLayoutElements];
-  v4 = v3;
+  topMostLayoutElements = [(SBCenterWindowToSlideOverSwitcherModifier *)&v12 topMostLayoutElements];
+  v4 = topMostLayoutElements;
   kind = self->_kind;
   if (kind == 2)
   {
@@ -402,18 +402,18 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    v6 = [v3 sb_arrayByRemovingObject:self->_fullScreenWithCenterAppLayout];
+    v6 = [topMostLayoutElements sb_arrayByRemovingObject:self->_fullScreenWithCenterAppLayout];
 
     v7 = [v6 sb_arrayByInsertingOrMovingObject:self->_movingAppLayout toIndex:0];
 
     v4 = [v7 sb_arrayByInsertingOrMovingObject:self->_outgoingCenterWindowAppLayout toIndex:1];
 
     outgoingFloatingAppLayout = self->_fullScreenWithoutCenterAppLayout;
-    v3 = v4;
+    topMostLayoutElements = v4;
     v9 = 2;
   }
 
-  v10 = [v3 sb_arrayByInsertingOrMovingObject:outgoingFloatingAppLayout toIndex:v9];
+  v10 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:outgoingFloatingAppLayout toIndex:v9];
 
   v4 = v10;
 LABEL_7:
@@ -421,34 +421,34 @@ LABEL_7:
   return v4;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v13 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v13 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   kind = self->_kind;
   if (kind == 2)
   {
-    if (self->_outgoingFloatingAppLayout == v6 && self->_isInSecondStageOfDosidoAnimation)
+    if (self->_outgoingFloatingAppLayout == layoutCopy && self->_isInSecondStageOfDosidoAnimation)
     {
       goto LABEL_8;
     }
   }
 
-  else if (kind == 1 && (self->_fullScreenWithoutCenterAppLayout == v6 || self->_outgoingCenterWindowAppLayout == v6))
+  else if (kind == 1 && (self->_fullScreenWithoutCenterAppLayout == layoutCopy || self->_outgoingCenterWindowAppLayout == layoutCopy))
   {
 LABEL_8:
-    v10 = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
-    [v10 defaultDimmingOpacity];
+    medusaSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
+    [medusaSettings defaultDimmingOpacity];
     v8 = v11;
   }
 
   return v8;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v12.receiver = self;
   v12.super_class = SBCenterWindowToSlideOverSwitcherModifier;
@@ -456,16 +456,16 @@ LABEL_8:
   v6 = v5;
   if (self->_kind == 2)
   {
-    v7 = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
-    v8 = [v7 objectAtIndex:a3];
+    appLayouts = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
+    v8 = [appLayouts objectAtIndex:index];
 
     if (v8 == self->_outgoingFloatingAppLayout)
     {
       v6 = 1.0;
       if (([(SBCenterWindowToSlideOverSwitcherModifier *)self isReduceMotionEnabled]& 1) == 0)
       {
-        v9 = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
-        [v9 switcherSlideOverContentPushInScale];
+        medusaSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
+        [medusaSettings switcherSlideOverContentPushInScale];
         v6 = v10;
       }
     }
@@ -474,20 +474,20 @@ LABEL_8:
   return v6;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v12 scaleForLayoutRole:a3 inAppLayout:v6];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v12 scaleForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  if (self->_kind == 1 && self->_outgoingCenterWindowAppLayout == v6)
+  if (self->_kind == 1 && self->_outgoingCenterWindowAppLayout == layoutCopy)
   {
     v8 = 1.0;
     if (([(SBCenterWindowToSlideOverSwitcherModifier *)self isReduceMotionEnabled]& 1) == 0)
     {
-      v9 = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
-      [v9 switcherCenterWindowContentPushInScale];
+      medusaSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self medusaSettings];
+      [medusaSettings switcherCenterWindowContentPushInScale];
       v8 = v10;
     }
   }
@@ -495,27 +495,27 @@ LABEL_8:
   return v8;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 centerToSlideOverAnimationSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  centerToSlideOverAnimationSettings = [animationSettings centerToSlideOverAnimationSettings];
+  [v5 setLayoutSettings:centerToSlideOverAnimationSettings];
 
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
   v10 = v9;
   kind = self->_kind;
   if (kind == 1)
@@ -533,7 +533,7 @@ LABEL_8:
     v12 = &OBJC_IVAR___SBCenterWindowToSlideOverSwitcherModifier__outgoingFloatingAppLayout;
   }
 
-  if (*(&self->super.super.super.super.super.isa + *v12) == v8)
+  if (*(&self->super.super.super.super.super.isa + *v12) == layoutCopy)
   {
     v10 = 1.0;
   }
@@ -543,14 +543,14 @@ LABEL_7:
   return v10;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   v11.receiver = self;
   v11.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v11 shadowOpacityForLayoutRole:a3 atIndex:?];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v11 shadowOpacityForLayoutRole:role atIndex:?];
   v7 = v6;
-  v8 = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
-  v9 = [v8 objectAtIndex:a4];
+  appLayouts = [(SBCenterWindowToSlideOverSwitcherModifier *)self appLayouts];
+  v9 = [appLayouts objectAtIndex:index];
 
   if (v9 == self->_outgoingCenterWindowAppLayout)
   {
@@ -560,21 +560,21 @@ LABEL_7:
   return v7;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
   v30.receiver = self;
   v30.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v30 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v30 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (self->_kind == 1 && (self->_movingAppLayout == v11 || self->_outgoingCenterWindowAppLayout == v11))
+  if (self->_kind == 1 && (self->_movingAppLayout == layoutCopy || self->_outgoingCenterWindowAppLayout == layoutCopy))
   {
     fullScreenWithCenterAppLayout = self->_fullScreenWithCenterAppLayout;
     v29.receiver = self;
@@ -597,52 +597,52 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  LOBYTE(v7) = [(SBCenterWindowToSlideOverSwitcherModifier *)&v9 isLayoutRoleBlurred:a3 inAppLayout:v6];
-  if ([(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:a3 inAppLayout:v6])
+  LOBYTE(v7) = [(SBCenterWindowToSlideOverSwitcherModifier *)&v9 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
+  if ([(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:blurred inAppLayout:layoutCopy])
   {
-    v7 = [(SBCenterWindowToSlideOverSwitcherModifier *)self isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    v7 = [(SBCenterWindowToSlideOverSwitcherModifier *)self isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   return v7;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v13.receiver = self;
   v13.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v6 = a4;
-  [(SBCenterWindowToSlideOverSwitcherModifier *)&v13 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBCenterWindowToSlideOverSwitcherModifier *)&v13 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
-  LODWORD(a3) = [(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:a3 inAppLayout:v6, v13.receiver, v13.super_class];
+  LODWORD(role) = [(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:role inAppLayout:layoutCopy, v13.receiver, v13.super_class];
 
-  if (a3)
+  if (role)
   {
-    v9 = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
-    v10 = [v9 animationSettings];
-    [v10 resizeBlurDelay];
+    switcherSettings = [(SBCenterWindowToSlideOverSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v11;
   }
 
   return v8;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
   v9.receiver = self;
   v9.super_class = SBCenterWindowToSlideOverSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBCenterWindowToSlideOverSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  LOBYTE(a3) = [(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:a3 inAppLayout:v6, v9.receiver, v9.super_class];
+  layoutCopy = layout;
+  v7 = [(SBCenterWindowToSlideOverSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  LOBYTE(scene) = [(SBCenterWindowToSlideOverSwitcherModifier *)self _shouldBlurAndStretchLayoutRole:scene inAppLayout:layoutCopy, v9.receiver, v9.super_class];
 
-  return (a3 | v7) & 1;
+  return (scene | v7) & 1;
 }
 
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf
 {
   retstr->var3 = 0;
   *&retstr->var1.origin.y = 0u;
@@ -655,14 +655,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_shouldBlurAndStretchLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)_shouldBlurAndStretchLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  if (self->_movingAppLayout == a4)
+  if (self->_movingAppLayout == layout)
   {
     return 1;
   }
 
-  return self->_fullScreenWithCenterAppLayout == a4 && a3 == 4;
+  return self->_fullScreenWithCenterAppLayout == layout && role == 4;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 fromAppLayout:(uint64_t)a2 toAppLayout:fromFloatingAppLayout:toFloatingAppLayout:toFloatingConfiguration:direction:.cold.1(uint64_t a1, uint64_t a2)

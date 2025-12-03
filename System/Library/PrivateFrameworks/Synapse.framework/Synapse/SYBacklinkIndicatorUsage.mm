@@ -1,23 +1,23 @@
 @interface SYBacklinkIndicatorUsage
-+ (id)_identifierFromUserActivity:(id)a3;
-+ (id)_proxyWithError:(id *)a3;
-+ (void)didActivateBacklinkItemWithIdentifier:(id)a3;
-+ (void)didActivateBacklinkItemWithUserActivity:(id)a3;
-+ (void)didDismissBacklinkItemWithUserActivity:(id)a3;
++ (id)_identifierFromUserActivity:(id)activity;
++ (id)_proxyWithError:(id *)error;
++ (void)didActivateBacklinkItemWithIdentifier:(id)identifier;
++ (void)didActivateBacklinkItemWithUserActivity:(id)activity;
++ (void)didDismissBacklinkItemWithUserActivity:(id)activity;
 @end
 
 @implementation SYBacklinkIndicatorUsage
 
-+ (id)_proxyWithError:(id *)a3
++ (id)_proxyWithError:(id *)error
 {
-  v5 = [a1 _listenerEndpoint];
+  _listenerEndpoint = [self _listenerEndpoint];
 
   v6 = objc_alloc(MEMORY[0x277CCAE80]);
   v7 = v6;
-  if (v5)
+  if (_listenerEndpoint)
   {
-    v8 = [a1 _listenerEndpoint];
-    v9 = [v7 initWithListenerEndpoint:v8];
+    _listenerEndpoint2 = [self _listenerEndpoint];
+    v9 = [v7 initWithListenerEndpoint:_listenerEndpoint2];
   }
 
   else
@@ -41,9 +41,9 @@
   v13[3] = &unk_27856B808;
   v13[4] = &v14;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v13];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -65,26 +65,26 @@ void __44__SYBacklinkIndicatorUsage__proxyWithError___block_invoke(uint64_t a1, 
   *(v11 + 40) = v3;
 }
 
-+ (void)didActivateBacklinkItemWithIdentifier:(id)a3
++ (void)didActivateBacklinkItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = 0;
-  v5 = [a1 _proxyWithError:&v7];
+  v5 = [self _proxyWithError:&v7];
   v6 = v5;
   if (!v7)
   {
-    [v5 didActivateBacklinkItemWithIdentifier:v4];
+    [v5 didActivateBacklinkItemWithIdentifier:identifierCopy];
   }
 }
 
-+ (id)_identifierFromUserActivity:(id)a3
++ (id)_identifierFromUserActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 activityType];
-  if ([v4 isEqualToString:@"com.apple.notes.activity.edit-note"])
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  if ([activityType isEqualToString:@"com.apple.notes.activity.edit-note"])
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKey:@"uuid"];
+    userInfo = [activityCopy userInfo];
+    v6 = [userInfo objectForKey:@"uuid"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
@@ -107,7 +107,7 @@ LABEL_12:
       v8 = os_log_create("com.apple.synapse", "");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(SYBacklinkIndicatorUsage *)v5 _identifierFromUserActivity:v8, v21, v22, v23, v24, v25, v26];
+        [(SYBacklinkIndicatorUsage *)userInfo _identifierFromUserActivity:v8, v21, v22, v23, v24, v25, v26];
       }
     }
 
@@ -115,10 +115,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = os_log_create("com.apple.synapse", "");
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  userInfo = os_log_create("com.apple.synapse", "");
+  if (os_log_type_enabled(userInfo, OS_LOG_TYPE_ERROR))
   {
-    [(SYBacklinkIndicatorUsage *)v4 _identifierFromUserActivity:v5, v15, v16, v17, v18, v19, v20];
+    [(SYBacklinkIndicatorUsage *)activityType _identifierFromUserActivity:userInfo, v15, v16, v17, v18, v19, v20];
   }
 
   v7 = 0;
@@ -127,13 +127,13 @@ LABEL_13:
   return v7;
 }
 
-+ (void)didActivateBacklinkItemWithUserActivity:(id)a3
++ (void)didActivateBacklinkItemWithUserActivity:(id)activity
 {
-  v4 = [a1 _identifierFromUserActivity:a3];
+  v4 = [self _identifierFromUserActivity:activity];
   if (v4)
   {
     v7 = 0;
-    v5 = [a1 _proxyWithError:&v7];
+    v5 = [self _proxyWithError:&v7];
     v6 = v5;
     if (!v7)
     {
@@ -142,13 +142,13 @@ LABEL_13:
   }
 }
 
-+ (void)didDismissBacklinkItemWithUserActivity:(id)a3
++ (void)didDismissBacklinkItemWithUserActivity:(id)activity
 {
-  v4 = [a1 _identifierFromUserActivity:a3];
+  v4 = [self _identifierFromUserActivity:activity];
   if (v4)
   {
     v7 = 0;
-    v5 = [a1 _proxyWithError:&v7];
+    v5 = [self _proxyWithError:&v7];
     v6 = v5;
     if (!v7)
     {

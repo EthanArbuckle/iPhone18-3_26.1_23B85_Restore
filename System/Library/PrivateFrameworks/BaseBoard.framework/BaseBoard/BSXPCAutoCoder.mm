@@ -1,11 +1,11 @@
 @interface BSXPCAutoCoder
-- (BSXPCAutoCoder)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BSXPCAutoCoder)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BSXPCAutoCoder
 
-- (BSXPCAutoCoder)initWithCoder:(id)a3
+- (BSXPCAutoCoder)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
   v6 = objc_opt_class();
@@ -13,7 +13,7 @@
   BSXPCObjectBaseClass();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [BSXPCCoder coderWithMessage:a3];
+    coder = [BSXPCCoder coderWithMessage:coder];
   }
 
   else
@@ -21,24 +21,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 supportedCodings];
+      supportedCodings = [v6 supportedCodings];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (([v8 containsObject:&unk_1F03C7E30] & 1) == 0)
+        if (([supportedCodings containsObject:&unk_1F03C7E30] & 1) == 0)
         {
           [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
         }
       }
 
-      else if (([v8 containsObject:&unk_1F03BA528] & 1) == 0)
+      else if (([supportedCodings containsObject:&unk_1F03BA528] & 1) == 0)
       {
         [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
       }
     }
   }
 
-  _BSXPCDecodeIvarsForObject(self, a3);
+  _BSXPCDecodeIvarsForObject(self, coder);
   AssociatedObject = objc_getAssociatedObject(v6, sel_decodeWithCoder_);
   v24 = 0u;
   v25 = 0u;
@@ -59,7 +59,7 @@
           objc_enumerationMutation(AssociatedObject);
         }
 
-        ([*(*(&v24 + 1) + 8 * v13++) pointerValue])(self, sel_decodeWithCoder_, a3);
+        ([*(*(&v24 + 1) + 8 * v13++) pointerValue])(self, sel_decodeWithCoder_, coder);
       }
 
       while (v11 != v13);
@@ -103,7 +103,7 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
   if (sel_encodeWithCoder_ == a2 && objc_getAssociatedObject(self, sel_encodeWithCoder_))
@@ -132,7 +132,7 @@
   BSXPCObjectBaseClass();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [BSXPCCoder coderWithMessage:a3];
+    coder = [BSXPCCoder coderWithMessage:coder];
   }
 
   else
@@ -142,10 +142,10 @@
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v9 = [v6 supportedCodings];
+      supportedCodings = [v6 supportedCodings];
       if (isKindOfClass)
       {
-        if (([v9 containsObject:&unk_1F03C7E30] & 1) == 0)
+        if (([supportedCodings containsObject:&unk_1F03C7E30] & 1) == 0)
         {
           v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not support %@", v6, NSStringFromProtocol(&unk_1F03C7E30)];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -173,7 +173,7 @@
         }
       }
 
-      else if (([v9 containsObject:&unk_1F03BA528] & 1) == 0)
+      else if (([supportedCodings containsObject:&unk_1F03BA528] & 1) == 0)
       {
         v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ does not support %@", v6, NSStringFromProtocol(&unk_1F03BA528)];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -202,8 +202,8 @@
     }
   }
 
-  v13 = [(BSXPCAutoCoder *)self replacementObjectForCoder:a3];
-  _BSXPCEncodeIvarsForObject(v13, a3);
+  v13 = [(BSXPCAutoCoder *)self replacementObjectForCoder:coder];
+  _BSXPCEncodeIvarsForObject(v13, coder);
   AssociatedObject = objc_getAssociatedObject(v6, sel_encodeWithCoder_);
   if (AssociatedObject)
   {
@@ -232,7 +232,7 @@
             objc_enumerationMutation(v15);
           }
 
-          ([*(*(&v24 + 1) + 8 * v19++) pointerValue])(v13, sel_encodeWithCoder_, a3);
+          ([*(*(&v24 + 1) + 8 * v19++) pointerValue])(v13, sel_encodeWithCoder_, coder);
         }
 
         while (v17 != v19);

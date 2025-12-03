@@ -1,20 +1,20 @@
 @interface ICASMiniSnapshotData
-- (ICASMiniSnapshotData)initWithMiniAccountSummary:(id)a3;
+- (ICASMiniSnapshotData)initWithMiniAccountSummary:(id)summary;
 - (id)toDict;
 @end
 
 @implementation ICASMiniSnapshotData
 
-- (ICASMiniSnapshotData)initWithMiniAccountSummary:(id)a3
+- (ICASMiniSnapshotData)initWithMiniAccountSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   v9.receiver = self;
   v9.super_class = ICASMiniSnapshotData;
   v6 = [(ICASMiniSnapshotData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_miniAccountSummary, a3);
+    objc_storeStrong(&v6->_miniAccountSummary, summary);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"miniAccountSummary";
-  v3 = [(ICASMiniSnapshotData *)self miniAccountSummary];
-  if (v3)
+  miniAccountSummary = [(ICASMiniSnapshotData *)self miniAccountSummary];
+  if (miniAccountSummary)
   {
-    v4 = [(ICASMiniSnapshotData *)self miniAccountSummary];
+    miniAccountSummary2 = [(ICASMiniSnapshotData *)self miniAccountSummary];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    miniAccountSummary2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = miniAccountSummary2;
+  v10[0] = miniAccountSummary2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

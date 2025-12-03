@@ -3,31 +3,31 @@
 - (BOOL)shouldShowCallWillEndWarning;
 - (BOOL)showDisableVoLTEWarningsIfNeeded;
 - (BOOL)showEnableVoLTEWarningsIfNeeded;
-- (BOOL)showWarningsIfNeededForEnableState:(BOOL)a3;
-- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4;
-- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 callCache:(id)a5 capabilitiesCache:(id)a6 carrierBundleCache:(id)a7 simStatusCache:(id)a8;
-- (id)createCallCarrierAlertForContext:(id)a3;
+- (BOOL)showWarningsIfNeededForEnableState:(BOOL)state;
+- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier;
+- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier callCache:(id)cache capabilitiesCache:(id)capabilitiesCache carrierBundleCache:(id)bundleCache simStatusCache:(id)statusCache;
+- (id)createCallCarrierAlertForContext:(id)context;
 - (id)getLogger;
 - (id)getVoLTEEnabled;
 - (id)groupFooterText;
-- (void)addSpinnerIfNeededToCell:(id)a3;
+- (void)addSpinnerIfNeededToCell:(id)cell;
 - (void)reloadSelfInListController;
 - (void)setUpPhoneCallWillEndWarningSpecifier;
-- (void)setVoLTEEnabled:(id)a3 specifier:(id)a4;
+- (void)setVoLTEEnabled:(id)enabled specifier:(id)specifier;
 - (void)showCallCarrierAlert;
 - (void)showPhoneCallWillEndWarning;
 @end
 
 @implementation PSUIVoLTESwitchSpecifier
 
-- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 callCache:(id)a5 capabilitiesCache:(id)a6 carrierBundleCache:(id)a7 simStatusCache:(id)a8
+- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier callCache:(id)cache capabilitiesCache:(id)capabilitiesCache carrierBundleCache:(id)bundleCache simStatusCache:(id)statusCache
 {
-  v14 = a3;
-  v15 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  cacheCopy = cache;
+  capabilitiesCacheCopy = capabilitiesCache;
+  bundleCacheCopy = bundleCache;
+  statusCacheCopy = statusCache;
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:@"VoLTE" value:&stru_287733598 table:@"VOLTE"];
   v27.receiver = self;
@@ -36,16 +36,16 @@
 
   if (v18)
   {
-    objc_storeWeak(&v18->_listController, v14);
-    objc_storeStrong(&v18->_parentSpecifier, a4);
-    v19 = [v15 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v18->_listController, controllerCopy);
+    objc_storeStrong(&v18->_parentSpecifier, specifier);
+    v19 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
     subscriptionContext = v18->_subscriptionContext;
     v18->_subscriptionContext = v19;
 
-    objc_storeStrong(&v18->_callCache, a5);
-    objc_storeStrong(&v18->_capabilitiesCache, a6);
-    objc_storeStrong(&v18->_carrierBundleCache, a7);
-    objc_storeStrong(&v18->_simStatusCache, a8);
+    objc_storeStrong(&v18->_callCache, cache);
+    objc_storeStrong(&v18->_capabilitiesCache, capabilitiesCache);
+    objc_storeStrong(&v18->_carrierBundleCache, bundleCache);
+    objc_storeStrong(&v18->_simStatusCache, statusCache);
   }
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:{-[PSUIVoLTESwitchSpecifier shouldEnableVoLTESwitchCell](v18, "shouldEnableVoLTESwitchCell")}];
@@ -54,15 +54,15 @@
   return v18;
 }
 
-- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4
+- (PSUIVoLTESwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v8 = +[PSUICoreTelephonyCallCache sharedInstance];
   v9 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
   v10 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-  v11 = [MEMORY[0x277D4D868] sharedInstance];
-  v12 = [(PSUIVoLTESwitchSpecifier *)self initWithHostController:v7 parentSpecifier:v6 callCache:v8 capabilitiesCache:v9 carrierBundleCache:v10 simStatusCache:v11];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  v12 = [(PSUIVoLTESwitchSpecifier *)self initWithHostController:controllerCopy parentSpecifier:specifierCopy callCache:v8 capabilitiesCache:v9 carrierBundleCache:v10 simStatusCache:mEMORY[0x277D4D868]];
 
   return v12;
 }
@@ -81,8 +81,8 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [(PSUICoreTelephonyCapabilitiesCache *)self->_capabilitiesCache capabilityEnabledVoLTE:self->_subscriptionContext];
-  v4 = [(PSUIVoLTESwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIVoLTESwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "OFF";
     if (v3)
@@ -92,7 +92,7 @@
 
     v9 = 136315138;
     v10 = v5;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "VoLTE state is: %s", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "VoLTE state is: %s", &v9, 0xCu);
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
@@ -101,35 +101,35 @@
   return v6;
 }
 
-- (void)setVoLTEEnabled:(id)a3 specifier:(id)a4
+- (void)setVoLTEEnabled:(id)enabled specifier:(id)specifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
-  v6 = [(PSUIVoLTESwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  bOOLValue = [enabled BOOLValue];
+  getLogger = [(PSUIVoLTESwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"disable";
-    if (v5)
+    if (bOOLValue)
     {
       v7 = @"enable";
     }
 
     v9 = 138412290;
     v10 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "attempting to %@ VoLTE", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "attempting to %@ VoLTE", &v9, 0xCu);
   }
 
-  if (![(PSUIVoLTESwitchSpecifier *)self showWarningsIfNeededForEnableState:v5])
+  if (![(PSUIVoLTESwitchSpecifier *)self showWarningsIfNeededForEnableState:bOOLValue])
   {
-    [(PSUIVoLTESwitchSpecifier *)self setVoLTEEnabled:v5];
+    [(PSUIVoLTESwitchSpecifier *)self setVoLTEEnabled:bOOLValue];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)showWarningsIfNeededForEnableState:(BOOL)a3
+- (BOOL)showWarningsIfNeededForEnableState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return [(PSUIVoLTESwitchSpecifier *)self showEnableVoLTEWarningsIfNeeded];
   }
@@ -142,47 +142,47 @@
 
 - (BOOL)showEnableVoLTEWarningsIfNeeded
 {
-  v3 = [(PSUIVoLTESwitchSpecifier *)self shouldShowCallCarrierAlert];
-  if (v3)
+  shouldShowCallCarrierAlert = [(PSUIVoLTESwitchSpecifier *)self shouldShowCallCarrierAlert];
+  if (shouldShowCallCarrierAlert)
   {
     [(PSUIVoLTESwitchSpecifier *)self showCallCarrierAlert];
   }
 
-  return v3;
+  return shouldShowCallCarrierAlert;
 }
 
 - (BOOL)showDisableVoLTEWarningsIfNeeded
 {
-  v3 = [(PSUIVoLTESwitchSpecifier *)self shouldShowCallWillEndWarning];
-  if (v3)
+  shouldShowCallWillEndWarning = [(PSUIVoLTESwitchSpecifier *)self shouldShowCallWillEndWarning];
+  if (shouldShowCallWillEndWarning)
   {
     [(PSUIVoLTESwitchSpecifier *)self showPhoneCallWillEndWarning];
   }
 
-  return v3;
+  return shouldShowCallWillEndWarning;
 }
 
 - (BOOL)shouldShowCallWillEndWarning
 {
-  v3 = [(PSUICoreTelephonyCallCache *)self->_callCache isActiveCallVoLTE];
-  if (v3)
+  isActiveCallVoLTE = [(PSUICoreTelephonyCallCache *)self->_callCache isActiveCallVoLTE];
+  if (isActiveCallVoLTE)
   {
     simStatusCache = self->_simStatusCache;
-    v5 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext slotID];
+    slotID = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext slotID];
 
-    LOBYTE(v3) = [(PSSimStatusCache *)simStatusCache isSlotActiveDataSlot:v5];
+    LOBYTE(isActiveCallVoLTE) = [(PSSimStatusCache *)simStatusCache isSlotActiveDataSlot:slotID];
   }
 
-  return v3;
+  return isActiveCallVoLTE;
 }
 
 - (void)showPhoneCallWillEndWarning
 {
-  v3 = [(PSUIVoLTESwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIVoLTESwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "User tried to disable VoLTE during a call, showing warning", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "User tried to disable VoLTE during a call, showing warning", v5, 2u);
   }
 
   [(PSUIVoLTESwitchSpecifier *)self setUpPhoneCallWillEndWarningSpecifier];
@@ -198,24 +198,24 @@
     phoneCallWillEndWarning = self->_phoneCallWillEndWarning;
     self->_phoneCallWillEndWarning = v3;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"ON_CALL_CANCEL" value:&stru_287733598 table:@"VOLTE"];
-    [v15 setObject:v6 forKey:*MEMORY[0x277D3FE78]];
+    [dictionary setObject:v6 forKey:*MEMORY[0x277D3FE78]];
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"ON_CALL_OK_DISABLE" value:&stru_287733598 table:@"VOLTE"];
-    [v15 setObject:v8 forKey:*MEMORY[0x277D3FE88]];
+    [dictionary setObject:v8 forKey:*MEMORY[0x277D3FE88]];
 
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"RAT_ON_CALL_WARNING_DISABLE_VOLTE" value:&stru_287733598 table:@"VOLTE"];
-    [v15 setObject:v10 forKey:*MEMORY[0x277D3FE90]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x277D3FE90]];
 
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"DISABLE_VOLTE" value:&stru_287733598 table:@"VOLTE"];
-    [v15 setObject:v12 forKey:*MEMORY[0x277D3FE98]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x277D3FE98]];
 
-    [(PSConfirmationSpecifier *)self->_phoneCallWillEndWarning setupWithDictionary:v15];
+    [(PSConfirmationSpecifier *)self->_phoneCallWillEndWarning setupWithDictionary:dictionary];
     v13 = self->_phoneCallWillEndWarning;
     v14 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(PSConfirmationSpecifier *)v13 setProperty:v14 forKey:*MEMORY[0x277D3FE80]];
@@ -258,16 +258,16 @@ void __54__PSUIVoLTESwitchSpecifier_reloadSelfInListController__block_invoke(uin
   [WeakRetained presentViewController:v3 animated:1 completion:0];
 }
 
-- (id)createCallCarrierAlertForContext:(id)a3
+- (id)createCallCarrierAlertForContext:(id)context
 {
   parentSpecifier = self->_parentSpecifier;
-  v5 = a3;
+  contextCopy = context;
   v6 = [(PSSpecifier *)parentSpecifier propertyForKey:0x287735978];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v7)
+  if (bOOLValue)
   {
     v10 = @"SETUP_VOICE_ALERT_TITLE_LTE_AS_4G";
   }
@@ -277,7 +277,7 @@ void __54__PSUIVoLTESwitchSpecifier_reloadSelfInListController__block_invoke(uin
     v10 = @"SETUP_VOICE_ALERT_TITLE_LTE";
   }
 
-  if (v7)
+  if (bOOLValue)
   {
     v11 = @"SETUP_VOICE_ALERT_BODY_FORMAT_LTE_AS_4G";
   }
@@ -292,9 +292,9 @@ void __54__PSUIVoLTESwitchSpecifier_reloadSelfInListController__block_invoke(uin
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:v11 value:&stru_287733598 table:@"VOLTE"];
 
-  v15 = [(PSUICoreTelephonyCarrierBundleCache *)self->_carrierBundleCache carrierName:v5];
+  v15 = [(PSUICoreTelephonyCarrierBundleCache *)self->_carrierBundleCache carrierName:contextCopy];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:v14, v15];
-  v17 = [(PSUICoreTelephonyCarrierBundleCache *)self->_carrierBundleCache volteCustomerCareWebsite:v5];
+  v17 = [(PSUICoreTelephonyCarrierBundleCache *)self->_carrierBundleCache volteCustomerCareWebsite:contextCopy];
 
   if (v17)
   {
@@ -342,14 +342,14 @@ void __61__PSUIVoLTESwitchSpecifier_createCallCarrierAlertForContext___block_inv
   [v2 openURL:*(a1 + 32) options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (void)addSpinnerIfNeededToCell:(id)a3
+- (void)addSpinnerIfNeededToCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   if ([(PSUIVoLTESwitchSpecifier *)self isVoLTEProvisioning])
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [v4 startAnimating];
-    [v5 setAccessoryView:v4];
+    [cellCopy setAccessoryView:v4];
   }
 }
 
@@ -374,9 +374,9 @@ void __61__PSUIVoLTESwitchSpecifier_createCallCarrierAlertForContext___block_inv
 {
   v2 = MEMORY[0x277D4D830];
   v3 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:self->_subscriptionContext];
-  v4 = [v3 instance];
-  v5 = [v4 stringValue];
-  v6 = [v2 loggerWithCategory:@"VoLTESwitchSpecifier" instance:v5];
+  instance = [v3 instance];
+  stringValue = [instance stringValue];
+  v6 = [v2 loggerWithCategory:@"VoLTESwitchSpecifier" instance:stringValue];
 
   return v6;
 }

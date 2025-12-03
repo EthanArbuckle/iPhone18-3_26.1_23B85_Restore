@@ -1,11 +1,11 @@
 @interface TSUCustomFormatData
 + (id)customFormatData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSUCustomFormatData)init;
-- (TSUCustomFormatData)initWithCustomFormatData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (TSUCustomFormatData)initWithCustomFormatData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)p_copySelfTo:(id)a3;
+- (void)p_copySelfTo:(id)to;
 @end
 
 @implementation TSUCustomFormatData
@@ -17,15 +17,15 @@
   return v2;
 }
 
-- (TSUCustomFormatData)initWithCustomFormatData:(id)a3
+- (TSUCustomFormatData)initWithCustomFormatData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = TSUCustomFormatData;
   v5 = [(TSUCustomFormatData *)&v7 init];
   if (v5)
   {
-    [v4 p_copySelfTo:v5];
+    [dataCopy p_copySelfTo:v5];
     v5->_formatCacheKey = atomic_fetch_add(&qword_280A62C08, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -50,135 +50,135 @@
   return result;
 }
 
-- (void)p_copySelfTo:(id)a3
+- (void)p_copySelfTo:(id)to
 {
-  v7 = a3;
-  v4 = [(TSUCustomFormatData *)self formatString];
-  [v7 setFormatString:v4];
+  toCopy = to;
+  formatString = [(TSUCustomFormatData *)self formatString];
+  [toCopy setFormatString:formatString];
 
-  v5 = [(TSUCustomFormatData *)self interstitialStrings];
-  [v7 setInterstitialStrings:v5];
+  interstitialStrings = [(TSUCustomFormatData *)self interstitialStrings];
+  [toCopy setInterstitialStrings:interstitialStrings];
 
-  v6 = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
-  [v7 setInterstitialStringInsertionIndexes:v6];
+  interstitialStringInsertionIndexes = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
+  [toCopy setInterstitialStringInsertionIndexes:interstitialStringInsertionIndexes];
 
   [(TSUCustomFormatData *)self scaleFactor];
-  [v7 setScaleFactor:?];
-  [v7 setFractionAccuracy:{-[TSUCustomFormatData fractionAccuracy](self, "fractionAccuracy")}];
-  [v7 setMinimumIntegerWidth:{-[TSUCustomFormatData minimumIntegerWidth](self, "minimumIntegerWidth")}];
-  [v7 setDecimalWidth:{-[TSUCustomFormatData decimalWidth](self, "decimalWidth")}];
-  [v7 setNumberOfNonSpaceIntegerPlaceholderDigits:{-[TSUCustomFormatData numberOfNonSpaceIntegerPlaceholderDigits](self, "numberOfNonSpaceIntegerPlaceholderDigits")}];
-  [v7 setNumberOfNonSpaceDecimalPlaceholderDigits:{-[TSUCustomFormatData numberOfNonSpaceDecimalPlaceholderDigits](self, "numberOfNonSpaceDecimalPlaceholderDigits")}];
-  [v7 setIndexFromRightOfLastDigitPlaceholder:{-[TSUCustomFormatData indexFromRightOfLastDigitPlaceholder](self, "indexFromRightOfLastDigitPlaceholder")}];
-  [v7 setNumberOfHashDecimalPlaceholders:{-[TSUCustomFormatData numberOfHashDecimalPlaceholders](self, "numberOfHashDecimalPlaceholders")}];
-  [v7 setTotalNumberOfDecimalPlaceholdersInFormat:-[TSUCustomFormatData totalNumberOfDecimalPlaceholdersInFormat](self, "totalNumberOfDecimalPlaceholdersInFormat")];
-  [v7 setCurrencyCodeIndex:{-[TSUCustomFormatData currencyCodeIndex](self, "currencyCodeIndex")}];
-  [v7 setShowThousandsSeparator:{-[TSUCustomFormatData showThousandsSeparator](self, "showThousandsSeparator")}];
-  [v7 setUseAccountingStyle:{-[TSUCustomFormatData useAccountingStyle](self, "useAccountingStyle")}];
-  [v7 setRequiresFractionReplacement:{-[TSUCustomFormatData requiresFractionReplacement](self, "requiresFractionReplacement")}];
-  [v7 setIsConditional:{-[TSUCustomFormatData isConditional](self, "isConditional")}];
-  [v7 setFormatContainsIntegerToken:{-[TSUCustomFormatData formatContainsIntegerToken](self, "formatContainsIntegerToken")}];
-  [v7 setIsComplexFormat:-[TSUCustomFormatData isComplexFormat](self, "isComplexFormat")];
+  [toCopy setScaleFactor:?];
+  [toCopy setFractionAccuracy:{-[TSUCustomFormatData fractionAccuracy](self, "fractionAccuracy")}];
+  [toCopy setMinimumIntegerWidth:{-[TSUCustomFormatData minimumIntegerWidth](self, "minimumIntegerWidth")}];
+  [toCopy setDecimalWidth:{-[TSUCustomFormatData decimalWidth](self, "decimalWidth")}];
+  [toCopy setNumberOfNonSpaceIntegerPlaceholderDigits:{-[TSUCustomFormatData numberOfNonSpaceIntegerPlaceholderDigits](self, "numberOfNonSpaceIntegerPlaceholderDigits")}];
+  [toCopy setNumberOfNonSpaceDecimalPlaceholderDigits:{-[TSUCustomFormatData numberOfNonSpaceDecimalPlaceholderDigits](self, "numberOfNonSpaceDecimalPlaceholderDigits")}];
+  [toCopy setIndexFromRightOfLastDigitPlaceholder:{-[TSUCustomFormatData indexFromRightOfLastDigitPlaceholder](self, "indexFromRightOfLastDigitPlaceholder")}];
+  [toCopy setNumberOfHashDecimalPlaceholders:{-[TSUCustomFormatData numberOfHashDecimalPlaceholders](self, "numberOfHashDecimalPlaceholders")}];
+  [toCopy setTotalNumberOfDecimalPlaceholdersInFormat:-[TSUCustomFormatData totalNumberOfDecimalPlaceholdersInFormat](self, "totalNumberOfDecimalPlaceholdersInFormat")];
+  [toCopy setCurrencyCodeIndex:{-[TSUCustomFormatData currencyCodeIndex](self, "currencyCodeIndex")}];
+  [toCopy setShowThousandsSeparator:{-[TSUCustomFormatData showThousandsSeparator](self, "showThousandsSeparator")}];
+  [toCopy setUseAccountingStyle:{-[TSUCustomFormatData useAccountingStyle](self, "useAccountingStyle")}];
+  [toCopy setRequiresFractionReplacement:{-[TSUCustomFormatData requiresFractionReplacement](self, "requiresFractionReplacement")}];
+  [toCopy setIsConditional:{-[TSUCustomFormatData isConditional](self, "isConditional")}];
+  [toCopy setFormatContainsIntegerToken:{-[TSUCustomFormatData formatContainsIntegerToken](self, "formatContainsIntegerToken")}];
+  [toCopy setIsComplexFormat:-[TSUCustomFormatData isComplexFormat](self, "isComplexFormat")];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(TSUCustomFormatData *)[TSUMutableCustomFormatData allocWithZone:?]];
   [(TSUCustomFormatData *)self p_copySelfTo:v4];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
 
   if (!v6)
   {
     goto LABEL_30;
   }
 
-  v7 = [(TSUCustomFormatData *)self showThousandsSeparator];
-  if (v7 != [v6 showThousandsSeparator])
+  showThousandsSeparator = [(TSUCustomFormatData *)self showThousandsSeparator];
+  if (showThousandsSeparator != [v6 showThousandsSeparator])
   {
     goto LABEL_30;
   }
 
-  v8 = [(TSUCustomFormatData *)self useAccountingStyle];
-  if (v8 != [v6 useAccountingStyle])
+  useAccountingStyle = [(TSUCustomFormatData *)self useAccountingStyle];
+  if (useAccountingStyle != [v6 useAccountingStyle])
   {
     goto LABEL_30;
   }
 
-  v9 = [(TSUCustomFormatData *)self requiresFractionReplacement];
-  if (v9 != [v6 requiresFractionReplacement])
+  requiresFractionReplacement = [(TSUCustomFormatData *)self requiresFractionReplacement];
+  if (requiresFractionReplacement != [v6 requiresFractionReplacement])
   {
     goto LABEL_30;
   }
 
-  v10 = [(TSUCustomFormatData *)self isConditional];
-  if (v10 != [v6 isConditional])
+  isConditional = [(TSUCustomFormatData *)self isConditional];
+  if (isConditional != [v6 isConditional])
   {
     goto LABEL_30;
   }
 
-  v11 = [(TSUCustomFormatData *)self formatContainsIntegerToken];
-  if (v11 != [v6 formatContainsIntegerToken])
+  formatContainsIntegerToken = [(TSUCustomFormatData *)self formatContainsIntegerToken];
+  if (formatContainsIntegerToken != [v6 formatContainsIntegerToken])
   {
     goto LABEL_30;
   }
 
-  v12 = [(TSUCustomFormatData *)self isComplexFormat];
-  if (v12 != [v6 isComplexFormat])
+  isComplexFormat = [(TSUCustomFormatData *)self isComplexFormat];
+  if (isComplexFormat != [v6 isComplexFormat])
   {
     goto LABEL_30;
   }
 
-  v13 = [(TSUCustomFormatData *)self fractionAccuracy];
-  if (v13 != [v6 fractionAccuracy])
+  fractionAccuracy = [(TSUCustomFormatData *)self fractionAccuracy];
+  if (fractionAccuracy != [v6 fractionAccuracy])
   {
     goto LABEL_30;
   }
 
-  v14 = [(TSUCustomFormatData *)self minimumIntegerWidth];
-  if (v14 != [v6 minimumIntegerWidth])
+  minimumIntegerWidth = [(TSUCustomFormatData *)self minimumIntegerWidth];
+  if (minimumIntegerWidth != [v6 minimumIntegerWidth])
   {
     goto LABEL_30;
   }
 
-  v15 = [(TSUCustomFormatData *)self decimalWidth];
-  if (v15 != [v6 decimalWidth])
+  decimalWidth = [(TSUCustomFormatData *)self decimalWidth];
+  if (decimalWidth != [v6 decimalWidth])
   {
     goto LABEL_30;
   }
 
-  v16 = [(TSUCustomFormatData *)self numberOfNonSpaceIntegerPlaceholderDigits];
-  if (v16 != [v6 numberOfNonSpaceIntegerPlaceholderDigits])
+  numberOfNonSpaceIntegerPlaceholderDigits = [(TSUCustomFormatData *)self numberOfNonSpaceIntegerPlaceholderDigits];
+  if (numberOfNonSpaceIntegerPlaceholderDigits != [v6 numberOfNonSpaceIntegerPlaceholderDigits])
   {
     goto LABEL_30;
   }
 
-  v17 = [(TSUCustomFormatData *)self numberOfNonSpaceDecimalPlaceholderDigits];
-  if (v17 != [v6 numberOfNonSpaceDecimalPlaceholderDigits])
+  numberOfNonSpaceDecimalPlaceholderDigits = [(TSUCustomFormatData *)self numberOfNonSpaceDecimalPlaceholderDigits];
+  if (numberOfNonSpaceDecimalPlaceholderDigits != [v6 numberOfNonSpaceDecimalPlaceholderDigits])
   {
     goto LABEL_30;
   }
 
-  v18 = [(TSUCustomFormatData *)self indexFromRightOfLastDigitPlaceholder];
-  if (v18 != [v6 indexFromRightOfLastDigitPlaceholder])
+  indexFromRightOfLastDigitPlaceholder = [(TSUCustomFormatData *)self indexFromRightOfLastDigitPlaceholder];
+  if (indexFromRightOfLastDigitPlaceholder != [v6 indexFromRightOfLastDigitPlaceholder])
   {
     goto LABEL_30;
   }
 
-  v19 = [(TSUCustomFormatData *)self numberOfHashDecimalPlaceholders];
-  if (v19 != [v6 numberOfHashDecimalPlaceholders])
+  numberOfHashDecimalPlaceholders = [(TSUCustomFormatData *)self numberOfHashDecimalPlaceholders];
+  if (numberOfHashDecimalPlaceholders != [v6 numberOfHashDecimalPlaceholders])
   {
     goto LABEL_30;
   }
 
-  v20 = [(TSUCustomFormatData *)self totalNumberOfDecimalPlaceholdersInFormat];
-  if (v20 != [v6 totalNumberOfDecimalPlaceholdersInFormat])
+  totalNumberOfDecimalPlaceholdersInFormat = [(TSUCustomFormatData *)self totalNumberOfDecimalPlaceholdersInFormat];
+  if (totalNumberOfDecimalPlaceholdersInFormat != [v6 totalNumberOfDecimalPlaceholdersInFormat])
   {
     goto LABEL_30;
   }
@@ -191,19 +191,19 @@
     goto LABEL_30;
   }
 
-  v24 = [(TSUCustomFormatData *)self currencyCodeIndex];
-  if (v24 != [v6 currencyCodeIndex])
+  currencyCodeIndex = [(TSUCustomFormatData *)self currencyCodeIndex];
+  if (currencyCodeIndex != [v6 currencyCodeIndex])
   {
     goto LABEL_30;
   }
 
-  v25 = [(TSUCustomFormatData *)self formatString];
+  formatString = [(TSUCustomFormatData *)self formatString];
 
-  if (v25)
+  if (formatString)
   {
-    v26 = [(TSUCustomFormatData *)self formatString];
-    v27 = [v6 formatString];
-    v28 = [v26 isEqualToString:v27];
+    formatString2 = [(TSUCustomFormatData *)self formatString];
+    formatString3 = [v6 formatString];
+    v28 = [formatString2 isEqualToString:formatString3];
 
     if ((v28 & 1) == 0)
     {
@@ -213,21 +213,21 @@
 
   else
   {
-    v29 = [v6 formatString];
+    formatString4 = [v6 formatString];
 
-    if (v29)
+    if (formatString4)
     {
       goto LABEL_30;
     }
   }
 
-  v30 = [(TSUCustomFormatData *)self interstitialStrings];
+  interstitialStrings = [(TSUCustomFormatData *)self interstitialStrings];
 
-  if (v30)
+  if (interstitialStrings)
   {
-    v31 = [(TSUCustomFormatData *)self interstitialStrings];
-    v32 = [v6 interstitialStrings];
-    v33 = [v31 isEqualToArray:v32];
+    interstitialStrings2 = [(TSUCustomFormatData *)self interstitialStrings];
+    interstitialStrings3 = [v6 interstitialStrings];
+    v33 = [interstitialStrings2 isEqualToArray:interstitialStrings3];
 
     if ((v33 & 1) == 0)
     {
@@ -237,21 +237,21 @@
 
   else
   {
-    v34 = [v6 interstitialStrings];
+    interstitialStrings4 = [v6 interstitialStrings];
 
-    if (v34)
+    if (interstitialStrings4)
     {
       goto LABEL_30;
     }
   }
 
-  v35 = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
+  interstitialStringInsertionIndexes = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
 
-  if (!v35)
+  if (!interstitialStringInsertionIndexes)
   {
-    v40 = [v6 interstitialStringInsertionIndexes];
+    interstitialStringInsertionIndexes2 = [v6 interstitialStringInsertionIndexes];
 
-    if (!v40)
+    if (!interstitialStringInsertionIndexes2)
     {
       goto LABEL_28;
     }
@@ -261,9 +261,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v36 = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
-  v37 = [v6 interstitialStringInsertionIndexes];
-  v38 = [v36 isEqualToIndexSet:v37];
+  interstitialStringInsertionIndexes3 = [(TSUCustomFormatData *)self interstitialStringInsertionIndexes];
+  interstitialStringInsertionIndexes4 = [v6 interstitialStringInsertionIndexes];
+  v38 = [interstitialStringInsertionIndexes3 isEqualToIndexSet:interstitialStringInsertionIndexes4];
 
   if ((v38 & 1) == 0)
   {
@@ -279,8 +279,8 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v2 = [(TSUCustomFormatData *)self formatString];
-  v3 = [v2 hash];
+  formatString = [(TSUCustomFormatData *)self formatString];
+  v3 = [formatString hash];
 
   return v3;
 }

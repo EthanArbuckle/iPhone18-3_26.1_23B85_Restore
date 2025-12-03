@@ -1,9 +1,9 @@
 @interface CloudContentTasteUpdateRequestListener
 + (id)sharedContentTasteRequestListener;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CloudContentTasteUpdateRequestListener)init;
-- (id)_adjustedContentTasteForLibraryEndpoint:(int64_t)a3;
-- (id)_contentTasteRequestHandlerForConfiguration:(id)a3 outError:(id *)a4;
+- (id)_adjustedContentTasteForLibraryEndpoint:(int64_t)endpoint;
+- (id)_contentTasteRequestHandlerForConfiguration:(id)configuration outError:(id *)error;
 - (id)_init;
 - (id)_supportedInterfaceForXPCConnection;
 - (void)_cancelAllContentTasteRequestHandlers;
@@ -11,18 +11,18 @@
 - (void)handleContentTasteChangedNotification;
 - (void)handleMusicAppInstalled;
 - (void)handleMusicAppRemoved;
-- (void)removeContentTasteOperationsForConnectionConfiguration:(id)a3;
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7 withCompletionHandler:(id)a8;
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 persistentID:(int64_t)a6 timeStamp:(id)a7 configuration:(id)a8 withCompletionHandler:(id)a9;
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 configuration:(id)a5 withCompletionHandler:(id)a6;
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8;
+- (void)removeContentTasteOperationsForConnectionConfiguration:(id)configuration;
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier configuration:(id)configuration timeStamp:(id)stamp withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier persistentID:(int64_t)d timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d configuration:(id)configuration withCompletionHandler:(id)handler;
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler;
 - (void)start;
 - (void)stop;
-- (void)updateContentTasteForConnectionConfiguration:(id)a3 invalidateLocalCache:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)updateContentTasteForConnectionConfiguration:(id)configuration invalidateLocalCache:(BOOL)cache withCompletionHandler:(id)handler;
 @end
 
 @implementation CloudContentTasteUpdateRequestListener
@@ -65,7 +65,7 @@
     {
       v7 = [v4 count];
       *buf = 138543874;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 1024;
       v26 = v7;
       v27 = 2114;
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ not processing pending changes as music app is not installed", buf, 0xCu);
     }
   }
@@ -133,48 +133,48 @@
   [(NSMutableDictionary *)contentTasteRequestHandlerToDSIDMap enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (id)_adjustedContentTasteForLibraryEndpoint:(int64_t)a3
+- (id)_adjustedContentTasteForLibraryEndpoint:(int64_t)endpoint
 {
-  if (a3 == 1)
+  if (endpoint == 1)
   {
-    v3 = 2;
+    endpointCopy = 2;
   }
 
   else
   {
-    v3 = a3;
-    if (a3)
+    endpointCopy = endpoint;
+    if (endpoint)
     {
       v5 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v8 = 138543618;
-        v9 = self;
+        selfCopy = self;
         v10 = 1024;
-        v11 = v3;
+        v11 = endpointCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@ Unsupported content taste value=%d to send to library APIs", &v8, 0x12u);
       }
     }
 
     else
     {
-      v3 = 1;
+      endpointCopy = 1;
     }
   }
 
-  v6 = [NSNumber numberWithInteger:v3];
+  v6 = [NSNumber numberWithInteger:endpointCopy];
 
   return v6;
 }
 
-- (id)_contentTasteRequestHandlerForConfiguration:(id)a3 outError:(id *)a4
+- (id)_contentTasteRequestHandlerForConfiguration:(id)configuration outError:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v7 = [v6 userIdentityStore];
-  v8 = [v6 userIdentity];
+  userIdentityStore = [configurationCopy userIdentityStore];
+  userIdentity = [configurationCopy userIdentity];
   v15 = 0;
-  v9 = [v7 DSIDForUserIdentity:v8 outError:&v15];
+  v9 = [userIdentityStore DSIDForUserIdentity:userIdentity outError:&v15];
   v10 = v15;
 
   if (v9 && !v10 && [v9 longLongValue])
@@ -182,7 +182,7 @@
     v11 = [(NSMutableDictionary *)self->_contentTasteRequestHandlerToDSIDMap objectForKey:v9];
     if (!v11)
     {
-      v11 = [[ICContentTasteRequestHandler alloc] initWithConfiguration:v6];
+      v11 = [[ICContentTasteRequestHandler alloc] initWithConfiguration:configurationCopy];
       [(NSMutableDictionary *)self->_contentTasteRequestHandlerToDSIDMap setObject:v11 forKey:v9];
     }
   }
@@ -193,19 +193,19 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = v6;
+      v19 = configurationCopy;
       v20 = 2114;
       v21 = v10;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@ Could not get DSID from configuration=%p, error=%{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v10;
       v11 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -217,214 +217,214 @@
   return v11;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 processIdentifier];
-  v7 = sub_1000D1624(v5, @"com.apple.itunesstored.private");
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v7 = sub_1000D1624(connectionCopy, @"com.apple.itunesstored.private");
   if (v7)
   {
-    v8 = [(CloudContentTasteUpdateRequestListener *)self _supportedInterfaceForXPCConnection];
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
+    _supportedInterfaceForXPCConnection = [(CloudContentTasteUpdateRequestListener *)self _supportedInterfaceForXPCConnection];
+    [connectionCopy setExportedInterface:_supportedInterfaceForXPCConnection];
+    [connectionCopy setExportedObject:self];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100138324;
     v13[3] = &unk_1001DF780;
     v13[4] = self;
-    v14 = v6;
-    [v5 setInterruptionHandler:v13];
+    v14 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v13];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001383E8;
     v11[3] = &unk_1001DF780;
     v11[4] = self;
-    v12 = v6;
-    [v5 setInvalidationHandler:v11];
-    [v5 resume];
+    v12 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v11];
+    [connectionCopy resume];
     v9 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1024;
-      v18 = v6;
+      v18 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ got connection request from pid %i", buf, 0x12u);
     }
   }
 
   else
   {
-    v8 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _supportedInterfaceForXPCConnection = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
+    if (os_log_type_enabled(_supportedInterfaceForXPCConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1024;
-      v18 = v6;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@ pid %i is not entitled to connect to content taste update service", buf, 0x12u);
+      v18 = processIdentifier;
+      _os_log_impl(&_mh_execute_header, _supportedInterfaceForXPCConnection, OS_LOG_TYPE_ERROR, "%{public}@ pid %i is not entitled to connect to content taste update service", buf, 0x12u);
     }
   }
 
   return v7;
 }
 
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001385C8;
   block[3] = &unk_1001DF708;
   block[4] = self;
-  v22 = v15;
-  v25 = a4;
-  v26 = a3;
-  v23 = v14;
-  v24 = v16;
-  v27 = a5;
-  v18 = v14;
-  v19 = v15;
-  v20 = v16;
+  v22 = configurationCopy;
+  dCopy = d;
+  tasteCopy = taste;
+  v23 = stampCopy;
+  v24 = handlerCopy;
+  iDCopy = iD;
+  v18 = stampCopy;
+  v19 = configurationCopy;
+  v20 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
-- (void)setContentTaste:(int64_t)a3 forArtistStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forArtistStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v12 = +[NSDate date];
-  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:a3 forMediaItem:8 storeIdentifier:a4 configuration:v11 timeStamp:v12 withCompletionHandler:v10];
+  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:taste forMediaItem:8 storeIdentifier:d configuration:configurationCopy timeStamp:v12 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100139620;
   block[3] = &unk_1001DF708;
   block[4] = self;
-  v22 = v15;
-  v25 = a4;
-  v26 = a3;
-  v23 = v14;
-  v24 = v16;
-  v27 = a5;
-  v18 = v14;
-  v19 = v15;
-  v20 = v16;
+  v22 = configurationCopy;
+  dCopy = d;
+  tasteCopy = taste;
+  v23 = stampCopy;
+  v24 = handlerCopy;
+  iDCopy = iD;
+  v18 = stampCopy;
+  v19 = configurationCopy;
+  v20 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
-- (void)setContentTaste:(int64_t)a3 forAlbumStoreID:(int64_t)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forAlbumStoreID:(int64_t)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v12 = +[NSDate date];
-  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:a3 forMediaItem:3 storeIdentifier:a4 configuration:v11 timeStamp:v12 withCompletionHandler:v10];
+  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:taste forMediaItem:3 storeIdentifier:d configuration:configurationCopy timeStamp:v12 withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 persistentID:(int64_t)a5 timeStamp:(id)a6 configuration:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d persistentID:(int64_t)iD timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013A08C;
   block[3] = &unk_1001DF6E0;
   block[4] = self;
-  v24 = v14;
-  v27 = v17;
-  v28 = a3;
-  v29 = a5;
-  v25 = v16;
-  v26 = v15;
-  v19 = v15;
-  v20 = v16;
-  v21 = v17;
-  v22 = v14;
+  v24 = dCopy;
+  v27 = handlerCopy;
+  tasteCopy = taste;
+  iDCopy = iD;
+  v25 = configurationCopy;
+  v26 = stampCopy;
+  v19 = stampCopy;
+  v20 = configurationCopy;
+  v21 = handlerCopy;
+  v22 = dCopy;
   dispatch_async(accessQueue, block);
 }
 
-- (void)setContentTaste:(int64_t)a3 forPlaylistGlobalID:(id)a4 configuration:(id)a5 withCompletionHandler:(id)a6
+- (void)setContentTaste:(int64_t)taste forPlaylistGlobalID:(id)d configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  dCopy = d;
   v13 = +[NSDate date];
-  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:a3 forPlaylistGlobalID:v12 persistentID:0 timeStamp:v13 configuration:v11 withCompletionHandler:v10];
+  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:taste forPlaylistGlobalID:dCopy persistentID:0 timeStamp:v13 configuration:configurationCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 persistentID:(int64_t)a6 timeStamp:(id)a7 configuration:(id)a8 withCompletionHandler:(id)a9
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier persistentID:(int64_t)d timeStamp:(id)stamp configuration:(id)configuration withCompletionHandler:(id)handler
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  stampCopy = stamp;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10013AB28;
   v22[3] = &unk_1001DF690;
-  v26 = a4;
-  v27 = a5;
+  itemCopy = item;
+  identifierCopy = identifier;
   v22[4] = self;
-  v23 = v16;
-  v24 = v15;
-  v25 = v17;
-  v28 = a3;
-  v29 = a6;
-  v19 = v15;
-  v20 = v16;
-  v21 = v17;
+  v23 = configurationCopy;
+  v24 = stampCopy;
+  v25 = handlerCopy;
+  tasteCopy = taste;
+  dCopy = d;
+  v19 = stampCopy;
+  v20 = configurationCopy;
+  v21 = handlerCopy;
   dispatch_async(accessQueue, v22);
 }
 
-- (void)setContentTaste:(int64_t)a3 forMediaItem:(int64_t)a4 storeIdentifier:(int64_t)a5 configuration:(id)a6 timeStamp:(id)a7 withCompletionHandler:(id)a8
+- (void)setContentTaste:(int64_t)taste forMediaItem:(int64_t)item storeIdentifier:(int64_t)identifier configuration:(id)configuration timeStamp:(id)stamp withCompletionHandler:(id)handler
 {
-  v13 = a8;
-  v14 = a6;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v15 = +[NSDate date];
-  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:a3 forMediaItem:a4 storeIdentifier:a5 persistentID:0 timeStamp:v15 configuration:v14 withCompletionHandler:v13];
+  [(CloudContentTasteUpdateRequestListener *)self setContentTaste:taste forMediaItem:item storeIdentifier:identifier persistentID:0 timeStamp:v15 configuration:configurationCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)removeContentTasteOperationsForConnectionConfiguration:(id)a3
+- (void)removeContentTasteOperationsForConnectionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10013B730;
   v7[3] = &unk_1001DF618;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = configurationCopy;
+  selfCopy = self;
+  v6 = configurationCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)updateContentTasteForConnectionConfiguration:(id)a3 invalidateLocalCache:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)updateContentTasteForConnectionConfiguration:(id)configuration invalidateLocalCache:(BOOL)cache withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013BA60;
   block[3] = &unk_1001DF5F0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = configurationCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = configurationCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -467,7 +467,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping ....", buf, 0xCu);
   }
 
@@ -487,7 +487,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting ....", buf, 0xCu);
   }
 

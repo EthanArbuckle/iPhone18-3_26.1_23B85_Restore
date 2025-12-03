@@ -1,21 +1,21 @@
 @interface AMSUIWebOpenAuthenticationSession
-- (AMSUIWebOpenAuthenticationSession)initWithJSObject:(id)a3 context:(id)a4;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (AMSUIWebOpenAuthenticationSession)initWithJSObject:(id)object context:(id)context;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebOpenAuthenticationSession
 
-- (AMSUIWebOpenAuthenticationSession)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebOpenAuthenticationSession)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = AMSUIWebOpenAuthenticationSession;
-  v8 = [(AMSUIWebAction *)&v21 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v21 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"callbackScheme"];
+    v9 = [objectCopy objectForKeyedSubscript:@"callbackScheme"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
     callback = v8->_callback;
     v8->_callback = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"url"];
+    v15 = [objectCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,10 +76,10 @@
     {
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"ephemeral"];
+    v18 = [objectCopy objectForKeyedSubscript:@"ephemeral"];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v6 objectForKeyedSubscript:@"ephemeral"];
+      v19 = [objectCopy objectForKeyedSubscript:@"ephemeral"];
       v8->_ephemeral = [v19 BOOLValue];
     }
 
@@ -96,7 +96,7 @@
 {
   v27.receiver = self;
   v27.super_class = AMSUIWebOpenAuthenticationSession;
-  v3 = [(AMSUIWebAction *)&v27 runAction];
+  runAction = [(AMSUIWebAction *)&v27 runAction];
   v4 = objc_alloc_init(MEMORY[0x1E698CA58]);
   v5 = [(AMSUIWebOpenAuthenticationSession *)self URL];
 
@@ -122,9 +122,9 @@
     _Block_object_dispose(&v28, 8);
     v9 = [v7 alloc];
     v10 = [(AMSUIWebOpenAuthenticationSession *)self URL];
-    v11 = [(AMSUIWebOpenAuthenticationSession *)self callback];
-    v12 = [v4 completionHandlerAdapter];
-    v13 = [v9 initWithURL:v10 callback:v11 completionHandler:v12];
+    callback = [(AMSUIWebOpenAuthenticationSession *)self callback];
+    completionHandlerAdapter = [v4 completionHandlerAdapter];
+    v13 = [v9 initWithURL:v10 callback:callback completionHandler:completionHandlerAdapter];
 
     [v13 setPresentationContextProvider:self];
     [v13 setPrefersEphemeralWebBrowserSession:{-[AMSUIWebOpenAuthenticationSession ephemeral](self, "ephemeral")}];
@@ -140,12 +140,12 @@
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__7;
     v23 = __Block_byref_object_dispose__7;
-    v24 = self;
+    selfCopy = self;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __46__AMSUIWebOpenAuthenticationSession_runAction__block_invoke_20;
     v18[3] = &unk_1E7F26908;
-    v18[4] = v24;
+    v18[4] = selfCopy;
     v18[5] = &v19;
     [v4 addFinishBlock:v18];
     v15 = [v4 thenWithBlock:&__block_literal_global_31];
@@ -278,15 +278,15 @@ id __46__AMSUIWebOpenAuthenticationSession_runAction__block_invoke_29(uint64_t a
   return v7;
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(AMSUIWebAction *)self context];
-  v4 = [v3 flowController];
-  v5 = [v4 currentContainer];
-  v6 = [v5 view];
-  v7 = [v6 window];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
+  view = [currentContainer view];
+  window = [view window];
 
-  return v7;
+  return window;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface NTKGreenfieldCompanionActivityViewController
-- (NTKGreenfieldCompanionActivityViewController)initWithDraftRecipe:(id)a3 previewImage:(id)a4;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
-- (void)_handleCustomizationValueChange:(id)a3 sharingOption:(id)a4;
-- (void)companionActivityItemProvider:(id)a3 handleError:(id)a4;
+- (NTKGreenfieldCompanionActivityViewController)initWithDraftRecipe:(id)recipe previewImage:(id)image;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
+- (void)_handleCustomizationValueChange:(id)change sharingOption:(id)option;
+- (void)companionActivityItemProvider:(id)provider handleError:(id)error;
 @end
 
 @implementation NTKGreenfieldCompanionActivityViewController
 
-- (NTKGreenfieldCompanionActivityViewController)initWithDraftRecipe:(id)a3 previewImage:(id)a4
+- (NTKGreenfieldCompanionActivityViewController)initWithDraftRecipe:(id)recipe previewImage:(id)image
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [[NTKGreenfieldCompanionActivityItemProvider alloc] initWithDraftRecipe:v7 previewImage:v8];
+  recipeCopy = recipe;
+  imageCopy = image;
+  v9 = [[NTKGreenfieldCompanionActivityItemProvider alloc] initWithDraftRecipe:recipeCopy previewImage:imageCopy];
 
   [(NTKGreenfieldCompanionActivityItemProvider *)v9 setDelegate:self];
   v22[0] = v9;
@@ -23,7 +23,7 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_draftRecipe, a3);
+    objc_storeStrong(&v11->_draftRecipe, recipe);
     [(NTKGreenfieldCompanionActivityViewController *)v11 setObjectManipulationDelegate:v11];
     v12 = *MEMORY[0x277D54760];
     v21[0] = *MEMORY[0x277D54748];
@@ -50,18 +50,18 @@
   return v11;
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   v46 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  controllerCopy = controller;
   val = self;
   draftRecipe = self->_draftRecipe;
   if (draftRecipe)
   {
-    v30 = [(NTKGreenfieldDraftRecipe *)draftRecipe sortedComplicationSharingOptions];
-    if ([v30 count])
+    sortedComplicationSharingOptions = [(NTKGreenfieldDraftRecipe *)draftRecipe sortedComplicationSharingOptions];
+    if ([sortedComplicationSharingOptions count])
     {
-      v34 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       [(NTKGreenfieldDraftRecipe *)self->_draftRecipe sortedComplicationSharingOptions];
       v42 = 0u;
       v43 = 0u;
@@ -82,12 +82,12 @@
 
             v6 = *(*(&v40 + 1) + 8 * i);
             v7 = val->_draftRecipe;
-            v8 = [v6 uniqueIdentifier];
-            v9 = [(NTKGreenfieldDraftRecipe *)v7 optionForComplicationUniqueIdentifier:v8];
+            uniqueIdentifier = [v6 uniqueIdentifier];
+            v9 = [(NTKGreenfieldDraftRecipe *)v7 optionForComplicationUniqueIdentifier:uniqueIdentifier];
 
             v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-            v11 = [v6 optionType];
-            if (v11 == 1)
+            optionType = [v6 optionType];
+            if (optionType == 1)
             {
               v15 = [NTKGreenfieldDraftRecipe titleFromComplicationOption:0];
               [v10 addObject:v15];
@@ -109,7 +109,7 @@
               }
             }
 
-            else if (v11)
+            else if (optionType)
             {
               v14 = 0;
             }
@@ -127,8 +127,8 @@
 
             v18 = [NTKGreenfieldDraftRecipe descriptionFromComplicationOption:v9];
             v19 = MEMORY[0x277CCACA8];
-            v20 = [v6 uniqueIdentifier];
-            v21 = [v19 stringWithFormat:@"%@.picker", v20];
+            uniqueIdentifier2 = [v6 uniqueIdentifier];
+            v21 = [v19 stringWithFormat:@"%@.picker", uniqueIdentifier2];
 
             objc_initWeak(&location, val);
             v22 = MEMORY[0x277D546F8];
@@ -140,13 +140,13 @@
             v37[4] = v6;
             v23 = [v22 pickerCustomizationWithIdentifier:v21 options:v10 selectedOptionIndex:v14 footerText:v18 valueChangedHandler:v37];
             v24 = objc_alloc(MEMORY[0x277D54700]);
-            v25 = [v6 name];
-            v26 = [v6 uniqueIdentifier];
+            name = [v6 name];
+            uniqueIdentifier3 = [v6 uniqueIdentifier];
             v44 = v23;
             v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-            v28 = [v24 _initGroupWithName:v25 identifier:v26 customizations:v27];
+            v28 = [v24 _initGroupWithName:name identifier:uniqueIdentifier3 customizations:v27];
 
-            [v34 addObject:v28];
+            [array addObject:v28];
             objc_destroyWeak(&v38);
             objc_destroyWeak(&location);
           }
@@ -160,16 +160,16 @@
 
     else
     {
-      v34 = MEMORY[0x277CBEBF8];
+      array = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v34 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v34;
+  return array;
 }
 
 void __94__NTKGreenfieldCompanionActivityViewController__customizationGroupsForActivityViewController___block_invoke(uint64_t a1, void *a2)
@@ -179,17 +179,17 @@ void __94__NTKGreenfieldCompanionActivityViewController__customizationGroupsForA
   [WeakRetained _handleCustomizationValueChange:v3 sharingOption:*(a1 + 32)];
 }
 
-- (void)_handleCustomizationValueChange:(id)a3 sharingOption:(id)a4
+- (void)_handleCustomizationValueChange:(id)change sharingOption:(id)option
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 optionType];
-  if (v8 != 1)
+  changeCopy = change;
+  optionCopy = option;
+  optionType = [optionCopy optionType];
+  if (optionType != 1)
   {
-    if (!v8)
+    if (!optionType)
     {
       v9 = 1;
-      if (![v6 selectedOptionIndex])
+      if (![changeCopy selectedOptionIndex])
       {
         goto LABEL_11;
       }
@@ -200,26 +200,26 @@ void __94__NTKGreenfieldCompanionActivityViewController__customizationGroupsForA
     goto LABEL_8;
   }
 
-  if (![v6 selectedOptionIndex])
+  if (![changeCopy selectedOptionIndex])
   {
 LABEL_8:
     v9 = 0;
     goto LABEL_11;
   }
 
-  if ([v6 selectedOptionIndex] != 1)
+  if ([changeCopy selectedOptionIndex] != 1)
   {
     v9 = 2;
 LABEL_10:
-    v9 = 2 * ([v6 selectedOptionIndex] == v9);
+    v9 = 2 * ([changeCopy selectedOptionIndex] == v9);
     goto LABEL_11;
   }
 
   v9 = 1;
 LABEL_11:
   draftRecipe = self->_draftRecipe;
-  v11 = [v7 uniqueIdentifier];
-  [(NTKGreenfieldDraftRecipe *)draftRecipe setComplicationOption:v9 forComplicationUniqueIdentifier:v11];
+  uniqueIdentifier = [optionCopy uniqueIdentifier];
+  [(NTKGreenfieldDraftRecipe *)draftRecipe setComplicationOption:v9 forComplicationUniqueIdentifier:uniqueIdentifier];
 
   v12 = self->_draftRecipe;
   v13[0] = MEMORY[0x277D85DD0];
@@ -254,15 +254,15 @@ void __94__NTKGreenfieldCompanionActivityViewController__handleCustomizationValu
   }
 }
 
-- (void)companionActivityItemProvider:(id)a3 handleError:(id)a4
+- (void)companionActivityItemProvider:(id)provider handleError:(id)error
 {
-  v7 = a4;
-  v5 = [(NTKGreenfieldCompanionActivityViewController *)self completionWithItemsHandler];
+  errorCopy = error;
+  completionWithItemsHandler = [(NTKGreenfieldCompanionActivityViewController *)self completionWithItemsHandler];
 
-  if (v5)
+  if (completionWithItemsHandler)
   {
-    v6 = [(NTKGreenfieldCompanionActivityViewController *)self completionWithItemsHandler];
-    (v6)[2](v6, @"Greenfield", 0, 0, v7);
+    completionWithItemsHandler2 = [(NTKGreenfieldCompanionActivityViewController *)self completionWithItemsHandler];
+    (completionWithItemsHandler2)[2](completionWithItemsHandler2, @"Greenfield", 0, 0, errorCopy);
 
     [(NTKGreenfieldCompanionActivityViewController *)self setCompletionWithItemsHandler:0];
   }

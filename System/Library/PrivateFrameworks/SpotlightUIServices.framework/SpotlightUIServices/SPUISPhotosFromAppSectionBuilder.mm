@@ -5,7 +5,7 @@
 - (id)buildSearchInAppCommand;
 - (id)buildSection;
 - (id)buildTitle;
-- (void)setSection:(id)a3;
+- (void)setSection:(id)section;
 @end
 
 @implementation SPUISPhotosFromAppSectionBuilder
@@ -32,59 +32,59 @@ void __54__SPUISPhotosFromAppSectionBuilder_supportedBundleIds__block_invoke()
   supportedBundleIds_bundleIDs = v1;
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
   v8.receiver = self;
   v8.super_class = SPUISPhotosFromAppSectionBuilder;
-  v4 = a3;
-  [(SPUISSectionBuilder *)&v8 setSection:v4];
-  v5 = [v4 results];
+  sectionCopy = section;
+  [(SPUISSectionBuilder *)&v8 setSection:sectionCopy];
+  results = [sectionCopy results];
 
-  v6 = [v5 firstObject];
-  v7 = [v6 applicationBundleIdentifier];
-  [(SPUISPhotosFromAppSectionBuilder *)self setAppBundleId:v7];
+  firstObject = [results firstObject];
+  applicationBundleIdentifier = [firstObject applicationBundleIdentifier];
+  [(SPUISPhotosFromAppSectionBuilder *)self setAppBundleId:applicationBundleIdentifier];
 }
 
 - (id)buildButtonItem
 {
   v3 = objc_opt_class();
-  v4 = [(SPUISPhotosFromAppSectionBuilder *)self buildSearchInAppCommand];
-  v5 = [v3 searchInAppButtonItemWithCommand:v4];
+  buildSearchInAppCommand = [(SPUISPhotosFromAppSectionBuilder *)self buildSearchInAppCommand];
+  v5 = [v3 searchInAppButtonItemWithCommand:buildSearchInAppCommand];
 
   return v5;
 }
 
 - (id)buildSearchInAppCommand
 {
-  v3 = [(SPUISSectionBuilder *)self queryContext];
-  v4 = [v3 searchEntities];
-  v5 = [v4 firstObject];
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  firstObject = [searchEntities firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 searchString];
-    if ([v6 length])
+    searchString = [firstObject searchString];
+    if ([searchString length])
     {
-      [v5 searchString];
+      [firstObject searchString];
     }
 
     else
     {
-      [v5 displayString];
+      [firstObject displayString];
     }
-    v7 = ;
+    searchString2 = ;
   }
 
   else
   {
-    v7 = [v3 searchString];
+    searchString2 = [queryContext searchString];
   }
 
   v8 = objc_opt_new();
-  v9 = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
-  [v8 setApplicationBundleIdentifier:v9];
+  appBundleId = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
+  [v8 setApplicationBundleIdentifier:appBundleId];
 
-  [v8 setSearchString:v7];
+  [v8 setSearchString:searchString2];
 
   return v8;
 }
@@ -98,18 +98,18 @@ void __54__SPUISPhotosFromAppSectionBuilder_supportedBundleIds__block_invoke()
 
   else
   {
-    v4 = [(SPUISSectionBuilder *)self queryContext];
-    v5 = [v4 searchEntities];
-    v6 = [v5 firstObject];
-    v7 = [v6 isPhotosEntitySearch];
+    queryContext = [(SPUISSectionBuilder *)self queryContext];
+    searchEntities = [queryContext searchEntities];
+    firstObject = [searchEntities firstObject];
+    isPhotosEntitySearch = [firstObject isPhotosEntitySearch];
 
-    v8 = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
+    appBundleId = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
     v9 = SSAppNameForBundleId();
     v10 = v9;
-    if ((v7 & 1) == 0)
+    if ((isPhotosEntitySearch & 1) == 0)
     {
       v10 = v9;
-      if (([v8 isEqualToString:@"com.apple.mobileslideshow"] & 1) == 0)
+      if (([appBundleId isEqualToString:@"com.apple.mobileslideshow"] & 1) == 0)
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = [SPUISUtilities localizedStringForKey:@"PHOTOS_TITLE_FORMAT"];
@@ -129,14 +129,14 @@ void __54__SPUISPhotosFromAppSectionBuilder_supportedBundleIds__block_invoke()
   if (SSSpotlightUIPlusEnabled())
   {
     v3 = objc_opt_new();
-    v4 = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
-    [v3 setBundleIdentifier:v4];
+    appBundleId = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
+    [v3 setBundleIdentifier:appBundleId];
 
-    v27 = [(SPUISPhotosFromAppSectionBuilder *)self buildSearchInAppCommand];
+    buildSearchInAppCommand = [(SPUISPhotosFromAppSectionBuilder *)self buildSearchInAppCommand];
     v5 = objc_opt_new();
-    v6 = [(SPUISSectionBuilder *)self section];
-    v7 = [v6 resultSet];
-    v8 = [v7 array];
+    section = [(SPUISSectionBuilder *)self section];
+    resultSet = [section resultSet];
+    array = [resultSet array];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -145,23 +145,23 @@ void __54__SPUISPhotosFromAppSectionBuilder_supportedBundleIds__block_invoke()
     v29[4] = self;
     v30 = v5;
     v9 = v5;
-    [v8 enumerateObjectsUsingBlock:v29];
+    [array enumerateObjectsUsingBlock:v29];
     v10 = objc_opt_new();
     [v10 setThumbnail:v3];
     v11 = MEMORY[0x277D4C598];
-    v12 = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
+    appBundleId2 = [(SPUISPhotosFromAppSectionBuilder *)self appBundleId];
     v13 = SSAppNameForBundleId();
     v14 = [v11 textWithString:v13];
     [v10 setTitle:v14];
 
-    [v10 setCommand:v27];
+    [v10 setCommand:buildSearchInAppCommand];
     [v10 setButtonItems:v9];
     [v10 setButtonItemsAreTrailing:1];
     v15 = MEMORY[0x277D4C598];
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"%lu Results" value:0 table:0];
-    v19 = [v16 stringWithFormat:v18, objc_msgSend(v8, "count")];
+    v19 = [v16 stringWithFormat:v18, objc_msgSend(array, "count")];
     v20 = [v15 textWithString:v19];
     v33[0] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -174,21 +174,21 @@ void __54__SPUISPhotosFromAppSectionBuilder_supportedBundleIds__block_invoke()
 
     v28.receiver = self;
     v28.super_class = SPUISPhotosFromAppSectionBuilder;
-    v24 = [(SPUISPhotosSectionBuilder *)&v28 buildBridgedResult];
-    [v24 setInlineCard:v22];
-    [v24 setCompactCard:v22];
+    buildBridgedResult = [(SPUISPhotosSectionBuilder *)&v28 buildBridgedResult];
+    [buildBridgedResult setInlineCard:v22];
+    [buildBridgedResult setCompactCard:v22];
   }
 
   else
   {
     v31.receiver = self;
     v31.super_class = SPUISPhotosFromAppSectionBuilder;
-    v24 = [(SPUISPhotosSectionBuilder *)&v31 buildBridgedResult];
+    buildBridgedResult = [(SPUISPhotosSectionBuilder *)&v31 buildBridgedResult];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return buildBridgedResult;
 }
 
 void __54__SPUISPhotosFromAppSectionBuilder_buildBridgedResult__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -224,13 +224,13 @@ void __54__SPUISPhotosFromAppSectionBuilder_buildBridgedResult__block_invoke(uin
 {
   v4.receiver = self;
   v4.super_class = SPUISPhotosFromAppSectionBuilder;
-  v2 = [(SPUISSectionBuilder *)&v4 buildSection];
+  buildSection = [(SPUISSectionBuilder *)&v4 buildSection];
   if (SSSpotlightUIPlusEnabled())
   {
-    [v2 setTitle:0];
+    [buildSection setTitle:0];
   }
 
-  return v2;
+  return buildSection;
 }
 
 @end

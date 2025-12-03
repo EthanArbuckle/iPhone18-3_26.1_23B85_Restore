@@ -1,21 +1,21 @@
 @interface SUXMLHTTPStoreRequestOperation
-- (SUXMLHTTPStoreRequestOperation)initWithRequestProperties:(id)a3;
+- (SUXMLHTTPStoreRequestOperation)initWithRequestProperties:(id)properties;
 - (id)outputBlock;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SUXMLHTTPStoreRequestOperation
 
-- (SUXMLHTTPStoreRequestOperation)initWithRequestProperties:(id)a3
+- (SUXMLHTTPStoreRequestOperation)initWithRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = SUXMLHTTPStoreRequestOperation;
   v5 = [(SUXMLHTTPStoreRequestOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     requestProperties = v5->_requestProperties;
     v5->_requestProperties = v6;
   }
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(SUXMLHTTPStoreRequestOperation *)self lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -63,10 +63,10 @@
     v7 = [(SUXMLHTTPStoreRequestOperation *)self runSubOperation:v6 returningError:&v14];
     v8 = v14;
 
-    v9 = [v6 dataProvider];
-    v10 = [v9 output];
+    dataProvider = [v6 dataProvider];
+    output = [dataProvider output];
 
-    v11 = [v6 response];
+    response = [v6 response];
 
     v5 = v8;
   }
@@ -74,15 +74,15 @@
   else
   {
     v7 = 0;
-    v11 = 0;
-    v10 = 0;
+    response = 0;
+    output = 0;
   }
 
-  v12 = [(SUXMLHTTPStoreRequestOperation *)self outputBlock];
-  v13 = v12;
-  if (v12)
+  outputBlock = [(SUXMLHTTPStoreRequestOperation *)self outputBlock];
+  v13 = outputBlock;
+  if (outputBlock)
   {
-    (*(v12 + 16))(v12, v7, v5, v11, v10);
+    (*(outputBlock + 16))(outputBlock, v7, v5, response, output);
     [(SUXMLHTTPStoreRequestOperation *)self setOutputBlock:0];
   }
 }

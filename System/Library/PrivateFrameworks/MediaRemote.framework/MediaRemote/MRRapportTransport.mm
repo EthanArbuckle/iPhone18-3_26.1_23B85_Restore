@@ -1,11 +1,11 @@
 @interface MRRapportTransport
 + (NSUserDefaults)userDefaults;
 + (id)_readConnectionRecordsFromDisk;
-+ (void)_writeConnectionRecordsToDisk:(id)a3;
++ (void)_writeConnectionRecordsToDisk:(id)disk;
 + (void)resetPersistedConnections;
-- (MRRapportTransport)initWithOutputDevice:(id)a3 proxyOutputDevice:(id)a4;
+- (MRRapportTransport)initWithOutputDevice:(id)device proxyOutputDevice:(id)outputDevice;
 - (id)_generateSessionUID;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)deviceInfo;
 - (id)error;
 - (id)name;
@@ -13,18 +13,18 @@
 - (void)_persistConnectionRecordToDisk;
 - (void)_removeConnectionRecordFromDisk;
 - (void)dealloc;
-- (void)resetWithError:(id)a3;
-- (void)setError:(id)a3;
-- (void)setSessionUID:(id)a3;
+- (void)resetWithError:(id)error;
+- (void)setError:(id)error;
+- (void)setSessionUID:(id)d;
 @end
 
 @implementation MRRapportTransport
 
-- (MRRapportTransport)initWithOutputDevice:(id)a3 proxyOutputDevice:(id)a4
+- (MRRapportTransport)initWithOutputDevice:(id)device proxyOutputDevice:(id)outputDevice
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  outputDeviceCopy = outputDevice;
   v23.receiver = self;
   v23.super_class = MRRapportTransport;
   v9 = [(MRRapportTransport *)&v23 init];
@@ -34,12 +34,12 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v7;
+      v25 = deviceCopy;
       _os_log_impl(&dword_1A2860000, v10, OS_LOG_TYPE_DEFAULT, "[MRRapportTransport] Create for %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v9->_outputDevice, a3);
-    objc_storeStrong(&v9->_proxyOutputDevice, a4);
+    objc_storeStrong(&v9->_outputDevice, device);
+    objc_storeStrong(&v9->_proxyOutputDevice, outputDevice);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.mediaremote.externalDeviceRapportTransport/workerQueue", v11);
     workerQueue = v9->_workerQueue;
@@ -120,53 +120,53 @@ void __34__MRRapportTransport_userDefaults__block_invoke()
 - (id)deviceInfo
 {
   v3 = objc_alloc_init(MRDeviceInfo);
-  v4 = [(MRAVOutputDevice *)self->_outputDevice name];
-  [(MRDeviceInfo *)v3 setName:v4];
+  name = [(MRAVOutputDevice *)self->_outputDevice name];
+  [(MRDeviceInfo *)v3 setName:name];
 
-  v5 = [(MRAVOutputDevice *)self->_outputDevice primaryID];
-  [(MRDeviceInfo *)v3 setDeviceUID:v5];
+  primaryID = [(MRAVOutputDevice *)self->_outputDevice primaryID];
+  [(MRDeviceInfo *)v3 setDeviceUID:primaryID];
 
   return v3;
 }
 
 - (id)uid
 {
-  v2 = [(MRRapportTransport *)self deviceInfo];
-  v3 = [v2 deviceUID];
+  deviceInfo = [(MRRapportTransport *)self deviceInfo];
+  deviceUID = [deviceInfo deviceUID];
 
-  return v3;
+  return deviceUID;
 }
 
 - (id)name
 {
-  v2 = [(MRRapportTransport *)self deviceInfo];
-  v3 = [v2 name];
+  deviceInfo = [(MRRapportTransport *)self deviceInfo];
+  name = [deviceInfo name];
 
-  return v3;
+  return name;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   obj = self;
   objc_sync_enter(obj);
   error = obj->_error;
-  obj->_error = v4;
+  obj->_error = errorCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSError *)v2->_error copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSError *)selfCopy->_error copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -259,56 +259,56 @@ void __51__MRRapportTransport_createConnectionWithUserInfo___block_invoke_39(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)resetWithError:(id)a3
+- (void)resetWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   if (self->_sessionUID)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v4 setObject:self->_sessionUID forKeyedSubscript:@"session"];
     client = self->_client;
-    v6 = [(RPCompanionLinkDevice *)self->_targetDevice effectiveIdentifier];
-    [(MRCompanionLinkClient *)client sendEvent:@"com.apple.mediaremote.remotecontrol.disconnect" destination:v6 userInfo:v4];
+    effectiveIdentifier = [(RPCompanionLinkDevice *)self->_targetDevice effectiveIdentifier];
+    [(MRCompanionLinkClient *)client sendEvent:@"com.apple.mediaremote.remotecontrol.disconnect" destination:effectiveIdentifier userInfo:v4];
   }
 
   [(MRRapportTransport *)self setSessionUID:0];
   [(MRRapportTransport *)self _removeConnectionRecordFromDisk];
-  [(MRExternalDeviceTransportConnection *)self->_connection closeWithError:v8];
+  [(MRExternalDeviceTransportConnection *)self->_connection closeWithError:errorCopy];
   connection = self->_connection;
   self->_connection = 0;
 }
 
-- (void)setSessionUID:(id)a3
+- (void)setSessionUID:(id)d
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_disconnectToken)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_disconnectToken)
   {
-    [(MRCompanionLinkClient *)v6->_client removeCallback:?];
-    disconnectToken = v6->_disconnectToken;
-    v6->_disconnectToken = 0;
+    [(MRCompanionLinkClient *)selfCopy->_client removeCallback:?];
+    disconnectToken = selfCopy->_disconnectToken;
+    selfCopy->_disconnectToken = 0;
   }
 
-  objc_storeStrong(&v6->_sessionUID, a3);
-  if (v6->_sessionUID)
+  objc_storeStrong(&selfCopy->_sessionUID, d);
+  if (selfCopy->_sessionUID)
   {
-    objc_initWeak(&location, v6);
-    client = v6->_client;
+    objc_initWeak(&location, selfCopy);
+    client = selfCopy->_client;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __36__MRRapportTransport_setSessionUID___block_invoke;
     v11[3] = &unk_1E769A450;
     objc_copyWeak(&v12, &location);
     v9 = [(MRCompanionLinkClient *)client registerEvent:@"com.apple.mediaremote.remotecontrol.disconnect" callback:v11];
-    v10 = v6->_disconnectToken;
-    v6->_disconnectToken = v9;
+    v10 = selfCopy->_disconnectToken;
+    selfCopy->_disconnectToken = v9;
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -338,13 +338,13 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
   v29 = *MEMORY[0x1E69E9840];
   obj = [objc_opt_class() userDefaults];
   objc_sync_enter(obj);
-  v2 = [objc_opt_class() _readConnectionRecordsFromDisk];
+  _readConnectionRecordsFromDisk = [objc_opt_class() _readConnectionRecordsFromDisk];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = v2;
+  v4 = _readConnectionRecordsFromDisk;
   v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
@@ -359,12 +359,12 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
-        v9 = [v8 deviceUID];
+        deviceUID = [v8 deviceUID];
 
-        if (v9)
+        if (deviceUID)
         {
-          v10 = [v8 deviceUID];
-          [v3 addObject:v10];
+          deviceUID2 = [v8 deviceUID];
+          [v3 addObject:deviceUID2];
         }
       }
 
@@ -411,18 +411,18 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
 
 - (void)_persistConnectionRecordToDisk
 {
-  v3 = [(MRRapportTransport *)self targetDevice];
-  v13 = [v3 effectiveIdentifier];
+  targetDevice = [(MRRapportTransport *)self targetDevice];
+  effectiveIdentifier = [targetDevice effectiveIdentifier];
 
-  if (v13)
+  if (effectiveIdentifier)
   {
-    v4 = [objc_opt_class() userDefaults];
-    objc_sync_enter(v4);
-    v5 = [objc_opt_class() _readConnectionRecordsFromDisk];
-    v6 = v5;
-    if (v5)
+    userDefaults = [objc_opt_class() userDefaults];
+    objc_sync_enter(userDefaults);
+    _readConnectionRecordsFromDisk = [objc_opt_class() _readConnectionRecordsFromDisk];
+    v6 = _readConnectionRecordsFromDisk;
+    if (_readConnectionRecordsFromDisk)
     {
-      v7 = [v5 mutableCopy];
+      v7 = [_readConnectionRecordsFromDisk mutableCopy];
     }
 
     else
@@ -432,18 +432,18 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
 
     v8 = v7;
     v9 = objc_alloc_init(MRRapportTransportConfiguration);
-    v10 = [(MRRapportTransport *)self sessionUID];
-    [(MRRapportTransportConfiguration *)v9 setSessionUID:v10];
+    sessionUID = [(MRRapportTransport *)self sessionUID];
+    [(MRRapportTransportConfiguration *)v9 setSessionUID:sessionUID];
 
-    [(MRRapportTransportConfiguration *)v9 setDeviceUID:v13];
-    v11 = [(MRRapportTransport *)self targetDevice];
-    v12 = [v11 name];
-    [(MRRapportTransportConfiguration *)v9 setName:v12];
+    [(MRRapportTransportConfiguration *)v9 setDeviceUID:effectiveIdentifier];
+    targetDevice2 = [(MRRapportTransport *)self targetDevice];
+    name = [targetDevice2 name];
+    [(MRRapportTransportConfiguration *)v9 setName:name];
 
     [v8 addObject:v9];
     [objc_opt_class() _writeConnectionRecordsToDisk:v8];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(userDefaults);
   }
 }
 
@@ -452,13 +452,13 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
   v20 = *MEMORY[0x1E69E9840];
   obj = [objc_opt_class() userDefaults];
   objc_sync_enter(obj);
-  v3 = [objc_opt_class() _readConnectionRecordsFromDisk];
-  v4 = [v3 mutableCopy];
+  _readConnectionRecordsFromDisk = [objc_opt_class() _readConnectionRecordsFromDisk];
+  v4 = [_readConnectionRecordsFromDisk mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = _readConnectionRecordsFromDisk;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -473,9 +473,9 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 sessionUID];
-        v11 = [(MRRapportTransport *)self sessionUID];
-        v12 = [v10 isEqualToString:v11];
+        sessionUID = [v9 sessionUID];
+        sessionUID2 = [(MRRapportTransport *)self sessionUID];
+        v12 = [sessionUID isEqualToString:sessionUID2];
 
         if (v12)
         {
@@ -498,8 +498,8 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
 + (id)_readConnectionRecordsFromDisk
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 objectForKey:@"outgoingRapportConnections"];
+  userDefaults = [objc_opt_class() userDefaults];
+  v3 = [userDefaults objectForKey:@"outgoingRapportConnections"];
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
   v10[0] = objc_opt_class();
   v10[1] = objc_opt_class();
@@ -512,15 +512,15 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
   return v7;
 }
 
-+ (void)_writeConnectionRecordsToDisk:(id)a3
++ (void)_writeConnectionRecordsToDisk:(id)disk
 {
-  v10 = a3;
-  v3 = [v10 count];
-  v4 = [objc_opt_class() userDefaults];
-  v5 = v4;
+  diskCopy = disk;
+  v3 = [diskCopy count];
+  userDefaults = [objc_opt_class() userDefaults];
+  v5 = userDefaults;
   if (v3)
   {
-    v6 = MRCreateDataFromObject(v10);
+    v6 = MRCreateDataFromObject(diskCopy);
     [v5 setObject:v6 forKey:@"outgoingRapportConnections"];
 
     if (!MSVDeviceOSIsInternalInstall())
@@ -528,35 +528,35 @@ void __36__MRRapportTransport_setSessionUID___block_invoke(uint64_t a1, uint64_t
       goto LABEL_7;
     }
 
-    v7 = [objc_opt_class() userDefaults];
-    v8 = [v10 description];
-    [v7 setObject:v8 forKey:@"outgoingRapportConnectionsDescription"];
+    userDefaults2 = [objc_opt_class() userDefaults];
+    v8 = [diskCopy description];
+    [userDefaults2 setObject:v8 forKey:@"outgoingRapportConnectionsDescription"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"outgoingRapportConnections"];
+    [userDefaults removeObjectForKey:@"outgoingRapportConnections"];
 
     if (!MSVDeviceOSIsInternalInstall())
     {
       goto LABEL_7;
     }
 
-    v7 = [objc_opt_class() userDefaults];
-    [v7 removeObjectForKey:@"outgoingRapportConnectionsDescription"];
+    userDefaults2 = [objc_opt_class() userDefaults];
+    [userDefaults2 removeObjectForKey:@"outgoingRapportConnectionsDescription"];
   }
 
 LABEL_7:
-  v9 = [objc_opt_class() userDefaults];
-  [v9 synchronize];
+  userDefaults3 = [objc_opt_class() userDefaults];
+  [userDefaults3 synchronize];
 }
 
 - (id)_generateSessionUID
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 initWithFormat:@"%@-%d", v4, ++_generateSessionUID_sessionUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [v2 initWithFormat:@"%@-%d", uUIDString, ++_generateSessionUID_sessionUID];
 
   return v5;
 }

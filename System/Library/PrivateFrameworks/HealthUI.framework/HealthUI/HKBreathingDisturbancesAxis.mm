@@ -1,25 +1,25 @@
 @interface HKBreathingDisturbancesAxis
-+ (id)standardAxisWith:(id)a3;
-- (HKBreathingDisturbancesAxis)initWithConfiguration:(id)a3;
-- (id)adjustValueRangeForLabels:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
++ (id)standardAxisWith:(id)with;
+- (HKBreathingDisturbancesAxis)initWithConfiguration:(id)configuration;
+- (id)adjustValueRangeForLabels:(id)labels;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation HKBreathingDisturbancesAxis
 
-+ (id)standardAxisWith:(id)a3
++ (id)standardAxisWith:(id)with
 {
   v4 = objc_allocWithZone(type metadata accessor for BreathingDisturbancesAxis());
-  v5 = BreathingDisturbancesAxis.init(displayType:)(a3);
+  v5 = BreathingDisturbancesAxis.init(displayType:)(with);
 
   return v5;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = self;
-  v6 = a3;
-  v7 = sub_1C3CF5FD8(a3);
+  selfCopy = self;
+  rangeCopy = range;
+  v7 = sub_1C3CF5FD8(range);
 
   if (v7)
   {
@@ -35,16 +35,16 @@
   return v8;
 }
 
-- (id)adjustValueRangeForLabels:(id)a3
+- (id)adjustValueRangeForLabels:(id)labels
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1C3CF573C(v4);
+  labelsCopy = labels;
+  selfCopy = self;
+  v6 = sub_1C3CF573C(labelsCopy);
 
   return v6;
 }
 
-- (HKBreathingDisturbancesAxis)initWithConfiguration:(id)a3
+- (HKBreathingDisturbancesAxis)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

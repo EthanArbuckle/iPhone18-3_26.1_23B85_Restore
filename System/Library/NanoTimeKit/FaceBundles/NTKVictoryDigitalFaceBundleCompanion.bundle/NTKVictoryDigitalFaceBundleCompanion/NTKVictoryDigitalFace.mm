@@ -1,16 +1,16 @@
 @interface NTKVictoryDigitalFace
 + (id)_complicationSlotDescriptors;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (int64_t)preferredComplicationFamilyForComplication:(id)a3 withSlot:(id)a4;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (int64_t)preferredComplicationFamilyForComplication:(id)complication withSlot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKVictoryDigitalFace
@@ -46,22 +46,22 @@
   return v2;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlot1])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlot1])
   {
     v4 = @"MIDDLE_LEFT";
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlot2])
+  else if ([slotCopy isEqualToString:NTKComplicationSlot2])
   {
     v4 = @"BOTTOM_LEFT";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:NTKComplicationSlotBottom];
+    v5 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
     v4 = @"BOTTOM";
     if (!v5)
     {
@@ -75,9 +75,9 @@
   return v7;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottom, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottom, device}])
   {
     v4 = +[NTKVictoryAppLauncher complication];
   }
@@ -90,20 +90,20 @@
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 13)
+  slotCopy = slot;
+  if (mode == 13)
   {
-    v7 = [(NTKVictoryDigitalFace *)self device];
-    v8 = [NTKVictoryDigitalStyleEditOption optionWithStyle:3 forDevice:v7];
+    device = [(NTKVictoryDigitalFace *)self device];
+    v8 = [NTKVictoryDigitalStyleEditOption optionWithStyle:3 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKVictoryDigitalFace *)self device];
-    v8 = [NTKVictoryDigitalColorEditOption optionWithVictoryColor:2 forDevice:v7];
+    device = [(NTKVictoryDigitalFace *)self device];
+    v8 = [NTKVictoryDigitalColorEditOption optionWithVictoryColor:2 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -116,55 +116,55 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
-    v4 = [@"EDIT_MODE_LABEL_STYLE" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_STYLE" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NTKVictoryDigitalFace;
-    v5 = objc_msgSendSuper2(&v7, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v5 = objc_msgSendSuper2(&v7, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v5;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKVictoryDigitalFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKVictoryDigitalFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKVictoryDigitalFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKVictoryDigitalFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKVictoryDigitalFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKVictoryDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKVictoryDigitalFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = off_10258;
 LABEL_5:
@@ -174,7 +174,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 13)
+  if (mode == 13)
   {
     v4 = &off_10260;
     goto LABEL_5;
@@ -185,11 +185,11 @@ LABEL_5:
   return v6;
 }
 
-- (int64_t)preferredComplicationFamilyForComplication:(id)a3 withSlot:(id)a4
+- (int64_t)preferredComplicationFamilyForComplication:(id)complication withSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() usesCircularMedium] && ((objc_msgSend(v7, "isEqualToString:", NTKComplicationSlot1) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", NTKComplicationSlot2)))
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([objc_opt_class() usesCircularMedium] && ((objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlot1) & 1) != 0 || objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlot2)))
   {
     v8 = CLKComplicationFamilyCircularMedium;
   }
@@ -198,21 +198,21 @@ LABEL_5:
   {
     v10.receiver = self;
     v10.super_class = NTKVictoryDigitalFace;
-    v8 = [(NTKVictoryDigitalFace *)&v10 preferredComplicationFamilyForComplication:v6 withSlot:v7];
+    v8 = [(NTKVictoryDigitalFace *)&v10 preferredComplicationFamilyForComplication:complicationCopy withSlot:slotCopy];
   }
 
   return v8;
 }
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
   v3 = 10;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }

@@ -1,25 +1,25 @@
 @interface MTRPluginThirdPartyExclusions
-+ (BOOL)attributeReadDisallowedOverXPCWithEndpointID:(id)a3 clusterID:(id)a4 attribute:(id)a5 isPrivatelyEntitled:(BOOL)a6;
-+ (BOOL)commandDisallowedOverXPCWithEndpointID:(id)a3 clusterID:(id)a4 commandID:(id)a5 isPrivatelyEntitled:(BOOL)a6;
-+ (BOOL)connectionIsPrivatelyEntitled:(id)a3;
++ (BOOL)attributeReadDisallowedOverXPCWithEndpointID:(id)d clusterID:(id)iD attribute:(id)attribute isPrivatelyEntitled:(BOOL)entitled;
++ (BOOL)commandDisallowedOverXPCWithEndpointID:(id)d clusterID:(id)iD commandID:(id)commandID isPrivatelyEntitled:(BOOL)entitled;
++ (BOOL)connectionIsPrivatelyEntitled:(id)entitled;
 @end
 
 @implementation MTRPluginThirdPartyExclusions
 
-+ (BOOL)connectionIsPrivatelyEntitled:(id)a3
++ (BOOL)connectionIsPrivatelyEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.homekit"];
-  v4 = [v3 BOOLValue];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.homekit"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)attributeReadDisallowedOverXPCWithEndpointID:(id)a3 clusterID:(id)a4 attribute:(id)a5 isPrivatelyEntitled:(BOOL)a6
++ (BOOL)attributeReadDisallowedOverXPCWithEndpointID:(id)d clusterID:(id)iD attribute:(id)attribute isPrivatelyEntitled:(BOOL)entitled
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6)
+  dCopy = d;
+  iDCopy = iD;
+  attributeCopy = attribute;
+  if (entitled)
   {
     goto LABEL_7;
   }
@@ -29,16 +29,16 @@
     +[MTRPluginThirdPartyExclusions attributeReadDisallowedOverXPCWithEndpointID:clusterID:attribute:isPrivatelyEntitled:];
   }
 
-  v12 = [attributeReadDisallowedOverXPCWithEndpointID_clusterID_attribute_isPrivatelyEntitled__disallowedClusterToAttributeMap allKeys];
-  v13 = [v12 containsObject:v10];
+  allKeys = [attributeReadDisallowedOverXPCWithEndpointID_clusterID_attribute_isPrivatelyEntitled__disallowedClusterToAttributeMap allKeys];
+  v13 = [allKeys containsObject:iDCopy];
 
   if (!v13)
   {
     goto LABEL_7;
   }
 
-  v14 = [attributeReadDisallowedOverXPCWithEndpointID_clusterID_attribute_isPrivatelyEntitled__disallowedClusterToAttributeMap objectForKeyedSubscript:v10];
-  v15 = [v14 containsObject:v11];
+  v14 = [attributeReadDisallowedOverXPCWithEndpointID_clusterID_attribute_isPrivatelyEntitled__disallowedClusterToAttributeMap objectForKeyedSubscript:iDCopy];
+  v15 = [v14 containsObject:attributeCopy];
 
   if (v15)
   {
@@ -70,16 +70,16 @@ void __118__MTRPluginThirdPartyExclusions_attributeReadDisallowedOverXPCWithEndp
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)commandDisallowedOverXPCWithEndpointID:(id)a3 clusterID:(id)a4 commandID:(id)a5 isPrivatelyEntitled:(BOOL)a6
++ (BOOL)commandDisallowedOverXPCWithEndpointID:(id)d clusterID:(id)iD commandID:(id)commandID isPrivatelyEntitled:(BOOL)entitled
 {
-  if (a6)
+  if (entitled)
   {
     return 0;
   }
 
   else
   {
-    return [&unk_28697C720 containsObject:a4];
+    return [&unk_28697C720 containsObject:iD];
   }
 }
 

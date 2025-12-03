@@ -1,50 +1,50 @@
 @interface TUIOverlayFadeView
-+ (id)renderModelWithIdentifier:(id)a3 size:(CGSize)a4 content:(id)a5 contentOrigin:(CGPoint)a6 contentErasableInsets:(UIEdgeInsets)a7 overlay:(id)a8 overlayOrigin:(CGPoint)a9 padding:(double)a10 gradientWidth:(double)a11 layoutDirection:(unint64_t)a12;
++ (id)renderModelWithIdentifier:(id)identifier size:(CGSize)size content:(id)content contentOrigin:(CGPoint)origin contentErasableInsets:(UIEdgeInsets)insets overlay:(id)overlay overlayOrigin:(CGPoint)overlayOrigin padding:(double)self0 gradientWidth:(double)self1 layoutDirection:(unint64_t)self2;
 - (TUIViewFactory)factory;
 - (void)_updateGeometry;
 - (void)_updateSubviews;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithModel:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithModel:(id)model;
 - (void)layoutSubviews;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUIOverlayFadeView
 
-+ (id)renderModelWithIdentifier:(id)a3 size:(CGSize)a4 content:(id)a5 contentOrigin:(CGPoint)a6 contentErasableInsets:(UIEdgeInsets)a7 overlay:(id)a8 overlayOrigin:(CGPoint)a9 padding:(double)a10 gradientWidth:(double)a11 layoutDirection:(unint64_t)a12
++ (id)renderModelWithIdentifier:(id)identifier size:(CGSize)size content:(id)content contentOrigin:(CGPoint)origin contentErasableInsets:(UIEdgeInsets)insets overlay:(id)overlay overlayOrigin:(CGPoint)overlayOrigin padding:(double)self0 gradientWidth:(double)self1 layoutDirection:(unint64_t)self2
 {
-  x = a9.x;
-  bottom = a7.bottom;
-  right = a7.right;
-  left = a7.left;
-  top = a7.top;
-  y = a6.y;
-  v16 = a6.x;
-  height = a4.height;
-  width = a4.width;
-  v21 = a8;
-  v22 = a5;
-  v23 = a3;
-  v24 = [[_TUIOverlayFadeRenderModel alloc] initWithIdentifier:v23 size:v22 content:v21 contentOrigin:*&x contentErasableInsets:width overlay:height overlayOrigin:v16 padding:y gradientWidth:top layoutDirection:left, bottom, right, *&a10, *&a11, v29, v30];
+  x = overlayOrigin.x;
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  y = origin.y;
+  v16 = origin.x;
+  height = size.height;
+  width = size.width;
+  overlayCopy = overlay;
+  contentCopy = content;
+  identifierCopy = identifier;
+  v24 = [[_TUIOverlayFadeRenderModel alloc] initWithIdentifier:identifierCopy size:contentCopy content:overlayCopy contentOrigin:*&x contentErasableInsets:width overlay:height overlayOrigin:v16 padding:y gradientWidth:top layoutDirection:left, bottom, right, *&padding, *&width, v29, v30];
 
   return v24;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = TUIOverlayFadeView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v6 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v6 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  [(TUIOverlayFadeView *)self configureWithModel:v5];
+  [(TUIOverlayFadeView *)self configureWithModel:renderModel];
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  v5 = a3;
-  if (self->_model == v5)
+  modelCopy = model;
+  if (self->_model == modelCopy)
   {
     if ((*&self->_flags & 2) == 0)
     {
@@ -52,18 +52,18 @@
     }
 
     *&self->_flags |= 1u;
-    v6 = v5;
+    v6 = modelCopy;
     [(TUIOverlayFadeView *)self setNeedsLayout];
   }
 
   else
   {
-    v6 = v5;
-    objc_storeStrong(&self->_model, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_model, model);
     [(TUIOverlayFadeView *)self _updateSubviews];
   }
 
-  v5 = v6;
+  modelCopy = v6;
 LABEL_6:
 }
 
@@ -76,13 +76,13 @@ LABEL_6:
   v6 = v5;
   [(_TUIOverlayFadeRenderModel *)self->_model gradientWidth];
   v79 = v7;
-  v8 = [(_TUIOverlayFadeRenderModel *)self->_model content];
-  [v8 size];
+  content = [(_TUIOverlayFadeRenderModel *)self->_model content];
+  [content size];
   v10 = v9;
   rect = v9;
 
-  v11 = [(_TUIOverlayFadeRenderModel *)self->_model overlay];
-  [v11 size];
+  overlay = [(_TUIOverlayFadeRenderModel *)self->_model overlay];
+  [overlay size];
   v13 = v12;
 
   [(_TUIOverlayFadeRenderModel *)self->_model contentErasableInsets];
@@ -90,7 +90,7 @@ LABEL_6:
   v17 = v16;
   v81 = v18;
   v20 = v19;
-  v21 = [(_TUIOverlayFadeRenderModel *)self->_model layoutDirection];
+  layoutDirection = [(_TUIOverlayFadeRenderModel *)self->_model layoutDirection];
   v68 = v6;
   v89 = v13;
   v88 = v6 + v10;
@@ -98,8 +98,8 @@ LABEL_6:
   y = CGPointZero.y;
   [(_TUIOverlayFadeRenderModel *)self->_model size];
   v87 = v24;
-  v25 = [(_TUIOverlayFadeRenderModel *)self->_model content];
-  [v25 size];
+  content2 = [(_TUIOverlayFadeRenderModel *)self->_model content];
+  [content2 size];
   v27 = v26;
   v29 = v28;
 
@@ -124,7 +124,7 @@ LABEL_6:
     v36 = v79;
     v37 = y;
     v38 = v87;
-    if (v21 == 2)
+    if (layoutDirection == 2)
     {
       goto LABEL_5;
     }
@@ -165,7 +165,7 @@ LABEL_12:
   }
 
   v34 = v79;
-  if (v21 != 2)
+  if (layoutDirection != 2)
   {
     v52 = v30;
     v34 = 0.0;
@@ -236,8 +236,8 @@ LABEL_5:
 
   v51 = v73;
 LABEL_14:
-  v54 = v21 == 2;
-  v55 = v21 == 2;
+  v54 = layoutDirection == 2;
+  v55 = layoutDirection == 2;
   if (v54)
   {
     v56 = 0.0;
@@ -271,8 +271,8 @@ LABEL_14:
 
   [(_TUIOverlayFadeRenderModel *)self->_model contentOrigin];
   v61 = v60;
-  v62 = [(_TUIOverlayFadeRenderModel *)self->_model content];
-  [v62 size];
+  content3 = [(_TUIOverlayFadeRenderModel *)self->_model content];
+  [content3 size];
   v64 = v63;
 
   v65 = v85 + v61;
@@ -314,14 +314,14 @@ LABEL_14:
     [(UIView *)self->_gradientOverflow setBackgroundColor:v11];
 
     v12 = kCAFilterDestOut;
-    v13 = [(UIView *)self->_gradientOverflow layer];
-    [v13 setCompositingFilter:v12];
+    layer = [(UIView *)self->_gradientOverflow layer];
+    [layer setCompositingFilter:v12];
 
-    v14 = [(_TUIOverlayFadeGradientView *)self->_gradient layer];
-    [v14 setZPosition:10000.0];
+    layer2 = [(_TUIOverlayFadeGradientView *)self->_gradient layer];
+    [layer2 setZPosition:10000.0];
 
-    v15 = [(_TUIOverlayFadeGradientView *)self->_gradient layer];
-    [v15 setZPosition:10000.0];
+    layer3 = [(_TUIOverlayFadeGradientView *)self->_gradient layer];
+    [layer3 setZPosition:10000.0];
 
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -334,32 +334,32 @@ LABEL_14:
   v36 = 0;
   if (self->_model && (v16 = objc_loadWeakRetained(&self->_factory), v16, v16))
   {
-    v17 = [(TUIReusableBaseView *)self feedControllerHost];
-    v18 = [v17 renderOverrideProvider];
-    v19 = [v18 renderOverrides];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    renderOverrideProvider = [feedControllerHost renderOverrideProvider];
+    renderOverrides = [renderOverrideProvider renderOverrides];
 
-    if (v19)
+    if (renderOverrides)
     {
-      v20 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-      v21 = [(TUIReusableBaseView *)self tui_querySectionUID];
+      tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+      tui_querySectionUID = [(TUIReusableBaseView *)self tui_querySectionUID];
     }
 
     else
     {
-      v21 = 0;
-      v20 = 0;
+      tui_querySectionUID = 0;
+      tui_querySectionUUID = 0;
     }
 
-    v27 = [(_TUIOverlayFadeRenderModel *)self->_model content];
+    content = [(_TUIOverlayFadeRenderModel *)self->_model content];
     WeakRetained = objc_loadWeakRetained(&self->_factory);
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
     right = UIEdgeInsetsZero.right;
-    v32 = [v27 configureSubviewsWithFactory:WeakRetained outsets:self->_content host:v19 overrides:&v36 usedOverrides:v20 UUID:v21 uid:{UIEdgeInsetsZero.top, left, bottom, right}];
+    v32 = [content configureSubviewsWithFactory:WeakRetained outsets:self->_content host:renderOverrides overrides:&v36 usedOverrides:tui_querySectionUUID UUID:tui_querySectionUID uid:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-    v33 = [(_TUIOverlayFadeRenderModel *)self->_model overlay];
+    overlay = [(_TUIOverlayFadeRenderModel *)self->_model overlay];
     v34 = objc_loadWeakRetained(&self->_factory);
-    v35 = [v33 configureSubviewsWithFactory:v34 outsets:self->_overlay host:v19 overrides:&v36 usedOverrides:v20 UUID:v21 uid:{UIEdgeInsetsZero.top, left, bottom, right}];
+    v35 = [overlay configureSubviewsWithFactory:v34 outsets:self->_overlay host:renderOverrides overrides:&v36 usedOverrides:tui_querySectionUUID UUID:tui_querySectionUID uid:{UIEdgeInsetsZero.top, left, bottom, right}];
 
     [(TUIOverlayFadeView *)self _updateGeometry];
     v26 = 2 * v36;
@@ -368,12 +368,12 @@ LABEL_14:
   else
   {
     v22 = objc_loadWeakRetained(&self->_factory);
-    v23 = [v22 subviewPool];
-    [v23 prepareToReuseHost:self->_content];
+    subviewPool = [v22 subviewPool];
+    [subviewPool prepareToReuseHost:self->_content];
 
     v24 = objc_loadWeakRetained(&self->_factory);
-    v25 = [v24 subviewPool];
-    [v25 prepareToReuseHost:self->_overlay];
+    subviewPool2 = [v24 subviewPool];
+    [subviewPool2 prepareToReuseHost:self->_overlay];
 
     v26 = 0;
   }
@@ -390,12 +390,12 @@ LABEL_14:
   self->_model = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v5 = [WeakRetained subviewPool];
-  [v5 prepareToReuseHost:self->_content];
+  subviewPool = [WeakRetained subviewPool];
+  [subviewPool prepareToReuseHost:self->_content];
 
   v6 = objc_loadWeakRetained(&self->_factory);
-  v7 = [v6 subviewPool];
-  [v7 prepareToReuseHost:self->_overlay];
+  subviewPool2 = [v6 subviewPool];
+  [subviewPool2 prepareToReuseHost:self->_overlay];
 }
 
 - (void)layoutSubviews

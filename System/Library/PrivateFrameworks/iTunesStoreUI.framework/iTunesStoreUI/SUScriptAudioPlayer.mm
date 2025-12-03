@@ -1,29 +1,29 @@
 @interface SUScriptAudioPlayer
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (SUScriptAudioPlayer)initWithURL:(id)a3 keyURL:(id)a4 certificateURL:(id)a5;
+- (SUScriptAudioPlayer)initWithURL:(id)l keyURL:(id)rL certificateURL:(id)uRL;
 - (double)currentTime;
 - (double)duration;
 - (id)scriptAttributeKeys;
 - (int64_t)state;
-- (void)_audioPlayerStateChangeNotification:(id)a3;
+- (void)_audioPlayerStateChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)setValue:(id)a3 forNowPlayingKey:(id)a4;
+- (void)setValue:(id)value forNowPlayingKey:(id)key;
 @end
 
 @implementation SUScriptAudioPlayer
 
-- (SUScriptAudioPlayer)initWithURL:(id)a3 keyURL:(id)a4 certificateURL:(id)a5
+- (SUScriptAudioPlayer)initWithURL:(id)l keyURL:(id)rL certificateURL:(id)uRL
 {
   v10.receiver = self;
   v10.super_class = SUScriptAudioPlayer;
   v8 = [(SUScriptObject *)&v10 init];
   if (v8)
   {
-    v8->_url = a3;
-    v8->_keyUrl = a4;
-    v8->_certificateUrl = a5;
+    v8->_url = l;
+    v8->_keyUrl = rL;
+    v8->_certificateUrl = uRL;
     WebThreadRunOnMainThread();
   }
 
@@ -68,7 +68,7 @@ uint64_t __28__SUScriptAudioPlayer_pause__block_invoke(uint64_t a1)
   return [v1 pause];
 }
 
-- (void)setValue:(id)a3 forNowPlayingKey:(id)a4
+- (void)setValue:(id)value forNowPlayingKey:(id)key
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -161,43 +161,43 @@ uint64_t __27__SUScriptAudioPlayer_stop__block_invoke(uint64_t a1)
 - (int64_t)state
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUPlayerStatus *)self->_playerStatus playerState];
+  playerState = [(SUPlayerStatus *)self->_playerStatus playerState];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return playerState;
 }
 
-- (void)_audioPlayerStateChangeNotification:(id)a3
+- (void)_audioPlayerStateChangeNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   [(SUScriptObject *)self lock];
 
-  self->_playerStatus = [v4 playerStatus];
+  self->_playerStatus = [object playerStatus];
   [(SUScriptObject *)self unlock];
 
   [(SUScriptObject *)self dispatchEvent:0 forName:@"statechange"];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_60 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAudioPlayer;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_46, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_46, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptAudioPlayer;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -207,14 +207,14 @@ uint64_t __27__SUScriptAudioPlayer_stop__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptAudioPlayer;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_60 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_60 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_46 = sel_play;
     unk_1EBF3B620 = @"play";

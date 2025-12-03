@@ -1,29 +1,29 @@
 @interface SSPurchaseManager
-- (BOOL)_resultForReply:(id)a3 error:(id *)a4;
-- (BOOL)_shouldInvalidateSubscriptionStatusForPurchaseResponse:(id)a3;
+- (BOOL)_resultForReply:(id)reply error:(id *)error;
+- (BOOL)_shouldInvalidateSubscriptionStatusForPurchaseResponse:(id)response;
 - (NSString)managerIdentifier;
-- (SSPurchaseManager)initWithManagerIdentifier:(id)a3;
+- (SSPurchaseManager)initWithManagerIdentifier:(id)identifier;
 - (SSPurchaseManagerDelegate)delegate;
-- (id)_newEncodedArrayWithPurchaseIdentifiers:(id)a3;
-- (id)_newEncodedArrayWithPurchases:(id)a3;
+- (id)_newEncodedArrayWithPurchaseIdentifiers:(id)identifiers;
+- (id)_newEncodedArrayWithPurchases:(id)purchases;
 - (id)_requestConnection;
 - (id)_responseConnection;
 - (void)_connectToDaemon;
-- (void)_handleAuthenticateRequest:(id)a3 fromConnection:(id)a4;
-- (void)_handleMessage:(id)a3 fromConnection:(id)a4;
-- (void)_handlePurchasesFinished:(id)a3 fromConnection:(id)a4;
+- (void)_handleAuthenticateRequest:(id)request fromConnection:(id)connection;
+- (void)_handleMessage:(id)message fromConnection:(id)connection;
+- (void)_handlePurchasesFinished:(id)finished fromConnection:(id)connection;
 - (void)_reconnectForDaemonLaunch;
-- (void)_sendCompletionBlock:(id)a3 forGetPurchasesReply:(id)a4;
-- (void)_sendCompletionBlock:(id)a3 forStandardReply:(id)a4;
-- (void)_sendMessage:(int64_t)a3 withPurchaseIdentifiers:(id)a4 afterPurchase:(id)a5 completionBlock:(id)a6;
-- (void)_sendMessage:(int64_t)a3 withPurchases:(id)a4 afterPurchase:(id)a5 completionBlock:(id)a6;
-- (void)addPurchases:(id)a3 withCompletionBlock:(id)a4;
-- (void)cancelPurchases:(id)a3 withCompletionBlock:(id)a4;
+- (void)_sendCompletionBlock:(id)block forGetPurchasesReply:(id)reply;
+- (void)_sendCompletionBlock:(id)block forStandardReply:(id)reply;
+- (void)_sendMessage:(int64_t)message withPurchaseIdentifiers:(id)identifiers afterPurchase:(id)purchase completionBlock:(id)block;
+- (void)_sendMessage:(int64_t)message withPurchases:(id)purchases afterPurchase:(id)purchase completionBlock:(id)block;
+- (void)addPurchases:(id)purchases withCompletionBlock:(id)block;
+- (void)cancelPurchases:(id)purchases withCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)getPurchasesUsingBlock:(id)a3;
-- (void)insertPurchases:(id)a3 afterPurchase:(id)a4 withCompletionBlock:(id)a5;
-- (void)movePurchases:(id)a3 afterPurchase:(id)a4 withCompletionBlock:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)getPurchasesUsingBlock:(id)block;
+- (void)insertPurchases:(id)purchases afterPurchase:(id)purchase withCompletionBlock:(id)block;
+- (void)movePurchases:(id)purchases afterPurchase:(id)purchase withCompletionBlock:(id)block;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SSPurchaseManager
@@ -39,15 +39,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -132,18 +132,18 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
   return [v5 _handleMessage:a2 fromConnection:a3];
 }
 
-- (SSPurchaseManager)initWithManagerIdentifier:(id)a3
+- (SSPurchaseManager)initWithManagerIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = SSPurchaseManager;
   v4 = [(SSPurchaseManager *)&v9 init];
   if (v4)
   {
-    v4->_managerIdentifier = [a3 copy];
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.StoreServices.SSPurchaseManager.%@.%p", a3, v4];
+    v4->_managerIdentifier = [identifier copy];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.StoreServices.SSPurchaseManager.%@.%p", identifier, v4];
     v4->_dispatchQueue = dispatch_queue_create([v5 UTF8String], 0);
 
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.StoreServices.SSPurchaseManager.completion.%@.%p", a3, v4];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.StoreServices.SSPurchaseManager.completion.%@.%p", identifier, v4];
     v4->_completionBlockQueue = dispatch_queue_create([v6 UTF8String], 0);
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -175,7 +175,7 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
   [(SSPurchaseManager *)&v6 dealloc];
 }
 
-- (void)addPurchases:(id)a3 withCompletionBlock:(id)a4
+- (void)addPurchases:(id)purchases withCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -186,15 +186,15 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -229,12 +229,12 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
   block[2] = __54__SSPurchaseManager_addPurchases_withCompletionBlock___block_invoke;
   block[3] = &unk_1E84ADFD0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = purchases;
+  block[6] = block;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)cancelPurchases:(id)a3 withCompletionBlock:(id)a4
+- (void)cancelPurchases:(id)purchases withCompletionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -245,15 +245,15 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -288,8 +288,8 @@ uint64_t __40__SSPurchaseManager__responseConnection__block_invoke(uint64_t a1, 
   block[2] = __57__SSPurchaseManager_cancelPurchases_withCompletionBlock___block_invoke;
   block[3] = &unk_1E84ADFD0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = purchases;
+  block[6] = block;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -321,7 +321,7 @@ id __29__SSPurchaseManager_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getPurchasesUsingBlock:(id)a3
+- (void)getPurchasesUsingBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -332,15 +332,15 @@ id __29__SSPurchaseManager_delegate__block_invoke(uint64_t a1)
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -375,7 +375,7 @@ id __29__SSPurchaseManager_delegate__block_invoke(uint64_t a1)
   block[2] = __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke;
   block[3] = &unk_1E84AF318;
   block[4] = self;
-  block[5] = a3;
+  block[5] = block;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -403,7 +403,7 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
   return [v4 _sendCompletionBlock:v5 forGetPurchasesReply:a2];
 }
 
-- (void)insertPurchases:(id)a3 afterPurchase:(id)a4 withCompletionBlock:(id)a5
+- (void)insertPurchases:(id)purchases afterPurchase:(id)purchase withCompletionBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -414,15 +414,15 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -457,9 +457,9 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
   block[2] = __71__SSPurchaseManager_insertPurchases_afterPurchase_withCompletionBlock___block_invoke;
   block[3] = &unk_1E84B2800;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
+  block[5] = purchases;
+  block[6] = purchase;
+  block[7] = block;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -470,7 +470,7 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
   return v2;
 }
 
-- (void)movePurchases:(id)a3 afterPurchase:(id)a4 withCompletionBlock:(id)a5
+- (void)movePurchases:(id)purchases afterPurchase:(id)purchase withCompletionBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -481,15 +481,15 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -524,13 +524,13 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
   block[2] = __69__SSPurchaseManager_movePurchases_afterPurchase_withCompletionBlock___block_invoke;
   block[3] = &unk_1E84B2800;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
+  block[5] = purchases;
+  block[6] = purchase;
+  block[7] = block;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -538,7 +538,7 @@ uint64_t __44__SSPurchaseManager_getPurchasesUsingBlock___block_invoke_2(uint64_
   v4[2] = __33__SSPurchaseManager_setDelegate___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -555,26 +555,26 @@ uint64_t __33__SSPurchaseManager_setDelegate___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_handleMessage:(id)a3 fromConnection:(id)a4
+- (void)_handleMessage:(id)message fromConnection:(id)connection
 {
-  int64 = xpc_dictionary_get_int64(a3, "0");
+  int64 = xpc_dictionary_get_int64(message, "0");
   if (int64 == 1101)
   {
 
-    [(SSPurchaseManager *)self _handlePurchasesFinished:a3 fromConnection:a4];
+    [(SSPurchaseManager *)self _handlePurchasesFinished:message fromConnection:connection];
   }
 
   else if (int64 == 1100)
   {
 
-    [(SSPurchaseManager *)self _handleAuthenticateRequest:a3 fromConnection:a4];
+    [(SSPurchaseManager *)self _handleAuthenticateRequest:message fromConnection:connection];
   }
 }
 
-- (void)_handleAuthenticateRequest:(id)a3 fromConnection:(id)a4
+- (void)_handleAuthenticateRequest:(id)request fromConnection:(id)connection
 {
   v40 = *MEMORY[0x1E69E9840];
-  value = xpc_dictionary_get_value(a3, "1");
+  value = xpc_dictionary_get_value(request, "1");
   if (value)
   {
     v8 = [[SSAuthenticationContext alloc] initWithXPCEncoding:value];
@@ -587,15 +587,15 @@ uint64_t __33__SSPurchaseManager_setDelegate___block_invoke(uint64_t result)
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -608,7 +608,7 @@ uint64_t __33__SSPurchaseManager_setDelegate___block_invoke(uint64_t result)
         v36 = 138543618;
         v37 = objc_opt_class();
         v38 = 2114;
-        v39 = [(SSAuthenticationContext *)v8 logUUID];
+        logUUID = [(SSAuthenticationContext *)v8 logUUID];
         LODWORD(v34) = 22;
         v13 = _os_log_send_and_compose_impl();
         if (v13)
@@ -627,8 +627,8 @@ uint64_t __33__SSPurchaseManager_setDelegate___block_invoke(uint64_t result)
       v35[3] = &unk_1E84B2828;
       v35[4] = self;
       v35[5] = v8;
-      v35[6] = a3;
-      v35[7] = a4;
+      v35[6] = request;
+      v35[7] = connection;
       [(SSAuthenticateRequest *)v22 startWithAuthenticateResponseBlock:v35];
     }
 
@@ -639,15 +639,15 @@ uint64_t __33__SSPurchaseManager_setDelegate___block_invoke(uint64_t result)
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v23 = [v10 shouldLog];
+      shouldLog2 = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v24 = v23 | 2;
+        v24 = shouldLog2 | 2;
       }
 
       else
       {
-        v24 = v23;
+        v24 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -744,10 +744,10 @@ void __63__SSPurchaseManager__handleAuthenticateRequest_fromConnection___block_i
   xpc_release(reply);
 }
 
-- (void)_handlePurchasesFinished:(id)a3 fromConnection:(id)a4
+- (void)_handlePurchasesFinished:(id)finished fromConnection:(id)connection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = [(SSPurchaseManager *)self delegate:a3];
+  v6 = [(SSPurchaseManager *)self delegate:finished];
   if (objc_opt_respondsToSelector())
   {
     v7 = xpc_array_create(0, 0);
@@ -756,7 +756,7 @@ void __63__SSPurchaseManager__handleAuthenticateRequest_fromConnection___block_i
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    value = xpc_dictionary_get_value(a3, "1");
+    value = xpc_dictionary_get_value(finished, "1");
     v10 = value;
     if (value && MEMORY[0x1DA6E0380](value) == MEMORY[0x1E69E9E50])
     {
@@ -799,22 +799,22 @@ void __63__SSPurchaseManager__handleAuthenticateRequest_fromConnection___block_i
           v12 = +[SSLogConfig sharedConfig];
         }
 
-        v13 = [v12 shouldLog];
-        v14 = [v12 shouldLogToDisk];
-        v15 = [v12 OSLogObject];
-        if (v14)
+        shouldLog = [v12 shouldLog];
+        shouldLogToDisk = [v12 shouldLogToDisk];
+        oSLogObject = [v12 OSLogObject];
+        if (shouldLogToDisk)
         {
-          v13 |= 2u;
+          shouldLog |= 2u;
         }
 
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
         {
-          v16 = v13;
+          v16 = shouldLog;
         }
 
         else
         {
-          v16 = v13 & 2;
+          v16 = shouldLog & 2;
         }
 
         if (v16)
@@ -866,7 +866,7 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
   return 1;
 }
 
-- (id)_newEncodedArrayWithPurchaseIdentifiers:(id)a3
+- (id)_newEncodedArrayWithPurchaseIdentifiers:(id)identifiers
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = xpc_array_create(0, 0);
@@ -874,7 +874,7 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [identifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -886,14 +886,14 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         xpc_array_set_int64(v4, 0xFFFFFFFFFFFFFFFFLL, [*(*(&v10 + 1) + 8 * v8++) uniqueIdentifier]);
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [identifiers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -902,7 +902,7 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
   return v4;
 }
 
-- (id)_newEncodedArrayWithPurchases:(id)a3
+- (id)_newEncodedArrayWithPurchases:(id)purchases
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = xpc_array_create(0, 0);
@@ -910,7 +910,7 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -922,14 +922,14 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) copyXPCEncoding];
-        if (v9)
+        copyXPCEncoding = [*(*(&v12 + 1) + 8 * v8) copyXPCEncoding];
+        if (copyXPCEncoding)
         {
-          v10 = v9;
-          xpc_array_append_value(v4, v9);
+          v10 = copyXPCEncoding;
+          xpc_array_append_value(v4, copyXPCEncoding);
           xpc_release(v10);
         }
 
@@ -937,7 +937,7 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -957,15 +957,15 @@ uint64_t __61__SSPurchaseManager__handlePurchasesFinished_fromConnection___block
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)_resultForReply:(id)a3 error:(id *)a4
+- (BOOL)_resultForReply:(id)reply error:(id *)error
 {
-  if (a3 == MEMORY[0x1E69E9E18])
+  if (reply == MEMORY[0x1E69E9E18])
   {
     v6 = 121;
 LABEL_6:
     v7 = SSError(@"SSErrorDomain", v6, 0, 0);
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -973,15 +973,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a3 || MEMORY[0x1DA6E0380](a3, a2) != MEMORY[0x1E69E9E80])
+  if (!reply || MEMORY[0x1DA6E0380](reply, a2) != MEMORY[0x1E69E9E80])
   {
     v6 = 111;
     goto LABEL_6;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(a3, "1")}];
-  v8 = xpc_dictionary_get_BOOL(a3, "0");
-  if (!a4)
+  v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(reply, "1")}];
+  v8 = xpc_dictionary_get_BOOL(reply, "0");
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -989,7 +989,7 @@ LABEL_6:
 LABEL_7:
   if (!v8)
   {
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_9:
@@ -997,12 +997,12 @@ LABEL_9:
   return v8;
 }
 
-- (void)_sendCompletionBlock:(id)a3 forGetPurchasesReply:(id)a4
+- (void)_sendCompletionBlock:(id)block forGetPurchasesReply:(id)reply
 {
-  if (a3)
+  if (block)
   {
     v13 = 0;
-    if ([(SSPurchaseManager *)self _resultForReply:a4 error:&v13]&& (value = xpc_dictionary_get_value(a4, "2")) != 0 && (v8 = value, MEMORY[0x1DA6E0380]() == MEMORY[0x1E69E9E50]))
+    if ([(SSPurchaseManager *)self _resultForReply:reply error:&v13]&& (value = xpc_dictionary_get_value(reply, "2")) != 0 && (v8 = value, MEMORY[0x1DA6E0380]() == MEMORY[0x1E69E9E50]))
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
       applier[0] = MEMORY[0x1E69E9820];
@@ -1025,7 +1025,7 @@ LABEL_9:
     block[3] = &unk_1E84AD618;
     block[4] = v9;
     block[5] = v13;
-    block[6] = a3;
+    block[6] = block;
     dispatch_async(completionBlockQueue, block);
   }
 }
@@ -1042,12 +1042,12 @@ uint64_t __63__SSPurchaseManager__sendCompletionBlock_forGetPurchasesReply___blo
   return 1;
 }
 
-- (void)_sendCompletionBlock:(id)a3 forStandardReply:(id)a4
+- (void)_sendCompletionBlock:(id)block forStandardReply:(id)reply
 {
-  if (a3)
+  if (block)
   {
     v10 = 0;
-    v6 = [(SSPurchaseManager *)self _resultForReply:a4 error:&v10];
+    v6 = [(SSPurchaseManager *)self _resultForReply:reply error:&v10];
     completionBlockQueue = self->_completionBlockQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1055,32 +1055,32 @@ uint64_t __63__SSPurchaseManager__sendCompletionBlock_forGetPurchasesReply___blo
     v8[3] = &unk_1E84B1C08;
     v9 = v6;
     v8[4] = v10;
-    v8[5] = a3;
+    v8[5] = block;
     dispatch_async(completionBlockQueue, v8);
   }
 }
 
-- (void)_sendMessage:(int64_t)a3 withPurchaseIdentifiers:(id)a4 afterPurchase:(id)a5 completionBlock:(id)a6
+- (void)_sendMessage:(int64_t)message withPurchaseIdentifiers:(id)identifiers afterPurchase:(id)purchase completionBlock:(id)block
 {
-  v10 = SSXPCCreateMessageDictionary(a3);
+  v10 = SSXPCCreateMessageDictionary(message);
   SSXPCDictionarySetCFObject(v10, "1", self->_managerIdentifier);
-  if (a5)
+  if (purchase)
   {
-    xpc_dictionary_set_int64(v10, "3", [a5 uniqueIdentifier]);
+    xpc_dictionary_set_int64(v10, "3", [purchase uniqueIdentifier]);
   }
 
-  v11 = [(SSPurchaseManager *)self _newEncodedArrayWithPurchaseIdentifiers:a4];
+  v11 = [(SSPurchaseManager *)self _newEncodedArrayWithPurchaseIdentifiers:identifiers];
   xpc_dictionary_set_value(v10, "2", v11);
   xpc_release(v11);
   v12 = [SSWeakReference weakReferenceWithObject:self];
-  v13 = [(SSPurchaseManager *)self _requestConnection];
+  _requestConnection = [(SSPurchaseManager *)self _requestConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__SSPurchaseManager__sendMessage_withPurchaseIdentifiers_afterPurchase_completionBlock___block_invoke;
   v14[3] = &unk_1E84AFB40;
   v14[4] = v12;
-  v14[5] = a6;
-  [v13 sendMessage:v10 withReply:v14];
+  v14[5] = block;
+  [_requestConnection sendMessage:v10 withReply:v14];
   xpc_release(v10);
 }
 
@@ -1092,27 +1092,27 @@ uint64_t __88__SSPurchaseManager__sendMessage_withPurchaseIdentifiers_afterPurch
   return [v4 _sendCompletionBlock:v5 forStandardReply:a2];
 }
 
-- (void)_sendMessage:(int64_t)a3 withPurchases:(id)a4 afterPurchase:(id)a5 completionBlock:(id)a6
+- (void)_sendMessage:(int64_t)message withPurchases:(id)purchases afterPurchase:(id)purchase completionBlock:(id)block
 {
-  v10 = SSXPCCreateMessageDictionary(a3);
+  v10 = SSXPCCreateMessageDictionary(message);
   SSXPCDictionarySetCFObject(v10, "1", self->_managerIdentifier);
-  if (a5)
+  if (purchase)
   {
-    xpc_dictionary_set_int64(v10, "3", [a5 uniqueIdentifier]);
+    xpc_dictionary_set_int64(v10, "3", [purchase uniqueIdentifier]);
   }
 
-  v11 = [(SSPurchaseManager *)self _newEncodedArrayWithPurchases:a4];
+  v11 = [(SSPurchaseManager *)self _newEncodedArrayWithPurchases:purchases];
   xpc_dictionary_set_value(v10, "2", v11);
   xpc_release(v11);
   v12 = [SSWeakReference weakReferenceWithObject:self];
-  v13 = [(SSPurchaseManager *)self _requestConnection];
+  _requestConnection = [(SSPurchaseManager *)self _requestConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__SSPurchaseManager__sendMessage_withPurchases_afterPurchase_completionBlock___block_invoke;
   v14[3] = &unk_1E84AFB40;
   v14[4] = v12;
-  v14[5] = a6;
-  [v13 sendMessage:v10 withReply:v14];
+  v14[5] = block;
+  [_requestConnection sendMessage:v10 withReply:v14];
   xpc_release(v10);
 }
 
@@ -1124,15 +1124,15 @@ uint64_t __78__SSPurchaseManager__sendMessage_withPurchases_afterPurchase_comple
   return [v4 _sendCompletionBlock:v5 forStandardReply:a2];
 }
 
-- (BOOL)_shouldInvalidateSubscriptionStatusForPurchaseResponse:(id)a3
+- (BOOL)_shouldInvalidateSubscriptionStatusForPurchaseResponse:(id)response
 {
-  if ([a3 error])
+  if ([response error])
   {
     return 0;
   }
 
-  v5 = [a3 purchase];
-  v6 = [objc_msgSend(v5 "requestProperties")];
+  purchase = [response purchase];
+  v6 = [objc_msgSend(purchase "requestProperties")];
   if (v6)
   {
     if (![v6 isEqualToString:@"buyProduct"])
@@ -1141,13 +1141,13 @@ uint64_t __78__SSPurchaseManager__sendMessage_withPurchases_afterPurchase_comple
     }
   }
 
-  v7 = [v5 buyParameters];
-  if (!v7)
+  buyParameters = [purchase buyParameters];
+  if (!buyParameters)
   {
     return 0;
   }
 
-  return [v7 containsString:@"STDQ"];
+  return [buyParameters containsString:@"STDQ"];
 }
 
 @end

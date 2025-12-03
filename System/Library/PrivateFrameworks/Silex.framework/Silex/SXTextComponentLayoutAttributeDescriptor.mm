@@ -1,20 +1,20 @@
 @interface SXTextComponentLayoutAttributeDescriptor
-+ (void)descriptorWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(char)a4 ignoreMargin:(uint64_t)a5 withRange:(uint64_t)a6;
++ (void)descriptorWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(char)layoutAttribute ignoreMargin:(uint64_t)margin withRange:(uint64_t)range;
 - (uint64_t)range;
 - (uint64_t)resultingExclusionPath;
-- (void)setResultingExclusionPath:(uint64_t)a1;
+- (void)setResultingExclusionPath:(uint64_t)path;
 @end
 
 @implementation SXTextComponentLayoutAttributeDescriptor
 
-+ (void)descriptorWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(char)a4 ignoreMargin:(uint64_t)a5 withRange:(uint64_t)a6
++ (void)descriptorWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(char)layoutAttribute ignoreMargin:(uint64_t)margin withRange:(uint64_t)range
 {
   objc_opt_self();
-  v11 = [(SXComponentLayoutAttributeDescriptor *)[SXTextComponentLayoutAttributeDescriptor alloc] initWithFromLayoutAttribute:a2 toLayoutAttribute:a3 ignoreMargin:a4];
+  v11 = [(SXComponentLayoutAttributeDescriptor *)[SXTextComponentLayoutAttributeDescriptor alloc] initWithFromLayoutAttribute:a2 toLayoutAttribute:attribute ignoreMargin:layoutAttribute];
   if (v11)
   {
-    v11[4] = a5;
-    v11[5] = a6;
+    v11[4] = margin;
+    v11[5] = range;
   }
 
   return v11;
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (void)setResultingExclusionPath:(uint64_t)a1
+- (void)setResultingExclusionPath:(uint64_t)path
 {
-  if (a1)
+  if (path)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((path + 24), a2);
   }
 }
 

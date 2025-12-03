@@ -1,50 +1,50 @@
 @interface MesaPairer
-- (BOOL)loadMSRkWithData:(id)a3 error:(id *)a4;
-- (BOOL)mesaAlreadyPaired:(int *)a3;
+- (BOOL)loadMSRkWithData:(id)data error:(id *)error;
+- (BOOL)mesaAlreadyPaired:(int *)paired;
 - (BOOL)mesaClearPhysicalPresence;
 - (BOOL)mesaPhysicalPresenceAsserted;
 - (id)createFDROptions;
-- (id)runWithInputs:(id)a3 results:(id *)a4;
-- (int64_t)verifyMSRkWithError:(id *)a3;
+- (id)runWithInputs:(id)inputs results:(id *)results;
+- (int64_t)verifyMSRkWithError:(id *)error;
 - (void)cancel;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation MesaPairer
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[MesaPairer setupWithInputs:responder:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = inputsCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v11, 0x20u);
   }
 
-  [(MesaPairer *)self setInputs:v6];
-  v9 = [(MesaPairer *)self inputs];
+  [(MesaPairer *)self setInputs:inputsCopy];
+  inputs = [(MesaPairer *)self inputs];
 
-  if (!v9)
+  if (!inputs)
   {
-    v10 = [(MesaPairer *)self result];
-    [v10 setStatusCode:&off_100015648];
+    result = [(MesaPairer *)self result];
+    [result setStatusCode:&off_100015648];
 
     [(MesaPairer *)self setFinished:1];
   }
 }
 
-- (id)runWithInputs:(id)a3 results:(id *)a4
+- (id)runWithInputs:(id)inputs results:(id *)results
 {
-  v5 = a3;
+  inputsCopy = inputs;
   v87 = 128;
   v88 = 0;
   v86 = 0;
@@ -56,25 +56,25 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v7 = [(MesaPairer *)self inputs];
+  inputs = [(MesaPairer *)self inputs];
 
-  if (!v7)
+  if (!inputs)
   {
-    [(MesaPairer *)self setInputs:v5];
+    [(MesaPairer *)self setInputs:inputsCopy];
   }
 
   AMSupportLogSetHandler();
   if ([(MesaPairer *)self mesaProtocolVersion]< 2)
   {
-    v76 = 0;
+    mesaPhysicalPresenceAsserted = 0;
     goto LABEL_26;
   }
 
-  v76 = [(MesaPairer *)self mesaPhysicalPresenceAsserted];
-  v8 = [(MesaPairer *)self inputs];
-  v9 = [v8 skipPairingPreCheck];
+  mesaPhysicalPresenceAsserted = [(MesaPairer *)self mesaPhysicalPresenceAsserted];
+  inputs2 = [(MesaPairer *)self inputs];
+  skipPairingPreCheck = [inputs2 skipPairingPreCheck];
 
-  if (v9)
+  if (skipPairingPreCheck)
   {
     v10 = handleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -91,7 +91,7 @@ LABEL_13:
 
   if (![(MesaPairer *)self mesaAlreadyPaired:0])
   {
-    if (v76)
+    if (mesaPhysicalPresenceAsserted)
     {
       v10 = handleForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -100,7 +100,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Mesa physical presence already asserted. Skip verify MSRk", buf, 2u);
       }
 
-      v76 = 1;
+      mesaPhysicalPresenceAsserted = 1;
       goto LABEL_25;
     }
 
@@ -125,7 +125,7 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v76 = 0;
+    mesaPhysicalPresenceAsserted = 0;
     goto LABEL_25;
   }
 
@@ -291,12 +291,12 @@ LABEL_123:
   v15 = &AMFDRCreateTypeWithOptions_ptr;
   v65 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v64 code]);
   v78 = v64;
-  v66 = [v64 localizedDescription];
+  localizedDescription = [v64 localizedDescription];
 
   v84 = v65;
   if ([v65 isEqual:&off_100015708])
   {
-    if ([(__CFString *)v66 containsString:@"errorCode: 8500"])
+    if ([(__CFString *)localizedDescription containsString:@"errorCode: 8500"])
     {
 
       v67 = &off_100015720;
@@ -305,7 +305,7 @@ LABEL_141:
       goto LABEL_142;
     }
 
-    if ([(__CFString *)v66 containsString:@"errorCode: 8302"])
+    if ([(__CFString *)localizedDescription containsString:@"errorCode: 8302"])
     {
 
       v67 = &off_100015738;
@@ -314,9 +314,9 @@ LABEL_141:
   }
 
 LABEL_142:
-  v19 = v66;
+  v19 = localizedDescription;
 LABEL_31:
-  v81 = v5;
+  v81 = inputsCopy;
   v82 = v17;
   v79 = v19;
   if ([(MesaPairer *)self mesaProtocolVersion]>= 2)
@@ -361,7 +361,7 @@ LABEL_31:
     v70 = v24;
     v92[3] = v24;
     v91[4] = @"mesaSensorPreviousPhysicalPresenceState";
-    v26 = [v15[136] numberWithBool:v76];
+    v26 = [v15[136] numberWithBool:mesaPhysicalPresenceAsserted];
     v27 = v26;
     if (!v26)
     {
@@ -399,7 +399,7 @@ LABEL_31:
 
     v92[7] = v33;
     v91[8] = @"isUnlockRequired";
-    v34 = [v15[136] numberWithInt:{(objc_msgSend(v83, "intValue") == 2) & (v76 ^ 1)}];
+    v34 = [v15[136] numberWithInt:{(objc_msgSend(v83, "intValue") == 2) & (mesaPhysicalPresenceAsserted ^ 1)}];
     v35 = v34;
     if (!v34)
     {
@@ -425,7 +425,7 @@ LABEL_54:
         {
         }
 
-        v37 = a4;
+        resultsCopy2 = results;
         if (!v30)
         {
         }
@@ -558,7 +558,7 @@ LABEL_105:
 
 LABEL_86:
 
-  v37 = a4;
+  resultsCopy2 = results;
   if (!v46)
   {
   }
@@ -579,10 +579,10 @@ LABEL_92:
   {
   }
 
-  if (v37)
+  if (resultsCopy2)
   {
     v52 = v36;
-    *v37 = v36;
+    *resultsCopy2 = v36;
   }
 
   v53 = v83;
@@ -600,21 +600,21 @@ LABEL_92:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(MesaPairer *)self inputs];
+  inputs = [(MesaPairer *)self inputs];
   v9 = 0;
-  v5 = [(MesaPairer *)self runWithInputs:v4 results:&v9];
+  v5 = [(MesaPairer *)self runWithInputs:inputs results:&v9];
   v6 = v9;
 
-  v7 = [(MesaPairer *)self result];
-  [v7 setStatusCode:v5];
+  result = [(MesaPairer *)self result];
+  [result setStatusCode:v5];
 
-  v8 = [(MesaPairer *)self result];
-  [v8 setData:v6];
+  result2 = [(MesaPairer *)self result];
+  [result2 setData:v6];
 
   [(MesaPairer *)self setFinished:1];
 }
 
-- (int64_t)verifyMSRkWithError:(id *)a3
+- (int64_t)verifyMSRkWithError:(id *)error
 {
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -628,13 +628,13 @@ LABEL_92:
   if (!AMFDRSealingMapCopyInstanceForClass())
   {
     sub_10000BFF0(&v21);
-    v6 = 0;
+    createFDROptions = 0;
 LABEL_21:
     v12 = 0;
     goto LABEL_29;
   }
 
-  v6 = [(MesaPairer *)self createFDROptions];
+  createFDROptions = [(MesaPairer *)self createFDROptions];
   if (!AMFDRCreateTypeWithOptions())
   {
     sub_10000BF90();
@@ -685,7 +685,7 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Load remote data", buf, 2u);
       }
 
-      v14 = [(MesaPairer *)self loadMSRkWithData:v12 error:a3];
+      v14 = [(MesaPairer *)self loadMSRkWithData:v12 error:error];
       v15 = handleForCategory();
       v16 = v15;
       if (v14)
@@ -719,10 +719,10 @@ LABEL_29:
     v12 = 0;
   }
 
-  if (a3 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a3 = v18;
+    *error = v18;
   }
 
 LABEL_18:
@@ -735,14 +735,14 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)loadMSRkWithData:(id)a3 error:(id *)a4
+- (BOOL)loadMSRkWithData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  v11 = sub_1000095D8(1, v9, v10);
+  v11 = sub_1000095D8(1, bytes, v10);
   v17 = v11;
   if (v11)
   {
@@ -754,7 +754,7 @@ LABEL_18:
     if ([(MesaPairer *)self mesaAlreadyPaired:&v17])
     {
       v12 = 0;
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_4;
     }
 
@@ -764,7 +764,7 @@ LABEL_18:
   if (!v12)
   {
 LABEL_12:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_4;
   }
 
@@ -774,20 +774,20 @@ LABEL_12:
     sub_10000C08C();
   }
 
-  if (a4)
+  if (error)
   {
     v15 = CRErrorDomain;
     v18 = NSLocalizedDescriptionKey;
     v19 = v12;
     v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    *a4 = [NSError errorWithDomain:v15 code:-8 userInfo:v16];
+    *error = [NSError errorWithDomain:v15 code:-8 userInfo:v16];
 
     goto LABEL_12;
   }
 
 LABEL_4:
 
-  return a4;
+  return error;
 }
 
 - (id)createFDROptions
@@ -804,34 +804,34 @@ LABEL_4:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"VerifyData"];
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"StripImg4"];
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"GetCombined"];
-  v5 = [(MesaPairer *)self inputs];
-  v6 = [v5 FDRCAURL];
+  inputs = [(MesaPairer *)self inputs];
+  fDRCAURL = [inputs FDRCAURL];
 
-  if (v6)
+  if (fDRCAURL)
   {
-    v7 = [(MesaPairer *)self inputs];
-    v8 = [v7 FDRCAURL];
-    [v4 setObject:v8 forKeyedSubscript:@"CAURL"];
+    inputs2 = [(MesaPairer *)self inputs];
+    fDRCAURL2 = [inputs2 FDRCAURL];
+    [v4 setObject:fDRCAURL2 forKeyedSubscript:@"CAURL"];
   }
 
-  v9 = [(MesaPairer *)self inputs];
-  v10 = [v9 FDRDSURL];
+  inputs3 = [(MesaPairer *)self inputs];
+  fDRDSURL = [inputs3 FDRDSURL];
 
-  if (v10)
+  if (fDRDSURL)
   {
-    v11 = [(MesaPairer *)self inputs];
-    v12 = [v11 FDRDSURL];
-    [v4 setObject:v12 forKeyedSubscript:@"DSURL"];
+    inputs4 = [(MesaPairer *)self inputs];
+    fDRDSURL2 = [inputs4 FDRDSURL];
+    [v4 setObject:fDRDSURL2 forKeyedSubscript:@"DSURL"];
   }
 
-  v13 = [(MesaPairer *)self inputs];
-  v14 = [v13 trustObjectURL];
+  inputs5 = [(MesaPairer *)self inputs];
+  trustObjectURL = [inputs5 trustObjectURL];
 
-  if (v14)
+  if (trustObjectURL)
   {
-    v15 = [(MesaPairer *)self inputs];
-    v16 = [v15 trustObjectURL];
-    [v4 setObject:v16 forKeyedSubscript:@"TrustObjectURL"];
+    inputs6 = [(MesaPairer *)self inputs];
+    trustObjectURL2 = [inputs6 trustObjectURL];
+    [v4 setObject:trustObjectURL2 forKeyedSubscript:@"TrustObjectURL"];
   }
 
   v17 = handleForCategory();
@@ -848,25 +848,25 @@ LABEL_4:
 - (BOOL)mesaPhysicalPresenceAsserted
 {
   v2 = objc_opt_new();
-  v3 = [v2 isPhysicalPresenceAsserted];
+  isPhysicalPresenceAsserted = [v2 isPhysicalPresenceAsserted];
 
-  return v3;
+  return isPhysicalPresenceAsserted;
 }
 
 - (BOOL)mesaClearPhysicalPresence
 {
   v2 = objc_opt_new();
-  v3 = [v2 clearPhysicalPresence];
+  clearPhysicalPresence = [v2 clearPhysicalPresence];
 
-  return v3;
+  return clearPhysicalPresence;
 }
 
-- (BOOL)mesaAlreadyPaired:(int *)a3
+- (BOOL)mesaAlreadyPaired:(int *)paired
 {
   v4 = objc_opt_new();
-  LOBYTE(a3) = [v4 isPaired:a3];
+  LOBYTE(paired) = [v4 isPaired:paired];
 
-  return a3;
+  return paired;
 }
 
 - (void)cancel

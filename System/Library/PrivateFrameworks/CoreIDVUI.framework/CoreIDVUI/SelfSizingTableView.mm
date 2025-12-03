@@ -1,9 +1,9 @@
 @interface SelfSizingTableView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC9CoreIDVUI19SelfSizingTableView)initWithCoder:(id)a3;
-- (_TtC9CoreIDVUI19SelfSizingTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC9CoreIDVUI19SelfSizingTableView)initWithCoder:(id)coder;
+- (_TtC9CoreIDVUI19SelfSizingTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation SelfSizingTableView
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SelfSizingTableView();
   v5 = v6.receiver;
@@ -33,14 +33,14 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI19SelfSizingTableView_maxHeight);
-  v3 = self;
-  [(SelfSizingTableView *)v3 contentSize];
+  selfCopy = self;
+  [(SelfSizingTableView *)selfCopy contentSize];
   if (v4 < v2)
   {
     v2 = v4;
   }
 
-  [(SelfSizingTableView *)v3 contentSize];
+  [(SelfSizingTableView *)selfCopy contentSize];
   v6 = v5;
 
   v7 = v6;
@@ -50,25 +50,25 @@
   return result;
 }
 
-- (_TtC9CoreIDVUI19SelfSizingTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC9CoreIDVUI19SelfSizingTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI19SelfSizingTableView_maxHeight) = 0x7FF0000000000000;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SelfSizingTableView();
-  return [(SelfSizingTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(SelfSizingTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC9CoreIDVUI19SelfSizingTableView)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI19SelfSizingTableView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI19SelfSizingTableView_maxHeight) = 0x7FF0000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SelfSizingTableView();
-  v4 = a3;
-  v5 = [(SelfSizingTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SelfSizingTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,30 +1,30 @@
 @interface HUAddRestrictedGuestViewController
-- (HUAddRestrictedGuestViewController)initWithHome:(id)a3 inviteeAddresses:(id)a4;
+- (HUAddRestrictedGuestViewController)initWithHome:(id)home inviteeAddresses:(id)addresses;
 - (HUPresentationDelegate)presentationDelegate;
 - (UIBarButtonItem)addButtonItem;
-- (id)_contactForAddress:(id)a3;
+- (id)_contactForAddress:(id)address;
 - (id)_requiredContactKeyDescriptors;
 - (id)_servicesAllowingToRGWithNotificationOff;
-- (void)restrictedGuestItemManager:(id)a3 didFailToSendInvitations:(id)a4;
-- (void)restrictedGuestItemManager:(id)a3 didSendInvitations:(id)a4;
-- (void)saveButtonPressed:(id)a3;
-- (void)setAddButtonItem:(id)a3;
+- (void)restrictedGuestItemManager:(id)manager didFailToSendInvitations:(id)invitations;
+- (void)restrictedGuestItemManager:(id)manager didSendInvitations:(id)invitations;
+- (void)saveButtonPressed:(id)pressed;
+- (void)setAddButtonItem:(id)item;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAddRestrictedGuestViewController
 
-- (HUAddRestrictedGuestViewController)initWithHome:(id)a3 inviteeAddresses:(id)a4
+- (HUAddRestrictedGuestViewController)initWithHome:(id)home inviteeAddresses:(id)addresses
 {
-  v7 = a4;
-  v8 = a3;
-  if (![v7 count])
+  addressesCopy = addresses;
+  homeCopy = home;
+  if (![addressesCopy count])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestViewController.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"inviteeAddresses.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAddRestrictedGuestViewController.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"inviteeAddresses.count > 0"}];
   }
 
-  v9 = [[HUAddRestrictedGuestTableViewController alloc] initWithItem:0 home:v8 inviteeAddresses:v7];
+  v9 = [[HUAddRestrictedGuestTableViewController alloc] initWithItem:0 home:homeCopy inviteeAddresses:addressesCopy];
 
   v10 = _HULocalizedStringWithDefaultValue(@"HUAddRestrictedGuest_Subtitle", @"HUAddRestrictedGuest_Subtitle", 1);
   v11 = _HULocalizedStringWithDefaultValue(@"HUAddRestrictedGuest_Title", @"HUAddRestrictedGuest_Title", 1);
@@ -34,16 +34,16 @@
 
   if (v12)
   {
-    v13 = [(HUAddRestrictedGuestViewController *)v12 headerView];
-    [v13 setTitleAccessibilityIdentifier:@"Home.Users.AddGuest.CustomizeAccess.Title"];
+    headerView = [(HUAddRestrictedGuestViewController *)v12 headerView];
+    [headerView setTitleAccessibilityIdentifier:@"Home.Users.AddGuest.CustomizeAccess.Title"];
 
-    v14 = [(HUAddRestrictedGuestViewController *)v12 headerView];
-    [v14 setDetailTextAccessibilityIdentifier:@"Home.Users.AddGuest.CustomizeAccess.Subtitle"];
+    headerView2 = [(HUAddRestrictedGuestViewController *)v12 headerView];
+    [headerView2 setDetailTextAccessibilityIdentifier:@"Home.Users.AddGuest.CustomizeAccess.Subtitle"];
 
     objc_storeStrong(&v12->_restrictedGuestTableViewController, v9);
     [(HUAddRestrictedGuestTableViewController *)v12->_restrictedGuestTableViewController setDelegate:v12];
-    v15 = [(HUAddRestrictedGuestTableViewController *)v12->_restrictedGuestTableViewController restrictedGuestItemManager];
-    [v15 setRestrictedGuestDelegate:v12];
+    restrictedGuestItemManager = [(HUAddRestrictedGuestTableViewController *)v12->_restrictedGuestTableViewController restrictedGuestItemManager];
+    [restrictedGuestItemManager setRestrictedGuestDelegate:v12];
   }
 
   return v12;
@@ -59,57 +59,57 @@
   v5 = [v3 initWithTitle:v4 style:2 target:self action:sel_saveButtonPressed_];
   [(HUAddRestrictedGuestViewController *)self setSaveButtonItem:v5];
 
-  v6 = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
-  [v6 setEnabled:0];
+  saveButtonItem = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
+  [saveButtonItem setEnabled:0];
 
-  v7 = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
-  v8 = [(OBBaseWelcomeController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  saveButtonItem2 = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:saveButtonItem2];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setAccessibilityIdentifier:@"Home.Users.AddGuest.NavigationBar.InviteButton"];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Users.AddGuest.NavigationBar.InviteButton"];
 }
 
 - (UIBarButtonItem)addButtonItem
 {
-  v2 = [(OBBaseWelcomeController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  return v3;
+  return rightBarButtonItem;
 }
 
-- (void)setAddButtonItem:(id)a3
+- (void)setAddButtonItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v4 = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
+    itemCopy = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
   }
 
-  v6 = v4;
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setRightBarButtonItem:v6];
+  v6 = itemCopy;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pressedCopy = pressed;
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v58 = "[HUAddRestrictedGuestViewController saveButtonPressed:]";
     v59 = 2112;
-    *v60 = v3;
+    *v60 = pressedCopy;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%s) '%@' button tapped.", buf, 0x16u);
   }
 
   v45 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v45];
-  v6 = [(OBBaseWelcomeController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
   [v45 startAnimating];
   objc_initWeak(&location, self);
@@ -127,21 +127,21 @@
   v43 = v7;
   v52 = v43;
   v44 = _Block_copy(v51);
-  v8 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
-  v46 = [v8 rgHomeAccessSettings];
+  restrictedGuestTableViewController = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
+  rgHomeAccessSettings = [restrictedGuestTableViewController rgHomeAccessSettings];
 
-  v9 = [v46 locksWithReducedFunctionalityDueToSchedule];
-  v10 = [v9 count];
+  locksWithReducedFunctionalityDueToSchedule = [rgHomeAccessSettings locksWithReducedFunctionalityDueToSchedule];
+  v10 = [locksWithReducedFunctionalityDueToSchedule count];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = v3;
-    v12 = [v46 guestAccessSchedule];
-    v13 = v12;
-    if (v12)
+    v42 = pressedCopy;
+    guestAccessSchedule = [rgHomeAccessSettings guestAccessSchedule];
+    v13 = guestAccessSchedule;
+    if (guestAccessSchedule)
     {
-      v14 = v12;
+      v14 = guestAccessSchedule;
     }
 
     else
@@ -150,13 +150,13 @@
     }
 
     v15 = MEMORY[0x277CD1650];
-    v16 = [v46 locksWithReducedFunctionalityDueToSchedule];
-    v17 = [v16 allObjects];
-    v18 = [v15 hf_minimumDescriptionsOfAccessories:v17];
+    locksWithReducedFunctionalityDueToSchedule2 = [rgHomeAccessSettings locksWithReducedFunctionalityDueToSchedule];
+    allObjects = [locksWithReducedFunctionalityDueToSchedule2 allObjects];
+    v18 = [v15 hf_minimumDescriptionsOfAccessories:allObjects];
     v19 = MEMORY[0x277CD1650];
-    v20 = [v46 accessAllowedToAccessories];
-    v21 = [v20 allObjects];
-    v22 = [v19 hf_minimumDescriptionsOfAccessories:v21];
+    accessAllowedToAccessories = [rgHomeAccessSettings accessAllowedToAccessories];
+    allObjects2 = [accessAllowedToAccessories allObjects];
+    v22 = [v19 hf_minimumDescriptionsOfAccessories:allObjects2];
     *buf = 136316162;
     v58 = "[HUAddRestrictedGuestViewController saveButtonPressed:]";
     v59 = 1024;
@@ -169,18 +169,18 @@
     v64 = v22;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "(%s) shouldShowLockScheduleAlert = %{BOOL}d | rgSchedule = %@ | locksWithReducedFunct = %@ | allowedAccessories = %@", buf, 0x30u);
 
-    v3 = v42;
+    pressedCopy = v42;
   }
 
   if (v10)
   {
-    v23 = [v46 accessAllowedToAccessories];
-    v24 = [v23 na_filter:&__block_literal_global_285];
+    accessAllowedToAccessories2 = [rgHomeAccessSettings accessAllowedToAccessories];
+    v24 = [accessAllowedToAccessories2 na_filter:&__block_literal_global_285];
 
-    v25 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
-    v26 = [v25 restrictedGuestItemManager];
-    v27 = [v26 inviteeAddresses];
-    v28 = [v27 count] == 1;
+    restrictedGuestTableViewController2 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
+    restrictedGuestItemManager = [restrictedGuestTableViewController2 restrictedGuestItemManager];
+    inviteeAddresses = [restrictedGuestItemManager inviteeAddresses];
+    v28 = [inviteeAddresses count] == 1;
 
     if (v28)
     {
@@ -355,9 +355,9 @@ void __56__HUAddRestrictedGuestViewController_saveButtonPressed___block_invoke_8
 - (id)_servicesAllowingToRGWithNotificationOff
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
-  v4 = [v3 accessoriesToAllowToRG];
-  v5 = [v4 count];
+  restrictedGuestTableViewController = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
+  accessoriesToAllowToRG = [restrictedGuestTableViewController accessoriesToAllowToRG];
+  v5 = [accessoriesToAllowToRG count];
 
   if (v5)
   {
@@ -366,10 +366,10 @@ void __56__HUAddRestrictedGuestViewController_saveButtonPressed___block_invoke_8
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
-    v8 = [v7 accessoriesToAllowToRG];
+    restrictedGuestTableViewController2 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
+    accessoriesToAllowToRG2 = [restrictedGuestTableViewController2 accessoriesToAllowToRG];
 
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+    v9 = [accessoriesToAllowToRG2 countByEnumeratingWithState:&v19 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -380,14 +380,14 @@ void __56__HUAddRestrictedGuestViewController_saveButtonPressed___block_invoke_8
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accessoriesToAllowToRG2);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) hf_servicesWithBulletinBoardNotificationTurnedOff];
-          [v6 na_safeAddObjectsFromArray:v13];
+          hf_servicesWithBulletinBoardNotificationTurnedOff = [*(*(&v19 + 1) + 8 * i) hf_servicesWithBulletinBoardNotificationTurnedOff];
+          [v6 na_safeAddObjectsFromArray:hf_servicesWithBulletinBoardNotificationTurnedOff];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+        v10 = [accessoriesToAllowToRG2 countByEnumeratingWithState:&v19 objects:v29 count:16];
       }
 
       while (v10);
@@ -396,12 +396,12 @@ void __56__HUAddRestrictedGuestViewController_saveButtonPressed___block_invoke_8
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
-      v16 = [v15 accessoriesToAllowToRG];
+      restrictedGuestTableViewController3 = [(HUAddRestrictedGuestViewController *)self restrictedGuestTableViewController];
+      accessoriesToAllowToRG3 = [restrictedGuestTableViewController3 accessoriesToAllowToRG];
       *buf = 136315650;
       v24 = "[HUAddRestrictedGuestViewController _servicesAllowingToRGWithNotificationOff]";
       v25 = 2112;
-      v26 = v16;
+      v26 = accessoriesToAllowToRG3;
       v27 = 2112;
       v28 = v6;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "(%s) Creating invitation that allows access to RG for %@. Among these accessories, services with notifications turned off: %@", buf, 0x20u);
@@ -426,21 +426,21 @@ void __56__HUAddRestrictedGuestViewController_saveButtonPressed___block_invoke_8
   return v17;
 }
 
-- (id)_contactForAddress:(id)a3
+- (id)_contactForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(HUAddRestrictedGuestViewController *)self _requiredContactKeyDescriptors];
-  if ([v4 hf_isPhoneNumber])
+  addressCopy = address;
+  _requiredContactKeyDescriptors = [(HUAddRestrictedGuestViewController *)self _requiredContactKeyDescriptors];
+  if ([addressCopy hf_isPhoneNumber])
   {
-    v6 = [MEMORY[0x277D145A8] contactForPhoneNumber:v4 keyDescriptors:v5];
+    v6 = [MEMORY[0x277D145A8] contactForPhoneNumber:addressCopy keyDescriptors:_requiredContactKeyDescriptors];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
   }
 
-  if ([v4 hf_isEmail])
+  if ([addressCopy hf_isEmail])
   {
-    v6 = [MEMORY[0x277D145A8] contactForEmailAddress:v4 keyDescriptors:v5];
+    v6 = [MEMORY[0x277D145A8] contactForEmailAddress:addressCopy keyDescriptors:_requiredContactKeyDescriptors];
     goto LABEL_5;
   }
 
@@ -460,7 +460,7 @@ LABEL_7:
   return v3;
 }
 
-- (void)restrictedGuestItemManager:(id)a3 didSendInvitations:(id)a4
+- (void)restrictedGuestItemManager:(id)manager didSendInvitations:(id)invitations
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -470,25 +470,25 @@ LABEL_7:
   }
 
   [(HUAddRestrictedGuestViewController *)self setRequiresPresentingViewControllerDismissal:1];
-  v6 = [(HUAddRestrictedGuestViewController *)self presentationDelegate];
-  v7 = [v6 finishPresentation:self animated:1];
+  presentationDelegate = [(HUAddRestrictedGuestViewController *)self presentationDelegate];
+  v7 = [presentationDelegate finishPresentation:self animated:1];
 }
 
-- (void)restrictedGuestItemManager:(id)a3 didFailToSendInvitations:(id)a4
+- (void)restrictedGuestItemManager:(id)manager didFailToSendInvitations:(id)invitations
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  invitationsCopy = invitations;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = invitationsCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "The invitations were NOT sent due to error {%@}.", &v9, 0xCu);
   }
 
-  v7 = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
-  v8 = [(OBBaseWelcomeController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  saveButtonItem = [(HUAddRestrictedGuestViewController *)self saveButtonItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:saveButtonItem];
 }
 
 - (HUPresentationDelegate)presentationDelegate

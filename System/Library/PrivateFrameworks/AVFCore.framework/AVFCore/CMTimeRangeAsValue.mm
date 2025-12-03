@@ -1,23 +1,23 @@
 @interface CMTimeRangeAsValue
-+ (id)valueWithCMTimeRange:(id *)a3;
++ (id)valueWithCMTimeRange:(id *)range;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)CMTimeRangeValue;
-- (BOOL)isEqualToValue:(id)a3;
-- (CMTimeRangeAsValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToValue:(id)value;
+- (CMTimeRangeAsValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(void *)value;
 @end
 
 @implementation CMTimeRangeAsValue
 
-+ (id)valueWithCMTimeRange:(id *)a3
++ (id)valueWithCMTimeRange:(id *)range
 {
-  v4 = [objc_allocWithZone(a1) init];
-  v6 = *&a3->var0.var3;
-  v5 = *&a3->var1.var1;
-  *(v4 + 8) = *&a3->var0.var0;
+  v4 = [objc_allocWithZone(self) init];
+  v6 = *&range->var0.var3;
+  v5 = *&range->var1.var1;
+  *(v4 + 8) = *&range->var0.var0;
   *(v4 + 24) = v6;
   *(v4 + 40) = v5;
 
@@ -33,13 +33,13 @@
   return self;
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   v4 = *&self->_timeRange.start.epoch;
   v3 = *&self->_timeRange.duration.timescale;
-  *a3 = *&self->_timeRange.start.value;
-  *(a3 + 1) = v4;
-  *(a3 + 2) = v3;
+  *value = *&self->_timeRange.start.value;
+  *(value + 1) = v4;
+  *(value + 2) = v3;
 }
 
 - (id)description
@@ -59,9 +59,9 @@
   return [v2 stringWithFormat:@"CMTimeRange: %@", CMTimeRangeCopyDescription(v3, &range)];
 }
 
-- (BOOL)isEqualToValue:(id)a3
+- (BOOL)isEqualToValue:(id)value
 {
-  if (self == a3)
+  if (self == value)
   {
     return 1;
   }
@@ -75,9 +75,9 @@
   }
 
   p_timeRange = &self->_timeRange;
-  if (a3)
+  if (value)
   {
-    [a3 CMTimeRangeValue];
+    [value CMTimeRangeValue];
   }
 
   else
@@ -101,9 +101,9 @@
   return CMTimeHash(&start) ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  if (NSShouldRetainWithZone(self, a3))
+  if (NSShouldRetainWithZone(self, zone))
   {
 
     return self;
@@ -119,11 +119,11 @@
   }
 }
 
-- (CMTimeRangeAsValue)initWithCoder:(id)a3
+- (CMTimeRangeAsValue)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v8 = self;
+    selfCopy = self;
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v9, v10, v11, v12, v13, "[coder allowsKeyedCoding]"), 0}];
     objc_exception_throw(v14);
   }
@@ -133,9 +133,9 @@
   v6 = [(CMTimeRangeAsValue *)&v18 init];
   if (v6)
   {
-    if (a3)
+    if (coder)
     {
-      [a3 decodeCMTimeRangeForKey:@"CMTimeRange"];
+      [coder decodeCMTimeRangeForKey:@"CMTimeRange"];
     }
 
     else
@@ -153,9 +153,9 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v6, v7, v8, v9, v10, "[coder allowsKeyedCoding]"), 0}];
     objc_exception_throw(v12);
@@ -165,7 +165,7 @@
   v13[0] = *&self->_timeRange.start.value;
   v13[1] = v11;
   v13[2] = *&self->_timeRange.duration.timescale;
-  [a3 encodeCMTimeRange:v13 forKey:@"CMTimeRange"];
+  [coder encodeCMTimeRange:v13 forKey:@"CMTimeRange"];
 }
 
 @end

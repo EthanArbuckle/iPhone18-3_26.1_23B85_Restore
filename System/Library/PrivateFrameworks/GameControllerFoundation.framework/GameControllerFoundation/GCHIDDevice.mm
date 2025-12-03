@@ -11,8 +11,8 @@
 - (NSString)product;
 - (NSString)transport;
 - (id)debugDescription;
-- (id)valueForHIDDeviceKey:(id)a3;
-- (id)valueForKey:(id)a3;
+- (id)valueForHIDDeviceKey:(id)key;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation GCHIDDevice
@@ -30,16 +30,16 @@
   v16.receiver = self;
   v16.super_class = GCHIDDevice;
   v14 = [(GCHIDDevice *)&v16 debugDescription];
-  v3 = [(GCHIDDevice *)self transport];
-  v4 = [(GCHIDDevice *)self vendorID];
-  v5 = [(GCHIDDevice *)self productID];
-  v6 = [(GCHIDDevice *)self versionNumber];
-  v7 = [(GCHIDDevice *)self manufacturer];
-  v8 = [(GCHIDDevice *)self product];
-  v9 = [(GCHIDDevice *)self maxInputReportSize];
-  v10 = [(GCHIDDevice *)self maxOutputReportSize];
-  v11 = [(GCHIDDevice *)self maxFeatureReportSize];
-  v12 = [v15 stringWithFormat:@"%@ {\n\t transport = %@\n\t vendorID = %@\n\t productID = %@\n\t versionNumber = %@\n\t manufacturer = %@\n\t product = %@\n\t maxInputReportSize = %@\n\t maxOutputReportSize = %@\n\t maxFeatureReportSize = %@\n}", v14, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  transport = [(GCHIDDevice *)self transport];
+  vendorID = [(GCHIDDevice *)self vendorID];
+  productID = [(GCHIDDevice *)self productID];
+  versionNumber = [(GCHIDDevice *)self versionNumber];
+  manufacturer = [(GCHIDDevice *)self manufacturer];
+  product = [(GCHIDDevice *)self product];
+  maxInputReportSize = [(GCHIDDevice *)self maxInputReportSize];
+  maxOutputReportSize = [(GCHIDDevice *)self maxOutputReportSize];
+  maxFeatureReportSize = [(GCHIDDevice *)self maxFeatureReportSize];
+  v12 = [v15 stringWithFormat:@"%@ {\n\t transport = %@\n\t vendorID = %@\n\t productID = %@\n\t versionNumber = %@\n\t manufacturer = %@\n\t product = %@\n\t maxInputReportSize = %@\n\t maxOutputReportSize = %@\n\t maxFeatureReportSize = %@\n}", v14, transport, vendorID, productID, versionNumber, manufacturer, product, maxInputReportSize, maxOutputReportSize, maxFeatureReportSize];
 
   return v12;
 }
@@ -222,18 +222,18 @@
   return v2;
 }
 
-- (id)valueForHIDDeviceKey:(id)a3
+- (id)valueForHIDDeviceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = GCHIDDeviceAttributeKeys();
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    v7 = [keyCopy substringToIndex:1];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v9 = [keyCopy stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
     v10 = [(GCHIDDevice *)self valueForKey:v9];
   }
 
@@ -245,25 +245,25 @@
   return v10;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = GCHIDDeviceAttributeKeys();
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [v4 substringToIndex:1];
-    v8 = [v7 lowercaseString];
+    v7 = [keyCopy substringToIndex:1];
+    lowercaseString = [v7 lowercaseString];
 
-    v9 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v9 = [keyCopy stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
 
-    v4 = v9;
+    keyCopy = v9;
   }
 
   v12.receiver = self;
   v12.super_class = GCHIDDevice;
-  v10 = [(GCHIDDevice *)&v12 valueForKey:v4];
+  v10 = [(GCHIDDevice *)&v12 valueForKey:keyCopy];
 
   return v10;
 }

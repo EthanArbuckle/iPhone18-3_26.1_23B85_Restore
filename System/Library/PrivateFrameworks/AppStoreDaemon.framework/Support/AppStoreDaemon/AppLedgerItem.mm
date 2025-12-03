@@ -1,6 +1,6 @@
 @interface AppLedgerItem
-- (AppLedgerItem)initWithBundleID:(id)a3 itemID:(id)a4;
-- (AppLedgerItem)initWithDictionary:(id)a3;
+- (AppLedgerItem)initWithBundleID:(id)d itemID:(id)iD;
+- (AppLedgerItem)initWithDictionary:(id)dictionary;
 - (NSArray)installs;
 - (NSDictionary)dictionaryRepresentation;
 - (id)lastUserInitiatedInstall;
@@ -8,24 +8,24 @@
 
 @implementation AppLedgerItem
 
-- (AppLedgerItem)initWithBundleID:(id)a3 itemID:(id)a4
+- (AppLedgerItem)initWithBundleID:(id)d itemID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = AppLedgerItem;
   v9 = [(AppLedgerItem *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdentifier, a3);
+    objc_storeStrong(&v9->_bundleIdentifier, d);
     if (!v10->_bundleIdentifier)
     {
       v13 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v10->_itemID, a4);
+    objc_storeStrong(&v10->_itemID, iD);
     v11 = +[NSMutableArray array];
     installs = v10->_installs;
     v10->_installs = v11;
@@ -37,9 +37,9 @@ LABEL_6:
   return v13;
 }
 
-- (AppLedgerItem)initWithDictionary:(id)a3
+- (AppLedgerItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = AppLedgerItem;
   v5 = [(AppLedgerItem *)&v41 init];
@@ -48,7 +48,7 @@ LABEL_6:
     goto LABEL_25;
   }
 
-  v6 = sub_1002380D8(v4, @"bundleIdentifier");
+  v6 = sub_1002380D8(dictionaryCopy, @"bundleIdentifier");
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v6;
 
@@ -58,11 +58,11 @@ LABEL_6:
     goto LABEL_27;
   }
 
-  v8 = sub_10023790C(v4, @"itemID");
+  v8 = sub_10023790C(dictionaryCopy, @"itemID");
   itemID = v5->_itemID;
   v5->_itemID = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"installs"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"installs"];
   v39 = +[NSMutableArray array];
   if (!v10)
   {
@@ -184,12 +184,12 @@ LABEL_27:
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(AppLedgerItem *)self bundleIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [(AppLedgerItem *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
-  v5 = [(AppLedgerItem *)self itemID];
+  itemID = [(AppLedgerItem *)self itemID];
   v17 = v3;
-  [v3 setObject:v5 forKeyedSubscript:@"itemID"];
+  [v3 setObject:itemID forKeyedSubscript:@"itemID"];
 
   if (self)
   {
@@ -272,8 +272,8 @@ LABEL_27:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(NSMutableArray *)self->_installs reverseObjectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_installs reverseObjectEnumerator];
+  v3 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -283,7 +283,7 @@ LABEL_27:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
@@ -302,7 +302,7 @@ LABEL_27:
         goto LABEL_15;
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
         continue;

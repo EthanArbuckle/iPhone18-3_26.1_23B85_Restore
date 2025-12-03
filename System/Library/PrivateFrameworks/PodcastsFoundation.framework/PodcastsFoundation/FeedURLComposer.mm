@@ -1,6 +1,6 @@
 @interface FeedURLComposer
 - (_TtC18PodcastsFoundation15FeedURLComposer)init;
-- (id)feedURLForOptionalURL:(id)a3 adamID:(int64_t)a4 error:(id *)a5;
+- (id)feedURLForOptionalURL:(id)l adamID:(int64_t)d error:(id *)error;
 @end
 
 @implementation FeedURLComposer
@@ -12,7 +12,7 @@
   return [(FeedURLComposer *)&v3 init];
 }
 
-- (id)feedURLForOptionalURL:(id)a3 adamID:(int64_t)a4 error:(id *)a5
+- (id)feedURLForOptionalURL:(id)l adamID:(int64_t)d error:(id *)error
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECAB5910, &qword_1D9188C90);
   v9 = *(*(v8 - 8) + 64);
@@ -25,7 +25,7 @@
   v16 = &v23[-((v15 + 15) & 0xFFFFFFFFFFFFFFF0)];
   MEMORY[0x1EEE9AC00](v17);
   v19 = &v23[-v18];
-  if (a3)
+  if (l)
   {
     sub_1D9176B9C();
     (*(v13 + 32))(v11, v16, v12);
@@ -37,8 +37,8 @@
     (*(v13 + 56))(v11, 1, 1, v12);
   }
 
-  v20 = self;
-  sub_1D8FD830C(v11, a4, v19);
+  selfCopy = self;
+  sub_1D8FD830C(v11, d, v19);
   sub_1D8E677CC(v11);
 
   v21 = sub_1D9176B1C();

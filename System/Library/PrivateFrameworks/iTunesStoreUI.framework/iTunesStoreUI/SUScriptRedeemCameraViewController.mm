@@ -1,42 +1,42 @@
 @interface SUScriptRedeemCameraViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SURedeemCameraViewController)redeemCameraViewController;
 - (id)scriptAttributeKeys;
-- (void)_performAction:(int64_t)a3 withObject:(id)a4;
-- (void)codeDetected:(id)a3;
-- (void)setBackButtonTitle:(id)a3;
-- (void)setCodeHandler:(id)a3;
+- (void)_performAction:(int64_t)action withObject:(id)object;
+- (void)codeDetected:(id)detected;
+- (void)setBackButtonTitle:(id)title;
+- (void)setCodeHandler:(id)handler;
 @end
 
 @implementation SUScriptRedeemCameraViewController
 
-- (void)setBackButtonTitle:(id)a3
+- (void)setBackButtonTitle:(id)title
 {
-  objc_storeStrong(&self->_backButtonTitle, a3);
-  v5 = a3;
-  [(SUScriptRedeemCameraViewController *)self _performAction:6 withObject:v5];
+  objc_storeStrong(&self->_backButtonTitle, title);
+  titleCopy = title;
+  [(SUScriptRedeemCameraViewController *)self _performAction:6 withObject:titleCopy];
 }
 
-- (void)setCodeHandler:(id)a3
+- (void)setCodeHandler:(id)handler
 {
-  v5 = a3;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  handlerCopy = handler;
+  if (handlerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
   }
 
   else
   {
-    objc_storeStrong(&self->_codeHandler, a3);
+    objc_storeStrong(&self->_codeHandler, handler);
   }
 }
 
-- (void)codeDetected:(id)a3
+- (void)codeDetected:(id)detected
 {
-  v4 = a3;
-  v3 = v4;
+  detectedCopy = detected;
+  v3 = detectedCopy;
   WebThreadRunOnMainThread();
 }
 
@@ -55,10 +55,10 @@ void __51__SUScriptRedeemCameraViewController_codeDetected___block_invoke(uint64
   [(SUScriptFunction *)v4 setThisObject:0];
 }
 
-- (void)_performAction:(int64_t)a3 withObject:(id)a4
+- (void)_performAction:(int64_t)action withObject:(id)object
 {
-  v5 = a4;
-  v4 = v5;
+  objectCopy = object;
+  v4 = objectCopy;
   WebThreadRunOnMainThread();
 }
 
@@ -104,28 +104,28 @@ void __64__SUScriptRedeemCameraViewController__performAction_withObject___block_
   objc_destroyWeak(&to);
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_3 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_3 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptRedeemCameraViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_1, 6);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_1, 6);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptRedeemCameraViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -135,16 +135,16 @@ void __64__SUScriptRedeemCameraViewController__performAction_withObject___block_
 {
   v5.receiver = self;
   v5.super_class = SUScriptRedeemCameraViewController;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_3 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_3 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_1 = sel_dismiss;
     unk_1EBF3A640 = @"dismiss";

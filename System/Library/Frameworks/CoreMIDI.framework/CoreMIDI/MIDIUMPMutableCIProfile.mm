@@ -1,25 +1,25 @@
 @interface MIDIUMPMutableCIProfile
-- (BOOL)setProfileState:(BOOL)a3 enabledChannelCount:(unsigned __int16)a4 error:(id *)a5;
-- (MIDIUMPMutableCIProfile)initWithProfileID:(id)a3 name:(id)a4 profileType:(unsigned __int8)a5 groupOffset:(unsigned __int8)a6 firstChannel:(unsigned __int8)a7 enabledChannelCount:(unsigned __int16)a8 totalChannelCount:(unsigned __int16)a9;
+- (BOOL)setProfileState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error;
+- (MIDIUMPMutableCIProfile)initWithProfileID:(id)d name:(id)name profileType:(unsigned __int8)type groupOffset:(unsigned __int8)offset firstChannel:(unsigned __int8)channel enabledChannelCount:(unsigned __int16)count totalChannelCount:(unsigned __int16)channelCount;
 - (void)dealloc;
 @end
 
 @implementation MIDIUMPMutableCIProfile
 
-- (BOOL)setProfileState:(BOOL)a3 enabledChannelCount:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)setProfileState:(BOOL)state enabledChannelCount:(unsigned __int16)count error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  countCopy = count;
+  stateCopy = state;
   os_unfair_recursive_lock_lock_with_options();
-  self->super._isEnabled = v7;
-  self->super._enabledChannelCount = v6;
+  self->super._isEnabled = stateCopy;
+  self->super._enabledChannelCount = countCopy;
   os_unfair_recursive_lock_unlock();
   v11.receiver = self;
   v11.super_class = MIDIUMPMutableCIProfile;
-  v9 = [(MIDIUMPCIProfile *)&v11 ciDevice];
-  LOBYTE(a5) = [v9 setProfile:self newState:v7 enabledChannelCount:v6 error:a5];
+  ciDevice = [(MIDIUMPCIProfile *)&v11 ciDevice];
+  LOBYTE(error) = [ciDevice setProfile:self newState:stateCopy enabledChannelCount:countCopy error:error];
 
-  return a5;
+  return error;
 }
 
 - (void)dealloc
@@ -30,11 +30,11 @@
   [(MIDIUMPMutableCIProfile *)&v3 dealloc];
 }
 
-- (MIDIUMPMutableCIProfile)initWithProfileID:(id)a3 name:(id)a4 profileType:(unsigned __int8)a5 groupOffset:(unsigned __int8)a6 firstChannel:(unsigned __int8)a7 enabledChannelCount:(unsigned __int16)a8 totalChannelCount:(unsigned __int16)a9
+- (MIDIUMPMutableCIProfile)initWithProfileID:(id)d name:(id)name profileType:(unsigned __int8)type groupOffset:(unsigned __int8)offset firstChannel:(unsigned __int8)channel enabledChannelCount:(unsigned __int16)count totalChannelCount:(unsigned __int16)channelCount
 {
-  v12 = a5;
-  v25 = a3;
-  v14 = a4;
+  typeCopy = type;
+  dCopy = d;
+  nameCopy = name;
   if (CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed < 0)
   {
     CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed = 0;
@@ -47,7 +47,7 @@
     else if (!CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed)
     {
 LABEL_12:
-      v22 = 0;
+      selfCopy = 0;
       goto LABEL_17;
     }
   }
@@ -57,13 +57,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v19 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v25 length:5];
+  v19 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&dCopy length:5];
   profileID = self->super._profileID;
   self->super._profileID = v19;
 
-  if (v14)
+  if (nameCopy)
   {
-    name = [MEMORY[0x277CCACA8] stringWithString:v14];
+    name = [MEMORY[0x277CCACA8] stringWithString:nameCopy];
     objc_storeStrong(&self->super._name, name);
   }
 
@@ -73,23 +73,23 @@ LABEL_12:
     self->super._name = 0;
   }
 
-  self->super._profileType = v12;
-  self->super._groupOffset = a6;
-  self->super._firstChannel = a7;
-  self->super._enabledChannelCount = a8;
-  self->super._totalChannelCount = a9;
+  self->super._profileType = typeCopy;
+  self->super._groupOffset = offset;
+  self->super._firstChannel = channel;
+  self->super._enabledChannelCount = count;
+  self->super._totalChannelCount = channelCount;
   self->super._isEnabled = 0;
   UMPCIClients::instance(v23);
   self->super._ownerClientRef = UMPCIClients::instance(void)::all;
-  if (v12 == 2)
+  if (typeCopy == 2)
   {
     *&self->super._enabledChannelCount = 1048592;
   }
 
-  v22 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v22;
+  return selfCopy;
 }
 
 @end

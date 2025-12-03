@@ -1,30 +1,30 @@
 @interface HURemoteContextHostingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HURemoteContextHostingView)initWithContentView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HURemoteContextHostingView)initWithContentView:(id)view;
 - (double)_continuousCornerRadius;
 - (double)_cornerRadius;
 - (unint64_t)maskedCorners;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
-- (void)setContentView:(id)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
+- (void)setContentView:(id)view;
+- (void)setMaskedCorners:(unint64_t)corners;
 @end
 
 @implementation HURemoteContextHostingView
 
-- (HURemoteContextHostingView)initWithContentView:(id)a3
+- (HURemoteContextHostingView)initWithContentView:(id)view
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v36.receiver = self;
   v36.super_class = HURemoteContextHostingView;
   v5 = [(HURemoteContextHostingView *)&v36 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(HURemoteContextHostingView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(HURemoteContextHostingView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
     v8 = objc_alloc(MEMORY[0x277D75D18]);
     [(HURemoteContextHostingView *)v6 bounds];
@@ -32,8 +32,8 @@
     destinationOutContainerView = v6->_destinationOutContainerView;
     v6->_destinationOutContainerView = v9;
 
-    v11 = [(UIView *)v6->_destinationOutContainerView layer];
-    [v11 setAllowsGroupBlending:0];
+    layer2 = [(UIView *)v6->_destinationOutContainerView layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(HURemoteContextHostingView *)v6 addSubview:v6->_destinationOutContainerView];
     v12 = objc_alloc(MEMORY[0x277D75D18]);
@@ -43,12 +43,12 @@
     v6->_destinationOutView = v13;
 
     [(UIView *)v6->_destinationOutView setClipsToBounds:1];
-    v15 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIView *)v6->_destinationOutView setBackgroundColor:v15];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIView *)v6->_destinationOutView setBackgroundColor:systemBackgroundColor];
 
     v16 = *MEMORY[0x277CDA310];
-    v17 = [(UIView *)v6->_destinationOutView layer];
-    [v17 setCompositingFilter:v16];
+    layer3 = [(UIView *)v6->_destinationOutView layer];
+    [layer3 setCompositingFilter:v16];
 
     [(UIView *)v6->_destinationOutContainerView addSubview:v6->_destinationOutView];
     v18 = objc_alloc(MEMORY[0x277D75D18]);
@@ -58,21 +58,21 @@
     v6->_destinationOverView = v19;
 
     v21 = *MEMORY[0x277CDA318];
-    v22 = [(UIView *)v6->_destinationOverView layer];
-    [v22 setCompositingFilter:v21];
+    layer4 = [(UIView *)v6->_destinationOverView layer];
+    [layer4 setCompositingFilter:v21];
 
     [(HURemoteContextHostingView *)v6 addSubview:v6->_destinationOverView];
-    [(HURemoteContextHostingView *)v6 setContentView:v4];
+    [(HURemoteContextHostingView *)v6 setContentView:viewCopy];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = [(HURemoteContextHostingView *)v6 destinationOutView];
-    v37[0] = v23;
-    v24 = [(HURemoteContextHostingView *)v6 destinationOutContainerView];
-    v37[1] = v24;
-    v25 = [(HURemoteContextHostingView *)v6 destinationOverView];
-    v37[2] = v25;
+    destinationOutView = [(HURemoteContextHostingView *)v6 destinationOutView];
+    v37[0] = destinationOutView;
+    destinationOutContainerView = [(HURemoteContextHostingView *)v6 destinationOutContainerView];
+    v37[1] = destinationOutContainerView;
+    destinationOverView = [(HURemoteContextHostingView *)v6 destinationOverView];
+    v37[2] = destinationOverView;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
 
     v27 = [v26 countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -104,34 +104,34 @@
   return v6;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    v7 = [(HURemoteContextHostingView *)self destinationOverView];
-    [v7 addSubview:v9];
+    objc_storeStrong(&self->_contentView, view);
+    destinationOverView = [(HURemoteContextHostingView *)self destinationOverView];
+    [destinationOverView addSubview:v9];
 
     [(HURemoteContextHostingView *)self bounds];
     [(UIView *)v9 setFrame:?];
     [(UIView *)v9 setAutoresizingMask:18];
-    v8 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIView *)v9 setBackgroundColor:v8];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIView *)v9 setBackgroundColor:systemBlackColor];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HURemoteContextHostingView *)self contentView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(HURemoteContextHostingView *)self contentView];
+  [contentView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -142,14 +142,14 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HURemoteContextHostingView *)self contentView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  contentView = [(HURemoteContextHostingView *)self contentView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -162,49 +162,49 @@
 
 - (unint64_t)maskedCorners
 {
-  v2 = [(HURemoteContextHostingView *)self destinationOutView];
-  v3 = [v2 layer];
-  v4 = [v3 maskedCorners];
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  layer = [destinationOutView layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v4 & 0xF;
+  return maskedCorners & 0xF;
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v3 = a3;
-  v5 = [(HURemoteContextHostingView *)self destinationOutView];
-  v4 = [v5 layer];
-  [v4 setMaskedCorners:v3 & 0xF];
+  cornersCopy = corners;
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  layer = [destinationOutView layer];
+  [layer setMaskedCorners:cornersCopy & 0xF];
 }
 
 - (double)_cornerRadius
 {
-  v2 = [(HURemoteContextHostingView *)self destinationOutView];
-  [v2 _cornerRadius];
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  [destinationOutView _cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v4 = [(HURemoteContextHostingView *)self destinationOutView];
-  [v4 _setCornerRadius:a3];
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  [destinationOutView _setCornerRadius:radius];
 }
 
 - (double)_continuousCornerRadius
 {
-  v2 = [(HURemoteContextHostingView *)self destinationOutView];
-  [v2 _continuousCornerRadius];
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  [destinationOutView _continuousCornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v4 = [(HURemoteContextHostingView *)self destinationOutView];
-  [v4 _setContinuousCornerRadius:a3];
+  destinationOutView = [(HURemoteContextHostingView *)self destinationOutView];
+  [destinationOutView _setContinuousCornerRadius:radius];
 }
 
 @end

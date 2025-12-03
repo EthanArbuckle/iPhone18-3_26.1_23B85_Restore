@@ -1,13 +1,13 @@
 @interface UITableView
 - (BOOL)_maps_shouldShowTopHairline;
 - (CGSize)_maps_contentSize;
-- (id)_maps_footerViewWithTitle:(id)a3 linkText:(id)a4 target:(id)a5 selector:(SEL)a6;
-- (id)_maps_groupedHeaderViewWithTitle:(id)a3;
-- (id)_maps_groupedHeaderViewWithTitle:(id)a3 buttonTitle:(id)a4 target:(id)a5 selector:(SEL)a6;
+- (id)_maps_footerViewWithTitle:(id)title linkText:(id)text target:(id)target selector:(SEL)selector;
+- (id)_maps_groupedHeaderViewWithTitle:(id)title;
+- (id)_maps_groupedHeaderViewWithTitle:(id)title buttonTitle:(id)buttonTitle target:(id)target selector:(SEL)selector;
 - (int64_t)_maps_indexOfFirstNonEmptySection;
 - (void)_maps_commitUpdates;
 - (void)_maps_initializeRAPAppearance;
-- (void)_maps_initializeRAPAppearanceWithStyle:(int64_t)a3;
+- (void)_maps_initializeRAPAppearanceWithStyle:(int64_t)style;
 - (void)_maps_registerGroupedHeaderView;
 - (void)_maps_registerSelectableFooterView;
 - (void)_maps_reloadCellHeights;
@@ -25,17 +25,17 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)_maps_initializeRAPAppearanceWithStyle:(int64_t)a3
+- (void)_maps_initializeRAPAppearanceWithStyle:(int64_t)style
 {
   [(UITableView *)self _maps_registerGroupedHeaderView];
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = +[UIColor systemBackgroundColor];
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
       return;
     }
@@ -55,55 +55,55 @@
   [(UITableView *)self _maps_initializeRAPAppearanceWithStyle:v4];
 }
 
-- (id)_maps_footerViewWithTitle:(id)a3 linkText:(id)a4 target:(id)a5 selector:(SEL)a6
+- (id)_maps_footerViewWithTitle:(id)title linkText:(id)text target:(id)target selector:(SEL)selector
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  targetCopy = target;
+  textCopy = text;
+  titleCopy = title;
   v12 = objc_alloc_init(TableViewFooterOptions);
-  [(TableViewFooterOptions *)v12 setLabelText:v11];
+  [(TableViewFooterOptions *)v12 setLabelText:titleCopy];
 
-  [(TableViewFooterOptions *)v12 setLinkText:v10];
+  [(TableViewFooterOptions *)v12 setLinkText:textCopy];
   v13 = [[TableViewSelectableFooterView alloc] initWithReuseIdentifier:@"_maps_selectableFooterReuseIdentifier" options:v12];
-  [(TableViewSelectableFooterView *)v13 setTarget:v9 action:a6];
+  [(TableViewSelectableFooterView *)v13 setTarget:targetCopy action:selector];
 
   return v13;
 }
 
-- (id)_maps_groupedHeaderViewWithTitle:(id)a3 buttonTitle:(id)a4 target:(id)a5 selector:(SEL)a6
+- (id)_maps_groupedHeaderViewWithTitle:(id)title buttonTitle:(id)buttonTitle target:(id)target selector:(SEL)selector
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  targetCopy = target;
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
   v13 = [(UITableView *)self dequeueReusableHeaderFooterViewWithIdentifier:@"_maps_groupedHeaderButtonReuseIdentifier"];
-  v14 = [v13 titleLabel];
-  [v14 setText:v12];
+  titleLabel = [v13 titleLabel];
+  [titleLabel setText:titleCopy];
 
   v15 = +[UIFont system17];
-  v16 = [v13 titleLabel];
-  [v16 setFont:v15];
+  titleLabel2 = [v13 titleLabel];
+  [titleLabel2 setFont:v15];
 
-  v17 = [v13 button];
-  [v17 setTitle:v11 forState:0];
+  button = [v13 button];
+  [button setTitle:buttonTitleCopy forState:0];
 
-  v18 = [v13 button];
-  [v18 addTarget:v10 action:a6 forControlEvents:64];
+  button2 = [v13 button];
+  [button2 addTarget:targetCopy action:selector forControlEvents:64];
 
   return v13;
 }
 
-- (id)_maps_groupedHeaderViewWithTitle:(id)a3
+- (id)_maps_groupedHeaderViewWithTitle:(id)title
 {
-  v4 = a3;
-  if ([v4 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
     v5 = [(UITableView *)self dequeueReusableHeaderFooterViewWithIdentifier:@"_maps_groupedHeaderReuseIdentifier"];
-    v6 = [v5 titleLabel];
-    [v6 setText:v4];
+    titleLabel = [v5 titleLabel];
+    [titleLabel setText:titleCopy];
 
     v7 = +[UIFont system17];
-    v8 = [v5 titleLabel];
-    [v8 setFont:v7];
+    titleLabel2 = [v5 titleLabel];
+    [titleLabel2 setFont:v7];
   }
 
   else
@@ -141,12 +141,12 @@
 
   else
   {
-    v7 = [(UITableView *)self _maps_indexOfFirstNonEmptySection];
-    v8 = [(UITableView *)self numberOfSections];
+    _maps_indexOfFirstNonEmptySection = [(UITableView *)self _maps_indexOfFirstNonEmptySection];
+    numberOfSections = [(UITableView *)self numberOfSections];
     result = 0;
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL && v7 < v8)
+    if (_maps_indexOfFirstNonEmptySection != 0x7FFFFFFFFFFFFFFFLL && _maps_indexOfFirstNonEmptySection < numberOfSections)
     {
-      [(UITableView *)self rectForHeaderInSection:v7];
+      [(UITableView *)self rectForHeaderInSection:_maps_indexOfFirstNonEmptySection];
       if (v12 == 0.0)
       {
         return 1;
@@ -177,8 +177,8 @@
 
 - (int64_t)_maps_indexOfFirstNonEmptySection
 {
-  v3 = [(UITableView *)self dataSource];
-  v4 = [v3 numberOfSectionsInTableView:self];
+  dataSource = [(UITableView *)self dataSource];
+  v4 = [dataSource numberOfSectionsInTableView:self];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 == [(UITableView *)self numberOfSections]&& v4 >= 1)
@@ -186,8 +186,8 @@
     v5 = 0;
     while (1)
     {
-      v6 = [(UITableView *)self dataSource];
-      v7 = [v6 tableView:self numberOfRowsInSection:v5];
+      dataSource2 = [(UITableView *)self dataSource];
+      v7 = [dataSource2 tableView:self numberOfRowsInSection:v5];
 
       if (v7)
       {

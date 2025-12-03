@@ -1,35 +1,35 @@
 @interface MOVStreamConvertq8q2ToL010PreProcessor
-- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4 error:(id *)a5;
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4;
+- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)of streamData:(StreamRecordingData *)data error:(id *)error;
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data;
 @end
 
 @implementation MOVStreamConvertq8q2ToL010PreProcessor
 
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data
 {
-  result = a4->var0;
-  if (!a4->var1)
+  result = data->var0;
+  if (!data->var1)
   {
     if (result)
     {
       CFRelease(result);
     }
 
-    result = [MOVStreamIOUtility formatForPixelBuffer:a3];
-    a4->var0 = result;
-    a4->var1 = 1;
+    result = [MOVStreamIOUtility formatForPixelBuffer:buffer];
+    data->var0 = result;
+    data->var1 = 1;
   }
 
   return result;
 }
 
-- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferCopyOf:(__CVBuffer *)of streamData:(StreamRecordingData *)data error:(id *)error
 {
   v33[6] = *MEMORY[0x277D85DE8];
-  p_var12 = &a4->var12;
-  v9 = a4->var12;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  p_var12 = &data->var12;
+  v9 = data->var12;
+  Width = CVPixelBufferGetWidth(of);
+  Height = CVPixelBufferGetHeight(of);
   if (!v9)
   {
     v12 = Height;
@@ -41,7 +41,7 @@
     v33[1] = v14;
     v32[2] = *MEMORY[0x277CC4DE8];
     v30 = *MEMORY[0x277CD2970];
-    v15 = [MEMORY[0x277CCABB0] numberWithInt:a4->var22];
+    v15 = [MEMORY[0x277CCABB0] numberWithInt:data->var22];
     v31 = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v17 = *MEMORY[0x277CC4E30];
@@ -64,10 +64,10 @@
     if (!v9)
     {
       v26 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot create L008 pixel buffer pool for Non-Planar stream." code:19];
-      if (a5)
+      if (error)
       {
         v26 = v26;
-        *a5 = v26;
+        *error = v26;
       }
 
       v9 = 0;
@@ -77,25 +77,25 @@
     objc_storeStrong(p_var12, v9);
   }
 
-  v23 = [(MIOPixelBufferPool *)v9 getPixelBuffer];
-  if (![MIOPixelBufferUtility transferq8q2PixelBuffer:a3 toL010PixelBuffer:v23])
+  getPixelBuffer = [(MIOPixelBufferPool *)v9 getPixelBuffer];
+  if (![MIOPixelBufferUtility transferq8q2PixelBuffer:of toL010PixelBuffer:getPixelBuffer])
   {
-    CVPixelBufferRelease(v23);
-    CVPixelBufferRelease(a3);
+    CVPixelBufferRelease(getPixelBuffer);
+    CVPixelBufferRelease(of);
     v24 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot convert q8q2 to L010 buffer." code:20];
     v21 = v24;
-    if (a5)
+    if (error)
     {
       v25 = v24;
-      *a5 = v21;
+      *error = v21;
     }
 
 LABEL_10:
 
-    v23 = 0;
+    getPixelBuffer = 0;
   }
 
-  return v23;
+  return getPixelBuffer;
 }
 
 @end

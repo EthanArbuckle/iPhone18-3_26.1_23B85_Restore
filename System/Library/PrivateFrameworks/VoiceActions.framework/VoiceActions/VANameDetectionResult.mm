@@ -1,21 +1,21 @@
 @interface VANameDetectionResult
 - (NSString)description;
 - (_TtC12VoiceActions21VANameDetectionResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VANameDetectionResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_27223A774(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_27223A774(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_27223B13C();
 
   v3 = sub_2723777FC();

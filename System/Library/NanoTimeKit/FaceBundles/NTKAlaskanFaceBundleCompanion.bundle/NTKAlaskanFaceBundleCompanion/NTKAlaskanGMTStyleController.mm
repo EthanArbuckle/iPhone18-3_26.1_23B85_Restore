@@ -1,40 +1,40 @@
 @interface NTKAlaskanGMTStyleController
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForCLLocation:(id)a3;
-- (BOOL)containsCityIdentifier:(id)a3;
-- (BOOL)crownInputHandlerCanChangeProgress:(id)a3;
-- (BOOL)crownInputHandlerDidPressCrown:(id)a3;
-- (BOOL)updateTimezoneLocations:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForCLLocation:(id)location;
+- (BOOL)containsCityIdentifier:(id)identifier;
+- (BOOL)crownInputHandlerCanChangeProgress:(id)progress;
+- (BOOL)crownInputHandlerDidPressCrown:(id)crown;
+- (BOOL)updateTimezoneLocations:(id)locations;
 - (BOOL)updateWorldClockCitiesIfNeeded;
-- (NTKAlaskanGMTStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4 storage:(id)a5;
+- (NTKAlaskanGMTStyleController)initWithContentView:(id)view crownInputHandler:(id)handler storage:(id)storage;
 - (NTKAlaskanGMTStyleView)gmtView;
 - (NTKAnalogFaceView)faceView;
-- (float)hourOffsetForTimezone:(id)a3;
-- (id)almanacTransitInfoForCity:(id)a3;
+- (float)hourOffsetForTimezone:(id)timezone;
+- (id)almanacTransitInfoForCity:(id)city;
 - (id)currentDate;
 - (id)currentTimezoneLocation;
-- (id)timezoneLocationFromCLLocation:(id)a3;
-- (id)timezoneLocationFromCity:(id)a3;
-- (id)timezoneLocationFromCityIdentifier:(int)a3;
+- (id)timezoneLocationFromCLLocation:(id)location;
+- (id)timezoneLocationFromCity:(id)city;
+- (id)timezoneLocationFromCityIdentifier:(int)identifier;
 - (id)worldClockCities;
 - (void)_saveReferenceTimezoneLocation;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
 - (void)_updateDefaultLocations;
-- (void)alaskanGMTStyleView:(id)a3 didSelectTimezoneLocation:(id)a4;
-- (void)alaskanGMTStyleViewDidCancelEditing:(id)a3 animated:(BOOL)a4;
-- (void)alaskanGMTStyleViewDidFinishEditing:(id)a3;
-- (void)alaskanGMTStyleViewDidStartEditing:(id)a3;
-- (void)crownInputHandler:(id)a3 didChangeProgress:(double)a4;
+- (void)alaskanGMTStyleView:(id)view didSelectTimezoneLocation:(id)location;
+- (void)alaskanGMTStyleViewDidCancelEditing:(id)editing animated:(BOOL)animated;
+- (void)alaskanGMTStyleViewDidFinishEditing:(id)editing;
+- (void)alaskanGMTStyleViewDidStartEditing:(id)editing;
+- (void)crownInputHandler:(id)handler didChangeProgress:(double)progress;
 - (void)currentLocationChangeNotification;
 - (void)dealloc;
-- (void)handleExitingEditModeAnimated:(BOOL)a3;
+- (void)handleExitingEditModeAnimated:(BOOL)animated;
 - (void)handleLocalTimeZoneChangedNotification;
 - (void)handleTimezoneChanged;
 - (void)resetGMTSunsetSunriseInformation;
-- (void)setDatamode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setStorage:(id)a3;
-- (void)setTritiumAnimationInProgress:(BOOL)a3;
+- (void)setDatamode:(int64_t)datamode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setStorage:(id)storage;
+- (void)setTritiumAnimationInProgress:(BOOL)progress;
 - (void)significantTimeChangeNotification;
 - (void)startListeningForLocalTimeZoneChangeNotification;
 - (void)startListeningForLocationChangeNotification;
@@ -44,27 +44,27 @@
 - (void)stopListeningForLocationChangeNotification;
 - (void)stopListeningForSignificantTimeChangeNotification;
 - (void)stopListeningForTimezoneChangeNotification;
-- (void)updateSelectionInViewAnimated:(BOOL)a3 saveSelection:(BOOL)a4 completionBlock:(id)a5;
+- (void)updateSelectionInViewAnimated:(BOOL)animated saveSelection:(BOOL)selection completionBlock:(id)block;
 - (void)updateWorldClockCities;
 @end
 
 @implementation NTKAlaskanGMTStyleController
 
-- (NTKAlaskanGMTStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4 storage:(id)a5
+- (NTKAlaskanGMTStyleController)initWithContentView:(id)view crownInputHandler:(id)handler storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  handlerCopy = handler;
+  storageCopy = storage;
   v21.receiver = self;
   v21.super_class = NTKAlaskanGMTStyleController;
   v11 = [(NTKAlaskanGMTStyleController *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_crownInputHandler, a4);
-    objc_storeStrong(&v12->_storage, a5);
-    v13 = objc_storeWeak(&v12->_gmtView, v8);
-    [v8 setDelegate:v12];
+    objc_storeStrong(&v11->_crownInputHandler, handler);
+    objc_storeStrong(&v12->_storage, storage);
+    v13 = objc_storeWeak(&v12->_gmtView, viewCopy);
+    [viewCopy setDelegate:v12];
 
     [(NTKCrownInputHandler *)v12->_crownInputHandler setDelegate:v12];
     [(NTKCrownInputHandler *)v12->_crownInputHandler setOffsetPerRevolution:NTKCrownInputHandlerDefaultOffsetPerRevolution];
@@ -102,26 +102,26 @@
   [(NTKAlaskanGMTStyleController *)&v3 dealloc];
 }
 
-- (void)setTritiumAnimationInProgress:(BOOL)a3
+- (void)setTritiumAnimationInProgress:(BOOL)progress
 {
-  v3 = a3;
-  self->_tritiumAnimationInProgress = a3;
+  progressCopy = progress;
+  self->_tritiumAnimationInProgress = progress;
   WeakRetained = objc_loadWeakRetained(&self->_gmtView);
-  [WeakRetained setUserInteractionEnabled:!v3];
+  [WeakRetained setUserInteractionEnabled:!progressCopy];
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  objc_storeStrong(&self->_storage, a3);
+  objc_storeStrong(&self->_storage, storage);
 
   [(NTKAlaskanGMTStyleController *)self updateWorldClockCitiesIfNeeded];
 }
 
-- (void)setDatamode:(int64_t)a3
+- (void)setDatamode:(int64_t)datamode
 {
-  if (a3 <= 5)
+  if (datamode <= 5)
   {
-    if (((1 << a3) & 0x35) != 0)
+    if (((1 << datamode) & 0x35) != 0)
     {
       [(NTKAlaskanGMTStyleController *)self _stopClockUpdates];
       WeakRetained = objc_loadWeakRetained(&self->_gmtView);
@@ -136,12 +136,12 @@
       [(NTKAlaskanGMTStyleController *)self updateWorldClockCitiesIfNeeded];
     }
 
-    else if (a3 == 1)
+    else if (datamode == 1)
     {
       [(NTKAlaskanGMTStyleController *)self updateWorldClockCitiesIfNeeded];
-      v6 = [(NTKAlaskanGMTStyleController *)self tritiumAnimationInProgress];
+      tritiumAnimationInProgress = [(NTKAlaskanGMTStyleController *)self tritiumAnimationInProgress];
       v7 = objc_loadWeakRetained(&self->_gmtView);
-      [v7 setUserInteractionEnabled:v6 ^ 1];
+      [v7 setUserInteractionEnabled:tritiumAnimationInProgress ^ 1];
 
       [(NTKAlaskanGMTStyleController *)self _startClockUpdates];
       [(NTKAlaskanGMTStyleController *)self startListeningForLocalTimeZoneChangeNotification];
@@ -165,18 +165,18 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_E7CC;
   v8[3] = &unk_38FB8;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = dateCopy;
   v9 = v7;
-  [UIView animateWithDuration:v8 animations:a4];
+  [UIView animateWithDuration:v8 animations:duration];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -221,32 +221,32 @@
   }
 }
 
-- (void)crownInputHandler:(id)a3 didChangeProgress:(double)a4
+- (void)crownInputHandler:(id)handler didChangeProgress:(double)progress
 {
   WeakRetained = objc_loadWeakRetained(&self->_gmtView);
-  v7 = [WeakRetained isEditing];
+  isEditing = [WeakRetained isEditing];
 
-  if ((v7 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    v8 = 1.0 - a4;
-    if (a4 < 0.5)
+    progressCopy = 1.0 - progress;
+    if (progress < 0.5)
     {
-      v8 = a4;
+      progressCopy = progress;
     }
 
-    if (vabdd_f64(self->_previousProgress, v8) > 0.04)
+    if (vabdd_f64(self->_previousProgress, progressCopy) > 0.04)
     {
-      self->_previousProgress = a4;
+      self->_previousProgress = progress;
       v9 = objc_loadWeakRetained(&self->_gmtView);
       [v9 setIsEditing:1];
     }
   }
 }
 
-- (BOOL)crownInputHandlerCanChangeProgress:(id)a3
+- (BOOL)crownInputHandlerCanChangeProgress:(id)progress
 {
-  v4 = [(NTKAlaskanGMTStyleController *)self faceView];
-  if ([v4 dataMode] == &dword_0 + 1)
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  if ([faceView dataMode] == &dword_0 + 1)
   {
     v5 = ![(NTKAlaskanGMTStyleController *)self tritiumAnimationInProgress];
   }
@@ -259,28 +259,28 @@
   return v5;
 }
 
-- (BOOL)crownInputHandlerDidPressCrown:(id)a3
+- (BOOL)crownInputHandlerDidPressCrown:(id)crown
 {
   WeakRetained = objc_loadWeakRetained(&self->_gmtView);
-  v5 = [WeakRetained isEditing];
+  isEditing = [WeakRetained isEditing];
 
-  if (v5)
+  if (isEditing)
   {
     v6 = objc_loadWeakRetained(&self->_gmtView);
     [v6 setIsEditing:0];
   }
 
-  return v5;
+  return isEditing;
 }
 
-- (void)alaskanGMTStyleViewDidStartEditing:(id)a3
+- (void)alaskanGMTStyleViewDidStartEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(NTKAlaskanGMTStyleController *)self faceView];
-  [v5 enableCrownEventReception];
+  editingCopy = editing;
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  [faceView enableCrownEventReception];
 
-  v6 = [(NTKAlaskanGMTStyleController *)self faceView];
-  [v6 enumerateComplicationDisplayWrappersWithBlock:&stru_38FF8];
+  faceView2 = [(NTKAlaskanGMTStyleController *)self faceView];
+  [faceView2 enumerateComplicationDisplayWrappersWithBlock:&stru_38FF8];
 
   objc_initWeak(&location, self);
   v9 = _NSConcreteStackBlock;
@@ -290,44 +290,44 @@
   objc_copyWeak(&v13, &location);
   [UIView animateWithDuration:&v9 animations:0.3 * 0.5];
   v7 = [(NTKAlaskanGMTStyleController *)self faceView:v9];
-  v8 = [v7 delegate];
-  [v8 faceViewWantsStatusBarHidden:1 animated:1];
+  delegate = [v7 delegate];
+  [delegate faceViewWantsStatusBarHidden:1 animated:1];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)alaskanGMTStyleViewDidFinishEditing:(id)a3
+- (void)alaskanGMTStyleViewDidFinishEditing:(id)editing
 {
-  v4 = [(NTKAlaskanGMTStyleController *)self faceView];
-  [v4 disableCrownEventReception];
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  [faceView disableCrownEventReception];
 
   [(NTKAlaskanGMTStyleController *)self handleExitingEditModeAnimated:1];
-  v5 = [(NTKAlaskanGMTTimezoneLocation *)self->_currentSelectedTimezoneLocation cityIdentifier];
+  cityIdentifier = [(NTKAlaskanGMTTimezoneLocation *)self->_currentSelectedTimezoneLocation cityIdentifier];
 
   currentSelectedTimezoneLocation = self->_currentSelectedTimezoneLocation;
-  if (v5)
+  if (cityIdentifier)
   {
-    v7 = [(NTKAlaskanGMTTimezoneLocation *)currentSelectedTimezoneLocation cityIdentifier];
-    v8 = [(NTKAlaskanGMTStyleController *)self storage];
-    [v8 setGmtSelectedCityIdentifier:v7];
+    cityIdentifier2 = [(NTKAlaskanGMTTimezoneLocation *)currentSelectedTimezoneLocation cityIdentifier];
+    storage = [(NTKAlaskanGMTStyleController *)self storage];
+    [storage setGmtSelectedCityIdentifier:cityIdentifier2];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(NTKAlaskanGMTTimezoneLocation *)currentSelectedTimezoneLocation locationName];
+  locationName = [(NTKAlaskanGMTTimezoneLocation *)currentSelectedTimezoneLocation locationName];
 
-  if (v9)
+  if (locationName)
   {
-    v10 = [(NTKAlaskanGMTStyleController *)self storage];
-    [v10 setGmtOffsetHours:0];
+    storage2 = [(NTKAlaskanGMTStyleController *)self storage];
+    [storage2 setGmtOffsetHours:0];
 
-    v11 = [(NTKAlaskanGMTStyleController *)self storage];
-    [v11 setGmtSelectedCityIdentifier:0];
+    storage3 = [(NTKAlaskanGMTStyleController *)self storage];
+    [storage3 setGmtSelectedCityIdentifier:0];
 
-    v7 = [(NTKAlaskanGMTStyleController *)self storage];
-    [v7 setGmtSelectedTimezone:0];
+    cityIdentifier2 = [(NTKAlaskanGMTStyleController *)self storage];
+    [cityIdentifier2 setGmtSelectedTimezone:0];
     goto LABEL_5;
   }
 
@@ -337,20 +337,20 @@ LABEL_6:
   [(NTKAlaskanGMTStyleController *)self updateSelectionInViewSavingSelection:1];
 }
 
-- (void)alaskanGMTStyleViewDidCancelEditing:(id)a3 animated:(BOOL)a4
+- (void)alaskanGMTStyleViewDidCancelEditing:(id)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(NTKAlaskanGMTStyleController *)self faceView];
-  [v6 disableCrownEventReception];
+  animatedCopy = animated;
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  [faceView disableCrownEventReception];
 
-  [(NTKAlaskanGMTStyleController *)self handleExitingEditModeAnimated:v4];
+  [(NTKAlaskanGMTStyleController *)self handleExitingEditModeAnimated:animatedCopy];
 }
 
-- (void)handleExitingEditModeAnimated:(BOOL)a3
+- (void)handleExitingEditModeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NTKAlaskanGMTStyleController *)self faceView];
-  [v5 enumerateComplicationDisplayWrappersWithBlock:&stru_39018];
+  animatedCopy = animated;
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  [faceView enumerateComplicationDisplayWrappersWithBlock:&stru_39018];
 
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -360,7 +360,7 @@ LABEL_6:
   objc_copyWeak(&v14, &location);
   v6 = objc_retainBlock(v13);
   v7 = v6;
-  if (v3)
+  if (animatedCopy)
   {
     v8 = dispatch_time(0, (0.3 * 0.5 * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
@@ -376,27 +376,27 @@ LABEL_6:
     (v6[2])(v6);
   }
 
-  v9 = [(NTKAlaskanGMTStyleController *)self faceView];
-  v10 = [v9 delegate];
-  [v10 faceViewWantsStatusBarHidden:0 animated:1];
+  faceView2 = [(NTKAlaskanGMTStyleController *)self faceView];
+  delegate = [faceView2 delegate];
+  [delegate faceViewWantsStatusBarHidden:0 animated:1];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)alaskanGMTStyleView:(id)a3 didSelectTimezoneLocation:(id)a4
+- (void)alaskanGMTStyleView:(id)view didSelectTimezoneLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(NTKAlaskanGMTStyleController *)self faceView];
-  v7 = [v6 dataMode];
+  locationCopy = location;
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  dataMode = [faceView dataMode];
 
-  if (v7 == &dword_0 + 1)
+  if (dataMode == &dword_0 + 1)
   {
     [(NTKCrownInputHandler *)self->_crownInputHandler generateMajorDetents];
   }
 
   currentSelectedTimezoneLocation = self->_currentSelectedTimezoneLocation;
-  self->_currentSelectedTimezoneLocation = v5;
+  self->_currentSelectedTimezoneLocation = locationCopy;
 }
 
 - (void)_updateDefaultLocations
@@ -457,8 +457,8 @@ LABEL_6:
 - (BOOL)updateWorldClockCitiesIfNeeded
 {
   v3 = self->_currentWorldClockCities;
-  v4 = [(NTKAlaskanGMTStyleController *)self worldClockCities];
-  v5 = [NSSet setWithArray:v4];
+  worldClockCities = [(NTKAlaskanGMTStyleController *)self worldClockCities];
+  v5 = [NSSet setWithArray:worldClockCities];
   currentWorldClockCities = self->_currentWorldClockCities;
   self->_currentWorldClockCities = v5;
 
@@ -488,8 +488,8 @@ LABEL_6:
 
           v14 = *(*(&v25 + 1) + 8 * i);
           defaultCityIdentifiers = self->_defaultCityIdentifiers;
-          v16 = [v14 alCityId];
-          LOBYTE(defaultCityIdentifiers) = [(NSSet *)defaultCityIdentifiers containsObject:v16];
+          alCityId = [v14 alCityId];
+          LOBYTE(defaultCityIdentifiers) = [(NSSet *)defaultCityIdentifiers containsObject:alCityId];
 
           if ((defaultCityIdentifiers & 1) == 0)
           {
@@ -510,20 +510,20 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    v18 = [(NTKAlaskanGMTStyleController *)self faceView];
-    if ([v18 dataMode] == &dword_0 + 3)
+    faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+    if ([faceView dataMode] == &dword_0 + 3)
     {
     }
 
     else
     {
-      v19 = [(NTKAlaskanGMTStyleController *)self storage];
+      storage = [(NTKAlaskanGMTStyleController *)self storage];
 
-      if (v19)
+      if (storage)
       {
-        v20 = [(NTKAlaskanGMTStyleController *)self currentTimezoneLocation];
+        currentTimezoneLocation = [(NTKAlaskanGMTStyleController *)self currentTimezoneLocation];
         WeakRetained = objc_loadWeakRetained(&self->_gmtView);
-        [WeakRetained setReferenceTimezoneLocation:v20];
+        [WeakRetained setReferenceTimezoneLocation:currentTimezoneLocation];
 
 LABEL_17:
         v22 = objc_loadWeakRetained(&self->_gmtView);
@@ -536,8 +536,8 @@ LABEL_18:
       }
     }
 
-    v20 = objc_loadWeakRetained(&self->_gmtView);
-    [v20 setReferenceTimezoneLocation:0];
+    currentTimezoneLocation = objc_loadWeakRetained(&self->_gmtView);
+    [currentTimezoneLocation setReferenceTimezoneLocation:0];
     goto LABEL_17;
   }
 
@@ -546,13 +546,13 @@ LABEL_19:
   return v7 ^ 1;
 }
 
-- (BOOL)updateTimezoneLocations:(id)a3
+- (BOOL)updateTimezoneLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [v4 sortedArrayUsingComparator:&stru_390A0];
+  locationsCopy = locations;
+  v5 = [locationsCopy sortedArrayUsingComparator:&stru_390A0];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 count];
+  v7 = [locationsCopy count];
   currentTimezoneLocations = self->_currentTimezoneLocations;
   p_currentTimezoneLocations = &self->_currentTimezoneLocations;
   if (v7 != [(NSArray *)currentTimezoneLocations count]|| !*p_currentTimezoneLocations)
@@ -590,9 +590,9 @@ LABEL_9:
 - (id)currentTimezoneLocation
 {
   v3 = +[NTKLocationManager sharedLocationManager];
-  v4 = [v3 anyLocation];
+  anyLocation = [v3 anyLocation];
 
-  v5 = [(NTKAlaskanGMTStyleController *)self timezoneLocationFromCLLocation:v4];
+  v5 = [(NTKAlaskanGMTStyleController *)self timezoneLocationFromCLLocation:anyLocation];
 
   return v5;
 }
@@ -600,20 +600,20 @@ LABEL_9:
 - (id)worldClockCities
 {
   v2 = +[NTKWorldClockManager sharedManager];
-  v3 = [v2 cities];
-  if (!v3 || (v4 = v3, v5 = [v2 checkIfCitiesModified], v4, v5))
+  cities = [v2 cities];
+  if (!cities || (v4 = cities, v5 = [v2 checkIfCitiesModified], v4, v5))
   {
     [v2 loadCities];
   }
 
-  v6 = [v2 cities];
+  cities2 = [v2 cities];
 
-  return v6;
+  return cities2;
 }
 
-- (id)timezoneLocationFromCityIdentifier:(int)a3
+- (id)timezoneLocationFromCityIdentifier:(int)identifier
 {
-  v4 = [[WorldClockCity alloc] initWithALCityIdentifier:*&a3];
+  v4 = [[WorldClockCity alloc] initWithALCityIdentifier:*&identifier];
   if (v4)
   {
     v5 = [(NTKAlaskanGMTStyleController *)self timezoneLocationFromCity:v4];
@@ -627,11 +627,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)timezoneLocationFromCity:(id)a3
+- (id)timezoneLocationFromCity:(id)city
 {
-  v4 = a3;
-  v5 = [v4 timeZone];
-  v6 = [NSTimeZone timeZoneWithName:v5];
+  cityCopy = city;
+  timeZone = [cityCopy timeZone];
+  v6 = [NSTimeZone timeZoneWithName:timeZone];
 
   v7 = objc_alloc_init(NTKAlaskanGMTTimezoneLocation);
   [(NTKAlaskanGMTStyleController *)self hourOffsetForTimezone:v6];
@@ -639,19 +639,19 @@ LABEL_9:
   v8 = NTKWorldClockCityAbbreviation();
   [(NTKAlaskanGMTTimezoneLocation *)v7 setLocationName:v8];
 
-  v9 = [v6 name];
-  [(NTKAlaskanGMTTimezoneLocation *)v7 setTimezone:v9];
+  name = [v6 name];
+  [(NTKAlaskanGMTTimezoneLocation *)v7 setTimezone:name];
 
-  v10 = [v4 alCityId];
-  [(NTKAlaskanGMTTimezoneLocation *)v7 setCityIdentifier:v10];
+  alCityId = [cityCopy alCityId];
+  [(NTKAlaskanGMTTimezoneLocation *)v7 setCityIdentifier:alCityId];
 
-  v11 = [v4 countryCode];
+  countryCode = [cityCopy countryCode];
 
-  [v4 name];
-  if (v11)
+  [cityCopy name];
+  if (countryCode)
     v12 = {;
-    v13 = [v4 countryCode];
-    v14 = [NSString stringWithFormat:@"%@, %@", v12, v13];
+    countryCode2 = [cityCopy countryCode];
+    v14 = [NSString stringWithFormat:@"%@, %@", v12, countryCode2];
     [(NTKAlaskanGMTTimezoneLocation *)v7 setCityName:v14];
   }
 
@@ -660,22 +660,22 @@ LABEL_9:
     [(NTKAlaskanGMTTimezoneLocation *)v7 setCityName:v12];
   }
 
-  v15 = [v4 alCity];
+  alCity = [cityCopy alCity];
 
-  if (v15)
+  if (alCity)
   {
-    v16 = [(NTKAlaskanGMTStyleController *)self almanacTransitInfoForCity:v4];
-    v17 = [v16 rise];
-    if (v17)
+    v16 = [(NTKAlaskanGMTStyleController *)self almanacTransitInfoForCity:cityCopy];
+    rise = [v16 rise];
+    if (rise)
     {
-      v18 = v17;
+      v18 = rise;
       v19 = [v16 set];
 
       if (v19)
       {
         v20 = +[NSCalendar currentCalendar];
-        v21 = [v16 rise];
-        v22 = [v20 componentsInTimeZone:v6 fromDate:v21];
+        rise2 = [v16 rise];
+        v22 = [v20 componentsInTimeZone:v6 fromDate:rise2];
 
         -[NTKAlaskanGMTTimezoneLocation setSunriseHourOfDay:](v7, "setSunriseHourOfDay:", [v22 minute] / 60.0 + objc_msgSend(v22, "hour"));
         v23 = [v16 set];
@@ -689,30 +689,30 @@ LABEL_9:
   return v7;
 }
 
-- (id)timezoneLocationFromCLLocation:(id)a3
+- (id)timezoneLocationFromCLLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_alloc_init(NTKAlaskanGMTTimezoneLocation);
   [(NTKAlaskanGMTTimezoneLocation *)v5 setHourOffset:0.0];
-  v6 = [(NTKAlaskanGMTStyleController *)self currentDate];
-  [(NTKAlaskanGMTStyleController *)self _geoLocationForCLLocation:v4];
+  currentDate = [(NTKAlaskanGMTStyleController *)self currentDate];
+  [(NTKAlaskanGMTStyleController *)self _geoLocationForCLLocation:locationCopy];
   v8 = v7;
   v10 = v9;
 
-  v11 = [CLKUIAlmanacTransitInfo transitInfoForDate:v6 location:v8, v10];
+  v11 = [CLKUIAlmanacTransitInfo transitInfoForDate:currentDate location:v8, v10];
 
-  v12 = [v11 rise];
-  if (v12)
+  rise = [v11 rise];
+  if (rise)
   {
-    v13 = v12;
+    v13 = rise;
     v14 = [v11 set];
 
     if (v14)
     {
       v15 = +[NSCalendar currentCalendar];
       v16 = +[NSTimeZone localTimeZone];
-      v17 = [v11 rise];
-      v18 = [v15 componentsInTimeZone:v16 fromDate:v17];
+      rise2 = [v11 rise];
+      v18 = [v15 componentsInTimeZone:v16 fromDate:rise2];
 
       -[NTKAlaskanGMTTimezoneLocation setSunriseHourOfDay:](v5, "setSunriseHourOfDay:", [v18 minute] / 60.0 + objc_msgSend(v18, "hour"));
       v19 = +[NSTimeZone localTimeZone];
@@ -726,12 +726,12 @@ LABEL_9:
   return v5;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForCLLocation:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForCLLocation:(id)location
 {
-  v3 = a3;
-  [v3 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v5 = v4;
-  [v3 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
 
   v8 = v5;
@@ -741,12 +741,12 @@ LABEL_9:
   return result;
 }
 
-- (id)almanacTransitInfoForCity:(id)a3
+- (id)almanacTransitInfoForCity:(id)city
 {
-  v4 = a3;
-  v5 = [v4 alCity];
+  cityCopy = city;
+  alCity = [cityCopy alCity];
 
-  if (v5)
+  if (alCity)
   {
     transitInfoByCity = self->_transitInfoByCity;
     if (!transitInfoByCity)
@@ -758,35 +758,35 @@ LABEL_9:
       transitInfoByCity = self->_transitInfoByCity;
     }
 
-    v9 = [v4 alCity];
-    v10 = [v9 classicIdentifier];
-    v5 = [(NSMutableDictionary *)transitInfoByCity objectForKeyedSubscript:v10];
+    alCity2 = [cityCopy alCity];
+    classicIdentifier = [alCity2 classicIdentifier];
+    alCity = [(NSMutableDictionary *)transitInfoByCity objectForKeyedSubscript:classicIdentifier];
 
-    if (!v5)
+    if (!alCity)
     {
-      v11 = [(NTKAlaskanGMTStyleController *)self currentDate];
-      v12 = [v4 alCity];
-      v5 = [CLKUIAlmanacTransitInfo transitInfoForDate:v11 city:v12];
+      currentDate = [(NTKAlaskanGMTStyleController *)self currentDate];
+      alCity3 = [cityCopy alCity];
+      alCity = [CLKUIAlmanacTransitInfo transitInfoForDate:currentDate city:alCity3];
 
       v13 = self->_transitInfoByCity;
-      v14 = [v4 alCity];
-      v15 = [v14 classicIdentifier];
-      [(NSMutableDictionary *)v13 setObject:v5 forKeyedSubscript:v15];
+      alCity4 = [cityCopy alCity];
+      classicIdentifier2 = [alCity4 classicIdentifier];
+      [(NSMutableDictionary *)v13 setObject:alCity forKeyedSubscript:classicIdentifier2];
     }
   }
 
-  return v5;
+  return alCity;
 }
 
-- (BOOL)containsCityIdentifier:(id)a3
+- (BOOL)containsCityIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
-    v14 = [(NSSet *)self->_defaultCityIdentifiers containsObject:v4];
+    v14 = [(NSSet *)self->_defaultCityIdentifiers containsObject:identifierCopy];
     if (v12[3])
     {
       v5 = 1;
@@ -799,7 +799,7 @@ LABEL_9:
       v8[1] = 3221225472;
       v8[2] = sub_1032C;
       v8[3] = &unk_390C8;
-      v9 = v4;
+      v9 = identifierCopy;
       v10 = &v11;
       [(NSSet *)currentWorldClockCities enumerateObjectsUsingBlock:v8];
 
@@ -817,7 +817,7 @@ LABEL_9:
   return v5 & 1;
 }
 
-- (void)updateSelectionInViewAnimated:(BOOL)a3 saveSelection:(BOOL)a4 completionBlock:(id)a5
+- (void)updateSelectionInViewAnimated:(BOOL)animated saveSelection:(BOOL)selection completionBlock:(id)block
 {
   WeakRetained = objc_loadWeakRetained(&self->_gmtView);
   [WeakRetained selectHourOffset:0.0];
@@ -826,24 +826,24 @@ LABEL_9:
 - (void)_saveReferenceTimezoneLocation
 {
   v3 = +[NSTimeZone localTimeZone];
-  v4 = [v3 name];
-  v5 = [(NTKAlaskanGMTStyleController *)self storage];
-  [v5 setGmtSelectedTimezone:v4];
+  name = [v3 name];
+  storage = [(NTKAlaskanGMTStyleController *)self storage];
+  [storage setGmtSelectedTimezone:name];
 
-  v6 = [(NTKAlaskanGMTStyleController *)self storage];
-  [v6 setGmtOffsetHours:&off_3A938];
+  storage2 = [(NTKAlaskanGMTStyleController *)self storage];
+  [storage2 setGmtOffsetHours:&off_3A938];
 
-  v7 = [(NTKAlaskanGMTStyleController *)self storage];
-  [v7 setGmtSelectedCityIdentifier:0];
+  storage3 = [(NTKAlaskanGMTStyleController *)self storage];
+  [storage3 setGmtSelectedCityIdentifier:0];
 }
 
-- (float)hourOffsetForTimezone:(id)a3
+- (float)hourOffsetForTimezone:(id)timezone
 {
-  v3 = a3;
+  timezoneCopy = timezone;
   v4 = +[NSDate date];
   v5 = +[NSTimeZone localTimeZone];
   v6 = [v5 secondsFromGMTForDate:v4];
-  v7 = [v3 secondsFromGMTForDate:v4];
+  v7 = [timezoneCopy secondsFromGMTForDate:v4];
 
   return (v7 - v6) / 60.0 / 60.0;
 }
@@ -944,12 +944,12 @@ LABEL_9:
 
 - (id)currentDate
 {
-  v2 = [(NTKAlaskanGMTStyleController *)self faceView];
-  v3 = [v2 currentDisplayDate];
-  v4 = v3;
-  if (v3)
+  faceView = [(NTKAlaskanGMTStyleController *)self faceView];
+  currentDisplayDate = [faceView currentDisplayDate];
+  v4 = currentDisplayDate;
+  if (currentDisplayDate)
   {
-    v5 = v3;
+    v5 = currentDisplayDate;
   }
 
   else

@@ -1,58 +1,58 @@
 @interface PUCropToolControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axRotationLabel:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axRotationLabel:(int64_t)label;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_aspectButtonTapped:(id)a3;
+- (void)_aspectButtonTapped:(id)tapped;
 - (void)_axAnnounceFlipOrRotateOrientation;
-- (void)_flipButtonTapped:(id)a3;
-- (void)_rotateButtonTapped:(id)a3;
-- (void)_userChangedAspectRatioLocked:(BOOL)a3;
-- (void)cropAspectFlipperView:(id)a3 cropOrientationSelected:(int64_t)a4;
+- (void)_flipButtonTapped:(id)tapped;
+- (void)_rotateButtonTapped:(id)tapped;
+- (void)_userChangedAspectRatioLocked:(BOOL)locked;
+- (void)cropAspectFlipperView:(id)view cropOrientationSelected:(int64_t)selected;
 - (void)viewDidLoad;
 @end
 
 @implementation PUCropToolControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"rotateButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"autoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"flipButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"_rotateButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"_flipButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"_aspectButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"aspectButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"geometry" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLImageGeometry" hasInstanceMethod:@"userOrientation" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectFlipperView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectFlipperView:cropOrientationSelected:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"autoButtonMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspect" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"width" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"height" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"_userChangedAspectRatioLocked:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspect" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUCropAspect" hasInstanceMethod:@"isFreeformCrop" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"rotateButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"autoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"flipButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"_rotateButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"_flipButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"_aspectButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"aspectButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"geometry" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLImageGeometry" hasInstanceMethod:@"userOrientation" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectFlipperView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectFlipperView:cropOrientationSelected:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"autoButtonMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspect" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"width" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"height" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"_userChangedAspectRatioLocked:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspect" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUCropAspect" hasInstanceMethod:@"isFreeformCrop" withFullSignature:{"B", 0}];
 }
 
-- (id)_axRotationLabel:(int64_t)a3
+- (id)_axRotationLabel:(int64_t)label
 {
   v3 = 0;
-  if (a3 > 4)
+  if (label > 4)
   {
-    if (a3 > 6)
+    if (label > 6)
     {
-      if (a3 == 7)
+      if (label == 7)
       {
         v4 = @"crop.rotate.transverse";
         goto LABEL_19;
       }
 
-      if (a3 != 8)
+      if (label != 8)
       {
         goto LABEL_20;
       }
@@ -64,7 +64,7 @@
 
     else
     {
-      if (a3 == 5)
+      if (label == 5)
       {
         v4 = @"crop.rotate.transpose";
         goto LABEL_19;
@@ -81,16 +81,16 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  if (a3 <= 2)
+  if (label <= 2)
   {
-    if (a3 == 1)
+    if (label == 1)
     {
       v4 = @"crop.rotate.normal";
     }
 
     else
     {
-      if (a3 != 2)
+      if (label != 2)
       {
         goto LABEL_20;
       }
@@ -101,7 +101,7 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  if (a3 == 3)
+  if (label == 3)
   {
     v5 = MEMORY[0x29EDBA0F8];
     v6 = accessibilityPULocalizedString(@"crop.rotate.degrees");
@@ -159,8 +159,8 @@ LABEL_20:
     v40[5] = v11;
 
     v13 = v40[5];
-    v14 = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
-    v15 = [v13 rangeOfCharacterFromSet:v14];
+    decimalDigitCharacterSet = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
+    v15 = [v13 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -289,11 +289,11 @@ uint64_t __79__PUCropToolControllerAccessibility__accessibilityLoadAccessibility
   [(PUCropToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_rotateButtonTapped:(id)a3
+- (void)_rotateButtonTapped:(id)tapped
 {
   v6.receiver = self;
   v6.super_class = PUCropToolControllerAccessibility;
-  [(PUCropToolControllerAccessibility *)&v6 _rotateButtonTapped:a3];
+  [(PUCropToolControllerAccessibility *)&v6 _rotateButtonTapped:tapped];
   v4 = *MEMORY[0x29EDC7F10];
   v5 = [(PUCropToolControllerAccessibility *)self safeValueForKey:@"_rotateButton"];
   UIAccessibilityPostNotification(v4, v5);
@@ -301,11 +301,11 @@ uint64_t __79__PUCropToolControllerAccessibility__accessibilityLoadAccessibility
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_flipButtonTapped:(id)a3
+- (void)_flipButtonTapped:(id)tapped
 {
   v6.receiver = self;
   v6.super_class = PUCropToolControllerAccessibility;
-  [(PUCropToolControllerAccessibility *)&v6 _flipButtonTapped:a3];
+  [(PUCropToolControllerAccessibility *)&v6 _flipButtonTapped:tapped];
   v4 = *MEMORY[0x29EDC7F10];
   v5 = [(PUCropToolControllerAccessibility *)self safeValueForKey:@"_flipButton"];
   UIAccessibilityPostNotification(v4, v5);
@@ -313,11 +313,11 @@ uint64_t __79__PUCropToolControllerAccessibility__accessibilityLoadAccessibility
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_aspectButtonTapped:(id)a3
+- (void)_aspectButtonTapped:(id)tapped
 {
   v4.receiver = self;
   v4.super_class = PUCropToolControllerAccessibility;
-  [(PUCropToolControllerAccessibility *)&v4 _aspectButtonTapped:a3];
+  [(PUCropToolControllerAccessibility *)&v4 _aspectButtonTapped:tapped];
   AXPerformBlockOnMainThreadAfterDelay();
   [(PUCropToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
@@ -338,21 +338,21 @@ void __57__PUCropToolControllerAccessibility__aspectButtonTapped___block_invoke(
   UIAccessibilitySpeak();
 }
 
-- (void)cropAspectFlipperView:(id)a3 cropOrientationSelected:(int64_t)a4
+- (void)cropAspectFlipperView:(id)view cropOrientationSelected:(int64_t)selected
 {
   v5.receiver = self;
   v5.super_class = PUCropToolControllerAccessibility;
-  [(PUCropToolControllerAccessibility *)&v5 cropAspectFlipperView:a3 cropOrientationSelected:a4];
+  [(PUCropToolControllerAccessibility *)&v5 cropAspectFlipperView:view cropOrientationSelected:selected];
   [(PUCropToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_userChangedAspectRatioLocked:(BOOL)a3
+- (void)_userChangedAspectRatioLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v6.receiver = self;
   v6.super_class = PUCropToolControllerAccessibility;
   [(PUCropToolControllerAccessibility *)&v6 _userChangedAspectRatioLocked:?];
-  if (v3)
+  if (lockedCopy)
   {
     v4 = @"photoedit.crop.aspect.ratio.locked";
   }

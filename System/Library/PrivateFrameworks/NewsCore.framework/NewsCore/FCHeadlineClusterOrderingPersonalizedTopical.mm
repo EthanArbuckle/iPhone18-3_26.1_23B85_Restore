@@ -1,34 +1,34 @@
 @interface FCHeadlineClusterOrderingPersonalizedTopical
-- (id)orderTopicsWithClusteredHeadlines:(id)a3 additionalHeadlines:(id)a4 subscribedTagIDs:(id)a5 scoresByArticleID:(id)a6 personalizer:(id)a7 tagNameProvider:(id)a8 personalizationTreatment:(id)a9 translationProvider:(id)a10;
+- (id)orderTopicsWithClusteredHeadlines:(id)headlines additionalHeadlines:(id)additionalHeadlines subscribedTagIDs:(id)ds scoresByArticleID:(id)d personalizer:(id)personalizer tagNameProvider:(id)provider personalizationTreatment:(id)treatment translationProvider:(id)self0;
 @end
 
 @implementation FCHeadlineClusterOrderingPersonalizedTopical
 
-- (id)orderTopicsWithClusteredHeadlines:(id)a3 additionalHeadlines:(id)a4 subscribedTagIDs:(id)a5 scoresByArticleID:(id)a6 personalizer:(id)a7 tagNameProvider:(id)a8 personalizationTreatment:(id)a9 translationProvider:(id)a10
+- (id)orderTopicsWithClusteredHeadlines:(id)headlines additionalHeadlines:(id)additionalHeadlines subscribedTagIDs:(id)ds scoresByArticleID:(id)d personalizer:(id)personalizer tagNameProvider:(id)provider personalizationTreatment:(id)treatment translationProvider:(id)self0
 {
   v70 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  headlinesCopy = headlines;
+  additionalHeadlinesCopy = additionalHeadlines;
+  dsCopy = ds;
+  dCopy = d;
+  personalizerCopy = personalizer;
+  treatmentCopy = treatment;
+  translationProviderCopy = translationProvider;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __211__FCHeadlineClusterOrderingPersonalizedTopical_orderTopicsWithClusteredHeadlines_additionalHeadlines_subscribedTagIDs_scoresByArticleID_personalizer_tagNameProvider_personalizationTreatment_translationProvider___block_invoke;
   aBlock[3] = &unk_1E7C38628;
-  v47 = v21;
+  v47 = translationProviderCopy;
   v60 = v47;
-  v22 = v15;
+  v22 = headlinesCopy;
   v61 = v22;
-  v23 = a8;
+  providerCopy = provider;
   v24 = _Block_copy(aBlock);
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __211__FCHeadlineClusterOrderingPersonalizedTopical_orderTopicsWithClusteredHeadlines_additionalHeadlines_subscribedTagIDs_scoresByArticleID_personalizer_tagNameProvider_personalizationTreatment_translationProvider___block_invoke_3;
   v55[3] = &unk_1E7C38678;
-  v46 = v18;
+  v46 = dCopy;
   v56 = v46;
   v25 = v24;
   v58 = v25;
@@ -40,7 +40,7 @@
   v52[1] = 3221225472;
   v52[2] = __211__FCHeadlineClusterOrderingPersonalizedTopical_orderTopicsWithClusteredHeadlines_additionalHeadlines_subscribedTagIDs_scoresByArticleID_personalizer_tagNameProvider_personalizationTreatment_translationProvider___block_invoke_280;
   v52[3] = &unk_1E7C386C8;
-  v45 = v16;
+  v45 = additionalHeadlinesCopy;
   v53 = v45;
   v29 = v25;
   v54 = v29;
@@ -63,12 +63,12 @@
   v48[1] = 3221225472;
   v48[2] = __211__FCHeadlineClusterOrderingPersonalizedTopical_orderTopicsWithClusteredHeadlines_additionalHeadlines_subscribedTagIDs_scoresByArticleID_personalizer_tagNameProvider_personalizationTreatment_translationProvider___block_invoke_287;
   v48[3] = &unk_1E7C38718;
-  v49 = v19;
-  v50 = v17;
-  v51 = v20;
-  v31 = v20;
-  v32 = v17;
-  v33 = v19;
+  v49 = personalizerCopy;
+  v50 = dsCopy;
+  v51 = treatmentCopy;
+  v31 = treatmentCopy;
+  v32 = dsCopy;
+  v33 = personalizerCopy;
   [v31 metaGroupingRelatednessThreshold];
   v35 = v34;
   [v31 metaGroupingRelatednessKWeight];
@@ -76,7 +76,7 @@
   [v31 metaGroupingTopicScoreWeight];
   v39 = v38;
   [v31 metaGroupingHighestScoringRelativeScoreMultiplier];
-  v41 = FCTopicallyOrderGroups(v27, v30, v48, v23, v35, v37, v39, v40);
+  v41 = FCTopicallyOrderGroups(v27, v30, v48, providerCopy, v35, v37, v39, v40);
 
   v42 = *MEMORY[0x1E69E9840];
 

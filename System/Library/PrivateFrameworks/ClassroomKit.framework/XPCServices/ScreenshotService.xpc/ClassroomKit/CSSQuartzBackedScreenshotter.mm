@@ -1,12 +1,12 @@
 @interface CSSQuartzBackedScreenshotter
-- (CATransform3D)transformForFinalScreenshotSize:(SEL)a3;
-- (CGImage)makeRawQuartzCGImageScreenshotWithIsSecure:(BOOL)a3 size:(id)a4 error:(id *)a5;
+- (CATransform3D)transformForFinalScreenshotSize:(SEL)size;
+- (CGImage)makeRawQuartzCGImageScreenshotWithIsSecure:(BOOL)secure size:(id)size error:(id *)error;
 - (CSSQuartzBackedScreenshotter)init;
-- (CSSQuartzBackedScreenshotter)initWithDisplay:(id)a3;
+- (CSSQuartzBackedScreenshotter)initWithDisplay:(id)display;
 - (double)displayScale;
 - (id)displaySize;
-- (id)makeRawQuartzScreenshotWithSize:(id)a3 error:(id *)a4;
-- (id)screenshotWithMaximumSizeInPixels:(CGSize)a3 error:(id *)a4;
+- (id)makeRawQuartzScreenshotWithSize:(id)size error:(id *)error;
+- (id)screenshotWithMaximumSizeInPixels:(CGSize)pixels error:(id *)error;
 @end
 
 @implementation CSSQuartzBackedScreenshotter
@@ -19,38 +19,38 @@
   return v4;
 }
 
-- (CSSQuartzBackedScreenshotter)initWithDisplay:(id)a3
+- (CSSQuartzBackedScreenshotter)initWithDisplay:(id)display
 {
-  v5 = a3;
+  displayCopy = display;
   v9.receiver = self;
   v9.super_class = CSSQuartzBackedScreenshotter;
   v6 = [(CSSQuartzBackedScreenshotter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_display, a3);
+    objc_storeStrong(&v6->_display, display);
   }
 
   return v7;
 }
 
-- (id)screenshotWithMaximumSizeInPixels:(CGSize)a3 error:(id *)a4
+- (id)screenshotWithMaximumSizeInPixels:(CGSize)pixels error:(id *)error
 {
-  height = a3.height;
-  width = a3.width;
+  height = pixels.height;
+  width = pixels.width;
   v8 = objc_opt_new();
-  v9 = [(CSSQuartzBackedScreenshotter *)self displaySize];
-  v10 = [v8 screenshotSizeWithMaximumSize:v9 displaySize:{width, height}];
+  displaySize = [(CSSQuartzBackedScreenshotter *)self displaySize];
+  v10 = [v8 screenshotSizeWithMaximumSize:displaySize displaySize:{width, height}];
 
-  v11 = [(CSSQuartzBackedScreenshotter *)self makeRawQuartzScreenshotWithSize:v10 error:a4];
+  v11 = [(CSSQuartzBackedScreenshotter *)self makeRawQuartzScreenshotWithSize:v10 error:error];
 
   return v11;
 }
 
 - (id)displaySize
 {
-  v2 = [(CSSQuartzBackedScreenshotter *)self display];
-  [v2 css_sizeInCurrentOrientation];
+  display = [(CSSQuartzBackedScreenshotter *)self display];
+  [display css_sizeInCurrentOrientation];
   v4 = v3;
   v6 = v5;
 
@@ -61,16 +61,16 @@
 
 - (double)displayScale
 {
-  v2 = [(CSSQuartzBackedScreenshotter *)self display];
-  v3 = [v2 currentMode];
-  v4 = [v3 preferredScale];
+  display = [(CSSQuartzBackedScreenshotter *)self display];
+  currentMode = [display currentMode];
+  preferredScale = [currentMode preferredScale];
 
-  return v4;
+  return preferredScale;
 }
 
-- (id)makeRawQuartzScreenshotWithSize:(id)a3 error:(id *)a4
+- (id)makeRawQuartzScreenshotWithSize:(id)size error:(id *)error
 {
-  v4 = [(CSSQuartzBackedScreenshotter *)self makeRawQuartzCGImageScreenshotWithIsSecure:1 size:a3 error:a4];
+  v4 = [(CSSQuartzBackedScreenshotter *)self makeRawQuartzCGImageScreenshotWithIsSecure:1 size:size error:error];
   if (v4)
   {
     v5 = v4;
@@ -86,13 +86,13 @@
   return v6;
 }
 
-- (CGImage)makeRawQuartzCGImageScreenshotWithIsSecure:(BOOL)a3 size:(id)a4 error:(id *)a5
+- (CGImage)makeRawQuartzCGImageScreenshotWithIsSecure:(BOOL)secure size:(id)size error:(id *)error
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = [(CSSQuartzBackedScreenshotter *)self display];
-  v10 = v9;
-  if (!v9)
+  secureCopy = secure;
+  sizeCopy = size;
+  display = [(CSSQuartzBackedScreenshotter *)self display];
+  v10 = display;
+  if (!display)
   {
     v33 = sub_100003634();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -100,7 +100,7 @@
       sub_100005EF8(v33, v34, v35, v36, v37, v38, v39, v40);
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -108,20 +108,20 @@
     goto LABEL_8;
   }
 
-  v62 = v6;
-  v64 = v9;
-  v11 = [v8 height];
-  v12 = [v8 width];
-  v13 = (4 * v12 + 63) & 0xFFFFFFFFFFFFFFC0;
+  v62 = secureCopy;
+  v64 = display;
+  height = [sizeCopy height];
+  width = [sizeCopy width];
+  v13 = (4 * width + 63) & 0xFFFFFFFFFFFFFFC0;
   v14 = vm_page_mask;
-  v15 = vm_page_mask + v13 * v11;
+  v15 = vm_page_mask + v13 * height;
   v76[0] = kIOSurfaceWidth;
-  v58 = v12;
+  v58 = width;
   v16 = [NSNumber numberWithUnsignedLong:?];
   v77[0] = v16;
   v76[1] = kIOSurfaceHeight;
-  height = v11;
-  v17 = [NSNumber numberWithUnsignedLong:v11];
+  height = height;
+  v17 = [NSNumber numberWithUnsignedLong:height];
   v77[1] = v17;
   v76[2] = kIOSurfacePixelFormat;
   v18 = [NSNumber numberWithInt:1111970369];
@@ -140,7 +140,7 @@
   v77[5] = v20;
   v77[6] = &off_10000CBD0;
   [NSDictionary dictionaryWithObjects:v77 forKeys:v76 count:7];
-  v22 = v21 = v8;
+  v22 = v21 = sizeCopy;
   v23 = IOSurfaceCreate(v22);
 
   if (!v23)
@@ -152,13 +152,13 @@
       sub_100005EC0(v41, v42, v43, v44, v45, v46, v47, v48);
     }
 
-    v8 = v21;
+    sizeCopy = v21;
 LABEL_15:
-    if (a5)
+    if (error)
     {
 LABEL_16:
       CRKErrorWithCodeAndUserInfo();
-      *a5 = v32 = 0;
+      *error = v32 = 0;
       goto LABEL_17;
     }
 
@@ -182,8 +182,8 @@ LABEL_8:
   v75[1] = v23;
   v74[2] = kCASnapshotDisplayName;
   v10 = v64;
-  v24 = [v64 name];
-  v75[2] = v24;
+  name = [v64 name];
+  v75[2] = name;
   v75[3] = &off_10000CBE8;
   v74[3] = kCASnapshotOriginX;
   v74[4] = kCASnapshotOriginY;
@@ -208,7 +208,7 @@ LABEL_8:
   IOSurfaceLock(v23, 1u, 0);
   BaseAddress = IOSurfaceGetBaseAddress(v23);
   v29 = CGDataProviderCreateWithData(v23, BaseAddress, v63 & ~v61, sub_100003678);
-  v8 = v21;
+  sizeCopy = v21;
   if (!v29)
   {
     IOSurfaceUnlock(v23, 1u, 0);
@@ -232,32 +232,32 @@ LABEL_17:
   return v32;
 }
 
-- (CATransform3D)transformForFinalScreenshotSize:(SEL)a3
+- (CATransform3D)transformForFinalScreenshotSize:(SEL)size
 {
   v6 = a4;
   v7 = objc_opt_new();
   [(CSSQuartzBackedScreenshotter *)self displayScale];
   v9 = v8;
-  v10 = [(CSSQuartzBackedScreenshotter *)self displaySize];
-  CGAffineTransformMakeScale(&v16, v9 / fmin([v10 height], objc_msgSend(v10, "width")), v9 / fmax(objc_msgSend(v10, "height"), objc_msgSend(v10, "width")));
+  displaySize = [(CSSQuartzBackedScreenshotter *)self displaySize];
+  CGAffineTransformMakeScale(&v16, v9 / fmin([displaySize height], objc_msgSend(displaySize, "width")), v9 / fmax(objc_msgSend(displaySize, "height"), objc_msgSend(displaySize, "width")));
   [v7 appendTransform:&v16];
   CGAffineTransformMakeTranslation(&v16, -0.5, -0.5);
   [v7 appendTransform:&v16];
-  v11 = [(CSSQuartzBackedScreenshotter *)self display];
-  v12 = [v11 css_interfaceOrientation];
+  display = [(CSSQuartzBackedScreenshotter *)self display];
+  css_interfaceOrientation = [display css_interfaceOrientation];
 
-  if ((v12 - 2) <= 2)
+  if ((css_interfaceOrientation - 2) <= 2)
   {
-    CGAffineTransformMakeRotation(&v16, dbl_100008738[(v12 - 2)]);
+    CGAffineTransformMakeRotation(&v16, dbl_100008738[(css_interfaceOrientation - 2)]);
     [v7 appendTransform:&v16];
   }
 
   CGAffineTransformMakeTranslation(&v16, 0.5, 0.5);
   [v7 appendTransform:&v16];
-  v13 = [v6 width];
-  v14 = [v6 height];
+  width = [v6 width];
+  height = [v6 height];
 
-  CGAffineTransformMakeScale(&v16, v13, v14);
+  CGAffineTransformMakeScale(&v16, width, height);
   [v7 appendTransform:&v16];
   if (v7)
   {

@@ -1,53 +1,53 @@
 @interface PKPaymentSetupProductProvidersSectionController
-- (PKPaymentSetupProductProvidersSectionController)initWithProduct:(id)a3 linkedApplications:(id)a4 clipMetadata:(id)a5 showOtherProviders:(BOOL)a6 delegate:(id)a7;
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_generateItems:(id)a3 linkedApplications:(id)a4 clipMetadata:(id)a5 showOtherProviders:(BOOL)a6;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3;
+- (PKPaymentSetupProductProvidersSectionController)initWithProduct:(id)product linkedApplications:(id)applications clipMetadata:(id)metadata showOtherProviders:(BOOL)providers delegate:(id)delegate;
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_generateItems:(id)items linkedApplications:(id)applications clipMetadata:(id)metadata showOtherProviders:(BOOL)providers;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPaymentSetupProductProvidersSectionController
 
-- (PKPaymentSetupProductProvidersSectionController)initWithProduct:(id)a3 linkedApplications:(id)a4 clipMetadata:(id)a5 showOtherProviders:(BOOL)a6 delegate:(id)a7
+- (PKPaymentSetupProductProvidersSectionController)initWithProduct:(id)product linkedApplications:(id)applications clipMetadata:(id)metadata showOtherProviders:(BOOL)providers delegate:(id)delegate
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  providersCopy = providers;
+  productCopy = product;
+  applicationsCopy = applications;
+  metadataCopy = metadata;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PKPaymentSetupProductProvidersSectionController;
   v16 = [(PKPaymentSetupListSectionController *)&v21 init];
   if (v16)
   {
-    v17 = [v12 displayName];
+    displayName = [productCopy displayName];
     productName = v16->_productName;
-    v16->_productName = v17;
+    v16->_productName = displayName;
 
-    v19 = [v12 configuration];
-    v16->_productType = [v19 type];
+    configuration = [productCopy configuration];
+    v16->_productType = [configuration type];
 
-    objc_storeWeak(&v16->_delegate, v15);
-    [(PKPaymentSetupProductProvidersSectionController *)v16 _generateItems:v12 linkedApplications:v13 clipMetadata:v14 showOtherProviders:v8];
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    [(PKPaymentSetupProductProvidersSectionController *)v16 _generateItems:productCopy linkedApplications:applicationsCopy clipMetadata:metadataCopy showOtherProviders:providersCopy];
   }
 
   return v16;
 }
 
-- (void)_generateItems:(id)a3 linkedApplications:(id)a4 clipMetadata:(id)a5 showOtherProviders:(BOOL)a6
+- (void)_generateItems:(id)items linkedApplications:(id)applications clipMetadata:(id)metadata showOtherProviders:(BOOL)providers
 {
-  v6 = a6;
+  providersCopy = providers;
   v68 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v55 = a4;
-  v52 = a5;
-  v56 = v6;
+  itemsCopy = items;
+  applicationsCopy = applications;
+  metadataCopy = metadata;
+  v56 = providersCopy;
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6)
+  if (providersCopy)
   {
     v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -61,8 +61,8 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v49 = v9;
-  obj = [v9 setupProductMethods];
+  v49 = itemsCopy;
+  obj = [itemsCopy setupProductMethods];
   v10 = [obj countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v10)
   {
@@ -82,20 +82,20 @@
         {
           v15 = objc_alloc_init(PKPaymentSetupProductProviderListItem);
           v16 = MEMORY[0x1E696AEC0];
-          v17 = [v14 partnerIdentifier];
-          v18 = [v14 localizedTitle];
+          partnerIdentifier = [v14 partnerIdentifier];
+          localizedTitle = [v14 localizedTitle];
           [v14 type];
           v19 = PKPaymentSupportedProvisioningMethodToString();
-          v20 = [v16 stringWithFormat:@"%@-%@-%@", v17, v18, v19];
+          v20 = [v16 stringWithFormat:@"%@-%@-%@", partnerIdentifier, localizedTitle, v19];
 
           [(PKPaymentSetupListItem *)v15 setIdentifier:v20];
           [(PKPaymentSetupProductProviderListItem *)v15 setSetupProductMethod:v14];
           [(PKPaymentSetupListItem *)v15 setLoadingIndicatorVisible:0];
           [(PKPaymentSetupListItem *)v15 setDisplayChevron:1];
-          v21 = [v14 type];
-          if (v21 <= 4)
+          type = [v14 type];
+          if (type <= 4)
           {
-            if (v21 == 1)
+            if (type == 1)
             {
               if (!v56)
               {
@@ -124,7 +124,7 @@ LABEL_43:
               continue;
             }
 
-            if (v21 == 2)
+            if (type == 2)
             {
               if (!v56)
               {
@@ -151,9 +151,9 @@ LABEL_21:
             goto LABEL_23;
           }
 
-          if (v21 != 5)
+          if (type != 5)
           {
-            if (v21 != 6)
+            if (type != 6)
             {
               goto LABEL_21;
             }
@@ -164,26 +164,26 @@ LABEL_21:
             }
 
             v24 = v14;
-            v25 = [v24 appClipLaunchURL];
-            v26 = [v52 objectForKeyedSubscript:v25];
+            appClipLaunchURL = [v24 appClipLaunchURL];
+            v26 = [metadataCopy objectForKeyedSubscript:appClipLaunchURL];
 
             if (v26)
             {
-              v27 = [v24 localizedTitle];
-              [(PKPaymentSetupListItem *)v15 setTitle:v27];
+              localizedTitle2 = [v24 localizedTitle];
+              [(PKPaymentSetupListItem *)v15 setTitle:localizedTitle2];
 
               v28 = PKUIImageNamed(@"App_Clip_Fallback_Icon");
               [(PKPaymentSetupListItem *)v15 setIcon:v28];
 
               [v51 addObject:v15];
-              v29 = [v26 fullAppIconURL];
+              fullAppIconURL = [v26 fullAppIconURL];
               v58[0] = MEMORY[0x1E69E9820];
               v58[1] = 3221225472;
               v58[2] = __117__PKPaymentSetupProductProvidersSectionController__generateItems_linkedApplications_clipMetadata_showOtherProviders___block_invoke;
               v58[3] = &unk_1E8012968;
               v59 = v15;
-              v60 = self;
-              PKCommonCachedImageFromURL(v29, v58);
+              selfCopy = self;
+              PKCommonCachedImageFromURL(fullAppIconURL, v58);
             }
 
 LABEL_23:
@@ -191,15 +191,15 @@ LABEL_23:
           }
 
           v33 = v14;
-          v34 = [v33 associatedStoreIdentifiers];
-          v35 = [v55 objectForKeyedSubscript:v34];
+          associatedStoreIdentifiers = [v33 associatedStoreIdentifiers];
+          v35 = [applicationsCopy objectForKeyedSubscript:associatedStoreIdentifiers];
 
           if (v35)
           {
-            v36 = [v35 iconImage];
-            if (v36)
+            iconImage = [v35 iconImage];
+            if (iconImage)
             {
-              [(PKPaymentSetupListItem *)v15 setIcon:v36];
+              [(PKPaymentSetupListItem *)v15 setIcon:iconImage];
             }
 
             else
@@ -210,24 +210,24 @@ LABEL_23:
 
             if ([v35 isInstalled])
             {
-              v38 = [v35 displayName];
-              [(PKPaymentSetupListItem *)v15 setTitle:v38];
+              displayName = [v35 displayName];
+              [(PKPaymentSetupListItem *)v15 setTitle:displayName];
               v39 = v50;
               goto LABEL_40;
             }
 
             if (v56)
             {
-              v38 = [v35 displayName];
-              if (v38)
+              displayName = [v35 displayName];
+              if (displayName)
               {
-                [(PKPaymentSetupListItem *)v15 setTitle:v38];
+                [(PKPaymentSetupListItem *)v15 setTitle:displayName];
               }
 
               else
               {
-                v40 = [v33 localizedTitle];
-                [(PKPaymentSetupListItem *)v15 setTitle:v40];
+                localizedTitle3 = [v33 localizedTitle];
+                [(PKPaymentSetupListItem *)v15 setTitle:localizedTitle3];
               }
 
               v39 = v51;
@@ -322,47 +322,47 @@ BOOL __117__PKPaymentSetupProductProvidersSectionController__generateItems_linke
   return v7;
 }
 
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = PKPaymentSetupProductProvidersSectionController;
-  v9 = [(PKPaymentSetupListSectionController *)&v13 decoratePaymentSetListCell:v7 forItem:v8 style:1];
+  v9 = [(PKPaymentSetupListSectionController *)&v13 decoratePaymentSetListCell:cellCopy forItem:itemCopy style:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 icon];
-    [v9 setImage:v10];
+    icon = [itemCopy icon];
+    [v9 setImage:icon];
 
-    v11 = [v9 imageProperties];
-    [v11 setMaximumSize:{32.0, 32.0}];
-    [v11 setReservedLayoutSize:{32.0, 32.0}];
-    [v11 setCornerRadius:4.0];
+    imageProperties = [v9 imageProperties];
+    [imageProperties setMaximumSize:{32.0, 32.0}];
+    [imageProperties setReservedLayoutSize:{32.0, 32.0}];
+    [imageProperties setCornerRadius:4.0];
   }
 
-  [v7 setContentConfiguration:v9];
+  [cellCopy setContentConfiguration:v9];
 
   return v9;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  if ([v5 isEqualToString:@"NewCardSection"])
+  if ([identifierCopy isEqualToString:@"NewCardSection"])
   {
     v7 = &OBJC_IVAR___PKPaymentSetupProductProvidersSectionController__newCardItems;
   }
 
-  else if ([v5 isEqualToString:@"InstalledAppsSection"])
+  else if ([identifierCopy isEqualToString:@"InstalledAppsSection"])
   {
     v7 = &OBJC_IVAR___PKPaymentSetupProductProvidersSectionController__installedItems;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"OtherSection"])
+    if (![identifierCopy isEqualToString:@"OtherSection"])
     {
       goto LABEL_8;
     }
@@ -376,36 +376,36 @@ LABEL_8:
   return v6;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  if (([v7 isEqualToString:@"InstalledAppsSection"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"OtherSection"))
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  if (([identifierCopy isEqualToString:@"InstalledAppsSection"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"OtherSection"))
   {
-    [v8 setHeaderMode:1];
+    [defaultListLayout setHeaderMode:1];
   }
 
-  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v6];
+  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
   [v9 contentInsets];
   [v9 setContentInsets:PKSetupViewConstantsListSectionInset(v10)];
 
   return v9;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v8 isEqualToString:@"InstalledAppsSection"])
+  registrationCopy = registration;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"InstalledAppsSection"])
   {
     v9 = @"FROM_APPS_ON_IPHONE_SECTION_TITLE";
   }
 
   else
   {
-    if (![v8 isEqualToString:@"OtherSection"] || !self->_newCardItems && !self->_installedItems)
+    if (![identifierCopy isEqualToString:@"OtherSection"] || !self->_newCardItems && !self->_installedItems)
     {
       goto LABEL_11;
     }
@@ -417,8 +417,8 @@ LABEL_8:
   if (v10)
   {
     v11 = v10;
-    v12 = [MEMORY[0x1E69DCC28] headerConfiguration];
-    [v12 setAxesPreservingSuperviewLayoutMargins:0];
+    headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
+    [headerConfiguration setAxesPreservingSuperviewLayoutMargins:0];
     v20[0] = *MEMORY[0x1E69DB648];
     v13 = PKOBKListHeaderFont();
     v21[0] = v13;
@@ -428,7 +428,7 @@ LABEL_8:
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
     v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v15];
-    [v12 setAttributedText:v16];
+    [headerConfiguration setAttributedText:v16];
 
     v17 = PKSetupViewConstantsViewMargin();
     v18 = PKSetupListViewConstantsViewMargin();
@@ -438,29 +438,29 @@ LABEL_8:
       v19 = 0.0;
     }
 
-    [v12 setDirectionalLayoutMargins:{10.0, v19, 10.0, v19}];
-    [v7 setContentConfiguration:v12];
+    [headerConfiguration setDirectionalLayoutMargins:{10.0, v19, 10.0, v19}];
+    [registrationCopy setContentConfiguration:headerConfiguration];
   }
 
 LABEL_11:
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  [v4 setLoadingIndicatorVisible:1];
+  itemCopy = item;
+  [itemCopy setLoadingIndicatorVisible:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained reloadItem:v4 animated:1];
+  [WeakRetained reloadItem:itemCopy animated:1];
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 setupProductMethod];
+  setupProductMethod = [itemCopy setupProductMethod];
 
-  [v7 didSelectProviderWithSetupMethod:v6];
+  [v7 didSelectProviderWithSetupMethod:setupProductMethod];
 }
 
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v42 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
@@ -484,7 +484,7 @@ LABEL_11:
         v10 = *(*(&v35 + 1) + 8 * i);
         [v10 setLoadingIndicatorVisible:0];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained reloadItem:v10 animated:v3];
+        [WeakRetained reloadItem:v10 animated:animatedCopy];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -515,7 +515,7 @@ LABEL_11:
         v17 = *(*(&v31 + 1) + 8 * j);
         [v17 setLoadingIndicatorVisible:0];
         v18 = objc_loadWeakRetained(&self->_delegate);
-        [v18 reloadItem:v17 animated:v3];
+        [v18 reloadItem:v17 animated:animatedCopy];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -546,7 +546,7 @@ LABEL_11:
         v24 = *(*(&v27 + 1) + 8 * k);
         [v24 setLoadingIndicatorVisible:{0, v27}];
         v25 = objc_loadWeakRetained(&self->_delegate);
-        [v25 reloadItem:v24 animated:v3];
+        [v25 reloadItem:v24 animated:animatedCopy];
       }
 
       v21 = [(NSArray *)v19 countByEnumeratingWithState:&v27 objects:v39 count:16];

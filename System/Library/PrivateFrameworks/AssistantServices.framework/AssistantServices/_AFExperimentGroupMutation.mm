@@ -1,5 +1,5 @@
 @interface _AFExperimentGroupMutation
-- (_AFExperimentGroupMutation)initWithBase:(id)a3;
+- (_AFExperimentGroupMutation)initWithBase:(id)base;
 - (id)getIdentifier;
 - (id)getProperties;
 - (unint64_t)getAllocation;
@@ -11,15 +11,15 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_properties;
+    properties = self->_properties;
   }
 
   else
   {
-    v2 = [(AFExperimentGroup *)self->_base properties];
+    properties = [(AFExperimentGroup *)self->_base properties];
   }
 
-  return v2;
+  return properties;
 }
 
 - (unint64_t)getAllocation
@@ -39,27 +39,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_identifier;
+    identifier = self->_identifier;
   }
 
   else
   {
-    v2 = [(AFExperimentGroup *)self->_base identifier];
+    identifier = [(AFExperimentGroup *)self->_base identifier];
   }
 
-  return v2;
+  return identifier;
 }
 
-- (_AFExperimentGroupMutation)initWithBase:(id)a3
+- (_AFExperimentGroupMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFExperimentGroupMutation;
   v6 = [(_AFExperimentGroupMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

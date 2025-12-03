@@ -7,7 +7,7 @@
 - (BOOL)canPinchToDismiss;
 - (BOOL)canSwipeToDismiss;
 - (BOOL)canToggleFullScreen;
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4;
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer;
 - (CGRect)contentFrame;
 - (CGSize)preferredContentSize;
 - (id)delegate;
@@ -15,51 +15,51 @@
 - (id)safeAreaLayoutGuide;
 - (id)transitioningView;
 - (int64_t)preferredWhitePointAdaptivityStyle;
-- (void)previewIsAppearingWithProgress:(double)a3;
+- (void)previewIsAppearingWithProgress:(double)progress;
 - (void)previewWillFinishAppearing;
-- (void)setDelegate:(id)a3;
-- (void)showPreviewViewController:(id)a3 animatingWithCrossfade:(BOOL)a4;
+- (void)setDelegate:(id)delegate;
+- (void)showPreviewViewController:(id)controller animatingWithCrossfade:(BOOL)crossfade;
 @end
 
 @implementation QLItemAggregatedViewController
 
-- (void)showPreviewViewController:(id)a3 animatingWithCrossfade:(BOOL)a4
+- (void)showPreviewViewController:(id)controller animatingWithCrossfade:(BOOL)crossfade
 {
-  v4 = a4;
+  crossfadeCopy = crossfade;
   v68[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  if (v8 != self)
+  if (parentViewController != self)
   {
-    v9 = [v7 parentViewController];
+    parentViewController2 = [controllerCopy parentViewController];
 
-    if (v9)
+    if (parentViewController2)
     {
-      [v7 willMoveToParentViewController:0];
-      v10 = [v7 view];
-      [v10 removeFromSuperview];
+      [controllerCopy willMoveToParentViewController:0];
+      view = [controllerCopy view];
+      [view removeFromSuperview];
 
-      [v7 removeFromParentViewController];
+      [controllerCopy removeFromParentViewController];
     }
 
-    [v7 willMoveToParentViewController:self];
-    v11 = [(QLItemAggregatedViewController *)self view];
-    v12 = [v7 view];
-    [v11 addSubview:v12];
+    [controllerCopy willMoveToParentViewController:self];
+    view2 = [(QLItemAggregatedViewController *)self view];
+    view3 = [controllerCopy view];
+    [view2 addSubview:view3];
 
-    [(QLItemAggregatedViewController *)self addChildViewController:v7];
-    [v7 didMoveToParentViewController:self];
+    [(QLItemAggregatedViewController *)self addChildViewController:controllerCopy];
+    [controllerCopy didMoveToParentViewController:self];
     if (self->_isVisible || self->_isAppearing)
     {
-      [v7 previewWillAppear:self->_currentPreviewViewController != 0];
+      [controllerCopy previewWillAppear:self->_currentPreviewViewController != 0];
     }
 
-    v13 = [(QLItemAggregatedViewController *)self view];
-    v14 = v13;
-    if (v13)
+    view4 = [(QLItemAggregatedViewController *)self view];
+    v14 = view4;
+    if (view4)
     {
-      [v13 transform];
+      [view4 transform];
     }
 
     else
@@ -69,47 +69,47 @@
       v62 = 0u;
     }
 
-    v15 = [v7 view];
+    view5 = [controllerCopy view];
     v61[0] = v62;
     v61[1] = v63;
     v61[2] = v64;
-    [v15 setTransform:v61];
+    [view5 setTransform:v61];
 
-    v16 = [(QLItemAggregatedViewController *)self view];
-    [v16 bounds];
+    view6 = [(QLItemAggregatedViewController *)self view];
+    [view6 bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v7 view];
-    [v25 setFrame:{v18, v20, v22, v24}];
+    view7 = [controllerCopy view];
+    [view7 setFrame:{v18, v20, v22, v24}];
 
-    v26 = [v7 view];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view8 = [controllerCopy view];
+    [view8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(QLItemAggregatedViewController *)self view];
+    view9 = [(QLItemAggregatedViewController *)self view];
     v28 = MEMORY[0x277CCAAD0];
     v67 = @"preview";
-    v29 = [v7 view];
-    v68[0] = v29;
+    view10 = [controllerCopy view];
+    v68[0] = view10;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:&v67 count:1];
     v31 = [v28 constraintsWithVisualFormat:@"H:|[preview]|" options:0 metrics:0 views:v30];
-    [v27 addConstraints:v31];
+    [view9 addConstraints:v31];
 
-    v32 = [(QLItemAggregatedViewController *)self view];
+    view11 = [(QLItemAggregatedViewController *)self view];
     v33 = MEMORY[0x277CCAAD0];
     v65 = @"preview";
-    v34 = [v7 view];
-    v66 = v34;
+    view12 = [controllerCopy view];
+    v66 = view12;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
     v36 = [v33 constraintsWithVisualFormat:@"V:|[preview]|" options:0 metrics:0 views:v35];
-    [v32 addConstraints:v36];
+    [view11 addConstraints:v36];
 
-    v37 = [(QLItemAggregatedViewController *)self delegate];
-    [v7 setDelegate:v37];
+    delegate = [(QLItemAggregatedViewController *)self delegate];
+    [controllerCopy setDelegate:delegate];
 
-    v38 = [(QLItemViewController *)self presentingDelegate];
-    [v7 setPresentingDelegate:v38];
+    presentingDelegate = [(QLItemViewController *)self presentingDelegate];
+    [controllerCopy setPresentingDelegate:presentingDelegate];
 
     currentPreviewViewController = self->_currentPreviewViewController;
     if (currentPreviewViewController)
@@ -122,15 +122,15 @@
       aBlock[3] = &unk_278B56E00;
       v41 = v40;
       v58 = v41;
-      v59 = self;
-      v42 = v7;
+      selfCopy = self;
+      v42 = controllerCopy;
       v60 = v42;
       v43 = _Block_copy(aBlock);
-      v44 = [v42 view];
-      v45 = v44;
-      if (v4)
+      view13 = [v42 view];
+      v45 = view13;
+      if (crossfadeCopy)
       {
-        [v44 setAlpha:0.0];
+        [view13 setAlpha:0.0];
 
         v46 = MEMORY[0x277D75D18];
         v55[0] = MEMORY[0x277D85DD0];
@@ -155,7 +155,7 @@
 
       else
       {
-        [v44 setAlpha:1.0];
+        [view13 setAlpha:1.0];
 
         v43[2](v43);
       }
@@ -163,18 +163,18 @@
 
     else if (self->_isVisible)
     {
-      [v7 previewDidAppear:1];
+      [controllerCopy previewDidAppear:1];
       self->_isAppearing = 0;
     }
 
-    objc_storeStrong(&self->_currentPreviewViewController, a3);
-    v48 = [(QLItemAggregatedViewController *)self delegate];
-    [(QLItemViewController *)self->_currentPreviewViewController setDelegate:v48];
+    objc_storeStrong(&self->_currentPreviewViewController, controller);
+    delegate2 = [(QLItemAggregatedViewController *)self delegate];
+    [(QLItemViewController *)self->_currentPreviewViewController setDelegate:delegate2];
 
     [(QLItemViewController *)self->_currentPreviewViewController setAppearance:self->_appearance];
     [(QLItemViewController *)self->_currentPreviewViewController previewBecameFullScreen:self->_fullScreen animated:0];
-    v49 = [(QLItemAggregatedViewController *)self delegate];
-    [v49 previewItemViewControllerDidChangeCurrentPreviewController:self];
+    delegate3 = [(QLItemAggregatedViewController *)self delegate];
+    [delegate3 previewItemViewControllerDidChangeCurrentPreviewController:self];
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -209,19 +209,19 @@ void __83__QLItemAggregatedViewController_showPreviewViewController_animatingWit
   [v1 setAlpha:1.0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [(QLItemViewController *)self->_currentPreviewViewController setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [(QLItemViewController *)self->_currentPreviewViewController setDelegate:delegateCopy];
 }
 
-- (void)previewIsAppearingWithProgress:(double)a3
+- (void)previewIsAppearingWithProgress:(double)progress
 {
   v5.receiver = self;
   v5.super_class = QLItemAggregatedViewController;
   [(QLItemViewController *)&v5 previewIsAppearingWithProgress:?];
-  [(QLItemViewController *)self->_currentPreviewViewController previewIsAppearingWithProgress:a3];
+  [(QLItemViewController *)self->_currentPreviewViewController previewIsAppearingWithProgress:progress];
 }
 
 - (void)previewWillFinishAppearing
@@ -232,13 +232,13 @@ void __83__QLItemAggregatedViewController_showPreviewViewController_animatingWit
   [(QLItemViewController *)self->_currentPreviewViewController previewWillFinishAppearing];
 }
 
-- (BOOL)shouldAcceptTouch:(id)a3 ofGestureRecognizer:(id)a4
+- (BOOL)shouldAcceptTouch:(id)touch ofGestureRecognizer:(id)recognizer
 {
   if (self->_currentPreviewViewController)
   {
     currentPreviewViewController = self->_currentPreviewViewController;
 
-    return [(QLItemViewController *)currentPreviewViewController shouldAcceptTouch:a3 ofGestureRecognizer:a4];
+    return [(QLItemViewController *)currentPreviewViewController shouldAcceptTouch:touch ofGestureRecognizer:recognizer];
   }
 
   else
@@ -247,14 +247,14 @@ void __83__QLItemAggregatedViewController_showPreviewViewController_animatingWit
     v10 = v5;
     v8.receiver = self;
     v8.super_class = QLItemAggregatedViewController;
-    return [(QLItemViewController *)&v8 shouldAcceptTouch:a3 ofGestureRecognizer:a4];
+    return [(QLItemViewController *)&v8 shouldAcceptTouch:touch ofGestureRecognizer:recognizer];
   }
 }
 
 - (id)safeAreaLayoutGuide
 {
-  v3 = [(QLItemAggregatedViewController *)self parentViewController];
-  if (v3)
+  parentViewController = [(QLItemAggregatedViewController *)self parentViewController];
+  if (parentViewController)
   {
     do
     {
@@ -264,29 +264,29 @@ void __83__QLItemAggregatedViewController_showPreviewViewController_animatingWit
         break;
       }
 
-      v4 = [v3 parentViewController];
+      v3ParentViewController = [parentViewController parentViewController];
 
-      v3 = v4;
+      parentViewController = v3ParentViewController;
     }
 
-    while (v4);
+    while (v3ParentViewController);
   }
 
-  v5 = [v3 safeAreaLayoutGuide];
-  v6 = v5;
-  if (v5)
+  safeAreaLayoutGuide = [parentViewController safeAreaLayoutGuide];
+  v6 = safeAreaLayoutGuide;
+  if (safeAreaLayoutGuide)
   {
-    v7 = v5;
+    safeAreaLayoutGuide2 = safeAreaLayoutGuide;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = QLItemAggregatedViewController;
-    v7 = [(QLItemAggregatedViewController *)&v10 safeAreaLayoutGuide];
+    safeAreaLayoutGuide2 = [(QLItemAggregatedViewController *)&v10 safeAreaLayoutGuide];
   }
 
-  v8 = v7;
+  v8 = safeAreaLayoutGuide2;
 
   return v8;
 }
@@ -403,15 +403,15 @@ void __83__QLItemAggregatedViewController_showPreviewViewController_animatingWit
   currentPreviewViewController = self->_currentPreviewViewController;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(QLItemViewController *)self->_currentPreviewViewController printer];
+    printer = [(QLItemViewController *)self->_currentPreviewViewController printer];
   }
 
   else
   {
-    v4 = 0;
+    printer = 0;
   }
 
-  return v4;
+  return printer;
 }
 
 - (CGSize)preferredContentSize

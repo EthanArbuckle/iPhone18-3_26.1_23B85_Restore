@@ -2,33 +2,33 @@
 - (CKContainerImplementation)containerImplementation;
 - (id)CKPropertiesDescription;
 - (id)CKStatusReportArray;
-- (id)initInternalWithContainerImplementation:(id)a3 scope:(int64_t)a4;
+- (id)initInternalWithContainerImplementation:(id)implementation scope:(int64_t)scope;
 - (unint64_t)countAssetCacheItems;
-- (void)_addOperation:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 isConvenience:(BOOL)a6;
-- (void)_scheduleConvenienceOperation:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5;
-- (void)checkSupportedDeviceCapabilitiesInZone:(id)a3 desiredCapabilities:(id)a4 options:(id)a5 wrappingDatabase:(id)a6 convenienceConfiguration:(id)a7 completionHandler:(id)a8;
+- (void)_addOperation:(id)operation wrappingDatabase:(id)database convenienceConfiguration:(id)configuration isConvenience:(BOOL)convenience;
+- (void)_scheduleConvenienceOperation:(id)operation wrappingDatabase:(id)database convenienceConfiguration:(id)configuration;
+- (void)checkSupportedDeviceCapabilitiesInZone:(id)zone desiredCapabilities:(id)capabilities options:(id)options wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)clearAssetCache;
-- (void)clearCacheEntriesForRecord:(id)a3 completionHandler:(id)a4;
-- (void)clearCacheEntriesForZone:(id)a3 completionHandler:(id)a4;
-- (void)clearCachesWithOptions:(unint64_t)a3 completionHandler:(id)a4;
+- (void)clearCacheEntriesForRecord:(id)record completionHandler:(id)handler;
+- (void)clearCacheEntriesForZone:(id)zone completionHandler:(id)handler;
+- (void)clearCachesWithOptions:(unint64_t)options completionHandler:(id)handler;
 - (void)clearInvalidatedPCSCacheEntriesIfNeeded;
 - (void)clearRecordCache;
-- (void)deleteRecordWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)deleteRecordZoneWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)deleteSubscriptionWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchAllRecordZonesWithWrappingDatabase:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5;
-- (void)fetchAllSubscriptionsWithWrappingDatabase:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5;
-- (void)fetchPCSFromCacheForRecordWithID:(id)a3 completionHandler:(id)a4;
-- (void)fetchPCSFromCacheForShareWithID:(id)a3 completionHandler:(id)a4;
-- (void)fetchPCSFromCacheForZoneWithID:(id)a3 localCacheOnly:(BOOL)a4 unitTestOverrides:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordZoneWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)fetchSubscriptionWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)getCorruptRecordsForAllZonesWithCompletionHandler:(id)a3;
-- (void)performQuery:(id)a3 inZoneWithID:(id)a4 wrappingDatabase:(id)a5 convenienceConfiguration:(id)a6 completionHandler:(id)a7;
-- (void)saveRecord:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)saveRecordZone:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)saveSubscription:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6;
+- (void)deleteRecordWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)deleteRecordZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)deleteSubscriptionWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchAllRecordZonesWithWrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchAllSubscriptionsWithWrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchPCSFromCacheForRecordWithID:(id)d completionHandler:(id)handler;
+- (void)fetchPCSFromCacheForShareWithID:(id)d completionHandler:(id)handler;
+- (void)fetchPCSFromCacheForZoneWithID:(id)d localCacheOnly:(BOOL)only unitTestOverrides:(id)overrides completionHandler:(id)handler;
+- (void)fetchRecordWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchRecordZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchSubscriptionWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)getCorruptRecordsForAllZonesWithCompletionHandler:(id)handler;
+- (void)performQuery:(id)query inZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)saveRecord:(id)record wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)saveRecordZone:(id)zone wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)saveSubscription:(id)subscription wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)showAssetCache;
 @end
 
@@ -61,19 +61,19 @@
   return v11;
 }
 
-- (id)initInternalWithContainerImplementation:(id)a3 scope:(int64_t)a4
+- (id)initInternalWithContainerImplementation:(id)implementation scope:(int64_t)scope
 {
-  v6 = a3;
+  implementationCopy = implementation;
   v26.receiver = self;
   v26.super_class = CKDatabaseImplementation;
   v7 = [(CKDatabaseImplementation *)&v26 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_containerImplementation, v6);
-    v8->_scope = a4;
+    objc_storeWeak(&v7->_containerImplementation, implementationCopy);
+    v8->_scope = scope;
     v9 = MEMORY[0x1E696AEC0];
-    v12 = objc_msgSend_containerIdentifier(v6, v10, v11);
+    v12 = objc_msgSend_containerIdentifier(implementationCopy, v10, v11);
     v14 = objc_msgSend_stringWithFormat_(v9, v13, @"%@.%@", @"com.apple.cloudkit.database-queue", v12);
     v15 = v14;
     v18 = objc_msgSend_UTF8String(v15, v16, v17);
@@ -92,13 +92,13 @@
   return v8;
 }
 
-- (void)_addOperation:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 isConvenience:(BOOL)a6
+- (void)_addOperation:(id)operation wrappingDatabase:(id)database convenienceConfiguration:(id)configuration isConvenience:(BOOL)convenience
 {
-  v6 = a6;
+  convenienceCopy = convenience;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  operationCopy = operation;
+  databaseCopy = database;
+  configurationCopy = configuration;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -108,11 +108,11 @@
   }
 
   objc_msgSend_databaseScope(self, v13, v14);
-  objc_msgSend_setDatabase_(v10, v15, v11);
-  objc_msgSend_applyConvenienceConfiguration_(v10, v16, v12);
+  objc_msgSend_setDatabase_(operationCopy, v15, databaseCopy);
+  objc_msgSend_applyConvenienceConfiguration_(operationCopy, v16, configurationCopy);
   v19 = objc_msgSend_containerImplementation(self, v17, v18);
   v22 = v19;
-  if (!v6)
+  if (!convenienceCopy)
   {
     goto LABEL_9;
   }
@@ -128,7 +128,7 @@
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       v27 = v23;
-      v30 = objc_msgSend_operationID(v10, v28, v29);
+      v30 = objc_msgSend_operationID(operationCopy, v28, v29);
       v34 = 138412290;
       v35 = v30;
       _os_log_error_impl(&dword_1883EA000, v27, OS_LOG_TYPE_ERROR, "No container found while enqueuing CKDatabase convenience operation %@", &v34, 0xCu);
@@ -136,12 +136,12 @@
 
 LABEL_9:
     v24 = objc_msgSend_operationQueue(self, v20, v21);
-    objc_msgSend_addOperation_(v24, v25, v10);
+    objc_msgSend_addOperation_(v24, v25, operationCopy);
 
     goto LABEL_10;
   }
 
-  objc_msgSend__addPreparedConvenienceOperation_(v19, v20, v10);
+  objc_msgSend__addPreparedConvenienceOperation_(v19, v20, operationCopy);
 LABEL_10:
 
   v26 = *MEMORY[0x1E69E9840];
@@ -216,138 +216,138 @@ LABEL_10:
   }
 }
 
-- (void)getCorruptRecordsForAllZonesWithCompletionHandler:(id)a3
+- (void)getCorruptRecordsForAllZonesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_containerImplementation(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_18854DF8C;
   v9[3] = &unk_1E70BC590;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   if (v7)
   {
     sub_1885397D0(v7, 0, 1, 0, &unk_1EFA2E9A8, v9);
   }
 }
 
-- (void)clearCachesWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)clearCachesWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9 = objc_msgSend_containerImplementation(self, v7, v8);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_18854E114;
   v11[3] = &unk_1E70BD070;
-  v12 = v6;
-  v13 = a3;
+  v12 = handlerCopy;
+  optionsCopy = options;
   v11[4] = self;
-  v10 = v6;
+  v10 = handlerCopy;
   if (v9)
   {
     sub_1885397D0(v9, 0, 1, 0, &unk_1EFA2E9C8, v11);
   }
 }
 
-- (void)clearCacheEntriesForRecord:(id)a3 completionHandler:(id)a4
+- (void)clearCacheEntriesForRecord:(id)record completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  handlerCopy = handler;
   v10 = objc_msgSend_containerImplementation(self, v8, v9);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18854E31C;
   v13[3] = &unk_1E70BCE10;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = recordCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = recordCopy;
   if (v10)
   {
     sub_1885397D0(v10, 0, 1, 0, &unk_1EFA2E9E8, v13);
   }
 }
 
-- (void)clearCacheEntriesForZone:(id)a3 completionHandler:(id)a4
+- (void)clearCacheEntriesForZone:(id)zone completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  handlerCopy = handler;
   v10 = objc_msgSend_containerImplementation(self, v8, v9);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18854E520;
   v13[3] = &unk_1E70BCE10;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = zoneCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = zoneCopy;
   if (v10)
   {
     sub_1885397D0(v10, 0, 1, 0, &unk_1EFA2EA08, v13);
   }
 }
 
-- (void)fetchPCSFromCacheForZoneWithID:(id)a3 localCacheOnly:(BOOL)a4 unitTestOverrides:(id)a5 completionHandler:(id)a6
+- (void)fetchPCSFromCacheForZoneWithID:(id)d localCacheOnly:(BOOL)only unitTestOverrides:(id)overrides completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  overridesCopy = overrides;
+  handlerCopy = handler;
   v15 = objc_msgSend_containerImplementation(self, v13, v14);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_18854E754;
   v19[3] = &unk_1E70BCCF8;
-  v20 = v10;
-  v21 = self;
-  v24 = a4;
-  v22 = v11;
-  v23 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  selfCopy = self;
+  onlyCopy = only;
+  v22 = overridesCopy;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = overridesCopy;
+  v18 = dCopy;
   if (v15)
   {
     sub_1885397D0(v15, 0, 1, 0, &unk_1EFA2EA28, v19);
   }
 }
 
-- (void)fetchPCSFromCacheForShareWithID:(id)a3 completionHandler:(id)a4
+- (void)fetchPCSFromCacheForShareWithID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = objc_msgSend_containerImplementation(self, v8, v9);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18854E95C;
   v13[3] = &unk_1E70BCE10;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
   if (v10)
   {
     sub_1885397D0(v10, 0, 1, 0, &unk_1EFA2EA48, v13);
   }
 }
 
-- (void)fetchPCSFromCacheForRecordWithID:(id)a3 completionHandler:(id)a4
+- (void)fetchPCSFromCacheForRecordWithID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = objc_msgSend_containerImplementation(self, v8, v9);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18854EB60;
   v13[3] = &unk_1E70BCE10;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
   if (v10)
   {
     sub_1885397D0(v10, 0, 1, 0, &unk_1EFA2EA68, v13);
@@ -422,25 +422,25 @@ LABEL_10:
   return v3;
 }
 
-- (void)_scheduleConvenienceOperation:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5
+- (void)_scheduleConvenienceOperation:(id)operation wrappingDatabase:(id)database convenienceConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v14 = a3;
+  configurationCopy = configuration;
+  databaseCopy = database;
+  operationCopy = operation;
   objc_msgSend_databaseScope(self, v10, v11);
-  objc_msgSend_configureConvenience_(v14, v12, v8);
-  objc_msgSend__addOperation_wrappingDatabase_convenienceConfiguration_isConvenience_(self, v13, v14, v9, v8, 1);
+  objc_msgSend_configureConvenience_(operationCopy, v12, configurationCopy);
+  objc_msgSend__addOperation_wrappingDatabase_convenienceConfiguration_isConvenience_(self, v13, operationCopy, databaseCopy, configurationCopy, 1);
 }
 
-- (void)fetchRecordWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("recordID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("recordID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -455,7 +455,7 @@ LABEL_10:
   }
 
   v17 = [CKFetchRecordsOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordIDs_(v17, v20, v19);
 
@@ -463,25 +463,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_18854F194;
   v37[3] = &unk_1E70BD110;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = dCopy;
   objc_msgSend_setFetchRecordsCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveRecord:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)saveRecord:(id)record wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordCopy = record;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("record", v10, 0, 0, 0, &v40);
+  v14 = _CKCheckArgument("record", recordCopy, 0, 0, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -496,7 +496,7 @@ LABEL_10:
   }
 
   v17 = [CKModifyRecordsOperation alloc];
-  v41[0] = v10;
+  v41[0] = recordCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordsToSave_recordIDsToDelete_(v17, v20, v19, 0);
 
@@ -504,25 +504,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_18854F558;
   v37[3] = &unk_1E70BD098;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = recordCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = recordCopy;
   objc_msgSend_setModifyRecordsCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteRecordWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)deleteRecordWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("recordID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("recordID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -537,7 +537,7 @@ LABEL_10:
   }
 
   v17 = [CKModifyRecordsOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordsToSave_recordIDsToDelete_(v17, v20, 0, v19);
 
@@ -545,25 +545,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_18854F90C;
   v37[3] = &unk_1E70BD098;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = dCopy;
   objc_msgSend_setModifyRecordsCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performQuery:(id)a3 inZoneWithID:(id)a4 wrappingDatabase:(id)a5 convenienceConfiguration:(id)a6 completionHandler:(id)a7
+- (void)performQuery:(id)query inZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queryCopy = query;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v46 = 0;
-  v17 = _CKCheckArgument("query", v12, 0, 0, 0, &v46);
+  v17 = _CKCheckArgument("query", queryCopy, 0, 0, 0, &v46);
   v18 = v46;
   v19 = v18;
   if ((v17 & 1) == 0)
@@ -579,8 +579,8 @@ LABEL_10:
 
   v20 = objc_opt_new();
   v21 = [CKQueryOperation alloc];
-  v23 = objc_msgSend_initWithQuery_(v21, v22, v12);
-  objc_msgSend_setZoneID_(v23, v24, v13);
+  v23 = objc_msgSend_initWithQuery_(v21, v22, queryCopy);
+  objc_msgSend_setZoneID_(v23, v24, dCopy);
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = sub_18854FCC0;
@@ -593,38 +593,38 @@ LABEL_10:
   v41[2] = sub_18854FD6C;
   v41[3] = &unk_1E70BD0E8;
   v42 = v25;
-  v43 = v16;
+  v43 = handlerCopy;
   v27 = v25;
-  v28 = v16;
+  v28 = handlerCopy;
   objc_msgSend_setQueryCompletionBlock_(v23, v29, v41);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v30, v23, v14, v15);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v30, v23, databaseCopy, configurationCopy);
 }
 
-- (void)fetchAllRecordZonesWithWrappingDatabase:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5
+- (void)fetchAllRecordZonesWithWrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  databaseCopy = database;
   v13 = objc_msgSend_fetchAllRecordZonesOperation(CKFetchRecordZonesOperation, v11, v12);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_18854FE84;
   v17[3] = &unk_1E70BCE38;
-  v18 = v8;
-  v14 = v8;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
   objc_msgSend_setFetchRecordZonesCompletionBlock_(v13, v15, v17);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v16, v13, v10, v9);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v16, v13, databaseCopy, configurationCopy);
 }
 
-- (void)fetchRecordZoneWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("zoneID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("zoneID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -639,7 +639,7 @@ LABEL_10:
   }
 
   v17 = [CKFetchRecordZonesOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordZoneIDs_(v17, v20, v19);
 
@@ -647,25 +647,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_188550124;
   v37[3] = &unk_1E70BD110;
-  v38 = v10;
-  v39 = v13;
-  v22 = v10;
-  v23 = v13;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = dCopy;
+  v23 = handlerCopy;
   objc_msgSend_setFetchRecordZonesCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveRecordZone:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)saveRecordZone:(id)zone wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  zoneCopy = zone;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("zone", v10, 0, 0, 0, &v40);
+  v14 = _CKCheckArgument("zone", zoneCopy, 0, 0, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -680,7 +680,7 @@ LABEL_10:
   }
 
   v17 = [CKModifyRecordZonesOperation alloc];
-  v41[0] = v10;
+  v41[0] = zoneCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordZonesToSave_recordZoneIDsToDelete_(v17, v20, v19, 0);
 
@@ -688,25 +688,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_1885503F8;
   v37[3] = &unk_1E70BD138;
-  v38 = v10;
-  v39 = v13;
-  v22 = v10;
-  v23 = v13;
+  v38 = zoneCopy;
+  v39 = handlerCopy;
+  v22 = zoneCopy;
+  v23 = handlerCopy;
   objc_msgSend_setModifyRecordZonesCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteRecordZoneWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)deleteRecordZoneWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("zoneID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("zoneID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -721,7 +721,7 @@ LABEL_10:
   }
 
   v17 = [CKModifyRecordZonesOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithRecordZonesToSave_recordZoneIDsToDelete_(v17, v20, 0, v19);
 
@@ -729,25 +729,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_1885506CC;
   v37[3] = &unk_1E70BD138;
-  v38 = v10;
-  v39 = v13;
-  v22 = v10;
-  v23 = v13;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = dCopy;
+  v23 = handlerCopy;
   objc_msgSend_setModifyRecordZonesCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveSubscription:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)saveSubscription:(id)subscription wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subscriptionCopy = subscription;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("subscription", v10, 0, 0, 0, &v40);
+  v14 = _CKCheckArgument("subscription", subscriptionCopy, 0, 0, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -762,7 +762,7 @@ LABEL_10:
   }
 
   v17 = [CKModifySubscriptionsOperation alloc];
-  v41[0] = v10;
+  v41[0] = subscriptionCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithSubscriptionsToSave_subscriptionIDsToDelete_(v17, v20, v19, 0);
 
@@ -770,27 +770,27 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_18855098C;
   v37[3] = &unk_1E70BD098;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = subscriptionCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = subscriptionCopy;
   objc_msgSend_setModifySubscriptionsCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkSupportedDeviceCapabilitiesInZone:(id)a3 desiredCapabilities:(id)a4 options:(id)a5 wrappingDatabase:(id)a6 convenienceConfiguration:(id)a7 completionHandler:(id)a8
+- (void)checkSupportedDeviceCapabilitiesInZone:(id)zone desiredCapabilities:(id)capabilities options:(id)options wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  zoneCopy = zone;
+  capabilitiesCopy = capabilities;
+  optionsCopy = options;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v63 = 0;
-  v20 = _CKCheckArgument("zone", v14, 0, 0, 0, &v63);
+  v20 = _CKCheckArgument("zone", zoneCopy, 0, 0, 0, &v63);
   v21 = v63;
   v22 = v21;
   if ((v20 & 1) == 0)
@@ -805,10 +805,10 @@ LABEL_10:
   }
 
   v23 = [CKCheckSupportedDeviceCapabilitiesOperation alloc];
-  v26 = objc_msgSend_zoneID(v14, v24, v25);
+  v26 = objc_msgSend_zoneID(zoneCopy, v24, v25);
   v64[0] = v26;
   v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v64, 1);
-  v30 = objc_msgSend_initWithDesiredCapabilities_zoneIDs_options_(v23, v29, v15, v28, v16);
+  v30 = objc_msgSend_initWithDesiredCapabilities_zoneIDs_options_(v23, v29, capabilitiesCopy, v28, optionsCopy);
 
   v33 = objc_msgSend_resolvedConfiguration(v30, v31, v32);
   objc_msgSend_setRequestOriginator_(v33, v34, 4);
@@ -816,13 +816,13 @@ LABEL_10:
   v61[0] = 0;
   v61[1] = v61;
   v61[2] = 0x2020000000;
-  v62 = v19 != 0;
+  v62 = handlerCopy != 0;
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = sub_188550E50;
   v58[3] = &unk_1E70BD160;
   v60 = v61;
-  v35 = v19;
+  v35 = handlerCopy;
   v59 = v35;
   objc_msgSend_setPerResultBlock_(v30, v36, v58);
   v53[0] = MEMORY[0x1E69E9820];
@@ -830,28 +830,28 @@ LABEL_10:
   v53[2] = sub_188551058;
   v53[3] = &unk_1E70BD188;
   v57 = v61;
-  v37 = v14;
+  v37 = zoneCopy;
   v54 = v37;
-  v38 = v15;
+  v38 = capabilitiesCopy;
   v55 = v38;
   v39 = v35;
   v56 = v39;
   objc_msgSend_setCheckSupportedDeviceCapabilitiesCompletionBlock_(v30, v40, v53);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v41, v30, v17, v18);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v41, v30, databaseCopy, configurationCopy);
 
   _Block_object_dispose(v61, 8);
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSubscriptionWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)deleteSubscriptionWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("subscriptionID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("subscriptionID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -866,7 +866,7 @@ LABEL_10:
   }
 
   v17 = [CKModifySubscriptionsOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithSubscriptionsToSave_subscriptionIDsToDelete_(v17, v20, 0, v19);
 
@@ -874,25 +874,25 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_1885513FC;
   v37[3] = &unk_1E70BD098;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = dCopy;
   objc_msgSend_setModifySubscriptionsCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchSubscriptionWithID:(id)a3 wrappingDatabase:(id)a4 convenienceConfiguration:(id)a5 completionHandler:(id)a6
+- (void)fetchSubscriptionWithID:(id)d wrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  databaseCopy = database;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v40 = 0;
-  v14 = _CKCheckArgument("subscriptionID", v10, 0, 1, 0, &v40);
+  v14 = _CKCheckArgument("subscriptionID", dCopy, 0, 1, 0, &v40);
   v15 = v40;
   v16 = v15;
   if ((v14 & 1) == 0)
@@ -907,7 +907,7 @@ LABEL_10:
   }
 
   v17 = [CKFetchSubscriptionsOperation alloc];
-  v41[0] = v10;
+  v41[0] = dCopy;
   v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v18, v41, 1);
   v21 = objc_msgSend_initWithSubscriptionIDs_(v17, v20, v19);
 
@@ -915,30 +915,30 @@ LABEL_10:
   v37[1] = 3221225472;
   v37[2] = sub_188551778;
   v37[3] = &unk_1E70BD110;
-  v38 = v10;
-  v39 = v13;
-  v22 = v13;
-  v23 = v10;
+  v38 = dCopy;
+  v39 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = dCopy;
   objc_msgSend_setFetchSubscriptionCompletionBlock_(v21, v24, v37);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, v11, v12);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v25, v21, databaseCopy, configurationCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllSubscriptionsWithWrappingDatabase:(id)a3 convenienceConfiguration:(id)a4 completionHandler:(id)a5
+- (void)fetchAllSubscriptionsWithWrappingDatabase:(id)database convenienceConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  databaseCopy = database;
   v13 = objc_msgSend_fetchAllSubscriptionsOperation(CKFetchSubscriptionsOperation, v11, v12);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_1885519E4;
   v17[3] = &unk_1E70BCE38;
-  v18 = v8;
-  v14 = v8;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
   objc_msgSend_setFetchSubscriptionCompletionBlock_(v13, v15, v17);
-  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v16, v13, v10, v9);
+  objc_msgSend__scheduleConvenienceOperation_wrappingDatabase_convenienceConfiguration_(self, v16, v13, databaseCopy, configurationCopy);
 }
 
 @end

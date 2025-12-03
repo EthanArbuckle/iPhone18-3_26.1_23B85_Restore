@@ -1,6 +1,6 @@
 @interface RAPTransitLinesAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (RAPTransitLinesAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4;
+- (RAPTransitLinesAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title;
 @end
 
 @implementation RAPTransitLinesAnnotation
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (RAPTransitLinesAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4
+- (RAPTransitLinesAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = RAPTransitLinesAnnotation;
   v8 = [(RAPTransitLinesAnnotation *)&v13 init];
@@ -27,7 +27,7 @@
   {
     v8->_coordinate.latitude = latitude;
     v8->_coordinate.longitude = longitude;
-    v10 = [v7 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
   }

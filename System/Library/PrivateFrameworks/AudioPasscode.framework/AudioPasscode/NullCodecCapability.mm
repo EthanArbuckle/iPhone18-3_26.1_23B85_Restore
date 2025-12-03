@@ -1,6 +1,6 @@
 @interface NullCodecCapability
 - (NullCodecCapability)init;
-- (NullCodecCapability)initWithCoder:(id)a3;
+- (NullCodecCapability)initWithCoder:(id)coder;
 @end
 
 @implementation NullCodecCapability
@@ -12,7 +12,7 @@
   return [(AUPasscodeCodecCapability *)&v3 initWithAlgorithmName:@"null"];
 }
 
-- (NullCodecCapability)initWithCoder:(id)a3
+- (NullCodecCapability)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = NullCodecCapability;

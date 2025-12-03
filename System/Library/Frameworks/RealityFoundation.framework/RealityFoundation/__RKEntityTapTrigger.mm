@@ -1,10 +1,10 @@
 @interface __RKEntityTapTrigger
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityTapTrigger
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   __RKEntityTapTrigger.copy(with:)(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

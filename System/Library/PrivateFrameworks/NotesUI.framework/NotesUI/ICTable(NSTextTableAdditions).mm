@@ -14,15 +14,15 @@
   v14 = objc_alloc_init(MEMORY[0x1E69DB860]);
   if (v10)
   {
-    v15 = [v10 count];
+    columnCount = [v10 count];
   }
 
   else
   {
-    v15 = [a1 columnCount];
+    columnCount = [self columnCount];
   }
 
-  [v14 setNumberOfColumns:v15];
+  [v14 setNumberOfColumns:columnCount];
   [v14 setCollapsesBorders:1];
   if (v10)
   {
@@ -31,7 +31,7 @@
 
   else
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(a1, "columnCount")}];
+    v16 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(self, "columnCount")}];
   }
 
   v17 = v16;
@@ -42,7 +42,7 @@
 
   else
   {
-    v18 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(a1, "rowCount")}];
+    v18 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(self, "rowCount")}];
   }
 
   v19 = v18;
@@ -50,7 +50,7 @@
   v27 = 3221225472;
   v28 = __101__ICTable_NSTextTableAdditions__attributedStringWithNSTextTablesForColumns_rows_context_forPrinting___block_invoke;
   v29 = &unk_1E846DD80;
-  v30 = a1;
+  selfCopy = self;
   v31 = v17;
   v32 = v12;
   v33 = v13;
@@ -76,8 +76,8 @@
   v17 = [[v14 alloc] initWithTable:v15 startingRow:a6 rowSpan:1 startingColumn:a5 columnSpan:1];
 
   [v17 setWidth:0 type:0 forLayer:1.0];
-  v18 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v17 setBorderColor:v18];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [v17 setBorderColor:lightGrayColor];
 
   [v17 setWidth:0 type:-1 forLayer:0 edge:5.0];
   [v17 setWidth:0 type:-1 forLayer:2 edge:5.0];
@@ -103,9 +103,9 @@
 
   if ([v22 length] >= 2)
   {
-    v23 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v24 = [v22 string];
-    v25 = [v23 characterIsMember:{objc_msgSend(v24, "characterAtIndex:", 0)}];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    string = [v22 string];
+    v25 = [newlineCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", 0)}];
 
     if (v25)
     {

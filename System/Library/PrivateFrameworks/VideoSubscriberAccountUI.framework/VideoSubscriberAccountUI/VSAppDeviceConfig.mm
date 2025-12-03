@@ -26,8 +26,8 @@
 
 - (CGSize)screenSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -49,14 +49,14 @@
   v2 = objc_alloc_init(MEMORY[0x277CE22E8]);
   [v2 start];
   [v2 waitUntilFinished];
-  v3 = [v2 result];
-  v4 = [v3 forceUnwrapObject];
+  result = [v2 result];
+  forceUnwrapObject = [result forceUnwrapObject];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__VSAppDeviceConfig_storeFrontCountryCode__block_invoke;
   v7[3] = &unk_279E19A40;
   v7[4] = &v8;
-  [v4 unwrapObject:v7 error:&__block_literal_global_5];
+  [forceUnwrapObject unwrapObject:v7 error:&__block_literal_global_5];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -76,11 +76,11 @@ void __42__VSAppDeviceConfig_storeFrontCountryCode__block_invoke_2(uint64_t a1, 
 
 - (id)timeZone
 {
-  v2 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE678]];
-  v4 = [v3 timeZone];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  v3 = [autoupdatingCurrentLocale objectForKey:*MEMORY[0x277CBE678]];
+  timeZone = [v3 timeZone];
 
-  return v4;
+  return timeZone;
 }
 
 void __42__VSAppDeviceConfig_storeFrontCountryCode__block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

@@ -1,17 +1,17 @@
 @interface MFKeyValueStoreService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFKeyValueStoreService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  v9 = a3;
-  v10 = xpc_dictionary_get_value(v9, [_MSMailServiceArguments UTF8String]);
+  messageCopy = message;
+  v10 = xpc_dictionary_get_value(messageCopy, [_MSMailServiceArguments UTF8String]);
   if (!v10)
   {
     v21 = +[NSAssertionHandler currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"MFKeyValueStoreService.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"args"}];
+    [v21 handleFailureInMethod:a2 object:self file:@"MFKeyValueStoreService.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"args"}];
   }
 
   v11 = _CFXPCCreateCFObjectFromXPCObject();
@@ -30,9 +30,9 @@
   if ([v12 isEqualToString:@"SignatureKey"])
   {
     v13 = +[MFSignatures sharedInstance];
-    v14 = [v13 signature];
+    signature = [v13 signature];
 LABEL_11:
-    v16 = v14;
+    v16 = signature;
 
     goto LABEL_15;
   }
@@ -40,7 +40,7 @@ LABEL_11:
   if ([v12 isEqualToString:@"UseAccountSignatures"])
   {
     v13 = +[MFSignatures sharedInstance];
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 useAccountSignatures]);
+    signature = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 useAccountSignatures]);
     goto LABEL_11;
   }
 
@@ -48,7 +48,7 @@ LABEL_11:
   if ([v12 isEqualToString:EMUserDefaultAlwaysBCCSelf])
   {
     v13 = +[NSUserDefaults em_userDefaults];
-    v14 = [v13 valueForKey:v15];
+    signature = [v13 valueForKey:v15];
     goto LABEL_11;
   }
 
@@ -64,7 +64,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  reply = xpc_dictionary_create_reply(v9);
+  reply = xpc_dictionary_create_reply(messageCopy);
   if (v16)
   {
     v18 = _CFXPCCreateXPCObjectFromCFObject();
@@ -72,7 +72,7 @@ LABEL_15:
   }
 
   v19 = reply;
-  *a5 = reply;
+  *object = reply;
 
   return 1;
 }

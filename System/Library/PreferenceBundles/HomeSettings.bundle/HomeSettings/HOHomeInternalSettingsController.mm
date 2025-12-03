@@ -1,25 +1,25 @@
 @interface HOHomeInternalSettingsController
 - (id)_legacyCameraDefaultsExist;
 - (id)createHomeEnergyPreferences;
-- (id)gridForecastErrorWithSpecifier:(id)a3;
+- (id)gridForecastErrorWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_removeLegacyCameraDefaults:(id)a3;
-- (void)_resetAccessCodeOnboarding:(id)a3;
-- (void)_resetAccessoryFirmwareUpdateOnboarding:(id)a3;
-- (void)_resetAnnounceOnboarding:(id)a3;
-- (void)_resetCameraRecordingOnboarding:(id)a3;
-- (void)_resetHomeEnergyCache:(id)a3;
-- (void)_resetHomeTheaterOnboarding:(id)a3;
-- (void)_resetIdentifyVoiceOnboarding:(id)a3;
-- (void)_resetNaturalLightingOnboarding:(id)a3;
-- (void)_resetNeedsRedesignMigration:(id)a3;
-- (void)_resetNewFeaturesOnboarding:(id)a3;
-- (void)_resetTVViewingProfilesOnboarding:(id)a3;
-- (void)_resetUtilityOnboarding:(id)a3;
-- (void)_resetWalletKeyExpressModeOnboarding:(id)a3;
-- (void)_setGridForecastError:(unint64_t)a3;
-- (void)setGridForecastError:(id)a3 withSpecifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_removeLegacyCameraDefaults:(id)defaults;
+- (void)_resetAccessCodeOnboarding:(id)onboarding;
+- (void)_resetAccessoryFirmwareUpdateOnboarding:(id)onboarding;
+- (void)_resetAnnounceOnboarding:(id)onboarding;
+- (void)_resetCameraRecordingOnboarding:(id)onboarding;
+- (void)_resetHomeEnergyCache:(id)cache;
+- (void)_resetHomeTheaterOnboarding:(id)onboarding;
+- (void)_resetIdentifyVoiceOnboarding:(id)onboarding;
+- (void)_resetNaturalLightingOnboarding:(id)onboarding;
+- (void)_resetNeedsRedesignMigration:(id)migration;
+- (void)_resetNewFeaturesOnboarding:(id)onboarding;
+- (void)_resetTVViewingProfilesOnboarding:(id)onboarding;
+- (void)_resetUtilityOnboarding:(id)onboarding;
+- (void)_resetWalletKeyExpressModeOnboarding:(id)onboarding;
+- (void)_setGridForecastError:(unint64_t)error;
+- (void)setGridForecastError:(id)error withSpecifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation HOHomeInternalSettingsController
@@ -202,8 +202,8 @@
 
     *&v49[OBJC_IVAR___PSSpecifier_setter] = "setKillHomeForSpecifierValue:specifier:";
     [v4 addObject:v49];
-    v50 = [(HOHomeInternalSettingsController *)self createHomeEnergyPreferences];
-    [v4 addObjectsFromArray:v50];
+    createHomeEnergyPreferences = [(HOHomeInternalSettingsController *)self createHomeEnergyPreferences];
+    [v4 addObjectsFromArray:createHomeEnergyPreferences];
 
     v51 = [PSSpecifier groupSpecifierWithName:@"WHA"];
 
@@ -250,7 +250,7 @@
     v92[3] = &unk_10870;
     v61 = v4;
     v93 = v61;
-    v94 = self;
+    selfCopy = self;
     [v60 enumerateKeysAndObjectsUsingBlock:v92];
 
     v62 = [PSSpecifier groupSpecifierWithName:@"Demo Mode"];
@@ -310,8 +310,8 @@
     [v61 addObject:v74];
     v75 = [(HOHomeInternalSettingsController *)self ho_globalButtonSpecifierWithName:@"Remove Legacy Camera Defaults" selector:"_removeLegacyCameraDefaults:"];
 
-    v76 = [(HOHomeInternalSettingsController *)self _legacyCameraDefaultsExist];
-    [v75 setProperty:v76 forKey:@"enabled"];
+    _legacyCameraDefaultsExist = [(HOHomeInternalSettingsController *)self _legacyCameraDefaultsExist];
+    [v75 setProperty:_legacyCameraDefaultsExist forKey:@"enabled"];
 
     [v61 addObject:v75];
     v77 = [PSSpecifier groupSpecifierWithName:@"Migration"];
@@ -359,97 +359,97 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  if ([v7 tag] == &dword_8)
+  cellCopy = cell;
+  if ([cellCopy tag] == &dword_8)
   {
-    v5 = [v7 editableTextField];
-    [v5 setTextAlignment:2];
+    editableTextField = [cellCopy editableTextField];
+    [editableTextField setTextAlignment:2];
 
-    v6 = [v7 editableTextField];
-    [v6 setReturnKeyType:9];
+    editableTextField2 = [cellCopy editableTextField];
+    [editableTextField2 setReturnKeyType:9];
   }
 }
 
-- (void)_resetIdentifyVoiceOnboarding:(id)a3
+- (void)_resetIdentifyVoiceOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetIdentifyVoiceOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetAnnounceOnboarding:(id)a3
+- (void)_resetAnnounceOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetAnnounceOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetHomeTheaterOnboarding:(id)a3
+- (void)_resetHomeTheaterOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetHomeTheaterOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetTVViewingProfilesOnboarding:(id)a3
+- (void)_resetTVViewingProfilesOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetTVViewingProfilesOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetNaturalLightingOnboarding:(id)a3
+- (void)_resetNaturalLightingOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetNaturalLightingOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetNewFeaturesOnboarding:(id)a3
+- (void)_resetNewFeaturesOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetHomeTheaterOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetCameraRecordingOnboarding:(id)a3
+- (void)_resetCameraRecordingOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetCameraRecordingOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetWalletKeyExpressModeOnboarding:(id)a3
+- (void)_resetWalletKeyExpressModeOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetWalletKeyExpressModeOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetAccessCodeOnboarding:(id)a3
+- (void)_resetAccessCodeOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetAccessCodeOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetAccessoryFirmwareUpdateOnboarding:(id)a3
+- (void)_resetAccessoryFirmwareUpdateOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetAccessoryFirmwareUpdateOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetNeedsRedesignMigration:(id)a3
+- (void)_resetNeedsRedesignMigration:(id)migration
 {
   CFPreferencesSetAppValue(HFResetRedesignMigrationKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_removeLegacyCameraDefaults:(id)a3
+- (void)_removeLegacyCameraDefaults:(id)defaults
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -464,8 +464,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [objc_opt_class() _legacyCameraDefaultKeys];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  _legacyCameraDefaultKeys = [objc_opt_class() _legacyCameraDefaultKeys];
+  v8 = [_legacyCameraDefaultKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -477,7 +477,7 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_legacyCameraDefaultKeys);
         }
 
         [v6 removeObjectForKey:*(*(&v12 + 1) + 8 * v11)];
@@ -485,7 +485,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v9 = [_legacyCameraDefaultKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v9);
@@ -498,14 +498,14 @@
 {
   v2 = [NSUserDefaults alloc];
   v3 = [v2 initWithSuiteName:HFHomeDomain];
-  v4 = [objc_opt_class() _legacyCameraDefaultKeys];
+  _legacyCameraDefaultKeys = [objc_opt_class() _legacyCameraDefaultKeys];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_68D8;
   v10[3] = &unk_10898;
   v11 = v3;
   v5 = v3;
-  v6 = [v4 na_any:v10];
+  v6 = [_legacyCameraDefaultKeys na_any:v10];
 
   if (v6)
   {
@@ -522,24 +522,24 @@
   return v7;
 }
 
-- (void)_resetUtilityOnboarding:(id)a3
+- (void)_resetUtilityOnboarding:(id)onboarding
 {
   CFPreferencesSetAppValue(HFResetUtilityOnboardingKey, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_resetHomeEnergyCache:(id)a3
+- (void)_resetHomeEnergyCache:(id)cache
 {
   CFPreferencesSetAppValue(HFPreferencesResetHomeEnergyDCache, kCFBooleanTrue, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
 }
 
-- (void)_setGridForecastError:(unint64_t)a3
+- (void)_setGridForecastError:(unint64_t)error
 {
   v4 = HFPreferencesGridForecastError;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:error];
   CFPreferencesSetAppValue(v4, v5, HFHomeDomain);
 
   [(HOHomeInternalSettingsController *)self ho_killHome];
@@ -596,18 +596,18 @@
   return v3;
 }
 
-- (void)setGridForecastError:(id)a3 withSpecifier:(id)a4
+- (void)setGridForecastError:(id)error withSpecifier:(id)specifier
 {
-  v5 = [a3 intValue];
+  intValue = [error intValue];
 
-  [(HOHomeInternalSettingsController *)self _setGridForecastError:v5];
+  [(HOHomeInternalSettingsController *)self _setGridForecastError:intValue];
 }
 
-- (id)gridForecastErrorWithSpecifier:(id)a3
+- (id)gridForecastErrorWithSpecifier:(id)specifier
 {
-  v3 = [(HOHomeInternalSettingsController *)self _gridForecastError];
+  _gridForecastError = [(HOHomeInternalSettingsController *)self _gridForecastError];
 
-  return [NSNumber numberWithUnsignedInteger:v3];
+  return [NSNumber numberWithUnsignedInteger:_gridForecastError];
 }
 
 @end

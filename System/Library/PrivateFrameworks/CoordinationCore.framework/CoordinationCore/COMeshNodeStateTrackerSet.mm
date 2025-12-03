@@ -1,15 +1,15 @@
 @interface COMeshNodeStateTrackerSet
 - (COMeshNodeStateTrackerSet)init;
 - (id)description;
-- (id)nodeStateTrackerForNode:(id)a3;
-- (id)nodeStateTrackersWithStatus:(int64_t)a3;
-- (void)_withLock:(id)a3;
-- (void)addNodeStateTracker:(id)a3;
-- (void)enumerateNodeStateTrackersOfStatus:(int64_t)a3 usingBlock:(id)a4;
-- (void)enumerateNodeStateTrackersUsingBlock:(id)a3;
+- (id)nodeStateTrackerForNode:(id)node;
+- (id)nodeStateTrackersWithStatus:(int64_t)status;
+- (void)_withLock:(id)lock;
+- (void)addNodeStateTracker:(id)tracker;
+- (void)enumerateNodeStateTrackersOfStatus:(int64_t)status usingBlock:(id)block;
+- (void)enumerateNodeStateTrackersUsingBlock:(id)block;
 - (void)removeAllNodeStateTrackers;
-- (void)removeNodeStateTrackerForNode:(id)a3;
-- (void)setNodeDormant:(id)a3 withState:(unint64_t)a4 error:(id)a5;
+- (void)removeNodeStateTrackerForNode:(id)node;
+- (void)setNodeDormant:(id)dormant withState:(unint64_t)state error:(id)error;
 @end
 
 @implementation COMeshNodeStateTrackerSet
@@ -34,32 +34,32 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COMeshNodeStateTrackerSet *)self trackers];
-  v7 = [v6 description];
+  trackers = [(COMeshNodeStateTrackerSet *)self trackers];
+  v7 = [trackers description];
   v8 = [v3 stringWithFormat:@"<%@: %p, trackers = %@>", v5, self, v7];
 
   return v8;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addNodeStateTracker:(id)a3
+- (void)addNodeStateTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__COMeshNodeStateTrackerSet_addNodeStateTracker___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = trackerCopy;
+  v5 = trackerCopy;
   [(COMeshNodeStateTrackerSet *)self _withLock:v6];
 }
 
@@ -75,9 +75,9 @@ void __49__COMeshNodeStateTrackerSet_addNodeStateTracker___block_invoke(uint64_t
   [*(a1 + 32) setTrackers:v5];
 }
 
-- (id)nodeStateTrackerForNode:(id)a3
+- (id)nodeStateTrackerForNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -90,7 +90,7 @@ void __49__COMeshNodeStateTrackerSet_addNodeStateTracker___block_invoke(uint64_t
   v8[3] = &unk_278E15A18;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = nodeCopy;
   v9 = v5;
   [(COMeshNodeStateTrackerSet *)self _withLock:v8];
   v6 = v12[5];
@@ -109,16 +109,16 @@ void __53__COMeshNodeStateTrackerSet_nodeStateTrackerForNode___block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (void)removeNodeStateTrackerForNode:(id)a3
+- (void)removeNodeStateTrackerForNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__COMeshNodeStateTrackerSet_removeNodeStateTrackerForNode___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = nodeCopy;
+  v5 = nodeCopy;
   [(COMeshNodeStateTrackerSet *)self _withLock:v6];
 }
 
@@ -148,7 +148,7 @@ void __55__COMeshNodeStateTrackerSet_removeAllNodeStateTrackers__block_invoke(ui
   [v1 setTrackers:v2];
 }
 
-- (id)nodeStateTrackersWithStatus:(int64_t)a3
+- (id)nodeStateTrackersWithStatus:(int64_t)status
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10[0] = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@ void __55__COMeshNodeStateTrackerSet_removeAllNodeStateTrackers__block_invoke(ui
   v10[2] = __57__COMeshNodeStateTrackerSet_nodeStateTrackersWithStatus___block_invoke;
   v10[3] = &unk_278E17FD8;
   v10[4] = self;
-  v12 = a3;
+  statusCopy = status;
   v6 = v5;
   v11 = v6;
   [(COMeshNodeStateTrackerSet *)self _withLock:v10];
@@ -178,20 +178,20 @@ void __57__COMeshNodeStateTrackerSet_nodeStateTrackersWithStatus___block_invoke(
   [v2 enumerateNodeStateTrackersOfStatus:v1 usingBlock:v3];
 }
 
-- (void)setNodeDormant:(id)a3 withState:(unint64_t)a4 error:(id)a5
+- (void)setNodeDormant:(id)dormant withState:(unint64_t)state error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  dormantCopy = dormant;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__COMeshNodeStateTrackerSet_setNodeDormant_withState_error___block_invoke;
   v12[3] = &unk_278E18000;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = dormantCopy;
+  v14 = errorCopy;
+  stateCopy = state;
+  v10 = errorCopy;
+  v11 = dormantCopy;
   [(COMeshNodeStateTrackerSet *)self _withLock:v12];
 }
 
@@ -220,29 +220,29 @@ void __60__COMeshNodeStateTrackerSet_setNodeDormant_withState_error___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateNodeStateTrackersUsingBlock:(id)a3
+- (void)enumerateNodeStateTrackersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(COMeshNodeStateTrackerSet *)self trackers];
+  blockCopy = block;
+  trackers = [(COMeshNodeStateTrackerSet *)self trackers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__COMeshNodeStateTrackerSet_enumerateNodeStateTrackersUsingBlock___block_invoke;
   v7[3] = &unk_278E18028;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [trackers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)enumerateNodeStateTrackersOfStatus:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateNodeStateTrackersOfStatus:(int64_t)status usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__COMeshNodeStateTrackerSet_enumerateNodeStateTrackersOfStatus_usingBlock___block_invoke;
   v8[3] = &unk_278E18050;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = blockCopy;
+  statusCopy = status;
+  v7 = blockCopy;
   [(COMeshNodeStateTrackerSet *)self enumerateNodeStateTrackersUsingBlock:v8];
 }
 

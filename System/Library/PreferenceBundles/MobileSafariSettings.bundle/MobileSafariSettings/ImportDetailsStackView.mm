@@ -1,7 +1,7 @@
 @interface ImportDetailsStackView
 - (ImportDetailsStackView)init;
-- (void)setFileNameAndMetadataFromURL:(id)a3;
-- (void)setNumberOfItemsToBeImportedPerDataType:(id)a3;
+- (void)setFileNameAndMetadataFromURL:(id)l;
+- (void)setNumberOfItemsToBeImportedPerDataType:(id)type;
 @end
 
 @implementation ImportDetailsStackView
@@ -16,7 +16,7 @@
     v37 = +[UIColor systemGray5Color];
     v33 = +[UIColor systemBackgroundColor];
     v3 = +[UIColor systemGray4Color];
-    v4 = [v3 cgColor];
+    cgColor = [v3 cgColor];
 
     v38 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline weight:UIFontWeightSemibold];
     v34 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -29,8 +29,8 @@
     [(ImportDetailsStackView *)v2 setLayoutMarginsRelativeArrangement:1];
     [(ImportDetailsStackView *)v2 setLayoutMargins:15.0, 15.0, 15.0, 15.0];
     [(ImportDetailsStackView *)v2 setBackgroundColor:v37];
-    v5 = [(ImportDetailsStackView *)v2 layer];
-    [v5 setCornerRadius:12.0];
+    layer = [(ImportDetailsStackView *)v2 layer];
+    [layer setCornerRadius:12.0];
 
     [(ImportDetailsStackView *)v2 setSpacing:10.0];
     v6 = objc_alloc_init(UIStackView);
@@ -42,14 +42,14 @@
     v7 = objc_alloc_init(UIView);
     [v6 addArrangedSubview:v7];
     [v7 setBackgroundColor:v33];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:8.0];
+    layer2 = [v7 layer];
+    [layer2 setCornerRadius:8.0];
 
-    v9 = [v7 layer];
-    [v9 setBorderWidth:1.0];
+    layer3 = [v7 layer];
+    [layer3 setBorderWidth:1.0];
 
-    v10 = [v7 layer];
-    [v10 setBorderColor:v4];
+    layer4 = [v7 layer];
+    [layer4 setBorderColor:cgColor];
 
     v11 = objc_alloc_init(UIView);
     [v6 addArrangedSubview:v11];
@@ -61,9 +61,9 @@
     v13 = [NSLayoutConstraint safari_constraintsMatchingFrameOfView:v12 withFrameOfView:v7 edgeInsets:2.0, 2.0, 2.0, 2.0];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [v6 widthAnchor];
+    widthAnchor = [v6 widthAnchor];
     [v7 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
-    v15 = [v14 constraintEqualToConstant:?];
+    v15 = [widthAnchor constraintEqualToConstant:?];
     [v15 setActive:1];
 
     v16 = objc_alloc_init(UIStackView);
@@ -119,12 +119,12 @@
   return v2;
 }
 
-- (void)setFileNameAndMetadataFromURL:(id)a3
+- (void)setFileNameAndMetadataFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v29 = 0;
   v28 = 0;
-  [v4 getResourceValue:&v29 forKey:NSURLFileSizeKey error:&v28];
+  [lCopy getResourceValue:&v29 forKey:NSURLFileSizeKey error:&v28];
   v5 = v29;
   v6 = v28;
   v7 = v6;
@@ -149,7 +149,7 @@
 
   v27 = 0;
   v26 = 0;
-  [v4 getResourceValue:&v27 forKey:NSURLCreationDateKey error:&v26];
+  [lCopy getResourceValue:&v27 forKey:NSURLCreationDateKey error:&v26];
   v10 = v27;
   v11 = v26;
 
@@ -185,10 +185,10 @@
     v25 = v14;
     v18 = v13;
     v19 = v11;
-    v20 = _WBSLocalizedString();
-    v21 = [v4 lastPathComponent];
-    v22 = [v21 stringByDeletingPathExtension];
-    v23 = [NSString localizedStringWithFormat:v20, v22];
+    lastPathComponent2 = _WBSLocalizedString();
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v23 = [NSString localizedStringWithFormat:lastPathComponent2, stringByDeletingPathExtension];
     p_filenameLabel = &self->_filenameLabel;
     [(UILabel *)*p_filenameLabel setText:v23];
 
@@ -199,25 +199,25 @@
 
   else
   {
-    v20 = [v4 lastPathComponent];
-    v21 = [v20 stringByDeletingPathExtension];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    lastPathComponent = [lastPathComponent2 stringByDeletingPathExtension];
     p_filenameLabel = &self->_filenameLabel;
-    [(UILabel *)*p_filenameLabel setText:v21];
+    [(UILabel *)*p_filenameLabel setText:lastPathComponent];
   }
 
   [(UILabel *)*p_filenameLabel setAccessibilityIdentifier:@"ImportDetailsFilename"];
 }
 
-- (void)setNumberOfItemsToBeImportedPerDataType:(id)a3
+- (void)setNumberOfItemsToBeImportedPerDataType:(id)type
 {
-  v4 = a3;
-  [(UIStackView *)self->_spinnerStackView setHidden:v4 != 0];
+  typeCopy = type;
+  [(UIStackView *)self->_spinnerStackView setHidden:typeCopy != 0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [typeCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -227,7 +227,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) unsignedIntegerValue])
@@ -237,7 +237,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -252,7 +252,7 @@ LABEL_11:
   [(UILabel *)self->_importCountsLabel setHidden:v6 ^ 1];
   if (((v6 ^ 1) & 1) == 0)
   {
-    v9 = [WBSBrowsingDataImportController localizedStringForNumberOfItemsToBeImported:v4];
+    v9 = [WBSBrowsingDataImportController localizedStringForNumberOfItemsToBeImported:typeCopy];
     [(UILabel *)self->_importCountsLabel setText:v9];
 
     [(UILabel *)self->_importCountsLabel setAccessibilityIdentifier:@"ImportDetailsItemCounts"];

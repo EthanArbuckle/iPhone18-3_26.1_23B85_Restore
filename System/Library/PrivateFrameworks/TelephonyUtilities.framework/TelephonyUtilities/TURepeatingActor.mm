@@ -4,9 +4,9 @@
 - (TURepeatingAction)currentRepeatingAction;
 - (TURepeatingActor)init;
 - (void)_attemptNextIteration;
-- (void)_beginRepeatingAction:(id)a3;
-- (void)beginRepeatingAction:(id)a3 iterations:(unint64_t)a4 pauseDurationBetweenIterations:(double)a5 completion:(id)a6;
-- (void)setCurrentRepeatingAction:(id)a3;
+- (void)_beginRepeatingAction:(id)action;
+- (void)beginRepeatingAction:(id)action iterations:(unint64_t)iterations pauseDurationBetweenIterations:(double)betweenIterations completion:(id)completion;
+- (void)setCurrentRepeatingAction:(id)action;
 - (void)stop;
 @end
 
@@ -14,8 +14,8 @@
 
 - (BOOL)isRunning
 {
-  v2 = [(TURepeatingActor *)self currentRepeatingAction];
-  v3 = v2 != 0;
+  currentRepeatingAction = [(TURepeatingActor *)self currentRepeatingAction];
+  v3 = currentRepeatingAction != 0;
 
   return v3;
 }
@@ -47,12 +47,12 @@
   return v3;
 }
 
-- (void)setCurrentRepeatingAction:(id)a3
+- (void)setCurrentRepeatingAction:(id)action
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_currentRepeatingAction != v5)
+  if (self->_currentRepeatingAction != actionCopy)
   {
     v6 = TUDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -63,7 +63,7 @@
       _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "setCurrentRepeatingAction to: %@", &v9, 0xCu);
     }
 
-    objc_storeStrong(&self->_currentRepeatingAction, a3);
+    objc_storeStrong(&self->_currentRepeatingAction, action);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -71,23 +71,23 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginRepeatingAction:(id)a3 iterations:(unint64_t)a4 pauseDurationBetweenIterations:(double)a5 completion:(id)a6
+- (void)beginRepeatingAction:(id)action iterations:(unint64_t)iterations pauseDurationBetweenIterations:(double)betweenIterations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(TURepeatingActor *)self queue];
+  actionCopy = action;
+  completionCopy = completion;
+  queue = [(TURepeatingActor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__TURepeatingActor_beginRepeatingAction_iterations_pauseDurationBetweenIterations_completion___block_invoke;
   block[3] = &unk_1E74251D0;
-  v17 = v11;
-  v18 = a4;
-  v19 = a5;
+  v17 = completionCopy;
+  iterationsCopy = iterations;
+  betweenIterationsCopy = betweenIterations;
   block[4] = self;
-  v16 = v10;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = actionCopy;
+  v13 = completionCopy;
+  v14 = actionCopy;
+  dispatch_async(queue, block);
 }
 
 void __94__TURepeatingActor_beginRepeatingAction_iterations_pauseDurationBetweenIterations_completion___block_invoke(uint64_t a1)
@@ -101,40 +101,40 @@ void __94__TURepeatingActor_beginRepeatingAction_iterations_pauseDurationBetween
 
 - (void)stop
 {
-  v3 = [(TURepeatingActor *)self queue];
+  queue = [(TURepeatingActor *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __24__TURepeatingActor_stop__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_beginRepeatingAction:(id)a3
+- (void)_beginRepeatingAction:(id)action
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURepeatingActor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  actionCopy = action;
+  queue = [(TURepeatingActor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(TURepeatingActor *)self currentRepeatingAction];
+  currentRepeatingAction = [(TURepeatingActor *)self currentRepeatingAction];
 
-  if (v6)
+  if (currentRepeatingAction)
   {
     v7 = TUDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = actionCopy;
       _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "add to pendingRepeatingAction: %@", &v11, 0xCu);
     }
 
-    [(TURepeatingActor *)self setPendingRepeatingAction:v4];
+    [(TURepeatingActor *)self setPendingRepeatingAction:actionCopy];
   }
 
   else
   {
-    [(TURepeatingActor *)self setCurrentRepeatingAction:v4];
+    [(TURepeatingActor *)self setCurrentRepeatingAction:actionCopy];
     v8 = TUDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -152,26 +152,26 @@ void __94__TURepeatingActor_beginRepeatingAction_iterations_pauseDurationBetween
 
 - (void)_attemptNextIteration
 {
-  v3 = [(TURepeatingActor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURepeatingActor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(TURepeatingActor *)self currentRepeatingAction];
-  if (v4)
+  currentRepeatingAction = [(TURepeatingActor *)self currentRepeatingAction];
+  if (currentRepeatingAction)
   {
-    v5 = v4;
-    v6 = [(TURepeatingActor *)self isStopped];
+    v5 = currentRepeatingAction;
+    isStopped = [(TURepeatingActor *)self isStopped];
 
-    if (!v6)
+    if (!isStopped)
     {
       if ([(TURepeatingActor *)self _hasIterationsRemaining])
       {
-        v7 = [(TURepeatingActor *)self currentRepeatingAction];
-        v8 = [v7 remainingIterations];
+        currentRepeatingAction2 = [(TURepeatingActor *)self currentRepeatingAction];
+        remainingIterations = [currentRepeatingAction2 remainingIterations];
 
-        if (v8 != -1)
+        if (remainingIterations != -1)
         {
-          v9 = [(TURepeatingActor *)self currentRepeatingAction];
-          [v9 setRemainingIterations:{objc_msgSend(v9, "remainingIterations") - 1}];
+          currentRepeatingAction3 = [(TURepeatingActor *)self currentRepeatingAction];
+          [currentRepeatingAction3 setRemainingIterations:{objc_msgSend(currentRepeatingAction3, "remainingIterations") - 1}];
         }
 
         aBlock[0] = MEMORY[0x1E69E9820];
@@ -181,9 +181,9 @@ void __94__TURepeatingActor_beginRepeatingAction_iterations_pauseDurationBetween
         aBlock[4] = self;
         v10 = _Block_copy(aBlock);
         [(TURepeatingActor *)self setCurrentlyPerformingAction:1];
-        v11 = [(TURepeatingActor *)self currentRepeatingAction];
-        v12 = [v11 action];
-        (v12)[2](v12, v10);
+        currentRepeatingAction4 = [(TURepeatingActor *)self currentRepeatingAction];
+        action = [currentRepeatingAction4 action];
+        (action)[2](action, v10);
       }
 
       else
@@ -270,19 +270,19 @@ uint64_t __41__TURepeatingActor__attemptNextIteration__block_invoke_3(uint64_t a
 
 - (BOOL)_hasIterationsRemaining
 {
-  v3 = [(TURepeatingActor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TURepeatingActor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(TURepeatingActor *)self currentRepeatingAction];
-  if ([v4 remainingIterations])
+  currentRepeatingAction = [(TURepeatingActor *)self currentRepeatingAction];
+  if ([currentRepeatingAction remainingIterations])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(TURepeatingActor *)self currentRepeatingAction];
-    v5 = [v6 remainingIterations] == -1;
+    currentRepeatingAction2 = [(TURepeatingActor *)self currentRepeatingAction];
+    v5 = [currentRepeatingAction2 remainingIterations] == -1;
   }
 
   return v5;

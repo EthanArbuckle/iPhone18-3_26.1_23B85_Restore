@@ -1,12 +1,12 @@
 @interface SFLatLng
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFLatLng)initWithCoder:(id)a3;
-- (SFLatLng)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFLatLng)initWithCoder:(id)coder;
+- (SFLatLng)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFLatLng
@@ -25,17 +25,17 @@
   return veorq_s8(v8, vdupq_laneq_s64(v8, 1)).u64[0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if ([(SFLatLng *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFLatLng *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(SFLatLng *)self lat];
     v7 = v6;
     [(SFLatLng *)v5 lat];
@@ -61,9 +61,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SFLatLng *)self lat];
   [v4 setLat:?];
   [(SFLatLng *)self lng];
@@ -74,31 +74,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBLatLng alloc] initWithFacade:self];
-  v3 = [(_SFPBLatLng *)v2 jsonData];
+  jsonData = [(_SFPBLatLng *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBLatLng alloc] initWithFacade:self];
-  v3 = [(_SFPBLatLng *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBLatLng *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBLatLng alloc] initWithFacade:self];
-  v5 = [(_SFPBLatLng *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBLatLng *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFLatLng)initWithCoder:(id)a3
+- (SFLatLng)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBLatLng alloc] initWithData:v5];
   v7 = [(SFLatLng *)self initWithProtobuf:v6];
@@ -106,25 +106,25 @@
   return v7;
 }
 
-- (SFLatLng)initWithProtobuf:(id)a3
+- (SFLatLng)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFLatLng;
   v5 = [(SFLatLng *)&v10 init];
   if (v5)
   {
-    [v4 lat];
+    [protobufCopy lat];
     if (v6 != 0.0)
     {
-      [v4 lat];
+      [protobufCopy lat];
       [(SFLatLng *)v5 setLat:?];
     }
 
-    [v4 lng];
+    [protobufCopy lng];
     if (v7 != 0.0)
     {
-      [v4 lng];
+      [protobufCopy lng];
       [(SFLatLng *)v5 setLng:?];
     }
 

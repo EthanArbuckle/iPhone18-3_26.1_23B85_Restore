@@ -1,34 +1,34 @@
 @interface ZoomHandGesturesActionDetailController
-- (id)_mapZoomActionToWCImage:(unint64_t)a3;
+- (id)_mapZoomActionToWCImage:(unint64_t)image;
 - (id)actionDetailControllerDelegate;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ZoomHandGesturesActionDetailController
 
 - (id)actionDetailControllerDelegate
 {
-  v2 = [(ZoomHandGesturesActionDetailController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"ZoomHandGesturesActionDetailDelegate"];
+  specifier = [(ZoomHandGesturesActionDetailController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"ZoomHandGesturesActionDetailDelegate"];
 
   return v4;
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
   v3 = *(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
   if (!v3)
   {
     v26 = *MEMORY[0x277D3FC48];
-    v25 = [MEMORY[0x277CBEB18] array];
-    v4 = [(ZoomHandGesturesActionDetailController *)v2 actionDetailControllerDelegate];
-    v31 = [v4 selectedActionForDetailController:v2];
+    array = [MEMORY[0x277CBEB18] array];
+    actionDetailControllerDelegate = [(ZoomHandGesturesActionDetailController *)selfCopy actionDetailControllerDelegate];
+    v31 = [actionDetailControllerDelegate selectedActionForDetailController:selfCopy];
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -46,21 +46,21 @@
       {
         for (i = 0; i != v7; ++i)
         {
-          v10 = v2;
+          v10 = selfCopy;
           if (*v33 != v29)
           {
             objc_enumerationMutation(obj);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [v11 unsignedIntegerValue];
-          v13 = [MEMORY[0x277D7EA40] nameForAction:v12];
+          unsignedIntegerValue = [v11 unsignedIntegerValue];
+          v13 = [MEMORY[0x277D7EA40] nameForAction:unsignedIntegerValue];
           v14 = MEMORY[0x277D3FAD8];
           v15 = settingsLocString(v13, @"ZoomSettings");
           v16 = [v14 preferenceSpecifierNamed:v15 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-          v2 = v10;
-          v17 = [(ZoomHandGesturesActionDetailController *)v10 _mapZoomActionToWCImage:v12];
+          selfCopy = v10;
+          v17 = [(ZoomHandGesturesActionDetailController *)v10 _mapZoomActionToWCImage:unsignedIntegerValue];
           [v16 setProperty:v17 forKey:v28];
           [v16 setProperty:v11 forKey:v8];
           if ([v11 isEqualToNumber:v31])
@@ -70,7 +70,7 @@
             v30 = v18;
           }
 
-          [v5 addObject:v16];
+          [array2 addObject:v16];
         }
 
         v7 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -84,23 +84,23 @@
       v30 = 0;
     }
 
-    if ([v5 count])
+    if ([array2 count])
     {
-      v19 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+      v19 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
       [v19 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
-      [v25 addObject:v19];
+      [array addObject:v19];
       if (v30)
       {
         [v19 setProperty:v30 forKey:*MEMORY[0x277D40090]];
       }
 
-      [v25 addObjectsFromArray:v5];
+      [array addObjectsFromArray:array2];
     }
 
-    v20 = v2;
-    v21 = *(&v2->super.super.super.super.super.super.isa + v26);
-    *(&v20->super.super.super.super.super.super.isa + v26) = v25;
-    v22 = v25;
+    v20 = selfCopy;
+    v21 = *(&selfCopy->super.super.super.super.super.super.isa + v26);
+    *(&v20->super.super.super.super.super.super.isa + v26) = array;
+    v22 = array;
 
     v3 = *(&v20->super.super.super.super.super.super.isa + v26);
   }
@@ -110,40 +110,40 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = ZoomHandGesturesActionDetailController;
-  v6 = a4;
-  [(ZoomHandGesturesActionDetailController *)&v16 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ZoomHandGesturesActionDetailController *)self indexForIndexPath:v6, v16.receiver, v16.super_class];
-  v8 = [(ZoomHandGesturesActionDetailController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(ZoomHandGesturesActionDetailController *)&v16 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ZoomHandGesturesActionDetailController *)self indexForIndexPath:pathCopy, v16.receiver, v16.super_class];
+  specifiers = [(ZoomHandGesturesActionDetailController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(ZoomHandGesturesActionDetailController *)self specifierAtIndex:[(ZoomHandGesturesActionDetailController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(ZoomHandGesturesActionDetailController *)self specifierAtIndex:[(ZoomHandGesturesActionDetailController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
     if (v14)
     {
-      v15 = [(ZoomHandGesturesActionDetailController *)self actionDetailControllerDelegate];
-      [v15 setAction:v14 forDetailController:self];
+      actionDetailControllerDelegate = [(ZoomHandGesturesActionDetailController *)self actionDetailControllerDelegate];
+      [actionDetailControllerDelegate setAction:v14 forDetailController:self];
 
       [(ZoomHandGesturesActionDetailController *)self reloadSpecifiers];
     }
   }
 }
 
-- (id)_mapZoomActionToWCImage:(unint64_t)a3
+- (id)_mapZoomActionToWCImage:(unint64_t)image
 {
   v3 = 0;
-  if (a3 > 1)
+  if (image > 1)
   {
-    if (a3 != 2 && a3 != 3)
+    if (image != 2 && image != 3)
     {
       goto LABEL_8;
     }
@@ -153,19 +153,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!image)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (image == 1)
   {
     v4 = MEMORY[0x277D755B8];
     v5 = [MEMORY[0x277D7EA40] symbolNameForAction:?];
     v6 = [v4 _systemImageNamed:v5];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    v3 = [v6 imageWithTintColor:v7 renderingMode:1];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v3 = [v6 imageWithTintColor:whiteColor renderingMode:1];
   }
 
 LABEL_8:

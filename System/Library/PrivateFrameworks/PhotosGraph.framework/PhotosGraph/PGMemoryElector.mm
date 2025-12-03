@@ -1,58 +1,58 @@
 @interface PGMemoryElector
-+ (int64_t)compareMemoryCategoryForMemory:(id)a3 toOtherMemory:(id)a4;
-- (BOOL)_memoryContainsNegativeFeedbackPets:(id)a3;
-- (BOOL)_shouldCheckForSuggestionCollisionsForTriggeredMemory:(id)a3;
-- (PGMemoryElector)initWithWorkingContext:(id)a3 userFeedbackCalculator:(id)a4;
-- (double)_contentScoreWeightForNewMemoryFocusWithCategory:(unint64_t)a3;
-- (id)_requestedEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4;
-- (id)electAndEnrichSortedTriggeredMemories:(id)a3 alreadyEnrichedMemories:(id)a4 targetNumberOfMemories:(unint64_t)a5 configuration:(id)a6 graph:(id)a7 planner:(id)a8 context:(id)a9 progressReporter:(id)a10;
-- (id)filterAndSortTriggeredMemories:(id)a3 withPlanner:(id)a4 context:(id)a5 configuration:(id)a6 progressReporter:(id)a7;
-- (id)generateEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4 plannerPastSource:(id)a5 plannerFutureSource:(id)a6 progressReporter:(id)a7;
-- (id)generateEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4 progressReporter:(id)a5;
-- (unint64_t)targetNumberOfMemoriesFromConfigurator:(id)a3 graph:(id)a4 context:(id)a5;
++ (int64_t)compareMemoryCategoryForMemory:(id)memory toOtherMemory:(id)otherMemory;
+- (BOOL)_memoryContainsNegativeFeedbackPets:(id)pets;
+- (BOOL)_shouldCheckForSuggestionCollisionsForTriggeredMemory:(id)memory;
+- (PGMemoryElector)initWithWorkingContext:(id)context userFeedbackCalculator:(id)calculator;
+- (double)_contentScoreWeightForNewMemoryFocusWithCategory:(unint64_t)category;
+- (id)_requestedEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph;
+- (id)electAndEnrichSortedTriggeredMemories:(id)memories alreadyEnrichedMemories:(id)enrichedMemories targetNumberOfMemories:(unint64_t)ofMemories configuration:(id)configuration graph:(id)graph planner:(id)planner context:(id)context progressReporter:(id)self0;
+- (id)filterAndSortTriggeredMemories:(id)memories withPlanner:(id)planner context:(id)context configuration:(id)configuration progressReporter:(id)reporter;
+- (id)generateEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph plannerPastSource:(id)source plannerFutureSource:(id)futureSource progressReporter:(id)reporter;
+- (id)generateEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph progressReporter:(id)reporter;
+- (unint64_t)targetNumberOfMemoriesFromConfigurator:(id)configurator graph:(id)graph context:(id)context;
 @end
 
 @implementation PGMemoryElector
 
-- (id)_requestedEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4
+- (id)_requestedEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph
 {
   v88 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  graphCopy = graph;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [[PGGraphLocationHelper alloc] initWithGraph:v7];
+  v9 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
   v10 = [[PGMemoryCurationSession alloc] initWithCurationManager:self->_curationManager photoLibrary:self->_photoLibrary curationContext:self->_curationContext locationHelper:v9];
   v11 = [PGEnrichedMemoryFactory alloc];
-  v72 = self;
-  v12 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+  selfCopy = self;
+  serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
   v71 = v10;
-  v73 = [(PGEnrichedMemoryFactory *)v11 initWithMemoryCurationSession:v10 graph:v7 serviceManager:v12];
+  v73 = [(PGEnrichedMemoryFactory *)v11 initWithMemoryCurationSession:v10 graph:graphCopy serviceManager:serviceManager];
 
-  v13 = [v6 requestedMemoryCategory];
-  v14 = [v6 requestedUniqueMemoryIdentifier];
-  v15 = v13 | [v14 length];
+  requestedMemoryCategory = [configurationCopy requestedMemoryCategory];
+  requestedUniqueMemoryIdentifier = [configurationCopy requestedUniqueMemoryIdentifier];
+  v15 = requestedMemoryCategory | [requestedUniqueMemoryIdentifier length];
 
-  v16 = [v6 requestedTriggerType];
+  requestedTriggerType = [configurationCopy requestedTriggerType];
   if (!v15)
   {
 LABEL_10:
-    if (v16)
+    if (requestedTriggerType)
     {
       v68 = v9;
       v36 = v8;
       v37 = [PGMemoryContext alloc];
-      v38 = [v6 localDate];
-      v39 = [v6 timeZone];
-      v40 = [(PGMemoryContext *)v37 initWithLocalDate:v38 timeZone:v39 photoLibrary:v72->_photoLibrary];
+      localDate = [configurationCopy localDate];
+      timeZone = [configurationCopy timeZone];
+      v40 = [(PGMemoryContext *)v37 initWithLocalDate:localDate timeZone:timeZone photoLibrary:selfCopy->_photoLibrary];
 
-      v66 = [[PGMemoryMomentNodesWithBlockedFeatureCache alloc] initWithUserFeedbackCalculator:v72->_userFeedbackCalculator loggingConnection:v72->_loggingConnection];
-      v41 = [[PGMemoryTriggerHandler alloc] initWithWorkingContext:v72->_workingContext momentNodesWithBlockedFeatureCache:v66];
-      v42 = [v6 requestedTriggerType];
-      v43 = [MEMORY[0x277D22C80] ignoreProgress];
+      v66 = [[PGMemoryMomentNodesWithBlockedFeatureCache alloc] initWithUserFeedbackCalculator:selfCopy->_userFeedbackCalculator loggingConnection:selfCopy->_loggingConnection];
+      v41 = [[PGMemoryTriggerHandler alloc] initWithWorkingContext:selfCopy->_workingContext momentNodesWithBlockedFeatureCache:v66];
+      requestedTriggerType2 = [configurationCopy requestedTriggerType];
+      ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
       v65 = v41;
       v67 = v40;
-      v70 = v7;
-      v44 = [(PGMemoryTriggerHandler *)v41 allTriggeredMemoriesWithContext:v40 forTriggerType:v42 inGraph:v7 progressReporter:v43];
+      v70 = graphCopy;
+      v44 = [(PGMemoryTriggerHandler *)v41 allTriggeredMemoriesWithContext:v40 forTriggerType:requestedTriggerType2 inGraph:graphCopy progressReporter:ignoreProgress];
 
       v76 = 0u;
       v77 = 0u;
@@ -75,8 +75,8 @@ LABEL_10:
 
             v50 = *(*(&v74 + 1) + 8 * i);
             v51 = objc_autoreleasePoolPush();
-            v52 = [MEMORY[0x277D22C80] ignoreProgress];
-            v53 = [(PGEnrichedMemoryFactory *)v73 enrichedMemoryWithTriggeredMemory:v50 withConfiguration:v6 progressReporter:v52];
+            ignoreProgress2 = [MEMORY[0x277D22C80] ignoreProgress];
+            v53 = [(PGEnrichedMemoryFactory *)v73 enrichedMemoryWithTriggeredMemory:v50 withConfiguration:configurationCopy progressReporter:ignoreProgress2];
 
             if (v53)
             {
@@ -94,39 +94,39 @@ LABEL_10:
 
       v8 = v36;
       v9 = v68;
-      v7 = v70;
+      graphCopy = v70;
     }
 
-    if ([v6 shouldPersist])
+    if ([configurationCopy shouldPersist])
     {
-      v54 = [v6 pendingState];
-      v55 = [MEMORY[0x277D22C80] ignoreProgress];
-      [(PGMemoryElector *)v72 persistEnrichedMemories:v8 pendingState:v54 graph:v7 progressReporter:v55];
+      pendingState = [configurationCopy pendingState];
+      ignoreProgress3 = [MEMORY[0x277D22C80] ignoreProgress];
+      [(PGMemoryElector *)selfCopy persistEnrichedMemories:v8 pendingState:pendingState graph:graphCopy progressReporter:ignoreProgress3];
     }
 
     v56 = v8;
     goto LABEL_24;
   }
 
-  v17 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:v7];
-  if (!v13)
+  v17 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:graphCopy];
+  if (!requestedMemoryCategory)
   {
 LABEL_7:
-    v28 = [v6 requestedUniqueMemoryIdentifier];
-    v29 = [v28 length];
+    requestedUniqueMemoryIdentifier2 = [configurationCopy requestedUniqueMemoryIdentifier];
+    v29 = [requestedUniqueMemoryIdentifier2 length];
 
     if (v29)
     {
-      v30 = [v6 requestedUniqueMemoryIdentifier];
-      v83 = v30;
+      requestedUniqueMemoryIdentifier3 = [configurationCopy requestedUniqueMemoryIdentifier];
+      v83 = requestedUniqueMemoryIdentifier3;
       [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
-      v31 = v6;
+      v31 = configurationCopy;
       v33 = v32 = v8;
-      v34 = [PGGraphMemoryNodeCollection memoryNodesWithUniqueIdentifierArray:v33 inGraph:v7];
+      v34 = [PGGraphMemoryNodeCollection memoryNodesWithUniqueIdentifierArray:v33 inGraph:graphCopy];
       v35 = [(MAElementCollection *)v17 collectionByFormingUnionWith:v34];
 
       v8 = v32;
-      v6 = v31;
+      configurationCopy = v31;
 
       v17 = v35;
     }
@@ -135,7 +135,7 @@ LABEL_7:
     v78[1] = 3221225472;
     v78[2] = __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___block_invoke;
     v78[3] = &unk_278889020;
-    v79 = v6;
+    v79 = configurationCopy;
     v80 = v73;
     v81 = v8;
     [(MANodeCollection *)v17 enumerateNodesUsingBlock:v78];
@@ -143,12 +143,12 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v18 = +[PGGraphMemoryNodeCollection memoryNodesOfCategory:inGraph:](PGGraphMemoryNodeCollection, "memoryNodesOfCategory:inGraph:", [v6 requestedMemoryCategory], v7);
+  v18 = +[PGGraphMemoryNodeCollection memoryNodesOfCategory:inGraph:](PGGraphMemoryNodeCollection, "memoryNodesOfCategory:inGraph:", [configurationCopy requestedMemoryCategory], graphCopy);
   v19 = [(MAElementCollection *)v17 collectionByFormingUnionWith:v18];
 
-  v20 = [v6 requestedFeature];
-  v21 = v20;
-  if (!v20)
+  requestedFeature = [configurationCopy requestedFeature];
+  v21 = requestedFeature;
+  if (!requestedFeature)
   {
 LABEL_6:
 
@@ -156,39 +156,39 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v22 = [v20 nodeInGraph:v7];
+  v22 = [requestedFeature nodeInGraph:graphCopy];
   if (v22)
   {
     v23 = v22;
     v24 = [(MANodeCollection *)[PGGraphFeatureNodeCollection alloc] initWithNode:v22];
     [(PGGraphFeatureNodeCollection *)v24 memoryNodes];
-    v25 = v6;
+    v25 = configurationCopy;
     v27 = v26 = v8;
     v69 = [(MAElementCollection *)v19 collectionByIntersecting:v27];
 
     v8 = v26;
-    v6 = v25;
+    configurationCopy = v25;
 
     v19 = v69;
     goto LABEL_6;
   }
 
-  loggingConnection = v72->_loggingConnection;
+  loggingConnection = selfCopy->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v60 = loggingConnection;
-    v61 = [v21 type];
+    type = [v21 type];
     [v21 name];
-    v62 = v6;
+    v62 = configurationCopy;
     v64 = v63 = v8;
     *buf = 67109378;
-    v85 = v61;
+    v85 = type;
     v86 = 2112;
     v87 = v64;
     _os_log_error_impl(&dword_22F0FC000, v60, OS_LOG_TYPE_ERROR, "[PGMemoryElector] Error fetching graph node for feature of type %d, name %@", buf, 0x12u);
 
     v8 = v63;
-    v6 = v62;
+    configurationCopy = v62;
   }
 
   v56 = MEMORY[0x277CBEBF8];
@@ -220,32 +220,32 @@ void __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___b
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)electAndEnrichSortedTriggeredMemories:(id)a3 alreadyEnrichedMemories:(id)a4 targetNumberOfMemories:(unint64_t)a5 configuration:(id)a6 graph:(id)a7 planner:(id)a8 context:(id)a9 progressReporter:(id)a10
+- (id)electAndEnrichSortedTriggeredMemories:(id)memories alreadyEnrichedMemories:(id)enrichedMemories targetNumberOfMemories:(unint64_t)ofMemories configuration:(id)configuration graph:(id)graph planner:(id)planner context:(id)context progressReporter:(id)self0
 {
   v110 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v62 = a4;
-  v68 = a6;
-  v16 = a7;
-  v66 = a8;
-  v56 = a9;
-  v61 = a10;
-  v64 = v16;
-  v57 = [[PGGraphLocationHelper alloc] initWithGraph:v16];
+  memoriesCopy = memories;
+  enrichedMemoriesCopy = enrichedMemories;
+  configurationCopy = configuration;
+  graphCopy = graph;
+  plannerCopy = planner;
+  contextCopy = context;
+  reporterCopy = reporter;
+  v64 = graphCopy;
+  v57 = [[PGGraphLocationHelper alloc] initWithGraph:graphCopy];
   v65 = [[PGMemoryCurationSession alloc] initWithCurationManager:self->_curationManager photoLibrary:self->_photoLibrary curationContext:self->_curationContext locationHelper:v57];
   v17 = [PGEnrichedMemoryFactory alloc];
-  v18 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
-  v67 = [(PGEnrichedMemoryFactory *)v17 initWithMemoryCurationSession:v65 graph:v64 serviceManager:v18];
+  serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+  v67 = [(PGEnrichedMemoryFactory *)v17 initWithMemoryCurationSession:v65 graph:v64 serviceManager:serviceManager];
 
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = a5;
+    *&buf[4] = ofMemories;
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[MemoryElector] targetNumberOfMemories: %d", buf, 8u);
   }
 
-  if (!a5)
+  if (!ofMemories)
   {
     v59 = MEMORY[0x277CBEBF8];
     goto LABEL_38;
@@ -256,7 +256,7 @@ void __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___b
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v21 = v62;
+  v21 = enrichedMemoriesCopy;
   v22 = [v21 countByEnumeratingWithState:&v98 objects:v109 count:16];
   if (v22)
   {
@@ -270,10 +270,10 @@ void __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___b
           objc_enumerationMutation(v21);
         }
 
-        v25 = [*(*(&v98 + 1) + 8 * i) keyAssetUUID];
-        if (v25)
+        keyAssetUUID = [*(*(&v98 + 1) + 8 * i) keyAssetUUID];
+        if (keyAssetUUID)
         {
-          [v20 addObject:v25];
+          [v20 addObject:keyAssetUUID];
         }
       }
 
@@ -283,22 +283,22 @@ void __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___b
     while (v22);
   }
 
-  v58 = [v68 maximumNumberOfMemoriesWithGuestAssets];
+  maximumNumberOfMemoriesWithGuestAssets = [configurationCopy maximumNumberOfMemoriesWithGuestAssets];
   *buf = 0;
   v106 = buf;
   v107 = 0x2020000000;
   v108 = 0;
-  v69 = v61;
+  v69 = reporterCopy;
   v94 = 0;
   v95 = &v94;
   v96 = 0x2020000000;
   v97 = 0;
   v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v21];
-  v27 = [v60 mutableCopy];
-  v28 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v28 setPersonContext:1];
-  [v28 setIncludedDetectionTypes:&unk_284486708];
-  v63 = v28;
+  v27 = [memoriesCopy mutableCopy];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_284486708];
+  v63 = librarySpecificFetchOptions;
   v29 = self->_loggingConnection;
   v30 = os_signpost_id_generate(v29);
   v31 = v29;
@@ -321,7 +321,7 @@ void __69__PGMemoryElector__requestedEnrichedMemoriesWithConfiguration_graph___b
   v33 = 0.0;
   v34 = MEMORY[0x277D86220];
   v59 = MEMORY[0x277CBEBF8];
-  while ([v26 count] < a5 && objc_msgSend(v27, "count") && v33 <= 1.0)
+  while ([v26 count] < ofMemories && objc_msgSend(v27, "count") && v33 <= 1.0)
   {
     v35 = objc_autoreleasePoolPush();
     v36 = v32;
@@ -374,7 +374,7 @@ LABEL_25:
     v71 = v26;
     v40 = v39;
     v72 = v40;
-    v73 = v66;
+    v73 = plannerCopy;
     v41 = v36;
     v85 = v33;
     v74 = v41;
@@ -383,14 +383,14 @@ LABEL_25:
     v75 = v69;
     v83 = v89;
     v76 = v67;
-    v77 = v68;
+    v77 = configurationCopy;
     v84 = buf;
-    v86 = v58;
+    v86 = maximumNumberOfMemoriesWithGuestAssets;
     v78 = v20;
     v79 = v63;
-    v80 = self;
-    v87 = 1.0 / a5;
-    v88 = a5;
+    selfCopy = self;
+    v87 = 1.0 / ofMemories;
+    ofMemoriesCopy = ofMemories;
     [v27 enumerateObjectsUsingBlock:v70];
     v33 = *(*&v103[8] + 24);
     [v27 removeObjectsAtIndexes:v40];
@@ -695,26 +695,26 @@ uint64_t __157__PGMemoryElector_electAndEnrichSortedTriggeredMemories_alreadyEnr
   return result;
 }
 
-- (unint64_t)targetNumberOfMemoriesFromConfigurator:(id)a3 graph:(id)a4 context:(id)a5
+- (unint64_t)targetNumberOfMemoriesFromConfigurator:(id)configurator graph:(id)graph context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  graphCopy = graph;
+  configuratorCopy = configurator;
   v10 = +[(PGGraphNodeCollection *)PGGraphMemoryNodeCollection];
-  v11 = [v8 numberOfNodesMatchingFilter:v10];
+  v11 = [graphCopy numberOfNodesMatchingFilter:v10];
 
-  v12 = [v9 targetNumberOfMemoriesWithMemoryContext:v7 totalNumberOfMemoryNodes:v11 referenceNumberOfDays:{objc_msgSend(v9, "numberOfDaysToLookInPast")}];
+  v12 = [configuratorCopy targetNumberOfMemoriesWithMemoryContext:contextCopy totalNumberOfMemoryNodes:v11 referenceNumberOfDays:{objc_msgSend(configuratorCopy, "numberOfDaysToLookInPast")}];
   return v12;
 }
 
-- (BOOL)_shouldCheckForSuggestionCollisionsForTriggeredMemory:(id)a3
+- (BOOL)_shouldCheckForSuggestionCollisionsForTriggeredMemory:(id)memory
 {
-  v4 = a3;
-  v5 = [v4 memoryCategory];
-  if (v5 > 0x13 || ((1 << v5) & 0x90002) == 0)
+  memoryCopy = memory;
+  memoryCategory = [memoryCopy memoryCategory];
+  if (memoryCategory > 0x13 || ((1 << memoryCategory) & 0x90002) == 0)
   {
-    v8 = [v4 memoryMomentNodes];
-    v9 = [v8 count];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    v9 = [memoryMomentNodes count];
 
     if (v9 == 1)
     {
@@ -737,10 +737,10 @@ uint64_t __157__PGMemoryElector_electAndEnrichSortedTriggeredMemories_alreadyEnr
   return v7;
 }
 
-- (double)_contentScoreWeightForNewMemoryFocusWithCategory:(unint64_t)a3
+- (double)_contentScoreWeightForNewMemoryFocusWithCategory:(unint64_t)category
 {
   result = 1.0;
-  if (a3 - 25 >= 6 && a3 != 10)
+  if (category - 25 >= 6 && category != 10)
   {
     return 0.5;
   }
@@ -748,12 +748,12 @@ uint64_t __157__PGMemoryElector_electAndEnrichSortedTriggeredMemories_alreadyEnr
   return result;
 }
 
-- (BOOL)_memoryContainsNegativeFeedbackPets:(id)a3
+- (BOOL)_memoryContainsNegativeFeedbackPets:(id)pets
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 memoryFeatureNodes];
-  v6 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection subsetInCollection:v5];
+  petsCopy = pets;
+  memoryFeatureNodes = [petsCopy memoryFeatureNodes];
+  v6 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v6 count] != 1)
   {
@@ -761,9 +761,9 @@ uint64_t __157__PGMemoryElector_electAndEnrichSortedTriggeredMemories_alreadyEnr
   }
 
   v7 = MEMORY[0x277CD9918];
-  v8 = [v6 localIdentifiers];
-  v9 = [v8 anyObject];
-  v10 = [v7 uuidFromLocalIdentifier:v9];
+  localIdentifiers = [v6 localIdentifiers];
+  anyObject = [localIdentifiers anyObject];
+  v10 = [v7 uuidFromLocalIdentifier:anyObject];
 
   if (![v10 length] || (-[PHUserFeedbackCalculator userFeedbackTypeForPersonUUID:](self->_userFeedbackCalculator, "userFeedbackTypeForPersonUUID:", v10) & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
@@ -778,7 +778,7 @@ LABEL_8:
   {
     v12 = MEMORY[0x277CD98D8];
     v13 = loggingConnection;
-    v14 = [v12 stringForCategory:{objc_msgSend(v4, "memoryCategory")}];
+    v14 = [v12 stringForCategory:{objc_msgSend(petsCopy, "memoryCategory")}];
     v18 = 138412546;
     v19 = v14;
     v20 = 2112;
@@ -793,22 +793,22 @@ LABEL_9:
   return v15;
 }
 
-- (id)filterAndSortTriggeredMemories:(id)a3 withPlanner:(id)a4 context:(id)a5 configuration:(id)a6 progressReporter:(id)a7
+- (id)filterAndSortTriggeredMemories:(id)memories withPlanner:(id)planner context:(id)context configuration:(id)configuration progressReporter:(id)reporter
 {
   v152 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v110 = a4;
-  v107 = a5;
-  v108 = a6;
-  v105 = v12;
-  v106 = a7;
-  if (![v12 count])
+  memoriesCopy = memories;
+  plannerCopy = planner;
+  contextCopy = context;
+  configurationCopy = configuration;
+  v105 = memoriesCopy;
+  reporterCopy = reporter;
+  if (![memoriesCopy count])
   {
     v91 = MEMORY[0x277CBEBF8];
     goto LABEL_90;
   }
 
-  v115 = self;
+  selfCopy = self;
   v13 = self->_loggingConnection;
   v14 = os_signpost_id_generate(v13);
   v15 = v13;
@@ -830,14 +830,14 @@ LABEL_9:
   v103 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
   v102 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
   v101 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
-  v98 = [v107 numberOfDaysSinceMemoryUpgrade];
-  v97 = [v108 numberOfDaysToFocusOnNewMemoryTypes];
+  numberOfDaysSinceMemoryUpgrade = [contextCopy numberOfDaysSinceMemoryUpgrade];
+  numberOfDaysToFocusOnNewMemoryTypes = [configurationCopy numberOfDaysToFocusOnNewMemoryTypes];
   v100 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
   v17 = objc_alloc(MEMORY[0x277CBEB98]);
   v18 = [(PGRemoteConfiguration *)self->_remoteConfiguration arrayValueForKey:@"com.apple.photos.memories.election.blockedMemoryCategorySubcategories" withFallbackValue:MEMORY[0x277CBEBF8]];
   v111 = [v17 initWithArray:v18];
 
-  v112 = v106;
+  v112 = reporterCopy;
   *buf = 0;
   v144 = buf;
   v145 = 0x2020000000;
@@ -846,12 +846,12 @@ LABEL_9:
   v140 = &v139;
   v141 = 0x2020000000;
   v142 = 0;
-  v19 = [v12 count];
+  v19 = [memoriesCopy count];
   v137 = 0u;
   v138 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v20 = v12;
+  v20 = memoriesCopy;
   v21 = [v20 countByEnumeratingWithState:&v135 objects:v151 count:16];
   if (!v21)
   {
@@ -892,7 +892,7 @@ LABEL_13:
       }
 
       v25 = [v112 isCancelledWithProgress:?];
-      p_isa = &v115->super.isa;
+      p_isa = &selfCopy->super.isa;
       v144[24] = v25;
       if (v25)
       {
@@ -904,18 +904,18 @@ LABEL_13:
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v24, "memoryCategorySubcategory")}];
         v29 = [v111 containsObject:v28];
 
-        p_isa = &v115->super.isa;
+        p_isa = &selfCopy->super.isa;
         if (v29)
         {
-          v30 = v115->_loggingConnection;
+          v30 = selfCopy->_loggingConnection;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            v31 = [v24 uniqueMemoryIdentifier];
-            v32 = [v24 memoryCategorySubcategory];
+            uniqueMemoryIdentifier = [v24 uniqueMemoryIdentifier];
+            memoryCategorySubcategory = [v24 memoryCategorySubcategory];
             *v149 = 138478083;
-            *v150 = v31;
+            *v150 = uniqueMemoryIdentifier;
             *&v150[8] = 2048;
-            *&v150[10] = v32;
+            *&v150[10] = memoryCategorySubcategory;
             _os_log_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_INFO, "[PGMemoryElector] Not considering to elect memory %{private}@ of type %lu because it is blocked", v149, 0x16u);
           }
 
@@ -923,10 +923,10 @@ LABEL_13:
         }
       }
 
-      if (![v110 tooSoonToElectMemory:v24])
+      if (![plannerCopy tooSoonToElectMemory:v24])
       {
-        v109 = [v108 collidableSuggestions];
-        if ([v109 count])
+        collidableSuggestions = [configurationCopy collidableSuggestions];
+        if ([collidableSuggestions count])
         {
           v34 = [p_isa _shouldCheckForSuggestionCollisionsForTriggeredMemory:v24];
 
@@ -935,17 +935,17 @@ LABEL_13:
             goto LABEL_39;
           }
 
-          v35 = [v24 memoryMomentNodes];
-          v109 = [v35 universalDateInterval];
+          memoryMomentNodes = [v24 memoryMomentNodes];
+          collidableSuggestions = [memoryMomentNodes universalDateInterval];
 
-          v36 = [v109 startDate];
-          v113 = [v109 endDate];
+          startDate = [collidableSuggestions startDate];
+          endDate = [collidableSuggestions endDate];
           v133 = 0u;
           v134 = 0u;
           v132 = 0u;
           v131 = 0u;
-          v37 = [v108 collidableSuggestions];
-          v38 = [v37 countByEnumeratingWithState:&v131 objects:v148 count:16];
+          collidableSuggestions2 = [configurationCopy collidableSuggestions];
+          v38 = [collidableSuggestions2 countByEnumeratingWithState:&v131 objects:v148 count:16];
           if (v38)
           {
             v39 = *v132;
@@ -955,30 +955,30 @@ LABEL_13:
               {
                 if (*v132 != v39)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(collidableSuggestions2);
                 }
 
                 v41 = *(*(&v131 + 1) + 8 * j);
-                v42 = [v41 universalEndDate];
-                if ([v36 compare:v42] == 1)
+                universalEndDate = [v41 universalEndDate];
+                if ([startDate compare:universalEndDate] == 1)
                 {
                 }
 
                 else
                 {
-                  v43 = [v41 universalStartDate];
-                  v44 = [v113 compare:v43] == -1;
+                  universalStartDate = [v41 universalStartDate];
+                  v44 = [endDate compare:universalStartDate] == -1;
 
                   if (!v44)
                   {
 
-                    loggingConnection = v115->_loggingConnection;
+                    loggingConnection = selfCopy->_loggingConnection;
                     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
                     {
                       *v149 = 138412546;
-                      *v150 = v36;
+                      *v150 = startDate;
                       *&v150[8] = 2112;
-                      *&v150[10] = v113;
+                      *&v150[10] = endDate;
                       _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGMemoryElector] Not considering to elect memory with moment nodes start date %@ and end date %@ because it collides with a suggestion", v149, 0x16u);
                     }
 
@@ -987,7 +987,7 @@ LABEL_13:
                 }
               }
 
-              v38 = [v37 countByEnumeratingWithState:&v131 objects:v148 count:16];
+              v38 = [collidableSuggestions2 countByEnumeratingWithState:&v131 objects:v148 count:16];
               if (v38)
               {
                 continue;
@@ -999,27 +999,27 @@ LABEL_13:
         }
 
 LABEL_39:
-        v45 = [v24 memoryCategory];
-        v46 = [v24 memoryFeatureNodes];
-        v47 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v46];
+        memoryCategory = [v24 memoryCategory];
+        memoryFeatureNodes = [v24 memoryFeatureNodes];
+        v47 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
         v48 = [v47 count];
-        v49 = v115;
+        v49 = selfCopy;
         if (v48 == 1)
         {
-          v50 = [v47 uuids];
-          v51 = [v50 anyObject];
+          uuids = [v47 uuids];
+          anyObject = [uuids anyObject];
 
-          if ([v51 length] && (-[PHUserFeedbackCalculator userFeedbackTypeForPersonUUID:](v115->_userFeedbackCalculator, "userFeedbackTypeForPersonUUID:", v51) & 0xFFFFFFFFFFFFFFFELL) == 2)
+          if ([anyObject length] && (-[PHUserFeedbackCalculator userFeedbackTypeForPersonUUID:](selfCopy->_userFeedbackCalculator, "userFeedbackTypeForPersonUUID:", anyObject) & 0xFFFFFFFFFFFFFFFELL) == 2)
           {
-            v52 = v115->_loggingConnection;
+            v52 = selfCopy->_loggingConnection;
             if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
             {
-              v53 = [MEMORY[0x277CD98D8] stringForCategory:v45];
+              v53 = [MEMORY[0x277CD98D8] stringForCategory:memoryCategory];
               *v149 = 138412546;
               *v150 = v53;
               *&v150[8] = 2112;
-              *&v150[10] = v51;
+              *&v150[10] = anyObject;
               _os_log_impl(&dword_22F0FC000, v52, OS_LOG_TYPE_DEFAULT, "[PGMemoryElector] Not considering to elect memory of category %@ featuring persons with uuid %@", v149, 0x16u);
             }
 
@@ -1027,7 +1027,7 @@ LABEL_39:
             goto LABEL_59;
           }
 
-          v49 = v115;
+          v49 = selfCopy;
         }
 
         if ([(PGMemoryElector *)v49 _memoryContainsNegativeFeedbackPets:v24])
@@ -1038,18 +1038,18 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        v54 = [v24 memoryFeatureNodes];
-        v55 = [v24 memoryMomentNodes];
-        v51 = [PGMemoryFeatureBlocking blockableFeaturesForFeatureNodes:v54 momentNodes:v55 memoryCategory:v45];
+        memoryFeatureNodes2 = [v24 memoryFeatureNodes];
+        memoryMomentNodes2 = [v24 memoryMomentNodes];
+        anyObject = [PGMemoryFeatureBlocking blockableFeaturesForFeatureNodes:memoryFeatureNodes2 momentNodes:memoryMomentNodes2 memoryCategory:memoryCategory];
 
-        [v24 setBlockableFeatures:v51];
-        v52 = [(PHUserFeedbackCalculator *)v115->_userFeedbackCalculator memoryFeaturesWithNegativeFeedbackForMemoryFeatures:v51];
+        [v24 setBlockableFeatures:anyObject];
+        v52 = [(PHUserFeedbackCalculator *)selfCopy->_userFeedbackCalculator memoryFeaturesWithNegativeFeedbackForMemoryFeatures:anyObject];
         if ([v52 count])
         {
-          v56 = v115->_loggingConnection;
+          v56 = selfCopy->_loggingConnection;
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
           {
-            v57 = [MEMORY[0x277CD98D8] stringForCategory:v45];
+            v57 = [MEMORY[0x277CD98D8] stringForCategory:memoryCategory];
             *v149 = 138412546;
             *v150 = v57;
             *&v150[8] = 2112;
@@ -1067,22 +1067,22 @@ LABEL_60:
           v61 = [MEMORY[0x277CCABB0] numberWithDouble:?];
           [v104 setObject:v61 forKey:v24];
 
-          [v110 collisionScoreForMemory:v24];
+          [plannerCopy collisionScoreForMemory:v24];
           v63 = v62;
           v64 = [MEMORY[0x277CCABB0] numberWithDouble:?];
           [v103 setObject:v64 forKey:v24];
 
-          [v110 avoidScoreForMemory:v24];
+          [plannerCopy avoidScoreForMemory:v24];
           v65 = [MEMORY[0x277CCABB0] numberWithDouble:?];
           [v102 setObject:v65 forKey:v24];
 
-          v66 = [v24 memoryMomentNodes];
-          [v66 averageContentScore];
+          memoryMomentNodes3 = [v24 memoryMomentNodes];
+          [memoryMomentNodes3 averageContentScore];
           v68 = v67;
 
-          if (v98 <= v97)
+          if (numberOfDaysSinceMemoryUpgrade <= numberOfDaysToFocusOnNewMemoryTypes)
           {
-            [(PGMemoryElector *)v115 _contentScoreWeightForNewMemoryFocusWithCategory:v45];
+            [(PGMemoryElector *)selfCopy _contentScoreWeightForNewMemoryFocusWithCategory:memoryCategory];
             v68 = v68 * v69;
           }
 
@@ -1090,8 +1090,8 @@ LABEL_60:
           [v101 setObject:v70 forKey:v24];
 
           [v24 setElectionScore:v60 + v63 * 0.01 + v68 * 0.001];
-          v71 = [v24 validityIntervalByTriggerType];
-          v72 = [PGMemoryTriggerHandler maximumValidityPeriodForValidityIntervalByTriggerType:v71 context:v107];
+          validityIntervalByTriggerType = [v24 validityIntervalByTriggerType];
+          v72 = [PGMemoryTriggerHandler maximumValidityPeriodForValidityIntervalByTriggerType:validityIntervalByTriggerType context:contextCopy];
 
           v56 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v72];
           [v100 setObject:v56 forKey:v24];
@@ -1105,9 +1105,9 @@ LABEL_59:
       v30 = p_isa[3];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v33 = [v24 uniqueMemoryIdentifier];
+        uniqueMemoryIdentifier2 = [v24 uniqueMemoryIdentifier];
         *v149 = 138477827;
-        *v150 = v33;
+        *v150 = uniqueMemoryIdentifier2;
         _os_log_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_INFO, "[PGMemoryElector] Not considering to elect memory %{private}@ because it is too soon since we last elected it", v149, 0xCu);
       }
 
@@ -1159,7 +1159,7 @@ LABEL_65:
   if ([v104 count])
   {
     v78 = [v104 count];
-    v79 = v115->_loggingConnection;
+    v79 = selfCopy->_loggingConnection;
     v80 = os_signpost_id_generate(v79);
     v81 = v79;
     v82 = v81;
@@ -1172,8 +1172,8 @@ LABEL_65:
     v130 = 0;
     mach_timebase_info(&v130);
     v83 = mach_absolute_time();
-    v84 = [v104 keyEnumerator];
-    v85 = [v84 allObjects];
+    keyEnumerator = [v104 keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
 
     v119[0] = MEMORY[0x277D85DD0];
     v119[1] = 3221225472;
@@ -1187,9 +1187,9 @@ LABEL_65:
     v122 = v103;
     v123 = v104;
     v124 = v100;
-    v125 = v115;
+    v125 = selfCopy;
     v126 = v101;
-    v86 = [v85 sortedArrayUsingComparator:v119];
+    v86 = [allObjects sortedArrayUsingComparator:v119];
     v87 = mach_absolute_time();
     v88 = v130;
     v89 = v82;
@@ -1435,36 +1435,36 @@ LABEL_10:
   return v15;
 }
 
-- (id)generateEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4 plannerPastSource:(id)a5 plannerFutureSource:(id)a6 progressReporter:(id)a7
+- (id)generateEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph plannerPastSource:(id)source plannerFutureSource:(id)futureSource progressReporter:(id)reporter
 {
   v83 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 requestedMemoryCategory])
+  configurationCopy = configuration;
+  graphCopy = graph;
+  sourceCopy = source;
+  futureSourceCopy = futureSource;
+  reporterCopy = reporter;
+  if ([configurationCopy requestedMemoryCategory])
   {
     goto LABEL_5;
   }
 
-  v17 = [v12 requestedUniqueMemoryIdentifier];
-  if ([v17 length])
+  requestedUniqueMemoryIdentifier = [configurationCopy requestedUniqueMemoryIdentifier];
+  if ([requestedUniqueMemoryIdentifier length])
   {
 
 LABEL_5:
-    v19 = [(PGMemoryElector *)self _requestedEnrichedMemoriesWithConfiguration:v12 graph:v13];
+    v19 = [(PGMemoryElector *)self _requestedEnrichedMemoriesWithConfiguration:configurationCopy graph:graphCopy];
     goto LABEL_6;
   }
 
-  v18 = [v12 requestedTriggerType];
+  requestedTriggerType = [configurationCopy requestedTriggerType];
 
-  if (v18)
+  if (requestedTriggerType)
   {
     goto LABEL_5;
   }
 
-  v22 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v16];
+  v22 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
   v76 = [v22 childProgressReporterToCheckpoint:0.1];
   v75 = [v22 childProgressReporterToCheckpoint:0.3];
   v74 = [v22 childProgressReporterToCheckpoint:0.4];
@@ -1474,9 +1474,9 @@ LABEL_5:
   v70 = [v22 childProgressReporterToCheckpoint:1.0];
   v69 = [[PGMemoryMomentNodesWithBlockedFeatureCache alloc] initWithUserFeedbackCalculator:self->_userFeedbackCalculator loggingConnection:self->_loggingConnection];
   v23 = [[PGMemoryTriggerHandler alloc] initWithWorkingContext:self->_workingContext momentNodesWithBlockedFeatureCache:v69];
-  if (v14)
+  if (sourceCopy)
   {
-    v24 = v14;
+    v24 = sourceCopy;
   }
 
   else
@@ -1485,9 +1485,9 @@ LABEL_5:
   }
 
   v25 = v24;
-  if (v15)
+  if (futureSourceCopy)
   {
-    v26 = v15;
+    v26 = futureSourceCopy;
   }
 
   else
@@ -1497,15 +1497,15 @@ LABEL_5:
 
   v67 = v26;
   v68 = v25;
-  v27 = [[PGMemoryPlanner alloc] initWithPastSource:v25 futureSource:v67 configuration:v12 graph:v13 loggingConnection:self->_loggingConnection progressReporter:v76];
-  if (([v16 isCancelled] & 1) == 0)
+  v27 = [[PGMemoryPlanner alloc] initWithPastSource:v25 futureSource:v67 configuration:configurationCopy graph:graphCopy loggingConnection:self->_loggingConnection progressReporter:v76];
+  if (([reporterCopy isCancelled] & 1) == 0)
   {
     v64 = v22;
     v29 = [[PGMemoryContext alloc] initWithMemoryPlanner:v27 photoLibrary:self->_photoLibrary];
-    v30 = [(PGMemoryTriggerHandler *)v23 allTriggeredMemoriesWithContext:v29 inGraph:v13 progressReporter:v75];
+    v30 = [(PGMemoryTriggerHandler *)v23 allTriggeredMemoriesWithContext:v29 inGraph:graphCopy progressReporter:v75];
     v65 = v29;
     v66 = v27;
-    if ([v16 isCancelled])
+    if ([reporterCopy isCancelled])
     {
       v19 = MEMORY[0x277CBEBF8];
       v31 = v30;
@@ -1514,14 +1514,14 @@ LABEL_5:
 
     else
     {
-      v31 = [(PGMemoryPlanner *)v27 filterMemories:v30 forTriggerCollisionsWithTriggerHandler:v23 graph:v13 progressReporter:v74];
+      v31 = [(PGMemoryPlanner *)v27 filterMemories:v30 forTriggerCollisionsWithTriggerHandler:v23 graph:graphCopy progressReporter:v74];
 
-      if (([v16 isCancelled] & 1) == 0)
+      if (([reporterCopy isCancelled] & 1) == 0)
       {
-        v61 = v14;
-        v32 = [(PGMemoryTriggerHandler *)v23 holidayService];
+        v61 = sourceCopy;
+        holidayService = [(PGMemoryTriggerHandler *)v23 holidayService];
         v33 = v29;
-        v34 = [PGMemoryTriggerHandler fallbackTriggeredMemoriesWithContext:v29 excludingTriggeredMemories:v31 inGraph:v13 holidayService:v32];
+        v34 = [PGMemoryTriggerHandler fallbackTriggeredMemoriesWithContext:v29 excludingTriggeredMemories:v31 inGraph:graphCopy holidayService:holidayService];
 
         v59 = v34;
         v35 = [v31 arrayByAddingObjectsFromArray:v34];
@@ -1531,28 +1531,28 @@ LABEL_5:
         v37 = v33;
         v38 = v33;
         v28 = v73;
-        v39 = [(PGMemoryElector *)self filterAndSortTriggeredMemories:v36 withPlanner:v66 context:v37 configuration:v12 progressReporter:v73];
+        v39 = [(PGMemoryElector *)self filterAndSortTriggeredMemories:v36 withPlanner:v66 context:v37 configuration:configurationCopy progressReporter:v73];
         v63 = v39;
-        if ([v16 isCancelled])
+        if ([reporterCopy isCancelled])
         {
           v19 = MEMORY[0x277CBEBF8];
-          v14 = v61;
+          sourceCopy = v61;
           v22 = v64;
         }
 
         else
         {
-          v40 = [(PGMemoryElector *)self targetNumberOfMemoriesFromConfigurator:v12 graph:v13 context:v38];
+          v40 = [(PGMemoryElector *)self targetNumberOfMemoriesFromConfigurator:configurationCopy graph:graphCopy context:v38];
           v77 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v41 = [v39 firstObject];
-          v42 = [v41 memoryCategory];
+          firstObject = [v39 firstObject];
+          memoryCategory = [firstObject memoryCategory];
 
           v58 = v40;
-          if (v42 == 8)
+          if (memoryCategory == 8)
           {
-            v55 = self;
-            v56 = v16;
-            v57 = v15;
+            selfCopy = self;
+            v56 = reporterCopy;
+            v57 = futureSourceCopy;
             v80 = 0u;
             v81 = 0u;
             v78 = 0u;
@@ -1574,8 +1574,8 @@ LABEL_5:
                   }
 
                   v49 = *(*(&v78 + 1) + 8 * i);
-                  v50 = [v49 triggerTypes];
-                  v51 = [v50 containsIndex:5];
+                  triggerTypes = [v49 triggerTypes];
+                  v51 = [triggerTypes containsIndex:5];
 
                   if (v51)
                   {
@@ -1591,22 +1591,22 @@ LABEL_5:
               while (v45);
             }
 
-            v14 = v61;
+            sourceCopy = v61;
             if ([v77 count])
             {
-              self = v55;
+              self = selfCopy;
               v40 = v58;
-              v52 = [(PGMemoryElector *)v55 electAndEnrichSortedTriggeredMemories:v77 alreadyEnrichedMemories:MEMORY[0x277CBEBF8] targetNumberOfMemories:v58 configuration:v12 graph:v13 planner:v66 context:v65 progressReporter:v71];
-              v16 = v56;
-              v15 = v57;
+              v52 = [(PGMemoryElector *)selfCopy electAndEnrichSortedTriggeredMemories:v77 alreadyEnrichedMemories:MEMORY[0x277CBEBF8] targetNumberOfMemories:v58 configuration:configurationCopy graph:graphCopy planner:v66 context:v65 progressReporter:v71];
+              reporterCopy = v56;
+              futureSourceCopy = v57;
             }
 
             else
             {
               v52 = MEMORY[0x277CBEBF8];
-              v16 = v56;
-              v15 = v57;
-              self = v55;
+              reporterCopy = v56;
+              futureSourceCopy = v57;
+              self = selfCopy;
               v40 = v58;
             }
           }
@@ -1614,7 +1614,7 @@ LABEL_5:
           else
           {
             v52 = MEMORY[0x277CBEBF8];
-            v14 = v61;
+            sourceCopy = v61;
           }
 
           if ([v52 count] >= v40)
@@ -1628,13 +1628,13 @@ LABEL_5:
           {
             v53 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v63];
             [v53 removeObjectsInArray:v77];
-            v62 = [(PGMemoryElector *)self electAndEnrichSortedTriggeredMemories:v53 alreadyEnrichedMemories:v52 targetNumberOfMemories:v58 configuration:v12 graph:v13 planner:v66 context:v65 progressReporter:v72];
+            v62 = [(PGMemoryElector *)self electAndEnrichSortedTriggeredMemories:v53 alreadyEnrichedMemories:v52 targetNumberOfMemories:v58 configuration:configurationCopy graph:graphCopy planner:v66 context:v65 progressReporter:v72];
 
             v28 = v73;
             v22 = v64;
           }
 
-          if ([v16 isCancelled] & 1) != 0 || objc_msgSend(v12, "shouldPersist") && (-[PGMemoryElector persistEnrichedMemories:pendingState:graph:progressReporter:](self, "persistEnrichedMemories:pendingState:graph:progressReporter:", v62, objc_msgSend(v12, "pendingState"), v13, v70), (objc_msgSend(v16, "isCancelled")))
+          if ([reporterCopy isCancelled] & 1) != 0 || objc_msgSend(configurationCopy, "shouldPersist") && (-[PGMemoryElector persistEnrichedMemories:pendingState:graph:progressReporter:](self, "persistEnrichedMemories:pendingState:graph:progressReporter:", v62, objc_msgSend(configurationCopy, "pendingState"), graphCopy, v70), (objc_msgSend(reporterCopy, "isCancelled")))
           {
             v19 = MEMORY[0x277CBEBF8];
             v54 = v62;
@@ -1672,13 +1672,13 @@ LABEL_6:
   return v19;
 }
 
-- (id)generateEnrichedMemoriesWithConfiguration:(id)a3 graph:(id)a4 progressReporter:(id)a5
+- (id)generateEnrichedMemoriesWithConfiguration:(id)configuration graph:(id)graph progressReporter:(id)reporter
 {
   v33 = *MEMORY[0x277D85DE8];
   v9 = self->_loggingConnection;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  reporterCopy = reporter;
+  graphCopy = graph;
+  configurationCopy = configuration;
   v13 = os_signpost_id_generate(v9);
   v14 = v9;
   v15 = v14;
@@ -1691,7 +1691,7 @@ LABEL_6:
   info = 0;
   mach_timebase_info(&info);
   v16 = mach_absolute_time();
-  v17 = [(PGMemoryElector *)self generateEnrichedMemoriesWithConfiguration:v12 graph:v11 plannerPastSource:0 plannerFutureSource:0 progressReporter:v10];
+  v17 = [(PGMemoryElector *)self generateEnrichedMemoriesWithConfiguration:configurationCopy graph:graphCopy plannerPastSource:0 plannerFutureSource:0 progressReporter:reporterCopy];
 
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
@@ -1728,30 +1728,30 @@ LABEL_6:
   return v17;
 }
 
-- (PGMemoryElector)initWithWorkingContext:(id)a3 userFeedbackCalculator:(id)a4
+- (PGMemoryElector)initWithWorkingContext:(id)context userFeedbackCalculator:(id)calculator
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  calculatorCopy = calculator;
   v23.receiver = self;
   v23.super_class = PGMemoryElector;
   v9 = [(PGMemoryElector *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workingContext, a3);
-    v11 = [v7 photoLibrary];
+    objc_storeStrong(&v9->_workingContext, context);
+    photoLibrary = [contextCopy photoLibrary];
     photoLibrary = v10->_photoLibrary;
-    v10->_photoLibrary = v11;
+    v10->_photoLibrary = photoLibrary;
 
-    v13 = [v7 loggingConnection];
+    loggingConnection = [contextCopy loggingConnection];
     loggingConnection = v10->_loggingConnection;
-    v10->_loggingConnection = v13;
+    v10->_loggingConnection = loggingConnection;
 
-    v15 = [v7 curationManager];
+    curationManager = [contextCopy curationManager];
     curationManager = v10->_curationManager;
-    v10->_curationManager = v15;
+    v10->_curationManager = curationManager;
 
-    objc_storeStrong(&v10->_userFeedbackCalculator, a4);
+    objc_storeStrong(&v10->_userFeedbackCalculator, calculator);
     v17 = objc_alloc_init(MEMORY[0x277D3C7A0]);
     v18 = [objc_alloc(MEMORY[0x277D3C790]) initWithUserFeedbackCalculator:v10->_userFeedbackCalculator curationSession:v17];
     curationContext = v10->_curationContext;
@@ -1765,24 +1765,24 @@ LABEL_6:
   return v10;
 }
 
-+ (int64_t)compareMemoryCategoryForMemory:(id)a3 toOtherMemory:(id)a4
++ (int64_t)compareMemoryCategoryForMemory:(id)memory toOtherMemory:(id)otherMemory
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 triggerTypes];
-  if ([v7 containsIndex:5])
+  memoryCopy = memory;
+  otherMemoryCopy = otherMemory;
+  triggerTypes = [memoryCopy triggerTypes];
+  if ([triggerTypes containsIndex:5])
   {
-    v8 = [v6 triggerTypes];
-    v9 = [v8 containsIndex:5];
+    triggerTypes2 = [otherMemoryCopy triggerTypes];
+    v9 = [triggerTypes2 containsIndex:5];
 
     if (v9)
     {
-      if ([v5 memoryCategory] == 8 && objc_msgSend(v6, "memoryCategory") != 8)
+      if ([memoryCopy memoryCategory] == 8 && objc_msgSend(otherMemoryCopy, "memoryCategory") != 8)
       {
         goto LABEL_27;
       }
 
-      if ([v5 memoryCategory] != 8 && objc_msgSend(v6, "memoryCategory") == 8)
+      if ([memoryCopy memoryCategory] != 8 && objc_msgSend(otherMemoryCopy, "memoryCategory") == 8)
       {
         goto LABEL_21;
       }
@@ -1793,20 +1793,20 @@ LABEL_6:
   {
   }
 
-  v10 = [v5 triggerTypes];
-  if ([v10 containsIndex:4])
+  triggerTypes3 = [memoryCopy triggerTypes];
+  if ([triggerTypes3 containsIndex:4])
   {
-    v11 = [v6 triggerTypes];
-    v12 = [v11 containsIndex:4];
+    triggerTypes4 = [otherMemoryCopy triggerTypes];
+    v12 = [triggerTypes4 containsIndex:4];
 
     if (v12)
     {
-      if ([v5 memoryCategory] == 23 && objc_msgSend(v6, "memoryCategory") == 1)
+      if ([memoryCopy memoryCategory] == 23 && objc_msgSend(otherMemoryCopy, "memoryCategory") == 1)
       {
         goto LABEL_27;
       }
 
-      if ([v5 memoryCategory] == 1 && objc_msgSend(v6, "memoryCategory") == 23)
+      if ([memoryCopy memoryCategory] == 1 && objc_msgSend(otherMemoryCopy, "memoryCategory") == 23)
       {
         goto LABEL_21;
       }
@@ -1817,15 +1817,15 @@ LABEL_6:
   {
   }
 
-  v13 = [v5 triggerTypes];
-  if (([v13 containsIndex:1] & 1) == 0)
+  triggerTypes5 = [memoryCopy triggerTypes];
+  if (([triggerTypes5 containsIndex:1] & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v14 = [v6 triggerTypes];
-  v15 = [v14 containsIndex:1];
+  triggerTypes6 = [otherMemoryCopy triggerTypes];
+  v15 = [triggerTypes6 containsIndex:1];
 
   if (!v15)
   {
@@ -1834,9 +1834,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v5 memoryCategory] != 16 || objc_msgSend(v6, "memoryCategory") != 17)
+  if ([memoryCopy memoryCategory] != 16 || objc_msgSend(otherMemoryCopy, "memoryCategory") != 17)
   {
-    if ([v5 memoryCategory] == 17 && objc_msgSend(v6, "memoryCategory") == 16)
+    if ([memoryCopy memoryCategory] == 17 && objc_msgSend(otherMemoryCopy, "memoryCategory") == 16)
     {
 LABEL_27:
       v16 = -1;

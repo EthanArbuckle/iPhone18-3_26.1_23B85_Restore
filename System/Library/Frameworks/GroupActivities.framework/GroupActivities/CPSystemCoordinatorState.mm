@@ -1,24 +1,24 @@
 @interface CPSystemCoordinatorState
 - (CPSystemCoordinatorState)init;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSystemCoordinatorState
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemCoordinatorState.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SystemCoordinatorState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SystemCoordinatorState.encode(with:)(coderCopy);
 }
 
 - (CPSystemCoordinatorState)init

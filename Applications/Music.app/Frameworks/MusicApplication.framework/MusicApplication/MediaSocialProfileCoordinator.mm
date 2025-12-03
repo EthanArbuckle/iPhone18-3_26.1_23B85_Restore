@@ -1,22 +1,22 @@
 @interface MediaSocialProfileCoordinator
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)handleProfileDidExpire:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)handleProfileDidExpire:(id)expire;
 @end
 
 @implementation MediaSocialProfileCoordinator
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
-  v5 = self;
+  reachabilityCopy = reachability;
+  selfCopy = self;
   sub_386688(&unk_D0E078, sub_386FB8, &block_descriptor_102);
 }
 
-- (void)handleProfileDidExpire:(id)a3
+- (void)handleProfileDidExpire:(id)expire
 {
-  v4 = a3;
-  v5 = self;
-  sub_385018(v4);
+  expireCopy = expire;
+  selfCopy = self;
+  sub_385018(expireCopy);
 }
 
 @end

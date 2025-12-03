@@ -1,14 +1,14 @@
 @interface CloudGeniusOnlyIfDoesNotHaveValueTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusOnlyIfDoesNotHaveValueTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
   v7.receiver = self;
   v7.super_class = CloudGeniusOnlyIfDoesNotHaveValueTransform;
-  v3 = [(CloudGeniusHasValueTransform *)&v7 geniusValueForMLValue:a3];
+  v3 = [(CloudGeniusHasValueTransform *)&v7 geniusValueForMLValue:value];
   if ([v3 BOOLValue])
   {
     v4 = 0;

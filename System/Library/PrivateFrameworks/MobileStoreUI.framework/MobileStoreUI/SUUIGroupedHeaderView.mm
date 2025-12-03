@@ -1,16 +1,16 @@
 @interface SUUIGroupedHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIGroupedHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIGroupedHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SUUIGroupedHeaderView
 
-- (SUUIGroupedHeaderView)initWithFrame:(CGRect)a3
+- (SUUIGroupedHeaderView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = SUUIGroupedHeaderView;
-  v3 = [(SUUIGroupedHeaderView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIGroupedHeaderView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:0.94 alpha:1.0];
@@ -52,12 +52,12 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UILabel *)self->_titleLabel text];
-  v6 = [v5 length];
+  height = fits.height;
+  width = fits.width;
+  text = [(UILabel *)self->_titleLabel text];
+  v6 = [text length];
 
   v7 = 35.0;
   if (v6)
@@ -106,13 +106,13 @@
   }
 
   [(UILabel *)self->_titleLabel setTextAlignment:v14];
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v17 = 1.0 / v16;
 
   [(UIView *)self->_topBorder setFrame:v4, v6, v8, v17];
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v20 = 1.0 / v19;
 
   v23.origin.x = v4;

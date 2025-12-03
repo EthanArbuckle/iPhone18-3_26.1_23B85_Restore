@@ -1,227 +1,227 @@
 @interface CALNUNNotificationContentMapper
-+ (id)_calnNotificationSoundFromUNNotificationContent:(id)a3;
-+ (id)_sectionIdentifierFromTopicIdentifiers:(id)a3;
-+ (void)_setBodyForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setInterruptionLevelForCALNMutableNotificationContent:(id)a3 usingUNNotificationContent:(id)a4;
-+ (void)_setInterruptionLevelForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setPeopleIdentifiersForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setSoundForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setSubtitleForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setThreadIdentifierForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setTitleForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setTopicIdentifiersForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-+ (void)_setUserInfoForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4;
-- (CALNUNNotificationContentMapper)initWithNotificationIconMapper:(id)a3;
-- (id)_iconIdentifierFromUNNotificationContent:(id)a3;
-- (id)_unNotificationIconFromCALNNotificationContent:(id)a3;
-- (id)calnNotificationContentFromUNNotificationContent:(id)a3;
-- (id)unNotificationContentFromCALNNotificationContent:(id)a3;
++ (id)_calnNotificationSoundFromUNNotificationContent:(id)content;
++ (id)_sectionIdentifierFromTopicIdentifiers:(id)identifiers;
++ (void)_setBodyForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setInterruptionLevelForCALNMutableNotificationContent:(id)content usingUNNotificationContent:(id)notificationContent;
++ (void)_setInterruptionLevelForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setPeopleIdentifiersForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setSoundForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setSubtitleForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setThreadIdentifierForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setTitleForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setTopicIdentifiersForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
++ (void)_setUserInfoForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent;
+- (CALNUNNotificationContentMapper)initWithNotificationIconMapper:(id)mapper;
+- (id)_iconIdentifierFromUNNotificationContent:(id)content;
+- (id)_unNotificationIconFromCALNNotificationContent:(id)content;
+- (id)calnNotificationContentFromUNNotificationContent:(id)content;
+- (id)unNotificationContentFromCALNNotificationContent:(id)content;
 @end
 
 @implementation CALNUNNotificationContentMapper
 
-- (CALNUNNotificationContentMapper)initWithNotificationIconMapper:(id)a3
+- (CALNUNNotificationContentMapper)initWithNotificationIconMapper:(id)mapper
 {
-  v5 = a3;
+  mapperCopy = mapper;
   v9.receiver = self;
   v9.super_class = CALNUNNotificationContentMapper;
   v6 = [(CALNUNNotificationContentMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notificationIconMapper, a3);
+    objc_storeStrong(&v6->_notificationIconMapper, mapper);
   }
 
   return v7;
 }
 
-- (id)unNotificationContentFromCALNNotificationContent:(id)a3
+- (id)unNotificationContentFromCALNNotificationContent:(id)content
 {
   v4 = MEMORY[0x277CE1F60];
-  v5 = a3;
+  contentCopy = content;
   v6 = objc_alloc_init(v4);
-  [objc_opt_class() _setBodyForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  v7 = [v5 categoryIdentifier];
-  [v6 setCategoryIdentifier:v7];
+  [objc_opt_class() _setBodyForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  categoryIdentifier = [contentCopy categoryIdentifier];
+  [v6 setCategoryIdentifier:categoryIdentifier];
 
-  v8 = [v5 date];
-  [v6 setDate:v8];
+  date = [contentCopy date];
+  [v6 setDate:date];
 
-  v9 = [v5 defaultActionURL];
-  [v6 setDefaultActionURL:v9];
+  defaultActionURL = [contentCopy defaultActionURL];
+  [v6 setDefaultActionURL:defaultActionURL];
 
-  v10 = [v5 expirationDate];
-  [v6 setExpirationDate:v10];
+  expirationDate = [contentCopy expirationDate];
+  [v6 setExpirationDate:expirationDate];
 
-  v11 = [(CALNUNNotificationContentMapper *)self _unNotificationIconFromCALNNotificationContent:v5];
+  v11 = [(CALNUNNotificationContentMapper *)self _unNotificationIconFromCALNNotificationContent:contentCopy];
   [v6 setIcon:v11];
 
-  [objc_opt_class() _setPeopleIdentifiersForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [v6 setShouldHideTime:{objc_msgSend(v5, "shouldHideTime")}];
-  [v6 setShouldSuppressSyncDismissalWhenRemoved:{objc_msgSend(v5, "shouldSuppressSyncDismissalWhenRemoved")}];
-  [objc_opt_class() _setSoundForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [objc_opt_class() _setSubtitleForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [objc_opt_class() _setThreadIdentifierForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [objc_opt_class() _setTitleForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [objc_opt_class() _setTopicIdentifiersForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  [objc_opt_class() _setUserInfoForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
+  [objc_opt_class() _setPeopleIdentifiersForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [v6 setShouldHideTime:{objc_msgSend(contentCopy, "shouldHideTime")}];
+  [v6 setShouldSuppressSyncDismissalWhenRemoved:{objc_msgSend(contentCopy, "shouldSuppressSyncDismissalWhenRemoved")}];
+  [objc_opt_class() _setSoundForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [objc_opt_class() _setSubtitleForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [objc_opt_class() _setThreadIdentifierForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [objc_opt_class() _setTitleForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [objc_opt_class() _setTopicIdentifiersForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  [objc_opt_class() _setUserInfoForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
   [v6 setShouldBackgroundDefaultAction:1];
-  [objc_opt_class() _setInterruptionLevelForUNMutableNotificationContent:v6 usingCALNNotificationContent:v5];
-  v12 = [v5 filterCriteria];
+  [objc_opt_class() _setInterruptionLevelForUNMutableNotificationContent:v6 usingCALNNotificationContent:contentCopy];
+  filterCriteria = [contentCopy filterCriteria];
 
-  [v6 setFilterCriteria:v12];
+  [v6 setFilterCriteria:filterCriteria];
   v13 = [v6 copy];
 
   return v13;
 }
 
-- (id)calnNotificationContentFromUNNotificationContent:(id)a3
+- (id)calnNotificationContentFromUNNotificationContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = objc_alloc_init(CALNMutableNotificationContent);
-  v6 = [v4 body];
-  [(CALNMutableNotificationContent *)v5 setBody:v6];
+  body = [contentCopy body];
+  [(CALNMutableNotificationContent *)v5 setBody:body];
 
-  v7 = [v4 categoryIdentifier];
-  [(CALNMutableNotificationContent *)v5 setCategoryIdentifier:v7];
+  categoryIdentifier = [contentCopy categoryIdentifier];
+  [(CALNMutableNotificationContent *)v5 setCategoryIdentifier:categoryIdentifier];
 
-  v8 = [v4 date];
-  [(CALNMutableNotificationContent *)v5 setDate:v8];
+  date = [contentCopy date];
+  [(CALNMutableNotificationContent *)v5 setDate:date];
 
-  v9 = [v4 defaultActionURL];
-  [(CALNMutableNotificationContent *)v5 setDefaultActionURL:v9];
+  defaultActionURL = [contentCopy defaultActionURL];
+  [(CALNMutableNotificationContent *)v5 setDefaultActionURL:defaultActionURL];
 
-  v10 = [v4 expirationDate];
-  [(CALNMutableNotificationContent *)v5 setExpirationDate:v10];
+  expirationDate = [contentCopy expirationDate];
+  [(CALNMutableNotificationContent *)v5 setExpirationDate:expirationDate];
 
-  v11 = [(CALNUNNotificationContentMapper *)self _iconIdentifierFromUNNotificationContent:v4];
+  v11 = [(CALNUNNotificationContentMapper *)self _iconIdentifierFromUNNotificationContent:contentCopy];
   [(CALNMutableNotificationContent *)v5 setIconIdentifier:v11];
 
-  v12 = [v4 peopleIdentifiers];
-  [(CALNMutableNotificationContent *)v5 setPeopleIdentifiers:v12];
+  peopleIdentifiers = [contentCopy peopleIdentifiers];
+  [(CALNMutableNotificationContent *)v5 setPeopleIdentifiers:peopleIdentifiers];
 
   v13 = objc_opt_class();
-  v14 = [v4 topicIdentifiers];
-  v15 = [v13 _sectionIdentifierFromTopicIdentifiers:v14];
+  topicIdentifiers = [contentCopy topicIdentifiers];
+  v15 = [v13 _sectionIdentifierFromTopicIdentifiers:topicIdentifiers];
   [(CALNMutableNotificationContent *)v5 setSectionIdentifier:v15];
 
-  -[CALNMutableNotificationContent setShouldHideTime:](v5, "setShouldHideTime:", [v4 shouldHideTime]);
-  -[CALNMutableNotificationContent setShouldSuppressSyncDismissalWhenRemoved:](v5, "setShouldSuppressSyncDismissalWhenRemoved:", [v4 shouldSuppressSyncDismissalWhenRemoved]);
-  v16 = [objc_opt_class() _calnNotificationSoundFromUNNotificationContent:v4];
+  -[CALNMutableNotificationContent setShouldHideTime:](v5, "setShouldHideTime:", [contentCopy shouldHideTime]);
+  -[CALNMutableNotificationContent setShouldSuppressSyncDismissalWhenRemoved:](v5, "setShouldSuppressSyncDismissalWhenRemoved:", [contentCopy shouldSuppressSyncDismissalWhenRemoved]);
+  v16 = [objc_opt_class() _calnNotificationSoundFromUNNotificationContent:contentCopy];
   [(CALNMutableNotificationContent *)v5 setSound:v16];
 
-  v17 = [v4 subtitle];
-  [(CALNMutableNotificationContent *)v5 setSubtitle:v17];
+  subtitle = [contentCopy subtitle];
+  [(CALNMutableNotificationContent *)v5 setSubtitle:subtitle];
 
-  v18 = [v4 threadIdentifier];
-  [(CALNMutableNotificationContent *)v5 setThreadIdentifier:v18];
+  threadIdentifier = [contentCopy threadIdentifier];
+  [(CALNMutableNotificationContent *)v5 setThreadIdentifier:threadIdentifier];
 
-  v19 = [v4 title];
-  [(CALNMutableNotificationContent *)v5 setTitle:v19];
+  title = [contentCopy title];
+  [(CALNMutableNotificationContent *)v5 setTitle:title];
 
-  v20 = [v4 userInfo];
-  [(CALNMutableNotificationContent *)v5 setUserInfo:v20];
+  userInfo = [contentCopy userInfo];
+  [(CALNMutableNotificationContent *)v5 setUserInfo:userInfo];
 
-  [objc_opt_class() _setInterruptionLevelForCALNMutableNotificationContent:v5 usingUNNotificationContent:v4];
-  v21 = [v4 filterCriteria];
+  [objc_opt_class() _setInterruptionLevelForCALNMutableNotificationContent:v5 usingUNNotificationContent:contentCopy];
+  filterCriteria = [contentCopy filterCriteria];
 
-  [(CALNMutableNotificationContent *)v5 setFilterCriteria:v21];
+  [(CALNMutableNotificationContent *)v5 setFilterCriteria:filterCriteria];
   v22 = [(CALNMutableNotificationContent *)v5 copy];
 
   return v22;
 }
 
-+ (void)_setInterruptionLevelForCALNMutableNotificationContent:(id)a3 usingUNNotificationContent:(id)a4
++ (void)_setInterruptionLevelForCALNMutableNotificationContent:(id)content usingUNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 interruptionLevel];
-  if (v5 <= 3)
+  contentCopy = content;
+  interruptionLevel = [notificationContent interruptionLevel];
+  if (interruptionLevel <= 3)
   {
-    [v6 setInterruptionLevel:v5];
+    [contentCopy setInterruptionLevel:interruptionLevel];
   }
 }
 
-+ (void)_setInterruptionLevelForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setInterruptionLevelForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 interruptionLevel];
-  if (v5 <= 3)
+  contentCopy = content;
+  interruptionLevel = [notificationContent interruptionLevel];
+  if (interruptionLevel <= 3)
   {
-    [v6 setInterruptionLevel:v5];
+    [contentCopy setInterruptionLevel:interruptionLevel];
   }
 }
 
-+ (void)_setBodyForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setBodyForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 body];
-  if (v5)
+  contentCopy = content;
+  body = [notificationContent body];
+  if (body)
   {
-    [v6 setBody:v5];
+    [contentCopy setBody:body];
   }
 }
 
-+ (void)_setPeopleIdentifiersForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setPeopleIdentifiersForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 peopleIdentifiers];
-  if (v5)
+  contentCopy = content;
+  peopleIdentifiers = [notificationContent peopleIdentifiers];
+  if (peopleIdentifiers)
   {
-    [v6 setPeopleIdentifiers:v5];
+    [contentCopy setPeopleIdentifiers:peopleIdentifiers];
   }
 }
 
-+ (void)_setSoundForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setSoundForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v7 = a3;
-  v5 = [a4 sound];
-  if (v5)
+  contentCopy = content;
+  sound = [notificationContent sound];
+  if (sound)
   {
-    v6 = [CALNUNNotificationSoundMapper unNotificationSoundFromCALNNotificationSound:v5];
-    [v7 setSound:v6];
+    v6 = [CALNUNNotificationSoundMapper unNotificationSoundFromCALNNotificationSound:sound];
+    [contentCopy setSound:v6];
   }
 }
 
-+ (void)_setSubtitleForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setSubtitleForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 subtitle];
-  if (v5)
+  contentCopy = content;
+  subtitle = [notificationContent subtitle];
+  if (subtitle)
   {
-    [v6 setSubtitle:v5];
+    [contentCopy setSubtitle:subtitle];
   }
 }
 
-+ (void)_setThreadIdentifierForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setThreadIdentifierForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 threadIdentifier];
-  if (v5)
+  contentCopy = content;
+  threadIdentifier = [notificationContent threadIdentifier];
+  if (threadIdentifier)
   {
-    [v6 setThreadIdentifier:v5];
+    [contentCopy setThreadIdentifier:threadIdentifier];
   }
 }
 
-+ (void)_setTitleForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setTitleForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 title];
-  if (v5)
+  contentCopy = content;
+  title = [notificationContent title];
+  if (title)
   {
-    [v6 setTitle:v5];
+    [contentCopy setTitle:title];
   }
 }
 
-+ (void)_setTopicIdentifiersForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setTopicIdentifiersForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 sectionIdentifier];
-  v7 = v6;
+  contentCopy = content;
+  sectionIdentifier = [notificationContent sectionIdentifier];
+  v7 = sectionIdentifier;
   v8 = MEMORY[0x277CBEB98];
-  if (v6)
+  if (sectionIdentifier)
   {
-    v12[0] = v6;
+    v12[0] = sectionIdentifier;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     v10 = [v8 setWithArray:v9];
   }
@@ -231,54 +231,54 @@
     v10 = [MEMORY[0x277CBEB98] set];
   }
 
-  [v5 setTopicIdentifiers:v10];
+  [contentCopy setTopicIdentifiers:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_setUserInfoForUNMutableNotificationContent:(id)a3 usingCALNNotificationContent:(id)a4
++ (void)_setUserInfoForUNMutableNotificationContent:(id)content usingCALNNotificationContent:(id)notificationContent
 {
-  v6 = a3;
-  v5 = [a4 userInfo];
-  if (v5)
+  contentCopy = content;
+  userInfo = [notificationContent userInfo];
+  if (userInfo)
   {
-    [v6 setUserInfo:v5];
+    [contentCopy setUserInfo:userInfo];
   }
 }
 
-+ (id)_sectionIdentifierFromTopicIdentifiers:(id)a3
++ (id)_sectionIdentifierFromTopicIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [v3 allObjects];
-    v5 = [v4 firstObject];
+    allObjects = [identifiersCopy allObjects];
+    firstObject = [allObjects firstObject];
 
-    if ([v3 count] >= 2)
+    if ([identifiersCopy count] >= 2)
     {
       v6 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(CALNUNNotificationContentMapper *)v3 _sectionIdentifierFromTopicIdentifiers:v5, v6];
+        [(CALNUNNotificationContentMapper *)identifiersCopy _sectionIdentifierFromTopicIdentifiers:firstObject, v6];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_unNotificationIconFromCALNNotificationContent:(id)a3
+- (id)_unNotificationIconFromCALNNotificationContent:(id)content
 {
-  v4 = [a3 iconIdentifier];
-  if (v4)
+  iconIdentifier = [content iconIdentifier];
+  if (iconIdentifier)
   {
-    v5 = [(CALNUNNotificationContentMapper *)self notificationIconMapper];
-    v6 = [v5 unNotificationIconFromIconIdentifier:v4];
+    notificationIconMapper = [(CALNUNNotificationContentMapper *)self notificationIconMapper];
+    v6 = [notificationIconMapper unNotificationIconFromIconIdentifier:iconIdentifier];
   }
 
   else
@@ -289,13 +289,13 @@
   return v6;
 }
 
-- (id)_iconIdentifierFromUNNotificationContent:(id)a3
+- (id)_iconIdentifierFromUNNotificationContent:(id)content
 {
-  v4 = [a3 icon];
-  if (v4)
+  icon = [content icon];
+  if (icon)
   {
-    v5 = [(CALNUNNotificationContentMapper *)self notificationIconMapper];
-    v6 = [v5 iconIdentifierFromUNNotificationIcon:v4];
+    notificationIconMapper = [(CALNUNNotificationContentMapper *)self notificationIconMapper];
+    v6 = [notificationIconMapper iconIdentifierFromUNNotificationIcon:icon];
   }
 
   else
@@ -306,12 +306,12 @@
   return v6;
 }
 
-+ (id)_calnNotificationSoundFromUNNotificationContent:(id)a3
++ (id)_calnNotificationSoundFromUNNotificationContent:(id)content
 {
-  v3 = [a3 sound];
-  if (v3)
+  sound = [content sound];
+  if (sound)
   {
-    v4 = [CALNUNNotificationSoundMapper calnNotificationSoundFromUNNotificationSound:v3];
+    v4 = [CALNUNNotificationSoundMapper calnNotificationSoundFromUNNotificationSound:sound];
   }
 
   else

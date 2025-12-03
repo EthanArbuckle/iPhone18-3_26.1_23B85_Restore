@@ -1,12 +1,12 @@
 @interface GKMultiplayerStepperController
-- (_TtC12GameCenterUI30GKMultiplayerStepperController)initWithMinimumValue:(int64_t)a3 maximumValue:(int64_t)a4 initialValue:(int64_t)a5 valueChangedHandler:(id)a6;
+- (_TtC12GameCenterUI30GKMultiplayerStepperController)initWithMinimumValue:(int64_t)value maximumValue:(int64_t)maximumValue initialValue:(int64_t)initialValue valueChangedHandler:(id)handler;
 @end
 
 @implementation GKMultiplayerStepperController
 
-- (_TtC12GameCenterUI30GKMultiplayerStepperController)initWithMinimumValue:(int64_t)a3 maximumValue:(int64_t)a4 initialValue:(int64_t)a5 valueChangedHandler:(id)a6
+- (_TtC12GameCenterUI30GKMultiplayerStepperController)initWithMinimumValue:(int64_t)value maximumValue:(int64_t)maximumValue initialValue:(int64_t)initialValue valueChangedHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     *(swift_allocObject() + 16) = v9;
@@ -18,7 +18,7 @@
     v10 = 0;
   }
 
-  return sub_24E01990C(a3, a4, a5, v10);
+  return sub_24E01990C(value, maximumValue, initialValue, v10);
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface SAPersistentConnectionMonitor
 - (BOOL)getReachability;
-- (SAPersistentConnectionMonitor)initWithQueue:(id)a3 forNetwork:(int)a4;
-- (void)interfaceReachabilityChanged:(id)a3;
+- (SAPersistentConnectionMonitor)initWithQueue:(id)queue forNetwork:(int)network;
+- (void)interfaceReachabilityChanged:(id)changed;
 @end
 
 @implementation SAPersistentConnectionMonitor
 
-- (SAPersistentConnectionMonitor)initWithQueue:(id)a3 forNetwork:(int)a4
+- (SAPersistentConnectionMonitor)initWithQueue:(id)queue forNetwork:(int)network
 {
-  v6 = a3;
-  if (!a4)
+  queueCopy = queue;
+  if (!network)
   {
     v7 = [PCInterfaceMonitor sharedInstanceForIdentifier:0];
-    [v7 addDelegate:self queue:v6];
+    [v7 addDelegate:self queue:queueCopy];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (network == 1)
   {
     v7 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-    [v7 addDelegate:self queue:v6];
+    [v7 addDelegate:self queue:queueCopy];
 LABEL_5:
 
     goto LABEL_8;
@@ -36,26 +36,26 @@ LABEL_5:
   }
 
 LABEL_8:
-  self->nwType = a4;
+  self->nwType = network;
 
   return self;
 }
 
-- (void)interfaceReachabilityChanged:(id)a3
+- (void)interfaceReachabilityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = objc_autoreleasePoolPush();
   v6 = SALogObjectGeneral;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 isInternetReachable];
+    isInternetReachable = [changedCopy isInternetReachable];
     nwType = self->nwType;
     *buf = 68289538;
     v17 = 0;
     v18 = 2082;
     v19 = "";
     v20 = 1026;
-    v21 = v7;
+    v21 = isInternetReachable;
     v22 = 1026;
     v23 = nwType;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#saNwReachMonitor,interfaceReachabilityChanged, reachable:%{public}d, type:%{public}d}", buf, 0x1Eu);
@@ -64,8 +64,8 @@ LABEL_8:
   reachabilityInstance = self->reachabilityInstance;
   if (reachabilityInstance)
   {
-    v10 = [v4 isInternetReachable];
-    v15 = v10;
+    isInternetReachable2 = [changedCopy isInternetReachable];
+    v15 = isInternetReachable2;
     v11 = SALogObjectGeneral;
     if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
     {
@@ -77,7 +77,7 @@ LABEL_8:
       v20 = 1026;
       v21 = v12;
       v22 = 1026;
-      v23 = v10;
+      v23 = isInternetReachable2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#saNwReachMonitor,onNetworkReachabilityChanged, type:%{public}d, isConnected:%{public}hhd}", buf, 0x1Eu);
     }
 
@@ -105,16 +105,16 @@ LABEL_8:
     }
 
     v3 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-    v4 = [v3 isInternetReachable];
+    isInternetReachable = [v3 isInternetReachable];
   }
 
   else
   {
     v3 = [PCInterfaceMonitor sharedInstanceForIdentifier:0];
-    v4 = [v3 isInternetReachable];
+    isInternetReachable = [v3 isInternetReachable];
   }
 
-  v5 = v4;
+  v5 = isInternetReachable;
 
   return v5;
 }

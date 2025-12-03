@@ -1,27 +1,27 @@
 @interface AXAuditIssue
-+ (id)auditIssueForClassification:(int64_t)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
++ (id)auditIssueForClassification:(int64_t)classification;
++ (void)registerTransportableObjectWithManager:(id)manager;
 - (AXAuditIssue)init;
-- (BOOL)_isSameRelativeLocationAsAuditIssue:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isSameRelativeLocationAsAuditIssue:(id)issue;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)containerOrigin;
 - (CGRect)elementRect;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)foundLogMessage;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setIssueClassification:(int64_t)a3;
+- (void)setIssueClassification:(int64_t)classification;
 @end
 
 @implementation AXAuditIssue
 
-+ (id)auditIssueForClassification:(int64_t)a3
++ (id)auditIssueForClassification:(int64_t)classification
 {
-  v4 = [objc_allocWithZone(objc_msgSend(a1 "_auditIssueClassForType:"init""))];
-  [v4 setIssueClassification:a3];
+  v4 = [objc_allocWithZone(objc_msgSend(self "_auditIssueClassForType:"init""))];
+  [v4 setIssueClassification:classification];
   v5 = +[AXAuditIssueDescriptionManager auditIssueTypeToAuditTestTypeMapping];
-  v6 = [MEMORY[0x277CCABB0] numberWithLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithLong:classification];
   v7 = [v5 objectForKey:v6];
 
   [v4 setAuditTestType:v7];
@@ -43,9 +43,9 @@
   return result;
 }
 
-- (void)setIssueClassification:(int64_t)a3
+- (void)setIssueClassification:(int64_t)classification
 {
-  self->_issueClassification = a3;
+  self->_issueClassification = classification;
   v4 = [(AXAuditIssue *)self _platformForClassification:?];
 
   [(AXAuditIssue *)self setPlatform:v4];
@@ -53,88 +53,88 @@
 
 - (id)foundLogMessage
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = +[AXAuditIssueDescriptionManager sharedManager];
   [(AXAuditIssue *)self setDescManager:v4];
 
-  v5 = [(AXAuditIssue *)self descManager];
-  v6 = [v5 longDescriptionForAuditIssue:self];
+  descManager = [(AXAuditIssue *)self descManager];
+  v6 = [descManager longDescriptionForAuditIssue:self];
 
-  v7 = [(AXAuditIssue *)self descManager];
-  v8 = [v7 longDescExtraInfoForAuditIssue:self];
+  descManager2 = [(AXAuditIssue *)self descManager];
+  v8 = [descManager2 longDescExtraInfoForAuditIssue:self];
 
-  v9 = [(AXAuditIssue *)self auditElement];
-  [v3 appendFormat:@"Found Issue %li:", -[AXAuditIssue issueClassification](self, "issueClassification")];
-  v10 = [(AXAuditIssue *)self auditTestType];
+  auditElement = [(AXAuditIssue *)self auditElement];
+  [string appendFormat:@"Found Issue %li:", -[AXAuditIssue issueClassification](self, "issueClassification")];
+  auditTestType = [(AXAuditIssue *)self auditTestType];
 
-  if (v10)
+  if (auditTestType)
   {
-    v11 = [(AXAuditIssue *)self auditTestType];
-    [v3 appendFormat:@" %@", v11];
+    auditTestType2 = [(AXAuditIssue *)self auditTestType];
+    [string appendFormat:@" %@", auditTestType2];
   }
 
   if ([v6 length])
   {
-    [v3 appendFormat:@" %@", v6];
+    [string appendFormat:@" %@", v6];
   }
 
   if ([v8 length])
   {
-    [v3 appendFormat:@" %@", v8];
+    [string appendFormat:@" %@", v8];
   }
 
-  if (v9)
+  if (auditElement)
   {
-    [v3 appendFormat:@" %@", v9];
+    [string appendFormat:@" %@", auditElement];
   }
 
   [(AXAuditIssue *)self elementRect];
   v12 = NSStringFromRect(v32);
-  [v3 appendFormat:@" %@", v12];
+  [string appendFormat:@" %@", v12];
 
-  v13 = [(AXAuditIssue *)self suggestedSelectorsToFix];
-  if ([v13 count])
+  suggestedSelectorsToFix = [(AXAuditIssue *)self suggestedSelectorsToFix];
+  if ([suggestedSelectorsToFix count])
   {
-    [v3 appendFormat:@", Suggested selectors to fix: %@", v13];
+    [string appendFormat:@", Suggested selectors to fix: %@", suggestedSelectorsToFix];
   }
 
-  v14 = [(AXAuditIssue *)self foregroundColor];
+  foregroundColor = [(AXAuditIssue *)self foregroundColor];
 
-  if (v14)
+  if (foregroundColor)
   {
-    v15 = [(AXAuditIssue *)self foregroundColor];
-    [v3 appendFormat:@" ForegroundColor:%@", v15];
+    foregroundColor2 = [(AXAuditIssue *)self foregroundColor];
+    [string appendFormat:@" ForegroundColor:%@", foregroundColor2];
   }
 
-  v16 = [(AXAuditIssue *)self backgroundColor];
+  backgroundColor = [(AXAuditIssue *)self backgroundColor];
 
-  if (v16)
+  if (backgroundColor)
   {
-    v17 = [(AXAuditIssue *)self backgroundColor];
-    [v3 appendFormat:@" BackgroundColor:%@", v17];
+    backgroundColor2 = [(AXAuditIssue *)self backgroundColor];
+    [string appendFormat:@" BackgroundColor:%@", backgroundColor2];
   }
 
   [(AXAuditIssue *)self fontSize];
   if (v18 > 0.0)
   {
     [(AXAuditIssue *)self fontSize];
-    [v3 appendFormat:@" FontSize:%.1f", v19];
+    [string appendFormat:@" FontSize:%.1f", v19];
   }
 
-  v20 = [(AXAuditIssue *)self elementText];
+  elementText = [(AXAuditIssue *)self elementText];
 
-  if (v20)
+  if (elementText)
   {
-    v21 = [(AXAuditIssue *)self elementText];
-    [v3 appendFormat:@" ElementText :%@", v21];
+    elementText2 = [(AXAuditIssue *)self elementText];
+    [string appendFormat:@" ElementText :%@", elementText2];
   }
 
-  v22 = [(AXAuditIssue *)self screenGroupId];
+  screenGroupId = [(AXAuditIssue *)self screenGroupId];
 
-  if (v22)
+  if (screenGroupId)
   {
-    v23 = [(AXAuditIssue *)self screenGroupId];
-    [v3 appendFormat:@" ScreenGroupID :%@", v23];
+    screenGroupId2 = [(AXAuditIssue *)self screenGroupId];
+    [string appendFormat:@" ScreenGroupID :%@", screenGroupId2];
   }
 
   if ([(AXAuditIssue *)self isDuplicate])
@@ -147,31 +147,31 @@
     v24 = @" New Issue ";
   }
 
-  [v3 appendFormat:v24];
-  v25 = [(AXAuditIssue *)self mlGeneratedDescription];
+  [string appendFormat:v24];
+  mlGeneratedDescription = [(AXAuditIssue *)self mlGeneratedDescription];
 
-  if (v25)
+  if (mlGeneratedDescription)
   {
-    v26 = [(AXAuditIssue *)self mlGeneratedDescription];
-    [v3 appendFormat:@" ML Generated Description :%@", v26];
+    mlGeneratedDescription2 = [(AXAuditIssue *)self mlGeneratedDescription];
+    [string appendFormat:@" ML Generated Description :%@", mlGeneratedDescription2];
   }
 
-  v27 = [(AXAuditIssue *)self timeStamp];
+  timeStamp = [(AXAuditIssue *)self timeStamp];
 
-  if (v27)
+  if (timeStamp)
   {
-    v28 = [(AXAuditIssue *)self timeStamp];
-    [v3 appendFormat:@" timestamp :%@", v28];
+    timeStamp2 = [(AXAuditIssue *)self timeStamp];
+    [string appendFormat:@" timestamp :%@", timeStamp2];
   }
 
-  v29 = [v3 copy];
+  v29 = [string copy];
 
   return v29;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v20 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditIssue_v1"];
   v19 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v20 addPropertyEntry:v19];
@@ -253,7 +253,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v12 setTransportKey:@"TimeStampValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v12 setLocalValueToTransportValue:&__block_literal_global_163];
   [(AXAuditObjectTransportPropertyEntry *)v12 setPopulateLocalObjectWithTransportValue:&__block_literal_global_165];
-  [v3 registerTransportInfoPropertyBased:v20];
+  [managerCopy registerTransportInfoPropertyBased:v20];
 }
 
 uint64_t __55__AXAuditIssue_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -471,58 +471,58 @@ void __55__AXAuditIssue_registerTransportableObjectWithManager___block_invoke_32
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIssueClassification:{-[AXAuditIssue issueClassification](self, "issueClassification")}];
-  v5 = [(AXAuditIssue *)self auditTestType];
-  [v4 setAuditTestType:v5];
+  auditTestType = [(AXAuditIssue *)self auditTestType];
+  [v4 setAuditTestType:auditTestType];
 
-  v6 = [(AXAuditIssue *)self auditElement];
-  [v4 setAuditElement:v6];
+  auditElement = [(AXAuditIssue *)self auditElement];
+  [v4 setAuditElement:auditElement];
 
-  v7 = [(AXAuditIssue *)self elementDescription];
-  [v4 setElementDescription:v7];
+  elementDescription = [(AXAuditIssue *)self elementDescription];
+  [v4 setElementDescription:elementDescription];
 
   [(AXAuditIssue *)self elementRect];
   [v4 setElementRect:?];
-  v8 = [(AXAuditIssue *)self suggestedSelectorsToFix];
-  [v4 setSuggestedSelectorsToFix:v8];
+  suggestedSelectorsToFix = [(AXAuditIssue *)self suggestedSelectorsToFix];
+  [v4 setSuggestedSelectorsToFix:suggestedSelectorsToFix];
 
-  v9 = [(AXAuditIssue *)self longDescExtraInfo];
-  [v4 setLongDescExtraInfo:v9];
+  longDescExtraInfo = [(AXAuditIssue *)self longDescExtraInfo];
+  [v4 setLongDescExtraInfo:longDescExtraInfo];
 
-  v10 = [(AXAuditIssue *)self foregroundColor];
-  [v4 setForegroundColor:v10];
+  foregroundColor = [(AXAuditIssue *)self foregroundColor];
+  [v4 setForegroundColor:foregroundColor];
 
-  v11 = [(AXAuditIssue *)self backgroundColor];
-  [v4 setBackgroundColor:v11];
+  backgroundColor = [(AXAuditIssue *)self backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
   [(AXAuditIssue *)self fontSize];
   [v4 setFontSize:?];
-  v12 = [(AXAuditIssue *)self elementText];
-  [v4 setElementText:v12];
+  elementText = [(AXAuditIssue *)self elementText];
+  [v4 setElementText:elementText];
 
-  v13 = [(AXAuditIssue *)self screenGroupId];
-  [v4 setScreenGroupId:v13];
+  screenGroupId = [(AXAuditIssue *)self screenGroupId];
+  [v4 setScreenGroupId:screenGroupId];
 
   [v4 setIsDuplicate:{-[AXAuditIssue isDuplicate](self, "isDuplicate")}];
-  v14 = [(AXAuditIssue *)self mlGeneratedDescription];
-  [v4 setMlGeneratedDescription:v14];
+  mlGeneratedDescription = [(AXAuditIssue *)self mlGeneratedDescription];
+  [v4 setMlGeneratedDescription:mlGeneratedDescription];
 
-  v15 = [(AXAuditIssue *)self imageIdentifier];
-  [v4 setImageIdentifier:v15];
+  imageIdentifier = [(AXAuditIssue *)self imageIdentifier];
+  [v4 setImageIdentifier:imageIdentifier];
 
-  v16 = [(AXAuditIssue *)self timeStamp];
-  [v4 setTimeStamp:v16];
+  timeStamp = [(AXAuditIssue *)self timeStamp];
+  [v4 setTimeStamp:timeStamp];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -532,9 +532,9 @@ void __55__AXAuditIssue_registerTransportableObjectWithManager___block_invoke_32
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditIssue *)v5 issueClassification];
-      if (v6 != [(AXAuditIssue *)self issueClassification])
+      v5 = equalCopy;
+      issueClassification = [(AXAuditIssue *)v5 issueClassification];
+      if (issueClassification != [(AXAuditIssue *)self issueClassification])
       {
         v15 = 0;
 LABEL_21:
@@ -542,41 +542,41 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v7 = [(AXAuditIssue *)self elementDescription];
-      v8 = [(AXAuditIssue *)v5 elementDescription];
-      v9 = [(AXAuditIssue *)self elementText];
-      v10 = [(AXAuditIssue *)v5 elementText];
-      v11 = [(AXAuditIssue *)self screenGroupId];
-      v71 = [(AXAuditIssue *)v5 screenGroupId];
-      v12 = [(AXAuditIssue *)self mlGeneratedDescription];
+      elementDescription = [(AXAuditIssue *)self elementDescription];
+      elementDescription2 = [(AXAuditIssue *)v5 elementDescription];
+      elementText = [(AXAuditIssue *)self elementText];
+      elementText2 = [(AXAuditIssue *)v5 elementText];
+      screenGroupId = [(AXAuditIssue *)self screenGroupId];
+      screenGroupId2 = [(AXAuditIssue *)v5 screenGroupId];
+      mlGeneratedDescription = [(AXAuditIssue *)self mlGeneratedDescription];
       *(&v72 + 1) = [(AXAuditIssue *)self auditTestType];
       *&v72 = [(AXAuditIssue *)v5 auditTestType];
-      v13 = [(AXAuditIssue *)v5 mlGeneratedDescription];
+      mlGeneratedDescription2 = [(AXAuditIssue *)v5 mlGeneratedDescription];
       [(AXAuditIssue *)self isDuplicate];
       [(AXAuditIssue *)v5 isDuplicate];
-      if (v7 | v8 && ![v7 isEqual:v8] || v9 | v10 && !objc_msgSend(v9, "isEqual:", v10) || v12 | v13 && !objc_msgSend(v12, "isEqual:", v13) || v72 != 0 && !objc_msgSend(*(&v72 + 1), "isEqual:", v72) || v11 | v71 && !objc_msgSend(v11, "isEqualToString:", v71))
+      if (elementDescription | elementDescription2 && ![elementDescription isEqual:elementDescription2] || elementText | elementText2 && !objc_msgSend(elementText, "isEqual:", elementText2) || mlGeneratedDescription | mlGeneratedDescription2 && !objc_msgSend(mlGeneratedDescription, "isEqual:", mlGeneratedDescription2) || v72 != 0 && !objc_msgSend(*(&v72 + 1), "isEqual:", v72) || screenGroupId | screenGroupId2 && !objc_msgSend(screenGroupId, "isEqualToString:", screenGroupId2))
       {
         v15 = 0;
         goto LABEL_20;
       }
 
-      v70 = v11;
-      v14 = [(AXAuditIssue *)self isDuplicate];
-      if (v14 != [(AXAuditIssue *)v5 isDuplicate])
+      v70 = screenGroupId;
+      isDuplicate = [(AXAuditIssue *)self isDuplicate];
+      if (isDuplicate != [(AXAuditIssue *)v5 isDuplicate])
       {
         v15 = 0;
-        v11 = v70;
+        screenGroupId = v70;
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v17 = [(AXAuditIssue *)self auditElement];
-      v68 = [(AXAuditIssue *)v5 auditElement];
-      v69 = v17;
-      v18 = v17 | v68;
-      v11 = v70;
-      if (v18 && ![v69 isEqual:v68])
+      auditElement = [(AXAuditIssue *)self auditElement];
+      auditElement2 = [(AXAuditIssue *)v5 auditElement];
+      v69 = auditElement;
+      v18 = auditElement | auditElement2;
+      screenGroupId = v70;
+      if (v18 && ![v69 isEqual:auditElement2])
       {
         goto LABEL_36;
       }
@@ -613,34 +613,34 @@ LABEL_56:
         }
       }
 
-      v66 = v12;
-      v33 = [(AXAuditIssue *)self suggestedSelectorsToFix];
-      v34 = [(AXAuditIssue *)v5 suggestedSelectorsToFix];
-      v67 = v33;
-      v35 = v33;
-      v36 = v34;
-      v65 = v34;
+      v66 = mlGeneratedDescription;
+      suggestedSelectorsToFix = [(AXAuditIssue *)self suggestedSelectorsToFix];
+      suggestedSelectorsToFix2 = [(AXAuditIssue *)v5 suggestedSelectorsToFix];
+      v67 = suggestedSelectorsToFix;
+      v35 = suggestedSelectorsToFix;
+      v36 = suggestedSelectorsToFix2;
+      v65 = suggestedSelectorsToFix2;
       if (([v35 count] || objc_msgSend(v36, "count")) && !objc_msgSend(v67, "isEqual:", v36))
       {
         v15 = 0;
-        v12 = v66;
+        mlGeneratedDescription = v66;
 LABEL_55:
 
         goto LABEL_56;
       }
 
       [(AXAuditIssue *)self longDescExtraInfo];
-      v60 = v12 = v66;
+      v60 = mlGeneratedDescription = v66;
       if (v60 || ([(AXAuditIssue *)v5 longDescExtraInfo], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v51 = [(AXAuditIssue *)self longDescExtraInfo];
-        v37 = [(AXAuditIssue *)v5 longDescExtraInfo];
-        v55 = [v51 isEqualToArray:?];
+        longDescExtraInfo = [(AXAuditIssue *)self longDescExtraInfo];
+        longDescExtraInfo2 = [(AXAuditIssue *)v5 longDescExtraInfo];
+        v55 = [longDescExtraInfo isEqualToArray:?];
 
         if (v60)
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if (!v55)
           {
             goto LABEL_54;
@@ -650,7 +650,7 @@ LABEL_55:
         else
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if ((v55 & 1) == 0)
           {
             goto LABEL_54;
@@ -658,17 +658,17 @@ LABEL_55:
         }
       }
 
-      v61 = [(AXAuditIssue *)self foregroundColor];
-      if (v61 || ([(AXAuditIssue *)v5 foregroundColor], (v49 = objc_claimAutoreleasedReturnValue()) != 0))
+      foregroundColor = [(AXAuditIssue *)self foregroundColor];
+      if (foregroundColor || ([(AXAuditIssue *)v5 foregroundColor], (v49 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v52 = [(AXAuditIssue *)self foregroundColor];
-        v38 = [(AXAuditIssue *)v5 foregroundColor];
-        v56 = [v52 isEqualToString:?];
+        foregroundColor2 = [(AXAuditIssue *)self foregroundColor];
+        foregroundColor3 = [(AXAuditIssue *)v5 foregroundColor];
+        v56 = [foregroundColor2 isEqualToString:?];
 
-        if (v61)
+        if (foregroundColor)
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if (!v56)
           {
             goto LABEL_54;
@@ -678,7 +678,7 @@ LABEL_55:
         else
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if ((v56 & 1) == 0)
           {
             goto LABEL_54;
@@ -686,17 +686,17 @@ LABEL_55:
         }
       }
 
-      v62 = [(AXAuditIssue *)self backgroundColor];
-      if (v62 || ([(AXAuditIssue *)v5 backgroundColor], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
+      backgroundColor = [(AXAuditIssue *)self backgroundColor];
+      if (backgroundColor || ([(AXAuditIssue *)v5 backgroundColor], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v53 = [(AXAuditIssue *)self backgroundColor];
-        v39 = [(AXAuditIssue *)v5 backgroundColor];
-        v57 = [v53 isEqualToString:?];
+        backgroundColor2 = [(AXAuditIssue *)self backgroundColor];
+        backgroundColor3 = [(AXAuditIssue *)v5 backgroundColor];
+        v57 = [backgroundColor2 isEqualToString:?];
 
-        if (v62)
+        if (backgroundColor)
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if (!v57)
           {
             goto LABEL_54;
@@ -706,7 +706,7 @@ LABEL_55:
         else
         {
 
-          v11 = v70;
+          screenGroupId = v70;
           if ((v57 & 1) == 0)
           {
             goto LABEL_54;
@@ -719,32 +719,32 @@ LABEL_55:
       [(AXAuditIssue *)v5 fontSize];
       if (vabdd_f64(v41, v42) < 0.000001)
       {
-        v63 = [(AXAuditIssue *)self imageIdentifier];
-        v43 = [(AXAuditIssue *)v5 imageIdentifier];
-        v58 = [v63 compare:v43];
+        imageIdentifier = [(AXAuditIssue *)self imageIdentifier];
+        imageIdentifier2 = [(AXAuditIssue *)v5 imageIdentifier];
+        v58 = [imageIdentifier compare:imageIdentifier2];
 
         if (v58)
         {
 LABEL_53:
           v15 = 0;
 LABEL_62:
-          v11 = v70;
+          screenGroupId = v70;
           goto LABEL_55;
         }
 
-        v44 = [(AXAuditIssue *)self timeStamp];
-        v45 = [(AXAuditIssue *)v5 timeStamp];
-        if (v44 == v45)
+        timeStamp = [(AXAuditIssue *)self timeStamp];
+        timeStamp2 = [(AXAuditIssue *)v5 timeStamp];
+        if (timeStamp == timeStamp2)
         {
         }
 
         else
         {
-          v59 = v45;
+          v59 = timeStamp2;
           [(AXAuditIssue *)self timeStamp];
-          v46 = v64 = v44;
-          v47 = [(AXAuditIssue *)v5 timeStamp];
-          v54 = [v46 isEqualToString:v47];
+          v46 = v64 = timeStamp;
+          timeStamp3 = [(AXAuditIssue *)v5 timeStamp];
+          v54 = [v46 isEqualToString:timeStamp3];
 
           if (!v54)
           {
@@ -769,19 +769,19 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)_isSameRelativeLocationAsAuditIssue:(id)a3
+- (BOOL)_isSameRelativeLocationAsAuditIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   [(AXAuditIssue *)self containerOrigin];
   v6 = v5;
   v8 = v7;
-  [v4 containerOrigin];
+  [issueCopy containerOrigin];
   v10 = v9;
   v12 = v11;
   [(AXAuditIssue *)self elementRect];
   v14 = v13;
   v16 = v15;
-  [v4 elementRect];
+  [issueCopy elementRect];
   v18 = v17;
   v20 = v19;
 
@@ -792,29 +792,29 @@ LABEL_22:
 {
   [(AXAuditIssue *)self elementRect];
   v7 = (v6 + v5 + v3 + v4);
-  v8 = [(AXAuditIssue *)self issueClassification];
-  v9 = [(AXAuditIssue *)self auditElement];
-  v10 = [v9 hash];
-  v11 = [(AXAuditIssue *)self elementDescription];
-  v12 = v10 ^ v8 ^ [v11 hash];
+  issueClassification = [(AXAuditIssue *)self issueClassification];
+  auditElement = [(AXAuditIssue *)self auditElement];
+  v10 = [auditElement hash];
+  elementDescription = [(AXAuditIssue *)self elementDescription];
+  v12 = v10 ^ issueClassification ^ [elementDescription hash];
 
   return v12 ^ v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(AXAuditIssue *)self issueClassification];
-  v6 = [v4 issueClassification];
+  compareCopy = compare;
+  issueClassification = [(AXAuditIssue *)self issueClassification];
+  issueClassification2 = [compareCopy issueClassification];
 
-  if (v5 < v6)
+  if (issueClassification < issueClassification2)
   {
     return -1;
   }
 
   else
   {
-    return v5 > v6;
+    return issueClassification > issueClassification2;
   }
 }
 
@@ -823,8 +823,8 @@ LABEL_22:
   v7.receiver = self;
   v7.super_class = AXAuditIssue;
   v3 = [(AXAuditIssue *)&v7 description];
-  v4 = [(AXAuditIssue *)self foundLogMessage];
-  v5 = [v3 stringByAppendingFormat:@" %@", v4];
+  foundLogMessage = [(AXAuditIssue *)self foundLogMessage];
+  v5 = [v3 stringByAppendingFormat:@" %@", foundLogMessage];
 
   return v5;
 }

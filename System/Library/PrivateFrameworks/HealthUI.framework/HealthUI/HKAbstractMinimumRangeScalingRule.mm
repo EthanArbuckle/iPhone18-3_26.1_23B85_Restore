@@ -1,7 +1,7 @@
 @interface HKAbstractMinimumRangeScalingRule
 - (HKAbstractMinimumRangeScalingRule)init;
-- (double)_rangeForZoomLevel:(int64_t)a3;
-- (id)yValueRangeForRange:(id)a3 zoomLevel:(int64_t)a4;
+- (double)_rangeForZoomLevel:(int64_t)level;
+- (id)yValueRangeForRange:(id)range zoomLevel:(int64_t)level;
 @end
 
 @implementation HKAbstractMinimumRangeScalingRule
@@ -13,19 +13,19 @@
   return [(HKAbstractMinimumRangeScalingRule *)&v3 init];
 }
 
-- (id)yValueRangeForRange:(id)a3 zoomLevel:(int64_t)a4
+- (id)yValueRangeForRange:(id)range zoomLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = [v6 minValue];
-  [v7 doubleValue];
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  [minValue doubleValue];
   v9 = v8;
 
-  v10 = [v6 maxValue];
+  maxValue = [rangeCopy maxValue];
 
-  [v10 doubleValue];
+  [maxValue doubleValue];
   v12 = v11;
 
-  [(HKAbstractMinimumRangeScalingRule *)self _rangeForZoomLevel:a4];
+  [(HKAbstractMinimumRangeScalingRule *)self _rangeForZoomLevel:level];
   v14 = v13;
   anchorValue = self->_anchorValue;
   if (anchorValue)
@@ -49,20 +49,20 @@
   axisBounds = self->_axisBounds;
   if (axisBounds)
   {
-    v19 = [(HKValueRange *)axisBounds minValue];
-    v20 = [(HKValueRange *)self->_axisBounds maxValue];
-    if (v19)
+    minValue2 = [(HKValueRange *)axisBounds minValue];
+    maxValue2 = [(HKValueRange *)self->_axisBounds maxValue];
+    if (minValue2)
     {
-      [v19 doubleValue];
+      [minValue2 doubleValue];
       if (v9 < v21)
       {
         v9 = v21;
       }
     }
 
-    if (v20)
+    if (maxValue2)
     {
-      [v20 doubleValue];
+      [maxValue2 doubleValue];
       if (v12 >= v22)
       {
         v12 = v22;
@@ -72,8 +72,8 @@
 
   else
   {
-    v20 = 0;
-    v19 = 0;
+    maxValue2 = 0;
+    minValue2 = 0;
   }
 
   if (v12 - v9 < v14)
@@ -81,24 +81,24 @@
     v23 = (v14 - (v12 - v9)) * 0.5;
     v9 = v9 - v23;
     v12 = v12 + v23;
-    if (v19)
+    if (minValue2)
     {
-      [v19 doubleValue];
+      [minValue2 doubleValue];
       if (v9 < v24)
       {
-        [v19 doubleValue];
+        [minValue2 doubleValue];
         v26 = vabdd_f64(v9, v25);
         v9 = v9 + v26;
         v12 = v12 + v26;
       }
     }
 
-    if (v20)
+    if (maxValue2)
     {
-      [v20 doubleValue];
+      [maxValue2 doubleValue];
       if (v12 > v27)
       {
-        [v20 doubleValue];
+        [maxValue2 doubleValue];
         v29 = vabdd_f64(v12, v28);
         v9 = v9 - v29;
         v12 = v12 - v29;
@@ -113,10 +113,10 @@
   return v32;
 }
 
-- (double)_rangeForZoomLevel:(int64_t)a3
+- (double)_rangeForZoomLevel:(int64_t)level
 {
   axisRangeOverrides = self->_axisRangeOverrides;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:level];
   v6 = [(NSDictionary *)axisRangeOverrides objectForKeyedSubscript:v5];
 
   if (v6)

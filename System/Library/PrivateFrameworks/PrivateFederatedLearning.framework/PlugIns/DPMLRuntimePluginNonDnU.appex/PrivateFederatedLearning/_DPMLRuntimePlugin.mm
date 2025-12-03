@@ -1,22 +1,22 @@
 @interface _DPMLRuntimePlugin
-+ (id)performWithTrialClient:(id)a3 outError:(id *)a4;
-- (id)performTask:(id)a3 outError:(id *)a4;
-- (id)performTrialTask:(id)a3 outError:(id *)a4;
++ (id)performWithTrialClient:(id)client outError:(id *)error;
+- (id)performTask:(id)task outError:(id *)error;
+- (id)performTrialTask:(id)task outError:(id *)error;
 - (void)stop;
 @end
 
 @implementation _DPMLRuntimePlugin
 
-- (id)performTask:(id)a3 outError:(id *)a4
+- (id)performTask:(id)task outError:(id *)error
 {
-  v5 = a3;
+  taskCopy = task;
   v6 = objc_opt_new();
-  v7 = [v5 parameters];
-  v8 = [v7 stringValueForKey:@"namespaceID" defaultValue:&stru_100031E10];
+  parameters = [taskCopy parameters];
+  v8 = [parameters stringValueForKey:@"namespaceID" defaultValue:&stru_100031E10];
   [v6 setNamespaceIdentifier:v8];
 
-  v9 = [v6 namespaceIdentifier];
-  v10 = [v9 isEqualToString:&stru_100031E10];
+  namespaceIdentifier = [v6 namespaceIdentifier];
+  v10 = [namespaceIdentifier isEqualToString:&stru_100031E10];
 
   if (v10)
   {
@@ -26,9 +26,9 @@
       sub_10001CCA4(v11, v12, v13, v14, v15, v16, v17, v18);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -39,8 +39,8 @@
 
   else
   {
-    v20 = [v5 parameters];
-    v21 = [v20 stringValueForKey:@"recipeURL" defaultValue:&stru_100031E10];
+    parameters2 = [taskCopy parameters];
+    v21 = [parameters2 stringValueForKey:@"recipeURL" defaultValue:&stru_100031E10];
 
     if ([v21 isEqualToString:&stru_100031E10])
     {
@@ -50,9 +50,9 @@
         sub_10001CC2C(v22, v23, v24, v25, v26, v27, v28, v29);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v19 = 0;
+        *error = v19 = 0;
       }
 
       else
@@ -66,7 +66,7 @@
       v30 = [NSURL URLWithString:v21];
       [v6 setRecipeURL:v30];
 
-      v31 = [objc_opt_class() performWithTrialClient:v6 outError:a4];
+      v31 = [objc_opt_class() performWithTrialClient:v6 outError:error];
       if (v31)
       {
         v19 = [[MLRTaskResult alloc] initWithJSONResult:&__NSDictionary0__struct unprivatizedVector:0];
@@ -82,19 +82,19 @@
   return v19;
 }
 
-- (id)performTrialTask:(id)a3 outError:(id *)a4
+- (id)performTrialTask:(id)task outError:(id *)error
 {
-  v5 = a3;
+  taskCopy = task;
   v6 = +[_PFLLog extension];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_10001CD1C();
   }
 
-  v7 = [[_DPMLRuntimeTrialClient alloc] initWithTask:v5 error:a4];
+  v7 = [[_DPMLRuntimeTrialClient alloc] initWithTask:taskCopy error:error];
   if (v7)
   {
-    v8 = [objc_opt_class() performWithTrialClient:v7 outError:a4];
+    v8 = [objc_opt_class() performWithTrialClient:v7 outError:error];
   }
 
   else
@@ -111,14 +111,14 @@
   return v8;
 }
 
-+ (id)performWithTrialClient:(id)a3 outError:(id *)a4
++ (id)performWithTrialClient:(id)client outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 recipeURL];
+  clientCopy = client;
+  recipeURL = [clientCopy recipeURL];
 
   v8 = +[_PFLLog extension];
   v9 = v8;
-  if (v7)
+  if (recipeURL)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -126,7 +126,7 @@
     }
 
     v53 = 0;
-    v10 = [_DPMLRuntimeRecipe recipeWithTrialClient:v6 error:&v53];
+    v10 = [_DPMLRuntimeRecipe recipeWithTrialClient:clientCopy error:&v53];
     v11 = v53;
     v12 = +[_PFLLog extension];
     v13 = v12;
@@ -137,13 +137,13 @@
         sub_10001CFA0();
       }
 
-      if (a4)
+      if (error)
       {
         v28 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
-      [_DPMLRuntimeTelemetry reportPluginForTrialClient:v6 withError:v11];
+      [_DPMLRuntimeTelemetry reportPluginForTrialClient:clientCopy withError:v11];
       goto LABEL_22;
     }
 
@@ -152,21 +152,21 @@
       sub_10001CE08();
     }
 
-    v14 = [v10 clientIdentifier];
-    if ([v14 containsString:@"com.apple.insights.iconic-scenes"])
+    clientIdentifier = [v10 clientIdentifier];
+    if ([clientIdentifier containsString:@"com.apple.insights.iconic-scenes"])
     {
       v15 = +[CLLocationManager locationServicesEnabled];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [v10 recipeIdentifier];
-        v17 = [NSString stringWithFormat:@"Location service is not enabled for recipe: %@", v16];
+        recipeIdentifier = [v10 recipeIdentifier];
+        v17 = [NSString stringWithFormat:@"Location service is not enabled for recipe: %@", recipeIdentifier];
         v18 = [_DPMLRuntimeError errorWithCode:300 description:v17];
 
-        if (a4)
+        if (error)
         {
           v19 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
         v20 = +[_PFLLog extension];
@@ -175,7 +175,7 @@
           sub_10001CE44();
         }
 
-        [_DPMLRuntimeTelemetry reportPluginForTrialClient:v6 withError:v18];
+        [_DPMLRuntimeTelemetry reportPluginForTrialClient:clientCopy withError:v18];
 LABEL_22:
         v4 = 0;
 LABEL_43:
@@ -188,8 +188,8 @@ LABEL_43:
     {
     }
 
-    v29 = [v10 clientIdentifier];
-    v30 = [v29 containsString:@"com.apple.insights.wallet-fairness"];
+    clientIdentifier2 = [v10 clientIdentifier];
+    v30 = [clientIdentifier2 containsString:@"com.apple.insights.wallet-fairness"];
 
     if (!v30)
     {
@@ -205,18 +205,18 @@ LABEL_35:
           sub_10001CEE8(v39, v40, v41);
         }
 
-        [_DPMLRuntimeTelemetry reportPluginSucceedForTrialClient:v6];
+        [_DPMLRuntimeTelemetry reportPluginSucceedForTrialClient:clientCopy];
         v4 = objc_opt_new();
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [_DPMLRuntimeError errorWithCode:400 underlyingError:v40 description:@"Cannot record data"];
+          *error = [_DPMLRuntimeError errorWithCode:400 underlyingError:v40 description:@"Cannot record data"];
         }
 
-        [_DPMLRuntimeTelemetry reportPluginForTrialClient:v6 withError:v40];
+        [_DPMLRuntimeTelemetry reportPluginForTrialClient:clientCopy withError:v40];
         v4 = 0;
       }
 
@@ -253,7 +253,7 @@ LABEL_35:
       }
 
       v37 = [_DPMLRuntimeError errorWithCode:300 description:v35];
-      [_DPMLRuntimeTelemetry reportPluginForTrialClient:v6 withError:v37];
+      [_DPMLRuntimeTelemetry reportPluginForTrialClient:clientCopy withError:v37];
 
       v4 = objc_opt_new();
     }
@@ -281,7 +281,7 @@ LABEL_34:
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "User does not have consent for Mead use-case.", buf, 2u);
       }
 
-      [_DPMLRuntimeTelemetry reportPluginSucceedForTrialClient:v6];
+      [_DPMLRuntimeTelemetry reportPluginSucceedForTrialClient:clientCopy];
       v4 = objc_opt_new();
     }
 
@@ -295,7 +295,7 @@ LABEL_34:
   }
 
   v11 = [_DPMLRuntimeError errorWithCode:100 description:@"Could not fetch recipeAttachment from Trial Client for registered namespaces"];
-  [_DPMLRuntimeTelemetry reportPluginForTrialClient:v6 withError:v11];
+  [_DPMLRuntimeTelemetry reportPluginForTrialClient:clientCopy withError:v11];
   v4 = 0;
 LABEL_44:
 

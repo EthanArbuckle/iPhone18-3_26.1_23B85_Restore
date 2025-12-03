@@ -1,6 +1,6 @@
 @interface OSLogPreferencesProcess
 - (BOOL)isLocked;
-- (OSLogPreferencesProcess)initWithBundleID:(id)a3;
+- (OSLogPreferencesProcess)initWithBundleID:(id)d;
 - (id)_levelPrefs;
 - (int64_t)defaultEnabledLevel;
 - (int64_t)defaultPersistedLevel;
@@ -9,8 +9,8 @@
 - (int64_t)enabledLevel;
 - (int64_t)persistedLevel;
 - (void)reset;
-- (void)setEnabledLevel:(int64_t)a3;
-- (void)setPersistedLevel:(int64_t)a3;
+- (void)setEnabledLevel:(int64_t)level;
+- (void)setPersistedLevel:(int64_t)level;
 @end
 
 @implementation OSLogPreferencesProcess
@@ -28,33 +28,33 @@
   }
 }
 
-- (void)setPersistedLevel:(int64_t)a3
+- (void)setPersistedLevel:(int64_t)level
 {
   if (![(OSLogPreferencesProcess *)self isLocked])
   {
-    v5 = [(OSLogPreferencesProcess *)self _levelPrefs];
-    if (a3 > 4)
+    _levelPrefs = [(OSLogPreferencesProcess *)self _levelPrefs];
+    if (level > 4)
     {
       v6 = @"inherit";
     }
 
     else
     {
-      v6 = off_2787AEBC8[a3];
+      v6 = off_2787AEBC8[level];
     }
 
-    v8 = v5;
-    [v5 setObject:v6 forKey:@"Persist"];
-    if (_LevelForKey(v8, @"Enable") < a3)
+    v8 = _levelPrefs;
+    [_levelPrefs setObject:v6 forKey:@"Persist"];
+    if (_LevelForKey(v8, @"Enable") < level)
     {
-      if (a3 > 4)
+      if (level > 4)
       {
         v7 = @"inherit";
       }
 
       else
       {
-        v7 = off_2787AEBC8[a3];
+        v7 = off_2787AEBC8[level];
       }
 
       [v8 setObject:v7 forKey:@"Enable"];
@@ -64,33 +64,33 @@
   }
 }
 
-- (void)setEnabledLevel:(int64_t)a3
+- (void)setEnabledLevel:(int64_t)level
 {
   if (![(OSLogPreferencesProcess *)self isLocked])
   {
-    v5 = [(OSLogPreferencesProcess *)self _levelPrefs];
-    if (a3 > 4)
+    _levelPrefs = [(OSLogPreferencesProcess *)self _levelPrefs];
+    if (level > 4)
     {
       v6 = @"inherit";
     }
 
     else
     {
-      v6 = off_2787AEBC8[a3];
+      v6 = off_2787AEBC8[level];
     }
 
-    v8 = v5;
-    [v5 setObject:v6 forKey:@"Enable"];
-    if (_LevelForKey(v8, @"Persist") > a3)
+    v8 = _levelPrefs;
+    [_levelPrefs setObject:v6 forKey:@"Enable"];
+    if (_LevelForKey(v8, @"Persist") > level)
     {
-      if (a3 > 4)
+      if (level > 4)
       {
         v7 = @"inherit";
       }
 
       else
       {
-        v7 = off_2787AEBC8[a3];
+        v7 = off_2787AEBC8[level];
       }
 
       [v8 setObject:v7 forKey:@"Persist"];
@@ -105,21 +105,21 @@
   prefs = self->_prefs;
   if (!prefs)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_prefs;
-    self->_prefs = v4;
+    self->_prefs = dictionary;
 
     prefs = self->_prefs;
   }
 
-  v6 = [(NSMutableDictionary *)prefs objectForKey:@"Level"];
-  if (!v6)
+  dictionary2 = [(NSMutableDictionary *)prefs objectForKey:@"Level"];
+  if (!dictionary2)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_prefs setObject:v6 forKey:@"Level"];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_prefs setObject:dictionary2 forKey:@"Level"];
   }
 
-  return v6;
+  return dictionary2;
 }
 
 - (int64_t)persistedLevel
@@ -187,9 +187,9 @@
     if (result == 1)
     {
       v4 = +[OSLogPreferencesManager sharedManager];
-      v5 = [v4 persistedLevel];
+      persistedLevel = [v4 persistedLevel];
 
-      return v5;
+      return persistedLevel;
     }
   }
 
@@ -205,9 +205,9 @@
     if (result == 1)
     {
       v4 = +[OSLogPreferencesManager sharedManager];
-      v5 = [v4 enabledLevel];
+      enabledLevel = [v4 enabledLevel];
 
-      return v5;
+      return enabledLevel;
     }
   }
 
@@ -222,21 +222,21 @@
   return v3;
 }
 
-- (OSLogPreferencesProcess)initWithBundleID:(id)a3
+- (OSLogPreferencesProcess)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = OSLogPreferencesProcess;
   v5 = [(OSLogPreferencesProcess *)&v30 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:_os_trace_sysprefsdir_path()];
     v9 = [v8 stringByAppendingPathComponent:@"Processes"];
-    v10 = [v9 stringByAppendingPathComponent:v4];
+    v10 = [v9 stringByAppendingPathComponent:dCopy];
     v11 = [v10 stringByAppendingPathExtension:@"plist"];
     systemPrefsFile = v5->_systemPrefsFile;
     v5->_systemPrefsFile = v11;
@@ -249,7 +249,7 @@
     {
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:_os_trace_intprefsdir_path()];
       v16 = [v15 stringByAppendingPathComponent:@"Processes"];
-      v17 = [v16 stringByAppendingPathComponent:v4];
+      v17 = [v16 stringByAppendingPathComponent:dCopy];
       v18 = [v17 stringByAppendingPathExtension:@"plist"];
       internalPrefsFile = v5->_internalPrefsFile;
       v5->_internalPrefsFile = v18;
@@ -261,7 +261,7 @@
 
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:_os_trace_prefsdir_path()];
     v23 = [v22 stringByAppendingPathComponent:@"Processes"];
-    v24 = [v23 stringByAppendingPathComponent:v4];
+    v24 = [v23 stringByAppendingPathComponent:dCopy];
     v25 = [v24 stringByAppendingPathExtension:@"plist"];
     prefsFile = v5->_prefsFile;
     v5->_prefsFile = v25;

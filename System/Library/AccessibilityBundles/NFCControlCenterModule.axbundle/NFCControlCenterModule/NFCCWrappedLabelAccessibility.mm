@@ -18,17 +18,17 @@
 - (id)accessibilityLabel
 {
   v2 = [(NFCCWrappedLabelAccessibility *)self safeValueForKey:@"label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(NFCCWrappedLabelAccessibility *)self safeValueForKey:@"label"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

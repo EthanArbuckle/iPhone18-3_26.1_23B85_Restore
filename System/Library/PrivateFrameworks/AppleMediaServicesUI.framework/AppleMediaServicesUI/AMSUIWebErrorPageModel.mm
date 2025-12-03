@@ -1,25 +1,25 @@
 @interface AMSUIWebErrorPageModel
-+ (id)_messageFromError:(id)a3;
-- (AMSUIWebErrorPageModel)initWithError:(id)a3 context:(id)a4 actionBlock:(id)a5;
-- (AMSUIWebErrorPageModel)initWithJSObject:(id)a3 context:(id)a4;
++ (id)_messageFromError:(id)error;
+- (AMSUIWebErrorPageModel)initWithError:(id)error context:(id)context actionBlock:(id)block;
+- (AMSUIWebErrorPageModel)initWithJSObject:(id)object context:(id)context;
 - (AMSUIWebErrorPageModelDelegate)delegate;
 - (CGSize)windowSize;
 - (NSString)description;
 - (NSString)errorMessage;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 - (void)_startMonitoringNetwork;
-- (void)_updateForNetworkConnectivityChange:(BOOL)a3;
+- (void)_updateForNetworkConnectivityChange:(BOOL)change;
 @end
 
 @implementation AMSUIWebErrorPageModel
 
-- (AMSUIWebErrorPageModel)initWithError:(id)a3 context:(id)a4 actionBlock:(id)a5
+- (AMSUIWebErrorPageModel)initWithError:(id)error context:(id)context actionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"errorPageModel"];
+  errorCopy = error;
+  contextCopy = context;
+  blockCopy = block;
+  userInfo = [errorCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"errorPageModel"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -34,7 +34,7 @@
 
   if (v14)
   {
-    v15 = [(AMSUIWebErrorPageModel *)self initWithJSObject:v14 context:v10];
+    v15 = [(AMSUIWebErrorPageModel *)self initWithJSObject:v14 context:contextCopy];
   }
 
   else
@@ -47,7 +47,7 @@
   v16 = v15;
   if (v15)
   {
-    v17 = _Block_copy(v11);
+    v17 = _Block_copy(blockCopy);
     actionBlock = v16->_actionBlock;
     v16->_actionBlock = v17;
 
@@ -55,8 +55,8 @@
     bundle = v16->_bundle;
     v16->_bundle = v19;
 
-    objc_storeStrong(&v16->_error, a3);
-    objc_storeStrong(&v16->_context, a4);
+    objc_storeStrong(&v16->_error, error);
+    objc_storeStrong(&v16->_context, context);
     v16->_hasNetworkConnection = 1;
     v21 = nw_path_monitor_create();
     pathMonitor = v16->_pathMonitor;
@@ -68,9 +68,9 @@
 
     [(AMSUIWebErrorPageModel *)v16 _startMonitoringNetwork];
     v25 = objc_alloc_init(AMSUIAirplaneModeInquiry);
-    v26 = [(AMSUIAirplaneModeInquiry *)v25 isEnabled];
-    v27 = [v9 userInfo];
-    v28 = [v27 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    isEnabled = [(AMSUIAirplaneModeInquiry *)v25 isEnabled];
+    userInfo2 = [errorCopy userInfo];
+    v28 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     objc_opt_class();
     v29 = 0;
@@ -79,14 +79,14 @@
       v29 = v28;
     }
 
-    if (v29 && ([v29 domain], v30 = objc_claimAutoreleasedReturnValue(), v31 = v30 == *MEMORY[0x1E695AD78] && v26, v30, v31 == 1))
+    if (v29 && ([v29 domain], v30 = objc_claimAutoreleasedReturnValue(), v31 = v30 == *MEMORY[0x1E695AD78] && isEnabled, v30, v31 == 1))
     {
-      v32 = [(AMSUIWebErrorPageModel *)v16 bundle];
-      v33 = [v32 localizedStringForKey:@"WIFI_AIRPLANE_MODE_ERROR" value:&stru_1F3921360 table:0];
+      bundle = [(AMSUIWebErrorPageModel *)v16 bundle];
+      v33 = [bundle localizedStringForKey:@"WIFI_AIRPLANE_MODE_ERROR" value:&stru_1F3921360 table:0];
       errorTitle = v16->_errorTitle;
       v16->_errorTitle = v33;
 
-      v35 = [objc_opt_class() _messageFromError:v9];
+      v35 = [objc_opt_class() _messageFromError:errorCopy];
       errorMessage = v16->_errorMessage;
       v16->_errorMessage = v35;
     }
@@ -96,7 +96,7 @@
       v37 = v16->_errorTitle;
       v16->_errorTitle = 0;
 
-      v38 = [objc_opt_class() _messageFromError:v9];
+      v38 = [objc_opt_class() _messageFromError:errorCopy];
       v39 = v16->_errorMessage;
       v16->_errorMessage = v38;
 
@@ -107,18 +107,18 @@
   return v16;
 }
 
-- (AMSUIWebErrorPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebErrorPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v34.receiver = self;
     v34.super_class = AMSUIWebErrorPageModel;
     v9 = [(AMSUIWebErrorPageModel *)&v34 init];
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"action"];
+      v10 = [objectCopy objectForKeyedSubscript:@"action"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -130,26 +130,26 @@
         v11 = 0;
       }
 
-      v12 = [AMSUIWebActionMapper actionFromJSObject:v11 context:v7];
+      v12 = [AMSUIWebActionMapper actionFromJSObject:v11 context:contextCopy];
       action = v9->_action;
       v9->_action = v12;
 
-      v14 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+      v14 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
       backgroundColor = v9->_backgroundColor;
       v9->_backgroundColor = v14;
 
-      v16 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+      v16 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
       impressionEvent = v9->_impressionEvent;
       v9->_impressionEvent = v16;
 
-      v18 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+      v18 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
       navigationBar = v9->_navigationBar;
       v9->_navigationBar = v18;
 
-      [AMSUIWebModel windowSizeFromPageModel:v6];
+      [AMSUIWebModel windowSizeFromPageModel:objectCopy];
       v9->_windowSize.width = v20;
       v9->_windowSize.height = v21;
-      v22 = [v6 objectForKeyedSubscript:@"actionButtonTitle"];
+      v22 = [objectCopy objectForKeyedSubscript:@"actionButtonTitle"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -164,8 +164,8 @@
       actionButtonTitle = v9->_actionButtonTitle;
       v9->_actionButtonTitle = v23;
 
-      objc_storeStrong(&v9->_context, a4);
-      v25 = [v6 objectForKeyedSubscript:@"errorMessage"];
+      objc_storeStrong(&v9->_context, context);
+      v25 = [objectCopy objectForKeyedSubscript:@"errorMessage"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -180,7 +180,7 @@
       errorMessage = v9->_errorMessage;
       v9->_errorMessage = v26;
 
-      v28 = [v6 objectForKeyedSubscript:@"errorTitle"];
+      v28 = [objectCopy objectForKeyedSubscript:@"errorTitle"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -195,10 +195,10 @@
       errorTitle = v9->_errorTitle;
       v9->_errorTitle = v29;
 
-      v31 = [v6 objectForKeyedSubscript:@"errorMessageInternalOnly"];
+      v31 = [objectCopy objectForKeyedSubscript:@"errorMessageInternalOnly"];
       if (objc_opt_respondsToSelector())
       {
-        v32 = [v6 objectForKeyedSubscript:@"errorMessageInternalOnly"];
+        v32 = [objectCopy objectForKeyedSubscript:@"errorMessageInternalOnly"];
         v9->_errorMessageInternalOnly = [v32 BOOLValue];
       }
 
@@ -209,15 +209,15 @@
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)errorMessage
@@ -267,60 +267,60 @@
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
   v7 = [v6 mutableCopy];
 
-  v8 = [(AMSUIWebErrorPageModel *)self action];
+  action = [(AMSUIWebErrorPageModel *)self action];
 
-  if (v8)
+  if (action)
   {
-    v9 = [(AMSUIWebErrorPageModel *)self action];
-    [v7 setObject:v9 forKey:@"action"];
+    action2 = [(AMSUIWebErrorPageModel *)self action];
+    [v7 setObject:action2 forKey:@"action"];
   }
 
-  v10 = [(AMSUIWebErrorPageModel *)self actionButtonTitle];
+  actionButtonTitle = [(AMSUIWebErrorPageModel *)self actionButtonTitle];
 
-  if (v10)
+  if (actionButtonTitle)
   {
-    v11 = [(AMSUIWebErrorPageModel *)self actionButtonTitle];
-    [v7 setObject:v11 forKey:@"actionButtonTitle"];
+    actionButtonTitle2 = [(AMSUIWebErrorPageModel *)self actionButtonTitle];
+    [v7 setObject:actionButtonTitle2 forKey:@"actionButtonTitle"];
   }
 
-  v12 = [(AMSUIWebErrorPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebErrorPageModel *)self backgroundColor];
 
-  if (v12)
+  if (backgroundColor)
   {
-    v13 = [(AMSUIWebErrorPageModel *)self backgroundColor];
-    [v7 setObject:v13 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebErrorPageModel *)self backgroundColor];
+    [v7 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v14 = [(AMSUIWebErrorPageModel *)self errorMessage];
+  errorMessage = [(AMSUIWebErrorPageModel *)self errorMessage];
 
-  if (v14)
+  if (errorMessage)
   {
-    v15 = [(AMSUIWebErrorPageModel *)self errorMessage];
-    [v7 setObject:v15 forKey:@"errorMessage"];
+    errorMessage2 = [(AMSUIWebErrorPageModel *)self errorMessage];
+    [v7 setObject:errorMessage2 forKey:@"errorMessage"];
   }
 
-  v16 = [(AMSUIWebErrorPageModel *)self errorTitle];
+  errorTitle = [(AMSUIWebErrorPageModel *)self errorTitle];
 
-  if (v16)
+  if (errorTitle)
   {
-    v17 = [(AMSUIWebErrorPageModel *)self errorTitle];
-    [v7 setObject:v17 forKey:@"errorTitle"];
+    errorTitle2 = [(AMSUIWebErrorPageModel *)self errorTitle];
+    [v7 setObject:errorTitle2 forKey:@"errorTitle"];
   }
 
-  v18 = [(AMSUIWebErrorPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebErrorPageModel *)self impressionEvent];
 
-  if (v18)
+  if (impressionEvent)
   {
-    v19 = [(AMSUIWebErrorPageModel *)self impressionEvent];
-    [v7 setObject:v19 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebErrorPageModel *)self impressionEvent];
+    [v7 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v20 = [(AMSUIWebErrorPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebErrorPageModel *)self navigationBar];
 
-  if (v20)
+  if (navigationBar)
   {
-    v21 = [(AMSUIWebErrorPageModel *)self navigationBar];
-    [v7 setObject:v21 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebErrorPageModel *)self navigationBar];
+    [v7 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
   v22 = [v7 description];
@@ -330,11 +330,11 @@
   return v22;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
   v4 = [AMSUIWebErrorViewController alloc];
-  v5 = [(AMSUIWebErrorPageModel *)self context];
-  v6 = [(AMSUIWebErrorViewController *)v4 initWithContext:v5];
+  context = [(AMSUIWebErrorPageModel *)self context];
+  v6 = [(AMSUIWebErrorViewController *)v4 initWithContext:context];
 
   return v6;
 }
@@ -387,45 +387,45 @@ uint64_t __49__AMSUIWebErrorPageModel__startMonitoringNetwork__block_invoke_2(ui
   return result;
 }
 
-+ (id)_messageFromError:(id)a3
++ (id)_messageFromError:(id)error
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%ld]", objc_msgSend(v3, "code")];
-  v5 = [v3 ams_title];
-  if (v5)
+  errorCopy = error;
+  v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%ld]", objc_msgSend(errorCopy, "code")];
+  ams_title = [errorCopy ams_title];
+  if (ams_title)
   {
-    v6 = v5;
+    ams_title2 = ams_title;
 LABEL_4:
-    [v4 appendFormat:@" %@", v6];
+    [v4 appendFormat:@" %@", ams_title2];
 
     v9 = 0;
     goto LABEL_5;
   }
 
-  v7 = [v3 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-  v6 = [v8 ams_title];
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  ams_title2 = [v8 ams_title];
 
-  if (v6)
+  if (ams_title2)
   {
     goto LABEL_4;
   }
 
   v9 = 1;
 LABEL_5:
-  v10 = [v3 ams_message];
-  if (v10)
+  ams_message = [errorCopy ams_message];
+  if (ams_message)
   {
-    v11 = v10;
+    ams_message2 = ams_message;
   }
 
   else
   {
-    v12 = [v3 userInfo];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v11 = [v13 ams_message];
+    userInfo2 = [errorCopy userInfo];
+    v13 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    ams_message2 = [v13 ams_message];
 
-    if (!v11)
+    if (!ams_message2)
     {
       goto LABEL_11;
     }
@@ -436,16 +436,16 @@ LABEL_5:
     [v4 appendString:@":"];
   }
 
-  [v4 appendFormat:@" %@", v11];
+  [v4 appendFormat:@" %@", ams_message2];
 
 LABEL_11:
 
   return v4;
 }
 
-- (void)_updateForNetworkConnectivityChange:(BOOL)a3
+- (void)_updateForNetworkConnectivityChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     objc_storeStrong(&self->_action, self->_cachedAction);
     cachedActionBlock = self->_cachedActionBlock;
@@ -456,32 +456,32 @@ LABEL_11:
       self->_actionBlock = v5;
     }
 
-    v7 = [(AMSUIWebErrorPageModel *)self delegate];
+    delegate = [(AMSUIWebErrorPageModel *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v25 = [(AMSUIWebErrorPageModel *)self delegate];
-      v9 = [v25 networkRestored];
-      action = v25;
+      delegate2 = [(AMSUIWebErrorPageModel *)self delegate];
+      networkRestored = [delegate2 networkRestored];
+      action = delegate2;
 LABEL_11:
 
-      MEMORY[0x1EEE66BB8](v9, action);
+      MEMORY[0x1EEE66BB8](networkRestored, action);
     }
   }
 
   else
   {
     self->_errorMessageInternalOnly = 0;
-    v11 = [(AMSUIWebErrorPageModel *)self bundle];
-    v12 = [v11 localizedStringForKey:@"NETWORK_ERROR_TITLE" value:&stru_1F3921360 table:0];
+    bundle = [(AMSUIWebErrorPageModel *)self bundle];
+    v12 = [bundle localizedStringForKey:@"NETWORK_ERROR_TITLE" value:&stru_1F3921360 table:0];
     errorTitle = self->_errorTitle;
     self->_errorTitle = v12;
 
-    LODWORD(v11) = MGGetBoolAnswer();
-    v14 = [(AMSUIWebErrorPageModel *)self bundle];
-    v15 = v14;
-    if (v11)
+    LODWORD(bundle) = MGGetBoolAnswer();
+    bundle2 = [(AMSUIWebErrorPageModel *)self bundle];
+    v15 = bundle2;
+    if (bundle)
     {
       v16 = @"WLAN_NETWORK_ERROR_MESSAGE";
     }
@@ -491,14 +491,14 @@ LABEL_11:
       v16 = @"WIFI_NETWORK_ERROR_MESSAGE";
     }
 
-    v17 = [v14 localizedStringForKey:v16 value:&stru_1F3921360 table:0];
+    v17 = [bundle2 localizedStringForKey:v16 value:&stru_1F3921360 table:0];
     errorMessage = self->_errorMessage;
     self->_errorMessage = v17;
 
     if ([(AMSUIWebErrorPageModel *)self _canOpenSettings])
     {
-      v19 = [(AMSUIWebErrorPageModel *)self bundle];
-      v20 = [v19 localizedStringForKey:@"NETWORK_ERROR_BUTTON" value:&stru_1F3921360 table:0];
+      bundle3 = [(AMSUIWebErrorPageModel *)self bundle];
+      v20 = [bundle3 localizedStringForKey:@"NETWORK_ERROR_BUTTON" value:&stru_1F3921360 table:0];
       actionButtonTitle = self->_actionButtonTitle;
       self->_actionButtonTitle = v20;
 
@@ -508,9 +508,9 @@ LABEL_11:
       self->_cachedActionBlock = v22;
 
       v24 = [AMSUIWiFiSettingsAction alloc];
-      v9 = [(AMSUIWiFiSettingsAction *)v24 initWithJSObject:MEMORY[0x1E695E0F8] context:self->_context];
+      networkRestored = [(AMSUIWiFiSettingsAction *)v24 initWithJSObject:MEMORY[0x1E695E0F8] context:self->_context];
       action = self->_action;
-      self->_action = v9;
+      self->_action = networkRestored;
       goto LABEL_11;
     }
   }

@@ -1,49 +1,49 @@
 @interface REMTTHashtag
-+ (BOOL)attributeValue:(id)a3 hasEqualHashtagObjectIdentifierIn:(id)a4;
-+ (id)attributeFromHashtag:(id)a3;
-- (REMTTHashtag)initWithObjectIdentifier:(id)a3;
++ (BOOL)attributeValue:(id)value hasEqualHashtagObjectIdentifierIn:(id)in;
++ (id)attributeFromHashtag:(id)hashtag;
+- (REMTTHashtag)initWithObjectIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation REMTTHashtag
 
-- (REMTTHashtag)initWithObjectIdentifier:(id)a3
+- (REMTTHashtag)initWithObjectIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REMTTHashtag;
   v6 = [(REMTTHashtag *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objectIdentifier, a3);
+    objc_storeStrong(&v6->_objectIdentifier, identifier);
   }
 
   return v7;
 }
 
-+ (id)attributeFromHashtag:(id)a3
++ (id)attributeFromHashtag:(id)hashtag
 {
-  v3 = a3;
+  hashtagCopy = hashtag;
   v4 = [REMTTHashtag alloc];
-  v5 = [v3 objectIdentifier];
+  objectIdentifier = [hashtagCopy objectIdentifier];
 
-  v6 = [(REMTTHashtag *)v4 initWithObjectIdentifier:v5];
+  v6 = [(REMTTHashtag *)v4 initWithObjectIdentifier:objectIdentifier];
 
   return v6;
 }
 
-+ (BOOL)attributeValue:(id)a3 hasEqualHashtagObjectIdentifierIn:(id)a4
++ (BOOL)attributeValue:(id)value hasEqualHashtagObjectIdentifierIn:(id)in
 {
-  v5 = a4;
-  v6 = a3;
+  inCopy = in;
+  valueCopy = value;
   v7 = objc_opt_class();
-  v8 = REMDynamicCast(v7, v6);
+  v8 = REMDynamicCast(v7, valueCopy);
 
   if (v8)
   {
-    v9 = [v8 objectIdentifier];
-    v10 = [v5 containsObject:v9];
+    objectIdentifier = [v8 objectIdentifier];
+    v10 = [inCopy containsObject:objectIdentifier];
   }
 
   else
@@ -58,8 +58,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMTTHashtag *)self objectIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p objectIdentifier: %@>", v4, self, v5];
+  objectIdentifier = [(REMTTHashtag *)self objectIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p objectIdentifier: %@>", v4, self, objectIdentifier];
 
   return v6;
 }

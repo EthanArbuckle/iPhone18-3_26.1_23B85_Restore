@@ -1,37 +1,37 @@
 @interface _UIBarCustomizationChiclet
 - (BOOL)_isDisplayingRootItem;
 - (BOOL)fixed;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)_contentSizeWithInterItemSpacing:(double)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)_contentSizeWithInterItemSpacing:(double)spacing;
 - (CGSize)_currentContentSize;
-- (CGSize)fittingSizeWithChicletSize:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIBarCustomizationChiclet)initWithItem:(id)a3;
+- (CGSize)fittingSizeWithChicletSize:(int64_t)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIBarCustomizationChiclet)initWithItem:(id)item;
 - (_UIBarCustomizationChicletAnchorView)anchorView;
 - (_UIBarCustomizationItem)representedItem;
 - (double)_currentInterItemSpacing;
-- (double)_interItemSpacingForChicletSize:(int64_t)a3;
+- (double)_interItemSpacingForChicletSize:(int64_t)size;
 - (double)_platterMinHeight;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_addContentView:(id)a3;
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_addContentView:(id)view;
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal;
 - (void)_updatePlatterShadow;
 - (void)layoutSubviews;
-- (void)setLabelVisible:(BOOL)a3;
-- (void)setMinimized:(BOOL)a3;
-- (void)setPlatterVisible:(BOOL)a3;
+- (void)setLabelVisible:(BOOL)visible;
+- (void)setMinimized:(BOOL)minimized;
+- (void)setPlatterVisible:(BOOL)visible;
 - (void)sizeToFit;
 - (void)updateItemCenterPoints;
 @end
 
 @implementation _UIBarCustomizationChiclet
 
-- (_UIBarCustomizationChiclet)initWithItem:(id)a3
+- (_UIBarCustomizationChiclet)initWithItem:(id)item
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v51.receiver = self;
   v51.super_class = _UIBarCustomizationChiclet;
   v5 = [(UIView *)&v51 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -40,9 +40,9 @@
   {
     [(UIView *)v5 _forceNilGlassGroupTraitOverride];
     v6->_chicletSize = 0;
-    objc_storeWeak(&v6->_representedItem, v4);
-    [v4 set_chiclet:v6];
-    [v4 _sourceFrameInContainer:0];
+    objc_storeWeak(&v6->_representedItem, itemCopy);
+    [itemCopy set_chiclet:v6];
+    [itemCopy _sourceFrameInContainer:0];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -58,8 +58,8 @@
     v48 = v10;
     v49 = v12;
     v50 = v14;
-    [v4 _enumerateSubitemsWithBlock:v45];
-    v17 = _itemViewFromItem(v4, v8, v10, v12, v14);
+    [itemCopy _enumerateSubitemsWithBlock:v45];
+    v17 = _itemViewFromItem(itemCopy, v8, v10, v12, v14);
     [(_UIBarCustomizationChiclet *)v6 setRootItemView:v17];
 
     [(_UIBarCustomizationChiclet *)v6 setSubitemViews:v16];
@@ -68,14 +68,14 @@
     v19 = [(UIView *)v18 initWithFrame:?];
     [(_UIBarCustomizationChiclet *)v6 setContentWrapperView:v19];
 
-    v20 = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
-    [(UIView *)v6 addSubview:v20];
+    contentWrapperView = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
+    [(UIView *)v6 addSubview:contentWrapperView];
 
     if (_UISolariumEnabled())
     {
       v21 = *MEMORY[0x1E6979E40];
-      v22 = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
-      [v22 _setContinuousCornerRadius:v21];
+      contentWrapperView2 = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
+      [contentWrapperView2 _setContinuousCornerRadius:v21];
     }
 
     else
@@ -86,20 +86,20 @@
       [(_UIBarCustomizationChiclet *)v6 setPlatterView:v24];
 
       v25 = +[UIColor systemBackgroundColor];
-      v26 = [(_UIBarCustomizationChiclet *)v6 platterView];
-      [v26 setBackgroundColor:v25];
+      platterView = [(_UIBarCustomizationChiclet *)v6 platterView];
+      [platterView setBackgroundColor:v25];
 
-      v27 = [(_UIBarCustomizationChiclet *)v6 platterView];
-      v28 = [v27 layer];
-      [v28 setShadowPathIsBounds:1];
+      platterView2 = [(_UIBarCustomizationChiclet *)v6 platterView];
+      layer = [platterView2 layer];
+      [layer setShadowPathIsBounds:1];
 
-      v29 = [(_UIBarCustomizationChiclet *)v6 platterView];
-      v30 = [v29 layer];
-      [v30 setAllowsEdgeAntialiasing:1];
+      platterView3 = [(_UIBarCustomizationChiclet *)v6 platterView];
+      layer2 = [platterView3 layer];
+      [layer2 setAllowsEdgeAntialiasing:1];
 
-      v22 = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
-      v31 = [(_UIBarCustomizationChiclet *)v6 platterView];
-      [v22 addSubview:v31];
+      contentWrapperView2 = [(_UIBarCustomizationChiclet *)v6 contentWrapperView];
+      platterView4 = [(_UIBarCustomizationChiclet *)v6 platterView];
+      [contentWrapperView2 addSubview:platterView4];
     }
 
     v43 = 0u;
@@ -132,14 +132,14 @@
       while (v34);
     }
 
-    v37 = [(_UIBarCustomizationChiclet *)v6 rootItemView];
-    [(_UIBarCustomizationChiclet *)v6 _addContentView:v37];
+    rootItemView = [(_UIBarCustomizationChiclet *)v6 rootItemView];
+    [(_UIBarCustomizationChiclet *)v6 _addContentView:rootItemView];
 
     v38 = [[UIPointerInteraction alloc] initWithDelegate:v6];
     [(_UIBarCustomizationChiclet *)v6 setPointerInteraction:v38];
 
-    v39 = [(_UIBarCustomizationChiclet *)v6 pointerInteraction];
-    [(UIView *)v6 addInteraction:v39];
+    pointerInteraction = [(_UIBarCustomizationChiclet *)v6 pointerInteraction];
+    [(UIView *)v6 addInteraction:pointerInteraction];
   }
 
   return v6;
@@ -147,58 +147,58 @@
 
 - (void)updateItemCenterPoints
 {
-  v21 = [(_UIBarCustomizationChiclet *)self representedItem];
-  [v21 _sourceFrameInContainer:0];
+  representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+  [representedItem _sourceFrameInContainer:0];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIBarCustomizationChiclet *)self rootItemView];
-  _updateSourceCenterForItemView(v21, v11, v4, v6, v8, v10);
+  rootItemView = [(_UIBarCustomizationChiclet *)self rootItemView];
+  _updateSourceCenterForItemView(representedItem, rootItemView, v4, v6, v8, v10);
 
-  v12 = [v21 subitems];
-  v13 = [v12 count];
+  subitems = [representedItem subitems];
+  v13 = [subitems count];
 
   if (v13)
   {
     v14 = 0;
     do
     {
-      v15 = [v21 subitems];
-      v16 = [v15 objectAtIndexedSubscript:v14];
-      v17 = [(_UIBarCustomizationChiclet *)self subitemViews];
-      v18 = [v17 objectAtIndexedSubscript:v14];
+      subitems2 = [representedItem subitems];
+      v16 = [subitems2 objectAtIndexedSubscript:v14];
+      subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
+      v18 = [subitemViews objectAtIndexedSubscript:v14];
       _updateSourceCenterForItemView(v16, v18, v4, v6, v8, v10);
 
       ++v14;
-      v19 = [v21 subitems];
-      v20 = [v19 count];
+      subitems3 = [representedItem subitems];
+      v20 = [subitems3 count];
     }
 
     while (v20 > v14);
   }
 }
 
-- (void)_addContentView:(id)a3
+- (void)_addContentView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v10;
-    v5 = [v4 sourceView];
-    v6 = [v5 window];
+    v4 = viewCopy;
+    sourceView = [v4 sourceView];
+    window = [sourceView window];
 
-    if (!v6)
+    if (!window)
     {
       v7 = +[_UIBarCustomizationCustomViewPortalSourceContainer sharedContainer];
-      v8 = [v4 sourceView];
-      [v7 addSubview:v8];
+      sourceView2 = [v4 sourceView];
+      [v7 addSubview:sourceView2];
     }
   }
 
-  v9 = [(_UIBarCustomizationChiclet *)self contentWrapperView];
-  [v9 addSubview:v10];
+  contentWrapperView = [(_UIBarCustomizationChiclet *)self contentWrapperView];
+  [contentWrapperView addSubview:viewCopy];
 }
 
 - (void)layoutSubviews
@@ -212,11 +212,11 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIBarCustomizationChiclet *)self contentWrapperView];
+  contentWrapperView = [(_UIBarCustomizationChiclet *)self contentWrapperView];
   if (![(_UIBarCustomizationChiclet *)self minimized])
   {
-    [v12 setFrame:{v5, v7, v9, v11}];
-    [v12 setBackgroundColor:0];
+    [contentWrapperView setFrame:{v5, v7, v9, v11}];
+    [contentWrapperView setBackgroundColor:0];
     v129 = *(MEMORY[0x1E695EFD0] + 16);
     v130 = *MEMORY[0x1E695EFD0];
     *&v147.a = *MEMORY[0x1E695EFD0];
@@ -224,16 +224,16 @@
     v128 = *(MEMORY[0x1E695EFD0] + 32);
     *&v147.tx = v128;
     [(UIView *)self setTransform:&v147];
-    v35 = [(_UIBarCustomizationChiclet *)self representedItem];
-    [v35 _sourceFrameInContainer:0];
+    representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+    [representedItem _sourceFrameInContainer:0];
 
     [(_UIBarCustomizationChiclet *)self _currentContentSize];
     v37 = v36;
     v39 = v38;
-    v40 = [(_UIBarCustomizationChiclet *)self subitemViews];
+    subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
     if ([(_UIBarCustomizationChiclet *)self platterVisible])
     {
-      v41 = [v40 count];
+      v41 = [subitemViews count];
       [(_UIBarCustomizationChiclet *)self _currentInterItemSpacing];
       v43 = v37 - v42 * (v41 - 1);
       v157.origin.x = v5;
@@ -251,18 +251,18 @@
         v45 = 16.0;
       }
 
-      if ([v40 count])
+      if ([subitemViews count])
       {
         v46 = 0;
         v47 = 0.0;
         do
         {
-          v48 = [v40 objectAtIndexedSubscript:v46];
-          v49 = [(_UIBarCustomizationChiclet *)self representedItem];
-          v50 = [v49 subitems];
-          v51 = [v50 objectAtIndexedSubscript:v46];
-          v52 = [v51 tintColor];
-          [v48 setTintColor:v52];
+          v48 = [subitemViews objectAtIndexedSubscript:v46];
+          representedItem2 = [(_UIBarCustomizationChiclet *)self representedItem];
+          subitems = [representedItem2 subitems];
+          v51 = [subitems objectAtIndexedSubscript:v46];
+          tintColor = [v51 tintColor];
+          [v48 setTintColor:tintColor];
 
           [v48 bounds];
           v53 = CGRectGetWidth(v158) * 0.5;
@@ -273,7 +273,7 @@
           ++v46;
         }
 
-        while ([v40 count] > v46);
+        while ([subitemViews count] > v46);
       }
     }
 
@@ -289,34 +289,34 @@
       v160.size.width = v9;
       v160.size.height = v11;
       Height = CGRectGetHeight(v160);
-      if ([v40 count])
+      if ([subitemViews count])
       {
         v57 = 0;
         v58 = (Width - v37) * 0.5;
         v59 = (Height - v39) * 0.5;
         do
         {
-          v60 = [v40 objectAtIndexedSubscript:v57];
+          v60 = [subitemViews objectAtIndexedSubscript:v57];
           [v60 _getSourceCenter];
           [v60 setCenter:{v58 + v61, v59 + v62}];
-          v63 = [(_UIBarCustomizationChiclet *)self representedItem];
-          v64 = [v63 subitems];
-          v65 = [v64 objectAtIndexedSubscript:v57];
+          representedItem3 = [(_UIBarCustomizationChiclet *)self representedItem];
+          subitems2 = [representedItem3 subitems];
+          v65 = [subitems2 objectAtIndexedSubscript:v57];
 
           if (([v65 enabled] & 1) == 0)
           {
-            v66 = [v65 tintColor];
-            v67 = v66;
-            if (!v66)
+            tintColor2 = [v65 tintColor];
+            v67 = tintColor2;
+            if (!tintColor2)
             {
-              v2 = [(UIView *)self tintColor];
-              v67 = v2;
+              tintColor3 = [(UIView *)self tintColor];
+              v67 = tintColor3;
             }
 
             v68 = [UIColor _disabledColorForColor:v67];
             [v60 setTintColor:v68];
 
-            if (!v66)
+            if (!tintColor2)
             {
             }
           }
@@ -324,24 +324,24 @@
           ++v57;
         }
 
-        while ([v40 count] > v57);
+        while ([subitemViews count] > v57);
       }
     }
 
-    v69 = [(_UIBarCustomizationChiclet *)self rootItemView];
-    [v69 setCenter:{v5 + v9 * 0.5, v7 + v11 * 0.5}];
+    rootItemView = [(_UIBarCustomizationChiclet *)self rootItemView];
+    [rootItemView setCenter:{v5 + v9 * 0.5, v7 + v11 * 0.5}];
     if ([(_UIBarCustomizationChiclet *)self _isDisplayingRootItem])
     {
-      [v69 setAlpha:1.0];
+      [rootItemView setAlpha:1.0];
       *&v147.a = v130;
       *&v147.c = v129;
       *&v147.tx = v128;
-      [v69 setTransform:&v147];
+      [rootItemView setTransform:&v147];
       v139 = 0u;
       v140 = 0u;
       v141 = 0u;
       v142 = 0u;
-      v70 = v40;
+      v70 = subitemViews;
       v71 = [v70 countByEnumeratingWithState:&v139 objects:v151 count:16];
       if (v71)
       {
@@ -358,11 +358,11 @@
 
             v75 = *(*(&v139 + 1) + 8 * i);
             memset(&v147, 0, sizeof(v147));
-            [v69 center];
+            [rootItemView center];
             v77 = v76;
             [v75 center];
             v79 = v77 - v78;
-            [v69 center];
+            [rootItemView center];
             v81 = v80;
             [v75 center];
             CGAffineTransformMakeTranslation(&v147, v79, v81 - v82);
@@ -382,15 +382,15 @@
 
     else
     {
-      [v69 setAlpha:0.0];
+      [rootItemView setAlpha:0.0];
       CGAffineTransformMakeScale(&v136, 0.5, 0.5);
       v147 = v136;
-      [v69 setTransform:&v147];
+      [rootItemView setTransform:&v147];
       v132 = 0u;
       v133 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v83 = v40;
+      v83 = subitemViews;
       v84 = [v83 countByEnumeratingWithState:&v132 objects:v150 count:16];
       if (v84)
       {
@@ -451,24 +451,24 @@
       v92 = 0;
     }
 
-    v93 = [(_UIBarCustomizationChiclet *)self platterView];
+    platterView = [(_UIBarCustomizationChiclet *)self platterView];
     if (_UISolariumEnabled())
     {
       if (!v92)
       {
-        [v12 _setBackground:0];
+        [contentWrapperView _setBackground:0];
         goto LABEL_61;
       }
 
       v94 = objc_opt_new();
       [v94 setFlexible:1];
-      [v12 _setBackground:v94];
+      [contentWrapperView _setBackground:v94];
     }
 
     else
     {
-      v95 = [(_UIBarCustomizationChiclet *)self platterView];
-      v94 = v95;
+      platterView2 = [(_UIBarCustomizationChiclet *)self platterView];
+      v94 = platterView2;
       v96 = 1.0;
       if (v92)
       {
@@ -481,16 +481,16 @@
         v97 = 2.0;
       }
 
-      [v95 setAlpha:v96];
+      [platterView2 setAlpha:v96];
       v98 = +[UIColor systemBackgroundColor];
       [v94 setBackgroundColor:v98];
 
-      [v12 bounds];
+      [contentWrapperView bounds];
       v164 = CGRectInset(v163, v97, v97);
       [v94 setFrame:{v164.origin.x, v164.origin.y, v164.size.width, v164.size.height}];
-      v99 = [(_UIBarCustomizationChiclet *)self chicletSize];
+      chicletSize = [(_UIBarCustomizationChiclet *)self chicletSize];
       v100 = 10.0;
-      if (v99 == 1)
+      if (chicletSize == 1)
       {
         v100 = 13.0;
       }
@@ -500,12 +500,12 @@
     }
 
 LABEL_61:
-    v101 = [(_UIBarCustomizationChiclet *)self label];
+    label = [(_UIBarCustomizationChiclet *)self label];
 
-    if (v101)
+    if (label)
     {
-      [v12 bounds];
-      [v12 convertRect:self toView:?];
+      [contentWrapperView bounds];
+      [contentWrapperView convertRect:self toView:?];
       x = v165.origin.x;
       y = v165.origin.y;
       v104 = v165.size.width;
@@ -516,17 +516,17 @@ LABEL_61:
       v166.size.width = v104;
       v166.size.height = v105;
       v107 = CGRectGetMaxY(v166) + 10.0;
-      v108 = [(_UIBarCustomizationChiclet *)self label];
-      [v108 setCenter:{MidX, v107}];
+      label2 = [(_UIBarCustomizationChiclet *)self label];
+      [label2 setCenter:{MidX, v107}];
 
-      v109 = [(_UIBarCustomizationChiclet *)self label];
-      [v12 bounds];
-      [v109 sizeThatFits:{CGRectGetWidth(v167) + 20.0, 0.0}];
+      label3 = [(_UIBarCustomizationChiclet *)self label];
+      [contentWrapperView bounds];
+      [label3 sizeThatFits:{CGRectGetWidth(v167) + 20.0, 0.0}];
       v111 = v110;
       v113 = v112;
 
-      v114 = [(_UIBarCustomizationChiclet *)self label];
-      [v114 setBounds:{0.0, 0.0, v111, v113}];
+      label4 = [(_UIBarCustomizationChiclet *)self label];
+      [label4 setBounds:{0.0, 0.0, v111, v113}];
     }
 
     goto LABEL_74;
@@ -535,22 +535,22 @@ LABEL_61:
   [(_UIBarCustomizationChiclet *)self _platterMinHeight];
   v14 = v13;
   v15 = 0.5;
-  [v12 setFrame:{round(v5 + v9 * 0.5 - v13 * 0.5), round(v7 + v11 * 0.5 - v13 * 0.5), v14, v14}];
+  [contentWrapperView setFrame:{round(v5 + v9 * 0.5 - v13 * 0.5), round(v7 + v11 * 0.5 - v13 * 0.5), v14, v14}];
   v16 = 0.0;
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v17 = [(_UIBarCustomizationChiclet *)self platterView];
-    [v12 bounds];
-    [v17 setFrame:?];
-    [v17 setAlpha:1.0];
-    [v17 bounds];
-    [v17 _setCornerRadius:CGRectGetWidth(v154) * 0.5];
-    v18 = [(UIView *)self tintColor];
-    [v17 setBackgroundColor:v18];
+    platterView3 = [(_UIBarCustomizationChiclet *)self platterView];
+    [contentWrapperView bounds];
+    [platterView3 setFrame:?];
+    [platterView3 setAlpha:1.0];
+    [platterView3 bounds];
+    [platterView3 _setCornerRadius:CGRectGetWidth(v154) * 0.5];
+    tintColor4 = [(UIView *)self tintColor];
+    [platterView3 setBackgroundColor:tintColor4];
 
-    v19 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     v20 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleBody" scale:3];
-    v21 = [v20 configurationWithTraitCollection:v19];
+    v21 = [v20 configurationWithTraitCollection:traitCollection];
     if (_UISMCBarsEnabled())
     {
       v22 = @"ellipsis";
@@ -562,9 +562,9 @@ LABEL_61:
     }
 
     v23 = [UIImage systemImageNamed:v22 withConfiguration:v21];
-    v24 = [v23 _outlinePath];
+    _outlinePath = [v23 _outlinePath];
 
-    SeparateComponents = CGPathCreateSeparateComponents([v24 CGPath], 0);
+    SeparateComponents = CGPathCreateSeparateComponents([_outlinePath CGPath], 0);
     Count = CFArrayGetCount(SeparateComponents);
     if (Count >= 1)
     {
@@ -579,7 +579,7 @@ LABEL_61:
         v32 = PathBoundingBox.size.width;
         v33 = PathBoundingBox.size.height;
         v34 = CGRectGetWidth(PathBoundingBox);
-        [v24 bounds];
+        [_outlinePath bounds];
         if (v34 < CGRectGetWidth(v156) * 0.5)
         {
           break;
@@ -604,18 +604,18 @@ LABEL_65:
   CGAffineTransformMakeScale(&v148, v16 / v14, v16 / v14);
   v147 = v148;
   [(UIView *)self setTransform:&v147];
-  [v12 bounds];
+  [contentWrapperView bounds];
   v117 = v116 + v115 * v15;
   v120 = v119 + v118 * v15;
-  v121 = [(_UIBarCustomizationChiclet *)self rootItemView];
-  [v121 setCenter:{v117, v120}];
+  rootItemView2 = [(_UIBarCustomizationChiclet *)self rootItemView];
+  [rootItemView2 setCenter:{v117, v120}];
 
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v40 = [(_UIBarCustomizationChiclet *)self subitemViews];
-  v122 = [v40 countByEnumeratingWithState:&v143 objects:v152 count:16];
+  subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
+  v122 = [subitemViews countByEnumeratingWithState:&v143 objects:v152 count:16];
   if (v122)
   {
     v123 = v122;
@@ -626,18 +626,18 @@ LABEL_65:
       {
         if (*v144 != v124)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(subitemViews);
         }
 
         v126 = *(*(&v143 + 1) + 8 * k);
-        v127 = [(_UIBarCustomizationChiclet *)self rootItemView];
-        [v127 center];
+        rootItemView3 = [(_UIBarCustomizationChiclet *)self rootItemView];
+        [rootItemView3 center];
         [v126 setCenter:?];
 
         [v126 setAlpha:0.0];
       }
 
-      v123 = [v40 countByEnumeratingWithState:&v143 objects:v152 count:16];
+      v123 = [subitemViews countByEnumeratingWithState:&v143 objects:v152 count:16];
     }
 
     while (v123);
@@ -646,20 +646,20 @@ LABEL_65:
 LABEL_74:
 }
 
-- (void)setPlatterVisible:(BOOL)a3
+- (void)setPlatterVisible:(BOOL)visible
 {
-  if (self->_platterVisible != a3)
+  if (self->_platterVisible != visible)
   {
-    self->_platterVisible = a3;
+    self->_platterVisible = visible;
     if ([(_UIBarCustomizationChiclet *)self fixed])
     {
       platterVisible = self->_platterVisible;
-      v5 = [(_UIBarCustomizationChiclet *)self representedItem];
-      v6 = [v5 tintColor];
+      representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+      tintColor = [representedItem tintColor];
       if (platterVisible)
       {
         v7 = +[UIColor _alertControllerDimmingViewColor];
-        v8 = [v6 _colorBlendedWithColor:v7];
+        v8 = [tintColor _colorBlendedWithColor:v7];
         [(UIView *)self setTintColor:v8];
 
         v9 = 0.32;
@@ -667,7 +667,7 @@ LABEL_74:
 
       else
       {
-        [(UIView *)self setTintColor:v6];
+        [(UIView *)self setTintColor:tintColor];
 
         v9 = 1.0;
       }
@@ -688,44 +688,44 @@ LABEL_74:
   }
 }
 
-- (void)setLabelVisible:(BOOL)a3
+- (void)setLabelVisible:(BOOL)visible
 {
-  if (self->_labelVisible != a3)
+  if (self->_labelVisible != visible)
   {
-    self->_labelVisible = a3;
+    self->_labelVisible = visible;
     [(UIView *)self setNeedsLayout];
     if (self->_labelVisible)
     {
-      v4 = [(_UIBarCustomizationChiclet *)self label];
+      label = [(_UIBarCustomizationChiclet *)self label];
 
-      if (!v4)
+      if (!label)
       {
         v5 = objc_opt_new();
         [(_UIBarCustomizationChiclet *)self setLabel:v5];
 
-        v6 = [(_UIBarCustomizationChiclet *)self label];
-        [v6 setTextAlignment:1];
+        label2 = [(_UIBarCustomizationChiclet *)self label];
+        [label2 setTextAlignment:1];
 
-        v7 = [(_UIBarCustomizationChiclet *)self label];
-        [v7 setAllowsDefaultTighteningForTruncation:1];
+        label3 = [(_UIBarCustomizationChiclet *)self label];
+        [label3 setAllowsDefaultTighteningForTruncation:1];
 
-        v8 = [(_UIBarCustomizationChiclet *)self label];
-        [v8 setAdjustsFontForContentSizeCategory:1];
+        label4 = [(_UIBarCustomizationChiclet *)self label];
+        [label4 setAdjustsFontForContentSizeCategory:1];
 
-        v9 = [(_UIBarCustomizationChiclet *)self label];
-        [v9 setNumberOfLines:2];
+        label5 = [(_UIBarCustomizationChiclet *)self label];
+        [label5 setNumberOfLines:2];
 
         v10 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption2"];
-        v11 = [(_UIBarCustomizationChiclet *)self label];
-        [v11 setFont:v10];
+        label6 = [(_UIBarCustomizationChiclet *)self label];
+        [label6 setFont:v10];
 
-        v12 = [(_UIBarCustomizationChiclet *)self representedItem];
-        v13 = [v12 name];
-        v14 = [(_UIBarCustomizationChiclet *)self label];
-        [v14 setText:v13];
+        representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+        name = [representedItem name];
+        label7 = [(_UIBarCustomizationChiclet *)self label];
+        [label7 setText:name];
 
-        v15 = [(_UIBarCustomizationChiclet *)self label];
-        [v15 setAnchorPoint:{0.5, 0.0}];
+        label8 = [(_UIBarCustomizationChiclet *)self label];
+        [label8 setAnchorPoint:{0.5, 0.0}];
 
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
@@ -746,25 +746,25 @@ LABEL_74:
       v16 = 0.0;
     }
 
-    v17 = [(_UIBarCustomizationChiclet *)self label];
-    [v17 setAlpha:v16];
+    label9 = [(_UIBarCustomizationChiclet *)self label];
+    [label9 setAlpha:v16];
   }
 }
 
-- (void)setMinimized:(BOOL)a3
+- (void)setMinimized:(BOOL)minimized
 {
-  if (self->_minimized != a3)
+  if (self->_minimized != minimized)
   {
-    self->_minimized = a3;
+    self->_minimized = minimized;
     [(UIView *)self setNeedsLayout];
   }
 }
 
 - (BOOL)fixed
 {
-  v2 = [(_UIBarCustomizationChiclet *)self representedItem];
-  v3 = [v2 identifier];
-  v4 = v3 == 0;
+  representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+  identifier = [representedItem identifier];
+  v4 = identifier == 0;
 
   return v4;
 }
@@ -780,14 +780,14 @@ LABEL_74:
   if (v8 != v11 || v10 != v12)
   {
     [(UIView *)self setBounds:v4, v6, v11, v12];
-    v14 = [(_UIBarCustomizationChiclet *)self pointerInteraction];
-    [v14 invalidate];
+    pointerInteraction = [(_UIBarCustomizationChiclet *)self pointerInteraction];
+    [pointerInteraction invalidate];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_UIBarCustomizationChiclet *)self chicletSize:a3.width];
+  v4 = [(_UIBarCustomizationChiclet *)self chicletSize:fits.width];
 
   [(_UIBarCustomizationChiclet *)self fittingSizeWithChicletSize:v4];
   result.height = v6;
@@ -795,14 +795,14 @@ LABEL_74:
   return result;
 }
 
-- (CGSize)fittingSizeWithChicletSize:(int64_t)a3
+- (CGSize)fittingSizeWithChicletSize:(int64_t)size
 {
   [(_UIBarCustomizationChiclet *)self _interItemSpacingForChicletSize:?];
   v6 = v5;
   [(_UIBarCustomizationChiclet *)self _contentSizeWithInterItemSpacing:?];
   v9 = v7;
   v10 = v8;
-  if (a3 == 1)
+  if (size == 1)
   {
     v11 = 0;
     v12 = v7 + 20.0;
@@ -866,19 +866,19 @@ LABEL_74:
   return result;
 }
 
-- (CGSize)_contentSizeWithInterItemSpacing:(double)a3
+- (CGSize)_contentSizeWithInterItemSpacing:(double)spacing
 {
   v46[1] = *MEMORY[0x1E69E9840];
   if ([(_UIBarCustomizationChiclet *)self _isDisplayingRootItem])
   {
-    v5 = [(_UIBarCustomizationChiclet *)self rootItemView];
-    v46[0] = v5;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
+    rootItemView = [(_UIBarCustomizationChiclet *)self rootItemView];
+    v46[0] = rootItemView;
+    subitemViews = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
   }
 
   else
   {
-    v6 = [(_UIBarCustomizationChiclet *)self subitemViews];
+    subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
   }
 
   if ([(_UIBarCustomizationChiclet *)self platterVisible])
@@ -887,7 +887,7 @@ LABEL_74:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = v6;
+    v7 = subitemViews;
     v8 = [v7 countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v8)
     {
@@ -933,20 +933,20 @@ LABEL_74:
       v12 = 0.0;
     }
 
-    v27 = v12 + ([v7 count] - 1) * a3;
+    v27 = v12 + ([v7 count] - 1) * spacing;
   }
 
   else
   {
-    v19 = [v6 firstObject];
-    v20 = [v6 lastObject];
-    [v19 bounds];
+    firstObject = [subitemViews firstObject];
+    lastObject = [subitemViews lastObject];
+    [firstObject bounds];
     MidX = CGRectGetMidX(v50);
-    [v20 _getSourceCenter];
+    [lastObject _getSourceCenter];
     v23 = v22;
-    [v19 _getSourceCenter];
+    [firstObject _getSourceCenter];
     v25 = v23 - v24;
-    [v20 bounds];
+    [lastObject bounds];
     v26 = MidX + v25 + CGRectGetMidX(v51);
     v11 = 0.0;
     v36 = 0u;
@@ -954,7 +954,7 @@ LABEL_74:
     v27 = v26;
     v38 = 0u;
     v39 = 0u;
-    v28 = v6;
+    v28 = subitemViews;
     v29 = [v28 countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v29)
     {
@@ -993,16 +993,16 @@ LABEL_74:
 
 - (double)_currentInterItemSpacing
 {
-  v3 = [(_UIBarCustomizationChiclet *)self chicletSize];
+  chicletSize = [(_UIBarCustomizationChiclet *)self chicletSize];
 
-  [(_UIBarCustomizationChiclet *)self _interItemSpacingForChicletSize:v3];
+  [(_UIBarCustomizationChiclet *)self _interItemSpacingForChicletSize:chicletSize];
   return result;
 }
 
-- (double)_interItemSpacingForChicletSize:(int64_t)a3
+- (double)_interItemSpacingForChicletSize:(int64_t)size
 {
   result = 16.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     return 20.0;
   }
@@ -1024,8 +1024,8 @@ LABEL_74:
 
 - (void)_updatePlatterShadow
 {
-  v3 = [(_UIBarCustomizationChiclet *)self chicletSize];
-  if (v3 == 1)
+  chicletSize = [(_UIBarCustomizationChiclet *)self chicletSize];
+  if (chicletSize == 1)
   {
     v4 = 4.0;
   }
@@ -1035,7 +1035,7 @@ LABEL_74:
     v4 = 2.0;
   }
 
-  if (v3 == 1)
+  if (chicletSize == 1)
   {
     v5 = 32.0;
   }
@@ -1045,41 +1045,41 @@ LABEL_74:
     v5 = 16.0;
   }
 
-  v6 = [(_UIBarCustomizationChiclet *)self platterView];
-  v7 = [v6 layer];
+  platterView = [(_UIBarCustomizationChiclet *)self platterView];
+  layer = [platterView layer];
   LODWORD(v8) = 1036831949;
-  [v7 setShadowOpacity:v8];
+  [layer setShadowOpacity:v8];
 
-  v9 = [(_UIBarCustomizationChiclet *)self platterView];
-  v10 = [v9 layer];
-  [v10 setShadowRadius:v5];
+  platterView2 = [(_UIBarCustomizationChiclet *)self platterView];
+  layer2 = [platterView2 layer];
+  [layer2 setShadowRadius:v5];
 
-  v12 = [(_UIBarCustomizationChiclet *)self platterView];
-  v11 = [v12 layer];
-  [v11 setShadowOffset:{0.0, v4}];
+  platterView3 = [(_UIBarCustomizationChiclet *)self platterView];
+  layer3 = [platterView3 layer];
+  [layer3 setShadowOffset:{0.0, v4}];
 }
 
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = _UIBarCustomizationChiclet;
   [(UIView *)&v18 _traitCollectionDidChangeOnSubtreeInternal:?];
-  var1 = a3->var1;
+  var1 = internal->var1;
   if (var1)
   {
-    var0 = a3->var0;
-    if (!a3->var0 || var1[13] != var0[13] || var1[15] != var0[15])
+    var0 = internal->var0;
+    if (!internal->var0 || var1[13] != var0[13] || var1[15] != var0[15])
     {
-      v7 = [(_UIBarCustomizationChiclet *)self rootItemView];
-      [v7 sizeToFit];
+      rootItemView = [(_UIBarCustomizationChiclet *)self rootItemView];
+      [rootItemView sizeToFit];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = [(_UIBarCustomizationChiclet *)self subitemViews];
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
+      v9 = [subitemViews countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1091,14 +1091,14 @@ LABEL_74:
           {
             if (*v15 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(subitemViews);
             }
 
             [*(*(&v14 + 1) + 8 * v12++) sizeToFit];
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v10 = [subitemViews countByEnumeratingWithState:&v14 objects:v19 count:16];
         }
 
         while (v10);
@@ -1106,23 +1106,23 @@ LABEL_74:
 
       [(_UIBarCustomizationChiclet *)self sizeToFit];
       [(UIView *)self setNeedsLayout];
-      v13 = [(_UIBarCustomizationChiclet *)self anchorView];
-      [v13 sizeToFit];
+      anchorView = [(_UIBarCustomizationChiclet *)self anchorView];
+      [anchorView sizeToFit];
     }
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
   width = v12;
   height = v14;
-  if ([v7 type] == 11)
+  if ([eventCopy type] == 11)
   {
     v20.origin.x = v9;
     v20.origin.y = v11;
@@ -1150,25 +1150,25 @@ LABEL_74:
   {
     v18.receiver = self;
     v18.super_class = _UIBarCustomizationChiclet;
-    v16 = [(UIView *)&v18 pointInside:v7 withEvent:x, y];
+    v16 = [(UIView *)&v18 pointInside:eventCopy withEvent:x, y];
   }
 
   return v16;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
   width = v12;
   height = v14;
-  v16 = [v7 type];
+  type = [eventCopy type];
 
-  if (v16 == 11)
+  if (type == 11)
   {
     v21.origin.x = v9;
     v21.origin.y = v11;
@@ -1189,20 +1189,20 @@ LABEL_74:
   v20.y = y;
   if (CGRectContainsPoint(v23, v20))
   {
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [(UIView *)self bounds:a3];
+  [(UIView *)self bounds:interaction];
   v9 = CGRectInset(v8, -10.0, -10.0);
   v5 = [UIPointerRegion regionWithRect:0 identifier:v9.origin.x, v9.origin.y, v9.size.width, v9.size.height];
   [v5 setLatchingAxes:3];
@@ -1210,11 +1210,11 @@ LABEL_74:
   return v5;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(_UIBarCustomizationChiclet *)self platterView:a3];
-  v6 = [(_UIBarCustomizationChiclet *)self contentWrapperView];
-  v7 = v6;
+  v5 = [(_UIBarCustomizationChiclet *)self platterView:interaction];
+  contentWrapperView = [(_UIBarCustomizationChiclet *)self contentWrapperView];
+  v7 = contentWrapperView;
   if (v5)
   {
     [v5 bounds];
@@ -1222,8 +1222,8 @@ LABEL_74:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v7 superview];
-    [v5 convertRect:v16 toView:{v9, v11, v13, v15}];
+    superview = [v7 superview];
+    [v5 convertRect:superview toView:{v9, v11, v13, v15}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -1235,7 +1235,7 @@ LABEL_74:
 
   else
   {
-    [v6 bounds];
+    [contentWrapperView bounds];
     v18 = v27;
     v20 = v28;
     v22 = v29;
@@ -1257,16 +1257,16 @@ LABEL_74:
 
 - (BOOL)_isDisplayingRootItem
 {
-  v3 = [(_UIBarCustomizationChiclet *)self representedItem];
-  if ([v3 collapsed])
+  representedItem = [(_UIBarCustomizationChiclet *)self representedItem];
+  if ([representedItem collapsed])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UIBarCustomizationChiclet *)self subitemViews];
-    v4 = [v5 count] == 0;
+    subitemViews = [(_UIBarCustomizationChiclet *)self subitemViews];
+    v4 = [subitemViews count] == 0;
   }
 
   return v4;

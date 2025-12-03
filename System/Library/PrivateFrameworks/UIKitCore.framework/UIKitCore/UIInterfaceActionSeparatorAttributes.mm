@@ -1,9 +1,9 @@
 @interface UIInterfaceActionSeparatorAttributes
 - (BOOL)_hasNonClearBackgroundColor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIInterfaceActionSeparatorAttributes)init;
 - (double)opacity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newSeparatorView;
 @end
 
@@ -25,27 +25,27 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(UIInterfaceActionSeparatorAttributes *)self opacity];
   [v4 setOpacity:?];
-  v5 = [(UIInterfaceActionSeparatorAttributes *)self filters];
-  [v4 setFilters:v5];
+  filters = [(UIInterfaceActionSeparatorAttributes *)self filters];
+  [v4 setFilters:filters];
 
-  v6 = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
-  [v4 setBackgroundColor:v6];
+  backgroundColor = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     [(UIInterfaceActionSeparatorAttributes *)self opacity];
     v9 = v8;
     [v7 opacity];
@@ -57,15 +57,15 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v11 = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
-    v12 = [v7 backgroundColor];
-    if (v11 == v12 || (-[UIInterfaceActionSeparatorAttributes backgroundColor](self, "backgroundColor"), v3 = objc_claimAutoreleasedReturnValue(), [v7 backgroundColor], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    backgroundColor = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
+    backgroundColor2 = [v7 backgroundColor];
+    if (backgroundColor == backgroundColor2 || (-[UIInterfaceActionSeparatorAttributes backgroundColor](self, "backgroundColor"), v3 = objc_claimAutoreleasedReturnValue(), [v7 backgroundColor], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v14 = [(UIInterfaceActionSeparatorAttributes *)self filters];
-      v15 = [v7 filters];
-      v13 = [v14 isEqual:v15];
+      filters = [(UIInterfaceActionSeparatorAttributes *)self filters];
+      filters2 = [v7 filters];
+      v13 = [filters isEqual:filters2];
 
-      if (v11 == v12)
+      if (backgroundColor == backgroundColor2)
       {
 LABEL_10:
 
@@ -106,15 +106,15 @@ LABEL_12:
 - (id)newSeparatorView
 {
   v3 = [_UIInterfaceActionBlendingSeparatorView alloc];
-  v4 = [(UIInterfaceActionSeparatorAttributes *)self filters];
-  v5 = [(_UIInterfaceActionBlendingSeparatorView *)v3 initWithTopLevelFilters:v4 compositingColors:MEMORY[0x1E695E0F0] compositingFilterModes:MEMORY[0x1E695E0F0]];
+  filters = [(UIInterfaceActionSeparatorAttributes *)self filters];
+  v5 = [(_UIInterfaceActionBlendingSeparatorView *)v3 initWithTopLevelFilters:filters compositingColors:MEMORY[0x1E695E0F0] compositingFilterModes:MEMORY[0x1E695E0F0]];
 
-  v6 = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
+  backgroundColor = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
 
-  if (v6)
+  if (backgroundColor)
   {
-    v7 = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
-    [(UIView *)v5 setBackgroundColor:v7];
+    backgroundColor2 = [(UIInterfaceActionSeparatorAttributes *)self backgroundColor];
+    [(UIView *)v5 setBackgroundColor:backgroundColor2];
   }
 
   [(UIInterfaceActionSeparatorAttributes *)self opacity];

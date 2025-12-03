@@ -1,70 +1,70 @@
 @interface PKPassFieldImage
-+ (id)createForDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (PKPassFieldImage)initWithCoder:(id)a3;
++ (id)createForDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (PKPassFieldImage)initWithCoder:(id)coder;
 - (id)_init;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassFieldImage
 
-+ (id)createForDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6
++ (id)createForDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [PKPassFieldImage alloc];
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  if (!v12)
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  dictionaryCopy = dictionary;
+  _init = [PKPassFieldImage alloc];
+  v13 = dictionaryCopy;
+  v14 = bundleCopy;
+  v15 = privateBundleCopy;
+  if (!_init)
   {
     goto LABEL_13;
   }
 
-  v12 = [(PKPassFieldImage *)v12 _init];
-  if (v12)
+  _init = [(PKPassFieldImage *)_init _init];
+  if (_init)
   {
     v16 = [v13 PKStringForKey:@"symbolName"];
-    symbolName = v12->_symbolName;
-    v12->_symbolName = v16;
+    symbolName = _init->_symbolName;
+    _init->_symbolName = v16;
 
     v18 = [v13 PKStringForKey:@"imageName"];
-    imageName = v12->_imageName;
-    v12->_imageName = v18;
+    imageName = _init->_imageName;
+    _init->_imageName = v18;
 
-    if (v12->_symbolName || v12->_imageName)
+    if (_init->_symbolName || _init->_imageName)
     {
       v20 = [v13 PKStringForKey:@"tintColor"];
-      PKSemanticColorFromString(v20, &v12->_tintColor);
+      PKSemanticColorFromString(v20, &_init->_tintColor);
 
       v21 = [v13 PKColorForKey:@"backgroundColor"];
-      backgroundColor = v12->_backgroundColor;
-      v12->_backgroundColor = v21;
+      backgroundColor = _init->_backgroundColor;
+      _init->_backgroundColor = v21;
 
-      if (!v12->_symbolName)
+      if (!_init->_symbolName)
       {
-        v23 = v12->_imageName;
+        v23 = _init->_imageName;
         if (v23)
         {
           v24 = [PKImage imageNamed:v23 inBundle:v14 screenScale:0 suffix:0.0];
           if (!v24)
           {
-            v24 = [PKImage imageNamed:v12->_imageName inBundle:v15 screenScale:0 suffix:0.0];
+            v24 = [PKImage imageNamed:_init->_imageName inBundle:v15 screenScale:0 suffix:0.0];
           }
 
-          image = v12->_image;
-          v12->_image = v24;
+          image = _init->_image;
+          _init->_image = v24;
           v26 = v24;
 
-          v27 = [(PKImage *)v26 imageHash];
-          imageHash = v12->_imageHash;
-          v12->_imageHash = v27;
+          imageHash = [(PKImage *)v26 imageHash];
+          imageHash = _init->_imageHash;
+          _init->_imageHash = imageHash;
         }
       }
 
-      v12->_allowInternalSymbols = a6 == 1;
+      _init->_allowInternalSymbols = type == 1;
       goto LABEL_11;
     }
 
@@ -74,8 +74,8 @@ LABEL_13:
   }
 
 LABEL_11:
-  v12 = v12;
-  v29 = v12;
+  _init = _init;
+  v29 = _init;
 LABEL_12:
 
   return v29;
@@ -88,51 +88,51 @@ LABEL_12:
   return [(PKPassFieldImage *)&v3 init];
 }
 
-- (PKPassFieldImage)initWithCoder:(id)a3
+- (PKPassFieldImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassFieldImage *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassFieldImage *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-    symbolName = v5->_symbolName;
-    v5->_symbolName = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+    symbolName = _init->_symbolName;
+    _init->_symbolName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
-    PKSemanticColorFromString(v8, &v5->_tintColor);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    PKSemanticColorFromString(v8, &_init->_tintColor);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
-    image = v5->_image;
-    v5->_image = v9;
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    image = _init->_image;
+    _init->_image = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
-    imageHash = v5->_imageHash;
-    v5->_imageHash = v11;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
+    imageHash = _init->_imageHash;
+    _init->_imageHash = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
-    backgroundColor = v5->_backgroundColor;
-    v5->_backgroundColor = v13;
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    backgroundColor = _init->_backgroundColor;
+    _init->_backgroundColor = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowInternalSymbols"];
-    v5->_allowInternalSymbols = [v15 BOOLValue];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowInternalSymbols"];
+    _init->_allowInternalSymbols = [v15 BOOLValue];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   symbolName = self->_symbolName;
-  v5 = a3;
-  [v5 encodeObject:symbolName forKey:@"symbolName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:symbolName forKey:@"symbolName"];
   v6 = PKSemanticColorToString(self->_tintColor);
-  [v5 encodeObject:v6 forKey:@"tintColor"];
+  [coderCopy encodeObject:v6 forKey:@"tintColor"];
 
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_imageHash forKey:@"imageHash"];
-  [v5 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_imageHash forKey:@"imageHash"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowInternalSymbols];
-  [v5 encodeObject:v7 forKey:@"allowInternalSymbols"];
+  [coderCopy encodeObject:v7 forKey:@"allowInternalSymbols"];
 }
 
 - (unint64_t)hash
@@ -150,15 +150,15 @@ LABEL_12:
   return SipHash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
+    v7 = equalCopy;
     v8 = v7;
     if (!self || v7[3] != self->_tintColor)
     {

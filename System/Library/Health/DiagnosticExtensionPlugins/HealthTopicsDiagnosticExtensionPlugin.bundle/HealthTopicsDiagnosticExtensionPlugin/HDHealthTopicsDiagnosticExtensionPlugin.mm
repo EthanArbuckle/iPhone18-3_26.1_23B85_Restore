@@ -1,6 +1,6 @@
 @interface HDHealthTopicsDiagnosticExtensionPlugin
 - (HDHealthTopicsDiagnosticExtensionPlugin)init;
-- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)a3;
+- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)l;
 @end
 
 @implementation HDHealthTopicsDiagnosticExtensionPlugin
@@ -12,7 +12,7 @@
   return [(HDHealthTopicsDiagnosticExtensionPlugin *)&v3 init];
 }
 
-- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)a3
+- (id)diagnosticOperationsWithAttachmentDirectoryURL:(id)l
 {
   v3 = sub_31CC();
   v4 = *(v3 - 8);

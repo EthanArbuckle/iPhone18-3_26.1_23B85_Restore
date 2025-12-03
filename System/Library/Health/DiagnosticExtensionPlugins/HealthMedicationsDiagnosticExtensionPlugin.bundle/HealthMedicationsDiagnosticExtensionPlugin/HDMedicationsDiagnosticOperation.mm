@@ -1,15 +1,15 @@
 @interface HDMedicationsDiagnosticOperation
-- (HDMedicationsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3;
+- (HDMedicationsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l;
 - (void)run;
 @end
 
 @implementation HDMedicationsDiagnosticOperation
 
-- (HDMedicationsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)a3
+- (HDMedicationsDiagnosticOperation)initWithAttachmentDirectoryURL:(id)l
 {
   v11.receiver = self;
   v11.super_class = HDMedicationsDiagnosticOperation;
-  v3 = [(HDMedicationsDiagnosticOperation *)&v11 initWithAttachmentDirectoryURL:a3];
+  v3 = [(HDMedicationsDiagnosticOperation *)&v11 initWithAttachmentDirectoryURL:l];
   if (v3)
   {
     v4 = objc_alloc_init(HKHealthStore);

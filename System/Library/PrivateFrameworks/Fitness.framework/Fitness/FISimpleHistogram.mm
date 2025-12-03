@@ -1,23 +1,23 @@
 @interface FISimpleHistogram
-- (BOOL)isEqual:(id)a3;
-- (FISimpleHistogram)initWithNumberOfBuckets:(int64_t)a3;
-- (double)valueForBucketAtIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (FISimpleHistogram)initWithNumberOfBuckets:(int64_t)buckets;
+- (double)valueForBucketAtIndex:(unint64_t)index;
 - (id)debugDescription;
 - (id)descriptionArray;
-- (int64_t)numberOfValuesInBucketAtIndex:(unint64_t)a3;
-- (void)addValue:(double)a3 toBucketAtIndex:(unint64_t)a4;
+- (int64_t)numberOfValuesInBucketAtIndex:(unint64_t)index;
+- (void)addValue:(double)value toBucketAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
 @implementation FISimpleHistogram
 
-- (FISimpleHistogram)initWithNumberOfBuckets:(int64_t)a3
+- (FISimpleHistogram)initWithNumberOfBuckets:(int64_t)buckets
 {
   v8.receiver = self;
   v8.super_class = FISimpleHistogram;
   v4 = [(FISimpleHistogram *)&v8 init];
   v5 = v4;
-  if (a3 < 1)
+  if (buckets < 1)
   {
     v6 = 0;
   }
@@ -26,8 +26,8 @@
   {
     if (v4)
     {
-      v4->_bucketCount = a3;
-      v4->_buckets = malloc_type_calloc(a3, 0x10uLL, 0x1000040451B5BE8uLL);
+      v4->_bucketCount = buckets;
+      v4->_buckets = malloc_type_calloc(buckets, 0x10uLL, 0x1000040451B5BE8uLL);
     }
 
     v6 = v5;
@@ -44,12 +44,12 @@
   [(FISimpleHistogram *)&v3 dealloc];
 }
 
-- (double)valueForBucketAtIndex:(unint64_t)a3
+- (double)valueForBucketAtIndex:(unint64_t)index
 {
   result = 0.0;
-  if (self->_bucketCount > a3)
+  if (self->_bucketCount > index)
   {
-    v4 = &self->_buckets[a3];
+    v4 = &self->_buckets[index];
     if (v4->var0)
     {
       return v4->var1 / v4->var0;
@@ -59,33 +59,33 @@
   return result;
 }
 
-- (void)addValue:(double)a3 toBucketAtIndex:(unint64_t)a4
+- (void)addValue:(double)value toBucketAtIndex:(unint64_t)index
 {
-  if (self->_bucketCount > a4)
+  if (self->_bucketCount > index)
   {
-    v4 = &self->_buckets[a4];
+    v4 = &self->_buckets[index];
     ++v4->var0;
-    v4->var1 = v4->var1 + a3;
+    v4->var1 = v4->var1 + value;
   }
 }
 
-- (int64_t)numberOfValuesInBucketAtIndex:(unint64_t)a3
+- (int64_t)numberOfValuesInBucketAtIndex:(unint64_t)index
 {
-  if (self->_bucketCount <= a3)
+  if (self->_bucketCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_buckets[a3].var0;
+    return self->_buckets[index].var0;
   }
 }
 
 - (id)debugDescription
 {
-  v2 = [(FISimpleHistogram *)self descriptionArray];
-  v3 = [v2 description];
+  descriptionArray = [(FISimpleHistogram *)self descriptionArray];
+  v3 = [descriptionArray description];
 
   return v3;
 }
@@ -128,10 +128,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -141,9 +141,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 bucketCount];
-      v7 = v6 == [(FISimpleHistogram *)self bucketCount]&& memcmp(v5[2], self->_buckets, 16 * self->_bucketCount) == 0;
+      v5 = equalCopy;
+      bucketCount = [v5 bucketCount];
+      v7 = bucketCount == [(FISimpleHistogram *)self bucketCount]&& memcmp(v5[2], self->_buckets, 16 * self->_bucketCount) == 0;
     }
 
     else

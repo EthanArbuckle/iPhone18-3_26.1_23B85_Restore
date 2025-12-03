@@ -1,24 +1,24 @@
 @interface BWSensitiveContentAnalyzerSinkNode
-- (BWSensitiveContentAnalyzerSinkNode)initWithAnalyzer:(id)a3 sinkID:(id)a4 interruptionDelegate:(id)a5;
+- (BWSensitiveContentAnalyzerSinkNode)initWithAnalyzer:(id)analyzer sinkID:(id)d interruptionDelegate:(id)delegate;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSensitiveContentAnalyzerSinkNode
 
-- (BWSensitiveContentAnalyzerSinkNode)initWithAnalyzer:(id)a3 sinkID:(id)a4 interruptionDelegate:(id)a5
+- (BWSensitiveContentAnalyzerSinkNode)initWithAnalyzer:(id)analyzer sinkID:(id)d interruptionDelegate:(id)delegate
 {
   if (SensitiveContentAnalysisLibraryCore())
   {
     if (getSCVideoStreamAnalyzerClass())
     {
-      if (a3)
+      if (analyzer)
       {
-        if (a5)
+        if (delegate)
         {
           v18.receiver = self;
           v18.super_class = BWSensitiveContentAnalyzerSinkNode;
-          self = [(BWSinkNode *)&v18 initWithSinkID:a4];
+          self = [(BWSinkNode *)&v18 initWithSinkID:d];
           if (self)
           {
             v9 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:self];
@@ -27,8 +27,8 @@
             [(BWNode *)self setSupportsLiveReconfiguration:1];
             [(BWNode *)self setSupportsPrepareWhileRunning:1];
             [(BWSensitiveContentAnalyzerSinkNode *)self setSensitiveContentAnalyzerEnabled:1];
-            self->_sensitiveContentAnalyzer = a3;
-            objc_initWeak(&location, a5);
+            self->_sensitiveContentAnalyzer = analyzer;
+            objc_initWeak(&location, delegate);
             v15[0] = 0;
             v15[1] = v15;
             v15[2] = 0x3042000000;
@@ -132,18 +132,18 @@ void __83__BWSensitiveContentAnalyzerSinkNode_initWithAnalyzer_sinkID_interrupti
   [(BWSinkNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (self->_sensitiveContentAnalyzerEnabled && self->_sensitiveContentAnalyzer)
   {
     UpTimeNanoseconds = FigGetUpTimeNanoseconds();
-    v8 = [CMGetAttachment(a3 @"UprightExifOrientation"];
+    v8 = [CMGetAttachment(buffer @"UprightExifOrientation"];
     v9 = v8 <= 1 ? 1 : v8;
-    [(SCVideoStreamAnalyzer *)self->_sensitiveContentAnalyzer analyzePixelBuffer:CMSampleBufferGetImageBuffer(a3) orientation:v9];
+    [(SCVideoStreamAnalyzer *)self->_sensitiveContentAnalyzer analyzePixelBuffer:CMSampleBufferGetImageBuffer(buffer) orientation:v9];
     if (((FigGetUpTimeNanoseconds() - UpTimeNanoseconds) / 1000000.0) > 8.0)
     {
 
-      [a4 numberOfBuffersReceived];
+      [input numberOfBuffersReceived];
     }
   }
 }

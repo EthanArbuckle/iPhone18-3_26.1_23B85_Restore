@@ -1,9 +1,9 @@
 @interface VISISPMeshGeneratorV2
-- (VISISPMeshGeneratorV2)initWithMetalContext:(id)a3 metalCommandQueue:(id)a4;
+- (VISISPMeshGeneratorV2)initWithMetalContext:(id)context metalCommandQueue:(id)queue;
 - (__n128)gridSize;
 - (__n128)inputSize;
 - (__n128)outputSize;
-- (int)_blitCopyLTMGrid:(id)a3;
+- (int)_blitCopyLTMGrid:(id)grid;
 - (int)generateMeshWithTransforms:(float *)(a3 transforms3x3:validBufferRect:ltmLUT:;
 - (void)dealloc;
 @end
@@ -50,8 +50,8 @@ void __64__VISISPMeshGeneratorV2_initWithMetalContext_metalCommandQueue___block_
 
 - (__n128)inputSize
 {
-  LOWORD(v1) = *(a1 + 40);
-  WORD2(v1) = *(a1 + 42);
+  LOWORD(v1) = *(self + 40);
+  WORD2(v1) = *(self + 42);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -59,8 +59,8 @@ void __64__VISISPMeshGeneratorV2_initWithMetalContext_metalCommandQueue___block_
 
 - (__n128)outputSize
 {
-  LOWORD(v1) = *(a1 + 44);
-  WORD2(v1) = *(a1 + 46);
+  LOWORD(v1) = *(self + 44);
+  WORD2(v1) = *(self + 46);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -68,17 +68,17 @@ void __64__VISISPMeshGeneratorV2_initWithMetalContext_metalCommandQueue___block_
 
 - (__n128)gridSize
 {
-  LOWORD(v1) = *(a1 + 48);
-  WORD2(v1) = *(a1 + 50);
+  LOWORD(v1) = *(self + 48);
+  WORD2(v1) = *(self + 50);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
 }
 
-- (VISISPMeshGeneratorV2)initWithMetalContext:(id)a3 metalCommandQueue:(id)a4
+- (VISISPMeshGeneratorV2)initWithMetalContext:(id)context metalCommandQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = VISISPMeshGeneratorV2;
   v9 = [(VISISPMeshGeneratorV2 *)&v26 init];
@@ -88,12 +88,12 @@ void __64__VISISPMeshGeneratorV2_initWithMetalContext_metalCommandQueue___block_
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v9->_metalContext, a3);
+  objc_storeStrong(&v9->_metalContext, context);
   metalContext = v10->_metalContext;
   if (!metalContext)
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
-    v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:v8];
+    v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:queueCopy];
     v14 = v10->_metalContext;
     v10->_metalContext = v13;
 
@@ -104,14 +104,14 @@ void __64__VISISPMeshGeneratorV2_initWithMetalContext_metalCommandQueue___block_
     }
   }
 
-  if (v8)
+  if (queueCopy)
   {
-    [(FigMetalContext *)metalContext setCommandQueue:v8];
+    [(FigMetalContext *)metalContext setCommandQueue:queueCopy];
     metalContext = v10->_metalContext;
   }
 
-  v15 = [(FigMetalContext *)metalContext device];
-  v16 = [v15 newBufferWithLength:648652 options:0];
+  device = [(FigMetalContext *)metalContext device];
+  v16 = [device newBufferWithLength:648652 options:0];
   meshParamsBuffer = v10->_meshParamsBuffer;
   v10->_meshParamsBuffer = v16;
 
@@ -149,24 +149,24 @@ LABEL_12:
   y = a4.origin.y;
   x = a4.origin.x;
   v12 = a5;
-  v13 = [(NSData *)self->_ISPMeshParams bytes];
+  bytes = [(NSData *)self->_ISPMeshParams bytes];
   if (*self->_inputSize < *self->_outputSize || *&self->_inputSize[2] < *&self->_outputSize[2])
   {
     v70 = -12780;
     goto LABEL_34;
   }
 
-  v17 = v13;
-  *v13 = 1;
-  *(v13 + 2) = y;
-  *(v13 + 3) = width;
-  *(v13 + 4) = height;
-  *(v13 + 5) = v6;
-  v13[3] = 0;
-  *(v13 + 8) = *self->_outputSize;
-  *(v13 + 9) = *&self->_outputSize[2];
-  *(v13 + 20) = 1;
-  v13[6] = 0;
+  v17 = bytes;
+  *bytes = 1;
+  *(bytes + 2) = y;
+  *(bytes + 3) = width;
+  *(bytes + 4) = height;
+  *(bytes + 5) = v6;
+  bytes[3] = 0;
+  *(bytes + 8) = *self->_outputSize;
+  *(bytes + 9) = *&self->_outputSize[2];
+  *(bytes + 20) = 1;
+  bytes[6] = 0;
   v18 = *self->_gridSize;
   v71 = v12;
   if (v18)
@@ -321,15 +321,15 @@ LABEL_19:
   }
 
   v66 = [v71 width] / 0x41;
-  v67 = [v71 height];
+  height = [v71 height];
   *(v17 + 11894) = vdup_n_s32(0x3FF8000u);
   v17[23790] = (v66 + *self->_inputSize - 1) / v66;
-  v17[23791] = (v67 + *&self->_inputSize[2] - 1) / v67;
+  v17[23791] = (height + *&self->_inputSize[2] - 1) / height;
   *(v17 + 47584) = v66;
-  *(v17 + 47585) = v67;
-  v68 = [v71 width];
-  *(v17 + 47586) = 2 * v68;
-  v17[23794] = (2 * v68) * [v71 height];
+  *(v17 + 47585) = height;
+  width = [v71 width];
+  *(v17 + 47586) = 2 * width;
+  v17[23794] = (2 * width) * [v71 height];
   if ((v17[23793] & 0x3F) != 0)
   {
 LABEL_35:
@@ -348,23 +348,23 @@ LABEL_34:
   return v70;
 }
 
-- (int)_blitCopyLTMGrid:(id)a3
+- (int)_blitCopyLTMGrid:(id)grid
 {
-  v4 = a3;
-  v5 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v6 = [v5 commandBuffer];
+  gridCopy = grid;
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (v6 && ([v6 blitCommandEncoder], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (commandBuffer && ([commandBuffer blitCommandEncoder], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     memset(v12, 0, sizeof(v12));
-    v11[0] = [v4 width];
-    v11[1] = [v4 height];
+    v11[0] = [gridCopy width];
+    v11[1] = [gridCopy height];
     v11[2] = 1;
-    [v8 copyFromTexture:v4 sourceSlice:0 sourceLevel:0 sourceOrigin:v12 sourceSize:v11 toBuffer:self->_meshParamsBuffer destinationOffset:95180 destinationBytesPerRow:2 * objc_msgSend(v4 destinationBytesPerImage:{"width"), 0}];
+    [v8 copyFromTexture:gridCopy sourceSlice:0 sourceLevel:0 sourceOrigin:v12 sourceSize:v11 toBuffer:self->_meshParamsBuffer destinationOffset:95180 destinationBytesPerRow:2 * objc_msgSend(gridCopy destinationBytesPerImage:{"width"), 0}];
     [v8 endEncoding];
-    [v6 commit];
-    [v6 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
 
     v9 = 0;
   }

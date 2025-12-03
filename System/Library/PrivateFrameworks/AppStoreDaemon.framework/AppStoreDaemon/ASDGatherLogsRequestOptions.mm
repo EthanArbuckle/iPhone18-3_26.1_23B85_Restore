@@ -1,10 +1,10 @@
 @interface ASDGatherLogsRequestOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDGatherLogsRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ASDGatherLogsRequestOptions allocWithZone:?]];
   v5 = [(NSString *)self->_fileName copy];

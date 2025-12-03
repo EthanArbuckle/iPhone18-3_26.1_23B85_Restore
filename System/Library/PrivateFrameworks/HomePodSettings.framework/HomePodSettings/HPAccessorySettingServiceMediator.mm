@@ -1,32 +1,32 @@
 @interface HPAccessorySettingServiceMediator
-- (HPAccessorySettingServiceMediator)initWithInterface:(id)a3;
+- (HPAccessorySettingServiceMediator)initWithInterface:(id)interface;
 - (HPSAccessorySettingService)settingsInterface;
-- (void)notifyDidUpdateSetting:(id)a3 forKeyPath:(id)a4;
+- (void)notifyDidUpdateSetting:(id)setting forKeyPath:(id)path;
 @end
 
 @implementation HPAccessorySettingServiceMediator
 
-- (HPAccessorySettingServiceMediator)initWithInterface:(id)a3
+- (HPAccessorySettingServiceMediator)initWithInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v8.receiver = self;
   v8.super_class = HPAccessorySettingServiceMediator;
   v5 = [(HPAccessorySettingServiceMediator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_settingsInterface, v4);
+    objc_storeWeak(&v5->_settingsInterface, interfaceCopy);
   }
 
   return v6;
 }
 
-- (void)notifyDidUpdateSetting:(id)a3 forKeyPath:(id)a4
+- (void)notifyDidUpdateSetting:(id)setting forKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPAccessorySettingServiceMediator *)self settingsInterface];
-  [v8 notifyDidUpdateSetting:v7 forKeyPath:v6];
+  pathCopy = path;
+  settingCopy = setting;
+  settingsInterface = [(HPAccessorySettingServiceMediator *)self settingsInterface];
+  [settingsInterface notifyDidUpdateSetting:settingCopy forKeyPath:pathCopy];
 }
 
 - (HPSAccessorySettingService)settingsInterface

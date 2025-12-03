@@ -3,10 +3,10 @@
 - (CGRect)nextButtonFrame;
 - (CGRect)prevButtonFrame;
 - (NSString)buttonFontName;
-- (THWReviewControlsLayout)initWithDelegate:(id)a3;
+- (THWReviewControlsLayout)initWithDelegate:(id)delegate;
 - (id)additionalLayouts;
 - (id)dependentLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (void)dealloc;
 - (void)updateChildrenFromInfo;
 - (void)validate;
@@ -14,14 +14,14 @@
 
 @implementation THWReviewControlsLayout
 
-- (THWReviewControlsLayout)initWithDelegate:(id)a3
+- (THWReviewControlsLayout)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = THWReviewControlsLayout;
   result = [(THWReviewControlsLayout *)&v5 initWithInfo:0];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
@@ -149,7 +149,7 @@
   return v4;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v4 = TSUProtocolCast();
   if (!v4)

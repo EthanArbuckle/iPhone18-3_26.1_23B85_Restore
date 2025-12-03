@@ -8,10 +8,10 @@
 - (NSString)SSID;
 - (double)signalStrength;
 - (id)description;
-- (id)initWithNetwork:(void *)a1;
+- (id)initWithNetwork:(void *)network;
 - (void)dealloc;
 - (void)setConfidence:(NEHotspotHelperConfidence)confidence;
-- (void)setNetwork:(uint64_t)a1;
+- (void)setNetwork:(uint64_t)network;
 - (void)setPassword:(NSString *)password;
 @end
 
@@ -156,7 +156,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = a1;
+      selfCopy = self;
       _os_log_error_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_ERROR, "%@ internal error", buf, 0xCu);
     }
 
@@ -288,30 +288,30 @@ LABEL_10:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNetwork:(uint64_t)a1
+- (void)setNetwork:(uint64_t)network
 {
   if (cf)
   {
     CFRetain(cf);
   }
 
-  v4 = *(a1 + 8);
+  v4 = *(network + 8);
   if (v4)
   {
     CFRelease(v4);
   }
 
-  *(a1 + 8) = cf;
+  *(network + 8) = cf;
 }
 
-- (id)initWithNetwork:(void *)a1
+- (id)initWithNetwork:(void *)network
 {
-  if (!a1)
+  if (!network)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = network;
   v6.super_class = NEHotspotNetwork;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

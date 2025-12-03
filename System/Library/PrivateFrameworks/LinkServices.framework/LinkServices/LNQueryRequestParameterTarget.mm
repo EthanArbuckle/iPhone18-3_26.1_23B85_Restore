@@ -1,21 +1,21 @@
 @interface LNQueryRequestParameterTarget
-- (BOOL)isEqual:(id)a3;
-- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)a3 parameterIdentifier:(id)a4;
-- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)a3 parameterIndex:(int64_t)a4;
-- (LNQueryRequestParameterTarget)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)metadata parameterIdentifier:(id)identifier;
+- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)metadata parameterIndex:(int64_t)index;
+- (LNQueryRequestParameterTarget)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryRequestParameterTarget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNQueryRequestParameterTarget *)self actionMetadata];
-    v8 = [(LNQueryRequestParameterTarget *)v6 actionMetadata];
-    v9 = v7;
-    v10 = v8;
+    actionMetadata = [(LNQueryRequestParameterTarget *)self actionMetadata];
+    actionMetadata2 = [(LNQueryRequestParameterTarget *)v6 actionMetadata];
+    v9 = actionMetadata;
+    v10 = actionMetadata2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
-    v16 = [(LNQueryRequestParameterTarget *)v6 parameterIdentifier];
-    v14 = v15;
-    v17 = v16;
+    parameterIdentifier = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
+    parameterIdentifier2 = [(LNQueryRequestParameterTarget *)v6 parameterIdentifier];
+    v14 = parameterIdentifier;
+    v17 = parameterIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -82,62 +82,62 @@ LABEL_21:
   return v12;
 }
 
-- (LNQueryRequestParameterTarget)initWithCoder:(id)a3
+- (LNQueryRequestParameterTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
 
   v7 = [(LNQueryRequestParameterTarget *)self initWithActionMetadata:v5 parameterIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryRequestParameterTarget *)self actionMetadata];
-  [v4 encodeObject:v5 forKey:@"actionMetadata"];
+  coderCopy = coder;
+  actionMetadata = [(LNQueryRequestParameterTarget *)self actionMetadata];
+  [coderCopy encodeObject:actionMetadata forKey:@"actionMetadata"];
 
-  v6 = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
-  [v4 encodeObject:v6 forKey:@"parameterIdentifier"];
+  parameterIdentifier = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNQueryRequestParameterTarget *)self actionMetadata];
-  v5 = [v4 identifier];
-  v6 = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
-  v7 = [v3 stringWithFormat:@"Parameter <%@:%@>", v5, v6];
+  actionMetadata = [(LNQueryRequestParameterTarget *)self actionMetadata];
+  identifier = [actionMetadata identifier];
+  parameterIdentifier = [(LNQueryRequestParameterTarget *)self parameterIdentifier];
+  v7 = [v3 stringWithFormat:@"Parameter <%@:%@>", identifier, parameterIdentifier];
 
   return v7;
 }
 
-- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)a3 parameterIdentifier:(id)a4
+- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)metadata parameterIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = LNQueryRequestParameterTarget;
-  v9 = [(LNQueryRequestTargetBase *)&v13 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(LNQueryRequestTargetBase *)&v13 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, a3);
-    objc_storeStrong(&v10->_parameterIdentifier, a4);
+    objc_storeStrong(_init + 1, metadata);
+    objc_storeStrong(&v10->_parameterIdentifier, identifier);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)a3 parameterIndex:(int64_t)a4
+- (LNQueryRequestParameterTarget)initWithActionMetadata:(id)metadata parameterIndex:(int64_t)index
 {
   actionMetadata = self->_actionMetadata;
-  v7 = [a3 parameters];
-  v8 = [v7 objectAtIndex:a4];
-  v9 = [v8 name];
-  v10 = [(LNQueryRequestParameterTarget *)self initWithActionMetadata:actionMetadata parameterIdentifier:v9];
+  parameters = [metadata parameters];
+  v8 = [parameters objectAtIndex:index];
+  name = [v8 name];
+  v10 = [(LNQueryRequestParameterTarget *)self initWithActionMetadata:actionMetadata parameterIdentifier:name];
 
   return v10;
 }

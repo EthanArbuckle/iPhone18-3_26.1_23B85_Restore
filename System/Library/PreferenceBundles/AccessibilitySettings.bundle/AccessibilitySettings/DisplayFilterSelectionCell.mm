@@ -1,22 +1,22 @@
 @interface DisplayFilterSelectionCell
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation DisplayFilterSelectionCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(DisplayFilterSelectionCell *)self textLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  textLabel = [(DisplayFilterSelectionCell *)self textLabel];
+  [textLabel setText:titleCopy];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(DisplayFilterSelectionCell *)self detailTextLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  detailTextLabel = [(DisplayFilterSelectionCell *)self detailTextLabel];
+  [detailTextLabel setText:subtitleCopy];
 }
 
 @end

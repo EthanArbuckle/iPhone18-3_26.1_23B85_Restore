@@ -1,147 +1,147 @@
 @interface PDEndpointServer
-- (BOOL)isCurrentUserStudent:(id *)a3;
-- (BOOL)isInternalWithError:(id *)a3;
+- (BOOL)isCurrentUserStudent:(id *)student;
+- (BOOL)isInternalWithError:(id *)error;
 - (NSMutableDictionary)statusReport;
 - (PDDaemon)daemon;
 - (PDDatabase)database;
-- (PDEndpointServer)initWithClient:(id)a3 daemon:(id)a4;
-- (id)_clientScopedPredicate:(id)a3 forEntityClass:(Class)a4;
-- (id)_createHandoutAssignedItemFrom:(id)a3 withError:(id *)a4;
-- (id)_createMainAppContext:(id *)a3;
-- (id)asmRosterSearchFinishBlock:(id)a3 query:(id)a4 asmConfig:(id)a5 buffer:(id)a6 buffSize:(unint64_t)a7 nextOffset:(unint64_t)a8;
+- (PDEndpointServer)initWithClient:(id)client daemon:(id)daemon;
+- (id)_clientScopedPredicate:(id)predicate forEntityClass:(Class)class;
+- (id)_createHandoutAssignedItemFrom:(id)from withError:(id *)error;
+- (id)_createMainAppContext:(id *)context;
+- (id)asmRosterSearchFinishBlock:(id)block query:(id)query asmConfig:(id)config buffer:(id)buffer buffSize:(unint64_t)size nextOffset:(unint64_t)offset;
 - (id)userNotificationCenter;
-- (int64_t)_authorizationStatusActivityWithID:(id)a3;
-- (int64_t)_authorizationStatusForContext:(id)a3;
-- (int64_t)_authorizationStatusForContextWithObjectID:(id)a3;
-- (int64_t)_authorizationStatusForHandoutAssignedItem:(id)a3;
-- (int64_t)_authorizationStatusForObject:(id)a3;
-- (void)_invalidateObserver:(id)a3;
-- (void)_performQuery:(id)a3 querySpecification:(id)a4 issueServerRequest:(BOOL)a5 completion:(id)a6;
-- (void)databaseChanged:(id)a3;
+- (int64_t)_authorizationStatusActivityWithID:(id)d;
+- (int64_t)_authorizationStatusForContext:(id)context;
+- (int64_t)_authorizationStatusForContextWithObjectID:(id)d;
+- (int64_t)_authorizationStatusForHandoutAssignedItem:(id)item;
+- (int64_t)_authorizationStatusForObject:(id)object;
+- (void)_invalidateObserver:(id)observer;
+- (void)_performQuery:(id)query querySpecification:(id)specification issueServerRequest:(BOOL)request completion:(id)completion;
+- (void)databaseChanged:(id)changed;
 - (void)dealloc;
-- (void)entitled_publishCollaborationStateChanges:(id)a3 completion:(id)a4;
+- (void)entitled_publishCollaborationStateChanges:(id)changes completion:(id)completion;
 - (void)invalidate;
 - (void)remote_accountChanged;
-- (void)remote_addAdminRequestor:(id)a3 completion:(id)a4;
-- (void)remote_addAuthorizationStatus:(unint64_t)a3 forContextAtPath:(id)a4 completion:(id)a5;
-- (void)remote_addAuthorizationStatus:(unint64_t)a3 forHandoutAssignedItem:(id)a4 completion:(id)a5;
-- (void)remote_addOrganization:(id)a3 withLocations:(id)a4 completion:(id)a5;
-- (void)remote_authTreeForAttachment:(id)a3 withCompletion:(id)a4;
-- (void)remote_authTreeWithCompletion:(id)a3;
-- (void)remote_authorizationStatusForContextAtPath:(id)a3 completion:(id)a4;
-- (void)remote_authorizationStatusForHandoutAssignedItem:(id)a3 completion:(id)a4;
-- (void)remote_canSearchRostersWithCompletion:(id)a3;
-- (void)remote_cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4;
-- (void)remote_cloudKitUrlSuitableForOpeningForAsset:(id)a3 downloadObserver:(id)a4 completion:(id)a5;
-- (void)remote_cloudKitUrlSuitableForStreamingAsset:(id)a3 downloadObserver:(id)a4 completion:(id)a5;
-- (void)remote_collaborationStatesForObjectWithID:(id)a3 classID:(id)a4 forOwnersWithRole:(unint64_t)a5 completion:(id)a6;
-- (void)remote_collaborationStatesForObjectWithID:(id)a3 ownerPersonID:(id)a4 completion:(id)a5;
-- (void)remote_contextsMatchingIdentifierPath:(id)a3 parentContextID:(id)a4 completion:(id)a5;
-- (void)remote_createShareIfNeededForURL:(id)a3 completion:(id)a4;
-- (void)remote_currentUserContentStoreCacheDirectoryURLWithCompletion:(id)a3;
-- (void)remote_currentUserIsStudent:(id)a3;
-- (void)remote_currentUserWithCompletion:(id)a3;
-- (void)remote_databasePathWithCompletion:(id)a3;
-- (void)remote_deleteAdminRequestID:(id)a3 completion:(id)a4;
-- (void)remote_deleteAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_deleteBackingStoreForAsset:(id)a3 completion:(id)a4;
-- (void)remote_deleteCollectionRelatedObjectsWithCompletion:(id)a3 completion:(id)a4;
-- (void)remote_deleteOrganization:(id)a3 completion:(id)a4;
-- (void)remote_deleteProgressReportingCapabilitiesForContextID:(id)a3 completion:(id)a4;
-- (void)remote_deleteThumbnailBlobForContextID:(id)a3 completion:(id)a4;
-- (void)remote_deregisterDataObserverWithID:(id)a3 completion:(id)a4;
-- (void)remote_executeRosterQuery:(id)a3 executeQuery:(id)a4 completion:(id)a5;
-- (void)remote_featureIsEnabled:(int)a3 completion:(id)a4;
-- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4;
-- (void)remote_fetchAppBasedAssignmentUsage:(id)a3 completion:(id)a4;
-- (void)remote_fetchCollectionItemsWithCompletion:(id)a3;
-- (void)remote_fetchCollectionsWithCompletion:(id)a3;
-- (void)remote_fetchContextsForContextIDs:(id)a3 completion:(id)a4;
-- (void)remote_fetchCountOfActivitiesForContextID:(id)a3 completion:(id)a4;
-- (void)remote_fetchDeletedObjectIDsNewerThanDate:(id)a3 completion:(id)a4;
-- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)a3 withCompletion:(id)a4;
-- (void)remote_fetchOrphanedAssetsWithCompletion:(id)a3;
-- (void)remote_fetchProgressReportingCapabilitiesForContextID:(id)a3 completion:(id)a4;
-- (void)remote_fetchReportsWithPredicate:(id)a3 completion:(id)a4;
-- (void)remote_fetchSurveyAnswer:(id)a3 responderIDs:(id)a4 completion:(id)a5;
-- (void)remote_fetchThumbnailBlobForContextID:(id)a3 completion:(id)a4;
-- (void)remote_fetchTransparencyMessageInfoForAttachmentID:(id)a3 withCompletion:(id)a4;
-- (void)remote_fetchTransparencyMessageInfoWithCompletion:(id)a3;
-- (void)remote_getBootstrapMode:(id)a3;
-- (void)remote_getClassKitCatalogEnvironmentWithCompletion:(id)a3;
-- (void)remote_getCurrentUseriCloudQuotaInfoWithCompletion:(id)a3;
-- (void)remote_getDevModeWithCompletion:(id)a3;
-- (void)remote_getServerInternalStateInfoWithCompletion:(id)a3;
-- (void)remote_getServerSyncStatusWithCompletion:(id)a3;
-- (void)remote_getUserDefaultForDefaultNamed:(id)a3 completion:(id)a4;
-- (void)remote_getUserDefaultsConfigurationDictionaryWithCompletion:(id)a3;
-- (void)remote_listAppsWithCompletion:(id)a3;
-- (void)remote_mainAppContextWithCompletion:(id)a3;
-- (void)remote_publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6;
-- (void)remote_publishClass:(id)a3 membersToInsert:(id)a4 membersToDelete:(id)a5 completion:(id)a6;
-- (void)remote_publishCollaborationStateChanges:(id)a3 completion:(id)a4;
-- (void)remote_publishHandoutGraph:(id)a3 completion:(id)a4;
-- (void)remote_publishSurveyAnswers:(id)a3 completion:(id)a4;
-- (void)remote_recreateDatabaseWithCompletion:(id)a3;
-- (void)remote_recreateDevelopmentDatabaseWithCompletion:(id)a3;
-- (void)remote_registerDataObserver:(id)a3 withID:(id)a4 querySpecification:(id)a5 oldChangeTag:(unint64_t)a6 completion:(id)a7;
-- (void)remote_relayRequestWithData:(id)a3 requestType:(unint64_t)a4 fileHandle:(id)a5 completion:(id)a6;
-- (void)remote_removeAuthorizationStatus:(unint64_t)a3 forContextAtPath:(id)a4 completion:(id)a5;
-- (void)remote_removeAuthorizationStatus:(unint64_t)a3 forHandoutAssignedItem:(id)a4 completion:(id)a5;
-- (void)remote_renewCredentialsWithCompletion:(id)a3;
-- (void)remote_repairHandoutAttachments:(id)a3 completion:(id)a4;
-- (void)remote_saveInsightEvents:(id)a3 completion:(id)a4;
-- (void)remote_saveObjects:(id)a3 saveResponse:(id)a4 completion:(id)a5;
-- (void)remote_setBootstrapMode:(int)a3 url:(id)a4 completion:(id)a5;
-- (void)remote_setClassKitCatalogEnvironment:(int64_t)a3 completion:(id)a4;
-- (void)remote_setDevMode:(int)a3 completion:(id)a4;
-- (void)remote_setOverrideBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_setShouldSyncTeacherBrowsedContexts:(BOOL)a3 completion:(id)a4;
-- (void)remote_setUserDefaultValue:(id)a3 forDefaultNamed:(id)a4 completion:(id)a5;
-- (void)remote_shouldSyncTeacherBrowsedContextsWithCompletion:(id)a3;
-- (void)remote_startActivityFailed:(id)a3 completion:(id)a4;
-- (void)remote_startAppActivity:(id)a3 bundleID:(id)a4 activityType:(unint64_t)a5 completion:(id)a6;
-- (void)remote_statusWithCompletion:(id)a3;
-- (void)remote_studentActivityForAttachmentsWithIDs:(id)a3 completion:(id)a4;
-- (void)remote_submittableURLByCurrentUser:(id)a3 completion:(id)a4;
-- (void)remote_syncBootstrapWithCompletion:(id)a3;
-- (void)remote_syncFetchWithCompletion:(id)a3;
-- (void)remote_syncPushWithCompletion:(id)a3;
-- (void)remote_syncStatsWithCompletion:(id)a3;
-- (void)remote_topLevelContentStoreCacheDirectoryURLWithCompletion:(id)a3;
-- (void)remote_triggerUserNotificationHandoutAssignedWithHandoutID:(id)a3 completion:(id)a4;
-- (void)remote_triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)a3 studentName:(id)a4 completion:(id)a5;
-- (void)remote_triggerUserNotificationRevisionRequestedWithAttachmentID:(id)a3 completion:(id)a4;
-- (void)remote_triggerUserNotificationWithTitle:(id)a3 message:(id)a4 wrappedImageURL:(id)a5;
-- (void)remote_uploadAsset:(id)a3 createThumbnailIfNeeded:(BOOL)a4 uploadObserver:(id)a5 completion:(id)a6;
-- (void)remote_urlSuitableForOpeningForExpectedURL:(id)a3 itemID:(id)a4 ownerName:(id)a5 zoneName:(id)a6 completion:(id)a7;
-- (void)remote_validateAndCreateHandoutAssignedItem:(id)a3 withCompletion:(id)a4;
-- (void)saveObjects:(id)a3 saveResponse:(id)a4 isRemoteClient:(BOOL)a5 completion:(id)a6;
+- (void)remote_addAdminRequestor:(id)requestor completion:(id)completion;
+- (void)remote_addAuthorizationStatus:(unint64_t)status forContextAtPath:(id)path completion:(id)completion;
+- (void)remote_addAuthorizationStatus:(unint64_t)status forHandoutAssignedItem:(id)item completion:(id)completion;
+- (void)remote_addOrganization:(id)organization withLocations:(id)locations completion:(id)completion;
+- (void)remote_authTreeForAttachment:(id)attachment withCompletion:(id)completion;
+- (void)remote_authTreeWithCompletion:(id)completion;
+- (void)remote_authorizationStatusForContextAtPath:(id)path completion:(id)completion;
+- (void)remote_authorizationStatusForHandoutAssignedItem:(id)item completion:(id)completion;
+- (void)remote_canSearchRostersWithCompletion:(id)completion;
+- (void)remote_cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion;
+- (void)remote_cloudKitUrlSuitableForOpeningForAsset:(id)asset downloadObserver:(id)observer completion:(id)completion;
+- (void)remote_cloudKitUrlSuitableForStreamingAsset:(id)asset downloadObserver:(id)observer completion:(id)completion;
+- (void)remote_collaborationStatesForObjectWithID:(id)d classID:(id)iD forOwnersWithRole:(unint64_t)role completion:(id)completion;
+- (void)remote_collaborationStatesForObjectWithID:(id)d ownerPersonID:(id)iD completion:(id)completion;
+- (void)remote_contextsMatchingIdentifierPath:(id)path parentContextID:(id)d completion:(id)completion;
+- (void)remote_createShareIfNeededForURL:(id)l completion:(id)completion;
+- (void)remote_currentUserContentStoreCacheDirectoryURLWithCompletion:(id)completion;
+- (void)remote_currentUserIsStudent:(id)student;
+- (void)remote_currentUserWithCompletion:(id)completion;
+- (void)remote_databasePathWithCompletion:(id)completion;
+- (void)remote_deleteAdminRequestID:(id)d completion:(id)completion;
+- (void)remote_deleteAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_deleteBackingStoreForAsset:(id)asset completion:(id)completion;
+- (void)remote_deleteCollectionRelatedObjectsWithCompletion:(id)completion completion:(id)a4;
+- (void)remote_deleteOrganization:(id)organization completion:(id)completion;
+- (void)remote_deleteProgressReportingCapabilitiesForContextID:(id)d completion:(id)completion;
+- (void)remote_deleteThumbnailBlobForContextID:(id)d completion:(id)completion;
+- (void)remote_deregisterDataObserverWithID:(id)d completion:(id)completion;
+- (void)remote_executeRosterQuery:(id)query executeQuery:(id)executeQuery completion:(id)completion;
+- (void)remote_featureIsEnabled:(int)enabled completion:(id)completion;
+- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion;
+- (void)remote_fetchAppBasedAssignmentUsage:(id)usage completion:(id)completion;
+- (void)remote_fetchCollectionItemsWithCompletion:(id)completion;
+- (void)remote_fetchCollectionsWithCompletion:(id)completion;
+- (void)remote_fetchContextsForContextIDs:(id)ds completion:(id)completion;
+- (void)remote_fetchCountOfActivitiesForContextID:(id)d completion:(id)completion;
+- (void)remote_fetchDeletedObjectIDsNewerThanDate:(id)date completion:(id)completion;
+- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)l withCompletion:(id)completion;
+- (void)remote_fetchOrphanedAssetsWithCompletion:(id)completion;
+- (void)remote_fetchProgressReportingCapabilitiesForContextID:(id)d completion:(id)completion;
+- (void)remote_fetchReportsWithPredicate:(id)predicate completion:(id)completion;
+- (void)remote_fetchSurveyAnswer:(id)answer responderIDs:(id)ds completion:(id)completion;
+- (void)remote_fetchThumbnailBlobForContextID:(id)d completion:(id)completion;
+- (void)remote_fetchTransparencyMessageInfoForAttachmentID:(id)d withCompletion:(id)completion;
+- (void)remote_fetchTransparencyMessageInfoWithCompletion:(id)completion;
+- (void)remote_getBootstrapMode:(id)mode;
+- (void)remote_getClassKitCatalogEnvironmentWithCompletion:(id)completion;
+- (void)remote_getCurrentUseriCloudQuotaInfoWithCompletion:(id)completion;
+- (void)remote_getDevModeWithCompletion:(id)completion;
+- (void)remote_getServerInternalStateInfoWithCompletion:(id)completion;
+- (void)remote_getServerSyncStatusWithCompletion:(id)completion;
+- (void)remote_getUserDefaultForDefaultNamed:(id)named completion:(id)completion;
+- (void)remote_getUserDefaultsConfigurationDictionaryWithCompletion:(id)completion;
+- (void)remote_listAppsWithCompletion:(id)completion;
+- (void)remote_mainAppContextWithCompletion:(id)completion;
+- (void)remote_publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion;
+- (void)remote_publishClass:(id)class membersToInsert:(id)insert membersToDelete:(id)delete completion:(id)completion;
+- (void)remote_publishCollaborationStateChanges:(id)changes completion:(id)completion;
+- (void)remote_publishHandoutGraph:(id)graph completion:(id)completion;
+- (void)remote_publishSurveyAnswers:(id)answers completion:(id)completion;
+- (void)remote_recreateDatabaseWithCompletion:(id)completion;
+- (void)remote_recreateDevelopmentDatabaseWithCompletion:(id)completion;
+- (void)remote_registerDataObserver:(id)observer withID:(id)d querySpecification:(id)specification oldChangeTag:(unint64_t)tag completion:(id)completion;
+- (void)remote_relayRequestWithData:(id)data requestType:(unint64_t)type fileHandle:(id)handle completion:(id)completion;
+- (void)remote_removeAuthorizationStatus:(unint64_t)status forContextAtPath:(id)path completion:(id)completion;
+- (void)remote_removeAuthorizationStatus:(unint64_t)status forHandoutAssignedItem:(id)item completion:(id)completion;
+- (void)remote_renewCredentialsWithCompletion:(id)completion;
+- (void)remote_repairHandoutAttachments:(id)attachments completion:(id)completion;
+- (void)remote_saveInsightEvents:(id)events completion:(id)completion;
+- (void)remote_saveObjects:(id)objects saveResponse:(id)response completion:(id)completion;
+- (void)remote_setBootstrapMode:(int)mode url:(id)url completion:(id)completion;
+- (void)remote_setClassKitCatalogEnvironment:(int64_t)environment completion:(id)completion;
+- (void)remote_setDevMode:(int)mode completion:(id)completion;
+- (void)remote_setOverrideBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_setShouldSyncTeacherBrowsedContexts:(BOOL)contexts completion:(id)completion;
+- (void)remote_setUserDefaultValue:(id)value forDefaultNamed:(id)named completion:(id)completion;
+- (void)remote_shouldSyncTeacherBrowsedContextsWithCompletion:(id)completion;
+- (void)remote_startActivityFailed:(id)failed completion:(id)completion;
+- (void)remote_startAppActivity:(id)activity bundleID:(id)d activityType:(unint64_t)type completion:(id)completion;
+- (void)remote_statusWithCompletion:(id)completion;
+- (void)remote_studentActivityForAttachmentsWithIDs:(id)ds completion:(id)completion;
+- (void)remote_submittableURLByCurrentUser:(id)user completion:(id)completion;
+- (void)remote_syncBootstrapWithCompletion:(id)completion;
+- (void)remote_syncFetchWithCompletion:(id)completion;
+- (void)remote_syncPushWithCompletion:(id)completion;
+- (void)remote_syncStatsWithCompletion:(id)completion;
+- (void)remote_topLevelContentStoreCacheDirectoryURLWithCompletion:(id)completion;
+- (void)remote_triggerUserNotificationHandoutAssignedWithHandoutID:(id)d completion:(id)completion;
+- (void)remote_triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)d studentName:(id)name completion:(id)completion;
+- (void)remote_triggerUserNotificationRevisionRequestedWithAttachmentID:(id)d completion:(id)completion;
+- (void)remote_triggerUserNotificationWithTitle:(id)title message:(id)message wrappedImageURL:(id)l;
+- (void)remote_uploadAsset:(id)asset createThumbnailIfNeeded:(BOOL)needed uploadObserver:(id)observer completion:(id)completion;
+- (void)remote_urlSuitableForOpeningForExpectedURL:(id)l itemID:(id)d ownerName:(id)name zoneName:(id)zoneName completion:(id)completion;
+- (void)remote_validateAndCreateHandoutAssignedItem:(id)item withCompletion:(id)completion;
+- (void)saveObjects:(id)objects saveResponse:(id)response isRemoteClient:(BOOL)client completion:(id)completion;
 @end
 
 @implementation PDEndpointServer
 
-- (PDEndpointServer)initWithClient:(id)a3 daemon:(id)a4
+- (PDEndpointServer)initWithClient:(id)client daemon:(id)daemon
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  daemonCopy = daemon;
   v23.receiver = self;
   v23.super_class = PDEndpointServer;
   v9 = [(PDEndpointServer *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    objc_storeWeak(&v10->_daemon, v8);
+    objc_storeStrong(&v9->_client, client);
+    objc_storeWeak(&v10->_daemon, daemonCopy);
     v11 = +[NSMapTable strongToStrongObjectsMapTable];
     observers = v10->_observers;
     v10->_observers = v11;
 
     v13 = CLSDispatchQueueName();
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     if (qword_10024D868 != -1)
     {
@@ -149,7 +149,7 @@
     }
 
     v16 = qword_10024D860;
-    v17 = dispatch_queue_create_with_target_V2(v14, v15, v16);
+    v17 = dispatch_queue_create_with_target_V2(uTF8String, v15, v16);
     queue = v10->_queue;
     v10->_queue = v17;
 
@@ -165,11 +165,11 @@
 
 - (void)invalidate
 {
-  v3 = [(PDEndpointServer *)self client];
-  v4 = v3;
-  if (v3)
+  client = [(PDEndpointServer *)self client];
+  v4 = client;
+  if (client)
   {
-    v5 = *(v3 + 32);
+    v5 = *(client + 32);
   }
 
   else
@@ -191,8 +191,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(NSMapTable *)v8 objectEnumerator];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  objectEnumerator = [(NSMapTable *)v8 objectEnumerator];
+  v11 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -203,13 +203,13 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [(PDEndpointServer *)self _invalidateObserver:*(*(&v15 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
@@ -228,10 +228,10 @@
 
 - (PDDatabase)database
 {
-  v2 = [(PDEndpointServer *)self daemon];
-  v3 = [v2 database];
+  daemon = [(PDEndpointServer *)self daemon];
+  database = [daemon database];
 
-  return v3;
+  return database;
 }
 
 - (id)userNotificationCenter
@@ -249,12 +249,12 @@
   return userNotificationCenter;
 }
 
-- (BOOL)isInternalWithError:(id *)a3
+- (BOOL)isInternalWithError:(id *)error
 {
-  v5 = [(PDEndpointServer *)self client];
-  if (v5)
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v6 = v5[25];
+    v6 = client[25];
 
     if (v6)
     {
@@ -267,21 +267,21 @@
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [(PDEndpointServer *)self client];
-    v11 = sub_1000B2528(v10);
+    client2 = [(PDEndpointServer *)self client];
+    v11 = sub_1000B2528(client2);
     v12 = 138412290;
     v13 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Not an internal client: %@", &v12, 0xCu);
   }
 
-  [NSError cls_assignError:a3 code:1 description:@"ClassKit is not available."];
+  [NSError cls_assignError:error code:1 description:@"ClassKit is not available."];
   return 0;
 }
 
-- (void)databaseChanged:(id)a3
+- (void)databaseChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_initWeak(&location, self);
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -289,19 +289,19 @@
   v9[2] = sub_1000233C0;
   v9[3] = &unk_1002028F8;
   objc_copyWeak(&v12, &location);
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = object;
+  v11 = changedCopy;
+  v7 = changedCopy;
+  v8 = object;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)remote_listAppsWithCompletion:(id)a3
+- (void)remote_listAppsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v20 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v20];
@@ -309,7 +309,7 @@
   if (v6)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v10 = objc_opt_class();
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
@@ -317,7 +317,7 @@
     v18 = &unk_1002022C0;
     v19 = v8;
     v11 = v8;
-    [v9 selectAll:v10 where:@"parentObjectID is NULL" orderBy:@"title asc" bindings:0 block:&v15];
+    [database selectAll:v10 where:@"parentObjectID is NULL" orderBy:@"title asc" bindings:0 block:&v15];
 
     if (v7)
     {
@@ -331,27 +331,27 @@
 
     v13 = [(PDEndpointServer *)self client:v15];
     v14 = sub_1000B2528(v13);
-    (v5)[2](v5, v12, v14, v7);
+    (completionCopy)[2](completionCopy, v12, v14, v7);
   }
 
   else
   {
-    v5[2](v5, 0, 0, v7);
+    completionCopy[2](completionCopy, 0, 0, v7);
   }
 }
 
-- (void)remote_setOverrideBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_setOverrideBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v14 = 0;
   v9 = [(PDEndpointServer *)self isInternalWithError:&v14];
   v10 = v14;
   if (v9)
   {
-    v11 = [(PDEndpointServer *)self client];
-    sub_1000B24B8(v11, v7);
+    client = [(PDEndpointServer *)self client];
+    sub_1000B24B8(client, identifierCopy);
     v12 = v10;
 
     v13 = v12 == 0;
@@ -362,40 +362,40 @@
     v13 = 0;
   }
 
-  v8[2](v8, v13, v10);
+  completionCopy[2](completionCopy, v13, v10);
 }
 
-- (void)remote_deleteAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_deleteAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v27 = 0;
   v9 = [(PDEndpointServer *)self isInternalWithError:&v27];
   v10 = v27;
   if ((v9 & 1) == 0)
   {
-    v8[2](v8, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
     goto LABEL_14;
   }
 
-  v11 = [(PDEndpointServer *)self client];
-  v12 = sub_1000B2528(v11);
-  if (!(v7 | v12))
+  client = [(PDEndpointServer *)self client];
+  v12 = sub_1000B2528(client);
+  if (!(identifierCopy | v12))
   {
 
     goto LABEL_9;
   }
 
   v13 = v12;
-  v14 = [(PDEndpointServer *)self client];
-  v15 = sub_1000B2528(v14);
+  client2 = [(PDEndpointServer *)self client];
+  v15 = sub_1000B2528(client2);
   v16 = v15;
-  if (v7 && v15)
+  if (identifierCopy && v15)
   {
-    v17 = [(PDEndpointServer *)self client];
-    v18 = sub_1000B2528(v17);
-    v24 = [v18 isEqualToString:v7];
+    client3 = [(PDEndpointServer *)self client];
+    v18 = sub_1000B2528(client3);
+    v24 = [v18 isEqualToString:identifierCopy];
 
     if (!v24)
     {
@@ -403,23 +403,23 @@
     }
 
 LABEL_9:
-    v19 = [NSError cls_createErrorWithCode:3 format:@"Cannot delete app. Bundle identifier %@ set as currently active app. Select another app as active app and try again.", v7];
+    identifierCopy = [NSError cls_createErrorWithCode:3 format:@"Cannot delete app. Bundle identifier %@ set as currently active app. Select another app as active app and try again.", identifierCopy];
 
-    v8[2](v8, 0, v19);
-    v10 = v19;
+    completionCopy[2](completionCopy, 0, identifierCopy);
+    v10 = identifierCopy;
     goto LABEL_14;
   }
 
 LABEL_11:
-  v20 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100023DF4;
   v25[3] = &unk_100202140;
   v25[4] = self;
-  v21 = v7;
+  v21 = identifierCopy;
   v26 = v21;
-  v22 = [v20 withSyncEnabled:v25];
+  v22 = [database withSyncEnabled:v25];
 
   if ((v22 & 1) == 0)
   {
@@ -428,7 +428,7 @@ LABEL_11:
     v10 = v23;
   }
 
-  (v8)[2](v8, v22, v10);
+  (completionCopy)[2](completionCopy, v22, v10);
 
 LABEL_14:
 }
@@ -450,18 +450,18 @@ LABEL_14:
     }
 
     v6 = +[PDUserDefaults sharedDefaults];
-    v7 = [v6 enableVerboseLogging];
+    enableVerboseLogging = [v6 enableVerboseLogging];
 
-    if (v7)
+    if (enableVerboseLogging)
     {
       CLSLogDebugCurrentPersona();
     }
 
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = v8;
-    if (v8)
+    daemon = [(PDEndpointServer *)self daemon];
+    v9 = daemon;
+    if (daemon)
     {
-      [v8 handleAccountChange];
+      [daemon handleAccountChange];
     }
 
     else
@@ -487,55 +487,55 @@ LABEL_14:
   }
 }
 
-- (void)remote_databasePathWithCompletion:(id)a3
+- (void)remote_databasePathWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v14 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v14];
   v7 = v14;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 mode];
-    if (v9 == 2)
+    daemon = [(PDEndpointServer *)self daemon];
+    mode = [daemon mode];
+    if (mode == 2)
     {
-      v10 = [v8 teacherDevDatabase];
+      teacherDevDatabase = [daemon teacherDevDatabase];
     }
 
-    else if (v9 == 1)
+    else if (mode == 1)
     {
-      v10 = [v8 studentDevDatabase];
+      teacherDevDatabase = [daemon studentDevDatabase];
     }
 
     else
     {
-      if (v9)
+      if (mode)
       {
         v12 = 0;
         goto LABEL_11;
       }
 
-      v10 = [(PDEndpointServer *)self database];
+      teacherDevDatabase = [(PDEndpointServer *)self database];
     }
 
-    v11 = v10;
-    v12 = sub_10010B4D8(v10);
+    v11 = teacherDevDatabase;
+    v12 = sub_10010B4D8(teacherDevDatabase);
 
 LABEL_11:
     v13 = [v12 objectForKeyedSubscript:@"PDDatabaseStatsPathKey"];
-    v5[2](v5, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
 
     goto LABEL_12;
   }
 
-  (v5)[2](v5, 0, v7);
+  (completionCopy)[2](completionCopy, 0, v7);
 LABEL_12:
 }
 
-- (void)remote_recreateDatabaseWithCompletion:(id)a3
+- (void)remote_recreateDatabaseWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
   v10 = 0;
@@ -543,74 +543,74 @@ LABEL_12:
   v8 = v10;
   if (v7)
   {
-    v9 = [(PDEndpointServer *)self daemon];
-    [v9 recreateDatabase];
+    daemon = [(PDEndpointServer *)self daemon];
+    [daemon recreateDatabase];
 
-    v5[2](v5, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    (v5)[2](v5, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)remote_syncStatsWithCompletion:(id)a3
+- (void)remote_syncStatsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v11 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v11];
   v7 = v11;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 operationsManager];
-    v10 = sub_1001266DC(v9);
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
+    v10 = sub_1001266DC(operationsManager);
 
-    v5[2](v5, v10, v7);
+    completionCopy[2](completionCopy, v10, v7);
   }
 
   else
   {
-    v5[2](v5, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 }
 
-- (void)remote_syncPushWithCompletion:(id)a3
+- (void)remote_syncPushWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v12 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v12];
   v7 = v12;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10002452C;
     v10[3] = &unk_100202970;
-    v11 = v5;
-    sub_100122748(v9, v10);
+    v11 = completionCopy;
+    sub_100122748(operationsManager, v10);
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
-- (void)remote_syncFetchWithCompletion:(id)a3
+- (void)remote_syncFetchWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v7 = [(PDEndpointServer *)self client];
-  v8 = sub_1000B2528(v7);
+  client = [(PDEndpointServer *)self client];
+  v8 = sub_1000B2528(client);
   if ([v8 hasPrefix:@"com.apple.schoolwork.ClassKitApp"])
   {
 
@@ -625,66 +625,66 @@ LABEL_12:
 
     if ((v10 & 1) == 0)
     {
-      v5[2](v5, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
       goto LABEL_6;
     }
   }
 
-  v11 = [(PDEndpointServer *)self database];
-  sub_1000EAE50(v11, 0);
+  database = [(PDEndpointServer *)self database];
+  sub_1000EAE50(database, 0);
 
-  v12 = [(PDEndpointServer *)self daemon];
-  v13 = [v12 operationsManager];
+  daemon = [(PDEndpointServer *)self daemon];
+  operationsManager = [daemon operationsManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000246DC;
   v14[3] = &unk_100202970;
-  v15 = v5;
-  sub_10012175C(v13, v14);
+  v15 = completionCopy;
+  sub_10012175C(operationsManager, v14);
 
 LABEL_6:
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)remote_syncBootstrapWithCompletion:(id)a3
+- (void)remote_syncBootstrapWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v7 = [(PDEndpointServer *)self client];
-  if (v7 && (v8 = v7[26], v7, (v8 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v8 = client[26], client, (v8 & 1) != 0))
   {
-    v9 = [(PDEndpointServer *)self database];
-    sub_1000EAE50(v9, 0);
-    sub_1000EAC18(v9, @"ee.setup");
-    sub_1000EAC18(v9, @"bootstrap");
-    v10 = [(PDEndpointServer *)self daemon];
-    v11 = [v10 operationsManager];
+    database = [(PDEndpointServer *)self database];
+    sub_1000EAE50(database, 0);
+    sub_1000EAC18(database, @"ee.setup");
+    sub_1000EAC18(database, @"bootstrap");
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100024874;
     v12[3] = &unk_100202970;
-    v13 = v5;
-    sub_100121CCC(v11, v12);
+    v13 = completionCopy;
+    sub_100121CCC(operationsManager, v12);
   }
 
   else
   {
-    v9 = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
-    (*(v5 + 2))(v5, 0, v9);
+    database = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
+    (*(completionCopy + 2))(completionCopy, 0, database);
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)remote_fetchReportsWithPredicate:(id)a3 completion:(id)a4
+- (void)remote_fetchReportsWithPredicate:(id)predicate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v9 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v10 = [(PDEndpointServer *)self client];
-  v11 = sub_1000B2528(v10);
+  client = [(PDEndpointServer *)self client];
+  v11 = sub_1000B2528(client);
   if ([v11 hasPrefix:@"com.apple.schoolwork.ClassKitApp"])
   {
 
@@ -699,46 +699,46 @@ LABEL_6:
 
     if ((v13 & 1) == 0)
     {
-      v8[2](v8, 0, v12);
+      completionCopy[2](completionCopy, 0, v12);
       goto LABEL_6;
     }
   }
 
-  v14 = [(PDEndpointServer *)self daemon];
-  v15 = [v14 operationsManager];
-  sub_100123138(v15, v7, v8);
+  daemon = [(PDEndpointServer *)self daemon];
+  operationsManager = [daemon operationsManager];
+  sub_100123138(operationsManager, predicateCopy, completionCopy);
 
 LABEL_6:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)remote_statusWithCompletion:(id)a3
+- (void)remote_statusWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v10 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v10];
   v7 = v10;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 statusReport];
+    daemon = [(PDEndpointServer *)self daemon];
+    statusReport = [daemon statusReport];
 
-    v5[2](v5, v9, 0);
+    completionCopy[2](completionCopy, statusReport, 0);
   }
 
   else
   {
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
-- (void)remote_renewCredentialsWithCompletion:(id)a3
+- (void)remote_renewCredentialsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  v7 = sub_1000B2528(v6);
+  client = [(PDEndpointServer *)self client];
+  v7 = sub_1000B2528(client);
   if ([v7 hasPrefix:@"com.apple.schoolwork.ClassKitApp"])
   {
 
@@ -753,7 +753,7 @@ LABEL_6:
 
     if ((v9 & 1) == 0)
     {
-      v5[2](v5, 0, 2, v8);
+      completionCopy[2](completionCopy, 0, 2, v8);
       goto LABEL_9;
     }
   }
@@ -761,145 +761,145 @@ LABEL_6:
   v10 = sub_10003E1B4();
   if (v10)
   {
-    sub_10003F6AC(PDAccountInfo, v10, 1, v5);
+    sub_10003F6AC(PDAccountInfo, v10, 1, completionCopy);
   }
 
   else
   {
-    v5[2](v5, 0, 2, v8);
+    completionCopy[2](completionCopy, 0, 2, v8);
   }
 
 LABEL_9:
 }
 
-- (void)remote_addAuthorizationStatus:(unint64_t)a3 forContextAtPath:(id)a4 completion:(id)a5
+- (void)remote_addAuthorizationStatus:(unint64_t)status forContextAtPath:(id)path completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v16 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v16];
   v12 = v16;
   if (v11)
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = sub_10014B4D4(v13, a3, v9);
+    database = [(PDEndpointServer *)self database];
+    v14 = sub_10014B4D4(database, status, pathCopy);
 
     if ((v14 & 1) == 0)
     {
-      v15 = [NSError cls_createErrorWithCode:100 format:@"failed to add authorization at path: %@", v9];
+      pathCopy = [NSError cls_createErrorWithCode:100 format:@"failed to add authorization at path: %@", pathCopy];
 
-      v12 = v15;
+      v12 = pathCopy;
     }
 
-    v10[2](v10, v14, v12);
+    completionCopy[2](completionCopy, v14, v12);
   }
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_authorizationStatusForContextAtPath:(id)a3 completion:(id)a4
+- (void)remote_authorizationStatusForContextAtPath:(id)path completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v14 = 0;
   v9 = [(PDEndpointServer *)self isInternalWithError:&v14];
   v10 = v14;
   if (v9)
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = sub_10014C17C(v11, v7);
+    database = [(PDEndpointServer *)self database];
+    v12 = sub_10014C17C(database, pathCopy);
 
     v13 = [NSNumber numberWithInteger:v12];
-    v8[2](v8, v13, v10);
+    completionCopy[2](completionCopy, v13, v10);
   }
 
   else
   {
-    v8[2](v8, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)remote_authorizationStatusForHandoutAssignedItem:(id)a3 completion:(id)a4
+- (void)remote_authorizationStatusForHandoutAssignedItem:(id)item completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v14 = 0;
   v9 = [(PDEndpointServer *)self isInternalWithError:&v14];
   v10 = v14;
   if (v9)
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = sub_100015328(v11, v7);
+    database = [(PDEndpointServer *)self database];
+    v12 = sub_100015328(database, itemCopy);
 
     v13 = [NSNumber numberWithInteger:v12];
-    v8[2](v8, v13, v10);
+    completionCopy[2](completionCopy, v13, v10);
   }
 
   else
   {
-    v8[2](v8, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)remote_removeAuthorizationStatus:(unint64_t)a3 forContextAtPath:(id)a4 completion:(id)a5
+- (void)remote_removeAuthorizationStatus:(unint64_t)status forContextAtPath:(id)path completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v16 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v16];
   v12 = v16;
   if (v11)
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = sub_10014B7E8(v13, a3, v9);
+    database = [(PDEndpointServer *)self database];
+    v14 = sub_10014B7E8(database, status, pathCopy);
 
     if ((v14 & 1) == 0)
     {
-      v15 = [NSError cls_createErrorWithCode:100 format:@"failed to remove authorization at path: %@", v9];
+      pathCopy = [NSError cls_createErrorWithCode:100 format:@"failed to remove authorization at path: %@", pathCopy];
 
-      v12 = v15;
+      v12 = pathCopy;
     }
 
-    v10[2](v10, v14, v12);
+    completionCopy[2](completionCopy, v14, v12);
   }
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_recreateDevelopmentDatabaseWithCompletion:(id)a3
+- (void)remote_recreateDevelopmentDatabaseWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v9 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v9];
   v7 = v9;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    [v8 recreateDevelopmentDatabases];
+    daemon = [(PDEndpointServer *)self daemon];
+    [daemon recreateDevelopmentDatabases];
 
-    v5[2](v5, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
-- (void)remote_setDevMode:(int)a3 completion:(id)a4
+- (void)remote_setDevMode:(int)mode completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v13 = 0;
   v8 = [(PDEndpointServer *)self isInternalWithError:&v13];
@@ -907,52 +907,52 @@ LABEL_9:
   v10 = v9;
   if (v8)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = a3 == 1;
+      v11 = mode == 1;
     }
 
-    v12 = [(PDEndpointServer *)self daemon];
-    [v12 setMode:v11];
+    daemon = [(PDEndpointServer *)self daemon];
+    [daemon setMode:v11];
 
     v10 = 0;
   }
 
-  (v7)[2](v7, v10);
+  (completionCopy)[2](completionCopy, v10);
 }
 
-- (void)remote_getDevModeWithCompletion:(id)a3
+- (void)remote_getDevModeWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v13 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v13];
   v7 = v13;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 mode];
+    daemon = [(PDEndpointServer *)self daemon];
+    mode = [daemon mode];
 
-    switch(v9)
+    switch(mode)
     {
       case 2u:
-        v10 = v5[2];
-        v11 = v5;
+        v10 = completionCopy[2];
+        v11 = completionCopy;
         v12 = 2;
         goto LABEL_9;
       case 1u:
-        v10 = v5[2];
-        v11 = v5;
+        v10 = completionCopy[2];
+        v11 = completionCopy;
         v12 = 1;
         goto LABEL_9;
       case 0u:
-        v10 = v5[2];
-        v11 = v5;
+        v10 = completionCopy[2];
+        v11 = completionCopy;
         v12 = 0;
 LABEL_9:
         v10(v11, v12, 0);
@@ -962,22 +962,22 @@ LABEL_9:
 
   else
   {
-    (v5[2])(v5, 0, v7);
+    (completionCopy[2])(completionCopy, 0, v7);
   }
 }
 
-- (void)remote_getBootstrapMode:(id)a3
+- (void)remote_getBootstrapMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   sub_100023888(self, a2);
   v13 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v13];
   v7 = v13;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self database];
-    v9 = [v8 select:objc_opt_class() identity:@"bootstrap"];
-    v10 = sub_10016A160(v8, @"bootstrapMode");
+    database = [(PDEndpointServer *)self database];
+    v9 = [database select:objc_opt_class() identity:@"bootstrap"];
+    v10 = sub_10016A160(database, @"bootstrapMode");
     if (v10 == 1)
     {
       v11 = 1;
@@ -989,76 +989,76 @@ LABEL_9:
     }
 
     v12 = sub_1000E9BC0(v9);
-    v5[2](v5, v11, v12, 0);
+    modeCopy[2](modeCopy, v11, v12, 0);
   }
 
   else
   {
-    (v5)[2](v5, 0, 0, v7);
+    (modeCopy)[2](modeCopy, 0, 0, v7);
   }
 }
 
-- (void)remote_setBootstrapMode:(int)a3 url:(id)a4 completion:(id)a5
+- (void)remote_setBootstrapMode:(int)mode url:(id)url completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  urlCopy = url;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v23 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v23];
   v12 = v23;
   if (v11)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = 2 * (a3 == 2);
+      v13 = 2 * (mode == 2);
     }
 
-    v14 = [(PDEndpointServer *)self database];
-    v15 = [v14 select:objc_opt_class() identity:@"bootstrap"];
+    database = [(PDEndpointServer *)self database];
+    v15 = [database select:objc_opt_class() identity:@"bootstrap"];
     if (v13)
     {
       if (v13 == 2)
       {
-        v16 = [v9 absoluteString];
+        absoluteString = [urlCopy absoluteString];
       }
 
       else
       {
-        v16 = @"https://pg-bootstrap.classkit.apple.com/v1/config";
+        absoluteString = @"https://pg-bootstrap.classkit.apple.com/v1/config";
       }
     }
 
     else
     {
-      v16 = @"https://pg-bootstrap.itunes.apple.com/v1/config";
+      absoluteString = @"https://pg-bootstrap.itunes.apple.com/v1/config";
     }
 
-    sub_10003F69C(v15, v16);
-    if ([v14 updateObject:v15])
+    sub_10003F69C(v15, absoluteString);
+    if ([database updateObject:v15])
     {
-      if (a3 == 2)
+      if (mode == 2)
       {
         v17 = [PDAllowedHost alloc];
-        v18 = [v9 host];
-        v19 = sub_10006F334(v17, v18);
+        host = [urlCopy host];
+        v19 = sub_10006F334(v17, host);
 
-        if (([v14 insertOrUpdateObject:v19] & 1) == 0)
+        if (([database insertOrUpdateObject:v19] & 1) == 0)
         {
           v22 = [NSError cls_createErrorWithCode:100 description:@"Failed to set allowed host in database.  The endpoint itself was updated"];
-          v10[2](v10, v22);
+          completionCopy[2](completionCopy, v22);
 
           goto LABEL_20;
         }
       }
 
-      if (sub_10016A0C8(v14, v13, @"bootstrapMode"))
+      if (sub_10016A0C8(database, v13, @"bootstrapMode"))
       {
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
 LABEL_20:
 
         goto LABEL_21;
@@ -1073,18 +1073,18 @@ LABEL_20:
     }
 
     v21 = [NSError cls_createErrorWithCode:100 description:v20];
-    v10[2](v10, v21);
+    completionCopy[2](completionCopy, v21);
 
     goto LABEL_20;
   }
 
-  v10[2](v10, v12);
+  completionCopy[2](completionCopy, v12);
 LABEL_21:
 }
 
-- (void)remote_setClassKitCatalogEnvironment:(int64_t)a3 completion:(id)a4
+- (void)remote_setClassKitCatalogEnvironment:(int64_t)environment completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v12 = 0;
   v8 = [(PDEndpointServer *)self isInternalWithError:&v12];
@@ -1092,44 +1092,44 @@ LABEL_21:
   v10 = v9;
   if (v8)
   {
-    v11 = [(PDEndpointServer *)self database];
-    sub_10015E1AC(v11, a3);
+    database = [(PDEndpointServer *)self database];
+    sub_10015E1AC(database, environment);
 
     v10 = 0;
   }
 
-  (v7)[2](v7, v10);
+  (completionCopy)[2](completionCopy, v10);
 }
 
-- (void)remote_getClassKitCatalogEnvironmentWithCompletion:(id)a3
+- (void)remote_getClassKitCatalogEnvironmentWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v10 = 0;
   v6 = [(PDEndpointServer *)self isInternalWithError:&v10];
   v7 = v10;
   if (v6)
   {
-    v8 = [(PDEndpointServer *)self database];
-    v9 = sub_10015E198(v8);
-    v5[2](v5, v9, 0);
+    database = [(PDEndpointServer *)self database];
+    v9 = sub_10015E198(database);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
-- (void)remote_shouldSyncTeacherBrowsedContextsWithCompletion:(id)a3
+- (void)remote_shouldSyncTeacherBrowsedContextsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
-    v8 = [(PDEndpointServer *)self database];
-    v12 = [v8 select:objc_opt_class() identity:@"syncTeacherContexts"];
+    database = [(PDEndpointServer *)self database];
+    v12 = [database select:objc_opt_class() identity:@"syncTeacherContexts"];
 
     if (v12)
     {
@@ -1138,63 +1138,63 @@ LABEL_21:
 
     else
     {
-      v10 = [(PDEndpointServer *)self database];
+      database2 = [(PDEndpointServer *)self database];
       v9 = 1;
-      sub_100169F38(v10, 1, @"syncTeacherContexts");
+      sub_100169F38(database2, 1, @"syncTeacherContexts");
     }
 
     v11 = [NSNumber numberWithBool:v9 & 1];
-    v5[2](v5, v11, 0);
+    completionCopy[2](completionCopy, v11, 0);
 
-    v5 = v11;
+    completionCopy = v11;
   }
 
   else
   {
     v12 = [NSError cls_createErrorWithCode:1 description:@"Could not read sync teacher browse."];
-    (v5[2])(v5, 0);
+    (completionCopy[2])(completionCopy, 0);
   }
 }
 
-- (void)remote_setShouldSyncTeacherBrowsedContexts:(BOOL)a3 completion:(id)a4
+- (void)remote_setShouldSyncTeacherBrowsedContexts:(BOOL)contexts completion:(id)completion
 {
-  v4 = a3;
-  v13 = a4;
+  contextsCopy = contexts;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v7 = [(PDEndpointServer *)self client];
-  if (v7 && (v8 = v7[26], v7, (v8 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v8 = client[26], client, (v8 & 1) != 0))
   {
-    v9 = [(PDEndpointServer *)self database];
-    sub_100169F38(v9, v4, @"syncTeacherContexts");
+    database = [(PDEndpointServer *)self database];
+    sub_100169F38(database, contextsCopy, @"syncTeacherContexts");
 
-    if (v4)
+    if (contextsCopy)
     {
-      v10 = [(PDEndpointServer *)self daemon];
-      v11 = [v10 operationsManager];
-      sub_100122748(v11, 0);
+      daemon = [(PDEndpointServer *)self daemon];
+      operationsManager = [daemon operationsManager];
+      sub_100122748(operationsManager, 0);
     }
 
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v12 = [NSError cls_createErrorWithCode:1 description:@"Could not write sync teacher browse."];
-    (v13)[2](v13, v12);
+    (completionCopy)[2](completionCopy, v12);
   }
 }
 
-- (void)remote_fetchTransparencyMessageInfoForAttachmentID:(id)a3 withCompletion:(id)a4
+- (void)remote_fetchTransparencyMessageInfoForAttachmentID:(id)d withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v9 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v10 = [(PDEndpointServer *)self client];
-  if (v10 && (v11 = v10[31], v10, (v11 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v11 = client[31], client, (v11 & 1) != 0))
   {
-    v12 = sub_100025B40(self, v7);
-    v8[2](v8, v12, 0);
+    v12 = sub_100025B40(self, dCopy);
+    completionCopy[2](completionCopy, v12, 0);
   }
 
   else
@@ -1208,26 +1208,26 @@ LABEL_21:
     }
 
     v12 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-    (v8)[2](v8, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)remote_fetchTransparencyMessageInfoWithCompletion:(id)a3
+- (void)remote_fetchTransparencyMessageInfoWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v7 = [(PDEndpointServer *)self client];
-  if (v7 && (v8 = v7[31], v7, (v8 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v8 = client[31], client, (v8 & 1) != 0))
   {
-    v9 = [(PDEndpointServer *)self database];
-    if (sub_10007116C(v9))
+    database = [(PDEndpointServer *)self database];
+    if (sub_10007116C(database))
     {
-      v42 = sub_100169FD0(v9, @"shownModalTransparency");
-      v10 = [(PDEndpointServer *)self client];
-      v46 = sub_1000B2528(v10);
+      v42 = sub_100169FD0(database, @"shownModalTransparency");
+      client2 = [(PDEndpointServer *)self client];
+      v46 = sub_1000B2528(client2);
 
       *buf = 0;
       v78 = buf;
@@ -1247,8 +1247,8 @@ LABEL_21:
       v68 = sub_100026A68;
       v69 = sub_100026A78;
       v70 = objc_opt_new();
-      v11 = sub_1000711FC(v9);
-      v12 = [v11 objectID];
+      v11 = sub_1000711FC(database);
+      objectID = [v11 objectID];
 
       v88[0] = &off_10021B558;
       v88[1] = v46;
@@ -1258,14 +1258,14 @@ LABEL_21:
       v59[1] = 3221225472;
       v59[2] = sub_100026A80;
       v59[3] = &unk_1002022E8;
-      v9 = v9;
-      v60 = v9;
-      v14 = v12;
+      database = database;
+      v60 = database;
+      v14 = objectID;
       v61 = v14;
       v62 = buf;
       v63 = &v65;
       v64 = &v71;
-      [v9 selectAll:v13 where:@"type = ? and bundleIdentifier = ?" bindings:v45 block:v59];
+      [database selectAll:v13 where:@"type = ? and bundleIdentifier = ?" bindings:v45 block:v59];
       v44 = v14;
       v15 = objc_opt_new();
       v57 = 0u;
@@ -1288,7 +1288,7 @@ LABEL_21:
               objc_enumerationMutation(v16);
             }
 
-            if (sub_10014C17C(v9, *(*(&v55 + 1) + 8 * v20)) == 1)
+            if (sub_10014C17C(database, *(*(&v55 + 1) + 8 * v20)) == 1)
             {
               v21 = [*(v78 + 5) objectAtIndexedSubscript:v18];
               [v15 addObject:v21];
@@ -1319,20 +1319,20 @@ LABEL_21:
         v24 = v50[5];
         v50[5] = v23;
 
-        v25 = [(__CFString *)v22 allObjects];
-        v26 = [PDDatabase whereSQLForArray:v25 prefix:@"parentObjectID in "];
+        allObjects = [(__CFString *)v22 allObjects];
+        v26 = [PDDatabase whereSQLForArray:allObjects prefix:@"parentObjectID in "];
         v48[0] = _NSConcreteStackBlock;
         v48[1] = 3221225472;
         v48[2] = sub_100026BA4;
         v48[3] = &unk_100202310;
         v48[4] = &v49;
-        [v9 selectAll:objc_opt_class() where:v26 bindings:v25 block:v48];
+        [database selectAll:objc_opt_class() where:v26 bindings:allObjects block:v48];
       }
 
       if ([v50[5] count])
       {
-        v27 = [v50[5] allObjects];
-        v43 = [PDDatabase whereSQLForArray:v27 prefix:@"objectID in "];
+        allObjects2 = [v50[5] allObjects];
+        v43 = [PDDatabase whereSQLForArray:allObjects2 prefix:@"objectID in "];
         *v83 = 0;
         *&v83[8] = v83;
         *&v83[16] = 0x3032000000;
@@ -1345,7 +1345,7 @@ LABEL_21:
         v47[2] = sub_100026C0C;
         v47[3] = &unk_100202338;
         v47[4] = v83;
-        [v9 selectAll:objc_opt_class() where:v43 bindings:v27 block:v47];
+        [database selectAll:objc_opt_class() where:v43 bindings:allObjects2 block:v47];
         if ([*(*&v83[8] + 40) count])
         {
           v29 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1381,7 +1381,7 @@ LABEL_21:
 
           if ((v42 & 1) == 0)
           {
-            sub_100169F38(v9, 1, @"shownModalTransparency");
+            sub_100169F38(database, 1, @"shownModalTransparency");
           }
         }
 
@@ -1431,7 +1431,7 @@ LABEL_21:
         _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "Client %@ pertains to relevant handoutIDs: %@ classIDs: %@", v83, 0x20u);
       }
 
-      v5[2](v5, v34, 0);
+      completionCopy[2](completionCopy, v34, 0);
       _Block_object_dispose(&v49, 8);
 
       _Block_object_dispose(&v65, 8);
@@ -1442,7 +1442,7 @@ LABEL_21:
 
     else
     {
-      v5[2](v5, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
   }
 
@@ -1456,23 +1456,23 @@ LABEL_21:
       _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "Skipping remote_fetchTransparencyMessageInfoWithCompletion from invalid client", buf, 2u);
     }
 
-    v9 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-    (v5)[2](v5, 0, v9);
+    database = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
+    (completionCopy)[2](completionCopy, 0, database);
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)a3 withCompletion:(id)a4
+- (void)remote_fetchHandoutAttachmentForDocumentURL:(id)l withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[31], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[31], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = sub_1000BA854(v11);
+    database = [(PDEndpointServer *)self database];
+    v12 = sub_1000BA854(database);
     v13 = v12;
     if (v12 && (*(v12 + 9) & 1) != 0)
     {
@@ -1480,9 +1480,9 @@ LABEL_21:
       v63[1] = 3221225472;
       v63[2] = sub_100027B74;
       v63[3] = &unk_100202388;
-      v14 = v7;
+      v14 = lCopy;
       v64 = v14;
-      v65 = v8;
+      v65 = completionCopy;
       v15 = objc_retainBlock(v63);
       *buf = 0;
       v58 = buf;
@@ -1520,15 +1520,15 @@ LABEL_21:
 
       if (v52[5] && (v20 = v46[5]) != 0)
       {
-        v21 = [v20 zoneID];
-        v43 = [v21 zoneName];
+        zoneID = [v20 zoneID];
+        zoneName = [zoneID zoneName];
 
-        v22 = [(PDEndpointServer *)self database];
+        database2 = [(PDEndpointServer *)self database];
         v23 = objc_opt_class();
         v71[0] = v52[5];
-        v71[1] = v43;
+        v71[1] = zoneName;
         v24 = [NSArray arrayWithObjects:v71 count:2];
-        v25 = [v22 select:v23 where:@"brItemID = ? and brZoneName = ?" bindings:v24];
+        v25 = [database2 select:v23 where:@"brItemID = ? and brZoneName = ?" bindings:v24];
 
         CLSInitLog();
         v26 = CLSLogDefault;
@@ -1538,12 +1538,12 @@ LABEL_21:
           *v67 = 138412546;
           v68 = v40;
           v69 = 2112;
-          v70 = v43;
+          v70 = zoneName;
           _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Looking up asset matching brItemID = %@ and brZoneName = %@", v67, 0x16u);
         }
 
-        v27 = [v25 parentObjectID];
-        v28 = v27 == 0;
+        parentObjectID = [v25 parentObjectID];
+        v28 = parentObjectID == 0;
 
         if (v28)
         {
@@ -1555,7 +1555,7 @@ LABEL_21:
             *v67 = 138412546;
             v68 = v41;
             v69 = 2112;
-            v70 = v43;
+            v70 = zoneName;
             _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "failed to find asset matching brItemID = %@ and brZoneName = %@", v67, 0x16u);
           }
 
@@ -1565,17 +1565,17 @@ LABEL_21:
 
         else
         {
-          v29 = [(PDEndpointServer *)self database];
+          database3 = [(PDEndpointServer *)self database];
           v30 = objc_opt_class();
-          v31 = [v25 parentObjectID];
-          v66 = v31;
+          parentObjectID2 = [v25 parentObjectID];
+          v66 = parentObjectID2;
           v32 = [NSArray arrayWithObjects:&v66 count:1];
-          v33 = [v29 select:v30 where:@"objectID = ?" bindings:v32];
+          v33 = [database3 select:v30 where:@"objectID = ?" bindings:v32];
 
           if (!v33)
           {
-            v34 = [v25 objectID];
-            v35 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", v34];
+            objectID = [v25 objectID];
+            v35 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", objectID];
             v36 = *(v58 + 5);
             *(v58 + 5) = v35;
 
@@ -1609,7 +1609,7 @@ LABEL_21:
       }
 
       v38 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-      (*(v8 + 2))(v8, 0, v38);
+      (*(completionCopy + 2))(completionCopy, 0, v38);
     }
   }
 
@@ -1623,24 +1623,24 @@ LABEL_21:
       _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "Skipping remote_fetchHandoutAttachmentForDocumentURL from invalid client", buf, 2u);
     }
 
-    v11 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-    (*(v8 + 2))(v8, 0, v11);
+    database = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
+    (*(completionCopy + 2))(completionCopy, 0, database);
   }
 }
 
-- (void)remote_validateAndCreateHandoutAssignedItem:(id)a3 withCompletion:(id)a4
+- (void)remote_validateAndCreateHandoutAssignedItem:(id)item withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[31], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[31], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = v11;
-    if (v11)
+    database = [(PDEndpointServer *)self database];
+    v12 = database;
+    if (database)
     {
-      v13 = (sub_1000717E8(v11) >> 1) & 1;
+      v13 = (sub_1000717E8(database) >> 1) & 1;
     }
 
     else
@@ -1661,16 +1661,16 @@ LABEL_21:
       v37 = 0;
       [NSError cls_assignError:&v37 code:4 description:@"Not Authorized"];
       v19 = v37;
-      v8[2](v8, 0, v19);
+      completionCopy[2](completionCopy, 0, v19);
     }
 
     else
     {
-      v14 = [(PDEndpointServer *)self database];
+      database2 = [(PDEndpointServer *)self database];
       v15 = objc_opt_class();
-      v41 = v7;
+      v41 = itemCopy;
       v16 = [NSArray arrayWithObjects:&v41 count:1];
-      v17 = [v14 select:v15 where:@"parentObjectID = ?" bindings:v16];
+      v17 = [database2 select:v15 where:@"parentObjectID = ?" bindings:v16];
 
       if (v17)
       {
@@ -1687,23 +1687,23 @@ LABEL_21:
           v36 = 0;
           [NSError cls_assignError:&v36 code:4 description:@"Not Authorized"];
           v19 = v36;
-          v8[2](v8, 0, v19);
+          completionCopy[2](completionCopy, 0, v19);
         }
 
         else
         {
-          (v8)[2](v8, v17, 0);
+          (completionCopy)[2](completionCopy, v17, 0);
           v19 = 0;
         }
       }
 
       else
       {
-        v21 = [(PDEndpointServer *)self database];
+        database3 = [(PDEndpointServer *)self database];
         v22 = objc_opt_class();
-        v40 = v7;
+        v40 = itemCopy;
         v23 = [NSArray arrayWithObjects:&v40 count:1];
-        v24 = [v21 select:v22 where:@"objectID = ?" bindings:v23];
+        v24 = [database3 select:v22 where:@"objectID = ?" bindings:v23];
 
         if (v24)
         {
@@ -1716,21 +1716,21 @@ LABEL_21:
             [NSError cls_assignError:&v33 code:4 description:@"Not Authorized"];
             v26 = v33;
 
-            v8[2](v8, 0, v26);
+            completionCopy[2](completionCopy, 0, v26);
             v17 = 0;
             v19 = v26;
           }
 
           else
           {
-            v28 = [(PDEndpointServer *)self database];
+            database4 = [(PDEndpointServer *)self database];
             v29 = objc_opt_class();
-            v30 = [v25 objectID];
-            v39 = v30;
+            objectID = [v25 objectID];
+            v39 = objectID;
             v31 = [NSArray arrayWithObjects:&v39 count:1];
-            v17 = [v28 select:v29 where:@"objectID = ?" bindings:v31];
+            v17 = [database4 select:v29 where:@"objectID = ?" bindings:v31];
 
-            (v8)[2](v8, v17, v19);
+            (completionCopy)[2](completionCopy, v17, v19);
           }
         }
 
@@ -1747,7 +1747,7 @@ LABEL_21:
           v35 = 0;
           [NSError cls_assignError:&v35 code:4 description:@"Not Authorized"];
           v19 = v35;
-          v8[2](v8, 0, v19);
+          completionCopy[2](completionCopy, 0, v19);
           v17 = 0;
         }
       }
@@ -1765,34 +1765,34 @@ LABEL_21:
     }
 
     v19 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-    v8[2](v8, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
-- (id)_createHandoutAssignedItemFrom:(id)a3 withError:(id *)a4
+- (id)_createHandoutAssignedItemFrom:(id)from withError:(id *)error
 {
-  v6 = a3;
+  fromCopy = from;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_100026A68;
   v23 = sub_100026A78;
   v24 = 0;
-  v7 = [(PDEndpointServer *)self client];
-  v8 = sub_1000B2528(v7);
+  client = [(PDEndpointServer *)self client];
+  v8 = sub_1000B2528(client);
   if ([v8 length])
   {
-    v9 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100028500;
     v13[3] = &unk_100202400;
-    v14 = v7;
-    v15 = v6;
+    v14 = client;
+    v15 = fromCopy;
     v16 = v8;
-    v17 = self;
+    selfCopy = self;
     v18 = &v19;
-    v10 = [v9 withSyncEnabled:v13];
+    v10 = [database withSyncEnabled:v13];
 
     if (v10)
     {
@@ -1801,14 +1801,14 @@ LABEL_21:
 
     else
     {
-      [NSError cls_assignError:a4 code:100 description:@"Unable to create CLSHandoutAssignedItem."];
+      [NSError cls_assignError:error code:100 description:@"Unable to create CLSHandoutAssignedItem."];
       v11 = 0;
     }
   }
 
   else
   {
-    [NSError cls_assignError:a4 code:2 description:@"Unable to determine bundle identifier."];
+    [NSError cls_assignError:error code:2 description:@"Unable to determine bundle identifier."];
     v11 = 0;
   }
 
@@ -1817,13 +1817,13 @@ LABEL_21:
   return v11;
 }
 
-- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4
+- (void)remote_fetchAndCompleteActiveAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (!v9 || (v10 = v9[31], v9, (v10 & 1) == 0))
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v10 = client[31], client, (v10 & 1) == 0))
   {
     CLSInitLog();
     v20 = CLSLogDefault;
@@ -1852,15 +1852,15 @@ LABEL_21:
     }
 
 LABEL_20:
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
     goto LABEL_21;
   }
 
-  v11 = [(PDEndpointServer *)self database];
-  v12 = v11;
-  if (v11)
+  database = [(PDEndpointServer *)self database];
+  v12 = database;
+  if (database)
   {
-    v13 = (sub_1000717E8(v11) >> 1) & 1;
+    v13 = (sub_1000717E8(database) >> 1) & 1;
   }
 
   else
@@ -1882,12 +1882,12 @@ LABEL_20:
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "markAsComplete: %{public}@", buf, 0xCu);
     }
 
-    v8[2](v8, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   else
   {
-    v14 = sub_100026D00(self, v7);
+    v14 = sub_100026D00(self, pathCopy);
     v15 = objc_opt_new();
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -1896,7 +1896,7 @@ LABEL_20:
     v21[4] = self;
     v16 = v14;
     v22 = v16;
-    v23 = v8;
+    v23 = completionCopy;
     [v15 setCompletion:v21];
     if (v16)
     {
@@ -1914,7 +1914,7 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)_createMainAppContext:(id *)a3
+- (id)_createMainAppContext:(id *)context
 {
   v19 = 0;
   v20 = &v19;
@@ -1922,20 +1922,20 @@ LABEL_21:
   v22 = sub_100026A68;
   v23 = sub_100026A78;
   v24 = 0;
-  v5 = [(PDEndpointServer *)self client];
-  v6 = sub_1000B2528(v5);
+  client = [(PDEndpointServer *)self client];
+  v6 = sub_1000B2528(client);
   if ([v6 length])
   {
-    v7 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000295FC;
     v14 = &unk_100202470;
     v18 = &v19;
     v15 = v6;
-    v16 = self;
-    v17 = v5;
-    v8 = [v7 withSyncEnabled:&v11];
+    selfCopy = self;
+    v17 = client;
+    v8 = [database withSyncEnabled:&v11];
 
     if (v8)
     {
@@ -1944,14 +1944,14 @@ LABEL_21:
 
     else
     {
-      [NSError cls_assignError:a3 code:100 description:@"Unable to create main app context.", v11, v12, v13, v14, v15, v16];
+      [NSError cls_assignError:context code:100 description:@"Unable to create main app context.", v11, v12, v13, v14, v15, selfCopy];
       v9 = 0;
     }
   }
 
   else
   {
-    [NSError cls_assignError:a3 code:2 description:@"Unable to determine bundle identifier."];
+    [NSError cls_assignError:context code:2 description:@"Unable to determine bundle identifier."];
     v9 = 0;
   }
 
@@ -1960,16 +1960,16 @@ LABEL_21:
   return v9;
 }
 
-- (void)remote_addAdminRequestor:(id)a3 completion:(id)a4
+- (void)remote_addAdminRequestor:(id)requestor completion:(id)completion
 {
-  v15 = a3;
-  v7 = a4;
+  requestorCopy = requestor;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[30], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[30], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self database];
-    v11 = [v10 insertOrUpdateObject:v15];
+    database = [(PDEndpointServer *)self database];
+    v11 = [database insertOrUpdateObject:requestorCopy];
 
     if (v11)
     {
@@ -1978,8 +1978,8 @@ LABEL_21:
 
     else
     {
-      v13 = [v15 email];
-      v12 = [NSError cls_createErrorWithCode:100 format:@"Failed to create requestor: %@", v13];
+      email = [requestorCopy email];
+      v12 = [NSError cls_createErrorWithCode:100 format:@"Failed to create requestor: %@", email];
     }
 
     if (v12)
@@ -1989,151 +1989,151 @@ LABEL_21:
 
     else
     {
-      v14 = v15;
+      v14 = requestorCopy;
     }
 
-    (v7)[2](v7, v14, v12);
+    (completionCopy)[2](completionCopy, v14, v12);
   }
 
   else
   {
     v12 = [NSError cls_createErrorWithCode:4 description:@"Use pdtool"];
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_addOrganization:(id)a3 withLocations:(id)a4 completion:(id)a5
+- (void)remote_addOrganization:(id)organization withLocations:(id)locations completion:(id)completion
 {
-  v20 = a3;
-  v9 = a4;
-  v10 = a5;
+  organizationCopy = organization;
+  locationsCopy = locations;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v11 = [(PDEndpointServer *)self client];
-  if (v11 && (v12 = v11[30], v11, (v12 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v12 = client[30], client, (v12 & 1) != 0))
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = [v13 insertOrUpdateObject:v20];
+    database = [(PDEndpointServer *)self database];
+    v14 = [database insertOrUpdateObject:organizationCopy];
 
     if (v14)
     {
-      if ([v9 count] && (-[PDEndpointServer database](self, "database"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "insertOrUpdateObjects:", v9), v15, (v16 & 1) == 0))
+      if ([locationsCopy count] && (-[PDEndpointServer database](self, "database"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "insertOrUpdateObjects:", locationsCopy), v15, (v16 & 1) == 0))
       {
-        v17 = [NSError cls_createErrorWithCode:100 format:@"Failed to create locations: %@", v9];
+        locationsCopy = [NSError cls_createErrorWithCode:100 format:@"Failed to create locations: %@", locationsCopy];
       }
 
       else
       {
-        v17 = 0;
+        locationsCopy = 0;
       }
     }
 
     else
     {
-      v18 = [v20 objectID];
-      v17 = [NSError cls_createErrorWithCode:100 format:@"Failed to create organization: %@", v18];
+      objectID = [organizationCopy objectID];
+      locationsCopy = [NSError cls_createErrorWithCode:100 format:@"Failed to create organization: %@", objectID];
     }
 
-    if (v17)
+    if (locationsCopy)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v20;
+      v19 = organizationCopy;
     }
 
-    (v10)[2](v10, v19, v17);
+    (completionCopy)[2](completionCopy, v19, locationsCopy);
   }
 
   else
   {
-    v17 = [NSError cls_createErrorWithCode:4 description:@"Use pdtool"];
-    v10[2](v10, 0, v17);
+    locationsCopy = [NSError cls_createErrorWithCode:4 description:@"Use pdtool"];
+    completionCopy[2](completionCopy, 0, locationsCopy);
   }
 }
 
-- (void)remote_deleteOrganization:(id)a3 completion:(id)a4
+- (void)remote_deleteOrganization:(id)organization completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  organizationCopy = organization;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[30], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[30], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v12 = objc_opt_class();
-    v17 = v7;
+    v17 = organizationCopy;
     v13 = [NSArray arrayWithObjects:&v17 count:1];
-    v14 = [v11 deleteAll:v12 where:@"objectID = ?" bindings:v13];
+    v14 = [database deleteAll:v12 where:@"objectID = ?" bindings:v13];
 
     if (v14)
     {
-      v15 = 0;
+      organizationCopy = 0;
     }
 
     else
     {
-      v15 = [NSError cls_createErrorWithCode:100 format:@"Failed to delete organization with identifier: %@", v7];
+      organizationCopy = [NSError cls_createErrorWithCode:100 format:@"Failed to delete organization with identifier: %@", organizationCopy];
     }
 
-    v8[2](v8, v14, v15);
+    completionCopy[2](completionCopy, v14, organizationCopy);
   }
 
   else
   {
     v16 = [NSError cls_createErrorWithCode:4 description:@"Use pdtool"];
-    v8[2](v8, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 }
 
-- (void)remote_mainAppContextWithCompletion:(id)a3
+- (void)remote_mainAppContextWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
   v9 = 0;
   v7 = [(PDEndpointServer *)self _createMainAppContext:&v9];
   v8 = v9;
-  v5[2](v5, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_performQuery:(id)a3 querySpecification:(id)a4 issueServerRequest:(BOOL)a5 completion:(id)a6
+- (void)_performQuery:(id)query querySpecification:(id)specification issueServerRequest:(BOOL)request completion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  requestCopy = request;
+  queryCopy = query;
+  specificationCopy = specification;
+  completionCopy = completion;
   v14 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v15 = [v12 entityName];
-  v16 = NSClassFromString(v15);
+  entityName = [specificationCopy entityName];
+  v16 = NSClassFromString(entityName);
 
   v41 = 0;
-  LOBYTE(v15) = sub_10002A284(self, v16, &v41);
+  LOBYTE(entityName) = sub_10002A284(self, v16, &v41);
   v17 = v41;
   v18 = v17;
-  if (v15)
+  if (entityName)
   {
-    v29 = v7;
+    v29 = requestCopy;
     v27 = v17;
     v28 = v14;
-    v30 = [v11 synchronousRemoteObjectProxyWithErrorHandler:&stru_100202490];
+    v30 = [queryCopy synchronousRemoteObjectProxyWithErrorHandler:&stru_100202490];
 
-    v19 = [v12 predicate];
-    v31 = [(PDEndpointServer *)self _clientScopedPredicate:v19 forEntityClass:v16];
+    predicate = [specificationCopy predicate];
+    v31 = [(PDEndpointServer *)self _clientScopedPredicate:predicate forEntityClass:v16];
 
     v20 = [[NSMutableArray alloc] initWithCapacity:50];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
-    v40 = [v12 offset];
-    v21 = [(PDEndpointServer *)self database];
-    v22 = [v12 sortDescriptors];
-    v23 = [v12 limit];
-    v24 = [v12 offset];
+    offset = [specificationCopy offset];
+    database = [(PDEndpointServer *)self database];
+    sortDescriptors = [specificationCopy sortDescriptors];
+    limit = [specificationCopy limit];
+    offset2 = [specificationCopy offset];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10002A52C;
@@ -2142,23 +2142,23 @@ LABEL_21:
     v25 = v20;
     v33 = v25;
     v36 = 50;
-    v11 = v30;
-    v34 = v11;
-    sub_1000429A0(v21, v16, v31, v22, v23, v24, v32);
+    queryCopy = v30;
+    v34 = queryCopy;
+    sub_1000429A0(database, v16, v31, sortDescriptors, limit, offset2, v32);
 
     if ([v25 count])
     {
-      [v11 clientRemote_deliverObject:v25];
+      [queryCopy clientRemote_deliverObject:v25];
     }
 
     if (v29 && [(objc_class *)v16 conformsToProtocol:&OBJC_PROTOCOL___PDEndpointServerEntityHooks])
     {
-      v26 = [v12 predicate];
-      [(objc_class *)v16 endpointServer:self willQueryForObjectWithPredicate:v26];
+      predicate2 = [specificationCopy predicate];
+      [(objc_class *)v16 endpointServer:self willQueryForObjectWithPredicate:predicate2];
     }
 
-    [v11 clientRemote_finishWithOffset:v38[3] error:0];
-    v13[2](v13);
+    [queryCopy clientRemote_finishWithOffset:v38[3] error:0];
+    completionCopy[2](completionCopy);
 
     _Block_object_dispose(&v37, 8);
     v18 = v27;
@@ -2167,28 +2167,28 @@ LABEL_21:
 
   else
   {
-    [v11 clientRemote_finishWithOffset:0 error:v17];
-    v13[2](v13);
+    [queryCopy clientRemote_finishWithOffset:0 error:v17];
+    completionCopy[2](completionCopy);
   }
 
   objc_autoreleasePoolPop(v14);
 }
 
-- (void)remote_executeRosterQuery:(id)a3 executeQuery:(id)a4 completion:(id)a5
+- (void)remote_executeRosterQuery:(id)query executeQuery:(id)executeQuery completion:(id)completion
 {
-  v8 = a3;
-  v46 = a4;
-  v9 = a5;
-  v10 = [(PDEndpointServer *)self client];
-  if (v10)
+  queryCopy = query;
+  executeQueryCopy = executeQuery;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v11 = v10[31];
+    v11 = client[31];
 
     if (v11)
     {
       context = objc_autoreleasePoolPush();
-      v12 = [(PDEndpointServer *)self database];
-      v13 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&stru_1002024D8];
+      database = [(PDEndpointServer *)self database];
+      v13 = [queryCopy synchronousRemoteObjectProxyWithErrorHandler:&stru_1002024D8];
 
       *v54 = 0;
       v55 = v54;
@@ -2202,11 +2202,11 @@ LABEL_21:
       v14 = [[NSMutableArray alloc] initWithCapacity:50];
       v48 = v14;
       v53 = 50;
-      v8 = v13;
-      v49 = v8;
-      v15 = v12;
+      queryCopy = v13;
+      v49 = queryCopy;
+      v15 = database;
       v50 = v15;
-      v16 = v46;
+      v16 = executeQueryCopy;
       v51 = v16;
       v45 = objc_retainBlock(v47);
       v17 = sub_1000BA854(v15);
@@ -2246,18 +2246,18 @@ LABEL_10:
           _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Delivering %lu remaining objects (local).", buf, 0xCu);
         }
 
-        [v8 clientRemote_deliverObject:v14];
+        [queryCopy clientRemote_deliverObject:v14];
         [v14 removeAllObjects];
       }
 
-      v21 = [v16 keyword];
-      v22 = [v21 length] > 1;
+      keyword = [v16 keyword];
+      v22 = [keyword length] > 1;
 
       if (v22)
       {
-        v23 = +[PDASMSearchStringCache shared];
-        v24 = [v16 keyword];
-        v25 = [v23 isCached:v24];
+        daemon = +[PDASMSearchStringCache shared];
+        keyword2 = [v16 keyword];
+        v25 = [daemon isCached:keyword2];
 
         if (v25)
         {
@@ -2265,14 +2265,14 @@ LABEL_10:
           v26 = CLSLogSearch;
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
-            v27 = [v16 keyword];
+            keyword3 = [v16 keyword];
             *buf = 138412290;
-            v59 = v27;
+            v59 = keyword3;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "String: '%@' appears in search string cache.  Returning.", buf, 0xCu);
           }
 
-          [v8 clientRemote_finishWithOffset:*(v55 + 3) error:0];
-          v9[2](v9);
+          [queryCopy clientRemote_finishWithOffset:*(v55 + 3) error:0];
+          completionCopy[2](completionCopy);
 LABEL_42:
 
           goto LABEL_43;
@@ -2294,17 +2294,17 @@ LABEL_42:
       {
         if (([v16 rosterSearchBehaviors] & 2) != 0)
         {
-          v23 = [(PDEndpointServer *)self daemon];
-          v43 = [v23 mode];
-          v31 = [v23 operationsManager];
-          v32 = sub_100121714(v31);
+          daemon = [(PDEndpointServer *)self daemon];
+          mode = [daemon mode];
+          operationsManager = [daemon operationsManager];
+          v32 = sub_100121714(operationsManager);
 
           if (v32)
           {
-            v33 = [(PDEndpointServer *)self asmRosterSearchFinishBlock:v16 query:v8 asmConfig:v18 buffer:v14 buffSize:50 nextOffset:*(v55 + 3)];
+            v33 = [(PDEndpointServer *)self asmRosterSearchFinishBlock:v16 query:queryCopy asmConfig:v18 buffer:v14 buffSize:50 nextOffset:*(v55 + 3)];
             v34 = sub_10017BFC4(v15, v16, v45, v33);
             v35 = v34;
-            if (v43 || !v34 || ![v34 needsToMakeNetworkRequest] || (objc_msgSend(v23, "operationsManager"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, v37))
+            if (mode || !v34 || ![v34 needsToMakeNetworkRequest] || (objc_msgSend(daemon, "operationsManager"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v36 == 0, v36, v37))
             {
               CLSInitLog();
               v40 = CLSLogSearch;
@@ -2314,16 +2314,16 @@ LABEL_42:
                 _os_log_debug_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "Finishing query (local).", buf, 2u);
               }
 
-              [v8 clientRemote_finishWithOffset:*(v55 + 3) error:0];
+              [queryCopy clientRemote_finishWithOffset:*(v55 + 3) error:0];
             }
 
             else
             {
-              v38 = [v23 operationsManager];
-              sub_1001232E0(v38, v35);
+              operationsManager2 = [daemon operationsManager];
+              sub_1001232E0(operationsManager2, v35);
             }
 
-            v9[2](v9);
+            completionCopy[2](completionCopy);
           }
 
           else
@@ -2336,8 +2336,8 @@ LABEL_42:
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Invalid user.  No server query", buf, 2u);
             }
 
-            [v8 clientRemote_finishWithOffset:*(v55 + 3) error:0];
-            v9[2](v9);
+            [queryCopy clientRemote_finishWithOffset:*(v55 + 3) error:0];
+            completionCopy[2](completionCopy);
           }
 
           goto LABEL_42;
@@ -2352,8 +2352,8 @@ LABEL_42:
         }
       }
 
-      [v8 clientRemote_finishWithOffset:*(v55 + 3) error:0];
-      v9[2](v9);
+      [queryCopy clientRemote_finishWithOffset:*(v55 + 3) error:0];
+      completionCopy[2](completionCopy);
 LABEL_43:
 
       _Block_object_dispose(v54, 8);
@@ -2370,27 +2370,27 @@ LABEL_43:
     _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "Skipping remote_executeRosterQuery from invalid client", v54, 2u);
   }
 
-  [v8 clientRemote_finishWithOffset:0 error:0];
-  v9[2](v9);
+  [queryCopy clientRemote_finishWithOffset:0 error:0];
+  completionCopy[2](completionCopy);
 LABEL_47:
 }
 
-- (void)remote_contextsMatchingIdentifierPath:(id)a3 parentContextID:(id)a4 completion:(id)a5
+- (void)remote_contextsMatchingIdentifierPath:(id)path parentContextID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  dCopy = d;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v12 = [(PDEndpointServer *)self database];
-  v13 = [v12 select:objc_opt_class() identity:v10];
+  database = [(PDEndpointServer *)self database];
+  v13 = [database select:objc_opt_class() identity:dCopy];
 
-  v14 = [(PDEndpointServer *)self database];
-  v15 = sub_10014C7CC(v14, v9, v13);
+  database2 = [(PDEndpointServer *)self database];
+  v15 = sub_10014C7CC(database2, pathCopy, v13);
 
-  v16 = [(PDEndpointServer *)self client];
-  if (v16)
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v17 = v16[24];
+    v17 = client[24];
   }
 
   else
@@ -2398,8 +2398,8 @@ LABEL_47:
     v17 = 0;
   }
 
-  v18 = [(PDEndpointServer *)self client];
-  v19 = sub_1000B2528(v18);
+  client2 = [(PDEndpointServer *)self client];
+  v19 = sub_1000B2528(client2);
 
   v35 = 0u;
   v36 = 0u;
@@ -2410,8 +2410,8 @@ LABEL_47:
   if (v21)
   {
     v30 = v13;
-    v31 = v10;
-    v32 = v9;
+    v31 = dCopy;
+    v32 = pathCopy;
     v22 = *v34;
     while (2)
     {
@@ -2425,17 +2425,17 @@ LABEL_47:
         if ((v17 & 1) == 0)
         {
           v24 = *(*(&v33 + 1) + 8 * i);
-          v25 = [v24 appIdentifier];
-          v26 = v25;
+          appIdentifier = [v24 appIdentifier];
+          v26 = appIdentifier;
           if (v19)
           {
-            if (!v25)
+            if (!appIdentifier)
             {
               goto LABEL_19;
             }
 
-            v27 = [v24 appIdentifier];
-            v28 = [v19 isEqualToString:v27];
+            appIdentifier2 = [v24 appIdentifier];
+            v28 = [v19 isEqualToString:appIdentifier2];
 
             if ((v28 & 1) == 0)
             {
@@ -2443,11 +2443,11 @@ LABEL_47:
             }
           }
 
-          else if (v25)
+          else if (appIdentifier)
           {
 
 LABEL_19:
-            v9 = v32;
+            pathCopy = v32;
             v21 = [NSError cls_createErrorWithCode:4 format:@"Can't fetch contexts at path: %@", v32];
             v29 = 0;
             goto LABEL_20;
@@ -2465,10 +2465,10 @@ LABEL_19:
     }
 
     v29 = v20;
-    v9 = v32;
+    pathCopy = v32;
 LABEL_20:
     v13 = v30;
-    v10 = v31;
+    dCopy = v31;
   }
 
   else
@@ -2476,47 +2476,47 @@ LABEL_20:
     v29 = v20;
   }
 
-  v11[2](v11, v29, v21);
+  completionCopy[2](completionCopy, v29, v21);
 }
 
-- (void)remote_fetchThumbnailBlobForContextID:(id)a3 completion:(id)a4
+- (void)remote_fetchThumbnailBlobForContextID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v10 = objc_opt_class();
-  v13 = v8;
+  v13 = dCopy;
   v11 = [NSArray arrayWithObjects:&v13 count:1];
 
-  v12 = [v9 select:v10 where:@"parentObjectID = ?" bindings:v11];
+  v12 = [database select:v10 where:@"parentObjectID = ?" bindings:v11];
 
-  v7[2](v7, v12, 0);
+  completionCopy[2](completionCopy, v12, 0);
 }
 
-- (void)remote_deleteThumbnailBlobForContextID:(id)a3 completion:(id)a4
+- (void)remote_deleteThumbnailBlobForContextID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v10 = objc_opt_class();
-  v13 = v8;
+  v13 = dCopy;
   v11 = [NSArray arrayWithObjects:&v13 count:1];
 
-  v12 = [v9 deleteAll:v10 where:@"parentObjectID = ?" bindings:v11];
-  v7[2](v7, v12, 0);
+  v12 = [database deleteAll:v10 where:@"parentObjectID = ?" bindings:v11];
+  completionCopy[2](completionCopy, v12, 0);
 }
 
-- (void)remote_fetchProgressReportingCapabilitiesForContextID:(id)a3 completion:(id)a4
+- (void)remote_fetchProgressReportingCapabilitiesForContextID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   sub_100023888(self, a2);
   v9 = objc_opt_new();
-  v10 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v11 = objc_opt_class();
-  v16 = v8;
+  v16 = dCopy;
   v12 = [NSArray arrayWithObjects:&v16 count:1];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2524,33 +2524,33 @@ LABEL_20:
   v14[3] = &unk_100202548;
   v15 = v9;
   v13 = v9;
-  [v10 selectAll:v11 where:@"parentObjectID = ?" bindings:v12 block:v14];
+  [database selectAll:v11 where:@"parentObjectID = ?" bindings:v12 block:v14];
 
-  v7[2](v7, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
-- (void)remote_deleteProgressReportingCapabilitiesForContextID:(id)a3 completion:(id)a4
+- (void)remote_deleteProgressReportingCapabilitiesForContextID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v10 = objc_opt_class();
-  v13 = v8;
+  v13 = dCopy;
   v11 = [NSArray arrayWithObjects:&v13 count:1];
 
-  v12 = [v9 deleteAll:v10 where:@"parentObjectID = ?" bindings:v11];
-  v7[2](v7, v12, 0);
+  v12 = [database deleteAll:v10 where:@"parentObjectID = ?" bindings:v11];
+  completionCopy[2](completionCopy, v12, 0);
 }
 
-- (void)remote_fetchContextsForContextIDs:(id)a3 completion:(id)a4
+- (void)remote_fetchContextsForContextIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   sub_100023888(self, a2);
   v9 = objc_opt_new();
-  v10 = [PDDatabase whereSQLForArray:v8 prefix:@"objectID in "];
-  v11 = [(PDEndpointServer *)self database];
+  v10 = [PDDatabase whereSQLForArray:dsCopy prefix:@"objectID in "];
+  database = [(PDEndpointServer *)self database];
   v12 = objc_opt_class();
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2558,22 +2558,22 @@ LABEL_20:
   v14[3] = &unk_1002022C0;
   v15 = v9;
   v13 = v9;
-  [v11 selectAll:v12 where:v10 bindings:v8 block:v14];
+  [database selectAll:v12 where:v10 bindings:dsCopy block:v14];
 
-  v7[2](v7, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
-- (void)remote_getServerSyncStatusWithCompletion:(id)a3
+- (void)remote_getServerSyncStatusWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
-    v8 = [(PDEndpointServer *)self database];
-    v9 = sub_1000507D8(v8);
-    if (sub_100050844(v8))
+    database = [(PDEndpointServer *)self database];
+    v9 = sub_1000507D8(database);
+    if (sub_100050844(database))
     {
       v10 = v9 | 2;
     }
@@ -2584,7 +2584,7 @@ LABEL_20:
     }
 
     v11 = 0;
-    if (sub_1000508B0(v8))
+    if (sub_1000508B0(database))
     {
       v12 = v10 | 4;
     }
@@ -2599,85 +2599,85 @@ LABEL_20:
   {
     v11 = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
     v12 = 0;
-    v8 = v11;
+    database = v11;
   }
 
   v13 = [NSNumber numberWithUnsignedInteger:v12];
-  v14[2](v14, v13, v11);
+  completionCopy[2](completionCopy, v13, v11);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)remote_getServerInternalStateInfoWithCompletion:(id)a3
+- (void)remote_getServerInternalStateInfoWithCompletion:(id)completion
 {
-  v23 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
     v8 = objc_alloc_init(NSMutableDictionary);
-    v9 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v10 = CLSSyncInitialRosterSyncDateKey;
-    v11 = sub_10016A65C(v9, CLSSyncInitialRosterSyncDateKey);
+    v11 = sub_10016A65C(database, CLSSyncInitialRosterSyncDateKey);
     [v8 setObject:v11 forKeyedSubscript:v10];
 
     v12 = CLSSyncInitialHandoutSyncDateKey;
-    v13 = sub_10016A65C(v9, CLSSyncInitialHandoutSyncDateKey);
+    v13 = sub_10016A65C(database, CLSSyncInitialHandoutSyncDateKey);
     [v8 setObject:v13 forKeyedSubscript:v12];
 
     v14 = CLSSyncLatestRosterSyncDateKey;
-    v15 = sub_10016A65C(v9, CLSSyncLatestRosterSyncDateKey);
+    v15 = sub_10016A65C(database, CLSSyncLatestRosterSyncDateKey);
     [v8 setObject:v15 forKeyedSubscript:v14];
 
     v16 = CLSSyncLatestHandoutSyncDateKey;
-    v17 = sub_10016A65C(v9, CLSSyncLatestHandoutSyncDateKey);
+    v17 = sub_10016A65C(database, CLSSyncLatestHandoutSyncDateKey);
     [v8 setObject:v17 forKeyedSubscript:v16];
 
     v18 = CLSSyncLatestRosterSyncFailureDateKey;
-    v19 = sub_10016A65C(v9, CLSSyncLatestRosterSyncFailureDateKey);
+    v19 = sub_10016A65C(database, CLSSyncLatestRosterSyncFailureDateKey);
     [v8 setObject:v19 forKeyedSubscript:v18];
 
     v20 = CLSSyncLatestHandoutSyncFailureDateKey;
-    v21 = sub_10016A65C(v9, CLSSyncLatestHandoutSyncFailureDateKey);
+    v21 = sub_10016A65C(database, CLSSyncLatestHandoutSyncFailureDateKey);
     [v8 setObject:v21 forKeyedSubscript:v20];
 
     v22 = [v8 copy];
-    v23[2](v23, v22, 0);
+    completionCopy[2](completionCopy, v22, 0);
   }
 
   else
   {
     v8 = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
-    (v23)[2](v23, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)remote_fetchCountOfActivitiesForContextID:(id)a3 completion:(id)a4
+- (void)remote_fetchCountOfActivitiesForContextID:(id)d completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v10 = objc_opt_class();
-  v14 = v8;
+  v14 = dCopy;
   v11 = [NSArray arrayWithObjects:&v14 count:1];
-  v12 = [v9 count:v10 where:@"parentObjectID = ?" bindings:v11];
+  v12 = [database count:v10 where:@"parentObjectID = ?" bindings:v11];
 
   v13 = [NSNumber numberWithUnsignedInteger:v12];
 
-  v7[2](v7, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
-- (void)remote_authTreeWithCompletion:(id)a3
+- (void)remote_authTreeWithCompletion:(id)completion
 {
-  v13 = a3;
+  completionCopy = completion;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PDEndpointServer *)self database];
-  v6 = v5;
-  if (v5 && (sub_1000717E8(v5) & 2) != 0)
+  database = [(PDEndpointServer *)self database];
+  v6 = database;
+  if (database && (sub_1000717E8(database) & 2) != 0)
   {
     v11 = [CLSAuthTree alloc];
     v12 = 0;
@@ -2687,8 +2687,8 @@ LABEL_20:
   {
     if (sub_10007116C(v6))
     {
-      v7 = [(PDEndpointServer *)self client];
-      v8 = sub_1000B2528(v7);
+      client = [(PDEndpointServer *)self client];
+      v8 = sub_1000B2528(client);
 
       v9 = sub_10014CAF0(v6, v8);
       v10 = 0;
@@ -2700,22 +2700,22 @@ LABEL_20:
     v12 = 2;
   }
 
-  v9 = [v11 initWithOverridingStatus:{v12, v13}];
+  v9 = [v11 initWithOverridingStatus:{v12, completionCopy}];
   v10 = 0;
 LABEL_8:
-  v13[2](v13, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)remote_authTreeForAttachment:(id)a3 withCompletion:(id)a4
+- (void)remote_authTreeForAttachment:(id)attachment withCompletion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
+  attachmentCopy = attachment;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PDEndpointServer *)self database];
-  v9 = v8;
-  if (v8 && (sub_1000717E8(v8) & 2) != 0)
+  database = [(PDEndpointServer *)self database];
+  v9 = database;
+  if (database && (sub_1000717E8(database) & 2) != 0)
   {
     v12 = [CLSAuthTree alloc];
     v13 = 0;
@@ -2725,7 +2725,7 @@ LABEL_8:
   {
     if (sub_10007116C(v9))
     {
-      v10 = sub_100016CF0(v9, v14);
+      v10 = sub_100016CF0(v9, attachmentCopy);
       v11 = 0;
       goto LABEL_8;
     }
@@ -2734,40 +2734,40 @@ LABEL_8:
     v13 = 2;
   }
 
-  v10 = [v12 initWithOverridingStatus:{v13, v14}];
+  v10 = [v12 initWithOverridingStatus:{v13, attachmentCopy}];
   v11 = 0;
 LABEL_8:
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)remote_saveObjects:(id)a3 saveResponse:(id)a4 completion:(id)a5
+- (void)remote_saveObjects:(id)objects saveResponse:(id)response completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  responseCopy = response;
+  completionCopy = completion;
   v10 = objc_autoreleasePoolPush();
-  [(PDEndpointServer *)self saveObjects:v11 saveResponse:v8 isRemoteClient:1 completion:v9];
+  [(PDEndpointServer *)self saveObjects:objectsCopy saveResponse:responseCopy isRemoteClient:1 completion:completionCopy];
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)saveObjects:(id)a3 saveResponse:(id)a4 isRemoteClient:(BOOL)a5 completion:(id)a6
+- (void)saveObjects:(id)objects saveResponse:(id)response isRemoteClient:(BOOL)client completion:(id)completion
 {
-  v7 = a5;
-  v45 = a3;
-  v49 = a4;
-  v48 = a6;
+  clientCopy = client;
+  objectsCopy = objects;
+  responseCopy = response;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v11 = [(PDEndpointServer *)self _createMainAppContext:0];
-  v12 = [(PDEndpointServer *)self client];
-  v47 = sub_1000B2528(v12);
+  client = [(PDEndpointServer *)self client];
+  v47 = sub_1000B2528(client);
 
-  v13 = [(PDEndpointServer *)self database];
-  v14 = v13;
-  if (v13)
+  database = [(PDEndpointServer *)self database];
+  v14 = database;
+  if (database)
   {
-    v15 = (sub_1000717E8(v13) >> 1) & 1;
+    v15 = (sub_1000717E8(database) >> 1) & 1;
   }
 
   else
@@ -2776,12 +2776,12 @@ LABEL_8:
   }
 
   v16 = sub_1000711FC(v14);
-  v46 = [v16 objectID];
+  objectID = [v16 objectID];
 
-  v17 = [(PDEndpointServer *)self client];
-  if (v17)
+  client2 = [(PDEndpointServer *)self client];
+  if (client2)
   {
-    v18 = v17[25];
+    v18 = client2[25];
   }
 
   else
@@ -2789,21 +2789,21 @@ LABEL_8:
     v18 = 0;
   }
 
-  if (v7)
+  if (clientCopy)
   {
-    v19 = [(PDEndpointServer *)self client];
-    v20 = v19;
-    if (v19 && (*(v19 + 26) & 1) != 0)
+    client3 = [(PDEndpointServer *)self client];
+    v20 = client3;
+    if (client3 && (*(client3 + 26) & 1) != 0)
     {
       v21 = 1;
     }
 
     else
     {
-      v22 = [(PDEndpointServer *)self client];
-      if (v22)
+      client4 = [(PDEndpointServer *)self client];
+      if (client4)
       {
-        v21 = v22[27];
+        v21 = client4[27];
       }
 
       else
@@ -2828,52 +2828,52 @@ LABEL_8:
   v73[3] = &unk_100202568;
   v74 = v15;
   v44 = objc_retainBlock(v73);
-  if (v7)
+  if (clientCopy)
   {
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_10002D3A0;
     v71[3] = &unk_100202970;
-    v72 = v48;
-    v23 = [v49 synchronousRemoteObjectProxyWithErrorHandler:v71];
+    v72 = completionCopy;
+    v23 = [responseCopy synchronousRemoteObjectProxyWithErrorHandler:v71];
 
-    v49 = v23;
+    responseCopy = v23;
   }
 
-  v24 = [(PDEndpointServer *)self client];
-  if (v24)
+  client5 = [(PDEndpointServer *)self client];
+  if (client5)
   {
-    v25 = v24[31];
+    v25 = client5[31];
 
     if (v25)
     {
       v26 = objc_opt_new();
       v27 = [PDSchoolworkCollaborationStateChangeManager alloc];
-      v28 = [(PDEndpointServer *)self client];
-      v29 = sub_1000B2528(v28);
-      v30 = [(PDEndpointServer *)self database];
-      v31 = sub_1001111CC(&v27->super.isa, v29, v30);
+      client6 = [(PDEndpointServer *)self client];
+      v29 = sub_1000B2528(client6);
+      database2 = [(PDEndpointServer *)self database];
+      v31 = sub_1001111CC(&v27->super.isa, v29, database2);
 
       v57[0] = _NSConcreteStackBlock;
       v57[1] = 3221225472;
       v57[2] = sub_10002D3B0;
       v57[3] = &unk_100202590;
       v58 = v14;
-      v32 = v45;
+      v32 = objectsCopy;
       v59 = v32;
       v33 = v26;
       v67 = v75;
       v60 = v33;
-      v61 = self;
+      selfCopy = self;
       v68 = v21 & 1;
       v69 = v18 & 1;
       v62 = v47;
       v66 = v44;
       v70 = v15;
-      v63 = v46;
+      v63 = objectID;
       v34 = v31;
       v64 = v34;
-      v35 = v49;
+      v35 = responseCopy;
       v65 = v35;
       if ([v58 withSyncEnabled:v57] && !objc_msgSend(v33, "count"))
       {
@@ -2896,7 +2896,7 @@ LABEL_8:
           goto LABEL_29;
         }
 
-        v37 = [v33 firstObject];
+        firstObject = [v33 firstObject];
       }
 
       else
@@ -2910,10 +2910,10 @@ LABEL_8:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Save failed; objects: %@", &buf, 0xCu);
         }
 
-        v37 = [NSError cls_createErrorWithCode:3 description:@"Save failed!"];
+        firstObject = [NSError cls_createErrorWithCode:3 description:@"Save failed!"];
       }
 
-      v39 = v37;
+      v39 = firstObject;
 LABEL_29:
       [v35 clientRemote_saveDone:v39];
       v41 = sub_100111548(v34);
@@ -2924,8 +2924,8 @@ LABEL_29:
         v78 = 0x3032000000;
         v79 = sub_100026A68;
         v80 = sub_100026A78;
-        v42 = [(PDEndpointServer *)self client];
-        v81 = sub_1000B2528(v42);
+        client7 = [(PDEndpointServer *)self client];
+        v81 = sub_1000B2528(client7);
 
         objc_initWeak(&location, self);
         v50[0] = _NSConcreteStackBlock;
@@ -2935,8 +2935,8 @@ LABEL_29:
         objc_copyWeak(&v55, &location);
         p_buf = &buf;
         v51 = v34;
-        v52 = self;
-        v53 = v48;
+        selfCopy2 = self;
+        v53 = completionCopy;
         [(PDEndpointServer *)self entitled_publishCollaborationStateChanges:v41 completion:v50];
 
         objc_destroyWeak(&v55);
@@ -2946,7 +2946,7 @@ LABEL_29:
 
       else
       {
-        v48[2]();
+        completionCopy[2]();
       }
 
       goto LABEL_38;
@@ -2961,15 +2961,15 @@ LABEL_29:
     _os_log_debug_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEBUG, "Skipping saveObjects from invalid client", &buf, 2u);
   }
 
-  [v49 clientRemote_saveDone:0];
+  [responseCopy clientRemote_saveDone:0];
 LABEL_38:
 
   _Block_object_dispose(v75, 8);
 }
 
-- (void)remote_currentUserWithCompletion:(id)a3
+- (void)remote_currentUserWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
   CLSInitLog();
   v7 = CLSLogDefault;
@@ -2980,24 +2980,24 @@ LABEL_38:
   }
 
   v8 = +[PDUserDefaults sharedDefaults];
-  v9 = [v8 enableVerboseLogging];
+  enableVerboseLogging = [v8 enableVerboseLogging];
 
-  if (v9)
+  if (enableVerboseLogging)
   {
     CLSLogDebugCurrentPersona();
   }
 
   sub_100023888(self, a2);
-  v10 = [(PDEndpointServer *)self client];
-  if (v10 && (v11 = v10[26], v10, (v11 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v11 = client[26], client, (v11 & 1) != 0))
   {
-    v12 = [(PDEndpointServer *)self client];
-    v13 = sub_1000B2528(v12);
+    client2 = [(PDEndpointServer *)self client];
+    v13 = sub_1000B2528(client2);
 
-    v14 = [(PDEndpointServer *)self client];
-    if (v14)
+    client3 = [(PDEndpointServer *)self client];
+    if (client3)
     {
-      v15 = v14[25];
+      v15 = client3[25];
     }
 
     else
@@ -3015,10 +3015,10 @@ LABEL_38:
       v50 = 0;
     }
 
-    v16 = [(PDEndpointServer *)self client];
-    if (v16)
+    client4 = [(PDEndpointServer *)self client];
+    if (client4)
     {
-      v49 = (v16[30] & v15);
+      v49 = (client4[30] & v15);
     }
 
     else
@@ -3052,9 +3052,9 @@ LABEL_38:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
     {
       v35 = v21;
-      v36 = [(PDEndpointServer *)self database];
+      database = [(PDEndpointServer *)self database];
       v37 = @"yes";
-      if (!v36)
+      if (!database)
       {
         v37 = @"no";
       }
@@ -3064,9 +3064,9 @@ LABEL_38:
       _os_log_debug_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "PDEndpointServer remote_currentUserWithCompletioncalled self.database is not nil: %@. About to synchronously fetch currentUser from the DB", buf, 0xCu);
     }
 
-    v22 = [(PDEndpointServer *)self daemon];
-    v23 = [(PDEndpointServer *)self database];
-    v24 = sub_1000DA28C(v22, v23);
+    daemon = [(PDEndpointServer *)self daemon];
+    database2 = [(PDEndpointServer *)self database];
+    v24 = sub_1000DA28C(daemon, database2);
 
     CLSInitLog();
     v25 = CLSLogDefault;
@@ -3077,19 +3077,19 @@ LABEL_38:
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "PDEndpointServer remote_currentUserWithCompletioncalled finished fetching currentUser from DB: %@", buf, 0xCu);
     }
 
-    v26 = [v24 devMode];
+    devMode = [v24 devMode];
     v6 = v17;
     v27 = v19;
-    if ((([v24 requiresPersonaMatch] ^ 1 | HIDWORD(v47) | v47 | HIDWORD(v48) | v20 | v48 | v50 | v49) & 1) != 0 || v26 - 1 < 2)
+    if ((([v24 requiresPersonaMatch] ^ 1 | HIDWORD(v47) | v47 | HIDWORD(v48) | v20 | v48 | v50 | v49) & 1) != 0 || devMode - 1 < 2)
     {
       [v24 setClientPersonaUniqueIdentifier:v19];
       [v24 setHasMatchingPersona:v20];
-      v30 = [v24 schoolworkUbiquitousContainerURL];
-      if (v30)
+      schoolworkUbiquitousContainerURL = [v24 schoolworkUbiquitousContainerURL];
+      if (schoolworkUbiquitousContainerURL)
       {
-        v31 = [(PDEndpointServer *)self client];
-        v32 = v31;
-        if (v31 && (v33 = *(v31 + 32)) != 0)
+        client5 = [(PDEndpointServer *)self client];
+        v32 = client5;
+        if (client5 && (v33 = *(client5 + 32)) != 0)
         {
           v34 = v33;
           [v33 auditToken];
@@ -3102,18 +3102,18 @@ LABEL_38:
           v55 = 0u;
         }
 
-        v38 = [v30 sandboxExtensionTokenForProcess:buf];
+        v38 = [schoolworkUbiquitousContainerURL sandboxExtensionTokenForProcess:buf];
 
         [v24 setSchoolworkUbiquitousContainerURLSandboxExtension:v38];
       }
 
-      v39 = [v24 multimediaCacheDirectoryURL];
+      multimediaCacheDirectoryURL = [v24 multimediaCacheDirectoryURL];
 
-      if (v39)
+      if (multimediaCacheDirectoryURL)
       {
-        v40 = [(PDEndpointServer *)self client];
-        v41 = v40;
-        if (v40 && (v42 = *(v40 + 32)) != 0)
+        client6 = [(PDEndpointServer *)self client];
+        v41 = client6;
+        if (client6 && (v42 = *(client6 + 32)) != 0)
         {
           v43 = v42;
           [v42 auditToken];
@@ -3126,7 +3126,7 @@ LABEL_38:
           v55 = 0u;
         }
 
-        v44 = [v39 sandboxExtensionTokenForProcess:buf];
+        v44 = [multimediaCacheDirectoryURL sandboxExtensionTokenForProcess:buf];
 
         [v24 setMultimediaCacheDirectoryURLSandboxExtension:v44];
       }
@@ -3140,7 +3140,7 @@ LABEL_38:
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "PDEndpointServer remote_currentUserWithCompletion calling completion with currentUser: %@", buf, 0xCu);
       }
 
-      v5[2](v5, v24, 0);
+      completionCopy[2](completionCopy, v24, 0);
 
       v29 = v51;
     }
@@ -3156,69 +3156,69 @@ LABEL_38:
       }
 
       v29 = v51;
-      (v5)[2](v5, 0, v51);
+      (completionCopy)[2](completionCopy, 0, v51);
     }
   }
 
   else
   {
     v13 = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
-    (v5)[2](v5, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
   }
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)remote_getCurrentUseriCloudQuotaInfoWithCompletion:(id)a3
+- (void)remote_getCurrentUseriCloudQuotaInfoWithCompletion:(id)completion
 {
-  v11 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
   v6 = +[PDUserDefaults sharedDefaults];
-  v7 = [v6 enableVerboseLogging];
+  enableVerboseLogging = [v6 enableVerboseLogging];
 
-  if (v7)
+  if (enableVerboseLogging)
   {
     CLSLogDebugCurrentPersona();
   }
 
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    sub_10004010C(PDAccountInfo, v11);
+    sub_10004010C(PDAccountInfo, completionCopy);
   }
 
   else
   {
     v10 = [NSError cls_createErrorWithCode:4 description:@"Not Authorized"];
-    (*(v11 + 2))(v11, 0, 0, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v10);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)remote_registerDataObserver:(id)a3 withID:(id)a4 querySpecification:(id)a5 oldChangeTag:(unint64_t)a6 completion:(id)a7
+- (void)remote_registerDataObserver:(id)observer withID:(id)d querySpecification:(id)specification oldChangeTag:(unint64_t)tag completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  observerCopy = observer;
+  dCopy = d;
+  specificationCopy = specification;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v17 = [(PDEndpointServer *)self client];
-  if (v17 && (v18 = v17[31], v17, (v18 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v18 = client[31], client, (v18 & 1) != 0))
   {
-    v19 = [v15 entityName];
-    v20 = NSClassFromString(v19);
+    entityName = [specificationCopy entityName];
+    v20 = NSClassFromString(entityName);
 
     v33 = 0;
-    LOBYTE(v19) = sub_10002A284(self, v20, &v33);
+    LOBYTE(entityName) = sub_10002A284(self, v20, &v33);
     v21 = v33;
-    if (v19)
+    if (entityName)
     {
-      v22 = sub_1000E3BF8([PDDataObserver alloc], v13, v20, [v15 observerOptions]);
-      v23 = [(PDEndpointServer *)self database];
+      v22 = sub_1000E3BF8([PDDataObserver alloc], observerCopy, v20, [specificationCopy observerOptions]);
+      database = [(PDEndpointServer *)self database];
       v32 = v21;
-      v24 = sub_1000E3D20(v22, v23, v15, a6, &v32);
+      v24 = sub_1000E3D20(v22, database, specificationCopy, tag, &v32);
       v25 = v32;
 
       if (v24)
@@ -3229,11 +3229,11 @@ LABEL_38:
         v28[2] = sub_10002EE98;
         v28[3] = &unk_1002028D0;
         v28[4] = self;
-        v29 = v14;
+        v29 = dCopy;
         v30 = v22;
-        v31 = v23;
+        v31 = database;
         dispatch_sync(queue, v28);
-        v16[2](v16, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       else
@@ -3244,14 +3244,14 @@ LABEL_38:
           [v22[8] clientRemote_invalidate];
         }
 
-        (v16)[2](v16, v25);
+        (completionCopy)[2](completionCopy, v25);
       }
     }
 
     else
     {
-      [v13 clientRemote_invalidate];
-      (v16)[2](v16, v21);
+      [observerCopy clientRemote_invalidate];
+      (completionCopy)[2](completionCopy, v21);
       v25 = v21;
     }
   }
@@ -3266,44 +3266,44 @@ LABEL_38:
       _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Skipping remote_registerDataObserver from invalid client", buf, 2u);
     }
 
-    [v13 clientRemote_invalidate];
+    [observerCopy clientRemote_invalidate];
     v25 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-    (v16)[2](v16, v25);
+    (completionCopy)[2](completionCopy, v25);
   }
 }
 
-- (void)remote_deregisterDataObserverWithID:(id)a3 completion:(id)a4
+- (void)remote_deregisterDataObserverWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002F028;
   v10[3] = &unk_1002029E8;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
-  v9 = a4;
+  v11 = dCopy;
+  v8 = dCopy;
+  completionCopy = completion;
   dispatch_sync(queue, v10);
-  v9[2](v9);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_invalidateObserver:(id)a3
+- (void)_invalidateObserver:(id)observer
 {
-  if (a3 && (*(a3 + 48) & 1) == 0)
+  if (observer && (*(observer + 48) & 1) == 0)
   {
-    [a3 setInvalidated:1];
-    v4 = *(a3 + 8);
+    [observer setInvalidated:1];
+    v4 = *(observer + 8);
 
     [v4 clientRemote_invalidate];
   }
 }
 
-- (void)remote_featureIsEnabled:(int)a3 completion:(id)a4
+- (void)remote_featureIsEnabled:(int)enabled completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PDEndpointServer *)self client];
-  if (!v7 || (v8 = v7[31], v7, (v8 & 1) == 0))
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v8 = client[31], client, (v8 & 1) == 0))
   {
     CLSInitLog();
     v12 = CLSLogDefault;
@@ -3317,66 +3317,66 @@ LABEL_38:
     goto LABEL_9;
   }
 
-  if (a3)
+  if (enabled)
   {
     v9 = [NSError errorWithDomain:CLSErrorCodeDomain code:314 userInfo:0];
 LABEL_9:
     v13 = v9;
-    v6[2](v6, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
 
     goto LABEL_10;
   }
 
-  v10 = [(PDEndpointServer *)self database];
-  v11 = [v10 entityExistsByClass:objc_opt_class() identity:@"ee.publishClass"];
+  database = [(PDEndpointServer *)self database];
+  v11 = [database entityExistsByClass:objc_opt_class() identity:@"ee.publishClass"];
 
-  (v6)[2](v6, v11, 0);
+  (completionCopy)[2](completionCopy, v11, 0);
 LABEL_10:
 }
 
-- (void)remote_getUserDefaultsConfigurationDictionaryWithCompletion:(id)a3
+- (void)remote_getUserDefaultsConfigurationDictionaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8 = 0;
   v5 = [(PDEndpointServer *)self isInternalWithError:&v8];
   v6 = v8;
   if (v5)
   {
     v7 = +[PDUserDefaults configurationDictionary];
-    v4[2](v4, v7, 0);
+    completionCopy[2](completionCopy, v7, 0);
   }
 
   else
   {
-    (v4)[2](v4, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 }
 
-- (void)remote_getUserDefaultForDefaultNamed:(id)a3 completion:(id)a4
+- (void)remote_getUserDefaultForDefaultNamed:(id)named completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  completionCopy = completion;
   v12 = 0;
   v8 = [(PDEndpointServer *)self isInternalWithError:&v12];
   v9 = v12;
   if (v8)
   {
     v10 = +[PDUserDefaults sharedDefaults];
-    v11 = [v10 valueForDefaultNamed:v6];
-    v7[2](v7, v11, 0);
+    v11 = [v10 valueForDefaultNamed:namedCopy];
+    completionCopy[2](completionCopy, v11, 0);
   }
 
   else
   {
-    (v7)[2](v7, 0, v9);
+    (completionCopy)[2](completionCopy, 0, v9);
   }
 }
 
-- (void)remote_setUserDefaultValue:(id)a3 forDefaultNamed:(id)a4 completion:(id)a5
+- (void)remote_setUserDefaultValue:(id)value forDefaultNamed:(id)named completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  namedCopy = named;
+  completionCopy = completion;
   v17 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v17];
   v12 = v17;
@@ -3384,86 +3384,86 @@ LABEL_10:
   {
     v13 = +[PDUserDefaults sharedDefaults];
     v16 = v12;
-    v14 = [v13 setValue:v8 forDefaultNamed:v9 error:&v16];
+    v14 = [v13 setValue:valueCopy forDefaultNamed:namedCopy error:&v16];
     v15 = v16;
 
-    v10[2](v10, v14, v15);
+    completionCopy[2](completionCopy, v14, v15);
     v12 = v15;
   }
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_addAuthorizationStatus:(unint64_t)a3 forHandoutAssignedItem:(id)a4 completion:(id)a5
+- (void)remote_addAuthorizationStatus:(unint64_t)status forHandoutAssignedItem:(id)item completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v16 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v16];
   v12 = v16;
   if (v11)
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = sub_1000160C4(v13, a3, v9);
+    database = [(PDEndpointServer *)self database];
+    v14 = sub_1000160C4(database, status, itemCopy);
 
     if ((v14 & 1) == 0)
     {
-      v15 = [NSError cls_createErrorWithCode:100 format:@"failed to add authorization at objectID: %@", v9];
+      itemCopy = [NSError cls_createErrorWithCode:100 format:@"failed to add authorization at objectID: %@", itemCopy];
 
-      v12 = v15;
+      v12 = itemCopy;
     }
 
-    v10[2](v10, v14, v12);
+    completionCopy[2](completionCopy, v14, v12);
   }
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_removeAuthorizationStatus:(unint64_t)a3 forHandoutAssignedItem:(id)a4 completion:(id)a5
+- (void)remote_removeAuthorizationStatus:(unint64_t)status forHandoutAssignedItem:(id)item completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v16 = 0;
   v11 = [(PDEndpointServer *)self isInternalWithError:&v16];
   v12 = v16;
   if (v11)
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = sub_10001639C(v13, a3, v9);
+    database = [(PDEndpointServer *)self database];
+    v14 = sub_10001639C(database, status, itemCopy);
 
     if ((v14 & 1) == 0)
     {
-      v15 = [NSError cls_createErrorWithCode:100 format:@"failed to remove authorization at objectID: %@", v9];
+      itemCopy = [NSError cls_createErrorWithCode:100 format:@"failed to remove authorization at objectID: %@", itemCopy];
 
-      v12 = v15;
+      v12 = itemCopy;
     }
 
-    v10[2](v10, v14, v12);
+    completionCopy[2](completionCopy, v14, v12);
   }
 
   else
   {
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)remote_urlSuitableForOpeningForExpectedURL:(id)a3 itemID:(id)a4 ownerName:(id)a5 zoneName:(id)a6 completion:(id)a7
+- (void)remote_urlSuitableForOpeningForExpectedURL:(id)l itemID:(id)d ownerName:(id)name zoneName:(id)zoneName completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PDEndpointServer *)self client];
-  if (v17 && (v18 = v17[26], v17, (v18 & 1) != 0))
+  lCopy = l;
+  dCopy = d;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v18 = client[26], client, (v18 & 1) != 0))
   {
     v19 = sub_10012D028(PDFileSyncManager, 0);
     v20 = sub_10003E1B4();
@@ -3479,12 +3479,12 @@ LABEL_10:
     }
 
     v23 = v22;
-    v26 = v12;
+    v26 = lCopy;
     v27 = v19;
-    v28 = v13;
-    v29 = v14;
-    v30 = v15;
-    v31 = v16;
+    v28 = dCopy;
+    v29 = nameCopy;
+    v30 = zoneNameCopy;
+    v31 = completionCopy;
     v24 = v19;
     CLSPerformWithPersona();
   }
@@ -3492,16 +3492,16 @@ LABEL_10:
   else
   {
     v25 = [NSError cls_createErrorWithCode:4 description:@"Fetching URL for asset not allowed."];
-    (*(v16 + 2))(v16, 0, v25);
+    (*(completionCopy + 2))(completionCopy, 0, v25);
   }
 }
 
-- (void)remote_cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4
+- (void)remote_cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  assetCopy = asset;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
     v10 = sub_10003E1B4();
     v11 = v10;
@@ -3516,25 +3516,25 @@ LABEL_10:
     }
 
     v13 = v12;
-    v15 = v6;
-    v16 = v7;
+    v15 = assetCopy;
+    v16 = completionCopy;
     CLSPerformWithPersona();
   }
 
   else
   {
     v14 = [NSError cls_createErrorWithCode:4 description:@"Fetching thumbnail URL for asset not allowed."];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)remote_cloudKitUrlSuitableForOpeningForAsset:(id)a3 downloadObserver:(id)a4 completion:(id)a5
+- (void)remote_cloudKitUrlSuitableForOpeningForAsset:(id)asset downloadObserver:(id)observer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PDEndpointServer *)self client];
-  if (v11 && (v12 = v11[26], v11, (v12 & 1) != 0))
+  assetCopy = asset;
+  observerCopy = observer;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v12 = client[26], client, (v12 & 1) != 0))
   {
     v13 = sub_10003E1B4();
     v14 = v13;
@@ -3549,26 +3549,26 @@ LABEL_10:
     }
 
     v16 = v15;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
+    v18 = assetCopy;
+    v19 = observerCopy;
+    v20 = completionCopy;
     CLSPerformWithPersona();
   }
 
   else
   {
     v17 = [NSError cls_createErrorWithCode:4 description:@"Fetching URL for asset not allowed."];
-    (*(v10 + 2))(v10, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 }
 
-- (void)remote_cloudKitUrlSuitableForStreamingAsset:(id)a3 downloadObserver:(id)a4 completion:(id)a5
+- (void)remote_cloudKitUrlSuitableForStreamingAsset:(id)asset downloadObserver:(id)observer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PDEndpointServer *)self client];
-  if (v11 && (v12 = v11[26], v11, (v12 & 1) != 0))
+  assetCopy = asset;
+  observerCopy = observer;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v12 = client[26], client, (v12 & 1) != 0))
   {
     v13 = sub_10003E1B4();
     v14 = v13;
@@ -3583,25 +3583,25 @@ LABEL_10:
     }
 
     v16 = v15;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
+    v18 = assetCopy;
+    v19 = observerCopy;
+    v20 = completionCopy;
     CLSPerformWithPersona();
   }
 
   else
   {
     v17 = [NSError cls_createErrorWithCode:4 description:@"Fetching streaming URL for asset not allowed."];
-    (*(v10 + 2))(v10, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v17);
   }
 }
 
-- (void)remote_deleteBackingStoreForAsset:(id)a3 completion:(id)a4
+- (void)remote_deleteBackingStoreForAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  assetCopy = asset;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
     v10 = sub_10003E1B4();
     v11 = v10;
@@ -3616,27 +3616,27 @@ LABEL_10:
     }
 
     v13 = v12;
-    v15 = v6;
-    v16 = v7;
+    v15 = assetCopy;
+    v16 = completionCopy;
     CLSPerformWithPersona();
   }
 
   else
   {
     v14 = [NSError cls_createErrorWithCode:4 description:@"Deleting backing store for asset not allowed."];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)remote_createShareIfNeededForURL:(id)a3 completion:(id)a4
+- (void)remote_createShareIfNeededForURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (!v8 || (v9 = v8[26], v8, (v9 & 1) == 0))
+  lCopy = l;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v9 = client[26], client, (v9 & 1) == 0))
   {
     v10 = [NSError cls_createErrorWithCode:4 description:@"Creating share not allowed."];
-    (*(v7 + 2))(v7, 1, 0, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0, v10);
     goto LABEL_12;
   }
 
@@ -3652,17 +3652,17 @@ LABEL_10:
       if (v12)
       {
         v14 = *(v10 + 72);
-        v18 = v6;
+        v18 = lCopy;
         v11 = v11;
         v13 = v13;
-        v19 = v7;
+        v19 = completionCopy;
         CLSPerformWithPersona();
       }
 
       else
       {
         v17 = *(v10 + 120);
-        (*(v7 + 2))(v7, 1, 0, 0, v17);
+        (*(completionCopy + 2))(completionCopy, 1, 0, 0, v17);
 
         v13 = 0;
       }
@@ -3680,7 +3680,7 @@ LABEL_10:
   }
 
   v16 = v15;
-  (*(v7 + 2))(v7, 1, 0, 0, v16);
+  (*(completionCopy + 2))(completionCopy, 1, 0, 0, v16);
 
   v11 = 0;
 LABEL_10:
@@ -3688,13 +3688,13 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)remote_uploadAsset:(id)a3 createThumbnailIfNeeded:(BOOL)a4 uploadObserver:(id)a5 completion:(id)a6
+- (void)remote_uploadAsset:(id)asset createThumbnailIfNeeded:(BOOL)needed uploadObserver:(id)observer completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(PDEndpointServer *)self client];
-  if (v12 && (v13 = v12[26], v12, (v13 & 1) != 0))
+  assetCopy = asset;
+  observerCopy = observer;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v13 = client[26], client, (v13 & 1) != 0))
   {
     v14 = sub_10003E1B4();
     v15 = v14;
@@ -3709,22 +3709,22 @@ LABEL_12:
     }
 
     v17 = v16;
-    v19 = v9;
-    v20 = v10;
-    v21 = v11;
+    v19 = assetCopy;
+    v20 = observerCopy;
+    v21 = completionCopy;
     CLSPerformWithPersona();
   }
 
   else
   {
     v18 = [NSError cls_createErrorWithCode:4 description:@"Uploading asset not allowed."];
-    (*(v11 + 2))(v11, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 }
 
-- (void)remote_topLevelContentStoreCacheDirectoryURLWithCompletion:(id)a3
+- (void)remote_topLevelContentStoreCacheDirectoryURLWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v10 = 0;
   LOBYTE(self) = [(PDEndpointServer *)self isInternalWithError:&v10];
@@ -3735,19 +3735,19 @@ LABEL_12:
     v7 = sub_1000E0D58(PDFileManager, &v9);
     v8 = v9;
 
-    v5[2](v5, v7, v8);
+    completionCopy[2](completionCopy, v7, v8);
     v6 = v8;
   }
 
   else
   {
-    v5[2](v5, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-- (void)remote_currentUserContentStoreCacheDirectoryURLWithCompletion:(id)a3
+- (void)remote_currentUserContentStoreCacheDirectoryURLWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
   v10 = 0;
   LOBYTE(self) = [(PDEndpointServer *)self isInternalWithError:&v10];
@@ -3758,39 +3758,39 @@ LABEL_12:
     v7 = sub_10012D068(PDFileSyncManager, &v9);
     v8 = v9;
 
-    v5[2](v5, v7, v8);
+    completionCopy[2](completionCopy, v7, v8);
     v6 = v8;
   }
 
   else
   {
-    v5[2](v5, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-- (void)remote_canSearchRostersWithCompletion:(id)a3
+- (void)remote_canSearchRostersWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v7 = sub_10003E1B4();
   if (sub_10004054C(v7))
   {
-    v8 = sub_1000711FC(v6);
+    v8 = sub_1000711FC(database);
 
     if (v8)
     {
-      v9 = sub_1000BA854(v6);
+      v9 = sub_1000BA854(database);
       if (v9)
       {
         v10 = [NSNumber numberWithBool:v9[8]];
-        v5[2](v5, v10, 0);
+        completionCopy[2](completionCopy, v10, 0);
       }
 
       else
       {
         v16 = [NSError cls_createErrorWithCode:100 format:@"Cannot search roster because ASMConfig is not available"];
-        (v5)[2](v5, 0, v16);
+        (completionCopy)[2](completionCopy, 0, v16);
 
         v10 = &__kCFBooleanFalse;
       }
@@ -3803,10 +3803,10 @@ LABEL_12:
   {
   }
 
-  v11 = [(PDEndpointServer *)self client];
-  if (v11)
+  client = [(PDEndpointServer *)self client];
+  if (client)
   {
-    v12 = v11[26];
+    v12 = client[26];
   }
 
   else
@@ -3815,17 +3815,17 @@ LABEL_12:
   }
 
   v13 = +[PDUserDefaults sharedDefaults];
-  v14 = [v13 enableVerboseLogging];
+  enableVerboseLogging = [v13 enableVerboseLogging];
 
-  if (v14)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v15 = CLSLogDefault;
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
     {
       v17 = v15;
-      v18 = [(PDEndpointServer *)self client];
-      v19 = sub_1000B2528(v18);
+      client2 = [(PDEndpointServer *)self client];
+      v19 = sub_1000B2528(client2);
       v20 = v19;
       v21 = @"no";
       if (v12)
@@ -3842,18 +3842,18 @@ LABEL_12:
   }
 
   v9 = [NSNumber numberWithBool:v12 & 1];
-  v5[2](v5, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 LABEL_13:
 }
 
-- (void)remote_studentActivityForAttachmentsWithIDs:(id)a3 completion:(id)a4
+- (void)remote_studentActivityForAttachmentsWithIDs:(id)ds completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  v10 = v9;
-  if (!v9 || *(v9 + 26) != 1 || ([(PDEndpointServer *)self database], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  client = [(PDEndpointServer *)self client];
+  v10 = client;
+  if (!client || *(client + 26) != 1 || ([(PDEndpointServer *)self database], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_23;
@@ -3866,26 +3866,26 @@ LABEL_13:
   {
 LABEL_23:
     v33 = [NSError cls_createErrorWithCode:4 description:@"Fetching student activity is not allowed."];
-    v8[2](v8, 0, v33);
+    completionCopy[2](completionCopy, 0, v33);
 
     goto LABEL_24;
   }
 
-  v34 = v8;
+  v34 = completionCopy;
   v36 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v35 = v7;
-  obj = v7;
+  v35 = dsCopy;
+  obj = dsCopy;
   v14 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v42;
     v17 = &CLSLogAsset_ptr;
-    v37 = self;
+    selfCopy = self;
     v38 = *v42;
     do
     {
@@ -3900,34 +3900,34 @@ LABEL_23:
 
         v19 = *(*(&v41 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [(PDEndpointServer *)self database];
+        database = [(PDEndpointServer *)self database];
         v22 = v17[90];
-        v23 = [v21 select:objc_opt_class() identity:v19];
+        v23 = [database select:objc_opt_class() identity:v19];
 
         if (v23)
         {
-          v24 = [v23 contextPath];
+          contextPath = [v23 contextPath];
 
-          if (v24)
+          if (contextPath)
           {
             v25 = v17;
-            v26 = [v23 contextPath];
-            v27 = [CLSContext objectIDForIdentifierPath:v26];
+            contextPath2 = [v23 contextPath];
+            v27 = [CLSContext objectIDForIdentifierPath:contextPath2];
 
             if (v27)
             {
-              v28 = [(PDEndpointServer *)self database];
+              database2 = [(PDEndpointServer *)self database];
               v29 = objc_opt_class();
               v47 = v27;
               v30 = [NSArray arrayWithObjects:&v47 count:1];
-              v31 = [v28 select:v29 where:@"parentObjectID = ?" bindings:v30];
+              v31 = [database2 select:v29 where:@"parentObjectID = ?" bindings:v30];
 
               if (v31)
               {
                 [v36 setObject:v31 forKeyedSubscript:v19];
               }
 
-              self = v37;
+              self = selfCopy;
               v16 = v38;
             }
 
@@ -3959,47 +3959,47 @@ LABEL_23:
     while (v15);
   }
 
-  v8 = v34;
+  completionCopy = v34;
   (v34)[2](v34, v36, 0);
 
-  v7 = v35;
+  dsCopy = v35;
 LABEL_24:
 }
 
-- (void)remote_startAppActivity:(id)a3 bundleID:(id)a4 activityType:(unint64_t)a5 completion:(id)a6
+- (void)remote_startAppActivity:(id)activity bundleID:(id)d activityType:(unint64_t)type completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  activityCopy = activity;
+  dCopy = d;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v14 = [(PDEndpointServer *)self client];
-  if (!v14 || (v15 = v14[26], v14, (v15 & 1) == 0))
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v15 = client[26], client, (v15 & 1) == 0))
   {
     v17 = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
-    v13[2](v13, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
     goto LABEL_46;
   }
 
-  v16 = [(PDEndpointServer *)self database];
-  v17 = v16;
-  if (a5 == 3)
+  database = [(PDEndpointServer *)self database];
+  v17 = database;
+  if (type == 3)
   {
-    v55 = [v16 select:objc_opt_class() identity:v11];
+    v55 = [database select:objc_opt_class() identity:activityCopy];
     v21 = objc_opt_class();
-    v60 = v11;
+    v60 = activityCopy;
     v22 = [NSArray arrayWithObjects:&v60 count:1];
     v23 = [v17 select:v21 where:@"parentObjectID = ?" bindings:v22];
 
     if (!v23)
     {
       v23 = [[CLSActivity alloc] _initWithTargetClass:objc_opt_class()];
-      v24 = [(PDEndpointServer *)self client];
-      v25 = sub_1000B2528(v24);
+      client2 = [(PDEndpointServer *)self client];
+      v25 = sub_1000B2528(client2);
       [v23 setAppIdentifier:v25];
 
-      [v23 setParentObjectID:v11];
-      v26 = [v23 objectID];
-      [v55 setCurrentActivityID:v26];
+      [v23 setParentObjectID:activityCopy];
+      objectID = [v23 objectID];
+      [v55 setCurrentActivityID:objectID];
 
       v27 = +[NSDate now];
       [v55 setDateLastModified:v27];
@@ -4010,25 +4010,25 @@ LABEL_24:
       [v17 saveAndSyncObjects:v28];
     }
 
-    v29 = [v23 objectID];
+    objectID2 = [v23 objectID];
     sub_100088880(v17);
     v30 = objc_opt_class();
-    v58 = v29;
+    v58 = objectID2;
     v31 = [NSArray arrayWithObjects:&v58 count:1];
     v32 = [v17 select:v30 where:@"activityID = ?" bindings:v31];
 
     if (!v32)
     {
-      v32 = sub_1000877D8([PDAppUsage alloc], v29, v12);
+      v32 = sub_1000877D8([PDAppUsage alloc], objectID2, dCopy);
     }
 
     v33 = v55;
-    v34 = [v55 parentObjectID];
-    if (v34)
+    parentObjectID = [v55 parentObjectID];
+    if (parentObjectID)
     {
-      if (sub_1000881B0(v17, v34))
+      if (sub_1000881B0(v17, parentObjectID))
       {
-        v53 = [v17 select:objc_opt_class() identity:v34];
+        v53 = [v17 select:objc_opt_class() identity:parentObjectID];
         [v53 timeExpectation];
         if (v35 == 0.0)
         {
@@ -4041,7 +4041,7 @@ LABEL_24:
           }
 
           v39 = [NSError cls_createErrorWithCode:0 description:@"No time expectation specified"];
-          v13[2](v13, 0, v39);
+          completionCopy[2](completionCopy, 0, v39);
         }
 
         else
@@ -4081,7 +4081,7 @@ LABEL_24:
 
               v51 = v50;
               *buf = 138543362;
-              v57 = v51;
+              typeCopy = v51;
               _os_log_error_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "Failed to update AppUsage. AppUsageID: %{public}@", buf, 0xCu);
             }
 
@@ -4089,7 +4089,7 @@ LABEL_24:
             v38 = v52;
           }
 
-          v13[2](v13, v38, v39);
+          completionCopy[2](completionCopy, v38, v39);
         }
 
         goto LABEL_40;
@@ -4114,9 +4114,9 @@ LABEL_24:
       if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
       {
         v48 = v41;
-        v54 = [v55 objectID];
+        objectID3 = [v55 objectID];
         *buf = 138543362;
-        v57 = v54;
+        typeCopy = objectID3;
         _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Missing parent object Attachment. CLSAssignedItemID: %{public}@", buf, 0xCu);
       }
 
@@ -4125,7 +4125,7 @@ LABEL_24:
     }
 
     v45 = [NSError cls_createErrorWithCode:v43 description:v42];
-    v13[2](v13, 0, v45);
+    completionCopy[2](completionCopy, 0, v45);
 
 LABEL_40:
 LABEL_41:
@@ -4133,24 +4133,24 @@ LABEL_41:
     goto LABEL_46;
   }
 
-  if (a5 != 1)
+  if (type != 1)
   {
     CLSInitLog();
     v40 = CLSLogDefault;
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v57 = a5;
+      typeCopy = type;
       _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Invoke start activity on un-supported attachment type - %lu", buf, 0xCu);
     }
 
     v33 = [NSError cls_createErrorWithCode:2 description:@"Start activity on un-supported attachment type."];
-    v13[2](v13, 0, v33);
+    completionCopy[2](completionCopy, 0, v33);
     goto LABEL_41;
   }
 
-  sub_100088880(v16);
-  v18 = sub_1000879B4(v17, v12);
+  sub_100088880(database);
+  v18 = sub_1000879B4(v17, dCopy);
   if (!sub_1000878C0(v18))
   {
     goto LABEL_9;
@@ -4174,31 +4174,31 @@ LABEL_9:
     v20 = 1;
   }
 
-  v13[2](v13, v20, v19);
+  completionCopy[2](completionCopy, v20, v19);
 
 LABEL_46:
 }
 
-- (void)remote_startActivityFailed:(id)a3 completion:(id)a4
+- (void)remote_startActivityFailed:(id)failed completion:(id)completion
 {
-  v16 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self database];
-    v11 = sub_100087F3C(v10, v16);
+    database = [(PDEndpointServer *)self database];
+    v11 = sub_100087F3C(database, failedCopy);
     if (v11)
     {
-      v12 = [v10 select:objc_opt_class() identity:v11];
+      v12 = [database select:objc_opt_class() identity:v11];
       v13 = v12;
       if (v12)
       {
         *(v12 + 8) = 0;
       }
 
-      v14 = [v10 insertOrUpdateObject:v12];
+      v14 = [database insertOrUpdateObject:v12];
       if (v14)
       {
         v15 = 0;
@@ -4209,55 +4209,55 @@ LABEL_46:
         v15 = [NSError cls_createErrorWithCode:8 description:@"Failed to update AppUsage"];
       }
 
-      v7[2](v7, v14, v15);
+      completionCopy[2](completionCopy, v14, v15);
     }
 
     else
     {
       v13 = [NSError cls_createErrorWithCode:0 description:@"AppUsage not found"];
-      v7[2](v7, 0, v13);
+      completionCopy[2](completionCopy, 0, v13);
     }
   }
 
   else
   {
-    v10 = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
-    v7[2](v7, 0, v10);
+    database = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
+    completionCopy[2](completionCopy, 0, database);
   }
 }
 
-- (void)remote_fetchAppBasedAssignmentUsage:(id)a3 completion:(id)a4
+- (void)remote_fetchAppBasedAssignmentUsage:(id)usage completion:(id)completion
 {
-  v12 = a3;
-  v7 = a4;
+  usageCopy = usage;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self database];
-    v11 = [NSNumber numberWithDouble:sub_100088364(v10, v12, 0)];
-    v7[2](v7, v11, 0);
+    database = [(PDEndpointServer *)self database];
+    v11 = [NSNumber numberWithDouble:sub_100088364(database, usageCopy, 0)];
+    completionCopy[2](completionCopy, v11, 0);
 
-    v7 = v11;
+    completionCopy = v11;
   }
 
   else
   {
-    v10 = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
-    (v7)[2](v7, 0, v10);
+    database = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
+    (completionCopy)[2](completionCopy, 0, database);
   }
 }
 
-- (void)remote_submittableURLByCurrentUser:(id)a3 completion:(id)a4
+- (void)remote_submittableURLByCurrentUser:(id)user completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  userCopy = user;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[27], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[27], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = sub_1000BA854(v11);
+    database = [(PDEndpointServer *)self database];
+    v12 = sub_1000BA854(database);
     v13 = v12;
     if (v12 && (*(v12 + 9) & 1) != 0)
     {
@@ -4265,9 +4265,9 @@ LABEL_46:
       v64[1] = 3221225472;
       v64[2] = sub_100031F54;
       v64[3] = &unk_100202680;
-      v14 = v7;
+      v14 = userCopy;
       v65 = v14;
-      v66 = v8;
+      v66 = completionCopy;
       v15 = objc_retainBlock(v64);
       *buf = 0;
       v59 = buf;
@@ -4310,14 +4310,14 @@ LABEL_46:
 
         if (v53[5] && (v21 = v47[5]) != 0)
         {
-          v22 = [v21 zoneID];
-          v23 = [v22 zoneName];
+          zoneID = [v21 zoneID];
+          zoneName = [zoneID zoneName];
 
           v24 = objc_opt_class();
           v72[0] = v53[5];
-          v72[1] = v23;
+          v72[1] = zoneName;
           v25 = [NSArray arrayWithObjects:v72 count:2];
-          v26 = [v11 select:v24 where:@"brItemID = ? and brZoneName = ?" bindings:v25];
+          v26 = [database select:v24 where:@"brItemID = ? and brZoneName = ?" bindings:v25];
 
           CLSInitLog();
           v27 = CLSLogDefault;
@@ -4327,12 +4327,12 @@ LABEL_46:
             *v68 = 138412546;
             v69 = v41;
             v70 = 2112;
-            v71 = v23;
+            v71 = zoneName;
             _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Looking up asset matching brItemID = %@ and brZoneName = %@", v68, 0x16u);
           }
 
-          v28 = [v26 parentObjectID];
-          v29 = v28 == 0;
+          parentObjectID = [v26 parentObjectID];
+          v29 = parentObjectID == 0;
 
           if (v29)
           {
@@ -4344,7 +4344,7 @@ LABEL_46:
               *v68 = 138412546;
               v69 = v42;
               v70 = 2112;
-              v71 = v23;
+              v71 = zoneName;
               _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "failed to find asset matching brItemID = %@ and brZoneName = %@", v68, 0x16u);
             }
 
@@ -4355,10 +4355,10 @@ LABEL_46:
           else
           {
             v30 = objc_opt_class();
-            v31 = [v26 parentObjectID];
-            v67 = v31;
+            parentObjectID2 = [v26 parentObjectID];
+            v67 = parentObjectID2;
             v32 = [NSArray arrayWithObjects:&v67 count:1];
-            v33 = [v11 select:v30 where:@"objectID = ?" bindings:v32];
+            v33 = [database select:v30 where:@"objectID = ?" bindings:v32];
 
             if (v33)
             {
@@ -4367,8 +4367,8 @@ LABEL_46:
 
             else
             {
-              v38 = [v26 objectID];
-              v39 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", v38, _NSConcreteStackBlock, 3221225472, sub_100032040, &unk_1002023B0, v44, &v52, buf, &v46];
+              objectID = [v26 objectID];
+              v39 = [NSError cls_createErrorWithCode:100 format:@"failed to find attachment for asset with id: %@", objectID, _NSConcreteStackBlock, 3221225472, sub_100032040, &unk_1002023B0, v44, &v52, buf, &v46];
               v40 = *(v59 + 5);
               *(v59 + 5) = v39;
 
@@ -4410,45 +4410,45 @@ LABEL_46:
       }
 
       v36 = [NSError cls_createErrorWithCode:4 format:@"Not Authorized"];
-      (*(v8 + 2))(v8, 0, v36);
+      (*(completionCopy + 2))(completionCopy, 0, v36);
     }
   }
 
   else
   {
     v43 = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
-    (*(v8 + 2))(v8, 0, v43);
+    (*(completionCopy + 2))(completionCopy, 0, v43);
   }
 }
 
-- (void)remote_currentUserIsStudent:(id)a3
+- (void)remote_currentUserIsStudent:(id)student
 {
-  v5 = a3;
+  studentCopy = student;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[27], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[27], client, (v7 & 1) != 0))
   {
     v11 = 0;
     v8 = [(PDEndpointServer *)self isCurrentUserStudent:&v11];
     v9 = v11;
-    v5[2](v5, v8, v9);
+    studentCopy[2](studentCopy, v8, v9);
   }
 
   else
   {
     v10 = [NSError cls_createErrorWithCode:4 description:@"Action not allowed."];
-    v5[2](v5, 0, v10);
+    studentCopy[2](studentCopy, 0, v10);
   }
 }
 
-- (void)remote_publishHandoutGraph:(id)a3 completion:(id)a4
+- (void)remote_publishHandoutGraph:(id)graph completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  v10 = v9;
-  if (!v9 || *(v9 + 26) != 1 || ([(PDEndpointServer *)self database], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  client = [(PDEndpointServer *)self client];
+  v10 = client;
+  if (!client || *(client + 26) != 1 || ([(PDEndpointServer *)self database], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_25;
@@ -4461,19 +4461,19 @@ LABEL_46:
   {
 LABEL_25:
     v15 = [NSError cls_createErrorWithCode:4 description:@"Publishing handouts not allowed."];
-    v8[2](v8, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
     goto LABEL_26;
   }
 
-  v14 = [(PDEndpointServer *)self client];
-  v15 = sub_1000B2528(v14);
+  client2 = [(PDEndpointServer *)self client];
+  v15 = sub_1000B2528(client2);
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v32 = v7;
-  v16 = v7;
+  v32 = graphCopy;
+  v16 = graphCopy;
   v17 = [v16 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v17)
   {
@@ -4489,18 +4489,18 @@ LABEL_25:
         }
 
         v21 = *(*(&v36 + 1) + 8 * i);
-        v22 = [v21 appIdentifier];
+        appIdentifier = [v21 appIdentifier];
 
-        if (!v22)
+        if (!appIdentifier)
         {
           [v21 setAppIdentifier:v15];
         }
 
         if ([v21 conformsToProtocol:&OBJC_PROTOCOL___PDEndpointServerEntityHooks] && (objc_msgSend(v21, "willBeProcessedByEndpointServer:", self) & 1) == 0)
         {
-          v8[2](v8, 0, 0);
-          v23 = v16;
-          v7 = v32;
+          completionCopy[2](completionCopy, 0, 0);
+          daemon = v16;
+          graphCopy = v32;
           goto LABEL_23;
         }
       }
@@ -4515,27 +4515,27 @@ LABEL_25:
     }
   }
 
-  v23 = [(PDEndpointServer *)self daemon];
-  v24 = [v23 operationsManager];
+  daemon = [(PDEndpointServer *)self daemon];
+  operationsManager = [daemon operationsManager];
 
-  if (v24)
+  if (operationsManager)
   {
     v25 = [PDHandoutPublish alloc];
-    v26 = [(PDEndpointServer *)self database];
-    v27 = sub_10012BEB8(v25, v26, v16);
+    database = [(PDEndpointServer *)self database];
+    v27 = sub_10012BEB8(v25, database, v16);
 
-    v28 = [(PDEndpointServer *)self client];
-    v29 = sub_1000B2528(v28);
+    client3 = [(PDEndpointServer *)self client];
+    v29 = sub_1000B2528(client3);
     [v27 setSourceApplicationBundleIdentifier:v29];
 
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100032658;
     v33[3] = &unk_1002026A8;
-    v34 = v8;
+    v34 = completionCopy;
     [v27 addOnFinishBlock:v33];
-    v30 = [v23 operationsManager];
-    sub_1001232E0(v30, v27);
+    operationsManager2 = [daemon operationsManager];
+    sub_1001232E0(operationsManager2, v27);
   }
 
   else
@@ -4549,23 +4549,23 @@ LABEL_25:
     }
 
     v27 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil.", v32];
-    v8[2](v8, 0, v27);
+    completionCopy[2](completionCopy, 0, v27);
   }
 
-  v7 = v32;
+  graphCopy = v32;
 
 LABEL_23:
 LABEL_26:
 }
 
-- (void)remote_fetchDeletedObjectIDsNewerThanDate:(id)a3 completion:(id)a4
+- (void)remote_fetchDeletedObjectIDsNewerThanDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dateCopy = date;
   v8 = objc_opt_new();
-  v9 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v10 = objc_opt_class();
-  v15 = v7;
+  v15 = dateCopy;
   v11 = [NSArray arrayWithObjects:&v15 count:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -4573,29 +4573,29 @@ LABEL_26:
   v13[3] = &unk_100202A30;
   v14 = v8;
   v12 = v8;
-  [v9 selectAll:v10 where:@"deletedAtDate >= ?" bindings:v11 block:v13];
+  [database selectAll:v10 where:@"deletedAtDate >= ?" bindings:v11 block:v13];
 
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)remote_repairHandoutAttachments:(id)a3 completion:(id)a4
+- (void)remote_repairHandoutAttachments:(id)attachments completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  attachmentsCopy = attachments;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[26], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[26], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self daemon];
-    v12 = [v11 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v12)
+    if (operationsManager)
     {
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v13 = v7;
+      v13 = attachmentsCopy;
       v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v14)
       {
@@ -4623,21 +4623,21 @@ LABEL_26:
       }
 
       v18 = [PDHandoutPublish alloc];
-      v19 = [(PDEndpointServer *)self database];
-      v20 = sub_10012BEB8(v18, v19, v13);
+      database = [(PDEndpointServer *)self database];
+      v20 = sub_10012BEB8(v18, database, v13);
 
-      v21 = [(PDEndpointServer *)self client];
-      v22 = sub_1000B2528(v21);
+      client2 = [(PDEndpointServer *)self client];
+      v22 = sub_1000B2528(client2);
       [v20 setSourceApplicationBundleIdentifier:v22];
 
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100032BD4;
       v25[3] = &unk_1002026A8;
-      v26 = v8;
+      v26 = completionCopy;
       [v20 addOnFinishBlock:v25];
-      v23 = [v11 operationsManager];
-      sub_1001232E0(v23, v20);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v20);
     }
 
     else
@@ -4651,37 +4651,37 @@ LABEL_26:
       }
 
       v20 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (*(v8 + 2))(v8, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, v20);
     }
   }
 
   else
   {
-    v11 = [NSError cls_createErrorWithCode:4 description:@"Repairing handout attachments not allowed."];
-    (*(v8 + 2))(v8, 0, v11);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Repairing handout attachments not allowed."];
+    (*(completionCopy + 2))(completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_fetchCollectionsWithCompletion:(id)a3
+- (void)remote_fetchCollectionsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v9)
+    if (operationsManager)
     {
       v10 = [PDCollectionSearchOperation alloc];
-      v11 = [(PDEndpointServer *)self database];
-      v12 = [(PDCollectionSearchOperation *)v10 initForCollectionsWithDatabase:v11];
+      database = [(PDEndpointServer *)self database];
+      v12 = [(PDCollectionSearchOperation *)v10 initForCollectionsWithDatabase:database];
 
-      v13 = [v8 operationsManager];
-      sub_1001232E0(v13, v12);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v12);
 
-      v5[2](v5, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -4695,41 +4695,41 @@ LABEL_26:
       }
 
       v15 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (v5)[2](v5, 0, v15);
+      (completionCopy)[2](completionCopy, 0, v15);
     }
   }
 
   else
   {
-    v8 = [NSError cls_createErrorWithCode:4 description:@"Fetching Collections not allowed. Not a Dashboard Client."];
-    (v5)[2](v5, 0, v8);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Fetching Collections not allowed. Not a Dashboard Client."];
+    (completionCopy)[2](completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_fetchCollectionItemsWithCompletion:(id)a3
+- (void)remote_fetchCollectionItemsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v6 = [(PDEndpointServer *)self client];
-  if (v6 && (v7 = v6[26], v6, (v7 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v7 = client[26], client, (v7 & 1) != 0))
   {
-    v8 = [(PDEndpointServer *)self daemon];
-    v9 = [v8 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v9)
+    if (operationsManager)
     {
       v10 = [PDCollectionSearchOperation alloc];
-      v11 = [(PDEndpointServer *)self database];
-      v12 = [(PDCollectionSearchOperation *)v10 initForCollectionItemsWithDatabase:v11];
+      database = [(PDEndpointServer *)self database];
+      v12 = [(PDCollectionSearchOperation *)v10 initForCollectionItemsWithDatabase:database];
 
-      v13 = [(PDEndpointServer *)self client];
-      v14 = sub_1000B2528(v13);
+      client2 = [(PDEndpointServer *)self client];
+      v14 = sub_1000B2528(client2);
       [v12 setSourceApplicationBundleIdentifier:v14];
 
-      v15 = [v8 operationsManager];
-      sub_1001232E0(v15, v12);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v12);
 
-      v5[2](v5, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -4743,41 +4743,41 @@ LABEL_26:
       }
 
       v17 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (v5)[2](v5, 0, v17);
+      (completionCopy)[2](completionCopy, 0, v17);
     }
   }
 
   else
   {
-    v8 = [NSError cls_createErrorWithCode:4 description:@"Fetching Collection Items not allowed. Not a Dashboard Client."];
-    (v5)[2](v5, 0, v8);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Fetching Collection Items not allowed. Not a Dashboard Client."];
+    (completionCopy)[2](completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_deleteCollectionRelatedObjectsWithCompletion:(id)a3 completion:(id)a4
+- (void)remote_deleteCollectionRelatedObjectsWithCompletion:(id)completion completion:(id)a4
 {
-  v7 = a3;
+  completionCopy = completion;
   v8 = a4;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[26], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[26], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self database];
-    v12 = sub_1000711FC(v11);
+    database = [(PDEndpointServer *)self database];
+    v12 = sub_1000711FC(database);
 
     if (v12)
     {
-      v13 = [(PDEndpointServer *)self daemon];
-      v14 = [v13 operationsManager];
+      daemon = [(PDEndpointServer *)self daemon];
+      operationsManager = [daemon operationsManager];
 
-      if (v14)
+      if (operationsManager)
       {
         v15 = [PDCollectionPublishOperation alloc];
-        v16 = [(PDEndpointServer *)self database];
-        v17 = [(PDCollectionPublishOperation *)v15 initWithDatabase:v16 andObjectsToDelete:v7];
+        database2 = [(PDEndpointServer *)self database];
+        v17 = [(PDCollectionPublishOperation *)v15 initWithDatabase:database2 andObjectsToDelete:completionCopy];
 
-        v18 = [(PDEndpointServer *)self client];
-        v19 = sub_1000B2528(v18);
+        client2 = [(PDEndpointServer *)self client];
+        v19 = sub_1000B2528(client2);
         [(PDOperation *)v17 setSourceApplicationBundleIdentifier:v19];
 
         v23[0] = _NSConcreteStackBlock;
@@ -4786,8 +4786,8 @@ LABEL_26:
         v23[3] = &unk_1002026D0;
         v24 = v8;
         [(PDOperation *)v17 addOnFinishBlock:v23];
-        v20 = [v13 operationsManager];
-        sub_1001232E0(v20, v17);
+        operationsManager2 = [daemon operationsManager];
+        sub_1001232E0(operationsManager2, v17);
       }
 
       else
@@ -4815,98 +4815,98 @@ LABEL_26:
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Must be signed in to delete collections.", buf, 2u);
       }
 
-      v13 = [NSError cls_createErrorWithCode:2 description:@"Must be signed in to delete collections."];
-      (*(v8 + 2))(v8, 0, v13);
+      daemon = [NSError cls_createErrorWithCode:2 description:@"Must be signed in to delete collections."];
+      (*(v8 + 2))(v8, 0, daemon);
     }
   }
 
   else
   {
-    v11 = [NSError cls_createErrorWithCode:4 description:@"Deleting Collections not allowed. Not a Dashboard Client."];
-    (*(v8 + 2))(v8, 0, v11);
+    database = [NSError cls_createErrorWithCode:4 description:@"Deleting Collections not allowed. Not a Dashboard Client."];
+    (*(v8 + 2))(v8, 0, database);
   }
 }
 
-- (void)remote_collaborationStatesForObjectWithID:(id)a3 ownerPersonID:(id)a4 completion:(id)a5
+- (void)remote_collaborationStatesForObjectWithID:(id)d ownerPersonID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v11 = [(PDEndpointServer *)self client];
-  if (v11 && (v12 = v11[26], v11, (v12 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v12 = client[26], client, (v12 & 1) != 0))
   {
-    v13 = [(PDEndpointServer *)self database];
-    v14 = sub_100163860(v13, v15, v9);
+    database = [(PDEndpointServer *)self database];
+    v14 = sub_100163860(database, dCopy, iDCopy);
 
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
   {
     v14 = [NSError cls_createErrorWithCode:4 description:@"Fetching assignment states not allowed. Not a Dashboard Client."];
-    (v10)[2](v10, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
   }
 }
 
-- (void)remote_collaborationStatesForObjectWithID:(id)a3 classID:(id)a4 forOwnersWithRole:(unint64_t)a5 completion:(id)a6
+- (void)remote_collaborationStatesForObjectWithID:(id)d classID:(id)iD forOwnersWithRole:(unint64_t)role completion:(id)completion
 {
-  v17 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v13 = [(PDEndpointServer *)self client];
-  if (v13 && (v14 = v13[26], v13, (v14 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v14 = client[26], client, (v14 & 1) != 0))
   {
-    v15 = [(PDEndpointServer *)self database];
-    v16 = sub_100163A80(v15, v17, v11, a5);
+    database = [(PDEndpointServer *)self database];
+    v16 = sub_100163A80(database, dCopy, iDCopy, role);
 
-    v12[2](v12, v16, 0);
+    completionCopy[2](completionCopy, v16, 0);
   }
 
   else
   {
     v16 = [NSError cls_createErrorWithCode:4 description:@"Fetching assignment states not allowed. Not a Dashboard Client."];
-    (v12)[2](v12, 0, v16);
+    (completionCopy)[2](completionCopy, 0, v16);
   }
 }
 
-- (void)remote_publishCollaborationStateChanges:(id)a3 completion:(id)a4
+- (void)remote_publishCollaborationStateChanges:(id)changes completion:(id)completion
 {
-  v11 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    [(PDEndpointServer *)self entitled_publishCollaborationStateChanges:v11 completion:v7];
+    [(PDEndpointServer *)self entitled_publishCollaborationStateChanges:changesCopy completion:completionCopy];
   }
 
   else
   {
     v10 = [NSError cls_createErrorWithCode:4 description:@"Changing assignment state not allowed. Not a Dashboard Client."];
-    (*(v7 + 2))(v7, 0, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v10);
   }
 }
 
-- (void)entitled_publishCollaborationStateChanges:(id)a3 completion:(id)a4
+- (void)entitled_publishCollaborationStateChanges:(id)changes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self database];
-  v9 = sub_1000711FC(v8);
+  changesCopy = changes;
+  completionCopy = completion;
+  database = [(PDEndpointServer *)self database];
+  v9 = sub_1000711FC(database);
 
   if (v9)
   {
-    v10 = sub_1000711FC(v8);
-    v11 = [v10 objectID];
+    v10 = sub_1000711FC(database);
+    objectID = [v10 objectID];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = v6;
-    v12 = v6;
+    v29 = changesCopy;
+    v12 = changesCopy;
     v13 = [v12 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v13)
     {
@@ -4922,11 +4922,11 @@ LABEL_26:
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          v18 = [v17 senderPersonID];
+          senderPersonID = [v17 senderPersonID];
 
-          if (!v18)
+          if (!senderPersonID)
           {
-            [v17 setSenderPersonID:v11];
+            [v17 setSenderPersonID:objectID];
           }
         }
 
@@ -4936,27 +4936,27 @@ LABEL_26:
       while (v14);
     }
 
-    v19 = [(PDEndpointServer *)self daemon];
-    v20 = [v19 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v20)
+    if (operationsManager)
     {
       v21 = [PDCollaborationStateChangePublish alloc];
-      v22 = [(PDEndpointServer *)self database];
-      v23 = sub_1001596A4(v21, v22, v12);
+      database2 = [(PDEndpointServer *)self database];
+      v23 = sub_1001596A4(v21, database2, v12);
 
-      v24 = [(PDEndpointServer *)self client];
-      v25 = sub_1000B2528(v24);
+      client = [(PDEndpointServer *)self client];
+      v25 = sub_1000B2528(client);
       [v23 setSourceApplicationBundleIdentifier:v25];
 
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100033AD8;
       v30[3] = &unk_1002026F8;
-      v31 = v7;
+      v31 = completionCopy;
       [v23 addOnFinishBlock:v30];
-      v26 = [v19 operationsManager];
-      sub_1001232E0(v26, v23);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v23);
     }
 
     else
@@ -4970,10 +4970,10 @@ LABEL_26:
       }
 
       v23 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil.", v29];
-      (*(v7 + 2))(v7, 0, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v23);
     }
 
-    v6 = v29;
+    changesCopy = v29;
   }
 
   else
@@ -4986,132 +4986,132 @@ LABEL_26:
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Must be signed in to publish state changes.", buf, 2u);
     }
 
-    v11 = [NSError cls_createErrorWithCode:2 description:@"Must be signed in to publish state changes."];
-    (*(v7 + 2))(v7, 0, 0, v11);
+    objectID = [NSError cls_createErrorWithCode:2 description:@"Must be signed in to publish state changes."];
+    (*(completionCopy + 2))(completionCopy, 0, 0, objectID);
   }
 }
 
-- (void)remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)date completion:(id)completion
 {
-  v15 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[30], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[30], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self daemon];
-    v11 = [v10 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v12 = [v11 reviewDueHandoutsTrigger];
-    v13 = [v12 fetchHandoutsDueYesterdayFromDate:v15];
-    v14 = [v12 dueYesterdayUserNotificationDataFromHandouts:v13];
-    [v12 fireTriggerWithNotificationData:v14];
-    v7[2](v7, 0);
+    reviewDueHandoutsTrigger = [userNotificationManager reviewDueHandoutsTrigger];
+    v13 = [reviewDueHandoutsTrigger fetchHandoutsDueYesterdayFromDate:dateCopy];
+    v14 = [reviewDueHandoutsTrigger dueYesterdayUserNotificationDataFromHandouts:v13];
+    [reviewDueHandoutsTrigger fireTriggerWithNotificationData:v14];
+    completionCopy[2](completionCopy, 0);
 
-    v7 = v12;
+    completionCopy = reviewDueHandoutsTrigger;
   }
 
   else
   {
-    v11 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed. Use pdtool"];
-    (v7)[2](v7, v11);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed. Use pdtool"];
+    (completionCopy)[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)date completion:(id)completion
 {
-  v15 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[30], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[30], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self daemon];
-    v11 = [v10 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v12 = [v11 handoutDueSoonTrigger];
-    v13 = [v12 fetchHandoutsDueNextDayFromDate:v15];
-    v14 = [v12 dueTomorrowUserNotificationDataFromHandouts:v13];
-    [v12 fireTriggerWithNotificationData:v14];
-    v7[2](v7, 0);
+    handoutDueSoonTrigger = [userNotificationManager handoutDueSoonTrigger];
+    v13 = [handoutDueSoonTrigger fetchHandoutsDueNextDayFromDate:dateCopy];
+    v14 = [handoutDueSoonTrigger dueTomorrowUserNotificationDataFromHandouts:v13];
+    [handoutDueSoonTrigger fireTriggerWithNotificationData:v14];
+    completionCopy[2](completionCopy, 0);
 
-    v7 = v12;
+    completionCopy = handoutDueSoonTrigger;
   }
 
   else
   {
-    v11 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
-    (v7)[2](v7, v11);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
+    (completionCopy)[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)date completion:(id)completion
 {
-  v15 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[30], v8, (v9 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[30], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self daemon];
-    v11 = [v10 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v12 = [v11 handoutPastDueTrigger];
-    v13 = [v12 fetchActiveHandoutsPastDueFromDate:v15];
-    v14 = [v12 pastDueUserNotificationDataFromHandouts:v13];
-    [v12 fireTriggerWithNotificationData:v14];
-    v7[2](v7, 0);
+    handoutPastDueTrigger = [userNotificationManager handoutPastDueTrigger];
+    v13 = [handoutPastDueTrigger fetchActiveHandoutsPastDueFromDate:dateCopy];
+    v14 = [handoutPastDueTrigger pastDueUserNotificationDataFromHandouts:v13];
+    [handoutPastDueTrigger fireTriggerWithNotificationData:v14];
+    completionCopy[2](completionCopy, 0);
 
-    v7 = v12;
+    completionCopy = handoutPastDueTrigger;
   }
 
   else
   {
-    v11 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
-    (v7)[2](v7, v11);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
+    (completionCopy)[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationRevisionRequestedWithAttachmentID:(id)a3 completion:(id)a4
+- (void)remote_triggerUserNotificationRevisionRequestedWithAttachmentID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[30], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[30], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self daemon];
-    v12 = [v11 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v13 = [v12 revisionNeededTrigger];
-    if (v13)
+    revisionNeededTrigger = [userNotificationManager revisionNeededTrigger];
+    if (revisionNeededTrigger)
     {
-      v14 = [(PDEndpointServer *)self database];
-      v15 = [v14 select:objc_opt_class() identity:v7];
+      database = [(PDEndpointServer *)self database];
+      v15 = [database select:objc_opt_class() identity:dCopy];
 
       if (v15)
       {
-        v16 = [(PDEndpointServer *)self database];
+        database2 = [(PDEndpointServer *)self database];
         v17 = objc_opt_class();
-        v18 = [v15 parentObjectID];
-        v19 = [v16 select:v17 identity:v18];
+        parentObjectID = [v15 parentObjectID];
+        v19 = [database2 select:v17 identity:parentObjectID];
 
         if (v19)
         {
-          v20 = [(PDEndpointServer *)self database];
+          database3 = [(PDEndpointServer *)self database];
           v21 = objc_opt_class();
           v30 = v19;
-          v22 = [v19 objectID];
-          v31 = v22;
+          objectID = [v19 objectID];
+          v31 = objectID;
           v23 = [NSArray arrayWithObjects:&v31 count:1];
-          v24 = [v20 select:v21 where:@"parentObjectID = ?" bindings:v23];
+          v24 = [database3 select:v21 where:@"parentObjectID = ?" bindings:v23];
 
           if (v24)
           {
-            v25 = [(PDEndpointServer *)self database];
-            v26 = [v13 notificationDataWithDatabase:v25 recipient:v24 attachmentID:v7];
+            database4 = [(PDEndpointServer *)self database];
+            v26 = [revisionNeededTrigger notificationDataWithDatabase:database4 recipient:v24 attachmentID:dCopy];
 
-            [v13 fireTriggerWithNotificationData:v26];
+            [revisionNeededTrigger fireTriggerWithNotificationData:v26];
             v27 = 0;
           }
 
@@ -5121,7 +5121,7 @@ LABEL_26:
             v26 = v27;
           }
 
-          v8[2](v8, v27);
+          completionCopy[2](completionCopy, v27);
 
           v19 = v30;
         }
@@ -5129,63 +5129,63 @@ LABEL_26:
         else
         {
           v29 = [NSError cls_createErrorWithCode:2 description:@"Handout does not exist"];
-          v8[2](v8, v29);
+          completionCopy[2](completionCopy, v29);
         }
       }
 
       else
       {
         v28 = [NSError cls_createErrorWithCode:2 description:@"Handout attachment does not exist"];
-        v8[2](v8, v28);
+        completionCopy[2](completionCopy, v28);
       }
     }
 
     else
     {
       v15 = [NSError cls_createErrorWithCode:2 description:@"Revision requested notification trigger does not exist. Are you signed in as a student?"];
-      v8[2](v8, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 
   else
   {
-    v12 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
-    v8[2](v8, v12);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
+    completionCopy[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)a3 studentName:(id)a4 completion:(id)a5
+- (void)remote_triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)d studentName:(id)name completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  nameCopy = name;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v12 = [(PDEndpointServer *)self client];
-  if (v12 && (v13 = v12[30], v12, (v13 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v13 = client[30], client, (v13 & 1) != 0))
   {
-    v14 = [(PDEndpointServer *)self daemon];
-    v15 = [v14 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v16 = [v15 revisedSubmissionTrigger];
-    if (v16)
+    revisedSubmissionTrigger = [userNotificationManager revisedSubmissionTrigger];
+    if (revisedSubmissionTrigger)
     {
-      v17 = [(PDEndpointServer *)self database];
-      v18 = [v17 select:objc_opt_class() identity:v9];
+      database = [(PDEndpointServer *)self database];
+      v18 = [database select:objc_opt_class() identity:dCopy];
 
       if (v18)
       {
-        v19 = [(PDEndpointServer *)self database];
+        database2 = [(PDEndpointServer *)self database];
         v20 = objc_opt_class();
-        v21 = [v18 parentObjectID];
-        v22 = [v19 select:v20 identity:v21];
+        parentObjectID = [v18 parentObjectID];
+        v22 = [database2 select:v20 identity:parentObjectID];
 
         if (v22)
         {
           v23 = objc_opt_class();
-          v24 = [v22 objectID];
-          v47 = v24;
+          objectID = [v22 objectID];
+          v47 = objectID;
           v25 = [NSArray arrayWithObjects:&v47 count:1];
-          v26 = v19;
+          v26 = database2;
           v27 = v25;
           v46 = v26;
           v28 = [v26 select:v23 where:@"parentObjectID = ?" bindings:v25];
@@ -5197,7 +5197,7 @@ LABEL_26:
             v30 = [v29 localizedStringForKey:@"NOTIFICATION_TEACHER_REVIEW_REVISED_WORK_MESSAGE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
             [v18 title];
             v32 = v31 = v22;
-            v44 = [NSString stringWithFormat:v30, v10, v32];
+            v44 = [NSString stringWithFormat:v30, nameCopy, v32];
 
             v22 = v31;
             v33 = [NSBundle bundleForClass:objc_opt_class()];
@@ -5205,27 +5205,27 @@ LABEL_26:
 
             v43 = v34;
             v35 = sub_10012F04C([PDUserNotificationData alloc], 5, v34, v44);
-            v37 = [v22 objectID];
+            objectID2 = [v22 objectID];
             if (v35)
             {
-              objc_setProperty_nonatomic_copy(v35, v36, v37, 24);
+              objc_setProperty_nonatomic_copy(v35, v36, objectID2, 24);
             }
 
-            v39 = [v45 classID];
-            v19 = v46;
+            classID = [v45 classID];
+            database2 = v46;
             if (v35)
             {
-              objc_setProperty_nonatomic_copy(v35, v38, v39, 32);
+              objc_setProperty_nonatomic_copy(v35, v38, classID, 32);
             }
 
-            v41 = [v18 objectID];
+            objectID3 = [v18 objectID];
             if (v35)
             {
-              objc_setProperty_nonatomic_copy(v35, v40, v41, 48);
+              objc_setProperty_nonatomic_copy(v35, v40, objectID3, 48);
             }
 
-            [v16 fireTriggerWithNotificationData:v35];
-            v11[2](v11, 0);
+            [revisedSubmissionTrigger fireTriggerWithNotificationData:v35];
+            completionCopy[2](completionCopy, 0);
 
             v42 = v44;
             v28 = v45;
@@ -5234,69 +5234,69 @@ LABEL_26:
           else
           {
             v42 = [NSError cls_createErrorWithCode:2 description:@"Handout recipient does not exist"];
-            (v11)[2](v11, v42);
-            v19 = v46;
+            (completionCopy)[2](completionCopy, v42);
+            database2 = v46;
           }
         }
 
         else
         {
           v28 = [NSError cls_createErrorWithCode:2 description:@"Handout does not exist"];
-          (v11)[2](v11, v28);
+          (completionCopy)[2](completionCopy, v28);
         }
       }
 
       else
       {
-        v19 = [NSError cls_createErrorWithCode:2 description:@"Handout attachment does not exist"];
-        (v11)[2](v11, v19);
+        database2 = [NSError cls_createErrorWithCode:2 description:@"Handout attachment does not exist"];
+        (completionCopy)[2](completionCopy, database2);
       }
     }
 
     else
     {
       v18 = [NSError cls_createErrorWithCode:2 description:@"Revised submission notification trigger does not exist. Are you signed in as a teacher?"];
-      (v11)[2](v11, v18);
+      (completionCopy)[2](completionCopy, v18);
     }
   }
 
   else
   {
-    v15 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
-    (v11)[2](v11, v15);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
+    (completionCopy)[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationHandoutAssignedWithHandoutID:(id)a3 completion:(id)a4
+- (void)remote_triggerUserNotificationHandoutAssignedWithHandoutID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v9 = [(PDEndpointServer *)self client];
-  if (v9 && (v10 = v9[30], v9, (v10 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v10 = client[30], client, (v10 & 1) != 0))
   {
-    v11 = [(PDEndpointServer *)self daemon];
-    v12 = [v11 userNotificationManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    userNotificationManager = [daemon userNotificationManager];
 
-    v13 = [v12 handoutAssignedTrigger];
-    if (v13)
+    handoutAssignedTrigger = [userNotificationManager handoutAssignedTrigger];
+    if (handoutAssignedTrigger)
     {
-      v14 = [(PDEndpointServer *)self database];
-      v15 = [v14 select:objc_opt_class() identity:v7];
+      database = [(PDEndpointServer *)self database];
+      v15 = [database select:objc_opt_class() identity:dCopy];
       if (v15)
       {
         v16 = objc_opt_class();
-        v23 = v7;
+        v23 = dCopy;
         v17 = [NSArray arrayWithObjects:&v23 count:1];
-        v18 = [v14 select:v16 where:@"parentObjectID = ?" bindings:v17];
+        v18 = [database select:v16 where:@"parentObjectID = ?" bindings:v17];
 
         if (v18)
         {
-          v19 = [v15 objectID];
-          v20 = [v15 title];
-          v21 = [v13 notificationDataWithDatabase:v14 recipient:v18 handoutID:v19 handoutTitle:v20];
+          objectID = [v15 objectID];
+          title = [v15 title];
+          v21 = [handoutAssignedTrigger notificationDataWithDatabase:database recipient:v18 handoutID:objectID handoutTitle:title];
 
-          [v13 fireTriggerWithNotificationData:v21];
+          [handoutAssignedTrigger fireTriggerWithNotificationData:v21];
           v22 = 0;
         }
 
@@ -5306,62 +5306,62 @@ LABEL_26:
           v21 = v22;
         }
 
-        v8[2](v8, v22);
+        completionCopy[2](completionCopy, v22);
       }
 
       else
       {
         v18 = [NSError cls_createErrorWithCode:2 description:@"Handout does not exist"];
-        v8[2](v8, v18);
+        completionCopy[2](completionCopy, v18);
       }
     }
 
     else
     {
-      v14 = [NSError cls_createErrorWithCode:2 description:@"Handout notification trigger does not exist.  Are you signed in as a student?"];
-      v8[2](v8, v14);
+      database = [NSError cls_createErrorWithCode:2 description:@"Handout notification trigger does not exist.  Are you signed in as a student?"];
+      completionCopy[2](completionCopy, database);
     }
   }
 
   else
   {
-    v12 = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
-    v8[2](v8, v12);
+    userNotificationManager = [NSError cls_createErrorWithCode:4 description:@"Triggering notifications not allowed.  Use pdtool"];
+    completionCopy[2](completionCopy, userNotificationManager);
   }
 }
 
-- (void)remote_triggerUserNotificationWithTitle:(id)a3 message:(id)a4 wrappedImageURL:(id)a5
+- (void)remote_triggerUserNotificationWithTitle:(id)title message:(id)message wrappedImageURL:(id)l
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  lCopy = l;
+  messageCopy = message;
+  titleCopy = title;
   sub_100023888(self, a2);
-  v12 = [v9 url];
+  v12 = [lCopy url];
 
-  sub_100043340(PDPrivateUserNotificationManager, v11, v10, v12);
+  sub_100043340(PDPrivateUserNotificationManager, titleCopy, messageCopy, v12);
 }
 
-- (void)remote_publishClass:(id)a3 membersToInsert:(id)a4 membersToDelete:(id)a5 completion:(id)a6
+- (void)remote_publishClass:(id)class membersToInsert:(id)insert membersToDelete:(id)delete completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  classCopy = class;
+  insertCopy = insert;
+  deleteCopy = delete;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v15 = [(PDEndpointServer *)self client];
-  if (v15 && (v16 = v15[26], v15, (v16 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v16 = client[26], client, (v16 & 1) != 0))
   {
-    v17 = [(PDEndpointServer *)self client];
-    v18 = sub_1000B2528(v17);
+    client2 = [(PDEndpointServer *)self client];
+    v18 = sub_1000B2528(client2);
 
-    v47 = v11;
-    v48 = v13;
-    if ([v11 isDeleted])
+    v47 = classCopy;
+    v48 = deleteCopy;
+    if ([classCopy isDeleted])
     {
       v19 = 3;
     }
 
-    else if ([v11 isTemporary])
+    else if ([classCopy isTemporary])
     {
       v19 = 1;
     }
@@ -5376,8 +5376,8 @@ LABEL_26:
     v59 = 0u;
     v57 = 0u;
     v56 = 0u;
-    v46 = v12;
-    v20 = v12;
+    v46 = insertCopy;
+    v20 = insertCopy;
     v21 = [v20 countByEnumeratingWithState:&v56 objects:v61 count:16];
     if (v21)
     {
@@ -5393,21 +5393,21 @@ LABEL_26:
           }
 
           v25 = *(*(&v56 + 1) + 8 * i);
-          v26 = [v25 appIdentifier];
+          appIdentifier = [v25 appIdentifier];
 
-          if (!v26)
+          if (!appIdentifier)
           {
             [v25 setAppIdentifier:v18];
           }
 
           if ([v25 conformsToProtocol:&OBJC_PROTOCOL___PDEndpointServerEntityHooks] && (objc_msgSend(v25, "willBeProcessedByEndpointServer:", self) & 1) == 0)
           {
-            (*(v14 + 2))(v14, 0, 0);
-            v34 = v20;
+            (*(completionCopy + 2))(completionCopy, 0, 0);
+            daemon = v20;
 LABEL_34:
-            v12 = v46;
-            v11 = v47;
-            v13 = v48;
+            insertCopy = v46;
+            classCopy = v47;
+            deleteCopy = v48;
             goto LABEL_35;
           }
         }
@@ -5422,7 +5422,7 @@ LABEL_34:
       }
     }
 
-    v44 = v14;
+    v44 = completionCopy;
 
     v54 = 0u;
     v55 = 0u;
@@ -5444,18 +5444,18 @@ LABEL_34:
           }
 
           v32 = *(*(&v52 + 1) + 8 * j);
-          v33 = [v32 appIdentifier];
+          appIdentifier2 = [v32 appIdentifier];
 
-          if (!v33)
+          if (!appIdentifier2)
           {
             [v32 setAppIdentifier:v18];
           }
 
           if ([v32 conformsToProtocol:&OBJC_PROTOCOL___PDEndpointServerEntityHooks] && (objc_msgSend(v32, "willBeProcessedByEndpointServer:", self) & 1) == 0)
           {
-            v14 = v44;
+            completionCopy = v44;
             v44[2](v44, 0, 0);
-            v34 = v27;
+            daemon = v27;
             goto LABEL_34;
           }
         }
@@ -5470,37 +5470,37 @@ LABEL_34:
       }
     }
 
-    v34 = [(PDEndpointServer *)self daemon];
-    v35 = [v34 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v35)
+    if (operationsManager)
     {
       v36 = [PDClassPublish alloc];
-      v37 = [(PDEndpointServer *)self database];
+      database = [(PDEndpointServer *)self database];
       v38 = v20;
-      v11 = v47;
-      v39 = sub_10007F73C(v36, v37, v47, v38, v27, v45);
+      classCopy = v47;
+      v39 = sub_10007F73C(v36, database, v47, v38, v27, v45);
 
-      v40 = [(PDEndpointServer *)self client];
-      v41 = sub_1000B2528(v40);
+      client3 = [(PDEndpointServer *)self client];
+      v41 = sub_1000B2528(client3);
       [v39 setSourceApplicationBundleIdentifier:v41];
 
       v49[0] = _NSConcreteStackBlock;
       v49[1] = 3221225472;
       v49[2] = sub_100035234;
       v49[3] = &unk_100202720;
-      v14 = v44;
+      completionCopy = v44;
       v50 = v44;
       [v39 addOnFinishBlock:v49];
-      v42 = [v34 operationsManager];
-      sub_1001232E0(v42, v39);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v39);
     }
 
     else
     {
       CLSInitLog();
       v43 = CLSLogDefault;
-      v14 = v44;
+      completionCopy = v44;
       if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -5508,12 +5508,12 @@ LABEL_34:
       }
 
       v39 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil.", v44];
-      (*(v14 + 2))(v14, 0, v39);
-      v11 = v47;
+      (*(completionCopy + 2))(completionCopy, 0, v39);
+      classCopy = v47;
     }
 
-    v12 = v46;
-    v13 = v48;
+    insertCopy = v46;
+    deleteCopy = v48;
 
 LABEL_35:
   }
@@ -5521,28 +5521,28 @@ LABEL_35:
   else
   {
     v18 = [NSError cls_createErrorWithCode:4 description:@"Creating classes not allowed. Not a Dashboard Client."];
-    (*(v14 + 2))(v14, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 }
 
-- (void)remote_publishSurveyAnswers:(id)a3 completion:(id)a4
+- (void)remote_publishSurveyAnswers:(id)answers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  answersCopy = answers;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self daemon];
-    v11 = [v10 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v11)
+    if (operationsManager)
     {
       v12 = objc_opt_new();
       v13 = objc_opt_new();
-      v14 = [(PDEndpointServer *)self database];
+      database = [(PDEndpointServer *)self database];
       v15 = objc_opt_class();
-      v16 = [v6 objectID];
-      v41[0] = v16;
+      objectID = [answersCopy objectID];
+      v41[0] = objectID;
       v41[1] = &off_10021B570;
       v17 = [NSArray arrayWithObjects:v41 count:2];
       v37[0] = _NSConcreteStackBlock;
@@ -5553,34 +5553,34 @@ LABEL_35:
       v38 = v18;
       v19 = v13;
       v39 = v19;
-      [v14 selectAll:v15 where:@"surveyID = ? and state = ?" bindings:v17 block:v37];
+      [database selectAll:v15 where:@"surveyID = ? and state = ?" bindings:v17 block:v37];
 
       v20 = objc_opt_new();
       if ([v19 count])
       {
         v21 = [PDDatabase whereSQLForArray:v19 prefix:@"parentObjectID in "];
-        v22 = [(PDEndpointServer *)self database];
+        database2 = [(PDEndpointServer *)self database];
         v23 = objc_opt_class();
         v35[0] = _NSConcreteStackBlock;
         v35[1] = 3221225472;
         v35[2] = sub_100035938;
         v35[3] = &unk_100202770;
         v36 = v20;
-        [v22 selectAll:v23 where:v21 bindings:v19 block:v35];
+        [database2 selectAll:v23 where:v21 bindings:v19 block:v35];
       }
 
       v24 = [PDPublishSurveyAnswersOperation alloc];
-      v25 = [(PDEndpointServer *)self database];
-      v26 = sub_100082BC0(v24, v25, v6, v18, v20);
+      database3 = [(PDEndpointServer *)self database];
+      v26 = sub_100082BC0(v24, database3, answersCopy, v18, v20);
 
       v30 = _NSConcreteStackBlock;
       v31 = 3221225472;
       v32 = sub_10003594C;
       v33 = &unk_100202798;
-      v34 = v7;
+      v34 = completionCopy;
       [v26 addOnFinishBlock:&v30];
-      v27 = [v10 operationsManager];
-      sub_1001232E0(v27, v26);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v26);
     }
 
     else
@@ -5594,7 +5594,7 @@ LABEL_35:
       }
 
       v18 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (*(v7 + 2))(v7, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 
@@ -5608,37 +5608,37 @@ LABEL_35:
       _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "CLSDataStore unable to publish survey answer, app is not dashboard client", buf, 2u);
     }
 
-    v10 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    (*(v7 + 2))(v7, 0, v10);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
+    (*(completionCopy + 2))(completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_fetchSurveyAnswer:(id)a3 responderIDs:(id)a4 completion:(id)a5
+- (void)remote_fetchSurveyAnswer:(id)answer responderIDs:(id)ds completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  answerCopy = answer;
+  dsCopy = ds;
+  completionCopy = completion;
   sub_100023888(self, a2);
-  v12 = [(PDEndpointServer *)self client];
-  if (v12 && (v13 = v12[26], v12, (v13 & 1) != 0))
+  client = [(PDEndpointServer *)self client];
+  if (client && (v13 = client[26], client, (v13 & 1) != 0))
   {
-    v14 = [(PDEndpointServer *)self daemon];
-    v15 = [v14 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v15)
+    if (operationsManager)
     {
       v16 = [PDFetchSurveyAnswerOperation alloc];
-      v17 = [(PDEndpointServer *)self database];
-      v18 = sub_1000A5C10(v16, v17, v9, v10);
+      database = [(PDEndpointServer *)self database];
+      v18 = sub_1000A5C10(v16, database, answerCopy, dsCopy);
 
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100035C74;
       v22[3] = &unk_1002027C0;
-      v23 = v11;
+      v23 = completionCopy;
       [v18 addOnFinishBlock:v22];
-      v19 = [v14 operationsManager];
-      sub_1001232E0(v19, v18);
+      operationsManager2 = [daemon operationsManager];
+      sub_1001232E0(operationsManager2, v18);
     }
 
     else
@@ -5652,7 +5652,7 @@ LABEL_35:
       }
 
       v18 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (*(v11 + 2))(v11, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 
@@ -5666,27 +5666,27 @@ LABEL_35:
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "CLSDataStore unable to publish survey answer, app is not dashboard client", buf, 2u);
     }
 
-    v14 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    (*(v11 + 2))(v11, 0, v14);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
+    (*(completionCopy + 2))(completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6
+- (void)remote_publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PDEndpointServer *)self client];
-  if (v14 && (v15 = v14[26], v14, (v15 & 1) != 0))
+  requestsCopy = requests;
+  requestorCopy = requestor;
+  accountsCopy = accounts;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v15 = client[26], client, (v15 & 1) != 0))
   {
-    v35 = v12;
-    v36 = v11;
+    v35 = accountsCopy;
+    v36 = requestorCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v16 = v10;
+    v16 = requestsCopy;
     v17 = [v16 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v17)
     {
@@ -5702,8 +5702,8 @@ LABEL_35:
           }
 
           v21 = *(*(&v40 + 1) + 8 * i);
-          v22 = [(PDEndpointServer *)self client];
-          v23 = sub_1000B2528(v22);
+          client2 = [(PDEndpointServer *)self client];
+          v23 = sub_1000B2528(client2);
           [v21 setBundleIdentifier:v23];
         }
 
@@ -5713,30 +5713,30 @@ LABEL_35:
       while (v18);
     }
 
-    v24 = [(PDEndpointServer *)self daemon];
-    v25 = [v24 operationsManager];
+    daemon = [(PDEndpointServer *)self daemon];
+    operationsManager = [daemon operationsManager];
 
-    if (v25)
+    if (operationsManager)
     {
-      v26 = [v24 operationsManager];
-      v27 = sub_100121714(v26);
+      operationsManager2 = [daemon operationsManager];
+      v27 = sub_100121714(operationsManager2);
 
-      v12 = v35;
+      accountsCopy = v35;
       if (v27)
       {
         v28 = [PDASMPublishAccountOperation alloc];
-        v29 = [(PDEndpointServer *)self database];
-        v30 = sub_1000DF7CC(v28, v29, v16);
-        v11 = v36;
+        database = [(PDEndpointServer *)self database];
+        v30 = sub_1000DF7CC(v28, database, v16);
+        requestorCopy = v36;
       }
 
       else
       {
         v32 = [PDPublishAdminRequest alloc];
-        v29 = [(PDEndpointServer *)self database];
+        database = [(PDEndpointServer *)self database];
         v33 = v32;
-        v11 = v36;
-        v30 = [(PDPublishAdminRequest *)v33 initWithDatabase:v29 adminRequests:v16 requestor:v36];
+        requestorCopy = v36;
+        v30 = [(PDPublishAdminRequest *)v33 initWithDatabase:database adminRequests:v16 requestor:v36];
       }
 
       [(PDPublishAdminRequest *)v30 setAdminRequestAccounts:v35];
@@ -5744,17 +5744,17 @@ LABEL_35:
       v37[1] = 3221225472;
       v37[2] = sub_1000360BC;
       v37[3] = &unk_1002027E8;
-      v38 = v13;
+      v38 = completionCopy;
       [(PDOperation *)v30 addOnFinishBlock:v37];
-      v34 = [v24 operationsManager];
-      sub_1001232E0(v34, v30);
+      operationsManager3 = [daemon operationsManager];
+      sub_1001232E0(operationsManager3, v30);
     }
 
     else
     {
       CLSInitLog();
       v31 = CLSLogDefault;
-      v12 = v35;
+      accountsCopy = v35;
       if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -5762,67 +5762,67 @@ LABEL_35:
       }
 
       v30 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-      (*(v13 + 2))(v13, 0, v30);
-      v11 = v36;
+      (*(completionCopy + 2))(completionCopy, 0, v30);
+      requestorCopy = v36;
     }
   }
 
   else
   {
-    v24 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    (*(v13 + 2))(v13, 0, v24);
+    daemon = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
+    (*(completionCopy + 2))(completionCopy, 0, daemon);
   }
 }
 
-- (void)remote_deleteAdminRequestID:(id)a3 completion:(id)a4
+- (void)remote_deleteAdminRequestID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDEndpointServer *)self client];
-  if (v8 && (v9 = v8[26], v8, (v9 & 1) != 0))
+  dCopy = d;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v9 = client[26], client, (v9 & 1) != 0))
   {
-    v10 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v11 = objc_opt_class();
-    v15 = v6;
+    v15 = dCopy;
     v12 = [NSArray arrayWithObjects:&v15 count:1];
-    v13 = [v10 deleteAll:v11 where:@"objectID = ?" bindings:v12];
+    v13 = [database deleteAll:v11 where:@"objectID = ?" bindings:v12];
 
-    v7[2](v7, v13, 0);
+    completionCopy[2](completionCopy, v13, 0);
   }
 
   else
   {
     v14 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    (v7)[2](v7, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
   }
 }
 
-- (void)remote_fetchOrphanedAssetsWithCompletion:(id)a3
+- (void)remote_fetchOrphanedAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PDEndpointServer *)self client];
-  if (v5 && (v6 = v5[26], v5, (v6 & 1) != 0))
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (client && (v6 = client[26], client, (v6 & 1) != 0))
   {
-    v7 = [(PDEndpointServer *)self database];
-    v8 = sub_10015D1E8(v7);
+    database = [(PDEndpointServer *)self database];
+    v8 = sub_10015D1E8(database);
 
-    v4[2](v4, v8, 0);
+    completionCopy[2](completionCopy, v8, 0);
   }
 
   else
   {
     v8 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 }
 
-- (void)remote_relayRequestWithData:(id)a3 requestType:(unint64_t)a4 fileHandle:(id)a5 completion:(id)a6
+- (void)remote_relayRequestWithData:(id)data requestType:(unint64_t)type fileHandle:(id)handle completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PDEndpointServer *)self client];
-  if (!v13 || (v14 = v13[26], v13, (v14 & 1) == 0))
+  dataCopy = data;
+  handleCopy = handle;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v14 = client[26], client, (v14 & 1) == 0))
   {
     v16 = [NSError cls_createErrorWithCode:4 description:@"Not authorized."];
     goto LABEL_11;
@@ -5830,32 +5830,32 @@ LABEL_35:
 
   v27 = 0;
   v28 = 0;
-  v15 = [v11 seekToEndReturningOffset:&v28 error:&v27];
+  v15 = [handleCopy seekToEndReturningOffset:&v28 error:&v27];
   v16 = v27;
   if ((v15 & 1) == 0)
   {
 LABEL_11:
-    v12[2](v12, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     goto LABEL_12;
   }
 
-  v17 = [(PDEndpointServer *)self daemon];
-  v18 = [v17 operationsManager];
+  daemon = [(PDEndpointServer *)self daemon];
+  operationsManager = [daemon operationsManager];
 
-  if (v18)
+  if (operationsManager)
   {
     v19 = [PDRelayRequestOperation alloc];
-    v20 = [(PDEndpointServer *)self database];
-    v21 = [(PDRelayRequestOperation *)v19 initWithDatabase:v20 data:v10 fileHandle:v11 requestType:a4];
+    database = [(PDEndpointServer *)self database];
+    v21 = [(PDRelayRequestOperation *)v19 initWithDatabase:database data:dataCopy fileHandle:handleCopy requestType:type];
 
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100036790;
     v24[3] = &unk_100202810;
-    v25 = v12;
+    v25 = completionCopy;
     [(PDOperation *)v21 addOnFinishBlock:v24];
-    v22 = [v17 operationsManager];
-    sub_1001232E0(v22, v21);
+    operationsManager2 = [daemon operationsManager];
+    sub_1001232E0(operationsManager2, v21);
   }
 
   else
@@ -5869,92 +5869,92 @@ LABEL_11:
     }
 
     v21 = [NSError cls_createErrorWithCode:100 description:@"Operations manager is nil."];
-    v12[2](v12, 0, v21);
+    completionCopy[2](completionCopy, 0, v21);
   }
 
 LABEL_12:
 }
 
-- (void)remote_saveInsightEvents:(id)a3 completion:(id)a4
+- (void)remote_saveInsightEvents:(id)events completion:(id)completion
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(PDEndpointServer *)self client];
-  if (!v7 || (v8 = v7[26], v7, (v8 & 1) == 0))
+  eventsCopy = events;
+  completionCopy = completion;
+  client = [(PDEndpointServer *)self client];
+  if (!client || (v8 = client[26], client, (v8 & 1) == 0))
   {
     v18 = @"Not authorized.";
     goto LABEL_9;
   }
 
-  v9 = [(PDEndpointServer *)self database];
-  v10 = [PDEndpointRequestOperation isEndpointAvailable:@"uploadEvents" inDatabase:v9];
+  database = [(PDEndpointServer *)self database];
+  v10 = [PDEndpointRequestOperation isEndpointAvailable:@"uploadEvents" inDatabase:database];
 
   if ((v10 & 1) == 0)
   {
     v18 = @"Not enabled.";
 LABEL_9:
-    v19 = [NSError cls_createErrorWithCode:4 description:v18];
+    eventsCopy = [NSError cls_createErrorWithCode:4 description:v18];
     goto LABEL_10;
   }
 
-  v11 = [(PDEndpointServer *)self database];
-  v12 = [v11 insertOrUpdateObjects:v20];
+  database2 = [(PDEndpointServer *)self database];
+  v12 = [database2 insertOrUpdateObjects:eventsCopy];
 
   if (v12)
   {
-    v13 = [(PDEndpointServer *)self daemon];
+    daemon = [(PDEndpointServer *)self daemon];
     v14 = [PDUploadEventsOperation alloc];
-    v15 = [(PDEndpointServer *)self database];
-    v16 = [(PDURLRequestOperation *)v14 initWithDatabase:v15];
+    database3 = [(PDEndpointServer *)self database];
+    v16 = [(PDURLRequestOperation *)v14 initWithDatabase:database3];
 
-    v17 = [v13 operationsManager];
-    sub_100123A84(v17, v16);
+    operationsManager = [daemon operationsManager];
+    sub_100123A84(operationsManager, v16);
 
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_11;
   }
 
-  v19 = [NSError cls_createErrorWithCode:100 format:@"Failed to save events: %@", v20];
+  eventsCopy = [NSError cls_createErrorWithCode:100 format:@"Failed to save events: %@", eventsCopy];
 LABEL_10:
-  v13 = v19;
-  v6[2](v6, 0, v19);
+  daemon = eventsCopy;
+  completionCopy[2](completionCopy, 0, eventsCopy);
 LABEL_11:
 }
 
-- (id)asmRosterSearchFinishBlock:(id)a3 query:(id)a4 asmConfig:(id)a5 buffer:(id)a6 buffSize:(unint64_t)a7 nextOffset:(unint64_t)a8
+- (id)asmRosterSearchFinishBlock:(id)block query:(id)query asmConfig:(id)config buffer:(id)buffer buffSize:(unint64_t)size nextOffset:(unint64_t)offset
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  blockCopy = block;
+  queryCopy = query;
+  configCopy = config;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100036FBC;
   v22[3] = &unk_100202860;
-  v23 = a6;
-  v24 = v13;
-  v25 = v12;
-  v26 = v14;
-  v27 = a8;
-  v15 = v14;
-  v16 = v12;
-  v17 = v13;
-  v18 = v23;
+  bufferCopy = buffer;
+  v24 = queryCopy;
+  v25 = blockCopy;
+  v26 = configCopy;
+  offsetCopy = offset;
+  v15 = configCopy;
+  v16 = blockCopy;
+  v17 = queryCopy;
+  v18 = bufferCopy;
   v19 = objc_retainBlock(v22);
   v20 = objc_retainBlock(v19);
 
   return v20;
 }
 
-- (int64_t)_authorizationStatusActivityWithID:(id)a3
+- (int64_t)_authorizationStatusActivityWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDEndpointServer *)self database];
-  v6 = [v5 select:objc_opt_class() identity:v4];
+  dCopy = d;
+  database = [(PDEndpointServer *)self database];
+  v6 = [database select:objc_opt_class() identity:dCopy];
 
   if (v6)
   {
-    v7 = [v6 parentObjectID];
-    v8 = [(PDEndpointServer *)self _authorizationStatusForHandoutAssignedItem:v7];
+    parentObjectID = [v6 parentObjectID];
+    v8 = [(PDEndpointServer *)self _authorizationStatusForHandoutAssignedItem:parentObjectID];
 
     if (v8 == 1)
     {
@@ -5963,8 +5963,8 @@ LABEL_11:
 
     else
     {
-      v10 = [v6 parentObjectID];
-      v9 = [(PDEndpointServer *)self _authorizationStatusForContextWithObjectID:v10];
+      parentObjectID2 = [v6 parentObjectID];
+      v9 = [(PDEndpointServer *)self _authorizationStatusForContextWithObjectID:parentObjectID2];
     }
   }
 
@@ -5976,38 +5976,38 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_authorizationStatusForContextWithObjectID:(id)a3
+- (int64_t)_authorizationStatusForContextWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDEndpointServer *)self database];
+  dCopy = d;
+  database = [(PDEndpointServer *)self database];
   v6 = objc_opt_class();
-  v11 = v4;
+  v11 = dCopy;
   v7 = [NSArray arrayWithObjects:&v11 count:1];
 
-  v8 = [v5 select:v6 where:@"objectID = ?" bindings:v7];
+  v8 = [database select:v6 where:@"objectID = ?" bindings:v7];
 
   v9 = [(PDEndpointServer *)self _authorizationStatusForContext:v8];
   return v9;
 }
 
-- (int64_t)_authorizationStatusForContext:(id)a3
+- (int64_t)_authorizationStatusForContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 2;
-    v5 = [(PDEndpointServer *)self database];
+    database = [(PDEndpointServer *)self database];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100037594;
     v8[3] = &unk_100202888;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
-    sub_10010BE68(v5, v8);
+    v9 = contextCopy;
+    sub_10010BE68(database, v8);
 
     v6 = v12[3];
     _Block_object_dispose(&v11, 8);
@@ -6021,19 +6021,19 @@ LABEL_11:
   return v6;
 }
 
-- (int64_t)_authorizationStatusForHandoutAssignedItem:(id)a3
+- (int64_t)_authorizationStatusForHandoutAssignedItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = [(PDEndpointServer *)self database];
-    v6 = [v5 select:objc_opt_class() identity:v4];
+    database = [(PDEndpointServer *)self database];
+    v6 = [database select:objc_opt_class() identity:itemCopy];
 
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 2;
-    v7 = [(PDEndpointServer *)self database];
+    database2 = [(PDEndpointServer *)self database];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000377B8;
@@ -6042,7 +6042,7 @@ LABEL_11:
     v11[4] = self;
     v8 = v6;
     v12 = v8;
-    sub_10010BE68(v7, v11);
+    sub_10010BE68(database2, v11);
 
     v9 = v15[3];
     _Block_object_dispose(&v14, 8);
@@ -6056,55 +6056,55 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_authorizationStatusForObject:(id)a3
+- (int64_t)_authorizationStatusForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 2;
-  v5 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100037988;
   v9[3] = &unk_100202270;
-  v6 = v4;
-  v11 = self;
+  v6 = objectCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  sub_10010BE68(v5, v9);
+  sub_10010BE68(database, v9);
   v7 = v14[3];
 
   _Block_object_dispose(&v13, 8);
   return v7;
 }
 
-- (id)_clientScopedPredicate:(id)a3 forEntityClass:(Class)a4
+- (id)_clientScopedPredicate:(id)predicate forEntityClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(PDEndpointServer *)self client];
-  v8 = v7;
-  if (v7 && v7[24] == 1)
+  predicateCopy = predicate;
+  client = [(PDEndpointServer *)self client];
+  v8 = client;
+  if (client && client[24] == 1)
   {
   }
 
   else
   {
-    v9 = [(PDEndpointServer *)self database];
-    v10 = [v9 entityClass:a4 containsColumnNamed:@"appIdentifier"];
+    database = [(PDEndpointServer *)self database];
+    v10 = [database entityClass:class containsColumnNamed:@"appIdentifier"];
 
     if (v10)
     {
-      v11 = [(PDEndpointServer *)self client];
-      v12 = sub_1000B2528(v11);
+      client2 = [(PDEndpointServer *)self client];
+      v12 = sub_1000B2528(client2);
 
-      v13 = [v6 pd_scopeToKeyPath:@"appIdentifier" value:v12];
+      v13 = [predicateCopy pd_scopeToKeyPath:@"appIdentifier" value:v12];
 
       goto LABEL_7;
     }
   }
 
-  v13 = v6;
+  v13 = predicateCopy;
 LABEL_7:
 
   return v13;
@@ -6112,8 +6112,8 @@ LABEL_7:
 
 - (NSMutableDictionary)statusReport
 {
-  v3 = [(PDEndpointServer *)self client];
-  v4 = sub_1000B2560(v3);
+  client = [(PDEndpointServer *)self client];
+  v4 = sub_1000B2560(client);
   v5 = [v4 mutableCopy];
 
   if (self && (previousCommands = self->_previousCommands) != 0)
@@ -6159,14 +6159,14 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)isCurrentUserStudent:(id *)a3
+- (BOOL)isCurrentUserStudent:(id *)student
 {
-  v5 = [(PDEndpointServer *)self database];
+  database = [(PDEndpointServer *)self database];
   v6 = sub_10003E1B4();
   v7 = CLSCurrentPersonaUniqueIdentifier();
-  LODWORD(v8) = sub_10003FF10(PDAccountInfo, v6, v7, a3);
-  v9 = [(PDEndpointServer *)self daemon];
-  v10 = sub_1000DA28C(v9, v5);
+  LODWORD(v8) = sub_10003FF10(PDAccountInfo, v6, v7, student);
+  daemon = [(PDEndpointServer *)self daemon];
+  v10 = sub_1000DA28C(daemon, database);
 
   if (![v10 requiresPersonaMatch] || v8)
   {

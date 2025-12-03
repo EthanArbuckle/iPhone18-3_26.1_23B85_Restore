@@ -1,10 +1,10 @@
 @interface CKCollaborationQueryController
-- (id)chatGUIDForSearchableItem:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
 - (id)createFoundItemsHandler;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
+- (id)queryAttributesForText:(id)text;
 @end
 
 @implementation CKCollaborationQueryController
@@ -37,10 +37,10 @@
   return v8;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
     v3 = *MEMORY[0x1E6964C38];
     v14 = @"com_apple_mobilesms_lpDescription";
@@ -83,16 +83,16 @@
   return v4;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -121,7 +121,7 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__14;
   v17 = __Block_byref_object_dispose__14;
-  v18 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__CKCollaborationQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -251,12 +251,12 @@ void __57__CKCollaborationQueryController_createFoundItemsHandler__block_invoke(
   }
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 domainIdentifier];
+  attributeSet = [item attributeSet];
+  domainIdentifier = [attributeSet domainIdentifier];
 
-  return v4;
+  return domainIdentifier;
 }
 
 @end

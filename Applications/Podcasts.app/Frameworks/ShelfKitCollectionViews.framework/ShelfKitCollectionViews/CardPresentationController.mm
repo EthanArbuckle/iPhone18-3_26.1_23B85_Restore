@@ -1,13 +1,13 @@
 @interface CardPresentationController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC23ShelfKitCollectionViews26CardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC23ShelfKitCollectionViews26CardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)containerViewWillLayoutSubviews;
-- (void)didTap:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)didTap:(id)tap;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
@@ -15,7 +15,7 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_91C18();
   v5 = v4;
   v7 = v6;
@@ -32,34 +32,34 @@
   return result;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_91DB8(a3);
+  selfCopy = self;
+  sub_91DB8(container);
   swift_unknownObjectRelease();
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_91F64();
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_920E8();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CardPresentationController *)&v5 presentationTransitionDidEnd:v3];
-  if (!v3)
+  [(CardPresentationController *)&v5 presentationTransitionDidEnd:endCopy];
+  if (!endCopy)
   {
     [*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews26CardPresentationController_cardRim] removeFromSuperview];
     [*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews26CardPresentationController_dimmingView] removeFromSuperview];
@@ -68,44 +68,44 @@
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_92AE4();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CardPresentationController *)&v5 dismissalTransitionDidEnd:v3];
-  if (v3)
+  [(CardPresentationController *)&v5 dismissalTransitionDidEnd:endCopy];
+  if (endCopy)
   {
     [*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews26CardPresentationController_dimmingView] removeFromSuperview];
   }
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = self;
-  v3 = [(CardPresentationController *)v4 presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  selfCopy = self;
+  presentedViewController = [(CardPresentationController *)selfCopy presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews26CardPresentationController_dimmingView);
-  v5 = a3;
-  v6 = self;
-  [v5 locationInView:v4];
+  beginCopy = begin;
+  selfCopy = self;
+  [beginCopy locationInView:v4];
   v8 = v7;
   v10 = v9;
-  v11 = [(CardPresentationController *)v6 presentedViewController];
-  v12 = [v11 view];
+  presentedViewController = [(CardPresentationController *)selfCopy presentedViewController];
+  view = [presentedViewController view];
 
-  if (v12)
+  if (view)
   {
-    [v12 frame];
+    [view frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -130,7 +130,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews26CardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC23ShelfKitCollectionViews26CardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

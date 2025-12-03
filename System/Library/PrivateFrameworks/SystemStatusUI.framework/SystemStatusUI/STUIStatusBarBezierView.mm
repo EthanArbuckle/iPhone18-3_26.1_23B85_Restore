@@ -1,62 +1,62 @@
 @interface STUIStatusBarBezierView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarBezierView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarBezierView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)setAlignmentRectInsets:(UIEdgeInsets)a3;
-- (void)setBezierPath:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setAlignmentRectInsets:(UIEdgeInsets)insets;
+- (void)setBezierPath:(id)path;
+- (void)setFillColor:(id)color;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation STUIStatusBarBezierView
 
-- (STUIStatusBarBezierView)initWithFrame:(CGRect)a3
+- (STUIStatusBarBezierView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarBezierView;
-  v3 = [(STUIStatusBarBezierView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(STUIStatusBarBezierView *)v3 shapeLayer];
-  [v4 setFillColor:0];
+  v3 = [(STUIStatusBarBezierView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  shapeLayer = [(STUIStatusBarBezierView *)v3 shapeLayer];
+  [shapeLayer setFillColor:0];
 
   return v3;
 }
 
-- (void)setBezierPath:(id)a3
+- (void)setBezierPath:(id)path
 {
-  v5 = a3;
-  if (self->_bezierPath != v5)
+  pathCopy = path;
+  if (self->_bezierPath != pathCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_bezierPath, a3);
-    v6 = [(STUIStatusBarBezierView *)self shapeLayer];
+    v10 = pathCopy;
+    objc_storeStrong(&self->_bezierPath, path);
+    shapeLayer = [(STUIStatusBarBezierView *)self shapeLayer];
     v7 = v10;
-    [v6 setPath:{-[UIBezierPath CGPath](v10, "CGPath")}];
+    [shapeLayer setPath:{-[UIBezierPath CGPath](v10, "CGPath")}];
     [(UIBezierPath *)v10 lineWidth];
-    [v6 setLineWidth:?];
-    v8 = [(UIBezierPath *)v10 usesEvenOddFillRule];
+    [shapeLayer setLineWidth:?];
+    usesEvenOddFillRule = [(UIBezierPath *)v10 usesEvenOddFillRule];
     v9 = MEMORY[0x277CDA248];
-    if (!v8)
+    if (!usesEvenOddFillRule)
     {
       v9 = MEMORY[0x277CDA250];
     }
 
-    [v6 setFillRule:*v9];
+    [shapeLayer setFillRule:*v9];
     [(STUIStatusBarBezierView *)self invalidateIntrinsicContentSize];
 
-    v5 = v10;
+    pathCopy = v10;
   }
 }
 
-- (void)setAlignmentRectInsets:(UIEdgeInsets)a3
+- (void)setAlignmentRectInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_alignmentRectInsets.top), vceqq_f64(v4, *&self->_alignmentRectInsets.bottom)))) & 1) == 0)
   {
-    self->_alignmentRectInsets = a3;
+    self->_alignmentRectInsets = insets;
     [(STUIStatusBarBezierView *)self invalidateIntrinsicContentSize];
   }
 }
@@ -80,51 +80,51 @@
   return result;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_fillColor, a3);
+    v9 = colorCopy;
+    objc_storeStrong(&self->_fillColor, color);
     v6 = v9;
-    v7 = [(UIColor *)v9 CGColor];
-    v8 = [(STUIStatusBarBezierView *)self shapeLayer];
-    [v8 setFillColor:v7];
+    cGColor = [(UIColor *)v9 CGColor];
+    shapeLayer = [(STUIStatusBarBezierView *)self shapeLayer];
+    [shapeLayer setFillColor:cGColor];
 
-    v5 = v9;
+    colorCopy = v9;
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  if (self->_strokeColor != colorCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_strokeColor, a3);
+    v9 = colorCopy;
+    objc_storeStrong(&self->_strokeColor, color);
     v6 = v9;
-    v7 = [(UIColor *)v9 CGColor];
-    v8 = [(STUIStatusBarBezierView *)self shapeLayer];
-    [v8 setStrokeColor:v7];
+    cGColor = [(UIColor *)v9 CGColor];
+    shapeLayer = [(STUIStatusBarBezierView *)self shapeLayer];
+    [shapeLayer setStrokeColor:cGColor];
 
-    v5 = v9;
+    colorCopy = v9;
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = STUIStatusBarBezierView;
-  if (-[STUIStatusBarBezierView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, v4) || ([v4 isEqualToString:@"fillColor"] & 1) != 0)
+  if (-[STUIStatusBarBezierView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, keyCopy) || ([keyCopy isEqualToString:@"fillColor"] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"strokeColor"];
+    v5 = [keyCopy isEqualToString:@"strokeColor"];
   }
 
   return v5;

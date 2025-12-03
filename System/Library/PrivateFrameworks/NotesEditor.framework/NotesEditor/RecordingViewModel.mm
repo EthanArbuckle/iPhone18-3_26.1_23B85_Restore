@@ -1,10 +1,10 @@
 @interface RecordingViewModel
-- (void)audioControllerPlaybackStateChanged:(id)a3;
+- (void)audioControllerPlaybackStateChanged:(id)changed;
 @end
 
 @implementation RecordingViewModel
 
-- (void)audioControllerPlaybackStateChanged:(id)a3
+- (void)audioControllerPlaybackStateChanged:(id)changed
 {
   v3 = sub_21549E19C();
   v4 = *(v3 - 8);

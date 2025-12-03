@@ -9,7 +9,7 @@
 
 - (id)title
 {
-  v2 = self;
+  selfCopy = self;
   Handle.prettyName.getter();
   if (!v3)
   {
@@ -23,7 +23,7 @@
 
 - (id)handleIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   Handle.identifier.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -33,7 +33,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Handle.hashValue.getter();
 
   return v3;

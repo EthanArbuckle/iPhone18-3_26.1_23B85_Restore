@@ -4,19 +4,19 @@
 - (PXAssetUIImageViewTile)init;
 - (UIImage)image;
 - (UIView)view;
-- (void)_setContentSize:(CGSize)a3;
-- (void)_setDesiredContentsRect:(CGRect)a3;
+- (void)_setContentSize:(CGSize)size;
+- (void)_setDesiredContentsRect:(CGRect)rect;
 - (void)_updateContentView;
 - (void)_updateImageRequester;
 - (void)_updateImageView;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setCornerRadius:(double)a3;
-- (void)setImageRequester:(id)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setShouldAllowFocus:(BOOL)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setImageRequester:(id)requester;
+- (void)setPlaceholderColor:(id)color;
+- (void)setShouldAllowFocus:(BOOL)focus;
 @end
 
 @implementation PXAssetUIImageViewTile
@@ -43,15 +43,15 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXImageRequesterObserverContext_142430 == a5)
+  if (PXImageRequesterObserverContext_142430 == context)
   {
-    v5 = a4;
-    v7 = a3;
-    v8 = [(PXAssetUIImageViewTile *)self imageRequester];
+    changeCopy = change;
+    observableCopy = observable;
+    imageRequester = [(PXAssetUIImageViewTile *)self imageRequester];
 
-    if ((v5 & 0x84) != 0 && v8 == v7)
+    if ((changeCopy & 0x84) != 0 && imageRequester == observableCopy)
     {
 
       [(PXAssetUIImageViewTile *)self imageDidChange];
@@ -61,26 +61,26 @@
 
 - (void)_updateImageView
 {
-  v24 = [(PXAssetUIImageViewTile *)self imageRequester];
-  v3 = [(PXFocusableUIImageView *)self->_imageView image];
-  v4 = [v24 image];
+  imageRequester = [(PXAssetUIImageViewTile *)self imageRequester];
+  image = [(PXFocusableUIImageView *)self->_imageView image];
+  image2 = [imageRequester image];
 
-  if (v3 != v4)
+  if (image != image2)
   {
     imageView = self->_imageView;
-    v6 = [v24 image];
-    [(PXFocusableUIImageView *)imageView setImage:v6];
+    image3 = [imageRequester image];
+    [(PXFocusableUIImageView *)imageView setImage:image3];
   }
 
-  v7 = [(PXFocusableUIImageView *)self->_imageView layer];
-  if (v24)
+  layer = [(PXFocusableUIImageView *)self->_imageView layer];
+  if (imageRequester)
   {
-    [v24 contentsRect];
+    [imageRequester contentsRect];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    [v7 contentsRect];
+    [layer contentsRect];
     v27.origin.x = v16;
     v27.origin.y = v17;
     v27.size.width = v18;
@@ -94,7 +94,7 @@
       goto LABEL_8;
     }
 
-    [v24 contentsRect];
+    [imageRequester contentsRect];
   }
 
   else
@@ -105,7 +105,7 @@
     v23 = *(off_1E77221F8 + 3);
   }
 
-  [v7 setContentsRect:{v20, v21, v22, v23}];
+  [layer setContentsRect:{v20, v21, v22, v23}];
 LABEL_8:
 }
 
@@ -122,7 +122,7 @@ LABEL_8:
   [(PXFocusableUIImageView *)self->_imageView bounds];
   v16 = v15;
   v18 = v17;
-  v19 = [(PXAssetUIImageViewTile *)self imageRequester];
+  imageRequester = [(PXAssetUIImageViewTile *)self imageRequester];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke;
@@ -135,7 +135,7 @@ LABEL_8:
   v20[9] = v14;
   v20[10] = v16;
   v20[11] = v18;
-  [v19 performChanges:v20];
+  [imageRequester performChanges:v20];
 }
 
 void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1, void *a2)
@@ -148,21 +148,21 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
   [v5 setViewportSize:{a1[10], a1[11]}];
 }
 
-- (void)_setContentSize:(CGSize)a3
+- (void)_setContentSize:(CGSize)size
 {
-  if (self->__contentSize.width != a3.width || self->__contentSize.height != a3.height)
+  if (self->__contentSize.width != size.width || self->__contentSize.height != size.height)
   {
-    self->__contentSize = a3;
+    self->__contentSize = size;
   }
 }
 
-- (void)_setDesiredContentsRect:(CGRect)a3
+- (void)_setDesiredContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->__desiredContentsRect, a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(self->__desiredContentsRect, rect))
   {
     self->__desiredContentsRect.origin.x = x;
     self->__desiredContentsRect.origin.y = y;
@@ -171,35 +171,35 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXAssetUIImageViewTile *)self _updateContentView];
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   imageRequester = self->_imageRequester;
-  if (imageRequester != v5)
+  if (imageRequester != requesterCopy)
   {
-    v7 = v5;
+    v7 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext_142430];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXAssetUIImageViewTile *)self _updateImageRequester];
     [(PXAssetUIImageViewTile *)self _updateImageView];
     [(PXImageRequester *)v7 registerChangeObserver:self context:PXImageRequesterObserverContext_142430];
-    v5 = v7;
+    requesterCopy = v7;
   }
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  [(PXAssetUIImageViewTile *)self _setContentSize:a3->contentSize.width, a3->contentSize.height];
-  [(PXAssetUIImageViewTile *)self _setDesiredContentsRect:a3->contentsRect.origin.x, a3->contentsRect.origin.y, a3->contentsRect.size.width, a3->contentsRect.size.height];
+  [(PXAssetUIImageViewTile *)self _setContentSize:geometry->contentSize.width, geometry->contentSize.height];
+  [(PXAssetUIImageViewTile *)self _setDesiredContentsRect:geometry->contentsRect.origin.x, geometry->contentsRect.origin.y, geometry->contentsRect.size.width, geometry->contentsRect.size.height];
 
   [(PXAssetUIImageViewTile *)self _updateImageRequester];
 }
@@ -207,15 +207,15 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
 - (void)prepareForReuse
 {
   [(PXFocusableUIImageView *)self->_imageView setReusable:0];
-  v3 = [(PXAssetUIImageViewTile *)self view];
-  [v3 setHidden:0];
+  view = [(PXAssetUIImageViewTile *)self view];
+  [view setHidden:0];
 }
 
 - (void)becomeReusable
 {
   [(PXFocusableUIImageView *)self->_imageView setReusable:1];
-  v3 = [(PXAssetUIImageViewTile *)self view];
-  [v3 setHidden:1];
+  view = [(PXAssetUIImageViewTile *)self view];
+  [view setHidden:1];
 
   [(PXAssetUIImageViewTile *)self setImageRequester:0];
   [(PXAssetUIImageViewTile *)self _setContentSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
@@ -238,8 +238,8 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
     self->_imageView = v5;
 
     [(PXFocusableUIImageView *)self->_imageView setDrawsFocusRing:1];
-    v7 = [(PXFocusableUIImageView *)self->_imageView layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer = [(PXFocusableUIImageView *)self->_imageView layer];
+    [layer setAllowsGroupOpacity:0];
 
     imageView = self->_imageView;
   }
@@ -258,29 +258,29 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
 
   [(PXFocusableUIImageView *)self->_imageView setContentMode:v8];
   v9 = self->_imageView;
-  v10 = [(PXAssetUIImageViewTile *)self placeholderColor];
-  [(PXFocusableUIImageView *)v9 setBackgroundColor:v10];
+  placeholderColor = [(PXAssetUIImageViewTile *)self placeholderColor];
+  [(PXFocusableUIImageView *)v9 setBackgroundColor:placeholderColor];
 
   [(PXAssetUIImageViewTile *)self cornerRadius];
   if (v11 == 0.0)
   {
-    v17 = [(PXFocusableUIImageView *)self->_imageView layer];
-    [v17 setCornerRadius:0.0];
+    layer2 = [(PXFocusableUIImageView *)self->_imageView layer];
+    [layer2 setCornerRadius:0.0];
   }
 
   else
   {
     [(PXAssetUIImageViewTile *)self cornerRadius];
     v13 = v12;
-    v14 = [(PXFocusableUIImageView *)self->_imageView layer];
-    [v14 setCornerRadius:v13];
+    layer3 = [(PXFocusableUIImageView *)self->_imageView layer];
+    [layer3 setCornerRadius:v13];
 
     v15 = *MEMORY[0x1E69796E8];
-    v16 = [(PXFocusableUIImageView *)self->_imageView layer];
-    [v16 setCornerCurve:v15];
+    layer4 = [(PXFocusableUIImageView *)self->_imageView layer];
+    [layer4 setCornerCurve:v15];
 
-    v17 = [(PXFocusableUIImageView *)self->_imageView layer];
-    [v17 setAllowsGroupOpacity:0];
+    layer2 = [(PXFocusableUIImageView *)self->_imageView layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   if (self->_shouldAllowFocus)
@@ -295,11 +295,11 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
   objc_storeStrong(&self->_contentView, v18);
 }
 
-- (void)setShouldAllowFocus:(BOOL)a3
+- (void)setShouldAllowFocus:(BOOL)focus
 {
-  if (self->_shouldAllowFocus != a3)
+  if (self->_shouldAllowFocus != focus)
   {
-    self->_shouldAllowFocus = a3;
+    self->_shouldAllowFocus = focus;
     if (self->_contentView)
     {
       [(PXAssetUIImageViewTile *)self _updateContentView];
@@ -307,12 +307,12 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v5 = a3;
-  if (self->_placeholderColor != v5)
+  colorCopy = color;
+  if (self->_placeholderColor != colorCopy)
   {
-    objc_storeStrong(&self->_placeholderColor, a3);
+    objc_storeStrong(&self->_placeholderColor, color);
     if (self->_contentView)
     {
       [(PXAssetUIImageViewTile *)self _updateContentView];
@@ -322,10 +322,10 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
 
 - (UIImage)image
 {
-  v2 = [(PXAssetUIImageViewTile *)self imageRequester];
-  v3 = [v2 image];
+  imageRequester = [(PXAssetUIImageViewTile *)self imageRequester];
+  image = [imageRequester image];
 
-  return v3;
+  return image;
 }
 
 - (UIView)view
@@ -347,9 +347,9 @@ void __47__PXAssetUIImageViewTile__updateImageRequester__block_invoke(double *a1
   v2 = [(PXAssetUIImageViewTile *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
     placeholderColor = v2->_placeholderColor;
-    v2->_placeholderColor = v3;
+    v2->_placeholderColor = quaternarySystemFillColor;
 
     v5 = *(off_1E77221F8 + 1);
     v2->__desiredContentsRect.origin = *off_1E77221F8;

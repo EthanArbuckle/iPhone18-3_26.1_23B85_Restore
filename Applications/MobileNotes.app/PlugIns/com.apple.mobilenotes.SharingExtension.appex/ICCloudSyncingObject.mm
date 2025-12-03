@@ -1,40 +1,40 @@
 @interface ICCloudSyncingObject
-+ (void)undoablyPersistActivityEventsForMoveAction:(id)a3 oldObject:(id)a4 newObject:(id)a5;
++ (void)undoablyPersistActivityEventsForMoveAction:(id)action oldObject:(id)object newObject:(id)newObject;
 - (void)persistJoinActivityEvent;
 - (void)persistLeaveActivityEvent;
-- (void)persistParticipantActivityEventsWithOldShare:(id)a3 newShare:(id)a4;
+- (void)persistParticipantActivityEventsWithOldShare:(id)share newShare:(id)newShare;
 @end
 
 @implementation ICCloudSyncingObject
 
-+ (void)undoablyPersistActivityEventsForMoveAction:(id)a3 oldObject:(id)a4 newObject:(id)a5
++ (void)undoablyPersistActivityEventsForMoveAction:(id)action oldObject:(id)object newObject:(id)newObject
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  _sSo20ICCloudSyncingObjectC38com_apple_mobilenotes_SharingExtensionE29undoablyPersistActivityEvents3for03oldC003newC0yAbCE10MoveActionC_ABSgAJtFZ_0(v7, a4, a5);
+  actionCopy = action;
+  objectCopy = object;
+  newObjectCopy = newObject;
+  _sSo20ICCloudSyncingObjectC38com_apple_mobilenotes_SharingExtensionE29undoablyPersistActivityEvents3for03oldC003newC0yAbCE10MoveActionC_ABSgAJtFZ_0(actionCopy, object, newObject);
 }
 
-- (void)persistParticipantActivityEventsWithOldShare:(id)a3 newShare:(id)a4
+- (void)persistParticipantActivityEventsWithOldShare:(id)share newShare:(id)newShare
 {
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  newShareCopy = newShare;
   v12.value.super.super.isa = self;
   isa = v12.value.super.super.isa;
-  v11.value.super.super.isa = a3;
-  v11.is_nil = a4;
+  v11.value.super.super.isa = share;
+  v11.is_nil = newShare;
   ICCloudSyncingObject.persistParticipantActivityEvents(oldShare:newShare:)(v11, v12);
 }
 
 - (void)persistJoinActivityEvent
 {
-  v2 = self;
+  selfCopy = self;
   ICCloudSyncingObject.persistJoinActivityEvent()();
 }
 
 - (void)persistLeaveActivityEvent
 {
-  v2 = self;
+  selfCopy = self;
   ICCloudSyncingObject.persistLeaveActivityEvent()();
 }
 

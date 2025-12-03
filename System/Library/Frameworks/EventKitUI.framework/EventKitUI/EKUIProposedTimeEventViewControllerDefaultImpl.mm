@@ -5,40 +5,40 @@
 - (id)proposedTime;
 - (id)statusButtonActions;
 - (id)viewTitle;
-- (void)bottomStatusButtonTappedWithAction:(int64_t)a3 eventStatusButtonsView:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)bottomStatusButtonTappedWithAction:(int64_t)action eventStatusButtonsView:(id)view;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKUIProposedTimeEventViewControllerDefaultImpl
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = EKUIProposedTimeEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v11 viewWillAppear:a3];
-  v4 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self statusButtonActions];
-  v5 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
-  if (v5)
+  [(EKEventViewControllerDefaultImpl *)&v11 viewWillAppear:appear];
+  statusButtonActions = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self statusButtonActions];
+  remoteUIDelegate = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
+  if (remoteUIDelegate)
   {
-    v6 = v5;
-    v7 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
+    v6 = remoteUIDelegate;
+    remoteUIDelegate2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
-      v10 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self _proposedTimeEventViewController];
-      [v9 viewController:v10 didChangeBottomStatusButtons:v4];
+      remoteUIDelegate3 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self remoteUIDelegate];
+      _proposedTimeEventViewController = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self _proposedTimeEventViewController];
+      [remoteUIDelegate3 viewController:_proposedTimeEventViewController didChangeBottomStatusButtons:statusButtonActions];
     }
   }
 }
 
 - (id)proposedTime
 {
-  v2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
-  v3 = [v2 proposedStartDate];
+  proposedTimeAttendee = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
+  proposedStartDate = [proposedTimeAttendee proposedStartDate];
 
-  return v3;
+  return proposedStartDate;
 }
 
 - (id)viewTitle
@@ -53,8 +53,8 @@
 {
   v4.receiver = self;
   v4.super_class = EKUIProposedTimeEventViewControllerDefaultImpl;
-  v2 = [(EKEventViewControllerDefaultImpl *)&v4 shouldShowEditButtonInline];
-  return !+[SwappableViewControllerImplementationFactory shouldUseOutOfProcessUI]& v2;
+  shouldShowEditButtonInline = [(EKEventViewControllerDefaultImpl *)&v4 shouldShowEditButtonInline];
+  return !+[SwappableViewControllerImplementationFactory shouldUseOutOfProcessUI]& shouldShowEditButtonInline;
 }
 
 - (id)items
@@ -65,16 +65,16 @@
   {
     v4 = objc_alloc_init(EKEventTitleDetailItem);
     [(EKEventTitleDetailItem *)v4 setEditDelegate:self];
-    v5 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTime];
-    [(EKEventTitleDetailItem *)v4 setProposedTime:v5];
+    proposedTime = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTime];
+    [(EKEventTitleDetailItem *)v4 setProposedTime:proposedTime];
 
     v6 = objc_alloc_init(EKEventPreviewDetailItem);
-    v7 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTime];
-    [(EKEventPreviewDetailItem *)v6 setProposedTime:v7];
+    proposedTime2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTime];
+    [(EKEventPreviewDetailItem *)v6 setProposedTime:proposedTime2];
 
     v8 = objc_alloc_init(EKEventOrganizerDetailItem);
-    v9 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
-    [(EKEventOrganizerDetailItem *)v8 setOrganizerOverride:v9];
+    proposedTimeAttendee = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
+    [(EKEventOrganizerDetailItem *)v8 setOrganizerOverride:proposedTimeAttendee];
 
     v13[0] = v4;
     v13[1] = v6;
@@ -97,10 +97,10 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(EKEventViewControllerDefaultImpl *)self event];
-  v4 = [v3 attendees];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  attendees = [event attendees];
 
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v5 = [attendees countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -111,21 +111,21 @@
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attendees);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
-          v11 = [v10 URL];
-          v12 = [v11 resourceSpecifier];
+          proposedTimeAttendee = [(EKUIProposedTimeEventViewControllerDefaultImpl *)self proposedTimeAttendee];
+          v11 = [proposedTimeAttendee URL];
+          resourceSpecifier = [v11 resourceSpecifier];
 
           v13 = [v9 URL];
-          v14 = [v13 resourceSpecifier];
+          resourceSpecifier2 = [v13 resourceSpecifier];
 
-          if ([v12 isEqualToString:v14])
+          if ([resourceSpecifier isEqualToString:resourceSpecifier2])
           {
             [v23 addObject:v9];
 
@@ -134,7 +134,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [attendees countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v6)
       {
         continue;
@@ -146,12 +146,12 @@
 
 LABEL_13:
 
-  v15 = [(EKEventViewControllerDefaultImpl *)self event];
-  v16 = [EKUIEmailCompositionManager canShowViewControllerForEvent:v15 withParticipantRecipients:v23];
+  event2 = [(EKEventViewControllerDefaultImpl *)self event];
+  v16 = [EKUIEmailCompositionManager canShowViewControllerForEvent:event2 withParticipantRecipients:v23];
 
-  v17 = [(EKEventViewControllerDefaultImpl *)self event];
-  v18 = [v17 calendar];
-  v19 = [v18 allowsContentModifications];
+  event3 = [(EKEventViewControllerDefaultImpl *)self event];
+  calendar = [event3 calendar];
+  allowsContentModifications = [calendar allowsContentModifications];
 
   v20 = &unk_1F4F32170;
   if (v16)
@@ -159,7 +159,7 @@ LABEL_13:
     v20 = &unk_1F4F32158;
   }
 
-  if (v19)
+  if (allowsContentModifications)
   {
     v21 = v20;
   }
@@ -172,21 +172,21 @@ LABEL_13:
   return v21;
 }
 
-- (void)bottomStatusButtonTappedWithAction:(int64_t)a3 eventStatusButtonsView:(id)a4
+- (void)bottomStatusButtonTappedWithAction:(int64_t)action eventStatusButtonsView:(id)view
 {
   v92 = *MEMORY[0x1E69E9840];
-  v65 = a4;
+  viewCopy = view;
   val = self;
-  v67 = [(EKEventViewControllerDefaultImpl *)self event];
-  v6 = [(UIResponder *)self EKUI_editor];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  eKUI_editor = [(UIResponder *)self EKUI_editor];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __108__EKUIProposedTimeEventViewControllerDefaultImpl_bottomStatusButtonTappedWithAction_eventStatusButtonsView___block_invoke;
   aBlock[3] = &unk_1E843F9C0;
-  v64 = v6;
+  v64 = eKUI_editor;
   v88 = v64;
   v66 = _Block_copy(aBlock);
-  switch(a3)
+  switch(action)
   {
     case 0x4000:
       v63 = objc_opt_new();
@@ -194,8 +194,8 @@ LABEL_13:
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v42 = [v67 attendees];
-      v43 = [v42 countByEnumeratingWithState:&v76 objects:v90 count:16];
+      attendees = [event attendees];
+      v43 = [attendees countByEnumeratingWithState:&v76 objects:v90 count:16];
       if (v43)
       {
         v44 = *v77;
@@ -205,7 +205,7 @@ LABEL_13:
           {
             if (*v77 != v44)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(attendees);
             }
 
             v46 = *(*(&v76 + 1) + 8 * i);
@@ -213,10 +213,10 @@ LABEL_13:
             if (objc_opt_isKindOfClass())
             {
               v47 = v46;
-              v48 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTimeAttendee];
-              v49 = [v48 emailAddress];
-              v50 = [v47 emailAddress];
-              v51 = [v49 isEqual:v50];
+              proposedTimeAttendee = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTimeAttendee];
+              emailAddress = [proposedTimeAttendee emailAddress];
+              emailAddress2 = [v47 emailAddress];
+              v51 = [emailAddress isEqual:emailAddress2];
 
               if (v51)
               {
@@ -227,7 +227,7 @@ LABEL_13:
             }
           }
 
-          v43 = [v42 countByEnumeratingWithState:&v76 objects:v90 count:16];
+          v43 = [attendees countByEnumeratingWithState:&v76 objects:v90 count:16];
           if (v43)
           {
             continue;
@@ -242,7 +242,7 @@ LABEL_42:
       v52 = EventKitUIBundle();
       v53 = [v52 localizedStringForKey:@"RE:" value:&stru_1F4EF6790 table:0];
 
-      v54 = [[EKUIEmailCompositionManager alloc] initWithEvent:v67 participantRecipients:v63 subjectPrefix:v53 bodyPrefix:0];
+      v54 = [[EKUIEmailCompositionManager alloc] initWithEvent:event participantRecipients:v63 subjectPrefix:v53 bodyPrefix:0];
       [(EKUIProposedTimeEventViewControllerDefaultImpl *)val setMessageSendingManager:v54];
 
       objc_initWeak(&location, val);
@@ -251,17 +251,17 @@ LABEL_42:
       v73[2] = __108__EKUIProposedTimeEventViewControllerDefaultImpl_bottomStatusButtonTappedWithAction_eventStatusButtonsView___block_invoke_3;
       v73[3] = &unk_1E843F7E8;
       objc_copyWeak(&v74, &location);
-      v55 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
-      [v55 setMessageSendingComplete:v73];
+      messageSendingManager = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
+      [messageSendingManager setMessageSendingComplete:v73];
 
-      v56 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
-      v57 = [v56 viewController];
-      [v57 setModalPresentationStyle:2];
+      messageSendingManager2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
+      viewController = [messageSendingManager2 viewController];
+      [viewController setModalPresentationStyle:2];
 
-      v58 = [(EKEventViewControllerDefaultImpl *)val presentationNavigationDelegate];
-      v59 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
-      v60 = [v59 viewController];
-      [v58 presentViewController:v60 animated:1 completion:0];
+      presentationNavigationDelegate = [(EKEventViewControllerDefaultImpl *)val presentationNavigationDelegate];
+      messageSendingManager3 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val messageSendingManager];
+      viewController2 = [messageSendingManager3 viewController];
+      [presentationNavigationDelegate presentViewController:viewController2 animated:1 completion:0];
 
       objc_destroyWeak(&v74);
       objc_destroyWeak(&location);
@@ -272,8 +272,8 @@ LABEL_42:
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v31 = [v67 attendees];
-      v32 = [v31 countByEnumeratingWithState:&v69 objects:v89 count:16];
+      attendees2 = [event attendees];
+      v32 = [attendees2 countByEnumeratingWithState:&v69 objects:v89 count:16];
       if (v32)
       {
         v33 = *v70;
@@ -283,7 +283,7 @@ LABEL_42:
           {
             if (*v70 != v33)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(attendees2);
             }
 
             v35 = *(*(&v69 + 1) + 8 * j);
@@ -291,10 +291,10 @@ LABEL_42:
             if (objc_opt_isKindOfClass())
             {
               v36 = v35;
-              v37 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTimeAttendee];
-              v38 = [v37 emailAddress];
-              v39 = [v36 emailAddress];
-              v40 = [v38 isEqual:v39];
+              proposedTimeAttendee2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTimeAttendee];
+              emailAddress3 = [proposedTimeAttendee2 emailAddress];
+              emailAddress4 = [v36 emailAddress];
+              v40 = [emailAddress3 isEqual:emailAddress4];
 
               if (v40)
               {
@@ -306,13 +306,13 @@ LABEL_42:
             }
           }
 
-          v32 = [v31 countByEnumeratingWithState:&v69 objects:v89 count:16];
+          v32 = [attendees2 countByEnumeratingWithState:&v69 objects:v89 count:16];
         }
 
         while (v32);
       }
 
-      if ([v67 isOrWasPartOfRecurringSeries])
+      if ([event isOrWasPartOfRecurringSeries])
       {
         v41 = 4;
       }
@@ -322,28 +322,28 @@ LABEL_42:
         v41 = 0;
       }
 
-      v66[2](v66, v67, v41);
+      v66[2](v66, event, v41);
       [(EKEventViewControllerDefaultImpl *)val completeWithAction:0];
       break;
     case 0x1000:
-      v7 = [v67 endDateUnadjustedForLegacyClients];
-      v8 = [v67 startDate];
-      [v7 timeIntervalSinceDate:v8];
+      endDateUnadjustedForLegacyClients = [event endDateUnadjustedForLegacyClients];
+      startDate = [event startDate];
+      [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
       v10 = v9;
 
-      v11 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTime];
-      [v67 setStartDate:v11];
+      proposedTime = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTime];
+      [event setStartDate:proposedTime];
 
-      v12 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTime];
-      v13 = [v12 dateByAddingTimeInterval:v10];
-      [v67 setEndDateUnadjustedForLegacyClients:v13];
+      proposedTime2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val proposedTime];
+      v13 = [proposedTime2 dateByAddingTimeInterval:v10];
+      [event setEndDateUnadjustedForLegacyClients:v13];
 
       v85 = 0u;
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v14 = [v67 attendees];
-      v15 = [v14 countByEnumeratingWithState:&v83 objects:v91 count:16];
+      attendees3 = [event attendees];
+      v15 = [attendees3 countByEnumeratingWithState:&v83 objects:v91 count:16];
       if (v15)
       {
         v16 = *v84;
@@ -353,7 +353,7 @@ LABEL_42:
           {
             if (*v84 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(attendees3);
             }
 
             v18 = *(*(&v83 + 1) + 8 * k);
@@ -367,17 +367,17 @@ LABEL_42:
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v83 objects:v91 count:16];
+          v15 = [attendees3 countByEnumeratingWithState:&v83 objects:v91 count:16];
         }
 
         while (v15);
       }
 
-      [v67 dismissAcceptedProposeNewTimeNotification];
-      v20 = [v65 buttonForAction:4096];
-      if ([v67 isOrWasPartOfRecurringSeries])
+      [event dismissAcceptedProposeNewTimeNotification];
+      v20 = [viewCopy buttonForAction:4096];
+      if ([event isOrWasPartOfRecurringSeries])
       {
-        v21 = [(EKEventViewControllerDefaultImpl *)val presentationSourceViewController];
+        presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)val presentationSourceViewController];
         [v20 bounds];
         v23 = v22;
         v25 = v24;
@@ -389,26 +389,26 @@ LABEL_42:
         v80[3] = &unk_1E843FA60;
         v80[4] = val;
         v82 = v66;
-        v81 = v67;
-        v30 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v21 sourceView:v20 sourceRect:v81 forEvent:v80 withCompletionHandler:v23, v25, v27, v29];
+        v81 = event;
+        v30 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:presentationSourceViewController sourceView:v20 sourceRect:v81 forEvent:v80 withCompletionHandler:v23, v25, v27, v29];
         [(EKUIProposedTimeEventViewControllerDefaultImpl *)val setRecurrenceAlertController:v30];
       }
 
       else
       {
-        v66[2](v66, v67, 0);
+        v66[2](v66, event, 0);
         [(EKEventViewControllerDefaultImpl *)val completeWithAction:0];
       }
 
       break;
   }
 
-  v61 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val completionBlock];
+  completionBlock = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val completionBlock];
 
-  if (v61)
+  if (completionBlock)
   {
-    v62 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val completionBlock];
-    v62[2]();
+    completionBlock2 = [(EKUIProposedTimeEventViewControllerDefaultImpl *)val completionBlock];
+    completionBlock2[2]();
   }
 }
 

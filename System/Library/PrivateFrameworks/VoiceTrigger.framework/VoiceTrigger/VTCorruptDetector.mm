@@ -1,21 +1,21 @@
 @interface VTCorruptDetector
 - (VTCorruptDetector)init;
-- (void)analyze:(AudioBuffer)a3;
+- (void)analyze:(AudioBuffer)analyze;
 @end
 
 @implementation VTCorruptDetector
 
-- (void)analyze:(AudioBuffer)a3
+- (void)analyze:(AudioBuffer)analyze
 {
-  v3 = *&a3.mNumberChannels >> 33;
-  if (*&a3.mNumberChannels >> 33)
+  v3 = *&analyze.mNumberChannels >> 33;
+  if (*&analyze.mNumberChannels >> 33)
   {
     zeroSamplesCount = self->_zeroSamplesCount;
     maxZeroSamplesCount = self->_maxZeroSamplesCount;
     do
     {
-      v7 = *a3.mData;
-      a3.mData = a3.mData + 2;
+      v7 = *analyze.mData;
+      analyze.mData = analyze.mData + 2;
       v6 = v7;
       if (v7 < 0)
       {

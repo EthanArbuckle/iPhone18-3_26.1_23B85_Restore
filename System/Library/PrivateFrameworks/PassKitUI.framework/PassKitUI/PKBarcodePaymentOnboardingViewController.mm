@@ -1,25 +1,25 @@
 @interface PKBarcodePaymentOnboardingViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (PKBarcodePaymentOnboardingViewController)initWithIssuerName:(id)a3 context:(int64_t)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (PKBarcodePaymentOnboardingViewController)initWithIssuerName:(id)name context:(int64_t)context;
 - (id)_imageForWatchView;
 - (void)_terminateSetupFlow;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKBarcodePaymentOnboardingViewController
 
-- (PKBarcodePaymentOnboardingViewController)initWithIssuerName:(id)a3 context:(int64_t)a4
+- (PKBarcodePaymentOnboardingViewController)initWithIssuerName:(id)name context:(int64_t)context
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PKBarcodePaymentOnboardingViewController;
-  v8 = [(PKExplanationViewController *)&v11 initWithContext:a4];
+  v8 = [(PKExplanationViewController *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_issuerName, a3);
+    objc_storeStrong(&v8->_issuerName, name);
     [(PKExplanationViewController *)v9 setExplanationViewControllerDelegate:v9];
   }
 
@@ -35,10 +35,10 @@
   [(PKExplanationViewController *)self setShowDoneButton:0];
   [(PKExplanationViewController *)self context];
   [(PKExplanationViewController *)self setShowCancelButton:PKPaymentSetupContextIsIssuerApp()];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
   v5 = PKLocalizedAquamanString(&cfstr_BarcodePayment.isa, &stru_1F3BD5BF0.isa, self->_issuerName);
-  [v3 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
   [(PKExplanationViewController *)self context];
   if (PKPaymentSetupContextIsBridge())
@@ -46,8 +46,8 @@
     v6 = PKLocalizedAquamanString(&cfstr_BarcodePayment_0.isa, &stru_1F3BD5BF0.isa, self->_issuerName);
     v7 = [PKWatchDeviceImageOverlayView alloc];
     v8 = [(PKWatchDeviceImageOverlayView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v9 = [(PKBarcodePaymentOnboardingViewController *)self _imageForWatchView];
-    [(PKWatchDeviceImageOverlayView *)v8 setOverlayImage:v9];
+    _imageForWatchView = [(PKBarcodePaymentOnboardingViewController *)self _imageForWatchView];
+    [(PKWatchDeviceImageOverlayView *)v8 setOverlayImage:_imageForWatchView];
     v10 = &OBJC_IVAR___PKBarcodePaymentOnboardingViewController__watchView;
   }
 
@@ -66,18 +66,18 @@
     v6 = PKLocalizedAquamanString(&v11->isa, &stru_1F3BD5BF0.isa, self->_issuerName);
     v12 = [PKEducationPhone alloc];
     v8 = [(PKEducationPhone *)v12 initWithFrame:3 displayOptions:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v9 = PKUIImageNamed(@"BarcodePaymentEducation");
-    [(PKWatchDeviceImageOverlayView *)v8 setPassImage:v9];
+    _imageForWatchView = PKUIImageNamed(@"BarcodePaymentEducation");
+    [(PKWatchDeviceImageOverlayView *)v8 setPassImage:_imageForWatchView];
     v10 = &OBJC_IVAR___PKBarcodePaymentOnboardingViewController__educationPhone;
   }
 
-  [v3 setBodyView:v8];
+  [explanationView setBodyView:v8];
   v13 = *v10;
   v14 = *(&self->super.super.super.super.isa + v13);
   *(&self->super.super.super.super.isa + v13) = v8;
 
   v31 = v6;
-  [v3 setBodyText:v6];
+  [explanationView setBodyText:v6];
   v15 = PKUIGetMinScreenType() - 4;
   v16 = 0.0;
   if (v15 <= 0xF)
@@ -85,50 +85,50 @@
     v16 = dbl_1BE114560[v15];
   }
 
-  [v3 setBodyViewPadding:v16];
-  [v3 setShowPrivacyView:0];
-  v17 = [v4 buttonExplanationTextView];
+  [explanationView setBodyViewPadding:v16];
+  [explanationView setShowPrivacyView:0];
+  buttonExplanationTextView = [dockView buttonExplanationTextView];
   v18 = PKLocalizedAquamanString(&cfstr_BarcodePayment_3.isa, &stru_1F3BD6370.isa, self->_issuerName, self->_issuerName);
   v19 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v19 setLineBreakMode:0];
   [v19 setAlignment:1];
   v33[0] = *MEMORY[0x1E69DB648];
-  v20 = [v17 font];
+  font = [buttonExplanationTextView font];
   v21 = *MEMORY[0x1E69DB688];
-  v34[0] = v20;
+  v34[0] = font;
   v34[1] = v19;
   v22 = *MEMORY[0x1E69DB650];
   v33[1] = v21;
   v33[2] = v22;
-  v23 = [v17 textColor];
-  v34[2] = v23;
+  textColor = [buttonExplanationTextView textColor];
+  v34[2] = textColor;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
-  v25 = v24 = v4;
+  v25 = v24 = dockView;
 
   v26 = PKAttributedStringByParsingLinksInString();
-  [v17 setAttributedText:v26];
-  [v17 setDelegate:self];
-  [v17 setDataDetectorTypes:2];
+  [buttonExplanationTextView setAttributedText:v26];
+  [buttonExplanationTextView setDelegate:self];
+  [buttonExplanationTextView setDataDetectorTypes:2];
   [(PKExplanationViewController *)self context];
   if ((PKPaymentSetupContextIsIssuerApp() & 1) == 0)
   {
-    v27 = [v24 primaryButton];
+    primaryButton = [v24 primaryButton];
     v28 = PKLocalizedAquamanString(&cfstr_BarcodePayment_4.isa, &stru_1F3BD5BF0.isa, self->_issuerName);
-    [v27 setTitle:v28 forState:0];
+    [primaryButton setTitle:v28 forState:0];
   }
 
-  v29 = [(PKBarcodePaymentOnboardingViewController *)self view];
+  view = [(PKBarcodePaymentOnboardingViewController *)self view];
   v30 = PKProvisioningBackgroundColor();
-  [v29 setBackgroundColor:v30];
+  [view setBackgroundColor:v30];
 
-  PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], v29);
+  PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], view);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKBarcodePaymentOnboardingViewController;
-  [(PKBarcodePaymentOnboardingViewController *)&v6 viewDidAppear:a3];
+  [(PKBarcodePaymentOnboardingViewController *)&v6 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   if (self->_educationPhone)
   {
@@ -142,10 +142,10 @@
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = [a4 absoluteString];
-  v8 = [v7 isEqualToString:@"OPEN_BARCODE_PAYMENT_PRIVACY_TEXT"];
+  absoluteString = [l absoluteString];
+  v8 = [absoluteString isEqualToString:@"OPEN_BARCODE_PAYMENT_PRIVACY_TEXT"];
 
   if (v8)
   {
@@ -157,15 +157,15 @@
   return 0;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   if (self->_continueHandler)
   {
-    v5 = [(PKExplanationViewController *)self explanationView];
-    v6 = [v5 dockView];
-    [v6 setButtonsEnabled:0];
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    dockView = [explanationView dockView];
+    [dockView setButtonsEnabled:0];
 
     objc_initWeak(&location, self);
     continueHandler = self->_continueHandler;
@@ -228,8 +228,8 @@ void __77__PKBarcodePaymentOnboardingViewController_explanationViewDidSelectCont
 
   else
   {
-    v5 = [(PKBarcodePaymentOnboardingViewController *)self presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKBarcodePaymentOnboardingViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

@@ -8,12 +8,12 @@
 - (id)ic_loggingValues
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(NSOperation *)self name];
+  name = [(NSOperation *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(NSOperation *)self name];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name2 = [(NSOperation *)self name];
+    [v3 setObject:name2 forKeyedSubscript:@"name"];
   }
 
   if ([(NSOperation *)self isExecuting])

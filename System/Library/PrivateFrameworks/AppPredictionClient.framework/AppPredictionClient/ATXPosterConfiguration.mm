@@ -1,62 +1,62 @@
 @interface ATXPosterConfiguration
-- (ATXPosterConfiguration)initWithCoder:(id)a3;
-- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)a3 active:(BOOL)a4 selected:(BOOL)a5 inlineComplication:(id)a6 complications:(id)a7 landscapeComplications:(id)a8 modeUUID:(id)a9 font:(id)a10 color:(id)a11 numberingSystem:(id)a12 posterUUID:(id)a13 galleryItem:(id)a14;
-- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)a3 active:(BOOL)a4 selected:(BOOL)a5 inlineComplication:(id)a6 complications:(id)a7 modeUUID:(id)a8 font:(id)a9 color:(id)a10 numberingSystem:(id)a11 posterUUID:(id)a12 galleryItem:(id)a13;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPosterConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXPosterConfiguration)initWithCoder:(id)coder;
+- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)identifier active:(BOOL)active selected:(BOOL)selected inlineComplication:(id)complication complications:(id)complications landscapeComplications:(id)landscapeComplications modeUUID:(id)d font:(id)self0 color:(id)self1 numberingSystem:(id)self2 posterUUID:(id)self3 galleryItem:(id)self4;
+- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)identifier active:(BOOL)active selected:(BOOL)selected inlineComplication:(id)complication complications:(id)complications modeUUID:(id)d font:(id)font color:(id)self0 numberingSystem:(id)self1 posterUUID:(id)self2 galleryItem:(id)self3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPosterConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXPosterConfiguration
 
-- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)a3 active:(BOOL)a4 selected:(BOOL)a5 inlineComplication:(id)a6 complications:(id)a7 modeUUID:(id)a8 font:(id)a9 color:(id)a10 numberingSystem:(id)a11 posterUUID:(id)a12 galleryItem:(id)a13
+- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)identifier active:(BOOL)active selected:(BOOL)selected inlineComplication:(id)complication complications:(id)complications modeUUID:(id)d font:(id)font color:(id)self0 numberingSystem:(id)self1 posterUUID:(id)self2 galleryItem:(id)self3
 {
-  v30 = a4;
-  v31 = a5;
+  activeCopy = active;
+  selectedCopy = selected;
   v17 = MEMORY[0x1E696AFB0];
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a3;
-  v25 = [v17 UUID];
-  v26 = [v25 UUIDString];
-  v27 = [(ATXPosterConfiguration *)self initWithExtensionBundleIdentifier:v24 active:v30 selected:v31 inlineComplication:v23 complications:v22 landscapeComplications:MEMORY[0x1E695E0F0] modeUUID:v21 font:v20 color:v19 numberingSystem:v18 posterUUID:v26 galleryItem:0];
+  systemCopy = system;
+  colorCopy = color;
+  fontCopy = font;
+  dCopy = d;
+  complicationsCopy = complications;
+  complicationCopy = complication;
+  identifierCopy = identifier;
+  uUID = [v17 UUID];
+  uUIDString = [uUID UUIDString];
+  v27 = [(ATXPosterConfiguration *)self initWithExtensionBundleIdentifier:identifierCopy active:activeCopy selected:selectedCopy inlineComplication:complicationCopy complications:complicationsCopy landscapeComplications:MEMORY[0x1E695E0F0] modeUUID:dCopy font:fontCopy color:colorCopy numberingSystem:systemCopy posterUUID:uUIDString galleryItem:0];
 
   return v27;
 }
 
-- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)a3 active:(BOOL)a4 selected:(BOOL)a5 inlineComplication:(id)a6 complications:(id)a7 landscapeComplications:(id)a8 modeUUID:(id)a9 font:(id)a10 color:(id)a11 numberingSystem:(id)a12 posterUUID:(id)a13 galleryItem:(id)a14
+- (ATXPosterConfiguration)initWithExtensionBundleIdentifier:(id)identifier active:(BOOL)active selected:(BOOL)selected inlineComplication:(id)complication complications:(id)complications landscapeComplications:(id)landscapeComplications modeUUID:(id)d font:(id)self0 color:(id)self1 numberingSystem:(id)self2 posterUUID:(id)self3 galleryItem:(id)self4
 {
-  v17 = a3;
-  obj = a6;
-  v50 = a6;
-  v18 = a7;
-  v19 = a8;
-  v49 = a9;
-  v20 = v18;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = v19;
-  v26 = a14;
+  identifierCopy = identifier;
+  obj = complication;
+  complicationCopy = complication;
+  complicationsCopy = complications;
+  landscapeComplicationsCopy = landscapeComplications;
+  dCopy = d;
+  v20 = complicationsCopy;
+  fontCopy = font;
+  colorCopy = color;
+  systemCopy = system;
+  iDCopy = iD;
+  v25 = landscapeComplicationsCopy;
+  itemCopy = item;
   v51.receiver = self;
   v51.super_class = ATXPosterConfiguration;
   v27 = [(ATXPosterConfiguration *)&v51 init];
   if (v27)
   {
-    v28 = [v17 copy];
+    v28 = [identifierCopy copy];
     extensionBundleIdentifier = v27->_extensionBundleIdentifier;
     v27->_extensionBundleIdentifier = v28;
 
-    v27->_active = a4;
-    v27->_selected = a5;
+    v27->_active = active;
+    v27->_selected = selected;
     objc_storeStrong(&v27->_inlineComplication, obj);
     v30 = [v20 copy];
     complications = v27->_complications;
@@ -66,24 +66,24 @@
     landscapeComplications = v27->_landscapeComplications;
     v27->_landscapeComplications = v32;
 
-    objc_storeStrong(&v27->_modeUUID, a9);
-    v34 = [v21 copy];
+    objc_storeStrong(&v27->_modeUUID, d);
+    v34 = [fontCopy copy];
     font = v27->_font;
     v27->_font = v34;
 
-    v36 = [v22 copy];
+    v36 = [colorCopy copy];
     color = v27->_color;
     v27->_color = v36;
 
-    v38 = [v23 copy];
+    v38 = [systemCopy copy];
     numberingSystem = v27->_numberingSystem;
     v27->_numberingSystem = v38;
 
-    v40 = [v24 copy];
+    v40 = [iDCopy copy];
     posterUUID = v27->_posterUUID;
     v27->_posterUUID = v40;
 
-    v42 = [v26 copy];
+    v42 = [itemCopy copy];
     galleryItem = v27->_galleryItem;
     v27->_galleryItem = v42;
   }
@@ -98,8 +98,8 @@
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"%@; ", v5];
 
-  v6 = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
-  [v3 appendFormat:@"extensionBundleIdentifier: %@; ", v6];
+  extensionBundleIdentifier = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
+  [v3 appendFormat:@"extensionBundleIdentifier: %@; ", extensionBundleIdentifier];
 
   if ([(ATXPosterConfiguration *)self isActive])
   {
@@ -123,53 +123,53 @@
   }
 
   [v3 appendFormat:@"selected: %@; ", v8];
-  v9 = [(ATXPosterConfiguration *)self inlineComplication];
-  [v3 appendFormat:@"inlineComplication: %@; ", v9];
+  inlineComplication = [(ATXPosterConfiguration *)self inlineComplication];
+  [v3 appendFormat:@"inlineComplication: %@; ", inlineComplication];
 
-  v10 = [(ATXPosterConfiguration *)self complications];
-  [v3 appendFormat:@"complications: %@; ", v10];
+  complications = [(ATXPosterConfiguration *)self complications];
+  [v3 appendFormat:@"complications: %@; ", complications];
 
-  v11 = [(ATXPosterConfiguration *)self landscapeComplications];
-  [v3 appendFormat:@"landscapeComplications: %@; ", v11];
+  landscapeComplications = [(ATXPosterConfiguration *)self landscapeComplications];
+  [v3 appendFormat:@"landscapeComplications: %@; ", landscapeComplications];
 
-  v12 = [(ATXPosterConfiguration *)self modeUUID];
-  v13 = [v12 UUIDString];
-  [v3 appendFormat:@"modeUUID: %@; ", v13];
+  modeUUID = [(ATXPosterConfiguration *)self modeUUID];
+  uUIDString = [modeUUID UUIDString];
+  [v3 appendFormat:@"modeUUID: %@; ", uUIDString];
 
-  v14 = [(ATXPosterConfiguration *)self font];
-  [v3 appendFormat:@"font: %@; ", v14];
+  font = [(ATXPosterConfiguration *)self font];
+  [v3 appendFormat:@"font: %@; ", font];
 
-  v15 = [(ATXPosterConfiguration *)self color];
-  [v3 appendFormat:@"color: %@; ", v15];
+  color = [(ATXPosterConfiguration *)self color];
+  [v3 appendFormat:@"color: %@; ", color];
 
-  v16 = [(ATXPosterConfiguration *)self numberingSystem];
-  [v3 appendFormat:@"numberingSystem: %@; ", v16];
+  numberingSystem = [(ATXPosterConfiguration *)self numberingSystem];
+  [v3 appendFormat:@"numberingSystem: %@; ", numberingSystem];
 
-  v17 = [(ATXPosterConfiguration *)self posterUUID];
-  [v3 appendFormat:@"posterUUID: %@; ", v17];
+  posterUUID = [(ATXPosterConfiguration *)self posterUUID];
+  [v3 appendFormat:@"posterUUID: %@; ", posterUUID];
 
-  v18 = [(ATXPosterConfiguration *)self galleryItem];
-  [v3 appendFormat:@"galleryItem: %@; ", v18];
+  galleryItem = [(ATXPosterConfiguration *)self galleryItem];
+  [v3 appendFormat:@"galleryItem: %@; ", galleryItem];
 
   return v3;
 }
 
-- (ATXPosterConfiguration)initWithCoder:(id)a3
+- (ATXPosterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   if (v5)
   {
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
-    v39 = [v4 decodeBoolForKey:@"selected"];
-    v38 = [v4 decodeBoolForKey:@"active"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inlineComplication"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
+    v39 = [coderCopy decodeBoolForKey:@"selected"];
+    v38 = [coderCopy decodeBoolForKey:@"active"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inlineComplication"];
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc(MEMORY[0x1E695DFD8]);
     v8 = objc_opt_class();
     v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v6);
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"complications"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"complications"];
     v11 = v10;
     v12 = MEMORY[0x1E695E0F0];
     if (v10)
@@ -189,7 +189,7 @@
     v16 = objc_opt_class();
     v17 = [v15 initWithObjects:{v16, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v14);
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"landscapeComplications"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"landscapeComplications"];
     v19 = v18;
     if (v18)
     {
@@ -203,10 +203,10 @@
 
     v36 = v20;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
     if (!v21)
     {
-      v22 = [v4 decodeBoolForKey:@"isCustomFont"];
+      v22 = [coderCopy decodeBoolForKey:@"isCustomFont"];
       v23 = @"isDefault";
       if (v22)
       {
@@ -216,10 +216,10 @@
       v21 = v23;
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     if (!v24)
     {
-      v25 = [v4 decodeBoolForKey:@"isCustomColor"];
+      v25 = [coderCopy decodeBoolForKey:@"isCustomColor"];
       v26 = @"isDefault";
       if (v25)
       {
@@ -229,10 +229,10 @@
       v24 = v26;
     }
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberingSystem"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberingSystem"];
     if (!v27)
     {
-      v28 = [v4 decodeBoolForKey:@"isCustomNumberingSystem"];
+      v28 = [coderCopy decodeBoolForKey:@"isCustomNumberingSystem"];
       v29 = @"isDefault";
       if (v28)
       {
@@ -242,12 +242,12 @@
       v27 = v29;
     }
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterUUID"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"galleryItem"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterUUID"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"galleryItem"];
     v32 = [(ATXPosterConfiguration *)self initWithExtensionBundleIdentifier:v5 active:v38 selected:v39 inlineComplication:v40 complications:v37 landscapeComplications:v36 modeUUID:v41 font:v21 color:v24 numberingSystem:v27 posterUUID:v30 galleryItem:v31];
 
     self = v32;
-    v33 = self;
+    selfCopy = self;
   }
 
   else
@@ -258,91 +258,91 @@
       [ATXPosterConfiguration initWithCoder:v34];
     }
 
-    v33 = 0;
+    selfCopy = 0;
   }
 
-  return v33;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  extensionBundleIdentifier = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  [v4 encodeBool:-[ATXPosterConfiguration isSelected](self forKey:{"isSelected"), @"selected"}];
-  v6 = [(ATXPosterConfiguration *)self inlineComplication];
-  [v4 encodeObject:v6 forKey:@"inlineComplication"];
+  [coderCopy encodeBool:-[ATXPosterConfiguration isSelected](self forKey:{"isSelected"), @"selected"}];
+  inlineComplication = [(ATXPosterConfiguration *)self inlineComplication];
+  [coderCopy encodeObject:inlineComplication forKey:@"inlineComplication"];
 
-  v7 = [(ATXPosterConfiguration *)self complications];
-  [v4 encodeObject:v7 forKey:@"complications"];
+  complications = [(ATXPosterConfiguration *)self complications];
+  [coderCopy encodeObject:complications forKey:@"complications"];
 
-  v8 = [(ATXPosterConfiguration *)self landscapeComplications];
-  [v4 encodeObject:v8 forKey:@"landscapeComplications"];
+  landscapeComplications = [(ATXPosterConfiguration *)self landscapeComplications];
+  [coderCopy encodeObject:landscapeComplications forKey:@"landscapeComplications"];
 
-  v9 = [(ATXPosterConfiguration *)self modeUUID];
-  [v4 encodeObject:v9 forKey:@"modeUUID"];
+  modeUUID = [(ATXPosterConfiguration *)self modeUUID];
+  [coderCopy encodeObject:modeUUID forKey:@"modeUUID"];
 
-  [v4 encodeBool:-[ATXPosterConfiguration isActive](self forKey:{"isActive"), @"active"}];
-  v10 = [(ATXPosterConfiguration *)self font];
-  [v4 encodeObject:v10 forKey:@"font"];
+  [coderCopy encodeBool:-[ATXPosterConfiguration isActive](self forKey:{"isActive"), @"active"}];
+  font = [(ATXPosterConfiguration *)self font];
+  [coderCopy encodeObject:font forKey:@"font"];
 
-  v11 = [(ATXPosterConfiguration *)self color];
-  [v4 encodeObject:v11 forKey:@"color"];
+  color = [(ATXPosterConfiguration *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v12 = [(ATXPosterConfiguration *)self numberingSystem];
-  [v4 encodeObject:v12 forKey:@"numberingSystem"];
+  numberingSystem = [(ATXPosterConfiguration *)self numberingSystem];
+  [coderCopy encodeObject:numberingSystem forKey:@"numberingSystem"];
 
-  v13 = [(ATXPosterConfiguration *)self posterUUID];
-  [v4 encodeObject:v13 forKey:@"posterUUID"];
+  posterUUID = [(ATXPosterConfiguration *)self posterUUID];
+  [coderCopy encodeObject:posterUUID forKey:@"posterUUID"];
 
-  v14 = [(ATXPosterConfiguration *)self galleryItem];
-  [v4 encodeObject:v14 forKey:@"galleryItem"];
+  galleryItem = [(ATXPosterConfiguration *)self galleryItem];
+  [coderCopy encodeObject:galleryItem forKey:@"galleryItem"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(ATXPosterConfiguration *)v3 extensionBundleIdentifier];
-  v16 = [(ATXPosterConfiguration *)v3 isActive];
-  v15 = [(ATXPosterConfiguration *)v3 isSelected];
-  v5 = [(ATXPosterConfiguration *)v3 inlineComplication];
-  v6 = [(ATXPosterConfiguration *)v3 complications];
-  v14 = [(ATXPosterConfiguration *)v3 landscapeComplications];
-  v7 = [(ATXPosterConfiguration *)v3 modeUUID];
-  v8 = [(ATXPosterConfiguration *)v3 font];
-  v9 = [(ATXPosterConfiguration *)v3 color];
-  v10 = [(ATXPosterConfiguration *)v3 numberingSystem];
-  v11 = [(ATXPosterConfiguration *)v3 posterUUID];
-  v12 = [(ATXPosterConfiguration *)v3 galleryItem];
-  v17 = [(ATXPosterConfiguration *)v3 initWithExtensionBundleIdentifier:v4 active:v16 selected:v15 inlineComplication:v5 complications:v6 landscapeComplications:v14 modeUUID:v7 font:v8 color:v9 numberingSystem:v10 posterUUID:v11 galleryItem:v12];
+  selfCopy = self;
+  extensionBundleIdentifier = [(ATXPosterConfiguration *)selfCopy extensionBundleIdentifier];
+  isActive = [(ATXPosterConfiguration *)selfCopy isActive];
+  isSelected = [(ATXPosterConfiguration *)selfCopy isSelected];
+  inlineComplication = [(ATXPosterConfiguration *)selfCopy inlineComplication];
+  complications = [(ATXPosterConfiguration *)selfCopy complications];
+  landscapeComplications = [(ATXPosterConfiguration *)selfCopy landscapeComplications];
+  modeUUID = [(ATXPosterConfiguration *)selfCopy modeUUID];
+  font = [(ATXPosterConfiguration *)selfCopy font];
+  color = [(ATXPosterConfiguration *)selfCopy color];
+  numberingSystem = [(ATXPosterConfiguration *)selfCopy numberingSystem];
+  posterUUID = [(ATXPosterConfiguration *)selfCopy posterUUID];
+  galleryItem = [(ATXPosterConfiguration *)selfCopy galleryItem];
+  v17 = [(ATXPosterConfiguration *)selfCopy initWithExtensionBundleIdentifier:extensionBundleIdentifier active:isActive selected:isSelected inlineComplication:inlineComplication complications:complications landscapeComplications:landscapeComplications modeUUID:modeUUID font:font color:color numberingSystem:numberingSystem posterUUID:posterUUID galleryItem:galleryItem];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterConfiguration *)self isEqualToATXPosterConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterConfiguration *)self isEqualToATXPosterConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPosterConfiguration:(id)a3
+- (BOOL)isEqualToATXPosterConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = self->_extensionBundleIdentifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == configurationCopy[2])
   {
   }
 
@@ -357,14 +357,14 @@
   }
 
   selected = self->_selected;
-  if (selected != [v4 isSelected])
+  if (selected != [configurationCopy isSelected])
   {
     goto LABEL_37;
   }
 
   v9 = self->_inlineComplication;
   v10 = v9;
-  if (v9 == v4[3])
+  if (v9 == configurationCopy[3])
   {
   }
 
@@ -380,7 +380,7 @@
 
   v12 = self->_complications;
   v13 = v12;
-  if (v12 == v4[4])
+  if (v12 == configurationCopy[4])
   {
   }
 
@@ -396,7 +396,7 @@
 
   v15 = self->_landscapeComplications;
   v16 = v15;
-  if (v15 == v4[5])
+  if (v15 == configurationCopy[5])
   {
   }
 
@@ -412,7 +412,7 @@
 
   v18 = self->_modeUUID;
   v19 = v18;
-  if (v18 == v4[6])
+  if (v18 == configurationCopy[6])
   {
   }
 
@@ -427,7 +427,7 @@
   }
 
   active = self->_active;
-  if (active != [v4 isActive])
+  if (active != [configurationCopy isActive])
   {
 LABEL_37:
     v34 = 0;
@@ -436,7 +436,7 @@ LABEL_37:
 
   v22 = self->_font;
   v23 = v22;
-  if (v22 == v4[7])
+  if (v22 == configurationCopy[7])
   {
   }
 
@@ -452,7 +452,7 @@ LABEL_37:
 
   v25 = self->_color;
   v26 = v25;
-  if (v25 == v4[8])
+  if (v25 == configurationCopy[8])
   {
   }
 
@@ -468,7 +468,7 @@ LABEL_37:
 
   v28 = self->_numberingSystem;
   v29 = v28;
-  if (v28 == v4[9])
+  if (v28 == configurationCopy[9])
   {
   }
 
@@ -484,7 +484,7 @@ LABEL_37:
 
   v31 = self->_posterUUID;
   v32 = v31;
-  if (v31 == v4[10])
+  if (v31 == configurationCopy[10])
   {
   }
 
@@ -500,7 +500,7 @@ LABEL_37:
 
   v36 = self->_galleryItem;
   v37 = v36;
-  if (v36 == v4[11])
+  if (v36 == configurationCopy[11])
   {
     v34 = 1;
   }
@@ -516,37 +516,37 @@ LABEL_38:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
-  v4 = [v3 hash];
+  extensionBundleIdentifier = [(ATXPosterConfiguration *)self extensionBundleIdentifier];
+  v4 = [extensionBundleIdentifier hash];
 
   v5 = 31 * v4 + [(ATXPosterConfiguration *)self isSelected];
-  v6 = [(ATXPosterConfiguration *)self inlineComplication];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  inlineComplication = [(ATXPosterConfiguration *)self inlineComplication];
+  v7 = [inlineComplication hash] - v5 + 32 * v5;
 
-  v8 = [(ATXPosterConfiguration *)self complications];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  complications = [(ATXPosterConfiguration *)self complications];
+  v9 = [complications hash] - v7 + 32 * v7;
 
-  v10 = [(ATXPosterConfiguration *)self landscapeComplications];
-  v11 = [v10 hash] - v9 + 32 * v9;
+  landscapeComplications = [(ATXPosterConfiguration *)self landscapeComplications];
+  v11 = [landscapeComplications hash] - v9 + 32 * v9;
 
-  v12 = [(ATXPosterConfiguration *)self modeUUID];
-  v13 = [v12 hash] - v11 + 32 * v11;
+  modeUUID = [(ATXPosterConfiguration *)self modeUUID];
+  v13 = [modeUUID hash] - v11 + 32 * v11;
 
   v14 = 31 * v13 + [(ATXPosterConfiguration *)self isActive];
-  v15 = [(ATXPosterConfiguration *)self font];
-  v16 = [v15 hash] - v14 + 32 * v14;
+  font = [(ATXPosterConfiguration *)self font];
+  v16 = [font hash] - v14 + 32 * v14;
 
-  v17 = [(ATXPosterConfiguration *)self color];
-  v18 = [v17 hash] - v16 + 32 * v16;
+  color = [(ATXPosterConfiguration *)self color];
+  v18 = [color hash] - v16 + 32 * v16;
 
-  v19 = [(ATXPosterConfiguration *)self numberingSystem];
-  v20 = [v19 hash] - v18 + 32 * v18;
+  numberingSystem = [(ATXPosterConfiguration *)self numberingSystem];
+  v20 = [numberingSystem hash] - v18 + 32 * v18;
 
-  v21 = [(ATXPosterConfiguration *)self posterUUID];
-  v22 = [v21 hash] - v20 + 32 * v20;
+  posterUUID = [(ATXPosterConfiguration *)self posterUUID];
+  v22 = [posterUUID hash] - v20 + 32 * v20;
 
-  v23 = [(ATXPosterConfiguration *)self galleryItem];
-  v24 = [v23 hash] - v22 + 32 * v22;
+  galleryItem = [(ATXPosterConfiguration *)self galleryItem];
+  v24 = [galleryItem hash] - v22 + 32 * v22;
 
   return v24;
 }

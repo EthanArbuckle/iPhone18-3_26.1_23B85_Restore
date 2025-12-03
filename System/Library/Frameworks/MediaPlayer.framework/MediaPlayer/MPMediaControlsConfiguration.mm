@@ -1,10 +1,10 @@
 @interface MPMediaControlsConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)sourceRect;
-- (MPMediaControlsConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPMediaControlsConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaControlsConfiguration
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v58 = 1;
   }
@@ -35,17 +35,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v60 = [(MPMediaControlsConfiguration *)v5 style];
-      v6 = [(MPMediaControlsConfiguration *)self style];
-      v7 = [(MPMediaControlsConfiguration *)v5 initatorStyle];
-      v8 = [(MPMediaControlsConfiguration *)self initatorStyle];
-      v9 = [(MPMediaControlsConfiguration *)v5 surface];
-      v10 = [(MPMediaControlsConfiguration *)self surface];
-      v11 = [(MPMediaControlsConfiguration *)v5 routingContextUID];
-      v12 = [(MPMediaControlsConfiguration *)self routingContextUID];
-      v13 = [v11 isEqualToString:v12];
-      if (v60 == v6 && v7 == v8 && v9 == v10)
+      v5 = equalCopy;
+      style = [(MPMediaControlsConfiguration *)v5 style];
+      style2 = [(MPMediaControlsConfiguration *)self style];
+      initatorStyle = [(MPMediaControlsConfiguration *)v5 initatorStyle];
+      initatorStyle2 = [(MPMediaControlsConfiguration *)self initatorStyle];
+      surface = [(MPMediaControlsConfiguration *)v5 surface];
+      surface2 = [(MPMediaControlsConfiguration *)self surface];
+      routingContextUID = [(MPMediaControlsConfiguration *)v5 routingContextUID];
+      routingContextUID2 = [(MPMediaControlsConfiguration *)self routingContextUID];
+      v13 = [routingContextUID isEqualToString:routingContextUID2];
+      if (style == style2 && initatorStyle == initatorStyle2 && surface == surface2)
       {
         v16 = v13;
       }
@@ -55,28 +55,28 @@
         v16 = 0;
       }
 
-      v17 = [(MPMediaControlsConfiguration *)v5 presentingAppBundleID];
-      v18 = [(MPMediaControlsConfiguration *)self presentingAppBundleID];
-      v19 = [v17 isEqualToString:v18];
+      presentingAppBundleID = [(MPMediaControlsConfiguration *)v5 presentingAppBundleID];
+      presentingAppBundleID2 = [(MPMediaControlsConfiguration *)self presentingAppBundleID];
+      v19 = [presentingAppBundleID isEqualToString:presentingAppBundleID2];
 
-      v20 = [(MPMediaControlsConfiguration *)v5 nowPlayingAppBundleID];
-      v21 = [(MPMediaControlsConfiguration *)self nowPlayingAppBundleID];
-      v22 = v19 & [v20 isEqualToString:v21];
+      nowPlayingAppBundleID = [(MPMediaControlsConfiguration *)v5 nowPlayingAppBundleID];
+      nowPlayingAppBundleID2 = [(MPMediaControlsConfiguration *)self nowPlayingAppBundleID];
+      v22 = v19 & [nowPlayingAppBundleID isEqualToString:nowPlayingAppBundleID2];
 
-      v23 = [(MPMediaControlsConfiguration *)v5 donatingAppBundleID];
-      v24 = [(MPMediaControlsConfiguration *)self donatingAppBundleID];
-      v25 = v16 & v22 & [v23 isEqualToString:v24];
+      donatingAppBundleID = [(MPMediaControlsConfiguration *)v5 donatingAppBundleID];
+      donatingAppBundleID2 = [(MPMediaControlsConfiguration *)self donatingAppBundleID];
+      v25 = v16 & v22 & [donatingAppBundleID isEqualToString:donatingAppBundleID2];
 
-      LODWORD(v23) = [(MPMediaControlsConfiguration *)v5 isDonatingAppEligible];
-      v26 = v25 & ~(v23 ^ [(MPMediaControlsConfiguration *)self isDonatingAppEligible]);
-      v27 = [(MPMediaControlsConfiguration *)v5 visibleMediaApps];
-      v28 = [(MPMediaControlsConfiguration *)self visibleMediaApps];
-      v29 = v26 & [v27 isEqualToArray:v28];
+      LODWORD(donatingAppBundleID) = [(MPMediaControlsConfiguration *)v5 isDonatingAppEligible];
+      v26 = v25 & ~(donatingAppBundleID ^ [(MPMediaControlsConfiguration *)self isDonatingAppEligible]);
+      visibleMediaApps = [(MPMediaControlsConfiguration *)v5 visibleMediaApps];
+      visibleMediaApps2 = [(MPMediaControlsConfiguration *)self visibleMediaApps];
+      v29 = v26 & [visibleMediaApps isEqualToArray:visibleMediaApps2];
 
-      LODWORD(v27) = [(MPMediaControlsConfiguration *)v5 allowsNowPlayingApplicationLaunch];
-      LODWORD(v28) = v27 ^ [(MPMediaControlsConfiguration *)self allowsNowPlayingApplicationLaunch];
-      LODWORD(v27) = [(MPMediaControlsConfiguration *)v5 sortByIsVideoRoute];
-      v30 = v29 & ~(v28 | v27 ^ [(MPMediaControlsConfiguration *)self sortByIsVideoRoute]);
+      LODWORD(visibleMediaApps) = [(MPMediaControlsConfiguration *)v5 allowsNowPlayingApplicationLaunch];
+      LODWORD(visibleMediaApps2) = visibleMediaApps ^ [(MPMediaControlsConfiguration *)self allowsNowPlayingApplicationLaunch];
+      LODWORD(visibleMediaApps) = [(MPMediaControlsConfiguration *)v5 sortByIsVideoRoute];
+      v30 = v29 & ~(visibleMediaApps2 | visibleMediaApps ^ [(MPMediaControlsConfiguration *)self sortByIsVideoRoute]);
       [(MPMediaControlsConfiguration *)v5 sourceRect];
       v32 = v31;
       v34 = v33;
@@ -91,10 +91,10 @@
       v61.origin.y = v34;
       v61.size.width = v36;
       v61.size.height = v38;
-      LODWORD(v27) = CGRectEqualToRect(v61, v62);
-      v43 = [(MPMediaControlsConfiguration *)v5 userInterfaceStyle];
-      v44 = [(MPMediaControlsConfiguration *)self userInterfaceStyle];
-      v45 = v30 & v27 & [v43 isEqualToNumber:v44];
+      LODWORD(visibleMediaApps) = CGRectEqualToRect(v61, v62);
+      userInterfaceStyle = [(MPMediaControlsConfiguration *)v5 userInterfaceStyle];
+      userInterfaceStyle2 = [(MPMediaControlsConfiguration *)self userInterfaceStyle];
+      v45 = v30 & visibleMediaApps & [userInterfaceStyle isEqualToNumber:userInterfaceStyle2];
 
       [(MPMediaControlsConfiguration *)v5 preferredWidth];
       v47 = v46;
@@ -109,19 +109,19 @@
         v49 = 0;
       }
 
-      v50 = [(MPMediaControlsConfiguration *)v5 routeUID];
-      v51 = [(MPMediaControlsConfiguration *)self routeUID];
-      v52 = [v50 isEqualToString:v51];
+      routeUID = [(MPMediaControlsConfiguration *)v5 routeUID];
+      routeUID2 = [(MPMediaControlsConfiguration *)self routeUID];
+      v52 = [routeUID isEqualToString:routeUID2];
 
-      v53 = [(MPMediaControlsConfiguration *)v5 customRows];
-      v54 = [(MPMediaControlsConfiguration *)self customRows];
-      v55 = v49 & v52 & [v53 isEqualToArray:v54];
+      customRows = [(MPMediaControlsConfiguration *)v5 customRows];
+      customRows2 = [(MPMediaControlsConfiguration *)self customRows];
+      v55 = v49 & v52 & [customRows isEqualToArray:customRows2];
 
-      LODWORD(v53) = [(MPMediaControlsConfiguration *)v5 useGenericDevicesIconInHeader];
-      v56 = v55 & ~(v53 ^ [(MPMediaControlsConfiguration *)self useGenericDevicesIconInHeader]);
-      v57 = [(MPMediaControlsConfiguration *)v5 audioSessionID];
+      LODWORD(customRows) = [(MPMediaControlsConfiguration *)v5 useGenericDevicesIconInHeader];
+      v56 = v55 & ~(customRows ^ [(MPMediaControlsConfiguration *)self useGenericDevicesIconInHeader]);
+      audioSessionID = [(MPMediaControlsConfiguration *)v5 audioSessionID];
 
-      if (v57 == [(MPMediaControlsConfiguration *)self audioSessionID])
+      if (audioSessionID == [(MPMediaControlsConfiguration *)self audioSessionID])
       {
         v58 = v56;
       }
@@ -141,7 +141,7 @@
   return v58;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPMediaControlsConfiguration);
   v4->_style = self->_style;
@@ -168,92 +168,92 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"style"];
-  [v5 encodeInteger:self->_initatorStyle forKey:@"initiatorStyle"];
-  [v5 encodeInteger:self->_surface forKey:@"surface"];
-  [v5 encodeObject:self->_routingContextUID forKey:@"routingContextUID"];
-  [v5 encodeObject:self->_presentingAppBundleID forKey:@"presentingAppBundleID"];
-  [v5 encodeObject:self->_nowPlayingAppBundleID forKey:@"nowPlayingAppBundleID"];
-  [v5 encodeObject:self->_donatingAppBundleID forKey:@"donatingAppBundleID"];
-  [v5 encodeBool:self->_donatingAppEligible forKey:@"donatingAppEligible"];
-  [v5 encodeObject:self->_visibleMediaApps forKey:@"visibleMediaApps"];
-  [v5 encodeBool:self->_allowsNowPlayingApplicationLaunch forKey:@"allowsNowPlayingApplicationLaunch"];
-  [v5 encodeBool:self->_sortByIsVideoRoute forKey:@"sortByIsVideoRoute"];
-  [v5 encodeCGRect:@"sourceRect" forKey:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
-  [v5 encodeObject:self->_userInterfaceStyle forKey:@"userInterfaceStyle"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"style"];
+  [coderCopy encodeInteger:self->_initatorStyle forKey:@"initiatorStyle"];
+  [coderCopy encodeInteger:self->_surface forKey:@"surface"];
+  [coderCopy encodeObject:self->_routingContextUID forKey:@"routingContextUID"];
+  [coderCopy encodeObject:self->_presentingAppBundleID forKey:@"presentingAppBundleID"];
+  [coderCopy encodeObject:self->_nowPlayingAppBundleID forKey:@"nowPlayingAppBundleID"];
+  [coderCopy encodeObject:self->_donatingAppBundleID forKey:@"donatingAppBundleID"];
+  [coderCopy encodeBool:self->_donatingAppEligible forKey:@"donatingAppEligible"];
+  [coderCopy encodeObject:self->_visibleMediaApps forKey:@"visibleMediaApps"];
+  [coderCopy encodeBool:self->_allowsNowPlayingApplicationLaunch forKey:@"allowsNowPlayingApplicationLaunch"];
+  [coderCopy encodeBool:self->_sortByIsVideoRoute forKey:@"sortByIsVideoRoute"];
+  [coderCopy encodeCGRect:@"sourceRect" forKey:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
+  [coderCopy encodeObject:self->_userInterfaceStyle forKey:@"userInterfaceStyle"];
   preferredWidth = self->_preferredWidth;
   *&preferredWidth = preferredWidth;
-  [v5 encodeFloat:@"preferredWidth" forKey:preferredWidth];
-  [v5 encodeObject:self->_routeUID forKey:@"routeUID"];
-  [v5 encodeObject:self->_customRows forKey:@"customRows"];
-  [v5 encodeInt32:self->_presentingAppProcessIdentifier forKey:@"presentingAppProcessIdentifier"];
-  [v5 encodeBool:self->_useGenericDevicesIconInHeader forKey:@"useGenericDevicesIconInHeader"];
+  [coderCopy encodeFloat:@"preferredWidth" forKey:preferredWidth];
+  [coderCopy encodeObject:self->_routeUID forKey:@"routeUID"];
+  [coderCopy encodeObject:self->_customRows forKey:@"customRows"];
+  [coderCopy encodeInt32:self->_presentingAppProcessIdentifier forKey:@"presentingAppProcessIdentifier"];
+  [coderCopy encodeBool:self->_useGenericDevicesIconInHeader forKey:@"useGenericDevicesIconInHeader"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_audioSessionID];
-  [v5 encodeObject:v7 forKey:@"audioSessionID"];
+  [coderCopy encodeObject:v7 forKey:@"audioSessionID"];
 }
 
-- (MPMediaControlsConfiguration)initWithCoder:(id)a3
+- (MPMediaControlsConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = MPMediaControlsConfiguration;
   v5 = [(MPMediaControlsConfiguration *)&v31 init];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v5->_initatorStyle = [v4 decodeIntegerForKey:@"initiatorStyle"];
-    v5->_surface = [v4 decodeIntegerForKey:@"surface"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingContextUID"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v5->_initatorStyle = [coderCopy decodeIntegerForKey:@"initiatorStyle"];
+    v5->_surface = [coderCopy decodeIntegerForKey:@"surface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingContextUID"];
     routingContextUID = v5->_routingContextUID;
     v5->_routingContextUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentingAppBundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentingAppBundleID"];
     presentingAppBundleID = v5->_presentingAppBundleID;
     v5->_presentingAppBundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nowPlayingAppBundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nowPlayingAppBundleID"];
     nowPlayingAppBundleID = v5->_nowPlayingAppBundleID;
     v5->_nowPlayingAppBundleID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"donatingAppBundleID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"donatingAppBundleID"];
     donatingAppBundleID = v5->_donatingAppBundleID;
     v5->_donatingAppBundleID = v12;
 
-    v5->_donatingAppEligible = [v4 decodeBoolForKey:@"donatingAppEligible"];
-    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"visibleMediaApps"];
+    v5->_donatingAppEligible = [coderCopy decodeBoolForKey:@"donatingAppEligible"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"visibleMediaApps"];
     visibleMediaApps = v5->_visibleMediaApps;
     v5->_visibleMediaApps = v14;
 
-    v5->_allowsNowPlayingApplicationLaunch = [v4 decodeBoolForKey:@"allowsNowPlayingApplicationLaunch"];
-    v5->_sortByIsVideoRoute = [v4 decodeBoolForKey:@"sortByIsVideoRoute"];
-    [v4 decodeCGRectForKey:@"sourceRect"];
+    v5->_allowsNowPlayingApplicationLaunch = [coderCopy decodeBoolForKey:@"allowsNowPlayingApplicationLaunch"];
+    v5->_sortByIsVideoRoute = [coderCopy decodeBoolForKey:@"sortByIsVideoRoute"];
+    [coderCopy decodeCGRectForKey:@"sourceRect"];
     v5->_sourceRect.origin.x = v16;
     v5->_sourceRect.origin.y = v17;
     v5->_sourceRect.size.width = v18;
     v5->_sourceRect.size.height = v19;
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInterfaceStyle"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInterfaceStyle"];
     userInterfaceStyle = v5->_userInterfaceStyle;
     v5->_userInterfaceStyle = v20;
 
-    [v4 decodeFloatForKey:@"preferredWidth"];
+    [coderCopy decodeFloatForKey:@"preferredWidth"];
     v5->_preferredWidth = v22;
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeUID"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeUID"];
     routeUID = v5->_routeUID;
     v5->_routeUID = v23;
 
     v25 = MEMORY[0x1E695DF70];
-    v26 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"customRows"];
+    v26 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"customRows"];
     v27 = [v25 arrayWithArray:v26];
     customRows = v5->_customRows;
     v5->_customRows = v27;
 
-    v5->_presentingAppProcessIdentifier = [v4 decodeInt32ForKey:@"presentingAppProcessIdentifier"];
-    v5->_useGenericDevicesIconInHeader = [v4 decodeBoolForKey:@"useGenericDevicesIconInHeader"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioSessionID"];
+    v5->_presentingAppProcessIdentifier = [coderCopy decodeInt32ForKey:@"presentingAppProcessIdentifier"];
+    v5->_useGenericDevicesIconInHeader = [coderCopy decodeBoolForKey:@"useGenericDevicesIconInHeader"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioSessionID"];
     v5->_audioSessionID = [v29 unsignedIntegerValue];
   }
 
@@ -262,34 +262,34 @@
 
 - (id)description
 {
-  v3 = [(MPMediaControlsConfiguration *)self style];
-  if (v3 > 8)
+  style = [(MPMediaControlsConfiguration *)self style];
+  if (style > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E7682538[v3];
+    v4 = off_1E7682538[style];
   }
 
-  v5 = [(MPMediaControlsConfiguration *)self surface];
-  if (v5 > 0xB)
+  surface = [(MPMediaControlsConfiguration *)self surface];
+  if (surface > 0xB)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E7682580[v5];
+    v6 = off_1E7682580[surface];
   }
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
-  v9 = [(MPMediaControlsConfiguration *)self routingContextUID];
+  routingContextUID = [(MPMediaControlsConfiguration *)self routingContextUID];
   presentingAppBundleID = self->_presentingAppBundleID;
   v11 = NSStringFromCGRect(self->_sourceRect);
-  v12 = [v7 stringWithFormat:@"<%@:%p routingContextUID=%@, style=%@, presentingAppBundleID=%@, sourcRect=%@, preferredWidth=%f, userInterfaceStyle=%@ surface=%@>", v8, self, v9, v4, presentingAppBundleID, v11, *&self->_preferredWidth, self->_userInterfaceStyle, v6];
+  v12 = [v7 stringWithFormat:@"<%@:%p routingContextUID=%@, style=%@, presentingAppBundleID=%@, sourcRect=%@, preferredWidth=%f, userInterfaceStyle=%@ surface=%@>", v8, self, routingContextUID, v4, presentingAppBundleID, v11, *&self->_preferredWidth, self->_userInterfaceStyle, v6];
 
   return v12;
 }

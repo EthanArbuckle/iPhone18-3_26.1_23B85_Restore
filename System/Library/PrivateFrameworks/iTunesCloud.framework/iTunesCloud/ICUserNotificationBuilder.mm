@@ -4,45 +4,45 @@
 - (BOOL)displaysAsTopMost;
 - (BOOL)forcesModalAppearance;
 - (ICUserNotificationBuilder)init;
-- (ICUserNotificationBuilder)initWithStoreDialog:(id)a3;
+- (ICUserNotificationBuilder)initWithStoreDialog:(id)dialog;
 - (NSString)alternateButtonTitle;
 - (NSString)defaultButtonTitle;
 - (NSString)message;
 - (NSString)otherButtonTitle;
 - (NSString)title;
 - (__CFUserNotification)createCFUserNotification;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setBoolValue:(BOOL)a3 forKey:(__CFString *)a4;
-- (void)setAlternateButtonTitle:(id)a3;
-- (void)setDefaultButtonTitle:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setOtherButtonTitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setBoolValue:(BOOL)value forKey:(__CFString *)key;
+- (void)setAlternateButtonTitle:(id)title;
+- (void)setDefaultButtonTitle:(id)title;
+- (void)setMessage:(id)message;
+- (void)setOtherButtonTitle:(id)title;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ICUserNotificationBuilder
 
-- (void)_setBoolValue:(BOOL)a3 forKey:(__CFString *)a4
+- (void)_setBoolValue:(BOOL)value forKey:(__CFString *)key
 {
   userNotificationDictionary = self->_userNotificationDictionary;
   v5 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!value)
   {
     v5 = MEMORY[0x1E695E4C0];
   }
 
-  [(NSMutableDictionary *)userNotificationDictionary setObject:*v5 forKey:a4];
+  [(NSMutableDictionary *)userNotificationDictionary setObject:*v5 forKey:key];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 16) = self->_alertLevel;
     *(v5 + 24) = self->_timeoutInterval;
-    v7 = [(NSMutableDictionary *)self->_userNotificationDictionary mutableCopyWithZone:a3];
+    v7 = [(NSMutableDictionary *)self->_userNotificationDictionary mutableCopyWithZone:zone];
     v8 = v6[1];
     v6[1] = v7;
   }
@@ -69,33 +69,33 @@
   return &v4->isa;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_userNotificationDictionary setObject:v4 forKey:*MEMORY[0x1E695EE58]];
 }
 
-- (void)setOtherButtonTitle:(id)a3
+- (void)setOtherButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_userNotificationDictionary setObject:v4 forKey:*MEMORY[0x1E695EE98]];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = [a3 copy];
+  v4 = [message copy];
   [(NSMutableDictionary *)self->_userNotificationDictionary setObject:v4 forKey:*MEMORY[0x1E695EE60]];
 }
 
-- (void)setDefaultButtonTitle:(id)a3
+- (void)setDefaultButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_userNotificationDictionary setObject:v4 forKey:*MEMORY[0x1E695EE78]];
 }
 
-- (void)setAlternateButtonTitle:(id)a3
+- (void)setAlternateButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_userNotificationDictionary setObject:v4 forKey:*MEMORY[0x1E695EE70]];
 }
 
@@ -140,25 +140,25 @@
 - (BOOL)forcesModalAppearance
 {
   v2 = [(NSMutableDictionary *)self->_userNotificationDictionary objectForKey:*MEMORY[0x1E69D4500]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)displaysAsTopMost
 {
   v2 = [(NSMutableDictionary *)self->_userNotificationDictionary objectForKey:*MEMORY[0x1E695EE68]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)displaysActionButtonOnLockScreen
 {
   v2 = [(NSMutableDictionary *)self->_userNotificationDictionary objectForKey:*MEMORY[0x1E69D44E0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)defaultButtonTitle
@@ -220,36 +220,36 @@
 - (BOOL)allowInCar
 {
   v2 = [(NSMutableDictionary *)self->_userNotificationDictionary objectForKey:*MEMORY[0x1E69D4478]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (ICUserNotificationBuilder)initWithStoreDialog:(id)a3
+- (ICUserNotificationBuilder)initWithStoreDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   v5 = [(ICUserNotificationBuilder *)self init];
   if (v5)
   {
-    v6 = [v4 message];
-    if ([v6 length])
+    message = [dialogCopy message];
+    if ([message length])
     {
-      [(ICUserNotificationBuilder *)v5 setTitle:v6];
+      [(ICUserNotificationBuilder *)v5 setTitle:message];
     }
 
-    v7 = [v4 explanation];
-    if ([v7 length])
+    explanation = [dialogCopy explanation];
+    if ([explanation length])
     {
-      [(ICUserNotificationBuilder *)v5 setMessage:v7];
+      [(ICUserNotificationBuilder *)v5 setMessage:explanation];
     }
 
-    v8 = [v4 buttons];
+    buttons = [dialogCopy buttons];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__ICUserNotificationBuilder_initWithStoreDialog___block_invoke;
     v10[3] = &unk_1E7BF4B20;
     v11 = v5;
-    [v8 enumerateObjectsUsingBlock:v10];
+    [buttons enumerateObjectsUsingBlock:v10];
   }
 
   return v5;

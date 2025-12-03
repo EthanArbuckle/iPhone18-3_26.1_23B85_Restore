@@ -3,8 +3,8 @@
 - (BOOL)hasActivity;
 - (SMActivityManagerInternal)init;
 - (void)endActivities;
-- (void)startActivityWith:(id)a3 localState:(id)a4;
-- (void)updateActivityWith:(id)a3 localState:(id)a4 shouldNotify:(BOOL)a5;
+- (void)startActivityWith:(id)with localState:(id)state;
+- (void)updateActivityWith:(id)with localState:(id)state shouldNotify:(BOOL)notify;
 @end
 
 @implementation SMActivityManagerInternal
@@ -41,45 +41,45 @@
   return v4;
 }
 
-- (void)startActivityWith:(id)a3 localState:(id)a4
+- (void)startActivityWith:(id)with localState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  withCopy = with;
+  stateCopy = state;
+  selfCopy = self;
   sub_264561600();
 }
 
-- (void)updateActivityWith:(id)a3 localState:(id)a4 shouldNotify:(BOOL)a5
+- (void)updateActivityWith:(id)with localState:(id)state shouldNotify:(BOOL)notify
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_264561DA0(v8, v5);
+  notifyCopy = notify;
+  withCopy = with;
+  stateCopy = state;
+  selfCopy = self;
+  sub_264561DA0(withCopy, notifyCopy);
 }
 
 - (void)endActivities
 {
-  v2 = self;
+  selfCopy = self;
   sub_264560A50();
 }
 
 - (BOOL)hasActivity
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FF72788, &qword_2645D9528);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2645D361C();
   v5 = OBJC_IVAR___SMActivityManagerInternal_activities;
   swift_beginAccess();
-  v6 = *(&v3->super.isa + v5);
-  *(&v3->super.isa + v5) = v4;
+  v6 = *(&selfCopy->super.isa + v5);
+  *(&selfCopy->super.isa + v5) = v4;
 
-  v7 = *(&v3->super.isa + v5);
+  v7 = *(&selfCopy->super.isa + v5);
   if (v7 >> 62)
   {
     if (v7 < 0)
     {
-      v10 = *(&v3->super.isa + v5);
+      v10 = *(&selfCopy->super.isa + v5);
     }
 
     v8 = sub_2645D3BCC();

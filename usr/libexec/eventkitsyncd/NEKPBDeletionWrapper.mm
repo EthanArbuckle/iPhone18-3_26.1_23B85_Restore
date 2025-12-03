@@ -1,21 +1,21 @@
 @interface NEKPBDeletionWrapper
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNekStoreType:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNekStoreType:(BOOL)type;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBDeletionWrapper
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNekStoreType:(BOOL)a3
+- (void)setHasNekStoreType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBDeletionWrapper;
   v3 = [(NEKPBDeletionWrapper *)&v7 description];
-  v4 = [(NEKPBDeletionWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBDeletionWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -94,27 +94,27 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_syncId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_calendarIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -122,7 +122,7 @@
   {
     nekChangeType = self->_nekChangeType;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -130,51 +130,51 @@
   {
     nekStoreType = self->_nekStoreType;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_syncId)
   {
-    [v4 setSyncId:?];
-    v4 = v6;
+    [toCopy setSyncId:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 8) = self->_type;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 8) = self->_type;
+    *(toCopy + 36) |= 4u;
   }
 
   if (self->_calendarIdentifier)
   {
     [v6 setCalendarIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_nekChangeType;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_nekChangeType;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_nekStoreType;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 5) = self->_nekStoreType;
+    *(toCopy + 36) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_syncId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_syncId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -184,7 +184,7 @@
     *(v5 + 36) |= 4u;
   }
 
-  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -205,16 +205,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   syncId = self->_syncId;
-  if (syncId | *(v4 + 3))
+  if (syncId | *(equalCopy + 3))
   {
     if (![(NSString *)syncId isEqual:?])
     {
@@ -223,22 +223,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  if (calendarIdentifier | *(v4 + 1))
+  if (calendarIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)calendarIdentifier isEqual:?])
     {
@@ -252,21 +252,21 @@ LABEL_21:
 
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_nekChangeType != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_nekChangeType != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_21;
   }
 
-  v9 = (*(v4 + 36) & 2) == 0;
+  v9 = (*(equalCopy + 36) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_nekStoreType != *(v4 + 5))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_nekStoreType != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
@@ -317,39 +317,39 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NEKPBDeletionWrapper *)self setSyncId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[9] & 4) != 0)
+  if ((fromCopy[9] & 4) != 0)
   {
-    self->_type = v4[8];
+    self->_type = fromCopy[8];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NEKPBDeletionWrapper *)self setCalendarIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_nekChangeType = v4[4];
+    self->_nekChangeType = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_nekStoreType = v4[5];
+    self->_nekStoreType = fromCopy[5];
     *&self->_has |= 2u;
   }
 }

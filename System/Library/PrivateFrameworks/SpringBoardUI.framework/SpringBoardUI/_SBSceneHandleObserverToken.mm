@@ -1,20 +1,20 @@
 @interface _SBSceneHandleObserverToken
 - (NSMutableDictionary)owner;
-- (_SBSceneHandleObserverToken)initWithOwner:(id)a3;
+- (_SBSceneHandleObserverToken)initWithOwner:(id)owner;
 @end
 
 @implementation _SBSceneHandleObserverToken
 
-- (_SBSceneHandleObserverToken)initWithOwner:(id)a3
+- (_SBSceneHandleObserverToken)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = _SBSceneHandleObserverToken;
   v5 = [(_SBSceneHandleObserverToken *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
   }
 
   return v6;

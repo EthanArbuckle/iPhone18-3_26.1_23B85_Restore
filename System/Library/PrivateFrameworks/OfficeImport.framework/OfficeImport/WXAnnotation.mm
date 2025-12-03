@@ -1,7 +1,7 @@
 @interface WXAnnotation
 + (id)annotationTypeEnumMap;
 + (void)annotationTypeEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 type:(int)a5 state:(id)a6;
++ (void)readFrom:(_xmlNode *)from to:(id)to type:(int)type state:(id)state;
 @end
 
 @implementation WXAnnotation
@@ -29,27 +29,27 @@ void __37__WXAnnotation_annotationTypeEnumMap__block_invoke()
   +[WXAnnotation annotationTypeEnumMap]::sAnnotationTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 type:(int)a5 state:(id)a6
++ (void)readFrom:(_xmlNode *)from to:(id)to type:(int)type state:(id)state
 {
-  v7 = *&a5;
+  v7 = *&type;
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  if ([v10 hasAnnotations])
+  toCopy = to;
+  stateCopy = state;
+  if ([stateCopy hasAnnotations])
   {
-    v11 = [v10 WXMainNamespace];
-    v12 = CXRequiredLongAttribute(a3, v11, "id");
+    wXMainNamespace = [stateCopy WXMainNamespace];
+    v12 = CXRequiredLongAttribute(from, wXMainNamespace, "id");
 
-    v13 = [v10 annotationWithId:v12];
-    v14 = [v10 xmlAnnotationWithID:v12];
+    v13 = [stateCopy annotationWithId:v12];
+    v14 = [stateCopy xmlAnnotationWithID:v12];
     if (v14)
     {
-      v15 = [v9 addAnnotation:v7];
+      v15 = [toCopy addAnnotation:v7];
       v16 = v15;
       if (v7 == 2 && v13)
       {
-        v17 = [v15 paragraph];
-        [v17 removeRun:v16];
+        paragraph = [v15 paragraph];
+        [paragraph removeRun:v16];
       }
 
       else if (v13)
@@ -61,27 +61,27 @@ void __37__WXAnnotation_annotationTypeEnumMap__block_invoke()
 
       else
       {
-        [v10 addAnnotationId:v12 annotation:v15];
+        [stateCopy addAnnotationId:v12 annotation:v15];
         v18 = wmxmlGetAuthorProperty(v14);
         [v16 setOwner:v18];
 
         v19 = wmxmlGetDateProperty(v14);
         [v16 setDate:v19];
 
-        v20 = [v10 drawingState];
-        v40 = [v20 packagePart];
+        drawingState = [stateCopy drawingState];
+        packagePart = [drawingState packagePart];
 
-        v21 = [v10 drawingState];
-        v22 = [v10 annotationPart];
-        [v21 setPackagePart:v22];
+        drawingState2 = [stateCopy drawingState];
+        annotationPart = [stateCopy annotationPart];
+        [drawingState2 setPackagePart:annotationPart];
 
-        v39 = [v10 isNewSectionRequested];
-        [v10 setNewSectionRequested:0];
-        v41 = [[WXReadState alloc] initNoStacksWith:v10];
-        v23 = [v16 text];
-        [WXText readFrom:v14 baseStyle:0 to:v23 state:v41];
+        isNewSectionRequested = [stateCopy isNewSectionRequested];
+        [stateCopy setNewSectionRequested:0];
+        v41 = [[WXReadState alloc] initNoStacksWith:stateCopy];
+        text = [v16 text];
+        [WXText readFrom:v14 baseStyle:0 to:text state:v41];
 
-        if ([v10 hasAnnotationsExtended])
+        if ([stateCopy hasAnnotationsExtended])
         {
           [v16 paragraphIds];
           v51 = 0u;
@@ -107,7 +107,7 @@ LABEL_11:
                 break;
               }
 
-              [v10 addAnnotationParaId:objc_msgSend(v27 annotation:{"unsignedIntValue"), v16}];
+              [stateCopy addAnnotationParaId:objc_msgSend(v27 annotation:{"unsignedIntValue"), v16}];
               if (v24 == ++v26)
               {
                 v24 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -125,9 +125,9 @@ LABEL_11:
           {
 LABEL_17:
 
-            v28 = [v10 drawingState];
-            v29 = [v10 annotationExtendedPart];
-            [v28 setPackagePart:v29];
+            drawingState3 = [stateCopy drawingState];
+            annotationExtendedPart = [stateCopy annotationExtendedPart];
+            [drawingState3 setPackagePart:annotationExtendedPart];
 
             v47 = 0u;
             v48 = 0u;
@@ -147,7 +147,7 @@ LABEL_17:
                     objc_enumerationMutation(v42);
                   }
 
-                  v33 = [v10 xmlAnnotationExtendedWithParaId:{objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedIntValue")}];
+                  v33 = [stateCopy xmlAnnotationExtendedWithParaId:{objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedIntValue")}];
                   v34 = v33;
                   if (v33)
                   {
@@ -160,7 +160,7 @@ LABEL_17:
 
                       if (v36)
                       {
-                        v37 = [v10 annotationWithParaId:v44];
+                        v37 = [stateCopy annotationWithParaId:v44];
                         [v16 setParent:v37];
 
                         goto LABEL_29;
@@ -183,10 +183,10 @@ LABEL_17:
 LABEL_29:
         }
 
-        v38 = [v10 drawingState];
-        [v38 setPackagePart:v40];
+        drawingState4 = [stateCopy drawingState];
+        [drawingState4 setPackagePart:packagePart];
 
-        [v10 setNewSectionRequested:v39];
+        [stateCopy setNewSectionRequested:isNewSectionRequested];
       }
     }
   }

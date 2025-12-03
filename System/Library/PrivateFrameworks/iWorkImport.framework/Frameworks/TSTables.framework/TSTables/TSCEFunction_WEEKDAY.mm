@@ -1,19 +1,19 @@
 @interface TSCEFunction_WEEKDAY
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_WEEKDAY
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v50 = 0;
-  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v50);
+  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v50);
   v11 = v50;
   if (v11)
   {
     v16 = v11;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v11, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v12, v11, v14, v15);
 LABEL_3:
 
     goto LABEL_13;
@@ -21,19 +21,19 @@ LABEL_3:
 
   v18 = objc_msgSend_gregorianCalendar(TSCECalendar, v12, v13, v14, v15);
   Weekday = objc_msgSend_extractWeekday_(v18, v19, v10, v20, v21);
-  if (*(a5 + 1) - *a5 >= 9uLL)
+  if (*(arguments + 1) - *arguments >= 9uLL)
   {
-    v23 = *(*a5 + 8);
+    v23 = *(*arguments + 8);
     if ((objc_msgSend_isTokenOrEmptyArg(v23, v24, v25, v26, v27) & 1) == 0)
     {
       v49 = 0;
-      v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v28, a3, a4, 1, &v49);
+      v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v28, context, spec, 1, &v49);
       v16 = v49;
       v34 = objc_msgSend_trunc(v29, v30, v31, v32, v33);
 
       if (v16)
       {
-        v17 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v16, v37, v38);
+        v17 = objc_msgSend_raiseErrorOrConvert_(context, v35, v16, v37, v38);
 
         goto LABEL_3;
       }

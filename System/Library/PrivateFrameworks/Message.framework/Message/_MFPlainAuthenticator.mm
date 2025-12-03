@@ -1,18 +1,18 @@
 @interface _MFPlainAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation _MFPlainAuthenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
-  v4 = [(ECSASLAuthenticator *)self account];
-  v5 = [v4 username];
-  v6 = [v5 dataUsingEncoding:4];
+  account = [(ECSASLAuthenticator *)self account];
+  username = [account username];
+  v6 = [username dataUsingEncoding:4];
 
-  v7 = [(ECSASLAuthenticator *)self account];
-  v8 = [v7 password];
-  v9 = [v8 dataUsingEncoding:4];
+  account2 = [(ECSASLAuthenticator *)self account];
+  password = [account2 password];
+  v9 = [password dataUsingEncoding:4];
 
   if (v9)
   {

@@ -1,82 +1,82 @@
 @interface _UICollectionViewDiffableDataSource
 - (UICollectionView)collectionView;
-- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 cellProvider:(id)a4;
-- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 reuseIdentifierProvider:(id)a4 cellConfigurationHandler:(id)a5;
+- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)view cellProvider:(id)provider;
+- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)view reuseIdentifierProvider:(id)provider cellConfigurationHandler:(id)handler;
 - (id)supplementaryConfigurationHandler;
 - (id)supplementaryReuseIdentifierProvider;
 - (id)supplementaryViewProvider;
-- (void)setSupplementaryConfigurationHandler:(id)a3;
-- (void)setSupplementaryReuseIdentifierProvider:(id)a3;
-- (void)setSupplementaryViewProvider:(id)a3;
+- (void)setSupplementaryConfigurationHandler:(id)handler;
+- (void)setSupplementaryReuseIdentifierProvider:(id)provider;
+- (void)setSupplementaryViewProvider:(id)provider;
 @end
 
 @implementation _UICollectionViewDiffableDataSource
 
-- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 cellProvider:(id)a4
+- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)view cellProvider:(id)provider
 {
   v5.receiver = self;
   v5.super_class = _UICollectionViewDiffableDataSource;
-  return [(_UIDiffableDataSource *)&v5 initWithCollectionView:a3 cellProvider:a4];
+  return [(_UIDiffableDataSource *)&v5 initWithCollectionView:view cellProvider:provider];
 }
 
-- (void)setSupplementaryViewProvider:(id)a3
+- (void)setSupplementaryViewProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(_UIDiffableDataSource *)self dsImpl];
-  [v5 setSupplementaryViewProvider:v4];
+  providerCopy = provider;
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  [dsImpl setSupplementaryViewProvider:providerCopy];
 }
 
 - (id)supplementaryViewProvider
 {
-  v2 = [(_UIDiffableDataSource *)self dsImpl];
-  v3 = [v2 supplementaryViewProvider];
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  supplementaryViewProvider = [dsImpl supplementaryViewProvider];
 
-  return v3;
+  return supplementaryViewProvider;
 }
 
 - (UICollectionView)collectionView
 {
-  v2 = [(_UIDiffableDataSource *)self dsImpl];
-  v3 = [v2 collectionView];
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  collectionView = [dsImpl collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)a3 reuseIdentifierProvider:(id)a4 cellConfigurationHandler:(id)a5
+- (_UICollectionViewDiffableDataSource)initWithCollectionView:(id)view reuseIdentifierProvider:(id)provider cellConfigurationHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = _UICollectionViewDiffableDataSource;
-  return [(_UIDiffableDataSource *)&v6 initWithCollectionView:a3 reuseIdentifierProvider:a4 cellConfigurationHandler:a5];
+  return [(_UIDiffableDataSource *)&v6 initWithCollectionView:view reuseIdentifierProvider:provider cellConfigurationHandler:handler];
 }
 
 - (id)supplementaryConfigurationHandler
 {
-  v2 = [(_UIDiffableDataSource *)self dsImpl];
-  v3 = [v2 supplementaryViewConfigurationHandler];
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  supplementaryViewConfigurationHandler = [dsImpl supplementaryViewConfigurationHandler];
 
-  return v3;
+  return supplementaryViewConfigurationHandler;
 }
 
-- (void)setSupplementaryConfigurationHandler:(id)a3
+- (void)setSupplementaryConfigurationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_UIDiffableDataSource *)self dsImpl];
-  [v5 setSupplementaryViewConfigurationHandler:v4];
+  handlerCopy = handler;
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  [dsImpl setSupplementaryViewConfigurationHandler:handlerCopy];
 }
 
 - (id)supplementaryReuseIdentifierProvider
 {
-  v2 = [(_UIDiffableDataSource *)self dsImpl];
-  v3 = [v2 supplementaryReuseIdentifierProvider];
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  supplementaryReuseIdentifierProvider = [dsImpl supplementaryReuseIdentifierProvider];
 
-  return v3;
+  return supplementaryReuseIdentifierProvider;
 }
 
-- (void)setSupplementaryReuseIdentifierProvider:(id)a3
+- (void)setSupplementaryReuseIdentifierProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(_UIDiffableDataSource *)self dsImpl];
-  [v5 setSupplementaryReuseIdentifierProvider:v4];
+  providerCopy = provider;
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  [dsImpl setSupplementaryReuseIdentifierProvider:providerCopy];
 }
 
 @end

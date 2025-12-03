@@ -1,27 +1,27 @@
 @interface EKEventDetailGroup
-- (BOOL)hasSubitemForIndexPathRow:(unint64_t)a3;
-- (EKEventDetailGroup)initWithTag:(unint64_t)a3 headerTitle:(id)a4;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3 withTraitCollection:(id)a4;
+- (BOOL)hasSubitemForIndexPathRow:(unint64_t)row;
+- (EKEventDetailGroup)initWithTag:(unint64_t)tag headerTitle:(id)title;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
+- (id)cellForSubitemAtIndex:(unint64_t)index withTraitCollection:(id)collection;
 - (id)description;
-- (id)itemAtIndex:(unint64_t)a3 subitemIndex:(unint64_t *)a4;
+- (id)itemAtIndex:(unint64_t)index subitemIndex:(unint64_t *)subitemIndex;
 - (unint64_t)numberOfRows;
-- (void)updateCellLayoutsForRowCountIfNeededUsingWidth:(double)a3;
+- (void)updateCellLayoutsForRowCountIfNeededUsingWidth:(double)width;
 @end
 
 @implementation EKEventDetailGroup
 
-- (EKEventDetailGroup)initWithTag:(unint64_t)a3 headerTitle:(id)a4
+- (EKEventDetailGroup)initWithTag:(unint64_t)tag headerTitle:(id)title
 {
-  v6 = a4;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = EKEventDetailGroup;
   v7 = [(EKEventDetailGroup *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(EKEventDetailGroup *)v7 setTag:a3];
-    [(EKEventDetailGroup *)v8 setHeaderTitle:v6];
+    [(EKEventDetailGroup *)v7 setTag:tag];
+    [(EKEventDetailGroup *)v8 setHeaderTitle:titleCopy];
   }
 
   return v8;
@@ -34,8 +34,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(EKEventDetailGroup *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [(EKEventDetailGroup *)self items];
+  v3 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -47,13 +47,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) numberOfSubitems];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -67,7 +67,7 @@
   return v5;
 }
 
-- (id)itemAtIndex:(unint64_t)a3 subitemIndex:(unint64_t *)a4
+- (id)itemAtIndex:(unint64_t)index subitemIndex:(unint64_t *)subitemIndex
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -92,20 +92,20 @@ LABEL_3:
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
-      if (a3 - v8 < [v12 numberOfSubitems])
+      if (index - v8 < [v12 numberOfSubitems])
       {
         v13 = v12;
 
         v9 = v13;
       }
 
-      if (a4)
+      if (subitemIndex)
       {
-        *a4 = a3 - v8;
+        *subitemIndex = index - v8;
       }
 
       v8 += [v12 numberOfSubitems];
-      if (v8 > a3)
+      if (v8 > index)
       {
         break;
       }
@@ -131,31 +131,31 @@ LABEL_3:
   return v9;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3 withTraitCollection:(id)a4
+- (id)cellForSubitemAtIndex:(unint64_t)index withTraitCollection:(id)collection
 {
   v10 = 0;
-  v6 = a4;
-  v7 = [(EKEventDetailGroup *)self itemAtIndex:a3 subitemIndex:&v10];
-  v8 = [v7 cellForSubitemAtIndex:v10 withTraitCollection:v6];
+  collectionCopy = collection;
+  v7 = [(EKEventDetailGroup *)self itemAtIndex:index subitemIndex:&v10];
+  v8 = [v7 cellForSubitemAtIndex:v10 withTraitCollection:collectionCopy];
 
   return v8;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
-  v5 = a5;
+  updateCopy = update;
   v11 = 0;
-  v7 = [(EKEventDetailGroup *)self itemAtIndex:a3 subitemIndex:&v11];
-  [v7 defaultCellHeightForSubitemAtIndex:v11 forWidth:v5 forceUpdate:a4];
+  v7 = [(EKEventDetailGroup *)self itemAtIndex:index subitemIndex:&v11];
+  [v7 defaultCellHeightForSubitemAtIndex:v11 forWidth:updateCopy forceUpdate:width];
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)hasSubitemForIndexPathRow:(unint64_t)a3
+- (BOOL)hasSubitemForIndexPathRow:(unint64_t)row
 {
   v6 = 0;
-  v3 = [(EKEventDetailGroup *)self itemAtIndex:a3 subitemIndex:&v6];
+  v3 = [(EKEventDetailGroup *)self itemAtIndex:row subitemIndex:&v6];
   v4 = [v3 hasDetailViewControllerAtIndex:v6];
 
   return v4;
@@ -164,21 +164,21 @@ LABEL_3:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(EKEventDetailGroup *)self items];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  items = [(EKEventDetailGroup *)self items];
+  v4 = [v2 stringWithFormat:@"%@", items];
 
   return v4;
 }
 
-- (void)updateCellLayoutsForRowCountIfNeededUsingWidth:(double)a3
+- (void)updateCellLayoutsForRowCountIfNeededUsingWidth:(double)width
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(EKEventDetailGroup *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  items = [(EKEventDetailGroup *)self items];
+  v5 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -189,7 +189,7 @@ LABEL_3:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -202,7 +202,7 @@ LABEL_3:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v11 layoutForWidth:objc_msgSend(v9 position:{"cellPosition"), a3}];
+              [v11 layoutForWidth:objc_msgSend(v9 position:{"cellPosition"), width}];
             }
 
             ++v10;
@@ -212,7 +212,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

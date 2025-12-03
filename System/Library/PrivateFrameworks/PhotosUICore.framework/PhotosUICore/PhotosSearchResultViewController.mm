@@ -1,8 +1,8 @@
 @interface PhotosSearchResultViewController
 - (BOOL)resetToInitialStateIfPossible;
-- (_TtC12PhotosUICore32PhotosSearchResultViewController)initWithConfiguration:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)swift_scrollViewControllerDidScroll:(id)a3;
+- (_TtC12PhotosUICore32PhotosSearchResultViewController)initWithConfiguration:(id)configuration;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)swift_scrollViewControllerDidScroll:(id)scroll;
 - (void)viewDidLoad;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PhotosSearchResultViewController.viewDidLoad()();
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -29,17 +29,17 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  PhotosSearchResultViewController.present(_:animated:completion:)(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  PhotosSearchResultViewController.present(_:animated:completion:)(controllerCopy, animated, v8, v9);
   sub_1A3C33378(v8);
 }
 
-- (void)swift_scrollViewControllerDidScroll:(id)a3
+- (void)swift_scrollViewControllerDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A45514DC(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1A45514DC(scrollCopy);
 }
 
 - (BOOL)resetToInitialStateIfPossible
@@ -51,7 +51,7 @@
   return [(PXPhotosUIViewController *)&v5 resetToInitialStateIfPossible];
 }
 
-- (_TtC12PhotosUICore32PhotosSearchResultViewController)initWithConfiguration:(id)a3
+- (_TtC12PhotosUICore32PhotosSearchResultViewController)initWithConfiguration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC12PhotosUICore32PhotosSearchResultViewController_searchDelegate) = 0;
@@ -60,7 +60,7 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore32PhotosSearchResultViewController_previousScrollOffset) = 0;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(PXPhotosUIViewController *)&v7 initWithConfiguration:a3];
+  return [(PXPhotosUIViewController *)&v7 initWithConfiguration:configuration];
 }
 
 @end

@@ -3,22 +3,22 @@
 + (id)sharedSession;
 - (MSParsecSearchSession)init;
 - (id)_categoryOrder;
-- (id)_sectionFeedbackForBundleIdentifier:(id)a3 results:(id)a4;
+- (id)_sectionFeedbackForBundleIdentifier:(id)identifier results:(id)results;
 - (void)reportDidGoToCommittedSearch;
-- (void)reportFeedback:(id)a3;
-- (void)reportInstantAnswerButtonSelected:(id)a3 cardSectionID:(id)a4 command:(id)a5;
-- (void)reportInstantAnswerCardSelected:(id)a3 cardSectionID:(id)a4;
+- (void)reportFeedback:(id)feedback;
+- (void)reportInstantAnswerButtonSelected:(id)selected cardSectionID:(id)d command:(id)command;
+- (void)reportInstantAnswerCardSelected:(id)selected cardSectionID:(id)d;
 - (void)reportLocalSearchCancelled;
 - (void)reportLocalSearchEnded;
-- (void)reportMessageListResultsFetched:(id)a3 topHitResults:(id)a4 instantAnswerResult:(id)a5 isFinished:(BOOL)a6;
-- (void)reportMessageResultEngaged:(id)a3 engagementAction:(int64_t)a4;
-- (void)reportMessageResultsVisible:(id)a3 latencyMs:(id)a4;
-- (void)reportQueryClearedEvent:(int64_t)a3;
-- (void)reportRankingFeedbackForSuggestions:(id)a3;
-- (void)reportSearchEndedEvent:(int64_t)a3;
-- (void)reportSuggestionSelected:(id)a3;
-- (void)reportSuggestionsVisible:(id)a3 latencyMs:(id)a4;
-- (void)reportTopHitSelected:(id)a3;
+- (void)reportMessageListResultsFetched:(id)fetched topHitResults:(id)results instantAnswerResult:(id)result isFinished:(BOOL)finished;
+- (void)reportMessageResultEngaged:(id)engaged engagementAction:(int64_t)action;
+- (void)reportMessageResultsVisible:(id)visible latencyMs:(id)ms;
+- (void)reportQueryClearedEvent:(int64_t)event;
+- (void)reportRankingFeedbackForSuggestions:(id)suggestions;
+- (void)reportSearchEndedEvent:(int64_t)event;
+- (void)reportSuggestionSelected:(id)selected;
+- (void)reportSuggestionsVisible:(id)visible latencyMs:(id)ms;
+- (void)reportTopHitSelected:(id)selected;
 - (void)sendLogsToSettings;
 @end
 
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __28__MSParsecSearchSession_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -131,27 +131,27 @@ void __38__MSParsecSearchSession_sharedSession__block_invoke()
   v3 = +[MSParsecSearchSession log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MSParsecSearchSession *)self currentFeedback];
+    currentFeedback = [(MSParsecSearchSession *)self currentFeedback];
     v7 = 138412290;
-    v8 = v4;
+    v8 = currentFeedback;
     _os_log_impl(&dword_257F8E000, v3, OS_LOG_TYPE_DEFAULT, "Reporting feedback to settings %@", &v7, 0xCu);
   }
 
-  v5 = [(MSParsecSearchSession *)self currentFeedback];
-  [v5 removeAllObjects];
+  currentFeedback2 = [(MSParsecSearchSession *)self currentFeedback];
+  [currentFeedback2 removeAllObjects];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportFeedback:(id)a3
+- (void)reportFeedback:(id)feedback
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSParsecSearchSession *)self session];
-  [v5 reportFeedback:v4 queryId:self->_currentQueryID];
+  feedbackCopy = feedback;
+  session = [(MSParsecSearchSession *)self session];
+  [session reportFeedback:feedbackCopy queryId:self->_currentQueryID];
 
-  v6 = [(MSParsecSearchSession *)self currentFeedback];
-  [v6 addObject:v4];
+  currentFeedback = [(MSParsecSearchSession *)self currentFeedback];
+  [currentFeedback addObject:feedbackCopy];
 
   v7 = +[MSParsecSearchSession log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -160,7 +160,7 @@ void __38__MSParsecSearchSession_sharedSession__block_invoke()
     v10 = 134218242;
     v11 = currentQueryID;
     v12 = 2112;
-    v13 = v4;
+    v13 = feedbackCopy;
     _os_log_impl(&dword_257F8E000, v7, OS_LOG_TYPE_INFO, "Reporting queryID: %lld feedback: %@", &v10, 0x16u);
   }
 
@@ -170,28 +170,28 @@ void __38__MSParsecSearchSession_sharedSession__block_invoke()
 - (void)reportLocalSearchEnded
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(MSParsecSearchSession *)self currentLocalSearchFeedback];
+  currentLocalSearchFeedback = [(MSParsecSearchSession *)self currentLocalSearchFeedback];
 
-  if (v3)
+  if (currentLocalSearchFeedback)
   {
     v4 = objc_alloc(MEMORY[0x277D4C348]);
-    v5 = [(MSParsecSearchSession *)self currentLocalSearchFeedback];
-    v6 = [v4 initWithStartSearch:v5];
+    currentLocalSearchFeedback2 = [(MSParsecSearchSession *)self currentLocalSearchFeedback];
+    v6 = [v4 initWithStartSearch:currentLocalSearchFeedback2];
 
-    v7 = [(MSParsecSearchSession *)self embeddingState];
-    if (v7)
+    embeddingState = [(MSParsecSearchSession *)self embeddingState];
+    if (embeddingState)
     {
       v8 = +[MSParsecSearchSession log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(MSParsecSearchSession *)self embeddingState];
+        embeddingState2 = [(MSParsecSearchSession *)self embeddingState];
         v12 = 138543362;
-        v13 = v9;
+        v13 = embeddingState2;
         _os_log_impl(&dword_257F8E000, v8, OS_LOG_TYPE_INFO, "Sending Parsec embeddingState: %{public}@", &v12, 0xCu);
       }
 
-      v10 = [v7 feedbackEmbedding];
-      [v6 setEmbeddingState:v10];
+      feedbackEmbedding = [embeddingState feedbackEmbedding];
+      [v6 setEmbeddingState:feedbackEmbedding];
 
       [(MSParsecSearchSession *)self setEmbeddingState:0];
     }
@@ -205,8 +205,8 @@ void __38__MSParsecSearchSession_sharedSession__block_invoke()
 
 - (void)reportLocalSearchCancelled
 {
-  v4 = [(MSParsecSearchSession *)self embeddingState];
-  v3 = +[MSParsecSearchEmbeddingState embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:](MSParsecSearchEmbeddingState, "embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:", 2, [v4 hasQueryEmbedding], objc_msgSend(v4, "hasKeywordResults"), objc_msgSend(v4, "hasEmbeddingResults"));
+  embeddingState = [(MSParsecSearchSession *)self embeddingState];
+  v3 = +[MSParsecSearchEmbeddingState embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:](MSParsecSearchEmbeddingState, "embeddingStateWithQueryStatus:hasQueryEmbedding:hasKeywordResults:hasEmbeddingResults:", 2, [embeddingState hasQueryEmbedding], objc_msgSend(embeddingState, "hasKeywordResults"), objc_msgSend(embeddingState, "hasEmbeddingResults"));
   [(MSParsecSearchSession *)self setEmbeddingState:v3];
 
   [(MSParsecSearchSession *)self reportLocalSearchEnded];
@@ -253,12 +253,12 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportRankingFeedbackForSuggestions:(id)a3
+- (void)reportRankingFeedbackForSuggestions:(id)suggestions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v4)
+  if (suggestionsCopy)
   {
     [(MSParsecSearchSession *)self _categoryOrder];
     v17 = 0u;
@@ -279,7 +279,7 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v4 objectForKeyedSubscript:{v10, v15}];
+          v11 = [suggestionsCopy objectForKeyedSubscript:{v10, v15}];
           if (v11)
           {
             v12 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:v10 results:v11];
@@ -300,18 +300,18 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportSuggestionsVisible:(id)a3 latencyMs:(id)a4
+- (void)reportSuggestionsVisible:(id)visible latencyMs:(id)ms
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
-  v20 = [v6 ef_mapSelector:{sel_feedbackResult, v6}];
+  visibleCopy = visible;
+  msCopy = ms;
+  v20 = [visibleCopy ef_mapSelector:{sel_feedbackResult, visibleCopy}];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = visibleCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -330,14 +330,14 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
-          v14 = [v13 inlineCard];
-          v15 = [v14 cardSections];
-          v16 = [v15 firstObject];
+          inlineCard = [v13 inlineCard];
+          cardSections = [inlineCard cardSections];
+          firstObject = [cardSections firstObject];
 
-          if (v16)
+          if (firstObject)
           {
-            v17 = [v16 cardSectionId];
-            [v7 addObject:v17];
+            cardSectionId = [firstObject cardSectionId];
+            [v7 addObject:cardSectionId];
           }
         }
       }
@@ -350,9 +350,9 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
 
   v18 = [objc_alloc(MEMORY[0x277D4C6F0]) initWithResults:v20 triggerEvent:0];
   [v18 setUniqueIdentifiersOfVisibleCardSections:v7];
-  if (v21 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (msCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v18 setInputToResultShownMs:v21];
+    [v18 setInputToResultShownMs:msCopy];
   }
 
   [(MSParsecSearchSession *)self reportFeedback:v18];
@@ -360,43 +360,43 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportTopHitSelected:(id)a3
+- (void)reportTopHitSelected:(id)selected
 {
-  v5 = [a3 feedbackResult];
-  v4 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:v5 triggerEvent:2 destination:0];
+  feedbackResult = [selected feedbackResult];
+  v4 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:feedbackResult triggerEvent:2 destination:0];
   [(MSParsecSearchSession *)self reportFeedback:v4];
 }
 
-- (void)reportInstantAnswerCardSelected:(id)a3 cardSectionID:(id)a4
+- (void)reportInstantAnswerCardSelected:(id)selected cardSectionID:(id)d
 {
-  v11 = a4;
-  v6 = [a3 feedbackResult];
+  dCopy = d;
+  feedbackResult = [selected feedbackResult];
   v7 = objc_alloc_init(MEMORY[0x277D4C238]);
-  [v7 setCardSectionId:v11];
+  [v7 setCardSectionId:dCopy];
   v8 = objc_alloc_init(MEMORY[0x277D4C6E8]);
   v9 = objc_alloc_init(MEMORY[0x277D4C200]);
-  v10 = [objc_alloc(MEMORY[0x277D4C2B8]) initWithCommand:v8 cardSection:v7 result:v6 button:v9];
+  v10 = [objc_alloc(MEMORY[0x277D4C2B8]) initWithCommand:v8 cardSection:v7 result:feedbackResult button:v9];
   [v10 setTriggerEvent:2];
   [(MSParsecSearchSession *)self reportFeedback:v10];
 }
 
-- (void)reportInstantAnswerButtonSelected:(id)a3 cardSectionID:(id)a4 command:(id)a5
+- (void)reportInstantAnswerButtonSelected:(id)selected cardSectionID:(id)d command:(id)command
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = [a3 feedbackResult];
+  dCopy = d;
+  commandCopy = command;
+  feedbackResult = [selected feedbackResult];
   v10 = objc_alloc_init(MEMORY[0x277D4C238]);
-  [v10 setCardSectionId:v13];
+  [v10 setCardSectionId:dCopy];
   v11 = objc_alloc_init(MEMORY[0x277D4C200]);
-  v12 = [objc_alloc(MEMORY[0x277D4C2B8]) initWithCommand:v8 cardSection:v10 result:v9 button:v11];
+  v12 = [objc_alloc(MEMORY[0x277D4C2B8]) initWithCommand:commandCopy cardSection:v10 result:feedbackResult button:v11];
   [v12 setTriggerEvent:2];
   [(MSParsecSearchSession *)self reportFeedback:v12];
 }
 
-- (void)reportSuggestionSelected:(id)a3
+- (void)reportSuggestionSelected:(id)selected
 {
-  v5 = [a3 feedbackResult];
-  v4 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:v5 triggerEvent:2 destination:0];
+  feedbackResult = [selected feedbackResult];
+  v4 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:feedbackResult triggerEvent:2 destination:0];
   [(MSParsecSearchSession *)self reportFeedback:v4];
 }
 
@@ -406,37 +406,37 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
   [(MSParsecSearchSession *)self reportFeedback:?];
 }
 
-- (void)reportMessageListResultsFetched:(id)a3 topHitResults:(id)a4 instantAnswerResult:(id)a5 isFinished:(BOOL)a6
+- (void)reportMessageListResultsFetched:(id)fetched topHitResults:(id)results instantAnswerResult:(id)result isFinished:(BOOL)finished
 {
-  v6 = a6;
+  finishedCopy = finished;
   v20[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6)
+  fetchedCopy = fetched;
+  resultsCopy = results;
+  resultCopy = result;
+  if (finishedCopy)
   {
     [(MSParsecSearchSession *)self reportLocalSearchEnded];
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v12)
+  if (resultCopy)
   {
-    v20[0] = v12;
+    v20[0] = resultCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v15 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:@"instantanswer" results:v14];
 
     [v13 addObject:v15];
   }
 
-  if ([v11 count])
+  if ([resultsCopy count])
   {
-    v16 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:@"tophit" results:v11];
+    v16 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:@"tophit" results:resultsCopy];
     [v13 addObject:v16];
   }
 
-  if ([v10 count])
+  if ([fetchedCopy count])
   {
-    v17 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:@"com.apple.mail.search.messagelist" results:v10];
+    v17 = [(MSParsecSearchSession *)self _sectionFeedbackForBundleIdentifier:@"com.apple.mail.search.messagelist" results:fetchedCopy];
     [v13 addObject:v17];
   }
 
@@ -446,16 +446,16 @@ void __39__MSParsecSearchSession__categoryOrder__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sectionFeedbackForBundleIdentifier:(id)a3 results:(id)a4
+- (id)_sectionFeedbackForBundleIdentifier:(id)identifier results:(id)results
 {
-  v5 = a3;
-  v6 = [a4 ef_compactMap:&__block_literal_global_35];
+  identifierCopy = identifier;
+  v6 = [results ef_compactMap:&__block_literal_global_35];
   v7 = [objc_alloc(MEMORY[0x277D4C608]) initWithResults:v6 section:0 localSectionPosition:0 personalizationScore:0.0];
   v8 = objc_alloc_init(MEMORY[0x277D4C588]);
-  [v8 setBundleIdentifier:v5];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  [v8 setIdentifier:v10];
+  [v8 setBundleIdentifier:identifierCopy];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v8 setIdentifier:uUIDString];
 
   [v7 setSection:v8];
 
@@ -472,71 +472,71 @@ id __69__MSParsecSearchSession__sectionFeedbackForBundleIdentifier_results___blo
   return v5;
 }
 
-- (void)reportMessageResultsVisible:(id)a3 latencyMs:(id)a4
+- (void)reportMessageResultsVisible:(id)visible latencyMs:(id)ms
 {
-  v8 = a4;
-  v6 = [a3 ef_compactMapSelector:sel_feedbackResult];
+  msCopy = ms;
+  v6 = [visible ef_compactMapSelector:sel_feedbackResult];
   v7 = [objc_alloc(MEMORY[0x277D4C6F0]) initWithResults:v6 triggerEvent:0];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (msCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 setInputToResultShownMs:v8];
+    [v7 setInputToResultShownMs:msCopy];
   }
 
   [(MSParsecSearchSession *)self reportFeedback:v7];
 }
 
-- (void)reportMessageResultEngaged:(id)a3 engagementAction:(int64_t)a4
+- (void)reportMessageResultEngaged:(id)engaged engagementAction:(int64_t)action
 {
-  v10 = [a3 feedbackResult];
-  if (a4 >= 5)
+  feedbackResult = [engaged feedbackResult];
+  if (action >= 5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:352 description:{@"Using undefined MSParsecSearchSessionEngagementAction %ld to create SFResultEngagementFeedback", 0}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:352 description:{@"Using undefined MSParsecSearchSessionEngagementAction %ld to create SFResultEngagementFeedback", 0}];
 
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_257FB28E8[a4];
+    v7 = qword_257FB28E8[action];
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:v10 triggerEvent:v7 destination:0];
+  v9 = [objc_alloc(MEMORY[0x277D4C578]) initWithResult:feedbackResult triggerEvent:v7 destination:0];
   [(MSParsecSearchSession *)self reportFeedback:v9];
 }
 
-- (void)reportQueryClearedEvent:(int64_t)a3
+- (void)reportQueryClearedEvent:(int64_t)event
 {
-  if (a3 >= 3)
+  if (event >= 3)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:372 description:{@"Using undefined MSParsecSearchSessionClearedEvent %ld to create SFClearInputFeedback", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:372 description:{@"Using undefined MSParsecSearchSessionClearedEvent %ld to create SFClearInputFeedback", event}];
 
     v5 = 0;
   }
 
   else
   {
-    v5 = a3 + 1;
+    v5 = event + 1;
   }
 
   v8 = [objc_alloc(MEMORY[0x277D4C260]) initWithEvent:v5];
   [(MSParsecSearchSession *)self reportFeedback:?];
 }
 
-- (void)reportSearchEndedEvent:(int64_t)a3
+- (void)reportSearchEndedEvent:(int64_t)event
 {
-  if (a3 >= 3)
+  if (event >= 3)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:392 description:{@"Using undefined MSParsecSearchSessionEndEvent %ld to create SFSearchViewDisappearFeedback", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSParsecSearchSession.m" lineNumber:392 description:{@"Using undefined MSParsecSearchSessionEndEvent %ld to create SFSearchViewDisappearFeedback", event}];
 
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_257FB2910[a3];
+    v5 = qword_257FB2910[event];
   }
 
   v8 = [objc_alloc(MEMORY[0x277D4C5E8]) initWithEvent:v5];

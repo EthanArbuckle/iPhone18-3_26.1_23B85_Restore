@@ -1,28 +1,28 @@
 @interface AMSDRefreshMultiUserTask
-- (AMSDRefreshMultiUserTask)initWithMultiUserController:(id)a3 homes:(id)a4 options:(id)a5;
-- (BOOL)_createMultiUserTokenForHome:(id)a3 error:(id *)a4;
-- (id)_stringForStatusValue:(unint64_t)a3;
+- (AMSDRefreshMultiUserTask)initWithMultiUserController:(id)controller homes:(id)homes options:(id)options;
+- (BOOL)_createMultiUserTokenForHome:(id)home error:(id *)error;
+- (id)_stringForStatusValue:(unint64_t)value;
 - (id)performTask;
-- (void)_createMultiUserTokensWithErrors:(id)a3;
-- (void)_reconcileRecordZonesWithErrors:(id)a3;
+- (void)_createMultiUserTokensWithErrors:(id)errors;
+- (void)_reconcileRecordZonesWithErrors:(id)errors;
 @end
 
 @implementation AMSDRefreshMultiUserTask
 
-- (AMSDRefreshMultiUserTask)initWithMultiUserController:(id)a3 homes:(id)a4 options:(id)a5
+- (AMSDRefreshMultiUserTask)initWithMultiUserController:(id)controller homes:(id)homes options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  homesCopy = homes;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = AMSDRefreshMultiUserTask;
   v12 = [(AMSDRefreshMultiUserTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_controller, a3);
-    objc_storeStrong(&v13->_homes, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_controller, controller);
+    objc_storeStrong(&v13->_homes, homes);
+    objc_storeStrong(&v13->_options, options);
   }
 
   return v13;
@@ -40,21 +40,21 @@
   return v2;
 }
 
-- (BOOL)_createMultiUserTokenForHome:(id)a3 error:(id *)a4
+- (BOOL)_createMultiUserTokenForHome:(id)home error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 isCurrentUserRestrictedGuest];
+  homeCopy = home;
+  isCurrentUserRestrictedGuest = [homeCopy isCurrentUserRestrictedGuest];
   v8 = +[AMSLogConfig sharedAccountsMultiUserConfig];
-  v9 = v8;
-  if (v7)
+  ams_activeiTunesAccount = v8;
+  if (isCurrentUserRestrictedGuest)
   {
     if (!v8)
     {
-      v9 = +[AMSLogConfig sharedConfig];
+      ams_activeiTunesAccount = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [ams_activeiTunesAccount OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -63,8 +63,8 @@
       v93 = 2114;
       v94 = v12;
       v95 = 2114;
-      v96 = v6;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping multi-user token generation restricted guest in home = %{public}@", buf, 0x20u);
+      v96 = homeCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping multi-user token generation restricted guest in home = %{public}@", buf, 0x20u);
     }
 
     goto LABEL_7;
@@ -72,11 +72,11 @@
 
   if (!v8)
   {
-    v9 = +[AMSLogConfig sharedConfig];
+    ams_activeiTunesAccount = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v9 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [ams_activeiTunesAccount OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = AMSLogKey();
@@ -87,28 +87,28 @@
     v94 = v16;
     v95 = 2114;
     v96 = v17;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating a Multi-User token if necessary. home = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating a Multi-User token if necessary. home = %{public}@", buf, 0x20u);
   }
 
   v18 = +[ACAccountStore ams_sharedAccountStore];
-  v9 = [v18 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v18 ams_activeiTunesAccount];
 
-  if (v9)
+  if (ams_activeiTunesAccount)
   {
-    v86 = a4;
+    errorCopy = error;
     v19 = [AMSDFetchMultiUserRecordZoneTask alloc];
-    v20 = [v6 currentUser];
-    v21 = [(AMSDRefreshMultiUserTask *)self controller];
-    v22 = [v21 cloudContainer];
-    v23 = [v22 privateDatabase];
-    v24 = [(AMSDRefreshMultiUserTask *)self metrics];
-    v25 = [(AMSDFetchMultiUserRecordZoneTask *)v19 initWithHome:v6 homeUser:v20 database:v23 metrics:v24];
+    currentUser = [homeCopy currentUser];
+    controller = [(AMSDRefreshMultiUserTask *)self controller];
+    cloudContainer = [controller cloudContainer];
+    privateDatabase = [cloudContainer privateDatabase];
+    metrics = [(AMSDRefreshMultiUserTask *)self metrics];
+    v25 = [(AMSDFetchMultiUserRecordZoneTask *)v19 initWithHome:homeCopy homeUser:currentUser database:privateDatabase metrics:metrics];
 
     [(AMSDFetchMultiUserRecordZoneTask *)v25 setRunMode:1];
     v87 = v25;
-    v26 = [(AMSDFetchMultiUserRecordZoneTask *)v25 performTask];
+    performTask = [(AMSDFetchMultiUserRecordZoneTask *)v25 performTask];
     v90 = 0;
-    v27 = [v26 resultWithError:&v90];
+    v27 = [performTask resultWithError:&v90];
     v28 = v90;
     if (!v27)
     {
@@ -118,8 +118,8 @@
         v47 = +[AMSLogConfig sharedConfig];
       }
 
-      v48 = [v47 OSLogObject];
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v47 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v49 = objc_opt_class();
         v50 = AMSLogKey();
@@ -130,16 +130,16 @@
         v94 = v50;
         v95 = 2114;
         v96 = v51;
-        _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch a home's record zone. error = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch a home's record zone. error = %{public}@", buf, 0x20u);
 
         v27 = 0;
       }
 
-      if (v86)
+      if (errorCopy)
       {
         v52 = v28;
         v13 = 0;
-        *v86 = v28;
+        *errorCopy = v28;
       }
 
       else
@@ -150,14 +150,14 @@
       goto LABEL_66;
     }
 
-    v84 = v26;
-    v29 = [(AMSDRefreshMultiUserTask *)self controller];
-    [v29 cloudContainer];
+    v84 = performTask;
+    controller2 = [(AMSDRefreshMultiUserTask *)self controller];
+    [controller2 cloudContainer];
     v31 = v30 = v27;
-    v32 = [v31 privateDatabase];
+    privateDatabase2 = [v31 privateDatabase];
     v83 = v30;
-    v33 = [v30 identifier];
-    v34 = [v32 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:v33];
+    identifier = [v30 identifier];
+    v34 = [privateDatabase2 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:identifier];
     v89 = v28;
     v35 = [v34 resultWithError:&v89];
     v85 = v89;
@@ -166,14 +166,14 @@
     if (!v35 && ([v85 ams_hasDomain:@"AMSDCloudDataErrorDomain" code:7] & 1) == 0)
     {
       v74 = +[AMSLogConfig sharedAccountsMultiUserConfig];
-      v75 = v86;
+      v75 = errorCopy;
       if (!v74)
       {
         v74 = +[AMSLogConfig sharedConfig];
       }
 
-      v76 = [v74 OSLogObject];
-      if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [v74 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         v77 = objc_opt_class();
         v78 = AMSLogKey();
@@ -184,10 +184,10 @@
         v94 = v78;
         v95 = 2114;
         v96 = v79;
-        _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch a HomeParticipant record. error = %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch a HomeParticipant record. error = %{public}@", buf, 0x20u);
 
         v36 = 0;
-        v75 = v86;
+        v75 = errorCopy;
       }
 
       v28 = v85;
@@ -197,14 +197,14 @@
         *v75 = v85;
       }
 
-      v55 = [(AMSDRefreshMultiUserTask *)self metrics];
-      v81 = [v55 enqueueCloudKitFetchFailedEventWithError:v85];
+      metrics2 = [(AMSDRefreshMultiUserTask *)self metrics];
+      v81 = [metrics2 enqueueCloudKitFetchFailedEventWithError:v85];
       v13 = 0;
       goto LABEL_65;
     }
 
-    v37 = [(AMSDRefreshMultiUserTask *)self metrics];
-    v38 = [v37 enqueueCloudKitFetchSuccessEvent];
+    metrics3 = [(AMSDRefreshMultiUserTask *)self metrics];
+    enqueueCloudKitFetchSuccessEvent = [metrics3 enqueueCloudKitFetchSuccessEvent];
 
     v39 = [v35 fieldForKey:@"AMSHomeParticipant_MultiUserToken"];
     objc_opt_class();
@@ -222,19 +222,19 @@
       v42 = 0;
     }
 
-    v53 = [v42 BOOLValue];
+    bOOLValue = [v42 BOOLValue];
     v54 = +[AMSLogConfig sharedAccountsMultiUserConfig];
-    v55 = v54;
-    if ((isKindOfClass & 1) != 0 && (v53 & 1) == 0)
+    metrics2 = v54;
+    if ((isKindOfClass & 1) != 0 && (bOOLValue & 1) == 0)
     {
       if (!v54)
       {
-        v55 = +[AMSLogConfig sharedConfig];
+        metrics2 = +[AMSLogConfig sharedConfig];
       }
 
-      v56 = [v55 OSLogObject];
+      oSLogObject5 = [metrics2 OSLogObject];
       v28 = v85;
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v57 = objc_opt_class();
         v58 = AMSLogKey();
@@ -242,14 +242,14 @@
         v92 = v57;
         v93 = 2114;
         v94 = v58;
-        _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] A Multi-User token already exists.", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] A Multi-User token already exists.", buf, 0x16u);
       }
 
       v13 = 1;
 LABEL_65:
 
       v27 = v83;
-      v26 = v84;
+      performTask = v84;
 LABEL_66:
 
       goto LABEL_67;
@@ -259,11 +259,11 @@ LABEL_66:
     {
       if (!v54)
       {
-        v55 = +[AMSLogConfig sharedConfig];
+        metrics2 = +[AMSLogConfig sharedConfig];
       }
 
-      v59 = [v55 OSLogObject];
-      if (!os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [metrics2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_49;
       }
@@ -281,11 +281,11 @@ LABEL_66:
     {
       if (!v54)
       {
-        v55 = +[AMSLogConfig sharedConfig];
+        metrics2 = +[AMSLogConfig sharedConfig];
       }
 
-      v59 = [v55 OSLogObject];
-      if (!os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+      oSLogObject6 = [metrics2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_49;
       }
@@ -299,16 +299,16 @@ LABEL_66:
       v62 = "%{public}@: [%{public}@] No Multi-User token exists.";
     }
 
-    _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, v62, buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject6, OS_LOG_TYPE_DEFAULT, v62, buf, 0x16u);
 
 LABEL_49:
     v64 = objc_opt_class();
-    v65 = [(AMSDRefreshMultiUserTask *)self controller];
-    v55 = [v64 _createGenerateMultiUserTokenTaskForAccount:v9 withController:v65 home:v6 multiUserTokenExists:isKindOfClass & 1];
+    controller3 = [(AMSDRefreshMultiUserTask *)self controller];
+    metrics2 = [v64 _createGenerateMultiUserTokenTaskForAccount:ams_activeiTunesAccount withController:controller3 home:homeCopy multiUserTokenExists:isKindOfClass & 1];
 
-    v66 = [v55 performTask];
+    performTask2 = [metrics2 performTask];
     v88 = v85;
-    v67 = [v66 resultWithError:&v88];
+    v67 = [performTask2 resultWithError:&v88];
     v28 = v88;
 
     v13 = v67 != 0;
@@ -320,8 +320,8 @@ LABEL_49:
         v68 = +[AMSLogConfig sharedConfig];
       }
 
-      v69 = [v68 OSLogObject];
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+      oSLogObject7 = [v68 OSLogObject];
+      if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
       {
         v70 = objc_opt_class();
         v71 = AMSLogKey();
@@ -332,14 +332,14 @@ LABEL_49:
         v94 = v71;
         v95 = 2114;
         v96 = v72;
-        _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error generating multi-user token: %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error generating multi-user token: %{public}@", buf, 0x20u);
       }
 
-      if (v86)
+      if (errorCopy)
       {
         v73 = v28;
         v13 = 0;
-        *v86 = v28;
+        *errorCopy = v28;
       }
 
       else
@@ -359,8 +359,8 @@ LABEL_49:
     v43 = +[AMSLogConfig sharedConfig];
   }
 
-  v44 = [v43 OSLogObject];
-  if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+  oSLogObject8 = [v43 OSLogObject];
+  if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
   {
     v45 = objc_opt_class();
     v46 = AMSLogKey();
@@ -368,13 +368,13 @@ LABEL_49:
     v92 = v45;
     v93 = 2114;
     v94 = v46;
-    _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate a multi-user token for the home. There's no active iTunes account.", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate a multi-user token for the home. There's no active iTunes account.", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     AMSError();
-    *a4 = v13 = 0;
+    *error = v13 = 0;
     goto LABEL_67;
   }
 
@@ -385,63 +385,63 @@ LABEL_67:
   return v13;
 }
 
-- (void)_createMultiUserTokensWithErrors:(id)a3
+- (void)_createMultiUserTokensWithErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   if (+[AMSDMultiUserController deviceCanManageMultiUser])
   {
-    if (([(AMSDRefreshMultiUserTask *)self isCancelled]& 1) == 0 && (sub_100048940(v4, v5) & 1) == 0)
+    if (([(AMSDRefreshMultiUserTask *)self isCancelled]& 1) == 0 && (sub_100048940(errorsCopy, v5) & 1) == 0)
     {
-      v6 = [(AMSDRefreshMultiUserTask *)self options];
-      v7 = [v6 shouldUseCloudData];
+      options = [(AMSDRefreshMultiUserTask *)self options];
+      shouldUseCloudData = [options shouldUseCloudData];
 
-      if (v7)
+      if (shouldUseCloudData)
       {
-        v8 = [(AMSDRefreshMultiUserTask *)self homes];
+        homes = [(AMSDRefreshMultiUserTask *)self homes];
         v9[0] = _NSConcreteStackBlock;
         v9[1] = 3221225472;
         v9[2] = sub_100089254;
         v9[3] = &unk_1002B2278;
         v9[4] = self;
-        v10 = v4;
-        [v8 enumerateObjectsUsingBlock:v9];
+        v10 = errorsCopy;
+        [homes enumerateObjectsUsingBlock:v9];
       }
     }
   }
 }
 
-- (void)_reconcileRecordZonesWithErrors:(id)a3
+- (void)_reconcileRecordZonesWithErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   if (+[AMSDMultiUserController deviceCanManageMultiUser])
   {
-    if (([(AMSDRefreshMultiUserTask *)self isCancelled]& 1) == 0 && (sub_100048940(v4, v5) & 1) == 0)
+    if (([(AMSDRefreshMultiUserTask *)self isCancelled]& 1) == 0 && (sub_100048940(errorsCopy, v5) & 1) == 0)
     {
-      v6 = [(AMSDRefreshMultiUserTask *)self options];
-      v7 = [v6 shouldUseCloudData];
+      options = [(AMSDRefreshMultiUserTask *)self options];
+      shouldUseCloudData = [options shouldUseCloudData];
 
-      if (v7)
+      if (shouldUseCloudData)
       {
-        v8 = [(AMSDRefreshMultiUserTask *)self controller];
-        v9 = [v8 cloudContainer];
-        v10 = [v9 privateDatabase];
+        controller = [(AMSDRefreshMultiUserTask *)self controller];
+        cloudContainer = [controller cloudContainer];
+        privateDatabase = [cloudContainer privateDatabase];
 
-        v11 = [v10 fetchRecordZones];
+        fetchRecordZones = [privateDatabase fetchRecordZones];
         v24 = 0;
-        v12 = [v11 resultWithError:&v24];
+        v12 = [fetchRecordZones resultWithError:&v24];
         v13 = v24;
 
         if (v12)
         {
-          v14 = [v12 results];
+          results = [v12 results];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_100089568;
           v20[3] = &unk_1002B22A0;
-          v21 = v10;
-          v22 = self;
-          v23 = v4;
-          [v14 enumerateKeysAndObjectsUsingBlock:v20];
+          v21 = privateDatabase;
+          selfCopy = self;
+          v23 = errorsCopy;
+          [results enumerateKeysAndObjectsUsingBlock:v20];
         }
 
         else
@@ -452,8 +452,8 @@ LABEL_67:
             v15 = +[AMSLogConfig sharedConfig];
           }
 
-          v16 = [v15 OSLogObject];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v15 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v17 = objc_opt_class();
             v18 = AMSLogKey();
@@ -464,25 +464,25 @@ LABEL_67:
             v28 = v18;
             v29 = 2114;
             v30 = v19;
-            _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch all record zones. error = %{public}@", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch all record zones. error = %{public}@", buf, 0x20u);
           }
 
-          [v4 addObject:v13];
+          [errorsCopy addObject:v13];
         }
       }
     }
   }
 }
 
-- (id)_stringForStatusValue:(unint64_t)a3
+- (id)_stringForStatusValue:(unint64_t)value
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (value == 1)
   {
     v3 = @"disabled";
   }
 
-  if (a3 == 2)
+  if (value == 2)
   {
     return @"enabled";
   }

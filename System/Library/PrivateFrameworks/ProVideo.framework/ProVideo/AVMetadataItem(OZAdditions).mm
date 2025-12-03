@@ -15,7 +15,7 @@
     v11[0] = *a5;
     v11[1] = v10;
     v11[2] = a5[2];
-    return [a1 simplyCreateMetadataItemWithRawData:result identifier:a4 timeRange:v11];
+    return [self simplyCreateMetadataItemWithRawData:result identifier:a4 timeRange:v11];
   }
 
   return result;

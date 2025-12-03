@@ -12,7 +12,7 @@
 
 - (double)_didInvalidateIntrinsicContentSize
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
 
   return [(_NUIViewContainerViewInfo *)IfNeeded resetCaches];
 }
@@ -20,7 +20,7 @@
 - (_NUIViewContainerViewInfo)effectiveAlignmentRectInsets
 {
   v11 = *MEMORY[0x277D85DE8];
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   v2 = result;
   if ((*&result->_flags & 8) == 0)
   {
@@ -70,13 +70,13 @@
 
 - (_NUIViewContainerViewInfo)setCurrentEffectiveLayoutSizeFittingSizeShouldNotBeCached
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 0);
   if ((*&result->_flags & 2) != 0)
   {
     *&result->_flags &= ~2u;
-    v3 = [(objc_object *)a1 superview];
+    superview = [(objc_object *)self superview];
 
-    return [v3 setCurrentEffectiveLayoutSizeFittingSizeShouldNotBeCached];
+    return [superview setCurrentEffectiveLayoutSizeFittingSizeShouldNotBeCached];
   }
 
   return result;
@@ -84,7 +84,7 @@
 
 - (uint64_t)effectiveFirstBaselineOffsetFromContentTop
 {
-  result = [a1 effectiveFirstBaselineOffsetFromTop];
+  result = [self effectiveFirstBaselineOffsetFromTop];
   v4 = v3;
   v5 = -v3;
   if (v4 >= 0.0)
@@ -99,7 +99,7 @@
 
   if (v6 > 2.22507386e-308)
   {
-    return [a1 effectiveAlignmentRectInsets];
+    return [self effectiveAlignmentRectInsets];
   }
 
   return result;
@@ -107,7 +107,7 @@
 
 - (uint64_t)effectiveBaselineOffsetFromContentBottom
 {
-  result = [a1 effectiveBaselineOffsetFromBottom];
+  result = [self effectiveBaselineOffsetFromBottom];
   v4 = v3;
   v5 = -v3;
   if (v4 >= 0.0)
@@ -122,7 +122,7 @@
 
   if (v6 > 2.22507386e-308)
   {
-    return [a1 effectiveAlignmentRectInsets];
+    return [self effectiveAlignmentRectInsets];
   }
 
   return result;
@@ -160,7 +160,7 @@
     v10 = 5;
   }
 
-  return [a1 _autolayoutSpacingAtEdge:v6 forAttribute:v7 nextToNeighbor:v8 edge:v9 attribute:v10 multiplier:?];
+  return [self _autolayoutSpacingAtEdge:v6 forAttribute:v7 nextToNeighbor:v8 edge:v9 attribute:v10 multiplier:?];
 }
 
 - (uint64_t)systemSpacingToSuperView:()NUISubclassHelpers edge:baselineRelative:multiplier:
@@ -232,8 +232,8 @@ LABEL_17:
   v7 = 1;
   v8 = 1;
 LABEL_20:
-  [a1 _autolayoutSpacingAtEdge:v7 forAttribute:v8 inContainer:a3 isGuide:0];
-  return [a1 effectiveScreenScale];
+  [self _autolayoutSpacingAtEdge:v7 forAttribute:v8 inContainer:a3 isGuide:0];
+  return [self effectiveScreenScale];
 }
 
 @end

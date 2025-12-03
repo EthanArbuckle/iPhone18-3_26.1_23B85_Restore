@@ -1,12 +1,12 @@
 @interface HMDStructuredDataFoundationOutputPointerWriter
-- (void)initWithOutput:(void *)a1;
+- (void)initWithOutput:(void *)output;
 @end
 
 @implementation HMDStructuredDataFoundationOutputPointerWriter
 
-- (void)initWithOutput:(void *)a1
+- (void)initWithOutput:(void *)output
 {
-  if (!a1)
+  if (!output)
   {
     return 0;
   }
@@ -17,7 +17,7 @@
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = output;
   v7.super_class = HMDStructuredDataFoundationOutputPointerWriter;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   v4 = v3;

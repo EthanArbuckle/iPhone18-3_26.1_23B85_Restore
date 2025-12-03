@@ -1,10 +1,10 @@
 @interface MSCMSAttribute
-+ (id)decodeAttribute:(Attribute *)a3 error:(id *)a4;
++ (id)decodeAttribute:(Attribute *)attribute error:(id *)error;
 - (Attribute)generateAttributeStruct;
-- (MSCMSAttribute)initWithAttribute:(id)a3 error:(id *)a4;
-- (MSCMSAttribute)initWithAttributeStruct:(Attribute *)a3 error:(id *)a4;
-- (MSCMSAttribute)initWithAttributeType:(id)a3 values:(id)a4;
-- (MSCMSAttribute)initWithDER:(id)a3;
+- (MSCMSAttribute)initWithAttribute:(id)attribute error:(id *)error;
+- (MSCMSAttribute)initWithAttributeStruct:(Attribute *)struct error:(id *)error;
+- (MSCMSAttribute)initWithAttributeType:(id)type values:(id)values;
+- (MSCMSAttribute)initWithDER:(id)r;
 - (void)dealloc;
 @end
 
@@ -62,7 +62,7 @@ uint64_t __41__MSCMSAttribute_generateAttributeStruct__block_invoke(uint64_t a1,
   [(MSCMSAttribute *)&v4 dealloc];
 }
 
-- (MSCMSAttribute)initWithAttributeStruct:(Attribute *)a3 error:(id *)a4
+- (MSCMSAttribute)initWithAttributeStruct:(Attribute *)struct error:(id *)error
 {
   v19.receiver = self;
   v19.super_class = MSCMSAttribute;
@@ -81,15 +81,15 @@ LABEL_13:
     v8 = copy_Attribute();
     if (v8)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:v8 underlyingError:*a4 description:@"unable to copy Attribute"];
+        *error = [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:v8 underlyingError:*error description:@"unable to copy Attribute"];
       }
 
       goto LABEL_16;
     }
 
-    v10 = [MSOID OIDWithAsn1OID:a3 error:a4];
+    v10 = [MSOID OIDWithAsn1OID:struct error:error];
     attributeType = v6->_attributeType;
     v6->_attributeType = v10;
 
@@ -104,21 +104,21 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3->var1.var0];
-    if (a3->var1.var0)
+    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:struct->var1.var0];
+    if (struct->var1.var0)
     {
       v13 = 0;
       v14 = 0;
       do
       {
-        v15 = [MEMORY[0x277CBEA90] dataWithBytes:a3->var1.var1[v13].var1 length:a3->var1.var1[v13].var0];
+        v15 = [MEMORY[0x277CBEA90] dataWithBytes:struct->var1.var1[v13].var1 length:struct->var1.var1[v13].var0];
         [(NSArray *)v12 addObject:v15];
 
         ++v14;
         ++v13;
       }
 
-      while (v14 < a3->var1.var0);
+      while (v14 < struct->var1.var0);
     }
 
     attributeValues = v6->_attributeValues;
@@ -127,10 +127,10 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
-    [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-108 underlyingError:*a4 description:@"unable to allocate Attribute"];
-    *a4 = v9 = 0;
+    [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-108 underlyingError:*error description:@"unable to allocate Attribute"];
+    *error = v9 = 0;
   }
 
   else
@@ -143,9 +143,9 @@ LABEL_17:
   return v9;
 }
 
-- (MSCMSAttribute)initWithDER:(id)a3
+- (MSCMSAttribute)initWithDER:(id)r
 {
-  v5 = a3;
+  rCopy = r;
   v6 = malloc_type_malloc(0x20uLL, 0x10300406495394CuLL);
   if (!v6)
   {
@@ -153,13 +153,13 @@ LABEL_17:
   }
 
   v7 = v6;
-  [v5 bytes];
-  [v5 length];
+  [rCopy bytes];
+  [rCopy length];
   if (decode_Attribute())
   {
     free(v7);
 LABEL_4:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -167,45 +167,45 @@ LABEL_4:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributeDERData, a3);
+    objc_storeStrong(&v9->_attributeDERData, r);
     free_Attribute();
     free(v7);
   }
 
   self = v10;
-  v8 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy;
 }
 
-- (MSCMSAttribute)initWithAttributeType:(id)a3 values:(id)a4
+- (MSCMSAttribute)initWithAttributeType:(id)type values:(id)values
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = MSCMSAttribute;
   v9 = [(MSCMSAttribute *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributeType, a3);
-    objc_storeStrong(&v10->_attributeValues, a4);
+    objc_storeStrong(&v9->_attributeType, type);
+    objc_storeStrong(&v10->_attributeValues, values);
   }
 
   return v10;
 }
 
-- (MSCMSAttribute)initWithAttribute:(id)a3 error:(id *)a4
+- (MSCMSAttribute)initWithAttribute:(id)attribute error:(id *)error
 {
-  v5 = a3;
+  attributeCopy = attribute;
 
-  return v5;
+  return attributeCopy;
 }
 
-+ (id)decodeAttribute:(Attribute *)a3 error:(id *)a4
++ (id)decodeAttribute:(Attribute *)attribute error:(id *)error
 {
-  v4 = [[a1 alloc] initWithAttributeStruct:a3 error:a4];
+  v4 = [[self alloc] initWithAttributeStruct:attribute error:error];
 
   return v4;
 }

@@ -1,70 +1,70 @@
 @interface PBCalloutBarPasteButtonTag
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (CGPoint)titleOrigin;
 - (CGSize)size;
-- (PBCalloutBarPasteButtonTag)initWithCoder:(id)a3;
-- (PBCalloutBarPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 titleOrigin:(CGPoint)a5 titleWidth:(double)a6 contentScaleLevel:(unint64_t)a7;
-- (float)backgroundStatisticsForegroundForStyle:(id)a3;
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9;
-- (id)resolvedStyleForStyle:(id)a3;
+- (PBCalloutBarPasteButtonTag)initWithCoder:(id)coder;
+- (PBCalloutBarPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size titleOrigin:(CGPoint)origin titleWidth:(double)width contentScaleLevel:(unint64_t)level;
+- (float)backgroundStatisticsForegroundForStyle:(id)style;
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit;
+- (id)resolvedStyleForStyle:(id)style;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBCalloutBarPasteButtonTag
 
-- (PBCalloutBarPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 titleOrigin:(CGPoint)a5 titleWidth:(double)a6 contentScaleLevel:(unint64_t)a7
+- (PBCalloutBarPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size titleOrigin:(CGPoint)origin titleWidth:(double)width contentScaleLevel:(unint64_t)level
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = PBCalloutBarPasteButtonTag;
   result = [(PBCalloutBarPasteButtonTag *)&v15 init];
   if (result)
   {
-    result->_secureName = a3;
+    result->_secureName = name;
     result->_size.width = width;
     result->_size.height = height;
     result->_titleOrigin.x = x;
     result->_titleOrigin.y = y;
-    result->_titleWidth = a6;
-    result->_contentScaleLevel = a7;
+    result->_titleWidth = width;
+    result->_contentScaleLevel = level;
   }
 
   return result;
 }
 
-- (PBCalloutBarPasteButtonTag)initWithCoder:(id)a3
+- (PBCalloutBarPasteButtonTag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PBCalloutBarPasteButtonTag;
-  v5 = [(PBPasteButtonTag *)&v12 initWithCoder:v4];
+  v5 = [(PBPasteButtonTag *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_secureName = [v4 decodeInt32ForKey:@"secureName"];
-    [v4 decodeSizeForKey:@"size"];
+    v5->_secureName = [coderCopy decodeInt32ForKey:@"secureName"];
+    [coderCopy decodeSizeForKey:@"size"];
     v5->_size.width = v6;
     v5->_size.height = v7;
-    [v4 decodePointForKey:@"titleOrigin"];
+    [coderCopy decodePointForKey:@"titleOrigin"];
     v5->_titleOrigin.x = v8;
     v5->_titleOrigin.y = v9;
-    [v4 decodeDoubleForKey:@"titleWidth"];
+    [coderCopy decodeDoubleForKey:@"titleWidth"];
     v5->_titleWidth = v10;
-    v5->_contentScaleLevel = [v4 decodeIntegerForKey:@"contentScaleLevel"];
+    v5->_contentScaleLevel = [coderCopy decodeIntegerForKey:@"contentScaleLevel"];
   }
 
   return v5;
 }
 
-- (float)backgroundStatisticsForegroundForStyle:(id)a3
+- (float)backgroundStatisticsForegroundForStyle:(id)style
 {
-  v3 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [style userInterfaceStyle];
   result = NAN;
-  if (v3 < 2)
+  if (userInterfaceStyle < 2)
   {
     return 1.0;
   }
@@ -72,17 +72,17 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PBCalloutBarPasteButtonTag;
-  v4 = a3;
-  [(PBPasteButtonTag *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
-  [v4 encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v4 encodePoint:@"titleOrigin" forKey:{self->_titleOrigin.x, self->_titleOrigin.y}];
-  [v4 encodeDouble:@"titleWidth" forKey:self->_titleWidth];
-  [v4 encodeInteger:self->_contentScaleLevel forKey:@"contentScaleLevel"];
+  coderCopy = coder;
+  [(PBPasteButtonTag *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
+  [coderCopy encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy encodePoint:@"titleOrigin" forKey:{self->_titleOrigin.x, self->_titleOrigin.y}];
+  [coderCopy encodeDouble:@"titleWidth" forKey:self->_titleWidth];
+  [coderCopy encodeInteger:self->_contentScaleLevel forKey:@"contentScaleLevel"];
 }
 
 - (unint64_t)hash
@@ -92,11 +92,11 @@
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ self->_titleWidth ^ self->_contentScaleLevel ^ self->_secureName ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(v4 + 2) && (self->_size.width == v4[4] ? (v5 = self->_size.height == v4[5]) : (v5 = 0), v5 && (self->_titleOrigin.x == v4[6] ? (v6 = self->_titleOrigin.y == v4[7]) : (v6 = 0), v6 && self->_titleWidth == v4[2])) && self->_contentScaleLevel == *(v4 + 3);
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(equalCopy + 2) && (self->_size.width == equalCopy[4] ? (v5 = self->_size.height == equalCopy[5]) : (v5 = 0), v5 && (self->_titleOrigin.x == equalCopy[6] ? (v6 = self->_titleOrigin.y == equalCopy[7]) : (v6 = 0), v6 && self->_titleWidth == equalCopy[2])) && self->_contentScaleLevel == *(equalCopy + 3);
 
   return v7;
 }
@@ -153,9 +153,9 @@
   return v13 & v17;
 }
 
-- (id)resolvedStyleForStyle:(id)a3
+- (id)resolvedStyleForStyle:(id)style
 {
-  v3 = [a3 copyWithChangeBlock:&__block_literal_global];
+  v3 = [style copyWithChangeBlock:&__block_literal_global];
 
   return v3;
 }
@@ -186,11 +186,11 @@ void __52__PBCalloutBarPasteButtonTag_resolvedStyleForStyle___block_invoke(uint6
   [v5 setUserInterfaceStyle:0];
 }
 
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit
 {
-  if (a3)
+  if (visit)
   {
-    v10 = (*(a3 + 2))(a3, self);
+    v10 = (*(visit + 2))(visit, self);
   }
 
   else

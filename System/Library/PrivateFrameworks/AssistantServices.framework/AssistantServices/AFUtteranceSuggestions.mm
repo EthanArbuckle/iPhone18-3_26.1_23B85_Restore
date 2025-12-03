@@ -1,9 +1,9 @@
 @interface AFUtteranceSuggestions
-- (AFUtteranceSuggestions)initWithLanguageCode:(id)a3 delegate:(id)a4;
+- (AFUtteranceSuggestions)initWithLanguageCode:(id)code delegate:(id)delegate;
 - (AFUtteranceSuggestionsDelegate)delegate;
 - (id)_suggestionsFilePath;
-- (void)getSuggestedUtterancesWithCompletion:(id)a3;
-- (void)setSuggestedUtterances:(id)a3;
+- (void)getSuggestedUtterancesWithCompletion:(id)completion;
+- (void)setSuggestedUtterances:(id)utterances;
 @end
 
 @implementation AFUtteranceSuggestions
@@ -15,17 +15,17 @@
   return WeakRetained;
 }
 
-- (void)setSuggestedUtterances:(id)a3
+- (void)setSuggestedUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__AFUtteranceSuggestions_setSuggestedUtterances___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = utterancesCopy;
+  v6 = utterancesCopy;
   dispatch_async(queue, v7);
 }
 
@@ -48,17 +48,17 @@ void __49__AFUtteranceSuggestions_setSuggestedUtterances___block_invoke(uint64_t
   }
 }
 
-- (void)getSuggestedUtterancesWithCompletion:(id)a3
+- (void)getSuggestedUtterancesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__AFUtteranceSuggestions_getSuggestedUtterancesWithCompletion___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -92,28 +92,28 @@ void __63__AFUtteranceSuggestions_getSuggestedUtterancesWithCompletion___block_i
 - (id)_suggestionsFilePath
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.siri.suggestions-%@.plist", self->_languageCode];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  v6 = [firstObject stringByAppendingPathComponent:v5];
 
   return v6;
 }
 
-- (AFUtteranceSuggestions)initWithLanguageCode:(id)a3 delegate:(id)a4
+- (AFUtteranceSuggestions)initWithLanguageCode:(id)code delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = AFUtteranceSuggestions;
   v8 = [(AFUtteranceSuggestions *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [codeCopy copy];
     languageCode = v8->_languageCode;
     v8->_languageCode = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("Siri Utterance Suggestions Queue", v11);
 

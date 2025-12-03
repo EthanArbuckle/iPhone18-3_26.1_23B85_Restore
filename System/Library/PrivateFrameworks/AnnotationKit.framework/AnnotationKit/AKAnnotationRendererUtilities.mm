@@ -1,18 +1,18 @@
 @interface AKAnnotationRendererUtilities
-+ (BOOL)contextWantsHDR:(CGContext *)a3;
-+ (CGPoint)_shadowDirectionForAnnotation:(id)a3;
-+ (CGRect)outsetRectForShadow:(CGRect)a3 onAnnotation:(id)a4;
-+ (void)beginShadowInContext:(CGContext *)a3 forAnnotation:(id)a4;
-+ (void)endShadowInContext:(CGContext *)a3;
-+ (void)setStandardLineDashInContext:(CGContext *)a3 forLineWidth:(double)a4;
-+ (void)setStandardLineStateInContext:(CGContext *)a3 forLineWidth:(double)a4;
++ (BOOL)contextWantsHDR:(CGContext *)r;
++ (CGPoint)_shadowDirectionForAnnotation:(id)annotation;
++ (CGRect)outsetRectForShadow:(CGRect)shadow onAnnotation:(id)annotation;
++ (void)beginShadowInContext:(CGContext *)context forAnnotation:(id)annotation;
++ (void)endShadowInContext:(CGContext *)context;
++ (void)setStandardLineDashInContext:(CGContext *)context forLineWidth:(double)width;
++ (void)setStandardLineStateInContext:(CGContext *)context forLineWidth:(double)width;
 @end
 
 @implementation AKAnnotationRendererUtilities
 
-+ (CGPoint)_shadowDirectionForAnnotation:(id)a3
++ (CGPoint)_shadowDirectionForAnnotation:(id)annotation
 {
-  v3 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [a3 originalExifOrientation]);
+  v3 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [annotation originalExifOrientation]);
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
 
@@ -22,13 +22,13 @@
   return result;
 }
 
-+ (CGRect)outsetRectForShadow:(CGRect)a3 onAnnotation:(id)a4
++ (CGRect)outsetRectForShadow:(CGRect)shadow onAnnotation:(id)annotation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 originalModelBaseScaleFactor];
+  height = shadow.size.height;
+  width = shadow.size.width;
+  y = shadow.origin.y;
+  x = shadow.origin.x;
+  [annotation originalModelBaseScaleFactor];
   v9 = v8 * -3.75;
   v10 = x;
   v11 = y;
@@ -38,52 +38,52 @@
   return CGRectInset(*&v10, v9, v9);
 }
 
-+ (void)beginShadowInContext:(CGContext *)a3 forAnnotation:(id)a4
++ (void)beginShadowInContext:(CGContext *)context forAnnotation:(id)annotation
 {
-  v6 = a4;
-  CGContextSaveGState(a3);
-  [a1 _shadowDirectionForAnnotation:v6];
+  annotationCopy = annotation;
+  CGContextSaveGState(context);
+  [self _shadowDirectionForAnnotation:annotationCopy];
   v8 = v7;
   v10 = v9;
-  [v6 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v12 = v11;
 
   v13 = [MEMORY[0x277D75348] akColorWithWhite:0.0 alpha:0.3];
-  v14 = [v13 CGColor];
+  cGColor = [v13 CGColor];
   v16.width = v8 * v12;
   v16.height = v10 * v12;
-  CGContextSetShadowWithColor(a3, v16, v12 * 3.0, v14);
+  CGContextSetShadowWithColor(context, v16, v12 * 3.0, cGColor);
 
-  CGContextBeginTransparencyLayer(a3, 0);
+  CGContextBeginTransparencyLayer(context, 0);
 }
 
-+ (void)endShadowInContext:(CGContext *)a3
++ (void)endShadowInContext:(CGContext *)context
 {
-  CGContextEndTransparencyLayer(a3);
+  CGContextEndTransparencyLayer(context);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-+ (void)setStandardLineStateInContext:(CGContext *)a3 forLineWidth:(double)a4
++ (void)setStandardLineStateInContext:(CGContext *)context forLineWidth:(double)width
 {
-  CGContextSetLineWidth(a3, a4);
-  CGContextSetLineCap(a3, kCGLineCapSquare);
-  CGContextSetLineJoin(a3, kCGLineJoinMiter);
+  CGContextSetLineWidth(context, width);
+  CGContextSetLineCap(context, kCGLineCapSquare);
+  CGContextSetLineJoin(context, kCGLineJoinMiter);
 
-  CGContextSetMiterLimit(a3, 10.0);
+  CGContextSetMiterLimit(context, 10.0);
 }
 
-+ (void)setStandardLineDashInContext:(CGContext *)a3 forLineWidth:(double)a4
++ (void)setStandardLineDashInContext:(CGContext *)context forLineWidth:(double)width
 {
   lengths[2] = *MEMORY[0x277D85DE8];
-  lengths[0] = a4 + 7.0;
-  lengths[1] = a4 * 3.0 + 4.0;
-  CGContextSetLineDash(a3, 1.0, lengths, 2uLL);
+  lengths[0] = width + 7.0;
+  lengths[1] = width * 3.0 + 4.0;
+  CGContextSetLineDash(context, 1.0, lengths, 2uLL);
 }
 
-+ (BOOL)contextWantsHDR:(CGContext *)a3
++ (BOOL)contextWantsHDR:(CGContext *)r
 {
-  ColorSpace = CGBitmapContextGetColorSpace(a3);
+  ColorSpace = CGBitmapContextGetColorSpace(r);
 
   return CGColorSpaceUsesExtendedRange(ColorSpace);
 }

@@ -1,6 +1,6 @@
 @interface GTReplayerOperation
-- (GTReplayerOperation)initWithBatch:(id)a3 withBlock:(id)a4;
-- (GTReplayerOperation)initWithRequestID:(unint64_t)a3 withBlock:(id)a4;
+- (GTReplayerOperation)initWithBatch:(id)batch withBlock:(id)block;
+- (GTReplayerOperation)initWithRequestID:(unint64_t)d withBlock:(id)block;
 - (void)main;
 @end
 
@@ -14,46 +14,46 @@
   v3();
 }
 
-- (GTReplayerOperation)initWithBatch:(id)a3 withBlock:(id)a4
+- (GTReplayerOperation)initWithBatch:(id)batch withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = GTReplayerOperation;
   v8 = [(GTReplayerOperation *)&v12 init];
   if (v8)
   {
-    v9 = MEMORY[0x253033CF0](v7);
+    v9 = MEMORY[0x253033CF0](blockCopy);
     block = v8->_block;
     v8->_block = v9;
 
-    v8->_uuid = [v6 uuid];
+    v8->_uuid = [batchCopy uuid];
   }
 
   return v8;
 }
 
-- (GTReplayerOperation)initWithRequestID:(unint64_t)a3 withBlock:(id)a4
+- (GTReplayerOperation)initWithRequestID:(unint64_t)d withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = GTReplayerOperation;
   v7 = [(GTReplayerOperation *)&v14 init];
   if (v7)
   {
-    v8 = MEMORY[0x253033CF0](v6);
+    v8 = MEMORY[0x253033CF0](blockCopy);
     block = v7->_block;
     v7->_block = v8;
 
-    v7->_uuid = a3;
-    GTCoreOperationControl_addOperation(a3);
+    v7->_uuid = d;
+    GTCoreOperationControl_addOperation(d);
     objc_initWeak(&location, v7);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__GTReplayerOperation_initWithRequestID_withBlock___block_invoke;
     v11[3] = &unk_279658B28;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
+    v12[1] = d;
     [(GTReplayerOperation *)v7 setCompletionBlock:v11];
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);

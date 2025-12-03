@@ -1,33 +1,33 @@
 @interface MechanismRatchet
-- (BOOL)_isStateSatisfiable:(id)a3;
+- (BOOL)_isStateSatisfiable:(id)satisfiable;
 - (LACRemoteUI)remoteUiDelegate;
-- (MechanismRatchet)initWithParams:(id)a3 request:(id)a4;
+- (MechanismRatchet)initWithParams:(id)params request:(id)request;
 - (NSString)description;
-- (void)_addBiometryConfirmationCredentialWithCompletion:(id)a3;
+- (void)_addBiometryConfirmationCredentialWithCompletion:(id)completion;
 - (void)_beginSecurityDelay;
 - (void)_continue;
 - (void)_dismiss;
-- (void)_finishInState:(id)a3 result:(id)a4 error:(id)a5 retryStrategy:(int64_t)a6;
-- (void)_ratchetStateCompositeWithCompletion:(id)a3;
-- (void)_runWithShowUIBlock:(id)a3;
+- (void)_finishInState:(id)state result:(id)result error:(id)error retryStrategy:(int64_t)strategy;
+- (void)_ratchetStateCompositeWithCompletion:(id)completion;
+- (void)_runWithShowUIBlock:(id)block;
 - (void)_startObservingRatchetState;
 - (void)_stopObservingRatchetState;
-- (void)finishRunWithResult:(id)a3 error:(id)a4;
-- (void)handleUIEvent:(int64_t)a3 params:(id)a4;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
+- (void)finishRunWithResult:(id)result error:(id)error;
+- (void)handleUIEvent:(int64_t)event params:(id)params;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
 @end
 
 @implementation MechanismRatchet
 
-- (MechanismRatchet)initWithParams:(id)a3 request:(id)a4
+- (MechanismRatchet)initWithParams:(id)params request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"AcmContextRecord"];
+  paramsCopy = params;
+  requestCopy = request;
+  v8 = [paramsCopy objectForKeyedSubscript:@"AcmContextRecord"];
   v17.receiver = self;
   v17.super_class = MechanismRatchet;
-  v9 = [(MechanismACM *)&v17 initWithEventIdentifier:12 remoteViewController:6 acmContextRecord:v8 request:v7];
+  v9 = [(MechanismACM *)&v17 initWithEventIdentifier:12 remoteViewController:6 acmContextRecord:v8 request:requestCopy];
 
   if (v9)
   {
@@ -36,32 +36,32 @@
     v9->_acmHelper = v10;
 
     v9->_coolOffDuration = 0.0;
-    v12 = [v6 objectForKeyedSubscript:@"ACMRequirement"];
+    v12 = [paramsCopy objectForKeyedSubscript:@"ACMRequirement"];
     requirement = v9->_requirement;
     v9->_requirement = v12;
 
-    v14 = [MEMORY[0x277D24048] sharedInstance];
+    mEMORY[0x277D24048] = [MEMORY[0x277D24048] sharedInstance];
     notificationCenter = v9->_notificationCenter;
-    v9->_notificationCenter = v14;
+    v9->_notificationCenter = mEMORY[0x277D24048];
   }
 
   return v9;
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MechanismBase *)self showUIBlock];
+  replyCopy = reply;
+  delegateCopy = delegate;
+  hintsCopy = hints;
+  showUIBlock = [(MechanismBase *)self showUIBlock];
   [(MechanismBase *)self setShowUIBlock:0];
   v13.receiver = self;
   v13.super_class = MechanismRatchet;
-  [(MechanismBase *)&v13 runWithHints:v10 eventsDelegate:v9 reply:v8];
+  [(MechanismBase *)&v13 runWithHints:hintsCopy eventsDelegate:delegateCopy reply:replyCopy];
 
-  if (v11)
+  if (showUIBlock)
   {
-    v12 = v11;
+    v12 = showUIBlock;
   }
 
   else
@@ -72,55 +72,55 @@
   [(MechanismRatchet *)self _runWithShowUIBlock:v12];
 }
 
-- (void)handleUIEvent:(int64_t)a3 params:(id)a4
+- (void)handleUIEvent:(int64_t)event params:(id)params
 {
-  v6 = a4;
-  if (a3 == 12)
+  paramsCopy = params;
+  if (event == 12)
   {
-    v7 = v6;
+    v7 = paramsCopy;
     [(MechanismRatchet *)self _continue];
   }
 
   else
   {
-    if (a3 != 11)
+    if (event != 11)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
+    v7 = paramsCopy;
     [(MechanismRatchet *)self _dismiss];
   }
 
-  v6 = v7;
+  paramsCopy = v7;
 LABEL_6:
 }
 
-- (void)finishRunWithResult:(id)a3 error:(id)a4
+- (void)finishRunWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   [(MechanismRatchet *)self _stopObservingRatchetState];
   v8.receiver = self;
   v8.super_class = MechanismRatchet;
-  [(MechanismBase *)&v8 finishRunWithResult:v7 error:v6];
+  [(MechanismBase *)&v8 finishRunWithResult:resultCopy error:errorCopy];
 }
 
-- (void)_finishInState:(id)a3 result:(id)a4 error:(id)a5 retryStrategy:(int64_t)a6
+- (void)_finishInState:(id)state result:(id)result error:(id)error retryStrategy:(int64_t)strategy
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10 | v11)
+  stateCopy = state;
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy | errorCopy)
   {
-    [(MechanismRatchet *)self finishRunWithResult:v10 error:v11];
+    [(MechanismRatchet *)self finishRunWithResult:resultCopy error:errorCopy];
   }
 
   else
   {
-    v12 = [(MechanismRatchet *)self _isStateSatisfiable:v16];
-    v13 = a6 != 2 && v12;
-    if (a6 == 1 || v13)
+    v12 = [(MechanismRatchet *)self _isStateSatisfiable:stateCopy];
+    v13 = strategy != 2 && v12;
+    if (strategy == 1 || v13)
     {
       v14 = [MEMORY[0x277CD47F0] errorWithCode:-1024];
     }
@@ -135,23 +135,23 @@ LABEL_6:
   }
 }
 
-- (void)_runWithShowUIBlock:(id)a3
+- (void)_runWithShowUIBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__MechanismRatchet__runWithShowUIBlock___block_invoke;
   v10[3] = &unk_278A62BC8;
   objc_copyWeak(&v12, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v11 = v5;
   v6 = MEMORY[0x23EE73C30](v10);
-  v7 = [(MechanismBase *)self policyOptions];
-  v8 = [v7 objectForKeyedSubscript:&unk_284B78918];
-  v9 = [v8 BOOLValue];
+  policyOptions = [(MechanismBase *)self policyOptions];
+  v8 = [policyOptions objectForKeyedSubscript:&unk_284B78918];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     [(MechanismRatchet *)self _addBiometryConfirmationCredentialWithCompletion:v6];
   }
@@ -351,29 +351,29 @@ MutableMechanismRatchetFlowParams *__40__MechanismRatchet__runWithShowUIBlock___
   return v2;
 }
 
-- (void)_ratchetStateCompositeWithCompletion:(id)a3
+- (void)_ratchetStateCompositeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MechanismBase *)self request];
-  v6 = [v5 serviceLocator];
+  completionCopy = completion;
+  request = [(MechanismBase *)self request];
+  serviceLocator = [request serviceLocator];
   v7 = NSStringFromProtocol(&unk_284B7EBE0);
-  v8 = [v6 serviceWithIdentifier:v7];
+  v8 = [serviceLocator serviceWithIdentifier:v7];
 
   if (v8 && ([v8 conformsToProtocol:&unk_284B7EBE0] & 1) != 0)
   {
-    v9 = [v8 ratchetStateProvider];
+    ratchetStateProvider = [v8 ratchetStateProvider];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __57__MechanismRatchet__ratchetStateCompositeWithCompletion___block_invoke;
     v11[3] = &unk_278A62BF0;
-    v12 = v4;
-    [v9 ratchetStateCompositeWithCompletion:v11];
+    v12 = completionCopy;
+    [ratchetStateProvider ratchetStateCompositeWithCompletion:v11];
   }
 
   else
   {
     v10 = [MEMORY[0x277CD47F0] errorWithCode:-1000 message:@"Missing LACDTOService dependency"];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -529,9 +529,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_addBiometryConfirmationCredentialWithCompletion:(id)a3
+- (void)_addBiometryConfirmationCredentialWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   acmHelper = self->_acmHelper;
   v14 = 0;
   v6 = [(LACACMHelper *)acmHelper addCredential:23 scope:1 error:&v14];
@@ -540,14 +540,14 @@ LABEL_7:
   {
     v8 = self->_acmHelper;
     v9 = [MEMORY[0x277D23FD0] acmPolicyForPolicy:{-[MechanismBase policy](self, "policy")}];
-    v10 = [(MechanismBase *)self maxGlobalCredentialAge];
+    maxGlobalCredentialAge = [(MechanismBase *)self maxGlobalCredentialAge];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __69__MechanismRatchet__addBiometryConfirmationCredentialWithCompletion___block_invoke;
     v12[3] = &unk_278A62C90;
     v12[4] = self;
-    v13 = v4;
-    [(LACACMHelper *)v8 preflightPolicy:v9 parameters:0 maxGlobalCredentialAge:v10 processRequirement:v12];
+    v13 = completionCopy;
+    [(LACACMHelper *)v8 preflightPolicy:v9 parameters:0 maxGlobalCredentialAge:maxGlobalCredentialAge processRequirement:v12];
   }
 
   else
@@ -558,7 +558,7 @@ LABEL_7:
       [MechanismRatchet _addBiometryConfirmationCredentialWithCompletion:];
     }
 
-    (*(v4 + 2))(v4, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -585,30 +585,30 @@ void __69__MechanismRatchet__addBiometryConfirmationCredentialWithCompletion___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isStateSatisfiable:(id)a3
+- (BOOL)_isStateSatisfiable:(id)satisfiable
 {
-  v3 = [a3 ratchetState];
-  v4 = [v3 rawValue];
+  ratchetState = [satisfiable ratchetState];
+  rawValue = [ratchetState rawValue];
 
-  return (v4 - 2) < 3;
+  return (rawValue - 2) < 3;
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  v5 = a3;
-  if (self->_notificationCenter == v5)
+  centerCopy = center;
+  if (self->_notificationCenter == centerCopy)
   {
     v6 = *MEMORY[0x277D23E50];
     if (LACDarwinNotificationsEqual())
     {
       objc_initWeak(&location, self);
-      v7 = [MEMORY[0x277CD47C8] queue];
+      queue = [MEMORY[0x277CD47C8] queue];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __62__MechanismRatchet_notificationCenter_didReceiveNotification___block_invoke;
       v8[3] = &unk_278A626F0;
       objc_copyWeak(&v9, &location);
-      dispatch_async(v7, v8);
+      dispatch_async(queue, v8);
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);

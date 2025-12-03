@@ -16,10 +16,10 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(_MSMessageExtensionRemoteViewController *)self view];
-  v4 = [v3 subviews];
+  view = [(_MSMessageExtensionRemoteViewController *)self view];
+  subviews = [view subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -31,14 +31,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setUserInteractionEnabled:1];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -47,11 +47,11 @@
 
 - (void)dealloc
 {
-  v3 = [(_MSMessageExtensionRemoteViewController *)self requestUUID];
-  if (v3)
+  requestUUID = [(_MSMessageExtensionRemoteViewController *)self requestUUID];
+  if (requestUUID)
   {
-    v4 = [(_MSMessageExtensionRemoteViewController *)self weakExtension];
-    [v4 cancelExtensionRequestWithIdentifier:v3];
+    weakExtension = [(_MSMessageExtensionRemoteViewController *)self weakExtension];
+    [weakExtension cancelExtensionRequestWithIdentifier:requestUUID];
   }
 
   v5.receiver = self;

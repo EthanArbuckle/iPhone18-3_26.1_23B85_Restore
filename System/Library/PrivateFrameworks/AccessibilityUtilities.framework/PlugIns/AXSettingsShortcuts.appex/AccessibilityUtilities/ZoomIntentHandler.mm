@@ -1,21 +1,21 @@
 @interface ZoomIntentHandler
-- (void)handleToggleZoom:(id)a3 completion:(id)a4;
-- (void)resolveOperationForToggleZoom:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForToggleZoom:(id)a3 withCompletion:(id)a4;
+- (void)handleToggleZoom:(id)zoom completion:(id)completion;
+- (void)resolveOperationForToggleZoom:(id)zoom withCompletion:(id)completion;
+- (void)resolveStateForToggleZoom:(id)zoom withCompletion:(id)completion;
 @end
 
 @implementation ZoomIntentHandler
 
-- (void)handleToggleZoom:(id)a3 completion:(id)a4
+- (void)handleToggleZoom:(id)zoom completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 operation] == 1 && !objc_msgSend(v5, "state"))
+  zoomCopy = zoom;
+  completionCopy = completion;
+  if ([zoomCopy operation] == 1 && !objc_msgSend(zoomCopy, "state"))
   {
     v13 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D80C(v5, v13);
+      sub_10000D80C(zoomCopy, v13);
     }
 
     v10 = [AXToggleZoomIntentResponse alloc];
@@ -24,14 +24,14 @@
 
   else
   {
-    if ([v5 operation] == 2)
+    if ([zoomCopy operation] == 2)
     {
       v7 = _AXSZoomTouchEnabled() == 0;
     }
 
     else
     {
-      v7 = [v5 state] == 1;
+      v7 = [zoomCopy state] == 1;
     }
 
     v8 = v7;
@@ -48,21 +48,21 @@
   }
 
   v12 = [(AXToggleZoomIntentResponse *)v10 initWithCode:v11 userActivity:0];
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)resolveOperationForToggleZoom:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForToggleZoom:(id)zoom withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [zoom operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveStateForToggleZoom:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForToggleZoom:(id)zoom withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 state]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [zoom state]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

@@ -3,7 +3,7 @@
 - (uint64_t)setPreLTMThumbnailEnabled:(uint64_t)result;
 - (uint64_t)setWeightSegmentMapEnabled:(uint64_t)result;
 - (void)dealloc;
-- (void)setObjectMetadataIdentifiers:(void *)a1;
+- (void)setObjectMetadataIdentifiers:(void *)identifiers;
 @end
 
 @implementation FigCaptureCinematographyPipelineConfiguration
@@ -15,11 +15,11 @@
   [(FigCaptureCinematographyPipelineConfiguration *)&v3 dealloc];
 }
 
-- (void)setObjectMetadataIdentifiers:(void *)a1
+- (void)setObjectMetadataIdentifiers:(void *)identifiers
 {
-  if (a1)
+  if (identifiers)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 8);
+    objc_setProperty_nonatomic_copy(identifiers, newValue, newValue, 8);
   }
 }
 

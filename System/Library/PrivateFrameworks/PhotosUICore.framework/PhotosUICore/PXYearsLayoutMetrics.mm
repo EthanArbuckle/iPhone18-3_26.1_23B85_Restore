@@ -1,8 +1,8 @@
 @interface PXYearsLayoutMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXYearsLayoutMetrics)init;
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -48,16 +48,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v19.receiver = self;
       v19.super_class = PXYearsLayoutMetrics;
       if ([(PXLayoutMetrics *)&v19 isEqual:v5])
       {
-        v6 = [(PXYearsLayoutMetrics *)v5 sizeClass];
-        if (v6 == [(PXYearsLayoutMetrics *)self sizeClass])
+        sizeClass = [(PXYearsLayoutMetrics *)v5 sizeClass];
+        if (sizeClass == [(PXYearsLayoutMetrics *)self sizeClass])
         {
-          v7 = [(PXYearsLayoutMetrics *)v5 orientation];
-          if (v7 == [(PXYearsLayoutMetrics *)self orientation])
+          orientation = [(PXYearsLayoutMetrics *)v5 orientation];
+          if (orientation == [(PXYearsLayoutMetrics *)self orientation])
           {
             [(PXYearsLayoutMetrics *)v5 interitemSpacing];
             v9 = v8;
@@ -105,11 +105,11 @@
   return v4 ^ (4 * [(PXYearsLayoutMetrics *)self orientation]);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXYearsLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   *(result + 3) = self->_sizeClass;
   *(result + 4) = self->_orientation;
   *(result + 5) = *&self->_interitemSpacing;

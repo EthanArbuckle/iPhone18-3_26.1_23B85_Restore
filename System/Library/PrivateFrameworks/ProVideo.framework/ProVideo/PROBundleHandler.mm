@@ -1,28 +1,28 @@
 @interface PROBundleHandler
-- (BOOL)_plugInHasReservedUUID:(id)a3;
-- (BOOL)dynamicPluginRequestedProtocolArray:(id *)a3 groupArray:(id *)a4 plugInArray:(id *)a5 actuallyLoad:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_plugInHasReservedUUID:(id)d;
+- (BOOL)dynamicPluginRequestedProtocolArray:(id *)array groupArray:(id *)groupArray plugInArray:(id *)inArray actuallyLoad:(BOOL)load;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrincipalClassAvailable;
 - (BOOL)loadingInProMSRendererTool;
-- (BOOL)plugInShouldLoadPlugInInstanceForTheFirstTime:(id)a3;
-- (PROBundleHandler)initWithBundle:(id)a3 actuallyLoad:(BOOL)a4;
-- (id)apiForProtocol:(id)a3;
-- (id)plugInGroupWithUUID:(__CFUUID *)a3;
+- (BOOL)plugInShouldLoadPlugInInstanceForTheFirstTime:(id)time;
+- (PROBundleHandler)initWithBundle:(id)bundle actuallyLoad:(BOOL)load;
+- (id)apiForProtocol:(id)protocol;
+- (id)plugInGroupWithUUID:(__CFUUID *)d;
 - (id)principalClassInstance;
-- (void)addPlugIn:(id)a3;
-- (void)completeRegistrationWithGroups:(id *)a3 plugIns:(id *)a4 requestedProtocols:(id *)a5;
+- (void)addPlugIn:(id)in;
+- (void)completeRegistrationWithGroups:(id *)groups plugIns:(id *)ins requestedProtocols:(id *)protocols;
 - (void)dealloc;
-- (void)finishRegisteringPlugIns:(BOOL)a3;
-- (void)plugInFirewall:(id)a3 receivedBadMessage:(SEL)a4;
-- (void)registerAndLoadPlugIns:(BOOL)a3;
-- (void)registerDynamicPlugInsAsynch:(id)a3;
+- (void)finishRegisteringPlugIns:(BOOL)ins;
+- (void)plugInFirewall:(id)firewall receivedBadMessage:(SEL)message;
+- (void)registerAndLoadPlugIns:(BOOL)ins;
+- (void)registerDynamicPlugInsAsynch:(id)asynch;
 @end
 
 @implementation PROBundleHandler
 
-- (PROBundleHandler)initWithBundle:(id)a3 actuallyLoad:(BOOL)a4
+- (PROBundleHandler)initWithBundle:(id)bundle actuallyLoad:(BOOL)load
 {
-  v4 = a4;
+  loadCopy = load;
   v11.receiver = self;
   v11.super_class = PROBundleHandler;
   v6 = [(PROBundleHandler *)&v11 init];
@@ -30,12 +30,12 @@
   if (v6)
   {
     v8 = [(PROBundleHandler *)v6 zone];
-    v7->bundle = a3;
+    v7->bundle = bundle;
     v7->plugIns = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{v8), "init"}];
     v7->groups = [objc_msgSend(MEMORY[0x277CBEB38] allocWithZone:{v8), "init"}];
     v7->deferralCompletionBlock = 0;
     v7->deferred = 0;
-    if (v4)
+    if (loadCopy)
     {
       v9 = 4;
     }
@@ -59,13 +59,13 @@
   [(PROBundleHandler *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [(PROBundleHandler *)self isEqualToBundleHandler:a3];
+    return [(PROBundleHandler *)self isEqualToBundleHandler:equal];
   }
 
   else
@@ -73,22 +73,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return self->bundle == a3;
+      return self->bundle == equal;
     }
 
     else
     {
       v6.receiver = self;
       v6.super_class = PROBundleHandler;
-      return [(PROBundleHandler *)&v6 isEqual:a3];
+      return [(PROBundleHandler *)&v6 isEqual:equal];
     }
   }
 }
 
 - (BOOL)isPrincipalClassAvailable
 {
-  v3 = [(NSBundle *)self->bundle infoDictionary];
-  if (!v3 || (v4 = -[NSDictionary objectForKey:](v3, "objectForKey:", @"PlugInKit")) == 0 || (v5 = [v4 objectForKey:@"EmbeddedCode"]) != 0)
+  infoDictionary = [(NSBundle *)self->bundle infoDictionary];
+  if (!infoDictionary || (v4 = -[NSDictionary objectForKey:](infoDictionary, "objectForKey:", @"PlugInKit")) == 0 || (v5 = [v4 objectForKey:@"EmbeddedCode"]) != 0)
   {
     [(NSBundle *)self->bundle principalClass];
     LOBYTE(v5) = objc_opt_respondsToSelector();
@@ -105,8 +105,8 @@
     return result;
   }
 
-  v4 = [(NSBundle *)self->bundle principalClass];
-  if (!v4)
+  principalClass = [(NSBundle *)self->bundle principalClass];
+  if (!principalClass)
   {
     v7 = objc_alloc(MEMORY[0x277CBEAC0]);
     v8 = [v7 initWithObjectsAndKeys:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Bundle has no principal class specified.", &stru_2872E16E0, @"PROPlug", *MEMORY[0x277CCA450], self->bundle, @"NSBundle", 0}];
@@ -118,7 +118,7 @@ LABEL_12:
     return 0;
   }
 
-  v5 = v4;
+  v5 = principalClass;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -132,9 +132,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [(objc_class *)v5 sharedInstance];
-  self->principalClassInstance = v6;
-  if (!v6)
+  sharedInstance = [(objc_class *)v5 sharedInstance];
+  self->principalClassInstance = sharedInstance;
+  if (!sharedInstance)
   {
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -150,10 +150,10 @@ LABEL_11:
   return self->principalClassInstance;
 }
 
-- (BOOL)_plugInHasReservedUUID:(id)a3
+- (BOOL)_plugInHasReservedUUID:(id)d
 {
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"7D976C6A-7F8E-11D9-AF6C-000A95DF1816", @"4894A645-622C-4EAF-B886-8481FC54A9C9", @"AD8AC810-D658-4444-94A6-B7C29767A90C", 0}];
-  v5 = [objc_msgSend(a3 "infoDictionary")];
+  v5 = [objc_msgSend(d "infoDictionary")];
   if (v5)
   {
 
@@ -163,21 +163,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)addPlugIn:(id)a3
+- (void)addPlugIn:(id)in
 {
   delegate = self->delegate;
-  if (!delegate || [(PROBundleHandlerDelegate *)delegate bundleHandler:self shouldAddPlugIn:a3])
+  if (!delegate || [(PROBundleHandlerDelegate *)delegate bundleHandler:self shouldAddPlugIn:in])
   {
-    [-[PROBundleHandler mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "addObject:", a3}];
+    [-[PROBundleHandler mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "addObject:", in}];
     v6 = self->delegate;
 
-    [(PROBundleHandlerDelegate *)v6 bundleHandler:self didAddPlugIn:a3];
+    [(PROBundleHandlerDelegate *)v6 bundleHandler:self didAddPlugIn:in];
   }
 }
 
-- (void)registerDynamicPlugInsAsynch:(id)a3
+- (void)registerDynamicPlugInsAsynch:(id)asynch
 {
-  v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:asynch];
   [v4 setRemoteObjectInterface:{objc_msgSend(MEMORY[0x277CCAE90], "interfaceWithProtocol:", &unk_28736D770)}];
   [v4 resume];
   v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_71];
@@ -216,18 +216,18 @@ id __49__PROBundleHandler_registerDynamicPlugInsAsynch___block_invoke_104(uint64
   return result;
 }
 
-- (BOOL)dynamicPluginRequestedProtocolArray:(id *)a3 groupArray:(id *)a4 plugInArray:(id *)a5 actuallyLoad:(BOOL)a6
+- (BOOL)dynamicPluginRequestedProtocolArray:(id *)array groupArray:(id *)groupArray plugInArray:(id *)inArray actuallyLoad:(BOOL)load
 {
-  if (!a6)
+  if (!load)
   {
     return 1;
   }
 
-  v10 = [(PROBundleHandler *)self principalClassInstance];
+  principalClassInstance = [(PROBundleHandler *)self principalClassInstance];
   if (objc_opt_respondsToSelector())
   {
     v17 = 0;
-    *a3 = [v10 requestedProtocolsWithError:&v17];
+    *array = [principalClassInstance requestedProtocolsWithError:&v17];
     if (v17)
     {
       v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -245,7 +245,7 @@ LABEL_12:
   if (objc_opt_respondsToSelector())
   {
     v17 = 0;
-    *a4 = [v10 registeredPlugInGroupsWithError:&v17];
+    *groupArray = [principalClassInstance registeredPlugInGroupsWithError:&v17];
     if (v17)
     {
       v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -258,7 +258,7 @@ LABEL_12:
   if (objc_opt_respondsToSelector())
   {
     v17 = 0;
-    *a5 = [v10 registeredPlugInsWithError:&v17];
+    *inArray = [principalClassInstance registeredPlugInsWithError:&v17];
     if (v17)
     {
       v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -271,11 +271,11 @@ LABEL_12:
   return 1;
 }
 
-- (void)completeRegistrationWithGroups:(id *)a3 plugIns:(id *)a4 requestedProtocols:(id *)a5
+- (void)completeRegistrationWithGroups:(id *)groups plugIns:(id *)ins requestedProtocols:(id *)protocols
 {
-  if (!*a4)
+  if (!*ins)
   {
-    *a4 = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugPlugInList"];
+    *ins = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugPlugInList"];
   }
 
   objc_opt_class();
@@ -292,22 +292,22 @@ LABEL_51:
     return;
   }
 
-  if (!*a3)
+  if (!*groups)
   {
-    *a3 = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugPlugInGroupList"];
+    *groups = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugPlugInGroupList"];
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v10 = *a3;
+  v10 = *groups;
   if (isKindOfClass)
   {
-    v11 = [v10 objectEnumerator];
+    objectEnumerator = [v10 objectEnumerator];
     v38 = [(PROBundleHandler *)self zone];
-    v12 = [v11 nextObject];
-    if (v12)
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v13 = v12;
+      nextObject2 = nextObject;
       v14 = *MEMORY[0x277CBECE8];
       while (1)
       {
@@ -317,8 +317,8 @@ LABEL_51:
           goto LABEL_17;
         }
 
-        v15 = [v13 objectForKey:@"groupName"];
-        v16 = [v13 objectForKey:@"uuid"];
+        v15 = [nextObject2 objectForKey:@"groupName"];
+        v16 = [nextObject2 objectForKey:@"uuid"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -341,8 +341,8 @@ LABEL_51:
         }
 
 LABEL_17:
-        v13 = [v11 nextObject];
-        if (!v13)
+        nextObject2 = [objectEnumerator nextObject];
+        if (!nextObject2)
         {
           goto LABEL_22;
         }
@@ -371,24 +371,24 @@ LABEL_16:
   }
 
 LABEL_22:
-  if (!*a5)
+  if (!*protocols)
   {
-    *a5 = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugProtocolList"];
+    *protocols = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugProtocolList"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [*a5 objectEnumerator];
+    objectEnumerator2 = [*protocols objectEnumerator];
     while (1)
     {
-      v24 = [v23 nextObject];
-      if (!v24)
+      nextObject3 = [objectEnumerator2 nextObject];
+      if (!nextObject3)
       {
         break;
       }
 
-      v25 = v24;
+      v25 = nextObject3;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -418,8 +418,8 @@ LABEL_22:
         goto LABEL_51;
       }
 
-      v27 = [v26 objectEnumerator];
-      while ([v27 nextObject])
+      objectEnumerator3 = [v26 objectEnumerator];
+      while ([objectEnumerator3 nextObject])
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -431,7 +431,7 @@ LABEL_22:
         }
       }
 
-      v28 = [objc_msgSend(MEMORY[0x277CBEA60] allocWithZone:{-[PROBundleHandler zone](self, "zone")), "initWithArray:copyItems:", *a5, 1}];
+      v28 = [objc_msgSend(MEMORY[0x277CBEA60] allocWithZone:{-[PROBundleHandler zone](self, "zone")), "initWithArray:copyItems:", *protocols, 1}];
       self->requestedProtocols = v28;
       if (([(PROVersionedAPIAccess *)self->apiManager validateProtocols:v28]& 1) == 0)
       {
@@ -443,18 +443,18 @@ LABEL_22:
     }
   }
 
-  v29 = [*a4 objectEnumerator];
+  objectEnumerator4 = [*ins objectEnumerator];
   v30 = [(PROBundleHandler *)self zone];
-  v31 = [v29 nextObject];
-  if (v31)
+  nextObject4 = [objectEnumerator4 nextObject];
+  if (nextObject4)
   {
-    v32 = v31;
+    nextObject5 = nextObject4;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = [[PROPlugIn allocWithZone:?]bundle:"initWithDictionary:bundle:delegate:pluginKitPlug:" delegate:v32 pluginKitPlug:self->bundle, self, 0];
+        v33 = [[PROPlugIn allocWithZone:?]bundle:"initWithDictionary:bundle:delegate:pluginKitPlug:" delegate:nextObject5 pluginKitPlug:self->bundle, self, 0];
         if (v33)
         {
           v34 = [(PROBundleHandler *)self mutableArrayValueForKey:@"plugIns"];
@@ -489,10 +489,10 @@ LABEL_22:
         }
       }
 
-      v32 = [v29 nextObject];
+      nextObject5 = [objectEnumerator4 nextObject];
     }
 
-    while (v32);
+    while (nextObject5);
   }
 }
 
@@ -503,9 +503,9 @@ LABEL_22:
   return [v2 isEqualToString:@"com.apple.ProMSRendererTool"];
 }
 
-- (void)finishRegisteringPlugIns:(BOOL)a3
+- (void)finishRegisteringPlugIns:(BOOL)ins
 {
-  v3 = a3;
+  insCopy = ins;
   [-[PROBundleHandler mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "removeAllObjects"}];
   [(NSMutableDictionary *)self->groups removeAllObjects];
   v5 = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugDictionaryVersion"];
@@ -516,7 +516,7 @@ LABEL_22:
     v10 = 0;
     v8 = [(NSBundle *)self->bundle objectForInfoDictionaryKey:@"ProPlugDynamicRegistration"];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v8 BOOLValue] || -[PROBundleHandler dynamicPluginRequestedProtocolArray:groupArray:plugInArray:actuallyLoad:](self, "dynamicPluginRequestedProtocolArray:groupArray:plugInArray:actuallyLoad:", &v9, &v10, &v11, v3))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v8 BOOLValue] || -[PROBundleHandler dynamicPluginRequestedProtocolArray:groupArray:plugInArray:actuallyLoad:](self, "dynamicPluginRequestedProtocolArray:groupArray:plugInArray:actuallyLoad:", &v9, &v10, &v11, insCopy))
     {
       [(PROBundleHandler *)self completeRegistrationWithGroups:&v10 plugIns:&v11 requestedProtocols:&v9];
     }
@@ -530,57 +530,57 @@ LABEL_22:
   }
 }
 
-- (void)registerAndLoadPlugIns:(BOOL)a3
+- (void)registerAndLoadPlugIns:(BOOL)ins
 {
-  v3 = a3;
+  insCopy = ins;
   if (![(PROBundleHandler *)self shouldDeferLoading])
   {
 
-    [(PROBundleHandler *)self finishRegisteringPlugIns:v3];
+    [(PROBundleHandler *)self finishRegisteringPlugIns:insCopy];
   }
 }
 
-- (id)apiForProtocol:(id)a3
+- (id)apiForProtocol:(id)protocol
 {
-  v11 = a3;
-  Name = protocol_getName(a3);
-  v5 = [(NSArray *)self->requestedProtocols objectEnumerator];
+  protocolCopy = protocol;
+  Name = protocol_getName(protocol);
+  objectEnumerator = [(NSArray *)self->requestedProtocols objectEnumerator];
   do
   {
-    v6 = [(NSEnumerator *)v5 nextObject];
-    v7 = v6;
+    nextObject = [(NSEnumerator *)objectEnumerator nextObject];
+    v7 = nextObject;
   }
 
-  while (v6 && ![objc_msgSend(v6 objectForKey:{@"protocolName", "isEqualToString:", Name}]);
-  result = -[PROVersionedAPIAccess apiForProtocol:versions:](self->apiManager, "apiForProtocol:versions:", &v11, [v7 objectForKey:@"versions"]);
+  while (nextObject && ![objc_msgSend(nextObject objectForKey:{@"protocolName", "isEqualToString:", Name}]);
+  result = -[PROVersionedAPIAccess apiForProtocol:versions:](self->apiManager, "apiForProtocol:versions:", &protocolCopy, [v7 objectForKey:@"versions"]);
   if (result)
   {
     v9 = result;
     v10 = [PROPlugInFirewall alloc];
-    return [(PROPlugInFirewall *)v10 initWithProtectedObject:v9 protocol:v11 secondaryProtocol:&unk_287357CF8 errorHandler:self];
+    return [(PROPlugInFirewall *)v10 initWithProtectedObject:v9 protocol:protocolCopy secondaryProtocol:&unk_287357CF8 errorHandler:self];
   }
 
   return result;
 }
 
-- (void)plugInFirewall:(id)a3 receivedBadMessage:(SEL)a4
+- (void)plugInFirewall:(id)firewall receivedBadMessage:(SEL)message
 {
   v6 = objc_alloc(MEMORY[0x277CBEAC0]);
   bundle = self->bundle;
-  v8 = NSStringFromSelector(a4);
+  v8 = NSStringFromSelector(message);
   v9 = [v6 initWithObjectsAndKeys:{bundle, @"NSBundle", v8, @"Selector", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Plug-In instance sent bad message.", &stru_2872E16E0, @"PROPlug", *MEMORY[0x277CCA450], 0}];
   -[PROBundleHandler reportError:](self, "reportError:", [MEMORY[0x277CCA9B8] errorWithDomain:@"PROPlug" code:-603 userInfo:v9]);
 }
 
-- (id)plugInGroupWithUUID:(__CFUUID *)a3
+- (id)plugInGroupWithUUID:(__CFUUID *)d
 {
   groups = self->groups;
-  v4 = [MEMORY[0x277CCAE60] valueWithPointer:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithPointer:d];
 
   return [(NSMutableDictionary *)groups objectForKey:v4];
 }
 
-- (BOOL)plugInShouldLoadPlugInInstanceForTheFirstTime:(id)a3
+- (BOOL)plugInShouldLoadPlugInInstanceForTheFirstTime:(id)time
 {
   bundleFlags = self->bundleFlags;
   if ((*&bundleFlags & 4) != 0)
@@ -592,18 +592,18 @@ LABEL_22:
       if (![(PROBundleHandler *)self isPrincipalClassAvailable])
       {
         *&self->bundleFlags |= 3u;
-        LOBYTE(v6) = 1;
-        return v6;
+        LOBYTE(principalClassInstance) = 1;
+        return principalClassInstance;
       }
 
-      v6 = [(PROBundleHandler *)self principalClassInstance];
-      if (!v6)
+      principalClassInstance = [(PROBundleHandler *)self principalClassInstance];
+      if (!principalClassInstance)
       {
         self->bundleFlags = (*&self->bundleFlags & 0xFFFFFFFC | 2);
-        return v6;
+        return principalClassInstance;
       }
 
-      v8 = v6;
+      v8 = principalClassInstance;
       v16[0] = 0;
       if (objc_opt_respondsToSelector())
       {
@@ -631,12 +631,12 @@ LABEL_22:
       }
     }
 
-    LOBYTE(v6) = *&bundleFlags & 1;
-    return v6;
+    LOBYTE(principalClassInstance) = *&bundleFlags & 1;
+    return principalClassInstance;
   }
 
-  LOBYTE(v6) = 0;
-  return v6;
+  LOBYTE(principalClassInstance) = 0;
+  return principalClassInstance;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface NTKSnowglobeRotatingObjectController
 - (NTKSnowglobeRotatingObjectController)init;
 - (SCNVector3)rotationAxis;
-- (void)updateAtTime:(double)a3;
+- (void)updateAtTime:(double)time;
 @end
 
 @implementation NTKSnowglobeRotatingObjectController
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)updateAtTime:(double)a3
+- (void)updateAtTime:(double)time
 {
   rotationSpeed = self->_rotationSpeed;
   rotation = self->_rotation;

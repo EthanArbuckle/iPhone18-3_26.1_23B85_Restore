@@ -1,13 +1,13 @@
 @interface IMCustomAcknowledgementChatItem
 - (IMBalloonPluginDataSource)dataSource;
-- (id)_initWithItem:(id)a3 sender:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item sender:(id)sender;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation IMCustomAcknowledgementChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -18,15 +18,15 @@
   return v15;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4
+- (id)_initWithItem:(id)item sender:(id)sender
 {
-  v6 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = IMCustomAcknowledgementChatItem;
-  v9 = [(IMAssociatedMessageChatItem *)&v13 _initWithItem:v6 sender:a4];
+  v9 = [(IMAssociatedMessageChatItem *)&v13 _initWithItem:itemCopy sender:sender];
   if (v9)
   {
-    v10 = objc_msgSend_message(v6, v7, v8);
+    v10 = objc_msgSend_message(itemCopy, v7, v8);
     v11 = v9[20];
     v9[20] = v10;
   }

@@ -1,31 +1,31 @@
 @interface MPCModelRadioGetTracksStep
-- (MPCModelRadioGetTracksStep)initWithGetTracksRequest:(id)a3 siriAssetInfo:(id)a4;
-- (MPCModelRadioGetTracksStep)initWithPreviousStep:(id)a3;
-- (id)nextStepWithError:(id)a3;
-- (void)_fireAndForgetServerDialog:(id)a3;
-- (void)_performDefaultHandlingForButtonAction:(id)a3;
-- (void)_presentServerDialog:(id)a3 completionHandler:(id)a4;
+- (MPCModelRadioGetTracksStep)initWithGetTracksRequest:(id)request siriAssetInfo:(id)info;
+- (MPCModelRadioGetTracksStep)initWithPreviousStep:(id)step;
+- (id)nextStepWithError:(id)error;
+- (void)_fireAndForgetServerDialog:(id)dialog;
+- (void)_performDefaultHandlingForButtonAction:(id)action;
+- (void)_presentServerDialog:(id)dialog completionHandler:(id)handler;
 @end
 
 @implementation MPCModelRadioGetTracksStep
 
-- (void)_presentServerDialog:(id)a3 completionHandler:(id)a4
+- (void)_presentServerDialog:(id)dialog completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E69E4690]) initWithStoreDialog:v5];
+  dialogCopy = dialog;
+  handlerCopy = handler;
+  v7 = [objc_alloc(MEMORY[0x1E69E4690]) initWithStoreDialog:dialogCopy];
   [v7 setAllowInCar:1];
-  v8 = [v7 createCFUserNotification];
-  if (v8)
+  createCFUserNotification = [v7 createCFUserNotification];
+  if (createCFUserNotification)
   {
-    v9 = v8;
-    v10 = [objc_alloc(MEMORY[0x1E69B14C0]) initWithCFUserNotification:v8];
+    v9 = createCFUserNotification;
+    v10 = [objc_alloc(MEMORY[0x1E69B14C0]) initWithCFUserNotification:createCFUserNotification];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __69__MPCModelRadioGetTracksStep__presentServerDialog_completionHandler___block_invoke;
     v13[3] = &unk_1E82352A8;
-    v14 = v5;
-    v15 = v6;
+    v14 = dialogCopy;
+    v15 = handlerCopy;
     [v10 presentWithCompletion:v13];
     CFRelease(v9);
   }
@@ -33,8 +33,8 @@
   else
   {
     v11 = ICUserNotificationGetResponseButton();
-    v12 = [v11 action];
-    (*(v6 + 2))(v6, v12);
+    action = [v11 action];
+    (*(handlerCopy + 2))(handlerCopy, action);
   }
 }
 
@@ -68,23 +68,23 @@ uint64_t __69__MPCModelRadioGetTracksStep__presentServerDialog_completionHandler
   return a1 & 1;
 }
 
-- (void)_performDefaultHandlingForButtonAction:(id)a3
+- (void)_performDefaultHandlingForButtonAction:(id)action
 {
   v4 = MEMORY[0x1E69E45E0];
-  v5 = a3;
+  actionCopy = action;
   v7 = objc_alloc_init(v4);
-  v6 = [(ICRadioGetTracksRequest *)self->_request requestContext];
-  [v7 handleButtonAction:v5 usingRequestContext:v6 withCompletionHandler:&__block_literal_global_16320];
+  requestContext = [(ICRadioGetTracksRequest *)self->_request requestContext];
+  [v7 handleButtonAction:actionCopy usingRequestContext:requestContext withCompletionHandler:&__block_literal_global_16320];
 }
 
-- (void)_fireAndForgetServerDialog:(id)a3
+- (void)_fireAndForgetServerDialog:(id)dialog
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__MPCModelRadioGetTracksStep__fireAndForgetServerDialog___block_invoke;
   v3[3] = &unk_1E8235238;
   v3[4] = self;
-  [(MPCModelRadioGetTracksStep *)self _presentServerDialog:a3 completionHandler:v3];
+  [(MPCModelRadioGetTracksStep *)self _presentServerDialog:dialog completionHandler:v3];
 }
 
 uint64_t __57__MPCModelRadioGetTracksStep__fireAndForgetServerDialog___block_invoke(uint64_t result, uint64_t a2)
@@ -97,11 +97,11 @@ uint64_t __57__MPCModelRadioGetTracksStep__fireAndForgetServerDialog___block_inv
   return result;
 }
 
-- (id)nextStepWithError:(id)a3
+- (id)nextStepWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [[MPCModelRadioGetTracksStep alloc] initWithPreviousStep:self];
-  v6 = [v4 copy];
+  v6 = [errorCopy copy];
 
   error = v5->_error;
   v5->_error = v6;
@@ -111,41 +111,41 @@ uint64_t __57__MPCModelRadioGetTracksStep__fireAndForgetServerDialog___block_inv
   return v5;
 }
 
-- (MPCModelRadioGetTracksStep)initWithPreviousStep:(id)a3
+- (MPCModelRadioGetTracksStep)initWithPreviousStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   v8.receiver = self;
   v8.super_class = MPCModelRadioGetTracksStep;
   v5 = [(MPCModelRadioGetTracksStep *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_delegatedIdentityProperties, v4[4]);
-    objc_storeStrong(&v6->_identityProperties, v4[3]);
-    objc_storeStrong(&v6->_request, v4[5]);
-    objc_storeStrong(&v6->_siriAssetInfoGetTracksResponse, v4[7]);
+    objc_storeStrong(&v5->_delegatedIdentityProperties, stepCopy[4]);
+    objc_storeStrong(&v6->_identityProperties, stepCopy[3]);
+    objc_storeStrong(&v6->_request, stepCopy[5]);
+    objc_storeStrong(&v6->_siriAssetInfoGetTracksResponse, stepCopy[7]);
   }
 
   return v6;
 }
 
-- (MPCModelRadioGetTracksStep)initWithGetTracksRequest:(id)a3 siriAssetInfo:(id)a4
+- (MPCModelRadioGetTracksStep)initWithGetTracksRequest:(id)request siriAssetInfo:(id)info
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  infoCopy = info;
   v29.receiver = self;
   v29.super_class = MPCModelRadioGetTracksStep;
   v8 = [(MPCModelRadioGetTracksStep *)&v29 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v9;
 
-    if ([v7 length])
+    if ([infoCopy length])
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v7 options:0];
+      v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:infoCopy options:0];
       if (![v11 length])
       {
         v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -167,12 +167,12 @@ uint64_t __57__MPCModelRadioGetTracksStep__fireAndForgetServerDialog___block_inv
         v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:10800.0];
         v16 = [v14 initWithResponseDictionary:v12 expirationDate:v15];
 
-        v17 = [v16 stationMetadata];
-        if (v17)
+        stationMetadata = [v16 stationMetadata];
+        if (stationMetadata)
         {
-          v18 = v17;
-          v19 = [v16 tracks];
-          v20 = [v19 count];
+          v18 = stationMetadata;
+          tracks = [v16 tracks];
+          v20 = [tracks count];
 
           if (v20)
           {
@@ -201,7 +201,7 @@ LABEL_20:
         }
 
         *buf = 138543362;
-        v31 = v7;
+        v31 = infoCopy;
         v22 = "[MPCModelRadioGetTracksStep] Siri Asset Info provided with invalid content: %{public}@";
         v23 = v21;
       }

@@ -1,15 +1,15 @@
 @interface INEventParticipant
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INEventParticipant)initWithCoder:(id)a3;
-- (INEventParticipant)initWithPerson:(id)a3 status:(int64_t)a4 isUser:(id)a5 isEventOrganizer:(id)a6;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INEventParticipant)initWithCoder:(id)coder;
+- (INEventParticipant)initWithPerson:(id)person status:(int64_t)status isUser:(id)user isEventOrganizer:(id)organizer;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INEventParticipant
@@ -19,34 +19,34 @@
   v14[4] = *MEMORY[0x1E69E9840];
   v13[0] = @"person";
   person = self->_person;
-  v4 = person;
+  null = person;
   if (!person)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"status";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_status];
   v14[1] = v5;
   v13[2] = @"isUser";
   isUser = self->_isUser;
-  v7 = isUser;
+  null2 = isUser;
   if (!isUser)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v7;
+  v14[2] = null2;
   v13[3] = @"isEventOrganizer";
   isEventOrganizer = self->_isEventOrganizer;
-  v9 = isEventOrganizer;
+  null3 = isEventOrganizer;
   if (!isEventOrganizer)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[3] = v9;
+  v14[3] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
   if (isEventOrganizer)
   {
@@ -75,26 +75,26 @@ LABEL_9:
   return v10;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INEventParticipant;
   v6 = [(INEventParticipant *)&v11 description];
-  v7 = [(INEventParticipant *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INEventParticipant *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_person];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"person"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_person];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"person"];
 
   v9 = self->_status - 1;
   if (v9 > 6)
@@ -108,44 +108,44 @@ LABEL_9:
   }
 
   v11 = v10;
-  [v7 if_setObjectIfNonNil:v11 forKey:@"status"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"status"];
 
-  v12 = [v6 encodeObject:self->_isUser];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"isUser"];
+  v12 = [encoderCopy encodeObject:self->_isUser];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"isUser"];
 
-  v13 = [v6 encodeObject:self->_isEventOrganizer];
+  v13 = [encoderCopy encodeObject:self->_isEventOrganizer];
 
-  [v7 if_setObjectIfNonNil:v13 forKey:@"isEventOrganizer"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"isEventOrganizer"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   person = self->_person;
-  v5 = a3;
-  [v5 encodeObject:person forKey:@"person"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeObject:self->_isUser forKey:@"isUser"];
-  [v5 encodeObject:self->_isEventOrganizer forKey:@"isEventOrganizer"];
+  coderCopy = coder;
+  [coderCopy encodeObject:person forKey:@"person"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_isUser forKey:@"isUser"];
+  [coderCopy encodeObject:self->_isEventOrganizer forKey:@"isEventOrganizer"];
 }
 
-- (INEventParticipant)initWithCoder:(id)a3
+- (INEventParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"person"];
-  v6 = [v4 decodeIntegerForKey:@"status"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isUser"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isEventOrganizer"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"person"];
+  v6 = [coderCopy decodeIntegerForKey:@"status"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isUser"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isEventOrganizer"];
 
   v9 = [(INEventParticipant *)self initWithPerson:v5 status:v6 isUser:v7 isEventOrganizer:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -155,7 +155,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       person = self->_person;
       v9 = 0;
       if ((person == v5->_person || [(INPerson *)person isEqual:?]) && self->_status == v5->_status)
@@ -192,26 +192,26 @@ LABEL_9:
   return v5 ^ v7;
 }
 
-- (INEventParticipant)initWithPerson:(id)a3 status:(int64_t)a4 isUser:(id)a5 isEventOrganizer:(id)a6
+- (INEventParticipant)initWithPerson:(id)person status:(int64_t)status isUser:(id)user isEventOrganizer:(id)organizer
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  personCopy = person;
+  userCopy = user;
+  organizerCopy = organizer;
   v21.receiver = self;
   v21.super_class = INEventParticipant;
   v13 = [(INEventParticipant *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [personCopy copy];
     person = v13->_person;
     v13->_person = v14;
 
-    v13->_status = a4;
-    v16 = [v11 copy];
+    v13->_status = status;
+    v16 = [userCopy copy];
     isUser = v13->_isUser;
     v13->_isUser = v16;
 
-    v18 = [v12 copy];
+    v18 = [organizerCopy copy];
     isEventOrganizer = v13->_isEventOrganizer;
     v13->_isEventOrganizer = v18;
   }
@@ -219,23 +219,23 @@ LABEL_9:
   return v13;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"person"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"person"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"status"];
+    v12 = [fromCopy objectForKeyedSubscript:@"status"];
     v13 = INEventParticipantStatusWithString(v12);
 
-    v14 = [v8 objectForKeyedSubscript:@"isUser"];
-    v15 = [v8 objectForKeyedSubscript:@"isEventOrganizer"];
-    v16 = [[a1 alloc] initWithPerson:v11 status:v13 isUser:v14 isEventOrganizer:v15];
+    v14 = [fromCopy objectForKeyedSubscript:@"isUser"];
+    v15 = [fromCopy objectForKeyedSubscript:@"isEventOrganizer"];
+    v16 = [[self alloc] initWithPerson:v11 status:v13 isUser:v14 isEventOrganizer:v15];
   }
 
   else
@@ -246,19 +246,19 @@ LABEL_9:
   return v16;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(INEventParticipant *)self person];
-  [v5 _intents_updateContainerWithCache:v4];
+  cacheCopy = cache;
+  person = [(INEventParticipant *)self person];
+  [person _intents_updateContainerWithCache:cacheCopy];
 }
 
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INEventParticipant *)self person];
-  v5 = [v4 _intents_cacheableObjects];
-  [v3 unionSet:v5];
+  person = [(INEventParticipant *)self person];
+  _intents_cacheableObjects = [person _intents_cacheableObjects];
+  [v3 unionSet:_intents_cacheableObjects];
 
   if ([v3 count])
   {

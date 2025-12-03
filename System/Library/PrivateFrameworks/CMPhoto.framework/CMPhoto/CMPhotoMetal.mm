@@ -1,19 +1,19 @@
 @interface CMPhotoMetal
-- (CMPhotoMetal)initWithDevice:(id)a3 rotate:(BOOL)a4 intc:(id *)a5;
-- (id)prepareTexture:(__IOSurface *)a3 usage:(unint64_t)a4;
-- (void)encodeComputeCommand:(id)a3;
-- (void)prepareDst:(__IOSurface *)a3 rotate:(BOOL)a4;
-- (void)prepareSrc:(__IOSurface *)a3 rotate:(BOOL)a4;
+- (CMPhotoMetal)initWithDevice:(id)device rotate:(BOOL)rotate intc:(id *)intc;
+- (id)prepareTexture:(__IOSurface *)texture usage:(unint64_t)usage;
+- (void)encodeComputeCommand:(id)command;
+- (void)prepareDst:(__IOSurface *)dst rotate:(BOOL)rotate;
+- (void)prepareSrc:(__IOSurface *)src rotate:(BOOL)rotate;
 - (void)sendComputeCommand;
 - (void)sendRenderCommand;
-- (void)setRotation:(int)a3;
+- (void)setRotation:(int)rotation;
 @end
 
 @implementation CMPhotoMetal
 
-- (CMPhotoMetal)initWithDevice:(id)a3 rotate:(BOOL)a4 intc:(id *)a5
+- (CMPhotoMetal)initWithDevice:(id)device rotate:(BOOL)rotate intc:(id *)intc
 {
-  v6 = a4;
+  rotateCopy = rotate;
   v35.receiver = self;
   v35.super_class = CMPhotoMetal;
   v8 = [(CMPhotoMetal *)&v35 init];
@@ -23,15 +23,15 @@
     return v9;
   }
 
-  v8->_mDevice = a3;
-  if (!a3)
+  v8->_mDevice = device;
+  if (!device)
   {
     return 0;
   }
 
-  v10 = [a3 newCommandQueue];
-  v9->_mCommandQueue = v10;
-  if (!v10)
+  newCommandQueue = [device newCommandQueue];
+  v9->_mCommandQueue = newCommandQueue;
+  if (!newCommandQueue)
   {
     return 0;
   }
@@ -55,23 +55,23 @@
   [[(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)v14 colorAttachments] objectAtIndexedSubscript:0] setLoadAction:0];
   [[(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)v9->_renderToTextureRenderPassDescriptor colorAttachments] objectAtIndexedSubscript:0] setClearColor:1.0, 1.0, 1.0, 1.0];
   [[(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)v9->_renderToTextureRenderPassDescriptor colorAttachments] objectAtIndexedSubscript:0] setStoreAction:1];
-  if (!v6)
+  if (!rotateCopy)
   {
-    if (!a5)
+    if (!intc)
     {
       return 0;
     }
 
-    if (a5->var2 || a5->var1)
+    if (intc->var2 || intc->var1)
     {
-      v21 = a5->var3 == 16;
+      v21 = intc->var3 == 16;
       v22 = 127;
       v23 = 255;
     }
 
     else
     {
-      v21 = a5->var3 == 16;
+      v21 = intc->var3 == 16;
       v22 = 31;
       v23 = 63;
     }
@@ -90,15 +90,15 @@
 
     v25 = v24;
     [v24 setVertexFunction:{objc_msgSend(v13, "newFunctionWithName:", @"simple_vs"}];
-    if (a5->var0)
+    if (intc->var0)
     {
       [v25 setLabel:@"Interchange Compact Repack Pipeline"];
-      if (a5->var1)
+      if (intc->var1)
       {
         v26 = @"bayer_repack_fs";
       }
 
-      else if (a5->var2)
+      else if (intc->var2)
       {
         v26 = @"quadra_repack_fs";
       }
@@ -109,9 +109,9 @@
       }
 
       [v25 setFragmentFunction:{objc_msgSend(v13, "newFunctionWithName:", v26)}];
-      if (a5->var1 || a5->var2)
+      if (intc->var1 || intc->var2)
       {
-        v28 = a5->var3 == 16;
+        v28 = intc->var3 == 16;
         v29 = 70;
         v30 = 110;
         goto LABEL_35;
@@ -121,12 +121,12 @@
     else
     {
       [v25 setLabel:@"Interchange Compact Unpack Pipeline"];
-      if (a5->var1)
+      if (intc->var1)
       {
         v27 = @"bayer_unpack_fs";
       }
 
-      else if (a5->var2)
+      else if (intc->var2)
       {
         v27 = @"quadra_unpack_fs";
       }
@@ -139,7 +139,7 @@
       [v25 setFragmentFunction:{objc_msgSend(v13, "newFunctionWithName:", v27)}];
     }
 
-    v28 = a5->var3 == 16;
+    v28 = intc->var3 == 16;
     v29 = 10;
     v30 = 20;
 LABEL_35:
@@ -192,20 +192,20 @@ LABEL_35:
   return v9;
 }
 
-- (void)setRotation:(int)a3
+- (void)setRotation:(int)rotation
 {
-  v3 = 8 * (a3 - 2);
+  v3 = 8 * (rotation - 2);
   v4 = 0x10100000101uLL >> v3;
   v5 = 0x1010000010100uLL >> v3;
   v6 = 0x1010101000000uLL >> v3;
-  if ((a3 - 2) > 6)
+  if ((rotation - 2) > 6)
   {
     LOBYTE(v4) = 0;
     LOBYTE(v5) = 0;
   }
 
   self->config.flip_x = v4;
-  if ((a3 - 2) > 6)
+  if ((rotation - 2) > 6)
   {
     LOBYTE(v6) = 0;
   }
@@ -214,11 +214,11 @@ LABEL_35:
   self->config.transpose = v6;
 }
 
-- (id)prepareTexture:(__IOSurface *)a3 usage:(unint64_t)a4
+- (id)prepareTexture:(__IOSurface *)texture usage:(unint64_t)usage
 {
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
-  Width = IOSurfaceGetWidth(a3);
-  Height = IOSurfaceGetHeight(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(texture);
+  Width = IOSurfaceGetWidth(texture);
+  Height = IOSurfaceGetHeight(texture);
   v10 = 10;
   if (PixelFormat <= 1278226741)
   {
@@ -319,7 +319,7 @@ LABEL_29:
     }
 
 LABEL_31:
-    Width = (3 * IOSurfaceGetWidth(a3)) >> 1;
+    Width = (3 * IOSurfaceGetWidth(texture)) >> 1;
     v10 = 10;
     goto LABEL_33;
   }
@@ -339,40 +339,40 @@ LABEL_26:
 
 LABEL_33:
   v14 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v10 width:Width height:Height mipmapped:0];
-  [v14 setUsage:a4];
-  v15 = [(MTLDevice *)self->_mDevice newTextureWithDescriptor:v14 iosurface:a3 plane:0];
+  [v14 setUsage:usage];
+  v15 = [(MTLDevice *)self->_mDevice newTextureWithDescriptor:v14 iosurface:texture plane:0];
 
   return v15;
 }
 
-- (void)prepareSrc:(__IOSurface *)a3 rotate:(BOOL)a4
+- (void)prepareSrc:(__IOSurface *)src rotate:(BOOL)rotate
 {
-  v4 = a4;
-  v7 = [(CMPhotoMetal *)self prepareTexture:a3 usage:1];
+  rotateCopy = rotate;
+  v7 = [(CMPhotoMetal *)self prepareTexture:src usage:1];
   self->_mSrcTex = v7;
   if (v7)
   {
-    if (v4)
+    if (rotateCopy)
     {
-      self->config.src_stride = IOSurfaceGetBytesPerRow(a3);
-      self->_mSrcBuf = [(MTLDevice *)self->_mDevice newBufferWithIOSurface:a3];
+      self->config.src_stride = IOSurfaceGetBytesPerRow(src);
+      self->_mSrcBuf = [(MTLDevice *)self->_mDevice newBufferWithIOSurface:src];
     }
   }
 }
 
-- (void)prepareDst:(__IOSurface *)a3 rotate:(BOOL)a4
+- (void)prepareDst:(__IOSurface *)dst rotate:(BOOL)rotate
 {
-  v4 = a4;
-  v7 = [(CMPhotoMetal *)self prepareTexture:a3 usage:4];
+  rotateCopy = rotate;
+  v7 = [(CMPhotoMetal *)self prepareTexture:dst usage:4];
   self->_mDstTex = v7;
   if (v7)
   {
-    if (v4)
+    if (rotateCopy)
     {
-      self->config.width = IOSurfaceGetWidth(a3);
-      self->config.height = IOSurfaceGetHeight(a3);
-      self->config.dst_stride = IOSurfaceGetBytesPerRow(a3);
-      self->_mDstBuf = [(MTLDevice *)self->_mDevice newBufferWithIOSurface:a3];
+      self->config.width = IOSurfaceGetWidth(dst);
+      self->config.height = IOSurfaceGetHeight(dst);
+      self->config.dst_stride = IOSurfaceGetBytesPerRow(dst);
+      self->_mDstBuf = [(MTLDevice *)self->_mDevice newBufferWithIOSurface:dst];
     }
 
     else if (IOSurfaceGetCompressionTypeOfPlane() == 3)
@@ -397,15 +397,15 @@ LABEL_33:
 
 - (void)sendComputeCommand
 {
-  v3 = [(MTLCommandQueue *)self->_mCommandQueue commandBuffer];
-  if (v3)
+  commandBuffer = [(MTLCommandQueue *)self->_mCommandQueue commandBuffer];
+  if (commandBuffer)
   {
-    v4 = v3;
-    v5 = [v3 computeCommandEncoder];
-    if (v5)
+    v4 = commandBuffer;
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v6 = v5;
-      [(CMPhotoMetal *)self encodeComputeCommand:v5];
+      v6 = computeCommandEncoder;
+      [(CMPhotoMetal *)self encodeComputeCommand:computeCommandEncoder];
       [v6 endEncoding];
       [v4 commit];
 
@@ -414,32 +414,32 @@ LABEL_33:
   }
 }
 
-- (void)encodeComputeCommand:(id)a3
+- (void)encodeComputeCommand:(id)command
 {
-  [a3 setComputePipelineState:self->_mComputePSO];
-  [a3 setBuffer:self->_mDstBuf offset:0 atIndex:0];
-  [a3 setBuffer:self->_mSrcBuf offset:0 atIndex:1];
-  [a3 setBytes:&self->config length:20 atIndex:2];
-  v5 = [(MTLTexture *)self->_mDstTex width];
-  v6 = [(MTLTexture *)self->_mDstTex height];
+  [command setComputePipelineState:self->_mComputePSO];
+  [command setBuffer:self->_mDstBuf offset:0 atIndex:0];
+  [command setBuffer:self->_mSrcBuf offset:0 atIndex:1];
+  [command setBytes:&self->config length:20 atIndex:2];
+  width = [(MTLTexture *)self->_mDstTex width];
+  height = [(MTLTexture *)self->_mDstTex height];
   if ([(MTLComputePipelineState *)self->_mComputePSO maxTotalThreadsPerThreadgroup]>= 0x400)
   {
-    v9[0] = v5;
-    v9[1] = v6;
+    v9[0] = width;
+    v9[1] = height;
     v9[2] = 1;
     v7 = xmmword_1A5ABB850;
     v8 = 1;
-    [a3 dispatchThreads:v9 threadsPerThreadgroup:&v7];
+    [command dispatchThreads:v9 threadsPerThreadgroup:&v7];
   }
 }
 
 - (void)sendRenderCommand
 {
-  v3 = [(MTLCommandQueue *)self->_mCommandQueue commandBuffer];
-  if (v3)
+  commandBuffer = [(MTLCommandQueue *)self->_mCommandQueue commandBuffer];
+  if (commandBuffer)
   {
-    v4 = v3;
-    [v3 setLabel:@"Command Buffer"];
+    v4 = commandBuffer;
+    [commandBuffer setLabel:@"Command Buffer"];
     [(MTLTexture *)self->_mDstTex iosurface];
     [(MTLTexture *)self->_mDstTex iosurfacePlane];
     if (IOSurfaceGetCompressionTypeOfPlane() == 3 || ([(MTLTexture *)self->_mSrcTex iosurface], [(MTLTexture *)self->_mSrcTex iosurfacePlane], IOSurfaceGetCompressionTypeOfPlane() == 3))

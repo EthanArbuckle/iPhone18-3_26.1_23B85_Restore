@@ -1,34 +1,34 @@
 @interface _MFLoginAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 @end
 
 @implementation _MFLoginAuthenticator
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   *(&self->super._authenticationState + 4) = 0;
-  if (!v4)
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 bytes];
+  bytes = [dataCopy bytes];
   if ([v5 length] < 4)
   {
     goto LABEL_5;
   }
 
-  if (!strncasecmp(v6, "user", 4uLL))
+  if (!strncasecmp(bytes, "user", 4uLL))
   {
-    v9 = [(MFSASLAuthenticator *)self account];
-    v10 = [v9 username];
+    account = [(MFSASLAuthenticator *)self account];
+    username = [account username];
   }
 
   else
   {
-    if (strncasecmp(v6, "pass", 4uLL))
+    if (strncasecmp(bytes, "pass", 4uLL))
     {
 LABEL_5:
       v7 = 0;
@@ -36,12 +36,12 @@ LABEL_5:
     }
 
     *(&self->super._authenticationState + 4) = 1;
-    v9 = [(MFSASLAuthenticator *)self account];
-    v10 = [v9 password];
+    account = [(MFSASLAuthenticator *)self account];
+    username = [account password];
   }
 
-  v11 = v10;
-  v7 = [v10 dataUsingEncoding:4];
+  v11 = username;
+  v7 = [username dataUsingEncoding:4];
 
 LABEL_6:
 

@@ -1,28 +1,28 @@
 @interface ChimeraLockViewController
-- (ChimeraLockViewController)initWithComponent:(id)a3 status:(id)a4;
+- (ChimeraLockViewController)initWithComponent:(id)component status:(id)status;
 - (StartPreflightNavigationCoordinator)coordinator;
 - (void)_continueTapped;
 @end
 
 @implementation ChimeraLockViewController
 
-- (ChimeraLockViewController)initWithComponent:(id)a3 status:(id)a4
+- (ChimeraLockViewController)initWithComponent:(id)component status:(id)status
 {
-  v6 = a4;
-  v7 = a3;
+  statusCopy = status;
+  componentCopy = component;
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
   v10 = @"iphone.slash";
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v10 = @"ipad.gen2.slash";
   }
 
   v11 = v10;
 
-  v12 = [CRDeviceMap getComponentTypeWithSPC:v7];
+  v12 = [CRDeviceMap getComponentTypeWithSPC:componentCopy];
   v13 = [CRLocalization localizedStringWithFormat:@"UNABLE_CONFIGURE_%@" component:v12];
-  if ([v6 isEqualToString:@"LOST"])
+  if ([statusCopy isEqualToString:@"LOST"])
   {
     v14 = @"ACTIVATION_LOST_DETAIL_TEXT";
 LABEL_7:
@@ -40,16 +40,16 @@ LABEL_7:
       [v18 setTitle:v20 forState:0];
 
       [v18 addTarget:v17 action:"_continueTapped" forControlEvents:64];
-      v21 = [(ChimeraLockViewController *)v17 buttonTray];
-      [v21 addButton:v18];
+      buttonTray = [(ChimeraLockViewController *)v17 buttonTray];
+      [buttonTray addButton:v18];
     }
 
     self = v17;
-    v22 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:@"DENIED"])
+  if ([statusCopy isEqualToString:@"DENIED"])
   {
     v14 = @"CHIMERA_LOCK_DETAIL_TEXT";
     goto LABEL_7;
@@ -61,10 +61,10 @@ LABEL_7:
     sub_10000D6E8(v16);
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)_continueTapped
@@ -77,8 +77,8 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
-  v4 = [(ChimeraLockViewController *)self coordinator];
-  [v4 moveToNextViewController];
+  coordinator = [(ChimeraLockViewController *)self coordinator];
+  [coordinator moveToNextViewController];
 }
 
 - (StartPreflightNavigationCoordinator)coordinator

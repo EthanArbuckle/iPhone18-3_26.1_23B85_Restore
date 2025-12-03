@@ -1,18 +1,18 @@
 @interface GQZArchiveFileInputStream
-- (GQZArchiveFileInputStream)initWithPath:(id)a3;
-- (const)dataAtOffset:(int64_t)a3 size:(unint64_t)a4 end:(int64_t)a5 readSize:(unint64_t *)a6;
+- (GQZArchiveFileInputStream)initWithPath:(id)path;
+- (const)dataAtOffset:(int64_t)offset size:(unint64_t)size end:(int64_t)end readSize:(unint64_t *)readSize;
 - (void)dealloc;
-- (void)readFromOffset:(int64_t)a3 size:(unint64_t)a4 buffer:(char *)a5;
+- (void)readFromOffset:(int64_t)offset size:(unint64_t)size buffer:(char *)buffer;
 @end
 
 @implementation GQZArchiveFileInputStream
 
-- (GQZArchiveFileInputStream)initWithPath:(id)a3
+- (GQZArchiveFileInputStream)initWithPath:(id)path
 {
   v4 = [(GQZArchiveFileInputStream *)self init];
   if (v4)
   {
-    v4->mFile = sub_44F28(a3, "r");
+    v4->mFile = sub_44F28(path, "r");
     v5 = malloc_type_malloc(0x40000uLL, 0x100004077774924uLL);
     v4->mBuffer = v5;
     if (!v5)
@@ -53,17 +53,17 @@
   [(GQZArchiveFileInputStream *)&v4 dealloc];
 }
 
-- (const)dataAtOffset:(int64_t)a3 size:(unint64_t)a4 end:(int64_t)a5 readSize:(unint64_t *)a6
+- (const)dataAtOffset:(int64_t)offset size:(unint64_t)size end:(int64_t)end readSize:(unint64_t *)readSize
 {
-  if (((a3 | a4) & 0x8000000000000000) != 0 || (a4 ^ 0x7FFFFFFFFFFFFFFFLL) < a3)
+  if (((offset | size) & 0x8000000000000000) != 0 || (size ^ 0x7FFFFFFFFFFFFFFFLL) < offset)
   {
     [GQZException raise:@"GQZReadError" format:@"Size overflow."];
   }
 
-  v11 = a4 + a3;
-  if (a5)
+  v11 = size + offset;
+  if (end)
   {
-    if (v11 > a5)
+    if (v11 > end)
     {
       [GQZException raise:@"GQZReadError" format:@"Tried to read past end of chunk."];
     }
@@ -71,26 +71,26 @@
 
   else
   {
-    a5 = v11;
+    end = v11;
   }
 
   mBufferStart = self->mBufferStart;
-  if (mBufferStart > a3 || (mBufferEnd = self->mBufferEnd, v11 > mBufferEnd))
+  if (mBufferStart > offset || (mBufferEnd = self->mBufferEnd, v11 > mBufferEnd))
   {
-    if (fseeko(self->mFile, a3, 0))
+    if (fseeko(self->mFile, offset, 0))
     {
       v14 = __error();
       [GQZException raise:@"GQZSeekError" format:@"Could not seek: %s", strerror(*v14)];
     }
 
-    if (a5 - a3 >= 0x40000)
+    if (end - offset >= 0x40000)
     {
       v15 = 0x40000;
     }
 
     else
     {
-      v15 = a5 - a3;
+      v15 = end - offset;
     }
 
     if (fread(self->mBuffer, 1uLL, v15, self->mFile) != v15)
@@ -99,29 +99,29 @@
       [GQZException raise:@"GQZReadError" format:@"Could not read: %s", strerror(*v16)];
     }
 
-    mBufferEnd = v15 + a3;
-    self->mBufferStart = a3;
-    self->mBufferEnd = v15 + a3;
-    mBufferStart = a3;
+    mBufferEnd = v15 + offset;
+    self->mBufferStart = offset;
+    self->mBufferEnd = v15 + offset;
+    mBufferStart = offset;
   }
 
-  if (a6)
+  if (readSize)
   {
-    *a6 = mBufferEnd - a3;
+    *readSize = mBufferEnd - offset;
   }
 
-  return &self->mBuffer[a3 - mBufferStart];
+  return &self->mBuffer[offset - mBufferStart];
 }
 
-- (void)readFromOffset:(int64_t)a3 size:(unint64_t)a4 buffer:(char *)a5
+- (void)readFromOffset:(int64_t)offset size:(unint64_t)size buffer:(char *)buffer
 {
-  if (fseeko(self->mFile, a3, 0))
+  if (fseeko(self->mFile, offset, 0))
   {
     v8 = __error();
     [GQZException raise:@"GQZSeekError" format:@"Could not seek: %s", strerror(*v8)];
   }
 
-  if (fread(a5, 1uLL, a4, self->mFile) != a4)
+  if (fread(buffer, 1uLL, size, self->mFile) != size)
   {
     v9 = __error();
     [GQZException raise:@"GQZReadError" format:@"Could not read: %s", strerror(*v9)];

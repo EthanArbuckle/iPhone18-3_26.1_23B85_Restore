@@ -1,5 +1,5 @@
 @interface _PASLPDictionaryEnumerator
-- (_PASLPDictionaryEnumerator)initWithLazyPlistReader:(id)a3 context:(id)a4;
+- (_PASLPDictionaryEnumerator)initWithLazyPlistReader:(id)reader context:(id)context;
 - (id)nextObject;
 @end
 
@@ -25,18 +25,18 @@
   return v5;
 }
 
-- (_PASLPDictionaryEnumerator)initWithLazyPlistReader:(id)a3 context:(id)a4
+- (_PASLPDictionaryEnumerator)initWithLazyPlistReader:(id)reader context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  readerCopy = reader;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = _PASLPDictionaryEnumerator;
   v9 = [(_PASLPDictionaryEnumerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reader, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_reader, reader);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;

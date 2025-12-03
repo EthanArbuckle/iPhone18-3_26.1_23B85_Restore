@@ -1,29 +1,29 @@
 @interface DateProcessor
-+ (id)processDateMatch:(id)a3 originalString:(id)a4;
++ (id)processDateMatch:(id)match originalString:(id)string;
 @end
 
 @implementation DateProcessor
 
-+ (id)processDateMatch:(id)a3 originalString:(id)a4
++ (id)processDateMatch:(id)match originalString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  matchCopy = match;
+  stringCopy = string;
+  v7 = stringCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (matchCopy && stringCopy)
   {
-    v9 = [v5 date];
-    if (v9 && [v5 underlyingResult])
+    date = [matchCopy date];
+    if (date && [matchCopy underlyingResult])
     {
-      v10 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-      if ([v7 rangeOfCharacterFromSet:v10] == 0x7FFFFFFFFFFFFFFFLL)
+      decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+      if ([v7 rangeOfCharacterFromSet:decimalDigitCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v8 = 0;
       }
 
       else
       {
-        [v5 underlyingResult];
+        [matchCopy underlyingResult];
         v11 = DDResultGetType();
         v12 = [v11 rangeOfString:@"Date"];
         v13 = [v11 rangeOfString:@"Time"];
@@ -42,9 +42,9 @@
 
           else
           {
-            v15 = [v5 timeIsSignificant];
+            timeIsSignificant = [matchCopy timeIsSignificant];
             v16 = 224;
-            if (!v15)
+            if (!timeIsSignificant)
             {
               v16 = 0;
             }
@@ -60,9 +60,9 @@
             v17 = v16 | 0x1C;
           }
 
-          v18 = [MEMORY[0x277CBEA80] currentCalendar];
-          v19 = [v18 components:v17 fromDate:v9];
-          if (v14 == 0x7FFFFFFFFFFFFFFFLL || ([v5 duration], v20 <= 0.0))
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          v19 = [currentCalendar components:v17 fromDate:date];
+          if (v14 == 0x7FFFFFFFFFFFFFFFLL || ([matchCopy duration], v20 <= 0.0))
           {
             v23 = 0;
           }
@@ -70,27 +70,27 @@
           else
           {
             v21 = MEMORY[0x277CBEAA8];
-            [v5 duration];
-            v22 = [v21 dateWithTimeInterval:v9 sinceDate:?];
-            v23 = [v18 components:v17 fromDate:v22];
+            [matchCopy duration];
+            v22 = [v21 dateWithTimeInterval:date sinceDate:?];
+            v23 = [currentCalendar components:v17 fromDate:v22];
           }
 
-          v24 = [v5 timeZone];
+          timeZone = [matchCopy timeZone];
 
-          if (v24)
+          if (timeZone)
           {
-            v25 = [v5 timeZone];
-            [v19 setTimeZone:v25];
+            timeZone2 = [matchCopy timeZone];
+            [v19 setTimeZone:timeZone2];
 
-            v26 = [v5 timeZone];
-            [v23 setTimeZone:v26];
+            timeZone3 = [matchCopy timeZone];
+            [v23 setTimeZone:timeZone3];
           }
 
-          v27 = [MEMORY[0x277CBEB38] dictionary];
-          [v27 setObject:v9 forKeyedSubscript:@"date"];
-          [v27 setObject:v19 forKeyedSubscript:@"startDateComponents"];
-          [v27 setObject:v23 forKeyedSubscript:@"endDateComponents"];
-          v8 = [v27 copy];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:date forKeyedSubscript:@"date"];
+          [dictionary setObject:v19 forKeyedSubscript:@"startDateComponents"];
+          [dictionary setObject:v23 forKeyedSubscript:@"endDateComponents"];
+          v8 = [dictionary copy];
         }
       }
     }

@@ -1,20 +1,20 @@
 @interface APManagedContendDataEnumerator
-- (APManagedContendDataEnumerator)initWithManagedContext:(id)a3 contentDataItemIds:(id)a4;
+- (APManagedContendDataEnumerator)initWithManagedContext:(id)context contentDataItemIds:(id)ids;
 - (id)nextObject;
 @end
 
 @implementation APManagedContendDataEnumerator
 
-- (APManagedContendDataEnumerator)initWithManagedContext:(id)a3 contentDataItemIds:(id)a4
+- (APManagedContendDataEnumerator)initWithManagedContext:(id)context contentDataItemIds:(id)ids
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  idsCopy = ids;
   v9 = [(APManagedContendDataEnumerator *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managedContext, a3);
-    objc_storeStrong(&v10->_contentDataItemIds, a4);
+    objc_storeStrong(&v9->_managedContext, context);
+    objc_storeStrong(&v10->_contentDataItemIds, ids);
     [(APManagedContendDataEnumerator *)v10 setCurrentContentDataItemIdIndex:0];
   }
 
@@ -25,23 +25,23 @@
 {
   for (i = self; ; self = i)
   {
-    v3 = [(APManagedContendDataEnumerator *)self currentContentDataItemIdIndex];
-    v4 = [(APManagedContendDataEnumerator *)i contentDataItemIds];
-    v5 = [v4 count];
+    currentContentDataItemIdIndex = [(APManagedContendDataEnumerator *)self currentContentDataItemIdIndex];
+    contentDataItemIds = [(APManagedContendDataEnumerator *)i contentDataItemIds];
+    v5 = [contentDataItemIds count];
 
-    if (v3 >= v5)
+    if (currentContentDataItemIdIndex >= v5)
     {
       v10 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(APManagedContendDataEnumerator *)i contentDataItemIds];
-    v7 = [(APManagedContendDataEnumerator *)i currentContentDataItemIdIndex];
-    [(APManagedContendDataEnumerator *)i setCurrentContentDataItemIdIndex:v7 + 1];
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    contentDataItemIds2 = [(APManagedContendDataEnumerator *)i contentDataItemIds];
+    currentContentDataItemIdIndex2 = [(APManagedContendDataEnumerator *)i currentContentDataItemIdIndex];
+    [(APManagedContendDataEnumerator *)i setCurrentContentDataItemIdIndex:currentContentDataItemIdIndex2 + 1];
+    v8 = [contentDataItemIds2 objectAtIndexedSubscript:currentContentDataItemIdIndex2];
 
-    v9 = [(APManagedContendDataEnumerator *)i managedContext];
-    v10 = [v9 managedContentDataForId:v8];
+    managedContext = [(APManagedContendDataEnumerator *)i managedContext];
+    v10 = [managedContext managedContentDataForId:v8];
 
     if (v10)
     {

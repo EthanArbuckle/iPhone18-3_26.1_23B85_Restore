@@ -8,14 +8,14 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"endpointID";
-  v3 = [(MTRPluginWriteAttributeMetric *)self endpointID];
-  v12[0] = v3;
+  endpointID = [(MTRPluginWriteAttributeMetric *)self endpointID];
+  v12[0] = endpointID;
   v11[1] = @"clusterID";
-  v4 = [(MTRPluginWriteAttributeMetric *)self clusterID];
-  v12[1] = v4;
+  clusterID = [(MTRPluginWriteAttributeMetric *)self clusterID];
+  v12[1] = clusterID;
   v11[2] = @"attributeID";
-  v5 = [(MTRPluginWriteAttributeMetric *)self attributeID];
-  v12[2] = v5;
+  attributeID = [(MTRPluginWriteAttributeMetric *)self attributeID];
+  v12[2] = attributeID;
   v11[3] = @"clientType";
   v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[MTRPluginWriteAttributeMetric clientType](self, "clientType")}];
   v12[3] = v6;

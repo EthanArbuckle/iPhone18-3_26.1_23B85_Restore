@@ -1,7 +1,7 @@
 @interface HearingTestFlowEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HearingTestFlowEvent
@@ -13,22 +13,22 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  HearingTestFlowEvent.makeUnrestrictedEventPayload(with:)(v4);
+  HearingTestFlowEvent.makeUnrestrictedEventPayload(with:)(sourceCopy);
 
   v5 = sub_20CE13874();
 
   return v5;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  HearingTestFlowEvent.makeIHAGatedEventPayload(with:)(v4);
+  HearingTestFlowEvent.makeIHAGatedEventPayload(with:)(sourceCopy);
 
   v5 = sub_20CE13874();
 

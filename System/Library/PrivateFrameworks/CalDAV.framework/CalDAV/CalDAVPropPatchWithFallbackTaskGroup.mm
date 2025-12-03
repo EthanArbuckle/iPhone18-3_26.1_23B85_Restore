@@ -1,41 +1,41 @@
 @interface CalDAVPropPatchWithFallbackTaskGroup
-- (CalDAVPropPatchWithFallbackTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4 primaryPropertiesToSet:(id)a5 fallbackPropertiesToSet:(id)a6 atURL:(id)a7;
-- (void)_proppatchAfterFailureCount:(unint64_t)a3;
+- (CalDAVPropPatchWithFallbackTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager primaryPropertiesToSet:(id)set fallbackPropertiesToSet:(id)toSet atURL:(id)l;
+- (void)_proppatchAfterFailureCount:(unint64_t)count;
 @end
 
 @implementation CalDAVPropPatchWithFallbackTaskGroup
 
-- (CalDAVPropPatchWithFallbackTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4 primaryPropertiesToSet:(id)a5 fallbackPropertiesToSet:(id)a6 atURL:(id)a7
+- (CalDAVPropPatchWithFallbackTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager primaryPropertiesToSet:(id)set fallbackPropertiesToSet:(id)toSet atURL:(id)l
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  setCopy = set;
+  toSetCopy = toSet;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = CalDAVPropPatchWithFallbackTaskGroup;
-  v16 = [(CoreDAVTaskGroup *)&v19 initWithAccountInfoProvider:a3 taskManager:a4];
+  v16 = [(CoreDAVTaskGroup *)&v19 initWithAccountInfoProvider:provider taskManager:manager];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_primaryElements, a5);
-    objc_storeStrong(&v17->_fallbackElements, a6);
-    objc_storeStrong(&v17->_url, a7);
+    objc_storeStrong(&v16->_primaryElements, set);
+    objc_storeStrong(&v17->_fallbackElements, toSet);
+    objc_storeStrong(&v17->_url, l);
   }
 
   return v17;
 }
 
-- (void)_proppatchAfterFailureCount:(unint64_t)a3
+- (void)_proppatchAfterFailureCount:(unint64_t)count
 {
   v5 = &OBJC_IVAR___CalDAVPropPatchWithFallbackTaskGroup__fallbackElements;
-  if (!a3)
+  if (!count)
   {
     v5 = &OBJC_IVAR___CalDAVPropPatchWithFallbackTaskGroup__primaryElements;
   }
 
   v6 = *(&self->super.super.isa + *v5);
   v7 = [objc_alloc(MEMORY[0x277CFDC70]) initWithPropertiesToSet:v6 andRemove:0 atURL:self->_url];
-  v8 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v7 setAccountInfoProvider:v8];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v7 setAccountInfoProvider:accountInfoProvider];
 
   objc_initWeak(&location, v7);
   v10 = MEMORY[0x277D85DD0];
@@ -43,8 +43,8 @@
   v12 = __68__CalDAVPropPatchWithFallbackTaskGroup__proppatchAfterFailureCount___block_invoke;
   v13 = &unk_278D66CA0;
   objc_copyWeak(v15, &location);
-  v15[1] = a3;
-  v14 = self;
+  v15[1] = count;
+  selfCopy = self;
   [v7 setCompletionBlock:&v10];
   v9 = [(CoreDAVTaskGroup *)self taskManager:v10];
   [v9 submitQueuedCoreDAVTask:v7];

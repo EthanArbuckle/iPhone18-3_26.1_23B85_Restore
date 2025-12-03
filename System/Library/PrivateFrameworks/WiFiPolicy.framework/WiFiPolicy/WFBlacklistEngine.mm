@@ -1,42 +1,42 @@
 @interface WFBlacklistEngine
-+ (id)stringRepresentationWithReason:(unint64_t)a3;
-+ (id)stringRepresentationWithState:(unint64_t)a3;
-- (BOOL)_evaluateTriggersForBlacklisting:(id)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5 bssid:(id)a6 ssid:(id)a7 state:(unint64_t)a8;
-- (BOOL)_evaluateTriggersForUnblacklisting:(id)a3 unblacklistReason:(unint64_t)a4 ssid:(id)a5;
-- (BOOL)_ignoreTriggersForDeviceProfile:(unint64_t)a3 node:(id)a4;
-- (BOOL)isNetworkBlacklistedForAutoJoinDueToTrigDisc:(id)a3 rssi:(int64_t *)a4 timestamp:(double *)a5;
-- (BOOL)isNetworkInBlacklistedState:(id)a3 state:(unint64_t)a4;
-- (BOOL)removeBlacklistedStateForNetworkWithReason:(id)a3 state:(unint64_t)a4 reason:(unint64_t)a5;
-- (WFBlacklistEngine)initWithBlacklistDelegate:(id)a3 profile:(unint64_t)a4;
-- (id)_findBlacklistNode:(id)a3;
-- (id)denyListThreshold:(unint64_t)a3 perSSID:(BOOL)a4;
-- (id)retrieveBlacklistedNetworkSsids:(unint64_t)a3;
-- (id)retrieveBlacklistedStateHistoryForNetwork:(id)a3 state:(unint64_t)a4 timestamps:(id)a5 reasonData:(id)a6;
-- (id)retrieveNetworksInBlacklistedState:(unint64_t)a3;
-- (id)retrieveNetworksInBlacklistedStateHistory:(unint64_t)a3;
-- (id)retrieveReasonsForNetworkInBlacklistedState:(id)a3 state:(unint64_t)a4 timestamps:(id)a5 reasonData:(id)a6;
-- (int64_t)getRssiWhenNetworkWasBlacklisted:(id)a3;
++ (id)stringRepresentationWithReason:(unint64_t)reason;
++ (id)stringRepresentationWithState:(unint64_t)state;
+- (BOOL)_evaluateTriggersForBlacklisting:(id)blacklisting reason:(unint64_t)reason reasonData:(int64_t)data bssid:(id)bssid ssid:(id)ssid state:(unint64_t)state;
+- (BOOL)_evaluateTriggersForUnblacklisting:(id)unblacklisting unblacklistReason:(unint64_t)reason ssid:(id)ssid;
+- (BOOL)_ignoreTriggersForDeviceProfile:(unint64_t)profile node:(id)node;
+- (BOOL)isNetworkBlacklistedForAutoJoinDueToTrigDisc:(id)disc rssi:(int64_t *)rssi timestamp:(double *)timestamp;
+- (BOOL)isNetworkInBlacklistedState:(id)state state:(unint64_t)a4;
+- (BOOL)removeBlacklistedStateForNetworkWithReason:(id)reason state:(unint64_t)state reason:(unint64_t)a5;
+- (WFBlacklistEngine)initWithBlacklistDelegate:(id)delegate profile:(unint64_t)profile;
+- (id)_findBlacklistNode:(id)node;
+- (id)denyListThreshold:(unint64_t)threshold perSSID:(BOOL)d;
+- (id)retrieveBlacklistedNetworkSsids:(unint64_t)ssids;
+- (id)retrieveBlacklistedStateHistoryForNetwork:(id)network state:(unint64_t)state timestamps:(id)timestamps reasonData:(id)data;
+- (id)retrieveNetworksInBlacklistedState:(unint64_t)state;
+- (id)retrieveNetworksInBlacklistedStateHistory:(unint64_t)history;
+- (id)retrieveReasonsForNetworkInBlacklistedState:(id)state state:(unint64_t)a4 timestamps:(id)timestamps reasonData:(id)data;
+- (int64_t)getRssiWhenNetworkWasBlacklisted:(id)blacklisted;
 - (unint64_t)getBlacklistedNetworkCount;
 - (void)_printBlacklist;
-- (void)clearTriggerForNetworkWithUnblacklistReason:(id)a3 reason:(unint64_t)a4;
-- (void)configureBlacklistedStateExpiryIntervalInSec:(double)a3 state:(unint64_t)a4;
+- (void)clearTriggerForNetworkWithUnblacklistReason:(id)reason reason:(unint64_t)a4;
+- (void)configureBlacklistedStateExpiryIntervalInSec:(double)sec state:(unint64_t)state;
 - (void)dealloc;
-- (void)networkPruned:(id)a3;
-- (void)networkRemovedForSsid:(id)a3;
-- (void)removeBlacklistedStateWithUnblacklistType:(unint64_t)a3;
+- (void)networkPruned:(id)pruned;
+- (void)networkRemovedForSsid:(id)ssid;
+- (void)removeBlacklistedStateWithUnblacklistType:(unint64_t)type;
 - (void)removeBlacklistedStates;
-- (void)removeExpiredBlacklistedState:(unint64_t)a3;
+- (void)removeExpiredBlacklistedState:(unint64_t)state;
 - (void)setDefaultBlacklistThresholds;
-- (void)setEnabled:(BOOL)a3;
-- (void)setTriggerForNetworkWithReasonAndState:(id)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5 bssid:(id)a6 state:(unint64_t)a7;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setTriggerForNetworkWithReasonAndState:(id)state reason:(unint64_t)reason reasonData:(int64_t)data bssid:(id)bssid state:(unint64_t)a7;
 @end
 
 @implementation WFBlacklistEngine
 
-- (WFBlacklistEngine)initWithBlacklistDelegate:(id)a3 profile:(unint64_t)a4
+- (WFBlacklistEngine)initWithBlacklistDelegate:(id)delegate profile:(unint64_t)profile
 {
   buf[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = WFBlacklistEngine;
   v7 = [(WFBlacklistEngine *)&v21 init];
@@ -60,20 +60,20 @@ LABEL_11:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v16, "UTF8String")];
-      v18 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
       LODWORD(buf[0]) = 136446210;
-      *(buf + 4) = v18;
+      *(buf + 4) = uTF8String;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  [(WFBlacklistEngine *)v8 setBlacklistDelegate:v6];
+  [(WFBlacklistEngine *)v8 setBlacklistDelegate:delegateCopy];
   [(WFBlacklistEngine *)v8 setWowBlacklistExpiry:600.0];
   [(WFBlacklistEngine *)v8 setAutojoinBlacklistExpiry:300.0];
   [(WFBlacklistEngine *)v8 setBssBlacklistExpiry:300.0];
-  v8->_profile = a4;
+  v8->_profile = profile;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   blacklist = v8->_blacklist;
   v8->_blacklist = v9;
@@ -115,77 +115,77 @@ LABEL_12:
 - (void)setDefaultBlacklistThresholds
 {
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v4 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v4 setObject:v3 atIndexedSubscript:0];
+  bssidThresholds = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds setObject:v3 atIndexedSubscript:0];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v6 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v6 setObject:v5 atIndexedSubscript:1];
+  bssidThresholds2 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds2 setObject:v5 atIndexedSubscript:1];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v8 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v8 setObject:v7 atIndexedSubscript:2];
+  bssidThresholds3 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds3 setObject:v7 atIndexedSubscript:2];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-  v10 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v10 setObject:v9 atIndexedSubscript:3];
+  bssidThresholds4 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds4 setObject:v9 atIndexedSubscript:3];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-  v12 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v12 setObject:v11 atIndexedSubscript:4];
+  bssidThresholds5 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds5 setObject:v11 atIndexedSubscript:4];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:10];
-  v14 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v14 setObject:v13 atIndexedSubscript:5];
+  bssidThresholds6 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds6 setObject:v13 atIndexedSubscript:5];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v16 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v16 setObject:v15 atIndexedSubscript:6];
+  bssidThresholds7 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds7 setObject:v15 atIndexedSubscript:6];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-  v18 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v18 setObject:v17 atIndexedSubscript:7];
+  bssidThresholds8 = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds8 setObject:v17 atIndexedSubscript:7];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v20 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v20 setObject:v19 atIndexedSubscript:0];
+  ssidThresholds = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds setObject:v19 atIndexedSubscript:0];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v22 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v22 setObject:v21 atIndexedSubscript:1];
+  ssidThresholds2 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds2 setObject:v21 atIndexedSubscript:1];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v24 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v24 setObject:v23 atIndexedSubscript:2];
+  ssidThresholds3 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds3 setObject:v23 atIndexedSubscript:2];
 
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:5];
-  v26 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v26 setObject:v25 atIndexedSubscript:3];
+  ssidThresholds4 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds4 setObject:v25 atIndexedSubscript:3];
 
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:5];
-  v28 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v28 setObject:v27 atIndexedSubscript:4];
+  ssidThresholds5 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds5 setObject:v27 atIndexedSubscript:4];
 
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:10];
-  v30 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v30 setObject:v29 atIndexedSubscript:5];
+  ssidThresholds6 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds6 setObject:v29 atIndexedSubscript:5];
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
-  v32 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v32 setObject:v31 atIndexedSubscript:6];
+  ssidThresholds7 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds7 setObject:v31 atIndexedSubscript:6];
 
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-  v33 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v33 setObject:v34 atIndexedSubscript:7];
+  ssidThresholds8 = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds8 setObject:v34 atIndexedSubscript:7];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFBlacklistEngine *)self ssidThresholds];
-  [v3 removeAllObjects];
+  ssidThresholds = [(WFBlacklistEngine *)self ssidThresholds];
+  [ssidThresholds removeAllObjects];
 
-  v4 = [(WFBlacklistEngine *)self bssidThresholds];
-  [v4 removeAllObjects];
+  bssidThresholds = [(WFBlacklistEngine *)self bssidThresholds];
+  [bssidThresholds removeAllObjects];
 
   [(NSMutableArray *)self->_blacklist removeAllObjects];
   v5.receiver = self;
@@ -193,15 +193,15 @@ LABEL_12:
   [(WFBlacklistEngine *)&v5 dealloc];
 }
 
-- (void)configureBlacklistedStateExpiryIntervalInSec:(double)a3 state:(unint64_t)a4
+- (void)configureBlacklistedStateExpiryIntervalInSec:(double)sec state:(unint64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  switch(a4)
+  switch(state)
   {
     case 3uLL:
-      if (a3 == 0.0 || a3 > 3600.0)
+      if (sec == 0.0 || sec > 3600.0)
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range WoWBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&a3];
+        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range WoWBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&sec];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           goto LABEL_27;
@@ -215,9 +215,9 @@ LABEL_12:
       [(WFBlacklistEngine *)self setWowBlacklistExpiry:?];
       break;
     case 2uLL:
-      if (a3 == 0.0 || a3 > 300.0)
+      if (sec == 0.0 || sec > 300.0)
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range BssBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&a3];
+        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range BssBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&sec];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           goto LABEL_27;
@@ -231,7 +231,7 @@ LABEL_12:
       [(WFBlacklistEngine *)self setBssBlacklistExpiry:?];
       break;
     case 1uLL:
-      if (a3 != 0.0 && a3 <= 86400.0)
+      if (sec != 0.0 && sec <= 86400.0)
       {
         v4 = *MEMORY[0x277D85DE8];
 
@@ -239,7 +239,7 @@ LABEL_12:
         return;
       }
 
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range AutojoinBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&a3];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Out of range AutojoinBlacklisting timeout value:%f", "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]", *&sec];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         goto LABEL_26;
@@ -250,7 +250,7 @@ LABEL_27:
       v9 = *MEMORY[0x277D85DE8];
       return;
     default:
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Invalid state", a3, "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]"];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Invalid state", sec, "-[WFBlacklistEngine configureBlacklistedStateExpiryIntervalInSec:state:]"];
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         goto LABEL_27;
@@ -259,16 +259,16 @@ LABEL_27:
 LABEL_26:
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v7, "UTF8String")];
       *buf = 136446210;
-      v11 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
       goto LABEL_27;
   }
 }
 
-- (id)denyListThreshold:(unint64_t)a3 perSSID:(BOOL)a4
+- (id)denyListThreshold:(unint64_t)threshold perSSID:(BOOL)d
 {
-  if (a4)
+  if (d)
   {
     [(WFBlacklistEngine *)self ssidThresholds];
   }
@@ -278,19 +278,19 @@ LABEL_26:
     [(WFBlacklistEngine *)self bssidThresholds];
   }
   v5 = ;
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  v6 = [v5 objectAtIndexedSubscript:threshold];
 
   return v6;
 }
 
-- (void)setTriggerForNetworkWithReasonAndState:(id)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5 bssid:(id)a6 state:(unint64_t)a7
+- (void)setTriggerForNetworkWithReasonAndState:(id)state reason:(unint64_t)reason reasonData:(int64_t)data bssid:(id)bssid state:(unint64_t)a7
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
+  stateCopy = state;
+  bssidCopy = bssid;
   if ([(WFBlacklistEngine *)self enabled])
   {
-    v14 = [(WFBlacklistEngine *)self _findBlacklistNode:v12];
+    v14 = [(WFBlacklistEngine *)self _findBlacklistNode:stateCopy];
     if (v14)
     {
       v15 = v14;
@@ -299,19 +299,19 @@ LABEL_26:
 
     else
     {
-      v17 = [[WFBlackListNode alloc] initWithBlacklistNetwork:v12];
+      v17 = [[WFBlackListNode alloc] initWithBlacklistNetwork:stateCopy];
       if (!v17)
       {
-        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistElement alloc failed", "-[WFBlacklistEngine setTriggerForNetworkWithReasonAndState:reason:reasonData:bssid:state:]"];
+        blacklistDelegate2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistElement alloc failed", "-[WFBlacklistEngine setTriggerForNetworkWithReasonAndState:reason:reasonData:bssid:state:]"];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v23, "UTF8String")];
+          v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(blacklistDelegate2, "UTF8String")];
           *buf = 136446210;
-          v28 = [v26 UTF8String];
+          uTF8String = [v26 UTF8String];
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
         }
 
-        v18 = 0;
+        ssid = 0;
         v16 = 0;
         v15 = 0;
         goto LABEL_17;
@@ -321,43 +321,43 @@ LABEL_26:
       v15 = v16;
     }
 
-    if ([(WFBlacklistEngine *)self _ignoreTriggersForDeviceProfile:a4 node:v15])
+    if ([(WFBlacklistEngine *)self _ignoreTriggersForDeviceProfile:reason node:v15])
     {
-      v18 = 0;
+      ssid = 0;
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v19 = [v15 networkDelegate];
-    v18 = [v19 ssid];
+    networkDelegate = [v15 networkDelegate];
+    ssid = [networkDelegate ssid];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v25 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+      v25 = [WFBlacklistEngine stringRepresentationWithReason:reason];
       *buf = 136317186;
-      v28 = "[WFBlacklistEngine setTriggerForNetworkWithReasonAndState:reason:reasonData:bssid:state:]";
+      uTF8String = "[WFBlacklistEngine setTriggerForNetworkWithReasonAndState:reason:reasonData:bssid:state:]";
       v29 = 2112;
       v30 = v25;
       v31 = 2160;
       v32 = 1752392040;
       v33 = 2112;
-      v34 = v18;
+      v34 = ssid;
       v35 = 2160;
       v36 = 1752392040;
       v37 = 2112;
-      v38 = v13;
+      v38 = bssidCopy;
       v39 = 2048;
-      v40 = a4;
+      reasonCopy = reason;
       v41 = 2048;
-      v42 = a5;
+      dataCopy = data;
       v43 = 2048;
       v44 = a7;
       _os_log_error_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s: Trigger '%@' for '%{mask.hash}@ [%{mask.hash}@]' (reason=%lu reasonData=%ld state=%lu)", buf, 0x5Cu);
     }
 
-    [v15 addBlacklistTrigger:a4 reasonData:a5 bssid:v13];
-    v20 = [(WFBlacklistEngine *)self _evaluateTriggersForBlacklisting:v15 reason:a4 reasonData:a5 bssid:v13 ssid:v18 state:a7];
+    [v15 addBlacklistTrigger:reason reasonData:data bssid:bssidCopy];
+    v20 = [(WFBlacklistEngine *)self _evaluateTriggersForBlacklisting:v15 reason:reason reasonData:data bssid:bssidCopy ssid:ssid state:a7];
     if (([(NSMutableArray *)self->_blacklist containsObject:v15]& 1) == 0)
     {
       [(NSMutableArray *)self->_blacklist addObject:v15];
@@ -369,7 +369,7 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v21 = [(WFBlacklistEngine *)self blacklistDelegate];
+    blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
     v22 = objc_opt_respondsToSelector();
 
     if ((v22 & 1) == 0)
@@ -377,8 +377,8 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v23 = [(WFBlacklistEngine *)self blacklistDelegate];
-    [v23 blacklistDidUpdate];
+    blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+    [blacklistDelegate2 blacklistDidUpdate];
 LABEL_17:
 
     goto LABEL_18;
@@ -389,7 +389,7 @@ LABEL_17:
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v15, "UTF8String")];
     *buf = 136446210;
-    v28 = [(WFBlackListNode *)v16 UTF8String];
+    uTF8String = [(WFBlackListNode *)v16 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
 LABEL_19:
   }
@@ -397,13 +397,13 @@ LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_evaluateTriggersForBlacklisting:(id)a3 reason:(unint64_t)a4 reasonData:(int64_t)a5 bssid:(id)a6 ssid:(id)a7 state:(unint64_t)a8
+- (BOOL)_evaluateTriggersForBlacklisting:(id)blacklisting reason:(unint64_t)reason reasonData:(int64_t)data bssid:(id)bssid ssid:(id)ssid state:(unint64_t)state
 {
   v118 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v93 = a7;
-  if (!v12)
+  blacklistingCopy = blacklisting;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  if (!blacklistingCopy)
   {
     [WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:];
     v86 = 0;
@@ -414,13 +414,13 @@ LABEL_19:
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v14 = [v12 blacklistTriggers];
-  v102 = [v14 countByEnumeratingWithState:&v103 objects:v117 count:16];
+  blacklistTriggers = [blacklistingCopy blacklistTriggers];
+  v102 = [blacklistTriggers countByEnumeratingWithState:&v103 objects:v117 count:16];
   if (!v102)
   {
 
     v86 = 0;
-    v16 = self;
+    selfCopy3 = self;
     goto LABEL_91;
   }
 
@@ -430,12 +430,12 @@ LABEL_19:
   v96 = 0;
   v94 = 0;
   v101 = *v104;
-  v89 = a8 & 0xFFFFFFFFFFFFFFFELL;
+  v89 = state & 0xFFFFFFFFFFFFFFFELL;
   v90 = 0;
   v15 = MEMORY[0x277D86220];
-  v16 = self;
-  v97 = a8;
-  obj = v14;
+  selfCopy3 = self;
+  stateCopy = state;
+  obj = blacklistTriggers;
   do
   {
     v17 = 0;
@@ -447,17 +447,17 @@ LABEL_19:
       }
 
       v18 = *(*(&v103 + 1) + 8 * v17);
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v19 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v21 = v20;
 
-      v22 = [v18 triggerReason];
+      triggerReason = [v18 triggerReason];
       [v18 triggerReasonTimestamp];
       v24 = v23;
-      if ([v12 enterprisePolicy] && a4 <= 7 && (v25 = v21 - v24, v21 - v24 <= 300.0))
+      if ([blacklistingCopy enterprisePolicy] && reason <= 7 && (v25 = v21 - v24, v21 - v24 <= 300.0))
       {
-        v26 = [v18 bssid];
-        v27 = [v26 compare:v13 options:1];
+        bssid = [v18 bssid];
+        v27 = [bssid compare:bssidCopy options:1];
 
         v28 = v27 == 0;
         v29 = HIDWORD(v98);
@@ -466,13 +466,13 @@ LABEL_19:
           v29 = HIDWORD(v98) + 1;
         }
 
-        if (v22 != a4)
+        if (triggerReason != reason)
         {
           v28 = 0;
         }
 
         v30 = (v99 + v28);
-        if (v22 == a4)
+        if (triggerReason == reason)
         {
           v31 = (HIDWORD(v99) + 1);
         }
@@ -486,25 +486,25 @@ LABEL_19:
         HIDWORD(v98) = v29;
         v99 = __PAIR64__(v31, v30);
         LODWORD(v98) = v98 + 1;
-        if (v29 <= 0x12 && ![(WFBlacklistEngine *)v16 _meetsThresholds:a4 count:v30 perSsid:0 bssid:v13 ssid:v93]&& v32 <= 0x12 && ![(WFBlacklistEngine *)v16 _meetsThresholds:a4 count:v31 perSsid:1 bssid:v13 ssid:v93])
+        if (v29 <= 0x12 && ![(WFBlacklistEngine *)selfCopy3 _meetsThresholds:reason count:v30 perSsid:0 bssid:bssidCopy ssid:ssidCopy]&& v32 <= 0x12 && ![(WFBlacklistEngine *)selfCopy3 _meetsThresholds:reason count:v31 perSsid:1 bssid:bssidCopy ssid:ssidCopy])
         {
-          a8 = v97;
+          state = stateCopy;
           goto LABEL_21;
         }
 
-        a8 = v97;
-        if (v97 == 5 || v97 == 3)
+        state = stateCopy;
+        if (stateCopy == 5 || stateCopy == 3)
         {
-          [(WFBlacklistEngine *)v16 _setBlacklistedState:v12 state:3 reason:a4 reasonData:a5];
+          [(WFBlacklistEngine *)selfCopy3 _setBlacklistedState:blacklistingCopy state:3 reason:reason reasonData:data];
           v94 = 1;
 LABEL_21:
           v15 = MEMORY[0x277D86220];
           goto LABEL_32;
         }
 
-        v36 = v13;
+        v36 = bssidCopy;
         v37 = MEMORY[0x277CCACA8];
-        v38 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+        v38 = [WFBlacklistEngine stringRepresentationWithReason:reason];
         v39 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
         v40 = [v37 stringWithFormat:@"%s WFNetworkBlacklistStateNoWoW ignored for %@ @ %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v38, v39];
 
@@ -512,21 +512,21 @@ LABEL_21:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v40, "UTF8String")];
-          v42 = [v41 UTF8String];
+          uTF8String = [v41 UTF8String];
           *buf = 136446210;
-          v108 = v42;
+          v108 = uTF8String;
           _os_log_impl(&dword_2332D7000, v15, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
         }
 
-        v13 = v36;
-        v16 = self;
-        a8 = v97;
+        bssidCopy = v36;
+        selfCopy3 = self;
+        state = stateCopy;
       }
 
-      else if ([v12 enterprisePolicy] && os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      else if ([blacklistingCopy enterprisePolicy] && os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v34 = [WFBlacklistEngine stringRepresentationWithReason:v22];
-        v35 = [v18 bssid];
+        v34 = [WFBlacklistEngine stringRepresentationWithReason:triggerReason];
+        bssid2 = [v18 bssid];
         *buf = 136316162;
         v108 = "[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]";
         v109 = 2112;
@@ -534,7 +534,7 @@ LABEL_21:
         v111 = 2160;
         v112 = 1752392040;
         v113 = 2112;
-        v114 = v35;
+        v114 = bssid2;
         v115 = 2048;
         v116 = v21 - v24;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s Trigger %@ for [%{mask.hash}@] was %f seconds ago and outside window. Will not consider for WoW blacklist", buf, 0x34u);
@@ -543,20 +543,20 @@ LABEL_21:
       }
 
 LABEL_32:
-      if (v22 != a4)
+      if (triggerReason != reason)
       {
         v52 = MEMORY[0x277CCACA8];
-        v53 = [WFBlacklistEngine stringRepresentationWithReason:v22];
-        v54 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+        v53 = [WFBlacklistEngine stringRepresentationWithReason:triggerReason];
+        v54 = [WFBlacklistEngine stringRepresentationWithReason:reason];
         v51 = [v52 stringWithFormat:@"%s Reasons differ. TriggerNodeReason: %@ CurrentReason: %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v53, v54];
 
         v15 = MEMORY[0x277D86220];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
           v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v51, "UTF8String")];
-          v56 = [v55 UTF8String];
+          uTF8String2 = [v55 UTF8String];
           *buf = 136446210;
-          v108 = v56;
+          v108 = uTF8String2;
           v57 = v15;
           v58 = OS_LOG_TYPE_DEBUG;
           goto LABEL_44;
@@ -567,13 +567,13 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      if (a4 <= 3)
+      if (reason <= 3)
       {
-        if (a8 != 1 && a8 != 5)
+        if (state != 1 && state != 5)
         {
-          if (a8 == 3)
+          if (state == 3)
           {
-            [(WFBlacklistEngine *)v16 _setBlacklistedState:v12 state:3 reason:a4 reasonData:a5];
+            [(WFBlacklistEngine *)selfCopy3 _setBlacklistedState:blacklistingCopy state:3 reason:reason reasonData:data];
             v43 = MEMORY[0x277CCACA8];
             v44 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
             v45 = [v43 stringWithFormat:@"%s Power Alert Event Generated, Blacklist for WoW, TimeStamp: %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v44];
@@ -581,9 +581,9 @@ LABEL_45:
             if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
             {
               v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v45, "UTF8String")];
-              v47 = [v46 UTF8String];
+              uTF8String3 = [v46 UTF8String];
               *buf = 136446210;
-              v108 = v47;
+              v108 = uTF8String3;
               _os_log_impl(&dword_2332D7000, v15, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
             }
 
@@ -591,7 +591,7 @@ LABEL_45:
           }
 
           v48 = MEMORY[0x277CCACA8];
-          v49 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+          v49 = [WFBlacklistEngine stringRepresentationWithReason:reason];
           v50 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
           v51 = [v48 stringWithFormat:@"%s WFNetworkBlacklistStateNoAutoJoin ignored for %@ @ %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v49, v50];
 
@@ -600,9 +600,9 @@ LABEL_45:
           {
 LABEL_86:
             v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v51, "UTF8String")];
-            v84 = [v55 UTF8String];
+            uTF8String4 = [v55 UTF8String];
             *buf = 136446210;
-            v108 = v84;
+            v108 = uTF8String4;
             v57 = v15;
             v58 = OS_LOG_TYPE_INFO;
 LABEL_44:
@@ -613,11 +613,11 @@ LABEL_44:
         }
 
         v96 = 1;
-        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](v16, "_setBlacklistedState:state:reason:reasonData:", v12, 1, a4, [v18 triggerReasonData]);
+        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](selfCopy3, "_setBlacklistedState:state:reason:reasonData:", blacklistingCopy, 1, reason, [v18 triggerReasonData]);
         goto LABEL_46;
       }
 
-      switch(a4)
+      switch(reason)
       {
         case 7uLL:
           if (++HIDWORD(v92) <= 2u)
@@ -634,16 +634,16 @@ LABEL_44:
           }
 
 LABEL_59:
-          if ((a8 | 4) == 5)
+          if ((state | 4) == 5)
           {
-            -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](v16, "_setBlacklistedState:state:reason:reasonData:", v12, 1, a4, [v18 triggerReasonData]);
+            -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](selfCopy3, "_setBlacklistedState:state:reason:reasonData:", blacklistingCopy, 1, reason, [v18 triggerReasonData]);
             v96 = 1;
           }
 
           else
           {
             v63 = MEMORY[0x277CCACA8];
-            v64 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+            v64 = [WFBlacklistEngine stringRepresentationWithReason:reason];
             v65 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
             v66 = [v63 stringWithFormat:@"%s WFNetworkBlacklistStateNoAutoJoin ignored for %@ @ %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v64, v65];
 
@@ -651,13 +651,13 @@ LABEL_59:
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
               v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v66, "UTF8String")];
-              v68 = [v67 UTF8String];
+              uTF8String5 = [v67 UTF8String];
               *buf = 136446210;
-              v108 = v68;
+              v108 = uTF8String5;
               _os_log_impl(&dword_2332D7000, v15, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
             }
 
-            a8 = v97;
+            state = stateCopy;
           }
 
           goto LABEL_67;
@@ -668,7 +668,7 @@ LABEL_59:
             LODWORD(v90) = v90 + 1;
             if (v90 >= 3)
             {
-              if ((a8 | 4) != 5)
+              if ((state | 4) != 5)
               {
                 v81 = MEMORY[0x277CCACA8];
                 v82 = [WFBlacklistEngine stringRepresentationWithReason:4, v33];
@@ -684,12 +684,12 @@ LABEL_59:
                 goto LABEL_45;
               }
 
-              v59 = [v18 triggerReasonData];
-              v60 = v16;
-              v61 = v12;
+              triggerReasonData = [v18 triggerReasonData];
+              v60 = selfCopy3;
+              v61 = blacklistingCopy;
               v62 = 4;
 LABEL_71:
-              [(WFBlacklistEngine *)v60 _setBlacklistedState:v61 state:1 reason:v62 reasonData:v59];
+              [(WFBlacklistEngine *)v60 _setBlacklistedState:v61 state:1 reason:v62 reasonData:triggerReasonData];
               v96 = 1;
               goto LABEL_46;
             }
@@ -698,12 +698,12 @@ LABEL_71:
           goto LABEL_46;
       }
 
-      if (a4 - 11 <= 1)
+      if (reason - 11 <= 1)
       {
         if (v89 != 4)
         {
           v72 = MEMORY[0x277CCACA8];
-          v73 = [WFBlacklistEngine stringRepresentationWithReason:a4];
+          v73 = [WFBlacklistEngine stringRepresentationWithReason:reason];
           v74 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
           v51 = [v72 stringWithFormat:@"%s WFNetworkBlacklistStateTemporarilyUnavailable ignored for %@ @ %@", "-[WFBlacklistEngine _evaluateTriggersForBlacklisting:reason:reasonData:bssid:ssid:state:]", v73, v74];
 
@@ -716,20 +716,20 @@ LABEL_71:
           goto LABEL_45;
         }
 
-        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](v16, "_setBlacklistedState:state:reason:reasonData:", v12, 4, a4, [v18 triggerReasonData]);
+        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](selfCopy3, "_setBlacklistedState:state:reason:reasonData:", blacklistingCopy, 4, reason, [v18 triggerReasonData]);
         v96 = 1;
         goto LABEL_46;
       }
 
 LABEL_67:
-      if (a4 != 8)
+      if (reason != 8)
       {
-        if (a4 != 6)
+        if (reason != 6)
         {
           goto LABEL_46;
         }
 
-        if ((a8 | 4) != 5)
+        if ((state | 4) != 5)
         {
           v75 = MEMORY[0x277CCACA8];
           v76 = [WFBlacklistEngine stringRepresentationWithReason:6];
@@ -745,15 +745,15 @@ LABEL_67:
           goto LABEL_45;
         }
 
-        v59 = [v18 triggerReasonData];
-        v60 = v16;
-        v61 = v12;
+        triggerReasonData = [v18 triggerReasonData];
+        v60 = selfCopy3;
+        v61 = blacklistingCopy;
         v62 = 6;
         goto LABEL_71;
       }
 
-      v69 = [v18 bssid];
-      v70 = [v69 compare:v13 options:1];
+      bssid3 = [v18 bssid];
+      v70 = [bssid3 compare:bssidCopy options:1];
 
       if (v70)
       {
@@ -768,7 +768,7 @@ LABEL_67:
       HIDWORD(v90) = v71;
       if (v71 >= 3)
       {
-        if (a8 != 2)
+        if (state != 2)
         {
           v78 = MEMORY[0x277CCACA8];
           v79 = [WFBlacklistEngine stringRepresentationWithReason:8];
@@ -784,7 +784,7 @@ LABEL_67:
           goto LABEL_45;
         }
 
-        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](v16, "_setBlacklistedState:state:reason:reasonData:", v12, 2, 8, [v18 triggerReasonData]);
+        -[WFBlacklistEngine _setBlacklistedState:state:reason:reasonData:](selfCopy3, "_setBlacklistedState:state:reason:reasonData:", blacklistingCopy, 2, 8, [v18 triggerReasonData]);
         v96 = 1;
       }
 
@@ -803,42 +803,42 @@ LABEL_46:
   v86 = v96;
   if (v94)
   {
-    [v12 addBlacklistedStateHistory:0 state:a8 reason:a4 reasonData:a5];
+    [blacklistingCopy addBlacklistedStateHistory:0 state:state reason:reason reasonData:data];
     v86 = 1;
   }
 
 LABEL_91:
-  [(WFBlacklistEngine *)v16 _printBlacklist];
+  [(WFBlacklistEngine *)selfCopy3 _printBlacklist];
 LABEL_92:
 
   v87 = *MEMORY[0x277D85DE8];
   return v86 & 1;
 }
 
-- (BOOL)_ignoreTriggersForDeviceProfile:(unint64_t)a3 node:(id)a4
+- (BOOL)_ignoreTriggersForDeviceProfile:(unint64_t)profile node:(id)node
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  nodeCopy = node;
+  v7 = nodeCopy;
   if (self->_profile != 2)
   {
-    if (([v6 enterprisePolicy] & 1) != 0 || (objc_msgSend(v7, "networkDelegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isProfileBased"), v13, v14))
+    if (([nodeCopy enterprisePolicy] & 1) != 0 || (objc_msgSend(v7, "networkDelegate"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isProfileBased"), v13, v14))
     {
-      v15 = [(WFBlacklistEngine *)self blacklistDelegate];
+      blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
         v25 = 0;
         v24 = 0;
-        v17 = [(WFBlacklistEngine *)self blacklistDelegate];
-        v18 = [v17 retrieveBatteryInfo:&v25 batteryLevel:&v24];
+        blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+        v18 = [blacklistDelegate2 retrieveBatteryInfo:&v25 batteryLevel:&v24];
 
         if (v18)
         {
           if (v25 == 1)
           {
-            v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored as device connected to external power supply", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", a3];
+            profile = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored as device connected to external power supply", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", profile];
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               goto LABEL_5;
@@ -847,19 +847,19 @@ LABEL_92:
             goto LABEL_21;
           }
 
-          if (a3 == 2 && v24 >= 0x51)
+          if (profile == 2 && v24 >= 0x51)
           {
-            v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored as battery level is %d", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", 2, v24];
+            profile = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored as battery level is %d", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", 2, v24];
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               goto LABEL_5;
             }
 
 LABEL_21:
-            v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v8, "UTF8String")];
-            v23 = [v9 UTF8String];
+            v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(profile, "UTF8String")];
+            uTF8String = [v9 UTF8String];
             *buf = 136446210;
-            v27 = v23;
+            uTF8String2 = uTF8String;
             v10 = MEMORY[0x277D86220];
             v11 = OS_LOG_TYPE_ERROR;
             goto LABEL_4;
@@ -874,7 +874,7 @@ LABEL_21:
         {
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v19, "UTF8String")];
           *buf = 136446210;
-          v27 = [v20 UTF8String];
+          uTF8String2 = [v20 UTF8String];
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
         }
       }
@@ -884,12 +884,12 @@ LABEL_21:
     goto LABEL_17;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored for %lu", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", a3, 2];
+  profile = [MEMORY[0x277CCACA8] stringWithFormat:@"%s BlacklistTrigger %lu ignored for %lu", "-[WFBlacklistEngine _ignoreTriggersForDeviceProfile:node:]", profile, 2];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v8, "UTF8String")];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(profile, "UTF8String")];
     *buf = 136446210;
-    v27 = [v9 UTF8String];
+    uTF8String2 = [v9 UTF8String];
     v10 = MEMORY[0x277D86220];
     v11 = OS_LOG_TYPE_INFO;
 LABEL_4:
@@ -905,10 +905,10 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)removeBlacklistedStateForNetworkWithReason:(id)a3 state:(unint64_t)a4 reason:(unint64_t)a5
+- (BOOL)removeBlacklistedStateForNetworkWithReason:(id)reason state:(unint64_t)state reason:(unint64_t)a5
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = [(WFBlacklistEngine *)self _findBlacklistNode:a3];
+  v8 = [(WFBlacklistEngine *)self _findBlacklistNode:reason];
   v9 = v8 != 0;
   if (v8)
   {
@@ -925,8 +925,8 @@ LABEL_17:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = [v8 blacklistedStatesCurrent];
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    blacklistedStatesCurrent = [v8 blacklistedStatesCurrent];
+    v13 = [blacklistedStatesCurrent countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
       v14 = v13;
@@ -937,17 +937,17 @@ LABEL_17:
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(blacklistedStatesCurrent);
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          if ([v17 blacklistedState] == a4 && objc_msgSend(v17, "blacklistedReason") == a5)
+          if ([v17 blacklistedState] == state && objc_msgSend(v17, "blacklistedReason") == a5)
           {
             [v11 addObject:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v14 = [blacklistedStatesCurrent countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v14);
@@ -960,18 +960,18 @@ LABEL_17:
     v18 = v8;
     v26 = v18;
     [v11 enumerateObjectsUsingBlock:v25];
-    v19 = [v18 blacklistedStatesCurrent];
-    [v19 removeObjectsInArray:v11];
+    blacklistedStatesCurrent2 = [v18 blacklistedStatesCurrent];
+    [blacklistedStatesCurrent2 removeObjectsInArray:v11];
 
     if ([v11 count])
     {
-      v20 = [(WFBlacklistEngine *)self blacklistDelegate];
+      blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(WFBlacklistEngine *)self blacklistDelegate];
-        [v22 blacklistDidUpdate];
+        blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+        [blacklistDelegate2 blacklistDidUpdate];
       }
     }
 
@@ -987,7 +987,7 @@ LABEL_18:
   return v9;
 }
 
-- (void)removeBlacklistedStateWithUnblacklistType:(unint64_t)a3
+- (void)removeBlacklistedStateWithUnblacklistType:(unint64_t)type
 {
   v119 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1012,7 +1012,7 @@ LABEL_18:
         v84 = *v103;
         v79 = v6;
         v12 = MEMORY[0x277D86220];
-        v87 = self;
+        selfCopy = self;
         while (1)
         {
           v13 = 0;
@@ -1028,52 +1028,52 @@ LABEL_18:
             v85 = v13;
             v11 = *(*(&v102 + 1) + 8 * v13);
 
-            if (a3 == 1)
+            if (type == 1)
             {
-              v15 = [v11 blacklistTriggers];
-              [v15 removeAllObjects];
+              blacklistTriggers = [v11 blacklistTriggers];
+              [blacklistTriggers removeAllObjects];
 
-              v16 = [v11 blacklistedStatesCurrent];
+              blacklistedStatesCurrent = [v11 blacklistedStatesCurrent];
               v100[0] = MEMORY[0x277D85DD0];
               v100[1] = 3221225472;
               v100[2] = __63__WFBlacklistEngine_removeBlacklistedStateWithUnblacklistType___block_invoke;
               v100[3] = &unk_2789C8318;
               v17 = v11;
               v101 = v17;
-              [v16 enumerateObjectsUsingBlock:v100];
+              [blacklistedStatesCurrent enumerateObjectsUsingBlock:v100];
 
-              v18 = [v17 blacklistedStatesCurrent];
-              [v18 removeAllObjects];
+              blacklistedStatesCurrent2 = [v17 blacklistedStatesCurrent];
+              [blacklistedStatesCurrent2 removeAllObjects];
 
               [v79 addObject:v17];
               v10 = 1;
-              v19 = v101;
+              ssid = v101;
               goto LABEL_61;
             }
 
             v83 = v10;
-            v20 = [v11 networkDelegate];
-            v19 = [v20 ssid];
+            networkDelegate = [v11 networkDelegate];
+            ssid = [networkDelegate ssid];
 
-            v21 = [v11 networkDelegate];
-            v86 = [v21 bssid];
+            networkDelegate2 = [v11 networkDelegate];
+            bssid = [networkDelegate2 bssid];
 
-            v22 = [v11 networkDelegate];
-            v23 = [(WFBlacklistEngine *)self isNetworkInBlacklistedState:v22 state:1];
+            networkDelegate3 = [v11 networkDelegate];
+            v23 = [(WFBlacklistEngine *)self isNetworkInBlacklistedState:networkDelegate3 state:1];
 
             v24 = 0.0;
             v82 = v11;
             if (v23)
             {
-              v25 = [v11 blacklistTriggers];
-              [v25 removeAllObjects];
+              blacklistTriggers2 = [v11 blacklistTriggers];
+              [blacklistTriggers2 removeAllObjects];
 
               v98 = 0u;
               v99 = 0u;
               v96 = 0u;
               v97 = 0u;
-              v26 = [v11 blacklistedStatesCurrent];
-              v27 = [v26 countByEnumeratingWithState:&v96 objects:v117 count:16];
+              blacklistedStatesCurrent3 = [v11 blacklistedStatesCurrent];
+              v27 = [blacklistedStatesCurrent3 countByEnumeratingWithState:&v96 objects:v117 count:16];
               if (!v27)
               {
                 goto LABEL_38;
@@ -1088,7 +1088,7 @@ LABEL_18:
                 {
                   if (*v97 != v29)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(blacklistedStatesCurrent3);
                   }
 
                   v31 = *(*(&v96 + 1) + 8 * v30);
@@ -1102,7 +1102,7 @@ LABEL_18:
                     goto LABEL_32;
                   }
 
-                  if (a3 != 3)
+                  if (type != 3)
                   {
                     goto LABEL_25;
                   }
@@ -1114,34 +1114,34 @@ LABEL_18:
                     v24 = v33;
                   }
 
-                  v34 = [MEMORY[0x277CBEAA8] date];
-                  [v34 timeIntervalSince1970];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  [date timeIntervalSince1970];
                   v36 = v35;
 
-                  [(WFBlacklistEngine *)v87 autojoinBlacklistExpiry];
+                  [(WFBlacklistEngine *)selfCopy autojoinBlacklistExpiry];
                   v37 = *(v8 + 3240);
                   if (v36 - v24 > v38)
                   {
-                    v39 = [v37 stringWithFormat:@"Network '%@' is due for unblacklisting", v19];
+                    v39 = [v37 stringWithFormat:@"Network '%@' is due for unblacklisting", ssid];
                     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                     {
                       v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v39, "UTF8String")];
-                      v41 = [v40 UTF8String];
+                      uTF8String = [v40 UTF8String];
                       *buf = 136446210;
-                      v107 = v41;
+                      v107 = uTF8String;
                       _os_log_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
                       v8 = 0x277CCA000uLL;
                     }
 
 LABEL_25:
-                    v42 = [*(v8 + 3240) stringWithFormat:@"%s Unblacklisting network '%@' for autojoin ", "-[WFBlacklistEngine removeBlacklistedStateWithUnblacklistType:]", v19];
+                    v42 = [*(v8 + 3240) stringWithFormat:@"%s Unblacklisting network '%@' for autojoin ", "-[WFBlacklistEngine removeBlacklistedStateWithUnblacklistType:]", ssid];
                     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                     {
                       v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v42, "UTF8String")];
-                      v44 = [v43 UTF8String];
+                      uTF8String2 = [v43 UTF8String];
                       *buf = 136446210;
-                      v107 = v44;
+                      v107 = uTF8String2;
                       _os_log_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
                       v8 = 0x277CCA000uLL;
@@ -1151,13 +1151,13 @@ LABEL_25:
 LABEL_28:
                     if ([v31 blacklistedState] == 3)
                     {
-                      v45 = [*(v8 + 3240) stringWithFormat:@"%s Unblacklisting network '%@' for WoW ", "-[WFBlacklistEngine removeBlacklistedStateWithUnblacklistType:]", v19];
+                      v45 = [*(v8 + 3240) stringWithFormat:@"%s Unblacklisting network '%@' for WoW ", "-[WFBlacklistEngine removeBlacklistedStateWithUnblacklistType:]", ssid];
                       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                       {
                         v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v45, "UTF8String")];
-                        v47 = [v46 UTF8String];
+                        uTF8String3 = [v46 UTF8String];
                         *buf = 136446210;
-                        v107 = v47;
+                        v107 = uTF8String3;
                         _os_log_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
                         v8 = 0x277CCA000;
@@ -1169,13 +1169,13 @@ LABEL_28:
                     goto LABEL_32;
                   }
 
-                  v48 = [v37 stringWithFormat:@"Skip unblacklisting network '%@' - not due.", v19];
+                  v48 = [v37 stringWithFormat:@"Skip unblacklisting network '%@' - not due.", ssid];
                   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                   {
                     v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v48, "UTF8String")];
-                    v50 = [v49 UTF8String];
+                    uTF8String4 = [v49 UTF8String];
                     *buf = 136446210;
-                    v107 = v50;
+                    v107 = uTF8String4;
                     _os_log_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
                     v8 = 0x277CCA000;
@@ -1186,13 +1186,13 @@ LABEL_32:
                 }
 
                 while (v28 != v30);
-                v51 = [v26 countByEnumeratingWithState:&v96 objects:v117 count:16];
+                v51 = [blacklistedStatesCurrent3 countByEnumeratingWithState:&v96 objects:v117 count:16];
                 v28 = v51;
                 if (!v51)
                 {
 LABEL_38:
 
-                  self = v87;
+                  self = selfCopy;
                   v9 = v80;
                   v11 = v82;
                   break;
@@ -1200,8 +1200,8 @@ LABEL_38:
               }
             }
 
-            v52 = [v11 networkDelegate];
-            v53 = [(WFBlacklistEngine *)self isNetworkInBlacklistedState:v52 state:2];
+            networkDelegate4 = [v11 networkDelegate];
+            v53 = [(WFBlacklistEngine *)self isNetworkInBlacklistedState:networkDelegate4 state:2];
 
             if (!v53)
             {
@@ -1212,8 +1212,8 @@ LABEL_38:
             v95 = 0u;
             v92 = 0u;
             v93 = 0u;
-            v54 = [v11 blacklistedStatesCurrent];
-            v55 = [v54 countByEnumeratingWithState:&v92 objects:v116 count:16];
+            blacklistedStatesCurrent4 = [v11 blacklistedStatesCurrent];
+            v55 = [blacklistedStatesCurrent4 countByEnumeratingWithState:&v92 objects:v116 count:16];
             if (!v55)
             {
               goto LABEL_59;
@@ -1227,13 +1227,13 @@ LABEL_38:
               {
                 if (*v93 != v57)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(blacklistedStatesCurrent4);
                 }
 
                 v59 = *(*(&v92 + 1) + 8 * i);
                 if ([v59 blacklistedState] == 2)
                 {
-                  if (a3 != 3)
+                  if (type != 3)
                   {
                     goto LABEL_52;
                   }
@@ -1245,12 +1245,12 @@ LABEL_38:
                     v24 = v61;
                   }
 
-                  v62 = [MEMORY[0x277CBEAA8] date];
-                  [v62 timeIntervalSince1970];
+                  date2 = [MEMORY[0x277CBEAA8] date];
+                  [date2 timeIntervalSince1970];
                   v64 = v63;
 
                   v65 = v64 - v24;
-                  [(WFBlacklistEngine *)v87 bssBlacklistExpiry];
+                  [(WFBlacklistEngine *)selfCopy bssBlacklistExpiry];
                   v67 = v66;
                   v68 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
                   if (v65 > v67)
@@ -1260,11 +1260,11 @@ LABEL_38:
                       *buf = 141558786;
                       v107 = 1752392040;
                       v108 = 2112;
-                      v109 = v19;
+                      v109 = ssid;
                       v110 = 2160;
                       v111 = 1752392040;
                       v112 = 2112;
-                      v113 = v86;
+                      v113 = bssid;
                       _os_log_error_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "BSS '%{mask.hash}@[%{mask.hash}@]' is due for unblacklisting", buf, 0x2Au);
                     }
 
@@ -1276,11 +1276,11 @@ LABEL_52:
                       v108 = 2160;
                       v109 = 1752392040;
                       v110 = 2112;
-                      v111 = v19;
+                      v111 = ssid;
                       v112 = 2160;
                       v113 = 1752392040;
                       v114 = 2112;
-                      v115 = v86;
+                      v115 = bssid;
                       _os_log_error_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "%s Unblacklisting BSS '%{mask.hash}@[%{mask.hash}@]' for autojoin ", buf, 0x34u);
                     }
 
@@ -1293,23 +1293,23 @@ LABEL_52:
                     *buf = 141558786;
                     v107 = 1752392040;
                     v108 = 2112;
-                    v109 = v19;
+                    v109 = ssid;
                     v110 = 2160;
                     v111 = 1752392040;
                     v112 = 2112;
-                    v113 = v86;
+                    v113 = bssid;
                     _os_log_error_impl(&dword_2332D7000, v12, OS_LOG_TYPE_ERROR, "Skip unblacklisting BSS '%{mask.hash}@[%{mask.hash}@]' - not due.", buf, 0x2Au);
                   }
                 }
               }
 
-              v56 = [v54 countByEnumeratingWithState:&v92 objects:v116 count:16];
+              v56 = [blacklistedStatesCurrent4 countByEnumeratingWithState:&v92 objects:v116 count:16];
             }
 
             while (v56);
 LABEL_59:
 
-            self = v87;
+            self = selfCopy;
             v9 = v80;
             v11 = v82;
 LABEL_60:
@@ -1317,12 +1317,12 @@ LABEL_60:
             v89[1] = 3221225472;
             v89[2] = __63__WFBlacklistEngine_removeBlacklistedStateWithUnblacklistType___block_invoke_107;
             v89[3] = &unk_2789C8340;
-            v91 = a3;
+            typeCopy = type;
             v69 = v11;
             v90 = v69;
             [v4 enumerateObjectsUsingBlock:v89];
-            v70 = [v69 blacklistedStatesCurrent];
-            [v70 removeObjectsInArray:v4];
+            blacklistedStatesCurrent5 = [v69 blacklistedStatesCurrent];
+            [blacklistedStatesCurrent5 removeObjectsInArray:v4];
 
             v10 = ([v4 count] != 0) | v83;
             [v4 removeAllObjects];
@@ -1355,9 +1355,9 @@ LABEL_65:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           v73 = [*(v71 + 3240) stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v72, "UTF8String")];
-          v74 = [v73 UTF8String];
+          uTF8String5 = [v73 UTF8String];
           *buf = 136446210;
-          v107 = v74;
+          v107 = uTF8String5;
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
         }
 
@@ -1366,13 +1366,13 @@ LABEL_65:
 
       if (v10)
       {
-        v75 = [(WFBlacklistEngine *)self blacklistDelegate];
+        blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
         v76 = objc_opt_respondsToSelector();
 
         if (v76)
         {
-          v77 = [(WFBlacklistEngine *)self blacklistDelegate];
-          [v77 blacklistDidUpdate];
+          blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+          [blacklistDelegate2 blacklistDidUpdate];
         }
       }
 
@@ -1411,7 +1411,7 @@ uint64_t __63__WFBlacklistEngine_removeBlacklistedStateWithUnblacklistType___blo
   return [v2 processBlacklistedStateMetric:a2 unblacklisting:1 unblacklistingReason:v5];
 }
 
-- (void)removeExpiredBlacklistedState:(unint64_t)a3
+- (void)removeExpiredBlacklistedState:(unint64_t)state
 {
   v96 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1428,7 +1428,7 @@ uint64_t __63__WFBlacklistEngine_removeBlacklistedStateWithUnblacklistType___blo
       v6 = 0;
       v75 = *v89;
       v79 = v5;
-      v81 = self;
+      selfCopy = self;
 LABEL_4:
       v7 = 0;
       v8 = v6;
@@ -1441,9 +1441,9 @@ LABEL_4:
 
         v6 = *(*(&v88 + 1) + 8 * v7);
 
-        v9 = [v6 blacklistedStatesCurrent];
+        blacklistedStatesCurrent = [v6 blacklistedStatesCurrent];
 
-        if (v9)
+        if (blacklistedStatesCurrent)
         {
           break;
         }
@@ -1464,15 +1464,15 @@ LABEL_61:
         }
       }
 
-      v10 = [v6 networkDelegate];
-      v11 = [v10 ssid];
+      networkDelegate = [v6 networkDelegate];
+      ssid = [networkDelegate ssid];
 
-      v80 = v11;
-      if (v11)
+      v80 = ssid;
+      if (ssid)
       {
         v78 = v7;
-        v12 = [v6 blacklistedStatesHistory];
-        v13 = [v12 count];
+        blacklistedStatesHistory = [v6 blacklistedStatesHistory];
+        v13 = [blacklistedStatesHistory count];
 
         v14 = 0.0;
         if (v13 >= 1)
@@ -1480,12 +1480,12 @@ LABEL_61:
           v15 = (v13 & 0x7FFFFFFF) + 1;
           while (1)
           {
-            v16 = [v6 blacklistedStatesHistory];
-            v17 = [v16 objectAtIndex:v15 - 2];
+            blacklistedStatesHistory2 = [v6 blacklistedStatesHistory];
+            v17 = [blacklistedStatesHistory2 objectAtIndex:v15 - 2];
 
             if (v17)
             {
-              if ([v17 blacklistedState] == a3 || objc_msgSend(v17, "blacklistedState") == 5)
+              if ([v17 blacklistedState] == state || objc_msgSend(v17, "blacklistedState") == 5)
               {
                 break;
               }
@@ -1507,8 +1507,8 @@ LABEL_17:
         v84 = 0u;
         v85 = 0u;
         v77 = v6;
-        v19 = [v6 blacklistedStatesCurrent];
-        v20 = [v19 countByEnumeratingWithState:&v84 objects:v94 count:16];
+        blacklistedStatesCurrent2 = [v6 blacklistedStatesCurrent];
+        v20 = [blacklistedStatesCurrent2 countByEnumeratingWithState:&v84 objects:v94 count:16];
         v21 = 0x277CCA000uLL;
         if (!v20)
         {
@@ -1523,15 +1523,15 @@ LABEL_19:
         {
           if (*v85 != v23)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(blacklistedStatesCurrent2);
           }
 
           v25 = *(*(&v84 + 1) + 8 * v24);
-          v26 = [MEMORY[0x277CBEAA8] date];
-          [v26 timeIntervalSince1970];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSince1970];
           v28 = v27;
 
-          if ([v25 blacklistedState] != a3 || objc_msgSend(v25, "blacklistedState") != 3)
+          if ([v25 blacklistedState] != state || objc_msgSend(v25, "blacklistedState") != 3)
           {
             goto LABEL_35;
           }
@@ -1542,7 +1542,7 @@ LABEL_19:
             break;
           }
 
-          v30 = [*(v21 + 3240) stringWithFormat:@"%s No history for most recent blacklisting time!!", "-[WFBlacklistEngine removeExpiredBlacklistedState:]"];
+          blacklistedStateString3 = [*(v21 + 3240) stringWithFormat:@"%s No history for most recent blacklisting time!!", "-[WFBlacklistEngine removeExpiredBlacklistedState:]"];
           v31 = MEMORY[0x277D86220];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -1554,7 +1554,7 @@ LABEL_49:
 LABEL_50:
           if (v22 == ++v24)
           {
-            v66 = [v19 countByEnumeratingWithState:&v84 objects:v94 count:16];
+            v66 = [blacklistedStatesCurrent2 countByEnumeratingWithState:&v84 objects:v94 count:16];
             v22 = v66;
             if (!v66)
             {
@@ -1569,19 +1569,19 @@ LABEL_55:
               v83 = v67;
               v5 = v79;
               [v79 enumerateObjectsUsingBlock:v82];
-              v68 = [v67 blacklistedStatesCurrent];
-              [v68 removeObjectsInArray:v79];
+              blacklistedStatesCurrent3 = [v67 blacklistedStatesCurrent];
+              [blacklistedStatesCurrent3 removeObjectsInArray:v79];
 
               if ([v79 count])
               {
-                v69 = [(WFBlacklistEngine *)self blacklistDelegate];
+                blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
                 v70 = objc_opt_respondsToSelector();
 
                 v7 = v78;
                 if (v70)
                 {
-                  v71 = [(WFBlacklistEngine *)self blacklistDelegate];
-                  [v71 blacklistDidUpdate];
+                  blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+                  [blacklistDelegate2 blacklistDidUpdate];
                 }
 
                 v5 = v79;
@@ -1608,7 +1608,7 @@ LABEL_55:
           [v25 blacklistedStateTimestamp];
           if (v28 - v35 <= 3600.0)
           {
-            v30 = [*(v21 + 3240) stringWithFormat:@"%s Skipping blacklist expiration: recent power alert", "-[WFBlacklistEngine removeExpiredBlacklistedState:]"];
+            blacklistedStateString3 = [*(v21 + 3240) stringWithFormat:@"%s Skipping blacklist expiration: recent power alert", "-[WFBlacklistEngine removeExpiredBlacklistedState:]"];
             v31 = MEMORY[0x277D86220];
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -1616,10 +1616,10 @@ LABEL_55:
             }
 
 LABEL_26:
-            v32 = [*(v21 + 3240) stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v30, "UTF8String")];
-            v33 = [v32 UTF8String];
+            v32 = [*(v21 + 3240) stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(blacklistedStateString3, "UTF8String")];
+            uTF8String = [v32 UTF8String];
             *buf = 136446210;
-            *&buf[4] = v33;
+            *&buf[4] = uTF8String;
             _os_log_impl(&dword_2332D7000, v31, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
             goto LABEL_49;
@@ -1630,38 +1630,38 @@ LABEL_26:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           v37 = [*(v21 + 3240) stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v36, "UTF8String")];
-          v38 = [v37 UTF8String];
+          uTF8String2 = [v37 UTF8String];
           *buf = 136446210;
-          *&buf[4] = v38;
+          *&buf[4] = uTF8String2;
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
 
-          self = v81;
+          self = selfCopy;
         }
 
         if (v28 - v14 > v34)
         {
-          v39 = [v25 blacklistedStateString];
+          blacklistedStateString = [v25 blacklistedStateString];
           [v25 blacklistedStateTimestamp];
           v40 = *(v21 + 3240);
           v41 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
-          v42 = [v40 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, v39, v41, v80];
+          v42 = [v40 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, blacklistedStateString, v41, v80];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v42, "UTF8String")];
-            v44 = [v43 UTF8String];
+            uTF8String3 = [v43 UTF8String];
             *buf = 136446210;
-            *&buf[4] = v44;
+            *&buf[4] = uTF8String3;
             _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
           }
 
           [v79 addObject:v25];
-          self = v81;
+          self = selfCopy;
           v21 = 0x277CCA000uLL;
         }
 
 LABEL_35:
-        if ([v25 blacklistedState] == a3 && objc_msgSend(v25, "blacklistedState") == 2 && objc_msgSend(v25, "blacklistedReason") == 8)
+        if ([v25 blacklistedState] == state && objc_msgSend(v25, "blacklistedState") == 2 && objc_msgSend(v25, "blacklistedReason") == 8)
         {
           [(WFBlacklistEngine *)self bssBlacklistExpiry];
           v46 = v45;
@@ -1671,9 +1671,9 @@ LABEL_35:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v49, "UTF8String")];
-            v51 = [v50 UTF8String];
+            uTF8String4 = [v50 UTF8String];
             *buf = 136446210;
-            *&buf[4] = v51;
+            *&buf[4] = uTF8String4;
             _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
           }
 
@@ -1681,51 +1681,51 @@ LABEL_35:
           v21 = 0x277CCA000uLL;
           if (v28 - v52 > v46)
           {
-            v53 = [v25 blacklistedStateString];
+            blacklistedStateString2 = [v25 blacklistedStateString];
             [v25 blacklistedStateTimestamp];
             v54 = MEMORY[0x277CCACA8];
             v55 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
-            v56 = [v54 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, v53, v55, v80];
+            v56 = [v54 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, blacklistedStateString2, v55, v80];
 
             v57 = MEMORY[0x277D86220];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               v58 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v56, "UTF8String")];
-              v59 = [v58 UTF8String];
+              uTF8String5 = [v58 UTF8String];
               *buf = 136446210;
-              *&buf[4] = v59;
+              *&buf[4] = uTF8String5;
               _os_log_impl(&dword_2332D7000, v57, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
             }
 
             [v79 addObject:v25];
-            self = v81;
+            self = selfCopy;
             v21 = 0x277CCA000uLL;
           }
         }
 
-        if ([v25 blacklistedState] != a3 || objc_msgSend(v25, "blacklistedState") != 4)
+        if ([v25 blacklistedState] != state || objc_msgSend(v25, "blacklistedState") != 4)
         {
           goto LABEL_50;
         }
 
-        v30 = [v25 blacklistedStateString];
+        blacklistedStateString3 = [v25 blacklistedStateString];
         [v25 blacklistedStateTimestamp];
         v60 = *(v21 + 3240);
         v61 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
-        v62 = [v60 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, v30, v61, v80];
+        v62 = [v60 stringWithFormat:@"%s Unblacklisting '%@' expired blacklisted state %@ (%@) for:%@", "-[WFBlacklistEngine removeExpiredBlacklistedState:]", v80, blacklistedStateString3, v61, v80];
 
         v63 = MEMORY[0x277D86220];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           v64 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v62, "UTF8String")];
-          v65 = [v64 UTF8String];
+          uTF8String6 = [v64 UTF8String];
           *buf = 136446210;
-          *&buf[4] = v65;
+          *&buf[4] = uTF8String6;
           _os_log_impl(&dword_2332D7000, v63, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
         }
 
         [v79 addObject:v25];
-        self = v81;
+        self = selfCopy;
         v21 = 0x277CCA000;
         goto LABEL_49;
       }
@@ -1759,7 +1759,7 @@ LABEL_66:
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v27 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
   }
 
@@ -1775,7 +1775,7 @@ LABEL_66:
     if (v6)
     {
       v7 = v6;
-      v17 = self;
+      selfCopy = self;
       v8 = 0;
       v9 = *v22;
       do
@@ -1790,14 +1790,14 @@ LABEL_66:
           v11 = *(*(&v21 + 1) + 8 * i);
 
           [v5 addObject:v11];
-          v12 = [v11 blacklistedStatesCurrent];
+          blacklistedStatesCurrent = [v11 blacklistedStatesCurrent];
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
           v19[2] = __44__WFBlacklistEngine_removeBlacklistedStates__block_invoke;
           v19[3] = &unk_2789C8318;
           v8 = v11;
           v20 = v8;
-          [v12 enumerateObjectsUsingBlock:v19];
+          [blacklistedStatesCurrent enumerateObjectsUsingBlock:v19];
         }
 
         v7 = [(NSMutableArray *)obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1805,17 +1805,17 @@ LABEL_66:
 
       while (v7);
 
-      self = v17;
+      self = selfCopy;
     }
 
     [(NSMutableArray *)self->_blacklist removeObjectsInArray:v5];
-    v13 = [(WFBlacklistEngine *)self blacklistDelegate];
+    blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(WFBlacklistEngine *)self blacklistDelegate];
-      [v15 blacklistDidUpdate];
+      blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+      [blacklistDelegate2 blacklistDidUpdate];
     }
   }
 
@@ -1829,11 +1829,11 @@ LABEL_66:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearTriggerForNetworkWithUnblacklistReason:(id)a3 reason:(unint64_t)a4
+- (void)clearTriggerForNetworkWithUnblacklistReason:(id)reason reason:(unint64_t)a4
 {
   v97 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(WFBlacklistEngine *)self _printBlacklist];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Unblacklisting all networks", "-[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]"];
@@ -1841,35 +1841,35 @@ LABEL_66:
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
       *buf = 136446210;
-      v80 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
     }
 
     [(WFBlacklistEngine *)self removeBlacklistedStates];
   }
 
-  v8 = [(WFBlacklistEngine *)self _findBlacklistNode:v5];
+  v8 = [(WFBlacklistEngine *)self _findBlacklistNode:reasonCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (v9 && (v65 = objc_alloc_init(MEMORY[0x277CBEB18])) != 0)
     {
-      v10 = [v8 networkDelegate];
-      v11 = [v10 ssid];
+      networkDelegate = [v8 networkDelegate];
+      ssid = [networkDelegate ssid];
 
-      v64 = v11;
-      if (v11)
+      v64 = ssid;
+      if (ssid)
       {
-        v58 = v5;
-        v12 = [v8 networkDelegate];
-        v61 = [v12 bssid];
+        v58 = reasonCopy;
+        networkDelegate2 = [v8 networkDelegate];
+        bssid = [networkDelegate2 bssid];
 
         v76 = 0u;
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v13 = [v8 blacklistedStatesCurrent];
-        v14 = [v13 countByEnumeratingWithState:&v74 objects:v96 count:16];
+        blacklistedStatesCurrent = [v8 blacklistedStatesCurrent];
+        v14 = [blacklistedStatesCurrent countByEnumeratingWithState:&v74 objects:v96 count:16];
         if (v14)
         {
           v15 = v14;
@@ -1881,7 +1881,7 @@ LABEL_66:
             {
               if (*v75 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(blacklistedStatesCurrent);
               }
 
               v19 = *(*(&v74 + 1) + 8 * i);
@@ -1890,7 +1890,7 @@ LABEL_66:
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 136316162;
-                  v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                  uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                   v81 = 2160;
                   v82 = 1752392040;
                   v83 = 2112;
@@ -1898,7 +1898,7 @@ LABEL_66:
                   v85 = 2160;
                   v86 = 1752392040;
                   v87 = 2112;
-                  v88 = v61;
+                  v88 = bssid;
                   _os_log_error_impl(&dword_2332D7000, v17, OS_LOG_TYPE_ERROR, "%s Unblacklisting and removing '%{mask.hash}@[%{mask.hash}@]' from Autojoin blacklist", buf, 0x34u);
                 }
 
@@ -1910,7 +1910,7 @@ LABEL_66:
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 136316162;
-                  v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                  uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                   v81 = 2160;
                   v82 = 1752392040;
                   v83 = 2112;
@@ -1918,7 +1918,7 @@ LABEL_66:
                   v85 = 2160;
                   v86 = 1752392040;
                   v87 = 2112;
-                  v88 = v61;
+                  v88 = bssid;
                   _os_log_error_impl(&dword_2332D7000, v17, OS_LOG_TYPE_ERROR, "%s Unblacklisting and removing '%{mask.hash}@[%{mask.hash}@]' from WoW blacklist", buf, 0x34u);
                 }
 
@@ -1930,7 +1930,7 @@ LABEL_66:
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 136316162;
-                  v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                  uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                   v81 = 2160;
                   v82 = 1752392040;
                   v83 = 2112;
@@ -1938,7 +1938,7 @@ LABEL_66:
                   v85 = 2160;
                   v86 = 1752392040;
                   v87 = 2112;
-                  v88 = v61;
+                  v88 = bssid;
                   _os_log_error_impl(&dword_2332D7000, v17, OS_LOG_TYPE_ERROR, "%s Unblacklisting and removing '%{mask.hash}@[%{mask.hash}@]' from BSS blacklist", buf, 0x34u);
                 }
 
@@ -1946,7 +1946,7 @@ LABEL_66:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v74 objects:v96 count:16];
+            v15 = [blacklistedStatesCurrent countByEnumeratingWithState:&v74 objects:v96 count:16];
           }
 
           while (v15);
@@ -1974,11 +1974,11 @@ LABEL_66:
               }
 
               v25 = *(*(&v70 + 1) + 8 * v24);
-              v26 = [v25 triggerReasonString];
+              triggerReasonString = [v25 triggerReasonString];
               [v25 triggerReasonTimestamp];
               v28 = v27;
-              v29 = [MEMORY[0x277CBEAA8] date];
-              [v29 timeIntervalSince1970];
+              date = [MEMORY[0x277CBEAA8] date];
+              [date timeIntervalSince1970];
               v31 = v30;
 
               if (![v25 triggerReason] || objc_msgSend(v25, "triggerReason") == 1 || objc_msgSend(v25, "triggerReason") == 5 || objc_msgSend(v25, "triggerReason") == 7 || objc_msgSend(v25, "triggerReason") == 2 || objc_msgSend(v25, "triggerReason") == 3 || objc_msgSend(v25, "triggerReason") == 11 || objc_msgSend(v25, "triggerReason") == 12)
@@ -1987,9 +1987,9 @@ LABEL_66:
                 {
                   v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v28];
                   *buf = 136316674;
-                  v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                  uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                   v81 = 2112;
-                  v82 = v26;
+                  v82 = triggerReasonString;
                   v83 = 2112;
                   v84 = v32;
                   v85 = 2160;
@@ -1999,7 +1999,7 @@ LABEL_66:
                   v89 = 2160;
                   v90 = 1752392040;
                   v91 = 2112;
-                  v92 = v61;
+                  v92 = bssid;
                   v33 = v22;
                   v34 = "%s Clearing trigger %@ (%@) for '%{mask.hash}@[%{mask.hash}@]'";
                   goto LABEL_47;
@@ -2017,9 +2017,9 @@ LABEL_66:
                   {
                     v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v28];
                     *buf = 136316674;
-                    v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                    uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                     v81 = 2112;
-                    v82 = v26;
+                    v82 = triggerReasonString;
                     v83 = 2112;
                     v84 = v32;
                     v85 = 2160;
@@ -2029,7 +2029,7 @@ LABEL_66:
                     v89 = 2160;
                     v90 = 1752392040;
                     v91 = 2112;
-                    v92 = v61;
+                    v92 = bssid;
                     v33 = v22;
                     v34 = "%s Clearing(for interval exceeded) trigger %@ (%@) for '%{mask.hash}@[%{mask.hash}@]'";
 LABEL_47:
@@ -2051,9 +2051,9 @@ LABEL_48:
                       v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v28];
                       [v25 triggerReasonTimestamp];
                       *buf = 136316930;
-                      v80 = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
+                      uTF8String = "[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]";
                       v81 = 2112;
-                      v82 = v26;
+                      v82 = triggerReasonString;
                       v83 = 2112;
                       v84 = v32;
                       v85 = 2160;
@@ -2063,7 +2063,7 @@ LABEL_48:
                       v89 = 2160;
                       v90 = 1752392040;
                       v91 = 2112;
-                      v92 = v61;
+                      v92 = bssid;
                       v93 = 2048;
                       v94 = (v31 - v38);
                       v33 = v22;
@@ -2085,14 +2085,14 @@ LABEL_43:
               {
                 v59 = MEMORY[0x277CCACA8];
                 v41 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v31];
-                v60 = [v59 stringWithFormat:@"%s Clearing(expired) trigger %@ (%@) for '%@'", "-[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]", v26, v41, v64];
+                v60 = [v59 stringWithFormat:@"%s Clearing(expired) trigger %@ (%@) for '%@'", "-[WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:]", triggerReasonString, v41, v64];
 
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
                 {
                   v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v60, "UTF8String")];
-                  v43 = [v42 UTF8String];
+                  uTF8String2 = [v42 UTF8String];
                   *buf = 136446210;
-                  v80 = v43;
+                  uTF8String = uTF8String2;
                   _os_log_impl(&dword_2332D7000, v22, OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
                 }
 
@@ -2140,34 +2140,34 @@ LABEL_44:
           while (v46);
         }
 
-        v49 = [v8 blacklistedStatesCurrent];
-        [v49 removeObjectsInArray:v9];
+        blacklistedStatesCurrent2 = [v8 blacklistedStatesCurrent];
+        [blacklistedStatesCurrent2 removeObjectsInArray:v9];
 
-        v50 = [v8 blacklistTriggers];
-        [v50 removeObjectsInArray:v65];
+        blacklistTriggers = [v8 blacklistTriggers];
+        [blacklistTriggers removeObjectsInArray:v65];
 
         if ([v9 count])
         {
-          v51 = [(WFBlacklistEngine *)self blacklistDelegate];
+          blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
           v52 = objc_opt_respondsToSelector();
 
           if (v52)
           {
-            v53 = [(WFBlacklistEngine *)self blacklistDelegate];
-            [v53 blacklistDidUpdate];
+            blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+            [blacklistDelegate2 blacklistDidUpdate];
           }
         }
 
-        v54 = [v8 blacklistedStatesCurrent];
-        v5 = v58;
-        if ([v54 count])
+        blacklistedStatesCurrent3 = [v8 blacklistedStatesCurrent];
+        reasonCopy = v58;
+        if ([blacklistedStatesCurrent3 count])
         {
         }
 
         else
         {
-          v55 = [v8 blacklistTriggers];
-          v56 = [v55 count];
+          blacklistTriggers2 = [v8 blacklistTriggers];
+          v56 = [blacklistTriggers2 count];
 
           if (!v56)
           {
@@ -2179,7 +2179,7 @@ LABEL_44:
       else
       {
         [WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:];
-        v61 = 0;
+        bssid = 0;
         v64 = 0;
       }
     }
@@ -2187,7 +2187,7 @@ LABEL_44:
     else
     {
       [WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reason:];
-      v61 = 0;
+      bssid = 0;
       v64 = 0;
       v65 = 0;
     }
@@ -2197,10 +2197,10 @@ LABEL_44:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:v5 reason:?];
+      [WFBlacklistEngine clearTriggerForNetworkWithUnblacklistReason:reasonCopy reason:?];
     }
 
-    v61 = 0;
+    bssid = 0;
     v64 = 0;
     v65 = 0;
     v9 = 0;
@@ -2212,14 +2212,14 @@ LABEL_44:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_evaluateTriggersForUnblacklisting:(id)a3 unblacklistReason:(unint64_t)a4 ssid:(id)a5
+- (BOOL)_evaluateTriggersForUnblacklisting:(id)unblacklisting unblacklistReason:(unint64_t)reason ssid:(id)ssid
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 blacklistedStatesHistory];
-  v9 = [v8 count];
+  unblacklistingCopy = unblacklisting;
+  blacklistedStatesHistory = [unblacklistingCopy blacklistedStatesHistory];
+  v9 = [blacklistedStatesHistory count];
 
-  v10 = [(WFBlacklistEngine *)self blacklistDelegate];
+  blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if ((v11 & 1) == 0)
@@ -2229,18 +2229,18 @@ LABEL_44:
     {
       v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v31, "UTF8String")];
       *buf = 136446210;
-      v44 = [v32 UTF8String];
+      uTF8String = [v32 UTF8String];
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
     }
 
     goto LABEL_24;
   }
 
-  v12 = [(WFBlacklistEngine *)self blacklistDelegate];
-  v13 = [v12 isUserModeInteractive];
+  blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+  isUserModeInteractive = [blacklistDelegate2 isUserModeInteractive];
 
   v14 = "non-interactive";
-  if (v13)
+  if (isUserModeInteractive)
   {
     v14 = "interactive";
   }
@@ -2250,25 +2250,25 @@ LABEL_44:
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v15, "UTF8String")];
     *buf = 136446210;
-    v44 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
   }
 
-  if (v13)
+  if (isUserModeInteractive)
   {
 LABEL_24:
     LOBYTE(v33) = 1;
     goto LABEL_25;
   }
 
-  v36 = a4;
-  v37 = v7;
+  reasonCopy = reason;
+  v37 = unblacklistingCopy;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = [v7 blacklistedStatesHistory];
-  v18 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  blacklistedStatesHistory2 = [unblacklistingCopy blacklistedStatesHistory];
+  v18 = [blacklistedStatesHistory2 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v18)
   {
     v19 = v18;
@@ -2276,14 +2276,14 @@ LABEL_24:
     v21 = 0;
     v22 = *v39;
     v23 = v9 - 1;
-    v24 = 13;
+    blacklistedReason = 13;
     do
     {
       for (i = 0; i != v19; ++i)
       {
         if (*v39 != v22)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(blacklistedStatesHistory2);
         }
 
         v26 = *(*(&v38 + 1) + 8 * i);
@@ -2291,8 +2291,8 @@ LABEL_24:
         {
           if ([v26 blacklistedReason] == 2)
           {
-            v27 = [MEMORY[0x277CBEAA8] date];
-            [v27 timeIntervalSince1970];
+            date = [MEMORY[0x277CBEAA8] date];
+            [date timeIntervalSince1970];
             v29 = v28;
 
             [v26 blacklistedStateTimestamp];
@@ -2301,14 +2301,14 @@ LABEL_24:
 
           if (v20 == v23)
           {
-            v24 = [v26 blacklistedReason];
+            blacklistedReason = [v26 blacklistedReason];
           }
 
           ++v20;
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v19 = [blacklistedStatesHistory2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v19);
@@ -2317,21 +2317,21 @@ LABEL_24:
   else
   {
     v21 = 0;
-    v24 = 13;
+    blacklistedReason = 13;
   }
 
   LOBYTE(v33) = 0;
-  if (v36 != 1 || (v21 & 1) != 0)
+  if (reasonCopy != 1 || (v21 & 1) != 0)
   {
-    v7 = v37;
+    unblacklistingCopy = v37;
   }
 
   else
   {
-    v7 = v37;
-    if (v24 <= 7)
+    unblacklistingCopy = v37;
+    if (blacklistedReason <= 7)
     {
-      v33 = 0xB0u >> v24;
+      v33 = 0xB0u >> blacklistedReason;
     }
   }
 
@@ -2341,11 +2341,11 @@ LABEL_25:
   return v33 & 1;
 }
 
-- (void)networkPruned:(id)a3
+- (void)networkPruned:(id)pruned
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  prunedCopy = pruned;
+  if (!prunedCopy)
   {
     [WFBlacklistEngine networkPruned:];
 LABEL_19:
@@ -2362,8 +2362,8 @@ LABEL_19:
   if (v6)
   {
     v7 = v6;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = prunedCopy;
     v8 = 0;
     v9 = *v23;
     v10 = MEMORY[0x277D86220];
@@ -2382,20 +2382,20 @@ LABEL_19:
 
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v13 = [v8 networkDelegate];
-          v14 = [v13 ssid];
-          v15 = [v8 networkDelegate];
-          v16 = [v15 bssid];
+          networkDelegate = [v8 networkDelegate];
+          ssid = [networkDelegate ssid];
+          networkDelegate2 = [v8 networkDelegate];
+          bssid = [networkDelegate2 bssid];
           *buf = 136316162;
           *&buf[4] = "[WFBlacklistEngine networkPruned:]";
           v27 = 2160;
           v28 = 1752392040;
           v29 = 2112;
-          v30 = v14;
+          v30 = ssid;
           v31 = 2160;
           v32 = 1752392040;
           v33 = 2112;
-          v34 = v16;
+          v34 = bssid;
           _os_log_error_impl(&dword_2332D7000, v10, OS_LOG_TYPE_ERROR, "%s blacklistedNode %{mask.hash}@[%{mask.hash}@]", buf, 0x34u);
         }
 
@@ -2409,16 +2409,16 @@ LABEL_19:
 
     while (v7);
 
-    self = v20;
-    v4 = v21;
+    self = selfCopy;
+    prunedCopy = v21;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [WFBlacklistEngine networkPruned:v4];
+    [WFBlacklistEngine networkPruned:prunedCopy];
   }
 
-  v17 = [(WFBlacklistEngine *)self _findBlacklistNode:v4, v20, v21];
+  v17 = [(WFBlacklistEngine *)self _findBlacklistNode:prunedCopy, selfCopy, v21];
   if (!v17)
   {
     [WFBlacklistEngine networkPruned:];
@@ -2432,10 +2432,10 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkRemovedForSsid:(id)a3
+- (void)networkRemovedForSsid:(id)ssid
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ssidCopy = ssid;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0u;
   v42 = 0u;
@@ -2446,7 +2446,7 @@ LABEL_16:
   if (v6)
   {
     v7 = v6;
-    v35 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = 0;
     v10 = *v42;
@@ -2465,53 +2465,53 @@ LABEL_16:
 
         v9 = *(*(&v41 + 1) + 8 * v11);
 
-        v13 = [v9 networkDelegate];
-        v14 = [v13 ssid];
-        v15 = [v4 isEqualToString:v14];
+        networkDelegate = [v9 networkDelegate];
+        ssid = [networkDelegate ssid];
+        v15 = [ssidCopy isEqualToString:ssid];
 
         if (v15)
         {
           v16 = v5;
-          v17 = v4;
+          v17 = ssidCopy;
           v18 = MEMORY[0x277CCACA8];
-          v19 = [v9 networkDelegate];
-          v20 = [v19 ssid];
-          v21 = [v9 networkDelegate];
-          v22 = [v21 ssid];
-          v23 = [v18 stringWithFormat:@"%s Removing blacklist node for network %@[%@]", "-[WFBlacklistEngine networkRemovedForSsid:]", v20, v22];
+          networkDelegate2 = [v9 networkDelegate];
+          ssid2 = [networkDelegate2 ssid];
+          networkDelegate3 = [v9 networkDelegate];
+          ssid3 = [networkDelegate3 ssid];
+          v23 = [v18 stringWithFormat:@"%s Removing blacklist node for network %@[%@]", "-[WFBlacklistEngine networkRemovedForSsid:]", ssid2, ssid3];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v23, "UTF8String")];
-            v25 = [v24 UTF8String];
+            uTF8String = [v24 UTF8String];
             *buf = 136446210;
-            v46 = v25;
+            v46 = uTF8String;
             _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
           }
 
-          v26 = [v9 blacklistTriggers];
-          [v26 removeAllObjects];
+          blacklistTriggers = [v9 blacklistTriggers];
+          [blacklistTriggers removeAllObjects];
 
-          v27 = [v9 blacklistedStatesCurrent];
+          blacklistedStatesCurrent = [v9 blacklistedStatesCurrent];
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __43__WFBlacklistEngine_networkRemovedForSsid___block_invoke;
           v39[3] = &unk_2789C8318;
           v28 = v9;
           v40 = v28;
-          [v27 enumerateObjectsUsingBlock:v39];
+          [blacklistedStatesCurrent enumerateObjectsUsingBlock:v39];
 
-          v29 = [v28 blacklistedStatesCurrent];
-          [v29 removeAllObjects];
+          blacklistedStatesCurrent2 = [v28 blacklistedStatesCurrent];
+          [blacklistedStatesCurrent2 removeAllObjects];
 
-          v30 = [v28 blacklistedStatesHistory];
-          [v30 removeAllObjects];
+          blacklistedStatesHistory = [v28 blacklistedStatesHistory];
+          [blacklistedStatesHistory removeAllObjects];
 
           v5 = v16;
           [v16 addObject:v28];
 
           v8 = 1;
-          v4 = v17;
+          ssidCopy = v17;
           v10 = v36;
           v7 = v37;
         }
@@ -2526,7 +2526,7 @@ LABEL_16:
 
     while (v7);
 
-    self = v35;
+    self = selfCopy;
   }
 
   else
@@ -2541,22 +2541,22 @@ LABEL_16:
 
   if (v8)
   {
-    v31 = [(WFBlacklistEngine *)self blacklistDelegate];
+    blacklistDelegate = [(WFBlacklistEngine *)self blacklistDelegate];
     v32 = objc_opt_respondsToSelector();
 
     if (v32)
     {
-      v33 = [(WFBlacklistEngine *)self blacklistDelegate];
-      [v33 blacklistDidUpdate];
+      blacklistDelegate2 = [(WFBlacklistEngine *)self blacklistDelegate];
+      [blacklistDelegate2 blacklistDidUpdate];
     }
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     self->_enabled = 1;
   }
@@ -2568,10 +2568,10 @@ LABEL_16:
   }
 }
 
-- (id)_findBlacklistNode:(id)a3
+- (id)_findBlacklistNode:(id)node
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodeCopy = node;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2595,7 +2595,7 @@ LABEL_3:
 
       v8 = *(*(&v14 + 1) + 8 * v10);
 
-      if ([v8 containsNetwork:{v4, v14}])
+      if ([v8 containsNetwork:{nodeCopy, v14}])
       {
         break;
       }
@@ -2626,7 +2626,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)retrieveNetworksInBlacklistedState:(unint64_t)a3
+- (id)retrieveNetworksInBlacklistedState:(unint64_t)state
 {
   v33 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2659,8 +2659,8 @@ LABEL_10:
           v25 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v9 = [v6 blacklistedStatesCurrent];
-          v10 = [v9 countByEnumeratingWithState:&v22 objects:v31 count:16];
+          blacklistedStatesCurrent = [v6 blacklistedStatesCurrent];
+          v10 = [blacklistedStatesCurrent countByEnumeratingWithState:&v22 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -2671,17 +2671,17 @@ LABEL_10:
               {
                 if (*v23 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(blacklistedStatesCurrent);
                 }
 
-                if ([*(*(&v22 + 1) + 8 * i) blacklistedState] == a3)
+                if ([*(*(&v22 + 1) + 8 * i) blacklistedState] == state)
                 {
-                  v14 = [v6 networkDelegate];
+                  networkDelegate = [v6 networkDelegate];
 
-                  if (v14)
+                  if (networkDelegate)
                   {
-                    v15 = [v6 networkDelegate];
-                    v16 = [v15 copyWithZone:0];
+                    networkDelegate2 = [v6 networkDelegate];
+                    v16 = [networkDelegate2 copyWithZone:0];
 
                     if (v16)
                     {
@@ -2691,7 +2691,7 @@ LABEL_10:
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v22 objects:v31 count:16];
+              v11 = [blacklistedStatesCurrent countByEnumeratingWithState:&v22 objects:v31 count:16];
             }
 
             while (v11);
@@ -2719,7 +2719,7 @@ LABEL_10:
   return v5;
 }
 
-- (id)retrieveNetworksInBlacklistedStateHistory:(unint64_t)a3
+- (id)retrieveNetworksInBlacklistedStateHistory:(unint64_t)history
 {
   v35 = *MEMORY[0x277D85DE8];
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2752,8 +2752,8 @@ LABEL_10:
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v11 = [v7 blacklistedStatesHistory];
-          v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
+          blacklistedStatesHistory = [v7 blacklistedStatesHistory];
+          v12 = [blacklistedStatesHistory countByEnumeratingWithState:&v24 objects:v33 count:16];
           if (v12)
           {
             v13 = v12;
@@ -2764,18 +2764,18 @@ LABEL_10:
               {
                 if (*v25 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(blacklistedStatesHistory);
                 }
 
                 v16 = *(*(&v24 + 1) + 8 * j);
-                if ([v16 blacklistedState] == a3 || objc_msgSend(v16, "blacklistedState") == 5)
+                if ([v16 blacklistedState] == history || objc_msgSend(v16, "blacklistedState") == 5)
                 {
-                  v17 = [v7 networkDelegate];
+                  networkDelegate = [v7 networkDelegate];
 
-                  if (v17)
+                  if (networkDelegate)
                   {
-                    v18 = [v7 networkDelegate];
-                    v19 = [v18 copyWithZone:0];
+                    networkDelegate2 = [v7 networkDelegate];
+                    v19 = [networkDelegate2 copyWithZone:0];
 
                     if (v19)
                     {
@@ -2787,7 +2787,7 @@ LABEL_10:
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
+              v13 = [blacklistedStatesHistory countByEnumeratingWithState:&v24 objects:v33 count:16];
               if (v13)
               {
                 continue;
@@ -2817,15 +2817,15 @@ LABEL_21:
   return v22;
 }
 
-- (id)retrieveBlacklistedStateHistoryForNetwork:(id)a3 state:(unint64_t)a4 timestamps:(id)a5 reasonData:(id)a6
+- (id)retrieveBlacklistedStateHistoryForNetwork:(id)network state:(unint64_t)state timestamps:(id)timestamps reasonData:(id)data
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([(WFBlacklistEngine *)self isNetworkInBlacklistedState:v10 state:a4])
+  networkCopy = network;
+  timestampsCopy = timestamps;
+  dataCopy = data;
+  if ([(WFBlacklistEngine *)self isNetworkInBlacklistedState:networkCopy state:state])
   {
-    v13 = [(WFBlacklistEngine *)self _findBlacklistNode:v10];
+    v13 = [(WFBlacklistEngine *)self _findBlacklistNode:networkCopy];
     if (v13)
     {
       v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2854,28 +2854,28 @@ LABEL_21:
               }
 
               v20 = *(*(&v33 + 1) + 8 * v19);
-              v21 = [v20 blacklistedReason];
+              blacklistedReason = [v20 blacklistedReason];
               [v20 blacklistedStateTimestamp];
               v23 = v22;
-              v24 = [v20 blacklistedReasonData];
-              v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
+              blacklistedReasonData = [v20 blacklistedReasonData];
+              v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:blacklistedReason];
               if (v25)
               {
                 v26 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
                 if (v26)
                 {
-                  v27 = [MEMORY[0x277CCABB0] numberWithInteger:v24];
+                  v27 = [MEMORY[0x277CCABB0] numberWithInteger:blacklistedReasonData];
                   if (v27)
                   {
                     [v15 addObject:v25];
-                    if (v11)
+                    if (timestampsCopy)
                     {
-                      [v11 addObject:v26];
+                      [timestampsCopy addObject:v26];
                     }
 
-                    if (v12)
+                    if (dataCopy)
                     {
-                      [v12 addObject:v27];
+                      [dataCopy addObject:v27];
                     }
                   }
 
@@ -2936,19 +2936,19 @@ LABEL_26:
   return v15;
 }
 
-- (id)retrieveReasonsForNetworkInBlacklistedState:(id)a3 state:(unint64_t)a4 timestamps:(id)a5 reasonData:(id)a6
+- (id)retrieveReasonsForNetworkInBlacklistedState:(id)state state:(unint64_t)a4 timestamps:(id)timestamps reasonData:(id)data
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![(WFBlacklistEngine *)self isNetworkInBlacklistedState:v10 state:a4])
+  stateCopy = state;
+  timestampsCopy = timestamps;
+  dataCopy = data;
+  if (![(WFBlacklistEngine *)self isNetworkInBlacklistedState:stateCopy state:a4])
   {
     v15 = 0;
     goto LABEL_24;
   }
 
-  v13 = [(WFBlacklistEngine *)self _findBlacklistNode:v10];
+  v13 = [(WFBlacklistEngine *)self _findBlacklistNode:stateCopy];
   if (!v13)
   {
     [WFBlacklistEngine retrieveReasonsForNetworkInBlacklistedState:state:timestamps:reasonData:];
@@ -2991,11 +2991,11 @@ LABEL_29:
       }
 
       v20 = *(*(&v35 + 1) + 8 * v19);
-      v21 = [v20 triggerReason];
+      triggerReason = [v20 triggerReason];
       [v20 triggerReasonTimestamp];
       v23 = v22;
-      v24 = [v20 triggerReasonData];
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
+      triggerReasonData = [v20 triggerReasonData];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:triggerReason];
       if (!v25)
       {
         [WFBlacklistEngine retrieveReasonsForNetworkInBlacklistedState:state:timestamps:reasonData:];
@@ -3012,13 +3012,13 @@ LABEL_17:
       }
 
       v27 = v26;
-      v28 = [MEMORY[0x277CCABB0] numberWithInteger:v24];
+      v28 = [MEMORY[0x277CCABB0] numberWithInteger:triggerReasonData];
       if (v28)
       {
         v29 = v28;
         [v15 addObject:v25];
-        [v11 addObject:v27];
-        [v12 addObject:v29];
+        [timestampsCopy addObject:v27];
+        [dataCopy addObject:v29];
       }
 
       else
@@ -3048,9 +3048,9 @@ LABEL_24:
   return v15;
 }
 
-- (BOOL)isNetworkInBlacklistedState:(id)a3 state:(unint64_t)a4
+- (BOOL)isNetworkInBlacklistedState:(id)state state:(unint64_t)a4
 {
-  v5 = [(WFBlacklistEngine *)self _findBlacklistNode:a3];
+  v5 = [(WFBlacklistEngine *)self _findBlacklistNode:state];
   v6 = v5;
   if (v5)
   {
@@ -3065,28 +3065,28 @@ LABEL_24:
   return v7;
 }
 
-- (int64_t)getRssiWhenNetworkWasBlacklisted:(id)a3
+- (int64_t)getRssiWhenNetworkWasBlacklisted:(id)blacklisted
 {
-  v3 = [(WFBlacklistEngine *)self _findBlacklistNode:a3];
+  v3 = [(WFBlacklistEngine *)self _findBlacklistNode:blacklisted];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 networkDelegate];
-    v6 = [v5 rssi];
+    networkDelegate = [v3 networkDelegate];
+    rssi = [networkDelegate rssi];
   }
 
   else
   {
-    v6 = 0;
+    rssi = 0;
   }
 
-  return v6;
+  return rssi;
 }
 
-- (BOOL)isNetworkBlacklistedForAutoJoinDueToTrigDisc:(id)a3 rssi:(int64_t *)a4 timestamp:(double *)a5
+- (BOOL)isNetworkBlacklistedForAutoJoinDueToTrigDisc:(id)disc rssi:(int64_t *)rssi timestamp:(double *)timestamp
 {
   v42 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  discCopy = disc;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -3096,8 +3096,8 @@ LABEL_24:
   if (v9)
   {
     v10 = v9;
-    v29 = a4;
-    v30 = a5;
+    rssiCopy = rssi;
+    timestampCopy = timestamp;
     v11 = 0;
     v12 = *v37;
     do
@@ -3114,10 +3114,10 @@ LABEL_24:
 
         if ([v11 hasBlacklistedState:1])
         {
-          v15 = [v11 networkDelegate];
-          v16 = [v15 ssid];
-          v17 = [v31 ssid];
-          v18 = [v16 isEqual:v17];
+          networkDelegate = [v11 networkDelegate];
+          ssid = [networkDelegate ssid];
+          ssid2 = [discCopy ssid];
+          v18 = [ssid isEqual:ssid2];
 
           if (v18)
           {
@@ -3125,8 +3125,8 @@ LABEL_24:
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v19 = [v11 blacklistedStatesCurrent];
-            v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            blacklistedStatesCurrent = [v11 blacklistedStatesCurrent];
+            v20 = [blacklistedStatesCurrent countByEnumeratingWithState:&v32 objects:v40 count:16];
             if (v20)
             {
               v21 = v20;
@@ -3137,21 +3137,21 @@ LABEL_24:
                 {
                   if (*v33 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(blacklistedStatesCurrent);
                   }
 
                   v24 = *(*(&v32 + 1) + 8 * j);
                   if ([v24 blacklistedReason] == 6)
                   {
-                    if (v29)
+                    if (rssiCopy)
                     {
-                      *v29 = [v24 blacklistedReasonData];
+                      *rssiCopy = [v24 blacklistedReasonData];
                     }
 
-                    if (v30)
+                    if (timestampCopy)
                     {
                       [v24 blacklistedStateTimestamp];
-                      *v30 = v26;
+                      *timestampCopy = v26;
                     }
 
                     v25 = 1;
@@ -3159,7 +3159,7 @@ LABEL_24:
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                v21 = [blacklistedStatesCurrent countByEnumeratingWithState:&v32 objects:v40 count:16];
                 if (v21)
                 {
                   continue;
@@ -3177,7 +3177,7 @@ LABEL_24:
 
     while (v10);
     v25 = 0;
-    v19 = v11;
+    blacklistedStatesCurrent = v11;
     v11 = 0;
 LABEL_25:
   }
@@ -3192,7 +3192,7 @@ LABEL_25:
   return v25;
 }
 
-- (id)retrieveBlacklistedNetworkSsids:(unint64_t)a3
+- (id)retrieveBlacklistedNetworkSsids:(unint64_t)ssids
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -3226,8 +3226,8 @@ LABEL_25:
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v9 = [v6 blacklistedStatesCurrent];
-          v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          blacklistedStatesCurrent = [v6 blacklistedStatesCurrent];
+          v10 = [blacklistedStatesCurrent countByEnumeratingWithState:&v25 objects:v34 count:16];
           if (v10)
           {
             v11 = v10;
@@ -3238,19 +3238,19 @@ LABEL_25:
               {
                 if (*v26 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(blacklistedStatesCurrent);
                 }
 
-                if ([*(*(&v25 + 1) + 8 * i) blacklistedState] == a3)
+                if ([*(*(&v25 + 1) + 8 * i) blacklistedState] == ssids)
                 {
-                  v14 = [v6 networkDelegate];
-                  v15 = [v14 ssid];
+                  networkDelegate = [v6 networkDelegate];
+                  ssid = [networkDelegate ssid];
 
-                  [v5 appendFormat:@"%@ ", v15];
+                  [v5 appendFormat:@"%@ ", ssid];
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+              v11 = [blacklistedStatesCurrent countByEnumeratingWithState:&v25 objects:v34 count:16];
             }
 
             while (v11);
@@ -3271,9 +3271,9 @@ LABEL_25:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v16, "UTF8String")];
-      v18 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
       *buf = 136446210;
-      *&buf[4] = v18;
+      *&buf[4] = uTF8String;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
     }
   }
@@ -3320,8 +3320,8 @@ LABEL_25:
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v5 blacklistedStatesCurrent];
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v30 count:16];
+        blacklistedStatesCurrent = [v5 blacklistedStatesCurrent];
+        v11 = [blacklistedStatesCurrent countByEnumeratingWithState:&v20 objects:v30 count:16];
         if (v11)
         {
           v12 = v11;
@@ -3332,7 +3332,7 @@ LABEL_8:
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(blacklistedStatesCurrent);
             }
 
             if ([*(*(&v20 + 1) + 8 * v14) blacklistedState])
@@ -3342,7 +3342,7 @@ LABEL_8:
 
             if (v12 == ++v14)
             {
-              v12 = [v10 countByEnumeratingWithState:&v20 objects:v30 count:16];
+              v12 = [blacklistedStatesCurrent countByEnumeratingWithState:&v20 objects:v30 count:16];
               if (v12)
               {
                 goto LABEL_8;
@@ -3370,9 +3370,9 @@ LABEL_8:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v15, "UTF8String")];
-    v17 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     *buf = 136446210;
-    v29 = v17;
+    v29 = uTF8String;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
   }
 
@@ -3390,7 +3390,7 @@ LABEL_8:
     {
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
       *buf = 136446210;
-      v96 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
     }
 
@@ -3418,17 +3418,17 @@ LABEL_8:
 
           v71 = v6;
           v7 = *(*(&v88 + 1) + 8 * v6);
-          v8 = [v7 networkDelegate];
-          v9 = [v8 ssid];
-          v10 = [v9 copy];
+          networkDelegate = [v7 networkDelegate];
+          ssid = [networkDelegate ssid];
+          v10 = [ssid copy];
 
-          v11 = [v7 networkDelegate];
-          v12 = [v11 bssid];
-          v13 = [v12 copy];
+          networkDelegate2 = [v7 networkDelegate];
+          bssid = [networkDelegate2 bssid];
+          v13 = [bssid copy];
 
           v72 = v7;
-          v14 = [v7 blacklistedStatesCurrent];
-          v15 = [v14 count];
+          blacklistedStatesCurrent = [v7 blacklistedStatesCurrent];
+          v15 = [blacklistedStatesCurrent count];
 
           if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
           {
@@ -3439,7 +3439,7 @@ LABEL_8:
               v16 = "NO";
             }
 
-            v96 = 1752392040;
+            uTF8String = 1752392040;
             v97 = 2112;
             v98 = v10;
             v99 = 2160;
@@ -3458,8 +3458,8 @@ LABEL_8:
           v85 = 0u;
           v86 = 0u;
           v87 = 0u;
-          v17 = [v7 blacklistedStatesHistory];
-          v18 = [v17 countByEnumeratingWithState:&v84 objects:v94 count:16];
+          blacklistedStatesHistory = [v7 blacklistedStatesHistory];
+          v18 = [blacklistedStatesHistory countByEnumeratingWithState:&v84 objects:v94 count:16];
           if (v18)
           {
             v19 = v18;
@@ -3471,22 +3471,22 @@ LABEL_8:
               {
                 if (*v85 != v21)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(blacklistedStatesHistory);
                 }
 
                 v23 = *(*(&v84 + 1) + 8 * i);
-                v24 = [v23 blacklistedStateString];
+                blacklistedStateString = [v23 blacklistedStateString];
                 [v23 blacklistedStateTimestamp];
                 v25 = MEMORY[0x277CCACA8];
                 v26 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
                 v27 = [v75 stringFromDate:v26];
-                v28 = [v25 stringWithFormat:@"[%d] %@ @ %@, ", v20, v24, v27];
+                v28 = [v25 stringWithFormat:@"[%d] %@ @ %@, ", v20, blacklistedStateString, v27];
 
                 [v74 appendString:v28];
                 v20 = (v20 + 1);
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v84 objects:v94 count:16];
+              v19 = [blacklistedStatesHistory countByEnumeratingWithState:&v84 objects:v94 count:16];
             }
 
             while (v19);
@@ -3497,9 +3497,9 @@ LABEL_8:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v29, "UTF8String")];
-            v32 = [v31 UTF8String];
+            uTF8String2 = [v31 UTF8String];
             *buf = 136446210;
-            v96 = v32;
+            uTF8String = uTF8String2;
             _os_log_impl(&dword_2332D7000, v30, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
           }
 
@@ -3508,8 +3508,8 @@ LABEL_8:
           v81 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v33 = [v72 blacklistedStatesCurrent];
-          v34 = [v33 countByEnumeratingWithState:&v80 objects:v93 count:16];
+          blacklistedStatesCurrent2 = [v72 blacklistedStatesCurrent];
+          v34 = [blacklistedStatesCurrent2 countByEnumeratingWithState:&v80 objects:v93 count:16];
           if (v34)
           {
             v35 = v34;
@@ -3521,22 +3521,22 @@ LABEL_8:
               {
                 if (*v81 != v37)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(blacklistedStatesCurrent2);
                 }
 
                 v39 = *(*(&v80 + 1) + 8 * j);
-                v40 = [v39 blacklistedStateString];
+                blacklistedStateString2 = [v39 blacklistedStateString];
                 [v39 blacklistedStateTimestamp];
                 v41 = MEMORY[0x277CCACA8];
                 v42 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
                 v43 = [v75 stringFromDate:v42];
-                v44 = [v41 stringWithFormat:@"[%d] %@ @ %@, ", v36, v40, v43];
+                v44 = [v41 stringWithFormat:@"[%d] %@ @ %@, ", v36, blacklistedStateString2, v43];
 
                 [v73 appendString:v44];
                 v36 = (v36 + 1);
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v80 objects:v93 count:16];
+              v35 = [blacklistedStatesCurrent2 countByEnumeratingWithState:&v80 objects:v93 count:16];
             }
 
             while (v35);
@@ -3547,9 +3547,9 @@ LABEL_8:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v45, "UTF8String")];
-            v48 = [v47 UTF8String];
+            uTF8String3 = [v47 UTF8String];
             *buf = 136446210;
-            v96 = v48;
+            uTF8String = uTF8String3;
             _os_log_impl(&dword_2332D7000, v46, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
           }
 
@@ -3558,8 +3558,8 @@ LABEL_8:
           v77 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v50 = [v72 blacklistTriggers];
-          v51 = [v50 countByEnumeratingWithState:&v76 objects:v92 count:16];
+          blacklistTriggers = [v72 blacklistTriggers];
+          v51 = [blacklistTriggers countByEnumeratingWithState:&v76 objects:v92 count:16];
           if (v51)
           {
             v52 = v51;
@@ -3571,22 +3571,22 @@ LABEL_8:
               {
                 if (*v77 != v54)
                 {
-                  objc_enumerationMutation(v50);
+                  objc_enumerationMutation(blacklistTriggers);
                 }
 
                 v56 = *(*(&v76 + 1) + 8 * k);
-                v57 = [v56 triggerReasonString];
+                triggerReasonString = [v56 triggerReasonString];
                 [v56 triggerReasonTimestamp];
                 v58 = MEMORY[0x277CCACA8];
                 v59 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
                 v60 = [v75 stringFromDate:v59];
-                v61 = [v58 stringWithFormat:@"[%d] %@ @ %@, ", v53, v57, v60];
+                v61 = [v58 stringWithFormat:@"[%d] %@ @ %@, ", v53, triggerReasonString, v60];
 
                 [v49 appendString:v61];
                 v53 = (v53 + 1);
               }
 
-              v52 = [v50 countByEnumeratingWithState:&v76 objects:v92 count:16];
+              v52 = [blacklistTriggers countByEnumeratingWithState:&v76 objects:v92 count:16];
             }
 
             while (v52);
@@ -3597,9 +3597,9 @@ LABEL_8:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v62, "UTF8String")];
-            v64 = [v63 UTF8String];
+            uTF8String4 = [v63 UTF8String];
             *buf = 136446210;
-            v96 = v64;
+            uTF8String = uTF8String4;
             _os_log_impl(&dword_2332D7000, v5, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
           }
 
@@ -3617,29 +3617,29 @@ LABEL_8:
   v65 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringRepresentationWithReason:(unint64_t)a3
++ (id)stringRepresentationWithReason:(unint64_t)reason
 {
-  if (a3 > 0xA)
+  if (reason > 0xA)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789C8360[a3];
+    return off_2789C8360[reason];
   }
 }
 
-+ (id)stringRepresentationWithState:(unint64_t)a3
++ (id)stringRepresentationWithState:(unint64_t)state
 {
-  if (a3 - 1 > 2)
+  if (state - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2789C83B8[a3 - 1];
+    return off_2789C83B8[state - 1];
   }
 }
 

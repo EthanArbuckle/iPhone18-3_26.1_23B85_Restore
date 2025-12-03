@@ -1,26 +1,26 @@
 @interface SettingsContainerViewController
 - (id)_rootController;
 - (id)parentController;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)specifier;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)onboardingFlowFinishedWithAction:(unint64_t)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)onboardingFlowFinishedWithAction:(unint64_t)action;
 - (void)openAvatarEditor;
-- (void)openPlayerProfileViewWithPlayerID:(id)a3;
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5;
-- (void)photoPickerDidCancel:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setRootController:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)set_rootController:(id)a3;
-- (void)set_specifier:(id)a3;
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)signInControllerDidCancel:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)openPlayerProfileViewWithPlayerID:(id)d;
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image;
+- (void)photoPickerDidCancel:(id)cancel;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setRootController:(id)controller;
+- (void)setSpecifier:(id)specifier;
+- (void)set_rootController:(id)controller;
+- (void)set_specifier:(id)set_specifier;
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)signInControllerDidCancel:(id)cancel;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SettingsContainerViewController
@@ -41,46 +41,46 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E052ED4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E053FC0(a3);
+  selfCopy = self;
+  sub_24E053FC0(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E054200(a3);
+  selfCopy = self;
+  sub_24E054200(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E0542B0(a3);
+  selfCopy = self;
+  sub_24E0542B0(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0543A4();
 }
 
-- (void)set_rootController:(id)a3
+- (void)set_rootController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E054590(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E054590(controller);
 }
 
-- (void)set_specifier:(id)a3
+- (void)set_specifier:(id)set_specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E054628(a3);
+  set_specifierCopy = set_specifier;
+  selfCopy = self;
+  sub_24E054628(set_specifier);
 }
 
 - (id)parentController
@@ -90,26 +90,26 @@
   return v2;
 }
 
-- (void)setRootController:(id)a3
+- (void)setRootController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  SettingsContainerViewController.setRoot(_:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  SettingsContainerViewController.setRoot(_:)(controller);
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  SettingsContainerViewController.setSpecifier(_:)(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  SettingsContainerViewController.setSpecifier(_:)(specifier);
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  if (a3)
+  if (value)
   {
-    v6 = a4;
-    v7 = self;
+    specifierCopy = specifier;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -118,14 +118,14 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    specifierCopy2 = specifier;
+    selfCopy2 = self;
   }
 
   sub_24DF8C95C(v10, &qword_27F1E0370);
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
   SettingsContainerViewController.readPreferenceValue(_:)(v11);
   v3 = v12;
@@ -149,12 +149,12 @@
   return v9;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
-    a3 = sub_24E347C08();
+    l = sub_24E347C08();
   }
 
   if (v6)
@@ -168,52 +168,52 @@
     v7 = 0;
   }
 
-  v8 = self;
-  v9._rawValue = a3;
+  selfCopy = self;
+  v9._rawValue = l;
   SettingsContainerViewController.handleURL(_:withCompletion:)(v9, v7);
   sub_24DE73FA0(v7);
 }
 
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
-  SettingsContainerViewController.signInController(_:didCompleteWithSuccess:error:)(v7, 0, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  SettingsContainerViewController.signInController(_:didCompleteWithSuccess:error:)(controllerCopy, 0, error);
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  SettingsContainerViewController.signInControllerDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  SettingsContainerViewController.signInControllerDidCancel(_:)(cancelCopy);
 }
 
 - (void)openAvatarEditor
 {
-  v2 = self;
+  selfCopy = self;
   SettingsContainerViewController.openAvatarEditor()();
 }
 
-- (void)photoPickerDidCancel:(id)a3
+- (void)photoPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  SettingsContainerViewController.photoPickerDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  SettingsContainerViewController.photoPickerDidCancel(_:)(cancelCopy);
 }
 
-- (void)photoPicker:(id)a3 didUpdatePhotoForContact:(id)a4 withContactImage:(id)a5
+- (void)photoPicker:(id)picker didUpdatePhotoForContact:(id)contact withContactImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  SettingsContainerViewController.photoPicker(_:didUpdatePhotoFor:with:)(v8, v9, v10);
+  pickerCopy = picker;
+  contactCopy = contact;
+  imageCopy = image;
+  selfCopy = self;
+  SettingsContainerViewController.photoPicker(_:didUpdatePhotoFor:with:)(pickerCopy, contactCopy, imageCopy);
 }
 
-- (void)openPlayerProfileViewWithPlayerID:(id)a3
+- (void)openPlayerProfileViewWithPlayerID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -225,15 +225,15 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   SettingsContainerViewController.openPlayerProfileView(playerID:)(v8);
 }
 
-- (void)onboardingFlowFinishedWithAction:(unint64_t)a3
+- (void)onboardingFlowFinishedWithAction:(unint64_t)action
 {
-  v3 = self;
+  selfCopy = self;
   SettingsContainerViewController.onboardingFlowFinished(with:)();
 }
 

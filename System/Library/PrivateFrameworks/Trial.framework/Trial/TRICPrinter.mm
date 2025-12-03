@@ -1,26 +1,26 @@
 @interface TRICPrinter
-+ (id)_repeatString:(id)a3 length:(unint64_t)a4;
-+ (void)_printAndLogString:(id)a3 error:(BOOL)a4;
-+ (void)printAndLogDefaultWithFormat:(id)a3;
-+ (void)printAndLogErrorWithFormat:(id)a3;
-+ (void)printNewlineAndLogDefaultWithFormat:(id)a3;
-+ (void)printNewlineAndLogErrorWithFormat:(id)a3;
-+ (void)printNewlineUsingStderr:(BOOL)a3 format:(id)a4;
-+ (void)printTabularWithLogDefaultForLines:(id)a3;
++ (id)_repeatString:(id)string length:(unint64_t)length;
++ (void)_printAndLogString:(id)string error:(BOOL)error;
++ (void)printAndLogDefaultWithFormat:(id)format;
++ (void)printAndLogErrorWithFormat:(id)format;
++ (void)printNewlineAndLogDefaultWithFormat:(id)format;
++ (void)printNewlineAndLogErrorWithFormat:(id)format;
++ (void)printNewlineUsingStderr:(BOOL)stderr format:(id)format;
++ (void)printTabularWithLogDefaultForLines:(id)lines;
 @end
 
 @implementation TRICPrinter
 
-+ (void)_printAndLogString:(id)a3 error:(BOOL)a4
++ (void)_printAndLogString:(id)string error:(BOOL)error
 {
-  v4 = a4;
+  errorCopy = error;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 dataUsingEncoding:4];
+  v7 = [stringCopy dataUsingEncoding:4];
   if (v7)
   {
-    if (v4)
+    if (errorCopy)
     {
       [MEMORY[0x277CCA9F8] fileHandleWithStandardError];
     }
@@ -36,7 +36,7 @@
   objc_autoreleasePoolPop(v6);
   v9 = TRILogCategory_InternalTool();
   v10 = v9;
-  if (v4)
+  if (errorCopy)
   {
     v11 = OS_LOG_TYPE_ERROR;
   }
@@ -49,24 +49,24 @@
   if (os_log_type_enabled(v9, v11))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = stringCopy;
     _os_log_impl(&dword_22EA6B000, v10, v11, "%@", &v13, 0xCu);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)printNewlineUsingStderr:(BOOL)a3 format:(id)a4
++ (void)printNewlineUsingStderr:(BOOL)stderr format:(id)format
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithFormat:v6 arguments:&v11];
+  formatCopy = format;
+  v7 = [[v5 alloc] initWithFormat:formatCopy arguments:&v11];
 
   v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n", v7];
   v9 = [v8 dataUsingEncoding:4];
   if (v9)
   {
-    if (a3)
+    if (stderr)
     {
       [MEMORY[0x277CCA9F8] fileHandleWithStandardError];
     }
@@ -80,52 +80,52 @@
   }
 }
 
-+ (void)printAndLogDefaultWithFormat:(id)a3
++ (void)printAndLogDefaultWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
-  [a1 _printAndLogString:v6 error:0];
+  [self _printAndLogString:v6 error:0];
 }
 
-+ (void)printAndLogErrorWithFormat:(id)a3
++ (void)printAndLogErrorWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
-  [a1 _printAndLogString:v6 error:1];
+  [self _printAndLogString:v6 error:1];
 }
 
-+ (void)printNewlineAndLogDefaultWithFormat:(id)a3
++ (void)printNewlineAndLogDefaultWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v8];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v8];
 
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n", v6];
-  [a1 _printAndLogString:v7 error:0];
+  [self _printAndLogString:v7 error:0];
 }
 
-+ (void)printNewlineAndLogErrorWithFormat:(id)a3
++ (void)printNewlineAndLogErrorWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v8];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v8];
 
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n", v6];
-  [a1 _printAndLogString:v7 error:1];
+  [self _printAndLogString:v7 error:1];
 }
 
-+ (void)printTabularWithLogDefaultForLines:(id)a3
++ (void)printTabularWithLogDefaultForLines:(id)lines
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  linesCopy = lines;
+  if ([linesCopy count])
   {
-    v17 = a1;
-    v5 = [v4 objectAtIndexedSubscript:0];
+    selfCopy = self;
+    v5 = [linesCopy objectAtIndexedSubscript:0];
     v6 = [v5 count];
 
     v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v6];
@@ -149,7 +149,7 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v4;
+    obj = linesCopy;
     v9 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
@@ -166,9 +166,9 @@
           v12 = *(*(&v26 + 1) + 8 * i);
           if ([v12 count] != v6)
           {
-            v16 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TRICPrinter printTabularWithLogDefaultForLines:]"];
-            [v16 handleFailureInFunction:v15 file:@"TRICPrinter.m" lineNumber:97 description:@"Tabular data has mismatched column counts"];
+            [currentHandler handleFailureInFunction:v15 file:@"TRICPrinter.m" lineNumber:97 description:@"Tabular data has mismatched column counts"];
           }
 
           v23[0] = MEMORY[0x277D85DD0];
@@ -191,7 +191,7 @@
     v19[2] = __50__TRICPrinter_printTabularWithLogDefaultForLines___block_invoke_2;
     v19[3] = &unk_27885DF80;
     v21 = v6;
-    v22 = v17;
+    v22 = selfCopy;
     v13 = v7;
     v20 = v13;
     [obj enumerateObjectsUsingBlock:v19];
@@ -279,12 +279,12 @@ void __50__TRICPrinter_printTabularWithLogDefaultForLines___block_invoke_3(void 
   [v9 addObject:v10];
 }
 
-+ (id)_repeatString:(id)a3 length:(unint64_t)a4
++ (id)_repeatString:(id)string length:(unint64_t)length
 {
-  v5 = a3;
-  for (i = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(v5, "length") * a4}]; a4; --a4)
+  stringCopy = string;
+  for (i = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(stringCopy, "length") * length}]; length; --length)
   {
-    [i appendString:v5];
+    [i appendString:stringCopy];
   }
 
   return i;

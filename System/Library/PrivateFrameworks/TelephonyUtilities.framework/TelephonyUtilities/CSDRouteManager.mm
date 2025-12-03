@@ -4,49 +4,49 @@
 - (BOOL)hasInEarRouteInTipiWithAndSmartRoutedToCompanionWatch;
 - (BOOL)hasInEarRouteInTipiWithCompanionWatch;
 - (BOOL)isAnyBluetoothHeadphoneRouteAvailableForAnyCall;
-- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)a3 forCall:(id)a4;
+- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)identifier forCall:(id)call;
 - (BOOL)isAnyVehicleRouteAvailableForAnyCall;
-- (BOOL)isAnyVehicleRouteAvailableForCall:(id)a3;
+- (BOOL)isAnyVehicleRouteAvailableForCall:(id)call;
 - (BOOL)isCarModeActive;
 - (BOOL)isCarPlayRouteAvailable;
 - (BOOL)isEligibleRouteAvailable;
-- (BOOL)isEligibleRouteAvailableForCall:(id)a3;
+- (BOOL)isEligibleRouteAvailableForCall:(id)call;
 - (CSDRouteManager)init;
-- (id)_audioRouteCollectionForCall:(id)a3;
-- (id)preferredAndActiveRouteForCall:(id)a3;
-- (id)preferredRouteForCall:(id)a3;
+- (id)_audioRouteCollectionForCall:(id)call;
+- (id)preferredAndActiveRouteForCall:(id)call;
+- (id)preferredRouteForCall:(id)call;
 - (void)_initializeAudioRouteCollections;
 - (void)_initializeAutomaticCarDNDStatusIfNecessary;
-- (void)_postNotificationName:(id)a3;
+- (void)_postNotificationName:(id)name;
 - (void)_updateCarPlayDeviceConnected;
 - (void)_updatePickableRoutes;
 - (void)aaDevicesDidChange;
-- (void)carPlayIsConnectedChanged:(id)a3;
+- (void)carPlayIsConnectedChanged:(id)changed;
 - (void)dealloc;
-- (void)mediaServicesWereResetNotification:(id)a3;
-- (void)pickableRoutesDidChangeNotification:(id)a3;
-- (void)preferredExternalRouteDidChangeNotification:(id)a3;
+- (void)mediaServicesWereResetNotification:(id)notification;
+- (void)pickableRoutesDidChangeNotification:(id)notification;
+- (void)preferredExternalRouteDidChangeNotification:(id)notification;
 @end
 
 @implementation CSDRouteManager
 
 - (void)_updatePickableRoutes
 {
-  v3 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(CSDRouteManager *)self audioRouteCollections];
-  v5 = [v4 allValues];
+  audioRouteCollections = [(CSDRouteManager *)self audioRouteCollections];
+  allValues = [audioRouteCollections allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    updatePickableRoutes = 0;
     v9 = *v12;
     do
     {
@@ -54,26 +54,26 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        if (v8)
+        if (updatePickableRoutes)
         {
-          v8 = 1;
+          updatePickableRoutes = 1;
         }
 
         else
         {
-          v8 = [*(*(&v11 + 1) + 8 * i) updatePickableRoutes];
+          updatePickableRoutes = [*(*(&v11 + 1) + 8 * i) updatePickableRoutes];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
 
-    if (v8)
+    if (updatePickableRoutes)
     {
       [(CSDRouteManager *)self _postNotificationName:@"CSDRouteManagerRoutesChangedNotification"];
     }
@@ -86,23 +86,23 @@
 
 - (BOOL)hasInEarRouteInTipiWithCompanionWatch
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100041FD0;
   v5[3] = &unk_10061C1E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 + (CSDRouteManager)sharedInstance
@@ -111,7 +111,7 @@
   block[1] = 3221225472;
   block[2] = sub_100154400;
   block[3] = &unk_10061A860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006ACDE0 != -1)
   {
     dispatch_once(&qword_1006ACDE0, block);
@@ -144,8 +144,8 @@
     v12[3] = &unk_10061C888;
     objc_copyWeak(&v13, &location);
     [(AADeviceManager *)v2->_aaDeviceManager setDeviceFoundHandler:v12];
-    v7 = [(AADeviceManager *)v2->_aaDeviceManager deviceFoundHandler];
-    [(AADeviceManager *)v2->_aaDeviceManager setDeviceLostHandler:v7];
+    deviceFoundHandler = [(AADeviceManager *)v2->_aaDeviceManager deviceFoundHandler];
+    [(AADeviceManager *)v2->_aaDeviceManager setDeviceLostHandler:deviceFoundHandler];
 
     [(AADeviceManager *)v2->_aaDeviceManager activateWithCompletion:&stru_10061C8C8];
     v8 = v2->_queue;
@@ -173,55 +173,55 @@
   [(CSDRouteManager *)&v4 dealloc];
 }
 
-- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)a3 forCall:(id)a4
+- (BOOL)isAnyRouteAvailableWithUniqueIdentifier:(id)identifier forCall:(id)call
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callCopy = call;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100154AA8;
   v12[3] = &unk_10061C910;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = callCopy;
+  v14 = identifierCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v12);
+  v9 = identifierCopy;
+  v10 = callCopy;
+  dispatch_sync(queue, v12);
 
   LOBYTE(self) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
   return self;
 }
 
-- (id)preferredRouteForCall:(id)a3
+- (id)preferredRouteForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100028684;
   v17 = sub_1000328CC;
   v18 = 0;
-  v5 = [v4 provider];
-  v6 = [v5 isTinCanProvider];
+  provider = [callCopy provider];
+  isTinCanProvider = [provider isTinCanProvider];
 
-  if ((v6 & 1) == 0)
+  if ((isTinCanProvider & 1) == 0)
   {
-    v7 = [(CSDRouteManager *)self queue];
+    queue = [(CSDRouteManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100154C70;
     block[3] = &unk_10061C678;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v7, block);
+    v11 = callCopy;
+    dispatch_sync(queue, block);
   }
 
   v8 = v14[5];
@@ -232,92 +232,92 @@
 
 - (BOOL)isEligibleRouteAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100154DB4;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasInEarRouteInTipiWithAndSmartRoutedToCompanionWatch
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100154FD0;
   v5[3] = &unk_10061C1E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEligibleRouteAvailableForCall:(id)a3
+- (BOOL)isEligibleRouteAvailableForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001551F0;
   block[3] = &unk_10061C678;
-  v9 = v4;
+  v9 = callCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = callCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(callCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return callCopy;
 }
 
-- (id)preferredAndActiveRouteForCall:(id)a3
+- (id)preferredAndActiveRouteForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100028684;
   v17 = sub_1000328CC;
   v18 = 0;
-  v5 = [v4 provider];
-  v6 = [v5 isTinCanProvider];
+  provider = [callCopy provider];
+  isTinCanProvider = [provider isTinCanProvider];
 
-  if ((v6 & 1) == 0)
+  if ((isTinCanProvider & 1) == 0)
   {
-    v7 = [(CSDRouteManager *)self queue];
+    queue = [(CSDRouteManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10015542C;
     block[3] = &unk_10061C678;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
-    dispatch_sync(v7, block);
+    v11 = callCopy;
+    dispatch_sync(queue, block);
   }
 
   v8 = v14[5];
@@ -326,256 +326,256 @@
   return v8;
 }
 
-- (BOOL)isAnyVehicleRouteAvailableForCall:(id)a3
+- (BOOL)isAnyVehicleRouteAvailableForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100155598;
   block[3] = &unk_10061AE20;
   block[4] = self;
-  v9 = v4;
+  v9 = callCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = callCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(callCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return callCopy;
 }
 
 - (BOOL)isAnyBluetoothHeadphoneRouteAvailableForAnyCall
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001556EC;
   v5[3] = &unk_10061C1E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isCarPlayRouteAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001558E8;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isAnyVehicleRouteAvailableForAnyCall
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001559F4;
   v5[3] = &unk_10061C1E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isCarModeActive
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100155BF0;
   v5[3] = &unk_10061C1E0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)aaDevicesDidChange
 {
-  v3 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100155CB0;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)pickableRoutesDidChangeNotification:(id)a3
+- (void)pickableRoutesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v7 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100155DF4;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (void)preferredExternalRouteDidChangeNotification:(id)a3
+- (void)preferredExternalRouteDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v7 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100155F38;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (void)carPlayIsConnectedChanged:(id)a3
+- (void)carPlayIsConnectedChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v7 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001560B8;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (void)mediaServicesWereResetNotification:(id)a3
+- (void)mediaServicesWereResetNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", buf, 0x16u);
   }
 
-  v7 = [(CSDRouteManager *)self queue];
+  queue = [(CSDRouteManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100156238;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_postNotificationName:(id)a3
+- (void)_postNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 postNotificationName:v4 object:0];
+  [v6 postNotificationName:nameCopy object:0];
 }
 
-- (id)_audioRouteCollectionForCall:(id)a3
+- (id)_audioRouteCollectionForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [TUAudioRouteCollectionKey alloc];
-  v7 = [v4 audioCategory];
-  v8 = [v4 audioMode];
-  v9 = [v6 initWithCategory:v7 mode:v8];
+  audioCategory = [callCopy audioCategory];
+  audioMode = [callCopy audioMode];
+  v9 = [v6 initWithCategory:audioCategory mode:audioMode];
 
-  v10 = [(CSDRouteManager *)self audioRouteCollections];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  audioRouteCollections = [(CSDRouteManager *)self audioRouteCollections];
+  v11 = [audioRouteCollections objectForKeyedSubscript:v9];
 
   if (!v11)
   {
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CSDRouteManager *)self audioRouteCollections];
-      v14 = [v4 audioCategory];
-      v15 = [v4 audioMode];
+      audioRouteCollections2 = [(CSDRouteManager *)self audioRouteCollections];
+      audioCategory2 = [callCopy audioCategory];
+      audioMode2 = [callCopy audioMode];
       v17 = 138413058;
-      v18 = v13;
+      v18 = audioRouteCollections2;
       v19 = 2112;
-      v20 = v14;
+      v20 = audioCategory2;
       v21 = 2112;
-      v22 = v15;
+      v22 = audioMode2;
       v23 = 2112;
-      v24 = v4;
+      v24 = callCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[WARN] No audio route collection found in audioRouteCollections: %@ for audio category %@ and audio mode %@ for call %@", &v17, 0x2Au);
     }
   }
@@ -585,18 +585,18 @@
 
 - (BOOL)_isAnyAudioDevicePreferred
 {
-  v2 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 audioDeviceController];
-  v5 = [v4 devices];
+  audioDeviceController = [v3 audioDeviceController];
+  devices = [audioDeviceController devices];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  v6 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -606,7 +606,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -625,7 +625,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v6 = [devices countByEnumeratingWithState:&v11 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -642,8 +642,8 @@ LABEL_13:
 
 - (void)_initializeAudioRouteCollections
 {
-  v2 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = +[NSMutableArray array];
   if (qword_1006ACE00 != -1)
@@ -712,9 +712,9 @@ LABEL_13:
 
         v17 = *(*(&v23 + 1) + 8 * i);
         v18 = [CSDAudioRouteCollection alloc];
-        v19 = [v17 category];
-        v20 = [v17 mode];
-        v21 = [(CSDAudioRouteCollection *)v18 initWithCategory:v19 mode:v20 routeManager:self];
+        category = [v17 category];
+        mode = [v17 mode];
+        v21 = [(CSDAudioRouteCollection *)v18 initWithCategory:category mode:mode routeManager:self];
 
         [v11 setObject:v21 forKeyedSubscript:v17];
       }
@@ -730,11 +730,11 @@ LABEL_13:
 
 - (void)_initializeAutomaticCarDNDStatusIfNecessary
 {
-  v3 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDRouteManager *)self automaticCarDNDStatus];
-  if (v4)
+  automaticCarDNDStatus = [(CSDRouteManager *)self automaticCarDNDStatus];
+  if (automaticCarDNDStatus)
   {
   }
 
@@ -792,30 +792,30 @@ LABEL_13:
 
 - (void)_updateCarPlayDeviceConnected
 {
-  v3 = [(CSDRouteManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDRouteManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (MGGetBoolAnswer())
   {
     v4 = +[AVSystemController sharedAVSystemController];
     v5 = [v4 attributeForKey:AVSystemController_CarPlayIsConnectedAttribute];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v6;
+    v8[1] = bOOLValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating isCarPlayDeviceConnected to %d", v8, 8u);
   }
 
-  [(CSDRouteManager *)self setCarPlayDeviceConnected:v6];
+  [(CSDRouteManager *)self setCarPlayDeviceConnected:bOOLValue];
 }
 
 @end

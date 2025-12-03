@@ -1,31 +1,31 @@
 @interface ML3ContainerItemDiffMetadata
-+ (id)diffMetadataWithPersistentID:(int64_t)a3;
-+ (id)diffMetadataWithPersistentID:(int64_t)a3 containerPersistentID:(int64_t)a4 itemPersistentID:(int64_t)a5 newPosition:(int64_t)a6 previousPosition:(int64_t)a7 uuid:(id)a8 positionUUD:(id)a9 occurrenceID:(id)a10;
++ (id)diffMetadataWithPersistentID:(int64_t)d;
++ (id)diffMetadataWithPersistentID:(int64_t)d containerPersistentID:(int64_t)iD itemPersistentID:(int64_t)persistentID newPosition:(int64_t)position previousPosition:(int64_t)previousPosition uuid:(id)uuid positionUUD:(id)uD occurrenceID:(id)self0;
 @end
 
 @implementation ML3ContainerItemDiffMetadata
 
-+ (id)diffMetadataWithPersistentID:(int64_t)a3 containerPersistentID:(int64_t)a4 itemPersistentID:(int64_t)a5 newPosition:(int64_t)a6 previousPosition:(int64_t)a7 uuid:(id)a8 positionUUD:(id)a9 occurrenceID:(id)a10
++ (id)diffMetadataWithPersistentID:(int64_t)d containerPersistentID:(int64_t)iD itemPersistentID:(int64_t)persistentID newPosition:(int64_t)position previousPosition:(int64_t)previousPosition uuid:(id)uuid positionUUD:(id)uD occurrenceID:(id)self0
 {
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = [ML3ContainerItemDiffMetadata diffMetadataWithPersistentID:a3];
-  [v18 setContainerPersistentID:a4];
-  [v18 setItemPersistentID:a5];
-  [v18 setNewPosition:a6];
-  [v18 setPreviousPosition:a7];
-  [v18 setUuid:v15];
-  [v18 setPositionUUID:v16];
-  [v18 setOccurrenceID:v17];
+  uuidCopy = uuid;
+  uDCopy = uD;
+  occurrenceIDCopy = occurrenceID;
+  v18 = [ML3ContainerItemDiffMetadata diffMetadataWithPersistentID:d];
+  [v18 setContainerPersistentID:iD];
+  [v18 setItemPersistentID:persistentID];
+  [v18 setNewPosition:position];
+  [v18 setPreviousPosition:previousPosition];
+  [v18 setUuid:uuidCopy];
+  [v18 setPositionUUID:uDCopy];
+  [v18 setOccurrenceID:occurrenceIDCopy];
 
   return v18;
 }
 
-+ (id)diffMetadataWithPersistentID:(int64_t)a3
++ (id)diffMetadataWithPersistentID:(int64_t)d
 {
   v4 = objc_alloc_init(ML3ContainerItemDiffMetadata);
-  [(ML3ContainerItemDiffMetadata *)v4 setPersistentID:a3];
+  [(ML3ContainerItemDiffMetadata *)v4 setPersistentID:d];
 
   return v4;
 }

@@ -12,7 +12,7 @@
 - (id)init
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = NSStream_0;
   v1 = objc_msgSendSuper2(&v3, sel_init);
   if (v1)
@@ -40,35 +40,35 @@
 {
   v4 = NSClassFromString(@"NSStream");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)close
 {
   v4 = NSClassFromString(@"NSStream");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)setDelegate:()NSStream
 {
   v4 = NSClassFromString(@"NSStream");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)scheduleInRunLoop:()NSStream forMode:
 {
   v4 = NSClassFromString(@"NSStream");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 - (void)removeFromRunLoop:()NSStream forMode:
 {
   v4 = NSClassFromString(@"NSStream");
 
-  NSRequestConcreteImplementation(a1, a2, v4);
+  NSRequestConcreteImplementation(self, a2, v4);
 }
 
 @end

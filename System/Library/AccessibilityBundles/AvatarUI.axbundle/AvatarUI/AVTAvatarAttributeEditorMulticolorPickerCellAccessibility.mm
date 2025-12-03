@@ -1,19 +1,19 @@
 @interface AVTAvatarAttributeEditorMulticolorPickerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
 @end
 
 @implementation AVTAvatarAttributeEditorMulticolorPickerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAvatarAttributeEditorMulticolorPickerCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorMulticolorPickerSectionItem" hasInstanceMethod:@"colorItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarAttributeEditorMulticolorPickerCell" hasInstanceMethod:@"clearButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorMulticolorPickerCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorMulticolorPickerSectionItem" hasInstanceMethod:@"colorItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorSectionColorItem" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTCoreModelColor" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarAttributeEditorMulticolorPickerCell" hasInstanceMethod:@"clearButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
@@ -28,8 +28,8 @@
 {
   v17.receiver = self;
   v17.super_class = AVTAvatarAttributeEditorMulticolorPickerCellAccessibility;
-  v3 = [(AVTAvatarAttributeEditorMulticolorPickerCellAccessibility *)&v17 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(AVTAvatarAttributeEditorMulticolorPickerCellAccessibility *)&v17 accessibilityCustomActions];
+  v4 = [accessibilityCustomActions mutableCopy];
 
   if (!v4)
   {
@@ -47,8 +47,8 @@
     v7 = objc_alloc(MEMORY[0x29EDC78E0]);
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"clear.memoji.trait");
-    v10 = [(AVTAvatarAttributeEditorMulticolorPickerCellAccessibility *)self accessibilityLabel];
-    v11 = [v8 localizedStringWithFormat:v9, v10];
+    accessibilityLabel = [(AVTAvatarAttributeEditorMulticolorPickerCellAccessibility *)self accessibilityLabel];
+    v11 = [v8 localizedStringWithFormat:v9, accessibilityLabel];
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = __87__AVTAvatarAttributeEditorMulticolorPickerCellAccessibility_accessibilityCustomActions__block_invoke;

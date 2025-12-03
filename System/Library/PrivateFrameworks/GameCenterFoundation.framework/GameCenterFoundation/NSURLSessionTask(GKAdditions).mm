@@ -6,11 +6,11 @@
 
 - (uint64_t)_gkHasValidServerURLRequest
 {
-  v1 = [a1 currentRequest];
-  v2 = [v1 URL];
-  v3 = [v2 _gkIsValidServerURL];
+  currentRequest = [self currentRequest];
+  v2 = [currentRequest URL];
+  _gkIsValidServerURL = [v2 _gkIsValidServerURL];
 
-  return v3;
+  return _gkIsValidServerURL;
 }
 
 @end

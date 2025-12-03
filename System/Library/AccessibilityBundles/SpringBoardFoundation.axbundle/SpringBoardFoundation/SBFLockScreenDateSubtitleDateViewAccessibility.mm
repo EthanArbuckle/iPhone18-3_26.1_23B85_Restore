@@ -1,5 +1,5 @@
 @interface SBFLockScreenDateSubtitleDateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityParentView;
@@ -8,14 +8,14 @@
 
 @implementation SBFLockScreenDateSubtitleDateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFLockScreenDateSubtitleDateView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBFLockScreenDateSubtitleDateView" hasProperty:@"string" withType:"@"];
-  [v3 validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBFLockScreenDateSubtitleDateView" hasInstanceMethod:@"alternateDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFLockScreenAlternateDateLabel" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFLockScreenDateSubtitleDateView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBFLockScreenDateSubtitleDateView" hasProperty:@"string" withType:"@"];
+  [validationsCopy validateClass:@"SBFLockScreenDateView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBFLockScreenDateSubtitleDateView" hasInstanceMethod:@"alternateDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFLockScreenAlternateDateLabel" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityViewIsVisible
@@ -44,7 +44,7 @@
   if (v4)
   {
     v5 = [(SBFLockScreenDateSubtitleDateViewAccessibility *)self safeValueForKeyPath:@"alternateDateLabel.label"];
-    v6 = [v5 accessibilityLabel];
+    accessibilityLabel = [v5 accessibilityLabel];
 
     v7 = __UIAXStringForVariables();
   }
@@ -53,17 +53,17 @@
   {
     if (v3)
     {
-      v8 = v3;
+      accessibilityLabel2 = v3;
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = SBFLockScreenDateSubtitleDateViewAccessibility;
-      v8 = [(SBFLockScreenDateSubtitleDateViewAccessibility *)&v10 accessibilityLabel];
+      accessibilityLabel2 = [(SBFLockScreenDateSubtitleDateViewAccessibility *)&v10 accessibilityLabel];
     }
 
-    v7 = v8;
+    v7 = accessibilityLabel2;
   }
 
   return v7;
@@ -103,20 +103,20 @@
 
 - (id)_accessibilityParentView
 {
-  v3 = [(SBFLockScreenDateSubtitleDateViewAccessibility *)self accessibilityContainer];
-  if (v3 && (NSClassFromString(&cfstr_Sbflockscreend_3.isa), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  accessibilityContainer = [(SBFLockScreenDateSubtitleDateViewAccessibility *)self accessibilityContainer];
+  if (accessibilityContainer && (NSClassFromString(&cfstr_Sbflockscreend_3.isa), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
+    _accessibilityParentView = accessibilityContainer;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBFLockScreenDateSubtitleDateViewAccessibility;
-    v4 = [(SBFLockScreenDateSubtitleDateViewAccessibility *)&v7 _accessibilityParentView];
+    _accessibilityParentView = [(SBFLockScreenDateSubtitleDateViewAccessibility *)&v7 _accessibilityParentView];
   }
 
-  v5 = v4;
+  v5 = _accessibilityParentView;
 
   return v5;
 }

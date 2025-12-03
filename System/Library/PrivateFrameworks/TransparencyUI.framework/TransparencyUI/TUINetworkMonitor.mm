@@ -1,7 +1,7 @@
 @interface TUINetworkMonitor
 - (TUINetworkMonitor)init;
 - (TUINetworkMonitorDelegate)delegate;
-- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)a3 completion:(id)a4;
+- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)path completion:(id)completion;
 - (void)dealloc;
 - (void)init;
 - (void)setUpNetworkPathMonitor;
@@ -157,10 +157,10 @@ uint64_t __44__TUINetworkMonitor_setUpNetworkPathMonitor__block_invoke_2_14()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)a3 completion:(id)a4
+- (void)_setNetworkMonitorUpdateHandlerWithPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_23 != -1)
   {
     [TUINetworkMonitor _setNetworkMonitorUpdateHandlerWithPath:completion:];
@@ -177,10 +177,10 @@ uint64_t __44__TUINetworkMonitor_setUpNetworkPathMonitor__block_invoke_2_14()
   v10[2] = __72__TUINetworkMonitor__setNetworkMonitorUpdateHandlerWithPath_completion___block_invoke_20;
   v10[3] = &unk_279DDB4F8;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = pathCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 
   objc_destroyWeak(&v13);

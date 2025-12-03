@@ -1,17 +1,17 @@
 @interface BKPDFSnapshotMetadata
-+ (id)snapshotHelperWithPDFDocument:(id)a3 currentPageIndex:(unint64_t)a4;
-- (BKPDFSnapshotMetadata)initWithPDFDocument:(id)a3 currentPageIndex:(unint64_t)a4;
-- (CGSize)_pageSize:(id)a3;
++ (id)snapshotHelperWithPDFDocument:(id)document currentPageIndex:(unint64_t)index;
+- (BKPDFSnapshotMetadata)initWithPDFDocument:(id)document currentPageIndex:(unint64_t)index;
+- (CGSize)_pageSize:(id)size;
 - (CGSize)leftPageSize;
 - (CGSize)rightPageSize;
-- (void)_cleanupPageIndicesIfNecessaryWithDocument:(id)a3 currentPageIndex:(unint64_t)a4;
+- (void)_cleanupPageIndicesIfNecessaryWithDocument:(id)document currentPageIndex:(unint64_t)index;
 @end
 
 @implementation BKPDFSnapshotMetadata
 
-- (BKPDFSnapshotMetadata)initWithPDFDocument:(id)a3 currentPageIndex:(unint64_t)a4
+- (BKPDFSnapshotMetadata)initWithPDFDocument:(id)document currentPageIndex:(unint64_t)index
 {
-  v6 = a3;
+  documentCopy = document;
   v14.receiver = self;
   v14.super_class = BKPDFSnapshotMetadata;
   v7 = [(BKPDFSnapshotMetadata *)&v14 init];
@@ -20,9 +20,9 @@
     goto LABEL_12;
   }
 
-  v8 = [v6 pageCount];
-  v9 = v8;
-  if (v8 <= a4)
+  pageCount = [documentCopy pageCount];
+  v9 = pageCount;
+  if (pageCount <= index)
   {
     BCReportAssertionFailureWithMessage();
     v13.f64[0] = NAN;
@@ -31,22 +31,22 @@
     p_leftPageIndex = &v7->_leftPageIndex;
 LABEL_14:
     BCReportAssertionFailureWithMessage();
-    v11 = *p_leftPageIndex;
+    indexCopy = *p_leftPageIndex;
     goto LABEL_9;
   }
 
-  v7->_leftPageIndex = a4;
+  v7->_leftPageIndex = index;
   v7->_rightPageIndex = 0x7FFFFFFFFFFFFFFFLL;
   p_leftPageIndex = &v7->_leftPageIndex;
-  if ((a4 & 1) == 0)
+  if ((index & 1) == 0)
   {
-    if ((a4 | 1) < v8)
+    if ((index | 1) < pageCount)
     {
-      v7->_rightPageIndex = a4 | 1;
+      v7->_rightPageIndex = index | 1;
     }
 
-    v11 = a4;
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    indexCopy = index;
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_9;
     }
@@ -54,28 +54,28 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v11 = a4 - 1;
-  v7->_leftPageIndex = a4 - 1;
-  v7->_rightPageIndex = a4;
+  indexCopy = index - 1;
+  v7->_leftPageIndex = index - 1;
+  v7->_rightPageIndex = index;
 LABEL_9:
-  if (v11 >= v9)
+  if (indexCopy >= v9)
   {
     sub_137DB8();
   }
 
-  [(BKPDFSnapshotMetadata *)v7 _cleanupPageIndicesIfNecessaryWithDocument:v6 currentPageIndex:a4];
+  [(BKPDFSnapshotMetadata *)v7 _cleanupPageIndicesIfNecessaryWithDocument:documentCopy currentPageIndex:index];
 LABEL_12:
 
   return v7;
 }
 
-- (CGSize)_pageSize:(id)a3
+- (CGSize)_pageSize:(id)size
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sizeCopy = size;
+  v4 = sizeCopy;
+  if (sizeCopy)
   {
-    [v3 boundsForBox:1];
+    [sizeCopy boundsForBox:1];
     v6 = v5;
     width = v7;
     if (fabs(([v4 rotation] % 180)) >= 0.00999999978)
@@ -103,10 +103,10 @@ LABEL_12:
   return result;
 }
 
-- (void)_cleanupPageIndicesIfNecessaryWithDocument:(id)a3 currentPageIndex:(unint64_t)a4
+- (void)_cleanupPageIndicesIfNecessaryWithDocument:(id)document currentPageIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  documentCopy = document;
+  v7 = documentCopy;
   if (self->_leftPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -114,7 +114,7 @@ LABEL_12:
   }
 
   rightPageIndex = self->_rightPageIndex;
-  v11 = [v6 pageAtIndex:?];
+  v11 = [documentCopy pageAtIndex:?];
   v8 = v11;
   if (rightPageIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -138,7 +138,7 @@ LABEL_12:
   self->_rightPageSize.width = v16;
   self->_rightPageSize.height = v17;
   leftPageIndex = self->_leftPageIndex;
-  if (leftPageIndex == a4)
+  if (leftPageIndex == index)
   {
     width = self->_leftPageSize.width;
   }
@@ -148,7 +148,7 @@ LABEL_12:
     width = v16;
   }
 
-  if (leftPageIndex == a4)
+  if (leftPageIndex == index)
   {
     height = self->_leftPageSize.height;
   }
@@ -204,7 +204,7 @@ LABEL_12:
 LABEL_39:
     self->_leftPageSize.width = width;
     self->_leftPageSize.height = height;
-    self->_leftPageIndex = a4;
+    self->_leftPageIndex = index;
     self->_rightPageIndex = 0x7FFFFFFFFFFFFFFFLL;
     self->_rightPageSize = CGSizeZero;
 
@@ -247,10 +247,10 @@ LABEL_3:
 LABEL_5:
 }
 
-+ (id)snapshotHelperWithPDFDocument:(id)a3 currentPageIndex:(unint64_t)a4
++ (id)snapshotHelperWithPDFDocument:(id)document currentPageIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [[BKPDFSnapshotMetadata alloc] initWithPDFDocument:v5 currentPageIndex:a4];
+  documentCopy = document;
+  v6 = [[BKPDFSnapshotMetadata alloc] initWithPDFDocument:documentCopy currentPageIndex:index];
 
   return v6;
 }

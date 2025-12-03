@@ -1,23 +1,23 @@
 @interface AMDJSRequestHandler
 + (id)getVersion;
-+ (id)handlePayload:(id)a3 error:(id *)a4;
-+ (int64_t)getActionCode:(id)a3;
-+ (void)handlePayload:(id)a3 ForAsyncOperation:(id)a4;
-+ (void)handlePayload:(id)a3 withCompletionHandler:(id)a4;
-+ (void)logAsyncHandlerPayload:(id)a3 forAction:(id)a4 withVerbosityLevel:(char)a5 andBuild:(id)a6 andSessionKey:(id)a7 andStorefrontId:(id)a8 withLoggingProbability:(id)a9 error:(id *)a10;
-+ (void)logMetrics:(id)a3;
++ (id)handlePayload:(id)payload error:(id *)error;
++ (int64_t)getActionCode:(id)code;
++ (void)handlePayload:(id)payload ForAsyncOperation:(id)operation;
++ (void)handlePayload:(id)payload withCompletionHandler:(id)handler;
++ (void)logAsyncHandlerPayload:(id)payload forAction:(id)action withVerbosityLevel:(char)level andBuild:(id)build andSessionKey:(id)key andStorefrontId:(id)id withLoggingProbability:(id)probability error:(id *)self0;
++ (void)logMetrics:(id)metrics;
 + (void)wrapUp;
 @end
 
 @implementation AMDJSRequestHandler
 
-+ (int64_t)getActionCode:(id)a3
++ (int64_t)getActionCode:(id)code
 {
   v10[50] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   if (!getActionCode__actionMap)
   {
     v9[0] = @"clear_user_data";
@@ -129,24 +129,24 @@
   v7 = [getActionCode__actionMap objectForKey:location[0]];
   if (v7)
   {
-    v6 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntValue = 0;
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
-  return v6;
+  return unsignedIntValue;
 }
 
 + (id)getVersion
 {
   v20[7] = *MEMORY[0x277D85DE8];
-  v18[2] = a1;
+  v18[2] = self;
   v18[1] = a2;
   v18[0] = +[AMDSQLite getSharedInstance];
   v15 = 0;
@@ -154,39 +154,39 @@
   v11 = 0;
   if ([v18[0] isUsable])
   {
-    v16 = [v18[0] getDataSchema];
+    getDataSchema = [v18[0] getDataSchema];
     v15 = 1;
-    v14 = [v16 getVersion];
+    getVersion = [getDataSchema getVersion];
     v13 = 1;
-    v2 = MEMORY[0x277D82BE0](v14);
+    v2 = MEMORY[0x277D82BE0](getVersion);
   }
 
   else
   {
-    v12 = [v18[0] connectionState];
+    connectionState = [v18[0] connectionState];
     v11 = 1;
-    v2 = MEMORY[0x277D82BE0](v12);
+    v2 = MEMORY[0x277D82BE0](connectionState);
   }
 
   v17 = v2;
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](connectionState);
   }
 
   if (v13)
   {
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](getVersion);
   }
 
   if (v15)
   {
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](getDataSchema);
   }
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v4 infoDictionary];
-  MEMORY[0x277D82BD8](v4);
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  MEMORY[0x277D82BD8](mainBundle);
   v19[0] = @"AMDVersion";
   v20[0] = &unk_2852BC680;
   v19[1] = @"Description";
@@ -194,23 +194,23 @@
   v19[2] = @"SchemaVersion";
   v20[2] = v17;
   v19[3] = @"CFBundleInfoDictionaryVersion";
-  v9 = [v10 objectForKey:?];
+  v9 = [infoDictionary objectForKey:?];
   v20[3] = v9;
   v19[4] = @"CFBundleNumericVersion";
-  v8 = [v10 objectForKey:?];
+  v8 = [infoDictionary objectForKey:?];
   v20[4] = v8;
   v19[5] = @"DTPlatformBuild";
-  v7 = [v10 objectForKey:?];
+  v7 = [infoDictionary objectForKey:?];
   v20[5] = v7;
   v19[6] = @"DTPlatformVersion";
-  v5 = [v10 objectForKey:?];
+  v5 = [infoDictionary objectForKey:?];
   v20[6] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:7];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&infoDictionary, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(v18, 0);
   *MEMORY[0x277D85DE8];
@@ -218,15 +218,15 @@
   return v6;
 }
 
-+ (void)handlePayload:(id)a3 ForAsyncOperation:(id)a4
++ (void)handlePayload:(id)payload ForAsyncOperation:(id)operation
 {
   v90 = *MEMORY[0x277D85DE8];
-  v87 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v85 = 0;
-  objc_storeStrong(&v85, a4);
+  objc_storeStrong(&v85, operation);
   v84 = 0;
   v83 = [location[0] objectForKey:@"data"];
   v82 = 0;
@@ -248,23 +248,23 @@
     }
 
     objc_storeStrong(&v79, 0);
-    [v87 logMetrics:v84];
+    [selfCopy logMetrics:v84];
     (*(v85 + 2))(v85, 0, v84);
   }
 
   v77 = [location[0] objectForKey:@"osBuildNumber"];
   v76 = [location[0] objectForKey:@"sessionKey"];
   v75 = [v81 objectForKey:@"storefrontId"];
-  v74 = 0;
+  intValue = 0;
   v73 = [location[0] objectForKey:@"verbosityLevel"];
   if (v73)
   {
-    v74 = [v73 intValue];
+    intValue = [v73 intValue];
   }
 
   else
   {
-    v74 = 0;
+    intValue = 0;
   }
 
   v72 = [v81 objectForKey:@"loggingProbability"];
@@ -277,17 +277,17 @@
     }
   }
 
-  [v87 getActionCode:v80];
-  v71 = [v87 getActionCode:v80];
+  [selfCopy getActionCode:v80];
+  v71 = [selfCopy getActionCode:v80];
   v19 = objc_alloc_init(MEMORY[0x277CCAD78]);
-  v70 = [v19 UUIDString];
+  uUIDString = [v19 UUIDString];
   MEMORY[0x277D82BD8](v19);
   v69 = 0;
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v67 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_4_8_64_8_64_4_0_8_64(v88, v70, v80, v71, @"__defaultTreatment");
+    __os_log_helper_16_2_4_8_64_8_64_4_0_8_64(v88, uUIDString, v80, v71, @"__defaultTreatment");
     _os_log_impl(&dword_240CB9000, oslog, v67, "Async JS handler call %@: action: %@, code:%d, treatment: %@", v88, 0x26u);
   }
 
@@ -349,9 +349,9 @@
       v42 = 0;
       v43 = __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_3;
       v44 = &unk_278CB6480;
-      v50[1] = v87;
+      v50[1] = selfCopy;
       v45 = MEMORY[0x277D82BE0](v80);
-      v51 = v74;
+      v51 = intValue;
       v46 = MEMORY[0x277D82BE0](v77);
       v47 = MEMORY[0x277D82BE0](v76);
       v48 = MEMORY[0x277D82BE0](v75);
@@ -374,9 +374,9 @@
       v24 = 0;
       v25 = __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_477;
       v26 = &unk_278CB6480;
-      v32[1] = v87;
+      v32[1] = selfCopy;
       v27 = MEMORY[0x277D82BE0](v80);
-      v33 = v74;
+      v33 = intValue;
       v28 = MEMORY[0x277D82BE0](v77);
       v29 = MEMORY[0x277D82BE0](v76);
       v30 = MEMORY[0x277D82BE0](v75);
@@ -404,7 +404,7 @@
 
   objc_storeStrong(&v66, 0);
   objc_storeStrong(&v69, 0);
-  objc_storeStrong(&v70, 0);
+  objc_storeStrong(&uUIDString, 0);
   objc_storeStrong(&v72, 0);
   objc_storeStrong(&v73, 0);
   objc_storeStrong(&v75, 0);
@@ -554,14 +554,14 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
   *MEMORY[0x277D85DE8];
 }
 
-+ (void)handlePayload:(id)a3 withCompletionHandler:(id)a4
++ (void)handlePayload:(id)payload withCompletionHandler:(id)handler
 {
-  v33 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, handler);
   v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v29 = 1;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -602,7 +602,7 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
     }
 
     objc_storeStrong(&v22, 0);
-    [v33 handlePayload:location[0] ForAsyncOperation:v31];
+    [selfCopy handlePayload:location[0] ForAsyncOperation:v31];
   }
 
   else
@@ -619,7 +619,7 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
 
     objc_storeStrong(&v19, 0);
     v15 = v26;
-    v7 = [v33 handlePayload:location[0] error:&v15];
+    v7 = [selfCopy handlePayload:location[0] error:&v15];
     objc_storeStrong(&v26, v15);
     v16 = v7;
     (*(v31 + 2))(v31, v7, v26);
@@ -635,14 +635,14 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
   objc_storeStrong(location, 0);
 }
 
-+ (id)handlePayload:(id)a3 error:(id *)a4
++ (id)handlePayload:(id)payload error:(id *)error
 {
   v170 = *MEMORY[0x277D85DE8];
-  v159 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v157 = a4;
+  objc_storeStrong(location, payload);
+  errorCopy = error;
   +[AMDPerf provision];
   [AMDPerf startMonitoringEvent:@"JSHandler"];
   v156 = 0;
@@ -664,16 +664,16 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
       v142 = [location[0] objectForKey:@"bypassUserChecks"];
       v141 = [location[0] objectForKey:@"populatePerformanceDict"];
       v140 = [location[0] objectForKey:@"returnOutputAsString"];
-      v139 = 0;
+      intValue = 0;
       v138 = [location[0] objectForKey:@"verbosityLevel"];
       if (v138)
       {
-        v139 = [v138 intValue];
+        intValue = [v138 intValue];
       }
 
       else
       {
-        v139 = 0;
+        intValue = 0;
       }
 
       v137 = [v149 objectForKey:@"loggingProbability"];
@@ -686,19 +686,19 @@ void __55__AMDJSRequestHandler_handlePayload_ForAsyncOperation___block_invoke_2_
         }
       }
 
-      [AMDFrameworkMetrics provisionInstanceAtVerbosity:v139 andAction:v146 andVersion:&unk_2852BC680 andBuild:v144 andStorefrontId:v148 withLoggingProbability:v137];
-      v136 = 0;
+      [AMDFrameworkMetrics provisionInstanceAtVerbosity:intValue andAction:v146 andVersion:&unk_2852BC680 andBuild:v144 andStorefrontId:v148 withLoggingProbability:v137];
+      intValue2 = 0;
       if (!v142 || ![v142 BOOLValue])
       {
         if (!v147 || !v148)
         {
-          v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing storefrontId (%@)or userId (%@)", v148, v147];
+          v147 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing storefrontId (%@)or userId (%@)", v148, v147];
           v8 = v153;
-          v153 = v7;
+          v153 = v147;
           MEMORY[0x277D82BD8](v8);
           v112 = [AMDError allocError:15 withMessage:v153];
           v9 = v112;
-          *v157 = v112;
+          *errorCopy = v112;
           v135 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v134 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
@@ -728,28 +728,28 @@ LABEL_104:
         }
 
         [v149 setObject:v147 forKey:@"userId"];
-        v136 = [v148 intValue];
+        intValue2 = [v148 intValue];
       }
 
       if (v146)
       {
-        v131 = 0;
+        bOOLValue = 0;
         v110 = [location[0] objectForKey:@"enablePerformance"];
         MEMORY[0x277D82BD8](v110);
         if (v110)
         {
           v109 = [location[0] objectForKey:@"enablePerformance"];
-          v131 = [v109 BOOLValue];
+          bOOLValue = [v109 BOOLValue];
           MEMORY[0x277D82BD8](v109);
         }
 
         else
         {
-          v131 = 1;
+          bOOLValue = 1;
         }
 
-        [AMDPerf enable:v131 & 1];
-        [AMDPerf setVerbosity:v139];
+        [AMDPerf enable:bOOLValue & 1];
+        [AMDPerf setVerbosity:intValue];
         if (!v145 && ([v146 isEqualToString:@"run_inference"] & 1) == 0 && (objc_msgSend(v146, "isEqualToString:", @"get_app_segment_data") & 1) == 0)
         {
           objc_storeStrong(&v145, @"__defaultTreatment");
@@ -768,9 +768,9 @@ LABEL_104:
 
         [AMDFrameworkMetrics log:v108 withKey:@"treatmentId" atVerbosity:0];
         v107 = objc_alloc_init(MEMORY[0x277CCAD78]);
-        v130 = [v107 UUIDString];
+        uUIDString = [v107 UUIDString];
         MEMORY[0x277D82BD8](v107);
-        [AMDFrameworkMetrics log:v130 withKey:@"callUUID" atVerbosity:0];
+        [AMDFrameworkMetrics log:uUIDString withKey:@"callUUID" atVerbosity:0];
         v129 = [location[0] objectForKey:@"bridgeAppVersion"];
         if (v129)
         {
@@ -782,7 +782,7 @@ LABEL_104:
           [AMDFrameworkMetrics log:v143 withKey:@"sessionKey" atVerbosity:0];
         }
 
-        v156 = [v159 getActionCode:v146];
+        v156 = [selfCopy getActionCode:v146];
         v128 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v127 = OS_LOG_TYPE_INFO;
         if (os_log_type_enabled(v128, OS_LOG_TYPE_INFO))
@@ -797,7 +797,7 @@ LABEL_104:
             v106 = @"__defaultTreatment";
           }
 
-          __os_log_helper_16_2_4_8_64_8_64_4_0_8_64(v166, v130, v146, v156, v106);
+          __os_log_helper_16_2_4_8_64_8_64_4_0_8_64(v166, uUIDString, v146, v156, v106);
           _os_log_impl(&dword_240CB9000, v128, v127, "Synchronous JS handler call %@: action: %@, code:%d, treatment: %@", v166, 0x26u);
         }
 
@@ -810,7 +810,7 @@ LABEL_104:
             obj = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
             v123 = [AMDSQLite clearUserData:location[0]];
             [obj setObject:v123 forKey:@"sqliteClearData"];
-            v122 = [AMDUserDataManager clearDataForUser:v149 error:v157];
+            v122 = [AMDUserDataManager clearDataForUser:v149 error:errorCopy];
             if (v122)
             {
               [obj setObject:v122 forKey:@"legacyClearData"];
@@ -822,19 +822,19 @@ LABEL_104:
             objc_storeStrong(&obj, 0);
             break;
           case 2:
-            v47 = [AMDDataSync processDataReplicationPayload:v149 error:v157];
+            v47 = [AMDDataSync processDataReplicationPayload:v149 error:errorCopy];
             v48 = v126;
             v126 = v47;
             MEMORY[0x277D82BD8](v48);
             break;
           case 3:
-            v57 = [AMDBiomeIntegration queryBiomeFor:v149 withError:v157];
+            v57 = [AMDBiomeIntegration queryBiomeFor:v149 withError:errorCopy];
             v58 = v126;
             v126 = v57;
             MEMORY[0x277D82BD8](v58);
             break;
           case 4:
-            v11 = [AMDJSGetSegments getAppSegments:v149 error:v157];
+            v11 = [AMDJSGetSegments getAppSegments:v149 error:errorCopy];
             v12 = v126;
             v126 = v11;
             MEMORY[0x277D82BD8](v12);
@@ -862,25 +862,25 @@ LABEL_104:
             MEMORY[0x277D82BD8](v104);
             break;
           case 7:
-            v17 = [v159 getVersion];
+            getVersion = [selfCopy getVersion];
             v18 = v126;
-            v126 = v17;
+            v126 = getVersion;
             MEMORY[0x277D82BD8](v18);
             break;
           case 8:
-            v49 = [AMDSplunkLogger logPayload:v149 error:v157];
+            v49 = [AMDSplunkLogger logPayload:v149 error:errorCopy];
             v50 = v126;
             v126 = v49;
             MEMORY[0x277D82BD8](v50);
             break;
           case 9:
-            v19 = [AMDModelDownloader processColdstartBinaryDownload:v149 error:v157];
+            v19 = [AMDModelDownloader processColdstartBinaryDownload:v149 error:errorCopy];
             v20 = v126;
             v126 = v19;
             MEMORY[0x277D82BD8](v20);
             break;
           case 10:
-            v21 = [AMDModelDownloader processModelDownload:v149 withStorefrontID:v148 error:v157];
+            v21 = [AMDModelDownloader processModelDownload:v149 withStorefrontID:v148 error:errorCopy];
             v22 = v126;
             v126 = v21;
             MEMORY[0x277D82BD8](v22);
@@ -902,49 +902,49 @@ LABEL_104:
             MEMORY[0x277D82BD8](v99);
             break;
           case 13:
-            v27 = [AMDJSSync dailyDataUpdate:v149 forStoreFrontId:v136 error:v157];
+            v27 = [AMDJSSync dailyDataUpdate:v149 forStoreFrontId:intValue2 error:errorCopy];
             v28 = v126;
             v126 = v27;
             MEMORY[0x277D82BD8](v28);
             break;
           case 14:
-            v29 = [AMDJSCustomAggregator runCustomAggregation:v149 error:v157];
+            v29 = [AMDJSCustomAggregator runCustomAggregation:v149 error:errorCopy];
             v30 = v126;
             v126 = v29;
             MEMORY[0x277D82BD8](v30);
             break;
           case 15:
-            v31 = [AMDJSInference runInference:v149 error:v157];
+            v31 = [AMDJSInference runInference:v149 error:errorCopy];
             v32 = v126;
             v126 = v31;
             MEMORY[0x277D82BD8](v32);
             break;
           case 16:
-            v33 = [AMDMegadomeIntegration handleJSRequest:v149 error:v157];
+            v33 = [AMDMegadomeIntegration handleJSRequest:v149 error:errorCopy];
             v34 = v126;
             v126 = v33;
             MEMORY[0x277D82BD8](v34);
             break;
           case 17:
-            v59 = [AMDJSCipherMLQueryHandler triggerPIRKVFetch:v149 withError:v157];
+            v59 = [AMDJSCipherMLQueryHandler triggerPIRKVFetch:v149 withError:errorCopy];
             v60 = v126;
             v126 = v59;
             MEMORY[0x277D82BD8](v60);
             break;
           case 18:
-            v61 = [AMDJSCipherMLQueryHandler triggerPECCall:v149 withError:v157];
+            v61 = [AMDJSCipherMLQueryHandler triggerPECCall:v149 withError:errorCopy];
             v62 = v126;
             v126 = v61;
             MEMORY[0x277D82BD8](v62);
             break;
           case 19:
-            v35 = [AMDJSSync runSync:v149 withCallUUID:v130 error:v157];
+            v35 = [AMDJSSync runSync:v149 withCallUUID:uUIDString error:errorCopy];
             v36 = v126;
             v126 = v35;
             MEMORY[0x277D82BD8](v36);
             break;
           case 20:
-            v37 = [AMDJSSync runSyncForUnsignedUser:v149 withCallUUID:v130 error:v157];
+            v37 = [AMDJSSync runSyncForUnsignedUser:v149 withCallUUID:uUIDString error:errorCopy];
             v38 = v126;
             v126 = v37;
             MEMORY[0x277D82BD8](v38);
@@ -953,14 +953,14 @@ LABEL_104:
           case 22:
           case 23:
             v125 = [v149 objectForKey:@"events"];
-            v39 = [AMDJSEngagementEventHandler handleAggregatedEngagementEvent:v125 forEventType:v156 forUserId:v147 andStoreFrontId:v136 error:v157];
+            v39 = [AMDJSEngagementEventHandler handleAggregatedEngagementEvent:v125 forEventType:v156 forUserId:v147 andStoreFrontId:intValue2 error:errorCopy];
             v40 = v126;
             v126 = v39;
             MEMORY[0x277D82BD8](v40);
             objc_storeStrong(&v125, 0);
             break;
           case 24:
-            v43 = [AMDJSAppStoreEventHandler handleAggregatedAppStoreEvent:v149 error:v157];
+            v43 = [AMDJSAppStoreEventHandler handleAggregatedAppStoreEvent:v149 error:errorCopy];
             v44 = v126;
             v126 = v43;
             MEMORY[0x277D82BD8](v44);
@@ -969,139 +969,139 @@ LABEL_104:
           case 26:
           case 27:
           case 34:
-            v41 = [AMDJSEngagementEventHandler handleSingleEngagementEvent:v149 forEventType:v156 forUserId:v147 andStoreFrontId:v136 error:v157];
+            v41 = [AMDJSEngagementEventHandler handleSingleEngagementEvent:v149 forEventType:v156 forUserId:v147 andStoreFrontId:intValue2 error:errorCopy];
             v42 = v126;
             v126 = v41;
             MEMORY[0x277D82BD8](v42);
             break;
           case 28:
-            [AMDModel saveModels:v149 error:v157];
+            [AMDModel saveModels:v149 error:errorCopy];
             break;
           case 29:
-            v55 = [AMDJSPIRResponseHandler persistPIRData:v149 error:v157];
+            v55 = [AMDJSPIRResponseHandler persistPIRData:v149 error:errorCopy];
             v56 = v126;
             v126 = v55;
             MEMORY[0x277D82BD8](v56);
             break;
           case 30:
-            v45 = [AMDSQLite saveEvents:location[0] error:v157];
+            v45 = [AMDSQLite saveEvents:location[0] error:errorCopy];
             v46 = v126;
             v126 = v45;
             MEMORY[0x277D82BD8](v46);
             break;
           case 31:
-            v63 = [AMDSQLite deleteRowsHandler:v149 error:v157];
+            v63 = [AMDSQLite deleteRowsHandler:v149 error:errorCopy];
             v64 = v126;
             v126 = v63;
             MEMORY[0x277D82BD8](v64);
             break;
           case 32:
-            v65 = [AMDSQLite insertRowsHandler:v149 error:v157];
+            v65 = [AMDSQLite insertRowsHandler:v149 error:errorCopy];
             v66 = v126;
             v126 = v65;
             MEMORY[0x277D82BD8](v66);
             break;
           case 33:
-            v67 = [AMDSQLite updateTablesHandler:v149 error:v157];
+            v67 = [AMDSQLite updateTablesHandler:v149 error:errorCopy];
             v68 = v126;
             v126 = v67;
             MEMORY[0x277D82BD8](v68);
             break;
           case 35:
-            v51 = [AMDJSDebugHandler testInference:v149 error:v157];
+            v51 = [AMDJSDebugHandler testInference:v149 error:errorCopy];
             v52 = v126;
             v126 = v51;
             MEMORY[0x277D82BD8](v52);
             break;
           case 36:
-            v69 = [AMDSQLite trimEventsForStreams:v149 error:v157];
+            v69 = [AMDSQLite trimEventsForStreams:v149 error:errorCopy];
             v70 = v126;
             v126 = v69;
             MEMORY[0x277D82BD8](v70);
             break;
           case 37:
-            v53 = [AMDJSDebugHandler handleDebugRequest:v149 error:v157];
+            v53 = [AMDJSDebugHandler handleDebugRequest:v149 error:errorCopy];
             v54 = v126;
             v126 = v53;
             MEMORY[0x277D82BD8](v54);
             break;
           case 42:
-            v71 = [AMDJSCustomAggregator runBatchedSQLDescriptorsUsing:v149 error:v157];
+            v71 = [AMDJSCustomAggregator runBatchedSQLDescriptorsUsing:v149 error:errorCopy];
             v72 = v126;
             v126 = v71;
             MEMORY[0x277D82BD8](v72);
             break;
           case 44:
-            v75 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager insertVectorsHandlerWithInsertVectorsPayload:v149 error:v157];
+            v75 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager insertVectorsHandlerWithInsertVectorsPayload:v149 error:errorCopy];
             v76 = v126;
             v126 = v75;
             MEMORY[0x277D82BD8](v76);
             break;
           case 45:
-            v77 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager clearVectorsHandlerWithClearVectorDBPayload:v149 error:v157];
+            v77 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager clearVectorsHandlerWithClearVectorDBPayload:v149 error:errorCopy];
             v78 = v126;
             v126 = v77;
             MEMORY[0x277D82BD8](v78);
             break;
           case 46:
-            v79 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager runVectorDBSearchWithSearchPayload:v149 error:v157];
+            v79 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager runVectorDBSearchWithSearchPayload:v149 error:errorCopy];
             v80 = v126;
             v126 = v79;
             MEMORY[0x277D82BD8](v80);
             break;
           case 47:
-            v81 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager deleteVectorDatabaseWithDeletionPayload:v149 error:v157];
+            v81 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager deleteVectorDatabaseWithDeletionPayload:v149 error:errorCopy];
             v82 = v126;
             v126 = v81;
             MEMORY[0x277D82BD8](v82);
             break;
           case 48:
-            v73 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager createVectorDBWithCreateDBPayload:v149 error:v157];
+            v73 = [_TtC19AppleMediaDiscovery18AMDVectorDBManager createVectorDBWithCreateDBPayload:v149 error:errorCopy];
             v74 = v126;
             v126 = v73;
             MEMORY[0x277D82BD8](v74);
             break;
           case 49:
-            v83 = [AMDBiomeIntegration writeToBiome:v149 withError:v157];
+            v83 = [AMDBiomeIntegration writeToBiome:v149 withError:errorCopy];
             v84 = v126;
             v126 = v83;
             MEMORY[0x277D82BD8](v84);
             break;
           default:
-            v121 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid action: %@", v146];
-            v98 = [AMDError allocError:15 withMessage:v121];
+            v146 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid action: %@", v146];
+            v98 = [AMDError allocError:15 withMessage:v146];
             v85 = v98;
-            *v157 = v98;
-            objc_storeStrong(&v121, 0);
+            *errorCopy = v98;
+            objc_storeStrong(&v146, 0);
             break;
         }
 
         [AMDPerf endMonitoringEvent:@"JSHandler"];
-        if (*v157)
+        if (*errorCopy)
         {
           v120 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v119 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v120, OS_LOG_TYPE_ERROR))
           {
-            v97 = [*v157 localizedDescription];
-            __os_log_helper_16_2_1_8_64(v165, v97);
+            localizedDescription = [*errorCopy localizedDescription];
+            __os_log_helper_16_2_1_8_64(v165, localizedDescription);
             _os_log_error_impl(&dword_240CB9000, v120, v119, "JS handler error: %@", v165, 0xCu);
-            MEMORY[0x277D82BD8](v97);
+            MEMORY[0x277D82BD8](localizedDescription);
           }
 
           objc_storeStrong(&v120, 0);
           v163 = @"JSHandlerError";
-          v96 = [*v157 localizedDescription];
-          v164 = v96;
+          localizedDescription2 = [*errorCopy localizedDescription];
+          v164 = localizedDescription2;
           v86 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v164 forKeys:&v163 count:1];
           v87 = v126;
           v126 = v86;
           MEMORY[0x277D82BD8](v87);
-          MEMORY[0x277D82BD8](v96);
-          v95 = [*v157 localizedDescription];
+          MEMORY[0x277D82BD8](localizedDescription2);
+          localizedDescription3 = [*errorCopy localizedDescription];
           [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-          MEMORY[0x277D82BD8](v95);
-          *v157 = 0;
+          MEMORY[0x277D82BD8](localizedDescription3);
+          *errorCopy = 0;
         }
 
         v118 = 0;
@@ -1140,7 +1140,7 @@ LABEL_104:
         v117 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v162 forKeys:v161 count:2];
         if (v140 && [v140 BOOLValue] == 1)
         {
-          v116 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v117 options:0 error:v157];
+          v116 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v117 options:0 error:errorCopy];
           v115 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v116 encoding:4];
           v160 = MEMORY[0x277D82BE0](v115);
           v150 = 1;
@@ -1158,7 +1158,7 @@ LABEL_104:
         objc_storeStrong(&v118, 0);
         objc_storeStrong(&v126, 0);
         objc_storeStrong(&v129, 0);
-        objc_storeStrong(&v130, 0);
+        objc_storeStrong(&uUIDString, 0);
       }
 
       else
@@ -1166,7 +1166,7 @@ LABEL_104:
         objc_storeStrong(&v153, @"No action");
         v111 = [AMDError allocError:15 withMessage:v153];
         v10 = v111;
-        *v157 = v111;
+        *errorCopy = v111;
         v133 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v132 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v133, OS_LOG_TYPE_ERROR))
@@ -1188,7 +1188,7 @@ LABEL_104:
   objc_storeStrong(&v153, @"Missing or invalid payload data");
   v113 = [AMDError allocError:15 withMessage:v153];
   v4 = v113;
-  *v157 = v113;
+  *errorCopy = v113;
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -1206,7 +1206,7 @@ LABEL_105:
   objc_storeStrong(&v153, 0);
   objc_storeStrong(&v154, 0);
   v92 = v150;
-  [v159 logMetrics:*v157];
+  [selfCopy logMetrics:*errorCopy];
   if (v155)
   {
     objc_exception_rethrow();
@@ -1229,15 +1229,15 @@ LABEL_105:
 + (void)wrapUp
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10[2] = a1;
+  v10[2] = self;
   v10[1] = a2;
   v10[0] = [AMDSQLite getSharedInstanceWithOption:0];
   if (v10[0])
   {
-    v9 = [v10[0] getDb];
-    if (v9)
+    getDb = [v10[0] getDb];
+    if (getDb)
     {
-      v8 = sqlite3_close_v2(v9);
+      v8 = sqlite3_close_v2(getDb);
       if (v8)
       {
         oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -1271,17 +1271,17 @@ LABEL_105:
   *MEMORY[0x277D85DE8];
 }
 
-+ (void)logMetrics:(id)a3
++ (void)logMetrics:(id)metrics
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metrics);
   if (location[0])
   {
-    v4 = [location[0] localizedDescription];
+    localizedDescription = [location[0] localizedDescription];
     [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
   v3 = +[AMDPerf generatePerformanceDict];
@@ -1291,38 +1291,38 @@ LABEL_105:
   objc_storeStrong(location, 0);
 }
 
-+ (void)logAsyncHandlerPayload:(id)a3 forAction:(id)a4 withVerbosityLevel:(char)a5 andBuild:(id)a6 andSessionKey:(id)a7 andStorefrontId:(id)a8 withLoggingProbability:(id)a9 error:(id *)a10
++ (void)logAsyncHandlerPayload:(id)payload forAction:(id)action withVerbosityLevel:(char)level andBuild:(id)build andSessionKey:(id)key andStorefrontId:(id)id withLoggingProbability:(id)probability error:(id *)self0
 {
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
+  objc_storeStrong(&v22, action);
+  levelCopy = level;
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, build);
   v19 = 0;
-  objc_storeStrong(&v19, a7);
+  objc_storeStrong(&v19, key);
   v18 = 0;
-  objc_storeStrong(&v18, a8);
+  objc_storeStrong(&v18, id);
   v17 = 0;
-  objc_storeStrong(&v17, a9);
-  v16 = a10;
-  [AMDFrameworkMetrics provisionInstanceAtVerbosity:v21 andAction:v22 andVersion:&unk_2852BC680 andBuild:v20 andStorefrontId:v18 withLoggingProbability:v17];
+  objc_storeStrong(&v17, probability);
+  errorCopy = error;
+  [AMDFrameworkMetrics provisionInstanceAtVerbosity:levelCopy andAction:v22 andVersion:&unk_2852BC680 andBuild:v20 andStorefrontId:v18 withLoggingProbability:v17];
   if (location[0])
   {
     v15 = [v22 stringByAppendingString:@"_summary"];
-    [AMDFrameworkMetrics log:location[0] withKey:v15 atVerbosity:v21];
+    [AMDFrameworkMetrics log:location[0] withKey:v15 atVerbosity:levelCopy];
     objc_storeStrong(&v15, 0);
   }
 
   if (v19)
   {
-    [AMDFrameworkMetrics log:v19 withKey:@"sessionKey" atVerbosity:v21];
+    [AMDFrameworkMetrics log:v19 withKey:@"sessionKey" atVerbosity:levelCopy];
   }
 
-  [v24 logMetrics:*v16];
+  [selfCopy logMetrics:*errorCopy];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);

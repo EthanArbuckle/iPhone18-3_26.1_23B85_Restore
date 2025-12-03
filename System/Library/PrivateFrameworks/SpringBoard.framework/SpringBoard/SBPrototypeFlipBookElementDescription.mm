@@ -1,24 +1,24 @@
 @interface SBPrototypeFlipBookElementDescription
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
 - (CGRect)captureBounds;
-- (SBPrototypeFlipBookElementDescription)initWithAssetView:(id)a3;
-- (id)allowedNextStatesForState:(id)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (SBPrototypeFlipBookElementDescription)initWithAssetView:(id)view;
+- (id)allowedNextStatesForState:(id)state;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation SBPrototypeFlipBookElementDescription
 
-- (SBPrototypeFlipBookElementDescription)initWithAssetView:(id)a3
+- (SBPrototypeFlipBookElementDescription)initWithAssetView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = SBPrototypeFlipBookElementDescription;
   v6 = [(SBPrototypeFlipBookElementDescription *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetView, a3);
+    objc_storeStrong(&v6->_assetView, view);
     assetViewCurrentState = v7->_assetViewCurrentState;
     v7->_assetViewCurrentState = 0;
   }
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Sleep"])
+  stateCopy = state;
+  if ([stateCopy isEqual:@"Sleep"])
   {
     v4 = &unk_28336E4C0;
   }
 
-  else if ([v3 isEqual:@"Locked"])
+  else if ([stateCopy isEqual:@"Locked"])
   {
     v4 = &unk_28336E4D8;
   }
 
-  else if ([v3 isEqual:@"Unlocked"])
+  else if ([stateCopy isEqual:@"Unlocked"])
   {
     v4 = &unk_28336E4F0;
   }
@@ -52,17 +52,17 @@
   return v4;
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (![v11 isEqual:@"hidden"] || !objc_msgSend(v12, "isEqual:", @"presented"))
+  fromCopy = from;
+  toCopy = to;
+  sequenceCopy = sequence;
+  stateCopy = state;
+  if (![sequenceCopy isEqual:@"hidden"] || !objc_msgSend(stateCopy, "isEqual:", @"presented"))
   {
-    if ([v11 isEqual:@"presented"] && objc_msgSend(v12, "isEqual:", @"hidden"))
+    if ([sequenceCopy isEqual:@"presented"] && objc_msgSend(stateCopy, "isEqual:", @"hidden"))
     {
-      if ([v9 isEqual:@"Sleep"])
+      if ([fromCopy isEqual:@"Sleep"])
       {
         goto LABEL_17;
       }
@@ -70,9 +70,9 @@
 
     else
     {
-      if ([v11 isEqual:@"presented"] && objc_msgSend(v12, "isEqual:", @"presented"))
+      if ([sequenceCopy isEqual:@"presented"] && objc_msgSend(stateCopy, "isEqual:", @"presented"))
       {
-        if ([v9 isEqual:@"Sleep"])
+        if ([fromCopy isEqual:@"Sleep"])
         {
 LABEL_17:
           LOBYTE(v13) = 0;
@@ -82,23 +82,23 @@ LABEL_17:
         goto LABEL_12;
       }
 
-      if (![v11 isEqual:@"hidden"] || !objc_msgSend(v12, "isEqual:", @"hidden") || !objc_msgSend(v9, "isEqual:", @"Sleep"))
+      if (![sequenceCopy isEqual:@"hidden"] || !objc_msgSend(stateCopy, "isEqual:", @"hidden") || !objc_msgSend(fromCopy, "isEqual:", @"Sleep"))
       {
         goto LABEL_17;
       }
     }
 
-    LOBYTE(v13) = [v10 isEqual:@"Sleep"];
+    LOBYTE(v13) = [toCopy isEqual:@"Sleep"];
     goto LABEL_18;
   }
 
-  if (![v9 isEqual:@"Sleep"])
+  if (![fromCopy isEqual:@"Sleep"])
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  v13 = [v10 isEqual:@"Sleep"] ^ 1;
+  v13 = [toCopy isEqual:@"Sleep"] ^ 1;
 LABEL_18:
 
   return v13;
@@ -114,10 +114,10 @@ LABEL_18:
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   resetGeneration = self->_resetGeneration;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -125,9 +125,9 @@ LABEL_18:
   v22[3] = &unk_2783AB780;
   v22[4] = self;
   v25 = resetGeneration;
-  v9 = v6;
+  v9 = stateCopy;
   v23 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v24 = v10;
   v11 = MEMORY[0x223D6F7F0](v22);
   v12 = dispatch_time(0, 2000000000);
@@ -194,10 +194,10 @@ uint64_t __65__SBPrototypeFlipBookElementDescription_resetToState_completion___b
   return (*(a1[6] + 16))();
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   transitionGeneration = self->_transitionGeneration;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -205,9 +205,9 @@ uint64_t __65__SBPrototypeFlipBookElementDescription_resetToState_completion___b
   v22[3] = &unk_2783AB780;
   v22[4] = self;
   v25 = transitionGeneration;
-  v9 = v6;
+  v9 = stateCopy;
   v23 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v24 = v10;
   v11 = MEMORY[0x223D6F7F0](v22);
   v12 = dispatch_time(0, 2000000000);

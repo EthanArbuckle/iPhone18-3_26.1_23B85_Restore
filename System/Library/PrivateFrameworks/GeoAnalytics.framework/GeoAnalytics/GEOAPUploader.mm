@@ -1,21 +1,21 @@
 @interface GEOAPUploader
 - (BOOL)_debugUploadCountersEnabled;
 - (GEOAPUploader)init;
-- (id)_additionalHTTPHeadersForAnalyticSessionType:(int)a3;
-- (id)_urlForAnalyticSessionType:(int)a3;
-- (id)_urlForBatchId:(unint64_t)a3;
-- (id)filePathForTaskDescription:(id)a3;
-- (id)fileURLForTaskDescription:(id)a3;
+- (id)_additionalHTTPHeadersForAnalyticSessionType:(int)type;
+- (id)_urlForAnalyticSessionType:(int)type;
+- (id)_urlForBatchId:(unint64_t)id;
+- (id)filePathForTaskDescription:(id)description;
+- (id)fileURLForTaskDescription:(id)description;
 - (id)persistence;
 - (id)tempFilePathForTaskDescription;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)_clearExpired;
 - (void)_clearHolddownTimer;
 - (void)_clearUploadTimer;
 - (void)_setupBackgroundTask;
-- (void)_startHolddownTimerForDuration:(double)a3;
-- (void)_startUploadTimerForDuration:(double)a3;
-- (void)_submitBatchForUploadWithBatchId:(unint64_t)a3;
+- (void)_startHolddownTimerForDuration:(double)duration;
+- (void)_startUploadTimerForDuration:(double)duration;
+- (void)_submitBatchForUploadWithBatchId:(unint64_t)id;
 - (void)_submitBatchesForUpload;
 @end
 
@@ -50,19 +50,19 @@
   return BOOL;
 }
 
-- (id)_additionalHTTPHeadersForAnalyticSessionType:(int)a3
+- (id)_additionalHTTPHeadersForAnalyticSessionType:(int)type
 {
   v4 = +[GEOPlatform sharedPlatform];
-  v5 = [v4 isInternalInstall];
+  isInternalInstall = [v4 isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
     v6 = +[NSMutableDictionary dictionary];
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
-    [v6 setObject:v8 forKeyedSubscript:@"X-uuid"];
+    uUIDString = [v7 UUIDString];
+    [v6 setObject:uUIDString forKeyedSubscript:@"X-uuid"];
 
-    if (a3 != 12)
+    if (type != 12)
     {
       goto LABEL_9;
     }
@@ -75,14 +75,14 @@
     goto LABEL_6;
   }
 
-  if (a3 == 12)
+  if (type == 12)
   {
 LABEL_6:
     v6 = +[NSMutableDictionary dictionary];
 LABEL_7:
     v9 = +[GEOPlatform sharedPlatform];
-    v10 = [v9 osAndBuildVersion];
-    [v6 setObject:v10 forKeyedSubscript:@"X-os-version"];
+    osAndBuildVersion = [v9 osAndBuildVersion];
+    [v6 setObject:osAndBuildVersion forKeyedSubscript:@"X-os-version"];
 
     goto LABEL_9;
   }
@@ -102,12 +102,12 @@ LABEL_9:
   return v11;
 }
 
-- (id)_urlForAnalyticSessionType:(int)a3
+- (id)_urlForAnalyticSessionType:(int)type
 {
   v4 = 0;
   if (([(GEOAPConfigProviding *)self->_configProvider simulateNoURLs]& 1) == 0)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
       case 2:
@@ -143,43 +143,43 @@ LABEL_9:
   return v4;
 }
 
-- (id)_urlForBatchId:(unint64_t)a3
+- (id)_urlForBatchId:(unint64_t)id
 {
   v4 = GEOBatchAnalyticsSessionType();
 
   return [(GEOAPUploader *)self _urlForAnalyticSessionType:v4];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   uploadQueue = self->_uploadQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012AE0;
   block[3] = &unk_10003D188;
-  v13 = v8;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
-  v11 = v8;
+  v13 = errorCopy;
+  v14 = taskCopy;
+  selfCopy = self;
+  v10 = taskCopy;
+  v11 = errorCopy;
   dispatch_sync(uploadQueue, block);
 }
 
-- (id)fileURLForTaskDescription:(id)a3
+- (id)fileURLForTaskDescription:(id)description
 {
-  v3 = [(GEOAPUploader *)self filePathForTaskDescription:a3];
+  v3 = [(GEOAPUploader *)self filePathForTaskDescription:description];
   v4 = [NSURL fileURLWithPath:v3];
 
   return v4;
 }
 
-- (id)filePathForTaskDescription:(id)a3
+- (id)filePathForTaskDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = +[GEOAPUtils GEOAPCachePath];
-  v5 = [v4 stringByAppendingPathComponent:v3];
+  v5 = [v4 stringByAppendingPathComponent:descriptionCopy];
 
   return v5;
 }
@@ -188,13 +188,13 @@ LABEL_9:
 {
   v2 = +[GEOAPUtils GEOAPCachePath];
   v3 = objc_alloc_init(NSUUID);
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringByAppendingPathComponent:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [v2 stringByAppendingPathComponent:uUIDString];
 
   return v5;
 }
 
-- (void)_submitBatchForUploadWithBatchId:(unint64_t)a3
+- (void)_submitBatchForUploadWithBatchId:(unint64_t)id
 {
   v53 = [(GEOAPUploader *)self _urlForBatchId:?];
   holddown = self->_holddown;
@@ -234,7 +234,7 @@ LABEL_9:
     v85 = 0x2020000000;
     v86 = 0;
     v6 = +[NSUUID UUID];
-    v52 = [v6 UUIDString];
+    uUIDString = [v6 UUIDString];
 
     v7 = GEOBatchUploadPolicyType();
     v8 = sub_100001E4C();
@@ -242,7 +242,7 @@ LABEL_9:
     {
       v9 = GEOBatchDescription();
       *buf = 138412546;
-      *&buf[4] = v52;
+      *&buf[4] = uUIDString;
       *&buf[12] = 2112;
       *&buf[14] = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "(%@) upload requested for %@", buf, 0x16u);
@@ -273,23 +273,23 @@ LABEL_9:
       v51 = *(&off_10003D1E8 + v7);
     }
 
-    v17 = [v11 uploadStages];
-    v18 = [v17 firstObject];
+    uploadStages = [v11 uploadStages];
+    firstObject = [uploadStages firstObject];
 
-    v19 = [v18 urlSessionConfig];
-    v20 = [v19 type];
+    urlSessionConfig = [firstObject urlSessionConfig];
+    type = [urlSessionConfig type];
 
-    if (v20 >= 7)
+    if (type >= 7)
     {
-      v50 = [NSString stringWithFormat:@"(unknown: %i)", v20];
+      v50 = [NSString stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v50 = *(&off_10003D258 + v20);
+      v50 = *(&off_10003D258 + type);
     }
 
-    [v18 ttl];
+    [firstObject ttl];
     v22 = v21;
     v23 = [GEOAPUploadFileWriter alloc];
     if (v23)
@@ -304,11 +304,11 @@ LABEL_9:
       }
 
       LODWORD(v24[1]._sessionCache) = 0;
-      v24->_uploadTimer = a3;
+      v24->_uploadTimer = id;
       v26 = +[GEOAPUtils GEOAPCachePath];
       v27 = objc_alloc_init(NSUUID);
-      v28 = [v27 UUIDString];
-      v29 = [v26 stringByAppendingPathComponent:v28];
+      uUIDString2 = [v27 UUIDString];
+      v29 = [v26 stringByAppendingPathComponent:uUIDString2];
       holddownTimer = v25->_holddownTimer;
       v25->_holddownTimer = v29;
 
@@ -350,13 +350,13 @@ LABEL_9:
         if (![(GEOAPConfigProviding *)self->_configProvider simulateFileWriteError])
         {
           [(GEOAPUploadHolddown *)self->_holddown createFileConditionMet];
-          v39 = [(GEOAPTimeProviding *)self->_timeProvider dateNow];
-          v40 = [(GEOAPUploader *)self persistence];
+          dateNow = [(GEOAPTimeProviding *)self->_timeProvider dateNow];
+          persistence = [(GEOAPUploader *)self persistence];
           v72[0] = _NSConcreteStackBlock;
           v72[1] = 3221225472;
           v72[2] = sub_100015014;
           v72[3] = &unk_10003D0E8;
-          v49 = v39;
+          v49 = dateNow;
           v73 = v49;
           v76 = v99;
           v77 = &v95;
@@ -364,9 +364,9 @@ LABEL_9:
           v79 = &v105;
           v80 = &v87;
           v74 = v38;
-          v75 = v52;
+          v75 = uUIDString;
           v81 = v93;
-          v82 = a3;
+          idCopy = id;
           v54[0] = _NSConcreteStackBlock;
           v54[1] = 3221225472;
           v54[2] = sub_1000155C4;
@@ -376,21 +376,21 @@ LABEL_9:
           v55 = v48;
           v62 = &v95;
           v63 = &v105;
-          v68 = a3;
+          idCopy2 = id;
           v69 = v22;
           v56 = v50;
           v57 = v51;
           v64 = &v100;
           v65 = &v87;
-          v71 = v20;
+          v71 = type;
           v38 = v74;
           v66 = &v83;
           v58 = v38;
-          v59 = self;
+          selfCopy = self;
           v70 = v14;
           v60 = v53;
           v67 = v99;
-          v41 = [v40 selectLogMsgsForBatchUploadWithBatchId:a3 visitorBlock:v72 completionBlock:v54];
+          v41 = [persistence selectLogMsgsForBatchUploadWithBatchId:id visitorBlock:v72 completionBlock:v54];
 
           if (v41)
           {
@@ -399,7 +399,7 @@ LABEL_9:
             {
               v42 = +[GEOAPDebugPersistence sharedInstance];
               LODWORD(v47) = 1;
-              [v42 addInflightUploadWithBatchUUID:v48 createTime:v88[5] sessionType:GEOBatchAnalyticsSessionType() eventCount:*(v96 + 6) uploadSize:*(v101 + 6) uploadPolicy:v20 stageNum:v47];
+              [v42 addInflightUploadWithBatchUUID:v48 createTime:v88[5] sessionType:GEOBatchAnalyticsSessionType() eventCount:*(v96 + 6) uploadSize:*(v101 + 6) uploadPolicy:type stageNum:v47];
             }
           }
 
@@ -437,7 +437,7 @@ LABEL_37:
         {
           v46 = GEOBatchDescription();
           *buf = 138412546;
-          *&buf[4] = v52;
+          *&buf[4] = uUIDString;
           *&buf[12] = 2112;
           *&buf[14] = v46;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "(%@) unable to create upload file writer for %@; unable to upload right now", buf, 0x16u);
@@ -476,10 +476,10 @@ LABEL_41:
   v3 = sub_10000E510();
   if (!v3 || (v4 = v3[32], v3, (v4 & 1) == 0))
   {
-    v5 = [(GEOAPUploader *)self persistence];
-    v6 = [v5 pendingBatchesReadyForUpload];
+    persistence = [(GEOAPUploader *)self persistence];
+    pendingBatchesReadyForUpload = [persistence pendingBatchesReadyForUpload];
 
-    v7 = [v6 count];
+    v7 = [pendingBatchesReadyForUpload count];
     v8 = sub_100001E4C();
     v9 = v8;
     if (v7)
@@ -487,7 +487,7 @@ LABEL_41:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v20 = [v6 count];
+        v20 = [pendingBatchesReadyForUpload count];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%lu types are ready", buf, 0xCu);
       }
 
@@ -495,7 +495,7 @@ LABEL_41:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v9 = v6;
+      v9 = pendingBatchesReadyForUpload;
       v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v10)
       {
@@ -532,8 +532,8 @@ LABEL_41:
 
 - (void)_clearExpired
 {
-  v2 = [(GEOAPUploader *)self persistence];
-  [v2 clearExpiredLogMsgsWithResultBlock:&stru_10003D0C0];
+  persistence = [(GEOAPUploader *)self persistence];
+  [persistence clearExpiredLogMsgsWithResultBlock:&stru_10003D0C0];
 }
 
 - (void)_clearHolddownTimer
@@ -547,9 +547,9 @@ LABEL_41:
   }
 }
 
-- (void)_startHolddownTimerForDuration:(double)a3
+- (void)_startHolddownTimerForDuration:(double)duration
 {
-  v4 = vcvtpd_s64_f64(a3);
+  v4 = vcvtpd_s64_f64(duration);
   v5 = dispatch_time(0, 1000000000 * v4);
   dispatch_source_set_timer(self->_holddownTimer, v5, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   v6 = sub_100001E4C();
@@ -572,9 +572,9 @@ LABEL_41:
   }
 }
 
-- (void)_startUploadTimerForDuration:(double)a3
+- (void)_startUploadTimerForDuration:(double)duration
 {
-  v4 = vcvtpd_s64_f64(a3);
+  v4 = vcvtpd_s64_f64(duration);
   v5 = dispatch_time(0, 1000000000 * v4);
   dispatch_source_set_timer(self->_uploadTimer, v5, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   v6 = sub_100001E4C();
@@ -608,7 +608,7 @@ LABEL_41:
 
     v4 = v3;
     _Block_object_dispose(&v12, 8);
-    v5 = [v4 sharedScheduler];
+    sharedScheduler = [v4 sharedScheduler];
     v6 = geo_dispatch_queue_create_with_qos();
     v7 = sub_10000C6AC();
     v10[0] = _NSConcreteStackBlock;
@@ -618,7 +618,7 @@ LABEL_41:
     v10[4] = self;
     v11 = v6;
     v8 = v6;
-    if (([v5 registerForTaskWithIdentifier:@"com.apple.geo.analytics" usingQueue:v8 launchHandler:v10] & 1) == 0)
+    if (([sharedScheduler registerForTaskWithIdentifier:@"com.apple.geo.analytics" usingQueue:v8 launchHandler:v10] & 1) == 0)
     {
       v9 = sub_100001E4C();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

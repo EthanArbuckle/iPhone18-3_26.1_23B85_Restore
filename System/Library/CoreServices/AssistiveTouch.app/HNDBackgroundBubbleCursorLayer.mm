@@ -1,10 +1,10 @@
 @interface HNDBackgroundBubbleCursorLayer
-- (id)_strokeColorForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5;
+- (id)_strokeColorForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier;
 @end
 
 @implementation HNDBackgroundBubbleCursorLayer
 
-- (id)_strokeColorForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5
+- (id)_strokeColorForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier
 {
   if (_AXSPointerStrokeColor() && _AXSPointerStrokeColor() != 1 && (_AXSPointerStrokeColor(), _AXSPointerStrokeColorValues()))
   {

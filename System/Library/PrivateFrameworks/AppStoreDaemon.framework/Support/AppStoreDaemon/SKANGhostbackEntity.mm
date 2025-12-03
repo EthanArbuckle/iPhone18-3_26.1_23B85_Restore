@@ -1,6 +1,6 @@
 @interface SKANGhostbackEntity
 + (id)defaultProperties;
-- (BOOL)canUpdateWithRestrictedConversionValue:(int64_t)a3;
+- (BOOL)canUpdateWithRestrictedConversionValue:(int64_t)value;
 @end
 
 @implementation SKANGhostbackEntity
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (BOOL)canUpdateWithRestrictedConversionValue:(int64_t)a3
+- (BOOL)canUpdateWithRestrictedConversionValue:(int64_t)value
 {
   v5 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
   [v5 timeIntervalSince1970];
@@ -41,9 +41,9 @@
   }
 
   v13 = sub_100340154(self, @"restricted_update_timestamp");
-  v14 = [v13 longLongValue];
+  longLongValue = [v13 longLongValue];
 
-  v15 = v14 >= (v7 * 1000.0) && sub_1003402E8(self, @"restricted_conversion_value") < a3;
+  v15 = longLongValue >= (v7 * 1000.0) && sub_1003402E8(self, @"restricted_conversion_value") < value;
   return v15;
 }
 

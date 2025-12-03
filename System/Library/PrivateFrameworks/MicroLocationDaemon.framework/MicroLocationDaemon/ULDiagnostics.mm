@@ -1,32 +1,32 @@
 @interface ULDiagnostics
-- (ULDiagnostics)initWithLabel:(id)a3;
+- (ULDiagnostics)initWithLabel:(id)label;
 - (id)_diagnosticsInfo;
-- (os_state_data_s)_stateDataForInfo:(id)a3;
+- (os_state_data_s)_stateDataForInfo:(id)info;
 - (void)_registerStateHandler;
-- (void)_withLock:(id)a3;
-- (void)addProvider:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addProvider:(id)provider;
 - (void)dealloc;
-- (void)removeProvider:(id)a3;
+- (void)removeProvider:(id)provider;
 @end
 
 @implementation ULDiagnostics
 
-- (ULDiagnostics)initWithLabel:(id)a3
+- (ULDiagnostics)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = ULDiagnostics;
   v5 = [(ULDiagnostics *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(ULDiagnostics *)v5 setLabel:v4];
+    [(ULDiagnostics *)v5 setLabel:labelCopy];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.milod.ULDiagnostics", v7);
     [(ULDiagnostics *)v6 setQueue:v8];
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(ULDiagnostics *)v6 setProviders:v9];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(ULDiagnostics *)v6 setProviders:weakObjectsHashTable];
 
     [(ULDiagnostics *)v6 setProvidersLock:0];
     [(ULDiagnostics *)v6 _registerStateHandler];
@@ -44,16 +44,16 @@
   [(ULDiagnostics *)&v3 dealloc];
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__ULDiagnostics_addProvider___block_invoke;
   v6[3] = &unk_2798D4280;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = providerCopy;
+  selfCopy = self;
+  v5 = providerCopy;
   [(ULDiagnostics *)self _withLock:v6];
 }
 
@@ -83,16 +83,16 @@ void __29__ULDiagnostics_addProvider___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__ULDiagnostics_removeProvider___block_invoke;
   v6[3] = &unk_2798D4280;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = providerCopy;
+  selfCopy = self;
+  v5 = providerCopy;
   [(ULDiagnostics *)self _withLock:v6];
 }
 
@@ -125,7 +125,7 @@ void __32__ULDiagnostics_removeProvider___block_invoke(uint64_t a1)
 - (void)_registerStateHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(ULDiagnostics *)self queue];
+  queue = [(ULDiagnostics *)self queue];
   v4 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v5, &location);
   [(ULDiagnostics *)self setStateHandle:os_state_add_handler(), v4, 3221225472, __38__ULDiagnostics__registerStateHandler__block_invoke, &unk_2798D5680];
@@ -184,7 +184,7 @@ uint64_t __38__ULDiagnostics__registerStateHandler__block_invoke(uint64_t a1, ui
 - (id)_diagnosticsInfo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -217,11 +217,11 @@ uint64_t __38__ULDiagnostics__registerStateHandler__block_invoke(uint64_t a1, ui
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) diagnosticInfo];
-        v10 = v9;
-        if (v9)
+        diagnosticInfo = [*(*(&v16 + 1) + 8 * i) diagnosticInfo];
+        v10 = diagnosticInfo;
+        if (diagnosticInfo)
         {
-          v11 = v9;
+          v11 = diagnosticInfo;
         }
 
         else
@@ -231,7 +231,7 @@ uint64_t __38__ULDiagnostics__registerStateHandler__block_invoke(uint64_t a1, ui
 
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        [v3 setObject:v11 forKeyedSubscript:v13];
+        [dictionary setObject:v11 forKeyedSubscript:v13];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v16 objects:v27 count:16];
@@ -243,7 +243,7 @@ uint64_t __38__ULDiagnostics__registerStateHandler__block_invoke(uint64_t a1, ui
   _Block_object_dispose(&v21, 8);
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 void __33__ULDiagnostics__diagnosticsInfo__block_invoke(uint64_t a1)
@@ -255,11 +255,11 @@ void __33__ULDiagnostics__diagnosticsInfo__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (os_state_data_s)_stateDataForInfo:(id)a3
+- (os_state_data_s)_stateDataForInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v14];
+  v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:info format:200 options:0 error:&v14];
   v5 = v14;
   v6 = [v4 length];
   if (v5)
@@ -287,8 +287,8 @@ void __33__ULDiagnostics__diagnosticsInfo__block_invoke(uint64_t a1)
     v8 = malloc_type_calloc(1uLL, v6 + 200, 0x1000040BEF03554uLL);
     v8->var0 = 1;
     v8->var1.var1 = v9;
-    v11 = [(ULDiagnostics *)self label];
-    [v11 UTF8String];
+    label = [(ULDiagnostics *)self label];
+    [label UTF8String];
     __strlcpy_chk();
 
     memcpy(v8->var4, [v4 bytes], v10);
@@ -298,11 +298,11 @@ void __33__ULDiagnostics__diagnosticsInfo__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_providersLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_providersLock);
 }

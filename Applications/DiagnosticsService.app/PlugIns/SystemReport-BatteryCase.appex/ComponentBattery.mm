@@ -2,7 +2,7 @@
 - (BOOL)isPresent;
 - (ComponentBattery)init;
 - (id)batterySerialNumber;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentBattery
@@ -26,30 +26,30 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentBattery *)self psDevice];
-  v3 = v2 != 0;
+  psDevice = [(ComponentBattery *)self psDevice];
+  v3 = psDevice != 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v9 = a3;
-  v4 = [(ComponentBattery *)self psDevice];
-  v5 = [v4 information];
-  [v9 addEntriesFromDictionary:v5];
+  attributesCopy = attributes;
+  psDevice = [(ComponentBattery *)self psDevice];
+  information = [psDevice information];
+  [attributesCopy addEntriesFromDictionary:information];
 
   v6 = [DSIOHIDDevice deviceMatchingAccessories:&off_10000D100];
   [(ComponentBattery *)self setHidDevice:v6];
 
-  v7 = [(ComponentBattery *)self hidDevice];
+  hidDevice = [(ComponentBattery *)self hidDevice];
 
-  if (v7)
+  if (hidDevice)
   {
-    v8 = [(ComponentBattery *)self batterySerialNumber];
-    if (v8)
+    batterySerialNumber = [(ComponentBattery *)self batterySerialNumber];
+    if (batterySerialNumber)
     {
-      [v9 setObject:v8 forKeyedSubscript:@"batterySerialNumber"];
+      [attributesCopy setObject:batterySerialNumber forKeyedSubscript:@"batterySerialNumber"];
     }
   }
 }

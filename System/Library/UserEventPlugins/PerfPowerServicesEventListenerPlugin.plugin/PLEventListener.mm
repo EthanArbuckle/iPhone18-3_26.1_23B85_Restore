@@ -1,20 +1,20 @@
 @interface PLEventListener
 + (BOOL)hasBattery;
-- (PLEventListener)initWithQueue:(id)a3;
+- (PLEventListener)initWithQueue:(id)queue;
 - (void)dealloc;
 - (void)registerForThermalNotification;
 @end
 
 @implementation PLEventListener
 
-- (PLEventListener)initWithQueue:(id)a3
+- (PLEventListener)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = PLEventListener;
   v4 = [(PLEventListener *)&v6 init];
   if (v4)
   {
-    v4->_powerEventListener = [[PLPowerEventListener alloc] initWithQueue:a3];
+    v4->_powerEventListener = [[PLPowerEventListener alloc] initWithQueue:queue];
     v4->_aggregateLogger = objc_alloc_init(PLAggregateLogger);
     [(PLEventListener *)v4 registerForThermalNotification];
   }

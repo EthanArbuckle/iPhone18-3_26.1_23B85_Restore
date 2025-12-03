@@ -1,21 +1,21 @@
 @interface PXCMMTranscriptTextView
-- (CGSize)_performLayoutInSize:(CGSize)a3 minimizingSize:(BOOL)a4 updateSubviewFrames:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCMMTranscriptTextView)initWithCoder:(id)a3;
-- (PXCMMTranscriptTextView)initWithFrame:(CGRect)a3;
+- (CGSize)_performLayoutInSize:(CGSize)size minimizingSize:(BOOL)minimizingSize updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCMMTranscriptTextView)initWithCoder:(id)coder;
+- (PXCMMTranscriptTextView)initWithFrame:(CGRect)frame;
 - (void)_updatePrimaryLabel;
 - (void)_updateSecondaryLabel;
 - (void)layoutSubviews;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
 @end
 
 @implementation PXCMMTranscriptTextView
 
 - (void)_updateSecondaryLabel
 {
-  v3 = [(PXCMMTranscriptTextView *)self secondaryText];
-  v4 = [v3 length];
+  secondaryText = [(PXCMMTranscriptTextView *)self secondaryText];
+  v4 = [secondaryText length];
 
   secondaryLabel = self->_secondaryLabel;
   if (v4)
@@ -30,9 +30,9 @@
       PXFontWithTextStyleSymbolicTraits();
     }
 
-    v10 = [(PXCMMTranscriptTextView *)self secondaryText];
-    [(UILabel *)self->_secondaryLabel setText:v10];
-    v9 = v10;
+    secondaryText2 = [(PXCMMTranscriptTextView *)self secondaryText];
+    [(UILabel *)self->_secondaryLabel setText:secondaryText2];
+    v9 = secondaryText2;
   }
 
   else
@@ -55,22 +55,22 @@
     PXFontWithTextStyleSymbolicTraits();
   }
 
-  v6 = [(PXCMMTranscriptTextView *)self primaryText];
-  [(UILabel *)self->_primaryLabel setText:v6];
+  primaryText = [(PXCMMTranscriptTextView *)self primaryText];
+  [(UILabel *)self->_primaryLabel setText:primaryText];
 }
 
-- (CGSize)_performLayoutInSize:(CGSize)a3 minimizingSize:(BOOL)a4 updateSubviewFrames:(BOOL)a5
+- (CGSize)_performLayoutInSize:(CGSize)size minimizingSize:(BOOL)minimizingSize updateSubviewFrames:(BOOL)frames
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
+  framesCopy = frames;
+  minimizingSizeCopy = minimizingSize;
+  height = size.height;
+  width = size.width;
   [(PXUpdater *)self->_updater updateIfNeeded];
   primaryLabel = self->_primaryLabel;
   if (!primaryLabel)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptTextView.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_primaryLabel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptTextView.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_primaryLabel"}];
 
     primaryLabel = self->_primaryLabel;
   }
@@ -78,7 +78,7 @@
   [(UILabel *)primaryLabel sizeThatFits:width, height];
   v14 = v13;
   v15 = v12;
-  if (v6)
+  if (minimizingSizeCopy)
   {
     PXSizeClampToSize();
   }
@@ -121,7 +121,7 @@
   v35.size.height = v19;
   v24 = CGRectGetMaxY(v35);
   v25 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[PXCMMTranscriptTextView semanticContentAttribute](self, "semanticContentAttribute")}];
-  if (v5)
+  if (framesCopy)
   {
     v26 = v23 - v14;
     if (v25 == 1)
@@ -154,23 +154,23 @@
   [(PXCMMTranscriptTextView *)self _performLayoutInSize:1 minimizingSize:1 updateSubviewFrames:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXCMMTranscriptTextView *)self _performLayoutInSize:0 minimizingSize:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXCMMTranscriptTextView *)self _performLayoutInSize:0 minimizingSize:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   secondaryText = self->_secondaryText;
-  if (secondaryText != v4)
+  if (secondaryText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)secondaryText isEqualToString:v4];
-    v4 = v9;
+    v9 = textCopy;
+    v6 = [(NSString *)secondaryText isEqualToString:textCopy];
+    textCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -178,20 +178,20 @@
       self->_secondaryText = v7;
 
       [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateSecondaryLabel];
-      v4 = v9;
+      textCopy = v9;
     }
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  if (primaryText != v4)
+  if (primaryText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)primaryText isEqualToString:v4];
-    v4 = v9;
+    v9 = textCopy;
+    v6 = [(NSString *)primaryText isEqualToString:textCopy];
+    textCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -199,16 +199,16 @@
       self->_primaryText = v7;
 
       [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updatePrimaryLabel];
-      v4 = v9;
+      textCopy = v9;
     }
   }
 }
 
-- (PXCMMTranscriptTextView)initWithFrame:(CGRect)a3
+- (PXCMMTranscriptTextView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXCMMTranscriptTextView;
-  v3 = [(PXCMMTranscriptTextView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCMMTranscriptTextView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[off_1E7721940 alloc] initWithTarget:v3 needsUpdateSelector:sel_setNeedsLayout];
@@ -222,11 +222,11 @@
   return v3;
 }
 
-- (PXCMMTranscriptTextView)initWithCoder:(id)a3
+- (PXCMMTranscriptTextView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptTextView.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXCMMTranscriptTextView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptTextView.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXCMMTranscriptTextView initWithCoder:]"}];
 
   abort();
 }

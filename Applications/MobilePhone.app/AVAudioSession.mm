@@ -8,8 +8,8 @@
 
 - (BOOL)isCategoryVoicemail
 {
-  v2 = [(AVAudioSession *)self category];
-  v3 = [v2 isEqualToString:AVAudioSessionCategoryVoiceMail];
+  category = [(AVAudioSession *)self category];
+  v3 = [category isEqualToString:AVAudioSessionCategoryVoiceMail];
 
   return v3;
 }
@@ -79,17 +79,17 @@
   v8 = v7;
   if ((v6 & 1) == 0)
   {
-    v9 = [v7 code];
+    code = [v7 code];
     v10 = vm_ui_log();
     v11 = v10;
-    v5 = v9 == 560030580;
+    v5 = code == 560030580;
     if (v5)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v12 = [v8 code];
+        code2 = [v8 code];
         *buf = 134217984;
-        v17 = v12;
+        v17 = code2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Audio session deactivation was unsucessful, but error code was %ld so treating as success", buf, 0xCu);
       }
     }

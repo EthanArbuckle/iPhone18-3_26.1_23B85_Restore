@@ -1,28 +1,28 @@
 @interface SUUIScrollingTabNavigationBar
 - (UIOffset)positionOffset;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPositionOffset:(UIOffset)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setPositionOffset:(UIOffset)offset;
 @end
 
 @implementation SUUIScrollingTabNavigationBar
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  v3 = a3.x + self->_positionOffset.horizontal;
-  v4 = a3.y + self->_positionOffset.vertical;
+  v3 = center.x + self->_positionOffset.horizontal;
+  v4 = center.y + self->_positionOffset.vertical;
   v5.receiver = self;
   v5.super_class = SUUIScrollingTabNavigationBar;
   [(SUUIScrollingTabNavigationBar *)&v5 setCenter:v3, v4];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + self->_positionOffset.horizontal;
-  v4 = a3.origin.y + self->_positionOffset.vertical;
+  v3 = frame.origin.x + self->_positionOffset.horizontal;
+  v4 = frame.origin.y + self->_positionOffset.vertical;
   v5.receiver = self;
   v5.super_class = SUUIScrollingTabNavigationBar;
-  [(SUUIScrollingTabNavigationBar *)&v5 setFrame:v3, v4, a3.size.width, a3.size.height];
+  [(SUUIScrollingTabNavigationBar *)&v5 setFrame:v3, v4, frame.size.width, frame.size.height];
 }
 
 - (UIOffset)positionOffset
@@ -34,12 +34,12 @@
   return result;
 }
 
-- (void)setPositionOffset:(UIOffset)a3
+- (void)setPositionOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   p_positionOffset = &self->_positionOffset;
-  if (self->_positionOffset.horizontal != a3.horizontal || self->_positionOffset.vertical != a3.vertical)
+  if (self->_positionOffset.horizontal != offset.horizontal || self->_positionOffset.vertical != offset.vertical)
   {
     [(SUUIScrollingTabNavigationBar *)self center];
     v8 = p_positionOffset->vertical;

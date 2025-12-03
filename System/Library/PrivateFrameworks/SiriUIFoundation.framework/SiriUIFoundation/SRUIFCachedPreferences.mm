@@ -10,15 +10,15 @@
 - (NSDictionary)assistantUODStatus;
 - (SRUIFCachedPreferences)init;
 - (UAFAssetStatus)assetStatus;
-- (void)_notifyObserversOfSettingsChangeWithBlock:(id)a3;
-- (void)_setAnnounceNotificationsInCarPlayTemporarilyDisabled:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversOfSettingsChangeWithBlock:(id)block;
+- (void)_setAnnounceNotificationsInCarPlayTemporarilyDisabled:(BOOL)disabled;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)handleAssetStatusUpdated;
 - (void)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
-- (void)siriUODAvailabilityDidChange:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
+- (void)siriUODAvailabilityDidChange:(BOOL)change;
 - (void)siriUODStatusDidChange;
 - (void)updatePreferences;
 @end
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __40__SRUIFCachedPreferences_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -282,9 +282,9 @@ uint64_t __40__SRUIFCachedPreferences_sharedInstance__block_invoke(uint64_t a1)
       [(SRUIFCachedPreferences *)v4 init];
     }
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v7 = dispatch_queue_create("SRUIFCachedPreferences", 0);
     queue = v2->_queue;
@@ -296,8 +296,8 @@ uint64_t __40__SRUIFCachedPreferences_sharedInstance__block_invoke(uint64_t a1)
 
     [(NSUserDefaults *)v2->_textInputDefaults addObserver:v2 forKeyPath:@"SiriUITextInputEnabled" options:5 context:&SRUIFCachedPreferencesContext];
     [(NSUserDefaults *)v2->_textInputDefaults addObserver:v2 forKeyPath:@"SiriUITextInputHTTEnabled" options:5 context:&SRUIFCachedPreferencesContext];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel_updatePreferences name:*MEMORY[0x277CEF060] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updatePreferences name:*MEMORY[0x277CEF060] object:0];
 
     [(SRUIFCachedPreferences *)v2 updatePreferences];
     v2->_understandingOnDeviceAssetsAvailable = 1;
@@ -319,8 +319,8 @@ uint64_t __40__SRUIFCachedPreferences_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NSUserDefaults *)self->_textInputDefaults removeObserver:self forKeyPath:@"SiriUITextInputEnabled" context:&SRUIFCachedPreferencesContext];
   [(NSUserDefaults *)self->_textInputDefaults removeObserver:self forKeyPath:@"SiriUITextInputHTTEnabled" context:&SRUIFCachedPreferencesContext];
@@ -330,9 +330,9 @@ uint64_t __40__SRUIFCachedPreferences_sharedInstance__block_invoke(uint64_t a1)
   [(SRUIFCachedPreferences *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -340,8 +340,8 @@ uint64_t __40__SRUIFCachedPreferences_sharedInstance__block_invoke(uint64_t a1)
   block[2] = __38__SRUIFCachedPreferences_addObserver___block_invoke;
   block[3] = &unk_279C61898;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -359,9 +359,9 @@ void __38__SRUIFCachedPreferences_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -369,8 +369,8 @@ void __38__SRUIFCachedPreferences_addObserver___block_invoke(uint64_t a1)
   block[2] = __41__SRUIFCachedPreferences_removeObserver___block_invoke;
   block[3] = &unk_279C61898;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -452,16 +452,16 @@ void __53__SRUIFCachedPreferences_isStreamingDictationEnabled__block_invoke(uint
 
 - (BOOL)assetsNeedSpace
 {
-  v2 = [(SRUIFCachedPreferences *)self assetStatus];
-  v3 = [v2 state] == 6;
+  assetStatus = [(SRUIFCachedPreferences *)self assetStatus];
+  v3 = [assetStatus state] == 6;
 
   return v3;
 }
 
 - (BOOL)assetsDownloading
 {
-  v2 = [(SRUIFCachedPreferences *)self assetStatus];
-  v3 = [v2 state] == 3;
+  assetStatus = [(SRUIFCachedPreferences *)self assetStatus];
+  v3 = [assetStatus state] == 3;
 
   return v3;
 }
@@ -510,7 +510,7 @@ void __53__SRUIFCachedPreferences_isStreamingDictationEnabled__block_invoke(uint
   return v3;
 }
 
-- (void)siriUODAvailabilityDidChange:(BOOL)a3
+- (void)siriUODAvailabilityDidChange:(BOOL)change
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -519,7 +519,7 @@ void __53__SRUIFCachedPreferences_isStreamingDictationEnabled__block_invoke(uint
   block[2] = __55__SRUIFCachedPreferences_siriUODAvailabilityDidChange___block_invoke;
   block[3] = &unk_279C627E0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  changeCopy = change;
   dispatch_async(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -551,18 +551,18 @@ void __55__SRUIFCachedPreferences_siriUODAvailabilityDidChange___block_invoke(ui
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAnnounceNotificationsInCarPlayTemporarilyDisabled:(BOOL)a3
+- (void)_setAnnounceNotificationsInCarPlayTemporarilyDisabled:(BOOL)disabled
 {
-  if ([(SRUIFCachedPreferences *)self announceNotificationsInCarPlayTemporarilyDisabled]!= a3)
+  if ([(SRUIFCachedPreferences *)self announceNotificationsInCarPlayTemporarilyDisabled]!= disabled)
   {
-    self->_announceNotificationsInCarPlayTemporarilyDisabled = a3;
+    self->_announceNotificationsInCarPlayTemporarilyDisabled = disabled;
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __80__SRUIFCachedPreferences__setAnnounceNotificationsInCarPlayTemporarilyDisabled___block_invoke;
     v5[3] = &unk_279C62808;
     objc_copyWeak(&v6, &location);
-    v7 = a3;
+    disabledCopy = disabled;
     [(SRUIFCachedPreferences *)self _notifyObserversOfSettingsChangeWithBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -579,22 +579,22 @@ void __80__SRUIFCachedPreferences__setAnnounceNotificationsInCarPlayTemporarilyD
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &SRUIFCachedPreferencesContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &SRUIFCachedPreferencesContext)
   {
-    if (self->_textInputDefaults == v11)
+    if (self->_textInputDefaults == objectCopy)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __73__SRUIFCachedPreferences_observeValueForKeyPath_ofObject_change_context___block_invoke;
       block[3] = &unk_279C61E10;
-      v16 = v10;
-      v17 = self;
+      v16 = pathCopy;
+      selfCopy = self;
       dispatch_async(queue, block);
     }
   }
@@ -603,7 +603,7 @@ void __80__SRUIFCachedPreferences__setAnnounceNotificationsInCarPlayTemporarilyD
   {
     v14.receiver = self;
     v14.super_class = SRUIFCachedPreferences;
-    [(SRUIFCachedPreferences *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SRUIFCachedPreferences *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -616,11 +616,11 @@ void __73__SRUIFCachedPreferences_observeValueForKeyPath_ofObject_change_context
   }
 }
 
-- (void)_notifyObserversOfSettingsChangeWithBlock:(id)a3
+- (void)_notifyObserversOfSettingsChangeWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -642,7 +642,7 @@ void __73__SRUIFCachedPreferences_observeValueForKeyPath_ofObject_change_context
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+          blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);

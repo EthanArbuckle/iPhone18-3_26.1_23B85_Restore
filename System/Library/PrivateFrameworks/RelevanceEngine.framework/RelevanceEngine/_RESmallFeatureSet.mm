@@ -1,31 +1,31 @@
 @interface _RESmallFeatureSet
-- (BOOL)containsFeature:(id)a3;
-- (_RESmallFeatureSet)initWithFeature:(id)a3;
-- (_RESmallFeatureSet)initWithFeatures:(id)a3;
+- (BOOL)containsFeature:(id)feature;
+- (_RESmallFeatureSet)initWithFeature:(id)feature;
+- (_RESmallFeatureSet)initWithFeatures:(id)features;
 - (id)allFeatures;
-- (id)featureWithName:(id)a3;
+- (id)featureWithName:(id)name;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation _RESmallFeatureSet
 
-- (_RESmallFeatureSet)initWithFeature:(id)a3
+- (_RESmallFeatureSet)initWithFeature:(id)feature
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  featureCopy = feature;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  featureCopy2 = feature;
+  v6 = [v4 arrayWithObjects:&featureCopy count:1];
 
-  v7 = [(_RESmallFeatureSet *)self initWithFeatures:v6, v10, v11];
+  v7 = [(_RESmallFeatureSet *)self initWithFeatures:v6, featureCopy, v11];
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (_RESmallFeatureSet)initWithFeatures:(id)a3
+- (_RESmallFeatureSet)initWithFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v14.receiver = self;
   v14.super_class = _RESmallFeatureSet;
   v5 = [(REFeatureSet *)&v14 init];
@@ -33,9 +33,9 @@
   {
     v6 = 0;
     v7 = 0;
-    while (v7 < [v4 count])
+    while (v7 < [featuresCopy count])
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [featuresCopy objectAtIndexedSubscript:v7];
       v9 = v5->_features[v7];
       v5->_features[v7] = v8;
 
@@ -86,9 +86,9 @@ LABEL_9:
   return result;
 }
 
-- (id)featureWithName:(id)a3
+- (id)featureWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = 0;
   features = self->_features;
   while (1)
@@ -100,8 +100,8 @@ LABEL_9:
       break;
     }
 
-    v9 = [(REFeature *)v7 name];
-    v10 = [v9 isEqualToString:v4];
+    name = [(REFeature *)v7 name];
+    v10 = [name isEqualToString:nameCopy];
 
     if (v10)
     {
@@ -118,9 +118,9 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)containsFeature:(id)a3
+- (BOOL)containsFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = 0;
   features = self->_features;
   while (1)
@@ -135,12 +135,12 @@ LABEL_6:
 
     v8 = v7;
     v9 = v8;
-    if (v8 == v4)
+    if (v8 == featureCopy)
     {
       break;
     }
 
-    v10 = [(REFeature *)v8 isEqual:v4];
+    v10 = [(REFeature *)v8 isEqual:featureCopy];
 
     if (v10)
     {
@@ -185,16 +185,16 @@ LABEL_9:
   return v8;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
-  a3->var0 = 1;
-  a3->var1 = self->_features;
-  a3->var2 = &countByEnumeratingWithState_objects_count__mutation_value_65;
+  state->var0 = 1;
+  state->var1 = self->_features;
+  state->var2 = &countByEnumeratingWithState_objects_count__mutation_value_65;
   return [(_RESmallFeatureSet *)self count];
 }
 

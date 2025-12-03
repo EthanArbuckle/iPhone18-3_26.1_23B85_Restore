@@ -1,45 +1,45 @@
 @interface JavaUtilDate
 + (void)initialize;
-- (BOOL)afterWithJavaUtilDate:(id)a3;
-- (BOOL)beforeWithJavaUtilDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)afterWithJavaUtilDate:(id)date;
+- (BOOL)beforeWithJavaUtilDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)toGMTString;
 - (id)toLocaleString;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int)getDate;
 - (int)getHours;
 - (int)getMinutes;
 - (int)getMonth;
 - (int)getSeconds;
 - (int)getTimezoneOffset;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setYearWithInt:(int)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setYearWithInt:(int)int;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilDate
 
-- (BOOL)afterWithJavaUtilDate:(id)a3
+- (BOOL)afterWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     JreThrowNullPointerException();
   }
 
-  return self->milliseconds_ > *(a3 + 1);
+  return self->milliseconds_ > *(date + 1);
 }
 
-- (BOOL)beforeWithJavaUtilDate:(id)a3
+- (BOOL)beforeWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     JreThrowNullPointerException();
   }
 
-  return self->milliseconds_ < *(a3 + 1);
+  return self->milliseconds_ < *(date + 1);
 }
 
 - (id)clone
@@ -49,10 +49,10 @@
   return [(JavaUtilDate *)&v3 clone];
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -63,7 +63,7 @@
   }
 
   milliseconds = self->milliseconds_;
-  v6 = *(a3 + 1);
+  v6 = *(id + 1);
   v7 = milliseconds < v6;
   v8 = milliseconds != v6;
   if (v7)
@@ -77,9 +77,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -92,7 +92,7 @@
 
   milliseconds = self->milliseconds_;
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -102,7 +102,7 @@
     JreThrowClassCastException();
   }
 
-  return milliseconds == *(a3 + 1);
+  return milliseconds == *(equal + 1);
 }
 
 - (int)getDate
@@ -147,10 +147,10 @@
   return -(v3 + [(JavaUtilCalendar *)v2 getWithInt:16]) / 60000;
 }
 
-- (void)setYearWithInt:(int)a3
+- (void)setYearWithInt:(int)int
 {
   v5 = new_JavaUtilGregorianCalendar_initWithLong_(self->milliseconds_);
-  [(JavaUtilCalendar *)v5 setWithInt:1 withInt:(a3 + 1900)];
+  [(JavaUtilCalendar *)v5 setWithInt:1 withInt:(int + 1900)];
   self->milliseconds_ = [(JavaUtilCalendar *)v5 getTimeInMillis];
 }
 
@@ -189,7 +189,7 @@
 
   v3 = LibcoreIcuLocaleData_getWithJavaUtilLocale_(JavaUtilLocale_US_);
   v4 = new_JavaUtilGregorianCalendar_initWithLong_(self->milliseconds_);
-  v5 = [(JavaUtilCalendar *)v4 getTimeZone];
+  getTimeZone = [(JavaUtilCalendar *)v4 getTimeZone];
   v6 = new_JavaLangStringBuilder_init();
   if (!v3)
   {
@@ -235,55 +235,55 @@
   [(JavaLangStringBuilder *)v8 appendWithChar:58];
   sub_100209098(v8, [(JavaUtilCalendar *)v4 getWithInt:13]);
   [(JavaLangStringBuilder *)v8 appendWithChar:32];
-  if (!v5)
+  if (!getTimeZone)
   {
 LABEL_14:
     JreThrowNullPointerException();
   }
 
-  -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [v5 getDisplayNameWithBoolean:objc_msgSend(v5 withInt:{"inDaylightTimeWithJavaUtilDate:", self), 0}]);
+  -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [getTimeZone getDisplayNameWithBoolean:objc_msgSend(getTimeZone withInt:{"inDaylightTimeWithJavaUtilDate:", self), 0}]);
   [(JavaLangStringBuilder *)v8 appendWithChar:32];
   [(JavaLangStringBuilder *)v8 appendWithInt:[(JavaUtilCalendar *)v4 getWithInt:1]];
 
   return [(JavaLangStringBuilder *)v8 description];
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
-  v5 = [(JavaUtilDate *)self getTime];
+  [stream defaultWriteObject];
+  getTime = [(JavaUtilDate *)self getTime];
 
-  [a3 writeLongWithLong:v5];
+  [stream writeLongWithLong:getTime];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readLong];
+  [stream defaultReadObject];
+  readLong = [stream readLong];
 
-  [(JavaUtilDate *)self setTimeWithLong:v5];
+  [(JavaUtilDate *)self setTimeWithLong:readLong];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilDate *)self clone];
+  clone = [(JavaUtilDate *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaUtilDate alloc];
     v2->milliseconds_ = JavaLangSystem_currentTimeMillis();

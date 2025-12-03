@@ -1,37 +1,37 @@
 @interface HUQuickControlStepperView
-- (BOOL)_shouldRequireMinimumDragDistanceForGestureRecognizer:(id)a3;
+- (BOOL)_shouldRequireMinimumDragDistanceForGestureRecognizer:(id)recognizer;
 - (CGPoint)lastTouchLocation;
 - (CGSize)intrinsicContentSize;
-- (HUQuickControlStepperView)initWithProfile:(id)a3;
+- (HUQuickControlStepperView)initWithProfile:(id)profile;
 - (HUQuickControlViewInteractionDelegate)interactionDelegate;
-- (id)_stepperViewMetricsForControlSize:(unint64_t)a3;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (id)_stepperViewMetricsForControlSize:(unint64_t)size;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (void)_actuateTapticFeedback;
 - (void)_createSegmentAndSeparatorViews;
-- (void)_handleGesture:(id)a3;
+- (void)_handleGesture:(id)gesture;
 - (void)_layoutSegmentViews;
 - (void)_prepareForTapticFeedback;
 - (void)_updateSegmentHighlightedState;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
-- (void)_updateUserInteractionActive:(BOOL)a3 forFirstTouch:(BOOL)a4;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
+- (void)_updateUserInteractionActive:(BOOL)active forFirstTouch:(BOOL)touch;
 - (void)layoutSubviews;
-- (void)setProfile:(id)a3;
-- (void)setReachabilityState:(unint64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setProfile:(id)profile;
+- (void)setReachabilityState:(unint64_t)state;
+- (void)setValue:(id)value;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 @end
 
 @implementation HUQuickControlStepperView
 
-- (HUQuickControlStepperView)initWithProfile:(id)a3
+- (HUQuickControlStepperView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HUQuickControlStepperView.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"[profile isKindOfClass:[HUQuickControlStepperViewProfile class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlStepperView.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"[profile isKindOfClass:[HUQuickControlStepperViewProfile class]]"}];
   }
 
   v23.receiver = self;
@@ -40,54 +40,54 @@
   v7 = v6;
   if (v6)
   {
-    [(HUQuickControlStepperView *)v6 setProfile:v5];
+    [(HUQuickControlStepperView *)v6 setProfile:profileCopy];
     [(HUQuickControlStepperView *)v7 setReachabilityState:0];
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlStepperView *)v7 setBackgroundView:v8];
 
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v9 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
-      [v9 setAutoresizingMask:18];
-      v10 = [(HUQuickControlStepperView *)v7 backgroundView];
-      [v10 addSubview:v9];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      [controlCenterTertiaryMaterial setAutoresizingMask:18];
+      backgroundView = [(HUQuickControlStepperView *)v7 backgroundView];
+      [backgroundView addSubview:controlCenterTertiaryMaterial];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-      v10 = [(HUQuickControlStepperView *)v7 backgroundView];
-      [v10 setBackgroundColor:v9];
+      controlCenterTertiaryMaterial = [MEMORY[0x277D75348] quaternarySystemFillColor];
+      backgroundView = [(HUQuickControlStepperView *)v7 backgroundView];
+      [backgroundView setBackgroundColor:controlCenterTertiaryMaterial];
     }
 
-    v11 = [(HUQuickControlStepperView *)v7 backgroundView];
-    v12 = [v11 layer];
-    [v12 setMasksToBounds:1];
+    backgroundView2 = [(HUQuickControlStepperView *)v7 backgroundView];
+    layer = [backgroundView2 layer];
+    [layer setMasksToBounds:1];
 
-    v13 = [(HUQuickControlStepperView *)v7 backgroundView];
-    [v13 setAutoresizingMask:18];
+    backgroundView3 = [(HUQuickControlStepperView *)v7 backgroundView];
+    [backgroundView3 setAutoresizingMask:18];
 
-    v14 = [(HUQuickControlStepperView *)v7 backgroundView];
-    [(HUQuickControlStepperView *)v7 addSubview:v14];
+    backgroundView4 = [(HUQuickControlStepperView *)v7 backgroundView];
+    [(HUQuickControlStepperView *)v7 addSubview:backgroundView4];
 
     [(HUQuickControlStepperView *)v7 _createSegmentAndSeparatorViews];
-    v15 = [(HUQuickControlStepperView *)v7 layer];
-    [v15 setAllowsGroupOpacity:0];
+    layer2 = [(HUQuickControlStepperView *)v7 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v16 = [(HUQuickControlStepperView *)v7 layer];
-    [v16 setAllowsGroupBlending:0];
+    layer3 = [(HUQuickControlStepperView *)v7 layer];
+    [layer3 setAllowsGroupBlending:0];
 
     v17 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v7 action:sel__handleGesture_];
     [(HUQuickControlStepperView *)v7 setGestureRecognizer:v17];
 
-    v18 = [(HUQuickControlStepperView *)v7 gestureRecognizer];
-    [v18 setDelegate:v7];
+    gestureRecognizer = [(HUQuickControlStepperView *)v7 gestureRecognizer];
+    [gestureRecognizer setDelegate:v7];
 
-    v19 = [(HUQuickControlStepperView *)v7 gestureRecognizer];
-    [v19 setMinimumPressDuration:0.0];
+    gestureRecognizer2 = [(HUQuickControlStepperView *)v7 gestureRecognizer];
+    [gestureRecognizer2 setMinimumPressDuration:0.0];
 
-    v20 = [(HUQuickControlStepperView *)v7 gestureRecognizer];
-    [(HUQuickControlStepperView *)v7 addGestureRecognizer:v20];
+    gestureRecognizer3 = [(HUQuickControlStepperView *)v7 gestureRecognizer];
+    [(HUQuickControlStepperView *)v7 addGestureRecognizer:gestureRecognizer3];
 
     [(HUQuickControlStepperView *)v7 _prepareForTapticFeedback];
   }
@@ -95,16 +95,16 @@
   return v7;
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUQuickControlViewProfile *)self->_profile controlSize];
-  v6 = [(HUQuickControlViewProfile *)v4 controlSize];
+  profileCopy = profile;
+  controlSize = [(HUQuickControlViewProfile *)self->_profile controlSize];
+  controlSize2 = [(HUQuickControlViewProfile *)profileCopy controlSize];
   profile = self->_profile;
-  self->_profile = v4;
+  self->_profile = profileCopy;
 
   [(HUQuickControlStepperView *)self setNeedsLayout];
-  if (v5 != v6)
+  if (controlSize != controlSize2)
   {
 
     [(HUQuickControlStepperView *)self invalidateIntrinsicContentSize];
@@ -116,10 +116,10 @@
   v29 = objc_opt_new();
   v27 = objc_opt_new();
   v26 = objc_opt_new();
-  v3 = [(HUQuickControlStepperView *)self profile];
-  v4 = [v3 numberOfSegments];
+  profile = [(HUQuickControlStepperView *)self profile];
+  numberOfSegments = [profile numberOfSegments];
 
-  if (v4)
+  if (numberOfSegments)
   {
     v5 = 0;
     v28 = MEMORY[0x277D85DD0];
@@ -137,16 +137,16 @@
         v7 = objc_alloc_init(MEMORY[0x277D75D68]);
         if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
         {
-          v8 = [MEMORY[0x277D75D00] controlCenterKeyLineOnDarkVibrancyEffect];
-          [v7 setEffect:v8];
+          controlCenterKeyLineOnDarkVibrancyEffect = [MEMORY[0x277D75D00] controlCenterKeyLineOnDarkVibrancyEffect];
+          [v7 setEffect:controlCenterKeyLineOnDarkVibrancyEffect];
         }
 
         v9 = objc_alloc_init(HUQuickControlStepperSeparatorView);
-        v10 = [v7 contentView];
-        [v10 addSubview:v9];
+        contentView = [v7 contentView];
+        [contentView addSubview:v9];
 
-        v11 = [(HUQuickControlStepperView *)self backgroundView];
-        [v11 addSubview:v7];
+        backgroundView = [(HUQuickControlStepperView *)self backgroundView];
+        [backgroundView addSubview:v7];
 
         [v27 addObject:v9];
         [v26 addObject:v7];
@@ -154,36 +154,36 @@
       }
 
       v12 = [HUQuickControlStepperSegmentView alloc];
-      v13 = [(HUQuickControlStepperView *)self profile];
-      v14 = [v13 stepperStyle];
-      v15 = [(HUQuickControlStepperView *)self profile];
-      v16 = [v15 orientation];
-      v17 = [(HUQuickControlStepperView *)self profile];
-      v18 = -[HUQuickControlStepperSegmentView initWithStyle:orientation:controlSize:](v12, "initWithStyle:orientation:controlSize:", v14, v16, [v17 controlSize]);
+      profile2 = [(HUQuickControlStepperView *)self profile];
+      stepperStyle = [profile2 stepperStyle];
+      profile3 = [(HUQuickControlStepperView *)self profile];
+      orientation = [profile3 orientation];
+      profile4 = [(HUQuickControlStepperView *)self profile];
+      v18 = -[HUQuickControlStepperSegmentView initWithStyle:orientation:controlSize:](v12, "initWithStyle:orientation:controlSize:", stepperStyle, orientation, [profile4 controlSize]);
 
       [(HUQuickControlStepperSegmentView *)v18 setTag:v5];
       [(HUQuickControlStepperSegmentView *)v18 setSegmentLocation:v6];
-      v19 = [(HUQuickControlStepperView *)self profile];
-      LODWORD(v12) = [v19 showSegmentTitles];
+      profile5 = [(HUQuickControlStepperView *)self profile];
+      LODWORD(v12) = [profile5 showSegmentTitles];
 
       if (v12)
       {
-        v20 = [(HUQuickControlStepperView *)self profile];
-        v21 = [v20 segmentTitles];
-        v22 = [v21 objectAtIndexedSubscript:v5];
+        profile6 = [(HUQuickControlStepperView *)self profile];
+        segmentTitles = [profile6 segmentTitles];
+        v22 = [segmentTitles objectAtIndexedSubscript:v5];
         [(HUQuickControlStepperSegmentView *)v18 setTitle:v22];
       }
 
-      v23 = [(HUQuickControlStepperView *)self backgroundView];
-      [v23 addSubview:v18];
+      backgroundView2 = [(HUQuickControlStepperView *)self backgroundView];
+      [backgroundView2 addSubview:v18];
 
       [v29 addObject:v18];
       ++v5;
-      v24 = [(HUQuickControlStepperView *)self profile];
-      v25 = [v24 numberOfSegments];
+      profile7 = [(HUQuickControlStepperView *)self profile];
+      numberOfSegments2 = [profile7 numberOfSegments];
     }
 
-    while (v5 < v25);
+    while (v5 < numberOfSegments2);
   }
 
   [(HUQuickControlStepperView *)self setSegmentViews:v29];
@@ -220,20 +220,20 @@ uint64_t __60__HUQuickControlStepperView__createSegmentAndSeparatorViews__block_
   v25.super_class = HUQuickControlStepperView;
   [(HUQuickControlStepperView *)&v25 layoutSubviews];
   [(HUQuickControlStepperView *)self _layoutSegmentViews];
-  v3 = [(HUQuickControlStepperView *)self profile];
-  v4 = -[HUQuickControlStepperView _stepperViewMetricsForControlSize:](self, "_stepperViewMetricsForControlSize:", [v3 controlSize]);
+  profile = [(HUQuickControlStepperView *)self profile];
+  v4 = -[HUQuickControlStepperView _stepperViewMetricsForControlSize:](self, "_stepperViewMetricsForControlSize:", [profile controlSize]);
   [v4 cornerRadius];
   v6 = v5;
 
-  v7 = [(HUQuickControlStepperView *)self backgroundView];
-  [v7 _setContinuousCornerRadius:v6];
+  backgroundView = [(HUQuickControlStepperView *)self backgroundView];
+  [backgroundView _setContinuousCornerRadius:v6];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(HUQuickControlStepperView *)self segmentViews];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  segmentViews = [(HUQuickControlStepperView *)self segmentViews];
+  v9 = [segmentViews countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -245,39 +245,39 @@ uint64_t __60__HUQuickControlStepperView__createSegmentAndSeparatorViews__block_
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(segmentViews);
         }
 
         [*(*(&v21 + 1) + 8 * i) setCornerRadius:v12];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v10 = [segmentViews countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(HUQuickControlStepperView *)self profile];
-  v15 = [v14 stepperStyle];
+  profile2 = [(HUQuickControlStepperView *)self profile];
+  stepperStyle = [profile2 stepperStyle];
 
-  if (v15 == 1)
+  if (stepperStyle == 1)
   {
-    v16 = [MEMORY[0x277D75348] systemLightGrayColor];
+    systemLightGrayColor = [MEMORY[0x277D75348] systemLightGrayColor];
     v17 = 1.0;
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!stepperStyle)
   {
-    v16 = [MEMORY[0x277D75348] clearColor];
+    systemLightGrayColor = [MEMORY[0x277D75348] clearColor];
     v17 = 0.0;
 LABEL_12:
-    v18 = [v16 CGColor];
-    v19 = [(HUQuickControlStepperView *)self layer];
-    [v19 setBorderColor:v18];
+    cGColor = [systemLightGrayColor CGColor];
+    layer = [(HUQuickControlStepperView *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v20 = [(HUQuickControlStepperView *)self layer];
-    [v20 setBorderWidth:v17];
+    layer2 = [(HUQuickControlStepperView *)self layer];
+    [layer2 setBorderWidth:v17];
   }
 
   [(HUQuickControlStepperView *)self _updateUIForReachabilityState:[(HUQuickControlStepperView *)self reachabilityState]];
@@ -285,19 +285,19 @@ LABEL_12:
 
 - (void)_layoutSegmentViews
 {
-  v3 = [(HUQuickControlStepperView *)self profile];
-  v4 = [v3 numberOfSegments];
+  profile = [(HUQuickControlStepperView *)self profile];
+  numberOfSegments = [profile numberOfSegments];
 
-  if (v4)
+  if (numberOfSegments)
   {
-    v5 = [(HUQuickControlStepperView *)self profile];
-    v6 = -[HUQuickControlStepperView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [v5 controlSize]);
+    profile2 = [(HUQuickControlStepperView *)self profile];
+    v6 = -[HUQuickControlStepperView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [profile2 controlSize]);
     [v6 intrinsicSize];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(HUQuickControlStepperView *)self profile];
-    if ([v11 orientation])
+    profile3 = [(HUQuickControlStepperView *)self profile];
+    if ([profile3 orientation])
     {
       v12 = v8;
     }
@@ -315,21 +315,21 @@ LABEL_12:
     v19[1] = v19;
     v19[2] = 0x2020000000;
     v19[3] = 0;
-    v17 = [(HUQuickControlStepperView *)self segmentViews];
+    segmentViews = [(HUQuickControlStepperView *)self segmentViews];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __48__HUQuickControlStepperView__layoutSegmentViews__block_invoke;
     v18[3] = &unk_277DC2910;
     v18[6] = v14;
-    v18[7] = v4;
+    v18[7] = numberOfSegments;
     v18[8] = v16;
-    v18[9] = v4 - 1;
+    v18[9] = numberOfSegments - 1;
     v18[4] = self;
     v18[5] = v19;
     v18[10] = v8;
     v18[11] = v10;
     v18[12] = v12;
-    [v17 enumerateObjectsUsingBlock:v18];
+    [segmentViews enumerateObjectsUsingBlock:v18];
 
     _Block_object_dispose(v19, 8);
   }
@@ -439,10 +439,10 @@ LABEL_17:
   [v9 setFrame:{0.0, 0.0, v18, v17}];
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(HUQuickControlStepperView *)self conformsToProtocol:&unk_2824F3238]&& (objc_opt_respondsToSelector() & 1) != 0 && (![(HUQuickControlStepperView *)self reachabilityState]|| [(HUQuickControlStepperView *)self reachabilityState]== 1))
   {
     v5 = HUQuickControlReachabilityString([(HUQuickControlStepperView *)self reachabilityState]);
@@ -450,7 +450,7 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138412802;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
       v34 = v5;
       v35 = 2080;
@@ -461,34 +461,34 @@ LABEL_17:
 
   else
   {
-    v7 = [v4 state];
-    v8 = [(HUQuickControlStepperView *)self gestureRecognizer];
+    state = [gestureCopy state];
+    gestureRecognizer = [(HUQuickControlStepperView *)self gestureRecognizer];
 
-    if ((v7 - 1) > 1)
+    if ((state - 1) > 1)
     {
-      if (v7 == 3)
+      if (state == 3)
       {
-        v24 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
+        trackingSegmentIndex = [(HUQuickControlStepperView *)self trackingSegmentIndex];
 
-        if (v24)
+        if (trackingSegmentIndex)
         {
-          v25 = [(HUQuickControlStepperView *)self selectedSegmentIndex];
-          v26 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
-          v27 = [v25 isEqual:v26];
+          selectedSegmentIndex = [(HUQuickControlStepperView *)self selectedSegmentIndex];
+          trackingSegmentIndex2 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
+          v27 = [selectedSegmentIndex isEqual:trackingSegmentIndex2];
 
-          v28 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
-          [(HUQuickControlStepperView *)self setSelectedSegmentIndex:v28];
+          trackingSegmentIndex3 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
+          [(HUQuickControlStepperView *)self setSelectedSegmentIndex:trackingSegmentIndex3];
 
           if ((v27 & 1) == 0)
           {
-            v29 = [(HUQuickControlStepperView *)self interactionDelegate];
-            v30 = [(HUQuickControlStepperView *)self value];
-            [v29 controlView:self valueDidChange:v30];
+            interactionDelegate = [(HUQuickControlStepperView *)self interactionDelegate];
+            value = [(HUQuickControlStepperView *)self value];
+            [interactionDelegate controlView:self valueDidChange:value];
           }
         }
       }
 
-      [(HUQuickControlStepperView *)self _updateUserInteractionActive:0 forFirstTouch:v8 != v4];
+      [(HUQuickControlStepperView *)self _updateUserInteractionActive:0 forFirstTouch:gestureRecognizer != gestureCopy];
       [(HUQuickControlStepperView *)self setTrackingSegmentIndex:0];
       [(HUQuickControlStepperView *)self setAccumulatedTouchDistance:0.0];
       [(HUQuickControlStepperView *)self setLastTouchLocation:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
@@ -498,11 +498,11 @@ LABEL_17:
 
     else
     {
-      [(HUQuickControlStepperView *)self _updateUserInteractionActive:1 forFirstTouch:v8 != v4];
-      [v4 locationInView:self];
+      [(HUQuickControlStepperView *)self _updateUserInteractionActive:1 forFirstTouch:gestureRecognizer != gestureCopy];
+      [gestureCopy locationInView:self];
       v10 = v9;
       v12 = v11;
-      if (![(HUQuickControlStepperView *)self _shouldRequireMinimumDragDistanceForGestureRecognizer:v4])
+      if (![(HUQuickControlStepperView *)self _shouldRequireMinimumDragDistanceForGestureRecognizer:gestureCopy])
       {
         goto LABEL_16;
       }
@@ -530,8 +530,8 @@ LABEL_16:
           v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v20, "tag")}];
         }
 
-        v22 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
-        v23 = [v22 isEqual:v21];
+        trackingSegmentIndex4 = [(HUQuickControlStepperView *)self trackingSegmentIndex];
+        v23 = [trackingSegmentIndex4 isEqual:v21];
 
         if ((v23 & 1) == 0)
         {
@@ -680,23 +680,23 @@ LABEL_10:
   }
 }
 
-- (BOOL)_shouldRequireMinimumDragDistanceForGestureRecognizer:(id)a3
+- (BOOL)_shouldRequireMinimumDragDistanceForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(HUQuickControlStepperView *)self gestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizer = [(HUQuickControlStepperView *)self gestureRecognizer];
 
-  return v5 != v4;
+  return gestureRecognizer != recognizerCopy;
 }
 
-- (void)_updateUserInteractionActive:(BOOL)a3 forFirstTouch:(BOOL)a4
+- (void)_updateUserInteractionActive:(BOOL)active forFirstTouch:(BOOL)touch
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(HUQuickControlStepperView *)self isUserInteractionActive]!= a3)
+  touchCopy = touch;
+  activeCopy = active;
+  if ([(HUQuickControlStepperView *)self isUserInteractionActive]!= active)
   {
-    [(HUQuickControlStepperView *)self setUserInteractionActive:v5];
-    v7 = [(HUQuickControlStepperView *)self interactionDelegate];
-    [v7 controlView:self interactionStateDidChange:v5 forFirstTouch:v4];
+    [(HUQuickControlStepperView *)self setUserInteractionActive:activeCopy];
+    interactionDelegate = [(HUQuickControlStepperView *)self interactionDelegate];
+    [interactionDelegate controlView:self interactionStateDidChange:activeCopy forFirstTouch:touchCopy];
   }
 }
 
@@ -706,33 +706,33 @@ LABEL_10:
   v23.super_class = HUQuickControlStepperView;
   [(HUQuickControlStepperView *)&v23 updateConstraints];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUQuickControlStepperView *)self constraints];
-  [v3 deactivateConstraints:v4];
+  constraints = [(HUQuickControlStepperView *)self constraints];
+  [v3 deactivateConstraints:constraints];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__HUQuickControlStepperView_updateConstraints__block_invoke;
   aBlock[3] = &unk_277DB9438;
-  v21 = v5;
-  v22 = self;
-  v6 = v5;
+  v21 = array;
+  selfCopy = self;
+  v6 = array;
   v7 = _Block_copy(aBlock);
-  v8 = [(HUQuickControlStepperView *)self backgroundView];
-  v7[2](v7, v8);
+  backgroundView = [(HUQuickControlStepperView *)self backgroundView];
+  v7[2](v7, backgroundView);
 
-  v9 = [(HUQuickControlStepperView *)self profile];
-  v10 = -[HUQuickControlStepperView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [v9 controlSize]);
+  profile = [(HUQuickControlStepperView *)self profile];
+  v10 = -[HUQuickControlStepperView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [profile controlSize]);
   [v10 intrinsicSize];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HUQuickControlStepperView *)self widthAnchor];
-  v16 = [v15 constraintEqualToConstant:v12];
+  widthAnchor = [(HUQuickControlStepperView *)self widthAnchor];
+  v16 = [widthAnchor constraintEqualToConstant:v12];
   [v16 setActive:1];
 
-  v17 = [(HUQuickControlStepperView *)self heightAnchor];
-  v18 = [v17 constraintEqualToConstant:v14];
+  heightAnchor = [(HUQuickControlStepperView *)self heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:v14];
   [v18 setActive:1];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v6];
@@ -771,26 +771,26 @@ void __46__HUQuickControlStepperView_updateConstraints__block_invoke(uint64_t a1
   [v16 addObject:v18];
 }
 
-- (id)_stepperViewMetricsForControlSize:(unint64_t)a3
+- (id)_stepperViewMetricsForControlSize:(unint64_t)size
 {
-  v5 = [(HUQuickControlStepperView *)self profile];
-  v6 = [v5 orientation];
-  v7 = [(HUQuickControlStepperView *)self profile];
-  v8 = HUQuickControlStepperViewMetricsForOrientation(a3, v6, [v7 numberOfSegments]);
+  profile = [(HUQuickControlStepperView *)self profile];
+  orientation = [profile orientation];
+  profile2 = [(HUQuickControlStepperView *)self profile];
+  v8 = HUQuickControlStepperViewMetricsForOrientation(size, orientation, [profile2 numberOfSegments]);
 
   return v8;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HUQuickControlStepperView *)self profile];
-  v4 = [v3 controlSize];
-  v5 = [(HUQuickControlStepperView *)self profile];
-  v6 = [v5 orientation];
-  v7 = [(HUQuickControlStepperView *)self profile];
-  v8 = HUQuickControlStepperViewMetricsForOrientation(v4, v6, [v7 numberOfSegments]);
-  v9 = [v8 sizeDescriptor];
-  [v9 intrinsicSize];
+  profile = [(HUQuickControlStepperView *)self profile];
+  controlSize = [profile controlSize];
+  profile2 = [(HUQuickControlStepperView *)self profile];
+  orientation = [profile2 orientation];
+  profile3 = [(HUQuickControlStepperView *)self profile];
+  v8 = HUQuickControlStepperViewMetricsForOrientation(controlSize, orientation, [profile3 numberOfSegments]);
+  sizeDescriptor = [v8 sizeDescriptor];
+  [sizeDescriptor intrinsicSize];
   v11 = v10;
   v13 = v12;
 
@@ -806,32 +806,32 @@ void __46__HUQuickControlStepperView_updateConstraints__block_invoke(uint64_t a1
   v3 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:3];
   [(HUQuickControlStepperView *)self setFeedbackGenerator:v3];
 
-  v4 = [(HUQuickControlStepperView *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator = [(HUQuickControlStepperView *)self feedbackGenerator];
+  [feedbackGenerator prepare];
 }
 
 - (void)_actuateTapticFeedback
 {
-  v3 = [(HUQuickControlStepperView *)self feedbackGenerator];
-  [v3 impactOccurred];
+  feedbackGenerator = [(HUQuickControlStepperView *)self feedbackGenerator];
+  [feedbackGenerator impactOccurred];
 
-  v4 = [(HUQuickControlStepperView *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator2 = [(HUQuickControlStepperView *)self feedbackGenerator];
+  [feedbackGenerator2 prepare];
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v3 = [(HUQuickControlStepperView *)self _stepperViewMetricsForControlSize:a3];
-  v4 = [v3 sizeDescriptor];
+  v3 = [(HUQuickControlStepperView *)self _stepperViewMetricsForControlSize:size];
+  sizeDescriptor = [v3 sizeDescriptor];
 
-  return v4;
+  return sizeDescriptor;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v10 = v4;
+  v10 = valueCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -850,9 +850,9 @@ void __46__HUQuickControlStepperView_updateConstraints__block_invoke(uint64_t a1
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v8 handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
   }
 
   v7 = 0;
@@ -862,16 +862,16 @@ LABEL_8:
   [(HUQuickControlStepperView *)self _updateSegmentHighlightedState];
 }
 
-- (void)setReachabilityState:(unint64_t)a3
+- (void)setReachabilityState:(unint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  self->_reachabilityState = a3;
+  self->_reachabilityState = state;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HUQuickControlStepperView *)self segmentViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  segmentViews = [(HUQuickControlStepperView *)self segmentViews];
+  v6 = [segmentViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -883,20 +883,20 @@ LABEL_8:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(segmentViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setReachabilityState:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setReachabilityState:state];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [segmentViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  [(HUQuickControlStepperView *)self _updateUIForReachabilityState:a3];
+  [(HUQuickControlStepperView *)self _updateUIForReachabilityState:state];
 }
 
 - (void)tintColorDidChange
@@ -904,13 +904,13 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = HUQuickControlStepperView;
   [(HUQuickControlStepperView *)&v5 tintColorDidChange];
-  v3 = [(HUQuickControlStepperView *)self segmentViews];
+  segmentViews = [(HUQuickControlStepperView *)self segmentViews];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__HUQuickControlStepperView_tintColorDidChange__block_invoke;
   v4[3] = &unk_277DC2938;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [segmentViews enumerateObjectsUsingBlock:v4];
 }
 
 void __47__HUQuickControlStepperView_tintColorDidChange__block_invoke(uint64_t a1, void *a2)
@@ -922,11 +922,11 @@ void __47__HUQuickControlStepperView_tintColorDidChange__block_invoke(uint64_t a
   [v3 setTintColor:v4];
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       goto LABEL_6;
     }

@@ -1,74 +1,74 @@
 @interface ICLPlaceholderRecord
-- (BOOL)isEqual:(id)a3;
-- (ICLPlaceholderRecord)initWithCoder:(id)a3;
-- (ICLPlaceholderRecord)initWithLegacyRecordDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICLPlaceholderRecord)initWithCoder:(id)coder;
+- (ICLPlaceholderRecord)initWithLegacyRecordDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)legacyRecordDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLPlaceholderRecord
 
-- (ICLPlaceholderRecord)initWithCoder:(id)a3
+- (ICLPlaceholderRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = ICLPlaceholderRecord;
-  v5 = [(ICLBundleRecord *)&v31 initWithCoder:v4];
+  v5 = [(ICLBundleRecord *)&v31 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleContainerURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleContainerURL"];
     bundleContainerURL = v5->_bundleContainerURL;
     v5->_bundleContainerURL = v6;
 
-    v5->_isOnDemandInstallCapable = [v4 decodeBoolForKey:@"isOnDemandInstallCapable"];
+    v5->_isOnDemandInstallCapable = [coderCopy decodeBoolForKey:@"isOnDemandInstallCapable"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"parentIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"parentIdentifiers"];
     parentIdentifiers = v5->_parentIdentifiers;
     v5->_parentIdentifiers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appManagementDomain"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appManagementDomain"];
     appManagementDomain = v5->_appManagementDomain;
     v5->_appManagementDomain = v13;
 
-    v5->_isSwiftPlaygroundsApp = [v4 decodeBoolForKey:@"isSwiftPlaygroundsApp"];
-    v5->_isDeletable = [v4 decodeBoolForKey:@"isDeletable"];
-    v5->_isBeta = [v4 decodeBoolForKey:@"isBeta"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholderFailureReason"];
+    v5->_isSwiftPlaygroundsApp = [coderCopy decodeBoolForKey:@"isSwiftPlaygroundsApp"];
+    v5->_isDeletable = [coderCopy decodeBoolForKey:@"isDeletable"];
+    v5->_isBeta = [coderCopy decodeBoolForKey:@"isBeta"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholderFailureReason"];
     v5->_placeholderFailureReason = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternateIconName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternateIconName"];
     alternateIconName = v5->_alternateIconName;
     v5->_alternateIconName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installDate"];
     installDate = v5->_installDate;
     v5->_installDate = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsInstallType"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsInstallType"];
     lsInstallType = v5->_lsInstallType;
     v5->_lsInstallType = v20;
 
-    v5->_isWebNotificationBundle = [v4 decodeBoolForKey:@"isWebNotificationBundle"];
-    v5->_isEligibleForWatchAppInstall = [v4 decodeBoolForKey:@"isEligibleForWatchAppInstall"];
-    v5->_isMarketplace = [v4 decodeBoolForKey:@"isMarketplace"];
-    v5->_supportsAppMigration = [v4 decodeBoolForKey:@"supportsAppMigration"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sinfInfo"];
+    v5->_isWebNotificationBundle = [coderCopy decodeBoolForKey:@"isWebNotificationBundle"];
+    v5->_isEligibleForWatchAppInstall = [coderCopy decodeBoolForKey:@"isEligibleForWatchAppInstall"];
+    v5->_isMarketplace = [coderCopy decodeBoolForKey:@"isMarketplace"];
+    v5->_supportsAppMigration = [coderCopy decodeBoolForKey:@"supportsAppMigration"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sinfInfo"];
     sinfInfo = v5->_sinfInfo;
     v5->_sinfInfo = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueInstallID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueInstallID"];
     uniqueInstallID = v5->_uniqueInstallID;
     v5->_uniqueInstallID = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installSessionID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installSessionID"];
     installSessionID = v5->_installSessionID;
     v5->_installSessionID = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkedParentBundleID"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkedParentBundleID"];
     linkedParentBundleID = v5->_linkedParentBundleID;
     v5->_linkedParentBundleID = v28;
   }
@@ -76,63 +76,63 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = ICLPlaceholderRecord;
-  v4 = a3;
-  [(ICLBundleRecord *)&v16 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ICLBundleRecord *)&v16 encodeWithCoder:coderCopy];
   v5 = [(ICLPlaceholderRecord *)self bundleContainerURL:v16.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleContainerURL"];
+  [coderCopy encodeObject:v5 forKey:@"bundleContainerURL"];
 
-  [v4 encodeBool:-[ICLPlaceholderRecord isOnDemandInstallCapable](self forKey:{"isOnDemandInstallCapable"), @"isOnDemandInstallCapable"}];
-  v6 = [(ICLPlaceholderRecord *)self parentIdentifiers];
-  [v4 encodeObject:v6 forKey:@"parentIdentifiers"];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isOnDemandInstallCapable](self forKey:{"isOnDemandInstallCapable"), @"isOnDemandInstallCapable"}];
+  parentIdentifiers = [(ICLPlaceholderRecord *)self parentIdentifiers];
+  [coderCopy encodeObject:parentIdentifiers forKey:@"parentIdentifiers"];
 
-  v7 = [(ICLPlaceholderRecord *)self appManagementDomain];
-  [v4 encodeObject:v7 forKey:@"appManagementDomain"];
+  appManagementDomain = [(ICLPlaceholderRecord *)self appManagementDomain];
+  [coderCopy encodeObject:appManagementDomain forKey:@"appManagementDomain"];
 
-  [v4 encodeBool:-[ICLPlaceholderRecord isSwiftPlaygroundsApp](self forKey:{"isSwiftPlaygroundsApp"), @"isSwiftPlaygroundsApp"}];
-  [v4 encodeBool:-[ICLPlaceholderRecord isDeletable](self forKey:{"isDeletable"), @"isDeletable"}];
-  [v4 encodeBool:-[ICLPlaceholderRecord isBeta](self forKey:{"isBeta"), @"isBeta"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isSwiftPlaygroundsApp](self forKey:{"isSwiftPlaygroundsApp"), @"isSwiftPlaygroundsApp"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isDeletable](self forKey:{"isDeletable"), @"isDeletable"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isBeta](self forKey:{"isBeta"), @"isBeta"}];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICLPlaceholderRecord placeholderFailureReason](self, "placeholderFailureReason")}];
-  [v4 encodeObject:v8 forKey:@"placeholderFailureReason"];
+  [coderCopy encodeObject:v8 forKey:@"placeholderFailureReason"];
 
-  v9 = [(ICLPlaceholderRecord *)self alternateIconName];
-  [v4 encodeObject:v9 forKey:@"alternateIconName"];
+  alternateIconName = [(ICLPlaceholderRecord *)self alternateIconName];
+  [coderCopy encodeObject:alternateIconName forKey:@"alternateIconName"];
 
-  v10 = [(ICLPlaceholderRecord *)self installDate];
-  [v4 encodeObject:v10 forKey:@"installDate"];
+  installDate = [(ICLPlaceholderRecord *)self installDate];
+  [coderCopy encodeObject:installDate forKey:@"installDate"];
 
-  v11 = [(ICLPlaceholderRecord *)self lsInstallType];
-  [v4 encodeObject:v11 forKey:@"lsInstallType"];
+  lsInstallType = [(ICLPlaceholderRecord *)self lsInstallType];
+  [coderCopy encodeObject:lsInstallType forKey:@"lsInstallType"];
 
-  [v4 encodeBool:-[ICLPlaceholderRecord isWebNotificationBundle](self forKey:{"isWebNotificationBundle"), @"isWebNotificationBundle"}];
-  [v4 encodeBool:-[ICLPlaceholderRecord isEligibleForWatchAppInstall](self forKey:{"isEligibleForWatchAppInstall"), @"isEligibleForWatchAppInstall"}];
-  [v4 encodeBool:-[ICLPlaceholderRecord isMarketplace](self forKey:{"isMarketplace"), @"isMarketplace"}];
-  [v4 encodeBool:-[ICLPlaceholderRecord supportsAppMigration](self forKey:{"supportsAppMigration"), @"supportsAppMigration"}];
-  v12 = [(ICLPlaceholderRecord *)self sinfInfo];
-  [v4 encodeObject:v12 forKey:@"sinfInfo"];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isWebNotificationBundle](self forKey:{"isWebNotificationBundle"), @"isWebNotificationBundle"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isEligibleForWatchAppInstall](self forKey:{"isEligibleForWatchAppInstall"), @"isEligibleForWatchAppInstall"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord isMarketplace](self forKey:{"isMarketplace"), @"isMarketplace"}];
+  [coderCopy encodeBool:-[ICLPlaceholderRecord supportsAppMigration](self forKey:{"supportsAppMigration"), @"supportsAppMigration"}];
+  sinfInfo = [(ICLPlaceholderRecord *)self sinfInfo];
+  [coderCopy encodeObject:sinfInfo forKey:@"sinfInfo"];
 
-  v13 = [(ICLPlaceholderRecord *)self uniqueInstallID];
-  [v4 encodeObject:v13 forKey:@"uniqueInstallID"];
+  uniqueInstallID = [(ICLPlaceholderRecord *)self uniqueInstallID];
+  [coderCopy encodeObject:uniqueInstallID forKey:@"uniqueInstallID"];
 
-  v14 = [(ICLPlaceholderRecord *)self installSessionID];
-  [v4 encodeObject:v14 forKey:@"installSessionID"];
+  installSessionID = [(ICLPlaceholderRecord *)self installSessionID];
+  [coderCopy encodeObject:installSessionID forKey:@"installSessionID"];
 
-  v15 = [(ICLPlaceholderRecord *)self linkedParentBundleID];
-  [v4 encodeObject:v15 forKey:@"linkedParentBundleID"];
+  linkedParentBundleID = [(ICLPlaceholderRecord *)self linkedParentBundleID];
+  [coderCopy encodeObject:linkedParentBundleID forKey:@"linkedParentBundleID"];
 }
 
-- (ICLPlaceholderRecord)initWithLegacyRecordDictionary:(id)a3
+- (ICLPlaceholderRecord)initWithLegacyRecordDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = ICLPlaceholderRecord;
-  v5 = [(ICLBundleRecord *)&v46 initWithLegacyRecordDictionary:v4];
+  v5 = [(ICLBundleRecord *)&v46 initWithLegacyRecordDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"BundleContainer"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"BundleContainer"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -151,10 +151,10 @@
       [(ICLPlaceholderRecord *)v5 setBundleContainerURL:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"IsOnDemandInstallCapable"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"IsOnDemandInstallCapable"];
     [(ICLPlaceholderRecord *)v5 setIsOnDemandInstallCapable:MIBooleanValue(v10, 0)];
 
-    v11 = [v4 objectForKeyedSubscript:@"ParentIdentifiers"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"ParentIdentifiers"];
     objc_opt_class();
     v12 = v11;
     if (objc_opt_isKindOfClass())
@@ -176,7 +176,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"AppManagementDomain"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"AppManagementDomain"];
     objc_opt_class();
     v15 = v14;
     if (objc_opt_isKindOfClass())
@@ -190,13 +190,13 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setAppManagementDomain:v16];
-    v17 = [v4 objectForKeyedSubscript:@"IsSwiftPlaygroundsApp"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"IsSwiftPlaygroundsApp"];
     [(ICLPlaceholderRecord *)v5 setIsSwiftPlaygroundsApp:MIBooleanValue(v17, 0)];
 
-    v18 = [v4 objectForKeyedSubscript:@"IsDeletable"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"IsDeletable"];
     [(ICLPlaceholderRecord *)v5 setIsDeletable:MIBooleanValue(v18, 0)];
 
-    v19 = [v4 objectForKeyedSubscript:@"PlaceholderFailureReason"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"PlaceholderFailureReason"];
     objc_opt_class();
     v20 = v19;
     if (objc_opt_isKindOfClass())
@@ -210,7 +210,7 @@
     }
 
     -[ICLPlaceholderRecord setPlaceholderFailureReason:](v5, "setPlaceholderFailureReason:", [v21 unsignedIntegerValue]);
-    v22 = [v4 objectForKeyedSubscript:@"AlternateIconName"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"AlternateIconName"];
     objc_opt_class();
     v23 = v22;
     if (objc_opt_isKindOfClass())
@@ -224,7 +224,7 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setAlternateIconName:v24];
-    v25 = [v4 objectForKeyedSubscript:@"AppInstallDate"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"AppInstallDate"];
     objc_opt_class();
     v26 = v25;
     if (objc_opt_isKindOfClass())
@@ -238,7 +238,7 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setInstallDate:v27];
-    v28 = [v4 objectForKeyedSubscript:@"LSInstallType"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"LSInstallType"];
     objc_opt_class();
     v29 = v28;
     if (objc_opt_isKindOfClass())
@@ -252,22 +252,22 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setLsInstallType:v30];
-    v31 = [v4 objectForKeyedSubscript:@"IsWebNotificationBundle"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"IsWebNotificationBundle"];
     [(ICLPlaceholderRecord *)v5 setIsWebNotificationBundle:MIBooleanValue(v31, 0)];
 
-    v32 = [v4 objectForKeyedSubscript:@"IsEligibleForWatchAppInstall"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"IsEligibleForWatchAppInstall"];
     [(ICLPlaceholderRecord *)v5 setIsEligibleForWatchAppInstall:MIBooleanValue(v32, 0)];
 
-    v33 = [v4 objectForKeyedSubscript:@"IsMarketplace"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"IsMarketplace"];
     [(ICLPlaceholderRecord *)v5 setIsMarketplace:MIBooleanValue(v33, 0)];
 
-    v34 = [v4 objectForKeyedSubscript:@"SupportsAppMigration"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"SupportsAppMigration"];
     [(ICLPlaceholderRecord *)v5 setSupportsAppMigration:MIBooleanValue(v34, 0)];
 
-    v35 = [[ICLSinfInfo alloc] initWithLegacySinfInfoDictionary:v4];
+    v35 = [[ICLSinfInfo alloc] initWithLegacySinfInfoDictionary:dictionaryCopy];
     [(ICLPlaceholderRecord *)v5 setSinfInfo:v35];
 
-    v36 = [v4 objectForKeyedSubscript:@"UniqueInstallID"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"UniqueInstallID"];
     objc_opt_class();
     v37 = v36;
     if (objc_opt_isKindOfClass())
@@ -281,7 +281,7 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setUniqueInstallID:v38];
-    v39 = [v4 objectForKeyedSubscript:@"InstallSessionID"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"InstallSessionID"];
     objc_opt_class();
     v40 = v39;
     if (objc_opt_isKindOfClass())
@@ -295,7 +295,7 @@
     }
 
     [(ICLPlaceholderRecord *)v5 setInstallSessionID:v41];
-    v42 = [v4 objectForKeyedSubscript:@"LinkedParentBundleID"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"LinkedParentBundleID"];
     objc_opt_class();
     v43 = v42;
     if (objc_opt_isKindOfClass())
@@ -314,58 +314,58 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27.receiver = self;
   v27.super_class = ICLPlaceholderRecord;
   v5 = [(ICLBundleRecord *)&v27 copyWithZone:?];
-  v6 = [(ICLPlaceholderRecord *)self bundleContainerURL];
-  v7 = [v6 copyWithZone:a3];
+  bundleContainerURL = [(ICLPlaceholderRecord *)self bundleContainerURL];
+  v7 = [bundleContainerURL copyWithZone:zone];
   [v5 setBundleContainerURL:v7];
 
   [v5 setIsOnDemandInstallCapable:{-[ICLPlaceholderRecord isOnDemandInstallCapable](self, "isOnDemandInstallCapable")}];
-  v8 = [(ICLPlaceholderRecord *)self parentIdentifiers];
-  v9 = [v8 copyWithZone:a3];
+  parentIdentifiers = [(ICLPlaceholderRecord *)self parentIdentifiers];
+  v9 = [parentIdentifiers copyWithZone:zone];
   [v5 setParentIdentifiers:v9];
 
-  v10 = [(ICLPlaceholderRecord *)self appManagementDomain];
-  v11 = [v10 copyWithZone:a3];
+  appManagementDomain = [(ICLPlaceholderRecord *)self appManagementDomain];
+  v11 = [appManagementDomain copyWithZone:zone];
   [v5 setAppManagementDomain:v11];
 
   [v5 setIsSwiftPlaygroundsApp:{-[ICLPlaceholderRecord isSwiftPlaygroundsApp](self, "isSwiftPlaygroundsApp")}];
   [v5 setIsDeletable:{-[ICLPlaceholderRecord isDeletable](self, "isDeletable")}];
   [v5 setIsBeta:{-[ICLPlaceholderRecord isBeta](self, "isBeta")}];
   [v5 setPlaceholderFailureReason:{-[ICLPlaceholderRecord placeholderFailureReason](self, "placeholderFailureReason")}];
-  v12 = [(ICLPlaceholderRecord *)self alternateIconName];
-  v13 = [v12 copyWithZone:a3];
+  alternateIconName = [(ICLPlaceholderRecord *)self alternateIconName];
+  v13 = [alternateIconName copyWithZone:zone];
   [v5 setAlternateIconName:v13];
 
-  v14 = [(ICLPlaceholderRecord *)self installDate];
-  v15 = [v14 copyWithZone:a3];
+  installDate = [(ICLPlaceholderRecord *)self installDate];
+  v15 = [installDate copyWithZone:zone];
   [v5 setInstallDate:v15];
 
-  v16 = [(ICLPlaceholderRecord *)self lsInstallType];
-  v17 = [v16 copyWithZone:a3];
+  lsInstallType = [(ICLPlaceholderRecord *)self lsInstallType];
+  v17 = [lsInstallType copyWithZone:zone];
   [v5 setLsInstallType:v17];
 
   [v5 setIsWebNotificationBundle:{-[ICLPlaceholderRecord isWebNotificationBundle](self, "isWebNotificationBundle")}];
   [v5 setIsEligibleForWatchAppInstall:{-[ICLPlaceholderRecord isEligibleForWatchAppInstall](self, "isEligibleForWatchAppInstall")}];
   [v5 setIsMarketplace:{-[ICLPlaceholderRecord isMarketplace](self, "isMarketplace")}];
   [v5 setSupportsAppMigration:{-[ICLPlaceholderRecord supportsAppMigration](self, "supportsAppMigration")}];
-  v18 = [(ICLPlaceholderRecord *)self sinfInfo];
-  v19 = [v18 copyWithZone:a3];
+  sinfInfo = [(ICLPlaceholderRecord *)self sinfInfo];
+  v19 = [sinfInfo copyWithZone:zone];
   [v5 setSinfInfo:v19];
 
-  v20 = [(ICLPlaceholderRecord *)self uniqueInstallID];
-  v21 = [v20 copyWithZone:a3];
+  uniqueInstallID = [(ICLPlaceholderRecord *)self uniqueInstallID];
+  v21 = [uniqueInstallID copyWithZone:zone];
   [v5 setUniqueInstallID:v21];
 
-  v22 = [(ICLPlaceholderRecord *)self installSessionID];
-  v23 = [v22 copyWithZone:a3];
+  installSessionID = [(ICLPlaceholderRecord *)self installSessionID];
+  v23 = [installSessionID copyWithZone:zone];
   [v5 setInstallSessionID:v23];
 
-  v24 = [(ICLPlaceholderRecord *)self linkedParentBundleID];
-  v25 = [v24 copyWithZone:a3];
+  linkedParentBundleID = [(ICLPlaceholderRecord *)self linkedParentBundleID];
+  v25 = [linkedParentBundleID copyWithZone:zone];
   [v5 setLinkedParentBundleID:v25];
 
   return v5;
@@ -376,21 +376,21 @@
   v3 = objc_opt_new();
   v30.receiver = self;
   v30.super_class = ICLPlaceholderRecord;
-  v4 = [(ICLBundleRecord *)&v30 legacyRecordDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  legacyRecordDictionary = [(ICLBundleRecord *)&v30 legacyRecordDictionary];
+  [v3 addEntriesFromDictionary:legacyRecordDictionary];
 
-  v5 = [(ICLPlaceholderRecord *)self bundleContainerURL];
-  v6 = [v5 path];
+  bundleContainerURL = [(ICLPlaceholderRecord *)self bundleContainerURL];
+  path = [bundleContainerURL path];
 
-  if (v6)
+  if (path)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"BundleContainer"];
+    [v3 setObject:path forKeyedSubscript:@"BundleContainer"];
   }
 
-  v7 = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
+  isOnDemandInstallCapable = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
   v8 = MEMORY[0x1E695E110];
   v9 = MEMORY[0x1E695E118];
-  if (v7)
+  if (isOnDemandInstallCapable)
   {
     v10 = MEMORY[0x1E695E118];
   }
@@ -401,16 +401,16 @@
   }
 
   [v3 setObject:v10 forKeyedSubscript:@"IsOnDemandInstallCapable"];
-  v11 = [(ICLPlaceholderRecord *)self parentIdentifiers];
-  if (v11)
+  parentIdentifiers = [(ICLPlaceholderRecord *)self parentIdentifiers];
+  if (parentIdentifiers)
   {
-    [v3 setObject:v11 forKeyedSubscript:@"ParentIdentifiers"];
+    [v3 setObject:parentIdentifiers forKeyedSubscript:@"ParentIdentifiers"];
   }
 
-  v12 = [(ICLPlaceholderRecord *)self appManagementDomain];
-  if (v12)
+  appManagementDomain = [(ICLPlaceholderRecord *)self appManagementDomain];
+  if (appManagementDomain)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"AppManagementDomain"];
+    [v3 setObject:appManagementDomain forKeyedSubscript:@"AppManagementDomain"];
   }
 
   if ([(ICLPlaceholderRecord *)self isSwiftPlaygroundsApp])
@@ -441,22 +441,22 @@
     [v3 setObject:v15 forKeyedSubscript:@"PlaceholderFailureReason"];
   }
 
-  v16 = [(ICLPlaceholderRecord *)self alternateIconName];
-  if (v16)
+  alternateIconName = [(ICLPlaceholderRecord *)self alternateIconName];
+  if (alternateIconName)
   {
-    [v3 setObject:v16 forKeyedSubscript:@"AlternateIconName"];
+    [v3 setObject:alternateIconName forKeyedSubscript:@"AlternateIconName"];
   }
 
-  v17 = [(ICLPlaceholderRecord *)self installDate];
-  if (v17)
+  installDate = [(ICLPlaceholderRecord *)self installDate];
+  if (installDate)
   {
-    [v3 setObject:v17 forKeyedSubscript:@"AppInstallDate"];
+    [v3 setObject:installDate forKeyedSubscript:@"AppInstallDate"];
   }
 
-  v18 = [(ICLPlaceholderRecord *)self lsInstallType];
-  if (v18)
+  lsInstallType = [(ICLPlaceholderRecord *)self lsInstallType];
+  if (lsInstallType)
   {
-    [v3 setObject:v18 forKeyedSubscript:@"LSInstallType"];
+    [v3 setObject:lsInstallType forKeyedSubscript:@"LSInstallType"];
   }
 
   if ([(ICLPlaceholderRecord *)self isWebNotificationBundle])
@@ -503,26 +503,26 @@
   }
 
   [v3 setObject:v22 forKeyedSubscript:@"SupportsAppMigration"];
-  v23 = [(ICLPlaceholderRecord *)self sinfInfo];
-  v24 = [v23 legacySinfInfoDictionary];
-  [v3 addEntriesFromDictionary:v24];
+  sinfInfo = [(ICLPlaceholderRecord *)self sinfInfo];
+  legacySinfInfoDictionary = [sinfInfo legacySinfInfoDictionary];
+  [v3 addEntriesFromDictionary:legacySinfInfoDictionary];
 
-  v25 = [(ICLPlaceholderRecord *)self uniqueInstallID];
-  if (v25)
+  uniqueInstallID = [(ICLPlaceholderRecord *)self uniqueInstallID];
+  if (uniqueInstallID)
   {
-    [v3 setObject:v25 forKeyedSubscript:@"UniqueInstallID"];
+    [v3 setObject:uniqueInstallID forKeyedSubscript:@"UniqueInstallID"];
   }
 
-  v26 = [(ICLPlaceholderRecord *)self installSessionID];
-  if (v26)
+  installSessionID = [(ICLPlaceholderRecord *)self installSessionID];
+  if (installSessionID)
   {
-    [v3 setObject:v26 forKeyedSubscript:@"InstallSessionID"];
+    [v3 setObject:installSessionID forKeyedSubscript:@"InstallSessionID"];
   }
 
-  v27 = [(ICLPlaceholderRecord *)self linkedParentBundleID];
-  if (v27)
+  linkedParentBundleID = [(ICLPlaceholderRecord *)self linkedParentBundleID];
+  if (linkedParentBundleID)
   {
-    [v3 setObject:v27 forKeyedSubscript:@"LinkedParentBundleID"];
+    [v3 setObject:linkedParentBundleID forKeyedSubscript:@"LinkedParentBundleID"];
   }
 
   v28 = [v3 copy];
@@ -530,10 +530,10 @@
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -545,93 +545,93 @@
     {
       v47.receiver = self;
       v47.super_class = ICLPlaceholderRecord;
-      if ([(ICLBundleRecord *)&v47 isEqual:v4])
+      if ([(ICLBundleRecord *)&v47 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(ICLPlaceholderRecord *)self bundleContainerURL];
-        v7 = [(ICLPlaceholderRecord *)v5 bundleContainerURL];
-        v8 = MICompareObjects(v6, v7);
+        v5 = equalCopy;
+        bundleContainerURL = [(ICLPlaceholderRecord *)self bundleContainerURL];
+        bundleContainerURL2 = [(ICLPlaceholderRecord *)v5 bundleContainerURL];
+        v8 = MICompareObjects(bundleContainerURL, bundleContainerURL2);
 
         if (v8)
         {
-          v9 = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
-          if (v9 == [(ICLPlaceholderRecord *)v5 isOnDemandInstallCapable])
+          isOnDemandInstallCapable = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
+          if (isOnDemandInstallCapable == [(ICLPlaceholderRecord *)v5 isOnDemandInstallCapable])
           {
-            v12 = [(ICLPlaceholderRecord *)self parentIdentifiers];
-            v13 = [(ICLPlaceholderRecord *)v5 parentIdentifiers];
-            v14 = MICompareObjects(v12, v13);
+            parentIdentifiers = [(ICLPlaceholderRecord *)self parentIdentifiers];
+            parentIdentifiers2 = [(ICLPlaceholderRecord *)v5 parentIdentifiers];
+            v14 = MICompareObjects(parentIdentifiers, parentIdentifiers2);
 
             if (v14)
             {
-              v15 = [(ICLPlaceholderRecord *)self appManagementDomain];
-              v16 = [(ICLPlaceholderRecord *)v5 appManagementDomain];
-              v17 = MICompareObjects(v15, v16);
+              appManagementDomain = [(ICLPlaceholderRecord *)self appManagementDomain];
+              appManagementDomain2 = [(ICLPlaceholderRecord *)v5 appManagementDomain];
+              v17 = MICompareObjects(appManagementDomain, appManagementDomain2);
 
               if (v17)
               {
-                v18 = [(ICLPlaceholderRecord *)self isSwiftPlaygroundsApp];
-                if (v18 == [(ICLPlaceholderRecord *)v5 isSwiftPlaygroundsApp])
+                isSwiftPlaygroundsApp = [(ICLPlaceholderRecord *)self isSwiftPlaygroundsApp];
+                if (isSwiftPlaygroundsApp == [(ICLPlaceholderRecord *)v5 isSwiftPlaygroundsApp])
                 {
-                  v19 = [(ICLPlaceholderRecord *)self isDeletable];
-                  if (v19 == [(ICLPlaceholderRecord *)v5 isDeletable])
+                  isDeletable = [(ICLPlaceholderRecord *)self isDeletable];
+                  if (isDeletable == [(ICLPlaceholderRecord *)v5 isDeletable])
                   {
-                    v20 = [(ICLPlaceholderRecord *)self isBeta];
-                    if (v20 == [(ICLPlaceholderRecord *)v5 isBeta])
+                    isBeta = [(ICLPlaceholderRecord *)self isBeta];
+                    if (isBeta == [(ICLPlaceholderRecord *)v5 isBeta])
                     {
-                      v21 = [(ICLPlaceholderRecord *)self placeholderFailureReason];
-                      if (v21 == [(ICLPlaceholderRecord *)v5 placeholderFailureReason])
+                      placeholderFailureReason = [(ICLPlaceholderRecord *)self placeholderFailureReason];
+                      if (placeholderFailureReason == [(ICLPlaceholderRecord *)v5 placeholderFailureReason])
                       {
-                        v22 = [(ICLPlaceholderRecord *)self alternateIconName];
-                        v23 = [(ICLPlaceholderRecord *)v5 alternateIconName];
-                        v24 = MICompareObjects(v22, v23);
+                        alternateIconName = [(ICLPlaceholderRecord *)self alternateIconName];
+                        alternateIconName2 = [(ICLPlaceholderRecord *)v5 alternateIconName];
+                        v24 = MICompareObjects(alternateIconName, alternateIconName2);
 
                         if (v24)
                         {
-                          v25 = [(ICLPlaceholderRecord *)self installDate];
-                          v26 = [(ICLPlaceholderRecord *)v5 installDate];
-                          v27 = MICompareObjects(v25, v26);
+                          installDate = [(ICLPlaceholderRecord *)self installDate];
+                          installDate2 = [(ICLPlaceholderRecord *)v5 installDate];
+                          v27 = MICompareObjects(installDate, installDate2);
 
                           if (v27)
                           {
-                            v28 = [(ICLPlaceholderRecord *)self lsInstallType];
-                            v29 = [(ICLPlaceholderRecord *)v5 lsInstallType];
-                            v30 = MICompareObjects(v28, v29);
+                            lsInstallType = [(ICLPlaceholderRecord *)self lsInstallType];
+                            lsInstallType2 = [(ICLPlaceholderRecord *)v5 lsInstallType];
+                            v30 = MICompareObjects(lsInstallType, lsInstallType2);
 
                             if (v30)
                             {
-                              v31 = [(ICLPlaceholderRecord *)self sinfInfo];
-                              v32 = [(ICLPlaceholderRecord *)v5 sinfInfo];
-                              v33 = MICompareObjects(v31, v32);
+                              sinfInfo = [(ICLPlaceholderRecord *)self sinfInfo];
+                              sinfInfo2 = [(ICLPlaceholderRecord *)v5 sinfInfo];
+                              v33 = MICompareObjects(sinfInfo, sinfInfo2);
 
                               if (v33)
                               {
-                                v34 = [(ICLPlaceholderRecord *)self isWebNotificationBundle];
-                                if (v34 == [(ICLPlaceholderRecord *)v5 isWebNotificationBundle])
+                                isWebNotificationBundle = [(ICLPlaceholderRecord *)self isWebNotificationBundle];
+                                if (isWebNotificationBundle == [(ICLPlaceholderRecord *)v5 isWebNotificationBundle])
                                 {
-                                  v35 = [(ICLPlaceholderRecord *)self isEligibleForWatchAppInstall];
-                                  if (v35 == [(ICLPlaceholderRecord *)v5 isEligibleForWatchAppInstall])
+                                  isEligibleForWatchAppInstall = [(ICLPlaceholderRecord *)self isEligibleForWatchAppInstall];
+                                  if (isEligibleForWatchAppInstall == [(ICLPlaceholderRecord *)v5 isEligibleForWatchAppInstall])
                                   {
-                                    v36 = [(ICLPlaceholderRecord *)self isMarketplace];
-                                    if (v36 == [(ICLPlaceholderRecord *)v5 isMarketplace])
+                                    isMarketplace = [(ICLPlaceholderRecord *)self isMarketplace];
+                                    if (isMarketplace == [(ICLPlaceholderRecord *)v5 isMarketplace])
                                     {
-                                      v37 = [(ICLPlaceholderRecord *)self supportsAppMigration];
-                                      if (v37 == [(ICLPlaceholderRecord *)v5 supportsAppMigration])
+                                      supportsAppMigration = [(ICLPlaceholderRecord *)self supportsAppMigration];
+                                      if (supportsAppMigration == [(ICLPlaceholderRecord *)v5 supportsAppMigration])
                                       {
-                                        v38 = [(ICLPlaceholderRecord *)self uniqueInstallID];
-                                        v39 = [(ICLPlaceholderRecord *)v5 uniqueInstallID];
-                                        v40 = MICompareObjects(v38, v39);
+                                        uniqueInstallID = [(ICLPlaceholderRecord *)self uniqueInstallID];
+                                        uniqueInstallID2 = [(ICLPlaceholderRecord *)v5 uniqueInstallID];
+                                        v40 = MICompareObjects(uniqueInstallID, uniqueInstallID2);
 
                                         if (v40)
                                         {
-                                          v41 = [(ICLPlaceholderRecord *)self installSessionID];
-                                          v42 = [(ICLPlaceholderRecord *)v5 installSessionID];
-                                          v43 = MICompareObjects(v41, v42);
+                                          installSessionID = [(ICLPlaceholderRecord *)self installSessionID];
+                                          installSessionID2 = [(ICLPlaceholderRecord *)v5 installSessionID];
+                                          v43 = MICompareObjects(installSessionID, installSessionID2);
 
                                           if (v43)
                                           {
-                                            v44 = [(ICLPlaceholderRecord *)self linkedParentBundleID];
-                                            v45 = [(ICLPlaceholderRecord *)v5 linkedParentBundleID];
-                                            v46 = MICompareObjects(v44, v45);
+                                            linkedParentBundleID = [(ICLPlaceholderRecord *)self linkedParentBundleID];
+                                            linkedParentBundleID2 = [(ICLPlaceholderRecord *)v5 linkedParentBundleID];
+                                            v46 = MICompareObjects(linkedParentBundleID, linkedParentBundleID2);
 
                                             if (v46)
                                             {
@@ -771,15 +771,15 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
-  v4 = [(ICLPlaceholderRecord *)self isSwiftPlaygroundsApp];
+  isOnDemandInstallCapable = [(ICLPlaceholderRecord *)self isOnDemandInstallCapable];
+  isSwiftPlaygroundsApp = [(ICLPlaceholderRecord *)self isSwiftPlaygroundsApp];
   v5 = 2;
-  if (!v4)
+  if (!isSwiftPlaygroundsApp)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | isOnDemandInstallCapable;
   if ([(ICLPlaceholderRecord *)self isDeletable])
   {
     v7 = 4;
@@ -790,9 +790,9 @@ LABEL_16:
     v7 = 0;
   }
 
-  v8 = [(ICLPlaceholderRecord *)self isBeta];
+  isBeta = [(ICLPlaceholderRecord *)self isBeta];
   v9 = 8;
-  if (!v8)
+  if (!isBeta)
   {
     v9 = 0;
   }
@@ -808,9 +808,9 @@ LABEL_16:
     v11 = 0;
   }
 
-  v12 = [(ICLPlaceholderRecord *)self isEligibleForWatchAppInstall];
+  isEligibleForWatchAppInstall = [(ICLPlaceholderRecord *)self isEligibleForWatchAppInstall];
   v13 = 64;
-  if (!v12)
+  if (!isEligibleForWatchAppInstall)
   {
     v13 = 0;
   }
@@ -826,43 +826,43 @@ LABEL_16:
     v15 = 0;
   }
 
-  v16 = [(ICLPlaceholderRecord *)self supportsAppMigration];
+  supportsAppMigration = [(ICLPlaceholderRecord *)self supportsAppMigration];
   v17 = 256;
-  if (!v16)
+  if (!supportsAppMigration)
   {
     v17 = 0;
   }
 
   v18 = v15 ^ v17;
-  v19 = [(ICLPlaceholderRecord *)self bundleContainerURL];
-  v20 = v18 ^ [v19 hash];
+  bundleContainerURL = [(ICLPlaceholderRecord *)self bundleContainerURL];
+  v20 = v18 ^ [bundleContainerURL hash];
 
-  v21 = [(ICLPlaceholderRecord *)self parentIdentifiers];
-  v22 = v20 ^ [v21 hash];
+  parentIdentifiers = [(ICLPlaceholderRecord *)self parentIdentifiers];
+  v22 = v20 ^ [parentIdentifiers hash];
 
-  v23 = [(ICLPlaceholderRecord *)self appManagementDomain];
-  v24 = v22 ^ [v23 hash];
+  appManagementDomain = [(ICLPlaceholderRecord *)self appManagementDomain];
+  v24 = v22 ^ [appManagementDomain hash];
 
-  v25 = [(ICLPlaceholderRecord *)self alternateIconName];
-  v26 = v14 ^ v24 ^ [v25 hash];
+  alternateIconName = [(ICLPlaceholderRecord *)self alternateIconName];
+  v26 = v14 ^ v24 ^ [alternateIconName hash];
 
-  v27 = [(ICLPlaceholderRecord *)self installDate];
-  v28 = [v27 hash];
+  installDate = [(ICLPlaceholderRecord *)self installDate];
+  v28 = [installDate hash];
 
-  v29 = [(ICLPlaceholderRecord *)self lsInstallType];
-  v30 = v28 ^ [v29 hash];
+  lsInstallType = [(ICLPlaceholderRecord *)self lsInstallType];
+  v30 = v28 ^ [lsInstallType hash];
 
-  v31 = [(ICLPlaceholderRecord *)self sinfInfo];
-  v32 = v30 ^ [v31 hash];
+  sinfInfo = [(ICLPlaceholderRecord *)self sinfInfo];
+  v32 = v30 ^ [sinfInfo hash];
 
-  v33 = [(ICLPlaceholderRecord *)self uniqueInstallID];
-  v34 = v32 ^ [v33 hash];
+  uniqueInstallID = [(ICLPlaceholderRecord *)self uniqueInstallID];
+  v34 = v32 ^ [uniqueInstallID hash];
 
-  v35 = [(ICLPlaceholderRecord *)self installSessionID];
-  v36 = v34 ^ [v35 hash];
+  installSessionID = [(ICLPlaceholderRecord *)self installSessionID];
+  v36 = v34 ^ [installSessionID hash];
 
-  v37 = [(ICLPlaceholderRecord *)self linkedParentBundleID];
-  v38 = v36 ^ [v37 hash];
+  linkedParentBundleID = [(ICLPlaceholderRecord *)self linkedParentBundleID];
+  v38 = v36 ^ [linkedParentBundleID hash];
 
   v40.receiver = self;
   v40.super_class = ICLPlaceholderRecord;

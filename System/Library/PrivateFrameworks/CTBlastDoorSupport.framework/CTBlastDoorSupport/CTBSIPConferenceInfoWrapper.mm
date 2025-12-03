@@ -1,11 +1,11 @@
 @interface CTBSIPConferenceInfoWrapper
-- (CTBSIPConferenceInfoWrapper)initWithWrapped:(optional<ctb:(BOOL)a4 :SIPConferenceInfo> *)a3;
+- (CTBSIPConferenceInfoWrapper)initWithWrapped:(optional<ctb:(BOOL)wrapped :SIPConferenceInfo> *)a3;
 - (id).cxx_construct;
 @end
 
 @implementation CTBSIPConferenceInfoWrapper
 
-- (CTBSIPConferenceInfoWrapper)initWithWrapped:(optional<ctb:(BOOL)a4 :SIPConferenceInfo> *)a3
+- (CTBSIPConferenceInfoWrapper)initWithWrapped:(optional<ctb:(BOOL)wrapped :SIPConferenceInfo> *)a3
 {
   v8.receiver = self;
   v8.super_class = CTBSIPConferenceInfoWrapper;

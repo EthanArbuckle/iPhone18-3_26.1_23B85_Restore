@@ -1,22 +1,22 @@
 @interface WiFiP2PTrafficRegistrationReservation
-- (id)initForService:(id)a3;
+- (id)initForService:(id)service;
 - (id)trafficRegistrationConfiguration;
-- (void)activateWithCompletion:(id)a3;
-- (void)handleConnectionEstablishedWithProxy:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)handleConnectionEstablishedWithProxy:(id)proxy;
 - (void)invalidate;
 @end
 
 @implementation WiFiP2PTrafficRegistrationReservation
 
-- (id)initForService:(id)a3
+- (id)initForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = WiFiP2PTrafficRegistrationReservation;
   v5 = [(WiFiP2PTrafficRegistrationReservation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [serviceCopy copy];
     service = v5->_service;
     v5->_service = v6;
 
@@ -38,9 +38,9 @@
 - (id)trafficRegistrationConfiguration
 {
   v3 = [AWDLTrafficRegistrationConfiguration alloc];
-  v4 = [(WiFiP2PTrafficRegistrationReservation *)self service];
+  service = [(WiFiP2PTrafficRegistrationReservation *)self service];
   v5 = +[WiFiMACAddress zeroAddress];
-  v6 = [(AWDLTrafficRegistrationConfiguration *)v3 initWithUniqueIdentifier:v4 peerAddress:v5];
+  v6 = [(AWDLTrafficRegistrationConfiguration *)v3 initWithUniqueIdentifier:service peerAddress:v5];
 
   if ([(WiFiP2PTrafficRegistrationReservation *)self showsUIAlertOnError])
   {
@@ -50,16 +50,16 @@
   return v6;
 }
 
-- (void)handleConnectionEstablishedWithProxy:(id)a3
+- (void)handleConnectionEstablishedWithProxy:(id)proxy
 {
-  v6 = a3;
+  proxyCopy = proxy;
   if (self->_enabledCount)
   {
     v4 = 0;
     do
     {
-      v5 = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
-      [v6 reserveTrafficRegistrationsForConfiguration:v5 enabled:1 completionHandler:&__block_literal_global_200];
+      trafficRegistrationConfiguration = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
+      [proxyCopy reserveTrafficRegistrationsForConfiguration:trafficRegistrationConfiguration enabled:1 completionHandler:&__block_literal_global_200];
 
       ++v4;
     }
@@ -68,25 +68,25 @@
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
+  completionCopy = completion;
+  trafficRegistrationConfiguration = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
   xpcConnection = self->_xpcConnection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__WiFiP2PTrafficRegistrationReservation_activateWithCompletion___block_invoke;
   v11[3] = &unk_2787AB780;
   v11[4] = self;
-  v12 = v5;
+  v12 = trafficRegistrationConfiguration;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__WiFiP2PTrafficRegistrationReservation_activateWithCompletion___block_invoke_2;
   v9[3] = &unk_2787AB7A8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = completionCopy;
+  v7 = completionCopy;
+  v8 = trafficRegistrationConfiguration;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v11 clientErrorHandler:v9];
 }
 
@@ -113,7 +113,7 @@ uint64_t __64__WiFiP2PTrafficRegistrationReservation_activateWithCompletion___bl
 
 - (void)invalidate
 {
-  v3 = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
+  trafficRegistrationConfiguration = [(WiFiP2PTrafficRegistrationReservation *)self trafficRegistrationConfiguration];
   xpcConnection = self->_xpcConnection;
   v6[4] = self;
   v7[0] = MEMORY[0x277D85DD0];
@@ -121,12 +121,12 @@ uint64_t __64__WiFiP2PTrafficRegistrationReservation_activateWithCompletion___bl
   v7[2] = __51__WiFiP2PTrafficRegistrationReservation_invalidate__block_invoke;
   v7[3] = &unk_2787AB780;
   v7[4] = self;
-  v8 = v3;
+  v8 = trafficRegistrationConfiguration;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__WiFiP2PTrafficRegistrationReservation_invalidate__block_invoke_2;
   v6[3] = &unk_2787AB7D0;
-  v5 = v3;
+  v5 = trafficRegistrationConfiguration;
   [(WiFiP2PXPCConnection *)xpcConnection withRemoteObjectProxy:v7 clientErrorHandler:v6];
 }
 

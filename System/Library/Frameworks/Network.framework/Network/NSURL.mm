@@ -7,13 +7,13 @@
 
 - (BOOL)_NW_isHTTPish
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 scheme];
-  v2 = [v1 length];
+  scheme = [self scheme];
+  v2 = [scheme length];
   v3 = 0;
   if (v2 > 6)
   {
@@ -112,7 +112,7 @@
     {
       v4 = @"wss";
 LABEL_33:
-      v3 = [v1 caseInsensitiveCompare:v4] == 0;
+      v3 = [scheme caseInsensitiveCompare:v4] == 0;
     }
   }
 
@@ -123,13 +123,13 @@ LABEL_34:
 
 - (BOOL)_NW_isWebSocket
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 scheme];
-  v2 = [v1 length];
+  scheme = [self scheme];
+  v2 = [scheme length];
   v3 = 0;
   if (v2 > 6)
   {
@@ -180,7 +180,7 @@ LABEL_34:
   {
     v4 = @"wss";
 LABEL_18:
-    v3 = [v1 caseInsensitiveCompare:v4] == 0;
+    v3 = [scheme caseInsensitiveCompare:v4] == 0;
   }
 
 LABEL_19:

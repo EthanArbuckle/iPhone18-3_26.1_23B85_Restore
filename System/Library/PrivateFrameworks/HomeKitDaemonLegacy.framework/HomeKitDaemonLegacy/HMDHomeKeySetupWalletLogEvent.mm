@@ -1,19 +1,19 @@
 @interface HMDHomeKeySetupWalletLogEvent
-- (HMDHomeKeySetupWalletLogEvent)initWithQueue:(id)a3;
+- (HMDHomeKeySetupWalletLogEvent)initWithQueue:(id)queue;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (void)submitSuccess;
 - (void)timeout;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHomeKeySetupWalletLogEvent
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDHomeKeySetupWalletLogEvent *)self timer];
+  fireCopy = fire;
+  timer = [(HMDHomeKeySetupWalletLogEvent *)self timer];
 
-  if (v5 == v4)
+  if (timer == fireCopy)
   {
 
     [(HMDHomeKeySetupWalletLogEvent *)self timeout];
@@ -22,14 +22,14 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v4 forKeyedSubscript:@"duration"];
+  [dictionary setObject:v4 forKeyedSubscript:@"duration"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDHomeKeySetupWalletLogEvent success](self, "success")}];
-  [v3 setObject:v5 forKeyedSubscript:@"success"];
+  [dictionary setObject:v5 forKeyedSubscript:@"success"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
@@ -50,11 +50,11 @@
   [v3 submitLogEvent:self];
 }
 
-- (HMDHomeKeySetupWalletLogEvent)initWithQueue:(id)a3
+- (HMDHomeKeySetupWalletLogEvent)initWithQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = HMDHomeKeySetupWalletLogEvent;
-  v3 = a3;
+  queueCopy = queue;
   v4 = [(HMMLogEvent *)&v9 init];
   v5 = objc_alloc(MEMORY[0x277D0F920]);
   v6 = [v5 initWithTimeInterval:0 options:{60.0, v9.receiver, v9.super_class}];
@@ -62,7 +62,7 @@
   v4->_timer = v6;
 
   [(HMFTimer *)v4->_timer setDelegate:v4];
-  [(HMFTimer *)v4->_timer setDelegateQueue:v3];
+  [(HMFTimer *)v4->_timer setDelegateQueue:queueCopy];
 
   return v4;
 }

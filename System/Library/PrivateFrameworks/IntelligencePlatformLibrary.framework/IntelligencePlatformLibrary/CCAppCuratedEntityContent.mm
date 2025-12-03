@@ -1,28 +1,28 @@
 @interface CCAppCuratedEntityContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppCuratedEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppCuratedEntityContent)initWithTypeIdentifier:(id)a3 displayRepresentation:(id)a4 typeDisplayRepresentation:(id)a5 error:(id *)a6;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppCuratedEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppCuratedEntityContent)initWithTypeIdentifier:(id)identifier displayRepresentation:(id)representation typeDisplayRepresentation:(id)displayRepresentation error:(id *)error;
 - (CCAppEntityDisplayRepresentation)displayRepresentation;
 - (CCAppEntityTypeDisplayRepresentation)typeDisplayRepresentation;
 - (NSString)typeIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppCuratedEntityContent
 
-- (CCAppCuratedEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppCuratedEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v21[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"typeIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"typeIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
     if (v10)
     {
       v21[0] = 0;
@@ -39,7 +39,7 @@
       v10 = v11;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"typeDisplayRepresentation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"typeDisplayRepresentation"];
     if (!v14)
     {
       v15 = 0;
@@ -55,7 +55,7 @@
     {
 
 LABEL_13:
-      v18 = [[CCAppCuratedEntityContent alloc] initWithTypeIdentifier:v9 displayRepresentation:v10 typeDisplayRepresentation:v15 error:a4];
+      v18 = [[CCAppCuratedEntityContent alloc] initWithTypeIdentifier:v9 displayRepresentation:v10 typeDisplayRepresentation:v15 error:error];
       v13 = v15;
 LABEL_16:
 
@@ -81,22 +81,22 @@ LABEL_17:
   v3 = objc_opt_new();
   if (self->_typeIdentifier)
   {
-    v4 = [(CCAppCuratedEntityContent *)self typeIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"typeIdentifier"];
+    typeIdentifier = [(CCAppCuratedEntityContent *)self typeIdentifier];
+    [v3 setObject:typeIdentifier forKeyedSubscript:@"typeIdentifier"];
   }
 
   if (self->_displayRepresentation)
   {
-    v5 = [(CCAppCuratedEntityContent *)self displayRepresentation];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCAppCuratedEntityContent *)self displayRepresentation];
+    jsonDictionary = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"displayRepresentation"];
   }
 
   if (self->_typeDisplayRepresentation)
   {
-    v7 = [(CCAppCuratedEntityContent *)self typeDisplayRepresentation];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"typeDisplayRepresentation"];
+    typeDisplayRepresentation = [(CCAppCuratedEntityContent *)self typeDisplayRepresentation];
+    jsonDictionary2 = [typeDisplayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"typeDisplayRepresentation"];
   }
 
   v9 = [v3 copy];
@@ -104,28 +104,28 @@ LABEL_17:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_typeIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:39426 stringValue:self->_typeIdentifier];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_displayRepresentation)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:39427 subMessageValue:self->_displayRepresentation];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
-  v7 = v9;
+  v7 = blockCopy;
   if (self->_typeDisplayRepresentation)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:39431 subMessageValue:self->_typeDisplayRepresentation];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
 
-    v7 = v9;
+    v7 = blockCopy;
   }
 }
 
@@ -150,10 +150,10 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -325,13 +325,13 @@ LABEL_40:
   return v37;
 }
 
-- (CCAppCuratedEntityContent)initWithTypeIdentifier:(id)a3 displayRepresentation:(id)a4 typeDisplayRepresentation:(id)a5 error:(id *)a6
+- (CCAppCuratedEntityContent)initWithTypeIdentifier:(id)identifier displayRepresentation:(id)representation typeDisplayRepresentation:(id)displayRepresentation error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  representationCopy = representation;
+  displayRepresentationCopy = displayRepresentation;
   v13 = objc_opt_new();
-  if (v10)
+  if (identifierCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -342,11 +342,11 @@ LABEL_40:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!representationCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (displayRepresentationCopy)
       {
         goto LABEL_5;
       }
@@ -360,7 +360,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!representationCopy)
     {
       goto LABEL_4;
     }
@@ -373,15 +373,15 @@ LABEL_11:
   if (!v20)
   {
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
-  v21 = [v11 data];
+  data = [representationCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v12)
+  if (!displayRepresentationCopy)
   {
     goto LABEL_11;
   }
@@ -393,35 +393,35 @@ LABEL_5:
 
   if (v17)
   {
-    v18 = [v12 data];
+    data2 = [displayRepresentationCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v22 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v22 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v19 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v19 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 26111) > 8u)
+  if ((identifier + 26111) > 8u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7D88[(a3 + 26111)];
+    return off_1E73E7D88[(identifier + 26111)];
   }
 }
 

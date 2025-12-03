@@ -1,24 +1,24 @@
 @interface LookAroundTrayContaineeViewController
 - (LookAroundActionCoordination)actionCoordinator;
-- (LookAroundTrayContaineeViewController)initWithLookAroundView:(id)a3;
+- (LookAroundTrayContaineeViewController)initWithLookAroundView:(id)view;
 - (LookAroundTrayContaineeViewControllerDelegate)delegate;
 - (double)headerHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)_captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)_captureUserAction:(int)action onTarget:(int)target eventValue:(id)value;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateLabelsButton;
-- (void)reportAnIssueButtonTapped:(id)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)shareButtonTapped:(id)a3;
-- (void)toggleLabelsButtonTapped:(id)a3;
+- (void)reportAnIssueButtonTapped:(id)tapped;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)shareButtonTapped:(id)tapped;
+- (void)toggleLabelsButtonTapped:(id)tapped;
 - (void)trayHeaderDidReceiveTap;
 - (void)updateLocation;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation LookAroundTrayContaineeViewController
@@ -37,10 +37,10 @@
   return WeakRetained;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
 - (void)_updateLabelsButton
@@ -66,21 +66,21 @@
 
 - (void)_setupViews
 {
-  v3 = [(LookAroundTrayContaineeViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(LookAroundTrayContaineeViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = objc_alloc_init(LookAroundTrayHeaderViewController);
   headerViewController = self->_headerViewController;
   self->_headerViewController = v4;
 
   [(LookAroundTrayHeaderViewController *)self->_headerViewController setDelegate:self];
-  v6 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(LookAroundTrayHeaderViewController *)self->_headerViewController setAccessibilityIdentifier:@"LookAroundTrayHeader"];
-  v7 = [(LookAroundTrayContaineeViewController *)self view];
-  v8 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  [v7 addSubview:v8];
+  view3 = [(LookAroundTrayContaineeViewController *)self view];
+  view4 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  [view3 addSubview:view4];
 
   v9 = [UIScrollView alloc];
   y = CGRectZero.origin.y;
@@ -93,12 +93,12 @@
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
   [(UIScrollView *)self->_scrollView setClipsToBounds:1];
   [(UIScrollView *)self->_scrollView setDelegate:self];
-  v15 = [(UIScrollView *)self->_scrollView layer];
-  [v15 setAllowsGroupOpacity:0];
+  layer = [(UIScrollView *)self->_scrollView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(UIScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(LookAroundTrayContaineeViewController *)self view];
-  [v16 addSubview:self->_scrollView];
+  view5 = [(LookAroundTrayContaineeViewController *)self view];
+  [view5 addSubview:self->_scrollView];
 
   v17 = [[MKViewWithHairline alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   grabberSafeAreaView = self->_grabberSafeAreaView;
@@ -111,8 +111,8 @@
   [(MKViewWithHairline *)self->_grabberSafeAreaView setBackgroundColor:v19];
 
   [(MKViewWithHairline *)self->_grabberSafeAreaView setPreservesSuperviewLayoutMargins:1];
-  v20 = [(LookAroundTrayContaineeViewController *)self view];
-  [v20 addSubview:self->_grabberSafeAreaView];
+  view6 = [(LookAroundTrayContaineeViewController *)self view];
+  [view6 addSubview:self->_grabberSafeAreaView];
 
   v21 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   containerView = self->_containerView;
@@ -191,139 +191,139 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(MKViewWithHairline *)self->_grabberSafeAreaView heightAnchor];
-  v4 = [v3 constraintEqualToConstant:0.0];
+  heightAnchor = [(MKViewWithHairline *)self->_grabberSafeAreaView heightAnchor];
+  v4 = [heightAnchor constraintEqualToConstant:0.0];
   grabberSafeAreaHeightConstraint = self->_grabberSafeAreaHeightConstraint;
   self->_grabberSafeAreaHeightConstraint = v4;
 
-  v111 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  v109 = [v111 topAnchor];
-  v110 = [(LookAroundTrayContaineeViewController *)self view];
-  v108 = [v110 topAnchor];
-  v107 = [v109 constraintEqualToAnchor:v108];
+  view = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  topAnchor = [view topAnchor];
+  view2 = [(LookAroundTrayContaineeViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v107 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v112[0] = v107;
-  v106 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  v104 = [v106 leadingAnchor];
-  v105 = [(LookAroundTrayContaineeViewController *)self view];
-  v103 = [v105 leadingAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103];
+  view3 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  leadingAnchor = [view3 leadingAnchor];
+  view4 = [(LookAroundTrayContaineeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v102 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v112[1] = v102;
-  v101 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  v99 = [v101 trailingAnchor];
-  v100 = [(LookAroundTrayContaineeViewController *)self view];
-  v98 = [v100 trailingAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98];
+  view5 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  trailingAnchor = [view5 trailingAnchor];
+  view6 = [(LookAroundTrayContaineeViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v97 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v112[2] = v97;
-  v95 = [(MKViewWithHairline *)self->_grabberSafeAreaView leadingAnchor];
-  v96 = [(LookAroundTrayContaineeViewController *)self view];
-  v94 = [v96 leadingAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  leadingAnchor3 = [(MKViewWithHairline *)self->_grabberSafeAreaView leadingAnchor];
+  view7 = [(LookAroundTrayContaineeViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v93 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v112[3] = v93;
-  v91 = [(MKViewWithHairline *)self->_grabberSafeAreaView trailingAnchor];
-  v92 = [(LookAroundTrayContaineeViewController *)self view];
-  v90 = [v92 trailingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  trailingAnchor3 = [(MKViewWithHairline *)self->_grabberSafeAreaView trailingAnchor];
+  view8 = [(LookAroundTrayContaineeViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v89 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v112[4] = v89;
-  v87 = [(MKViewWithHairline *)self->_grabberSafeAreaView bottomAnchor];
-  v88 = [(LookAroundTrayContaineeViewController *)self view];
-  v86 = [v88 bottomAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  bottomAnchor = [(MKViewWithHairline *)self->_grabberSafeAreaView bottomAnchor];
+  view9 = [(LookAroundTrayContaineeViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v85 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v6 = self->_grabberSafeAreaHeightConstraint;
   v112[5] = v85;
   v112[6] = v6;
-  v83 = [(UIScrollView *)self->_scrollView topAnchor];
-  v84 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  v82 = [v84 bottomAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  topAnchor3 = [(UIScrollView *)self->_scrollView topAnchor];
+  view10 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  bottomAnchor3 = [view10 bottomAnchor];
+  v81 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v112[7] = v81;
-  v79 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v80 = [(LookAroundTrayContaineeViewController *)self view];
-  v78 = [v80 leadingAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  leadingAnchor5 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view11 = [(LookAroundTrayContaineeViewController *)self view];
+  leadingAnchor6 = [view11 leadingAnchor];
+  v77 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v112[8] = v77;
-  v75 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v76 = [(LookAroundTrayContaineeViewController *)self view];
-  v74 = [v76 trailingAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  trailingAnchor5 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view12 = [(LookAroundTrayContaineeViewController *)self view];
+  trailingAnchor6 = [view12 trailingAnchor];
+  v73 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v112[9] = v73;
-  v72 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v70 = [v72 widthAnchor];
-  v71 = [(LookAroundTrayContaineeViewController *)self view];
-  v69 = [v71 widthAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  widthAnchor = [contentLayoutGuide widthAnchor];
+  view13 = [(LookAroundTrayContaineeViewController *)self view];
+  widthAnchor2 = [view13 widthAnchor];
+  v68 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v112[10] = v68;
-  v67 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v66 = [(MKViewWithHairline *)self->_grabberSafeAreaView topAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  bottomAnchor4 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  topAnchor4 = [(MKViewWithHairline *)self->_grabberSafeAreaView topAnchor];
+  v65 = [bottomAnchor4 constraintEqualToAnchor:topAnchor4];
   v112[11] = v65;
-  v64 = [(UIView *)self->_containerView topAnchor];
-  v63 = [(UIScrollView *)self->_scrollView topAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  topAnchor5 = [(UIView *)self->_containerView topAnchor];
+  topAnchor6 = [(UIScrollView *)self->_scrollView topAnchor];
+  v62 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v112[12] = v62;
-  v61 = [(UIView *)self->_containerView leadingAnchor];
-  v60 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  leadingAnchor7 = [(UIView *)self->_containerView leadingAnchor];
+  leadingAnchor8 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v59 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v112[13] = v59;
-  v58 = [(UIView *)self->_containerView trailingAnchor];
-  v57 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  trailingAnchor7 = [(UIView *)self->_containerView trailingAnchor];
+  trailingAnchor8 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v56 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v112[14] = v56;
-  v55 = [(UIView *)self->_containerView bottomAnchor];
-  v54 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  bottomAnchor5 = [(UIView *)self->_containerView bottomAnchor];
+  bottomAnchor6 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v53 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v112[15] = v53;
-  v52 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
-  v51 = [(UIView *)self->_containerView topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:16.0];
+  topAnchor7 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
+  topAnchor8 = [(UIView *)self->_containerView topAnchor];
+  v50 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:16.0];
   v112[16] = v50;
-  v49 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v48 = [(UIView *)self->_containerView leadingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:16.0];
+  leadingAnchor9 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  leadingAnchor10 = [(UIView *)self->_containerView leadingAnchor];
+  v47 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
   v112[17] = v47;
-  v46 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v45 = [(UIView *)self->_containerView trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45 constant:-16.0];
+  trailingAnchor9 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  trailingAnchor10 = [(UIView *)self->_containerView trailingAnchor];
+  v44 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-16.0];
   v112[18] = v44;
-  v43 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
-  v42 = [(UIView *)self->_containerView bottomAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:-16.0];
+  bottomAnchor7 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_containerView bottomAnchor];
+  v41 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-16.0];
   v112[19] = v41;
-  v40 = [(UIStackView *)self->_buttonStackView topAnchor];
-  v39 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor9 = [(UIStackView *)self->_buttonStackView topAnchor];
+  topAnchor10 = [(UILayoutGuide *)self->_containerLayoutGuide topAnchor];
+  v38 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v112[20] = v38;
-  v37 = [(UIStackView *)self->_buttonStackView leadingAnchor];
-  v36 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor11 = [(UIStackView *)self->_buttonStackView leadingAnchor];
+  leadingAnchor12 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  v35 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   v112[21] = v35;
-  v34 = [(UIStackView *)self->_buttonStackView trailingAnchor];
-  v33 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor11 = [(UIStackView *)self->_buttonStackView trailingAnchor];
+  trailingAnchor12 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  v32 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v112[22] = v32;
-  v31 = [(LookAroundVibrantBackgroundButton *)self->_toggleLabelsButton heightAnchor];
-  v30 = [v31 constraintGreaterThanOrEqualToConstant:52.0];
+  heightAnchor2 = [(LookAroundVibrantBackgroundButton *)self->_toggleLabelsButton heightAnchor];
+  v30 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:52.0];
   v29 = [DynamicTypeWizard autoscaledConstraint:v30 constant:&stru_101628490 withFontProvider:52.0];
   v112[23] = v29;
-  v28 = [(LookAroundVibrantBackgroundButton *)self->_shareButton heightAnchor];
-  v27 = [(LookAroundVibrantBackgroundButton *)self->_toggleLabelsButton heightAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  heightAnchor3 = [(LookAroundVibrantBackgroundButton *)self->_shareButton heightAnchor];
+  heightAnchor4 = [(LookAroundVibrantBackgroundButton *)self->_toggleLabelsButton heightAnchor];
+  v26 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   v112[24] = v26;
-  v25 = [(UILabel *)self->_lastUpdatedLabel leadingAnchor];
-  v24 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor13 = [(UILabel *)self->_lastUpdatedLabel leadingAnchor];
+  leadingAnchor14 = [(UILayoutGuide *)self->_containerLayoutGuide leadingAnchor];
+  v23 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
   v112[25] = v23;
-  v22 = [(UILabel *)self->_lastUpdatedLabel trailingAnchor];
-  v21 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  trailingAnchor13 = [(UILabel *)self->_lastUpdatedLabel trailingAnchor];
+  trailingAnchor14 = [(UILayoutGuide *)self->_containerLayoutGuide trailingAnchor];
+  v20 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
   v112[26] = v20;
-  v7 = [(UILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
-  v8 = [(UIStackView *)self->_buttonStackView bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  firstBaselineAnchor = [(UILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
+  bottomAnchor9 = [(UIStackView *)self->_buttonStackView bottomAnchor];
+  v9 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor9];
   v10 = [DynamicTypeWizard autoscaledConstraint:v9 constant:&stru_101628490 withFontProvider:32.0];
   v112[27] = v10;
-  v11 = [(UILabel *)self->_lastUpdatedLabel bottomAnchor];
-  v12 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor10 = [(UILabel *)self->_lastUpdatedLabel bottomAnchor];
+  bottomAnchor11 = [(UILayoutGuide *)self->_containerLayoutGuide bottomAnchor];
+  v13 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
   v112[28] = v13;
   v14 = [NSArray arrayWithObjects:v112 count:29];
   v15 = [NSMutableArray arrayWithArray:v14];
@@ -331,106 +331,106 @@
   reportAnIssueButton = self->_reportAnIssueButton;
   if (reportAnIssueButton)
   {
-    v17 = [(LookAroundVibrantBackgroundButton *)reportAnIssueButton heightAnchor];
-    v18 = [(LookAroundVibrantBackgroundButton *)self->_shareButton heightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    heightAnchor5 = [(LookAroundVibrantBackgroundButton *)reportAnIssueButton heightAnchor];
+    heightAnchor6 = [(LookAroundVibrantBackgroundButton *)self->_shareButton heightAnchor];
+    v19 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
     [v15 addObject:v19];
   }
 
   [NSLayoutConstraint activateConstraints:v15];
 }
 
-- (void)reportAnIssueButtonTapped:(id)a3
+- (void)reportAnIssueButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(LookAroundTrayContaineeViewController *)self delegate];
-  [v5 lookAroundTrayContaineeViewController:self didTapReportAnIssueButton:v4];
+  tappedCopy = tapped;
+  delegate = [(LookAroundTrayContaineeViewController *)self delegate];
+  [delegate lookAroundTrayContaineeViewController:self didTapReportAnIssueButton:tappedCopy];
 }
 
-- (void)shareButtonTapped:(id)a3
+- (void)shareButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(LookAroundTrayContaineeViewController *)self delegate];
-  [v5 lookAroundTrayContaineeViewController:self didTapShareButton:v4];
+  tappedCopy = tapped;
+  delegate = [(LookAroundTrayContaineeViewController *)self delegate];
+  [delegate lookAroundTrayContaineeViewController:self didTapShareButton:tappedCopy];
 }
 
-- (void)toggleLabelsButtonTapped:(id)a3
+- (void)toggleLabelsButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(LookAroundTrayContaineeViewController *)self delegate];
-  [v5 lookAroundTrayContaineeViewController:self didTapToggleLabelsButton:v4];
+  tappedCopy = tapped;
+  delegate = [(LookAroundTrayContaineeViewController *)self delegate];
+  [delegate lookAroundTrayContaineeViewController:self didTapToggleLabelsButton:tappedCopy];
 
   [(LookAroundTrayContaineeViewController *)self _updateLabelsButton];
 }
 
 - (void)trayHeaderDidReceiveTap
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v4 == 1)
+  if (containeeLayout == 1)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 wantsExpandLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsExpandLayout];
   }
 
   else
   {
-    if (v4 != 2)
+    if (containeeLayout != 2)
     {
       return;
     }
 
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 wantsMinimizeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 wantsMinimizeLayout];
   }
 }
 
-- (void)_captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5
+- (void)_captureUserAction:(int)action onTarget:(int)target eventValue:(id)value
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v18 = a5;
+  v5 = *&target;
+  v6 = *&action;
+  valueCopy = value;
   v8 = self->_lookAroundView;
   [(MKLookAroundView *)v8 centerCoordinate];
   v11 = [[GEOLocation alloc] initWithLatitude:v9 longitude:v10];
   [(MKLookAroundView *)v8 presentationYaw];
   v13 = v12;
-  v14 = [(MKLookAroundView *)v8 visiblePlaceMUIDs];
-  v15 = [v14 count];
+  visiblePlaceMUIDs = [(MKLookAroundView *)v8 visiblePlaceMUIDs];
+  v15 = [visiblePlaceMUIDs count];
   if (([(MKLookAroundView *)v8 showsRoadLabels]& 1) != 0)
   {
-    v16 = 1;
+    showsPointLabels = 1;
   }
 
   else
   {
-    v16 = [(MKLookAroundView *)v8 showsPointLabels];
+    showsPointLabels = [(MKLookAroundView *)v8 showsPointLabels];
   }
 
-  LOBYTE(v17) = v16;
-  [GEOAPPortal captureLookAroundUserAction:v6 onTarget:v5 eventValue:v18 location:v11 heading:v13 zoom:v15 numberPoisInView:0.0 labelingShown:v17];
+  LOBYTE(v17) = showsPointLabels;
+  [GEOAPPortal captureLookAroundUserAction:v6 onTarget:v5 eventValue:valueCopy location:v11 heading:v13 zoom:v15 numberPoisInView:0.0 labelingShown:v17];
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = LookAroundTrayContaineeViewController;
-  [(ContaineeViewController *)&v5 willChangeContainerStyle:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 grabberSafeAreaHeight];
+  [(ContaineeViewController *)&v5 willChangeContainerStyle:style];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController grabberSafeAreaHeight];
   [(NSLayoutConstraint *)self->_grabberSafeAreaHeightConstraint setConstant:?];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v10.receiver = self;
   v10.super_class = LookAroundTrayContaineeViewController;
   [(ContaineeViewController *)&v10 willChangeLayout:?];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (a3 == 2 && v6 == 1)
+  if (layout == 2 && containeeLayout == 1)
   {
     v7 = 1;
 LABEL_7:
@@ -438,26 +438,26 @@ LABEL_7:
     return;
   }
 
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  v9 = [v8 containeeLayout];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout2 = [cardPresentationController2 containeeLayout];
 
-  if (a3 == 1 && v9 == 2)
+  if (layout == 1 && containeeLayout2 == 2)
   {
     v7 = 2;
     goto LABEL_7;
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 1)
+  if (layout == 1)
   {
     v10 = 0.0;
     goto LABEL_5;
   }
 
   v4 = -1.0;
-  if (a3 == 3)
+  if (layout == 3)
   {
     height = UILayoutFittingCompressedSize.height;
     [(UIView *)self->_containerView frame];
@@ -469,8 +469,8 @@ LABEL_7:
 LABEL_5:
     [(LookAroundTrayContaineeViewController *)self headerHeight];
     v12 = v11;
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v12 + v10 + v14;
   }
 
@@ -480,26 +480,26 @@ LABEL_5:
 - (double)headerHeight
 {
   height = UILayoutFittingCompressedSize.height;
-  v4 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
-  [v4 frame];
+  view = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  [view frame];
   Width = CGRectGetWidth(v12);
 
-  v6 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
+  view2 = [(LookAroundTrayHeaderViewController *)self->_headerViewController view];
   LODWORD(v7) = 1148846080;
   LODWORD(v8) = 1112014848;
-  [v6 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:height verticalFittingPriority:{v7, v8}];
+  [view2 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:height verticalFittingPriority:{v7, v8}];
   v10 = v9;
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = LookAroundTrayContaineeViewController;
-  [(ContaineeViewController *)&v5 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 grabberSafeAreaHeight];
+  [(ContaineeViewController *)&v5 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController grabberSafeAreaHeight];
   [(NSLayoutConstraint *)self->_grabberSafeAreaHeightConstraint setConstant:?];
 }
 
@@ -512,13 +512,13 @@ LABEL_5:
   [(LookAroundTrayContaineeViewController *)self _setupConstraints];
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 wantsLayout:1];
+    self->_visible = visible;
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
 
     [(LookAroundTrayContaineeViewController *)self updateLocation];
 
@@ -533,33 +533,33 @@ LABEL_5:
   v6 = 3221225472;
   v7 = sub_10075AD24;
   v9 = v8 = &unk_101661A90;
-  v10 = self;
+  selfCopy = self;
   v3 = v9;
   [UIView performWithoutAnimation:&v5];
   v4 = [(ContaineeViewController *)self cardPresentationController:v5];
   [v4 updateHeightForCurrentLayout];
 }
 
-- (LookAroundTrayContaineeViewController)initWithLookAroundView:(id)a3
+- (LookAroundTrayContaineeViewController)initWithLookAroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = LookAroundTrayContaineeViewController;
   v6 = [(LookAroundTrayContaineeViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v8 setAllowResizeInFloatingStyle:1];
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-    v9 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v9 setEdgeAttachedRegularHeightDimmingBehavior:1];
+    cardPresentationController2 = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController2 setEdgeAttachedRegularHeightDimmingBehavior:1];
 
     v10 = objc_alloc_init(NSDateFormatter);
     dateFormatter = v7->_dateFormatter;
     v7->_dateFormatter = v10;
 
-    objc_storeStrong(&v7->_lookAroundView, a3);
+    objc_storeStrong(&v7->_lookAroundView, view);
     v7->_visible = 0;
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:v7 selector:"_contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];

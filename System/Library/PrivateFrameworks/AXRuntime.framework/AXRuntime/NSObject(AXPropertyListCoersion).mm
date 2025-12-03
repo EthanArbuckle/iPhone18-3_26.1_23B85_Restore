@@ -19,8 +19,8 @@
     *&valuePtr = AXSerializeSmuggledTypeCFBoolean;
     v31 = @"SmugType";
     v32 = @"Value";
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:CFBooleanGetValue(cf)];
-    *(&valuePtr + 1) = v6;
+    data = [MEMORY[0x1E696AD98] numberWithUnsignedChar:CFBooleanGetValue(cf)];
+    *(&valuePtr + 1) = data;
 LABEL_5:
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&valuePtr forKeys:&v31 count:2];
     goto LABEL_6;
@@ -39,21 +39,21 @@ LABEL_5:
     LODWORD(v26) = bswap32(*(cf + 4));
     v27 = bswap64(v10);
     v28 = bswap64(v9);
-    v6 = [MEMORY[0x1E695DF88] data];
-    [v6 appendBytes:&v26 length:4];
-    [v6 appendBytes:&v28 length:8];
-    [v6 appendBytes:&v27 length:8];
+    data = [MEMORY[0x1E695DF88] data];
+    [data appendBytes:&v26 length:4];
+    [data appendBytes:&v28 length:8];
+    [data appendBytes:&v27 length:8];
     v31 = @"SmugType";
     v32 = @"Value";
     *&valuePtr = AXSerializeSmuggledTypeAXUIElement;
-    *(&valuePtr + 1) = v6;
+    *(&valuePtr + 1) = data;
     goto LABEL_5;
   }
 
   if (v5 == smugglingDictionaryForCoreFoundationObject_AXValueTypeID)
   {
     Type = AXValueGetType(cf);
-    v6 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     if (Type <= 2)
     {
       if (Type == 1)
@@ -87,12 +87,12 @@ LABEL_5:
         v27 = bswap64(v30);
         v28 = bswap64(*(&valuePtr + 1));
         v26 = bswap64(*(&v30 + 1));
-        [v6 appendBytes:&v31 length:8];
-        [v6 appendBytes:&v28 length:8];
-        [v6 appendBytes:&v27 length:8];
+        [data appendBytes:&v31 length:8];
+        [data appendBytes:&v28 length:8];
+        [data appendBytes:&v27 length:8];
         v13 = &v26;
 LABEL_44:
-        v14 = v6;
+        v14 = data;
         v15 = 8;
         goto LABEL_45;
       }
@@ -105,7 +105,7 @@ LABEL_44:
           AXValueGetValue(cf, kAXValueTypeAXError, &valuePtr);
           LODWORD(v31) = bswap32(valuePtr);
           v13 = &v31;
-          v14 = v6;
+          v14 = data;
           v15 = 4;
 LABEL_45:
           [v14 appendBytes:v13 length:v15];
@@ -120,7 +120,7 @@ LABEL_47:
         v25 = [MEMORY[0x1E696AD98] numberWithInt:Type];
         v33 = @"Value";
         *(&valuePtr + 1) = v25;
-        *&v30 = v6;
+        *&v30 = data;
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&valuePtr forKeys:&v31 count:3];
 
 LABEL_6:
@@ -140,7 +140,7 @@ LABEL_6:
     AXValueGetValue(v23, v24, &valuePtr);
     v31 = bswap64(valuePtr);
     v28 = bswap64(*(&valuePtr + 1));
-    [v6 appendBytes:&v31 length:8];
+    [data appendBytes:&v31 length:8];
     v13 = &v28;
     goto LABEL_44;
   }
@@ -188,7 +188,7 @@ LABEL_10:
   {
     Type = Model;
     NumberOfComponents = CGColorGetNumberOfComponents(cf);
-    v6 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     Components = CGColorGetComponents(cf);
     if (NumberOfComponents)
     {
@@ -197,7 +197,7 @@ LABEL_10:
       {
         v21 = *v20++;
         *&valuePtr = bswap64(v21);
-        [v6 appendBytes:&valuePtr length:8];
+        [data appendBytes:&valuePtr length:8];
         --NumberOfComponents;
       }
 

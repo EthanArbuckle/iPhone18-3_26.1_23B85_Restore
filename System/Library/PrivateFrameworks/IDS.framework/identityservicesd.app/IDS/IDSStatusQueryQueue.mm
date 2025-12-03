@@ -2,7 +2,7 @@
 - (IDSStatusQueryQueue)init;
 - (void)_callStateChanged;
 - (void)dealloc;
-- (void)enqueueQueryBlock:(id)a3 cleanup:(id)a4;
+- (void)enqueueQueryBlock:(id)block cleanup:(id)cleanup;
 @end
 
 @implementation IDSStatusQueryQueue
@@ -34,16 +34,16 @@
 - (void)_callStateChanged
 {
   v3 = +[IMCallMonitor sharedInstance];
-  v4 = [v3 isOnTelephonyCall];
+  isOnTelephonyCall = [v3 isOnTelephonyCall];
 
-  if ((v4 & 1) == 0)
+  if ((isOnTelephonyCall & 1) == 0)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = [(NSMutableArray *)self->_queue count];
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ _callStateChanged - no longer on a call, processing %lu pending queries!", buf, 0x16u);
@@ -95,39 +95,39 @@
   }
 }
 
-- (void)enqueueQueryBlock:(id)a3 cleanup:(id)a4
+- (void)enqueueQueryBlock:(id)block cleanup:(id)cleanup
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  blockCopy = block;
+  cleanupCopy = cleanup;
+  if (blockCopy)
   {
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100613E80;
     v28[3] = &unk_100BE2448;
-    v29 = v6;
-    v8 = v7;
+    v29 = blockCopy;
+    v8 = cleanupCopy;
     v30 = v8;
     v9 = objc_retainBlock(v28);
     v10 = +[IMMobileNetworkManager sharedInstance];
-    v11 = [v10 isWiFiUsable];
+    isWiFiUsable = [v10 isWiFiUsable];
 
     v12 = +[FTDeviceSupport sharedInstance];
-    v13 = [v12 supportsSimultaneousVoiceAndDataRightNow];
+    supportsSimultaneousVoiceAndDataRightNow = [v12 supportsSimultaneousVoiceAndDataRightNow];
 
-    if ((v11 | v13))
+    if ((isWiFiUsable | supportsSimultaneousVoiceAndDataRightNow))
     {
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = @"NO";
-        if (v11)
+        if (isWiFiUsable)
         {
           v15 = @"YES";
         }
 
         *buf = 138412546;
-        v32 = self;
+        selfCopy6 = self;
         v33 = 2112;
         v34 = v15;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@ - we're not on a call or wifi is usable, processing query immediately (Usable WiFi: %@)", buf, 0x16u);
@@ -147,9 +147,9 @@
     else
     {
       v16 = +[IMCallMonitor sharedInstance];
-      v17 = [v16 isOnTelephonyCall];
+      isOnTelephonyCall = [v16 isOnTelephonyCall];
 
-      if (v17)
+      if (isOnTelephonyCall)
       {
         queue = self->_queue;
         if (!queue)
@@ -167,18 +167,18 @@
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v32 = self;
+            selfCopy6 = self;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ - on a call and wifi isn't usable, enqueuing query to avoid mRAB", buf, 0xCu);
           }
 
           if (os_log_shim_legacy_logging_enabled())
           {
             MarcoLogMadridLevel();
-            v27 = self;
+            selfCopy4 = self;
             IMLogString();
             if (_IMWillLog())
             {
-              v27 = self;
+              selfCopy4 = self;
               _IMAlwaysLog();
             }
           }
@@ -196,7 +196,7 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v32 = self;
+          selfCopy6 = self;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@ - too many enqueued queries, dropping this one", buf, 0xCu);
         }
 
@@ -226,7 +226,7 @@ LABEL_35:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v32 = self;
+        selfCopy6 = self;
         v33 = 2112;
         v34 = @"NO";
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@ - we're on a call but the network is usable, processing query immediately (Usable WiFi: %@)", buf, 0x16u);

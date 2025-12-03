@@ -1,12 +1,12 @@
 @interface CKBrowserSelectionLabelAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKBrowserSelectionLabelAccessoryView)initWithCoder:(id)a3;
-- (CKBrowserSelectionLabelAccessoryView)initWithLabelAccessoryType:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKBrowserSelectionLabelAccessoryView)initWithCoder:(id)coder;
+- (CKBrowserSelectionLabelAccessoryView)initWithLabelAccessoryType:(unint64_t)type;
 @end
 
 @implementation CKBrowserSelectionLabelAccessoryView
 
-- (CKBrowserSelectionLabelAccessoryView)initWithLabelAccessoryType:(unint64_t)a3
+- (CKBrowserSelectionLabelAccessoryView)initWithLabelAccessoryType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = CKBrowserSelectionLabelAccessoryView;
@@ -14,10 +14,10 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKBrowserSelectionLabelAccessoryView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(CKBrowserSelectionLabelAccessoryView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    if (a3 == 2)
+    if (type == 2)
     {
       if (initWithLabelAccessoryType__onceToken_39 != -1)
       {
@@ -30,7 +30,7 @@
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         v9 = 0;
         v10 = 0;
@@ -86,19 +86,19 @@ void __67__CKBrowserSelectionLabelAccessoryView_initWithLabelAccessoryType___blo
   initWithLabelAccessoryType____plusDImage_38 = v4;
 }
 
-- (CKBrowserSelectionLabelAccessoryView)initWithCoder:(id)a3
+- (CKBrowserSelectionLabelAccessoryView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This class does not support unarchiving from a nib" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKBrowserSelectionLabelAccessoryView *)self plusLView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  plusLView = [(CKBrowserSelectionLabelAccessoryView *)self plusLView];
+  [plusLView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

@@ -16,8 +16,8 @@
   if (v11)
   {
     v16 = MEMORY[0x277CCABB0];
-    v17 = [MEMORY[0x277CCDAB0] dayUnit];
-    [v11 doubleValueForUnit:v17];
+    dayUnit = [MEMORY[0x277CCDAB0] dayUnit];
+    [v11 doubleValueForUnit:dayUnit];
     v18 = [v16 numberWithDouble:?];
     [v15 setUserReportedCycleLength:v18];
 
@@ -28,8 +28,8 @@
   if (v12)
   {
     v20 = MEMORY[0x277CCABB0];
-    v21 = [MEMORY[0x277CCDAB0] dayUnit];
-    [v12 doubleValueForUnit:v21];
+    dayUnit2 = [MEMORY[0x277CCDAB0] dayUnit];
+    [v12 doubleValueForUnit:dayUnit2];
     v22 = [v20 numberWithDouble:?];
     [v15 setUserReportedMenstruationLength:v22];
 

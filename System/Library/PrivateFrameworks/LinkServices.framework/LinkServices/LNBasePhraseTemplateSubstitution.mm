@@ -1,60 +1,60 @@
 @interface LNBasePhraseTemplateSubstitution
-- (LNBasePhraseTemplateSubstitution)initWithBasePhraseTemplate:(id)a3 parameterSubstitutions:(id)a4;
-- (LNBasePhraseTemplateSubstitution)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LNBasePhraseTemplateSubstitution)initWithBasePhraseTemplate:(id)template parameterSubstitutions:(id)substitutions;
+- (LNBasePhraseTemplateSubstitution)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNBasePhraseTemplateSubstitution
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNBasePhraseTemplateSubstitution *)self basePhraseTemplate];
-  [v4 encodeObject:v5 forKey:@"basePhraseTemplate"];
+  coderCopy = coder;
+  basePhraseTemplate = [(LNBasePhraseTemplateSubstitution *)self basePhraseTemplate];
+  [coderCopy encodeObject:basePhraseTemplate forKey:@"basePhraseTemplate"];
 
-  v6 = [(LNBasePhraseTemplateSubstitution *)self parameterSubstitutions];
-  [v4 encodeObject:v6 forKey:@"parameterSubstitutions"];
+  parameterSubstitutions = [(LNBasePhraseTemplateSubstitution *)self parameterSubstitutions];
+  [coderCopy encodeObject:parameterSubstitutions forKey:@"parameterSubstitutions"];
 }
 
-- (LNBasePhraseTemplateSubstitution)initWithCoder:(id)a3
+- (LNBasePhraseTemplateSubstitution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"basePhraseTemplate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"basePhraseTemplate"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"parameterSubstitutions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parameterSubstitutions"];
 
     if (v9)
     {
       self = [(LNBasePhraseTemplateSubstitution *)self initWithBasePhraseTemplate:v5 parameterSubstitutions:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (LNBasePhraseTemplateSubstitution)initWithBasePhraseTemplate:(id)a3 parameterSubstitutions:(id)a4
+- (LNBasePhraseTemplateSubstitution)initWithBasePhraseTemplate:(id)template parameterSubstitutions:(id)substitutions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  templateCopy = template;
+  substitutionsCopy = substitutions;
+  v9 = substitutionsCopy;
+  if (templateCopy)
   {
-    if (v8)
+    if (substitutionsCopy)
     {
       goto LABEL_3;
     }
@@ -62,8 +62,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNBasePhraseTemplateSubstitution.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"basePhraseTemplate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNBasePhraseTemplateSubstitution.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"basePhraseTemplate"}];
 
     if (v9)
     {
@@ -71,8 +71,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNBasePhraseTemplateSubstitution.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"parameterSubstitutions"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNBasePhraseTemplateSubstitution.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"parameterSubstitutions"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -80,7 +80,7 @@ LABEL_3:
   v10 = [(LNBasePhraseTemplateSubstitution *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [templateCopy copy];
     basePhraseTemplate = v10->_basePhraseTemplate;
     v10->_basePhraseTemplate = v11;
 

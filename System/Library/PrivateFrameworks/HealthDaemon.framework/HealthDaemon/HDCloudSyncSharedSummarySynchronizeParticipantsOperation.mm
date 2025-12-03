@@ -1,6 +1,6 @@
 @interface HDCloudSyncSharedSummarySynchronizeParticipantsOperation
 - (void)main;
-- (void)updateRequiredLocalEntries:(id)a3 participants:(id)a4 updatedAuthorizationRecords:(id)a5 updatedRecordIDs:(id)a6;
+- (void)updateRequiredLocalEntries:(id)entries participants:(id)participants updatedAuthorizationRecords:(id)records updatedRecordIDs:(id)ds;
 @end
 
 @implementation HDCloudSyncSharedSummarySynchronizeParticipantsOperation
@@ -8,21 +8,21 @@
 - (void)main
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 syncAvailability];
-  v6 = [v5 shouldSyncSummarySharingPush];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncAvailability = [repository syncAvailability];
+  shouldSyncSummarySharingPush = [syncAvailability shouldSyncSummarySharingPush];
 
-  if (v6)
+  if (shouldSyncSummarySharingPush)
   {
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [v7 cachedCloudState];
-    v9 = [(HDCloudSyncOperation *)self configuration];
-    v10 = [v9 repository];
-    v11 = [v10 primaryCKContainer];
-    v12 = [v11 containerIdentifier];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v26 = 0;
-    v13 = [v8 privateMetadataZoneForContainerID:v12 error:&v26];
+    v13 = [cachedCloudState privateMetadataZoneForContainerID:containerIdentifier error:&v26];
     v14 = v26;
 
     if (!v13 && v14)
@@ -54,8 +54,8 @@ LABEL_15:
     }
 
     v19 = [HDCloudSyncSharedSummaryMergeLocalAndCloudParticipantsOperation alloc];
-    v20 = [(HDCloudSyncOperation *)self configuration];
-    v21 = [(HDCloudSyncSharedSummaryMergeLocalAndCloudParticipantsOperation *)v19 initWithConfiguration:v20 privateMetadataZone:v13 participants:v18];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    v21 = [(HDCloudSyncSharedSummaryMergeLocalAndCloudParticipantsOperation *)v19 initWithConfiguration:configuration4 privateMetadataZone:v13 participants:v18];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -80,7 +80,7 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping operation because platform/profile does not support summary sharing", buf, 0xCu);
   }
 
@@ -119,52 +119,52 @@ void __64__HDCloudSyncSharedSummarySynchronizeParticipantsOperation_main__block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRequiredLocalEntries:(id)a3 participants:(id)a4 updatedAuthorizationRecords:(id)a5 updatedRecordIDs:(id)a6
+- (void)updateRequiredLocalEntries:(id)entries participants:(id)participants updatedAuthorizationRecords:(id)records updatedRecordIDs:(id)ds
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  dsCopy = ds;
+  recordsCopy = records;
+  participantsCopy = participants;
+  entriesCopy = entries;
   v14 = [HDCloudSyncCompoundOperation alloc];
-  v15 = [(HDCloudSyncOperation *)self configuration];
-  v16 = [(HDCloudSyncCompoundOperation *)v14 initWithConfiguration:v15 cloudState:0 name:@"Synchronize Participants" continueOnSubOperationError:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v16 = [(HDCloudSyncCompoundOperation *)v14 initWithConfiguration:configuration cloudState:0 name:@"Synchronize Participants" continueOnSubOperationError:0];
 
   v17 = [HDCloudSyncSharedSummaryUpdateCodableEntryOperation alloc];
-  v18 = [(HDCloudSyncOperation *)self configuration];
-  v37 = [(HDCloudSyncSharedSummaryUpdateCodableEntryOperation *)v17 initWithConfiguration:v18 updatedLocalEntries:v13 isActive:0 shouldResolveCNContact:0];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  v37 = [(HDCloudSyncSharedSummaryUpdateCodableEntryOperation *)v17 initWithConfiguration:configuration2 updatedLocalEntries:entriesCopy isActive:0 shouldResolveCNContact:0];
 
   [(HDCloudSyncCompoundOperation *)v16 addOperation:v37 transitionHandler:0];
   v19 = [HDCloudSyncSharedSummaryParticipantProfileCreationOperation alloc];
-  v20 = [(HDCloudSyncOperation *)self configuration];
-  v36 = [(HDCloudSyncSharedSummaryParticipantProfileCreationOperation *)v19 initWithConfiguration:v20 participants:v12];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  v36 = [(HDCloudSyncSharedSummaryParticipantProfileCreationOperation *)v19 initWithConfiguration:configuration3 participants:participantsCopy];
 
   [(HDCloudSyncCompoundOperation *)v16 addOperation:v36 transitionHandler:0];
   v21 = [HDCloudSyncSharedSummaryUpdateCodableEntryOperation alloc];
-  v22 = [(HDCloudSyncOperation *)self configuration];
-  v35 = [(HDCloudSyncSharedSummaryUpdateCodableEntryOperation *)v21 initWithConfiguration:v22 updatedLocalEntries:v13 isActive:1 shouldResolveCNContact:1];
+  configuration4 = [(HDCloudSyncOperation *)self configuration];
+  v35 = [(HDCloudSyncSharedSummaryUpdateCodableEntryOperation *)v21 initWithConfiguration:configuration4 updatedLocalEntries:entriesCopy isActive:1 shouldResolveCNContact:1];
 
   [(HDCloudSyncCompoundOperation *)v16 addOperation:v35 transitionHandler:0];
   v23 = [HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation alloc];
-  v24 = [(HDCloudSyncOperation *)self configuration];
-  v25 = [(HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation *)v23 initWithConfiguration:v24 participants:v12];
+  configuration5 = [(HDCloudSyncOperation *)self configuration];
+  v25 = [(HDCloudSyncSharedSummaryInactiveParticipantProfileDeletionOperation *)v23 initWithConfiguration:configuration5 participants:participantsCopy];
 
   [(HDCloudSyncCompoundOperation *)v16 addOperation:v25 transitionHandler:0];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __145__HDCloudSyncSharedSummarySynchronizeParticipantsOperation_updateRequiredLocalEntries_participants_updatedAuthorizationRecords_updatedRecordIDs___block_invoke;
   v38[3] = &unk_278620400;
-  v39 = v10;
-  v26 = v10;
-  v27 = [v12 hk_map:v38];
+  v39 = dsCopy;
+  v26 = dsCopy;
+  v27 = [participantsCopy hk_map:v38];
 
-  v28 = [v27 arrayByAddingObjectsFromArray:v11];
+  v28 = [v27 arrayByAddingObjectsFromArray:recordsCopy];
 
   v29 = [HDCloudSyncModifyRecordsOperation alloc];
-  v30 = [(HDCloudSyncOperation *)self configuration];
-  v31 = [(HDCloudSyncOperation *)self configuration];
-  v32 = [v31 repository];
-  v33 = [v32 primaryCKContainer];
-  v34 = [(HDCloudSyncModifyRecordsOperation *)v29 initWithConfiguration:v30 container:v33 recordsToSave:v28 recordIDsToDelete:0];
+  configuration6 = [(HDCloudSyncOperation *)self configuration];
+  configuration7 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration7 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  v34 = [(HDCloudSyncModifyRecordsOperation *)v29 initWithConfiguration:configuration6 container:primaryCKContainer recordsToSave:v28 recordIDsToDelete:0];
 
   [(HDCloudSyncCompoundOperation *)v16 addOperation:v34 transitionHandler:0];
   [(HDCloudSyncOperation *)self delegateToOperation:v16];

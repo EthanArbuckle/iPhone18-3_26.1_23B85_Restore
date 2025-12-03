@@ -1,5 +1,5 @@
 @interface PXStoryMiroPhotoInfo
-- (PXStoryMiroPhotoInfo)initWithData:(id)a3;
+- (PXStoryMiroPhotoInfo)initWithData:(id)data;
 - (id)dataRepresentation;
 @end
 
@@ -13,15 +13,15 @@
   return v2;
 }
 
-- (PXStoryMiroPhotoInfo)initWithData:(id)a3
+- (PXStoryMiroPhotoInfo)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = PXStoryMiroPhotoInfo;
-  v5 = [(PXStoryMiroAssetInfo *)&v7 initWithData:v4];
-  if (v5 && [v4 length] == 5)
+  v5 = [(PXStoryMiroAssetInfo *)&v7 initWithData:dataCopy];
+  if (v5 && [dataCopy length] == 5)
   {
-    -[PXStoryMiroAssetInfo setIsUsed:](v5, "setIsUsed:", *([v4 bytes] + 4) & 1);
+    -[PXStoryMiroAssetInfo setIsUsed:](v5, "setIsUsed:", *([dataCopy bytes] + 4) & 1);
   }
 
   return v5;

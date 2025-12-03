@@ -1,20 +1,20 @@
 @interface TSIntervalTimeLineFilter
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)rateRatio;
-- (unint64_t)domainAIntervalFromDomainBInterval:(unint64_t)a3;
-- (unint64_t)domainATimeFromDomainBTime:(unint64_t)a3;
-- (unint64_t)domainBIntervalFromDomainAInterval:(unint64_t)a3;
-- (unint64_t)domainBTimeFromDomainATime:(unint64_t)a3;
-- (void)addTimestamps:(id)a3;
-- (void)changeToNewFilterSize:(unsigned __int8)a3;
-- (void)getAnchors:(id *)a3 andRateRatio:(id *)a4;
+- (unint64_t)domainAIntervalFromDomainBInterval:(unint64_t)interval;
+- (unint64_t)domainATimeFromDomainBTime:(unint64_t)time;
+- (unint64_t)domainBIntervalFromDomainAInterval:(unint64_t)interval;
+- (unint64_t)domainBTimeFromDomainATime:(unint64_t)time;
+- (void)addTimestamps:(id)timestamps;
+- (void)changeToNewFilterSize:(unsigned __int8)size;
+- (void)getAnchors:(id *)anchors andRateRatio:(id *)ratio;
 - (void)resetFilter;
-- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)a3 expectedDomainBInterval:(unint64_t)a4;
-- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)a3 expectedDomainBInterval:(unint64_t)a4 multiIntervalCount:(unsigned int)a5;
+- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)interval expectedDomainBInterval:(unint64_t)bInterval;
+- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)interval expectedDomainBInterval:(unint64_t)bInterval multiIntervalCount:(unsigned int)count;
 @end
 
 @implementation TSIntervalTimeLineFilter
 
-- (void)addTimestamps:(id)a3
+- (void)addTimestamps:(id)timestamps
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -22,7 +22,7 @@
   block[2] = __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke;
   block[3] = &unk_279DBD630;
   block[4] = self;
-  v5 = a3;
+  timestampsCopy = timestamps;
   dispatch_sync(syncQueue, block);
 }
 
@@ -58,38 +58,38 @@ uint64_t __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke(void *a1)
   return result;
 }
 
-- (void)getAnchors:(id *)a3 andRateRatio:(id *)a4
+- (void)getAnchors:(id *)anchors andRateRatio:(id *)ratio
 {
-  if (a3)
+  if (anchors)
   {
-    a3->var0 = -1;
-    a3->var1 = -1;
+    anchors->var0 = -1;
+    anchors->var1 = -1;
   }
 
-  if (a4)
+  if (ratio)
   {
-    a4->var0 = -1;
-    a4->var1 = -1;
+    ratio->var0 = -1;
+    ratio->var1 = -1;
   }
 
   validIndex = self->_validIndex;
   if (validIndex <= 7)
   {
-    if (a3)
+    if (anchors)
     {
-      a3->var0 = self->_AAnchor[validIndex];
-      a3->var1 = self->_BAnchor[validIndex];
+      anchors->var0 = self->_AAnchor[validIndex];
+      anchors->var1 = self->_BAnchor[validIndex];
     }
 
-    if (a4)
+    if (ratio)
     {
-      a4->var0 = [(TSIntervalFilter *)self->_aIntervalFilter multiIntervalTimeForEntry:self->_AEntries[validIndex]];
-      a4->var1 = [(TSIntervalFilter *)self->_bIntervalFilter multiIntervalTimeForEntry:self->_BEntries[validIndex]];
+      ratio->var0 = [(TSIntervalFilter *)self->_aIntervalFilter multiIntervalTimeForEntry:self->_AEntries[validIndex]];
+      ratio->var1 = [(TSIntervalFilter *)self->_bIntervalFilter multiIntervalTimeForEntry:self->_BEntries[validIndex]];
     }
   }
 }
 
-- (unint64_t)domainATimeFromDomainBTime:(unint64_t)a3
+- (unint64_t)domainATimeFromDomainBTime:(unint64_t)time
 {
   validIndex = self->_validIndex;
   if (validIndex > 7)
@@ -102,10 +102,10 @@ uint64_t __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke(void *a1)
   v8 = self->_BAnchor[validIndex];
   v9 = self->_AAnchor[validIndex];
 
-  return TSTimeXtoTimeY(a3, v8, v7, v9, v6);
+  return TSTimeXtoTimeY(time, v8, v7, v9, v6);
 }
 
-- (unint64_t)domainAIntervalFromDomainBInterval:(unint64_t)a3
+- (unint64_t)domainAIntervalFromDomainBInterval:(unint64_t)interval
 {
   validIndex = self->_validIndex;
   if (validIndex > 7)
@@ -116,10 +116,10 @@ uint64_t __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke(void *a1)
   v6 = [(TSIntervalFilter *)self->_aIntervalFilter multiIntervalTimeForEntry:self->_AEntries[validIndex]];
   v7 = [(TSIntervalFilter *)self->_bIntervalFilter multiIntervalTimeForEntry:self->_BEntries[validIndex]];
 
-  return TSIntervalXtoIntervalY(a3, v7, v6);
+  return TSIntervalXtoIntervalY(interval, v7, v6);
 }
 
-- (unint64_t)domainBTimeFromDomainATime:(unint64_t)a3
+- (unint64_t)domainBTimeFromDomainATime:(unint64_t)time
 {
   validIndex = self->_validIndex;
   if (validIndex > 7)
@@ -132,10 +132,10 @@ uint64_t __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke(void *a1)
   v8 = self->_AAnchor[validIndex];
   v9 = self->_BAnchor[validIndex];
 
-  return TSTimeXtoTimeY(a3, v8, v6, v9, v7);
+  return TSTimeXtoTimeY(time, v8, v6, v9, v7);
 }
 
-- (unint64_t)domainBIntervalFromDomainAInterval:(unint64_t)a3
+- (unint64_t)domainBIntervalFromDomainAInterval:(unint64_t)interval
 {
   validIndex = self->_validIndex;
   if (validIndex > 7)
@@ -146,7 +146,7 @@ uint64_t __42__TSIntervalTimeLineFilter_addTimestamps___block_invoke(void *a1)
   v6 = [(TSIntervalFilter *)self->_aIntervalFilter multiIntervalTimeForEntry:self->_AEntries[validIndex]];
   v7 = [(TSIntervalFilter *)self->_bIntervalFilter multiIntervalTimeForEntry:self->_BEntries[validIndex]];
 
-  return TSIntervalXtoIntervalY(a3, v6, v7);
+  return TSIntervalXtoIntervalY(interval, v6, v7);
 }
 
 - (void)resetFilter
@@ -168,7 +168,7 @@ uint64_t __39__TSIntervalTimeLineFilter_resetFilter__block_invoke(uint64_t a1)
   return [v2 resetFilter];
 }
 
-- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)a3 expectedDomainBInterval:(unint64_t)a4
+- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)interval expectedDomainBInterval:(unint64_t)bInterval
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -176,8 +176,8 @@ uint64_t __39__TSIntervalTimeLineFilter_resetFilter__block_invoke(uint64_t a1)
   block[2] = __94__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterval_expectedDomainBInterval___block_invoke;
   block[3] = &unk_279DBD630;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = interval;
+  block[6] = bInterval;
   dispatch_sync(syncQueue, block);
 }
 
@@ -190,7 +190,7 @@ uint64_t __94__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterva
   return [v2 resetFilterWithNewExpectedInterval:v3];
 }
 
-- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)a3 expectedDomainBInterval:(unint64_t)a4 multiIntervalCount:(unsigned int)a5
+- (void)resetFilterWithNewExpectedDomainAInterval:(unint64_t)interval expectedDomainBInterval:(unint64_t)bInterval multiIntervalCount:(unsigned int)count
 {
   syncQueue = self->_syncQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -198,9 +198,9 @@ uint64_t __94__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterva
   v6[2] = __113__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterval_expectedDomainBInterval_multiIntervalCount___block_invoke;
   v6[3] = &unk_279DBD680;
   v6[4] = self;
-  v6[5] = a3;
-  v7 = a5;
-  v6[6] = a4;
+  v6[5] = interval;
+  countCopy = count;
+  v6[6] = bInterval;
   dispatch_sync(syncQueue, v6);
 }
 
@@ -214,7 +214,7 @@ uint64_t __113__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterv
   return [v2 resetFilterWithNewExpectedInterval:v3 multiIntervalCount:v4];
 }
 
-- (void)changeToNewFilterSize:(unsigned __int8)a3
+- (void)changeToNewFilterSize:(unsigned __int8)size
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -222,7 +222,7 @@ uint64_t __113__TSIntervalTimeLineFilter_resetFilterWithNewExpectedDomainAInterv
   v4[2] = __50__TSIntervalTimeLineFilter_changeToNewFilterSize___block_invoke;
   v4[3] = &unk_279DBD6A8;
   v4[4] = self;
-  v5 = a3;
+  sizeCopy = size;
   dispatch_sync(syncQueue, v4);
 }
 

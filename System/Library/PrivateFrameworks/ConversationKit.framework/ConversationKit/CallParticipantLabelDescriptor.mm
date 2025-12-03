@@ -1,6 +1,6 @@
 @interface CallParticipantLabelDescriptor
 - (NSArray)strings;
-- (void)setStrings:(id)a3;
+- (void)setStrings:(id)strings;
 @end
 
 @implementation CallParticipantLabelDescriptor
@@ -13,10 +13,10 @@
   return v2.super.isa;
 }
 
-- (void)setStrings:(id)a3
+- (void)setStrings:(id)strings
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   CallParticipantLabelDescriptor.strings.setter(v4);
 }
 

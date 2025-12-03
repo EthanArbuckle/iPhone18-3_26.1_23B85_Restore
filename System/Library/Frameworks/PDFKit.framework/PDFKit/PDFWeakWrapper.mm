@@ -1,15 +1,15 @@
 @interface PDFWeakWrapper
-+ (id)weakWrapperWithObject:(id)a3;
++ (id)weakWrapperWithObject:(id)object;
 - (id)object;
 @end
 
 @implementation PDFWeakWrapper
 
-+ (id)weakWrapperWithObject:(id)a3
++ (id)weakWrapperWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  [v4 setObject:v3];
+  [v4 setObject:objectCopy];
 
   return v4;
 }

@@ -1,85 +1,85 @@
 @interface CHWorkoutDataCalculator
-- (BOOL)_activeDateIntervals:(id)a3 containsDate:(id)a4;
-- (BOOL)_workoutSupportsDistanceAndPace:(id)a3;
-- (CHWorkoutDataCalculator)initWithHealthStore:(id)a3 unitManager:(id)a4;
-- (double)_activeWorkoutElapsedTimeFromDate:(id)a3 toDate:(id)a4 forWorkout:(id)a5 workoutActivity:(id)a6;
-- (id)_activeDateIntervalsForWorkout:(id)a3 during:(id)a4;
-- (id)_activeDateIntervalsForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)_activeDateIntervalsForWorkoutActivity:(id)a3 during:(id)a4;
-- (id)_averageHeartRateQuantityFromWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)_endDateInWorkout:(id)a3 reachingAccumulatedDistance:(double)a4 fromStartDate:(id)a5;
-- (id)_endDateInWorkout:(id)a3 reachingAccumulatedTime:(double)a4 fromStartDate:(id)a5;
-- (id)_getDistanceSamplesForWorkout:(id)a3;
-- (id)_predicateForActiveDateIntervals:(id)a3;
-- (id)_predicateForObjectsFromWorkout:(id)a3 withinWorkoutActivity:(id)a4;
-- (id)_queue_downhillRunsForWorkout:(id)a3 error:(id *)a4;
-- (id)_queue_intervalsForWorkout:(id)a3 error:(id *)a4;
-- (id)_queue_openWaterSwimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5;
-- (id)_queue_segmentsForWorkout:(id)a3 markerEvents:(id)a4 error:(id *)a5;
-- (id)_queue_swimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5;
-- (id)_queue_swimmingSetsForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5;
-- (id)_queue_swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5;
-- (id)_queue_trackLapsForWorkout:(id)a3 lapEvents:(id)a4 error:(id *)a5;
-- (id)_swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 distanceSamples:(id)a5 strokeSamples:(id)a6 forDelimeterUnit:(id)a7 splitDelimiter:(id)a8;
-- (id)_testMarkersForWorkout:(id)a3;
-- (id)_testTrackLapsForWorkout:(id)a3;
-- (id)_uuidForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)averageHeartRateForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)cacheContainerForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)cachedDownhillRunsForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)cachedEffortForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)cachedEffortSampleCollectionForWorkout:(id)a3 workoutActivity:(id)a4;
-- (int64_t)_queue_strokeStyleForLaps:(id)a3;
-- (void)_fetchHeartRateDataForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)_handleUpdatedRelationships:(id)a3 withAnchor:(id)a4;
-- (void)_seriesSamplesForType:(id)a3 workout:(id)a4 workoutActivity:(id)a5 completion:(id)a6;
-- (void)_setDistanceSamples:(id)a3 forWorkout:(id)a4;
-- (void)_setStrokeSamples:(id)a3 forWorkout:(id)a4;
-- (void)_updateSplits:(id)a3 withDistance:(double)a4 duration:(double)a5 strokeCount:(int64_t)a6 splitDelimiterInUserUnit:(double)a7;
-- (void)averageCadenceForWorkout:(id)a3 during:(id)a4 completion:(id)a5;
-- (void)averageHeartRateForWorkout:(id)a3 during:(id)a4 completion:(id)a5;
-- (void)averagePowerForWorkout:(id)a3 during:(id)a4 completion:(id)a5;
-- (void)cadenceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)customSplitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)cyclingSpeedSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
+- (BOOL)_activeDateIntervals:(id)intervals containsDate:(id)date;
+- (BOOL)_workoutSupportsDistanceAndPace:(id)pace;
+- (CHWorkoutDataCalculator)initWithHealthStore:(id)store unitManager:(id)manager;
+- (double)_activeWorkoutElapsedTimeFromDate:(id)date toDate:(id)toDate forWorkout:(id)workout workoutActivity:(id)activity;
+- (id)_activeDateIntervalsForWorkout:(id)workout during:(id)during;
+- (id)_activeDateIntervalsForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)_activeDateIntervalsForWorkoutActivity:(id)activity during:(id)during;
+- (id)_averageHeartRateQuantityFromWorkout:(id)workout workoutActivity:(id)activity;
+- (id)_endDateInWorkout:(id)workout reachingAccumulatedDistance:(double)distance fromStartDate:(id)date;
+- (id)_endDateInWorkout:(id)workout reachingAccumulatedTime:(double)time fromStartDate:(id)date;
+- (id)_getDistanceSamplesForWorkout:(id)workout;
+- (id)_predicateForActiveDateIntervals:(id)intervals;
+- (id)_predicateForObjectsFromWorkout:(id)workout withinWorkoutActivity:(id)activity;
+- (id)_queue_downhillRunsForWorkout:(id)workout error:(id *)error;
+- (id)_queue_intervalsForWorkout:(id)workout error:(id *)error;
+- (id)_queue_openWaterSwimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error;
+- (id)_queue_segmentsForWorkout:(id)workout markerEvents:(id)events error:(id *)error;
+- (id)_queue_swimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error;
+- (id)_queue_swimmingSetsForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error;
+- (id)_queue_swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error;
+- (id)_queue_trackLapsForWorkout:(id)workout lapEvents:(id)events error:(id *)error;
+- (id)_swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity distanceSamples:(id)samples strokeSamples:(id)strokeSamples forDelimeterUnit:(id)unit splitDelimiter:(id)delimiter;
+- (id)_testMarkersForWorkout:(id)workout;
+- (id)_testTrackLapsForWorkout:(id)workout;
+- (id)_uuidForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)averageHeartRateForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)cacheContainerForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)cachedDownhillRunsForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)cachedEffortForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)cachedEffortSampleCollectionForWorkout:(id)workout workoutActivity:(id)activity;
+- (int64_t)_queue_strokeStyleForLaps:(id)laps;
+- (void)_fetchHeartRateDataForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)_handleUpdatedRelationships:(id)relationships withAnchor:(id)anchor;
+- (void)_seriesSamplesForType:(id)type workout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)_setDistanceSamples:(id)samples forWorkout:(id)workout;
+- (void)_setStrokeSamples:(id)samples forWorkout:(id)workout;
+- (void)_updateSplits:(id)splits withDistance:(double)distance duration:(double)duration strokeCount:(int64_t)count splitDelimiterInUserUnit:(double)unit;
+- (void)averageCadenceForWorkout:(id)workout during:(id)during completion:(id)completion;
+- (void)averageHeartRateForWorkout:(id)workout during:(id)during completion:(id)completion;
+- (void)averagePowerForWorkout:(id)workout during:(id)during completion:(id)completion;
+- (void)cadenceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)customSplitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)cyclingSpeedSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
 - (void)dealloc;
-- (void)distanceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)downhillRunsForWorkout:(id)a3 completion:(id)a4;
-- (void)effortForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)groundContactTimeSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)heartRateDataForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)intervalsForWorkout:(id)a3 completion:(id)a4;
-- (void)openWaterSwimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)paceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)powerSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)saveContainerToCache:(id)a3 forWorkout:(id)a4 workoutActivity:(id)a5;
-- (void)segmentsForWorkout:(id)a3 completion:(id)a4;
-- (void)splitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)strideLengthSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)strokeSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)swimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)swimmingPacePerHundredForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)swimmingSetsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
-- (void)totalDistanceForWorkout:(id)a3 workoutActivity:(id)a4 atDate:(id)a5 completion:(id)a6;
-- (void)trackLapsForWorkout:(id)a3 completion:(id)a4;
-- (void)verticalOscillationSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5;
+- (void)distanceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)downhillRunsForWorkout:(id)workout completion:(id)completion;
+- (void)effortForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)groundContactTimeSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)heartRateDataForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)intervalsForWorkout:(id)workout completion:(id)completion;
+- (void)openWaterSwimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)paceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)powerSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)saveContainerToCache:(id)cache forWorkout:(id)workout workoutActivity:(id)activity;
+- (void)segmentsForWorkout:(id)workout completion:(id)completion;
+- (void)splitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)strideLengthSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)strokeSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)swimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)swimmingPacePerHundredForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)swimmingSetsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
+- (void)totalDistanceForWorkout:(id)workout workoutActivity:(id)activity atDate:(id)date completion:(id)completion;
+- (void)trackLapsForWorkout:(id)workout completion:(id)completion;
+- (void)verticalOscillationSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion;
 @end
 
 @implementation CHWorkoutDataCalculator
 
-- (CHWorkoutDataCalculator)initWithHealthStore:(id)a3 unitManager:(id)a4
+- (CHWorkoutDataCalculator)initWithHealthStore:(id)store unitManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = CHWorkoutDataCalculator;
   v9 = [(CHWorkoutDataCalculator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
-    objc_storeStrong(&v10->_unitManager, a4);
+    objc_storeStrong(&v9->_healthStore, store);
+    objc_storeStrong(&v10->_unitManager, manager);
     v11 = objc_alloc_init(NSCache);
     cache = v10->_cache;
     v10->_cache = v11;
@@ -111,45 +111,45 @@
   [(CHWorkoutDataCalculator *)&v4 dealloc];
 }
 
-- (id)cacheContainerForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)cacheContainerForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = [(CHWorkoutDataCalculator *)self _uuidForWorkout:a3 workoutActivity:a4];
-  v6 = [(CHWorkoutDataCalculator *)self cache];
-  v7 = [v6 objectForKey:v5];
+  v5 = [(CHWorkoutDataCalculator *)self _uuidForWorkout:workout workoutActivity:activity];
+  cache = [(CHWorkoutDataCalculator *)self cache];
+  v7 = [cache objectForKey:v5];
 
   if (!v7)
   {
     v7 = objc_alloc_init(CHWorkoutCacheContainer);
-    v8 = [(CHWorkoutDataCalculator *)self cache];
-    [v8 setObject:v7 forKey:v5];
+    cache2 = [(CHWorkoutDataCalculator *)self cache];
+    [cache2 setObject:v7 forKey:v5];
   }
 
   return v7;
 }
 
-- (void)saveContainerToCache:(id)a3 forWorkout:(id)a4 workoutActivity:(id)a5
+- (void)saveContainerToCache:(id)cache forWorkout:(id)workout workoutActivity:(id)activity
 {
-  v8 = a3;
-  v10 = [(CHWorkoutDataCalculator *)self _uuidForWorkout:a4 workoutActivity:a5];
-  v9 = [(CHWorkoutDataCalculator *)self cache];
-  [v9 setObject:v8 forKey:v10];
+  cacheCopy = cache;
+  v10 = [(CHWorkoutDataCalculator *)self _uuidForWorkout:workout workoutActivity:activity];
+  cache = [(CHWorkoutDataCalculator *)self cache];
+  [cache setObject:cacheCopy forKey:v10];
 }
 
-- (id)averageHeartRateForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)averageHeartRateForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:v7];
-  v9 = [v8 averageHeartRate];
+  workoutCopy = workout;
+  activityCopy = activity;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  averageHeartRate = [v8 averageHeartRate];
 
-  if (v9)
+  if (averageHeartRate)
   {
-    v10 = v9;
+    v10 = averageHeartRate;
   }
 
   else
   {
-    v11 = [(CHWorkoutDataCalculator *)self _averageHeartRateQuantityFromWorkout:v6 workoutActivity:v7];
+    v11 = [(CHWorkoutDataCalculator *)self _averageHeartRateQuantityFromWorkout:workoutCopy workoutActivity:activityCopy];
     if (v11)
     {
       v12 = +[HKUnit _countPerMinuteUnit];
@@ -166,20 +166,20 @@
   return v10;
 }
 
-- (void)heartRateDataForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)heartRateDataForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 heartRateReadings];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  heartRateReadings = [v11 heartRateReadings];
 
-  if (v12)
+  if (heartRateReadings)
   {
-    v13 = [v11 heartRateReadings];
-    v14 = [v11 recoveryHeartRateReadings];
-    v15 = [v11 averageHeartRate];
-    v10[2](v10, v13, v14, v15, 0);
+    heartRateReadings2 = [v11 heartRateReadings];
+    recoveryHeartRateReadings = [v11 recoveryHeartRateReadings];
+    averageHeartRate = [v11 averageHeartRate];
+    completionCopy[2](completionCopy, heartRateReadings2, recoveryHeartRateReadings, averageHeartRate, 0);
   }
 
   else
@@ -191,11 +191,11 @@
     v22 = &unk_10083B260;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v16 = v8;
+    v16 = workoutCopy;
     v24 = v16;
-    v17 = v9;
+    v17 = activityCopy;
     v25 = v17;
-    v26 = v10;
+    v26 = completionCopy;
     v18 = objc_retainBlock(&v19);
     [(CHWorkoutDataCalculator *)self _fetchHeartRateDataForWorkout:v16 workoutActivity:v17 completion:v18, v19, v20, v21, v22];
 
@@ -204,45 +204,45 @@
   }
 }
 
-- (id)_averageHeartRateQuantityFromWorkout:(id)a3 workoutActivity:(id)a4
+- (id)_averageHeartRateQuantityFromWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v7 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-  if (v6)
+  if (activityCopy)
   {
-    v8 = [v6 statisticsForType:v7];
-    v9 = [v8 averageQuantity];
+    v8 = [activityCopy statisticsForType:v7];
+    averageQuantity = [v8 averageQuantity];
   }
 
   else
   {
-    v8 = [v5 statisticsForType:v7];
-    v10 = [v8 averageQuantity];
-    v11 = v10;
-    if (v10)
+    v8 = [workoutCopy statisticsForType:v7];
+    averageQuantity2 = [v8 averageQuantity];
+    v11 = averageQuantity2;
+    if (averageQuantity2)
     {
-      v9 = v10;
+      averageQuantity = averageQuantity2;
     }
 
     else
     {
-      v12 = [v5 metadata];
-      v9 = [v12 objectForKeyedSubscript:NLWorkoutMetadataKeyAverageHeartRate];
+      metadata = [workoutCopy metadata];
+      averageQuantity = [metadata objectForKeyedSubscript:NLWorkoutMetadataKeyAverageHeartRate];
     }
   }
 
-  return v9;
+  return averageQuantity;
 }
 
-- (void)_fetchHeartRateDataForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)_fetchHeartRateDataForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v30 = a5;
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
   v31 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-  v10 = [(CHWorkoutDataCalculator *)self _activeDateIntervalsForWorkout:v8 workoutActivity:v9];
-  v29 = [(CHWorkoutDataCalculator *)self _averageHeartRateQuantityFromWorkout:v8 workoutActivity:v9];
+  v10 = [(CHWorkoutDataCalculator *)self _activeDateIntervalsForWorkout:workoutCopy workoutActivity:activityCopy];
+  v29 = [(CHWorkoutDataCalculator *)self _averageHeartRateQuantityFromWorkout:workoutCopy workoutActivity:activityCopy];
   v11 = [(CHWorkoutDataCalculator *)self _predicateForActiveDateIntervals:v10];
   v49[0] = 0;
   v49[1] = v49;
@@ -268,11 +268,11 @@
   v43[3] = sub_1000C9D88;
   v43[4] = sub_1000C9D98;
   v44 = 0;
-  v12 = [_HKHeartRateRecoveryQueryUtility recoveryDateIntervalWithWorkout:v8];
+  v12 = [_HKHeartRateRecoveryQueryUtility recoveryDateIntervalWithWorkout:workoutCopy];
   v13 = v11;
-  if (!v9 || ([v8 workoutActivities], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "lastObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", v9), v15, v14, v17 = v13, v16))
+  if (!activityCopy || ([workoutCopy workoutActivities], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "lastObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqual:", activityCopy), v15, v14, v17 = v13, v16))
   {
-    v18 = [_HKHeartRateRecoveryQueryUtility predicateForWorkoutRecoveryTimeWithWorkout:v8];
+    v18 = [_HKHeartRateRecoveryQueryUtility predicateForWorkoutRecoveryTimeWithWorkout:workoutCopy];
     v51[0] = v13;
     v51[1] = v18;
     v19 = [NSArray arrayWithObjects:v51 count:2];
@@ -295,15 +295,15 @@
   v23 = v29;
   v35 = v23;
   v42 = v45;
-  v24 = v9;
+  v24 = activityCopy;
   v36 = v24;
-  v25 = v8;
+  v25 = workoutCopy;
   v37 = v25;
-  v26 = v30;
+  v26 = completionCopy;
   v38 = v26;
   v27 = [v20 initWithQuantityType:v31 predicate:v17 quantityHandler:v32];
-  v28 = [(CHWorkoutDataCalculator *)self healthStore];
-  [v28 executeQuery:v27];
+  healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+  [healthStore executeQuery:v27];
 
   _Block_object_dispose(v43, 8);
   _Block_object_dispose(v45, 8);
@@ -312,18 +312,18 @@
   _Block_object_dispose(v49, 8);
 }
 
-- (void)distanceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)distanceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 distanceSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  distanceSamples = [v11 distanceSamples];
 
-  if (v12)
+  if (distanceSamples)
   {
-    v13 = [v11 distanceSamples];
-    v10[2](v10, v13, 0);
+    distanceSamples2 = [v11 distanceSamples];
+    completionCopy[2](completionCopy, distanceSamples2, 0);
   }
 
   else
@@ -335,11 +335,11 @@
     v22 = &unk_10083B2D8;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v24 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v25 = v15;
-    v16 = v10;
+    v16 = completionCopy;
     v26 = v16;
     v17 = objc_retainBlock(&v19);
     if (v15)
@@ -368,27 +368,27 @@
   }
 }
 
-- (void)totalDistanceForWorkout:(id)a3 workoutActivity:(id)a4 atDate:(id)a5 completion:(id)a6
+- (void)totalDistanceForWorkout:(id)workout workoutActivity:(id)activity atDate:(id)date completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v10 workoutActivity:v11];
-  v15 = [v14 totalDistance];
+  workoutCopy = workout;
+  activityCopy = activity;
+  dateCopy = date;
+  completionCopy = completion;
+  v14 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  totalDistance = [v14 totalDistance];
 
-  if (!v15)
+  if (!totalDistance)
   {
     v16 = objc_alloc_init(NSMutableDictionary);
     [v14 setTotalDistance:v16];
   }
 
-  v17 = [v14 totalDistance];
-  v18 = [v17 objectForKeyedSubscript:v12];
+  totalDistance2 = [v14 totalDistance];
+  v18 = [totalDistance2 objectForKeyedSubscript:dateCopy];
 
   if (v18)
   {
-    v13[2](v13, v18, 0);
+    completionCopy[2](completionCopy, v18, 0);
   }
 
   else
@@ -399,32 +399,32 @@
     v36[2] = sub_1000CA8B0;
     v36[3] = &unk_10083B300;
     v37 = v14;
-    v19 = v12;
+    v19 = dateCopy;
     v38 = v19;
     objc_copyWeak(&v42, location);
-    v30 = v10;
-    v32 = v10;
+    v30 = workoutCopy;
+    v32 = workoutCopy;
     v39 = v32;
-    v20 = v11;
+    v20 = activityCopy;
     v40 = v20;
-    v41 = v13;
+    v41 = completionCopy;
     v31 = objc_retainBlock(v36);
     v21 = [NSDateInterval alloc];
     if (v20)
     {
-      v22 = [v20 startDate];
-      v23 = [v21 initWithStartDate:v22 endDate:v19];
+      startDate = [v20 startDate];
+      v23 = [v21 initWithStartDate:startDate endDate:v19];
 
       v24 = [(CHWorkoutDataCalculator *)self _activeDateIntervalsForWorkoutActivity:v20 during:v23];
-      v25 = [v20 workoutConfiguration];
-      [v25 activityType];
+      workoutConfiguration = [v20 workoutConfiguration];
+      [workoutConfiguration activityType];
       v29 = _HKWorkoutDistanceTypeForActivityType();
     }
 
     else
     {
-      v26 = [v32 startDate];
-      v23 = [v21 initWithStartDate:v26 endDate:v19];
+      startDate2 = [v32 startDate];
+      v23 = [v21 initWithStartDate:startDate2 endDate:v19];
 
       v24 = [(CHWorkoutDataCalculator *)self _activeDateIntervalsForWorkout:v32 during:v23];
       [v32 workoutActivityType];
@@ -443,16 +443,16 @@
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(location);
-    v10 = v30;
+    workoutCopy = v30;
   }
 }
 
-- (void)_seriesSamplesForType:(id)a3 workout:(id)a4 workoutActivity:(id)a5 completion:(id)a6
+- (void)_seriesSamplesForType:(id)type workout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -465,17 +465,17 @@
   v28[3] = sub_1000C9D88;
   v28[4] = sub_1000C9D98;
   v29 = 0;
-  v14 = [(CHWorkoutDataCalculator *)self _predicateForObjectsFromWorkout:v11 withinWorkoutActivity:v12];
+  v14 = [(CHWorkoutDataCalculator *)self _predicateForObjectsFromWorkout:workoutCopy withinWorkoutActivity:activityCopy];
   v15 = [HKQuantitySeriesSampleQuery alloc];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_1000CAE78;
   v23 = &unk_10083B350;
   v26 = v28;
-  v16 = v10;
+  v16 = typeCopy;
   v24 = v16;
   v27 = v30;
-  v17 = v13;
+  v17 = completionCopy;
   v25 = v17;
   v18 = [v15 initWithQuantityType:v16 predicate:v14 quantityHandler:&v20];
   v19 = [(CHWorkoutDataCalculator *)self healthStore:v20];
@@ -485,18 +485,18 @@
   _Block_object_dispose(v30, 8);
 }
 
-- (void)cadenceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)cadenceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 cadenceSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  cadenceSamples = [v11 cadenceSamples];
 
-  if (v12)
+  if (cadenceSamples)
   {
-    v13 = [v11 cadenceSamples];
-    v10[2](v10, v13, 0);
+    cadenceSamples2 = [v11 cadenceSamples];
+    completionCopy[2](completionCopy, cadenceSamples2, 0);
   }
 
   else
@@ -508,11 +508,11 @@
     v21[3] = &unk_10083B2D8;
     v22 = v11;
     objc_copyWeak(&v26, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v23 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v24 = v15;
-    v25 = v10;
+    v25 = completionCopy;
     v20 = objc_retainBlock(v21);
     v16 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
     if ([v14 workoutActivityType] == 13 || (objc_msgSend(v15, "workoutConfiguration"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "activityType"), v17, v18 == 13))
@@ -529,18 +529,18 @@
   }
 }
 
-- (void)strokeSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)strokeSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 strokeSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  strokeSamples = [v11 strokeSamples];
 
-  if (v12)
+  if (strokeSamples)
   {
-    v13 = [v11 strokeSamples];
-    v10[2](v10, v13, 0);
+    strokeSamples2 = [v11 strokeSamples];
+    completionCopy[2](completionCopy, strokeSamples2, 0);
   }
 
   else
@@ -552,11 +552,11 @@
     v27[3] = &unk_10083B2D8;
     v28 = v11;
     objc_copyWeak(&v32, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v29 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v30 = v15;
-    v31 = v10;
+    v31 = completionCopy;
     v16 = objc_retainBlock(v27);
     v24 = [(CHWorkoutDataCalculator *)self _predicateForObjectsFromWorkout:v14 withinWorkoutActivity:v15];
     v17 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierSwimmingStrokeCount];
@@ -572,26 +572,26 @@
     v26 = v21;
     v22 = [v19 initWithSampleType:v17 predicate:v24 limit:0 sortDescriptors:v20 resultsHandler:v25];
 
-    v23 = [(CHWorkoutDataCalculator *)self healthStore];
-    [v23 executeQuery:v22];
+    healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+    [healthStore executeQuery:v22];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)paceSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)paceSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 paceSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  paceSamples = [v11 paceSamples];
 
-  if (v12)
+  if (paceSamples)
   {
-    v13 = [v11 paceSamples];
-    v10[2](v10, v13, 0);
+    paceSamples2 = [v11 paceSamples];
+    completionCopy[2](completionCopy, paceSamples2, 0);
   }
 
   else
@@ -603,17 +603,17 @@
     v22[3] = &unk_10083B2D8;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v24 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v25 = v15;
-    v16 = v10;
+    v16 = completionCopy;
     v26 = v16;
     v21 = objc_retainBlock(v22);
     if (v15)
     {
-      v17 = [v15 workoutConfiguration];
-      [v17 activityType];
+      workoutConfiguration = [v15 workoutConfiguration];
+      [workoutConfiguration activityType];
     }
 
     else
@@ -641,18 +641,18 @@
   }
 }
 
-- (void)powerSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)powerSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 powerSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  powerSamples = [v11 powerSamples];
 
-  if (v12)
+  if (powerSamples)
   {
-    v13 = [v11 powerSamples];
-    v10[2](v10, v13, 0);
+    powerSamples2 = [v11 powerSamples];
+    completionCopy[2](completionCopy, powerSamples2, 0);
   }
 
   else
@@ -664,11 +664,11 @@
     v22[3] = &unk_10083B2D8;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v24 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v25 = v15;
-    v26 = v10;
+    v26 = completionCopy;
     v21 = objc_retainBlock(v22);
     v16 = HKQuantityTypeIdentifierRunningPower;
     if ([v14 workoutActivityType] == 13 || (objc_msgSend(v15, "workoutConfiguration"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "activityType"), v17, v18 == 13))
@@ -686,18 +686,18 @@
   }
 }
 
-- (void)cyclingSpeedSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)cyclingSpeedSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 cyclingSpeedSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  cyclingSpeedSamples = [v11 cyclingSpeedSamples];
 
-  if (v12)
+  if (cyclingSpeedSamples)
   {
-    v13 = [v11 cyclingSpeedSamples];
-    v10[2](v10, v13, 0);
+    cyclingSpeedSamples2 = [v11 cyclingSpeedSamples];
+    completionCopy[2](completionCopy, cyclingSpeedSamples2, 0);
   }
 
   else
@@ -709,11 +709,11 @@
     v22 = &unk_10083B2D8;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v24 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v25 = v15;
-    v26 = v10;
+    v26 = completionCopy;
     v16 = objc_retainBlock(&v19);
     v17 = HKQuantityTypeIdentifierCyclingSpeed;
     v18 = [HKQuantityType quantityTypeForIdentifier:v17, v19, v20, v21, v22];
@@ -724,18 +724,18 @@
   }
 }
 
-- (void)strideLengthSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)strideLengthSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 strideLengthSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  strideLengthSamples = [v11 strideLengthSamples];
 
-  if (v12)
+  if (strideLengthSamples)
   {
-    v13 = [v11 strideLengthSamples];
-    v10[2](v10, v13, 0);
+    strideLengthSamples2 = [v11 strideLengthSamples];
+    completionCopy[2](completionCopy, strideLengthSamples2, 0);
   }
 
   else
@@ -747,11 +747,11 @@
     v21 = &unk_10083B2D8;
     v22 = v11;
     objc_copyWeak(&v26, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v23 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v24 = v15;
-    v25 = v10;
+    v25 = completionCopy;
     v16 = objc_retainBlock(&v18);
     v17 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierRunningStrideLength, v18, v19, v20, v21];
     [(CHWorkoutDataCalculator *)self _seriesSamplesForType:v17 workout:v14 workoutActivity:v15 completion:v16];
@@ -761,18 +761,18 @@
   }
 }
 
-- (void)verticalOscillationSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)verticalOscillationSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 verticalOscillationSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  verticalOscillationSamples = [v11 verticalOscillationSamples];
 
-  if (v12)
+  if (verticalOscillationSamples)
   {
-    v13 = [v11 verticalOscillationSamples];
-    v10[2](v10, v13, 0);
+    verticalOscillationSamples2 = [v11 verticalOscillationSamples];
+    completionCopy[2](completionCopy, verticalOscillationSamples2, 0);
   }
 
   else
@@ -784,11 +784,11 @@
     v21 = &unk_10083B2D8;
     v22 = v11;
     objc_copyWeak(&v26, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v23 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v24 = v15;
-    v25 = v10;
+    v25 = completionCopy;
     v16 = objc_retainBlock(&v18);
     v17 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierRunningVerticalOscillation, v18, v19, v20, v21];
     [(CHWorkoutDataCalculator *)self _seriesSamplesForType:v17 workout:v14 workoutActivity:v15 completion:v16];
@@ -798,18 +798,18 @@
   }
 }
 
-- (void)groundContactTimeSamplesForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)groundContactTimeSamplesForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 groundContactTimeSamples];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  groundContactTimeSamples = [v11 groundContactTimeSamples];
 
-  if (v12)
+  if (groundContactTimeSamples)
   {
-    v13 = [v11 groundContactTimeSamples];
-    v10[2](v10, v13, 0);
+    groundContactTimeSamples2 = [v11 groundContactTimeSamples];
+    completionCopy[2](completionCopy, groundContactTimeSamples2, 0);
   }
 
   else
@@ -821,11 +821,11 @@
     v21 = &unk_10083B2D8;
     v22 = v11;
     objc_copyWeak(&v26, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v23 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v24 = v15;
-    v25 = v10;
+    v25 = completionCopy;
     v16 = objc_retainBlock(&v18);
     v17 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierRunningGroundContactTime, v18, v19, v20, v21];
     [(CHWorkoutDataCalculator *)self _seriesSamplesForType:v17 workout:v14 workoutActivity:v15 completion:v16];
@@ -835,31 +835,31 @@
   }
 }
 
-- (void)splitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)splitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self unitManager];
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  unitManager = [(CHWorkoutDataCalculator *)self unitManager];
+  if (activityCopy)
   {
-    v12 = v9;
+    v12 = activityCopy;
   }
 
   else
   {
-    v12 = v8;
+    v12 = workoutCopy;
   }
 
-  v13 = [v12 fiui_activityType];
-  v14 = [v11 userDistanceHKUnitForDistanceType:FIUIDistanceTypeForActivityType()];
+  fiui_activityType = [v12 fiui_activityType];
+  v14 = [unitManager userDistanceHKUnitForDistanceType:FIUIDistanceTypeForActivityType()];
 
-  v15 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v16 = [v15 splits];
-  if (v16 && (v17 = v16, [v15 userPreferredDistanceUnit], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", v14), v18, v17, v19))
+  v15 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  splits = [v15 splits];
+  if (splits && (v17 = splits, [v15 userPreferredDistanceUnit], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqual:", v14), v18, v17, v19))
   {
-    v20 = [v15 splits];
-    v10[2](v10, v20, 0);
+    splits2 = [v15 splits];
+    completionCopy[2](completionCopy, splits2, 0);
   }
 
   else
@@ -871,13 +871,13 @@
     v29[3] = &unk_10083B2D8;
     v30 = v15;
     objc_copyWeak(&v34, &location);
-    v21 = v8;
+    v21 = workoutCopy;
     v31 = v21;
-    v22 = v9;
+    v22 = activityCopy;
     v32 = v22;
-    v33 = v10;
+    v33 = completionCopy;
     v23 = objc_retainBlock(v29);
-    if (v9)
+    if (activityCopy)
     {
       [v22 fiui_splitsForUserPreferredDistanceUnit:v14];
     }
@@ -901,18 +901,18 @@
   }
 }
 
-- (void)customSplitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)customSplitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 customSplits];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  customSplits = [v11 customSplits];
 
-  if (v12)
+  if (customSplits)
   {
-    v13 = [v11 customSplits];
-    v10[2](v10, v13, 0);
+    customSplits2 = [v11 customSplits];
+    completionCopy[2](completionCopy, customSplits2, 0);
   }
 
   else
@@ -924,11 +924,11 @@
     v22[3] = &unk_10083B2D8;
     v23 = v11;
     objc_copyWeak(&v27, &location);
-    v14 = v8;
+    v14 = workoutCopy;
     v24 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v25 = v15;
-    v26 = v10;
+    v26 = completionCopy;
     v16 = objc_retainBlock(v22);
     if (v15)
     {
@@ -954,17 +954,17 @@
   }
 }
 
-- (void)segmentsForWorkout:(id)a3 completion:(id)a4
+- (void)segmentsForWorkout:(id)workout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  v9 = [v8 segments];
+  workoutCopy = workout;
+  completionCopy = completion;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  segments = [v8 segments];
 
-  if (v9)
+  if (segments)
   {
-    v10 = [v8 segments];
-    v7[2](v7, v10, 0);
+    segments2 = [v8 segments];
+    completionCopy[2](completionCopy, segments2, 0);
   }
 
   else
@@ -976,13 +976,13 @@
     v22[3] = &unk_10083B3E0;
     v23 = v8;
     objc_copyWeak(&v26, location);
-    v11 = v6;
+    v11 = workoutCopy;
     v24 = v11;
-    v25 = v7;
+    v25 = completionCopy;
     v12 = objc_retainBlock(v22);
-    v13 = [v11 workoutEvents];
+    workoutEvents = [v11 workoutEvents];
     v14 = [NSPredicate predicateWithBlock:&stru_10083B400];
-    v15 = [v13 filteredArrayUsingPredicate:v14];
+    v15 = [workoutEvents filteredArrayUsingPredicate:v14];
 
     if ([(CHWorkoutDataCalculator *)self shouldUseFakeSegmentMarkers])
     {
@@ -1015,17 +1015,17 @@
   }
 }
 
-- (void)downhillRunsForWorkout:(id)a3 completion:(id)a4
+- (void)downhillRunsForWorkout:(id)workout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  v9 = [v8 downhillRuns];
+  workoutCopy = workout;
+  completionCopy = completion;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  downhillRuns = [v8 downhillRuns];
 
-  if (v9)
+  if (downhillRuns)
   {
-    v10 = [v8 downhillRuns];
-    v7[2](v7, v10, 0);
+    downhillRuns2 = [v8 downhillRuns];
+    completionCopy[2](completionCopy, downhillRuns2, 0);
   }
 
   else
@@ -1037,9 +1037,9 @@
     v18[3] = &unk_10083B3E0;
     v19 = v8;
     objc_copyWeak(&v22, &location);
-    v11 = v6;
+    v11 = workoutCopy;
     v20 = v11;
-    v21 = v7;
+    v21 = completionCopy;
     v12 = objc_retainBlock(v18);
     v13 = dispatch_get_global_queue(25, 0);
     v15[0] = _NSConcreteStackBlock;
@@ -1057,17 +1057,17 @@
   }
 }
 
-- (void)intervalsForWorkout:(id)a3 completion:(id)a4
+- (void)intervalsForWorkout:(id)workout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  v9 = [v8 intervals];
+  workoutCopy = workout;
+  completionCopy = completion;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  intervals = [v8 intervals];
 
-  if (v9)
+  if (intervals)
   {
-    v10 = [v8 intervals];
-    v7[2](v7, v10, 0);
+    intervals2 = [v8 intervals];
+    completionCopy[2](completionCopy, intervals2, 0);
   }
 
   else
@@ -1079,9 +1079,9 @@
     v18[3] = &unk_10083B3E0;
     v19 = v8;
     objc_copyWeak(&v22, &location);
-    v11 = v6;
+    v11 = workoutCopy;
     v20 = v11;
-    v21 = v7;
+    v21 = completionCopy;
     v12 = objc_retainBlock(v18);
     v13 = dispatch_get_global_queue(25, 0);
     v15[0] = _NSConcreteStackBlock;
@@ -1099,17 +1099,17 @@
   }
 }
 
-- (void)trackLapsForWorkout:(id)a3 completion:(id)a4
+- (void)trackLapsForWorkout:(id)workout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  v9 = [v8 trackLaps];
+  workoutCopy = workout;
+  completionCopy = completion;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  trackLaps = [v8 trackLaps];
 
-  if (v9)
+  if (trackLaps)
   {
-    v10 = [v8 trackLaps];
-    v7[2](v7, v10, 0);
+    trackLaps2 = [v8 trackLaps];
+    completionCopy[2](completionCopy, trackLaps2, 0);
   }
 
   else
@@ -1121,15 +1121,15 @@
     v22[3] = &unk_10083B3E0;
     v23 = v8;
     objc_copyWeak(&v26, location);
-    v11 = v6;
+    v11 = workoutCopy;
     v24 = v11;
-    v25 = v7;
+    v25 = completionCopy;
     v12 = objc_retainBlock(v22);
     if ([v11 supportsTrackWorkout])
     {
-      v13 = [v11 workoutEvents];
+      workoutEvents = [v11 workoutEvents];
       v14 = [NSPredicate predicateWithBlock:&stru_10083B448];
-      v15 = [v13 filteredArrayUsingPredicate:v14];
+      v15 = [workoutEvents filteredArrayUsingPredicate:v14];
 
       if ([(CHWorkoutDataCalculator *)self shouldUseFakeSegmentMarkers])
       {
@@ -1168,18 +1168,18 @@
   }
 }
 
-- (void)swimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)swimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 swimDistanceByStrokeStyle];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  swimDistanceByStrokeStyle = [v11 swimDistanceByStrokeStyle];
 
-  if (v12)
+  if (swimDistanceByStrokeStyle)
   {
-    v13 = [v11 swimDistanceByStrokeStyle];
-    v10[2](v10, v13, 0);
+    swimDistanceByStrokeStyle2 = [v11 swimDistanceByStrokeStyle];
+    completionCopy[2](completionCopy, swimDistanceByStrokeStyle2, 0);
   }
 
   else
@@ -1191,11 +1191,11 @@
     v23[3] = &unk_10083B470;
     v24 = v11;
     objc_copyWeak(&v28, location);
-    v14 = v8;
+    v14 = workoutCopy;
     v25 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v26 = v15;
-    v27 = v10;
+    v27 = completionCopy;
     v16 = objc_retainBlock(v23);
     v17 = dispatch_get_global_queue(25, 0);
     block[0] = _NSConcreteStackBlock;
@@ -1214,18 +1214,18 @@
   }
 }
 
-- (void)openWaterSwimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)openWaterSwimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 swimDistanceByStrokeStyle];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  swimDistanceByStrokeStyle = [v11 swimDistanceByStrokeStyle];
 
-  if (v12)
+  if (swimDistanceByStrokeStyle)
   {
-    v13 = [v11 swimDistanceByStrokeStyle];
-    v10[2](v10, v13, 0);
+    swimDistanceByStrokeStyle2 = [v11 swimDistanceByStrokeStyle];
+    completionCopy[2](completionCopy, swimDistanceByStrokeStyle2, 0);
   }
 
   else
@@ -1237,11 +1237,11 @@
     v23[3] = &unk_10083B470;
     v24 = v11;
     objc_copyWeak(&v28, location);
-    v14 = v8;
+    v14 = workoutCopy;
     v25 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v26 = v15;
-    v27 = v10;
+    v27 = completionCopy;
     v16 = objc_retainBlock(v23);
     v17 = dispatch_get_global_queue(25, 0);
     block[0] = _NSConcreteStackBlock;
@@ -1260,18 +1260,18 @@
   }
 }
 
-- (void)swimmingSetsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)swimmingSetsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 swimmingSets];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  swimmingSets = [v11 swimmingSets];
 
-  if (v12)
+  if (swimmingSets)
   {
-    v13 = [v11 swimmingSets];
-    v10[2](v10, v13, 0);
+    swimmingSets2 = [v11 swimmingSets];
+    completionCopy[2](completionCopy, swimmingSets2, 0);
   }
 
   else
@@ -1283,11 +1283,11 @@
     v23[3] = &unk_10083B2D8;
     v24 = v11;
     objc_copyWeak(&v28, location);
-    v14 = v8;
+    v14 = workoutCopy;
     v25 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v26 = v15;
-    v27 = v10;
+    v27 = completionCopy;
     v16 = objc_retainBlock(v23);
     v17 = dispatch_get_global_queue(25, 0);
     block[0] = _NSConcreteStackBlock;
@@ -1306,18 +1306,18 @@
   }
 }
 
-- (void)swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-  v12 = [v11 swimmingSplits];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+  swimmingSplits = [v11 swimmingSplits];
 
-  if (v12)
+  if (swimmingSplits)
   {
-    v13 = [v11 swimmingSplits];
-    v10[2](v10, v13, 0);
+    swimmingSplits2 = [v11 swimmingSplits];
+    completionCopy[2](completionCopy, swimmingSplits2, 0);
   }
 
   else
@@ -1329,11 +1329,11 @@
     v23[3] = &unk_10083B470;
     v24 = v11;
     objc_copyWeak(&v28, location);
-    v14 = v8;
+    v14 = workoutCopy;
     v25 = v14;
-    v15 = v9;
+    v15 = activityCopy;
     v26 = v15;
-    v27 = v10;
+    v27 = completionCopy;
     v16 = objc_retainBlock(v23);
     v17 = dispatch_get_global_queue(25, 0);
     block[0] = _NSConcreteStackBlock;
@@ -1352,15 +1352,15 @@
   }
 }
 
-- (void)effortForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)effortForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [WOEffortBridges demoExertionForWorkout:v8];
+  workoutCopy = workout;
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [WOEffortBridges demoExertionForWorkout:workoutCopy];
   if (v11)
   {
-    v10[2](v10, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
@@ -1387,41 +1387,41 @@
       effortObserverQuery = self->_effortObserverQuery;
       self->_effortObserverQuery = v15;
 
-      v17 = [(CHWorkoutDataCalculator *)self healthStore];
-      [v17 executeQuery:self->_effortObserverQuery];
+      healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+      [healthStore executeQuery:self->_effortObserverQuery];
 
       objc_destroyWeak(&v42);
     }
 
-    if (v9 && ([v9 workoutConfiguration], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "activityType") == 83, v18, v19))
+    if (activityCopy && ([activityCopy workoutConfiguration], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "activityType") == 83, v18, v19))
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
-      v33 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v8 workoutActivity:v9];
-      v20 = [v33 effortSampleCollection];
-      v21 = [v20 preferredQuantity];
+      v33 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:activityCopy];
+      effortSampleCollection = [v33 effortSampleCollection];
+      preferredQuantity = [effortSampleCollection preferredQuantity];
 
-      if (v21)
+      if (preferredQuantity)
       {
         _HKInitializeLogging();
         v22 = HKLogWorkouts;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v8 UUID];
-          v24 = [v9 UUID];
+          uUID = [workoutCopy UUID];
+          uUID2 = [activityCopy UUID];
           *buf = 138412802;
-          v45 = v23;
+          v45 = uUID;
           v46 = 2112;
-          v47 = v24;
+          v47 = uUID2;
           v48 = 2112;
-          v49 = v21;
+          v49 = preferredQuantity;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Effort cache hit for %@ (%@) with quantity %@", buf, 0x20u);
         }
 
-        v10[2](v10, v21);
+        completionCopy[2](completionCopy, preferredQuantity);
       }
 
       else
@@ -1430,12 +1430,12 @@
         v25 = HKLogWorkouts;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v8 UUID];
-          v27 = [v9 UUID];
+          uUID3 = [workoutCopy UUID];
+          uUID4 = [activityCopy UUID];
           *buf = 138412546;
-          v45 = v26;
+          v45 = uUID3;
           v46 = 2112;
-          v47 = v27;
+          v47 = uUID4;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Effort cache miss for %@ (%@), fetching from database.", buf, 0x16u);
         }
 
@@ -1444,20 +1444,20 @@
         v36[2] = sub_1000CF82C;
         v36[3] = &unk_10083B4E8;
         objc_copyWeak(&v40, &location);
-        v28 = v8;
+        v28 = workoutCopy;
         v37 = v28;
-        v29 = v9;
+        v29 = activityCopy;
         v38 = v29;
-        v39 = v10;
+        v39 = completionCopy;
         v30 = objc_retainBlock(v36);
-        v31 = [(CHWorkoutDataCalculator *)self healthStore];
+        healthStore2 = [(CHWorkoutDataCalculator *)self healthStore];
         v34[0] = _NSConcreteStackBlock;
         v34[1] = 3221225472;
         v34[2] = sub_1000CF910;
         v34[3] = &unk_10083B510;
         v32 = v30;
         v35 = v32;
-        [WOEffortBridges fetchExertionForWorkout:v28 workoutActivity:v29 healthStore:v31 completion:v34];
+        [WOEffortBridges fetchExertionForWorkout:v28 workoutActivity:v29 healthStore:healthStore2 completion:v34];
 
         objc_destroyWeak(&v40);
       }
@@ -1467,24 +1467,24 @@
   }
 }
 
-- (void)_handleUpdatedRelationships:(id)a3 withAnchor:(id)a4
+- (void)_handleUpdatedRelationships:(id)relationships withAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  relationshipsCopy = relationships;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v8 = [(CHWorkoutDataCalculator *)self lastEffortAnchor];
-  v9 = [v7 isEqual:v8];
+  lastEffortAnchor = [(CHWorkoutDataCalculator *)self lastEffortAnchor];
+  v9 = [anchorCopy isEqual:lastEffortAnchor];
 
   if ((v9 & 1) == 0)
   {
-    v29 = v7;
-    [(CHWorkoutDataCalculator *)self setLastEffortAnchor:v7];
+    v29 = anchorCopy;
+    [(CHWorkoutDataCalculator *)self setLastEffortAnchor:anchorCopy];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v30 = v6;
-    obj = v6;
+    v30 = relationshipsCopy;
+    obj = relationshipsCopy;
     v10 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v10)
     {
@@ -1500,40 +1500,40 @@
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
-          v14 = [v13 workout];
-          v15 = [v13 activity];
-          v16 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v14 workoutActivity:v15];
+          workout = [v13 workout];
+          activity = [v13 activity];
+          v16 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workout workoutActivity:activity];
 
           v17 = [CHEffortSampleCollection alloc];
-          v18 = [v13 samples];
-          v19 = [(CHEffortSampleCollection *)v17 initWithSamples:v18];
+          samples = [v13 samples];
+          v19 = [(CHEffortSampleCollection *)v17 initWithSamples:samples];
 
           [v16 setEffortSampleCollection:v19];
-          v20 = [v13 workout];
-          v21 = [v13 activity];
-          [(CHWorkoutDataCalculator *)self saveContainerToCache:v16 forWorkout:v20 workoutActivity:v21];
+          workout2 = [v13 workout];
+          activity2 = [v13 activity];
+          [(CHWorkoutDataCalculator *)self saveContainerToCache:v16 forWorkout:workout2 workoutActivity:activity2];
 
-          v22 = [v13 activity];
+          activity3 = [v13 activity];
 
-          if (v22)
+          if (activity3)
           {
             v39[0] = @"WorkoutUUID";
-            v23 = [v13 workout];
-            v24 = [v23 UUID];
+            workout3 = [v13 workout];
+            uUID = [workout3 UUID];
             v39[1] = @"ActivityUUID";
-            v40[0] = v24;
-            v25 = [v13 activity];
-            v26 = [v25 UUID];
-            v40[1] = v26;
+            v40[0] = uUID;
+            activity4 = [v13 activity];
+            uUID2 = [activity4 UUID];
+            v40[1] = uUID2;
             v27 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
           }
 
           else
           {
             v37 = @"WorkoutUUID";
-            v23 = [v13 workout];
-            v24 = [v23 UUID];
-            v38 = v24;
+            workout3 = [v13 workout];
+            uUID = [workout3 UUID];
+            v38 = uUID;
             v27 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
           }
 
@@ -1547,112 +1547,112 @@
       while (v11);
     }
 
-    v7 = v29;
-    v6 = v30;
+    anchorCopy = v29;
+    relationshipsCopy = v30;
   }
 }
 
-- (id)cachedDownhillRunsForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)cachedDownhillRunsForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:a3 workoutActivity:a4];
-  v5 = [v4 downhillRuns];
+  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workout workoutActivity:activity];
+  downhillRuns = [v4 downhillRuns];
 
-  return v5;
+  return downhillRuns;
 }
 
-- (id)cachedEffortForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)cachedEffortForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:a3 workoutActivity:a4];
-  v5 = [v4 effortSampleCollection];
-  v6 = [v5 preferredQuantity];
+  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workout workoutActivity:activity];
+  effortSampleCollection = [v4 effortSampleCollection];
+  preferredQuantity = [effortSampleCollection preferredQuantity];
 
-  return v6;
+  return preferredQuantity;
 }
 
-- (id)cachedEffortSampleCollectionForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)cachedEffortSampleCollectionForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:a3 workoutActivity:a4];
-  v5 = [v4 effortSampleCollection];
+  v4 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workout workoutActivity:activity];
+  effortSampleCollection = [v4 effortSampleCollection];
 
-  return v5;
+  return effortSampleCollection;
 }
 
-- (void)averageHeartRateForWorkout:(id)a3 during:(id)a4 completion:(id)a5
+- (void)averageHeartRateForWorkout:(id)workout during:(id)during completion:(id)completion
 {
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000CFF10;
   v15 = &unk_10083B538;
-  v16 = self;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v8 = v19;
-  v9 = v18;
-  v10 = v17;
+  selfCopy = self;
+  workoutCopy = workout;
+  duringCopy = during;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = duringCopy;
+  v10 = workoutCopy;
   v11 = objc_retainBlock(&v12);
-  [(CHWorkoutDataCalculator *)self heartRateDataForWorkout:v10 workoutActivity:0 completion:v11, v12, v13, v14, v15, v16];
+  [(CHWorkoutDataCalculator *)self heartRateDataForWorkout:v10 workoutActivity:0 completion:v11, v12, v13, v14, v15, selfCopy];
 }
 
-- (void)averageCadenceForWorkout:(id)a3 during:(id)a4 completion:(id)a5
+- (void)averageCadenceForWorkout:(id)workout during:(id)during completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000D0304;
   v10[3] = &unk_10083B560;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  [(CHWorkoutDataCalculator *)v11 cadenceSamplesForWorkout:v9 workoutActivity:0 completion:v10];
+  selfCopy = self;
+  workoutCopy = workout;
+  duringCopy = during;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = duringCopy;
+  v9 = workoutCopy;
+  [(CHWorkoutDataCalculator *)selfCopy cadenceSamplesForWorkout:v9 workoutActivity:0 completion:v10];
 }
 
-- (void)averagePowerForWorkout:(id)a3 during:(id)a4 completion:(id)a5
+- (void)averagePowerForWorkout:(id)workout during:(id)during completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000D076C;
   v10[3] = &unk_10083B560;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  [(CHWorkoutDataCalculator *)v11 powerSamplesForWorkout:v9 workoutActivity:0 completion:v10];
+  selfCopy = self;
+  workoutCopy = workout;
+  duringCopy = during;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = duringCopy;
+  v9 = workoutCopy;
+  [(CHWorkoutDataCalculator *)selfCopy powerSamplesForWorkout:v9 workoutActivity:0 completion:v10];
 }
 
-- (void)swimmingPacePerHundredForWorkout:(id)a3 workoutActivity:(id)a4 completion:(id)a5
+- (void)swimmingPacePerHundredForWorkout:(id)workout workoutActivity:(id)activity completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D0AE0;
   v9[3] = &unk_10083B588;
-  v10 = a5;
-  v8 = v10;
-  [(CHWorkoutDataCalculator *)self swimmingSplitsForWorkout:a3 workoutActivity:a4 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(CHWorkoutDataCalculator *)self swimmingSplitsForWorkout:workout workoutActivity:activity completion:v9];
 }
 
-- (id)_queue_intervalsForWorkout:(id)a3 error:(id *)a4
+- (id)_queue_intervalsForWorkout:(id)workout error:(id *)error
 {
-  v5 = a3;
-  if ([v5 isIntervalWorkout])
+  workoutCopy = workout;
+  if ([workoutCopy isIntervalWorkout])
   {
-    v55 = a4;
+    errorCopy = error;
     v89[0] = _NSConcreteStackBlock;
     v89[1] = 3221225472;
     v89[2] = sub_1000D15E4;
     v89[3] = &unk_10083B5B0;
     v6 = objc_alloc_init(NSMutableArray);
     v90 = v6;
-    v57 = v5;
-    [v5 _enumerateActiveTimePeriods:v89];
+    v57 = workoutCopy;
+    [workoutCopy _enumerateActiveTimePeriods:v89];
     v7 = objc_alloc_init(NSMutableArray);
-    v8 = [v5 workoutActivities];
+    workoutActivities = [workoutCopy workoutActivities];
     v84[0] = _NSConcreteStackBlock;
     v84[1] = 3221225472;
     v84[2] = sub_1000D1670;
@@ -1663,25 +1663,25 @@
     v86 = v53;
     v64 = v57;
     v87 = v64;
-    v88 = self;
-    [v8 enumerateObjectsUsingBlock:v84];
+    selfCopy = self;
+    [workoutActivities enumerateObjectsUsingBlock:v84];
 
-    v56 = [v58 lastObject];
-    if (v56)
+    lastObject = [v58 lastObject];
+    if (lastObject)
     {
-      v9 = [v64 endDate];
-      v10 = [v56 endDate];
-      [v9 timeIntervalSinceDate:v10];
+      endDate = [v64 endDate];
+      endDate2 = [lastObject endDate];
+      [endDate timeIntervalSinceDate:endDate2];
       v12 = v11;
 
       if (v12 > 5.0)
       {
         v13 = objc_alloc_init(CHWorkoutInterval);
-        v14 = [v56 endDate];
-        [(CHWorkoutSegment *)v13 setStartDate:v14];
+        endDate3 = [lastObject endDate];
+        [(CHWorkoutSegment *)v13 setStartDate:endDate3];
 
-        v15 = [v64 endDate];
-        [(CHWorkoutSegment *)v13 setEndDate:v15];
+        endDate4 = [v64 endDate];
+        [(CHWorkoutSegment *)v13 setEndDate:endDate4];
 
         [(CHWorkoutSegment *)v13 setElapsedTime:v12];
         [(CHWorkoutInterval *)v13 setStepKeyPath:@"WORKOUT_CONFIGURATION_GOAL_OPEN"];
@@ -1732,18 +1732,18 @@
 
             v26 = *(*(&v80 + 1) + 8 * i);
             v27 = [NSDateInterval alloc];
-            v28 = [v26 startDate];
-            v29 = [v26 endDate];
-            v30 = [v27 initWithStartDate:v28 endDate:v29];
+            startDate = [v26 startDate];
+            endDate5 = [v26 endDate];
+            v30 = [v27 initWithStartDate:startDate endDate:endDate5];
             [v21 addObject:v30];
 
-            v31 = [v26 stepKeyPath];
-            v32 = [v64 expectedIntervalDistanceForStepKeyPath:v31];
+            stepKeyPath = [v26 stepKeyPath];
+            v32 = [v64 expectedIntervalDistanceForStepKeyPath:stepKeyPath];
 
-            v33 = [v26 wasSuccessful];
+            wasSuccessful = [v26 wasSuccessful];
             if (v32)
             {
-              v34 = v33;
+              v34 = wasSuccessful;
             }
 
             else
@@ -1773,7 +1773,7 @@
       v74 = v22;
       v79 = v60;
       v75 = v64;
-      v76 = self;
+      selfCopy2 = self;
       v77 = group;
       [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:v75 workoutActivity:0 completion:v72];
     }
@@ -1801,9 +1801,9 @@
             v37 = *(*(&v68 + 1) + 8 * j);
             dispatch_group_enter(group);
             v38 = [HKQuery predicateForObjectsFromWorkout:v64];
-            v39 = [v37 startDate];
-            v40 = [v37 endDate];
-            v41 = [HKQuery predicateForSamplesWithStartDate:v39 endDate:v40 options:1];
+            startDate2 = [v37 startDate];
+            endDate6 = [v37 endDate];
+            v41 = [HKQuery predicateForSamplesWithStartDate:startDate2 endDate:endDate6 options:1];
 
             v91[0] = v38;
             v91[1] = v41;
@@ -1821,8 +1821,8 @@
             v66 = group;
             v46 = [v44 initWithQuantityType:v45 quantitySamplePredicate:v43 options:16 completionHandler:v65];
 
-            v47 = [(CHWorkoutDataCalculator *)self healthStore];
-            [v47 executeQuery:v46];
+            healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+            [healthStore executeQuery:v46];
           }
 
           v35 = [obj countByEnumeratingWithState:&v68 objects:v92 count:16];
@@ -1838,10 +1838,10 @@
     v50 = v49;
     if (v49)
     {
-      if (v55)
+      if (errorCopy)
       {
         v51 = v49;
-        *v55 = v50;
+        *errorCopy = v50;
       }
 
       else
@@ -1853,7 +1853,7 @@
     v20 = v58;
     _Block_object_dispose(&buf, 8);
 
-    v5 = v57;
+    workoutCopy = v57;
   }
 
   else
@@ -1864,18 +1864,18 @@
   return v20;
 }
 
-- (id)_queue_segmentsForWorkout:(id)a3 markerEvents:(id)a4 error:(id *)a5
+- (id)_queue_segmentsForWorkout:(id)workout markerEvents:(id)events error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  eventsCopy = events;
   v81 = objc_alloc_init(NSMutableArray);
-  v83 = v6;
-  v8 = [v6 startDate];
+  v83 = workoutCopy;
+  startDate = [workoutCopy startDate];
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v9 = [obj countByEnumeratingWithState:&v116 objects:v125 count:16];
   if (v9)
   {
@@ -1891,27 +1891,27 @@
         }
 
         v12 = *(*(&v116 + 1) + 8 * i);
-        v13 = [v12 dateInterval];
-        v14 = [v13 startDate];
-        [v14 timeIntervalSinceDate:v8];
+        dateInterval = [v12 dateInterval];
+        startDate2 = [dateInterval startDate];
+        [startDate2 timeIntervalSinceDate:startDate];
         v16 = v15;
 
         if (fabs(round(v16)) >= 2.22044605e-16)
         {
           v17 = objc_alloc_init(CHWorkoutSegment);
-          [(CHWorkoutSegment *)v17 setStartDate:v8];
-          v18 = [v12 dateInterval];
-          v19 = [v18 startDate];
-          [(CHWorkoutSegment *)v17 setEndDate:v19];
+          [(CHWorkoutSegment *)v17 setStartDate:startDate];
+          dateInterval2 = [v12 dateInterval];
+          startDate3 = [dateInterval2 startDate];
+          [(CHWorkoutSegment *)v17 setEndDate:startDate3];
 
           [v81 addObject:v17];
-          v20 = [v12 dateInterval];
-          v21 = [v20 startDate];
+          dateInterval3 = [v12 dateInterval];
+          startDate4 = [dateInterval3 startDate];
 
           if ([v83 isTrackWorkout])
           {
-            v22 = [v12 metadata];
-            v23 = [v22 objectForKeyedSubscript:group];
+            metadata = [v12 metadata];
+            v23 = [metadata objectForKeyedSubscript:group];
 
             if (v23)
             {
@@ -1922,7 +1922,7 @@
             }
           }
 
-          v8 = v21;
+          startDate = startDate4;
         }
       }
 
@@ -1933,9 +1933,9 @@
   }
 
   v72 = objc_alloc_init(CHWorkoutSegment);
-  [(CHWorkoutSegment *)v72 setStartDate:v8];
-  v26 = [v83 endDate];
-  [(CHWorkoutSegment *)v72 setEndDate:v26];
+  [(CHWorkoutSegment *)v72 setStartDate:startDate];
+  endDate = [v83 endDate];
+  [(CHWorkoutSegment *)v72 setEndDate:endDate];
 
   [v81 addObject:v72];
   if ([v81 count] >= 2)
@@ -1967,9 +1967,9 @@
 
           v30 = *(*(&v110 + 1) + 8 * j);
           v31 = [NSDateInterval alloc];
-          v32 = [v30 startDate];
-          v33 = [v30 endDate];
-          v34 = [v31 initWithStartDate:v32 endDate:v33];
+          startDate5 = [v30 startDate];
+          endDate2 = [v30 endDate];
+          v34 = [v31 initWithStartDate:startDate5 endDate:endDate2];
 
           v108 = 0u;
           v109 = 0u;
@@ -2050,9 +2050,9 @@
 
             v48 = *(*(&v96 + 1) + 8 * m);
             v49 = [NSDateInterval alloc];
-            v50 = [v48 startDate];
-            v51 = [v48 endDate];
-            v52 = [v49 initWithStartDate:v50 endDate:v51];
+            startDate6 = [v48 startDate];
+            endDate3 = [v48 endDate];
+            v52 = [v49 initWithStartDate:startDate6 endDate:endDate3];
             [v43 addObject:v52];
           }
 
@@ -2097,9 +2097,9 @@
             v55 = *(*(&v87 + 1) + 8 * n);
             dispatch_group_enter(groupb);
             v56 = [HKQuery predicateForObjectsFromWorkout:v83];
-            v57 = [v55 startDate];
-            v58 = [v55 endDate];
-            v59 = [HKQuery predicateForSamplesWithStartDate:v57 endDate:v58 options:1];
+            startDate7 = [v55 startDate];
+            endDate4 = [v55 endDate];
+            v59 = [HKQuery predicateForSamplesWithStartDate:startDate7 endDate:endDate4 options:1];
 
             v120[0] = v56;
             v120[1] = v59;
@@ -2117,8 +2117,8 @@
             v85 = groupb;
             v64 = [v62 initWithQuantityType:v63 quantitySamplePredicate:v61 options:16 completionHandler:v84];
 
-            v65 = [(CHWorkoutDataCalculator *)self healthStore];
-            [v65 executeQuery:v64];
+            healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+            [healthStore executeQuery:v64];
           }
 
           v53 = [v73 countByEnumeratingWithState:&v87 objects:v121 count:16];
@@ -2134,10 +2134,10 @@
     v68 = v67;
     if (v67)
     {
-      if (a5)
+      if (error)
       {
         v69 = v67;
-        *a5 = v68;
+        *error = v68;
       }
 
       else
@@ -2158,9 +2158,9 @@
   return v27;
 }
 
-- (id)_queue_downhillRunsForWorkout:(id)a3 error:(id *)a4
+- (id)_queue_downhillRunsForWorkout:(id)workout error:(id *)error
 {
-  v6 = a3;
+  workoutCopy = workout;
   v7 = dispatch_group_create();
   v26 = 0;
   v27 = &v26;
@@ -2184,17 +2184,17 @@
   v19 = &v26;
   v9 = v7;
   v17 = v9;
-  [v6 makeDownhillRunBridgesWithHealthStore:healthStore completion:v16];
+  [workoutCopy makeDownhillRunBridgesWithHealthStore:healthStore completion:v16];
   v10 = dispatch_time(0, 20000000000);
   dispatch_group_wait(v9, v10);
   v11 = v21[5];
   v12 = v11;
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v13 = v11;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -2211,10 +2211,10 @@
   return v14;
 }
 
-- (id)_queue_trackLapsForWorkout:(id)a3 lapEvents:(id)a4 error:(id *)a5
+- (id)_queue_trackLapsForWorkout:(id)workout lapEvents:(id)events error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  eventsCopy = events;
   v57 = objc_alloc_init(NSMutableArray);
   v84[0] = _NSConcreteStackBlock;
   v84[1] = 3221225472;
@@ -2222,13 +2222,13 @@
   v84[3] = &unk_10083B5B0;
   v51 = objc_alloc_init(NSMutableArray);
   v85 = v51;
-  v54 = v6;
-  [v6 _enumerateActiveTimePeriods:v84];
+  v54 = workoutCopy;
+  [workoutCopy _enumerateActiveTimePeriods:v84];
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v8 = [obj countByEnumeratingWithState:&v80 objects:v89 count:16];
   if (v8)
   {
@@ -2245,16 +2245,16 @@
 
         v11 = *(*(&v80 + 1) + 8 * i);
         v12 = [[CHWorkoutTrackLap alloc] initWithWorkoutEvent:v11];
-        v13 = [v11 metadata];
-        v14 = [v13 allKeys];
-        v15 = [v14 containsObject:v9];
+        metadata = [v11 metadata];
+        allKeys = [metadata allKeys];
+        v15 = [allKeys containsObject:v9];
 
         if ((v15 & 1) == 0)
         {
           v16 = [NSDateInterval alloc];
-          v17 = [(CHWorkoutSegment *)v12 startDate];
-          v18 = [(CHWorkoutSegment *)v12 endDate];
-          v19 = [v16 initWithStartDate:v17 endDate:v18];
+          startDate = [(CHWorkoutSegment *)v12 startDate];
+          endDate = [(CHWorkoutSegment *)v12 endDate];
+          v19 = [v16 initWithStartDate:startDate endDate:endDate];
 
           v78 = 0u;
           v79 = 0u;
@@ -2354,9 +2354,9 @@
           v32 = *(*(&v61 + 1) + 8 * k);
           dispatch_group_enter(v28);
           v33 = [HKQuery predicateForObjectsFromWorkout:v54];
-          v34 = [v32 startDate];
-          v35 = [v32 endDate];
-          v36 = [HKQuery predicateForSamplesWithStartDate:v34 endDate:v35 options:1];
+          startDate2 = [v32 startDate];
+          endDate2 = [v32 endDate];
+          v36 = [HKQuery predicateForSamplesWithStartDate:startDate2 endDate:endDate2 options:1];
 
           v86[0] = v33;
           v86[1] = v36;
@@ -2374,8 +2374,8 @@
           v59 = v28;
           v41 = [v39 initWithQuantityType:v40 quantitySamplePredicate:v38 options:16 completionHandler:v58];
 
-          v42 = [(CHWorkoutDataCalculator *)self healthStore];
-          [v42 executeQuery:v41];
+          healthStore = [(CHWorkoutDataCalculator *)self healthStore];
+          [healthStore executeQuery:v41];
         }
 
         v29 = v50;
@@ -2392,10 +2392,10 @@
   v45 = v44;
   if (v44)
   {
-    if (a5)
+    if (error)
     {
       v46 = v44;
-      *a5 = v45;
+      *error = v45;
     }
 
     else
@@ -2410,10 +2410,10 @@
   return v47;
 }
 
-- (id)_queue_openWaterSwimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5
+- (id)_queue_openWaterSwimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -2435,7 +2435,7 @@
   v34 = &v41;
   v10 = v9;
   v33 = v10;
-  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:v7 workoutActivity:v8 completion:v32];
+  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v32];
   dispatch_group_enter(v10);
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -2444,7 +2444,7 @@
   v31 = &v35;
   v11 = v10;
   v30 = v11;
-  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:v7 workoutActivity:v8 completion:v29];
+  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v29];
   v12 = dispatch_time(0, 20000000000);
   dispatch_group_wait(v11, v12);
   _HKInitializeLogging();
@@ -2486,39 +2486,39 @@
   return v21;
 }
 
-- (id)_queue_swimDistanceByStrokeStyleForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5
+- (id)_queue_swimDistanceByStrokeStyleForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v8 = objc_alloc_init(NSMutableDictionary);
-  if (v7)
+  if (activityCopy)
   {
-    v9 = v7;
+    v9 = activityCopy;
   }
 
   else
   {
-    v9 = v6;
+    v9 = workoutCopy;
   }
 
-  v10 = [v9 workoutEvents];
+  workoutEvents = [v9 workoutEvents];
   v11 = [NSPredicate predicateWithBlock:&stru_10083B760];
-  v12 = [v10 filteredArrayUsingPredicate:v11];
+  v12 = [workoutEvents filteredArrayUsingPredicate:v11];
 
   if ([v12 count])
   {
-    v30 = v7;
-    v29 = v10;
-    if (v7)
+    v30 = activityCopy;
+    v29 = workoutEvents;
+    if (activityCopy)
     {
-      v13 = [v7 workoutConfiguration];
-      [v13 lapLength];
+      workoutConfiguration = [activityCopy workoutConfiguration];
+      [workoutConfiguration lapLength];
     }
 
     else
     {
-      v13 = [v6 metadata];
-      [v13 objectForKeyedSubscript:HKMetadataKeyLapLength];
+      workoutConfiguration = [workoutCopy metadata];
+      [workoutConfiguration objectForKeyedSubscript:HKMetadataKeyLapLength];
     }
     v15 = ;
 
@@ -2541,8 +2541,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v20 = [*(*(&v32 + 1) + 8 * i) metadata];
-          v21 = [v20 objectForKeyedSubscript:HKMetadataKeySwimmingStrokeStyle];
+          metadata = [*(*(&v32 + 1) + 8 * i) metadata];
+          v21 = [metadata objectForKeyedSubscript:HKMetadataKeySwimmingStrokeStyle];
           v22 = v21;
           if (v21)
           {
@@ -2578,8 +2578,8 @@
     }
 
     v14 = [[NSDictionary alloc] initWithDictionary:v8];
-    v7 = v30;
-    v10 = v29;
+    activityCopy = v30;
+    workoutEvents = v29;
   }
 
   else
@@ -2590,10 +2590,10 @@
   return v14;
 }
 
-- (id)_queue_swimmingSetsForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5
+- (id)_queue_swimmingSetsForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error
 {
-  v35 = a3;
-  v36 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x3032000000;
@@ -2615,7 +2615,7 @@
   v57 = v64;
   v7 = v6;
   v56 = v7;
-  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:v35 workoutActivity:v36 completion:v55];
+  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v55];
   dispatch_group_enter(v7);
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
@@ -2624,7 +2624,7 @@
   v54 = &v58;
   v8 = v7;
   v53 = v8;
-  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:v35 workoutActivity:v36 completion:v52];
+  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v52];
   v9 = dispatch_time(0, 20000000000);
   v33 = v8;
   dispatch_group_wait(v8, v9);
@@ -2651,8 +2651,8 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v48 + 1) + 8 * v15) quantity];
-        v11 = [v16 _quantityByAddingQuantity:v17];
+        quantity = [*(*(&v48 + 1) + 8 * v15) quantity];
+        v11 = [v16 _quantityByAddingQuantity:quantity];
 
         v15 = v15 + 1;
         v16 = v11;
@@ -2666,14 +2666,14 @@
   }
 
   v18 = objc_alloc_init(NSMutableArray);
-  if (v36)
+  if (activityCopy)
   {
-    [v36 workoutEvents];
+    [activityCopy workoutEvents];
   }
 
   else
   {
-    [v35 workoutEvents];
+    [workoutCopy workoutEvents];
   }
 
   v46 = 0u;
@@ -2697,8 +2697,8 @@
         v24 = *(*(&v44 + 1) + 8 * i);
         if ([v24 type] == 7)
         {
-          v25 = [v24 metadata];
-          v26 = [v25 objectForKey:v22];
+          metadata = [v24 metadata];
+          v26 = [metadata objectForKey:v22];
 
           if ([v26 intValue] != 1 && objc_msgSend(v26, "intValue") != 3)
           {
@@ -2724,7 +2724,7 @@
   v43 = &v58;
   v29 = v19;
   v39 = v29;
-  v40 = self;
+  selfCopy = self;
   v30 = v27;
   v41 = v30;
   [v28 enumerateObjectsUsingBlock:v37];
@@ -2736,15 +2736,15 @@
   return v31;
 }
 
-- (int64_t)_queue_strokeStyleForLaps:(id)a3
+- (int64_t)_queue_strokeStyleForLaps:(id)laps
 {
-  v3 = a3;
+  lapsCopy = laps;
   v4 = objc_alloc_init(NSMutableDictionary);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v3;
+  obj = lapsCopy;
   v5 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v5)
   {
@@ -2759,8 +2759,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v48 + 1) + 8 * i) metadata];
-        v10 = [v9 objectForKeyedSubscript:HKMetadataKeySwimmingStrokeStyle];
+        metadata = [*(*(&v48 + 1) + 8 * i) metadata];
+        v10 = [metadata objectForKeyedSubscript:HKMetadataKeySwimmingStrokeStyle];
         v11 = v10;
         if (v10)
         {
@@ -2796,14 +2796,14 @@
   }
 
   v17 = [v4 count];
-  v18 = v17;
+  integerValue = v17;
   if (v17)
   {
     if (v17 == 1)
     {
-      v19 = [v4 allKeys];
-      v20 = [v19 firstObject];
-      v18 = [v20 integerValue];
+      allKeys = [v4 allKeys];
+      firstObject = [allKeys firstObject];
+      integerValue = [firstObject integerValue];
     }
 
     else
@@ -2812,8 +2812,8 @@
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v21 = [v4 allValues];
-      v22 = [v21 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      allValues = [v4 allValues];
+      v22 = [allValues countByEnumeratingWithState:&v44 objects:v53 count:16];
       if (v22)
       {
         v23 = v22;
@@ -2825,14 +2825,14 @@
           {
             if (*v45 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v44 + 1) + 8 * j) floatValue];
             v25 = v25 + v27;
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v44 objects:v53 count:16];
+          v23 = [allValues countByEnumeratingWithState:&v44 objects:v53 count:16];
         }
 
         while (v23);
@@ -2847,8 +2847,8 @@
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v19 = [v4 allKeys];
-      v28 = [v19 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      allKeys = [v4 allKeys];
+      v28 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
       if (v28)
       {
         v29 = v28;
@@ -2863,14 +2863,14 @@
           v32 = v25 + -1.0;
         }
 
-        v18 = 1;
+        integerValue = 1;
         while (2)
         {
           for (k = 0; k != v29; k = k + 1)
           {
             if (*v41 != v30)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allKeys);
             }
 
             v34 = *(*(&v40 + 1) + 8 * k);
@@ -2880,12 +2880,12 @@
 
             if ((v37 / v32) > 0.9)
             {
-              v18 = [v34 integerValue];
+              integerValue = [v34 integerValue];
               goto LABEL_43;
             }
           }
 
-          v29 = [v19 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          v29 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
           if (v29)
           {
             continue;
@@ -2897,62 +2897,62 @@
 
       else
       {
-        v18 = 1;
+        integerValue = 1;
       }
     }
 
 LABEL_43:
   }
 
-  return v18;
+  return integerValue;
 }
 
-- (void)_updateSplits:(id)a3 withDistance:(double)a4 duration:(double)a5 strokeCount:(int64_t)a6 splitDelimiterInUserUnit:(double)a7
+- (void)_updateSplits:(id)splits withDistance:(double)distance duration:(double)duration strokeCount:(int64_t)count splitDelimiterInUserUnit:(double)unit
 {
-  v11 = a3;
-  if ([v11 count])
+  splitsCopy = splits;
+  if ([splitsCopy count])
   {
-    v12 = [v11 lastObject];
+    lastObject = [splitsCopy lastObject];
   }
 
   else
   {
-    v12 = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:a7 distanceInUserUnit:0 strokeCount:0.0 duration:0.0];
-    [v11 addObject:v12];
+    lastObject = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:unit distanceInUserUnit:0 strokeCount:0.0 duration:0.0];
+    [splitsCopy addObject:lastObject];
   }
 
-  [(CHWorkoutSwimmingSplit *)v12 distanceInUserUnit];
-  v14 = a4 - (a7 - v13);
-  [(CHWorkoutSwimmingSplit *)v12 distanceInUserUnit];
+  [(CHWorkoutSwimmingSplit *)lastObject distanceInUserUnit];
+  v14 = distance - (unit - v13);
+  [(CHWorkoutSwimmingSplit *)lastObject distanceInUserUnit];
   if (v14 <= 2.22044605e-16)
   {
-    [(CHWorkoutSwimmingSplit *)v12 setDistanceInUserUnit:v15 + a4];
-    [(CHWorkoutSwimmingSplit *)v12 duration];
-    [(CHWorkoutSwimmingSplit *)v12 setDuration:v25 + a5];
-    [(CHWorkoutSwimmingSplit *)v12 setStrokeCount:[(CHWorkoutSwimmingSplit *)v12 strokeCount]+ a6];
+    [(CHWorkoutSwimmingSplit *)lastObject setDistanceInUserUnit:v15 + distance];
+    [(CHWorkoutSwimmingSplit *)lastObject duration];
+    [(CHWorkoutSwimmingSplit *)lastObject setDuration:v25 + duration];
+    [(CHWorkoutSwimmingSplit *)lastObject setStrokeCount:[(CHWorkoutSwimmingSplit *)lastObject strokeCount]+ count];
   }
 
   else
   {
-    v16 = (a7 - v15) / a4;
-    [(CHWorkoutSwimmingSplit *)v12 distanceInUserUnit];
-    [(CHWorkoutSwimmingSplit *)v12 setDistanceInUserUnit:v17 + v16 * a4];
-    [(CHWorkoutSwimmingSplit *)v12 duration];
-    [(CHWorkoutSwimmingSplit *)v12 setDuration:v18 + v16 * a5];
-    v19 = a6;
-    [(CHWorkoutSwimmingSplit *)v12 setStrokeCount:([(CHWorkoutSwimmingSplit *)v12 strokeCount]+ v16 * a6)];
-    v20 = a4 - v16 * a4;
-    v21 = vcvtmd_u64_f64(v20 / a7);
+    v16 = (unit - v15) / distance;
+    [(CHWorkoutSwimmingSplit *)lastObject distanceInUserUnit];
+    [(CHWorkoutSwimmingSplit *)lastObject setDistanceInUserUnit:v17 + v16 * distance];
+    [(CHWorkoutSwimmingSplit *)lastObject duration];
+    [(CHWorkoutSwimmingSplit *)lastObject setDuration:v18 + v16 * duration];
+    countCopy = count;
+    [(CHWorkoutSwimmingSplit *)lastObject setStrokeCount:([(CHWorkoutSwimmingSplit *)lastObject strokeCount]+ v16 * count)];
+    v20 = distance - v16 * distance;
+    v21 = vcvtmd_u64_f64(v20 / unit);
     if (v21)
     {
-      v22 = llround(a7 / a4 * v19);
+      v22 = llround(unit / distance * countCopy);
       v23 = v21;
       do
       {
-        v24 = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:a7 distanceInUserUnit:v22 strokeCount:a7 duration:a7 / a4 * a5];
+        duration = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:unit distanceInUserUnit:v22 strokeCount:unit duration:unit / distance * duration];
 
-        [v11 addObject:v24];
-        v12 = v24;
+        [splitsCopy addObject:duration];
+        lastObject = duration;
         --v23;
       }
 
@@ -2961,13 +2961,13 @@ LABEL_43:
 
     else
     {
-      v24 = v12;
+      duration = lastObject;
     }
 
-    v26 = v20 - v21 * a7;
+    v26 = v20 - v21 * unit;
     if (v26 >= 0.0)
     {
-      if (v26 > a7)
+      if (v26 > unit)
       {
         _HKInitializeLogging();
         if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
@@ -2988,37 +2988,37 @@ LABEL_43:
 
     if (v26 <= 0.01)
     {
-      v12 = v24;
+      lastObject = duration;
     }
 
     else
     {
-      v12 = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:a7 distanceInUserUnit:llround(v26 / a4 * v19) strokeCount:v26 / a4 * a4 duration:v26 / a4 * a5];
+      lastObject = [[CHWorkoutSwimmingSplit alloc] initWithSplitDelimiterDistance:unit distanceInUserUnit:llround(v26 / distance * countCopy) strokeCount:v26 / distance * distance duration:v26 / distance * duration];
 
-      [v11 addObject:v12];
+      [splitsCopy addObject:lastObject];
     }
   }
 }
 
-- (double)_activeWorkoutElapsedTimeFromDate:(id)a3 toDate:(id)a4 forWorkout:(id)a5 workoutActivity:(id)a6
+- (double)_activeWorkoutElapsedTimeFromDate:(id)date toDate:(id)toDate forWorkout:(id)workout workoutActivity:(id)activity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  dateCopy = date;
+  toDateCopy = toDate;
+  workoutCopy = workout;
+  activityCopy = activity;
+  v13 = activityCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (v12)
+  if (activityCopy)
   {
-    [v12 workoutEvents];
+    [activityCopy workoutEvents];
   }
 
   else
   {
-    [v11 workoutEvents];
+    [workoutCopy workoutEvents];
   }
   v14 = ;
   _HKEnumerateActiveWorkoutIntervals();
@@ -3028,40 +3028,40 @@ LABEL_43:
   return v15;
 }
 
-- (id)_swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 distanceSamples:(id)a5 strokeSamples:(id)a6 forDelimeterUnit:(id)a7 splitDelimiter:(id)a8
+- (id)_swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity distanceSamples:(id)samples strokeSamples:(id)strokeSamples forDelimeterUnit:(id)unit splitDelimiter:(id)delimiter
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  workoutCopy = workout;
+  activityCopy = activity;
+  samplesCopy = samples;
+  strokeSamplesCopy = strokeSamples;
+  unitCopy = unit;
+  delimiterCopy = delimiter;
   v20 = +[NSMutableArray array];
-  if (v16 && v17)
+  if (samplesCopy && strokeSamplesCopy)
   {
-    if ([v16 count])
+    if ([samplesCopy count])
     {
-      v46 = v17;
-      if (v15)
+      v46 = strokeSamplesCopy;
+      if (activityCopy)
       {
-        v21 = v15;
+        v21 = activityCopy;
       }
 
       else
       {
-        v21 = v14;
+        v21 = workoutCopy;
       }
 
-      v22 = [v21 startDate];
-      v23 = [v16 objectAtIndexedSubscript:0];
-      v24 = [v23 startDate];
-      v47 = v22;
-      [(CHWorkoutDataCalculator *)self _activeWorkoutElapsedTimeFromDate:v22 toDate:v24 forWorkout:v14 workoutActivity:v15];
+      startDate = [v21 startDate];
+      v23 = [samplesCopy objectAtIndexedSubscript:0];
+      startDate2 = [v23 startDate];
+      v47 = startDate;
+      [(CHWorkoutDataCalculator *)self _activeWorkoutElapsedTimeFromDate:startDate toDate:startDate2 forWorkout:workoutCopy workoutActivity:activityCopy];
       v26 = v25;
 
       if (v26 > 2.22044605e-16)
       {
-        [v19 doubleValueForUnit:v18];
+        [delimiterCopy doubleValueForUnit:unitCopy];
         [(CHWorkoutDataCalculator *)self _updateSplits:v20 withDistance:0 duration:0.0 strokeCount:v26 splitDelimiterInUserUnit:v27];
       }
 
@@ -3069,16 +3069,16 @@ LABEL_43:
       v53[1] = 3221225472;
       v53[2] = sub_1000D5DAC;
       v53[3] = &unk_10083B828;
-      v48 = self;
+      selfCopy = self;
       v53[4] = self;
-      v28 = v18;
-      v29 = v16;
+      v28 = unitCopy;
+      v29 = samplesCopy;
       v54 = v29;
-      v52 = v14;
-      v30 = v14;
+      v52 = workoutCopy;
+      v30 = workoutCopy;
       v55 = v30;
-      v31 = v19;
-      v32 = v15;
+      v31 = delimiterCopy;
+      v32 = activityCopy;
       v56 = v32;
       v33 = v20;
       v57 = v33;
@@ -3088,11 +3088,11 @@ LABEL_43:
       v50 = v28;
       v43 = v28;
       v59 = v43;
-      v17 = v46;
+      strokeSamplesCopy = v46;
       v60 = v46;
       [v29 enumerateObjectsUsingBlock:v53];
       v51 = v20;
-      if (v15)
+      if (activityCopy)
       {
         v34 = v32;
       }
@@ -3102,24 +3102,24 @@ LABEL_43:
         v34 = v30;
       }
 
-      v35 = [v34 endDate];
-      v36 = [v29 lastObject];
-      v37 = [v36 endDate];
-      [(CHWorkoutDataCalculator *)v48 _activeWorkoutElapsedTimeFromDate:v37 toDate:v35 forWorkout:v30 workoutActivity:v32];
+      endDate = [v34 endDate];
+      lastObject = [v29 lastObject];
+      endDate2 = [lastObject endDate];
+      [(CHWorkoutDataCalculator *)selfCopy _activeWorkoutElapsedTimeFromDate:endDate2 toDate:endDate forWorkout:v30 workoutActivity:v32];
       v39 = v38;
 
       if (v39 > 2.22044605e-16)
       {
         [v45 doubleValueForUnit:v44];
-        [(CHWorkoutDataCalculator *)v48 _updateSplits:v33 withDistance:0 duration:0.0 strokeCount:v39 splitDelimiterInUserUnit:v40];
+        [(CHWorkoutDataCalculator *)selfCopy _updateSplits:v33 withDistance:0 duration:0.0 strokeCount:v39 splitDelimiterInUserUnit:v40];
       }
 
       v41 = v33;
 
       v20 = v51;
-      v14 = v52;
-      v19 = v49;
-      v18 = v50;
+      workoutCopy = v52;
+      delimiterCopy = v49;
+      unitCopy = v50;
     }
 
     else
@@ -3144,10 +3144,10 @@ LABEL_43:
   return v20;
 }
 
-- (id)_queue_swimmingSplitsForWorkout:(id)a3 workoutActivity:(id)a4 error:(id *)a5
+- (id)_queue_swimmingSplitsForWorkout:(id)workout workoutActivity:(id)activity error:(id *)error
 {
-  v55 = a3;
-  v56 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v84 = 0;
   v85 = &v84;
   v86 = 0x3032000000;
@@ -3169,7 +3169,7 @@ LABEL_43:
   v77 = &v84;
   v7 = v6;
   v76 = v7;
-  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:v55 workoutActivity:v56 completion:v75];
+  [(CHWorkoutDataCalculator *)self strokeSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v75];
   dispatch_group_enter(v7);
   v72[0] = _NSConcreteStackBlock;
   v72[1] = 3221225472;
@@ -3178,7 +3178,7 @@ LABEL_43:
   v74 = &v78;
   group = v7;
   v73 = group;
-  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:v55 workoutActivity:v56 completion:v72];
+  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:workoutCopy workoutActivity:activityCopy completion:v72];
   v8 = dispatch_time(0, 20000000000);
   dispatch_group_wait(group, v8);
   v9 = [v85[5] count];
@@ -3187,20 +3187,20 @@ LABEL_43:
     goto LABEL_34;
   }
 
-  if (v56)
+  if (activityCopy)
   {
-    v10 = [v56 workoutConfiguration];
-    v11 = [v10 swimmingLocationType];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    swimmingLocationType = [workoutConfiguration swimmingLocationType];
   }
 
   else
   {
-    v10 = [v55 metadata];
-    v12 = [v10 objectForKeyedSubscript:HKMetadataKeySwimmingLocationType];
-    v11 = [v12 integerValue];
+    workoutConfiguration = [workoutCopy metadata];
+    v12 = [workoutConfiguration objectForKeyedSubscript:HKMetadataKeySwimmingLocationType];
+    swimmingLocationType = [v12 integerValue];
   }
 
-  if (v11 == 2)
+  if (swimmingLocationType == 2)
   {
     _HKInitializeLogging();
     v13 = HKLogWorkouts;
@@ -3245,7 +3245,7 @@ LABEL_10:
         }
 
         v15 = *(*(&v67 + 1) + 8 * i);
-        v16 = [v15 fiui_dateInterval];
+        fiui_dateInterval = [v15 fiui_dateInterval];
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
@@ -3266,14 +3266,14 @@ LABEL_18:
             }
 
             v21 = *(*(&v63 + 1) + 8 * v20);
-            v22 = [v21 fiui_dateInterval];
-            [v16 duration];
+            fiui_dateInterval2 = [v21 fiui_dateInterval];
+            [fiui_dateInterval duration];
             if (v23 > 2.22044605e-16)
             {
-              v24 = [v22 intersectionWithDateInterval:v16];
+              v24 = [fiui_dateInterval2 intersectionWithDateInterval:fiui_dateInterval];
               [v24 duration];
               v26 = v25;
-              [v16 duration];
+              [fiui_dateInterval duration];
               v28 = v26 / v27 > 0.9;
 
               if (v28)
@@ -3310,12 +3310,12 @@ LABEL_25:
         v30 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierSwimmingStrokeCount];
         v31 = +[HKUnit countUnit];
         v32 = [HKQuantity quantityWithUnit:v31 doubleValue:0.0];
-        v33 = [v61 startDate];
-        v34 = [v61 endDate];
+        startDate = [v61 startDate];
+        endDate = [v61 endDate];
         v92 = HKMetadataKeySwimmingStrokeStyle;
         v93 = &off_10086E188;
         v35 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-        v29 = [HKQuantitySample quantitySampleWithType:v30 quantity:v32 startDate:v33 endDate:v34 metadata:v35];
+        v29 = [HKQuantitySample quantitySampleWithType:v30 quantity:v32 startDate:startDate endDate:endDate metadata:v35];
 
 LABEL_28:
         [v59 addObject:v29];
@@ -3339,23 +3339,23 @@ LABEL_28:
   }
 
 LABEL_34:
-  v37 = [(CHWorkoutDataCalculator *)self unitManager];
-  v38 = [v37 userDistanceHKUnitForDistanceType:3];
+  unitManager = [(CHWorkoutDataCalculator *)self unitManager];
+  v38 = [unitManager userDistanceHKUnitForDistanceType:3];
 
   v39 = v79[5];
   v40 = v85[5];
   v41 = [HKQuantity quantityWithUnit:v38 doubleValue:100.0];
-  v42 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:v55 workoutActivity:v56 distanceSamples:v39 strokeSamples:v40 forDelimeterUnit:v38 splitDelimiter:v41];
+  v42 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:workoutCopy workoutActivity:activityCopy distanceSamples:v39 strokeSamples:v40 forDelimeterUnit:v38 splitDelimiter:v41];
 
   v43 = v79[5];
   v44 = v85[5];
   v45 = [HKQuantity quantityWithUnit:v38 doubleValue:50.0];
-  v46 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:v55 workoutActivity:v56 distanceSamples:v43 strokeSamples:v44 forDelimeterUnit:v38 splitDelimiter:v45];
+  v46 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:workoutCopy workoutActivity:activityCopy distanceSamples:v43 strokeSamples:v44 forDelimeterUnit:v38 splitDelimiter:v45];
 
   v47 = v79[5];
   v48 = v85[5];
   v49 = [HKQuantity quantityWithUnit:v38 doubleValue:25.0];
-  v50 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:v55 workoutActivity:v56 distanceSamples:v47 strokeSamples:v48 forDelimeterUnit:v38 splitDelimiter:v49];
+  v50 = [(CHWorkoutDataCalculator *)self _swimmingSplitsForWorkout:workoutCopy workoutActivity:activityCopy distanceSamples:v47 strokeSamples:v48 forDelimeterUnit:v38 splitDelimiter:v49];
 
   v90[0] = &off_10086E158;
   v90[1] = &off_10086E1B8;
@@ -3371,31 +3371,31 @@ LABEL_34:
   return v51;
 }
 
-- (id)_uuidForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)_uuidForWorkout:(id)workout workoutActivity:(id)activity
 {
-  if (a4)
+  if (activity)
   {
-    v4 = a4;
+    workoutCopy = activity;
   }
 
   else
   {
-    v4 = a3;
+    workoutCopy = workout;
   }
 
-  v5 = [v4 UUID];
+  uUID = [workoutCopy UUID];
 
-  return v5;
+  return uUID;
 }
 
-- (id)_predicateForObjectsFromWorkout:(id)a3 withinWorkoutActivity:(id)a4
+- (id)_predicateForObjectsFromWorkout:(id)workout withinWorkoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [HKQuery predicateForObjectsFromWorkout:v5];
+  workoutCopy = workout;
+  activityCopy = activity;
+  v7 = [HKQuery predicateForObjectsFromWorkout:workoutCopy];
   v8 = objc_alloc_init(NSMutableArray);
   v9 = v8;
-  if (v6)
+  if (activityCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -3404,7 +3404,7 @@ LABEL_34:
     v10 = &v18;
     v18 = v8;
     v11 = v17;
-    v12 = v6;
+    v12 = activityCopy;
   }
 
   else
@@ -3416,7 +3416,7 @@ LABEL_34:
     v10 = &v20;
     v20 = v8;
     v11 = v19;
-    v12 = v5;
+    v12 = workoutCopy;
   }
 
   [v12 _enumerateActiveTimePeriods:v11];
@@ -3430,13 +3430,13 @@ LABEL_34:
   return v15;
 }
 
-- (id)_activeDateIntervalsForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)_activeDateIntervalsForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = v7;
-  if (v6)
+  if (activityCopy)
   {
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
@@ -3445,7 +3445,7 @@ LABEL_34:
     v9 = &v17;
     v17 = v7;
     v10 = &v13;
-    v11 = v6;
+    v11 = activityCopy;
   }
 
   else
@@ -3457,7 +3457,7 @@ LABEL_34:
     v9 = &v22;
     v22 = v7;
     v10 = &v18;
-    v11 = v5;
+    v11 = workoutCopy;
   }
 
   [v11 _enumerateActiveTimePeriods:{v10, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22}];
@@ -3465,23 +3465,23 @@ LABEL_34:
   return v8;
 }
 
-- (id)_predicateForActiveDateIntervals:(id)a3
+- (id)_predicateForActiveDateIntervals:(id)intervals
 {
-  v3 = [a3 hk_map:&stru_10083B868];
+  v3 = [intervals hk_map:&stru_10083B868];
   v4 = [NSCompoundPredicate orPredicateWithSubpredicates:v3];
 
   return v4;
 }
 
-- (BOOL)_activeDateIntervals:(id)a3 containsDate:(id)a4
+- (BOOL)_activeDateIntervals:(id)intervals containsDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  intervalsCopy = intervals;
+  dateCopy = date;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = intervalsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -3496,15 +3496,15 @@ LABEL_34:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 startDate];
-        [v12 timeIntervalSinceReferenceDate];
+        startDate = [v11 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v14 = v13;
 
-        v15 = [v11 endDate];
-        [v15 timeIntervalSinceReferenceDate];
+        endDate = [v11 endDate];
+        [endDate timeIntervalSinceReferenceDate];
         v17 = v16;
 
-        [v6 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         if (v18 >= v14 && v18 < v17)
         {
           LOBYTE(v8) = 1;
@@ -3527,19 +3527,19 @@ LABEL_14:
   return v8;
 }
 
-- (id)_activeDateIntervalsForWorkout:(id)a3 during:(id)a4
+- (id)_activeDateIntervalsForWorkout:(id)workout during:(id)during
 {
-  v5 = a4;
-  v6 = a3;
+  duringCopy = during;
+  workoutCopy = workout;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000D7164;
   v12[3] = &unk_10083B890;
-  v13 = v5;
+  v13 = duringCopy;
   v7 = objc_alloc_init(NSMutableArray);
   v14 = v7;
-  v8 = v5;
-  [v6 _enumerateActiveTimePeriods:v12];
+  v8 = duringCopy;
+  [workoutCopy _enumerateActiveTimePeriods:v12];
 
   v9 = v14;
   v10 = v7;
@@ -3547,19 +3547,19 @@ LABEL_14:
   return v7;
 }
 
-- (id)_activeDateIntervalsForWorkoutActivity:(id)a3 during:(id)a4
+- (id)_activeDateIntervalsForWorkoutActivity:(id)activity during:(id)during
 {
-  v5 = a4;
-  v6 = a3;
+  duringCopy = during;
+  activityCopy = activity;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000D73BC;
   v12[3] = &unk_10083B890;
-  v13 = v5;
+  v13 = duringCopy;
   v7 = objc_alloc_init(NSMutableArray);
   v14 = v7;
-  v8 = v5;
-  [v6 _enumerateActiveTimePeriods:v12];
+  v8 = duringCopy;
+  [activityCopy _enumerateActiveTimePeriods:v12];
 
   v9 = v14;
   v10 = v7;
@@ -3567,19 +3567,19 @@ LABEL_14:
   return v7;
 }
 
-- (id)_endDateInWorkout:(id)a3 reachingAccumulatedTime:(double)a4 fromStartDate:(id)a5
+- (id)_endDateInWorkout:(id)workout reachingAccumulatedTime:(double)time fromStartDate:(id)date
 {
-  v7 = a3;
-  v8 = a5;
+  workoutCopy = workout;
+  dateCopy = date;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_1000D7804;
   v35[3] = &unk_10083B5B0;
   v9 = objc_alloc_init(NSMutableArray);
   v36 = v9;
-  [v7 _enumerateActiveTimePeriods:v35];
+  [workoutCopy _enumerateActiveTimePeriods:v35];
   v10 = 0;
-  if (a4 > 0.0 && v8)
+  if (time > 0.0 && dateCopy)
   {
     v33 = 0u;
     v34 = 0u;
@@ -3589,7 +3589,7 @@ LABEL_14:
     v10 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v10)
     {
-      v30 = v7;
+      v30 = workoutCopy;
       v12 = *v32;
       v13 = 0.0;
       while (2)
@@ -3602,37 +3602,37 @@ LABEL_14:
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
-          v16 = [v15 endDate];
-          v17 = [v15 startDate];
-          [v16 timeIntervalSinceDate:v17];
+          endDate = [v15 endDate];
+          startDate = [v15 startDate];
+          [endDate timeIntervalSinceDate:startDate];
           v19 = v18;
 
           if (v19 >= 2.22044605e-16)
           {
-            v20 = [v15 endDate];
-            v21 = [v20 compare:v8];
+            endDate2 = [v15 endDate];
+            v21 = [endDate2 compare:dateCopy];
 
             if (v21 == 1)
             {
-              v22 = [v15 startDate];
-              v23 = [v15 startDate];
-              v24 = [v23 compare:v8];
+              startDate2 = [v15 startDate];
+              startDate3 = [v15 startDate];
+              v24 = [startDate3 compare:dateCopy];
 
               if (v24 == -1)
               {
-                v25 = v8;
+                v25 = dateCopy;
 
-                v26 = [v15 endDate];
-                [v26 timeIntervalSinceDate:v25];
+                endDate3 = [v15 endDate];
+                [endDate3 timeIntervalSinceDate:v25];
                 v19 = v27;
 
-                v22 = v25;
+                startDate2 = v25;
               }
 
               v28 = v13 + v19;
-              if (v28 >= a4)
+              if (v28 >= time)
               {
-                v10 = [v22 dateByAddingTimeInterval:a4 - v13];
+                v10 = [startDate2 dateByAddingTimeInterval:time - v13];
 
                 goto LABEL_18;
               }
@@ -3652,20 +3652,20 @@ LABEL_14:
       }
 
 LABEL_18:
-      v7 = v30;
+      workoutCopy = v30;
     }
   }
 
   return v10;
 }
 
-- (id)_endDateInWorkout:(id)a3 reachingAccumulatedDistance:(double)a4 fromStartDate:(id)a5
+- (id)_endDateInWorkout:(id)workout reachingAccumulatedDistance:(double)distance fromStartDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
+  workoutCopy = workout;
+  dateCopy = date;
   v10 = [NSDateInterval alloc];
-  v11 = [v8 endDate];
-  v12 = [v10 initWithStartDate:v9 endDate:v11];
+  endDate = [workoutCopy endDate];
+  v12 = [v10 initWithStartDate:dateCopy endDate:endDate];
 
   v24 = 0;
   v25 = &v24;
@@ -3682,10 +3682,10 @@ LABEL_18:
   v14 = v13;
   v20 = v14;
   v15 = v12;
-  v23 = a4;
+  distanceCopy = distance;
   v21 = v15;
   v22 = &v24;
-  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:v8 workoutActivity:0 completion:v19];
+  [(CHWorkoutDataCalculator *)self distanceSamplesForWorkout:workoutCopy workoutActivity:0 completion:v19];
   v16 = dispatch_time(0, 20000000000);
   dispatch_group_wait(v14, v16);
   v17 = v25[5];
@@ -3695,18 +3695,18 @@ LABEL_18:
   return v17;
 }
 
-- (id)_testMarkersForWorkout:(id)a3
+- (id)_testMarkersForWorkout:(id)workout
 {
-  v3 = a3;
-  v4 = [v3 endDate];
-  v5 = [v3 startDate];
-  [v4 timeIntervalSinceDate:v5];
+  workoutCopy = workout;
+  endDate = [workoutCopy endDate];
+  startDate = [workoutCopy startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v7 = v6;
 
   v8 = v7 / 3.0;
   v9 = [NSDateInterval alloc];
-  v10 = [v3 startDate];
-  v11 = [v10 dateByAddingTimeInterval:v8];
+  startDate2 = [workoutCopy startDate];
+  v11 = [startDate2 dateByAddingTimeInterval:v8];
   v12 = [v9 initWithStartDate:v11 duration:0.0];
   v13 = FIUIPrivateMetadataKeyMarkerEventSubtype;
   v27 = FIUIPrivateMetadataKeyMarkerEventSubtype;
@@ -3715,9 +3715,9 @@ LABEL_18:
   v15 = [HKWorkoutEvent workoutEventWithType:4 dateInterval:v12 metadata:v14];
 
   v16 = [NSDateInterval alloc];
-  v17 = [v3 startDate];
+  startDate3 = [workoutCopy startDate];
 
-  v18 = [v17 dateByAddingTimeInterval:v8 + v8];
+  v18 = [startDate3 dateByAddingTimeInterval:v8 + v8];
   v19 = [v16 initWithStartDate:v18 duration:0.0];
   v25 = v13;
   v26 = &off_10086E1E8;
@@ -3731,10 +3731,10 @@ LABEL_18:
   return v22;
 }
 
-- (id)_testTrackLapsForWorkout:(id)a3
+- (id)_testTrackLapsForWorkout:(id)workout
 {
-  v22 = a3;
-  [v22 duration];
+  workoutCopy = workout;
+  [workoutCopy duration];
   v4 = v3 * 0.125;
   v5 = [&__NSArray0__struct mutableCopy];
   v21 = FIPrivateMetadataKeyLapIndex;
@@ -3746,8 +3746,8 @@ LABEL_18:
   do
   {
     v8 = [NSDateInterval alloc];
-    v24 = [v22 startDate];
-    v23 = [v24 dateByAddingTimeInterval:v4 * v7];
+    startDate = [workoutCopy startDate];
+    v23 = [startDate dateByAddingTimeInterval:v4 * v7];
     v9 = [v8 initWithStartDate:v23 duration:v4];
     v25[0] = v21;
     v7 = v7 + 1.0;
@@ -3775,47 +3775,47 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_workoutSupportsDistanceAndPace:(id)a3
+- (BOOL)_workoutSupportsDistanceAndPace:(id)pace
 {
-  v3 = a3;
-  v4 = [v3 fiui_activityType];
-  v5 = [FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:v3];
+  paceCopy = pace;
+  fiui_activityType = [paceCopy fiui_activityType];
+  v5 = [FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:paceCopy];
   v6 = [FIUIWorkoutDefaultMetricsProvider alloc];
-  v7 = [v3 _activityMoveMode];
+  _activityMoveMode = [paceCopy _activityMoveMode];
   v8 = FIUIDeviceSupportsElevationGain();
-  v9 = [v6 initWithMetricsVersion:v5 activityType:v4 activityMoveMode:v7 deviceSupportsElevationMetrics:v8 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
-  v10 = [v3 fiui_isConnectedGymWorkout];
+  v9 = [v6 initWithMetricsVersion:v5 activityType:fiui_activityType activityMoveMode:_activityMoveMode deviceSupportsElevationMetrics:v8 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
+  fiui_isConnectedGymWorkout = [paceCopy fiui_isConnectedGymWorkout];
 
-  LOBYTE(v3) = [v9 isMetricTypeSupported:1 isMachineWorkout:v10 activityType:v4];
-  return v3;
+  LOBYTE(paceCopy) = [v9 isMetricTypeSupported:1 isMachineWorkout:fiui_isConnectedGymWorkout activityType:fiui_activityType];
+  return paceCopy;
 }
 
-- (void)_setDistanceSamples:(id)a3 forWorkout:(id)a4
+- (void)_setDistanceSamples:(id)samples forWorkout:(id)workout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  [v8 setDistanceSamples:v7];
+  workoutCopy = workout;
+  samplesCopy = samples;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  [v8 setDistanceSamples:samplesCopy];
 
-  [(CHWorkoutDataCalculator *)self saveContainerToCache:v8 forWorkout:v6 workoutActivity:0];
+  [(CHWorkoutDataCalculator *)self saveContainerToCache:v8 forWorkout:workoutCopy workoutActivity:0];
 }
 
-- (void)_setStrokeSamples:(id)a3 forWorkout:(id)a4
+- (void)_setStrokeSamples:(id)samples forWorkout:(id)workout
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:v6 workoutActivity:0];
-  [v8 setStrokeSamples:v7];
+  workoutCopy = workout;
+  samplesCopy = samples;
+  v8 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workoutCopy workoutActivity:0];
+  [v8 setStrokeSamples:samplesCopy];
 
-  [(CHWorkoutDataCalculator *)self saveContainerToCache:v8 forWorkout:v6 workoutActivity:0];
+  [(CHWorkoutDataCalculator *)self saveContainerToCache:v8 forWorkout:workoutCopy workoutActivity:0];
 }
 
-- (id)_getDistanceSamplesForWorkout:(id)a3
+- (id)_getDistanceSamplesForWorkout:(id)workout
 {
-  v3 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:a3 workoutActivity:0];
-  v4 = [v3 distanceSamples];
+  v3 = [(CHWorkoutDataCalculator *)self cacheContainerForWorkout:workout workoutActivity:0];
+  distanceSamples = [v3 distanceSamples];
 
-  return v4;
+  return distanceSamples;
 }
 
 @end

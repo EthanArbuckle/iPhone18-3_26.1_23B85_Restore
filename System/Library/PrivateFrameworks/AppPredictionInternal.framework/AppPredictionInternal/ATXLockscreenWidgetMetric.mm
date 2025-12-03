@@ -8,32 +8,32 @@
 {
   v16[6] = *MEMORY[0x277D85DE8];
   v15[0] = @"lockscreenId";
-  v3 = [(ATXLockscreenWidgetMetric *)self lockscreenId];
-  v4 = v3;
-  if (!v3)
+  lockscreenId = [(ATXLockscreenWidgetMetric *)self lockscreenId];
+  null = lockscreenId;
+  if (!lockscreenId)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[0] = v4;
+  v16[0] = null;
   v15[1] = @"extensionBundleId";
-  v5 = [(ATXLockscreenWidgetMetric *)self extensionBundleId];
-  v6 = v5;
-  if (!v5)
+  extensionBundleId = [(ATXLockscreenWidgetMetric *)self extensionBundleId];
+  null2 = extensionBundleId;
+  if (!extensionBundleId)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[1] = v6;
+  v16[1] = null2;
   v15[2] = @"kind";
-  v7 = [(ATXLockscreenWidgetMetric *)self kind];
-  v8 = v7;
-  if (!v7)
+  kind = [(ATXLockscreenWidgetMetric *)self kind];
+  null3 = kind;
+  if (!kind)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[2] = v8;
+  v16[2] = null3;
   v15[3] = @"source";
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXLockscreenWidgetMetric source](self, "source")}];
   v16[3] = v9;
@@ -45,15 +45,15 @@
   v16[5] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:6];
 
-  if (!v7)
+  if (!kind)
   {
   }
 
-  if (!v5)
+  if (!extensionBundleId)
   {
   }
 
-  if (!v3)
+  if (!lockscreenId)
   {
   }
 

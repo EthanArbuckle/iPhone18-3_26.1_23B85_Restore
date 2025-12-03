@@ -1,19 +1,19 @@
 @interface CertInfoCertificateListCellContentView
-- (CertInfoCertificateListCellContentView)initWithFrame:(CGRect)a3;
-- (void)_setText:(id)a3 forLabel:(id)a4 withRedColor:(BOOL)a5;
-- (void)_setupLabel:(id)a3 isSubtitle:(BOOL)a4;
+- (CertInfoCertificateListCellContentView)initWithFrame:(CGRect)frame;
+- (void)_setText:(id)text forLabel:(id)label withRedColor:(BOOL)color;
+- (void)_setupLabel:(id)label isSubtitle:(BOOL)subtitle;
 - (void)layoutSubviews;
-- (void)setExpiration:(id)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setExpiration:(id)expiration;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation CertInfoCertificateListCellContentView
 
-- (CertInfoCertificateListCellContentView)initWithFrame:(CGRect)a3
+- (CertInfoCertificateListCellContentView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = CertInfoCertificateListCellContentView;
-  v3 = [(CertInfoCertificateListCellContentView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CertInfoCertificateListCellContentView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -41,11 +41,11 @@
   return v3;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_28561D260] & 1) == 0)
+  subtitleCopy = subtitle;
+  v9 = subtitleCopy;
+  if (subtitleCopy && ([subtitleCopy isEqualToString:&stru_28561D260] & 1) == 0)
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
@@ -61,14 +61,14 @@
   [(CertInfoCertificateListCellContentView *)self _setText:v5 forLabel:self->_subtitleLabel withRedColor:0];
 }
 
-- (void)setExpiration:(id)a3
+- (void)setExpiration:(id)expiration
 {
-  v13 = a3;
-  [v13 timeIntervalSinceNow];
+  expirationCopy = expiration;
+  [expirationCopy timeIntervalSinceNow];
   v5 = v4;
-  if (v13)
+  if (expirationCopy)
   {
-    v6 = [MEMORY[0x277CCA968] localizedStringFromDate:v13 dateStyle:2 timeStyle:2];
+    v6 = [MEMORY[0x277CCA968] localizedStringFromDate:expirationCopy dateStyle:2 timeStyle:2];
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v9 = v8;
@@ -94,19 +94,19 @@
   [(CertInfoCertificateListCellContentView *)self _setText:v12 forLabel:self->_expirationLabel withRedColor:v5 < 0.0];
 }
 
-- (void)_setupLabel:(id)a3 isSubtitle:(BOOL)a4
+- (void)_setupLabel:(id)label isSubtitle:(BOOL)subtitle
 {
-  v4 = a4;
-  v8 = a3;
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setHighlightedTextColor:v5];
+  subtitleCopy = subtitle;
+  labelCopy = label;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [labelCopy setHighlightedTextColor:whiteColor];
 
-  [v8 setBackgroundColor:0];
-  [v8 setOpaque:0];
-  if (v4)
+  [labelCopy setBackgroundColor:0];
+  [labelCopy setOpaque:0];
+  if (subtitleCopy)
   {
-    v6 = [MEMORY[0x277D75348] grayColor];
-    [v8 setTextColor:v6];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [labelCopy setTextColor:grayColor];
 
     [MEMORY[0x277D74300] systemFontOfSize:13.0];
   }
@@ -116,29 +116,29 @@
     [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
   }
   v7 = ;
-  [v8 setFont:v7];
+  [labelCopy setFont:v7];
 }
 
-- (void)_setText:(id)a3 forLabel:(id)a4 withRedColor:(BOOL)a5
+- (void)_setText:(id)text forLabel:(id)label withRedColor:(BOOL)color
 {
-  v5 = a5;
-  v9 = a4;
-  if (a3)
+  colorCopy = color;
+  labelCopy = label;
+  if (text)
   {
-    [v9 setText:a3];
-    [v9 sizeToFit];
-    if (v5)
+    [labelCopy setText:text];
+    [labelCopy sizeToFit];
+    if (colorCopy)
     {
-      v8 = [MEMORY[0x277D75348] redColor];
-      [v9 setTextColor:v8];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [labelCopy setTextColor:redColor];
     }
 
-    [(CertInfoCertificateListCellContentView *)self addSubview:v9];
+    [(CertInfoCertificateListCellContentView *)self addSubview:labelCopy];
   }
 
   else
   {
-    [v9 removeFromSuperview];
+    [labelCopy removeFromSuperview];
   }
 
   [(CertInfoCertificateListCellContentView *)self setNeedsLayout];
@@ -167,15 +167,15 @@
   }
 
   v16 = v6 + -8.0;
-  v17 = [(UILabel *)self->_subtitleLabel superview];
+  superview = [(UILabel *)self->_subtitleLabel superview];
 
-  v18 = [(UILabel *)self->_expirationLabel superview];
+  superview2 = [(UILabel *)self->_expirationLabel superview];
 
-  if (v17 | v18)
+  if (superview | superview2)
   {
-    if (v17)
+    if (superview)
     {
-      v20 = v18 == 0;
+      v20 = superview2 == 0;
     }
 
     else
@@ -186,16 +186,16 @@
     if (v20)
     {
       [(UILabel *)self->_subtitleLabel setNumberOfLines:2];
-      v38 = [(UILabel *)self->_subtitleLabel text];
-      v39 = [(UILabel *)self->_subtitleLabel font];
-      [v38 _legacy_sizeWithFont:v39 constrainedToSize:{v16, 0.0}];
+      text = [(UILabel *)self->_subtitleLabel text];
+      font = [(UILabel *)self->_subtitleLabel font];
+      [text _legacy_sizeWithFont:font constrainedToSize:{v16, 0.0}];
       v41 = v40;
       v52 = v4;
       v43 = v42;
 
-      v44 = [(UILabel *)self->_subtitleLabel text];
-      v45 = [(UILabel *)self->_subtitleLabel font];
-      [v44 _legacy_sizeWithFont:v45 constrainedToSize:{v41, v43 + v43}];
+      text2 = [(UILabel *)self->_subtitleLabel text];
+      font2 = [(UILabel *)self->_subtitleLabel font];
+      [text2 _legacy_sizeWithFont:font2 constrainedToSize:{v41, v43 + v43}];
       v47 = v46;
       v55 = v11;
       v49 = v48;
@@ -218,9 +218,9 @@
 
     else
     {
-      if (v17)
+      if (superview)
       {
-        v21 = v18 == 0;
+        v21 = superview2 == 0;
       }
 
       else

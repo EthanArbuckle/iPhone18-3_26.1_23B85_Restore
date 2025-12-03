@@ -1,24 +1,24 @@
 @interface PVCMSampleBuffer
-+ (id)sampleBufferWithPVImageBuffer:(id)a3 timestamp:(id *)a4 frameDuration:(id *)a5;
-+ (id)sampleBufferWithPVImageBuffer:(id)a3 timestamp:(id *)a4 frameDuration:(id *)a5 error:(id *)a6;
-+ (opaqueCMSampleBuffer)createCMSampleBufferForPVImageBuffer:(id)a3 timingInfo:(id *)a4 error:(id *)a5;
-- (PVCMSampleBuffer)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
++ (id)sampleBufferWithPVImageBuffer:(id)buffer timestamp:(id *)timestamp frameDuration:(id *)duration;
++ (id)sampleBufferWithPVImageBuffer:(id)buffer timestamp:(id *)timestamp frameDuration:(id *)duration error:(id *)error;
++ (opaqueCMSampleBuffer)createCMSampleBufferForPVImageBuffer:(id)buffer timingInfo:(id *)info error:(id *)error;
+- (PVCMSampleBuffer)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PVCMSampleBuffer
 
-+ (opaqueCMSampleBuffer)createCMSampleBufferForPVImageBuffer:(id)a3 timingInfo:(id *)a4 error:(id *)a5
++ (opaqueCMSampleBuffer)createCMSampleBufferForPVImageBuffer:(id)buffer timingInfo:(id *)info error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 cvPixelBuffer];
-  if (v8)
+  bufferCopy = buffer;
+  cvPixelBuffer = [bufferCopy cvPixelBuffer];
+  if (cvPixelBuffer)
   {
     formatDescriptionOut = 0;
-    v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, v8, &formatDescriptionOut);
+    v9 = CMVideoFormatDescriptionCreateForImageBuffer(0, cvPixelBuffer, &formatDescriptionOut);
     v10 = v9;
-    if (a5 && v9)
+    if (error && v9)
     {
       switch(v9)
       {
@@ -41,15 +41,15 @@
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create video format description: %@", v11];
       v28 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      *a5 = [v14 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:v10 userInfo:v16];
+      *error = [v14 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:v10 userInfo:v16];
     }
 
     sampleBufferOut = 0;
     if (!v10)
     {
-      v17 = CMSampleBufferCreateReadyWithImageBuffer(0, v8, formatDescriptionOut, a4, &sampleBufferOut);
+      v17 = CMSampleBufferCreateReadyWithImageBuffer(0, cvPixelBuffer, formatDescriptionOut, info, &sampleBufferOut);
       v10 = v17;
-      if (a5)
+      if (error)
       {
         if (v17)
         {
@@ -124,7 +124,7 @@
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create sample buffer: %@", v18];
           v26 = v20;
           v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a5 = [v19 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:v10 userInfo:v21];
+          *error = [v19 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:v10 userInfo:v21];
 
           v10 = 1;
         }
@@ -138,45 +138,45 @@
 
     if (v10)
     {
-      a5 = 0;
+      error = 0;
     }
 
     else
     {
-      a5 = sampleBufferOut;
+      error = sampleBufferOut;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA450];
     v30[0] = @"Failed to create sample buffer: CVPixelBuffer is nil.";
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    *a5 = [v12 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:3 userInfo:v13];
+    *error = [v12 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:3 userInfo:v13];
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
-+ (id)sampleBufferWithPVImageBuffer:(id)a3 timestamp:(id *)a4 frameDuration:(id *)a5
++ (id)sampleBufferWithPVImageBuffer:(id)buffer timestamp:(id *)timestamp frameDuration:(id *)duration
 {
-  v8 = *a4;
-  v7 = *a5;
-  v5 = [a1 sampleBufferWithPVImageBuffer:a3 timestamp:&v8 frameDuration:&v7 error:0];
+  v8 = *timestamp;
+  v7 = *duration;
+  v5 = [self sampleBufferWithPVImageBuffer:buffer timestamp:&v8 frameDuration:&v7 error:0];
 
   return v5;
 }
 
-+ (id)sampleBufferWithPVImageBuffer:(id)a3 timestamp:(id *)a4 frameDuration:(id *)a5 error:(id *)a6
++ (id)sampleBufferWithPVImageBuffer:(id)buffer timestamp:(id *)timestamp frameDuration:(id *)duration error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (!v11)
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -185,15 +185,15 @@
     v23 = *MEMORY[0x277CCA450];
     v24[0] = @"Image must not be nil.";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    *a6 = [v14 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:1 userInfo:v15];
+    *error = [v14 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:1 userInfo:v15];
 
     goto LABEL_8;
   }
 
-  v19 = *&a5->var0;
-  *v20 = a5->var3;
-  *&v20[8] = *&a4->var0;
-  *&v20[24] = a4->var3;
+  v19 = *&duration->var0;
+  *v20 = duration->var3;
+  *&v20[8] = *&timestamp->var0;
+  *&v20[24] = timestamp->var3;
   v21 = *&v20[8];
   v22 = *&v20[24];
   v17[2] = *&v20[16];
@@ -201,34 +201,34 @@
   v18 = *&v20[24];
   v17[0] = v19;
   v17[1] = *v20;
-  v12 = [a1 createCMSampleBufferForPVImageBuffer:v11 timingInfo:v17 error:a6];
+  v12 = [self createCMSampleBufferForPVImageBuffer:bufferCopy timingInfo:v17 error:error];
   if (!v12)
   {
 LABEL_8:
-    a6 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
-  a6 = [[PVCMSampleBuffer alloc] initWithSampleBuffer:v12 error:a6];
+  error = [[PVCMSampleBuffer alloc] initWithSampleBuffer:v12 error:error];
   CFRelease(v12);
-  if (a6)
+  if (error)
   {
-    objc_storeStrong(a6 + 2, a3);
-    v13 = a6;
+    objc_storeStrong(error + 2, buffer);
+    errorCopy = error;
   }
 
 LABEL_9:
 
-  return a6;
+  return error;
 }
 
-- (PVCMSampleBuffer)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (PVCMSampleBuffer)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!buffer)
   {
 
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -238,18 +238,18 @@ LABEL_9:
     v12[0] = @"Sample buffer must not be nil.";
     backingPVImageBuffer = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [v8 errorWithDomain:@"com.apple.provideo.PVFrameSet" code:2 userInfo:backingPVImageBuffer];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
     goto LABEL_6;
   }
 
   v10.receiver = self;
   v10.super_class = PVCMSampleBuffer;
-  v5 = [(PVCMSampleBuffer *)&v10 init:a3];
+  v5 = [(PVCMSampleBuffer *)&v10 init:buffer];
   if (v5)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
     backingPVImageBuffer = v5->_backingPVImageBuffer;
-    v5->_sampleBufferRef = a3;
+    v5->_sampleBufferRef = buffer;
     v5->_backingPVImageBuffer = 0;
 LABEL_6:
   }

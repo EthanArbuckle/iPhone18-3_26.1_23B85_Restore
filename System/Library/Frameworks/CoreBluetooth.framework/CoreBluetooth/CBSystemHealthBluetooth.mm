@@ -1,7 +1,7 @@
 @interface CBSystemHealthBluetooth
 - (CBSystemHealthBluetooth)init;
-- (CBSystemHealthBluetooth)initWithComponentType:(unint64_t)a3;
-- (unint64_t)getComponentStatusWithError:(id *)a3;
+- (CBSystemHealthBluetooth)initWithComponentType:(unint64_t)type;
+- (unint64_t)getComponentStatusWithError:(id *)error;
 @end
 
 @implementation CBSystemHealthBluetooth
@@ -13,40 +13,40 @@
   return 0;
 }
 
-- (CBSystemHealthBluetooth)initWithComponentType:(unint64_t)a3
+- (CBSystemHealthBluetooth)initWithComponentType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = CBSystemHealthBluetooth;
   result = [(CBSystemHealthBluetooth *)&v5 init];
   if (result)
   {
-    result->componentType = a3;
+    result->componentType = type;
   }
 
   return result;
 }
 
-- (unint64_t)getComponentStatusWithError:(id *)a3
+- (unint64_t)getComponentStatusWithError:(id *)error
 {
   v4 = [CBController controllerInfoAndReturnError:?];
-  v5 = [v4 lastChipsetInitError];
-  v6 = v5;
-  if (!v5)
+  lastChipsetInitError = [v4 lastChipsetInitError];
+  v6 = lastChipsetInitError;
+  if (!lastChipsetInitError)
   {
     v8 = 2;
     goto LABEL_9;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [v5 copy];
+    *error = [lastChipsetInitError copy];
   }
 
-  v7 = [v6 code];
+  code = [v6 code];
   v8 = 1;
-  if (v7 > 310212)
+  if (code > 310212)
   {
-    if ((v7 - 310213) < 2)
+    if ((code - 310213) < 2)
     {
       goto LABEL_9;
     }
@@ -54,7 +54,7 @@
     goto LABEL_6;
   }
 
-  if (v7 != 310001)
+  if (code != 310001)
   {
 LABEL_6:
     v8 = 0;

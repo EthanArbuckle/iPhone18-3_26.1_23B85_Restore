@@ -1,52 +1,52 @@
 @interface PKPaymentSetupHeroViewController
 - (BOOL)_readerModeIsSupported;
-- (PKPaymentSetupHeroViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 product:(id)a6 selectedMethod:(id)a7 allowsManualEntry:(BOOL)a8;
+- (PKPaymentSetupHeroViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate product:(id)product selectedMethod:(id)method allowsManualEntry:(BOOL)entry;
 - (PKPaymentSetupHeroViewControllerFlowDelegate)flowDelegate;
 - (PKPaymentSetupViewControllerDelegate)delegate;
 - (id)_bodyText;
 - (void)_configureDock;
 - (void)_didContinueWithSelectedMethod;
-- (void)_preflightWithCompletion:(id)a3;
-- (void)_setShowActivityIndicator:(BOOL)a3;
-- (void)_setUserInteractionEnabled:(BOOL)a3;
+- (void)_preflightWithCompletion:(id)completion;
+- (void)_setShowActivityIndicator:(BOOL)indicator;
+- (void)_setUserInteractionEnabled:(BOOL)enabled;
 - (void)_terminateSetupFlow;
 - (void)_transferExistingCardTapped;
-- (void)didTapFooterLink:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)didTapFooterLink:(id)link;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
-- (void)setHideSetupLaterButton:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setHideSetupLaterButton:(BOOL)button;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPaymentSetupHeroViewController
 
-- (PKPaymentSetupHeroViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 product:(id)a6 selectedMethod:(id)a7 allowsManualEntry:(BOOL)a8
+- (PKPaymentSetupHeroViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate product:(id)product selectedMethod:(id)method allowsManualEntry:(BOOL)entry
 {
-  v8 = a8;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  entryCopy = entry;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  productCopy = product;
+  methodCopy = method;
   v34.receiver = self;
   v34.super_class = PKPaymentSetupHeroViewController;
-  v19 = [(PKExplanationViewController *)&v34 initWithContext:a4];
+  v19 = [(PKExplanationViewController *)&v34 initWithContext:context];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_provisioningController, a3);
+    objc_storeStrong(&v19->_provisioningController, controller);
     v21 = objc_alloc_init(MEMORY[0x1E6959A48]);
     accountStore = v20->_accountStore;
     v20->_accountStore = v21;
 
-    objc_storeWeak(&v20->_delegate, v16);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     v20->_paymentSetupMode = 0;
-    objc_storeStrong(&v20->_product, a6);
-    objc_storeStrong(&v20->_selectedMethod, a7);
+    objc_storeStrong(&v20->_product, product);
+    objc_storeStrong(&v20->_selectedMethod, method);
     if (v20->_selectedMethod)
     {
       v23 = 1;
@@ -54,19 +54,19 @@
 
     else
     {
-      v23 = !v8;
+      v23 = !entryCopy;
     }
 
     v24 = !v23 && [(PKPaymentSetupHeroViewController *)v20 _readerModeIsSupported];
     v20->_allowsManualEntry = v24;
-    v25 = [(PKPaymentSetupHeroViewController *)v20 webService];
-    v26 = [v25 targetDevice];
-    v27 = [v26 deviceRegion];
+    webService = [(PKPaymentSetupHeroViewController *)v20 webService];
+    targetDevice = [webService targetDevice];
+    deviceRegion = [targetDevice deviceRegion];
     deviceRegion = v20->_deviceRegion;
-    v20->_deviceRegion = v27;
+    v20->_deviceRegion = deviceRegion;
 
     v29 = [MEMORY[0x1E69B8C18] manifestForRegion:v20->_deviceRegion];
-    v30 = [objc_alloc(MEMORY[0x1E69B8C10]) initWithManifest:v29 webService:v25];
+    v30 = [objc_alloc(MEMORY[0x1E69B8C10]) initWithManifest:v29 webService:webService];
     heroImageController = v20->_heroImageController;
     v20->_heroImageController = v30;
 
@@ -76,8 +76,8 @@
       [(PKPaymentHeroImageController *)v20->_heroImageController setWatchSize:+[PKBridgeWatchAttributeController heroWatchSize]];
     }
 
-    v32 = [(PKExplanationViewController *)v20 explanationView];
-    [v32 setDelegate:v20];
+    explanationView = [(PKExplanationViewController *)v20 explanationView];
+    [explanationView setDelegate:v20];
   }
 
   return v20;
@@ -89,7 +89,7 @@
   v16.super_class = PKPaymentSetupHeroViewController;
   [(PKExplanationViewController *)&v16 loadView];
   [(PKPaymentSetupHeroViewController *)self _configureDock];
-  v3 = [(PKExplanationViewController *)self context];
+  context = [(PKExplanationViewController *)self context];
   featuredImages = self->_featuredImages;
   if (featuredImages && [(NSArray *)featuredImages count])
   {
@@ -98,29 +98,29 @@
 
   else
   {
-    v6 = [(PKPaymentHeroImageController *)self->_heroImageController featuredImages];
-    v7 = v6;
-    if (v6)
+    featuredImages = [(PKPaymentHeroImageController *)self->_heroImageController featuredImages];
+    v7 = featuredImages;
+    if (featuredImages)
     {
-      v8 = v6;
+      featuredDefaultImages = featuredImages;
     }
 
     else
     {
-      v8 = [(PKPaymentHeroImageController *)self->_heroImageController featuredDefaultImages];
+      featuredDefaultImages = [(PKPaymentHeroImageController *)self->_heroImageController featuredDefaultImages];
     }
 
-    v5 = v8;
+    v5 = featuredDefaultImages;
   }
 
   v9 = [(PKPaymentHeroImageController *)self->_heroImageController filterImages:v5];
 
-  v10 = [[PKPaymentSetupHeroView alloc] initWithContext:v3 heroImageController:self->_heroImageController heroImages:v9 product:self->_product];
+  v10 = [[PKPaymentSetupHeroView alloc] initWithContext:context heroImageController:self->_heroImageController heroImages:v9 product:self->_product];
   splashView = self->_splashView;
   self->_splashView = v10;
 
-  v12 = [(PKExplanationViewController *)self explanationView];
-  [v12 setHeroView:self->_splashView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setHeroView:self->_splashView];
   if (self->_showPaymentCardTitle)
   {
     PKLocalizedPaymentString(&cfstr_PaymentSetupCr.isa);
@@ -131,32 +131,32 @@
     [(PKPaymentSetupProduct *)self->_product displayName];
   }
   v13 = ;
-  [v12 setTitleText:v13];
+  [explanationView setTitleText:v13];
 
-  [v12 setTitleAccessoriesEnabled:0];
+  [explanationView setTitleAccessoriesEnabled:0];
   if ((PKPearlIsAvailable() & 1) != 0 || [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     v14 = +[PKPaymentSetupHeroView assetBackgroundColor];
-    [v12 setTopBackgroundColor:v14];
+    [explanationView setTopBackgroundColor:v14];
   }
 
-  v15 = [(PKPaymentSetupHeroViewController *)self view];
-  [v15 setAccessibilityIdentifier:*MEMORY[0x1E69B9C40]];
+  view = [(PKPaymentSetupHeroViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9C40]];
 }
 
 - (void)_configureDock
 {
   v45[3] = *MEMORY[0x1E69E9840];
-  v39 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   [(PKExplanationViewController *)self context];
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
-  v4 = [v39 dockView];
-  [v4 setRequiresAdditionalPrimaryButtonPadding:IsSetupAssistant];
+  dockView = [explanationView dockView];
+  [dockView setRequiresAdditionalPrimaryButtonPadding:IsSetupAssistant];
   product = self->_product;
   if (product)
   {
-    v6 = [(PKPaymentSetupProduct *)product configuration];
-    v7 = ([v6 type] - 3) < 2;
+    configuration = [(PKPaymentSetupProduct *)product configuration];
+    v7 = ([configuration type] - 3) < 2;
   }
 
   else
@@ -209,8 +209,8 @@ LABEL_12:
     v16 = [v13 preferredFontForTextStyle:*v15];
     v45[0] = v16;
     v44[1] = *MEMORY[0x1E69DB650];
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v45[1] = v17;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v45[1] = secondaryLabelColor;
     v44[2] = *MEMORY[0x1E69DB688];
     v45[2] = v12;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:3];
@@ -219,18 +219,18 @@ LABEL_12:
     v20 = PKLocalizedPaymentString(&cfstr_ApplePayDescri.isa);
     v21 = [v19 initWithString:v20 attributes:v18];
 
-    [v39 setAttributedSecondaryBodyText:v21];
+    [explanationView setAttributedSecondaryBodyText:v21];
   }
 
   v22 = self->_product;
   v23 = PKIsChinaSKU();
   if (self->_showSouthKoreaPrivacyDisclosure)
   {
-    v24 = PKLocalizedPaymentString(&cfstr_ContinueSouthK.isa);
-    v25 = [v4 primaryButton];
-    [v25 setTitle:v24 forState:0];
+    primaryButton3 = PKLocalizedPaymentString(&cfstr_ContinueSouthK.isa);
+    primaryButton = [dockView primaryButton];
+    [primaryButton setTitle:primaryButton3 forState:0];
 
-    v26 = PKLocalizedPaymentString(&cfstr_HeroSouthKorea.isa);
+    primaryButton2 = PKLocalizedPaymentString(&cfstr_HeroSouthKorea.isa);
     v27 = PKLocalizedPaymentString(&cfstr_HeroSouthKorea_0.isa);
     v28 = PKStringWithValidatedFormat();
     v29 = objc_alloc_init(PKMultiHyperlinkView);
@@ -250,8 +250,8 @@ LABEL_12:
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(&location);
-    [v4 setAdditionalView:v29];
-    [v4 setAdditionalViewBottomPadding:11.0];
+    [dockView setAdditionalView:v29];
+    [dockView setAdditionalViewBottomPadding:11.0];
   }
 
   else
@@ -268,9 +268,9 @@ LABEL_12:
 
     if (v33 == 1)
     {
-      v24 = PKLocalizedPaymentString(&cfstr_ContinueChina.isa);
-      v26 = [v4 primaryButton];
-      [v26 setTitle:v24 forState:0];
+      primaryButton3 = PKLocalizedPaymentString(&cfstr_ContinueChina.isa);
+      primaryButton2 = [dockView primaryButton];
+      [primaryButton2 setTitle:primaryButton3 forState:0];
     }
 
     else
@@ -280,10 +280,10 @@ LABEL_12:
         goto LABEL_26;
       }
 
-      v24 = [v4 primaryButton];
-      v26 = PKLocalizedPaymentString(&cfstr_AddNewCardTitl.isa);
-      v34 = PKLocalizedPaymentString(v26);
-      [v24 setTitle:v34 forState:0];
+      primaryButton3 = [dockView primaryButton];
+      primaryButton2 = PKLocalizedPaymentString(&cfstr_AddNewCardTitl.isa);
+      v34 = PKLocalizedPaymentString(primaryButton2);
+      [primaryButton3 setTitle:v34 forState:0];
     }
   }
 
@@ -306,11 +306,11 @@ LABEL_26:
     }
 
     v36 = PKLocalizedPaymentString(&v35->isa);
-    v37 = [v4 footerView];
-    v38 = [v37 secondaryActionButton];
+    footerView = [dockView footerView];
+    secondaryActionButton = [footerView secondaryActionButton];
 
-    [v38 setTitle:v36 forState:0];
-    [v38 addTarget:self action:sel__transferExistingCardTapped forControlEvents:0x2000];
+    [secondaryActionButton setTitle:v36 forState:0];
+    [secondaryActionButton addTarget:self action:sel__transferExistingCardTapped forControlEvents:0x2000];
   }
 }
 
@@ -325,9 +325,9 @@ void __50__PKPaymentSetupHeroViewController__configureDock__block_invoke(uint64_
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportOtherButtonPressed:@"transferCard"];
   v5 = [(PKPaymentSetupProduct *)self->_product setupProductMethodsOfType:1];
-  v3 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   selectedMethod = self->_selectedMethod;
-  self->_selectedMethod = v3;
+  self->_selectedMethod = firstObject;
 
   [(PKPaymentSetupHeroViewController *)self _didContinueWithSelectedMethod];
 }
@@ -383,11 +383,11 @@ void __66__PKPaymentSetupHeroViewController__didContinueWithSelectedMethod__bloc
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupHeroViewController;
-  [(PKPaymentSetupHeroViewController *)&v5 viewWillAppear:a3];
+  [(PKPaymentSetupHeroViewController *)&v5 viewWillAppear:appear];
   [(PKPaymentSetupHeroViewController *)self _setUserInteractionEnabled:1];
   if (!self->_preflightComplete)
   {
@@ -410,26 +410,26 @@ void __66__PKPaymentSetupHeroViewController__didContinueWithSelectedMethod__bloc
   v7.receiver = self;
   v7.super_class = PKPaymentSetupHeroViewController;
   [(PKExplanationViewController *)&v7 viewDidLoad];
-  v3 = [(PKPaymentSetupHeroViewController *)self view];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [(PKPaymentSetupHeroViewController *)self _bodyText];
-  [v4 setBodyText:v5];
+  view = [(PKPaymentSetupHeroViewController *)self view];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  _bodyText = [(PKPaymentSetupHeroViewController *)self _bodyText];
+  [explanationView setBodyText:_bodyText];
 
   v6 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v6];
+  [view setBackgroundColor:v6];
 
-  PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], v3);
+  PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], view);
 }
 
-- (void)_preflightWithCompletion:(id)a3
+- (void)_preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_preflightComplete)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
@@ -517,13 +517,13 @@ void __61__PKPaymentSetupHeroViewController__preflightWithCompletion___block_inv
   v3 = 0.0;
   if (PKPaymentSetupContextIsSetupAssistant())
   {
-    v4 = [(PKPaymentSetupHeroViewController *)self traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [(PKPaymentSetupHeroViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      v7 = [v6 orientation] - 1;
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      v7 = [currentDevice orientation] - 1;
 
       if (v7 > 1)
       {
@@ -531,9 +531,9 @@ void __61__PKPaymentSetupHeroViewController__preflightWithCompletion___block_inv
       }
     }
 
-    else if (v5 != 5)
+    else if (userInterfaceIdiom != 5)
     {
-      if (v5 == 6)
+      if (userInterfaceIdiom == 6)
       {
         v3 = 74.0;
       }
@@ -550,15 +550,15 @@ void __61__PKPaymentSetupHeroViewController__preflightWithCompletion___block_inv
   }
 
 LABEL_9:
-  v8 = [(PKExplanationViewController *)self explanationView];
-  [v8 setTopMargin:v3];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setTopMargin:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupHeroViewController;
-  [(PKPaymentSetupHeroViewController *)&v8 viewDidAppear:a3];
+  [(PKPaymentSetupHeroViewController *)&v8 viewDidAppear:appear];
   self->_nextButtonPushed = 0;
   splashView = self->_splashView;
   if (splashView)
@@ -583,65 +583,65 @@ LABEL_9:
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupHeroViewController;
-  [(PKPaymentSetupHeroViewController *)&v7 viewDidDisappear:a3];
-  v4 = [(PKPaymentSetupHeroViewController *)self view];
+  [(PKPaymentSetupHeroViewController *)&v7 viewDidDisappear:disappear];
+  view = [(PKPaymentSetupHeroViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(PKPaymentSetupHeroViewController *)self view];
-    [v6 stopAnimation];
+    view2 = [(PKPaymentSetupHeroViewController *)self view];
+    [view2 stopAnimation];
   }
 }
 
-- (void)_setUserInteractionEnabled:(BOOL)a3
+- (void)_setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKPaymentSetupHeroViewController *)self view];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  view = [(PKPaymentSetupHeroViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 
-  [(PKPaymentSetupHeroViewController *)self _setShowActivityIndicator:v3 ^ 1];
+  [(PKPaymentSetupHeroViewController *)self _setShowActivityIndicator:enabledCopy ^ 1];
 }
 
-- (void)_setShowActivityIndicator:(BOOL)a3
+- (void)_setShowActivityIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v4 dockView];
+  indicatorCopy = indicator;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  [v6 setButtonsEnabled:v3 ^ 1];
-  v5 = [v6 primaryButton];
-  [v5 setShowSpinner:v3];
+  [dockView setButtonsEnabled:indicatorCopy ^ 1];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:indicatorCopy];
 }
 
 - (id)_bodyText
 {
-  v3 = [(PKPaymentSetupProduct *)self->_product longLocalizedDescription];
-  if ([v3 length])
+  longLocalizedDescription = [(PKPaymentSetupProduct *)self->_product longLocalizedDescription];
+  if ([longLocalizedDescription length])
   {
-    v4 = v3;
+    v4 = longLocalizedDescription;
   }
 
   else
   {
-    v5 = [(PKPaymentSetupHeroViewController *)self webService];
-    v6 = [v5 context];
-    v7 = [v6 configuration];
+    webService = [(PKPaymentSetupHeroViewController *)self webService];
+    context = [webService context];
+    configuration = [context configuration];
 
-    v8 = [v7 paymentSetupFeaturedNetworksForRegion:self->_deviceRegion];
+    v8 = [configuration paymentSetupFeaturedNetworksForRegion:self->_deviceRegion];
     [(PKExplanationViewController *)self context];
     IsBridge = PKPaymentSetupContextIsBridge();
-    v10 = [(PKPaymentSetupHeroViewController *)self traitCollection];
-    v11 = [v10 userInterfaceIdiom];
+    traitCollection = [(PKPaymentSetupHeroViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     if ([v8 containsObject:*MEMORY[0x1E69BC0B8]])
     {
-      v12 = (v11 & 0xFFFFFFFFFFFFFFFBLL) == 0;
+      v12 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 0;
     }
 
     else
@@ -701,13 +701,13 @@ LABEL_9:
   }
 }
 
-- (void)didTapFooterLink:(id)a3
+- (void)didTapFooterLink:(id)link
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  linkCopy = link;
+  if (linkCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:linkCopy];
     [v5 setModalPresentationStyle:2];
     [(PKPaymentSetupHeroViewController *)self presentViewController:v5 animated:1 completion:0];
   }
@@ -726,7 +726,7 @@ LABEL_9:
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
@@ -739,26 +739,26 @@ LABEL_9:
       if (self->_allowsManualEntry || !self->_selectedMethod)
       {
         v6 = [(PKPaymentSetupProduct *)product setupProductMethodsOfType:2];
-        v7 = [v6 firstObject];
+        firstObject = [v6 firstObject];
         selectedMethod = self->_selectedMethod;
-        self->_selectedMethod = v7;
+        self->_selectedMethod = firstObject;
       }
 
       v9 = objc_loadWeakRetained(&self->_flowDelegate);
       v13 = v9;
       v10 = self->_selectedMethod;
-      v11 = self;
+      selfCopy2 = self;
     }
 
     else
     {
       v9 = objc_loadWeakRetained(&self->_flowDelegate);
       v13 = v9;
-      v11 = self;
+      selfCopy2 = self;
       v10 = 0;
     }
 
-    [v9 heroViewControllerDidSelectContinue:v11 didSelectMethod:v10];
+    [v9 heroViewControllerDidSelectContinue:selfCopy2 didSelectMethod:v10];
   }
 
   else
@@ -774,7 +774,7 @@ LABEL_9:
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:4];
   WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
@@ -792,16 +792,16 @@ LABEL_9:
   }
 }
 
-- (void)setHideSetupLaterButton:(BOOL)a3
+- (void)setHideSetupLaterButton:(BOOL)button
 {
-  v3 = a3;
-  v7 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v7 dockView];
-  v5 = [v4 footerView];
-  v6 = v5;
-  if (v3)
+  buttonCopy = button;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  v6 = footerView;
+  if (buttonCopy)
   {
-    [v5 setSetUpLaterButton:0];
+    [footerView setSetUpLaterButton:0];
   }
 }
 

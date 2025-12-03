@@ -1,6 +1,6 @@
 @interface QuoteSharingActivityItem
 - (_TtC5BooksP33_2C2BED1571008C9518B7996B9F10173C24QuoteSharingActivityItem)init;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation QuoteSharingActivityItem
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_1003B1BE8();
 
   return v6;

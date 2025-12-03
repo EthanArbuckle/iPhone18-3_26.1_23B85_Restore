@@ -1,8 +1,8 @@
 @interface SASStartSpeech
 - (id)ad_deferredMetricsContext;
-- (void)ad_setAFSpeechEvent:(int64_t)a3;
-- (void)ad_setAFSpeechRequestOptions:(id)a3;
-- (void)ad_setCSSiriRecordingInfo:(id)a3;
+- (void)ad_setAFSpeechEvent:(int64_t)event;
+- (void)ad_setAFSpeechRequestOptions:(id)options;
+- (void)ad_setCSSiriRecordingInfo:(id)info;
 @end
 
 @implementation SASStartSpeech
@@ -11,115 +11,115 @@
 {
   v12.receiver = self;
   v12.super_class = SASStartSpeech;
-  v3 = [(SASStartSpeech *)&v12 ad_deferredMetricsContext];
-  v4 = [(SASStartSpeech *)self audioSource];
-  if (v4)
+  ad_deferredMetricsContext = [(SASStartSpeech *)&v12 ad_deferredMetricsContext];
+  audioSource = [(SASStartSpeech *)self audioSource];
+  if (audioSource)
   {
-    [v3 setObject:v4 forKey:SASStartSpeechAudioSourcePListKey];
+    [ad_deferredMetricsContext setObject:audioSource forKey:SASStartSpeechAudioSourcePListKey];
   }
 
-  v5 = [(SASStartSpeech *)self origin];
-  if (v5)
+  origin = [(SASStartSpeech *)self origin];
+  if (origin)
   {
-    [v3 setObject:v5 forKey:SASStartSpeechOriginPListKey];
+    [ad_deferredMetricsContext setObject:origin forKey:SASStartSpeechOriginPListKey];
   }
 
-  v6 = [(SASStartSpeech *)self motionActivity];
-  if (v6)
+  motionActivity = [(SASStartSpeech *)self motionActivity];
+  if (motionActivity)
   {
-    [v3 setObject:v6 forKey:SASStartSpeechMotionActivityPListKey];
+    [ad_deferredMetricsContext setObject:motionActivity forKey:SASStartSpeechMotionActivityPListKey];
   }
 
-  v7 = [(SASStartSpeech *)self motionConfidence];
-  if (v7)
+  motionConfidence = [(SASStartSpeech *)self motionConfidence];
+  if (motionConfidence)
   {
-    [v3 setObject:v7 forKey:SASStartSpeechMotionConfidencePListKey];
+    [ad_deferredMetricsContext setObject:motionConfidence forKey:SASStartSpeechMotionConfidencePListKey];
   }
 
-  v8 = [(SASStartSpeech *)self headsetAddress];
-  if (v8)
+  headsetAddress = [(SASStartSpeech *)self headsetAddress];
+  if (headsetAddress)
   {
-    [v3 setObject:v8 forKey:SASStartSpeechHeadsetAddressPListKey];
+    [ad_deferredMetricsContext setObject:headsetAddress forKey:SASStartSpeechHeadsetAddressPListKey];
   }
 
-  v9 = [(SASStartSpeech *)self headsetId];
-  if (v9)
+  headsetId = [(SASStartSpeech *)self headsetId];
+  if (headsetId)
   {
-    [v3 setObject:v9 forKey:SASStartSpeechHeadsetIdPListKey];
+    [ad_deferredMetricsContext setObject:headsetId forKey:SASStartSpeechHeadsetIdPListKey];
   }
 
-  v10 = [(SASStartSpeech *)self headsetName];
-  if (v10)
+  headsetName = [(SASStartSpeech *)self headsetName];
+  if (headsetName)
   {
-    [v3 setObject:v10 forKey:SASStartSpeechHeadsetNamePListKey];
+    [ad_deferredMetricsContext setObject:headsetName forKey:SASStartSpeechHeadsetNamePListKey];
   }
 
-  return v3;
+  return ad_deferredMetricsContext;
 }
 
-- (void)ad_setCSSiriRecordingInfo:(id)a3
+- (void)ad_setCSSiriRecordingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 source];
+  infoCopy = info;
+  source = [infoCopy source];
   v6 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v15 = 136315394;
     v16 = "[SASStartSpeech(ADSAExtensions) ad_setCSSiriRecordingInfo:]";
     v17 = 2112;
-    v18 = v5;
+    v18 = source;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s audioSource = %@", &v15, 0x16u);
   }
 
-  [(SASStartSpeech *)self setAudioSource:v5];
-  v7 = [v4 destination];
+  [(SASStartSpeech *)self setAudioSource:source];
+  destination = [infoCopy destination];
   v8 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v15 = 136315394;
     v16 = "[SASStartSpeech(ADSAExtensions) ad_setCSSiriRecordingInfo:]";
     v17 = 2112;
-    v18 = v7;
+    v18 = destination;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s audioDestination = %@", &v15, 0x16u);
   }
 
-  [(SASStartSpeech *)self setAudioDestination:v7];
-  v9 = [v4 codec];
+  [(SASStartSpeech *)self setAudioDestination:destination];
+  codec = [infoCopy codec];
   [(SASStartSpeech *)self setCodec:SASCodecForString()];
 
-  v10 = [v4 deviceIdentifier];
-  [(SASStartSpeech *)self setDeviceIdentifier:v10];
+  deviceIdentifier = [infoCopy deviceIdentifier];
+  [(SASStartSpeech *)self setDeviceIdentifier:deviceIdentifier];
 
-  v11 = [v4 modelName];
-  [(SASStartSpeech *)self setDeviceModel:v11];
+  modelName = [infoCopy modelName];
+  [(SASStartSpeech *)self setDeviceModel:modelName];
 
-  v12 = [v4 dspStatus];
-  [(SASStartSpeech *)self setDspStatus:v12];
+  dspStatus = [infoCopy dspStatus];
+  [(SASStartSpeech *)self setDspStatus:dspStatus];
 
-  v13 = [v4 headsetAddress];
-  [(SASStartSpeech *)self setHeadsetAddress:v13];
+  headsetAddress = [infoCopy headsetAddress];
+  [(SASStartSpeech *)self setHeadsetAddress:headsetAddress];
 
-  v14 = [v4 headsetName];
-  [(SASStartSpeech *)self setHeadsetName:v14];
+  headsetName = [infoCopy headsetName];
+  [(SASStartSpeech *)self setHeadsetName:headsetName];
 }
 
-- (void)ad_setAFSpeechRequestOptions:(id)a3
+- (void)ad_setAFSpeechRequestOptions:(id)options
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (optionsCopy)
   {
-    v5 = [v4 activationEvent];
+    activationEvent = [optionsCopy activationEvent];
   }
 
   else
   {
-    v5 = 0;
+    activationEvent = 0;
   }
 
-  [(SASStartSpeech *)self ad_setAFSpeechEvent:v5];
-  v6 = [v10 turnIdentifier];
-  if (v6)
+  [(SASStartSpeech *)self ad_setAFSpeechEvent:activationEvent];
+  turnIdentifier = [v10 turnIdentifier];
+  if (turnIdentifier)
   {
     v7 = AFTurnIdentifierGetString();
     [(SASStartSpeech *)self setTurnId:v7];
@@ -130,18 +130,18 @@
     [(SASStartSpeech *)self setTurnId:0];
   }
 
-  v8 = [(SASStartSpeech *)self voiceTriggerEventInfo];
+  voiceTriggerEventInfo = [(SASStartSpeech *)self voiceTriggerEventInfo];
 
-  if (!v8)
+  if (!voiceTriggerEventInfo)
   {
-    v9 = [v10 voiceTriggerEventInfo];
-    [(SASStartSpeech *)self setVoiceTriggerEventInfo:v9];
+    voiceTriggerEventInfo2 = [v10 voiceTriggerEventInfo];
+    [(SASStartSpeech *)self setVoiceTriggerEventInfo:voiceTriggerEventInfo2];
   }
 }
 
-- (void)ad_setAFSpeechEvent:(int64_t)a3
+- (void)ad_setAFSpeechEvent:(int64_t)event
 {
-  v4 = sub_10000EF08(a3);
+  v4 = sub_10000EF08(event);
   [(SASStartSpeech *)self setOrigin:v4];
 }
 

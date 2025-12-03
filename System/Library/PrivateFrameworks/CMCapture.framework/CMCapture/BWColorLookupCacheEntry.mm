@@ -1,19 +1,19 @@
 @interface BWColorLookupCacheEntry
-- (BWColorLookupCacheEntry)initWithForegroundColorLookupTable:(id)a3 backgroundColorLookupTable:(id)a4;
+- (BWColorLookupCacheEntry)initWithForegroundColorLookupTable:(id)table backgroundColorLookupTable:(id)lookupTable;
 - (void)dealloc;
 @end
 
 @implementation BWColorLookupCacheEntry
 
-- (BWColorLookupCacheEntry)initWithForegroundColorLookupTable:(id)a3 backgroundColorLookupTable:(id)a4
+- (BWColorLookupCacheEntry)initWithForegroundColorLookupTable:(id)table backgroundColorLookupTable:(id)lookupTable
 {
   v8.receiver = self;
   v8.super_class = BWColorLookupCacheEntry;
   v6 = [(BWColorLookupCacheEntry *)&v8 init];
   if (v6)
   {
-    v6->_foregroundColorLookupTable = a3;
-    v6->_backgroundColorLookupTable = a4;
+    v6->_foregroundColorLookupTable = table;
+    v6->_backgroundColorLookupTable = lookupTable;
   }
 
   return v6;

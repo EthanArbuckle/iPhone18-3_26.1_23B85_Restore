@@ -1,8 +1,8 @@
 @interface CHSMutableWidgetTintParameters
 - (BOOL)wantsSubduedGlass;
 - (CHSMutableWidgetTintParameters)init;
-- (CHSMutableWidgetTintParameters)initWithFilterStyle:(int64_t)a3;
-- (void)setGlassOptions:(id)a3;
+- (CHSMutableWidgetTintParameters)initWithFilterStyle:(int64_t)style;
+- (void)setGlassOptions:(id)options;
 @end
 
 @implementation CHSMutableWidgetTintParameters
@@ -14,17 +14,17 @@
   return [(CHSWidgetTintParameters *)&v3 init];
 }
 
-- (CHSMutableWidgetTintParameters)initWithFilterStyle:(int64_t)a3
+- (CHSMutableWidgetTintParameters)initWithFilterStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = CHSMutableWidgetTintParameters;
-  return [(CHSWidgetTintParameters *)&v4 initWithFilterStyle:a3];
+  return [(CHSWidgetTintParameters *)&v4 initWithFilterStyle:style];
 }
 
-- (void)setGlassOptions:(id)a3
+- (void)setGlassOptions:(id)options
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  optionsCopy = options;
+  v4 = [optionsCopy copy];
   glassOptions = self->super._glassOptions;
   self->super._glassOptions = v4;
 }

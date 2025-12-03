@@ -1,33 +1,33 @@
 @interface ML3ArtworkConfiguration
 + (id)systemConfiguration;
-- (ML3ArtworkConfiguration)initWithConfigurationDictionaries:(id)a3;
-- (id)_supportedSizeKeysForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
-- (id)sizesToAutogenerateForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
-- (id)supportedSizesForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5;
+- (ML3ArtworkConfiguration)initWithConfigurationDictionaries:(id)dictionaries;
+- (id)_supportedSizeKeysForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType;
+- (id)sizesToAutogenerateForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType;
+- (id)supportedSizesForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType;
 @end
 
 @implementation ML3ArtworkConfiguration
 
-- (id)_supportedSizeKeysForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (id)_supportedSizeKeysForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType
 {
-  if ((a4 - 1) > 4)
+  if ((artworkType - 1) > 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_278762E90[a4 - 1];
+    v7 = off_278762E90[artworkType - 1];
   }
 
-  if (a5 > 4)
+  if (variantType > 4)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_278762EB8[a5];
+    v8 = off_278762EB8[variantType];
   }
 
   v17 = v5;
@@ -38,9 +38,9 @@
   v12[2] = __89__ML3ArtworkConfiguration__supportedSizeKeysForMediaType_artworkType_artworkVariantType___block_invoke;
   v12[3] = &unk_278762E70;
   v14 = v8;
-  v15 = a5;
+  variantTypeCopy = variantType;
   v13 = v7;
-  v16 = a3;
+  typeCopy = type;
   v10 = [(NSDictionary *)artworkConfigurationDictionary keysOfEntriesPassingTest:v12];
 
   return v10;
@@ -154,10 +154,10 @@ LABEL_28:
   return v9;
 }
 
-- (id)sizesToAutogenerateForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (id)sizesToAutogenerateForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = [(ML3ArtworkConfiguration *)self _supportedSizeKeysForMediaType:*&a3 artworkType:a4 artworkVariantType:a5];
+  v6 = [(ML3ArtworkConfiguration *)self _supportedSizeKeysForMediaType:*&type artworkType:artworkType artworkVariantType:variantType];
   v22 = [MEMORY[0x277CBEB58] set];
   v27 = 0u;
   v28 = 0u;
@@ -181,9 +181,9 @@ LABEL_28:
         v12 = *(*(&v27 + 1) + 8 * i);
         v13 = [(NSDictionary *)self->_artworkConfigurationDictionary objectForKey:v12];
         v14 = [v13 objectForKey:@"autogenerate"];
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
 
-        if (v15)
+        if (bOOLValue)
         {
           v26 = 0uLL;
           v16 = _ML3ArtworkConfigurationCGSizeFromString(v12);
@@ -219,9 +219,9 @@ LABEL_28:
   return v19;
 }
 
-- (id)supportedSizesForMediaType:(unsigned int)a3 artworkType:(int64_t)a4 artworkVariantType:(int64_t)a5
+- (id)supportedSizesForMediaType:(unsigned int)type artworkType:(int64_t)artworkType artworkVariantType:(int64_t)variantType
 {
-  v7 = *&a3;
+  v7 = *&type;
   v55 = *MEMORY[0x277D85DE8];
   v8 = [_ML3ArtworkConfigurationMediaArtworkTypeKey keyWithMediaType:"keyWithMediaType:artworkType:" artworkType:?];
   v47 = 0;
@@ -244,7 +244,7 @@ LABEL_28:
   v11 = 0x277CBE000;
   if (!v10)
   {
-    v12 = [(ML3ArtworkConfiguration *)self _supportedSizeKeysForMediaType:v7 artworkType:a4 artworkVariantType:a5];
+    v12 = [(ML3ArtworkConfiguration *)self _supportedSizeKeysForMediaType:v7 artworkType:artworkType artworkVariantType:variantType];
     v13 = [MEMORY[0x277CBEB58] set];
     v42 = 0u;
     v43 = 0u;
@@ -288,13 +288,13 @@ LABEL_28:
     }
 
     v22 = [v13 count];
-    v23 = v13;
+    null = v13;
     if (!v22)
     {
-      v23 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    objc_storeStrong(v48 + 5, v23);
+    objc_storeStrong(v48 + 5, null);
     if (!v22)
     {
     }
@@ -313,8 +313,8 @@ LABEL_28:
     v11 = 0x277CBE000uLL;
   }
 
-  v25 = [*(v11 + 2920) null];
-  if (v10 == v25)
+  null2 = [*(v11 + 2920) null];
+  if (v10 == null2)
   {
     v26 = 0;
   }
@@ -347,10 +347,10 @@ void __85__ML3ArtworkConfiguration_supportedSizesForMediaType_artworkType_artwor
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (ML3ArtworkConfiguration)initWithConfigurationDictionaries:(id)a3
+- (ML3ArtworkConfiguration)initWithConfigurationDictionaries:(id)dictionaries
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v24.receiver = self;
   v24.super_class = ML3ArtworkConfiguration;
   v5 = [(ML3ArtworkConfiguration *)&v24 init];
@@ -360,16 +360,16 @@ void __85__ML3ArtworkConfiguration_supportedSizesForMediaType_artworkType_artwor
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     supportedSizesCache = v5->_supportedSizesCache;
-    v5->_supportedSizesCache = v8;
+    v5->_supportedSizesCache = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v4;
+    v11 = dictionariesCopy;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
@@ -385,7 +385,7 @@ void __85__ML3ArtworkConfiguration_supportedSizesForMediaType_artworkType_artwor
             objc_enumerationMutation(v11);
           }
 
-          [v10 mergeWithDictionary:{*(*(&v20 + 1) + 8 * v15++), v20}];
+          [dictionary2 mergeWithDictionary:{*(*(&v20 + 1) + 8 * v15++), v20}];
         }
 
         while (v13 != v15);
@@ -395,7 +395,7 @@ void __85__ML3ArtworkConfiguration_supportedSizesForMediaType_artworkType_artwor
       while (v13);
     }
 
-    v16 = [v10 copy];
+    v16 = [dictionary2 copy];
     artworkConfigurationDictionary = v5->_artworkConfigurationDictionary;
     v5->_artworkConfigurationDictionary = v16;
 

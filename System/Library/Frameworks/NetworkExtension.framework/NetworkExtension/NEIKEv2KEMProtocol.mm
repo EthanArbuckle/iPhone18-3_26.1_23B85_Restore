@@ -1,30 +1,30 @@
 @interface NEIKEv2KEMProtocol
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2KEMProtocol)initWithMethod:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2KEMProtocol)initWithMethod:(unint64_t)method;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NEIKEv2KEMProtocol
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIKEv2KEMProtocol allocWithZone:a3];
-  v5 = [(NEIKEv2KEMProtocol *)self method];
+  v4 = [NEIKEv2KEMProtocol allocWithZone:zone];
+  method = [(NEIKEv2KEMProtocol *)self method];
 
-  return [(NEIKEv2KEMProtocol *)v4 initWithMethod:v5];
+  return [(NEIKEv2KEMProtocol *)v4 initWithMethod:method];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2KEMProtocol *)self method];
-    v7 = [v5 method];
+    v5 = equalCopy;
+    method = [(NEIKEv2KEMProtocol *)self method];
+    method2 = [v5 method];
 
-    v8 = v6 == v7;
+    v8 = method == method2;
   }
 
   else
@@ -37,10 +37,10 @@
 
 - (id)description
 {
-  v3 = [(NEIKEv2KEMProtocol *)self method];
-  if (v3 < 0x26 && ((0x31803FC027uLL >> v3) & 1) != 0)
+  method = [(NEIKEv2KEMProtocol *)self method];
+  if (method < 0x26 && ((0x31803FC027uLL >> method) & 1) != 0)
   {
-    v4 = off_1E7F07F58[v3];
+    v4 = off_1E7F07F58[method];
   }
 
   else
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (NEIKEv2KEMProtocol)initWithMethod:(unint64_t)a3
+- (NEIKEv2KEMProtocol)initWithMethod:(unint64_t)method
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2KEMProtocol;
@@ -59,7 +59,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_method = a3;
+    v4->_method = method;
     v6 = v4;
   }
 

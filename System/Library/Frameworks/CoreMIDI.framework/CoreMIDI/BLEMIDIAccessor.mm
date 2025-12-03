@@ -1,34 +1,34 @@
 @interface BLEMIDIAccessor
-+ (BOOL)deviceIsLocalPeripheral:(unsigned int)a3;
-+ (BOOL)deviceIsNullDevice:(unsigned int)a3;
-+ (BOOL)deviceIsOnline:(unsigned int)a3;
-+ (BOOL)deviceIsRemotePeripheral:(unsigned int)a3;
-+ (BOOL)uuidIsForgettable:(id)a3;
++ (BOOL)deviceIsLocalPeripheral:(unsigned int)peripheral;
++ (BOOL)deviceIsNullDevice:(unsigned int)device;
++ (BOOL)deviceIsOnline:(unsigned int)online;
++ (BOOL)deviceIsRemotePeripheral:(unsigned int)peripheral;
++ (BOOL)uuidIsForgettable:(id)forgettable;
 + (id)localPeripheralName;
-+ (id)nameForMIDIDevice:(unsigned int)a3;
-+ (id)uuidForMIDIDevice:(unsigned int)a3;
++ (id)nameForMIDIDevice:(unsigned int)device;
++ (id)uuidForMIDIDevice:(unsigned int)device;
 + (unsigned)localPeripheral;
-+ (unsigned)midiDeviceForUUID:(id)a3;
-+ (unsigned)midiDeviceForUUID:(id)a3 isLocalPeripheral:(BOOL)a4 isRemotePeripheral:(BOOL)a5;
++ (unsigned)midiDeviceForUUID:(id)d;
++ (unsigned)midiDeviceForUUID:(id)d isLocalPeripheral:(BOOL)peripheral isRemotePeripheral:(BOOL)remotePeripheral;
 + (unsigned)nullDevice;
-+ (void)logEvent:(char *)a3 length:(unsigned __int16)a4 timeStamp:(unint64_t)a5 intoBuffer:(char *)a6;
++ (void)logEvent:(char *)event length:(unsigned __int16)length timeStamp:(unint64_t)stamp intoBuffer:(char *)buffer;
 @end
 
 @implementation BLEMIDIAccessor
 
-+ (void)logEvent:(char *)a3 length:(unsigned __int16)a4 timeStamp:(unint64_t)a5 intoBuffer:(char *)a6
++ (void)logEvent:(char *)event length:(unsigned __int16)length timeStamp:(unint64_t)stamp intoBuffer:(char *)buffer
 {
-  v7 = a4;
+  lengthCopy = length;
   v9 = __udivti3();
-  v10 = snprintf(a6, 0x7D0uLL, "Timestamp: %10.10llu ms MIDI:", v9 / 0xF4240);
+  v10 = snprintf(buffer, 0x7D0uLL, "Timestamp: %10.10llu ms MIDI:", v9 / 0xF4240);
   v11 = v10;
   if (v10)
   {
-    if (v7)
+    if (lengthCopy)
     {
       v12 = v10;
       v13 = 2000 - v10;
-      v14 = v7;
+      v14 = lengthCopy;
       do
       {
         v15 = v13;
@@ -37,7 +37,7 @@
           break;
         }
 
-        v16 = snprintf(&a6[v12], 2000 - v12, " %02.2X", *a3);
+        v16 = snprintf(&buffer[v12], 2000 - v12, " %02.2X", *event);
         if (!v16)
         {
           break;
@@ -45,7 +45,7 @@
 
         v12 += v16;
         v13 = v15 - v16;
-        ++a3;
+        ++event;
         --v14;
       }
 
@@ -53,13 +53,13 @@
       v11 = v12;
     }
 
-    a6[v11] = 0;
+    buffer[v11] = 0;
   }
 }
 
-+ (BOOL)uuidIsForgettable:(id)a3
++ (BOOL)uuidIsForgettable:(id)forgettable
 {
-  v3 = [BLEMIDIAccessor midiDeviceForUUID:a3 isLocalPeripheral:0 isRemotePeripheral:1];
+  v3 = [BLEMIDIAccessor midiDeviceForUUID:forgettable isLocalPeripheral:0 isRemotePeripheral:1];
   if (v3)
   {
     LOBYTE(v3) = ![BLEMIDIAccessor deviceIsOnline:v3];
@@ -68,67 +68,67 @@
   return v3;
 }
 
-+ (BOOL)deviceIsOnline:(unsigned int)a3
++ (BOOL)deviceIsOnline:(unsigned int)online
 {
-  result = a3;
+  result = online;
   outValue = 0;
-  if (a3)
+  if (online)
   {
-    MIDIObjectGetIntegerProperty(a3, kMIDIPropertyOffline, &outValue);
+    MIDIObjectGetIntegerProperty(online, kMIDIPropertyOffline, &outValue);
     return outValue == 0;
   }
 
   return result;
 }
 
-+ (BOOL)deviceIsNullDevice:(unsigned int)a3
++ (BOOL)deviceIsNullDevice:(unsigned int)device
 {
-  result = a3;
+  result = device;
   outValue = 0;
-  if (a3)
+  if (device)
   {
-    MIDIObjectGetIntegerProperty(a3, @"is BLE MIDI null device", &outValue);
+    MIDIObjectGetIntegerProperty(device, @"is BLE MIDI null device", &outValue);
     return outValue != 0;
   }
 
   return result;
 }
 
-+ (BOOL)deviceIsLocalPeripheral:(unsigned int)a3
++ (BOOL)deviceIsLocalPeripheral:(unsigned int)peripheral
 {
-  result = a3;
+  result = peripheral;
   outValue = 0;
-  if (a3)
+  if (peripheral)
   {
-    MIDIObjectGetIntegerProperty(a3, @"MIDI Local Peripheral", &outValue);
+    MIDIObjectGetIntegerProperty(peripheral, @"MIDI Local Peripheral", &outValue);
     return outValue != 0;
   }
 
   return result;
 }
 
-+ (BOOL)deviceIsRemotePeripheral:(unsigned int)a3
++ (BOOL)deviceIsRemotePeripheral:(unsigned int)peripheral
 {
-  result = a3;
+  result = peripheral;
   outValue = 0;
-  if (a3)
+  if (peripheral)
   {
-    MIDIObjectGetIntegerProperty(a3, @"MIDI Remote Peripheral", &outValue);
+    MIDIObjectGetIntegerProperty(peripheral, @"MIDI Remote Peripheral", &outValue);
     return outValue != 0;
   }
 
   return result;
 }
 
-+ (id)nameForMIDIDevice:(unsigned int)a3
++ (id)nameForMIDIDevice:(unsigned int)device
 {
-  if (!a3)
+  if (!device)
   {
     return 0;
   }
 
   str = 0;
-  MIDIObjectGetStringProperty(a3, kMIDIPropertyName, &str);
+  MIDIObjectGetStringProperty(device, kMIDIPropertyName, &str);
   if (!str)
   {
     return 0;
@@ -139,15 +139,15 @@
   return v3;
 }
 
-+ (id)uuidForMIDIDevice:(unsigned int)a3
++ (id)uuidForMIDIDevice:(unsigned int)device
 {
-  if (!a3)
+  if (!device)
   {
     return 0;
   }
 
   str = 0;
-  MIDIObjectGetStringProperty(a3, @"BLE MIDI Device UUID", &str);
+  MIDIObjectGetStringProperty(device, @"BLE MIDI Device UUID", &str);
   if (!str)
   {
     return 0;
@@ -253,12 +253,12 @@
   return 0;
 }
 
-+ (unsigned)midiDeviceForUUID:(id)a3 isLocalPeripheral:(BOOL)a4 isRemotePeripheral:(BOOL)a5
++ (unsigned)midiDeviceForUUID:(id)d isLocalPeripheral:(BOOL)peripheral isRemotePeripheral:(BOOL)remotePeripheral
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = [BLEMIDIAccessor midiDeviceForUUID:a3];
-  if (!v7 || (v8 = v7, [BLEMIDIAccessor deviceIsLocalPeripheral:v7]!= v6) || [BLEMIDIAccessor deviceIsRemotePeripheral:v8]!= v5)
+  remotePeripheralCopy = remotePeripheral;
+  peripheralCopy = peripheral;
+  v7 = [BLEMIDIAccessor midiDeviceForUUID:d];
+  if (!v7 || (v8 = v7, [BLEMIDIAccessor deviceIsLocalPeripheral:v7]!= peripheralCopy) || [BLEMIDIAccessor deviceIsRemotePeripheral:v8]!= remotePeripheralCopy)
   {
     LODWORD(v8) = 0;
   }
@@ -266,11 +266,11 @@
   return v8;
 }
 
-+ (unsigned)midiDeviceForUUID:(id)a3
++ (unsigned)midiDeviceForUUID:(id)d
 {
   v4 = MIDIGetNumberOfDevices();
   LODWORD(v5) = 0;
-  if (a3)
+  if (d)
   {
     v6 = v4;
     if (v4)
@@ -287,7 +287,7 @@
             v8 = [BLEMIDIAccessor uuidForMIDIDevice:v5];
             if (v8)
             {
-              if ([v8 isEqualToString:a3])
+              if ([v8 isEqualToString:d])
               {
                 goto LABEL_13;
               }

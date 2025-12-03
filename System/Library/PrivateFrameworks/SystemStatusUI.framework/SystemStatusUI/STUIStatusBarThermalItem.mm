@@ -1,31 +1,31 @@
 @interface STUIStatusBarThermalItem
-- (id)_colorForThermalColor:(int64_t)a3 imageTintColor:(id)a4;
-- (id)imageForUpdate:(id)a3;
+- (id)_colorForThermalColor:(int64_t)color imageTintColor:(id)tintColor;
+- (id)imageForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarThermalItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v5 thermalEntry];
+  updateCopy = update;
+  data = [updateCopy data];
+  thermalEntry = [data thermalEntry];
 
-  v7 = [v6 color];
-  v8 = [v4 styleAttributes];
-  v9 = [v8 imageTintColor];
-  v10 = [(STUIStatusBarThermalItem *)self _colorForThermalColor:v7 imageTintColor:v9];
+  color = [thermalEntry color];
+  styleAttributes = [updateCopy styleAttributes];
+  imageTintColor = [styleAttributes imageTintColor];
+  v10 = [(STUIStatusBarThermalItem *)self _colorForThermalColor:color imageTintColor:imageTintColor];
 
-  v11 = [v4 styleAttributes];
-  v12 = [v11 imageNamePrefixes];
-  LOBYTE(v9) = [v12 containsObject:@"SystemUpdate_"];
+  styleAttributes2 = [updateCopy styleAttributes];
+  imageNamePrefixes = [styleAttributes2 imageNamePrefixes];
+  LOBYTE(imageTintColor) = [imageNamePrefixes containsObject:@"SystemUpdate_"];
 
   v13 = 15.0;
-  if ((v9 & 1) == 0)
+  if ((imageTintColor & 1) == 0)
   {
-    v14 = [v4 styleAttributes];
-    v15 = [v14 imageNamePrefixes];
-    v16 = [v15 containsObject:@"Large_"];
+    styleAttributes3 = [updateCopy styleAttributes];
+    imageNamePrefixes2 = [styleAttributes3 imageNamePrefixes];
+    v16 = [imageNamePrefixes2 containsObject:@"Large_"];
 
     if (v16)
     {
@@ -44,8 +44,8 @@
   v22[2] = __43__STUIStatusBarThermalItem_imageForUpdate___block_invoke;
   v22[3] = &unk_279D38FF0;
   v23 = v10;
-  v24 = v6;
-  v18 = v6;
+  v24 = thermalEntry;
+  v18 = thermalEntry;
   v19 = v10;
   v20 = [v17 imageWithActions:v22];
 
@@ -74,54 +74,54 @@ void __43__STUIStatusBarThermalItem_imageForUpdate___block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_colorForThermalColor:(int64_t)a3 imageTintColor:(id)a4
+- (id)_colorForThermalColor:(int64_t)color imageTintColor:(id)tintColor
 {
-  v5 = a4;
+  tintColorCopy = tintColor;
   v6 = 0;
-  if (a3 > 2)
+  if (color > 2)
   {
-    switch(a3)
+    switch(color)
     {
       case 5:
-        v7 = [MEMORY[0x277D75348] whiteColor];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
         break;
       case 4:
-        v7 = [MEMORY[0x277D75348] blueColor];
+        whiteColor = [MEMORY[0x277D75348] blueColor];
         break;
       case 3:
-        v7 = [MEMORY[0x277D75348] purpleColor];
+        whiteColor = [MEMORY[0x277D75348] purpleColor];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (a3)
+  else if (color)
   {
-    if (a3 == 1)
+    if (color == 1)
     {
-      v7 = [MEMORY[0x277D75348] orangeColor];
+      whiteColor = [MEMORY[0x277D75348] orangeColor];
     }
 
     else
     {
-      if (a3 != 2)
+      if (color != 2)
       {
         goto LABEL_15;
       }
 
-      v7 = [MEMORY[0x277D75348] redColor];
+      whiteColor = [MEMORY[0x277D75348] redColor];
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] yellowColor];
+    whiteColor = [MEMORY[0x277D75348] yellowColor];
   }
 
-  v6 = v7;
+  v6 = whiteColor;
 LABEL_15:
-  v8 = [v5 colorWithAlphaComponent:0.15];
+  v8 = [tintColorCopy colorWithAlphaComponent:0.15];
   v9 = [v6 _colorBlendedWithColor:v8 compositingFilter:*MEMORY[0x277CDA620]];
 
   return v9;

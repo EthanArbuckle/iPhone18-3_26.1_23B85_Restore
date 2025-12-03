@@ -1,20 +1,20 @@
 @interface DistanceUnitDataProvider
 - (DistanceUnitDataProvider)init;
 - (GEOObserverHashTable)observers;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation DistanceUnitDataProvider
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     v6 = +[NSLocale currentLocale];
-    v7 = [v6 _navigation_distanceUsesMetricSystem];
-    if (v7)
+    _navigation_distanceUsesMetricSystem = [v6 _navigation_distanceUsesMetricSystem];
+    if (_navigation_distanceUsesMetricSystem)
     {
       v8 = 1;
     }
@@ -36,7 +36,7 @@
       v16 = 138412802;
       v17 = v12;
       v18 = 2112;
-      if (v7)
+      if (_navigation_distanceUsesMetricSystem)
       {
         v15 = @"Metric";
       }
@@ -50,7 +50,7 @@
     if (v8 != distanceUnit)
     {
       self->_distanceUnit = v8;
-      if (v3)
+      if (observersCopy)
       {
         [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
       }
@@ -73,14 +73,14 @@
   return observers;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v7 = +[NSNotificationCenter defaultCenter];
-    if (v3)
+    if (activeCopy)
     {
       v5 = MNLocaleDidChangeNotification();
       [v7 addObserver:self selector:"_localeDidChange:" name:v5 object:0];

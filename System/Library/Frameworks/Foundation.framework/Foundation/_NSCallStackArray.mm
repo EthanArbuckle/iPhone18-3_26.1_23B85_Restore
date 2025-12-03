@@ -1,8 +1,8 @@
 @interface _NSCallStackArray
-+ (id)arrayWithFrames:(void *)a3 count:(unint64_t)a4 symbols:(BOOL)a5;
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)_descriptionWithBuffer:(char *)a3 size:(int64_t)a4;
++ (id)arrayWithFrames:(void *)frames count:(unint64_t)count symbols:(BOOL)symbols;
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)_descriptionWithBuffer:(char *)buffer size:(int64_t)size;
 - (void)dealloc;
 @end
 
@@ -23,51 +23,51 @@
   [(_NSCallStackArray *)&v4 dealloc];
 }
 
-+ (id)arrayWithFrames:(void *)a3 count:(unint64_t)a4 symbols:(BOOL)a5
++ (id)arrayWithFrames:(void *)frames count:(unint64_t)count symbols:(BOOL)symbols
 {
   v8 = objc_opt_new();
   *(v8 + 24) = 2;
-  *(v8 + 8) = a3;
-  v9 = a4 - 2;
-  if (a4 < 2)
+  *(v8 + 8) = frames;
+  v9 = count - 2;
+  if (count < 2)
   {
     v9 = 0;
   }
 
   *(v8 + 16) = v9;
   *(v8 + 32) = 0;
-  *(v8 + 40) = a5;
+  *(v8 + 40) = symbols;
 
   return v8;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   cnt = self->_cnt;
-  if (cnt <= a3)
+  if (cnt <= index)
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%ld) beyond bounds (%ld)", _NSMethodExceptionProem(self, a2), a3, self->_cnt), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%ld) beyond bounds (%ld)", _NSMethodExceptionProem(self, a2), index, self->_cnt), 0}];
     objc_exception_throw(v11);
   }
 
   if (self->_wantSyms && ((pcstrs = self->_pcstrs) != 0 || (pcstrs = backtrace_symbols(&self->_frames[self->_ignore], cnt), self->_pcstrs = pcstrs, self->_wantSyms) && pcstrs))
   {
-    v8 = pcstrs[a3];
+    v8 = pcstrs[index];
 
     return [NSString stringWithUTF8String:v8];
   }
 
   else
   {
-    v10 = *(&self->_frames[self->_ignore] + a3);
+    v10 = *(&self->_frames[self->_ignore] + index);
 
     return [NSNumber numberWithUnsignedInteger:v10];
   }
 }
 
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent
 {
-  v5 = [(NSString *)NSMutableString string:a3];
+  v5 = [(NSString *)NSMutableString string:locale];
   if (self->_wantSyms && (self->_pcstrs || (self->_pcstrs = backtrace_symbols(&self->_frames[self->_ignore], self->_cnt), self->_wantSyms)))
   {
     v6 = CFSTR("(\n");
@@ -116,15 +116,15 @@
   return v5;
 }
 
-- (unint64_t)_descriptionWithBuffer:(char *)a3 size:(int64_t)a4
+- (unint64_t)_descriptionWithBuffer:(char *)buffer size:(int64_t)size
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a4 <= 0)
+  if (size <= 0)
   {
     __break(1u);
   }
 
-  *a3 = 0;
+  *buffer = 0;
   if (self->_wantSyms && (self->_pcstrs || (self->_pcstrs = backtrace_symbols(&self->_frames[self->_ignore], self->_cnt), self->_wantSyms)))
   {
     v7 = "(\n";
@@ -135,7 +135,7 @@
     v7 = "(";
   }
 
-  strlcat(a3, v7, a4);
+  strlcat(buffer, v7, size);
   cnt = self->_cnt;
   if (cnt)
   {
@@ -145,7 +145,7 @@
       if (self->_wantSyms && (pcstrs = self->_pcstrs) != 0)
       {
         snprintf(__str, 0x100uLL, "\t%s\n", pcstrs[v9]);
-        strlcat(a3, __str, a4);
+        strlcat(buffer, __str, size);
         ++v9;
       }
 
@@ -163,7 +163,7 @@
         }
 
         snprintf(__str, 0x100uLL, "%p%s", v11, v12);
-        strlcat(a3, __str, a4);
+        strlcat(buffer, __str, size);
       }
 
       cnt = self->_cnt;
@@ -172,8 +172,8 @@
     while (v9 < cnt);
   }
 
-  strlcat(a3, ")", a4);
-  return strlen(a3);
+  strlcat(buffer, ")", size);
+  return strlen(buffer);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface SSSCropOverlayCornerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)initForCorner:(unint64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)initForCorner:(unint64_t)corner;
 - (void)layoutSubviews;
 @end
 
 @implementation SSSCropOverlayCornerView
 
-- (id)initForCorner:(unint64_t)a3
+- (id)initForCorner:(unint64_t)corner
 {
   v13.receiver = self;
   v13.super_class = SSSCropOverlayCornerView;
   v4 = [(SSSCropOverlayCornerView *)&v13 init];
-  v4->_corner = a3;
+  v4->_corner = corner;
   v5 = 0.0;
-  if (a3 - 2 <= 6)
+  if (corner - 2 <= 6)
   {
-    v5 = dbl_10008F4E0[a3 - 2];
+    v5 = dbl_10008F4E0[corner - 2];
   }
 
   memset(&v12, 0, sizeof(v12));
@@ -65,14 +65,14 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   topLineView = self->_topLineView;
   [(SSSCropOverlayGrabberView *)topLineView convertPoint:self fromView:x, y];
-  if ([(SSSCropOverlayGrabberView *)topLineView pointInside:v7 withEvent:?])
+  if ([(SSSCropOverlayGrabberView *)topLineView pointInside:eventCopy withEvent:?])
   {
     v9 = 1;
   }
@@ -81,31 +81,31 @@
   {
     leftLineView = self->_leftLineView;
     [(SSSCropOverlayGrabberView *)leftLineView convertPoint:self fromView:x, y];
-    v9 = [(SSSCropOverlayGrabberView *)leftLineView pointInside:v7 withEvent:?];
+    v9 = [(SSSCropOverlayGrabberView *)leftLineView pointInside:eventCopy withEvent:?];
   }
 
   return v9;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = test.y;
+  x = test.x;
+  selfCopy = self;
   v11.receiver = self;
   v11.super_class = SSSCropOverlayCornerView;
-  v7 = [(SSSCropOverlayCornerView *)&v11 hitTest:a4 withEvent:?];
+  v7 = [(SSSCropOverlayCornerView *)&v11 hitTest:event withEvent:?];
   +[SSSCropOverlayGrabberView preferredDimension];
   UIRectCenteredAboutPoint();
   v13.x = x;
   v13.y = y;
   v8 = CGRectContainsPoint(v14, v13);
-  if (v7 != v6->_topLineView && v7 != v6->_leftLineView && !v8)
+  if (v7 != selfCopy->_topLineView && v7 != selfCopy->_leftLineView && !v8)
   {
-    v6 = v7;
+    selfCopy = v7;
   }
 
-  v9 = v6;
+  v9 = selfCopy;
 
   return v9;
 }

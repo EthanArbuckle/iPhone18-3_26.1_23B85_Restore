@@ -1,31 +1,31 @@
 @interface VUIARAssetRequest
-- (VUIARAssetRequest)initWithRemoteURL:(id)a3 shareURL:(id)a4 fileName:(id)a5;
-- (id)_prefixForString:(id)a3;
-- (id)cacheDownloadedFileFromLocation:(id)a3;
+- (VUIARAssetRequest)initWithRemoteURL:(id)l shareURL:(id)rL fileName:(id)name;
+- (id)_prefixForString:(id)string;
+- (id)cacheDownloadedFileFromLocation:(id)location;
 - (id)cachePath;
 - (void)cancelDownload;
-- (void)recordLog:(id)a3;
-- (void)startDownloadWithSession:(id)a3 completionHandler:(id)a4;
+- (void)recordLog:(id)log;
+- (void)startDownloadWithSession:(id)session completionHandler:(id)handler;
 @end
 
 @implementation VUIARAssetRequest
 
-- (VUIARAssetRequest)initWithRemoteURL:(id)a3 shareURL:(id)a4 fileName:(id)a5
+- (VUIARAssetRequest)initWithRemoteURL:(id)l shareURL:(id)rL fileName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = VUIARAssetRequest;
   v11 = [(VUIARAssetRequest *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    [(VUIARAssetRequest *)v11 setFileName:v10];
-    [(VUIARAssetRequest *)v12 setRemoteURL:v8];
-    [(VUIARAssetRequest *)v12 setShareURL:v9];
-    v13 = [v8 relativePath];
-    v14 = [(VUIARAssetRequest *)v12 _prefixForString:v13];
+    [(VUIARAssetRequest *)v11 setFileName:nameCopy];
+    [(VUIARAssetRequest *)v12 setRemoteURL:lCopy];
+    [(VUIARAssetRequest *)v12 setShareURL:rLCopy];
+    relativePath = [lCopy relativePath];
+    v14 = [(VUIARAssetRequest *)v12 _prefixForString:relativePath];
 
     fileName = v12->_fileName;
     if (fileName)
@@ -55,11 +55,11 @@
   return v12;
 }
 
-- (void)startDownloadWithSession:(id)a3 completionHandler:(id)a4
+- (void)startDownloadWithSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  [(VUIARAssetRequest *)self setCompletionHandler:a4];
-  v7 = [v6 downloadTaskWithURL:self->_remoteURL];
+  sessionCopy = session;
+  [(VUIARAssetRequest *)self setCompletionHandler:handler];
+  v7 = [sessionCopy downloadTaskWithURL:self->_remoteURL];
 
   [(VUIARAssetRequest *)self setTask:v7];
   [(VUIARAssetRequest *)self setIsDownloading:1];
@@ -69,31 +69,31 @@
 - (void)cancelDownload
 {
   [(VUIARAssetRequest *)self setIsDownloading:0];
-  v3 = [(VUIARAssetRequest *)self task];
-  [v3 cancel];
+  task = [(VUIARAssetRequest *)self task];
+  [task cancel];
 }
 
 - (id)cachePath
 {
   VUIRequireMainThread();
-  v3 = [MEMORY[0x1E69DF688] sharedInstance];
-  v4 = [v3 assetPathForKey:self->_cacheKey inGroupOfType:3];
+  mEMORY[0x1E69DF688] = [MEMORY[0x1E69DF688] sharedInstance];
+  v4 = [mEMORY[0x1E69DF688] assetPathForKey:self->_cacheKey inGroupOfType:3];
 
   return v4;
 }
 
-- (id)cacheDownloadedFileFromLocation:(id)a3
+- (id)cacheDownloadedFileFromLocation:(id)location
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   VUIRequireMainThread();
-  if (v4 && self->_cacheKey)
+  if (locationCopy && self->_cacheKey)
   {
-    v5 = [MEMORY[0x1E69DF688] sharedInstance];
-    v6 = [v4 relativePath];
-    [v5 setImageAssetFromPath:v6 forKey:self->_cacheKey inGroupOfType:3 expiryDate:0];
+    mEMORY[0x1E69DF688] = [MEMORY[0x1E69DF688] sharedInstance];
+    relativePath = [locationCopy relativePath];
+    [mEMORY[0x1E69DF688] setImageAssetFromPath:relativePath forKey:self->_cacheKey inGroupOfType:3 expiryDate:0];
 
-    v7 = [v5 assetPathForKey:self->_cacheKey inGroupOfType:3];
+    v7 = [mEMORY[0x1E69DF688] assetPathForKey:self->_cacheKey inGroupOfType:3];
     v8 = VUIDefaultLogObject();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
     if (v7)
@@ -116,7 +116,7 @@
         v13 = 138412546;
         v14 = cacheKey;
         v15 = 2112;
-        v16 = v4;
+        v16 = locationCopy;
         _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "VUIARAssetRequest - Unable to cache the downloaded file with VUIAssetLibrary: %@, %@", &v13, 0x16u);
       }
 
@@ -132,17 +132,17 @@
   return v10;
 }
 
-- (void)recordLog:(id)a3
+- (void)recordLog:(id)log
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (log)
   {
     v13[0] = @"AR download failure";
     v12[0] = @"message";
     v12[1] = @"errorCode";
     v3 = MEMORY[0x1E696AD98];
-    v4 = a3;
-    v5 = [v3 numberWithLong:{objc_msgSend(v4, "code")}];
+    logCopy = log;
+    v5 = [v3 numberWithLong:{objc_msgSend(logCopy, "code")}];
     v6 = v5;
     if (v5)
     {
@@ -156,11 +156,11 @@
 
     v13[1] = v7;
     v12[2] = @"errorDomain";
-    v8 = [v4 domain];
+    domain = [logCopy domain];
 
-    if (v8)
+    if (domain)
     {
-      v9 = v8;
+      v9 = domain;
     }
 
     else
@@ -176,23 +176,23 @@
   }
 }
 
-- (id)_prefixForString:(id)a3
+- (id)_prefixForString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    if ([v3 length])
+    if ([stringCopy length])
     {
       v4 = 0;
       v5 = 1;
       v6 = 0x7FFFFFFFLL;
       do
       {
-        v6 ^= [v3 characterAtIndex:v4];
+        v6 ^= [stringCopy characterAtIndex:v4];
         v4 = v5;
       }
 
-      while ([v3 length] > v5++);
+      while ([stringCopy length] > v5++);
     }
 
     else

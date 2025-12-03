@@ -1,14 +1,14 @@
 @interface MBCellularAccess
 + (id)expensiveCellularAccess;
 + (id)inexpensiveCellularAccess;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MBCellularAccess)init;
-- (MBCellularAccess)initWithCoder:(id)a3;
-- (MBCellularAccess)initWithDictionaryRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MBCellularAccess)initWithCoder:(id)coder;
+- (MBCellularAccess)initWithDictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MBCellularAccess
@@ -42,9 +42,9 @@
   return result;
 }
 
-- (MBCellularAccess)initWithDictionaryRepresentation:(id)a3
+- (MBCellularAccess)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = MBCellularAccess;
   v5 = [(MBCellularAccess *)&v11 init];
@@ -53,7 +53,7 @@
     goto LABEL_9;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"allowsExpensiveNetworkAccess"];
+  v6 = [representationCopy objectForKeyedSubscript:@"allowsExpensiveNetworkAccess"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_11:
@@ -63,11 +63,11 @@ LABEL_11:
   }
 
   v5->_allowsExpensiveNetworkAccess = [v6 BOOLValue];
-  v7 = [v4 objectForKeyedSubscript:@"allowsConstrainedNetworkAccess"];
+  v7 = [representationCopy objectForKeyedSubscript:@"allowsConstrainedNetworkAccess"];
 
   if (!v7)
   {
-    v8 = 1;
+    bOOLValue = 1;
     goto LABEL_8;
   }
 
@@ -78,9 +78,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 LABEL_8:
-  v5->_allowsConstrainedNetworkAccess = v8;
+  v5->_allowsConstrainedNetworkAccess = bOOLValue;
 
 LABEL_9:
   v9 = v5;
@@ -105,14 +105,14 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[MBCellularAccess allowsExpensiveNetworkAccess](self, "allowsExpensiveNetworkAccess"), v5 == [v4 allowsExpensiveNetworkAccess]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[MBCellularAccess allowsExpensiveNetworkAccess](self, "allowsExpensiveNetworkAccess"), v5 == [equalCopy allowsExpensiveNetworkAccess]))
   {
-    v7 = [(MBCellularAccess *)self allowsConstrainedNetworkAccess];
-    v6 = v7 ^ [v4 allowsConstrainedNetworkAccess] ^ 1;
+    allowsConstrainedNetworkAccess = [(MBCellularAccess *)self allowsConstrainedNetworkAccess];
+    v6 = allowsConstrainedNetworkAccess ^ [equalCopy allowsConstrainedNetworkAccess] ^ 1;
   }
 
   else
@@ -123,29 +123,29 @@ LABEL_12:
   return v6;
 }
 
-- (MBCellularAccess)initWithCoder:(id)a3
+- (MBCellularAccess)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MBCellularAccess;
   v5 = [(MBCellularAccess *)&v7 init];
   if (v5)
   {
-    -[MBCellularAccess setAllowsExpensiveNetworkAccess:](v5, "setAllowsExpensiveNetworkAccess:", [v4 decodeBoolForKey:@"allowsExpensiveNetworkAccess"]);
-    -[MBCellularAccess setAllowsConstrainedNetworkAccess:](v5, "setAllowsConstrainedNetworkAccess:", [v4 decodeBoolForKey:@"allowsConstrainedNetworkAccess"]);
+    -[MBCellularAccess setAllowsExpensiveNetworkAccess:](v5, "setAllowsExpensiveNetworkAccess:", [coderCopy decodeBoolForKey:@"allowsExpensiveNetworkAccess"]);
+    -[MBCellularAccess setAllowsConstrainedNetworkAccess:](v5, "setAllowsConstrainedNetworkAccess:", [coderCopy decodeBoolForKey:@"allowsConstrainedNetworkAccess"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MBCellularAccess allowsExpensiveNetworkAccess](self forKey:{"allowsExpensiveNetworkAccess"), @"allowsExpensiveNetworkAccess"}];
-  [v4 encodeBool:-[MBCellularAccess allowsConstrainedNetworkAccess](self forKey:{"allowsConstrainedNetworkAccess"), @"allowsConstrainedNetworkAccess"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MBCellularAccess allowsExpensiveNetworkAccess](self forKey:{"allowsExpensiveNetworkAccess"), @"allowsExpensiveNetworkAccess"}];
+  [coderCopy encodeBool:-[MBCellularAccess allowsConstrainedNetworkAccess](self forKey:{"allowsConstrainedNetworkAccess"), @"allowsConstrainedNetworkAccess"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setAllowsExpensiveNetworkAccess:{-[MBCellularAccess allowsExpensiveNetworkAccess](self, "allowsExpensiveNetworkAccess")}];

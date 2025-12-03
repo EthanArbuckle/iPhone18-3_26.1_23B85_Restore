@@ -1,10 +1,10 @@
 @interface CellPreformanceTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellPreformanceTile
@@ -90,7 +90,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = 0u;
   v21 = 0u;
@@ -151,9 +151,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -173,7 +173,7 @@
           objc_enumerationMutation(lteCells);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * i) copyWithZone:zone];
         sub_10015D594(v5, v11);
       }
 
@@ -202,7 +202,7 @@
           objc_enumerationMutation(nrCells);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * j) copyWithZone:a3];
+        v17 = [*(*(&v19 + 1) + 8 * j) copyWithZone:zone];
         sub_10015D63C(v5, v17);
       }
 
@@ -215,16 +215,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     lteCells = self->_lteCells;
-    if (!(lteCells | *(a3 + 1)) || (v5 = [(NSMutableArray *)lteCells isEqual:?]) != 0)
+    if (!(lteCells | *(equal + 1)) || (v5 = [(NSMutableArray *)lteCells isEqual:?]) != 0)
     {
       nrCells = self->_nrCells;
-      if (nrCells | *(a3 + 2))
+      if (nrCells | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)nrCells isEqual:?];

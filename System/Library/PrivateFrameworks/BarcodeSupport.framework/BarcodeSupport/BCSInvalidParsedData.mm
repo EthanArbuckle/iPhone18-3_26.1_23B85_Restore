@@ -1,22 +1,22 @@
 @interface BCSInvalidParsedData
-- (BCSInvalidParsedData)initWithCoder:(id)a3;
-- (BCSInvalidParsedData)initWithInvalidDataType:(int64_t)a3 invalidContents:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BCSInvalidParsedData)initWithCoder:(id)coder;
+- (BCSInvalidParsedData)initWithInvalidDataType:(int64_t)type invalidContents:(id)contents;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSInvalidParsedData
 
-- (BCSInvalidParsedData)initWithInvalidDataType:(int64_t)a3 invalidContents:(id)a4
+- (BCSInvalidParsedData)initWithInvalidDataType:(int64_t)type invalidContents:(id)contents
 {
-  v6 = a4;
+  contentsCopy = contents;
   v13.receiver = self;
   v13.super_class = BCSInvalidParsedData;
   v7 = [(BCSInvalidParsedData *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_invalidDataType = a3;
-    v9 = [v6 copy];
+    v7->_invalidDataType = type;
+    v9 = [contentsCopy copy];
     invalidContents = v8->_invalidContents;
     v8->_invalidContents = v9;
 
@@ -26,13 +26,13 @@
   return v8;
 }
 
-- (BCSInvalidParsedData)initWithCoder:(id)a3
+- (BCSInvalidParsedData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidDataType"];
-  v6 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidContents"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidDataType"];
+  v6 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidContents"];
   v7 = -[BCSInvalidParsedData initWithInvalidDataType:invalidContents:](self, "initWithInvalidDataType:invalidContents:", [v5 integerValue], v6);
-  v8 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidURLScheme"];
+  v8 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"invalidURLScheme"];
 
   if ([v8 length])
   {
@@ -42,13 +42,13 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   invalidDataType = self->_invalidDataType;
-  v5 = a3;
-  [v5 encodeInteger:invalidDataType forKey:@"invalidDataType"];
-  [v5 encodeObject:self->_invalidContents forKey:@"invalidContents"];
-  [v5 encodeObject:self->_invalidURLScheme forKey:@"invalidURLScheme"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:invalidDataType forKey:@"invalidDataType"];
+  [coderCopy encodeObject:self->_invalidContents forKey:@"invalidContents"];
+  [coderCopy encodeObject:self->_invalidURLScheme forKey:@"invalidURLScheme"];
 }
 
 @end

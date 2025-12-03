@@ -1,20 +1,20 @@
 @interface CNExternalIdentifierDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNExternalIdentifierDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 externalIdentifier];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  externalIdentifier = [contactCopy externalIdentifier];
+  if (!externalIdentifier)
   {
-    v4 = [v7 externalIdentifier];
-    if (!v4)
+    externalIdentifier2 = [otherCopy externalIdentifier];
+    if (!externalIdentifier2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 externalIdentifier];
-  v10 = [v7 externalIdentifier];
-  v11 = [v9 isEqual:v10];
+  externalIdentifier3 = [contactCopy externalIdentifier];
+  externalIdentifier4 = [otherCopy externalIdentifier];
+  v11 = [externalIdentifier3 isEqual:externalIdentifier4];
 
-  if (!v8)
+  if (!externalIdentifier)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
 
   v7 = [v9 copy];
-  v8 = v5[58];
-  v5[58] = v7;
+  v8 = contactCopy[58];
+  contactCopy[58] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A348];
+    *d = *MEMORY[0x1E698A348];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

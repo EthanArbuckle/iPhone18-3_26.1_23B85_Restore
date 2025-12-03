@@ -1,30 +1,30 @@
 @interface CKSQLiteEnumerator
-- (CKSQLiteEnumerator)initWithDatabase:(id)a3 columns:(id)a4 from:(id)a5 where:(id)a6 bindings:(id)a7 orderBy:(id)a8;
+- (CKSQLiteEnumerator)initWithDatabase:(id)database columns:(id)columns from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by;
 - (id)nextObject;
 @end
 
 @implementation CKSQLiteEnumerator
 
-- (CKSQLiteEnumerator)initWithDatabase:(id)a3 columns:(id)a4 from:(id)a5 where:(id)a6 bindings:(id)a7 orderBy:(id)a8
+- (CKSQLiteEnumerator)initWithDatabase:(id)database columns:(id)columns from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by
 {
-  v15 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v16 = a7;
-  v17 = a8;
+  databaseCopy = database;
+  columnsCopy = columns;
+  fromCopy = from;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  byCopy = by;
   v28.receiver = self;
   v28.super_class = CKSQLiteEnumerator;
   v18 = [(CKSQLiteEnumerator *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_database, a3);
-    objc_storeStrong(&v19->_columns, a4);
-    objc_storeStrong(&v19->_tableName, a5);
-    objc_storeStrong(&v19->_whereSQL, a6);
-    objc_storeStrong(&v19->_bindings, a7);
-    objc_storeStrong(&v19->_orderBy, a8);
+    objc_storeStrong(&v18->_database, database);
+    objc_storeStrong(&v19->_columns, columns);
+    objc_storeStrong(&v19->_tableName, from);
+    objc_storeStrong(&v19->_whereSQL, where);
+    objc_storeStrong(&v19->_bindings, bindings);
+    objc_storeStrong(&v19->_orderBy, by);
     v20 = objc_alloc(MEMORY[0x1E695DF70]);
     v22 = objc_msgSend_initWithCapacity_(v20, v21, 64);
     objects = v19->_objects;

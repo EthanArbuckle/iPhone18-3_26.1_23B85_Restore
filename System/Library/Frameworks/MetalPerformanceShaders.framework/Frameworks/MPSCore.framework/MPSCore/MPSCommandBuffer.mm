@@ -1,11 +1,11 @@
 @interface MPSCommandBuffer
 + (MPSCommandBuffer)commandBufferFromCommandQueue:(id)commandQueue;
 + (MPSCommandBuffer)commandBufferWithCommandBuffer:(id)commandBuffer;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (MPSCommandBuffer)initWithCommandBuffer:(id)commandBuffer;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
-- (id)dispatchBufferWithOffset:(unint64_t *)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
+- (id)dispatchBufferWithOffset:(unint64_t *)offset;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)heapProvider;
 - (id)rootCommandBuffer;
 - (void)commitAndContinue;
@@ -92,7 +92,7 @@
   sub_22E35BAAC(v6, heapProvider, v7, v8, v9);
 }
 
-- (id)dispatchBufferWithOffset:(unint64_t *)a3
+- (id)dispatchBufferWithOffset:(unint64_t *)offset
 {
   os_unfair_lock_lock(&stru_27DA622C0);
   currentDispatchBuffer = self->_currentDispatchBuffer;
@@ -120,14 +120,14 @@ LABEL_6:
 
   v11 = self->_offsetToCurrentFree;
 LABEL_7:
-  *a3 = v11;
+  *offset = v11;
   v14 = self->_currentDispatchBuffer;
   self->_offsetToCurrentFree += 12;
   os_unfair_lock_unlock(&stru_27DA622C0);
   return v14;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -140,7 +140,7 @@ LABEL_7:
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -149,12 +149,12 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = MPSCommandBuffer;
-  return [(MPSCommandBuffer *)&v6 respondsToSelector:a3];
+  return [(MPSCommandBuffer *)&v6 respondsToSelector:selector];
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
-  result = objc_msgSend_computeCommandEncoderWithDispatchType_(self->_commandBuffer, a2, a3, v3, v4);
+  result = objc_msgSend_computeCommandEncoderWithDispatchType_(self->_commandBuffer, a2, type, v3, v4);
   if (self->_predicate)
   {
     mpsDevice = self->_mpsDevice;

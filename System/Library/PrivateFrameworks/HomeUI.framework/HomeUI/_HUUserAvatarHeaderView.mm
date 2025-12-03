@@ -2,25 +2,25 @@
 - (ACAccountStore)accountStore;
 - (HUMediaAccountDelegate)mediaAccountDelegate;
 - (NSAttributedString)message;
-- (_HUUserAvatarHeaderView)initWithUser:(id)a3 home:(id)a4 delegate:(id)a5;
+- (_HUUserAvatarHeaderView)initWithUser:(id)user home:(id)home delegate:(id)delegate;
 - (id)_keyDescriptors;
 - (void)dealloc;
 - (void)dismissMultiUserTokenFixUI;
 - (void)dismissSplitAccountView;
-- (void)presentMultiUserTokenFixUIForMediaAccount:(id)a3 inHome:(id)a4;
-- (void)setAccounts:(id)a3 forHome:(id)a4;
-- (void)setMessage:(id)a3;
+- (void)presentMultiUserTokenFixUIForMediaAccount:(id)account inHome:(id)home;
+- (void)setAccounts:(id)accounts forHome:(id)home;
+- (void)setMessage:(id)message;
 - (void)showSplitAccountViewIfNeeded;
 @end
 
 @implementation _HUUserAvatarHeaderView
 
-- (_HUUserAvatarHeaderView)initWithUser:(id)a3 home:(id)a4 delegate:(id)a5
+- (_HUUserAvatarHeaderView)initWithUser:(id)user home:(id)home delegate:(id)delegate
 {
   v66[4] = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = a4;
-  obj = a5;
+  userCopy = user;
+  homeCopy = home;
+  obj = delegate;
   v65.receiver = self;
   v65.super_class = _HUUserAvatarHeaderView;
   v8 = [(_HUUserAvatarHeaderView *)&v65 initWithReuseIdentifier:0];
@@ -33,40 +33,40 @@
     v9->_contactView = v10;
 
     [(HUContactView *)v9->_contactView setContactNameFontTextStyle:*MEMORY[0x277D769A8]];
-    v59 = [v58 hf_handleForUser:v57];
+    v59 = [homeCopy hf_handleForUser:userCopy];
     if (v59)
     {
-      v12 = [MEMORY[0x277D145B0] defaultStore];
-      v13 = [(_HUUserAvatarHeaderView *)v9 _keyDescriptors];
-      v14 = [v12 contactForUserHandle:v59 withKeys:v13];
+      defaultStore = [MEMORY[0x277D145B0] defaultStore];
+      _keyDescriptors = [(_HUUserAvatarHeaderView *)v9 _keyDescriptors];
+      v14 = [defaultStore contactForUserHandle:v59 withKeys:_keyDescriptors];
       [(HUContactView *)v9->_contactView setContact:v14];
     }
 
     else
     {
       v15 = MEMORY[0x277CBDA58];
-      v16 = [v57 name];
-      v12 = [v15 contactWithDisplayName:v16 emailOrPhoneNumber:0];
+      name = [userCopy name];
+      defaultStore = [v15 contactWithDisplayName:name emailOrPhoneNumber:0];
 
-      [(HUContactView *)v9->_contactView setContact:v12];
+      [(HUContactView *)v9->_contactView setContact:defaultStore];
     }
 
     if (![v59 type])
     {
       v17 = objc_opt_new();
-      v18 = [v59 userID];
+      userID = [v59 userID];
 
-      if (v18)
+      if (userID)
       {
-        v19 = [v59 userID];
-        [v17 addObject:v19];
+        userID2 = [v59 userID];
+        [v17 addObject:userID2];
       }
 
       [(HUContactView *)v9->_contactView setAccounts:v17];
-      v20 = [MEMORY[0x277D14400] sharedInstance];
-      v21 = [v58 uniqueIdentifier];
-      v22 = [v21 UUIDString];
-      v23 = [v20 mediaAccountForHomeIdentifier:v22];
+      mEMORY[0x277D14400] = [MEMORY[0x277D14400] sharedInstance];
+      uniqueIdentifier = [homeCopy uniqueIdentifier];
+      uUIDString = [uniqueIdentifier UUIDString];
+      v23 = [mEMORY[0x277D14400] mediaAccountForHomeIdentifier:uUIDString];
 
       if (v23)
       {
@@ -76,8 +76,8 @@
 
       else
       {
-        v24 = [MEMORY[0x277D14400] sharedInstance];
-        v25 = [v24 executeHomeMediaAccountFetchForHome:v58];
+        mEMORY[0x277D14400]2 = [MEMORY[0x277D14400] sharedInstance];
+        v25 = [mEMORY[0x277D14400]2 executeHomeMediaAccountFetchForHome:homeCopy];
         mediaAccountFuture = v9->_mediaAccountFuture;
         v9->_mediaAccountFuture = v25;
 
@@ -88,7 +88,7 @@
         v60[2] = __54___HUUserAvatarHeaderView_initWithUser_home_delegate___block_invoke;
         v60[3] = &unk_277DBE738;
         objc_copyWeak(&v63, &location);
-        v61 = v58;
+        v61 = homeCopy;
         v62 = v17;
         v28 = [(NAFuture *)v27 addCompletionBlock:v60];
 
@@ -97,41 +97,41 @@
       }
     }
 
-    v29 = [(_HUUserAvatarHeaderView *)v9 contentView];
-    [v29 naui_addAutoLayoutSubview:v9->_contactView];
+    contentView = [(_HUUserAvatarHeaderView *)v9 contentView];
+    [contentView naui_addAutoLayoutSubview:v9->_contactView];
 
-    v55 = [(_HUUserAvatarHeaderView *)v9 contentView];
-    v53 = [v55 topAnchor];
-    v54 = [(_HUUserAvatarHeaderView *)v9 contactView];
-    v52 = [v54 topAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:-20.0];
+    contentView2 = [(_HUUserAvatarHeaderView *)v9 contentView];
+    topAnchor = [contentView2 topAnchor];
+    contactView = [(_HUUserAvatarHeaderView *)v9 contactView];
+    topAnchor2 = [contactView topAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-20.0];
     v66[0] = v51;
-    v50 = [(_HUUserAvatarHeaderView *)v9 contentView];
-    v49 = [v50 layoutMarginsGuide];
-    v47 = [v49 leadingAnchor];
-    v48 = [(_HUUserAvatarHeaderView *)v9 contactView];
-    v46 = [v48 leadingAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    contentView3 = [(_HUUserAvatarHeaderView *)v9 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide leadingAnchor];
+    contactView2 = [(_HUUserAvatarHeaderView *)v9 contactView];
+    leadingAnchor2 = [contactView2 leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v66[1] = v45;
-    v44 = [(_HUUserAvatarHeaderView *)v9 contentView];
-    v43 = [v44 layoutMarginsGuide];
-    v42 = [v43 trailingAnchor];
-    v30 = [(_HUUserAvatarHeaderView *)v9 contactView];
-    v31 = [v30 trailingAnchor];
-    v32 = [v42 constraintEqualToAnchor:v31];
+    contentView4 = [(_HUUserAvatarHeaderView *)v9 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+    contactView3 = [(_HUUserAvatarHeaderView *)v9 contactView];
+    trailingAnchor2 = [contactView3 trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v66[2] = v32;
-    v33 = [(_HUUserAvatarHeaderView *)v9 contentView];
-    v34 = [v33 bottomAnchor];
-    v35 = [(_HUUserAvatarHeaderView *)v9 contactView];
-    v36 = [v35 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:20.0];
+    contentView5 = [(_HUUserAvatarHeaderView *)v9 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    contactView4 = [(_HUUserAvatarHeaderView *)v9 contactView];
+    bottomAnchor2 = [contactView4 bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:20.0];
     v66[3] = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:4];
     [(_HUUserAvatarHeaderView *)v9 setLayoutConstraints:v38];
 
     v39 = MEMORY[0x277CCAAD0];
-    v40 = [(_HUUserAvatarHeaderView *)v9 layoutConstraints];
-    [v39 activateConstraints:v40];
+    layoutConstraints = [(_HUUserAvatarHeaderView *)v9 layoutConstraints];
+    [v39 activateConstraints:layoutConstraints];
   }
 
   return v9;
@@ -139,132 +139,132 @@
 
 - (void)dealloc
 {
-  v3 = [(_HUUserAvatarHeaderView *)self mediaAccountFuture];
-  [v3 cancel];
+  mediaAccountFuture = [(_HUUserAvatarHeaderView *)self mediaAccountFuture];
+  [mediaAccountFuture cancel];
 
   v4.receiver = self;
   v4.super_class = _HUUserAvatarHeaderView;
   [(_HUUserAvatarHeaderView *)&v4 dealloc];
 }
 
-- (void)presentMultiUserTokenFixUIForMediaAccount:(id)a3 inHome:(id)a4
+- (void)presentMultiUserTokenFixUIForMediaAccount:(id)account inHome:(id)home
 {
   v102 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  homeCopy = home;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [v8 currentUser];
+    currentUser = [homeCopy currentUser];
     *buf = 138413058;
     v95 = v10;
     v96 = 2112;
-    v97 = v7;
+    v97 = accountCopy;
     v98 = 2112;
-    v99 = v11;
+    v99 = currentUser;
     v100 = 2112;
-    v101 = v8;
+    v101 = homeCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@ MutilUser Token Fix needed for account [%@], user [%@], in Home [%@]", buf, 0x2Au);
   }
 
   v12 = [HUMultiUserTokenFixTableView alloc];
-  v13 = [(_HUUserAvatarHeaderView *)self mediaAccountDelegate];
-  v14 = [(HUMultiUserTokenFixTableView *)v12 initWithFrame:v7 mediaAccount:v8 home:v13 delegate:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  mediaAccountDelegate = [(_HUUserAvatarHeaderView *)self mediaAccountDelegate];
+  v14 = [(HUMultiUserTokenFixTableView *)v12 initWithFrame:accountCopy mediaAccount:homeCopy home:mediaAccountDelegate delegate:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(_HUUserAvatarHeaderView *)self setMultiUserTokenFixHeaderView:v14];
 
-  v15 = [(_HUUserAvatarHeaderView *)self contentView];
-  v16 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  [v15 naui_addAutoLayoutSubview:v16];
+  contentView = [(_HUUserAvatarHeaderView *)self contentView];
+  multiUserTokenFixHeaderView = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  [contentView naui_addAutoLayoutSubview:multiUserTokenFixHeaderView];
 
   v17 = MEMORY[0x277CCAAD0];
-  v18 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
-  [v17 deactivateConstraints:v18];
+  layoutConstraints = [(_HUUserAvatarHeaderView *)self layoutConstraints];
+  [v17 deactivateConstraints:layoutConstraints];
 
-  v92 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v90 = [v92 leadingAnchor];
-  v91 = [(_HUUserAvatarHeaderView *)self contentView];
-  v89 = [v91 leadingAnchor];
-  v88 = [v90 constraintEqualToAnchor:v89];
+  multiUserTokenFixHeaderView2 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  leadingAnchor = [multiUserTokenFixHeaderView2 leadingAnchor];
+  contentView2 = [(_HUUserAvatarHeaderView *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v88 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v93[0] = v88;
-  v87 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v85 = [v87 trailingAnchor];
-  v86 = [(_HUUserAvatarHeaderView *)self contentView];
-  v84 = [v86 trailingAnchor];
-  v82 = [v85 constraintEqualToAnchor:v84];
+  multiUserTokenFixHeaderView3 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  trailingAnchor = [multiUserTokenFixHeaderView3 trailingAnchor];
+  contentView3 = [(_HUUserAvatarHeaderView *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v82 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v93[1] = v82;
-  v80 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v78 = [v80 topAnchor];
-  v79 = [(_HUUserAvatarHeaderView *)self contentView];
-  v77 = [v79 topAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77 constant:-20.0];
+  multiUserTokenFixHeaderView4 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  topAnchor = [multiUserTokenFixHeaderView4 topAnchor];
+  contentView4 = [(_HUUserAvatarHeaderView *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v76 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-20.0];
   v93[2] = v76;
-  v75 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v72 = [v75 heightAnchor];
-  v73 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v74 = [MEMORY[0x277D759A0] mainScreen];
-  [v74 bounds];
-  [v73 tableViewHeightForWidth:v19];
-  v71 = [v72 constraintEqualToConstant:?];
+  multiUserTokenFixHeaderView5 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  heightAnchor = [multiUserTokenFixHeaderView5 heightAnchor];
+  multiUserTokenFixHeaderView6 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
+  [multiUserTokenFixHeaderView6 tableViewHeightForWidth:v19];
+  v71 = [heightAnchor constraintEqualToConstant:?];
   v93[3] = v71;
-  v70 = [(_HUUserAvatarHeaderView *)self contactView];
-  v68 = [v70 leadingAnchor];
-  v69 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v67 = [v69 leadingAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  contactView = [(_HUUserAvatarHeaderView *)self contactView];
+  leadingAnchor3 = [contactView leadingAnchor];
+  multiUserTokenFixHeaderView7 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  leadingAnchor4 = [multiUserTokenFixHeaderView7 leadingAnchor];
+  v66 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v93[4] = v66;
-  v65 = [(_HUUserAvatarHeaderView *)self contactView];
-  v63 = [v65 trailingAnchor];
-  v64 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v62 = [v64 trailingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  contactView2 = [(_HUUserAvatarHeaderView *)self contactView];
+  trailingAnchor3 = [contactView2 trailingAnchor];
+  multiUserTokenFixHeaderView8 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  trailingAnchor4 = [multiUserTokenFixHeaderView8 trailingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v93[5] = v61;
-  v60 = [(_HUUserAvatarHeaderView *)self contactView];
-  v59 = [v60 topAnchor];
-  v20 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v59 constraintEqualToAnchor:v21 constant:20.0];
+  contactView3 = [(_HUUserAvatarHeaderView *)self contactView];
+  topAnchor3 = [contactView3 topAnchor];
+  multiUserTokenFixHeaderView9 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  bottomAnchor = [multiUserTokenFixHeaderView9 bottomAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
   v93[6] = v22;
-  v23 = [(_HUUserAvatarHeaderView *)self contentView];
-  v24 = [v23 bottomAnchor];
+  contentView5 = [(_HUUserAvatarHeaderView *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
   [(_HUUserAvatarHeaderView *)self contactView];
-  v25 = v83 = v7;
+  v25 = v83 = accountCopy;
   [v25 bottomAnchor];
-  v26 = v81 = v8;
-  v27 = [v24 constraintEqualToAnchor:v26 constant:20.0];
+  v26 = v81 = homeCopy;
+  v27 = [bottomAnchor2 constraintEqualToAnchor:v26 constant:20.0];
   v93[7] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:8];
   [(_HUUserAvatarHeaderView *)self setLayoutConstraints:v28];
 
   v29 = MEMORY[0x277CCAAD0];
-  v30 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
-  [v29 activateConstraints:v30];
+  layoutConstraints2 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
+  [v29 activateConstraints:layoutConstraints2];
 
-  v31 = [(_HUUserAvatarHeaderView *)self contentView];
-  [v31 frame];
+  contentView6 = [(_HUUserAvatarHeaderView *)self contentView];
+  [contentView6 frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
 
-  v40 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v41 = [MEMORY[0x277D759A0] mainScreen];
-  [v41 bounds];
-  [v40 tableViewHeightForWidth:v42];
+  multiUserTokenFixHeaderView10 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
+  [multiUserTokenFixHeaderView10 tableViewHeightForWidth:v42];
   v44 = v39 + v43 + -20.0;
 
-  v45 = [(_HUUserAvatarHeaderView *)self contentView];
-  [v45 setFrame:{v33, v35, v37, v44}];
+  contentView7 = [(_HUUserAvatarHeaderView *)self contentView];
+  [contentView7 setFrame:{v33, v35, v37, v44}];
 
   [(_HUUserAvatarHeaderView *)self frame];
   v47 = v46;
   v49 = v48;
   v51 = v50;
   v53 = v52;
-  v54 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  v55 = [MEMORY[0x277D759A0] mainScreen];
-  [v55 bounds];
-  [v54 tableViewHeightForWidth:v56];
+  multiUserTokenFixHeaderView11 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 bounds];
+  [multiUserTokenFixHeaderView11 tableViewHeightForWidth:v56];
   v58 = v53 + v57 + -20.0;
 
   [(_HUUserAvatarHeaderView *)self setFrame:v47, v49, v51, v58];
@@ -272,31 +272,31 @@
 
 - (void)dismissMultiUserTokenFixUI
 {
-  v3 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-  if (v3)
+  multiUserTokenFixHeaderView = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+  if (multiUserTokenFixHeaderView)
   {
-    v4 = v3;
-    v5 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-    [v5 alpha];
+    v4 = multiUserTokenFixHeaderView;
+    multiUserTokenFixHeaderView2 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+    [multiUserTokenFixHeaderView2 alpha];
     v7 = v6;
 
     if (v7 == 1.0)
     {
-      v8 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v8 frame];
+      contentView = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v15 frame];
+      contentView2 = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView2 frame];
       v17 = v16;
-      v18 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-      [v18 tableViewHeightForWidth:v14];
+      multiUserTokenFixHeaderView3 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+      [multiUserTokenFixHeaderView3 tableViewHeightForWidth:v14];
       v20 = v17 - v19 + 20.0;
 
-      v21 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v21 setFrame:{v10, v12, v14, v20}];
+      contentView3 = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView3 setFrame:{v10, v12, v14, v20}];
 
       [(_HUUserAvatarHeaderView *)self frame];
       v23 = v22;
@@ -304,34 +304,34 @@
       v27 = v26;
       [(_HUUserAvatarHeaderView *)self frame];
       v29 = v28;
-      v30 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-      [v30 tableViewHeightForWidth:v27];
+      multiUserTokenFixHeaderView4 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+      [multiUserTokenFixHeaderView4 tableViewHeightForWidth:v27];
       v32 = v29 - v31 + 20.0;
 
       [(_HUUserAvatarHeaderView *)self setFrame:v23, v25, v27, v32];
-      v33 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-      v34 = [v33 heightAnchor];
-      v35 = [v34 constraintEqualToConstant:20.0];
+      multiUserTokenFixHeaderView5 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+      heightAnchor = [multiUserTokenFixHeaderView5 heightAnchor];
+      v35 = [heightAnchor constraintEqualToConstant:20.0];
       [v35 setActive:1];
 
-      v36 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
-      [v36 setAlpha:0.0];
+      multiUserTokenFixHeaderView6 = [(_HUUserAvatarHeaderView *)self multiUserTokenFixHeaderView];
+      [multiUserTokenFixHeaderView6 setAlpha:0.0];
 
       [(_HUUserAvatarHeaderView *)self layoutIfNeeded];
     }
   }
 }
 
-- (void)setAccounts:(id)a3 forHome:(id)a4
+- (void)setAccounts:(id)accounts forHome:(id)home
 {
   v119 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  homeCopy = home;
   contactView = self->_contactView;
-  v9 = a3;
-  [(HUContactView *)contactView setAccounts:v9];
-  v10 = [(_HUUserAvatarHeaderView *)self accountStore];
-  v11 = [v10 ams_activeiTunesAccount];
-  v12 = [v9 na_firstObjectPassingTest:&__block_literal_global_132];
+  accountsCopy = accounts;
+  [(HUContactView *)contactView setAccounts:accountsCopy];
+  accountStore = [(_HUUserAvatarHeaderView *)self accountStore];
+  ams_activeiTunesAccount = [accountStore ams_activeiTunesAccount];
+  v12 = [accountsCopy na_firstObjectPassingTest:&__block_literal_global_132];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -342,7 +342,7 @@
     v110 = 1024;
     *v111 = [MEMORY[0x277D14CE8] isAMac];
     *&v111[4] = 1024;
-    *&v111[6] = [v7 isMultiUserEnabled];
+    *&v111[6] = [homeCopy isMultiUserEnabled];
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@ isThisMac = %d, is MU Enabled = [%d] ", buf, 0x18u);
   }
 
@@ -350,18 +350,18 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NSStringFromSelector(a2);
-    v17 = [v11 aa_altDSID];
+    aa_altDSID = [ams_activeiTunesAccount aa_altDSID];
     [v12 aa_altDSID];
     v18 = a2;
-    v19 = v11;
-    v20 = v7;
+    v19 = ams_activeiTunesAccount;
+    v20 = homeCopy;
     v22 = v21 = v12;
     *buf = 138413570;
     v109 = v16;
     v110 = 2112;
     *v111 = v19;
     *&v111[8] = 2112;
-    v112 = v17;
+    v112 = aa_altDSID;
     v113 = 2112;
     v114 = v21;
     v115 = 2112;
@@ -371,16 +371,16 @@
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@ Active Media Account - [%@] with DSID - [%@] on this iOS device.  Fetched ams_iTunesAccount - [%@] with DSID - [%@] for Home [%@]", buf, 0x3Eu);
 
     v12 = v21;
-    v7 = v20;
-    v11 = v19;
+    homeCopy = v20;
+    ams_activeiTunesAccount = v19;
     a2 = v18;
   }
 
-  if ([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || !objc_msgSend(v7, "isMultiUserEnabled") || !v11 || (objc_msgSend(v11, "aa_altDSID"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "aa_altDSID"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqualToString:", v27), v27, v26, (v28))
+  if ([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || !objc_msgSend(homeCopy, "isMultiUserEnabled") || !ams_activeiTunesAccount || (objc_msgSend(ams_activeiTunesAccount, "aa_altDSID"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "aa_altDSID"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqualToString:", v27), v27, v26, (v28))
   {
-    v23 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    splitAccountHeaderView = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
 
-    if (v23)
+    if (splitAccountHeaderView)
     {
       v24 = HFLogForCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -398,7 +398,7 @@
   else
   {
     v105 = v12;
-    v106 = v10;
+    v106 = accountStore;
     v29 = HFLogForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -409,100 +409,100 @@
     }
 
     v31 = [HUSplitAccountHeaderTableView alloc];
-    v32 = [(_HUUserAvatarHeaderView *)self mediaAccountDelegate];
-    v33 = [(HUSplitAccountHeaderTableView *)v31 initWithFrame:v11 mediaAccount:v7 home:v32 delegate:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    mediaAccountDelegate = [(_HUUserAvatarHeaderView *)self mediaAccountDelegate];
+    v33 = [(HUSplitAccountHeaderTableView *)v31 initWithFrame:ams_activeiTunesAccount mediaAccount:homeCopy home:mediaAccountDelegate delegate:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(_HUUserAvatarHeaderView *)self setSplitAccountHeaderView:v33];
 
-    v34 = [(_HUUserAvatarHeaderView *)self contentView];
-    v35 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    [v34 naui_addAutoLayoutSubview:v35];
+    contentView = [(_HUUserAvatarHeaderView *)self contentView];
+    splitAccountHeaderView2 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    [contentView naui_addAutoLayoutSubview:splitAccountHeaderView2];
 
-    v36 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    [v36 setAlpha:0.0];
+    splitAccountHeaderView3 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    [splitAccountHeaderView3 setAlpha:0.0];
 
     v37 = MEMORY[0x277CCAAD0];
-    v38 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
-    [v37 deactivateConstraints:v38];
+    layoutConstraints = [(_HUUserAvatarHeaderView *)self layoutConstraints];
+    [v37 deactivateConstraints:layoutConstraints];
 
-    v104 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v102 = [v104 leadingAnchor];
-    v103 = [(_HUUserAvatarHeaderView *)self contentView];
-    v101 = [v103 leadingAnchor];
-    v100 = [v102 constraintEqualToAnchor:v101];
+    splitAccountHeaderView4 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    leadingAnchor = [splitAccountHeaderView4 leadingAnchor];
+    contentView2 = [(_HUUserAvatarHeaderView *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v100 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v107[0] = v100;
-    v99 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v97 = [v99 trailingAnchor];
-    v98 = [(_HUUserAvatarHeaderView *)self contentView];
-    v96 = [v98 trailingAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    splitAccountHeaderView5 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    trailingAnchor = [splitAccountHeaderView5 trailingAnchor];
+    contentView3 = [(_HUUserAvatarHeaderView *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v95 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v107[1] = v95;
-    v94 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v92 = [v94 topAnchor];
-    v93 = [(_HUUserAvatarHeaderView *)self contentView];
-    v91 = [v93 topAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91 constant:-20.0];
+    splitAccountHeaderView6 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    topAnchor = [splitAccountHeaderView6 topAnchor];
+    contentView4 = [(_HUUserAvatarHeaderView *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v90 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-20.0];
     v107[2] = v90;
-    v89 = [(_HUUserAvatarHeaderView *)self contactView];
-    v87 = [v89 leadingAnchor];
-    v88 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v86 = [v88 leadingAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    contactView = [(_HUUserAvatarHeaderView *)self contactView];
+    leadingAnchor3 = [contactView leadingAnchor];
+    splitAccountHeaderView7 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    leadingAnchor4 = [splitAccountHeaderView7 leadingAnchor];
+    v85 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v107[3] = v85;
-    v84 = [(_HUUserAvatarHeaderView *)self contactView];
-    v82 = [v84 trailingAnchor];
-    v83 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v81 = [v83 trailingAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    contactView2 = [(_HUUserAvatarHeaderView *)self contactView];
+    trailingAnchor3 = [contactView2 trailingAnchor];
+    splitAccountHeaderView8 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    trailingAnchor4 = [splitAccountHeaderView8 trailingAnchor];
+    v80 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v107[4] = v80;
-    v79 = [(_HUUserAvatarHeaderView *)self contactView];
-    v77 = [v79 topAnchor];
-    v78 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v76 = [v78 bottomAnchor];
-    v39 = [v77 constraintEqualToAnchor:v76 constant:20.0];
+    contactView3 = [(_HUUserAvatarHeaderView *)self contactView];
+    topAnchor3 = [contactView3 topAnchor];
+    splitAccountHeaderView9 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    bottomAnchor = [splitAccountHeaderView9 bottomAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
     v107[5] = v39;
-    v40 = [(_HUUserAvatarHeaderView *)self contentView];
-    v41 = [v40 bottomAnchor];
-    v42 = [(_HUUserAvatarHeaderView *)self contactView];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43 constant:20.0];
+    contentView5 = [(_HUUserAvatarHeaderView *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    contactView4 = [(_HUUserAvatarHeaderView *)self contactView];
+    bottomAnchor3 = [contactView4 bottomAnchor];
+    v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
     v107[6] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:7];
     [(_HUUserAvatarHeaderView *)self setLayoutConstraints:v45];
 
     v46 = MEMORY[0x277CCAAD0];
-    v47 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
-    [v46 activateConstraints:v47];
+    layoutConstraints2 = [(_HUUserAvatarHeaderView *)self layoutConstraints];
+    [v46 activateConstraints:layoutConstraints2];
 
-    v48 = [(_HUUserAvatarHeaderView *)self contentView];
-    [v48 frame];
+    contentView6 = [(_HUUserAvatarHeaderView *)self contentView];
+    [contentView6 frame];
     v50 = v49;
     v52 = v51;
     v54 = v53;
     v56 = v55;
 
-    v57 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v58 = [MEMORY[0x277D759A0] mainScreen];
-    [v58 bounds];
-    [v57 tableViewHeightForWidth:v59];
+    splitAccountHeaderView10 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
+    [splitAccountHeaderView10 tableViewHeightForWidth:v59];
     v61 = v56 + v60 + -20.0;
 
-    v62 = [(_HUUserAvatarHeaderView *)self contentView];
-    [v62 setFrame:{v50, v52, v54, v61}];
+    contentView7 = [(_HUUserAvatarHeaderView *)self contentView];
+    [contentView7 setFrame:{v50, v52, v54, v61}];
 
     [(_HUUserAvatarHeaderView *)self frame];
     v64 = v63;
     v66 = v65;
     v68 = v67;
     v70 = v69;
-    v71 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v72 = [MEMORY[0x277D759A0] mainScreen];
-    [v72 bounds];
-    [v71 tableViewHeightForWidth:v73];
+    splitAccountHeaderView11 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
+    [splitAccountHeaderView11 tableViewHeightForWidth:v73];
     v75 = v70 + v74 + -20.0;
 
     [(_HUUserAvatarHeaderView *)self setFrame:v64, v66, v68, v75];
     v12 = v105;
-    v10 = v106;
+    accountStore = v106;
   }
 
   [(_HUUserAvatarHeaderView *)self setNeedsLayout];
@@ -510,21 +510,21 @@
 
 - (void)showSplitAccountViewIfNeeded
 {
-  v3 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+  splitAccountHeaderView = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
 
-  if (v3)
+  if (splitAccountHeaderView)
   {
-    v4 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v5 = [v4 heightAnchor];
-    v6 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
-    [v6 tableViewHeightForWidth:v8];
-    v9 = [v5 constraintEqualToConstant:?];
+    splitAccountHeaderView2 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    heightAnchor = [splitAccountHeaderView2 heightAnchor];
+    splitAccountHeaderView3 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
+    [splitAccountHeaderView3 tableViewHeightForWidth:v8];
+    v9 = [heightAnchor constraintEqualToConstant:?];
     [v9 setActive:1];
 
-    v10 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    [v10 setAlpha:1.0];
+    splitAccountHeaderView4 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    [splitAccountHeaderView4 setAlpha:1.0];
 
     [(_HUUserAvatarHeaderView *)self layoutIfNeeded];
   }
@@ -532,31 +532,31 @@
 
 - (void)dismissSplitAccountView
 {
-  v3 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-  if (v3)
+  splitAccountHeaderView = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+  if (splitAccountHeaderView)
   {
-    v4 = v3;
-    v5 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-    [v5 alpha];
+    v4 = splitAccountHeaderView;
+    splitAccountHeaderView2 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+    [splitAccountHeaderView2 alpha];
     v7 = v6;
 
     if (v7 == 1.0)
     {
-      v8 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v8 frame];
+      contentView = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v15 frame];
+      contentView2 = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView2 frame];
       v17 = v16;
-      v18 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-      [v18 tableViewHeightForWidth:v14];
+      splitAccountHeaderView3 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+      [splitAccountHeaderView3 tableViewHeightForWidth:v14];
       v20 = v17 - v19 + 20.0;
 
-      v21 = [(_HUUserAvatarHeaderView *)self contentView];
-      [v21 setFrame:{v10, v12, v14, v20}];
+      contentView3 = [(_HUUserAvatarHeaderView *)self contentView];
+      [contentView3 setFrame:{v10, v12, v14, v20}];
 
       [(_HUUserAvatarHeaderView *)self frame];
       v23 = v22;
@@ -564,18 +564,18 @@
       v27 = v26;
       [(_HUUserAvatarHeaderView *)self frame];
       v29 = v28;
-      v30 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-      [v30 tableViewHeightForWidth:v27];
+      splitAccountHeaderView4 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+      [splitAccountHeaderView4 tableViewHeightForWidth:v27];
       v32 = v29 - v31 + 20.0;
 
       [(_HUUserAvatarHeaderView *)self setFrame:v23, v25, v27, v32];
-      v33 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-      v34 = [v33 heightAnchor];
-      v35 = [v34 constraintEqualToConstant:20.0];
+      splitAccountHeaderView5 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+      heightAnchor = [splitAccountHeaderView5 heightAnchor];
+      v35 = [heightAnchor constraintEqualToConstant:20.0];
       [v35 setActive:1];
 
-      v36 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
-      [v36 setAlpha:0.0];
+      splitAccountHeaderView6 = [(_HUUserAvatarHeaderView *)self splitAccountHeaderView];
+      [splitAccountHeaderView6 setAlpha:0.0];
 
       [(_HUUserAvatarHeaderView *)self layoutIfNeeded];
     }
@@ -587,9 +587,9 @@
   accountStore = self->_accountStore;
   if (!accountStore)
   {
-    v4 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
     v5 = self->_accountStore;
-    self->_accountStore = v4;
+    self->_accountStore = ams_sharedAccountStore;
 
     accountStore = self->_accountStore;
   }
@@ -601,17 +601,17 @@
 
 - (NSAttributedString)message
 {
-  v2 = [(_HUUserAvatarHeaderView *)self contactView];
-  v3 = [v2 message];
+  contactView = [(_HUUserAvatarHeaderView *)self contactView];
+  message = [contactView message];
 
-  return v3;
+  return message;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(_HUUserAvatarHeaderView *)self contactView];
-  [v5 setMessage:v4];
+  messageCopy = message;
+  contactView = [(_HUUserAvatarHeaderView *)self contactView];
+  [contactView setMessage:messageCopy];
 }
 
 - (id)_keyDescriptors

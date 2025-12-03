@@ -41,13 +41,13 @@
             }
           }
 
-          v11 = [(TUIBox *)v9 parentModel];
+          parentModel = [(TUIBox *)v9 parentModel];
 
-          v12 = 0;
-          if (v11)
+          role = 0;
+          if (parentModel)
           {
-            v9 = v11;
-            if (v11 != self)
+            v9 = parentModel;
+            if (parentModel != self)
             {
               continue;
             }
@@ -57,13 +57,13 @@
         }
 
         v13 = v10;
-        v12 = [v10 role];
+        role = [v10 role];
 
-        v11 = v9;
+        parentModel = v9;
 LABEL_13:
-        v14 = [v12 isEqualToString:@"content"];
+        v14 = [role isEqualToString:@"content"];
         v15 = &OBJC_IVAR___TUIShelfBox__content;
-        if (v14 & 1) != 0 || (v16 = [v12 isEqualToString:@"content-background"], v15 = &OBJC_IVAR___TUIShelfBox__contentBackground, (v16) || (v17 = objc_msgSend(v12, "isEqualToString:", @"background"), v15 = &OBJC_IVAR___TUIShelfBox__background, v17))
+        if (v14 & 1) != 0 || (v16 = [role isEqualToString:@"content-background"], v15 = &OBJC_IVAR___TUIShelfBox__contentBackground, (v16) || (v17 = objc_msgSend(role, "isEqualToString:", @"background"), v15 = &OBJC_IVAR___TUIShelfBox__background, v17))
         {
           objc_storeStrong((&self->super.super.super.isa + *v15), v8);
         }

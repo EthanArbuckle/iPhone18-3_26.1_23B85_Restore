@@ -60,7 +60,7 @@
     return 6.0;
   }
 
-  [a1 inputRecordingDurationInSecs];
+  [self inputRecordingDurationInSecs];
   return result;
 }
 

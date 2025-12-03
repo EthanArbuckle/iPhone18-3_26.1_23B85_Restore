@@ -1,10 +1,10 @@
 @interface AAUISpinnerManager
 - (AAUISpinnerManager)init;
-- (AAUISpinnerManager)initWithNavigationItem:(id)a3 hideBackButton:(BOOL)a4;
+- (AAUISpinnerManager)initWithNavigationItem:(id)item hideBackButton:(BOOL)button;
 - (void)startNavigationSpinner;
-- (void)startSpinnerInSpecifier:(id)a3 forKey:(id)a4;
+- (void)startSpinnerInSpecifier:(id)specifier forKey:(id)key;
 - (void)stopAllSpinners;
-- (void)stopAnimatingForKey:(id)a3;
+- (void)stopAnimatingForKey:(id)key;
 @end
 
 @implementation AAUISpinnerManager
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (AAUISpinnerManager)initWithNavigationItem:(id)a3 hideBackButton:(BOOL)a4
+- (AAUISpinnerManager)initWithNavigationItem:(id)item hideBackButton:(BOOL)button
 {
-  v7 = a3;
+  itemCopy = item;
   v8 = [(AAUISpinnerManager *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_navItem, a3);
-    v9->_shouldHideBackButton = a4;
+    objc_storeStrong(&v8->_navItem, item);
+    v9->_shouldHideBackButton = button;
   }
 
   return v9;
@@ -87,19 +87,19 @@ void __44__AAUISpinnerManager_startNavigationSpinner__block_invoke(uint64_t a1)
   }
 }
 
-- (void)startSpinnerInSpecifier:(id)a3 forKey:(id)a4
+- (void)startSpinnerInSpecifier:(id)specifier forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__AAUISpinnerManager_startSpinnerInSpecifier_forKey___block_invoke;
   v10[3] = &unk_1E820BF58;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = keyCopy;
+  v12 = specifierCopy;
+  v8 = specifierCopy;
+  v9 = keyCopy;
   os_unfair_lock_lock(&self->_controllersLock);
   __53__AAUISpinnerManager_startSpinnerInSpecifier_forKey___block_invoke(v10);
   os_unfair_lock_unlock(&self->_controllersLock);
@@ -133,8 +133,8 @@ void __53__AAUISpinnerManager_startSpinnerInSpecifier_forKey___block_invoke(void
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_spinnerControllers allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allKeys = [(NSMutableDictionary *)self->_spinnerControllers allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -146,30 +146,30 @@ void __53__AAUISpinnerManager_startSpinnerInSpecifier_forKey___block_invoke(void
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(AAUISpinnerManager *)self stopAnimatingForKey:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)stopAnimatingForKey:(id)a3
+- (void)stopAnimatingForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__AAUISpinnerManager_stopAnimatingForKey___block_invoke;
   v6[3] = &unk_1E820BEB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   os_unfair_lock_lock(&self->_controllersLock);
   __42__AAUISpinnerManager_stopAnimatingForKey___block_invoke(v6);
   os_unfair_lock_unlock(&self->_controllersLock);

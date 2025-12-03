@@ -1,18 +1,18 @@
 @interface TSCEUnitRegistry
-+ (BOOL)unitIsMetric:(unsigned __int16)a3;
-+ (TSCEPrefixedBaseUnit)prefixedUnitForString:(id)a3;
-+ (double)multiplierForUnit:(TSCEPrefixedBaseUnit)a3;
-+ (id)baseUnitStringsForDimension:(unsigned __int8)a3;
-+ (id)convertInNumber:(const TSUDecimal *)a3 outNumber:(TSUDecimal *)a4 fromUnit:(TSCEPrefixedBaseUnit)a5 toUnit:(TSCEPrefixedBaseUnit)a6;
-+ (id)currencyCodeForUnit:(unsigned __int16)a3;
++ (BOOL)unitIsMetric:(unsigned __int16)metric;
++ (TSCEPrefixedBaseUnit)prefixedUnitForString:(id)string;
++ (double)multiplierForUnit:(TSCEPrefixedBaseUnit)unit;
++ (id)baseUnitStringsForDimension:(unsigned __int8)dimension;
++ (id)convertInNumber:(const TSUDecimal *)number outNumber:(TSUDecimal *)outNumber fromUnit:(TSCEPrefixedBaseUnit)unit toUnit:(TSCEPrefixedBaseUnit)toUnit;
++ (id)currencyCodeForUnit:(unsigned __int16)unit;
 + (id)siBinaryPrefixStrings;
 + (id)siPrefixStrings;
-+ (unsigned)binaryUnitPrefixForChars:(unsigned __int16)a3 :(unsigned __int16)a4;
-+ (unsigned)canonicalUnitForDimension:(unsigned __int8)a3;
-+ (unsigned)dimensionForUnit:(unsigned __int16)a3;
-+ (unsigned)unitForCurrencyCode:(id)a3;
-+ (unsigned)unitForString:(id)a3;
-+ (unsigned)unitPrefixForCharacter:(unsigned __int16)a3;
++ (unsigned)binaryUnitPrefixForChars:(unsigned __int16)chars :(unsigned __int16)a4;
++ (unsigned)canonicalUnitForDimension:(unsigned __int8)dimension;
++ (unsigned)dimensionForUnit:(unsigned __int16)unit;
++ (unsigned)unitForCurrencyCode:(id)code;
++ (unsigned)unitForString:(id)string;
++ (unsigned)unitPrefixForCharacter:(unsigned __int16)character;
 + (void)initialize;
 @end
 
@@ -26,12 +26,12 @@
   }
 }
 
-+ (unsigned)unitForCurrencyCode:(id)a3
++ (unsigned)unitForCurrencyCode:(id)code
 {
-  v6 = a3;
-  if (v6)
+  codeCopy = code;
+  if (codeCopy)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(qword_27CFB5418, v3, v6, v4, v5);
+    v7 = objc_msgSend_objectForKeyedSubscript_(qword_27CFB5418, v3, codeCopy, v4, v5);
     v12 = objc_msgSend_integerValue(v7, v8, v9, v10, v11);
   }
 
@@ -49,21 +49,21 @@
   return v12;
 }
 
-+ (id)currencyCodeForUnit:(unsigned __int16)a3
++ (id)currencyCodeForUnit:(unsigned __int16)unit
 {
-  v3 = a3;
+  unitCopy = unit;
   v4 = objc_alloc(MEMORY[0x277CCABB0]);
-  v8 = objc_msgSend_initWithInt_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithInt_(v4, v5, unitCopy, v6, v7);
   v12 = objc_msgSend_objectForKey_(qword_27CFB5420, v9, v8, v10, v11);
 
   return v12;
 }
 
-+ (unsigned)canonicalUnitForDimension:(unsigned __int8)a3
++ (unsigned)canonicalUnitForDimension:(unsigned __int8)dimension
 {
-  if (a3 < 0xEu && ((0x3FEFu >> a3) & 1) != 0)
+  if (dimension < 0xEu && ((0x3FEFu >> dimension) & 1) != 0)
   {
-    return word_2217E12C2[a3];
+    return word_2217E12C2[dimension];
   }
 
   v6 = MEMORY[0x277D81150];
@@ -75,7 +75,7 @@
   return 6;
 }
 
-+ (id)baseUnitStringsForDimension:(unsigned __int8)a3
++ (id)baseUnitStringsForDimension:(unsigned __int8)dimension
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEUnitRegistry baseUnitStringsForDimension:]", v3, v4);
@@ -108,9 +108,9 @@
   return 0;
 }
 
-+ (unsigned)unitForString:(id)a3
++ (unsigned)unitForString:(id)string
 {
-  v5 = objc_msgSend_objectForKey_(qword_27CFB5428, a2, a3, v3, v4);
+  v5 = objc_msgSend_objectForKey_(qword_27CFB5428, a2, string, v3, v4);
   v10 = v5;
   if (v5)
   {
@@ -125,11 +125,11 @@
   return v11;
 }
 
-+ (double)multiplierForUnit:(TSCEPrefixedBaseUnit)a3
++ (double)multiplierForUnit:(TSCEPrefixedBaseUnit)unit
 {
-  var1 = a3.var1;
+  var1 = unit.var1;
   v6 = 1.0e18;
-  switch(a3.var0)
+  switch(unit.var0)
   {
     case 0u:
       v7 = MEMORY[0x277D81150];
@@ -257,15 +257,15 @@ LABEL_26:
   return v6;
 }
 
-+ (unsigned)unitPrefixForCharacter:(unsigned __int16)a3
++ (unsigned)unitPrefixForCharacter:(unsigned __int16)character
 {
-  if (a3 > 116)
+  if (character > 116)
   {
-    if (a3 <= 121)
+    if (character <= 121)
     {
-      if (a3 != 117)
+      if (character != 117)
       {
-        if (a3 == 121)
+        if (character == 121)
         {
           return 21;
         }
@@ -276,12 +276,12 @@ LABEL_26:
 
     else
     {
-      if (a3 == 122)
+      if (character == 122)
       {
         return 20;
       }
 
-      if (a3 != 181 && a3 != 956)
+      if (character != 181 && character != 956)
       {
         return 0;
       }
@@ -290,7 +290,7 @@ LABEL_26:
     return 13;
   }
 
-  switch(a3)
+  switch(character)
   {
     case 'M':
       return 5;
@@ -344,14 +344,14 @@ LABEL_26:
     case 'p':
       return 15;
     default:
-      if (a3 == 69)
+      if (character == 69)
       {
         result = 1;
       }
 
       else
       {
-        if (a3 != 71)
+        if (character != 71)
         {
           return 0;
         }
@@ -365,20 +365,20 @@ LABEL_26:
   return result;
 }
 
-+ (unsigned)binaryUnitPrefixForChars:(unsigned __int16)a3 :(unsigned __int16)a4
++ (unsigned)binaryUnitPrefixForChars:(unsigned __int16)chars :(unsigned __int16)a4
 {
   if (a4 != 105)
   {
     return 0;
   }
 
-  if (a3 > 83)
+  if (chars > 83)
   {
-    if (a3 > 89)
+    if (chars > 89)
     {
-      if (a3 != 107)
+      if (chars != 107)
       {
-        if (a3 == 90)
+        if (chars == 90)
         {
           return 23;
         }
@@ -391,9 +391,9 @@ LABEL_26:
 
     else
     {
-      if (a3 != 84)
+      if (chars != 84)
       {
-        if (a3 == 89)
+        if (chars == 89)
         {
           return 22;
         }
@@ -405,11 +405,11 @@ LABEL_26:
     }
   }
 
-  else if (a3 > 76)
+  else if (chars > 76)
   {
-    if (a3 != 77)
+    if (chars != 77)
     {
-      if (a3 == 80)
+      if (chars == 80)
       {
         return 25;
       }
@@ -422,9 +422,9 @@ LABEL_26:
 
   else
   {
-    if (a3 != 69)
+    if (chars != 69)
     {
-      if (a3 == 71)
+      if (chars == 71)
       {
         return 27;
       }
@@ -436,29 +436,29 @@ LABEL_26:
   }
 }
 
-+ (TSCEPrefixedBaseUnit)prefixedUnitForString:(id)a3
++ (TSCEPrefixedBaseUnit)prefixedUnitForString:(id)string
 {
-  v3 = a3;
-  v7 = objc_msgSend_unitForString_(TSCEUnitRegistry, v4, v3, v5, v6);
+  stringCopy = string;
+  v7 = objc_msgSend_unitForString_(TSCEUnitRegistry, v4, stringCopy, v5, v6);
   if (v7)
   {
     v46.var1 = v7;
     v46.var0 = 9;
   }
 
-  else if (objc_msgSend_length(v3, v8, v9, v10, v11))
+  else if (objc_msgSend_length(stringCopy, v8, v9, v10, v11))
   {
-    v16 = objc_msgSend_characterAtIndex_(v3, v13, 0, v14, v15);
+    v16 = objc_msgSend_characterAtIndex_(stringCopy, v13, 0, v14, v15);
     v46.var0 = objc_msgSend_unitPrefixForCharacter_(TSCEUnitRegistry, v17, v16, v18, v19);
-    v23 = objc_msgSend_substringFromIndex_(v3, v20, 1, v21, v22);
+    v23 = objc_msgSend_substringFromIndex_(stringCopy, v20, 1, v21, v22);
     v27 = objc_msgSend_unitForString_(TSCEUnitRegistry, v24, v23, v25, v26);
     v46.var1 = v27;
 
-    if (!v27 && objc_msgSend_length(v3, v28, v29, v30, v31) >= 2)
+    if (!v27 && objc_msgSend_length(stringCopy, v28, v29, v30, v31) >= 2)
     {
-      v35 = objc_msgSend_characterAtIndex_(v3, v32, 1, v33, v34);
+      v35 = objc_msgSend_characterAtIndex_(stringCopy, v32, 1, v33, v34);
       v46.var0 = objc_msgSend_binaryUnitPrefixForChars::(TSCEUnitRegistry, v36, v16, v35, v37);
-      v41 = objc_msgSend_substringFromIndex_(v3, v38, 2, v39, v40);
+      v41 = objc_msgSend_substringFromIndex_(stringCopy, v38, 2, v39, v40);
       v45 = objc_msgSend_unitForString_(TSCEUnitRegistry, v42, v41, v43, v44);
       v46.var1 = v45;
 
@@ -483,10 +483,10 @@ LABEL_26:
   return v46;
 }
 
-+ (BOOL)unitIsMetric:(unsigned __int16)a3
++ (BOOL)unitIsMetric:(unsigned __int16)metric
 {
   result = 1;
-  if ((a3 > 0x38u || ((1 << a3) & 0x1C804E2FBE82940) == 0) && ((a3 - 79) > 0x1D || ((1 << (a3 - 79)) & 0x304B0041) == 0))
+  if ((metric > 0x38u || ((1 << metric) & 0x1C804E2FBE82940) == 0) && ((metric - 79) > 0x1D || ((1 << (metric - 79)) & 0x304B0041) == 0))
   {
     return 0;
   }
@@ -494,15 +494,15 @@ LABEL_26:
   return result;
 }
 
-+ (id)convertInNumber:(const TSUDecimal *)a3 outNumber:(TSUDecimal *)a4 fromUnit:(TSCEPrefixedBaseUnit)a5 toUnit:(TSCEPrefixedBaseUnit)a6
++ (id)convertInNumber:(const TSUDecimal *)number outNumber:(TSUDecimal *)outNumber fromUnit:(TSCEPrefixedBaseUnit)unit toUnit:(TSCEPrefixedBaseUnit)toUnit
 {
-  v41 = a6;
-  v42 = a5;
-  v40 = *a3;
-  if (qword_27CFB5448 <= a5.var1 && qword_27CFB5448 <= a6.var1)
+  toUnitCopy = toUnit;
+  unitCopy = unit;
+  v40 = *number;
+  if (qword_27CFB5448 <= unit.var1 && qword_27CFB5448 <= toUnit.var1)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEUnitRegistry convertInNumber:outNumber:fromUnit:toUnit:]", a4, *&a5.var0);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEUnitRegistry convertInNumber:outNumber:fromUnit:toUnit:]", outNumber, *&unit.var0);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEUnitRegistry.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 951, 0, "Invalid unit found in convert:");
 
@@ -512,19 +512,19 @@ LABEL_26:
     goto LABEL_18;
   }
 
-  v43._decimal.w[0] = &v42.var1;
-  v8 = *(sub_221309CBC(qword_27CFB5438, &v42.var1) + 18);
-  v43._decimal.w[0] = &v41.var1;
-  v9 = *(sub_221309CBC(qword_27CFB5438, &v41.var1) + 18);
+  v43._decimal.w[0] = &unitCopy.var1;
+  v8 = *(sub_221309CBC(qword_27CFB5438, &unitCopy.var1) + 18);
+  v43._decimal.w[0] = &toUnitCopy.var1;
+  v9 = *(sub_221309CBC(qword_27CFB5438, &toUnitCopy.var1) + 18);
   if (v8 != v9)
   {
-    var1 = v42.var1;
-    if (v9 != 2 || v42.var1 != 29 || v42.var0 != 15)
+    var1 = unitCopy.var1;
+    if (v9 != 2 || unitCopy.var1 != 29 || unitCopy.var0 != 15)
     {
-      if (v41.var1 == 29 && v41.var0 == 15 && v8 == 2)
+      if (toUnitCopy.var1 == 29 && toUnitCopy.var0 == 15 && v8 == 2)
       {
-        v41.var0 = 9;
-        v41.var1 = 68;
+        toUnitCopy.var0 = 9;
+        toUnitCopy.var1 = 68;
         goto LABEL_21;
       }
 
@@ -534,15 +534,15 @@ LABEL_26:
       goto LABEL_40;
     }
 
-    v42.var0 = 9;
-    v42.var1 = 68;
+    unitCopy.var0 = 9;
+    unitCopy.var1 = 68;
   }
 
-  var1 = v42.var1;
+  var1 = unitCopy.var1;
 LABEL_21:
   if (var1 == 41)
   {
-    if (v41.var1 == 41)
+    if (toUnitCopy.var1 == 41)
     {
       goto LABEL_30;
     }
@@ -552,7 +552,7 @@ LABEL_21:
 
   if (var1 == 74)
   {
-    if (v41.var1 == 74)
+    if (toUnitCopy.var1 == 74)
     {
       goto LABEL_30;
     }
@@ -560,7 +560,7 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  if (var1 == 42 && v41.var1 != 42)
+  if (var1 == 42 && toUnitCopy.var1 != 42)
   {
 LABEL_29:
     TSUDecimal::operator=();
@@ -568,19 +568,19 @@ LABEL_29:
   }
 
 LABEL_30:
-  v43._decimal.w[0] = &v42.var1;
-  sub_221309EF8(qword_27CFB5440, &v42.var1);
+  v43._decimal.w[0] = &unitCopy.var1;
+  sub_221309EF8(qword_27CFB5440, &unitCopy.var1);
   v43 = v40;
   TSUDecimal::operator*=();
   v28 = v43;
-  v43._decimal.w[0] = &v41.var1;
-  sub_221309EF8(qword_27CFB5440, &v41.var1);
+  v43._decimal.w[0] = &toUnitCopy.var1;
+  sub_221309EF8(qword_27CFB5440, &toUnitCopy.var1);
   v43 = v28;
   TSUDecimal::operator/=();
   v39 = v43;
-  if (v41.var1 == 41)
+  if (toUnitCopy.var1 == 41)
   {
-    if (v42.var1 != 41)
+    if (unitCopy.var1 != 41)
     {
       goto LABEL_38;
     }
@@ -588,9 +588,9 @@ LABEL_30:
 
   else
   {
-    if (v41.var1 != 74)
+    if (toUnitCopy.var1 != 74)
     {
-      if (v41.var1 != 42 || v42.var1 == 42)
+      if (toUnitCopy.var1 != 42 || unitCopy.var1 == 42)
       {
         goto LABEL_39;
       }
@@ -598,7 +598,7 @@ LABEL_30:
       goto LABEL_38;
     }
 
-    if (v42.var1 != 74)
+    if (unitCopy.var1 != 74)
     {
 LABEL_38:
       TSUDecimal::operator=();
@@ -607,22 +607,22 @@ LABEL_38:
   }
 
 LABEL_39:
-  objc_msgSend_multiplierForUnit_(TSCEUnitRegistry, v29, *&v42, v30, v31);
-  objc_msgSend_multiplierForUnit_(TSCEUnitRegistry, v32, *&v41, v33, v34);
+  objc_msgSend_multiplierForUnit_(TSCEUnitRegistry, v29, *&unitCopy, v30, v31);
+  objc_msgSend_multiplierForUnit_(TSCEUnitRegistry, v32, *&toUnitCopy, v33, v34);
   TSUDecimal::operator=();
   v43 = v39;
   TSUDecimal::operator*=();
   v27 = 0;
-  *a4 = v43;
+  *outNumber = v43;
 LABEL_40:
 
   return v27;
 }
 
-+ (unsigned)dimensionForUnit:(unsigned __int16)a3
++ (unsigned)dimensionForUnit:(unsigned __int16)unit
 {
-  v17 = a3;
-  if (qword_27CFB5448 <= a3)
+  unitCopy = unit;
+  if (qword_27CFB5448 <= unit)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEUnitRegistry dimensionForUnit:]", v3, v4);
@@ -632,8 +632,8 @@ LABEL_40:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13, v14, v15);
   }
 
-  v18 = &v17;
-  return *(sub_221309CBC(qword_27CFB5438, &v17) + 18);
+  v18 = &unitCopy;
+  return *(sub_221309CBC(qword_27CFB5438, &unitCopy) + 18);
 }
 
 @end

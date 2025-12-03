@@ -11,7 +11,7 @@
 
 - (id)genericListThumbnailCreator
 {
-  if ([a1 hasThumbnailImage])
+  if ([self hasThumbnailImage])
   {
     v1 = &__block_literal_global_31;
   }
@@ -28,7 +28,7 @@
 
 - (id)genericBrickThumbnailCreator
 {
-  if ([a1 hasThumbnailImage])
+  if ([self hasThumbnailImage])
   {
     v1 = &__block_literal_global_12_0;
   }
@@ -60,8 +60,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [v11 icons];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    icons = [v11 icons];
+    v13 = [icons countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
@@ -72,12 +72,12 @@ LABEL_6:
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(icons);
         }
 
         v17 = *(*(&v25 + 1) + 8 * v16);
         [v17 size];
-        if (v18 == a1)
+        if (v18 == self)
         {
           [v17 size];
           if (v19 <= a2)
@@ -87,7 +87,7 @@ LABEL_6:
         }
 
         [v17 size];
-        if (v20 <= a1)
+        if (v20 <= self)
         {
           [v17 size];
           if (v21 == a2)
@@ -98,7 +98,7 @@ LABEL_6:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v14 = [icons countByEnumeratingWithState:&v25 objects:v29 count:16];
           if (v14)
           {
             goto LABEL_6;
@@ -108,9 +108,9 @@ LABEL_6:
         }
       }
 
-      v22 = v17;
+      lastObject = v17;
 
-      if (v22)
+      if (lastObject)
       {
         goto LABEL_18;
       }
@@ -121,25 +121,25 @@ LABEL_6:
 LABEL_15:
     }
 
-    v23 = [v11 icons];
-    v22 = [v23 lastObject];
+    icons2 = [v11 icons];
+    lastObject = [icons2 lastObject];
 
 LABEL_18:
   }
 
   else
   {
-    v22 = 0;
+    lastObject = 0;
   }
 
-  return v22;
+  return lastObject;
 }
 
 - (id)quicklookPreviewItems
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 attachment];
-  v4[0] = v1;
+  attachment = [self attachment];
+  v4[0] = attachment;
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
 
   return v2;
@@ -148,23 +148,23 @@ LABEL_18:
 - (id)activityItems
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 attachment];
-  v3 = [v2 media];
-  v4 = [v3 mediaURL];
+  attachment = [self attachment];
+  media = [attachment media];
+  mediaURL = [media mediaURL];
 
-  v5 = [a1 attachment];
-  v6 = v5;
-  if (v4)
+  attachment2 = [self attachment];
+  v6 = attachment2;
+  if (mediaURL)
   {
-    v7 = [v5 attachmentModel];
-    v8 = [a1 attachment];
-    v9 = [v8 media];
-    v10 = [v9 mediaURL];
-    v11 = [v7 generateHardLinkURLIfNecessaryForURL:v10];
+    attachmentModel = [attachment2 attachmentModel];
+    attachment3 = [self attachment];
+    media2 = [attachment3 media];
+    mediaURL2 = [media2 mediaURL];
+    attachment4 = [attachmentModel generateHardLinkURLIfNecessaryForURL:mediaURL2];
 
-    if (v11)
+    if (attachment4)
     {
-      v21[0] = v11;
+      v21[0] = attachment4;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     }
 
@@ -177,12 +177,12 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v13 = [v5 URL];
+  v13 = [attachment2 URL];
 
   if (v13)
   {
-    v11 = [a1 attachment];
-    v14 = [v11 URL];
+    attachment4 = [self attachment];
+    v14 = [attachment4 URL];
     v20 = v14;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
 
@@ -193,8 +193,8 @@ LABEL_7:
   v12 = MEMORY[0x1E695E0F0];
 LABEL_8:
   v15 = [ICAttachmentActivityItemSource alloc];
-  v16 = [a1 attachment];
-  v17 = [(ICAttachmentActivityItemSource *)v15 initWithAttachment:v16];
+  attachment5 = [self attachment];
+  v17 = [(ICAttachmentActivityItemSource *)v15 initWithAttachment:attachment5];
   v18 = [v12 arrayByAddingObject:v17];
 
   return v18;
@@ -203,10 +203,10 @@ LABEL_8:
 - (id)fileIconWithPreferredSize:()UI
 {
   v6 = objc_opt_class();
-  v7 = [a1 attachment];
-  v8 = [v7 media];
-  v9 = [v8 mediaURL];
-  v10 = [v6 fileIconForURL:v9 withPreferredSize:{a2, a3}];
+  attachment = [self attachment];
+  media = [attachment media];
+  mediaURL = [media mediaURL];
+  v10 = [v6 fileIconForURL:mediaURL withPreferredSize:{a2, a3}];
 
   return v10;
 }

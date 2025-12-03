@@ -1,15 +1,15 @@
 @interface KNBuildFlame
 + (id)defaultAttributes;
-- (CATransform3D)p_orthoTransformWithScale:(SEL)a3 offset:(double)a4;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (id)p_flameSystemForTR:(id)a3 build:(id)a4 randomGenerator:(id)a5 metalContext:(id)a6;
-- (id)p_texturedRectFromImagePath:(id)a3 metalContext:(id)a4;
-- (void)metalAnimationHasBegunWithContext:(id)a3;
-- (void)metalAnimationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_prepareAnimationWithContext:(id)a3;
+- (CATransform3D)p_orthoTransformWithScale:(SEL)scale offset:(double)offset;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (id)p_flameSystemForTR:(id)r build:(id)build randomGenerator:(id)generator metalContext:(id)context;
+- (id)p_texturedRectFromImagePath:(id)path metalContext:(id)context;
+- (void)metalAnimationHasBegunWithContext:(id)context;
+- (void)metalAnimationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_prepareAnimationWithContext:(id)context;
 @end
 
 @implementation KNBuildFlame
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  v4 = [a3 textures];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  textures = [context textures];
+  v5 = [textures objectAtIndexedSubscript:0];
 
   [v5 frameOnCanvas];
   self->_drawableFrame.origin.x = v6;
@@ -66,13 +66,13 @@
   return result;
 }
 
-- (id)p_flameSystemForTR:(id)a3 build:(id)a4 randomGenerator:(id)a5 metalContext:(id)a6
+- (id)p_flameSystemForTR:(id)r build:(id)build randomGenerator:(id)generator metalContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  rCopy = r;
+  buildCopy = build;
+  generatorCopy = generator;
+  contextCopy = context;
+  if (!generatorCopy)
   {
     v14 = +[TSUAssertionHandler currentHandler];
     v15 = [NSString stringWithUTF8String:"[KNBuildFlame p_flameSystemForTR:build:randomGenerator:metalContext:]"];
@@ -81,16 +81,16 @@
   }
 
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
-  [v11 duration];
+  [buildCopy duration];
   v18 = v17;
-  [v10 size];
+  [rCopy size];
   v20 = v19;
-  [v10 size];
-  if (v13)
+  [rCopy size];
+  if (contextCopy)
   {
     v22 = ((v18 + fmax(v18 * -0.5 + 1.0, 0.0)) * (v20 / v21 * 150.0));
-    [v10 size];
-    v23 = [KNBuildFlameSystem newParticleSystemWithNumberOfParticles:"newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:" objectSize:v22 slideSize:0 duration:v12 direction:self->_metalFlameShader randomGenerator:v13 shader:? metalContext:?];
+    [rCopy size];
+    v23 = [KNBuildFlameSystem newParticleSystemWithNumberOfParticles:"newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:" objectSize:v22 slideSize:0 duration:generatorCopy direction:self->_metalFlameShader randomGenerator:contextCopy shader:? metalContext:?];
     [(TSDTexturedRectangle *)self->_metalFlameTexture size];
   }
 
@@ -101,12 +101,12 @@
     height = CGSizeZero.height;
   }
 
-  [v23 setupWithTexture:v10 particleTextureSize:0 reverseDrawOrder:{width, height}];
+  [v23 setupWithTexture:rCopy particleTextureSize:0 reverseDrawOrder:{width, height}];
 
   return v23;
 }
 
-- (CATransform3D)p_orthoTransformWithScale:(SEL)a3 offset:(double)a4
+- (CATransform3D)p_orthoTransformWithScale:(SEL)scale offset:(double)offset
 {
   y = a5.y;
   x = a5.x;
@@ -148,45 +148,45 @@
   return result;
 }
 
-- (id)p_texturedRectFromImagePath:(id)a3 metalContext:(id)a4
+- (id)p_texturedRectFromImagePath:(id)path metalContext:(id)context
 {
-  v5 = a4;
-  v6 = [TSUImage imageWithContentsOfFile:a3];
-  v7 = [v6 CGImage];
+  contextCopy = context;
+  v6 = [TSUImage imageWithContentsOfFile:path];
+  cGImage = [v6 CGImage];
 
-  v8 = [[TSDTexturedRectangle alloc] initWithCGImage:v7];
-  v9 = [v5 device];
+  v8 = [[TSDTexturedRectangle alloc] initWithCGImage:cGImage];
+  device = [contextCopy device];
 
-  [v8 setupMetalTextureForDevice:v9];
+  [v8 setupMetalTextureForDevice:device];
 
   return v8;
 }
 
-- (void)p_prepareAnimationWithContext:(id)a3
+- (void)p_prepareAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 textures];
-  v6 = [v4 metalContext];
-  v7 = [v6 device];
-  if ([v5 count] != &dword_0 + 1)
+  contextCopy = context;
+  textures = [contextCopy textures];
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
+  if ([textures count] != &dword_0 + 1)
   {
     v8 = +[TSUAssertionHandler currentHandler];
     v9 = [NSString stringWithUTF8String:"[KNBuildFlame p_prepareAnimationWithContext:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildFlame.m"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:254 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v5, "count")}];
+    [v8 handleFailureInFunction:v9 file:v10 lineNumber:254 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
   }
 
-  v11 = [v5 lastObject];
+  lastObject = [textures lastObject];
   v12 = KNBundle();
   v69 = [v12 pathForResource:@"KNBuildFlame" ofType:@"png"];
 
-  v13 = [(KNBuildFlame *)self p_texturedRectFromImagePath:v69 metalContext:v6];
+  v13 = [(KNBuildFlame *)self p_texturedRectFromImagePath:v69 metalContext:metalContext];
   metalFlameTexture = self->_metalFlameTexture;
   self->_metalFlameTexture = v13;
 
-  [(KNBuildFlame *)self frameOfEffectWithContext:v4];
-  v68 = v5;
-  [(KNAnimationEffect *)self mvpMatrixWithContext:v4];
+  [(KNBuildFlame *)self frameOfEffectWithContext:contextCopy];
+  v68 = textures;
+  [(KNAnimationEffect *)self mvpMatrixWithContext:contextCopy];
   v15 = *&v74.m33;
   *&self->_baseTransform.m31 = *&v74.m31;
   *&self->_baseTransform.m33 = v15;
@@ -199,30 +199,30 @@
   v18 = *&v74.m23;
   *&self->_baseTransform.m21 = *&v74.m21;
   *&self->_baseTransform.m23 = v18;
-  [v11 frameOnCanvas];
+  [lastObject frameOnCanvas];
   v67 = v19 - CGRectGetMinX(self->_frameRect);
-  [v11 frameOnCanvas];
+  [lastObject frameOnCanvas];
   v21 = v20 - CGRectGetMaxY(self->_frameRect);
   frameRect = self->_frameRect;
   v22 = self->_drawableFrame.origin.y - frameRect.origin.y;
   MaxY = CGRectGetMaxY(frameRect);
   v66 = v21 + MaxY - CGRectGetMaxY(self->_drawableFrame) - v22;
-  [v11 frameOnCanvas];
+  [lastObject frameOnCanvas];
   v25 = v24;
   v27 = v26;
   y = CGPointZero.y;
   v29 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v29 setPixelFormat:objc_msgSend(v6, "pixelFormat")];
+  [v29 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v29 setBlendingEnabled:1];
   [v29 setSourceRGBBlendFactor:1];
   [v29 setSourceAlphaBlendFactor:1];
   [v29 setDestinationRGBBlendFactor:5];
   [v29 setDestinationAlphaBlendFactor:5];
-  v30 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:v7 colorAttachment:v29];
+  v30 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:device colorAttachment:v29];
   metalObjectShader = self->_metalObjectShader;
   self->_metalObjectShader = v30;
 
-  v32 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v7 textureRect:CGPointZero.x device:y, v25, v27, TSDRectUnit[0], TSDRectUnit[1], TSDRectUnit[2], TSDRectUnit[3]];
+  v32 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:CGPointZero.x device:y, v25, v27, TSDRectUnit[0], TSDRectUnit[1], TSDRectUnit[2], TSDRectUnit[3]];
   metalObjectDataBuffer = self->_metalObjectDataBuffer;
   self->_metalObjectDataBuffer = v32;
 
@@ -233,30 +233,30 @@
   *&self->_anon_160[16] = v34;
   *&self->_anon_160[32] = v35;
   *&self->_anon_160[48] = v36;
-  v37 = v4;
+  v37 = contextCopy;
   v38 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v38 setPixelFormat:objc_msgSend(v6, "pixelFormat")];
+  [v38 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v38 setBlendingEnabled:1];
   [v38 setSourceRGBBlendFactor:4];
   [v38 setSourceAlphaBlendFactor:4];
   [v38 setDestinationRGBBlendFactor:1];
   [v38 setDestinationAlphaBlendFactor:1];
-  v39 = [[TSDMetalRenderTarget alloc] initWithSize:v6 metalContext:{self->_frameRect.size.width, self->_frameRect.size.height}];
+  v39 = [[TSDMetalRenderTarget alloc] initWithSize:metalContext metalContext:{self->_frameRect.size.width, self->_frameRect.size.height}];
   fboRenderTarget = self->_fboRenderTarget;
   self->_fboRenderTarget = v39;
 
-  v41 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildFlameVertexShader" fragmentShader:@"buildFlameFragmentShader" device:v7 library:@"KeynoteMetalLibrary" colorAttachment:v38];
+  v41 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildFlameVertexShader" fragmentShader:@"buildFlameFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v38];
   metalFlameShader = self->_metalFlameShader;
   self->_metalFlameShader = v41;
 
-  v43 = [v37 animatedBuild];
-  v44 = [v37 randomGenerator];
-  v45 = [(KNBuildFlame *)self p_flameSystemForTR:v11 build:v43 randomGenerator:v44 metalContext:v6];
+  animatedBuild = [v37 animatedBuild];
+  randomGenerator = [v37 randomGenerator];
+  v45 = [(KNBuildFlame *)self p_flameSystemForTR:lastObject build:animatedBuild randomGenerator:randomGenerator metalContext:metalContext];
   flameSystem = self->_flameSystem;
   self->_flameSystem = v45;
 
-  [v11 frameOnCanvas];
-  [v11 frameOnCanvas];
+  [lastObject frameOnCanvas];
+  [lastObject frameOnCanvas];
   height = self->_frameRect.size.height;
   [(KNAnimationContext *)self->super.mAnimationContext fieldOfViewInRadians];
   v49 = tan(v48 * 0.5);
@@ -286,12 +286,12 @@
   [(KNBuildFlameSystem *)self->_flameSystem duration];
   *&v56 = v56;
   *&self->_anon_34[60] = LODWORD(v56);
-  v57 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:v7 colorAttachment:v29];
+  v57 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:device colorAttachment:v29];
   metalFboShader = self->_metalFboShader;
   self->_metalFboShader = v57;
 
   TSDRectWithSize();
-  v59 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v7 device:?];
+  v59 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:device device:?];
   metalFboDataBuffer = self->_metalFboDataBuffer;
   self->_metalFboDataBuffer = v59;
 
@@ -312,46 +312,46 @@
   *&self->_anon_1c0[48] = v65;
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildIn];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildIn = [animatedBuild isBuildIn];
 
-  if (v5)
+  if (isBuildIn)
   {
-    [(KNBuildFlame *)self p_prepareAnimationWithContext:v6];
+    [(KNBuildFlame *)self p_prepareAnimationWithContext:contextCopy];
   }
 }
 
-- (void)metalAnimationWillBeginWithContext:(id)a3
+- (void)metalAnimationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildFlame *)self metalPrepareAnimationWithContext:v4];
-  [(KNBuildFlame *)self metalAnimationHasBegunWithContext:v4];
+  contextCopy = context;
+  [(KNBuildFlame *)self metalPrepareAnimationWithContext:contextCopy];
+  [(KNBuildFlame *)self metalAnimationHasBegunWithContext:contextCopy];
 }
 
-- (void)metalAnimationHasBegunWithContext:(id)a3
+- (void)metalAnimationHasBegunWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildOut];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
-    [(KNBuildFlame *)self p_prepareAnimationWithContext:v6];
+    [(KNBuildFlame *)self p_prepareAnimationWithContext:contextCopy];
   }
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
-  v37 = a3;
-  v4 = [v37 textures];
-  v5 = [v37 metalContext];
-  [v37 percent];
+  contextCopy = context;
+  textures = [contextCopy textures];
+  metalContext = [contextCopy metalContext];
+  [contextCopy percent];
   v7 = v6;
-  v8 = [v37 animatedBuild];
-  if ([v8 isBuildOut])
+  animatedBuild = [contextCopy animatedBuild];
+  if ([animatedBuild isBuildOut])
   {
     v9 = 1.0 - v7;
   }
@@ -361,22 +361,22 @@
     v9 = v7;
   }
 
-  v10 = [v4 lastObject];
-  v11 = [v37 metalContext];
-  v12 = [v11 renderEncoder];
+  lastObject = [textures lastObject];
+  metalContext2 = [contextCopy metalContext];
+  renderEncoder = [metalContext2 renderEncoder];
 
-  if (!v12)
+  if (!renderEncoder)
   {
     v13 = +[TSUAssertionHandler currentHandler];
     v14 = [NSString stringWithUTF8String:"[KNBuildFlame metalRenderFrameWithContext:]"];
     [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildFlame.m"];
-    v16 = v15 = v5;
+    v16 = v15 = metalContext;
     [v13 handleFailureInFunction:v14 file:v16 lineNumber:392 description:{@"invalid nil value for '%s'", "renderEncoder"}];
 
-    v5 = v15;
+    metalContext = v15;
   }
 
-  if ([v8 isBuildOut])
+  if ([animatedBuild isBuildOut])
   {
     v17 = 0.25;
   }
@@ -386,7 +386,7 @@
     v17 = 0.5;
   }
 
-  [v8 duration];
+  [animatedBuild duration];
   v19 = 1.0 / v18;
   if (v17 >= v19)
   {
@@ -398,22 +398,22 @@
     v20 = v17;
   }
 
-  v21 = [v37 metalContext];
-  v22 = [v10 metalTextureWithContext:v21];
+  metalContext3 = [contextCopy metalContext];
+  v22 = [lastObject metalTextureWithContext:metalContext3];
 
   if (v22)
   {
-    v36 = v4;
-    [v12 setFragmentTexture:v22 atIndex:0];
+    v36 = textures;
+    [renderEncoder setFragmentTexture:v22 atIndex:0];
     if (v9 > v20)
     {
       TSUSineMap();
       v24 = v23;
-      [v10 singleTextureOpacity];
+      [lastObject singleTextureOpacity];
       *&v25 = v24 * v25;
       self->_objectFragmentUniforms.Opacity = *&v25;
-      [(TSDMetalShader *)self->_metalObjectShader setPipelineStateWithEncoder:v12 vertexBytes:self->_anon_160 fragmentBytes:?];
-      [(TSDMTLDataBuffer *)self->_metalObjectDataBuffer drawWithEncoder:v12 atIndex:[(TSDMetalShader *)self->_metalObjectShader bufferIndex]];
+      [(TSDMetalShader *)self->_metalObjectShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_160 fragmentBytes:?];
+      [(TSDMTLDataBuffer *)self->_metalObjectDataBuffer drawWithEncoder:renderEncoder atIndex:[(TSDMetalShader *)self->_metalObjectShader bufferIndex]];
     }
 
     v26 = v9 == 1.0 || v9 == 0.0;
@@ -426,32 +426,32 @@
     v27 = v7;
     *&self->_anon_34[52] = v27;
     *&self->_anon_34[56] = v28;
-    [v5 commandQueue];
-    v29 = v35 = v5;
-    v30 = [v29 commandBuffer];
+    [metalContext commandQueue];
+    v29 = v35 = metalContext;
+    commandBuffer = [v29 commandBuffer];
 
-    v31 = [(TSDMetalRenderTarget *)self->_fboRenderTarget passDescriptor];
-    v32 = [v30 renderCommandEncoderWithDescriptor:v31];
+    passDescriptor = [(TSDMetalRenderTarget *)self->_fboRenderTarget passDescriptor];
+    v32 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
 
     [(TSDMetalShader *)self->_metalFlameShader setPipelineStateWithEncoder:v32 vertexBytes:&self->_flameUniforms];
-    v33 = [(TSDTexturedRectangle *)self->_metalFlameTexture metalTexture];
-    [v32 setFragmentTexture:v33 atIndex:0];
+    metalTexture = [(TSDTexturedRectangle *)self->_metalFlameTexture metalTexture];
+    [v32 setFragmentTexture:metalTexture atIndex:0];
 
     [(KNBuildFlameSystem *)self->_flameSystem drawMetalWithEncoder:v32];
     [v32 endEncoding];
-    [v30 commit];
-    v34 = [(TSDMetalRenderTarget *)self->_fboRenderTarget texture];
-    [v12 setFragmentTexture:v34 atIndex:0];
+    [commandBuffer commit];
+    texture = [(TSDMetalRenderTarget *)self->_fboRenderTarget texture];
+    [renderEncoder setFragmentTexture:texture atIndex:0];
 
-    [(TSDMetalShader *)self->_metalFboShader setPipelineStateWithEncoder:v12 vertexBytes:self->_anon_1c0];
-    [(TSDMTLDataBuffer *)self->_metalFboDataBuffer drawWithEncoder:v12 atIndex:[(TSDMetalShader *)self->_metalFboShader bufferIndex]];
+    [(TSDMetalShader *)self->_metalFboShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_1c0];
+    [(TSDMTLDataBuffer *)self->_metalFboDataBuffer drawWithEncoder:renderEncoder atIndex:[(TSDMetalShader *)self->_metalFboShader bufferIndex]];
 
-    v5 = v35;
-    v4 = v36;
+    metalContext = v35;
+    textures = v36;
   }
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   metalFlameShader = self->_metalFlameShader;
   self->_metalFlameShader = 0;

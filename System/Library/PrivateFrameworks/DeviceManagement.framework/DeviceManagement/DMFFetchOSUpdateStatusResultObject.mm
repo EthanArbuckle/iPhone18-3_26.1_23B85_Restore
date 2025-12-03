@@ -1,49 +1,49 @@
 @interface DMFFetchOSUpdateStatusResultObject
-+ (id)descriptionForStatus:(unint64_t)a3;
-- (DMFFetchOSUpdateStatusResultObject)initWithCoder:(id)a3;
-- (DMFFetchOSUpdateStatusResultObject)initWithProductKey:(id)a3 status:(unint64_t)a4 downloadPercentComplete:(double)a5;
++ (id)descriptionForStatus:(unint64_t)status;
+- (DMFFetchOSUpdateStatusResultObject)initWithCoder:(id)coder;
+- (DMFFetchOSUpdateStatusResultObject)initWithProductKey:(id)key status:(unint64_t)status downloadPercentComplete:(double)complete;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchOSUpdateStatusResultObject
 
-- (DMFFetchOSUpdateStatusResultObject)initWithProductKey:(id)a3 status:(unint64_t)a4 downloadPercentComplete:(double)a5
+- (DMFFetchOSUpdateStatusResultObject)initWithProductKey:(id)key status:(unint64_t)status downloadPercentComplete:(double)complete
 {
-  v8 = a3;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = DMFFetchOSUpdateStatusResultObject;
   v9 = [(CATTaskResultObject *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [keyCopy copy];
     productKey = v9->_productKey;
     v9->_productKey = v10;
 
-    v9->_status = a4;
-    v9->_downloadPercentComplete = a5;
+    v9->_status = status;
+    v9->_downloadPercentComplete = complete;
   }
 
   return v9;
 }
 
-- (DMFFetchOSUpdateStatusResultObject)initWithCoder:(id)a3
+- (DMFFetchOSUpdateStatusResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = DMFFetchOSUpdateStatusResultObject;
-  v5 = [(CATTaskResultObject *)&v13 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"productKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"productKey"];
     productKey = v5->_productKey;
     v5->_productKey = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     v5->_status = [v9 unsignedIntegerValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadPercentComplete"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadPercentComplete"];
     [v10 doubleValue];
     v5->_downloadPercentComplete = v11;
   }
@@ -51,33 +51,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = DMFFetchOSUpdateStatusResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v9 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchOSUpdateStatusResultObject *)self productKey:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"productKey"];
+  [coderCopy encodeObject:v5 forKey:@"productKey"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFFetchOSUpdateStatusResultObject status](self, "status")}];
-  [v4 encodeObject:v6 forKey:@"status"];
+  [coderCopy encodeObject:v6 forKey:@"status"];
 
   v7 = MEMORY[0x1E696AD98];
   [(DMFFetchOSUpdateStatusResultObject *)self downloadPercentComplete];
   v8 = [v7 numberWithDouble:?];
-  [v4 encodeObject:v8 forKey:@"downloadPercentComplete"];
+  [coderCopy encodeObject:v8 forKey:@"downloadPercentComplete"];
 }
 
-+ (id)descriptionForStatus:(unint64_t)a3
++ (id)descriptionForStatus:(unint64_t)status
 {
   v3 = @"idle";
-  if (a3 == 1)
+  if (status == 1)
   {
     v3 = @"downloading";
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
     return @"installing";
   }
@@ -91,12 +91,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@:%p {\n", objc_opt_class(), self];
-  v4 = [(DMFFetchOSUpdateStatusResultObject *)self productKey];
-  v5 = v4;
+  productKey = [(DMFFetchOSUpdateStatusResultObject *)self productKey];
+  v5 = productKey;
   v6 = @"None";
-  if (v4)
+  if (productKey)
   {
-    v6 = v4;
+    v6 = productKey;
   }
 
   [v3 appendFormat:@"\tProduct Key               : “%@”\n", v6];

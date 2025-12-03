@@ -1,61 +1,61 @@
 @interface CKAudioReplyPreviewBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKAudioReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5;
-- (void)configureForMessagePart:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKAudioReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
-- (void)setDuration:(double)a3;
-- (void)setWaveform:(id)a3;
+- (void)setDuration:(double)duration;
+- (void)setWaveform:(id)waveform;
 @end
 
 @implementation CKAudioReplyPreviewBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation
 {
-  v5 = a5;
+  orientationCopy = orientation;
   v12.receiver = self;
   v12.super_class = CKAudioReplyPreviewBalloonView;
-  v8 = a3;
-  [(CKBalloonView *)&v12 configureForMediaObject:v8 previewWidth:v5 orientation:a4];
-  v9 = [v8 waveformForOrientation:{v5, v12.receiver, v12.super_class}];
+  objectCopy = object;
+  [(CKBalloonView *)&v12 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:width];
+  v9 = [objectCopy waveformForOrientation:{orientationCopy, v12.receiver, v12.super_class}];
   [(CKAudioReplyPreviewBalloonView *)self setWaveform:v9];
 
-  [v8 duration];
+  [objectCopy duration];
   v11 = v10;
 
   [(CKAudioReplyPreviewBalloonView *)self setDuration:v11];
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = CKAudioReplyPreviewBalloonView;
-  v4 = a3;
-  [(CKColoredBalloonView *)&v8 configureForComposition:v4];
-  v5 = [v4 mediaObjects];
+  compositionCopy = composition;
+  [(CKColoredBalloonView *)&v8 configureForComposition:compositionCopy];
+  mediaObjects = [compositionCopy mediaObjects];
 
-  v6 = [v5 lastObject];
+  lastObject = [mediaObjects lastObject];
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 previewMaxWidth];
-  [(CKAudioReplyPreviewBalloonView *)self configureForMediaObject:v6 previewWidth:1 orientation:?];
+  [(CKAudioReplyPreviewBalloonView *)self configureForMediaObject:lastObject previewWidth:1 orientation:?];
 }
 
-- (CKAudioReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKAudioReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = CKAudioReplyPreviewBalloonView;
   v7 = [(CKColoredBalloonView *)&v13 initWithFrame:?];
   if (v7)
   {
-    v8 = [[CKWaveformProgressView alloc] initWithFrame:x, y, width, height];
+    height = [[CKWaveformProgressView alloc] initWithFrame:x, y, width, height];
     waveformProgressView = v7->_waveformProgressView;
-    v7->_waveformProgressView = v8;
+    v7->_waveformProgressView = height;
 
     [(CKWaveformProgressView *)v7->_waveformProgressView setColor:[(CKBalloonView *)v7 color]];
     [(CKWaveformProgressView *)v7->_waveformProgressView setPlaying:0];
@@ -66,8 +66,8 @@
     [(CKWaveformProgressView *)v10 setDuration:?];
     [(CKWaveformProgressView *)v7->_waveformProgressView setContentMode:1];
     [(CKAudioReplyPreviewBalloonView *)v7 addSubview:v7->_waveformProgressView];
-    v11 = [(CKBalloonView *)v7 doubleTapGestureRecognizer];
-    [v11 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v7 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v7;
@@ -86,9 +86,9 @@
   v28 = v10;
   v29 = v9;
   v12 = v11;
-  v13 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
-  [v13 frame];
-  [v13 sizeThatFits:{v4, v6}];
+  waveformProgressView = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
+  [waveformProgressView frame];
+  [waveformProgressView sizeThatFits:{v4, v6}];
   v15 = v14;
   v17 = v16;
   v18 = +[CKUIBehavior sharedBehaviors];
@@ -109,17 +109,17 @@
     v27 = *&CKMainScreenScale_sMainScreenScale_56;
   }
 
-  [v13 setFrame:{floor((v8 + (v12 - (v15 - (v22 + v26))) * 0.5) * v27) / v27, floor((v29 + (v28 - (v17 - (v20 + v24))) * 0.5) * v27) / v27}];
+  [waveformProgressView setFrame:{floor((v8 + (v12 - (v15 - (v22 + v26))) * 0.5) * v27) / v27, floor((v29 + (v28 - (v17 - (v20 + v24))) * 0.5) * v27) / v27}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  width = a3.width;
-  [(UIView *)self __ck_alignmentRectSizeForFrameSize:a4, a5, a3.width, a3.height];
+  width = fits.width;
+  [(UIView *)self __ck_alignmentRectSizeForFrameSize:insets, tailInsets, fits.width, fits.height];
   v9 = v8;
   v11 = v10;
-  v12 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
-  [v12 sizeThatFits:{v9, v11}];
+  waveformProgressView = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
+  [waveformProgressView sizeThatFits:{v9, v11}];
   v14 = v13;
 
   v15 = 0.0;
@@ -135,9 +135,9 @@
     v19.f64[1] = NAN;
     v40 = *vbslq_s8(vnegq_f64(v19), v17, v18).i64;
     v20 = +[CKUIBehavior sharedBehaviors];
-    v21 = [v20 waveformPowerLevelWidthIncrement];
+    waveformPowerLevelWidthIncrement = [v20 waveformPowerLevelWidthIncrement];
 
-    v15 = v39 + v21 - (v40 + (v39 % v21));
+    v15 = v39 + waveformPowerLevelWidthIncrement - (v40 + (v39 % waveformPowerLevelWidthIncrement));
   }
 
   v22 = +[CKUIBehavior sharedBehaviors];
@@ -152,12 +152,12 @@
   v31 = v30;
   v33 = v32;
 
-  if (a4)
+  if (insets)
   {
-    a4->top = v27;
-    a4->left = v29;
-    a4->bottom = v31;
-    a4->right = v33;
+    insets->top = v27;
+    insets->left = v29;
+    insets->bottom = v31;
+    insets->right = v33;
   }
 
   v34 = +[CKUIBehavior sharedBehaviors];
@@ -176,29 +176,29 @@
   v5.receiver = self;
   v5.super_class = CKAudioReplyPreviewBalloonView;
   [(CKColoredBalloonView *)&v5 prepareForDisplay];
-  v3 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
-  [v3 setColor:{-[CKBalloonView color](self, "color")}];
+  waveformProgressView = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
+  [waveformProgressView setColor:{-[CKBalloonView color](self, "color")}];
 
-  v4 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
-  [v4 prepareForDisplayIfNeeded];
+  waveformProgressView2 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
+  [waveformProgressView2 prepareForDisplayIfNeeded];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
-    v5 = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
-    [v5 setDuration:a3];
+    self->_duration = duration;
+    waveformProgressView = [(CKAudioReplyPreviewBalloonView *)self waveformProgressView];
+    [waveformProgressView setDuration:duration];
 
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setWaveform:(id)a3
+- (void)setWaveform:(id)waveform
 {
-  v4 = a3;
-  [v4 size];
+  waveformCopy = waveform;
+  [waveformCopy size];
   if (v6 != 0.0)
   {
     v7 = v5;
@@ -210,8 +210,8 @@
       v13 = 3221225472;
       v14 = __46__CKAudioReplyPreviewBalloonView_setWaveform___block_invoke;
       v15 = &unk_1E72F4320;
-      v16 = v4;
-      v17 = self;
+      v16 = waveformCopy;
+      selfCopy = self;
       v18 = v7;
       v19 = v8;
       v10 = [v9 imageWithActions:&v12];
@@ -237,20 +237,20 @@ void __46__CKAudioReplyPreviewBalloonView_setWaveform___block_invoke(uint64_t a1
   UIRectFillUsingBlendMode(*&v7, kCGBlendModeSourceIn);
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v9.receiver = self;
   v9.super_class = CKAudioReplyPreviewBalloonView;
-  [(CKColoredBalloonView *)&v9 configureForMessagePart:v4];
-  v5 = [v4 mediaObject];
+  [(CKColoredBalloonView *)&v9 configureForMessagePart:partCopy];
+  mediaObject = [partCopy mediaObject];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 previewMaxWidth];
-  -[CKAudioReplyPreviewBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", v5, [v4 balloonOrientation], v7);
+  -[CKAudioReplyPreviewBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", mediaObject, [partCopy balloonOrientation], v7);
 
-  if (v4)
+  if (partCopy)
   {
-    [v4 balloonDescriptor];
+    [partCopy balloonDescriptor];
   }
 
   else

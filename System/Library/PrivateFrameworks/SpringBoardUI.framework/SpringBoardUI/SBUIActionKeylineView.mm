@@ -6,8 +6,8 @@
 - (void)_updateCornerMask;
 - (void)_updateVisualStylingIfNecessary;
 - (void)layoutSubviews;
-- (void)setHeight:(double)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setHeight:(double)height;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SBUIActionKeylineView
@@ -25,11 +25,11 @@
   return result;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
-  if (vabdd_f64(a3, self->_height) > 2.22044605e-16)
+  if (vabdd_f64(height, self->_height) > 2.22044605e-16)
   {
-    self->_height = a3;
+    self->_height = height;
     [(SBUIActionKeylineView *)self _updateCornerMask];
 
     [(SBUIActionKeylineView *)self invalidateIntrinsicContentSize];
@@ -40,8 +40,8 @@
 {
   [(SBUIActionKeylineView *)self height];
   v4 = v3;
-  v5 = [(SBUIActionKeylineView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(SBUIActionKeylineView *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v4 * (1.0 / v6);
 
   return v7;
@@ -55,11 +55,11 @@
   [(SBUIActionKeylineView *)self _updateVisualStylingIfNecessary];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = SBUIActionKeylineView;
-  [(SBUIActionKeylineView *)&v4 willMoveToSuperview:a3];
+  [(SBUIActionKeylineView *)&v4 willMoveToSuperview:superview];
   [(SBUIActionKeylineView *)self _invalidateVisualStyling];
 }
 
@@ -99,8 +99,8 @@
 
 - (void)_updateCornerMask
 {
-  v7 = [(SBUIActionKeylineView *)self layer];
-  [v7 setMaskedCorners:5];
+  layer = [(SBUIActionKeylineView *)self layer];
+  [layer setMaskedCorners:5];
   [(SBUIActionKeylineView *)self heightInPixels];
   v4 = v3 * 0.5;
   v5 = v3 < 1.0;

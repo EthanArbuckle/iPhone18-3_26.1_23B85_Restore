@@ -1,29 +1,29 @@
 @interface WFImageIcon
-- (BOOL)isEqual:(id)a3;
-- (WFImageIcon)initWithCoder:(id)a3;
-- (WFImageIcon)initWithImage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFImageIcon)initWithCoder:(id)coder;
+- (WFImageIcon)initWithImage:(id)image;
 @end
 
 @implementation WFImageIcon
 
-- (WFImageIcon)initWithCoder:(id)a3
+- (WFImageIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
 
   v6 = [(WFImageIcon *)self initWithImage:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFImageIcon *)self image];
-    v6 = [v4 image];
-    v7 = v5;
-    v8 = v6;
+    image = [(WFImageIcon *)self image];
+    image2 = [equalCopy image];
+    v7 = image;
+    v8 = image2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -48,22 +48,22 @@
   return v10;
 }
 
-- (WFImageIcon)initWithImage:(id)a3
+- (WFImageIcon)initWithImage:(id)image
 {
-  v6 = a3;
-  if (!v6)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFIcon.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFIcon.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"image"}];
   }
 
   v12.receiver = self;
   v12.super_class = WFImageIcon;
-  v7 = [(WFIcon *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(WFIcon *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(_init + 1, image);
     v9 = v8;
   }
 

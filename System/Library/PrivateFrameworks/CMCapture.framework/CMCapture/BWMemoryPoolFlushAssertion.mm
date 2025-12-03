@@ -1,6 +1,6 @@
 @interface BWMemoryPoolFlushAssertion
 - (void)dealloc;
-- (void)initWithIdentifier:(void *)a3 pool:;
+- (void)initWithIdentifier:(void *)identifier pool:;
 @end
 
 @implementation BWMemoryPoolFlushAssertion
@@ -14,22 +14,22 @@
   [(BWMemoryPoolFlushAssertion *)&v3 dealloc];
 }
 
-- (void)initWithIdentifier:(void *)a3 pool:
+- (void)initWithIdentifier:(void *)identifier pool:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = BWMemoryPoolFlushAssertion;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   if (v5)
   {
     v6 = [a2 copy];
-    v5[1] = a3;
+    v5[1] = identifier;
     v5[2] = v6;
-    [a3 _addFlushAssertion];
+    [identifier _addFlushAssertion];
   }
 
   return v5;

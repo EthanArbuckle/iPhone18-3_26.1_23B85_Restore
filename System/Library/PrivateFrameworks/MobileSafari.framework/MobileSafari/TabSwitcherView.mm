@@ -1,8 +1,8 @@
 @interface TabSwitcherView
-- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithCoder:(id)a3;
-- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithFrame:(CGRect)a3;
+- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithCoder:(id)coder;
+- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation TabSwitcherView
@@ -22,7 +22,7 @@
   v3[32] = 0;
 }
 
-- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithCoder:(id)a3
+- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView_lastLayoutBounds;
   *v3 = 0u;
@@ -33,14 +33,14 @@
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_18BB07294(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_18BB07294(window);
 }
 
-- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithFrame:(CGRect)a3
+- (_TtC12MobileSafariP33_10AE7CC66F702E7BDA2FA135062253C815TabSwitcherView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,17 +1,17 @@
 @interface ZhuGeCache
-- (BOOL)setCache:(id)a3 forKey:(id)a4 withError:(id *)a5;
-- (ZhuGeCache)initWithName:(id)a3 andCapacity:(id)a4 andCacheType:(Class)a5;
-- (id)getCacheForKey:(id)a3;
+- (BOOL)setCache:(id)cache forKey:(id)key withError:(id *)error;
+- (ZhuGeCache)initWithName:(id)name andCapacity:(id)capacity andCacheType:(Class)type;
+- (id)getCacheForKey:(id)key;
 - (void)clearCache;
-- (void)delCacheForKey:(id)a3;
+- (void)delCacheForKey:(id)key;
 @end
 
 @implementation ZhuGeCache
 
-- (ZhuGeCache)initWithName:(id)a3 andCapacity:(id)a4 andCacheType:(Class)a5
+- (ZhuGeCache)initWithName:(id)name andCapacity:(id)capacity andCacheType:(Class)type
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  capacityCopy = capacity;
   v18.receiver = self;
   v18.super_class = ZhuGeCache;
   v11 = [(ZhuGeCache *)&v18 init];
@@ -19,9 +19,9 @@
   if (v11)
   {
     initPthreadRecursiveMutex(&v11->aRecursiveMutex);
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v12->_capacity, a4);
-    objc_storeStrong(&v12->_cacheType, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v12->_capacity, capacity);
+    objc_storeStrong(&v12->_cacheType, type);
     v13 = [[NSMutableArray alloc] initWithCapacity:{-[NSNumber integerValue](v12->_capacity, "integerValue")}];
     cacheList = v12->_cacheList;
     v12->_cacheList = v13;
@@ -37,60 +37,60 @@
 - (void)clearCache
 {
   pthread_mutex_lock(&self->aRecursiveMutex);
-  v3 = [(ZhuGeCache *)self cacheDict];
-  [v3 removeAllObjects];
+  cacheDict = [(ZhuGeCache *)self cacheDict];
+  [cacheDict removeAllObjects];
 
-  v4 = [(ZhuGeCache *)self cacheList];
-  [v4 removeAllObjects];
+  cacheList = [(ZhuGeCache *)self cacheList];
+  [cacheList removeAllObjects];
 
   pthread_mutex_unlock(&self->aRecursiveMutex);
 }
 
-- (void)delCacheForKey:(id)a3
+- (void)delCacheForKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->aRecursiveMutex);
-  if (v8)
+  if (keyCopy)
   {
-    v4 = [(ZhuGeCache *)self cacheList];
-    v5 = [v4 containsObject:v8];
+    cacheList = [(ZhuGeCache *)self cacheList];
+    v5 = [cacheList containsObject:keyCopy];
 
     if (v5)
     {
-      v6 = [(ZhuGeCache *)self cacheDict];
-      [v6 removeObjectForKey:v8];
+      cacheDict = [(ZhuGeCache *)self cacheDict];
+      [cacheDict removeObjectForKey:keyCopy];
 
-      v7 = [(ZhuGeCache *)self cacheList];
-      [v7 removeObject:v8];
+      cacheList2 = [(ZhuGeCache *)self cacheList];
+      [cacheList2 removeObject:keyCopy];
     }
   }
 
   pthread_mutex_unlock(&self->aRecursiveMutex);
 }
 
-- (id)getCacheForKey:(id)a3
+- (id)getCacheForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->aRecursiveMutex);
-  v5 = [(ZhuGeCache *)self cacheList];
-  v6 = [v5 containsObject:v4];
+  cacheList = [(ZhuGeCache *)self cacheList];
+  v6 = [cacheList containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [(ZhuGeCache *)self cacheDict];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    cacheDict = [(ZhuGeCache *)self cacheDict];
+    v8 = [cacheDict objectForKeyedSubscript:keyCopy];
 
-    v9 = [(ZhuGeCache *)self cacheList];
-    v10 = [v9 firstObject];
-    v11 = [v10 isEqualToString:v4];
+    cacheList2 = [(ZhuGeCache *)self cacheList];
+    firstObject = [cacheList2 firstObject];
+    v11 = [firstObject isEqualToString:keyCopy];
 
     if (v11)
     {
-      v12 = [(ZhuGeCache *)self cacheList];
-      [v12 removeObject:v4];
+      cacheList3 = [(ZhuGeCache *)self cacheList];
+      [cacheList3 removeObject:keyCopy];
 
-      v13 = [(ZhuGeCache *)self cacheList];
-      [v13 addObject:v4];
+      cacheList4 = [(ZhuGeCache *)self cacheList];
+      [cacheList4 addObject:keyCopy];
     }
   }
 
@@ -104,47 +104,47 @@
   return v8;
 }
 
-- (BOOL)setCache:(id)a3 forKey:(id)a4 withError:(id *)a5
+- (BOOL)setCache:(id)cache forKey:(id)key withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  cacheCopy = cache;
+  keyCopy = key;
   pthread_mutex_lock(&self->aRecursiveMutex);
-  if (!a5)
+  if (!error)
   {
-    v28 = [(ZhuGeCache *)self name];
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 91, @"In %@, error p-pointer is nil!", v29, v30, v31, v28);
+    name = [(ZhuGeCache *)self name];
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 91, @"In %@, error p-pointer is nil!", v29, v30, v31, name);
 
     v27 = 0;
     goto LABEL_19;
   }
 
-  *a5 = 0;
-  if (!v8)
+  *error = 0;
+  if (!cacheCopy)
   {
-    v32 = [(ZhuGeCache *)self name];
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 97, @"In %@, aCache pointer is nil!", v33, v34, v35, v32);
+    name2 = [(ZhuGeCache *)self name];
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 97, @"In %@, aCache pointer is nil!", v33, v34, v35, name2);
 LABEL_17:
 
     v39 = 45;
 LABEL_18:
     [NSError errorWithZhuGeErrorCode:v39 underlyingError:0];
-    *a5 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_19;
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
-    v32 = [(ZhuGeCache *)self name];
-    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 103, @"In %@, aKey pointer is nil!", v36, v37, v38, v32);
+    name2 = [(ZhuGeCache *)self name];
+    ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 103, @"In %@, aKey pointer is nil!", v36, v37, v38, name2);
     goto LABEL_17;
   }
 
-  v10 = [(ZhuGeCache *)self cacheList];
-  v11 = [v10 containsObject:v9];
+  cacheList = [(ZhuGeCache *)self cacheList];
+  v11 = [cacheList containsObject:keyCopy];
 
   if (v11)
   {
-    [(ZhuGeCache *)self delCacheForKey:v9];
+    [(ZhuGeCache *)self delCacheForKey:keyCopy];
   }
 
   if ([(ZhuGeCache *)self cacheType])
@@ -152,39 +152,39 @@ LABEL_18:
     [(ZhuGeCache *)self cacheType];
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v41 = [(ZhuGeCache *)self name];
+      name3 = [(ZhuGeCache *)self name];
       objc_opt_class();
-      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 115, @"In %@, key %@ got a wrong cache class type %@!", v42, v43, v44, v41);
+      ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/ZhuGeCache.m", "[ZhuGeCache setCache:forKey:withError:]", 115, @"In %@, key %@ got a wrong cache class type %@!", v42, v43, v44, name3);
 
       v39 = 9;
       goto LABEL_18;
     }
   }
 
-  v12 = [(ZhuGeCache *)self capacity];
-  if (v12)
+  capacity = [(ZhuGeCache *)self capacity];
+  if (capacity)
   {
-    v13 = v12;
-    v14 = [(ZhuGeCache *)self cacheList];
-    v15 = [v14 count];
-    v16 = [(ZhuGeCache *)self capacity];
-    v17 = [v16 intValue];
+    v13 = capacity;
+    cacheList2 = [(ZhuGeCache *)self cacheList];
+    v15 = [cacheList2 count];
+    capacity2 = [(ZhuGeCache *)self capacity];
+    intValue = [capacity2 intValue];
 
-    if (v15 >= v17)
+    if (v15 >= intValue)
     {
-      v18 = [(ZhuGeCache *)self cacheList];
-      v19 = [v18 count];
-      v20 = [(ZhuGeCache *)self capacity];
-      v21 = [v20 intValue];
+      cacheList3 = [(ZhuGeCache *)self cacheList];
+      v19 = [cacheList3 count];
+      capacity3 = [(ZhuGeCache *)self capacity];
+      intValue2 = [capacity3 intValue];
 
-      if (v19 - v21 + 1 >= 1)
+      if (v19 - intValue2 + 1 >= 1)
       {
-        v22 = v19 - v21 + 2;
+        v22 = v19 - intValue2 + 2;
         do
         {
-          v23 = [(ZhuGeCache *)self cacheList];
-          v24 = [v23 firstObject];
-          [(ZhuGeCache *)self delCacheForKey:v24];
+          cacheList4 = [(ZhuGeCache *)self cacheList];
+          firstObject = [cacheList4 firstObject];
+          [(ZhuGeCache *)self delCacheForKey:firstObject];
 
           --v22;
         }
@@ -194,11 +194,11 @@ LABEL_18:
     }
   }
 
-  v25 = [(ZhuGeCache *)self cacheList];
-  [v25 addObject:v9];
+  cacheList5 = [(ZhuGeCache *)self cacheList];
+  [cacheList5 addObject:keyCopy];
 
-  v26 = [(ZhuGeCache *)self cacheDict];
-  [v26 setObject:v8 forKeyedSubscript:v9];
+  cacheDict = [(ZhuGeCache *)self cacheDict];
+  [cacheDict setObject:cacheCopy forKeyedSubscript:keyCopy];
 
   v27 = 1;
 LABEL_19:

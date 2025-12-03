@@ -3,10 +3,10 @@
 - (BOOL)didSucceed;
 - (NSError)error;
 - (id)description;
-- (void)setDidSucceed:(BOOL)a3;
-- (void)setError:(id)a3;
-- (void)setReplyToID:(id)a3;
-- (void)setReturnData:(id)a3;
+- (void)setDidSucceed:(BOOL)succeed;
+- (void)setError:(id)error;
+- (void)setReplyToID:(id)d;
+- (void)setReturnData:(id)data;
 @end
 
 @implementation AKReplyMessage
@@ -29,27 +29,27 @@
   return v3;
 }
 
-- (void)setReplyToID:(id)a3
+- (void)setReplyToID:(id)d
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->super._properties setObject:location[0] forKeyedSubscript:@"akrid"];
+  objc_storeStrong(location, d);
+  [(NSMutableDictionary *)selfCopy->super._properties setObject:location[0] forKeyedSubscript:@"akrid"];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)didSucceed
 {
   v3 = [(NSMutableDictionary *)self->super._properties objectForKeyedSubscript:@"aksuc"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   _objc_release(v3);
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setDidSucceed:(BOOL)a3
+- (void)setDidSucceed:(BOOL)succeed
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:succeed];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   _objc_release(v3);
 }
@@ -77,43 +77,43 @@
   return v2;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   if (location[0])
   {
-    v3 = [location[0] ac_secureCodingError];
+    ac_secureCodingError = [location[0] ac_secureCodingError];
     v4 = [NSKeyedArchiver archivedDataWithRootObject:"archivedDataWithRootObject:requiringSecureCoding:error:" requiringSecureCoding:? error:?];
-    _objc_release(v3);
-    [(NSMutableDictionary *)v6->super._properties setObject:v4 forKeyedSubscript:@"akerd"];
+    _objc_release(ac_secureCodingError);
+    [(NSMutableDictionary *)selfCopy->super._properties setObject:v4 forKeyedSubscript:@"akerd"];
     objc_storeStrong(&v4, 0);
   }
 
   else
   {
-    [(NSMutableDictionary *)v6->super._properties removeObjectForKey:@"akerd"];
+    [(NSMutableDictionary *)selfCopy->super._properties removeObjectForKey:@"akerd"];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setReturnData:(id)a3
+- (void)setReturnData:(id)data
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   if (location[0])
   {
-    [(NSMutableDictionary *)v4->super._properties setObject:location[0] forKeyedSubscript:@"akret"];
+    [(NSMutableDictionary *)selfCopy->super._properties setObject:location[0] forKeyedSubscript:@"akret"];
   }
 
   else
   {
-    [(NSMutableDictionary *)v4->super._properties removeObjectForKey:@"akret"];
+    [(NSMutableDictionary *)selfCopy->super._properties removeObjectForKey:@"akret"];
   }
 
   objc_storeStrong(location, 0);
@@ -121,7 +121,7 @@
 
 - (id)description
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   v14 = [(NSMutableDictionary *)self->super._properties objectForKeyedSubscript:@"akret"];
@@ -140,22 +140,22 @@
     objc_storeStrong(location, @"(none)");
   }
 
-  v7 = v16;
-  v11 = [(_AKMessage *)v16 identifier];
-  v10 = [(AKReplyMessage *)v16 replyToID];
-  v4 = [(AKReplyMessage *)v16 didSucceed];
+  v7 = selfCopy;
+  identifier = [(_AKMessage *)selfCopy identifier];
+  replyToID = [(AKReplyMessage *)selfCopy replyToID];
+  didSucceed = [(AKReplyMessage *)selfCopy didSucceed];
   v5 = @"YES";
-  if ((v4 & 1) == 0)
+  if ((didSucceed & 1) == 0)
   {
     v5 = @"NO";
   }
 
   v8 = v5;
-  v9 = [(AKReplyMessage *)v16 error];
-  v12 = [NSString stringWithFormat:@"\nAKReplyMessage <%p> {\nInternal ID: %@, \nReply-To: %@, \nSuccess: %@, \nError: %@, \nRD: %@ }", v7, v11, v10, v8, v9, location[0]];
-  _objc_release(v9);
-  _objc_release(v10);
-  _objc_release(v11);
+  error = [(AKReplyMessage *)selfCopy error];
+  v12 = [NSString stringWithFormat:@"\nAKReplyMessage <%p> {\nInternal ID: %@, \nReply-To: %@, \nSuccess: %@, \nError: %@, \nRD: %@ }", v7, identifier, replyToID, v8, error, location[0]];
+  _objc_release(error);
+  _objc_release(replyToID);
+  _objc_release(identifier);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 

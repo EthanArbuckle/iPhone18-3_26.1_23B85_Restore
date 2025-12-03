@@ -1,16 +1,16 @@
 @interface BDSSyncEnginePipeline
 - (_TtC13BookDataStore21BDSSyncEnginePipeline)init;
-- (_TtC13BookDataStore21BDSSyncEnginePipeline)initWithRecordType:(id)a3 zoneName:(id)a4 delegate:(id)a5 dataMapper:(id)a6;
+- (_TtC13BookDataStore21BDSSyncEnginePipeline)initWithRecordType:(id)type zoneName:(id)name delegate:(id)delegate dataMapper:(id)mapper;
 - (id)privacyDelegate;
-- (void)fetchRecordForRecordID:(CKRecordID *)a3 completion:(id)a4;
-- (void)saltUpdatedWithSaltVersionIdentifier:(id)a3;
+- (void)fetchRecordForRecordID:(CKRecordID *)d completion:(id)completion;
+- (void)saltUpdatedWithSaltVersionIdentifier:(id)identifier;
 - (void)signalSyncToCK;
-- (void)startSyncToCKWithCompletion:(id)a3;
+- (void)startSyncToCKWithCompletion:(id)completion;
 @end
 
 @implementation BDSSyncEnginePipeline
 
-- (_TtC13BookDataStore21BDSSyncEnginePipeline)initWithRecordType:(id)a3 zoneName:(id)a4 delegate:(id)a5 dataMapper:(id)a6
+- (_TtC13BookDataStore21BDSSyncEnginePipeline)initWithRecordType:(id)type zoneName:(id)name delegate:(id)delegate dataMapper:(id)mapper
 {
   v8 = sub_1E470AF1C();
   v10 = v9;
@@ -18,28 +18,28 @@
   v13 = v12;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1E46F48C4(v8, v10, v11, v13, a5, a6);
+  return sub_1E46F48C4(v8, v10, v11, v13, delegate, mapper);
 }
 
-- (void)saltUpdatedWithSaltVersionIdentifier:(id)a3
+- (void)saltUpdatedWithSaltVersionIdentifier:(id)identifier
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E46F7598();
 }
 
 - (void)signalSyncToCK
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E46F7598();
 }
 
-- (void)startSyncToCKWithCompletion:(id)a3
+- (void)startSyncToCKWithCompletion:(id)completion
 {
   v5 = sub_1E4650534(&unk_1ECF752E0, &qword_1E471B9A8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -55,19 +55,19 @@
   v14[3] = 0;
   v14[4] = &unk_1E4720558;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_1E46FF094(0, 0, v9, &unk_1E4720560, v14);
 }
 
-- (void)fetchRecordForRecordID:(CKRecordID *)a3 completion:(id)a4
+- (void)fetchRecordForRecordID:(CKRecordID *)d completion:(id)completion
 {
   v7 = sub_1E4650534(&unk_1ECF752E0, &qword_1E471B9A8);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = d;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_1E470B14C();
@@ -82,8 +82,8 @@
   v16[3] = 0;
   v16[4] = &unk_1E471B9C0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_1E46FF094(0, 0, v11, &unk_1E471B9C8, v16);
 }
 

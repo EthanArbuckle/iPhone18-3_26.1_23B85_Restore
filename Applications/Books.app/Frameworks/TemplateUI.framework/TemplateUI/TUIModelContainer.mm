@@ -1,51 +1,51 @@
 @interface TUIModelContainer
 - (TUIModelContaining)parentModel;
-- (void)appendLayoutChildrenToArray:(id)a3;
-- (void)appendLayoutModelsToArray:(id)a3;
+- (void)appendLayoutChildrenToArray:(id)array;
+- (void)appendLayoutModelsToArray:(id)array;
 - (void)onContainedModelsChanged;
-- (void)updateModelChildren:(id)a3;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIModelContainer
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   submodels = self->_submodels;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_86100;
   v7[3] = &unk_25DF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)submodels enumerateObjectsUsingBlock:v7];
 }
 
-- (void)appendLayoutModelsToArray:(id)a3
+- (void)appendLayoutModelsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   submodels = self->_submodels;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_861A4;
   v7[3] = &unk_25DF80;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)submodels enumerateObjectsUsingBlock:v7];
 }
 
 - (void)onContainedModelsChanged
 {
-  v2 = [(TUIModelContainer *)self parentModel];
-  [v2 onContainedModelsChanged];
+  parentModel = [(TUIModelContainer *)self parentModel];
+  [parentModel onContainedModelsChanged];
 }
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
   submodels = self->_submodels;
-  v5 = a3;
+  childrenCopy = children;
   [(NSArray *)submodels enumerateObjectsUsingBlock:&stru_2606B8];
-  v6 = [v5 copy];
+  v6 = [childrenCopy copy];
 
   v7 = self->_submodels;
   self->_submodels = v6;

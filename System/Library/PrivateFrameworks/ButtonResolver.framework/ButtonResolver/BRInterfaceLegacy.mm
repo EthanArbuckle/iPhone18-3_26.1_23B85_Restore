@@ -1,13 +1,13 @@
 @interface BRInterfaceLegacy
 + (id)interface;
-- (BOOL)_disableState:(unint64_t)a3;
-- (BOOL)_enableState:(unint64_t)a3;
-- (BOOL)_servicesSetProperty:(void *)a3 forKey:(__CFString *)a4;
-- (BOOL)_setConfig:(id)a3 forState:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_setDefaultServicePropertiesOnService:(__IOHIDServiceClient *)a3;
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5;
-- (BOOL)enableStates:(id)a3 error:(id *)a4;
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6;
+- (BOOL)_disableState:(unint64_t)state;
+- (BOOL)_enableState:(unint64_t)state;
+- (BOOL)_servicesSetProperty:(void *)property forKey:(__CFString *)key;
+- (BOOL)_setConfig:(id)config forState:(unint64_t)state error:(id *)error;
+- (BOOL)_setDefaultServicePropertiesOnService:(__IOHIDServiceClient *)service;
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error;
+- (BOOL)enableStates:(id)states error:(id *)error;
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error;
 - (BRInterfaceLegacy)init;
 - (id)description;
 - (id)propertyList;
@@ -15,9 +15,9 @@
 - (void)dealloc;
 - (void)init;
 - (void)propertyList;
-- (void)scheduleReadyNotificationWithBlock:(id)a3;
-- (void)serviceAddedHandler:(__IOHIDServiceClient *)a3;
-- (void)serviceRemovedHandler:(__IOHIDServiceClient *)a3;
+- (void)scheduleReadyNotificationWithBlock:(id)block;
+- (void)serviceAddedHandler:(__IOHIDServiceClient *)handler;
+- (void)serviceRemovedHandler:(__IOHIDServiceClient *)handler;
 @end
 
 @implementation BRInterfaceLegacy
@@ -127,11 +127,11 @@
   return v2;
 }
 
-- (void)serviceAddedHandler:(__IOHIDServiceClient *)a3
+- (void)serviceAddedHandler:(__IOHIDServiceClient *)handler
 {
   [(NSMutableArray *)self->_services addObject:?];
   IOHIDServiceClientRegisterRemovalCallback();
-  [(BRInterfaceLegacy *)self _setDefaultServicePropertiesOnService:a3];
+  [(BRInterfaceLegacy *)self _setDefaultServicePropertiesOnService:handler];
   if (!self->_isReady)
   {
     self->_isReady = 1;
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)serviceRemovedHandler:(__IOHIDServiceClient *)a3
+- (void)serviceRemovedHandler:(__IOHIDServiceClient *)handler
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -172,7 +172,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      if (CFEqual(v10, a3))
+      if (CFEqual(v10, handler))
       {
         break;
       }
@@ -221,14 +221,14 @@ LABEL_16:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(BRInterfaceLegacy *)a3 serviceRemovedHandler:v12];
+      [(BRInterfaceLegacy *)handler serviceRemovedHandler:v12];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_servicesSetProperty:(void *)a3 forKey:(__CFString *)a4
+- (BOOL)_servicesSetProperty:(void *)property forKey:(__CFString *)key
 {
   v12 = 0;
   v13 = &v12;
@@ -246,16 +246,16 @@ LABEL_16:
     [BRInterfaceLegacy _servicesSetProperty:forKey:];
   }
 
-  v8 = [(BRInterface *)self queue];
+  queue = [(BRInterface *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__BRInterfaceLegacy__servicesSetProperty_forKey___block_invoke;
   v11[3] = &unk_278D3F388;
   v11[4] = self;
   v11[5] = &v12;
-  v11[6] = a4;
-  v11[7] = a3;
-  dispatch_sync(v8, v11);
+  v11[6] = key;
+  v11[7] = property;
+  dispatch_sync(queue, v11);
   v9 = *(v13 + 24) != 0;
   _Block_object_dispose(&v12, 8);
   return v9;
@@ -306,7 +306,7 @@ LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setDefaultServicePropertiesOnService:(__IOHIDServiceClient *)a3
+- (BOOL)_setDefaultServicePropertiesOnService:(__IOHIDServiceClient *)service
 {
   v16 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -328,9 +328,9 @@ LABEL_11:
           objc_enumerationMutation(&unk_285468520);
         }
 
-        if (!IOHIDServiceClientSetProperty(a3, *(*(&v10 + 1) + 8 * v7), &unk_285468060))
+        if (!IOHIDServiceClientSetProperty(service, *(*(&v10 + 1) + 8 * v7), &unk_285468060))
         {
-          [(BRInterfaceLegacy *)a3 _setDefaultServicePropertiesOnService:?];
+          [(BRInterfaceLegacy *)service _setDefaultServicePropertiesOnService:?];
           result = v14;
           goto LABEL_11;
         }
@@ -355,18 +355,18 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error
 {
   v16 = 0;
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
-  if ([a5 count])
+  if ([states count])
   {
     v11 = 0;
     while (1)
     {
-      if (a3)
+      if (configs)
       {
-        v12 = [a3 objectAtIndexedSubscript:v11];
+        v12 = [configs objectAtIndexedSubscript:v11];
       }
 
       else
@@ -374,7 +374,7 @@ LABEL_11:
         v12 = 0;
       }
 
-      v13 = [objc_msgSend(a5 objectAtIndexedSubscript:{v11), "unsignedIntegerValue"}];
+      v13 = [objc_msgSend(states objectAtIndexedSubscript:{v11), "unsignedIntegerValue"}];
       if (v12 == [MEMORY[0x277CBEB68] null])
       {
         v12 = 0;
@@ -390,16 +390,16 @@ LABEL_11:
         }
       }
 
-      if (++v11 >= [a5 count])
+      if (++v11 >= [states count])
       {
         v14 = v16;
         break;
       }
     }
 
-    if (a6 && v14)
+    if (error && v14)
     {
-      *a6 = v14;
+      *error = v14;
     }
   }
 
@@ -407,7 +407,7 @@ LABEL_11:
   return v16 == 0;
 }
 
-- (BOOL)enableStates:(id)a3 error:(id *)a4
+- (BOOL)enableStates:(id)states error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
@@ -415,11 +415,11 @@ LABEL_11:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [states countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
-    v17 = a4;
+    errorCopy = error;
     v10 = *v19;
     while (2)
     {
@@ -427,7 +427,7 @@ LABEL_11:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(states);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -435,9 +435,9 @@ LABEL_11:
         {
           v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-536870212 userInfo:0];
           v13 = v16 != 0;
-          if (v17 && v16)
+          if (errorCopy && v16)
           {
-            *v17 = v16;
+            *errorCopy = v16;
             v13 = 1;
           }
 
@@ -445,7 +445,7 @@ LABEL_11:
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [states countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;
@@ -462,7 +462,7 @@ LABEL_12:
   return !v13;
 }
 
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
@@ -470,11 +470,11 @@ LABEL_12:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [states countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
-    v18 = a5;
+    errorCopy = error;
     v11 = *v20;
     while (2)
     {
@@ -482,7 +482,7 @@ LABEL_12:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(states);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -490,9 +490,9 @@ LABEL_12:
         {
           v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-536870212 userInfo:0];
           v14 = v17 != 0;
-          if (v18 && v17)
+          if (errorCopy && v17)
           {
-            *v18 = v17;
+            *errorCopy = v17;
             v14 = 1;
           }
 
@@ -500,7 +500,7 @@ LABEL_12:
         }
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [states countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;
@@ -517,16 +517,16 @@ LABEL_12:
   return !v14;
 }
 
-- (void)scheduleReadyNotificationWithBlock:(id)a3
+- (void)scheduleReadyNotificationWithBlock:(id)block
 {
-  v5 = [(BRInterface *)self queue];
+  queue = [(BRInterface *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__BRInterfaceLegacy_scheduleReadyNotificationWithBlock___block_invoke;
   v6[3] = &unk_278D3F360;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = block;
+  dispatch_sync(queue, v6);
   [(BRInterfaceLegacy *)self _findServices];
 }
 
@@ -537,9 +537,9 @@ uint64_t __56__BRInterfaceLegacy_scheduleReadyNotificationWithBlock___block_invo
   return result;
 }
 
-- (BOOL)_setConfig:(id)a3 forState:(unint64_t)a4 error:(id *)a5
+- (BOOL)_setConfig:(id)config forState:(unint64_t)state error:(id *)error
 {
-  v8 = [a3 objectForKeyedSubscript:@"MaxTime"];
+  v8 = [config objectForKeyedSubscript:@"MaxTime"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = 0;
@@ -548,9 +548,9 @@ uint64_t __56__BRInterfaceLegacy_scheduleReadyNotificationWithBlock___block_invo
     v8 = 0;
   }
 
-  if (a4 <= 5)
+  if (state <= 5)
   {
-    if (!a4)
+    if (!state)
     {
       v13 = *MEMORY[0x277CBED28];
       v14 = @"PressCountTrackingEnabled";
@@ -563,9 +563,9 @@ LABEL_23:
       goto LABEL_33;
     }
 
-    if (a4 != 2)
+    if (state != 2)
     {
-      if (a4 != 4)
+      if (state != 4)
       {
         return !v10;
       }
@@ -574,7 +574,7 @@ LABEL_23:
       {
         if ([(BRInterfaceLegacy *)self _servicesSetProperty:v8 forKey:@"PressCountTriplePressTimeout"])
         {
-          v11 = [v8 unsignedIntegerValue];
+          unsignedIntegerValue = [v8 unsignedIntegerValue];
           v10 = 0;
           v12 = 88;
           goto LABEL_31;
@@ -593,7 +593,7 @@ LABEL_23:
 
     if ([(BRInterfaceLegacy *)self _servicesSetProperty:v8 forKey:@"PressCountDoublePressTimeout"])
     {
-      v11 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
       v10 = 0;
       v12 = 80;
       goto LABEL_31;
@@ -602,11 +602,11 @@ LABEL_23:
 
   else
   {
-    if (a4 <= 9)
+    if (state <= 9)
     {
-      if (a4 != 6)
+      if (state != 6)
       {
-        if (a4 != 8)
+        if (state != 8)
         {
           return !v10;
         }
@@ -615,11 +615,11 @@ LABEL_23:
         {
           if ([(BRInterfaceLegacy *)self _servicesSetProperty:v8 forKey:@"DoubleTapTimeout"])
           {
-            v11 = [v8 unsignedIntegerValue];
+            unsignedIntegerValue = [v8 unsignedIntegerValue];
             v10 = 0;
             v12 = 96;
 LABEL_31:
-            *(&self->super.super.isa + v12) = v11;
+            *(&self->super.super.isa + v12) = unsignedIntegerValue;
             return !v10;
           }
 
@@ -636,7 +636,7 @@ LABEL_24:
       goto LABEL_23;
     }
 
-    if (a4 == 10)
+    if (state == 10)
     {
       if (!v8)
       {
@@ -645,7 +645,7 @@ LABEL_24:
 
       if ([(BRInterfaceLegacy *)self _servicesSetProperty:v8 forKey:@"TripleTapTimeout"])
       {
-        v11 = [v8 unsignedIntegerValue];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
         v10 = 0;
         v12 = 104;
         goto LABEL_31;
@@ -654,7 +654,7 @@ LABEL_24:
 
     else
     {
-      if (a4 != 14)
+      if (state != 14)
       {
         return !v10;
       }
@@ -666,7 +666,7 @@ LABEL_24:
 
       if ([(BRInterfaceLegacy *)self _servicesSetProperty:v8 forKey:@"LongPressTimeout"])
       {
-        v11 = [v8 unsignedIntegerValue];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
         v10 = 0;
         v12 = 112;
         goto LABEL_31;
@@ -677,27 +677,27 @@ LABEL_24:
 LABEL_33:
   v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-536870199 userInfo:0];
   v10 = v16 != 0;
-  if (a5 && v16)
+  if (error && v16)
   {
-    *a5 = v16;
+    *error = v16;
     v10 = 1;
   }
 
   return !v10;
 }
 
-- (BOOL)_enableState:(unint64_t)a3
+- (BOOL)_enableState:(unint64_t)state
 {
-  if (a3 <= 5)
+  if (state <= 5)
   {
-    if (!a3)
+    if (!state)
     {
       v4 = *MEMORY[0x277CBED28];
       v5 = @"PressCountTrackingEnabled";
       goto LABEL_22;
     }
 
-    if (a3 == 2)
+    if (state == 2)
     {
       if (self->_doublePressTimeoutUs)
       {
@@ -707,7 +707,7 @@ LABEL_33:
       }
     }
 
-    else if (a3 == 4 && self->_triplePressTimeoutUs)
+    else if (state == 4 && self->_triplePressTimeoutUs)
     {
       v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
       v5 = @"PressCountTriplePressTimeout";
@@ -717,9 +717,9 @@ LABEL_33:
     return 1;
   }
 
-  if (a3 > 9)
+  if (state > 9)
   {
-    if (a3 == 10)
+    if (state == 10)
     {
       if (self->_tripleTapTimeoutUs)
       {
@@ -729,7 +729,7 @@ LABEL_33:
       }
     }
 
-    else if (a3 == 14 && self->_longPressTimeoutUs)
+    else if (state == 14 && self->_longPressTimeoutUs)
     {
       v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
       v5 = @"LongPressTimeout";
@@ -739,14 +739,14 @@ LABEL_33:
     return 1;
   }
 
-  if (a3 == 6)
+  if (state == 6)
   {
     v4 = *MEMORY[0x277CBED28];
     v5 = @"TapTrackingEnabled";
     goto LABEL_22;
   }
 
-  if (a3 != 8 || !self->_doubleTapTimeoutUs)
+  if (state != 8 || !self->_doubleTapTimeoutUs)
   {
     return 1;
   }
@@ -758,11 +758,11 @@ LABEL_22:
   return [(BRInterfaceLegacy *)self _servicesSetProperty:v4 forKey:v5];
 }
 
-- (BOOL)_disableState:(unint64_t)a3
+- (BOOL)_disableState:(unint64_t)state
 {
-  if (a3 <= 5)
+  if (state <= 5)
   {
-    switch(a3)
+    switch(state)
     {
       case 0uLL:
         v3 = *MEMORY[0x277CBED10];
@@ -779,16 +779,16 @@ LABEL_22:
     }
   }
 
-  else if (a3 > 9)
+  else if (state > 9)
   {
-    if (a3 == 10)
+    if (state == 10)
     {
       v3 = &unk_285468078;
       v4 = @"TripleTapTimeout";
       return [(BRInterfaceLegacy *)self _servicesSetProperty:v3 forKey:v4];
     }
 
-    if (a3 == 14)
+    if (state == 14)
     {
       v3 = &unk_285468078;
       v4 = @"LongPressTimeout";
@@ -798,14 +798,14 @@ LABEL_22:
 
   else
   {
-    if (a3 == 6)
+    if (state == 6)
     {
       v3 = *MEMORY[0x277CBED10];
       v4 = @"TapTrackingEnabled";
       return [(BRInterfaceLegacy *)self _servicesSetProperty:v3 forKey:v4];
     }
 
-    if (a3 == 8)
+    if (state == 8)
     {
       v3 = &unk_285468078;
       v4 = @"DoubleTapTimeout";
@@ -824,13 +824,13 @@ LABEL_22:
   if (v4)
   {
     IOHIDEventSystemClientSetMatchingMultiple();
-    v5 = [(BRInterface *)self queue];
+    queue = [(BRInterface *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__BRInterfaceLegacy__findServices__block_invoke;
     block[3] = &unk_278D3F310;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 }
 

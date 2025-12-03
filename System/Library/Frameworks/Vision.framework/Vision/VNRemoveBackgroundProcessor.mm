@@ -1,38 +1,38 @@
 @interface VNRemoveBackgroundProcessor
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)espressoModelFileNameForConfigurationOptions:(id)options;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VNRemoveBackgroundProcessor
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v98[3] = *MEMORY[0x1E69E9840];
-  v17 = a5;
-  v49 = a7;
-  v50 = a9;
-  v53 = v17;
-  v18 = [v17 objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_PerformInPlace"];
-  v48 = [v18 BOOLValue];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v53 = optionsCopy;
+  v18 = [optionsCopy objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_PerformInPlace"];
+  bOOLValue = [v18 BOOLValue];
 
-  v19 = [v17 objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_CropResult"];
-  v46 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_CropResult"];
+  bOOLValue2 = [v19 BOOLValue];
 
-  v20 = [v17 objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_ReturnMask"];
-  v47 = [v20 BOOLValue];
+  v20 = [optionsCopy objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_ReturnMask"];
+  bOOLValue3 = [v20 BOOLValue];
 
-  v51 = [v17 objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_MaskObservation"];
+  v51 = [optionsCopy objectForKeyedSubscript:@"VNRemoveBackgroundProcessorOption_MaskObservation"];
   v97 = 0;
-  if (![VNValidationUtilities getBOOLValue:&v97 forKey:@"VNRemoveBackgroundProcessorOption_AlphaGating" inOptions:v17 withDefaultValue:0 error:a8])
+  if (![VNValidationUtilities getBOOLValue:&v97 forKey:@"VNRemoveBackgroundProcessorOption_AlphaGating" inOptions:optionsCopy withDefaultValue:0 error:error])
   {
     v22 = 0;
     goto LABEL_51;
@@ -44,9 +44,9 @@
   v96 = 0;
   if (!v51)
   {
-    v26 = [VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNRemoveBackgroundProcessorOption_LowResInput" inOptions:v17 error:a8];
+    v26 = [VNValidationUtilities requiredObjectOfClass:0 forKey:@"VNRemoveBackgroundProcessorOption_LowResInput" inOptions:optionsCopy error:error];
     v94[3] = v26;
-    if (!v26 || ![VNCVPixelBufferHelper lockPixelBuffer:v26 lockFlags:1uLL error:a8])
+    if (!v26 || ![VNCVPixelBufferHelper lockPixelBuffer:v26 lockFlags:1uLL error:error])
     {
       v22 = 0;
       goto LABEL_50;
@@ -56,7 +56,7 @@
     {
       if (!self)
       {
-        if ([VNCVPixelBufferHelper unlockPixelBuffer:1uLL lockFlags:a8 error:?])
+        if ([VNCVPixelBufferHelper unlockPixelBuffer:1uLL lockFlags:error error:?])
         {
           v22 = MEMORY[0x1E695E0F0];
         }
@@ -74,11 +74,11 @@
       CVPixelBufferGetHeight(v27);
       CVPixelBufferGetBytesPerRow(v27);
       CVPixelBufferGetBaseAddress(v27);
-      v28 = [objc_opt_class() detectorInternalProcessingAsyncTasksQueue];
-      v29 = [v28 maximumTasksCount];
-      if (v29)
+      detectorInternalProcessingAsyncTasksQueue = [objc_opt_class() detectorInternalProcessingAsyncTasksQueue];
+      maximumTasksCount = [detectorInternalProcessingAsyncTasksQueue maximumTasksCount];
+      if (maximumTasksCount)
       {
-        if (v29 < 0x666666666666667)
+        if (maximumTasksCount < 0x666666666666667)
         {
           operator new();
         }
@@ -87,18 +87,18 @@
       }
 
       v34 = dispatch_group_create();
-      [v28 dispatchGroupWait:v34 error:0];
+      [detectorInternalProcessingAsyncTasksQueue dispatchGroupWait:v34 error:0];
     }
   }
 
-  if (!v48 || (v101.origin.x = 0.0, v101.origin.y = 0.0, v101.size.width = 1.0, v101.size.height = 1.0, v100.origin.x = x, v100.origin.y = y, v100.size.width = width, v100.size.height = height, CGRectEqualToRect(v100, v101)))
+  if (!bOOLValue || (v101.origin.x = 0.0, v101.origin.y = 0.0, v101.size.width = 1.0, v101.size.height = 1.0, v100.origin.x = x, v100.origin.y = y, v100.size.width = width, v100.size.height = height, CGRectEqualToRect(v100, v101)))
   {
     v21 = 0;
     v22 = 0;
     goto LABEL_6;
   }
 
-  v22 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  v22 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v22)
   {
     v21 = 1;
@@ -130,8 +130,8 @@ LABEL_6:
     v59 = &v89;
     v60 = &v77;
     v55 = v51;
-    v56 = self;
-    v70 = v47;
+    selfCopy = self;
+    v70 = bOOLValue3;
     v61 = &v93;
     v62 = &v81;
     v71 = v21;
@@ -141,15 +141,15 @@ LABEL_6:
     v68 = height;
     v44 = v22;
     v57 = v44;
-    v43 = v17;
+    v43 = optionsCopy;
     v58 = v43;
     v63 = &v85;
     v64 = &v73;
-    v72 = v48;
-    v69 = a4;
+    v72 = bOOLValue;
+    bufferCopy = buffer;
     v45 = _Block_copy(aBlock);
-    v23 = self;
-    if (VNExecuteBlock(v45, a8))
+    selfCopy4 = self;
+    if (VNExecuteBlock(v45, error))
     {
       if (v78[6] < 0.16)
       {
@@ -159,11 +159,11 @@ LABEL_6:
 LABEL_40:
         if (*(v74 + 24) == 1)
         {
-          dispatch_semaphore_wait(v23->_removeBackgroundSemaphore, 0);
+          dispatch_semaphore_wait(selfCopy4->_removeBackgroundSemaphore, 0);
         }
 
         v38 = v94[3];
-        if (v38 && ![VNCVPixelBufferHelper unlockPixelBuffer:v38 lockFlags:1uLL error:a8])
+        if (v38 && ![VNCVPixelBufferHelper unlockPixelBuffer:v38 lockFlags:1uLL error:error])
         {
 
           v24 = 0;
@@ -200,14 +200,14 @@ LABEL_40:
         goto LABEL_50;
       }
 
-      if (!v46)
+      if (!bOOLValue2)
       {
         if (*(v74 + 24) == 1)
         {
           dispatch_semaphore_wait(self->_removeBackgroundSemaphore, 0xFFFFFFFFFFFFFFFFLL);
         }
 
-        v35 = [VNValidationUtilities originatingRequestSpecifierInOptions:v43 error:a8, v40, v41];
+        v35 = [VNValidationUtilities originatingRequestSpecifierInOptions:v43 error:error, v40, v41];
         v25 = v35 != 0;
         if (v35)
         {
@@ -230,7 +230,7 @@ LABEL_40:
         }
 
         v22 = 0;
-        v23 = self;
+        selfCopy4 = self;
         goto LABEL_40;
       }
 
@@ -243,11 +243,11 @@ LABEL_40:
         CVPixelBufferGetHeight(v30);
         CVPixelBufferGetBytesPerRow(v30);
         CVPixelBufferGetBaseAddress(v30);
-        v31 = [objc_opt_class() detectorInternalProcessingAsyncTasksQueue];
-        v32 = [v31 maximumTasksCount];
-        if (v32)
+        detectorInternalProcessingAsyncTasksQueue2 = [objc_opt_class() detectorInternalProcessingAsyncTasksQueue];
+        maximumTasksCount2 = [detectorInternalProcessingAsyncTasksQueue2 maximumTasksCount];
+        if (maximumTasksCount2)
         {
-          if (v32 < 0x555555555555556)
+          if (maximumTasksCount2 < 0x555555555555556)
           {
             operator new();
           }
@@ -256,12 +256,12 @@ LABEL_40:
         }
 
         v33 = dispatch_group_create();
-        if (([v31 dispatchGroupWait:v33 error:a8] & 1) != 0 && a8)
+        if (([detectorInternalProcessingAsyncTasksQueue2 dispatchGroupWait:v33 error:error] & 1) != 0 && error)
         {
-          *a8 = [VNError errorForInternalErrorWithLocalizedDescription:@"No pixels meet or exceed alpha threshold"];
+          *error = [VNError errorForInternalErrorWithLocalizedDescription:@"No pixels meet or exceed alpha threshold"];
         }
 
-        v23 = self;
+        selfCopy4 = self;
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 1uLL);
       }
     }
@@ -792,46 +792,46 @@ LABEL_7:
   return [*(a1 + 32) dispatchReportBlockCompletion];
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v17)
   {
     v35 = 0;
-    if ([VNValidationUtilities getBOOLValue:&v35 forKey:@"VNRemoveBackgroundProcessorOption_PerformInPlace" inOptions:v16 withDefaultValue:0 error:a8])
+    if ([VNValidationUtilities getBOOLValue:&v35 forKey:@"VNRemoveBackgroundProcessorOption_PerformInPlace" inOptions:optionsCopy withDefaultValue:0 error:error])
     {
       v34 = 0;
-      if ([VNValidationUtilities getBOOLValue:&v34 forKey:@"VNRemoveBackgroundProcessorOption_CropResult" inOptions:v16 withDefaultValue:0 error:a8])
+      if ([VNValidationUtilities getBOOLValue:&v34 forKey:@"VNRemoveBackgroundProcessorOption_CropResult" inOptions:optionsCopy withDefaultValue:0 error:error])
       {
         v33 = 0;
-        if ([VNValidationUtilities getBOOLValue:&v33 forKey:@"VNRemoveBackgroundProcessorOption_ReturnMask" inOptions:v16 withDefaultValue:0 error:a8])
+        if ([VNValidationUtilities getBOOLValue:&v33 forKey:@"VNRemoveBackgroundProcessorOption_ReturnMask" inOptions:optionsCopy withDefaultValue:0 error:error])
         {
           v32 = 0;
-          v18 = [VNValidationUtilities getOptionalObject:&v32 ofClass:objc_opt_class() forKey:@"VNRemoveBackgroundProcessorOption_MaskObservation" inOptions:v16 error:a8];
+          v18 = [VNValidationUtilities getOptionalObject:&v32 ofClass:objc_opt_class() forKey:@"VNRemoveBackgroundProcessorOption_MaskObservation" inOptions:optionsCopy error:error];
           v19 = v32;
           if (v18)
           {
-            v20 = [v17 width];
-            v21 = x * v20;
-            v22 = width * v20;
-            v23 = [v17 height];
-            v24 = y * v23;
-            v25 = height * v23;
+            width = [v17 width];
+            v21 = x * width;
+            v22 = width * width;
+            height = [v17 height];
+            v24 = y * height;
+            v25 = height * height;
             if (v35 == 1)
             {
               v26 = CVPixelBufferRetain([v17 originalPixelBuffer]);
-              *a7 = v26;
-              if (!v26 || CVPixelBufferGetPixelFormatType(v26) != 1111970369 || !CVPixelBufferGetIOSurface(*a7) || v33 == 1)
+              *buffer = v26;
+              if (!v26 || CVPixelBufferGetPixelFormatType(v26) != 1111970369 || !CVPixelBufferGetIOSurface(*buffer) || v33 == 1)
               {
-                if (a8)
+                if (error)
                 {
                   v27 = [MEMORY[0x1E696AD98] numberWithBool:v35];
-                  *a8 = [VNError errorForInvalidOption:v27 named:@"performInPlace" localizedDescription:@"Conditions for in-place execution not met"];
+                  *error = [VNError errorForInvalidOption:v27 named:@"performInPlace" localizedDescription:@"Conditions for in-place execution not met"];
                 }
 
                 goto LABEL_13;
@@ -840,20 +840,20 @@ LABEL_7:
 LABEL_18:
               if (!v19)
               {
-                [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-                v31 = [v17 croppedBufferWithWidth:self->_networkWidth height:self->_networkHeight format:1111970369 cropRect:v16 options:a8 error:{v21, v24, v22, v25}];
+                [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+                v31 = [v17 croppedBufferWithWidth:self->_networkWidth height:self->_networkHeight format:1111970369 cropRect:optionsCopy options:error error:{v21, v24, v22, v25}];
                 if (!v31)
                 {
 LABEL_13:
-                  CVPixelBufferRelease(*a7);
+                  CVPixelBufferRelease(*buffer);
                   v28 = 0;
-                  *a7 = 0;
+                  *buffer = 0;
 LABEL_23:
 
                   goto LABEL_15;
                 }
 
-                [v16 setObject:v31 forKeyedSubscript:@"VNRemoveBackgroundProcessorOption_LowResInput"];
+                [optionsCopy setObject:v31 forKeyedSubscript:@"VNRemoveBackgroundProcessorOption_LowResInput"];
               }
 
               v28 = 1;
@@ -865,8 +865,8 @@ LABEL_23:
               goto LABEL_18;
             }
 
-            v30 = [v17 croppedBufferWithWidth:v22 height:v25 format:1111970369 cropRect:v16 options:a8 error:{v21, v24, v22, v25}];
-            *a7 = v30;
+            v30 = [v17 croppedBufferWithWidth:v22 height:v25 format:1111970369 cropRect:optionsCopy options:error error:{v21, v24, v22, v25}];
+            *buffer = v30;
             if (v30)
             {
               goto LABEL_18;
@@ -886,42 +886,42 @@ LABEL_15:
   return v28;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v24.receiver = self;
   v24.super_class = VNRemoveBackgroundProcessor;
-  if ([(VNEspressoModelFileBasedDetector *)&v24 completeInitializationForSession:v6 error:a4])
+  if ([(VNEspressoModelFileBasedDetector *)&v24 completeInitializationForSession:sessionCopy error:error])
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"input_image"];
-    v8 = [(VNEspressoModelFileBasedDetector *)self getWidth:&self->_networkWidth height:&self->_networkHeight ofEspressoModelNetworkBlobNamed:v7 error:a4];
+    v8 = [(VNEspressoModelFileBasedDetector *)self getWidth:&self->_networkWidth height:&self->_networkHeight ofEspressoModelNetworkBlobNamed:v7 error:error];
 
     if (v8)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"saliency"];
-      v10 = [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputMaskEspressoBuffer toNetworkOutputBlobName:v9 error:a4];
+      v10 = [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputMaskEspressoBuffer toNetworkOutputBlobName:v9 error:error];
 
       if (v10)
       {
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"gating_confidence"];
-        v12 = [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputConfidenceEspressoBuffer toNetworkOutputBlobName:v11 error:a4];
+        v12 = [(VNEspressoModelFileBasedDetector *)self bindBuffer:&self->_outputConfidenceEspressoBuffer toNetworkOutputBlobName:v11 error:error];
 
         if (v12)
         {
-          v13 = [(VNDetector *)self metalContext];
-          v14 = [(VNMetalContext *)v13 computePipelineStateForFunctionWithName:a4 error:?];
+          metalContext = [(VNDetector *)self metalContext];
+          v14 = [(VNMetalContext *)metalContext computePipelineStateForFunctionWithName:error error:?];
           assembleConstraintsState = self->_assembleConstraintsState;
           self->_assembleConstraintsState = v14;
 
           if (self->_assembleConstraintsState)
           {
-            v16 = [(VNMetalContext *)v13 computePipelineStateForFunctionWithName:a4 error:?];
+            v16 = [(VNMetalContext *)metalContext computePipelineStateForFunctionWithName:error error:?];
             applyMaskComputeState = self->_applyMaskComputeState;
             self->_applyMaskComputeState = v16;
 
             if (self->_applyMaskComputeState)
             {
-              v18 = [(VNMetalContext *)v13 computePipelineStateForFunctionWithName:a4 error:?];
+              v18 = [(VNMetalContext *)metalContext computePipelineStateForFunctionWithName:error error:?];
               copyCropComputeState = self->_copyCropComputeState;
               self->_copyCropComputeState = v18;
 
@@ -939,10 +939,10 @@ LABEL_15:
                   goto LABEL_11;
                 }
 
-                if (a4)
+                if (error)
                 {
                   [VNError errorForInternalErrorWithLocalizedDescription:@"failed to create semaphore"];
-                  *a4 = v22 = 0;
+                  *error = v22 = 0;
                   goto LABEL_15;
                 }
               }
@@ -975,25 +975,25 @@ LABEL_11:
   [(VNDetector *)&v4 dealloc];
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"input_image"];
 
   return v3;
 }
 
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3
++ (id)espressoModelFileNameForConfigurationOptions:(id)options
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"subject_lifting_gen1_rev5_gv8dsz6vxu_multihead_int8.espresso"];
 
   return v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 

@@ -2,21 +2,21 @@
 + (BOOL)_readsAdaptiveImageGlyphFromDocumentFormats;
 + (BOOL)prefersEmojiImageTextAttachment;
 + (BOOL)prefersTextAttachment;
-+ (void)setPrefersEmojiImageTextAttachment:(BOOL)a3;
-+ (void)setPrefersTextAttachment:(BOOL)a3;
-- (CGImage)imageForProposedSize:(CGSize)a3 scaleFactor:(double)a4 imageOffset:(CGPoint *)a5 imageSize:(CGSize *)a6;
-- (CGSize)_imageSizeForAttributes:(id)a3;
-- (CGSize)_imageSizeForProposedSize:(CGSize)a3 scaleFactor:(double)a4;
-- (CTAdaptiveImageGlyph)initWithCoder:(id)a3;
-- (CTAdaptiveImageGlyph)initWithFileWrapper:(id)a3;
-- (CTAdaptiveImageGlyph)initWithImageContent:(id)a3;
++ (void)setPrefersEmojiImageTextAttachment:(BOOL)attachment;
++ (void)setPrefersTextAttachment:(BOOL)attachment;
+- (CGImage)imageForProposedSize:(CGSize)size scaleFactor:(double)factor imageOffset:(CGPoint *)offset imageSize:(CGSize *)imageSize;
+- (CGSize)_imageSizeForAttributes:(id)attributes;
+- (CGSize)_imageSizeForProposedSize:(CGSize)size scaleFactor:(double)factor;
+- (CTAdaptiveImageGlyph)initWithCoder:(id)coder;
+- (CTAdaptiveImageGlyph)initWithFileWrapper:(id)wrapper;
+- (CTAdaptiveImageGlyph)initWithImageContent:(id)content;
 - (NSArray)strikes;
 - (NSFileWrapper)_fallbackFileWrapper;
-- (id)_configuredFileWrapperForAttributes:(id)a3;
-- (id)_initWithContentIdentifier:(id)a3;
-- (id)_nominalTextAttachmentCreatingIfNeededUsingBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_configuredFileWrapperForAttributes:(id)attributes;
+- (id)_initWithContentIdentifier:(id)identifier;
+- (id)_nominalTextAttachmentCreatingIfNeededUsingBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTAdaptiveImageGlyph
@@ -49,11 +49,11 @@ void __45__CTAdaptiveImageGlyph_prefersTextAttachment__block_invoke()
   _MergedGlobals_36 = v1;
 }
 
-+ (void)setPrefersTextAttachment:(BOOL)a3
++ (void)setPrefersTextAttachment:(BOOL)attachment
 {
-  if (_MergedGlobals_36 != a3)
+  if (_MergedGlobals_36 != attachment)
   {
-    _MergedGlobals_36 = a3;
+    _MergedGlobals_36 = attachment;
     +[__CTAdaptiveImageGlyphStorage flushInstanceCache];
   }
 }
@@ -74,22 +74,22 @@ void __55__CTAdaptiveImageGlyph_prefersEmojiImageTextAttachment__block_invoke()
   byte_1ED568249 = [v0 BOOLForKey:@"_NSAdaptiveImageGlyphPrefersEmojiImageTextAttachment"];
 }
 
-+ (void)setPrefersEmojiImageTextAttachment:(BOOL)a3
++ (void)setPrefersEmojiImageTextAttachment:(BOOL)attachment
 {
-  if (byte_1ED568249 != a3)
+  if (byte_1ED568249 != attachment)
   {
-    byte_1ED568249 = a3;
+    byte_1ED568249 = attachment;
     +[__CTAdaptiveImageGlyphStorage flushInstanceCache];
   }
 }
 
-- (CTAdaptiveImageGlyph)initWithImageContent:(id)a3
+- (CTAdaptiveImageGlyph)initWithImageContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v10.receiver = self;
   v10.super_class = CTAdaptiveImageGlyph;
   v5 = [(CTAdaptiveImageGlyph *)&v10 init];
-  if (v5 && ([__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:0 imageContent:v4], v6 = objc_claimAutoreleasedReturnValue(), storage = v5->_storage, v5->_storage = v6, storage, v5->_storage))
+  if (v5 && ([__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:0 imageContent:contentCopy], v6 = objc_claimAutoreleasedReturnValue(), storage = v5->_storage, v5->_storage = v6, storage, v5->_storage))
   {
     v8 = v5;
   }
@@ -102,13 +102,13 @@ void __55__CTAdaptiveImageGlyph_prefersEmojiImageTextAttachment__block_invoke()
   return v8;
 }
 
-- (id)_initWithContentIdentifier:(id)a3
+- (id)_initWithContentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CTAdaptiveImageGlyph;
   v5 = [(CTAdaptiveImageGlyph *)&v10 init];
-  if (v5 && ([__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:v4 imageContent:0], v6 = objc_claimAutoreleasedReturnValue(), storage = v5->_storage, v5->_storage = v6, storage, v5->_storage))
+  if (v5 && ([__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:identifierCopy imageContent:0], v6 = objc_claimAutoreleasedReturnValue(), storage = v5->_storage, v5->_storage = v6, storage, v5->_storage))
   {
     v8 = v5;
   }
@@ -121,34 +121,34 @@ void __55__CTAdaptiveImageGlyph_prefersEmojiImageTextAttachment__block_invoke()
   return v8;
 }
 
-- (CTAdaptiveImageGlyph)initWithFileWrapper:(id)a3
+- (CTAdaptiveImageGlyph)initWithFileWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [v4 preferredFilename];
-  v6 = [v5 pathExtension];
+  wrapperCopy = wrapper;
+  preferredFilename = [wrapperCopy preferredFilename];
+  pathExtension = [preferredFilename pathExtension];
 
-  if (v6)
+  if (pathExtension)
   {
-    v7 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v6];
+    v7 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
     v8 = +[CTAdaptiveImageGlyph contentType];
     v9 = [v7 isEqual:v8];
 
     if (!v9)
     {
-      v12 = 0;
+      selfCopy = 0;
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v10 = [v4 regularFileContents];
-    if (v10)
+    regularFileContents = [wrapperCopy regularFileContents];
+    if (regularFileContents)
     {
-      v11 = [(CTAdaptiveImageGlyph *)self initWithImageContent:v10];
+      v11 = [(CTAdaptiveImageGlyph *)self initWithImageContent:regularFileContents];
       if (v11)
       {
         self = v11;
-        v12 = self;
+        selfCopy = self;
 LABEL_10:
 
         goto LABEL_11;
@@ -157,44 +157,44 @@ LABEL_10:
       self = 0;
     }
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CTAdaptiveImageGlyph alloc];
-  v5 = [(__CTAdaptiveImageGlyphStorage *)self->_storage contentIdentifier];
-  v6 = [(CTAdaptiveImageGlyph *)v4 initWithContentIdentifier:v5];
+  contentIdentifier = [(__CTAdaptiveImageGlyphStorage *)self->_storage contentIdentifier];
+  v6 = [(CTAdaptiveImageGlyph *)v4 initWithContentIdentifier:contentIdentifier];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if ([v6 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v4 = [(__CTAdaptiveImageGlyphStorage *)self->_storage contentIdentifier];
-    [v6 encodeObject:v4 forKey:@"NS.contentIdentifier"];
+    contentIdentifier = [(__CTAdaptiveImageGlyphStorage *)self->_storage contentIdentifier];
+    [coderCopy encodeObject:contentIdentifier forKey:@"NS.contentIdentifier"];
 
-    v5 = [(__CTAdaptiveImageGlyphStorage *)self->_storage imageContent];
-    [v6 encodeObject:v5 forKey:@"NS.imageContent"];
+    imageContent = [(__CTAdaptiveImageGlyphStorage *)self->_storage imageContent];
+    [coderCopy encodeObject:imageContent forKey:@"NS.imageContent"];
   }
 }
 
-- (CTAdaptiveImageGlyph)initWithCoder:(id)a3
+- (CTAdaptiveImageGlyph)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NS.contentIdentifier"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NS.contentIdentifier"];
     if (v5 && ([__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:v5 imageContent:0], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
@@ -202,7 +202,7 @@ LABEL_12:
 
     else
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NS.imageContent"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NS.imageContent"];
       v7 = [__CTAdaptiveImageGlyphStorage adaptiveImageGlyphStorageWithContentIdentifier:0 imageContent:v9];
 
       if (!v7)
@@ -221,7 +221,7 @@ LABEL_12:
       v10->_storage = v7;
 
       self = self;
-      v8 = self;
+      selfCopy = self;
 LABEL_10:
 
       goto LABEL_11;
@@ -229,14 +229,14 @@ LABEL_10:
 
 LABEL_9:
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSArray)strikes
@@ -246,10 +246,10 @@ LABEL_11:
   return v2;
 }
 
-- (CGSize)_imageSizeForProposedSize:(CGSize)a3 scaleFactor:(double)a4
+- (CGSize)_imageSizeForProposedSize:(CGSize)size scaleFactor:(double)factor
 {
   v6 = *MEMORY[0x1E695F060];
-  __CTEmojiImageSourceGetImageIndex([(__CTAdaptiveImageGlyphStorage *)self->_storage imageSourceRef], &v6, 0, a3.width, a3.height, 1.0);
+  __CTEmojiImageSourceGetImageIndex([(__CTAdaptiveImageGlyphStorage *)self->_storage imageSourceRef], &v6, 0, size.width, size.height, 1.0);
   v5 = *(&v6 + 1);
   v4 = *&v6;
   result.height = v5;
@@ -257,30 +257,30 @@ LABEL_11:
   return result;
 }
 
-- (id)_nominalTextAttachmentCreatingIfNeededUsingBlock:(id)a3
+- (id)_nominalTextAttachmentCreatingIfNeededUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_storage;
   objc_sync_enter(v5);
-  v6 = [(__CTAdaptiveImageGlyphStorage *)self->_storage _nominalTextAttachment];
-  if (!v6)
+  _nominalTextAttachment = [(__CTAdaptiveImageGlyphStorage *)self->_storage _nominalTextAttachment];
+  if (!_nominalTextAttachment)
   {
-    v6 = v4[2](v4);
-    [(__CTAdaptiveImageGlyphStorage *)self->_storage _setNominalTextAttachment:v6];
+    _nominalTextAttachment = blockCopy[2](blockCopy);
+    [(__CTAdaptiveImageGlyphStorage *)self->_storage _setNominalTextAttachment:_nominalTextAttachment];
   }
 
   objc_sync_exit(v5);
 
-  return v6;
+  return _nominalTextAttachment;
 }
 
-- (CGImage)imageForProposedSize:(CGSize)a3 scaleFactor:(double)a4 imageOffset:(CGPoint *)a5 imageSize:(CGSize *)a6
+- (CGImage)imageForProposedSize:(CGSize)size scaleFactor:(double)factor imageOffset:(CGPoint *)offset imageSize:(CGSize *)imageSize
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = [(__CTAdaptiveImageGlyphStorage *)self->_storage imageSourceRef];
+  height = size.height;
+  width = size.width;
+  imageSourceRef = [(__CTAdaptiveImageGlyphStorage *)self->_storage imageSourceRef];
   v26 = 0;
-  ImageIndex = __CTEmojiImageSourceGetImageIndex(v12, a6, &v26, width, height, a4);
+  ImageIndex = __CTEmojiImageSourceGetImageIndex(imageSourceRef, imageSize, &v26, width, height, factor);
   v14 = v26;
   if (ImageIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -288,7 +288,7 @@ LABEL_11:
     if (ImageAtIndex)
     {
       v16 = ImageAtIndex;
-      if (!a5)
+      if (!offset)
       {
 LABEL_14:
         v21 = CFAutorelease(v16);
@@ -308,11 +308,11 @@ LABEL_14:
         v20 = *(MEMORY[0x1E695EFF8] + 8);
       }
 
-      a5->x = v19;
-      a5->y = v20;
-      v22 = a6->width;
-      v23 = a6->height;
-      if (a6->width >= v23)
+      offset->x = v19;
+      offset->y = v20;
+      v22 = imageSize->width;
+      v23 = imageSize->height;
+      if (imageSize->width >= v23)
       {
         if (v23 >= v22)
         {
@@ -323,7 +323,7 @@ LABEL_13:
 
         v24 = v22 - v23 - v20;
         v19 = v20;
-        a5 = (a5 + 8);
+        offset = (offset + 8);
       }
 
       else
@@ -331,7 +331,7 @@ LABEL_13:
         v24 = v23 - v22 - v19;
       }
 
-      a5->x = v19 + v24 * 0.5;
+      offset->x = v19 + v24 * 0.5;
       goto LABEL_13;
     }
   }
@@ -373,24 +373,24 @@ void __67__CTAdaptiveImageGlyph__readsAdaptiveImageGlyphFromDocumentFormats__blo
   }
 }
 
-- (id)_configuredFileWrapperForAttributes:(id)a3
+- (id)_configuredFileWrapperForAttributes:(id)attributes
 {
-  v5 = [objc_opt_class() contentType];
-  v6 = [v5 preferredFilenameExtension];
+  contentType = [objc_opt_class() contentType];
+  preferredFilenameExtension = [contentType preferredFilenameExtension];
 
-  v7 = [(CTAdaptiveImageGlyph *)self contentIdentifier];
-  v8 = [@"AdaptiveImageGlyph-" stringByAppendingString:v7];
+  contentIdentifier = [(CTAdaptiveImageGlyph *)self contentIdentifier];
+  v8 = [@"AdaptiveImageGlyph-" stringByAppendingString:contentIdentifier];
 
-  if (v6)
+  if (preferredFilenameExtension)
   {
-    v9 = [v8 stringByAppendingPathExtension:v6];
+    v9 = [v8 stringByAppendingPathExtension:preferredFilenameExtension];
 
     v8 = v9;
   }
 
   v10 = objc_alloc(MEMORY[0x1E696AC38]);
   storage = self->_storage;
-  if (a3)
+  if (attributes)
   {
     [(__CTAdaptiveImageGlyphStorage *)storage _RTFDImageData];
   }
@@ -407,9 +407,9 @@ void __67__CTAdaptiveImageGlyph__readsAdaptiveImageGlyphFromDocumentFormats__blo
   return v13;
 }
 
-- (CGSize)_imageSizeForAttributes:(id)a3
+- (CGSize)_imageSizeForAttributes:(id)attributes
 {
-  v4 = [a3 objectForKeyedSubscript:@"NSFont"];
+  v4 = [attributes objectForKeyedSubscript:@"NSFont"];
   if (!v4)
   {
     v5 = _CTGetEmojiFontName(0);
@@ -428,10 +428,10 @@ void __67__CTAdaptiveImageGlyph__readsAdaptiveImageGlyphFromDocumentFormats__blo
 
 - (NSFileWrapper)_fallbackFileWrapper
 {
-  v2 = [(__CTAdaptiveImageGlyphStorage *)self->_storage _fallbackImageData];
-  if (v2)
+  _fallbackImageData = [(__CTAdaptiveImageGlyphStorage *)self->_storage _fallbackImageData];
+  if (_fallbackImageData)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:v2];
+    v3 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:_fallbackImageData];
     [v3 setPreferredFilename:@"Attachment.png"];
   }
 

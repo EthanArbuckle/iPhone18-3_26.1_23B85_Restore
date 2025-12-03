@@ -1,6 +1,6 @@
 @interface TIDPNgramRecorderCascading
 - (BOOL)report;
-- (TIDPNgramRecorderCascading)initWithTypingSession:(id)a3 aligned:(id)a4 n:(unint64_t)a5;
+- (TIDPNgramRecorderCascading)initWithTypingSession:(id)session aligned:(id)aligned n:(unint64_t)n;
 @end
 
 @implementation TIDPNgramRecorderCascading
@@ -16,18 +16,18 @@
     {
       v6 = v5;
       v7 = [TIDPNgramRecorder alloc];
-      v8 = [(TIDPRecorder *)self typingSession];
-      v9 = [(TIDPRecorder *)self typingSessionAligned];
-      v5 = [(TIDPNgramRecorderCascading *)v7 initWithTypingSession:v8 aligned:v9 n:v4];
+      typingSession = [(TIDPRecorder *)self typingSession];
+      typingSessionAligned = [(TIDPRecorder *)self typingSessionAligned];
+      v5 = [(TIDPNgramRecorderCascading *)v7 initWithTypingSession:typingSession aligned:typingSessionAligned n:v4];
 
-      v10 = [(TIDPRecorder *)self delegate];
+      delegate = [(TIDPRecorder *)self delegate];
       NSClassFromString(&cfstr_Tidpreportermo.isa);
-      LOBYTE(v9) = objc_opt_isKindOfClass();
+      LOBYTE(typingSessionAligned) = objc_opt_isKindOfClass();
 
-      if (v9)
+      if (typingSessionAligned)
       {
-        v11 = [(TIDPRecorder *)self delegate];
-        [(TIDPRecorder *)v5 setDelegate:v11];
+        delegate2 = [(TIDPRecorder *)self delegate];
+        [(TIDPRecorder *)v5 setDelegate:delegate2];
       }
 
       [(TIDPNgramRecorder *)v5 report];
@@ -40,25 +40,25 @@
   return 0;
 }
 
-- (TIDPNgramRecorderCascading)initWithTypingSession:(id)a3 aligned:(id)a4 n:(unint64_t)a5
+- (TIDPNgramRecorderCascading)initWithTypingSession:(id)session aligned:(id)aligned n:(unint64_t)n
 {
   v10.receiver = self;
   v10.super_class = TIDPNgramRecorderCascading;
-  v6 = [(TIDPRecorder *)&v10 initWithTypingSession:a3 aligned:a4];
+  v6 = [(TIDPRecorder *)&v10 initWithTypingSession:session aligned:aligned];
   v7 = v6;
   if (v6)
   {
-    if (a5)
+    if (n)
     {
-      v8 = a5;
+      nCopy = n;
     }
 
     else
     {
-      v8 = 5;
+      nCopy = 5;
     }
 
-    [(TIDPNgramRecorderCascading *)v6 setN:v8];
+    [(TIDPNgramRecorderCascading *)v6 setN:nCopy];
   }
 
   return v7;

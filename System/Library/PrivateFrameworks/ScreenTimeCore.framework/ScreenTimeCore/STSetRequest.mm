@@ -1,37 +1,37 @@
 @interface STSetRequest
-+ (id)requestWithUUID:(id)a3 withSyncToken:(id)a4 withDeclarations:(id)a5;
-- (BOOL)loadRequestFromDictionary:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)requestWithUUID:(id)d withSyncToken:(id)token withDeclarations:(id)declarations;
+- (BOOL)loadRequestFromDictionary:(id)dictionary error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)serialize;
 @end
 
 @implementation STSetRequest
 
-+ (id)requestWithUUID:(id)a3 withSyncToken:(id)a4 withDeclarations:(id)a5
++ (id)requestWithUUID:(id)d withSyncToken:(id)token withDeclarations:(id)declarations
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  declarationsCopy = declarations;
+  tokenCopy = token;
+  dCopy = d;
   v10 = objc_opt_new();
-  [v10 setRequestUUID:v9];
+  [v10 setRequestUUID:dCopy];
 
   [v10 setRequestType:@"Set"];
-  [v10 setSyncToken:v8];
+  [v10 setSyncToken:tokenCopy];
 
-  [v10 setDeclarations:v7];
+  [v10 setDeclarations:declarationsCopy];
 
   return v10;
 }
 
-- (BOOL)loadRequestFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)loadRequestFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = STSetRequest;
-  if ([(STRemoteManagementRequest *)&v17 loadRequestFromDictionary:v6 error:a4])
+  if ([(STRemoteManagementRequest *)&v17 loadRequestFromDictionary:dictionaryCopy error:error])
   {
     v16 = 0;
-    v7 = [(STSetRequest *)self loadStringFromDictionary:v6 withKey:@"SyncToken" isRequired:1 defaultValue:0 error:&v16];
+    v7 = [(STSetRequest *)self loadStringFromDictionary:dictionaryCopy withKey:@"SyncToken" isRequired:1 defaultValue:0 error:&v16];
     v8 = v16;
     syncToken = self->_syncToken;
     self->_syncToken = v7;
@@ -39,17 +39,17 @@
     if (!v8)
     {
       v15 = 0;
-      v10 = [(STSetRequest *)self loadArrayFromDictionary:v6 withKey:@"Declarations" validator:&stru_1001A5DC0 isRequired:0 defaultValue:0 error:&v15];
+      v10 = [(STSetRequest *)self loadArrayFromDictionary:dictionaryCopy withKey:@"Declarations" validator:&stru_1001A5DC0 isRequired:0 defaultValue:0 error:&v15];
       v8 = v15;
       declarations = self->_declarations;
       self->_declarations = v10;
     }
 
     v12 = v8 == 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v13 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -66,8 +66,8 @@
   v3 = +[NSMutableDictionary dictionary];
   v7.receiver = self;
   v7.super_class = STSetRequest;
-  v4 = [(STRemoteManagementRequest *)&v7 serialize];
-  [v3 addEntriesFromDictionary:v4];
+  serialize = [(STRemoteManagementRequest *)&v7 serialize];
+  [v3 addEntriesFromDictionary:serialize];
 
   [(STSetRequest *)self serializeStringIntoDictionary:v3 withKey:@"SyncToken" withValue:self->_syncToken isRequired:1 defaultValue:0];
   [(STSetRequest *)self serializeArrayIntoDictionary:v3 withKey:@"Declarations" withValue:self->_declarations itemSerializer:&stru_1001A5E00 isRequired:0 defaultValue:0];
@@ -76,11 +76,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = STSetRequest;
-  v4 = [(STRemoteManagementRequest *)&v10 copyWithZone:a3];
+  v4 = [(STRemoteManagementRequest *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_syncToken copy];
   v6 = v4[4];
   v4[4] = v5;

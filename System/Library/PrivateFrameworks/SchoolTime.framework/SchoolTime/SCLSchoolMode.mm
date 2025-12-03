@@ -1,13 +1,13 @@
 @interface SCLSchoolMode
-- (SCLSchoolMode)initWithConfiguration:(id)a3;
-- (SCLSchoolMode)initWithIdentifier:(id)a3 delegate:(id)a4;
-- (SCLSchoolMode)initWithIdentifier:(id)a3 pairingID:(id)a4 delegate:(id)a5;
+- (SCLSchoolMode)initWithConfiguration:(id)configuration;
+- (SCLSchoolMode)initWithIdentifier:(id)identifier delegate:(id)delegate;
+- (SCLSchoolMode)initWithIdentifier:(id)identifier pairingID:(id)d delegate:(id)delegate;
 - (void)_assertQueueIfReady;
-- (void)applyScheduleSettings:(id)a3 completion:(id)a4;
-- (void)client:(id)a3 didLoadScheduleSettings:(id)a4;
-- (void)client:(id)a3 didUpdateScheduleSettings:(id)a4;
-- (void)client:(id)a3 didUpdateToState:(id)a4 fromState:(id)a5;
-- (void)clientDidChangeUnlockHistory:(id)a3;
+- (void)applyScheduleSettings:(id)settings completion:(id)completion;
+- (void)client:(id)client didLoadScheduleSettings:(id)settings;
+- (void)client:(id)client didUpdateScheduleSettings:(id)settings;
+- (void)client:(id)client didUpdateToState:(id)state fromState:(id)fromState;
+- (void)clientDidChangeUnlockHistory:(id)history;
 - (void)dealloc;
 - (void)noteSignificantUserInteraction;
 - (void)resume;
@@ -15,26 +15,26 @@
 
 @implementation SCLSchoolMode
 
-- (SCLSchoolMode)initWithIdentifier:(id)a3 delegate:(id)a4
+- (SCLSchoolMode)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v8 = SCLAutoUpdatingPairingID();
-  v9 = [(SCLSchoolMode *)self initWithIdentifier:v7 pairingID:v8 delegate:v6];
+  v9 = [(SCLSchoolMode *)self initWithIdentifier:identifierCopy pairingID:v8 delegate:delegateCopy];
 
   return v9;
 }
 
-- (SCLSchoolMode)initWithIdentifier:(id)a3 pairingID:(id)a4 delegate:(id)a5
+- (SCLSchoolMode)initWithIdentifier:(id)identifier pairingID:(id)d delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  dCopy = d;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(SCLSchoolModeConfiguration);
-  [(SCLSchoolModeConfiguration *)v11 setIdentifier:v10];
+  [(SCLSchoolModeConfiguration *)v11 setIdentifier:identifierCopy];
 
-  [(SCLSchoolModeConfiguration *)v11 setPairingID:v9];
-  [(SCLSchoolModeConfiguration *)v11 setDelegate:v8];
+  [(SCLSchoolModeConfiguration *)v11 setPairingID:dCopy];
+  [(SCLSchoolModeConfiguration *)v11 setDelegate:delegateCopy];
 
   v12 = [(SCLSchoolMode *)self initWithConfiguration:v11];
   [(SCLSchoolMode *)v12 resume];
@@ -42,25 +42,25 @@
   return v12;
 }
 
-- (SCLSchoolMode)initWithConfiguration:(id)a3
+- (SCLSchoolMode)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = SCLSchoolMode;
   v5 = [(SCLSchoolMode *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    v8 = [(SCLSchoolModeConfiguration *)v5->_configuration targetQueue];
+    targetQueue = [(SCLSchoolModeConfiguration *)v5->_configuration targetQueue];
 
-    if (!v8)
+    if (!targetQueue)
     {
       v9 = v5->_configuration;
-      v10 = [v4 identifier];
-      v11 = dispatch_queue_create([v10 cStringUsingEncoding:4], 0);
+      identifier = [configurationCopy identifier];
+      v11 = dispatch_queue_create([identifier cStringUsingEncoding:4], 0);
       [(SCLSchoolModeConfiguration *)v9 setTargetQueue:v11];
     }
 
@@ -97,11 +97,11 @@
   }
 }
 
-- (void)applyScheduleSettings:(id)a3 completion:(id)a4
+- (void)applyScheduleSettings:(id)settings completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_264829000, "ApplyScheduleSettings", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
@@ -110,11 +110,11 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v6;
+    v13 = settingsCopy;
     _os_log_impl(&dword_264829000, v9, OS_LOG_TYPE_DEFAULT, "Apply schedule settings: %{public}@", buf, 0xCu);
   }
 
-  [(SCLSchoolModeXPCClient *)self->_xpcClient applyScheduleSettings:v6 completion:v7];
+  [(SCLSchoolModeXPCClient *)self->_xpcClient applyScheduleSettings:settingsCopy completion:completionCopy];
   os_activity_scope_leave(&v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -122,12 +122,12 @@
 
 - (void)_assertQueueIfReady
 {
-  v3 = [(SCLSchoolMode *)self resumeState];
-  if (v3 != 2)
+  resumeState = [(SCLSchoolMode *)self resumeState];
+  if (resumeState != 2)
   {
-    if (v3 != 1)
+    if (resumeState != 1)
     {
-      if (!v3)
+      if (!resumeState)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Got delegate callback but not resumed: %@", self}];
       }
@@ -141,72 +141,72 @@
     }
   }
 
-  v4 = [(SCLSchoolModeConfiguration *)self->_configuration targetQueue];
-  dispatch_assert_queue_V2(v4);
+  targetQueue = [(SCLSchoolModeConfiguration *)self->_configuration targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 }
 
-- (void)client:(id)a3 didUpdateToState:(id)a4 fromState:(id)a5
+- (void)client:(id)client didUpdateToState:(id)state fromState:(id)fromState
 {
-  v11 = a4;
-  v7 = a5;
+  stateCopy = state;
+  fromStateCopy = fromState;
   [(SCLSchoolMode *)self _assertQueueIfReady];
-  v8 = [(SCLSchoolMode *)self delegate];
+  delegate = [(SCLSchoolMode *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SCLSchoolMode *)self delegate];
-    [v10 schoolMode:self didUpdateState:v11 fromState:v7];
+    delegate2 = [(SCLSchoolMode *)self delegate];
+    [delegate2 schoolMode:self didUpdateState:stateCopy fromState:fromStateCopy];
   }
 }
 
-- (void)client:(id)a3 didUpdateScheduleSettings:(id)a4
+- (void)client:(id)client didUpdateScheduleSettings:(id)settings
 {
-  v8 = a4;
+  settingsCopy = settings;
   [(SCLSchoolMode *)self _assertQueueIfReady];
-  v5 = [(SCLSchoolMode *)self delegate];
+  delegate = [(SCLSchoolMode *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SCLSchoolMode *)self delegate];
-    [v7 schoolMode:self didUpdateScheduleSettings:v8];
+    delegate2 = [(SCLSchoolMode *)self delegate];
+    [delegate2 schoolMode:self didUpdateScheduleSettings:settingsCopy];
   }
 }
 
-- (void)clientDidChangeUnlockHistory:(id)a3
+- (void)clientDidChangeUnlockHistory:(id)history
 {
   [(SCLSchoolMode *)self _assertQueueIfReady];
-  v4 = [(SCLSchoolMode *)self delegate];
+  delegate = [(SCLSchoolMode *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SCLSchoolMode *)self delegate];
-    [v6 schoolModeDidUpdateUnlockHistory:self];
+    delegate2 = [(SCLSchoolMode *)self delegate];
+    [delegate2 schoolModeDidUpdateUnlockHistory:self];
   }
 }
 
-- (void)client:(id)a3 didLoadScheduleSettings:(id)a4
+- (void)client:(id)client didLoadScheduleSettings:(id)settings
 {
-  v11 = a4;
+  settingsCopy = settings;
   [(SCLSchoolMode *)self _assertQueueIfReady];
-  v5 = [(SCLSchoolMode *)self delegate];
+  delegate = [(SCLSchoolMode *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SCLSchoolMode *)self delegate];
-    [v7 schoolMode:self didLoadScheduleSettings:v11];
+    delegate2 = [(SCLSchoolMode *)self delegate];
+    [delegate2 schoolMode:self didLoadScheduleSettings:settingsCopy];
   }
 
-  v8 = [(SCLSchoolMode *)self delegate];
+  delegate3 = [(SCLSchoolMode *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SCLSchoolMode *)self delegate];
-    [v10 schoolModeDidLoad:self];
+    delegate4 = [(SCLSchoolMode *)self delegate];
+    [delegate4 schoolModeDidLoad:self];
   }
 }
 
@@ -221,7 +221,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_264829000, v4, OS_LOG_TYPE_DEFAULT, "NoteSignificantUserInteraction for %@", buf, 0xCu);
   }
 

@@ -1,10 +1,10 @@
 @interface HMDCharacteristicResponseNotificationContext
-+ (id)notificationUpdateMessagePayloadForHome:(id)a3 notificationEnabled:(BOOL)a4 characteristics:(id)a5 characteristicsErrorsMap:(id)a6;
-+ (id)responsePayloadForHome:(id)a3 changedAccessories:(id)a4 moreMessagesInMultipart:(id)a5;
-+ (id)updateMultipleCharacteristicReadWriteResponsePayload:(id)a3 withUnhandledRequests:(id)a4;
-- (HMDCharacteristicResponseNotificationContext)initWithRequestIdentifier:(id)a3 responses:(id)a4 pendingMultiPartResponses:(BOOL)a5;
++ (id)notificationUpdateMessagePayloadForHome:(id)home notificationEnabled:(BOOL)enabled characteristics:(id)characteristics characteristicsErrorsMap:(id)map;
++ (id)responsePayloadForHome:(id)home changedAccessories:(id)accessories moreMessagesInMultipart:(id)multipart;
++ (id)updateMultipleCharacteristicReadWriteResponsePayload:(id)payload withUnhandledRequests:(id)requests;
+- (HMDCharacteristicResponseNotificationContext)initWithRequestIdentifier:(id)identifier responses:(id)responses pendingMultiPartResponses:(BOOL)partResponses;
 - (id)attributeDescriptions;
-- (id)notificationWithHome:(id)a3;
+- (id)notificationWithHome:(id)home;
 @end
 
 @implementation HMDCharacteristicResponseNotificationContext
@@ -13,8 +13,8 @@
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
-  v4 = [v3 initWithName:@"Request Identifier" value:v20];
+  requestIdentifier = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
+  v4 = [v3 initWithName:@"Request Identifier" value:requestIdentifier];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDCharacteristicResponseNotificationContext *)self hasPendingMultiPartResponses];
@@ -22,16 +22,16 @@
   v7 = [v5 initWithName:@"Has Pending Multi Part Responses" value:v6];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDCharacteristicResponseNotificationContext *)self changedCharacteristics];
-  v10 = [v8 initWithName:@"Changed Characteristics" value:v9];
+  changedCharacteristics = [(HMDCharacteristicResponseNotificationContext *)self changedCharacteristics];
+  v10 = [v8 initWithName:@"Changed Characteristics" value:changedCharacteristics];
   v21[2] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDCharacteristicResponseNotificationContext *)self previouslyNilChangedCharacteristics];
-  v13 = [v11 initWithName:@"Previously Nil Changed Characteristics" value:v12];
+  previouslyNilChangedCharacteristics = [(HMDCharacteristicResponseNotificationContext *)self previouslyNilChangedCharacteristics];
+  v13 = [v11 initWithName:@"Previously Nil Changed Characteristics" value:previouslyNilChangedCharacteristics];
   v21[3] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMDCharacteristicResponseNotificationContext *)self notificationPayloadByAccessoryUUID];
-  v16 = [v14 initWithName:@"Notification Payload" value:v15];
+  notificationPayloadByAccessoryUUID = [(HMDCharacteristicResponseNotificationContext *)self notificationPayloadByAccessoryUUID];
+  v16 = [v14 initWithName:@"Notification Payload" value:notificationPayloadByAccessoryUUID];
   v21[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:5];
 
@@ -40,24 +40,24 @@
   return v17;
 }
 
-- (id)notificationWithHome:(id)a3
+- (id)notificationWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
+  homeCopy = home;
+  requestIdentifier = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
 
-  if (v5)
+  if (requestIdentifier)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v7 = [(HMDCharacteristicResponseNotificationContext *)self notificationPayloadByAccessoryUUID];
-    [v6 setObject:v7 forKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
+    notificationPayloadByAccessoryUUID = [(HMDCharacteristicResponseNotificationContext *)self notificationPayloadByAccessoryUUID];
+    [v6 setObject:notificationPayloadByAccessoryUUID forKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
 
-    v8 = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
-    [v6 setObject:v8 forKeyedSubscript:@"kModifiedCharacteristicsMessageIdentifierKey"];
+    requestIdentifier2 = [(HMDCharacteristicResponseNotificationContext *)self requestIdentifier];
+    [v6 setObject:requestIdentifier2 forKeyedSubscript:@"kModifiedCharacteristicsMessageIdentifierKey"];
 
     v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDCharacteristicResponseNotificationContext hasPendingMultiPartResponses](self, "hasPendingMultiPartResponses")}];
     [v6 setObject:v9 forKeyedSubscript:@"kMultiPartResponseKey"];
 
-    v10 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:v4 userInfo:v6];
+    v10 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:homeCopy userInfo:v6];
   }
 
   else
@@ -68,33 +68,33 @@
   return v10;
 }
 
-- (HMDCharacteristicResponseNotificationContext)initWithRequestIdentifier:(id)a3 responses:(id)a4 pendingMultiPartResponses:(BOOL)a5
+- (HMDCharacteristicResponseNotificationContext)initWithRequestIdentifier:(id)identifier responses:(id)responses pendingMultiPartResponses:(BOOL)partResponses
 {
   v130 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  responsesCopy = responses;
   v118.receiver = self;
   v118.super_class = HMDCharacteristicResponseNotificationContext;
   v10 = [(HMDCharacteristicResponseNotificationContext *)&v118 init];
   if (v10)
   {
-    v91 = v8;
-    v11 = [v8 copy];
+    v91 = identifierCopy;
+    v11 = [identifierCopy copy];
     requestIdentifier = v10->_requestIdentifier;
     v10->_requestIdentifier = v11;
 
     v99 = v10;
-    v10->_pendingMultiPartResponses = a5;
+    v10->_pendingMultiPartResponses = partResponses;
     v107 = [MEMORY[0x277CBEB58] set];
     v98 = [MEMORY[0x277CBEB58] set];
     v92 = [MEMORY[0x277CBEB58] set];
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v114 = 0u;
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v90 = v9;
-    obj = v9;
+    v90 = responsesCopy;
+    obj = responsesCopy;
     v14 = [obj countByEnumeratingWithState:&v114 objects:v129 count:16];
     if (!v14)
     {
@@ -109,7 +109,7 @@
     v97 = *MEMORY[0x277CD21B8];
     v95 = *MEMORY[0x277CD2150];
     v94 = *MEMORY[0x277CD21D0];
-    v105 = v13;
+    v105 = dictionary;
     v106 = *v115;
     while (1)
     {
@@ -123,15 +123,15 @@
         }
 
         v18 = *(*(&v114 + 1) + 8 * v17);
-        v19 = [v18 request];
-        v20 = [v19 characteristic];
+        request = [v18 request];
+        characteristic = [request characteristic];
 
-        v21 = [v20 service];
-        v22 = [v21 accessory];
-        v23 = v22;
-        if (v20)
+        service = [characteristic service];
+        accessory = [service accessory];
+        v23 = accessory;
+        if (characteristic)
         {
-          v24 = v21 == 0;
+          v24 = service == 0;
         }
 
         else
@@ -139,43 +139,43 @@
           v24 = 1;
         }
 
-        if (!v24 && v22 != 0)
+        if (!v24 && accessory != 0)
         {
-          v26 = [v22 uuid];
-          v27 = [v26 UUIDString];
+          uuid = [accessory uuid];
+          uUIDString = [uuid UUIDString];
 
-          v28 = [v13 hmf_mutableDictionaryForKey:v27];
-          if (!v28)
+          dictionary2 = [dictionary hmf_mutableDictionaryForKey:uUIDString];
+          if (!dictionary2)
           {
-            v28 = [MEMORY[0x277CBEB38] dictionary];
-            [v13 setObject:v28 forKeyedSubscript:v27];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+            [dictionary setObject:dictionary2 forKeyedSubscript:uUIDString];
           }
 
-          v110 = v27;
-          v29 = [v21 instanceID];
-          v30 = [v29 stringValue];
-          v31 = [v28 hmf_mutableDictionaryForKey:v30];
+          v110 = uUIDString;
+          instanceID = [service instanceID];
+          stringValue = [instanceID stringValue];
+          v31 = [dictionary2 hmf_mutableDictionaryForKey:stringValue];
 
           v112 = v31;
           if (!v31)
           {
-            v32 = [MEMORY[0x277CBEB38] dictionary];
-            v33 = [v21 instanceID];
-            v34 = [v33 stringValue];
-            v112 = v32;
-            [v28 setObject:v32 forKeyedSubscript:v34];
+            dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+            instanceID2 = [service instanceID];
+            stringValue2 = [instanceID2 stringValue];
+            v112 = dictionary3;
+            [dictionary2 setObject:dictionary3 forKeyedSubscript:stringValue2];
           }
 
-          [v107 addObject:v20];
-          v35 = [v18 error];
+          [v107 addObject:characteristic];
+          error = [v18 error];
           v111 = v23;
-          if (v35 || ([v18 value], v42 = objc_claimAutoreleasedReturnValue(), v42, !v42) && (objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", v93, 4, 0), (v35 = objc_claimAutoreleasedReturnValue()) != 0))
+          if (error || ([v18 value], v42 = objc_claimAutoreleasedReturnValue(), v42, !v42) && (objc_msgSend(MEMORY[0x277CCA9B8], "errorWithDomain:code:userInfo:", v93, 4, 0), (error = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v36 = v35;
-            v37 = v28;
+            value = error;
+            v37 = dictionary2;
             v113 = 0;
-            v38 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v35 requiringSecureCoding:1 error:&v113];
-            v39 = v113;
+            v38 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:error requiringSecureCoding:1 error:&v113];
+            previousValue = v113;
             if (v38)
             {
               v127 = v100;
@@ -195,12 +195,12 @@
                 *buf = 138543874;
                 v122 = v54;
                 v123 = 2112;
-                v124 = v36;
+                v124 = value;
                 v125 = 2112;
-                v126 = v39;
+                v126 = previousValue;
                 _os_log_impl(&dword_2531F8000, v53, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize error %@: %@", buf, 0x20u);
 
-                v13 = v105;
+                dictionary = v105;
               }
 
               objc_autoreleasePoolPop(contexta);
@@ -212,17 +212,17 @@
 
           else
           {
-            v36 = [v18 value];
-            v43 = [v18 request];
-            v44 = [v43 isMemberOfClass:objc_opt_class()];
+            value = [v18 value];
+            request2 = [v18 request];
+            v44 = [request2 isMemberOfClass:objc_opt_class()];
 
             if (v44)
             {
-              v45 = v28;
-              v46 = [v20 lastKnownValue];
-              v47 = [v20 lastKnownValueUpdateTime];
-              v48 = [v18 valueUpdatedTime];
-              v49 = [v47 compare:v48] != 1 || v46 == 0;
+              v45 = dictionary2;
+              lastKnownValue = [characteristic lastKnownValue];
+              lastKnownValueUpdateTime = [characteristic lastKnownValueUpdateTime];
+              valueUpdatedTime = [v18 valueUpdatedTime];
+              v49 = [lastKnownValueUpdateTime compare:valueUpdatedTime] != 1 || lastKnownValue == 0;
               v50 = !v49;
               context = v50;
               if (v49)
@@ -231,12 +231,12 @@
 
               else
               {
-                v51 = [v46 isEqual:v36];
+                v51 = [lastKnownValue isEqual:value];
 
                 if (v51)
                 {
                   context = 0;
-                  v13 = v105;
+                  dictionary = v105;
                   goto LABEL_45;
                 }
 
@@ -252,63 +252,63 @@
                   v123 = 2112;
                   v124 = v18;
                   v125 = 2112;
-                  v126 = v46;
+                  v126 = lastKnownValue;
                   _os_log_impl(&dword_2531F8000, v58, OS_LOG_TYPE_INFO, "%{public}@Updating notification context response to last known characteristic value %@ -> %@", buf, 0x20u);
 
                   v56 = v101;
                 }
 
                 objc_autoreleasePoolPop(v56);
-                v47 = v36;
-                v36 = v46;
+                lastKnownValueUpdateTime = value;
+                value = lastKnownValue;
               }
 
-              v13 = v105;
+              dictionary = v105;
 
 LABEL_45:
-              v28 = v45;
+              dictionary2 = v45;
 
-              if (!v36)
+              if (!value)
               {
 LABEL_46:
-                v36 = [MEMORY[0x277CBEB68] null];
+                value = [MEMORY[0x277CBEB68] null];
               }
             }
 
             else
             {
               context = 0;
-              v13 = v105;
-              if (!v36)
+              dictionary = v105;
+              if (!value)
               {
                 goto LABEL_46;
               }
             }
 
-            v102 = v28;
+            v102 = dictionary2;
             v119 = v97;
-            v120 = v36;
+            v120 = value;
             v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
             v41 = [v60 mutableCopy];
 
-            v61 = [v20 lastKnownValueUpdateTime];
-            [v41 setObject:v61 forKeyedSubscript:v96];
+            lastKnownValueUpdateTime2 = [characteristic lastKnownValueUpdateTime];
+            [v41 setObject:lastKnownValueUpdateTime2 forKeyedSubscript:v96];
 
-            v62 = [v20 notificationContext];
-            [v41 setObject:v62 forKeyedSubscript:v95];
+            notificationContext = [characteristic notificationContext];
+            [v41 setObject:notificationContext forKeyedSubscript:v95];
 
-            v63 = [v18 stateNumber];
-            if (v63)
+            stateNumber = [v18 stateNumber];
+            if (stateNumber)
             {
-              v64 = v63;
-              v65 = [v18 stateNumber];
-              v66 = [v20 stateNumber];
+              v64 = stateNumber;
+              stateNumber2 = [v18 stateNumber];
+              stateNumber3 = [characteristic stateNumber];
               v67 = HAPCompareStateNumberWithRollover();
 
               if (v67 == 1)
               {
-                v68 = [v18 stateNumber];
-                [v20 setStateNumber:v68];
+                stateNumber4 = [v18 stateNumber];
+                [characteristic setStateNumber:stateNumber4];
 
                 v69 = 1;
               }
@@ -318,7 +318,7 @@ LABEL_46:
                 v69 = 0;
               }
 
-              v13 = v105;
+              dictionary = v105;
             }
 
             else
@@ -326,13 +326,13 @@ LABEL_46:
               v69 = 0;
             }
 
-            v70 = [v20 stateNumber];
-            [v41 setObject:v70 forKeyedSubscript:v94];
+            stateNumber5 = [characteristic stateNumber];
+            [v41 setObject:stateNumber5 forKeyedSubscript:v94];
 
-            v71 = [v18 request];
-            v39 = [v71 previousValue];
+            request3 = [v18 request];
+            previousValue = [request3 previousValue];
 
-            if (v39)
+            if (previousValue)
             {
               v72 = context;
             }
@@ -342,32 +342,32 @@ LABEL_46:
               v72 = 1;
             }
 
-            if ((v72 & 1) != 0 || ![HMDCharacteristic value:v36 differentThan:v39])
+            if ((v72 & 1) != 0 || ![HMDCharacteristic value:value differentThan:previousValue])
             {
               v75 = 0;
             }
 
             else
             {
-              v73 = [v20 previousValue];
-              v74 = [v20 lastKnownValue];
-              v75 = [HMDCharacteristic value:v73 differentThan:v74];
+              previousValue2 = [characteristic previousValue];
+              lastKnownValue2 = [characteristic lastKnownValue];
+              v75 = [HMDCharacteristic value:previousValue2 differentThan:lastKnownValue2];
 
-              v13 = v105;
+              dictionary = v105;
             }
 
             v76 = v69 | v75;
             v77 = v98;
             v55 = v102;
-            if ((v76 & 1) != 0 || !v39 && (v77 = v92, v36))
+            if ((v76 & 1) != 0 || !previousValue && (v77 = v92, value))
             {
-              [v77 addObject:v20];
+              [v77 addObject:characteristic];
             }
           }
 
-          v78 = [v20 instanceID];
-          v79 = [v78 stringValue];
-          [v112 setObject:v41 forKeyedSubscript:v79];
+          instanceID3 = [characteristic instanceID];
+          stringValue3 = [instanceID3 stringValue];
+          [v112 setObject:v41 forKeyedSubscript:stringValue3];
 
           v16 = v106;
           v15 = v108;
@@ -396,12 +396,12 @@ LABEL_67:
         previouslyNilChangedCharacteristics = v99->_previouslyNilChangedCharacteristics;
         v99->_previouslyNilChangedCharacteristics = v84;
 
-        v86 = [v13 copy];
+        v86 = [dictionary copy];
         notificationPayloadByAccessoryUUID = v99->_notificationPayloadByAccessoryUUID;
         v99->_notificationPayloadByAccessoryUUID = v86;
 
-        v9 = v90;
-        v8 = v91;
+        responsesCopy = v90;
+        identifierCopy = v91;
         break;
       }
     }
@@ -411,13 +411,13 @@ LABEL_67:
   return v10;
 }
 
-+ (id)updateMultipleCharacteristicReadWriteResponsePayload:(id)a3 withUnhandledRequests:(id)a4
++ (id)updateMultipleCharacteristicReadWriteResponsePayload:(id)payload withUnhandledRequests:(id)requests
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  payloadCopy = payload;
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
-    v7 = [v5 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
+    v7 = [payloadCopy hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
     v8 = [v7 mutableCopy];
 
     if (v8)
@@ -435,8 +435,8 @@ LABEL_67:
       v23 = v13;
       v24 = v12;
       v14 = v12;
-      [v6 enumerateKeysAndObjectsUsingBlock:&v19];
-      v15 = [v5 mutableCopy];
+      [requestsCopy enumerateKeysAndObjectsUsingBlock:&v19];
+      v15 = [payloadCopy mutableCopy];
       v16 = [v13 copy];
       [v15 setObject:v16 forKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
 
@@ -446,13 +446,13 @@ LABEL_67:
 
     else
     {
-      v17 = v5;
+      v17 = payloadCopy;
     }
   }
 
   else
   {
-    v17 = v5;
+    v17 = payloadCopy;
   }
 
   return v17;
@@ -550,19 +550,19 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)notificationUpdateMessagePayloadForHome:(id)a3 notificationEnabled:(BOOL)a4 characteristics:(id)a5 characteristicsErrorsMap:(id)a6
++ (id)notificationUpdateMessagePayloadForHome:(id)home notificationEnabled:(BOOL)enabled characteristics:(id)characteristics characteristicsErrorsMap:(id)map
 {
-  v54 = a4;
+  enabledCopy = enabled;
   v75 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v8 = a5;
-  v58 = a6;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  homeCopy = home;
+  characteristicsCopy = characteristics;
+  mapCopy = map;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v8;
+  obj = characteristicsCopy;
   v61 = [obj countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v61)
   {
@@ -570,7 +570,7 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
     v55 = *MEMORY[0x277CD2128];
     v53 = *MEMORY[0x277CD2158];
     v52 = *MEMORY[0x277CD2168];
-    v56 = v9;
+    v56 = dictionary;
     do
     {
       for (i = 0; i != v61; ++i)
@@ -581,15 +581,15 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
         }
 
         v11 = *(*(&v62 + 1) + 8 * i);
-        v12 = [v11 service];
-        v13 = [v12 instanceID];
-        v14 = [v12 accessory];
-        v15 = [v14 uuid];
-        v16 = [v15 UUIDString];
+        service = [v11 service];
+        instanceID = [service instanceID];
+        accessory = [service accessory];
+        uuid = [accessory uuid];
+        uUIDString = [uuid UUIDString];
 
-        if (v13)
+        if (instanceID)
         {
-          v17 = v16 == 0;
+          v17 = uUIDString == 0;
         }
 
         else
@@ -600,7 +600,7 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
         if (v17)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -608,7 +608,7 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
             *buf = 138543874;
             v69 = v21;
             v70 = 2112;
-            v71 = v12;
+            v71 = service;
             v72 = 2112;
             v73 = v11;
             _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Missing required service (%@) properties for characteristic %@ - dropping the notification", buf, 0x20u);
@@ -620,7 +620,7 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
         else
         {
           v22 = MEMORY[0x277CBEB38];
-          v23 = [v9 objectForKeyedSubscript:v16];
+          v23 = [dictionary objectForKeyedSubscript:uUIDString];
           v24 = v23;
           v25 = MEMORY[0x277CBEC10];
           if (v23)
@@ -636,7 +636,7 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
           v27 = [v22 dictionaryWithDictionary:v26];
 
           v28 = MEMORY[0x277CBEB38];
-          v29 = [v27 objectForKeyedSubscript:v13];
+          v29 = [v27 objectForKeyedSubscript:instanceID];
           v30 = v29;
           if (v29)
           {
@@ -650,40 +650,40 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
 
           v32 = [v28 dictionaryWithDictionary:v31];
 
-          v33 = [MEMORY[0x277CBEB38] dictionary];
-          v34 = [v58 objectForKey:v11];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          v34 = [mapCopy objectForKey:v11];
           if (v34)
           {
-            v35 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v34 requiringSecureCoding:1 error:0];
-            v36 = v33;
-            v37 = v35;
+            notificationEnabledTime = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v34 requiringSecureCoding:1 error:0];
+            v36 = dictionary2;
+            v37 = notificationEnabledTime;
             v38 = v55;
           }
 
           else
           {
-            v39 = [MEMORY[0x277CCABB0] numberWithBool:v54];
-            [v33 setObject:v39 forKeyedSubscript:v53];
+            v39 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
+            [dictionary2 setObject:v39 forKeyedSubscript:v53];
 
-            v35 = [v11 notificationEnabledTime];
-            v36 = v33;
-            v37 = v35;
+            notificationEnabledTime = [v11 notificationEnabledTime];
+            v36 = dictionary2;
+            v37 = notificationEnabledTime;
             v38 = v52;
           }
 
           [v36 setObject:v37 forKeyedSubscript:v38];
 
-          v40 = [v33 copy];
-          v41 = [v11 instanceID];
-          [v32 setObject:v40 forKeyedSubscript:v41];
+          v40 = [dictionary2 copy];
+          instanceID2 = [v11 instanceID];
+          [v32 setObject:v40 forKeyedSubscript:instanceID2];
 
           v42 = [v32 copy];
-          [v27 setObject:v42 forKeyedSubscript:v13];
+          [v27 setObject:v42 forKeyedSubscript:instanceID];
 
           v43 = [v27 copy];
-          [v56 setObject:v43 forKeyedSubscript:v16];
+          [v56 setObject:v43 forKeyedSubscript:uUIDString];
 
-          v9 = v56;
+          dictionary = v56;
         }
       }
 
@@ -693,23 +693,23 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
     while (v61);
   }
 
-  if ([v9 count])
+  if ([dictionary count])
   {
     v66[0] = *MEMORY[0x277CD2490];
-    v44 = [v9 copy];
+    v44 = [dictionary copy];
     v67[0] = v44;
     v66[1] = *MEMORY[0x277CD0640];
-    v45 = v51;
-    v46 = [v51 uuid];
-    v47 = [v46 UUIDString];
-    v67[1] = v47;
+    v45 = homeCopy;
+    uuid2 = [homeCopy uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    v67[1] = uUIDString2;
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:2];
   }
 
   else
   {
     v48 = MEMORY[0x277CBEC10];
-    v45 = v51;
+    v45 = homeCopy;
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -717,28 +717,28 @@ void __123__HMDCharacteristicResponseNotificationContext_updateMultipleCharacter
   return v48;
 }
 
-+ (id)responsePayloadForHome:(id)a3 changedAccessories:(id)a4 moreMessagesInMultipart:(id)a5
++ (id)responsePayloadForHome:(id)home changedAccessories:(id)accessories moreMessagesInMultipart:(id)multipart
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v8)
+  homeCopy = home;
+  accessoriesCopy = accessories;
+  multipartCopy = multipart;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (accessoriesCopy)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
+    [dictionary setObject:accessoriesCopy forKeyedSubscript:@"kModifiedCharacteristicsForAccessoryKey"];
   }
 
-  if (v7)
+  if (homeCopy)
   {
-    v12 = [v7 uuid];
-    v13 = [v12 UUIDString];
-    [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x277CD0640]];
+    uuid = [homeCopy uuid];
+    uUIDString = [uuid UUIDString];
+    [v11 setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CD0640]];
   }
 
-  if (v9)
+  if (multipartCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:@"kMultiPartResponseKey"];
+    [v11 setObject:multipartCopy forKeyedSubscript:@"kMultiPartResponseKey"];
   }
 
   v14 = [v11 copy];

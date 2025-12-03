@@ -15,28 +15,28 @@
 - (NSNumber)externalDisplayBrightness;
 - (NSString)currentHDRMode;
 - (id)externalDisplayName;
-- (id)mainDisplayImageWithWidth:(double)a3;
+- (id)mainDisplayImageWithWidth:(double)width;
 - (id)mainDisplayName;
 - (id)preferredHDRModes;
 - (id)supportedHDRModes;
 - (id)supportedHDRModesWithHighRefreshRate;
 - (id)supportedHDRModesWithVRR;
-- (void)_notifyObserversDidUpdateMirroringEnabledState:(BOOL)a3;
+- (void)_notifyObserversDidUpdateMirroringEnabledState:(BOOL)state;
 - (void)_updateDisplayInfo;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)externalDisplayDidConnect:(id)a3;
-- (void)externalDisplayWillDisconnect:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
-- (void)setAdaptiveSyncEnabled:(BOOL)a3;
-- (void)setAutoBrightnessEnabled:(BOOL)a3;
-- (void)setCurrentHDRMode:(id)a3;
-- (void)setExternalDisplayBrightness:(id)a3 shouldCommit:(BOOL)a4;
-- (void)setLimitRefreshRate:(BOOL)a3;
-- (void)setMatchContent:(BOOL)a3;
-- (void)setMirroringEnabled:(BOOL)a3;
-- (void)updateNativeDisplaySize:(CGSize)a3;
+- (void)externalDisplayDidConnect:(id)connect;
+- (void)externalDisplayWillDisconnect:(id)disconnect;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
+- (void)setAdaptiveSyncEnabled:(BOOL)enabled;
+- (void)setAutoBrightnessEnabled:(BOOL)enabled;
+- (void)setCurrentHDRMode:(id)mode;
+- (void)setExternalDisplayBrightness:(id)brightness shouldCommit:(BOOL)commit;
+- (void)setLimitRefreshRate:(BOOL)rate;
+- (void)setMatchContent:(BOOL)content;
+- (void)setMirroringEnabled:(BOOL)enabled;
+- (void)updateNativeDisplaySize:(CGSize)size;
 @end
 
 @implementation DBSExternalDisplayManager
@@ -67,20 +67,20 @@ uint64_t __43__DBSExternalDisplayManager_defaultManager__block_invoke()
   v2 = [(DBSExternalDisplayManager *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x277CD9E40] TVOutDisplay];
-    if (v5)
+    tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+    if (tVOutDisplay)
     {
       v6 = NSStringFromSelector(sel_preferences);
-      [v5 addObserver:v2 forKeyPath:v6 options:1 context:PKDisplayPreferencesContext];
+      [tVOutDisplay addObserver:v2 forKeyPath:v6 options:1 context:PKDisplayPreferencesContext];
 
       if (![(DBSExternalDisplayManager *)v2 deviceSupportsChamoisExternalDisplay])
       {
         v7 = NSStringFromSelector(sel_currentMode);
-        [v5 addObserver:v2 forKeyPath:v7 options:1 context:PKDisplayCurrentModeContext];
+        [tVOutDisplay addObserver:v2 forKeyPath:v7 options:1 context:PKDisplayCurrentModeContext];
       }
     }
 
@@ -102,15 +102,15 @@ uint64_t __43__DBSExternalDisplayManager_defaultManager__block_invoke()
       }
     }
 
-    v12 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
     objc_initWeak(&location, v2);
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __33__DBSExternalDisplayManager_init__block_invoke_2;
     v19 = &unk_2784596E0;
     objc_copyWeak(&v20, &location);
-    [v12 setTransitionHandler:&v16];
-    v13 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v12, v16, v17, v18, v19}];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:&v16];
+    v13 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationForDefaultMainDisplayMonitor, v16, v17, v18, v19}];
     layoutMonitor = v2->_layoutMonitor;
     v2->_layoutMonitor = v13;
 
@@ -187,21 +187,21 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v3)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v4 = NSStringFromSelector(sel_preferences);
-    [v3 removeObserver:self forKeyPath:v4 context:PKDisplayPreferencesContext];
+    [tVOutDisplay removeObserver:self forKeyPath:v4 context:PKDisplayPreferencesContext];
 
     if (![(DBSExternalDisplayManager *)self deviceSupportsChamoisExternalDisplay])
     {
       v5 = NSStringFromSelector(sel_currentMode);
-      [v3 removeObserver:self forKeyPath:v5 context:PKDisplayCurrentModeContext];
+      [tVOutDisplay removeObserver:self forKeyPath:v5 context:PKDisplayCurrentModeContext];
     }
   }
 
-  v6 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  [v6 unregisterNotificationForKeys:&unk_28349F610];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  [brightnessSystemClient unregisterNotificationForKeys:&unk_28349F610];
 
   if ([(DBSExternalDisplayManager *)self deviceSupportsChamoisExternalDisplay])
   {
@@ -214,13 +214,13 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
   [(DBSExternalDisplayManager *)&v7 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
-    if (![(NSHashTable *)self->_observers containsObject:v4])
+    v5 = observerCopy;
+    if (![(NSHashTable *)self->_observers containsObject:observerCopy])
     {
       [(NSHashTable *)self->_observers addObject:v5];
     }
@@ -229,9 +229,9 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -241,19 +241,19 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
 {
   if ([(DBSExternalDisplayManager *)self externalDisplayAvailable])
   {
-    v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-    v3 = [v2 productName];
-    if (v3 && (v4 = v3, [v2 productName], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v4, v6))
+    tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+    productName = [tVOutDisplay productName];
+    if (productName && (v4 = productName, [tVOutDisplay productName], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v4, v6))
     {
-      v7 = [v2 productName];
+      productName2 = [tVOutDisplay productName];
     }
 
     else
     {
-      v7 = DBS_LocalizedStringForConnectedDisplays(@"EXTERNAL_DISPLAY");
+      productName2 = DBS_LocalizedStringForConnectedDisplays(@"EXTERNAL_DISPLAY");
     }
 
-    v8 = v7;
+    v8 = productName2;
   }
 
   else
@@ -268,11 +268,11 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
 {
   if ([(DBSExternalDisplayManager *)self externalDisplayAvailable])
   {
-    v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-    v3 = v2;
-    if (v2)
+    tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+    v3 = tVOutDisplay;
+    if (tVOutDisplay)
     {
-      [v2 frame];
+      [tVOutDisplay frame];
       v5 = v4;
       v7 = v6;
     }
@@ -297,34 +297,34 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)updateNativeDisplaySize:(CGSize)a3
+- (void)updateNativeDisplaySize:(CGSize)size
 {
-  if (self->_nativeDisplaySize.width != a3.width || self->_nativeDisplaySize.height != a3.height)
+  if (self->_nativeDisplaySize.width != size.width || self->_nativeDisplaySize.height != size.height)
   {
-    self->_nativeDisplaySize = a3;
+    self->_nativeDisplaySize = size;
   }
 }
 
 - (id)mainDisplayName
 {
-  v2 = [MEMORY[0x277CD9E40] mainDisplay];
-  v3 = [v2 productName];
-  if (v3 && (v4 = v3, [v2 productName], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v4, v6))
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  productName = [mainDisplay productName];
+  if (productName && (v4 = productName, [mainDisplay productName], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v4, v6))
   {
-    v7 = [v2 productName];
+    productName2 = [mainDisplay productName];
   }
 
   else
   {
-    v7 = DBS_LocalizedStringForConnectedDisplays(@"MAIN_DISPLAY");
+    productName2 = DBS_LocalizedStringForConnectedDisplays(@"MAIN_DISPLAY");
   }
 
-  v8 = v7;
+  v8 = productName2;
 
   return v8;
 }
 
-- (id)mainDisplayImageWithWidth:(double)a3
+- (id)mainDisplayImageWithWidth:(double)width
 {
   v10 = 0;
   v11 = &v10;
@@ -332,20 +332,20 @@ void __33__DBSExternalDisplayManager_init__block_invoke_3(uint64_t a1)
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 connectedScenes];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke;
   v9[3] = &unk_278459708;
   v9[4] = &v10;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [connectedScenes enumerateObjectsUsingBlock:v9];
 
   [v11[5] interfaceOrientation];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
 
   v7 = SBSUIWallpaperGetPreview();
   _Block_object_dispose(&v10, 8);
@@ -374,44 +374,44 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
 {
   if ([(DBSExternalDisplayManager *)self externalDisplayAvailable])
   {
-    v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-    v3 = [v2 supportedHDRModes];
+    tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+    supportedHDRModes = [tVOutDisplay supportedHDRModes];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    supportedHDRModes = MEMORY[0x277CBEBF8];
   }
 
-  return v3;
+  return supportedHDRModes;
 }
 
 - (id)preferredHDRModes
 {
   if ([(DBSExternalDisplayManager *)self externalDisplayAvailable])
   {
-    v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-    v3 = [v2 preferredHDRModes];
+    tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+    preferredHDRModes = [tVOutDisplay preferredHDRModes];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    preferredHDRModes = MEMORY[0x277CBEBF8];
   }
 
-  return v3;
+  return preferredHDRModes;
 }
 
 - (id)supportedHDRModesWithHighRefreshRate
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v3 = objc_alloc_init(MEMORY[0x277CD9E50]);
     [v3 setHighRefreshRate:1];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v2 supportedHDRModesWithCriteria:v3];
+      v4 = [tVOutDisplay supportedHDRModesWithCriteria:v3];
     }
 
     else
@@ -430,15 +430,15 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
 
 - (id)supportedHDRModesWithVRR
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v3 = objc_alloc_init(MEMORY[0x277CD9E50]);
     [v3 setHighRefreshRate:1];
     [v3 setVariableRefreshRate:1];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v2 supportedHDRModesWithCriteria:v3];
+      v4 = [tVOutDisplay supportedHDRModesWithCriteria:v3];
     }
 
     else
@@ -457,14 +457,14 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
 
 - (BOOL)externalDisplayAvailable
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v3 = v2;
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v3 = tVOutDisplay;
+  if (tVOutDisplay)
   {
-    v4 = [v2 currentMode];
-    if ([v4 height])
+    currentMode = [tVOutDisplay currentMode];
+    if ([currentMode height])
     {
-      v5 = [v4 width] != 0;
+      v5 = [currentMode width] != 0;
     }
 
     else
@@ -483,41 +483,41 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
 
 - (BOOL)externalDisplayBrightnessAvailable
 {
-  v2 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  v3 = [v2 copyPropertyForKey:@"DisplayBrightness2Available"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  v3 = [brightnessSystemClient copyPropertyForKey:@"DisplayBrightness2Available"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(brightnessSystemClient) = [v3 BOOLValue];
+  return brightnessSystemClient;
 }
 
 - (BOOL)externalDisplayAutoBrightnessAvailable
 {
-  v2 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  v3 = [v2 copyPropertyForKey:@"DisplayBrightnessAuto2Available"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  v3 = [brightnessSystemClient copyPropertyForKey:@"DisplayBrightnessAuto2Available"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(brightnessSystemClient) = [v3 BOOLValue];
+  return brightnessSystemClient;
 }
 
 - (NSString)currentHDRMode
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v3 = v2;
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v3 = tVOutDisplay;
+  if (tVOutDisplay)
   {
-    v4 = [v2 preferences];
-    v5 = [v4 preferredHdrMode];
+    preferences = [tVOutDisplay preferences];
+    preferredHdrMode = [preferences preferredHdrMode];
 
-    if (v5)
+    if (preferredHdrMode)
     {
-      v6 = [v3 preferences];
-      [v6 preferredHdrMode];
+      preferences2 = [v3 preferences];
+      [preferences2 preferredHdrMode];
     }
 
     else
     {
-      v6 = [v3 currentMode];
-      [v6 hdrMode];
+      preferences2 = [v3 currentMode];
+      [preferences2 hdrMode];
     }
     v7 = ;
   }
@@ -530,59 +530,59 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
   return v7;
 }
 
-- (void)setCurrentHDRMode:(id)a3
+- (void)setCurrentHDRMode:(id)mode
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v4)
+  modeCopy = mode;
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v5 = DBSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = modeCopy;
       _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "External Display: Setting current HDR mode preference to value: %@", &v8, 0xCu);
     }
 
-    v6 = [v4 preferences];
-    v7 = [v6 mutableCopy];
+    preferences = [tVOutDisplay preferences];
+    v7 = [preferences mutableCopy];
 
-    [v7 setPreferredHdrMode:v3];
-    [v4 setPreferences:v7];
+    [v7 setPreferredHdrMode:modeCopy];
+    [tVOutDisplay setPreferences:v7];
   }
 }
 
 - (BOOL)matchContent
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v3 = v2;
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v3 = tVOutDisplay;
+  if (tVOutDisplay)
   {
-    v4 = [v2 preferences];
-    v5 = [v4 matchContent];
+    preferences = [tVOutDisplay preferences];
+    matchContent = [preferences matchContent];
   }
 
   else
   {
-    v5 = 0;
+    matchContent = 0;
   }
 
-  return v5;
+  return matchContent;
 }
 
-- (void)setMatchContent:(BOOL)a3
+- (void)setMatchContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v4)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v5 = DBSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (contentCopy)
       {
         v6 = @"YES";
       }
@@ -592,22 +592,22 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
       _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "External Display: Setting match content preference to value: %@", &v9, 0xCu);
     }
 
-    v7 = [v4 preferences];
-    v8 = [v7 mutableCopy];
+    preferences = [tVOutDisplay preferences];
+    v8 = [preferences mutableCopy];
 
-    [v8 setMatchContent:v3];
-    [v4 setPreferences:v8];
+    [v8 setMatchContent:contentCopy];
+    [tVOutDisplay setPreferences:v8];
   }
 }
 
 - (BOOL)limitRefreshRate
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v3 = v2;
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v3 = tVOutDisplay;
+  if (tVOutDisplay)
   {
-    v4 = [v2 preferences];
-    v5 = [v4 prefersHighRefreshRate] ^ 1;
+    preferences = [tVOutDisplay preferences];
+    v5 = [preferences prefersHighRefreshRate] ^ 1;
   }
 
   else
@@ -618,18 +618,18 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
   return v5;
 }
 
-- (void)setLimitRefreshRate:(BOOL)a3
+- (void)setLimitRefreshRate:(BOOL)rate
 {
-  v3 = a3;
+  rateCopy = rate;
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v4)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v5 = DBSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (rateCopy)
       {
         v6 = @"YES";
       }
@@ -639,89 +639,89 @@ void __55__DBSExternalDisplayManager_mainDisplayImageWithWidth___block_invoke(ui
       _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "External Display: Setting limit refresh rate preference to value: %@", &v9, 0xCu);
     }
 
-    v7 = [v4 preferences];
-    v8 = [v7 mutableCopy];
+    preferences = [tVOutDisplay preferences];
+    v8 = [preferences mutableCopy];
 
-    [v8 setPrefersHighRefreshRate:!v3];
-    [v4 setPreferences:v8];
+    [v8 setPrefersHighRefreshRate:!rateCopy];
+    [tVOutDisplay setPreferences:v8];
   }
 }
 
 - (BOOL)adaptiveSyncEnabled
 {
-  v2 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v3 = v2;
-  if (v2)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v3 = tVOutDisplay;
+  if (tVOutDisplay)
   {
-    v4 = [v2 preferences];
-    v5 = [v4 prefersVariableRefreshRate];
+    preferences = [tVOutDisplay preferences];
+    prefersVariableRefreshRate = [preferences prefersVariableRefreshRate];
   }
 
   else
   {
-    v5 = 0;
+    prefersVariableRefreshRate = 0;
   }
 
-  return v5;
+  return prefersVariableRefreshRate;
 }
 
-- (void)setAdaptiveSyncEnabled:(BOOL)a3
+- (void)setAdaptiveSyncEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  if (v4)
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  if (tVOutDisplay)
   {
     v5 = DBSLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+      v6 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
       v9 = 138412290;
       v10 = v6;
       _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "External Display: Setting adaptive sync preference enabled to: %@", &v9, 0xCu);
     }
 
-    v7 = [v4 preferences];
-    v8 = [v7 mutableCopy];
+    preferences = [tVOutDisplay preferences];
+    v8 = [preferences mutableCopy];
 
-    [v8 setPrefersVariableRefreshRate:v3];
-    [v4 setPreferences:v8];
+    [v8 setPrefersVariableRefreshRate:enabledCopy];
+    [tVOutDisplay setPreferences:v8];
   }
 }
 
 - (NSNumber)externalDisplayBrightness
 {
-  v2 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  v3 = [v2 copyPropertyForKey:@"DisplayBrightness2"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  v3 = [brightnessSystemClient copyPropertyForKey:@"DisplayBrightness2"];
 
   return v3;
 }
 
 - (BOOL)autoBrightnessEnabled
 {
-  v2 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  v3 = [v2 copyPropertyForKey:@"DisplayBrightnessAuto2"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  v3 = [brightnessSystemClient copyPropertyForKey:@"DisplayBrightnessAuto2"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(brightnessSystemClient) = [v3 BOOLValue];
+  return brightnessSystemClient;
 }
 
-- (void)setAutoBrightnessEnabled:(BOOL)a3
+- (void)setAutoBrightnessEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v5 = DBSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
     v13 = 138412290;
     v14 = v6;
     _os_log_impl(&dword_22102E000, v5, OS_LOG_TYPE_DEFAULT, "External Display: Setting external display auto brightness setting to to %@.", &v13, 0xCu);
   }
 
-  v7 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  v9 = [v7 setProperty:v8 forKey:@"DisplayBrightnessAuto2"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
+  v9 = [brightnessSystemClient setProperty:v8 forKey:@"DisplayBrightnessAuto2"];
 
   v10 = DBSLogForCategory(0);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -744,28 +744,28 @@ LABEL_8:
   }
 }
 
-- (void)setExternalDisplayBrightness:(id)a3 shouldCommit:(BOOL)a4
+- (void)setExternalDisplayBrightness:(id)brightness shouldCommit:(BOOL)commit
 {
-  v4 = a4;
+  commitCopy = commit;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  brightnessCopy = brightness;
   v7 = DBSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:commitCopy];
     *buf = 138412546;
-    v18 = v6;
+    v18 = brightnessCopy;
     v19 = 2112;
     v20 = v8;
     _os_log_impl(&dword_22102E000, v7, OS_LOG_TYPE_DEFAULT, "External Display: Setting external display brightness to %@ with hint %@.", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{v4, @"Brightness", @"Commit", v6}];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{commitCopy, @"Brightness", @"Commit", brightnessCopy}];
   v16[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:2];
 
-  v11 = [(DBSExternalDisplayManager *)self brightnessSystemClient];
-  LODWORD(v9) = [v11 setProperty:v10 forKey:@"DisplayBrightness2"];
+  brightnessSystemClient = [(DBSExternalDisplayManager *)self brightnessSystemClient];
+  LODWORD(v9) = [brightnessSystemClient setProperty:v10 forKey:@"DisplayBrightness2"];
 
   v12 = DBSLogForCategory(0);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -799,83 +799,83 @@ LABEL_8:
   return displayInfo;
 }
 
-- (void)setMirroringEnabled:(BOOL)a3
+- (void)setMirroringEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBSConnectedDisplayInfo *)self->_displayInfo identifier];
+  enabledCopy = enabled;
+  identifier = [(SBSConnectedDisplayInfo *)self->_displayInfo identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(DBSExternalDisplayManager *)self displayService];
-    v7 = [(SBSConnectedDisplayInfo *)self->_displayInfo identifier];
-    [v6 setMirroringEnabled:v3 forDisplay:v7];
+    displayService = [(DBSExternalDisplayManager *)self displayService];
+    identifier2 = [(SBSConnectedDisplayInfo *)self->_displayInfo identifier];
+    [displayService setMirroringEnabled:enabledCopy forDisplay:identifier2];
 
-    [(DBSExternalDisplayManager *)self _notifyObserversDidUpdateMirroringEnabledState:v3];
+    [(DBSExternalDisplayManager *)self _notifyObserversDidUpdateMirroringEnabledState:enabledCopy];
 
     [(DBSExternalDisplayManager *)self _updateDisplayInfo];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  v14 = v13;
-  if (PKDisplayPreferencesContext == a6 && [v13 isEqual:v11])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  v14 = tVOutDisplay;
+  if (PKDisplayPreferencesContext == context && [tVOutDisplay isEqual:objectCopy])
   {
-    v15 = DBSLogForCategory(0);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    defaultCenter = DBSLogForCategory(0);
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 preferences];
-      v17 = [v16 description];
+      preferences = [v14 preferences];
+      v17 = [preferences description];
       *buf = 138412290;
       v23 = v17;
-      _os_log_impl(&dword_22102E000, v15, OS_LOG_TYPE_DEFAULT, "External Display: Display preference did change: %@", buf, 0xCu);
+      _os_log_impl(&dword_22102E000, defaultCenter, OS_LOG_TYPE_DEFAULT, "External Display: Display preference did change: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    if (PKDisplayCurrentModeContext != a6 || ![v14 isEqual:v11])
+    if (PKDisplayCurrentModeContext != context || ![v14 isEqual:objectCopy])
     {
       v21.receiver = self;
       v21.super_class = DBSExternalDisplayManager;
-      [(DBSExternalDisplayManager *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(DBSExternalDisplayManager *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_12;
     }
 
     v18 = DBSLogForCategory(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v14 currentMode];
-      v20 = [v19 description];
+      currentMode = [v14 currentMode];
+      v20 = [currentMode description];
       *buf = 138412290;
       v23 = v20;
       _os_log_impl(&dword_22102E000, v18, OS_LOG_TYPE_DEFAULT, "External Display: Display current mode did change %@", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
   }
 
 LABEL_12:
 }
 
-- (void)externalDisplayDidConnect:(id)a3
+- (void)externalDisplayDidConnect:(id)connect
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
 
   [(DBSExternalDisplayManager *)self _updateDisplayInfo];
 }
 
-- (void)externalDisplayWillDisconnect:(id)a3
+- (void)externalDisplayWillDisconnect:(id)disconnect
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
 
   [(DBSExternalDisplayManager *)self _updateDisplayInfo];
 }
@@ -906,13 +906,13 @@ LABEL_12:
   self->_displayInfo = 0;
 
   objc_initWeak(&location, self);
-  v4 = [(DBSExternalDisplayManager *)self displayService];
+  displayService = [(DBSExternalDisplayManager *)self displayService];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__DBSExternalDisplayManager__updateDisplayInfo__block_invoke;
   v5[3] = &unk_278459730;
   objc_copyWeak(&v6, &location);
-  [v4 getConnectedDisplayInfoWithCompletionHandler:v5];
+  [displayService getConnectedDisplayInfoWithCompletionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -930,9 +930,9 @@ void __47__DBSExternalDisplayManager__updateDisplayInfo__block_invoke(uint64_t a
   }
 }
 
-- (void)_notifyObserversDidUpdateMirroringEnabledState:(BOOL)a3
+- (void)_notifyObserversDidUpdateMirroringEnabledState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
@@ -957,7 +957,7 @@ void __47__DBSExternalDisplayManager__updateDisplayInfo__block_invoke(uint64_t a
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 externalDisplayManager:self didUpdateMirroringEnabledState:v3];
+          [v10 externalDisplayManager:self didUpdateMirroringEnabledState:stateCopy];
         }
 
         ++v9;

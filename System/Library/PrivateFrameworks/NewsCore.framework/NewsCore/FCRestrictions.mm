@@ -1,10 +1,10 @@
 @interface FCRestrictions
 + (id)sharedInstance;
-+ (int64_t)integerRepresentationOfShortVersionString:(id)a3;
-- (BOOL)isContentBlockedInStorefrontID:(id)a3 withAllowedStorefrontIDs:(id)a4 blockedStorefrontIDs:(id)a5;
++ (int64_t)integerRepresentationOfShortVersionString:(id)string;
+- (BOOL)isContentBlockedInStorefrontID:(id)d withAllowedStorefrontIDs:(id)ds blockedStorefrontIDs:(id)iDs;
 - (BOOL)isExplicitContentAllowed;
-- (BOOL)isNewsVersionAllowed:(int64_t)a3;
-- (BOOL)isNewsVersionAllowedWithMinNewsVersion:(int64_t)a3 maxNewsVersion:(int64_t)a4;
+- (BOOL)isNewsVersionAllowed:(int64_t)allowed;
+- (BOOL)isNewsVersionAllowedWithMinNewsVersion:(int64_t)version maxNewsVersion:(int64_t)newsVersion;
 - (FCRestrictions)init;
 @end
 
@@ -72,15 +72,15 @@ uint64_t __32__FCRestrictions_sharedInstance__block_invoke()
     return [(FCRestrictions *)self isExplicitContentAllowedOverride]== 1;
   }
 
-  v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v5 = [v4 isExplicitContentAllowedOutAsk:0];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v5 = [mEMORY[0x1E69ADFB8] isExplicitContentAllowedOutAsk:0];
 
   return v5;
 }
 
-- (BOOL)isNewsVersionAllowed:(int64_t)a3
+- (BOOL)isNewsVersionAllowed:(int64_t)allowed
 {
-  if (a3 < 1)
+  if (allowed < 1)
   {
     return 1;
   }
@@ -90,27 +90,27 @@ uint64_t __32__FCRestrictions_sharedInstance__block_invoke()
     return 1;
   }
 
-  return [(FCRestrictions *)self buildVersionNumber]>= a3;
+  return [(FCRestrictions *)self buildVersionNumber]>= allowed;
 }
 
-- (BOOL)isNewsVersionAllowedWithMinNewsVersion:(int64_t)a3 maxNewsVersion:(int64_t)a4
+- (BOOL)isNewsVersionAllowedWithMinNewsVersion:(int64_t)version maxNewsVersion:(int64_t)newsVersion
 {
   if ([(FCRestrictions *)self buildVersionNumber]< 1)
   {
     return 1;
   }
 
-  if ([(FCRestrictions *)self buildVersionNumber]>= a3)
+  if ([(FCRestrictions *)self buildVersionNumber]>= version)
   {
-    return [(FCRestrictions *)self buildVersionNumber]<= a4;
+    return [(FCRestrictions *)self buildVersionNumber]<= newsVersion;
   }
 
   return 0;
 }
 
-+ (int64_t)integerRepresentationOfShortVersionString:(id)a3
++ (int64_t)integerRepresentationOfShortVersionString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [string componentsSeparatedByString:@"."];
   v4 = [v3 count];
   if (v4)
   {
@@ -139,18 +139,18 @@ uint64_t __32__FCRestrictions_sharedInstance__block_invoke()
   return v7;
 }
 
-- (BOOL)isContentBlockedInStorefrontID:(id)a3 withAllowedStorefrontIDs:(id)a4 blockedStorefrontIDs:(id)a5
+- (BOOL)isContentBlockedInStorefrontID:(id)d withAllowedStorefrontIDs:(id)ds blockedStorefrontIDs:(id)iDs
 {
-  v7 = a3;
-  v8 = a4;
-  if ([a5 containsObject:v7])
+  dCopy = d;
+  dsCopy = ds;
+  if ([iDs containsObject:dCopy])
   {
     LOBYTE(v9) = 1;
   }
 
-  else if ([v8 count])
+  else if ([dsCopy count])
   {
-    v9 = [v8 containsObject:v7] ^ 1;
+    v9 = [dsCopy containsObject:dCopy] ^ 1;
   }
 
   else

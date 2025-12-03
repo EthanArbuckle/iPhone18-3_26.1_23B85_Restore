@@ -1,40 +1,40 @@
 @interface BuddyAccountAge
 - (BOOL)isUnder18;
-- (BuddyAccountAge)initWithAccount:(id)a3;
-- (BuddyAccountAge)initWithAccount:(id)a3 accountManager:(id)a4;
-- (BuddyAccountAge)initWithAgeRange:(unint64_t)a3;
+- (BuddyAccountAge)initWithAccount:(id)account;
+- (BuddyAccountAge)initWithAccount:(id)account accountManager:(id)manager;
+- (BuddyAccountAge)initWithAgeRange:(unint64_t)range;
 @end
 
 @implementation BuddyAccountAge
 
-- (BuddyAccountAge)initWithAccount:(id)a3 accountManager:(id)a4
+- (BuddyAccountAge)initWithAccount:(id)account accountManager:(id)manager
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, manager);
   if (location[0])
   {
-    v8 = v39;
-    v39 = 0;
+    v8 = selfCopy;
+    selfCopy = 0;
     v31.receiver = v8;
     v31.super_class = BuddyAccountAge;
     v9 = [(BuddyAccountAge *)&v31 init];
-    v39 = v9;
-    objc_storeStrong(&v39, v9);
+    selfCopy = v9;
+    objc_storeStrong(&selfCopy, v9);
     if (v9)
     {
-      v10 = [location[0] aa_altDSID];
+      aa_altDSID = [location[0] aa_altDSID];
 
-      if (v10)
+      if (aa_altDSID)
       {
         v30 = 0;
         v11 = v37;
-        v12 = [location[0] aa_altDSID];
+        aa_altDSID2 = [location[0] aa_altDSID];
         obj = 0;
-        v13 = [v11 authKitAccountWithAltDSID:v12 error:&obj];
+        v13 = [v11 authKitAccountWithAltDSID:aa_altDSID2 error:&obj];
         objc_storeStrong(&v30, obj);
         v29 = v13;
 
@@ -51,13 +51,13 @@
           }
 
           objc_storeStrong(&oslog, 0);
-          *(v39 + 1) = 0;
+          *(selfCopy + 1) = 0;
         }
 
         else
         {
           v16 = [v37 userAgeRangeForAccount:v29];
-          *(v39 + 1) = v16;
+          *(selfCopy + 1) = v16;
         }
 
         objc_storeStrong(&v29, 0);
@@ -69,8 +69,8 @@
         v24 = [location[0] accountPropertyForKey:@"userAgeRange"];
         if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v17 = [v24 unsignedIntegerValue];
-          *(v39 + 1) = v17;
+          unsignedIntegerValue = [v24 unsignedIntegerValue];
+          *(selfCopy + 1) = unsignedIntegerValue;
         }
 
         else
@@ -86,14 +86,14 @@
           }
 
           objc_storeStrong(&v23, 0);
-          *(v39 + 1) = 0;
+          *(selfCopy + 1) = 0;
         }
 
         objc_storeStrong(&v24, 0);
       }
     }
 
-    v40 = v39;
+    v40 = selfCopy;
     v32 = 1;
   }
 
@@ -110,44 +110,44 @@
     }
 
     objc_storeStrong(&v36, 0);
-    *(v39 + 1) = 0;
-    v7 = v39;
-    v39 = 0;
+    *(selfCopy + 1) = 0;
+    v7 = selfCopy;
+    selfCopy = 0;
     v33.receiver = v7;
     v33.super_class = BuddyAccountAge;
-    v39 = [(BuddyAccountAge *)&v33 init];
-    v40 = v39;
+    selfCopy = [(BuddyAccountAge *)&v33 init];
+    v40 = selfCopy;
     v32 = 1;
   }
 
   objc_storeStrong(&v37, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v40;
 }
 
-- (BuddyAccountAge)initWithAccount:(id)a3
+- (BuddyAccountAge)initWithAccount:(id)account
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
   v4 = location[0];
   v5 = +[AKAccountManager sharedInstance];
-  v9 = 0;
-  v9 = [v3 initWithAccount:v4 accountManager:v5];
-  v6 = v9;
+  selfCopy = 0;
+  selfCopy = [v3 initWithAccount:v4 accountManager:v5];
+  v6 = selfCopy;
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (BuddyAccountAge)initWithAgeRange:(unint64_t)a3
+- (BuddyAccountAge)initWithAgeRange:(unint64_t)range
 {
   v8 = a2;
-  v7 = a3;
+  rangeCopy = range;
   location = 0;
   v6.receiver = self;
   v6.super_class = BuddyAccountAge;
@@ -156,7 +156,7 @@
   objc_storeStrong(&location, v3);
   if (v3)
   {
-    *(location + 1) = v7;
+    *(location + 1) = rangeCopy;
   }
 
   v4 = location;
@@ -166,14 +166,14 @@
 
 - (BOOL)isUnder18
 {
-  v2 = [(BuddyAccountAge *)self isTeen];
-  v3 = 1;
-  if ((v2 & 1) == 0)
+  isTeen = [(BuddyAccountAge *)self isTeen];
+  isChild = 1;
+  if ((isTeen & 1) == 0)
   {
-    v3 = [(BuddyAccountAge *)self isChild];
+    isChild = [(BuddyAccountAge *)self isChild];
   }
 
-  return v3 & 1;
+  return isChild & 1;
 }
 
 @end

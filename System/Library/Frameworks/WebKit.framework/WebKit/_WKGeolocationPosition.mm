@@ -1,18 +1,18 @@
 @interface _WKGeolocationPosition
-+ (id)positionWithLocation:(id)a3;
++ (id)positionWithLocation:(id)location;
 - (void)dealloc;
 @end
 
 @implementation _WKGeolocationPosition
 
-+ (id)positionWithLocation:(id)a3
++ (id)positionWithLocation:(id)location
 {
-  if (!a3)
+  if (!location)
   {
     return 0;
   }
 
-  MEMORY[0x19EB0B460](v15, a3);
+  MEMORY[0x19EB0B460](v15, location);
   v3 = API::Object::newObject(0x80uLL, 67);
   v4 = API::Object::Object(v3);
   *v4 = &unk_1F110E560;

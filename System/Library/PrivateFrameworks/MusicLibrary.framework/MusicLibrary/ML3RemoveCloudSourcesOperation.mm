@@ -1,17 +1,17 @@
 @interface ML3RemoveCloudSourcesOperation
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties;
 @end
 
 @implementation ML3RemoveCloudSourcesOperation
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v106[2] = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(ML3DatabaseOperation *)self attributes];
-  v75 = [v6 objectForKey:@"MLDatabaseOperationAttributeRemoveCloudSourcesKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v75 = [attributes objectForKey:@"MLDatabaseOperationAttributeRemoveCloudSourcesKey"];
 
   v7 = [v75 containsObject:@"MLDatabaseOperationAttributeRemoveSubscriptionContentKey"];
   v72 = [v75 containsObject:@"MLDatabaseOperationAttributeRemovePurchaseHistoryKey"];
@@ -31,21 +31,21 @@
     _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "[ML3RemoveCloudSourcesOperation] Beginning remove cloud sources operation - removeSourceMatch=%{BOOL}u, subscription=%{BOOL}u, purchasesForMediaItems=%{BOOL}u, removeSourcePurchaseHistory=%{BOOL}u", buf, 0x1Au);
   }
 
-  v76 = [(ML3DatabaseOperation *)self transaction];
-  v77 = [v76 connection];
-  v78 = [v76 library];
+  transaction = [(ML3DatabaseOperation *)self transaction];
+  connection = [transaction connection];
+  library = [transaction library];
   if (v7)
   {
     v10 = [ML3ComparisonPredicate predicateWithProperty:@"item_store.is_subscription" equalToInt64:1];
-    v11 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:v78 predicate:v10 orderingTerms:0];
+    v11 = [(ML3Entity *)ML3Track unrestrictedAllItemsQueryWithlibrary:library predicate:v10 orderingTerms:0];
     [v11 setIgnoreSystemFilterPredicates:1];
     if ([v11 hasEntities])
     {
-      [v78 removeSource:6 forImportOperation:self usingConnection:v77 postNotifications:0];
+      [library removeSource:6 forImportOperation:self usingConnection:connection postNotifications:0];
     }
   }
 
-  if (([v78 sagaOnDiskDatabaseRevision] != 0) | v8 & 1)
+  if (([library sagaOnDiskDatabaseRevision] != 0) | v8 & 1)
   {
     v12 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -56,7 +56,7 @@
     }
 
     v101 = 0;
-    v13 = [v77 executeUpdate:@"UPDATE container SET store_cloud_id = 0" withParameters:0 error:&v101];
+    v13 = [connection executeUpdate:@"UPDATE container SET store_cloud_id = 0" withParameters:0 error:&v101];
     v14 = v101;
     if ((v13 & 1) == 0)
     {
@@ -72,7 +72,7 @@
     }
 
     v100 = v14;
-    v16 = [v77 executeUpdate:@"UPDATE container SET is_src_remote=1 WHERE sync_id != 0" withParameters:0 error:&v100];
+    v16 = [connection executeUpdate:@"UPDATE container SET is_src_remote=1 WHERE sync_id != 0" withParameters:0 error:&v100];
     v70 = v100;
 
     if ((v16 & 1) == 0)
@@ -89,16 +89,16 @@
     }
 
     v18 = [ML3ComparisonPredicate predicateWithProperty:@"is_src_remote" equalToInt64:2];
-    v71 = [(ML3Entity *)ML3Container queryWithLibrary:v78 predicate:v18];
+    v71 = [(ML3Entity *)ML3Container queryWithLibrary:library predicate:v18];
 
     v19 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v71 countOfEntities];
+      countOfEntities = [v71 countOfEntities];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v20;
+      *&buf[14] = countOfEntities;
       _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEFAULT, "[ML3RemoveCloudSourcesOperation] %{public}@ - Removing %ld playlists synced from the cloud", buf, 0x16u);
     }
 
@@ -111,14 +111,14 @@
       _os_log_impl(&dword_22D2FA000, v21, OS_LOG_TYPE_DEFAULT, "[ML3RemoveCloudSourcesOperation] %{public}@ - Removing cloud source from albums and artists", buf, 0xCu);
     }
 
-    v22 = [v77 executeQuery:@"SELECT album_artist_pid FROM album_artist where cloud_universal_library_id !=''"];
+    v22 = [connection executeQuery:@"SELECT album_artist_pid FROM album_artist where cloud_universal_library_id !=''"];
     v97[0] = MEMORY[0x277D85DD0];
     v97[1] = 3221225472;
     v97[2] = __43__ML3RemoveCloudSourcesOperation__execute___block_invoke;
     v97[3] = &unk_278763E40;
-    v23 = v78;
+    v23 = library;
     v98 = v23;
-    v24 = v77;
+    v24 = connection;
     v99 = v24;
     [v22 enumerateRowsWithBlock:v97];
     v25 = [v24 executeQuery:@"SELECT album_pid FROM album where cloud_library_id !=''"];
@@ -172,11 +172,11 @@
     v36 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v35 countOfEntities];
+      countOfEntities2 = [v35 countOfEntities];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v37;
+      *&buf[14] = countOfEntities2;
       _os_log_impl(&dword_22D2FA000, v36, OS_LOG_TYPE_DEFAULT, "[ML3RemoveCloudSourcesOperation] %{public}@ - Removing %ld genius mixes.", buf, 0x16u);
     }
 
@@ -226,33 +226,33 @@
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v106 count:2];
     v47 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v46];
 
-    v48 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:v78 predicate:v47 orderingTerms:MEMORY[0x277CBEBF8]];
+    v48 = [(ML3Entity *)ML3Track unrestrictedQueryWithLibrary:library predicate:v47 orderingTerms:MEMORY[0x277CBEBF8]];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     *&buf[24] = __Block_byref_object_copy__1572;
     v104 = __Block_byref_object_dispose__1573;
-    v105 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v87[0] = MEMORY[0x277D85DD0];
     v87[1] = 3221225472;
     v87[2] = __43__ML3RemoveCloudSourcesOperation__execute___block_invoke_50;
     v87[3] = &unk_27875CE90;
     v87[4] = buf;
     [v48 enumeratePersistentIDsUsingBlock:v87];
-    [v78 removeSource:4 fromPersistentIDS:*(*&buf[8] + 40) forImportOperation:self usingConnection:v77 postNotifications:0];
+    [library removeSource:4 fromPersistentIDS:*(*&buf[8] + 40) forImportOperation:self usingConnection:connection postNotifications:0];
     _Block_object_dispose(buf, 8);
   }
 
   if (v72)
   {
-    if ([v78 jaliscoOnDiskDatabaseRevision] >= 1)
+    if ([library jaliscoOnDiskDatabaseRevision] >= 1)
     {
-      [v78 removeSource:4 forImportOperation:self usingConnection:v77 postNotifications:0];
-      [v78 setJaliscoOnDiskDatabaseRevision:0];
-      v49 = [MEMORY[0x277CBEAA8] distantPast];
-      [v78 setJaliscoLastGeniusUpdateDate:v49];
+      [library removeSource:4 forImportOperation:self usingConnection:connection postNotifications:0];
+      [library setJaliscoOnDiskDatabaseRevision:0];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      [library setJaliscoLastGeniusUpdateDate:distantPast];
 
-      if ([v78 jaliscoHasCloudGeniusData])
+      if ([library jaliscoHasCloudGeniusData])
       {
         v85 = 0u;
         v86 = 0u;
@@ -276,7 +276,7 @@
               v54 = *(*(&v83 + 1) + 8 * v52);
               v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM %@", v54];
               v82 = v53;
-              v56 = [v77 executeUpdate:v55 withParameters:0 error:&v82];
+              v56 = [connection executeUpdate:v55 withParameters:0 error:&v82];
               v42 = v82;
 
               if ((v56 & 1) == 0)
@@ -311,12 +311,12 @@
 
 LABEL_55:
         v58 = [ML3ComparisonPredicate predicateWithProperty:@"(container.is_container_type_active_target AND container.smart_is_genius)" equalToInteger:1];
-        v59 = [(ML3Entity *)ML3Container queryWithLibrary:v78 predicate:v58];
+        v59 = [(ML3Entity *)ML3Container queryWithLibrary:library predicate:v58];
         v80[0] = MEMORY[0x277D85DD0];
         v80[1] = 3221225472;
         v80[2] = __43__ML3RemoveCloudSourcesOperation__execute___block_invoke_68;
         v80[3] = &unk_278765BD8;
-        v60 = v78;
+        v60 = library;
         v81 = v60;
         [v59 enumeratePersistentIDsUsingBlock:v80];
         [v60 setJaliscoHasCloudGeniusData:0];
@@ -324,12 +324,12 @@ LABEL_55:
       }
     }
 
-    [v78 clearAllCloudKVSData];
-    [v78 clearCachedPurchaseHistoryVersionsUsingConnection:v77];
+    [library clearAllCloudKVSData];
+    [library clearCachedPurchaseHistoryVersionsUsingConnection:connection];
   }
 
   v79 = 0;
-  v61 = [v77 executeUpdate:@"UPDATE album SET liked_state=? WHERE NOT EXISTS (SELECT 1 FROM item WHERE in_my_library AND item.album_pid = album.album_pid)" withParameters:&unk_2840C6620 error:&v79];
+  v61 = [connection executeUpdate:@"UPDATE album SET liked_state=? WHERE NOT EXISTS (SELECT 1 FROM item WHERE in_my_library AND item.album_pid = album.album_pid)" withParameters:&unk_2840C6620 error:&v79];
   v62 = v79;
   v63 = v62;
   if (v61)
@@ -350,7 +350,7 @@ LABEL_55:
     }
   }
 
-  [v78 clearCachedCloudLibraryVersionsUsingConnection:v77];
+  [library clearCachedCloudLibraryVersionsUsingConnection:connection];
   v66 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
   {
@@ -364,15 +364,15 @@ LABEL_55:
 
   if (v61)
   {
-    [v78 performMainentanceTasksUsingActivity:0];
-    [v78 notifyEntitiesAddedOrRemoved];
-    [v78 notifyContentsDidChange];
+    [library performMainentanceTasksUsingActivity:0];
+    [library notifyEntitiesAddedOrRemoved];
+    [library notifyContentsDidChange];
   }
 
-  if (a3)
+  if (_execute)
   {
     v68 = v64;
-    *a3 = v64;
+    *_execute = v64;
   }
 
   return v61;
@@ -429,7 +429,7 @@ void __43__ML3RemoveCloudSourcesOperation__execute___block_invoke_68(uint64_t a1
   }
 }
 
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties
 {
   v10.receiver = self;
   v10.super_class = ML3RemoveCloudSourcesOperation;
@@ -438,14 +438,14 @@ void __43__ML3RemoveCloudSourcesOperation__execute___block_invoke_68(uint64_t a1
     return 0;
   }
 
-  v5 = [(ML3DatabaseOperation *)self attributes];
-  v6 = [v5 objectForKey:@"MLDatabaseOperationAttributeRemoveCloudSourcesKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v6 = [attributes objectForKey:@"MLDatabaseOperationAttributeRemoveCloudSourcesKey"];
 
   v7 = [v6 count];
   v8 = v7 != 0;
-  if (a3 && !v7)
+  if (properties && !v7)
   {
-    *a3 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3RemoveCloudSourcesOperation requires a track source attribute"];
+    *properties = [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3RemoveCloudSourcesOperation requires a track source attribute"];
   }
 
   return v8;

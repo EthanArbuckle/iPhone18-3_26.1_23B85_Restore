@@ -1,6 +1,6 @@
 @interface _SBStatusBarChanges
 - (void)invalidate;
-- (void)setStatusBarPartStyle:(int64_t)a3 forPartWithIdentifier:(id)a4;
+- (void)setStatusBarPartStyle:(int64_t)style forPartWithIdentifier:(id)identifier;
 @end
 
 @implementation _SBStatusBarChanges
@@ -14,11 +14,11 @@
   self->_statusBarPartIdentifier = 0;
 }
 
-- (void)setStatusBarPartStyle:(int64_t)a3 forPartWithIdentifier:(id)a4
+- (void)setStatusBarPartStyle:(int64_t)style forPartWithIdentifier:(id)identifier
 {
   self->_statusBarPartStyleChanged = 1;
-  self->_statusBarPartStyle = a3;
-  objc_storeStrong(&self->_statusBarPartIdentifier, a4);
+  self->_statusBarPartStyle = style;
+  objc_storeStrong(&self->_statusBarPartIdentifier, identifier);
 }
 
 @end

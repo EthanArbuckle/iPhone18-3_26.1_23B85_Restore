@@ -1,26 +1,26 @@
 @interface SESAssertion
-- (SESAssertion)initWithKeyIdentifier:(id)a3 appletIdentifier:(id)a4;
+- (SESAssertion)initWithKeyIdentifier:(id)identifier appletIdentifier:(id)appletIdentifier;
 - (id)proxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setProxy:(id)a3;
+- (void)setProxy:(id)proxy;
 @end
 
 @implementation SESAssertion
 
-- (SESAssertion)initWithKeyIdentifier:(id)a3 appletIdentifier:(id)a4
+- (SESAssertion)initWithKeyIdentifier:(id)identifier appletIdentifier:(id)appletIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  appletIdentifierCopy = appletIdentifier;
   v12.receiver = self;
   v12.super_class = SESAssertion;
   v9 = [(SESAssertion *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyIdentifier, a3);
-    objc_storeStrong(&v10->_appletIdentifier, a4);
+    objc_storeStrong(&v9->_keyIdentifier, identifier);
+    objc_storeStrong(&v10->_appletIdentifier, appletIdentifier);
   }
 
   return v10;
@@ -100,37 +100,37 @@ void __26__SESAssertion_invalidate__block_invoke_505(uint64_t a1, char a2, void 
 
 - (id)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_proxy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_proxy;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProxy:(id)a3
+- (void)setProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   obj = self;
   objc_sync_enter(obj);
   proxy = obj->_proxy;
-  obj->_proxy = v4;
+  obj->_proxy = proxyCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SESAssertion *)self proxy];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  proxy = [(SESAssertion *)self proxy];
+  v6 = [proxy synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v6)
   {
     v7 = SESDefaultLogObject();
     v8 = *MEMORY[0x1E69E5148];
     v9 = SESCreateAndLogError();
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   return v6;

@@ -1,21 +1,21 @@
 @interface DebugHierarchyProperty
-- (DebugHierarchyProperty)initWithName:(id)a3 runtimeTypeName:(id)a4;
-- (DebugHierarchyProperty)initWithPropertyDescription:(id)a3;
+- (DebugHierarchyProperty)initWithName:(id)name runtimeTypeName:(id)typeName;
+- (DebugHierarchyProperty)initWithPropertyDescription:(id)description;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation DebugHierarchyProperty
 
-- (DebugHierarchyProperty)initWithPropertyDescription:(id)a3
+- (DebugHierarchyProperty)initWithPropertyDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"propertyName"];
-  v6 = [v4 objectForKeyedSubscript:@"propertyRuntimeType"];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKeyedSubscript:@"propertyName"];
+  v6 = [descriptionCopy objectForKeyedSubscript:@"propertyRuntimeType"];
   v7 = [(DebugHierarchyProperty *)self initWithName:v5 runtimeTypeName:v6];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"propertyLogicalType"];
+    v8 = [descriptionCopy objectForKeyedSubscript:@"propertyLogicalType"];
     v9 = v8;
     if (v8)
     {
@@ -30,50 +30,50 @@
     logicalType = v7->_logicalType;
     v7->_logicalType = &v10->isa;
 
-    v12 = [v4 objectForKeyedSubscript:@"propertyFormat"];
+    v12 = [descriptionCopy objectForKeyedSubscript:@"propertyFormat"];
     if (v12)
     {
       objc_storeStrong(&v7->_format, v12);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"propertyVisibility"];
+    v13 = [descriptionCopy objectForKeyedSubscript:@"propertyVisibility"];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v15 = &dword_0 + 1;
+      integerValue = &dword_0 + 1;
     }
 
-    v7->_visibility = v15;
-    v16 = [v4 objectForKeyedSubscript:@"propertyOptions"];
-    v17 = v16;
-    if (v16)
+    v7->_visibility = integerValue;
+    integerValue2 = [descriptionCopy objectForKeyedSubscript:@"propertyOptions"];
+    v17 = integerValue2;
+    if (integerValue2)
     {
-      v16 = [v16 integerValue];
+      integerValue2 = [integerValue2 integerValue];
     }
 
-    v7->_options = v16;
+    v7->_options = integerValue2;
   }
 
   return v7;
 }
 
-- (DebugHierarchyProperty)initWithName:(id)a3 runtimeTypeName:(id)a4
+- (DebugHierarchyProperty)initWithName:(id)name runtimeTypeName:(id)typeName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  typeNameCopy = typeName;
   v12.receiver = self;
   v12.super_class = DebugHierarchyProperty;
   v9 = [(DebugHierarchyProperty *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_runtimeTypeName, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_runtimeTypeName, typeName);
     v10->_visibility = 1;
   }
 
@@ -142,9 +142,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DebugHierarchyProperty *)self name];
-  v6 = [(DebugHierarchyProperty *)self runtimeTypeName];
-  v7 = [NSString stringWithFormat:@"<%@ %p, name: %@, runtimeTypeName: %@>", v4, self, v5, v6];
+  name = [(DebugHierarchyProperty *)self name];
+  runtimeTypeName = [(DebugHierarchyProperty *)self runtimeTypeName];
+  v7 = [NSString stringWithFormat:@"<%@ %p, name: %@, runtimeTypeName: %@>", v4, self, name, runtimeTypeName];
 
   return v7;
 }

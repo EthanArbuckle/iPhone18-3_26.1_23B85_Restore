@@ -1,56 +1,56 @@
 @interface LRSchemaLRRedactionSignal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LRSchemaLRComponentIdentifierRedactionSignal)componentId;
-- (LRSchemaLRRedactionSignal)initWithDictionary:(id)a3;
-- (LRSchemaLRRedactionSignal)initWithJSON:(id)a3;
+- (LRSchemaLRRedactionSignal)initWithDictionary:(id)dictionary;
+- (LRSchemaLRRedactionSignal)initWithJSON:(id)n;
 - (LRSchemaLRTimespanRedactionSignal)timeSpan;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteComponentId;
 - (void)deleteIsEntireClockAffected;
 - (void)deleteTimeSpan;
-- (void)setComponentId:(id)a3;
-- (void)setHasSignalTimeNanosecondsSinceBoot:(BOOL)a3;
-- (void)setIsEntireClockAffected:(BOOL)a3;
-- (void)setTimeSpan:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setComponentId:(id)id;
+- (void)setHasSignalTimeNanosecondsSinceBoot:(BOOL)boot;
+- (void)setIsEntireClockAffected:(BOOL)affected;
+- (void)setTimeSpan:(id)span;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRRedactionSignal
 
-- (LRSchemaLRRedactionSignal)initWithDictionary:(id)a3
+- (LRSchemaLRRedactionSignal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = LRSchemaLRRedactionSignal;
   v5 = [(LRSchemaLRRedactionSignal *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sensitivityState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sensitivityState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRRedactionSignal setSensitivityState:](v5, "setSensitivityState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"signalTimeNanosecondsSinceBoot"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"signalTimeNanosecondsSinceBoot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRRedactionSignal setSignalTimeNanosecondsSinceBoot:](v5, "setSignalTimeNanosecondsSinceBoot:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isEntireClockAffected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isEntireClockAffected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[LRSchemaLRRedactionSignal setIsEntireClockAffected:](v5, "setIsEntireClockAffected:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"timeSpan"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"timeSpan"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(LRSchemaLRRedactionSignal *)v5 setTimeSpan:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"componentId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"componentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (LRSchemaLRRedactionSignal)initWithJSON:(id)a3
+- (LRSchemaLRRedactionSignal)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRRedactionSignal *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRRedactionSignal *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRRedactionSignal *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,27 +108,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_componentId)
   {
-    v4 = [(LRSchemaLRRedactionSignal *)self componentId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    componentId = [(LRSchemaLRRedactionSignal *)self componentId];
+    dictionaryRepresentation = [componentId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"componentId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"componentId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"componentId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"componentId"];
     }
   }
 
   if (self->_whichSignal == 101)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[LRSchemaLRRedactionSignal isEntireClockAffected](self, "isEntireClockAffected")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isEntireClockAffected"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isEntireClockAffected"];
   }
 
   has = self->_has;
@@ -145,35 +145,35 @@
       v10 = off_1E78D8CA8[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"sensitivityState"];
+    [dictionary setObject:v10 forKeyedSubscript:@"sensitivityState"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[LRSchemaLRRedactionSignal signalTimeNanosecondsSinceBoot](self, "signalTimeNanosecondsSinceBoot")}];
-    [v3 setObject:v11 forKeyedSubscript:@"signalTimeNanosecondsSinceBoot"];
+    [dictionary setObject:v11 forKeyedSubscript:@"signalTimeNanosecondsSinceBoot"];
   }
 
   if (self->_timeSpan)
   {
-    v12 = [(LRSchemaLRRedactionSignal *)self timeSpan];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    timeSpan = [(LRSchemaLRRedactionSignal *)self timeSpan];
+    dictionaryRepresentation2 = [timeSpan dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"timeSpan"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"timeSpan"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"timeSpan"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"timeSpan"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,22 +214,22 @@ LABEL_6:
   return v6 ^ [(LRSchemaLRComponentIdentifierRedactionSignal *)self->_componentId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   whichSignal = self->_whichSignal;
-  if (whichSignal != [v4 whichSignal])
+  if (whichSignal != [equalCopy whichSignal])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v7 = v4[48];
+  v7 = equalCopy[48];
   if ((*&has & 1) != (v7 & 1))
   {
     goto LABEL_21;
@@ -238,13 +238,13 @@ LABEL_6:
   if (*&has)
   {
     sensitivityState = self->_sensitivityState;
-    if (sensitivityState != [v4 sensitivityState])
+    if (sensitivityState != [equalCopy sensitivityState])
     {
       goto LABEL_21;
     }
 
     has = self->_has;
-    v7 = v4[48];
+    v7 = equalCopy[48];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -256,32 +256,32 @@ LABEL_6:
   if (v9)
   {
     signalTimeNanosecondsSinceBoot = self->_signalTimeNanosecondsSinceBoot;
-    if (signalTimeNanosecondsSinceBoot != [v4 signalTimeNanosecondsSinceBoot])
+    if (signalTimeNanosecondsSinceBoot != [equalCopy signalTimeNanosecondsSinceBoot])
     {
       goto LABEL_21;
     }
   }
 
   isEntireClockAffected = self->_isEntireClockAffected;
-  if (isEntireClockAffected != [v4 isEntireClockAffected])
+  if (isEntireClockAffected != [equalCopy isEntireClockAffected])
   {
     goto LABEL_21;
   }
 
-  v12 = [(LRSchemaLRRedactionSignal *)self timeSpan];
-  v13 = [v4 timeSpan];
-  if ((v12 != 0) == (v13 == 0))
+  timeSpan = [(LRSchemaLRRedactionSignal *)self timeSpan];
+  timeSpan2 = [equalCopy timeSpan];
+  if ((timeSpan != 0) == (timeSpan2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(LRSchemaLRRedactionSignal *)self timeSpan];
-  if (v14)
+  timeSpan3 = [(LRSchemaLRRedactionSignal *)self timeSpan];
+  if (timeSpan3)
   {
-    v15 = v14;
-    v16 = [(LRSchemaLRRedactionSignal *)self timeSpan];
-    v17 = [v4 timeSpan];
-    v18 = [v16 isEqual:v17];
+    v15 = timeSpan3;
+    timeSpan4 = [(LRSchemaLRRedactionSignal *)self timeSpan];
+    timeSpan5 = [equalCopy timeSpan];
+    v18 = [timeSpan4 isEqual:timeSpan5];
 
     if (!v18)
     {
@@ -293,12 +293,12 @@ LABEL_6:
   {
   }
 
-  v12 = [(LRSchemaLRRedactionSignal *)self componentId];
-  v13 = [v4 componentId];
-  if ((v12 != 0) != (v13 == 0))
+  timeSpan = [(LRSchemaLRRedactionSignal *)self componentId];
+  timeSpan2 = [equalCopy componentId];
+  if ((timeSpan != 0) != (timeSpan2 == 0))
   {
-    v19 = [(LRSchemaLRRedactionSignal *)self componentId];
-    if (!v19)
+    componentId = [(LRSchemaLRRedactionSignal *)self componentId];
+    if (!componentId)
     {
 
 LABEL_24:
@@ -306,10 +306,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(LRSchemaLRRedactionSignal *)self componentId];
-    v22 = [v4 componentId];
-    v23 = [v21 isEqual:v22];
+    v20 = componentId;
+    componentId2 = [(LRSchemaLRRedactionSignal *)self componentId];
+    componentId3 = [equalCopy componentId];
+    v23 = [componentId2 isEqual:componentId3];
 
     if (v23)
     {
@@ -329,9 +329,9 @@ LABEL_22:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -349,23 +349,23 @@ LABEL_22:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(LRSchemaLRRedactionSignal *)self timeSpan];
+  timeSpan = [(LRSchemaLRRedactionSignal *)self timeSpan];
 
-  if (v5)
+  if (timeSpan)
   {
-    v6 = [(LRSchemaLRRedactionSignal *)self timeSpan];
+    timeSpan2 = [(LRSchemaLRRedactionSignal *)self timeSpan];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(LRSchemaLRRedactionSignal *)self componentId];
+  componentId = [(LRSchemaLRRedactionSignal *)self componentId];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (componentId)
   {
-    v9 = [(LRSchemaLRRedactionSignal *)self componentId];
+    componentId2 = [(LRSchemaLRRedactionSignal *)self componentId];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
@@ -394,22 +394,22 @@ LABEL_22:
   return v3;
 }
 
-- (void)setComponentId:(id)a3
+- (void)setComponentId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   self->_isEntireClockAffected = 0;
   timeSpan = self->_timeSpan;
   self->_timeSpan = 0;
 
   v6 = 103;
-  if (!v4)
+  if (!idCopy)
   {
     v6 = 0;
   }
 
   self->_whichSignal = v6;
   componentId = self->_componentId;
-  self->_componentId = v4;
+  self->_componentId = idCopy;
 }
 
 - (void)deleteTimeSpan
@@ -437,22 +437,22 @@ LABEL_22:
   return v3;
 }
 
-- (void)setTimeSpan:(id)a3
+- (void)setTimeSpan:(id)span
 {
-  v4 = a3;
+  spanCopy = span;
   self->_isEntireClockAffected = 0;
   componentId = self->_componentId;
   self->_componentId = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!spanCopy)
   {
     v6 = 0;
   }
 
   self->_whichSignal = v6;
   timeSpan = self->_timeSpan;
-  self->_timeSpan = v4;
+  self->_timeSpan = spanCopy;
 }
 
 - (void)deleteIsEntireClockAffected
@@ -464,7 +464,7 @@ LABEL_22:
   }
 }
 
-- (void)setIsEntireClockAffected:(BOOL)a3
+- (void)setIsEntireClockAffected:(BOOL)affected
 {
   timeSpan = self->_timeSpan;
   self->_timeSpan = 0;
@@ -473,12 +473,12 @@ LABEL_22:
   self->_componentId = 0;
 
   self->_whichSignal = 101;
-  self->_isEntireClockAffected = a3;
+  self->_isEntireClockAffected = affected;
 }
 
-- (void)setHasSignalTimeNanosecondsSinceBoot:(BOOL)a3
+- (void)setHasSignalTimeNanosecondsSinceBoot:(BOOL)boot
 {
-  if (a3)
+  if (boot)
   {
     v3 = 2;
   }
@@ -491,26 +491,26 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = LRSchemaLRRedactionSignal;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(LRSchemaLRRedactionSignal *)self timeSpan];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  timeSpan = [(LRSchemaLRRedactionSignal *)self timeSpan];
+  v7 = [timeSpan applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LRSchemaLRRedactionSignal *)self deleteTimeSpan];
   }
 
-  v9 = [(LRSchemaLRRedactionSignal *)self componentId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  componentId = [(LRSchemaLRRedactionSignal *)self componentId];
+  v10 = [componentId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(LRSchemaLRRedactionSignal *)self deleteComponentId];
   }

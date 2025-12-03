@@ -1,24 +1,24 @@
 @interface HUTitleValueDescriptionCell
-- (HUTitleValueDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUTitleValueDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateValue;
 - (void)_updateValueHidden;
 - (void)_updateValueWidthConstraintConstant;
 - (void)prepareForReuse;
-- (void)setHideValue:(BOOL)a3;
-- (void)setValueColorFollowsTintColor:(BOOL)a3;
-- (void)setValueFont:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)setHideValue:(BOOL)value;
+- (void)setValueColorFollowsTintColor:(BOOL)color;
+- (void)setValueFont:(id)font;
+- (void)setValueText:(id)text;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUTitleValueDescriptionCell
 
-- (HUTitleValueDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTitleValueDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = HUTitleValueDescriptionCell;
-  v4 = [(HUTitleDescriptionCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUTitleDescriptionCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
@@ -27,15 +27,15 @@
 
     [(HUTitleDescriptionCell *)v4 setMaxNumberOfTitleLines:0];
     v7 = MEMORY[0x277D756B8];
-    v8 = [(HUTitleDescriptionCell *)v4 titleText];
-    v9 = [(HUTitleDescriptionCell *)v4 titleFont];
-    v10 = [v7 labelWithText:v8 font:v9];
+    titleText = [(HUTitleDescriptionCell *)v4 titleText];
+    titleFont = [(HUTitleDescriptionCell *)v4 titleFont];
+    v10 = [v7 labelWithText:titleText font:titleFont];
     valueLabel = v4->_valueLabel;
     v4->_valueLabel = v10;
 
     [(UILabel *)v4->_valueLabel _setTextColorFollowsTintColor:[(HUTitleValueDescriptionCell *)v4 valueColorFollowsTintColor]];
-    v12 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v4->_valueLabel setTextColor:v12];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v4->_valueLabel setTextColor:systemGrayColor];
   }
 
   return v4;
@@ -54,41 +54,41 @@
   [(HUTitleValueDescriptionCell *)self setValueColorFollowsTintColor:0];
 }
 
-- (void)setHideValue:(BOOL)a3
+- (void)setHideValue:(BOOL)value
 {
-  if (self->_hideValue != a3)
+  if (self->_hideValue != value)
   {
-    self->_hideValue = a3;
+    self->_hideValue = value;
     [(HUTitleValueDescriptionCell *)self _updateValueHidden];
   }
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  v5 = a3;
-  v6 = [(HUTitleValueDescriptionCell *)self valueText];
-  v7 = v5;
+  textCopy = text;
+  valueText = [(HUTitleValueDescriptionCell *)self valueText];
+  v7 = textCopy;
   v10 = v7;
-  if (v6 == v7)
+  if (valueText == v7)
   {
 
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!valueText)
   {
 
     goto LABEL_7;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [valueText isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_valueText, a3);
-    v9 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    [v9 setText:v10];
+    objc_storeStrong(&self->_valueText, text);
+    valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
+    [valueLabel setText:v10];
 
     [(HUTitleValueDescriptionCell *)self _updateValueHidden];
     [(HUTitleValueDescriptionCell *)self _updateValueWidthConstraintConstant];
@@ -97,27 +97,27 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setValueFont:(id)a3
+- (void)setValueFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_valueFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_valueFont, a3);
-    v5 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    [v5 setFont:v6];
+    objc_storeStrong(&self->_valueFont, font);
+    valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
+    [valueLabel setFont:fontCopy];
 
     [(HUTitleValueDescriptionCell *)self _updateValueWidthConstraintConstant];
   }
 }
 
-- (void)setValueColorFollowsTintColor:(BOOL)a3
+- (void)setValueColorFollowsTintColor:(BOOL)color
 {
-  if (self->_valueColorFollowsTintColor != a3)
+  if (self->_valueColorFollowsTintColor != color)
   {
-    v4 = a3;
-    self->_valueColorFollowsTintColor = a3;
-    v6 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    [v6 _setTextColorFollowsTintColor:v4];
+    colorCopy = color;
+    self->_valueColorFollowsTintColor = color;
+    valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
+    [valueLabel _setTextColorFollowsTintColor:colorCopy];
 
     [(HUTitleValueDescriptionCell *)self _updateValue];
   }
@@ -125,97 +125,97 @@ LABEL_8:
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUTitleValueDescriptionCell *)self valueLabel];
-  [v4 setNumberOfLines:0];
+  array = [MEMORY[0x277CBEB18] array];
+  valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
+  [valueLabel setNumberOfLines:0];
 
   v44.receiver = self;
   v44.super_class = HUTitleValueDescriptionCell;
   [(HUTitleDescriptionCell *)&v44 updateConstraints];
-  v5 = [(HUTitleValueDescriptionCell *)self valueLabel];
-  v6 = [v5 superview];
+  valueLabel2 = [(HUTitleValueDescriptionCell *)self valueLabel];
+  superview = [valueLabel2 superview];
 
-  if (v6)
+  if (superview)
   {
-    v7 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    v8 = [v7 centerYAnchor];
-    v9 = [(HUTitleValueDescriptionCell *)self contentView];
-    v10 = [v9 centerYAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
-    [v3 addObject:v11];
+    valueLabel3 = [(HUTitleValueDescriptionCell *)self valueLabel];
+    centerYAnchor = [valueLabel3 centerYAnchor];
+    contentView = [(HUTitleValueDescriptionCell *)self contentView];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v11];
 
-    v12 = [(HUTitleValueDescriptionCell *)self contentView];
-    v13 = [v12 layoutMarginsGuide];
-    v14 = [v13 trailingAnchor];
-    v15 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    v16 = [v15 trailingAnchor];
-    v17 = [v14 constraintEqualToSystemSpacingAfterAnchor:v16 multiplier:1.0];
-    [v3 addObject:v17];
+    contentView2 = [(HUTitleValueDescriptionCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide trailingAnchor];
+    valueLabel4 = [(HUTitleValueDescriptionCell *)self valueLabel];
+    trailingAnchor2 = [valueLabel4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
+    [array addObject:v17];
 
-    v18 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
+    valueLabelWidthConstraint = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
 
-    if (!v18)
+    if (!valueLabelWidthConstraint)
     {
-      v19 = [(HUTitleValueDescriptionCell *)self valueLabel];
-      v20 = [v19 widthAnchor];
-      v21 = [v20 constraintEqualToConstant:1.0];
+      valueLabel5 = [(HUTitleValueDescriptionCell *)self valueLabel];
+      widthAnchor = [valueLabel5 widthAnchor];
+      v21 = [widthAnchor constraintEqualToConstant:1.0];
       [(HUTitleValueDescriptionCell *)self setValueLabelWidthConstraint:v21];
     }
 
     [(HUTitleValueDescriptionCell *)self _updateValueWidthConstraintConstant];
-    v22 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
-    [v3 addObject:v22];
+    valueLabelWidthConstraint2 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
+    [array addObject:valueLabelWidthConstraint2];
 
-    v23 = [(HUTitleDescriptionCell *)self titleLabel];
-    v24 = [v23 trailingAnchor];
-    v25 = [v24 constraintsAffectingLayout];
+    titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+    trailingAnchor3 = [titleLabel trailingAnchor];
+    constraintsAffectingLayout = [trailingAnchor3 constraintsAffectingLayout];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __48__HUTitleValueDescriptionCell_updateConstraints__block_invoke;
     v43[3] = &unk_277DBF850;
     v43[4] = self;
-    [v25 na_each:v43];
+    [constraintsAffectingLayout na_each:v43];
 
-    v26 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v27 = [v26 trailingAnchor];
-    v28 = [v27 constraintsAffectingLayout];
+    descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+    trailingAnchor4 = [descriptionLabel trailingAnchor];
+    constraintsAffectingLayout2 = [trailingAnchor4 constraintsAffectingLayout];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __48__HUTitleValueDescriptionCell_updateConstraints__block_invoke_2;
     v42[3] = &unk_277DBF850;
     v42[4] = self;
-    [v28 na_each:v42];
+    [constraintsAffectingLayout2 na_each:v42];
 
-    v29 = [(HUTitleDescriptionCell *)self titleTrailingConstraint];
-    [v29 setActive:0];
+    titleTrailingConstraint = [(HUTitleDescriptionCell *)self titleTrailingConstraint];
+    [titleTrailingConstraint setActive:0];
 
-    v30 = [(HUTitleDescriptionCell *)self descriptionTrailingConstraint];
-    [v30 setActive:0];
+    descriptionTrailingConstraint = [(HUTitleDescriptionCell *)self descriptionTrailingConstraint];
+    [descriptionTrailingConstraint setActive:0];
 
-    v31 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    v32 = [v31 leadingAnchor];
-    v33 = [(HUTitleDescriptionCell *)self titleLabel];
-    v34 = [v33 trailingAnchor];
-    v35 = [v32 constraintEqualToSystemSpacingAfterAnchor:v34 multiplier:1.0];
-    [v3 addObject:v35];
+    valueLabel6 = [(HUTitleValueDescriptionCell *)self valueLabel];
+    leadingAnchor = [valueLabel6 leadingAnchor];
+    titleLabel2 = [(HUTitleDescriptionCell *)self titleLabel];
+    trailingAnchor5 = [titleLabel2 trailingAnchor];
+    v35 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor5 multiplier:1.0];
+    [array addObject:v35];
 
-    v36 = [(HUTitleValueDescriptionCell *)self valueLabel];
-    v37 = [v36 leadingAnchor];
-    v38 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v39 = [v38 trailingAnchor];
-    v40 = [v37 constraintEqualToSystemSpacingAfterAnchor:v39 multiplier:1.0];
-    [v3 addObject:v40];
+    valueLabel7 = [(HUTitleValueDescriptionCell *)self valueLabel];
+    leadingAnchor2 = [valueLabel7 leadingAnchor];
+    descriptionLabel2 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    trailingAnchor6 = [descriptionLabel2 trailingAnchor];
+    v40 = [leadingAnchor2 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor6 multiplier:1.0];
+    [array addObject:v40];
   }
 
   else
   {
-    v41 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
-    [v41 setActive:0];
+    valueLabelWidthConstraint3 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
+    [valueLabelWidthConstraint3 setActive:0];
 
     [(HUTitleValueDescriptionCell *)self setValueLabelWidthConstraint:0];
   }
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v3];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 void __48__HUTitleValueDescriptionCell_updateConstraints__block_invoke(uint64_t a1, void *a2)
@@ -298,15 +298,15 @@ void __48__HUTitleValueDescriptionCell_updateConstraints__block_invoke_2(uint64_
 LABEL_8:
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v9.receiver = self;
   v9.super_class = HUTitleValueDescriptionCell;
-  [(HUTitleDescriptionCell *)&v9 updateUIWithAnimation:a3];
+  [(HUTitleDescriptionCell *)&v9 updateUIWithAnimation:animation];
   objc_opt_class();
-  v4 = [(HUIconCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  item = [(HUIconCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E30]];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -325,17 +325,17 @@ LABEL_8:
 
 - (void)_updateValueWidthConstraintConstant
 {
-  v3 = [(HUTitleValueDescriptionCell *)self valueLabel];
+  valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
   [(HUTitleValueDescriptionCell *)self bounds];
-  [v3 sizeThatFits:{v4, v5}];
+  [valueLabel sizeThatFits:{v4, v5}];
   v7 = v6;
 
-  v8 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
+  valueLabelWidthConstraint = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
 
-  if (v8)
+  if (valueLabelWidthConstraint)
   {
-    v9 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
-    [v9 setConstant:v7];
+    valueLabelWidthConstraint2 = [(HUTitleValueDescriptionCell *)self valueLabelWidthConstraint];
+    [valueLabelWidthConstraint2 setConstant:v7];
   }
 }
 
@@ -348,26 +348,26 @@ LABEL_8:
 
   else
   {
-    v4 = [(HUTitleValueDescriptionCell *)self valueText];
-    v3 = [v4 length] == 0;
+    valueText = [(HUTitleValueDescriptionCell *)self valueText];
+    v3 = [valueText length] == 0;
   }
 
-  v5 = [(HUTitleValueDescriptionCell *)self valueLabel];
-  v6 = [v5 superview];
+  valueLabel = [(HUTitleValueDescriptionCell *)self valueLabel];
+  superview = [valueLabel superview];
 
-  if (((v3 ^ (v6 != 0)) & 1) == 0)
+  if (((v3 ^ (superview != 0)) & 1) == 0)
   {
     if (v3)
     {
-      v7 = [(HUTitleValueDescriptionCell *)self valueLabel];
-      [v7 removeFromSuperview];
+      valueLabel2 = [(HUTitleValueDescriptionCell *)self valueLabel];
+      [valueLabel2 removeFromSuperview];
     }
 
     else
     {
-      v8 = [(HUIconCell *)self containerView];
-      v9 = [(HUTitleValueDescriptionCell *)self valueLabel];
-      [v8 addSubview:v9];
+      containerView = [(HUIconCell *)self containerView];
+      valueLabel3 = [(HUTitleValueDescriptionCell *)self valueLabel];
+      [containerView addSubview:valueLabel3];
 
       [(HUTitleValueDescriptionCell *)self _updateValueWidthConstraintConstant];
     }

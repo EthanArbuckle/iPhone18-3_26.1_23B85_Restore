@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ResetSharedLibrarySharingSuggestionsAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetSharedLibrarySharingSuggestionsAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -25,7 +25,7 @@
   [v7 setFetchBatchSize:100];
   v9 = v48 + 5;
   obj = v48[5];
-  v10 = [v6 executeFetchRequest:v7 error:&obj];
+  v10 = [contextCopy executeFetchRequest:v7 error:&obj];
   objc_storeStrong(v9, obj);
   if ([v10 count])
   {
@@ -39,7 +39,7 @@
     v45 = &v53;
     v12 = v11;
     v43 = v12;
-    v13 = [v6 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v42];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:v42];
     if (v13 && !v48[5])
     {
       objc_storeStrong(v48 + 5, v13);
@@ -53,8 +53,8 @@
 
       if (v15)
       {
-        v16 = [(PLModelMigrationActionCore *)self logger];
-        v17 = v16 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v17 = logger == 0;
 
         if (!v17)
         {
@@ -123,12 +123,12 @@ LABEL_21:
 
       if (v23)
       {
-        v24 = [(PLModelMigrationActionCore *)self logger];
-        v25 = v24 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v25 = logger2 == 0;
 
         if (!v25)
         {
-          v41 = a4;
+          errorCopy = error;
           v90 = 0u;
           v91 = 0u;
           v88 = 0u;
@@ -172,7 +172,7 @@ LABEL_21:
           LODWORD(v40) = 22;
           v20 = _os_log_send_and_compose_impl();
 
-          a4 = v41;
+          error = errorCopy;
           v30 = [(PLModelMigrationActionCore *)self logger:&v57];
           [v30 logWithMessage:v20 fromCodeLocation:"PLModelMigrationActions_16000.m" type:{437, 16}];
 
@@ -216,10 +216,10 @@ LABEL_23:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v36 = v54[3];
   v37 = v48[5];
-  if (v36 != 1 && a4)
+  if (v36 != 1 && error)
   {
     v37 = v37;
-    *a4 = v37;
+    *error = v37;
   }
 
   v38 = v54[3];

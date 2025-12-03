@@ -1,22 +1,22 @@
 @interface TRILaunchDaemonActivityDescriptor
-+ (id)launchDaemonActivityDescriptorWithName:(id)a3 supportedTaskCapabilities:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLaunchDaemonActivityDescriptor:(id)a3;
-- (TRILaunchDaemonActivityDescriptor)initWithName:(id)a3 supportedTaskCapabilities:(unint64_t)a4;
-- (id)copyWithReplacementName:(id)a3;
-- (id)copyWithReplacementSupportedTaskCapabilities:(unint64_t)a3;
++ (id)launchDaemonActivityDescriptorWithName:(id)name supportedTaskCapabilities:(unint64_t)capabilities;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLaunchDaemonActivityDescriptor:(id)descriptor;
+- (TRILaunchDaemonActivityDescriptor)initWithName:(id)name supportedTaskCapabilities:(unint64_t)capabilities;
+- (id)copyWithReplacementName:(id)name;
+- (id)copyWithReplacementSupportedTaskCapabilities:(unint64_t)capabilities;
 - (id)description;
 @end
 
 @implementation TRILaunchDaemonActivityDescriptor
 
-- (TRILaunchDaemonActivityDescriptor)initWithName:(id)a3 supportedTaskCapabilities:(unint64_t)a4
+- (TRILaunchDaemonActivityDescriptor)initWithName:(id)name supportedTaskCapabilities:(unint64_t)capabilities
 {
-  v8 = a3;
-  if (!v8)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1038 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1038 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
   }
 
   v13.receiver = self;
@@ -25,49 +25,49 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v10->_supportedTaskCapabilities = a4;
+    objc_storeStrong(&v9->_name, name);
+    v10->_supportedTaskCapabilities = capabilities;
   }
 
   return v10;
 }
 
-+ (id)launchDaemonActivityDescriptorWithName:(id)a3 supportedTaskCapabilities:(unint64_t)a4
++ (id)launchDaemonActivityDescriptorWithName:(id)name supportedTaskCapabilities:(unint64_t)capabilities
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 supportedTaskCapabilities:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy supportedTaskCapabilities:capabilities];
 
   return v7;
 }
 
-- (id)copyWithReplacementName:(id)a3
+- (id)copyWithReplacementName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithName:v4 supportedTaskCapabilities:self->_supportedTaskCapabilities];
+  nameCopy = name;
+  v5 = [objc_alloc(objc_opt_class()) initWithName:nameCopy supportedTaskCapabilities:self->_supportedTaskCapabilities];
 
   return v5;
 }
 
-- (id)copyWithReplacementSupportedTaskCapabilities:(unint64_t)a3
+- (id)copyWithReplacementSupportedTaskCapabilities:(unint64_t)capabilities
 {
   v5 = objc_alloc(objc_opt_class());
   name = self->_name;
 
-  return [v5 initWithName:name supportedTaskCapabilities:a3];
+  return [v5 initWithName:name supportedTaskCapabilities:capabilities];
 }
 
-- (BOOL)isEqualToLaunchDaemonActivityDescriptor:(id)a3
+- (BOOL)isEqualToLaunchDaemonActivityDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  descriptorCopy = descriptor;
+  v5 = descriptorCopy;
+  if (!descriptorCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_name == 0;
-  v7 = [v4 name];
-  v8 = v7 != 0;
+  name = [descriptorCopy name];
+  v8 = name != 0;
 
   if (v6 == v8 || (name = self->_name) != 0 && ([v5 name], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](name, "isEqual:", v10), v10, !v11))
   {
@@ -84,18 +84,18 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRILaunchDaemonActivityDescriptor *)self isEqualToLaunchDaemonActivityDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRILaunchDaemonActivityDescriptor *)self isEqualToLaunchDaemonActivityDescriptor:v5];
   }
 
   return v6;

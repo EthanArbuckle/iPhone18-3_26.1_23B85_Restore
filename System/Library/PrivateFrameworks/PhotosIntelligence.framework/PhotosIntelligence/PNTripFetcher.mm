@@ -1,10 +1,10 @@
 @interface PNTripFetcher
-+ (BOOL)supportsCollection:(id)a3;
++ (BOOL)supportsCollection:(id)collection;
 @end
 
 @implementation PNTripFetcher
 
-+ (BOOL)supportsCollection:(id)a3
++ (BOOL)supportsCollection:(id)collection
 {
   swift_unknownObjectRetain();
   sub_1C75515CC();

@@ -6,8 +6,8 @@
 
 - (id)failingURL
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E696A980]];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A980]];
 
   return v2;
 }

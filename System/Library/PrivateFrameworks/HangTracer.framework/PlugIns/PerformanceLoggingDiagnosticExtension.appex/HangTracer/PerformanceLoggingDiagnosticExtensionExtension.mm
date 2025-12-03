@@ -1,41 +1,41 @@
 @interface PerformanceLoggingDiagnosticExtensionExtension
-- (BOOL)setEPLKeysForParameters:(id)a3 error:(id *)a4 domain:(__CFString *)a5;
-- (id)attachmentsForParameters:(id)a3;
-- (id)keyWithPrefix:(id)a3;
+- (BOOL)setEPLKeysForParameters:(id)parameters error:(id *)error domain:(__CFString *)domain;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)keyWithPrefix:(id)prefix;
 - (id)linkRMEAndGetEPLProfilePath;
-- (id)sysdiagnoseParamsFromDEParams:(id)a3;
-- (id)takeSysdiagnose:(id)a3 error:(id *)a4;
-- (void)enableReportMemoryException:(BOOL)a3;
+- (id)sysdiagnoseParamsFromDEParams:(id)params;
+- (id)takeSysdiagnose:(id)sysdiagnose error:(id *)error;
+- (void)enableReportMemoryException:(BOOL)exception;
 @end
 
 @implementation PerformanceLoggingDiagnosticExtensionExtension
 
-- (id)keyWithPrefix:(id)a3
+- (id)keyWithPrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
-    v4 = [NSString stringWithFormat:@"%@.%@", @"HTEPL", a3];
+    prefix = [NSString stringWithFormat:@"%@.%@", @"HTEPL", prefix];
   }
 
   else
   {
-    v4 = 0;
+    prefix = 0;
   }
 
-  return v4;
+  return prefix;
 }
 
-- (id)sysdiagnoseParamsFromDEParams:(id)a3
+- (id)sysdiagnoseParamsFromDEParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v4 = +[NSMutableDictionary dictionary];
-  if (v3)
+  if (paramsCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"shouldCreateTarBall"];
+    v5 = [paramsCopy objectForKeyedSubscript:@"shouldCreateTarBall"];
 
     if (v5)
     {
-      v6 = [v3 objectForKeyedSubscript:@"shouldCreateTarBall"];
+      v6 = [paramsCopy objectForKeyedSubscript:@"shouldCreateTarBall"];
       [v4 setObject:v6 forKeyedSubscript:@"shouldCreateTarBall"];
     }
 
@@ -44,11 +44,11 @@
       [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"shouldCreateTarBall"];
     }
 
-    v9 = [v3 objectForKeyedSubscript:@"forceDiagnostic"];
+    v9 = [paramsCopy objectForKeyedSubscript:@"forceDiagnostic"];
 
     if (v9)
     {
-      v10 = [v3 objectForKeyedSubscript:@"forceDiagnostic"];
+      v10 = [paramsCopy objectForKeyedSubscript:@"forceDiagnostic"];
       [v4 setObject:v10 forKeyedSubscript:@"forceDiagnostic"];
     }
 
@@ -95,9 +95,9 @@
   return v8;
 }
 
-- (id)takeSysdiagnose:(id)a3 error:(id *)a4
+- (id)takeSysdiagnose:(id)sysdiagnose error:(id *)error
 {
-  v5 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   v6 = shared_pl_log_handle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -105,16 +105,16 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Attempting to take sysdiagnose", buf, 2u);
   }
 
-  if (v5)
+  if (sysdiagnoseCopy)
   {
     v14 = 0;
-    v7 = [Libsysdiagnose sysdiagnoseWithMetadata:v5 withError:&v14];
+    v7 = [Libsysdiagnose sysdiagnoseWithMetadata:sysdiagnoseCopy withError:&v14];
     v8 = v14;
     v9 = v8;
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = shared_pl_log_handle();
@@ -134,11 +134,11 @@
     sub_100008B38();
   }
 
-  if (a4)
+  if (error)
   {
     v9 = [NSDictionary dictionaryWithObject:@"sysdiagnose parameters dictionary is nil" forKey:NSLocalizedDescriptionKey];
     [NSError errorWithDomain:@"EPLErrorDomain" code:1 userInfo:v9];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
 LABEL_13:
 
     goto LABEL_14;
@@ -159,7 +159,7 @@ LABEL_14:
 
   if (qword_10001A198)
   {
-    v2 = [qword_10001A198 getEPLProfilePath];
+    getEPLProfilePath = [qword_10001A198 getEPLProfilePath];
     v3 = shared_pl_log_handle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
@@ -176,26 +176,26 @@ LABEL_14:
       sub_100008B80();
     }
 
-    v2 = 0;
+    getEPLProfilePath = 0;
   }
 
-  return v2;
+  return getEPLProfilePath;
 }
 
-- (void)enableReportMemoryException:(BOOL)a3
+- (void)enableReportMemoryException:(BOOL)exception
 {
-  v3 = a3;
-  v4 = [(PerformanceLoggingDiagnosticExtensionExtension *)self linkRMEAndGetEPLProfilePath];
-  v5 = v4;
-  if (v4)
+  exceptionCopy = exception;
+  linkRMEAndGetEPLProfilePath = [(PerformanceLoggingDiagnosticExtensionExtension *)self linkRMEAndGetEPLProfilePath];
+  v5 = linkRMEAndGetEPLProfilePath;
+  if (linkRMEAndGetEPLProfilePath)
   {
-    if (v3)
+    if (exceptionCopy)
     {
       v6 = objc_alloc_init(NSDateComponents);
       [v6 setDay:2];
       v7 = +[NSCalendar currentCalendar];
       v8 = +[NSDate date];
-      v9 = [v7 dateByAddingComponents:v6 toDate:v8 options:0];
+      localizedDescription = [v7 dateByAddingComponents:v6 toDate:v8 options:0];
 
       v38[0] = @"FullDiagLimit";
       v38[1] = @"LiteDiagLimit";
@@ -204,7 +204,7 @@ LABEL_14:
       v38[2] = @"PerProcessLimit";
       v38[3] = @"ExpirationDate";
       v39[2] = &off_100015D30;
-      v39[3] = v9;
+      v39[3] = localizedDescription;
       v10 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:4];
       v31 = 0;
       v11 = [NSPropertyListSerialization dataWithPropertyList:v10 format:100 options:0 error:&v31];
@@ -281,7 +281,7 @@ LABEL_14:
 
     else
     {
-      v21 = truncate([v4 UTF8String], 0);
+      v21 = truncate([linkRMEAndGetEPLProfilePath UTF8String], 0);
       v22 = shared_pl_log_handle();
       v23 = v22;
       if (v21 == -1)
@@ -325,11 +325,11 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v9 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 138412546;
       v33 = v5;
       v34 = 2112;
-      v35 = v9;
+      v35 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Failed to delete ReportMemoryException plist at %@ with error %@", buf, 0x16u);
     }
 
@@ -345,13 +345,13 @@ LABEL_32:
 LABEL_33:
 }
 
-- (BOOL)setEPLKeysForParameters:(id)a3 error:(id *)a4 domain:(__CFString *)a5
+- (BOOL)setEPLKeysForParameters:(id)parameters error:(id *)error domain:(__CFString *)domain
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  parametersCopy = parameters;
+  v9 = parametersCopy;
+  if (parametersCopy)
   {
-    v10 = [v8 objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
     v11 = v10;
     if (v10)
     {
@@ -363,29 +363,29 @@ LABEL_33:
           [(PerformanceLoggingDiagnosticExtensionExtension *)self enableReportMemoryException:1];
           v12 = +[NSDate date];
           [v12 timeIntervalSinceReferenceDate];
-          [PLPreferences setDouble:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLTimeoutTimestampSec"] key:a5 domain:v13 + 172800.0];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLEnabled"] domain:a5];
+          [PLPreferences setDouble:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLTimeoutTimestampSec"] key:domain domain:v13 + 172800.0];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLEnabled"] domain:domain];
           [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableAppActivationLogging"] domain:@"com.apple.hangtracer"];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnabled"] domain:a5];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableTailspin"] domain:a5];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableSignpostMonitoring"] domain:a5];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableWorkflowResponsiveness"] domain:a5];
-          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerCollectOSSignpostsDeferred"] domain:a5];
-          [PLPreferences setBool:0 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerShouldUploadToDiagPipe"] domain:a5];
-          [PLPreferences setString:@"compressed" key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerKeepTailspinsWithFormat"] domain:a5];
-          [PLPreferences setInteger:55 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerSavedTailspinsMaxMB"] domain:a5];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnabled"] domain:domain];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableTailspin"] domain:domain];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableSignpostMonitoring"] domain:domain];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableWorkflowResponsiveness"] domain:domain];
+          [PLPreferences setBool:1 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerCollectOSSignpostsDeferred"] domain:domain];
+          [PLPreferences setBool:0 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerShouldUploadToDiagPipe"] domain:domain];
+          [PLPreferences setString:@"compressed" key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerKeepTailspinsWithFormat"] domain:domain];
+          [PLPreferences setInteger:55 key:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerSavedTailspinsMaxMB"] domain:domain];
 
 LABEL_11:
-          if (a4)
+          if (error)
           {
-            *a4 = 0;
+            *error = 0;
           }
 
           v14 = 1;
           goto LABEL_21;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_20;
         }
@@ -396,23 +396,23 @@ LABEL_11:
       else
       {
         persistAndUnredactLogs(0);
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLEnabled"] domain:a5];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLEnabled"] domain:domain];
         [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableAppActivationLogging"] domain:@"com.apple.hangtracer"];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnabled"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableTailspin"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableSignpostMonitoring"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableWorkflowResponsiveness"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerCollectOSSignpostsDeferred"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerKeepTailspinsWithFormat"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerSavedTailspinsMaxMB"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerShouldUploadToDiagPipe"] domain:a5];
-        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLTimeoutTimestampSec"] domain:a5];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnabled"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableTailspin"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableSignpostMonitoring"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerEnableWorkflowResponsiveness"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerCollectOSSignpostsDeferred"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerKeepTailspinsWithFormat"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerSavedTailspinsMaxMB"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"HangTracerShouldUploadToDiagPipe"] domain:domain];
+        [PLPreferences removeKey:[(PerformanceLoggingDiagnosticExtensionExtension *)self keyWithPrefix:@"EPLTimeoutTimestampSec"] domain:domain];
         if (configureTailspinForEPL(0))
         {
           goto LABEL_11;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_20;
         }
@@ -421,13 +421,13 @@ LABEL_11:
       }
       v16 = ;
       v17 = [NSDictionary dictionaryWithObject:v16 forKey:NSLocalizedDescriptionKey];
-      *a4 = [NSError errorWithDomain:@"EPLErrorDomain" code:3 userInfo:v17];
+      *error = [NSError errorWithDomain:@"EPLErrorDomain" code:3 userInfo:v17];
     }
 
-    else if (a4)
+    else if (error)
     {
       v15 = [NSDictionary dictionaryWithObject:@"Enhanced Performance Logging key not found in parameters" forKey:NSLocalizedDescriptionKey];
-      *a4 = [NSError errorWithDomain:@"EPLErrorDomain" code:2 userInfo:v15];
+      *error = [NSError errorWithDomain:@"EPLErrorDomain" code:2 userInfo:v15];
     }
 
 LABEL_20:
@@ -435,11 +435,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = [NSDictionary dictionaryWithObject:@"Parameters dictionary is nil" forKey:NSLocalizedDescriptionKey];
     [NSError errorWithDomain:@"EPLErrorDomain" code:1 userInfo:v11];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
 LABEL_21:
 
     goto LABEL_22;
@@ -451,9 +451,9 @@ LABEL_22:
   return v14;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (qword_10001A1A8 != -1)
   {
     sub_100008EE4();
@@ -477,7 +477,7 @@ LABEL_22:
     byte_10001A1B0 = 1;
     [qword_10001A188 unlock];
     v21 = 0;
-    [(PerformanceLoggingDiagnosticExtensionExtension *)self setEPLKeysForParameters:v4 error:&v21];
+    [(PerformanceLoggingDiagnosticExtensionExtension *)self setEPLKeysForParameters:parametersCopy error:&v21];
     v7 = v21;
     v8 = shared_pl_log_handle();
     v9 = v8;
@@ -498,27 +498,27 @@ LABEL_22:
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v10 = [v4 objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
+        v10 = [parametersCopy objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
         *buf = 138412290;
         v23 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Posting notification regarding EPL state change: %@", buf, 0xCu);
       }
 
       notify_post(EPL_STATE_CHANGED_NOTIFICATION);
-      v11 = [v4 objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
+      v11 = [parametersCopy objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
       if (v11)
       {
-        v12 = [v4 objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
-        v13 = [v12 BOOLValue];
+        v12 = [parametersCopy objectForKeyedSubscript:@"EnableEnhancedPerformanceLogging"];
+        bOOLValue = [v12 BOOLValue];
 
-        if (v13)
+        if (bOOLValue)
         {
           v11 = 0;
         }
 
         else
         {
-          v14 = [(PerformanceLoggingDiagnosticExtensionExtension *)self sysdiagnoseParamsFromDEParams:v4];
+          v14 = [(PerformanceLoggingDiagnosticExtensionExtension *)self sysdiagnoseParamsFromDEParams:parametersCopy];
           v20 = 0;
           v11 = [(PerformanceLoggingDiagnosticExtensionExtension *)self takeSysdiagnose:v14 error:&v20];
           v15 = v20;

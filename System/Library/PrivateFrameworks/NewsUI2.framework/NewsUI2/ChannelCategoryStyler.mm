@@ -1,7 +1,7 @@
 @interface ChannelCategoryStyler
 - (UIFont)tagTitleFont;
 - (double)cornerRadius;
-- (id)tagColorFor:(id)a3;
+- (id)tagColorFor:(id)for;
 @end
 
 @implementation ChannelCategoryStyler
@@ -22,16 +22,16 @@
 
 - (UIFont)tagTitleFont
 {
-  v2 = [*self->feedNavImageStyler tagTitleFont];
+  tagTitleFont = [*self->feedNavImageStyler tagTitleFont];
 
-  return v2;
+  return tagTitleFont;
 }
 
-- (id)tagColorFor:(id)a3
+- (id)tagColorFor:(id)for
 {
-  v3 = [*self->feedNavImageStyler tagColorFor_];
+  tagColorFor_ = [*self->feedNavImageStyler tagColorFor_];
 
-  return v3;
+  return tagColorFor_;
 }
 
 @end

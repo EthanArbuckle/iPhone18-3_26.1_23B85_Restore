@@ -1,25 +1,25 @@
 @interface WANWActivityStatistics
 - (PBCodable)awdReport;
-- (WANWActivityStatistics)initWithPBCodableData:(id)a3;
-- (WANWActivityStatistics)initWithWAActivityReport:(const void *)a3 length:(unint64_t)a4;
-- (id)expandKeyNameLengths:(id)a3;
-- (id)getTransformedFlattened:(int)a3;
+- (WANWActivityStatistics)initWithPBCodableData:(id)data;
+- (WANWActivityStatistics)initWithWAActivityReport:(const void *)report length:(unint64_t)length;
+- (id)expandKeyNameLengths:(id)lengths;
+- (id)getTransformedFlattened:(int)flattened;
 - (unsigned)awdMetricID;
 @end
 
 @implementation WANWActivityStatistics
 
-- (WANWActivityStatistics)initWithPBCodableData:(id)a3
+- (WANWActivityStatistics)initWithPBCodableData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = WANWActivityStatistics;
   v5 = [(WANWActivityStatistics *)&v13 init];
   v6 = v5;
-  if (v4 && v5 && [v4 length])
+  if (dataCopy && v5 && [dataCopy length])
   {
-    v7 = [[WiFiAnalyticsAWDWiFiNWActivity alloc] initWithData:v4];
+    v7 = [[WiFiAnalyticsAWDWiFiNWActivity alloc] initWithData:dataCopy];
     awdReport = v6->_awdReport;
     v6->_awdReport = &v7->super;
 
@@ -31,7 +31,7 @@
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v4 length];
+      v10 = [dataCopy length];
       *buf = 136446978;
       v15 = "[WANWActivityStatistics initWithPBCodableData:]";
       v16 = 1024;
@@ -48,7 +48,7 @@
   return v6;
 }
 
-- (WANWActivityStatistics)initWithWAActivityReport:(const void *)a3 length:(unint64_t)a4
+- (WANWActivityStatistics)initWithWAActivityReport:(const void *)report length:(unint64_t)length
 {
   v28 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -59,7 +59,7 @@
   {
     v6->_fromInitWithPBCodableData = 0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:a4];
+    v9 = [MEMORY[0x1E695DEF0] dataWithBytes:report length:length];
     if (!v9)
     {
       v11 = WALogCategoryDefaultHandle();
@@ -188,8 +188,8 @@ LABEL_26:
     }
   }
 
-  v7 = [(PBCodable *)awdReport activities];
-  v8 = [v7 count];
+  activities = [(PBCodable *)awdReport activities];
+  v8 = [activities count];
 
   if (v8)
   {
@@ -211,8 +211,8 @@ LABEL_26:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(WANWActivityStatistics *)self externallyVisibleActivityUUIDs];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  externallyVisibleActivityUUIDs = [(WANWActivityStatistics *)self externallyVisibleActivityUUIDs];
+  v10 = [externallyVisibleActivityUUIDs countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -223,15 +223,15 @@ LABEL_26:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(externallyVisibleActivityUUIDs);
         }
 
         v14 = self->_awdReport;
-        v15 = [*(*(&v22 + 1) + 8 * i) UUIDString];
-        [(PBCodable *)v14 addActivities:v15];
+        uUIDString = [*(*(&v22 + 1) + 8 * i) UUIDString];
+        [(PBCodable *)v14 addActivities:uUIDString];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v11 = [externallyVisibleActivityUUIDs countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v11);
@@ -258,7 +258,7 @@ LABEL_18:
   return v5;
 }
 
-- (id)getTransformedFlattened:(int)a3
+- (id)getTransformedFlattened:(int)flattened
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -273,9 +273,9 @@ LABEL_18:
   if (!v6)
   {
     v7 = [_TtC13WiFiAnalytics21WANWActivityTransform alloc];
-    v8 = [(WANWActivityStatistics *)self awdReport];
-    v9 = [v8 dictionaryRepresentation];
-    v10 = [(WANWActivityTransform *)v7 initWithSingle:v9];
+    awdReport = [(WANWActivityStatistics *)self awdReport];
+    dictionaryRepresentation = [awdReport dictionaryRepresentation];
+    v10 = [(WANWActivityTransform *)v7 initWithSingle:dictionaryRepresentation];
     [(WANWActivityStatistics *)self setObj:v10];
   }
 
@@ -296,31 +296,31 @@ LABEL_18:
   if (v11)
   {
     v12 = 0;
-    if (a3 > 1)
+    if (flattened > 1)
     {
-      if (a3 == 2)
+      if (flattened == 2)
       {
         v14 = [(WANWActivityStatistics *)self obj];
-        v15 = [v14 getTransformedMeasurementForLogging];
+        getTransformedMeasurementForLogging = [v14 getTransformedMeasurementForLogging];
       }
 
       else
       {
-        if (a3 != 3)
+        if (flattened != 3)
         {
           goto LABEL_27;
         }
 
         v14 = [(WANWActivityStatistics *)self obj];
-        v15 = [v14 getTransformedMeasurementForP2PMetrics];
+        getTransformedMeasurementForLogging = [v14 getTransformedMeasurementForP2PMetrics];
       }
     }
 
     else
     {
-      if (a3)
+      if (flattened)
       {
-        if (a3 != 1)
+        if (flattened != 1)
         {
           goto LABEL_27;
         }
@@ -346,10 +346,10 @@ LABEL_18:
       }
 
       v14 = [(WANWActivityStatistics *)self obj];
-      v15 = [v14 getTransformedMeasurementForTelemetryWithIndex:0];
+      getTransformedMeasurementForLogging = [v14 getTransformedMeasurementForTelemetryWithIndex:0];
     }
 
-    v12 = v15;
+    v12 = getTransformedMeasurementForLogging;
     goto LABEL_26;
   }
 
@@ -380,10 +380,10 @@ LABEL_27:
   return v12;
 }
 
-- (id)expandKeyNameLengths:(id)a3
+- (id)expandKeyNameLengths:(id)lengths
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lengthsCopy = lengths;
   v5 = objc_autoreleasePoolPush();
   v6 = [(WANWActivityStatistics *)self obj];
 
@@ -396,7 +396,7 @@ LABEL_27:
     }
 
     v7 = [(WANWActivityStatistics *)self obj];
-    v8 = [v7 expandKeyNameLengthsFrom:v4];
+    v8 = [v7 expandKeyNameLengthsFrom:lengthsCopy];
 
     if (os_signpost_enabled(MEMORY[0x1E69E9C10]))
     {

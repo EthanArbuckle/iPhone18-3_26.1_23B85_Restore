@@ -1,26 +1,26 @@
 @interface NFApplet
-+ (id)aidListForPrinting:(id)a3;
++ (id)aidListForPrinting:(id)printing;
 - (BOOL)containsSubKeys;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToApplet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToApplet:(id)applet;
 - (BOOL)isPPSEControllable;
 - (BOOL)suppressTypeA;
 - (BOOL)suppressTypeB;
 - (NFApplet)groupHead;
-- (NFApplet)initWithCoder:(id)a3;
-- (NFApplet)initWithDictionary:(id)a3;
+- (NFApplet)initWithCoder:(id)coder;
+- (NFApplet)initWithDictionary:(id)dictionary;
 - (NFAppletCollection)appletCollection;
 - (NSArray)groupMembers;
 - (NSArray)referencedApps;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)multiSSDMembers;
 - (unsigned)lifecycleState;
 - (unsigned)supportedTypeFSystem;
 - (void)_initManagedBySP;
-- (void)_setIsActive:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setIsActive:(BOOL)active;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFApplet
@@ -56,8 +56,8 @@
             v17 = 0u;
             v14 = 0u;
             v15 = 0u;
-            v9 = [v8 children];
-            v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            children = [v8 children];
+            v10 = [children countByEnumeratingWithState:&v14 objects:v22 count:16];
             if (v10)
             {
               v11 = v10;
@@ -68,7 +68,7 @@
                 {
                   if (*v15 != v12)
                   {
-                    objc_enumerationMutation(v9);
+                    objc_enumerationMutation(children);
                   }
 
                   if ([*(*(&v14 + 1) + 8 * j) tag] == 57154)
@@ -78,7 +78,7 @@
                   }
                 }
 
-                v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+                v11 = [children countByEnumeratingWithState:&v14 objects:v22 count:16];
                 if (v11)
                 {
                   continue;
@@ -113,11 +113,11 @@ LABEL_18:
   }
 
   v53 = v4;
-  v5 = [(NFApplet *)self lifecycleState];
+  lifecycleState = [(NFApplet *)self lifecycleState];
   v6 = @"UNKNOWN";
-  if (v5 <= 14)
+  if (lifecycleState <= 14)
   {
-    switch(v5)
+    switch(lifecycleState)
     {
       case 1:
         v6 = @"loaded";
@@ -131,25 +131,25 @@ LABEL_18:
     }
   }
 
-  else if (v5 > 128)
+  else if (lifecycleState > 128)
   {
-    if (v5 == 129)
+    if (lifecycleState == 129)
     {
       v6 = @"terminated";
     }
 
-    else if (v5 == 130)
+    else if (lifecycleState == 130)
     {
       v6 = @"frozen";
     }
   }
 
-  else if (v5 == 15)
+  else if (lifecycleState == 15)
   {
     v6 = @"personalized";
   }
 
-  else if (v5 == 23)
+  else if (lifecycleState == 23)
   {
     v6 = @"pre-personalized";
   }
@@ -181,7 +181,7 @@ LABEL_18:
   v59.receiver = self;
   v59.super_class = NFApplet;
   v51 = [(NFApplet *)&v59 description];
-  v50 = [(NSData *)self->_identifierAsData NF_asHexString];
+  nF_asHexString = [(NSData *)self->_identifierAsData NF_asHexString];
   family = self->_family;
   appletGPState = self->_appletGPState;
   if ([(NFApplet *)self isGPLocked])
@@ -222,8 +222,8 @@ LABEL_18:
   if (groupHeadIDAsData)
   {
     v12 = [NSString alloc];
-    v34 = [(NSData *)self->_groupHeadIDAsData NF_asHexString];
-    v58 = [v12 initWithFormat:@"groupHead=%@ ", v34];
+    nF_asHexString2 = [(NSData *)self->_groupHeadIDAsData NF_asHexString];
+    v58 = [v12 initWithFormat:@"groupHead=%@ ", nF_asHexString2];
   }
 
   else
@@ -283,8 +283,8 @@ LABEL_18:
   if (packageIdentifierAsData)
   {
     v17 = [NSString alloc];
-    v31 = [(NSData *)self->_packageIdentifierAsData NF_asHexString];
-    v55 = [v17 initWithFormat:@"packageIdentifier=%@ ", v31];
+    nF_asHexString3 = [(NSData *)self->_packageIdentifierAsData NF_asHexString];
+    v55 = [v17 initWithFormat:@"packageIdentifier=%@ ", nF_asHexString3];
   }
 
   else
@@ -296,8 +296,8 @@ LABEL_18:
   if (moduleIdentifierAsData)
   {
     v18 = [NSString alloc];
-    v30 = [(NSData *)self->_moduleIdentifierAsData NF_asHexString];
-    v54 = [v18 initWithFormat:@"moduleIdentifier=%@ ", v30];
+    nF_asHexString4 = [(NSData *)self->_moduleIdentifierAsData NF_asHexString];
+    v54 = [v18 initWithFormat:@"moduleIdentifier=%@ ", nF_asHexString4];
   }
 
   else
@@ -351,7 +351,7 @@ LABEL_18:
     v27 = &stru_10031EA18;
   }
 
-  v28 = [v47 initWithFormat:@"%@ { identifier=%@ family=0x%x(%@) lifecycle=0x%x(%@) locked=%@ activation=0x%x(%@) authTransient=%@ authTransientConfigurable=%@ %@%@%@isContainer=%@ isProxy=%@ %@%@activationStyle=%d %@ %@%@seOS=%lu%@instanceACL=%@}", v51, v50, family, v53, appletGPState, v52, v43, v42, v48, v41, v40, v58, v57, v56, v36, v35, v55, v54, groupActivationStyle, v21, v24, v26, self->_seOS, v27, self->_instanceACL];
+  v28 = [v47 initWithFormat:@"%@ { identifier=%@ family=0x%x(%@) lifecycle=0x%x(%@) locked=%@ activation=0x%x(%@) authTransient=%@ authTransientConfigurable=%@ %@%@%@isContainer=%@ isProxy=%@ %@%@activationStyle=%d %@ %@%@seOS=%lu%@instanceACL=%@}", v51, nF_asHexString, family, v53, appletGPState, v52, v43, v42, v48, v41, v40, v58, v57, v56, v36, v35, v55, v54, groupActivationStyle, v21, v24, v26, self->_seOS, v27, self->_instanceACL];
   if (v25)
   {
   }
@@ -400,11 +400,11 @@ LABEL_18:
   }
 
   v38 = v3;
-  v4 = [(NFApplet *)self lifecycleState];
+  lifecycleState = [(NFApplet *)self lifecycleState];
   v5 = @"UNKNOWN";
-  if (v4 <= 14)
+  if (lifecycleState <= 14)
   {
-    switch(v4)
+    switch(lifecycleState)
     {
       case 1:
         v5 = @"loaded";
@@ -418,25 +418,25 @@ LABEL_18:
     }
   }
 
-  else if (v4 > 128)
+  else if (lifecycleState > 128)
   {
-    if (v4 == 129)
+    if (lifecycleState == 129)
     {
       v5 = @"terminated";
     }
 
-    else if (v4 == 130)
+    else if (lifecycleState == 130)
     {
       v5 = @"frozen";
     }
   }
 
-  else if (v4 == 15)
+  else if (lifecycleState == 15)
   {
     v5 = @"personalized";
   }
 
-  else if (v4 == 23)
+  else if (lifecycleState == 23)
   {
     v5 = @"pre-personalized";
   }
@@ -465,9 +465,9 @@ LABEL_18:
 
   v35 = v7;
   v36 = [NSMutableDictionary alloc];
-  v8 = [(NSData *)self->_identifierAsData NF_asHexString];
+  nF_asHexString = [(NSData *)self->_identifierAsData NF_asHexString];
   seIdentifier = self->_seIdentifier;
-  v34 = v8;
+  v34 = nF_asHexString;
   v32 = [NSNumber numberWithUnsignedChar:self->_family];
   v9 = [NSNumber numberWithUnsignedChar:self->_appletGPState];
   v10 = [NSNumber numberWithUnsignedChar:self->_activationState];
@@ -519,8 +519,8 @@ LABEL_18:
   groupHeadIDAsData = self->_groupHeadIDAsData;
   if (groupHeadIDAsData)
   {
-    v20 = [(NSData *)groupHeadIDAsData NF_asHexString];
-    [v18 setObject:v20 forKey:@"groupHead"];
+    nF_asHexString2 = [(NSData *)groupHeadIDAsData NF_asHexString];
+    [v18 setObject:nF_asHexString2 forKey:@"groupHead"];
   }
 
   groupMemberIDs = self->_groupMemberIDs;
@@ -538,15 +538,15 @@ LABEL_18:
   packageIdentifierAsData = self->_packageIdentifierAsData;
   if (packageIdentifierAsData)
   {
-    v24 = [(NSData *)packageIdentifierAsData NF_asHexString];
-    [v18 setObject:v24 forKey:@"packageIdentifier"];
+    nF_asHexString3 = [(NSData *)packageIdentifierAsData NF_asHexString];
+    [v18 setObject:nF_asHexString3 forKey:@"packageIdentifier"];
   }
 
   moduleIdentifierAsData = self->_moduleIdentifierAsData;
   if (moduleIdentifierAsData)
   {
-    v26 = [(NSData *)moduleIdentifierAsData NF_asHexString];
-    [v18 setObject:v26 forKey:@"moduleIdentifier"];
+    nF_asHexString4 = [(NSData *)moduleIdentifierAsData NF_asHexString];
+    [v18 setObject:nF_asHexString4 forKey:@"moduleIdentifier"];
   }
 
   discretionaryData = self->_discretionaryData;
@@ -576,16 +576,16 @@ LABEL_18:
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(NFApplet *)self isEqualToApplet:v5];
   }
@@ -598,22 +598,22 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isEqualToApplet:(id)a3
+- (BOOL)isEqualToApplet:(id)applet
 {
-  v4 = a3;
-  if (v4 == self)
+  appletCopy = applet;
+  if (appletCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(NFApplet *)self identifierAsData];
-    v6 = [(NFApplet *)v4 identifierAsData];
-    if ([v5 isEqualToData:v6])
+    identifierAsData = [(NFApplet *)self identifierAsData];
+    identifierAsData2 = [(NFApplet *)appletCopy identifierAsData];
+    if ([identifierAsData isEqualToData:identifierAsData2])
     {
-      v7 = [(NFApplet *)self seOS];
-      v8 = v7 == [(NFApplet *)v4 seOS];
+      seOS = [(NFApplet *)self seOS];
+      v8 = seOS == [(NFApplet *)appletCopy seOS];
     }
 
     else
@@ -673,64 +673,64 @@ LABEL_18:
   return 2;
 }
 
-- (NFApplet)initWithCoder:(id)a3
+- (NFApplet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = NFApplet;
   v5 = [(NFApplet *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
     seIdentifier = v5->_seIdentifier;
     v5->_seIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifierAsData = v5->_identifierAsData;
     v5->_identifierAsData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
     discretionaryData = v5->_discretionaryData;
     v5->_discretionaryData = v10;
 
-    v5->_family = [v4 decodeInt32ForKey:@"family"];
-    v5->_appletGPState = [v4 decodeInt32ForKey:@"lifecycleState"];
-    v5->_activationState = [v4 decodeInt32ForKey:@"activationState"];
-    v5->_authTransientSupport = [v4 decodeBoolForKey:@"authTransientSupport"];
-    v5->_authTransientConfigurable = [v4 decodeBoolForKey:@"authTransientConfigurable"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupHead"];
+    v5->_family = [coderCopy decodeInt32ForKey:@"family"];
+    v5->_appletGPState = [coderCopy decodeInt32ForKey:@"lifecycleState"];
+    v5->_activationState = [coderCopy decodeInt32ForKey:@"activationState"];
+    v5->_authTransientSupport = [coderCopy decodeBoolForKey:@"authTransientSupport"];
+    v5->_authTransientConfigurable = [coderCopy decodeBoolForKey:@"authTransientConfigurable"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupHead"];
     groupHeadIDAsData = v5->_groupHeadIDAsData;
     v5->_groupHeadIDAsData = v12;
 
-    v14 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"groupMembers"];
+    v14 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"groupMembers"];
     groupMemberIDs = v5->_groupMemberIDs;
     v5->_groupMemberIDs = v14;
 
-    v16 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"referencedApps"];
+    v16 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"referencedApps"];
     referencedAppIDs = v5->_referencedAppIDs;
     v5->_referencedAppIDs = v16;
 
-    v5->_isContainer = [v4 decodeBoolForKey:@"containerInstance"];
-    v5->_isProxy = [v4 decodeBoolForKey:@"proxyInstance"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"packageIdentifier"];
+    v5->_isContainer = [coderCopy decodeBoolForKey:@"containerInstance"];
+    v5->_isProxy = [coderCopy decodeBoolForKey:@"proxyInstance"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"packageIdentifier"];
     packageIdentifierAsData = v5->_packageIdentifierAsData;
     v5->_packageIdentifierAsData = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"moduleIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"moduleIdentifier"];
     moduleIdentifierAsData = v5->_moduleIdentifierAsData;
     v5->_moduleIdentifierAsData = v20;
 
-    v5->_groupActivationStyle = [v4 decodeInt32ForKey:@"groupActivationStyle"];
-    v22 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"multiSEApplicationGroup"];
+    v5->_groupActivationStyle = [coderCopy decodeInt32ForKey:@"groupActivationStyle"];
+    v22 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"multiSEApplicationGroup"];
     multiSEApplicationGroupMemberIDs = v5->_multiSEApplicationGroupMemberIDs;
     v5->_multiSEApplicationGroupMemberIDs = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeFSystemCode"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeFSystemCode"];
     typeFSystemCode = v5->_typeFSystemCode;
     v5->_typeFSystemCode = v24;
 
-    v5->_seOS = [v4 decodeIntegerForKey:@"seOS"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceACL"];
+    v5->_seOS = [coderCopy decodeIntegerForKey:@"seOS"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceACL"];
     instanceACL = v5->_instanceACL;
     v5->_instanceACL = v26;
 
@@ -740,46 +740,46 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   seIdentifier = self->_seIdentifier;
-  v5 = a3;
-  [v5 encodeObject:seIdentifier forKey:@"seid"];
-  [v5 encodeObject:self->_identifierAsData forKey:@"identifier"];
-  [v5 encodeObject:self->_discretionaryData forKey:@"discretionary"];
-  [v5 encodeInt32:self->_family forKey:@"family"];
-  [v5 encodeInt32:self->_appletGPState forKey:@"lifecycleState"];
-  [v5 encodeInt32:self->_activationState forKey:@"activationState"];
-  [v5 encodeBool:self->_authTransientSupport forKey:@"authTransientSupport"];
-  [v5 encodeBool:self->_authTransientConfigurable forKey:@"authTransientConfigurable"];
-  [v5 encodeObject:self->_groupHeadIDAsData forKey:@"groupHead"];
-  [v5 encodeObject:self->_groupMemberIDs forKey:@"groupMembers"];
-  [v5 encodeObject:self->_referencedAppIDs forKey:@"referencedApps"];
-  [v5 encodeBool:self->_isContainer forKey:@"containerInstance"];
-  [v5 encodeBool:self->_isProxy forKey:@"proxyInstance"];
-  [v5 encodeObject:self->_packageIdentifierAsData forKey:@"packageIdentifier"];
-  [v5 encodeObject:self->_moduleIdentifierAsData forKey:@"moduleIdentifier"];
-  [v5 encodeInt32:self->_groupActivationStyle forKey:@"groupActivationStyle"];
-  [v5 encodeObject:self->_multiSEApplicationGroupMemberIDs forKey:@"multiSEApplicationGroup"];
-  [v5 encodeObject:self->_typeFSystemCode forKey:@"typeFSystemCode"];
-  [v5 encodeInteger:self->_seOS forKey:@"seOS"];
-  [v5 encodeObject:self->_instanceACL forKey:@"instanceACL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:seIdentifier forKey:@"seid"];
+  [coderCopy encodeObject:self->_identifierAsData forKey:@"identifier"];
+  [coderCopy encodeObject:self->_discretionaryData forKey:@"discretionary"];
+  [coderCopy encodeInt32:self->_family forKey:@"family"];
+  [coderCopy encodeInt32:self->_appletGPState forKey:@"lifecycleState"];
+  [coderCopy encodeInt32:self->_activationState forKey:@"activationState"];
+  [coderCopy encodeBool:self->_authTransientSupport forKey:@"authTransientSupport"];
+  [coderCopy encodeBool:self->_authTransientConfigurable forKey:@"authTransientConfigurable"];
+  [coderCopy encodeObject:self->_groupHeadIDAsData forKey:@"groupHead"];
+  [coderCopy encodeObject:self->_groupMemberIDs forKey:@"groupMembers"];
+  [coderCopy encodeObject:self->_referencedAppIDs forKey:@"referencedApps"];
+  [coderCopy encodeBool:self->_isContainer forKey:@"containerInstance"];
+  [coderCopy encodeBool:self->_isProxy forKey:@"proxyInstance"];
+  [coderCopy encodeObject:self->_packageIdentifierAsData forKey:@"packageIdentifier"];
+  [coderCopy encodeObject:self->_moduleIdentifierAsData forKey:@"moduleIdentifier"];
+  [coderCopy encodeInt32:self->_groupActivationStyle forKey:@"groupActivationStyle"];
+  [coderCopy encodeObject:self->_multiSEApplicationGroupMemberIDs forKey:@"multiSEApplicationGroup"];
+  [coderCopy encodeObject:self->_typeFSystemCode forKey:@"typeFSystemCode"];
+  [coderCopy encodeInteger:self->_seOS forKey:@"seOS"];
+  [coderCopy encodeObject:self->_instanceACL forKey:@"instanceACL"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
   {
-    v6 = [(NSString *)self->_seIdentifier copyWithZone:a3];
+    v6 = [(NSString *)self->_seIdentifier copyWithZone:zone];
     v7 = *(v5 + 11);
     *(v5 + 11) = v6;
 
-    v8 = [(NSData *)self->_identifierAsData copyWithZone:a3];
+    v8 = [(NSData *)self->_identifierAsData copyWithZone:zone];
     v9 = *(v5 + 12);
     *(v5 + 12) = v8;
 
-    v10 = [(NSData *)self->_discretionaryData copyWithZone:a3];
+    v10 = [(NSData *)self->_discretionaryData copyWithZone:zone];
     v11 = *(v5 + 13);
     *(v5 + 13) = v10;
 
@@ -788,34 +788,34 @@ LABEL_18:
     *(v5 + 77) = self->_activationState;
     *(v5 + 78) = self->_authTransientSupport;
     *(v5 + 79) = self->_authTransientConfigurable;
-    v12 = [(NSData *)self->_groupHeadIDAsData copyWithZone:a3];
+    v12 = [(NSData *)self->_groupHeadIDAsData copyWithZone:zone];
     v13 = *(v5 + 2);
     *(v5 + 2) = v12;
 
-    v14 = [(NSArray *)self->_groupMemberIDs copyWithZone:a3];
+    v14 = [(NSArray *)self->_groupMemberIDs copyWithZone:zone];
     v15 = *(v5 + 3);
     *(v5 + 3) = v14;
 
-    v16 = [(NSArray *)self->_referencedAppIDs copyWithZone:a3];
+    v16 = [(NSArray *)self->_referencedAppIDs copyWithZone:zone];
     v17 = *(v5 + 4);
     *(v5 + 4) = v16;
 
     *(v5 + 73) = self->_isContainer;
     *(v5 + 74) = self->_isProxy;
-    v18 = [(NSData *)self->_packageIdentifierAsData copyWithZone:a3];
+    v18 = [(NSData *)self->_packageIdentifierAsData copyWithZone:zone];
     v19 = *(v5 + 5);
     *(v5 + 5) = v18;
 
-    v20 = [(NSData *)self->_moduleIdentifierAsData copyWithZone:a3];
+    v20 = [(NSData *)self->_moduleIdentifierAsData copyWithZone:zone];
     v21 = *(v5 + 6);
     *(v5 + 6) = v20;
 
     *(v5 + 72) = self->_groupActivationStyle;
-    v22 = [(NSArray *)self->_multiSEApplicationGroupMemberIDs copyWithZone:a3];
+    v22 = [(NSArray *)self->_multiSEApplicationGroupMemberIDs copyWithZone:zone];
     v23 = *(v5 + 7);
     *(v5 + 7) = v22;
 
-    v24 = [(NSData *)self->_typeFSystemCode copyWithZone:a3];
+    v24 = [(NSData *)self->_typeFSystemCode copyWithZone:zone];
     v25 = *(v5 + 8);
     *(v5 + 8) = v24;
 
@@ -847,8 +847,8 @@ LABEL_18:
   if (self->_groupHeadIDAsData)
   {
     v5 = objc_loadWeakRetained(&self->_appletCollection);
-    v6 = [(NSData *)self->_groupHeadIDAsData NF_asHexString];
-    v7 = [v5 appletWithIdentifier:v6];
+    nF_asHexString = [(NSData *)self->_groupHeadIDAsData NF_asHexString];
+    v7 = [v5 appletWithIdentifier:nF_asHexString];
   }
 
   else
@@ -1185,36 +1185,36 @@ LABEL_18:
 
 - (BOOL)containsSubKeys
 {
-  v3 = [(NFApplet *)self identifierAsData];
+  identifierAsData = [(NFApplet *)self identifierAsData];
   v4 = [[NSData alloc] initWithBytes:&unk_100296B2C length:13];
-  if ([v3 isEqualToData:v4])
+  if ([identifierAsData isEqualToData:v4])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NFApplet *)self identifierAsData];
+    identifierAsData2 = [(NFApplet *)self identifierAsData];
     v7 = [[NSData alloc] initWithBytes:&unk_100296B39 length:12];
-    if ([v6 isEqualToData:v7])
+    if ([identifierAsData2 isEqualToData:v7])
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(NFApplet *)self identifierAsData];
+      identifierAsData3 = [(NFApplet *)self identifierAsData];
       v9 = [[NSData alloc] initWithBytes:&unk_100296B45 length:12];
-      if ([v8 isEqualToData:v9])
+      if ([identifierAsData3 isEqualToData:v9])
       {
         v5 = 1;
       }
 
       else
       {
-        v10 = [(NFApplet *)self identifierAsData];
+        identifierAsData4 = [(NFApplet *)self identifierAsData];
         v11 = [[NSData alloc] initWithBytes:&unk_100296B51 length:9];
-        v5 = [v10 isEqualToData:v11];
+        v5 = [identifierAsData4 isEqualToData:v11];
       }
     }
   }
@@ -1244,15 +1244,15 @@ LABEL_18:
   return appletGPState;
 }
 
-- (NFApplet)initWithDictionary:(id)a3
+- (NFApplet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = NFApplet;
   v5 = [(NFApplet *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"identifier"];
+    v6 = [dictionaryCopy objectForKey:@"identifier"];
     if (!v6)
     {
       goto LABEL_8;
@@ -1279,30 +1279,30 @@ LABEL_18:
     v5->_identifierAsData = v7;
 
 LABEL_8:
-    v9 = [v4 objectForKeyedSubscript:@"seid"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"seid"];
     seIdentifier = v5->_seIdentifier;
     v5->_seIdentifier = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"discretionary"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"discretionary"];
     discretionaryData = v5->_discretionaryData;
     v5->_discretionaryData = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"family"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"family"];
     v5->_family = [v13 intValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"lifecycleState"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"lifecycleState"];
     v5->_appletGPState = [v14 unsignedCharValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"activationState"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"activationState"];
     v5->_activationState = [v15 intValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"authTransientSupport"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"authTransientSupport"];
     v5->_authTransientSupport = [v16 BOOLValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"authTransientConfigurable"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"authTransientConfigurable"];
     v5->_authTransientConfigurable = [v17 BOOLValue];
 
-    v18 = [v4 objectForKey:@"groupHead"];
+    v18 = [dictionaryCopy objectForKey:@"groupHead"];
 
     if (!v18)
     {
@@ -1330,23 +1330,23 @@ LABEL_8:
     v5->_groupHeadIDAsData = v19;
 
 LABEL_14:
-    v21 = [v4 objectForKeyedSubscript:@"groupMembers"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"groupMembers"];
     v22 = [v21 copy];
     groupMemberIDs = v5->_groupMemberIDs;
     v5->_groupMemberIDs = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"referencedApps"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"referencedApps"];
     v25 = [v24 copy];
     referencedAppIDs = v5->_referencedAppIDs;
     v5->_referencedAppIDs = v25;
 
-    v27 = [v4 objectForKeyedSubscript:@"containerInstance"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"containerInstance"];
     v5->_isContainer = [v27 BOOLValue];
 
-    v28 = [v4 objectForKeyedSubscript:@"proxyInstance"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"proxyInstance"];
     v5->_isProxy = [v28 BOOLValue];
 
-    v29 = [v4 objectForKey:@"packageIdentifier"];
+    v29 = [dictionaryCopy objectForKey:@"packageIdentifier"];
 
     if (!v29)
     {
@@ -1374,7 +1374,7 @@ LABEL_14:
     v5->_packageIdentifierAsData = v30;
 
 LABEL_20:
-    v32 = [v4 objectForKey:@"moduleIdentifier"];
+    v32 = [dictionaryCopy objectForKey:@"moduleIdentifier"];
 
     if (v32)
     {
@@ -1398,23 +1398,23 @@ LABEL_25:
     }
 
 LABEL_26:
-    v35 = [v4 objectForKeyedSubscript:@"groupActivationStyle"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"groupActivationStyle"];
     v5->_groupActivationStyle = [v35 intValue];
 
-    v36 = [v4 objectForKeyedSubscript:@"multiSEApplicationGroup"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"multiSEApplicationGroup"];
     v37 = [v36 copy];
     multiSEApplicationGroupMemberIDs = v5->_multiSEApplicationGroupMemberIDs;
     v5->_multiSEApplicationGroupMemberIDs = v37;
 
-    v39 = [v4 objectForKeyedSubscript:@"typeFSystemCode"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"typeFSystemCode"];
     v40 = [v39 copy];
     typeFSystemCode = v5->_typeFSystemCode;
     v5->_typeFSystemCode = v40;
 
-    v42 = [v4 objectForKeyedSubscript:@"seOS"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"seOS"];
     v5->_seOS = [v42 unsignedIntegerValue];
 
-    v43 = [v4 objectForKeyedSubscript:@"instanceACL"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"instanceACL"];
     instanceACL = v5->_instanceACL;
     v5->_instanceACL = v43;
 
@@ -1424,7 +1424,7 @@ LABEL_26:
   return v5;
 }
 
-- (void)_setIsActive:(BOOL)a3
+- (void)_setIsActive:(BOOL)active
 {
   if (self->_activationState == 128)
   {
@@ -1475,19 +1475,19 @@ LABEL_26:
 
   else
   {
-    self->_activationState = a3;
+    self->_activationState = active;
   }
 }
 
-+ (id)aidListForPrinting:(id)a3
++ (id)aidListForPrinting:(id)printing
 {
-  v3 = a3;
+  printingCopy = printing;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = printingCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1506,8 +1506,8 @@ LABEL_26:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 identifier];
-          [v4 addObject:v11];
+          identifier = [v10 identifier];
+          [v4 addObject:identifier];
         }
       }
 
@@ -1549,8 +1549,8 @@ LABEL_26:
         {
           v8 = [NSData alloc];
           v9 = [v8 initWithBytes:&unk_100296B5A length:{14, v14}];
-          v10 = [v9 NF_asHexString];
-          v11 = [v7 caseInsensitiveCompare:v10];
+          nF_asHexString = [v9 NF_asHexString];
+          v11 = [v7 caseInsensitiveCompare:nF_asHexString];
 
           if (!v11)
           {

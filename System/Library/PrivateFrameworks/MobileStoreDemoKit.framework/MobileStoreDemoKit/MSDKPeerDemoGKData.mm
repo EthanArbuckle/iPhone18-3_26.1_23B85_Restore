@@ -1,9 +1,9 @@
 @interface MSDKPeerDemoGKData
 - (MSDKPeerDemoGKData)init;
-- (MSDKPeerDemoGKData)initWithCoder:(id)a3;
+- (MSDKPeerDemoGKData)initWithCoder:(id)coder;
 - (id)description;
 - (void)addOffsetFromTolerance:(MSDKPeerDemoGKData *)self;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoGKData
@@ -43,7 +43,7 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MSDKPeerDemoGKData *)self dataValid];
+  dataValid = [(MSDKPeerDemoGKData *)self dataValid];
   [(MSDKPeerDemoGKData *)self reliefBoxSpaceMM];
   v8 = v7;
   [(MSDKPeerDemoGKData *)self reliefTotalBoxSpaceMM];
@@ -53,39 +53,39 @@
   [(MSDKPeerDemoGKData *)self offsetFromToleranceY];
   v14 = v13;
   [(MSDKPeerDemoGKData *)self offsetFromToleranceZ];
-  v16 = [v3 stringWithFormat:@"<%@[%p]: DataValid=%d reliefBoxSpaceMM=%f totalReliefBoxSpaceMM=%f offsetFromTolerance=(%f, %f, %f)>", v5, self, v6, *&v8, *&v10, *&v12, *&v14, v15];
+  v16 = [v3 stringWithFormat:@"<%@[%p]: DataValid=%d reliefBoxSpaceMM=%f totalReliefBoxSpaceMM=%f offsetFromTolerance=(%f, %f, %f)>", v5, self, dataValid, *&v8, *&v10, *&v12, *&v14, v15];
 
   return v16;
 }
 
-- (MSDKPeerDemoGKData)initWithCoder:(id)a3
+- (MSDKPeerDemoGKData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MSDKPeerDemoGKData;
   v5 = [(MSDKPeerDemoGKData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataValid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataValid"];
     -[MSDKPeerDemoGKData setDataValid:](v5, "setDataValid:", [v6 BOOLValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reliefBoxSpaceMM"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reliefBoxSpaceMM"];
     [v7 floatValue];
     [(MSDKPeerDemoGKData *)v5 setReliefBoxSpaceMM:?];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reliefTotalBoxSpaceMM"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reliefTotalBoxSpaceMM"];
     [v8 floatValue];
     [(MSDKPeerDemoGKData *)v5 setReliefTotalBoxSpaceMM:?];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceX"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceX"];
     [v9 floatValue];
     [(MSDKPeerDemoGKData *)v5 setOffsetFromToleranceX:?];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceY"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceY"];
     [v10 floatValue];
     [(MSDKPeerDemoGKData *)v5 setOffsetFromToleranceY:?];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceZ"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offsetFromToleranceZ"];
     [v11 floatValue];
     [(MSDKPeerDemoGKData *)v5 setOffsetFromToleranceZ:?];
   }
@@ -93,37 +93,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:{-[MSDKPeerDemoGKData dataValid](self, "dataValid")}];
-  [v5 encodeObject:v6 forKey:@"dataValid"];
+  [coderCopy encodeObject:v6 forKey:@"dataValid"];
 
   v7 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoGKData *)self reliefBoxSpaceMM];
   v8 = [v7 numberWithFloat:?];
-  [v5 encodeObject:v8 forKey:@"reliefBoxSpaceMM"];
+  [coderCopy encodeObject:v8 forKey:@"reliefBoxSpaceMM"];
 
   v9 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoGKData *)self reliefTotalBoxSpaceMM];
   v10 = [v9 numberWithFloat:?];
-  [v5 encodeObject:v10 forKey:@"reliefTotalBoxSpaceMM"];
+  [coderCopy encodeObject:v10 forKey:@"reliefTotalBoxSpaceMM"];
 
   v11 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoGKData *)self offsetFromToleranceX];
   v12 = [v11 numberWithFloat:?];
-  [v5 encodeObject:v12 forKey:@"offsetFromToleranceX"];
+  [coderCopy encodeObject:v12 forKey:@"offsetFromToleranceX"];
 
   v13 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoGKData *)self offsetFromToleranceY];
   v14 = [v13 numberWithFloat:?];
-  [v5 encodeObject:v14 forKey:@"offsetFromToleranceY"];
+  [coderCopy encodeObject:v14 forKey:@"offsetFromToleranceY"];
 
   v15 = MEMORY[0x277CCABB0];
   [(MSDKPeerDemoGKData *)self offsetFromToleranceZ];
   v16 = [v15 numberWithFloat:?];
-  [v5 encodeObject:v16 forKey:@"offsetFromToleranceZ"];
+  [coderCopy encodeObject:v16 forKey:@"offsetFromToleranceZ"];
 }
 
 @end

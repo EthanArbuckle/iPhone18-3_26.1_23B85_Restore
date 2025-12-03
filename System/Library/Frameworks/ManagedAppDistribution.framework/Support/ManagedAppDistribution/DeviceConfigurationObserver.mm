@@ -1,6 +1,6 @@
 @interface DeviceConfigurationObserver
 - (_TtC28ManagedAppDistributionDaemon27DeviceConfigurationObserver)init;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation DeviceConfigurationObserver
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  v6 = self;
+  selfCopy = self;
   sub_1003D4A14(sub_1003D52DC, v5);
 }
 

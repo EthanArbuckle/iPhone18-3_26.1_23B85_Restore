@@ -1,25 +1,25 @@
 @interface CNAccountsAndGroupsViewController
 + (id)log;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)editingCollectionViewRequiresAuthorization;
 - (BOOL)isAnyListCellCurrentlyEditing;
 - (BOOL)isCollectionViewEditing;
-- (BOOL)isNotificationInternalSave:(id)a3;
-- (BOOL)shouldEnableItem:(id)a3;
+- (BOOL)isNotificationInternalSave:(id)save;
+- (BOOL)shouldEnableItem:(id)item;
 - (BOOL)shouldSetFirstResponder;
 - (BOOL)shouldShowCancelButton;
 - (BOOL)viewCanReload;
-- (CNAccountsAndGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNAccountsAndGroupsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CNAccountsAndGroupsViewControllerDelegate)delegate;
 - (UIBarButtonItem)addGroupBarButtonItem;
 - (UIBarButtonItem)cancelBarButtonItem;
 - (UIKeyCommand)addGroupKeyCommand;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
 - (id)currentlySelectedItem;
 - (id)fakeBackButton;
 - (id)groupsStyle;
@@ -28,68 +28,68 @@
 - (id)multitaskingDragExclusionRects;
 - (void)_updateUserActivity;
 - (void)acceptedIntroductionsDidChange;
-- (void)action:(id)a3 presentViewController:(id)a4;
+- (void)action:(id)action presentViewController:(id)controller;
 - (void)addAcceptedIntroductionsNotifier;
-- (void)addDefaultGroup:(id)a3;
-- (void)authorizedAddContacts:(id)a3 toDestinationItem:(id)a4;
-- (void)authorizedSetCollectionViewEditing:(BOOL)a3;
-- (void)authorizedSetViewEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)cancel:(id)a3;
+- (void)addDefaultGroup:(id)group;
+- (void)authorizedAddContacts:(id)contacts toDestinationItem:(id)item;
+- (void)authorizedSetCollectionViewEditing:(BOOL)editing;
+- (void)authorizedSetViewEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)cancel:(id)cancel;
 - (void)cellTextViewDidChangeHeight;
-- (void)cleanUpItemIfNeeded:(id)a3;
+- (void)cleanUpItemIfNeeded:(id)needed;
 - (void)clearNavigationButtonsIfNeeded;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
 - (void)configureDataSource;
 - (void)configureNavigationBar;
-- (void)contactStoreDidChange:(id)a3;
+- (void)contactStoreDidChange:(id)change;
 - (void)dealloc;
 - (void)deselectAllItems;
-- (void)didTapCollectionView:(id)a3;
+- (void)didTapCollectionView:(id)view;
 - (void)dismissKeyboard;
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4;
-- (void)expandSectionForAccountWithIdentifier:(id)a3;
-- (void)goBack:(id)a3;
-- (void)item:(id)a3 didEndEditingWithName:(id)a4;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)presentController:(id)a3 animated:(BOOL)a4;
-- (void)presentErrorAlertWithTitle:(id)a3 message:(id)a4 animated:(BOOL)a5;
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result;
+- (void)expandSectionForAccountWithIdentifier:(id)identifier;
+- (void)goBack:(id)back;
+- (void)item:(id)item didEndEditingWithName:(id)name;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)presentController:(id)controller animated:(BOOL)animated;
+- (void)presentErrorAlertWithTitle:(id)title message:(id)message animated:(BOOL)animated;
 - (void)reloadAddGroupButton;
-- (void)reloadCollectionViewAddingPlaceholderItem:(id)a3 inSectionWithIdentifier:(id)a4;
-- (void)reloadCollectionViewDeletingItem:(id)a3;
-- (void)reloadCollectionViewForSectionWithIdentifier:(id)a3 settingFilterForEditingItem:(BOOL)a4 allowsReloadWhenEditing:(BOOL)a5;
+- (void)reloadCollectionViewAddingPlaceholderItem:(id)item inSectionWithIdentifier:(id)identifier;
+- (void)reloadCollectionViewDeletingItem:(id)item;
+- (void)reloadCollectionViewForSectionWithIdentifier:(id)identifier settingFilterForEditingItem:(BOOL)item allowsReloadWhenEditing:(BOOL)editing;
 - (void)reloadData;
-- (void)removePlaceholderCellsIfNeededInSection:(id)a3 animated:(BOOL)a4;
-- (void)resignAllFirstRespondersSavingCurrentlyEditing:(BOOL)a3;
+- (void)removePlaceholderCellsIfNeededInSection:(id)section animated:(BOOL)animated;
+- (void)resignAllFirstRespondersSavingCurrentlyEditing:(BOOL)editing;
 - (void)restoreCurrentlyEditingGroupIfNeeded;
 - (void)selectAllContacts;
-- (void)setDataSource:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEditingForGroupItem:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditingForGroupItem:(id)item;
 - (void)setUpCollectionView;
-- (void)showEditAuthorizationPaneWithAuthorizationContext:(id)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showEditAuthorizationPaneWithAuthorizationContext:(id)context animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateNavigationButtons;
 - (void)updateSelectionIfNeeded;
 - (void)updateToolbarVisibility;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CNAccountsAndGroupsViewController
 
 - (void)addAcceptedIntroductionsNotifier
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:19];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:19];
 
   if (v5)
   {
@@ -125,55 +125,55 @@
     v3 = [objc_opt_class() log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [MEMORY[0x1E696AAE8] mainBundle];
-      v5 = [v4 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       v16 = 138412290;
-      v17 = v5;
+      selfCopy2 = bundleIdentifier;
       _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Activity continuity - running in %@", &v16, 0xCu);
     }
 
-    v6 = [(CNAccountsAndGroupsViewController *)self activityManager];
-    v7 = [v6 makeActivityAdvertisingViewingGroups];
+    activityManager = [(CNAccountsAndGroupsViewController *)self activityManager];
+    makeActivityAdvertisingViewingGroups = [activityManager makeActivityAdvertisingViewingGroups];
 
-    v8 = [(CNAccountsAndGroupsViewController *)self userActivity];
-    v9 = v8;
-    if (v7)
+    userActivity = [(CNAccountsAndGroupsViewController *)self userActivity];
+    v9 = userActivity;
+    if (makeActivityAdvertisingViewingGroups)
     {
 
       if (!v9)
       {
-        [(CNAccountsAndGroupsViewController *)self setUserActivity:v7];
-        v10 = [(CNAccountsAndGroupsViewController *)self userActivity];
-        [v10 becomeCurrent];
+        [(CNAccountsAndGroupsViewController *)self setUserActivity:makeActivityAdvertisingViewingGroups];
+        userActivity2 = [(CNAccountsAndGroupsViewController *)self userActivity];
+        [userActivity2 becomeCurrent];
 
         v11 = [objc_opt_class() log];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(CNAccountsAndGroupsViewController *)self userActivity];
+          userActivity3 = [(CNAccountsAndGroupsViewController *)self userActivity];
           v16 = 138412546;
-          v17 = self;
+          selfCopy2 = self;
           v18 = 2112;
-          v19 = v12;
+          v19 = userActivity3;
           _os_log_impl(&dword_199A75000, v11, OS_LOG_TYPE_INFO, "Activity continuity -  %@ created %@", &v16, 0x16u);
         }
       }
 
-      v13 = [(CNAccountsAndGroupsViewController *)self userActivity];
-      [v13 setNeedsSave:1];
+      userActivity4 = [(CNAccountsAndGroupsViewController *)self userActivity];
+      [userActivity4 setNeedsSave:1];
     }
 
     else
     {
-      [v8 resignCurrent];
+      [userActivity resignCurrent];
 
       v14 = [objc_opt_class() log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(CNAccountsAndGroupsViewController *)self userActivity];
+        userActivity5 = [(CNAccountsAndGroupsViewController *)self userActivity];
         v16 = 138412546;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2112;
-        v19 = v15;
+        v19 = userActivity5;
         _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_INFO, "Activity continuity -  %@ removed %@", &v16, 0x16u);
       }
 
@@ -182,91 +182,91 @@
   }
 }
 
-- (void)action:(id)a3 presentViewController:(id)a4
+- (void)action:(id)action presentViewController:(id)controller
 {
-  v19 = a4;
-  v5 = [v19 popoverPresentationController];
-  v6 = [v5 sourceView];
+  controllerCopy = controller;
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  sourceView = [popoverPresentationController sourceView];
 
-  if (!v6)
+  if (!sourceView)
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-    v8 = [v19 popoverPresentationController];
-    [v8 setSourceView:v7];
+    collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+    popoverPresentationController2 = [controllerCopy popoverPresentationController];
+    [popoverPresentationController2 setSourceView:collectionView];
 
-    v9 = [(CNAccountsAndGroupsViewController *)self collectionView];
-    [v9 bounds];
+    collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+    [collectionView2 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v19 popoverPresentationController];
-    [v18 setSourceRect:{v11, v13, v15, v17}];
+    popoverPresentationController3 = [controllerCopy popoverPresentationController];
+    [popoverPresentationController3 setSourceRect:{v11, v13, v15, v17}];
   }
 
-  [(CNAccountsAndGroupsViewController *)self presentController:v19 animated:1];
+  [(CNAccountsAndGroupsViewController *)self presentController:controllerCopy animated:1];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
   v5 = *(MEMORY[0x1E69DDCE0] + 16);
   v6 = *(MEMORY[0x1E69DDCE0] + 24);
-  v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v7 setContentInset:{v3, v4, v5, v6}];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView setContentInset:{v3, v4, v5, v6}];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v33 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v14 = [v33 window];
-  [v14 convertRect:0 fromWindow:{v7, v9, v11, v13}];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  window = [collectionView window];
+  [window convertRect:0 fromWindow:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v33 convertRect:0 fromView:{v16, v18, v20, v22}];
+  [collectionView convertRect:0 fromView:{v16, v18, v20, v22}];
   v24 = v23;
-  v25 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v25 contentInset];
+  collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView2 contentInset];
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v32 setContentInset:{v27, v29, v24, v31}];
+  collectionView3 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView3 setContentInset:{v27, v29, v24, v31}];
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(CNAccountsAndGroupsViewController *)self view];
-  [v2 endEditing:1];
+  view = [(CNAccountsAndGroupsViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)didTapCollectionView:(id)a3
+- (void)didTapCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v4 locationInView:v5];
+  viewCopy = view;
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [viewCopy locationInView:collectionView];
   v7 = v6;
 
-  v8 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v8 bounds];
+  collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView2 bounds];
   v10 = v9;
 
-  v11 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v12 = [v11 collectionViewLayout];
-  v13 = [v12 layoutAttributesForElementsInRect:{0.0, v7, v10, 1.0}];
+  collectionView3 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  collectionViewLayout = [collectionView3 collectionViewLayout];
+  v13 = [collectionViewLayout layoutAttributesForElementsInRect:{0.0, v7, v10, 1.0}];
 
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
@@ -274,126 +274,126 @@
   }
 }
 
-- (void)showEditAuthorizationPaneWithAuthorizationContext:(id)a3 animated:(BOOL)a4
+- (void)showEditAuthorizationPaneWithAuthorizationContext:(id)context animated:(BOOL)animated
 {
-  v4 = a4;
-  [(CNAccountsAndGroupsViewController *)self setCurrentAuthorizationContext:a3];
+  animatedCopy = animated;
+  [(CNAccountsAndGroupsViewController *)self setCurrentAuthorizationContext:context];
   v6 = objc_alloc_init(CNUIEditAuthorizationController);
   [(CNAccountsAndGroupsViewController *)self setEditAuthorizationController:v6];
 
-  v7 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
-  [v7 setDelegate:self];
+  editAuthorizationController = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
+  [editAuthorizationController setDelegate:self];
 
-  v8 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
-  [v8 setSender:self];
+  editAuthorizationController2 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
+  [editAuthorizationController2 setSender:self];
 
-  v9 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
-  [v9 setAnimated:v4];
+  editAuthorizationController3 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
+  [editAuthorizationController3 setAnimated:animatedCopy];
 
-  v10 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
-  [v10 setGuardedViewController:self];
+  editAuthorizationController4 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
+  [editAuthorizationController4 setGuardedViewController:self];
 
-  v11 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
-  [v11 presentAuthorizationUI];
+  editAuthorizationController5 = [(CNAccountsAndGroupsViewController *)self editAuthorizationController];
+  [editAuthorizationController5 presentAuthorizationUI];
 }
 
-- (void)presentErrorAlertWithTitle:(id)a3 message:(id)a4 animated:(BOOL)a5
+- (void)presentErrorAlertWithTitle:(id)title message:(id)message animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  animatedCopy = animated;
+  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:title message:message preferredStyle:1];
   v7 = MEMORY[0x1E69DC648];
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"OKAY" value:&stru_1F0CE7398 table:@"Localized"];
   v10 = [v7 actionWithTitle:v9 style:0 handler:0];
 
   [v11 addAction:v10];
-  [(CNAccountsAndGroupsViewController *)self presentController:v11 animated:v5];
+  [(CNAccountsAndGroupsViewController *)self presentController:v11 animated:animatedCopy];
 }
 
-- (void)presentController:(id)a3 animated:(BOOL)a4
+- (void)presentController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(CNAccountsAndGroupsViewController *)self setPotentiallyPresentedViewController:v6];
-  [(CNAccountsAndGroupsViewController *)self presentViewController:v6 animated:v4 completion:0];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(CNAccountsAndGroupsViewController *)self setPotentiallyPresentedViewController:controllerCopy];
+  [(CNAccountsAndGroupsViewController *)self presentViewController:controllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)editAuthorizationController:(id)a3 authorizationDidFinishWithResult:(int64_t)a4
+- (void)editAuthorizationController:(id)controller authorizationDidFinishWithResult:(int64_t)result
 {
   [(CNAccountsAndGroupsViewController *)self setEditAuthorizationController:0];
-  v6 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+  currentAuthorizationContext = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
 
-  if (!v6)
+  if (!currentAuthorizationContext)
   {
     return;
   }
 
-  if (a4 < 2)
+  if (result < 2)
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-    v8 = [v7 actionCompletionHandler];
+    currentAuthorizationContext2 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+    actionCompletionHandler = [currentAuthorizationContext2 actionCompletionHandler];
 
-    if (!v8)
+    if (!actionCompletionHandler)
     {
       return;
     }
 
-    v18 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-    v9 = [v18 actionCompletionHandler];
-    v9[2](v9, 0);
+    currentAuthorizationContext3 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+    actionCompletionHandler2 = [currentAuthorizationContext3 actionCompletionHandler];
+    actionCompletionHandler2[2](actionCompletionHandler2, 0);
     goto LABEL_20;
   }
 
-  if (a4 != 2)
+  if (result != 2)
   {
     return;
   }
 
-  v10 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-  v11 = [v10 type];
+  currentAuthorizationContext4 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+  type = [currentAuthorizationContext4 type];
 
-  if (v11 <= 1)
+  if (type <= 1)
   {
-    if (v11)
+    if (type)
     {
-      if (v11 != 1)
+      if (type != 1)
       {
         return;
       }
 
-      v18 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-      v9 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-      v12 = [v9 cell];
-      [v18 authorizedEditGroupNameForCell:v12];
+      currentAuthorizationContext3 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+      actionCompletionHandler2 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+      cell = [actionCompletionHandler2 cell];
+      [currentAuthorizationContext3 authorizedEditGroupNameForCell:cell];
       goto LABEL_19;
     }
 
-    v18 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-    v13 = [v18 contactsToAddToDropDestination];
-    v14 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-    v17 = [v14 item];
-    [(CNAccountsAndGroupsViewController *)self authorizedAddContacts:v13 toDestinationItem:v17];
+    currentAuthorizationContext3 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+    contactsToAddToDropDestination = [currentAuthorizationContext3 contactsToAddToDropDestination];
+    currentAuthorizationContext5 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+    item = [currentAuthorizationContext5 item];
+    [(CNAccountsAndGroupsViewController *)self authorizedAddContacts:contactsToAddToDropDestination toDestinationItem:item];
 
 LABEL_25:
     goto LABEL_21;
   }
 
-  switch(v11)
+  switch(type)
   {
     case 2:
-      v18 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-      v13 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-      v14 = [v13 item];
-      v15 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-      v16 = [v15 actionCompletionHandler];
-      [v18 authorizedDeleteGroupForItem:v14 completionHandler:v16];
+      currentAuthorizationContext3 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+      contactsToAddToDropDestination = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+      currentAuthorizationContext5 = [contactsToAddToDropDestination item];
+      currentAuthorizationContext6 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+      actionCompletionHandler3 = [currentAuthorizationContext6 actionCompletionHandler];
+      [currentAuthorizationContext3 authorizedDeleteGroupForItem:currentAuthorizationContext5 completionHandler:actionCompletionHandler3];
 
       goto LABEL_25;
     case 3:
-      v18 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-      v9 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
-      v12 = [v9 containerItem];
-      [v18 authorizedCreateGroupActionForContainerItem:v12];
+      currentAuthorizationContext3 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+      actionCompletionHandler2 = [(CNAccountsAndGroupsViewController *)self currentAuthorizationContext];
+      cell = [actionCompletionHandler2 containerItem];
+      [currentAuthorizationContext3 authorizedCreateGroupActionForContainerItem:cell];
 LABEL_19:
 
 LABEL_20:
@@ -407,24 +407,24 @@ LABEL_21:
   }
 }
 
-- (void)authorizedAddContacts:(id)a3 toDestinationItem:(id)a4
+- (void)authorizedAddContacts:(id)contacts toDestinationItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v9 = [v8 containerIdentifierForItem:v7];
+  contactsCopy = contacts;
+  itemCopy = item;
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  v9 = [dataSource containerIdentifierForItem:itemCopy];
 
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v10 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v11 = [v10 groupIdentifierForGroupItem:v7];
+    dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    v11 = [dataSource2 groupIdentifierForGroupItem:itemCopy];
 
-    v12 = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
-    v13 = [v12 addContacts:v6 toGroupWithIdentifier:v11 inContainerWithIdentifier:v9 moveWasAuthorized:1];
+    groupsAndContainersSaveManager = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
+    v13 = [groupsAndContainersSaveManager addContacts:contactsCopy toGroupWithIdentifier:v11 inContainerWithIdentifier:v9 moveWasAuthorized:1];
 
-    v14 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v15 = [v14 sectionIdentifierForItem:v7];
+    dataSource3 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    v15 = [dataSource3 sectionIdentifierForItem:itemCopy];
 
     if (v15)
     {
@@ -438,36 +438,36 @@ LABEL_21:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = itemCopy;
       _os_log_error_impl(&dword_199A75000, v16, OS_LOG_TYPE_ERROR, "Could not add contacts to item: %@, container identifier is nil", &v17, 0xCu);
     }
   }
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v7 = [v5 destinationIndexPath];
-  v8 = [v6 itemIdentifierForIndexPath:v7];
+  coordinatorCopy = coordinator;
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  v8 = [diffableDataSource itemIdentifierForIndexPath:destinationIndexPath];
 
-  v9 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v10 = [v9 containerIdentifierForItem:v8];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  v10 = [dataSource containerIdentifierForItem:v8];
 
-  v11 = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
-  v12 = [v11 containerForContainerIdentifier:v10];
+  groupsAndContainersSaveManager = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
+  v12 = [groupsAndContainersSaveManager containerForContainerIdentifier:v10];
 
-  v13 = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
-  v14 = [v13 acAccountForContainer:v12];
+  groupsAndContainersSaveManager2 = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
+  v14 = [groupsAndContainersSaveManager2 acAccountForContainer:v12];
 
   if (v12)
   {
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v5 session];
-    v25 = v5;
+    [coordinatorCopy session];
+    v25 = coordinatorCopy;
     v19 = v18 = v10;
     v20 = objc_opt_class();
     v26[0] = MEMORY[0x1E69E9820];
@@ -487,7 +487,7 @@ LABEL_21:
     v24 = [v19 loadObjectsOfClass:v20 completion:v26];
 
     v10 = v18;
-    v5 = v25;
+    coordinatorCopy = v25;
   }
 
   else
@@ -581,12 +581,12 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   objc_opt_class();
-  v7 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v6];
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  v8 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -602,8 +602,8 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
   if (v10 && [v10 acceptsVCardDrop])
   {
-    v11 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v12 = [v11 containerIdentifierForItem:v10];
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    v12 = [dataSource containerIdentifierForItem:v10];
 
     if ((*(*MEMORY[0x1E6996570] + 16))())
     {
@@ -642,11 +642,11 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v14;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v4 = a4;
-  v5 = [objc_opt_class() allowedDropTypes];
-  v6 = [v4 hasItemsConformingToTypeIdentifiers:v5];
+  sessionCopy = session;
+  allowedDropTypes = [objc_opt_class() allowedDropTypes];
+  v6 = [sessionCopy hasItemsConformingToTypeIdentifiers:allowedDropTypes];
 
   return v6;
 }
@@ -655,8 +655,8 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696B098];
-  v3 = [(CNAccountsAndGroupsViewController *)self view];
-  [v3 bounds];
+  view = [(CNAccountsAndGroupsViewController *)self view];
+  [view bounds];
   v11[0] = v4;
   v11[1] = v5;
   v11[2] = v6;
@@ -668,11 +668,11 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v9;
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v14 = [a4 identifier];
-  v6 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v14];
+  identifier = [configuration identifier];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:identifier];
 
   objc_opt_class();
   v8 = v7;
@@ -690,18 +690,18 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
   if (v10)
   {
-    v11 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v12 = [v10 item];
-    v13 = [v11 cellAccessoriesForItem:v12];
+    groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    item = [v10 item];
+    v13 = [groupsStyle cellAccessoriesForItem:item];
     [v10 setAccessories:v13];
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v9 = v8;
@@ -719,26 +719,26 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
   if (v11 && ([v11 window], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v14 = [v11 item];
-    v15 = [v13 cellAccessoriesForItem:v14];
+    groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    item = [v11 item];
+    v15 = [groupsStyle cellAccessoriesForItem:item];
     [v11 setAccessories:v15];
 
     v16 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-    v17 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v18 = [v17 backgroundColor];
+    groupsStyle2 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    backgroundColor = [groupsStyle2 backgroundColor];
 
-    if (v18)
+    if (backgroundColor)
     {
-      v19 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-      v20 = [v19 backgroundColor];
-      [v16 setBackgroundColor:v20];
+      groupsStyle3 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+      backgroundColor2 = [groupsStyle3 backgroundColor];
+      [v16 setBackgroundColor:backgroundColor2];
     }
 
-    v21 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v22 = [v21 isInset];
+    groupsStyle4 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    isInset = [groupsStyle4 isInset];
 
-    if ((v22 & 1) == 0)
+    if ((isInset & 1) == 0)
     {
       v23 = MEMORY[0x1E69DC728];
       [v11 bounds];
@@ -757,11 +757,11 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v25;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v9 = v8;
@@ -779,20 +779,20 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
   if (v11 && ([v11 window], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v14 = [v11 item];
-    v15 = [v13 cellAccessoriesForContextMenuPreviewForItem:v14];
+    groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    item = [v11 item];
+    v15 = [groupsStyle cellAccessoriesForContextMenuPreviewForItem:item];
     [v11 setAccessories:v15];
 
     v16 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-    v17 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v18 = [v17 backgroundColor];
+    groupsStyle2 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    backgroundColor = [groupsStyle2 backgroundColor];
 
-    if (v18)
+    if (backgroundColor)
     {
-      v19 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-      v20 = [v19 backgroundColor];
-      [v16 setBackgroundColor:v20];
+      groupsStyle3 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+      backgroundColor2 = [groupsStyle3 backgroundColor];
+      [v16 setBackgroundColor:backgroundColor2];
     }
 
     v21 = MEMORY[0x1E69DC728];
@@ -811,18 +811,18 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v23;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] == 1)
+  viewCopy = view;
+  pathsCopy = paths;
+  if ([pathsCopy count] == 1)
   {
-    v9 = [v8 firstObject];
+    firstObject = [pathsCopy firstObject];
     if (-[CNAccountsAndGroupsViewController allowsEditing](self, "allowsEditing") && (-[CNAccountsAndGroupsViewController collectionView](self, "collectionView"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEditing], v10, (v11 & 1) == 0))
     {
       objc_opt_class();
-      v13 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-      v14 = [v13 itemIdentifierForIndexPath:v9];
+      diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+      v14 = [diffableDataSource itemIdentifierForIndexPath:firstObject];
       if (objc_opt_isKindOfClass())
       {
         v15 = v14;
@@ -836,7 +836,7 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
       v16 = v15;
 
       objc_opt_class();
-      v17 = [v7 cellForItemAtIndexPath:v9];
+      v17 = [viewCopy cellForItemAtIndexPath:firstObject];
       if (objc_opt_isKindOfClass())
       {
         v18 = v17;
@@ -852,10 +852,10 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
       v12 = 0;
       if (v16 && v19)
       {
-        v20 = [v16 identifier];
-        v21 = [(CNAccountsAndGroupsViewController *)self dataSource];
-        v22 = [v21 currentlyEditingGroupIdentifier];
-        v23 = [v20 isEqualToString:v22];
+        identifier = [v16 identifier];
+        dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+        currentlyEditingGroupIdentifier = [dataSource currentlyEditingGroupIdentifier];
+        v23 = [identifier isEqualToString:currentlyEditingGroupIdentifier];
 
         if ((v23 & 1) != 0 || ![v16 canShowContextMenu])
         {
@@ -864,8 +864,8 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
         else
         {
-          v24 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-          v12 = [v24 contextMenuConfigurationForItem:v16 cell:v19 atIndexPath:v9];
+          actionsProvider = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+          v12 = [actionsProvider contextMenuConfigurationForItem:v16 cell:v19 atIndexPath:firstObject];
         }
       }
     }
@@ -884,12 +884,12 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   objc_opt_class();
-  v6 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -905,10 +905,10 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
 
   if (v9)
   {
-    v10 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v11 = [v10 currentlyEditingGroupIdentifier];
-    v12 = [v9 identifier];
-    v13 = [v11 isEqualToString:v12];
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    currentlyEditingGroupIdentifier = [dataSource currentlyEditingGroupIdentifier];
+    identifier = [v9 identifier];
+    v13 = [currentlyEditingGroupIdentifier isEqualToString:identifier];
 
     v14 = v13 ^ 1;
   }
@@ -921,11 +921,11 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   return v14;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   objc_opt_class();
-  v8 = v5;
+  v8 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v8;
@@ -944,26 +944,26 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v19 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  v19 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v8 = [v7 filter];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  filter = [dataSource filter];
 
-  v9 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  [v9 setFilterForItem:v19];
+  dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  [dataSource2 setFilterForItem:v19];
 
-  v10 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v11 = [v10 filter];
-  if ([v8 isEqual:v11])
+  dataSource3 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  filter2 = [dataSource3 filter];
+  if ([filter isEqual:filter2])
   {
-    v12 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v13 = [v12 serverFilter];
+    dataSource4 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    serverFilter = [dataSource4 serverFilter];
 
-    if (!v13)
+    if (!serverFilter)
     {
       goto LABEL_7;
     }
@@ -973,21 +973,21 @@ void __79__CNAccountsAndGroupsViewController_collectionView_performDropWithCoord
   {
   }
 
-  v14 = [(CNAccountsAndGroupsViewController *)self delegate];
-  [v14 accountsAndGroupsViewControllerDidUpdateSelection:self];
+  delegate = [(CNAccountsAndGroupsViewController *)self delegate];
+  [delegate accountsAndGroupsViewControllerDidUpdateSelection:self];
 
-  v15 = [(CNAccountsAndGroupsViewController *)self delegate];
+  delegate2 = [(CNAccountsAndGroupsViewController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(CNAccountsAndGroupsViewController *)self delegate];
-    [v17 accountsAndGroupsViewControllerDidChangeList:self];
+    delegate3 = [(CNAccountsAndGroupsViewController *)self delegate];
+    [delegate3 accountsAndGroupsViewControllerDidChangeList:self];
   }
 
 LABEL_7:
-  v18 = [(CNAccountsAndGroupsViewController *)self delegate];
-  [v18 accountsAndGroupsViewControllerDidFinish:self];
+  delegate4 = [(CNAccountsAndGroupsViewController *)self delegate];
+  [delegate4 accountsAndGroupsViewControllerDidFinish:self];
 
   [(CNAccountsAndGroupsViewController *)self resignAllFirstRespondersSavingCurrentlyEditing:0];
   if (([(CNAccountsAndGroupsViewController *)self isFirstResponder]& 1) == 0)
@@ -996,17 +996,17 @@ LABEL_7:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 identifier];
-    v9 = [v8 isEqualToString:@"groupPlaceholderIdentifier"] ^ 1;
+    identifier = [v7 identifier];
+    v9 = [identifier isEqualToString:@"groupPlaceholderIdentifier"] ^ 1;
   }
 
   else
@@ -1017,93 +1017,93 @@ LABEL_7:
   return v9;
 }
 
-- (void)item:(id)a3 didEndEditingWithName:(id)a4
+- (void)item:(id)item didEndEditingWithName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v8 = [v7 currentlyEditingGroupIdentifier];
-  v9 = [v13 identifier];
-  v10 = [v8 isEqualToString:v9];
+  itemCopy = item;
+  nameCopy = name;
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  currentlyEditingGroupIdentifier = [dataSource currentlyEditingGroupIdentifier];
+  identifier = [itemCopy identifier];
+  v10 = [currentlyEditingGroupIdentifier isEqualToString:identifier];
 
   if (v10)
   {
-    v11 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    [v11 setCurrentlyEditingGroupIdentifier:0];
+    dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    [dataSource2 setCurrentlyEditingGroupIdentifier:0];
   }
 
-  v12 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-  [v12 updateItem:v13 withNewName:v6];
+  actionsProvider = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+  [actionsProvider updateItem:itemCopy withNewName:nameCopy];
 }
 
 - (void)cellTextViewDidChangeHeight
 {
-  v5 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v3 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v4 = [v3 snapshot];
-  [v5 applySnapshot:v4 animatingDifferences:1];
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  diffableDataSource2 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource2 snapshot];
+  [diffableDataSource applySnapshot:snapshot animatingDifferences:1];
 }
 
 - (BOOL)isCollectionViewEditing
 {
-  v2 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v3 = [v2 isEditing];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  return v3;
+  return isEditing;
 }
 
 - (void)selectAllContacts
 {
-  v3 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v16 = [v3 showAllSectionItem];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  showAllSectionItem = [dataSource showAllSectionItem];
 
-  v4 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v5 = [v4 sections];
-  if ([v5 count] == 1)
+  dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  sections = [dataSource2 sections];
+  if ([sections count] == 1)
   {
-    v6 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v7 = [v6 sections];
-    v8 = [v7 firstObject];
-    v9 = [v8 items];
-    v10 = [v9 count];
+    dataSource3 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    sections2 = [dataSource3 sections];
+    firstObject = [sections2 firstObject];
+    items = [firstObject items];
+    v10 = [items count];
 
     if (!v10)
     {
       goto LABEL_5;
     }
 
-    v11 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v12 = [v11 sections];
-    v4 = [v12 firstObject];
+    dataSource4 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    sections3 = [dataSource4 sections];
+    dataSource2 = [sections3 firstObject];
 
-    v5 = [v4 items];
-    v13 = [v5 firstObject];
+    sections = [dataSource2 items];
+    firstObject2 = [sections firstObject];
 
-    v16 = v13;
+    showAllSectionItem = firstObject2;
   }
 
 LABEL_5:
-  v14 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  [v14 setFilterForItem:v16];
+  dataSource5 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  [dataSource5 setFilterForItem:showAllSectionItem];
 
-  v15 = [(CNAccountsAndGroupsViewController *)self delegate];
-  [v15 accountsAndGroupsViewControllerDidUpdateSelection:self];
+  delegate = [(CNAccountsAndGroupsViewController *)self delegate];
+  [delegate accountsAndGroupsViewControllerDidUpdateSelection:self];
 
   [(CNAccountsAndGroupsViewController *)self updateSelectionIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CNAccountsAndGroupsViewController;
-  v4 = a3;
-  [(CNAccountsAndGroupsViewController *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 _splitViewControllerContext];
+  changeCopy = change;
+  [(CNAccountsAndGroupsViewController *)&v8 traitCollectionDidChange:changeCopy];
+  _splitViewControllerContext = [changeCopy _splitViewControllerContext];
 
-  v6 = [(CNAccountsAndGroupsViewController *)self traitCollection];
-  v7 = [v6 _splitViewControllerContext];
+  traitCollection = [(CNAccountsAndGroupsViewController *)self traitCollection];
+  _splitViewControllerContext2 = [traitCollection _splitViewControllerContext];
 
-  if (v5 != v7)
+  if (_splitViewControllerContext != _splitViewControllerContext2)
   {
     [(CNAccountsAndGroupsViewController *)self reloadData];
     [(CNAccountsAndGroupsViewController *)self updateNavigationButtons];
@@ -1112,24 +1112,24 @@ LABEL_5:
   [(CNAccountsAndGroupsViewController *)self configureNavigationBar];
 }
 
-- (BOOL)shouldEnableItem:(id)a3
+- (BOOL)shouldEnableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsViewController *)self delegate];
-  v6 = [v4 identifier];
-  v7 = [v5 accountsAndGroupsViewController:self shouldEnableItemWithIdentifier:v6];
+  itemCopy = item;
+  delegate = [(CNAccountsAndGroupsViewController *)self delegate];
+  identifier = [itemCopy identifier];
+  v7 = [delegate accountsAndGroupsViewController:self shouldEnableItemWithIdentifier:identifier];
 
   if ([(CNAccountsAndGroupsViewController *)self isEditing])
   {
-    v8 = [v4 isEditable];
+    isEditable = [itemCopy isEditable];
   }
 
   else
   {
-    v8 = 1;
+    isEditable = 1;
   }
 
-  return v7 & v8;
+  return v7 & isEditable;
 }
 
 - (void)configureDataSource
@@ -1167,14 +1167,14 @@ LABEL_5:
   [v11 setHandlers:v12];
   [(CNAccountsAndGroupsViewController *)self setSectionController:v11];
   v13 = objc_alloc(MEMORY[0x1E69DC820]);
-  v14 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
   v21 = v11;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-  v16 = [v13 initWithCollectionView:v14 sectionControllers:v15 rendererIdentifierProvider:&__block_literal_global_173];
+  v16 = [v13 initWithCollectionView:collectionView sectionControllers:v15 rendererIdentifierProvider:&__block_literal_global_173];
 
   [(CNAccountsAndGroupsViewController *)self setDiffableDataSource:v16];
-  v17 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v17 setDelegate:self];
+  collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 }
 
 void __56__CNAccountsAndGroupsViewController_configureDataSource__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1415,8 +1415,8 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
 
 - (id)groupsStyle
 {
-  v2 = [(CNAccountsAndGroupsViewController *)self traitCollection];
-  v3 = [CNAccountsAndGroupsStyle styleForTraitCollection:v2];
+  traitCollection = [(CNAccountsAndGroupsViewController *)self traitCollection];
+  v3 = [CNAccountsAndGroupsStyle styleForTraitCollection:traitCollection];
 
   return v3;
 }
@@ -1425,12 +1425,12 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
 {
   if ([(CNAccountsAndGroupsViewController *)self isViewLoaded])
   {
-    v3 = [(CNAccountsAndGroupsViewController *)self isVisible];
+    isVisible = [(CNAccountsAndGroupsViewController *)self isVisible];
   }
 
   else
   {
-    v3 = 0;
+    isVisible = 0;
   }
 
   if (([(CNAccountsAndGroupsViewController *)self isEditing]& 1) != 0)
@@ -1441,9 +1441,9 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
   else
   {
     v5 = *MEMORY[0x1E6996570];
-    v6 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v7 = [v6 currentlyEditingGroupIdentifier];
-    if ((*(v5 + 16))(v5, v7))
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    currentlyEditingGroupIdentifier = [dataSource currentlyEditingGroupIdentifier];
+    if ((*(v5 + 16))(v5, currentlyEditingGroupIdentifier))
     {
       LOBYTE(v4) = 0;
     }
@@ -1454,14 +1454,14 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
     }
   }
 
-  return v3 & v4;
+  return isVisible & v4;
 }
 
-- (BOOL)isNotificationInternalSave:(id)a3
+- (BOOL)isNotificationInternalSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695CBF0]];
+  saveCopy = save;
+  userInfo = [saveCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E695CBF0]];
 
   if (v6 && ([v6 BOOLValue] & 1) != 0)
   {
@@ -1470,14 +1470,14 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
 
   else
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:*MEMORY[0x1E695CBF8]];
+    userInfo2 = [saveCopy userInfo];
+    v9 = [userInfo2 objectForKey:*MEMORY[0x1E695CBF8]];
 
     v10 = [MEMORY[0x1E695DFD8] setWithArray:v9];
     v11 = MEMORY[0x1E695DFD8];
-    v12 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-    v13 = [v12 issuedSaveRequestIdentifiers];
-    v14 = [v11 setWithArray:v13];
+    actionsProvider = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+    issuedSaveRequestIdentifiers = [actionsProvider issuedSaveRequestIdentifiers];
+    v14 = [v11 setWithArray:issuedSaveRequestIdentifiers];
 
     v15 = *MEMORY[0x1E6996560];
     if ((*(*MEMORY[0x1E6996560] + 16))(*MEMORY[0x1E6996560], v14) & 1) != 0 || ((*(v15 + 16))(v15, v10))
@@ -1497,15 +1497,15 @@ id __43__CNAccountsAndGroupsViewController_layout__block_invoke_3(uint64_t a1, u
 - (void)acceptedIntroductionsDidChange
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 defaultSchedulerProvider];
-  v5 = [v4 mainThreadScheduler];
+  defaultSchedulerProvider = [v3 defaultSchedulerProvider];
+  mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__CNAccountsAndGroupsViewController_acceptedIntroductionsDidChange__block_invoke;
   v6[3] = &unk_1E74E6A88;
   v6[4] = self;
-  [v5 performBlock:v6];
+  [mainThreadScheduler performBlock:v6];
 }
 
 void __67__CNAccountsAndGroupsViewController_acceptedIntroductionsDidChange__block_invoke(uint64_t a1)
@@ -1538,21 +1538,21 @@ void __69__CNAccountsAndGroupsViewController_addAcceptedIntroductionsNotifier__b
   [WeakRetained acceptedIntroductionsDidChange];
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[CNUIContactsEnvironment currentEnvironment];
-  v6 = [v5 defaultSchedulerProvider];
-  v7 = [v6 mainThreadScheduler];
+  defaultSchedulerProvider = [v5 defaultSchedulerProvider];
+  mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__CNAccountsAndGroupsViewController_contactStoreDidChange___block_invoke;
   v9[3] = &unk_1E74E77C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 performBlock:v9];
+  v10 = changeCopy;
+  v8 = changeCopy;
+  [mainThreadScheduler performBlock:v9];
 }
 
 void __59__CNAccountsAndGroupsViewController_contactStoreDidChange___block_invoke(uint64_t a1)
@@ -1582,14 +1582,14 @@ void __59__CNAccountsAndGroupsViewController_contactStoreDidChange___block_invok
 - (void)deselectAllItems
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = indexPathsForSelectedItems;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1606,8 +1606,8 @@ void __59__CNAccountsAndGroupsViewController_contactStoreDidChange___block_invok
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(CNAccountsAndGroupsViewController *)self collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:0];
+        collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:0];
 
         ++v9;
       }
@@ -1622,17 +1622,17 @@ void __59__CNAccountsAndGroupsViewController_contactStoreDidChange___block_invok
 
 - (BOOL)isAnyListCellCurrentlyEditing
 {
-  v2 = self;
-  v3 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  selfCopy = self;
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__CNAccountsAndGroupsViewController_isAnyListCellCurrentlyEditing__block_invoke;
   v6[3] = &unk_1E74E3A80;
-  v6[4] = v2;
-  LOBYTE(v2) = [v4 _cn_any:v6];
+  v6[4] = selfCopy;
+  LOBYTE(selfCopy) = [indexPathsForVisibleItems _cn_any:v6];
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __66__CNAccountsAndGroupsViewController_isAnyListCellCurrentlyEditing__block_invoke(uint64_t a1, void *a2)
@@ -1669,21 +1669,21 @@ uint64_t __66__CNAccountsAndGroupsViewController_isAnyListCellCurrentlyEditing__
   return v9;
 }
 
-- (void)setEditingForGroupItem:(id)a3
+- (void)setEditingForGroupItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
-    v5 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-    v6 = [v5 indexPathForItemIdentifier:v4];
+    itemCopy = item;
+    diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+    v6 = [diffableDataSource indexPathForItemIdentifier:itemCopy];
 
-    v7 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    [v7 setCurrentlyEditingGroupIdentifier:0];
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    [dataSource setCurrentlyEditingGroupIdentifier:0];
 
     if (v6)
     {
-      v8 = [(CNAccountsAndGroupsViewController *)self collectionView];
-      [v8 scrollToItemAtIndexPath:v6 atScrollPosition:2 animated:0];
+      collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v6 atScrollPosition:2 animated:0];
 
       v9 = dispatch_time(0, 500000000);
       v10[0] = MEMORY[0x1E69E9820];
@@ -1725,22 +1725,22 @@ void __60__CNAccountsAndGroupsViewController_setEditingForGroupItem___block_invo
 
 - (void)restoreCurrentlyEditingGroupIfNeeded
 {
-  v4 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v3 = [v4 currentlyEditingGroupItem];
-  [(CNAccountsAndGroupsViewController *)self setEditingForGroupItem:v3];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  currentlyEditingGroupItem = [dataSource currentlyEditingGroupItem];
+  [(CNAccountsAndGroupsViewController *)self setEditingForGroupItem:currentlyEditingGroupItem];
 }
 
 - (id)currentlySelectedItem
 {
-  v3 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v4 = [v3 snapshot];
-  v5 = [v4 itemIdentifiers];
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  itemIdentifiers = [snapshot itemIdentifiers];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_invoke;
   v8[3] = &unk_1E74E71A8;
   v8[4] = self;
-  v6 = [v5 _cn_firstObjectPassingTest:v8];
+  v6 = [itemIdentifiers _cn_firstObjectPassingTest:v8];
 
   return v6;
 }
@@ -1778,25 +1778,25 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
 
 - (void)updateSelectionIfNeeded
 {
-  v3 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-  v4 = [v3 shouldShowCellSelection];
+  groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+  shouldShowCellSelection = [groupsStyle shouldShowCellSelection];
 
-  if (v4)
+  if (shouldShowCellSelection)
   {
-    v5 = [(CNAccountsAndGroupsViewController *)self currentlySelectedItem];
-    if (v5)
+    currentlySelectedItem = [(CNAccountsAndGroupsViewController *)self currentlySelectedItem];
+    if (currentlySelectedItem)
     {
-      v9 = v5;
-      v6 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-      v7 = [v6 indexPathForItemIdentifier:v9];
+      v9 = currentlySelectedItem;
+      diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+      v7 = [diffableDataSource indexPathForItemIdentifier:v9];
 
       if (v7)
       {
-        v8 = [(CNAccountsAndGroupsViewController *)self collectionView];
-        [v8 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+        collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+        [collectionView selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
       }
 
-      v5 = v9;
+      currentlySelectedItem = v9;
     }
   }
 
@@ -1807,18 +1807,18 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
   }
 }
 
-- (void)resignAllFirstRespondersSavingCurrentlyEditing:(BOOL)a3
+- (void)resignAllFirstRespondersSavingCurrentlyEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v9 = [v5 currentlyEditingGroupIdentifier];
+  editingCopy = editing;
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  currentlyEditingGroupIdentifier = [dataSource currentlyEditingGroupIdentifier];
 
-  v6 = [(CNAccountsAndGroupsViewController *)self view];
-  [v6 endEditing:1];
+  view = [(CNAccountsAndGroupsViewController *)self view];
+  [view endEditing:1];
 
-  if (v3)
+  if (editingCopy)
   {
-    v7 = v9;
+    v7 = currentlyEditingGroupIdentifier;
   }
 
   else
@@ -1826,21 +1826,21 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
     v7 = 0;
   }
 
-  v8 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  [v8 setCurrentlyEditingGroupIdentifier:v7];
+  dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  [dataSource2 setCurrentlyEditingGroupIdentifier:v7];
 }
 
-- (void)expandSectionForAccountWithIdentifier:(id)a3
+- (void)expandSectionForAccountWithIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v6 = [v5 sectionForIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  v6 = [dataSource sectionForIdentifier:identifierCopy];
 
   if (v6)
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self sectionController];
-    v8 = [v7 snapshotForSection:v6];
+    sectionController = [(CNAccountsAndGroupsViewController *)self sectionController];
+    v8 = [sectionController snapshotForSection:v6];
 
     if (v8 && ([v8 isExpanded:v6] & 1) == 0)
     {
@@ -1848,33 +1848,33 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
       [v8 expandItems:v9];
 
-      v10 = [(CNAccountsAndGroupsViewController *)self sectionController];
-      [v10 applySnapshot:v8 toSection:v6 animatingDifferences:1 completion:0];
+      sectionController2 = [(CNAccountsAndGroupsViewController *)self sectionController];
+      [sectionController2 applySnapshot:v8 toSection:v6 animatingDifferences:1 completion:0];
     }
   }
 }
 
 - (void)configureNavigationBar
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (v5)
   {
-    v6 = [(CNAccountsAndGroupsViewController *)self navigationController];
-    v7 = [v6 navigationBar];
-    [v7 setPrefersLargeTitles:0];
+    navigationController = [(CNAccountsAndGroupsViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setPrefersLargeTitles:0];
 
-    v8 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v8 setLargeTitleDisplayMode:2];
+    navigationItem = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v13 = [(CNAccountsAndGroupsViewController *)self traitCollection];
-    v9 = [v13 _splitViewControllerContext] != 0;
-    v10 = [(CNAccountsAndGroupsViewController *)self navigationController];
-    v11 = [v10 navigationBar];
-    v12 = [v11 standardAppearance];
-    [v12 _setTitleControlHidden:v9];
+    traitCollection = [(CNAccountsAndGroupsViewController *)self traitCollection];
+    v9 = [traitCollection _splitViewControllerContext] != 0;
+    navigationController2 = [(CNAccountsAndGroupsViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    standardAppearance = [navigationBar2 standardAppearance];
+    [standardAppearance _setTitleControlHidden:v9];
   }
 }
 
@@ -1886,10 +1886,10 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v3 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v4 = [v3 sections];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  sections = [dataSource sections];
 
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v5 = [sections countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1901,7 +1901,7 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
         v9 = *(*(&v40 + 1) + 8 * v8);
@@ -1912,103 +1912,103 @@ uint64_t __58__CNAccountsAndGroupsViewController_currentlySelectedItem__block_in
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
           [v10 appendItems:v11];
 
-          v12 = [v9 items];
-          [v10 appendItems:v12 intoParent:v9];
+          items = [v9 items];
+          [v10 appendItems:items intoParent:v9];
 
           v44 = v9;
-          v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-          [v10 expandItems:v13];
+          items2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
+          [v10 expandItems:items2];
         }
 
         else
         {
-          v13 = [v9 items];
-          [v10 appendItems:v13];
+          items2 = [v9 items];
+          [v10 appendItems:items2];
         }
 
-        v14 = [(CNAccountsAndGroupsViewController *)self sectionController];
-        [v14 applySnapshot:v10 toSection:v9 animatingDifferences:0 completion:0];
+        sectionController = [(CNAccountsAndGroupsViewController *)self sectionController];
+        [sectionController applySnapshot:v10 toSection:v9 animatingDifferences:0 completion:0];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v6 = [sections countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  v16 = [v15 snapshot];
+  diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
-  v17 = [(CNAccountsAndGroupsViewController *)self sectionController];
-  v18 = [v17 associatedSectionIdentifiers];
+  sectionController2 = [(CNAccountsAndGroupsViewController *)self sectionController];
+  associatedSectionIdentifiers = [sectionController2 associatedSectionIdentifiers];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __47__CNAccountsAndGroupsViewController_reloadData__block_invoke;
   v39[3] = &unk_1E74E5A40;
   v39[4] = self;
-  v19 = [v18 _cn_filter:v39];
-  v20 = [v19 allObjects];
+  v19 = [associatedSectionIdentifiers _cn_filter:v39];
+  allObjects = [v19 allObjects];
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    [v16 deleteSectionsWithIdentifiers:v20];
+    [snapshot deleteSectionsWithIdentifiers:allObjects];
   }
 
-  v21 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  v22 = [v21 sections];
-  v23 = [v22 firstObject];
+  dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+  sections2 = [dataSource2 sections];
+  firstObject = [sections2 firstObject];
 
-  if ([v23 isAllContactsGlobalSection])
+  if ([firstObject isAllContactsGlobalSection])
   {
-    v24 = [v16 sectionIdentifiers];
-    if ([v24 count] >= 2)
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    if ([sectionIdentifiers count] >= 2)
     {
-      v25 = [v16 sectionIdentifiers];
-      v26 = [v25 firstObject];
-      if ([v26 isEqual:v23])
+      sectionIdentifiers2 = [snapshot sectionIdentifiers];
+      firstObject2 = [sectionIdentifiers2 firstObject];
+      if ([firstObject2 isEqual:firstObject])
       {
       }
 
       else
       {
-        v27 = [v16 sectionIdentifiers];
-        v28 = [v27 containsObject:v23];
+        sectionIdentifiers3 = [snapshot sectionIdentifiers];
+        v28 = [sectionIdentifiers3 containsObject:firstObject];
 
         if (!v28)
         {
           goto LABEL_21;
         }
 
-        v24 = [v16 sectionIdentifiers];
-        v25 = [v24 firstObject];
-        [v16 moveSectionWithIdentifier:v23 beforeSectionWithIdentifier:v25];
+        sectionIdentifiers = [snapshot sectionIdentifiers];
+        sectionIdentifiers2 = [sectionIdentifiers firstObject];
+        [snapshot moveSectionWithIdentifier:firstObject beforeSectionWithIdentifier:sectionIdentifiers2];
       }
     }
   }
 
 LABEL_21:
-  v29 = [v16 itemIdentifiers];
-  [v16 reloadItemsWithIdentifiers:v29];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  [snapshot reloadItemsWithIdentifiers:itemIdentifiers];
 
-  v30 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-  [v30 applySnapshot:v16 animatingDifferences:0];
+  diffableDataSource2 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+  [diffableDataSource2 applySnapshot:snapshot animatingDifferences:0];
 
-  v31 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-  v32 = [v31 backgroundColor];
+  groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+  backgroundColor = [groupsStyle backgroundColor];
 
-  if (v32)
+  if (backgroundColor)
   {
-    v33 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-    v34 = [v33 backgroundColor];
+    groupsStyle2 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+    backgroundColor2 = [groupsStyle2 backgroundColor];
 
-    v35 = [(CNAccountsAndGroupsViewController *)self view];
-    [v35 setBackgroundColor:v34];
+    view = [(CNAccountsAndGroupsViewController *)self view];
+    [view setBackgroundColor:backgroundColor2];
 
-    v36 = [(CNAccountsAndGroupsViewController *)self collectionView];
-    [v36 setBackgroundColor:v34];
+    collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+    [collectionView setBackgroundColor:backgroundColor2];
   }
 
   v37 = CNContactsUIBundle();
@@ -2031,26 +2031,26 @@ uint64_t __47__CNAccountsAndGroupsViewController_reloadData__block_invoke(uint64
   return v6 ^ 1u;
 }
 
-- (void)reloadCollectionViewForSectionWithIdentifier:(id)a3 settingFilterForEditingItem:(BOOL)a4 allowsReloadWhenEditing:(BOOL)a5
+- (void)reloadCollectionViewForSectionWithIdentifier:(id)identifier settingFilterForEditingItem:(BOOL)item allowsReloadWhenEditing:(BOOL)editing
 {
-  v8 = a3;
-  if (v8)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (![(CNAccountsAndGroupsViewController *)self isEditing]|| a5)
+    if (![(CNAccountsAndGroupsViewController *)self isEditing]|| editing)
     {
       [(CNAccountsAndGroupsViewController *)self resignAllFirstRespondersSavingCurrentlyEditing:1];
       v9 = +[CNUIContactsEnvironment currentEnvironment];
-      v10 = [v9 defaultSchedulerProvider];
-      v11 = [v10 mainThreadScheduler];
+      defaultSchedulerProvider = [v9 defaultSchedulerProvider];
+      mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __134__CNAccountsAndGroupsViewController_reloadCollectionViewForSectionWithIdentifier_settingFilterForEditingItem_allowsReloadWhenEditing___block_invoke;
       v12[3] = &unk_1E74E34A0;
       v12[4] = self;
-      v13 = v8;
-      v14 = a4;
-      [v11 performBlock:v12];
+      v13 = identifierCopy;
+      itemCopy = item;
+      [mainThreadScheduler performBlock:v12];
     }
 
     else
@@ -2117,21 +2117,21 @@ void __134__CNAccountsAndGroupsViewController_reloadCollectionViewForSectionWith
   }
 }
 
-- (void)reloadCollectionViewAddingPlaceholderItem:(id)a3 inSectionWithIdentifier:(id)a4
+- (void)reloadCollectionViewAddingPlaceholderItem:(id)item inSectionWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   [(CNAccountsAndGroupsViewController *)self resignAllFirstRespondersSavingCurrentlyEditing:0];
-  if (v6 && v7)
+  if (itemCopy && identifierCopy)
   {
-    v8 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v9 = [v8 sectionForIdentifier:v7];
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    v9 = [dataSource sectionForIdentifier:identifierCopy];
 
     if (v9)
     {
       v10 = +[CNUIContactsEnvironment currentEnvironment];
-      v11 = [v10 defaultSchedulerProvider];
-      v12 = [v11 mainThreadScheduler];
+      defaultSchedulerProvider = [v10 defaultSchedulerProvider];
+      mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -2139,8 +2139,8 @@ void __134__CNAccountsAndGroupsViewController_reloadCollectionViewForSectionWith
       v13[3] = &unk_1E74E6EE8;
       v13[4] = self;
       v14 = v9;
-      v15 = v6;
-      [v12 performBlock:v13];
+      v15 = itemCopy;
+      [mainThreadScheduler performBlock:v13];
     }
   }
 }
@@ -2178,22 +2178,22 @@ uint64_t __103__CNAccountsAndGroupsViewController_reloadCollectionViewAddingPlac
   return v3;
 }
 
-- (void)removePlaceholderCellsIfNeededInSection:(id)a3 animated:(BOOL)a4
+- (void)removePlaceholderCellsIfNeededInSection:(id)section animated:(BOOL)animated
 {
-  v6 = a3;
+  sectionCopy = section;
   v7 = +[CNUIContactsEnvironment currentEnvironment];
-  v8 = [v7 defaultSchedulerProvider];
-  v9 = [v8 mainThreadScheduler];
+  defaultSchedulerProvider = [v7 defaultSchedulerProvider];
+  mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__CNAccountsAndGroupsViewController_removePlaceholderCellsIfNeededInSection_animated___block_invoke;
   v11[3] = &unk_1E74E34A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
-  [v9 performBlock:v11];
+  v12 = sectionCopy;
+  animatedCopy = animated;
+  v10 = sectionCopy;
+  [mainThreadScheduler performBlock:v11];
 }
 
 void __86__CNAccountsAndGroupsViewController_removePlaceholderCellsIfNeededInSection_animated___block_invoke(uint64_t a1)
@@ -2220,19 +2220,19 @@ uint64_t __86__CNAccountsAndGroupsViewController_removePlaceholderCellsIfNeededI
   return v3;
 }
 
-- (void)cleanUpItemIfNeeded:(id)a3
+- (void)cleanUpItemIfNeeded:(id)needed
 {
-  if (a3)
+  if (needed)
   {
-    v4 = a3;
-    v5 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-    v12 = [v5 indexPathForItemIdentifier:v4];
+    neededCopy = needed;
+    diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+    v12 = [diffableDataSource indexPathForItemIdentifier:neededCopy];
 
     v6 = v12;
     if (v12)
     {
-      v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-      v8 = [v7 cellForItemAtIndexPath:v12];
+      collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+      v8 = [collectionView cellForItemAtIndexPath:v12];
 
       if (v8)
       {
@@ -2261,41 +2261,41 @@ uint64_t __86__CNAccountsAndGroupsViewController_removePlaceholderCellsIfNeededI
   }
 }
 
-- (void)reloadCollectionViewDeletingItem:(id)a3
+- (void)reloadCollectionViewDeletingItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(CNAccountsAndGroupsViewController *)self resignAllFirstRespondersSavingCurrentlyEditing:0];
-  if (v4)
+  if (itemCopy)
   {
-    v5 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    v6 = [v5 isFilterShowingItem:v4];
+    dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+    v6 = [dataSource isFilterShowingItem:itemCopy];
 
-    v7 = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
-    v8 = [v7 snapshot];
-    v9 = [v8 itemIdentifiers];
-    v10 = [v9 containsObject:v4];
+    diffableDataSource = [(CNAccountsAndGroupsViewController *)self diffableDataSource];
+    snapshot = [diffableDataSource snapshot];
+    itemIdentifiers = [snapshot itemIdentifiers];
+    v10 = [itemIdentifiers containsObject:itemCopy];
 
     if (v10)
     {
-      [(CNAccountsAndGroupsViewController *)self cleanUpItemIfNeeded:v4];
+      [(CNAccountsAndGroupsViewController *)self cleanUpItemIfNeeded:itemCopy];
       v11 = +[CNUIContactsEnvironment currentEnvironment];
-      v12 = [v11 defaultSchedulerProvider];
-      v13 = [v12 mainThreadScheduler];
+      defaultSchedulerProvider = [v11 defaultSchedulerProvider];
+      mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __70__CNAccountsAndGroupsViewController_reloadCollectionViewDeletingItem___block_invoke;
       v15[3] = &unk_1E74E34A0;
       v15[4] = self;
-      v16 = v4;
+      v16 = itemCopy;
       v17 = v6;
-      [v13 performBlock:v15];
+      [mainThreadScheduler performBlock:v15];
     }
 
     else
     {
-      v14 = [(CNAccountsAndGroupsViewController *)self dataSource];
-      [v14 reload];
+      dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+      [dataSource2 reload];
 
       [(CNAccountsAndGroupsViewController *)self reloadData];
       if (v6)
@@ -2325,43 +2325,43 @@ void __70__CNAccountsAndGroupsViewController_reloadCollectionViewDeletingItem___
   }
 }
 
-- (void)goBack:(id)a3
+- (void)goBack:(id)back
 {
-  v4 = [(CNAccountsAndGroupsViewController *)self delegate];
+  delegate = [(CNAccountsAndGroupsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAccountsAndGroupsViewController *)self delegate];
-    [v6 accountsAndGroupsViewControllerDidGoBack:self];
+    delegate2 = [(CNAccountsAndGroupsViewController *)self delegate];
+    [delegate2 accountsAndGroupsViewControllerDidGoBack:self];
   }
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(CNAccountsAndGroupsViewController *)self delegate];
+  delegate = [(CNAccountsAndGroupsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAccountsAndGroupsViewController *)self delegate];
-    [v6 accountsAndGroupsViewControllerDidCancel:self];
+    delegate2 = [(CNAccountsAndGroupsViewController *)self delegate];
+    [delegate2 accountsAndGroupsViewControllerDidCancel:self];
   }
 }
 
 - (void)updateToolbarVisibility
 {
-  v5 = [(CNAccountsAndGroupsViewController *)self allowsEditing];
-  if (v5 && (-[CNAccountsAndGroupsViewController groupsStyle](self, "groupsStyle"), v2 = objc_claimAutoreleasedReturnValue(), -[CNAccountsAndGroupsViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), [v2 buttonBehaviorWithTraitCollection:v3] == 1))
+  allowsEditing = [(CNAccountsAndGroupsViewController *)self allowsEditing];
+  if (allowsEditing && (-[CNAccountsAndGroupsViewController groupsStyle](self, "groupsStyle"), v2 = objc_claimAutoreleasedReturnValue(), -[CNAccountsAndGroupsViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), [v2 buttonBehaviorWithTraitCollection:v3] == 1))
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v8 = [v7 featureFlags];
-    if ([v8 isFeatureEnabled:29])
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    if ([featureFlags isFeatureEnabled:29])
     {
       v9 = +[CNUIContactsEnvironment currentEnvironment];
       v6 = [v9 runningInContactsAppOniPad] ^ 1;
@@ -2372,24 +2372,24 @@ void __70__CNAccountsAndGroupsViewController_reloadCollectionViewDeletingItem___
       v6 = 1;
     }
 
-    if (!v5)
+    if (!allowsEditing)
     {
       goto LABEL_9;
     }
   }
 
 LABEL_9:
-  v10 = [(CNAccountsAndGroupsViewController *)self navigationController];
-  [v10 setToolbarHidden:v6];
+  navigationController = [(CNAccountsAndGroupsViewController *)self navigationController];
+  [navigationController setToolbarHidden:v6];
 }
 
 - (void)updateNavigationButtons
 {
   v35[1] = *MEMORY[0x1E69E9840];
   [(CNAccountsAndGroupsViewController *)self updateToolbarVisibility];
-  v3 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-  v4 = [(CNAccountsAndGroupsViewController *)self traitCollection];
-  v5 = [v3 buttonBehaviorWithTraitCollection:v4];
+  groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+  traitCollection = [(CNAccountsAndGroupsViewController *)self traitCollection];
+  v5 = [groupsStyle buttonBehaviorWithTraitCollection:traitCollection];
 
   if (self->_buttonBehavior != v5)
   {
@@ -2411,15 +2411,15 @@ LABEL_9:
             [(CNAccountsAndGroupsViewController *)self editButtonItem];
           }
           v27 = ;
-          v28 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v28 setLeftBarButtonItem:v27];
+          navigationItem = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem setLeftBarButtonItem:v27];
 
-          v29 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v29 setRightBarButtonItem:0];
+          navigationItem2 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem2 setRightBarButtonItem:0];
 
-          v18 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-          v19 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-          v34[1] = v19;
+          addGroupBarButtonItem = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+          flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+          v34[1] = flexibleSpaceItem;
           v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
           [(CNAccountsAndGroupsViewController *)self setToolbarItems:v30];
 
@@ -2438,16 +2438,16 @@ LABEL_9:
             [(CNAccountsAndGroupsViewController *)self editButtonItem];
           }
           v20 = ;
-          v21 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v21 setLeftBarButtonItem:v20];
+          navigationItem3 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem3 setLeftBarButtonItem:v20];
 
-          v22 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-          v23 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v23 setRightBarButtonItem:v22];
+          addGroupBarButtonItem2 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+          navigationItem4 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem4 setRightBarButtonItem:addGroupBarButtonItem2];
 
           [(CNAccountsAndGroupsViewController *)self setToolbarItems:0];
-          v24 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-          v25 = v24;
+          addGroupBarButtonItem3 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+          v25 = addGroupBarButtonItem3;
           v26 = 0;
           goto LABEL_32;
         }
@@ -2457,80 +2457,80 @@ LABEL_9:
       {
         if (buttonBehavior == 1)
         {
-          v7 = [(CNAccountsAndGroupsViewController *)self shouldShowCancelButton];
-          if (v7)
+          shouldShowCancelButton = [(CNAccountsAndGroupsViewController *)self shouldShowCancelButton];
+          if (shouldShowCancelButton)
           {
-            v8 = [(CNAccountsAndGroupsViewController *)self cancelBarButtonItem];
+            cancelBarButtonItem = [(CNAccountsAndGroupsViewController *)self cancelBarButtonItem];
           }
 
           else
           {
-            v8 = 0;
+            cancelBarButtonItem = 0;
           }
 
-          v15 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v15 setLeftBarButtonItem:v8];
+          navigationItem5 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem5 setLeftBarButtonItem:cancelBarButtonItem];
 
-          if (v7)
+          if (shouldShowCancelButton)
           {
           }
 
-          v16 = [(CNAccountsAndGroupsViewController *)self editButtonItem];
-          v17 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-          [v17 setRightBarButtonItem:v16];
+          editButtonItem = [(CNAccountsAndGroupsViewController *)self editButtonItem];
+          navigationItem6 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+          [navigationItem6 setRightBarButtonItem:editButtonItem];
 
-          v18 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-          v35[0] = v18;
-          v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-          [(CNAccountsAndGroupsViewController *)self setToolbarItems:v19];
+          addGroupBarButtonItem = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+          v35[0] = addGroupBarButtonItem;
+          flexibleSpaceItem = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
+          [(CNAccountsAndGroupsViewController *)self setToolbarItems:flexibleSpaceItem];
 LABEL_31:
 
-          v24 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-          v25 = v24;
+          addGroupBarButtonItem3 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+          v25 = addGroupBarButtonItem3;
           v26 = 1;
 LABEL_32:
-          [v24 _setPrefersNoPlatter:v26];
+          [addGroupBarButtonItem3 _setPrefersNoPlatter:v26];
         }
       }
 
       else
       {
-        v13 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-        [v13 setLeftBarButtonItem:0];
+        navigationItem7 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+        [navigationItem7 setLeftBarButtonItem:0];
 
-        v14 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-        [v14 setRightBarButtonItem:0];
+        navigationItem8 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+        [navigationItem8 setRightBarButtonItem:0];
 
         [(CNAccountsAndGroupsViewController *)self setToolbarItems:0];
       }
 
-      v31 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v32 = [(CNAccountsAndGroupsViewController *)self navigationController];
-      v33 = [v32 navigationBar];
-      [v33 setTintColor:v31];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      navigationController = [(CNAccountsAndGroupsViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setTintColor:systemBlueColor];
 
       [(CNAccountsAndGroupsViewController *)self reloadAddGroupButton];
       return;
     }
 
-    v9 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:0];
+    navigationItem9 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem9 setRightBarButtonItem:0];
 
-    v10 = [(CNAccountsAndGroupsViewController *)self shouldShowCancelButton];
-    if (v10)
+    shouldShowCancelButton2 = [(CNAccountsAndGroupsViewController *)self shouldShowCancelButton];
+    if (shouldShowCancelButton2)
     {
-      v11 = [(CNAccountsAndGroupsViewController *)self cancelBarButtonItem];
+      cancelBarButtonItem2 = [(CNAccountsAndGroupsViewController *)self cancelBarButtonItem];
     }
 
     else
     {
-      v11 = 0;
+      cancelBarButtonItem2 = 0;
     }
 
-    v12 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    navigationItem10 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem10 setLeftBarButtonItem:cancelBarButtonItem2];
 
-    if (v10)
+    if (shouldShowCancelButton2)
     {
     }
 
@@ -2541,17 +2541,17 @@ LABEL_32:
 - (void)clearNavigationButtonsIfNeeded
 {
   buttonBehavior = self->_buttonBehavior;
-  v4 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-  v5 = [(CNAccountsAndGroupsViewController *)self traitCollection];
-  v6 = [v4 buttonBehaviorWithTraitCollection:v5];
+  groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+  traitCollection = [(CNAccountsAndGroupsViewController *)self traitCollection];
+  v6 = [groupsStyle buttonBehaviorWithTraitCollection:traitCollection];
 
   if (buttonBehavior != v6)
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:0];
+    navigationItem = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
-    v8 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v8 setLeftBarButtonItem:0];
+    navigationItem2 = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0];
   }
 }
 
@@ -2565,8 +2565,8 @@ LABEL_32:
     v6 = v5;
     if (isLimitedAccessOnboarding)
     {
-      v7 = [(CNAccountsAndGroupsViewController *)self fakeBackButton];
-      v8 = [v6 initWithCustomView:v7];
+      fakeBackButton = [(CNAccountsAndGroupsViewController *)self fakeBackButton];
+      v8 = [v6 initWithCustomView:fakeBackButton];
       v9 = self->_cancelBarButtonItem;
       self->_cancelBarButtonItem = v8;
     }
@@ -2574,7 +2574,7 @@ LABEL_32:
     else
     {
       v10 = [v5 initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-      v7 = self->_cancelBarButtonItem;
+      fakeBackButton = self->_cancelBarButtonItem;
       self->_cancelBarButtonItem = v10;
     }
 
@@ -2586,19 +2586,19 @@ LABEL_32:
 
 - (id)fakeBackButton
 {
-  v3 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v4 = MEMORY[0x1E696AEC0];
   v5 = CNContactsUIBundle();
   v6 = [v5 localizedStringForKey:@"LIMITED_BACK" value:&stru_1F0CE7398 table:@"Localized"];
   v7 = [v4 stringWithFormat:@" %@", v6];
-  [v3 setTitle:v7];
+  [plainButtonConfiguration setTitle:v7];
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithWeight:7];
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.backward" withConfiguration:v8];
-  [v3 setImage:v9];
+  [plainButtonConfiguration setImage:v9];
 
   v10 = objc_alloc_init(MEMORY[0x1E69DC738]);
-  [v10 setConfiguration:v3];
+  [v10 setConfiguration:plainButtonConfiguration];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v10 addTarget:self action:sel_goBack_ forControlEvents:64];
 
@@ -2617,14 +2617,14 @@ LABEL_32:
 
 - (id)menuForContainers
 {
-  v3 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-  v4 = [v3 containerPickerItems];
+  containerDataSource = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+  containerPickerItems = [containerDataSource containerPickerItems];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__CNAccountsAndGroupsViewController_menuForContainers__block_invoke;
   v8[3] = &unk_1E74E2A78;
   v8[4] = self;
-  v5 = [v4 _cn_map:v8];
+  v5 = [containerPickerItems _cn_map:v8];
 
   v6 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:v5];
 
@@ -2660,34 +2660,34 @@ void __54__CNAccountsAndGroupsViewController_menuForContainers__block_invoke_2(u
 {
   if ([(CNAccountsAndGroupsViewController *)self allowsEditing])
   {
-    v3 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-    [v3 discoverContainers];
+    containerDataSource = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+    [containerDataSource discoverContainers];
 
-    v4 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-    v5 = [v4 containerPickerItems];
-    v6 = [v5 count];
+    containerDataSource2 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+    containerPickerItems = [containerDataSource2 containerPickerItems];
+    v6 = [containerPickerItems count];
 
-    v7 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-    v8 = [v7 containerPickerItems];
-    v9 = [v8 count];
+    containerDataSource3 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+    containerPickerItems2 = [containerDataSource3 containerPickerItems];
+    v9 = [containerPickerItems2 count];
 
     if (self->_addGroupBarButtonItem)
     {
-      v10 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-      [v10 setHidden:v6 == 0];
+      addGroupBarButtonItem = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+      [addGroupBarButtonItem setHidden:v6 == 0];
 
       if (v9 < 2)
       {
-        v11 = 0;
+        menuForContainers = 0;
       }
 
       else
       {
-        v11 = [(CNAccountsAndGroupsViewController *)self menuForContainers];
+        menuForContainers = [(CNAccountsAndGroupsViewController *)self menuForContainers];
       }
 
-      v12 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-      [v12 setMenu:v11];
+      addGroupBarButtonItem2 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+      [addGroupBarButtonItem2 setMenu:menuForContainers];
 
       if (v9 < 2)
       {
@@ -2709,19 +2709,19 @@ void __54__CNAccountsAndGroupsViewController_menuForContainers__block_invoke_2(u
       else
       {
 
-        v13 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
-        [v13 setPrimaryAction:0];
+        addGroupBarButtonItem3 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+        [addGroupBarButtonItem3 setPrimaryAction:0];
       }
 
-      v17 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
+      addGroupBarButtonItem4 = [(CNAccountsAndGroupsViewController *)self addGroupBarButtonItem];
       v18 = CNContactsUIBundle();
       v19 = [v18 localizedStringForKey:@"ADD_LIST" value:&stru_1F0CE7398 table:@"Localized"];
-      [v17 setTitle:v19];
+      [addGroupBarButtonItem4 setTitle:v19];
     }
 
-    v20 = [(CNAccountsAndGroupsViewController *)self keyCommands];
-    v21 = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
-    v22 = [v20 containsObject:v21];
+    keyCommands = [(CNAccountsAndGroupsViewController *)self keyCommands];
+    addGroupKeyCommand = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
+    v22 = [keyCommands containsObject:addGroupKeyCommand];
 
     if (v6)
     {
@@ -2730,8 +2730,8 @@ void __54__CNAccountsAndGroupsViewController_menuForContainers__block_invoke_2(u
         return;
       }
 
-      v23 = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
-      [(CNAccountsAndGroupsViewController *)self addKeyCommand:v23];
+      addGroupKeyCommand2 = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
+      [(CNAccountsAndGroupsViewController *)self addKeyCommand:addGroupKeyCommand2];
     }
 
     else
@@ -2741,8 +2741,8 @@ void __54__CNAccountsAndGroupsViewController_menuForContainers__block_invoke_2(u
         return;
       }
 
-      v23 = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
-      [(CNAccountsAndGroupsViewController *)self removeKeyCommand:v23];
+      addGroupKeyCommand2 = [(CNAccountsAndGroupsViewController *)self addGroupKeyCommand];
+      [(CNAccountsAndGroupsViewController *)self removeKeyCommand:addGroupKeyCommand2];
     }
   }
 }
@@ -2772,17 +2772,17 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
   return addGroupBarButtonItem;
 }
 
-- (void)addDefaultGroup:(id)a3
+- (void)addDefaultGroup:(id)group
 {
-  v4 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-  v5 = [v4 containerPickerItems];
-  v8 = [v5 firstObject];
+  containerDataSource = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+  containerPickerItems = [containerDataSource containerPickerItems];
+  firstObject = [containerPickerItems firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v6 = [(CNAccountsAndGroupsViewController *)self actionsProvider];
-    v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-    [v6 createGroupActionForContainerItem:v8 isCollectionViewEditing:{objc_msgSend(v7, "isEditing")}];
+    actionsProvider = [(CNAccountsAndGroupsViewController *)self actionsProvider];
+    collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+    [actionsProvider createGroupActionForContainerItem:firstObject isCollectionViewEditing:{objc_msgSend(collectionView, "isEditing")}];
   }
 }
 
@@ -2805,21 +2805,21 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
   return addGroupKeyCommand;
 }
 
-- (void)authorizedSetCollectionViewEditing:(BOOL)a3
+- (void)authorizedSetCollectionViewEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v5 setEditing:v3];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView setEditing:editingCopy];
 
-  if (!v3)
+  if (!editingCopy)
   {
     [(CNAccountsAndGroupsViewController *)self resignAllFirstRespondersSavingCurrentlyEditing:0];
     if ([(CNAccountsAndGroupsViewController *)self needsReload])
     {
       [(CNAccountsAndGroupsViewController *)self setNeedsReload:0];
-      v6 = [(CNAccountsAndGroupsViewController *)self dataSource];
-      [v6 reload];
+      dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+      [dataSource reload];
 
       [(CNAccountsAndGroupsViewController *)self reloadData];
     }
@@ -2834,10 +2834,10 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v8 = [v7 preparedCells];
+  collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  preparedCells = [collectionView2 preparedCells];
 
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [preparedCells countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2849,7 +2849,7 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(preparedCells);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
@@ -2867,44 +2867,44 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
 
         v16 = v15;
 
-        [v16 setTextViewEnabled:v3];
-        v17 = [v16 item];
-        [v16 setUserInteractionEnabled:{-[CNAccountsAndGroupsViewController shouldEnableItem:](self, "shouldEnableItem:", v17)}];
+        [v16 setTextViewEnabled:editingCopy];
+        item = [v16 item];
+        [v16 setUserInteractionEnabled:{-[CNAccountsAndGroupsViewController shouldEnableItem:](self, "shouldEnableItem:", item)}];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [preparedCells countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)authorizedSetViewEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)authorizedSetViewEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v6.receiver = self;
   v6.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v6 setEditing:a3 animated:a4];
-  [(CNAccountsAndGroupsViewController *)self authorizedSetCollectionViewEditing:v4];
+  [(CNAccountsAndGroupsViewController *)&v6 setEditing:editing animated:animated];
+  [(CNAccountsAndGroupsViewController *)self authorizedSetCollectionViewEditing:editingCopy];
 }
 
 - (BOOL)editingCollectionViewRequiresAuthorization
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-  [v3 discoverContainers];
+  containerDataSource = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+  [containerDataSource discoverContainers];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
-  v5 = [v4 containers];
+  containerDataSource2 = [(CNAccountsAndGroupsViewController *)self containerDataSource];
+  containers = [containerDataSource2 containers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [containers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2915,12 +2915,12 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(containers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
-        LODWORD(v10) = [v11 isAuthorizedToEditContainer:v10];
+        groupsAndContainersSaveManager = [(CNAccountsAndGroupsViewController *)self groupsAndContainersSaveManager];
+        LODWORD(v10) = [groupsAndContainersSaveManager isAuthorizedToEditContainer:v10];
 
         if (!v10)
         {
@@ -2929,7 +2929,7 @@ void __57__CNAccountsAndGroupsViewController_reloadAddGroupButton__block_invoke(
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [containers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -2945,11 +2945,11 @@ LABEL_11:
   return v12;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3 && [(CNAccountsAndGroupsViewController *)self editingCollectionViewRequiresAuthorization])
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (editing && [(CNAccountsAndGroupsViewController *)self editingCollectionViewRequiresAuthorization])
   {
     v7 = objc_alloc_init(CNAccountsAndGroupsAuthorizationContext);
     [(CNAccountsAndGroupsAuthorizationContext *)v7 setType:4];
@@ -2959,7 +2959,7 @@ LABEL_11:
   else
   {
 
-    [(CNAccountsAndGroupsViewController *)self authorizedSetViewEditing:v5 animated:v4];
+    [(CNAccountsAndGroupsViewController *)self authorizedSetViewEditing:editingCopy animated:animatedCopy];
   }
 }
 
@@ -2967,100 +2967,100 @@ LABEL_11:
 {
   v36[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v4 = [(CNAccountsAndGroupsViewController *)self layout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  layout = [(CNAccountsAndGroupsViewController *)self layout];
+  v5 = [v3 initWithFrame:layout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(CNAccountsAndGroupsViewController *)self setCollectionView:v5];
 
-  v6 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v6 setDelegate:self];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v7 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v7 setDropDelegate:self];
+  collectionView2 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView2 setDropDelegate:self];
 
-  v8 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v8 setKeyboardDismissMode:2];
+  collectionView3 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView3 setKeyboardDismissMode:2];
 
-  v9 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v9 setSelectionFollowsFocus:1];
+  collectionView4 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView4 setSelectionFollowsFocus:1];
 
   [(CNAccountsAndGroupsViewController *)self configureDataSource];
-  v10 = [(CNAccountsAndGroupsViewController *)self view];
-  v11 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v10 addSubview:v11];
+  view = [(CNAccountsAndGroupsViewController *)self view];
+  collectionView5 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [view addSubview:collectionView5];
 
-  v12 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView6 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v35 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v33 = [v35 leadingAnchor];
-  v34 = [(CNAccountsAndGroupsViewController *)self view];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  collectionView7 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  leadingAnchor = [collectionView7 leadingAnchor];
+  view2 = [(CNAccountsAndGroupsViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[0] = v31;
-  v30 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v28 = [v30 trailingAnchor];
-  v29 = [(CNAccountsAndGroupsViewController *)self view];
-  v27 = [v29 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  collectionView8 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  trailingAnchor = [collectionView8 trailingAnchor];
+  view3 = [(CNAccountsAndGroupsViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[1] = v26;
-  v25 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v13 = [v25 topAnchor];
-  v14 = [(CNAccountsAndGroupsViewController *)self view];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  collectionView9 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  topAnchor = [collectionView9 topAnchor];
+  view4 = [(CNAccountsAndGroupsViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[2] = v16;
-  v17 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v18 = [v17 bottomAnchor];
-  v19 = [(CNAccountsAndGroupsViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  collectionView10 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  bottomAnchor = [collectionView10 bottomAnchor];
+  view5 = [(CNAccountsAndGroupsViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[3] = v21;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v24];
   v22 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapCollectionView_];
   [v22 setCancelsTouchesInView:0];
-  v23 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  [v23 addGestureRecognizer:v22];
+  collectionView11 = [(CNAccountsAndGroupsViewController *)self collectionView];
+  [collectionView11 addGestureRecognizer:v22];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNAccountsAndGroupsViewController;
   [(CNAccountsAndGroupsViewController *)&v4 dealloc];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v4 viewDidDisappear:a3];
+  [(CNAccountsAndGroupsViewController *)&v4 viewDidDisappear:disappear];
   [(CNAccountsAndGroupsViewController *)self setIsVisible:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v8 viewWillDisappear:a3];
-  v4 = [(CNAccountsAndGroupsViewController *)self collectionView];
-  v5 = [v4 isEditing];
+  [(CNAccountsAndGroupsViewController *)&v8 viewWillDisappear:disappear];
+  collectionView = [(CNAccountsAndGroupsViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  if (v5)
+  if (isEditing)
   {
     [(CNAccountsAndGroupsViewController *)self setEditing:0];
   }
 
-  v6 = [(CNAccountsAndGroupsViewController *)self potentiallyPresentedViewController];
+  potentiallyPresentedViewController = [(CNAccountsAndGroupsViewController *)self potentiallyPresentedViewController];
 
-  if (v6)
+  if (potentiallyPresentedViewController)
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self potentiallyPresentedViewController];
-    [v7 dismissViewControllerAnimated:0 completion:0];
+    potentiallyPresentedViewController2 = [(CNAccountsAndGroupsViewController *)self potentiallyPresentedViewController];
+    [potentiallyPresentedViewController2 dismissViewControllerAnimated:0 completion:0];
 
     [(CNAccountsAndGroupsViewController *)self setPotentiallyPresentedViewController:0];
   }
@@ -3068,10 +3068,10 @@ LABEL_11:
 
 - (BOOL)shouldSetFirstResponder
 {
-  v3 = [(CNAccountsAndGroupsViewController *)self presentedViewController];
+  presentedViewController = [(CNAccountsAndGroupsViewController *)self presentedViewController];
 
-  v4 = [(CNAccountsAndGroupsViewController *)self splitViewController];
-  v5 = [v4 firstResponder];
+  splitViewController = [(CNAccountsAndGroupsViewController *)self splitViewController];
+  firstResponder = [splitViewController firstResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3080,36 +3080,36 @@ LABEL_11:
 
   else
   {
-    v7 = [(CNAccountsAndGroupsViewController *)self splitViewController];
-    v8 = [v7 firstResponder];
+    splitViewController2 = [(CNAccountsAndGroupsViewController *)self splitViewController];
+    firstResponder2 = [splitViewController2 firstResponder];
     objc_opt_class();
     v6 = objc_opt_isKindOfClass() ^ 1;
   }
 
-  return (v3 == 0) & v6;
+  return (presentedViewController == 0) & v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v7 viewDidAppear:a3];
+  [(CNAccountsAndGroupsViewController *)&v7 viewDidAppear:appear];
   if ([(CNAccountsAndGroupsViewController *)self shouldSetFirstResponder])
   {
     [(CNAccountsAndGroupsViewController *)self becomeFirstResponder];
   }
 
   [(CNAccountsAndGroupsViewController *)self setIsVisible:1];
-  v4 = [(CNAccountsAndGroupsViewController *)self transitionCoordinator];
-  v5 = v4;
-  if (v4)
+  transitionCoordinator = [(CNAccountsAndGroupsViewController *)self transitionCoordinator];
+  v5 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__CNAccountsAndGroupsViewController_viewDidAppear___block_invoke;
     v6[3] = &unk_1E74E3CC8;
     v6[4] = self;
-    [v4 animateAlongsideTransition:0 completion:v6];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v6];
   }
 
   else
@@ -3120,15 +3120,15 @@ LABEL_11:
   [(CNAccountsAndGroupsViewController *)self configureNavigationBar];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v6.receiver = self;
   v6.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v6 viewIsAppearing:a3];
-  v4 = [(CNAccountsAndGroupsViewController *)self groupsStyle];
-  v5 = [v4 shouldShowCellSelection];
+  [(CNAccountsAndGroupsViewController *)&v6 viewIsAppearing:appearing];
+  groupsStyle = [(CNAccountsAndGroupsViewController *)self groupsStyle];
+  shouldShowCellSelection = [groupsStyle shouldShowCellSelection];
 
-  if ((v5 & 1) == 0)
+  if ((shouldShowCellSelection & 1) == 0)
   {
     [(CNAccountsAndGroupsViewController *)self deselectAllItems];
   }
@@ -3136,18 +3136,18 @@ LABEL_11:
   [(CNAccountsAndGroupsViewController *)self updateNavigationButtons];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CNAccountsAndGroupsViewController;
-  [(CNAccountsAndGroupsViewController *)&v10 viewWillAppear:a3];
-  v4 = [(CNAccountsAndGroupsViewController *)self dataSource];
-  [v4 setCurrentlyEditingGroupIdentifier:0];
+  [(CNAccountsAndGroupsViewController *)&v10 viewWillAppear:appear];
+  dataSource = [(CNAccountsAndGroupsViewController *)self dataSource];
+  [dataSource setCurrentlyEditingGroupIdentifier:0];
 
   if (self->_needsReload)
   {
-    v5 = [(CNAccountsAndGroupsViewController *)self dataSource];
-    [v5 reload];
+    dataSource2 = [(CNAccountsAndGroupsViewController *)self dataSource];
+    [dataSource2 reload];
 
     [(CNAccountsAndGroupsViewController *)self reloadData];
     [(CNAccountsAndGroupsViewController *)self loadViewIfNeeded];
@@ -3159,16 +3159,16 @@ LABEL_11:
     [(CNAccountsAndGroupsViewController *)self reloadData];
   }
 
-  v6 = [(CNAccountsAndGroupsViewController *)self transitionCoordinator];
-  v7 = v6;
-  if (v6)
+  transitionCoordinator = [(CNAccountsAndGroupsViewController *)self transitionCoordinator];
+  v7 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __52__CNAccountsAndGroupsViewController_viewWillAppear___block_invoke;
     v9[3] = &unk_1E74E3CC8;
     v9[4] = self;
-    [v6 animateAlongsideTransition:v9 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v9 completion:0];
   }
 
   else
@@ -3178,8 +3178,8 @@ LABEL_11:
 
   if (self->_isLimitedAccessOnboarding)
   {
-    v8 = [(CNAccountsAndGroupsViewController *)self navigationItem];
-    [v8 setPrompt:&stru_1F0CE7398];
+    navigationItem = [(CNAccountsAndGroupsViewController *)self navigationItem];
+    [navigationItem setPrompt:&stru_1F0CE7398];
   }
 }
 
@@ -3189,32 +3189,32 @@ LABEL_11:
   v6.super_class = CNAccountsAndGroupsViewController;
   [(CNAccountsAndGroupsViewController *)&v6 viewDidLoad];
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 inProcessActivityManager];
+  inProcessActivityManager = [v3 inProcessActivityManager];
   activityManager = self->_activityManager;
-  self->_activityManager = v4;
+  self->_activityManager = inProcessActivityManager;
 
   [(CNAccountsAndGroupsViewController *)self _updateUserActivity];
   [(CNAccountsAndGroupsViewController *)self setUpCollectionView];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  if (self->_dataSource != sourceCopy)
   {
-    v19 = v5;
-    objc_storeStrong(&self->_dataSource, a3);
+    v19 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     if (v19)
     {
       v6 = [CNUIGroupsAndContainersSaveManager alloc];
-      v7 = [(CNAccountsAndGroupsDataSource *)self->_dataSource store];
-      v8 = [(CNUIGroupsAndContainersSaveManager *)v6 initWithContactStore:v7];
+      store = [(CNAccountsAndGroupsDataSource *)self->_dataSource store];
+      v8 = [(CNUIGroupsAndContainersSaveManager *)v6 initWithContactStore:store];
       groupsAndContainersSaveManager = self->_groupsAndContainersSaveManager;
       self->_groupsAndContainersSaveManager = v8;
 
       v10 = [CNContainerDataSource alloc];
-      v11 = [(CNAccountsAndGroupsDataSource *)self->_dataSource store];
-      v12 = [(CNContainerDataSource *)v10 initWithContactStore:v11];
+      store2 = [(CNAccountsAndGroupsDataSource *)self->_dataSource store];
+      v12 = [(CNContainerDataSource *)v10 initWithContactStore:store2];
       containerDataSource = self->_containerDataSource;
       self->_containerDataSource = v12;
 
@@ -3238,38 +3238,38 @@ LABEL_11:
       self->_actionsProvider = 0;
     }
 
-    v5 = v19;
+    sourceCopy = v19;
   }
 }
 
-- (CNAccountsAndGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNAccountsAndGroupsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v17.receiver = self;
   v17.super_class = CNAccountsAndGroupsViewController;
-  v4 = [(CNAccountsAndGroupsViewController *)&v17 initWithNibName:a3 bundle:a4];
+  v4 = [(CNAccountsAndGroupsViewController *)&v17 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel_contactStoreDidChange_ name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contactStoreDidChange_ name:*MEMORY[0x1E695C3D8] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v4 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
     [(CNAccountsAndGroupsViewController *)v4 addAcceptedIntroductionsNotifier];
     v4->_needsReload = 1;
     v4->_allowsEditing = 1;
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v11 = objc_alloc(MEMORY[0x1E6996760]);
-    v12 = [MEMORY[0x1E6996768] sharedConnection];
-    v13 = [v11 initWithBundleIdentifier:v10 managedProfileConnection:v12];
+    mEMORY[0x1E6996768] = [MEMORY[0x1E6996768] sharedConnection];
+    v13 = [v11 initWithBundleIdentifier:bundleIdentifier managedProfileConnection:mEMORY[0x1E6996768]];
     managedConfiguration = v4->_managedConfiguration;
     v4->_managedConfiguration = v13;
 

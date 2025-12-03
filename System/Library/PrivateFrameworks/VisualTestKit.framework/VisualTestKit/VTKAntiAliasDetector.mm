@@ -1,77 +1,77 @@
 @interface VTKAntiAliasDetector
-- (BOOL)isAntiAliasedAtPointHelper:(VTKPoint)a3 leftContext:(id)a4 rightContext:(id)a5;
-- (VTKAntiAliasDetector)initWithLeftContext:(id)a3 rightContext:(id)a4 strategy:(id)a5;
+- (BOOL)isAntiAliasedAtPointHelper:(VTKPoint)helper leftContext:(id)context rightContext:(id)rightContext;
+- (VTKAntiAliasDetector)initWithLeftContext:(id)context rightContext:(id)rightContext strategy:(id)strategy;
 @end
 
 @implementation VTKAntiAliasDetector
 
-- (VTKAntiAliasDetector)initWithLeftContext:(id)a3 rightContext:(id)a4 strategy:(id)a5
+- (VTKAntiAliasDetector)initWithLeftContext:(id)context rightContext:(id)rightContext strategy:(id)strategy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  rightContextCopy = rightContext;
+  strategyCopy = strategy;
   v15.receiver = self;
   v15.super_class = VTKAntiAliasDetector;
   v12 = [(VTKAntiAliasDetector *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_leftContext, a3);
-    objc_storeStrong(&v13->_rightContext, a4);
-    objc_storeStrong(&v13->_strategy, a5);
+    objc_storeStrong(&v12->_leftContext, context);
+    objc_storeStrong(&v13->_rightContext, rightContext);
+    objc_storeStrong(&v13->_strategy, strategy);
   }
 
   return v13;
 }
 
-- (BOOL)isAntiAliasedAtPointHelper:(VTKPoint)a3 leftContext:(id)a4 rightContext:(id)a5
+- (BOOL)isAntiAliasedAtPointHelper:(VTKPoint)helper leftContext:(id)context rightContext:(id)rightContext
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a4;
-  v10 = a5;
+  var1 = helper.var1;
+  var0 = helper.var0;
+  contextCopy = context;
+  rightContextCopy = rightContext;
   v11 = var0 - 1;
-  v12 = [v9 pixelWidth];
-  if (var0 + 1 < (v12 - 1))
+  pixelWidth = [contextCopy pixelWidth];
+  if (var0 + 1 < (pixelWidth - 1))
   {
     v13 = (var0 + 1);
   }
 
   else
   {
-    v13 = v12 - 1;
+    v13 = pixelWidth - 1;
   }
 
-  v38 = v9;
-  v14 = [v9 pixelHeight];
-  if (var1 + 1 < (v14 - 1))
+  v38 = contextCopy;
+  pixelHeight = [contextCopy pixelHeight];
+  if (var1 + 1 < (pixelHeight - 1))
   {
     v15 = (var1 + 1);
   }
 
   else
   {
-    v15 = v14 - 1;
+    v15 = pixelHeight - 1;
   }
 
   v33 = v13;
   if (v11 > v13)
   {
-    LOBYTE(v16) = v10 == 0;
+    LOBYTE(v16) = rightContextCopy == 0;
     goto LABEL_50;
   }
 
   v40 = 0;
   v41 = 0;
   v34 = 0;
-  v35 = v10;
+  v35 = rightContextCopy;
   v39 = 0;
   v36 = 0;
   v37 = 0;
   *&v31[8] = 0;
   v32 = var1 - 1;
   v17 = 0.0;
-  *v31 = v10 == 0;
+  *v31 = rightContextCopy == 0;
   v18 = 0.0;
   while (1)
   {
@@ -84,7 +84,7 @@
 LABEL_40:
     if (++v11 > v33)
     {
-      v10 = v35;
+      rightContextCopy = v35;
       if (v35)
       {
         LOBYTE(v16) = v31[0];
@@ -221,7 +221,7 @@ LABEL_39:
 
 LABEL_49:
   LOBYTE(v16) = 0;
-  v10 = v35;
+  rightContextCopy = v35;
 LABEL_50:
 
   return v16;

@@ -11,60 +11,60 @@
 
 - (id)_mapkit_transitIncident
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"MKErrorGEOTransitIncidentKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"MKErrorGEOTransitIncidentKey"];
 
   return v2;
 }
 
 - (uint64_t)_mapkit_underlyingGEOError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"MKErrorGEOError"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"MKErrorGEOError"];
 
   if (v2)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)_mapkit_isLocationAuthorizationError
 {
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:MKLocationErrorDomain];
+  domain = [self domain];
+  v3 = [domain isEqualToString:MKLocationErrorDomain];
 
-  return v3 && [a1 code] < 3;
+  return v3 && [self code] < 3;
 }
 
 - (uint64_t)_mapkit_directionsErrorCode
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"MKDirectionsErrorCode"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"MKDirectionsErrorCode"];
 
   if (v2)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)_mapkit_isDirectionsError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"MKDirectionsErrorCode"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"MKDirectionsErrorCode"];
   v3 = v2 != 0;
 
   return v3;
@@ -75,29 +75,29 @@
   v54[2] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 domain];
+  domain = [self domain];
   v9 = GEOErrorDomain();
-  v10 = [v8 isEqualToString:v9];
+  v10 = [domain isEqualToString:v9];
 
   if ((v10 & 1) == 0)
   {
-    v45 = a1;
+    selfCopy = self;
     goto LABEL_39;
   }
 
-  v11 = [a1 code];
-  v12 = [v6 firstDirectionsErrorCode];
-  if (!v6 || (v13 = v12, v12 == 1))
+  code = [self code];
+  firstDirectionsErrorCode = [v6 firstDirectionsErrorCode];
+  if (!v6 || (v13 = firstDirectionsErrorCode, firstDirectionsErrorCode == 1))
   {
-    if (v11 <= -29)
+    if (code <= -29)
     {
-      if (v11 == -402)
+      if (code == -402)
       {
         v13 = 5;
         goto LABEL_4;
       }
 
-      if (v11 == -401)
+      if (code == -401)
       {
         v13 = 4;
         goto LABEL_4;
@@ -106,7 +106,7 @@
 
     else
     {
-      switch(v11)
+      switch(code)
       {
         case -28:
           v13 = 17;
@@ -124,22 +124,22 @@
   }
 
 LABEL_4:
-  v14 = [v6 title];
-  if (!v14 || (v15 = v14, v16 = MEMORY[0x1E696AEC0], [v6 title], v17 = objc_claimAutoreleasedReturnValue(), memset(v52, 0, sizeof(v52)), LOBYTE(v52[0]) = 1, *(v52 + 15) = 0, objc_msgSend(v16, "_navigation_stringForServerFormattedString:options:wrappedOverrideVariables:", v17, v52, v7), v18 = objc_claimAutoreleasedReturnValue(), v17, v15, !v18))
+  title = [v6 title];
+  if (!title || (v15 = title, v16 = MEMORY[0x1E696AEC0], [v6 title], v17 = objc_claimAutoreleasedReturnValue(), memset(v52, 0, sizeof(v52)), LOBYTE(v52[0]) = 1, *(v52 + 15) = 0, objc_msgSend(v16, "_navigation_stringForServerFormattedString:options:wrappedOverrideVariables:", v17, v52, v7), localizedTitle = objc_claimAutoreleasedReturnValue(), v17, v15, !localizedTitle))
   {
-    v18 = [v6 localizedTitle];
+    localizedTitle = [v6 localizedTitle];
   }
 
-  v19 = [v6 content];
-  if (!v19 || (v20 = v19, v21 = MEMORY[0x1E696AEC0], [v6 content], v22 = objc_claimAutoreleasedReturnValue(), memset(v52, 0, sizeof(v52)), LOBYTE(v52[0]) = 1, *(v52 + 15) = 0, objc_msgSend(v21, "_navigation_stringForServerFormattedString:options:wrappedOverrideVariables:", v22, v52, v7), v23 = objc_claimAutoreleasedReturnValue(), v22, v20, !v23))
+  content = [v6 content];
+  if (!content || (v20 = content, v21 = MEMORY[0x1E696AEC0], [v6 content], v22 = objc_claimAutoreleasedReturnValue(), memset(v52, 0, sizeof(v52)), LOBYTE(v52[0]) = 1, *(v52 + 15) = 0, objc_msgSend(v21, "_navigation_stringForServerFormattedString:options:wrappedOverrideVariables:", v22, v52, v7), localizedDescription = objc_claimAutoreleasedReturnValue(), v22, v20, !localizedDescription))
   {
-    v23 = [v6 localizedDescription];
+    localizedDescription = [v6 localizedDescription];
   }
 
   v51 = v7;
-  if ([(__CFString *)v18 length]|| [(__CFString *)v23 length])
+  if ([(__CFString *)localizedTitle length]|| [(__CFString *)localizedDescription length])
   {
-    v24 = v18;
+    v24 = localizedTitle;
   }
 
   else
@@ -224,7 +224,7 @@ LABEL_67:
 LABEL_68:
         v47 = v24;
         _MKLocalizedStringFromThisBundle(v48);
-        v23 = v24 = v23;
+        localizedDescription = v24 = localizedDescription;
 LABEL_69:
 
         v24 = v47;
@@ -235,12 +235,12 @@ LABEL_69:
   }
 
   v25 = objc_opt_new();
-  v26 = [a1 userInfo];
+  userInfo = [self userInfo];
 
-  if (v26)
+  if (userInfo)
   {
-    v27 = [a1 userInfo];
-    [v25 setObject:v27 forKeyedSubscript:@"MKErrorGEOErrorUserInfo"];
+    userInfo2 = [self userInfo];
+    [v25 setObject:userInfo2 forKeyedSubscript:@"MKErrorGEOErrorUserInfo"];
   }
 
   v28 = [(__CFString *)v24 length];
@@ -250,19 +250,19 @@ LABEL_69:
     [v25 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696A578]];
   }
 
-  v30 = [(__CFString *)v23 length];
+  v30 = [(__CFString *)localizedDescription length];
   v31 = MEMORY[0x1E696A588];
   if (v30)
   {
-    [v25 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696A588]];
+    [v25 setObject:localizedDescription forKeyedSubscript:*MEMORY[0x1E696A588]];
   }
 
-  v32 = [v6 incidentMessage];
+  incidentMessage = [v6 incidentMessage];
 
-  if (v32)
+  if (incidentMessage)
   {
-    v33 = [v6 incidentMessage];
-    [v25 setObject:v33 forKeyedSubscript:@"MKErrorGEOTransitIncidentKey"];
+    incidentMessage2 = [v6 incidentMessage];
+    [v25 setObject:incidentMessage2 forKeyedSubscript:@"MKErrorGEOTransitIncidentKey"];
   }
 
   if (v6)
@@ -274,7 +274,7 @@ LABEL_69:
   v34 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
   v53[1] = @"MKErrorGEOError";
   v54[0] = v34;
-  v35 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+  v35 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   v54[1] = v35;
   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
   [v25 addEntriesFromDictionary:v36];
@@ -284,42 +284,42 @@ LABEL_69:
     [v25 setObject:v24 forKeyedSubscript:*v29];
   }
 
-  if ([(__CFString *)v23 length])
+  if ([(__CFString *)localizedDescription length])
   {
-    [v25 setObject:v23 forKeyedSubscript:*v31];
+    [v25 setObject:localizedDescription forKeyedSubscript:*v31];
   }
 
-  v37 = [v6 internalServerErrors];
+  internalServerErrors = [v6 internalServerErrors];
 
-  if (v37)
+  if (internalServerErrors)
   {
-    v38 = [v6 internalServerErrors];
-    v39 = [v38 componentsJoinedByString:@" | "];
+    internalServerErrors2 = [v6 internalServerErrors];
+    v39 = [internalServerErrors2 componentsJoinedByString:@" | "];
 
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n(internal error: %@)", v23, v39];
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n(internal error: %@)", localizedDescription, v39];
     [v25 setObject:v40 forKeyedSubscript:*MEMORY[0x1E696A278]];
   }
 
-  v41 = [a1 _mapkit_error];
-  v42 = [v41 domain];
-  v43 = [v42 isEqualToString:MKErrorDomain];
+  _mapkit_error = [self _mapkit_error];
+  domain2 = [_mapkit_error domain];
+  v43 = [domain2 isEqualToString:MKErrorDomain];
 
   if (v43)
   {
-    v44 = [v41 code];
+    code2 = [_mapkit_error code];
   }
 
   else
   {
-    v44 = 5;
+    code2 = 5;
   }
 
-  v45 = [MEMORY[0x1E696ABC0] errorWithDomain:MKErrorDomain code:v44 userInfo:v25];
+  selfCopy = [MEMORY[0x1E696ABC0] errorWithDomain:MKErrorDomain code:code2 userInfo:v25];
 
   v7 = v51;
 LABEL_39:
 
-  return v45;
+  return selfCopy;
 }
 
 @end

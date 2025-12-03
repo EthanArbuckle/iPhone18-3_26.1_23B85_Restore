@@ -1,31 +1,31 @@
 @interface PKPaymentPassDetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_infoCellWithDescription:(id)a3 forTableView:(id)a4;
-- (id)_linkCellWithText:(id)a3 forTableView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (unint64_t)_cardInfoSectionGenerateCellWithOutput:(id *)a3 forRowIndex:(int64_t)a4 tableView:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_infoCellWithDescription:(id)description forTableView:(id)view;
+- (id)_linkCellWithText:(id)text forTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (unint64_t)_cardInfoSectionGenerateCellWithOutput:(id *)output forRowIndex:(int64_t)index tableView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axLabelIssuerLogo;
-- (void)_axLoadAccessibilityInformationForCell:(id)a3 atIndexPath:(id)a4;
-- (void)_axSetSanitizedLabelForCell:(id)a3;
+- (void)_axLoadAccessibilityInformationForCell:(id)cell atIndexPath:(id)path;
+- (void)_axSetSanitizedLabelForCell:(id)cell;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PKPaymentPassDetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentPassDetailViewController" isKindOfClass:@"PKDynamicTableViewController"];
-  [v3 validateClass:@"PKPassField" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaymentPassDetailViewController" hasInstanceVariable:@"_logoView" withType:"UIImageView"];
-  [v3 validateClass:@"PKDynamicTableViewController" hasInstanceMethod:@"indexOfSectionIdentifier:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_cardInfoSectionGenerateCellWithOutput:forRowIndex:tableView:" withFullSignature:{"Q", "^@", "q", "@", 0}];
-  [v3 validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_linkCellWithText:forTableView:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_infoCellWithDescription:forTableView:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKSectionTableViewController" hasInstanceMethod:@"shouldMapSection:" withFullSignature:{"B", "Q", 0}];
-  [v3 validateClass:@"PKPass" hasInstanceMethod:@"fieldForKey:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" isKindOfClass:@"PKDynamicTableViewController"];
+  [validationsCopy validateClass:@"PKPassField" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" hasInstanceVariable:@"_logoView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PKDynamicTableViewController" hasInstanceMethod:@"indexOfSectionIdentifier:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_cardInfoSectionGenerateCellWithOutput:forRowIndex:tableView:" withFullSignature:{"Q", "^@", "q", "@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_linkCellWithText:forTableView:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"_infoCellWithDescription:forTableView:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassDetailViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKSectionTableViewController" hasInstanceMethod:@"shouldMapSection:" withFullSignature:{"B", "Q", 0}];
+  [validationsCopy validateClass:@"PKPass" hasInstanceMethod:@"fieldForKey:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,21 +36,21 @@
   [(PKPaymentPassDetailViewControllerAccessibility *)self _axLabelIssuerLogo];
 }
 
-- (void)_axLoadAccessibilityInformationForCell:(id)a3 atIndexPath:(id)a4
+- (void)_axLoadAccessibilityInformationForCell:(id)cell atIndexPath:(id)path
 {
-  v5 = a3;
+  cellCopy = cell;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v10 = a4;
+  pathCopy = path;
   AXPerformSafeBlock();
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);
-  v9 = v5;
-  v7 = v5;
-  v8 = v10;
+  v9 = cellCopy;
+  v7 = cellCopy;
+  v8 = pathCopy;
   AXPerformSafeBlock();
 }
 
@@ -149,52 +149,52 @@ uint64_t __101__PKPaymentPassDetailViewControllerAccessibility__axLoadAccessibil
   [(PKPaymentPassDetailViewControllerAccessibility *)self _axLabelIssuerLogo];
 }
 
-- (id)_linkCellWithText:(id)a3 forTableView:(id)a4
+- (id)_linkCellWithText:(id)text forTableView:(id)view
 {
   v6.receiver = self;
   v6.super_class = PKPaymentPassDetailViewControllerAccessibility;
-  v4 = [(PKPaymentPassDetailViewControllerAccessibility *)&v6 _linkCellWithText:a3 forTableView:a4];
+  v4 = [(PKPaymentPassDetailViewControllerAccessibility *)&v6 _linkCellWithText:text forTableView:view];
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
 
   return v4;
 }
 
-- (unint64_t)_cardInfoSectionGenerateCellWithOutput:(id *)a3 forRowIndex:(int64_t)a4 tableView:(id)a5
+- (unint64_t)_cardInfoSectionGenerateCellWithOutput:(id *)output forRowIndex:(int64_t)index tableView:(id)view
 {
   v10.receiver = self;
   v10.super_class = PKPaymentPassDetailViewControllerAccessibility;
-  v8 = [(PKPaymentPassDetailViewControllerAccessibility *)&v10 _cardInfoSectionGenerateCellWithOutput:a3 forRowIndex:a4 tableView:a5];
-  if (a3 && !a4)
+  v8 = [(PKPaymentPassDetailViewControllerAccessibility *)&v10 _cardInfoSectionGenerateCellWithOutput:output forRowIndex:index tableView:view];
+  if (output && !index)
   {
-    [(PKPaymentPassDetailViewControllerAccessibility *)self _axSetSanitizedLabelForCell:*a3];
+    [(PKPaymentPassDetailViewControllerAccessibility *)self _axSetSanitizedLabelForCell:*output];
   }
 
   return v8;
 }
 
-- (id)_infoCellWithDescription:(id)a3 forTableView:(id)a4
+- (id)_infoCellWithDescription:(id)description forTableView:(id)view
 {
   v7.receiver = self;
   v7.super_class = PKPaymentPassDetailViewControllerAccessibility;
-  v4 = [(PKPaymentPassDetailViewControllerAccessibility *)&v7 _infoCellWithDescription:a3 forTableView:a4];
-  v5 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:v5 & ~*MEMORY[0x29EDC7F70]];
+  v4 = [(PKPaymentPassDetailViewControllerAccessibility *)&v7 _infoCellWithDescription:description forTableView:view];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x29EDC7F70]];
 
   return v4;
 }
 
-- (void)_axSetSanitizedLabelForCell:(id)a3
+- (void)_axSetSanitizedLabelForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   NSClassFromString(&cfstr_Pkstackedlabel.isa);
   if (objc_opt_isKindOfClass())
   {
-    [v3 safeValueForKey:@"_detailLabel"];
+    [cellCopy safeValueForKey:@"_detailLabel"];
   }
 
   else
   {
-    [v3 detailTextLabel];
+    [cellCopy detailTextLabel];
   }
   v4 = ;
 
@@ -205,13 +205,13 @@ uint64_t __101__PKPaymentPassDetailViewControllerAccessibility__axLoadAccessibil
   if (v7)
   {
     v8 = [v4 safeStringForKey:@"text"];
-    v9 = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
-    v10 = [v9 invertedSet];
-    v11 = [v8 componentsSeparatedByCharactersInSet:v10];
+    decimalDigitCharacterSet = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
+    v11 = [v8 componentsSeparatedByCharactersInSet:invertedSet];
     v12 = [v11 componentsJoinedByString:&stru_2A22657E8];
 
-    v13 = [MEMORY[0x29EDB9F50] controlCharacterSet];
-    v14 = [v12 stringByTrimmingCharactersInSet:v13];
+    controlCharacterSet = [MEMORY[0x29EDB9F50] controlCharacterSet];
+    v14 = [v12 stringByTrimmingCharactersInSet:controlCharacterSet];
 
     v15 = MEMORY[0x29EDBD7E8];
     v16 = MEMORY[0x29EDBA0F8];
@@ -230,13 +230,13 @@ uint64_t __101__PKPaymentPassDetailViewControllerAccessibility__axLoadAccessibil
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = PKPaymentPassDetailViewControllerAccessibility;
-  v6 = a4;
-  v7 = [(PKPaymentPassDetailViewControllerAccessibility *)&v9 tableView:a3 cellForRowAtIndexPath:v6];
-  [(PKPaymentPassDetailViewControllerAccessibility *)self _axLoadAccessibilityInformationForCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(PKPaymentPassDetailViewControllerAccessibility *)&v9 tableView:view cellForRowAtIndexPath:pathCopy];
+  [(PKPaymentPassDetailViewControllerAccessibility *)self _axLoadAccessibilityInformationForCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }

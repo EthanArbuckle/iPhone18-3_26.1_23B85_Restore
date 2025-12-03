@@ -1,7 +1,7 @@
 @interface NEIKEv2KeyExchangeHandlerMODP
-- (BOOL)processPeerPayload:(id)a3;
+- (BOOL)processPeerPayload:(id)payload;
 - (void)dealloc;
-- (void)initWithMODPMethod:(void *)a1;
+- (void)initWithMODPMethod:(void *)method;
 @end
 
 @implementation NEIKEv2KeyExchangeHandlerMODP
@@ -18,10 +18,10 @@
   [(NEIKEv2KeyExchangeHandlerMODP *)&v3 dealloc];
 }
 
-- (BOOL)processPeerPayload:(id)a3
+- (BOOL)processPeerPayload:(id)payload
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -40,7 +40,7 @@
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "Compute KE %zu result", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!payloadCopy)
   {
     v20 = ne_log_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -53,7 +53,7 @@
     goto LABEL_32;
   }
 
-  v6 = [v4 length];
+  v6 = [payloadCopy length];
   v7 = v6;
   if (!self)
   {
@@ -74,13 +74,13 @@ LABEL_30:
       if (self)
       {
         v24 = self->super._method;
-        v25 = [v4 length];
+        v25 = [payloadCopy length];
         primeLength = self->_primeLength;
       }
 
       else
       {
-        v25 = [v4 length];
+        v25 = [payloadCopy length];
         v24 = 0;
         primeLength = 0;
       }
@@ -108,8 +108,8 @@ LABEL_5:
     context = self->_context;
   }
 
-  [v4 bytes];
-  [v4 length];
+  [payloadCopy bytes];
+  [payloadCopy length];
   v10 = SecDHComputeKey();
   if (v10)
   {
@@ -184,16 +184,16 @@ LABEL_12:
   return v14;
 }
 
-- (void)initWithMODPMethod:(void *)a1
+- (void)initWithMODPMethod:(void *)method
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!method)
   {
     v13 = 0;
     goto LABEL_16;
   }
 
-  v3 = a1;
+  methodCopy = method;
   v4 = a2 - 1;
   if ((a2 - 1) >= 0x12 || ((0x3E013u >> v4) & 1) == 0)
   {
@@ -274,11 +274,11 @@ LABEL_18:
     _os_log_debug_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_DEBUG, "Generated KE %zu key", buf, 0xCu);
   }
 
-  v12 = [(NEIKEv2KeyExchangeHandler *)v3 initWithMethod:a2 keyExchangeData:v9];
+  v12 = [(NEIKEv2KeyExchangeHandler *)methodCopy initWithMethod:a2 keyExchangeData:v9];
   if (!v12)
   {
     SecDHDestroy();
-    v3 = 0;
+    methodCopy = 0;
 LABEL_25:
     v13 = 0;
     goto LABEL_12;
@@ -286,8 +286,8 @@ LABEL_25:
 
   v12[4] = v5;
   v12[5] = 0;
-  v3 = v12;
-  v13 = v3;
+  methodCopy = v12;
+  v13 = methodCopy;
 LABEL_12:
 
 LABEL_15:

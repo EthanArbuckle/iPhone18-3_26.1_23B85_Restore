@@ -1,16 +1,16 @@
 @interface LNResponseContext
-- (LNResponseContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LNResponseContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNResponseContext
 
-- (LNResponseContext)initWithCoder:(id)a3
+- (LNResponseContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [(LNResponseContext *)self init];
   v7 = v6;
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNResponseContext *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNResponseContext *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 - (id)description
@@ -35,17 +35,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNResponseContext *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@>", v5, self, v6];
+  identifier = [(LNResponseContext *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, identifier: %@>", v5, self, identifier];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(LNResponseContext);
-  v5 = [(LNResponseContext *)self identifier];
-  [(LNResponseContext *)v4 setIdentifier:v5];
+  identifier = [(LNResponseContext *)self identifier];
+  [(LNResponseContext *)v4 setIdentifier:identifier];
 
   return v4;
 }

@@ -1,30 +1,30 @@
 @interface CCDDeviceUploadOperation
-- (void)completeOperationWithResponse:(id)a3 error:(id)a4;
+- (void)completeOperationWithResponse:(id)response error:(id)error;
 @end
 
 @implementation CCDDeviceUploadOperation
 
-- (void)completeOperationWithResponse:(id)a3 error:(id)a4
+- (void)completeOperationWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDDeviceUploadOperation *)self deviceUploadCompletionBlock];
+  responseCopy = response;
+  errorCopy = error;
+  deviceUploadCompletionBlock = [(CCDDeviceUploadOperation *)self deviceUploadCompletionBlock];
 
-  if (v8)
+  if (deviceUploadCompletionBlock)
   {
-    if (v7)
+    if (errorCopy)
     {
       v9 = *(DEPLogObjects() + 8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v7;
+        v13 = errorCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Error: %@", &v12, 0xCu);
       }
     }
 
-    v10 = [(CCDDeviceUploadOperation *)self deviceUploadCompletionBlock];
-    (v10)[2](v10, v6, v7);
+    deviceUploadCompletionBlock2 = [(CCDDeviceUploadOperation *)self deviceUploadCompletionBlock];
+    (deviceUploadCompletionBlock2)[2](deviceUploadCompletionBlock2, responseCopy, errorCopy);
   }
 
   else

@@ -1,7 +1,7 @@
 @interface RouteStepWaypointItem
 - (NSAttributedString)primaryText;
 - (NSAttributedString)secondaryText;
-- (RouteStepWaypointItem)initWithWaypoint:(id)a3 waypointType:(unint64_t)a4 arrivalStep:(id)a5 vehicle:(id)a6 route:(id)a7 cellClass:(Class)a8 state:(unint64_t)a9 metrics:(id)a10 context:(int64_t)a11 scale:(double)a12;
+- (RouteStepWaypointItem)initWithWaypoint:(id)waypoint waypointType:(unint64_t)type arrivalStep:(id)step vehicle:(id)vehicle route:(id)route cellClass:(Class)class state:(unint64_t)state metrics:(id)self0 context:(int64_t)self1 scale:(double)self2;
 - (UIImage)pinImage;
 - (id)_stepWithEVInfo;
 - (id)description;
@@ -13,39 +13,39 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(RouteStepWaypointItem *)self primaryText];
-  v5 = [v4 string];
-  v6 = [(RouteStepWaypointItem *)self secondaryText];
-  v7 = [v6 string];
-  v8 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@>", v3, self, v5, v7];;
+  primaryText = [(RouteStepWaypointItem *)self primaryText];
+  string = [primaryText string];
+  secondaryText = [(RouteStepWaypointItem *)self secondaryText];
+  string2 = [secondaryText string];
+  v8 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@>", v3, self, string, string2];;
 
   return v8;
 }
 
 - (id)_stepWithEVInfo
 {
-  v4 = [(RouteStepWaypointItem *)self waypointType];
-  if (v4 == 2)
+  waypointType = [(RouteStepWaypointItem *)self waypointType];
+  if (waypointType == 2)
   {
-    v5 = [(RouteStepItem *)self route];
-    v17 = [v5 lastEVStep];
+    route = [(RouteStepItem *)self route];
+    lastEVStep = [route lastEVStep];
 LABEL_18:
-    v2 = v17;
+    firstObject = lastEVStep;
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  if (v4 != 1)
+  if (waypointType != 1)
   {
-    if (v4)
+    if (waypointType)
     {
       goto LABEL_20;
     }
 
-    v5 = [(RouteStepItem *)self route];
-    v6 = [v5 steps];
-    v2 = [v6 firstObject];
+    route = [(RouteStepItem *)self route];
+    steps = [route steps];
+    firstObject = [steps firstObject];
 
     goto LABEL_19;
   }
@@ -54,10 +54,10 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(RouteStepItem *)self route];
-  v8 = [v7 legs];
+  route2 = [(RouteStepItem *)self route];
+  legs = [route2 legs];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [legs countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -68,22 +68,22 @@ LABEL_7:
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(legs);
       }
 
       v13 = *(*(&v20 + 1) + 8 * v12);
-      v14 = [v13 endStepIndex];
-      v15 = [(RouteStepWaypointItem *)self arrivalStep];
-      v16 = [v15 stepIndex];
+      endStepIndex = [v13 endStepIndex];
+      arrivalStep = [(RouteStepWaypointItem *)self arrivalStep];
+      stepIndex = [arrivalStep stepIndex];
 
-      if (v14 >= v16)
+      if (endStepIndex >= stepIndex)
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [legs countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v10)
         {
           goto LABEL_7;
@@ -93,25 +93,25 @@ LABEL_7:
       }
     }
 
-    v18 = [v13 legIndex];
+    legIndex = [v13 legIndex];
 
-    if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+    if (legIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_16;
     }
 
-    v5 = [(RouteStepItem *)self route];
-    v17 = [v5 lastEVStepInLegWithIndex:v18];
+    route = [(RouteStepItem *)self route];
+    lastEVStep = [route lastEVStepInLegWithIndex:legIndex];
     goto LABEL_18;
   }
 
 LABEL_13:
 
 LABEL_16:
-  v2 = 0;
+  firstObject = 0;
 LABEL_20:
 
-  return v2;
+  return firstObject;
 }
 
 - (void)_computeContent
@@ -120,11 +120,11 @@ LABEL_20:
   primaryText = self->_primaryText;
   self->_primaryText = 0;
 
-  v4 = [(RouteStepWaypointItem *)self waypointType];
+  waypointType = [(RouteStepWaypointItem *)self waypointType];
   if (self->_arrivalStep)
   {
-    v5 = [(RouteStepItem *)self route];
-    v6 = [v5 legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self->_arrivalStep, "stepIndex")}];
+    route = [(RouteStepItem *)self route];
+    v6 = [route legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self->_arrivalStep, "stepIndex")}];
   }
 
   else
@@ -132,9 +132,9 @@ LABEL_20:
     v6 = 0;
   }
 
-  v7 = [(RouteStepItem *)self route];
-  v8 = [v7 legs];
-  v9 = [v8 count];
+  route2 = [(RouteStepItem *)self route];
+  legs = [route2 legs];
+  v9 = [legs count];
 
   if (v6 >= v9)
   {
@@ -144,11 +144,11 @@ LABEL_20:
 
   else
   {
-    v10 = [(RouteStepItem *)self route];
-    v11 = [v10 legs];
-    v12 = [v11 objectAtIndexedSubscript:v6];
+    route3 = [(RouteStepItem *)self route];
+    legs2 = [route3 legs];
+    v12 = [legs2 objectAtIndexedSubscript:v6];
 
-    if (v4)
+    if (waypointType)
     {
       [v12 destination];
     }
@@ -161,12 +161,12 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 name];
+      name = [v14 name];
     }
 
     else
     {
-      if (v4)
+      if (waypointType)
       {
         [v12 destinationListInstructionString];
       }
@@ -175,17 +175,17 @@ LABEL_20:
       {
         [v12 originListInstructionString];
       }
-      v15 = ;
+      name = ;
     }
 
-    v13 = v15;
+    v13 = name;
     v89 = v12;
   }
 
-  v16 = [(RouteStepWaypointItem *)self waypoint];
-  v17 = [v16 isDynamicCurrentLocation];
+  waypoint = [(RouteStepWaypointItem *)self waypoint];
+  isDynamicCurrentLocation = [waypoint isDynamicCurrentLocation];
 
-  v18 = ([v13 length] == 0) & v17;
+  v18 = ([v13 length] == 0) & isDynamicCurrentLocation;
   if (v18 == 1)
   {
     v19 = MKLocalizedStringForCurrentLocation();
@@ -202,8 +202,8 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v20 = [(RouteStepWaypointItem *)self waypointType];
-  switch(v20)
+  waypointType2 = [(RouteStepWaypointItem *)self waypointType];
+  switch(waypointType2)
   {
     case 2uLL:
       v21 = +[NSBundle mainBundle];
@@ -228,32 +228,32 @@ LABEL_26:
 
   v84 = 1;
 LABEL_28:
-  v86 = v4;
+  v86 = waypointType;
   if ([v13 length])
   {
-    v24 = [(RouteStepItem *)self metrics];
-    v25 = [v24 primaryTextFontStyle];
-    v26 = [(RouteStepItem *)self metrics];
-    [v26 primaryTextFontWeight];
+    metrics = [(RouteStepItem *)self metrics];
+    primaryTextFontStyle = [metrics primaryTextFontStyle];
+    metrics2 = [(RouteStepItem *)self metrics];
+    [metrics2 primaryTextFontWeight];
     v28 = v27;
-    v29 = [(RouteStepItem *)self traitCollection];
-    v30 = [UIFont _maps_fontWithTextStyle:v25 weight:v29 compatibleWithTraitCollection:v28];
+    traitCollection = [(RouteStepItem *)self traitCollection];
+    v30 = [UIFont _maps_fontWithTextStyle:primaryTextFontStyle weight:traitCollection compatibleWithTraitCollection:v28];
 
     v31 = [NSAttributedString alloc];
     v93[0] = v30;
     v92[0] = NSFontAttributeName;
     v92[1] = NSForegroundColorAttributeName;
-    v32 = [(RouteStepItem *)self state];
-    v33 = [(RouteStepItem *)self metrics];
-    v34 = v33;
-    if (v32)
+    state = [(RouteStepItem *)self state];
+    metrics3 = [(RouteStepItem *)self metrics];
+    v34 = metrics3;
+    if (state)
     {
-      [v33 primaryTextActiveTextColor];
+      [metrics3 primaryTextActiveTextColor];
     }
 
     else
     {
-      [v33 primaryTextDisabledTextColor];
+      [metrics3 primaryTextDisabledTextColor];
     }
     v35 = ;
     v93[1] = v35;
@@ -262,10 +262,10 @@ LABEL_28:
     v38 = self->_primaryText;
     self->_primaryText = v37;
 
-    v4 = v86;
+    waypointType = v86;
   }
 
-  if (v4)
+  if (waypointType)
   {
     [v89 destination];
   }
@@ -277,25 +277,25 @@ LABEL_28:
   v39 = ;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v41 = [(RouteStepItem *)self metrics];
-  v42 = [v41 secondaryTextFontStyle];
-  v43 = [(RouteStepItem *)self metrics];
-  [v43 secondaryTextFontWeight];
+  metrics4 = [(RouteStepItem *)self metrics];
+  secondaryTextFontStyle = [metrics4 secondaryTextFontStyle];
+  metrics5 = [(RouteStepItem *)self metrics];
+  [metrics5 secondaryTextFontWeight];
   v45 = v44;
-  v46 = [(RouteStepItem *)self traitCollection];
-  v88 = [UIFont _maps_fontWithTextStyle:v42 weight:v46 compatibleWithTraitCollection:v45];
+  traitCollection2 = [(RouteStepItem *)self traitCollection];
+  v88 = [UIFont _maps_fontWithTextStyle:secondaryTextFontStyle weight:traitCollection2 compatibleWithTraitCollection:v45];
 
-  v47 = [(RouteStepItem *)self state];
-  v48 = [(RouteStepItem *)self metrics];
-  v49 = v48;
-  if (v47)
+  state2 = [(RouteStepItem *)self state];
+  metrics6 = [(RouteStepItem *)self metrics];
+  v49 = metrics6;
+  if (state2)
   {
-    [v48 secondaryTextActiveTextColor];
+    [metrics6 secondaryTextActiveTextColor];
   }
 
   else
   {
-    [v48 secondaryTextDisabledTextColor];
+    [metrics6 secondaryTextDisabledTextColor];
   }
   v50 = ;
 
@@ -315,7 +315,7 @@ LABEL_28:
     }
 
 LABEL_44:
-    v87 = 0;
+    singleLineAddress = 0;
     goto LABEL_49;
   }
 
@@ -327,7 +327,7 @@ LABEL_44:
       secondaryText = self->_secondaryText;
       self->_secondaryText = 0;
 
-      v87 = 0;
+      singleLineAddress = 0;
       goto LABEL_52;
     }
 
@@ -336,8 +336,8 @@ LABEL_44:
   }
 
   v53 = [NSAttributedString alloc];
-  v54 = [v39 arrivingDisplayName];
-  v55 = [v53 initWithString:v54 attributes:v52];
+  arrivingDisplayName = [v39 arrivingDisplayName];
+  v55 = [v53 initWithString:arrivingDisplayName attributes:v52];
 
   if (isKindOfClass)
   {
@@ -345,8 +345,8 @@ LABEL_44:
   }
 
 LABEL_48:
-  v58 = [(RouteStepWaypointItem *)self waypoint];
-  v87 = [v58 singleLineAddress];
+  waypoint2 = [(RouteStepWaypointItem *)self waypoint];
+  singleLineAddress = [waypoint2 singleLineAddress];
 
 LABEL_49:
   p_secondaryText = &self->_secondaryText;
@@ -358,7 +358,7 @@ LABEL_49:
     v60 = v55;
     v61 = v60;
 LABEL_51:
-    v62 = *p_secondaryText;
+    _stepWithEVInfo = *p_secondaryText;
     *p_secondaryText = v60;
 LABEL_55:
 
@@ -366,12 +366,12 @@ LABEL_55:
   }
 
 LABEL_52:
-  v63 = [(RouteStepWaypointItem *)self vehicle];
+  vehicle = [(RouteStepWaypointItem *)self vehicle];
 
-  if (v63)
+  if (vehicle)
   {
-    v62 = [(RouteStepWaypointItem *)self _stepWithEVInfo];
-    v64 = [v62 attributedChargeStringForWaypointType:-[RouteStepWaypointItem waypointType](self font:"waypointType") textColor:v88 includeDaysAgo:{v50, v86 == 0}];
+    _stepWithEVInfo = [(RouteStepWaypointItem *)self _stepWithEVInfo];
+    v64 = [_stepWithEVInfo attributedChargeStringForWaypointType:-[RouteStepWaypointItem waypointType](self font:"waypointType") textColor:v88 includeDaysAgo:{v50, v86 == 0}];
 LABEL_54:
     v65 = *p_secondaryText;
     *p_secondaryText = v64;
@@ -380,9 +380,9 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if ([v87 length])
+  if ([singleLineAddress length])
   {
-    v60 = [[NSAttributedString alloc] initWithString:v87 attributes:v52];
+    v60 = [[NSAttributedString alloc] initWithString:singleLineAddress attributes:v52];
     v61 = 0;
     goto LABEL_51;
   }
@@ -390,39 +390,39 @@ LABEL_54:
   if (v84)
   {
     v83 = [NSAttributedString alloc];
-    v62 = MKLocalizedStringForUnknownLocation();
-    v64 = [v83 initWithString:v62 attributes:v52];
+    _stepWithEVInfo = MKLocalizedStringForUnknownLocation();
+    v64 = [v83 initWithString:_stepWithEVInfo attributes:v52];
     goto LABEL_54;
   }
 
   v61 = 0;
 LABEL_56:
   v66 = v50;
-  v67 = [v39 chargingInfo];
+  chargingInfo = [v39 chargingInfo];
 
   v68 = v52;
-  if (v67)
+  if (chargingInfo)
   {
-    v69 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
-    v70 = [(RouteStepItem *)self metrics];
-    v71 = [v70 iconSize];
+    waypoint3 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
+    metrics7 = [(RouteStepItem *)self metrics];
+    iconSize = [metrics7 iconSize];
     [(RouteStepItem *)self scale];
-    v72 = v69;
-    v73 = v71;
+    v72 = waypoint3;
+    v73 = iconSize;
   }
 
   else
   {
     if ((isKindOfClass & 1) == 0)
     {
-      v69 = [(RouteStepWaypointItem *)self waypoint];
-      v70 = [v69 mapItemIfLoaded];
+      waypoint3 = [(RouteStepWaypointItem *)self waypoint];
+      metrics7 = [waypoint3 mapItemIfLoaded];
       [(RouteStepItem *)self scale];
       v78 = v77;
-      v76 = [(RouteStepItem *)self metrics];
-      v79 = [v76 iconSize];
-      v80 = [(RouteStepItem *)self metrics];
-      v81 = +[MKMapItem _maps_markerImageForMapItem:scale:size:useMarkerFallback:](MKMapItem, "_maps_markerImageForMapItem:scale:size:useMarkerFallback:", v70, v79, [v80 useMarkerFallback], v78);
+      metrics8 = [(RouteStepItem *)self metrics];
+      iconSize2 = [metrics8 iconSize];
+      metrics9 = [(RouteStepItem *)self metrics];
+      v81 = +[MKMapItem _maps_markerImageForMapItem:scale:size:useMarkerFallback:](MKMapItem, "_maps_markerImageForMapItem:scale:size:useMarkerFallback:", metrics7, iconSize2, [metrics9 useMarkerFallback], v78);
       pinImage = self->_pinImage;
       self->_pinImage = v81;
 
@@ -430,16 +430,16 @@ LABEL_56:
       goto LABEL_61;
     }
 
-    v69 = +[GEOFeatureStyleAttributes customSavedRouteStyleAttributes];
-    v70 = [(RouteStepItem *)self metrics];
-    v74 = [v70 iconSize];
+    waypoint3 = +[GEOFeatureStyleAttributes customSavedRouteStyleAttributes];
+    metrics7 = [(RouteStepItem *)self metrics];
+    iconSize3 = [metrics7 iconSize];
     [(RouteStepItem *)self scale];
-    v72 = v69;
-    v73 = v74;
+    v72 = waypoint3;
+    v73 = iconSize3;
   }
 
   v75 = [MKIconManager imageForStyle:v72 size:v73 forScale:0 format:?];
-  v76 = self->_pinImage;
+  metrics8 = self->_pinImage;
   self->_pinImage = v75;
 LABEL_61:
 }
@@ -480,25 +480,25 @@ LABEL_61:
   return primaryText;
 }
 
-- (RouteStepWaypointItem)initWithWaypoint:(id)a3 waypointType:(unint64_t)a4 arrivalStep:(id)a5 vehicle:(id)a6 route:(id)a7 cellClass:(Class)a8 state:(unint64_t)a9 metrics:(id)a10 context:(int64_t)a11 scale:(double)a12
+- (RouteStepWaypointItem)initWithWaypoint:(id)waypoint waypointType:(unint64_t)type arrivalStep:(id)step vehicle:(id)vehicle route:(id)route cellClass:(Class)class state:(unint64_t)state metrics:(id)self0 context:(int64_t)self1 scale:(double)self2
 {
-  v26 = a3;
-  v25 = a5;
-  v19 = a6;
-  v20 = a10;
+  waypointCopy = waypoint;
+  stepCopy = step;
+  vehicleCopy = vehicle;
+  metricsCopy = metrics;
   v27.receiver = self;
   v27.super_class = RouteStepWaypointItem;
-  v21 = [(RouteStepItem *)&v27 initWithCellClass:a8 state:a9 metrics:v20 context:a11 route:a7 scale:a12];
+  v21 = [(RouteStepItem *)&v27 initWithCellClass:class state:state metrics:metricsCopy context:context route:route scale:scale];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_waypoint, a3);
-    v22->_waypointType = a4;
-    objc_storeStrong(&v22->_arrivalStep, a5);
-    objc_storeStrong(&v22->_vehicle, a6);
-    [v20 imageAreaWidth];
+    objc_storeStrong(&v21->_waypoint, waypoint);
+    v22->_waypointType = type;
+    objc_storeStrong(&v22->_arrivalStep, step);
+    objc_storeStrong(&v22->_vehicle, vehicle);
+    [metricsCopy imageAreaWidth];
     [(RouteStepItem *)v22 setHairlineLeadingInset:?];
-    [v20 textTrailingMargin];
+    [metricsCopy textTrailingMargin];
     [(RouteStepItem *)v22 setHairlineTrailingInset:?];
   }
 

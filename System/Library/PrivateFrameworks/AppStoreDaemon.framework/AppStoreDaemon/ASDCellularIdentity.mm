@@ -1,33 +1,33 @@
 @interface ASDCellularIdentity
 + (ASDCellularIdentity)nullIdentity;
-+ (id)identityForSubscription:(id)a3 usingClient:(id)a4 error:(id *)a5;
-- (id)copyWithRoaming:(BOOL)a3;
++ (id)identityForSubscription:(id)subscription usingClient:(id)client error:(id *)error;
+- (id)copyWithRoaming:(BOOL)roaming;
 - (id)description;
-- (id)initWithSIMIdentity:(char)a3 roaming:;
-- (id)initWithSIMIdentity:(char)a3 roaming:(void *)a4 defaultsKey:;
+- (id)initWithSIMIdentity:(char)identity roaming:;
+- (id)initWithSIMIdentity:(char)identity roaming:(void *)roaming defaultsKey:;
 @end
 
 @implementation ASDCellularIdentity
 
-+ (id)identityForSubscription:(id)a3 usingClient:(id)a4 error:(id *)a5
++ (id)identityForSubscription:(id)subscription usingClient:(id)client error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  subscriptionCopy = subscription;
+  clientCopy = client;
+  v9 = clientCopy;
   v10 = 0;
-  if (!v7)
+  if (!subscriptionCopy)
   {
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!clientCopy)
   {
     goto LABEL_11;
   }
 
   v20 = 0;
-  v11 = [v8 copySIMIdentity:v7 error:&v20];
+  v11 = [clientCopy copySIMIdentity:subscriptionCopy error:&v20];
   v10 = v20;
   if (!v11)
   {
@@ -37,21 +37,21 @@
   if ([v11 length])
   {
     v19 = v10;
-    v12 = [v9 getDataStatus:v7 error:&v19];
+    v12 = [v9 getDataStatus:subscriptionCopy error:&v19];
     v13 = v19;
 
     v14 = v12 ? [v12 inHomeCountry] ^ 1 : 0;
-    v15 = [[ASDCellularIdentity alloc] initWithSIMIdentity:v11 roaming:v14];
+    nullIdentity = [[ASDCellularIdentity alloc] initWithSIMIdentity:v11 roaming:v14];
 
     v10 = v13;
   }
 
   else
   {
-    v15 = [a1 nullIdentity];
+    nullIdentity = [self nullIdentity];
   }
 
-  if (!v15)
+  if (!nullIdentity)
   {
 LABEL_11:
     v16 = ASDLogHandleForCategory(13);
@@ -62,18 +62,18 @@ LABEL_11:
       _os_log_error_impl(&dword_1B8220000, v16, OS_LOG_TYPE_ERROR, "[Cellular] Returning 'null' identity after error occurred: %{public}@", buf, 0xCu);
     }
 
-    v15 = [a1 nullIdentity];
+    nullIdentity = [self nullIdentity];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return nullIdentity;
 }
 
-- (id)initWithSIMIdentity:(char)a3 roaming:
+- (id)initWithSIMIdentity:(char)identity roaming:
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = a2;
     v6 = [v5 dataUsingEncoding:4];
@@ -87,7 +87,7 @@ LABEL_11:
 
     v9 = [v7 copy];
 
-    v10 = [(ASDCellularIdentity *)a1 initWithSIMIdentity:v5 roaming:a3 defaultsKey:v9];
+    v10 = [(ASDCellularIdentity *)self initWithSIMIdentity:v5 roaming:identity defaultsKey:v9];
     v11 = v10;
   }
 
@@ -100,45 +100,45 @@ LABEL_11:
   return v11;
 }
 
-- (id)initWithSIMIdentity:(char)a3 roaming:(void *)a4 defaultsKey:
+- (id)initWithSIMIdentity:(char)identity roaming:(void *)roaming defaultsKey:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  roamingCopy = roaming;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = ASDCellularIdentity;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v14, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = *(a1 + 3);
-      *(a1 + 3) = v9;
+      v10 = *(self + 3);
+      *(self + 3) = v9;
 
-      *(a1 + 8) = a3;
-      v11 = [v8 copy];
-      v12 = *(a1 + 2);
-      *(a1 + 2) = v11;
+      *(self + 8) = identity;
+      v11 = [roamingCopy copy];
+      v12 = *(self + 2);
+      *(self + 2) = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (ASDCellularIdentity)nullIdentity
 {
-  v2 = [(ASDCellularIdentity *)[a1 alloc] initWithSIMIdentity:0 roaming:?];
+  v2 = [(ASDCellularIdentity *)[self alloc] initWithSIMIdentity:0 roaming:?];
 
   return v2;
 }
 
-- (id)copyWithRoaming:(BOOL)a3
+- (id)copyWithRoaming:(BOOL)roaming
 {
   v5 = [ASDCellularIdentity alloc];
   defaultsKey = self->_defaultsKey;
   simIdentity = self->_simIdentity;
 
-  return [(ASDCellularIdentity *)v5 initWithSIMIdentity:a3 roaming:defaultsKey defaultsKey:?];
+  return [(ASDCellularIdentity *)v5 initWithSIMIdentity:roaming roaming:defaultsKey defaultsKey:?];
 }
 
 - (id)description

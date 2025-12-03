@@ -1,49 +1,49 @@
 @interface PKPassDetailScheduledPaymentsSectionController
-- (BOOL)_shouldDisplaySection:(id)a3;
+- (BOOL)_shouldDisplaySection:(id)section;
 - (BOOL)_updateSections;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (PKPassDetailScheduledPaymentsSectionController)initWithAccount:(id)a3 pass:(id)a4 accountService:(id)a5 delegate:(id)a6;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (PKPassDetailScheduledPaymentsSectionController)initWithAccount:(id)account pass:(id)pass accountService:(id)service delegate:(id)delegate;
 - (PKPassDetailScheduledPaymentsSectionControllerDelegate)delegate;
-- (id)_accountServiceScheduledPaymentsCellForRowIndex:(int64_t)a3 sectionIdentifier:(id)a4 tableView:(id)a5;
+- (id)_accountServiceScheduledPaymentsCellForRowIndex:(int64_t)index sectionIdentifier:(id)identifier tableView:(id)view;
 - (id)_dueDateFormatter;
 - (id)_dueTimeFormatter;
-- (id)_scheduledPaymentCellForPayment:(id)a3 tableView:(id)a4;
+- (id)_scheduledPaymentCellForPayment:(id)payment tableView:(id)view;
 - (id)_titleForScheduledPaymentsSection;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForFooterInSectionIdentifier:(id)a3;
-- (id)titleForHeaderInSectionIdentifier:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (unint64_t)_accountServiceScheduledPaymentsRowTypeForRowIndex:(int64_t)a3 sectionIdentifier:(id)a4;
-- (void)_fetchScheduledPaymentsWithAccountIdentifier:(id)a3 completion:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForFooterInSectionIdentifier:(id)identifier;
+- (id)titleForHeaderInSectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (unint64_t)_accountServiceScheduledPaymentsRowTypeForRowIndex:(int64_t)index sectionIdentifier:(id)identifier;
+- (void)_fetchScheduledPaymentsWithAccountIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)fetchScheduledPaymentsAndReloadSections:(id)a3;
-- (void)presentSchedulePayments:(id)a3 completion:(id)a4;
+- (void)fetchScheduledPaymentsAndReloadSections:(id)sections;
+- (void)presentSchedulePayments:(id)payments completion:(id)completion;
 - (void)reloadScheduledPayments;
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3;
-- (void)setCurrentSegment:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (void)updateWithAccount:(id)a3;
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier;
+- (void)setCurrentSegment:(unint64_t)segment;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (void)updateWithAccount:(id)account;
 @end
 
 @implementation PKPassDetailScheduledPaymentsSectionController
 
-- (PKPassDetailScheduledPaymentsSectionController)initWithAccount:(id)a3 pass:(id)a4 accountService:(id)a5 delegate:(id)a6
+- (PKPassDetailScheduledPaymentsSectionController)initWithAccount:(id)account pass:(id)pass accountService:(id)service delegate:(id)delegate
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  passCopy = pass;
+  serviceCopy = service;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKPassDetailScheduledPaymentsSectionController;
   v15 = [(PKPaymentPassDetailSectionController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_pass, a4);
-    objc_storeStrong(&v16->_accountService, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_pass, pass);
+    objc_storeStrong(&v16->_accountService, service);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v21[0] = @"SchedulePaymentsSectionIdentifier";
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     allSectionIdentifiers = v16->_allSectionIdentifiers;
@@ -67,8 +67,8 @@
 - (void)reloadScheduledPayments
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(PKPassDetailScheduledPaymentsSectionController *)self allSectionIdentifiers];
-  [WeakRetained reloadSectionIdentifiers:v3 updates:0];
+  allSectionIdentifiers = [(PKPassDetailScheduledPaymentsSectionController *)self allSectionIdentifiers];
+  [WeakRetained reloadSectionIdentifiers:allSectionIdentifiers updates:0];
 }
 
 - (BOOL)_updateSections
@@ -98,9 +98,9 @@
   return v8 ^ 1;
 }
 
-- (void)fetchScheduledPaymentsAndReloadSections:(id)a3
+- (void)fetchScheduledPaymentsAndReloadSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   if ([(PKPassDetailScheduledPaymentsSectionController *)self _updateSections])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -112,25 +112,25 @@
     [(PKPassDetailScheduledPaymentsSectionController *)self reloadScheduledPayments];
   }
 
-  v6 = [(PKAccount *)self->_account accountIdentifier];
-  [(PKPassDetailScheduledPaymentsSectionController *)self _fetchScheduledPaymentsWithAccountIdentifier:v6 completion:v4];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [(PKPassDetailScheduledPaymentsSectionController *)self _fetchScheduledPaymentsWithAccountIdentifier:accountIdentifier completion:sectionsCopy];
 }
 
-- (void)updateWithAccount:(id)a3
+- (void)updateWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_account, a3);
+    objc_storeStrong(&self->_account, account);
     [(PKPassDetailScheduledPaymentsSectionController *)self fetchScheduledPaymentsAndReloadSections:0];
   }
 }
 
-- (void)presentSchedulePayments:(id)a3 completion:(id)a4
+- (void)presentSchedulePayments:(id)payments completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_presentationSceneIdentifier, a3);
+  paymentsCopy = payments;
+  completionCopy = completion;
+  objc_storeStrong(&self->_presentationSceneIdentifier, payments);
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -141,16 +141,16 @@
   v9 = _Block_copy(aBlock);
   if (!self->_loadingAutomaticPayments)
   {
-    v10 = [MEMORY[0x1E69B8EF8] sharedService];
-    v11 = [(PKPaymentPassDetailSectionController *)self detailViewStyle];
-    v12 = v11;
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    detailViewStyle = [(PKPaymentPassDetailSectionController *)self detailViewStyle];
+    v12 = detailViewStyle;
     v13 = 3;
-    if (v11 != 1)
+    if (detailViewStyle != 1)
     {
       v13 = 0;
     }
 
-    if (v11 == 2)
+    if (detailViewStyle == 2)
     {
       v14 = 4;
     }
@@ -160,7 +160,7 @@
       v14 = v13;
     }
 
-    v15 = [[PKAccountAutomaticPaymentsController alloc] initWithAccountService:self->_accountService paymentWebService:v10 account:self->_account context:v14];
+    v15 = [[PKAccountAutomaticPaymentsController alloc] initWithAccountService:self->_accountService paymentWebService:mEMORY[0x1E69B8EF8] account:self->_account context:v14];
     [(PKAccountAutomaticPaymentsController *)v15 setDelegate:self];
     [(PKAccountAutomaticPaymentsController *)v15 setAutomaticPayments:self->_recurringPayments];
     v9[2](v9, 1);
@@ -172,11 +172,11 @@
     v16 = v15;
     v19 = v16;
     v21 = v9;
-    v17 = v10;
+    v17 = mEMORY[0x1E69B8EF8];
     v20 = v17;
     v23[1] = v12;
     v23[2] = v14;
-    v22 = v8;
+    v22 = completionCopy;
     [(PKAccountAutomaticPaymentsController *)v16 preflightWithCompletion:v18];
 
     objc_destroyWeak(v23);
@@ -317,12 +317,12 @@ LABEL_6:
   }
 }
 
-- (void)scheduledPaymentsChangedForAccountIdentifier:(id)a3
+- (void)scheduledPaymentsChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  v6 = v4;
-  v7 = v5;
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  v6 = identifierCopy;
+  v7 = accountIdentifier;
   v8 = v7;
   if (v7 == v6)
   {
@@ -353,56 +353,56 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)setCurrentSegment:(unint64_t)a3
+- (void)setCurrentSegment:(unint64_t)segment
 {
   v4.receiver = self;
   v4.super_class = PKPassDetailScheduledPaymentsSectionController;
-  [(PKPaymentPassDetailSectionController *)&v4 setCurrentSegment:a3];
+  [(PKPaymentPassDetailSectionController *)&v4 setCurrentSegment:segment];
   [(PKPassDetailScheduledPaymentsSectionController *)self _updateSections];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = -[PKPassDetailScheduledPaymentsSectionController _accountServiceScheduledPaymentsRowTypeForRowIndex:sectionIdentifier:](self, "_accountServiceScheduledPaymentsRowTypeForRowIndex:sectionIdentifier:", [a4 row], v7);
+  identifierCopy = identifier;
+  v8 = -[PKPassDetailScheduledPaymentsSectionController _accountServiceScheduledPaymentsRowTypeForRowIndex:sectionIdentifier:](self, "_accountServiceScheduledPaymentsRowTypeForRowIndex:sectionIdentifier:", [path row], identifierCopy);
 
   return v8 == 3 || !self->_loadingPayments;
 }
 
-- (id)titleForHeaderInSectionIdentifier:(id)a3
+- (id)titleForHeaderInSectionIdentifier:(id)identifier
 {
   if (PKEqualObjects())
   {
-    v4 = [(PKPassDetailScheduledPaymentsSectionController *)self _titleForScheduledPaymentsSection];
+    _titleForScheduledPaymentsSection = [(PKPassDetailScheduledPaymentsSectionController *)self _titleForScheduledPaymentsSection];
   }
 
   else
   {
-    v4 = 0;
+    _titleForScheduledPaymentsSection = 0;
   }
 
-  return v4;
+  return _titleForScheduledPaymentsSection;
 }
 
-- (id)titleForFooterInSectionIdentifier:(id)a3
+- (id)titleForFooterInSectionIdentifier:(id)identifier
 {
   if (!PKEqualObjects())
   {
     goto LABEL_13;
   }
 
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [v5 accountSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
-  v7 = [v6 remainingStatementBalance];
-  v8 = [v6 paymentDueDate];
-  v9 = [v6 currentStatement];
+  remainingStatementBalance = [accountSummary remainingStatementBalance];
+  paymentDueDate = [accountSummary paymentDueDate];
+  currentStatement = [accountSummary currentStatement];
   [(PKAccount *)self->_account feature];
   v10 = 1;
   if (PKUserInterfaceIdiomSupportsLargeLayouts())
   {
-    v11 = !v8 || v9 == 0;
-    if (!v11 && !-[NSArray count](self->_recurringPayments, "count") && [v7 pk_isPositiveNumber])
+    v11 = !paymentDueDate || currentStatement == 0;
+    if (!v11 && !-[NSArray count](self->_recurringPayments, "count") && [remainingStatementBalance pk_isPositiveNumber])
     {
       IsSingular = PKHourOfDateIsSingular();
       v13 = @"ACCOUNT_SERVICE_BILL_PAYMENT_PAYMENT_DUE_BY";
@@ -412,11 +412,11 @@ LABEL_9:
       }
 
       v14 = v13;
-      v15 = [(PKPassDetailScheduledPaymentsSectionController *)self _dueDateFormatter];
-      v16 = [v15 stringFromDate:v8];
+      _dueDateFormatter = [(PKPassDetailScheduledPaymentsSectionController *)self _dueDateFormatter];
+      v16 = [_dueDateFormatter stringFromDate:paymentDueDate];
 
-      v17 = [(PKPassDetailScheduledPaymentsSectionController *)self _dueTimeFormatter];
-      v18 = [v17 stringFromDate:v8];
+      _dueTimeFormatter = [(PKPassDetailScheduledPaymentsSectionController *)self _dueTimeFormatter];
+      v18 = [_dueTimeFormatter stringFromDate:paymentDueDate];
 
       v3 = PKLocalizedFeatureString();
 
@@ -433,17 +433,17 @@ LABEL_13:
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(PKAccount *)self->_account creditDetails];
-  v7 = [v6 accountSummary];
+  identifierCopy = identifier;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
-  v8 = [v7 adjustedBalance];
-  if (v8)
+  adjustedBalance = [accountSummary adjustedBalance];
+  if (adjustedBalance)
   {
-    v9 = [MEMORY[0x1E696AB90] zero];
-    v10 = [v8 compare:v9] == 1;
+    zero = [MEMORY[0x1E696AB90] zero];
+    v10 = [adjustedBalance compare:zero] == 1;
   }
 
   else
@@ -471,20 +471,20 @@ LABEL_13:
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = -[PKPassDetailScheduledPaymentsSectionController _accountServiceScheduledPaymentsCellForRowIndex:sectionIdentifier:tableView:](self, "_accountServiceScheduledPaymentsCellForRowIndex:sectionIdentifier:tableView:", [a4 row], v8, v9);
+  identifierCopy = identifier;
+  viewCopy = view;
+  v10 = -[PKPassDetailScheduledPaymentsSectionController _accountServiceScheduledPaymentsCellForRowIndex:sectionIdentifier:tableView:](self, "_accountServiceScheduledPaymentsCellForRowIndex:sectionIdentifier:tableView:", [path row], identifierCopy, viewCopy);
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v18 = a4;
-  v8 = a5;
-  [a3 deselectRowAtIndexPath:v18 animated:1];
+  pathCopy = path;
+  identifierCopy = identifier;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   if (PKStoreDemoModeEnabled())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -492,8 +492,8 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v10 = [v18 row];
-  v11 = [(PKPassDetailScheduledPaymentsSectionController *)self _accountServiceScheduledPaymentsRowTypeForRowIndex:v10 sectionIdentifier:v8];
+  v10 = [pathCopy row];
+  v11 = [(PKPassDetailScheduledPaymentsSectionController *)self _accountServiceScheduledPaymentsRowTypeForRowIndex:v10 sectionIdentifier:identifierCopy];
   WeakRetained = 0;
   if (v11 > 1)
   {
@@ -557,9 +557,9 @@ LABEL_13:
 LABEL_17:
 }
 
-- (BOOL)_shouldDisplaySection:(id)a3
+- (BOOL)_shouldDisplaySection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   if ([(PKPaymentPassDetailSectionController *)self detailViewStyle]== 2)
   {
     v5 = 0;
@@ -585,8 +585,8 @@ LABEL_17:
     self->_dueDateFormatter = v4;
 
     v6 = self->_dueDateFormatter;
-    v7 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v6 setLocale:v7];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v6 setLocale:autoupdatingCurrentLocale];
 
     [(NSDateFormatter *)self->_dueDateFormatter setLocalizedDateFormatFromTemplate:@"MMMM d"];
     [(NSDateFormatter *)self->_dueDateFormatter setFormattingContext:1];
@@ -606,8 +606,8 @@ LABEL_17:
     self->_dueTimeFormatter = v4;
 
     v6 = self->_dueTimeFormatter;
-    v7 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v6 setLocale:v7];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v6 setLocale:autoupdatingCurrentLocale];
 
     [(NSDateFormatter *)self->_dueTimeFormatter setLocalizedDateFormatFromTemplate:@"j:mm a"];
     [(NSDateFormatter *)self->_dueTimeFormatter setFormattingContext:1];
@@ -624,10 +624,10 @@ LABEL_17:
   return PKLocalizedFeatureString();
 }
 
-- (id)_accountServiceScheduledPaymentsCellForRowIndex:(int64_t)a3 sectionIdentifier:(id)a4 tableView:(id)a5
+- (id)_accountServiceScheduledPaymentsCellForRowIndex:(int64_t)index sectionIdentifier:(id)identifier tableView:(id)view
 {
-  v8 = a5;
-  v9 = [(PKPassDetailScheduledPaymentsSectionController *)self _accountServiceScheduledPaymentsRowTypeForRowIndex:a3 sectionIdentifier:a4];
+  viewCopy = view;
+  v9 = [(PKPassDetailScheduledPaymentsSectionController *)self _accountServiceScheduledPaymentsRowTypeForRowIndex:index sectionIdentifier:identifier];
   v10 = v9;
   if (v9 > 1)
   {
@@ -640,29 +640,29 @@ LABEL_17:
       }
 
       v22 = PKLocalizedFeatureString();
-      v23 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v22 forTableView:v8];
+      v23 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v22 forTableView:viewCopy];
       goto LABEL_13;
     }
 
     v14 = PKLocalizedFeatureString();
     v15 = PKLocalizedFeatureString();
     v16 = 1;
-    v17 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v14 detailText:v15 cellStyle:1 forTableView:v8];
+    v17 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v14 detailText:v15 cellStyle:1 forTableView:viewCopy];
     v18 = v17;
     if (self->_loadingAutomaticPayments)
     {
-      v19 = [v17 detailTextLabel];
-      [v19 setText:0];
+      detailTextLabel = [v17 detailTextLabel];
+      [detailTextLabel setText:0];
 
       v20 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       [v20 startAnimating];
       if (self->_loadingAutomaticPayments)
       {
-        v21 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+        tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
         v16 = 0;
 LABEL_26:
-        v30 = [v18 textLabel];
-        [v30 setTextColor:v21];
+        textLabel = [v18 textLabel];
+        [textLabel setTextColor:tertiaryLabelColor];
 
         [v18 setAccessoryType:v16];
         [v18 setAccessoryView:v20];
@@ -679,19 +679,19 @@ LABEL_26:
       v20 = 0;
     }
 
-    v27 = [(PKPaymentPassDetailSectionController *)self primaryTextColor];
-    v28 = v27;
-    if (v27)
+    primaryTextColor = [(PKPaymentPassDetailSectionController *)self primaryTextColor];
+    v28 = primaryTextColor;
+    if (primaryTextColor)
     {
-      v29 = v27;
+      labelColor = primaryTextColor;
     }
 
     else
     {
-      v29 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
-    v21 = v29;
+    tertiaryLabelColor = labelColor;
 
     goto LABEL_26;
   }
@@ -699,18 +699,18 @@ LABEL_26:
   if (v9)
   {
     scheduledPayments = self->_scheduledPayments;
-    v12 = a3 - [(NSArray *)self->_recurringPayments count];
+    indexCopy = index - [(NSArray *)self->_recurringPayments count];
     recurringPayments = scheduledPayments;
   }
 
   else
   {
     recurringPayments = self->_recurringPayments;
-    v12 = a3;
+    indexCopy = index;
   }
 
-  v22 = [(NSArray *)recurringPayments objectAtIndexedSubscript:v12];
-  v23 = [(PKPassDetailScheduledPaymentsSectionController *)self _scheduledPaymentCellForPayment:v22 tableView:v8];
+  v22 = [(NSArray *)recurringPayments objectAtIndexedSubscript:indexCopy];
+  v23 = [(PKPassDetailScheduledPaymentsSectionController *)self _scheduledPaymentCellForPayment:v22 tableView:viewCopy];
 LABEL_13:
   v18 = v23;
 
@@ -738,27 +738,27 @@ LABEL_27:
   return v18;
 }
 
-- (id)_scheduledPaymentCellForPayment:(id)a3 tableView:(id)a4
+- (id)_scheduledPaymentCellForPayment:(id)payment tableView:(id)view
 {
-  v6 = a3;
-  v7 = [a4 dequeueReusableCellWithIdentifier:@"scheduledPaymentCell"];
+  paymentCopy = payment;
+  v7 = [view dequeueReusableCellWithIdentifier:@"scheduledPaymentCell"];
   if (!v7)
   {
     v7 = [[PKAccountScheduledPaymentCell alloc] initWithStyle:1 reuseIdentifier:@"scheduledPaymentCell"];
-    v8 = [(PKPaymentPassDetailSectionController *)self primaryTextColor];
-    [(PKAccountScheduledPaymentCell *)v7 setTitleColor:v8];
+    primaryTextColor = [(PKPaymentPassDetailSectionController *)self primaryTextColor];
+    [(PKAccountScheduledPaymentCell *)v7 setTitleColor:primaryTextColor];
   }
 
-  [(PKAccountScheduledPaymentCell *)v7 setPayment:v6 forAccount:self->_account];
+  [(PKAccountScheduledPaymentCell *)v7 setPayment:paymentCopy forAccount:self->_account];
 
   return v7;
 }
 
-- (void)_fetchScheduledPaymentsWithAccountIdentifier:(id)a3 completion:(id)a4
+- (void)_fetchScheduledPaymentsWithAccountIdentifier:(id)identifier completion:(id)completion
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (PKStoreDemoModeEnabled())
   {
     p_loadingPayments = &self->_loadingPayments;
@@ -766,18 +766,18 @@ LABEL_27:
     [(PKPassDetailScheduledPaymentsSectionController *)self reloadScheduledPayments];
 LABEL_4:
     v9 = objc_alloc_init(MEMORY[0x1E69B8398]);
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
-    [v9 setReferenceIdentifier:v11];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v9 setReferenceIdentifier:uUIDString];
 
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
-    [v9 setClientReferenceIdentifier:v13];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    [v9 setClientReferenceIdentifier:uUIDString2];
 
     v14 = [objc_alloc(MEMORY[0x1E69B83A8]) initWithType:1];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
-    [v14 setIdentifier:v16];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString3 = [uUID3 UUIDString];
+    [v14 setIdentifier:uUIDString3];
 
     [v14 setAccountSuffix:@"2354"];
     v17 = objc_alloc_init(MEMORY[0x1E69B83A0]);
@@ -787,12 +787,12 @@ LABEL_4:
     v18 = objc_alloc_init(MEMORY[0x1E69B83B0]);
     [v18 setFrequency:7];
     [v18 setPreset:3];
-    v19 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v20 = PKEndOfMonth();
     [v18 setScheduledDate:v20];
 
     [v9 setScheduleDetails:v18];
-    v21 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     v22 = PKEndOfMonth();
     [v9 setPaymentDate:v22];
 
@@ -804,9 +804,9 @@ LABEL_4:
 
     *p_loadingPayments = 0;
     [(PKPassDetailScheduledPaymentsSectionController *)self reloadScheduledPayments];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_7;
@@ -831,16 +831,16 @@ LABEL_4:
     v28[2] = __106__PKPassDetailScheduledPaymentsSectionController__fetchScheduledPaymentsWithAccountIdentifier_completion___block_invoke;
     v28[3] = &unk_1E8011130;
     objc_copyWeak(&v30, &location);
-    v29 = v6;
-    [(PKAccountService *)accountService scheduledPaymentsWithAccountIdentifier:v27 includeFailedRecurringPayments:1 completion:v28];
+    v29 = completionCopy;
+    [(PKAccountService *)accountService scheduledPaymentsWithAccountIdentifier:identifierCopy includeFailedRecurringPayments:1 completion:v28];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_7:
@@ -950,10 +950,10 @@ BOOL __106__PKPassDetailScheduledPaymentsSectionController__fetchScheduledPaymen
   return v3;
 }
 
-- (unint64_t)_accountServiceScheduledPaymentsRowTypeForRowIndex:(int64_t)a3 sectionIdentifier:(id)a4
+- (unint64_t)_accountServiceScheduledPaymentsRowTypeForRowIndex:(int64_t)index sectionIdentifier:(id)identifier
 {
   recurringPayments = self->_recurringPayments;
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = [(NSArray *)recurringPayments count];
   v9 = [(NSArray *)self->_scheduledPayments count];
   v10 = PKEqualObjects();
@@ -963,8 +963,8 @@ BOOL __106__PKPassDetailScheduledPaymentsSectionController__fetchScheduledPaymen
     return 3;
   }
 
-  v11 = a3 - v8;
-  if (a3 - v8 < v9)
+  v11 = index - v8;
+  if (index - v8 < v9)
   {
     return v11 >= 0;
   }

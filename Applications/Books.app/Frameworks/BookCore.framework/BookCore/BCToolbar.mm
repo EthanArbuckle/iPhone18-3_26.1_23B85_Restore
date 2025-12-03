@@ -1,13 +1,13 @@
 @interface BCToolbar
 - (double)_imageButtonMargin;
-- (void)setBackgroundHidden:(BOOL)a3;
+- (void)setBackgroundHidden:(BOOL)hidden;
 @end
 
 @implementation BCToolbar
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4 = objc_opt_new();
     [(BCToolbar *)self setBackgroundImage:v4 forToolbarPosition:0 barMetrics:0];

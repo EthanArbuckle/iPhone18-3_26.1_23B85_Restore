@@ -1,26 +1,26 @@
 @interface WFNSItemProviderContentItem
-+ (id)itemProviderTypeIdentifierOverridesWithFileURLType:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemProviderTypeIdentifierOverridesWithFileURLType:(id)type;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 - (NSItemProvider)itemProvider;
 - (id)name;
 - (id)outputTypes;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateFileRepresentationWithNewAPI:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)generateObjectRepresentationWithNewAPI:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)preloadImportantItemsWithCompletionHandler:(id)a3;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateFileRepresentationWithNewAPI:(id)i options:(id)options forType:(id)type;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
+- (void)generateObjectRepresentationWithNewAPI:(id)i options:(id)options forClass:(Class)class;
+- (void)preloadImportantItemsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFNSItemProviderContentItem
 
-- (void)preloadImportantItemsWithCompletionHandler:(id)a3
+- (void)preloadImportantItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFNSItemProviderContentItem *)self outputTypes];
+  handlerCopy = handler;
+  outputTypes = [(WFNSItemProviderContentItem *)self outputTypes];
   v6 = [WFObjectType typeWithClass:objc_opt_class()];
-  v7 = [v5 containsObject:v6];
+  v7 = [outputTypes containsObject:v6];
 
   if (v7)
   {
@@ -30,7 +30,7 @@
     v21[3] = &unk_278349F18;
     v21[4] = self;
     v8 = &v22;
-    v22 = v4;
+    v22 = handlerCopy;
     v9 = objc_opt_class();
     v10 = v21;
   }
@@ -38,7 +38,7 @@
   else
   {
     v11 = [WFObjectType typeWithClass:objc_opt_class()];
-    v12 = [v5 containsObject:v11];
+    v12 = [outputTypes containsObject:v11];
 
     if (v12)
     {
@@ -48,7 +48,7 @@
       v19[3] = &unk_278349F18;
       v19[4] = self;
       v8 = &v20;
-      v20 = v4;
+      v20 = handlerCopy;
       v9 = objc_opt_class();
       v10 = v19;
     }
@@ -56,7 +56,7 @@
     else
     {
       v13 = [WFObjectType typeWithClass:objc_opt_class()];
-      v14 = [v5 containsObject:v13];
+      v14 = [outputTypes containsObject:v13];
 
       if (!v14)
       {
@@ -66,7 +66,7 @@
         v15[3] = &unk_27834A200;
         v15[4] = self;
         v8 = &v16;
-        v16 = v4;
+        v16 = handlerCopy;
         [(WFContentItem *)self getFileRepresentations:v15 forType:0];
         goto LABEL_8;
       }
@@ -77,7 +77,7 @@
       v17[3] = &unk_278349F18;
       v17[4] = self;
       v8 = &v18;
-      v18 = v4;
+      v18 = handlerCopy;
       v9 = objc_opt_class();
       v10 = v17;
     }
@@ -126,14 +126,14 @@ void __74__WFNSItemProviderContentItem_preloadImportantItemsWithCompletionHandle
   v29 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB40];
   v4 = MEMORY[0x277D79F68];
-  v5 = [(WFNSItemProviderContentItem *)self itemProvider];
-  v6 = [v5 registeredTypeIdentifiers];
-  v7 = [v4 typesFromStrings:v6];
+  itemProvider = [(WFNSItemProviderContentItem *)self itemProvider];
+  registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
+  v7 = [v4 typesFromStrings:registeredTypeIdentifiers];
   v8 = [v3 orderedSetWithArray:v7];
 
   v9 = objc_opt_class();
-  v10 = [(WFNSItemProviderContentItem *)self fileURLType];
-  v11 = [v9 itemProviderTypeIdentifierOverridesWithFileURLType:v10];
+  fileURLType = [(WFNSItemProviderContentItem *)self fileURLType];
+  v11 = [v9 itemProviderTypeIdentifierOverridesWithFileURLType:fileURLType];
 
   v26 = 0u;
   v27 = 0u;
@@ -184,88 +184,88 @@ void __74__WFNSItemProviderContentItem_preloadImportantItemsWithCompletionHandle
 
 - (id)name
 {
-  v3 = [(WFNSItemProviderContentItem *)self contentName];
-  v4 = v3;
-  if (v3)
+  contentName = [(WFNSItemProviderContentItem *)self contentName];
+  v4 = contentName;
+  if (contentName)
   {
-    v5 = v3;
+    name = contentName;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFNSItemProviderContentItem;
-    v5 = [(WFContentItem *)&v8 name];
+    name = [(WFContentItem *)&v8 name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  representationCopy = representation;
+  optionsCopy = options;
   v10 = getWFContentGraphLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v26 = "[WFNSItemProviderContentItem generateObjectRepresentation:options:forClass:]";
     v27 = 2112;
-    v28 = a5;
+    classCopy = class;
     _os_log_impl(&dword_21E1BD000, v10, OS_LOG_TYPE_DEFAULT, "%s Loading item of class %@ from NSItemProvider", buf, 0x16u);
   }
 
   if (![(WFNSItemProviderContentItem *)self useNewLoadingAPI])
   {
-    if (objc_opt_class() == a5)
+    if (objc_opt_class() == class)
     {
-      v12 = [(WFNSItemProviderContentItem *)self itemProvider];
-      v13 = [*MEMORY[0x277CE1E90] identifier];
+      itemProvider = [(WFNSItemProviderContentItem *)self itemProvider];
+      identifier = [*MEMORY[0x277CE1E90] identifier];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __77__WFNSItemProviderContentItem_generateObjectRepresentation_options_forClass___block_invoke;
       v23[3] = &unk_278349EA0;
-      v24 = v8;
-      [v12 loadItemForTypeIdentifier:v13 options:0 completionHandler:v23];
+      v24 = representationCopy;
+      [itemProvider loadItemForTypeIdentifier:identifier options:0 completionHandler:v23];
 
       v14 = v24;
     }
 
-    else if (objc_opt_class() == a5)
+    else if (objc_opt_class() == class)
     {
-      v15 = [(WFNSItemProviderContentItem *)self itemProvider];
-      v16 = [*MEMORY[0x277CE1DB0] identifier];
+      itemProvider2 = [(WFNSItemProviderContentItem *)self itemProvider];
+      identifier2 = [*MEMORY[0x277CE1DB0] identifier];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __77__WFNSItemProviderContentItem_generateObjectRepresentation_options_forClass___block_invoke_2;
       v21[3] = &unk_278349EC8;
-      v22 = v8;
-      [v15 loadItemForTypeIdentifier:v16 options:0 completionHandler:v21];
+      v22 = representationCopy;
+      [itemProvider2 loadItemForTypeIdentifier:identifier2 options:0 completionHandler:v21];
 
       v14 = v22;
     }
 
     else
     {
-      if (objc_opt_class() != a5)
+      if (objc_opt_class() != class)
       {
-        v11 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-        (*(v8 + 2))(v8, 0, 0, v11);
+        v11 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+        (*(representationCopy + 2))(representationCopy, 0, 0, v11);
 
         goto LABEL_13;
       }
 
-      v17 = [(WFNSItemProviderContentItem *)self itemProvider];
-      v18 = [*MEMORY[0x277CE1E20] identifier];
+      itemProvider3 = [(WFNSItemProviderContentItem *)self itemProvider];
+      identifier3 = [*MEMORY[0x277CE1E20] identifier];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __77__WFNSItemProviderContentItem_generateObjectRepresentation_options_forClass___block_invoke_3;
       v19[3] = &unk_27834A278;
-      v20 = v8;
-      [v17 loadItemForTypeIdentifier:v18 options:0 completionHandler:v19];
+      v20 = representationCopy;
+      [itemProvider3 loadItemForTypeIdentifier:identifier3 options:0 completionHandler:v19];
 
       v14 = v20;
     }
@@ -273,7 +273,7 @@ void __74__WFNSItemProviderContentItem_preloadImportantItemsWithCompletionHandle
     goto LABEL_13;
   }
 
-  [(WFNSItemProviderContentItem *)self generateObjectRepresentationWithNewAPI:v8 options:v9 forClass:a5];
+  [(WFNSItemProviderContentItem *)self generateObjectRepresentationWithNewAPI:representationCopy options:optionsCopy forClass:class];
 LABEL_13:
 }
 
@@ -443,18 +443,18 @@ LABEL_15:
   (*(v15 + 16))(v15, v18, 0, *(a1 + 40));
 }
 
-- (void)generateObjectRepresentationWithNewAPI:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentationWithNewAPI:(id)i options:(id)options forClass:(Class)class
 {
-  v7 = a3;
-  v8 = [(WFNSItemProviderContentItem *)self itemProvider];
+  iCopy = i;
+  itemProvider = [(WFNSItemProviderContentItem *)self itemProvider];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__WFNSItemProviderContentItem_generateObjectRepresentationWithNewAPI_options_forClass___block_invoke;
   v11[3] = &unk_278349E78;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  v10 = [v8 loadObjectOfClass:a5 completionHandler:v11];
+  v12 = iCopy;
+  v9 = iCopy;
+  v10 = [itemProvider loadObjectOfClass:class completionHandler:v11];
 }
 
 void __87__WFNSItemProviderContentItem_generateObjectRepresentationWithNewAPI_options_forClass___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -468,39 +468,39 @@ void __87__WFNSItemProviderContentItem_generateObjectRepresentationWithNewAPI_op
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  optionsCopy = options;
+  typeCopy = type;
   v11 = getWFContentGraphLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v18 = "[WFNSItemProviderContentItem generateFileRepresentation:options:forType:]";
     v19 = 2112;
-    v20 = v10;
+    v20 = typeCopy;
     _os_log_impl(&dword_21E1BD000, v11, OS_LOG_TYPE_DEFAULT, "%s Loading item of type %@ from NSItemProvider", buf, 0x16u);
   }
 
   if ([(WFNSItemProviderContentItem *)self useNewLoadingAPI])
   {
-    [(WFNSItemProviderContentItem *)self generateFileRepresentationWithNewAPI:v8 options:v9 forType:v10];
+    [(WFNSItemProviderContentItem *)self generateFileRepresentationWithNewAPI:representationCopy options:optionsCopy forType:typeCopy];
   }
 
   else
   {
-    v12 = [(WFNSItemProviderContentItem *)self itemProvider];
-    v13 = [v10 string];
+    itemProvider = [(WFNSItemProviderContentItem *)self itemProvider];
+    string = [typeCopy string];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __74__WFNSItemProviderContentItem_generateFileRepresentation_options_forType___block_invoke;
     v14[3] = &unk_278349E50;
     v14[4] = self;
-    v15 = v10;
-    v16 = v8;
-    [v12 loadItemForTypeIdentifier:v13 options:0 completionHandler:v14];
+    v15 = typeCopy;
+    v16 = representationCopy;
+    [itemProvider loadItemForTypeIdentifier:string options:0 completionHandler:v14];
   }
 }
 
@@ -610,22 +610,22 @@ void __74__WFNSItemProviderContentItem_generateFileRepresentation_options_forTyp
   }
 }
 
-- (void)generateFileRepresentationWithNewAPI:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentationWithNewAPI:(id)i options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(WFNSItemProviderContentItem *)self itemProvider];
-  v10 = [v8 string];
+  iCopy = i;
+  typeCopy = type;
+  itemProvider = [(WFNSItemProviderContentItem *)self itemProvider];
+  string = [typeCopy string];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_options_forType___block_invoke;
   v14[3] = &unk_278349DD8;
-  v16 = self;
-  v17 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  v13 = [v9 loadInPlaceFileRepresentationForTypeIdentifier:v10 completionHandler:v14];
+  selfCopy = self;
+  v17 = iCopy;
+  v15 = typeCopy;
+  v11 = typeCopy;
+  v12 = iCopy;
+  v13 = [itemProvider loadInPlaceFileRepresentationForTypeIdentifier:string completionHandler:v14];
 }
 
 void __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_options_forType___block_invoke(uint64_t a1, void *a2, char a3, void *a4)
@@ -712,20 +712,20 @@ void __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_opti
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Item providers", @"Item providers");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Item provider", @"Item provider");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -739,10 +739,10 @@ void __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_opti
   return v4;
 }
 
-+ (id)itemProviderTypeIdentifierOverridesWithFileURLType:(id)a3
++ (id)itemProviderTypeIdentifierOverridesWithFileURLType:(id)type
 {
   v21[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v19 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E90]];
   v20[0] = v19;
   v18 = [WFObjectType typeWithClass:objc_opt_class()];
@@ -762,8 +762,8 @@ void __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_opti
   v8 = *MEMORY[0x277CE1D70];
   v9 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D70]];
   v20[4] = v9;
-  v10 = v3;
-  if (!v3)
+  v10 = typeCopy;
+  if (!typeCopy)
   {
     v10 = [MEMORY[0x277D79F68] typeWithUTType:v8];
   }
@@ -776,7 +776,7 @@ void __84__WFNSItemProviderContentItem_generateFileRepresentationWithNewAPI_opti
   v21[5] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
 
-  if (!v3)
+  if (!typeCopy)
   {
   }
 

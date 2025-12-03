@@ -1,32 +1,32 @@
 @interface MPSGraphCropResizeOpDescriptor
-+ (id)descriptorWithResizeWidth:(unint64_t)a3 resizeHeight:(unint64_t)a4;
-+ (id)descriptorWithResizeWidth:(unint64_t)a3 resizeHeight:(unint64_t)a4 normalizeCoordinates:(BOOL)a5 spatialScale:(float)a6 resizeMode:(unint64_t)a7 samplingMode:(unint64_t)a8 coordinateMode:(unint64_t)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptorWithResizeWidth:(unint64_t)width resizeHeight:(unint64_t)height;
++ (id)descriptorWithResizeWidth:(unint64_t)width resizeHeight:(unint64_t)height normalizeCoordinates:(BOOL)coordinates spatialScale:(float)scale resizeMode:(unint64_t)mode samplingMode:(unint64_t)samplingMode coordinateMode:(unint64_t)coordinateMode;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphCropResizeOpDescriptor
 
-+ (id)descriptorWithResizeWidth:(unint64_t)a3 resizeHeight:(unint64_t)a4 normalizeCoordinates:(BOOL)a5 spatialScale:(float)a6 resizeMode:(unint64_t)a7 samplingMode:(unint64_t)a8 coordinateMode:(unint64_t)a9
++ (id)descriptorWithResizeWidth:(unint64_t)width resizeHeight:(unint64_t)height normalizeCoordinates:(BOOL)coordinates spatialScale:(float)scale resizeMode:(unint64_t)mode samplingMode:(unint64_t)samplingMode coordinateMode:(unint64_t)coordinateMode
 {
-  v13 = a5;
+  coordinatesCopy = coordinates;
   v16 = objc_alloc_init(MPSGraphCropResizeOpDescriptor);
-  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeWidth:a3];
-  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeHeight:a4];
-  [(MPSGraphCropResizeOpDescriptor *)v16 setNormalizeCoordinates:v13];
-  *&v17 = a6;
+  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeWidth:width];
+  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeHeight:height];
+  [(MPSGraphCropResizeOpDescriptor *)v16 setNormalizeCoordinates:coordinatesCopy];
+  *&v17 = scale;
   [(MPSGraphCropResizeOpDescriptor *)v16 setSpatialScale:v17];
-  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeMode:a7];
-  [(MPSGraphCropResizeOpDescriptor *)v16 setSamplingMode:a8];
-  [(MPSGraphCropResizeOpDescriptor *)v16 setCoordinateMode:a9];
+  [(MPSGraphCropResizeOpDescriptor *)v16 setResizeMode:mode];
+  [(MPSGraphCropResizeOpDescriptor *)v16 setSamplingMode:samplingMode];
+  [(MPSGraphCropResizeOpDescriptor *)v16 setCoordinateMode:coordinateMode];
 
   return v16;
 }
 
-+ (id)descriptorWithResizeWidth:(unint64_t)a3 resizeHeight:(unint64_t)a4
++ (id)descriptorWithResizeWidth:(unint64_t)width resizeHeight:(unint64_t)height
 {
   v6 = objc_alloc_init(MPSGraphCropResizeOpDescriptor);
-  [(MPSGraphCropResizeOpDescriptor *)v6 setResizeWidth:a3];
-  [(MPSGraphCropResizeOpDescriptor *)v6 setResizeHeight:a4];
+  [(MPSGraphCropResizeOpDescriptor *)v6 setResizeWidth:width];
+  [(MPSGraphCropResizeOpDescriptor *)v6 setResizeHeight:height];
   [(MPSGraphCropResizeOpDescriptor *)v6 setNormalizeCoordinates:1];
   LODWORD(v7) = 1.0;
   [(MPSGraphCropResizeOpDescriptor *)v6 setSpatialScale:v7];
@@ -37,7 +37,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphCropResizeOpDescriptor alloc];
   [(MPSGraphCropResizeOpDescriptor *)v4 setResizeWidth:self->_resizeWidth];

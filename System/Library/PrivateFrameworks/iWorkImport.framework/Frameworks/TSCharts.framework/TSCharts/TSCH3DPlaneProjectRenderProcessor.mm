@@ -1,45 +1,45 @@
 @interface TSCH3DPlaneProjectRenderProcessor
-+ (id)processorWithPlane:(const void *)a3 projPt:(const void *)a4;
-- (TSCH3DPlaneProjectRenderProcessor)initWithPlane:(const void *)a3 projPt:(const void *)a4;
++ (id)processorWithPlane:(const void *)plane projPt:(const void *)pt;
+- (TSCH3DPlaneProjectRenderProcessor)initWithPlane:(const void *)plane projPt:(const void *)pt;
 - (id).cxx_construct;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DPlaneProjectRenderProcessor
 
-+ (id)processorWithPlane:(const void *)a3 projPt:(const void *)a4
++ (id)processorWithPlane:(const void *)plane projPt:(const void *)pt
 {
-  v6 = [a1 alloc];
-  v11 = objc_msgSend_initWithPlane_projPt_(v6, v7, v8, v9, v10, a3, a4);
+  v6 = [self alloc];
+  v11 = objc_msgSend_initWithPlane_projPt_(v6, v7, v8, v9, v10, plane, pt);
 
   return v11;
 }
 
-- (TSCH3DPlaneProjectRenderProcessor)initWithPlane:(const void *)a3 projPt:(const void *)a4
+- (TSCH3DPlaneProjectRenderProcessor)initWithPlane:(const void *)plane projPt:(const void *)pt
 {
   v7.receiver = self;
   v7.super_class = TSCH3DPlaneProjectRenderProcessor;
   result = [(TSCH3DTransformGeometryRenderProcessor *)&v7 init];
   if (result)
   {
-    result->_plane._normal.var0.var0 = *a3;
-    result->_plane._normal.var1.var0 = *(a3 + 1);
-    result->_plane._normal.var2.var0 = *(a3 + 2);
-    result->_plane._distance = *(a3 + 3);
-    result->_projPt.var0.var0 = *a4;
-    result->_projPt.var1.var0 = *(a4 + 1);
-    result->_projPt.var2.var0 = *(a4 + 2);
+    result->_plane._normal.var0.var0 = *plane;
+    result->_plane._normal.var1.var0 = *(plane + 1);
+    result->_plane._normal.var2.var0 = *(plane + 2);
+    result->_plane._distance = *(plane + 3);
+    result->_projPt.var0.var0 = *pt;
+    result->_projPt.var1.var0 = *(pt + 1);
+    result->_projPt.var2.var0 = *(pt + 2);
   }
 
   return result;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v4 = a3;
-  if (objc_msgSend_hasOffset(v4, v5, v6, v7, v8))
+  submitCopy = submit;
+  if (objc_msgSend_hasOffset(submitCopy, v5, v6, v7, v8))
   {
-    v13 = objc_msgSend_offset(v4, v9, v10, v11, v12);
+    v13 = objc_msgSend_offset(submitCopy, v9, v10, v11, v12);
   }
 
   else
@@ -47,9 +47,9 @@
     v13 = 0;
   }
 
-  if (objc_msgSend_hasCount(v4, v9, v10, v11, v12))
+  if (objc_msgSend_hasCount(submitCopy, v9, v10, v11, v12))
   {
-    v19 = objc_msgSend_count(v4, v14, v15, v16, v17);
+    v19 = objc_msgSend_count(submitCopy, v14, v15, v16, v17);
   }
 
   else

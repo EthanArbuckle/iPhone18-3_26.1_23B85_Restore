@@ -1,21 +1,21 @@
 @interface _UIFloatingTabBarPageButton
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4;
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIFloatingTabBarPageButton)initWithDirection:(int64_t)a3;
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window;
+- (CGRect)_sourceRectForPresentationInWindow:(id)window;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIFloatingTabBarPageButton)initWithDirection:(int64_t)direction;
 - (double)contentOpacity;
 - (id)_imageNameForCurrentDirection;
 - (id)_tintColorForButton;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_configureButton;
 - (void)_updateButtonColor;
 - (void)layoutSubviews;
-- (void)setContentOpacity:(double)a3;
+- (void)setContentOpacity:(double)opacity;
 @end
 
 @implementation _UIFloatingTabBarPageButton
 
-- (_UIFloatingTabBarPageButton)initWithDirection:(int64_t)a3
+- (_UIFloatingTabBarPageButton)initWithDirection:(int64_t)direction
 {
   v7.receiver = self;
   v7.super_class = _UIFloatingTabBarPageButton;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_direction = a3;
+    v4->_direction = direction;
     [(_UIFloatingTabBarPageButton *)v4 _configureButton];
   }
 
@@ -32,17 +32,17 @@
 
 - (double)contentOpacity
 {
-  v2 = [(_UIFloatingTabBarPageButton *)self button];
-  [v2 alpha];
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setContentOpacity:(double)a3
+- (void)setContentOpacity:(double)opacity
 {
-  v4 = [(_UIFloatingTabBarPageButton *)self button];
-  [v4 setAlpha:a3];
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button setAlpha:opacity];
 }
 
 - (id)_imageNameForCurrentDirection
@@ -61,24 +61,24 @@
 - (void)_configureButton
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIFloatingTabBarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   v5 = +[UIButtonConfiguration plainButtonConfiguration];
-  v6 = [(_UIFloatingTabBarPageButton *)self _imageNameForCurrentDirection];
-  v7 = [UIImage systemImageNamed:v6];
+  _imageNameForCurrentDirection = [(_UIFloatingTabBarPageButton *)self _imageNameForCurrentDirection];
+  v7 = [UIImage systemImageNamed:_imageNameForCurrentDirection];
   [v5 setImage:v7];
 
-  v8 = [(_UIFloatingTabBarPageButton *)self _tintColorForButton];
-  [v5 setBaseForegroundColor:v8];
+  _tintColorForButton = [(_UIFloatingTabBarPageButton *)self _tintColorForButton];
+  [v5 setBaseForegroundColor:_tintColorForButton];
 
   [v5 setCornerStyle:-1];
   v9 = *MEMORY[0x1E6979E40];
-  v10 = [v5 background];
-  [v10 setCornerRadius:v9];
+  background = [v5 background];
+  [background setCornerRadius:v9];
 
-  v11 = [v4 symbolConfiguration];
-  [v5 setPreferredSymbolConfigurationForImage:v11];
+  symbolConfiguration = [v4 symbolConfiguration];
+  [v5 setPreferredSymbolConfigurationForImage:symbolConfiguration];
 
   v12 = [UIButton buttonWithConfiguration:v5 primaryAction:0];
   v13 = +[UIHoverHighlightEffect effect];
@@ -99,12 +99,12 @@
   v19 = [(UIView *)self registerForTraitChanges:v18 withAction:sel__updateButtonColor];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_UIFloatingTabBarPageButton *)self button];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -130,20 +130,20 @@
     v4 = v4 + -10.0;
   }
 
-  v11 = [(_UIFloatingTabBarPageButton *)self button];
-  [v11 setFrame:{v4, v6, v8 + 10.0, v10}];
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button setFrame:{v4, v6, v8 + 10.0, v10}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(UIView *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(UIView *)self pointInside:eventCopy withEvent:x, y])
   {
     v10.receiver = self;
     v10.super_class = _UIFloatingTabBarPageButton;
-    v8 = [(UIView *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(UIView *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -156,36 +156,36 @@
 
 - (void)_updateButtonColor
 {
-  v3 = [(_UIFloatingTabBarPageButton *)self button];
-  v6 = [v3 configuration];
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  configuration = [button configuration];
 
-  v4 = [(_UIFloatingTabBarPageButton *)self _tintColorForButton];
-  [v6 setBaseForegroundColor:v4];
+  _tintColorForButton = [(_UIFloatingTabBarPageButton *)self _tintColorForButton];
+  [configuration setBaseForegroundColor:_tintColorForButton];
 
-  v5 = [(_UIFloatingTabBarPageButton *)self button];
-  [v5 setConfiguration:v6];
+  button2 = [(_UIFloatingTabBarPageButton *)self button];
+  [button2 setConfiguration:configuration];
 }
 
 - (id)_tintColorForButton
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIFloatingTabBarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 contentPaletteProvider];
-  v6 = [(UIView *)self traitCollection];
-  v7 = v5[2](v5, [v6 userInterfaceStyle]);
+  contentPaletteProvider = [v4 contentPaletteProvider];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = contentPaletteProvider[2](contentPaletteProvider, [traitCollection2 userInterfaceStyle]);
 
-  v8 = [v7 inactiveColor];
+  inactiveColor = [v7 inactiveColor];
 
-  return v8;
+  return inactiveColor;
 }
 
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window
 {
-  v5 = a3;
-  v6 = [(_UIFloatingTabBarPageButton *)self button];
-  [v6 frame];
-  [(UIView *)self convertRect:v5 toCoordinateSpace:?];
+  spaceCopy = space;
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button frame];
+  [(UIView *)self convertRect:spaceCopy toCoordinateSpace:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -202,10 +202,10 @@
   return result;
 }
 
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3
+- (CGRect)_sourceRectForPresentationInWindow:(id)window
 {
-  v3 = [(_UIFloatingTabBarPageButton *)self button];
-  [v3 frame];
+  button = [(_UIFloatingTabBarPageButton *)self button];
+  [button frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;

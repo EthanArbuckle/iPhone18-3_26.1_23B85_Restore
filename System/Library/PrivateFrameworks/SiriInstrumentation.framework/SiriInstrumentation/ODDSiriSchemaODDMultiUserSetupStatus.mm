@@ -1,68 +1,68 @@
 @interface ODDSiriSchemaODDMultiUserSetupStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDMultiUserSetupStatus)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDMultiUserSetupStatus)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDMultiUserSetupStatus)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDMultiUserSetupStatus)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumParticipantsWithTrust:(BOOL)a3;
-- (void)setHasNumUsersWhoSyncedRecognizeMyVoice:(BOOL)a3;
-- (void)setHasNumUsersWithLocationServicesEnabled:(BOOL)a3;
-- (void)setHasNumUsersWithMatchingSiriLanguage:(BOOL)a3;
-- (void)setHasNumUsersWithPersonalRequestsEnabled:(BOOL)a3;
-- (void)setHasNumUsersWithRecognizeMyVoiceEnabled:(BOOL)a3;
-- (void)setHasNumUsersWithSiriCloudSyncEnabled:(BOOL)a3;
-- (void)setHasNumVoiceProfilesAvailable:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumParticipantsWithTrust:(BOOL)trust;
+- (void)setHasNumUsersWhoSyncedRecognizeMyVoice:(BOOL)voice;
+- (void)setHasNumUsersWithLocationServicesEnabled:(BOOL)enabled;
+- (void)setHasNumUsersWithMatchingSiriLanguage:(BOOL)language;
+- (void)setHasNumUsersWithPersonalRequestsEnabled:(BOOL)enabled;
+- (void)setHasNumUsersWithRecognizeMyVoiceEnabled:(BOOL)enabled;
+- (void)setHasNumUsersWithSiriCloudSyncEnabled:(BOOL)enabled;
+- (void)setHasNumVoiceProfilesAvailable:(BOOL)available;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDMultiUserSetupStatus
 
-- (ODDSiriSchemaODDMultiUserSetupStatus)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDMultiUserSetupStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = ODDSiriSchemaODDMultiUserSetupStatus;
   v5 = [(ODDSiriSchemaODDMultiUserSetupStatus *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numGuestsAccepted"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numGuestsAccepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumGuestsAccepted:](v5, "setNumGuestsAccepted:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numParticipantsWithTrust"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numParticipantsWithTrust"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumParticipantsWithTrust:](v5, "setNumParticipantsWithTrust:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numUsersWhoSyncedRecognizeMyVoice"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numUsersWhoSyncedRecognizeMyVoice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumUsersWhoSyncedRecognizeMyVoice:](v5, "setNumUsersWhoSyncedRecognizeMyVoice:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"numUsersWithRecognizeMyVoiceEnabled", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"numUsersWithRecognizeMyVoiceEnabled", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumUsersWithRecognizeMyVoiceEnabled:](v5, "setNumUsersWithRecognizeMyVoiceEnabled:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numVoiceProfilesAvailable"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numVoiceProfilesAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumVoiceProfilesAvailable:](v5, "setNumVoiceProfilesAvailable:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"numUsersWithPersonalRequestsEnabled"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numUsersWithPersonalRequestsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"numUsersWithMatchingSiriLanguage"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"numUsersWithMatchingSiriLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"numUsersWithSiriCloudSyncEnabled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numUsersWithSiriCloudSyncEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMultiUserSetupStatus setNumUsersWithSiriCloudSyncEnabled:](v5, "setNumUsersWithSiriCloudSyncEnabled:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"numUsersWithLocationServicesEnabled"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numUsersWithLocationServicesEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDMultiUserSetupStatus)initWithJSON:(id)a3
+- (ODDSiriSchemaODDMultiUserSetupStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDMultiUserSetupStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDMultiUserSetupStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDMultiUserSetupStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numGuestsAccepted](self, "numGuestsAccepted")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numGuestsAccepted"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numGuestsAccepted"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numParticipantsWithTrust](self, "numParticipantsWithTrust")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numParticipantsWithTrust"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numParticipantsWithTrust"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWhoSyncedRecognizeMyVoice](self, "numUsersWhoSyncedRecognizeMyVoice")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numUsersWhoSyncedRecognizeMyVoice"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numUsersWhoSyncedRecognizeMyVoice"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWithLocationServicesEnabled](self, "numUsersWithLocationServicesEnabled")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numUsersWithLocationServicesEnabled"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numUsersWithLocationServicesEnabled"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWithMatchingSiriLanguage](self, "numUsersWithMatchingSiriLanguage")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numUsersWithMatchingSiriLanguage"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numUsersWithMatchingSiriLanguage"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWithPersonalRequestsEnabled](self, "numUsersWithPersonalRequestsEnabled")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numUsersWithPersonalRequestsEnabled"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numUsersWithPersonalRequestsEnabled"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -240,7 +240,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWithRecognizeMyVoiceEnabled](self, "numUsersWithRecognizeMyVoiceEnabled")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numUsersWithRecognizeMyVoiceEnabled"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numUsersWithRecognizeMyVoiceEnabled"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -256,19 +256,19 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numUsersWithSiriCloudSyncEnabled](self, "numUsersWithSiriCloudSyncEnabled")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numUsersWithSiriCloudSyncEnabled"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numUsersWithSiriCloudSyncEnabled"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMultiUserSetupStatus numVoiceProfilesAvailable](self, "numVoiceProfilesAvailable")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numVoiceProfilesAvailable"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numVoiceProfilesAvailable"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -396,16 +396,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[22];
+  v6 = equalCopy[22];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -414,13 +414,13 @@ LABEL_10:
   if (*&has)
   {
     numGuestsAccepted = self->_numGuestsAccepted;
-    if (numGuestsAccepted != [v4 numGuestsAccepted])
+    if (numGuestsAccepted != [equalCopy numGuestsAccepted])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -432,13 +432,13 @@ LABEL_10:
   if (v8)
   {
     numParticipantsWithTrust = self->_numParticipantsWithTrust;
-    if (numParticipantsWithTrust != [v4 numParticipantsWithTrust])
+    if (numParticipantsWithTrust != [equalCopy numParticipantsWithTrust])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -450,13 +450,13 @@ LABEL_10:
   if (v10)
   {
     numUsersWhoSyncedRecognizeMyVoice = self->_numUsersWhoSyncedRecognizeMyVoice;
-    if (numUsersWhoSyncedRecognizeMyVoice != [v4 numUsersWhoSyncedRecognizeMyVoice])
+    if (numUsersWhoSyncedRecognizeMyVoice != [equalCopy numUsersWhoSyncedRecognizeMyVoice])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -468,13 +468,13 @@ LABEL_10:
   if (v12)
   {
     numUsersWithRecognizeMyVoiceEnabled = self->_numUsersWithRecognizeMyVoiceEnabled;
-    if (numUsersWithRecognizeMyVoiceEnabled != [v4 numUsersWithRecognizeMyVoiceEnabled])
+    if (numUsersWithRecognizeMyVoiceEnabled != [equalCopy numUsersWithRecognizeMyVoiceEnabled])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -486,13 +486,13 @@ LABEL_10:
   if (v14)
   {
     numVoiceProfilesAvailable = self->_numVoiceProfilesAvailable;
-    if (numVoiceProfilesAvailable != [v4 numVoiceProfilesAvailable])
+    if (numVoiceProfilesAvailable != [equalCopy numVoiceProfilesAvailable])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -504,13 +504,13 @@ LABEL_10:
   if (v16)
   {
     numUsersWithPersonalRequestsEnabled = self->_numUsersWithPersonalRequestsEnabled;
-    if (numUsersWithPersonalRequestsEnabled != [v4 numUsersWithPersonalRequestsEnabled])
+    if (numUsersWithPersonalRequestsEnabled != [equalCopy numUsersWithPersonalRequestsEnabled])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -522,13 +522,13 @@ LABEL_10:
   if (v18)
   {
     numUsersWithMatchingSiriLanguage = self->_numUsersWithMatchingSiriLanguage;
-    if (numUsersWithMatchingSiriLanguage != [v4 numUsersWithMatchingSiriLanguage])
+    if (numUsersWithMatchingSiriLanguage != [equalCopy numUsersWithMatchingSiriLanguage])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -540,10 +540,10 @@ LABEL_10:
   if (v20)
   {
     numUsersWithSiriCloudSyncEnabled = self->_numUsersWithSiriCloudSyncEnabled;
-    if (numUsersWithSiriCloudSyncEnabled == [v4 numUsersWithSiriCloudSyncEnabled])
+    if (numUsersWithSiriCloudSyncEnabled == [equalCopy numUsersWithSiriCloudSyncEnabled])
     {
       has = self->_has;
-      v6 = v4[22];
+      v6 = equalCopy[22];
       goto LABEL_34;
     }
 
@@ -562,7 +562,7 @@ LABEL_34:
   if (v22)
   {
     numUsersWithLocationServicesEnabled = self->_numUsersWithLocationServicesEnabled;
-    if (numUsersWithLocationServicesEnabled != [v4 numUsersWithLocationServicesEnabled])
+    if (numUsersWithLocationServicesEnabled != [equalCopy numUsersWithLocationServicesEnabled])
     {
       goto LABEL_38;
     }
@@ -574,9 +574,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -693,9 +693,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasNumUsersWithLocationServicesEnabled:(BOOL)a3
+- (void)setHasNumUsersWithLocationServicesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 256;
   }
@@ -708,9 +708,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumUsersWithSiriCloudSyncEnabled:(BOOL)a3
+- (void)setHasNumUsersWithSiriCloudSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -723,9 +723,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumUsersWithMatchingSiriLanguage:(BOOL)a3
+- (void)setHasNumUsersWithMatchingSiriLanguage:(BOOL)language
 {
-  if (a3)
+  if (language)
   {
     v3 = 64;
   }
@@ -738,9 +738,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumUsersWithPersonalRequestsEnabled:(BOOL)a3
+- (void)setHasNumUsersWithPersonalRequestsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -753,9 +753,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumVoiceProfilesAvailable:(BOOL)a3
+- (void)setHasNumVoiceProfilesAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 16;
   }
@@ -768,9 +768,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumUsersWithRecognizeMyVoiceEnabled:(BOOL)a3
+- (void)setHasNumUsersWithRecognizeMyVoiceEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -783,9 +783,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumUsersWhoSyncedRecognizeMyVoice:(BOOL)a3
+- (void)setHasNumUsersWhoSyncedRecognizeMyVoice:(BOOL)voice
 {
-  if (a3)
+  if (voice)
   {
     v3 = 4;
   }
@@ -798,9 +798,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumParticipantsWithTrust:(BOOL)a3
+- (void)setHasNumParticipantsWithTrust:(BOOL)trust
 {
-  if (a3)
+  if (trust)
   {
     v3 = 2;
   }

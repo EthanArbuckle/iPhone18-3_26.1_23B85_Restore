@@ -1,19 +1,19 @@
 @interface TSADEVValue
-- (TSADEVValue)initWithObservationInterval:(double)a3 andADEV:(double)a4;
+- (TSADEVValue)initWithObservationInterval:(double)interval andADEV:(double)v;
 - (id)description;
 @end
 
 @implementation TSADEVValue
 
-- (TSADEVValue)initWithObservationInterval:(double)a3 andADEV:(double)a4
+- (TSADEVValue)initWithObservationInterval:(double)interval andADEV:(double)v
 {
   v7.receiver = self;
   v7.super_class = TSADEVValue;
   result = [(TSADEVValue *)&v7 init];
   if (result)
   {
-    result->_observationInterval = a3;
-    result->_adev = a4;
+    result->_observationInterval = interval;
+    result->_adev = v;
   }
 
   return result;

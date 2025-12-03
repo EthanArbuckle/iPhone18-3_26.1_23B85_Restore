@@ -1,120 +1,120 @@
 @interface UARPController
-- (BOOL)accessoryIDKnown:(id)a3;
-- (BOOL)accessoryKnown:(id)a3;
-- (BOOL)accessoryReachable:(id)a3;
-- (BOOL)accessoryReachableInternal:(id)a3;
-- (BOOL)accessoryUnreachable:(id)a3;
-- (BOOL)accessoryUnreachableInternal:(id)a3;
-- (BOOL)addAccessory:(id)a3 assetID:(id)a4;
-- (BOOL)applyStagedFirmwareOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4;
-- (BOOL)cancelFirmwareStagingForAccessory:(id)a3 assetID:(id)a4;
-- (BOOL)changeAssetLocation:(id)a3 assetID:(id)a4;
-- (BOOL)checkForUpdate:(id)a3;
+- (BOOL)accessoryIDKnown:(id)known;
+- (BOOL)accessoryKnown:(id)known;
+- (BOOL)accessoryReachable:(id)reachable;
+- (BOOL)accessoryReachableInternal:(id)internal;
+- (BOOL)accessoryUnreachable:(id)unreachable;
+- (BOOL)accessoryUnreachableInternal:(id)internal;
+- (BOOL)addAccessory:(id)accessory assetID:(id)d;
+- (BOOL)applyStagedFirmwareOnAccessoryList:(id)list withUserIntent:(BOOL)intent;
+- (BOOL)cancelFirmwareStagingForAccessory:(id)accessory assetID:(id)d;
+- (BOOL)changeAssetLocation:(id)location assetID:(id)d;
+- (BOOL)checkForUpdate:(id)update;
 - (BOOL)createUploader;
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)downloadAvailableFirmwareUpdate:(id)a3 assetID:(id)a4 withUserIntent:(BOOL)a5;
-- (BOOL)downloadReleaseNotes:(id)a3 assetID:(id)a4;
-- (BOOL)dynamicAssetAvailableForAccessory:(id)a3 assetID:(id)a4 error:(id *)a5;
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)getAttestationCertificates:(id)a3 assetLocationType:(int64_t)a4;
-- (BOOL)getAttestationCertificatesInternal:(id)a3 assetID:(id)a4;
-- (BOOL)getBatchedSupportedAccessories:(id)a3 assetLocationType:(int64_t)a4;
-- (BOOL)getSupportedAccessories:(id)a3 assetLocationType:(int64_t)a4;
-- (BOOL)getSupportedAccessoriesInternal:(id)a3 assetID:(id)a4 batchRequest:(BOOL)a5;
-- (BOOL)pauseAssetTransfersForAccessory:(id)a3;
-- (BOOL)recvDataFromAccessory:(id)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)registerForAssetAvailabilityNotification:(id)a3;
-- (BOOL)registerForAttestationCertificatesAvailability:(id)a3;
-- (BOOL)registerForGenericNotification:(id)a3 notificationName:(id)a4;
-- (BOOL)registerForSupplementalAssetAvailabilityNotification:(id)a3;
-- (BOOL)registerForSupportedAccessoriesAvailability:(id)a3;
-- (BOOL)removeAccessory:(id)a3;
-- (BOOL)requestConsent:(id)a3;
-- (BOOL)rescindStagedFirmwareOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4;
-- (BOOL)resumeAssetTransfersForAccessory:(id)a3;
-- (BOOL)revokeConsentRequest:(id)a3;
-- (BOOL)solicitDynamicAsset:(id)a3 assetID:(id)a4;
-- (BOOL)stageFirmwareUpdateOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4;
-- (BOOL)startPacketCapture:(id)a3;
-- (BOOL)startTapToRadar:(id)a3;
-- (BOOL)triggerUnsolicitedDynamicAsset:(id)a3 assetTag:(id)a4;
-- (BOOL)updateProperty:(unint64_t)a3 value:(id)a4 forAccessory:(id)a5;
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)downloadAvailableFirmwareUpdate:(id)update assetID:(id)d withUserIntent:(BOOL)intent;
+- (BOOL)downloadReleaseNotes:(id)notes assetID:(id)d;
+- (BOOL)dynamicAssetAvailableForAccessory:(id)accessory assetID:(id)d error:(id *)error;
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)getAttestationCertificates:(id)certificates assetLocationType:(int64_t)type;
+- (BOOL)getAttestationCertificatesInternal:(id)internal assetID:(id)d;
+- (BOOL)getBatchedSupportedAccessories:(id)accessories assetLocationType:(int64_t)type;
+- (BOOL)getSupportedAccessories:(id)accessories assetLocationType:(int64_t)type;
+- (BOOL)getSupportedAccessoriesInternal:(id)internal assetID:(id)d batchRequest:(BOOL)request;
+- (BOOL)pauseAssetTransfersForAccessory:(id)accessory;
+- (BOOL)recvDataFromAccessory:(id)accessory data:(id)data error:(id *)error;
+- (BOOL)registerForAssetAvailabilityNotification:(id)notification;
+- (BOOL)registerForAttestationCertificatesAvailability:(id)availability;
+- (BOOL)registerForGenericNotification:(id)notification notificationName:(id)name;
+- (BOOL)registerForSupplementalAssetAvailabilityNotification:(id)notification;
+- (BOOL)registerForSupportedAccessoriesAvailability:(id)availability;
+- (BOOL)removeAccessory:(id)accessory;
+- (BOOL)requestConsent:(id)consent;
+- (BOOL)rescindStagedFirmwareOnAccessoryList:(id)list withUserIntent:(BOOL)intent;
+- (BOOL)resumeAssetTransfersForAccessory:(id)accessory;
+- (BOOL)revokeConsentRequest:(id)request;
+- (BOOL)solicitDynamicAsset:(id)asset assetID:(id)d;
+- (BOOL)stageFirmwareUpdateOnAccessoryList:(id)list withUserIntent:(BOOL)intent;
+- (BOOL)startPacketCapture:(id)capture;
+- (BOOL)startTapToRadar:(id)radar;
+- (BOOL)triggerUnsolicitedDynamicAsset:(id)asset assetTag:(id)tag;
+- (BOOL)updateProperty:(unint64_t)property value:(id)value forAccessory:(id)accessory;
 - (NSArray)accessoryList;
 - (UARPController)init;
 - (UARPControllerDelegateProtocol)delegate;
-- (id)assetAvailabilityTokenForAccessory:(id)a3;
-- (id)createSupportedAccessory:(id)a3 accessoryMetadata:(id)a4;
-- (id)pendingAssetForAccessory:(id)a3 assetID:(id)a4;
+- (id)assetAvailabilityTokenForAccessory:(id)accessory;
+- (id)createSupportedAccessory:(id)accessory accessoryMetadata:(id)metadata;
+- (id)pendingAssetForAccessory:(id)accessory assetID:(id)d;
 - (id)pendingTatsuRequests;
-- (id)personalizationHelperQueryPendingTssRequests:(id)a3;
-- (id)supplementalAssetAvailabilityTokenForAccessory:(id)a3;
-- (id)unsolicitedDynamicAssetOffered:(id)a3 assetID:(id)a4;
-- (int64_t)queryProperty:(unint64_t)a3 forAccessory:(id)a4;
-- (void)accessoryTransportNeeded:(id)a3 isNeeded:(BOOL)a4;
-- (void)assetAvailabilityNotificationPosted:(int)a3;
-- (void)assetAvailablityUpdateForAccessory:(id)a3 assetID:(id)a4;
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4;
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)assetSolicitationProgress:(id)a3 assetID:(id)a4 bytesReceived:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)assetStagingPause:(id)a3;
-- (void)assetStagingResume:(id)a3;
+- (id)personalizationHelperQueryPendingTssRequests:(id)requests;
+- (id)supplementalAssetAvailabilityTokenForAccessory:(id)accessory;
+- (id)unsolicitedDynamicAssetOffered:(id)offered assetID:(id)d;
+- (int64_t)queryProperty:(unint64_t)property forAccessory:(id)accessory;
+- (void)accessoryTransportNeeded:(id)needed isNeeded:(BOOL)isNeeded;
+- (void)assetAvailabilityNotificationPosted:(int)posted;
+- (void)assetAvailablityUpdateForAccessory:(id)accessory assetID:(id)d;
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD;
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)assetSolicitationProgress:(id)progress assetID:(id)d bytesReceived:(unint64_t)received bytesTotal:(unint64_t)total;
+- (void)assetStagingPause:(id)pause;
+- (void)assetStagingResume:(id)resume;
 - (void)dealloc;
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6 filterProgress:(BOOL)a7;
-- (void)firmwareUpdateResult:(id)a3 vendorSpecificStatus:(unsigned int)a4 error:(id)a5;
-- (void)genericNotificationPosted:(int)a3;
-- (void)handleReceivedAttestationCertificates:(id)a3 forSubjectKeyIdentifier:(id)a4;
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total filterProgress:(BOOL)filterProgress;
+- (void)firmwareUpdateResult:(id)result vendorSpecificStatus:(unsigned int)status error:(id)error;
+- (void)genericNotificationPosted:(int)posted;
+- (void)handleReceivedAttestationCertificates:(id)certificates forSubjectKeyIdentifier:(id)identifier;
 - (void)pendingTatsuRequests;
-- (void)personalizationHelperTssResponse:(id)a3 updaterName:(id)a4;
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)queryCompleteForAccessory:(id)a3 appleModelNumber:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 boardID:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 chipID:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 chipRevision:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 ecid:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 enableMixMatch:(BOOL)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 epoch:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 firmwareVersion:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 friendlyName:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 hardwareVersion:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 hwFusingType:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 liveNonce:(BOOL)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 manifestPrefix:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 manufacturer:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 modelName:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 nonceHash:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 nonceSeed:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 prefixNeedsLUN:(BOOL)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 productionMode:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 securityDomain:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 securityMode:(unint64_t)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 serialNumber:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 stagedFirmwareVersion:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 stats:(id)a4 error:(id)a5;
-- (void)queryCompleteForAccessory:(id)a3 suffixNeedsLUN:(BOOL)a4 error:(id)a5;
-- (void)queryFirmwareUpdateResultForAccessory:(id)a3;
-- (void)sendFirmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)sendFirmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4;
-- (void)setChipInfoDelegate:(id)a3;
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4;
-- (void)stagedFirmwareRescindComplete:(id)a3 withStatus:(unint64_t)a4;
-- (void)startPersonalizationHelperService:(id)a3 entitlement:(id)a4;
+- (void)personalizationHelperTssResponse:(id)response updaterName:(id)name;
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)queryCompleteForAccessory:(id)accessory appleModelNumber:(id)number error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory boardID:(unint64_t)d error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory chipID:(unint64_t)d error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory chipRevision:(unint64_t)revision error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory ecid:(unint64_t)ecid error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory enableMixMatch:(BOOL)match error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory epoch:(unint64_t)epoch error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory firmwareVersion:(id)version error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory friendlyName:(id)name error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory hardwareVersion:(id)version error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory hwFusingType:(id)type error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory liveNonce:(BOOL)nonce error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory manifestPrefix:(id)prefix error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory manufacturer:(id)manufacturer error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory modelName:(id)name error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory nonceHash:(id)hash error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory nonceSeed:(id)seed error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory prefixNeedsLUN:(BOOL)n error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory productionMode:(unint64_t)mode error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory securityDomain:(unint64_t)domain error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory securityMode:(unint64_t)mode error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory serialNumber:(id)number error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory stagedFirmwareVersion:(id)version error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory stats:(id)stats error:(id)error;
+- (void)queryCompleteForAccessory:(id)accessory suffixNeedsLUN:(BOOL)n error:(id)error;
+- (void)queryFirmwareUpdateResultForAccessory:(id)accessory;
+- (void)sendFirmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)sendFirmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg;
+- (void)setChipInfoDelegate:(id)delegate;
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status;
+- (void)stagedFirmwareRescindComplete:(id)complete withStatus:(unint64_t)status;
+- (void)startPersonalizationHelperService:(id)service entitlement:(id)entitlement;
 - (void)stopPacketCapture;
 - (void)stopTapToRadar;
-- (void)supplementalAssetAvailabilityNotificationPosted:(int)a3;
-- (void)supplementalAssetAvailablityUpdateForAccessory:(id)a3 assetName:(id)a4;
-- (void)supplementalAssetAvailablityUpdateForAccessoryID:(id)a3 assetName:(id)a4;
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5;
-- (void)tssResponse:(id)a3;
+- (void)supplementalAssetAvailabilityNotificationPosted:(int)posted;
+- (void)supplementalAssetAvailablityUpdateForAccessory:(id)accessory assetName:(id)name;
+- (void)supplementalAssetAvailablityUpdateForAccessoryID:(id)d assetName:(id)name;
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete;
+- (void)tssResponse:(id)response;
 - (void)unregisterForAllAssetAvailabilityNotifications;
 - (void)unregisterForAllAttestationCertificatesAvailabilityNotifications;
 - (void)unregisterForAllGenericNotifications;
 - (void)unregisterForAllSupplementalAssetAvailabilityNotifications;
-- (void)unregisterForAssetAvailabilityNotification:(id)a3;
-- (void)unregisterForSupplementalAssetAvailabilityNotification:(id)a3;
-- (void)updatePendingAssetsForAccessory:(id)a3 assetID:(id)a4;
+- (void)unregisterForAssetAvailabilityNotification:(id)notification;
+- (void)unregisterForSupplementalAssetAvailabilityNotification:(id)notification;
+- (void)updatePendingAssetsForAccessory:(id)accessory assetID:(id)d;
 @end
 
 @implementation UARPController
@@ -126,9 +126,9 @@
   v2 = [(UARPController *)&v32 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     accessories = v2->_accessories;
-    v2->_accessories = v3;
+    v2->_accessories = dictionary;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
     assetCache = v2->_assetCache;
@@ -162,25 +162,25 @@
     updateFirmwareAnalytics = v2->_updateFirmwareAnalytics;
     v2->_updateFirmwareAnalytics = v19;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     assetAvailabilityNotificationTokenDict = v2->_assetAvailabilityNotificationTokenDict;
-    v2->_assetAvailabilityNotificationTokenDict = v21;
+    v2->_assetAvailabilityNotificationTokenDict = dictionary2;
 
-    v23 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     supplementalAssetAvailabilityNotificationTokenDict = v2->_supplementalAssetAvailabilityNotificationTokenDict;
-    v2->_supplementalAssetAvailabilityNotificationTokenDict = v23;
+    v2->_supplementalAssetAvailabilityNotificationTokenDict = dictionary3;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     assetAvailabilityUARPProductGroupNotificationTokenDict = v2->_assetAvailabilityUARPProductGroupNotificationTokenDict;
-    v2->_assetAvailabilityUARPProductGroupNotificationTokenDict = v25;
+    v2->_assetAvailabilityUARPProductGroupNotificationTokenDict = dictionary4;
 
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict = v2->_attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict;
-    v2->_attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict = v27;
+    v2->_attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict = dictionary5;
 
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
     generalNotificationTokenDict = v2->_generalNotificationTokenDict;
-    v2->_generalNotificationTokenDict = v29;
+    v2->_generalNotificationTokenDict = dictionary6;
 
     v2->_isInternalBuild = MGGetBoolAnswer();
   }
@@ -188,13 +188,13 @@
   return v2;
 }
 
-- (void)setChipInfoDelegate:(id)a3
+- (void)setChipInfoDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   obj = self;
   objc_sync_enter(obj);
   chipInfoDelegate = obj->_chipInfoDelegate;
-  obj->_chipInfoDelegate = v4;
+  obj->_chipInfoDelegate = delegateCopy;
 
   objc_sync_exit(obj);
 }
@@ -210,21 +210,21 @@
   [(UARPController *)&v3 dealloc];
 }
 
-- (BOOL)accessoryReachableInternal:(id)a3
+- (BOOL)accessoryReachableInternal:(id)internal
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  internalCopy = internal;
   accessories = self->_accessories;
-  v6 = [v4 getID];
-  v7 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:v6];
+  getID = [internalCopy getID];
+  v7 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:getID];
 
-  [v7 setSuppressAutomaticDynamicAssets:{objc_msgSend(v4, "suppressAutomaticDynamicAssets")}];
-  [v7 setSuppressInfoQueries:{objc_msgSend(v4, "suppressInfoQueries")}];
+  [v7 setSuppressAutomaticDynamicAssets:{objc_msgSend(internalCopy, "suppressAutomaticDynamicAssets")}];
+  [v7 setSuppressInfoQueries:{objc_msgSend(internalCopy, "suppressInfoQueries")}];
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = internalCopy;
     _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "Accessory reported as reachable %@", &v17, 0xCu);
   }
 
@@ -235,10 +235,10 @@
 
   if (v7)
   {
-    v9 = [v7 reachable];
+    reachable = [v7 reachable];
     v10 = self->_controllerLog;
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (v9)
+    if (reachable)
     {
       if (v11)
       {
@@ -258,7 +258,7 @@
     }
 
     [v7 setReachable:1];
-    if ([(UARPUploader *)self->_uploader accessoryReachable:v4 error:0])
+    if ([(UARPUploader *)self->_uploader accessoryReachable:internalCopy error:0])
     {
       goto LABEL_11;
     }
@@ -270,8 +270,8 @@ LABEL_12:
 
 LABEL_11:
   powerLogManager = self->_powerLogManager;
-  v13 = [v4 getID];
-  [(UARPPowerLogManager *)powerLogManager setAccessoryIDReachable:v13];
+  getID2 = [internalCopy getID];
+  [(UARPPowerLogManager *)powerLogManager setAccessoryIDReachable:getID2];
 
   v14 = 1;
 LABEL_13:
@@ -280,9 +280,9 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)accessoryReachable:(id)a3
+- (BOOL)accessoryReachable:(id)reachable
 {
-  v4 = a3;
+  reachableCopy = reachable;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -292,10 +292,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __37__UARPController_accessoryReachable___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = reachableCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = reachableCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -310,19 +310,19 @@ uint64_t __37__UARPController_accessoryReachable___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)accessoryUnreachableInternal:(id)a3
+- (BOOL)accessoryUnreachableInternal:(id)internal
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  internalCopy = internal;
   accessories = self->_accessories;
-  v6 = [v4 getID];
-  v7 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:v6];
+  getID = [internalCopy getID];
+  v7 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:getID];
 
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v37 = v4;
+    v37 = internalCopy;
     _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "Accessory reported as unreachable %@", buf, 0xCu);
   }
 
@@ -331,10 +331,10 @@ uint64_t __37__UARPController_accessoryReachable___block_invoke(uint64_t a1)
     goto LABEL_20;
   }
 
-  v9 = [v7 reachable];
+  reachable = [v7 reachable];
   v10 = self->_controllerLog;
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (!v9)
+  if (!reachable)
   {
     if (v11)
     {
@@ -359,21 +359,21 @@ uint64_t __37__UARPController_accessoryReachable___block_invoke(uint64_t a1)
     _os_log_impl(&dword_247AA7000, v10, OS_LOG_TYPE_INFO, "Accessory is newly unreachable %@", buf, 0xCu);
   }
 
-  if (![(UARPUploader *)self->_uploader accessoryUnreachable:v4 error:0])
+  if (![(UARPUploader *)self->_uploader accessoryUnreachable:internalCopy error:0])
   {
 LABEL_20:
     v24 = 0;
     goto LABEL_24;
   }
 
-  v31 = v4;
+  v31 = internalCopy;
   [v7 setReachable:0];
-  v12 = [v7 pendingAssets];
+  pendingAssets = [v7 pendingAssets];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v13 = [pendingAssets countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v13)
   {
     v14 = v13;
@@ -384,13 +384,13 @@ LABEL_20:
       {
         if (*v33 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pendingAssets);
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
         v18 = [v17 id];
-        v19 = [v7 getID];
-        v20 = [v18 isStagingInProgressOnAccessoryID:v19];
+        getID2 = [v7 getID];
+        v20 = [v18 isStagingInProgressOnAccessoryID:getID2];
 
         if (v20)
         {
@@ -405,35 +405,35 @@ LABEL_20:
           }
 
           v22 = [v17 id];
-          v23 = [v7 getID];
-          [v22 stagingCompleteOnAccessoryID:v23];
+          getID3 = [v7 getID];
+          [v22 stagingCompleteOnAccessoryID:getID3];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v14 = [pendingAssets countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v14);
   }
 
   v24 = 1;
-  v4 = v31;
+  internalCopy = v31;
 LABEL_24:
   updateFirmwareAnalytics = self->_updateFirmwareAnalytics;
-  v26 = [v4 getID];
-  [(UARPAnalyticsUpdateFirmwareManager *)updateFirmwareAnalytics setAccessoryIDUnreachable:v26];
+  getID4 = [internalCopy getID];
+  [(UARPAnalyticsUpdateFirmwareManager *)updateFirmwareAnalytics setAccessoryIDUnreachable:getID4];
 
   powerLogManager = self->_powerLogManager;
-  v28 = [v4 getID];
-  [(UARPPowerLogManager *)powerLogManager setAccessoryIDUnreachable:v28];
+  getID5 = [internalCopy getID];
+  [(UARPPowerLogManager *)powerLogManager setAccessoryIDUnreachable:getID5];
 
   v29 = *MEMORY[0x277D85DE8];
   return v24;
 }
 
-- (BOOL)accessoryUnreachable:(id)a3
+- (BOOL)accessoryUnreachable:(id)unreachable
 {
-  v4 = a3;
+  unreachableCopy = unreachable;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -443,10 +443,10 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __39__UARPController_accessoryUnreachable___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = unreachableCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = unreachableCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -492,18 +492,18 @@ void __31__UARPController_accessoryList__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)stageFirmwareUpdateOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4
+- (BOOL)stageFirmwareUpdateOnAccessoryList:(id)list withUserIntent:(BOOL)intent
 {
-  v6 = a3;
+  listCopy = list;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__UARPController_stageFirmwareUpdateOnAccessoryList_withUserIntent___block_invoke;
   block[3] = &unk_278EC28A0;
-  v11 = v6;
-  v12 = self;
-  v13 = a4;
-  v8 = v6;
+  v11 = listCopy;
+  selfCopy = self;
+  intentCopy = intent;
+  v8 = listCopy;
   dispatch_sync(internalQueue, block);
 
   return 1;
@@ -650,17 +650,17 @@ void __68__UARPController_stageFirmwareUpdateOnAccessoryList_withUserIntent___bl
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applyStagedFirmwareOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4
+- (BOOL)applyStagedFirmwareOnAccessoryList:(id)list withUserIntent:(BOOL)intent
 {
-  v5 = a3;
+  listCopy = list;
   internalQueue = self->_internalQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__UARPController_applyStagedFirmwareOnAccessoryList_withUserIntent___block_invoke;
   v9[3] = &unk_278EC1140;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
+  v10 = listCopy;
+  selfCopy = self;
+  v7 = listCopy;
   dispatch_sync(internalQueue, v9);
 
   return 1;
@@ -702,17 +702,17 @@ void __68__UARPController_applyStagedFirmwareOnAccessoryList_withUserIntent___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)rescindStagedFirmwareOnAccessoryList:(id)a3 withUserIntent:(BOOL)a4
+- (BOOL)rescindStagedFirmwareOnAccessoryList:(id)list withUserIntent:(BOOL)intent
 {
-  v5 = a3;
+  listCopy = list;
   internalQueue = self->_internalQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__UARPController_rescindStagedFirmwareOnAccessoryList_withUserIntent___block_invoke;
   v9[3] = &unk_278EC1140;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
+  v10 = listCopy;
+  selfCopy = self;
+  v7 = listCopy;
   dispatch_sync(internalQueue, v9);
 
   return 1;
@@ -754,10 +754,10 @@ void __70__UARPController_rescindStagedFirmwareOnAccessoryList_withUserIntent___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)cancelFirmwareStagingForAccessory:(id)a3 assetID:(id)a4
+- (BOOL)cancelFirmwareStagingForAccessory:(id)accessory assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -768,11 +768,11 @@ void __70__UARPController_rescindStagedFirmwareOnAccessoryList_withUserIntent___
   v12[2] = __60__UARPController_cancelFirmwareStagingForAccessory_assetID___block_invoke;
   v12[3] = &unk_278EC28C8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = accessoryCopy;
+  v14 = dCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = accessoryCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -796,11 +796,11 @@ void __60__UARPController_cancelFirmwareStagingForAccessory_assetID___block_invo
   }
 }
 
-- (BOOL)recvDataFromAccessory:(id)a3 data:(id)a4 error:(id *)a5
+- (BOOL)recvDataFromAccessory:(id)accessory data:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 length])
+  accessoryCopy = accessory;
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v24 = 0;
     v25 = &v24;
@@ -819,13 +819,13 @@ void __60__UARPController_cancelFirmwareStagingForAccessory_assetID___block_invo
     block[3] = &unk_278EC28F0;
     v16 = &v24;
     block[4] = self;
-    v14 = v8;
-    v15 = v9;
+    v14 = accessoryCopy;
+    v15 = dataCopy;
     v17 = &v18;
     dispatch_sync(internalQueue, block);
-    if (a5)
+    if (error)
     {
-      *a5 = v19[5];
+      *error = v19[5];
     }
 
     v11 = *(v25 + 24);
@@ -874,41 +874,41 @@ void __51__UARPController_recvDataFromAccessory_data_error___block_invoke(void *
   [v10 dump:v7 accessoryID:v11 uarpStatus:v8 direction:1];
 }
 
-- (BOOL)accessoryKnown:(id)a3
+- (BOOL)accessoryKnown:(id)known
 {
   accessories = self->_accessories;
-  v4 = [a3 getID];
-  v5 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:v4];
+  getID = [known getID];
+  v5 = [(NSMutableDictionary *)accessories objectForKeyedSubscript:getID];
   LOBYTE(accessories) = v5 != 0;
 
   return accessories;
 }
 
-- (BOOL)accessoryIDKnown:(id)a3
+- (BOOL)accessoryIDKnown:(id)known
 {
-  v3 = [(NSMutableDictionary *)self->_accessories objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_accessories objectForKeyedSubscript:known];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)updatePendingAssetsForAccessory:(id)a3 assetID:(id)a4
+- (void)updatePendingAssetsForAccessory:(id)accessory assetID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 localURL];
-  if (!v8 || [v7 downloadStatus] != 1)
+  accessoryCopy = accessory;
+  dCopy = d;
+  localURL = [dCopy localURL];
+  if (!localURL || [dCopy downloadStatus] != 1)
   {
     goto LABEL_21;
   }
 
-  v9 = [v7 updateAvailabilityStatus];
+  updateAvailabilityStatus = [dCopy updateAvailabilityStatus];
 
-  if (v9 == 3)
+  if (updateAvailabilityStatus == 3)
   {
-    v8 = [(UARPController *)self pendingAssetForAccessory:v6 assetID:v7];
-    if (v8)
+    localURL = [(UARPController *)self pendingAssetForAccessory:accessoryCopy assetID:dCopy];
+    if (localURL)
     {
       xpcLog = self->_xpcLog;
       if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_DEFAULT))
@@ -916,26 +916,26 @@ void __51__UARPController_recvDataFromAccessory_data_error___block_invoke(void *
         v24 = 136315394;
         v25 = "[UARPController updatePendingAssetsForAccessory:assetID:]";
         v26 = 2112;
-        v27 = v7;
+        v27 = dCopy;
         _os_log_impl(&dword_247AA7000, xpcLog, OS_LOG_TYPE_DEFAULT, "%s: AssetID %@ already present in accessory's pending list", &v24, 0x16u);
       }
 
       goto LABEL_21;
     }
 
-    v11 = [(NSCache *)self->_assetCache objectForKey:v7];
+    v11 = [(NSCache *)self->_assetCache objectForKey:dCopy];
     if (!v11)
     {
-      v12 = [(UARPControllerInternalDelegate *)self->_internalDelegate getSandboxExtensionTokenForAssetID:v7];
+      v12 = [(UARPControllerInternalDelegate *)self->_internalDelegate getSandboxExtensionTokenForAssetID:dCopy];
       v13 = [UARPAsset alloc];
       if (v12)
       {
-        v14 = [(UARPAsset *)v13 initWithID:v7 sandboxToken:v12];
+        v14 = [(UARPAsset *)v13 initWithID:dCopy sandboxToken:v12];
       }
 
       else
       {
-        v14 = [(UARPAsset *)v13 initWithID:v7];
+        v14 = [(UARPAsset *)v13 initWithID:dCopy];
       }
 
       v11 = v14;
@@ -950,20 +950,20 @@ void __51__UARPController_recvDataFromAccessory_data_error___block_invoke(void *
         goto LABEL_20;
       }
 
-      [(NSCache *)self->_assetCache setObject:v14 forKey:v7];
+      [(NSCache *)self->_assetCache setObject:v14 forKey:dCopy];
     }
 
     v15 = self->_xpcLog;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v6 pendingAssets];
+      pendingAssets = [accessoryCopy pendingAssets];
       v24 = 136315650;
       v25 = "[UARPController updatePendingAssetsForAccessory:assetID:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = accessoryCopy;
       v28 = 2112;
-      v29 = v17;
+      v29 = pendingAssets;
       _os_log_impl(&dword_247AA7000, v16, OS_LOG_TYPE_DEFAULT, "%s: Current PendingAssetList for %@: %@", &v24, 0x20u);
     }
 
@@ -977,18 +977,18 @@ void __51__UARPController_recvDataFromAccessory_data_error___block_invoke(void *
       _os_log_impl(&dword_247AA7000, v18, OS_LOG_TYPE_DEFAULT, "%s: Adding Asset %@", &v24, 0x16u);
     }
 
-    [v6 addPendingAsset:v11];
+    [accessoryCopy addPendingAsset:v11];
     v19 = self->_xpcLog;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v6 pendingAssets];
+      pendingAssets2 = [accessoryCopy pendingAssets];
       v24 = 136315650;
       v25 = "[UARPController updatePendingAssetsForAccessory:assetID:]";
       v26 = 2112;
-      v27 = v6;
+      v27 = accessoryCopy;
       v28 = 2112;
-      v29 = v21;
+      v29 = pendingAssets2;
       _os_log_impl(&dword_247AA7000, v20, OS_LOG_TYPE_DEFAULT, "%s: Updated PendingAssetList for %@: %@", &v24, 0x20u);
     }
 
@@ -1001,18 +1001,18 @@ LABEL_21:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pendingAssetForAccessory:(id)a3 assetID:(id)a4
+- (id)pendingAssetForAccessory:(id)accessory assetID:(id)d
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v34 = "[UARPController pendingAssetForAccessory:assetID:]";
     v35 = 2112;
-    v36 = v7;
+    v36 = dCopy;
     _os_log_impl(&dword_247AA7000, xpcLog, OS_LOG_TYPE_DEFAULT, "%s: Looking for matching asset on pending queue for asset %@", buf, 0x16u);
   }
 
@@ -1020,12 +1020,12 @@ LABEL_21:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [v6 pendingAssets];
+  obj = [accessoryCopy pendingAssets];
   v9 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
-    v27 = v6;
+    v27 = accessoryCopy;
     v11 = *v30;
     while (2)
     {
@@ -1038,9 +1038,9 @@ LABEL_21:
 
         v13 = *(*(&v29 + 1) + 8 * i);
         v14 = [v13 id];
-        v15 = [v14 firmwareHash];
-        v16 = [v7 firmwareHash];
-        v17 = [v15 isEqualToString:v16];
+        firmwareHash = [v14 firmwareHash];
+        firmwareHash2 = [dCopy firmwareHash];
+        v17 = [firmwareHash isEqualToString:firmwareHash2];
 
         v18 = self->_xpcLog;
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -1055,7 +1055,7 @@ LABEL_21:
             v35 = 2112;
             v36 = v24;
             v37 = 2112;
-            v38 = v7;
+            v38 = dCopy;
             _os_log_impl(&dword_247AA7000, v23, OS_LOG_TYPE_DEFAULT, "%s: Assets matched %@ and %@", buf, 0x20u);
           }
 
@@ -1072,7 +1072,7 @@ LABEL_21:
           v35 = 2112;
           v36 = v21;
           v37 = 2112;
-          v38 = v7;
+          v38 = dCopy;
           _os_log_impl(&dword_247AA7000, v20, OS_LOG_TYPE_DEFAULT, "%s: Assets NOT matched %@ and %@", buf, 0x20u);
         }
       }
@@ -1088,7 +1088,7 @@ LABEL_21:
 
     v22 = 0;
 LABEL_17:
-    v6 = v27;
+    accessoryCopy = v27;
   }
 
   else
@@ -1101,45 +1101,45 @@ LABEL_17:
   return v22;
 }
 
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 getID];
-  [v9 stagingCompleteOnAccessoryID:v10];
+  completeCopy = complete;
+  dCopy = d;
+  getID = [completeCopy getID];
+  [dCopy stagingCompleteOnAccessoryID:getID];
 
-  v11 = [(UARPController *)self pendingAssetForAccessory:v8 assetID:v9];
+  v11 = [(UARPController *)self pendingAssetForAccessory:completeCopy assetID:dCopy];
   if (v11)
   {
-    [v8 removePendingAsset:v11];
+    [completeCopy removePendingAsset:v11];
   }
 
-  if (([v9 isDynamicAsset] & 1) == 0)
+  if (([dCopy isDynamicAsset] & 1) == 0)
   {
     updateFirmwareAnalytics = self->_updateFirmwareAnalytics;
-    v13 = [v8 getID];
-    [(UARPAnalyticsUpdateFirmwareManager *)updateFirmwareAnalytics stagingCompleteForAccessoryID:v13 assetID:v9 status:a5];
+    getID2 = [completeCopy getID];
+    [(UARPAnalyticsUpdateFirmwareManager *)updateFirmwareAnalytics stagingCompleteForAccessoryID:getID2 assetID:dCopy status:status];
 
     powerLogManager = self->_powerLogManager;
-    v15 = [v8 getID];
-    v16 = [v9 assetVersion];
-    v17 = [v8 firmwareVersion];
-    [(UARPPowerLogManager *)powerLogManager setStagingCompleteForAccessoryID:v15 stagedFirmwareVersion:v16 activeFirmareVersion:v17 status:a5];
+    getID3 = [completeCopy getID];
+    assetVersion = [dCopy assetVersion];
+    firmwareVersion = [completeCopy firmwareVersion];
+    [(UARPPowerLogManager *)powerLogManager setStagingCompleteForAccessoryID:getID3 stagedFirmwareVersion:assetVersion activeFirmareVersion:firmwareVersion status:status];
 
     if (self->_isInternalBuild)
     {
       internalDelegate = self->_internalDelegate;
-      v19 = [v8 getID];
-      [(UARPControllerInternalDelegate *)internalDelegate stagingCompleteForAccessoryID:v19 assetID:v9 status:a5];
+      getID4 = [completeCopy getID];
+      [(UARPControllerInternalDelegate *)internalDelegate stagingCompleteForAccessoryID:getID4 assetID:dCopy status:status];
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v9 reportProgressToDelegates];
+    reportProgressToDelegates = [dCopy reportProgressToDelegates];
 
-    if (v21)
+    if (reportProgressToDelegates)
     {
       delegateQueue = self->_delegateQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -1147,9 +1147,9 @@ LABEL_17:
       block[2] = __61__UARPController_firmwareStagingComplete_assetID_withStatus___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v31 = v8;
-      v32 = v9;
-      v33 = a5;
+      v31 = completeCopy;
+      v32 = dCopy;
+      statusCopy = status;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -1161,9 +1161,9 @@ LABEL_17:
   v23 = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v24 = [v9 reportProgressToDelegates];
+    reportProgressToDelegates2 = [dCopy reportProgressToDelegates];
 
-    if (v24)
+    if (reportProgressToDelegates2)
     {
       v25 = self->_delegateQueue;
       v26[0] = MEMORY[0x277D85DD0];
@@ -1171,9 +1171,9 @@ LABEL_17:
       v26[2] = __61__UARPController_firmwareStagingComplete_assetID_withStatus___block_invoke_2;
       v26[3] = &unk_278EC2918;
       v26[4] = self;
-      v27 = v8;
-      v28 = v9;
-      v29 = a5;
+      v27 = completeCopy;
+      v28 = dCopy;
+      statusCopy2 = status;
       dispatch_async(v25, v26);
     }
   }
@@ -1195,9 +1195,9 @@ void __61__UARPController_firmwareStagingComplete_assetID_withStatus___block_inv
   [WeakRetained firmwareStagingComplete:a1[5] assetID:a1[6] withStatus:a1[7]];
 }
 
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status
 {
-  v6 = a3;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -1209,8 +1209,8 @@ void __61__UARPController_firmwareStagingComplete_assetID_withStatus___block_inv
     block[2] = __63__UARPController_stagedFirmwareApplicationComplete_withStatus___block_invoke;
     block[3] = &unk_278EC2530;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = completeCopy;
+    statusCopy = status;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -1221,9 +1221,9 @@ void __63__UARPController_stagedFirmwareApplicationComplete_withStatus___block_i
   [WeakRetained stagedFirmwareApplicationComplete:a1[5] withStatus:a1[6]];
 }
 
-- (void)stagedFirmwareRescindComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareRescindComplete:(id)complete withStatus:(unint64_t)status
 {
-  v6 = a3;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -1235,8 +1235,8 @@ void __63__UARPController_stagedFirmwareApplicationComplete_withStatus___block_i
     block[2] = __59__UARPController_stagedFirmwareRescindComplete_withStatus___block_invoke;
     block[3] = &unk_278EC2530;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = completeCopy;
+    statusCopy = status;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -1247,23 +1247,23 @@ void __59__UARPController_stagedFirmwareRescindComplete_withStatus___block_invok
   [WeakRetained stagedFirmwareRescindComplete:a1[5] withStatus:a1[6]];
 }
 
-- (BOOL)updateProperty:(unint64_t)a3 value:(id)a4 forAccessory:(id)a5
+- (BOOL)updateProperty:(unint64_t)property value:(id)value forAccessory:(id)accessory
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  valueCopy = value;
+  accessoryCopy = accessory;
+  v10 = accessoryCopy;
   v11 = 0;
-  if (a3 > 4)
+  if (property > 4)
   {
-    if (a3 > 11)
+    if (property > 11)
     {
-      switch(a3)
+      switch(property)
       {
         case 0xCuLL:
-          [v9 setHwFusingType:v8];
+          [accessoryCopy setHwFusingType:valueCopy];
           break;
         case 0xDuLL:
-          [v9 setFriendlyName:v8];
+          [accessoryCopy setFriendlyName:valueCopy];
           break;
         case 0x23uLL:
           break;
@@ -1274,64 +1274,64 @@ void __59__UARPController_stagedFirmwareRescindComplete_withStatus___block_invok
       goto LABEL_26;
     }
 
-    if (a3 != 5)
+    if (property != 5)
     {
-      if (a3 == 7)
+      if (property == 7)
       {
-        [v9 setProductGroup:v8];
+        [accessoryCopy setProductGroup:valueCopy];
         goto LABEL_26;
       }
 
-      if (a3 == 8)
+      if (property == 8)
       {
-        [v9 setProductNumber:v8];
+        [accessoryCopy setProductNumber:valueCopy];
 LABEL_26:
-        v11 = [(UARPControllerInternalDelegate *)self->_internalDelegate updateProperty:a3 value:v8 forAccessory:v10];
+        v11 = [(UARPControllerInternalDelegate *)self->_internalDelegate updateProperty:property value:valueCopy forAccessory:v10];
         goto LABEL_27;
       }
 
       goto LABEL_27;
     }
 
-    [v9 setStagedFirmwareVersion:v8];
+    [accessoryCopy setStagedFirmwareVersion:valueCopy];
     powerLogManager = self->_powerLogManager;
-    v13 = [v10 getID];
-    [(UARPPowerLogManager *)powerLogManager setStagedFirmwareVersionForAccessoryID:v13 stagedFirmwareVersion:v8];
+    getID = [v10 getID];
+    [(UARPPowerLogManager *)powerLogManager setStagedFirmwareVersionForAccessoryID:getID stagedFirmwareVersion:valueCopy];
 LABEL_24:
 
     goto LABEL_26;
   }
 
-  if (a3 > 1)
+  if (property > 1)
   {
-    if (a3 == 2)
+    if (property == 2)
     {
-      [v9 setSerialNumber:v8];
+      [accessoryCopy setSerialNumber:valueCopy];
       goto LABEL_26;
     }
 
-    if (a3 == 3)
+    if (property == 3)
     {
-      [v9 setHwRevision:v8];
+      [accessoryCopy setHwRevision:valueCopy];
       goto LABEL_26;
     }
 
-    [v9 setFirmwareVersion:v8];
+    [accessoryCopy setFirmwareVersion:valueCopy];
     v12 = self->_powerLogManager;
-    v13 = [v10 getID];
-    [(UARPPowerLogManager *)v12 setActiveFirmwareVersionForAccessoryID:v13 activeFirmwareVersion:v8];
+    getID = [v10 getID];
+    [(UARPPowerLogManager *)v12 setActiveFirmwareVersionForAccessoryID:getID activeFirmwareVersion:valueCopy];
     goto LABEL_24;
   }
 
-  if (!a3)
+  if (!property)
   {
-    [v9 setManufacturer:v8];
+    [accessoryCopy setManufacturer:valueCopy];
     goto LABEL_26;
   }
 
-  if (a3 == 1)
+  if (property == 1)
   {
-    [v9 setModelName:v8];
+    [accessoryCopy setModelName:valueCopy];
     goto LABEL_26;
   }
 
@@ -1340,25 +1340,25 @@ LABEL_27:
   return v11;
 }
 
-- (void)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4
+- (void)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  accessoryCopy = accessory;
+  msgCopy = msg;
+  if ([msgCopy length])
   {
     v12[0] = 0;
     v12[1] = v12;
     v12[2] = 0x3032000000;
     v12[3] = __Block_byref_object_copy__4;
     v12[4] = __Block_byref_object_dispose__4;
-    v13 = [MEMORY[0x277CBEA90] dataWithData:v7];
+    v13 = [MEMORY[0x277CBEA90] dataWithData:msgCopy];
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__UARPController_sendMessageToAccessory_uarpMsg___block_invoke;
     block[3] = &unk_278EC2480;
     block[4] = self;
-    v10 = v6;
+    v10 = accessoryCopy;
     v11 = v12;
     dispatch_async(delegateQueue, block);
 
@@ -1421,9 +1421,9 @@ void __49__UARPController_sendMessageToAccessory_uarpMsg___block_invoke_24(uint6
   [v2 dump:v3 accessoryID:v4 uarpStatus:v1 direction:0];
 }
 
-- (BOOL)startPacketCapture:(id)a3
+- (BOOL)startPacketCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1434,9 +1434,9 @@ void __49__UARPController_sendMessageToAccessory_uarpMsg___block_invoke_24(uint6
   block[2] = __37__UARPController_startPacketCapture___block_invoke;
   block[3] = &unk_278EC2480;
   block[4] = self;
-  v9 = v4;
+  v9 = captureCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = captureCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -1475,17 +1475,17 @@ void __35__UARPController_stopPacketCapture__block_invoke(uint64_t a1)
   *(v1 + 96) = 0;
 }
 
-- (BOOL)solicitDynamicAsset:(id)a3 assetID:(id)a4
+- (BOOL)solicitDynamicAsset:(id)asset assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [v7 localURL];
+  localURL = [dCopy localURL];
 
-  if (v8)
+  if (localURL)
   {
     internalQueue = self->_internalQueue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -1493,8 +1493,8 @@ void __35__UARPController_stopPacketCapture__block_invoke(uint64_t a1)
     v12[2] = __46__UARPController_solicitDynamicAsset_assetID___block_invoke;
     v12[3] = &unk_278EC28C8;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = assetCopy;
+    v14 = dCopy;
     v15 = &v16;
     dispatch_sync(internalQueue, v12);
     v10 = *(v17 + 24);
@@ -1552,22 +1552,22 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(UARPController *)self pendingAssetForAccessory:v8 assetID:v9];
+  completeCopy = complete;
+  dCopy = d;
+  v10 = [(UARPController *)self pendingAssetForAccessory:completeCopy assetID:dCopy];
   if (v10)
   {
-    [v8 removePendingAsset:v10];
+    [completeCopy removePendingAsset:v10];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v9 reportProgressToDelegates];
+    reportProgressToDelegates = [dCopy reportProgressToDelegates];
 
-    if (v12)
+    if (reportProgressToDelegates)
     {
       delegateQueue = self->_delegateQueue;
       v14[0] = MEMORY[0x277D85DD0];
@@ -1575,9 +1575,9 @@ LABEL_6:
       v14[2] = __63__UARPController_assetSolicitationComplete_assetID_withStatus___block_invoke;
       v14[3] = &unk_278EC2918;
       v14[4] = self;
-      v15 = v8;
-      v16 = v9;
-      v17 = a5;
+      v15 = completeCopy;
+      v16 = dCopy;
+      statusCopy = status;
       dispatch_async(delegateQueue, v14);
     }
   }
@@ -1593,10 +1593,10 @@ void __63__UARPController_assetSolicitationComplete_assetID_withStatus___block_i
   [WeakRetained assetSolicitationComplete:a1[5] assetID:a1[6] withStatus:a1[7]];
 }
 
-- (BOOL)dynamicAssetAvailableForAccessory:(id)a3 assetID:(id)a4 error:(id *)a5
+- (BOOL)dynamicAssetAvailableForAccessory:(id)accessory assetID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1613,16 +1613,16 @@ void __63__UARPController_assetSolicitationComplete_assetID_withStatus___block_i
   block[2] = __66__UARPController_dynamicAssetAvailableForAccessory_assetID_error___block_invoke;
   block[3] = &unk_278EC2968;
   block[4] = self;
-  v11 = v8;
+  v11 = accessoryCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = dCopy;
   v17 = v12;
   v18 = &v26;
   v19 = &v20;
   dispatch_sync(internalQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   v13 = *(v27 + 24);
@@ -1676,10 +1676,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)triggerUnsolicitedDynamicAsset:(id)a3 assetTag:(id)a4
+- (BOOL)triggerUnsolicitedDynamicAsset:(id)asset assetTag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  tagCopy = tag;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1690,11 +1690,11 @@ LABEL_6:
   v12[2] = __58__UARPController_triggerUnsolicitedDynamicAsset_assetTag___block_invoke;
   v12[3] = &unk_278EC2990;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = assetCopy;
+  v14 = tagCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = tagCopy;
+  v10 = assetCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -1714,40 +1714,40 @@ void __58__UARPController_triggerUnsolicitedDynamicAsset_assetTag___block_invoke
   }
 }
 
-- (void)assetAvailablityUpdateForAccessory:(id)a3 assetID:(id)a4
+- (void)assetAvailablityUpdateForAccessory:(id)accessory assetID:(id)d
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v34 = "[UARPController assetAvailablityUpdateForAccessory:assetID:]";
     v35 = 2112;
-    v36 = v6;
+    v36 = accessoryCopy;
     v37 = 2112;
-    v38 = v7;
+    v38 = dCopy;
     _os_log_impl(&dword_247AA7000, xpcLog, OS_LOG_TYPE_INFO, "RECEIVED %s: %@ %@", buf, 0x20u);
   }
 
-  v9 = [v7 assetVersion];
-  if (!v9)
+  assetVersion = [dCopy assetVersion];
+  if (!assetVersion)
   {
     goto LABEL_6;
   }
 
-  v10 = v9;
-  v11 = [v6 stagedFirmwareVersion];
+  v10 = assetVersion;
+  stagedFirmwareVersion = [accessoryCopy stagedFirmwareVersion];
 
-  if (!v11)
+  if (!stagedFirmwareVersion)
   {
     goto LABEL_6;
   }
 
-  v12 = [v6 stagedFirmwareVersion];
-  v13 = [v7 assetVersion];
-  v14 = uarpVersionCompareStrings(v12, v13);
+  stagedFirmwareVersion2 = [accessoryCopy stagedFirmwareVersion];
+  assetVersion2 = [dCopy assetVersion];
+  v14 = uarpVersionCompareStrings(stagedFirmwareVersion2, assetVersion2);
 
   if (v14 != 1)
   {
@@ -1755,14 +1755,14 @@ void __58__UARPController_triggerUnsolicitedDynamicAsset_assetTag___block_invoke
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v7 assetVersion];
-      v26 = [v6 stagedFirmwareVersion];
+      assetVersion3 = [dCopy assetVersion];
+      stagedFirmwareVersion3 = [accessoryCopy stagedFirmwareVersion];
       *buf = 138412802;
-      v34 = v25;
+      v34 = assetVersion3;
       v35 = 2112;
-      v36 = v26;
+      v36 = stagedFirmwareVersion3;
       v37 = 2112;
-      v38 = v6;
+      v38 = accessoryCopy;
       _os_log_impl(&dword_247AA7000, v24, OS_LOG_TYPE_DEFAULT, "assetID assetVersion %@ is not greater than staged version %@ for accessory %@", buf, 0x20u);
     }
   }
@@ -1770,10 +1770,10 @@ void __58__UARPController_triggerUnsolicitedDynamicAsset_assetTag___block_invoke
   else
   {
 LABEL_6:
-    v15 = [v7 assetVersion];
-    [v6 setAvailableFirmwareVersion:v15];
+    assetVersion4 = [dCopy assetVersion];
+    [accessoryCopy setAvailableFirmwareVersion:assetVersion4];
 
-    [(UARPController *)self updatePendingAssetsForAccessory:v6 assetID:v7];
+    [(UARPController *)self updatePendingAssetsForAccessory:accessoryCopy assetID:dCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v17 = objc_opt_respondsToSelector();
 
@@ -1785,8 +1785,8 @@ LABEL_6:
       block[2] = __61__UARPController_assetAvailablityUpdateForAccessory_assetID___block_invoke;
       block[3] = &unk_278EC29B8;
       block[4] = self;
-      v31 = v6;
-      v32 = v7;
+      v31 = accessoryCopy;
+      v32 = dCopy;
       dispatch_async(delegateQueue, block);
     }
 
@@ -1801,8 +1801,8 @@ LABEL_6:
       v27[2] = __61__UARPController_assetAvailablityUpdateForAccessory_assetID___block_invoke_2;
       v27[3] = &unk_278EC29B8;
       v27[4] = self;
-      v28 = v6;
-      v29 = v7;
+      v28 = accessoryCopy;
+      v29 = dCopy;
       dispatch_async(v21, v27);
     }
   }
@@ -1822,20 +1822,20 @@ void __61__UARPController_assetAvailablityUpdateForAccessory_assetID___block_inv
   [WeakRetained assetAvailablityUpdateForAccessoryID:a1[5] assetID:a1[6]];
 }
 
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__UARPController_assetAvailablityUpdateForAccessoryID_assetID___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1855,20 +1855,20 @@ void __63__UARPController_assetAvailablityUpdateForAccessoryID_assetID___block_i
   }
 }
 
-- (void)supplementalAssetAvailablityUpdateForAccessory:(id)a3 assetName:(id)a4
+- (void)supplementalAssetAvailablityUpdateForAccessory:(id)accessory assetName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  nameCopy = name;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v17 = "[UARPController supplementalAssetAvailablityUpdateForAccessory:assetName:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = accessoryCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = nameCopy;
     _os_log_impl(&dword_247AA7000, xpcLog, OS_LOG_TYPE_INFO, "RECEIVED %s: %@ %@", buf, 0x20u);
   }
 
@@ -1878,29 +1878,29 @@ void __63__UARPController_assetAvailablityUpdateForAccessoryID_assetID___block_i
   block[2] = __75__UARPController_supplementalAssetAvailablityUpdateForAccessory_assetName___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = accessoryCopy;
+  v15 = nameCopy;
+  v10 = nameCopy;
+  v11 = accessoryCopy;
   dispatch_async(internalQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supplementalAssetAvailablityUpdateForAccessoryID:(id)a3 assetName:(id)a4
+- (void)supplementalAssetAvailablityUpdateForAccessoryID:(id)d assetName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__UARPController_supplementalAssetAvailablityUpdateForAccessoryID_assetName___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = nameCopy;
+  v9 = nameCopy;
+  v10 = dCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1920,17 +1920,17 @@ void __77__UARPController_supplementalAssetAvailablityUpdateForAccessoryID_asset
   }
 }
 
-- (void)supportedAccessories:(id)a3 forProductGroup:(id)a4 isComplete:(BOOL)a5
+- (void)supportedAccessories:(id)accessories forProductGroup:(id)group isComplete:(BOOL)complete
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  accessoriesCopy = accessories;
+  groupCopy = group;
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v8;
+  v11 = accessoriesCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -1946,7 +1946,7 @@ void __77__UARPController_supplementalAssetAvailablityUpdateForAccessoryID_asset
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(UARPController *)self createSupportedAccessory:v9 accessoryMetadata:*(*(&v25 + 1) + 8 * v15)];
+        v16 = [(UARPController *)self createSupportedAccessory:groupCopy accessoryMetadata:*(*(&v25 + 1) + 8 * v15)];
         if (v16)
         {
           [v10 addObject:v16];
@@ -1975,9 +1975,9 @@ void __77__UARPController_supplementalAssetAvailablityUpdateForAccessoryID_asset
   v21[3] = &unk_278EC29E0;
   v21[4] = self;
   v22 = v10;
-  v23 = v9;
-  v24 = a5;
-  v18 = v9;
+  v23 = groupCopy;
+  completeCopy = complete;
+  v18 = groupCopy;
   v19 = v10;
   dispatch_async(delegateQueue, v21);
 
@@ -2015,20 +2015,20 @@ LABEL_5:
   }
 }
 
-- (void)handleReceivedAttestationCertificates:(id)a3 forSubjectKeyIdentifier:(id)a4
+- (void)handleReceivedAttestationCertificates:(id)certificates forSubjectKeyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  certificatesCopy = certificates;
+  identifierCopy = identifier;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__UARPController_handleReceivedAttestationCertificates_forSubjectKeyIdentifier___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = certificatesCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = certificatesCopy;
   dispatch_async(delegateQueue, block);
 }
 
@@ -2038,21 +2038,21 @@ void __80__UARPController_handleReceivedAttestationCertificates_forSubjectKeyIde
   [WeakRetained attestationCertificates:a1[5] forSubjectKeyIdentifier:a1[6]];
 }
 
-- (id)createSupportedAccessory:(id)a3 accessoryMetadata:(id)a4
+- (id)createSupportedAccessory:(id)accessory accessoryMetadata:(id)metadata
 {
-  v4 = a4;
-  if ([v4 accessoryCapability] == 16)
+  metadataCopy = metadata;
+  if ([metadataCopy accessoryCapability] == 16)
   {
     v5 = [UARPAccessoryHardwareCHIP alloc];
-    v6 = [v4 productGroup];
-    v7 = [v6 integerValue];
-    v8 = [v4 productNumber];
-    v9 = -[UARPAccessoryHardwareCHIP initWithVendorID:productID:hardwareID:metadata:](v5, "initWithVendorID:productID:hardwareID:metadata:", v7, [v8 integerValue], 0, v4);
+    productGroup = [metadataCopy productGroup];
+    integerValue = [productGroup integerValue];
+    productNumber = [metadataCopy productNumber];
+    v9 = -[UARPAccessoryHardwareCHIP initWithVendorID:productID:hardwareID:metadata:](v5, "initWithVendorID:productID:hardwareID:metadata:", integerValue, [productNumber integerValue], 0, metadataCopy);
 
     v10 = [UARPSupportedAccessory alloc];
-    v11 = [v4 productGroup];
-    v12 = [v4 productNumber];
-    v13 = -[UARPSupportedAccessory initWithHardwareID:productGroup:productNumber:capabilities:](v10, "initWithHardwareID:productGroup:productNumber:capabilities:", v9, v11, v12, [v4 accessoryCapability]);
+    productGroup2 = [metadataCopy productGroup];
+    productNumber2 = [metadataCopy productNumber];
+    v13 = -[UARPSupportedAccessory initWithHardwareID:productGroup:productNumber:capabilities:](v10, "initWithHardwareID:productGroup:productNumber:capabilities:", v9, productGroup2, productNumber2, [metadataCopy accessoryCapability]);
   }
 
   else
@@ -2063,23 +2063,23 @@ void __80__UARPController_handleReceivedAttestationCertificates_forSubjectKeyIde
   return v13;
 }
 
-- (void)queryFirmwareUpdateResultForAccessory:(id)a3
+- (void)queryFirmwareUpdateResultForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__UARPController_queryFirmwareUpdateResultForAccessory___block_invoke;
   v7[3] = &unk_278EC1140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (int64_t)queryProperty:(unint64_t)a3 forAccessory:(id)a4
+- (int64_t)queryProperty:(unint64_t)property forAccessory:(id)accessory
 {
-  v6 = a4;
+  accessoryCopy = accessory;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2090,10 +2090,10 @@ void __80__UARPController_handleReceivedAttestationCertificates_forSubjectKeyIde
   v11[2] = __45__UARPController_queryProperty_forAccessory___block_invoke;
   v11[3] = &unk_278EC2A08;
   v13 = &v15;
-  v14 = a3;
+  propertyCopy = property;
   v11[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = accessoryCopy;
+  v8 = accessoryCopy;
   dispatch_sync(internalQueue, v11);
   v9 = v16[3];
 
@@ -2116,21 +2116,21 @@ uint64_t __45__UARPController_queryProperty_forAccessory___block_invoke(uint64_t
   return result;
 }
 
-- (void)firmwareUpdateResult:(id)a3 vendorSpecificStatus:(unsigned int)a4 error:(id)a5
+- (void)firmwareUpdateResult:(id)result vendorSpecificStatus:(unsigned int)status error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  resultCopy = result;
+  errorCopy = error;
   delegateQueue = self->_delegateQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__UARPController_firmwareUpdateResult_vendorSpecificStatus_error___block_invoke;
   v13[3] = &unk_278EC2A30;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = resultCopy;
+  statusCopy = status;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = resultCopy;
   dispatch_async(delegateQueue, v13);
 }
 
@@ -2146,13 +2146,13 @@ void __66__UARPController_firmwareUpdateResult_vendorSpecificStatus_error___bloc
   }
 }
 
-- (void)queryCompleteForAccessory:(id)a3 manufacturer:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory manufacturer:(id)manufacturer error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:0 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:0])
+  accessoryCopy = accessory;
+  manufacturerCopy = manufacturer;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:0 value:manufacturerCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:0])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2164,13 +2164,13 @@ void __66__UARPController_firmwareUpdateResult_vendorSpecificStatus_error___bloc
       v16 = 3221225472;
       v17 = __63__UARPController_queryCompleteForAccessory_manufacturer_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = manufacturerCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{0, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{0, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2181,13 +2181,13 @@ void __63__UARPController_queryCompleteForAccessory_manufacturer_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] manufacturer:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 modelName:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory modelName:(id)name error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:1 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:1])
+  accessoryCopy = accessory;
+  nameCopy = name;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:1 value:nameCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:1])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2199,13 +2199,13 @@ void __63__UARPController_queryCompleteForAccessory_manufacturer_error___block_i
       v16 = 3221225472;
       v17 = __60__UARPController_queryCompleteForAccessory_modelName_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = nameCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{1, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{1, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2216,13 +2216,13 @@ void __60__UARPController_queryCompleteForAccessory_modelName_error___block_invo
   [WeakRetained queryCompleteForAccessory:a1[5] modelName:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 firmwareVersion:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory firmwareVersion:(id)version error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:4 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:4])
+  accessoryCopy = accessory;
+  versionCopy = version;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:4 value:versionCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:4])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2234,13 +2234,13 @@ void __60__UARPController_queryCompleteForAccessory_modelName_error___block_invo
       v16 = 3221225472;
       v17 = __66__UARPController_queryCompleteForAccessory_firmwareVersion_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = versionCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{4, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{4, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2251,13 +2251,13 @@ void __66__UARPController_queryCompleteForAccessory_firmwareVersion_error___bloc
   [WeakRetained queryCompleteForAccessory:a1[5] firmwareVersion:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 stagedFirmwareVersion:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory stagedFirmwareVersion:(id)version error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:5 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:5])
+  accessoryCopy = accessory;
+  versionCopy = version;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:5 value:versionCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:5])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2269,13 +2269,13 @@ void __66__UARPController_queryCompleteForAccessory_firmwareVersion_error___bloc
       v16 = 3221225472;
       v17 = __72__UARPController_queryCompleteForAccessory_stagedFirmwareVersion_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = versionCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{5, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{5, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2286,12 +2286,12 @@ void __72__UARPController_queryCompleteForAccessory_stagedFirmwareVersion_error_
   [WeakRetained queryCompleteForAccessory:a1[5] stagedFirmwareVersion:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 stats:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory stats:(id)stats error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 clientQueryPendingForProperty:6])
+  accessoryCopy = accessory;
+  statsCopy = stats;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:6])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2303,13 +2303,13 @@ void __72__UARPController_queryCompleteForAccessory_stagedFirmwareVersion_error_
       v16 = 3221225472;
       v17 = __56__UARPController_queryCompleteForAccessory_stats_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = statsCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{6, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{6, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2320,13 +2320,13 @@ void __56__UARPController_queryCompleteForAccessory_stats_error___block_invoke(v
   [WeakRetained queryCompleteForAccessory:a1[5] stats:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 hardwareVersion:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory hardwareVersion:(id)version error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:3 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:3])
+  accessoryCopy = accessory;
+  versionCopy = version;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:3 value:versionCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:3])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2338,13 +2338,13 @@ void __56__UARPController_queryCompleteForAccessory_stats_error___block_invoke(v
       v16 = 3221225472;
       v17 = __66__UARPController_queryCompleteForAccessory_hardwareVersion_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = versionCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{3, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{3, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2355,13 +2355,13 @@ void __66__UARPController_queryCompleteForAccessory_hardwareVersion_error___bloc
   [WeakRetained queryCompleteForAccessory:a1[5] hardwareVersion:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 serialNumber:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory serialNumber:(id)number error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:2 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:2])
+  accessoryCopy = accessory;
+  numberCopy = number;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:2 value:numberCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:2])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2373,13 +2373,13 @@ void __66__UARPController_queryCompleteForAccessory_hardwareVersion_error___bloc
       v16 = 3221225472;
       v17 = __63__UARPController_queryCompleteForAccessory_serialNumber_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = numberCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{2, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{2, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2390,13 +2390,13 @@ void __63__UARPController_queryCompleteForAccessory_serialNumber_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] serialNumber:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 appleModelNumber:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory appleModelNumber:(id)number error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:11 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:11])
+  accessoryCopy = accessory;
+  numberCopy = number;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:11 value:numberCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:11])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2408,13 +2408,13 @@ void __63__UARPController_queryCompleteForAccessory_serialNumber_error___block_i
       v16 = 3221225472;
       v17 = __67__UARPController_queryCompleteForAccessory_appleModelNumber_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = numberCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{11, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{11, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2425,19 +2425,19 @@ void __67__UARPController_queryCompleteForAccessory_appleModelNumber_error___blo
   [WeakRetained queryCompleteForAccessory:a1[5] appleModelNumber:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 hwFusingType:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory hwFusingType:(id)type error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 modelNumber];
-  v12 = [UARPSupportedAccessory findByAppleModelNumber:v11];
+  accessoryCopy = accessory;
+  typeCopy = type;
+  errorCopy = error;
+  modelNumber = [accessoryCopy modelNumber];
+  v12 = [UARPSupportedAccessory findByAppleModelNumber:modelNumber];
 
-  if (!self->_isInternalBuild && -[__CFString isEqualToString:](v9, "isEqualToString:", @"unfused") && ([v12 fusingOverrideUnfused], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  if (!self->_isInternalBuild && -[__CFString isEqualToString:](typeCopy, "isEqualToString:", @"unfused") && ([v12 fusingOverrideUnfused], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [v12 fusingOverrideUnfused];
-    v15 = [v14 isEqualToString:@"dev"];
+    fusingOverrideUnfused = [v12 fusingOverrideUnfused];
+    v15 = [fusingOverrideUnfused isEqualToString:@"dev"];
 
     if (v15)
     {
@@ -2453,9 +2453,9 @@ void __67__UARPController_queryCompleteForAccessory_appleModelNumber_error___blo
     if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v32 = v8;
+      v32 = accessoryCopy;
       v33 = 2114;
-      v34 = v9;
+      v34 = typeCopy;
       v35 = 2114;
       v36 = v16;
       _os_log_error_impl(&dword_247AA7000, xpcLog, OS_LOG_TYPE_ERROR, "Overriding hw fusing for %{public}@, from %{public}@ to %{public}@", buf, 0x20u);
@@ -2464,11 +2464,11 @@ void __67__UARPController_queryCompleteForAccessory_appleModelNumber_error___blo
 
   else
   {
-    v16 = v9;
+    v16 = typeCopy;
   }
 
-  [(UARPController *)self updateProperty:12 value:v16 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:12])
+  [(UARPController *)self updateProperty:12 value:v16 forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:12])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v19 = objc_opt_respondsToSelector();
@@ -2480,13 +2480,13 @@ void __67__UARPController_queryCompleteForAccessory_appleModelNumber_error___blo
       v24 = 3221225472;
       v25 = __63__UARPController_queryCompleteForAccessory_hwFusingType_error___block_invoke;
       v26 = &unk_278EC2A58;
-      v27 = self;
-      v21 = v8;
+      selfCopy = self;
+      v21 = accessoryCopy;
       v28 = v21;
       v29 = v16;
-      v30 = v10;
+      v30 = errorCopy;
       dispatch_async(delegateQueue, &v23);
-      [v21 removePendingClientPropertyQuery:{12, v23, v24, v25, v26, v27}];
+      [v21 removePendingClientPropertyQuery:{12, v23, v24, v25, v26, selfCopy}];
     }
   }
 
@@ -2499,13 +2499,13 @@ void __63__UARPController_queryCompleteForAccessory_hwFusingType_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] hwFusingType:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 friendlyName:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory friendlyName:(id)name error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(UARPController *)self updateProperty:13 value:v9 forAccessory:v8];
-  if ([v8 clientQueryPendingForProperty:13])
+  accessoryCopy = accessory;
+  nameCopy = name;
+  errorCopy = error;
+  [(UARPController *)self updateProperty:13 value:nameCopy forAccessory:accessoryCopy];
+  if ([accessoryCopy clientQueryPendingForProperty:13])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2517,13 +2517,13 @@ void __63__UARPController_queryCompleteForAccessory_hwFusingType_error___block_i
       v16 = 3221225472;
       v17 = __63__UARPController_queryCompleteForAccessory_friendlyName_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = nameCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{13, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{13, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -2534,12 +2534,12 @@ void __63__UARPController_queryCompleteForAccessory_friendlyName_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] friendlyName:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 manifestPrefix:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory manifestPrefix:(id)prefix error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 clientQueryPendingForProperty:14])
+  accessoryCopy = accessory;
+  prefixCopy = prefix;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:14])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -2552,16 +2552,16 @@ void __63__UARPController_queryCompleteForAccessory_friendlyName_error___block_i
       block[2] = __65__UARPController_queryCompleteForAccessory_manifestPrefix_error___block_invoke;
       block[3] = &unk_278EC2A58;
       block[4] = self;
-      v14 = v8;
+      v14 = accessoryCopy;
       v27 = v14;
-      v28 = v9;
-      v29 = v10;
+      v28 = prefixCopy;
+      v29 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v14 removePendingClientPropertyQuery:14];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:14])
+  if ([accessoryCopy clientQueryPendingForProperty:14])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2571,13 +2571,13 @@ void __63__UARPController_queryCompleteForAccessory_friendlyName_error___block_i
       v19 = 3221225472;
       v20 = __65__UARPController_queryCompleteForAccessory_manifestPrefix_error___block_invoke_2;
       v21 = &unk_278EC2A58;
-      v22 = self;
-      v17 = v8;
+      selfCopy = self;
+      v17 = accessoryCopy;
       v23 = v17;
-      v24 = v9;
-      v25 = v10;
+      v24 = prefixCopy;
+      v25 = errorCopy;
       dispatch_async(v16, &v18);
-      [v17 removePendingClientPropertyQuery:{14, v18, v19, v20, v21, v22}];
+      [v17 removePendingClientPropertyQuery:{14, v18, v19, v20, v21, selfCopy}];
     }
   }
 }
@@ -2588,11 +2588,11 @@ void __65__UARPController_queryCompleteForAccessory_manifestPrefix_error___block
   [WeakRetained queryCompleteForAccessory:a1[5] manifestPrefix:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 boardID:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory boardID:(unint64_t)d error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:15])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:15])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2605,16 +2605,16 @@ void __65__UARPController_queryCompleteForAccessory_manifestPrefix_error___block
       block[2] = __58__UARPController_queryCompleteForAccessory_boardID_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      dCopy = d;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:15];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:15])
+  if ([accessoryCopy clientQueryPendingForProperty:15])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2624,13 +2624,13 @@ void __65__UARPController_queryCompleteForAccessory_manifestPrefix_error___block
       v18 = 3221225472;
       v19 = __58__UARPController_queryCompleteForAccessory_boardID_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      dCopy2 = d;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{15, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{15, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2641,11 +2641,11 @@ void __58__UARPController_queryCompleteForAccessory_boardID_error___block_invoke
   [WeakRetained queryCompleteForAccessory:a1[5] boardID:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 chipID:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory chipID:(unint64_t)d error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:16])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:16])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2658,16 +2658,16 @@ void __58__UARPController_queryCompleteForAccessory_boardID_error___block_invoke
       block[2] = __57__UARPController_queryCompleteForAccessory_chipID_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      dCopy = d;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:16];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:16])
+  if ([accessoryCopy clientQueryPendingForProperty:16])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2677,13 +2677,13 @@ void __58__UARPController_queryCompleteForAccessory_boardID_error___block_invoke
       v18 = 3221225472;
       v19 = __57__UARPController_queryCompleteForAccessory_chipID_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      dCopy2 = d;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{16, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{16, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2694,11 +2694,11 @@ void __57__UARPController_queryCompleteForAccessory_chipID_error___block_invoke(
   [WeakRetained queryCompleteForAccessory:a1[5] chipID:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 chipRevision:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory chipRevision:(unint64_t)revision error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:17])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:17])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2711,16 +2711,16 @@ void __57__UARPController_queryCompleteForAccessory_chipID_error___block_invoke(
       block[2] = __63__UARPController_queryCompleteForAccessory_chipRevision_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      revisionCopy = revision;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:17];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:17])
+  if ([accessoryCopy clientQueryPendingForProperty:17])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2730,13 +2730,13 @@ void __57__UARPController_queryCompleteForAccessory_chipID_error___block_invoke(
       v18 = 3221225472;
       v19 = __63__UARPController_queryCompleteForAccessory_chipRevision_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      revisionCopy2 = revision;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{17, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{17, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2747,11 +2747,11 @@ void __63__UARPController_queryCompleteForAccessory_chipRevision_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] chipRevision:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 ecid:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory ecid:(unint64_t)ecid error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:18])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:18])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2764,16 +2764,16 @@ void __63__UARPController_queryCompleteForAccessory_chipRevision_error___block_i
       block[2] = __55__UARPController_queryCompleteForAccessory_ecid_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      ecidCopy = ecid;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:18];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:18])
+  if ([accessoryCopy clientQueryPendingForProperty:18])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2783,13 +2783,13 @@ void __63__UARPController_queryCompleteForAccessory_chipRevision_error___block_i
       v18 = 3221225472;
       v19 = __55__UARPController_queryCompleteForAccessory_ecid_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      ecidCopy2 = ecid;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{18, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{18, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2800,11 +2800,11 @@ void __55__UARPController_queryCompleteForAccessory_ecid_error___block_invoke(vo
   [WeakRetained queryCompleteForAccessory:a1[5] ecid:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 securityDomain:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory securityDomain:(unint64_t)domain error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:19])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:19])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2817,16 +2817,16 @@ void __55__UARPController_queryCompleteForAccessory_ecid_error___block_invoke(vo
       block[2] = __65__UARPController_queryCompleteForAccessory_securityDomain_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      domainCopy = domain;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:19];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:19])
+  if ([accessoryCopy clientQueryPendingForProperty:19])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2836,13 +2836,13 @@ void __55__UARPController_queryCompleteForAccessory_ecid_error___block_invoke(vo
       v18 = 3221225472;
       v19 = __65__UARPController_queryCompleteForAccessory_securityDomain_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      domainCopy2 = domain;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{19, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{19, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2853,11 +2853,11 @@ void __65__UARPController_queryCompleteForAccessory_securityDomain_error___block
   [WeakRetained queryCompleteForAccessory:a1[5] securityDomain:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 securityMode:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory securityMode:(unint64_t)mode error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:20])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:20])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2870,16 +2870,16 @@ void __65__UARPController_queryCompleteForAccessory_securityDomain_error___block
       block[2] = __63__UARPController_queryCompleteForAccessory_securityMode_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      modeCopy = mode;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:20];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:20])
+  if ([accessoryCopy clientQueryPendingForProperty:20])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2889,13 +2889,13 @@ void __65__UARPController_queryCompleteForAccessory_securityDomain_error___block
       v18 = 3221225472;
       v19 = __63__UARPController_queryCompleteForAccessory_securityMode_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      modeCopy2 = mode;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{20, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{20, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2906,11 +2906,11 @@ void __63__UARPController_queryCompleteForAccessory_securityMode_error___block_i
   [WeakRetained queryCompleteForAccessory:a1[5] securityMode:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 productionMode:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory productionMode:(unint64_t)mode error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:21])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:21])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2923,16 +2923,16 @@ void __63__UARPController_queryCompleteForAccessory_securityMode_error___block_i
       block[2] = __65__UARPController_queryCompleteForAccessory_productionMode_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      modeCopy = mode;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:21];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:21])
+  if ([accessoryCopy clientQueryPendingForProperty:21])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2942,13 +2942,13 @@ void __63__UARPController_queryCompleteForAccessory_securityMode_error___block_i
       v18 = 3221225472;
       v19 = __65__UARPController_queryCompleteForAccessory_productionMode_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      modeCopy2 = mode;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{21, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{21, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -2959,11 +2959,11 @@ void __65__UARPController_queryCompleteForAccessory_productionMode_error___block
   [WeakRetained queryCompleteForAccessory:a1[5] productionMode:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 epoch:(unint64_t)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory epoch:(unint64_t)epoch error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:22])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:22])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -2976,16 +2976,16 @@ void __65__UARPController_queryCompleteForAccessory_productionMode_error___block
       block[2] = __56__UARPController_queryCompleteForAccessory_epoch_error___block_invoke;
       block[3] = &unk_278EC2918;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      epochCopy = epoch;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:22];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:22])
+  if ([accessoryCopy clientQueryPendingForProperty:22])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -2995,13 +2995,13 @@ void __65__UARPController_queryCompleteForAccessory_productionMode_error___block
       v18 = 3221225472;
       v19 = __56__UARPController_queryCompleteForAccessory_epoch_error___block_invoke_2;
       v20 = &unk_278EC2918;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      epochCopy2 = epoch;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{22, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{22, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -3012,11 +3012,11 @@ void __56__UARPController_queryCompleteForAccessory_epoch_error___block_invoke(v
   [WeakRetained queryCompleteForAccessory:a1[5] epoch:a1[7] error:a1[6]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 enableMixMatch:(BOOL)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory enableMixMatch:(BOOL)match error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:23])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:23])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -3029,16 +3029,16 @@ void __56__UARPController_queryCompleteForAccessory_epoch_error___block_invoke(v
       block[2] = __65__UARPController_queryCompleteForAccessory_enableMixMatch_error___block_invoke;
       block[3] = &unk_278EC29E0;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      matchCopy = match;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:23];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:23])
+  if ([accessoryCopy clientQueryPendingForProperty:23])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -3048,13 +3048,13 @@ void __56__UARPController_queryCompleteForAccessory_epoch_error___block_invoke(v
       v18 = 3221225472;
       v19 = __65__UARPController_queryCompleteForAccessory_enableMixMatch_error___block_invoke_2;
       v20 = &unk_278EC29E0;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      matchCopy2 = match;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{23, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{23, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -3065,11 +3065,11 @@ void __65__UARPController_queryCompleteForAccessory_enableMixMatch_error___block
   [WeakRetained queryCompleteForAccessory:*(a1 + 40) enableMixMatch:*(a1 + 56) error:*(a1 + 48)];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 liveNonce:(BOOL)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory liveNonce:(BOOL)nonce error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:24])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:24])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -3082,16 +3082,16 @@ void __65__UARPController_queryCompleteForAccessory_enableMixMatch_error___block
       block[2] = __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invoke;
       block[3] = &unk_278EC29E0;
       block[4] = self;
-      v13 = v8;
+      v13 = accessoryCopy;
       v26 = v13;
-      v28 = a4;
-      v27 = v9;
+      nonceCopy = nonce;
+      v27 = errorCopy;
       dispatch_async(delegateQueue, block);
       [v13 removePendingClientPropertyQuery:24];
     }
   }
 
-  if ([v8 clientQueryPendingForProperty:24])
+  if ([accessoryCopy clientQueryPendingForProperty:24])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -3101,13 +3101,13 @@ void __65__UARPController_queryCompleteForAccessory_enableMixMatch_error___block
       v18 = 3221225472;
       v19 = __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invoke_2;
       v20 = &unk_278EC29E0;
-      v21 = self;
-      v16 = v8;
+      selfCopy = self;
+      v16 = accessoryCopy;
       v22 = v16;
-      v24 = a4;
-      v23 = v9;
+      nonceCopy2 = nonce;
+      v23 = errorCopy;
       dispatch_async(v15, &v17);
-      [v16 removePendingClientPropertyQuery:{24, v17, v18, v19, v20, v21}];
+      [v16 removePendingClientPropertyQuery:{24, v17, v18, v19, v20, selfCopy}];
     }
   }
 }
@@ -3118,11 +3118,11 @@ void __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invo
   [WeakRetained queryCompleteForAccessory:*(a1 + 40) liveNonce:*(a1 + 56) error:*(a1 + 48)];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 prefixNeedsLUN:(BOOL)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory prefixNeedsLUN:(BOOL)n error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:25])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:25])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -3132,22 +3132,22 @@ void __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invo
       v14 = 3221225472;
       v15 = __65__UARPController_queryCompleteForAccessory_prefixNeedsLUN_error___block_invoke;
       v16 = &unk_278EC29E0;
-      v17 = self;
-      v12 = v8;
+      selfCopy = self;
+      v12 = accessoryCopy;
       v18 = v12;
-      v20 = a4;
-      v19 = v9;
+      nCopy = n;
+      v19 = errorCopy;
       dispatch_async(delegateQueue, &v13);
-      [v12 removePendingClientPropertyQuery:{25, v13, v14, v15, v16, v17}];
+      [v12 removePendingClientPropertyQuery:{25, v13, v14, v15, v16, selfCopy}];
     }
   }
 }
 
-- (void)queryCompleteForAccessory:(id)a3 suffixNeedsLUN:(BOOL)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory suffixNeedsLUN:(BOOL)n error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 clientQueryPendingForProperty:26])
+  accessoryCopy = accessory;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:26])
   {
     chipInfoDelegate = self->_chipInfoDelegate;
     if (objc_opt_respondsToSelector())
@@ -3157,23 +3157,23 @@ void __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invo
       v14 = 3221225472;
       v15 = __65__UARPController_queryCompleteForAccessory_suffixNeedsLUN_error___block_invoke;
       v16 = &unk_278EC29E0;
-      v17 = self;
-      v12 = v8;
+      selfCopy = self;
+      v12 = accessoryCopy;
       v18 = v12;
-      v20 = a4;
-      v19 = v9;
+      nCopy = n;
+      v19 = errorCopy;
       dispatch_async(delegateQueue, &v13);
-      [v12 removePendingClientPropertyQuery:{26, v13, v14, v15, v16, v17}];
+      [v12 removePendingClientPropertyQuery:{26, v13, v14, v15, v16, selfCopy}];
     }
   }
 }
 
-- (void)queryCompleteForAccessory:(id)a3 nonceSeed:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory nonceSeed:(id)seed error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 clientQueryPendingForProperty:42])
+  accessoryCopy = accessory;
+  seedCopy = seed;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:42])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -3185,13 +3185,13 @@ void __60__UARPController_queryCompleteForAccessory_liveNonce_error___block_invo
       v16 = 3221225472;
       v17 = __60__UARPController_queryCompleteForAccessory_nonceSeed_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = seedCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{42, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{42, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -3202,12 +3202,12 @@ void __60__UARPController_queryCompleteForAccessory_nonceSeed_error___block_invo
   [WeakRetained queryCompleteForAccessory:a1[5] nonceSeed:a1[6] error:a1[7]];
 }
 
-- (void)queryCompleteForAccessory:(id)a3 nonceHash:(id)a4 error:(id)a5
+- (void)queryCompleteForAccessory:(id)accessory nonceHash:(id)hash error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 clientQueryPendingForProperty:43])
+  accessoryCopy = accessory;
+  hashCopy = hash;
+  errorCopy = error;
+  if ([accessoryCopy clientQueryPendingForProperty:43])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -3219,13 +3219,13 @@ void __60__UARPController_queryCompleteForAccessory_nonceSeed_error___block_invo
       v16 = 3221225472;
       v17 = __60__UARPController_queryCompleteForAccessory_nonceHash_error___block_invoke;
       v18 = &unk_278EC2A58;
-      v19 = self;
-      v14 = v8;
+      selfCopy = self;
+      v14 = accessoryCopy;
       v20 = v14;
-      v21 = v9;
-      v22 = v10;
+      v21 = hashCopy;
+      v22 = errorCopy;
       dispatch_async(delegateQueue, &v15);
-      [v14 removePendingClientPropertyQuery:{43, v15, v16, v17, v18, v19}];
+      [v14 removePendingClientPropertyQuery:{43, v15, v16, v17, v18, selfCopy}];
     }
   }
 }
@@ -3236,16 +3236,16 @@ void __60__UARPController_queryCompleteForAccessory_nonceHash_error___block_invo
   [WeakRetained queryCompleteForAccessory:a1[5] nonceHash:a1[6] error:a1[7]];
 }
 
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6 filterProgress:(BOOL)a7
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total filterProgress:(BOOL)filterProgress
 {
-  v12 = a3;
-  v13 = a4;
+  progressCopy = progress;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v13 reportProgressToDelegates];
+    reportProgressToDelegates = [dCopy reportProgressToDelegates];
 
-    if (v15)
+    if (reportProgressToDelegates)
     {
       delegateQueue = self->_delegateQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -3253,10 +3253,10 @@ void __60__UARPController_queryCompleteForAccessory_nonceHash_error___block_invo
       block[2] = __86__UARPController_firmwareStagingProgress_assetID_bytesSent_bytesTotal_filterProgress___block_invoke;
       block[3] = &unk_278EC2A80;
       block[4] = self;
-      v18 = v12;
-      v19 = v13;
-      v20 = a5;
-      v21 = a6;
+      v18 = progressCopy;
+      v19 = dCopy;
+      sentCopy = sent;
+      totalCopy = total;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -3265,9 +3265,9 @@ void __60__UARPController_queryCompleteForAccessory_nonceHash_error___block_invo
   {
   }
 
-  if (!a7)
+  if (!filterProgress)
   {
-    [(UARPControllerInternalDelegate *)self->_internalDelegate sendFirmwareUpdateProgressForAccessory:v12 assetID:v13 bytesSent:a5 bytesTotal:a6];
+    [(UARPControllerInternalDelegate *)self->_internalDelegate sendFirmwareUpdateProgressForAccessory:progressCopy assetID:dCopy bytesSent:sent bytesTotal:total];
   }
 }
 
@@ -3277,16 +3277,16 @@ void __86__UARPController_firmwareStagingProgress_assetID_bytesSent_bytesTotal_f
   [WeakRetained firmwareStagingProgress:a1[5] assetID:a1[6] bytesSent:a1[7] bytesTotal:a1[8]];
 }
 
-- (void)assetSolicitationProgress:(id)a3 assetID:(id)a4 bytesReceived:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)assetSolicitationProgress:(id)progress assetID:(id)d bytesReceived:(unint64_t)received bytesTotal:(unint64_t)total
 {
-  v10 = a3;
-  v11 = a4;
+  progressCopy = progress;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v11 reportProgressToDelegates];
+    reportProgressToDelegates = [dCopy reportProgressToDelegates];
 
-    if (v13)
+    if (reportProgressToDelegates)
     {
       delegateQueue = self->_delegateQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -3294,10 +3294,10 @@ void __86__UARPController_firmwareStagingProgress_assetID_bytesSent_bytesTotal_f
       block[2] = __77__UARPController_assetSolicitationProgress_assetID_bytesReceived_bytesTotal___block_invoke;
       block[3] = &unk_278EC2A80;
       block[4] = self;
-      v16 = v10;
-      v17 = v11;
-      v18 = a5;
-      v19 = a6;
+      v16 = progressCopy;
+      v17 = dCopy;
+      receivedCopy = received;
+      totalCopy = total;
       dispatch_async(delegateQueue, block);
     }
   }
@@ -3313,10 +3313,10 @@ void __77__UARPController_assetSolicitationProgress_assetID_bytesReceived_bytesT
   [WeakRetained assetSolicitationProgress:a1[5] assetID:a1[6] bytesReceived:a1[7] bytesTotal:a1[8]];
 }
 
-- (id)unsolicitedDynamicAssetOffered:(id)a3 assetID:(id)a4
+- (id)unsolicitedDynamicAssetOffered:(id)offered assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  offeredCopy = offered;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3329,11 +3329,11 @@ void __77__UARPController_assetSolicitationProgress_assetID_bytesReceived_bytesT
   v13[2] = __57__UARPController_unsolicitedDynamicAssetOffered_assetID___block_invoke;
   v13[3] = &unk_278EC2990;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = offeredCopy;
+  v15 = dCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = offeredCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -3382,9 +3382,9 @@ void __57__UARPController_unsolicitedDynamicAssetOffered_assetID___block_invoke(
   }
 }
 
-- (void)accessoryTransportNeeded:(id)a3 isNeeded:(BOOL)a4
+- (void)accessoryTransportNeeded:(id)needed isNeeded:(BOOL)isNeeded
 {
-  v6 = a3;
+  neededCopy = needed;
   if (os_log_type_enabled(self->_xpcLog, OS_LOG_TYPE_ERROR))
   {
     [UARPController accessoryTransportNeeded:isNeeded:];
@@ -3396,9 +3396,9 @@ void __57__UARPController_unsolicitedDynamicAssetOffered_assetID___block_invoke(
   block[2] = __52__UARPController_accessoryTransportNeeded_isNeeded___block_invoke;
   block[3] = &unk_278EC28A0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = neededCopy;
+  isNeededCopy = isNeeded;
+  v8 = neededCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -3436,10 +3436,10 @@ void __52__UARPController_accessoryTransportNeeded_isNeeded___block_invoke_2(uin
   [WeakRetained accessoryTransportNeeded:*(a1 + 40) isNeeded:*(a1 + 48)];
 }
 
-- (BOOL)addAccessory:(id)a3 assetID:(id)a4
+- (BOOL)addAccessory:(id)accessory assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3450,11 +3450,11 @@ void __52__UARPController_accessoryTransportNeeded_isNeeded___block_invoke_2(uin
   v12[2] = __39__UARPController_addAccessory_assetID___block_invoke;
   v12[3] = &unk_278EC2AA8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = accessoryCopy;
+  v14 = dCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = accessoryCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -3539,9 +3539,9 @@ void __39__UARPController_addAccessory_assetID___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeAccessory:(id)a3
+- (BOOL)removeAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3551,10 +3551,10 @@ void __39__UARPController_addAccessory_assetID___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__UARPController_removeAccessory___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = accessoryCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = accessoryCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3581,10 +3581,10 @@ void __34__UARPController_removeAccessory___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)changeAssetLocation:(id)a3 assetID:(id)a4
+- (BOOL)changeAssetLocation:(id)location assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3595,11 +3595,11 @@ void __34__UARPController_removeAccessory___block_invoke(uint64_t a1)
   v12[2] = __46__UARPController_changeAssetLocation_assetID___block_invoke;
   v12[3] = &unk_278EC2AA8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = locationCopy;
+  v14 = dCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = locationCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -3614,9 +3614,9 @@ uint64_t __46__UARPController_changeAssetLocation_assetID___block_invoke(void *a
   return result;
 }
 
-- (BOOL)requestConsent:(id)a3
+- (BOOL)requestConsent:(id)consent
 {
-  v4 = a3;
+  consentCopy = consent;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3626,10 +3626,10 @@ uint64_t __46__UARPController_changeAssetLocation_assetID___block_invoke(void *a
   block[1] = 3221225472;
   block[2] = __33__UARPController_requestConsent___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = consentCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = consentCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3644,9 +3644,9 @@ uint64_t __33__UARPController_requestConsent___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)revokeConsentRequest:(id)a3
+- (BOOL)revokeConsentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3656,10 +3656,10 @@ uint64_t __33__UARPController_requestConsent___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __39__UARPController_revokeConsentRequest___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = requestCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3674,9 +3674,9 @@ uint64_t __39__UARPController_revokeConsentRequest___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)pauseAssetTransfersForAccessory:(id)a3
+- (BOOL)pauseAssetTransfersForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3687,9 +3687,9 @@ uint64_t __39__UARPController_revokeConsentRequest___block_invoke(void *a1)
   block[2] = __50__UARPController_pauseAssetTransfersForAccessory___block_invoke;
   block[3] = &unk_278EC2480;
   block[4] = self;
-  v9 = v4;
+  v9 = accessoryCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = accessoryCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3729,9 +3729,9 @@ void __50__UARPController_pauseAssetTransfersForAccessory___block_invoke(uint64_
 LABEL_7:
 }
 
-- (BOOL)resumeAssetTransfersForAccessory:(id)a3
+- (BOOL)resumeAssetTransfersForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3742,9 +3742,9 @@ LABEL_7:
   block[2] = __51__UARPController_resumeAssetTransfersForAccessory___block_invoke;
   block[3] = &unk_278EC2480;
   block[4] = self;
-  v9 = v4;
+  v9 = accessoryCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = accessoryCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3784,10 +3784,10 @@ void __51__UARPController_resumeAssetTransfersForAccessory___block_invoke(uint64
 LABEL_7:
 }
 
-- (BOOL)downloadAvailableFirmwareUpdate:(id)a3 assetID:(id)a4 withUserIntent:(BOOL)a5
+- (BOOL)downloadAvailableFirmwareUpdate:(id)update assetID:(id)d withUserIntent:(BOOL)intent
 {
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -3798,12 +3798,12 @@ LABEL_7:
   block[2] = __73__UARPController_downloadAvailableFirmwareUpdate_assetID_withUserIntent___block_invoke;
   block[3] = &unk_278EC2AD0;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = updateCopy;
+  v16 = dCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
+  intentCopy = intent;
+  v11 = dCopy;
+  v12 = updateCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v20 + 24);
 
@@ -3818,10 +3818,10 @@ uint64_t __73__UARPController_downloadAvailableFirmwareUpdate_assetID_withUserIn
   return result;
 }
 
-- (BOOL)downloadReleaseNotes:(id)a3 assetID:(id)a4
+- (BOOL)downloadReleaseNotes:(id)notes assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  notesCopy = notes;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3832,11 +3832,11 @@ uint64_t __73__UARPController_downloadAvailableFirmwareUpdate_assetID_withUserIn
   v12[2] = __47__UARPController_downloadReleaseNotes_assetID___block_invoke;
   v12[3] = &unk_278EC2AA8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = notesCopy;
+  v14 = dCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = notesCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -3851,76 +3851,76 @@ uint64_t __47__UARPController_downloadReleaseNotes_assetID___block_invoke(void *
   return result;
 }
 
-- (void)sendFirmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)sendFirmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v10 = a3;
-  v11 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__UARPController_sendFirmwareUpdateProgressForAccessory_assetID_bytesSent_bytesTotal___block_invoke;
   block[3] = &unk_278EC2A80;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a5;
-  v19 = a6;
-  v13 = v11;
-  v14 = v10;
+  v16 = accessoryCopy;
+  v17 = dCopy;
+  sentCopy = sent;
+  totalCopy = total;
+  v13 = dCopy;
+  v14 = accessoryCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)sendFirmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)sendFirmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
+  consentCopy = consent;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__UARPController_sendFirmwareUpdateProgressForUARPConsent_bytesSent_bytesTotal___block_invoke;
   v11[3] = &unk_278EC2AF8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = consentCopy;
+  sentCopy = sent;
+  totalCopy = total;
+  v10 = consentCopy;
   dispatch_sync(internalQueue, v11);
 }
 
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
+  consentCopy = consent;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__UARPController_progressForUARPConsent_bytesSent_bytesTotal___block_invoke;
   v11[3] = &unk_278EC2AF8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = consentCopy;
+  sentCopy = sent;
+  totalCopy = total;
+  v10 = consentCopy;
   dispatch_sync(internalQueue, v11);
 }
 
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
+  logoutCopy = logout;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__UARPController_progressForUARPConsentInPostLogout_bytesSent_bytesTotal___block_invoke;
   v11[3] = &unk_278EC2AF8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = logoutCopy;
+  sentCopy = sent;
+  totalCopy = total;
+  v10 = logoutCopy;
   dispatch_sync(internalQueue, v11);
 }
 
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3930,10 +3930,10 @@ uint64_t __47__UARPController_downloadReleaseNotes_assetID___block_invoke(void *
   block[1] = 3221225472;
   block[2] = __66__UARPController_enableTRMSystemAuthenticationForRegistryEntryID___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3948,9 +3948,9 @@ uint64_t __66__UARPController_enableTRMSystemAuthenticationForRegistryEntryID___
   return result;
 }
 
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3960,10 +3960,10 @@ uint64_t __66__UARPController_enableTRMSystemAuthenticationForRegistryEntryID___
   block[1] = 3221225472;
   block[2] = __67__UARPController_disableTRMSystemAuthenticationForRegistryEntryID___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3978,9 +3978,9 @@ uint64_t __67__UARPController_disableTRMSystemAuthenticationForRegistryEntryID__
   return result;
 }
 
-- (BOOL)checkForUpdate:(id)a3
+- (BOOL)checkForUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3990,10 +3990,10 @@ uint64_t __67__UARPController_disableTRMSystemAuthenticationForRegistryEntryID__
   block[1] = 3221225472;
   block[2] = __33__UARPController_checkForUpdate___block_invoke;
   block[3] = &unk_278EC2850;
-  v9 = v4;
+  v9 = updateCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = updateCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -4008,10 +4008,10 @@ uint64_t __33__UARPController_checkForUpdate___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)getSupportedAccessoriesInternal:(id)a3 assetID:(id)a4 batchRequest:(BOOL)a5
+- (BOOL)getSupportedAccessoriesInternal:(id)internal assetID:(id)d batchRequest:(BOOL)request
 {
-  v8 = a3;
-  v9 = a4;
+  internalCopy = internal;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -4022,12 +4022,12 @@ uint64_t __33__UARPController_checkForUpdate___block_invoke(void *a1)
   block[2] = __71__UARPController_getSupportedAccessoriesInternal_assetID_batchRequest___block_invoke;
   block[3] = &unk_278EC2AD0;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = internalCopy;
+  v16 = dCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
+  requestCopy = request;
+  v11 = dCopy;
+  v12 = internalCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v20 + 24);
 
@@ -4055,28 +4055,28 @@ void __71__UARPController_getSupportedAccessoriesInternal_assetID_batchRequest__
   }
 }
 
-- (BOOL)getSupportedAccessories:(id)a3 assetLocationType:(int64_t)a4
+- (BOOL)getSupportedAccessories:(id)accessories assetLocationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[UARPAssetID alloc] initWithLocationType:a4 remoteURL:0];
-  LOBYTE(self) = [(UARPController *)self getSupportedAccessoriesInternal:v6 assetID:v7 batchRequest:0];
+  accessoriesCopy = accessories;
+  v7 = [[UARPAssetID alloc] initWithLocationType:type remoteURL:0];
+  LOBYTE(self) = [(UARPController *)self getSupportedAccessoriesInternal:accessoriesCopy assetID:v7 batchRequest:0];
 
   return self;
 }
 
-- (BOOL)getBatchedSupportedAccessories:(id)a3 assetLocationType:(int64_t)a4
+- (BOOL)getBatchedSupportedAccessories:(id)accessories assetLocationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[UARPAssetID alloc] initWithLocationType:a4 remoteURL:0];
-  LOBYTE(self) = [(UARPController *)self getSupportedAccessoriesInternal:v6 assetID:v7 batchRequest:1];
+  accessoriesCopy = accessories;
+  v7 = [[UARPAssetID alloc] initWithLocationType:type remoteURL:0];
+  LOBYTE(self) = [(UARPController *)self getSupportedAccessoriesInternal:accessoriesCopy assetID:v7 batchRequest:1];
 
   return self;
 }
 
-- (BOOL)getAttestationCertificatesInternal:(id)a3 assetID:(id)a4
+- (BOOL)getAttestationCertificatesInternal:(id)internal assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  internalCopy = internal;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -4087,11 +4087,11 @@ void __71__UARPController_getSupportedAccessoriesInternal_assetID_batchRequest__
   v12[2] = __61__UARPController_getAttestationCertificatesInternal_assetID___block_invoke;
   v12[3] = &unk_278EC2AA8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = internalCopy;
+  v14 = dCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = dCopy;
+  v10 = internalCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -4116,16 +4116,16 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
   }
 }
 
-- (BOOL)getAttestationCertificates:(id)a3 assetLocationType:(int64_t)a4
+- (BOOL)getAttestationCertificates:(id)certificates assetLocationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[UARPAssetID alloc] initWithLocationType:a4 remoteURL:0];
-  LOBYTE(self) = [(UARPController *)self getAttestationCertificatesInternal:v6 assetID:v7];
+  certificatesCopy = certificates;
+  v7 = [[UARPAssetID alloc] initWithLocationType:type remoteURL:0];
+  LOBYTE(self) = [(UARPController *)self getAttestationCertificatesInternal:certificatesCopy assetID:v7];
 
   return self;
 }
 
-- (void)assetAvailabilityNotificationPosted:(int)a3
+- (void)assetAvailabilityNotificationPosted:(int)posted
 {
   v16 = *MEMORY[0x277D85DE8];
   assetAvailabilityNotificationTokenDict = self->_assetAvailabilityNotificationTokenDict;
@@ -4145,8 +4145,8 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
     }
 
     internalDelegate = self->_internalDelegate;
-    v9 = [v6 getID];
-    v10 = [(UARPControllerInternalDelegate *)internalDelegate getAssetIDForAccessoryID:v9];
+    getID = [v6 getID];
+    v10 = [(UARPControllerInternalDelegate *)internalDelegate getAssetIDForAccessoryID:getID];
 
     if (v10)
     {
@@ -4167,12 +4167,12 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForAssetAvailabilityNotification:(id)a3
+- (BOOL)registerForAssetAvailabilityNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   out_token = -1;
-  v5 = [v4 getID];
-  v6 = [v5 assetAvailabilityUpdateNotification];
+  getID = [notificationCopy getID];
+  assetAvailabilityUpdateNotification = [getID assetAvailabilityUpdateNotification];
 
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
@@ -4181,7 +4181,7 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
   handler[2] = __59__UARPController_registerForAssetAvailabilityNotification___block_invoke;
   handler[3] = &unk_278EC2B20;
   objc_copyWeak(&v13, &location);
-  v8 = notify_register_dispatch(v6, &out_token, internalQueue, handler);
+  v8 = notify_register_dispatch(assetAvailabilityUpdateNotification, &out_token, internalQueue, handler);
   if (v8)
   {
     if (os_log_type_enabled(self->_controllerLog, OS_LOG_TYPE_ERROR))
@@ -4194,7 +4194,7 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
   {
     assetAvailabilityNotificationTokenDict = self->_assetAvailabilityNotificationTokenDict;
     v10 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
-    [(NSMutableDictionary *)assetAvailabilityNotificationTokenDict setObject:v4 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)assetAvailabilityNotificationTokenDict setObject:notificationCopy forKeyedSubscript:v10];
   }
 
   objc_destroyWeak(&v13);
@@ -4209,17 +4209,17 @@ void __59__UARPController_registerForAssetAvailabilityNotification___block_invok
   [WeakRetained assetAvailabilityNotificationPosted:a2];
 }
 
-- (BOOL)registerForSupportedAccessoriesAvailability:(id)a3
+- (BOOL)registerForSupportedAccessoriesAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   out_token = -1;
-  v5 = [v4 identifier];
+  identifier = [availabilityCopy identifier];
 
   v6 = MEMORY[0x277CCACA8];
-  if (v5)
+  if (identifier)
   {
-    v7 = [v4 identifier];
-    v8 = [v6 stringWithFormat:@"%@-%@", @"com.apple.accessoryUpdater.uarp.supportedAccessoriesMetadataAvailable", v7];
+    identifier2 = [availabilityCopy identifier];
+    v8 = [v6 stringWithFormat:@"%@-%@", @"com.apple.accessoryUpdater.uarp.supportedAccessoriesMetadataAvailable", identifier2];
   }
 
   else
@@ -4228,14 +4228,14 @@ void __59__UARPController_registerForAssetAvailabilityNotification___block_invok
   }
 
   objc_initWeak(&location, self);
-  v9 = [v8 UTF8String];
+  uTF8String = [v8 UTF8String];
   internalQueue = self->_internalQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __62__UARPController_registerForSupportedAccessoriesAvailability___block_invoke;
   handler[3] = &unk_278EC2B20;
   objc_copyWeak(&v16, &location);
-  v11 = notify_register_dispatch(v9, &out_token, internalQueue, handler);
+  v11 = notify_register_dispatch(uTF8String, &out_token, internalQueue, handler);
   if (v11)
   {
     if (os_log_type_enabled(self->_controllerLog, OS_LOG_TYPE_ERROR))
@@ -4244,11 +4244,11 @@ void __59__UARPController_registerForAssetAvailabilityNotification___block_invok
     }
   }
 
-  else if (v4)
+  else if (availabilityCopy)
   {
     assetAvailabilityUARPProductGroupNotificationTokenDict = self->_assetAvailabilityUARPProductGroupNotificationTokenDict;
     v13 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
-    [(NSMutableDictionary *)assetAvailabilityUARPProductGroupNotificationTokenDict setObject:v4 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)assetAvailabilityUARPProductGroupNotificationTokenDict setObject:availabilityCopy forKeyedSubscript:v13];
   }
 
   objc_destroyWeak(&v16);
@@ -4263,10 +4263,10 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   [WeakRetained availabilityNotificationForSupportedAccessoriesPosted:a2];
 }
 
-- (id)assetAvailabilityTokenForAccessory:(id)a3
+- (id)assetAvailabilityTokenForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -4289,7 +4289,7 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_assetAvailabilityNotificationTokenDict objectForKeyedSubscript:v11, v16];
-        if ([v4 isEqual:v12])
+        if ([accessoryCopy isEqual:v12])
         {
           v13 = v11;
 
@@ -4313,11 +4313,11 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   return v8;
 }
 
-- (void)unregisterForAssetAvailabilityNotification:(id)a3
+- (void)unregisterForAssetAvailabilityNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UARPController *)self assetAvailabilityTokenForAccessory:v4];
+  notificationCopy = notification;
+  v5 = [(UARPController *)self assetAvailabilityTokenForAccessory:notificationCopy];
   v6 = v5;
   if (v5)
   {
@@ -4329,7 +4329,7 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
       v9 = 136315394;
       v10 = "[UARPController unregisterForAssetAvailabilityNotification:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = notificationCopy;
       _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "%s: unregistered %@", &v9, 0x16u);
     }
   }
@@ -4405,7 +4405,7 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supplementalAssetAvailabilityNotificationPosted:(int)a3
+- (void)supplementalAssetAvailabilityNotificationPosted:(int)posted
 {
   v16 = *MEMORY[0x277D85DE8];
   supplementalAssetAvailabilityNotificationTokenDict = self->_supplementalAssetAvailabilityNotificationTokenDict;
@@ -4425,8 +4425,8 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
     }
 
     internalDelegate = self->_internalDelegate;
-    v9 = [v6 getID];
-    v10 = [(UARPControllerInternalDelegate *)internalDelegate getSupplementalAssetNameForAccessoryID:v9];
+    getID = [v6 getID];
+    v10 = [(UARPControllerInternalDelegate *)internalDelegate getSupplementalAssetNameForAccessoryID:getID];
 
     if (v10)
     {
@@ -4447,12 +4447,12 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForSupplementalAssetAvailabilityNotification:(id)a3
+- (BOOL)registerForSupplementalAssetAvailabilityNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   out_token = -1;
-  v5 = [v4 getID];
-  v6 = [v5 supplementalAssetAvailabilityUpdateNotification];
+  getID = [notificationCopy getID];
+  supplementalAssetAvailabilityUpdateNotification = [getID supplementalAssetAvailabilityUpdateNotification];
 
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
@@ -4461,7 +4461,7 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   handler[2] = __71__UARPController_registerForSupplementalAssetAvailabilityNotification___block_invoke;
   handler[3] = &unk_278EC2B20;
   objc_copyWeak(&v13, &location);
-  v8 = notify_register_dispatch(v6, &out_token, internalQueue, handler);
+  v8 = notify_register_dispatch(supplementalAssetAvailabilityUpdateNotification, &out_token, internalQueue, handler);
   if (v8)
   {
     if (os_log_type_enabled(self->_controllerLog, OS_LOG_TYPE_ERROR))
@@ -4474,7 +4474,7 @@ void __62__UARPController_registerForSupportedAccessoriesAvailability___block_in
   {
     supplementalAssetAvailabilityNotificationTokenDict = self->_supplementalAssetAvailabilityNotificationTokenDict;
     v10 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
-    [(NSMutableDictionary *)supplementalAssetAvailabilityNotificationTokenDict setObject:v4 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)supplementalAssetAvailabilityNotificationTokenDict setObject:notificationCopy forKeyedSubscript:v10];
   }
 
   objc_destroyWeak(&v13);
@@ -4489,10 +4489,10 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
   [WeakRetained supplementalAssetAvailabilityNotificationPosted:a2];
 }
 
-- (id)supplementalAssetAvailabilityTokenForAccessory:(id)a3
+- (id)supplementalAssetAvailabilityTokenForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -4515,7 +4515,7 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_supplementalAssetAvailabilityNotificationTokenDict objectForKeyedSubscript:v11, v16];
-        if ([v4 isEqual:v12])
+        if ([accessoryCopy isEqual:v12])
         {
           v13 = v11;
 
@@ -4539,11 +4539,11 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
   return v8;
 }
 
-- (void)unregisterForSupplementalAssetAvailabilityNotification:(id)a3
+- (void)unregisterForSupplementalAssetAvailabilityNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UARPController *)self supplementalAssetAvailabilityTokenForAccessory:v4];
+  notificationCopy = notification;
+  v5 = [(UARPController *)self supplementalAssetAvailabilityTokenForAccessory:notificationCopy];
   v6 = v5;
   if (v5)
   {
@@ -4555,7 +4555,7 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
       v9 = 136315394;
       v10 = "[UARPController unregisterForSupplementalAssetAvailabilityNotification:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = notificationCopy;
       _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "%s: unregistered %@", &v9, 0x16u);
     }
   }
@@ -4600,13 +4600,13 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForAttestationCertificatesAvailability:(id)a3
+- (BOOL)registerForAttestationCertificatesAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   out_token = -1;
-  if (v4)
+  if (availabilityCopy)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"com.apple.accessoryUpdater.uarp.attestationCertificatesAvailable", v4];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"com.apple.accessoryUpdater.uarp.attestationCertificatesAvailable", availabilityCopy];
   }
 
   else
@@ -4615,14 +4615,14 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
   }
   v5 = ;
   objc_initWeak(&location, self);
-  v6 = [v5 UTF8String];
+  uTF8String = [v5 UTF8String];
   internalQueue = self->_internalQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __65__UARPController_registerForAttestationCertificatesAvailability___block_invoke;
   handler[3] = &unk_278EC2B20;
   objc_copyWeak(&v14, &location);
-  v8 = notify_register_dispatch(v6, &out_token, internalQueue, handler);
+  v8 = notify_register_dispatch(uTF8String, &out_token, internalQueue, handler);
   if (v8)
   {
     if (os_log_type_enabled(self->_controllerLog, OS_LOG_TYPE_ERROR))
@@ -4631,11 +4631,11 @@ void __71__UARPController_registerForSupplementalAssetAvailabilityNotification__
     }
   }
 
-  else if (v4)
+  else if (availabilityCopy)
   {
     attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict = self->_attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict;
     v10 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
-    [(NSMutableDictionary *)attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict setObject:v4 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)attestationCertificatesAvailabilitySubjectKeyIdentifierNotificationTokenDict setObject:availabilityCopy forKeyedSubscript:v10];
   }
 
   objc_destroyWeak(&v14);
@@ -4687,16 +4687,16 @@ void __65__UARPController_registerForAttestationCertificatesAvailability___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForGenericNotification:(id)a3 notificationName:(id)a4
+- (BOOL)registerForGenericNotification:(id)notification notificationName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  nameCopy = name;
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v7;
+    v34 = nameCopy;
     _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "Registering for BSD notification %@", buf, 0xCu);
   }
 
@@ -4718,13 +4718,13 @@ void __65__UARPController_registerForAttestationCertificatesAvailability___block
           objc_enumerationMutation(v9);
         }
 
-        if ([*(*(&v28 + 1) + 8 * i) isEqualToString:v7])
+        if ([*(*(&v28 + 1) + 8 * i) isEqualToString:nameCopy])
         {
           v19 = self->_controllerLog;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v34 = v7;
+            v34 = nameCopy;
             _os_log_impl(&dword_247AA7000, v19, OS_LOG_TYPE_INFO, "Already registered for notification %@", buf, 0xCu);
           }
 
@@ -4745,15 +4745,15 @@ void __65__UARPController_registerForAttestationCertificatesAvailability___block
 
   out_token = -1;
   objc_initWeak(&location, self);
-  v13 = v7;
-  v14 = [v7 UTF8String];
+  v13 = nameCopy;
+  uTF8String = [nameCopy UTF8String];
   internalQueue = self->_internalQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __66__UARPController_registerForGenericNotification_notificationName___block_invoke;
   handler[3] = &unk_278EC2B20;
   objc_copyWeak(&v25, &location);
-  v16 = notify_register_dispatch(v14, &out_token, internalQueue, handler);
+  v16 = notify_register_dispatch(uTF8String, &out_token, internalQueue, handler);
   v17 = v16 == 0;
   v18 = self->_controllerLog;
   if (v16)
@@ -4769,13 +4769,13 @@ void __65__UARPController_registerForAttestationCertificatesAvailability___block
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v7;
+      v34 = nameCopy;
       _os_log_impl(&dword_247AA7000, v18, OS_LOG_TYPE_INFO, "Registered for BSD notification %@", buf, 0xCu);
     }
 
     generalNotificationTokenDict = self->_generalNotificationTokenDict;
     v21 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
-    [(NSMutableDictionary *)generalNotificationTokenDict setObject:v7 forKeyedSubscript:v21];
+    [(NSMutableDictionary *)generalNotificationTokenDict setObject:nameCopy forKeyedSubscript:v21];
   }
 
   objc_destroyWeak(&v25);
@@ -4792,7 +4792,7 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
   [WeakRetained genericNotificationPosted:a2];
 }
 
-- (void)genericNotificationPosted:(int)a3
+- (void)genericNotificationPosted:(int)posted
 {
   v28 = *MEMORY[0x277D85DE8];
   generalNotificationTokenDict = self->_generalNotificationTokenDict;
@@ -4811,8 +4811,8 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
       _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "%s: Notification posted %@", buf, 0x16u);
     }
 
-    v8 = [(NSMutableDictionary *)self->_accessories allValues];
-    v9 = [v8 copy];
+    allValues = [(NSMutableDictionary *)self->_accessories allValues];
+    v9 = [allValues copy];
 
     v21 = 0u;
     v22 = 0u;
@@ -4834,8 +4834,8 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 bsdNotifications];
-          v17 = [v16 containsObject:v6];
+          bsdNotifications = [v15 bsdNotifications];
+          v17 = [bsdNotifications containsObject:v6];
 
           if (v17)
           {
@@ -4910,9 +4910,9 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
     if (v5)
     {
       v6 = objc_loadWeakRetained(&self->_delegate);
-      v7 = [v6 newUploader];
+      newUploader = [v6 newUploader];
       uploader = self->_uploader;
-      self->_uploader = v7;
+      self->_uploader = newUploader;
     }
 
     else
@@ -4941,9 +4941,9 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
   return v2;
 }
 
-- (BOOL)startTapToRadar:(id)a3
+- (BOOL)startTapToRadar:(id)radar
 {
-  v4 = a3;
+  radarCopy = radar;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -4957,7 +4957,7 @@ void __66__UARPController_registerForGenericNotification_notificationName___bloc
     block[3] = &unk_278EC2B48;
     block[4] = self;
     v10 = &v11;
-    v9 = v4;
+    v9 = radarCopy;
     dispatch_async(internalQueue, block);
     v6 = *(v12 + 24);
   }
@@ -5022,20 +5022,20 @@ uint64_t __32__UARPController_stopTapToRadar__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 64) stopTapToRadar];
 }
 
-- (void)startPersonalizationHelperService:(id)a3 entitlement:(id)a4
+- (void)startPersonalizationHelperService:(id)service entitlement:(id)entitlement
 {
-  v6 = a4;
-  v7 = a3;
+  entitlementCopy = entitlement;
+  serviceCopy = service;
   v8 = dispatch_queue_create("UARPController personalization", 0);
   personalizationQueue = self->_personalizationQueue;
   self->_personalizationQueue = v8;
 
-  v10 = [[UARPPersonalizationManager alloc] initWithMachServiceName:v7 entitlement:v6 delegate:self queue:self->_personalizationQueue];
+  v10 = [[UARPPersonalizationManager alloc] initWithMachServiceName:serviceCopy entitlement:entitlementCopy delegate:self queue:self->_personalizationQueue];
   personalizationManager = self->_personalizationManager;
   self->_personalizationManager = v10;
 }
 
-- (id)personalizationHelperQueryPendingTssRequests:(id)a3
+- (id)personalizationHelperQueryPendingTssRequests:(id)requests
 {
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_DEBUG))
@@ -5043,21 +5043,21 @@ uint64_t __32__UARPController_stopTapToRadar__block_invoke(uint64_t a1)
     [(UARPController *)controllerLog personalizationHelperQueryPendingTssRequests:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [(UARPController *)self pendingTatsuRequests];
+  pendingTatsuRequests = [(UARPController *)self pendingTatsuRequests];
 
-  return v12;
+  return pendingTatsuRequests;
 }
 
-- (void)personalizationHelperTssResponse:(id)a3 updaterName:(id)a4
+- (void)personalizationHelperTssResponse:(id)response updaterName:(id)name
 {
-  v5 = a3;
+  responseCopy = response;
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_DEBUG))
   {
     [(UARPController *)controllerLog personalizationHelperTssResponse:v7 updaterName:v8, v9, v10, v11, v12, v13];
   }
 
-  [(UARPController *)self tssResponse:v5];
+  [(UARPController *)self tssResponse:responseCopy];
 }
 
 - (id)pendingTatsuRequests
@@ -5114,17 +5114,17 @@ void __38__UARPController_pendingTatsuRequests__block_invoke(uint64_t a1)
   [*(*(*(a1 + 40) + 8) + 40) addObjectsFromArray:v10];
 }
 
-- (void)tssResponse:(id)a3
+- (void)tssResponse:(id)response
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   controllerLog = self->_controllerLog;
   if (os_log_type_enabled(controllerLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[UARPController tssResponse:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = responseCopy;
     _os_log_impl(&dword_247AA7000, controllerLog, OS_LOG_TYPE_INFO, "%s: Tatsu Response, %@", buf, 0x16u);
   }
 
@@ -5134,8 +5134,8 @@ void __38__UARPController_pendingTatsuRequests__block_invoke(uint64_t a1)
   v9[2] = __30__UARPController_tssResponse___block_invoke;
   v9[3] = &unk_278EC1140;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = responseCopy;
+  v7 = responseCopy;
   dispatch_sync(internalQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -5157,9 +5157,9 @@ uint64_t __30__UARPController_tssResponse___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)assetStagingPause:(id)a3
+- (void)assetStagingPause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -5171,7 +5171,7 @@ uint64_t __30__UARPController_tssResponse___block_invoke(uint64_t a1)
     v8[2] = __36__UARPController_assetStagingPause___block_invoke;
     v8[3] = &unk_278EC1140;
     v8[4] = self;
-    v9 = v4;
+    v9 = pauseCopy;
     dispatch_async(delegateQueue, v8);
   }
 }
@@ -5182,9 +5182,9 @@ void __36__UARPController_assetStagingPause___block_invoke(uint64_t a1)
   [WeakRetained assetStagingPause:*(a1 + 40)];
 }
 
-- (void)assetStagingResume:(id)a3
+- (void)assetStagingResume:(id)resume
 {
-  v4 = a3;
+  resumeCopy = resume;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -5196,7 +5196,7 @@ void __36__UARPController_assetStagingPause___block_invoke(uint64_t a1)
     v8[2] = __37__UARPController_assetStagingResume___block_invoke;
     v8[3] = &unk_278EC1140;
     v8[4] = self;
-    v9 = v4;
+    v9 = resumeCopy;
     dispatch_async(delegateQueue, v8);
   }
 }
@@ -5428,7 +5428,7 @@ void __61__UARPController_getAttestationCertificatesInternal_assetID___block_inv
 - (void)pendingTatsuRequests
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_1_5(&dword_247AA7000, a1, a3, "%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_5(&dword_247AA7000, self, a3, "%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

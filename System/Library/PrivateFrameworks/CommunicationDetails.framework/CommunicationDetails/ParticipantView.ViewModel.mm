@@ -1,8 +1,8 @@
 @interface ParticipantView.ViewModel
 - (_TtCV20CommunicationDetails15ParticipantView9ViewModel)init;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 @end
 
 @implementation ParticipantView.ViewModel
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -24,10 +24,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [controller dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -37,10 +37,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [cancel dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -50,10 +50,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  ParticipantView.ViewModel.contactPicker(_:didSelect:)(v7, v8);
+  pickerCopy = picker;
+  contactCopy = contact;
+  selfCopy = self;
+  ParticipantView.ViewModel.contactPicker(_:didSelect:)(pickerCopy, contactCopy);
 }
 
 @end

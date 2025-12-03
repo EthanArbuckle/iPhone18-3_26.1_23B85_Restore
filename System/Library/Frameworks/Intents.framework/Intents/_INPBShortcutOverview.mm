@@ -1,13 +1,13 @@
 @interface _INPBShortcutOverview
-- (BOOL)isEqual:(id)a3;
-- (_INPBShortcutOverview)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBShortcutOverview)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSteps:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSteps:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSteps:(id)steps;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSteps:(id)steps;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBShortcutOverview
@@ -15,22 +15,22 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBShortcutOverview *)self descriptiveText];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"descriptiveText"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  descriptiveText = [(_INPBShortcutOverview *)self descriptiveText];
+  dictionaryRepresentation = [descriptiveText dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"descriptiveText"];
 
-  v6 = [(_INPBShortcutOverview *)self icon];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"icon"];
+  icon = [(_INPBShortcutOverview *)self icon];
+  dictionaryRepresentation2 = [icon dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"icon"];
 
-  v8 = [(_INPBShortcutOverview *)self name];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"name"];
+  name = [(_INPBShortcutOverview *)self name];
+  dictionaryRepresentation3 = [name dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"name"];
 
   if ([(NSArray *)self->_steps count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -50,8 +50,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -60,16 +60,16 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"steps"];
+    [dictionary setObject:array forKeyedSubscript:@"steps"];
   }
 
-  v17 = [(_INPBShortcutOverview *)self voiceCommand];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"voiceCommand"];
+  voiceCommand = [(_INPBShortcutOverview *)self voiceCommand];
+  dictionaryRepresentation5 = [voiceCommand dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"voiceCommand"];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -81,28 +81,28 @@
   return v6 ^ [(_INPBDataString *)self->_voiceCommand hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBShortcutOverview *)self descriptiveText];
-  v6 = [v4 descriptiveText];
-  if ((v5 != 0) == (v6 == 0))
+  descriptiveText = [(_INPBShortcutOverview *)self descriptiveText];
+  descriptiveText2 = [equalCopy descriptiveText];
+  if ((descriptiveText != 0) == (descriptiveText2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBShortcutOverview *)self descriptiveText];
-  if (v7)
+  descriptiveText3 = [(_INPBShortcutOverview *)self descriptiveText];
+  if (descriptiveText3)
   {
-    v8 = v7;
-    v9 = [(_INPBShortcutOverview *)self descriptiveText];
-    v10 = [v4 descriptiveText];
-    v11 = [v9 isEqual:v10];
+    v8 = descriptiveText3;
+    descriptiveText4 = [(_INPBShortcutOverview *)self descriptiveText];
+    descriptiveText5 = [equalCopy descriptiveText];
+    v11 = [descriptiveText4 isEqual:descriptiveText5];
 
     if (!v11)
     {
@@ -114,20 +114,20 @@
   {
   }
 
-  v5 = [(_INPBShortcutOverview *)self icon];
-  v6 = [v4 icon];
-  if ((v5 != 0) == (v6 == 0))
+  descriptiveText = [(_INPBShortcutOverview *)self icon];
+  descriptiveText2 = [equalCopy icon];
+  if ((descriptiveText != 0) == (descriptiveText2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBShortcutOverview *)self icon];
-  if (v12)
+  icon = [(_INPBShortcutOverview *)self icon];
+  if (icon)
   {
-    v13 = v12;
-    v14 = [(_INPBShortcutOverview *)self icon];
-    v15 = [v4 icon];
-    v16 = [v14 isEqual:v15];
+    v13 = icon;
+    icon2 = [(_INPBShortcutOverview *)self icon];
+    icon3 = [equalCopy icon];
+    v16 = [icon2 isEqual:icon3];
 
     if (!v16)
     {
@@ -139,20 +139,20 @@
   {
   }
 
-  v5 = [(_INPBShortcutOverview *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  descriptiveText = [(_INPBShortcutOverview *)self name];
+  descriptiveText2 = [equalCopy name];
+  if ((descriptiveText != 0) == (descriptiveText2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBShortcutOverview *)self name];
-  if (v17)
+  name = [(_INPBShortcutOverview *)self name];
+  if (name)
   {
-    v18 = v17;
-    v19 = [(_INPBShortcutOverview *)self name];
-    v20 = [v4 name];
-    v21 = [v19 isEqual:v20];
+    v18 = name;
+    name2 = [(_INPBShortcutOverview *)self name];
+    name3 = [equalCopy name];
+    v21 = [name2 isEqual:name3];
 
     if (!v21)
     {
@@ -164,20 +164,20 @@
   {
   }
 
-  v5 = [(_INPBShortcutOverview *)self steps];
-  v6 = [v4 steps];
-  if ((v5 != 0) == (v6 == 0))
+  descriptiveText = [(_INPBShortcutOverview *)self steps];
+  descriptiveText2 = [equalCopy steps];
+  if ((descriptiveText != 0) == (descriptiveText2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBShortcutOverview *)self steps];
-  if (v22)
+  steps = [(_INPBShortcutOverview *)self steps];
+  if (steps)
   {
-    v23 = v22;
-    v24 = [(_INPBShortcutOverview *)self steps];
-    v25 = [v4 steps];
-    v26 = [v24 isEqual:v25];
+    v23 = steps;
+    steps2 = [(_INPBShortcutOverview *)self steps];
+    steps3 = [equalCopy steps];
+    v26 = [steps2 isEqual:steps3];
 
     if (!v26)
     {
@@ -189,12 +189,12 @@
   {
   }
 
-  v5 = [(_INPBShortcutOverview *)self voiceCommand];
-  v6 = [v4 voiceCommand];
-  if ((v5 != 0) != (v6 == 0))
+  descriptiveText = [(_INPBShortcutOverview *)self voiceCommand];
+  descriptiveText2 = [equalCopy voiceCommand];
+  if ((descriptiveText != 0) != (descriptiveText2 == 0))
   {
-    v27 = [(_INPBShortcutOverview *)self voiceCommand];
-    if (!v27)
+    voiceCommand = [(_INPBShortcutOverview *)self voiceCommand];
+    if (!voiceCommand)
     {
 
 LABEL_30:
@@ -202,10 +202,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBShortcutOverview *)self voiceCommand];
-    v30 = [v4 voiceCommand];
-    v31 = [v29 isEqual:v30];
+    v28 = voiceCommand;
+    voiceCommand2 = [(_INPBShortcutOverview *)self voiceCommand];
+    voiceCommand3 = [equalCopy voiceCommand];
+    v31 = [voiceCommand2 isEqual:voiceCommand3];
 
     if (v31)
     {
@@ -225,76 +225,76 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBShortcutOverview allocWithZone:](_INPBShortcutOverview init];
-  v6 = [(_INPBDataString *)self->_descriptiveText copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_descriptiveText copyWithZone:zone];
   [(_INPBShortcutOverview *)v5 setDescriptiveText:v6];
 
-  v7 = [(_INPBImageValue *)self->_icon copyWithZone:a3];
+  v7 = [(_INPBImageValue *)self->_icon copyWithZone:zone];
   [(_INPBShortcutOverview *)v5 setIcon:v7];
 
-  v8 = [(_INPBDataString *)self->_name copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_name copyWithZone:zone];
   [(_INPBShortcutOverview *)v5 setName:v8];
 
-  v9 = [(NSArray *)self->_steps copyWithZone:a3];
+  v9 = [(NSArray *)self->_steps copyWithZone:zone];
   [(_INPBShortcutOverview *)v5 setSteps:v9];
 
-  v10 = [(_INPBDataString *)self->_voiceCommand copyWithZone:a3];
+  v10 = [(_INPBDataString *)self->_voiceCommand copyWithZone:zone];
   [(_INPBShortcutOverview *)v5 setVoiceCommand:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBShortcutOverview *)self data];
+  coderCopy = coder;
+  data = [(_INPBShortcutOverview *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBShortcutOverview)initWithCoder:(id)a3
+- (_INPBShortcutOverview)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBShortcutOverview *)self initWithData:v6];
+    self = [(_INPBShortcutOverview *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBShortcutOverview *)self descriptiveText];
+  toCopy = to;
+  descriptiveText = [(_INPBShortcutOverview *)self descriptiveText];
 
-  if (v5)
+  if (descriptiveText)
   {
-    v6 = [(_INPBShortcutOverview *)self descriptiveText];
+    descriptiveText2 = [(_INPBShortcutOverview *)self descriptiveText];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBShortcutOverview *)self icon];
+  icon = [(_INPBShortcutOverview *)self icon];
 
-  if (v7)
+  if (icon)
   {
-    v8 = [(_INPBShortcutOverview *)self icon];
+    icon2 = [(_INPBShortcutOverview *)self icon];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBShortcutOverview *)self name];
+  name = [(_INPBShortcutOverview *)self name];
 
-  if (v9)
+  if (name)
   {
-    v10 = [(_INPBShortcutOverview *)self name];
+    name2 = [(_INPBShortcutOverview *)self name];
     PBDataWriterWriteSubmessage();
   }
 
@@ -330,38 +330,38 @@ LABEL_28:
     while (v13);
   }
 
-  v17 = [(_INPBShortcutOverview *)self voiceCommand];
+  voiceCommand = [(_INPBShortcutOverview *)self voiceCommand];
 
-  if (v17)
+  if (voiceCommand)
   {
-    v18 = [(_INPBShortcutOverview *)self voiceCommand];
+    voiceCommand2 = [(_INPBShortcutOverview *)self voiceCommand];
     PBDataWriterWriteSubmessage();
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSteps:(id)a3
+- (void)addSteps:(id)steps
 {
-  v4 = a3;
+  stepsCopy = steps;
   steps = self->_steps;
-  v8 = v4;
+  v8 = stepsCopy;
   if (!steps)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_steps;
-    self->_steps = v6;
+    self->_steps = array;
 
-    v4 = v8;
+    stepsCopy = v8;
     steps = self->_steps;
   }
 
-  [(NSArray *)steps addObject:v4];
+  [(NSArray *)steps addObject:stepsCopy];
 }
 
-- (void)setSteps:(id)a3
+- (void)setSteps:(id)steps
 {
-  v4 = [a3 mutableCopy];
+  v4 = [steps mutableCopy];
   steps = self->_steps;
   self->_steps = v4;
 

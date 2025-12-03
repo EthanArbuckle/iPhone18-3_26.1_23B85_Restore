@@ -1,20 +1,20 @@
 @interface IMDChatAssetRefreshController
-- (BOOL)shouldRefreshTTLForAsset:(id)a3 chatGUID:(id)a4;
-- (IMDChatAssetRefreshController)initWithSession:(id)a3;
+- (BOOL)shouldRefreshTTLForAsset:(id)asset chatGUID:(id)d;
+- (IMDChatAssetRefreshController)initWithSession:(id)session;
 - (MessageServiceSession)session;
 - (double)maxRefreshTime;
 - (double)minRefreshTime;
 - (id)attachmentRefreshDeliveryController;
 - (void)dealloc;
-- (void)refreshTTLForChatAsset:(id)a3 chat:(id)a4 refreshDate:(id)a5 resendBlock:(id)a6 successBlock:(id)a7;
-- (void)refreshTTLForChatAsset:(id)a3 chat:(id)a4 resendBlock:(id)a5 successBlock:(id)a6;
+- (void)refreshTTLForChatAsset:(id)asset chat:(id)chat refreshDate:(id)date resendBlock:(id)block successBlock:(id)successBlock;
+- (void)refreshTTLForChatAsset:(id)asset chat:(id)chat resendBlock:(id)block successBlock:(id)successBlock;
 @end
 
 @implementation IMDChatAssetRefreshController
 
-- (IMDChatAssetRefreshController)initWithSession:(id)a3
+- (IMDChatAssetRefreshController)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = IMDChatAssetRefreshController;
   v5 = [(IMDChatAssetRefreshController *)&v9 init];
@@ -24,7 +24,7 @@
     refreshRequests = v5->_refreshRequests;
     v5->_refreshRequests = v6;
 
-    objc_storeWeak(&v5->_session, v4);
+    objc_storeWeak(&v5->_session, sessionCopy);
   }
 
   return v5;
@@ -42,17 +42,17 @@
 
 - (id)attachmentRefreshDeliveryController
 {
-  v2 = [(IMDChatAssetRefreshController *)self session];
-  v3 = [v2 attachmentRefreshDeliveryController];
+  session = [(IMDChatAssetRefreshController *)self session];
+  attachmentRefreshDeliveryController = [session attachmentRefreshDeliveryController];
 
-  return v3;
+  return attachmentRefreshDeliveryController;
 }
 
-- (BOOL)shouldRefreshTTLForAsset:(id)a3 chatGUID:(id)a4
+- (BOOL)shouldRefreshTTLForAsset:(id)asset chatGUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  assetCopy = asset;
+  dCopy = d;
+  if (!assetCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -71,8 +71,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v8 = [(IMDChatAssetRefreshController *)self refreshRequests];
-  v9 = [v8 containsObject:v7];
+  refreshRequests = [(IMDChatAssetRefreshController *)self refreshRequests];
+  v9 = [refreshRequests containsObject:dCopy];
 
   if (v9)
   {
@@ -81,9 +81,9 @@ LABEL_21:
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(IMDChatAssetRefreshController *)self refreshRequests];
+        refreshRequests2 = [(IMDChatAssetRefreshController *)self refreshRequests];
         v20 = 138412290;
-        v21 = *&v11;
+        v21 = *&refreshRequests2;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "not refreshing asset - request already in flight. %@", &v20, 0xCu);
       }
     }
@@ -92,7 +92,7 @@ LABEL_21:
   }
 
   v13 = +[NSDate date];
-  [v13 timeIntervalSinceDate:v6];
+  [v13 timeIntervalSinceDate:assetCopy];
   v15 = v14;
 
   if (IMOSLoggingEnabled())
@@ -103,9 +103,9 @@ LABEL_21:
       v20 = 134218498;
       v21 = v15;
       v22 = 2112;
-      v23 = v7;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v6;
+      v25 = assetCopy;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "Time since last refresh: %f for chat: %@, refresh date: %@", &v20, 0x20u);
     }
   }
@@ -137,27 +137,27 @@ LABEL_22:
   return v18;
 }
 
-- (void)refreshTTLForChatAsset:(id)a3 chat:(id)a4 resendBlock:(id)a5 successBlock:(id)a6
+- (void)refreshTTLForChatAsset:(id)asset chat:(id)chat resendBlock:(id)block successBlock:(id)successBlock
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [v13 userInfo];
-  v14 = [v13 refreshDate];
+  successBlockCopy = successBlock;
+  blockCopy = block;
+  chatCopy = chat;
+  assetCopy = asset;
+  userInfo = [assetCopy userInfo];
+  refreshDate = [assetCopy refreshDate];
 
-  [(IMDChatAssetRefreshController *)self refreshTTLForChatAsset:v15 chat:v12 refreshDate:v14 resendBlock:v11 successBlock:v10];
+  [(IMDChatAssetRefreshController *)self refreshTTLForChatAsset:userInfo chat:chatCopy refreshDate:refreshDate resendBlock:blockCopy successBlock:successBlockCopy];
 }
 
-- (void)refreshTTLForChatAsset:(id)a3 chat:(id)a4 refreshDate:(id)a5 resendBlock:(id)a6 successBlock:(id)a7
+- (void)refreshTTLForChatAsset:(id)asset chat:(id)chat refreshDate:(id)date resendBlock:(id)block successBlock:(id)successBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v36 = a7;
-  v16 = [v13 guid];
-  v17 = [(IMDChatAssetRefreshController *)self shouldRefreshTTLForAsset:v14 chatGUID:v16];
+  assetCopy = asset;
+  chatCopy = chat;
+  dateCopy = date;
+  blockCopy = block;
+  successBlockCopy = successBlock;
+  guid = [chatCopy guid];
+  v17 = [(IMDChatAssetRefreshController *)self shouldRefreshTTLForAsset:dateCopy chatGUID:guid];
 
   if (v17)
   {
@@ -167,24 +167,24 @@ LABEL_22:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v42 = *&v12;
+        v42 = *&assetCopy;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "requesting to refresh tll for asset %@", buf, 0xCu);
       }
     }
 
-    v19 = [v12 objectForKey:@"decryption-key"];
+    v19 = [assetCopy objectForKey:@"decryption-key"];
     if (v19)
     {
-      v20 = [v12 objectForKey:@"file-size"];
+      v20 = [assetCopy objectForKey:@"file-size"];
       if (v20)
       {
-        v21 = [v12 objectForKey:@"mmcs-owner"];
+        v21 = [assetCopy objectForKey:@"mmcs-owner"];
         if (v21)
         {
-          v22 = [v12 objectForKey:@"mmcs-signature-hex"];
+          v22 = [assetCopy objectForKey:@"mmcs-signature-hex"];
           if (v22)
           {
-            v23 = [v12 objectForKey:@"mmcs-url"];
+            v23 = [assetCopy objectForKey:@"mmcs-url"];
             v24 = v23 != 0;
           }
 
@@ -212,29 +212,29 @@ LABEL_22:
     }
 
     v25 = +[NSDate date];
-    [v25 timeIntervalSinceDate:v14];
+    [v25 timeIntervalSinceDate:dateCopy];
     v27 = v26;
 
     [(IMDChatAssetRefreshController *)self maxRefreshTime];
     if (v27 <= v28 && v24)
     {
-      v29 = v12;
+      v29 = assetCopy;
       v30 = objc_alloc_init(FTiMessageRequestMMCSFileRefreshToken);
       AttachmentRefreshUtilConfigureStickerToken(v30, v29);
-      v31 = [(IMDChatAssetRefreshController *)self refreshRequests];
-      v32 = [v13 guid];
-      [v31 addObject:v32];
+      refreshRequests = [(IMDChatAssetRefreshController *)self refreshRequests];
+      guid2 = [chatCopy guid];
+      [refreshRequests addObject:guid2];
 
-      v33 = [(IMDChatAssetRefreshController *)self attachmentRefreshDeliveryController];
+      attachmentRefreshDeliveryController = [(IMDChatAssetRefreshController *)self attachmentRefreshDeliveryController];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_74044;
       v37[3] = &unk_113FD0;
       v37[4] = self;
-      v38 = v13;
-      v39 = v15;
-      v40 = v36;
-      [v33 sendFTMessage:v30 attempts:0 withCompletionBlock:v37];
+      v38 = chatCopy;
+      v39 = blockCopy;
+      v40 = successBlockCopy;
+      [attachmentRefreshDeliveryController sendFTMessage:v30 attempts:0 withCompletionBlock:v37];
     }
 
     else
@@ -258,7 +258,7 @@ LABEL_22:
         }
       }
 
-      v15[2](v15);
+      blockCopy[2](blockCopy);
     }
   }
 }

@@ -12,14 +12,14 @@
 - (PSSpecifier)temperatureUnitSpecifier;
 - (_TtC21InternationalSettings8Settings)init;
 - (int64_t)firstWeekday;
-- (void)setCalendar:(id)a3;
-- (void)setFirstWeekday:(int64_t)a3;
-- (void)setFirstWeekdayAsNSNumber:(id)a3;
-- (void)setMeasurementSystem:(id)a3;
-- (void)setNumberFormat:(id)a3;
-- (void)setNumberFormatAsString:(id)a3;
-- (void)setNumberingSystem:(id)a3;
-- (void)setTemperatureUnit:(id)a3;
+- (void)setCalendar:(id)calendar;
+- (void)setFirstWeekday:(int64_t)weekday;
+- (void)setFirstWeekdayAsNSNumber:(id)number;
+- (void)setMeasurementSystem:(id)system;
+- (void)setNumberFormat:(id)format;
+- (void)setNumberFormatAsString:(id)string;
+- (void)setNumberingSystem:(id)system;
+- (void)setTemperatureUnit:(id)unit;
 @end
 
 @implementation Settings
@@ -46,7 +46,7 @@
   __chkstk_darwin(v11);
   v15 = &v21 - v14;
   v16 = objc_opt_self();
-  v17 = self;
+  selfCopy = self;
   result = [v16 preferredLocale];
   if (result)
   {
@@ -70,31 +70,31 @@
   return result;
 }
 
-- (void)setFirstWeekday:(int64_t)a3
+- (void)setFirstWeekday:(int64_t)weekday
 {
-  v4 = self;
-  sub_179C8(a3);
+  selfCopy = self;
+  sub_179C8(weekday);
 }
 
 - (NSNumber)firstWeekdayAsNSNumber
 {
   sub_1752C(0, &qword_3CE58, NSNumber_ptr);
-  v3 = self;
-  v4.super.super.isa = sub_2127C([(Settings *)v3 firstWeekday]).super.super.isa;
+  selfCopy = self;
+  v4.super.super.isa = sub_2127C([(Settings *)selfCopy firstWeekday]).super.super.isa;
 
   return v4.super.super.isa;
 }
 
-- (void)setFirstWeekdayAsNSNumber:(id)a3
+- (void)setFirstWeekdayAsNSNumber:(id)number
 {
-  v4 = a3;
-  v5 = self;
-  -[Settings setFirstWeekday:](v5, "setFirstWeekday:", [v4 integerValue]);
+  numberCopy = number;
+  selfCopy = self;
+  -[Settings setFirstWeekday:](selfCopy, "setFirstWeekday:", [numberCopy integerValue]);
 }
 
 - (PSSpecifier)firstWeekdaySpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_17F74();
 
   return v3;
@@ -108,17 +108,17 @@
   return v2;
 }
 
-- (void)setTemperatureUnit:(id)a3
+- (void)setTemperatureUnit:(id)unit
 {
   v4 = sub_211EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_18CE0(v4, v6);
 }
 
 - (PSSpecifier)temperatureUnitSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18FC4();
 
   return v3;
@@ -126,21 +126,21 @@
 
 - (IPNumberFormat)numberFormat
 {
-  v2 = [objc_opt_self() currentFormat];
+  currentFormat = [objc_opt_self() currentFormat];
 
-  return v2;
+  return currentFormat;
 }
 
-- (void)setNumberFormat:(id)a3
+- (void)setNumberFormat:(id)format
 {
   type metadata accessor for Settings();
   sub_195B4();
-  v5 = a3;
-  v8 = self;
+  formatCopy = format;
+  selfCopy = self;
   sub_210FC();
   sub_2110C();
 
-  [objc_opt_self() setFormat:v5];
+  [objc_opt_self() setFormat:formatCopy];
   _CFLocaleResetCurrent();
   v6 = CFNotificationCenterGetDarwinNotifyCenter();
   v7 = sub_211BC();
@@ -149,30 +149,30 @@
 
 - (NSString)numberFormatAsString
 {
-  v2 = self;
-  v3 = [(Settings *)v2 numberFormat];
-  v4 = [(IPNumberFormat *)v3 formattedNumber];
+  selfCopy = self;
+  numberFormat = [(Settings *)selfCopy numberFormat];
+  formattedNumber = [(IPNumberFormat *)numberFormat formattedNumber];
 
-  if (!v4)
+  if (!formattedNumber)
   {
     sub_211EC();
-    v4 = sub_211BC();
+    formattedNumber = sub_211BC();
   }
 
-  return v4;
+  return formattedNumber;
 }
 
-- (void)setNumberFormatAsString:(id)a3
+- (void)setNumberFormatAsString:(id)string
 {
   v4 = sub_211EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_19934(v4, v6);
 }
 
 - (PSSpecifier)numberFormatSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19BB4();
 
   return v3;
@@ -186,11 +186,11 @@
   return v2;
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
   v4 = sub_211EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1ADFC(v4, v6);
 }
 
@@ -202,11 +202,11 @@
   return v2;
 }
 
-- (void)setNumberingSystem:(id)a3
+- (void)setNumberingSystem:(id)system
 {
   v4 = sub_211EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1D7AC(v4, v6);
 }
 
@@ -218,17 +218,17 @@
   return v2;
 }
 
-- (void)setMeasurementSystem:(id)a3
+- (void)setMeasurementSystem:(id)system
 {
   v4 = sub_211EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1EEDC(v4, v6);
 }
 
 - (PSSpecifier)measurementSystemSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1F1D4();
 
   return v3;

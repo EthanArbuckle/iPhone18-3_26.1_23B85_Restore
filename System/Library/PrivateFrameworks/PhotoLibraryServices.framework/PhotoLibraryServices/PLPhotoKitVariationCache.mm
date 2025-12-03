@@ -1,33 +1,33 @@
 @interface PLPhotoKitVariationCache
-- (BOOL)_performChangesForAssetIdentifier:(id)a3 sourceType:(int64_t)a4 changesBlock:(id)a5;
-- (BOOL)_removeCachesForURL:(id)a3;
-- (BOOL)_writeInfo:(id)a3 atURL:(id)a4;
-- (BOOL)deleteCacheForAssetIdentifier:(id)a3 sourceType:(int64_t)a4;
-- (PLPhotoKitVariationCache)initWithCacheURL:(id)a3;
-- (PLPhotoKitVariationCache)initWithPathManager:(id)a3;
-- (id)_fileURLWithIdentifier:(id)a3 sourceType:(int64_t)a4 pathExtension:(id)a5;
-- (id)_readInfoForURL:(id)a3;
-- (id)analysisResultForAssetIdentifier:(id)a3 sourceType:(int64_t)a4;
-- (id)gatingResultForVariationType:(int64_t)a3 assetIdentifier:(id)a4 sourceType:(int64_t)a5;
-- (id)portraitEffectSettingsForAssetIdentifier:(id)a3 sourceType:(int64_t)a4;
+- (BOOL)_performChangesForAssetIdentifier:(id)identifier sourceType:(int64_t)type changesBlock:(id)block;
+- (BOOL)_removeCachesForURL:(id)l;
+- (BOOL)_writeInfo:(id)info atURL:(id)l;
+- (BOOL)deleteCacheForAssetIdentifier:(id)identifier sourceType:(int64_t)type;
+- (PLPhotoKitVariationCache)initWithCacheURL:(id)l;
+- (PLPhotoKitVariationCache)initWithPathManager:(id)manager;
+- (id)_fileURLWithIdentifier:(id)identifier sourceType:(int64_t)type pathExtension:(id)extension;
+- (id)_readInfoForURL:(id)l;
+- (id)analysisResultForAssetIdentifier:(id)identifier sourceType:(int64_t)type;
+- (id)gatingResultForVariationType:(int64_t)type assetIdentifier:(id)identifier sourceType:(int64_t)sourceType;
+- (id)portraitEffectSettingsForAssetIdentifier:(id)identifier sourceType:(int64_t)type;
 - (unint64_t)evictIfNeeded;
 - (unint64_t)purgeAll;
-- (void)_saveToMemoryCache:(id)a3 forFileURL:(id)a4 fileSize:(unint64_t)a5;
-- (void)saveAnalysisResult:(id)a3 assetIdentifier:(id)a4 sourceType:(int64_t)a5;
-- (void)saveGatingResult:(id)a3 forVariationType:(int64_t)a4 assetIdentifier:(id)a5 sourceType:(int64_t)a6;
-- (void)savePortraitEffectSettings:(id)a3 sourceType:(int64_t)a4 assetIdentifier:(id)a5;
+- (void)_saveToMemoryCache:(id)cache forFileURL:(id)l fileSize:(unint64_t)size;
+- (void)saveAnalysisResult:(id)result assetIdentifier:(id)identifier sourceType:(int64_t)type;
+- (void)saveGatingResult:(id)result forVariationType:(int64_t)type assetIdentifier:(id)identifier sourceType:(int64_t)sourceType;
+- (void)savePortraitEffectSettings:(id)settings sourceType:(int64_t)type assetIdentifier:(id)identifier;
 @end
 
 @implementation PLPhotoKitVariationCache
 
-- (BOOL)_removeCachesForURL:(id)a3
+- (BOOL)_removeCachesForURL:(id)l
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSCache *)self->_memoryCache removeObjectForKey:v4];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  [(NSCache *)self->_memoryCache removeObjectForKey:lCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v10];
+  v6 = [defaultManager removeItemAtURL:lCopy error:&v10];
   v7 = v10;
 
   if ((v6 & 1) == 0)
@@ -36,9 +36,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = lCopy;
       v15 = 2112;
       v16 = v7;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "%@: could not delete file at %@ (%@)", buf, 0x20u);
@@ -48,27 +48,27 @@
   return v6;
 }
 
-- (void)_saveToMemoryCache:(id)a3 forFileURL:(id)a4 fileSize:(unint64_t)a5
+- (void)_saveToMemoryCache:(id)cache forFileURL:(id)l fileSize:(unint64_t)size
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_PHVariationInMemoryCachedValue alloc] initWithInfo:v9 fileURL:v8];
+  lCopy = l;
+  cacheCopy = cache;
+  v10 = [[_PHVariationInMemoryCachedValue alloc] initWithInfo:cacheCopy fileURL:lCopy];
 
-  [(NSCache *)self->_memoryCache setObject:v10 forKey:v8 cost:a5];
+  [(NSCache *)self->_memoryCache setObject:v10 forKey:lCopy cost:size];
 }
 
-- (id)_readInfoForURL:(id)a3
+- (id)_readInfoForURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSCache *)self->_memoryCache objectForKey:v4];
+  lCopy = l;
+  v5 = [(NSCache *)self->_memoryCache objectForKey:lCopy];
   v6 = v5;
   if (v5)
   {
     if ([v5 isValid])
     {
-      v7 = [v6 info];
-      if (v7)
+      info = [v6 info];
+      if (info)
       {
         goto LABEL_14;
       }
@@ -76,11 +76,11 @@
 
     else
     {
-      [(NSCache *)self->_memoryCache removeObjectForKey:v4];
+      [(NSCache *)self->_memoryCache removeObjectForKey:lCopy];
     }
   }
 
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4];
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
   if (!v8)
   {
     v9 = 0;
@@ -88,53 +88,53 @@
   }
 
   v12 = 0;
-  v7 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:&v12];
+  info = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:&v12];
   v9 = v12;
-  if (!v7)
+  if (!info)
   {
 LABEL_10:
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v4;
+      v16 = lCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "%@: could not read file at %@ (%@)", buf, 0x20u);
     }
 
-    v7 = 0;
+    info = 0;
     goto LABEL_13;
   }
 
-  -[PLPhotoKitVariationCache _saveToMemoryCache:forFileURL:fileSize:](self, "_saveToMemoryCache:forFileURL:fileSize:", v7, v4, [v8 length]);
+  -[PLPhotoKitVariationCache _saveToMemoryCache:forFileURL:fileSize:](self, "_saveToMemoryCache:forFileURL:fileSize:", info, lCopy, [v8 length]);
 LABEL_13:
 
 LABEL_14:
 
-  return v7;
+  return info;
 }
 
-- (BOOL)_writeInfo:(id)a3 atURL:(id)a4
+- (BOOL)_writeInfo:(id)info atURL:(id)l
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  lCopy = l;
   v17 = 0;
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:&v17];
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:200 options:0 error:&v17];
   v9 = v17;
   v10 = v9;
   if (v8)
   {
     v16 = v9;
-    v11 = [v8 writeToURL:v7 options:1073741825 error:&v16];
+    v11 = [v8 writeToURL:lCopy options:1073741825 error:&v16];
     v12 = v16;
 
     if (v11)
     {
-      -[PLPhotoKitVariationCache _saveToMemoryCache:forFileURL:fileSize:](self, "_saveToMemoryCache:forFileURL:fileSize:", v6, v7, [v8 length]);
+      -[PLPhotoKitVariationCache _saveToMemoryCache:forFileURL:fileSize:](self, "_saveToMemoryCache:forFileURL:fileSize:", infoCopy, lCopy, [v8 length]);
       v13 = 1;
       goto LABEL_8;
     }
@@ -149,9 +149,9 @@ LABEL_14:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = lCopy;
     v22 = 2112;
     v23 = v12;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "%@: could not write file at %@ (%@)", buf, 0x20u);
@@ -163,22 +163,22 @@ LABEL_8:
   return v13;
 }
 
-- (id)_fileURLWithIdentifier:(id)a3 sourceType:(int64_t)a4 pathExtension:(id)a5
+- (id)_fileURLWithIdentifier:(id)identifier sourceType:(int64_t)type pathExtension:(id)extension
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
     v8 = self->_cacheURL;
-    v9 = a5;
-    v10 = [a3 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+    extensionCopy = extension;
+    v10 = [identifier stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
     v11 = v10;
     v12 = @"SpatialOverCapture";
-    if (a4 != 1)
+    if (type != 1)
     {
       v12 = 0;
     }
 
-    if (!a4)
+    if (!type)
     {
       v12 = @"Primary";
     }
@@ -191,7 +191,7 @@ LABEL_8:
 
     v16 = [v15 componentsJoinedByString:@"-"];
 
-    v17 = [v16 stringByAppendingPathExtension:v9];
+    v17 = [v16 stringByAppendingPathExtension:extensionCopy];
 
     v18 = [(NSURL *)v8 URLByAppendingPathComponent:v17 isDirectory:0];
   }
@@ -204,9 +204,9 @@ LABEL_8:
   return v18;
 }
 
-- (BOOL)deleteCacheForAssetIdentifier:(id)a3 sourceType:(int64_t)a4
+- (BOOL)deleteCacheForAssetIdentifier:(id)identifier sourceType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -217,10 +217,10 @@ LABEL_8:
   v10[2] = __69__PLPhotoKitVariationCache_deleteCacheForAssetIdentifier_sourceType___block_invoke;
   v10[3] = &unk_1E7576680;
   v10[4] = self;
-  v11 = v6;
+  v11 = identifierCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  typeCopy = type;
+  v8 = identifierCopy;
   dispatch_barrier_sync(cacheQueue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -471,22 +471,22 @@ uint64_t __41__PLPhotoKitVariationCache_evictIfNeeded__block_invoke_2(uint64_t a
   return v7;
 }
 
-- (BOOL)_performChangesForAssetIdentifier:(id)a3 sourceType:(int64_t)a4 changesBlock:(id)a5
+- (BOOL)_performChangesForAssetIdentifier:(id)identifier sourceType:(int64_t)type changesBlock:(id)block
 {
-  v8 = a5;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v9 = [(PLPhotoKitVariationCache *)self _fileURLWithIdentifier:a3 sourceType:a4 pathExtension:@"plist"];
+    v9 = [(PLPhotoKitVariationCache *)self _fileURLWithIdentifier:identifier sourceType:type pathExtension:@"plist"];
     v10 = [(PLPhotoKitVariationCache *)self _readInfoForURL:v9];
-    v11 = [v10 mutableCopy];
+    dictionary = [v10 mutableCopy];
 
-    if (!v11)
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v8[2](v8, v11);
-    v12 = [(PLPhotoKitVariationCache *)self _writeInfo:v11 atURL:v9];
+    blockCopy[2](blockCopy, dictionary);
+    v12 = [(PLPhotoKitVariationCache *)self _writeInfo:dictionary atURL:v9];
   }
 
   else
@@ -497,9 +497,9 @@ uint64_t __41__PLPhotoKitVariationCache_evictIfNeeded__block_invoke_2(uint64_t a
   return v12;
 }
 
-- (id)gatingResultForVariationType:(int64_t)a3 assetIdentifier:(id)a4 sourceType:(int64_t)a5
+- (id)gatingResultForVariationType:(int64_t)type assetIdentifier:(id)identifier sourceType:(int64_t)sourceType
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -512,11 +512,11 @@ uint64_t __41__PLPhotoKitVariationCache_evictIfNeeded__block_invoke_2(uint64_t a
   block[2] = __84__PLPhotoKitVariationCache_gatingResultForVariationType_assetIdentifier_sourceType___block_invoke;
   block[3] = &unk_1E7566520;
   block[4] = self;
-  v14 = v8;
-  v16 = a5;
-  v17 = a3;
+  v14 = identifierCopy;
+  sourceTypeCopy = sourceType;
+  typeCopy = type;
   v15 = &v18;
-  v10 = v8;
+  v10 = identifierCopy;
   dispatch_sync(cacheQueue, block);
   v11 = v19[5];
 
@@ -539,21 +539,21 @@ void __84__PLPhotoKitVariationCache_gatingResultForVariationType_assetIdentifier
   }
 }
 
-- (void)saveGatingResult:(id)a3 forVariationType:(int64_t)a4 assetIdentifier:(id)a5 sourceType:(int64_t)a6
+- (void)saveGatingResult:(id)result forVariationType:(int64_t)type assetIdentifier:(id)identifier sourceType:(int64_t)sourceType
 {
-  v10 = a3;
-  v11 = a5;
+  resultCopy = result;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PLPhotoKitVariationCache_saveGatingResult_forVariationType_assetIdentifier_sourceType___block_invoke;
   block[3] = &unk_1E7576428;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a6;
-  v20 = a4;
-  v12 = v11;
-  v13 = v10;
+  v16 = resultCopy;
+  selfCopy = self;
+  v18 = identifierCopy;
+  sourceTypeCopy = sourceType;
+  typeCopy = type;
+  v12 = identifierCopy;
+  v13 = resultCopy;
   v14 = dispatch_block_create_with_qos_class(0, QOS_CLASS_UTILITY, -8, block);
   dispatch_barrier_async(self->_cacheQueue, v14);
 }
@@ -585,9 +585,9 @@ void __89__PLPhotoKitVariationCache_saveGatingResult_forVariationType_assetIdent
   }
 }
 
-- (id)portraitEffectSettingsForAssetIdentifier:(id)a3 sourceType:(int64_t)a4
+- (id)portraitEffectSettingsForAssetIdentifier:(id)identifier sourceType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -600,10 +600,10 @@ void __89__PLPhotoKitVariationCache_saveGatingResult_forVariationType_assetIdent
   v11[2] = __80__PLPhotoKitVariationCache_portraitEffectSettingsForAssetIdentifier_sourceType___block_invoke;
   v11[3] = &unk_1E7576680;
   v11[4] = self;
-  v12 = v6;
+  v12 = identifierCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  typeCopy = type;
+  v8 = identifierCopy;
   dispatch_sync(cacheQueue, v11);
   v9 = v16[5];
 
@@ -622,20 +622,20 @@ void __80__PLPhotoKitVariationCache_portraitEffectSettingsForAssetIdentifier_sou
   *(v4 + 40) = v3;
 }
 
-- (void)savePortraitEffectSettings:(id)a3 sourceType:(int64_t)a4 assetIdentifier:(id)a5
+- (void)savePortraitEffectSettings:(id)settings sourceType:(int64_t)type assetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__PLPhotoKitVariationCache_savePortraitEffectSettings_sourceType_assetIdentifier___block_invoke;
   v13[3] = &unk_1E7576168;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v10 = v9;
-  v11 = v8;
+  v14 = settingsCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  typeCopy = type;
+  v10 = identifierCopy;
+  v11 = settingsCopy;
   v12 = dispatch_block_create_with_qos_class(0, QOS_CLASS_UTILITY, -8, v13);
   dispatch_barrier_async(self->_cacheQueue, v12);
 }
@@ -656,9 +656,9 @@ void __82__PLPhotoKitVariationCache_savePortraitEffectSettings_sourceType_assetI
   }
 }
 
-- (id)analysisResultForAssetIdentifier:(id)a3 sourceType:(int64_t)a4
+- (id)analysisResultForAssetIdentifier:(id)identifier sourceType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -671,10 +671,10 @@ void __82__PLPhotoKitVariationCache_savePortraitEffectSettings_sourceType_assetI
   v11[2] = __72__PLPhotoKitVariationCache_analysisResultForAssetIdentifier_sourceType___block_invoke;
   v11[3] = &unk_1E7576680;
   v11[4] = self;
-  v12 = v6;
+  v12 = identifierCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  typeCopy = type;
+  v8 = identifierCopy;
   dispatch_sync(cacheQueue, v11);
   v9 = v16[5];
 
@@ -693,20 +693,20 @@ void __72__PLPhotoKitVariationCache_analysisResultForAssetIdentifier_sourceType_
   *(v4 + 40) = v3;
 }
 
-- (void)saveAnalysisResult:(id)a3 assetIdentifier:(id)a4 sourceType:(int64_t)a5
+- (void)saveAnalysisResult:(id)result assetIdentifier:(id)identifier sourceType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__PLPhotoKitVariationCache_saveAnalysisResult_assetIdentifier_sourceType___block_invoke;
   v13[3] = &unk_1E7576168;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a5;
-  v10 = v9;
-  v11 = v8;
+  v14 = resultCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  typeCopy = type;
+  v10 = identifierCopy;
+  v11 = resultCopy;
   v12 = dispatch_block_create_with_qos_class(0, QOS_CLASS_UTILITY, -8, v13);
   dispatch_barrier_async(self->_cacheQueue, v12);
 }
@@ -727,13 +727,13 @@ void __74__PLPhotoKitVariationCache_saveAnalysisResult_assetIdentifier_sourceTyp
   }
 }
 
-- (PLPhotoKitVariationCache)initWithCacheURL:(id)a3
+- (PLPhotoKitVariationCache)initWithCacheURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLPhotoKitVariationCache.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"cacheURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoKitVariationCache.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"cacheURL"}];
   }
 
   v15.receiver = self;
@@ -746,7 +746,7 @@ void __74__PLPhotoKitVariationCache_saveAnalysisResult_assetIdentifier_sourceTyp
     cacheQueue = v7->_cacheQueue;
     v7->_cacheQueue = v9;
 
-    objc_storeStrong(&v7->_cacheURL, a3);
+    objc_storeStrong(&v7->_cacheURL, l);
     v11 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     memoryCache = v7->_memoryCache;
     v7->_memoryCache = v11;
@@ -757,10 +757,10 @@ void __74__PLPhotoKitVariationCache_saveAnalysisResult_assetIdentifier_sourceTyp
   return v7;
 }
 
-- (PLPhotoKitVariationCache)initWithPathManager:(id)a3
+- (PLPhotoKitVariationCache)initWithPathManager:(id)manager
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [a3 privateCacheDirectoryWithSubType:7 createIfNeeded:1 error:0];
+  v5 = [manager privateCacheDirectoryWithSubType:7 createIfNeeded:1 error:0];
   v6 = [v4 fileURLWithPath:v5 isDirectory:1];
 
   v7 = [(PLPhotoKitVariationCache *)self initWithCacheURL:v6];

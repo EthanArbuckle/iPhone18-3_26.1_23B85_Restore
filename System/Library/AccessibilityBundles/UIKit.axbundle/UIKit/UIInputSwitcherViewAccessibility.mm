@@ -1,24 +1,24 @@
 @interface UIInputSwitcherViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityLastHandednessBiasAnnouncement;
-- (void)_accessibilitySetLastHandednessBiasAnnouncement:(uint64_t)a1;
-- (void)_axAnnounceSelectedLanguage:(id)a3;
-- (void)_segmentControlValueDidChange:(id)a3;
-- (void)highlightRow:(unint64_t)a3;
-- (void)updateSelectionWithPoint:(CGPoint)a3;
-- (void)willFadeForSelectionAtIndex:(unint64_t)a3;
+- (void)_accessibilitySetLastHandednessBiasAnnouncement:(uint64_t)announcement;
+- (void)_axAnnounceSelectedLanguage:(id)language;
+- (void)_segmentControlValueDidChange:(id)change;
+- (void)highlightRow:(unint64_t)row;
+- (void)updateSelectionWithPoint:(CGPoint)point;
+- (void)willFadeForSelectionAtIndex:(unint64_t)index;
 @end
 
 @implementation UIInputSwitcherViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIInputSwitcherView";
   v6 = @"UIKeyboardMenuView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -41,9 +41,9 @@
 
 - (id)_accessibilityLastHandednessBiasAnnouncement
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIInputSwitcherView___accessibilityLastHandednessBiasAnnouncement);
+    v2 = objc_getAssociatedObject(self, &__UIInputSwitcherView___accessibilityLastHandednessBiasAnnouncement);
   }
 
   else
@@ -54,12 +54,12 @@
   return v2;
 }
 
-- (void)_accessibilitySetLastHandednessBiasAnnouncement:(uint64_t)a1
+- (void)_accessibilitySetLastHandednessBiasAnnouncement:(uint64_t)announcement
 {
-  v3 = a1;
+  announcementCopy = announcement;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (announcementCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -67,29 +67,29 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)updateSelectionWithPoint:(CGPoint)a3
+- (void)updateSelectionWithPoint:(CGPoint)point
 {
-  v14 = a3;
-  v13 = self;
+  pointCopy = point;
+  selfCopy = self;
   v12[1] = a2;
   v11 = 0;
   objc_opt_class();
-  v5 = [(UIInputSwitcherViewAccessibility *)v13 safeValueForKey:@"m_table"];
+  v5 = [(UIInputSwitcherViewAccessibility *)selfCopy safeValueForKey:@"m_table"];
   v10 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v9 = MEMORY[0x29EDC9748](v10);
   objc_storeStrong(&v10, 0);
   v12[0] = v9;
-  v8 = [v9 indexPathForSelectedRow];
-  v7.receiver = v13;
+  indexPathForSelectedRow = [v9 indexPathForSelectedRow];
+  v7.receiver = selfCopy;
   v7.super_class = UIInputSwitcherViewAccessibility;
-  [(UIInputSwitcherViewAccessibility *)&v7 updateSelectionWithPoint:v14.x, v14.y];
-  v6 = [v12[0] indexPathForSelectedRow];
-  if (v8 != v6 && ([v8 isEqual:v6] & 1) == 0)
+  [(UIInputSwitcherViewAccessibility *)&v7 updateSelectionWithPoint:pointCopy.x, pointCopy.y];
+  indexPathForSelectedRow2 = [v12[0] indexPathForSelectedRow];
+  if (indexPathForSelectedRow != indexPathForSelectedRow2 && ([indexPathForSelectedRow isEqual:indexPathForSelectedRow2] & 1) == 0)
   {
-    if (v6)
+    if (indexPathForSelectedRow2)
     {
-      [(UIInputSwitcherViewAccessibility *)v13 _axAnnounceSelectedLanguage:v6];
+      [(UIInputSwitcherViewAccessibility *)selfCopy _axAnnounceSelectedLanguage:indexPathForSelectedRow2];
     }
 
     else
@@ -101,34 +101,34 @@
     }
   }
 
-  objc_storeStrong(&v6, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&indexPathForSelectedRow2, 0);
+  objc_storeStrong(&indexPathForSelectedRow, 0);
   objc_storeStrong(v12, 0);
 }
 
-- (void)highlightRow:(unint64_t)a3
+- (void)highlightRow:(unint64_t)row
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  rowCopy = row;
   v5.receiver = self;
   v5.super_class = UIInputSwitcherViewAccessibility;
-  [(UIInputSwitcherViewAccessibility *)&v5 highlightRow:a3];
-  v3 = v8;
-  v4 = [MEMORY[0x29EDB9FE0] indexPathForRow:v6 inSection:0];
+  [(UIInputSwitcherViewAccessibility *)&v5 highlightRow:row];
+  v3 = selfCopy;
+  v4 = [MEMORY[0x29EDB9FE0] indexPathForRow:rowCopy inSection:0];
   [(UIInputSwitcherViewAccessibility *)v3 _axAnnounceSelectedLanguage:?];
   MEMORY[0x29EDC9740](v4);
 }
 
-- (void)_axAnnounceSelectedLanguage:(id)a3
+- (void)_axAnnounceSelectedLanguage:(id)language
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, language);
   v42 = 0;
   objc_opt_class();
-  v16 = [(UIInputSwitcherViewAccessibility *)v45 safeValueForKey:@"m_table"];
+  v16 = [(UIInputSwitcherViewAccessibility *)selfCopy safeValueForKey:@"m_table"];
   v41 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v16);
   v40 = MEMORY[0x29EDC9748](v41);
@@ -150,7 +150,7 @@
     v27 = __64__UIInputSwitcherViewAccessibility__axAnnounceSelectedLanguage___block_invoke;
     v28 = &unk_29F30C860;
     v30[1] = &v31;
-    v29 = MEMORY[0x29EDC9748](v45);
+    v29 = MEMORY[0x29EDC9748](selfCopy);
     v30[0] = MEMORY[0x29EDC9748](location[0]);
     AXPerformSafeBlock();
     v23 = MEMORY[0x29EDC9748](v32[5]);
@@ -161,7 +161,7 @@
     v38 = v23;
     v22 = 0;
     v21 = 0;
-    v20 = [(UIInputSwitcherViewAccessibility *)v45 safeArrayForKey:@"inputModes"];
+    v20 = [(UIInputSwitcherViewAccessibility *)selfCopy safeArrayForKey:@"inputModes"];
     v19 = [v38 safeValueForKey:@"identifier"];
     if ([v20 containsObject:v19])
     {
@@ -186,16 +186,16 @@
       MEMORY[0x29EDC9740](v8);
     }
 
-    v9 = [v39 accessibilityValue];
+    accessibilityValue = [v39 accessibilityValue];
     v10 = v22;
-    v22 = v9;
+    v22 = accessibilityValue;
     *&v11 = MEMORY[0x29EDC9740](v10).n128_u64[0];
     v13 = MEMORY[0x29EDBD7E8];
-    v15 = [v39 accessibilityLabel];
+    accessibilityLabel = [v39 accessibilityLabel];
     v14 = __UIAXStringForVariables();
     argument = [v13 axAttributedStringWithString:{v22, @"__AXStringForVariablesSentinel"}];
     MEMORY[0x29EDC9740](v14);
-    *&v12 = MEMORY[0x29EDC9740](v15).n128_u64[0];
+    *&v12 = MEMORY[0x29EDC9740](accessibilityLabel).n128_u64[0];
     if (v21)
     {
       [argument setAttribute:v21 forKey:{*MEMORY[0x29EDBD918], v12}];
@@ -228,13 +228,13 @@ double __64__UIInputSwitcherViewAccessibility__axAnnounceSelectedLanguage___bloc
   return result;
 }
 
-- (void)_segmentControlValueDidChange:(id)a3
+- (void)_segmentControlValueDidChange:(id)change
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18.receiver = v20;
+  objc_storeStrong(location, change);
+  v18.receiver = selfCopy;
   v18.super_class = UIInputSwitcherViewAccessibility;
   [(UIInputSwitcherViewAccessibility *)&v18 _segmentControlValueDidChange:location[0]];
   v17 = 0;
@@ -265,20 +265,20 @@ double __64__UIInputSwitcherViewAccessibility__axAnnounceSelectedLanguage___bloc
   LOBYTE(v6) = 0;
   if (v17)
   {
-    v9 = [(UIInputSwitcherViewAccessibility *)v20 _accessibilityLastHandednessBiasAnnouncement];
+    _accessibilityLastHandednessBiasAnnouncement = [(UIInputSwitcherViewAccessibility *)selfCopy _accessibilityLastHandednessBiasAnnouncement];
     v8 = 1;
-    v6 = [v9 isEqualToString:v17] ^ 1;
+    v6 = [_accessibilityLastHandednessBiasAnnouncement isEqualToString:v17] ^ 1;
   }
 
   if (v8)
   {
-    MEMORY[0x29EDC9740](v9);
+    MEMORY[0x29EDC9740](_accessibilityLastHandednessBiasAnnouncement);
   }
 
   if (v6)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v17);
-    [(UIInputSwitcherViewAccessibility *)v20 _accessibilitySetLastHandednessBiasAnnouncement:v17];
+    [(UIInputSwitcherViewAccessibility *)selfCopy _accessibilitySetLastHandednessBiasAnnouncement:v17];
   }
 
   objc_storeStrong(&v13, 0);
@@ -286,11 +286,11 @@ double __64__UIInputSwitcherViewAccessibility__axAnnounceSelectedLanguage___bloc
   objc_storeStrong(location, 0);
 }
 
-- (void)willFadeForSelectionAtIndex:(unint64_t)a3
+- (void)willFadeForSelectionAtIndex:(unint64_t)index
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  indexCopy = index;
   argument = [*MEMORY[0x29EDC8008] _accessibilityResponderElement];
   if (!argument)
   {
@@ -299,9 +299,9 @@ double __64__UIInputSwitcherViewAccessibility__axAnnounceSelectedLanguage___bloc
   }
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], argument);
-  v3.receiver = v7;
+  v3.receiver = selfCopy;
   v3.super_class = UIInputSwitcherViewAccessibility;
-  [(UIInputSwitcherViewAccessibility *)&v3 willFadeForSelectionAtIndex:v5];
+  [(UIInputSwitcherViewAccessibility *)&v3 willFadeForSelectionAtIndex:indexCopy];
   objc_storeStrong(&argument, 0);
 }
 

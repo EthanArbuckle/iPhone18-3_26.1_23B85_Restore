@@ -1,7 +1,7 @@
 @interface _VideosExtrasShelfCollectionViewLayout
 - (CGSize)calculatedContentSize;
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)_calculateSizes;
 - (void)prepareLayout;
 @end
@@ -13,8 +13,8 @@
   if (!self->_rects)
   {
     v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v3 = [(_VideosExtrasShelfCollectionViewLayout *)self collectionView];
-    v4 = [v3 delegate];
+    collectionView = [(_VideosExtrasShelfCollectionViewLayout *)self collectionView];
+    delegate = [collectionView delegate];
     v5 = objc_opt_respondsToSelector();
     v6 = objc_opt_respondsToSelector() & 1;
     v7 = objc_opt_respondsToSelector() & 1;
@@ -73,9 +73,9 @@
     v41[3] = &unk_1E87304B8;
     v50 = v6;
     v45 = v51;
-    v42 = v4;
-    v43 = v3;
-    v44 = self;
+    v42 = delegate;
+    v43 = collectionView;
+    selfCopy = self;
     v46 = v12;
     v47 = v13;
     v48 = v14;
@@ -89,7 +89,7 @@
     v30 = v23;
     v24 = v43;
     v31 = v24;
-    v32 = self;
+    selfCopy2 = self;
     v36 = v8;
     v37 = v9;
     v34 = v51;
@@ -111,16 +111,16 @@
   }
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v24 = *MEMORY[0x1E69E9840];
   if ([(UICollectionViewFlowLayout *)self scrollDirection])
   {
-    v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    height = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -146,7 +146,7 @@
           [v16 CGRectValue];
           [v15 setFrame:?];
 
-          [v8 addObject:v15];
+          [height addObject:v15];
         }
 
         v11 = [(NSDictionary *)v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -160,10 +160,10 @@
   {
     v22.receiver = self;
     v22.super_class = _VideosExtrasShelfCollectionViewLayout;
-    v8 = [(UICollectionViewFlowLayout *)&v22 layoutAttributesForElementsInRect:x, y, width, height];
+    height = [(UICollectionViewFlowLayout *)&v22 layoutAttributesForElementsInRect:x, y, width, height];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)prepareLayout

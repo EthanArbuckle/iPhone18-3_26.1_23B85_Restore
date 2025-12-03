@@ -1,7 +1,7 @@
 @interface MIBUNFCResponse
-- (BOOL)_deserialize:(id)a3;
+- (BOOL)_deserialize:(id)_deserialize;
 - (MIBUNFCResponse)init;
-- (MIBUNFCResponse)initWithResponsePayload:(id)a3;
+- (MIBUNFCResponse)initWithResponsePayload:(id)payload;
 - (id)serialize;
 - (void)serialize;
 @end
@@ -23,12 +23,12 @@
   return v3;
 }
 
-- (MIBUNFCResponse)initWithResponsePayload:(id)a3
+- (MIBUNFCResponse)initWithResponsePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = [(MIBUNFCResponse *)self init];
   v6 = v5;
-  if (v5 && ![(MIBUNFCResponse *)v5 _deserialize:v4])
+  if (v5 && ![(MIBUNFCResponse *)v5 _deserialize:payloadCopy])
   {
     v7 = 0;
   }
@@ -44,21 +44,21 @@
 - (id)serialize
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUNFCResponse *)self error];
-  v5 = [v3 serializeResponseError:v4];
+  error = [(MIBUNFCResponse *)self error];
+  v5 = [v3 serializeResponseError:error];
 
   if (v5)
   {
-    v6 = [v3 serializedData];
+    serializedData = [v3 serializedData];
   }
 
   else
   {
     [(MIBUNFCResponse *)self serialize];
-    v6 = v8;
+    serializedData = v8;
   }
 
-  return v6;
+  return serializedData;
 }
 
 void __28__MIBUNFCResponse_serialize__block_invoke()
@@ -77,14 +77,14 @@ void __28__MIBUNFCResponse_serialize__block_invoke()
   }
 }
 
-- (BOOL)_deserialize:(id)a3
+- (BOOL)_deserialize:(id)_deserialize
 {
-  v4 = a3;
-  v5 = [[MIBUDeserializer alloc] initWithData:v4];
+  _deserializeCopy = _deserialize;
+  v5 = [[MIBUDeserializer alloc] initWithData:_deserializeCopy];
 
-  v6 = [(MIBUDeserializer *)v5 deserialize];
+  deserialize = [(MIBUDeserializer *)v5 deserialize];
 
-  if (v6)
+  if (deserialize)
   {
     v12 = 0;
     v7 = [(MIBUDeserializer *)v5 deserializeResponseError:&v12];
@@ -157,9 +157,9 @@ void __32__MIBUNFCResponse__deserialize___block_invoke_6()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
     v6 = v4;
-    v7 = [a1 error];
+    error = [self error];
     v8 = 138543362;
-    v9 = v7;
+    v9 = error;
     _os_log_error_impl(&dword_259ABF000, v6, OS_LOG_TYPE_ERROR, "Failed to serialize responseerror: %{public}@", &v8, 0xCu);
   }
 

@@ -1,52 +1,52 @@
 @interface WFAnyPropertyListObject
-+ (id)objectWithPropertyListObject:(id)a3;
-- (WFAnyPropertyListObject)initWithCoder:(id)a3;
-- (WFAnyPropertyListObject)initWithPropertyListObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)objectWithPropertyListObject:(id)object;
+- (WFAnyPropertyListObject)initWithCoder:(id)coder;
+- (WFAnyPropertyListObject)initWithPropertyListObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAnyPropertyListObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAnyPropertyListObject *)self propertyListObject];
-  [v4 encodeObject:v5 forKey:@"propertyListObject"];
+  coderCopy = coder;
+  propertyListObject = [(WFAnyPropertyListObject *)self propertyListObject];
+  [coderCopy encodeObject:propertyListObject forKey:@"propertyListObject"];
 }
 
-- (WFAnyPropertyListObject)initWithCoder:(id)a3
+- (WFAnyPropertyListObject)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v4 setWithObjects:{v6, v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"propertyListObject"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"propertyListObject"];
 
   if (v12)
   {
     self = [(WFAnyPropertyListObject *)self initWithPropertyListObject:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (WFAnyPropertyListObject)initWithPropertyListObject:(id)a3
+- (WFAnyPropertyListObject)initWithPropertyListObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFPropertyListObject.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"propertyListObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPropertyListObject.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"propertyListObject"}];
   }
 
   v12.receiver = self;
@@ -54,7 +54,7 @@
   v6 = [(WFAnyPropertyListObject *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copyWithZone:0];
+    v7 = [objectCopy copyWithZone:0];
     propertyListObject = v6->_propertyListObject;
     v6->_propertyListObject = v7;
 
@@ -64,12 +64,12 @@
   return v6;
 }
 
-+ (id)objectWithPropertyListObject:(id)a3
++ (id)objectWithPropertyListObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] initWithPropertyListObject:v4];
+    objectCopy = object;
+    v5 = [[self alloc] initWithPropertyListObject:objectCopy];
   }
 
   else

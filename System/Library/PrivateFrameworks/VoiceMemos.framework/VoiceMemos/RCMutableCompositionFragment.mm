@@ -1,13 +1,13 @@
 @interface RCMutableCompositionFragment
-- (BOOL)intersectWithTimeRange:(id)a3;
+- (BOOL)intersectWithTimeRange:(id)range;
 @end
 
 @implementation RCMutableCompositionFragment
 
-- (BOOL)intersectWithTimeRange:(id)a3
+- (BOOL)intersectWithTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   [(RCCompositionFragment *)self timeRangeInComposition];
   v7 = v6;
   v9 = RCTimeRangeIntersectTimeRange(v6, v8, var0, var1);

@@ -1,41 +1,41 @@
 @interface FCGoalProgressStore
-- (FCGoalProgressStore)initWithProfile:(id)a3;
+- (FCGoalProgressStore)initWithProfile:(id)profile;
 - (id)_legacyDefaultsDomain;
 - (id)_userDefaultsDomain;
 - (id)currentConfiguration;
-- (id)lastFiredEventDateForIdentifier:(id)a3;
+- (id)lastFiredEventDateForIdentifier:(id)identifier;
 - (id)scheduledEventIdentifiers;
 - (void)clearScheduledEventIdentifiers;
 - (void)currentConfiguration;
 - (void)scheduledEventIdentifiers;
-- (void)storeCurrentConfiguration:(id)a3;
-- (void)storeFiredEventDate:(id)a3 identifier:(id)a4;
-- (void)storeScheduledEventIdentifiers:(id)a3;
+- (void)storeCurrentConfiguration:(id)configuration;
+- (void)storeFiredEventDate:(id)date identifier:(id)identifier;
+- (void)storeScheduledEventIdentifiers:(id)identifiers;
 @end
 
 @implementation FCGoalProgressStore
 
-- (FCGoalProgressStore)initWithProfile:(id)a3
+- (FCGoalProgressStore)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = FCGoalProgressStore;
   v5 = [(FCGoalProgressStore *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)storeCurrentConfiguration:(id)a3
+- (void)storeCurrentConfiguration:(id)configuration
 {
-  v4 = [a3 transportData];
-  v5 = [(FCGoalProgressStore *)self _userDefaultsDomain];
+  transportData = [configuration transportData];
+  _userDefaultsDomain = [(FCGoalProgressStore *)self _userDefaultsDomain];
   v7 = 0;
-  [v5 setData:v4 forKey:@"goalProgressConfigurationData" error:&v7];
+  [_userDefaultsDomain setData:transportData forKey:@"goalProgressConfigurationData" error:&v7];
   v6 = v7;
   if (v6)
   {
@@ -49,9 +49,9 @@
 
 - (id)currentConfiguration
 {
-  v2 = [(FCGoalProgressStore *)self _userDefaultsDomain];
+  _userDefaultsDomain = [(FCGoalProgressStore *)self _userDefaultsDomain];
   v7 = 0;
-  v3 = [v2 dataForKey:@"goalProgressConfigurationData" error:&v7];
+  v3 = [_userDefaultsDomain dataForKey:@"goalProgressConfigurationData" error:&v7];
   v4 = v7;
   if (v4)
   {
@@ -77,14 +77,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)storeFiredEventDate:(id)a3 identifier:(id)a4
+- (void)storeFiredEventDate:(id)date identifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCGoalProgressStore *)self _legacyDefaultsDomain];
+  dateCopy = date;
+  identifierCopy = identifier;
+  _legacyDefaultsDomain = [(FCGoalProgressStore *)self _legacyDefaultsDomain];
   v12 = 0;
-  [v8 setDate:v6 forKey:v7 error:&v12];
+  [_legacyDefaultsDomain setDate:dateCopy forKey:identifierCopy error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -93,9 +93,9 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v6;
+      v14 = dateCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = identifierCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_error_impl(&dword_24B55B000, v10, OS_LOG_TYPE_ERROR, "Failed to store goal progress event date %@ identifier %@, error %@", buf, 0x20u);
@@ -105,12 +105,12 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastFiredEventDateForIdentifier:(id)a3
+- (id)lastFiredEventDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FCGoalProgressStore *)self _legacyDefaultsDomain];
+  identifierCopy = identifier;
+  _legacyDefaultsDomain = [(FCGoalProgressStore *)self _legacyDefaultsDomain];
   v10 = 0;
-  v6 = [v5 dateForKey:v4 error:&v10];
+  v6 = [_legacyDefaultsDomain dateForKey:identifierCopy error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -131,13 +131,13 @@ LABEL_7:
   return v8;
 }
 
-- (void)storeScheduledEventIdentifiers:(id)a3
+- (void)storeScheduledEventIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(FCGoalProgressStore *)self _userDefaultsDomain];
-  v6 = [v4 allObjects];
+  identifiersCopy = identifiers;
+  _userDefaultsDomain = [(FCGoalProgressStore *)self _userDefaultsDomain];
+  allObjects = [identifiersCopy allObjects];
   v8 = 0;
-  [v5 setPropertyListValue:v6 forKey:@"goalProgressScheduledEventIdentifiers" error:&v8];
+  [_userDefaultsDomain setPropertyListValue:allObjects forKey:@"goalProgressScheduledEventIdentifiers" error:&v8];
   v7 = v8;
 
   if (v7)
@@ -158,9 +158,9 @@ LABEL_7:
 
 - (id)scheduledEventIdentifiers
 {
-  v2 = [(FCGoalProgressStore *)self _userDefaultsDomain];
+  _userDefaultsDomain = [(FCGoalProgressStore *)self _userDefaultsDomain];
   v7 = 0;
-  v3 = [v2 propertyListValueForKey:@"goalProgressScheduledEventIdentifiers" error:&v7];
+  v3 = [_userDefaultsDomain propertyListValueForKey:@"goalProgressScheduledEventIdentifiers" error:&v7];
   v4 = v7;
   if (v4)
   {

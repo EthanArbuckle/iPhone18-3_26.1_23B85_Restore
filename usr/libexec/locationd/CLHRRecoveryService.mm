@@ -1,36 +1,36 @@
 @interface CLHRRecoveryService
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)shouldForceWriteSampleToHealthKit;
 - (CLHRRecoveryService)init;
 - (id).cxx_construct;
-- (unint64_t)mapWorkoutTypeToHKWorkoutActivityType:(int64_t)a3;
+- (unint64_t)mapWorkoutTypeToHKWorkoutActivityType:(int64_t)type;
 - (void)beginService;
 - (void)endService;
-- (void)forceWriteSampleToHealthKit:(const WorkoutEvent *)a3;
-- (void)logBodyMetrics:(const CLBodyMetrics *)a3;
-- (void)logSessionStats:(const HRRecoveryResult *)a3;
-- (void)logVO2MaxStats:(const VO2MaxResult *)a3;
-- (void)onCatherineNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onHRRecoveryEstimate:(HRRecoveryResult *)a3;
+- (void)forceWriteSampleToHealthKit:(const WorkoutEvent *)kit;
+- (void)logBodyMetrics:(const CLBodyMetrics *)metrics;
+- (void)logSessionStats:(const HRRecoveryResult *)stats;
+- (void)logVO2MaxStats:(const VO2MaxResult *)stats;
+- (void)onCatherineNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onHRRecoveryEstimate:(HRRecoveryResult *)estimate;
 - (void)onHRRecoverySessionEnd;
 - (void)onHRRecoverySessionStart;
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onNatalimetryNotification:(const int *)a3 data:(const void *)a4;
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onNatalimetryNotification:(const int *)notification data:(const void *)data;
 - (void)sendAnalytics;
 - (void)setUpAggregationOnTimer;
-- (void)storeHRRecoveryToHealthKit:(const HRRecoveryResult *)a3;
+- (void)storeHRRecoveryToHealthKit:(const HRRecoveryResult *)kit;
 @end
 
 @implementation CLHRRecoveryService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -312,20 +312,20 @@ LABEL_37:
   dispatch_resume(self->fAggregationTimer);
 }
 
-- (void)onCatherineNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onCatherineNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLHRRecoveryService universe](self "universe")];
-  if (*a3 == 9)
+  if (*notification == 9)
   {
     ptr = self->fHRRecoveryEstimator.__ptr_;
 
-    sub_1008D0F34(ptr, a4);
+    sub_1008D0F34(ptr, data);
   }
 
-  else if (*a3 == 7)
+  else if (*notification == 7)
   {
     v7 = self->fHRRecoveryEstimator.__ptr_;
-    v8 = *(a4 + 3);
+    v8 = *(data + 3);
 
     sub_1008D0E40(v7, v8);
   }
@@ -340,7 +340,7 @@ LABEL_37:
     v10 = qword_1025D44F8;
     if (os_log_type_enabled(qword_1025D44F8, OS_LOG_TYPE_ERROR))
     {
-      v11 = *a3;
+      v11 = *notification;
       v12[0] = 67109120;
       v12[1] = v11;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "CLHRRecoveryService: Unhandled notification type, %d", v12, 8u);
@@ -348,21 +348,21 @@ LABEL_37:
 
     if (sub_10000A100(121, 0))
     {
-      sub_101897924(a3);
+      sub_101897924(notification);
     }
   }
 }
 
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLHRRecoveryService universe](self universe];
-  if (*a3 == 2)
+  if (*notification == 2)
   {
-    sub_1008D1A30(self->fHRRecoveryEstimator.__ptr_, a4);
-    if (*(a4 + 2) == 1 && sub_1008D1D1C(self->fHRRecoveryEstimator.__ptr_, *(a4 + 12)) && sub_1008D1E10(self->fHRRecoveryEstimator.__ptr_, *(a4 + 26)) && [(CLHRRecoveryService *)self shouldForceWriteSampleToHealthKit])
+    sub_1008D1A30(self->fHRRecoveryEstimator.__ptr_, data);
+    if (*(data + 2) == 1 && sub_1008D1D1C(self->fHRRecoveryEstimator.__ptr_, *(data + 12)) && sub_1008D1E10(self->fHRRecoveryEstimator.__ptr_, *(data + 26)) && [(CLHRRecoveryService *)self shouldForceWriteSampleToHealthKit])
     {
 
-      [(CLHRRecoveryService *)self forceWriteSampleToHealthKit:a4];
+      [(CLHRRecoveryService *)self forceWriteSampleToHealthKit:data];
     }
   }
 
@@ -376,7 +376,7 @@ LABEL_37:
     v10 = qword_1025D44F8;
     if (os_log_type_enabled(qword_1025D44F8, OS_LOG_TYPE_ERROR))
     {
-      v11 = *a3;
+      v11 = *notification;
       v12[0] = 67109120;
       v12[1] = v11;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_ERROR, "CLHRRecoveryService: Unhandled notification type, %d", v12, 8u);
@@ -384,24 +384,24 @@ LABEL_37:
 
     if (sub_10000A100(121, 0))
     {
-      sub_101897A1C(a3);
+      sub_101897A1C(notification);
     }
   }
 }
 
-- (void)onNatalimetryNotification:(const int *)a3 data:(const void *)a4
+- (void)onNatalimetryNotification:(const int *)notification data:(const void *)data
 {
   [-[CLHRRecoveryService universe](self "universe")];
-  v7 = *a3;
-  if (*a3 == 9)
+  v7 = *notification;
+  if (*notification == 9)
   {
     ptr = self->fHRRecoveryEstimator.__ptr_;
-    v9 = *(a4 + 2);
-    v10 = *(a4 + 26);
-    v11 = *(a4 + 12);
-    v12 = *(a4 + 4);
-    v13 = *(a4 + 22);
-    v14 = *(a4 + 39);
+    v9 = *(data + 2);
+    v10 = *(data + 26);
+    v11 = *(data + 12);
+    v12 = *(data + 4);
+    v13 = *(data + 22);
+    v14 = *(data + 39);
 
     sub_1008D17D4(ptr, v10, v13, v9, v14, v11, v12);
   }
@@ -409,14 +409,14 @@ LABEL_37:
   else if (v7 == 6)
   {
 
-    [(CLHRRecoveryService *)self logVO2MaxStats:a4];
+    [(CLHRRecoveryService *)self logVO2MaxStats:data];
   }
 
   else if (v7 == 2)
   {
-    sub_1008D0CE8(self->fHRRecoveryEstimator.__ptr_, a4);
+    sub_1008D0CE8(self->fHRRecoveryEstimator.__ptr_, data);
 
-    [(CLHRRecoveryService *)self logBodyMetrics:a4];
+    [(CLHRRecoveryService *)self logBodyMetrics:data];
   }
 
   else
@@ -429,7 +429,7 @@ LABEL_37:
     v15 = qword_1025D44F8;
     if (os_log_type_enabled(qword_1025D44F8, OS_LOG_TYPE_ERROR))
     {
-      v16 = *a3;
+      v16 = *notification;
       v17[0] = 67109120;
       v17[1] = v16;
       _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_ERROR, "CLHRRecoveryService: Unhandled notification type, %d", v17, 8u);
@@ -437,7 +437,7 @@ LABEL_37:
 
     if (sub_10000A100(121, 0))
     {
-      sub_101897B14(a3);
+      sub_101897B14(notification);
     }
   }
 }
@@ -480,34 +480,34 @@ LABEL_37:
   *&self->fSessionStats.sessionDuration = 0x1BF800000;
 }
 
-- (void)onHRRecoveryEstimate:(HRRecoveryResult *)a3
+- (void)onHRRecoveryEstimate:(HRRecoveryResult *)estimate
 {
   [(CLHRRecoveryService *)self logSessionStats:?];
-  if ((a3->var0 == 1 || a3->var34) && a3->var27)
+  if ((estimate->var0 == 1 || estimate->var34) && estimate->var27)
   {
 
-    [(CLHRRecoveryService *)self storeHRRecoveryToHealthKit:a3];
+    [(CLHRRecoveryService *)self storeHRRecoveryToHealthKit:estimate];
   }
 }
 
-- (void)storeHRRecoveryToHealthKit:(const HRRecoveryResult *)a3
+- (void)storeHRRecoveryToHealthKit:(const HRRecoveryResult *)kit
 {
   if (objc_opt_class())
   {
     v5 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRateRecoveryOneMinute];
-    v6 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3->var1];
-    v7 = [HKQuantity quantityWithUnit:[HKUnit unitFromString:@"count/min"] doubleValue:a3->var2];
+    v6 = [NSDate dateWithTimeIntervalSinceReferenceDate:kit->var1];
+    v7 = [HKQuantity quantityWithUnit:[HKUnit unitFromString:@"count/min"] doubleValue:kit->var2];
     v8 = objc_alloc_init(NSMutableDictionary);
     [v8 setObject:&off_10254E990 forKeyedSubscript:HKMetadataKeyAlgorithmVersion];
     [v8 setObject:&off_10254E9A8 forKeyedSubscript:HKMetadataKeyHeartRateRecoveryTestType];
-    [v8 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", -[CLHRRecoveryService mapWorkoutTypeToHKWorkoutActivityType:](self, "mapWorkoutTypeToHKWorkoutActivityType:", a3->var4)), HKMetadataKeyHeartRateRecoveryActivityType}];
-    [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit secondUnit](HKUnit, "secondUnit"), a3->var3), HKMetadataKeyHeartRateRecoveryActivityDuration}];
-    if (a3->var17 > 0.0)
+    [v8 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKeyedSubscript:{"numberWithUnsignedInteger:", -[CLHRRecoveryService mapWorkoutTypeToHKWorkoutActivityType:](self, "mapWorkoutTypeToHKWorkoutActivityType:", kit->var4)), HKMetadataKeyHeartRateRecoveryActivityType}];
+    [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit secondUnit](HKUnit, "secondUnit"), kit->var3), HKMetadataKeyHeartRateRecoveryActivityDuration}];
+    if (kit->var17 > 0.0)
     {
-      [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit unitFromString:](HKUnit, "unitFromString:", @"count/min", a3->var17), HKMetadataKeyHeartRateRecoveryMaxObservedRecoveryHeartRate}];
+      [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit unitFromString:](HKUnit, "unitFromString:", @"count/min", kit->var17), HKMetadataKeyHeartRateRecoveryMaxObservedRecoveryHeartRate}];
     }
 
-    if (a3->var21)
+    if (kit->var21)
     {
       v9 = &off_10254E9C0;
     }
@@ -518,7 +518,7 @@ LABEL_37:
     }
 
     [v8 setObject:v9 forKeyedSubscript:HKMetadataKeyUserMotionContext];
-    if (a3->var5)
+    if (kit->var5)
     {
       v10 = &__kCFBooleanTrue;
     }
@@ -529,9 +529,9 @@ LABEL_37:
     }
 
     [v8 setObject:v10 forKeyedSubscript:_HKPrivateMetadataKeyUserOnBetaBlocker];
-    if (a3->var0 == 1 && a3->var22 > 0.0)
+    if (kit->var0 == 1 && kit->var22 > 0.0)
     {
-      [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit unitFromString:](HKUnit, "unitFromString:", @"count/min", a3->var22), HKMetadataKeySessionEstimate}];
+      [v8 setObject:+[HKQuantity quantityWithUnit:doubleValue:](HKQuantity forKeyedSubscript:{"quantityWithUnit:doubleValue:", +[HKUnit unitFromString:](HKUnit, "unitFromString:", @"count/min", kit->var22), HKMetadataKeySessionEstimate}];
     }
 
     v11 = [HKQuantitySample quantitySampleWithType:v5 quantity:v7 startDate:v6 endDate:v6 metadata:v8];
@@ -541,14 +541,14 @@ LABEL_37:
   }
 }
 
-- (unint64_t)mapWorkoutTypeToHKWorkoutActivityType:(int64_t)a3
+- (unint64_t)mapWorkoutTypeToHKWorkoutActivityType:(int64_t)type
 {
-  result = a3;
-  if (a3 <= 14)
+  result = type;
+  if (type <= 14)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         return 37;
       }
@@ -557,14 +557,14 @@ LABEL_37:
     }
   }
 
-  else if (a3 != 15)
+  else if (type != 15)
   {
-    if (a3 == 24)
+    if (type == 24)
     {
       return result;
     }
 
-    if (a3 == 17)
+    if (type == 17)
     {
       return 37;
     }
@@ -590,7 +590,7 @@ LABEL_37:
   return sub_100328630() & v6;
 }
 
-- (void)forceWriteSampleToHealthKit:(const WorkoutEvent *)a3
+- (void)forceWriteSampleToHealthKit:(const WorkoutEvent *)kit
 {
   v47 = 0x4039000000000000;
   v5 = sub_100011660();
@@ -616,10 +616,10 @@ LABEL_37:
   v22 = Current;
   v10 = v46;
   v9 = v47;
-  v11 = a3->var1 - a3->var0;
+  v11 = kit->var1 - kit->var0;
   v23 = v47;
   v24 = v11;
-  var2 = a3->var5.var2;
+  var2 = kit->var5.var2;
   v25 = var2;
   v13 = *(ptr + 144);
   v26 = v13;
@@ -698,74 +698,74 @@ LABEL_37:
   [(CLHRRecoveryService *)self storeHRRecoveryToHealthKit:&v21];
 }
 
-- (void)logBodyMetrics:(const CLBodyMetrics *)a3
+- (void)logBodyMetrics:(const CLBodyMetrics *)metrics
 {
   [-[CLHRRecoveryService universe](self "universe")];
-  self->fSessionStats.age = a3->age;
-  self->fSessionStats.biologicalSex = a3->biologicalSex;
-  self->fSessionStats.betaBlockerUse = a3->betaBlockerUse;
-  weightKG = a3->weightKG;
+  self->fSessionStats.age = metrics->age;
+  self->fSessionStats.biologicalSex = metrics->biologicalSex;
+  self->fSessionStats.betaBlockerUse = metrics->betaBlockerUse;
+  weightKG = metrics->weightKG;
   if (weightKG != 0.0)
   {
-    heightM = a3->heightM;
+    heightM = metrics->heightM;
     if (heightM != 0.0)
     {
       self->fSessionStats.userBMI = weightKG / (heightM * heightM);
     }
   }
 
-  self->fSessionStats.hrmax = a3->hrmax;
+  self->fSessionStats.hrmax = metrics->hrmax;
 }
 
-- (void)logVO2MaxStats:(const VO2MaxResult *)a3
+- (void)logVO2MaxStats:(const VO2MaxResult *)stats
 {
   [-[CLHRRecoveryService universe](self "universe")];
-  v5 = llround(a3->var2);
-  var13 = a3->var13;
-  self->fSessionStats.estimationStatus = a3->var12;
+  v5 = llround(stats->var2);
+  var13 = stats->var13;
+  self->fSessionStats.estimationStatus = stats->var12;
   self->fSessionStats.vo2MaxValue = v5;
   self->fSessionStats.sessionType = var13;
 }
 
-- (void)logSessionStats:(const HRRecoveryResult *)a3
+- (void)logSessionStats:(const HRRecoveryResult *)stats
 {
   [-[CLHRRecoveryService universe](self "universe")];
-  self->fSessionStats.status = a3->var0;
-  var3 = a3->var3;
+  self->fSessionStats.status = stats->var0;
+  var3 = stats->var3;
   self->fSessionStats.sessionDuration = var3;
-  self->fSessionStats.workoutType = a3->var4;
-  var6 = a3->var6;
-  self->fSessionStats.diffTimeRecoveryOnsetWorkout = a3->var7 - var6;
-  self->fSessionStats.diffTimeTDropWorkoutEnd = a3->var13 - var6;
-  self->fSessionStats.hrRecovery = llround(a3->var2);
-  self->fSessionStats.hrRecoverySession = llround(a3->var22);
-  var29 = a3->var29;
-  v8.f64[0] = a3->var14;
-  var15 = a3->var15;
+  self->fSessionStats.workoutType = stats->var4;
+  var6 = stats->var6;
+  self->fSessionStats.diffTimeRecoveryOnsetWorkout = stats->var7 - var6;
+  self->fSessionStats.diffTimeTDropWorkoutEnd = stats->var13 - var6;
+  self->fSessionStats.hrRecovery = llround(stats->var2);
+  self->fSessionStats.hrRecoverySession = llround(stats->var22);
+  var29 = stats->var29;
+  v8.f64[0] = stats->var14;
+  var15 = stats->var15;
   v8.f64[1] = var29 - var15;
-  *&self->fSessionStats.peakHR = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->var8), v8);
-  *&self->fSessionStats.recoveryLoad = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->var16), *&a3->var18);
-  var20 = a3->var20;
+  *&self->fSessionStats.peakHR = vcvt_hight_f32_f64(vcvt_f32_f64(*&stats->var8), v8);
+  *&self->fSessionStats.recoveryLoad = vcvt_hight_f32_f64(vcvt_f32_f64(*&stats->var16), *&stats->var18);
+  var20 = stats->var20;
   self->fSessionStats.recoveryMetsStdDev = var20;
-  var24 = a3->var24;
+  var24 = stats->var24;
   self->fSessionStats.biasAdjustment = var24;
-  self->fSessionStats.isOtherwiseEligibleForLongitudinal = a3->var34;
+  self->fSessionStats.isOtherwiseEligibleForLongitudinal = stats->var34;
   v12 = var15;
   *&var29 = var29;
   self->fSessionStats.hrRecoveryReference = v12;
   self->fSessionStats.hrRecoveryReferencePeak = *&var29;
-  var28 = a3->var28;
+  var28 = stats->var28;
   self->fSessionStats.hrOneMinPostRecovery = var28;
-  var30 = a3->var30;
+  var30 = stats->var30;
   self->fSessionStats.hrOneMinExponential = var30;
-  self->fSessionStats.isEligibleForHK = a3->var27;
-  v15.f64[0] = a3->var33;
-  v15.f64[1] = a3->var35;
-  *&self->fSessionStats.minHRAfterWorkoutEnd = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->var31), v15);
-  var23 = a3->var23;
+  self->fSessionStats.isEligibleForHK = stats->var27;
+  v15.f64[0] = stats->var33;
+  v15.f64[1] = stats->var35;
+  *&self->fSessionStats.minHRAfterWorkoutEnd = vcvt_hight_f32_f64(vcvt_f32_f64(*&stats->var31), v15);
+  var23 = stats->var23;
   self->fSessionStats.peakHrOneMinusFhr = var23;
-  *&self->fSessionStats.lambda = vcvt_f32_f64(*&a3->var10);
-  var12 = a3->var12;
+  *&self->fSessionStats.lambda = vcvt_f32_f64(*&stats->var10);
+  var12 = stats->var12;
   self->fSessionStats.explainedVarianceScore = var12;
   if (qword_1025D44F0 != -1)
   {

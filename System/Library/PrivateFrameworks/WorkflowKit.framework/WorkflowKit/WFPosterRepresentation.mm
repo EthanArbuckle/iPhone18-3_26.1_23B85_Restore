@@ -1,47 +1,47 @@
 @interface WFPosterRepresentation
 + (id)defaultPoster;
-+ (id)posterWithSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WFPosterRepresentation)initWithCoder:(id)a3;
-- (WFPosterRepresentation)initWithUUID:(id)a3 name:(id)a4 providerBundleIdentifier:(id)a5;
++ (id)posterWithSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (WFPosterRepresentation)initWithCoder:(id)coder;
+- (WFPosterRepresentation)initWithUUID:(id)d name:(id)name providerBundleIdentifier:(id)identifier;
 - (id)description;
 - (id)serializedRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPosterRepresentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFPosterRepresentation *)self UUID];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  coderCopy = coder;
+  uUID = [(WFPosterRepresentation *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
-  v6 = [(WFPosterRepresentation *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(WFPosterRepresentation *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(WFPosterRepresentation *)self providerBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"providerBundleIdentifier"];
+  providerBundleIdentifier = [(WFPosterRepresentation *)self providerBundleIdentifier];
+  [coderCopy encodeObject:providerBundleIdentifier forKey:@"providerBundleIdentifier"];
 }
 
-- (WFPosterRepresentation)initWithCoder:(id)a3
+- (WFPosterRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFPosterRepresentation;
   v5 = [(WFPosterRepresentation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerBundleIdentifier"];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
     v5->_providerBundleIdentifier = v10;
 
@@ -53,23 +53,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WFPosterRepresentation *)self UUID];
-  v4 = [v3 hash];
-  v5 = [(WFPosterRepresentation *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFPosterRepresentation *)self providerBundleIdentifier];
-  v8 = [v7 hash];
+  uUID = [(WFPosterRepresentation *)self UUID];
+  v4 = [uUID hash];
+  name = [(WFPosterRepresentation *)self name];
+  v6 = [name hash] ^ v4;
+  providerBundleIdentifier = [(WFPosterRepresentation *)self providerBundleIdentifier];
+  v8 = [providerBundleIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -78,10 +78,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(WFPosterRepresentation *)self UUID];
-    v8 = [(WFPosterRepresentation *)v6 UUID];
-    v9 = v7;
-    v10 = v8;
+    uUID = [(WFPosterRepresentation *)self UUID];
+    uUID2 = [(WFPosterRepresentation *)v6 UUID];
+    v9 = uUID;
+    v10 = uUID2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -108,10 +108,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(WFPosterRepresentation *)self name];
-    v17 = [(WFPosterRepresentation *)v6 name];
-    v14 = v16;
-    v18 = v17;
+    name = [(WFPosterRepresentation *)self name];
+    name2 = [(WFPosterRepresentation *)v6 name];
+    v14 = name;
+    v18 = name2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -138,10 +138,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(WFPosterRepresentation *)self providerBundleIdentifier];
-    v22 = [(WFPosterRepresentation *)v6 providerBundleIdentifier];
-    v20 = v21;
-    v23 = v22;
+    providerBundleIdentifier = [(WFPosterRepresentation *)self providerBundleIdentifier];
+    providerBundleIdentifier2 = [(WFPosterRepresentation *)v6 providerBundleIdentifier];
+    v20 = providerBundleIdentifier;
+    v23 = providerBundleIdentifier2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -172,10 +172,10 @@ LABEL_28:
   v10.receiver = self;
   v10.super_class = WFPosterRepresentation;
   v4 = [(WFPosterRepresentation *)&v10 description];
-  v5 = [(WFPosterRepresentation *)self UUID];
-  v6 = [(WFPosterRepresentation *)self name];
-  v7 = [(WFPosterRepresentation *)self providerBundleIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@, UUID: %@, name: %@, providerBundleId: %@>", v4, v5, v6, v7];
+  uUID = [(WFPosterRepresentation *)self UUID];
+  name = [(WFPosterRepresentation *)self name];
+  providerBundleIdentifier = [(WFPosterRepresentation *)self providerBundleIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@, UUID: %@, name: %@, providerBundleId: %@>", v4, uUID, name, providerBundleIdentifier];
 
   return v8;
 }
@@ -183,38 +183,38 @@ LABEL_28:
 - (id)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFPosterRepresentation *)self UUID];
-  v5 = [v4 UUIDString];
-  [v3 if_setObjectIfNonNil:v5 forKey:@"UUID"];
+  uUID = [(WFPosterRepresentation *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 if_setObjectIfNonNil:uUIDString forKey:@"UUID"];
 
-  v6 = [(WFPosterRepresentation *)self name];
-  [v3 if_setObjectIfNonNil:v6 forKey:@"name"];
+  name = [(WFPosterRepresentation *)self name];
+  [v3 if_setObjectIfNonNil:name forKey:@"name"];
 
-  v7 = [(WFPosterRepresentation *)self providerBundleIdentifier];
-  [v3 if_setObjectIfNonNil:v7 forKey:@"providerBundleIdentifier"];
+  providerBundleIdentifier = [(WFPosterRepresentation *)self providerBundleIdentifier];
+  [v3 if_setObjectIfNonNil:providerBundleIdentifier forKey:@"providerBundleIdentifier"];
 
   v8 = [v3 copy];
 
   return v8;
 }
 
-- (WFPosterRepresentation)initWithUUID:(id)a3 name:(id)a4 providerBundleIdentifier:(id)a5
+- (WFPosterRepresentation)initWithUUID:(id)d name:(id)name providerBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = WFPosterRepresentation;
   v12 = [(WFPosterRepresentation *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_UUID, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_UUID, d);
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     providerBundleIdentifier = v13->_providerBundleIdentifier;
     v13->_providerBundleIdentifier = v16;
 
@@ -226,20 +226,20 @@ LABEL_28:
 
 + (id)defaultPoster
 {
-  v3 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v4 = [v3 objectForKey:@"WFShortcutsDefaultPosterRepresentation"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v4 = [systemShortcutsUserDefaults objectForKey:@"WFShortcutsDefaultPosterRepresentation"];
 
-  v5 = [a1 posterWithSerializedRepresentation:v4];
+  v5 = [self posterWithSerializedRepresentation:v4];
 
   return v5;
 }
 
-+ (id)posterWithSerializedRepresentation:(id)a3
++ (id)posterWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  representationCopy = representation;
+  if (representationCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 objectForKey:@"UUID"];
+    v5 = [representationCopy objectForKey:@"UUID"];
     if (v5)
     {
       objc_opt_class();
@@ -264,7 +264,7 @@ LABEL_28:
     v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
     if (v9)
     {
-      v10 = [v4 objectForKey:@"name"];
+      v10 = [representationCopy objectForKey:@"name"];
       if (v10)
       {
         objc_opt_class();
@@ -286,7 +286,7 @@ LABEL_28:
 
       v12 = v11;
 
-      v13 = [v4 objectForKey:@"providerBundleIdentifier"];
+      v13 = [representationCopy objectForKey:@"providerBundleIdentifier"];
       if (v13)
       {
         objc_opt_class();
@@ -308,7 +308,7 @@ LABEL_28:
 
       v15 = v14;
 
-      v7 = [[a1 alloc] initWithUUID:v9 name:v12 providerBundleIdentifier:v15];
+      v7 = [[self alloc] initWithUUID:v9 name:v12 providerBundleIdentifier:v15];
     }
 
     else

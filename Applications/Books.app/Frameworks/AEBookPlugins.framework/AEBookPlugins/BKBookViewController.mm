@@ -1,116 +1,116 @@
 @interface BKBookViewController
-+ (BOOL)areCitationsAllowedForBook:(id)a3;
-+ (id)propertySourceFromBook:(id)a3;
-+ (id)valueOfAnnotationProperty:(id)a3 activityType:(id)a4 book:(id)a5;
++ (BOOL)areCitationsAllowedForBook:(id)book;
++ (id)propertySourceFromBook:(id)book;
++ (id)valueOfAnnotationProperty:(id)property activityType:(id)type book:(id)book;
 + (void)initialize;
 - (AEAssetViewControllerDelegate)assetViewControllerDelegate;
 - (BAContentSettingsData)analyticsContentSettingData;
 - (BCAppIntentsAssetViewControllerInfo)appIntentsInfo;
 - (BEProtocolCacheItem)currentBookCacheItem;
-- (BKBookViewController)initWithBook:(id)a3 storeID:(id)a4;
+- (BKBookViewController)initWithBook:(id)book storeID:(id)d;
 - (BKLocation)resumeLocation;
 - (BKLocation)savableLocation;
 - (BKNavigationHistory)navigationHistory;
 - (BKUpsell)upsellContentViewController;
-- (BOOL)_controller:(id)a3 handleInternalRequestForURL:(id)a4;
-- (BOOL)_currentChapterInfo:(id *)a3 uniqueID:(id *)a4;
+- (BOOL)_controller:(id)_controller handleInternalRequestForURL:(id)l;
+- (BOOL)_currentChapterInfo:(id *)info uniqueID:(id *)d;
 - (BOOL)_inAnalyticsReadSession;
-- (BOOL)_isPageAllZeros:(_NSRange)a3;
-- (BOOL)_isPageEmpty:(_NSRange)a3;
+- (BOOL)_isPageAllZeros:(_NSRange)zeros;
+- (BOOL)_isPageEmpty:(_NSRange)empty;
 - (BOOL)bc_analyticsVisibilityOfSelf;
 - (BOOL)bkaxNeedsPersistentControls;
 - (BOOL)bookCanBeBookmarked;
 - (BOOL)canCopy;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canSearch;
 - (BOOL)canShowContent;
-- (BOOL)dismissShouldBegin:(id)a3;
-- (BOOL)editorController:(id)a3 isSharingEnabledForAnnotation:(id)a4;
-- (BOOL)expandedContentView:(id)a3 shouldStartLoadWithRequest:(id)a4;
-- (BOOL)expandedContentViewController:(id)a3 handleInternalLoadRequest:(id)a4;
-- (BOOL)footnoteViewController:(id)a3 handleInternalLoadRequest:(id)a4;
+- (BOOL)dismissShouldBegin:(id)begin;
+- (BOOL)editorController:(id)controller isSharingEnabledForAnnotation:(id)annotation;
+- (BOOL)expandedContentView:(id)view shouldStartLoadWithRequest:(id)request;
+- (BOOL)expandedContentViewController:(id)controller handleInternalLoadRequest:(id)request;
+- (BOOL)footnoteViewController:(id)controller handleInternalLoadRequest:(id)request;
 - (BOOL)hasRemoteResources;
 - (BOOL)hasSoundtrack;
 - (BOOL)hidesPageControlsOnOpen;
 - (BOOL)inLiveResize;
-- (BOOL)isAnnotationVisible:(id)a3;
+- (BOOL)isAnnotationVisible:(id)visible;
 - (BOOL)isBookToolbarAppearanceDark;
-- (BOOL)isEditingAnnotation:(id)a3;
+- (BOOL)isEditingAnnotation:(id)annotation;
 - (BOOL)isOnLastPage;
 - (BOOL)isPageBookmarked;
 - (BOOL)isPageProgressionRTL;
 - (BOOL)isPreordered;
 - (BOOL)isReadAloudPaused;
 - (BOOL)isSoundtrackPlaying;
-- (BOOL)isTOCURL:(id)a3;
-- (BOOL)needTOCEntriesForOrdinal:(int64_t)a3;
-- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)a3;
+- (BOOL)isTOCURL:(id)l;
+- (BOOL)needTOCEntriesForOrdinal:(int64_t)ordinal;
+- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal;
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)shouldAutorotate;
 - (BOOL)shouldControlsBeVisibleOnOpen;
 - (BOOL)shouldDisplayBuyButton;
 - (BOOL)shouldDisplayShareControls;
 - (BOOL)touchBarWantsHistoryNav;
-- (CGRect)frameForLocation:(id)a3 inView:(id)a4 expandedContentViewController:(id)a5;
+- (CGRect)frameForLocation:(id)location inView:(id)view expandedContentViewController:(id)controller;
 - (NSURL)storeShortURL;
 - (_NSRange)currentPages;
-- (_NSRange)pageRangeForAnnotation:(id)a3;
-- (double)pagePositionForTouchBarPosition:(double)a3;
-- (double)touchBarPositionForPageNumber:(int64_t)a3;
-- (double)touchBarScrollerEndScrollPositionForPosition:(double)a3;
-- (double)touchBarScrollerPositionForBookmark:(id)a3;
-- (double)touchBarScrollerPositionForChapter:(id)a3;
+- (_NSRange)pageRangeForAnnotation:(id)annotation;
+- (double)pagePositionForTouchBarPosition:(double)position;
+- (double)touchBarPositionForPageNumber:(int64_t)number;
+- (double)touchBarScrollerEndScrollPositionForPosition:(double)position;
+- (double)touchBarScrollerPositionForBookmark:(id)bookmark;
+- (double)touchBarScrollerPositionForChapter:(id)chapter;
 - (float)volume;
-- (id)_allAnnotationsForType:(int)a3;
+- (id)_allAnnotationsForType:(int)type;
 - (id)_analyticsSessionHost;
 - (id)_contentControllerThatHasCopyableSelection;
-- (id)_contentSettingsDataFromReadingSessionData:(id)a3 optedIn:(BOOL)a4;
+- (id)_contentSettingsDataFromReadingSessionData:(id)data optedIn:(BOOL)in;
 - (id)_createEndOfBookExperience;
 - (id)_currentReadingProgress;
-- (id)_footnoteViewController2ForResource:(id)a3 stylesheetSet:(id)a4;
-- (id)_locationForChapter:(id)a3;
-- (id)_normalizedLocation:(id)a3;
+- (id)_footnoteViewController2ForResource:(id)resource stylesheetSet:(id)set;
+- (id)_locationForChapter:(id)chapter;
+- (id)_normalizedLocation:(id)location;
 - (id)_readPlayer;
-- (id)_searchQueryFromSender:(id)a3;
-- (id)_searchResultOffsetByDistance:(int64_t)a3;
+- (id)_searchQueryFromSender:(id)sender;
+- (id)_searchResultOffsetByDistance:(int64_t)distance;
 - (id)_trackPlayer;
-- (id)_visibleAnnotationsForType:(int)a3;
-- (id)addAnnotation:(int)a3 location:(id)a4 selectedText:(id)a5 representativeText:(id)a6;
+- (id)_visibleAnnotationsForType:(int)type;
+- (id)addAnnotation:(int)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText;
 - (id)appearanceMenuItems;
 - (id)bookToolbarThemeID;
 - (id)bookmarkToolTip;
-- (id)bookmarksFetchRequestForBook:(id)a3 moc:(id)a4;
+- (id)bookmarksFetchRequestForBook:(id)book moc:(id)moc;
 - (id)buttonColor;
 - (id)chapterColor;
-- (id)chapterTitleForAnnotation:(id)a3;
-- (id)contentDataForSearchViewController:(id)a3;
-- (id)contentViewController:(id)a3 addAnnotation:(int)a4 location:(id)a5 selectedText:(id)a6 representativeText:(id)a7;
-- (id)contentViewControllerForMediaOverlayElement:(id)a3;
-- (id)documentForLocation:(id)a3;
-- (id)documentForURL:(id)a3;
+- (id)chapterTitleForAnnotation:(id)annotation;
+- (id)contentDataForSearchViewController:(id)controller;
+- (id)contentViewController:(id)controller addAnnotation:(int)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText;
+- (id)contentViewControllerForMediaOverlayElement:(id)element;
+- (id)documentForLocation:(id)location;
+- (id)documentForURL:(id)l;
 - (id)environmentOverrideView;
-- (id)fullScreenNoteEditorForAnnotation:(id)a3;
+- (id)fullScreenNoteEditorForAnnotation:(id)annotation;
 - (id)itemProvidersForSharing;
 - (id)keyCommands;
-- (id)locationForPath:(id)a3 fragment:(id)a4;
-- (id)pageLocationForPageNumber:(int64_t)a3;
+- (id)locationForPath:(id)path fragment:(id)fragment;
+- (id)pageLocationForPageNumber:(int64_t)number;
 - (id)profileFuture;
-- (id)readingSessionDataForSearchViewController:(id)a3;
-- (id)savableLocationForLocation:(id)a3;
-- (id)searchModuleWithSearchString:(id)a3;
+- (id)readingSessionDataForSearchViewController:(id)controller;
+- (id)savableLocationForLocation:(id)location;
+- (id)searchModuleWithSearchString:(id)string;
 - (id)searchViewController;
-- (id)searchViewController:(id)a3 chapterNameForSearchResult:(id)a4 pageNumber:(int64_t)a5;
-- (id)smilMapOnPages:(_NSRange)a3;
+- (id)searchViewController:(id)controller chapterNameForSearchResult:(id)result pageNumber:(int64_t)number;
+- (id)smilMapOnPages:(_NSRange)pages;
 - (id)tintColorForNavbarButtons;
 - (id)titleColor;
-- (id)titleForChapterAtPageNumber:(int64_t)a3;
+- (id)titleForChapterAtPageNumber:(int64_t)number;
 - (id)titleMutedColor;
 - (id)tocToolTip;
-- (id)tocViewController:(id)a3 pageTitleForAnnotation:(id)a4;
-- (id)tocViewController:(id)a3 pageTitleForChapter:(id)a4;
-- (id)tocViewControllerTocIdCssRules:(id)a3;
-- (id)touchBarScrollerAccessibilityLabelForBookmark:(id)a3;
-- (id)touchBarScrollerAccessibilityLabelForChapter:(id)a3;
+- (id)tocViewController:(id)controller pageTitleForAnnotation:(id)annotation;
+- (id)tocViewController:(id)controller pageTitleForChapter:(id)chapter;
+- (id)tocViewControllerTocIdCssRules:(id)rules;
+- (id)touchBarScrollerAccessibilityLabelForBookmark:(id)bookmark;
+- (id)touchBarScrollerAccessibilityLabelForChapter:(id)chapter;
 - (id)touchBarScrollerChapters;
 - (id)transitionContentBackgroundColor;
 - (id)transitionContentView;
@@ -120,249 +120,249 @@
 - (int64_t)bookToolbarMode;
 - (int64_t)calculatePageCountExcludingUpsell;
 - (int64_t)currentPageNumber;
-- (int64_t)directoryContent:(id)a3 pageNumberForLocation:(id)a4;
+- (int64_t)directoryContent:(id)content pageNumberForLocation:(id)location;
 - (int64_t)pageCountExcludingUpsell;
-- (int64_t)pageNavigationCurrentReadAloudPageOffset:(id)a3;
-- (int64_t)pageNumberForTouchBarPosition:(double)a3;
-- (int64_t)searchViewController:(id)a3 pageNumberForDocumentOrdinal:(int64_t)a4;
+- (int64_t)pageNavigationCurrentReadAloudPageOffset:(id)offset;
+- (int64_t)pageNumberForTouchBarPosition:(double)position;
+- (int64_t)searchViewController:(id)controller pageNumberForDocumentOrdinal:(int64_t)ordinal;
 - (int64_t)themeInterfaceStyle;
-- (int64_t)tocViewController:(id)a3 pageNumberForAnnotation:(id)a4;
-- (int64_t)tocViewController:(id)a3 pageNumberForChapter:(id)a4;
+- (int64_t)tocViewController:(id)controller pageNumberForAnnotation:(id)annotation;
+- (int64_t)tocViewController:(id)controller pageNumberForChapter:(id)chapter;
 - (int64_t)upsellPageNumber;
 - (unint64_t)lastLayoutUsed;
 - (unint64_t)numberOfBookmarks;
-- (unint64_t)scrollLayoutForBook:(id)a3;
+- (unint64_t)scrollLayoutForBook:(id)book;
 - (unint64_t)supportedInterfaceOrientations;
 - (unint64_t)upsellOrdinal;
-- (unint64_t)validLayoutForBook:(id)a3 desiredLayout:(unint64_t)a4;
+- (unint64_t)validLayoutForBook:(id)book desiredLayout:(unint64_t)layout;
 - (void)_cleanupFootnoteViewController;
-- (void)_contentReady:(id)a3;
-- (void)_emitAnnotationActionEventIfNeededForAnnotationType:(int)a3;
-- (void)_handleExternalLoadRequest:(id)a3 likelyUserInitiated:(BOOL)a4;
-- (void)_highlightElement:(id)a3;
-- (void)_newBADoNotDisturbDataWithStartStatus:(int64_t)a3 tracker:(id)a4 completion:(id)a5;
-- (void)_nextDelayedPageHint:(id)a3;
-- (void)_nextPageHint:(BOOL)a3 afterDelay:(double)a4;
+- (void)_contentReady:(id)ready;
+- (void)_emitAnnotationActionEventIfNeededForAnnotationType:(int)type;
+- (void)_handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated;
+- (void)_highlightElement:(id)element;
+- (void)_newBADoNotDisturbDataWithStartStatus:(int64_t)status tracker:(id)tracker completion:(id)completion;
+- (void)_nextDelayedPageHint:(id)hint;
+- (void)_nextPageHint:(BOOL)hint afterDelay:(double)delay;
 - (void)_notifyBookmarkObservers;
-- (void)_paginationComplete:(id)a3;
-- (void)_performScrollTest:(id)a3 completionHandler:(id)a4;
+- (void)_paginationComplete:(id)complete;
+- (void)_performScrollTest:(id)test completionHandler:(id)handler;
 - (void)_playNextItem;
-- (void)_promptToLoadExternalContent:(id)a3;
-- (void)_removeHighlightOnElement:(id)a3;
-- (void)_reportLoadFailedAlertForError:(id)a3;
-- (void)_reportResourceUnavailableForBookWithTitle:(id)a3 error:(id)a4;
+- (void)_promptToLoadExternalContent:(id)content;
+- (void)_removeHighlightOnElement:(id)element;
+- (void)_reportLoadFailedAlertForError:(id)error;
+- (void)_reportResourceUnavailableForBookWithTitle:(id)title error:(id)error;
 - (void)_resume;
-- (void)_setAudioSessionMix:(BOOL)a3;
-- (void)_showExpandedContentForResource:(id)a3 atLocation:(id)a4 presentingFromTOC:(BOOL)a5 completion:(id)a6;
-- (void)_startReadAloud:(BOOL)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_setAudioSessionMix:(BOOL)mix;
+- (void)_showExpandedContentForResource:(id)resource atLocation:(id)location presentingFromTOC:(BOOL)c completion:(id)completion;
+- (void)_startReadAloud:(BOOL)aloud;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateHoverInteraction;
-- (void)_updateLocationFromAnnotation:(id)a3;
-- (void)addTOCEntries:(id)a3 ordinal:(int64_t)a4 completion:(id)a5;
-- (void)addTextNodeCharacterCounts:(id)a3 ordinal:(int64_t)a4 completion:(id)a5;
-- (void)appearanceViewController:(id)a3 didChangeAutoNightMode:(BOOL)a4 previousValue:(BOOL)a5;
-- (void)appearanceViewController:(id)a3 didChangeFont:(id)a4;
-- (void)appearanceViewController:(id)a3 didChangeFontSize:(double)a4;
-- (void)appearanceViewController:(id)a3 didChangeLayout:(unint64_t)a4;
-- (void)appearanceViewController:(id)a3 didChangeTheme:(unint64_t)a4;
+- (void)_updateLocationFromAnnotation:(id)annotation;
+- (void)addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)appearanceViewController:(id)controller didChangeAutoNightMode:(BOOL)mode previousValue:(BOOL)value;
+- (void)appearanceViewController:(id)controller didChangeFont:(id)font;
+- (void)appearanceViewController:(id)controller didChangeFontSize:(double)size;
+- (void)appearanceViewController:(id)controller didChangeLayout:(unint64_t)layout;
+- (void)appearanceViewController:(id)controller didChangeTheme:(unint64_t)theme;
 - (void)assetViewControllerUpdateToolbarsAfterOpenAnimation;
 - (void)assetViewControllerUpdateToolbarsForOpenAnimation;
-- (void)audioPlaybackWillStart:(id)a3;
+- (void)audioPlaybackWillStart:(id)start;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityWillDisappear;
-- (void)bookMilestoneReached:(int64_t)a3;
-- (void)bookPositionChanged:(id)a3;
-- (void)bookSectionChanged:(id)a3;
-- (void)bookmarkPage:(id)a3;
-- (void)books_chapterLeft:(id)a3;
-- (void)books_chapterRight:(id)a3;
-- (void)books_findNext:(id)a3;
-- (void)books_findPrevious:(id)a3;
-- (void)books_search:(id)a3;
-- (void)buildContextTree:(id)a3;
-- (void)buy:(id)a3;
-- (void)buyWithCompletion:(id)a3;
+- (void)bookMilestoneReached:(int64_t)reached;
+- (void)bookPositionChanged:(id)changed;
+- (void)bookSectionChanged:(id)changed;
+- (void)bookmarkPage:(id)page;
+- (void)books_chapterLeft:(id)left;
+- (void)books_chapterRight:(id)right;
+- (void)books_findNext:(id)next;
+- (void)books_findPrevious:(id)previous;
+- (void)books_search:(id)books_search;
+- (void)buildContextTree:(id)tree;
+- (void)buy:(id)buy;
+- (void)buyWithCompletion:(id)completion;
 - (void)cancelPendingHidePageControls;
 - (void)cancelPendingSavePageControlVisibility;
-- (void)cancelPreloadForContent:(id)a3;
+- (void)cancelPreloadForContent:(id)content;
 - (void)cleanupPopovers;
 - (void)clearCurrentHighlighting;
 - (void)clearInactiveContentViewControllers;
 - (void)clearSearchResult;
 - (void)clearSelectedAnnotation;
 - (void)clearSelection;
-- (void)close:(BOOL)a3;
-- (void)contentFailedToLoadWithError:(id)a3;
-- (void)contentView:(id)a3 didSelectMediaOverlayElement:(id)a4;
-- (void)contentViewController:(id)a3 expandAnnotation:(id)a4 location:(id)a5 selectedText:(id)a6 representativeText:(id)a7;
-- (void)contentViewController:(id)a3 goToLocation:(id)a4;
-- (void)contentViewController:(id)a3 goToURL:(id)a4 likelyUserInitiated:(BOOL)a5;
-- (void)contentViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5;
-- (void)contentViewController:(id)a3 setEndOfBookToLocation:(id)a4 range:(id)a5;
-- (void)contentViewController:(id)a3 setFinishedAndCloseForAssetID:(id)a4;
-- (void)contentViewController:(id)a3 setSearchString:(id)a4;
-- (void)contentViewController:(id)a3 shareAnnotation:(id)a4 annotationRects:(id)a5 completion:(id)a6;
-- (void)contentViewController:(id)a3 showAlertController:(id)a4 fromRect:(CGRect)a5 animated:(BOOL)a6;
-- (void)contentViewController:(id)a3 showHighlightingMenuForAnnotation:(id)a4;
-- (void)contentViewController:(id)a3 showTranslateForText:(id)a4 fromView:(id)a5 onClose:(id)a6;
-- (void)contentViewController:(id)a3 stopMediaPlay:(id)a4;
-- (void)contentViewControllerAnnotationCacheDidChange:(id)a3;
-- (void)contentViewReady:(id)a3;
+- (void)close:(BOOL)close;
+- (void)contentFailedToLoadWithError:(id)error;
+- (void)contentView:(id)view didSelectMediaOverlayElement:(id)element;
+- (void)contentViewController:(id)controller expandAnnotation:(id)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText;
+- (void)contentViewController:(id)controller goToLocation:(id)location;
+- (void)contentViewController:(id)controller goToURL:(id)l likelyUserInitiated:(BOOL)initiated;
+- (void)contentViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion;
+- (void)contentViewController:(id)controller setEndOfBookToLocation:(id)location range:(id)range;
+- (void)contentViewController:(id)controller setFinishedAndCloseForAssetID:(id)d;
+- (void)contentViewController:(id)controller setSearchString:(id)string;
+- (void)contentViewController:(id)controller shareAnnotation:(id)annotation annotationRects:(id)rects completion:(id)completion;
+- (void)contentViewController:(id)controller showAlertController:(id)alertController fromRect:(CGRect)rect animated:(BOOL)animated;
+- (void)contentViewController:(id)controller showHighlightingMenuForAnnotation:(id)annotation;
+- (void)contentViewController:(id)controller showTranslateForText:(id)text fromView:(id)view onClose:(id)close;
+- (void)contentViewController:(id)controller stopMediaPlay:(id)play;
+- (void)contentViewControllerAnnotationCacheDidChange:(id)change;
+- (void)contentViewReady:(id)ready;
 - (void)continueReadAloudAfterReady;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)copy:(id)a3;
-- (void)createPaginationControllerIfNeeded:(BOOL)a3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
+- (void)copy:(id)copy;
+- (void)createPaginationControllerIfNeeded:(BOOL)needed;
 - (void)dealloc;
 - (void)delayedHidePageControls;
 - (void)delayedSavePageControlVisibility;
 - (void)didChangeCurrentOverlayViewController;
-- (void)didChangeLocationClosing:(BOOL)a3 suspending:(BOOL)a4;
-- (void)didHideAnnotationEditor:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4;
+- (void)didChangeLocationClosing:(BOOL)closing suspending:(BOOL)suspending;
+- (void)didHideAnnotationEditor:(id)editor;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion;
 - (void)didReceiveMemoryWarning;
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4;
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4 animated:(BOOL)a5;
-- (void)dismissCurrentPopoverAnimated:(BOOL)a3;
-- (void)dismissCurrentPopoverWithCompletion:(id)a3 animated:(BOOL)a4;
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4;
-- (void)editorController:(id)a3 editedAnnotation:(id)a4 toText:(id)a5;
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5;
-- (void)editorController:(id)a3 shareAnnotation:(id)a4;
+- (void)directoryContent:(id)content didSelectLocation:(id)location;
+- (void)directoryContent:(id)content didSelectLocation:(id)location animated:(BOOL)animated;
+- (void)dismissCurrentPopoverAnimated:(BOOL)animated;
+- (void)dismissCurrentPopoverWithCompletion:(id)completion animated:(BOOL)animated;
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation;
+- (void)editorController:(id)controller editedAnnotation:(id)annotation toText:(id)text;
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation;
+- (void)editorController:(id)controller shareAnnotation:(id)annotation;
 - (void)emitReadingOrientationChangeEventIfNeeded;
-- (void)emitScrubEventStartPosition:(int64_t)a3 endPosition:(int64_t)a4 totalLength:(int64_t)a5;
-- (void)expandAnnotation:(id)a3 location:(id)a4 selectedText:(id)a5 representativeText:(id)a6;
-- (void)expandedContentViewController:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5;
-- (void)expandedContentViewController:(id)a3 handleInternalLoadRequestForNewWindow:(id)a4;
-- (void)expandedContentViewController:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5;
-- (void)expandedContentViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5;
-- (void)expandedContentViewDidDisappear:(id)a3;
-- (void)fixupNavigationHistoryForUpsellPageNumber:(int64_t)a3;
-- (void)footnoteViewController:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5;
-- (void)footnoteViewController:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5;
-- (void)footnoteViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5;
-- (void)footnoteViewDidDisappear:(id)a3;
-- (void)footnoteViewDidFinishLoad:(id)a3;
+- (void)emitScrubEventStartPosition:(int64_t)position endPosition:(int64_t)endPosition totalLength:(int64_t)length;
+- (void)expandAnnotation:(id)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText;
+- (void)expandedContentViewController:(id)controller handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated;
+- (void)expandedContentViewController:(id)controller handleInternalLoadRequestForNewWindow:(id)window;
+- (void)expandedContentViewController:(id)controller handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion;
+- (void)expandedContentViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion;
+- (void)expandedContentViewDidDisappear:(id)disappear;
+- (void)fixupNavigationHistoryForUpsellPageNumber:(int64_t)number;
+- (void)footnoteViewController:(id)controller handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated;
+- (void)footnoteViewController:(id)controller handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion;
+- (void)footnoteViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion;
+- (void)footnoteViewDidDisappear:(id)disappear;
+- (void)footnoteViewDidFinishLoad:(id)load;
 - (void)forceReload;
 - (void)forceRepagination;
-- (void)goToPath:(id)a3 fragment:(id)a4 animated:(BOOL)a5;
+- (void)goToPath:(id)path fragment:(id)fragment animated:(BOOL)animated;
 - (void)handleAppearanceViewControllerDismissal;
-- (void)handleSwitchControlStatusChanged:(id)a3;
-- (void)handleVoiceOverStatusChanged:(id)a3;
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4;
-- (void)hoverInteractionDidSettle:(id)a3;
-- (void)isLocationVisible:(id)a3 completion:(id)a4;
-- (void)jumpAheadAnimated:(BOOL)a3;
-- (void)jumpBackAnimated:(BOOL)a3;
-- (void)jumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)managedObjectContextDidSave:(id)a3;
-- (void)mediaPlaybackStarted:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)open:(BOOL)a3;
-- (void)openToLocation:(id)a3 animated:(BOOL)a4;
+- (void)handleSwitchControlStatusChanged:(id)changed;
+- (void)handleVoiceOverStatusChanged:(id)changed;
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys;
+- (void)hoverInteractionDidSettle:(id)settle;
+- (void)isLocationVisible:(id)visible completion:(id)completion;
+- (void)jumpAheadAnimated:(BOOL)animated;
+- (void)jumpBackAnimated:(BOOL)animated;
+- (void)jumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion;
+- (void)managedObjectContextDidSave:(id)save;
+- (void)mediaPlaybackStarted:(id)started;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)open:(BOOL)open;
+- (void)openToLocation:(id)location animated:(BOOL)animated;
 - (void)p_releaseDictionary;
-- (void)pageNavigationDidChangeLocation:(id)a3;
+- (void)pageNavigationDidChangeLocation:(id)location;
 - (void)pageViewControllersDidChange;
 - (void)paginationCompleted;
 - (void)paginationUpdateRequired;
 - (void)pauseReadAloud;
 - (void)playCurrentSoundtrack;
-- (void)player:(id)a3 callbackForTime:(double)a4;
-- (void)playerCurrentItemEnded:(id)a3;
-- (void)playerStateChanged:(id)a3;
-- (void)popoverDidClose:(id)a3 fromToolbar:(id)a4;
-- (void)preloadContentController:(id)a3 highPriority:(BOOL)a4;
-- (void)presentAppearanceViewControllerFromItem:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)player:(id)player callbackForTime:(double)time;
+- (void)playerCurrentItemEnded:(id)ended;
+- (void)playerStateChanged:(id)changed;
+- (void)popoverDidClose:(id)close fromToolbar:(id)toolbar;
+- (void)preloadContentController:(id)controller highPriority:(BOOL)priority;
+- (void)presentAppearanceViewControllerFromItem:(id)item;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)promptForRemoteResourcesIfNecessary;
-- (void)readAloudViewControllerReady:(id)a3;
-- (void)readNextPages:(id)a3;
-- (void)readPages:(_NSRange)a3 from:(int64_t)a4 to:(int64_t)a5 waitOnEmpty:(BOOL)a6;
+- (void)readAloudViewControllerReady:(id)ready;
+- (void)readNextPages:(id)pages;
+- (void)readPages:(_NSRange)pages from:(int64_t)from to:(int64_t)to waitOnEmpty:(BOOL)empty;
 - (void)readingLocationChanged;
 - (void)rebuildHoverRegions;
-- (void)recordedJumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)registerBookmarkObserver:(id)a3;
+- (void)recordedJumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion;
+- (void)registerBookmarkObserver:(id)observer;
 - (void)releaseViews;
 - (void)reloadExternalWebFrames;
-- (void)requestClose:(BOOL)a3;
+- (void)requestClose:(BOOL)close;
 - (void)resetKeyWindow;
 - (void)restoreSavedLocation;
-- (void)resume:(id)a3;
+- (void)resume:(id)resume;
 - (void)resumeReadAloud;
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4;
+- (void)revealSearchResult:(id)result animated:(BOOL)animated;
 - (void)saveBook;
 - (void)savePageControlVisibility;
-- (void)saveReadingLocation:(id)a3;
-- (void)saveStateClosing:(BOOL)a3;
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4;
-- (void)scrub:(id)a3;
-- (void)scrubberTouchDown:(id)a3;
-- (void)searchViewController:(id)a3 revealSearchResult:(id)a4 animated:(BOOL)a5;
-- (void)searchViewController:(id)a3 turnToLocation:(id)a4 animated:(BOOL)a5;
-- (void)searchViewController:(id)a3 turnToPageNumber:(int64_t)a4 animated:(BOOL)a5;
-- (void)searchViewControllerDidDisappear:(id)a3;
-- (void)searchViewControllerWillAppear:(id)a3;
-- (void)setAssetIsPreordered:(id)a3;
-- (void)setBook:(id)a3;
-- (void)setControlsVisible:(BOOL)a3 animated:(BOOL)a4 animations:(id)a5 completion:(id)a6;
-- (void)setExpandedContentViewController:(id)a3;
-- (void)setFinishedForAssetID:(id)a3;
-- (void)setLayout:(unint64_t)a3;
-- (void)setLocation:(id)a3;
-- (void)setPageCountIncludingUpsell:(int64_t)a3;
-- (void)setPaginationController:(id)a3;
-- (void)setReadAloudState:(BOOL)a3;
-- (void)setSection:(int)a3 animated:(BOOL)a4 adjustScrollToReveal:(BOOL)a5;
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4 animations:(id)a5 completion:(id)a6;
-- (void)setTheme:(id)a3;
-- (void)setTrackState:(BOOL)a3 persistSetting:(BOOL)a4;
-- (void)setTurnState:(BOOL)a3;
-- (void)setVolume:(float)a3;
+- (void)saveReadingLocation:(id)location;
+- (void)saveStateClosing:(BOOL)closing;
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending;
+- (void)scrub:(id)scrub;
+- (void)scrubberTouchDown:(id)down;
+- (void)searchViewController:(id)controller revealSearchResult:(id)result animated:(BOOL)animated;
+- (void)searchViewController:(id)controller turnToLocation:(id)location animated:(BOOL)animated;
+- (void)searchViewController:(id)controller turnToPageNumber:(int64_t)number animated:(BOOL)animated;
+- (void)searchViewControllerDidDisappear:(id)disappear;
+- (void)searchViewControllerWillAppear:(id)appear;
+- (void)setAssetIsPreordered:(id)preordered;
+- (void)setBook:(id)book;
+- (void)setControlsVisible:(BOOL)visible animated:(BOOL)animated animations:(id)animations completion:(id)completion;
+- (void)setExpandedContentViewController:(id)controller;
+- (void)setFinishedForAssetID:(id)d;
+- (void)setLayout:(unint64_t)layout;
+- (void)setLocation:(id)location;
+- (void)setPageCountIncludingUpsell:(int64_t)upsell;
+- (void)setPaginationController:(id)controller;
+- (void)setReadAloudState:(BOOL)state;
+- (void)setSection:(int)section animated:(BOOL)animated adjustScrollToReveal:(BOOL)reveal;
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated animations:(id)animations completion:(id)completion;
+- (void)setTheme:(id)theme;
+- (void)setTrackState:(BOOL)state persistSetting:(BOOL)setting;
+- (void)setTurnState:(BOOL)state;
+- (void)setVolume:(float)volume;
 - (void)setupAppearanceViewController;
-- (void)shareAnnotation:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 completion:(id)a6;
-- (void)shareAnnotations:(id)a3 fromBarButtonItem:(id)a4 excerpt:(BOOL)a5 completion:(id)a6;
-- (void)shareAnnotations:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 excerpt:(BOOL)a6 completion:(id)a7;
-- (void)showAudio:(id)a3;
-- (void)showBrightness:(id)a3;
-- (void)showFootnoteInContentViewController:(id)a3 resource:(id)a4 fromView:(id)a5 stylesheetSet:(id)a6;
-- (void)showLookupForString:(id)a3 fromView:(id)a4 onClose:(id)a5;
-- (void)showNoteEditorForAnnotation:(id)a3;
-- (void)showOverlayViewController:(id)a3 fromView:(id)a4 popoverOnPhone:(BOOL)a5 popoverBackgroundColor:(id)a6;
-- (void)showSearchWithString:(id)a3 sender:(id)a4;
-- (void)showTOC:(id)a3;
-- (void)signalBookContentDidLoad:(id)a3;
+- (void)shareAnnotation:(id)annotation fromRect:(CGRect)rect inView:(id)view completion:(id)completion;
+- (void)shareAnnotations:(id)annotations fromBarButtonItem:(id)item excerpt:(BOOL)excerpt completion:(id)completion;
+- (void)shareAnnotations:(id)annotations fromRect:(CGRect)rect inView:(id)view excerpt:(BOOL)excerpt completion:(id)completion;
+- (void)showAudio:(id)audio;
+- (void)showBrightness:(id)brightness;
+- (void)showFootnoteInContentViewController:(id)controller resource:(id)resource fromView:(id)view stylesheetSet:(id)set;
+- (void)showLookupForString:(id)string fromView:(id)view onClose:(id)close;
+- (void)showNoteEditorForAnnotation:(id)annotation;
+- (void)showOverlayViewController:(id)controller fromView:(id)view popoverOnPhone:(BOOL)phone popoverBackgroundColor:(id)color;
+- (void)showSearchWithString:(id)string sender:(id)sender;
+- (void)showTOC:(id)c;
+- (void)signalBookContentDidLoad:(id)load;
 - (void)startFetchingBookmarks;
 - (void)stopFetchingBookmarks;
-- (void)stopReadAloudAndReload:(BOOL)a3;
-- (void)stopSoundtrackAndReload:(BOOL)a3;
-- (void)storeChangedNotification:(id)a3;
-- (void)tocViewController:(id)a3 didSelectChapter:(id)a4;
-- (void)toggleBookmark:(id)a3;
-- (void)toggleShowPageControls:(id)a3;
-- (void)touchBarHandleBackRequest:(id)a3;
-- (void)touchBarHandleForwardRequest:(id)a3;
-- (void)touchBarHandleReadAloudRequest:(id)a3;
-- (void)touchBarScrollerDidEnd:(double)a3 completion:(id)a4;
-- (void)touchBarScrollerDidIdle:(double)a3;
-- (void)touchBarScrollerJumpToBookmark:(id)a3;
-- (void)transitionDidFinish:(BOOL)a3;
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4;
-- (void)unbookmarkPage:(id)a3;
-- (void)unregisterBookmarkObserver:(id)a3;
-- (void)updateBookmarkButton:(BOOL)a3;
+- (void)stopReadAloudAndReload:(BOOL)reload;
+- (void)stopSoundtrackAndReload:(BOOL)reload;
+- (void)storeChangedNotification:(id)notification;
+- (void)tocViewController:(id)controller didSelectChapter:(id)chapter;
+- (void)toggleBookmark:(id)bookmark;
+- (void)toggleShowPageControls:(id)controls;
+- (void)touchBarHandleBackRequest:(id)request;
+- (void)touchBarHandleForwardRequest:(id)request;
+- (void)touchBarHandleReadAloudRequest:(id)request;
+- (void)touchBarScrollerDidEnd:(double)end completion:(id)completion;
+- (void)touchBarScrollerDidIdle:(double)idle;
+- (void)touchBarScrollerJumpToBookmark:(id)bookmark;
+- (void)transitionDidFinish:(BOOL)finish;
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated;
+- (void)unbookmarkPage:(id)page;
+- (void)unregisterBookmarkObserver:(id)observer;
+- (void)updateBookmarkButton:(BOOL)button;
 - (void)updatePageCount;
 - (void)updateProgressKitForNewLocation;
 - (void)updateUIForSmartInvert;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 - (void)writeAnnotationsToWebProcessPlugin;
 - (void)writeControlVisibilityStateToWebProcessPlugin;
 @end
@@ -371,7 +371,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [NSDictionary alloc];
     v4 = [v2 initWithObjectsAndKeys:{BKBookHidePageControls[0], &__kCFBooleanFalse, BKLeftTapTurnToNextDefault[0], &__kCFBooleanFalse, BKReadAloudAutoPageTurn[0], &__kCFBooleanTrue, @"BKUseLegacyCurlAnimation", &off_1F14C0, BKDefaultHighlightColor[0], &__kCFBooleanFalse, BKDefaultUnderlineState, &__kCFBooleanTrue, @"BKAllowOnlineContent", 0}];
@@ -380,10 +380,10 @@
   }
 }
 
-- (BKBookViewController)initWithBook:(id)a3 storeID:(id)a4
+- (BKBookViewController)initWithBook:(id)book storeID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  bookCopy = book;
+  dCopy = d;
   v42.receiver = self;
   v42.super_class = BKBookViewController;
   v8 = [(BKViewController *)&v42 initWithNibName:0 bundle:0];
@@ -394,11 +394,11 @@
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v6 assetLogID];
+      assetLogID = [bookCopy assetLogID];
       *buf = 138543618;
       v44 = v10;
       v45 = 2114;
-      v46 = v12;
+      v46 = assetLogID;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Initializing BVC:%{public}@ logID:%{public}@", buf, 0x16u);
     }
 
@@ -435,12 +435,12 @@
       v8->_displaySleepController = v24;
     }
 
-    [(BKBookViewController *)v8 setBook:v6];
+    [(BKBookViewController *)v8 setBook:bookCopy];
     v26 = +[BCAudioMuxingCoordinator sharedInstance];
     [v26 addAudioMuxingObserver:v8];
 
-    v27 = [v6 sampleContent];
-    if ([v27 BOOLValue])
+    sampleContent = [bookCopy sampleContent];
+    if ([sampleContent BOOLValue])
     {
       [(BKBookViewController *)v8 setExperienceManager:0];
     }
@@ -451,45 +451,45 @@
       [(BKBookViewController *)v8 setExperienceManager:v28];
     }
 
-    v29 = [(BKBookViewController *)v8 experienceManager];
+    experienceManager = [(BKBookViewController *)v8 experienceManager];
 
-    if (v29)
+    if (experienceManager)
     {
-      v30 = [(BKBookViewController *)v8 experienceManager];
-      [(BKBookViewController *)v8 setBookPositionProcessor:v30];
+      experienceManager2 = [(BKBookViewController *)v8 experienceManager];
+      [(BKBookViewController *)v8 setBookPositionProcessor:experienceManager2];
 
-      v31 = [(BKBookViewController *)v8 experienceManager];
-      [v31 setPresentationViewController:v8];
+      experienceManager3 = [(BKBookViewController *)v8 experienceManager];
+      [experienceManager3 setPresentationViewController:v8];
 
-      v32 = [v6 storeId];
-      v33 = [v32 longLongValue];
-      if (v33 < 1)
+      storeId = [bookCopy storeId];
+      longLongValue = [storeId longLongValue];
+      if (longLongValue < 1)
       {
-        v34 = v7;
+        storeId2 = dCopy;
       }
 
       else
       {
-        v34 = [v6 storeId];
+        storeId2 = [bookCopy storeId];
       }
 
-      v35 = [(BKBookViewController *)v8 experienceManager];
-      [v35 setStoreID:v34];
+      experienceManager4 = [(BKBookViewController *)v8 experienceManager];
+      [experienceManager4 setStoreID:storeId2];
 
-      if (v33 >= 1)
+      if (longLongValue >= 1)
       {
       }
 
-      v36 = [(BKBookViewController *)v8 _createEndOfBookExperience];
-      if (v36)
+      _createEndOfBookExperience = [(BKBookViewController *)v8 _createEndOfBookExperience];
+      if (_createEndOfBookExperience)
       {
-        v37 = [(BKBookViewController *)v8 experienceManager];
-        [v37 addExperience:v36];
+        experienceManager5 = [(BKBookViewController *)v8 experienceManager];
+        [experienceManager5 addExperience:_createEndOfBookExperience];
       }
     }
 
-    v38 = [(BKBookViewController *)v8 book];
-    v8->_layout = [(BKBookViewController *)v8 validLayoutForBook:v38 desiredLayout:[(BKBookViewController *)v8 defaultLayoutToUse]];
+    book = [(BKBookViewController *)v8 book];
+    v8->_layout = [(BKBookViewController *)v8 validLayoutForBook:book desiredLayout:[(BKBookViewController *)v8 defaultLayoutToUse]];
 
     v39 = +[UITraitCollection bc_allAPITraits];
     v40 = [(BKBookViewController *)v8 registerForTraitChanges:v39 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
@@ -501,33 +501,33 @@
 - (NSURL)storeShortURL
 {
   v3 = objc_opt_class();
-  v4 = [(BKBookViewController *)self book];
-  v5 = [v3 propertySourceFromBook:v4];
+  book = [(BKBookViewController *)self book];
+  v5 = [v3 propertySourceFromBook:book];
 
   v6 = [[AEAssetActivityItemProviderSource alloc] initWithPropertySource:v5];
-  v7 = [v6 propertyProvider];
-  v8 = [v7 storeURLPreferShort];
+  propertyProvider = [v6 propertyProvider];
+  storeURLPreferShort = [propertyProvider storeURLPreferShort];
 
-  return v8;
+  return storeURLPreferShort;
 }
 
 - (unint64_t)lastLayoutUsed
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(BKBookViewController *)self lastLayoutUsedKey];
-  v5 = [v3 objectForKey:v4];
+  lastLayoutUsedKey = [(BKBookViewController *)self lastLayoutUsedKey];
+  v5 = [v3 objectForKey:lastLayoutUsedKey];
 
   if (v5)
   {
-    v6 = [v5 intValue];
-    if (v6 <= 1)
+    intValue = [v5 intValue];
+    if (intValue <= 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v6;
+      v7 = intValue;
     }
 
     v8 = v7;
@@ -541,52 +541,52 @@
   return v8;
 }
 
-- (void)setLayout:(unint64_t)a3
+- (void)setLayout:(unint64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
-    v5 = [(BKBookViewController *)self layout];
+    self->_layout = layout;
+    layout = [(BKBookViewController *)self layout];
     v6 = _AEBookPluginsLifeCycleLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = (v5 & 0xFFFFFFFFFFFFFFFELL) == 2;
-      v8 = [NSNumber numberWithUnsignedInteger:a3];
-      v9 = [(BKBookViewController *)self book];
-      v10 = [v9 assetLogID];
+      v7 = (layout & 0xFFFFFFFFFFFFFFFELL) == 2;
+      v8 = [NSNumber numberWithUnsignedInteger:layout];
+      book = [(BKBookViewController *)self book];
+      assetLogID = [book assetLogID];
       v11 = [NSNumber numberWithBool:v7];
       v14 = 138543874;
       v15 = v8;
       v16 = 2114;
-      v17 = v10;
+      v17 = assetLogID;
       v18 = 2114;
       v19 = v11;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "SetLayout:%{public}@, logID:%{public}@, Scroll:%{public}@", &v14, 0x20u);
     }
 
     v12 = +[NSUserDefaults standardUserDefaults];
-    v13 = [(BKBookViewController *)self lastLayoutUsedKey];
-    [v12 setInteger:a3 forKey:v13];
+    lastLayoutUsedKey = [(BKBookViewController *)self lastLayoutUsedKey];
+    [v12 setInteger:layout forKey:lastLayoutUsedKey];
   }
 }
 
-- (unint64_t)validLayoutForBook:(id)a3 desiredLayout:(unint64_t)a4
+- (unint64_t)validLayoutForBook:(id)book desiredLayout:(unint64_t)layout
 {
-  v6 = a3;
-  if (([v6 isScrollModeDisabled] & 1) == 0)
+  bookCopy = book;
+  if (([bookCopy isScrollModeDisabled] & 1) == 0)
   {
-    if (a4 - 2 < 2)
+    if (layout - 2 < 2)
     {
-      v9 = [(BKBookViewController *)self scrollLayoutForBook:v6];
+      v9 = [(BKBookViewController *)self scrollLayoutForBook:bookCopy];
       goto LABEL_10;
     }
 
-    if (a4 == 4 || !a4)
+    if (layout == 4 || !layout)
     {
       v7 = BCIMLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [NSNumber numberWithUnsignedInteger:a4];
+        v8 = [NSNumber numberWithUnsignedInteger:layout];
         v11 = 138412290;
         v12 = v8;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Unexpected layout request value (%@). Falling back to paged layout", &v11, 0xCu);
@@ -600,17 +600,17 @@ LABEL_10:
   return v9;
 }
 
-- (unint64_t)scrollLayoutForBook:(id)a3
+- (unint64_t)scrollLayoutForBook:(id)book
 {
   if (![(BKBookViewController *)self allowsScrollMode])
   {
     return 1;
   }
 
-  v4 = [(BKBookViewController *)self book];
-  v5 = [v4 scrollModeOrientation];
+  book = [(BKBookViewController *)self book];
+  scrollModeOrientation = [book scrollModeOrientation];
 
-  if (v5)
+  if (scrollModeOrientation)
   {
     return 2;
   }
@@ -623,16 +623,16 @@ LABEL_10:
 
 - (id)_createEndOfBookExperience
 {
-  v3 = [(BKBookViewController *)self book];
-  v4 = [v3 endOfBookLocation];
+  book = [(BKBookViewController *)self book];
+  endOfBookLocation = [book endOfBookLocation];
 
-  v5 = [(BKBookViewController *)self book];
-  v6 = [v5 endOfBookValidRange];
+  book2 = [(BKBookViewController *)self book];
+  endOfBookValidRange = [book2 endOfBookValidRange];
 
-  if ([v4 length])
+  if ([endOfBookLocation length])
   {
     v40 = 0;
-    v7 = [BCCFI cfiWithString:v4 error:&v40];
+    v7 = [BCCFI cfiWithString:endOfBookLocation error:&v40];
     v8 = v40;
   }
 
@@ -642,11 +642,11 @@ LABEL_10:
     v8 = 0;
   }
 
-  v38 = v6;
-  if ([v6 length])
+  v38 = endOfBookValidRange;
+  if ([endOfBookValidRange length])
   {
     v39 = 0;
-    v9 = [BCCFI cfiWithString:v6 error:&v39];
+    v9 = [BCCFI cfiWithString:endOfBookValidRange error:&v39];
     v36 = v39;
   }
 
@@ -664,16 +664,16 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v4;
+      v42 = endOfBookLocation;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Valid end of book: %@", buf, 0xCu);
     }
 
     if (v9)
     {
-      v12 = [v9 headCFI];
-      v13 = [v9 tailCFI];
-      v14 = [BCEPubBookPosition positionWithCFI:v12];
-      v15 = [BCEPubBookPosition positionWithCFI:v13];
+      headCFI = [v9 headCFI];
+      tailCFI = [v9 tailCFI];
+      v14 = [BCEPubBookPosition positionWithCFI:headCFI];
+      v15 = [BCEPubBookPosition positionWithCFI:tailCFI];
       v16 = [BCBookSection bookSectionWithStartPosition:v14 endPosition:v15];
     }
 
@@ -687,9 +687,9 @@ LABEL_10:
     [v10 setExperiencePoint:v17];
 
     [v10 setValidRange:v16];
-    v18 = [(BKBookViewController *)self book];
-    v19 = [v18 endOfBookConfidence];
-    [v19 floatValue];
+    book3 = [(BKBookViewController *)self book];
+    endOfBookConfidence = [book3 endOfBookConfidence];
+    [endOfBookConfidence floatValue];
     [v10 setConfidence:?];
   }
 
@@ -704,9 +704,9 @@ LABEL_10:
     [v22 setKind:0];
     [v22 setEnabled:1];
     [v22 setSkipToast:0];
-    v23 = [(BKBookViewController *)self book];
-    v24 = [v23 endOfBookVersion];
-    [v22 setVersion:v24];
+    book4 = [(BKBookViewController *)self book];
+    endOfBookVersion = [book4 endOfBookVersion];
+    [v22 setVersion:endOfBookVersion];
 
     [v22 setPageProgressionIsRTL:{-[BKBookViewController pageProgressionDirection](self, "pageProgressionDirection") == 1}];
     v25 = BCAugmentedExperienceLog();
@@ -740,107 +740,107 @@ LABEL_10:
 
 - (void)pageViewControllersDidChange
 {
-  v3 = [(BKBookViewController *)self experienceManager];
-  [v3 presentingViewControllerDidChangeLayout:self];
+  experienceManager = [(BKBookViewController *)self experienceManager];
+  [experienceManager presentingViewControllerDidChangeLayout:self];
 }
 
-- (void)bookSectionChanged:(id)a3
+- (void)bookSectionChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
+  changedCopy = changed;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v4)
+  if (assetViewControllerDelegate)
   {
-    v5 = [(BKBookViewController *)self bookPositionProcessor];
-    [v5 emitter:self bookSectionChanged:v6];
+    bookPositionProcessor = [(BKBookViewController *)self bookPositionProcessor];
+    [bookPositionProcessor emitter:self bookSectionChanged:changedCopy];
   }
 }
 
-- (void)bookMilestoneReached:(int64_t)a3
+- (void)bookMilestoneReached:(int64_t)reached
 {
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v5)
+  if (assetViewControllerDelegate)
   {
-    v6 = [(BKBookViewController *)self bookPositionProcessor];
-    [v6 emitter:self bookMilestoneReached:a3];
+    bookPositionProcessor = [(BKBookViewController *)self bookPositionProcessor];
+    [bookPositionProcessor emitter:self bookMilestoneReached:reached];
   }
 }
 
-- (void)bookPositionChanged:(id)a3
+- (void)bookPositionChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
+  changedCopy = changed;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v4)
+  if (assetViewControllerDelegate)
   {
-    v5 = [(BKBookViewController *)self bookPositionProcessor];
-    [v5 emitter:self bookPositionChanged:v6];
+    bookPositionProcessor = [(BKBookViewController *)self bookPositionProcessor];
+    [bookPositionProcessor emitter:self bookPositionChanged:changedCopy];
   }
 }
 
 - (BOOL)isOnLastPage
 {
-  v3 = [(BKBookViewController *)self currentPages];
+  currentPages = [(BKBookViewController *)self currentPages];
   v5 = v4;
   if (([(BKBookViewController *)self layout]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = 2;
   }
 
-  v6 = [(BKBookViewController *)self pageCountIncludingUpsell];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
+  if (currentPages == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v9 = v6 >= v3 && v6 - v3 < v5;
-  v10 = v6 != 0x7FFFFFFFFFFFFFFFLL && v9;
-  return v6 && v10;
+  v9 = pageCountIncludingUpsell >= currentPages && pageCountIncludingUpsell - currentPages < v5;
+  v10 = pageCountIncludingUpsell != 0x7FFFFFFFFFFFFFFFLL && v9;
+  return pageCountIncludingUpsell && v10;
 }
 
 - (BOOL)inLiveResize
 {
-  v2 = [(BKBookViewController *)self assetViewControllerDelegate];
-  v3 = [v2 inLiveResize];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  inLiveResize = [assetViewControllerDelegate inLiveResize];
 
-  return v3;
+  return inLiveResize;
 }
 
 - (void)readingLocationChanged
 {
   if (![(BKBookViewController *)self section]&& +[BCAugmentedExperienceManager endOfBookExperienceFeatureEnabled])
   {
-    v3 = [(BKBookViewController *)self book];
-    v4 = [v3 sampleContent];
-    if ([v4 BOOLValue])
+    book = [(BKBookViewController *)self book];
+    sampleContent = [book sampleContent];
+    if ([sampleContent BOOLValue])
     {
       goto LABEL_4;
     }
 
-    v5 = [(BKBookViewController *)self isRotationInProgress];
+    isRotationInProgress = [(BKBookViewController *)self isRotationInProgress];
 
-    if ((v5 & 1) == 0)
+    if ((isRotationInProgress & 1) == 0)
     {
       [(BKBookViewController *)self currentPages];
       [(BKBookViewController *)self layout];
       if (![(BKBookViewController *)self isOnLastPage])
       {
-        v7 = [(BKBookViewController *)self visibleCFIRange];
-        v3 = v7;
-        if (!v7)
+        visibleCFIRange = [(BKBookViewController *)self visibleCFIRange];
+        book = visibleCFIRange;
+        if (!visibleCFIRange)
         {
           [(BKBookViewController *)self bookSectionChanged:0];
           goto LABEL_5;
         }
 
-        v8 = [v7 headCFI];
-        v4 = [BCEPubBookPosition positionWithCFI:v8];
+        headCFI = [visibleCFIRange headCFI];
+        sampleContent = [BCEPubBookPosition positionWithCFI:headCFI];
 
-        v9 = [v3 tailCFI];
-        v10 = [BCEPubBookPosition positionWithCFI:v9];
+        tailCFI = [book tailCFI];
+        v10 = [BCEPubBookPosition positionWithCFI:tailCFI];
 
-        v11 = [BCBookSection bookSectionWithStartPosition:v4 endPosition:v10];
+        v11 = [BCBookSection bookSectionWithStartPosition:sampleContent endPosition:v10];
         [(BKBookViewController *)self bookSectionChanged:v11];
 
 LABEL_4:
@@ -855,32 +855,32 @@ LABEL_5:
 
 LABEL_9:
   [(BKBookViewController *)self writeAnnotationsToWebProcessPlugin];
-  v6 = [(BKBookViewController *)self searchResult];
+  searchResult = [(BKBookViewController *)self searchResult];
 
-  if (v6)
+  if (searchResult)
   {
-    v12 = [(BKBookViewController *)self searchResult];
-    [(BKBookViewController *)self highlightSearchResult:v12];
+    searchResult2 = [(BKBookViewController *)self searchResult];
+    [(BKBookViewController *)self highlightSearchResult:searchResult2];
   }
 }
 
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion
 {
-  v6 = a4;
-  if ([a3 isPreorder])
+  completionCopy = completion;
+  if ([profile isPreorder])
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_4B964;
     v9[3] = &unk_1E3438;
     v9[4] = self;
-    v10 = v6;
+    v10 = completionCopy;
     dispatch_async(&_dispatch_main_q, v9);
   }
 
   else
   {
-    v7 = objc_retainBlock(v6);
+    v7 = objc_retainBlock(completionCopy);
     v8 = v7;
     if (v7)
     {
@@ -889,16 +889,16 @@ LABEL_9:
   }
 }
 
-- (void)setAssetIsPreordered:(id)a3
+- (void)setAssetIsPreordered:(id)preordered
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self book];
-  [v5 setIsPreorder:v4];
+  preorderedCopy = preordered;
+  book = [(BKBookViewController *)self book];
+  [book setIsPreorder:preorderedCopy];
 }
 
-- (void)_performScrollTest:(id)a3 completionHandler:(id)a4
+- (void)_performScrollTest:(id)test completionHandler:(id)handler
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(handler);
   if (v4)
   {
     v5 = v4;
@@ -918,9 +918,9 @@ LABEL_9:
   colorEditor = self->_colorEditor;
   self->_colorEditor = 0;
 
-  v5 = [(BKBookViewController *)self activityViewController];
+  activityViewController = [(BKBookViewController *)self activityViewController];
 
-  if (v5)
+  if (activityViewController)
   {
     [(BKBookViewController *)self dismissCurrentPopoverAnimated:0];
   }
@@ -949,8 +949,8 @@ LABEL_9:
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [(BKBookViewController *)self paginationController];
-  [v5 cancelPagination];
+  paginationController = [(BKBookViewController *)self paginationController];
+  [paginationController cancelPagination];
 
   [(BKBookViewController *)self setPaginationController:0];
   [(BKBookViewController *)self setBook:0];
@@ -962,8 +962,8 @@ LABEL_9:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)self->_contentViewControllers allValues];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_contentViewControllers allValues];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -975,7 +975,7 @@ LABEL_9:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v13 + 1) + 8 * v10) setDelegate:0];
@@ -983,15 +983,15 @@ LABEL_9:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(BKExpandedContentViewController *)self->_expandedContentViewController delegate];
+  delegate = [(BKExpandedContentViewController *)self->_expandedContentViewController delegate];
 
-  if (v11 == self)
+  if (delegate == self)
   {
     [(BKExpandedContentViewController *)self->_expandedContentViewController setDelegate:0];
   }
@@ -1015,27 +1015,27 @@ LABEL_9:
   [(BKBookViewController *)&v3 didReceiveMemoryWarning];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = BKBookViewController;
-  [(BKBookViewController *)&v7 willMoveToParentViewController:a3];
+  [(BKBookViewController *)&v7 willMoveToParentViewController:controller];
   hoverInteraction = self->_hoverInteraction;
   if (hoverInteraction)
   {
-    v5 = [(BCUIHoverInteraction *)hoverInteraction view];
-    [v5 removeInteraction:self->_hoverInteraction];
+    view = [(BCUIHoverInteraction *)hoverInteraction view];
+    [view removeInteraction:self->_hoverInteraction];
 
     v6 = self->_hoverInteraction;
     self->_hoverInteraction = 0;
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = BKBookViewController;
-  [(BKBookViewController *)&v4 didMoveToParentViewController:a3];
+  [(BKBookViewController *)&v4 didMoveToParentViewController:controller];
   [(BKBookViewController *)self _updateHoverInteraction];
 }
 
@@ -1043,20 +1043,20 @@ LABEL_9:
 {
   if (!self->_hoverInteraction)
   {
-    v3 = [(BKBookViewController *)self navigationController];
-    v4 = [v3 view];
+    navigationController = [(BKBookViewController *)self navigationController];
+    view = [navigationController view];
 
-    if (v4)
+    if (view)
     {
       v5 = [BCUIHoverInteraction alloc];
-      v6 = [(BKBookViewController *)self view];
-      v7 = [v5 initWithDelegate:self view:v6];
+      view2 = [(BKBookViewController *)self view];
+      v7 = [v5 initWithDelegate:self view:view2];
       hoverInteraction = self->_hoverInteraction;
       self->_hoverInteraction = v7;
 
-      v9 = [(BKBookViewController *)self navigationController];
-      v10 = [v9 view];
-      [v10 addInteraction:self->_hoverInteraction];
+      navigationController2 = [(BKBookViewController *)self navigationController];
+      view3 = [navigationController2 view];
+      [view3 addInteraction:self->_hoverInteraction];
 
       [(BKBookViewController *)self rebuildHoverRegions];
     }
@@ -1101,8 +1101,8 @@ LABEL_9:
 
 - (int64_t)themeInterfaceStyle
 {
-  v2 = [(BKBookViewController *)self theme];
-  if ([v2 shouldInvertContent])
+  theme = [(BKBookViewController *)self theme];
+  if ([theme shouldInvertContent])
   {
     v3 = 2;
   }
@@ -1115,26 +1115,26 @@ LABEL_9:
   return v3;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5 = _AEBookPluginsLifeCycleLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(BKBookViewController *)self book];
-    v9 = [v8 assetLogID];
+    book = [(BKBookViewController *)self book];
+    assetLogID = [book assetLogID];
     *buf = 138543618;
     v18 = v6;
     v19 = 2114;
-    v20 = v9;
+    v20 = assetLogID;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "viewWillAppear BVC:%{public}@ logID:%{public}@", buf, 0x16u);
   }
 
   v16.receiver = self;
   v16.super_class = BKBookViewController;
-  [(BKBookViewController *)&v16 viewIsAppearing:v3];
+  [(BKBookViewController *)&v16 viewIsAppearing:appearingCopy];
   v10 = +[BCThemeCoordinator shared];
   [v10 addObserver:self];
 
@@ -1164,35 +1164,35 @@ LABEL_9:
     [(BKBookViewController *)self setControlsVisible:1 animated:1];
   }
 
-  v15 = [(BKBookViewController *)self displaySleepController];
-  [v15 userInteractionOccurred];
+  displaySleepController = [(BKBookViewController *)self displaySleepController];
+  [displaySleepController userInteractionOccurred];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = BKBookViewController;
-  [(BKBookViewController *)&v13 viewDidAppear:a3];
+  [(BKBookViewController *)&v13 viewDidAppear:appear];
   [(BKBookViewController *)self setSafeToShowToolbarItems:1];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 launchedToTest];
+  launchedToTest = [v4 launchedToTest];
 
-  if ((v5 & 1) == 0)
+  if ((launchedToTest & 1) == 0)
   {
     [(BKBookViewController *)self promptForRemoteResourcesIfNecessary];
   }
 
-  v6 = [(BKBookViewController *)self openingLocation];
+  openingLocation = [(BKBookViewController *)self openingLocation];
 
-  if (v6)
+  if (openingLocation)
   {
-    v7 = [(BKBookViewController *)self openingLocation];
-    [(BKBookViewController *)self recordedJumpToLocation:v7 animated:0 completion:0];
+    openingLocation2 = [(BKBookViewController *)self openingLocation];
+    [(BKBookViewController *)self recordedJumpToLocation:openingLocation2 animated:0 completion:0];
   }
 
-  v8 = [(BKBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v8)
+  if (assetViewControllerDelegate)
   {
     +[IMSleepManager startSleepTimer];
   }
@@ -1203,17 +1203,17 @@ LABEL_9:
   [(BKBookViewController *)self updateProgressKitForNewLocation];
   [(BKBookViewController *)self bc_analyticsVisibilityUpdateSubtree];
   [(BKBookViewController *)self _updateHoverInteraction];
-  v10 = [(BKBookViewController *)self view];
-  v11 = [v10 window];
-  v12 = [(BKBookViewController *)self displaySleepController];
-  [v12 setWindow:v11];
+  view = [(BKBookViewController *)self view];
+  window = [view window];
+  displaySleepController = [(BKBookViewController *)self displaySleepController];
+  [displaySleepController setWindow:window];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = BKBookViewController;
-  [(BKBookViewController *)&v7 viewWillDisappear:a3];
+  [(BKBookViewController *)&v7 viewWillDisappear:disappear];
   v4 = +[BCThemeCoordinator shared];
   [v4 removeObserver:self];
 
@@ -1229,11 +1229,11 @@ LABEL_9:
   [(BKBookViewController *)self bc_analyticsVisibilitySubtreeWillDisappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BKBookViewController;
-  [(BKBookViewController *)&v4 viewDidDisappear:a3];
+  [(BKBookViewController *)&v4 viewDidDisappear:disappear];
   [(BKBookViewController *)self bc_analyticsVisibilitySubtreeDidDisappear];
 }
 
@@ -1243,10 +1243,10 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(BKBookViewController *)self contentViewControllers];
-  v3 = [v2 allValues];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1257,7 +1257,7 @@ LABEL_9:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) currentlyHighlighting])
@@ -1267,7 +1267,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -1296,11 +1296,11 @@ LABEL_11:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(BKBookViewController *)self setRotationInProgress:1];
   if (isPad())
   {
@@ -1313,27 +1313,27 @@ LABEL_11:
   v16[2] = sub_4C98C;
   v16[3] = &unk_1E2A60;
   v16[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v16];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v16];
   v15.receiver = self;
   v15.super_class = BKBookViewController;
-  [(BKBookViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(BKBookViewController *)self referenceLibraryViewController];
-  v9 = v8;
-  if (v8 && [v8 _isInPopoverPresentation])
+  [(BKBookViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  referenceLibraryViewController = [(BKBookViewController *)self referenceLibraryViewController];
+  v9 = referenceLibraryViewController;
+  if (referenceLibraryViewController && [referenceLibraryViewController _isInPopoverPresentation])
   {
     [(BKBookViewController *)self dismissCurrentPopoverAnimated:0];
   }
 
-  v10 = [(BKBookViewController *)self translationViewController];
-  v11 = v10;
-  if (v10 && [v10 _isInPopoverPresentation])
+  translationViewController = [(BKBookViewController *)self translationViewController];
+  v11 = translationViewController;
+  if (translationViewController && [translationViewController _isInPopoverPresentation])
   {
     [(BKBookViewController *)self dismissCurrentPopoverAnimated:0];
   }
 
-  v12 = [(BKBookViewController *)self footnoteController];
-  v13 = v12;
-  if (v12 && [v12 _isInPopoverPresentation])
+  footnoteController = [(BKBookViewController *)self footnoteController];
+  v13 = footnoteController;
+  if (footnoteController && [footnoteController _isInPopoverPresentation])
   {
     [(BKBookViewController *)self dismissCurrentPopoverAnimated:0];
   }
@@ -1343,31 +1343,31 @@ LABEL_11:
   v14[2] = sub_4C994;
   v14[3] = &unk_1E2A60;
   v14[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v14];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v14];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(BKBookViewController *)self createPaginationControllerIfNeeded:1, a4];
+  [(BKBookViewController *)self createPaginationControllerIfNeeded:1, collection];
   if (([(BKBookViewController *)self im_isCompactWidth]& 1) == 0)
   {
-    v5 = [(BKBookViewController *)self footnoteController];
-    [v5 dismissCurrentPopover];
+    footnoteController = [(BKBookViewController *)self footnoteController];
+    [footnoteController dismissCurrentPopover];
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v10 assetViewController:self presentViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate assetViewController:self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)setBook:(id)a3
+- (void)setBook:(id)book
 {
-  v13 = a3;
+  bookCopy = book;
   currentBookCacheItem = self->_currentBookCacheItem;
   self->_currentBookCacheItem = 0;
 
@@ -1391,64 +1391,64 @@ LABEL_11:
     self->_bookMoc = 0;
   }
 
-  v9 = v13;
-  if (v13)
+  v9 = bookCopy;
+  if (bookCopy)
   {
-    objc_storeStrong(&self->_book, a3);
+    objc_storeStrong(&self->_book, book);
     [(BKViewController *)self setLayoutDirection:[(BKBookViewController *)self pageProgressionDirection]== 1];
-    self->_layout = [(BKBookViewController *)self validLayoutForBook:v13 desiredLayout:[(BKBookViewController *)self defaultLayoutToUse]];
-    v10 = [(AEBookInfo *)self->_book managedObjectContext];
+    self->_layout = [(BKBookViewController *)self validLayoutForBook:bookCopy desiredLayout:[(BKBookViewController *)self defaultLayoutToUse]];
+    managedObjectContext = [(AEBookInfo *)self->_book managedObjectContext];
     v11 = self->_bookMoc;
-    self->_bookMoc = v10;
+    self->_bookMoc = managedObjectContext;
 
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:self selector:"managedObjectContextDidSave:" name:NSManagedObjectContextDidSaveNotification object:0];
 
     [(BKBookViewController *)self restoreSavedLocation];
-    v9 = v13;
+    v9 = bookCopy;
   }
 }
 
-- (void)setPageCountIncludingUpsell:(int64_t)a3
+- (void)setPageCountIncludingUpsell:(int64_t)upsell
 {
-  if (self->_pageCountIncludingUpsell != a3)
+  if (self->_pageCountIncludingUpsell != upsell)
   {
-    self->_pageCountIncludingUpsell = a3;
+    self->_pageCountIncludingUpsell = upsell;
     [(BKBookViewController *)self pageCountDidUpdate];
 
     [(BKBookViewController *)self updateTouchBarController];
   }
 }
 
-- (void)createPaginationControllerIfNeeded:(BOOL)a3
+- (void)createPaginationControllerIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self paginationController];
+  neededCopy = needed;
+  paginationController = [(BKBookViewController *)self paginationController];
 
-  if (!v5)
+  if (!paginationController)
   {
     v9 = [BKPaginationController newPaginationControllerForBook:self->_book delegate:self];
     [(BKBookViewController *)self setPaginationController:?];
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = BKPaginationCompleteForBookNotification;
-    v8 = [(BKBookViewController *)self paginationController];
-    [v6 addObserver:self selector:"_paginationComplete:" name:v7 object:v8];
+    paginationController2 = [(BKBookViewController *)self paginationController];
+    [v6 addObserver:self selector:"_paginationComplete:" name:v7 object:paginationController2];
 
-    if (v3)
+    if (neededCopy)
     {
       [(BKBookViewController *)self paginationUpdateRequired];
     }
   }
 }
 
-- (void)_setAudioSessionMix:(BOOL)a3
+- (void)_setAudioSessionMix:(BOOL)mix
 {
-  if (a3)
+  if (mix)
   {
-    v3 = [(BKBookViewController *)self book];
-    v4 = [v3 hasMediaOverlayElements];
+    book = [(BKBookViewController *)self book];
+    hasMediaOverlayElements = [book hasMediaOverlayElements];
 
-    if (v4)
+    if (hasMediaOverlayElements)
     {
       v5 = +[AVAudioSession sharedInstance];
       v11 = 0;
@@ -1473,10 +1473,10 @@ LABEL_11:
   currentBookCacheItem = self->_currentBookCacheItem;
   if (!currentBookCacheItem)
   {
-    v4 = [(BKBookViewController *)self book];
-    v5 = [v4 cacheItem];
+    book = [(BKBookViewController *)self book];
+    cacheItem = [book cacheItem];
     v6 = self->_currentBookCacheItem;
-    self->_currentBookCacheItem = v5;
+    self->_currentBookCacheItem = cacheItem;
 
     currentBookCacheItem = self->_currentBookCacheItem;
   }
@@ -1484,68 +1484,68 @@ LABEL_11:
   return currentBookCacheItem;
 }
 
-- (void)open:(BOOL)a3
+- (void)open:(BOOL)open
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
+  openCopy = open;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v5)
+  if (assetViewControllerDelegate)
   {
-    v6 = [(BKBookViewController *)self assetViewControllerDelegate];
-    [v6 assetViewController:self willOpen:v3];
+    assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+    [assetViewControllerDelegate2 assetViewController:self willOpen:openCopy];
   }
 
   [(BKBookViewController *)self _setAudioSessionMix:1];
-  v7 = [(BKBookViewController *)self contentViewControllers];
-  v8 = [v7 allValues];
-  [v8 makeObjectsPerformSelector:"resume"];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"resume"];
 
   [(BKBookViewController *)self updateUIForSmartInvert];
 }
 
-- (void)openToLocation:(id)a3 animated:(BOOL)a4
+- (void)openToLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
-  [(BKBookViewController *)self setOpeningLocation:v11];
-  v6 = [(BKBookViewController *)self book];
-  [v11 updateOrdinalForBookInfo:v6];
+  animatedCopy = animated;
+  locationCopy = location;
+  [(BKBookViewController *)self setOpeningLocation:locationCopy];
+  book = [(BKBookViewController *)self book];
+  [locationCopy updateOrdinalForBookInfo:book];
 
   if ([(BKBookViewController *)self isVisible])
   {
     if ([(BKBookViewController *)self section])
     {
-      [(BKBookViewController *)self setResumeLocation:v11];
-      [(BKBookViewController *)self setSection:0 animated:v4 adjustScrollToReveal:0];
+      [(BKBookViewController *)self setResumeLocation:locationCopy];
+      [(BKBookViewController *)self setSection:0 animated:animatedCopy adjustScrollToReveal:0];
       [(BKBookViewController *)self setResumeLocation:0];
     }
 
-    else if (![(BKBookViewController *)self isLocationOnCurrentPage:v11])
+    else if (![(BKBookViewController *)self isLocationOnCurrentPage:locationCopy])
     {
-      [(BKBookViewController *)self recordedJumpToLocation:v11 animated:v4 completion:0];
+      [(BKBookViewController *)self recordedJumpToLocation:locationCopy animated:animatedCopy completion:0];
     }
   }
 
   else
   {
-    [(BKBookViewController *)self setLocation:v11];
-    v7 = [(BKBookViewController *)self assetViewControllerDelegate];
+    [(BKBookViewController *)self setLocation:locationCopy];
+    assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-    if (v7)
+    if (assetViewControllerDelegate)
     {
-      v8 = [(BKBookViewController *)self assetViewControllerDelegate];
-      [v8 assetViewController:self willOpen:v4];
+      assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+      [assetViewControllerDelegate2 assetViewController:self willOpen:animatedCopy];
     }
 
     [(BKBookViewController *)self _setAudioSessionMix:1];
   }
 
-  v9 = [(BKBookViewController *)self contentViewControllers];
-  v10 = [v9 allValues];
-  [v10 makeObjectsPerformSelector:"resume"];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"resume"];
 }
 
-- (void)requestClose:(BOOL)a3
+- (void)requestClose:(BOOL)close
 {
   v5 = +[AETestDriver shared];
   [v5 postEvent:kBETestDriverOpenAnimationStart sender:self];
@@ -1558,15 +1558,15 @@ LABEL_11:
   v7[2] = sub_4D20C;
   v7[3] = &unk_1E3ED8;
   v7[4] = self;
-  v8 = a3;
+  closeCopy = close;
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v7];
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self contentData];
-  [(BKBookViewController *)self setCachedContentData:v5];
+  closeCopy = close;
+  contentData = [(BKBookViewController *)self contentData];
+  [(BKBookViewController *)self setCachedContentData:contentData];
 
   [(BKBookViewController *)self bookMilestoneReached:10];
   [(BKBookViewController *)self stopPlayingMedia:0];
@@ -1577,120 +1577,120 @@ LABEL_11:
   [(BKBookViewController *)self stopSoundtrack];
   [(BKBookViewController *)self setReadAloudState:0];
   [(BKBookViewController *)self saveBook];
-  v6 = [(AEBookInfo *)self->_book baseURL];
-  v7 = [v6 absoluteString];
-  v8 = [v7 lastPathComponent];
-  [BKTextIndex removeTextIndexWithName:v8];
+  baseURL = [(AEBookInfo *)self->_book baseURL];
+  absoluteString = [baseURL absoluteString];
+  lastPathComponent = [absoluteString lastPathComponent];
+  [BKTextIndex removeTextIndexWithName:lastPathComponent];
 
-  v9 = [(BKBookViewController *)self contentViewControllers];
-  v10 = [v9 allValues];
-  [v10 makeObjectsPerformSelector:"suspend"];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"suspend"];
 
-  v11 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v11 assetViewController:self willClose:v3];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate assetViewController:self willClose:closeCopy];
 }
 
 - (void)assetViewControllerUpdateToolbarsAfterOpenAnimation
 {
-  v3 = [(BKBookViewController *)self shouldControlsBeVisibleOnOpen];
+  shouldControlsBeVisibleOnOpen = [(BKBookViewController *)self shouldControlsBeVisibleOnOpen];
 
-  [(BKBookViewController *)self setControlsVisible:v3 animated:1];
+  [(BKBookViewController *)self setControlsVisible:shouldControlsBeVisibleOnOpen animated:1];
 }
 
 - (void)assetViewControllerUpdateToolbarsForOpenAnimation
 {
-  v3 = [(BKBookViewController *)self shouldControlsBeVisibleOnOpen];
+  shouldControlsBeVisibleOnOpen = [(BKBookViewController *)self shouldControlsBeVisibleOnOpen];
 
-  [(BKBookViewController *)self setControlsVisible:v3 animated:0];
+  [(BKBookViewController *)self setControlsVisible:shouldControlsBeVisibleOnOpen animated:0];
 }
 
 - (BOOL)shouldControlsBeVisibleOnOpen
 {
-  v3 = [(BKBookViewController *)self controlsVisible];
-  v4 = [(BKBookViewController *)self book];
-  v5 = [v4 sampleContent];
-  v6 = [v5 BOOLValue];
+  controlsVisible = [(BKBookViewController *)self controlsVisible];
+  book = [(BKBookViewController *)self book];
+  sampleContent = [book sampleContent];
+  bOOLValue = [sampleContent BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = +[BRCConfigurationManager sharedInstance];
     v8 = [v7 valueForKey:BRCBooksDefaultsKeyReadingExperienceSamplesShowChromeOnOpen fromNamespace:BRCBooksDefaultsNamespace];
 
-    v3 |= [v8 BOOLValue];
+    controlsVisible |= [v8 BOOLValue];
   }
 
-  return v3 & 1;
+  return controlsVisible & 1;
 }
 
-- (void)saveStateClosing:(BOOL)a3
+- (void)saveStateClosing:(BOOL)closing
 {
-  v3 = a3;
-  if (a3)
+  closingCopy = closing;
+  if (closing)
   {
     v5 = _AEBookPluginsLifeCycleLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = v6;
-      v8 = [(BKBookViewController *)self book];
-      v9 = [v8 assetLogID];
+      book = [(BKBookViewController *)self book];
+      assetLogID = [book assetLogID];
       v10 = 138543618;
       v11 = v6;
       v12 = 2114;
-      v13 = v9;
+      v13 = assetLogID;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "SaveState while Closing BVC:%{public}@ logID:%{public}@", &v10, 0x16u);
     }
   }
 
-  [(BKBookViewController *)self saveStateClosing:v3 suspending:0];
+  [(BKBookViewController *)self saveStateClosing:closingCopy suspending:0];
 }
 
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending
 {
-  v6 = [(BKBookViewController *)self book:a3];
+  v6 = [(BKBookViewController *)self book:closing];
   if (v6 && ([v6 isDeleted] & 1) == 0 && objc_msgSend(v6, "exists"))
   {
-    v5 = [(BKBookViewController *)self savableLocation];
-    if (v5)
+    savableLocation = [(BKBookViewController *)self savableLocation];
+    if (savableLocation)
     {
-      [(BKBookViewController *)self saveReadingLocation:v5];
+      [(BKBookViewController *)self saveReadingLocation:savableLocation];
     }
   }
 
   [(BKBookViewController *)self setOpeningLocation:0];
 }
 
-- (BOOL)dismissShouldBegin:(id)a3
+- (BOOL)dismissShouldBegin:(id)begin
 {
-  v3 = a3;
-  [v3 velocity];
+  beginCopy = begin;
+  [beginCopy velocity];
   v5 = v4;
-  [v3 velocity];
+  [beginCopy velocity];
   if (v5 >= v6)
   {
-    v7 = 0;
+    proposedBeginState = 0;
   }
 
   else
   {
-    v7 = [v3 proposedBeginState];
+    proposedBeginState = [beginCopy proposedBeginState];
   }
 
-  return v7;
+  return proposedBeginState;
 }
 
 - (void)saveBook
 {
-  v3 = [(BKBookViewController *)self book];
-  v4 = [v3 managedObjectContext];
-  v5 = [v4 hasChanges];
+  book = [(BKBookViewController *)self book];
+  managedObjectContext = [book managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  if (v5)
+  if (hasChanges)
   {
-    v6 = [(BKBookViewController *)self book];
-    v7 = [v6 managedObjectContext];
+    book2 = [(BKBookViewController *)self book];
+    managedObjectContext2 = [book2 managedObjectContext];
     v12 = 0;
-    v8 = [v7 save:&v12];
+    v8 = [managedObjectContext2 save:&v12];
     v9 = v12;
 
     if ((v8 & 1) == 0)
@@ -1729,11 +1729,11 @@ LABEL_11:
 
 - (int64_t)pageCountExcludingUpsell
 {
-  v3 = [(BKBookViewController *)self pageCountIncludingUpsell];
+  pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (pageCountIncludingUpsell != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v3 - ([(BKBookViewController *)self upsellOrdinal]!= 0x7FFFFFFFFFFFFFFFLL);
+    return pageCountIncludingUpsell - ([(BKBookViewController *)self upsellOrdinal]!= 0x7FFFFFFFFFFFFFFFLL);
   }
 
   return v4;
@@ -1741,11 +1741,11 @@ LABEL_11:
 
 - (void)updatePageCount
 {
-  v3 = [(BKBookViewController *)self calculatePageCountExcludingUpsell];
+  calculatePageCountExcludingUpsell = [(BKBookViewController *)self calculatePageCountExcludingUpsell];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (calculatePageCountExcludingUpsell != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = calculatePageCountExcludingUpsell;
     if ([(BKBookViewController *)self upsellOrdinal]== 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = v5;
@@ -1762,17 +1762,17 @@ LABEL_11:
 
 - (int64_t)calculatePageCountExcludingUpsell
 {
-  v3 = [(BKBookViewController *)self paginationController];
+  paginationController = [(BKBookViewController *)self paginationController];
 
-  if (!v3)
+  if (!paginationController)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(BKBookViewController *)self paginationController];
-  v5 = [v4 pageTotal];
+  paginationController2 = [(BKBookViewController *)self paginationController];
+  pageTotal = [paginationController2 pageTotal];
 
-  return v5;
+  return pageTotal;
 }
 
 - (BOOL)hidesPageControlsOnOpen
@@ -1802,21 +1802,21 @@ LABEL_11:
 
 - (void)cancelPendingHidePageControls
 {
-  v3 = [(BKBookViewController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v3 selector:"hidePageControls:" object:self];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"hidePageControls:" object:self];
 }
 
 - (void)delayedHidePageControls
 {
   [(BKBookViewController *)self cancelPendingHidePageControls];
-  v3 = [(BKBookViewController *)self performSelectorProxy];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
   [(BKBookViewController *)self hidesPageControlsOnOpenDelay];
-  [v3 performSelector:"hidePageControls:" withObject:self afterDelay:?];
+  [performSelectorProxy performSelector:"hidePageControls:" withObject:self afterDelay:?];
 }
 
-- (void)transitionDidFinish:(BOOL)a3
+- (void)transitionDidFinish:(BOOL)finish
 {
-  if (a3 && [(BKBookViewController *)self hidesPageControlsOnOpen])
+  if (finish && [(BKBookViewController *)self hidesPageControlsOnOpen])
   {
 
     [(BKBookViewController *)self delayedHidePageControls];
@@ -1825,42 +1825,42 @@ LABEL_11:
 
 - (BKLocation)savableLocation
 {
-  v3 = [(BKBookViewController *)self currentLocation];
-  v4 = [(BKBookViewController *)self savableLocationForLocation:v3];
+  currentLocation = [(BKBookViewController *)self currentLocation];
+  v4 = [(BKBookViewController *)self savableLocationForLocation:currentLocation];
 
   return v4;
 }
 
-- (id)savableLocationForLocation:(id)a3
+- (id)savableLocationForLocation:(id)location
 {
-  v4 = a3;
-  if (([v4 ordinal] & 0x8000000000000000) != 0)
+  locationCopy = location;
+  if (([locationCopy ordinal] & 0x8000000000000000) != 0)
   {
-    v6 = [(BKBookViewController *)self resumeLocation];
+    resumeLocation = [(BKBookViewController *)self resumeLocation];
   }
 
   else
   {
-    v5 = [v4 ordinal];
-    if (v5 != [(BKBookViewController *)self upsellOrdinal])
+    ordinal = [locationCopy ordinal];
+    if (ordinal != [(BKBookViewController *)self upsellOrdinal])
     {
       goto LABEL_6;
     }
 
-    v6 = [(BKBookViewController *)self pageLocationForPageNumber:[(BKBookViewController *)self pageCountExcludingUpsell]];
+    resumeLocation = [(BKBookViewController *)self pageLocationForPageNumber:[(BKBookViewController *)self pageCountExcludingUpsell]];
   }
 
-  v7 = v6;
+  v7 = resumeLocation;
 
-  v4 = v7;
+  locationCopy = v7;
 LABEL_6:
-  if (([v4 ordinal] & 0x8000000000000000) != 0)
+  if (([locationCopy ordinal] & 0x8000000000000000) != 0)
   {
 
-    v4 = 0;
+    locationCopy = 0;
   }
 
-  return v4;
+  return locationCopy;
 }
 
 - (void)restoreSavedLocation
@@ -1870,23 +1870,23 @@ LABEL_6:
   {
     v4 = objc_opt_class();
     v5 = v4;
-    v6 = [(BKBookViewController *)self book];
-    v7 = [v6 assetLogID];
+    book = [(BKBookViewController *)self book];
+    assetLogID = [book assetLogID];
     v10 = 138543618;
     v11 = v4;
     v12 = 2114;
-    v13 = v7;
+    v13 = assetLogID;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "restoreSavedLocation BVC:%{public}@ for logID:%{public}@ ", &v10, 0x16u);
   }
 
-  v8 = [(BKBookViewController *)self book];
-  v9 = [v8 readingLocation];
-  [(BKBookViewController *)self setLocation:v9];
+  book2 = [(BKBookViewController *)self book];
+  readingLocation = [book2 readingLocation];
+  [(BKBookViewController *)self setLocation:readingLocation];
 }
 
-- (void)_promptToLoadExternalContent:(id)a3
+- (void)_promptToLoadExternalContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = AEBundle();
   v17 = [v5 localizedStringForKey:@"Allow Online Content?" value:&stru_1E7188 table:0];
 
@@ -1900,7 +1900,7 @@ LABEL_6:
   v20[1] = 3221225472;
   v20[2] = sub_4E07C;
   v20[3] = &unk_1E3F00;
-  v11 = v4;
+  v11 = contentCopy;
   v20[4] = self;
   v21 = v11;
   v12 = [UIAlertAction actionWithTitle:v10 style:1 handler:v20];
@@ -1926,17 +1926,17 @@ LABEL_6:
   if ([(BKBookViewController *)self hasRemoteResources])
   {
     v3 = +[BEDocumentExternalLoadApprovalCache sharedInstance];
-    v4 = [(BKBookViewController *)self book];
-    v5 = [v4 assetID];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
 
-    if (([v3 hasCachedLoadExternalContentApprovalForBookID:v5] & 1) == 0)
+    if (([v3 hasCachedLoadExternalContentApprovalForBookID:assetID] & 1) == 0)
     {
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_4E228;
       v6[3] = &unk_1E3F28;
       v7 = v3;
-      v8 = v5;
+      v8 = assetID;
       [(BKBookViewController *)self _promptToLoadExternalContent:v6];
     }
   }
@@ -1956,10 +1956,10 @@ LABEL_6:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(BKBookViewController *)self book];
-    v5 = [v4 sortedDocuments];
+    book = [(BKBookViewController *)self book];
+    sortedDocuments = [book sortedDocuments];
 
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [sortedDocuments countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1970,11 +1970,11 @@ LABEL_6:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sortedDocuments);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) manifestProperties];
-          v11 = [v10 componentsSeparatedByString:@" "];
+          manifestProperties = [*(*(&v14 + 1) + 8 * i) manifestProperties];
+          v11 = [manifestProperties componentsSeparatedByString:@" "];
           v12 = [v11 containsObject:@"remote-resources"];
 
           if (v12)
@@ -1984,7 +1984,7 @@ LABEL_6:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [sortedDocuments countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -2009,10 +2009,10 @@ LABEL_13:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(BKBookViewController *)self contentViewControllers];
-  v3 = [v2 allValues];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2024,7 +2024,7 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -2042,26 +2042,26 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
+  themeCopy = theme;
   v15.receiver = self;
   v15.super_class = BKBookViewController;
-  v5 = [(BKBookViewController *)&v15 theme];
+  theme = [(BKBookViewController *)&v15 theme];
 
-  if (v5 != v4)
+  if (theme != themeCopy)
   {
     v14.receiver = self;
     v14.super_class = BKBookViewController;
-    [(BKBookViewController *)&v14 setTheme:v4];
-    -[BKBookViewController setSelectionHighlightType:](self, "setSelectionHighlightType:", +[BKTextHighlightView bkTextHighlightTypeForIMTextHighlightType:](BKTextHighlightView, "bkTextHighlightTypeForIMTextHighlightType:", [v4 textHighlightType]));
+    [(BKBookViewController *)&v14 setTheme:themeCopy];
+    -[BKBookViewController setSelectionHighlightType:](self, "setSelectionHighlightType:", +[BKTextHighlightView bkTextHighlightTypeForIMTextHighlightType:](BKTextHighlightView, "bkTextHighlightTypeForIMTextHighlightType:", [themeCopy textHighlightType]));
   }
 
   v6 = dispatch_time(0, (*&BKBookViewControllerThemeTransitionDuration * 0.5 * 1000000000.0));
@@ -2069,40 +2069,40 @@ LABEL_13:
   v9 = 3221225472;
   v10 = sub_4E66C;
   v11 = &unk_1E3F50;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v13 = themeCopy;
+  v7 = themeCopy;
   dispatch_after(v6, &_dispatch_main_q, &v8);
   [(BKBookViewController *)self updateUIForSmartInvert:v8];
 }
 
 - (int)pageProgressionDirection
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 bkPageProgressionDirection];
+  book = [(BKBookViewController *)self book];
+  bkPageProgressionDirection = [book bkPageProgressionDirection];
 
-  return v3;
+  return bkPageProgressionDirection;
 }
 
 - (BOOL)isPageProgressionRTL
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 isPageProgressionRTL];
+  book = [(BKBookViewController *)self book];
+  isPageProgressionRTL = [book isPageProgressionRTL];
 
-  return v3;
+  return isPageProgressionRTL;
 }
 
 - (void)clearInactiveContentViewControllers
 {
-  v3 = [(BKBookViewController *)self contentViewControllers];
-  v4 = [v3 copy];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  v4 = [contentViewControllers copy];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2113,7 +2113,7 @@ LABEL_13:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -2122,19 +2122,19 @@ LABEL_13:
         {
           [v11 setDelegate:0];
           [v11 removeFromParentViewController];
-          v14 = [(BKBookViewController *)self contentViewControllers];
-          [v14 removeObjectForKey:v10];
+          contentViewControllers2 = [(BKBookViewController *)self contentViewControllers];
+          [contentViewControllers2 removeObjectForKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)storeChangedNotification:(id)a3
+- (void)storeChangedNotification:(id)notification
 {
   if ([(BKBookViewController *)self upsellOrdinal]!= 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2145,18 +2145,18 @@ LABEL_13:
 
 - (unint64_t)upsellOrdinal
 {
-  v3 = [(BKBookViewController *)self book];
-  v4 = [v3 hasUpsellPage];
+  book = [(BKBookViewController *)self book];
+  hasUpsellPage = [book hasUpsellPage];
 
-  if (!v4)
+  if (!hasUpsellPage)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(BKBookViewController *)self book];
-  v6 = [v5 readingDocumentCount];
+  book2 = [(BKBookViewController *)self book];
+  readingDocumentCount = [book2 readingDocumentCount];
 
-  return v6;
+  return readingDocumentCount;
 }
 
 - (int64_t)upsellPageNumber
@@ -2180,11 +2180,11 @@ LABEL_13:
   {
     if (!self->_upsellContentViewController)
     {
-      v4 = [(BKBookViewController *)self book];
-      v5 = [v4 sampleContent];
-      v6 = [v5 BOOLValue];
+      book = [(BKBookViewController *)self book];
+      sampleContent = [book sampleContent];
+      bOOLValue = [sampleContent BOOLValue];
 
-      if (v6)
+      if (bOOLValue)
       {
         v7 = objc_alloc_init(BKSampleUpsellContentViewController);
         [(BKSampleUpsellContentViewController *)v7 setBuyDelegate:self];
@@ -2198,23 +2198,23 @@ LABEL_13:
       upsellContentViewController = self->_upsellContentViewController;
       self->_upsellContentViewController = v7;
 
-      v9 = [(BKBookViewController *)self book];
-      [(BKUpsell *)self->_upsellContentViewController setBook:v9];
+      book2 = [(BKBookViewController *)self book];
+      [(BKUpsell *)self->_upsellContentViewController setBook:book2];
 
       [(BKUpsell *)self->_upsellContentViewController setOrdinal:[(BKBookViewController *)self upsellOrdinal]];
       [(BKUpsell *)self->_upsellContentViewController setDelegate:self];
     }
 
-    v10 = [(BKBookViewController *)self book];
-    v11 = [v10 sampleContent];
-    v12 = [v11 BOOLValue];
+    book3 = [(BKBookViewController *)self book];
+    sampleContent2 = [book3 sampleContent];
+    bOOLValue2 = [sampleContent2 BOOLValue];
 
-    if (v12)
+    if (bOOLValue2)
     {
       objc_opt_class();
       v13 = BUDynamicCast();
-      v14 = [(BKBookViewController *)self assetViewControllerDelegate];
-      v15 = [v14 assetViewControllerProductProfile:self];
+      assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+      v15 = [assetViewControllerDelegate assetViewControllerProductProfile:self];
       [v13 setProfileFuture:v15];
     }
 
@@ -2224,7 +2224,7 @@ LABEL_13:
   return v3;
 }
 
-- (void)resume:(id)a3
+- (void)resume:(id)resume
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -2237,16 +2237,16 @@ LABEL_13:
 - (void)_resume
 {
   [(BKBookViewController *)self setSection:0 animated:1 adjustScrollToReveal:0];
-  v3 = [(BKBookViewController *)self resumeLocation];
+  resumeLocation = [(BKBookViewController *)self resumeLocation];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4ECD4;
   v4[3] = &unk_1E2BD0;
   v4[4] = self;
-  [(BKBookViewController *)self jumpToLocation:v3 animated:1 completion:v4];
+  [(BKBookViewController *)self jumpToLocation:resumeLocation animated:1 completion:v4];
 }
 
-- (void)showTOC:(id)a3
+- (void)showTOC:(id)c
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -2256,12 +2256,12 @@ LABEL_13:
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v3];
 }
 
-- (void)toggleShowPageControls:(id)a3
+- (void)toggleShowPageControls:(id)controls
 {
-  v4 = [(BKBookViewController *)self expandedContentViewController];
-  v5 = [v4 isVisible];
+  expandedContentViewController = [(BKBookViewController *)self expandedContentViewController];
+  isVisible = [expandedContentViewController isVisible];
 
-  if ((v5 & 1) == 0)
+  if ((isVisible & 1) == 0)
   {
     v6 = [(BKBookViewController *)self controlsVisible]^ 1;
 
@@ -2269,47 +2269,47 @@ LABEL_13:
   }
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4 animations:(id)a5 completion:(id)a6
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated animations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(BKBookViewController *)self view];
-  v12 = [v11 window];
+  animatedCopy = animated;
+  animationsCopy = animations;
+  completionCopy = completion;
+  view = [(BKBookViewController *)self view];
+  window = [view window];
 
-  if (v7)
+  if (animatedCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_4F0DC;
     v15[3] = &unk_1E3F78;
-    v17 = v12 != 0;
+    v17 = window != 0;
     v15[4] = self;
-    v16 = v9;
+    v16 = animationsCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_4F144;
     v13[3] = &unk_1E3FA0;
-    v14 = v10;
+    v14 = completionCopy;
     [UIView animateWithDuration:4 delay:v15 options:v13 animations:0.15 completion:0.0];
   }
 
   else
   {
-    if (v12)
+    if (window)
     {
       [(BKBookViewController *)self setNeedsStatusBarAppearanceUpdate];
       [(BKBookViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 
-    if (v9)
+    if (animationsCopy)
     {
-      v9[2](v9);
+      animationsCopy[2](animationsCopy);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -2327,37 +2327,37 @@ LABEL_13:
   }
 }
 
-- (void)setControlsVisible:(BOOL)a3 animated:(BOOL)a4 animations:(id)a5 completion:(id)a6
+- (void)setControlsVisible:(BOOL)visible animated:(BOOL)animated animations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
+  animatedCopy = animated;
+  visibleCopy = visible;
+  animationsCopy = animations;
+  completionCopy = completion;
   self->_controlsEnabledViaHover = 0;
   [(BKBookViewController *)self cancelPendingHidePageControls];
-  if (v8 || ![(BKBookViewController *)self bkaxNeedsPersistentControls]|| [(BKBookViewController *)self bkaxAccessibilityUserIsRequestingControlsVisibilityToggle])
+  if (visibleCopy || ![(BKBookViewController *)self bkaxNeedsPersistentControls]|| [(BKBookViewController *)self bkaxAccessibilityUserIsRequestingControlsVisibilityToggle])
   {
-    self->_controlsVisible = v8;
+    self->_controlsVisible = visibleCopy;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_4F2E4;
     v12[3] = &unk_1E2E08;
-    v13 = v10;
-    [(BKBookViewController *)self setStatusBarHidden:!v8 animated:v7 animations:v12 completion:v11];
+    v13 = animationsCopy;
+    [(BKBookViewController *)self setStatusBarHidden:!visibleCopy animated:animatedCopy animations:v12 completion:completionCopy];
     [(BKBookViewController *)self delayedSavePageControlVisibility];
     [(BKBookViewController *)self writeControlVisibilityStateToWebProcessPlugin];
   }
 }
 
-- (void)showBrightness:(id)a3
+- (void)showBrightness:(id)brightness
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_4F3D4;
   v11 = &unk_1E3F50;
-  v12 = self;
-  v13 = a3;
-  v4 = v13;
+  selfCopy = self;
+  brightnessCopy = brightness;
+  v4 = brightnessCopy;
   v5 = objc_retainBlock(&v8);
   v6 = [(BKBookViewController *)self brightnessController:v8];
   if (v6)
@@ -2373,58 +2373,58 @@ LABEL_13:
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v7];
 }
 
-- (void)showAudio:(id)a3
+- (void)showAudio:(id)audio
 {
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_4F544;
   v9 = &unk_1E3F50;
-  v10 = self;
-  v11 = a3;
-  v4 = v11;
+  selfCopy = self;
+  audioCopy = audio;
+  v4 = audioCopy;
   v5 = objc_retainBlock(&v6);
-  [(BKViewController *)self dismissCurrentPopoverWithCompletion:v5, v6, v7, v8, v9, v10];
+  [(BKViewController *)self dismissCurrentPopoverWithCompletion:v5, v6, v7, v8, v9, selfCopy];
 }
 
-- (void)buy:(id)a3
+- (void)buy:(id)buy
 {
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v4 assetViewControllerRequestToBuy:self completion:0];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate assetViewControllerRequestToBuy:self completion:0];
 }
 
-- (void)buyWithCompletion:(id)a3
+- (void)buyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
-  v7 = v5;
-  if (v5)
+  completionCopy = completion;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  v7 = assetViewControllerDelegate;
+  if (assetViewControllerDelegate)
   {
-    [v5 assetViewControllerRequestToBuy:self completion:v4];
+    [assetViewControllerDelegate assetViewControllerRequestToBuy:self completion:completionCopy];
   }
 
   else
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(completionCopy);
 
     if (v6)
     {
       (*(v6 + 2))(v6, 0, 0);
     }
 
-    v4 = v6;
+    completionCopy = v6;
   }
 }
 
-- (void)presentAppearanceViewControllerFromItem:(id)a3
+- (void)presentAppearanceViewControllerFromItem:(id)item
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4F7F0;
   v4[3] = &unk_1E3F50;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BKViewController *)v5 dismissCurrentPopoverWithCompletion:v4];
+  selfCopy = self;
+  itemCopy = item;
+  v3 = itemCopy;
+  [(BKViewController *)selfCopy dismissCurrentPopoverWithCompletion:v4];
 }
 
 - (id)appearanceMenuItems
@@ -2443,19 +2443,19 @@ LABEL_13:
     appearanceViewController = self->_appearanceViewController;
     self->_appearanceViewController = v3;
 
-    v5 = [(BKBookViewController *)self appearanceMenuItems];
-    [(BKAppearanceViewController *)self->_appearanceViewController setMenuItems:v5];
+    appearanceMenuItems = [(BKBookViewController *)self appearanceMenuItems];
+    [(BKAppearanceViewController *)self->_appearanceViewController setMenuItems:appearanceMenuItems];
 
     v6 = [[UINavigationController alloc] initWithRootViewController:self->_appearanceViewController];
     appearanceNavigationController = self->_appearanceNavigationController;
     self->_appearanceNavigationController = v6;
 
     [(UINavigationController *)self->_appearanceNavigationController setNavigationBarHidden:1];
-    v8 = [(BKBookViewController *)self theme];
-    [(BKAppearanceViewController *)self->_appearanceViewController setTheme:v8];
+    theme = [(BKBookViewController *)self theme];
+    [(BKAppearanceViewController *)self->_appearanceViewController setTheme:theme];
 
-    v9 = [(BKBookViewController *)self book];
-    [(BKAppearanceViewController *)self->_appearanceViewController setBook:v9];
+    book = [(BKBookViewController *)self book];
+    [(BKAppearanceViewController *)self->_appearanceViewController setBook:book];
 
     [(BKAppearanceViewController *)self->_appearanceViewController setDelegate:self];
     [(BKAppearanceViewController *)self->_appearanceViewController setLayout:[(BKBookViewController *)self layout]];
@@ -2464,22 +2464,22 @@ LABEL_13:
     appearanceContainerViewController = self->_appearanceContainerViewController;
     self->_appearanceContainerViewController = v10;
 
-    v12 = [(BKBookViewController *)self theme];
-    [(IMViewController *)self->_appearanceContainerViewController setTheme:v12];
+    theme2 = [(BKBookViewController *)self theme];
+    [(IMViewController *)self->_appearanceContainerViewController setTheme:theme2];
 
     [(IMViewController *)self->_appearanceContainerViewController addChildViewController:self->_appearanceNavigationController];
-    v13 = [(IMViewController *)self->_appearanceContainerViewController view];
-    [v13 bounds];
+    view = [(IMViewController *)self->_appearanceContainerViewController view];
+    [view bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UINavigationController *)self->_appearanceNavigationController view];
-    [v22 setFrame:{v15, v17, v19, v21}];
+    view2 = [(UINavigationController *)self->_appearanceNavigationController view];
+    [view2 setFrame:{v15, v17, v19, v21}];
 
-    v23 = [(IMViewController *)self->_appearanceContainerViewController view];
-    v24 = [(UINavigationController *)self->_appearanceNavigationController view];
-    [v23 addSubview:v24];
+    view3 = [(IMViewController *)self->_appearanceContainerViewController view];
+    view4 = [(UINavigationController *)self->_appearanceNavigationController view];
+    [view3 addSubview:view4];
 
     [(BKAppearanceViewController *)self->_appearanceViewController preferredContentSize];
     [(IMViewController *)self->_appearanceContainerViewController setPreferredContentSize:?];
@@ -2502,129 +2502,129 @@ LABEL_13:
   appearanceContainerViewController = self->_appearanceContainerViewController;
   self->_appearanceContainerViewController = 0;
 
-  v6 = [(BKBookViewController *)self paginationController];
-  [v6 resume];
+  paginationController = [(BKBookViewController *)self paginationController];
+  [paginationController resume];
 }
 
-- (void)appearanceViewController:(id)a3 didChangeLayout:(unint64_t)a4
+- (void)appearanceViewController:(id)controller didChangeLayout:(unint64_t)layout
 {
-  v6 = a3;
-  v7 = [(BKBookViewController *)self book];
-  v8 = [(BKBookViewController *)self validLayoutForBook:v7 desiredLayout:a4];
+  controllerCopy = controller;
+  book = [(BKBookViewController *)self book];
+  v8 = [(BKBookViewController *)self validLayoutForBook:book desiredLayout:layout];
 
   v9 = +[BAEventReporter sharedReporter];
-  v10 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  v11 = [(BKBookViewController *)self readingSessionData];
-  v12 = [(BKBookViewController *)self contentData];
-  v13 = [v6 style];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(BKBookViewController *)self readingSessionData];
+  contentData = [(BKBookViewController *)self contentData];
+  style = [controllerCopy style];
 
-  [v13 fontSize];
-  [v9 emitReadingScrollViewSettingChangeEventWithTracker:v10 readingSessionData:v11 contentData:v12 fontSize:v8 != 1 isOn:?];
+  [style fontSize];
+  [v9 emitReadingScrollViewSettingChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData fontSize:v8 != 1 isOn:?];
 
   [(BKBookViewController *)self setLayout:v8];
 }
 
-- (void)appearanceViewController:(id)a3 didChangeFont:(id)a4
+- (void)appearanceViewController:(id)controller didChangeFont:(id)font
 {
-  v5 = a4;
+  fontCopy = font;
   v9 = +[BAEventReporter sharedReporter];
-  v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  v7 = [(BKBookViewController *)self readingSessionData];
-  v8 = [(BKBookViewController *)self contentData];
-  [v9 emitReadingFontChangeEventWithTracker:v6 readingSessionData:v7 contentData:v8 fontName:v5];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(BKBookViewController *)self readingSessionData];
+  contentData = [(BKBookViewController *)self contentData];
+  [v9 emitReadingFontChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData fontName:fontCopy];
 }
 
-- (void)appearanceViewController:(id)a3 didChangeFontSize:(double)a4
+- (void)appearanceViewController:(id)controller didChangeFontSize:(double)size
 {
   v10 = +[BAEventReporter sharedReporter];
-  v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  v7 = [(BKBookViewController *)self readingSessionData];
-  v8 = [(BKBookViewController *)self contentData];
-  *&v9 = a4;
-  [v10 emitReadingFontSizeChangeEventWithTracker:v6 readingSessionData:v7 contentData:v8 fontSize:v9];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(BKBookViewController *)self readingSessionData];
+  contentData = [(BKBookViewController *)self contentData];
+  *&v9 = size;
+  [v10 emitReadingFontSizeChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData fontSize:v9];
 }
 
-- (void)appearanceViewController:(id)a3 didChangeAutoNightMode:(BOOL)a4 previousValue:(BOOL)a5
+- (void)appearanceViewController:(id)controller didChangeAutoNightMode:(BOOL)mode previousValue:(BOOL)value
 {
-  if (a4 != a5)
+  if (mode != value)
   {
-    v6 = a4;
+    modeCopy = mode;
     v11 = +[BAEventReporter sharedReporter];
-    v8 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-    v9 = [(BKBookViewController *)self readingSessionData];
-    v10 = [(BKBookViewController *)self contentData];
-    [v11 emitReadingAutoNightSettingChangeEventWithTracker:v8 readingSessionData:v9 contentData:v10 isOn:v6];
+    ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+    readingSessionData = [(BKBookViewController *)self readingSessionData];
+    contentData = [(BKBookViewController *)self contentData];
+    [v11 emitReadingAutoNightSettingChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData isOn:modeCopy];
   }
 }
 
-- (void)appearanceViewController:(id)a3 didChangeTheme:(unint64_t)a4
+- (void)appearanceViewController:(id)controller didChangeTheme:(unint64_t)theme
 {
   v9 = BABackgroundColorDataFromBCAppearanceStyle();
   v5 = +[BAEventReporter sharedReporter];
-  v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  v7 = [(BKBookViewController *)self readingSessionData];
-  v8 = [(BKBookViewController *)self contentData];
-  [v5 emitReadingBackgroundColorChangeEventWithTracker:v6 readingSessionData:v7 contentData:v8 backgroundColorData:v9];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  readingSessionData = [(BKBookViewController *)self readingSessionData];
+  contentData = [(BKBookViewController *)self contentData];
+  [v5 emitReadingBackgroundColorChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:readingSessionData contentData:contentData backgroundColorData:v9];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   v14.receiver = self;
   v14.super_class = BKBookViewController;
-  v7 = [(BKBookViewController *)&v14 canPerformAction:a3 withSender:v6];
-  if (!sel_isEqual(a3, "copy:"))
+  v7 = [(BKBookViewController *)&v14 canPerformAction:action withSender:senderCopy];
+  if (!sel_isEqual(action, "copy:"))
   {
-    if (sel_isEqual(a3, "books_showContent:"))
+    if (sel_isEqual(action, "books_showContent:"))
     {
       if (v7)
       {
-        v8 = [(BKBookViewController *)self canShowContent];
+        canShowContent = [(BKBookViewController *)self canShowContent];
         goto LABEL_21;
       }
     }
 
-    else if (sel_isEqual(a3, "books_pageForward:"))
+    else if (sel_isEqual(action, "books_pageForward:"))
     {
       if (v7)
       {
-        v8 = [(BKBookViewController *)self canGoToNextPage];
+        canShowContent = [(BKBookViewController *)self canGoToNextPage];
         goto LABEL_21;
       }
     }
 
-    else if (sel_isEqual(a3, "books_pageBackward:"))
+    else if (sel_isEqual(action, "books_pageBackward:"))
     {
       if (v7)
       {
-        v8 = [(BKBookViewController *)self canGoToPreviousPage];
+        canShowContent = [(BKBookViewController *)self canGoToPreviousPage];
         goto LABEL_21;
       }
     }
 
-    else if (sel_isEqual(a3, "books_chapterLeft:") || sel_isEqual(a3, "books_chapterRight:") || sel_isEqual(a3, "books_chapterForward:") || sel_isEqual(a3, "books_chapterBackward:") || sel_isEqual(a3, "books_chapterStart:") || sel_isEqual(a3, "books_chapterEnd:"))
+    else if (sel_isEqual(action, "books_chapterLeft:") || sel_isEqual(action, "books_chapterRight:") || sel_isEqual(action, "books_chapterForward:") || sel_isEqual(action, "books_chapterBackward:") || sel_isEqual(action, "books_chapterStart:") || sel_isEqual(action, "books_chapterEnd:"))
     {
       if (v7)
       {
-        v8 = [(BKBookViewController *)self canNavigateByChapter];
+        canShowContent = [(BKBookViewController *)self canNavigateByChapter];
         goto LABEL_21;
       }
     }
 
-    else if (sel_isEqual(a3, "books_toggleBookmark:"))
+    else if (sel_isEqual(action, "books_toggleBookmark:"))
     {
       if ([(BKBookViewController *)self bookCanBeBookmarked])
       {
-        v8 = [(BKBookViewController *)self shouldBookmarkButtonsBeEnabled];
+        canShowContent = [(BKBookViewController *)self shouldBookmarkButtonsBeEnabled];
         goto LABEL_21;
       }
     }
 
-    else if (sel_isEqual(a3, "books_search:"))
+    else if (sel_isEqual(action, "books_search:"))
     {
       if (v7 && [(BKBookViewController *)self canSearch])
       {
-        v10 = [(BKBookViewController *)self _searchQueryFromSender:v6];
+        v10 = [(BKBookViewController *)self _searchQueryFromSender:senderCopy];
         v9 = [v10 length] != 0;
 
         goto LABEL_36;
@@ -2633,38 +2633,38 @@ LABEL_13:
 
     else
     {
-      if (!sel_isEqual(a3, "books_find:"))
+      if (!sel_isEqual(action, "books_find:"))
       {
-        if (sel_isEqual(a3, "books_findNext:"))
+        if (sel_isEqual(action, "books_findNext:"))
         {
           if (!v7)
           {
             goto LABEL_35;
           }
 
-          v11 = [(BKBookViewController *)self nextSearchResult];
+          nextSearchResult = [(BKBookViewController *)self nextSearchResult];
         }
 
         else
         {
-          isEqual = sel_isEqual(a3, "books_findPrevious:");
+          isEqual = sel_isEqual(action, "books_findPrevious:");
           if ((isEqual & v7) != 1)
           {
             v9 = !isEqual & v7;
             goto LABEL_36;
           }
 
-          v11 = [(BKBookViewController *)self previousSearchResult];
+          nextSearchResult = [(BKBookViewController *)self previousSearchResult];
         }
 
-        v9 = v11 != 0;
+        v9 = nextSearchResult != 0;
 
         goto LABEL_36;
       }
 
       if (v7)
       {
-        v8 = [(BKBookViewController *)self canSearch];
+        canShowContent = [(BKBookViewController *)self canSearch];
         goto LABEL_21;
       }
     }
@@ -2679,38 +2679,38 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v8 = [(BKBookViewController *)self canCopy];
+  canShowContent = [(BKBookViewController *)self canCopy];
 LABEL_21:
-  v9 = v8;
+  v9 = canShowContent;
 LABEL_36:
 
   return v9;
 }
 
-- (void)books_search:(id)a3
+- (void)books_search:(id)books_search
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self _searchQueryFromSender:v4];
-  [(BKBookViewController *)self showSearchWithString:v5 sender:v4];
+  books_searchCopy = books_search;
+  v5 = [(BKBookViewController *)self _searchQueryFromSender:books_searchCopy];
+  [(BKBookViewController *)self showSearchWithString:v5 sender:books_searchCopy];
 }
 
-- (void)books_findNext:(id)a3
+- (void)books_findNext:(id)next
 {
-  v4 = [(BKBookViewController *)self nextSearchResult];
-  [(BKBookViewController *)self revealSearchResult:v4 animated:1];
+  nextSearchResult = [(BKBookViewController *)self nextSearchResult];
+  [(BKBookViewController *)self revealSearchResult:nextSearchResult animated:1];
 }
 
-- (void)books_findPrevious:(id)a3
+- (void)books_findPrevious:(id)previous
 {
-  v4 = [(BKBookViewController *)self previousSearchResult];
-  [(BKBookViewController *)self revealSearchResult:v4 animated:1];
+  previousSearchResult = [(BKBookViewController *)self previousSearchResult];
+  [(BKBookViewController *)self revealSearchResult:previousSearchResult animated:1];
 }
 
 - (void)resetKeyWindow
 {
-  v3 = [(BKBookViewController *)self view];
-  v2 = [v3 window];
-  [v2 makeKeyAndVisible];
+  view = [(BKBookViewController *)self view];
+  window = [view window];
+  [window makeKeyAndVisible];
 }
 
 - (BOOL)canShowContent
@@ -2720,17 +2720,17 @@ LABEL_36:
     return 1;
   }
 
-  v4 = [(BKViewController *)self currentOverlayViewController];
-  v3 = v4 != 0;
+  currentOverlayViewController = [(BKViewController *)self currentOverlayViewController];
+  v3 = currentOverlayViewController != 0;
 
   return v3;
 }
 
 - (BOOL)canSearch
 {
-  v3 = [(BKBookViewController *)self searchButtonItem];
-  v4 = v3;
-  v5 = (!v3 || [v3 isEnabled]) && -[BKBookViewController section](self, "section") == 0;
+  searchButtonItem = [(BKBookViewController *)self searchButtonItem];
+  v4 = searchButtonItem;
+  v5 = (!searchButtonItem || [searchButtonItem isEnabled]) && -[BKBookViewController section](self, "section") == 0;
 
   return v5;
 }
@@ -2741,9 +2741,9 @@ LABEL_36:
   v14 = 0u;
   v15 = 0u;
   v2 = [(BKBookViewController *)self contentViewControllers:0];
-  v3 = [v2 allValues];
+  allValues = [v2 allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2754,15 +2754,15 @@ LABEL_3:
     {
       if (*v13 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allValues);
       }
 
       objc_opt_class();
       v8 = BUDynamicCast();
       if ([v8 canCopyContent])
       {
-        v9 = [v8 selectedText];
-        v10 = [v9 length];
+        selectedText = [v8 selectedText];
+        v10 = [selectedText length];
 
         if (v10)
         {
@@ -2772,7 +2772,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -2794,24 +2794,24 @@ LABEL_10:
 
 - (BOOL)canCopy
 {
-  v2 = [(BKBookViewController *)self _contentControllerThatHasCopyableSelection];
-  v3 = v2 != 0;
+  _contentControllerThatHasCopyableSelection = [(BKBookViewController *)self _contentControllerThatHasCopyableSelection];
+  v3 = _contentControllerThatHasCopyableSelection != 0;
 
   return v3;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(BKBookViewController *)self _contentControllerThatHasCopyableSelection];
-  [v3 copyContent];
+  _contentControllerThatHasCopyableSelection = [(BKBookViewController *)self _contentControllerThatHasCopyableSelection];
+  [_contentControllerThatHasCopyableSelection copyContent];
 }
 
 - (id)keyCommands
 {
   v20.receiver = self;
   v20.super_class = BKBookViewController;
-  v3 = [(BKBookViewController *)&v20 keyCommands];
-  v4 = [v3 mutableCopy];
+  keyCommands = [(BKBookViewController *)&v20 keyCommands];
+  v4 = [keyCommands mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -2876,18 +2876,18 @@ LABEL_10:
   return v7;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v11.receiver = self;
   v11.super_class = BKBookViewController;
-  [(BKBookViewController *)&v11 validateCommand:v4];
-  v5 = [v4 action];
-  v6 = [(BKBookViewController *)self isPageProgressionRTL];
-  if (sel_isEqual(v5, "books_chapterLeft:"))
+  [(BKBookViewController *)&v11 validateCommand:commandCopy];
+  action = [commandCopy action];
+  isPageProgressionRTL = [(BKBookViewController *)self isPageProgressionRTL];
+  if (sel_isEqual(action, "books_chapterLeft:"))
   {
     v7 = AEBundle();
-    if (v6)
+    if (isPageProgressionRTL)
     {
 LABEL_3:
       v8 = @"Next Chapter";
@@ -2899,10 +2899,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (sel_isEqual(v5, "books_chapterRight:"))
+  if (sel_isEqual(action, "books_chapterRight:"))
   {
     v7 = AEBundle();
-    if ((v6 & 1) == 0)
+    if ((isPageProgressionRTL & 1) == 0)
     {
       goto LABEL_3;
     }
@@ -2910,14 +2910,14 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!sel_isEqual(v5, "books_toggleBookmark:"))
+  if (!sel_isEqual(action, "books_toggleBookmark:"))
   {
     goto LABEL_8;
   }
 
-  v10 = [(BKBookViewController *)self isPageBookmarked];
+  isPageBookmarked = [(BKBookViewController *)self isPageBookmarked];
   v7 = AEBundle();
-  if (v10)
+  if (isPageBookmarked)
   {
     v8 = @"Remove Bookmark";
   }
@@ -2929,107 +2929,107 @@ LABEL_6:
 
 LABEL_7:
   v9 = [v7 localizedStringForKey:v8 value:&stru_1E7188 table:0];
-  [v4 setTitle:v9];
+  [commandCopy setTitle:v9];
 
 LABEL_8:
 }
 
-- (void)books_chapterLeft:(id)a3
+- (void)books_chapterLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   if ([(BKBookViewController *)self isPageProgressionRTL])
   {
-    [(BKBookViewController *)self books_chapterForward:v4];
+    [(BKBookViewController *)self books_chapterForward:leftCopy];
   }
 
   else
   {
-    [(BKBookViewController *)self books_chapterBackward:v4];
+    [(BKBookViewController *)self books_chapterBackward:leftCopy];
   }
 }
 
-- (void)books_chapterRight:(id)a3
+- (void)books_chapterRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   if ([(BKBookViewController *)self isPageProgressionRTL])
   {
-    [(BKBookViewController *)self books_chapterBackward:v4];
+    [(BKBookViewController *)self books_chapterBackward:rightCopy];
   }
 
   else
   {
-    [(BKBookViewController *)self books_chapterForward:v4];
+    [(BKBookViewController *)self books_chapterForward:rightCopy];
   }
 }
 
 - (void)savePageControlVisibility
 {
-  v3 = [(BKBookViewController *)self view];
-  v4 = [v3 window];
+  view = [(BKBookViewController *)self view];
+  window = [view window];
 
-  if (v4 && [(BKBookViewController *)self shouldSavePageControlVisibility])
+  if (window && [(BKBookViewController *)self shouldSavePageControlVisibility])
   {
     v6 = +[NSUserDefaults standardUserDefaults];
-    v5 = [(BKBookViewController *)self controlsVisible];
-    [v6 setBool:v5 ^ 1 forKey:BKBookHidePageControls[0]];
+    controlsVisible = [(BKBookViewController *)self controlsVisible];
+    [v6 setBool:controlsVisible ^ 1 forKey:BKBookHidePageControls[0]];
   }
 }
 
 - (void)cancelPendingSavePageControlVisibility
 {
-  v2 = [(BKBookViewController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v2 selector:"savePageControlVisibility" object:0];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"savePageControlVisibility" object:0];
 }
 
 - (void)delayedSavePageControlVisibility
 {
   [(BKBookViewController *)self cancelPendingSavePageControlVisibility];
-  v3 = [(BKBookViewController *)self performSelectorProxy];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
   [(BKBookViewController *)self savePageControlVisibilityDelay];
-  [v3 performSelector:"savePageControlVisibility" withObject:0 afterDelay:?];
+  [performSelectorProxy performSelector:"savePageControlVisibility" withObject:0 afterDelay:?];
 }
 
 - (void)clearSearchResult
 {
   [(BKBookViewController *)self setSearchResult:0];
-  v4 = [(BKBookViewController *)self contentViewControllers];
-  v3 = [v4 allValues];
-  [v3 makeObjectsPerformSelector:"clearSearchLocation" withObject:0];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"clearSearchLocation" withObject:0];
 }
 
 - (void)clearSelection
 {
   [(BKBookViewController *)self setSearchResult:0];
-  v4 = [(BKBookViewController *)self contentViewControllers];
-  v3 = [v4 allValues];
-  [v3 makeObjectsPerformSelector:"clearSelection" withObject:0];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"clearSelection" withObject:0];
 }
 
 - (void)clearSelectedAnnotation
 {
-  v3 = [(BKBookViewController *)self contentViewControllers];
-  v2 = [v3 allValues];
-  [v2 makeObjectsPerformSelector:"clearSelectedAnnotation"];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"clearSelectedAnnotation"];
 }
 
 - (void)clearCurrentHighlighting
 {
-  v3 = [(BKBookViewController *)self contentViewControllers];
-  v2 = [v3 allValues];
-  [v2 makeObjectsPerformSelector:"clearCurrentHighlighting"];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
+  [allValues makeObjectsPerformSelector:"clearCurrentHighlighting"];
 }
 
 - (void)forceReload
 {
-  v3 = [(BKBookViewController *)self currentLocation];
+  currentLocation = [(BKBookViewController *)self currentLocation];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BKBookViewController *)self contentViewControllers];
-  v5 = [v4 allValues];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3041,7 +3041,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -3059,7 +3059,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -3068,7 +3068,7 @@ LABEL_8:
   [(BKPaginationController *)self->_paginationController releasePaginationInfo];
   [(BKBookViewController *)self setPageCountIncludingUpsell:0x7FFFFFFFFFFFFFFFLL];
   [(BKBookViewController *)self paginationUpdateRequired];
-  [(BKBookViewController *)self jumpToLocation:v3 animated:0 completion:0];
+  [(BKBookViewController *)self jumpToLocation:currentLocation animated:0 completion:0];
 }
 
 - (void)forceRepagination
@@ -3081,37 +3081,37 @@ LABEL_8:
 
 - (void)paginationUpdateRequired
 {
-  v3 = [(BKBookViewController *)self navigationHistory];
-  v4 = [(BKBookViewController *)self paginationController];
-  [v4 setNavigationHistory:v3];
+  navigationHistory = [(BKBookViewController *)self navigationHistory];
+  paginationController = [(BKBookViewController *)self paginationController];
+  [paginationController setNavigationHistory:navigationHistory];
 
-  v5 = [(BKBookViewController *)self paginationController];
-  [v5 repaginateWithStyle:0 geometry:0];
+  paginationController2 = [(BKBookViewController *)self paginationController];
+  [paginationController2 repaginateWithStyle:0 geometry:0];
 }
 
-- (id)titleForChapterAtPageNumber:(int64_t)a3
+- (id)titleForChapterAtPageNumber:(int64_t)number
 {
   v3 = 0;
-  if (a3 && a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (number && number != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(BKBookViewController *)self paginationController];
-    v7 = [v6 pageTotal];
+    paginationController = [(BKBookViewController *)self paginationController];
+    pageTotal = [paginationController pageTotal];
 
-    if (v7 >= a3)
+    if (pageTotal >= number)
     {
-      v12 = [(BKBookViewController *)self paginationController];
-      v14 = [v12 titleForChapterAtPageNumber:a3];
+      paginationController2 = [(BKBookViewController *)self paginationController];
+      v14 = [paginationController2 titleForChapterAtPageNumber:number];
     }
 
     else
     {
-      v8 = [(BKBookViewController *)self book];
-      v9 = [v8 sampleContent];
-      v10 = [v9 BOOLValue];
+      book = [(BKBookViewController *)self book];
+      sampleContent = [book sampleContent];
+      bOOLValue = [sampleContent BOOLValue];
 
       v11 = AEBundle();
-      v12 = v11;
-      if (v10)
+      paginationController2 = v11;
+      if (bOOLValue)
       {
         v13 = @"Buy Book";
       }
@@ -3130,15 +3130,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 object];
+  saveCopy = save;
+  object = [saveCopy object];
   v6 = self->_bookMoc;
   v7 = v6;
   if (v6)
   {
-    v8 = v6 == v5;
+    v8 = v6 == object;
   }
 
   else
@@ -3148,17 +3148,17 @@ LABEL_8:
 
   if (!v8)
   {
-    v9 = [(NSManagedObjectContext *)v6 persistentStoreCoordinator];
-    v10 = [(NSManagedObjectContext *)v5 persistentStoreCoordinator];
+    persistentStoreCoordinator = [(NSManagedObjectContext *)v6 persistentStoreCoordinator];
+    persistentStoreCoordinator2 = [(NSManagedObjectContext *)object persistentStoreCoordinator];
 
-    if (v9 == v10)
+    if (persistentStoreCoordinator == persistentStoreCoordinator2)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_51544;
       v14[3] = &unk_1E3F50;
       v15 = v7;
-      v16 = v4;
+      v16 = saveCopy;
       v11 = objc_retainBlock(v14);
       if (v11)
       {
@@ -3181,25 +3181,25 @@ LABEL_8:
   }
 }
 
-- (id)_searchResultOffsetByDistance:(int64_t)a3
+- (id)_searchResultOffsetByDistance:(int64_t)distance
 {
-  v5 = [(BKBookViewController *)self searchResult];
-  v6 = [(BKBookViewController *)self searchViewControllerIfLoaded];
-  v7 = [v6 searchController];
-  v8 = [v7 results];
+  searchResult = [(BKBookViewController *)self searchResult];
+  searchViewControllerIfLoaded = [(BKBookViewController *)self searchViewControllerIfLoaded];
+  searchController = [searchViewControllerIfLoaded searchController];
+  results = [searchController results];
 
   v9 = 0;
-  if (v5 && v8)
+  if (searchResult && results)
   {
-    v10 = [v8 indexOfObject:v5];
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10 + a3, v11 < 0) || v11 >= [v8 count])
+    v10 = [results indexOfObject:searchResult];
+    if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10 + distance, v11 < 0) || v11 >= [results count])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [v8 objectAtIndexedSubscript:v11];
+      v9 = [results objectAtIndexedSubscript:v11];
     }
   }
 
@@ -3217,23 +3217,23 @@ LABEL_8:
   return result;
 }
 
-- (id)documentForLocation:(id)a3
+- (id)documentForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BKBookViewController *)self book];
-    v7 = [v5 path];
+    v5 = locationCopy;
+    book = [(BKBookViewController *)self book];
+    path = [v5 path];
 
-    v8 = [v6 documentAtPath:v7];
+    v8 = [book documentAtPath:path];
   }
 
   else
   {
-    v6 = [(BKBookViewController *)self book];
-    v8 = [v6 documentWithOrdinal:{objc_msgSend(v4, "ordinal")}];
+    book = [(BKBookViewController *)self book];
+    v8 = [book documentWithOrdinal:{objc_msgSend(locationCopy, "ordinal")}];
   }
 
   return v8;
@@ -3248,16 +3248,16 @@ LABEL_8:
   return result;
 }
 
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
-  [(BKBookViewController *)self dismissCurrentPopover:a3];
+  [(BKBookViewController *)self dismissCurrentPopover:number];
 
   [(BKBookViewController *)self didChangeLocationClosing:0 suspending:0];
 }
 
-- (void)jumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)jumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -3266,63 +3266,63 @@ LABEL_8:
   }
 }
 
-- (void)recordedJumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)recordedJumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v28 = v9;
-  if (v8)
+  animatedCopy = animated;
+  locationCopy = location;
+  completionCopy = completion;
+  v28 = completionCopy;
+  if (locationCopy)
   {
-    v10 = [(BKBookViewController *)self documentForLocation:v8];
+    v10 = [(BKBookViewController *)self documentForLocation:locationCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 documentOrdinal];
-      if ([v12 integerValue] == -1)
+      documentOrdinal = [v10 documentOrdinal];
+      if ([documentOrdinal integerValue] == -1)
       {
 LABEL_6:
 
 LABEL_7:
-        v14 = [(BKBookViewController *)self book];
-        v15 = [v14 urlForDocument:v11];
+        book = [(BKBookViewController *)self book];
+        v15 = [book urlForDocument:v11];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = v8;
-          v17 = [v16 anchor];
+          v16 = locationCopy;
+          anchor = [v16 anchor];
 
-          if (v17)
+          if (anchor)
           {
-            v18 = [v16 anchor];
-            v19 = [v15 URLByAppendingPathComponent:v18];
+            anchor2 = [v16 anchor];
+            v19 = [v15 URLByAppendingPathComponent:anchor2];
 
             v15 = v19;
           }
         }
 
         v20 = [BKExpandedContentResource resourceForURL:v15];
-        v21 = [(BKBookViewController *)self book];
-        v22 = [v21 cacheItem];
-        [v20 setCacheItem:v22];
+        book2 = [(BKBookViewController *)self book];
+        cacheItem = [book2 cacheItem];
+        [v20 setCacheItem:cacheItem];
 
-        [(BKBookViewController *)self showExpandedContentForResource:v20 atLocation:v8 completion:v28];
+        [(BKBookViewController *)self showExpandedContentForResource:v20 atLocation:locationCopy completion:v28];
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      v13 = [v11 nonlinearElement];
-      if ([v13 BOOLValue])
+      nonlinearElement = [v11 nonlinearElement];
+      if ([nonlinearElement BOOLValue])
       {
 
         goto LABEL_6;
       }
 
-      v24 = [v11 documentOrdinal];
+      documentOrdinal2 = [v11 documentOrdinal];
 
-      if (!v24)
+      if (!documentOrdinal2)
       {
         goto LABEL_7;
       }
@@ -3330,8 +3330,8 @@ LABEL_19:
 
     if (self->_isReading)
     {
-      v25 = [(BKBookViewController *)self currentLocation];
-      v26 = [v8 isEqual:v25];
+      currentLocation = [(BKBookViewController *)self currentLocation];
+      v26 = [locationCopy isEqual:currentLocation];
 
       if (v26)
       {
@@ -3339,16 +3339,16 @@ LABEL_19:
       }
     }
 
-    v27 = [(BKBookViewController *)self _normalizedLocation:v8];
+    v27 = [(BKBookViewController *)self _normalizedLocation:locationCopy];
 
     [(BKBookViewController *)self recordJumpFromCurrentLocation];
-    [(BKBookViewController *)self jumpToLocation:v27 animated:v6 completion:v28];
-    v8 = v27;
+    [(BKBookViewController *)self jumpToLocation:v27 animated:animatedCopy completion:v28];
+    locationCopy = v27;
     goto LABEL_19;
   }
 
-  v23 = objc_retainBlock(v9);
-  v8 = v23;
+  v23 = objc_retainBlock(completionCopy);
+  locationCopy = v23;
   if (v23)
   {
     (*(v23 + 2))(v23);
@@ -3357,47 +3357,47 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)locationForPath:(id)a3 fragment:(id)a4
+- (id)locationForPath:(id)path fragment:(id)fragment
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && [BKNavigationInfo isExcludedFromSampleHash:v7])
+  pathCopy = path;
+  fragmentCopy = fragment;
+  if (fragmentCopy && [BKNavigationInfo isExcludedFromSampleHash:fragmentCopy])
   {
     v8 = [[BKLocation alloc] initWithOrdinal:[(BKBookViewController *)self upsellOrdinal]];
   }
 
   else
   {
-    v9 = [(BKBookViewController *)self book];
-    v10 = [v9 documentsWithPath:v6 sortBy:@"documentOrdinal" limit:0];
-    v11 = [v10 lastObject];
+    book = [(BKBookViewController *)self book];
+    v10 = [book documentsWithPath:pathCopy sortBy:@"documentOrdinal" limit:0];
+    lastObject = [v10 lastObject];
 
-    v12 = [v11 documentOrdinal];
-    v13 = [v12 integerValue];
+    documentOrdinal = [lastObject documentOrdinal];
+    integerValue = [documentOrdinal integerValue];
 
-    v8 = [[BKAnchorLocation alloc] initWithOrdinal:v13 andAnchor:v7];
+    v8 = [[BKAnchorLocation alloc] initWithOrdinal:integerValue andAnchor:fragmentCopy];
   }
 
   return v8;
 }
 
-- (id)_normalizedLocation:(id)a3
+- (id)_normalizedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_opt_class();
   v5 = BUDynamicCast();
-  v6 = v4;
+  v6 = locationCopy;
   if (v5)
   {
     v7 = _AECaptureLocationLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v39 = v4;
+      v39 = locationCopy;
     }
 
-    v8 = [v5 path];
-    v9 = [v8 length];
+    path = [v5 path];
+    v9 = [path length];
 
     if (v9)
     {
@@ -3408,48 +3408,48 @@ LABEL_20:
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Had path - using locationForPath:fragment:", buf, 2u);
       }
 
-      v11 = [v5 path];
-      v12 = [v5 anchor];
-      v6 = [(BKBookViewController *)self locationForPath:v11 fragment:v12];
-      v13 = v4;
+      path2 = [v5 path];
+      anchor = [v5 anchor];
+      v6 = [(BKBookViewController *)self locationForPath:path2 fragment:anchor];
+      v13 = locationCopy;
       goto LABEL_26;
     }
 
-    v11 = [v5 anchor];
+    path2 = [v5 anchor];
     v14 = _AECaptureLocationLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v39 = v11;
+      v39 = path2;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "We had no path - Attempting to parse the anchor: %{public}@", buf, 0xCu);
     }
 
     v37 = 0;
     v13 = [NSRegularExpression regularExpressionWithPattern:@"(\\d+)" options:1 error:&v37];
-    v12 = v37;
-    if (v12 || !v11)
+    anchor = v37;
+    if (anchor || !path2)
     {
       v25 = _AECaptureLocationLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v39 = v11;
+        v39 = path2;
         v40 = 2114;
-        v41 = v12;
+        v41 = anchor;
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "Failed to create regular expression to get page number from %{public}@ - %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v15 = [v13 firstMatchInString:v11 options:2 range:{0, objc_msgSend(v11, "length")}];
-      v16 = [v15 range];
-      v18 = [v11 substringWithRange:{v16, v17}];
-      v19 = [v18 integerValue];
+      v15 = [v13 firstMatchInString:path2 options:2 range:{0, objc_msgSend(path2, "length")}];
+      range = [v15 range];
+      v18 = [path2 substringWithRange:{range, v17}];
+      integerValue = [v18 integerValue];
       v20 = _AECaptureLocationLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        [NSNumber numberWithInteger:v19];
+        [NSNumber numberWithInteger:integerValue];
         v21 = v35 = self;
         *buf = 138543618;
         v39 = v18;
@@ -3460,14 +3460,14 @@ LABEL_20:
         self = v35;
       }
 
-      if (v19 != 0x7FFFFFFFFFFFFFFFLL)
+      if (integerValue != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v11 containsString:@"page("]
+        if ([path2 containsString:@"page("]
         {
           v22 = _AECaptureLocationLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            [NSNumber numberWithInteger:v19];
+            [NSNumber numberWithInteger:integerValue];
             v24 = v23 = self;
             *buf = 138543362;
             v39 = v24;
@@ -3479,16 +3479,16 @@ LABEL_20:
           goto LABEL_25;
         }
 
-        if ([v11 containsString:@"chapter("]
+        if ([path2 containsString:@"chapter("]
         {
-          v36 = self;
-          v31 = [(BKBookViewController *)self paginationController];
-          v32 = [v31 pageRangeForChapterAtIndex:v19 - 1];
+          selfCopy = self;
+          paginationController = [(BKBookViewController *)self paginationController];
+          v32 = [paginationController pageRangeForChapterAtIndex:integerValue - 1];
 
           v22 = _AECaptureLocationLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [NSNumber numberWithInteger:v19];
+            v33 = [NSNumber numberWithInteger:integerValue];
             v34 = [NSNumber numberWithUnsignedInteger:v32];
             *buf = 138543618;
             v39 = v33;
@@ -3497,8 +3497,8 @@ LABEL_20:
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Parsing chapter - Captured chapterNumber: %{public}@ and got startPage: %{public}@", buf, 0x16u);
           }
 
-          v19 = v32;
-          self = v36;
+          integerValue = v32;
+          self = selfCopy;
           goto LABEL_25;
         }
 
@@ -3506,7 +3506,7 @@ LABEL_20:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v39 = v11;
+          v39 = path2;
           v27 = v22;
           v28 = 12;
           goto LABEL_23;
@@ -3522,7 +3522,7 @@ LABEL_20:
       *buf = 138543618;
       v39 = v13;
       v40 = 2114;
-      v41 = v11;
+      v41 = path2;
       v27 = v22;
       v28 = 22;
 LABEL_23:
@@ -3530,11 +3530,11 @@ LABEL_23:
     }
 
 LABEL_24:
-    v19 = 0;
+    integerValue = 0;
 LABEL_25:
 
-    v29 = [(BKBookViewController *)self paginationController];
-    v6 = [v29 pageLocationForPageNumber:v19];
+    paginationController2 = [(BKBookViewController *)self paginationController];
+    v6 = [paginationController2 pageLocationForPageNumber:integerValue];
 
 LABEL_26:
   }
@@ -3542,89 +3542,89 @@ LABEL_26:
   return v6;
 }
 
-- (void)goToPath:(id)a3 fragment:(id)a4 animated:(BOOL)a5
+- (void)goToPath:(id)path fragment:(id)fragment animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = [(BKBookViewController *)self locationForPath:a3 fragment:a4];
-  [(BKBookViewController *)self recordedJumpToLocation:v7 animated:v5 completion:0];
+  animatedCopy = animated;
+  v7 = [(BKBookViewController *)self locationForPath:path fragment:fragment];
+  [(BKBookViewController *)self recordedJumpToLocation:v7 animated:animatedCopy completion:0];
 }
 
-- (void)jumpBackAnimated:(BOOL)a3
+- (void)jumpBackAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self navigationHistory];
-  v6 = [v5 isAtTopOfStack];
+  animatedCopy = animated;
+  navigationHistory = [(BKBookViewController *)self navigationHistory];
+  isAtTopOfStack = [navigationHistory isAtTopOfStack];
 
-  if (v6)
+  if (isAtTopOfStack)
   {
     [(BKBookViewController *)self recordJumpFromCurrentLocation];
   }
 
-  v7 = [(BKBookViewController *)self navigationHistory];
-  [v7 rewind];
+  navigationHistory2 = [(BKBookViewController *)self navigationHistory];
+  [navigationHistory2 rewind];
 
-  v8 = [(BKBookViewController *)self navigationHistory];
-  v10 = [v8 currentEntity];
+  navigationHistory3 = [(BKBookViewController *)self navigationHistory];
+  currentEntity = [navigationHistory3 currentEntity];
 
-  v9 = [v10 location];
-  [(BKBookViewController *)self jumpToLocation:v9 animated:v3 completion:0];
+  location = [currentEntity location];
+  [(BKBookViewController *)self jumpToLocation:location animated:animatedCopy completion:0];
 }
 
-- (void)jumpAheadAnimated:(BOOL)a3
+- (void)jumpAheadAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self navigationHistory];
-  v12 = [v5 nextEntity];
+  animatedCopy = animated;
+  navigationHistory = [(BKBookViewController *)self navigationHistory];
+  nextEntity = [navigationHistory nextEntity];
 
-  v6 = v12;
-  if (v12)
+  v6 = nextEntity;
+  if (nextEntity)
   {
-    v7 = [(BKBookViewController *)self navigationHistory];
-    [v7 skip];
+    navigationHistory2 = [(BKBookViewController *)self navigationHistory];
+    [navigationHistory2 skip];
 
-    v8 = [(BKBookViewController *)self navigationHistory];
-    v9 = [v8 isAtTopOfStack];
+    navigationHistory3 = [(BKBookViewController *)self navigationHistory];
+    isAtTopOfStack = [navigationHistory3 isAtTopOfStack];
 
-    if (v9)
+    if (isAtTopOfStack)
     {
-      v10 = [(BKBookViewController *)self navigationHistory];
-      [v10 truncateHistory];
+      navigationHistory4 = [(BKBookViewController *)self navigationHistory];
+      [navigationHistory4 truncateHistory];
     }
 
-    v11 = [v12 location];
-    [(BKBookViewController *)self jumpToLocation:v11 animated:v3 completion:0];
+    location = [nextEntity location];
+    [(BKBookViewController *)self jumpToLocation:location animated:animatedCopy completion:0];
 
-    v6 = v12;
+    v6 = nextEntity;
   }
 }
 
-- (BOOL)_currentChapterInfo:(id *)a3 uniqueID:(id *)a4
+- (BOOL)_currentChapterInfo:(id *)info uniqueID:(id *)d
 {
-  v7 = [(BKBookViewController *)self currentPages];
-  v9 = [(BKBookViewController *)self pageNumberFromRange:v7, v8];
+  currentPages = [(BKBookViewController *)self currentPages];
+  v9 = [(BKBookViewController *)self pageNumberFromRange:currentPages, v8];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v10 = v9;
-  v11 = [(BKBookViewController *)self paginationController];
-  v12 = [v11 numberOfChapters];
+  paginationController = [(BKBookViewController *)self paginationController];
+  numberOfChapters = [paginationController numberOfChapters];
 
-  v13 = [(BKBookViewController *)self paginationController];
-  v14 = v13;
-  if (!v12)
+  paginationController2 = [(BKBookViewController *)self paginationController];
+  v14 = paginationController2;
+  if (!numberOfChapters)
   {
-    v18 = [v13 pageTotal];
+    pageTotal = [paginationController2 pageTotal];
 
-    if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+    if (pageTotal != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [(BKBookViewController *)self paginationController];
-      *a4 = [v20 hrefForPageNumber:v10];
+      paginationController3 = [(BKBookViewController *)self paginationController];
+      *d = [paginationController3 hrefForPageNumber:v10];
 
-      v17 = [(BKBookViewController *)self paginationController];
-      v21 = [v17 physicalPageTitlesForPageNumber:v10];
-      *a3 = [v21 firstObject];
+      paginationController4 = [(BKBookViewController *)self paginationController];
+      v21 = [paginationController4 physicalPageTitlesForPageNumber:v10];
+      *info = [v21 firstObject];
 
       goto LABEL_8;
     }
@@ -3632,18 +3632,18 @@ LABEL_26:
     return 0;
   }
 
-  v15 = [v13 chapterIndexForPageNumber:v10];
+  v15 = [paginationController2 chapterIndexForPageNumber:v10];
 
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v16 = [(BKBookViewController *)self paginationController];
-  *a4 = [v16 hrefForChapterAtPageNumber:v10];
+  paginationController5 = [(BKBookViewController *)self paginationController];
+  *d = [paginationController5 hrefForChapterAtPageNumber:v10];
 
-  v17 = [(BKBookViewController *)self paginationController];
-  *a3 = [v17 titleForChapterAtPageNumber:v10];
+  paginationController4 = [(BKBookViewController *)self paginationController];
+  *info = [paginationController4 titleForChapterAtPageNumber:v10];
 LABEL_8:
 
   return 1;
@@ -3659,40 +3659,40 @@ LABEL_8:
   if (v3)
   {
     v6 = +[BCProgressKitController sharedController];
-    v7 = [(BKBookViewController *)self book];
-    v8 = [v7 assetID];
-    [v6 activateChapterForBook:v8 chapterID:v5 title:v4 completion:0];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
+    [v6 activateChapterForBook:assetID chapterID:v5 title:v4 completion:0];
   }
 
   v9 = +[BCProgressKitController sharedController];
-  v10 = [(BKBookViewController *)self book];
-  v11 = [v10 assetID];
-  [v9 updateBookProgress:v11 completion:0];
+  book2 = [(BKBookViewController *)self book];
+  assetID2 = [book2 assetID];
+  [v9 updateBookProgress:assetID2 completion:0];
 }
 
 - (void)writeAnnotationsToWebProcessPlugin
 {
-  v3 = [(BKBookViewController *)self visiblePageBookmarks];
-  v4 = [(BKBookViewController *)self visiblePageHighlights];
-  v27 = [AEAnnotation dictionaryRepresentationsForAnnotations:v4];
+  visiblePageBookmarks = [(BKBookViewController *)self visiblePageBookmarks];
+  visiblePageHighlights = [(BKBookViewController *)self visiblePageHighlights];
+  v27 = [AEAnnotation dictionaryRepresentationsForAnnotations:visiblePageHighlights];
   v5 = +[NSMutableArray array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [(BKBookViewController *)self contentViewControllers];
-  v7 = [v6 allValues];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
-    v23 = v4;
-    v24 = v3;
+    v23 = visiblePageHighlights;
+    v24 = visiblePageBookmarks;
     v10 = 0;
     v11 = *v34;
     v12 = &OBJC_IVAR___BKThumbnailBookViewController__tipContextName;
-    v25 = v7;
+    v25 = allValues;
     v26 = *v34;
     do
     {
@@ -3702,7 +3702,7 @@ LABEL_8:
       {
         if (*v34 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         objc_opt_class();
@@ -3745,7 +3745,7 @@ LABEL_8:
           }
 
           v10 = v16;
-          v7 = v25;
+          allValues = v25;
           v11 = v26;
           v12 = v15;
           v9 = v28;
@@ -3755,22 +3755,22 @@ LABEL_8:
       }
 
       while (v13 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v9);
 
     if (!v10)
     {
-      v4 = v23;
-      v3 = v24;
+      visiblePageHighlights = v23;
+      visiblePageBookmarks = v24;
       goto LABEL_24;
     }
 
-    v3 = v24;
-    v7 = [AEAnnotation dictionaryRepresentationsForAnnotations:v24];
-    [v10 writeAnnotationsToWebProcessPlugin:v7 andHighlights:v5];
-    v4 = v23;
+    visiblePageBookmarks = v24;
+    allValues = [AEAnnotation dictionaryRepresentationsForAnnotations:v24];
+    [v10 writeAnnotationsToWebProcessPlugin:allValues andHighlights:v5];
+    visiblePageHighlights = v23;
   }
 
   else
@@ -3787,9 +3787,9 @@ LABEL_24:
   v12 = 0u;
   v13 = 0u;
   v3 = [(BKBookViewController *)self contentViewControllers:0];
-  v4 = [v3 allValues];
+  allValues = [v3 allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3800,7 +3800,7 @@ LABEL_24:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         objc_opt_class();
@@ -3814,7 +3814,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -3827,59 +3827,59 @@ LABEL_24:
 LABEL_11:
 }
 
-- (void)didChangeLocationClosing:(BOOL)a3 suspending:(BOOL)a4
+- (void)didChangeLocationClosing:(BOOL)closing suspending:(BOOL)suspending
 {
-  if (!a3)
+  if (!closing)
   {
     [(BKBookViewController *)self setUserNavigated:1];
   }
 
-  v6 = [(BKBookViewController *)self book];
-  v7 = [v6 sampleContent];
-  v8 = [v7 BOOLValue];
+  book = [(BKBookViewController *)self book];
+  sampleContent = [book sampleContent];
+  bOOLValue = [sampleContent BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v9 = [(BKBookViewController *)self readingLocationHighwaterMark];
+    readingLocationHighwaterMark = [(BKBookViewController *)self readingLocationHighwaterMark];
 
-    if (!v9)
+    if (!readingLocationHighwaterMark)
     {
-      v10 = [(BKBookViewController *)self book];
-      v11 = [(BKBookViewController *)self annotationProvider];
-      v12 = [v11 uiManagedObjectContext];
-      v13 = [v10 readingLocationAnnotation:0 moc:v12];
+      book2 = [(BKBookViewController *)self book];
+      annotationProvider = [(BKBookViewController *)self annotationProvider];
+      uiManagedObjectContext = [annotationProvider uiManagedObjectContext];
+      v13 = [book2 readingLocationAnnotation:0 moc:uiManagedObjectContext];
       [v13 readingProgressHighWaterMark];
       v14 = [NSNumber numberWithFloat:?];
       [(BKBookViewController *)self setReadingLocationHighwaterMark:v14];
     }
 
-    v15 = [(BKBookViewController *)self readingProgress];
-    if (v15)
+    readingProgress = [(BKBookViewController *)self readingProgress];
+    if (readingProgress)
     {
-      v16 = [(BKBookViewController *)self assetViewControllerDelegate];
+      assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
       v25 = BCAssetReadingProgressKey;
-      v26 = v15;
+      v26 = readingProgress;
       v17 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      [v16 assetViewController:self assetPropertyChanged:v17];
+      [assetViewControllerDelegate assetViewController:self assetPropertyChanged:v17];
 
-      v18 = [(BKBookViewController *)self readingLocationHighwaterMark];
-      [v18 floatValue];
+      readingLocationHighwaterMark2 = [(BKBookViewController *)self readingLocationHighwaterMark];
+      [readingLocationHighwaterMark2 floatValue];
       v20 = v19;
       v21 = kAEAnnotationReadingLocationSignificantHighwaterMark;
 
       if (v20 < v21)
       {
-        [(BKBookViewController *)self setReadingLocationHighwaterMark:v15];
-        [v15 floatValue];
+        [(BKBookViewController *)self setReadingLocationHighwaterMark:readingProgress];
+        [readingProgress floatValue];
         if (v22 > v21)
         {
-          v23 = [(BKBookViewController *)self assetViewControllerDelegate];
-          [v23 assetViewControllerSignificantReadingLocationChange:self];
+          assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+          [assetViewControllerDelegate2 assetViewControllerSignificantReadingLocationChange:self];
         }
       }
     }
 
-    if (!a4)
+    if (!suspending)
     {
       [(BKBookViewController *)self updateProgressKitForNewLocation];
     }
@@ -3888,35 +3888,35 @@ LABEL_11:
   }
 
   [(BKBookViewController *)self updateTouchBarController];
-  v24 = [(BKBookViewController *)self displaySleepController];
-  [v24 userInteractionOccurred];
+  displaySleepController = [(BKBookViewController *)self displaySleepController];
+  [displaySleepController userInteractionOccurred];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v5 = a3;
-  objc_storeStrong(&self->_location, a3);
+  locationCopy = location;
+  objc_storeStrong(&self->_location, location);
   v6 = _AEBookPluginsLifeCycleLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(BKBookViewController *)self book];
-    v10 = [v9 assetLogID];
+    book = [(BKBookViewController *)self book];
+    assetLogID = [book assetLogID];
     v11 = 138543874;
     v12 = v7;
     v13 = 2114;
-    v14 = v5;
+    v14 = locationCopy;
     v15 = 2114;
-    v16 = v10;
+    v16 = assetLogID;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "SetLocation BVC:%{public}@.  Location:%{public}@ logID:%{public}@ ", &v11, 0x20u);
   }
 }
 
-- (id)pageLocationForPageNumber:(int64_t)a3
+- (id)pageLocationForPageNumber:(int64_t)number
 {
-  v4 = [(BKBookViewController *)self paginationController];
-  v5 = [v4 pageLocationForPageNumber:a3];
+  paginationController = [(BKBookViewController *)self paginationController];
+  v5 = [paginationController pageLocationForPageNumber:number];
 
   return v5;
 }
@@ -3926,78 +3926,78 @@ LABEL_11:
   resumeLocation = self->_resumeLocation;
   if (resumeLocation)
   {
-    v3 = resumeLocation;
+    currentLocation = resumeLocation;
   }
 
   else
   {
-    v3 = [(BKBookViewController *)self currentLocation];
+    currentLocation = [(BKBookViewController *)self currentLocation];
   }
 
-  return v3;
+  return currentLocation;
 }
 
-- (void)saveReadingLocation:(id)a3
+- (void)saveReadingLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v4)
+  if (locationCopy)
   {
-    v5 = [(BKBookViewController *)self book];
-    if (v5)
+    book = [(BKBookViewController *)self book];
+    if (book)
     {
-      v6 = [(BKBookViewController *)self book];
-      if ([v6 isDeleted])
+      book2 = [(BKBookViewController *)self book];
+      if ([book2 isDeleted])
       {
       }
 
       else
       {
-        v7 = [(BKBookViewController *)self userNavigated];
+        userNavigated = [(BKBookViewController *)self userNavigated];
 
-        if (v7)
+        if (userNavigated)
         {
-          v8 = [(BKBookViewController *)self book];
-          v9 = [v8 readingLocation];
+          book3 = [(BKBookViewController *)self book];
+          readingLocation = [book3 readingLocation];
 
-          v10 = [(BKBookViewController *)self reportedLocation];
-          if (!v10 || (-[BKBookViewController reportedLocation](self, "reportedLocation"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v4 isEqual:v11], v11, v10, (v12 & 1) == 0))
+          reportedLocation = [(BKBookViewController *)self reportedLocation];
+          if (!reportedLocation || (-[BKBookViewController reportedLocation](self, "reportedLocation"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [locationCopy isEqual:v11], v11, reportedLocation, (v12 & 1) == 0))
           {
-            [(BKBookViewController *)self setReportedLocation:v4];
-            v13 = v4;
+            [(BKBookViewController *)self setReportedLocation:locationCopy];
+            v13 = locationCopy;
 
             v14 = _AEBookPluginsLifeCycleLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [(BKBookViewController *)self book];
-              v16 = [v15 databaseKey];
-              v17 = [(BKBookViewController *)self book];
-              v18 = [v17 assetLogID];
+              book4 = [(BKBookViewController *)self book];
+              databaseKey = [book4 databaseKey];
+              book5 = [(BKBookViewController *)self book];
+              assetLogID = [book5 assetLogID];
               *buf = 138543874;
               v27 = v13;
               v28 = 2112;
-              v29 = v16;
+              v29 = databaseKey;
               v30 = 2114;
-              v31 = v18;
+              v31 = assetLogID;
               _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Saving location into global annotation:%{public}@ assetID:%@ logID:%{public}@", buf, 0x20u);
             }
 
             objc_initWeak(buf, self);
-            v19 = [(BKBookViewController *)self book];
+            book6 = [(BKBookViewController *)self book];
             v20 = _NSConcreteStackBlock;
             v21 = 3221225472;
             v22 = sub_53150;
             v23 = &unk_1E3FC8;
             objc_copyWeak(&v25, buf);
-            v9 = v13;
-            v24 = v9;
-            [v19 setSingletonAnnotationType:3 location:v9 modificationHandler:&v20];
+            readingLocation = v13;
+            v24 = readingLocation;
+            [book6 setSingletonAnnotationType:3 location:readingLocation modificationHandler:&v20];
 
             objc_destroyWeak(&v25);
             objc_destroyWeak(buf);
           }
 
-          [(BKBookViewController *)self setLocation:v9, v20, v21, v22, v23];
+          [(BKBookViewController *)self setLocation:readingLocation, v20, v21, v22, v23];
         }
       }
     }
@@ -4006,27 +4006,27 @@ LABEL_11:
 
 - (id)_currentReadingProgress
 {
-  v3 = [(BKBookViewController *)self pageCountIncludingUpsell];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
+  if (pageCountIncludingUpsell == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
-    if (v3 < 1)
+    v5 = pageCountIncludingUpsell;
+    if (pageCountIncludingUpsell < 1)
     {
       v4 = &off_1F1870;
     }
 
     else
     {
-      v7 = [(BKBookViewController *)self currentPages];
+      currentPages = [(BKBookViewController *)self currentPages];
       v4 = 0;
-      if (v7 != 0x7FFFFFFFFFFFFFFFLL && v6)
+      if (currentPages != 0x7FFFFFFFFFFFFFFFLL && v6)
       {
-        *&v8 = (v7 + v6 - 1) / v5;
+        *&v8 = (currentPages + v6 - 1) / v5;
         v4 = [NSNumber numberWithFloat:v8];
       }
     }
@@ -4035,9 +4035,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)isLocationVisible:(id)a3 completion:(id)a4
+- (void)isLocationVisible:(id)visible completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -4048,8 +4048,8 @@ LABEL_11:
 
 - (BOOL)isPageBookmarked
 {
-  v2 = [(BKBookViewController *)self visiblePageBookmarks];
-  v3 = [v2 count] != 0;
+  visiblePageBookmarks = [(BKBookViewController *)self visiblePageBookmarks];
+  v3 = [visiblePageBookmarks count] != 0;
 
   return v3;
 }
@@ -4063,23 +4063,23 @@ LABEL_11:
 
   else
   {
-    v4 = [(BKBookViewController *)self book];
-    v5 = [v4 sampleContent];
-    v3 = [v5 BOOLValue] ^ 1;
+    book = [(BKBookViewController *)self book];
+    sampleContent = [book sampleContent];
+    v3 = [sampleContent BOOLValue] ^ 1;
   }
 
   return v3;
 }
 
-- (id)_allAnnotationsForType:(int)a3
+- (id)_allAnnotationsForType:(int)type
 {
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fetchedObjects = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
+  v7 = [fetchedObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4090,17 +4090,17 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fetchedObjects);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 annotationType] == a3)
+        if ([v11 annotationType] == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [fetchedObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -4109,15 +4109,15 @@ LABEL_11:
   return v5;
 }
 
-- (id)_visibleAnnotationsForType:(int)a3
+- (id)_visibleAnnotationsForType:(int)type
 {
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  fetchedObjects = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
+  v7 = [fetchedObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4128,12 +4128,12 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fetchedObjects);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        if ([v11 annotationType] == a3 && -[BKBookViewController isAnnotationVisible:](self, "isAnnotationVisible:", v11))
+        if ([v11 annotationType] == type && -[BKBookViewController isAnnotationVisible:](self, "isAnnotationVisible:", v11))
         {
           [v5 addObject:v11];
         }
@@ -4141,7 +4141,7 @@ LABEL_11:
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [fetchedObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -4150,9 +4150,9 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isAnnotationVisible:(id)a3
+- (BOOL)isAnnotationVisible:(id)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BKBookViewController isAnnotationVisible:]"];
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
   v6 = v5;
@@ -4160,13 +4160,13 @@ LABEL_11:
   objc_exception_throw(v5);
 }
 
-- (void)bookmarkPage:(id)a3
+- (void)bookmarkPage:(id)page
 {
   v4 = [[BAViewData alloc] initWithType:2 action:5 location:2];
   v5 = +[BAEventReporter sharedReporter];
-  v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
   v7 = [(BKBookViewController *)self contentDataForSearchViewController:0];
-  [v5 emitAnnotationActionEventWithTracker:v6 contentData:v7 viewData:v4];
+  [v5 emitAnnotationActionEventWithTracker:ba_effectiveAnalyticsTracker contentData:v7 viewData:v4];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -4176,7 +4176,7 @@ LABEL_11:
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v8];
 }
 
-- (void)unbookmarkPage:(id)a3
+- (void)unbookmarkPage:(id)page
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -4186,43 +4186,43 @@ LABEL_11:
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v3];
 }
 
-- (void)toggleBookmark:(id)a3
+- (void)toggleBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   if ([(BKBookViewController *)self isPageBookmarked])
   {
-    [(BKBookViewController *)self unbookmarkPage:v4];
+    [(BKBookViewController *)self unbookmarkPage:bookmarkCopy];
   }
 
   else
   {
-    [(BKBookViewController *)self bookmarkPage:v4];
+    [(BKBookViewController *)self bookmarkPage:bookmarkCopy];
   }
 
   [(BKBookViewController *)self updateBookmarkButton:1];
 }
 
-- (void)updateBookmarkButton:(BOOL)a3
+- (void)updateBookmarkButton:(BOOL)button
 {
   [(BKBookViewController *)self updateToolbarController];
 
   [(BKBookViewController *)self updateTouchBarController];
 }
 
-- (id)bookmarksFetchRequestForBook:(id)a3 moc:(id)a4
+- (id)bookmarksFetchRequestForBook:(id)book moc:(id)moc
 {
-  v5 = a4;
-  v6 = a3;
+  mocCopy = moc;
+  bookCopy = book;
   v7 = objc_alloc_init(NSFetchRequest);
-  v8 = [v6 assetID];
-  v9 = [AEAnnotation pageBookmarksPredicate:v8];
+  assetID = [bookCopy assetID];
+  v9 = [AEAnnotation pageBookmarksPredicate:assetID];
 
-  v10 = [v6 assetID];
-  v11 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:v10];
+  assetID2 = [bookCopy assetID];
+  v11 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:assetID2];
 
-  v12 = [v6 assetID];
+  assetID3 = [bookCopy assetID];
 
-  v13 = [AEAnnotation highlightsPredicate:v12];
+  v13 = [AEAnnotation highlightsPredicate:assetID3];
 
   v14 = [NSCompoundPredicate alloc];
   v22[0] = v9;
@@ -4232,7 +4232,7 @@ LABEL_11:
   v16 = [v14 initWithType:2 subpredicates:v15];
 
   [v7 setPredicate:v16];
-  v17 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:v5];
+  v17 = [NSEntityDescription entityForName:@"AEAnnotation" inManagedObjectContext:mocCopy];
 
   [v7 setEntity:v17];
   v18 = [[NSSortDescriptor alloc] initWithKey:@"plLocationRangeStart" ascending:1];
@@ -4247,12 +4247,12 @@ LABEL_11:
 {
   if (!self->_pageBookmarksFRC)
   {
-    v3 = [(BKBookViewController *)self book];
-    v4 = [v3 annotationProvider];
-    v5 = [v4 uiManagedObjectContext];
+    book = [(BKBookViewController *)self book];
+    annotationProvider = [book annotationProvider];
+    uiManagedObjectContext = [annotationProvider uiManagedObjectContext];
 
-    v6 = [(BKBookViewController *)self bookmarksFetchRequestForBook:v3 moc:v5];
-    v7 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v6 managedObjectContext:v5 sectionNameKeyPath:0 cacheName:0];
+    v6 = [(BKBookViewController *)self bookmarksFetchRequestForBook:book moc:uiManagedObjectContext];
+    v7 = [[IMUbiquitousFetchedResultsController alloc] initWithFetchRequest:v6 managedObjectContext:uiManagedObjectContext sectionNameKeyPath:0 cacheName:0];
     pageBookmarksFRC = self->_pageBookmarksFRC;
     self->_pageBookmarksFRC = v7;
 
@@ -4266,13 +4266,13 @@ LABEL_11:
     {
       v63 = v11;
       v64 = v6;
-      v65 = v3;
-      v13 = [v3 assetID];
-      v14 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:v13];
+      v65 = book;
+      assetID = [book assetID];
+      v14 = [AEAnnotation predicateForGlobalAnnotationWithAssetID:assetID];
 
-      v15 = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
+      fetchedObjects = [(NSFetchedResultsController *)self->_pageBookmarksFRC fetchedObjects];
       v62 = v14;
-      v16 = [v15 filteredArrayUsingPredicate:v14];
+      v16 = [fetchedObjects filteredArrayUsingPredicate:v14];
 
       v73 = 0u;
       v74 = 0u;
@@ -4297,11 +4297,11 @@ LABEL_11:
             v23 = *(*(&v71 + 1) + 8 * i);
             if (v20)
             {
-              v24 = [*(*(&v71 + 1) + 8 * i) locationModificationDate];
-              [v24 timeIntervalSinceReferenceDate];
+              locationModificationDate = [*(*(&v71 + 1) + 8 * i) locationModificationDate];
+              [locationModificationDate timeIntervalSinceReferenceDate];
               v26 = v25;
-              v27 = [v20 locationModificationDate];
-              [v27 timeIntervalSinceReferenceDate];
+              locationModificationDate2 = [v20 locationModificationDate];
+              [locationModificationDate2 timeIntervalSinceReferenceDate];
               v29 = v28;
 
               if (v26 <= v29)
@@ -4361,10 +4361,10 @@ LABEL_11:
         while (v33);
       }
 
-      if ([v5 hasChanges])
+      if ([uiManagedObjectContext hasChanges])
       {
         v66 = 0;
-        [v5 save:&v66];
+        [uiManagedObjectContext save:&v66];
         v37 = v66;
         if (v37)
         {
@@ -4376,74 +4376,74 @@ LABEL_11:
         }
       }
 
-      v39 = [v20 location];
-      if (v39 && (v40 = v39, [(BKBookViewController *)self openingLocation], v41 = objc_claimAutoreleasedReturnValue(), v41, v40, !v41))
+      location = [v20 location];
+      if (location && (v40 = location, [(BKBookViewController *)self openingLocation], v41 = objc_claimAutoreleasedReturnValue(), v41, v40, !v41))
       {
         v52 = _AEBookPluginsLifeCycleLog();
-        v3 = v65;
+        book = v65;
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [v20 location];
-          v61 = [(BKBookViewController *)self book];
-          v54 = [v61 databaseKey];
-          v55 = [(BKBookViewController *)self book];
-          v56 = [v55 assetLogID];
+          location2 = [v20 location];
+          book2 = [(BKBookViewController *)self book];
+          databaseKey = [book2 databaseKey];
+          book3 = [(BKBookViewController *)self book];
+          assetLogID = [book3 assetLogID];
           *buf = 138543874;
-          v77 = v53;
+          v77 = location2;
           v78 = 2112;
-          v79 = v54;
+          v79 = databaseKey;
           v80 = 2114;
-          v81 = v56;
+          v81 = assetLogID;
           _os_log_impl(&dword_0, v52, OS_LOG_TYPE_DEFAULT, "Restoring location from global annotation:%{public}@ for assetID:%@ logID:%{public}@", buf, 0x20u);
         }
 
-        v57 = [v20 location];
-        [(BKBookViewController *)self setLocation:v57];
+        location3 = [v20 location];
+        [(BKBookViewController *)self setLocation:location3];
 
-        v58 = [(BKBookViewController *)self location];
-        [(BKBookViewController *)self setReportedLocation:v58];
+        location4 = [(BKBookViewController *)self location];
+        [(BKBookViewController *)self setReportedLocation:location4];
 
         [(BKBookViewController *)self setUserNavigated:0];
       }
 
       else
       {
-        v3 = v65;
+        book = v65;
         if (!v20)
         {
           v42 = _AEBookPluginsLifeCycleLog();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v59 = [(BKBookViewController *)self book];
-            v43 = [v59 databaseKey];
-            v44 = [(BKBookViewController *)self book];
-            v45 = [v44 assetLogID];
+            book4 = [(BKBookViewController *)self book];
+            databaseKey2 = [book4 databaseKey];
+            book5 = [(BKBookViewController *)self book];
+            assetLogID2 = [book5 assetLogID];
             *buf = 138412546;
-            v77 = v43;
+            v77 = databaseKey2;
             v78 = 2114;
-            v79 = v45;
+            v79 = assetLogID2;
             _os_log_impl(&dword_0, v42, OS_LOG_TYPE_DEFAULT, "%@ logID:%{public}@ No global annotation to restore from", buf, 0x16u);
           }
         }
 
-        v46 = [(BKBookViewController *)self openingLocation];
+        openingLocation = [(BKBookViewController *)self openingLocation];
 
-        if (v46)
+        if (openingLocation)
         {
           v47 = _AEBookPluginsLifeCycleLog();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
-            v60 = [(BKBookViewController *)self book];
-            v48 = [v60 databaseKey];
-            v49 = [(BKBookViewController *)self book];
-            v50 = [v49 assetLogID];
-            v51 = [(BKBookViewController *)self openingLocation];
+            book6 = [(BKBookViewController *)self book];
+            databaseKey3 = [book6 databaseKey];
+            book7 = [(BKBookViewController *)self book];
+            assetLogID3 = [book7 assetLogID];
+            openingLocation2 = [(BKBookViewController *)self openingLocation];
             *buf = 138412802;
-            v77 = v48;
+            v77 = databaseKey3;
             v78 = 2114;
-            v79 = v50;
+            v79 = assetLogID3;
             v80 = 2112;
-            v81 = v51;
+            v81 = openingLocation2;
             _os_log_impl(&dword_0, v47, OS_LOG_TYPE_DEFAULT, "%@ logID:%{public}@ Have existing openingLocation: %@", buf, 0x20u);
           }
         }
@@ -4481,90 +4481,90 @@ LABEL_11:
   self->_pageBookmarksFRC = 0;
 }
 
-- (void)_updateLocationFromAnnotation:(id)a3
+- (void)_updateLocationFromAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   if (![(BKBookViewController *)self section])
   {
-    v5 = [(BKBookViewController *)self openingLocation];
+    openingLocation = [(BKBookViewController *)self openingLocation];
 
-    if (v5)
+    if (openingLocation)
     {
-      v6 = BKMobileCloudSyncAnnotationsLog();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      location2 = BKMobileCloudSyncAnnotationsLog();
+      if (os_log_type_enabled(location2, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v4 annotationLocation];
-        v8 = [(BKBookViewController *)self openingLocation];
+        annotationLocation = [annotationCopy annotationLocation];
+        openingLocation2 = [(BKBookViewController *)self openingLocation];
         v22 = 138412546;
-        v23 = v7;
+        v23 = annotationLocation;
         v24 = 2112;
-        v25 = v8;
-        _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Ignoring updated global location %@ because we have an openingLocation location: %@", &v22, 0x16u);
+        v25 = openingLocation2;
+        _os_log_impl(&dword_0, location2, OS_LOG_TYPE_DEFAULT, "Ignoring updated global location %@ because we have an openingLocation location: %@", &v22, 0x16u);
       }
 
       goto LABEL_21;
     }
 
-    if ([(BKBookViewController *)self shouldAcceptLocationUpdateFromGlobalAnnotation:v4])
+    if ([(BKBookViewController *)self shouldAcceptLocationUpdateFromGlobalAnnotation:annotationCopy])
     {
-      v9 = [(BKBookViewController *)self savableLocation];
-      v10 = [v4 isLocationSame:v9];
+      savableLocation = [(BKBookViewController *)self savableLocation];
+      v10 = [annotationCopy isLocationSame:savableLocation];
 
       if (v10)
       {
-        v6 = BKMobileCloudSyncAnnotationsLog();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        location2 = BKMobileCloudSyncAnnotationsLog();
+        if (os_log_type_enabled(location2, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v4 annotationLocation];
+          annotationLocation2 = [annotationCopy annotationLocation];
           v22 = 138543362;
-          v23 = v11;
+          v23 = annotationLocation2;
           v12 = "_updateLocationFromAnnotation Ignoring updated location because it is the same as the current savable location %{public}@";
 LABEL_14:
-          _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, v12, &v22, 0xCu);
+          _os_log_impl(&dword_0, location2, OS_LOG_TYPE_DEFAULT, v12, &v22, 0xCu);
           goto LABEL_15;
         }
       }
 
       else
       {
-        v14 = [v4 location];
-        v15 = [(BKBookViewController *)self isLocationOnCurrentPage:v14];
+        location = [annotationCopy location];
+        v15 = [(BKBookViewController *)self isLocationOnCurrentPage:location];
 
-        v6 = BKMobileCloudSyncAnnotationsLog();
-        v16 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+        location2 = BKMobileCloudSyncAnnotationsLog();
+        v16 = os_log_type_enabled(location2, OS_LOG_TYPE_DEFAULT);
         if ((v15 & 1) == 0)
         {
           if (v16)
           {
-            v17 = [v4 annotationLocation];
+            annotationLocation3 = [annotationCopy annotationLocation];
             v22 = 138543362;
-            v23 = v17;
-            _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "_updateLocationFromAnnotation Jumping to location from annotation location: %{public}@", &v22, 0xCu);
+            v23 = annotationLocation3;
+            _os_log_impl(&dword_0, location2, OS_LOG_TYPE_DEFAULT, "_updateLocationFromAnnotation Jumping to location from annotation location: %{public}@", &v22, 0xCu);
           }
 
           v18 = _AEBookPluginsLifeCycleLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(BKBookViewController *)self book];
-            v20 = [v19 assetLogID];
-            v21 = [v4 annotationLocation];
+            book = [(BKBookViewController *)self book];
+            assetLogID = [book assetLogID];
+            annotationLocation4 = [annotationCopy annotationLocation];
             v22 = 138543618;
-            v23 = v20;
+            v23 = assetLogID;
             v24 = 2114;
-            v25 = v21;
+            v25 = annotationLocation4;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "_updateLocationFromAnnotation logID:%{public}@ Jumping to location from annotation location: %{public}@", &v22, 0x16u);
           }
 
-          v6 = [v4 location];
-          [(BKBookViewController *)self recordedJumpToLocation:v6 animated:1 completion:0];
+          location2 = [annotationCopy location];
+          [(BKBookViewController *)self recordedJumpToLocation:location2 animated:1 completion:0];
           goto LABEL_21;
         }
 
         if (v16)
         {
-          v11 = [v4 annotationLocation];
+          annotationLocation2 = [annotationCopy annotationLocation];
           v22 = 138543362;
-          v23 = v11;
+          v23 = annotationLocation2;
           v12 = "_updateLocationFromAnnotation Ignoring updated location because it is already visible %{public}@";
           goto LABEL_14;
         }
@@ -4573,16 +4573,16 @@ LABEL_14:
 
     else
     {
-      v6 = BKMobileCloudSyncAnnotationsLog();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      location2 = BKMobileCloudSyncAnnotationsLog();
+      if (os_log_type_enabled(location2, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 annotationLocation];
-        v11 = [(BKBookViewController *)self savableLocation];
+        annotationLocation5 = [annotationCopy annotationLocation];
+        annotationLocation2 = [(BKBookViewController *)self savableLocation];
         v22 = 138412546;
-        v23 = v13;
+        v23 = annotationLocation5;
         v24 = 2112;
-        v25 = v11;
-        _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Ignoring updated global location %@ because we have a newer local location: %@", &v22, 0x16u);
+        v25 = annotationLocation2;
+        _os_log_impl(&dword_0, location2, OS_LOG_TYPE_DEFAULT, "Ignoring updated global location %@ because we have a newer local location: %@", &v22, 0x16u);
 
 LABEL_15:
       }
@@ -4592,32 +4592,32 @@ LABEL_21:
   }
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (self->_pageBookmarksFRC == v12)
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (self->_pageBookmarksFRC == controllerCopy)
   {
-    if (a6 == 1)
+    if (type == 1)
     {
       [(BKBookViewController *)self setAnnotationChangeRequiresPaginationUpdate:1];
     }
 
-    v16 = v13;
-    v17 = [v16 annotationType];
-    if (v17 == 1)
+    v16 = objectCopy;
+    annotationType = [v16 annotationType];
+    if (annotationType == 1)
     {
-      v18 = [v16 location];
-      if (v18)
+      location = [v16 location];
+      if (location)
       {
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_54B48;
         v19[3] = &unk_1E2C20;
         v19[4] = self;
-        [(BKBookViewController *)self isLocationOnVisiblePages:v18 completion:v19];
+        [(BKBookViewController *)self isLocationOnVisiblePages:location completion:v19];
       }
 
       else
@@ -4626,14 +4626,14 @@ LABEL_21:
       }
     }
 
-    else if (v17 == 3)
+    else if (annotationType == 3)
     {
       [(BKBookViewController *)self _updateLocationFromAnnotation:v16];
     }
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   if ([(BKBookViewController *)self annotationChangeRequiresPaginationUpdate])
   {
@@ -4646,42 +4646,42 @@ LABEL_21:
   [(BKBookViewController *)self _notifyBookmarkObservers];
 }
 
-- (void)scrubberTouchDown:(id)a3
+- (void)scrubberTouchDown:(id)down
 {
   [(BKBookViewController *)self cancelPendingHidePageControls];
-  v4 = [(BKBookViewController *)self currentPageNumber];
+  currentPageNumber = [(BKBookViewController *)self currentPageNumber];
 
-  [(BKBookViewController *)self setPageNumberBeforeScrubbing:v4];
+  [(BKBookViewController *)self setPageNumberBeforeScrubbing:currentPageNumber];
 }
 
-- (void)scrub:(id)a3
+- (void)scrub:(id)scrub
 {
-  v4 = [a3 pageNumber];
-  [(BKBookViewController *)self turnToPageNumber:v4 animated:1];
-  [(BKBookViewController *)self emitScrubEventStartPosition:[(BKBookViewController *)self pageNumberBeforeScrubbing] endPosition:v4 totalLength:[(BKBookViewController *)self pageCountIncludingUpsell]];
+  pageNumber = [scrub pageNumber];
+  [(BKBookViewController *)self turnToPageNumber:pageNumber animated:1];
+  [(BKBookViewController *)self emitScrubEventStartPosition:[(BKBookViewController *)self pageNumberBeforeScrubbing] endPosition:pageNumber totalLength:[(BKBookViewController *)self pageCountIncludingUpsell]];
 
   [(BKBookViewController *)self setPageNumberBeforeScrubbing:0x7FFFFFFFFFFFFFFFLL];
 }
 
 - (BOOL)touchBarWantsHistoryNav
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 isFixedLayout];
+  book = [(BKBookViewController *)self book];
+  isFixedLayout = [book isFixedLayout];
 
-  return v3 ^ 1;
+  return isFixedLayout ^ 1;
 }
 
-- (int64_t)pageNumberForTouchBarPosition:(double)a3
+- (int64_t)pageNumberForTouchBarPosition:(double)position
 {
-  v5 = [(BKBookViewController *)self pageCountIncludingUpsell];
+  pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 && v5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (pageCountIncludingUpsell && pageCountIncludingUpsell != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(BKBookViewController *)self pagePositionForTouchBarPosition:a3];
-    v8 = fmax(v7 * (v5 - 1) + 1.0, 1.0);
-    if (v8 >= v5)
+    [(BKBookViewController *)self pagePositionForTouchBarPosition:position];
+    v8 = fmax(v7 * (pageCountIncludingUpsell - 1) + 1.0, 1.0);
+    if (v8 >= pageCountIncludingUpsell)
     {
-      return v5;
+      return pageCountIncludingUpsell;
     }
 
     return v8;
@@ -4690,64 +4690,64 @@ LABEL_21:
   return result;
 }
 
-- (double)touchBarPositionForPageNumber:(int64_t)a3
+- (double)touchBarPositionForPageNumber:(int64_t)number
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (number == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1.0;
   }
 
-  v5 = [(BKBookViewController *)self pageCountIncludingUpsell];
-  if (!v5 || v5 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
+  if (!pageCountIncludingUpsell || pageCountIncludingUpsell == 0x7FFFFFFFFFFFFFFFLL)
   {
     return -1.0;
   }
 
-  v7 = fmin(fmax((a3 - 1) / (v5 - 1), 0.0), 1.0);
+  v7 = fmin(fmax((number - 1) / (pageCountIncludingUpsell - 1), 0.0), 1.0);
 
   [(BKBookViewController *)self touchBarPositionForPagePosition:v7];
   return result;
 }
 
-- (double)pagePositionForTouchBarPosition:(double)a3
+- (double)pagePositionForTouchBarPosition:(double)position
 {
-  v4 = [(BKBookViewController *)self touchBarScrollerBookIsRightToLeft];
-  result = 1.0 - a3;
-  if (!v4)
+  touchBarScrollerBookIsRightToLeft = [(BKBookViewController *)self touchBarScrollerBookIsRightToLeft];
+  result = 1.0 - position;
+  if (!touchBarScrollerBookIsRightToLeft)
   {
-    return a3;
+    return position;
   }
 
   return result;
 }
 
-- (void)touchBarHandleBackRequest:(id)a3
+- (void)touchBarHandleBackRequest:(id)request
 {
   [(BKBookViewController *)self dismissCurrentPopover];
-  v4 = [(BKBookViewController *)self navigationHistory];
-  v5 = [v4 previousEntity];
+  navigationHistory = [(BKBookViewController *)self navigationHistory];
+  previousEntity = [navigationHistory previousEntity];
 
-  if (v5)
+  if (previousEntity)
   {
 
     [(BKBookViewController *)self jumpBackAnimated:1];
   }
 }
 
-- (void)touchBarHandleForwardRequest:(id)a3
+- (void)touchBarHandleForwardRequest:(id)request
 {
   [(BKBookViewController *)self dismissCurrentPopover];
-  v4 = [(BKBookViewController *)self navigationHistory];
-  v5 = [v4 nextEntity];
+  navigationHistory = [(BKBookViewController *)self navigationHistory];
+  nextEntity = [navigationHistory nextEntity];
 
-  if (v5)
+  if (nextEntity)
   {
 
     [(BKBookViewController *)self jumpAheadAnimated:1];
   }
 }
 
-- (void)touchBarHandleReadAloudRequest:(id)a3
+- (void)touchBarHandleReadAloudRequest:(id)request
 {
   if ([(BKBookViewController *)self isReadAloudPaused])
   {
@@ -4763,31 +4763,31 @@ LABEL_21:
   }
 }
 
-- (void)touchBarScrollerDidEnd:(double)a3 completion:(id)a4
+- (void)touchBarScrollerDidEnd:(double)end completion:(id)completion
 {
-  v6 = a4;
-  [(BKBookViewController *)self turnToPageNumber:[(BKBookViewController *)self pageNumberForTouchBarPosition:a3] animated:1];
-  v6[2](a3);
+  completionCopy = completion;
+  [(BKBookViewController *)self turnToPageNumber:[(BKBookViewController *)self pageNumberForTouchBarPosition:end] animated:1];
+  completionCopy[2](end);
 }
 
-- (void)touchBarScrollerDidIdle:(double)a3
+- (void)touchBarScrollerDidIdle:(double)idle
 {
-  v4 = [(BKBookViewController *)self pageNumberForTouchBarPosition:a3];
+  v4 = [(BKBookViewController *)self pageNumberForTouchBarPosition:idle];
 
   [(BKBookViewController *)self turnToPageNumber:v4 animated:1];
 }
 
-- (void)touchBarScrollerJumpToBookmark:(id)a3
+- (void)touchBarScrollerJumpToBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   v7 = BUDynamicCast();
 
   v5 = v7;
   if (v7)
   {
-    v6 = [v7 location];
-    [(BKBookViewController *)self recordedJumpToLocation:v6 animated:1 completion:&stru_1E3FE8];
+    location = [v7 location];
+    [(BKBookViewController *)self recordedJumpToLocation:location animated:1 completion:&stru_1E3FE8];
 
     v5 = v7;
   }
@@ -4795,24 +4795,24 @@ LABEL_21:
 
 - (id)touchBarScrollerChapters
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 chapters];
-  v4 = [v3 allObjects];
+  book = [(BKBookViewController *)self book];
+  chapters = [book chapters];
+  allObjects = [chapters allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (double)touchBarScrollerPositionForChapter:(id)a3
+- (double)touchBarScrollerPositionForChapter:(id)chapter
 {
-  v4 = a3;
+  chapterCopy = chapter;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5)
   {
     v6 = [(BKBookViewController *)self _locationForChapter:v5];
-    v7 = [(BKBookViewController *)self paginationController];
-    v8 = [v7 pageNumberForLocation:v6];
+    paginationController = [(BKBookViewController *)self paginationController];
+    v8 = [paginationController pageNumberForLocation:v6];
   }
 
   else
@@ -4826,16 +4826,16 @@ LABEL_21:
   return v10;
 }
 
-- (double)touchBarScrollerPositionForBookmark:(id)a3
+- (double)touchBarScrollerPositionForBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5)
   {
-    v6 = [(BKBookViewController *)self paginationController];
-    v7 = [v6 pageRangeForAnnotation:v5];
+    paginationController = [(BKBookViewController *)self paginationController];
+    v7 = [paginationController pageRangeForAnnotation:v5];
     v9 = v8;
 
     v10 = [(BKBookViewController *)self pageNumberFromRange:v7, v9];
@@ -4852,17 +4852,17 @@ LABEL_21:
   return v12;
 }
 
-- (double)touchBarScrollerEndScrollPositionForPosition:(double)a3
+- (double)touchBarScrollerEndScrollPositionForPosition:(double)position
 {
-  v4 = [(BKBookViewController *)self pageNumberForTouchBarPosition:a3];
+  v4 = [(BKBookViewController *)self pageNumberForTouchBarPosition:position];
 
   [(BKBookViewController *)self touchBarPositionForPageNumber:v4];
   return result;
 }
 
-- (id)touchBarScrollerAccessibilityLabelForChapter:(id)a3
+- (id)touchBarScrollerAccessibilityLabelForChapter:(id)chapter
 {
-  v3 = a3;
+  chapterCopy = chapter;
   objc_opt_class();
   v4 = BUDynamicCast();
 
@@ -4870,10 +4870,10 @@ LABEL_21:
   {
     v5 = AEBundle();
     v6 = [v5 localizedStringForKey:@"Chapter %1$lu value:%2$@" table:{&stru_1E7188, 0}];
-    v7 = [v4 absoluteOrder];
-    v8 = [v7 integerValue] + 1;
-    v9 = [v4 name];
-    v10 = [NSString localizedStringWithFormat:v6, v8, v9];
+    absoluteOrder = [v4 absoluteOrder];
+    v8 = [absoluteOrder integerValue] + 1;
+    name = [v4 name];
+    v10 = [NSString localizedStringWithFormat:v6, v8, name];
   }
 
   else
@@ -4884,35 +4884,35 @@ LABEL_21:
   return v10;
 }
 
-- (id)touchBarScrollerAccessibilityLabelForBookmark:(id)a3
+- (id)touchBarScrollerAccessibilityLabelForBookmark:(id)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   v4 = BUDynamicCast();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
-- (void)registerBookmarkObserver:(id)a3
+- (void)registerBookmarkObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self bookmarkObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  bookmarkObservers = [(BKBookViewController *)self bookmarkObservers];
+  [bookmarkObservers addObject:observerCopy];
 }
 
-- (void)unregisterBookmarkObserver:(id)a3
+- (void)unregisterBookmarkObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self bookmarkObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  bookmarkObservers = [(BKBookViewController *)self bookmarkObservers];
+  [bookmarkObservers removeObject:observerCopy];
 }
 
 - (unint64_t)numberOfBookmarks
 {
-  v2 = [(BKBookViewController *)self allBookmarkIdentifiers];
-  v3 = [v2 count];
+  allBookmarkIdentifiers = [(BKBookViewController *)self allBookmarkIdentifiers];
+  v3 = [allBookmarkIdentifiers count];
 
   return v3;
 }
@@ -4952,141 +4952,141 @@ LABEL_21:
   }
 }
 
-- (void)contentViewControllerAnnotationCacheDidChange:(id)a3
+- (void)contentViewControllerAnnotationCacheDidChange:(id)change
 {
   [(BKBookViewController *)self writeAnnotationsToWebProcessPlugin];
 
   [(BKBookViewController *)self _notifyBookmarkObservers];
 }
 
-- (void)contentViewController:(id)a3 setEndOfBookToLocation:(id)a4 range:(id)a5
+- (void)contentViewController:(id)controller setEndOfBookToLocation:(id)location range:(id)range
 {
-  v6 = a4;
+  locationCopy = location;
   objc_opt_class();
   v14 = BUDynamicCast();
 
-  v7 = [v14 cfiString];
-  if ([v7 length])
+  cfiString = [v14 cfiString];
+  if ([cfiString length])
   {
-    v8 = [(BKBookViewController *)self book];
-    [v8 setEndOfBookLocation:v7];
+    book = [(BKBookViewController *)self book];
+    [book setEndOfBookLocation:cfiString];
 
-    v9 = [(BKBookViewController *)self book];
-    [v9 setEndOfBookValidRange:0];
+    book2 = [(BKBookViewController *)self book];
+    [book2 setEndOfBookValidRange:0];
 
     if ([(NSManagedObjectContext *)self->_bookMoc hasChanges])
     {
       [(NSManagedObjectContext *)self->_bookMoc save:0];
     }
 
-    v10 = [(BKBookViewController *)self experienceManager];
+    experienceManager = [(BKBookViewController *)self experienceManager];
 
-    if (v10)
+    if (experienceManager)
     {
-      v11 = [(BKBookViewController *)self _createEndOfBookExperience];
-      if (v11)
+      _createEndOfBookExperience = [(BKBookViewController *)self _createEndOfBookExperience];
+      if (_createEndOfBookExperience)
       {
-        v12 = [(BKBookViewController *)self experienceManager];
-        [v12 removeExperienceOfType:0];
+        experienceManager2 = [(BKBookViewController *)self experienceManager];
+        [experienceManager2 removeExperienceOfType:0];
 
-        v13 = [(BKBookViewController *)self experienceManager];
-        [v13 addExperience:v11];
+        experienceManager3 = [(BKBookViewController *)self experienceManager];
+        [experienceManager3 addExperience:_createEndOfBookExperience];
       }
     }
   }
 }
 
-- (void)contentViewController:(id)a3 goToLocation:(id)a4
+- (void)contentViewController:(id)controller goToLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKBookViewController *)self recordedJumpToLocation:v5 animated:1 completion:0];
+    [(BKBookViewController *)self recordedJumpToLocation:locationCopy animated:1 completion:0];
   }
 
   else
   {
-    [(BKBookViewController *)self saveReadingLocation:v5];
+    [(BKBookViewController *)self saveReadingLocation:locationCopy];
     [(BKBookViewController *)self turnToInitialPage:1];
   }
 }
 
-- (void)mediaPlaybackStarted:(id)a3
+- (void)mediaPlaybackStarted:(id)started
 {
   v4 = +[BCAudioMuxingCoordinator sharedInstance];
   [v4 notifyPlaybackWillStart:self];
 }
 
-- (void)setFinishedForAssetID:(id)a3
+- (void)setFinishedForAssetID:(id)d
 {
-  v5 = a3;
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
+  dCopy = d;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setFinishedForAssetID:v5];
+    [assetViewControllerDelegate setFinishedForAssetID:dCopy];
   }
 }
 
-- (void)contentViewController:(id)a3 setFinishedAndCloseForAssetID:(id)a4
+- (void)contentViewController:(id)controller setFinishedAndCloseForAssetID:(id)d
 {
-  v6 = a4;
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
+  dCopy = d;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 assetViewController:self setFinishedAndCloseForAssetID:v6];
+    [assetViewControllerDelegate assetViewController:self setFinishedAndCloseForAssetID:dCopy];
   }
 }
 
-- (BOOL)isTOCURL:(id)a3
+- (BOOL)isTOCURL:(id)l
 {
-  v4 = [a3 bc_pathWithoutPrecedingSlash];
-  v5 = [v4 stringByRemovingURLFragment];
-  v6 = [(BKBookViewController *)self book];
-  v7 = [v6 tocPageHref];
-  v8 = [v5 isEqual:v7];
+  bc_pathWithoutPrecedingSlash = [l bc_pathWithoutPrecedingSlash];
+  stringByRemovingURLFragment = [bc_pathWithoutPrecedingSlash stringByRemovingURLFragment];
+  book = [(BKBookViewController *)self book];
+  tocPageHref = [book tocPageHref];
+  v8 = [stringByRemovingURLFragment isEqual:tocPageHref];
 
   return v8;
 }
 
-- (id)documentForURL:(id)a3
+- (id)documentForURL:(id)l
 {
-  v4 = [a3 bc_pathWithoutPrecedingSlash];
-  v5 = [v4 stringByRemovingURLFragment];
-  v6 = [(BKBookViewController *)self book];
-  v7 = [v6 documentAtPath:v5];
+  bc_pathWithoutPrecedingSlash = [l bc_pathWithoutPrecedingSlash];
+  stringByRemovingURLFragment = [bc_pathWithoutPrecedingSlash stringByRemovingURLFragment];
+  book = [(BKBookViewController *)self book];
+  v7 = [book documentAtPath:stringByRemovingURLFragment];
 
   return v7;
 }
 
-- (void)contentViewController:(id)a3 goToURL:(id)a4 likelyUserInitiated:(BOOL)a5
+- (void)contentViewController:(id)controller goToURL:(id)l likelyUserInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v12 = a4;
+  initiatedCopy = initiated;
+  lCopy = l;
   if ([(BKBookViewController *)self isTOCURL:?])
   {
     [(BKBookViewController *)self showTOC:self];
     goto LABEL_9;
   }
 
-  v7 = [(BKBookViewController *)self documentForURL:v12];
+  v7 = [(BKBookViewController *)self documentForURL:lCopy];
   if (v7)
   {
-    v8 = [v12 bc_pathWithoutPrecedingSlash];
-    v9 = [v8 stringByRemovingURLFragment];
-    v10 = [v12 fragment];
-    [(BKBookViewController *)self goToPath:v9 fragment:v10 animated:+[UIView areAnimationsEnabled]];
+    bc_pathWithoutPrecedingSlash = [lCopy bc_pathWithoutPrecedingSlash];
+    stringByRemovingURLFragment = [bc_pathWithoutPrecedingSlash stringByRemovingURLFragment];
+    fragment = [lCopy fragment];
+    [(BKBookViewController *)self goToPath:stringByRemovingURLFragment fragment:fragment animated:+[UIView areAnimationsEnabled]];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(BKBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v11)
+  if (assetViewControllerDelegate)
   {
-    v8 = [(BKBookViewController *)self assetViewControllerDelegate];
-    [v8 assetViewController:self requestOpenURL:v12 likelyUserInitiated:v5];
+    bc_pathWithoutPrecedingSlash = [(BKBookViewController *)self assetViewControllerDelegate];
+    [bc_pathWithoutPrecedingSlash assetViewController:self requestOpenURL:lCopy likelyUserInitiated:initiatedCopy];
     goto LABEL_7;
   }
 
@@ -5095,23 +5095,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)contentViewReady:(id)a3
+- (void)contentViewReady:(id)ready
 {
-  v4 = a3;
-  [(BKBookViewController *)self readAloudViewControllerReady:v4];
-  [(BKBookViewController *)self signalBookContentDidLoad:v4];
-  [v4 resume];
+  readyCopy = ready;
+  [(BKBookViewController *)self readAloudViewControllerReady:readyCopy];
+  [(BKBookViewController *)self signalBookContentDidLoad:readyCopy];
+  [readyCopy resume];
 }
 
-- (void)readAloudViewControllerReady:(id)a3
+- (void)readAloudViewControllerReady:(id)ready
 {
-  v4 = a3;
-  v16 = v4;
+  readyCopy = ready;
+  v16 = readyCopy;
   if (self->_isReading)
   {
-    [(BKBookViewController *)self _markupDocumentElementForMediaOverlay:v4];
+    [(BKBookViewController *)self _markupDocumentElementForMediaOverlay:readyCopy];
     [(BKBookViewController *)self _installClickHandlers:v16];
-    v4 = v16;
+    readyCopy = v16;
   }
 
   else if (!self->_isPlayingSoundTrack)
@@ -5126,25 +5126,25 @@ LABEL_9:
     v7 = self->_loadedPages;
     self->_loadedPages = v6;
 
-    v4 = v16;
+    readyCopy = v16;
     loadedPages = self->_loadedPages;
   }
 
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 ordinal]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [readyCopy ordinal]);
   [(NSMutableArray *)loadedPages addObject:v8];
 
-  v9 = [(BKBookViewController *)self currentPages];
+  currentPages = [(BKBookViewController *)self currentPages];
   if (v10)
   {
     v11 = v10;
-    v12 = v9 - 1;
+    v12 = currentPages - 1;
     while (1)
     {
       v13 = [NSNumber numberWithInteger:v12];
       if (([(NSMutableArray *)self->_loadedPages containsObject:v13]& 1) == 0)
       {
-        v14 = [v13 unsignedIntegerValue];
-        if (v14 != [(BKBookViewController *)self upsellOrdinal])
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
+        if (unsignedIntegerValue != [(BKBookViewController *)self upsellOrdinal])
         {
           break;
         }
@@ -5167,7 +5167,7 @@ LABEL_11:
     [(BKBookViewController *)self continueReadAloudAfterReady];
   }
 
-  v4 = v16;
+  readyCopy = v16;
 LABEL_14:
 }
 
@@ -5175,8 +5175,8 @@ LABEL_14:
 {
   if (self->_isReading && ![(BKBookViewController *)self section])
   {
-    v3 = [(BKBookViewController *)self currentPages];
-    [(BKBookViewController *)self readPages:v3 from:v4 to:[(BKBookViewController *)self _itemIndexForCurrentPage] waitOnEmpty:-1, 1];
+    currentPages = [(BKBookViewController *)self currentPages];
+    [(BKBookViewController *)self readPages:currentPages from:v4 to:[(BKBookViewController *)self _itemIndexForCurrentPage] waitOnEmpty:-1, 1];
   }
 
   if (self->_isPlayingSoundTrack)
@@ -5186,59 +5186,59 @@ LABEL_14:
   }
 }
 
-- (void)signalBookContentDidLoad:(id)a3
+- (void)signalBookContentDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = _AEBookOpenLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKBookViewController *)self contentOpenAnimator];
+    contentOpenAnimator = [(BKBookViewController *)self contentOpenAnimator];
     v8 = 138412546;
-    v9 = v6;
+    v9 = contentOpenAnimator;
     v10 = 2112;
-    v11 = v4;
+    v11 = loadCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "SignalBookContentDidLoad - animator: %@ content: %@", &v8, 0x16u);
   }
 
-  v7 = [(BKBookViewController *)self contentOpenAnimator];
-  [v7 bookContentDidLoad];
+  contentOpenAnimator2 = [(BKBookViewController *)self contentOpenAnimator];
+  [contentOpenAnimator2 bookContentDidLoad];
 
   [(BKBookViewController *)self setContentOpenAnimator:0];
 }
 
-- (void)contentViewController:(id)a3 showAlertController:(id)a4 fromRect:(CGRect)a5 animated:(BOOL)a6
+- (void)contentViewController:(id)controller showAlertController:(id)alertController fromRect:(CGRect)rect animated:(BOOL)animated
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v26 = a3;
-  v13 = a4;
-  if (![v13 preferredStyle])
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  alertControllerCopy = alertController;
+  if (![alertControllerCopy preferredStyle])
   {
-    v14 = [(BKBookViewController *)self view];
-    v15 = [v26 view];
-    [v14 convertRect:v15 fromView:{x, y, width, height}];
+    view = [(BKBookViewController *)self view];
+    view2 = [controllerCopy view];
+    [view convertRect:view2 fromView:{x, y, width, height}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [v13 popoverPresentationController];
-    [v24 setPermittedArrowDirections:15];
-    v25 = [(BKBookViewController *)self view];
-    [v24 setSourceView:v25];
+    popoverPresentationController = [alertControllerCopy popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    view3 = [(BKBookViewController *)self view];
+    [popoverPresentationController setSourceView:view3];
 
-    [v24 setSourceRect:{v17, v19, v21, v23}];
+    [popoverPresentationController setSourceRect:{v17, v19, v21, v23}];
   }
 
-  [(BKBookViewController *)self presentViewController:v13 animated:v6 completion:0];
+  [(BKBookViewController *)self presentViewController:alertControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)contentViewController:(id)a3 stopMediaPlay:(id)a4
+- (void)contentViewController:(id)controller stopMediaPlay:(id)play
 {
-  v5 = a4;
+  playCopy = play;
   v12 = 0;
   v13 = 0;
   v6 = [(BKBookViewController *)self _currentChapterInfo:&v13 uniqueID:&v12];
@@ -5247,101 +5247,101 @@ LABEL_14:
   if (v6)
   {
     v9 = +[BCProgressKitController sharedController];
-    v10 = [(BKBookViewController *)self book];
-    v11 = [v10 assetID];
-    [v9 updateMediaForBook:v11 chapter:v8 mediaCFI:v5 progress:&off_1F1870 completion:0];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
+    [v9 updateMediaForBook:assetID chapter:v8 mediaCFI:playCopy progress:&off_1F1870 completion:0];
   }
 }
 
-- (void)contentViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5
+- (void)contentViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v8 = [(BKBookViewController *)self book];
-  v9 = [v8 bookTitle];
-  [v10 setTitle:v9];
+  completionCopy = completion;
+  alertControllerCopy = alertController;
+  book = [(BKBookViewController *)self book];
+  bookTitle = [book bookTitle];
+  [alertControllerCopy setTitle:bookTitle];
 
-  [(BKBookViewController *)self presentViewController:v10 animated:+[UIView completion:"areAnimationsEnabled"], v7];
+  [(BKBookViewController *)self presentViewController:alertControllerCopy animated:+[UIView completion:"areAnimationsEnabled"], completionCopy];
 }
 
-- (void)contentViewController:(id)a3 showTranslateForText:(id)a4 fromView:(id)a5 onClose:(id)a6
+- (void)contentViewController:(id)controller showTranslateForText:(id)text fromView:(id)view onClose:(id)close
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_563EC;
   v11[3] = &unk_1E38C0;
-  v12 = self;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v8 = v14;
-  v9 = v15;
-  v10 = v13;
-  [(BKBookViewController *)v12 dismissCurrentPopoverWithCompletion:v11 animated:0];
+  selfCopy = self;
+  textCopy = text;
+  viewCopy = view;
+  closeCopy = close;
+  v8 = viewCopy;
+  v9 = closeCopy;
+  v10 = textCopy;
+  [(BKBookViewController *)selfCopy dismissCurrentPopoverWithCompletion:v11 animated:0];
 }
 
-- (void)contentViewController:(id)a3 setSearchString:(id)a4
+- (void)contentViewController:(id)controller setSearchString:(id)string
 {
-  v5 = [(BKBookViewController *)self searchModuleWithSearchString:a4];
-  v4 = [v5 searchController];
-  [v4 cancelSearch];
+  v5 = [(BKBookViewController *)self searchModuleWithSearchString:string];
+  searchController = [v5 searchController];
+  [searchController cancelSearch];
 }
 
-- (void)contentViewController:(id)a3 expandAnnotation:(id)a4 location:(id)a5 selectedText:(id)a6 representativeText:(id)a7
+- (void)contentViewController:(id)controller expandAnnotation:(id)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  -[BKBookViewController _emitAnnotationActionEventIfNeededForAnnotationType:](self, "_emitAnnotationActionEventIfNeededForAnnotationType:", [v14 annotationType]);
-  [(BKBookViewController *)self expandAnnotation:v14 location:v13 selectedText:v12 representativeText:v11];
+  representativeTextCopy = representativeText;
+  textCopy = text;
+  locationCopy = location;
+  annotationCopy = annotation;
+  -[BKBookViewController _emitAnnotationActionEventIfNeededForAnnotationType:](self, "_emitAnnotationActionEventIfNeededForAnnotationType:", [annotationCopy annotationType]);
+  [(BKBookViewController *)self expandAnnotation:annotationCopy location:locationCopy selectedText:textCopy representativeText:representativeTextCopy];
 }
 
-- (id)contentViewController:(id)a3 addAnnotation:(int)a4 location:(id)a5 selectedText:(id)a6 representativeText:(id)a7
+- (id)contentViewController:(id)controller addAnnotation:(int)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText
 {
-  v9 = *&a4;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  v9 = *&annotation;
+  representativeTextCopy = representativeText;
+  textCopy = text;
+  locationCopy = location;
   [(BKBookViewController *)self _emitAnnotationActionEventIfNeededForAnnotationType:v9];
-  v14 = [(BKBookViewController *)self addAnnotation:v9 location:v13 selectedText:v12 representativeText:v11];
+  v14 = [(BKBookViewController *)self addAnnotation:v9 location:locationCopy selectedText:textCopy representativeText:representativeTextCopy];
 
   return v14;
 }
 
-- (void)_emitAnnotationActionEventIfNeededForAnnotationType:(int)a3
+- (void)_emitAnnotationActionEventIfNeededForAnnotationType:(int)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v8 = [[BAViewData alloc] initWithType:4 action:5 location:2];
     v5 = +[BAEventReporter sharedReporter];
-    v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+    ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
     v7 = [(BKBookViewController *)self contentDataForSearchViewController:0];
-    [v5 emitAnnotationActionEventWithTracker:v6 contentData:v7 viewData:v8];
+    [v5 emitAnnotationActionEventWithTracker:ba_effectiveAnalyticsTracker contentData:v7 viewData:v8];
   }
 }
 
-- (id)_searchQueryFromSender:(id)a3
+- (id)_searchQueryFromSender:(id)sender
 {
-  v3 = a3;
+  senderCopy = sender;
   objc_opt_class();
-  v4 = BUDynamicCast();
-  if (!v4)
+  appIntentsSearchQuery = BUDynamicCast();
+  if (!appIntentsSearchQuery)
   {
     v5 = BUProtocolCast();
-    v4 = [v5 appIntentsSearchQuery];
+    appIntentsSearchQuery = [v5 appIntentsSearchQuery];
   }
 
-  return v4;
+  return appIntentsSearchQuery;
 }
 
 - (BCAppIntentsAssetViewControllerInfo)appIntentsInfo
 {
   v3 = objc_opt_new();
   [v3 setSupportsTheming:0];
-  v4 = [(BKBookViewController *)self asset];
-  v5 = [v4 assetID];
-  [v3 setAssetID:v5];
+  asset = [(BKBookViewController *)self asset];
+  assetID = [asset assetID];
+  [v3 setAssetID:assetID];
 
   return v3;
 }
@@ -5361,10 +5361,10 @@ LABEL_14:
     return 7;
   }
 
-  v3 = [(BKBookViewController *)self expandedContentViewController];
-  v4 = [v3 isVisible];
+  expandedContentViewController = [(BKBookViewController *)self expandedContentViewController];
+  isVisible = [expandedContentViewController isVisible];
 
-  if (v4)
+  if (isVisible)
   {
     return 3;
   }
@@ -5379,50 +5379,50 @@ LABEL_14:
 
 - (BOOL)isBookToolbarAppearanceDark
 {
-  v3 = [(BKBookViewController *)self themePage];
-  v4 = [v3 userInterfaceStyle];
+  themePage = [(BKBookViewController *)self themePage];
+  userInterfaceStyle = [themePage userInterfaceStyle];
 
-  if (!v4)
+  if (!userInterfaceStyle)
   {
-    v5 = [(BKBookViewController *)self viewIfLoaded];
-    v6 = [v5 window];
+    viewIfLoaded = [(BKBookViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    v7 = [v6 traitCollection];
-    v4 = [v7 userInterfaceStyle];
+    traitCollection = [window traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
-  return v4 == &dword_0 + 2;
+  return userInterfaceStyle == &dword_0 + 2;
 }
 
 - (id)bookToolbarThemeID
 {
-  v2 = [(BKBookViewController *)self theme];
-  v3 = [v2 themeIdentifier];
+  theme = [(BKBookViewController *)self theme];
+  themeIdentifier = [theme themeIdentifier];
 
-  return v3;
+  return themeIdentifier;
 }
 
 - (BOOL)shouldDisplayShareControls
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 isStoreBook];
+  book = [(BKBookViewController *)self book];
+  isStoreBook = [book isStoreBook];
 
-  return v3;
+  return isStoreBook;
 }
 
 - (BOOL)shouldDisplayBuyButton
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 sampleContent];
-  v4 = [v3 BOOLValue];
+  book = [(BKBookViewController *)self book];
+  sampleContent = [book sampleContent];
+  bOOLValue = [sampleContent BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)itemProvidersForSharing
 {
-  v2 = [(BKBookViewController *)self storeShortURL];
-  if (v2 && (v3 = [[NSItemProvider alloc] initWithContentsOfURL:v2]) != 0)
+  storeShortURL = [(BKBookViewController *)self storeShortURL];
+  if (storeShortURL && (v3 = [[NSItemProvider alloc] initWithContentsOfURL:storeShortURL]) != 0)
   {
     v4 = v3;
     v7 = v3;
@@ -5439,59 +5439,59 @@ LABEL_14:
 
 - (id)titleMutedColor
 {
-  v2 = [(BKBookViewController *)self theme];
-  v3 = [v2 headerTextColorDimmed];
+  theme = [(BKBookViewController *)self theme];
+  headerTextColorDimmed = [theme headerTextColorDimmed];
 
-  return v3;
+  return headerTextColorDimmed;
 }
 
 - (id)titleColor
 {
-  v2 = [(BKBookViewController *)self theme];
-  v3 = [v2 toolbarTitleColor];
+  theme = [(BKBookViewController *)self theme];
+  toolbarTitleColor = [theme toolbarTitleColor];
 
-  return v3;
+  return toolbarTitleColor;
 }
 
 - (id)chapterColor
 {
-  v2 = [(BKBookViewController *)self theme];
-  v3 = [v2 headerTextColorDimmed];
+  theme = [(BKBookViewController *)self theme];
+  headerTextColorDimmed = [theme headerTextColorDimmed];
 
-  return v3;
+  return headerTextColorDimmed;
 }
 
 - (id)tintColorForNavbarButtons
 {
-  v2 = [(BKBookViewController *)self theme];
-  v3 = [v2 tintColorForNavbarButtons];
+  theme = [(BKBookViewController *)self theme];
+  tintColorForNavbarButtons = [theme tintColorForNavbarButtons];
 
-  return v3;
+  return tintColorForNavbarButtons;
 }
 
 - (id)buttonColor
 {
-  v2 = [(BKBookViewController *)self themePage];
-  v3 = [v2 buttonColor];
+  themePage = [(BKBookViewController *)self themePage];
+  buttonColor = [themePage buttonColor];
 
-  return v3;
+  return buttonColor;
 }
 
 - (id)profileFuture
 {
-  v3 = [(BKBookViewController *)self assetViewControllerDelegate];
-  v4 = [v3 assetViewControllerProductProfileProtocol:self];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  v4 = [assetViewControllerDelegate assetViewControllerProductProfileProtocol:self];
 
   return v4;
 }
 
 - (BOOL)isPreordered
 {
-  v2 = [(BKBookViewController *)self book];
-  v3 = [v2 isPreorder];
-  v4 = [v3 BOOLValue];
+  book = [(BKBookViewController *)self book];
+  isPreorder = [book isPreorder];
+  bOOLValue = [isPreorder BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)bookmarkToolTip
@@ -5510,19 +5510,19 @@ LABEL_14:
   return v3;
 }
 
-- (void)popoverDidClose:(id)a3 fromToolbar:(id)a4
+- (void)popoverDidClose:(id)close fromToolbar:(id)toolbar
 {
-  v9 = a3;
-  v5 = [(BKBookViewController *)self brightnessController];
+  closeCopy = close;
+  brightnessController = [(BKBookViewController *)self brightnessController];
 
-  if (v5 == v9 || (-[BKBookViewController audioController](self, "audioController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v8 = v9, v7 == v9))
+  if (brightnessController == closeCopy || (-[BKBookViewController audioController](self, "audioController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v8 = closeCopy, v7 == closeCopy))
   {
     [(BKBookViewController *)self cleanupPopovers];
   }
 
   else
   {
-    if (self->_appearanceContainerViewController != v9)
+    if (self->_appearanceContainerViewController != closeCopy)
     {
       goto LABEL_7;
     }
@@ -5530,65 +5530,65 @@ LABEL_14:
     [(BKBookViewController *)self handleAppearanceViewControllerDismissal];
   }
 
-  v8 = v9;
+  v8 = closeCopy;
 LABEL_7:
 }
 
-- (void)showOverlayViewController:(id)a3 fromView:(id)a4 popoverOnPhone:(BOOL)a5 popoverBackgroundColor:(id)a6
+- (void)showOverlayViewController:(id)controller fromView:(id)view popoverOnPhone:(BOOL)phone popoverBackgroundColor:(id)color
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  phoneCopy = phone;
+  colorCopy = color;
+  viewCopy = view;
+  controllerCopy = controller;
   [(BKBookViewController *)self cancelPendingHidePageControls];
-  [(BKViewController *)self showOverlayViewController:v12 fromItem:v11 popoverOnPhone:v6 passthroughViews:&__NSArray0__struct popoverBackgroundColor:v10];
+  [(BKViewController *)self showOverlayViewController:controllerCopy fromItem:viewCopy popoverOnPhone:phoneCopy passthroughViews:&__NSArray0__struct popoverBackgroundColor:colorCopy];
 }
 
-- (void)setExpandedContentViewController:(id)a3
+- (void)setExpandedContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   expandedContentViewController = self->_expandedContentViewController;
-  if (expandedContentViewController != v5)
+  if (expandedContentViewController != controllerCopy)
   {
-    v8 = v5;
-    v7 = [(BKExpandedContentViewController *)expandedContentViewController delegate];
+    v8 = controllerCopy;
+    delegate = [(BKExpandedContentViewController *)expandedContentViewController delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
       [(BKExpandedContentViewController *)self->_expandedContentViewController setDelegate:0];
     }
 
-    objc_storeStrong(&self->_expandedContentViewController, a3);
+    objc_storeStrong(&self->_expandedContentViewController, controller);
     expandedContentViewController = [(BKBookViewController *)self updateToolbarController];
-    v5 = v8;
+    controllerCopy = v8;
   }
 
-  _objc_release_x1(expandedContentViewController, v5);
+  _objc_release_x1(expandedContentViewController, controllerCopy);
 }
 
-- (void)_showExpandedContentForResource:(id)a3 atLocation:(id)a4 presentingFromTOC:(BOOL)a5 completion:(id)a6
+- (void)_showExpandedContentForResource:(id)resource atLocation:(id)location presentingFromTOC:(BOOL)c completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(BKBookViewController *)self expandedContentViewController];
-  [v13 close:0];
+  cCopy = c;
+  resourceCopy = resource;
+  locationCopy = location;
+  completionCopy = completion;
+  expandedContentViewController = [(BKBookViewController *)self expandedContentViewController];
+  [expandedContentViewController close:0];
 
-  if (!v7)
+  if (!cCopy)
   {
-    v14 = [(BKBookViewController *)self currentLocation];
-    [(BKBookViewController *)self setResumeLocation:v14];
+    currentLocation = [(BKBookViewController *)self currentLocation];
+    [(BKBookViewController *)self setResumeLocation:currentLocation];
   }
 
-  v15 = [v10 sourceURL];
+  sourceURL = [resourceCopy sourceURL];
   v16 = BEDoesURLPointToUSDZFile();
 
   if (v16)
   {
     v17 = objc_alloc_init(BKARQuicklookViewController);
-    v18 = [v10 sourceURL];
-    [(BKARQuicklookViewController *)v17 setARModelDataURL:v18];
+    sourceURL2 = [resourceCopy sourceURL];
+    [(BKARQuicklookViewController *)v17 setARModelDataURL:sourceURL2];
 
     [(BKARQuicklookViewController *)v17 setDataSource:v17];
     [(BKBookViewController *)self presentViewController:v17 animated:1 completion:0];
@@ -5596,21 +5596,21 @@ LABEL_7:
 
   else
   {
-    v17 = [BKExpandedContentViewController expandedContentControllerForResource:v10];
-    v19 = [(BKBookViewController *)self theme];
-    [(BKARQuicklookViewController *)v17 setTheme:v19];
+    v17 = [BKExpandedContentViewController expandedContentControllerForResource:resourceCopy];
+    theme = [(BKBookViewController *)self theme];
+    [(BKARQuicklookViewController *)v17 setTheme:theme];
 
     [(BKARQuicklookViewController *)v17 setDelegate:self];
     objc_opt_class();
     v20 = BUDynamicCast();
     if (v20)
     {
-      v21 = [(BKBookViewController *)self book];
-      [v20 setAllowsRemoteInspection:{objc_msgSend(v21, "shouldAllowRemoteInspection")}];
+      book = [(BKBookViewController *)self book];
+      [v20 setAllowsRemoteInspection:{objc_msgSend(book, "shouldAllowRemoteInspection")}];
     }
 
     [(BKBookViewController *)self setExpandedContentViewController:v17];
-    [(BKARQuicklookViewController *)v17 setPresentingFromTOC:v7];
+    [(BKARQuicklookViewController *)v17 setPresentingFromTOC:cCopy];
     objc_initWeak(&location, self);
     v22 = +[UIView areAnimationsEnabled];
     v23[0] = _NSConcreteStackBlock;
@@ -5618,7 +5618,7 @@ LABEL_7:
     v23[2] = sub_57534;
     v23[3] = &unk_1E4010;
     objc_copyWeak(&v25, &location);
-    v24 = v12;
+    v24 = completionCopy;
     [(BKBookViewController *)self presentViewController:v17 animated:v22 completion:v23];
 
     objc_destroyWeak(&v25);
@@ -5626,7 +5626,7 @@ LABEL_7:
   }
 }
 
-- (CGRect)frameForLocation:(id)a3 inView:(id)a4 expandedContentViewController:(id)a5
+- (CGRect)frameForLocation:(id)location inView:(id)view expandedContentViewController:(id)controller
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
@@ -5639,12 +5639,12 @@ LABEL_7:
   return result;
 }
 
-- (void)expandedContentViewController:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5
+- (void)expandedContentViewController:(id)controller handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion
 {
-  if (self->_expandedContentViewController == a3)
+  if (self->_expandedContentViewController == controller)
   {
 
-    [(BKBookViewController *)self _promptToLoadExternalContent:a5, a4];
+    [(BKBookViewController *)self _promptToLoadExternalContent:completion, l];
   }
 
   else
@@ -5653,12 +5653,12 @@ LABEL_7:
   }
 }
 
-- (void)expandedContentViewController:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5
+- (void)expandedContentViewController:(id)controller handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated
 {
-  if (self->_expandedContentViewController == a3)
+  if (self->_expandedContentViewController == controller)
   {
 
-    [(BKBookViewController *)self _handleExternalLoadRequest:a4 likelyUserInitiated:a5];
+    [(BKBookViewController *)self _handleExternalLoadRequest:request likelyUserInitiated:initiated];
   }
 
   else
@@ -5667,9 +5667,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)expandedContentViewController:(id)a3 handleInternalLoadRequest:(id)a4
+- (BOOL)expandedContentViewController:(id)controller handleInternalLoadRequest:(id)request
 {
-  if (self->_expandedContentViewController == a3)
+  if (self->_expandedContentViewController == controller)
   {
 
     return [BKBookViewController _controller:"_controller:handleInternalRequestForURL:" handleInternalRequestForURL:?];
@@ -5682,9 +5682,9 @@ LABEL_7:
   }
 }
 
-- (void)expandedContentViewController:(id)a3 handleInternalLoadRequestForNewWindow:(id)a4
+- (void)expandedContentViewController:(id)controller handleInternalLoadRequestForNewWindow:(id)window
 {
-  if (self->_expandedContentViewController == a3)
+  if (self->_expandedContentViewController == controller)
   {
 
     [BKBookViewController _controller:"_controller:handleInternalRequestForURL:" handleInternalRequestForURL:?];
@@ -5696,22 +5696,22 @@ LABEL_7:
   }
 }
 
-- (void)expandedContentViewDidDisappear:(id)a3
+- (void)expandedContentViewDidDisappear:(id)disappear
 {
-  v5 = a3;
-  if (self->_expandedContentViewController == v5)
+  disappearCopy = disappear;
+  if (self->_expandedContentViewController == disappearCopy)
   {
-    v4 = [(BKBookViewController *)self searchResult];
+    searchResult = [(BKBookViewController *)self searchResult];
     [(BKBookViewController *)self clearSelection];
     [(BKBookViewController *)self setExpandedContentViewController:0];
-    if (![(BKExpandedContentViewController *)v5 presentingFromTOC])
+    if (![(BKExpandedContentViewController *)disappearCopy presentingFromTOC])
     {
       [(BKBookViewController *)self setResumeLocation:0];
     }
 
-    if (v4)
+    if (searchResult)
     {
-      [(BKBookViewController *)self highlightSearchResult:v4];
+      [(BKBookViewController *)self highlightSearchResult:searchResult];
     }
   }
 
@@ -5721,36 +5721,36 @@ LABEL_7:
   }
 }
 
-- (BOOL)expandedContentView:(id)a3 shouldStartLoadWithRequest:(id)a4
+- (BOOL)expandedContentView:(id)view shouldStartLoadWithRequest:(id)request
 {
-  v6 = a3;
-  if (self->_expandedContentViewController != v6)
+  viewCopy = view;
+  if (self->_expandedContentViewController != viewCopy)
   {
     sub_137A60();
     LOBYTE(self) = 0;
     goto LABEL_14;
   }
 
-  v7 = [a4 URL];
+  v7 = [request URL];
   if (BEURLHandlerSchemeIsOkForBookToLoad())
   {
-    v8 = [v7 bc_pathWithoutPrecedingSlash];
-    v9 = [v8 stringByRemovingURLFragment];
-    v10 = [(BKBookViewController *)self book];
-    v11 = [v10 documentAtPath:v9];
+    bc_pathWithoutPrecedingSlash = [v7 bc_pathWithoutPrecedingSlash];
+    stringByRemovingURLFragment = [bc_pathWithoutPrecedingSlash stringByRemovingURLFragment];
+    book = [(BKBookViewController *)self book];
+    v11 = [book documentAtPath:stringByRemovingURLFragment];
 
-    v12 = [v11 documentOrdinal];
-    if ([v12 integerValue] == -1)
+    documentOrdinal = [v11 documentOrdinal];
+    if ([documentOrdinal integerValue] == -1)
     {
       LOBYTE(self) = 1;
     }
 
     else
     {
-      v13 = [v11 nonlinearElement];
-      v14 = [v13 BOOLValue];
+      nonlinearElement = [v11 nonlinearElement];
+      bOOLValue = [nonlinearElement BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
         LOBYTE(self) = 1;
 LABEL_12:
@@ -5758,26 +5758,26 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (v8)
+      if (bc_pathWithoutPrecedingSlash)
       {
-        v12 = [v7 fragment];
-        [(BKExpandedContentViewController *)v6 close:1];
-        [(BKBookViewController *)self goToPath:v8 fragment:v12 animated:1];
+        documentOrdinal = [v7 fragment];
+        [(BKExpandedContentViewController *)viewCopy close:1];
+        [(BKBookViewController *)self goToPath:bc_pathWithoutPrecedingSlash fragment:documentOrdinal animated:1];
         LOBYTE(self) = 0;
       }
 
       else
       {
-        v12 = [(BKBookViewController *)self assetViewControllerDelegate];
-        LODWORD(self) = [v12 assetViewController:self requestOpenURL:v7 likelyUserInitiated:0] ^ 1;
+        documentOrdinal = [(BKBookViewController *)self assetViewControllerDelegate];
+        LODWORD(self) = [documentOrdinal assetViewController:self requestOpenURL:v7 likelyUserInitiated:0] ^ 1;
       }
     }
 
     goto LABEL_12;
   }
 
-  v8 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v8 assetViewController:self requestOpenURL:v7 likelyUserInitiated:0];
+  bc_pathWithoutPrecedingSlash = [(BKBookViewController *)self assetViewControllerDelegate];
+  [bc_pathWithoutPrecedingSlash assetViewController:self requestOpenURL:v7 likelyUserInitiated:0];
   LOBYTE(self) = 0;
 LABEL_13:
 
@@ -5785,17 +5785,17 @@ LABEL_14:
   return self;
 }
 
-- (void)expandedContentViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5
+- (void)expandedContentViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  if (self->_expandedContentViewController == a3)
+  alertControllerCopy = alertController;
+  completionCopy = completion;
+  if (self->_expandedContentViewController == controller)
   {
-    v9 = [(BKBookViewController *)self book];
-    v10 = [v9 bookTitle];
-    [v11 setTitle:v10];
+    book = [(BKBookViewController *)self book];
+    bookTitle = [book bookTitle];
+    [alertControllerCopy setTitle:bookTitle];
 
-    [(BKBookViewController *)self presentViewController:v11 animated:+[UIView completion:"areAnimationsEnabled"], v8];
+    [(BKBookViewController *)self presentViewController:alertControllerCopy animated:+[UIView completion:"areAnimationsEnabled"], completionCopy];
   }
 
   else
@@ -5808,10 +5808,10 @@ LABEL_14:
 {
   if (!self->_navigationHistory)
   {
-    v3 = [(BKBookViewController *)self book];
-    v4 = [v3 wantsJumpBackHistory];
+    book = [(BKBookViewController *)self book];
+    wantsJumpBackHistory = [book wantsJumpBackHistory];
 
-    if (v4)
+    if (wantsJumpBackHistory)
     {
       v5 = objc_alloc_init(BKNavigationHistory);
       navigationHistory = self->_navigationHistory;
@@ -5824,23 +5824,23 @@ LABEL_14:
   return v7;
 }
 
-- (void)fixupNavigationHistoryForUpsellPageNumber:(int64_t)a3
+- (void)fixupNavigationHistoryForUpsellPageNumber:(int64_t)number
 {
-  v5 = [(BKBookViewController *)self upsellOrdinal];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  upsellOrdinal = [(BKBookViewController *)self upsellOrdinal];
+  if (upsellOrdinal != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v5;
-    v7 = [(BKBookViewController *)self paginationController];
-    v8 = [v7 currentLookupKey];
+    v6 = upsellOrdinal;
+    paginationController = [(BKBookViewController *)self paginationController];
+    currentLookupKey = [paginationController currentLookupKey];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(BKBookViewController *)self navigationHistory];
-    v10 = [v9 allObjects];
+    navigationHistory = [(BKBookViewController *)self navigationHistory];
+    allObjects = [navigationHistory allObjects];
 
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -5851,20 +5851,20 @@ LABEL_14:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 location];
-          v17 = [v16 ordinal];
+          location = [v15 location];
+          ordinal = [location ordinal];
 
-          if (v17 == v6)
+          if (ordinal == v6)
           {
-            [v15 setPage:a3 forLookupKey:v8];
+            [v15 setPage:number forLookupKey:currentLookupKey];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -5872,12 +5872,12 @@ LABEL_14:
   }
 }
 
-- (void)setPaginationController:(id)a3
+- (void)setPaginationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   paginationController = self->_paginationController;
-  v10 = v5;
-  if (paginationController != v5)
+  v10 = controllerCopy;
+  if (paginationController != controllerCopy)
   {
     if (paginationController)
     {
@@ -5894,7 +5894,7 @@ LABEL_14:
 
     [(BKPaginationController *)v8 removeObserver:self forKeyPath:@"progress"];
     [(BKPaginationController *)self->_paginationController quit];
-    objc_storeStrong(&self->_paginationController, a3);
+    objc_storeStrong(&self->_paginationController, controller);
     [(BKPaginationController *)self->_paginationController addObserver:self forKeyPath:@"progress" options:4 context:0];
     [(BKSearchViewController *)self->_searchViewController setPaginationController:self->_paginationController];
     if (self->_paginationController)
@@ -5906,12 +5906,12 @@ LABEL_14:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"progress"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"progress"])
   {
     [(BKPaginationController *)self->_paginationController progress];
     [(BKBookViewController *)self updatePaginationProgress:?];
@@ -5921,40 +5921,40 @@ LABEL_14:
   {
     v13.receiver = self;
     v13.super_class = BKBookViewController;
-    [(BKBookViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKBookViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)a3
+- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal
 {
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
-  LOBYTE(a3) = [v4 needTextNodeCharacterCountsForOrdinal:a3];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  LOBYTE(ordinal) = [assetViewControllerDelegate needTextNodeCharacterCountsForOrdinal:ordinal];
 
-  return a3;
+  return ordinal;
 }
 
-- (void)addTextNodeCharacterCounts:(id)a3 ordinal:(int64_t)a4 completion:(id)a5
+- (void)addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v10 addTextNodeCharacterCounts:v9 ordinal:a4 completion:v8];
+  completionCopy = completion;
+  countsCopy = counts;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate addTextNodeCharacterCounts:countsCopy ordinal:ordinal completion:completionCopy];
 }
 
-- (BOOL)needTOCEntriesForOrdinal:(int64_t)a3
+- (BOOL)needTOCEntriesForOrdinal:(int64_t)ordinal
 {
-  v4 = [(BKBookViewController *)self assetViewControllerDelegate];
-  LOBYTE(a3) = [v4 needTOCEntriesForOrdinal:a3];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  LOBYTE(ordinal) = [assetViewControllerDelegate needTOCEntriesForOrdinal:ordinal];
 
-  return a3;
+  return ordinal;
 }
 
-- (void)addTOCEntries:(id)a3 ordinal:(int64_t)a4 completion:(id)a5
+- (void)addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v10 addTOCEntries:v9 ordinal:a4 completion:v8];
+  completionCopy = completion;
+  entriesCopy = entries;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate addTOCEntries:entriesCopy ordinal:ordinal completion:completionCopy];
 }
 
 - (id)searchViewController
@@ -5966,11 +5966,11 @@ LABEL_14:
     v5 = self->_searchViewController;
     self->_searchViewController = v4;
 
-    v6 = [(BKBookViewController *)self book];
-    -[BKSearchViewController setContentType:](self->_searchViewController, "setContentType:", [v6 contentType]);
+    book = [(BKBookViewController *)self book];
+    -[BKSearchViewController setContentType:](self->_searchViewController, "setContentType:", [book contentType]);
 
-    v7 = [(BKBookViewController *)self theme];
-    [(BKSearchViewController *)self->_searchViewController setTheme:v7];
+    theme = [(BKBookViewController *)self theme];
+    [(BKSearchViewController *)self->_searchViewController setTheme:theme];
 
     [(BKSearchViewController *)self->_searchViewController setSearchDelegate:self];
     [(BKSearchViewController *)self->_searchViewController setPaginationController:self->_paginationController];
@@ -5980,11 +5980,11 @@ LABEL_14:
   return searchViewController;
 }
 
-- (void)showSearchWithString:(id)a3 sender:(id)a4
+- (void)showSearchWithString:(id)string sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKBookViewController *)self searchModuleWithSearchString:v6];
+  stringCopy = string;
+  senderCopy = sender;
+  v8 = [(BKBookViewController *)self searchModuleWithSearchString:stringCopy];
   v9 = [[UINavigationController alloc] initWithRootViewController:v8];
   if (_UISolariumEnabled() && isPhone())
   {
@@ -6006,71 +6006,71 @@ LABEL_14:
 
 - (id)environmentOverrideView
 {
-  v2 = [(BKBookViewController *)self viewIfLoaded];
-  v3 = [v2 window];
+  viewIfLoaded = [(BKBookViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v3)
+  if (!window)
   {
     v4 = +[UIViewController bc_presentingViewController];
-    v5 = [v4 view];
+    view = [v4 view];
 
-    v2 = v5;
+    viewIfLoaded = view;
   }
 
-  return v2;
+  return viewIfLoaded;
 }
 
-- (id)searchModuleWithSearchString:(id)a3
+- (id)searchModuleWithSearchString:(id)string
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self searchStringLengthLimit];
-  if ([v4 length] > v5)
+  stringCopy = string;
+  searchStringLengthLimit = [(BKBookViewController *)self searchStringLengthLimit];
+  if ([stringCopy length] > searchStringLengthLimit)
   {
-    v6 = [v4 substringToIndex:v5];
+    v6 = [stringCopy substringToIndex:searchStringLengthLimit];
 
-    v4 = v6;
+    stringCopy = v6;
   }
 
-  v7 = [(BKBookViewController *)self searchViewController];
-  v8 = [(BKBookViewController *)self book];
-  v9 = [v7 searchController];
-  [v9 setSearchBook:v8];
+  searchViewController = [(BKBookViewController *)self searchViewController];
+  book = [(BKBookViewController *)self book];
+  searchController = [searchViewController searchController];
+  [searchController setSearchBook:book];
 
-  [v7 setSearchString:v4];
+  [searchViewController setSearchString:stringCopy];
 
-  return v7;
+  return searchViewController;
 }
 
-- (void)searchViewControllerWillAppear:(id)a3
+- (void)searchViewControllerWillAppear:(id)appear
 {
   [(BKBookViewController *)self pauseReadAloud];
 
   +[IMSleepManager stopSleepTimer];
 }
 
-- (void)searchViewControllerDidDisappear:(id)a3
+- (void)searchViewControllerDidDisappear:(id)disappear
 {
   [(BKBookViewController *)self resumeReadAloud];
 
   +[IMSleepManager startSleepTimer];
 }
 
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4
+- (void)revealSearchResult:(id)result animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  resultCopy = result;
+  v7 = resultCopy;
+  if (resultCopy)
   {
-    v8 = [v6 location];
+    location = [resultCopy location];
     objc_initWeak(&location, self);
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_58530;
     v10[3] = &unk_1E4060;
     objc_copyWeak(&v13, &location);
-    v9 = v8;
+    v9 = location;
     v11 = v9;
-    v14 = a4;
+    animatedCopy = animated;
     v12 = v7;
     [(BKBookViewController *)self isLocationVisible:v9 completion:v10];
 
@@ -6079,39 +6079,39 @@ LABEL_14:
   }
 }
 
-- (void)searchViewController:(id)a3 revealSearchResult:(id)a4 animated:(BOOL)a5
+- (void)searchViewController:(id)controller revealSearchResult:(id)result animated:(BOOL)animated
 {
-  [(BKBookViewController *)self revealSearchResult:a4 animated:a5];
+  [(BKBookViewController *)self revealSearchResult:result animated:animated];
 
   [(BKBookViewController *)self _dismissSearchViewController];
 }
 
-- (void)searchViewController:(id)a3 turnToPageNumber:(int64_t)a4 animated:(BOOL)a5
+- (void)searchViewController:(id)controller turnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
-  [(BKBookViewController *)self turnToPageNumber:a4 animated:a5];
+  [(BKBookViewController *)self turnToPageNumber:number animated:animated];
 
   [(BKBookViewController *)self _dismissSearchViewController];
 }
 
-- (void)searchViewController:(id)a3 turnToLocation:(id)a4 animated:(BOOL)a5
+- (void)searchViewController:(id)controller turnToLocation:(id)location animated:(BOOL)animated
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_58960;
   v5[3] = &unk_1E2BD0;
   v5[4] = self;
-  [(BKBookViewController *)self recordedJumpToLocation:a4 animated:a5 completion:v5];
+  [(BKBookViewController *)self recordedJumpToLocation:location animated:animated completion:v5];
 }
 
-- (int64_t)searchViewController:(id)a3 pageNumberForDocumentOrdinal:(int64_t)a4
+- (int64_t)searchViewController:(id)controller pageNumberForDocumentOrdinal:(int64_t)ordinal
 {
-  v5 = a3;
-  v6 = [v5 paginationController];
+  controllerCopy = controller;
+  paginationController = [controllerCopy paginationController];
 
-  if (v6)
+  if (paginationController)
   {
-    v7 = [v5 paginationController];
-    v8 = [v7 pageNumberForDocumentOrdinal:a4];
+    paginationController2 = [controllerCopy paginationController];
+    v8 = [paginationController2 pageNumberForDocumentOrdinal:ordinal];
   }
 
   else
@@ -6122,17 +6122,17 @@ LABEL_14:
   return v8;
 }
 
-- (id)searchViewController:(id)a3 chapterNameForSearchResult:(id)a4 pageNumber:(int64_t)a5
+- (id)searchViewController:(id)controller chapterNameForSearchResult:(id)result pageNumber:(int64_t)number
 {
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (number == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
   else
   {
-    v7 = [a3 paginationController];
-    v5 = [v7 titleForChapterAtPageNumber:a5];
+    paginationController = [controller paginationController];
+    v5 = [paginationController titleForChapterAtPageNumber:number];
   }
 
   return v5;
@@ -6154,64 +6154,64 @@ LABEL_14:
   if ([(BKBookViewController *)self lastAnalyticsDeviceOrientationReported]!= v4)
   {
     v5 = +[BAEventReporter sharedReporter];
-    v6 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+    ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
     v7 = [(BKBookViewController *)self readingSessionDataForSearchViewController:0];
     v8 = [(BKBookViewController *)self contentDataForSearchViewController:0];
-    [v5 emitReadingOrientationChangeEventWithTracker:v6 readingSessionData:v7 contentData:v8];
+    [v5 emitReadingOrientationChangeEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:v7 contentData:v8];
 
     [(BKBookViewController *)self setLastAnalyticsDeviceOrientationReported:v4];
   }
 }
 
-- (id)readingSessionDataForSearchViewController:(id)a3
+- (id)readingSessionDataForSearchViewController:(id)controller
 {
-  v4 = [(BKBookViewController *)self _currentReadingProgress];
-  v5 = [(BKBookViewController *)self book];
-  v6 = [v5 sampleContent];
-  v7 = [v6 BOOLValue];
+  _currentReadingProgress = [(BKBookViewController *)self _currentReadingProgress];
+  book = [(BKBookViewController *)self book];
+  sampleContent = [book sampleContent];
+  bOOLValue = [sampleContent BOOLValue];
 
   v8 = [BAReadingSessionData alloc];
-  v9 = [(BKBookViewController *)self analyticsReadStartProgress];
-  v10 = [NSNumber numberWithBool:v7];
-  v11 = [v8 initWithPercentCompletionStart:v9 percentCompletionEnd:v4 isFreeSample:v10 deviceOrientation:{-[BKBookViewController lastAnalyticsDeviceOrientationReported](self, "lastAnalyticsDeviceOrientationReported")}];
+  analyticsReadStartProgress = [(BKBookViewController *)self analyticsReadStartProgress];
+  v10 = [NSNumber numberWithBool:bOOLValue];
+  v11 = [v8 initWithPercentCompletionStart:analyticsReadStartProgress percentCompletionEnd:_currentReadingProgress isFreeSample:v10 deviceOrientation:{-[BKBookViewController lastAnalyticsDeviceOrientationReported](self, "lastAnalyticsDeviceOrientationReported")}];
 
   return v11;
 }
 
-- (id)contentDataForSearchViewController:(id)a3
+- (id)contentDataForSearchViewController:(id)controller
 {
-  v4 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
-  v6 = [(BKBookViewController *)self contentSubType];
-  v7 = [v5 analyticsContentDataForAssetViewController:self contentSubType:v6 tracker:v4];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  contentSubType = [(BKBookViewController *)self contentSubType];
+  v7 = [assetViewControllerDelegate analyticsContentDataForAssetViewController:self contentSubType:contentSubType tracker:ba_effectiveAnalyticsTracker];
 
   if (!v7)
   {
-    v8 = [(BKBookViewController *)self book];
-    v9 = [v8 assetID];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
 
     v10 = BCCurrentBookLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v19 = [(BKBookViewController *)self assetViewControllerDelegate];
+      assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
       *buf = 138412802;
-      v21 = v9;
+      v21 = assetID;
       v22 = 2112;
-      v23 = v19;
+      v23 = assetViewControllerDelegate2;
       v24 = 2112;
-      v25 = v4;
+      v25 = ba_effectiveAnalyticsTracker;
       _os_log_fault_impl(&dword_0, v10, OS_LOG_TYPE_FAULT, "Failed to create ContentData for asset %@ from assetViewControllerDelegate %@. Creating a fallback with tracker %@.", buf, 0x20u);
     }
 
     v11 = [BAUtilities contentTypeFromAssetType:0];
-    v12 = [v4 contentPrivateIDForContentID:v9];
-    v13 = [v4 contentUserIDForContentID:v9];
+    v12 = [ba_effectiveAnalyticsTracker contentPrivateIDForContentID:assetID];
+    v13 = [ba_effectiveAnalyticsTracker contentUserIDForContentID:assetID];
     v14 = +[BAEventReporter sharedReporter];
-    v15 = [v14 seriesTypeForContentID:v9];
+    v15 = [v14 seriesTypeForContentID:assetID];
 
     v16 = [BAContentData alloc];
-    v17 = [(BKBookViewController *)self contentSubType];
-    v7 = [v16 initWithContentID:v9 contentType:v11 contentPrivateID:v12 contentUserID:v13 contentAcquisitionType:0 contentSubType:v17 contentLength:0 supplementalContentCount:0 seriesType:v15 productionType:0 isUnified:0 contentKind:0];
+    contentSubType2 = [(BKBookViewController *)self contentSubType];
+    v7 = [v16 initWithContentID:assetID contentType:v11 contentPrivateID:v12 contentUserID:v13 contentAcquisitionType:0 contentSubType:contentSubType2 contentLength:0 supplementalContentCount:0 seriesType:v15 productionType:0 isUnified:0 contentKind:0];
   }
 
   return v7;
@@ -6224,69 +6224,69 @@ LABEL_14:
   self->_referenceLibraryViewController = 0;
 }
 
-- (void)showLookupForString:(id)a3 fromView:(id)a4 onClose:(id)a5
+- (void)showLookupForString:(id)string fromView:(id)view onClose:(id)close
 {
-  v8 = a3;
+  stringCopy = string;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_58FAC;
   v12[3] = &unk_1E40B0;
-  v13 = a4;
-  v14 = self;
-  v15 = v8;
-  v16 = a5;
-  v9 = v16;
-  v10 = v8;
-  v11 = v13;
+  viewCopy = view;
+  selfCopy = self;
+  v15 = stringCopy;
+  closeCopy = close;
+  v9 = closeCopy;
+  v10 = stringCopy;
+  v11 = viewCopy;
   [(BKBookViewController *)self dismissCurrentPopoverWithCompletion:v12 animated:0];
 }
 
-- (void)dismissCurrentPopoverWithCompletion:(id)a3 animated:(BOOL)a4
+- (void)dismissCurrentPopoverWithCompletion:(id)completion animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKBookViewController *)self referenceLibraryViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  referenceLibraryViewController = [(BKBookViewController *)self referenceLibraryViewController];
 
-  if (v7)
+  if (referenceLibraryViewController)
   {
-    v8 = [(BKBookViewController *)self referenceLibraryViewController];
-    [v8 dismissViewControllerAnimated:0 completion:0];
+    referenceLibraryViewController2 = [(BKBookViewController *)self referenceLibraryViewController];
+    [referenceLibraryViewController2 dismissViewControllerAnimated:0 completion:0];
 
     [(BKBookViewController *)self p_releaseDictionary];
   }
 
-  v9 = [(BKBookViewController *)self translationViewController];
+  translationViewController = [(BKBookViewController *)self translationViewController];
 
-  if (v9)
+  if (translationViewController)
   {
-    v10 = [(BKBookViewController *)self translationViewController];
-    [v10 dismissViewControllerAnimated:0 completion:0];
+    translationViewController2 = [(BKBookViewController *)self translationViewController];
+    [translationViewController2 dismissViewControllerAnimated:0 completion:0];
 
     [(BKBookViewController *)self setTranslationViewController:0];
   }
 
   v11.receiver = self;
   v11.super_class = BKBookViewController;
-  [(BKViewController *)&v11 dismissCurrentPopoverWithCompletion:v6 animated:v4];
+  [(BKViewController *)&v11 dismissCurrentPopoverWithCompletion:completionCopy animated:animatedCopy];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [v4 presentedViewController];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
   activityViewController = self->_activityViewController;
 
-  if (v5 == activityViewController)
+  if (presentedViewController == activityViewController)
   {
     [(BKBookViewController *)self setActivityViewController:0];
   }
 
   else
   {
-    v7 = [v4 presentedViewController];
-    v8 = [(BKBookViewController *)self referenceLibraryViewController];
+    presentedViewController2 = [dismissCopy presentedViewController];
+    referenceLibraryViewController = [(BKBookViewController *)self referenceLibraryViewController];
 
-    if (v7 == v8)
+    if (presentedViewController2 == referenceLibraryViewController)
     {
       [(BKBookViewController *)self clearSelection];
       [(BKBookViewController *)self p_releaseDictionary];
@@ -6294,10 +6294,10 @@ LABEL_14:
 
     else
     {
-      v9 = [v4 presentedViewController];
-      v10 = [(BKBookViewController *)self translationViewController];
+      presentedViewController3 = [dismissCopy presentedViewController];
+      translationViewController = [(BKBookViewController *)self translationViewController];
 
-      if (v9 == v10)
+      if (presentedViewController3 == translationViewController)
       {
         [(BKBookViewController *)self clearSelection];
         [(BKBookViewController *)self setTranslationViewController:0];
@@ -6305,20 +6305,20 @@ LABEL_14:
 
       else
       {
-        v11 = [v4 presentedViewController];
-        v12 = [(BKBookViewController *)self brightnessController];
+        presentedViewController4 = [dismissCopy presentedViewController];
+        brightnessController = [(BKBookViewController *)self brightnessController];
 
-        if (v11 == v12 || ([v4 presentedViewController], v13 = objc_claimAutoreleasedReturnValue(), -[BKBookViewController audioController](self, "audioController"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "navigationController"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v13 == v15))
+        if (presentedViewController4 == brightnessController || ([dismissCopy presentedViewController], v13 = objc_claimAutoreleasedReturnValue(), -[BKBookViewController audioController](self, "audioController"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "navigationController"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v13 == v15))
         {
           [(BKBookViewController *)self cleanupPopovers];
         }
 
         else if (self->_appearanceContainerViewController)
         {
-          v16 = [v4 presentedViewController];
+          presentedViewController5 = [dismissCopy presentedViewController];
           appearanceContainerViewController = self->_appearanceContainerViewController;
 
-          if (v16 == appearanceContainerViewController)
+          if (presentedViewController5 == appearanceContainerViewController)
           {
             [(BKBookViewController *)self handleAppearanceViewControllerDismissal];
           }
@@ -6329,36 +6329,36 @@ LABEL_14:
 
   v18.receiver = self;
   v18.super_class = BKBookViewController;
-  [(BKViewController *)&v18 presentationControllerDidDismiss:v4];
+  [(BKViewController *)&v18 presentationControllerDidDismiss:dismissCopy];
 }
 
-- (id)_footnoteViewController2ForResource:(id)a3 stylesheetSet:(id)a4
+- (id)_footnoteViewController2ForResource:(id)resource stylesheetSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BKFootnoteViewController2 alloc] initWithResource:v7 stylesheetSet:v6 backgroundColor:0 textColor:0];
+  setCopy = set;
+  resourceCopy = resource;
+  v8 = [[BKFootnoteViewController2 alloc] initWithResource:resourceCopy stylesheetSet:setCopy backgroundColor:0 textColor:0];
 
   [(BKFootnoteViewController2 *)v8 setAllowsRemoteInspection:[(AEBookInfo *)self->_book shouldAllowRemoteInspection]];
-  v9 = [(BKBookViewController *)self theme];
-  [(BKFootnoteViewController2 *)v8 setTheme:v9];
+  theme = [(BKBookViewController *)self theme];
+  [(BKFootnoteViewController2 *)v8 setTheme:theme];
 
   objc_storeStrong(&self->_footnoteController, v8);
 
   return v8;
 }
 
-- (void)showFootnoteInContentViewController:(id)a3 resource:(id)a4 fromView:(id)a5 stylesheetSet:(id)a6
+- (void)showFootnoteInContentViewController:(id)controller resource:(id)resource fromView:(id)view stylesheetSet:(id)set
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  viewCopy = view;
+  setCopy = set;
+  resourceCopy = resource;
   [(BKBookViewController *)self dismissCurrentPopover];
   [(BKBookViewController *)self _cleanupFootnoteViewController];
   footnoteSourceView = self->_footnoteSourceView;
-  self->_footnoteSourceView = v9;
-  v15 = v9;
+  self->_footnoteSourceView = viewCopy;
+  v15 = viewCopy;
 
-  v13 = [(BKBookViewController *)self _footnoteViewController2ForResource:v11 stylesheetSet:v10];
+  v13 = [(BKBookViewController *)self _footnoteViewController2ForResource:resourceCopy stylesheetSet:setCopy];
 
   footnoteController = self->_footnoteController;
   self->_footnoteController = v13;
@@ -6377,12 +6377,12 @@ LABEL_14:
   self->_footnoteSourceView = 0;
 }
 
-- (void)footnoteViewController:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5
+- (void)footnoteViewController:(id)controller handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion
 {
-  if (self->_footnoteController == a3)
+  if (self->_footnoteController == controller)
   {
 
-    [(BKBookViewController *)self _promptToLoadExternalContent:a5, a4];
+    [(BKBookViewController *)self _promptToLoadExternalContent:completion, l];
   }
 
   else
@@ -6391,12 +6391,12 @@ LABEL_14:
   }
 }
 
-- (void)footnoteViewController:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5
+- (void)footnoteViewController:(id)controller handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated
 {
-  if (self->_footnoteController == a3)
+  if (self->_footnoteController == controller)
   {
 
-    [(BKBookViewController *)self _handleExternalLoadRequest:a4 likelyUserInitiated:a5];
+    [(BKBookViewController *)self _handleExternalLoadRequest:request likelyUserInitiated:initiated];
   }
 
   else
@@ -6405,9 +6405,9 @@ LABEL_14:
   }
 }
 
-- (BOOL)footnoteViewController:(id)a3 handleInternalLoadRequest:(id)a4
+- (BOOL)footnoteViewController:(id)controller handleInternalLoadRequest:(id)request
 {
-  if (self->_footnoteController == a3)
+  if (self->_footnoteController == controller)
   {
 
     return [BKBookViewController _controller:"_controller:handleInternalRequestForURL:" handleInternalRequestForURL:?];
@@ -6420,9 +6420,9 @@ LABEL_14:
   }
 }
 
-- (void)footnoteViewDidFinishLoad:(id)a3
+- (void)footnoteViewDidFinishLoad:(id)load
 {
-  if (self->_footnoteController == a3)
+  if (self->_footnoteController == load)
   {
 
     [BKBookViewController showOverlayViewController:"showOverlayViewController:fromView:popoverOnPhone:popoverBackgroundColor:" fromView:? popoverOnPhone:? popoverBackgroundColor:?];
@@ -6434,9 +6434,9 @@ LABEL_14:
   }
 }
 
-- (void)footnoteViewDidDisappear:(id)a3
+- (void)footnoteViewDidDisappear:(id)disappear
 {
-  if (self->_footnoteController == a3)
+  if (self->_footnoteController == disappear)
   {
     [(BKBookViewController *)self _cleanupFootnoteViewController];
 
@@ -6449,17 +6449,17 @@ LABEL_14:
   }
 }
 
-- (void)footnoteViewController:(id)a3 presentAlertController:(id)a4 completion:(id)a5
+- (void)footnoteViewController:(id)controller presentAlertController:(id)alertController completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  if (self->_footnoteController == a3)
+  alertControllerCopy = alertController;
+  completionCopy = completion;
+  if (self->_footnoteController == controller)
   {
-    v9 = [(BKBookViewController *)self book];
-    v10 = [v9 bookTitle];
-    [v11 setTitle:v10];
+    book = [(BKBookViewController *)self book];
+    bookTitle = [book bookTitle];
+    [alertControllerCopy setTitle:bookTitle];
 
-    [(BKBookViewController *)self presentViewController:v11 animated:+[UIView completion:"areAnimationsEnabled"], v8];
+    [(BKBookViewController *)self presentViewController:alertControllerCopy animated:+[UIView completion:"areAnimationsEnabled"], completionCopy];
   }
 
   else
@@ -6468,7 +6468,7 @@ LABEL_14:
   }
 }
 
-- (void)pageNavigationDidChangeLocation:(id)a3
+- (void)pageNavigationDidChangeLocation:(id)location
 {
   v5.location = [(BKBookViewController *)self currentPages];
   if (!NSIntersectionRange(v5, self[240]).length)
@@ -6478,9 +6478,9 @@ LABEL_14:
   }
 }
 
-- (int64_t)pageNavigationCurrentReadAloudPageOffset:(id)a3
+- (int64_t)pageNavigationCurrentReadAloudPageOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   previousReadingOrdinal = self->_previousReadingOrdinal;
   if (previousReadingOrdinal == -1)
   {
@@ -6498,39 +6498,39 @@ LABEL_14:
   return previousReadingOrdinal;
 }
 
-- (void)setSection:(int)a3 animated:(BOOL)a4 adjustScrollToReveal:(BOOL)a5
+- (void)setSection:(int)section animated:(BOOL)animated adjustScrollToReveal:(BOOL)reveal
 {
-  if (self->_section != a3)
+  if (self->_section != section)
   {
-    self->_section = a3;
-    if (a3)
+    self->_section = section;
+    if (section)
     {
-      [(BKBookViewController *)self bookMilestoneReached:7, a4, a5];
+      [(BKBookViewController *)self bookMilestoneReached:7, animated, reveal];
       [(BKBookViewController *)self updateToolbarController];
     }
 
     else
     {
-      [(BKBookViewController *)self updateToolbarController:*&a3];
-      v7 = [(BKBookViewController *)self displaySleepController];
-      [v7 userInteractionOccurred];
+      [(BKBookViewController *)self updateToolbarController:*&section];
+      displaySleepController = [(BKBookViewController *)self displaySleepController];
+      [displaySleepController userInteractionOccurred];
     }
 
     [(BKBookViewController *)self notifyAppIntentsInfoChanged];
   }
 }
 
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4
+- (void)directoryContent:(id)content didSelectLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  [(BKBookViewController *)self directoryContent:v7 didSelectLocation:v6 animated:+[UIView areAnimationsEnabled]];
+  locationCopy = location;
+  contentCopy = content;
+  [(BKBookViewController *)self directoryContent:contentCopy didSelectLocation:locationCopy animated:+[UIView areAnimationsEnabled]];
 }
 
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4 animated:(BOOL)a5
+- (void)directoryContent:(id)content didSelectLocation:(id)location animated:(BOOL)animated
 {
-  v5 = a5;
-  v21 = a4;
+  animatedCopy = animated;
+  locationCopy = location;
   v7 = [(BKBookViewController *)self documentForLocation:?];
   v8 = v7;
   if (!v7)
@@ -6538,98 +6538,98 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  v9 = [v7 documentOrdinal];
-  if ([v9 integerValue] == -1)
+  documentOrdinal = [v7 documentOrdinal];
+  if ([documentOrdinal integerValue] == -1)
   {
   }
 
   else
   {
-    v10 = [v8 nonlinearElement];
-    v11 = [v10 BOOLValue];
+    nonlinearElement = [v8 nonlinearElement];
+    bOOLValue = [nonlinearElement BOOLValue];
 
-    if (!v11)
+    if (!bOOLValue)
     {
 LABEL_4:
       [(BKBookViewController *)self recordJumpFromCurrentLocation];
-      if (v21)
+      if (locationCopy)
       {
-        [(BKBookViewController *)self setResumeLocation:v21];
+        [(BKBookViewController *)self setResumeLocation:locationCopy];
       }
 
-      [(BKBookViewController *)self setSection:0 animated:v5 adjustScrollToReveal:1];
+      [(BKBookViewController *)self setSection:0 animated:animatedCopy adjustScrollToReveal:1];
       [(BKBookViewController *)self setResumeLocation:0];
       [(BKBookViewController *)self clearSearchResult];
       goto LABEL_13;
     }
   }
 
-  v12 = [(BKBookViewController *)self book];
-  v13 = [v12 urlForDocument:v8];
+  book = [(BKBookViewController *)self book];
+  v13 = [book urlForDocument:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v21;
-    v15 = [v14 anchor];
+    v14 = locationCopy;
+    anchor = [v14 anchor];
 
-    if (v15)
+    if (anchor)
     {
-      v16 = [v14 anchor];
-      v17 = [v13 URLByAppendingPathComponent:v16];
+      anchor2 = [v14 anchor];
+      v17 = [v13 URLByAppendingPathComponent:anchor2];
 
       v13 = v17;
     }
   }
 
   v18 = [BKExpandedContentResource resourceForURL:v13];
-  v19 = [(BKBookViewController *)self book];
-  v20 = [v19 cacheItem];
-  [v18 setCacheItem:v20];
+  book2 = [(BKBookViewController *)self book];
+  cacheItem = [book2 cacheItem];
+  [v18 setCacheItem:cacheItem];
 
-  [(BKBookViewController *)self _showExpandedContentForResource:v18 atLocation:v21 presentingFromTOC:1 completion:0];
+  [(BKBookViewController *)self _showExpandedContentForResource:v18 atLocation:locationCopy presentingFromTOC:1 completion:0];
 LABEL_13:
 }
 
-- (int64_t)directoryContent:(id)a3 pageNumberForLocation:(id)a4
+- (int64_t)directoryContent:(id)content pageNumberForLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self paginationController];
-  v7 = [v6 pageNumberForLocation:v5];
+  locationCopy = location;
+  paginationController = [(BKBookViewController *)self paginationController];
+  v7 = [paginationController pageNumberForLocation:locationCopy];
 
   return v7;
 }
 
-- (id)_locationForChapter:(id)a3
+- (id)_locationForChapter:(id)chapter
 {
-  v4 = a3;
-  v5 = [v4 href];
-  v6 = [v5 URLFragmentString];
+  chapterCopy = chapter;
+  href = [chapterCopy href];
+  uRLFragmentString = [href URLFragmentString];
 
-  v7 = [v4 href];
+  href2 = [chapterCopy href];
 
-  v8 = [v7 stringByRemovingURLFragment];
+  stringByRemovingURLFragment = [href2 stringByRemovingURLFragment];
 
-  v9 = [(BKBookViewController *)self locationForPath:v8 fragment:v6];
+  v9 = [(BKBookViewController *)self locationForPath:stringByRemovingURLFragment fragment:uRLFragmentString];
 
   return v9;
 }
 
-- (void)tocViewController:(id)a3 didSelectChapter:(id)a4
+- (void)tocViewController:(id)controller didSelectChapter:(id)chapter
 {
-  v6 = a3;
-  v8 = [(BKBookViewController *)self _locationForChapter:a4];
+  controllerCopy = controller;
+  v8 = [(BKBookViewController *)self _locationForChapter:chapter];
   objc_opt_class();
   v7 = BUDynamicCast();
 
   [(BKBookViewController *)self directoryContent:v7 didSelectLocation:v8];
 }
 
-- (id)tocViewController:(id)a3 pageTitleForChapter:(id)a4
+- (id)tocViewController:(id)controller pageTitleForChapter:(id)chapter
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self paginationController];
-  v7 = [v6 pageRangeForChapter:v5];
+  chapterCopy = chapter;
+  paginationController = [(BKBookViewController *)self paginationController];
+  v7 = [paginationController pageRangeForChapter:chapterCopy];
   v9 = v8;
 
   v10 = [(BKBookViewController *)self pageNumberFromRange:v7, v9];
@@ -6658,11 +6658,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)tocViewController:(id)a3 pageTitleForAnnotation:(id)a4
+- (id)tocViewController:(id)controller pageTitleForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self paginationController];
-  v7 = [v6 pageRangeForAnnotation:v5];
+  annotationCopy = annotation;
+  paginationController = [(BKBookViewController *)self paginationController];
+  v7 = [paginationController pageRangeForAnnotation:annotationCopy];
   v9 = v8;
 
   v10 = [(BKBookViewController *)self pageNumberFromRange:v7, v9];
@@ -6675,39 +6675,39 @@ LABEL_7:
   return v11;
 }
 
-- (int64_t)tocViewController:(id)a3 pageNumberForAnnotation:(id)a4
+- (int64_t)tocViewController:(id)controller pageNumberForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self paginationController];
-  v7 = [v6 pageRangeForAnnotation:v5];
+  annotationCopy = annotation;
+  paginationController = [(BKBookViewController *)self paginationController];
+  v7 = [paginationController pageRangeForAnnotation:annotationCopy];
   v9 = v8;
 
   return [(BKBookViewController *)self pageNumberFromRange:v7, v9];
 }
 
-- (int64_t)tocViewController:(id)a3 pageNumberForChapter:(id)a4
+- (int64_t)tocViewController:(id)controller pageNumberForChapter:(id)chapter
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self paginationController];
-  v7 = [v6 pageRangeForChapter:v5];
+  chapterCopy = chapter;
+  paginationController = [(BKBookViewController *)self paginationController];
+  v7 = [paginationController pageRangeForChapter:chapterCopy];
 
   return v7;
 }
 
-- (id)tocViewControllerTocIdCssRules:(id)a3
+- (id)tocViewControllerTocIdCssRules:(id)rules
 {
-  v3 = [(BKBookViewController *)self book];
-  v4 = [v3 tocIdCssRules];
+  book = [(BKBookViewController *)self book];
+  tocIdCssRules = [book tocIdCssRules];
 
-  return v4;
+  return tocIdCssRules;
 }
 
-- (void)_contentReady:(id)a3
+- (void)_contentReady:(id)ready
 {
-  v5 = [a3 object];
+  object = [ready object];
   if ([(NSMutableArray *)self->_contentLoadQueue containsObject:?])
   {
-    [(NSMutableArray *)self->_contentLoadQueue removeObject:v5];
+    [(NSMutableArray *)self->_contentLoadQueue removeObject:object];
     if ([(NSMutableArray *)self->_contentLoadQueue count])
     {
       v4 = [(NSMutableArray *)self->_contentLoadQueue objectAtIndex:0];
@@ -6716,17 +6716,17 @@ LABEL_7:
   }
 }
 
-- (void)preloadContentController:(id)a3 highPriority:(BOOL)a4
+- (void)preloadContentController:(id)controller highPriority:(BOOL)priority
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  priorityCopy = priority;
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (controllerCopy)
   {
-    v16 = v6;
-    v6 = [v6 isContentLoaded];
+    v16 = controllerCopy;
+    controllerCopy = [controllerCopy isContentLoaded];
     v7 = v16;
-    if ((v6 & 1) == 0)
+    if ((controllerCopy & 1) == 0)
     {
       contentLoadQueue = self->_contentLoadQueue;
       if (!contentLoadQueue)
@@ -6742,7 +6742,7 @@ LABEL_7:
       v11 = [(NSMutableArray *)contentLoadQueue indexOfObject:v7];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v4 && [(NSMutableArray *)self->_contentLoadQueue count])
+        if (priorityCopy && [(NSMutableArray *)self->_contentLoadQueue count])
         {
           [(NSMutableArray *)self->_contentLoadQueue insertObject:v16 atIndex:1];
         }
@@ -6756,7 +6756,7 @@ LABEL_7:
       else
       {
         v12 = v11;
-        if (v11 >= 2 && v4)
+        if (v11 >= 2 && priorityCopy)
         {
           v14 = self->_contentLoadQueue;
           v15 = v16;
@@ -6765,22 +6765,22 @@ LABEL_7:
         }
       }
 
-      v6 = [(NSMutableArray *)self->_contentLoadQueue count];
+      controllerCopy = [(NSMutableArray *)self->_contentLoadQueue count];
       v7 = v16;
-      if (v6 == &dword_0 + 1)
+      if (controllerCopy == &dword_0 + 1)
       {
-        v6 = [v16 load];
+        controllerCopy = [v16 load];
         v7 = v16;
       }
     }
   }
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(controllerCopy, v7);
 }
 
-- (void)cancelPreloadForContent:(id)a3
+- (void)cancelPreloadForContent:(id)content
 {
-  v4 = [(NSMutableArray *)self->_contentLoadQueue indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_contentLoadQueue indexOfObject:content];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -6796,60 +6796,60 @@ LABEL_7:
   }
 }
 
-+ (id)valueOfAnnotationProperty:(id)a3 activityType:(id)a4 book:(id)a5
++ (id)valueOfAnnotationProperty:(id)property activityType:(id)type book:(id)book
 {
-  v6 = a3;
-  v29 = a5;
+  propertyCopy = property;
+  bookCopy = book;
   v7 = [NSSet alloc];
   v30 = [v7 initWithObjects:{AEAssetActivityItemProviderPropertyStoreId, AEAssetActivityItemProviderPropertyEpubId, AEAssetActivityItemProviderPropertyTitle, AEAssetActivityItemProviderPropertyAuthor, AEAssetActivityItemProviderPropertyPublisherLocation, AEAssetActivityItemProviderPropertyPublisherName, AEAssetActivityItemProviderPropertyPublisherYear, AEAssetActivityItemProviderPropertyLanguage, AEAssetActivityItemProviderPropertyGenre, AEAssetActivityItemProviderPropertyIsContentProtected, 0}];
-  if ([v30 containsObject:v6])
+  if ([v30 containsObject:propertyCopy])
   {
     v8 = [NSDictionary alloc];
     v9 = [v8 initWithObjectsAndKeys:{@"storeId", AEAssetActivityItemProviderPropertyStoreId, @"bookEpubId", AEAssetActivityItemProviderPropertyEpubId, @"bookTitle", AEAssetActivityItemProviderPropertyTitle, @"bookAuthor", AEAssetActivityItemProviderPropertyAuthor, @"publisherLocation", AEAssetActivityItemProviderPropertyPublisherLocation, @"publisherName", AEAssetActivityItemProviderPropertyPublisherName, @"publisherYear", AEAssetActivityItemProviderPropertyPublisherYear, @"bookLanguage", AEAssetActivityItemProviderPropertyLanguage, @"genre", AEAssetActivityItemProviderPropertyGenre, @"isProtected", AEAssetActivityItemProviderPropertyIsContentProtected, 0}];
-    v10 = [v9 objectForKey:v6];
-    v11 = v29;
-    v12 = [v29 valueForKey:v10];
+    storeId2 = [v9 objectForKey:propertyCopy];
+    v11 = bookCopy;
+    v12 = [bookCopy valueForKey:storeId2];
 LABEL_3:
-    v13 = v12;
+    assetType = v12;
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v11 = v29;
-  if ([v6 isEqualToString:AEAssetActivityItemProviderPropertyAssetCover])
+  v11 = bookCopy;
+  if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertyAssetCover])
   {
-    v9 = [v29 url];
+    v9 = [bookCopy url];
     v14 = +[AEPluginRegistry sharedInstance];
-    v10 = [v14 pluginForURL:v9];
+    storeId2 = [v14 pluginForURL:v9];
 
-    if (!v10 || ([v10 helperForURL:v9 withOptions:0], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "helperCoverImage"), v13 = objc_claimAutoreleasedReturnValue(), v15, !v13))
+    if (!storeId2 || ([storeId2 helperForURL:v9 withOptions:0], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "helperCoverImage"), assetType = objc_claimAutoreleasedReturnValue(), v15, !assetType))
     {
-      v16 = [v29 pageProgressionDirection];
-      [v16 isEqualToString:AEHelperStringMetadataPageProgressionRightToLeftValue];
+      pageProgressionDirection = [bookCopy pageProgressionDirection];
+      [pageProgressionDirection isEqualToString:AEHelperStringMetadataPageProgressionRightToLeftValue];
 
-      v17 = [v29 bookLanguage];
-      v28 = [v29 coverWritingModeString];
-      [v28 imIsVerticalWritingMode];
+      bookLanguage = [bookCopy bookLanguage];
+      coverWritingModeString = [bookCopy coverWritingModeString];
+      [coverWritingModeString imIsVerticalWritingMode];
       BKGenericBookCoverLayoutFromLanguageAndVerticality();
       v18 = +[UIScreen mainScreen];
       [v18 scale];
 
       CGSizeScale();
-      v19 = [v29 genericCoverTemplate];
+      genericCoverTemplate = [bookCopy genericCoverTemplate];
       v20 = BKGenericBookCoverTemplateNameValid();
 
-      v21 = [v29 shortBookTitle];
-      v22 = [v29 bookAuthor];
+      shortBookTitle = [bookCopy shortBookTitle];
+      bookAuthor = [bookCopy bookAuthor];
       if (v20)
       {
-        v23 = [v29 genericCoverTemplate];
+        genericCoverTemplate2 = [bookCopy genericCoverTemplate];
         ImageWithTemplate = BKGenericBookCoverCreateImageWithTemplate();
       }
 
       else
       {
-        v23 = [v29 databaseKey];
+        genericCoverTemplate2 = [bookCopy databaseKey];
         ImageWithTemplate = BKGenericBookCoverCreateImageWithItemIDAndLayout();
       }
 
@@ -6857,181 +6857,181 @@ LABEL_21:
 
       if (v26)
       {
-        v13 = [UIImage imageWithCGImage:v26];
+        assetType = [UIImage imageWithCGImage:v26];
         CFRelease(v26);
       }
 
       else
       {
-        v13 = 0;
+        assetType = 0;
       }
     }
 
     goto LABEL_21;
   }
 
-  if ([v6 isEqualToString:AEAssetActivityItemProviderPropertyAssetType])
+  if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertyAssetType])
   {
-    v13 = [v29 assetType];
+    assetType = [bookCopy assetType];
     goto LABEL_22;
   }
 
-  if ([v6 isEqualToString:AEAssetActivityItemProviderPropertyStoreUrl])
+  if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertyStoreUrl])
   {
-    v25 = [v29 storeId];
-    v13 = +[AEBookInfo storeURLForBookStoreId:isAudiobook:](AEBookInfo, "storeURLForBookStoreId:isAudiobook:", v25, [v29 contentType] == 4);
+    storeId = [bookCopy storeId];
+    assetType = +[AEBookInfo storeURLForBookStoreId:isAudiobook:](AEBookInfo, "storeURLForBookStoreId:isAudiobook:", storeId, [bookCopy contentType] == 4);
 
     goto LABEL_22;
   }
 
-  if ([v6 isEqualToString:AEAssetActivityItemProviderPropertyStoreShortUrl])
+  if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertyStoreShortUrl])
   {
-    if ([v29 isStoreBook])
+    if ([bookCopy isStoreBook])
     {
       v9 = +[AEUserPublishing sharedInstance];
-      v10 = [v29 storeId];
-      v12 = [v9 storeShortURLForStoreId:v10 dataSource:0];
+      storeId2 = [bookCopy storeId];
+      v12 = [v9 storeShortURLForStoreId:storeId2 dataSource:0];
       goto LABEL_3;
     }
   }
 
   else
   {
-    if ([v6 isEqualToString:AEAssetActivityItemProviderPropertyBookDescription])
+    if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertyBookDescription])
     {
       v9 = +[AEAssetEngine libraryMgr];
-      v10 = [v29 assetID];
-      v12 = [v9 bookDescriptionForAssetID:v10];
+      storeId2 = [bookCopy assetID];
+      v12 = [v9 bookDescriptionForAssetID:storeId2];
       goto LABEL_3;
     }
 
-    if ([v6 isEqualToString:AEAssetActivityItemProviderPropertySeriesTitle])
+    if ([propertyCopy isEqualToString:AEAssetActivityItemProviderPropertySeriesTitle])
     {
       v9 = +[AEAssetEngine libraryMgr];
-      v10 = [v29 assetID];
-      v12 = [v9 seriesTitleForAssetID:v10];
+      storeId2 = [bookCopy assetID];
+      v12 = [v9 seriesTitleForAssetID:storeId2];
       goto LABEL_3;
     }
   }
 
-  v13 = 0;
+  assetType = 0;
 LABEL_22:
 
-  return v13;
+  return assetType;
 }
 
-+ (id)propertySourceFromBook:(id)a3
++ (id)propertySourceFromBook:(id)book
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_5ABC0;
   v11 = &unk_1E40D8;
-  v12 = a3;
-  v13 = a1;
-  v4 = v12;
+  bookCopy = book;
+  selfCopy = self;
+  v4 = bookCopy;
   v5 = objc_retainBlock(&v8);
   v6 = [v5 copy];
 
   return v6;
 }
 
-+ (BOOL)areCitationsAllowedForBook:(id)a3
++ (BOOL)areCitationsAllowedForBook:(id)book
 {
-  v3 = a3;
-  if ([v3 isProtected] && (+[AEAssetEngine storeMgr](AEAssetEngine, "storeMgr"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "clientApplicationController"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "storeFrontId"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "citationAllowedForStoreFrontID:", objc_msgSend(v6, "unsignedLongLongValue")), v6, v5, v4, !v7))
+  bookCopy = book;
+  if ([bookCopy isProtected] && (+[AEAssetEngine storeMgr](AEAssetEngine, "storeMgr"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "clientApplicationController"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(bookCopy, "storeFrontId"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "citationAllowedForStoreFrontID:", objc_msgSend(v6, "unsignedLongLongValue")), v6, v5, v4, !v7))
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v8 = [v3 sampleContent];
-    v9 = [v8 BOOLValue] ^ 1;
+    sampleContent = [bookCopy sampleContent];
+    v9 = [sampleContent BOOLValue] ^ 1;
   }
 
   return v9;
 }
 
-- (void)shareAnnotation:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 completion:(id)a6
+- (void)shareAnnotation:(id)annotation fromRect:(CGRect)rect inView:(id)view completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = [NSArray arrayWithObject:a3];
-  [(BKBookViewController *)self shareAnnotations:v15 fromRect:v14 inView:1 excerpt:v13 completion:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  viewCopy = view;
+  v15 = [NSArray arrayWithObject:annotation];
+  [(BKBookViewController *)self shareAnnotations:v15 fromRect:viewCopy inView:1 excerpt:completionCopy completion:x, y, width, height];
 }
 
-- (void)shareAnnotations:(id)a3 fromBarButtonItem:(id)a4 excerpt:(BOOL)a5 completion:(id)a6
+- (void)shareAnnotations:(id)annotations fromBarButtonItem:(id)item excerpt:(BOOL)excerpt completion:(id)completion
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_5AE68;
   v14[3] = &unk_1E4150;
   v14[4] = self;
-  v15 = a3;
-  v18 = a5;
-  v16 = a4;
-  v17 = a6;
-  v10 = v16;
-  v11 = v17;
-  v12 = v15;
+  annotationsCopy = annotations;
+  excerptCopy = excerpt;
+  itemCopy = item;
+  completionCopy = completion;
+  v10 = itemCopy;
+  v11 = completionCopy;
+  v12 = annotationsCopy;
   v13 = objc_retainBlock(v14);
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v13];
 }
 
-- (void)shareAnnotations:(id)a3 fromRect:(CGRect)a4 inView:(id)a5 excerpt:(BOOL)a6 completion:(id)a7
+- (void)shareAnnotations:(id)annotations fromRect:(CGRect)rect inView:(id)view excerpt:(BOOL)excerpt completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationsCopy = annotations;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_5B620;
   v20[3] = &unk_1E4178;
   v20[4] = self;
-  v21 = a5;
+  viewCopy = view;
   v24 = x;
   v25 = y;
   v26 = width;
   v27 = height;
-  v28 = a6;
-  v22 = v15;
-  v23 = a7;
-  v16 = v23;
-  v17 = v15;
-  v18 = v21;
+  excerptCopy = excerpt;
+  v22 = annotationsCopy;
+  completionCopy = completion;
+  v16 = completionCopy;
+  v17 = annotationsCopy;
+  v18 = viewCopy;
   v19 = objc_retainBlock(v20);
   [(BKViewController *)self dismissCurrentPopoverWithCompletion:v19];
 }
 
-- (void)expandAnnotation:(id)a3 location:(id)a4 selectedText:(id)a5 representativeText:(id)a6
+- (void)expandAnnotation:(id)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText
 {
-  if (a4)
+  if (location)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [(BKBookViewController *)self book];
-    [v14 expandAnnotation:v13 location:v12 selectedText:v11 representativeText:v10];
+    representativeTextCopy = representativeText;
+    textCopy = text;
+    locationCopy = location;
+    annotationCopy = annotation;
+    book = [(BKBookViewController *)self book];
+    [book expandAnnotation:annotationCopy location:locationCopy selectedText:textCopy representativeText:representativeTextCopy];
   }
 }
 
-- (id)addAnnotation:(int)a3 location:(id)a4 selectedText:(id)a5 representativeText:(id)a6
+- (id)addAnnotation:(int)annotation location:(id)location selectedText:(id)text representativeText:(id)representativeText
 {
-  if (a4)
+  if (location)
   {
-    v8 = *&a3;
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = [(BKBookViewController *)self book];
-    v14 = [v13 addAnnotation:v8 location:v12 selectedText:v11 representativeText:v10];
+    v8 = *&annotation;
+    representativeTextCopy = representativeText;
+    textCopy = text;
+    locationCopy = location;
+    book = [(BKBookViewController *)self book];
+    v14 = [book addAnnotation:v8 location:locationCopy selectedText:textCopy representativeText:representativeTextCopy];
   }
 
   else
@@ -7042,26 +7042,26 @@ LABEL_22:
   return v14;
 }
 
-- (void)contentViewController:(id)a3 showHighlightingMenuForAnnotation:(id)a4
+- (void)contentViewController:(id)controller showHighlightingMenuForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKBookViewController *)self theme];
-  v9 = [v8 annotationPageTheme];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  theme = [(BKBookViewController *)self theme];
+  annotationPageTheme = [theme annotationPageTheme];
 
-  v10 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [v7 annotationStyle], v9, objc_msgSend(v7, "annotationIsUnderline"));
+  v10 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [annotationCopy annotationStyle], annotationPageTheme, objc_msgSend(annotationCopy, "annotationIsUnderline"));
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_5C090;
   v17[3] = &unk_1E41A0;
   objc_copyWeak(v21, &location);
-  v11 = v6;
+  v11 = controllerCopy;
   v18 = v11;
   v12 = v10;
   v19 = v12;
-  v21[1] = v9;
-  v13 = v7;
+  v21[1] = annotationPageTheme;
+  v13 = annotationCopy;
   v20 = v13;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -7075,41 +7075,41 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)contentViewController:(id)a3 shareAnnotation:(id)a4 annotationRects:(id)a5 completion:(id)a6
+- (void)contentViewController:(id)controller shareAnnotation:(id)annotation annotationRects:(id)rects completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [a5 firstObject];
-  v14 = v13;
-  if (v13)
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  completionCopy = completion;
+  firstObject = [rects firstObject];
+  v14 = firstObject;
+  if (firstObject)
   {
-    [v13 rectValue];
+    [firstObject rectValue];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [v10 view];
-    [(BKBookViewController *)self shareAnnotation:v11 fromRect:v23 inView:v12 completion:v16, v18, v20, v22];
+    view = [controllerCopy view];
+    [(BKBookViewController *)self shareAnnotation:annotationCopy fromRect:view inView:completionCopy completion:v16, v18, v20, v22];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if ([v11 conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
+  if ([annotationCopy conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
   {
-    v24 = v11;
-    v25 = [v24 location];
+    v24 = annotationCopy;
+    location = [v24 location];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_5C3C4;
     v26[3] = &unk_1E41F0;
     v26[4] = self;
     v27 = v24;
-    v28 = v10;
-    v29 = v12;
-    v23 = v24;
-    [v28 visibleRectForLocation:v25 completion:v26];
+    v28 = controllerCopy;
+    v29 = completionCopy;
+    view = v24;
+    [v28 visibleRectForLocation:location completion:v26];
 
     goto LABEL_5;
   }
@@ -7170,28 +7170,28 @@ LABEL_6:
 
 - (BOOL)hasSoundtrack
 {
-  v2 = [(BKBookViewController *)self currentSoundtrack];
-  v3 = v2 != 0;
+  currentSoundtrack = [(BKBookViewController *)self currentSoundtrack];
+  v3 = currentSoundtrack != 0;
 
   return v3;
 }
 
 - (BOOL)isSoundtrackPlaying
 {
-  v3 = [(BKBookViewController *)self hasSoundtrack];
-  if (v3)
+  hasSoundtrack = [(BKBookViewController *)self hasSoundtrack];
+  if (hasSoundtrack)
   {
-    LOBYTE(v3) = self->_isPlayingSoundTrack;
+    LOBYTE(hasSoundtrack) = self->_isPlayingSoundTrack;
   }
 
-  return v3;
+  return hasSoundtrack;
 }
 
-- (void)setReadAloudState:(BOOL)a3
+- (void)setReadAloudState:(BOOL)state
 {
-  if (self->_isReading != a3)
+  if (self->_isReading != state)
   {
-    if (a3)
+    if (state)
     {
       self->_isReading = 1;
       [(BKBookViewController *)self startReadAloud];
@@ -7207,9 +7207,9 @@ LABEL_6:
       [(BKBookViewController *)self stopReadAloud];
       [(BKBookViewController *)self _nextPageHint:0];
       self->_isReading = 0;
-      v4 = [(BKBookViewController *)self currentPages];
+      currentPages = [(BKBookViewController *)self currentPages];
       v6 = v5;
-      v7 = [(BKBookViewController *)self pageNumberFromRange:v4, v5];
+      v7 = [(BKBookViewController *)self pageNumberFromRange:currentPages, v5];
       if (v6)
       {
         v8 = v7;
@@ -7235,10 +7235,10 @@ LABEL_6:
 
 - (int)readAloudState
 {
-  v3 = [(BKBookViewController *)self book];
-  v4 = [v3 hasMediaOverlayElements];
+  book = [(BKBookViewController *)self book];
+  hasMediaOverlayElements = [book hasMediaOverlayElements];
 
-  if (v4)
+  if (hasMediaOverlayElements)
   {
     return self->_isReading;
   }
@@ -7249,14 +7249,14 @@ LABEL_6:
   }
 }
 
-- (void)setTrackState:(BOOL)a3 persistSetting:(BOOL)a4
+- (void)setTrackState:(BOOL)state persistSetting:(BOOL)setting
 {
-  v4 = a4;
-  if (!a3)
+  settingCopy = setting;
+  if (!state)
   {
     [(BKBookViewController *)self stopSoundtrack];
     self->_isPlayingSoundTrack = 0;
-    if (!v4)
+    if (!settingCopy)
     {
       goto LABEL_6;
     }
@@ -7266,7 +7266,7 @@ LABEL_6:
 
   self->_isPlayingSoundTrack = 1;
   [(BKBookViewController *)self playCurrentSoundtrack];
-  if (v4)
+  if (settingCopy)
   {
 LABEL_5:
     v6 = +[NSUserDefaults standardUserDefaults];
@@ -7281,9 +7281,9 @@ LABEL_6:
 
 - (int)trackState
 {
-  v3 = [(BKBookViewController *)self currentSoundtrack];
+  currentSoundtrack = [(BKBookViewController *)self currentSoundtrack];
 
-  if (v3)
+  if (currentSoundtrack)
   {
     return self->_isPlayingSoundTrack;
   }
@@ -7294,9 +7294,9 @@ LABEL_6:
   }
 }
 
-- (void)setTurnState:(BOOL)a3
+- (void)setTurnState:(BOOL)state
 {
-  self->_autoTurn = a3;
+  self->_autoTurn = state;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [NSNumber numberWithBool:self->_autoTurn];
   [v4 setObject:v5 forKey:BKReadAloudAutoPageTurn[0]];
@@ -7304,35 +7304,35 @@ LABEL_6:
   [(BKBookViewController *)self updateToolbarController];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   [(IMAVPlayer *)self->_readPlayer setVolume:?];
-  *&v5 = a3;
+  *&v5 = volume;
   [(IMAVPlayer *)self->_trackPlayer setVolume:v5];
   v8 = +[NSUserDefaults standardUserDefaults];
-  *&v6 = a3;
+  *&v6 = volume;
   v7 = [NSNumber numberWithFloat:v6];
   [v8 setObject:v7 forKey:@"AudioVolume"];
 }
 
 - (float)volume
 {
-  v2 = [(BKBookViewController *)self _readPlayer];
-  [v2 volume];
+  _readPlayer = [(BKBookViewController *)self _readPlayer];
+  [_readPlayer volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)dismissCurrentPopoverAnimated:(BOOL)a3
+- (void)dismissCurrentPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (self->_appearanceContainerViewController)
   {
-    v5 = [(BKBookViewController *)self presentedViewController];
+    presentedViewController = [(BKBookViewController *)self presentedViewController];
     appearanceContainerViewController = self->_appearanceContainerViewController;
 
-    if (v5 == appearanceContainerViewController)
+    if (presentedViewController == appearanceContainerViewController)
     {
       [(BKBookViewController *)self handleAppearanceViewControllerDismissal];
     }
@@ -7342,23 +7342,23 @@ LABEL_6:
   [(BKBookViewController *)self _cleanupFootnoteViewController];
   v7.receiver = self;
   v7.super_class = BKBookViewController;
-  [(BKViewController *)&v7 dismissCurrentPopoverAnimated:v3];
+  [(BKViewController *)&v7 dismissCurrentPopoverAnimated:animatedCopy];
 }
 
-- (void)playerStateChanged:(id)a3
+- (void)playerStateChanged:(id)changed
 {
-  if (self->_readPlayer == a3)
+  if (self->_readPlayer == changed)
   {
     [(BKBookViewController *)self updateTouchBarController];
   }
 }
 
-- (void)playerCurrentItemEnded:(id)a3
+- (void)playerCurrentItemEnded:(id)ended
 {
-  v4 = a3;
-  if (self->_readPlayer == v4)
+  endedCopy = ended;
+  if (self->_readPlayer == endedCopy)
   {
-    v17 = v4;
+    v17 = endedCopy;
     currentMapItem = self->_currentMapItem;
     if (currentMapItem)
     {
@@ -7379,13 +7379,13 @@ LABEL_6:
       }
 
       ++self->_currentMapIndex;
-      v10 = [(BKBookViewController *)self performSelectorProxy];
-      [NSObject cancelPreviousPerformRequestsWithTarget:v10 selector:"_playNextItem" object:0];
+      performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+      [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"_playNextItem" object:0];
 
-      v11 = [(BKBookViewController *)self currentPages];
+      currentPages = [(BKBookViewController *)self currentPages];
       if (self->_autoTurn)
       {
-        v13 = v11;
+        v13 = currentPages;
         v14 = v12;
         if (![(BKBookViewController *)self _isFocusedOnSecondPageOfSpread])
         {
@@ -7394,8 +7394,8 @@ LABEL_6:
           {
             [(BKBookViewController *)self _focusOnPage:previousReadingOrdinal + 2];
             [(BKBookViewController *)self clearSelection];
-            v16 = [(BKBookViewController *)self performSelectorProxy];
-            [v16 performSelector:"_playNextItem" withObject:0 afterDelay:3.0];
+            performSelectorProxy2 = [(BKBookViewController *)self performSelectorProxy];
+            [performSelectorProxy2 performSelector:"_playNextItem" withObject:0 afterDelay:3.0];
 
             goto LABEL_8;
           }
@@ -7405,13 +7405,13 @@ LABEL_6:
 
     [(BKBookViewController *)self _playNextItem];
 LABEL_8:
-    v4 = v17;
+    endedCopy = v17;
   }
 }
 
-- (void)player:(id)a3 callbackForTime:(double)a4
+- (void)player:(id)player callbackForTime:(double)time
 {
-  v24 = a3;
+  playerCopy = player;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -7433,47 +7433,47 @@ LABEL_8:
 
         v9 = *(*(&v27 + 1) + 8 * i);
         v10 = [v9 valueForKey:@"smil"];
-        v11 = [v10 audioHref];
+        audioHref = [v10 audioHref];
 
-        if (v11)
+        if (audioHref)
         {
-          v12 = self;
-          v13 = [(BKBookViewController *)self book];
-          v14 = [v13 basePlusContentPath];
-          v15 = [v10 audioHref];
-          v16 = [v14 stringByAppendingPathComponent:v15];
+          selfCopy = self;
+          book = [(BKBookViewController *)self book];
+          basePlusContentPath = [book basePlusContentPath];
+          audioHref2 = [v10 audioHref];
+          v16 = [basePlusContentPath stringByAppendingPathComponent:audioHref2];
 
           v17 = [NSURL fileURLWithPath:v16 isDirectory:0];
-          v18 = [v10 audioStart];
-          [v18 doubleValue];
-          if (vabdd_f64(v19, a4) >= 0.001)
+          audioStart = [v10 audioStart];
+          [audioStart doubleValue];
+          if (vabdd_f64(v19, time) >= 0.001)
           {
           }
 
           else
           {
-            v20 = [v24 assetURL];
-            v21 = [v17 isEqual:v20];
+            assetURL = [playerCopy assetURL];
+            v21 = [v17 isEqual:assetURL];
 
             if (v21)
             {
               v22 = [v9 valueForKey:@"ordinal"];
-              v23 = [v22 intValue];
+              intValue = [v22 intValue];
 
-              if (v12->_previousReadingOrdinal != v23)
+              if (selfCopy->_previousReadingOrdinal != intValue)
               {
-                v12->_previousReadingOrdinal = v23;
-                [(BKBookViewController *)v12 _focusOnPage:v23 + 1];
-                [(BKBookViewController *)v12 clearSelection];
+                selfCopy->_previousReadingOrdinal = intValue;
+                [(BKBookViewController *)selfCopy _focusOnPage:intValue + 1];
+                [(BKBookViewController *)selfCopy clearSelection];
               }
 
-              [(BKBookViewController *)v12 _highlightElement:v10];
+              [(BKBookViewController *)selfCopy _highlightElement:v10];
 
               goto LABEL_18;
             }
           }
 
-          self = v12;
+          self = selfCopy;
         }
       }
 
@@ -7497,15 +7497,15 @@ LABEL_18:
     return 0;
   }
 
-  v2 = [(BKBookViewController *)self _readPlayer];
-  v3 = [v2 state] == 3;
+  _readPlayer = [(BKBookViewController *)self _readPlayer];
+  v3 = [_readPlayer state] == 3;
 
   return v3;
 }
 
-- (void)_startReadAloud:(BOOL)a3
+- (void)_startReadAloud:(BOOL)aloud
 {
-  if (a3 && [(BKBookViewController *)self isReadAloudPaused])
+  if (aloud && [(BKBookViewController *)self isReadAloudPaused])
   {
     v4 = 1;
   }
@@ -7516,9 +7516,9 @@ LABEL_18:
     v4 = 0;
   }
 
-  v5 = [(BKBookViewController *)self currentPages];
+  currentPages = [(BKBookViewController *)self currentPages];
   v7 = v6;
-  v8 = [(BKBookViewController *)self pageNumberFromRange:v5, v6];
+  v8 = [(BKBookViewController *)self pageNumberFromRange:currentPages, v6];
   if (v7)
   {
     v9 = v8;
@@ -7538,36 +7538,36 @@ LABEL_18:
 
   if (v4)
   {
-    v12 = [(BKBookViewController *)self _readPlayer];
-    [v12 play];
+    _readPlayer = [(BKBookViewController *)self _readPlayer];
+    [_readPlayer play];
 LABEL_14:
 
     goto LABEL_16;
   }
 
-  if (self->_autoTurn && ([(BKBookViewController *)self _isPageEmpty:v5, v7]|| [(BKBookViewController *)self _isPageAllZeros:v5, v7]))
+  if (self->_autoTurn && ([(BKBookViewController *)self _isPageEmpty:currentPages, v7]|| [(BKBookViewController *)self _isPageAllZeros:currentPages, v7]))
   {
-    v12 = [NSNumber numberWithBool:0];
-    [(BKBookViewController *)self readNextPages:v12];
+    _readPlayer = [NSNumber numberWithBool:0];
+    [(BKBookViewController *)self readNextPages:_readPlayer];
     goto LABEL_14;
   }
 
-  [(BKBookViewController *)self readPages:v5 from:v7 to:[(BKBookViewController *)self _itemIndexForCurrentPage] waitOnEmpty:-1, 0];
+  [(BKBookViewController *)self readPages:currentPages from:v7 to:[(BKBookViewController *)self _itemIndexForCurrentPage] waitOnEmpty:-1, 0];
 LABEL_16:
   self->_isAutoTurning = 1;
   v13 = +[BCAudioMuxingCoordinator sharedInstance];
   [v13 notifyPlaybackWillStart:self];
 }
 
-- (void)stopReadAloudAndReload:(BOOL)a3
+- (void)stopReadAloudAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   [(BKBookViewController *)self pauseReadAloud];
   [(IMAVPlayer *)self->_readPlayer setCurrentTime:0.0];
-  if (v3)
+  if (reloadCopy)
   {
-    v5 = [(IMAVPlayer *)self->_readPlayer assetURL];
-    v6 = [AVAsset assetWithURL:v5];
+    assetURL = [(IMAVPlayer *)self->_readPlayer assetURL];
+    v6 = [AVAsset assetWithURL:assetURL];
     [(IMAVPlayer *)self->_readPlayer setAsset:v6];
   }
 
@@ -7622,11 +7622,11 @@ LABEL_16:
       while (v5);
     }
 
-    v9 = [(BKBookViewController *)self performSelectorProxy];
-    [NSObject cancelPreviousPerformRequestsWithTarget:v9 selector:"readNextPages:" object:0];
+    performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+    [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"readNextPages:" object:0];
 
-    v10 = [(BKBookViewController *)self performSelectorProxy];
-    [NSObject cancelPreviousPerformRequestsWithTarget:v10 selector:"_playNextItem" object:0];
+    performSelectorProxy2 = [(BKBookViewController *)self performSelectorProxy];
+    [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy2 selector:"_playNextItem" object:0];
 
     self->_isAutoTurning = 0;
     +[IMSleepManager stopSleepTimer];
@@ -7638,8 +7638,8 @@ LABEL_16:
   if (self->_playNextItemAbortedWhileInactive)
   {
     self->_playNextItemAbortedWhileInactive = 0;
-    v3 = [(BKBookViewController *)self performSelectorProxy];
-    [v3 performSelector:"_playNextItem" withObject:0 afterDelay:1.0];
+    performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+    [performSelectorProxy performSelector:"_playNextItem" withObject:0 afterDelay:1.0];
   }
 
   else if ([(BKBookViewController *)self isReadAloudPaused]&& self->_smilMap)
@@ -7652,15 +7652,15 @@ LABEL_16:
 - (void)_playNextItem
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_nextDelayedPageHint:" object:&__kCFBooleanTrue];
-  v3 = [(BKBookViewController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v3 selector:"readNextPages:" object:0];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"readNextPages:" object:0];
 
-  v4 = [(BKBookViewController *)self viewIfLoaded];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 activationState];
+  viewIfLoaded = [(BKBookViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (v7)
+  if (activationState)
   {
     self->_playNextItemAbortedWhileInactive = 1;
   }
@@ -7668,11 +7668,11 @@ LABEL_16:
   else
   {
     self->_playNextItemAbortedWhileInactive = 0;
-    v8 = [(BKBookViewController *)self currentPages];
+    currentPages = [(BKBookViewController *)self currentPages];
     v10 = v9;
-    if ([(BKBookViewController *)self _isPageEmpty:v8, v9]|| [(BKBookViewController *)self _isPageAllZeros:v8, v10])
+    if ([(BKBookViewController *)self _isPageEmpty:currentPages, v9]|| [(BKBookViewController *)self _isPageAllZeros:currentPages, v10])
     {
-      if (&v8[v10 - 1] == [(BKBookViewController *)self pageCountIncludingUpsell])
+      if (&currentPages[v10 - 1] == [(BKBookViewController *)self pageCountIncludingUpsell])
       {
 
         [(BKBookViewController *)self setReadAloudState:0];
@@ -7684,11 +7684,11 @@ LABEL_16:
         {
           if (![(BKBookViewController *)self _isFocusedOnSecondPageOfSpread]&& v10 != 1)
           {
-            [(BKBookViewController *)self _focusOnPage:[(BKBookViewController *)self pageNumberFromRange:v8, v10]+ 1];
+            [(BKBookViewController *)self _focusOnPage:[(BKBookViewController *)self pageNumberFromRange:currentPages, v10]+ 1];
           }
 
-          v11 = [(BKBookViewController *)self performSelectorProxy];
-          [v11 performSelector:"readNextPages:" withObject:0 afterDelay:3.0];
+          performSelectorProxy2 = [(BKBookViewController *)self performSelectorProxy];
+          [performSelectorProxy2 performSelector:"readNextPages:" withObject:0 afterDelay:3.0];
         }
 
         else
@@ -7713,8 +7713,8 @@ LABEL_16:
       if (currentMapIndex >= [(NSArray *)self->_smilMap count])
       {
         v14 = self->_previousReadingOrdinal + 1;
-        v15 = v14 >= v8;
-        v16 = v14 - v8;
+        v15 = v14 >= currentPages;
+        v16 = v14 - currentPages;
         if (v15 && v16 < v10)
         {
           self->_isAutoTurning = 0;
@@ -7738,39 +7738,39 @@ LABEL_16:
         maxMapIndex = self->_maxMapIndex;
         if (maxMapIndex < 0 || self->_currentMapIndex <= maxMapIndex)
         {
-          v17 = [(BKBookViewController *)self _readPlayer];
-          [v17 removeAllTimeObservers];
+          _readPlayer = [(BKBookViewController *)self _readPlayer];
+          [_readPlayer removeAllTimeObservers];
           v18 = [(NSArray *)self->_smilMap objectAtIndex:self->_currentMapIndex];
           currentMapItem = self->_currentMapItem;
           self->_currentMapItem = v18;
 
           ++self->_currentMapIndex;
           v20 = [(NSDictionary *)self->_currentMapItem objectForKey:@"smil"];
-          v21 = [v20 audioStart];
-          [v21 doubleValue];
+          audioStart = [v20 audioStart];
+          [audioStart doubleValue];
           v23 = v22;
 
           v47 = v20;
-          v24 = [v20 audioEnd];
-          [v24 doubleValue];
+          audioEnd = [v20 audioEnd];
+          [audioEnd doubleValue];
           v26 = v25;
 
-          [v17 addTimeObserver:v23];
+          [_readPlayer addTimeObserver:v23];
           v27 = self->_currentMapIndex;
           if (v27 < [(NSArray *)self->_smilMap count])
           {
             while (1)
             {
-              v28 = v17;
+              v28 = _readPlayer;
               v29 = [(NSArray *)self->_smilMap objectAtIndex:v27];
               v30 = [(NSDictionary *)v29 objectForKey:@"smil"];
-              v31 = [v30 audioStart];
-              [v31 doubleValue];
+              audioStart2 = [v30 audioStart];
+              [audioStart2 doubleValue];
               v33 = v32;
 
-              v34 = [v30 audioHref];
-              v35 = [v47 audioHref];
-              if (![v34 isEqualToString:v35])
+              audioHref = [v30 audioHref];
+              audioHref2 = [v47 audioHref];
+              if (![audioHref isEqualToString:audioHref2])
               {
                 break;
               }
@@ -7780,10 +7780,10 @@ LABEL_16:
                 goto LABEL_43;
               }
 
-              v17 = v28;
+              _readPlayer = v28;
               [v28 addTimeObserver:v33];
-              v36 = [v30 audioEnd];
-              [v36 doubleValue];
+              audioEnd2 = [v30 audioEnd];
+              [audioEnd2 doubleValue];
               v26 = v37;
 
               v38 = self->_currentMapItem;
@@ -7797,24 +7797,24 @@ LABEL_16:
             }
 
 LABEL_43:
-            v17 = v28;
+            _readPlayer = v28;
           }
 
 LABEL_44:
-          [v17 addTimeObserver:v26];
-          v39 = [v47 audioHref];
+          [_readPlayer addTimeObserver:v26];
+          audioHref3 = [v47 audioHref];
 
-          if (v39)
+          if (audioHref3)
           {
-            v40 = [(BKBookViewController *)self book];
-            v41 = [v40 basePlusContentPath];
-            v42 = [v47 audioHref];
-            v43 = [v41 stringByAppendingPathComponent:v42];
+            book = [(BKBookViewController *)self book];
+            basePlusContentPath = [book basePlusContentPath];
+            audioHref4 = [v47 audioHref];
+            v43 = [basePlusContentPath stringByAppendingPathComponent:audioHref4];
 
             if (v43)
             {
               v44 = [NSURL fileURLWithPath:v43 isDirectory:0];
-              [v17 setAssetURL:v44];
+              [_readPlayer setAssetURL:v44];
 
               if (v23 == v26)
               {
@@ -7823,10 +7823,10 @@ LABEL_44:
 
               else
               {
-                [v17 setEndTime:v26];
-                if (![v17 isPlaying] || (objc_msgSend(v17, "currentTime"), vabdd_f64(v23, v45) >= 2.0))
+                [_readPlayer setEndTime:v26];
+                if (![_readPlayer isPlaying] || (objc_msgSend(_readPlayer, "currentTime"), vabdd_f64(v23, v45) >= 2.0))
                 {
-                  [v17 playFrom:v23];
+                  [_readPlayer playFrom:v23];
                 }
               }
             }
@@ -7844,10 +7844,10 @@ LABEL_44:
   }
 }
 
-- (void)readNextPages:(id)a3
+- (void)readNextPages:(id)pages
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(BKBookViewController *)self currentPages];
+  bOOLValue = [pages BOOLValue];
+  currentPages = [(BKBookViewController *)self currentPages];
   v7 = v6;
   if (-[BKBookViewController _isManualCurlInProgress](self, "_isManualCurlInProgress") || (+[NSRunLoop currentRunLoop](NSRunLoop, "currentRunLoop"), v8 = objc_claimAutoreleasedReturnValue(), [v8 currentMode], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", UITrackingRunLoopMode), v9, v8, (v10 & 1) != 0))
   {
@@ -7857,11 +7857,11 @@ LABEL_44:
 
   else
   {
-    v11 = v5 + v7;
-    v12 = [(BKBookViewController *)self pageCountIncludingUpsell];
-    if (v4)
+    v11 = currentPages + v7;
+    pageCountIncludingUpsell = [(BKBookViewController *)self pageCountIncludingUpsell];
+    if (bOOLValue)
     {
-      if (v11 <= v12)
+      if (v11 <= pageCountIncludingUpsell)
       {
         while ([(BKBookViewController *)self _isPageEmpty:v11, 1])
         {
@@ -7879,7 +7879,7 @@ LABEL_44:
 
     else
     {
-      if (v11 <= v12)
+      if (v11 <= pageCountIncludingUpsell)
       {
         while ([(BKBookViewController *)self _isPageAllZeros:v11, 1])
         {
@@ -7910,16 +7910,16 @@ LABEL_15:
   }
 }
 
-- (void)contentView:(id)a3 didSelectMediaOverlayElement:(id)a4
+- (void)contentView:(id)view didSelectMediaOverlayElement:(id)element
 {
-  v5 = a4;
-  v22 = [(BKBookViewController *)self currentPages];
-  v23 = self;
+  elementCopy = element;
+  currentPages = [(BKBookViewController *)self currentPages];
+  selfCopy = self;
   v21 = v6;
   v7 = [(BKBookViewController *)self smilMapOnPages:?];
-  [v5 elementId];
-  v25 = v24 = v5;
-  v8 = [v5 documentHref];
+  [elementCopy elementId];
+  v25 = v24 = elementCopy;
+  documentHref = [elementCopy documentHref];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -7941,22 +7941,22 @@ LABEL_15:
 
         v13 = *(*(&v27 + 1) + 8 * i);
         v14 = [v13 valueForKey:@"smil"];
-        v15 = [v14 documentHref];
-        if ([v15 isEqualToString:v8])
+        documentHref2 = [v14 documentHref];
+        if ([documentHref2 isEqualToString:documentHref])
         {
-          v16 = [v14 elementId];
-          v17 = [v16 isEqualToString:v25];
+          elementId = [v14 elementId];
+          v17 = [elementId isEqualToString:v25];
 
           if (v17)
           {
             v18 = [obj indexOfObject:v13];
             v19 = v18;
-            if ((v23->_currentMapIndex & 0x8000000000000000) == 0 && v23->_maxMapIndex < 0)
+            if ((selfCopy->_currentMapIndex & 0x8000000000000000) == 0 && selfCopy->_maxMapIndex < 0)
             {
               v20 = -1;
             }
 
-            else if (v23->_autoTurn)
+            else if (selfCopy->_autoTurn)
             {
               v20 = -1;
             }
@@ -7966,14 +7966,14 @@ LABEL_15:
               v20 = v18;
             }
 
-            [(BKBookViewController *)v23 stopReadAloud];
-            [(BKBookViewController *)v23 _nextPageHint:0];
-            if (![(BKBookViewController *)v23 bkaxNeedsPersistentControls])
+            [(BKBookViewController *)selfCopy stopReadAloud];
+            [(BKBookViewController *)selfCopy _nextPageHint:0];
+            if (![(BKBookViewController *)selfCopy bkaxNeedsPersistentControls])
             {
-              [(BKBookViewController *)v23 hidePageControls:0];
+              [(BKBookViewController *)selfCopy hidePageControls:0];
             }
 
-            [(BKBookViewController *)v23 readPages:v22 from:v21 to:v19 waitOnEmpty:v20, 0];
+            [(BKBookViewController *)selfCopy readPages:currentPages from:v21 to:v19 waitOnEmpty:v20, 0];
 
             goto LABEL_22;
           }
@@ -7997,18 +7997,18 @@ LABEL_15:
 LABEL_22:
 }
 
-- (void)readPages:(_NSRange)a3 from:(int64_t)a4 to:(int64_t)a5 waitOnEmpty:(BOOL)a6
+- (void)readPages:(_NSRange)pages from:(int64_t)from to:(int64_t)to waitOnEmpty:(BOOL)empty
 {
   if (!self->_isReading)
   {
     return;
   }
 
-  v6 = a6;
-  length = a3.length;
-  location = a3.location;
-  self->_currentMapIndex = a4;
-  self->_maxMapIndex = a5;
+  emptyCopy = empty;
+  length = pages.length;
+  location = pages.location;
+  self->_currentMapIndex = from;
+  self->_maxMapIndex = to;
   currentMapItem = self->_currentMapItem;
   self->_currentMapItem = 0;
 
@@ -8016,7 +8016,7 @@ LABEL_22:
   smilMap = self->_smilMap;
   self->_smilMap = v11;
 
-  if (v6)
+  if (emptyCopy)
   {
     v13 = 0.5;
   }
@@ -8030,8 +8030,8 @@ LABEL_22:
   {
     if (length == 1)
     {
-      v14 = 0;
-      if (!v6)
+      _isFocusedOnSecondPageOfSpread = 0;
+      if (!emptyCopy)
       {
 LABEL_18:
         if (length == 1)
@@ -8045,14 +8045,14 @@ LABEL_18:
 
     else
     {
-      v14 = [(BKBookViewController *)self _isFocusedOnSecondPageOfSpread];
-      if (!v6)
+      _isFocusedOnSecondPageOfSpread = [(BKBookViewController *)self _isFocusedOnSecondPageOfSpread];
+      if (!emptyCopy)
       {
         goto LABEL_18;
       }
     }
 
-    if ((v14 & 1) == 0)
+    if ((_isFocusedOnSecondPageOfSpread & 1) == 0)
     {
       if ([(NSArray *)self->_smilMap count])
       {
@@ -8078,8 +8078,8 @@ LABEL_18:
 
 LABEL_20:
   +[IMSleepManager startSleepTimer];
-  v17 = [(BKBookViewController *)self performSelectorProxy];
-  [NSObject cancelPreviousPerformRequestsWithTarget:v17 selector:"_playNextItem" object:0];
+  performSelectorProxy = [(BKBookViewController *)self performSelectorProxy];
+  [NSObject cancelPreviousPerformRequestsWithTarget:performSelectorProxy selector:"_playNextItem" object:0];
 
   if (v13 == 0.0)
   {
@@ -8089,17 +8089,17 @@ LABEL_20:
 
   else
   {
-    v18 = [(BKBookViewController *)self performSelectorProxy];
-    [v18 performSelector:"_playNextItem" withObject:0 afterDelay:v13];
+    performSelectorProxy2 = [(BKBookViewController *)self performSelectorProxy];
+    [performSelectorProxy2 performSelector:"_playNextItem" withObject:0 afterDelay:v13];
   }
 }
 
-- (id)smilMapOnPages:(_NSRange)a3
+- (id)smilMapOnPages:(_NSRange)pages
 {
-  length = a3.length;
-  location = a3.location;
+  length = pages.length;
+  location = pages.location;
   p_pagesForMap = &self->_pagesForMap;
-  v7 = a3.location == self->_pagesForMap.location && a3.length == self->_pagesForMap.length;
+  v7 = pages.location == self->_pagesForMap.location && pages.length == self->_pagesForMap.length;
   if (!v7 || (v8 = self->_smilMap) == 0)
   {
     v8 = [(BKBookViewController *)self _prepareSmilMapOn:location, length];
@@ -8110,17 +8110,17 @@ LABEL_20:
   return v8;
 }
 
-- (id)contentViewControllerForMediaOverlayElement:(id)a3
+- (id)contentViewControllerForMediaOverlayElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(BKBookViewController *)self contentViewControllers];
-  v6 = [v5 allValues];
+  contentViewControllers = [(BKBookViewController *)self contentViewControllers];
+  allValues = [contentViewControllers allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -8130,14 +8130,14 @@ LABEL_20:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 document];
-        v12 = [v11 href];
-        v13 = [v4 documentHref];
-        v14 = [v12 isEqualToString:v13];
+        document = [v10 document];
+        href = [document href];
+        documentHref = [elementCopy documentHref];
+        v14 = [href isEqualToString:documentHref];
 
         if (v14)
         {
@@ -8146,7 +8146,7 @@ LABEL_20:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -8161,42 +8161,42 @@ LABEL_11:
   return v7;
 }
 
-- (void)_removeHighlightOnElement:(id)a3
+- (void)_removeHighlightOnElement:(id)element
 {
-  if (self->_highlightedElement == a3)
+  if (self->_highlightedElement == element)
   {
-    v4 = a3;
-    v6 = [(BKBookViewController *)self contentViewControllerForMediaOverlayElement:v4];
-    [v6 clearMediaOverlayElement:v4];
+    elementCopy = element;
+    v6 = [(BKBookViewController *)self contentViewControllerForMediaOverlayElement:elementCopy];
+    [v6 clearMediaOverlayElement:elementCopy];
 
     highlightedElement = self->_highlightedElement;
     self->_highlightedElement = 0;
   }
 }
 
-- (void)_highlightElement:(id)a3
+- (void)_highlightElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   [(BKBookViewController *)self _removeHighlightOnElement:self->_highlightedElement];
   highlightedElement = self->_highlightedElement;
-  self->_highlightedElement = v4;
-  v6 = v4;
+  self->_highlightedElement = elementCopy;
+  v6 = elementCopy;
 
   v7 = [(BKBookViewController *)self contentViewControllerForMediaOverlayElement:v6];
   [v7 highlightMediaOverlayElement:v6];
 }
 
-- (BOOL)_isPageEmpty:(_NSRange)a3
+- (BOOL)_isPageEmpty:(_NSRange)empty
 {
-  v3 = [(BKBookViewController *)self smilMapOnPages:a3.location, a3.length];
+  v3 = [(BKBookViewController *)self smilMapOnPages:empty.location, empty.length];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (BOOL)_isPageAllZeros:(_NSRange)a3
+- (BOOL)_isPageAllZeros:(_NSRange)zeros
 {
-  v3 = [(BKBookViewController *)self smilMapOnPages:a3.location, a3.length];
+  v3 = [(BKBookViewController *)self smilMapOnPages:zeros.location, zeros.length];
   if ([v3 count])
   {
     v17 = 0u;
@@ -8219,9 +8219,9 @@ LABEL_11:
           }
 
           v9 = [*(*(&v15 + 1) + 8 * i) objectForKey:{@"smil", v15}];
-          v10 = [v9 audioStart];
-          v11 = [v9 audioEnd];
-          v12 = [v10 isEqualToNumber:v11];
+          audioStart = [v9 audioStart];
+          audioEnd = [v9 audioEnd];
+          v12 = [audioStart isEqualToNumber:audioEnd];
 
           if (!v12)
           {
@@ -8252,34 +8252,34 @@ LABEL_12:
   return v13;
 }
 
-- (void)_nextDelayedPageHint:(id)a3
+- (void)_nextDelayedPageHint:(id)hint
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [hint BOOLValue];
 
-  [(BKBookViewController *)self _nextPageHint:v4];
+  [(BKBookViewController *)self _nextPageHint:bOOLValue];
 }
 
-- (void)_nextPageHint:(BOOL)a3 afterDelay:(double)a4
+- (void)_nextPageHint:(BOOL)hint afterDelay:(double)delay
 {
-  v6 = [NSNumber numberWithBool:a3];
-  [(BKBookViewController *)self performSelector:"_nextDelayedPageHint:" withObject:v6 afterDelay:a4];
+  v6 = [NSNumber numberWithBool:hint];
+  [(BKBookViewController *)self performSelector:"_nextDelayedPageHint:" withObject:v6 afterDelay:delay];
 }
 
 - (void)playCurrentSoundtrack
 {
   if (self->_isPlayingSoundTrack)
   {
-    v11 = [(BKBookViewController *)self currentSoundtrack];
-    if (v11)
+    currentSoundtrack = [(BKBookViewController *)self currentSoundtrack];
+    if (currentSoundtrack)
     {
-      v4 = [(BKBookViewController *)self book];
-      v5 = [v4 basePlusContentPath];
-      v6 = [v5 stringByAppendingPathComponent:v11];
+      book = [(BKBookViewController *)self book];
+      basePlusContentPath = [book basePlusContentPath];
+      v6 = [basePlusContentPath stringByAppendingPathComponent:currentSoundtrack];
 
-      v7 = [v6 stringByStandardizingPath];
-      v8 = [NSURL fileURLWithPath:v7 isDirectory:0];
-      v9 = [(BKBookViewController *)self _trackPlayer];
-      [v9 setAssetURL:v8];
+      stringByStandardizingPath = [v6 stringByStandardizingPath];
+      v8 = [NSURL fileURLWithPath:stringByStandardizingPath isDirectory:0];
+      _trackPlayer = [(BKBookViewController *)self _trackPlayer];
+      [_trackPlayer setAssetURL:v8];
 
       [(IMAVPlayer *)self->_trackPlayer setLoops:0xFFFFFFFFLL];
       [(IMAVPlayer *)self->_trackPlayer play];
@@ -8294,21 +8294,21 @@ LABEL_12:
   }
 }
 
-- (void)stopSoundtrackAndReload:(BOOL)a3
+- (void)stopSoundtrackAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   [(IMAVPlayer *)self->_trackPlayer pause];
-  if (v3)
+  if (reloadCopy)
   {
-    v6 = [(IMAVPlayer *)self->_trackPlayer assetURL];
-    v5 = [AVAsset assetWithURL:v6];
+    assetURL = [(IMAVPlayer *)self->_trackPlayer assetURL];
+    v5 = [AVAsset assetWithURL:assetURL];
     [(IMAVPlayer *)self->_trackPlayer setAsset:v5];
   }
 }
 
-- (void)audioPlaybackWillStart:(id)a3
+- (void)audioPlaybackWillStart:(id)start
 {
-  if (a3 != self)
+  if (start != self)
   {
     [(BKBookViewController *)self setReadAloudState:0];
     [(BKBookViewController *)self setTrackState:0 persistSetting:0];
@@ -8317,9 +8317,9 @@ LABEL_12:
   }
 }
 
-- (void)_reportLoadFailedAlertForError:(id)a3
+- (void)_reportLoadFailedAlertForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = AEBundle();
   v6 = [v5 localizedStringForKey:@"Failed to load book because the requested resource is missing." value:&stru_1E7188 table:0];
 
@@ -8330,29 +8330,29 @@ LABEL_12:
   v13 = 3221225472;
   v14 = sub_5ECBC;
   v15 = &unk_1E4218;
-  v16 = self;
-  v17 = v4;
-  v10 = v4;
+  selfCopy = self;
+  v17 = errorCopy;
+  v10 = errorCopy;
   v11 = [UIAlertAction actionWithTitle:v9 style:0 handler:&v12];
-  [v7 addAction:{v11, v12, v13, v14, v15, v16}];
+  [v7 addAction:{v11, v12, v13, v14, v15, selfCopy}];
 
   [(BKBookViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_reportResourceUnavailableForBookWithTitle:(id)a3 error:(id)a4
+- (void)_reportResourceUnavailableForBookWithTitle:(id)title error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  errorCopy = error;
   v8 = AEBundle();
   v9 = [v8 localizedStringForKey:@"Cannot Open Book" value:&stru_1E7188 table:0];
 
-  if ([v6 length])
+  if ([titleCopy length])
   {
     v10 = AEBundle();
     v11 = [v10 localizedStringForKey:@"Cannot Open “%@”" value:&stru_1E7188 table:0];
-    v12 = [NSString stringWithFormat:v11, v6];
+    titleCopy = [NSString stringWithFormat:v11, titleCopy];
 
-    v9 = v12;
+    v9 = titleCopy;
   }
 
   v13 = AEBundle();
@@ -8367,17 +8367,17 @@ LABEL_12:
   v20[2] = sub_5EF38;
   v20[3] = &unk_1E4218;
   v20[4] = self;
-  v21 = v7;
-  v18 = v7;
+  v21 = errorCopy;
+  v18 = errorCopy;
   v19 = [UIAlertAction actionWithTitle:v16 style:1 handler:v20];
   [v17 addAction:v19];
 
   [(BKBookViewController *)self presentViewController:v17 animated:1 completion:0];
 }
 
-- (void)contentFailedToLoadWithError:(id)a3
+- (void)contentFailedToLoadWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = BCIMLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -8394,19 +8394,19 @@ LABEL_12:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = errorCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "@Showing Load Failed Alert -- %@", buf, 0xCu);
   }
 
-  v7 = [v4 domain];
-  if ([v7 isEqualToString:NSURLErrorDomain])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:NSURLErrorDomain])
   {
-    v8 = [v4 code];
+    code = [errorCopy code];
 
-    if (v8 == -1008)
+    if (code == -1008)
     {
-      v9 = [(BKBookViewController *)self book];
-      v10 = [v9 bookTitle];
+      book = [(BKBookViewController *)self book];
+      bookTitle = [book bookTitle];
 
       v11 = BCIMLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -8424,7 +8424,7 @@ LABEL_12:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v22 = v10;
+        v22 = bookTitle;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "@Load Failed Alert for book: %@", buf, 0xCu);
       }
 
@@ -8433,9 +8433,9 @@ LABEL_12:
       block[2] = sub_5F2F4;
       block[3] = &unk_1E4240;
       block[4] = self;
-      v19 = v10;
-      v20 = v4;
-      v13 = v10;
+      v19 = bookTitle;
+      v20 = errorCopy;
+      v13 = bookTitle;
       dispatch_async(&_dispatch_main_q, block);
 
       goto LABEL_17;
@@ -8446,43 +8446,43 @@ LABEL_12:
   {
   }
 
-  v14 = [v4 domain];
-  v15 = [v14 isEqualToString:kCFErrorDomainCFNetwork];
+  domain2 = [errorCopy domain];
+  v15 = [domain2 isEqualToString:kCFErrorDomainCFNetwork];
 
-  if (!v15 && ([v4 domain], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", NSURLErrorDomain), v16, !v17) || objc_msgSend(v4, "code") != -999)
+  if (!v15 && ([errorCopy domain], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", NSURLErrorDomain), v16, !v17) || objc_msgSend(errorCopy, "code") != -999)
   {
-    [(BKBookViewController *)self performSelectorOnMainThread:"_reportLoadFailedAlertForError:" withObject:v4 waitUntilDone:0];
+    [(BKBookViewController *)self performSelectorOnMainThread:"_reportLoadFailedAlertForError:" withObject:errorCopy waitUntilDone:0];
   }
 
 LABEL_17:
 }
 
-- (id)fullScreenNoteEditorForAnnotation:(id)a3
+- (id)fullScreenNoteEditorForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self theme];
-  v6 = [v5 shouldInvertContent];
+  annotationCopy = annotation;
+  theme = [(BKBookViewController *)self theme];
+  shouldInvertContent = [theme shouldInvertContent];
 
-  v7 = [v4 annotationNote];
-  v8 = [v7 length] == 0;
+  annotationNote = [annotationCopy annotationNote];
+  v8 = [annotationNote length] == 0;
 
   v9 = objc_alloc_init(AENoteFullscreenEditorController);
   [v9 setEditsOnLaunch:v8];
-  v10 = [(BKBookViewController *)self noteEditorHighlightedTextFont];
-  [v9 setHighlightedTextFont:v10];
+  noteEditorHighlightedTextFont = [(BKBookViewController *)self noteEditorHighlightedTextFont];
+  [v9 setHighlightedTextFont:noteEditorHighlightedTextFont];
 
-  [v9 setAnnotation:v4];
+  [v9 setAnnotation:annotationCopy];
   [v9 setDelegate:self];
-  [v9 setShouldDim:v6];
-  v11 = [(BKBookViewController *)self theme];
-  [v9 setTheme:v11];
+  [v9 setShouldDim:shouldInvertContent];
+  theme2 = [(BKBookViewController *)self theme];
+  [v9 setTheme:theme2];
 
   return v9;
 }
 
-- (void)showNoteEditorForAnnotation:(id)a3
+- (void)showNoteEditorForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   [(AENotePopoverEditorController *)self->_noteEditor setDelegate:0];
   noteEditor = self->_noteEditor;
   self->_noteEditor = 0;
@@ -8491,34 +8491,34 @@ LABEL_17:
   v7 = self->_noteEditor;
   self->_noteEditor = v6;
 
-  [(AENotePopoverEditorController *)self->_noteEditor setAnnotation:v4];
-  v8 = [(BKBookViewController *)self theme];
-  v9 = [v8 annotationPageTheme];
+  [(AENotePopoverEditorController *)self->_noteEditor setAnnotation:annotationCopy];
+  theme = [(BKBookViewController *)self theme];
+  annotationPageTheme = [theme annotationPageTheme];
 
-  v10 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [v4 annotationStyle], v9, objc_msgSend(v4, "annotationIsUnderline"));
+  v10 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [annotationCopy annotationStyle], annotationPageTheme, objc_msgSend(annotationCopy, "annotationIsUnderline"));
   [(AENotePopoverEditorController *)self->_noteEditor setAnnotationTheme:v10];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(BKBookViewController *)self theme];
-    [(AENotePopoverEditorController *)self->_noteEditor setTheme:v11];
+    theme2 = [(BKBookViewController *)self theme];
+    [(AENotePopoverEditorController *)self->_noteEditor setTheme:theme2];
   }
 
   [(AENotePopoverEditorController *)self->_noteEditor setDelegate:self];
-  v12 = [v4 annotationNote];
-  v13 = [v12 length] == 0;
+  annotationNote = [annotationCopy annotationNote];
+  v13 = [annotationNote length] == 0;
 
   [(AENotePopoverEditorController *)self->_noteEditor setEditsOnLaunch:v13];
   if (([(BKBookViewController *)self im_isCompactWidth]& 1) != 0 || ([(BKBookViewController *)self im_isCompactHeight]& 1) != 0)
   {
-    v14 = [(BKBookViewController *)self fullScreenNoteEditorForAnnotation:v4];
+    v14 = [(BKBookViewController *)self fullScreenNoteEditorForAnnotation:annotationCopy];
     [(BKBookViewController *)self setControlsVisible:1 animated:1];
     [(BKBookViewController *)self presentViewController:v14 animated:1 completion:0];
   }
 
   else
   {
-    v15 = [(BKBookViewController *)self contentViewControllerForAnnotation:v4];
+    v15 = [(BKBookViewController *)self contentViewControllerForAnnotation:annotationCopy];
     v14 = v15;
     if (v15)
     {
@@ -8527,40 +8527,40 @@ LABEL_17:
       v16[2] = sub_5F64C;
       v16[3] = &unk_1E3488;
       v17 = v15;
-      v18 = self;
-      [v17 rectForAnnotation:v4 withCompletion:v16];
+      selfCopy = self;
+      [v17 rectForAnnotation:annotationCopy withCompletion:v16];
     }
   }
 }
 
-- (BOOL)isEditingAnnotation:(id)a3
+- (BOOL)isEditingAnnotation:(id)annotation
 {
-  v4 = [a3 annotationUuid];
-  v5 = [(AENotePopoverEditorController *)self->_noteEditor annotation];
-  v6 = [v5 annotationUuid];
-  v7 = [v4 isEqualToString:v6];
+  annotationUuid = [annotation annotationUuid];
+  annotation = [(AENotePopoverEditorController *)self->_noteEditor annotation];
+  annotationUuid2 = [annotation annotationUuid];
+  v7 = [annotationUuid isEqualToString:annotationUuid2];
 
   return v7;
 }
 
-- (void)didHideAnnotationEditor:(id)a3
+- (void)didHideAnnotationEditor:(id)editor
 {
-  v4 = a3;
-  v5 = [(AENotePopoverEditorController *)v4 annotation];
-  if ([v5 isInserted] && (objc_msgSend(v5, "annotationNote"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, !v7))
+  editorCopy = editor;
+  annotation = [(AENotePopoverEditorController *)editorCopy annotation];
+  if ([annotation isInserted] && (objc_msgSend(annotation, "annotationNote"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, !v7))
   {
-    v10 = [(BKBookViewController *)self book];
-    [v10 deleteAnnotation:v5];
+    book = [(BKBookViewController *)self book];
+    [book deleteAnnotation:annotation];
   }
 
   else
   {
-    v8 = [v5 managedObjectContext];
+    managedObjectContext = [annotation managedObjectContext];
     v17 = 0;
-    v9 = [v8 save:&v17];
-    v10 = v17;
+    v9 = [managedObjectContext save:&v17];
+    book = v17;
 
-    if ((v9 & 1) == 0 && v10)
+    if ((v9 & 1) == 0 && book)
     {
       v11 = BCIMLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -8578,7 +8578,7 @@ LABEL_17:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v19 = v10;
+        v19 = book;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "@Save Error: %@", buf, 0xCu);
       }
     }
@@ -8586,7 +8586,7 @@ LABEL_17:
 
   p_noteEditor = &self->_noteEditor;
   noteEditor = self->_noteEditor;
-  if (noteEditor == v4)
+  if (noteEditor == editorCopy)
   {
     [(AENotePopoverEditorController *)noteEditor setDelegate:0];
     goto LABEL_15;
@@ -8594,7 +8594,7 @@ LABEL_17:
 
   p_noteEditor = &self->_colorEditor;
   colorEditor = self->_colorEditor;
-  if (colorEditor == v4)
+  if (colorEditor == editorCopy)
   {
     [(AEHighlightColorEditorController *)colorEditor removeFromParentViewController];
 LABEL_15:
@@ -8605,46 +8605,46 @@ LABEL_15:
   [(BKBookViewController *)self clearSelectedAnnotation];
 }
 
-- (void)editorController:(id)a3 setTheme:(id)a4 forAnnotation:(id)a5
+- (void)editorController:(id)controller setTheme:(id)theme forAnnotation:(id)annotation
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = [v7 annotationStyle];
-  v9 = [v7 isUnderline];
+  annotationCopy = annotation;
+  themeCopy = theme;
+  annotationStyle = [themeCopy annotationStyle];
+  isUnderline = [themeCopy isUnderline];
 
-  v12 = v6;
-  [v12 setAnnotationStyle:v8];
-  [v12 setAnnotationIsUnderline:v9];
+  v12 = annotationCopy;
+  [v12 setAnnotationStyle:annotationStyle];
+  [v12 setAnnotationIsUnderline:isUnderline];
 
   v10 = +[NSUserDefaults standardUserDefaults];
-  [v10 setInteger:v8 forKey:BKDefaultHighlightColor[0]];
+  [v10 setInteger:annotationStyle forKey:BKDefaultHighlightColor[0]];
 
   v11 = +[NSUserDefaults standardUserDefaults];
-  [v11 setBool:v9 forKey:BKDefaultUnderlineState];
+  [v11 setBool:isUnderline forKey:BKDefaultUnderlineState];
 }
 
-- (void)editorController:(id)a3 deleteAnnotation:(id)a4
+- (void)editorController:(id)controller deleteAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(BKBookViewController *)self book];
-  [v6 deleteAnnotation:v5];
+  annotationCopy = annotation;
+  book = [(BKBookViewController *)self book];
+  [book deleteAnnotation:annotationCopy];
 
-  v7 = [(BKBookViewController *)self searchResult];
+  searchResult = [(BKBookViewController *)self searchResult];
 
-  if (v7)
+  if (searchResult)
   {
-    v8 = [(BKBookViewController *)self searchResult];
-    [(BKBookViewController *)self highlightSearchResult:v8];
+    searchResult2 = [(BKBookViewController *)self searchResult];
+    [(BKBookViewController *)self highlightSearchResult:searchResult2];
   }
 }
 
-- (_NSRange)pageRangeForAnnotation:(id)a3
+- (_NSRange)pageRangeForAnnotation:(id)annotation
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
+  annotationCopy = annotation;
+  if ([annotationCopy conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
   {
-    v5 = [(BKBookViewController *)self paginationController];
-    v6 = [v5 pageRangeForAnnotation:v4];
+    paginationController = [(BKBookViewController *)self paginationController];
+    v6 = [paginationController pageRangeForAnnotation:annotationCopy];
     v8 = v7;
   }
 
@@ -8661,13 +8661,13 @@ LABEL_15:
   return result;
 }
 
-- (id)chapterTitleForAnnotation:(id)a3
+- (id)chapterTitleForAnnotation:(id)annotation
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
+  annotationCopy = annotation;
+  if ([annotationCopy conformsToProtocol:&OBJC_PROTOCOL___BKBookmark])
   {
-    v5 = [(BKBookViewController *)self paginationController];
-    v6 = [v5 pageRangeForAnnotation:v4];
+    paginationController = [(BKBookViewController *)self paginationController];
+    v6 = [paginationController pageRangeForAnnotation:annotationCopy];
     v8 = [(BKBookViewController *)self pageNumberFromRange:v6, v7];
 
     v9 = [(BKBookViewController *)self titleForChapterAtPageNumber:v8];
@@ -8681,20 +8681,20 @@ LABEL_15:
   return v9;
 }
 
-- (void)editorController:(id)a3 editedAnnotation:(id)a4 toText:(id)a5
+- (void)editorController:(id)controller editedAnnotation:(id)annotation toText:(id)text
 {
-  v6 = a4;
-  v7 = a5;
-  [v6 setAnnotationNote:v7];
+  annotationCopy = annotation;
+  textCopy = text;
+  [annotationCopy setAnnotationNote:textCopy];
   v8 = BKMobileCloudSyncAnnotationsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 annotationAssetID];
-    v10 = [v6 annotationUuid];
+    annotationAssetID = [annotationCopy annotationAssetID];
+    annotationUuid = [annotationCopy annotationUuid];
     v12 = 138412546;
-    v13 = v9;
+    v13 = annotationAssetID;
     v14 = 2112;
-    v15 = v10;
+    v15 = annotationUuid;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "edit annotation note: assetID: %@, uuid: %@", &v12, 0x16u);
   }
 
@@ -8705,36 +8705,36 @@ LABEL_15:
   }
 }
 
-- (void)editorController:(id)a3 shareAnnotation:(id)a4
+- (void)editorController:(id)controller shareAnnotation:(id)annotation
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 presentationRect];
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  [controllerCopy presentationRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 presentationView];
+  presentationView = [controllerCopy presentationView];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_5FF0C;
   v17[3] = &unk_1E4268;
   v17[4] = self;
-  [(BKBookViewController *)self shareAnnotation:v6 fromRect:v16 inView:v17 completion:v9, v11, v13, v15];
+  [(BKBookViewController *)self shareAnnotation:annotationCopy fromRect:presentationView inView:v17 completion:v9, v11, v13, v15];
 }
 
-- (BOOL)editorController:(id)a3 isSharingEnabledForAnnotation:(id)a4
+- (BOOL)editorController:(id)controller isSharingEnabledForAnnotation:(id)annotation
 {
-  v5 = a4;
+  annotationCopy = annotation;
   if ([(BKBookViewController *)self isSharingSupported])
   {
     v6 = objc_opt_class();
-    v7 = [(BKBookViewController *)self book];
-    if ([v6 areCitationsAllowedForBook:v7])
+    book = [(BKBookViewController *)self book];
+    if ([v6 areCitationsAllowedForBook:book])
     {
-      v8 = [v5 annotationSelectedText];
-      v9 = [v8 length] != 0;
+      annotationSelectedText = [annotationCopy annotationSelectedText];
+      v9 = [annotationSelectedText length] != 0;
     }
 
     else
@@ -8753,8 +8753,8 @@ LABEL_15:
 
 - (id)transitionContentBackgroundColor
 {
-  v3 = [(BKBookViewController *)self theme];
-  v4 = [v3 backgroundColorForTraitEnvironment:self];
+  theme = [(BKBookViewController *)self theme];
+  v4 = [theme backgroundColorForTraitEnvironment:self];
 
   return v4;
 }
@@ -8766,23 +8766,23 @@ LABEL_15:
   return [(BKBookViewController *)self view];
 }
 
-- (void)_paginationComplete:(id)a3
+- (void)_paginationComplete:(id)complete
 {
-  v4 = [a3 object];
-  v5 = [(BKBookViewController *)self paginationController];
+  object = [complete object];
+  paginationController = [(BKBookViewController *)self paginationController];
 
-  v6 = _AEPaginationLog();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v4 != v5)
+  _currentReadingProgress = _AEPaginationLog();
+  v7 = os_log_type_enabled(_currentReadingProgress, OS_LOG_TYPE_DEFAULT);
+  if (object != paginationController)
   {
     if (v7)
     {
-      v8 = [(BKBookViewController *)self paginationController];
+      paginationController2 = [(BKBookViewController *)self paginationController];
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v8;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "IGNORING paginationComplete BVC:%@ paginationController:%@", &v14, 0x16u);
+      v17 = paginationController2;
+      _os_log_impl(&dword_0, _currentReadingProgress, OS_LOG_TYPE_DEFAULT, "IGNORING paginationComplete BVC:%@ paginationController:%@", &v14, 0x16u);
     }
 
     goto LABEL_4;
@@ -8790,50 +8790,50 @@ LABEL_15:
 
   if (v7)
   {
-    v9 = [(BKBookViewController *)self paginationController];
+    paginationController3 = [(BKBookViewController *)self paginationController];
     v14 = 138412546;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
-    v17 = v9;
-    _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Received paginationComplete BVC:%@ paginationController:%@", &v14, 0x16u);
+    v17 = paginationController3;
+    _os_log_impl(&dword_0, _currentReadingProgress, OS_LOG_TYPE_DEFAULT, "Received paginationComplete BVC:%@ paginationController:%@", &v14, 0x16u);
   }
 
-  v10 = [(BKBookViewController *)self assetViewControllerDelegate];
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(BKBookViewController *)self assetViewControllerDelegate];
-    [v12 assetViewControllerPaginationCompletedForBook:self];
+    assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+    [assetViewControllerDelegate2 assetViewControllerPaginationCompletedForBook:self];
   }
 
   if ([(BKBookViewController *)self _inAnalyticsReadSession])
   {
-    v13 = [(BKBookViewController *)self analyticsReadStartProgress];
+    analyticsReadStartProgress = [(BKBookViewController *)self analyticsReadStartProgress];
 
-    if (!v13)
+    if (!analyticsReadStartProgress)
     {
-      v6 = [(BKBookViewController *)self _currentReadingProgress];
-      [(BKBookViewController *)self setAnalyticsReadStartProgress:v6];
+      _currentReadingProgress = [(BKBookViewController *)self _currentReadingProgress];
+      [(BKBookViewController *)self setAnalyticsReadStartProgress:_currentReadingProgress];
 LABEL_4:
     }
   }
 }
 
-- (void)buildContextTree:(id)a3
+- (void)buildContextTree:(id)tree
 {
-  v39 = a3;
+  treeCopy = tree;
   v4 = objc_opt_new();
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v31 = self;
-  v5 = [(BKBookViewController *)self book];
-  v6 = [v5 sortedDocuments];
+  selfCopy = self;
+  book = [(BKBookViewController *)self book];
+  sortedDocuments = [book sortedDocuments];
 
-  obj = v6;
-  v32 = [v6 countByEnumeratingWithState:&v44 objects:v51 count:16];
+  obj = sortedDocuments;
+  v32 = [sortedDocuments countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v32)
   {
     v7 = 0;
@@ -8854,8 +8854,8 @@ LABEL_4:
 
         v33 = v8;
         v9 = *(*(&v44 + 1) + 8 * v8);
-        v10 = [(BKBookViewController *)v31 book];
-        v11 = [v10 navigationInfosForDocument:v9];
+        book2 = [(BKBookViewController *)selfCopy book];
+        v11 = [book2 navigationInfosForDocument:v9];
 
         v42 = 0u;
         v43 = 0u;
@@ -8880,7 +8880,7 @@ LABEL_4:
               v17 = *(*(&v40 + 1) + 8 * i);
               v18 = [v17 valueForKey:@"href"];
               v19 = [v17 valueForKey:@"name"];
-              v20 = [v39 objectForKeyedSubscript:v18];
+              v20 = [treeCopy objectForKeyedSubscript:v18];
               v21 = v20;
               v22 = &stru_1E7188;
               if (v20)
@@ -8926,30 +8926,30 @@ LABEL_4:
   if ([v4 count])
   {
     v26 = +[BCProgressKitController sharedController];
-    v27 = [(BKBookViewController *)v31 book];
-    v28 = [v27 assetID];
-    [v26 buildContextTree:v4 forBook:v28 completion:0];
+    book3 = [(BKBookViewController *)selfCopy book];
+    assetID = [book3 assetID];
+    [v26 buildContextTree:v4 forBook:assetID completion:0];
   }
 }
 
-- (void)_handleExternalLoadRequest:(id)a3 likelyUserInitiated:(BOOL)a4
+- (void)_handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v7 assetViewController:self requestOpenURL:v6 likelyUserInitiated:v4];
+  initiatedCopy = initiated;
+  requestCopy = request;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate assetViewController:self requestOpenURL:requestCopy likelyUserInitiated:initiatedCopy];
 }
 
-- (BOOL)_controller:(id)a3 handleInternalRequestForURL:(id)a4
+- (BOOL)_controller:(id)_controller handleInternalRequestForURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 bc_pathWithoutPrecedingSlash];
-  v9 = [v8 stringByRemovingURLFragment];
-  v10 = [(BKBookViewController *)self book];
-  v11 = [v10 documentAtPath:v9];
+  _controllerCopy = _controller;
+  lCopy = l;
+  bc_pathWithoutPrecedingSlash = [lCopy bc_pathWithoutPrecedingSlash];
+  stringByRemovingURLFragment = [bc_pathWithoutPrecedingSlash stringByRemovingURLFragment];
+  book = [(BKBookViewController *)self book];
+  v11 = [book documentAtPath:stringByRemovingURLFragment];
 
-  if ([(BKBookViewController *)self isTOCURL:v7])
+  if ([(BKBookViewController *)self isTOCURL:lCopy])
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -8960,35 +8960,35 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v12 = [v11 documentOrdinal];
-  if ([v12 integerValue] == -1)
+  documentOrdinal = [v11 documentOrdinal];
+  if ([documentOrdinal integerValue] == -1)
   {
 
     goto LABEL_8;
   }
 
-  v13 = [v11 nonlinearElement];
-  v14 = [v13 BOOLValue];
+  nonlinearElement = [v11 nonlinearElement];
+  bOOLValue = [nonlinearElement BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
 LABEL_8:
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_60888;
     v17[3] = &unk_1E3F50;
-    v18 = v7;
-    v19 = self;
+    v18 = lCopy;
+    selfCopy = self;
     [(BKViewController *)self hideOverlayViewControllerWithCompletion:v17];
 
     goto LABEL_9;
   }
 
-  if (v8)
+  if (bc_pathWithoutPrecedingSlash)
   {
-    [v6 dismissViewControllerAnimated:1 completion:0];
-    v15 = [v7 fragment];
-    [(BKBookViewController *)self goToPath:v8 fragment:v15 animated:1];
+    [_controllerCopy dismissViewControllerAnimated:1 completion:0];
+    fragment = [lCopy fragment];
+    [(BKBookViewController *)self goToPath:bc_pathWithoutPrecedingSlash fragment:fragment animated:1];
   }
 
 LABEL_9:
@@ -8996,21 +8996,21 @@ LABEL_9:
   return 0;
 }
 
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_hoverInteraction == v7 && -[BCUIHoverInteraction isHovering](v7, "isHovering") && self->_section != 1 && [v6 containsObject:@"control"] && -[BCUIHoverInteraction stateForRegionWithKey:](v7, "stateForRegionWithKey:", @"control"))
+  interactionCopy = interaction;
+  keysCopy = keys;
+  if (self->_hoverInteraction == interactionCopy && -[BCUIHoverInteraction isHovering](interactionCopy, "isHovering") && self->_section != 1 && [keysCopy containsObject:@"control"] && -[BCUIHoverInteraction stateForRegionWithKey:](interactionCopy, "stateForRegionWithKey:", @"control"))
   {
     [(BKBookViewController *)self setControlsVisible:1 animated:1];
     self->_controlsEnabledViaHover = 1;
   }
 }
 
-- (void)hoverInteractionDidSettle:(id)a3
+- (void)hoverInteractionDidSettle:(id)settle
 {
-  v4 = a3;
-  if (([v4 stateForRegionWithKey:@"control"] & 1) == 0 && objc_msgSend(v4, "isHovering") && !self->_section && self->_controlsEnabledViaHover && -[BKBookViewController canDismissControls](self, "canDismissControls"))
+  settleCopy = settle;
+  if (([settleCopy stateForRegionWithKey:@"control"] & 1) == 0 && objc_msgSend(settleCopy, "isHovering") && !self->_section && self->_controlsEnabledViaHover && -[BKBookViewController canDismissControls](self, "canDismissControls"))
   {
     [(BKBookViewController *)self setControlsVisible:0 animated:1];
     self->_controlsEnabledViaHover = 0;
@@ -9032,13 +9032,13 @@ LABEL_9:
 {
   if ([(BKBookViewController *)self _inAnalyticsReadSession])
   {
-    v3 = [(BKBookViewController *)self book];
-    v4 = [v3 annotationProvider];
-    v5 = [v4 uiManagedObjectContext];
+    book = [(BKBookViewController *)self book];
+    annotationProvider = [book annotationProvider];
+    uiManagedObjectContext = [annotationProvider uiManagedObjectContext];
 
-    [(BKBookViewController *)self bookmarksFetchRequestForBook:v3 moc:v5];
+    [(BKBookViewController *)self bookmarksFetchRequestForBook:book moc:uiManagedObjectContext];
     v24 = v29 = 0;
-    v6 = [v5 executeFetchRequest:? error:?];
+    v6 = [uiManagedObjectContext executeFetchRequest:? error:?];
     v23 = v29;
     v25 = 0u;
     v26 = 0u;
@@ -9063,8 +9063,8 @@ LABEL_9:
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 annotationType];
-          if (v16 == 2)
+          annotationType = [v15 annotationType];
+          if (annotationType == 2)
           {
             if ([v15 annotationHasNote])
             {
@@ -9077,7 +9077,7 @@ LABEL_9:
             }
           }
 
-          else if (v16 == 1)
+          else if (annotationType == 1)
           {
             ++v10;
           }
@@ -9111,22 +9111,22 @@ LABEL_9:
   return v17;
 }
 
-- (void)emitScrubEventStartPosition:(int64_t)a3 endPosition:(int64_t)a4 totalLength:(int64_t)a5
+- (void)emitScrubEventStartPosition:(int64_t)position endPosition:(int64_t)endPosition totalLength:(int64_t)length
 {
-  v15 = [(BKBookViewController *)self analyticsReadingSettingsData];
+  analyticsReadingSettingsData = [(BKBookViewController *)self analyticsReadingSettingsData];
   v9 = +[BAEventReporter sharedReporter];
-  v10 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
   v11 = [(BKBookViewController *)self contentDataForSearchViewController:0];
-  v12 = [NSNumber numberWithInteger:a3];
-  v13 = [NSNumber numberWithInteger:a4];
-  v14 = [NSNumber numberWithInteger:a5];
-  [v9 emitScrubEventWithTracker:v10 contentData:v11 readingSettingsData:v15 startPosition:v12 endPosition:v13 totalLength:v14];
+  v12 = [NSNumber numberWithInteger:position];
+  v13 = [NSNumber numberWithInteger:endPosition];
+  v14 = [NSNumber numberWithInteger:length];
+  [v9 emitScrubEventWithTracker:ba_effectiveAnalyticsTracker contentData:v11 readingSettingsData:analyticsReadingSettingsData startPosition:v12 endPosition:v13 totalLength:v14];
 }
 
 - (void)bc_analyticsVisibilityDidAppear
 {
-  v3 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
-  if ([v3 optedIn])
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  if ([ba_effectiveAnalyticsTracker optedIn])
   {
     objc_initWeak(&location, self);
     v6 = _NSConcreteStackBlock;
@@ -9147,52 +9147,52 @@ LABEL_9:
   v4 = [NSDate date:v6];
   [(BKBookViewController *)self setAnalyticsReadStartDate:v4];
 
-  v5 = [(BKBookViewController *)self _currentReadingProgress];
-  [(BKBookViewController *)self setAnalyticsReadStartProgress:v5];
+  _currentReadingProgress = [(BKBookViewController *)self _currentReadingProgress];
+  [(BKBookViewController *)self setAnalyticsReadStartProgress:_currentReadingProgress];
 }
 
 - (void)bc_analyticsVisibilityWillDisappear
 {
-  v3 = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(BKBookViewController *)self ba_effectiveAnalyticsTracker];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
   v25[3] = sub_613C4;
   v25[4] = sub_613D4;
-  v26 = [v3 newSessionAssertion];
-  v4 = [(BKBookViewController *)self contentData];
-  v5 = v4;
-  if (v4)
+  newSessionAssertion = [ba_effectiveAnalyticsTracker newSessionAssertion];
+  contentData = [(BKBookViewController *)self contentData];
+  v5 = contentData;
+  if (contentData)
   {
-    v6 = v4;
+    cachedContentData = contentData;
   }
 
   else
   {
-    v6 = [(BKBookViewController *)self cachedContentData];
+    cachedContentData = [(BKBookViewController *)self cachedContentData];
   }
 
-  v7 = v6;
+  v7 = cachedContentData;
 
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = sub_613C4;
   v23[4] = sub_613D4;
-  v24 = [(BKBookViewController *)self analyticsReadStartDate];
+  analyticsReadStartDate = [(BKBookViewController *)self analyticsReadStartDate];
   if (v7)
   {
-    v8 = [(BKBookViewController *)self doNotDisturbStatusAtStart];
+    doNotDisturbStatusAtStart = [(BKBookViewController *)self doNotDisturbStatusAtStart];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_613DC;
     v17[3] = &unk_1E4358;
-    v18 = v3;
-    v19 = self;
+    v18 = ba_effectiveAnalyticsTracker;
+    selfCopy = self;
     v21 = v23;
     v22 = v25;
     v20 = v7;
-    [(BKBookViewController *)self _newBADoNotDisturbDataWithStartStatus:v8 tracker:v18 completion:v17];
+    [(BKBookViewController *)self _newBADoNotDisturbDataWithStartStatus:doNotDisturbStatusAtStart tracker:v18 completion:v17];
 
     v9 = v18;
   }
@@ -9202,90 +9202,90 @@ LABEL_9:
     v9 = BCCurrentBookLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = [(BKBookViewController *)self assetViewControllerDelegate];
-      sub_137D00(v10, buf, v9);
+      assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+      sub_137D00(assetViewControllerDelegate, buf, v9);
     }
   }
 
-  v11 = [(BKBookViewController *)self analyticsReadStartDate];
-  [v11 timeIntervalSinceNow];
+  analyticsReadStartDate2 = [(BKBookViewController *)self analyticsReadStartDate];
+  [analyticsReadStartDate2 timeIntervalSinceNow];
   v13 = v12;
 
-  v14 = [(BKBookViewController *)self _analyticsSessionHost];
-  v15 = [(BKBookViewController *)self asset];
-  v16 = [v15 assetID];
-  [v14 readSessionDidEnd:v16 readTime:-v13];
+  _analyticsSessionHost = [(BKBookViewController *)self _analyticsSessionHost];
+  asset = [(BKBookViewController *)self asset];
+  assetID = [asset assetID];
+  [_analyticsSessionHost readSessionDidEnd:assetID readTime:-v13];
 
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(v25, 8);
 }
 
-- (id)_contentSettingsDataFromReadingSessionData:(id)a3 optedIn:(BOOL)a4
+- (id)_contentSettingsDataFromReadingSessionData:(id)data optedIn:(BOOL)in
 {
-  if (a4)
+  if (in)
   {
-    v6 = a3;
-    v7 = [v6 percentCompletionStart];
-    [v7 floatValue];
+    dataCopy = data;
+    percentCompletionStart = [dataCopy percentCompletionStart];
+    [percentCompletionStart floatValue];
     v9 = v8;
 
-    v10 = [v6 percentCompletionEnd];
+    percentCompletionEnd = [dataCopy percentCompletionEnd];
 
-    [v10 floatValue];
+    [percentCompletionEnd floatValue];
     v12 = v11;
 
     v13 = v12 >= 0.5 && v9 < 0.5;
-    if (v13 || (v14 = 0, v12 >= 0.9) && v9 < 0.9)
+    if (v13 || (analyticsContentSettingData = 0, v12 >= 0.9) && v9 < 0.9)
     {
-      v14 = [(BKBookViewController *)self analyticsContentSettingData];
+      analyticsContentSettingData = [(BKBookViewController *)self analyticsContentSettingData];
     }
   }
 
   else
   {
-    v14 = 0;
+    analyticsContentSettingData = 0;
   }
 
-  return v14;
+  return analyticsContentSettingData;
 }
 
-- (void)_newBADoNotDisturbDataWithStartStatus:(int64_t)a3 tracker:(id)a4 completion:(id)a5
+- (void)_newBADoNotDisturbDataWithStartStatus:(int64_t)status tracker:(id)tracker completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v7 optedIn])
+    if ([trackerCopy optedIn])
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_619BC;
       v10[3] = &unk_1E4380;
-      v12 = a3;
-      v11 = v8;
+      statusCopy = status;
+      v11 = completionCopy;
       [BADoNotDisturbHelper fetchCurrentState:v10];
     }
 
     else
     {
       v9 = [[BADoNotDisturbData alloc] initWithStartStatus:0 endStatus:0];
-      (*(v8 + 2))(v8, v9);
+      (*(completionCopy + 2))(completionCopy, v9);
     }
   }
 }
 
 - (BOOL)bc_analyticsVisibilityOfSelf
 {
-  v2 = [(BKBookViewController *)self assetViewControllerDelegate];
-  v3 = v2 != 0;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  v3 = assetViewControllerDelegate != 0;
 
   return v3;
 }
 
 - (BOOL)_inAnalyticsReadSession
 {
-  v2 = [(BKBookViewController *)self analyticsReadStartDate];
-  v3 = v2 != 0;
+  analyticsReadStartDate = [(BKBookViewController *)self analyticsReadStartDate];
+  v3 = analyticsReadStartDate != 0;
 
   return v3;
 }
@@ -9293,12 +9293,12 @@ LABEL_9:
 - (id)_analyticsSessionHost
 {
   v2 = [(BKBookViewController *)self im_ancestorViewControllerConformingToProtocol:&OBJC_PROTOCOL___BASessionHostProviding];
-  v3 = [v2 analyticsSessionHost];
+  analyticsSessionHost = [v2 analyticsSessionHost];
 
-  return v3;
+  return analyticsSessionHost;
 }
 
-- (void)handleVoiceOverStatusChanged:(id)a3
+- (void)handleVoiceOverStatusChanged:(id)changed
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
@@ -9307,7 +9307,7 @@ LABEL_9:
   }
 }
 
-- (void)handleSwitchControlStatusChanged:(id)a3
+- (void)handleSwitchControlStatusChanged:(id)changed
 {
   if (UIAccessibilityIsSwitchControlRunning())
   {
@@ -9319,8 +9319,8 @@ LABEL_9:
 - (void)updateUIForSmartInvert
 {
   v3 = +[IMTheme isAutoNightModeEnabled];
-  v4 = [(BKBookViewController *)self viewIfLoaded];
-  [v4 setAccessibilityIgnoresInvertColors:v3];
+  viewIfLoaded = [(BKBookViewController *)self viewIfLoaded];
+  [viewIfLoaded setAccessibilityIgnoresInvertColors:v3];
 }
 
 - (BOOL)bkaxNeedsPersistentControls

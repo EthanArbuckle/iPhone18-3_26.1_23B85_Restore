@@ -4,7 +4,7 @@
 - (id)description;
 - (void)bind;
 - (void)dealloc;
-- (void)setColor:(_GLKVector4)a3;
+- (void)setColor:(_GLKVector4)color;
 - (void)setShaderBindings;
 @end
 
@@ -42,9 +42,9 @@
 {
   if (self->_enabled)
   {
-    v3 = [(GLKEffectProperty *)self location];
+    location = [(GLKEffectProperty *)self location];
 
-    glVertexAttrib4fv(v3, &self->_color.x);
+    glVertexAttrib4fv(location, &self->_color.x);
   }
 }
 
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (void)setColor:(_GLKVector4)a3
+- (void)setColor:(_GLKVector4)color
 {
   self->_color.x = v3;
   self->_color.y = v4;

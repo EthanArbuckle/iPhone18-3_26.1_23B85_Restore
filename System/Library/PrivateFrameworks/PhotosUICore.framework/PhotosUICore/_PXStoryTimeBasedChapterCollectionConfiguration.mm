@@ -1,19 +1,19 @@
 @interface _PXStoryTimeBasedChapterCollectionConfiguration
 - (_PXStoryTimeBasedChapterCollectionConfiguration)init;
-- (void)addChapterWithDateInterval:(id)a3 configuration:(id)a4;
+- (void)addChapterWithDateInterval:(id)interval configuration:(id)configuration;
 @end
 
 @implementation _PXStoryTimeBasedChapterCollectionConfiguration
 
-- (void)addChapterWithDateInterval:(id)a3 configuration:(id)a4
+- (void)addChapterWithDateInterval:(id)interval configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[_PXStoryTimeBasedChapter alloc] initWithDateInterval:v7 firstAssetLocalIdentifier:0];
+  configurationCopy = configuration;
+  intervalCopy = interval;
+  v9 = [[_PXStoryTimeBasedChapter alloc] initWithDateInterval:intervalCopy firstAssetLocalIdentifier:0];
 
-  v6[2](v6, v9);
-  v8 = [(_PXStoryTimeBasedChapterCollectionConfiguration *)self chapters];
-  [v8 addObject:v9];
+  configurationCopy[2](configurationCopy, v9);
+  chapters = [(_PXStoryTimeBasedChapterCollectionConfiguration *)self chapters];
+  [chapters addObject:v9];
 }
 
 - (_PXStoryTimeBasedChapterCollectionConfiguration)init

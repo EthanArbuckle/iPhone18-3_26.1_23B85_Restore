@@ -1,12 +1,12 @@
 @interface TTSVBSiriTTSTrainerAudioQualityHelper
-+ (id)assessAudioForBuffers:(id)a3;
++ (id)assessAudioForBuffers:(id)buffers;
 @end
 
 @implementation TTSVBSiriTTSTrainerAudioQualityHelper
 
-+ (id)assessAudioForBuffers:(id)a3
++ (id)assessAudioForBuffers:(id)buffers
 {
-  v3 = a3;
+  buffersCopy = buffers;
   v4 = objc_alloc_init(_TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement);
   v10 = 0;
   v11 = &v10;
@@ -26,7 +26,7 @@
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 assessAudioQualityWithBuffers:v3];
+  v7 = [v5 assessAudioQualityWithBuffers:buffersCopy];
   [v7 SPL];
   [(TTSVBAudioQualityMeasurement *)v4 setSpl:?];
   [v7 SPL_end];

@@ -36,9 +36,9 @@
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = [v15 accountPropertyForKey:{v9, v22, v23, v24}];
         v17 = [v7 accountPropertyForKey:v9];
-        v18 = [v7 identifier];
-        v19 = [v15 identifier];
-        if (([v18 isEqualToString:v19] & 1) != 0 || !v16)
+        identifier = [v7 identifier];
+        identifier2 = [v15 identifier];
+        if (([identifier isEqualToString:identifier2] & 1) != 0 || !v16)
         {
         }
 

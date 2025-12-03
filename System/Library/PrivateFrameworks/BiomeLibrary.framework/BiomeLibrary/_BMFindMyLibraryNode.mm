@@ -5,7 +5,7 @@
 + (id)configurationForLocationChange;
 + (id)storeConfigurationForContactActivity;
 + (id)storeConfigurationForLocationChange;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)ContactActivity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForContactActivity];
+  configurationForContactActivity = [self configurationForContactActivity];
   v3 = +[BMFindMyContactActivity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"FindMy.ContactActivity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"FindMy.ContactActivity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"FindMy.ContactActivity" schema:v9 configuration:configurationForContactActivity];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -43,13 +43,13 @@
 
 + (id)configurationForContactActivity
 {
-  v3 = [a1 storeConfigurationForContactActivity];
-  v4 = [a1 syncPolicyForContactActivity];
+  storeConfigurationForContactActivity = [self storeConfigurationForContactActivity];
+  syncPolicyForContactActivity = [self syncPolicyForContactActivity];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A5D8AB11-4CD5-4A67-8878-727A278888C6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"FindMy.ContactActivity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.findmy" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"FindMy.ContactActivity" eventClass:objc_opt_class() storeConfig:storeConfigurationForContactActivity syncPolicy:syncPolicyForContactActivity legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.findmy" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -57,7 +57,7 @@
 + (id)LocationChange
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLocationChange];
+  configurationForLocationChange = [self configurationForLocationChange];
   v3 = +[BMFindMyLocationChange columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -69,7 +69,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"FindMy.LocationChange" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"FindMy.LocationChange" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"FindMy.LocationChange" schema:v9 configuration:configurationForLocationChange];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -78,13 +78,13 @@
 
 + (id)configurationForLocationChange
 {
-  v3 = [a1 storeConfigurationForLocationChange];
-  v4 = [a1 syncPolicyForLocationChange];
+  storeConfigurationForLocationChange = [self storeConfigurationForLocationChange];
+  syncPolicyForLocationChange = [self syncPolicyForLocationChange];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E84B3AF5-052E-48DB-BF4C-B7B3FDEBA508"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"FindMy.LocationChange" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EC6F0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.findmy" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"FindMy.LocationChange" eventClass:objc_opt_class() storeConfig:storeConfigurationForLocationChange syncPolicy:syncPolicyForLocationChange legacyNames:&unk_1EF3EC6F0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.findmy" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -97,20 +97,20 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ContactActivity"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ContactActivity"])
   {
-    v5 = [a1 ContactActivity];
+    contactActivity = [self ContactActivity];
 LABEL_5:
-    v6 = v5;
+    v6 = contactActivity;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"LocationChange"])
+  if ([nameCopy isEqualToString:@"LocationChange"])
   {
-    v5 = [a1 LocationChange];
+    contactActivity = [self LocationChange];
     goto LABEL_5;
   }
 

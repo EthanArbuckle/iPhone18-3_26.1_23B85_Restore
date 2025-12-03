@@ -102,12 +102,12 @@ void __39__PXDiagnosticsSettings_sharedInstance__block_invoke()
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
   v29 = [v20 sectionWithRows:v28 title:@"Scroll"];
 
-  v30 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v31 = MEMORY[0x1E69C6638];
   v42[0] = v36;
   v42[1] = v35;
   v42[2] = v29;
-  v42[3] = v30;
+  v42[3] = px_restoreDefaultsSection;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
   v33 = [v31 moduleWithTitle:@"Diagnostics" contents:v32];
 

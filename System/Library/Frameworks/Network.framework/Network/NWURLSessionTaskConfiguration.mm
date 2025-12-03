@@ -2,23 +2,23 @@
 - (NWConcrete_nw_http_cookie_storage)HTTPCookieStorage;
 - (id)activity;
 - (id)connectionStateStorage;
-- (id)createRegistrableDomain:(void *)a1;
-- (id)initWithConfiguration:(void *)a3 task:(void *)a4 request:;
+- (id)createRegistrableDomain:(void *)domain;
+- (id)initWithConfiguration:(void *)configuration task:(void *)task request:;
 - (id)sourceApplicationBundleIdentifier;
 - (void)URLCredentialStorage;
-- (void)configureConnection:(uint64_t)a1;
-- (void)configureParameters:(id *)a1;
-- (void)configureSecProtocolOptions:(int)a3 QUIC:;
-- (void)updateRequest:(uint64_t)a1;
+- (void)configureConnection:(uint64_t)connection;
+- (void)configureParameters:(id *)parameters;
+- (void)configureSecProtocolOptions:(int)options QUIC:;
+- (void)updateRequest:(uint64_t)request;
 @end
 
 @implementation NWURLSessionTaskConfiguration
 
 - (id)connectionStateStorage
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     if (v1)
     {
       v2 = *(v1 + 416);
@@ -28,11 +28,11 @@
         v4 = *(v2 + 9);
         if (!v4)
         {
-          v5 = [*(v2 + 12) _alternativeServicesStorage];
-          v6 = v5;
-          if (v5)
+          _alternativeServicesStorage = [*(v2 + 12) _alternativeServicesStorage];
+          v6 = _alternativeServicesStorage;
+          if (_alternativeServicesStorage)
           {
-            ns = nw_http_connection_state_storage_create_ns(v5);
+            ns = nw_http_connection_state_storage_create_ns(_alternativeServicesStorage);
             v8 = v3[9];
             v3[9] = ns;
           }
@@ -64,19 +64,19 @@ LABEL_10:
 
 - (NWConcrete_nw_http_cookie_storage)HTTPCookieStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    cookieStorage = a1[1].cookieStorage;
+    selfCopy = self;
+    cookieStorage = self[1].cookieStorage;
     if (cookieStorage && BYTE2(cookieStorage[1]._internal) == 1)
     {
-      a1 = cookieStorage[28].super.isa;
+      self = cookieStorage[28].super.isa;
 LABEL_20:
       v1 = vars8;
       goto LABEL_21;
     }
 
-    if (a1[2].super.isa)
+    if (self[2].super.isa)
     {
       v4 = CFURLRequestCopyHTTPCookieStorage();
     }
@@ -86,11 +86,11 @@ LABEL_20:
       v4 = 0;
     }
 
-    v5 = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
-    v6 = v5;
+    mEMORY[0x1E695AC00] = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
+    v6 = mEMORY[0x1E695AC00];
     if (v4)
     {
-      if (v4 != [v5 _cookieStorage])
+      if (v4 != [mEMORY[0x1E695AC00] _cookieStorage])
       {
         v7 = [objc_alloc(MEMORY[0x1E695AC00]) _initWithCFHTTPCookieStorage:v4];
         CFRelease(v4);
@@ -106,7 +106,7 @@ LABEL_20:
       CFRelease(v4);
     }
 
-    v12 = v2[1].cookieStorage;
+    v12 = selfCopy[1].cookieStorage;
     if (v12)
     {
       v13 = v12[26].super.isa;
@@ -116,11 +116,11 @@ LABEL_20:
         isa = v13[3].super.isa;
         if (!isa)
         {
-          v15 = [(objc_class *)v13[6].super.isa HTTPCookieStorage];
-          v16 = v15;
-          if (v15)
+          hTTPCookieStorage = [(objc_class *)v13[6].super.isa HTTPCookieStorage];
+          v16 = hTTPCookieStorage;
+          if (hTTPCookieStorage)
           {
-            v17 = v15;
+            v17 = hTTPCookieStorage;
             v18 = objc_alloc_init(NWConcrete_nw_http_cookie_storage);
             v19 = v18->cookieStorage;
             v18->cookieStorage = v17;
@@ -145,25 +145,25 @@ LABEL_20:
     v11 = 0;
 LABEL_19:
 
-    a1 = v11;
+    self = v11;
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  return a1;
+  return self;
 }
 
 - (void)URLCredentialStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[3];
+    v2 = self[3];
     if (v2)
     {
       if (*(v2 + 27))
       {
-        a1 = 0;
+        self = 0;
 LABEL_12:
         v1 = vars8;
         goto LABEL_13;
@@ -176,11 +176,11 @@ LABEL_12:
         v5 = *(v3 + 7);
         if (!v5)
         {
-          v6 = [*(v3 + 12) URLCredentialStorage];
-          v7 = v6;
-          if (v6)
+          uRLCredentialStorage = [*(v3 + 12) URLCredentialStorage];
+          v7 = uRLCredentialStorage;
+          if (uRLCredentialStorage)
           {
-            v8 = v6;
+            v8 = uRLCredentialStorage;
             v9 = objc_alloc_init(NWConcrete_nw_authentication_credential_storage);
             credentialStorage = v9->credentialStorage;
             v9->credentialStorage = v8;
@@ -205,119 +205,119 @@ LABEL_12:
     v12 = 0;
 LABEL_11:
 
-    a1 = v12;
+    self = v12;
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  return a1;
+  return self;
 }
 
 - (id)activity
 {
-  if (a1)
+  if (self)
   {
-    v2 = (a1 + 40);
-    v1 = *(a1 + 40);
+    v2 = (self + 40);
+    v1 = *(self + 40);
     if (v1)
     {
-      v3 = v1;
+      _nw_activity = v1;
     }
 
     else
     {
-      v4 = *(a1 + 24);
-      v3 = [v4 _nw_activity];
+      v4 = *(self + 24);
+      _nw_activity = [v4 _nw_activity];
 
-      if (!v3)
+      if (!_nw_activity)
       {
-        v3 = nw_activity_create(12, 2);
-        nw_activity_activate(v3);
+        _nw_activity = nw_activity_create(12, 2);
+        nw_activity_activate(_nw_activity);
       }
 
-      objc_storeStrong(v2, v3);
+      objc_storeStrong(v2, _nw_activity);
     }
   }
 
   else
   {
-    v3 = 0;
+    _nw_activity = 0;
   }
 
-  return v3;
+  return _nw_activity;
 }
 
-- (id)initWithConfiguration:(void *)a3 task:(void *)a4 request:
+- (id)initWithConfiguration:(void *)configuration task:(void *)task request:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  configurationCopy = configuration;
+  taskCopy = task;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = NWURLSessionTaskConfiguration;
     v11 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a4);
-      if ([a1[4] _explicitlySetTimeoutInterval])
+      objc_storeStrong(self + 3, configuration);
+      objc_storeStrong(self + 4, task);
+      if ([self[4] _explicitlySetTimeoutInterval])
       {
-        [a1[4] timeoutInterval];
+        [self[4] timeoutInterval];
       }
 
       else
       {
-        [a1[2] timeoutIntervalForRequest];
+        [self[2] timeoutIntervalForRequest];
       }
 
-      a1[6] = v12;
+      self[6] = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)updateRequest:(uint64_t)a1
+- (void)updateRequest:(uint64_t)request
 {
   v4 = a2;
-  if (a1)
+  if (request)
   {
     v6 = v4;
-    objc_storeStrong((a1 + 32), a2);
-    if ([*(a1 + 32) _explicitlySetTimeoutInterval])
+    objc_storeStrong((request + 32), a2);
+    if ([*(request + 32) _explicitlySetTimeoutInterval])
     {
-      [*(a1 + 32) timeoutInterval];
+      [*(request + 32) timeoutInterval];
     }
 
     else
     {
-      [*(a1 + 16) timeoutIntervalForRequest];
+      [*(request + 16) timeoutIntervalForRequest];
     }
 
-    *(a1 + 48) = v5;
+    *(request + 48) = v5;
     v4 = v6;
   }
 }
 
-- (void)configureParameters:(id *)a1
+- (void)configureParameters:(id *)parameters
 {
   v110 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!parameters)
   {
     goto LABEL_125;
   }
 
-  v4 = a1[3];
+  v4 = parameters[3];
   v5 = v4;
   if (v4)
   {
     v6 = v4[52];
-    v7 = v6;
+    _sourceApplicationAuditTokenData3 = v6;
     if (!v6)
     {
       goto LABEL_184;
@@ -328,7 +328,7 @@ LABEL_13:
 
   else
   {
-    v7 = 0;
+    _sourceApplicationAuditTokenData3 = 0;
     v8 = 0;
   }
 
@@ -337,35 +337,35 @@ LABEL_13:
     v9 = v8;
     nw_parameters_set_context(v3, v9);
 
-    v10 = a1 + 4;
-    v11 = [a1[4] _explicitlySetNetworkServiceType];
-    v12 = a1 + 2;
+    v10 = parameters + 4;
+    _explicitlySetNetworkServiceType = [parameters[4] _explicitlySetNetworkServiceType];
+    v12 = parameters + 2;
     v13 = 2;
-    if (v11)
+    if (_explicitlySetNetworkServiceType)
     {
       v13 = 4;
     }
 
-    v14 = [a1[v13] networkServiceType];
-    if (v14 > 0xB)
+    networkServiceType = [parameters[v13] networkServiceType];
+    if (networkServiceType > 0xB)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = dword_182B08FC4[v14];
+      v15 = dword_182B08FC4[networkServiceType];
     }
 
     nw_parameters_set_traffic_class(v3, v15);
     if ([*v10 _explicitlySetAllowsCellularAccess])
     {
-      v16 = a1 + 4;
+      v16 = parameters + 4;
     }
 
     else
     {
-      v16 = a1 + 2;
+      v16 = parameters + 2;
     }
 
     if (([*v16 allowsCellularAccess] & 1) == 0)
@@ -375,12 +375,12 @@ LABEL_13:
 
     if ([*v10 _explicitlySetAllowsExpensiveNetworkAccess])
     {
-      v17 = a1 + 4;
+      v17 = parameters + 4;
     }
 
     else
     {
-      v17 = a1 + 2;
+      v17 = parameters + 2;
     }
 
     if (([*v17 allowsExpensiveNetworkAccess] & 1) == 0)
@@ -390,12 +390,12 @@ LABEL_13:
 
     if ([*v10 _explicitlySetAllowsConstrainedNetworkAccess])
     {
-      v18 = a1 + 4;
+      v18 = parameters + 4;
     }
 
     else
     {
-      v18 = a1 + 2;
+      v18 = parameters + 2;
     }
 
     if (([*v18 allowsConstrainedNetworkAccess] & 1) == 0)
@@ -410,25 +410,25 @@ LABEL_13:
 
     else
     {
-      v20 = [*v12 _explicitlySetAllowsUCA];
+      _explicitlySetAllowsUCA = [*v12 _explicitlySetAllowsUCA];
 
-      if (!v20)
+      if (!_explicitlySetAllowsUCA)
       {
         goto LABEL_32;
       }
     }
 
-    v21 = [*v10 _explicitlySetAllowsUCA] ? a1 + 4 : a1 + 2;
+    v21 = [*v10 _explicitlySetAllowsUCA] ? parameters + 4 : parameters + 2;
     nw_parameters_set_allow_ultra_constrained(v3, [*v21 _allowsUCA]);
 LABEL_32:
     if ([*v10 _explicitlySetRequiresDNSSECValidation])
     {
-      v22 = a1 + 4;
+      v22 = parameters + 4;
     }
 
     else
     {
-      v22 = a1 + 2;
+      v22 = parameters + 2;
     }
 
     if ([*v22 requiresDNSSECValidation])
@@ -459,7 +459,7 @@ LABEL_32:
       }
     }
 
-    v27 = a1[3];
+    v27 = parameters[3];
     if (v27)
     {
       v28 = v27[52];
@@ -469,8 +469,8 @@ LABEL_32:
         v30 = *(v28 + 10);
         if (!v30)
         {
-          v31 = [*(v28 + 12) connectionProxyDictionary];
-          if (v31)
+          connectionProxyDictionary = [*(v28 + 12) connectionProxyDictionary];
+          if (connectionProxyDictionary)
           {
             *objects = _CFXPCCreateXPCObjectFromCFObject();
             v32 = xpc_array_create(objects, 1uLL);
@@ -512,43 +512,43 @@ LABEL_55:
       _nw_array_apply(v5, aBlock);
     }
 
-    nw_parameters_set_multipath_service(v3, [a1[2] multipathServiceType]);
-    v36 = [(NWURLSessionTaskConfiguration *)a1 sourceApplicationBundleIdentifier];
+    nw_parameters_set_multipath_service(v3, [parameters[2] multipathServiceType]);
+    sourceApplicationBundleIdentifier = [(NWURLSessionTaskConfiguration *)parameters sourceApplicationBundleIdentifier];
 
-    if (v36)
+    if (sourceApplicationBundleIdentifier)
     {
-      v37 = [(NWURLSessionTaskConfiguration *)a1 sourceApplicationBundleIdentifier];
-      v38 = [a1[2] _sourceApplicationAuditTokenData];
+      sourceApplicationBundleIdentifier2 = [(NWURLSessionTaskConfiguration *)parameters sourceApplicationBundleIdentifier];
+      _sourceApplicationAuditTokenData = [parameters[2] _sourceApplicationAuditTokenData];
 
-      v39 = [v37 UTF8String];
-      if (v38)
+      uTF8String = [sourceApplicationBundleIdentifier2 UTF8String];
+      if (_sourceApplicationAuditTokenData)
       {
-        nw_parameters_set_effective_bundle_id(v3, v39);
+        nw_parameters_set_effective_bundle_id(v3, uTF8String);
       }
 
       else
       {
-        nw_parameters_set_source_application_by_bundle_id_internal(v3, v39);
+        nw_parameters_set_source_application_by_bundle_id_internal(v3, uTF8String);
       }
     }
 
-    v40 = [*v12 _sourceApplicationSecondaryIdentifier];
+    _sourceApplicationSecondaryIdentifier = [*v12 _sourceApplicationSecondaryIdentifier];
 
-    if (v40)
+    if (_sourceApplicationSecondaryIdentifier)
     {
-      v41 = [*v12 _sourceApplicationSecondaryIdentifier];
-      nw_parameters_set_account_id(v3, [v41 UTF8String]);
+      _sourceApplicationSecondaryIdentifier2 = [*v12 _sourceApplicationSecondaryIdentifier];
+      nw_parameters_set_account_id(v3, [_sourceApplicationSecondaryIdentifier2 UTF8String]);
     }
 
-    v42 = [*v12 _sourceApplicationAuditTokenData];
+    _sourceApplicationAuditTokenData2 = [*v12 _sourceApplicationAuditTokenData];
 
-    if (!v42)
+    if (!_sourceApplicationAuditTokenData2)
     {
       goto LABEL_66;
     }
 
-    v7 = [*v12 _sourceApplicationAuditTokenData];
-    if ([v7 length] == 32)
+    _sourceApplicationAuditTokenData3 = [*v12 _sourceApplicationAuditTokenData];
+    if ([_sourceApplicationAuditTokenData3 length] == 32)
     {
       break;
     }
@@ -559,31 +559,31 @@ LABEL_184:
     v8 = 0;
   }
 
-  v43 = [v7 bytes];
-  *objects = *v43;
-  *&objects[16] = v43[1];
+  bytes = [_sourceApplicationAuditTokenData3 bytes];
+  *objects = *bytes;
+  *&objects[16] = bytes[1];
   nw_parameters_set_source_application(v3, objects);
 
 LABEL_66:
-  v44 = [*v12 _CTDataConnectionServiceType];
-  if (v44)
+  _CTDataConnectionServiceType = [*v12 _CTDataConnectionServiceType];
+  if (_CTDataConnectionServiceType)
   {
-    v45 = v44;
-    v46 = [*v10 boundInterfaceIdentifier];
+    v45 = _CTDataConnectionServiceType;
+    boundInterfaceIdentifier = [*v10 boundInterfaceIdentifier];
 
-    if (!v46)
+    if (!boundInterfaceIdentifier)
     {
       v47 = xpc_array_create(0, 0);
       xpc_array_set_string(v47, 0xFFFFFFFFFFFFFFFFLL, "Cellular");
       v48 = xpc_array_create(0, 0);
-      v49 = [*v12 _CTDataConnectionServiceType];
+      _CTDataConnectionServiceType2 = [*v12 _CTDataConnectionServiceType];
       v50 = 0;
-      if ([v49 hasPrefix:@"kCTDataConnectionServiceType"])
+      if ([_CTDataConnectionServiceType2 hasPrefix:@"kCTDataConnectionServiceType"])
       {
         v50 = [@"kCTDataConnectionServiceType" length];
       }
 
-      xpc_array_set_string(v48, 0xFFFFFFFFFFFFFFFFLL, ([v49 UTF8String] + v50));
+      xpc_array_set_string(v48, 0xFFFFFFFFFFFFFFFFLL, ([_CTDataConnectionServiceType2 UTF8String] + v50));
       nw_parameters_set_required_netagent_classes(v3, v47, v48);
     }
   }
@@ -686,20 +686,20 @@ LABEL_173:
 
 LABEL_76:
   v104 = v5;
-  v51 = [*v12 _attributedBundleIdentifier];
+  _attributedBundleIdentifier = [*v12 _attributedBundleIdentifier];
 
-  if (v51)
+  if (_attributedBundleIdentifier)
   {
-    v52 = [*v12 _attributedBundleIdentifier];
-    nw_parameters_set_attributed_bundle_identifier(v3, [v52 UTF8String]);
+    _attributedBundleIdentifier2 = [*v12 _attributedBundleIdentifier];
+    nw_parameters_set_attributed_bundle_identifier(v3, [_attributedBundleIdentifier2 UTF8String]);
   }
 
   nw_parameters_set_skip_stack_trace_capture(v3, 1);
-  v53 = [a1[3] countOfBytesClientExpectsToSend];
-  v54 = v53 & ~(v53 >> 63);
-  v55 = [a1[3] countOfBytesClientExpectsToReceive];
-  nw_parameters_set_expected_workload(v3, (v55 & ~(v55 >> 63)) + v54);
-  if ([a1[4] attribution] == 1)
+  countOfBytesClientExpectsToSend = [parameters[3] countOfBytesClientExpectsToSend];
+  v54 = countOfBytesClientExpectsToSend & ~(countOfBytesClientExpectsToSend >> 63);
+  countOfBytesClientExpectsToReceive = [parameters[3] countOfBytesClientExpectsToReceive];
+  nw_parameters_set_expected_workload(v3, (countOfBytesClientExpectsToReceive & ~(countOfBytesClientExpectsToReceive >> 63)) + v54);
+  if ([parameters[4] attribution] == 1)
   {
     nw_parameters_set_attribution(v3, nw_parameters_attribution_user);
   }
@@ -709,39 +709,39 @@ LABEL_76:
     nw_parameters_set_expired_dns_behavior(v3, nw_parameters_expired_dns_behavior_prohibit|nw_parameters_expired_dns_behavior_allow);
   }
 
-  v56 = [*v10 mainDocumentURL];
-  v57 = [v56 host];
+  mainDocumentURL = [*v10 mainDocumentURL];
+  host = [mainDocumentURL host];
 
-  v58 = [NWURLSessionTaskConfiguration createRegistrableDomain:v57];
+  v58 = [NWURLSessionTaskConfiguration createRegistrableDomain:host];
   v59 = *v10;
   v60 = [v59 URL];
-  v61 = [v60 host];
+  host2 = [v60 host];
 
-  v62 = [NWURLSessionTaskConfiguration createRegistrableDomain:v61];
-  v63 = [*v10 _trackerContext];
-  v64 = v63;
-  if (v63 || ([*v10 mainDocumentURL], v66 = objc_claimAutoreleasedReturnValue(), v67 = -[NSURL _NW_isHTTPish](v66), v66, v67) && ((v63 = v58) != 0 || (v63 = v57) != 0))
+  v62 = [NWURLSessionTaskConfiguration createRegistrableDomain:host2];
+  _trackerContext = [*v10 _trackerContext];
+  v64 = _trackerContext;
+  if (_trackerContext || ([*v10 mainDocumentURL], v66 = objc_claimAutoreleasedReturnValue(), v67 = -[NSURL _NW_isHTTPish](v66), v66, v67) && ((_trackerContext = v58) != 0 || (_trackerContext = host) != 0))
   {
-    nw_parameters_set_attribution_context(v3, [v63 UTF8String]);
+    nw_parameters_set_attribution_context(v3, [_trackerContext UTF8String]);
   }
 
-  v65 = [*v10 mainDocumentURL];
+  mainDocumentURL2 = [*v10 mainDocumentURL];
 
-  if (v65)
+  if (mainDocumentURL2)
   {
     if (v58 && v62)
     {
       if ([v58 isEqualToString:v62])
       {
 LABEL_95:
-        v68 = [*v10 mainDocumentURL];
-        nw_parameters_set_main_document_cfurl(v3, v68);
+        mainDocumentURL3 = [*v10 mainDocumentURL];
+        nw_parameters_set_main_document_cfurl(v3, mainDocumentURL3);
 
         goto LABEL_96;
       }
     }
 
-    else if ([v57 isEqualToString:v61])
+    else if ([host isEqualToString:host2])
     {
       goto LABEL_95;
     }
@@ -751,12 +751,12 @@ LABEL_95:
   }
 
 LABEL_96:
-  v69 = [*v10 boundInterfaceIdentifier];
+  boundInterfaceIdentifier2 = [*v10 boundInterfaceIdentifier];
 
-  if (v69)
+  if (boundInterfaceIdentifier2)
   {
-    v70 = [*v10 boundInterfaceIdentifier];
-    v71 = nw_interface_create_with_name([v70 UTF8String]);
+    boundInterfaceIdentifier3 = [*v10 boundInterfaceIdentifier];
+    v71 = nw_interface_create_with_name([boundInterfaceIdentifier3 UTF8String]);
     nw_parameters_require_interface(v3, v71);
   }
 
@@ -780,7 +780,7 @@ LABEL_96:
     nw_parameters_set_privacy_proxy_fail_closed_for_unreachable_hosts(v3, 1);
   }
 
-  if ([*v10 _privacyProxyFailClosedForUnreachableNonMainHosts] && v57 && objc_msgSend(v57, "caseInsensitiveCompare:", v61))
+  if ([*v10 _privacyProxyFailClosedForUnreachableNonMainHosts] && host && objc_msgSend(host, "caseInsensitiveCompare:", host2))
   {
     nw_parameters_set_privacy_proxy_fail_closed_for_unreachable_hosts(v3, 1);
   }
@@ -1012,35 +1012,35 @@ LABEL_125:
 
 - (id)sourceApplicationBundleIdentifier
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[3] _sourceApplicationBundleIdentifierForMobileAsset];
-    v3 = v2;
-    if (v2)
+    _sourceApplicationBundleIdentifierForMobileAsset = [self[3] _sourceApplicationBundleIdentifierForMobileAsset];
+    v3 = _sourceApplicationBundleIdentifierForMobileAsset;
+    if (_sourceApplicationBundleIdentifierForMobileAsset)
     {
-      v4 = v2;
+      _sourceApplicationBundleIdentifier = _sourceApplicationBundleIdentifierForMobileAsset;
     }
 
     else
     {
-      v4 = [v1[2] _sourceApplicationBundleIdentifier];
+      _sourceApplicationBundleIdentifier = [selfCopy[2] _sourceApplicationBundleIdentifier];
     }
 
-    v1 = v4;
+    selfCopy = _sourceApplicationBundleIdentifier;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)createRegistrableDomain:(void *)a1
+- (id)createRegistrableDomain:(void *)domain
 {
   v32 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  domainCopy = domain;
+  v2 = domainCopy;
+  if (domainCopy)
   {
-    v4 = v1;
+    v4 = domainCopy;
     v5 = [v4 length];
     if (v5 >= 0x101)
     {
@@ -1247,19 +1247,19 @@ void __57__NWURLSessionTaskConfiguration_createIDNAEncodedDomain___block_invoke(
   }
 }
 
-- (void)configureSecProtocolOptions:(int)a3 QUIC:
+- (void)configureSecProtocolOptions:(int)options QUIC:
 {
-  v5 = a2;
-  if (a1)
+  optionsCopy2 = a2;
+  if (self)
   {
-    options = v5;
-    sec_protocol_options_set_min_tls_protocol_version(v5, [*(a1 + 16) TLSMinimumSupportedProtocolVersion]);
-    sec_protocol_options_set_max_tls_protocol_version(options, [*(a1 + 16) TLSMaximumSupportedProtocolVersion]);
-    if (a3)
+    options = optionsCopy2;
+    sec_protocol_options_set_min_tls_protocol_version(optionsCopy2, [*(self + 16) TLSMinimumSupportedProtocolVersion]);
+    sec_protocol_options_set_max_tls_protocol_version(options, [*(self + 16) TLSMaximumSupportedProtocolVersion]);
+    if (options)
     {
-      if ([*(a1 + 16) enablesEarlyData])
+      if ([*(self + 16) enablesEarlyData])
       {
-        LOBYTE(a3) = 1;
+        LOBYTE(options) = 1;
       }
 
       else
@@ -1269,31 +1269,31 @@ void __57__NWURLSessionTaskConfiguration_createIDNAEncodedDomain___block_invoke(
           dispatch_once(&enablesEarlyData_onceToken, &__block_literal_global_7);
         }
 
-        LOBYTE(a3) = enablesEarlyData_earlyDataEnabled;
+        LOBYTE(options) = enablesEarlyData_earlyDataEnabled;
       }
     }
 
-    if ([*(a1 + 16) _allowsTLSSessionTickets] & 1) != 0 || (a3)
+    if ([*(self + 16) _allowsTLSSessionTickets] & 1) != 0 || (options)
     {
       sec_protocol_options_set_tls_tickets_enabled(options, 1);
     }
 
-    if (a3)
+    if (options)
     {
       sec_protocol_options_set_tls_early_data_enabled();
     }
 
-    if ([*(a1 + 16) _allowsTLSECH])
+    if ([*(self + 16) _allowsTLSECH])
     {
       sec_protocol_options_set_enable_encrypted_client_hello(options, 1);
     }
 
-    v6 = [*(a1 + 16) _forceEnablePQTLS];
-    v5 = options;
-    if (v6)
+    _forceEnablePQTLS = [*(self + 16) _forceEnablePQTLS];
+    optionsCopy2 = options;
+    if (_forceEnablePQTLS)
     {
       sec_protocol_options_set_pqtls_mode();
-      v5 = options;
+      optionsCopy2 = options;
     }
   }
 }
@@ -1394,24 +1394,24 @@ LABEL_22:
   return result;
 }
 
-- (void)configureConnection:(uint64_t)a1
+- (void)configureConnection:(uint64_t)connection
 {
   v6 = a2;
-  if (a1)
+  if (connection)
   {
-    v3 = [(NWURLSessionTaskConfiguration *)a1 activity];
-    nw_connection_start_activity(v6, v3);
+    activity = [(NWURLSessionTaskConfiguration *)connection activity];
+    nw_connection_start_activity(v6, activity);
 
-    v4 = [*(a1 + 24) countOfBytesClientExpectsToSend];
-    if (v4 >= 1)
+    countOfBytesClientExpectsToSend = [*(connection + 24) countOfBytesClientExpectsToSend];
+    if (countOfBytesClientExpectsToSend >= 1)
     {
-      nw_connection_increment_estimated_bytes(v6, 0, v4);
+      nw_connection_increment_estimated_bytes(v6, 0, countOfBytesClientExpectsToSend);
     }
 
-    v5 = [*(a1 + 24) countOfBytesClientExpectsToReceive];
-    if (v5 >= 1)
+    countOfBytesClientExpectsToReceive = [*(connection + 24) countOfBytesClientExpectsToReceive];
+    if (countOfBytesClientExpectsToReceive >= 1)
     {
-      nw_connection_increment_estimated_bytes(v6, 1, v5);
+      nw_connection_increment_estimated_bytes(v6, 1, countOfBytesClientExpectsToReceive);
     }
   }
 }

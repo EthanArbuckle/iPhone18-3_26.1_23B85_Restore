@@ -1,25 +1,25 @@
 @interface GKUnifiedRecipient
-+ (id)recipientForContact:(id)a3;
-+ (id)recipientForHandle:(id)a3;
++ (id)recipientForContact:(id)contact;
++ (id)recipientForHandle:(id)handle;
 - (id)displayName;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 @end
 
 @implementation GKUnifiedRecipient
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   p_contact = &self->_contact;
-  if (self->_contact != v5)
+  if (self->_contact != contactCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_contact, a3);
+    v9 = contactCopy;
+    objc_storeStrong(p_contact, contact);
     v7 = [MEMORY[0x277CBDA78] stringFromContact:v9 style:0];
     [(GKUnifiedRecipient *)self setFullName:v7];
 
-    v8 = [(CNContact *)v9 nickname];
-    [(GKUnifiedRecipient *)self setNickName:v8];
+    nickname = [(CNContact *)v9 nickname];
+    [(GKUnifiedRecipient *)self setNickName:nickname];
   }
 
   MEMORY[0x2821F9730](p_contact);
@@ -27,30 +27,30 @@
 
 - (id)displayName
 {
-  v3 = [(GKUnifiedRecipient *)self fullName];
-  v4 = v3;
-  if (v3)
+  fullName = [(GKUnifiedRecipient *)self fullName];
+  v4 = fullName;
+  if (fullName)
   {
-    v5 = v3;
+    handle = fullName;
   }
 
   else
   {
-    v5 = [(GKUnifiedRecipient *)self handle];
+    handle = [(GKUnifiedRecipient *)self handle];
   }
 
-  v6 = v5;
+  v6 = handle;
 
   return v6;
 }
 
-+ (id)recipientForHandle:(id)a3
++ (id)recipientForHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
     v4 = objc_alloc_init(GKUnifiedRecipient);
-    [(GKUnifiedRecipient *)v4 setHandle:v3];
+    [(GKUnifiedRecipient *)v4 setHandle:handleCopy];
   }
 
   else
@@ -61,12 +61,12 @@
   return v4;
 }
 
-+ (id)recipientForContact:(id)a3
++ (id)recipientForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(GKUnifiedRecipient);
-  [(GKUnifiedRecipient *)v4 setContact:v3];
-  v5 = [GKMessageUtilities messagesRecipientHandleForContact:v3];
+  [(GKUnifiedRecipient *)v4 setContact:contactCopy];
+  v5 = [GKMessageUtilities messagesRecipientHandleForContact:contactCopy];
 
   [(GKUnifiedRecipient *)v4 setHandle:v5];
 

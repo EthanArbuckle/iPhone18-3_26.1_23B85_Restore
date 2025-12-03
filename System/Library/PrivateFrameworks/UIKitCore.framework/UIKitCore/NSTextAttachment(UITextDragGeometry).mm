@@ -8,75 +8,75 @@
 + (uint64_t)_attachmentHasImage:()UITextDragGeometry
 {
   v3 = a3;
-  v4 = [v3 image];
+  image = [v3 image];
 
-  if (!v4)
+  if (!image)
   {
-    v6 = [v3 fileType];
-    if (v6)
+    fileType = [v3 fileType];
+    if (fileType)
     {
-      v7 = v6;
-      v5 = [v3 fileWrapper];
-      if (!v5)
+      v7 = fileType;
+      fileWrapper = [v3 fileWrapper];
+      if (!fileWrapper)
       {
 LABEL_7:
 
         goto LABEL_9;
       }
 
-      v8 = [v3 fileWrapper];
-      v9 = [v8 isRegularFile];
+      fileWrapper2 = [v3 fileWrapper];
+      isRegularFile = [fileWrapper2 isRegularFile];
 
-      if (v9)
+      if (isRegularFile)
       {
         v7 = +[UIImage readableTypeIdentifiersForItemProvider];
-        v10 = [v3 fileType];
-        v5 = [v7 containsObject:v10];
+        fileType2 = [v3 fileType];
+        fileWrapper = [v7 containsObject:fileType2];
 
         goto LABEL_7;
       }
     }
 
-    v5 = 0;
+    fileWrapper = 0;
     goto LABEL_9;
   }
 
-  v5 = 1;
+  fileWrapper = 1;
 LABEL_9:
 
-  return v5;
+  return fileWrapper;
 }
 
 + (id)_imageFromAttachment:()UITextDragGeometry
 {
   v3 = a3;
-  v4 = [v3 image];
+  image = [v3 image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [v3 image];
+    image2 = [v3 image];
     goto LABEL_11;
   }
 
-  v5 = [v3 fileType];
-  if (v5)
+  image2 = [v3 fileType];
+  if (image2)
   {
-    v6 = [v3 fileWrapper];
-    if (v6)
+    fileWrapper = [v3 fileWrapper];
+    if (fileWrapper)
     {
-      v7 = v6;
-      v8 = [v3 fileWrapper];
-      if ([v8 isRegularFile])
+      v7 = fileWrapper;
+      fileWrapper2 = [v3 fileWrapper];
+      if ([fileWrapper2 isRegularFile])
       {
         v9 = +[UIImage readableTypeIdentifiersForItemProvider];
-        v10 = [v3 fileType];
-        v11 = [v9 containsObject:v10];
+        fileType = [v3 fileType];
+        v11 = [v9 containsObject:fileType];
 
         if (v11)
         {
-          v12 = [v3 fileWrapper];
-          v13 = [v12 regularFileContents];
-          v5 = [UIImage imageWithData:v13];
+          fileWrapper3 = [v3 fileWrapper];
+          regularFileContents = [fileWrapper3 regularFileContents];
+          image2 = [UIImage imageWithData:regularFileContents];
 
           goto LABEL_11;
         }
@@ -86,12 +86,12 @@ LABEL_9:
     }
 
 LABEL_10:
-    v5 = 0;
+    image2 = 0;
   }
 
 LABEL_11:
 
-  return v5;
+  return image2;
 }
 
 @end

@@ -55,8 +55,8 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(NSValue *)inputTransform objCType];
-    if (!strcmp(v4, "{CGAffineTransform=dddddd}") || !strcmp(v4, "{?=dddddd}"))
+    objCType = [(NSValue *)inputTransform objCType];
+    if (!strcmp(objCType, "{CGAffineTransform=dddddd}") || !strcmp(objCType, "{?=dddddd}"))
     {
       [(NSValue *)inputTransform getValue:&v25 size:48];
       goto LABEL_11;
@@ -116,7 +116,7 @@ LABEL_11:
     v24 = v25;
     CGAffineTransformInvert(&v26, &v24);
     v25 = v26;
-    v11 = [(CIAffineTile *)self _kernel];
+    _kernel = [(CIAffineTile *)self _kernel];
     v12 = *MEMORY[0x1E695F040];
     v13 = *(MEMORY[0x1E695F040] + 8);
     v15 = *(MEMORY[0x1E695F040] + 16);
@@ -124,7 +124,7 @@ LABEL_11:
     v27[0] = [CIVector vectorWithX:*&v25.tx Y:MEMORY[0x1E69E9820], 3221225472, __27__CIAffineTile_outputImage__block_invoke, &__block_descriptor_80_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, *&v25.a, *&v25.c, *&v25.tx];
     v27[1] = [CIVector vectorWithX:v25.a Y:v25.c];
     v27[2] = [CIVector vectorWithX:v25.b Y:v25.d];
-    return [v11 applyWithExtent:&v23 roiCallback:v10 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 3), v12, v13, v15, v14}];
+    return [_kernel applyWithExtent:&v23 roiCallback:v10 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 3), v12, v13, v15, v14}];
   }
 }
 

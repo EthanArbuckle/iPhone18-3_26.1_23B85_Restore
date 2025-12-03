@@ -1,21 +1,21 @@
 @interface TYATypologyAccessSession
-+ (id)_safeFilenameWithName:(id)a3;
++ (id)_safeFilenameWithName:(id)name;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (TYATypologyAccessSession)initWithAuditToken:(id *)a3;
-- (id)_issueSandboxExtensionForURL:(id)a3;
+- (TYATypologyAccessSession)initWithAuditToken:(id *)token;
+- (id)_issueSandboxExtensionForURL:(id)l;
 - (void)_initializeEnumerator;
-- (void)nextTypologyURL:(id)a3;
-- (void)removeTypologyFileWithName:(id)a3 completion:(id)a4;
-- (void)setAccessMode:(unint64_t)a3;
-- (void)setAuditToken:(id *)a3;
-- (void)setTypologyAccessMode:(unint64_t)a3;
+- (void)nextTypologyURL:(id)l;
+- (void)removeTypologyFileWithName:(id)name completion:(id)completion;
+- (void)setAccessMode:(unint64_t)mode;
+- (void)setAuditToken:(id *)token;
+- (void)setTypologyAccessMode:(unint64_t)mode;
 - (void)startEnumeration;
-- (void)writeData:(id)a3 toTypologyFileWithName:(id)a4 completion:(id)a5;
+- (void)writeData:(id)data toTypologyFileWithName:(id)name completion:(id)completion;
 @end
 
 @implementation TYATypologyAccessSession
 
-- (TYATypologyAccessSession)initWithAuditToken:(id *)a3
+- (TYATypologyAccessSession)initWithAuditToken:(id *)token
 {
   v8.receiver = self;
   v8.super_class = TYATypologyAccessSession;
@@ -23,8 +23,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0[4];
-    *v4->_auditToken.val = *a3->var0;
+    v6 = *&token->var0[4];
+    *v4->_auditToken.val = *token->var0;
     *&v4->_auditToken.val[4] = v6;
     [(TYATypologyAccessSession *)v4 setAccessMode:0];
   }
@@ -32,14 +32,14 @@
   return v5;
 }
 
-- (void)setAccessMode:(unint64_t)a3
+- (void)setAccessMode:(unint64_t)mode
 {
-  if (self->_accessMode != a3)
+  if (self->_accessMode != mode)
   {
-    self->_accessMode = a3;
-    if (a3 <= 2)
+    self->_accessMode = mode;
+    if (mode <= 2)
     {
-      v4 = objc_alloc_init(*(&off_10001C770)[a3]);
+      v4 = objc_alloc_init(*(&off_10001C770)[mode]);
       typologyPreferences = self->_typologyPreferences;
       self->_typologyPreferences = v4;
 
@@ -53,38 +53,38 @@
   directoryEnumerator = self->_directoryEnumerator;
   self->_directoryEnumerator = 0;
 
-  v4 = [(TYATypologyAccessSession *)self typologyPreferences];
-  v5 = [v4 typologyLoggingEnabledByProfile];
+  typologyPreferences = [(TYATypologyAccessSession *)self typologyPreferences];
+  typologyLoggingEnabledByProfile = [typologyPreferences typologyLoggingEnabledByProfile];
 
-  if (v5)
+  if (typologyLoggingEnabledByProfile)
   {
-    v6 = [(TYATypologyAccessSession *)self typologyPreferences];
-    v7 = [v6 typologyDirectoryURL];
+    typologyPreferences2 = [(TYATypologyAccessSession *)self typologyPreferences];
+    typologyDirectoryURL = [typologyPreferences2 typologyDirectoryURL];
 
     v12[0] = NSURLNameKey;
     v12[1] = NSURLIsDirectoryKey;
     v8 = [NSArray arrayWithObjects:v12 count:2];
     v9 = [&stru_10001C750 copy];
     v10 = +[NSFileManager defaultManager];
-    v11 = [v10 enumeratorAtURL:v7 includingPropertiesForKeys:v8 options:5 errorHandler:v9];
+    v11 = [v10 enumeratorAtURL:typologyDirectoryURL includingPropertiesForKeys:v8 options:5 errorHandler:v9];
     [(TYATypologyAccessSession *)self setDirectoryEnumerator:v11];
   }
 
   else
   {
-    v7 = TYALog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    typologyDirectoryURL = TYALog();
+    if (os_log_type_enabled(typologyDirectoryURL, OS_LOG_TYPE_ERROR))
     {
       sub_10000D014();
     }
   }
 }
 
-- (id)_issueSandboxExtensionForURL:(id)a3
+- (id)_issueSandboxExtensionForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 path];
-  [v5 fileSystemRepresentation];
+  lCopy = l;
+  path = [lCopy path];
+  [path fileSystemRepresentation];
   [(TYATypologyAccessSession *)self auditToken];
   v6 = sandbox_extension_issue_file_to_process();
   if (!v6)
@@ -92,7 +92,7 @@
     v14 = TYALog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D140(v4, v14);
+      sub_10000D140(lCopy, v14);
     }
 
     goto LABEL_12;
@@ -117,13 +117,13 @@ LABEL_12:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v11 = [v8 UTF8String];
-    v12 = [v4 lastPathComponent];
-    v13 = [v12 UTF8String];
+    uTF8String = [v8 UTF8String];
+    lastPathComponent = [lCopy lastPathComponent];
+    uTF8String2 = [lastPathComponent UTF8String];
     v16 = 136380931;
-    v17 = v11;
+    v17 = uTF8String;
     v18 = 2081;
-    v19 = v13;
+    v19 = uTF8String2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Issued sandbox extension (%{private}s) for typology url with name %{private}s", &v16, 0x16u);
   }
 
@@ -144,25 +144,25 @@ LABEL_13:
   [(TYATypologyAccessSession *)self _initializeEnumerator];
 }
 
-+ (id)_safeFilenameWithName:(id)a3
++ (id)_safeFilenameWithName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = v4;
-  if (v4 && [v4 length] && (objc_msgSend(v5, "isEqualToString:", @"/") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"~") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @".") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"..") & 1) == 0)
+  nameCopy = name;
+  lastPathComponent = [nameCopy lastPathComponent];
+  v5 = lastPathComponent;
+  if (lastPathComponent && [lastPathComponent length] && (objc_msgSend(v5, "isEqualToString:", @"/") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"~") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @".") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"..") & 1) == 0)
   {
-    if ([v5 isEqualToString:v3])
+    if ([v5 isEqualToString:nameCopy])
     {
 LABEL_8:
       v6 = v5;
       goto LABEL_15;
     }
 
-    v7 = [v3 pathComponents];
-    if ([v7 count] == 2 && (objc_msgSend(v7, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"."), v8, v9))
+    pathComponents = [nameCopy pathComponents];
+    if ([pathComponents count] == 2 && (objc_msgSend(pathComponents, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"."), v8, v9))
     {
-      v10 = [v7 lastObject];
-      v11 = [v10 isEqualToString:v5];
+      lastObject = [pathComponents lastObject];
+      v11 = [lastObject isEqualToString:v5];
 
       if (v11)
       {
@@ -181,29 +181,29 @@ LABEL_15:
   return v6;
 }
 
-- (void)nextTypologyURL:(id)a3
+- (void)nextTypologyURL:(id)l
 {
-  v4 = a3;
-  v5 = 0;
+  lCopy = l;
+  nextObject = 0;
   while (1)
   {
-    v6 = v5;
-    v7 = [(TYATypologyAccessSession *)self directoryEnumerator];
-    v5 = [v7 nextObject];
+    v6 = nextObject;
+    directoryEnumerator = [(TYATypologyAccessSession *)self directoryEnumerator];
+    nextObject = [directoryEnumerator nextObject];
 
-    if (!v5)
+    if (!nextObject)
     {
       break;
     }
 
-    if (_isTypologyURL(v5))
+    if (_isTypologyURL(nextObject))
     {
-      v8 = [(TYATypologyAccessSession *)self typologyPreferences];
-      v9 = [v8 isTypologyInDatavault];
+      typologyPreferences = [(TYATypologyAccessSession *)self typologyPreferences];
+      isTypologyInDatavault = [typologyPreferences isTypologyInDatavault];
 
-      if (v9)
+      if (isTypologyInDatavault)
       {
-        v10 = [(TYATypologyAccessSession *)self _issueSandboxExtensionForURL:v5];
+        v10 = [(TYATypologyAccessSession *)self _issueSandboxExtensionForURL:nextObject];
       }
 
       else
@@ -214,15 +214,15 @@ LABEL_15:
       v12 = TYALog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v5 lastPathComponent];
+        lastPathComponent = [nextObject lastPathComponent];
         v14 = 136380931;
-        v15 = [v13 UTF8String];
+        uTF8String = [lastPathComponent UTF8String];
         v16 = 2081;
-        v17 = [v10 UTF8String];
+        uTF8String2 = [v10 UTF8String];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "-nextTypologyURL: -> (%{private}s, %{private}s)", &v14, 0x16u);
       }
 
-      v4[2](v4, v5, v10);
+      lCopy[2](lCopy, nextObject, v10);
       goto LABEL_13;
     }
   }
@@ -234,28 +234,28 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "-nextTypologyURL: -> ((null), (null))", &v14, 2u);
   }
 
-  v4[2](v4, 0, 0);
+  lCopy[2](lCopy, 0, 0);
 LABEL_13:
 }
 
-- (void)removeTypologyFileWithName:(id)a3 completion:(id)a4
+- (void)removeTypologyFileWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v8 = TYALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v20 = v6;
+    v20 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Removing typology file with name: %{private}@", buf, 0xCu);
   }
 
-  v9 = [objc_opt_class() _safeFilenameWithName:v6];
+  v9 = [objc_opt_class() _safeFilenameWithName:nameCopy];
   if (v9)
   {
-    v10 = [(TYATypologyAccessSession *)self typologyPreferences];
-    v11 = [v10 typologyDirectoryURL];
-    v12 = [v11 URLByAppendingPathComponent:v9 isDirectory:0];
+    typologyPreferences = [(TYATypologyAccessSession *)self typologyPreferences];
+    typologyDirectoryURL = [typologyPreferences typologyDirectoryURL];
+    v12 = [typologyDirectoryURL URLByAppendingPathComponent:v9 isDirectory:0];
 
     v13 = +[NSFileManager defaultManager];
     v18 = 0;
@@ -284,30 +284,30 @@ LABEL_13:
     v14 = 0;
   }
 
-  v7[2](v7, v14, v15);
+  completionCopy[2](completionCopy, v14, v15);
 }
 
-- (void)setTypologyAccessMode:(unint64_t)a3
+- (void)setTypologyAccessMode:(unint64_t)mode
 {
   v5 = TYALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Set typology access mode %lu.", &v6, 0xCu);
   }
 
-  [(TYATypologyAccessSession *)self setAccessMode:a3];
+  [(TYATypologyAccessSession *)self setAccessMode:mode];
 }
 
-- (void)writeData:(id)a3 toTypologyFileWithName:(id)a4 completion:(id)a5
+- (void)writeData:(id)data toTypologyFileWithName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  completionCopy = completion;
   if (TI_IS_INTERNAL_INSTALL())
   {
-    v11 = [objc_opt_class() _safeFilenameWithName:v9];
+    v11 = [objc_opt_class() _safeFilenameWithName:nameCopy];
     if (!v11)
     {
       v24 = TYALog();
@@ -321,9 +321,9 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    v12 = [(TYATypologyAccessSession *)self typologyPreferences];
-    v13 = [v12 typologyDirectoryURL];
-    v14 = [v13 URLByAppendingPathComponent:v11];
+    typologyPreferences = [(TYATypologyAccessSession *)self typologyPreferences];
+    typologyDirectoryURL = [typologyPreferences typologyDirectoryURL];
+    v14 = [typologyDirectoryURL URLByAppendingPathComponent:v11];
 
     v15 = TYALog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -334,16 +334,16 @@ LABEL_13:
     }
 
     v16 = +[NSFileManager defaultManager];
-    v17 = [(TYATypologyAccessSession *)self typologyPreferences];
-    v18 = [v17 typologyDirectoryURL];
+    typologyPreferences2 = [(TYATypologyAccessSession *)self typologyPreferences];
+    typologyDirectoryURL2 = [typologyPreferences2 typologyDirectoryURL];
     v27 = 0;
-    v19 = [v16 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v27];
+    v19 = [v16 createDirectoryAtURL:typologyDirectoryURL2 withIntermediateDirectories:1 attributes:&__NSDictionary0__struct error:&v27];
     v20 = v27;
 
     if (v19)
     {
       v26 = v20;
-      v21 = [v8 writeToURL:v14 options:2 error:&v26];
+      v21 = [dataCopy writeToURL:v14 options:2 error:&v26];
       v22 = v26;
 
       if (v21)
@@ -374,7 +374,7 @@ LABEL_17:
   v22 = 0;
   v23 = 0;
 LABEL_18:
-  v10[2](v10, v23, v22);
+  completionCopy[2](completionCopy, v23, v22);
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
@@ -385,10 +385,10 @@ LABEL_18:
   return self;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_auditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_auditToken.val = *token->var0;
   *&self->_auditToken.val[4] = v3;
 }
 

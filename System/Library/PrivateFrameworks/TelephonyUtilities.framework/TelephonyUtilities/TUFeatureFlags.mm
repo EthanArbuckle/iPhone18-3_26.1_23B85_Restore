@@ -31,15 +31,15 @@
 
 - (BOOL)receptionistEnabled
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v3 != 2)
+  if (deviceType != 2)
   {
-    v4 = [MEMORY[0x1E699BE70] sharedInstance];
-    v5 = [v4 deviceType];
+    mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+    deviceType2 = [mEMORY[0x1E699BE70]2 deviceType];
 
-    if (v5 != 4)
+    if (deviceType2 != 4)
     {
       return 0;
     }
@@ -74,15 +74,15 @@
 
 - (BOOL)audioCallTranslationEnabled
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v3 != 2)
+  if (deviceType != 2)
   {
-    v4 = [MEMORY[0x1E699BE70] sharedInstance];
-    v5 = [v4 deviceType];
+    mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+    deviceType2 = [mEMORY[0x1E699BE70]2 deviceType];
 
-    if (v5 != 4)
+    if (deviceType2 != 4)
     {
       return 0;
     }
@@ -115,86 +115,86 @@
 
 - (BOOL)lagunaPullBackEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)lagunaIncomingCallsEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)lagunaLiveCaptionsEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)lagunaAudioCallsEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)lagunaContinuityCompanionModeEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)lagunaContinuityCompanionModeMessageSupport
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)continuityEmergencyMultiDeviceDiscoveryEnabled
 {
-  v2 = [(TUFeatureFlags *)self lagunaEnabled];
-  if (v2)
+  lagunaEnabled = [(TUFeatureFlags *)self lagunaEnabled];
+  if (lagunaEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(lagunaEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return lagunaEnabled;
 }
 
 - (BOOL)intelligentRoutingEnabled
@@ -211,14 +211,14 @@
 
 - (BOOL)collaborateTogetherEnabled
 {
-  v2 = [(TUFeatureFlags *)self gelatoEnabled];
-  if (v2)
+  gelatoEnabled = [(TUFeatureFlags *)self gelatoEnabled];
+  if (gelatoEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(gelatoEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return gelatoEnabled;
 }
 
 - (BOOL)expanseEnabledForMusic
@@ -235,14 +235,14 @@
 
 - (BOOL)aTVHandoff
 {
-  v2 = [(TUFeatureFlags *)self expanseEnabled];
-  if (v2)
+  expanseEnabled = [(TUFeatureFlags *)self expanseEnabled];
+  if (expanseEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(expanseEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return expanseEnabled;
 }
 
 - (BOOL)uPlusNDowngrade
@@ -271,10 +271,10 @@
 
 - (BOOL)simLinePickerEnabled
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v3 == 4)
+  if (deviceType == 4)
   {
     return 0;
   }
@@ -284,27 +284,27 @@
 
 - (BOOL)phoneRecentsAvatarsCarplayEnabled
 {
-  v2 = [(TUFeatureFlags *)self phoneRecentsAvatarsEnabled];
-  if (v2)
+  phoneRecentsAvatarsEnabled = [(TUFeatureFlags *)self phoneRecentsAvatarsEnabled];
+  if (phoneRecentsAvatarsEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(phoneRecentsAvatarsEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return phoneRecentsAvatarsEnabled;
 }
 
 - (BOOL)videoCallTranslationEnabled
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v3 != 2)
+  if (deviceType != 2)
   {
-    v4 = [MEMORY[0x1E699BE70] sharedInstance];
-    v5 = [v4 deviceType];
+    mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+    deviceType2 = [mEMORY[0x1E699BE70]2 deviceType];
 
-    if (v5 != 4)
+    if (deviceType2 != 4)
     {
       return 0;
     }
@@ -327,14 +327,14 @@
 
 - (BOOL)acceptedContactsLabelsEnabled
 {
-  v2 = [(TUFeatureFlags *)self junkFilteringEnabled];
-  if (v2)
+  junkFilteringEnabled = [(TUFeatureFlags *)self junkFilteringEnabled];
+  if (junkFilteringEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(junkFilteringEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return junkFilteringEnabled;
 }
 
 - (BOOL)relayCallRecordingEnabled
@@ -349,10 +349,10 @@
 
 - (BOOL)dialerInterceptEnabled
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v3 != 2)
+  if (deviceType != 2)
   {
     return 0;
   }

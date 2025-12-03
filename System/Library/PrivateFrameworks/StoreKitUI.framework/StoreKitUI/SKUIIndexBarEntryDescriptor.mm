@@ -1,15 +1,15 @@
 @interface SKUIIndexBarEntryDescriptor
-+ (id)entryDescriptorWithArtwork:(id)a3;
-+ (id)entryDescriptorWithAttributedString:(id)a3;
-+ (id)entryDescriptorWithImage:(id)a3;
-+ (id)placeholderEntryDescriptorWithSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)entryDescriptorWithArtwork:(id)artwork;
++ (id)entryDescriptorWithAttributedString:(id)string;
++ (id)entryDescriptorWithImage:(id)image;
++ (id)placeholderEntryDescriptorWithSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (UIEdgeInsets)contentEdgeInsets;
 - (unint64_t)hash;
-- (void)setArtwork:(id)a3;
-- (void)setAttributedString:(id)a3;
-- (void)setImage:(id)a3;
+- (void)setArtwork:(id)artwork;
+- (void)setAttributedString:(id)string;
+- (void)setImage:(id)image;
 @end
 
 @implementation SKUIIndexBarEntryDescriptor
@@ -34,9 +34,9 @@
   return v12 ^ v13 ^ [(UIImage *)self->_image hash]^ (self->_size.width * 1000.0) ^ (self->_size.height * 10000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -49,19 +49,19 @@
     }
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     goto LABEL_20;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || v4->_entryDescriptorType != self->_entryDescriptorType || (v4->_size.width == self->_size.width ? (v13 = v4->_size.height == self->_size.height) : (v13 = 0), !v13 || (image = v4->_image, image != self->_image) && ![(UIImage *)image isEqual:?]|| (attributedString = v4->_attributedString, attributedString != self->_attributedString) && ![(NSAttributedString *)attributedString isEqualToAttributedString:?]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || equalCopy->_entryDescriptorType != self->_entryDescriptorType || (equalCopy->_size.width == self->_size.width ? (v13 = equalCopy->_size.height == self->_size.height) : (v13 = 0), !v13 || (image = equalCopy->_image, image != self->_image) && ![(UIImage *)image isEqual:?]|| (attributedString = equalCopy->_attributedString, attributedString != self->_attributedString) && ![(NSAttributedString *)attributedString isEqualToAttributedString:?]))
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  artwork = v4->_artwork;
+  artwork = equalCopy->_artwork;
   if (artwork == self->_artwork)
   {
 LABEL_20:
@@ -75,9 +75,9 @@ LABEL_21:
   return v17;
 }
 
-+ (id)entryDescriptorWithArtwork:(id)a3
++ (id)entryDescriptorWithArtwork:(id)artwork
 {
-  v3 = a3;
+  artworkCopy = artwork;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -92,14 +92,14 @@ LABEL_21:
 
   v12 = objc_alloc_init(SKUIIndexBarEntryDescriptor);
   [(SKUIIndexBarEntryDescriptor *)v12 setEntryDescriptorType:2];
-  [(SKUIIndexBarEntryDescriptor *)v12 setArtwork:v3];
+  [(SKUIIndexBarEntryDescriptor *)v12 setArtwork:artworkCopy];
 
   return v12;
 }
 
-+ (id)entryDescriptorWithAttributedString:(id)a3
++ (id)entryDescriptorWithAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -114,14 +114,14 @@ LABEL_21:
 
   v12 = objc_alloc_init(SKUIIndexBarEntryDescriptor);
   [(SKUIIndexBarEntryDescriptor *)v12 setEntryDescriptorType:1];
-  [(SKUIIndexBarEntryDescriptor *)v12 setAttributedString:v3];
+  [(SKUIIndexBarEntryDescriptor *)v12 setAttributedString:stringCopy];
 
   return v12;
 }
 
-+ (id)entryDescriptorWithImage:(id)a3
++ (id)entryDescriptorWithImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -136,15 +136,15 @@ LABEL_21:
 
   v12 = objc_alloc_init(SKUIIndexBarEntryDescriptor);
   [(SKUIIndexBarEntryDescriptor *)v12 setEntryDescriptorType:3];
-  [(SKUIIndexBarEntryDescriptor *)v12 setImage:v3];
+  [(SKUIIndexBarEntryDescriptor *)v12 setImage:imageCopy];
 
   return v12;
 }
 
-+ (id)placeholderEntryDescriptorWithSize:(CGSize)a3
++ (id)placeholderEntryDescriptorWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -164,9 +164,9 @@ LABEL_21:
   return v13;
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v5 = a3;
+  artworkCopy = artwork;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -180,18 +180,18 @@ LABEL_21:
   }
 
   artwork = self->_artwork;
-  if (artwork != v5 && ![(SKUIArtwork *)artwork isEqual:v5])
+  if (artwork != artworkCopy && ![(SKUIArtwork *)artwork isEqual:artworkCopy])
   {
-    objc_storeStrong(&self->_artwork, a3);
+    objc_storeStrong(&self->_artwork, artwork);
     [(SKUIArtwork *)self->_artwork size];
     self->_size.width = v15;
     self->_size.height = v16;
   }
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -205,9 +205,9 @@ LABEL_21:
   }
 
   attributedString = self->_attributedString;
-  if (attributedString != v4 && ![(NSAttributedString *)attributedString isEqualToAttributedString:v4])
+  if (attributedString != stringCopy && ![(NSAttributedString *)attributedString isEqualToAttributedString:stringCopy])
   {
-    v14 = [(NSAttributedString *)v4 copy];
+    v14 = [(NSAttributedString *)stringCopy copy];
     v15 = self->_attributedString;
     self->_attributedString = v14;
 
@@ -217,9 +217,9 @@ LABEL_21:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -233,9 +233,9 @@ LABEL_21:
   }
 
   image = self->_image;
-  if (image != v5 && ([(UIImage *)image isEqual:v5]& 1) == 0)
+  if (image != imageCopy && ([(UIImage *)image isEqual:imageCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(UIImage *)self->_image size];
     self->_size.width = v15;
     self->_size.height = v16;

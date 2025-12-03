@@ -3,13 +3,13 @@
 + (id)shortDescription;
 + (id)uniqueIdentifierNamespace;
 - (BOOL)isSiriAssistant;
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMSiriEndpointProfileAssistant)initWithCoder:(id)a3;
-- (HMSiriEndpointProfileAssistant)initWithIdentifier:(id)a3 name:(id)a4 active:(int64_t)a5;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMSiriEndpointProfileAssistant)initWithCoder:(id)coder;
+- (HMSiriEndpointProfileAssistant)initWithIdentifier:(id)identifier name:(id)name active:(int64_t)active;
 - (NSString)name;
 - (NSString)shortDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
 @end
 
 @implementation HMSiriEndpointProfileAssistant
@@ -21,13 +21,13 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -39,18 +39,18 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 name];
-    v9 = [(HMSiriEndpointProfileAssistant *)self name];
+    name = [v6 name];
+    name2 = [(HMSiriEndpointProfileAssistant *)self name];
     v10 = HMFEqualObjects();
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v7 name];
-      [(HMSiriEndpointProfileAssistant *)self setName:v11];
+      name3 = [v7 name];
+      [(HMSiriEndpointProfileAssistant *)self setName:name3];
     }
 
-    v12 = [v7 active];
-    if (v12 == [(HMSiriEndpointProfileAssistant *)self active])
+    active = [v7 active];
+    if (active == [(HMSiriEndpointProfileAssistant *)self active])
     {
       v13 = v10 ^ 1;
     }
@@ -70,9 +70,9 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -84,48 +84,48 @@
   objc_exception_throw(v10);
 }
 
-- (HMSiriEndpointProfileAssistant)initWithCoder:(id)a3
+- (HMSiriEndpointProfileAssistant)initWithCoder:(id)coder
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMSiriEndpointProfileAssistant *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sepa-identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sepa-identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     v8 = v5->_identifier;
     if (v8)
     {
-      v9 = [(NSNumber *)v8 stringValue];
-      v22[0] = v9;
+      stringValue = [(NSNumber *)v8 stringValue];
+      v22[0] = stringValue;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
 
       v11 = MEMORY[0x1E696AFB0];
-      v12 = [objc_opt_class() uniqueIdentifierNamespace];
-      v13 = [v11 hm_deriveUUIDFromBaseUUID:v12 identifierSalt:0 withSalts:v10];
+      uniqueIdentifierNamespace = [objc_opt_class() uniqueIdentifierNamespace];
+      v13 = [v11 hm_deriveUUIDFromBaseUUID:uniqueIdentifierNamespace identifierSalt:0 withSalts:v10];
       uniqueIdentifier = v5->_uniqueIdentifier;
       v5->_uniqueIdentifier = v13;
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sepa-name"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sepa-name"];
     name = v5->_name;
     v5->_name = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sepa-active"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sepa-active"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 integerValue];
+      integerValue = [v17 integerValue];
     }
 
     else
     {
-      v19 = -1;
+      integerValue = -1;
     }
 
-    v5->_active = v19;
+    v5->_active = integerValue;
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -134,17 +134,17 @@
 
 - (BOOL)isSiriAssistant
 {
-  v2 = [(HMSiriEndpointProfileAssistant *)self identifier];
+  identifier = [(HMSiriEndpointProfileAssistant *)self identifier];
   v3 = HMFEqualObjects();
 
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   name = self->_name;
   self->_name = v4;
 
@@ -160,24 +160,24 @@
   return v3;
 }
 
-- (HMSiriEndpointProfileAssistant)initWithIdentifier:(id)a3 name:(id)a4 active:(int64_t)a5
+- (HMSiriEndpointProfileAssistant)initWithIdentifier:(id)identifier name:(id)name active:(int64_t)active
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = HMSiriEndpointProfileAssistant;
   v10 = [(HMSiriEndpointProfileAssistant *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v13;
 
-    v10->_active = a5;
+    v10->_active = active;
   }
 
   return v10;

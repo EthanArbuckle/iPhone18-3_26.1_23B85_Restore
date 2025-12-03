@@ -1,23 +1,23 @@
 @interface PLPhotoStreamsHelper
-+ (void)deletePhotoStreamAssetsWithLibraryServiceManager:(id)a3 withReason:(id)a4 completion:(id)a5;
++ (void)deletePhotoStreamAssetsWithLibraryServiceManager:(id)manager withReason:(id)reason completion:(id)completion;
 @end
 
 @implementation PLPhotoStreamsHelper
 
-+ (void)deletePhotoStreamAssetsWithLibraryServiceManager:(id)a3 withReason:(id)a4 completion:(id)a5
++ (void)deletePhotoStreamAssetsWithLibraryServiceManager:(id)manager withReason:(id)reason completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  reasonCopy = reason;
+  completionCopy = completion;
   v9 = MEMORY[0x1E696AC08];
-  v10 = a3;
-  v11 = [v9 defaultManager];
-  v12 = [v10 pathManager];
-  v13 = [v12 photoDirectoryWithType:15];
+  managerCopy = manager;
+  defaultManager = [v9 defaultManager];
+  pathManager = [managerCopy pathManager];
+  v13 = [pathManager photoDirectoryWithType:15];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v15 = [v10 databaseContext];
+  databaseContext = [managerCopy databaseContext];
 
-  v16 = [v15 newShortLivedLibraryWithName:"+[PLPhotoStreamsHelper deletePhotoStreamAssetsWithLibraryServiceManager:withReason:completion:]"];
+  v16 = [databaseContext newShortLivedLibraryWithName:"+[PLPhotoStreamsHelper deletePhotoStreamAssetsWithLibraryServiceManager:withReason:completion:]"];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __95__PLPhotoStreamsHelper_deletePhotoStreamAssetsWithLibraryServiceManager_withReason_completion___block_invoke;
@@ -25,8 +25,8 @@
   v34 = 1;
   v29 = v16;
   v30 = v14;
-  v31 = v7;
-  v32 = v11;
+  v31 = reasonCopy;
+  v32 = defaultManager;
   v33 = v13;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -35,11 +35,11 @@
   v27 = 1;
   v24 = v33;
   v25 = v32;
-  v26 = v8;
-  v17 = v8;
+  v26 = completionCopy;
+  v17 = completionCopy;
   v18 = v32;
   v19 = v33;
-  v20 = v7;
+  v20 = reasonCopy;
   v21 = v14;
   v22 = v16;
   [v22 performTransaction:v28 completionHandler:v23];

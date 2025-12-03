@@ -1,29 +1,29 @@
 @interface HDMCDaySummaryObserverQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDMCDaySummaryObserverQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDMCDaySummaryObserverQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension;
 - (id)objectTypes;
 - (void)_queue_deliverUpdate;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDMCDaySummaryObserverQueryServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
 
   if (v16)
   {
-    v17 = [[HDMCDaySummaryObserverQueryServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14 profileExtension:v16];
+    v17 = [[HDMCDaySummaryObserverQueryServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy profileExtension:v16];
   }
 
   else
@@ -31,10 +31,10 @@
     v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
     if (v18)
     {
-      if (a7)
+      if (error)
       {
         v19 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -49,29 +49,29 @@
   return v17;
 }
 
-- (HDMCDaySummaryObserverQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7
+- (HDMCDaySummaryObserverQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  extensionCopy = extension;
   v27.receiver = self;
   v27.super_class = HDMCDaySummaryObserverQueryServer;
-  v17 = [(HDQueryServer *)&v27 initWithUUID:v12 configuration:v13 client:v14 delegate:v15];
+  v17 = [(HDQueryServer *)&v27 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_profileExtension, a7);
+    objc_storeStrong(&v17->_profileExtension, extension);
     objc_initWeak(&location, v18);
     v19 = objc_alloc(MEMORY[0x277CCDD98]);
-    v20 = [(HDQueryServer *)v18 queryQueue];
+    queryQueue = [(HDQueryServer *)v18 queryQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __97__HDMCDaySummaryObserverQueryServer_initWithUUID_configuration_client_delegate_profileExtension___block_invoke;
     v24[3] = &unk_27865A750;
     objc_copyWeak(&v25, &location);
-    v21 = [v19 initWithMode:0 clock:1 queue:v20 delay:v24 block:0.1];
+    v21 = [v19 initWithMode:0 clock:1 queue:queryQueue delay:v24 block:0.1];
     updateOperation = v18->_updateOperation;
     v18->_updateOperation = v21;
 
@@ -88,18 +88,18 @@ void __97__HDMCDaySummaryObserverQueryServer_initWithUUID_configuration_client_d
   [WeakRetained _queue_deliverUpdate];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
-  v6 = [(HDQueryServer *)self queryQueue];
+  addedCopy = added;
+  queryQueue = [(HDQueryServer *)self queryQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__HDMCDaySummaryObserverQueryServer_samplesAdded_anchor___block_invoke;
   v8[3] = &unk_27865A778;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = addedCopy;
+  v7 = addedCopy;
+  dispatch_async(queryQueue, v8);
 }
 
 uint64_t __57__HDMCDaySummaryObserverQueryServer_samplesAdded_anchor___block_invoke(uint64_t a1)
@@ -127,18 +127,18 @@ uint64_t __57__HDMCDaySummaryObserverQueryServer_samplesAdded_anchor___block_inv
   return result;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v5 = a3;
-  v6 = [(HDQueryServer *)self queryQueue];
+  removedCopy = removed;
+  queryQueue = [(HDQueryServer *)self queryQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__HDMCDaySummaryObserverQueryServer_samplesOfTypesWereRemoved_anchor___block_invoke;
   v8[3] = &unk_27865A778;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = removedCopy;
+  v7 = removedCopy;
+  dispatch_async(queryQueue, v8);
 }
 
 uint64_t __70__HDMCDaySummaryObserverQueryServer_samplesOfTypesWereRemoved_anchor___block_invoke(uint64_t a1)
@@ -166,21 +166,21 @@ uint64_t __70__HDMCDaySummaryObserverQueryServer_samplesOfTypesWereRemoved_ancho
   return result;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = a4;
-  v7 = [v6 entitlements];
+  clientCopy = client;
+  entitlements = [clientCopy entitlements];
   v8 = *MEMORY[0x277CCC8B0];
-  v9 = [v7 hasEntitlement:*MEMORY[0x277CCC8B0]];
+  v9 = [entitlements hasEntitlement:*MEMORY[0x277CCC8B0]];
 
-  if (v9 & 1) != 0 || ([v6 entitlements], v10 = objc_claimAutoreleasedReturnValue(), v11 = *MEMORY[0x277CCC890], v12 = objc_msgSend(v10, "hasPrivateAccessEntitlementWithIdentifier:", *MEMORY[0x277CCC890]), v10, (v12))
+  if (v9 & 1) != 0 || ([clientCopy entitlements], v10 = objc_claimAutoreleasedReturnValue(), v11 = *MEMORY[0x277CCC890], v12 = objc_msgSend(v10, "hasPrivateAccessEntitlementWithIdentifier:", *MEMORY[0x277CCC890]), v10, (v12))
   {
     v13 = 1;
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:4 format:{@"Missing required entitlement: %@ for core apps or %@ for second-party access.", v8, v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 format:{@"Missing required entitlement: %@ for core apps or %@ for second-party access.", v8, v11}];
     v13 = 0;
   }
 
@@ -202,20 +202,20 @@ uint64_t __70__HDMCDaySummaryObserverQueryServer_samplesOfTypesWereRemoved_ancho
   v27.receiver = self;
   v27.super_class = HDMCDaySummaryObserverQueryServer;
   [(HDQueryServer *)&v27 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v5 = [(HDQueryServer *)self client];
-  v6 = [v5 authorizationOracle];
-  v7 = [(HDMCDaySummaryObserverQueryServer *)self objectTypes];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  objectTypes = [(HDMCDaySummaryObserverQueryServer *)self objectTypes];
   v26 = 0;
-  v8 = [v6 authorizationStatusRecordsForTypes:v7 error:&v26];
+  v8 = [authorizationOracle authorizationStatusRecordsForTypes:objectTypes error:&v26];
   v9 = v26;
 
   if (!v8)
   {
-    v20 = [(HDQueryServer *)self queryUUID];
-    [v4 client_deliverError:v9 forQuery:v20];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [remoteObjectProxy client_deliverError:v9 forQuery:queryUUID];
 
     goto LABEL_19;
   }
@@ -224,39 +224,39 @@ uint64_t __70__HDMCDaySummaryObserverQueryServer_samplesOfTypesWereRemoved_ancho
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v8 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  allValues = [v8 allValues];
+  v11 = [allValues countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v23;
-    v14 = 1;
+    canRead = 1;
     do
     {
       for (i = 0; i != v12; ++i)
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
-        if (v14)
+        if (canRead)
         {
-          v14 = [*(*(&v22 + 1) + 8 * i) canRead];
+          canRead = [*(*(&v22 + 1) + 8 * i) canRead];
         }
 
         else
         {
-          v14 = 0;
+          canRead = 0;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v12);
 
-    if ((v14 & 1) == 0)
+    if ((canRead & 1) == 0)
     {
       _HKInitializeLogging();
       v16 = *MEMORY[0x277CCC2E8];
@@ -293,11 +293,11 @@ LABEL_19:
 
 - (void)_queue_deliverUpdate
 {
-  v3 = [(HDQueryServer *)self clientProxy];
-  v5 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v4 = [(HDQueryServer *)self queryUUID];
-  [v5 client_deliverUpdateWithQueryUUID:v4];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  [remoteObjectProxy client_deliverUpdateWithQueryUUID:queryUUID];
 }
 
 - (void)_queue_stop

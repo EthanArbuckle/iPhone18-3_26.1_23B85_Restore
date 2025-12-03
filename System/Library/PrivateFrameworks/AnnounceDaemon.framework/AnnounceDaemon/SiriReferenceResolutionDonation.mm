@@ -1,6 +1,6 @@
 @interface SiriReferenceResolutionDonation
 - (_TtC14AnnounceDaemon31SiriReferenceResolutionDonation)init;
-- (void)makePlaybackDonationWithAnnouncementID:(id)a3;
+- (void)makePlaybackDonationWithAnnouncementID:(id)d;
 @end
 
 @implementation SiriReferenceResolutionDonation
@@ -21,11 +21,11 @@
   return [(SiriReferenceResolutionDonation *)&v11 init];
 }
 
-- (void)makePlaybackDonationWithAnnouncementID:(id)a3
+- (void)makePlaybackDonationWithAnnouncementID:(id)d
 {
   v4 = sub_23F5882D4();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_23F57DF00(v4, v6);
 }
 

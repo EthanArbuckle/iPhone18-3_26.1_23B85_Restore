@@ -1,12 +1,12 @@
 @interface TSUProgressObserver
-- (TSUProgressObserver)initWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (TSUProgressObserver)initWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)handleValue:(double)a3 maxValue:(double)a4 isIndeterminate:(BOOL)a5;
+- (void)handleValue:(double)value maxValue:(double)maxValue isIndeterminate:(BOOL)indeterminate;
 @end
 
 @implementation TSUProgressObserver
 
-- (TSUProgressObserver)initWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (TSUProgressObserver)initWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = TSUProgressObserver;
@@ -14,12 +14,12 @@
   v9 = v8;
   if (v8)
   {
-    if (a4 && a5)
+    if (queue && handler)
     {
-      v8->mValueInterval = a3;
-      dispatch_retain(a4);
-      v9->mQueue = a4;
-      v9->mHandler = [a5 copy];
+      v8->mValueInterval = interval;
+      dispatch_retain(queue);
+      v9->mQueue = queue;
+      v9->mHandler = [handler copy];
       v9->mLastHandledValue = 0.0;
     }
 
@@ -46,12 +46,12 @@
   [(TSUProgressObserver *)&v4 dealloc];
 }
 
-- (void)handleValue:(double)a3 maxValue:(double)a4 isIndeterminate:(BOOL)a5
+- (void)handleValue:(double)value maxValue:(double)maxValue isIndeterminate:(BOOL)indeterminate
 {
-  if (self->mLastHandledIndeterminate != a5 || (v9 = vabdd_f64(a3, self->mLastHandledValue), [(TSUProgressObserver *)self valueInterval], v9 >= v10) || a3 >= a4 && self->mLastHandledValue < a4)
+  if (self->mLastHandledIndeterminate != indeterminate || (v9 = vabdd_f64(value, self->mLastHandledValue), [(TSUProgressObserver *)self valueInterval], v9 >= v10) || value >= maxValue && self->mLastHandledValue < maxValue)
   {
-    self->mLastHandledIndeterminate = a5;
-    self->mLastHandledValue = a3;
+    self->mLastHandledIndeterminate = indeterminate;
+    self->mLastHandledValue = value;
     mQueue = self->mQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

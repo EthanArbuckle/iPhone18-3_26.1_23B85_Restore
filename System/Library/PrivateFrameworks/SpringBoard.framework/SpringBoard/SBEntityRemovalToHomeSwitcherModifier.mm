@@ -1,13 +1,13 @@
 @interface SBEntityRemovalToHomeSwitcherModifier
-- (SBEntityRemovalToHomeSwitcherModifier)initWithTransitionID:(id)a3 homeAnimationDelay:(double)a4 multitaskingModifier:(id)a5;
+- (SBEntityRemovalToHomeSwitcherModifier)initWithTransitionID:(id)d homeAnimationDelay:(double)delay multitaskingModifier:(id)modifier;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
 - (double)wallpaperScale;
 - (id)_cornerRadiusSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (int64_t)homeScreenBackdropBlurType;
@@ -15,18 +15,18 @@
 
 @implementation SBEntityRemovalToHomeSwitcherModifier
 
-- (SBEntityRemovalToHomeSwitcherModifier)initWithTransitionID:(id)a3 homeAnimationDelay:(double)a4 multitaskingModifier:(id)a5
+- (SBEntityRemovalToHomeSwitcherModifier)initWithTransitionID:(id)d homeAnimationDelay:(double)delay multitaskingModifier:(id)modifier
 {
-  v9 = a5;
+  modifierCopy = modifier;
   v13.receiver = self;
   v13.super_class = SBEntityRemovalToHomeSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_multitaskingModifier, a5);
-    v11->_homeAnimationDelay = a4;
-    v11->_canAnimateHomeScreenStyle = a4 <= 0.0;
+    objc_storeStrong(&v10->_multitaskingModifier, modifier);
+    v11->_homeAnimationDelay = delay;
+    v11->_canAnimateHomeScreenStyle = delay <= 0.0;
   }
 
   return v11;
@@ -36,9 +36,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBEntityRemovalToHomeSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
@@ -47,7 +47,7 @@
 {
   v15.receiver = self;
   v15.super_class = SBEntityRemovalToHomeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v15 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v15 transitionWillUpdate];
   if (!self->_canAnimateHomeScreenStyle)
   {
     objc_initWeak(&location, self);
@@ -59,14 +59,14 @@
     v12 = &unk_2783AD4A0;
     objc_copyWeak(&v13, &location);
     v6 = [(SBTimerEventSwitcherEventResponse *)v4 initWithDelay:&v9 validator:@"kSBEntityRemovalToHomeSwitcherModifierHomeScreenLayoutReason" reason:homeAnimationDelay];
-    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v3, v9, v10, v11, v12];
+    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:transitionWillUpdate, v9, v10, v11, v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
-    v3 = v7;
+    transitionWillUpdate = v7;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
 BOOL __61__SBEntityRemovalToHomeSwitcherModifier_transitionWillUpdate__block_invoke(uint64_t a1)
@@ -78,16 +78,16 @@ BOOL __61__SBEntityRemovalToHomeSwitcherModifier_transitionWillUpdate__block_inv
   return v3;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBEntityRemovalToHomeSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"kSBEntityRemovalToHomeSwitcherModifierHomeScreenLayoutReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"kSBEntityRemovalToHomeSwitcherModifierHomeScreenLayoutReason"];
+  if (eventCopy)
   {
     self->_canAnimateHomeScreenStyle = 1;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -99,19 +99,19 @@ BOOL __61__SBEntityRemovalToHomeSwitcherModifier_transitionWillUpdate__block_inv
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBEntityRemovalToHomeSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:v4];
-  v6 = [v4 switcherLayoutElementType];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:elementCopy];
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
 
-  if (!v6)
+  if (!switcherLayoutElementType)
   {
     v7 = [v5 mutableCopy];
-    v8 = [(SBEntityRemovalToHomeSwitcherModifier *)self _cornerRadiusSettings];
-    [v7 setCornerRadiusSettings:v8];
+    _cornerRadiusSettings = [(SBEntityRemovalToHomeSwitcherModifier *)self _cornerRadiusSettings];
+    [v7 setCornerRadiusSettings:_cornerRadiusSettings];
 
     v5 = v7;
   }

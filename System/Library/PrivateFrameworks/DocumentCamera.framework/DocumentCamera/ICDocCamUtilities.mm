@@ -1,24 +1,24 @@
 @interface ICDocCamUtilities
-+ (BOOL)shouldPerformCustomAnimationForTransitionCoordinator:(id)a3 window:(id)a4;
-+ (CGAffineTransform)transformForOrientation:(SEL)a3 newSize:(id)a4;
-+ (CGSize)aspectFillSize:(CGSize)a3 targetSize:(CGSize)a4;
-+ (CGSize)aspectFitSize:(CGSize)a3 targetSize:(CGSize)a4;
-+ (id)buttonFromCopyingValuesFromButton:(id)a3;
-+ (id)resizedImage:(id)a3 newSize:(CGSize)a4 interpolationQuality:(int)a5;
-+ (id)resizedImage:(id)a3 newSize:(CGSize)a4 transform:(CGAffineTransform *)a5 drawTransposed:(BOOL)a6 interpolationQuality:(int)a7;
-+ (void)prepareForRotationIfNecessaryWithShutterButton:(id)a3 coodinator:(id)a4;
++ (BOOL)shouldPerformCustomAnimationForTransitionCoordinator:(id)coordinator window:(id)window;
++ (CGAffineTransform)transformForOrientation:(SEL)orientation newSize:(id)size;
++ (CGSize)aspectFillSize:(CGSize)size targetSize:(CGSize)targetSize;
++ (CGSize)aspectFitSize:(CGSize)size targetSize:(CGSize)targetSize;
++ (id)buttonFromCopyingValuesFromButton:(id)button;
++ (id)resizedImage:(id)image newSize:(CGSize)size interpolationQuality:(int)quality;
++ (id)resizedImage:(id)image newSize:(CGSize)size transform:(CGAffineTransform *)transform drawTransposed:(BOOL)transposed interpolationQuality:(int)quality;
++ (void)prepareForRotationIfNecessaryWithShutterButton:(id)button coodinator:(id)coodinator;
 @end
 
 @implementation ICDocCamUtilities
 
-+ (void)prepareForRotationIfNecessaryWithShutterButton:(id)a3 coodinator:(id)a4
++ (void)prepareForRotationIfNecessaryWithShutterButton:(id)button coodinator:(id)coodinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  buttonCopy = button;
+  coodinatorCopy = coodinator;
+  v8 = coodinatorCopy;
+  if (buttonCopy)
   {
-    if (v7)
+    if (coodinatorCopy)
     {
       goto LABEL_10;
     }
@@ -43,16 +43,16 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  if ([v11 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v12 = [v8 isAnimated];
+    isAnimated = [v8 isAnimated];
 
-    if (v12)
+    if (isAnimated)
     {
       v46[0] = 0;
       v46[1] = v46;
@@ -72,15 +72,15 @@ LABEL_10:
       v42[3] = __Block_byref_object_copy__8;
       v42[4] = __Block_byref_object_dispose__8;
       v43 = 0;
-      v13 = [v6 window];
-      v14 = [v6 window];
-      [v14 frame];
+      window = [buttonCopy window];
+      window2 = [buttonCopy window];
+      [window2 frame];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
 
-      v23 = [a1 shouldPerformCustomAnimationForTransitionCoordinator:v8 window:v13];
+      v23 = [self shouldPerformCustomAnimationForTransitionCoordinator:v8 window:window];
       v24 = v23;
       if (v23)
       {
@@ -96,8 +96,8 @@ LABEL_10:
         v34 = v42;
         v35 = v44;
         v36 = v46;
-        v41 = a1;
-        v33 = v6;
+        selfCopy = self;
+        v33 = buttonCopy;
         [v25 performWithoutAnimation:v32];
       }
 
@@ -106,9 +106,9 @@ LABEL_10:
       v27[2] = __79__ICDocCamUtilities_prepareForRotationIfNecessaryWithShutterButton_coodinator___block_invoke_2;
       v27[3] = &unk_278F941C8;
       v31 = v24;
-      v28 = v6;
+      v28 = buttonCopy;
       v30 = v42;
-      v26 = v13;
+      v26 = window;
       v29 = v26;
       [v8 animateAlongsideTransition:0 completion:v27];
 
@@ -180,32 +180,32 @@ uint64_t __79__ICDocCamUtilities_prepareForRotationIfNecessaryWithShutterButton_
   return [v2 makeKeyAndVisible];
 }
 
-+ (id)buttonFromCopyingValuesFromButton:(id)a3
++ (id)buttonFromCopyingValuesFromButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = [ICDocCamShutterButton alloc];
-  [v3 frame];
+  [buttonCopy frame];
   v5 = [(ICDocCamShutterButton *)v4 initWithFrame:?];
   [(ICDocCamShutterButton *)v5 setUserInteractionEnabled:0];
-  v6 = [v3 isPseudoDisabled];
+  isPseudoDisabled = [buttonCopy isPseudoDisabled];
 
-  [(ICDocCamShutterButton *)v5 setPseudoDisabled:v6];
+  [(ICDocCamShutterButton *)v5 setPseudoDisabled:isPseudoDisabled];
 
   return v5;
 }
 
-+ (BOOL)shouldPerformCustomAnimationForTransitionCoordinator:(id)a3 window:(id)a4
++ (BOOL)shouldPerformCustomAnimationForTransitionCoordinator:(id)coordinator window:(id)window
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v6 = MEMORY[0x277D74248];
-  v7 = a4;
-  v8 = [v6 dc_isRTL];
-  v9 = [v7 windowScene];
+  windowCopy = window;
+  dc_isRTL = [v6 dc_isRTL];
+  windowScene = [windowCopy windowScene];
 
-  v10 = [v9 interfaceOrientation];
-  if (v5)
+  interfaceOrientation = [windowScene interfaceOrientation];
+  if (coordinatorCopy)
   {
-    [v5 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -220,7 +220,7 @@ uint64_t __79__ICDocCamUtilities_prepareForRotationIfNecessaryWithShutterButton_
     v12 = 0;
   }
 
-  if ((v8 | v12) != 1)
+  if ((dc_isRTL | v12) != 1)
   {
     goto LABEL_11;
   }
@@ -231,9 +231,9 @@ uint64_t __79__ICDocCamUtilities_prepareForRotationIfNecessaryWithShutterButton_
     v13 = 0;
   }
 
-  if (!v8 || v13)
+  if (!dc_isRTL || v13)
   {
-    if (!v8)
+    if (!dc_isRTL)
     {
       LOBYTE(v12) = v13;
     }
@@ -244,13 +244,13 @@ uint64_t __79__ICDocCamUtilities_prepareForRotationIfNecessaryWithShutterButton_
       goto LABEL_13;
     }
 
-    v14 = v10 - 3;
+    v14 = interfaceOrientation - 3;
   }
 
   else
   {
 LABEL_11:
-    v14 = v10 - 1;
+    v14 = interfaceOrientation - 1;
   }
 
   v15 = v14 < 2;
@@ -259,57 +259,57 @@ LABEL_13:
   return v15;
 }
 
-+ (CGSize)aspectFillSize:(CGSize)a3 targetSize:(CGSize)a4
++ (CGSize)aspectFillSize:(CGSize)size targetSize:(CGSize)targetSize
 {
-  v4 = a4.width / a3.width;
-  v5 = a4.height / a3.height;
+  v4 = targetSize.width / size.width;
+  v5 = targetSize.height / size.height;
   if (v4 <= v5)
   {
     v4 = v5;
   }
 
-  v6 = a3.width * v4;
-  v7 = a3.height * v4;
+  v6 = size.width * v4;
+  v7 = size.height * v4;
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-+ (CGSize)aspectFitSize:(CGSize)a3 targetSize:(CGSize)a4
++ (CGSize)aspectFitSize:(CGSize)size targetSize:(CGSize)targetSize
 {
-  v4 = a4.width / a3.width;
-  v5 = a4.height / a3.height;
+  v4 = targetSize.width / size.width;
+  v5 = targetSize.height / size.height;
   if (v4 >= v5)
   {
     v4 = v5;
   }
 
-  v6 = a3.width * v4;
-  v7 = a3.height * v4;
+  v6 = size.width * v4;
+  v7 = size.height * v4;
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-+ (id)resizedImage:(id)a3 newSize:(CGSize)a4 interpolationQuality:(int)a5
++ (id)resizedImage:(id)image newSize:(CGSize)size interpolationQuality:(int)quality
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = (([v9 imageOrientation] - 2) & 0xFFFFFFFFFFFFFFFALL) == 0;
-  [ICDocCamUtilities transformForOrientation:v9 newSize:width, height];
-  v11 = [a1 resizedImage:v9 newSize:&v13 transform:v10 drawTransposed:v5 interpolationQuality:{width, height}];
+  v5 = *&quality;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  v10 = (([imageCopy imageOrientation] - 2) & 0xFFFFFFFFFFFFFFFALL) == 0;
+  [ICDocCamUtilities transformForOrientation:imageCopy newSize:width, height];
+  v11 = [self resizedImage:imageCopy newSize:&v13 transform:v10 drawTransposed:v5 interpolationQuality:{width, height}];
 
   return v11;
 }
 
-+ (id)resizedImage:(id)a3 newSize:(CGSize)a4 transform:(CGAffineTransform *)a5 drawTransposed:(BOOL)a6 interpolationQuality:(int)a7
++ (id)resizedImage:(id)image newSize:(CGSize)size transform:(CGAffineTransform *)transform drawTransposed:(BOOL)transposed interpolationQuality:(int)quality
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
+  transposedCopy = transposed;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v32.origin.x = 0.0;
   v32.origin.y = 0.0;
   v32.size.width = width;
@@ -319,19 +319,19 @@ LABEL_13:
   y = v33.origin.y;
   v15 = v33.size.width;
   v16 = v33.size.height;
-  v17 = [v12 CGImage];
+  cGImage = [imageCopy CGImage];
 
-  BitsPerComponent = CGImageGetBitsPerComponent(v17);
-  ColorSpace = CGImageGetColorSpace(v17);
-  BitmapInfo = CGImageGetBitmapInfo(v17);
+  BitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+  ColorSpace = CGImageGetColorSpace(cGImage);
+  BitmapInfo = CGImageGetBitmapInfo(cGImage);
   v21 = CGBitmapContextCreate(0, v15, v16, BitsPerComponent, 0, ColorSpace, BitmapInfo);
-  v22 = *&a5->c;
-  *&v30.a = *&a5->a;
+  v22 = *&transform->c;
+  *&v30.a = *&transform->a;
   *&v30.c = v22;
-  *&v30.tx = *&a5->tx;
+  *&v30.tx = *&transform->tx;
   CGContextConcatCTM(v21, &v30);
-  CGContextSetInterpolationQuality(v21, a7);
-  if (v8)
+  CGContextSetInterpolationQuality(v21, quality);
+  if (transposedCopy)
   {
     v23 = v15;
   }
@@ -341,7 +341,7 @@ LABEL_13:
     v23 = v16;
   }
 
-  if (v8)
+  if (transposedCopy)
   {
     v24 = v16;
   }
@@ -351,7 +351,7 @@ LABEL_13:
     v24 = v15;
   }
 
-  if (v8)
+  if (transposedCopy)
   {
     v25 = 0.0;
   }
@@ -361,7 +361,7 @@ LABEL_13:
     v25 = x;
   }
 
-  if (v8)
+  if (transposedCopy)
   {
     v26 = 0.0;
   }
@@ -371,7 +371,7 @@ LABEL_13:
     v26 = y;
   }
 
-  CGContextDrawImage(v21, *(&v23 - 3), v17);
+  CGContextDrawImage(v21, *(&v23 - 3), cGImage);
   Image = CGBitmapContextCreateImage(v21);
   v28 = [MEMORY[0x277D755B8] imageWithCGImage:Image];
   CGContextRelease(v21);
@@ -380,11 +380,11 @@ LABEL_13:
   return v28;
 }
 
-+ (CGAffineTransform)transformForOrientation:(SEL)a3 newSize:(id)a4
++ (CGAffineTransform)transformForOrientation:(SEL)orientation newSize:(id)size
 {
   height = a5.height;
   width = a5.width;
-  v8 = a4;
+  sizeCopy = size;
   v9 = MEMORY[0x277CBF2C0];
   v27 = *(MEMORY[0x277CBF2C0] + 16);
   v28 = *MEMORY[0x277CBF2C0];
@@ -392,10 +392,10 @@ LABEL_13:
   *&retstr->c = v27;
   v26 = *(v9 + 32);
   *&retstr->tx = v26;
-  v10 = [v8 imageOrientation];
-  if (v10 <= 7)
+  imageOrientation = [sizeCopy imageOrientation];
+  if (imageOrientation <= 7)
   {
-    if (((1 << v10) & 0x22) != 0)
+    if (((1 << imageOrientation) & 0x22) != 0)
     {
       *&v30.a = v28;
       *&v30.c = v27;
@@ -408,7 +408,7 @@ LABEL_13:
       v13 = 3.14159265;
     }
 
-    else if (((1 << v10) & 0x44) != 0)
+    else if (((1 << imageOrientation) & 0x44) != 0)
     {
       v14 = *&retstr->c;
       *&v30.a = *&retstr->a;
@@ -424,7 +424,7 @@ LABEL_13:
 
     else
     {
-      if (((1 << v10) & 0x88) == 0)
+      if (((1 << imageOrientation) & 0x88) == 0)
       {
         goto LABEL_9;
       }
@@ -449,8 +449,8 @@ LABEL_13:
   }
 
 LABEL_9:
-  v18 = [v8 imageOrientation];
-  if ((v18 - 6) < 2)
+  imageOrientation2 = [sizeCopy imageOrientation];
+  if ((imageOrientation2 - 6) < 2)
   {
     v21 = *&retstr->c;
     *&v29.a = *&retstr->a;
@@ -460,7 +460,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if ((v18 - 4) <= 1)
+  if ((imageOrientation2 - 4) <= 1)
   {
     v19 = *&retstr->c;
     *&v29.a = *&retstr->a;

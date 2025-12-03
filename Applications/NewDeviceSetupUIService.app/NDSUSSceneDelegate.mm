@@ -1,25 +1,25 @@
 @interface NDSUSSceneDelegate
 - (_TtC23NewDeviceSetupUIService18NDSUSSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation NDSUSSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC23NewDeviceSetupUIService18NDSUSSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC23NewDeviceSetupUIService18NDSUSSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC23NewDeviceSetupUIService18NDSUSSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000077AC(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1000077AC(sceneCopy);
 }
 
 - (_TtC23NewDeviceSetupUIService18NDSUSSceneDelegate)init

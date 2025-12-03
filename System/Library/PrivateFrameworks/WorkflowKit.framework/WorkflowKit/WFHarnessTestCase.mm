@@ -1,5 +1,5 @@
 @interface WFHarnessTestCase
-- (WFHarnessTestCase)initWithIdentifier:(id)a3 name:(id)a4 workflowRunDescriptor:(id)a5 input:(id)a6 automationType:(id)a7 interactions:(id)a8 siriInteractions:(id)a9 conditions:(id)a10 resultExpectation:(id)a11;
+- (WFHarnessTestCase)initWithIdentifier:(id)identifier name:(id)name workflowRunDescriptor:(id)descriptor input:(id)input automationType:(id)type interactions:(id)interactions siriInteractions:(id)siriInteractions conditions:(id)self0 resultExpectation:(id)self1;
 - (id)description;
 @end
 
@@ -16,21 +16,21 @@
   return v7;
 }
 
-- (WFHarnessTestCase)initWithIdentifier:(id)a3 name:(id)a4 workflowRunDescriptor:(id)a5 input:(id)a6 automationType:(id)a7 interactions:(id)a8 siriInteractions:(id)a9 conditions:(id)a10 resultExpectation:(id)a11
+- (WFHarnessTestCase)initWithIdentifier:(id)identifier name:(id)name workflowRunDescriptor:(id)descriptor input:(id)input automationType:(id)type interactions:(id)interactions siriInteractions:(id)siriInteractions conditions:(id)self0 resultExpectation:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v48 = a5;
-  v47 = a6;
-  v19 = a7;
-  v20 = a8;
-  v46 = a9;
-  v21 = a10;
-  v22 = self;
-  v45 = a11;
-  if (v17)
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  inputCopy = input;
+  typeCopy = type;
+  interactionsCopy = interactions;
+  siriInteractionsCopy = siriInteractions;
+  conditionsCopy = conditions;
+  selfCopy = self;
+  expectationCopy = expectation;
+  if (identifierCopy)
   {
-    if (v18)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -38,22 +38,22 @@
 
   else
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:v22 file:@"WFHarnessTestCase.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"WFHarnessTestCase.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-    if (v18)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v40 handleFailureInMethod:a2 object:v22 file:@"WFHarnessTestCase.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"WFHarnessTestCase.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
-  if (v48)
+  if (descriptorCopy)
   {
-    if (v20)
+    if (interactionsCopy)
     {
       goto LABEL_5;
     }
@@ -61,49 +61,49 @@ LABEL_3:
 
   else
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:v22 file:@"WFHarnessTestCase.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"runDescriptor"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"WFHarnessTestCase.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"runDescriptor"}];
 
-    if (v20)
+    if (interactionsCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:v22 file:@"WFHarnessTestCase.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"interactions"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"WFHarnessTestCase.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"interactions"}];
 
 LABEL_5:
-  v23 = v20;
-  if (!v21)
+  v23 = interactionsCopy;
+  if (!conditionsCopy)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:v22 file:@"WFHarnessTestCase.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"conditions"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"WFHarnessTestCase.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"conditions"}];
   }
 
-  v49.receiver = v22;
+  v49.receiver = selfCopy;
   v49.super_class = WFHarnessTestCase;
   v24 = [(WFHarnessTestCase *)&v49 init];
   if (v24)
   {
-    v25 = [v17 copy];
+    v25 = [identifierCopy copy];
     identifier = v24->_identifier;
     v24->_identifier = v25;
 
-    v27 = [v18 copy];
+    v27 = [nameCopy copy];
     name = v24->_name;
     v24->_name = v27;
 
-    objc_storeStrong(&v24->_runDescriptor, a5);
-    objc_storeStrong(&v24->_input, a6);
-    v29 = [v19 copy];
+    objc_storeStrong(&v24->_runDescriptor, descriptor);
+    objc_storeStrong(&v24->_input, input);
+    v29 = [typeCopy copy];
     automationType = v24->_automationType;
     v24->_automationType = v29;
 
-    objc_storeStrong(&v24->_interactions, a8);
-    objc_storeStrong(&v24->_siriInteractions, a9);
-    objc_storeStrong(&v24->_conditions, a10);
-    objc_storeStrong(&v24->_resultExpectation, a11);
+    objc_storeStrong(&v24->_interactions, interactions);
+    objc_storeStrong(&v24->_siriInteractions, siriInteractions);
+    objc_storeStrong(&v24->_conditions, conditions);
+    objc_storeStrong(&v24->_resultExpectation, expectation);
     v31 = objc_opt_new();
     handledInteractions = v24->_handledInteractions;
     v24->_handledInteractions = v31;

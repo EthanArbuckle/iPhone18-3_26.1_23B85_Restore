@@ -3,9 +3,9 @@
 - (BOOL)canDeleteAssets;
 - (PXImportController)importController;
 - (PXImportDeleteAction)init;
-- (PXImportDeleteAction)initWithAssets:(id)a3;
+- (PXImportDeleteAction)initWithAssets:(id)assets;
 - (id)performAction;
-- (void)_handleDeletionFinished:(id)a3;
+- (void)_handleDeletionFinished:(id)finished;
 - (void)_performMockAction;
 - (void)_performRealAction;
 - (void)_preAction;
@@ -13,10 +13,10 @@
 - (void)_stopObservingDeleteProgress;
 - (void)cancel;
 - (void)dealloc;
-- (void)didRemoveAssets:(id)a3;
+- (void)didRemoveAssets:(id)assets;
 - (void)finish;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendActionProgress:(double)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendActionProgress:(double)progress;
 - (void)start;
 @end
 
@@ -29,55 +29,55 @@
   return WeakRetained;
 }
 
-- (void)sendActionProgress:(double)a3
+- (void)sendActionProgress:(double)progress
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v15[0] = @"PXImportControllerFractionCompleted";
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:progress];
   v16[0] = v4;
   v15[1] = @"PXImportControllerCompletedItemCount";
   v5 = MEMORY[0x1E696AD98];
   progress = self->_progress;
   if (progress)
   {
-    v7 = [(NSProgress *)progress completedUnitCount];
+    completedUnitCount = [(NSProgress *)progress completedUnitCount];
   }
 
   else
   {
-    v7 = 0;
+    completedUnitCount = 0;
   }
 
-  v8 = [v5 numberWithLongLong:v7];
+  v8 = [v5 numberWithLongLong:completedUnitCount];
   v16[1] = v8;
   v15[2] = @"PXImportControllerTotalItemCount";
   v9 = MEMORY[0x1E696AD98];
   v10 = self->_progress;
   if (v10)
   {
-    v11 = [(NSProgress *)v10 totalUnitCount];
+    totalUnitCount = [(NSProgress *)v10 totalUnitCount];
   }
 
   else
   {
-    v11 = 0;
+    totalUnitCount = 0;
   }
 
-  v12 = [v9 numberWithLongLong:v11];
+  v12 = [v9 numberWithLongLong:totalUnitCount];
   v16[2] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 postNotificationName:@"PXImportControllerProgressNotification" object:self userInfo:v13];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PXImportControllerProgressNotification" object:self userInfo:v13];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  v12 = v8;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v11 = objectCopy;
+  v12 = pathCopy;
   px_dispatch_on_main_queue_sync();
 }
 
@@ -136,10 +136,10 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
   [(NSProgress *)progress addObserver:self forKeyPath:@"fractionCompleted" options:0 context:&PXImportDeleteObserverFractionCompletedContext];
 }
 
-- (void)didRemoveAssets:(id)a3
+- (void)didRemoveAssets:(id)assets
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   removedAssets = self->_removedAssets;
   if (!removedAssets)
   {
@@ -150,7 +150,7 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
     removedAssets = self->_removedAssets;
   }
 
-  [(NSMutableArray *)removedAssets addObjectsFromArray:v4];
+  [(NSMutableArray *)removedAssets addObjectsFromArray:assetsCopy];
   v8 = [(NSArray *)self->_assets count];
   if (v8 == [(NSMutableArray *)self->_removedAssets count])
   {
@@ -183,34 +183,34 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}s] will (mock) delete %lu", buf, 0x16u);
   }
 
-  v5 = [(PXImportDeleteAction *)self importController];
-  if (!v5)
+  importController = [(PXImportDeleteAction *)self importController];
+  if (!importController)
   {
     _PFAssertContinueHandler();
   }
 
-  v6 = [(PXImportDeleteAction *)self importController];
-  v26 = [v6 importSource];
+  importController2 = [(PXImportDeleteAction *)self importController];
+  importSource = [importController2 importSource];
 
-  if (!v26)
+  if (!importSource)
   {
     _PFAssertContinueHandler();
   }
 
-  v7 = [(PXImportDeleteAction *)self importController];
-  if (([v7 conformsToProtocol:&unk_1F19BDF30] & 1) == 0)
+  importController3 = [(PXImportDeleteAction *)self importController];
+  if (([importController3 conformsToProtocol:&unk_1F19BDF30] & 1) == 0)
   {
     _PFAssertContinueHandler();
   }
 
-  v25 = [(PXImportDeleteAction *)self importController];
+  importController4 = [(PXImportDeleteAction *)self importController];
   v8 = [(NSArray *)self->_assets count];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v36 = 0;
-  v9 = [(PXImportDeleteAction *)self progress];
-  v10 = v9 == 0;
+  progress = [(PXImportDeleteAction *)self progress];
+  v10 = progress == 0;
 
   if (v10)
   {
@@ -232,9 +232,9 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
 
     v16 = [(NSArray *)self->_assets objectAtIndex:v12];
     [v14 addObject:v16];
-    v17 = [(NSArray *)self->_assets lastObject];
+    lastObject = [(NSArray *)self->_assets lastObject];
 
-    if ([v14 count] >= v15 || v16 == v17)
+    if ([v14 count] >= v15 || v16 == lastObject)
     {
       if ([v14 count])
       {
@@ -247,10 +247,10 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
         block[2] = __42__PXImportDeleteAction__performMockAction__block_invoke;
         block[3] = &unk_1E772DD00;
         v29 = v18;
-        v34 = v16 == v17;
-        v30 = v25;
-        v21 = v26;
-        v32 = self;
+        v34 = v16 == lastObject;
+        v30 = importController4;
+        v21 = importSource;
+        selfCopy = self;
         v33 = buf;
         v31 = v21;
         v22 = v18;
@@ -266,7 +266,7 @@ id __71__PXImportDeleteAction_observeValueForKeyPath_ofObject_change_context___b
     ++v12;
   }
 
-  while (v16 != v17);
+  while (v16 != lastObject);
 
   _Block_object_dispose(buf, 8);
 }
@@ -298,10 +298,10 @@ void __42__PXImportDeleteAction__performMockAction__block_invoke_43(uint64_t a1)
   [v2 setCompletedUnitCount:v1];
 }
 
-- (void)_handleDeletionFinished:(id)a3
+- (void)_handleDeletionFinished:(id)finished
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishedCopy = finished;
   v5 = _importDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,8 +311,8 @@ void __42__PXImportDeleteAction__performMockAction__block_invoke_43(uint64_t a1)
   }
 
   [(PXImportDeleteAction *)self setProgress:0];
-  [(PXImportDeleteAction *)self setDidSucceed:v4 == 0];
-  [(PXImportDeleteAction *)self setError:v4];
+  [(PXImportDeleteAction *)self setDidSucceed:finishedCopy == 0];
+  [(PXImportDeleteAction *)self setError:finishedCopy];
 }
 
 - (void)_performRealAction
@@ -331,10 +331,10 @@ void __42__PXImportDeleteAction__performMockAction__block_invoke_43(uint64_t a1)
 
   if ([(NSArray *)self->_assets count])
   {
-    v5 = [(PXImportDeleteAction *)self importController];
-    v6 = [v5 importSource];
+    importController = [(PXImportDeleteAction *)self importController];
+    importSource = [importController importSource];
 
-    if (!v6)
+    if (!importSource)
     {
       _PFAssertContinueHandler();
     }
@@ -346,7 +346,7 @@ void __42__PXImportDeleteAction__performMockAction__block_invoke_43(uint64_t a1)
     v9[2] = __42__PXImportDeleteAction__performRealAction__block_invoke;
     v9[3] = &unk_1E774A020;
     objc_copyWeak(&v10, buf);
-    v8 = [v6 deleteImportAssets:assets isConfirmed:1 atEnd:v9];
+    v8 = [importSource deleteImportAssets:assets isConfirmed:1 atEnd:v9];
     [(PXImportDeleteAction *)self setProgress:v8];
 
     objc_destroyWeak(&v10);
@@ -364,10 +364,10 @@ void __42__PXImportDeleteAction__performRealAction__block_invoke(uint64_t a1, vo
 - (void)_preAction
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PXImportDeleteAction *)self sessionUuid];
-  v4 = [(PXImportDeleteAction *)self importController];
-  v5 = [v4 dataSourceManager];
-  v6 = [v5 dataSource];
+  sessionUuid = [(PXImportDeleteAction *)self sessionUuid];
+  importController = [(PXImportDeleteAction *)self importController];
+  dataSourceManager = [importController dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
   v18 = 0u;
   v19 = 0u;
@@ -389,14 +389,14 @@ void __42__PXImportDeleteAction__performRealAction__block_invoke(uint64_t a1, vo
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) uuid];
-        v12 = [v6 itemForImportAssetUuid:v11];
+        uuid = [*(*(&v16 + 1) + 8 * v10) uuid];
+        v12 = [dataSource itemForImportAssetUuid:uuid];
 
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __34__PXImportDeleteAction__preAction__block_invoke;
         v14[3] = &unk_1E77414C0;
-        v15 = v3;
+        v15 = sessionUuid;
         [v12 performChanges:v14];
 
         ++v10;
@@ -413,9 +413,9 @@ void __42__PXImportDeleteAction__performRealAction__block_invoke(uint64_t a1, vo
 - (BOOL)canDeleteAssets
 {
   v2 = +[PXImportSettings sharedInstance];
-  v3 = [v2 disableAssetDeletion];
+  disableAssetDeletion = [v2 disableAssetDeletion];
 
-  return v3 ^ 1;
+  return disableAssetDeletion ^ 1;
 }
 
 - (void)cancel
@@ -518,28 +518,28 @@ void *__36__PXImportDeleteAction_setProgress___block_invoke(uint64_t a1)
 
 - (PXImportDeleteAction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImportDeleteAction.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXImportDeleteAction init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportDeleteAction.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXImportDeleteAction init]"}];
 
   abort();
 }
 
-- (PXImportDeleteAction)initWithAssets:(id)a3
+- (PXImportDeleteAction)initWithAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v12.receiver = self;
   v12.super_class = PXImportDeleteAction;
   v5 = [(PXImportDeleteAction *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assetsCopy copy];
     assets = v5->_assets;
     v5->_assets = v6;
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     sessionUuid = v5->_sessionUuid;
-    v5->_sessionUuid = v9;
+    v5->_sessionUuid = uUIDString;
   }
 
   return v5;
@@ -547,8 +547,8 @@ void *__36__PXImportDeleteAction_setProgress___block_invoke(uint64_t a1)
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXImportDeleteAction.m" lineNumber:49 description:{@"%s is not available as initializer", "+[PXImportDeleteAction new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportDeleteAction.m" lineNumber:49 description:{@"%s is not available as initializer", "+[PXImportDeleteAction new]"}];
 
   abort();
 }

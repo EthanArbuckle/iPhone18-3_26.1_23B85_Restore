@@ -1,6 +1,6 @@
 @interface PXSelectionCountNumberFormatter
 - (PXSelectionCountNumberFormatter)init;
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation PXSelectionCountNumberFormatter
@@ -16,8 +16,8 @@
     decimalNumberFormatter = v2->_decimalNumberFormatter;
     v2->_decimalNumberFormatter = v3;
 
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    [(NSNumberFormatter *)v2->_decimalNumberFormatter setLocale:v5];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(NSNumberFormatter *)v2->_decimalNumberFormatter setLocale:currentLocale];
 
     [(NSNumberFormatter *)v2->_decimalNumberFormatter setGeneratesDecimalNumbers:1];
     [(NSNumberFormatter *)v2->_decimalNumberFormatter setNumberStyle:1];
@@ -27,38 +27,38 @@
   return v2;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
+    integerValue = [valueCopy integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  v6 = [(PXSelectionCountNumberFormatter *)self selectionNumberLimit];
-  v7 = [(PXSelectionCountNumberFormatter *)self decimalNumberFormatter];
-  if (v5 <= v6)
+  selectionNumberLimit = [(PXSelectionCountNumberFormatter *)self selectionNumberLimit];
+  decimalNumberFormatter = [(PXSelectionCountNumberFormatter *)self decimalNumberFormatter];
+  if (integerValue <= selectionNumberLimit)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-    v12 = [v7 stringFromNumber:v10];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+    v12 = [decimalNumberFormatter stringFromNumber:v10];
   }
 
   else
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXSelectionCountNumberFormatter selectionNumberLimit](self, "selectionNumberLimit")}];
-    v9 = [v7 stringFromNumber:v8];
+    v9 = [decimalNumberFormatter stringFromNumber:v8];
 
     v10 = PXPhotosUIFoundationBundle();
     v11 = [v10 localizedStringForKey:@"PXSelectionNumberFormatterOverflowFormat" value:&stru_1F2B87EE0 table:0];
     v12 = PFStringWithValidatedFormat();
 
-    v7 = v9;
+    decimalNumberFormatter = v9;
   }
 
   return v12;

@@ -1,27 +1,27 @@
 @interface RMUIInteractiveProfileFooterViewModel
-- (RMUIInteractiveProfileFooterViewModel)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RMUIInteractiveProfileFooterViewModel)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMUIInteractiveProfileFooterViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMUIInteractiveProfileFooterViewModel *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(RMUIInteractiveProfileFooterViewModel *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 }
 
-- (RMUIInteractiveProfileFooterViewModel)initWithCoder:(id)a3
+- (RMUIInteractiveProfileFooterViewModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RMUIInteractiveProfileFooterViewModel;
   v5 = [(RMUIInteractiveProfileFooterViewModel *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"title"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"title"];
     title = v5->_title;
     v5->_title = v7;
   }

@@ -8,10 +8,10 @@
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
 - (void)_configureConstraints;
-- (void)setDarkMode:(BOOL)a3;
-- (void)setDetail:(id)a3;
-- (void)setInstruction:(id)a3;
-- (void)setLabelsHorizontalMargin:(UIEdgeInsets)a3;
+- (void)setDarkMode:(BOOL)mode;
+- (void)setDetail:(id)detail;
+- (void)setInstruction:(id)instruction;
+- (void)setLabelsHorizontalMargin:(UIEdgeInsets)margin;
 @end
 
 @implementation BKUIPearlInstructionView
@@ -38,9 +38,9 @@
       v6 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A28] weight:*MEMORY[0x277D74420]];
       [v4 setFont:v6];
 
-      v7 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       WeakRetained = objc_loadWeakRetained(&v2->_instructionLabel);
-      [WeakRetained setTextColor:v7];
+      [WeakRetained setTextColor:whiteColor];
     }
 
     else
@@ -71,8 +71,8 @@
 
     if (v2->_isSolarium)
     {
-      v14 = [MEMORY[0x277D75348] grayColor];
-      [v11 setTextColor:v14];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      [v11 setTextColor:grayColor];
     }
 
     objc_storeWeak(&v2->_detailLabel, v11);
@@ -105,8 +105,8 @@
           [v22 setNumberOfLines:0];
           if (!v2->_isSolarium)
           {
-            v23 = [MEMORY[0x277D75348] whiteColor];
-            [v22 setTextColor:v23];
+            whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+            [v22 setTextColor:whiteColor2];
           }
 
           [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -132,45 +132,45 @@
 {
   v44[7] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_instructionLabel);
-  v4 = [WeakRetained widthAnchor];
-  v5 = [(BKUIPearlInstructionView *)self widthAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  widthAnchor = [WeakRetained widthAnchor];
+  widthAnchor2 = [(BKUIPearlInstructionView *)self widthAnchor];
+  v6 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [(BKUIPearlInstructionView *)self setLabelsWidthConstraint:v6];
 
   v33 = MEMORY[0x277CCAAD0];
-  v43 = [(BKUIPearlInstructionView *)self labelsWidthConstraint];
-  v44[0] = v43;
+  labelsWidthConstraint = [(BKUIPearlInstructionView *)self labelsWidthConstraint];
+  v44[0] = labelsWidthConstraint;
   v42 = objc_loadWeakRetained(&self->_instructionLabel);
-  v41 = [v42 topAnchor];
-  v40 = [(BKUIPearlInstructionView *)self topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40 constant:16.0];
+  topAnchor = [v42 topAnchor];
+  topAnchor2 = [(BKUIPearlInstructionView *)self topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v44[1] = v39;
   v38 = objc_loadWeakRetained(&self->_instructionLabel);
-  v37 = [v38 centerXAnchor];
-  v36 = [(BKUIPearlInstructionView *)self centerXAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  centerXAnchor = [v38 centerXAnchor];
+  centerXAnchor2 = [(BKUIPearlInstructionView *)self centerXAnchor];
+  v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v44[2] = v35;
   v34 = objc_loadWeakRetained(&self->_instructionLabel);
-  v31 = [v34 bottomAnchor];
+  bottomAnchor = [v34 bottomAnchor];
   v32 = objc_loadWeakRetained(&self->_detailLabel);
-  v30 = [v32 topAnchor];
-  v29 = [v31 constraintLessThanOrEqualToAnchor:v30];
+  topAnchor3 = [v32 topAnchor];
+  v29 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor3];
   v44[3] = v29;
   v28 = objc_loadWeakRetained(&self->_detailLabel);
-  v27 = [v28 centerXAnchor];
-  v26 = [(BKUIPearlInstructionView *)self centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerXAnchor3 = [v28 centerXAnchor];
+  centerXAnchor4 = [(BKUIPearlInstructionView *)self centerXAnchor];
+  v25 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v44[4] = v25;
   v24 = objc_loadWeakRetained(&self->_detailLabel);
-  v7 = [v24 widthAnchor];
+  widthAnchor3 = [v24 widthAnchor];
   v8 = objc_loadWeakRetained(&self->_instructionLabel);
-  v9 = [v8 widthAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  widthAnchor4 = [v8 widthAnchor];
+  v10 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v44[5] = v10;
   v11 = objc_loadWeakRetained(&self->_detailLabel);
-  v12 = [v11 bottomAnchor];
-  v13 = [(BKUIPearlInstructionView *)self bottomAnchor];
-  v14 = [v12 constraintLessThanOrEqualToAnchor:v13];
+  bottomAnchor2 = [v11 bottomAnchor];
+  bottomAnchor3 = [(BKUIPearlInstructionView *)self bottomAnchor];
+  v14 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v44[6] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:7];
   [v33 activateConstraints:v15];
@@ -186,10 +186,10 @@
   }
 
   v17 = objc_loadWeakRetained(&self->_detailLabel);
-  v18 = [v17 firstBaselineAnchor];
+  firstBaselineAnchor = [v17 firstBaselineAnchor];
   v19 = objc_loadWeakRetained(&self->_instructionLabel);
-  v20 = [v19 lastBaselineAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20 constant:v16];
+  lastBaselineAnchor = [v19 lastBaselineAnchor];
+  v21 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v16];
 
   LODWORD(v22) = 1144750080;
   [v21 setPriority:v22];
@@ -198,10 +198,10 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDarkMode:(BOOL)a3
+- (void)setDarkMode:(BOOL)mode
 {
-  self->_darkMode = a3;
-  if (a3)
+  self->_darkMode = mode;
+  if (mode)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -221,20 +221,20 @@
   }
 }
 
-- (void)setInstruction:(id)a3
+- (void)setInstruction:(id)instruction
 {
-  objc_storeStrong(&self->_instruction, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_instruction, instruction);
+  instructionCopy = instruction;
   WeakRetained = objc_loadWeakRetained(&self->_instructionLabel);
-  [WeakRetained setText:v5];
+  [WeakRetained setText:instructionCopy];
 }
 
-- (void)setDetail:(id)a3
+- (void)setDetail:(id)detail
 {
-  objc_storeStrong(&self->_detail, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_detail, detail);
+  detailCopy = detail;
   WeakRetained = objc_loadWeakRetained(&self->_detailLabel);
-  [WeakRetained setText:v5];
+  [WeakRetained setText:detailCopy];
 }
 
 - (id)viewForFirstBaselineLayout
@@ -251,12 +251,12 @@
   return WeakRetained;
 }
 
-- (void)setLabelsHorizontalMargin:(UIEdgeInsets)a3
+- (void)setLabelsHorizontalMargin:(UIEdgeInsets)margin
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margin.right;
+  bottom = margin.bottom;
+  left = margin.left;
+  top = margin.top;
   [(BKUIPearlInstructionView *)self labelsHorizontalMargin];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -264,31 +264,31 @@
     self->_labelsHorizontalMargin.left = left;
     self->_labelsHorizontalMargin.bottom = bottom;
     self->_labelsHorizontalMargin.right = right;
-    v18 = [(BKUIPearlInstructionView *)self superview];
-    [v18 size];
+    superview = [(BKUIPearlInstructionView *)self superview];
+    [superview size];
     v16 = v15 - self->_labelsHorizontalMargin.left - self->_labelsHorizontalMargin.right;
-    v17 = [(BKUIPearlInstructionView *)self labelsWidthConstraint];
-    [v17 setConstant:v16];
+    labelsWidthConstraint = [(BKUIPearlInstructionView *)self labelsWidthConstraint];
+    [labelsWidthConstraint setConstant:v16];
   }
 }
 
 - (NSLayoutYAxisAnchor)instructionTextTopAnchor
 {
   WeakRetained = objc_loadWeakRetained(&self->_instructionLabel);
-  v3 = [WeakRetained topAnchor];
+  topAnchor = [WeakRetained topAnchor];
 
-  return v3;
+  return topAnchor;
 }
 
 - (CGSize)intrinsicContentSize
 {
   [(BKUIPearlInstructionView *)self size];
   v4 = v3;
-  v5 = [(BKUIPearlInstructionView *)self instructionLabel];
-  [v5 intrinsicContentSize];
+  instructionLabel = [(BKUIPearlInstructionView *)self instructionLabel];
+  [instructionLabel intrinsicContentSize];
   v7 = v6;
-  v8 = [(BKUIPearlInstructionView *)self detailLabel];
-  [v8 intrinsicContentSize];
+  detailLabel = [(BKUIPearlInstructionView *)self detailLabel];
+  [detailLabel intrinsicContentSize];
   v10 = v7 + v9;
 
   v11 = v4;

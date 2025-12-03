@@ -1,21 +1,21 @@
 @interface KCellularWcdmaIdleToConnectedUserData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsUplink:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsUplink:(BOOL)uplink;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularWcdmaIdleToConnectedUserData
 
-- (void)setHasIsUplink:(BOOL)a3
+- (void)setHasIsUplink:(BOOL)uplink
 {
-  if (a3)
+  if (uplink)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = KCellularWcdmaIdleToConnectedUserData;
   v4 = [(KCellularWcdmaIdleToConnectedUserData *)&v8 description];
-  v5 = [(KCellularWcdmaIdleToConnectedUserData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularWcdmaIdleToConnectedUserData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -70,27 +70,27 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUplink];
-    [v3 setObject:v6 forKey:@"is_uplink"];
+    [dictionary setObject:v6 forKey:@"is_uplink"];
   }
 
   userData = self->_userData;
   if (userData)
   {
-    [v3 setObject:userData forKey:@"user_data"];
+    [dictionary setObject:userData forKey:@"user_data"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v8 forKey:@"subs_id"];
+    [dictionary setObject:v8 forKey:@"subs_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -117,40 +117,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 32) = self->_isUplink;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_isUplink;
+    *(toCopy + 36) |= 4u;
   }
 
   if (self->_userData)
   {
-    v6 = v4;
-    [v4 setUserData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUserData:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_subsId;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 4) = self->_subsId;
+    *(toCopy + 36) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -166,7 +166,7 @@
     *(v5 + 36) |= 4u;
   }
 
-  v8 = [(NSData *)self->_userData copyWithZone:a3];
+  v8 = [(NSData *)self->_userData copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -179,58 +179,58 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_17;
     }
 
-    v10 = *(v4 + 32);
+    v10 = *(equalCopy + 32);
     if (self->_isUplink)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_17;
   }
 
   userData = self->_userData;
-  if (!(userData | *(v4 + 3)))
+  if (!(userData | *(equalCopy + 3)))
   {
     goto LABEL_12;
   }
@@ -243,12 +243,12 @@ LABEL_17:
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
 LABEL_12:
   v8 = (v6 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_subsId != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_subsId != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
@@ -299,33 +299,33 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_isUplink = *(v4 + 32);
+    self->_isUplink = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(KCellularWcdmaIdleToConnectedUserData *)self setUserData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
-    self->_subsId = *(v4 + 4);
+    self->_subsId = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

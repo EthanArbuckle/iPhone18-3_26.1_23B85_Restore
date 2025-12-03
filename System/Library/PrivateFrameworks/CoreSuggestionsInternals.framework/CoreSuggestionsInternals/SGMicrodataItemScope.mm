@@ -1,16 +1,16 @@
 @interface SGMicrodataItemScope
-- (BOOL)isReferencedBy:(id)a3;
+- (BOOL)isReferencedBy:(id)by;
 - (SGMicrodataItemScope)init;
 @end
 
 @implementation SGMicrodataItemScope
 
-- (BOOL)isReferencedBy:(id)a3
+- (BOOL)isReferencedBy:(id)by
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  byCopy = by;
+  v5 = byCopy;
+  if (byCopy == self)
   {
     v12 = 1;
   }
@@ -21,8 +21,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(SGMicrodataItemScope *)v4 itemProps];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    itemProps = [(SGMicrodataItemScope *)byCopy itemProps];
+    v7 = [itemProps countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -33,11 +33,11 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(itemProps);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) itemValue];
-          if (v11 && [(SGMicrodataItemScope *)self isReferencedBy:v11])
+          itemValue = [*(*(&v15 + 1) + 8 * i) itemValue];
+          if (itemValue && [(SGMicrodataItemScope *)self isReferencedBy:itemValue])
           {
 
             v12 = 1;
@@ -45,7 +45,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [itemProps countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;

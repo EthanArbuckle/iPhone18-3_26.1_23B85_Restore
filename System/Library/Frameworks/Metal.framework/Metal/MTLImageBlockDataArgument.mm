@@ -1,5 +1,5 @@
 @interface MTLImageBlockDataArgument
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -13,19 +13,19 @@
   [(MTLBindingInternal *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_dataSize == *(a3 + 42) && self->_aliasImplicitImageBlock == *(a3 + 184) && self->_aliasImplicitImageBlockRenderTarget == *(a3 + 47))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_dataSize == *(equal + 42) && self->_aliasImplicitImageBlock == *(equal + 184) && self->_aliasImplicitImageBlockRenderTarget == *(equal + 47))
     {
       masterStructMembers = self->_masterStructMembers;
-      if (!(masterStructMembers | *(a3 + 22)) || (v6 = [(MTLStructTypeInternal *)masterStructMembers isEqual:?]))
+      if (!(masterStructMembers | *(equal + 22)) || (v6 = [(MTLStructTypeInternal *)masterStructMembers isEqual:?]))
       {
         v8.receiver = self;
         v8.super_class = MTLImageBlockDataArgument;
-        LOBYTE(v6) = [(MTLBindingInternal *)&v8 isEqual:a3];
+        LOBYTE(v6) = [(MTLBindingInternal *)&v8 isEqual:equal];
       }
     }
 

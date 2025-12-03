@@ -1,21 +1,21 @@
 @interface TMASAsset
-- (TMASAsset)initWithAssetType:(id)a3 assetSpecifier:(id)a4 fileName:(id)a5 destination:(id)a6;
+- (TMASAsset)initWithAssetType:(id)type assetSpecifier:(id)specifier fileName:(id)name destination:(id)destination;
 - (void)dealloc;
 @end
 
 @implementation TMASAsset
 
-- (TMASAsset)initWithAssetType:(id)a3 assetSpecifier:(id)a4 fileName:(id)a5 destination:(id)a6
+- (TMASAsset)initWithAssetType:(id)type assetSpecifier:(id)specifier fileName:(id)name destination:(id)destination
 {
   v12.receiver = self;
   v12.super_class = TMASAsset;
   v10 = [(TMASAsset *)&v12 init];
   if (v10)
   {
-    v10->_assetType = a3;
-    v10->_assetSpecifier = a4;
-    v10->_destination = [[NSURL alloc] initFileURLWithPath:a6];
-    v10->_fileName = a5;
+    v10->_assetType = type;
+    v10->_assetSpecifier = specifier;
+    v10->_destination = [[NSURL alloc] initFileURLWithPath:destination];
+    v10->_fileName = name;
   }
 
   return v10;

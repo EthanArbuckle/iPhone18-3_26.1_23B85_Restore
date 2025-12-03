@@ -2,24 +2,24 @@
 + (id)newTransferOptionsForAssetsFromSyndicationToSystem;
 + (id)newTransferOptionsForFaceCropFromSyndicationToSystem;
 + (id)newTransferOptionsForPersonFromSystemToSyndication;
-- (PLInterLibraryTransferOptions)initWithCoder:(id)a3;
+- (PLInterLibraryTransferOptions)initWithCoder:(id)coder;
 - (id)_sortedEntityNamesAsString;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLInterLibraryTransferOptions
 
-- (PLInterLibraryTransferOptions)initWithCoder:(id)a3
+- (PLInterLibraryTransferOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PLInterLibraryTransferOptions;
   v5 = [(PLInterLibraryTransferOptions *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"excludedEntityNames"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"excludedEntityNames"];
     if (v6)
     {
       v7 = [MEMORY[0x1E695DFD8] setWithArray:v6];
@@ -31,20 +31,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(PLInterLibraryTransferOptions *)self excludedEntityNames];
-  v5 = [v6 allObjects];
-  [v4 encodeObject:v5 forKey:@"excludedEntityNames"];
+  coderCopy = coder;
+  excludedEntityNames = [(PLInterLibraryTransferOptions *)self excludedEntityNames];
+  allObjects = [excludedEntityNames allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"excludedEntityNames"];
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLInterLibraryTransferOptions *)self _sortedEntityNamesAsString];
-  v6 = [v3 stringWithFormat:@"<%@:%p> (excluding %@)", v4, self, v5];
+  _sortedEntityNamesAsString = [(PLInterLibraryTransferOptions *)self _sortedEntityNamesAsString];
+  v6 = [v3 stringWithFormat:@"<%@:%p> (excluding %@)", v4, self, _sortedEntityNamesAsString];
 
   return v6;
 }
@@ -53,17 +53,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLInterLibraryTransferOptions *)self _sortedEntityNamesAsString];
-  v6 = [v3 stringWithFormat:@"%@ (excluding %@)", v4, v5];
+  _sortedEntityNamesAsString = [(PLInterLibraryTransferOptions *)self _sortedEntityNamesAsString];
+  v6 = [v3 stringWithFormat:@"%@ (excluding %@)", v4, _sortedEntityNamesAsString];
 
   return v6;
 }
 
 - (id)_sortedEntityNamesAsString
 {
-  v2 = [(PLInterLibraryTransferOptions *)self excludedEntityNames];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  excludedEntityNames = [(PLInterLibraryTransferOptions *)self excludedEntityNames];
+  allObjects = [excludedEntityNames allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:sel_compare_];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   return v5;
@@ -71,7 +71,7 @@
 
 + (id)newTransferOptionsForFaceCropFromSyndicationToSystem
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
   v4 = +[PLDetectedFace entityName];
   v5 = +[PLManagedAsset entityName];
@@ -91,7 +91,7 @@
 
 + (id)newTransferOptionsForPersonFromSystemToSyndication
 {
-  v16 = objc_alloc_init(a1);
+  v16 = objc_alloc_init(self);
   v17 = objc_alloc(MEMORY[0x1E695DFD8]);
   v18 = +[PLDetectedFace entityName];
   v14 = +[PLDetectedFaceGroup entityName];
@@ -120,7 +120,7 @@
 + (id)newTransferOptionsForAssetsFromSyndicationToSystem
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v19 = objc_alloc(MEMORY[0x1E695DFD8]);
   v24 = +[PLGenericAlbum entityName];
   v18 = +[PLCloudSharedComment entityName];

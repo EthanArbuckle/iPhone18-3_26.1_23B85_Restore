@@ -6,8 +6,8 @@
 - (NSString)placeholderRestoreDirectory;
 - (NSURL)demotedAppsPlist;
 - (_TtC18RestorePostProcess14MigratorConfig)init;
-- (_TtC18RestorePostProcess14MigratorConfig)initWithDataSeparatedAccount:(id)a3;
-- (_TtC18RestorePostProcess14MigratorConfig)initWithPersonaID:(id)a3 didRestoreFromBackup:(BOOL)a4 didRestoreFromCloudBackup:(BOOL)a5 error:(id *)a6;
+- (_TtC18RestorePostProcess14MigratorConfig)initWithDataSeparatedAccount:(id)account;
+- (_TtC18RestorePostProcess14MigratorConfig)initWithPersonaID:(id)d didRestoreFromBackup:(BOOL)backup didRestoreFromCloudBackup:(BOOL)cloudBackup error:(id *)error;
 @end
 
 @implementation MigratorConfig
@@ -17,9 +17,9 @@
   if (self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state + 8] && self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state + 8] == 1)
   {
     v2 = *(&self->super.isa + OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state);
-    v3 = self;
-    v4 = [v2 persona];
-    v5 = [v4 placeholderRestoreDirectory];
+    selfCopy = self;
+    persona = [v2 persona];
+    placeholderRestoreDirectory = [persona placeholderRestoreDirectory];
 
     sub_13AD8();
   }
@@ -39,9 +39,9 @@
   if (self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state + 8] == 1)
   {
     v8 = *(&self->super.isa + OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state);
-    v9 = self;
-    v10 = [v8 persona];
-    v11 = [v10 demotedAppsPlistPath];
+    selfCopy = self;
+    persona = [v8 persona];
+    demotedAppsPlistPath = [persona demotedAppsPlistPath];
 
     sub_13AD8();
     sub_13A98();
@@ -49,7 +49,7 @@
 
   else
   {
-    v13 = self;
+    selfCopy2 = self;
     sub_13A98();
   }
 
@@ -87,9 +87,9 @@
 
   if (self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state + 8] == 1)
   {
-    v3 = self;
-    v4 = [v2 persona];
-    v5 = [v4 personaIdentifier];
+    selfCopy = self;
+    persona = [v2 persona];
+    personaIdentifier = [persona personaIdentifier];
 
     sub_13AD8();
 LABEL_5:
@@ -112,11 +112,11 @@ LABEL_7:
   }
 
   v2 = *(&self->super.isa + OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state);
-  v3 = self;
-  v4 = [v2 persona];
-  v5 = [v4 isDataSeparatedPersona];
+  selfCopy = self;
+  persona = [v2 persona];
+  isDataSeparatedPersona = [persona isDataSeparatedPersona];
 
-  return v5;
+  return isDataSeparatedPersona;
 }
 
 - (NSString)description
@@ -124,7 +124,7 @@ LABEL_7:
   v2 = *(&self->super.isa + OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state);
   v3 = *&self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state];
   v4 = self->state[OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state + 8];
-  v5 = self;
+  selfCopy = self;
   sub_122BC(v2, v3, v4);
 
   v6 = sub_13AC8();
@@ -132,9 +132,9 @@ LABEL_7:
   return v6;
 }
 
-- (_TtC18RestorePostProcess14MigratorConfig)initWithPersonaID:(id)a3 didRestoreFromBackup:(BOOL)a4 didRestoreFromCloudBackup:(BOOL)a5 error:(id *)a6
+- (_TtC18RestorePostProcess14MigratorConfig)initWithPersonaID:(id)d didRestoreFromBackup:(BOOL)backup didRestoreFromCloudBackup:(BOOL)cloudBackup error:(id *)error
 {
-  if (a3)
+  if (d)
   {
     v8 = sub_13AD8();
   }
@@ -145,19 +145,19 @@ LABEL_7:
     v9 = 0;
   }
 
-  return sub_12A08(v8, v9, a4, a5);
+  return sub_12A08(v8, v9, backup, cloudBackup);
 }
 
-- (_TtC18RestorePostProcess14MigratorConfig)initWithDataSeparatedAccount:(id)a3
+- (_TtC18RestorePostProcess14MigratorConfig)initWithDataSeparatedAccount:(id)account
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC18RestorePostProcess14MigratorConfig_state;
-  *v6 = a3;
+  *v6 = account;
   *(v6 + 1) = 0;
   v6[16] = 1;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  accountCopy = account;
   return [(MigratorConfig *)&v9 init];
 }
 

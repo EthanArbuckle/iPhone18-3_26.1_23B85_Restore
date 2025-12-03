@@ -1,14 +1,14 @@
 @interface RCAudioBufferEnumerator
-- (RCAudioBufferEnumerator)initWithComposition:(id)a3 processingFormat:(id)a4 startTime:(double)a5 error:(id *)a6;
+- (RCAudioBufferEnumerator)initWithComposition:(id)composition processingFormat:(id)format startTime:(double)time error:(id *)error;
 - (id)nextObject;
 @end
 
 @implementation RCAudioBufferEnumerator
 
-- (RCAudioBufferEnumerator)initWithComposition:(id)a3 processingFormat:(id)a4 startTime:(double)a5 error:(id *)a6
+- (RCAudioBufferEnumerator)initWithComposition:(id)composition processingFormat:(id)format startTime:(double)time error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  compositionCopy = composition;
+  formatCopy = format;
   v32.receiver = self;
   v32.super_class = RCAudioBufferEnumerator;
   v12 = [(RCAudioBufferEnumerator *)&v32 init];
@@ -19,7 +19,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v13 = [v10 playableAsset:a6];
+  v13 = [compositionCopy playableAsset:error];
   asset = v12->_asset;
   v12->_asset = v13;
 
@@ -29,22 +29,22 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v12->_processingFormat, a4);
-  v15 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:v12->_asset error:a6];
+  objc_storeStrong(&v12->_processingFormat, format);
+  v15 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:v12->_asset error:error];
   if (v15)
   {
     [(AVAsset *)v12->_asset rc_durationInSeconds];
-    v17 = RCTimeRangeMake(a5, v16);
+    v17 = RCTimeRangeMake(time, v16);
     CMTimeRangeFromRCTimeRange(&v31, v17, v18);
     v30 = v31;
     [(RCAudioBufferEnumerator *)v15 setTimeRange:&v30];
-    v19 = [(AVAsset *)v12->_asset rc_audioTracks];
+    rc_audioTracks = [(AVAsset *)v12->_asset rc_audioTracks];
     v20 = MEMORY[0x277CE6418];
-    v21 = [v11 settings];
-    v22 = [v20 assetReaderAudioMixOutputWithAudioTracks:v19 audioSettings:v21];
+    settings = [formatCopy settings];
+    v22 = [v20 assetReaderAudioMixOutputWithAudioTracks:rc_audioTracks audioSettings:settings];
 
     [(AVAssetReaderAudioMixOutput *)v22 setAlwaysCopiesSampleData:0];
-    if ([v19 count] >= 2)
+    if ([rc_audioTracks count] >= 2)
     {
       v23 = objc_opt_new();
       v30.start.value = 0;
@@ -55,7 +55,7 @@ LABEL_9:
       v29[2] = __80__RCAudioBufferEnumerator_initWithComposition_processingFormat_startTime_error___block_invoke;
       v29[3] = &unk_279E44748;
       v29[4] = &v30;
-      v24 = [v19 na_map:v29];
+      v24 = [rc_audioTracks na_map:v29];
       [v23 setInputParameters:v24];
 
       [(AVAssetReaderAudioMixOutput *)v22 setAudioMix:v23];
@@ -105,10 +105,10 @@ id __80__RCAudioBufferEnumerator_initWithComposition_processingFormat_startTime_
 
 - (id)nextObject
 {
-  v3 = [(AVAssetReaderAudioMixOutput *)self->_mixerOutput copyNextSampleBuffer];
-  if (v3)
+  copyNextSampleBuffer = [(AVAssetReaderAudioMixOutput *)self->_mixerOutput copyNextSampleBuffer];
+  if (copyNextSampleBuffer)
   {
-    v4 = v3;
+    v4 = copyNextSampleBuffer;
     v5 = self->_processingFormat;
     if (CMSampleBufferGetNumSamples(v4))
     {
@@ -122,12 +122,12 @@ id __80__RCAudioBufferEnumerator_initWithComposition_processingFormat_startTime_
         v16 = __Block_byref_object_copy__6;
         v17 = __Block_byref_object_dispose__6;
         v18 = [MEMORY[0x277CBEB28] dataWithLength:bufferListSizeNeededOut];
-        v7 = [v14[5] mutableBytes];
+        mutableBytes = [v14[5] mutableBytes];
         v11[0] = 0;
         v11[1] = v11;
         v11[2] = 0x2020000000;
         v12 = 0;
-        if (CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(v4, 0, v7, bufferListSizeNeededOut, *MEMORY[0x277CBECE8], *MEMORY[0x277CBECE8], 0, &v12))
+        if (CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(v4, 0, mutableBytes, bufferListSizeNeededOut, *MEMORY[0x277CBECE8], *MEMORY[0x277CBECE8], 0, &v12))
         {
           v6 = 0;
         }
@@ -141,7 +141,7 @@ id __80__RCAudioBufferEnumerator_initWithComposition_processingFormat_startTime_
           v10[3] = &unk_279E447E8;
           v10[4] = &v13;
           v10[5] = v11;
-          v6 = [v8 initWithPCMFormat:v5 bufferListNoCopy:v7 deallocator:v10];
+          v6 = [v8 initWithPCMFormat:v5 bufferListNoCopy:mutableBytes deallocator:v10];
         }
 
         _Block_object_dispose(v11, 8);

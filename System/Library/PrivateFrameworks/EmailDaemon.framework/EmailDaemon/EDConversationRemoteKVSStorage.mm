@@ -1,15 +1,15 @@
 @interface EDConversationRemoteKVSStorage
 + (OS_os_log)log;
 - (BOOL)synchronize;
-- (EDConversationRemoteKVSStorage)initWithDelegate:(id)a3;
+- (EDConversationRemoteKVSStorage)initWithDelegate:(id)delegate;
 - (EDConversationRemoteStorageDelegate)delegate;
-- (id)dictionaryForKey:(id)a3;
+- (id)dictionaryForKey:(id)key;
 - (id)dictionaryRepresentation;
 - (id)storageName;
-- (id)subsetOfMessageIDsToSyncFromMessageIDString:(id)a3;
-- (void)_storeChangedExternally:(id)a3;
-- (void)removeDictionaryForKey:(id)a3;
-- (void)setDictionary:(id)a3 forKey:(id)a4;
+- (id)subsetOfMessageIDsToSyncFromMessageIDString:(id)string;
+- (void)_storeChangedExternally:(id)externally;
+- (void)removeDictionaryForKey:(id)key;
+- (void)setDictionary:(id)dictionary forKey:(id)key;
 @end
 
 @implementation EDConversationRemoteKVSStorage
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __37__EDConversationRemoteKVSStorage_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_33 != -1)
   {
     dispatch_once(&log_onceToken_33, block);
@@ -39,9 +39,9 @@ void __37__EDConversationRemoteKVSStorage_log__block_invoke(uint64_t a1)
   log_log_33 = v1;
 }
 
-- (EDConversationRemoteKVSStorage)initWithDelegate:(id)a3
+- (EDConversationRemoteKVSStorage)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = EDConversationRemoteKVSStorage;
   v5 = [(EDConversationRemoteKVSStorage *)&v18 init];
@@ -55,7 +55,7 @@ void __37__EDConversationRemoteKVSStorage_log__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Initializing Conversation KVS storage", buf, 2u);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v8 = [MEMORY[0x1E696AFB8] additionalStoreWithIdentifier:@"com.apple.mail.threadinfo"];
     kvStore = v5->_kvStore;
     v5->_kvStore = v8;
@@ -64,8 +64,8 @@ void __37__EDConversationRemoteKVSStorage_log__block_invoke(uint64_t a1)
     privateQueue = v5->_privateQueue;
     v5->_privateQueue = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v6 selector:sel__storeChangedExternally_ name:*MEMORY[0x1E696A9E8] object:v6->_kvStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__storeChangedExternally_ name:*MEMORY[0x1E696A9E8] object:v6->_kvStore];
     v13 = v6->_privateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -91,20 +91,20 @@ void __51__EDConversationRemoteKVSStorage_initWithDelegate___block_invoke(uint64
   }
 }
 
-- (void)setDictionary:(id)a3 forKey:(id)a4
+- (void)setDictionary:(id)dictionary forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   privateQueue = self->_privateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__EDConversationRemoteKVSStorage_setDictionary_forKey___block_invoke;
   block[3] = &unk_1E8250720;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionaryCopy;
+  selfCopy = self;
+  v14 = keyCopy;
+  v9 = keyCopy;
+  v10 = dictionaryCopy;
   dispatch_sync(privateQueue, block);
 }
 
@@ -160,9 +160,9 @@ void __58__EDConversationRemoteKVSStorage_dictionaryRepresentation__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -174,10 +174,10 @@ void __58__EDConversationRemoteKVSStorage_dictionaryRepresentation__block_invoke
   block[1] = 3221225472;
   block[2] = __51__EDConversationRemoteKVSStorage_dictionaryForKey___block_invoke;
   block[3] = &unk_1E8251C08;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(privateQueue, block);
   v7 = v13[5];
 
@@ -195,17 +195,17 @@ void __51__EDConversationRemoteKVSStorage_dictionaryForKey___block_invoke(uint64
   *(v3 + 40) = v2;
 }
 
-- (void)removeDictionaryForKey:(id)a3
+- (void)removeDictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   privateQueue = self->_privateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__EDConversationRemoteKVSStorage_removeDictionaryForKey___block_invoke;
   v7[3] = &unk_1E8250128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(privateQueue, v7);
 }
 
@@ -270,11 +270,11 @@ void __45__EDConversationRemoteKVSStorage_synchronize__block_invoke(uint64_t a1)
   return NSStringFromClass(v2);
 }
 
-- (id)subsetOfMessageIDsToSyncFromMessageIDString:(id)a3
+- (id)subsetOfMessageIDsToSyncFromMessageIDString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 componentsSeparatedByString:@" "];
+  v5 = [stringCopy componentsSeparatedByString:@" "];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__EDConversationRemoteKVSStorage_subsetOfMessageIDsToSyncFromMessageIDString___block_invoke;
@@ -298,17 +298,17 @@ uint64_t __78__EDConversationRemoteKVSStorage_subsetOfMessageIDsToSyncFromMessag
   return result;
 }
 
-- (void)_storeChangedExternally:(id)a3
+- (void)_storeChangedExternally:(id)externally
 {
-  v4 = a3;
+  externallyCopy = externally;
   privateQueue = self->_privateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__EDConversationRemoteKVSStorage__storeChangedExternally___block_invoke;
   v7[3] = &unk_1E8250128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = externallyCopy;
+  selfCopy = self;
+  v6 = externallyCopy;
   dispatch_async(privateQueue, v7);
 }
 

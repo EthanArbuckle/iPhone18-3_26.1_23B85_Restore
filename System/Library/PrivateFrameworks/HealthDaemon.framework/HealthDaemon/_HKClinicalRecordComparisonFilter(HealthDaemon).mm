@@ -6,8 +6,8 @@
 
 - (__CFString)propertyForKeyPath
 {
-  v4 = [a1 keyPath];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCC690]];
+  keyPath = [self keyPath];
+  v5 = [keyPath isEqualToString:*MEMORY[0x277CCC690]];
 
   if (v5)
   {
@@ -17,8 +17,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v7 = [a1 keyPath];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CCC698]];
+  keyPath2 = [self keyPath];
+  v8 = [keyPath2 isEqualToString:*MEMORY[0x277CCC698]];
 
   if (v8)
   {
@@ -26,8 +26,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:a1 file:@"_HKClinicalRecordComparisonFilter+HealthDaemon.m" lineNumber:33 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKClinicalRecordComparisonFilter+HealthDaemon.m" lineNumber:33 description:@"Unreachable code has been executed"];
 
   v9 = &stru_283BF39C8;
 LABEL_7:

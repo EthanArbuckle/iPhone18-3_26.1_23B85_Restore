@@ -1,54 +1,54 @@
 @interface GDGraphBicyclingActivityEvent
-- (GDGraphBicyclingActivityEvent)initWithEntityIdentifierField:(id)a3 nameField:(id)a4 dateField:(id)a5 attendeesField:(id)a6 locationsField:(id)a7 startLocationField:(id)a8 endLocationField:(id)a9 activityTypeObjectField:(id)a10 activityTypeField:(id)a11 confidenceField:(id)a12 allNameField:(id)a13 allDateField:(id)a14 allStartLocationField:(id)a15 allEndLocationField:(id)a16 allActivityTypeObjectField:(id)a17 allActivityTypeField:(id)a18 allConfidenceField:(id)a19;
+- (GDGraphBicyclingActivityEvent)initWithEntityIdentifierField:(id)field nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField locationsField:(id)locationsField startLocationField:(id)locationField endLocationField:(id)endLocationField activityTypeObjectField:(id)self0 activityTypeField:(id)self1 confidenceField:(id)self2 allNameField:(id)self3 allDateField:(id)self4 allStartLocationField:(id)self5 allEndLocationField:(id)self6 allActivityTypeObjectField:(id)self7 allActivityTypeField:(id)self8 allConfidenceField:(id)self9;
 @end
 
 @implementation GDGraphBicyclingActivityEvent
 
-- (GDGraphBicyclingActivityEvent)initWithEntityIdentifierField:(id)a3 nameField:(id)a4 dateField:(id)a5 attendeesField:(id)a6 locationsField:(id)a7 startLocationField:(id)a8 endLocationField:(id)a9 activityTypeObjectField:(id)a10 activityTypeField:(id)a11 confidenceField:(id)a12 allNameField:(id)a13 allDateField:(id)a14 allStartLocationField:(id)a15 allEndLocationField:(id)a16 allActivityTypeObjectField:(id)a17 allActivityTypeField:(id)a18 allConfidenceField:(id)a19
+- (GDGraphBicyclingActivityEvent)initWithEntityIdentifierField:(id)field nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField locationsField:(id)locationsField startLocationField:(id)locationField endLocationField:(id)endLocationField activityTypeObjectField:(id)self0 activityTypeField:(id)self1 confidenceField:(id)self2 allNameField:(id)self3 allDateField:(id)self4 allStartLocationField:(id)self5 allEndLocationField:(id)self6 allActivityTypeObjectField:(id)self7 allActivityTypeField:(id)self8 allConfidenceField:(id)self9
 {
-  v48 = a3;
-  v35 = a4;
-  v47 = a4;
-  v36 = a5;
-  v46 = a5;
-  v37 = a6;
-  v45 = a6;
-  v44 = a7;
-  v43 = a8;
-  v42 = a9;
-  v41 = a10;
-  v40 = a11;
-  v39 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
-  v27 = a16;
-  v28 = a17;
-  v29 = a18;
-  v30 = a19;
+  fieldCopy = field;
+  nameFieldCopy = nameField;
+  nameFieldCopy2 = nameField;
+  dateFieldCopy = dateField;
+  dateFieldCopy2 = dateField;
+  attendeesFieldCopy = attendeesField;
+  attendeesFieldCopy2 = attendeesField;
+  locationsFieldCopy = locationsField;
+  locationFieldCopy = locationField;
+  endLocationFieldCopy = endLocationField;
+  objectFieldCopy = objectField;
+  typeFieldCopy = typeField;
+  confidenceFieldCopy = confidenceField;
+  allNameFieldCopy = allNameField;
+  allDateFieldCopy = allDateField;
+  startLocationFieldCopy = startLocationField;
+  allEndLocationFieldCopy = allEndLocationField;
+  typeObjectFieldCopy = typeObjectField;
+  activityTypeFieldCopy = activityTypeField;
+  allConfidenceFieldCopy = allConfidenceField;
   v49.receiver = self;
   v49.super_class = GDGraphBicyclingActivityEvent;
   v31 = [(GDGraphBicyclingActivityEvent *)&v49 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_entityIdentifier, a3);
-    objc_storeStrong(&v32->_name, v35);
-    objc_storeStrong(&v32->_date, v36);
-    objc_storeStrong(&v32->_attendees, v37);
-    objc_storeStrong(&v32->_locations, a7);
-    objc_storeStrong(&v32->_startLocation, a8);
-    objc_storeStrong(&v32->_endLocation, a9);
-    objc_storeStrong(&v32->_activityTypeObject, a10);
-    objc_storeStrong(&v32->_activityType, a11);
-    objc_storeStrong(&v32->_confidence, a12);
-    objc_storeStrong(&v32->_allName, a13);
-    objc_storeStrong(&v32->_allDate, a14);
-    objc_storeStrong(&v32->_allStartLocation, a15);
-    objc_storeStrong(&v32->_allEndLocation, a16);
-    objc_storeStrong(&v32->_allActivityTypeObject, a17);
-    objc_storeStrong(&v32->_allActivityType, a18);
-    objc_storeStrong(&v32->_allConfidence, a19);
+    objc_storeStrong(&v31->_entityIdentifier, field);
+    objc_storeStrong(&v32->_name, nameFieldCopy);
+    objc_storeStrong(&v32->_date, dateFieldCopy);
+    objc_storeStrong(&v32->_attendees, attendeesFieldCopy);
+    objc_storeStrong(&v32->_locations, locationsField);
+    objc_storeStrong(&v32->_startLocation, locationField);
+    objc_storeStrong(&v32->_endLocation, endLocationField);
+    objc_storeStrong(&v32->_activityTypeObject, objectField);
+    objc_storeStrong(&v32->_activityType, typeField);
+    objc_storeStrong(&v32->_confidence, confidenceField);
+    objc_storeStrong(&v32->_allName, allNameField);
+    objc_storeStrong(&v32->_allDate, allDateField);
+    objc_storeStrong(&v32->_allStartLocation, startLocationField);
+    objc_storeStrong(&v32->_allEndLocation, allEndLocationField);
+    objc_storeStrong(&v32->_allActivityTypeObject, typeObjectField);
+    objc_storeStrong(&v32->_allActivityType, activityTypeField);
+    objc_storeStrong(&v32->_allConfidence, allConfidenceField);
   }
 
   return v32;

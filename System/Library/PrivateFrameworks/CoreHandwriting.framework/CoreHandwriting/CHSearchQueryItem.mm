@@ -1,7 +1,7 @@
 @interface CHSearchQueryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSearchQueryItem:(id)a3;
-- (CGRect)boundsForStrokeIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSearchQueryItem:(id)item;
+- (CGRect)boundsForStrokeIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -18,11 +18,11 @@
   return v14;
 }
 
-- (BOOL)isEqualToSearchQueryItem:(id)a3
+- (BOOL)isEqualToSearchQueryItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     isEqual = 0;
     goto LABEL_16;
@@ -55,7 +55,7 @@ LABEL_11:
       {
 LABEL_14:
 
-        if (v4 != self)
+        if (itemCopy != self)
         {
           goto LABEL_5;
         }
@@ -67,7 +67,7 @@ LABEL_15:
     }
 
     v19 = 138412290;
-    v20 = v4;
+    v20 = itemCopy;
     _os_log_impl(&dword_18366B000, v17, OS_LOG_TYPE_FAULT, "item should be of class CHSearchQueryItem: %@", &v19, 0xCu);
     goto LABEL_14;
   }
@@ -89,7 +89,7 @@ LABEL_15:
   {
 LABEL_9:
     v19 = 138412290;
-    v20 = v4;
+    v20 = itemCopy;
     _os_log_impl(&dword_18366B000, v16, OS_LOG_TYPE_ERROR, "item should be of class CHSearchQueryItem: %@", &v19, 0xCu);
   }
 
@@ -102,26 +102,26 @@ LABEL_10:
   }
 
 LABEL_4:
-  if (v4 == self)
+  if (itemCopy == self)
   {
     goto LABEL_15;
   }
 
 LABEL_5:
-  v10 = objc_msgSend_strokeIdentifiers(v4, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_strokeIdentifiers(itemCopy, v5, v6, v7, v8, v9);
   isEqual = objc_msgSend_isEqual_(v10, v11, self->_strokeIdentifiers, v12, v13, v14);
 
 LABEL_16:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToSearchQueryItem = objc_msgSend_isEqualToSearchQueryItem_(self, v5, v4, v6, v7, v8);
+    isEqualToSearchQueryItem = objc_msgSend_isEqualToSearchQueryItem_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToSearchQueryItem;
   }
@@ -133,9 +133,9 @@ LABEL_16:
   }
 }
 
-- (CGRect)boundsForStrokeIdentifier:(id)a3
+- (CGRect)boundsForStrokeIdentifier:(id)identifier
 {
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_strokeBoundsByIdentifier, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_strokeBoundsByIdentifier, a2, identifier, v3, v4, v5);
   v12 = v6;
   if (v6)
   {

@@ -1,8 +1,8 @@
 @interface SyncedSettingsRequestHandler
 - (_TtC7imagent28SyncedSettingsRequestHandler)init;
-- (void)fetchSettingExplicitlySet:(int64_t)a3 reply:(id)a4;
-- (void)fetchSettingValueForKey:(int64_t)a3 reply:(id)a4;
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4;
+- (void)fetchSettingExplicitlySet:(int64_t)set reply:(id)reply;
+- (void)fetchSettingValueForKey:(int64_t)key reply:(id)reply;
+- (void)setSettingValue:(id)value forKey:(int64_t)key;
 @end
 
 @implementation SyncedSettingsRequestHandler
@@ -15,40 +15,40 @@
   return [(SyncedSettingsRequestHandler *)&v3 init];
 }
 
-- (void)fetchSettingValueForKey:(int64_t)a3 reply:(id)a4
+- (void)fetchSettingValueForKey:(int64_t)key reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = self;
-  sub_10003BC54(a3, v7, v6);
+  selfCopy = self;
+  sub_10003BC54(key, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)setSettingValue:(id)a3 forKey:(int64_t)a4
+- (void)setSettingValue:(id)value forKey:(int64_t)key
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1000542D4();
   v7 = swift_unknownObjectRelease();
-  v8 = (*((swift_isaMask & v6->super.isa) + 0x58))(v7);
+  v8 = (*((swift_isaMask & selfCopy->super.isa) + 0x58))(v7);
   sub_10003526C(v9, v9[3]);
-  [v8 setSettingValue:sub_100054414() forKey:a4];
+  [v8 setSettingValue:sub_100054414() forKey:key];
 
   swift_unknownObjectRelease();
   sub_1000031D0(v9);
 }
 
-- (void)fetchSettingExplicitlySet:(int64_t)a3 reply:(id)a4
+- (void)fetchSettingExplicitlySet:(int64_t)set reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v9 = v7();
-  LOBYTE(a3) = [v9 settingExplicitlySetForKey:a3];
+  LOBYTE(set) = [v9 settingExplicitlySetForKey:set];
 
   v20 = &type metadata for Bool;
-  v19[0] = a3;
+  v19[0] = set;
   sub_10003A8B8(v19, v17);
   v10 = v18;
   if (v18)

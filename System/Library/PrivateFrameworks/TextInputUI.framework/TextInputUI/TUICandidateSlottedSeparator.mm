@@ -1,40 +1,40 @@
 @interface TUICandidateSlottedSeparator
-- (void)setStyle:(id)a3;
+- (void)setStyle:(id)style;
 @end
 
 @implementation TUICandidateSlottedSeparator
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(TUICandidateLine *)self style];
-  v6 = [v5 isEqual:v4];
+  styleCopy = style;
+  style = [(TUICandidateLine *)self style];
+  v6 = [style isEqual:styleCopy];
 
   if ((v6 & 1) == 0)
   {
     v14.receiver = self;
     v14.super_class = TUICandidateSlottedSeparator;
-    [(TUICandidateLine *)&v14 setStyle:v4];
+    [(TUICandidateLine *)&v14 setStyle:styleCopy];
     [(TUICandidateSlottedSeparator *)self setBackgroundColor:0];
-    v7 = [(TUICandidateSlottedSeparator *)self imageView];
+    imageView = [(TUICandidateSlottedSeparator *)self imageView];
 
-    if (!v7)
+    if (!imageView)
     {
       v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
       [(TUICandidateSlottedSeparator *)self bounds];
       v9 = [v8 initWithFrame:?];
       [(TUICandidateSlottedSeparator *)self setImageView:v9];
 
-      v10 = [(TUICandidateSlottedSeparator *)self imageView];
-      [v10 setAutoresizingMask:18];
+      imageView2 = [(TUICandidateSlottedSeparator *)self imageView];
+      [imageView2 setAutoresizingMask:18];
 
-      v11 = [(TUICandidateSlottedSeparator *)self imageView];
-      [(TUICandidateSlottedSeparator *)self addSubview:v11];
+      imageView3 = [(TUICandidateSlottedSeparator *)self imageView];
+      [(TUICandidateSlottedSeparator *)self addSubview:imageView3];
     }
 
-    v12 = [v4 slottedCellSeparatorImage];
-    v13 = [(TUICandidateSlottedSeparator *)self imageView];
-    [v13 setImage:v12];
+    slottedCellSeparatorImage = [styleCopy slottedCellSeparatorImage];
+    imageView4 = [(TUICandidateSlottedSeparator *)self imageView];
+    [imageView4 setImage:slottedCellSeparatorImage];
   }
 }
 

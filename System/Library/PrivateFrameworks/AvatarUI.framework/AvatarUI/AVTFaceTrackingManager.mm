@@ -1,38 +1,38 @@
 @interface AVTFaceTrackingManager
-+ (double)desiredUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3;
-- (AVTFaceTrackingManager)initWithAvatarView:(id)a3 environment:(id)a4;
-- (AVTFaceTrackingManager)initWithAvatarView:(id)a3 userInfoView:(id)a4 environment:(id)a5;
++ (double)desiredUserInfoLabelAlphaForFaceTrackingState:(BOOL)state;
+- (AVTFaceTrackingManager)initWithAvatarView:(id)view environment:(id)environment;
+- (AVTFaceTrackingManager)initWithAvatarView:(id)view userInfoView:(id)infoView environment:(id)environment;
 - (AVTFaceTrackingManagerDelegate)delegate;
 - (id)userInfoStringForCurrentTrackingState;
-- (void)avatarView:(id)a3 didUpdateWithFaceTrackingStatus:(BOOL)a4;
-- (void)avatarView:(id)a3 faceTrackingSessionFailedWithError:(id)a4;
+- (void)avatarView:(id)view didUpdateWithFaceTrackingStatus:(BOOL)status;
+- (void)avatarView:(id)view faceTrackingSessionFailedWithError:(id)error;
 - (void)avatarViewDidUpdateWithLowLightOrCameraOcclusionStatus;
-- (void)avatarViewFaceTrackingSessionInterruptionDidBegin:(id)a3;
-- (void)avatarViewFaceTrackingSessionInterruptionDidEnd:(id)a3;
+- (void)avatarViewFaceTrackingSessionInterruptionDidBegin:(id)begin;
+- (void)avatarViewFaceTrackingSessionInterruptionDidEnd:(id)end;
 - (void)cancelLowLightAndSensorOcclusionTimer;
 - (void)dealloc;
 - (void)invalidateFaceTrackingTimers;
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4;
-- (void)resetForResumingTrackingAnimated:(BOOL)a3;
-- (void)resetForTrackingFoundAFaceAnimated:(BOOL)a3;
-- (void)resumeFaceTrackingIfNeededAnimated:(BOOL)a3;
-- (void)setFaceTrackingManagementPaused:(BOOL)a3;
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)resetForResumingTrackingAnimated:(BOOL)animated;
+- (void)resetForTrackingFoundAFaceAnimated:(BOOL)animated;
+- (void)resumeFaceTrackingIfNeededAnimated:(BOOL)animated;
+- (void)setFaceTrackingManagementPaused:(BOOL)paused;
 - (void)setupDisplayLayoutMonitor;
 - (void)startTrackingLostTimers;
-- (void)updateForPausingTrackingWithLabel:(BOOL)a3;
+- (void)updateForPausingTrackingWithLabel:(BOOL)label;
 - (void)updateForTrackingLost;
-- (void)updateInterruptionTypeIfNeeded:(unint64_t)a3;
+- (void)updateInterruptionTypeIfNeeded:(unint64_t)needed;
 - (void)updateUserInfoBackdropForCurrentLabel;
-- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3;
-- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)state;
+- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)state animated:(BOOL)animated;
 @end
 
 @implementation AVTFaceTrackingManager
 
-+ (double)desiredUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3
++ (double)desiredUserInfoLabelAlphaForFaceTrackingState:(BOOL)state
 {
   result = 1.0;
-  if (a3)
+  if (state)
   {
     return 0.0;
   }
@@ -40,33 +40,33 @@
   return result;
 }
 
-- (AVTFaceTrackingManager)initWithAvatarView:(id)a3 environment:(id)a4
+- (AVTFaceTrackingManager)initWithAvatarView:(id)view environment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
+  environmentCopy = environment;
+  viewCopy = view;
   v8 = [AVTUserInfoView alloc];
   v9 = [(AVTUserInfoView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v10 = [(AVTFaceTrackingManager *)self initWithAvatarView:v7 userInfoView:v9 environment:v6];
+  v10 = [(AVTFaceTrackingManager *)self initWithAvatarView:viewCopy userInfoView:v9 environment:environmentCopy];
 
   return v10;
 }
 
-- (AVTFaceTrackingManager)initWithAvatarView:(id)a3 userInfoView:(id)a4 environment:(id)a5
+- (AVTFaceTrackingManager)initWithAvatarView:(id)view userInfoView:(id)infoView environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  infoViewCopy = infoView;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = AVTFaceTrackingManager;
   v12 = [(AVTFaceTrackingManager *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_environment, a5);
-    objc_storeStrong(&v13->_avatarView, a3);
-    [v9 setFaceTrackingDelegate:v13];
-    objc_storeStrong(&v13->_userInfoView, a4);
-    [v10 setUserInteractionEnabled:0];
+    objc_storeStrong(&v12->_environment, environment);
+    objc_storeStrong(&v13->_avatarView, view);
+    [viewCopy setFaceTrackingDelegate:v13];
+    objc_storeStrong(&v13->_userInfoView, infoView);
+    [infoViewCopy setUserInteractionEnabled:0];
     [(AVTUserInfoView *)v13->_userInfoView setAlpha:0.0];
     v14 = MGCopyAnswer();
     v15 = [v14 copy];
@@ -81,8 +81,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AVTFaceTrackingManager *)self displayLayoutMonitor];
-  [v3 invalidate];
+  displayLayoutMonitor = [(AVTFaceTrackingManager *)self displayLayoutMonitor];
+  [displayLayoutMonitor invalidate];
 
   [(AVTFaceTrackingManager *)self invalidateFaceTrackingTimers];
   [(AVTFaceTrackingManager *)self cancelLowLightAndSensorOcclusionTimer];
@@ -91,12 +91,12 @@
   [(AVTFaceTrackingManager *)&v4 dealloc];
 }
 
-- (void)setFaceTrackingManagementPaused:(BOOL)a3
+- (void)setFaceTrackingManagementPaused:(BOOL)paused
 {
-  if (self->_faceTrackingManagementPaused != a3)
+  if (self->_faceTrackingManagementPaused != paused)
   {
-    self->_faceTrackingManagementPaused = a3;
-    if (a3)
+    self->_faceTrackingManagementPaused = paused;
+    if (paused)
     {
       [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:1 animated:0];
       [(AVTFaceTrackingManager *)self resetForResumingTrackingAnimated:0];
@@ -106,10 +106,10 @@
 
     else
     {
-      v4 = [(AVTFaceTrackingManager *)self avatarView];
-      v5 = [v4 faceIsTracked];
+      avatarView = [(AVTFaceTrackingManager *)self avatarView];
+      faceIsTracked = [avatarView faceIsTracked];
 
-      if ((v5 & 1) == 0)
+      if ((faceIsTracked & 1) == 0)
       {
 
         [(AVTFaceTrackingManager *)self startTrackingLostTimers];
@@ -118,32 +118,32 @@
   }
 }
 
-- (void)resumeFaceTrackingIfNeededAnimated:(BOOL)a3
+- (void)resumeFaceTrackingIfNeededAnimated:(BOOL)animated
 {
-  [(AVTFaceTrackingManager *)self resetForResumingTrackingAnimated:a3];
-  v4 = [(AVTFaceTrackingManager *)self avatarView];
-  v5 = [v4 faceIsTracked];
+  [(AVTFaceTrackingManager *)self resetForResumingTrackingAnimated:animated];
+  avatarView = [(AVTFaceTrackingManager *)self avatarView];
+  faceIsTracked = [avatarView faceIsTracked];
 
-  if ((v5 & 1) == 0)
+  if ((faceIsTracked & 1) == 0)
   {
 
     [(AVTFaceTrackingManager *)self startTrackingLostTimers];
   }
 }
 
-- (void)updateInterruptionTypeIfNeeded:(unint64_t)a3
+- (void)updateInterruptionTypeIfNeeded:(unint64_t)needed
 {
-  if ([(AVTFaceTrackingManager *)self interruptionType]< a3)
+  if ([(AVTFaceTrackingManager *)self interruptionType]< needed)
   {
 
-    [(AVTFaceTrackingManager *)self setInterruptionType:a3];
+    [(AVTFaceTrackingManager *)self setInterruptionType:needed];
   }
 }
 
 - (void)updateUserInfoBackdropForCurrentLabel
 {
-  v3 = [(AVTFaceTrackingManager *)self userInfoView];
-  [v3 sizeToFit];
+  userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+  [userInfoView sizeToFit];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -151,49 +151,49 @@
   if (v5)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    v6 = [(AVTFaceTrackingManager *)self userInfoView];
-    [v6 bounds];
+    userInfoView2 = [(AVTFaceTrackingManager *)self userInfoView];
+    [userInfoView2 bounds];
     [v9 faceTrackingManager:self didUpdateUserInfoWithSize:{v7, v8}];
   }
 }
 
-- (void)resetForTrackingFoundAFaceAnimated:(BOOL)a3
+- (void)resetForTrackingFoundAFaceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(AVTFaceTrackingManager *)self invalidateFaceTrackingTimers];
 
-  [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:1 animated:v3];
+  [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:1 animated:animatedCopy];
 }
 
-- (void)resetForResumingTrackingAnimated:(BOOL)a3
+- (void)resetForResumingTrackingAnimated:(BOOL)animated
 {
   [(AVTFaceTrackingManager *)self invalidateFaceTrackingTimers];
-  v4 = [(AVTFaceTrackingManager *)self avatarView];
-  [v4 setFaceTrackingPaused:0];
+  avatarView = [(AVTFaceTrackingManager *)self avatarView];
+  [avatarView setFaceTrackingPaused:0];
 
-  v5 = [(AVTFaceTrackingManager *)self userInfoStringForCurrentTrackingState];
-  v6 = [(AVTFaceTrackingManager *)self userInfoView];
-  [v6 setText:v5];
+  userInfoStringForCurrentTrackingState = [(AVTFaceTrackingManager *)self userInfoStringForCurrentTrackingState];
+  userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+  [userInfoView setText:userInfoStringForCurrentTrackingState];
 
   [(AVTFaceTrackingManager *)self updateUserInfoBackdropForCurrentLabel];
-  v7 = [(AVTFaceTrackingManager *)self avatarView];
-  LODWORD(v6) = [v7 faceIsTracked];
+  avatarView2 = [(AVTFaceTrackingManager *)self avatarView];
+  LODWORD(userInfoView) = [avatarView2 faceIsTracked];
 
-  if (v6)
+  if (userInfoView)
   {
     [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:1 animated:1];
   }
 
-  v8 = [(AVTFaceTrackingManager *)self environment];
-  v9 = [v8 usageTrackingSession];
-  [v9 didResumeFaceTracking];
+  environment = [(AVTFaceTrackingManager *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  [usageTrackingSession didResumeFaceTracking];
 
   [(AVTFaceTrackingManager *)self setInterruptionType:0];
 }
 
-- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3
+- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 0.0;
   }
@@ -203,58 +203,58 @@
     v3 = 1.0;
   }
 
-  v4 = [(AVTFaceTrackingManager *)self userInfoView];
-  [v4 setAlpha:v3];
+  userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+  [userInfoView setAlpha:v3];
 }
 
-- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)a3 animated:(BOOL)a4
+- (void)updateUserInfoLabelAlphaForFaceTrackingState:(BOOL)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AVTFaceTrackingManager *)self userInfoView];
-  [v7 alpha];
+  animatedCopy = animated;
+  stateCopy = state;
+  userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+  [userInfoView alpha];
   v9 = v8;
-  [objc_opt_class() desiredUserInfoLabelAlphaForFaceTrackingState:v5];
+  [objc_opt_class() desiredUserInfoLabelAlphaForFaceTrackingState:stateCopy];
   v11 = v10;
 
   if (v9 != v11)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __80__AVTFaceTrackingManager_updateUserInfoLabelAlphaForFaceTrackingState_animated___block_invoke;
       v12[3] = &unk_1E7F3B910;
       v12[4] = self;
-      v13 = v5;
+      v13 = stateCopy;
       [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:0.5];
     }
 
     else
     {
 
-      [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:v5];
+      [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:stateCopy];
     }
   }
 }
 
 - (void)invalidateFaceTrackingTimers
 {
-  v3 = [(AVTFaceTrackingManager *)self trackingLostMessageTimer];
-  [v3 invalidate];
+  trackingLostMessageTimer = [(AVTFaceTrackingManager *)self trackingLostMessageTimer];
+  [trackingLostMessageTimer invalidate];
 
   [(AVTFaceTrackingManager *)self setTrackingLostMessageTimer:0];
-  v4 = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
-  [v4 invalidate];
+  pauseTrackingTimer = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
+  [pauseTrackingTimer invalidate];
 
   [(AVTFaceTrackingManager *)self setPauseTrackingTimer:0];
 }
 
 - (void)startTrackingLostTimers
 {
-  v3 = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
+  pauseTrackingTimer = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
 
-  if (!v3 && ![(AVTFaceTrackingManager *)self faceTrackingManagementPaused])
+  if (!pauseTrackingTimer && ![(AVTFaceTrackingManager *)self faceTrackingManagementPaused])
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E695DFF0];
@@ -275,14 +275,14 @@
     v7 = [v6 timerWithTimeInterval:0 repeats:v13 block:10.0];
     [(AVTFaceTrackingManager *)self setPauseTrackingTimer:v7];
 
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v9 = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    pauseTrackingTimer2 = [(AVTFaceTrackingManager *)self pauseTrackingTimer];
     v10 = *MEMORY[0x1E695DA28];
-    [v8 addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
+    [mainRunLoop addTimer:pauseTrackingTimer2 forMode:*MEMORY[0x1E695DA28]];
 
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v12 = [(AVTFaceTrackingManager *)self trackingLostMessageTimer];
-    [v11 addTimer:v12 forMode:v10];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    trackingLostMessageTimer = [(AVTFaceTrackingManager *)self trackingLostMessageTimer];
+    [mainRunLoop2 addTimer:trackingLostMessageTimer forMode:v10];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -305,59 +305,59 @@ void __49__AVTFaceTrackingManager_startTrackingLostTimers__block_invoke_2(uint64
 
 - (void)updateForTrackingLost
 {
-  v3 = [(AVTFaceTrackingManager *)self userInfoStringForCurrentTrackingState];
-  v4 = [(AVTFaceTrackingManager *)self userInfoView];
-  [v4 setText:v3];
+  userInfoStringForCurrentTrackingState = [(AVTFaceTrackingManager *)self userInfoStringForCurrentTrackingState];
+  userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+  [userInfoView setText:userInfoStringForCurrentTrackingState];
 
   [(AVTFaceTrackingManager *)self updateUserInfoBackdropForCurrentLabel];
 
   [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:0 animated:1];
 }
 
-- (void)updateForPausingTrackingWithLabel:(BOOL)a3
+- (void)updateForPausingTrackingWithLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   [(AVTFaceTrackingManager *)self cancelLowLightAndSensorOcclusionTimer];
-  if (v3)
+  if (labelCopy)
   {
     v5 = AVTAvatarUIBundle();
     v6 = [v5 localizedStringForKey:@"TAP_TO_RESUME" value:&stru_1F39618F0 table:@"Localized"];
-    v7 = [(AVTFaceTrackingManager *)self userInfoView];
-    [v7 setText:v6];
+    userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+    [userInfoView setText:v6];
 
     [(AVTFaceTrackingManager *)self updateUserInfoBackdropForCurrentLabel];
   }
 
-  [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:!v3 animated:1];
-  v8 = [(AVTFaceTrackingManager *)self avatarView];
-  [v8 setFaceTrackingPaused:1];
+  [(AVTFaceTrackingManager *)self updateUserInfoLabelAlphaForFaceTrackingState:!labelCopy animated:1];
+  avatarView = [(AVTFaceTrackingManager *)self avatarView];
+  [avatarView setFaceTrackingPaused:1];
 
   [(AVTFaceTrackingManager *)self setPauseTrackingTimer:0];
   [(AVTFaceTrackingManager *)self updateInterruptionTypeIfNeeded:1];
-  v10 = [(AVTFaceTrackingManager *)self environment];
-  v9 = [v10 usageTrackingSession];
-  [v9 didPauseFaceTracking];
+  environment = [(AVTFaceTrackingManager *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  [usageTrackingSession didPauseFaceTracking];
 }
 
 - (id)userInfoStringForCurrentTrackingState
 {
-  v3 = [(AVTFaceTrackingManager *)self environment];
-  if (([v3 deviceIsPad] & 1) == 0)
+  environment = [(AVTFaceTrackingManager *)self environment];
+  if (([environment deviceIsPad] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(AVTFaceTrackingManager *)self delegate];
-  v5 = [v4 interfaceOrientationForFaceTrackingManager:self];
+  delegate = [(AVTFaceTrackingManager *)self delegate];
+  v5 = [delegate interfaceOrientationForFaceTrackingManager:self];
 
   if (v5 != 2)
   {
 LABEL_5:
-    v11 = [(AVTFaceTrackingManager *)self avatarView];
-    v12 = [v11 isSensorCovered];
+    avatarView = [(AVTFaceTrackingManager *)self avatarView];
+    isSensorCovered = [avatarView isSensorCovered];
 
-    if (v12)
+    if (isSensorCovered)
     {
       v13 = AVTAvatarUIBundle();
       v7 = v13;
@@ -366,12 +366,12 @@ LABEL_5:
 
     else
     {
-      v15 = [(AVTFaceTrackingManager *)self avatarView];
-      v16 = [v15 captureImageIsTooDark];
+      avatarView2 = [(AVTFaceTrackingManager *)self avatarView];
+      captureImageIsTooDark = [avatarView2 captureImageIsTooDark];
 
       v13 = AVTAvatarUIBundle();
       v7 = v13;
-      if (v16)
+      if (captureImageIsTooDark)
       {
         v14 = @"LOW_LIGHT";
       }
@@ -389,22 +389,22 @@ LABEL_5:
   v6 = MEMORY[0x1E696AEC0];
   v7 = AVTAvatarUIBundle();
   v8 = [v7 localizedStringForKey:@"ROTATE_DEVICE" value:&stru_1F39618F0 table:@"Localized"];
-  v9 = [(AVTFaceTrackingManager *)self localizedDeviceName];
-  v10 = [v6 stringWithFormat:v8, v9];
+  localizedDeviceName = [(AVTFaceTrackingManager *)self localizedDeviceName];
+  v10 = [v6 stringWithFormat:v8, localizedDeviceName];
 
 LABEL_11:
 
   return v10;
 }
 
-- (void)avatarView:(id)a3 didUpdateWithFaceTrackingStatus:(BOOL)a4
+- (void)avatarView:(id)view didUpdateWithFaceTrackingStatus:(BOOL)status
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__AVTFaceTrackingManager_avatarView_didUpdateWithFaceTrackingStatus___block_invoke;
   v4[3] = &unk_1E7F3B910;
   v4[4] = self;
-  v5 = a4;
+  statusCopy = status;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
@@ -436,8 +436,8 @@ uint64_t __69__AVTFaceTrackingManager_avatarView_didUpdateWithFaceTrackingStatus
 
 - (void)cancelLowLightAndSensorOcclusionTimer
 {
-  v3 = [(AVTFaceTrackingManager *)self lowLightAndSensorOcclusionLockoutTimer];
-  [v3 invalidate];
+  lowLightAndSensorOcclusionLockoutTimer = [(AVTFaceTrackingManager *)self lowLightAndSensorOcclusionLockoutTimer];
+  [lowLightAndSensorOcclusionLockoutTimer invalidate];
 
   [(AVTFaceTrackingManager *)self setLowLightAndSensorOcclusionLockoutTimer:0];
 
@@ -526,20 +526,20 @@ void __80__AVTFaceTrackingManager_avatarViewDidUpdateWithLowLightOrCameraOcclusi
   }
 }
 
-- (void)avatarView:(id)a3 faceTrackingSessionFailedWithError:(id)a4
+- (void)avatarView:(id)view faceTrackingSessionFailedWithError:(id)error
 {
-  if (![(AVTFaceTrackingManager *)self faceTrackingManagementPaused:a3])
+  if (![(AVTFaceTrackingManager *)self faceTrackingManagementPaused:view])
   {
     [(AVTFaceTrackingManager *)self updateInterruptionTypeIfNeeded:4];
     [(AVTFaceTrackingManager *)self invalidateFaceTrackingTimers];
     [(AVTFaceTrackingManager *)self cancelLowLightAndSensorOcclusionTimer];
-    v5 = [(AVTFaceTrackingManager *)self avatarView];
-    [v5 setFaceTrackingPaused:1];
+    avatarView = [(AVTFaceTrackingManager *)self avatarView];
+    [avatarView setFaceTrackingPaused:1];
 
     v6 = AVTAvatarUIBundle();
     v7 = [v6 localizedStringForKey:@"FACE_TRACKING_FAILED" value:&stru_1F39618F0 table:@"Localized"];
-    v8 = [(AVTFaceTrackingManager *)self userInfoView];
-    [v8 setText:v7];
+    userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+    [userInfoView setText:v7];
 
     [(AVTFaceTrackingManager *)self updateUserInfoBackdropForCurrentLabel];
 
@@ -547,7 +547,7 @@ void __80__AVTFaceTrackingManager_avatarViewDidUpdateWithLowLightOrCameraOcclusi
   }
 }
 
-- (void)avatarViewFaceTrackingSessionInterruptionDidBegin:(id)a3
+- (void)avatarViewFaceTrackingSessionInterruptionDidBegin:(id)begin
 {
   if (![(AVTFaceTrackingManager *)self faceTrackingManagementPaused])
   {
@@ -558,8 +558,8 @@ void __80__AVTFaceTrackingManager_avatarViewDidUpdateWithLowLightOrCameraOcclusi
       [(AVTFaceTrackingManager *)self cancelLowLightAndSensorOcclusionTimer];
       v4 = AVTAvatarUIBundle();
       v5 = [v4 localizedStringForKey:@"SESSION_INTERRUPTED" value:&stru_1F39618F0 table:@"Localized"];
-      v6 = [(AVTFaceTrackingManager *)self userInfoView];
-      [v6 setText:v5];
+      userInfoView = [(AVTFaceTrackingManager *)self userInfoView];
+      [userInfoView setText:v5];
 
       [(AVTFaceTrackingManager *)self updateUserInfoBackdropForCurrentLabel];
 
@@ -568,7 +568,7 @@ void __80__AVTFaceTrackingManager_avatarViewDidUpdateWithLowLightOrCameraOcclusi
   }
 }
 
-- (void)avatarViewFaceTrackingSessionInterruptionDidEnd:(id)a3
+- (void)avatarViewFaceTrackingSessionInterruptionDidEnd:(id)end
 {
   if (![(AVTFaceTrackingManager *)self faceTrackingManagementPaused]&& [(AVTFaceTrackingManager *)self interruptionType]== 2)
   {
@@ -580,14 +580,14 @@ void __80__AVTFaceTrackingManager_avatarViewDidUpdateWithLowLightOrCameraOcclusi
 - (void)setupDisplayLayoutMonitor
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __51__AVTFaceTrackingManager_setupDisplayLayoutMonitor__block_invoke;
   v9 = &unk_1E7F3D280;
   objc_copyWeak(&v10, &location);
-  [v3 setTransitionHandler:&v6];
-  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:{v3, v6, v7, v8, v9}];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:&v6];
+  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:{configurationForDefaultMainDisplayMonitor, v6, v7, v8, v9}];
   displayLayoutMonitor = self->_displayLayoutMonitor;
   self->_displayLayoutMonitor = v4;
 
@@ -603,16 +603,16 @@ void __51__AVTFaceTrackingManager_setupDisplayLayoutMonitor__block_invoke(uint64
   [WeakRetained layoutMonitorDidUpdateDisplayLayout:v7 withContext:v6];
 }
 
-- (void)layoutMonitorDidUpdateDisplayLayout:(id)a3 withContext:(id)a4
+- (void)layoutMonitorDidUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v5 = a3;
+  layoutCopy = layout;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__AVTFaceTrackingManager_layoutMonitorDidUpdateDisplayLayout_withContext___block_invoke;
   v7[3] = &unk_1E7F3AD60;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = layoutCopy;
+  v6 = layoutCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

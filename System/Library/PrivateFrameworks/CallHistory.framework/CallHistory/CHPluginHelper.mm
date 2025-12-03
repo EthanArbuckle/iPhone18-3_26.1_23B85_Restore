@@ -1,8 +1,8 @@
 @interface CHPluginHelper
 - (CHPluginHelper)init;
-- (unint64_t)unreadCallCountWithError:(id *)a3;
-- (void)unreadCallCountForPredicate:(id)a3 completionHandler:(id)a4;
-- (void)unreadCallCountWithCompletionHandler:(id)a3;
+- (unint64_t)unreadCallCountWithError:(id *)error;
+- (void)unreadCallCountForPredicate:(id)predicate completionHandler:(id)handler;
+- (void)unreadCallCountWithCompletionHandler:(id)handler;
 @end
 
 @implementation CHPluginHelper
@@ -55,7 +55,7 @@ void __53__CHPluginHelper_recentCallsWithLimitingTypes_error___block_invoke_2(ui
   *(v4 + 40) = 0;
 }
 
-- (unint64_t)unreadCallCountWithError:(id *)a3
+- (unint64_t)unreadCallCountWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -83,12 +83,12 @@ void __53__CHPluginHelper_recentCallsWithLimitingTypes_error___block_invoke_2(ui
   v9[5] = &v11;
   [v5 unreadCallCount:v9];
 
-  if (a3)
+  if (error)
   {
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -107,15 +107,15 @@ void __43__CHPluginHelper_unreadCallCountWithError___block_invoke_2(uint64_t a1,
   *(v2 + 40) = 0;
 }
 
-- (void)unreadCallCountWithCompletionHandler:(id)a3
+- (void)unreadCallCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__CHPluginHelper_unreadCallCountWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E81DC730;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -127,22 +127,22 @@ void __43__CHPluginHelper_unreadCallCountWithError___block_invoke_2(uint64_t a1,
   [v7 unreadCallCount:v9];
 }
 
-- (void)unreadCallCountForPredicate:(id)a3 completionHandler:(id)a4
+- (void)unreadCallCountForPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     connection = self->_connection;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__CHPluginHelper_unreadCallCountForPredicate_completionHandler___block_invoke;
     v12[3] = &unk_1E81DC730;
-    v9 = v6;
+    v9 = handlerCopy;
     v13 = v9;
-    v10 = a3;
+    predicateCopy = predicate;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-    [v11 unreadCallCountForPredicate:v10 completionHandler:v9];
+    [v11 unreadCallCountForPredicate:predicateCopy completionHandler:v9];
   }
 }
 

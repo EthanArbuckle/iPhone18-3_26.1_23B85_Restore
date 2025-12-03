@@ -1,27 +1,27 @@
 @interface SFCoreSpotlightCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCoreSpotlightCopyItem)initWithCoder:(id)a3;
-- (SFCoreSpotlightCopyItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCoreSpotlightCopyItem)initWithCoder:(id)coder;
+- (SFCoreSpotlightCopyItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCoreSpotlightCopyItem
 
-- (SFCoreSpotlightCopyItem)initWithProtobuf:(id)a3
+- (SFCoreSpotlightCopyItem)initWithProtobuf:(id)protobuf
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v35.receiver = self;
   v35.super_class = SFCoreSpotlightCopyItem;
   v5 = [(SFCoreSpotlightCopyItem *)&v35 init];
   if (v5)
   {
-    v6 = [v4 dataProviderTypeIdentifiers];
-    if (v6)
+    dataProviderTypeIdentifiers = [protobufCopy dataProviderTypeIdentifiers];
+    if (dataProviderTypeIdentifiers)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [v4 dataProviderTypeIdentifiers];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    dataProviderTypeIdentifiers2 = [protobufCopy dataProviderTypeIdentifiers];
+    v9 = [dataProviderTypeIdentifiers2 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(dataProviderTypeIdentifiers2);
           }
 
           if (*(*(&v31 + 1) + 8 * i))
@@ -56,15 +56,15 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v37 count:16];
+        v10 = [dataProviderTypeIdentifiers2 countByEnumeratingWithState:&v31 objects:v37 count:16];
       }
 
       while (v10);
     }
 
     [(SFCoreSpotlightCopyItem *)v5 setDataProviderTypeIdentifiers:v7];
-    v13 = [v4 fileProviderTypeIdentifiers];
-    if (v13)
+    fileProviderTypeIdentifiers = [protobufCopy fileProviderTypeIdentifiers];
+    if (fileProviderTypeIdentifiers)
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -78,8 +78,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [v4 fileProviderTypeIdentifiers];
-    v16 = [v15 countByEnumeratingWithState:&v27 objects:v36 count:16];
+    fileProviderTypeIdentifiers2 = [protobufCopy fileProviderTypeIdentifiers];
+    v16 = [fileProviderTypeIdentifiers2 countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v16)
     {
       v17 = v16;
@@ -90,7 +90,7 @@
         {
           if (*v28 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(fileProviderTypeIdentifiers2);
           }
 
           if (*(*(&v27 + 1) + 8 * j))
@@ -99,27 +99,27 @@
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v27 objects:v36 count:16];
+        v17 = [fileProviderTypeIdentifiers2 countByEnumeratingWithState:&v27 objects:v36 count:16];
       }
 
       while (v17);
     }
 
     [(SFCoreSpotlightCopyItem *)v5 setFileProviderTypeIdentifiers:v14];
-    v20 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v20)
+    if (applicationBundleIdentifier)
     {
-      v21 = [v4 applicationBundleIdentifier];
-      [(SFCoreSpotlightCopyItem *)v5 setApplicationBundleIdentifier:v21];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFCoreSpotlightCopyItem *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    v22 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [protobufCopy coreSpotlightIdentifier];
 
-    if (v22)
+    if (coreSpotlightIdentifier)
     {
-      v23 = [v4 coreSpotlightIdentifier];
-      [(SFCoreSpotlightCopyItem *)v5 setCoreSpotlightIdentifier:v23];
+      coreSpotlightIdentifier2 = [protobufCopy coreSpotlightIdentifier];
+      [(SFCoreSpotlightCopyItem *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
     v24 = v5;
@@ -134,38 +134,38 @@
   v13.receiver = self;
   v13.super_class = SFCoreSpotlightCopyItem;
   v3 = [(SFCopyItem *)&v13 hash];
-  v4 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
-  v5 = [v4 hash];
-  v6 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
-  v11 = v9 ^ [v10 hash];
+  dataProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
+  v5 = [dataProviderTypeIdentifiers hash];
+  fileProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
+  v7 = v5 ^ [fileProviderTypeIdentifiers hash];
+  applicationBundleIdentifier = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
+  v9 = v7 ^ [applicationBundleIdentifier hash];
+  coreSpotlightIdentifier = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
+  v11 = v9 ^ [coreSpotlightIdentifier hash];
 
   return v11 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCoreSpotlightCopyItem *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCoreSpotlightCopyItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v42.receiver = self;
       v42.super_class = SFCoreSpotlightCopyItem;
-      if ([(SFCopyItem *)&v42 isEqual:v5])
+      if ([(SFCopyItem *)&v42 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
-        v8 = [(SFCoreSpotlightCopyItem *)v6 dataProviderTypeIdentifiers];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        dataProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
+        dataProviderTypeIdentifiers2 = [(SFCoreSpotlightCopyItem *)v6 dataProviderTypeIdentifiers];
+        if ((dataProviderTypeIdentifiers != 0) == (dataProviderTypeIdentifiers2 == 0))
         {
           v11 = 0;
 LABEL_38:
@@ -173,65 +173,65 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v9 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
-        if (v9)
+        dataProviderTypeIdentifiers3 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
+        if (dataProviderTypeIdentifiers3)
         {
-          v10 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
-          v3 = [(SFCoreSpotlightCopyItem *)v6 dataProviderTypeIdentifiers];
-          if (![v10 isEqual:v3])
+          dataProviderTypeIdentifiers4 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
+          dataProviderTypeIdentifiers5 = [(SFCoreSpotlightCopyItem *)v6 dataProviderTypeIdentifiers];
+          if (![dataProviderTypeIdentifiers4 isEqual:dataProviderTypeIdentifiers5])
           {
             v11 = 0;
             goto LABEL_36;
           }
 
-          v41 = v10;
+          v41 = dataProviderTypeIdentifiers4;
         }
 
-        v12 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
-        v13 = [(SFCoreSpotlightCopyItem *)v6 fileProviderTypeIdentifiers];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        fileProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
+        fileProviderTypeIdentifiers2 = [(SFCoreSpotlightCopyItem *)v6 fileProviderTypeIdentifiers];
+        v14 = fileProviderTypeIdentifiers2;
+        if ((fileProviderTypeIdentifiers != 0) == (fileProviderTypeIdentifiers2 == 0))
         {
 
           v11 = 0;
           goto LABEL_35;
         }
 
-        v15 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
-        v40 = v15;
-        if (v15)
+        fileProviderTypeIdentifiers3 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
+        v40 = fileProviderTypeIdentifiers3;
+        if (fileProviderTypeIdentifiers3)
         {
-          v16 = v15;
+          v16 = fileProviderTypeIdentifiers3;
           v35 = v14;
-          v17 = v12;
-          v18 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
-          v37 = [(SFCoreSpotlightCopyItem *)v6 fileProviderTypeIdentifiers];
-          v38 = v18;
-          if (![v18 isEqual:?])
+          v17 = fileProviderTypeIdentifiers;
+          fileProviderTypeIdentifiers4 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
+          fileProviderTypeIdentifiers5 = [(SFCoreSpotlightCopyItem *)v6 fileProviderTypeIdentifiers];
+          v38 = fileProviderTypeIdentifiers4;
+          if (![fileProviderTypeIdentifiers4 isEqual:?])
           {
             v11 = 0;
-            v12 = v17;
+            fileProviderTypeIdentifiers = v17;
             v14 = v35;
             goto LABEL_33;
           }
 
-          v39 = v3;
-          v12 = v17;
+          v39 = dataProviderTypeIdentifiers5;
+          fileProviderTypeIdentifiers = v17;
           v14 = v35;
         }
 
         else
         {
-          v39 = v3;
+          v39 = dataProviderTypeIdentifiers5;
         }
 
-        v19 = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
-        v20 = [(SFCoreSpotlightCopyItem *)v6 applicationBundleIdentifier];
-        if ((v19 != 0) == (v20 == 0))
+        applicationBundleIdentifier = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFCoreSpotlightCopyItem *)v6 applicationBundleIdentifier];
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
-          v3 = v39;
+          dataProviderTypeIdentifiers5 = v39;
           v16 = v40;
           if (!v40)
           {
@@ -241,15 +241,15 @@ LABEL_38:
           goto LABEL_33;
         }
 
-        v33 = v20;
-        v34 = v19;
+        v33 = applicationBundleIdentifier2;
+        v34 = applicationBundleIdentifier;
         [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
         v36 = v16 = v40;
         if (!v36 || (-[SFCoreSpotlightCopyItem applicationBundleIdentifier](self, "applicationBundleIdentifier"), v21 = objc_claimAutoreleasedReturnValue(), -[SFCoreSpotlightCopyItem applicationBundleIdentifier](v6, "applicationBundleIdentifier"), v31 = objc_claimAutoreleasedReturnValue(), v32 = v21, [v21 isEqual:?]))
         {
-          v22 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
-          v23 = [(SFCoreSpotlightCopyItem *)v6 coreSpotlightIdentifier];
-          if ((v22 != 0) == (v23 == 0))
+          coreSpotlightIdentifier = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
+          coreSpotlightIdentifier2 = [(SFCoreSpotlightCopyItem *)v6 coreSpotlightIdentifier];
+          if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
           {
 
             v11 = 0;
@@ -258,16 +258,16 @@ LABEL_38:
 
           else
           {
-            v29 = v22;
-            v30 = v23;
-            v24 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
+            v29 = coreSpotlightIdentifier;
+            v30 = coreSpotlightIdentifier2;
+            coreSpotlightIdentifier3 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
             v16 = v40;
-            if (v24)
+            if (coreSpotlightIdentifier3)
             {
-              v28 = v24;
-              v27 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
-              v25 = [(SFCoreSpotlightCopyItem *)v6 coreSpotlightIdentifier];
-              v11 = [v27 isEqual:?];
+              v28 = coreSpotlightIdentifier3;
+              coreSpotlightIdentifier4 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
+              coreSpotlightIdentifier5 = [(SFCoreSpotlightCopyItem *)v6 coreSpotlightIdentifier];
+              v11 = [coreSpotlightIdentifier4 isEqual:?];
             }
 
             else
@@ -277,7 +277,7 @@ LABEL_38:
             }
           }
 
-          v3 = v39;
+          dataProviderTypeIdentifiers5 = v39;
           if (!v36)
           {
 LABEL_32:
@@ -287,8 +287,8 @@ LABEL_32:
 LABEL_34:
 
 LABEL_35:
-              v10 = v41;
-              if (!v9)
+              dataProviderTypeIdentifiers4 = v41;
+              if (!dataProviderTypeIdentifiers3)
               {
 LABEL_37:
 
@@ -309,7 +309,7 @@ LABEL_33:
         else
         {
           v11 = 0;
-          v3 = v39;
+          dataProviderTypeIdentifiers5 = v39;
         }
 
         goto LABEL_32;
@@ -324,25 +324,25 @@ LABEL_39:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = SFCoreSpotlightCopyItem;
-  v4 = [(SFCopyItem *)&v14 copyWithZone:a3];
-  v5 = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
-  v6 = [v5 copy];
+  v4 = [(SFCopyItem *)&v14 copyWithZone:zone];
+  dataProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self dataProviderTypeIdentifiers];
+  v6 = [dataProviderTypeIdentifiers copy];
   [v4 setDataProviderTypeIdentifiers:v6];
 
-  v7 = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
-  v8 = [v7 copy];
+  fileProviderTypeIdentifiers = [(SFCoreSpotlightCopyItem *)self fileProviderTypeIdentifiers];
+  v8 = [fileProviderTypeIdentifiers copy];
   [v4 setFileProviderTypeIdentifiers:v8];
 
-  v9 = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
-  v10 = [v9 copy];
+  applicationBundleIdentifier = [(SFCoreSpotlightCopyItem *)self applicationBundleIdentifier];
+  v10 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v10];
 
-  v11 = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
-  v12 = [v11 copy];
+  coreSpotlightIdentifier = [(SFCoreSpotlightCopyItem *)self coreSpotlightIdentifier];
+  v12 = [coreSpotlightIdentifier copy];
   [v4 setCoreSpotlightIdentifier:v12];
 
   return v4;
@@ -351,31 +351,31 @@ LABEL_39:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCoreSpotlightCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCoreSpotlightCopyItem *)v2 jsonData];
+  jsonData = [(_SFPBCoreSpotlightCopyItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCoreSpotlightCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBCoreSpotlightCopyItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCoreSpotlightCopyItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCoreSpotlightCopyItem alloc] initWithFacade:self];
-  v5 = [(_SFPBCoreSpotlightCopyItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCoreSpotlightCopyItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCoreSpotlightCopyItem)initWithCoder:(id)a3
+- (SFCoreSpotlightCopyItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCoreSpotlightCopyItem alloc] initWithData:v5];
   v7 = [(SFCoreSpotlightCopyItem *)self initWithProtobuf:v6];

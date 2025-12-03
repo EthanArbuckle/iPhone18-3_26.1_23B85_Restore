@@ -1,14 +1,14 @@
 @interface HDCloudSyncPullStoreOperation
-- (BOOL)_copyAnchorsOfType:(void *)a1 from:(void *)a2 to:(void *)a3 error:(uint64_t)a4;
-- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5;
-- (uint64_t)_requiresSyncForSequence:(uint64_t)a3 error:;
+- (BOOL)_copyAnchorsOfType:(void *)type from:(void *)from to:(void *)to error:(uint64_t)error;
+- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target;
+- (uint64_t)_requiresSyncForSequence:(uint64_t)sequence error:;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPullStoreOperation
 
-- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -18,17 +18,17 @@
   return 0;
 }
 
-- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5
+- (HDCloudSyncPullStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target
 {
-  v9 = a5;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = HDCloudSyncPullStoreOperation;
-  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:state];
   v11 = v10;
   if (v10)
   {
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_target, a5);
+    objc_storeStrong(&v10->_target, target);
     v11->_hasAppliedChange = 0;
   }
 
@@ -38,10 +38,10 @@
 - (void)main
 {
   v282 = *MEMORY[0x277D85DE8];
-  v2 = [(HDCloudSyncTarget *)self->_target storeRecord];
-  v3 = [v2 requiredProtocolVersion];
+  storeRecord = [(HDCloudSyncTarget *)self->_target storeRecord];
+  requiredProtocolVersion = [storeRecord requiredProtocolVersion];
 
-  if (v3 >= 2)
+  if (requiredProtocolVersion >= 2)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC328];
@@ -49,35 +49,35 @@
     {
       target = self->_target;
       v54 = v4;
-      v55 = [(HDCloudSyncTarget *)target storeRecord];
-      v56 = [v55 requiredProtocolVersion];
-      v57 = [(HDCloudSyncTarget *)self->_target storeRecord];
-      v58 = [v57 systemBuildVersion];
-      v59 = [(HDCloudSyncTarget *)self->_target storeRecord];
-      v60 = [v59 productType];
-      v61 = [(HDCloudSyncTarget *)self->_target storeRecord];
-      v62 = [v61 deviceName];
+      storeRecord2 = [(HDCloudSyncTarget *)target storeRecord];
+      requiredProtocolVersion2 = [storeRecord2 requiredProtocolVersion];
+      storeRecord3 = [(HDCloudSyncTarget *)self->_target storeRecord];
+      systemBuildVersion = [storeRecord3 systemBuildVersion];
+      storeRecord4 = [(HDCloudSyncTarget *)self->_target storeRecord];
+      productType = [storeRecord4 productType];
+      storeRecord5 = [(HDCloudSyncTarget *)self->_target storeRecord];
+      deviceName = [storeRecord5 deviceName];
       *buf = 138544386;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v56;
+      *&buf[14] = requiredProtocolVersion2;
       *&buf[22] = 2114;
-      v274 = v58;
+      v274 = systemBuildVersion;
       *v275 = 2114;
-      *&v275[2] = v60;
+      *&v275[2] = productType;
       *&v275[10] = 2114;
-      *&v275[12] = v62;
+      *&v275[12] = deviceName;
       _os_log_error_impl(&dword_228986000, v54, OS_LOG_TYPE_ERROR, "%{public}@: Found incomprehensible required protocol version %ld (from %{public}@ on a %{public}@: '%{public}@')", buf, 0x34u);
     }
 
     v5 = [MEMORY[0x277CCA9B8] hk_error:703 format:@"Health data from a future system version is present in iCloud and cannot be handled by this device."];
     v265[0] = *MEMORY[0x277CCBD98];
-    v6 = [(HDCloudSyncTarget *)self->_target storeRecord];
-    v7 = [v6 deviceName];
-    v8 = v7;
-    if (v7)
+    storeRecord6 = [(HDCloudSyncTarget *)self->_target storeRecord];
+    deviceName2 = [storeRecord6 deviceName];
+    v8 = deviceName2;
+    if (deviceName2)
     {
-      v9 = v7;
+      v9 = deviceName2;
     }
 
     else
@@ -87,12 +87,12 @@
 
     v266[0] = v9;
     v265[1] = *MEMORY[0x277CCBDA0];
-    v10 = [(HDCloudSyncTarget *)self->_target storeRecord];
-    v11 = [v10 productType];
-    v12 = v11;
-    if (v11)
+    storeRecord7 = [(HDCloudSyncTarget *)self->_target storeRecord];
+    productType2 = [storeRecord7 productType];
+    v12 = productType2;
+    if (productType2)
     {
-      v13 = v11;
+      v13 = productType2;
     }
 
     else
@@ -108,21 +108,21 @@
     goto LABEL_142;
   }
 
-  v16 = [(HDCloudSyncTarget *)self->_target storeRecord];
-  v17 = [v16 orderedSequenceRecords];
-  v18 = [v17 count];
+  storeRecord8 = [(HDCloudSyncTarget *)self->_target storeRecord];
+  orderedSequenceRecords = [storeRecord8 orderedSequenceRecords];
+  v18 = [orderedSequenceRecords count];
 
   if (v18)
   {
-    v19 = [(HDCloudSyncTarget *)self->_target storeRecord];
-    v20 = [v19 orderedSequenceRecords];
-    v21 = [v20 count];
-    v22 = [(HDCloudSyncOperation *)self progress];
-    [v22 setTotalUnitCount:300 * v21 + 200];
+    storeRecord9 = [(HDCloudSyncTarget *)self->_target storeRecord];
+    orderedSequenceRecords2 = [storeRecord9 orderedSequenceRecords];
+    v21 = [orderedSequenceRecords2 count];
+    progress = [(HDCloudSyncOperation *)self progress];
+    [progress setTotalUnitCount:300 * v21 + 200];
 
-    v23 = [(HDCloudSyncTarget *)self->_target store];
+    store = [(HDCloudSyncTarget *)self->_target store];
     v241 = 0;
-    v222 = [v23 persistedStateWithError:&v241];
+    v222 = [store persistedStateWithError:&v241];
     v220 = v241;
 
     if (!v222)
@@ -137,12 +137,12 @@
     {
       v25 = self->_target;
       v26 = v24;
-      v27 = [(HDCloudSyncTarget *)v25 storeRecord];
-      v28 = [v27 shortDescription];
+      storeRecord10 = [(HDCloudSyncTarget *)v25 storeRecord];
+      shortDescription = [storeRecord10 shortDescription];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v28;
+      *&buf[14] = shortDescription;
       _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: Store: %{public}@", buf, 0x16u);
     }
 
@@ -152,12 +152,12 @@
     {
       v30 = self->_target;
       v31 = v29;
-      v32 = [(HDCloudSyncTarget *)v30 storeRecord];
-      v33 = [v32 activeSequenceHeaderRecord];
+      storeRecord11 = [(HDCloudSyncTarget *)v30 storeRecord];
+      activeSequenceHeaderRecord = [storeRecord11 activeSequenceHeaderRecord];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v33;
+      *&buf[14] = activeSequenceHeaderRecord;
       _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@: Sequence: %{public}@", buf, 0x16u);
     }
 
@@ -172,11 +172,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v35 = v34;
-      v36 = [v222 syncProtocolVersion];
+      syncProtocolVersion = [v222 syncProtocolVersion];
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v36;
+      *&buf[14] = syncProtocolVersion;
       *&buf[18] = 1024;
       *&buf[20] = 17;
       _os_log_impl(&dword_228986000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@: detected sync protocol version change %d -> %d", buf, 0x18u);
@@ -185,12 +185,12 @@
     v240 = v220;
     v37 = v222;
     v38 = [HDCloudSyncCachedZone alloc];
-    v39 = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
-    v40 = [(HDCloudSyncOperation *)self configuration];
-    v41 = [v40 repository];
-    v42 = [(HDCloudSyncOperation *)self configuration];
-    v43 = [v42 accessibilityAssertion];
-    v44 = [(HDCloudSyncCachedZone *)v38 initForZoneIdentifier:v39 repository:v41 accessibilityAssertion:v43];
+    zoneIdentifier = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    accessibilityAssertion = [configuration2 accessibilityAssertion];
+    v44 = [(HDCloudSyncCachedZone *)v38 initForZoneIdentifier:zoneIdentifier repository:repository accessibilityAssertion:accessibilityAssertion];
 
     v267 = 0;
     v268 = &v267;
@@ -221,20 +221,20 @@
         goto LABEL_32;
       }
 
-      v47 = [(HDCloudSyncTarget *)self->_target store];
-      v48 = [v47 resetReceivedSyncAnchorMapWithError:&v240];
+      store2 = [(HDCloudSyncTarget *)self->_target store];
+      v48 = [store2 resetReceivedSyncAnchorMapWithError:&v240];
 
       if (v48)
       {
-        v49 = [(HDCloudSyncOperation *)self configuration];
-        v50 = [v49 operationGroup];
-        [v50 setExpectedReceiveSize:3];
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        operationGroup = [configuration3 operationGroup];
+        [operationGroup setExpectedReceiveSize:3];
 
 LABEL_32:
         v64 = [v46 stateWithSyncProtocolVersion:17];
 
-        v65 = [(HDCloudSyncTarget *)self->_target store];
-        v52 = [v65 persistState:v64 error:&v240];
+        store3 = [(HDCloudSyncTarget *)self->_target store];
+        v52 = [store3 persistState:v64 error:&v240];
 
         v46 = v64;
 LABEL_33:
@@ -250,12 +250,12 @@ LABEL_33:
         }
 
 LABEL_34:
-        v66 = [(HDCloudSyncTarget *)self->_target storeRecord];
-        v67 = [v66 activeSequenceHeaderRecord];
-        v68 = [v67 baselineEpoch];
-        LODWORD(v68) = v68 > [v222 baselineEpoch];
+        storeRecord12 = [(HDCloudSyncTarget *)self->_target storeRecord];
+        activeSequenceHeaderRecord2 = [storeRecord12 activeSequenceHeaderRecord];
+        baselineEpoch = [activeSequenceHeaderRecord2 baselineEpoch];
+        LODWORD(baselineEpoch) = baselineEpoch > [v222 baselineEpoch];
 
-        if (v68)
+        if (baselineEpoch)
         {
           v239 = v233;
           v235 = v222;
@@ -264,40 +264,40 @@ LABEL_34:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v70 = v69;
-            v71 = [v235 baselineEpoch];
-            v72 = [(HDCloudSyncTarget *)self->_target storeRecord];
-            v73 = [v72 activeSequenceHeaderRecord];
-            v74 = [v73 baselineEpoch];
+            baselineEpoch2 = [v235 baselineEpoch];
+            storeRecord13 = [(HDCloudSyncTarget *)self->_target storeRecord];
+            activeSequenceHeaderRecord3 = [storeRecord13 activeSequenceHeaderRecord];
+            baselineEpoch3 = [activeSequenceHeaderRecord3 baselineEpoch];
             *buf = 138543874;
             *&buf[4] = self;
             *&buf[12] = 2048;
-            *&buf[14] = v71;
+            *&buf[14] = baselineEpoch2;
             *&buf[22] = 2048;
-            v274 = v74;
+            v274 = baselineEpoch3;
             _os_log_impl(&dword_228986000, v70, OS_LOG_TYPE_DEFAULT, "%{public}@: detected this is a pull of a new epoch %llu -> %llu", buf, 0x20u);
           }
 
           v226 = [_HDCloudSyncStorePersistableState alloc];
-          v231 = [(HDCloudSyncTarget *)self->_target storeRecord];
-          v229 = [v231 activeSequenceHeaderRecord];
-          v75 = [v229 baselineEpoch];
-          v227 = [v235 rebaseDeadline];
-          v76 = [v235 lastSyncDate];
-          v77 = [v235 emptyZoneDateByZoneID];
-          v78 = [v235 lastCheckDate];
-          v79 = [(HDCloudSyncTarget *)self->_target storeRecord];
-          v80 = [v79 ownerIdentifier];
-          v81 = [(HDCloudSyncTarget *)self->_target container];
-          v82 = [v81 containerIdentifier];
-          v83 = [(HDCloudSyncTarget *)self->_target storeRecord];
-          v84 = [v83 syncIdentity];
+          storeRecord14 = [(HDCloudSyncTarget *)self->_target storeRecord];
+          activeSequenceHeaderRecord4 = [storeRecord14 activeSequenceHeaderRecord];
+          baselineEpoch4 = [activeSequenceHeaderRecord4 baselineEpoch];
+          rebaseDeadline = [v235 rebaseDeadline];
+          lastSyncDate = [v235 lastSyncDate];
+          emptyZoneDateByZoneID = [v235 emptyZoneDateByZoneID];
+          lastCheckDate = [v235 lastCheckDate];
+          storeRecord15 = [(HDCloudSyncTarget *)self->_target storeRecord];
+          ownerIdentifier = [storeRecord15 ownerIdentifier];
+          container = [(HDCloudSyncTarget *)self->_target container];
+          containerIdentifier = [container containerIdentifier];
+          storeRecord16 = [(HDCloudSyncTarget *)self->_target storeRecord];
+          syncIdentity = [storeRecord16 syncIdentity];
           LODWORD(v208) = [v235 syncProtocolVersion];
-          v85 = [(_HDCloudSyncStorePersistableState *)v226 initWithServerChangeToken:0 baselineEpoch:v75 rebaseDeadline:v227 lastSyncDate:v76 emptyZones:v77 lastCheckDate:v78 ownerIdentifier:v80 containerIdentifier:v82 syncIdentity:v84 syncProtocolVersion:v208];
+          v85 = [(_HDCloudSyncStorePersistableState *)v226 initWithServerChangeToken:0 baselineEpoch:baselineEpoch4 rebaseDeadline:rebaseDeadline lastSyncDate:lastSyncDate emptyZones:emptyZoneDateByZoneID lastCheckDate:lastCheckDate ownerIdentifier:ownerIdentifier containerIdentifier:containerIdentifier syncIdentity:syncIdentity syncProtocolVersion:v208];
 
-          v86 = [(HDCloudSyncTarget *)self->_target store];
-          v87 = [(HDCloudSyncTarget *)self->_target storeRecord];
-          v88 = [v87 activeSequenceHeaderRecord];
-          v89 = [v86 syncStoreForEpoch:{objc_msgSend(v88, "baselineEpoch")}];
+          store4 = [(HDCloudSyncTarget *)self->_target store];
+          storeRecord17 = [(HDCloudSyncTarget *)self->_target storeRecord];
+          activeSequenceHeaderRecord5 = [storeRecord17 activeSequenceHeaderRecord];
+          v89 = [store4 syncStoreForEpoch:{objc_msgSend(activeSequenceHeaderRecord5, "baselineEpoch")}];
 
           if ([v235 hasEncounteredGapInCurrentEpoch])
           {
@@ -311,8 +311,8 @@ LABEL_34:
 
           else
           {
-            v97 = [(HDCloudSyncTarget *)self->_target store];
-            v98 = [HDCloudSyncPullStoreOperation _copyAnchorsOfType:v97 from:v89 to:&v239 error:?];
+            store5 = [(HDCloudSyncTarget *)self->_target store];
+            v98 = [HDCloudSyncPullStoreOperation _copyAnchorsOfType:store5 from:v89 to:&v239 error:?];
 
             if (!v98 || ([(HDCloudSyncTarget *)self->_target store], v99 = objc_claimAutoreleasedReturnValue(), v100 = [HDCloudSyncPullStoreOperation _copyAnchorsOfType:v99 from:v89 to:&v239 error:?], v99, !v100))
             {
@@ -331,14 +331,14 @@ LABEL_56:
             goto LABEL_58;
           }
 
-          v101 = [v90 serverChangeToken];
-          v102 = v101 == 0;
+          serverChangeToken = [v90 serverChangeToken];
+          v102 = serverChangeToken == 0;
 
           if (v102)
           {
-            v103 = [(HDCloudSyncOperation *)self configuration];
-            v104 = [v103 operationGroup];
-            [v104 setExpectedReceiveSize:3];
+            configuration4 = [(HDCloudSyncOperation *)self configuration];
+            operationGroup2 = [configuration4 operationGroup];
+            [operationGroup2 setExpectedReceiveSize:3];
           }
 
           buf[0] = 1;
@@ -357,12 +357,12 @@ LABEL_58:
         }
 
         v238 = v233;
-        v91 = [(HDCloudSyncTarget *)self->_target storeRecord];
-        v92 = [v91 tombstoneSequenceRecord];
+        storeRecord18 = [(HDCloudSyncTarget *)self->_target storeRecord];
+        tombstoneSequenceRecord = [storeRecord18 tombstoneSequenceRecord];
 
-        if (v92)
+        if (tombstoneSequenceRecord)
         {
-          v93 = [(HDCloudSyncPullStoreOperation *)&self->super.super.isa _requiresSyncForSequence:v92 error:&v238];
+          v93 = [(HDCloudSyncPullStoreOperation *)&self->super.super.isa _requiresSyncForSequence:tombstoneSequenceRecord error:&v238];
           if (!v93)
           {
 
@@ -375,10 +375,10 @@ LABEL_58:
 
             v220 = v238;
 LABEL_59:
-            v106 = [(HDCloudSyncTarget *)self->_target storeRecord];
-            v107 = [v106 isChild];
+            storeRecord19 = [(HDCloudSyncTarget *)self->_target storeRecord];
+            isChild = [storeRecord19 isChild];
 
-            if (v107)
+            if (isChild)
             {
               v237 = v220;
               *buf = 0;
@@ -388,15 +388,15 @@ LABEL_59:
               *v275 = __Block_byref_object_dispose__202;
               *&v275[8] = 0;
               v108 = +[HDDatabaseTransactionContext contextForReading];
-              v109 = [(HDCloudSyncOperation *)self profile];
-              v110 = [v109 database];
+              profile = [(HDCloudSyncOperation *)self profile];
+              database = [profile database];
               v267 = MEMORY[0x277D85DD0];
               v268 = 3221225472;
               v269 = __63__HDCloudSyncPullStoreOperation__childSyncIdentitiesWithError___block_invoke;
               v270 = &unk_278619398;
               v272 = buf;
-              v271 = self;
-              v111 = [v110 performTransactionWithContext:v108 error:&v237 block:&v267 inaccessibilityHandler:0];
+              selfCopy = self;
+              v111 = [database performTransactionWithContext:v108 error:&v237 block:&v267 inaccessibilityHandler:0];
 
               if (v111)
               {
@@ -412,23 +412,23 @@ LABEL_59:
               if (v112 && (-[HDCloudSyncTarget storeRecord](self->_target, "storeRecord"), v114 = objc_claimAutoreleasedReturnValue(), [v114 syncIdentity], v115 = objc_claimAutoreleasedReturnValue(), v116 = objc_msgSend(v112, "containsObject:", v115), v115, v114, v116))
               {
                 v117 = objc_alloc_init(HDSyncAnchorMap);
-                v118 = [(HDCloudSyncTarget *)self->_target store];
-                v119 = [(HDCloudSyncOperation *)self configuration];
-                v120 = [v119 repository];
-                v121 = [v120 profile];
-                v122 = [v121 legacyRepositoryProfile];
-                v123 = [HDSyncAnchorEntity getSyncAnchorsOfType:4 anchorMap:v117 store:v118 profile:v122 error:&v237];
+                store6 = [(HDCloudSyncTarget *)self->_target store];
+                configuration5 = [(HDCloudSyncOperation *)self configuration];
+                repository2 = [configuration5 repository];
+                profile2 = [repository2 profile];
+                legacyRepositoryProfile = [profile2 legacyRepositoryProfile];
+                v123 = [HDSyncAnchorEntity getSyncAnchorsOfType:4 anchorMap:v117 store:store6 profile:legacyRepositoryProfile error:&v237];
 
                 if (v123)
                 {
-                  v124 = [(HDCloudSyncOperation *)self configuration];
-                  v125 = [v124 syncDate];
-                  v126 = [(HDCloudSyncTarget *)self->_target store];
-                  v127 = [(HDCloudSyncOperation *)self configuration];
-                  v128 = [v127 repository];
-                  v129 = [v128 profile];
-                  v130 = [v129 legacyRepositoryProfile];
-                  v123 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v117 type:3 updateDate:v125 store:v126 updatePolicy:2 resetInvalid:0 profile:v130 error:&v237];
+                  configuration6 = [(HDCloudSyncOperation *)self configuration];
+                  syncDate = [configuration6 syncDate];
+                  store7 = [(HDCloudSyncTarget *)self->_target store];
+                  configuration7 = [(HDCloudSyncOperation *)self configuration];
+                  repository3 = [configuration7 repository];
+                  profile3 = [repository3 profile];
+                  legacyRepositoryProfile2 = [profile3 legacyRepositoryProfile];
+                  v123 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v117 type:3 updateDate:syncDate store:store7 updatePolicy:2 resetInvalid:0 profile:legacyRepositoryProfile2 error:&v237];
                 }
               }
 
@@ -458,12 +458,12 @@ LABEL_59:
             }
 
             v133 = [HDCloudSyncCachedZone alloc];
-            v134 = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
-            v135 = [(HDCloudSyncOperation *)self configuration];
-            v136 = [v135 repository];
-            v137 = [(HDCloudSyncOperation *)self configuration];
-            v138 = [v137 accessibilityAssertion];
-            v210 = [(HDCloudSyncCachedZone *)v133 initForZoneIdentifier:v134 repository:v136 accessibilityAssertion:v138];
+            zoneIdentifier2 = [(HDCloudSyncTarget *)self->_target zoneIdentifier];
+            configuration8 = [(HDCloudSyncOperation *)self configuration];
+            repository4 = [configuration8 repository];
+            configuration9 = [(HDCloudSyncOperation *)self configuration];
+            accessibilityAssertion2 = [configuration9 accessibilityAssertion];
+            v210 = [(HDCloudSyncCachedZone *)v133 initForZoneIdentifier:zoneIdentifier2 repository:repository4 accessibilityAssertion:accessibilityAssertion2];
 
             v139 = objc_opt_class();
             v242[0] = MEMORY[0x277D85DD0];
@@ -482,11 +482,11 @@ LABEL_59:
               {
                 v205 = self->_target;
                 v206 = v199;
-                v207 = [(HDCloudSyncTarget *)v205 zoneIdentifier];
+                zoneIdentifier3 = [(HDCloudSyncTarget *)v205 zoneIdentifier];
                 *buf = 138543874;
                 *&buf[4] = self;
                 *&buf[12] = 2114;
-                *&buf[14] = v207;
+                *&buf[14] = zoneIdentifier3;
                 *&buf[22] = 2114;
                 v274 = v209;
                 _os_log_error_impl(&dword_228986000, v206, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get change records for %{public}@, %{public}@", buf, 0x20u);
@@ -504,11 +504,11 @@ LABEL_59:
               {
                 v201 = self->_target;
                 v202 = v200;
-                v203 = [(HDCloudSyncTarget *)v201 zoneIdentifier];
+                zoneIdentifier4 = [(HDCloudSyncTarget *)v201 zoneIdentifier];
                 *buf = 138543874;
                 *&buf[4] = self;
                 *&buf[12] = 2114;
-                *&buf[14] = v203;
+                *&buf[14] = zoneIdentifier4;
                 *&buf[22] = 2114;
                 v274 = v209;
                 _os_log_impl(&dword_228986000, v202, OS_LOG_TYPE_DEFAULT, "%{public}@ No change records fetched from cache for %{public}@, %{public}@", buf, 0x20u);
@@ -519,26 +519,26 @@ LABEL_59:
             }
 
             v140 = v211;
-            v141 = [(HDCloudSyncTarget *)self->_target storeRecord];
-            v142 = [v141 orderedSequenceRecords];
+            storeRecord20 = [(HDCloudSyncTarget *)self->_target storeRecord];
+            orderedSequenceRecords3 = [storeRecord20 orderedSequenceRecords];
             *buf = MEMORY[0x277D85DD0];
             *&buf[8] = 3221225472;
             *&buf[16] = __97__HDCloudSyncPullStoreOperation__orderedChangeRecordsBySequenceRecordIDWithFetchedChangeRecords___block_invoke;
             v274 = &unk_27862F168;
             v143 = v140;
             *v275 = v143;
-            v215 = [v142 hk_mapToDictionary:buf];
+            v215 = [orderedSequenceRecords3 hk_mapToDictionary:buf];
 
             v144 = [HDCloudSyncCompoundOperation alloc];
-            v145 = [(HDCloudSyncOperation *)self configuration];
-            v212 = [(HDCloudSyncCompoundOperation *)v144 initWithConfiguration:v145 cloudState:0 name:@"Pull Sequences" continueOnSubOperationError:0];
+            configuration10 = [(HDCloudSyncOperation *)self configuration];
+            v212 = [(HDCloudSyncCompoundOperation *)v144 initWithConfiguration:configuration10 cloudState:0 name:@"Pull Sequences" continueOnSubOperationError:0];
 
             v247 = 0u;
             v245 = 0u;
             v246 = 0u;
             v244 = 0u;
-            v146 = [(HDCloudSyncTarget *)self->_target storeRecord];
-            obj = [v146 orderedSequenceRecords];
+            storeRecord21 = [(HDCloudSyncTarget *)self->_target storeRecord];
+            obj = [storeRecord21 orderedSequenceRecords];
 
             v216 = [obj countByEnumeratingWithState:&v244 objects:&v267 count:16];
             if (!v216)
@@ -557,12 +557,12 @@ LABEL_131:
               v277 = &unk_278613060;
               *&v278 = self;
               [(HDCloudSyncOperation *)v212 setOnSuccess:v276];
-              v194 = [(HDCloudSyncOperation *)self progress];
-              v195 = [(HDCloudSyncOperation *)v212 progress];
-              v196 = [(HDCloudSyncOperation *)self progress];
-              v197 = [v196 totalUnitCount];
-              v198 = [(HDCloudSyncOperation *)self progress];
-              [v194 addChild:v195 withPendingUnitCount:{v197 - objc_msgSend(v198, "completedUnitCount")}];
+              progress2 = [(HDCloudSyncOperation *)self progress];
+              progress3 = [(HDCloudSyncOperation *)v212 progress];
+              progress4 = [(HDCloudSyncOperation *)self progress];
+              totalUnitCount = [progress4 totalUnitCount];
+              progress5 = [(HDCloudSyncOperation *)self progress];
+              [progress2 addChild:progress3 withPendingUnitCount:{totalUnitCount - objc_msgSend(progress5, "completedUnitCount")}];
 
               [(HDCloudSyncCompoundOperation *)v212 start];
               goto LABEL_139;
@@ -583,16 +583,16 @@ LABEL_131:
 
                 v218 = v147;
                 v149 = *(*(&v244 + 1) + 8 * v147);
-                v150 = [v149 recordID];
-                v221 = [v215 objectForKeyedSubscript:v150];
+                recordID = [v149 recordID];
+                v221 = [v215 objectForKeyedSubscript:recordID];
 
                 if ([v221 count])
                 {
                   v151 = v221;
                   v219 = v149;
                   v225 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                  v152 = [(HDCloudSyncTarget *)self->_target store];
-                  v232 = [v152 syncStoreForEpoch:{objc_msgSend(v219, "baselineEpoch")}];
+                  store8 = [(HDCloudSyncTarget *)self->_target store];
+                  v232 = [store8 syncStoreForEpoch:{objc_msgSend(v219, "baselineEpoch")}];
 
                   v254 = 0;
                   v234 = [v232 receivedSyncAnchorMapWithError:&v254];
@@ -633,17 +633,17 @@ LABEL_131:
                         }
 
                         v156 = *(*(&v250 + 1) + 8 * i);
-                        v157 = [v156 decodedSyncAnchorRangeMap];
-                        v158 = [v232 shardPredicate];
-                        v159 = [v158 type] == 2;
-                        v160 = v157;
+                        decodedSyncAnchorRangeMap = [v156 decodedSyncAnchorRangeMap];
+                        shardPredicate = [v232 shardPredicate];
+                        v159 = [shardPredicate type] == 2;
+                        v160 = decodedSyncAnchorRangeMap;
                         v161 = v230;
                         if (v160 && (![v160 anchorRangeCount] ? (v162 = 1) : (v162 = v230 == 0), !v162))
                         {
-                          v165 = [(HDCloudSyncOperation *)self configuration];
-                          v166 = [v165 repository];
-                          v167 = [v166 profile];
-                          v168 = [v167 legacyRepositoryProfile];
+                          configuration11 = [(HDCloudSyncOperation *)self configuration];
+                          repository5 = [configuration11 repository];
+                          profile4 = [repository5 profile];
+                          legacyRepositoryProfile3 = [profile4 legacyRepositoryProfile];
 
                           v261 = 0;
                           v262 = &v261;
@@ -659,7 +659,7 @@ LABEL_131:
                           *&v276[8] = 3221225472;
                           *&v276[16] = __93__HDCloudSyncPullStoreOperation__isValidAnchorRangeMap_lastAnchorMap_allowStartingGap_error___block_invoke;
                           v277 = &unk_27862F190;
-                          v169 = v168;
+                          v169 = legacyRepositoryProfile3;
                           *&v278 = v169;
                           v170 = v161;
                           v281 = v159;
@@ -694,11 +694,11 @@ LABEL_131:
                           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                           {
                             v183 = v174;
-                            v184 = [v156 changeIndex];
+                            changeIndex = [v156 changeIndex];
                             *v276 = 138544130;
                             *&v276[4] = self;
                             *&v276[12] = 2048;
-                            *&v276[14] = v184;
+                            *&v276[14] = changeIndex;
                             *&v276[22] = 2114;
                             v277 = v160;
                             LOWORD(v278) = 2114;
@@ -748,11 +748,11 @@ LABEL_131:
                         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                         {
                           v181 = v180;
-                          v182 = [v156 changeIndex];
+                          changeIndex2 = [v156 changeIndex];
                           *v276 = 138543874;
                           *&v276[4] = self;
                           *&v276[12] = 2048;
-                          *&v276[14] = v182;
+                          *&v276[14] = changeIndex2;
                           *&v276[22] = 2114;
                           v277 = v176;
                           _os_log_impl(&dword_228986000, v181, OS_LOG_TYPE_DEFAULT, "%{public}@: %lld %{public}@", v276, 0x20u);
@@ -785,24 +785,24 @@ LABEL_142:
                   v185 = *MEMORY[0x277CCC328];
                   if (os_log_type_enabled(v185, OS_LOG_TYPE_DEFAULT))
                   {
-                    v186 = [v219 slot];
-                    if ((v186 - 1) >= 3)
+                    slot = [v219 slot];
+                    if ((slot - 1) >= 3)
                     {
-                      v187 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v186];
+                      v186 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", slot];
                     }
 
                     else
                     {
-                      v187 = off_27862F1B0[(v186 - 1)];
+                      v186 = off_27862F1B0[(slot - 1)];
                     }
 
-                    v188 = v187;
+                    v188 = v186;
                     v189 = [v225 count];
                     v190 = [v223 count];
                     *buf = 138544130;
                     *&buf[4] = self;
                     *&buf[12] = 2114;
-                    *&buf[14] = v187;
+                    *&buf[14] = v186;
                     *&buf[22] = 2048;
                     v274 = v189;
                     *v275 = 2048;
@@ -813,8 +813,8 @@ LABEL_142:
                   if ([v225 count])
                   {
                     v191 = [HDCloudSyncPullSequenceOperation alloc];
-                    v192 = [(HDCloudSyncOperation *)self configuration];
-                    v193 = [(HDCloudSyncPullSequenceOperation *)v191 initWithConfiguration:v192 cloudState:0 target:self->_target sequence:v219 changes:v225];
+                    configuration12 = [(HDCloudSyncOperation *)self configuration];
+                    v193 = [(HDCloudSyncPullSequenceOperation *)v191 initWithConfiguration:configuration12 cloudState:0 target:self->_target sequence:v219 changes:v225];
 
                     [(HDCloudSyncCompoundOperation *)v212 addOperation:v193 transitionHandler:0];
                   }
@@ -833,17 +833,17 @@ LABEL_142:
           }
         }
 
-        v94 = [(HDCloudSyncTarget *)self->_target storeRecord];
-        v95 = [v94 sequenceRecord];
+        storeRecord22 = [(HDCloudSyncTarget *)self->_target storeRecord];
+        sequenceRecord = [storeRecord22 sequenceRecord];
 
-        if (!v95)
+        if (!sequenceRecord)
         {
 
           v220 = v238;
           goto LABEL_64;
         }
 
-        v96 = [(HDCloudSyncPullStoreOperation *)&self->super.super.isa _requiresSyncForSequence:v95 error:&v238];
+        v96 = [(HDCloudSyncPullStoreOperation *)&self->super.super.isa _requiresSyncForSequence:sequenceRecord error:&v238];
 
         v220 = v238;
         if (v96)
@@ -970,65 +970,65 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)_copyAnchorsOfType:(void *)a1 from:(void *)a2 to:(void *)a3 error:(uint64_t)a4
+- (BOOL)_copyAnchorsOfType:(void *)type from:(void *)from to:(void *)to error:(uint64_t)error
 {
-  v23 = a3;
-  v7 = a2;
+  toCopy = to;
+  fromCopy = from;
   v8 = objc_alloc_init(HDSyncAnchorMap);
-  v9 = [a1 configuration];
-  v10 = [v9 repository];
-  v11 = [v10 profile];
-  v12 = [v11 legacyRepositoryProfile];
-  v13 = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:v8 store:v7 profile:v12 error:a4];
+  configuration = [type configuration];
+  repository = [configuration repository];
+  profile = [repository profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
+  v13 = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:v8 store:fromCopy profile:legacyRepositoryProfile error:error];
 
   if (v13)
   {
-    v14 = [a1 configuration];
-    v15 = [v14 syncDate];
-    v16 = [a1 configuration];
-    v17 = [v16 repository];
-    v18 = [v17 profile];
-    v19 = [v18 legacyRepositoryProfile];
-    v20 = v23;
-    v21 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v8 type:3 updateDate:v15 store:v23 updatePolicy:2 resetInvalid:0 profile:v19 error:a4];
+    configuration2 = [type configuration];
+    syncDate = [configuration2 syncDate];
+    configuration3 = [type configuration];
+    repository2 = [configuration3 repository];
+    profile2 = [repository2 profile];
+    legacyRepositoryProfile2 = [profile2 legacyRepositoryProfile];
+    v20 = toCopy;
+    v21 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v8 type:3 updateDate:syncDate store:toCopy updatePolicy:2 resetInvalid:0 profile:legacyRepositoryProfile2 error:error];
   }
 
   else
   {
     v21 = 0;
-    v20 = v23;
+    v20 = toCopy;
   }
 
   return v21;
 }
 
-- (uint64_t)_requiresSyncForSequence:(uint64_t)a3 error:
+- (uint64_t)_requiresSyncForSequence:(uint64_t)sequence error:
 {
   v5 = a2;
-  v6 = [a1[14] store];
+  store = [self[14] store];
   v30 = v5;
-  v7 = [v6 syncStoreForEpoch:{objc_msgSend(v5, "baselineEpoch")}];
+  v7 = [store syncStoreForEpoch:{objc_msgSend(v5, "baselineEpoch")}];
 
-  v8 = [a1 configuration];
-  v9 = [v8 repository];
-  v10 = [v9 syncEngine];
-  v11 = [a1 configuration];
-  v12 = [v11 repository];
-  v13 = [v12 profile];
-  v14 = [v13 legacyRepositoryProfile];
-  v29 = a3;
-  LODWORD(a3) = [v10 updateLocalVersionsForStore:v7 profile:v14 error:a3];
+  configuration = [self configuration];
+  repository = [configuration repository];
+  syncEngine = [repository syncEngine];
+  configuration2 = [self configuration];
+  repository2 = [configuration2 repository];
+  profile = [repository2 profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
+  sequenceCopy = sequence;
+  LODWORD(sequence) = [syncEngine updateLocalVersionsForStore:v7 profile:legacyRepositoryProfile error:sequence];
 
-  if (a3)
+  if (sequence)
   {
     v15 = v30;
-    v16 = [v30 syncAnchorMap];
+    syncAnchorMap = [v30 syncAnchorMap];
     v17 = objc_alloc_init(HDSyncAnchorMap);
-    v18 = [a1 configuration];
-    v19 = [v18 repository];
-    v20 = [v19 profile];
-    v21 = [v20 legacyRepositoryProfile];
-    v22 = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:v17 store:v7 profile:v21 error:v29];
+    configuration3 = [self configuration];
+    repository3 = [configuration3 repository];
+    profile2 = [repository3 profile];
+    legacyRepositoryProfile2 = [profile2 legacyRepositoryProfile];
+    v22 = [HDSyncAnchorEntity getSyncAnchorsOfType:3 anchorMap:v17 store:v7 profile:legacyRepositoryProfile2 error:sequenceCopy];
 
     v23 = v7;
     if (v22)
@@ -1039,15 +1039,15 @@ LABEL_7:
       v37 = __Block_byref_object_copy__202;
       v38 = __Block_byref_object_dispose__202;
       v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v24 = [v7 orderedSyncEntities];
+      orderedSyncEntities = [v7 orderedSyncEntities];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __64__HDCloudSyncPullStoreOperation__requiresSyncForSequence_error___block_invoke;
       v31[3] = &unk_278628868;
-      v25 = v24;
+      v25 = orderedSyncEntities;
       v32 = v25;
       v33 = &v34;
-      [v16 enumerateAnchorsAndEntityIdentifiersWithBlock:v31];
+      [syncAnchorMap enumerateAnchorsAndEntityIdentifiersWithBlock:v31];
       v26 = [HDSyncAnchorMap syncAnchorMapWithDictionary:v35[5]];
       if (HDSyncAnchorMapIsSuperset(v26, v17))
       {

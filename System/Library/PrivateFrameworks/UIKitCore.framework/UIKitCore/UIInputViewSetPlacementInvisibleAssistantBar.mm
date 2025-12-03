@@ -1,15 +1,15 @@
 @interface UIInputViewSetPlacementInvisibleAssistantBar
-+ (id)placementWithPlacement:(id)a3;
-- (id)applicatorInfoForOwner:(id)a3;
++ (id)placementWithPlacement:(id)placement;
+- (id)applicatorInfoForOwner:(id)owner;
 @end
 
 @implementation UIInputViewSetPlacementInvisibleAssistantBar
 
-+ (id)placementWithPlacement:(id)a3
++ (id)placementWithPlacement:(id)placement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isVisible] & 1) == 0)
+  placementCopy = placement;
+  if (([placementCopy isVisible] & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -34,21 +34,21 @@
     }
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 5, a3);
+    objc_storeStrong(v6 + 5, placement);
   }
 
   return v7;
 }
 
-- (id)applicatorInfoForOwner:(id)a3
+- (id)applicatorInfoForOwner:(id)owner
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = [(UIInputViewSetPlacement *)self->super.super._actualPlacement applicatorInfoForOwner:a3];
+  v5 = [(UIInputViewSetPlacement *)self->super.super._actualPlacement applicatorInfoForOwner:owner];
   v6 = [v4 dictionaryWithDictionary:v5];
 
   [v6 removeObjectsForKeys:&unk_1EFE2CC28];

@@ -1,6 +1,6 @@
 @interface MTSearchTrie
 - (MTSearchTrie)init;
-- (void)addMatchCandidate:(id)a3;
+- (void)addMatchCandidate:(id)candidate;
 @end
 
 @implementation MTSearchTrie
@@ -19,12 +19,12 @@
   return [(MTSearchTrie *)&v7 init];
 }
 
-- (void)addMatchCandidate:(id)a3
+- (void)addMatchCandidate:(id)candidate
 {
   v5 = sub_1D917820C();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
+  candidateCopy = candidate;
+  selfCopy = self;
   sub_1D8D49E98(v5, v7);
 }
 

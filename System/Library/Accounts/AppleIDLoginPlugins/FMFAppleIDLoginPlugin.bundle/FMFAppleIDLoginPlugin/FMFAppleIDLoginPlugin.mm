@@ -7,32 +7,32 @@
 
 - (id)parametersForIdentityEstablishmentRequest
 {
-  v2 = [(FMFAppleIDLoginPlugin *)self _accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  _accountStore = [(FMFAppleIDLoginPlugin *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
-  if (v3 && ([v3 aa_fmfAccount], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (aa_primaryAppleAccount && ([aa_primaryAppleAccount aa_fmfAccount], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = objc_alloc_init(NSMutableDictionary);
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"account-exists"];
-    v7 = [v3 username];
+    username = [aa_primaryAppleAccount username];
 
-    if (v7)
+    if (username)
     {
-      v8 = [v3 username];
-      [v6 setObject:v8 forKeyedSubscript:@"apple-id"];
+      username2 = [aa_primaryAppleAccount username];
+      [v6 setObject:username2 forKeyedSubscript:@"apple-id"];
     }
 
-    v9 = [v3 aa_personID];
+    aa_personID = [aa_primaryAppleAccount aa_personID];
 
-    if (v9)
+    if (aa_personID)
     {
-      v10 = [v3 aa_personID];
-      [v6 setObject:v10 forKeyedSubscript:@"dsid"];
+      aa_personID2 = [aa_primaryAppleAccount aa_personID];
+      [v6 setObject:aa_personID2 forKeyedSubscript:@"dsid"];
     }
 
-    v11 = [v5 credential];
-    v12 = [v11 credentialItemForKey:ACFindMyFriendsTokenKey];
+    credential = [v5 credential];
+    v12 = [credential credentialItemForKey:ACFindMyFriendsTokenKey];
 
     if (v12)
     {

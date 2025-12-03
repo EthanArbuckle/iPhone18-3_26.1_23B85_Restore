@@ -12,9 +12,9 @@
   {
     if (self->super.inputPredicateImage && self->super.inputMainImage)
     {
-      v4 = [(NSNumber *)self->super.inputNumIterations integerValue];
+      integerValue = [(NSNumber *)self->super.inputNumIterations integerValue];
       inputImage = self->super.inputImage;
-      if (v4)
+      if (integerValue)
       {
         inputMainImage = self->super.inputMainImage;
         v16[0] = @"inputMainImage";

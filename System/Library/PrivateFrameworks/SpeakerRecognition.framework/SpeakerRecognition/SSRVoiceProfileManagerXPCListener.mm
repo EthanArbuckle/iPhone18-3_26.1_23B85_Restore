@@ -1,16 +1,16 @@
 @interface SSRVoiceProfileManagerXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SSRVoiceProfileManagerXPCListener)init;
 - (void)listen;
 @end
 
 @implementation SSRVoiceProfileManagerXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MEMORY[0x277D01970];
   v9 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -21,15 +21,15 @@
   }
 
   xpcListener = self->_xpcListener;
-  if (xpcListener == v6)
+  if (xpcListener == listenerCopy)
   {
     v12 = objc_alloc_init(SSRVoiceProfileManagerXPCService);
     v13 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283941E28];
-    [v7 setExportedInterface:v13];
+    [connectionCopy setExportedInterface:v13];
 
-    [v7 setExportedObject:v12];
-    [v7 setRemoteObjectInterface:0];
-    [v7 resume];
+    [connectionCopy setExportedObject:v12];
+    [connectionCopy setRemoteObjectInterface:0];
+    [connectionCopy resume];
     v14 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -47,13 +47,13 @@
       v17 = 136315394;
       v18 = "[SSRVoiceProfileManagerXPCListener listener:shouldAcceptNewConnection:]";
       v19 = 2114;
-      v20 = v6;
+      v20 = listenerCopy;
       _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s Invalid listener - %{public}@", &v17, 0x16u);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return xpcListener == v6;
+  return xpcListener == listenerCopy;
 }
 
 - (void)listen

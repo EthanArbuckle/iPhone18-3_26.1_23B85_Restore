@@ -1,15 +1,15 @@
 @interface TRMessageDecoder
-+ (id)decodeMessage:(id)a3 error:(id *)a4;
++ (id)decodeMessage:(id)message error:(id *)error;
 @end
 
 @implementation TRMessageDecoder
 
-+ (id)decodeMessage:(id)a3 error:(id *)a4
++ (id)decodeMessage:(id)message error:(id *)error
 {
   v31[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAAC8];
-  v6 = a3;
-  v7 = [[v5 alloc] initForReadingFromData:v6 error:0];
+  messageCopy = message;
+  v7 = [[v5 alloc] initForReadingFromData:messageCopy error:0];
 
   v8 = [v7 decodeTopLevelObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308] error:0];
   [v7 finishDecoding];
@@ -21,7 +21,7 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v10 = *MEMORY[0x277CCA450];
       v31[0] = @"Message decoding failed.";
@@ -37,7 +37,7 @@
       v31[1] = v17;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9200 userInfo:v18];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-9200 userInfo:v18];
     }
 
     else if (_TRLogEnabled == 1)

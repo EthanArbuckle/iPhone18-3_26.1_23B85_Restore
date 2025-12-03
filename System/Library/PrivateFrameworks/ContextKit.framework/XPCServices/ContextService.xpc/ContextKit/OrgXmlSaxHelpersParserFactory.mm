@@ -1,12 +1,12 @@
 @interface OrgXmlSaxHelpersParserFactory
-+ (id)makeParserWithNSString:(id)a3;
++ (id)makeParserWithNSString:(id)string;
 @end
 
 @implementation OrgXmlSaxHelpersParserFactory
 
-+ (id)makeParserWithNSString:(id)a3
++ (id)makeParserWithNSString:(id)string
 {
-  v3 = OrgXmlSaxHelpersNewInstance_newInstanceWithNSString_(a3);
+  v3 = OrgXmlSaxHelpersNewInstance_newInstanceWithNSString_(string);
   v4 = OrgXmlSaxParser_class_();
   if (v3 && ([v4 isInstance:v3] & 1) == 0)
   {

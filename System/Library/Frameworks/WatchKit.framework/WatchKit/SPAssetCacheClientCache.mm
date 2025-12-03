@@ -1,43 +1,43 @@
 @interface SPAssetCacheClientCache
-- (BOOL)addAsset:(id)a3 withName:(id)a4 sendImage:(BOOL)a5;
-- (BOOL)checkAvailableSpaceForAssetWithName:(id)a3 length:(unint64_t)a4;
-- (BOOL)saveAssetData:(id)a3 forAsset:(id)a4;
-- (SPAssetCacheClientCache)initWithIdentifier:(id)a3 cacheType:(unint64_t)a4;
+- (BOOL)addAsset:(id)asset withName:(id)name sendImage:(BOOL)image;
+- (BOOL)checkAvailableSpaceForAssetWithName:(id)name length:(unint64_t)length;
+- (BOOL)saveAssetData:(id)data forAsset:(id)asset;
+- (SPAssetCacheClientCache)initWithIdentifier:(id)identifier cacheType:(unint64_t)type;
 - (id)cacheDirectory;
 - (id)cachedImages;
-- (id)dataForImageWithName:(id)a3;
-- (id)pathForAssetDataWithName:(id)a3;
-- (void)addedAssetWithName:(id)a3;
-- (void)clearSpaceForAsset:(unint64_t)a3;
+- (id)dataForImageWithName:(id)name;
+- (id)pathForAssetDataWithName:(id)name;
+- (void)addedAssetWithName:(id)name;
+- (void)clearSpaceForAsset:(unint64_t)asset;
 - (void)deleteAllAssets;
-- (void)deleteAsset:(id)a3;
-- (void)deleteAssetWithName:(id)a3;
-- (void)deleteDataForAsset:(id)a3;
-- (void)deletedAssetWithName:(id)a3;
-- (void)syncAssets:(id)a3;
+- (void)deleteAsset:(id)asset;
+- (void)deleteAssetWithName:(id)name;
+- (void)deleteDataForAsset:(id)asset;
+- (void)deletedAssetWithName:(id)name;
+- (void)syncAssets:(id)assets;
 @end
 
 @implementation SPAssetCacheClientCache
 
-- (SPAssetCacheClientCache)initWithIdentifier:(id)a3 cacheType:(unint64_t)a4
+- (SPAssetCacheClientCache)initWithIdentifier:(id)identifier cacheType:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = SPAssetCacheClientCache;
   v8 = [(SPAssetCacheClientCache *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     keys = v8->_keys;
-    v8->_keys = v9;
+    v8->_keys = array;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     assets = v8->_assets;
-    v8->_assets = v11;
+    v8->_assets = dictionary;
 
     v8->_size = 0;
-    v8->_cacheType = a4;
-    objc_storeStrong(&v8->_gizmoCacheIdentifier, a3);
+    v8->_cacheType = type;
+    objc_storeStrong(&v8->_gizmoCacheIdentifier, identifier);
   }
 
   return v8;
@@ -89,15 +89,15 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pathForAssetDataWithName:(id)a3
+- (id)pathForAssetDataWithName:(id)name
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPAssetCacheClientCache *)self cacheDirectory];
-  v11[0] = v5;
-  v6 = [v4 _sp_stringByEncodingIllegalFilenameCharacters];
+  nameCopy = name;
+  cacheDirectory = [(SPAssetCacheClientCache *)self cacheDirectory];
+  v11[0] = cacheDirectory;
+  _sp_stringByEncodingIllegalFilenameCharacters = [nameCopy _sp_stringByEncodingIllegalFilenameCharacters];
 
-  v11[1] = v6;
+  v11[1] = _sp_stringByEncodingIllegalFilenameCharacters;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 
   v8 = [MEMORY[0x277CCACA8] pathWithComponents:v7];
@@ -107,29 +107,29 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)syncAssets:(id)a3
+- (void)syncAssets:(id)assets
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   [(SPAssetCacheClientCache *)self clearedCache];
   cacheType = self->_cacheType;
   if (cacheType == 2)
   {
-    v19 = [v4 transientCache];
-    v20 = [v19 assets];
+    transientCache = [assetsCopy transientCache];
+    assets = [transientCache assets];
 
-    if (v20)
+    if (assets)
     {
-      v21 = [v4 transientCache];
-      v22 = [v21 assets];
-      v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_9];
+      transientCache2 = [assetsCopy transientCache];
+      assets2 = [transientCache2 assets];
+      v23 = [assets2 sortedArrayUsingComparator:&__block_literal_global_9];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v9 = v23;
-      v24 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      assets4 = v23;
+      v24 = [assets4 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v24)
       {
         v25 = v24;
@@ -140,7 +140,7 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
           {
             if (*v35 != v26)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(assets4);
             }
 
             v28 = *(*(&v34 + 1) + 8 * i);
@@ -155,7 +155,7 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
             self->_size += [v28 size];
           }
 
-          v25 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v25 = [assets4 countByEnumeratingWithState:&v34 objects:v42 count:16];
         }
 
         while (v25);
@@ -167,19 +167,19 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
 
   else if (cacheType == 1)
   {
-    v6 = [v4 permanentCache];
-    v7 = [v6 assets];
+    permanentCache = [assetsCopy permanentCache];
+    assets3 = [permanentCache assets];
 
-    if (v7)
+    if (assets3)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v8 = [v4 permanentCache];
-      v9 = [v8 assets];
+      permanentCache2 = [assetsCopy permanentCache];
+      assets4 = [permanentCache2 assets];
 
-      v10 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v10 = [assets4 countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v10)
       {
         v11 = v10;
@@ -190,7 +190,7 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
           {
             if (*v39 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(assets4);
             }
 
             v14 = *(*(&v38 + 1) + 8 * j);
@@ -205,7 +205,7 @@ void __41__SPAssetCacheClientCache_cacheDirectory__block_invoke(uint64_t a1)
             self->_size += [v14 size];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+          v11 = [assets4 countByEnumeratingWithState:&v38 objects:v43 count:16];
         }
 
         while (v11);
@@ -229,13 +229,13 @@ BOOL __38__SPAssetCacheClientCache_syncAssets___block_invoke(uint64_t a1, void *
   return v6 > v8;
 }
 
-- (BOOL)addAsset:(id)a3 withName:(id)a4 sendImage:(BOOL)a5
+- (BOOL)addAsset:(id)asset withName:(id)name sendImage:(BOOL)image
 {
-  v5 = a5;
+  imageCopy = image;
   v30[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  assetCopy = asset;
+  nameCopy = name;
+  if (!assetCopy)
   {
     v21 = wk_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ BOOL __38__SPAssetCacheClientCache_syncAssets___block_invoke(uint64_t a1, void *
 
   if (self->_cacheType != 1)
   {
-    v22 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:v9];
+    v22 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:nameCopy];
 
     if (v22)
     {
@@ -257,20 +257,20 @@ BOOL __38__SPAssetCacheClientCache_syncAssets___block_invoke(uint64_t a1, void *
 
     else
     {
-      -[SPAssetCacheClientCache clearSpaceForAsset:](self, "clearSpaceForAsset:", [v8 length]);
-      [(NSMutableArray *)self->_keys addObject:v9];
+      -[SPAssetCacheClientCache clearSpaceForAsset:](self, "clearSpaceForAsset:", [assetCopy length]);
+      [(NSMutableArray *)self->_keys addObject:nameCopy];
       v23 = [SPCacheAsset alloc];
-      v24 = [v8 length];
-      v25 = [MEMORY[0x277CBEAA8] date];
+      v24 = [assetCopy length];
+      date = [MEMORY[0x277CBEAA8] date];
       v20 = 1;
-      v26 = [(SPCacheAsset *)v23 initWithName:v9 size:v24 state:1 accessDate:v25];
-      [(NSMutableDictionary *)self->_assets setObject:v26 forKeyedSubscript:v9];
+      v26 = [(SPCacheAsset *)v23 initWithName:nameCopy size:v24 state:1 accessDate:date];
+      [(NSMutableDictionary *)self->_assets setObject:v26 forKeyedSubscript:nameCopy];
     }
 
     goto LABEL_20;
   }
 
-  if (!-[SPAssetCacheClientCache checkAvailableSpaceForAssetWithName:length:](self, "checkAvailableSpaceForAssetWithName:length:", v9, [v8 length]))
+  if (!-[SPAssetCacheClientCache checkAvailableSpaceForAssetWithName:length:](self, "checkAvailableSpaceForAssetWithName:length:", nameCopy, [assetCopy length]))
   {
 LABEL_14:
     v20 = 0;
@@ -278,33 +278,33 @@ LABEL_14:
   }
 
   v10 = [SPCacheAsset alloc];
-  v11 = [v8 length];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [(SPCacheAsset *)v10 initWithName:v9 size:v11 state:1 accessDate:v12];
+  v11 = [assetCopy length];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v13 = [(SPCacheAsset *)v10 initWithName:nameCopy size:v11 state:1 accessDate:date2];
 
-  if (v5 && ![(SPAssetCacheClientCache *)self saveAssetData:v8 forAsset:v13])
+  if (imageCopy && ![(SPAssetCacheClientCache *)self saveAssetData:assetCopy forAsset:v13])
   {
     v20 = 0;
   }
 
   else
   {
-    v14 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:v9];
+    v14 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:nameCopy];
 
     if (!v14)
     {
-      [(NSMutableArray *)self->_keys addObject:v9];
+      [(NSMutableArray *)self->_keys addObject:nameCopy];
     }
 
-    [(NSMutableDictionary *)self->_assets setObject:v13 forKeyedSubscript:v9];
-    if (v5)
+    [(NSMutableDictionary *)self->_assets setObject:v13 forKeyedSubscript:nameCopy];
+    if (imageCopy)
     {
       v30[0] = &unk_284E0A1C0;
       v29[0] = @"cmsg";
       v29[1] = @"a";
       v15 = [(SPCacheAsset *)v13 key];
       v30[1] = v15;
-      v30[2] = v8;
+      v30[2] = assetCopy;
       v29[2] = @"d";
       v29[3] = @"t";
       v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_cacheType];
@@ -326,9 +326,9 @@ LABEL_20:
   return v20;
 }
 
-- (void)addedAssetWithName:(id)a3
+- (void)addedAssetWithName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:name];
   if (v4)
   {
     v5 = v4;
@@ -338,10 +338,10 @@ LABEL_20:
   }
 }
 
-- (void)clearSpaceForAsset:(unint64_t)a3
+- (void)clearSpaceForAsset:(unint64_t)asset
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = self->_size + a3;
+  v4 = self->_size + asset;
   if (v4 >= 0x500000)
   {
     v16 = 0u;
@@ -368,7 +368,7 @@ LABEL_4:
         [(SPAssetCacheClientCache *)self deleteAsset:v12];
         v9 += [v12 size];
 
-        if (v9 >= a3)
+        if (v9 >= asset)
         {
           break;
         }
@@ -386,23 +386,23 @@ LABEL_4:
       }
     }
 
-    v4 = self->_size + a3;
+    v4 = self->_size + asset;
   }
 
   self->_size = v4;
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkAvailableSpaceForAssetWithName:(id)a3 length:(unint64_t)a4
+- (BOOL)checkAvailableSpaceForAssetWithName:(id)name length:(unint64_t)length
 {
-  v6 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:name];
   v7 = v6;
   if (v6)
   {
-    a4 -= [v6 size];
+    length -= [v6 size];
   }
 
-  v8 = self->_size + a4;
+  v8 = self->_size + length;
   if (v8 >> 20 <= 4)
   {
     self->_size = v8;
@@ -413,18 +413,18 @@ LABEL_4:
   return v9;
 }
 
-- (void)deleteAsset:(id)a3
+- (void)deleteAsset:(id)asset
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 size];
+  assetCopy = asset;
+  v5 = [assetCopy size];
   self->_size = (self->_size - v5) & ~((self->_size - v5) >> 63);
-  [(SPAssetCacheClientCache *)self deleteDataForAsset:v4];
-  [v4 setState:2];
+  [(SPAssetCacheClientCache *)self deleteDataForAsset:assetCopy];
+  [assetCopy setState:2];
   v13[0] = &unk_284E0A1D8;
   v12[0] = @"cmsg";
   v12[1] = @"a";
-  v6 = [v4 key];
+  v6 = [assetCopy key];
 
   v13[1] = v6;
   v12[2] = @"t";
@@ -441,9 +441,9 @@ LABEL_4:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAssetWithName:(id)a3
+- (void)deleteAssetWithName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:name];
   if (v4)
   {
     [(SPAssetCacheClientCache *)self deleteAsset:v4];
@@ -452,14 +452,14 @@ LABEL_4:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)deletedAssetWithName:(id)a3
+- (void)deletedAssetWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_assets removeObjectForKey:v5];
-    [(NSMutableArray *)self->_keys removeObject:v5];
+    [(NSMutableDictionary *)self->_assets removeObjectForKey:nameCopy];
+    [(NSMutableArray *)self->_keys removeObject:nameCopy];
   }
 }
 
@@ -524,7 +524,7 @@ LABEL_4:
 - (id)cachedImages
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -549,7 +549,7 @@ LABEL_4:
         if ([v10 state] == 1 || !objc_msgSend(v10, "state"))
         {
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "size")}];
-          [v3 setObject:v11 forKey:v9];
+          [dictionary setObject:v11 forKey:v9];
         }
       }
 
@@ -561,23 +561,23 @@ LABEL_4:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)saveAssetData:(id)a3 forAsset:(id)a4
+- (BOOL)saveAssetData:(id)data forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = [a4 key];
+  dataCopy = data;
+  v7 = [asset key];
   v8 = [(SPAssetCacheClientCache *)self pathForAssetDataWithName:v7];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  LODWORD(v7) = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LODWORD(v7) = [defaultManager fileExistsAtPath:v8];
 
   if (v7)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v18 = 0;
-    v11 = [v10 removeItemAtPath:v8 error:&v18];
+    v11 = [defaultManager2 removeItemAtPath:v8 error:&v18];
     v12 = v18;
 
     if ((v11 & 1) == 0)
@@ -603,7 +603,7 @@ LABEL_9:
   v14 = v12;
   v17 = v12;
   v15 = 1;
-  [v6 writeToFile:v8 options:1 error:&v17];
+  [dataCopy writeToFile:v8 options:1 error:&v17];
   v12 = v17;
 
   if (v12)
@@ -622,21 +622,21 @@ LABEL_10:
   return v15;
 }
 
-- (void)deleteDataForAsset:(id)a3
+- (void)deleteDataForAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
-    v4 = [a3 key];
+    v4 = [asset key];
     v5 = [(SPAssetCacheClientCache *)self pathForAssetDataWithName:v4];
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:v5];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v12 = 0;
-      v9 = [v8 removeItemAtPath:v5 error:&v12];
+      v9 = [defaultManager2 removeItemAtPath:v5 error:&v12];
       v10 = v12;
 
       if ((v9 & 1) == 0)
@@ -656,9 +656,9 @@ LABEL_10:
   }
 }
 
-- (id)dataForImageWithName:(id)a3
+- (id)dataForImageWithName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_assets objectForKeyedSubscript:name];
   v5 = v4;
   if (v4)
   {

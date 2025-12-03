@@ -1,9 +1,9 @@
 @interface _MPCProtoMigrationDataTimeSync
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)anchorTime;
 - (double)anchorTimestamp;
 - (double)rate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)isLive;
@@ -13,8 +13,8 @@
 - (uint64_t)setIsLive:(uint64_t)result;
 - (uint64_t)setRate:(uint64_t)result;
 - (unint64_t)hash;
-- (void)setItemID:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setItemID:(uint64_t)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoMigrationDataTimeSync
@@ -170,16 +170,16 @@
   return v6 ^ v3 ^ v10 ^ v14 ^ v18 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   itemID = self->_itemID;
-  if (itemID | *(v4 + 4))
+  if (itemID | *(equalCopy + 4))
   {
     if (![(NSString *)itemID isEqual:?])
     {
@@ -189,60 +189,60 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_anchorTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_anchorTimestamp != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_anchorTime != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_anchorTime != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_rate != *(v4 + 10))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_rate != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_duration != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_duration != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v6 = (*(v4 + 48) & 0x10) == 0;
+  v6 = (*(equalCopy + 48) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0)
+    if ((*(equalCopy + 48) & 0x10) == 0)
     {
 LABEL_26:
       v6 = 0;
@@ -251,13 +251,13 @@ LABEL_26:
 
     if (self->_isLive)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_26;
     }
@@ -270,10 +270,10 @@ LABEL_27:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_itemID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_itemID copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -342,21 +342,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_itemID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -376,7 +376,7 @@ LABEL_5:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -391,7 +391,7 @@ LABEL_6:
 
 LABEL_14:
   PBDataWriterWriteFloatField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -406,12 +406,12 @@ LABEL_7:
 
 LABEL_15:
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_8:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_9:
@@ -419,12 +419,12 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   itemID = self->_itemID;
   if (itemID)
   {
-    [v3 setObject:itemID forKey:@"itemID"];
+    [dictionary setObject:itemID forKey:@"itemID"];
   }
 
   has = self->_has;
@@ -505,8 +505,8 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = _MPCProtoMigrationDataTimeSync;
   v4 = [(_MPCProtoMigrationDataTimeSync *)&v8 description];
-  v5 = [(_MPCProtoMigrationDataTimeSync *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoMigrationDataTimeSync *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -566,19 +566,19 @@ LABEL_9:
   return result;
 }
 
-- (void)setItemID:(uint64_t)a1
+- (void)setItemID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((d + 32), a2);
   }
 }
 
 - (double)anchorTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -589,9 +589,9 @@ LABEL_9:
 
 - (double)anchorTime
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -602,20 +602,20 @@ LABEL_9:
 
 - (double)rate
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 40);
+  LODWORD(result) = *(self + 40);
   return result;
 }
 
 - (uint64_t)isLive
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 44);
+    v1 = *(self + 44);
   }
 
   else

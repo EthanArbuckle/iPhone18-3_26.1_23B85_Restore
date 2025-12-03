@@ -1,52 +1,52 @@
 @interface PLAssetsSaver
-+ (id)createWriteImageCompletionBlockWithImage:(id)a3 target:(id)a4 selector:(SEL)a5 contextInfo:(void *)a6;
-+ (id)createWriteVideoCompletionBlockWithVideoPath:(id)a3 target:(id)a4 selector:(SEL)a5 contextInfo:(void *)a6;
-+ (id)publicAssetsLibraryErrorFromPrivateDomain:(id)a3 withPrivateCode:(int64_t)a4;
-+ (id)publicAssetsLibraryErrorFromPrivateError:(id)a3;
++ (id)createWriteImageCompletionBlockWithImage:(id)image target:(id)target selector:(SEL)selector contextInfo:(void *)info;
++ (id)createWriteVideoCompletionBlockWithVideoPath:(id)path target:(id)target selector:(SEL)selector contextInfo:(void *)info;
++ (id)publicAssetsLibraryErrorFromPrivateDomain:(id)domain withPrivateCode:(int64_t)code;
++ (id)publicAssetsLibraryErrorFromPrivateError:(id)error;
 + (id)sharedAssetsSaver;
 - (PLAssetsSaver)init;
-- (id)_assetsdClientForJobDictionary:(id)a3;
+- (id)_assetsdClientForJobDictionary:(id)dictionary;
 - (id)_saveIsolationQueue;
-- (id)requestSynchronousImageForAssetOID:(id)a3 withFormat:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 outImageDataInfo:(id *)a9 outCPLDownloadContext:(id *)a10;
-- (id)saveCameraImage:(id)a3 metadata:(id)a4 additionalProperties:(id)a5 diagnostics:(id)a6 previouslyPendingAsset:(id)a7 requestEnqueuedBlock:(id)a8;
-- (id)validateAvalanches:(id)a3 inLibraryWithURL:(id)a4;
-- (void)_queueJobDictionary:(id)a3 asset:(id)a4 requestEnqueuedBlock:(id)a5 completionBlock:(id)a6 imageSurface:(__IOSurface *)a7;
-- (void)_saveImage:(id)a3 imageData:(id)a4 properties:(id)a5 completionBlock:(id)a6;
-- (void)_saveVideoAtPath:(id)a3 properties:(id)a4 completionBlock:(id)a5;
+- (id)requestSynchronousImageForAssetOID:(id)d withFormat:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download outImageDataInfo:(id *)info outCPLDownloadContext:(id *)self0;
+- (id)saveCameraImage:(id)image metadata:(id)metadata additionalProperties:(id)properties diagnostics:(id)diagnostics previouslyPendingAsset:(id)asset requestEnqueuedBlock:(id)block;
+- (id)validateAvalanches:(id)avalanches inLibraryWithURL:(id)l;
+- (void)_queueJobDictionary:(id)dictionary asset:(id)asset requestEnqueuedBlock:(id)block completionBlock:(id)completionBlock imageSurface:(__IOSurface *)surface;
+- (void)_saveImage:(id)image imageData:(id)data properties:(id)properties completionBlock:(id)block;
+- (void)_saveVideoAtPath:(id)path properties:(id)properties completionBlock:(id)block;
 - (void)dealloc;
 - (void)deletePhotoStreamData;
-- (void)queuePhotoStreamJobDictionary:(id)a3;
-- (void)requestAsynchronousImageForAssetOID:(id)a3 withFormat:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 completionBlock:(id)a9;
-- (void)saveImageRef:(CGImage *)a3 orientation:(int64_t)a4 imageData:(id)a5 properties:(id)a6 completionBlock:(id)a7;
-- (void)saveSyncedAssets:(id)a3 completionBlock:(id)a4;
+- (void)queuePhotoStreamJobDictionary:(id)dictionary;
+- (void)requestAsynchronousImageForAssetOID:(id)d withFormat:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionBlock:(id)block;
+- (void)saveImageRef:(CGImage *)ref orientation:(int64_t)orientation imageData:(id)data properties:(id)properties completionBlock:(id)block;
+- (void)saveSyncedAssets:(id)assets completionBlock:(id)block;
 @end
 
 @implementation PLAssetsSaver
 
-- (void)saveSyncedAssets:(id)a3 completionBlock:(id)a4
+- (void)saveSyncedAssets:(id)assets completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v8 setObject:*MEMORY[0x1E69C0460] forKey:*MEMORY[0x1E69C0410]];
-  if (v6)
+  assetsCopy = assets;
+  blockCopy = block;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:*MEMORY[0x1E69C0460] forKey:*MEMORY[0x1E69C0410]];
+  if (assetsCopy)
   {
-    [v8 setObject:v6 forKey:@"SyncClientJobsData"];
+    [dictionary setObject:assetsCopy forKey:@"SyncClientJobsData"];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__PLAssetsSaver_saveSyncedAssets_completionBlock___block_invoke;
   v10[3] = &unk_1E7565F40;
-  v11 = v7;
-  v9 = v7;
-  [(PLAssetsSaver *)self _queueJobDictionary:v8 completionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(PLAssetsSaver *)self _queueJobDictionary:dictionary completionBlock:v10];
 }
 
-- (id)validateAvalanches:(id)a3 inLibraryWithURL:(id)a4
+- (id)validateAvalanches:(id)avalanches inLibraryWithURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  avalanchesCopy = avalanches;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -55,8 +55,8 @@
   v19 = 0;
   v7 = dispatch_semaphore_create(0);
   v8 = dispatch_get_global_queue(0, 0);
-  v11 = v5;
-  v12 = v6;
+  v11 = avalanchesCopy;
+  v12 = lCopy;
   v13 = v7;
   pl_dispatch_async();
 
@@ -134,45 +134,45 @@ void __53__PLAssetsSaver_validateAvalanches_inLibraryWithURL___block_invoke_2(ui
 
 - (void)deletePhotoStreamData
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
-  [(PLAssetsSaver *)self queuePhotoStreamJobDictionary:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
+  [(PLAssetsSaver *)self queuePhotoStreamJobDictionary:dictionary];
 }
 
-- (void)saveImageRef:(CGImage *)a3 orientation:(int64_t)a4 imageData:(id)a5 properties:(id)a6 completionBlock:(id)a7
+- (void)saveImageRef:(CGImage *)ref orientation:(int64_t)orientation imageData:(id)data properties:(id)properties completionBlock:(id)block
 {
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
+  blockCopy = block;
+  propertiesCopy = properties;
+  dataCopy = data;
   v13 = DCIM_newPLImageWithCGImage();
-  [(PLAssetsSaver *)self _saveImage:v13 imageData:v12 properties:v11 completionBlock:v10];
+  [(PLAssetsSaver *)self _saveImage:v13 imageData:dataCopy properties:propertiesCopy completionBlock:blockCopy];
 }
 
-- (void)_saveVideoAtPath:(id)a3 properties:(id)a4 completionBlock:(id)a5
+- (void)_saveVideoAtPath:(id)path properties:(id)properties completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  pathCopy = path;
+  propertiesCopy = properties;
+  blockCopy = block;
+  if (!pathCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"videoPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"videoPath"}];
   }
 
-  v12 = [v11 copy];
-  v13 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v12 = [blockCopy copy];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __61__PLAssetsSaver__saveVideoAtPath_properties_completionBlock___block_invoke;
   v18[3] = &unk_1E7565EE8;
-  v19 = v10;
-  v20 = v9;
-  v21 = self;
+  v19 = propertiesCopy;
+  v20 = pathCopy;
+  selfCopy = self;
   v22 = v12;
   v14 = v12;
-  v15 = v9;
-  v16 = v10;
-  [v13 checkPhotosAccessAllowedWithScope:1 handler:v18];
+  v15 = pathCopy;
+  v16 = propertiesCopy;
+  [mEMORY[0x1E69BF2B0] checkPhotosAccessAllowedWithScope:1 handler:v18];
 }
 
 void __61__PLAssetsSaver__saveVideoAtPath_properties_completionBlock___block_invoke(uint64_t a1)
@@ -336,27 +336,27 @@ void __61__PLAssetsSaver__saveVideoAtPath_properties_completionBlock___block_inv
   }
 }
 
-- (void)_saveImage:(id)a3 imageData:(id)a4 properties:(id)a5 completionBlock:(id)a6
+- (void)_saveImage:(id)image imageData:(id)data properties:(id)properties completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 copy];
-  v14 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  imageCopy = image;
+  dataCopy = data;
+  propertiesCopy = properties;
+  v13 = [block copy];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__PLAssetsSaver__saveImage_imageData_properties_completionBlock___block_invoke;
   v19[3] = &unk_1E7565EC0;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
-  v23 = self;
+  v20 = propertiesCopy;
+  v21 = dataCopy;
+  v22 = imageCopy;
+  selfCopy = self;
   v24 = v13;
   v15 = v13;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
-  [v14 checkPhotosAccessAllowedWithScope:1 handler:v19];
+  v16 = imageCopy;
+  v17 = dataCopy;
+  v18 = propertiesCopy;
+  [mEMORY[0x1E69BF2B0] checkPhotosAccessAllowedWithScope:1 handler:v19];
 }
 
 void __65__PLAssetsSaver__saveImage_imageData_properties_completionBlock___block_invoke(uint64_t a1)
@@ -590,98 +590,98 @@ void __65__PLAssetsSaver__saveImage_imageData_properties_completionBlock___block
   }
 }
 
-- (id)saveCameraImage:(id)a3 metadata:(id)a4 additionalProperties:(id)a5 diagnostics:(id)a6 previouslyPendingAsset:(id)a7 requestEnqueuedBlock:(id)a8
+- (id)saveCameraImage:(id)image metadata:(id)metadata additionalProperties:(id)properties diagnostics:(id)diagnostics previouslyPendingAsset:(id)asset requestEnqueuedBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v44 = a8;
-  v46 = v18;
-  if (v18)
+  imageCopy = image;
+  metadataCopy = metadata;
+  propertiesCopy = properties;
+  diagnosticsCopy = diagnostics;
+  assetCopy = asset;
+  blockCopy = block;
+  v46 = diagnosticsCopy;
+  if (diagnosticsCopy)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:348 description:{@"diagnostics will always be nil, no clients pass in non-nil params currently, enforce until adopters drop call"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:348 description:{@"diagnostics will always be nil, no clients pass in non-nil params currently, enforce until adopters drop call"}];
   }
 
   v42 = a2;
-  v43 = self;
+  selfCopy = self;
   context = objc_autoreleasePoolPush();
-  v47 = [v15 objectForKey:*MEMORY[0x1E69C02B8]];
-  v20 = [v15 objectForKey:*MEMORY[0x1E69C02C0]];
-  v21 = [v16 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  v47 = [imageCopy objectForKey:*MEMORY[0x1E69C02B8]];
+  v20 = [imageCopy objectForKey:*MEMORY[0x1E69C02C0]];
+  v21 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
   v22 = [v21 objectForKey:*MEMORY[0x1E69867B0]];
   if (v22)
   {
-    v23 = [v19 managedObjectContext];
+    managedObjectContext = [assetCopy managedObjectContext];
 
-    if (v23)
+    if (managedObjectContext)
     {
-      [v19 setAvalancheUUID:v22];
-      [v19 setAvalanchePickType:1];
+      [assetCopy setAvalancheUUID:v22];
+      [assetCopy setAvalanchePickType:1];
       if (+[PLAvalanche shouldOnlyShowAvalanchePicks])
       {
-        [v19 setVisibilityState:2];
+        [assetCopy setVisibilityState:2];
       }
     }
   }
 
-  v45 = v19;
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  v45 = assetCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = [MEMORY[0x1E696AD98] numberWithInt:0];
-  [v24 setObject:v25 forKey:*MEMORY[0x1E69C0388]];
+  [dictionary setObject:v25 forKey:*MEMORY[0x1E69C0388]];
 
-  [v24 setObject:*MEMORY[0x1E69C0458] forKey:*MEMORY[0x1E69C0410]];
-  if (v16)
+  [dictionary setObject:*MEMORY[0x1E69C0458] forKey:*MEMORY[0x1E69C0410]];
+  if (metadataCopy)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromImageProperties()];
-    [v24 setObject:v26 forKey:*MEMORY[0x1E69C0400]];
+    [dictionary setObject:v26 forKey:*MEMORY[0x1E69C0400]];
 
-    [v24 setObject:v16 forKey:*MEMORY[0x1E69C03C8]];
+    [dictionary setObject:metadataCopy forKey:*MEMORY[0x1E69C03C8]];
   }
 
-  v27 = [MEMORY[0x1E695DF00] date];
-  [v24 setObject:v27 forKey:*MEMORY[0x1E69C03A8]];
+  date = [MEMORY[0x1E695DF00] date];
+  [dictionary setObject:date forKey:*MEMORY[0x1E69C03A8]];
 
-  if (v17)
+  if (propertiesCopy)
   {
-    [v24 addEntriesFromDictionary:v17];
+    [dictionary addEntriesFromDictionary:propertiesCopy];
   }
 
-  v28 = v17;
+  v28 = propertiesCopy;
   v29 = [MEMORY[0x1E696AD98] numberWithBool:0];
-  [v24 setObject:v29 forKey:*MEMORY[0x1E69C0550]];
+  [dictionary setObject:v29 forKey:*MEMORY[0x1E69C0550]];
 
   v30 = *MEMORY[0x1E69C0558];
-  v31 = [v24 objectForKey:*MEMORY[0x1E69C0558]];
+  v31 = [dictionary objectForKey:*MEMORY[0x1E69C0558]];
 
   if (!v31)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E69BF328], "defaultSavedAssetTypeForPLAssetsSaver")}];
-    [v24 setObject:v32 forKey:v30];
+    [dictionary setObject:v32 forKey:v30];
   }
 
   v33 = [MEMORY[0x1E696AD98] numberWithBool:1];
-  [v24 setObject:v33 forKey:*MEMORY[0x1E69C02F8]];
+  [dictionary setObject:v33 forKey:*MEMORY[0x1E69C02F8]];
 
-  v34 = [v15 objectForKey:*MEMORY[0x1E69C02C8]];
+  v34 = [imageCopy objectForKey:*MEMORY[0x1E69C02C8]];
   v35 = *MEMORY[0x1E69C02D0];
-  v36 = [v15 objectForKey:*MEMORY[0x1E69C02D0]];
+  v36 = [imageCopy objectForKey:*MEMORY[0x1E69C02D0]];
   if (v36)
   {
-    [v24 setObject:v36 forKey:v35];
+    [dictionary setObject:v36 forKey:v35];
   }
 
   v37 = DCIM_CGImageRefFromPLImage();
   if (v37)
   {
-    [v24 setObject:v37 forKey:*MEMORY[0x1E69C0548]];
+    [dictionary setObject:v37 forKey:*MEMORY[0x1E69C0548]];
   }
 
   if ([v20 length])
   {
-    [v24 setObject:v20 forKey:*MEMORY[0x1E69C0540]];
+    [dictionary setObject:v20 forKey:*MEMORY[0x1E69C0540]];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -690,7 +690,7 @@ void __65__PLAssetsSaver__saveImage_imageData_properties_completionBlock___block
   aBlock[3] = &__block_descriptor_40_e44_v32__0__NSDictionary_8__NSURL_16__NSError_24l;
   aBlock[4] = v42;
   v38 = _Block_copy(aBlock);
-  [(PLAssetsSaver *)v43 _queueJobDictionary:v24 asset:0 requestEnqueuedBlock:v44 completionBlock:v38 imageSurface:v34];
+  [(PLAssetsSaver *)selfCopy _queueJobDictionary:dictionary asset:0 requestEnqueuedBlock:blockCopy completionBlock:v38 imageSurface:v34];
 
   objc_autoreleasePoolPop(context);
   return 0;
@@ -733,9 +733,9 @@ LABEL_7:
   }
 }
 
-- (id)_assetsdClientForJobDictionary:(id)a3
+- (id)_assetsdClientForJobDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69C0568]];
+  v3 = [dictionary objectForKey:*MEMORY[0x1E69C0568]];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69BF198]) initWithPhotoLibraryURL:v3];
@@ -743,26 +743,26 @@ LABEL_7:
 
   else
   {
-    v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-    v4 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:v5];
+    systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+    v4 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
   }
 
   return v4;
 }
 
-- (void)_queueJobDictionary:(id)a3 asset:(id)a4 requestEnqueuedBlock:(id)a5 completionBlock:(id)a6 imageSurface:(__IOSurface *)a7
+- (void)_queueJobDictionary:(id)dictionary asset:(id)asset requestEnqueuedBlock:(id)block completionBlock:(id)completionBlock imageSurface:(__IOSurface *)surface
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v31 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if (PLIsAssetsd())
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Calling PLAssetsSaver from assetsd directly with job dictionary: %@", v12];
+    dictionaryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Calling PLAssetsSaver from assetsd directly with job dictionary: %@", dictionaryCopy];
     PLSimulateCrash();
   }
 
-  v15 = [v12 objectForKey:@"callStack"];
+  v15 = [dictionaryCopy objectForKey:@"callStack"];
   if (v15)
   {
     v16 = PLBackendGetLog();
@@ -785,7 +785,7 @@ LABEL_7:
   v21 = MEMORY[0x1E69C0410];
   if (v20)
   {
-    v22 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+    v22 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
     *buf = 138543362;
     v36 = v22;
     _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Sending assets saver job: %{public}@", buf, 0xCu);
@@ -793,7 +793,7 @@ LABEL_7:
 
   if ((PLIsAssetsd() & 1) == 0)
   {
-    PLIssueSandboxExtensionsForJobDictionary(v12);
+    PLIssueSandboxExtensionsForJobDictionary(dictionaryCopy);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -801,13 +801,13 @@ LABEL_7:
   aBlock[2] = __93__PLAssetsSaver__queueJobDictionary_asset_requestEnqueuedBlock_completionBlock_imageSurface___block_invoke;
   aBlock[3] = &unk_1E7565DD0;
   aBlock[4] = self;
-  v34 = v13;
-  v23 = v13;
+  v34 = completionBlockCopy;
+  v23 = completionBlockCopy;
   v24 = _Block_copy(aBlock);
-  if (a7)
+  if (surface)
   {
-    CFRetain(a7);
-    v25 = [v12 objectForKey:*v21];
+    CFRetain(surface);
+    v25 = [dictionaryCopy objectForKey:*v21];
     v26 = [v25 isEqualToString:*MEMORY[0x1E69C0458]];
 
     if (v26)
@@ -816,11 +816,11 @@ LABEL_7:
     }
   }
 
-  v27 = [(PLAssetsSaver *)self _saveIsolationQueue];
-  v32 = v12;
-  v28 = v31;
+  _saveIsolationQueue = [(PLAssetsSaver *)self _saveIsolationQueue];
+  v32 = dictionaryCopy;
+  v28 = blockCopy;
   v29 = v24;
-  v30 = v12;
+  v30 = dictionaryCopy;
   pl_dispatch_async();
 }
 
@@ -995,11 +995,11 @@ void __93__PLAssetsSaver__queueJobDictionary_asset_requestEnqueuedBlock_completi
   }
 }
 
-- (void)queuePhotoStreamJobDictionary:(id)a3
+- (void)queuePhotoStreamJobDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKey:@"callStack"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"callStack"];
   if (v6)
   {
     v7 = PLBackendGetLog();
@@ -1020,7 +1020,7 @@ void __93__PLAssetsSaver__queueJobDictionary_asset_requestEnqueuedBlock_completi
   v10 = PLBackendGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+    v11 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
     *buf = 138543362;
     v22 = v11;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Sending assets saver photo stream job: %{public}@", buf, 0xCu);
@@ -1030,10 +1030,10 @@ void __93__PLAssetsSaver__queueJobDictionary_asset_requestEnqueuedBlock_completi
   aBlock[1] = 3221225472;
   aBlock[2] = __47__PLAssetsSaver_queuePhotoStreamJobDictionary___block_invoke;
   aBlock[3] = &unk_1E7565DA0;
-  v12 = v5;
+  v12 = dictionaryCopy;
   v20 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(PLAssetsSaver *)self _saveIsolationQueue];
+  _saveIsolationQueue = [(PLAssetsSaver *)self _saveIsolationQueue];
   v17 = v12;
   v18 = v13;
   v15 = v13;
@@ -1120,45 +1120,45 @@ void __35__PLAssetsSaver__setIsTakingPhoto___block_invoke()
   _setIsTakingPhoto__takingPhotoIndicatorIsolation = v0;
 }
 
-- (void)requestAsynchronousImageForAssetOID:(id)a3 withFormat:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 completionBlock:(id)a9
+- (void)requestAsynchronousImageForAssetOID:(id)d withFormat:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download completionBlock:(id)block
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = *&a4;
-  v16 = a9;
-  v17 = a3;
-  v18 = [(PLAssetsSaver *)self _photoLibrary];
-  v19 = [v18 assetsdClient];
-  v20 = [v19 resourceClient];
+  downloadCopy = download;
+  allowedCopy = allowed;
+  onlyCopy = only;
+  placeholderCopy = placeholder;
+  v13 = *&format;
+  blockCopy = block;
+  dCopy = d;
+  _photoLibrary = [(PLAssetsSaver *)self _photoLibrary];
+  assetsdClient = [_photoLibrary assetsdClient];
+  resourceClient = [assetsdClient resourceClient];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __147__PLAssetsSaver_requestAsynchronousImageForAssetOID_withFormat_allowPlaceholder_wantURLOnly_networkAccessAllowed_trackCPLDownload_completionBlock___block_invoke;
   v22[3] = &unk_1E7565D78;
-  v23 = v16;
-  v21 = v16;
-  [v20 imageDataForAsset:v17 format:v13 allowPlaceholder:v12 wantURLOnly:v11 networkAccessAllowed:v10 trackCPLDownload:v9 completionHandler:v22];
+  v23 = blockCopy;
+  v21 = blockCopy;
+  [resourceClient imageDataForAsset:dCopy format:v13 allowPlaceholder:placeholderCopy wantURLOnly:onlyCopy networkAccessAllowed:allowedCopy trackCPLDownload:downloadCopy completionHandler:v22];
 }
 
-- (id)requestSynchronousImageForAssetOID:(id)a3 withFormat:(int)a4 allowPlaceholder:(BOOL)a5 wantURLOnly:(BOOL)a6 networkAccessAllowed:(BOOL)a7 trackCPLDownload:(BOOL)a8 outImageDataInfo:(id *)a9 outCPLDownloadContext:(id *)a10
+- (id)requestSynchronousImageForAssetOID:(id)d withFormat:(int)format allowPlaceholder:(BOOL)placeholder wantURLOnly:(BOOL)only networkAccessAllowed:(BOOL)allowed trackCPLDownload:(BOOL)download outImageDataInfo:(id *)info outCPLDownloadContext:(id *)self0
 {
-  v32 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = *&a4;
+  downloadCopy = download;
+  allowedCopy = allowed;
+  onlyCopy = only;
+  placeholderCopy = placeholder;
+  v13 = *&format;
   v40 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  dCopy = d;
   context = objc_autoreleasePoolPush();
-  v16 = [(PLAssetsSaver *)self _photoLibrary];
-  v17 = [v16 assetsdClient];
-  v18 = [v17 resourceClient];
+  _photoLibrary = [(PLAssetsSaver *)self _photoLibrary];
+  assetsdClient = [_photoLibrary assetsdClient];
+  resourceClient = [assetsdClient resourceClient];
 
   v37 = 0;
   v19 = &v36;
-  if (a9)
+  if (info)
   {
     v36 = 0;
   }
@@ -1169,7 +1169,7 @@ void __35__PLAssetsSaver__setIsTakingPhoto___block_invoke()
   }
 
   v20 = &v35;
-  if (a10)
+  if (context)
   {
     v35 = 0;
   }
@@ -1180,13 +1180,13 @@ void __35__PLAssetsSaver__setIsTakingPhoto___block_invoke()
   }
 
   v34 = 0;
-  v21 = v15;
-  v22 = [v18 imageDataForAsset:v15 format:v13 allowPlaceholder:v12 wantURLOnly:v11 networkAccessAllowed:v10 trackCPLDownload:v32 outImageData:&v37 outImageDataInfo:v19 outCPLDownloadContext:v20 error:&v34];
+  v21 = dCopy;
+  v22 = [resourceClient imageDataForAsset:dCopy format:v13 allowPlaceholder:placeholderCopy wantURLOnly:onlyCopy networkAccessAllowed:allowedCopy trackCPLDownload:downloadCopy outImageData:&v37 outImageDataInfo:v19 outCPLDownloadContext:v20 error:&v34];
   v23 = v37;
-  if (a9)
+  if (info)
   {
     v24 = v36;
-    if (a10)
+    if (context)
     {
 LABEL_9:
       v25 = v35;
@@ -1197,7 +1197,7 @@ LABEL_9:
   else
   {
     v24 = 0;
-    if (a10)
+    if (context)
     {
       goto LABEL_9;
     }
@@ -1218,16 +1218,16 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(context);
-  if (a9)
+  if (info)
   {
     v28 = v24;
-    *a9 = v24;
+    *info = v24;
   }
 
-  if (a10)
+  if (context)
   {
     v29 = v25;
-    *a10 = v25;
+    *context = v25;
   }
 
   v30 = v23;
@@ -1239,8 +1239,8 @@ LABEL_12:
 {
   if (__SharedAssetsSaver == self)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:100 description:@"sharedAssetsSaver should never be dealloc'd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsSaver.m" lineNumber:100 description:@"sharedAssetsSaver should never be dealloc'd"];
   }
 
   v5.receiver = self;
@@ -1267,24 +1267,24 @@ LABEL_12:
   return v2;
 }
 
-+ (id)publicAssetsLibraryErrorFromPrivateError:(id)a3
++ (id)publicAssetsLibraryErrorFromPrivateError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v3 code];
-  if ([v4 isEqualToString:*MEMORY[0x1E69BFF48]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  if ([domain isEqualToString:*MEMORY[0x1E69BFF48]])
   {
-    if (v5 <= 12)
+    if (code <= 12)
     {
-      if (v5 != -3001)
+      if (code != -3001)
       {
-        if (v5 == 12)
+        if (code == 12)
         {
 LABEL_5:
           v6 = PLServicesLocalizedFrameworkString();
           v7 = 0;
           v8 = 0;
-          v5 = -3304;
+          code = -3304;
           goto LABEL_31;
         }
 
@@ -1294,9 +1294,9 @@ LABEL_5:
       goto LABEL_23;
     }
 
-    if (v5 != 13)
+    if (code != 13)
     {
-      if (v5 != 14)
+      if (code != 14)
       {
         goto LABEL_15;
       }
@@ -1305,36 +1305,36 @@ LABEL_22:
       v6 = PLServicesLocalizedFrameworkString();
       v7 = 0;
       v8 = 0;
-      v5 = -3305;
+      code = -3305;
       goto LABEL_31;
     }
 
     goto LABEL_26;
   }
 
-  if (![v4 isEqualToString:@"ALAssetsLibraryErrorDomain"])
+  if (![domain isEqualToString:@"ALAssetsLibraryErrorDomain"])
   {
     goto LABEL_15;
   }
 
   v7 = 0;
-  if (v5 <= -3305)
+  if (code <= -3305)
   {
-    if (v5 > -3311)
+    if (code > -3311)
     {
-      if (v5 == -3310)
+      if (code == -3310)
       {
 LABEL_23:
         v6 = PLServicesLocalizedFrameworkString();
         v8 = PLServicesLocalizedFrameworkString();
         v7 = 0;
-        v5 = -3310;
+        code = -3310;
         goto LABEL_31;
       }
 
       v6 = 0;
       v8 = 0;
-      if (v5 != -3305)
+      if (code != -3305)
       {
         goto LABEL_31;
       }
@@ -1342,7 +1342,7 @@ LABEL_23:
       goto LABEL_22;
     }
 
-    if (v5 == -3315)
+    if (code == -3315)
     {
       v6 = PLServicesLocalizedFrameworkString();
       v7 = 0;
@@ -1353,7 +1353,7 @@ LABEL_30:
 
     v6 = 0;
     v8 = 0;
-    if (v5 != -3311)
+    if (code != -3311)
     {
       goto LABEL_31;
     }
@@ -1364,22 +1364,22 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v5 > -3302)
+  if (code > -3302)
   {
-    if (v5 == -3301)
+    if (code == -3301)
     {
       v6 = PLServicesLocalizedFrameworkString();
       v7 = PLServicesLocalizedFrameworkString();
       v8 = PLServicesLocalizedFrameworkString();
-      v5 = -3301;
+      code = -3301;
       goto LABEL_31;
     }
 
-    if (v5 != -3300)
+    if (code != -3300)
     {
       v6 = 0;
       v8 = 0;
-      if (v5 != -1)
+      if (code != -1)
       {
         goto LABEL_31;
       }
@@ -1388,70 +1388,70 @@ LABEL_15:
       v6 = PLServicesLocalizedFrameworkString();
       v7 = 0;
       v8 = 0;
-      v5 = -1;
+      code = -1;
       goto LABEL_31;
     }
 
     goto LABEL_29;
   }
 
-  if (v5 == -3304)
+  if (code == -3304)
   {
     goto LABEL_5;
   }
 
   v6 = 0;
   v8 = 0;
-  if (v5 == -3302)
+  if (code == -3302)
   {
 LABEL_26:
     v6 = PLServicesLocalizedFrameworkString();
     v7 = PLServicesLocalizedFrameworkString();
     v8 = PLServicesLocalizedFrameworkString();
-    v5 = -3302;
+    code = -3302;
   }
 
 LABEL_31:
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([v6 length])
   {
-    [v9 setObject:v6 forKey:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v6 forKey:*MEMORY[0x1E696A578]];
   }
 
   if ([v7 length])
   {
-    [v9 setObject:v7 forKey:*MEMORY[0x1E696A588]];
+    [dictionary setObject:v7 forKey:*MEMORY[0x1E696A588]];
   }
 
   if ([v8 length])
   {
-    [v9 setObject:v8 forKey:*MEMORY[0x1E696A598]];
+    [dictionary setObject:v8 forKey:*MEMORY[0x1E696A598]];
   }
 
-  if (v3)
+  if (errorCopy)
   {
-    [v9 setObject:v3 forKey:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
-  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ALAssetsLibraryErrorDomain" code:v5 userInfo:v9];
+  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ALAssetsLibraryErrorDomain" code:code userInfo:dictionary];
 
   return v10;
 }
 
-+ (id)publicAssetsLibraryErrorFromPrivateDomain:(id)a3 withPrivateCode:(int64_t)a4
++ (id)publicAssetsLibraryErrorFromPrivateDomain:(id)domain withPrivateCode:(int64_t)code
 {
-  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:a3 code:a4 userInfo:0];
-  v6 = [a1 publicAssetsLibraryErrorFromPrivateError:v5];
+  v5 = [MEMORY[0x1E696ABC0] errorWithDomain:domain code:code userInfo:0];
+  v6 = [self publicAssetsLibraryErrorFromPrivateError:v5];
 
   return v6;
 }
 
-+ (id)createWriteVideoCompletionBlockWithVideoPath:(id)a3 target:(id)a4 selector:(SEL)a5 contextInfo:(void *)a6
++ (id)createWriteVideoCompletionBlockWithVideoPath:(id)path target:(id)target selector:(SEL)selector contextInfo:(void *)info
 {
-  v10 = a3;
-  v11 = a4;
+  pathCopy = path;
+  targetCopy = target;
   v12 = 0;
-  if (v11 && a5)
+  if (targetCopy && selector)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -1459,8 +1459,8 @@ LABEL_31:
       v16 = *MEMORY[0x1E695D940];
       v17 = MEMORY[0x1E696AEC0];
       v18 = objc_opt_class();
-      v19 = NSStringFromSelector(a5);
-      v20 = [v17 stringWithFormat:@"%@<%p> does not respond to selector %@", v18, v11, v19];
+      v19 = NSStringFromSelector(selector);
+      v20 = [v17 stringWithFormat:@"%@<%p> does not respond to selector %@", v18, targetCopy, v19];
       v21 = [v15 exceptionWithName:v16 reason:v20 userInfo:0];
       v22 = v21;
 
@@ -1471,10 +1471,10 @@ LABEL_31:
     aBlock[1] = 3221225472;
     aBlock[2] = __90__PLAssetsSaver_createWriteVideoCompletionBlockWithVideoPath_target_selector_contextInfo___block_invoke;
     aBlock[3] = &unk_1E7565E68;
-    v25 = a1;
-    v24 = v11;
-    v26 = a5;
-    v27 = a6;
+    selfCopy = self;
+    v24 = targetCopy;
+    selectorCopy = selector;
+    infoCopy = info;
     v13 = _Block_copy(aBlock);
     v12 = [v13 copy];
   }
@@ -1503,12 +1503,12 @@ void __90__PLAssetsSaver_createWriteVideoCompletionBlockWithVideoPath_target_sel
   [v9 invoke];
 }
 
-+ (id)createWriteImageCompletionBlockWithImage:(id)a3 target:(id)a4 selector:(SEL)a5 contextInfo:(void *)a6
++ (id)createWriteImageCompletionBlockWithImage:(id)image target:(id)target selector:(SEL)selector contextInfo:(void *)info
 {
-  v10 = a3;
-  v11 = a4;
+  imageCopy = image;
+  targetCopy = target;
   v12 = 0;
-  if (v11 && a5)
+  if (targetCopy && selector)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -1516,8 +1516,8 @@ void __90__PLAssetsSaver_createWriteVideoCompletionBlockWithVideoPath_target_sel
       v16 = *MEMORY[0x1E695D940];
       v17 = MEMORY[0x1E696AEC0];
       v18 = objc_opt_class();
-      v19 = NSStringFromSelector(a5);
-      v20 = [v17 stringWithFormat:@"%@<%p> does not respond to selector %@", v18, v11, v19];
+      v19 = NSStringFromSelector(selector);
+      v20 = [v17 stringWithFormat:@"%@<%p> does not respond to selector %@", v18, targetCopy, v19];
       v21 = [v15 exceptionWithName:v16 reason:v20 userInfo:0];
       v22 = v21;
 
@@ -1528,11 +1528,11 @@ void __90__PLAssetsSaver_createWriteVideoCompletionBlockWithVideoPath_target_sel
     aBlock[1] = 3221225472;
     aBlock[2] = __86__PLAssetsSaver_createWriteImageCompletionBlockWithImage_target_selector_contextInfo___block_invoke;
     aBlock[3] = &unk_1E7565E40;
-    v26 = a1;
-    v24 = v10;
-    v25 = v11;
-    v27 = a5;
-    v28 = a6;
+    selfCopy = self;
+    v24 = imageCopy;
+    v25 = targetCopy;
+    selectorCopy = selector;
+    infoCopy = info;
     v13 = _Block_copy(aBlock);
     v12 = [v13 copy];
   }

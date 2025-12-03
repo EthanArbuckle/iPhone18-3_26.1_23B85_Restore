@@ -12,10 +12,10 @@
   [(PTSettings *)&v5 setDefaultValues];
   [(SBExternalDisplayRuntimeAvailabilitySettings *)self->_availabilitySettings setDefaultValues];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 externalDisplayDefaults];
+  externalDisplayDefaults = [v3 externalDisplayDefaults];
 
-  -[SBExternalDisplaySettings setFakeStorageForWirelessDisplaySupport:](self, "setFakeStorageForWirelessDisplaySupport:", [v4 allowWirelessDisplaysForExtendedDisplayMode]);
-  [v4 contentsScale];
+  -[SBExternalDisplaySettings setFakeStorageForWirelessDisplaySupport:](self, "setFakeStorageForWirelessDisplaySupport:", [externalDisplayDefaults allowWirelessDisplaysForExtendedDisplayMode]);
+  [externalDisplayDefaults contentsScale];
   [(SBExternalDisplaySettings *)self setFakeStorageForContentsScale:?];
   [(SBExternalDisplaySettings *)self setActiveDisplayTrackingMethodology:1];
 }
@@ -24,16 +24,16 @@
 {
   v44[3] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [MEMORY[0x277D431B8] rowWithTitle:@"Active Display Tracking" valueKeyPath:@"activeDisplayTrackingMethodology"];
   v4 = [v3 possibleValues:&unk_28336DED8 titles:&unk_28336DEF0];
-  [v33 addObject:v4];
+  [array addObject:v4];
 
-  v31 = [MEMORY[0x277D43210] sectionWithRows:v33 title:0];
+  v31 = [MEMORY[0x277D43210] sectionWithRows:array title:0];
   v32 = [SBExternalDisplayRuntimeAvailabilitySettings _moduleWithSectionTitle:@"Runtime Requirements (Deprecated)"];
   v30 = [MEMORY[0x277D43210] submoduleWithModule:v32 childSettingsKeyPath:@"availabilitySettings" condition:v2];
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 externalDisplayDefaults];
+  externalDisplayDefaults = [v5 externalDisplayDefaults];
 
   v7 = [MEMORY[0x277D432A8] rowWithTitle:@"Allow Wireless Displays" valueKeyPath:@"fakeStorageForWirelessDisplaySupport"];
   v8 = [v7 condition:v2];
@@ -42,7 +42,7 @@
   v40[1] = 3221225472;
   v40[2] = __53__SBExternalDisplaySettings_settingsControllerModule__block_invoke;
   v40[3] = &unk_2783ADCB8;
-  v9 = v6;
+  v9 = externalDisplayDefaults;
   v41 = v9;
   [v8 setValueValidatator:v40];
   v38[0] = MEMORY[0x277D85DD0];

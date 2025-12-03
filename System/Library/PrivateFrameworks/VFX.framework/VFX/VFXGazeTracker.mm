@@ -1,6 +1,6 @@
 @interface VFXGazeTracker
-+ (void)start:(id)a3;
-+ (void)stop:(id)a3;
++ (void)start:(id)start;
++ (void)stop:(id)stop;
 - (_TtC3VFX14VFXGazeTracker)init;
 @end
 
@@ -18,7 +18,7 @@
   return [(VFXGazeTracker *)&v5 init];
 }
 
-+ (void)start:(id)a3
++ (void)start:(id)start
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -31,16 +31,16 @@
   v3 = qword_1EB6C3608;
   if (qword_1EB6C3608)
   {
-    v4 = a3;
+    startCopy = start;
 LABEL_6:
     v9 = v3;
-    sub_1AFBF5AE8(a3);
+    sub_1AFBF5AE8(start);
 
     goto LABEL_7;
   }
 
   v5 = objc_allocWithZone(type metadata accessor for VFXGazeTracker());
-  v6 = a3;
+  startCopy2 = start;
   v7 = [v5 init];
   v8 = qword_1EB6C3608;
   qword_1EB6C3608 = v7;
@@ -54,7 +54,7 @@ LABEL_6:
 LABEL_7:
 }
 
-+ (void)stop:(id)a3
++ (void)stop:(id)stop
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -64,8 +64,8 @@ LABEL_7:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
-  sub_1AFBF6118(v4);
+  stopCopy = stop;
+  sub_1AFBF6118(stopCopy);
 }
 
 @end

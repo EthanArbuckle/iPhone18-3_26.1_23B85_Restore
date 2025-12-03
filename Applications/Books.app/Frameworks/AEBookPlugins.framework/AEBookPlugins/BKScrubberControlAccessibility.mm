@@ -4,7 +4,7 @@
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
 - (double)bkaxProgress;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -13,7 +13,7 @@
 - (id)bkaxThumb;
 - (int64_t)bkaxPageNumber;
 - (unint64_t)accessibilityTraits;
-- (void)_axTurnPage:(BOOL)a3;
+- (void)_axTurnPage:(BOOL)page;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
@@ -31,8 +31,8 @@
 - (id)bkaxDelegate
 {
   objc_opt_class();
-  v3 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  v4 = [v3 bkAccessibilityDelegate];
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  bkAccessibilityDelegate = [bkaxTarget bkAccessibilityDelegate];
   v5 = __IMAccessibilityCastAsClass();
 
   return v5;
@@ -40,16 +40,16 @@
 
 - (int64_t)bkaxPageNumber
 {
-  v2 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  v3 = [v2 pageNumber];
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  pageNumber = [bkaxTarget pageNumber];
 
-  return v3;
+  return pageNumber;
 }
 
 - (double)bkaxProgress
 {
-  v2 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  [v2 progress];
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  [bkaxTarget progress];
   v4 = v3;
 
   return v4;
@@ -57,19 +57,19 @@
 
 - (id)bkaxThumb
 {
-  v2 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  v3 = [v2 thumb];
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  thumb = [bkaxTarget thumb];
 
-  return v3;
+  return thumb;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  v8 = [v7 track];
-  [v8 frame];
+  y = test.y;
+  x = test.x;
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  track = [bkaxTarget track];
+  [track frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -83,36 +83,36 @@
   v20.y = y;
   if (CGRectContainsPoint(v21, v20))
   {
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)_axTurnPage:(BOOL)a3
+- (void)_axTurnPage:(BOOL)page
 {
-  v3 = a3;
-  v5 = [(BKScrubberControlAccessibility *)self bkaxDelegate];
-  if (v5)
+  pageCopy = page;
+  bkaxDelegate = [(BKScrubberControlAccessibility *)self bkaxDelegate];
+  if (bkaxDelegate)
   {
-    v16 = v5;
+    v16 = bkaxDelegate;
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v16 hasSpreadPages];
+      hasSpreadPages = [v16 hasSpreadPages];
     }
 
     else
     {
-      v6 = 0;
+      hasSpreadPages = 0;
     }
 
     objc_opt_class();
-    if ((v6 | objc_opt_isKindOfClass()))
+    if ((hasSpreadPages | objc_opt_isKindOfClass()))
     {
       v7 = 2;
     }
@@ -122,22 +122,22 @@
       v7 = 1;
     }
 
-    v8 = [(BKScrubberControlAccessibility *)self bkaxTarget];
+    bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-      v11 = [v10 pageCount];
+      bkaxTarget2 = [(BKScrubberControlAccessibility *)self bkaxTarget];
+      pageCount = [bkaxTarget2 pageCount];
     }
 
     else
     {
-      v11 = 0;
+      pageCount = 0;
     }
 
-    v12 = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
-    if (v3)
+    bkaxPageNumber = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
+    if (pageCopy)
     {
       v13 = v7;
     }
@@ -147,10 +147,10 @@
       v13 = -v7;
     }
 
-    v14 = v12 + v13;
-    if (v14 >= v11)
+    v14 = bkaxPageNumber + v13;
+    if (v14 >= pageCount)
     {
-      v14 = v11;
+      v14 = pageCount;
     }
 
     if (v14 <= 1)
@@ -171,37 +171,37 @@
 
     if (objc_opt_respondsToSelector())
     {
-      [(BKScrubberControlAccessibility *)self setValue:(v15 - 1) / (v11 - 1)];
+      [(BKScrubberControlAccessibility *)self setValue:(v15 - 1) / (pageCount - 1)];
     }
 
     [(BKScrubberControlAccessibility *)self sendActionsForControlEvents:4096];
     [(BKScrubberControlAccessibility *)self sendActionsForControlEvents:64];
-    v5 = v16;
+    bkaxDelegate = v16;
   }
 }
 
 - (BOOL)_accessibilityIsRTL
 {
-  v2 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-  v3 = [v2 track];
-  v4 = [v3 layoutDirection] == &dword_0 + 1;
+  bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+  track = [bkaxTarget track];
+  v4 = [track layoutDirection] == &dword_0 + 1;
 
   return v4;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(BKScrubberControlAccessibility *)self bkaxDelegate];
-  v3 = v2 != 0;
+  bkaxDelegate = [(BKScrubberControlAccessibility *)self bkaxDelegate];
+  v3 = bkaxDelegate != 0;
 
   return v3;
 }
 
 - (void)accessibilityIncrement
 {
-  v3 = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
+  bkaxPageNumber = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
   [(BKScrubberControlAccessibility *)self _axTurnPage:1];
-  if (v3 != [(BKScrubberControlAccessibility *)self bkaxPageNumber])
+  if (bkaxPageNumber != [(BKScrubberControlAccessibility *)self bkaxPageNumber])
   {
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, kAXAnnouncementTypeScrollSound);
     v4 = UIAccessibilityLayoutChangedNotification;
@@ -212,9 +212,9 @@
 
 - (void)accessibilityDecrement
 {
-  v3 = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
+  bkaxPageNumber = [(BKScrubberControlAccessibility *)self bkaxPageNumber];
   [(BKScrubberControlAccessibility *)self _axTurnPage:0];
-  if (v3 != [(BKScrubberControlAccessibility *)self bkaxPageNumber])
+  if (bkaxPageNumber != [(BKScrubberControlAccessibility *)self bkaxPageNumber])
   {
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, kAXAnnouncementTypeScrollSound);
     v4 = UIAccessibilityLayoutChangedNotification;
@@ -225,8 +225,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(BKScrubberControlAccessibility *)self bkaxThumb];
-  if (v3)
+  bkaxThumb = [(BKScrubberControlAccessibility *)self bkaxThumb];
+  if (bkaxThumb)
   {
     v25.receiver = self;
     v25.super_class = BKScrubberControlAccessibility;
@@ -235,7 +235,7 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v3 accessibilityFrame];
+    [bkaxThumb accessibilityFrame];
     v29.origin.x = v12;
     v29.origin.y = v13;
     v29.size.width = v14;
@@ -272,9 +272,9 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(BKScrubberControlAccessibility *)self _axIsLoading];
+  _axIsLoading = [(BKScrubberControlAccessibility *)self _axIsLoading];
   v3 = &UIAccessibilityTraitUpdatesFrequently;
-  if (!v2)
+  if (!_axIsLoading)
   {
     v3 = &UIAccessibilityTraitAdjustable;
   }
@@ -284,11 +284,11 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(BKScrubberControlAccessibility *)self bkaxThumb];
-  v4 = v3;
-  if (v3)
+  bkaxThumb = [(BKScrubberControlAccessibility *)self bkaxThumb];
+  v4 = bkaxThumb;
+  if (bkaxThumb)
   {
-    [v3 accessibilityActivationPoint];
+    [bkaxThumb accessibilityActivationPoint];
   }
 
   else
@@ -317,10 +317,10 @@
 
   else
   {
-    v4 = [(BKScrubberControlAccessibility *)self bkaxTarget];
-    v5 = [v4 orientation];
+    bkaxTarget = [(BKScrubberControlAccessibility *)self bkaxTarget];
+    orientation = [bkaxTarget orientation];
 
-    if (v5)
+    if (orientation)
     {
       v6 = @"page.control.hint.vertical";
     }

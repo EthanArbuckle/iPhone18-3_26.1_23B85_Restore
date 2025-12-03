@@ -1,14 +1,14 @@
 @interface ABPKSkeletonDefinition
-+ (id)computeParentChildOrderFor:(const void *)a3 withRoot:(int64_t)a4;
++ (id)computeParentChildOrderFor:(const void *)for withRoot:(int64_t)root;
 - (ABPKSkeletonDefinition)init;
-- (ABPKSkeletonDefinition)initWithPlist:(id)a3 fromBundle:(id)a4;
-- (ABPKSkeletonDefinition)initWithType:(int64_t)a3;
+- (ABPKSkeletonDefinition)initWithPlist:(id)plist fromBundle:(id)bundle;
+- (ABPKSkeletonDefinition)initWithType:(int64_t)type;
 - (id).cxx_construct;
-- (id)getChildrenIndices:(int64_t)a3;
-- (id)jointName:(int64_t)a3;
-- (int64_t)indexOfJointWithName:(id)a3;
-- (int64_t)parentJoint:(int64_t)a3;
-- (void)enumerateChildrenJointIndicesOfJointAtIndex:(int64_t)a3 withBlock:(id)a4;
+- (id)getChildrenIndices:(int64_t)indices;
+- (id)jointName:(int64_t)name;
+- (int64_t)indexOfJointWithName:(id)name;
+- (int64_t)parentJoint:(int64_t)joint;
+- (void)enumerateChildrenJointIndicesOfJointAtIndex:(int64_t)index withBlock:(id)block;
 @end
 
 @implementation ABPKSkeletonDefinition
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (ABPKSkeletonDefinition)initWithType:(int64_t)a3
+- (ABPKSkeletonDefinition)initWithType:(int64_t)type
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (a3 >= 5)
+  if (type >= 5)
   {
     v6 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -36,30 +36,30 @@
 
   else
   {
-    self = [(ABPKSkeletonDefinition *)self initWithPlist:off_278C718E0[a3] fromBundle:v5];
+    self = [(ABPKSkeletonDefinition *)self initWithPlist:off_278C718E0[type] fromBundle:v5];
   }
 
   return self;
 }
 
-- (ABPKSkeletonDefinition)initWithPlist:(id)a3 fromBundle:(id)a4
+- (ABPKSkeletonDefinition)initWithPlist:(id)plist fromBundle:(id)bundle
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  plistCopy = plist;
+  bundleCopy = bundle;
   v46.receiver = self;
   v46.super_class = ABPKSkeletonDefinition;
   v8 = [(ABPKSkeletonDefinition *)&v46 init];
   if (v8)
   {
-    v9 = [v7 pathForResource:v6 ofType:0];
+    v9 = [bundleCopy pathForResource:plistCopy ofType:0];
     if (!v9)
     {
       v11 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v6;
+        *&buf[4] = plistCopy;
         _os_log_impl(&dword_23EDDC000, v11, OS_LOG_TYPE_DEFAULT, " Could not find path for resource %@. ", buf, 0xCu);
       }
 
@@ -115,9 +115,9 @@
           }
 
           v15 = [v12 objectAtIndexedSubscript:v45];
-          v16 = [v15 integerValue];
+          integerValue = [v15 integerValue];
 
-          v44 = v16;
+          v44 = integerValue;
           std::vector<long>::push_back[abi:ne200100](&v8->_jointParentIndicesVector.__begin_, &v44);
           if (v44 != -1)
           {
@@ -263,69 +263,69 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
   [v5 setValue:v6 forKey:v7];
 }
 
-- (id)jointName:(int64_t)a3
+- (id)jointName:(int64_t)name
 {
-  if (a3 < 0)
+  if (name < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSArray *)self->_jointNames count]<= a3)
+    if ([(NSArray *)self->_jointNames count]<= name)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSArray *)self->_jointNames objectAtIndex:a3];
+      v6 = [(NSArray *)self->_jointNames objectAtIndex:name];
     }
   }
 
   return v6;
 }
 
-- (int64_t)indexOfJointWithName:(id)a3
+- (int64_t)indexOfJointWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_jointNamesToIndices objectForKey:a3];
+  v3 = [(NSDictionary *)self->_jointNamesToIndices objectForKey:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = -1;
+    integerValue = -1;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (int64_t)parentJoint:(int64_t)a3
+- (int64_t)parentJoint:(int64_t)joint
 {
-  if (a3 < 0)
+  if (joint < 0)
   {
     return -1;
   }
 
   begin = self->_jointParentIndicesVector.__begin_;
-  if (a3 >= (self->_jointParentIndicesVector.__end_ - begin))
+  if (joint >= (self->_jointParentIndicesVector.__end_ - begin))
   {
     return -1;
   }
 
   else
   {
-    return begin[a3];
+    return begin[joint];
   }
 }
 
-- (id)getChildrenIndices:(int64_t)a3
+- (id)getChildrenIndices:(int64_t)indices
 {
-  v10[0] = a3;
-  if (a3 < 0 || a3 >= (self->_jointParentIndicesVector.__end_ - self->_jointParentIndicesVector.__begin_))
+  v10[0] = indices;
+  if (indices < 0 || indices >= (self->_jointParentIndicesVector.__end_ - self->_jointParentIndicesVector.__begin_))
   {
     v8 = objc_opt_new();
   }
@@ -357,33 +357,33 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
   return v8;
 }
 
-- (void)enumerateChildrenJointIndicesOfJointAtIndex:(int64_t)a3 withBlock:(id)a4
+- (void)enumerateChildrenJointIndicesOfJointAtIndex:(int64_t)index withBlock:(id)block
 {
-  v10[0] = a3;
-  v6 = a4;
-  if ((a3 & 0x8000000000000000) == 0 && a3 < (self->_jointParentIndicesVector.__end_ - self->_jointParentIndicesVector.__begin_))
+  v10[0] = index;
+  blockCopy = block;
+  if ((index & 0x8000000000000000) == 0 && index < (self->_jointParentIndicesVector.__end_ - self->_jointParentIndicesVector.__begin_))
   {
     v10[2] = v10;
     v7 = std::__tree<std::__value_type<long,std::vector<long>>,std::__map_value_compare<long,std::__value_type<long,std::vector<long>>,std::less<long>,true>,std::allocator<std::__value_type<long,std::vector<long>>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(&self->_parentsToChildIndicesMap, v10);
     v8 = v7[5];
     for (i = v7[6]; v8 != i; ++v8)
     {
-      v6[2](v6, *v8);
+      blockCopy[2](blockCopy, *v8);
     }
   }
 }
 
-+ (id)computeParentChildOrderFor:(const void *)a3 withRoot:(int64_t)a4
++ (id)computeParentChildOrderFor:(const void *)for withRoot:(int64_t)root
 {
-  std::vector<int>::vector[abi:ne200100](&v45, (*(a3 + 1) - *a3) >> 3);
+  std::vector<int>::vector[abi:ne200100](&v45, (*(for + 1) - *for) >> 3);
   v6 = v45;
-  v45[a4] = 0;
+  v45[root] = 0;
   v42 = 0;
   v43 = 0;
   v44 = 0;
   v41 = 0;
-  v7 = *a3;
-  if (*(a3 + 1) == *a3)
+  v7 = *for;
+  if (*(for + 1) == *for)
   {
     v38 = 0;
     v39 = 0;
@@ -405,8 +405,8 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
         do
         {
           std::vector<long>::push_back[abi:ne200100](&v42, &v41);
-          v7 = *a3;
-          v41 = *(*a3 + 8 * v41);
+          v7 = *for;
+          v41 = *(*for + 8 * v41);
           v6 = v45;
           v11 = v45[v41];
         }
@@ -432,7 +432,7 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
       }
 
       ++v10;
-      v14 = *(a3 + 1);
+      v14 = *(for + 1);
     }
 
     while (v10 < (v14 - v7) >> 3);
@@ -463,8 +463,8 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
           }
 
           while (v18 + 1 > ((v39 - v38) >> 2));
-          v7 = *a3;
-          v14 = *(a3 + 1);
+          v7 = *for;
+          v14 = *(for + 1);
         }
 
         ++v15[v18];
@@ -489,7 +489,7 @@ void __51__ABPKSkeletonDefinition_initWithPlist_fromBundle___block_invoke(uint64
     ++v20;
   }
 
-  std::vector<int>::vector[abi:ne200100](&__p, (*(a3 + 1) - *a3) >> 3);
+  std::vector<int>::vector[abi:ne200100](&__p, (*(for + 1) - *for) >> 3);
   v22 = v45;
   v23 = __p;
   if (v46 != v45)

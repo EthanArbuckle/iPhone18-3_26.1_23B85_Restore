@@ -1,41 +1,41 @@
 @interface HKFeatureAvailabilityOnboardingAcknowledgementRequirement
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithFeatureIdentifier:(id)a3 onboardingAcknowledgedKey:(id)a4 isAcknowledged:(BOOL)a5;
-- (id)isSatisfiedWithOnboardingRecord:(id)a3 dataSource:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithFeatureIdentifier:(id)identifier onboardingAcknowledgedKey:(id)key isAcknowledged:(BOOL)acknowledged;
+- (id)isSatisfiedWithOnboardingRecord:(id)record dataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAvailabilityOnboardingAcknowledgementRequirement
 
-- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithFeatureIdentifier:(id)a3 onboardingAcknowledgedKey:(id)a4 isAcknowledged:(BOOL)a5
+- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithFeatureIdentifier:(id)identifier onboardingAcknowledgedKey:(id)key isAcknowledged:(BOOL)acknowledged
 {
-  v8 = a4;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = HKFeatureAvailabilityOnboardingAcknowledgementRequirement;
-  v9 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v13 initWithFeatureIdentifier:a3];
+  v9 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v13 initWithFeatureIdentifier:identifier];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [keyCopy copy];
     onboardingAcknowledgedKey = v9->_onboardingAcknowledgedKey;
     v9->_onboardingAcknowledgedKey = v10;
 
-    v9->_isAcknowledged = a5;
+    v9->_isAcknowledged = acknowledged;
   }
 
   return v9;
 }
 
-- (id)isSatisfiedWithOnboardingRecord:(id)a3 dataSource:(id)a4 error:(id *)a5
+- (id)isSatisfiedWithOnboardingRecord:(id)record dataSource:(id)source error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 featureSettings];
+  recordCopy = record;
+  featureSettings = [recordCopy featureSettings];
 
-  if (v7)
+  if (featureSettings)
   {
-    v8 = [v6 featureSettings];
-    v9 = [v8 numberForKey:self->_onboardingAcknowledgedKey];
+    featureSettings2 = [recordCopy featureSettings];
+    v9 = [featureSettings2 numberForKey:self->_onboardingAcknowledgedKey];
 
     if (v9 && [v9 BOOLValue])
     {
@@ -44,8 +44,8 @@
 
     else
     {
-      v11 = [v6 featureSettings];
-      v12 = [v11 numberForKey:@"OnboardingAcknowledgedDate"];
+      featureSettings3 = [recordCopy featureSettings];
+      v12 = [featureSettings3 numberForKey:@"OnboardingAcknowledgedDate"];
 
       isAcknowledged = self->_isAcknowledged;
       if (v12)
@@ -69,14 +69,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = HKFeatureAvailabilityOnboardingAcknowledgementRequirement;
-  if ([(HKFeatureAvailabilityOnboardingRecordRequirement *)&v10 isEqual:v4])
+  if ([(HKFeatureAvailabilityOnboardingRecordRequirement *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     onboardingAcknowledgedKey = self->_onboardingAcknowledgedKey;
     v7 = v5[3];
     v8 = (onboardingAcknowledgedKey == v7 || v7 && [(NSString *)onboardingAcknowledgedKey isEqual:?]) && self->_isAcknowledged == *(v5 + 16);
@@ -98,29 +98,29 @@
   return [(NSString *)self->_onboardingAcknowledgedKey hash]^ v3 ^ self->_isAcknowledged;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKFeatureAvailabilityOnboardingAcknowledgementRequirement;
-  v4 = a3;
-  [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_onboardingAcknowledgedKey forKey:{@"onboardingAcknowledgedKey", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_isAcknowledged forKey:@"isAcknowledged"];
+  coderCopy = coder;
+  [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_onboardingAcknowledgedKey forKey:{@"onboardingAcknowledgedKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_isAcknowledged forKey:@"isAcknowledged"];
 }
 
-- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithCoder:(id)a3
+- (HKFeatureAvailabilityOnboardingAcknowledgementRequirement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityOnboardingAcknowledgementRequirement;
-  v5 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v9 initWithCoder:v4];
+  v5 = [(HKFeatureAvailabilityOnboardingRecordRequirement *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onboardingAcknowledgedKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onboardingAcknowledgedKey"];
     onboardingAcknowledgedKey = v5->_onboardingAcknowledgedKey;
     v5->_onboardingAcknowledgedKey = v6;
 
-    v5->_isAcknowledged = [v4 decodeBoolForKey:@"isAcknowledged"];
+    v5->_isAcknowledged = [coderCopy decodeBoolForKey:@"isAcknowledged"];
   }
 
   return v5;

@@ -1,11 +1,11 @@
 @interface CryptexRemoteDeviceIdentifier
-- (CryptexRemoteDeviceIdentifier)initWithChipInstance:(const _img4_chip_instance *)a3;
+- (CryptexRemoteDeviceIdentifier)initWithChipInstance:(const _img4_chip_instance *)instance;
 - (void)dealloc;
 @end
 
 @implementation CryptexRemoteDeviceIdentifier
 
-- (CryptexRemoteDeviceIdentifier)initWithChipInstance:(const _img4_chip_instance *)a3
+- (CryptexRemoteDeviceIdentifier)initWithChipInstance:(const _img4_chip_instance *)instance
 {
   v15 = *MEMORY[0x29EDCA608];
   v12.receiver = self;
@@ -18,18 +18,18 @@
   }
 
   v4->_inst = v5;
-  v6 = *&a3->var17.var2[32];
-  *&v5->var17.var2[16] = *&a3->var17.var2[16];
+  v6 = *&instance->var17.var2[32];
+  *&v5->var17.var2[16] = *&instance->var17.var2[16];
   *&v5->var17.var2[32] = v6;
-  *&v5->var18 = *&a3->var18;
-  v7 = *&a3->var8;
-  *&v5->var5 = *&a3->var5;
+  *&v5->var18 = *&instance->var18;
+  v7 = *&instance->var8;
+  *&v5->var5 = *&instance->var5;
   *&v5->var8 = v7;
-  v8 = *a3->var17.var2;
-  *&v5->var17.var0 = *&a3->var17.var0;
+  v8 = *instance->var17.var2;
+  *&v5->var17.var0 = *&instance->var17.var0;
   *v5->var17.var2 = v8;
-  v9 = *&a3->var2;
-  *&v5->var0 = *&a3->var0;
+  v9 = *&instance->var2;
+  *&v5->var0 = *&instance->var0;
   *&v5->var2 = v9;
   v10 = *MEMORY[0x29EDCA608];
   return v4;

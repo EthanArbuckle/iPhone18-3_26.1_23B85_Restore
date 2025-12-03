@@ -1,6 +1,6 @@
 @interface DefaultDaemonServiceManager
 - (id)queue;
-- (void)bootstrapServiceWithType:(id)a3 clientConnection:(id)a4 completionHandler:(id)a5;
+- (void)bootstrapServiceWithType:(id)type clientConnection:(id)connection completionHandler:(id)handler;
 @end
 
 @implementation DefaultDaemonServiceManager
@@ -8,86 +8,86 @@
 - (id)queue
 {
   v2 = +[DaemonUtils sharedInstance];
-  v3 = [v2 serverQueue];
+  serverQueue = [v2 serverQueue];
 
-  return v3;
+  return serverQueue;
 }
 
-- (void)bootstrapServiceWithType:(id)a3 clientConnection:(id)a4 completionHandler:(id)a5
+- (void)bootstrapServiceWithType:(id)type clientConnection:(id)connection completionHandler:(id)handler
 {
-  v29 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [&off_100057EC0 objectForKeyedSubscript:v29];
+  typeCopy = type;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v10 = [&off_100057EC0 objectForKeyedSubscript:typeCopy];
   if (v10)
   {
-    v11 = [v8 valueForEntitlement:v10];
-    v12 = [v11 BOOLValue];
+    v11 = [connectionCopy valueForEntitlement:v10];
+    bOOLValue = [v11 BOOLValue];
 
-    if ((v12 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v14 = [LAErrorHelper missingEntitlementError:v10];
-      v9[2](v9, 0, v14);
+      secureStorage = [LAErrorHelper missingEntitlementError:v10];
+      handlerCopy[2](handlerCopy, 0, secureStorage);
       goto LABEL_12;
     }
   }
 
-  if ([v29 isEqualToString:@"kLAServiceTypeSecureStorage"])
+  if ([typeCopy isEqualToString:@"kLAServiceTypeSecureStorage"])
   {
     v13 = +[SecureStorageProvider sharedInstance];
-    v14 = [v13 secureStorage];
+    secureStorage = [v13 secureStorage];
 
     v15 = &OBJC_PROTOCOL___LACSecureStorageService;
 LABEL_10:
     v20 = [NSXPCInterface interfaceWithProtocol:v15];
-    v21 = [(DefaultDaemonServiceManager *)self queue];
-    v22 = [[LAServiceAdapter alloc] initWithExportedInterface:v20 exportedObject:v14 queue:v21];
-    (v9)[2](v9, v22, 0);
+    queue = [(DefaultDaemonServiceManager *)self queue];
+    v22 = [[LAServiceAdapter alloc] initWithExportedInterface:v20 exportedObject:secureStorage queue:queue];
+    (handlerCopy)[2](handlerCopy, v22, 0);
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v29 isEqualToString:@"kLAServiceTypeRatchet"])
+  if ([typeCopy isEqualToString:@"kLAServiceTypeRatchet"])
   {
     v16 = +[DaemonServiceLocator sharedInstance];
     v17 = [v16 dto];
-    v14 = [v17 xpcController];
+    secureStorage = [v17 xpcController];
 
     v15 = &OBJC_PROTOCOL___LACDTOServiceXPC;
     goto LABEL_10;
   }
 
-  if ([v29 isEqualToString:@"kLAServiceTypeEnvironment"])
+  if ([typeCopy isEqualToString:@"kLAServiceTypeEnvironment"])
   {
     v18 = +[DaemonServiceLocator sharedInstance];
-    v19 = [v18 environment];
-    v14 = [v19 xpcController];
+    environment = [v18 environment];
+    secureStorage = [environment xpcController];
 
     v15 = &OBJC_PROTOCOL___LACEnvironmentServiceXPC;
     goto LABEL_10;
   }
 
-  if ([v29 isEqualToString:@"kLAServiceTypeAnalytics"])
+  if ([typeCopy isEqualToString:@"kLAServiceTypeAnalytics"])
   {
     v23 = +[DaemonServiceLocator sharedInstance];
-    v24 = [v23 analytics];
-    v14 = [v24 xpcController];
+    analytics = [v23 analytics];
+    secureStorage = [analytics xpcController];
 
     v20 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LACAnalyticsServiceXPC];
     v25 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LACAnalyticsSessionXPC];
     [v20 setInterface:v25 forSelector:"startSessionForContext:dialogID:bundleID:reply:" argumentIndex:0 ofReply:1];
     [v20 setInterface:v25 forSelector:"connectSessionForContext:reply:" argumentIndex:0 ofReply:1];
-    v26 = [(DefaultDaemonServiceManager *)self queue];
-    v27 = [[LAServiceAdapter alloc] initWithExportedInterface:v20 exportedObject:v14 queue:v26];
-    (v9)[2](v9, v27, 0);
+    queue2 = [(DefaultDaemonServiceManager *)self queue];
+    v27 = [[LAServiceAdapter alloc] initWithExportedInterface:v20 exportedObject:secureStorage queue:queue2];
+    (handlerCopy)[2](handlerCopy, v27, 0);
 
     goto LABEL_11;
   }
 
-  v14 = [NSString stringWithFormat:@"Invalid serviceType: %@", v29];
-  v28 = [LAErrorHelper internalErrorWithMessage:v14];
-  v9[2](v9, 0, v28);
+  secureStorage = [NSString stringWithFormat:@"Invalid serviceType: %@", typeCopy];
+  v28 = [LAErrorHelper internalErrorWithMessage:secureStorage];
+  handlerCopy[2](handlerCopy, 0, v28);
 
 LABEL_12:
 }

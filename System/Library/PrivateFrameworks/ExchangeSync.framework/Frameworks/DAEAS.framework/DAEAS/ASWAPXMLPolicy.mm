@@ -8,7 +8,7 @@
 - (id)_policyForWAPProvisioningXMLData;
 - (id)_wbxmlPolicyDict;
 - (id)perDomainDictsForPolicy;
-- (void)_setData:(id)a3;
+- (void)_setData:(id)data;
 @end
 
 @implementation ASWAPXMLPolicy
@@ -22,7 +22,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_2 = v2;
     acceptsTopLevelLeaves___haveChecked_2 = 1;
   }
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_2 = v2;
     parsingLeafNode___haveChecked_2 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_2 = v2;
     parsingWithSubItems___haveChecked_2 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_2 = v2;
     frontingBasicTypes___haveChecked_2 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_2 = v2;
     notifyOfUnknownTokens___haveChecked_2 = 1;
   }
@@ -98,11 +98,11 @@
   return v2 & 1;
 }
 
-- (void)_setData:(id)a3
+- (void)_setData:(id)data
 {
-  if (self->_data != a3)
+  if (self->_data != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     data = self->_data;
     self->_data = v4;
 
@@ -113,12 +113,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___ASWAPXMLPolicy;
     v6 = objc_msgSendSuper2(&v14, sel_asParseRules);
     v5 = [v6 mutableCopy];
@@ -130,7 +130,7 @@
 
     [v5 addEntriesFromDictionary:v10];
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
@@ -139,8 +139,8 @@
 
 - (id)_policyForWAPProvisioningXMLData
 {
-  v2 = [(ASWAPXMLPolicy *)self data];
-  Memory = xmlReadMemory([v2 bytes], objc_msgSend(v2, "length"), 0, 0, 0);
+  data = [(ASWAPXMLPolicy *)self data];
+  Memory = xmlReadMemory([data bytes], objc_msgSend(data, "length"), 0, 0, 0);
   if (Memory)
   {
     RootElement = xmlDocGetRootElement(Memory);
@@ -250,7 +250,7 @@ LABEL_29:
         goto LABEL_57;
       }
 
-      v30 = v2;
+      v30 = data;
       v32 = v9;
 LABEL_34:
       if (v19->type != XML_ELEMENT_NODE || xmlStrcmp(v19->name, "characteristic"))
@@ -343,7 +343,7 @@ LABEL_53:
         if (!v21)
         {
 
-          v2 = v30;
+          data = v30;
           v9 = v32;
 LABEL_55:
 
@@ -377,13 +377,13 @@ LABEL_8:
 - (id)_wbxmlPolicyDict
 {
   v45[3] = *MEMORY[0x277D85DE8];
-  v2 = [(ASWAPXMLPolicy *)self _policyForWAPProvisioningXMLData];
-  v3 = [v2 objectForKeyedSubscript:@"ASPolicyEnabled"];
-  v4 = [v3 BOOLValue];
+  _policyForWAPProvisioningXMLData = [(ASWAPXMLPolicy *)self _policyForWAPProvisioningXMLData];
+  v3 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:@"ASPolicyEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v2, "count")}];
+    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(_policyForWAPProvisioningXMLData, "count")}];
     if (!_wbxmlPolicyDict_policyMapping)
     {
       v44[0] = @"MinimumPasswordLength";
@@ -405,8 +405,8 @@ LABEL_8:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = [v2 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    allKeys = [_policyForWAPProvisioningXMLData allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v11)
     {
       v12 = v11;
@@ -419,14 +419,14 @@ LABEL_8:
         {
           if (*v36 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v35 + 1) + 8 * v14);
           v16 = [_wbxmlPolicyDict_policyMapping objectForKeyedSubscript:v15];
           if (v16)
           {
-            v17 = [v2 objectForKeyedSubscript:v15];
+            v17 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:v15];
             v18 = v5;
             v19 = v17;
             v20 = v16;
@@ -437,18 +437,18 @@ LABEL_8:
           {
             if ([v15 isEqualToString:@"PasswordComplexity"])
             {
-              v21 = [v2 objectForKeyedSubscript:v15];
-              v22 = [v21 intValue];
+              v21 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:v15];
+              intValue = [v21 intValue];
 
-              if ((v22 - 1) >= 2)
+              if ((intValue - 1) >= 2)
               {
-                if (v22)
+                if (intValue)
                 {
                   v27 = DALoggingwithCategory();
                   if (os_log_type_enabled(v27, type))
                   {
                     *buf = 67109120;
-                    LODWORD(v40) = v22;
+                    LODWORD(v40) = intValue;
                     _os_log_impl(&dword_24A0AC000, v27, type, "Unknown value %d set for 2003 password complexity value", buf, 8u);
                   }
                 }
@@ -468,7 +468,7 @@ LABEL_8:
                 v17 = DALoggingwithCategory();
                 if (os_log_type_enabled(v17, type))
                 {
-                  v28 = [v2 objectForKeyedSubscript:v15];
+                  v28 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:v15];
                   *buf = 138412546;
                   v40 = v15;
                   v41 = 2112;
@@ -480,15 +480,15 @@ LABEL_8:
                 goto LABEL_12;
               }
 
-              v23 = [v2 objectForKeyedSubscript:@"AEFrequencyType"];
-              v24 = [v23 BOOLValue];
+              v23 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:@"AEFrequencyType"];
+              bOOLValue2 = [v23 BOOLValue];
 
-              if (v24)
+              if (bOOLValue2)
               {
-                v25 = [v2 objectForKeyedSubscript:@"AEFrequencyValue"];
-                v26 = [v25 intValue];
+                v25 = [_policyForWAPProvisioningXMLData objectForKeyedSubscript:@"AEFrequencyValue"];
+                intValue2 = [v25 intValue];
 
-                v17 = [MEMORY[0x277CCABB0] numberWithInt:(60 * v26)];
+                v17 = [MEMORY[0x277CCABB0] numberWithInt:(60 * intValue2)];
                 v18 = v5;
                 v19 = v17;
                 v20 = @"MaxInactivityTimeDeviceLock";
@@ -503,7 +503,7 @@ LABEL_12:
         }
 
         while (v12 != v14);
-        v30 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v30 = [allKeys countByEnumeratingWithState:&v35 objects:v43 count:16];
         v12 = v30;
       }
 
@@ -513,12 +513,12 @@ LABEL_12:
 
   else
   {
-    v10 = DALoggingwithCategory();
+    allKeys = DALoggingwithCategory();
     v31 = *(MEMORY[0x277D03988] + 6);
-    if (os_log_type_enabled(v10, v31))
+    if (os_log_type_enabled(allKeys, v31))
     {
       *buf = 0;
-      _os_log_impl(&dword_24A0AC000, v10, v31, "EAS 2003 policy is not enabled, treating as empty 2007 policy", buf, 2u);
+      _os_log_impl(&dword_24A0AC000, allKeys, v31, "EAS 2003 policy is not enabled, treating as empty 2007 policy", buf, 2u);
     }
 
     v5 = 0;
@@ -531,10 +531,10 @@ LABEL_12:
 
 - (id)perDomainDictsForPolicy
 {
-  v2 = [(ASWAPXMLPolicy *)self _wbxmlPolicyDict];
+  _wbxmlPolicyDict = [(ASWAPXMLPolicy *)self _wbxmlPolicyDict];
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  v4 = managedConfigurationPoliciesFromEASWBXMLPolicies(v2);
-  v5 = perAccountEASPoliciesFromEASWBXMLPolicies(v2);
+  v4 = managedConfigurationPoliciesFromEASWBXMLPolicies(_wbxmlPolicyDict);
+  v5 = perAccountEASPoliciesFromEASWBXMLPolicies(_wbxmlPolicyDict);
   if (v4)
   {
     [v3 setObject:v4 forKeyedSubscript:@"ASPolicyMCFeatures"];

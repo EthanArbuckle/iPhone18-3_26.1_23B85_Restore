@@ -1,31 +1,31 @@
 @interface SBExternalDisplayCoverSheetViewController
 - (SBWindowScene)_sbWindowScene;
 - (id)_floatingDockController;
-- (id)_initWithWindowScene:(id)a3 wallpaperEffectViewFactory:(id)a4;
+- (id)_initWithWindowScene:(id)scene wallpaperEffectViewFactory:(id)factory;
 - (id)newWallpaperEffectView;
 - (void)cleanupAfterDismissal;
 - (void)dealloc;
 - (void)prepareForPresentation;
 - (void)viewDidLoad;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBExternalDisplayCoverSheetViewController
 
-- (id)_initWithWindowScene:(id)a3 wallpaperEffectViewFactory:(id)a4
+- (id)_initWithWindowScene:(id)scene wallpaperEffectViewFactory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  factoryCopy = factory;
   v14.receiver = self;
   v14.super_class = SBExternalDisplayCoverSheetViewController;
   v8 = [(SBExternalDisplayCoverSheetViewController *)&v14 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sbWindowScene, v6);
-    objc_storeStrong(&v9->_wallpaperEffectViewFactory, a4);
-    v10 = [v6 zStackResolver];
-    v11 = [v10 acquireParticipantWithIdentifier:8 delegate:v9];
+    objc_storeWeak(&v8->_sbWindowScene, sceneCopy);
+    objc_storeStrong(&v9->_wallpaperEffectViewFactory, factory);
+    zStackResolver = [sceneCopy zStackResolver];
+    v11 = [zStackResolver acquireParticipantWithIdentifier:8 delegate:v9];
     zStackParticipant = v9->_zStackParticipant;
     v9->_zStackParticipant = v11;
   }
@@ -55,23 +55,23 @@
   [(SBExternalDisplayCoverSheetViewController *)&v17 viewDidLoad];
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  v5 = [WeakRetained screen];
-  [v5 bounds];
+  screen = [WeakRetained screen];
+  [screen bounds];
   v6 = [v4 initWithFrame:?];
   wallpaperContainerView = self->_wallpaperContainerView;
   self->_wallpaperContainerView = v6;
 
   v8 = self->_wallpaperContainerView;
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v8 setBackgroundColor:clearColor];
 
   [(UIView *)self->_wallpaperContainerView setUserInteractionEnabled:0];
   [(UIView *)self->_wallpaperContainerView setHidden:0];
   [(UIView *)self->_wallpaperContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(SBExternalDisplayCoverSheetViewController *)self view];
-  [v10 addSubview:self->_wallpaperContainerView];
+  view = [(SBExternalDisplayCoverSheetViewController *)self view];
+  [view addSubview:self->_wallpaperContainerView];
 
-  v11 = [(SBExternalDisplayCoverSheetViewController *)self view];
+  view2 = [(SBExternalDisplayCoverSheetViewController *)self view];
   v12 = SBHPinViewWithinView();
 
   if (self->_wallpaperEffectViewFactory)
@@ -84,9 +84,9 @@
     wallpaperEffectViewFactory = self;
   }
 
-  v14 = [wallpaperEffectViewFactory newWallpaperEffectView];
+  newWallpaperEffectView = [wallpaperEffectViewFactory newWallpaperEffectView];
   wallpaperEffectView = self->_wallpaperEffectView;
-  self->_wallpaperEffectView = v14;
+  self->_wallpaperEffectView = newWallpaperEffectView;
 
   [(UIView *)self->_wallpaperEffectView setClipsToBounds:1];
   [(UIView *)self->_wallpaperEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -112,10 +112,10 @@
 
 - (id)_floatingDockController
 {
-  v2 = [(SBExternalDisplayCoverSheetViewController *)self _sbWindowScene];
-  v3 = [v2 floatingDockController];
+  _sbWindowScene = [(SBExternalDisplayCoverSheetViewController *)self _sbWindowScene];
+  floatingDockController = [_sbWindowScene floatingDockController];
 
-  return v3;
+  return floatingDockController;
 }
 
 - (id)newWallpaperEffectView
@@ -125,7 +125,7 @@
   return [(SBExternalDisplayWallpaperEffectView *)v3 initExternalDisplayWithDelegate:self wallpaperVariant:0 transformOptions:15];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
   if (self->_isPresented)
   {
@@ -137,7 +137,7 @@
     v4 = 0;
   }
 
-  [a4 setActivationPolicyForParticipantsBelow:v4];
+  [preferences setActivationPolicyForParticipantsBelow:v4];
 }
 
 - (SBWindowScene)_sbWindowScene

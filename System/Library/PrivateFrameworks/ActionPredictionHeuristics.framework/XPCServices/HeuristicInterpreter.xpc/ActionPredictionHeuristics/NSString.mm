@@ -14,13 +14,13 @@
   {
     if ([(NSString *)self length]== 9)
     {
-      v3 = self;
+      selfCopy = self;
 LABEL_5:
-      v4 = v3;
+      v4 = selfCopy;
 LABEL_12:
       v6 = +[NSCharacterSet decimalDigitCharacterSet];
-      v7 = [v6 invertedSet];
-      v5 = [(NSString *)v4 rangeOfCharacterFromSet:v7]== 0x7FFFFFFFFFFFFFFFLL;
+      invertedSet = [v6 invertedSet];
+      v5 = [(NSString *)v4 rangeOfCharacterFromSet:invertedSet]== 0x7FFFFFFFFFFFFFFFLL;
 
       return v5;
     }
@@ -33,7 +33,7 @@ LABEL_12:
 
     if ([(NSString *)self characterAtIndex:3]== 45 && [(NSString *)self characterAtIndex:6]== 45)
     {
-      v3 = [(NSString *)self stringByReplacingOccurrencesOfString:@"-" withString:&stru_100025D20];
+      selfCopy = [(NSString *)self stringByReplacingOccurrencesOfString:@"-" withString:&stru_100025D20];
       goto LABEL_5;
     }
   }
@@ -45,8 +45,8 @@ LABEL_12:
 {
   v2 = [(NSString *)self stringByReplacingOccurrencesOfString:@" " withString:&stru_100025D20];
   v3 = +[NSCharacterSet decimalDigitCharacterSet];
-  v4 = [v3 invertedSet];
-  v5 = [v2 rangeOfCharacterFromSet:v4];
+  invertedSet = [v3 invertedSet];
+  v5 = [v2 rangeOfCharacterFromSet:invertedSet];
 
   v6 = [v2 length];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL || (v6 - 15) > 1)
@@ -57,12 +57,12 @@ LABEL_12:
   else
   {
     v9 = v6;
-    v10 = [v2 UTF8String];
+    uTF8String = [v2 UTF8String];
     v11 = 0;
     v12 = v9 - 1;
     do
     {
-      LOBYTE(v13) = v12[v10] - 48;
+      LOBYTE(v13) = v12[uTF8String] - 48;
       if (((v12 ^ v9) & 1) == 0)
       {
         v13 = (2 * v13);
@@ -152,15 +152,15 @@ LABEL_18:
 
 - (id)atx_phoneNumberFromTelURLString
 {
-  v2 = self;
-  if ([(NSString *)v2 hasPrefix:@"tel://"])
+  selfCopy = self;
+  if ([(NSString *)selfCopy hasPrefix:@"tel://"])
   {
     v3 = 6;
   }
 
   else
   {
-    if (![(NSString *)v2 hasPrefix:@"tel:"])
+    if (![(NSString *)selfCopy hasPrefix:@"tel:"])
     {
       goto LABEL_6;
     }
@@ -168,11 +168,11 @@ LABEL_18:
     v3 = 4;
   }
 
-  v4 = [(NSString *)v2 substringFromIndex:v3];
+  v4 = [(NSString *)selfCopy substringFromIndex:v3];
 
-  v2 = v4;
+  selfCopy = v4;
 LABEL_6:
-  v5 = [(NSString *)v2 stringByReplacingOccurrencesOfString:@"p" withString:@", "];
+  v5 = [(NSString *)selfCopy stringByReplacingOccurrencesOfString:@"p" withString:@", "];
 
   v6 = [v5 stringByReplacingOccurrencesOfString:@"w" withString:@""];;
 
@@ -191,21 +191,21 @@ LABEL_6:
     v6 = v10;
   }
 
-  v11 = [v6 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v6 stringByRemovingPercentEncoding];
 
   if (v8)
   {
     v12 = [v8 rangeOfString:@";ext=" options:2];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [v8 stringByRemovingPercentEncoding];
-      v15 = [v14 stringByReplacingOccurrencesOfString:@"p" withString:{@", "}];
+      stringByRemovingPercentEncoding2 = [v8 stringByRemovingPercentEncoding];
+      v15 = [stringByRemovingPercentEncoding2 stringByReplacingOccurrencesOfString:@"p" withString:{@", "}];
 
       v16 = [v15 stringByReplacingOccurrencesOfString:@"w" withString:@""];;
 
-      v17 = [v11 stringByAppendingString:v16];
+      v17 = [stringByRemovingPercentEncoding stringByAppendingString:v16];
 
-      v11 = v17;
+      stringByRemovingPercentEncoding = v17;
     }
 
     else
@@ -222,18 +222,18 @@ LABEL_6:
         [v8 substringWithRange:{v18, v19 - v18}];
       }
       v20 = ;
-      v21 = [v20 stringByRemovingPercentEncoding];
+      stringByRemovingPercentEncoding3 = [v20 stringByRemovingPercentEncoding];
 
-      v25[0] = v11;
-      v25[1] = v21;
+      v25[0] = stringByRemovingPercentEncoding;
+      v25[1] = stringByRemovingPercentEncoding3;
       v22 = [NSArray arrayWithObjects:v25 count:2];
       v23 = [v22 componentsJoinedByString:{@", "}];
 
-      v11 = v23;
+      stringByRemovingPercentEncoding = v23;
     }
   }
 
-  return v11;
+  return stringByRemovingPercentEncoding;
 }
 
 - (id)atx_appNameFromBundleID
@@ -264,7 +264,7 @@ LABEL_6:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v10 = 138412290;
-          v11 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "LSApplicationRecord cannot find localizedName for bundleID even though it is installed: %@", &v10, 0xCu);
         }
 
@@ -278,7 +278,7 @@ LABEL_6:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "bundleID has no installed application: %@", &v10, 0xCu);
       }
 

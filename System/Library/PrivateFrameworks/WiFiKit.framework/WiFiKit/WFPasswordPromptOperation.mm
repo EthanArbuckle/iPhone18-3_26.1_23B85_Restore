@@ -1,13 +1,13 @@
 @interface WFPasswordPromptOperation
-+ (id)passwordPromptOperationWithCredentialsContext:(id)a3;
++ (id)passwordPromptOperationWithCredentialsContext:(id)context;
 @end
 
 @implementation WFPasswordPromptOperation
 
-+ (id)passwordPromptOperationWithCredentialsContext:(id)a3
++ (id)passwordPromptOperationWithCredentialsContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLogForCategory(3uLL);
   v5 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
@@ -15,7 +15,7 @@
     *buf = 136315394;
     v36 = "+[WFPasswordPromptOperation passwordPromptOperationWithCredentialsContext:]";
     v37 = 2112;
-    v38 = v3;
+    v38 = contextCopy;
     _os_log_impl(&dword_273ECD000, v4, v5, "%s: creating password prompt for context %@", buf, 0x16u);
   }
 
@@ -23,9 +23,9 @@
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v31 = [v7 localizedStringForKey:@"kWFLocPasswordAlertTitle" value:&stru_2882E4AD8 table:@"WiFiKitUILocalizableStrings"];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v3 network];
-  v10 = [v9 ssid];
-  v30 = [v8 stringWithFormat:v31, v10];
+  network = [contextCopy network];
+  ssid = [network ssid];
+  v30 = [v8 stringWithFormat:v31, ssid];
 
   if (v30)
   {
@@ -35,9 +35,9 @@
   else
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v3 network];
-    v13 = [v12 ssid];
-    v14 = [v11 stringWithFormat:@"Enter the password for “%@”", v13];
+    network2 = [contextCopy network];
+    ssid2 = [network2 ssid];
+    v14 = [v11 stringWithFormat:@"Enter the password for “%@”", ssid2];
     [v6 setObject:v14 forKey:*MEMORY[0x277CBF188]];
   }
 
@@ -71,7 +71,7 @@
   [v6 setObject:MEMORY[0x277CBEC38] forKey:@"SBUserNotificationDismissOnLock"];
   [v6 setObject:&stru_2882E4AD8 forKey:@"SBUserNotificationAlertMessageDelimiterKey"];
   v21 = [objc_alloc(objc_opt_class()) initWithOptions:v6 timeout:0x10000 flags:0.0];
-  [v21 setCredentialsProviderContext:v3];
+  [v21 setCredentialsProviderContext:contextCopy];
   objc_initWeak(&location, v21);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -91,9 +91,9 @@
   }
 
   v24 = MEMORY[0x277CCACA8];
-  v25 = [v3 network];
-  v26 = [v25 ssid];
-  v27 = [v24 stringWithFormat:@"Password prompt for '%@'", v26];
+  network3 = [contextCopy network];
+  ssid3 = [network3 ssid];
+  v27 = [v24 stringWithFormat:@"Password prompt for '%@'", ssid3];
   [v21 setName:v27];
 
   objc_destroyWeak(&v33);

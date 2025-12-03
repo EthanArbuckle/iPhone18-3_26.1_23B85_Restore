@@ -1,35 +1,35 @@
 @interface CDASchemaCDAElectionAdvertisingStartStarted
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAElectionAdvertisingStartStarted)initWithDictionary:(id)a3;
-- (CDASchemaCDAElectionAdvertisingStartStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAElectionAdvertisingStartStarted)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAElectionAdvertisingStartStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAdvertisementDelay:(BOOL)a3;
-- (void)setHasAdvertisementInterval:(BOOL)a3;
-- (void)setHasVoiceTriggerLatency:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAdvertisementDelay:(BOOL)delay;
+- (void)setHasAdvertisementInterval:(BOOL)interval;
+- (void)setHasVoiceTriggerLatency:(BOOL)latency;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAElectionAdvertisingStartStarted
 
-- (CDASchemaCDAElectionAdvertisingStartStarted)initWithDictionary:(id)a3
+- (CDASchemaCDAElectionAdvertisingStartStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CDASchemaCDAElectionAdvertisingStartStarted;
   v5 = [(CDASchemaCDAElectionAdvertisingStartStarted *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"state"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAElectionAdvertisingStartStarted setState:](v5, "setState:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"advertisementInterval"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"advertisementInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(CDASchemaCDAElectionAdvertisingStartStarted *)v5 setAdvertisementInterval:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"advertisementDelay"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"advertisementDelay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(CDASchemaCDAElectionAdvertisingStartStarted *)v5 setAdvertisementDelay:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"voiceTriggerLatency"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (CDASchemaCDAElectionAdvertisingStartStarted)initWithJSON:(id)a3
+- (CDASchemaCDAElectionAdvertisingStartStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAElectionAdvertisingStartStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAElectionAdvertisingStartStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAElectionAdvertisingStartStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,14 +95,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(CDASchemaCDAElectionAdvertisingStartStarted *)self advertisementDelay];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"advertisementDelay"];
+    [dictionary setObject:v9 forKeyedSubscript:@"advertisementDelay"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -125,7 +125,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(CDASchemaCDAElectionAdvertisingStartStarted *)self advertisementInterval];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"advertisementInterval"];
+  [dictionary setObject:v11 forKeyedSubscript:@"advertisementInterval"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -151,7 +151,7 @@ LABEL_11:
     v13 = off_1E78D2710[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"state"];
+  [dictionary setObject:v13 forKeyedSubscript:@"state"];
   if ((*&self->_has & 8) == 0)
   {
     goto LABEL_6;
@@ -161,12 +161,12 @@ LABEL_5:
   v5 = MEMORY[0x1E696AD98];
   [(CDASchemaCDAElectionAdvertisingStartStarted *)self voiceTriggerLatency];
   v6 = [v5 numberWithFloat:?];
-  [v3 setObject:v6 forKeyedSubscript:@"voiceTriggerLatency"];
+  [dictionary setObject:v6 forKeyedSubscript:@"voiceTriggerLatency"];
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -303,16 +303,16 @@ LABEL_10:
   return v9 ^ v4 ^ v10 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -321,13 +321,13 @@ LABEL_10:
   if (*&has)
   {
     state = self->_state;
-    if (state != [v4 state])
+    if (state != [equalCopy state])
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -336,14 +336,14 @@ LABEL_10:
     if (v8)
     {
       advertisementInterval = self->_advertisementInterval;
-      [v4 advertisementInterval];
+      [equalCopy advertisementInterval];
       if (advertisementInterval != v10)
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -352,20 +352,20 @@ LABEL_10:
       if (v11)
       {
         advertisementDelay = self->_advertisementDelay;
-        [v4 advertisementDelay];
+        [equalCopy advertisementDelay];
         if (advertisementDelay != v13)
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v14 = (*&has >> 3) & 1;
       if (v14 == ((v6 >> 3) & 1))
       {
-        if (!v14 || (voiceTriggerLatency = self->_voiceTriggerLatency, [v4 voiceTriggerLatency], voiceTriggerLatency == v16))
+        if (!v14 || (voiceTriggerLatency = self->_voiceTriggerLatency, [equalCopy voiceTriggerLatency], voiceTriggerLatency == v16))
         {
           v17 = 1;
           goto LABEL_18;
@@ -381,9 +381,9 @@ LABEL_18:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -430,9 +430,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasVoiceTriggerLatency:(BOOL)a3
+- (void)setHasVoiceTriggerLatency:(BOOL)latency
 {
-  if (a3)
+  if (latency)
   {
     v3 = 8;
   }
@@ -445,9 +445,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAdvertisementDelay:(BOOL)a3
+- (void)setHasAdvertisementDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 4;
   }
@@ -460,9 +460,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAdvertisementInterval:(BOOL)a3
+- (void)setHasAdvertisementInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }

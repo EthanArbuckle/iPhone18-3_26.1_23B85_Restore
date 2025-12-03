@@ -1,23 +1,23 @@
 @interface AXInvertColors_CameraEffectsKit
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_CameraEffectsKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CFXCaptureViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CFXFilterEffectPickerView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CFXCaptureViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CFXFilterEffectPickerView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"CFXCaptureViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CFXFilterEffectPickerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CFXFilterPickerCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"CFXCaptureViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CFXFilterEffectPickerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CFXFilterPickerCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -8,7 +8,7 @@
 {
   v18 = a12;
   v19 = a13;
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = a11 & 7;
   if (v21 <= 3)
   {
@@ -22,7 +22,7 @@
         v110.size.height = a8;
         MaxX = CGRectGetMaxX(v110);
         rect = a7;
-        v111.origin.x = a1;
+        v111.origin.x = self;
         v111.origin.y = a2;
         v111.size.width = a3;
         v111.size.height = a4;
@@ -33,31 +33,31 @@
         v112.size.width = a7;
         v112.size.height = a8;
         v25 = CGRectGetMinX(v112) - v23;
-        v113.origin.x = a1;
+        v113.origin.x = self;
         v113.origin.y = a2;
         v113.size.width = a3;
         v113.size.height = a4;
         v26 = [v24 constraintWithItem:v18 attribute:34 relatedBy:0 toItem:v19 attribute:7 constant:v25 + CGRectGetWidth(v113) * -0.5];
-        [v20 addObject:v26];
+        [array addObject:v26];
         v27 = MEMORY[0x1E6997770];
-        v28 = a1;
+        selfCopy2 = self;
         v29 = a2;
         v30 = a3;
         v31 = a4;
 LABEL_8:
-        v32 = [v27 constraintWithItem:v18 attribute:7 relatedBy:0 constant:CGRectGetWidth(*&v28)];
+        v32 = [v27 constraintWithItem:v18 attribute:7 relatedBy:0 constant:CGRectGetWidth(*&selfCopy2)];
         goto LABEL_43;
       }
 
 LABEL_7:
-      v114.origin.x = a1;
+      v114.origin.x = self;
       v114.origin.y = a2;
       v114.size.width = a3;
       v114.size.height = a4;
       v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:34 relatedBy:0 constant:CGRectGetMidX(v114)];
-      [v20 addObject:v26];
+      [array addObject:v26];
       v27 = MEMORY[0x1E6997770];
-      v28 = a1;
+      selfCopy2 = self;
       v29 = a2;
       v30 = a3;
       v31 = a4;
@@ -66,7 +66,7 @@ LABEL_7:
 
     if (v21 == 2)
     {
-      v115.origin.x = a1;
+      v115.origin.x = self;
       v115.origin.y = a2;
       v115.size.width = a3;
       v115.size.height = a4;
@@ -81,13 +81,13 @@ LABEL_7:
       v117.size.width = a7;
       v117.size.height = a8;
       v33 = CGRectGetMaxX(v117);
-      v118.origin.x = a1;
+      v118.origin.x = self;
       v118.origin.y = a2;
       v118.size.width = a3;
       v118.size.height = a4;
       v34 = v33 - CGRectGetMaxX(v118);
       v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:34 relatedBy:0 toItem:v19 attribute:34 multiplier:1.0 constant:(rect - v34) * 0.5];
-      [v20 addObject:v26];
+      [array addObject:v26];
       v32 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:7 relatedBy:0 toItem:v19 attribute:7 constant:-(rect + v34)];
       goto LABEL_43;
     }
@@ -97,7 +97,7 @@ LABEL_7:
     v129.size.width = a7;
     v129.size.height = a8;
     v49 = CGRectGetMaxX(v129);
-    v130.origin.x = a1;
+    v130.origin.x = self;
     v130.size.width = a3;
     v130.size.height = a4;
     v130.origin.y = a2;
@@ -120,7 +120,7 @@ LABEL_23:
         v133.size.height = a8;
         MinX = CGRectGetMinX(v133);
         v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:34 relatedBy:0 toItem:v19 attribute:34 multiplier:2.0 - v40 constant:MinX * (v40 * 1.5 + -1.0) + v51 * (v40 * 0.5 + -1.0)];
-        [v20 addObject:v26];
+        [array addObject:v26];
         v44 = MEMORY[0x1E6997770];
         v43 = -(v40 * (v51 + MinX));
         goto LABEL_24;
@@ -136,7 +136,7 @@ LABEL_23:
       }
     }
 
-    v132.origin.x = a1;
+    v132.origin.x = self;
     v132.size.width = a3;
     v132.size.height = a4;
     v132.origin.y = a2;
@@ -162,12 +162,12 @@ LABEL_23:
       if (*MEMORY[0x1E6997758] > 0.0)
       {
 LABEL_19:
-        v128.origin.x = a1;
+        v128.origin.x = self;
         v128.size.width = a3;
         v128.size.height = a4;
         v128.origin.y = a2;
         v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:7 relatedBy:0 constant:CGRectGetWidth(v128)];
-        [v20 addObject:v26];
+        [array addObject:v26];
         v44 = MEMORY[0x1E6997770];
         v43 = 0.0;
         v47 = v18;
@@ -187,7 +187,7 @@ LABEL_25:
       }
     }
 
-    v126.origin.x = a1;
+    v126.origin.x = self;
     v126.size.width = a3;
     v126.size.height = a4;
     v126.origin.y = a2;
@@ -202,7 +202,7 @@ LABEL_25:
 
   if (v21 == 6)
   {
-    v119.origin.x = a1;
+    v119.origin.x = self;
     v119.size.width = a3;
     v119.size.height = a4;
     v119.origin.y = a2;
@@ -233,7 +233,7 @@ LABEL_15:
         v123.size.height = v39;
         v41 = v39;
         v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:34 relatedBy:0 toItem:v19 attribute:34 multiplier:v40 constant:v36 * (v40 * -0.5 + 1.0) + CGRectGetMinX(v123) * (v40 * -1.5 + 1.0)];
-        [v20 addObject:v26];
+        [array addObject:v26];
         v42 = MEMORY[0x1E6997770];
         a5 = v37;
         v124.origin.x = v37;
@@ -259,7 +259,7 @@ LABEL_24:
       }
     }
 
-    v122.origin.x = a1;
+    v122.origin.x = self;
     v122.size.width = a3;
     v122.size.height = a4;
     v122.origin.y = a2;
@@ -288,7 +288,7 @@ LABEL_24:
   if (fabs(v54) >= *MEMORY[0x1E6997758])
   {
 LABEL_28:
-    v135.origin.x = a1;
+    v135.origin.x = self;
     v135.size.width = a3;
     v135.size.height = a4;
     v135.origin.y = a2;
@@ -306,7 +306,7 @@ LABEL_29:
   v137.size.width = a7;
   v137.size.height = a8;
   v26 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:34 relatedBy:0 toItem:v19 attribute:7 multiplier:v56 constant:CGRectGetMinX(v137)];
-  [v20 addObject:v26];
+  [array addObject:v26];
   v138.origin.x = a5;
   v138.origin.y = a6;
   v138.size.width = a7;
@@ -320,7 +320,7 @@ LABEL_29:
     }
 
 LABEL_41:
-    v139.origin.x = a1;
+    v139.origin.x = self;
     v139.size.width = a3;
     v139.size.height = a4;
     v139.origin.y = a2;
@@ -345,7 +345,7 @@ LABEL_42:
 LABEL_43:
   v61 = v32;
 
-  [v20 addObject:v61];
+  [array addObject:v61];
   v62 = (a11 >> 3) & 7;
   if (v62 <= 3)
   {
@@ -358,7 +358,7 @@ LABEL_43:
         v141.size.width = a7;
         v141.size.height = a8;
         MaxY = CGRectGetMaxY(v141);
-        v142.origin.x = a1;
+        v142.origin.x = self;
         v142.origin.y = a2;
         v142.size.width = a3;
         v142.size.height = a4;
@@ -369,33 +369,33 @@ LABEL_43:
         v143.size.width = a7;
         v143.size.height = a8;
         v66 = CGRectGetMinY(v143) - v64;
-        v144.origin.x = a1;
+        v144.origin.x = self;
         v144.origin.y = a2;
         v144.size.width = a3;
         v144.size.height = a4;
         v67 = [v65 constraintWithItem:v18 attribute:35 relatedBy:0 toItem:v19 attribute:8 constant:v66 + CGRectGetHeight(v144) * -0.5];
 
-        [v20 addObject:v67];
+        [array addObject:v67];
         v68 = MEMORY[0x1E6997770];
-        v69 = a1;
+        selfCopy4 = self;
         v70 = a2;
         v71 = a3;
         v72 = a4;
 LABEL_50:
-        v73 = [v68 constraintWithItem:v18 attribute:8 relatedBy:0 constant:CGRectGetHeight(*&v69)];
+        v73 = [v68 constraintWithItem:v18 attribute:8 relatedBy:0 constant:CGRectGetHeight(*&selfCopy4)];
         goto LABEL_85;
       }
 
 LABEL_49:
-      v145.origin.x = a1;
+      v145.origin.x = self;
       v145.origin.y = a2;
       v145.size.width = a3;
       v145.size.height = a4;
       v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:35 relatedBy:0 constant:CGRectGetMidY(v145)];
 
-      [v20 addObject:v67];
+      [array addObject:v67];
       v68 = MEMORY[0x1E6997770];
-      v69 = a1;
+      selfCopy4 = self;
       v70 = a2;
       v71 = a3;
       v72 = a4;
@@ -404,7 +404,7 @@ LABEL_49:
 
     if (v62 == 2)
     {
-      v146.origin.x = a1;
+      v146.origin.x = self;
       v146.origin.y = a2;
       v146.size.width = a3;
       v146.size.height = a4;
@@ -419,14 +419,14 @@ LABEL_49:
       v148.size.width = a7;
       v148.size.height = a8;
       v74 = CGRectGetMaxY(v148);
-      v149.origin.x = a1;
+      v149.origin.x = self;
       v149.origin.y = a2;
       v149.size.width = a3;
       v149.size.height = a4;
       v75 = v74 - CGRectGetMaxY(v149);
       v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:35 relatedBy:0 toItem:v19 attribute:35 multiplier:1.0 constant:(rectc - v75) * 0.5];
 
-      [v20 addObject:v67];
+      [array addObject:v67];
       v73 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:8 relatedBy:0 toItem:v19 attribute:8 constant:-(rectc + v75)];
       goto LABEL_85;
     }
@@ -436,7 +436,7 @@ LABEL_49:
     v160.size.width = a7;
     v160.size.height = a8;
     v87 = CGRectGetMaxY(v160);
-    v161.origin.x = a1;
+    v161.origin.x = self;
     v161.size.width = a3;
     v161.size.height = a4;
     v161.origin.y = a2;
@@ -461,7 +461,7 @@ LABEL_65:
         MinY = CGRectGetMinY(v164);
         v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:35 relatedBy:0 toItem:v19 attribute:35 multiplier:2.0 - v79 constant:MinY * (v79 * 1.5 + -1.0) + v89 * (v79 * 0.5 + -1.0)];
 
-        [v20 addObject:v67];
+        [array addObject:v67];
         v82 = MEMORY[0x1E6997770];
         v81 = -(v79 * (v89 + MinY));
         goto LABEL_66;
@@ -477,7 +477,7 @@ LABEL_65:
       }
     }
 
-    v163.origin.x = a1;
+    v163.origin.x = self;
     v163.size.width = a3;
     v163.size.height = a4;
     v163.origin.y = a2;
@@ -503,13 +503,13 @@ LABEL_65:
       if (*MEMORY[0x1E6997758] > 0.0)
       {
 LABEL_61:
-        v159.origin.x = a1;
+        v159.origin.x = self;
         v159.size.width = a3;
         v159.size.height = a4;
         v159.origin.y = a2;
         v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:8 relatedBy:0 constant:CGRectGetHeight(v159)];
 
-        [v20 addObject:v67];
+        [array addObject:v67];
         v82 = MEMORY[0x1E6997770];
         v81 = 0.0;
         v85 = v18;
@@ -529,7 +529,7 @@ LABEL_67:
       }
     }
 
-    v157.origin.x = a1;
+    v157.origin.x = self;
     v157.size.width = a3;
     v157.size.height = a4;
     v157.origin.y = a2;
@@ -544,7 +544,7 @@ LABEL_67:
 
   if (v62 == 6)
   {
-    v150.origin.x = a1;
+    v150.origin.x = self;
     v150.size.width = a3;
     v150.size.height = a4;
     v150.origin.y = a2;
@@ -572,7 +572,7 @@ LABEL_57:
         v154.size.height = a8;
         v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:35 relatedBy:0 toItem:v19 attribute:35 multiplier:v79 constant:v77 * (v79 * -0.5 + 1.0) + CGRectGetMinY(v154) * (v79 * -1.5 + 1.0)];
 
-        [v20 addObject:v67];
+        [array addObject:v67];
         v80 = MEMORY[0x1E6997770];
         v155.origin.x = a5;
         v155.origin.y = a6;
@@ -596,7 +596,7 @@ LABEL_66:
       }
     }
 
-    v153.origin.x = a1;
+    v153.origin.x = self;
     v153.size.width = a3;
     v153.size.height = a4;
     v153.origin.y = a2;
@@ -624,7 +624,7 @@ LABEL_66:
   if (fabs(v92) >= *MEMORY[0x1E6997758])
   {
 LABEL_70:
-    v166.origin.x = a1;
+    v166.origin.x = self;
     v166.size.width = a3;
     v166.size.height = a4;
     v166.origin.y = a2;
@@ -643,7 +643,7 @@ LABEL_71:
   v168.size.height = a8;
   v67 = [MEMORY[0x1E6997770] constraintWithItem:v18 attribute:35 relatedBy:0 toItem:v19 attribute:8 multiplier:v93 constant:CGRectGetMinY(v168)];
 
-  [v20 addObject:v67];
+  [array addObject:v67];
   v169.origin.x = a5;
   v169.origin.y = a6;
   v169.size.width = a7;
@@ -657,7 +657,7 @@ LABEL_71:
     }
 
 LABEL_83:
-    v170.origin.x = a1;
+    v170.origin.x = self;
     v170.size.width = a3;
     v170.size.height = a4;
     v170.origin.y = a2;
@@ -682,9 +682,9 @@ LABEL_84:
 LABEL_85:
   v98 = v73;
 
-  [v20 addObject:v98];
+  [array addObject:v98];
 
-  return v20;
+  return array;
 }
 
 @end

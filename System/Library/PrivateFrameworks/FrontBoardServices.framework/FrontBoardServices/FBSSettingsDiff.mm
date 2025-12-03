@@ -1,104 +1,104 @@
 @interface FBSSettingsDiff
 + (Class)_settingsClass;
-+ (id)diffByApplyingDiff:(id)a3 toDiff:(id)a4;
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4;
-- (BOOL)containsLegacySetting:(unint64_t)a3;
-- (BOOL)containsProperty:(SEL)a3;
-- (BOOL)containsPropertyFromExtension:(Class)a3;
-- (FBSSettingsDiff)initWithChangesFromSettings:(id)a3 toSettings:(id)a4;
-- (FBSSettingsDiff)initWithXPCDictionary:(id)a3;
++ (id)diffByApplyingDiff:(id)diff toDiff:(id)toDiff;
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings;
+- (BOOL)containsLegacySetting:(unint64_t)setting;
+- (BOOL)containsProperty:(SEL)property;
+- (BOOL)containsPropertyFromExtension:(Class)extension;
+- (FBSSettingsDiff)initWithChangesFromSettings:(id)settings toSettings:(id)toSettings;
+- (FBSSettingsDiff)initWithXPCDictionary:(id)dictionary;
 - (id)_allLegacySettings;
 - (id)_allModernSettings;
 - (id)_changedSettings;
-- (id)_initWithSettingsDiff:(void *)a3 localDiff:(void *)a4 legacyDiff:(void *)a5 legacyLocalDiff:(void *)a6 settingsClass:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)settingsByApplyingToMutableCopyOfSettings:(id)a3;
+- (id)_initWithSettingsDiff:(void *)diff localDiff:(void *)localDiff legacyDiff:(void *)legacyDiff legacyLocalDiff:(void *)legacyLocalDiff settingsClass:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)settingsByApplyingToMutableCopyOfSettings:(id)settings;
 - (id)succinctDescription;
-- (uint64_t)_containsAnySettingNamed:(id *)a1;
-- (uint64_t)_containsKey:(uint64_t)a1;
-- (unint64_t)_containsSetting:(unint64_t)a1;
-- (void)_inspectDiff:(void *)a3 withBlock:;
-- (void)applyToMutableSettings:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)inspectChangesWithBlock:(id)a3;
-- (void)inspectOtherChangesWithBlock:(id)a3;
+- (uint64_t)_containsAnySettingNamed:(id *)named;
+- (uint64_t)_containsKey:(uint64_t)key;
+- (unint64_t)_containsSetting:(unint64_t)setting;
+- (void)_inspectDiff:(void *)diff withBlock:;
+- (void)applyToMutableSettings:(id)settings;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)inspectChangesWithBlock:(id)block;
+- (void)inspectOtherChangesWithBlock:(id)block;
 @end
 
 @implementation FBSSettingsDiff
 
 - (id)_allLegacySettings
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (!*(v1 + 7))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!*(selfCopy + 7))
     {
       v2 = [MEMORY[0x1E695DFA8] set];
-      v3 = *(v1 + 5);
-      if (!v3)
+      _settingsClass = *(selfCopy + 5);
+      if (!_settingsClass)
       {
-        v3 = [objc_opt_class() _settingsClass];
+        _settingsClass = [objc_opt_class() _settingsClass];
       }
 
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __37__FBSSettingsDiff__allLegacySettings__block_invoke;
       v12 = &unk_1E76BE1C8;
-      v14 = v3;
+      v14 = _settingsClass;
       v4 = v2;
       v13 = v4;
       v5 = MEMORY[0x1A58E80F0](&v9);
-      [v1 inspectOtherChangesWithBlock:{v5, v9, v10, v11, v12}];
+      [selfCopy inspectOtherChangesWithBlock:{v5, v9, v10, v11, v12}];
       v6 = [v4 copy];
-      v7 = *(v1 + 7);
-      *(v1 + 7) = v6;
+      v7 = *(selfCopy + 7);
+      *(selfCopy + 7) = v6;
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
 
-    a1 = *(v1 + 7);
+    self = *(selfCopy + 7);
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_allModernSettings
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (!*(v1 + 6))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!*(selfCopy + 6))
     {
       v2 = [MEMORY[0x1E695DFA8] set];
-      v3 = *(v1 + 5);
-      if (!v3)
+      _settingsClass = *(selfCopy + 5);
+      if (!_settingsClass)
       {
-        v3 = [objc_opt_class() _settingsClass];
+        _settingsClass = [objc_opt_class() _settingsClass];
       }
 
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __37__FBSSettingsDiff__allModernSettings__block_invoke;
       v12 = &unk_1E76BE1A0;
-      v14 = v3;
+      v14 = _settingsClass;
       v4 = v2;
       v13 = v4;
       v5 = MEMORY[0x1A58E80F0](&v9);
-      [v1 inspectChangesWithBlock:{v5, v9, v10, v11, v12}];
+      [selfCopy inspectChangesWithBlock:{v5, v9, v10, v11, v12}];
       v6 = [v4 copy];
-      v7 = *(v1 + 6);
-      *(v1 + 6) = v6;
+      v7 = *(selfCopy + 6);
+      *(selfCopy + 6) = v6;
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
 
-    a1 = *(v1 + 6);
+    self = *(selfCopy + 6);
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __37__FBSSettingsDiff__allModernSettings__block_invoke(uint64_t a1, NSString *aSelectorName)
@@ -128,33 +128,33 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
 - (id)_changedSettings
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(FBSSettingsDiff *)self _allModernSettings];
-  [v3 unionSet:v4];
+  _allModernSettings = [(FBSSettingsDiff *)self _allModernSettings];
+  [v3 unionSet:_allModernSettings];
 
-  v5 = [(FBSSettingsDiff *)self _allLegacySettings];
-  [v3 unionSet:v5];
+  _allLegacySettings = [(FBSSettingsDiff *)self _allLegacySettings];
+  [v3 unionSet:_allLegacySettings];
 
   return v3;
 }
 
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_opt_class() == a1)
+  settingsCopy = settings;
+  toSettingsCopy = toSettings;
+  if (objc_opt_class() == self)
   {
-    v9 = [objc_opt_class() _diffClass];
-    if (!v9)
+    _diffClass = [objc_opt_class() _diffClass];
+    if (!_diffClass)
     {
-      v9 = [objc_opt_class() _diffClass];
+      _diffClass = [objc_opt_class() _diffClass];
     }
 
-    v8 = [v9 diffFromSettings:v6 toSettings:v7];
+    v8 = [_diffClass diffFromSettings:settingsCopy toSettings:toSettingsCopy];
   }
 
   else
   {
-    v8 = [[a1 alloc] initWithChangesFromSettings:v6 toSettings:v7];
+    v8 = [[self alloc] initWithChangesFromSettings:settingsCopy toSettings:toSettingsCopy];
   }
 
   v10 = v8;
@@ -162,25 +162,25 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
   return v10;
 }
 
-+ (id)diffByApplyingDiff:(id)a3 toDiff:(id)a4
++ (id)diffByApplyingDiff:(id)diff toDiff:(id)toDiff
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || v6 == v7)
+  diffCopy = diff;
+  toDiffCopy = toDiff;
+  v8 = toDiffCopy;
+  if (!diffCopy || diffCopy == toDiffCopy)
   {
-    v12 = v7;
+    v12 = toDiffCopy;
   }
 
   else
   {
-    if (v7)
+    if (toDiffCopy)
     {
       v9 = objc_opt_class();
       if (v9 == objc_opt_class())
       {
         v10 = v8[1];
-        v11 = v6[1];
+        v11 = diffCopy[1];
         if (v10)
         {
           [v10 copyApplyingDiff:v11];
@@ -192,7 +192,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
         }
 
         v15 = v8[2];
-        v16 = v6[2];
+        v16 = diffCopy[2];
         if (v15)
         {
           [v15 copyApplyingDiff:v16];
@@ -204,7 +204,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
         }
 
         v18 = v8[3];
-        v19 = v6[3];
+        v19 = diffCopy[3];
         if (v18)
         {
           [v18 copyApplyingDiff:v19];
@@ -216,7 +216,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
         }
 
         v21 = v8[4];
-        v22 = v6[4];
+        v22 = diffCopy[4];
         if (v21)
         {
           [v21 copyApplyingDiff:v22];
@@ -233,7 +233,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
       [FBSSettingsDiff diffByApplyingDiff:a2 toDiff:?];
     }
 
-    v12 = v6;
+    v12 = diffCopy;
   }
 
   v13 = v12;
@@ -241,29 +241,29 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
   return v13;
 }
 
-- (FBSSettingsDiff)initWithChangesFromSettings:(id)a3 toSettings:(id)a4
+- (FBSSettingsDiff)initWithChangesFromSettings:(id)settings toSettings:(id)toSettings
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 != v7)
+  settingsCopy = settings;
+  toSettingsCopy = toSettings;
+  if (settingsCopy != toSettingsCopy)
   {
-    v8 = [FBSSettings _settings:v6];
-    v9 = [FBSSettings _settings:v7];
+    v8 = [FBSSettings _settings:settingsCopy];
+    v9 = [FBSSettings _settings:toSettingsCopy];
     [off_1E76BCA70 diffFromSettings:v8 toSettings:v9];
     objc_claimAutoreleasedReturnValue();
 
-    v10 = [FBSSettings _legacyOtherSettings:v6];
-    v11 = [FBSSettings _legacyOtherSettings:v7];
+    v10 = [FBSSettings _legacyOtherSettings:settingsCopy];
+    v11 = [FBSSettings _legacyOtherSettings:toSettingsCopy];
     [off_1E76BCA70 diffFromSettings:v10 toSettings:v11];
     objc_claimAutoreleasedReturnValue();
 
-    v12 = [FBSSettings _localSettings:v6];
-    v13 = [FBSSettings _localSettings:v7];
+    v12 = [FBSSettings _localSettings:settingsCopy];
+    v13 = [FBSSettings _localSettings:toSettingsCopy];
     [off_1E76BCA70 diffFromSettings:v12 toSettings:v13];
     objc_claimAutoreleasedReturnValue();
 
-    v14 = [FBSSettings _legacyLocalSettings:v6];
-    v15 = [FBSSettings _legacyLocalSettings:v7];
+    v14 = [FBSSettings _legacyLocalSettings:settingsCopy];
+    v15 = [FBSSettings _legacyLocalSettings:toSettingsCopy];
     [off_1E76BCA70 diffFromSettings:v14 toSettings:v15];
     objc_claimAutoreleasedReturnValue();
 
@@ -273,7 +273,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
   return 0;
 }
 
-- (BOOL)containsProperty:(SEL)a3
+- (BOOL)containsProperty:(SEL)property
 {
   settingsClass = self->_settingsClass;
   if (!settingsClass)
@@ -281,10 +281,10 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
     settingsClass = [objc_opt_class() _settingsClass];
   }
 
-  v6 = FBSSettingForSelector(settingsClass, a3);
+  v6 = FBSSettingForSelector(settingsClass, property);
   if (!v6 || ([(FBSSettingsDiff *)self _containsSetting:v6]& 1) == 0)
   {
-    if (-[objc_class _baseClass](settingsClass, "_baseClass") == settingsClass || (-[FBSSetting isLegacy](v6) & 1) != 0 || !FBSSubclassHasBeenIngested(settingsClass) && ((v8 = -[objc_class instanceMethodForSelector:](settingsClass, "instanceMethodForSelector:", a3), v8 == MEMORY[0x1E69E58E8]) || v8 == [-[objc_class _baseClass](settingsClass "_baseClass")]) || (FBSSettingForLegacySelector(settingsClass, a3), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (-[objc_class _baseClass](settingsClass, "_baseClass") == settingsClass || (-[FBSSetting isLegacy](v6) & 1) != 0 || !FBSSubclassHasBeenIngested(settingsClass) && ((v8 = -[objc_class instanceMethodForSelector:](settingsClass, "instanceMethodForSelector:", property), v8 == MEMORY[0x1E69E58E8]) || v8 == [-[objc_class _baseClass](settingsClass "_baseClass")]) || (FBSSettingForLegacySelector(settingsClass, property), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (v6)
       {
@@ -292,7 +292,7 @@ uint64_t __37__FBSSettingsDiff__allLegacySettings__block_invoke(uint64_t a1, con
         goto LABEL_17;
       }
 
-      v10 = NSStringFromSelector(a3);
+      v10 = NSStringFromSelector(property);
       v11 = [(FBSSettingsDiff *)&self->super.isa _containsAnySettingNamed:v10];
     }
 
@@ -313,29 +313,29 @@ LABEL_17:
   return v7;
 }
 
-- (unint64_t)_containsSetting:(unint64_t)a1
+- (unint64_t)_containsSetting:(unint64_t)setting
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (setting)
   {
     if (!v3)
     {
       [FBSSettingsDiff _containsSetting:?];
     }
 
-    [(FBSSettingsDiff *)v3 _containsSetting:a1, &v6];
-    a1 = v6;
+    [(FBSSettingsDiff *)v3 _containsSetting:setting, &v6];
+    setting = v6;
   }
 
-  return a1;
+  return setting;
 }
 
-- (uint64_t)_containsAnySettingNamed:(id *)a1
+- (uint64_t)_containsAnySettingNamed:(id *)named
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (named)
   {
     if (!v3)
     {
@@ -345,66 +345,66 @@ LABEL_17:
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
-    v15 = [(FBSSettingsDiff *)a1 _containsKey:v3];
+    v15 = [(FBSSettingsDiff *)named _containsKey:v3];
     if (v13[3])
     {
-      LOBYTE(a1) = 1;
+      LOBYTE(named) = 1;
     }
 
     else
     {
-      v5 = [a1[5] _legacyDescriptionProvider];
-      v6 = v5;
-      if (v5)
+      _legacyDescriptionProvider = [named[5] _legacyDescriptionProvider];
+      v6 = _legacyDescriptionProvider;
+      if (_legacyDescriptionProvider)
       {
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __44__FBSSettingsDiff__containsAnySettingNamed___block_invoke;
         v8[3] = &unk_1E76BE150;
         v11 = &v12;
-        v9 = v5;
+        v9 = _legacyDescriptionProvider;
         v10 = v4;
-        [a1 inspectOtherChangesWithBlock:v8];
+        [named inspectOtherChangesWithBlock:v8];
       }
 
-      LOBYTE(a1) = *(v13 + 24);
+      LOBYTE(named) = *(v13 + 24);
     }
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return a1 & 1;
+  return named & 1;
 }
 
-- (uint64_t)_containsKey:(uint64_t)a1
+- (uint64_t)_containsKey:(uint64_t)key
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (key)
   {
     if (!v3)
     {
       [FBSSettingsDiff _containsKey:?];
     }
 
-    if ([*(a1 + 8) settingChangedForKey:v3])
+    if ([*(key + 8) settingChangedForKey:v3])
     {
-      a1 = 1;
+      key = 1;
     }
 
     else
     {
-      a1 = [*(a1 + 24) settingChangedForKey:v4];
+      key = [*(key + 24) settingChangedForKey:v4];
     }
   }
 
-  return a1;
+  return key;
 }
 
-- (BOOL)containsPropertyFromExtension:(Class)a3
+- (BOOL)containsPropertyFromExtension:(Class)extension
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)extension isSubclassOfClass:objc_opt_class()])
   {
     settingsClass = self->_settingsClass;
     if (!settingsClass)
@@ -414,12 +414,12 @@ LABEL_17:
 
     if ([(objc_class *)settingsClass isSubclassOfClass:objc_opt_class()])
     {
-      [(objc_class *)a3 settingsExtensions];
+      [(objc_class *)extension settingsExtensions];
     }
 
     else
     {
-      [(objc_class *)a3 clientSettingsExtensions];
+      [(objc_class *)extension clientSettingsExtensions];
     }
 
     v17 = 0u;
@@ -466,14 +466,14 @@ LABEL_18:
 
   else
   {
-    v6 = NSStringFromClass(a3);
+    v6 = NSStringFromClass(extension);
     v7 = [(FBSSettingsDiff *)self _containsKey:v6];
   }
 
   return v7;
 }
 
-- (BOOL)containsLegacySetting:(unint64_t)a3
+- (BOOL)containsLegacySetting:(unint64_t)setting
 {
   settingsClass = self->_settingsClass;
   if (!settingsClass)
@@ -481,7 +481,7 @@ LABEL_18:
     settingsClass = [objc_opt_class() _settingsClass];
   }
 
-  v6 = FBSSettingForLegacySetting(settingsClass, a3);
+  v6 = FBSSettingForLegacySetting(settingsClass, setting);
   if (v6)
   {
     v7 = [(FBSSettingsDiff *)self _containsSetting:v6];
@@ -498,7 +498,7 @@ LABEL_18:
     v10[2] = __41__FBSSettingsDiff_containsLegacySetting___block_invoke;
     v10[3] = &unk_1E76BE128;
     v10[4] = &v11;
-    v10[5] = a3;
+    v10[5] = setting;
     v8 = MEMORY[0x1A58E80F0](v10);
     [(BSSettingsDiff *)self->_legacyDiff inspectChangesWithBlock:v8];
     [(BSSettingsDiff *)self->_legacyLocalDiff inspectChangesWithBlock:v8];
@@ -533,7 +533,7 @@ uint64_t __41__FBSSettingsDiff_containsLegacySetting___block_invoke(uint64_t res
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSSettingsDiff.m";
     v16 = 1024;
@@ -561,12 +561,12 @@ void __44__FBSSettingsDiff__containsAnySettingNamed___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_inspectDiff:(void *)a3 withBlock:
+- (void)_inspectDiff:(void *)diff withBlock:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  diffCopy = diff;
+  v7 = diffCopy;
+  if (self)
   {
     v11[0] = 0;
     v11[1] = v11;
@@ -577,8 +577,8 @@ void __44__FBSSettingsDiff__containsAnySettingNamed___block_invoke(uint64_t a1, 
     v8[2] = __42__FBSSettingsDiff__inspectDiff_withBlock___block_invoke;
     v8[3] = &unk_1E76BE178;
     v10 = v11;
-    v8[4] = a1;
-    v9 = v6;
+    v8[4] = self;
+    v9 = diffCopy;
     [v5 inspectKeyedChangesWithBlock:v8];
 
     _Block_object_dispose(v11, 8);
@@ -595,61 +595,61 @@ void __42__FBSSettingsDiff__inspectDiff_withBlock___block_invoke(void *a1, uint6
   }
 }
 
-- (void)inspectChangesWithBlock:(id)a3
+- (void)inspectChangesWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     diff = self->_diff;
-    v5 = a3;
-    [(FBSSettingsDiff *)self _inspectDiff:v5 withBlock:?];
-    [(FBSSettingsDiff *)self _inspectDiff:v5 withBlock:?];
+    blockCopy = block;
+    [(FBSSettingsDiff *)self _inspectDiff:blockCopy withBlock:?];
+    [(FBSSettingsDiff *)self _inspectDiff:blockCopy withBlock:?];
   }
 }
 
-- (void)inspectOtherChangesWithBlock:(id)a3
+- (void)inspectOtherChangesWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     legacyDiff = self->_legacyDiff;
-    v5 = a3;
-    [(BSSettingsDiff *)legacyDiff inspectChangesWithBlock:v5];
-    [(BSSettingsDiff *)self->_legacyLocalDiff inspectChangesWithBlock:v5];
+    blockCopy = block;
+    [(BSSettingsDiff *)legacyDiff inspectChangesWithBlock:blockCopy];
+    [(BSSettingsDiff *)self->_legacyLocalDiff inspectChangesWithBlock:blockCopy];
   }
 }
 
-- (id)settingsByApplyingToMutableCopyOfSettings:(id)a3
+- (id)settingsByApplyingToMutableCopyOfSettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
-    v5 = [objc_opt_class() _settingsClass];
+    _settingsClass = [objc_opt_class() _settingsClass];
     settingsClass = self->_settingsClass;
-    if (settingsClass && [(objc_class *)settingsClass isSubclassOfClass:v5])
+    if (settingsClass && [(objc_class *)settingsClass isSubclassOfClass:_settingsClass])
     {
       v7 = [objc_alloc(self->_settingsClass) initWithSettings:0];
     }
 
     else
     {
-      v7 = objc_alloc_init(v5);
+      v7 = objc_alloc_init(_settingsClass);
     }
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 
-  v8 = [v4 mutableCopy];
+  v8 = [settingsCopy mutableCopy];
   [(FBSSettingsDiff *)self applyToMutableSettings:v8];
 
   return v8;
 }
 
-- (void)applyToMutableSettings:(id)a3
+- (void)applyToMutableSettings:(id)settings
 {
-  v15 = a3;
-  v5 = [objc_opt_class() _settingsClass];
+  settingsCopy = settings;
+  _settingsClass = [objc_opt_class() _settingsClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"input %@ is not of expected class %@", objc_opt_class(), v5];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"input %@ is not of expected class %@", objc_opt_class(), _settingsClass];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [FBSSettingsDiff applyToMutableSettings:a2];
@@ -659,31 +659,31 @@ void __42__FBSSettingsDiff__inspectDiff_withBlock___block_invoke(void *a1, uint6
     _bs_set_crash_log_message();
   }
 
-  if (([(FBSSettings *)v15 _isMutable]& 1) == 0)
+  if (([(FBSSettings *)settingsCopy _isMutable]& 1) == 0)
   {
     [FBSSettingsDiff applyToMutableSettings:a2];
   }
 
   diff = self->_diff;
-  v7 = [(FBSSettings *)v15 _settings];
-  [(BSSettingsDiff *)diff applyToSettings:v7];
+  _settings = [(FBSSettings *)settingsCopy _settings];
+  [(BSSettingsDiff *)diff applyToSettings:_settings];
 
   legacyDiff = self->_legacyDiff;
-  v9 = [v15 otherSettings];
-  [(BSSettingsDiff *)legacyDiff applyToSettings:v9];
+  otherSettings = [settingsCopy otherSettings];
+  [(BSSettingsDiff *)legacyDiff applyToSettings:otherSettings];
 
   localDiff = self->_localDiff;
-  v11 = [(FBSSettings *)v15 _localSettings];
-  [(BSSettingsDiff *)localDiff applyToSettings:v11];
+  _localSettings = [(FBSSettings *)settingsCopy _localSettings];
+  [(BSSettingsDiff *)localDiff applyToSettings:_localSettings];
 
   legacyLocalDiff = self->_legacyLocalDiff;
-  v13 = [(FBSSettings *)v15 _legacyLocalSettings];
-  [(BSSettingsDiff *)legacyLocalDiff applyToSettings:v13];
+  _legacyLocalSettings = [(FBSSettings *)settingsCopy _legacyLocalSettings];
+  [(BSSettingsDiff *)legacyLocalDiff applyToSettings:_legacyLocalSettings];
 }
 
-- (FBSSettingsDiff)initWithXPCDictionary:(id)a3
+- (FBSSettingsDiff)initWithXPCDictionary:(id)dictionary
 {
-  v3 = [off_1E76BCA80 coderWithMessage:a3];
+  v3 = [off_1E76BCA80 coderWithMessage:dictionary];
   [v3 decodeObjectOfClass:objc_opt_class() forKey:@"mainDiff"];
   objc_claimAutoreleasedReturnValue();
   [v3 decodeObjectOfClass:objc_opt_class() forKey:@"otherDiff"];
@@ -693,9 +693,9 @@ void __42__FBSSettingsDiff__inspectDiff_withBlock___block_invoke(void *a1, uint6
   BSSettingsDiffIsEmpty();
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = [off_1E76BCA80 coderWithMessage:a3];
+  v5 = [off_1E76BCA80 coderWithMessage:dictionary];
   [v5 encodeObject:self->_diff forKey:@"mainDiff"];
   [v5 encodeObject:self->_legacyDiff forKey:@"otherDiff"];
   v4 = NSStringFromClass(self->_settingsClass);
@@ -704,35 +704,35 @@ void __42__FBSSettingsDiff__inspectDiff_withBlock___block_invoke(void *a1, uint6
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSettingsDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSettingsDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSettingsDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSettingsDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSettingsDiff *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSettingsDiff *)self succinctDescriptionBuilder];
   v6 = NSStringFromClass(self->_settingsClass);
-  v7 = [v5 appendObject:v6 withName:0 skipIfNil:1];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:0 skipIfNil:1];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__FBSSettingsDiff_descriptionBuilderWithMultilinePrefix___block_invoke;
   v12[3] = &unk_1E76BCD60;
   v12[4] = self;
-  v8 = v5;
+  v8 = succinctDescriptionBuilder;
   v13 = v8;
-  [v8 appendBodySectionWithName:0 multilinePrefix:v4 block:v12];
+  [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v12];
 
   v9 = v13;
   v10 = v8;
@@ -806,29 +806,29 @@ uint64_t __57__FBSSettingsDiff_descriptionBuilderWithMultilinePrefix___block_inv
   return result;
 }
 
-- (id)_initWithSettingsDiff:(void *)a3 localDiff:(void *)a4 legacyDiff:(void *)a5 legacyLocalDiff:(void *)a6 settingsClass:
+- (id)_initWithSettingsDiff:(void *)diff localDiff:(void *)localDiff legacyDiff:(void *)legacyDiff legacyLocalDiff:(void *)legacyLocalDiff settingsClass:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (a1)
+  diffCopy = diff;
+  localDiffCopy = localDiff;
+  legacyDiffCopy = legacyDiff;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = FBSSettingsDiff;
     v16 = objc_msgSendSuper2(&v18, sel_init);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 1, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 2, a4);
-      objc_storeStrong(a1 + 4, a5);
-      a1[5] = a6;
+      objc_storeStrong(self + 3, diff);
+      objc_storeStrong(self + 2, localDiff);
+      objc_storeStrong(self + 4, legacyDiff);
+      self[5] = legacyLocalDiff;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (void)diffByApplyingDiff:(char *)a1 toDiff:.cold.1(char *a1)

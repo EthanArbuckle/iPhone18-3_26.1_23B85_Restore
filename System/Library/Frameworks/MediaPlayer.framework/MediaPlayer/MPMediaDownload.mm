@@ -1,24 +1,24 @@
 @interface MPMediaDownload
-+ (id)MPMediaDownloadsFromATAssets:(id)a3;
-+ (id)MPMediaDownloadsFromMPStoreDownloads:(id)a3;
-+ (int64_t)_downloadReasonFromStoreDownload:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaDownload)initWithATAsset:(id)a3;
-- (MPMediaDownload)initWithMPStoreDownload:(id)a3;
++ (id)MPMediaDownloadsFromATAssets:(id)assets;
++ (id)MPMediaDownloadsFromMPStoreDownloads:(id)downloads;
++ (int64_t)_downloadReasonFromStoreDownload:(id)download;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaDownload)initWithATAsset:(id)asset;
+- (MPMediaDownload)initWithMPStoreDownload:(id)download;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation MPMediaDownload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (v4 != self)
+  if (equalCopy != self)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ((v5 = [(MPMediaDownload *)self deviceLibraryID]) == 0 || v5 != [(MPMediaDownload *)v4 deviceLibraryID]) && ((v6 = [(MPMediaDownload *)self storeItemID]) == 0 || v6 != [(MPMediaDownload *)v4 storeItemID]))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ((v5 = [(MPMediaDownload *)self deviceLibraryID]) == 0 || v5 != [(MPMediaDownload *)equalCopy deviceLibraryID]) && ((v6 = [(MPMediaDownload *)self storeItemID]) == 0 || v6 != [(MPMediaDownload *)equalCopy storeItemID]))
     {
       v7 = 0;
     }
@@ -48,80 +48,80 @@
   return v6;
 }
 
-- (MPMediaDownload)initWithATAsset:(id)a3
+- (MPMediaDownload)initWithATAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = MPMediaDownload;
   v5 = [(MPMediaDownload *)&v13 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v5->_deviceLibraryID = [v6 longLongValue];
+    identifier = [assetCopy identifier];
+    v5->_deviceLibraryID = [identifier longLongValue];
 
-    v7 = [v4 storeInfo];
-    v8 = [v7 adamID];
-    v5->_storeItemID = [v8 longLongValue];
+    storeInfo = [assetCopy storeInfo];
+    adamID = [storeInfo adamID];
+    v5->_storeItemID = [adamID longLongValue];
 
-    [v4 downloadProgress];
+    [assetCopy downloadProgress];
     v5->_downloadProgress = v9;
-    v10 = [v4 downloadOnly];
+    downloadOnly = [assetCopy downloadOnly];
     v11 = 2;
-    if (!v10)
+    if (!downloadOnly)
     {
       v11 = 0;
     }
 
     v5->_downloadReason = v11;
-    v5->_downloadPausedReason = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:v4];
+    v5->_downloadPausedReason = [MPMediaDownload MPMediaDownloadPauseReasonForATAsset:assetCopy];
   }
 
   return v5;
 }
 
-- (MPMediaDownload)initWithMPStoreDownload:(id)a3
+- (MPMediaDownload)initWithMPStoreDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v8.receiver = self;
   v8.super_class = MPMediaDownload;
   v5 = [(MPMediaDownload *)&v8 init];
   if (v5)
   {
-    v5->_deviceLibraryID = [v4 libraryItemIdentifier];
-    v5->_storeItemID = [v4 storeItemIdentifier];
-    [v4 percentComplete];
+    v5->_deviceLibraryID = [downloadCopy libraryItemIdentifier];
+    v5->_storeItemID = [downloadCopy storeItemIdentifier];
+    [downloadCopy percentComplete];
     v5->_downloadProgress = v6;
-    v5->_downloadReason = [MPMediaDownload _downloadReasonFromStoreDownload:v4];
+    v5->_downloadReason = [MPMediaDownload _downloadReasonFromStoreDownload:downloadCopy];
     v5->_downloadPausedReason = 0;
   }
 
   return v5;
 }
 
-+ (int64_t)_downloadReasonFromStoreDownload:(id)a3
++ (int64_t)_downloadReasonFromStoreDownload:(id)download
 {
-  v3 = [a3 reason];
-  if (v3 == 1)
+  reason = [download reason];
+  if (reason == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (reason == 2);
   }
 }
 
-+ (id)MPMediaDownloadsFromATAssets:(id)a3
++ (id)MPMediaDownloadsFromATAssets:(id)assets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -139,7 +139,7 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [MPMediaDownload alloc];
         v12 = [(MPMediaDownload *)v11 initWithATAsset:v10, v14];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -148,19 +148,19 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)MPMediaDownloadsFromMPStoreDownloads:(id)a3
++ (id)MPMediaDownloadsFromMPStoreDownloads:(id)downloads
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  downloadsCopy = downloads;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = downloadsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -178,7 +178,7 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [MPMediaDownload alloc];
         v12 = [(MPMediaDownload *)v11 initWithMPStoreDownload:v10, v14];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -187,7 +187,7 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 @end

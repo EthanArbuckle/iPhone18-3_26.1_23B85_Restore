@@ -1,37 +1,37 @@
 @interface PlaceSummaryOutlineCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UICollectionViewCellRegistration)cellRegistration;
 - (_TtC4Maps28PlaceSummaryOutlineCellModel)init;
 - (_TtP4Maps36PlaceSummaryOutlineCellModelDelegate_)delegate;
 - (id)homeActionObject;
 - (id)homeDragAndDropObject;
 - (int64_t)hash;
-- (void)setPlaceSummaryViewModelTemplate:(id)a3;
-- (void)setRapObject:(id)a3;
-- (void)setSearchResult:(id)a3;
+- (void)setPlaceSummaryViewModelTemplate:(id)template;
+- (void)setRapObject:(id)object;
+- (void)setSearchResult:(id)result;
 @end
 
 @implementation PlaceSummaryOutlineCellModel
 
-- (void)setPlaceSummaryViewModelTemplate:(id)a3
+- (void)setPlaceSummaryViewModelTemplate:(id)template
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_placeSummaryViewModelTemplate);
-  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_placeSummaryViewModelTemplate) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_placeSummaryViewModelTemplate) = template;
+  templateCopy = template;
 }
 
-- (void)setSearchResult:(id)a3
+- (void)setSearchResult:(id)result
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_searchResult);
-  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_searchResult) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_searchResult) = result;
+  resultCopy = result;
 }
 
-- (void)setRapObject:(id)a3
+- (void)setRapObject:(id)object
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_rapObject);
-  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_rapObject) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps28PlaceSummaryOutlineCellModel_rapObject) = object;
+  objectCopy = object;
 }
 
 - (_TtP4Maps36PlaceSummaryOutlineCellModelDelegate_)delegate
@@ -53,11 +53,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -66,7 +66,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1002AD130(v8);
@@ -88,7 +88,7 @@
 
 - (id)homeActionObject
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002AD488(v11);
 
   v3 = v12;

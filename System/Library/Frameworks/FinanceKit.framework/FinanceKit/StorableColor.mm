@@ -1,22 +1,22 @@
 @interface StorableColor
 - (_TtC10FinanceKit13StorableColor)init;
-- (_TtC10FinanceKit13StorableColor)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC10FinanceKit13StorableColor)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StorableColor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  StorableColor.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  StorableColor.encode(with:)(coderCopy);
 }
 
-- (_TtC10FinanceKit13StorableColor)initWithCoder:(id)a3
+- (_TtC10FinanceKit13StorableColor)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1B7375838(v3);
+  coderCopy = coder;
+  v4 = sub_1B7375838(coderCopy);
 
   return v4;
 }

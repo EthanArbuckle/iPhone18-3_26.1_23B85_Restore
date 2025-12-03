@@ -1,18 +1,18 @@
 @interface CAFClimateControlsLockedObservable
 - (NSString)description;
-- (void)climateControlsLockedService:(id)a3 didUpdateLockState:(unsigned __int8)a4;
-- (void)climateControlsLockedService:(id)a3 didUpdateName:(id)a4;
-- (void)climateControlsLockedService:(id)a3 didUpdateVehicleLayoutKey:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)climateControlsLockedService:(id)service didUpdateLockState:(unsigned __int8)state;
+- (void)climateControlsLockedService:(id)service didUpdateName:(id)name;
+- (void)climateControlsLockedService:(id)service didUpdateVehicleLayoutKey:(id)key;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFClimateControlsLockedObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   locked = CAFClimateControlsLockedObservable.description.getter();
   v5 = v4;
 
@@ -21,52 +21,52 @@
   return v6;
 }
 
-- (void)climateControlsLockedService:(id)a3 didUpdateLockState:(unsigned __int8)a4
+- (void)climateControlsLockedService:(id)service didUpdateLockState:(unsigned __int8)state
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFClimateControlsLockedObservable.climateControlsLockedService(_:didUpdateLockState:)();
 }
 
-- (void)climateControlsLockedService:(id)a3 didUpdateVehicleLayoutKey:(id)a4
+- (void)climateControlsLockedService:(id)service didUpdateVehicleLayoutKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFClimateControlsLockedObservable.climateControlsLockedService(_:didUpdateVehicleLayoutKey:)();
 }
 
-- (void)climateControlsLockedService:(id)a3 didUpdateName:(id)a4
+- (void)climateControlsLockedService:(id)service didUpdateName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFClimateControlsLockedObservable.climateControlsLockedService(_:didUpdateName:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFClimateControlsLockedObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFClimateControlsLockedObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFClimateControlsLockedObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFClimateControlsLockedObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFClimateControlsLockedObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

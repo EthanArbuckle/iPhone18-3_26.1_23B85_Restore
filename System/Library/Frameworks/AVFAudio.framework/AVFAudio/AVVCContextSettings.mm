@@ -1,16 +1,16 @@
 @interface AVVCContextSettings
-- (AVVCContextSettings)initWithMode:(int64_t)a3 deviceUID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVVCContextSettings)initWithMode:(int64_t)mode deviceUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVVCContextSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 16) = [(AVVCContextSettings *)self activationMode];
-  v5 = [(AVVCContextSettings *)self activationDeviceUID];
-  v6 = [v5 copy];
+  activationDeviceUID = [(AVVCContextSettings *)self activationDeviceUID];
+  v6 = [activationDeviceUID copy];
   v7 = *(v4 + 24);
   *(v4 + 24) = v6;
 
@@ -18,17 +18,17 @@
   return v4;
 }
 
-- (AVVCContextSettings)initWithMode:(int64_t)a3 deviceUID:(id)a4
+- (AVVCContextSettings)initWithMode:(int64_t)mode deviceUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = AVVCContextSettings;
   v7 = [(AVVCContextSettings *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_activationMode = a3;
-    v9 = [v6 copy];
+    v7->_activationMode = mode;
+    v9 = [dCopy copy];
     activationDeviceUID = v8->_activationDeviceUID;
     v8->_activationDeviceUID = v9;
   }

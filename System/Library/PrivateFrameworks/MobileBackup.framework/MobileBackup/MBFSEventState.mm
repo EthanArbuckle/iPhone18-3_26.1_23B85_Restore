@@ -1,34 +1,34 @@
 @interface MBFSEventState
-+ (id)stateForVolumeMountPoints:(id)a3 error:(id *)a4;
-- (MBFSEventState)initWithDictionaryRepresentation:(id)a3;
++ (id)stateForVolumeMountPoints:(id)points error:(id *)error;
+- (MBFSEventState)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MBFSEventState
 
-- (MBFSEventState)initWithDictionaryRepresentation:(id)a3
+- (MBFSEventState)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v25.receiver = self;
   v25.super_class = MBFSEventState;
   v5 = [(MBFSEventState *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dateCreated"];
+    v6 = [representationCopy objectForKeyedSubscript:@"dateCreated"];
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         objc_storeStrong(&v5->_dateCreated, v6);
-        v7 = [v4 objectForKeyedSubscript:@"eventId"];
+        v7 = [representationCopy objectForKeyedSubscript:@"eventId"];
         if (v7)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             objc_storeStrong(&v5->_eventId, v7);
-            v8 = [v4 objectForKeyedSubscript:@"eventDatabaseUUIDForVolumeUUID"];
+            v8 = [representationCopy objectForKeyedSubscript:@"eventDatabaseUUIDForVolumeUUID"];
             if (v8)
             {
               objc_opt_class();
@@ -115,15 +115,15 @@ LABEL_23:
   return v3;
 }
 
-+ (id)stateForVolumeMountPoints:(id)a3 error:(id *)a4
++ (id)stateForVolumeMountPoints:(id)points error:(id *)error
 {
-  v5 = a3;
+  pointsCopy = points;
   v6 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = pointsCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
@@ -139,7 +139,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v27 + 1) + 8 * v11);
-      v13 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v12 error:a4];
+      v13 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v12 error:error];
       if (!v13)
       {
         goto LABEL_19;
@@ -156,11 +156,11 @@ LABEL_3:
       v16 = FSEventsCopyUUIDForDevice(v31.st_dev);
       if (!v16)
       {
-        if (a4)
+        if (error)
         {
-          v25 = [MBError errorWithCode:4 format:@"FSEventsCopyUUIDForDevice returned nil for device %d", st_dev];
+          st_dev = [MBError errorWithCode:4 format:@"FSEventsCopyUUIDForDevice returned nil for device %d", st_dev];
 LABEL_17:
-          *a4 = v25;
+          *error = st_dev;
         }
 
         goto LABEL_18;
@@ -169,8 +169,8 @@ LABEL_17:
       v17 = v16;
       v18 = CFUUIDCreateString(0, v16);
       CFRelease(v17);
-      v19 = [v14 UUIDString];
-      [v6 setObject:v18 forKeyedSubscript:v19];
+      uUIDString = [v14 UUIDString];
+      [v6 setObject:v18 forKeyedSubscript:uUIDString];
 
       if (v9 == ++v11)
       {
@@ -185,9 +185,9 @@ LABEL_17:
     }
 
     v24 = __error();
-    if (a4)
+    if (error)
     {
-      v25 = [MBError errorWithErrno:*v24 path:v12 format:@"stat error"];
+      st_dev = [MBError errorWithErrno:*v24 path:v12 format:@"stat error"];
       goto LABEL_17;
     }
 

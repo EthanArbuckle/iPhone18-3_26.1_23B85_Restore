@@ -1,25 +1,25 @@
 @interface INRunVoiceCommandIntent
 - (INIntentExecutionResult)executionResult;
-- (INRunVoiceCommandIntent)initWithVoiceCommand:(id)a3 originDevice:(id)a4 executionResult:(id)a5 previousIntentIdentifier:(id)a6;
+- (INRunVoiceCommandIntent)initWithVoiceCommand:(id)command originDevice:(id)device executionResult:(id)result previousIntentIdentifier:(id)identifier;
 - (INSpeakableString)voiceCommand;
 - (INVoiceCommandDeviceInformation)originDevice;
 - (NSString)previousIntentIdentifier;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setExecutionResult:(id)a3;
-- (void)setOriginDevice:(id)a3;
-- (void)setPreviousIntentIdentifier:(id)a3;
-- (void)setVoiceCommand:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setExecutionResult:(id)result;
+- (void)setOriginDevice:(id)device;
+- (void)setPreviousIntentIdentifier:(id)identifier;
+- (void)setVoiceCommand:(id)command;
 @end
 
 @implementation INRunVoiceCommandIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INRunVoiceCommandIntent *)self _typedBackingStore:a3];
+  v6 = [(INRunVoiceCommandIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -28,55 +28,55 @@
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v14[0] = @"voiceCommand";
-  v3 = [(INRunVoiceCommandIntent *)self voiceCommand];
-  v4 = v3;
-  if (!v3)
+  voiceCommand = [(INRunVoiceCommandIntent *)self voiceCommand];
+  null = voiceCommand;
+  if (!voiceCommand)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"originDevice";
-  v5 = [(INRunVoiceCommandIntent *)self originDevice];
-  v6 = v5;
-  if (!v5)
+  originDevice = [(INRunVoiceCommandIntent *)self originDevice];
+  null2 = originDevice;
+  if (!originDevice)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"executionResult";
-  v7 = [(INRunVoiceCommandIntent *)self executionResult];
-  v8 = v7;
-  if (!v7)
+  executionResult = [(INRunVoiceCommandIntent *)self executionResult];
+  null3 = executionResult;
+  if (!executionResult)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v8;
+  v15[2] = null3;
   v14[3] = @"previousIntentIdentifier";
-  v9 = [(INRunVoiceCommandIntent *)self previousIntentIdentifier];
-  v10 = v9;
-  if (!v9)
+  previousIntentIdentifier = [(INRunVoiceCommandIntent *)self previousIntentIdentifier];
+  null4 = previousIntentIdentifier;
+  if (!previousIntentIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (!v9)
+  if (!previousIntentIdentifier)
   {
   }
 
-  if (!v7)
+  if (!executionResult)
   {
   }
 
-  if (!v5)
+  if (!originDevice)
   {
   }
 
-  if (!v3)
+  if (!voiceCommand)
   {
   }
 
@@ -85,119 +85,119 @@
   return v11;
 }
 
-- (void)setPreviousIntentIdentifier:(id)a3
+- (void)setPreviousIntentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  [v5 setPreviousIntentIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  [_typedBackingStore setPreviousIntentIdentifier:identifierCopy];
 }
 
 - (NSString)previousIntentIdentifier
 {
-  v2 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v3 = [v2 previousIntentIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  previousIntentIdentifier = [_typedBackingStore previousIntentIdentifier];
+  v4 = [previousIntentIdentifier copy];
 
   return v4;
 }
 
-- (void)setExecutionResult:(id)a3
+- (void)setExecutionResult:(id)result
 {
-  v4 = a3;
-  v6 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToIntentExecutionResult(v4);
+  resultCopy = result;
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToIntentExecutionResult(resultCopy);
 
-  [v6 setExecutionResult:v5];
+  [_typedBackingStore setExecutionResult:v5];
 }
 
 - (INIntentExecutionResult)executionResult
 {
-  v2 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v3 = [v2 executionResult];
-  v4 = INIntentSlotValueTransformFromIntentExecutionResult(v3);
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  executionResult = [_typedBackingStore executionResult];
+  v4 = INIntentSlotValueTransformFromIntentExecutionResult(executionResult);
 
   return v4;
 }
 
-- (void)setOriginDevice:(id)a3
+- (void)setOriginDevice:(id)device
 {
-  v4 = a3;
-  v6 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToVoiceCommandDeviceInformation(v4);
+  deviceCopy = device;
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToVoiceCommandDeviceInformation(deviceCopy);
 
-  [v6 setOriginDevice:v5];
+  [_typedBackingStore setOriginDevice:v5];
 }
 
 - (INVoiceCommandDeviceInformation)originDevice
 {
-  v2 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v3 = [v2 originDevice];
-  v4 = INIntentSlotValueTransformFromVoiceCommandDeviceInformation(v3);
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  originDevice = [_typedBackingStore originDevice];
+  v4 = INIntentSlotValueTransformFromVoiceCommandDeviceInformation(originDevice);
 
   return v4;
 }
 
-- (void)setVoiceCommand:(id)a3
+- (void)setVoiceCommand:(id)command
 {
-  v4 = a3;
-  v6 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  commandCopy = command;
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(commandCopy);
 
-  [v6 setVoiceCommand:v5];
+  [_typedBackingStore setVoiceCommand:v5];
 }
 
 - (INSpeakableString)voiceCommand
 {
-  v2 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v3 = [v2 voiceCommand];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  voiceCommand = [_typedBackingStore voiceCommand];
+  v4 = INIntentSlotValueTransformFromDataString(voiceCommand);
 
   return v4;
 }
 
-- (INRunVoiceCommandIntent)initWithVoiceCommand:(id)a3 originDevice:(id)a4 executionResult:(id)a5 previousIntentIdentifier:(id)a6
+- (INRunVoiceCommandIntent)initWithVoiceCommand:(id)command originDevice:(id)device executionResult:(id)result previousIntentIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  deviceCopy = device;
+  resultCopy = result;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = INRunVoiceCommandIntent;
   v14 = [(INIntent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(INRunVoiceCommandIntent *)v14 setVoiceCommand:v10];
-    [(INRunVoiceCommandIntent *)v15 setOriginDevice:v11];
-    [(INRunVoiceCommandIntent *)v15 setExecutionResult:v12];
-    [(INRunVoiceCommandIntent *)v15 setPreviousIntentIdentifier:v13];
+    [(INRunVoiceCommandIntent *)v14 setVoiceCommand:commandCopy];
+    [(INRunVoiceCommandIntent *)v15 setOriginDevice:deviceCopy];
+    [(INRunVoiceCommandIntent *)v15 setExecutionResult:resultCopy];
+    [(INRunVoiceCommandIntent *)v15 setPreviousIntentIdentifier:identifierCopy];
   }
 
   return v15;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INRunVoiceCommandIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INRunVoiceCommandIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

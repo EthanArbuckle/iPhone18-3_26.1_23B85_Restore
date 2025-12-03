@@ -1,25 +1,25 @@
 @interface STUpdateBlueprintsResult
-+ (id)outOfDateWithReturnDestination:(id)a3;
++ (id)outOfDateWithReturnDestination:(id)destination;
 + (id)success;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResult:(id)a3;
-- (id)_initWithType:(int64_t)a3 returnDestination:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResult:(id)result;
+- (id)_initWithType:(int64_t)type returnDestination:(id)destination;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STUpdateBlueprintsResult
 
-- (id)_initWithType:(int64_t)a3 returnDestination:(id)a4
+- (id)_initWithType:(int64_t)type returnDestination:(id)destination
 {
-  v6 = a4;
+  destinationCopy = destination;
   v10.receiver = self;
   v10.super_class = STUpdateBlueprintsResult;
   v7 = [(STUpdateBlueprintsResult *)&v10 init];
   returnDestination = v7->_returnDestination;
-  v7->_type = a3;
-  v7->_returnDestination = v6;
+  v7->_type = type;
+  v7->_returnDestination = destinationCopy;
 
   return v7;
 }
@@ -31,28 +31,28 @@
   return v2;
 }
 
-+ (id)outOfDateWithReturnDestination:(id)a3
++ (id)outOfDateWithReturnDestination:(id)destination
 {
-  v3 = a3;
-  v4 = [[STUpdateBlueprintsResult alloc] _initWithType:1 returnDestination:v3];
+  destinationCopy = destination;
+  v4 = [[STUpdateBlueprintsResult alloc] _initWithType:1 returnDestination:destinationCopy];
 
   return v4;
 }
 
 - (id)description
 {
-  v4 = [(STUpdateBlueprintsResult *)self type];
-  if (v4 == 1)
+  type = [(STUpdateBlueprintsResult *)self type];
+  if (type == 1)
   {
     v7 = objc_opt_class();
     v6 = NSStringFromClass(v7);
-    v8 = [(STUpdateBlueprintsResult *)self returnDestination];
-    v2 = [NSString stringWithFormat:@"<%@:%p { OutOfDate: %@ }>", v6, self, v8];
+    returnDestination = [(STUpdateBlueprintsResult *)self returnDestination];
+    v2 = [NSString stringWithFormat:@"<%@:%p { OutOfDate: %@ }>", v6, self, returnDestination];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -67,19 +67,19 @@ LABEL_6:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   type = self->_type;
   returnDestination = self->_returnDestination;
 
   return [v4 _initWithType:type returnDestination:returnDestination];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -89,7 +89,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STUpdateBlueprintsResult *)self isEqualToResult:v4];
+      v5 = [(STUpdateBlueprintsResult *)self isEqualToResult:equalCopy];
     }
 
     else
@@ -101,31 +101,31 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqualToResult:(id)a3
+- (BOOL)isEqualToResult:(id)result
 {
-  v4 = a3;
-  if (v4 == self)
+  resultCopy = result;
+  if (resultCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(STUpdateBlueprintsResult *)self type];
-    if (v5 == [(STUpdateBlueprintsResult *)v4 type])
+    type = [(STUpdateBlueprintsResult *)self type];
+    if (type == [(STUpdateBlueprintsResult *)resultCopy type])
     {
-      v6 = [(STUpdateBlueprintsResult *)self returnDestination];
-      v7 = [(STUpdateBlueprintsResult *)v4 returnDestination];
-      if (v6 == v7)
+      returnDestination = [(STUpdateBlueprintsResult *)self returnDestination];
+      returnDestination2 = [(STUpdateBlueprintsResult *)resultCopy returnDestination];
+      if (returnDestination == returnDestination2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(STUpdateBlueprintsResult *)self returnDestination];
-        v9 = [(STUpdateBlueprintsResult *)v4 returnDestination];
-        v10 = [v8 isEqual:v9];
+        returnDestination3 = [(STUpdateBlueprintsResult *)self returnDestination];
+        returnDestination4 = [(STUpdateBlueprintsResult *)resultCopy returnDestination];
+        v10 = [returnDestination3 isEqual:returnDestination4];
       }
     }
 
@@ -140,11 +140,11 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(STUpdateBlueprintsResult *)self type];
-  v4 = [(STUpdateBlueprintsResult *)self returnDestination];
-  v5 = [v4 hash];
+  type = [(STUpdateBlueprintsResult *)self type];
+  returnDestination = [(STUpdateBlueprintsResult *)self returnDestination];
+  v5 = [returnDestination hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
 @end

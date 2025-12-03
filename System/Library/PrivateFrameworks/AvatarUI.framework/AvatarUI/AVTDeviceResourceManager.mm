@@ -1,48 +1,48 @@
 @interface AVTDeviceResourceManager
-- (AVTDeviceResourceManager)initWithLogger:(id)a3 lockProvider:(id)a4;
-- (void)consumer:(id)a3 willConsumeRenderingResourceForEstimatedDuration:(double)a4;
-- (void)performWorkWithConsumers:(id)a3;
-- (void)registerConsumer:(id)a3;
-- (void)unregisterConsumer:(id)a3;
+- (AVTDeviceResourceManager)initWithLogger:(id)logger lockProvider:(id)provider;
+- (void)consumer:(id)consumer willConsumeRenderingResourceForEstimatedDuration:(double)duration;
+- (void)performWorkWithConsumers:(id)consumers;
+- (void)registerConsumer:(id)consumer;
+- (void)unregisterConsumer:(id)consumer;
 @end
 
 @implementation AVTDeviceResourceManager
 
-- (AVTDeviceResourceManager)initWithLogger:(id)a3 lockProvider:(id)a4
+- (AVTDeviceResourceManager)initWithLogger:(id)logger lockProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  loggerCopy = logger;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = AVTDeviceResourceManager;
   v9 = [(AVTDeviceResourceManager *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_logger, a3);
-    v11 = v8[2](v8, "com.apple.AvatarUI.AVTDeviceResourceManager.stateLock");
+    objc_storeStrong(&v9->_logger, logger);
+    v11 = providerCopy[2](providerCopy, "com.apple.AvatarUI.AVTDeviceResourceManager.stateLock");
     stateLock = v10->_stateLock;
     v10->_stateLock = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     consumers = v10->_consumers;
-    v10->_consumers = v13;
+    v10->_consumers = array;
   }
 
   return v10;
 }
 
-- (void)performWorkWithConsumers:(id)a3
+- (void)performWorkWithConsumers:(id)consumers
 {
-  v4 = a3;
-  v5 = [(AVTDeviceResourceManager *)self stateLock];
+  consumersCopy = consumers;
+  stateLock = [(AVTDeviceResourceManager *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__AVTDeviceResourceManager_performWorkWithConsumers___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = consumersCopy;
+  v6 = consumersCopy;
+  dispatch_sync(stateLock, v7);
 }
 
 void __53__AVTDeviceResourceManager_performWorkWithConsumers___block_invoke(uint64_t a1)
@@ -52,16 +52,16 @@ void __53__AVTDeviceResourceManager_performWorkWithConsumers___block_invoke(uint
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)registerConsumer:(id)a3
+- (void)registerConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__AVTDeviceResourceManager_registerConsumer___block_invoke;
   v6[3] = &unk_1E7F3D198;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = consumerCopy;
+  selfCopy = self;
+  v5 = consumerCopy;
   [(AVTDeviceResourceManager *)self performWorkWithConsumers:v6];
 }
 
@@ -74,15 +74,15 @@ void __45__AVTDeviceResourceManager_registerConsumer___block_invoke(uint64_t a1,
   [v5 addObject:*(a1 + 32)];
 }
 
-- (void)unregisterConsumer:(id)a3
+- (void)unregisterConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__AVTDeviceResourceManager_unregisterConsumer___block_invoke;
   v6[3] = &unk_1E7F3D1C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = consumerCopy;
+  v5 = consumerCopy;
   [(AVTDeviceResourceManager *)self performWorkWithConsumers:v6];
 }
 
@@ -94,9 +94,9 @@ void __47__AVTDeviceResourceManager_unregisterConsumer___block_invoke(uint64_t a
   [v4 removeObject:*(a1 + 32)];
 }
 
-- (void)consumer:(id)a3 willConsumeRenderingResourceForEstimatedDuration:(double)a4
+- (void)consumer:(id)consumer willConsumeRenderingResourceForEstimatedDuration:(double)duration
 {
-  v6 = a3;
+  consumerCopy = consumer;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -107,7 +107,7 @@ void __47__AVTDeviceResourceManager_unregisterConsumer___block_invoke(uint64_t a
   v10[1] = 3221225472;
   v10[2] = __86__AVTDeviceResourceManager_consumer_willConsumeRenderingResourceForEstimatedDuration___block_invoke;
   v10[3] = &unk_1E7F3D210;
-  v7 = v6;
+  v7 = consumerCopy;
   v11 = v7;
   v12 = &v13;
   [(AVTDeviceResourceManager *)self performWorkWithConsumers:v10];
@@ -116,7 +116,7 @@ void __47__AVTDeviceResourceManager_unregisterConsumer___block_invoke(uint64_t a
   v9[1] = 3221225472;
   v9[2] = __86__AVTDeviceResourceManager_consumer_willConsumeRenderingResourceForEstimatedDuration___block_invoke_3;
   v9[3] = &__block_descriptor_40_e44_v32__0___AVTDeviceResourceConsumer__8Q16_B24l;
-  *&v9[4] = a4;
+  *&v9[4] = duration;
   [v8 enumerateObjectsUsingBlock:v9];
 
   _Block_object_dispose(&v13, 8);

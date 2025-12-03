@@ -1,24 +1,24 @@
 @interface STUIStatusBarVisualProvider_CarPlay
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info;
 - (STUIStatusBar)statusBar;
 - (STUIStatusBarVisualProvider_CarPlay)init;
 - (id)_animationForSensorIndicator;
-- (id)_defaultScaleAnimationWithIdentifier:(id)a3;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)condensedFontForCellularType:(int64_t)a3 defaultFont:(id)a4 baselineOffset:(double *)a5;
+- (id)_defaultScaleAnimationWithIdentifier:(id)identifier;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)condensedFontForCellularType:(int64_t)type defaultFont:(id)font baselineOffset:(double *)offset;
 - (id)emphasizedFont;
 - (id)emphasizedPillTimeFont;
 - (id)emphasizedSoftFont;
 - (id)emphasizedSoftPillTimeFont;
 - (id)gradedBaseFont;
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4;
-- (id)styleAttributesForStyle:(int64_t)a3;
-- (id)willUpdateWithData:(id)a3;
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
-- (void)itemCreated:(id)a3;
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed;
+- (id)styleAttributesForStyle:(int64_t)style;
+- (id)willUpdateWithData:(id)data;
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
+- (void)itemCreated:(id)created;
 @end
 
 @implementation STUIStatusBarVisualProvider_CarPlay
@@ -30,16 +30,16 @@
   return WeakRetained;
 }
 
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info
 {
-  v4 = a4;
+  infoCopy = info;
   v5 = objc_opt_class();
-  if (v4)
+  if (infoCopy)
   {
-    v6 = [v4 objectForKey:@"STUIStatusBarCarPlayHorizontalLayoutKey"];
-    v7 = [v6 BOOLValue];
+    v6 = [infoCopy objectForKey:@"STUIStatusBarCarPlayHorizontalLayoutKey"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7 & 1) != 0 || ([v4 objectForKey:@"STUIStatusBarCarPlayDualLayoutDriverKey"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, (v9) || (objc_msgSend(v4, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutPassengerKey"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, (v11) || (objc_msgSend(v4, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutTopStatusKey"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "BOOLValue"), v12, (v13) || (objc_msgSend(v4, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutAppDockKey"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v15))
+    if (bOOLValue & 1) != 0 || ([infoCopy objectForKey:@"STUIStatusBarCarPlayDualLayoutDriverKey"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, (v9) || (objc_msgSend(infoCopy, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutPassengerKey"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, (v11) || (objc_msgSend(infoCopy, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutTopStatusKey"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "BOOLValue"), v12, (v13) || (objc_msgSend(infoCopy, "objectForKey:", @"STUIStatusBarCarPlayDualLayoutAppDockKey"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, v15))
     {
       v5 = objc_opt_class();
     }
@@ -50,7 +50,7 @@
   return v5;
 }
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x277D77260];
   v4 = *MEMORY[0x277D77260];
@@ -69,35 +69,35 @@
     v3 = objc_opt_new();
     [(STUIStatusBarVisualProvider_CarPlay *)v2 setPillRegionCoordinator:v3];
 
-    v4 = [(STUIStatusBarVisualProvider_CarPlay *)v2 pillRegionCoordinator];
-    [v4 setVisualProvider:v2];
+    pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)v2 pillRegionCoordinator];
+    [pillRegionCoordinator setVisualProvider:v2];
   }
 
   return v2;
 }
 
-- (void)itemCreated:(id)a3
+- (void)itemCreated:(id)created
 {
-  v8 = a3;
+  createdCopy = created;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v8;
+    v4 = createdCopy;
     [v4 setReducesFontSize:0];
     [v4 setTypeStringProvider:self];
   }
 
   else
   {
-    v5 = [v8 identifier];
+    identifier = [createdCopy identifier];
     v6 = +[(STUIStatusBarItem *)STUIStatusBarVoiceControlPillItem];
 
-    if (v5 != v6)
+    if (identifier != v6)
     {
       goto LABEL_6;
     }
 
-    v7 = v8;
+    v7 = createdCopy;
     [v7 setPillSize:{15.0, 15.0}];
     [v7 setPillPadding:3.0];
   }
@@ -105,20 +105,20 @@
 LABEL_6:
 }
 
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed
 {
   v4 = @"􀛱";
-  if (a3 != 9)
+  if (type != 9)
   {
     v4 = 0;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v4 = @"􀛰";
   }
 
-  if (a4)
+  if (condensed)
   {
     return v4;
   }
@@ -129,21 +129,21 @@ LABEL_6:
   }
 }
 
-- (id)condensedFontForCellularType:(int64_t)a3 defaultFont:(id)a4 baselineOffset:(double *)a5
+- (id)condensedFontForCellularType:(int64_t)type defaultFont:(id)font baselineOffset:(double *)offset
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if (a3 <= 0xF)
+  fontCopy = font;
+  v7 = fontCopy;
+  v8 = fontCopy;
+  if (type <= 0xF)
   {
-    v8 = v6;
-    if (((1 << a3) & 0xF8C0) != 0)
+    v8 = fontCopy;
+    if (((1 << type) & 0xF8C0) != 0)
     {
       v9 = MEMORY[0x277D74300];
-      [v6 pointSize];
+      [fontCopy pointSize];
       v10 = [v9 systemFontOfSize:? weight:?];
-      v11 = [v10 fontDescriptor];
-      v12 = [v11 fontDescriptorWithSymbolicTraits:64];
+      fontDescriptor = [v10 fontDescriptor];
+      v12 = [fontDescriptor fontDescriptorWithSymbolicTraits:64];
 
       v8 = [MEMORY[0x277D74300] fontWithDescriptor:v12 size:0.0];
     }
@@ -171,9 +171,9 @@ LABEL_6:
     _MergedGlobals_56 = IsBoldTextEnabled;
     v6 = MEMORY[0x277D74300];
     v7 = *MEMORY[0x277D76938];
-    v8 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v9 = [v8 traitCollection];
-    [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:v9];
+    statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+    traitCollection = [statusBar traitCollection];
+    [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:traitCollection];
     CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
     v11 = qword_280C1E888;
     qword_280C1E888 = CopyOfSystemUIFontWithGrade;
@@ -203,9 +203,9 @@ LABEL_6:
     byte_280C1E881 = IsBoldTextEnabled;
     v6 = MEMORY[0x277D74300];
     v7 = *MEMORY[0x277D76938];
-    v8 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v9 = [v8 traitCollection];
-    v10 = [v6 _preferredFontForTextStyle:v7 design:0 variant:1024 compatibleWithTraitCollection:v9];
+    statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+    traitCollection = [statusBar traitCollection];
+    v10 = [v6 _preferredFontForTextStyle:v7 design:0 variant:1024 compatibleWithTraitCollection:traitCollection];
     v11 = unk_280C1E890;
     unk_280C1E890 = v10;
 
@@ -261,9 +261,9 @@ LABEL_6:
     byte_280C1E883 = IsBoldTextEnabled;
     v6 = MEMORY[0x277D74300];
     v7 = *MEMORY[0x277D76940];
-    v8 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v9 = [v8 traitCollection];
-    v10 = [v6 _preferredFontForTextStyle:v7 design:0 variant:1024 compatibleWithTraitCollection:v9];
+    statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+    traitCollection = [statusBar traitCollection];
+    v10 = [v6 _preferredFontForTextStyle:v7 design:0 variant:1024 compatibleWithTraitCollection:traitCollection];
     v11 = unk_280C1E8A0;
     unk_280C1E8A0 = v10;
 
@@ -300,108 +300,108 @@ LABEL_6:
   return v3;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
-  v5 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v6 = [STUIStatusBarStyleAttributes styleAttributesForStatusBar:v5 style:a3];
+  statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+  v6 = [STUIStatusBarStyleAttributes styleAttributesForStatusBar:statusBar style:style];
 
-  if (a3 == 2)
+  if (style == 2)
   {
-    v7 = [MEMORY[0x277D75348] blackColor];
-    [v6 setTextColor:v7];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v6 setTextColor:blackColor];
 
     [MEMORY[0x277D75348] blackColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v6 setTextColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v6 setTextColor:whiteColor];
 
     [MEMORY[0x277D75348] whiteColor];
   }
   v9 = ;
   [v6 setImageTintColor:v9];
 
-  v10 = [(STUIStatusBarVisualProvider_CarPlay *)self gradedBaseFont];
-  [v6 setFont:v10];
+  gradedBaseFont = [(STUIStatusBarVisualProvider_CarPlay *)self gradedBaseFont];
+  [v6 setFont:gradedBaseFont];
 
-  v11 = [(STUIStatusBarVisualProvider_CarPlay *)self gradedBaseFont];
-  [v6 setSmallFont:v11];
+  gradedBaseFont2 = [(STUIStatusBarVisualProvider_CarPlay *)self gradedBaseFont];
+  [v6 setSmallFont:gradedBaseFont2];
 
-  v12 = [(STUIStatusBarVisualProvider_CarPlay *)self emphasizedFont];
-  [v6 setEmphasizedFont:v12];
+  emphasizedFont = [(STUIStatusBarVisualProvider_CarPlay *)self emphasizedFont];
+  [v6 setEmphasizedFont:emphasizedFont];
 
-  v13 = [v6 imageTintColor];
-  v14 = [v13 colorWithAlphaComponent:0.2];
+  imageTintColor = [v6 imageTintColor];
+  v14 = [imageTintColor colorWithAlphaComponent:0.2];
   [v6 setImageDimmedTintColor:v14];
 
   return v6;
 }
 
-- (id)willUpdateWithData:(id)a3
+- (id)willUpdateWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 sensorActivityEntry];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  sensorActivityEntry = [dataCopy sensorActivityEntry];
+  v6 = sensorActivityEntry;
+  if (sensorActivityEntry)
   {
-    -[STUIStatusBarVisualProvider_CarPlay setShowingSensorActivityIndicator:](self, "setShowingSensorActivityIndicator:", [v5 isEnabled]);
+    -[STUIStatusBarVisualProvider_CarPlay setShowingSensorActivityIndicator:](self, "setShowingSensorActivityIndicator:", [sensorActivityEntry isEnabled]);
   }
 
-  v7 = [v4 backgroundActivityEntry];
-  v8 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  [v8 updateDataForBackgroundActivity:v4];
+  backgroundActivityEntry = [dataCopy backgroundActivityEntry];
+  pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  [pillRegionCoordinator updateDataForBackgroundActivity:dataCopy];
 
-  if (v7)
+  if (backgroundActivityEntry)
   {
-    -[STUIStatusBarVisualProvider_CarPlay setShowingPill:](self, "setShowingPill:", [v7 isEnabled]);
+    -[STUIStatusBarVisualProvider_CarPlay setShowingPill:](self, "setShowingPill:", [backgroundActivityEntry isEnabled]);
   }
 
-  v9 = [v4 radarEntry];
-  v10 = v9;
-  if (v9)
+  radarEntry = [dataCopy radarEntry];
+  v10 = radarEntry;
+  if (radarEntry)
   {
-    if ([v9 isEnabled])
+    if ([radarEntry isEnabled])
     {
-      v11 = [STUIStatusBarActivityAction actionForBackgroundActivityWithIdentifier:*MEMORY[0x277D6BCF0]];
-      v12 = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
-      [v12 setAction:v11];
+      radarRegion2 = [STUIStatusBarActivityAction actionForBackgroundActivityWithIdentifier:*MEMORY[0x277D6BCF0]];
+      radarRegion = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
+      [radarRegion setAction:radarRegion2];
     }
 
     else
     {
-      v11 = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
-      [v11 setAction:0];
+      radarRegion2 = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
+      [radarRegion2 setAction:0];
     }
   }
 
   return MEMORY[0x277CBEBF8];
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(STUIStatusBarBackgroundActivityItem *)STUIStatusBarPillBackgroundActivityItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v17 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    v18 = [v17 animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
+    pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    v18 = [pillRegionCoordinator animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
 
     goto LABEL_14;
   }
 
   v9 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorQuietModeItem];
-  if (v9 == v6)
+  if (v9 == identifierCopy)
   {
     goto LABEL_11;
   }
 
   v10 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorAnnounceNotificationsItem];
   v11 = v10;
-  if (v10 == v6)
+  if (v10 == identifierCopy)
   {
 
 LABEL_11:
@@ -410,27 +410,27 @@ LABEL_11:
 
   v12 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorQuietModeAnnounceItem];
 
-  if (v12 != v6)
+  if (v12 != identifierCopy)
   {
     v13 = +[(STUIStatusBarItem *)STUIStatusBarSensorActivityItem];
 
-    if (v13 == v6)
+    if (v13 == identifierCopy)
     {
-      v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
+      _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
     }
 
     else
     {
       v14 = +[STUIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-      if (v14 == v6 || (+[STUIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v6))
+      if (v14 == identifierCopy || (+[STUIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == identifierCopy))
       {
-        v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
+        _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
       }
 
       else
       {
-        v16 = v7;
+        _animationForSensorIndicator = animationCopy;
       }
     }
 
@@ -438,37 +438,37 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:v6];
+  _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:identifierCopy];
 LABEL_13:
-  v18 = v16;
+  v18 = _animationForSensorIndicator;
 LABEL_14:
 
   return v18;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(STUIStatusBarBackgroundActivityItem *)STUIStatusBarPillBackgroundActivityItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v17 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    v18 = [v17 animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
+    pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    v18 = [pillRegionCoordinator animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
 
     goto LABEL_14;
   }
 
   v9 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorQuietModeItem];
-  if (v9 == v6)
+  if (v9 == identifierCopy)
   {
     goto LABEL_11;
   }
 
   v10 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorAnnounceNotificationsItem];
   v11 = v10;
-  if (v10 == v6)
+  if (v10 == identifierCopy)
   {
 
 LABEL_11:
@@ -477,27 +477,27 @@ LABEL_11:
 
   v12 = +[(STUIStatusBarItem *)STUIStatusBarIndicatorQuietModeAnnounceItem];
 
-  if (v12 != v6)
+  if (v12 != identifierCopy)
   {
     v13 = +[(STUIStatusBarItem *)STUIStatusBarSensorActivityItem];
 
-    if (v13 == v6)
+    if (v13 == identifierCopy)
     {
-      v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
+      _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
     }
 
     else
     {
       v14 = +[STUIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-      if (v14 == v6 || (+[STUIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v6))
+      if (v14 == identifierCopy || (+[STUIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == identifierCopy))
       {
-        v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
+        _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
       }
 
       else
       {
-        v16 = v7;
+        _animationForSensorIndicator = animationCopy;
       }
     }
 
@@ -505,50 +505,50 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(STUIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:v6];
+  _animationForSensorIndicator = [(STUIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:identifierCopy];
 LABEL_13:
-  v18 = v16;
+  v18 = _animationForSensorIndicator;
 LABEL_14:
 
   return v18;
 }
 
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
-  v8 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  if (([v8 handledUpdateOfActionable:v13 highlighted:v6 initialPress:v5] & 1) == 0)
+  pressCopy = press;
+  highlightedCopy = highlighted;
+  actionableCopy = actionable;
+  pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  if (([pillRegionCoordinator handledUpdateOfActionable:actionableCopy highlighted:highlightedCopy initialPress:pressCopy] & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v10 = v13;
+    v10 = actionableCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v8 = v13;
-    v11 = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
+    pillRegionCoordinator = actionableCopy;
+    radarRegion = [(STUIStatusBarVisualProvider_CarPlay *)self radarRegion];
 
-    if (v11 == v8)
+    if (radarRegion == pillRegionCoordinator)
     {
-      v12 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-      [v12 updateRegion:v8 highlighted:v6 initialPress:v5 cornerRadius:8.0];
+      pillRegionCoordinator2 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+      [pillRegionCoordinator2 updateRegion:pillRegionCoordinator highlighted:highlightedCopy initialPress:pressCopy cornerRadius:8.0];
     }
   }
 
-  v10 = v13;
+  v10 = actionableCopy;
 LABEL_6:
 }
 
-- (id)_defaultScaleAnimationWithIdentifier:(id)a3
+- (id)_defaultScaleAnimationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   CGAffineTransformMakeScale(&v7, 0.25, 0.25);
-  v5 = STUIStatusBarDefaultAnimation(self, v4, &v7, 0.25, 0.25, 0.0);
+  v5 = STUIStatusBarDefaultAnimation(self, identifierCopy, &v7, 0.25, 0.25, 0.0);
 
   return v5;
 }
@@ -562,9 +562,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (!_UISolariumEnabled())
   {
     goto LABEL_4;
@@ -572,7 +572,7 @@ LABEL_6:
 
   v5 = +[STUIStatusBarTimeItem timeDisplayIdentifier];
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
 
     goto LABEL_9;
@@ -580,19 +580,19 @@ LABEL_6:
 
   v7 = +[STUIStatusBarTimeItem shortTimeDisplayIdentifier];
 
-  if (v7 == v4)
+  if (v7 == identifierCopy)
   {
 LABEL_9:
     v9 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
-    v10 = [(STUIStatusBarVisualProvider_CarPlay *)self emphasizedSoftFont];
-    [v9 setEmphasizedFont:v10];
+    emphasizedSoftFont = [(STUIStatusBarVisualProvider_CarPlay *)self emphasizedSoftFont];
+    [v9 setEmphasizedFont:emphasizedSoftFont];
     goto LABEL_12;
   }
 
 LABEL_4:
   v8 = +[STUIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-  if (v8 != v4)
+  if (v8 != identifierCopy)
   {
     v9 = 0;
     goto LABEL_13;
@@ -611,8 +611,8 @@ LABEL_4:
   v11 = ;
   [v9 setEmphasizedFont:v11];
 
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [v9 setTextColor:v10];
+  emphasizedSoftFont = [MEMORY[0x277D75348] whiteColor];
+  [v9 setTextColor:emphasizedSoftFont];
 LABEL_12:
 
 LABEL_13:

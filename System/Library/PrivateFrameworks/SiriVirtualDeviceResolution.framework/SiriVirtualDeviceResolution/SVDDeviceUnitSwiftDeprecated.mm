@@ -1,20 +1,20 @@
 @interface SVDDeviceUnitSwiftDeprecated
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVDDeviceUnitSwiftDeprecated
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2698DF5BC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2698DF5BC(coderCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2698DFA54();
 
   return v3;

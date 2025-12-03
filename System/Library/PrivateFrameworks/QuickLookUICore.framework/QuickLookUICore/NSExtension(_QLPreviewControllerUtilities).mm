@@ -7,17 +7,17 @@
 
 - (uint64_t)ql_isPreviewExtensionThatHaveCustomPresentationView
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"QLCustomLoadingView"];
-  v3 = [v2 BOOLValue];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"QLCustomLoadingView"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)ql_previewExtensionCustomLoadingTime
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"QLCustomLoadingTimeout"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"QLCustomLoadingTimeout"];
 
   return v2;
 }

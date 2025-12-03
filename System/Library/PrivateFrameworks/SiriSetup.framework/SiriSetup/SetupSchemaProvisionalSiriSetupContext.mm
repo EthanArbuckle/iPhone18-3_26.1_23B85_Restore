@@ -1,8 +1,8 @@
 @interface SetupSchemaProvisionalSiriSetupContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SetupSchemaProvisionalSiriSetupContext)initWithDictionary:(id)a3;
-- (SetupSchemaProvisionalSiriSetupContext)initWithJSON:(id)a3;
+- (SetupSchemaProvisionalSiriSetupContext)initWithDictionary:(id)dictionary;
+- (SetupSchemaProvisionalSiriSetupContext)initWithJSON:(id)n;
 - (SetupSchemaProvisionalSiriSetupEnded)ended;
 - (SetupSchemaProvisionalSiriSetupStarted)started;
 - (SetupSchemaProvisionalSiriSetupStep)step;
@@ -11,26 +11,26 @@
 - (void)deleteEnded;
 - (void)deleteStarted;
 - (void)deleteStep;
-- (void)setEnded:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)setStep:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setStarted:(id)started;
+- (void)setStep:(id)step;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SetupSchemaProvisionalSiriSetupContext
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   ended = self->_ended;
   self->_ended = 0;
 
   step = self->_step;
   self->_step = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = startedCopy != 0;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
 - (SetupSchemaProvisionalSiriSetupStarted)started
@@ -59,18 +59,18 @@
   }
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   started = self->_started;
   self->_started = 0;
 
   step = self->_step;
   self->_step = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (SetupSchemaProvisionalSiriSetupEnded)ended
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setStep:(id)a3
+- (void)setStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   started = self->_started;
   self->_started = 0;
 
@@ -109,14 +109,14 @@
   self->_ended = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!stepCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   step = self->_step;
-  self->_step = v4;
+  self->_step = stepCopy;
 }
 
 - (SetupSchemaProvisionalSiriSetupStep)step
@@ -145,65 +145,65 @@
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+  toCopy = to;
+  started = [(SetupSchemaProvisionalSiriSetupContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+    started2 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+  ended = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+    ended2 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+  step = [(SetupSchemaProvisionalSiriSetupContext *)self step];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (step)
   {
-    v10 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+    step2 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
-  if (v8)
+  started3 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -215,20 +215,20 @@
   {
   }
 
-  v6 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+  started2 = [equalCopy ended];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
-  if (v13)
+  ended = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -240,12 +240,12 @@
   {
   }
 
-  v6 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
-  v7 = [v4 step];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+  started2 = [equalCopy step];
+  if ((started != 0) != (started2 == 0))
   {
-    v18 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
-    if (!v18)
+    step = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+    if (!step)
     {
 
 LABEL_21:
@@ -253,10 +253,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
-    v21 = [v4 step];
-    v22 = [v20 isEqual:v21];
+    v19 = step;
+    step2 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+    step3 = [equalCopy step];
+    v22 = [step2 isEqual:step3];
 
     if (v22)
     {
@@ -285,66 +285,66 @@ LABEL_19:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_ended)
   {
-    v4 = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(SetupSchemaProvisionalSiriSetupContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_started)
   {
-    v7 = [(SetupSchemaProvisionalSiriSetupContext *)self started];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    started = [(SetupSchemaProvisionalSiriSetupContext *)self started];
+    dictionaryRepresentation2 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v9 forKeyedSubscript:@"started"];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"started"];
     }
   }
 
   if (self->_step)
   {
-    v10 = [(SetupSchemaProvisionalSiriSetupContext *)self step];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    step = [(SetupSchemaProvisionalSiriSetupContext *)self step];
+    dictionaryRepresentation3 = [step dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"step"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"step"];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB68] null];
-      [v3 setObject:v12 forKeyedSubscript:@"step"];
+      null3 = [MEMORY[0x277CBEB68] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"step"];
     }
   }
 
-  [(SetupSchemaProvisionalSiriSetupContext *)self willProduceDictionaryRepresentation:v3];
+  [(SetupSchemaProvisionalSiriSetupContext *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SetupSchemaProvisionalSiriSetupContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SetupSchemaProvisionalSiriSetupContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -355,33 +355,33 @@ LABEL_19:
   return v3;
 }
 
-- (SetupSchemaProvisionalSiriSetupContext)initWithJSON:(id)a3
+- (SetupSchemaProvisionalSiriSetupContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SetupSchemaProvisionalSiriSetupContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (SetupSchemaProvisionalSiriSetupContext)initWithDictionary:(id)a3
+- (SetupSchemaProvisionalSiriSetupContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SetupSchemaProvisionalSiriSetupContext;
   v5 = [(SetupSchemaProvisionalSiriSetupContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -389,7 +389,7 @@ LABEL_19:
       [(SetupSchemaProvisionalSiriSetupContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -397,7 +397,7 @@ LABEL_19:
       [(SetupSchemaProvisionalSiriSetupContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"step"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"step"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

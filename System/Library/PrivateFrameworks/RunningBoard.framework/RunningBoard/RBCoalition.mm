@@ -1,16 +1,16 @@
 @interface RBCoalition
-- (BOOL)isEqual:(id)a3;
-- (RBCoalition)initWithCoalitionID:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBCoalition)initWithCoalitionID:(unint64_t)d;
 - (id)debugDescription;
-- (void)enumerateProcessesUsingBlock:(id)a3;
-- (void)removeProcess:(id)a3;
-- (void)setCoalitionLevel:(unint64_t)a3;
-- (void)setProcess:(id)a3 withState:(id)a4;
+- (void)enumerateProcessesUsingBlock:(id)block;
+- (void)removeProcess:(id)process;
+- (void)setCoalitionLevel:(unint64_t)level;
+- (void)setProcess:(id)process withState:(id)state;
 @end
 
 @implementation RBCoalition
 
-- (RBCoalition)initWithCoalitionID:(unint64_t)a3
+- (RBCoalition)initWithCoalitionID:(unint64_t)d
 {
   v12.receiver = self;
   v12.super_class = RBCoalition;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_coalitionID = a3;
+    v4->_coalitionID = d;
     v4->_level = 0;
     v6 = objc_alloc_init(RBProcessMap);
     processes = v5->_processes;
@@ -37,44 +37,44 @@
   return v5;
 }
 
-- (void)setCoalitionLevel:(unint64_t)a3
+- (void)setCoalitionLevel:(unint64_t)level
 {
   self->_previousCoalitionLevel = self->_level;
-  self->_level = a3;
+  self->_level = level;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_lastModificationTime = v4;
 }
 
-- (void)setProcess:(id)a3 withState:(id)a4
+- (void)setProcess:(id)process withState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 identity];
-  v8 = [(RBProcessMap *)self->_processes setValue:v10 forIdentity:v7];
-  if (v6)
+  processCopy = process;
+  stateCopy = state;
+  identity = [processCopy identity];
+  v8 = [(RBProcessMap *)self->_processes setValue:processCopy forIdentity:identity];
+  if (stateCopy)
   {
-    v9 = [(RBProcessMap *)self->_processStates setValue:v6 forIdentity:v7];
+    v9 = [(RBProcessMap *)self->_processStates setValue:stateCopy forIdentity:identity];
   }
 }
 
-- (void)removeProcess:(id)a3
+- (void)removeProcess:(id)process
 {
-  v6 = [a3 identity];
-  v4 = [(RBProcessMap *)self->_processes removeValueForIdentity:v6];
-  v5 = [(RBProcessMap *)self->_processStates removeValueForIdentity:v6];
+  identity = [process identity];
+  v4 = [(RBProcessMap *)self->_processes removeValueForIdentity:identity];
+  v5 = [(RBProcessMap *)self->_processStates removeValueForIdentity:identity];
 }
 
-- (void)enumerateProcessesUsingBlock:(id)a3
+- (void)enumerateProcessesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   processes = self->_processes;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RBCoalition_enumerateProcessesUsingBlock___block_invoke;
   v7[3] = &unk_279B33258;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(RBProcessMap *)processes enumerateWithBlock:v7];
 }
 
@@ -86,18 +86,18 @@ void __44__RBCoalition_enumerateProcessesUsingBlock___block_invoke(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(RBCoalition *)v5 coalitionID]== self->_coalitionID;
+    v7 = equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(RBCoalition *)v5 coalitionID]== self->_coalitionID;
   }
 
   return v7;

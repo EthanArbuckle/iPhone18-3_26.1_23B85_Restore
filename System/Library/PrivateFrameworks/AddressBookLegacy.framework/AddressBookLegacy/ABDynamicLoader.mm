@@ -1,22 +1,22 @@
 @interface ABDynamicLoader
-+ (BOOL)loadFrameworkAtPath:(id)a3 andStoreHandle:(void *)a4 bundle:(id *)a5 logging:(BOOL)a6;
++ (BOOL)loadFrameworkAtPath:(id)path andStoreHandle:(void *)handle bundle:(id *)bundle logging:(BOOL)logging;
 @end
 
 @implementation ABDynamicLoader
 
-+ (BOOL)loadFrameworkAtPath:(id)a3 andStoreHandle:(void *)a4 bundle:(id *)a5 logging:(BOOL)a6
++ (BOOL)loadFrameworkAtPath:(id)path andStoreHandle:(void *)handle bundle:(id *)bundle logging:(BOOL)logging
 {
-  v6 = a6;
-  v8 = a4;
+  loggingCopy = logging;
+  handleCopy = handle;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = *a4;
-  v11 = [CPSystemRootDirectory() stringByAppendingPathComponent:a3];
+  v10 = *handle;
+  v11 = [CPSystemRootDirectory() stringByAppendingPathComponent:path];
   v12 = getenv("DYLD_FRAMEWORK_PATH");
-  v13 = [v11 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v11 stringByDeletingLastPathComponent];
   if (v12)
   {
     v35 = v10;
-    v36 = a5;
+    bundleCopy = bundle;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -26,8 +26,8 @@
     if (v15)
     {
       v16 = v15;
-      v33 = v8;
-      v34 = v6;
+      v33 = handleCopy;
+      v34 = loggingCopy;
       v17 = *v38;
       while (2)
       {
@@ -56,21 +56,21 @@
       }
 
 LABEL_12:
-      v6 = v34;
-      v8 = v33;
+      loggingCopy = v34;
+      handleCopy = v33;
     }
 
-    v20 = [v11 fileSystemRepresentation];
+    fileSystemRepresentation = [v11 fileSystemRepresentation];
     v21 = strlen(v12);
-    v22 = v21 + strlen(v20);
-    v23 = malloc_type_calloc(1uLL, v22 + 2, 0x7DF51AA6uLL);
-    strlcat(v23, v12, v22 + 2);
-    strlcat(v23, "/", v22 + 2);
-    strlcat(v23, [objc_msgSend(v13 "lastPathComponent")], v22 + 2);
-    strlcat(v23, "/", v22 + 2);
-    strlcat(v23, [objc_msgSend(a3 "lastPathComponent")], v22 + 2);
-    v24 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithUTF8String:{v12), "stringByAppendingPathComponent:", objc_msgSend(v13, "lastPathComponent")}];
-    a5 = v36;
+    v22 = v21 + strlen(fileSystemRepresentation);
+    fileSystemRepresentation2 = malloc_type_calloc(1uLL, v22 + 2, 0x7DF51AA6uLL);
+    strlcat(fileSystemRepresentation2, v12, v22 + 2);
+    strlcat(fileSystemRepresentation2, "/", v22 + 2);
+    strlcat(fileSystemRepresentation2, [objc_msgSend(stringByDeletingLastPathComponent "lastPathComponent")], v22 + 2);
+    strlcat(fileSystemRepresentation2, "/", v22 + 2);
+    strlcat(fileSystemRepresentation2, [objc_msgSend(path "lastPathComponent")], v22 + 2);
+    v24 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithUTF8String:{v12), "stringByAppendingPathComponent:", objc_msgSend(stringByDeletingLastPathComponent, "lastPathComponent")}];
+    bundle = bundleCopy;
     if (v35)
     {
       goto LABEL_14;
@@ -79,10 +79,10 @@ LABEL_12:
 
   else
   {
-    v23 = [v11 fileSystemRepresentation];
-    v20 = 0;
-    v24 = v13;
-    v13 = 0;
+    fileSystemRepresentation2 = [v11 fileSystemRepresentation];
+    fileSystemRepresentation = 0;
+    v24 = stringByDeletingLastPathComponent;
+    stringByDeletingLastPathComponent = 0;
     if (v10)
     {
 LABEL_14:
@@ -91,26 +91,26 @@ LABEL_14:
     }
   }
 
-  v26 = dlopen(v23, 2);
-  *v8 = v26;
-  if (v20 && !v26)
+  v26 = dlopen(fileSystemRepresentation2, 2);
+  *handleCopy = v26;
+  if (fileSystemRepresentation && !v26)
   {
-    v26 = dlopen(v20, 2);
-    *v8 = v26;
+    v26 = dlopen(fileSystemRepresentation, 2);
+    *handleCopy = v26;
   }
 
   v25 = v26 != 0;
-  if (!v26 && v6)
+  if (!v26 && loggingCopy)
   {
     ABDiagnosticsEnabled();
-    if (v20)
+    if (fileSystemRepresentation)
     {
-      v30 = v20;
+      v30 = fileSystemRepresentation;
     }
 
     else
     {
-      v30 = v23;
+      v30 = fileSystemRepresentation2;
     }
 
     _ABLog2(3, "+[ABDynamicLoader loadFrameworkAtPath:andStoreHandle:bundle:logging:]", 69, 0, @"Could not load framework at path: %s", v27, v28, v29, v30);
@@ -118,22 +118,22 @@ LABEL_14:
   }
 
 LABEL_25:
-  if (a5)
+  if (bundle)
   {
     v31 = [MEMORY[0x1E696AAE8] bundleWithPath:v24];
-    *a5 = v31;
+    *bundle = v31;
     if (!v31)
     {
-      if (v13)
+      if (stringByDeletingLastPathComponent)
       {
-        *a5 = [MEMORY[0x1E696AAE8] bundleWithPath:v13];
+        *bundle = [MEMORY[0x1E696AAE8] bundleWithPath:stringByDeletingLastPathComponent];
       }
     }
   }
 
-  if (v23 && v20)
+  if (fileSystemRepresentation2 && fileSystemRepresentation)
   {
-    free(v23);
+    free(fileSystemRepresentation2);
   }
 
   return v25;

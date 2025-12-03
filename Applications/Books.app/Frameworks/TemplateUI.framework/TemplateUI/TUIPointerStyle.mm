@@ -1,14 +1,14 @@
 @interface TUIPointerStyle
 + (id)defaultPointerStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TUIPointerStyle)init;
-- (TUIPointerStyle)initWithOther:(id)a3;
-- (TUIPointerStyle)pointerStyleWithCursor:(id)a3;
-- (TUIPointerStyle)pointerStyleWithEffect:(int64_t)a3;
-- (TUIPointerStyle)pointerStyleWithPreferredTintMode:(int64_t)a3;
-- (TUIPointerStyle)pointerStyleWithPrefersScale:(BOOL)a3;
-- (TUIPointerStyle)pointerStyleWithPrefersShadow:(BOOL)a3;
-- (id)pointerEffectWithPreview:(id)a3;
+- (TUIPointerStyle)initWithOther:(id)other;
+- (TUIPointerStyle)pointerStyleWithCursor:(id)cursor;
+- (TUIPointerStyle)pointerStyleWithEffect:(int64_t)effect;
+- (TUIPointerStyle)pointerStyleWithPreferredTintMode:(int64_t)mode;
+- (TUIPointerStyle)pointerStyleWithPrefersScale:(BOOL)scale;
+- (TUIPointerStyle)pointerStyleWithPrefersShadow:(BOOL)shadow;
+- (id)pointerEffectWithPreview:(id)preview;
 @end
 
 @implementation TUIPointerStyle
@@ -28,21 +28,21 @@
   return result;
 }
 
-- (TUIPointerStyle)initWithOther:(id)a3
+- (TUIPointerStyle)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v9.receiver = self;
   v9.super_class = TUIPointerStyle;
   v5 = [(TUIPointerStyle *)&v9 init];
   if (v5)
   {
-    v5->_effect = [v4 effect];
-    v5->_prefersShadow = [v4 prefersShadow];
-    v5->_prefersScale = [v4 prefersScale];
-    v5->_preferredTintMode = [v4 preferredTintMode];
-    v6 = [v4 cursor];
+    v5->_effect = [otherCopy effect];
+    v5->_prefersShadow = [otherCopy prefersShadow];
+    v5->_prefersScale = [otherCopy prefersScale];
+    v5->_preferredTintMode = [otherCopy preferredTintMode];
+    cursor = [otherCopy cursor];
     cursor = v5->_cursor;
-    v5->_cursor = v6;
+    v5->_cursor = cursor;
   }
 
   return v5;
@@ -50,18 +50,18 @@
 
 + (id)defaultPointerStyle
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = equalCopy;
   }
 
   else
@@ -107,9 +107,9 @@
   return v9;
 }
 
-- (id)pointerEffectWithPreview:(id)a3
+- (id)pointerEffectWithPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   v5 = 0;
   effect = self->_effect;
   if (effect <= 1)
@@ -136,13 +136,13 @@
   {
     v7 = UIPointerLiftEffect;
 LABEL_10:
-    v5 = [v7 effectWithPreview:v4];
+    v5 = [v7 effectWithPreview:previewCopy];
     goto LABEL_11;
   }
 
   if (effect == 3)
   {
-    v5 = [UIPointerHoverEffect effectWithPreview:v4];
+    v5 = [UIPointerHoverEffect effectWithPreview:previewCopy];
     [v5 setPrefersShadow:self->_prefersShadow];
     [v5 setPrefersScaledContent:self->_prefersScale];
     [v5 setPreferredTintMode:self->_preferredTintMode];
@@ -153,69 +153,69 @@ LABEL_11:
   return v5;
 }
 
-- (TUIPointerStyle)pointerStyleWithEffect:(int64_t)a3
+- (TUIPointerStyle)pointerStyleWithEffect:(int64_t)effect
 {
-  v4 = self;
-  if (v4->_effect != a3)
+  selfCopy = self;
+  if (selfCopy->_effect != effect)
   {
-    v5 = [[TUIPointerStyle alloc] initWithOther:v4];
+    v5 = [[TUIPointerStyle alloc] initWithOther:selfCopy];
 
-    [(TUIPointerStyle *)v5 setEffect:a3];
-    v4 = v5;
+    [(TUIPointerStyle *)v5 setEffect:effect];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerStyle)pointerStyleWithPrefersShadow:(BOOL)a3
+- (TUIPointerStyle)pointerStyleWithPrefersShadow:(BOOL)shadow
 {
-  v3 = a3;
-  v4 = self;
-  if (v4->_prefersShadow != v3)
+  shadowCopy = shadow;
+  selfCopy = self;
+  if (selfCopy->_prefersShadow != shadowCopy)
   {
-    v5 = [[TUIPointerStyle alloc] initWithOther:v4];
+    v5 = [[TUIPointerStyle alloc] initWithOther:selfCopy];
 
-    [(TUIPointerStyle *)v5 setPrefersShadow:v3];
-    v4 = v5;
+    [(TUIPointerStyle *)v5 setPrefersShadow:shadowCopy];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerStyle)pointerStyleWithPrefersScale:(BOOL)a3
+- (TUIPointerStyle)pointerStyleWithPrefersScale:(BOOL)scale
 {
-  v3 = a3;
-  v4 = self;
-  if (v4->_prefersScale != v3)
+  scaleCopy = scale;
+  selfCopy = self;
+  if (selfCopy->_prefersScale != scaleCopy)
   {
-    v5 = [[TUIPointerStyle alloc] initWithOther:v4];
+    v5 = [[TUIPointerStyle alloc] initWithOther:selfCopy];
 
-    [(TUIPointerStyle *)v5 setPrefersScale:v3];
-    v4 = v5;
+    [(TUIPointerStyle *)v5 setPrefersScale:scaleCopy];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerStyle)pointerStyleWithPreferredTintMode:(int64_t)a3
+- (TUIPointerStyle)pointerStyleWithPreferredTintMode:(int64_t)mode
 {
-  v4 = self;
-  if (v4->_preferredTintMode != a3)
+  selfCopy = self;
+  if (selfCopy->_preferredTintMode != mode)
   {
-    v5 = [[TUIPointerStyle alloc] initWithOther:v4];
+    v5 = [[TUIPointerStyle alloc] initWithOther:selfCopy];
 
-    [(TUIPointerStyle *)v5 setPreferredTintMode:a3];
-    v4 = v5;
+    [(TUIPointerStyle *)v5 setPreferredTintMode:mode];
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (TUIPointerStyle)pointerStyleWithCursor:(id)a3
+- (TUIPointerStyle)pointerStyleWithCursor:(id)cursor
 {
-  v4 = a3;
+  cursorCopy = cursor;
   v5 = [[TUIPointerStyle alloc] initWithOther:self];
-  [(TUIPointerStyle *)v5 setCursor:v4];
+  [(TUIPointerStyle *)v5 setCursor:cursorCopy];
 
   return v5;
 }

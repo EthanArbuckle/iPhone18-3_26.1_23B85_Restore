@@ -1,24 +1,24 @@
 @interface WLSourceDevicesController
 - (WLSourceDevicesController)init;
-- (WLSourceDevicesController)initWithDelegate:(id)a3;
+- (WLSourceDevicesController)initWithDelegate:(id)delegate;
 - (WLSourceDevicesDelegate)delegate;
-- (void)attemptDirectConnectionToAddress:(id)a3;
+- (void)attemptDirectConnectionToAddress:(id)address;
 - (void)dealloc;
-- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)a3;
-- (void)stopDeviceDiscoveryWithCompletion:(id)a3;
-- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)a3;
+- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)completion;
+- (void)stopDeviceDiscoveryWithCompletion:(id)completion;
+- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)completion;
 @end
 
 @implementation WLSourceDevicesController
 
-- (WLSourceDevicesController)initWithDelegate:(id)a3
+- (WLSourceDevicesController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(WLSourceDevicesController *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -55,9 +55,9 @@
   [(WLSourceDevicesController *)&v6 dealloc];
 }
 
-- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)a3
+- (void)startWiFiAndDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__WLSourceDevicesController_startWiFiAndDeviceDiscoveryWithCompletion___block_invoke;
@@ -69,8 +69,8 @@
   v7[2] = __71__WLSourceDevicesController_startWiFiAndDeviceDiscoveryWithCompletion___block_invoke_2;
   v7[3] = &unk_279EB41E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 startWiFiAndDeviceDiscovery:v7];
 }
 
@@ -92,9 +92,9 @@ void __71__WLSourceDevicesController_startWiFiAndDeviceDiscoveryWithCompletion__
   }
 }
 
-- (void)stopDeviceDiscoveryWithCompletion:(id)a3
+- (void)stopDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__WLSourceDevicesController_stopDeviceDiscoveryWithCompletion___block_invoke;
@@ -106,8 +106,8 @@ void __71__WLSourceDevicesController_startWiFiAndDeviceDiscoveryWithCompletion__
   v7[2] = __63__WLSourceDevicesController_stopDeviceDiscoveryWithCompletion___block_invoke_2;
   v7[3] = &unk_279EB4210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 stopDeviceDiscovery:v7];
 }
 
@@ -130,9 +130,9 @@ uint64_t __63__WLSourceDevicesController_stopDeviceDiscoveryWithCompletion___blo
   return MEMORY[0x2821F9730]();
 }
 
-- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)a3
+- (void)stopWiFiAndDeviceDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__WLSourceDevicesController_stopWiFiAndDeviceDiscoveryWithCompletion___block_invoke;
@@ -144,8 +144,8 @@ uint64_t __63__WLSourceDevicesController_stopDeviceDiscoveryWithCompletion___blo
   v7[2] = __70__WLSourceDevicesController_stopWiFiAndDeviceDiscoveryWithCompletion___block_invoke_2;
   v7[3] = &unk_279EB4210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 stopWiFiAndDeviceDiscovery:v7];
 }
 
@@ -168,16 +168,16 @@ uint64_t __70__WLSourceDevicesController_stopWiFiAndDeviceDiscoveryWithCompletio
   return MEMORY[0x2821F9730]();
 }
 
-- (void)attemptDirectConnectionToAddress:(id)a3
+- (void)attemptDirectConnectionToAddress:(id)address
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__WLSourceDevicesController_attemptDirectConnectionToAddress___block_invoke;
   v6[3] = &unk_279EB4128;
   v6[4] = self;
-  v4 = a3;
+  addressCopy = address;
   v5 = [(WLDaemonConnection *)self daemonWithErrorHandler:v6];
-  [v5 attemptDirectConnectionToAddress:v4];
+  [v5 attemptDirectConnectionToAddress:addressCopy];
 }
 
 - (WLSourceDevicesDelegate)delegate

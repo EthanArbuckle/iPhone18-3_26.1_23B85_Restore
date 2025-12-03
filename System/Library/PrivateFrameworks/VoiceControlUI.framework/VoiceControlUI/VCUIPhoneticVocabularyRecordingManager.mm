@@ -1,13 +1,13 @@
 @interface VCUIPhoneticVocabularyRecordingManager
 - (_TtC14VoiceControlUI38VCUIPhoneticVocabularyRecordingManager)init;
 - (void)dealloc;
-- (void)dictationConnection:(id)a3 didRecognizeTranscriptionObjects:(id)a4 languageModel:(id)a5;
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4;
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4;
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3;
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3;
+- (void)dictationConnection:(id)connection didRecognizeTranscriptionObjects:(id)objects languageModel:(id)model;
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail;
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail;
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed;
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin;
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel;
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end;
 @end
 
 @implementation VCUIPhoneticVocabularyRecordingManager
@@ -15,7 +15,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14VoiceControlUI38VCUIPhoneticVocabularyRecordingManager_connection);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 endSession];
@@ -26,19 +26,19 @@
   [(VCUIPhoneticVocabularyRecordingManager *)&v5 dealloc];
 }
 
-- (void)dictationConnectionSpeechRecordingDidBegin:(id)a3
+- (void)dictationConnectionSpeechRecordingDidBegin:(id)begin
 {
-  v5 = a3;
-  v6 = self;
-  sub_272417744(a3);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_272417744(begin);
 }
 
-- (void)dictationConnection:(id)a3 didRecognizeTranscriptionObjects:(id)a4 languageModel:(id)a5
+- (void)dictationConnection:(id)connection didRecognizeTranscriptionObjects:(id)objects languageModel:(id)model
 {
-  if (a4)
+  if (objects)
   {
     v8 = sub_272434A50();
-    if (!a5)
+    if (!model)
     {
       goto LABEL_4;
     }
@@ -47,53 +47,53 @@
   }
 
   v8 = 0;
-  if (a5)
+  if (model)
   {
 LABEL_3:
     sub_272434930();
   }
 
 LABEL_4:
-  v9 = a3;
-  v10 = self;
-  sub_272429130(a3, v8);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_272429130(connection, v8);
 }
 
-- (void)dictationConnection:(id)a3 speechRecordingDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecordingDidFail:(id)fail
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_272417CA4(a3, a4);
+  connectionCopy = connection;
+  selfCopy = self;
+  failCopy = fail;
+  sub_272417CA4(connection, fail);
 }
 
-- (void)dictationConnection:(id)a3 speechRecognitionDidFail:(id)a4
+- (void)dictationConnection:(id)connection speechRecognitionDidFail:(id)fail
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_272417D34(a3, a4);
+  connectionCopy = connection;
+  selfCopy = self;
+  failCopy = fail;
+  sub_272417D34(connection, fail);
 }
 
-- (void)dictationConnectionSpeechRecordingDidCancel:(id)a3
+- (void)dictationConnectionSpeechRecordingDidCancel:(id)cancel
 {
-  v5 = a3;
-  v6 = self;
-  sub_272418164(a3);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_272418164(cancel);
 }
 
-- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)a3
+- (void)dictationConnectionSpeechRecognitionDidSucceed:(id)succeed
 {
-  v5 = a3;
-  v6 = self;
-  sub_2724184E0(a3);
+  succeedCopy = succeed;
+  selfCopy = self;
+  sub_2724184E0(succeed);
 }
 
-- (void)dictationConnectionSpeechRecordingDidEnd:(id)a3
+- (void)dictationConnectionSpeechRecordingDidEnd:(id)end
 {
-  v5 = a3;
-  v6 = self;
-  sub_272418800(a3);
+  endCopy = end;
+  selfCopy = self;
+  sub_272418800(end);
 }
 
 - (_TtC14VoiceControlUI38VCUIPhoneticVocabularyRecordingManager)init

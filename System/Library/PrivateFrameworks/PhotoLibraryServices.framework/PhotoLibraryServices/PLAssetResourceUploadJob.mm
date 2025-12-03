@@ -1,38 +1,38 @@
 @interface PLAssetResourceUploadJob
-+ (id)_uploadJobsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 inPhotoLibrary:(id)a6 error:(id *)a7;
-+ (id)insertInManagedObjectContext:(id)a3 withUUID:(id)a4;
++ (id)_uploadJobsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit inPhotoLibrary:(id)library error:(id *)error;
++ (id)insertInManagedObjectContext:(id)context withUUID:(id)d;
 + (id)predicateForAcknowledgeableJobs;
-+ (id)uploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5;
-+ (id)uploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5 error:(id *)a6;
-+ (id)uploadJobsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5;
-+ (unint64_t)_countOfUploadJobsWithPredicate:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5;
-+ (unint64_t)_deleteUploadJobsMatchingPredicate:(id)a3 inPhotoLibrary:(id)a4;
-+ (unint64_t)countOfAcknowledgedUploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5;
-+ (unint64_t)countOfUploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5 error:(id *)a6;
-+ (unint64_t)countOfUploadJobsWithConfiguration:(id)a3 states:(id)a4 inPhotoLibrary:(id)a5 error:(id *)a6;
-+ (unint64_t)deleteUploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4;
-+ (unint64_t)deleteUploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5;
-+ (unint64_t)deleteUploadJobsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4;
-+ (void)_signalPendingBackgroundUploadWorkItemForLibrary:(id)a3;
++ (id)uploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library error:(id *)error;
++ (id)uploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library error:(id *)error;
++ (id)uploadJobsWithUUIDs:(id)ds inPhotoLibrary:(id)library error:(id *)error;
++ (unint64_t)_countOfUploadJobsWithPredicate:(id)predicate inPhotoLibrary:(id)library error:(id *)error;
++ (unint64_t)_deleteUploadJobsMatchingPredicate:(id)predicate inPhotoLibrary:(id)library;
++ (unint64_t)countOfAcknowledgedUploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library error:(id *)error;
++ (unint64_t)countOfUploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library error:(id *)error;
++ (unint64_t)countOfUploadJobsWithConfiguration:(id)configuration states:(id)states inPhotoLibrary:(id)library error:(id *)error;
++ (unint64_t)deleteUploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library;
++ (unint64_t)deleteUploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library;
++ (unint64_t)deleteUploadJobsWithUUIDs:(id)ds inPhotoLibrary:(id)library;
++ (void)_signalPendingBackgroundUploadWorkItemForLibrary:(id)library;
 - (NSData)urlRequestData;
 - (void)delete;
-- (void)setUrlRequestData:(id)a3;
-- (void)updateState:(signed __int16)a3;
+- (void)setUrlRequestData:(id)data;
+- (void)updateState:(signed __int16)state;
 - (void)willSave;
 @end
 
 @implementation PLAssetResourceUploadJob
 
-- (void)updateState:(signed __int16)a3
+- (void)updateState:(signed __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(PLAssetResourceUploadJob *)self willChangeValueForKey:@"state"];
-  v5 = [MEMORY[0x1E696AD98] numberWithShort:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithShort:stateCopy];
   [(PLAssetResourceUploadJob *)self setPrimitiveValue:v5 forKey:@"state"];
 
   [(PLAssetResourceUploadJob *)self didChangeValueForKey:@"state"];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(PLAssetResourceUploadJob *)self setLastModifiedDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLAssetResourceUploadJob *)self setLastModifiedDate:date];
 }
 
 - (void)willSave
@@ -40,29 +40,29 @@
   v15.receiver = self;
   v15.super_class = PLAssetResourceUploadJob;
   [(PLManagedObject *)&v15 willSave];
-  v3 = [(PLAssetResourceUploadJob *)self managedObjectContext];
+  managedObjectContext = [(PLAssetResourceUploadJob *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PLAssetResourceUploadJob *)self isDeleted]& 1) == 0)
   {
     if ([(PLAssetResourceUploadJob *)self isInserted])
     {
       v4 = objc_opt_class();
-      v5 = [(PLManagedObject *)self photoLibrary];
-      [v4 _signalPendingBackgroundUploadWorkItemForLibrary:v5];
+      photoLibrary = [(PLManagedObject *)self photoLibrary];
+      [v4 _signalPendingBackgroundUploadWorkItemForLibrary:photoLibrary];
     }
 
-    v6 = [(PLAssetResourceUploadJob *)self changedValues];
-    v7 = [v6 objectForKeyedSubscript:@"state"];
+    changedValues = [(PLAssetResourceUploadJob *)self changedValues];
+    v7 = [changedValues objectForKeyedSubscript:@"state"];
 
     if (!v7)
     {
       goto LABEL_14;
     }
 
-    v8 = [(PLAssetResourceUploadJob *)self state];
-    if ((v8 - 3) >= 3)
+    state = [(PLAssetResourceUploadJob *)self state];
+    if ((state - 3) >= 3)
     {
-      if ((v8 - 1) >= 2)
+      if ((state - 1) >= 2)
       {
 LABEL_14:
 
@@ -79,8 +79,8 @@ LABEL_14:
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_INFO, "PLAssetResourceJob is signaling the extension worker", v14, 2u);
       }
 
-      v10 = [(PLManagedObject *)self photoLibrary];
-      [PLAssetResourceUploadJobConfiguration signalPendingBackgroundProcessingForLibrary:v10];
+      photoLibrary2 = [(PLManagedObject *)self photoLibrary];
+      [PLAssetResourceUploadJobConfiguration signalPendingBackgroundProcessingForLibrary:photoLibrary2];
     }
 
     v11 = PLBackendGetLog();
@@ -91,8 +91,8 @@ LABEL_14:
     }
 
     v12 = objc_opt_class();
-    v13 = [(PLManagedObject *)self photoLibrary];
-    [v12 _signalPendingBackgroundUploadWorkItemForLibrary:v13];
+    photoLibrary3 = [(PLManagedObject *)self photoLibrary];
+    [v12 _signalPendingBackgroundUploadWorkItemForLibrary:photoLibrary3];
 
     goto LABEL_14;
   }
@@ -100,32 +100,32 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setUrlRequestData:(id)a3
+- (void)setUrlRequestData:(id)data
 {
-  v7 = a3;
-  v4 = [(PLAssetResourceUploadJob *)self managedObjectContext];
-  v5 = [(PLAssetResourceUploadJob *)self request];
-  if (v7)
+  dataCopy = data;
+  managedObjectContext = [(PLAssetResourceUploadJob *)self managedObjectContext];
+  request = [(PLAssetResourceUploadJob *)self request];
+  if (dataCopy)
   {
-    if (!v5)
+    if (!request)
     {
-      v6 = [(PLAssetResourceUploadJob *)self managedObjectContext];
-      v5 = [(PLManagedObject *)PLAssetResourceUploadJobRequest insertInManagedObjectContext:v6];
+      managedObjectContext2 = [(PLAssetResourceUploadJob *)self managedObjectContext];
+      request = [(PLManagedObject *)PLAssetResourceUploadJobRequest insertInManagedObjectContext:managedObjectContext2];
 
-      [(PLAssetResourceUploadJob *)self setRequest:v5];
+      [(PLAssetResourceUploadJob *)self setRequest:request];
     }
 
-    [v5 setUrlRequestData:v7];
+    [request setUrlRequestData:dataCopy];
   }
 
   else
   {
-    if (!v5)
+    if (!request)
     {
       goto LABEL_8;
     }
 
-    [v4 deleteObject:v5];
+    [managedObjectContext deleteObject:request];
     [(PLAssetResourceUploadJob *)self setRequest:0];
   }
 
@@ -134,36 +134,36 @@ LABEL_8:
 
 - (NSData)urlRequestData
 {
-  v2 = [(PLAssetResourceUploadJob *)self request];
-  v3 = v2;
-  if (v2)
+  request = [(PLAssetResourceUploadJob *)self request];
+  v3 = request;
+  if (request)
   {
-    v4 = [v2 urlRequestData];
+    urlRequestData = [request urlRequestData];
   }
 
   else
   {
-    v4 = 0;
+    urlRequestData = 0;
   }
 
-  return v4;
+  return urlRequestData;
 }
 
 - (void)delete
 {
-  v3 = [(PLAssetResourceUploadJob *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(PLAssetResourceUploadJob *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
-+ (void)_signalPendingBackgroundUploadWorkItemForLibrary:(id)a3
++ (void)_signalPendingBackgroundUploadWorkItemForLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__PLAssetResourceUploadJob__signalPendingBackgroundUploadWorkItemForLibrary___block_invoke;
   v5[3] = &unk_1E75781E8;
-  v6 = v3;
-  v4 = v3;
+  v6 = libraryCopy;
+  v4 = libraryCopy;
   [v4 performBlock:v5];
 }
 
@@ -174,10 +174,10 @@ void __77__PLAssetResourceUploadJob__signalPendingBackgroundUploadWorkItemForLib
   [v1 signalBackgroundProcessingNeededForWorkerTypes:v2];
 }
 
-+ (unint64_t)_countOfUploadJobsWithPredicate:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5
++ (unint64_t)_countOfUploadJobsWithPredicate:(id)predicate inPhotoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  libraryCopy = library;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -192,19 +192,19 @@ void __77__PLAssetResourceUploadJob__signalPendingBackgroundUploadWorkItemForLib
   v15[1] = 3221225472;
   v15[2] = __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibrary_error___block_invoke;
   v15[3] = &unk_1E7578898;
-  v9 = v7;
+  v9 = predicateCopy;
   v16 = v9;
-  v10 = v8;
+  v10 = libraryCopy;
   v17 = v10;
   v18 = &v24;
   v19 = &v20;
   [v10 performBlockAndWait:v15];
   v11 = v21[3];
   v12 = v25[5];
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL && a5)
+  if (v11 == 0x7FFFFFFFFFFFFFFFLL && error)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v21[3];
@@ -234,30 +234,30 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   }
 }
 
-+ (unint64_t)countOfUploadJobsWithConfiguration:(id)a3 states:(id)a4 inPhotoLibrary:(id)a5 error:(id *)a6
++ (unint64_t)countOfUploadJobsWithConfiguration:(id)configuration states:(id)states inPhotoLibrary:(id)library error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  configurationCopy = configuration;
+  statesCopy = states;
+  libraryCopy = library;
   v13 = MEMORY[0x1E696AB28];
   v14 = MEMORY[0x1E696AE18];
-  if (v10)
+  if (configurationCopy)
   {
-    v15 = [v10 objectID];
-    v16 = [v14 predicateWithFormat:@"%K == %@", @"configuration", v15];
+    objectID = [configurationCopy objectID];
+    v16 = [v14 predicateWithFormat:@"%K == %@", @"configuration", objectID];
   }
 
   else
   {
     v16 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-    v15 = v16;
+    objectID = v16;
   }
 
   v34[0] = v16;
-  if ([v11 count])
+  if ([statesCopy count])
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"state", v11];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"state", statesCopy];
   }
 
   else
@@ -269,30 +269,30 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   v19 = [v13 andPredicateWithSubpredicates:v18];
 
-  if (v10)
+  if (configurationCopy)
   {
   }
 
   v27 = 0;
-  v20 = [a1 _countOfUploadJobsWithPredicate:v19 inPhotoLibrary:v12 error:&v27];
+  v20 = [self _countOfUploadJobsWithPredicate:v19 inPhotoLibrary:libraryCopy error:&v27];
   v21 = v27;
   v22 = v21;
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a6)
+    if (error)
     {
       v23 = v21;
-      *a6 = v22;
+      *error = v22;
     }
 
     v24 = PLBackendGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v10 uuid];
+      uuid = [configurationCopy uuid];
       *buf = 138412802;
-      v29 = v11;
+      v29 = statesCopy;
       v30 = 2114;
-      v31 = v25;
+      v31 = uuid;
       v32 = 2112;
       v33 = v22;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Failed to fetch count of jobs with state (%@) for configuration: %{public}@: %@", buf, 0x20u);
@@ -302,32 +302,32 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   return v20;
 }
 
-+ (unint64_t)countOfUploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5 error:(id *)a6
++ (unint64_t)countOfUploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library error:(id *)error
 {
-  v7 = a4;
+  stateCopy = state;
   v17[1] = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E696AD98];
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 numberWithShort:v7];
+  libraryCopy = library;
+  configurationCopy = configuration;
+  v13 = [v10 numberWithShort:stateCopy];
   v17[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v15 = [a1 countOfUploadJobsWithConfiguration:v12 states:v14 inPhotoLibrary:v11 error:a6];
+  v15 = [self countOfUploadJobsWithConfiguration:configurationCopy states:v14 inPhotoLibrary:libraryCopy error:error];
 
   return v15;
 }
 
-+ (unint64_t)countOfAcknowledgedUploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5
++ (unint64_t)countOfAcknowledgedUploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library error:(id *)error
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  configurationCopy = configuration;
+  libraryCopy = library;
   v11 = MEMORY[0x1E696AB28];
   v12 = MEMORY[0x1E696AE18];
-  if (v9)
+  if (configurationCopy)
   {
-    v5 = [v9 objectID];
-    [v12 predicateWithFormat:@"%K == %@", @"configuration", v5];
+    objectID = [configurationCopy objectID];
+    [v12 predicateWithFormat:@"%K == %@", @"configuration", objectID];
   }
 
   else
@@ -336,35 +336,35 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   }
   v13 = ;
   v29[0] = v13;
-  v14 = [a1 predicateForAcknowledgeableJobs];
-  v29[1] = v14;
+  predicateForAcknowledgeableJobs = [self predicateForAcknowledgeableJobs];
+  v29[1] = predicateForAcknowledgeableJobs;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v16 = [v11 andPredicateWithSubpredicates:v15];
 
-  if (v9)
+  if (configurationCopy)
   {
 
-    v13 = v5;
+    v13 = objectID;
   }
 
   v24 = 0;
-  v17 = [a1 _countOfUploadJobsWithPredicate:v16 inPhotoLibrary:v10 error:&v24];
+  v17 = [self _countOfUploadJobsWithPredicate:v16 inPhotoLibrary:libraryCopy error:&v24];
   v18 = v24;
   v19 = v18;
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
       v20 = v18;
-      *a5 = v19;
+      *error = v19;
     }
 
     v21 = PLBackendGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v9 uuid];
+      uuid = [configurationCopy uuid];
       *buf = 138543618;
-      v26 = v22;
+      v26 = uuid;
       v27 = 2112;
       v28 = v19;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to fetch count of unacknowledged jobs for configuration: %{public}@: %@", buf, 0x16u);
@@ -388,16 +388,16 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   return v6;
 }
 
-+ (unint64_t)_deleteUploadJobsMatchingPredicate:(id)a3 inPhotoLibrary:(id)a4
++ (unint64_t)_deleteUploadJobsMatchingPredicate:(id)predicate inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  libraryCopy = library;
   v8 = objc_autoreleasePoolPush();
   v9 = MEMORY[0x1E695D5E0];
-  v10 = [a1 entityName];
-  v11 = [v9 fetchRequestWithEntityName:v10];
+  entityName = [self entityName];
+  v11 = [v9 fetchRequestWithEntityName:entityName];
 
-  [v11 setPredicate:v6];
+  [v11 setPredicate:predicateCopy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -406,7 +406,7 @@ void __81__PLAssetResourceUploadJob__countOfUploadJobsWithPredicate_inPhotoLibra
   v16[1] = 3221225472;
   v16[2] = __78__PLAssetResourceUploadJob__deleteUploadJobsMatchingPredicate_inPhotoLibrary___block_invoke;
   v16[3] = &unk_1E7578820;
-  v12 = v7;
+  v12 = libraryCopy;
   v17 = v12;
   v13 = v11;
   v18 = v13;
@@ -450,16 +450,16 @@ LABEL_6:
   }
 }
 
-+ (unint64_t)deleteUploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5
++ (unint64_t)deleteUploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library
 {
-  v6 = a4;
+  stateCopy = state;
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  configurationCopy = configuration;
+  libraryCopy = library;
   v10 = MEMORY[0x1E696AB28];
-  if (v8)
+  if (configurationCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"configuration", v8];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"configuration", configurationCopy];
   }
 
   else
@@ -468,40 +468,40 @@ LABEL_6:
   }
   v11 = ;
   v17[0] = v11;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", v6];
-  v17[1] = v12;
+  stateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", stateCopy];
+  v17[1] = stateCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v14 = [v10 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 _deleteUploadJobsMatchingPredicate:v14 inPhotoLibrary:v9];
+  v15 = [self _deleteUploadJobsMatchingPredicate:v14 inPhotoLibrary:libraryCopy];
   return v15;
 }
 
-+ (unint64_t)deleteUploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4
++ (unint64_t)deleteUploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K == %@", @"configuration", a3];
-  v9 = [a1 _deleteUploadJobsMatchingPredicate:v8 inPhotoLibrary:v7];
+  libraryCopy = library;
+  configuration = [v6 predicateWithFormat:@"%K == %@", @"configuration", configuration];
+  v9 = [self _deleteUploadJobsMatchingPredicate:configuration inPhotoLibrary:libraryCopy];
 
   return v9;
 }
 
-+ (unint64_t)deleteUploadJobsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4
++ (unint64_t)deleteUploadJobsWithUUIDs:(id)ds inPhotoLibrary:(id)library
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K IN %@", @"uuid", a3];
-  v9 = [a1 _deleteUploadJobsMatchingPredicate:v8 inPhotoLibrary:v7];
+  libraryCopy = library;
+  v8 = [v6 predicateWithFormat:@"%K IN %@", @"uuid", ds];
+  v9 = [self _deleteUploadJobsMatchingPredicate:v8 inPhotoLibrary:libraryCopy];
 
   return v9;
 }
 
-+ (id)_uploadJobsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 inPhotoLibrary:(id)a6 error:(id *)a7
++ (id)_uploadJobsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit inPhotoLibrary:(id)library error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  libraryCopy = library;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -518,23 +518,23 @@ LABEL_6:
   v22[1] = 3221225472;
   v22[2] = __100__PLAssetResourceUploadJob__uploadJobsMatchingPredicate_sortDescriptors_limit_inPhotoLibrary_error___block_invoke;
   v22[3] = &unk_1E7565F90;
-  v28 = a1;
-  v15 = v12;
+  selfCopy = self;
+  v15 = predicateCopy;
   v23 = v15;
-  v16 = v13;
-  v29 = a5;
+  v16 = descriptorsCopy;
+  limitCopy = limit;
   v24 = v16;
   v26 = &v36;
-  v17 = v14;
+  v17 = libraryCopy;
   v25 = v17;
   v27 = &v30;
   [v17 performBlockAndWait:v22];
   v18 = v37[5];
   v19 = v31[5];
-  if (!v18 && a7)
+  if (!v18 && error)
   {
     v19 = v19;
-    *a7 = v19;
+    *error = v19;
   }
 
   v20 = v37[5];
@@ -586,16 +586,16 @@ void __100__PLAssetResourceUploadJob__uploadJobsMatchingPredicate_sortDescriptor
   }
 }
 
-+ (id)uploadJobsWithConfiguration:(id)a3 state:(signed __int16)a4 inPhotoLibrary:(id)a5 error:(id *)a6
++ (id)uploadJobsWithConfiguration:(id)configuration state:(signed __int16)state inPhotoLibrary:(id)library error:(id *)error
 {
-  v8 = a4;
+  stateCopy = state;
   v19[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  configurationCopy = configuration;
+  libraryCopy = library;
   v12 = MEMORY[0x1E696AB28];
-  if (v10)
+  if (configurationCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"configuration", v10];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"configuration", configurationCopy];
   }
 
   else
@@ -604,43 +604,43 @@ void __100__PLAssetResourceUploadJob__uploadJobsMatchingPredicate_sortDescriptor
   }
   v13 = ;
   v19[0] = v13;
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", v8];
-  v19[1] = v14;
+  stateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", stateCopy];
+  v19[1] = stateCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v16 = [v12 andPredicateWithSubpredicates:v15];
 
-  v17 = [a1 _uploadJobsMatchingPredicate:v16 sortDescriptors:0 limit:0 inPhotoLibrary:v11 error:a6];
+  v17 = [self _uploadJobsMatchingPredicate:v16 sortDescriptors:0 limit:0 inPhotoLibrary:libraryCopy error:error];
 
   return v17;
 }
 
-+ (id)uploadJobsWithConfiguration:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5
++ (id)uploadJobsWithConfiguration:(id)configuration inPhotoLibrary:(id)library error:(id *)error
 {
   v8 = MEMORY[0x1E696AE18];
-  v9 = a4;
-  v10 = [v8 predicateWithFormat:@"%K == %@", @"configuration", a3];
-  v11 = [a1 _uploadJobsMatchingPredicate:v10 sortDescriptors:0 limit:0 inPhotoLibrary:v9 error:a5];
+  libraryCopy = library;
+  configuration = [v8 predicateWithFormat:@"%K == %@", @"configuration", configuration];
+  v11 = [self _uploadJobsMatchingPredicate:configuration sortDescriptors:0 limit:0 inPhotoLibrary:libraryCopy error:error];
 
   return v11;
 }
 
-+ (id)uploadJobsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4 error:(id *)a5
++ (id)uploadJobsWithUUIDs:(id)ds inPhotoLibrary:(id)library error:(id *)error
 {
   v8 = MEMORY[0x1E696AE18];
-  v9 = a4;
-  v10 = [v8 predicateWithFormat:@"%K IN %@", @"uuid", a3];
-  v11 = [a1 _uploadJobsMatchingPredicate:v10 sortDescriptors:0 limit:0 inPhotoLibrary:v9 error:a5];
+  libraryCopy = library;
+  v10 = [v8 predicateWithFormat:@"%K IN %@", @"uuid", ds];
+  v11 = [self _uploadJobsMatchingPredicate:v10 sortDescriptors:0 limit:0 inPhotoLibrary:libraryCopy error:error];
 
   return v11;
 }
 
-+ (id)insertInManagedObjectContext:(id)a3 withUUID:(id)a4
++ (id)insertInManagedObjectContext:(id)context withUUID:(id)d
 {
-  v6 = a4;
-  v7 = [a1 insertInManagedObjectContext:a3];
-  if (v6)
+  dCopy = d;
+  v7 = [self insertInManagedObjectContext:context];
+  if (dCopy)
   {
-    v8 = v6;
+    uUIDString = dCopy;
     if (!v7)
     {
       goto LABEL_4;
@@ -649,13 +649,13 @@ void __100__PLAssetResourceUploadJob__uploadJobsMatchingPredicate_sortDescriptor
     goto LABEL_3;
   }
 
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v10 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   if (v7)
   {
 LABEL_3:
-    [v7 setUuid:v8];
+    [v7 setUuid:uUIDString];
   }
 
 LABEL_4:

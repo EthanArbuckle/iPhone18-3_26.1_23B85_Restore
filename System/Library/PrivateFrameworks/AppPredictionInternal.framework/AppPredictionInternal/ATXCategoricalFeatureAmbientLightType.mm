@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureAmbientLightType
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForAWDProactiveAppPredictionAmbientLightType:(int)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForAWDProactiveAppPredictionAmbientLightType:(int)type;
 @end
 
 @implementation ATXCategoricalFeatureAmbientLightType
 
-- (id)featureNameForAWDProactiveAppPredictionAmbientLightType:(int)a3
+- (id)featureNameForAWDProactiveAppPredictionAmbientLightType:(int)type
 {
-  if (a3 < 8)
+  if (type < 8)
   {
-    return off_2785A20C0[a3];
+    return off_2785A20C0[type];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,17 +21,17 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 ambientLightContext];
+  contextCopy = context;
+  ambientLightContext = [contextCopy ambientLightContext];
 
-  if (v6)
+  if (ambientLightContext)
   {
-    v7 = [v5 ambientLightContext];
-    v8 = [v7 ambientLightType];
+    ambientLightContext2 = [contextCopy ambientLightContext];
+    ambientLightType = [ambientLightContext2 ambientLightType];
 
-    v9 = [(ATXCategoricalFeatureAmbientLightType *)self featureNameForAWDProactiveAppPredictionAmbientLightType:v8];
+    v9 = [(ATXCategoricalFeatureAmbientLightType *)self featureNameForAWDProactiveAppPredictionAmbientLightType:ambientLightType];
   }
 
   else

@@ -10,8 +10,8 @@
 
 - (uint64_t)mf_isValidAttachmentURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 hasPrefix:@"x-attach"];
+  scheme = [self scheme];
+  v2 = [scheme hasPrefix:@"x-attach"];
 
   return v2;
 }
@@ -19,16 +19,16 @@
 - (uint64_t)mf_rowID
 {
   v2 = *MEMORY[0x1E699A728];
-  if ([a1 mf_isValidAttachmentURL])
+  if ([self mf_isValidAttachmentURL])
   {
-    v3 = [a1 host];
-    v4 = v3;
-    if (v3)
+    host = [self host];
+    v4 = host;
+    if (host)
     {
-      v5 = [v3 longLongValue];
-      if (v5 >= 0)
+      longLongValue = [host longLongValue];
+      if (longLongValue >= 0)
       {
-        v2 = v5;
+        v2 = longLongValue;
       }
     }
   }
@@ -38,14 +38,14 @@
 
 - (id)mf_partNumbers
 {
-  if ([a1 mf_isValidAttachmentURL])
+  if ([self mf_isValidAttachmentURL])
   {
-    v2 = [a1 absoluteString];
-    v3 = [v2 pathComponents];
+    absoluteString = [self absoluteString];
+    pathComponents = [absoluteString pathComponents];
 
-    if ([v3 count])
+    if ([pathComponents count])
     {
-      v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+      v4 = [pathComponents subarrayWithRange:{1, objc_msgSend(pathComponents, "count") - 1}];
     }
 
     else
@@ -64,18 +64,18 @@
 
 - (id)mf_lastPartNumber
 {
-  v1 = [a1 mf_partNumbers];
-  v2 = [v1 lastObject];
+  mf_partNumbers = [self mf_partNumbers];
+  lastObject = [mf_partNumbers lastObject];
 
-  return v2;
+  return lastObject;
 }
 
 - (id)mf_firstPartNumber
 {
-  v1 = [a1 mf_partNumbers];
-  if ([v1 count])
+  mf_partNumbers = [self mf_partNumbers];
+  if ([mf_partNumbers count])
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [mf_partNumbers objectAtIndexedSubscript:0];
   }
 
   else

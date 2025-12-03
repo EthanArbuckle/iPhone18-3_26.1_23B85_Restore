@@ -1,25 +1,25 @@
 @interface _UIPassthroughScrollGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (_UIPassthroughScrollGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_beginAtLocation:(CGPoint)a3;
-- (void)_scrollingChangedWithEvent:(id)a3;
-- (void)_setAcceptsFailureRequirements:(BOOL)a3;
-- (void)_transformChangedWithEvent:(id)a3;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (_UIPassthroughScrollGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_beginAtLocation:(CGPoint)location;
+- (void)_scrollingChangedWithEvent:(id)event;
+- (void)_setAcceptsFailureRequirements:(BOOL)requirements;
+- (void)_transformChangedWithEvent:(id)event;
 - (void)reset;
-- (void)setView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIPassthroughScrollGestureRecognizer
 
-- (_UIPassthroughScrollGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIPassthroughScrollGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIPassthroughScrollGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -31,28 +31,28 @@
   return v5;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  if (a3)
+  if (view)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      [v6 handleFailureInMethod:a2 object:self file:@"_UIPassthroughScrollGestureRecognizer.m" lineNumber:69 description:{@"%@ can only be added to a window", v8}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPassthroughScrollGestureRecognizer.m" lineNumber:69 description:{@"%@ can only be added to a window", v8}];
     }
   }
 
   v9.receiver = self;
   v9.super_class = _UIPassthroughScrollGestureRecognizer;
-  [(UIGestureRecognizer *)&v9 setView:a3];
+  [(UIGestureRecognizer *)&v9 setView:view];
 }
 
-- (void)_setAcceptsFailureRequirements:(BOOL)a3
+- (void)_setAcceptsFailureRequirements:(BOOL)requirements
 {
-  if (a3)
+  if (requirements)
   {
     v3 = 2;
   }
@@ -74,32 +74,32 @@
   *&self->_flags &= ~1u;
 }
 
-- (void)_beginAtLocation:(CGPoint)a3
+- (void)_beginAtLocation:(CGPoint)location
 {
-  self->_startPoint = a3;
+  self->_startPoint = location;
   self->_startTime = CACurrentMediaTime();
   self->_endReason = 0;
 
   [(UIGestureRecognizer *)self setState:1];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    v6 = [(UIGestureRecognizer *)self view];
-    [(UIGestureRecognizer *)self locationInView:v6];
+    view = [(UIGestureRecognizer *)self view];
+    [(UIGestureRecognizer *)self locationInView:view];
     [(_UIPassthroughScrollGestureRecognizer *)self _beginAtLocation:?];
 
     *&self->_flags = *&self->_flags & 0xFE | (([(UIGestureRecognizer *)self modifierFlags]& 0x100000) != 0);
-    if (-[_UIPassthroughScrollGestureRecognizer endForSecondaryButtonDown](self, "endForSecondaryButtonDown") && ([a4 buttonMask] & 2) != 0)
+    if (-[_UIPassthroughScrollGestureRecognizer endForSecondaryButtonDown](self, "endForSecondaryButtonDown") && ([event buttonMask] & 2) != 0)
     {
       v7 = 5;
     }
 
     else
     {
-      if (!-[_UIPassthroughScrollGestureRecognizer endForPrimaryButtonDown](self, "endForPrimaryButtonDown") || ([a4 buttonMask] & 1) == 0)
+      if (!-[_UIPassthroughScrollGestureRecognizer endForPrimaryButtonDown](self, "endForPrimaryButtonDown") || ([event buttonMask] & 1) == 0)
       {
         return;
       }
@@ -111,9 +111,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [(UIGestureRecognizer *)self view:a3];
+  v5 = [(UIGestureRecognizer *)self view:moved];
   [(UIGestureRecognizer *)self locationInView:v5];
   v7 = v6;
   v9 = v8;
@@ -126,8 +126,8 @@
 
   if (v10 > 10.0)
   {
-    v11 = [(_UIPassthroughScrollGestureRecognizer *)self _window];
-    if ([v11 _hasSystemGestureGate])
+    _window = [(_UIPassthroughScrollGestureRecognizer *)self _window];
+    if ([_window _hasSystemGestureGate])
     {
 
 LABEL_10:
@@ -136,10 +136,10 @@ LABEL_10:
       return;
     }
 
-    v12 = [(_UIPassthroughScrollGestureRecognizer *)self _window];
-    v13 = [v12 _systemGestureRecognitionIsPossible];
+    _window2 = [(_UIPassthroughScrollGestureRecognizer *)self _window];
+    _systemGestureRecognitionIsPossible = [_window2 _systemGestureRecognitionIsPossible];
 
-    if ((v13 & 1) == 0)
+    if ((_systemGestureRecognitionIsPossible & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -148,9 +148,9 @@ LABEL_10:
   [(UIGestureRecognizer *)self setState:2];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(UIGestureRecognizer *)self view:a3];
+  v5 = [(UIGestureRecognizer *)self view:ended];
   [(UIGestureRecognizer *)self locationInView:v5];
   v7 = v6;
   v9 = v8;
@@ -192,17 +192,17 @@ LABEL_10:
   [(_UIPassthroughScrollGestureRecognizer *)self _endWithReason:v13];
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v7 = [(UIGestureRecognizer *)self delegate];
-  if (v7)
+  delegate = [(UIGestureRecognizer *)self delegate];
+  if (delegate)
   {
-    v8 = [(UIGestureRecognizer *)self view];
-    [a3 locationInView:v8];
+    view = [(UIGestureRecognizer *)self view];
+    [touch locationInView:view];
     v10 = v9;
     v12 = v11;
 
-    v13 = [v7 _passthroughGestureRecognizer:self shouldInteractAtLocation:a4 withEvent:{v10, v12}];
+    v13 = [delegate _passthroughGestureRecognizer:self shouldInteractAtLocation:event withEvent:{v10, v12}];
   }
 
   else
@@ -213,21 +213,21 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
   if ([_UIPassthroughScrollGestureRecognizer canHandleEventForPassthrough:?])
   {
-    v5 = [(UIGestureRecognizer *)self delegate];
-    if (v5)
+    delegate = [(UIGestureRecognizer *)self delegate];
+    if (delegate)
     {
-      if ([a3 type] == 10 || objc_msgSend(a3, "type") == 14)
+      if ([event type] == 10 || objc_msgSend(event, "type") == 14)
       {
-        v6 = [(UIGestureRecognizer *)self view];
-        [a3 locationInView:v6];
+        view = [(UIGestureRecognizer *)self view];
+        [event locationInView:view];
         v8 = v7;
         v10 = v9;
 
-        v11 = [v5 _passthroughGestureRecognizer:self shouldInteractAtLocation:a3 withEvent:{v8, v10}];
+        v11 = [delegate _passthroughGestureRecognizer:self shouldInteractAtLocation:event withEvent:{v8, v10}];
       }
 
       else
@@ -246,27 +246,27 @@ LABEL_10:
   {
     v13.receiver = self;
     v13.super_class = _UIPassthroughScrollGestureRecognizer;
-    return [(UIGestureRecognizer *)&v13 shouldReceiveEvent:a3];
+    return [(UIGestureRecognizer *)&v13 shouldReceiveEvent:event];
   }
 
   return v11;
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v5 = [(UIGestureRecognizer *)self view];
-  [a3 locationInView:v5];
+  view = [(UIGestureRecognizer *)self view];
+  [event locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  if ([a3 phase] == 2)
+  if ([event phase] == 2)
   {
 
     [(_UIPassthroughScrollGestureRecognizer *)self _beginAtLocation:v7, v9];
     return;
   }
 
-  if ([a3 phase] == 5)
+  if ([event phase] == 5)
   {
     if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateEnded)
     {
@@ -281,8 +281,8 @@ LABEL_10:
     return;
   }
 
-  v12 = [(UIGestureRecognizer *)self view];
-  [a3 _adjustedAcceleratedDeltaInView:v12];
+  view2 = [(UIGestureRecognizer *)self view];
+  [event _adjustedAcceleratedDeltaInView:view2];
   v14 = v13;
   v16 = v15;
 
@@ -292,44 +292,44 @@ LABEL_10:
   self->_accumulatedScrollEventDelta.dy = v18;
   if (sqrt(v17 * v17 + v18 * v18) > 10.0)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 4;
     goto LABEL_12;
   }
 
-  if ([a3 phase] != 3)
+  if ([event phase] != 3)
   {
 LABEL_7:
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
 LABEL_12:
 
-    [(_UIPassthroughScrollGestureRecognizer *)v10 _endWithReason:v11];
+    [(_UIPassthroughScrollGestureRecognizer *)selfCopy2 _endWithReason:v11];
     return;
   }
 
   [(UIGestureRecognizer *)self setState:2];
 }
 
-- (void)_transformChangedWithEvent:(id)a3
+- (void)_transformChangedWithEvent:(id)event
 {
-  v5 = [(UIGestureRecognizer *)self view];
-  [a3 locationInView:v5];
+  view = [(UIGestureRecognizer *)self view];
+  [event locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [a3 phase];
-  if ((v10 - 2) < 2)
+  phase = [event phase];
+  if ((phase - 2) < 2)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = 6;
   }
 
   else
   {
-    if (v10 != 4)
+    if (phase != 4)
     {
-      if (v10 == 1)
+      if (phase == 1)
       {
 
         [(_UIPassthroughScrollGestureRecognizer *)self _beginAtLocation:v7, v9];
@@ -338,11 +338,11 @@ LABEL_12:
       return;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1;
   }
 
-  [(_UIPassthroughScrollGestureRecognizer *)v11 _endWithReason:v12];
+  [(_UIPassthroughScrollGestureRecognizer *)selfCopy2 _endWithReason:v12];
 }
 
 @end

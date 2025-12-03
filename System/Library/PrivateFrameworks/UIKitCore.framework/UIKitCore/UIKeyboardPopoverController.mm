@@ -2,7 +2,7 @@
 - (BOOL)isPresented;
 - (UIKeyboardPopoverController)init;
 - (void)_setupContentView;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -17,8 +17,8 @@
 
 - (BOOL)isPresented
 {
-  v3 = [(UIViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  if (presentingViewController)
   {
     v4 = ![(UIViewController *)self isBeingDismissed];
   }
@@ -37,18 +37,18 @@
   v5.super_class = UIKeyboardPopoverController;
   [(UIViewController *)&v5 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
   [(UIKeyboardPopoverController *)self _setupContentView];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  objc_storeStrong(&self->_contentView, a3);
-  v4 = [(UIViewController *)self viewIfLoaded];
+  objc_storeStrong(&self->_contentView, view);
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
 
-  if (v4)
+  if (viewIfLoaded)
   {
 
     [(UIKeyboardPopoverController *)self _setupContentView];
@@ -60,34 +60,34 @@
   v26[4] = *MEMORY[0x1E69E9840];
   if (self->_contentView)
   {
-    v3 = [(UIViewController *)self view];
-    [v3 addSubview:self->_contentView];
+    view = [(UIViewController *)self view];
+    [view addSubview:self->_contentView];
 
     [(UIView *)self->_contentView setNeedsLayout];
     v16 = MEMORY[0x1E69977A0];
-    v24 = [(UIView *)self->_contentView topAnchor];
-    v25 = [(UIViewController *)self view];
-    v23 = [v25 safeAreaLayoutGuide];
-    v22 = [v23 topAnchor];
-    v21 = [v24 constraintEqualToAnchor:v22];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    view2 = [(UIViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[0] = v21;
-    v19 = [(UIView *)self->_contentView bottomAnchor];
-    v20 = [(UIViewController *)self view];
-    v18 = [v20 safeAreaLayoutGuide];
-    v17 = [v18 bottomAnchor];
-    v15 = [v19 constraintEqualToAnchor:v17];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    view3 = [(UIViewController *)self view];
+    safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[1] = v15;
-    v14 = [(UIView *)self->_contentView leadingAnchor];
-    v4 = [(UIViewController *)self view];
-    v5 = [v4 safeAreaLayoutGuide];
-    v6 = [v5 leadingAnchor];
-    v7 = [v14 constraintEqualToAnchor:v6];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    view4 = [(UIViewController *)self view];
+    safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[2] = v7;
-    v8 = [(UIView *)self->_contentView trailingAnchor];
-    v9 = [(UIViewController *)self view];
-    v10 = [v9 safeAreaLayoutGuide];
-    v11 = [v10 trailingAnchor];
-    v12 = [v8 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    view5 = [(UIViewController *)self view];
+    safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v16 activateConstraints:v13];

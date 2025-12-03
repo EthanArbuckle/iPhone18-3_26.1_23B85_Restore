@@ -1,32 +1,32 @@
 @interface HMDStreamInterface
 + (id)logCategory;
-+ (int)openSocketWithNetworkConfig:(id)a3;
-- (BOOL)loadMiscFields:(id)a3;
-- (HMDStreamInterface)initWithSessionID:(id)a3 workQueue:(id)a4 sessionHandler:(id)a5 localRTPSocket:(int)a6;
++ (int)openSocketWithNetworkConfig:(id)config;
+- (BOOL)loadMiscFields:(id)fields;
+- (HMDStreamInterface)initWithSessionID:(id)d workQueue:(id)queue sessionHandler:(id)handler localRTPSocket:(int)socket;
 - (id)logIdentifier;
 - (unint64_t)state;
 - (void)dealloc;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation HMDStreamInterface
 
 - (id)logIdentifier
 {
-  v2 = [(HMDStreamInterface *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDStreamInterface *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (BOOL)loadMiscFields:(id)a3
+- (BOOL)loadMiscFields:(id)fields
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDStreamInterface *)self sessionHandler];
-  if ([v5 conformsToProtocol:&unk_2866763F8])
+  fieldsCopy = fields;
+  sessionHandler = [(HMDStreamInterface *)self sessionHandler];
+  if ([sessionHandler conformsToProtocol:&unk_2866763F8])
   {
-    v6 = v5;
+    v6 = sessionHandler;
   }
 
   else
@@ -39,56 +39,56 @@
   if (v7)
   {
     v8 = objc_opt_class();
-    v9 = [v7 remoteVideoSocket];
-    v10 = [v8 extractNetworkConfig:v9 peerNameExtractor:MEMORY[0x277D85F28]];
+    remoteVideoSocket = [v7 remoteVideoSocket];
+    v10 = [v8 extractNetworkConfig:remoteVideoSocket peerNameExtractor:MEMORY[0x277D85F28]];
     v11 = v10 != 0;
     if (v10)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [v10 ipAddress];
+        ipAddress = [v10 ipAddress];
         v31 = 138543618;
         v32 = v15;
         v33 = 2112;
-        v34 = v16;
+        v34 = ipAddress;
         _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@IDSDevice connection: Peer IP address: %@\n", &v31, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
       v17 = objc_autoreleasePoolPush();
-      v18 = v13;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v10 rtpPort];
+        rtpPort = [v10 rtpPort];
         v31 = 138543618;
         v32 = v20;
         v33 = 2112;
-        v34 = v21;
+        v34 = rtpPort;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@IDSDevice connection: Peer port      : %@\n", &v31, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v22 = [v10 ipAddress];
-      v23 = [v4 remoteAddress];
-      [v23 setIp:v22];
+      ipAddress2 = [v10 ipAddress];
+      remoteAddress = [fieldsCopy remoteAddress];
+      [remoteAddress setIp:ipAddress2];
 
-      v24 = [v10 rtpPort];
-      LOWORD(v23) = [v24 unsignedIntegerValue];
-      v25 = [v4 remoteAddress];
-      [v25 setPort:v23];
+      rtpPort2 = [v10 rtpPort];
+      LOWORD(remoteAddress) = [rtpPort2 unsignedIntegerValue];
+      remoteAddress2 = [fieldsCopy remoteAddress];
+      [remoteAddress2 setPort:remoteAddress];
 
-      v26 = [v10 ipv6];
-      v27 = [v4 remoteAddress];
-      [v27 setIsIPv6:v26];
+      ipv6 = [v10 ipv6];
+      remoteAddress3 = [fieldsCopy remoteAddress];
+      [remoteAddress3 setIsIPv6:ipv6];
 
-      v28 = [v10 rtpPort];
-      [v4 setRtcpRemotePort:{objc_msgSend(v28, "unsignedShortValue")}];
+      rtpPort3 = [v10 rtpPort];
+      [fieldsCopy setRtcpRemotePort:{objc_msgSend(rtpPort3, "unsignedShortValue")}];
     }
   }
 
@@ -101,10 +101,10 @@
   return v11;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -130,11 +130,11 @@
   [(HMDStreamInterface *)&v4 dealloc];
 }
 
-- (HMDStreamInterface)initWithSessionID:(id)a3 workQueue:(id)a4 sessionHandler:(id)a5 localRTPSocket:(int)a6
+- (HMDStreamInterface)initWithSessionID:(id)d workQueue:(id)queue sessionHandler:(id)handler localRTPSocket:(int)socket
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = HMDStreamInterface;
   v14 = [(HMDStreamInterface *)&v18 init];
@@ -142,10 +142,10 @@
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_sessionID, a3);
-    objc_storeStrong(&v15->_workQueue, a4);
-    objc_storeStrong(&v15->_sessionHandler, a5);
-    v15->_localRTPSocket = a6;
+    objc_storeStrong(&v14->_sessionID, d);
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v15->_sessionHandler, handler);
+    v15->_localRTPSocket = socket;
     v15->_state = 1;
     socketCloseHandler = v15->_socketCloseHandler;
     v15->_socketCloseHandler = &__block_literal_global_55011;
@@ -176,17 +176,17 @@ uint64_t __33__HMDStreamInterface_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (int)openSocketWithNetworkConfig:(id)a3
++ (int)openSocketWithNetworkConfig:(id)config
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 ipv6])
+  configCopy = config;
+  if ([configCopy ipv6])
   {
     v5 = socket(30, 2, 0);
     if ((v5 & 0x80000000) != 0)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      selfCopy4 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -216,10 +216,10 @@ LABEL_18:
     setsockopt(v5, 0xFFFF, 512, &v34, 4u);
     v34 = 3200000;
     setsockopt(v6, 0xFFFF, 4098, &v34, 4u);
-    if (bind(v6, (v4 + 36), 0x1Cu) < 0)
+    if (bind(v6, (configCopy + 36), 0x1Cu) < 0)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      selfCopy4 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -250,7 +250,7 @@ LABEL_17:
     if ((v14 & 0x80000000) != 0)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      selfCopy4 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -276,10 +276,10 @@ LABEL_17:
     setsockopt(v14, 0xFFFF, 512, &v34, 4u);
     v34 = 3200000;
     setsockopt(v6, 0xFFFF, 4098, &v34, 4u);
-    if (bind(v6, (v4 + 8), 0x10u) < 0)
+    if (bind(v6, (configCopy + 8), 0x10u) < 0)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      selfCopy4 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -301,24 +301,24 @@ LABEL_17:
     }
   }
 
-  v15 = [a1 extractNetworkConfig:v6 peerNameExtractor:MEMORY[0x277D85F30]];
-  v16 = [v15 rtpPort];
-  [v4 setRtpPort:v16];
+  v15 = [self extractNetworkConfig:v6 peerNameExtractor:MEMORY[0x277D85F30]];
+  rtpPort = [v15 rtpPort];
+  [configCopy setRtpPort:rtpPort];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = a1;
+  selfCopy5 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [v4 ipAddress];
-    v22 = [v4 rtpPort];
+    ipAddress = [configCopy ipAddress];
+    rtpPort2 = [configCopy rtpPort];
     *buf = 138543874;
     v36 = v20;
     v37 = 2112;
-    v38 = v21;
+    v38 = ipAddress;
     v39 = 2112;
-    v40 = v22;
+    v40 = rtpPort2;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Opened socket at address %@ and port %@", buf, 0x20u);
   }
 

@@ -1,38 +1,38 @@
 @interface _TUIMappedDynamicArrayInstance
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5;
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5;
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block;
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block;
 @end
 
 @implementation _TUIMappedDynamicArrayInstance
 
-- (void)fetchDataForRange:(_NSRange)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForRange:(_NSRange)range generation:(id)generation block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_71C74;
   v10[3] = &unk_25EAF0;
-  v11 = self;
-  v12 = a5;
-  v9.receiver = v11;
+  selfCopy = self;
+  blockCopy = block;
+  v9.receiver = selfCopy;
   v9.super_class = _TUIMappedDynamicArrayInstance;
-  v8 = v12;
-  [(_TUIDynamicArrayInstance *)&v9 fetchDataForRange:location generation:length block:a4, v10];
+  v8 = blockCopy;
+  [(_TUIDynamicArrayInstance *)&v9 fetchDataForRange:location generation:length block:generation, v10];
 }
 
-- (void)fetchDataForIndexes:(id)a3 generation:(id)a4 block:(id)a5
+- (void)fetchDataForIndexes:(id)indexes generation:(id)generation block:(id)block
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_71DA4;
   v9[3] = &unk_25EAF0;
-  v10 = self;
-  v11 = a5;
-  v8.receiver = v10;
+  selfCopy = self;
+  blockCopy = block;
+  v8.receiver = selfCopy;
   v8.super_class = _TUIMappedDynamicArrayInstance;
-  v7 = v11;
-  [(_TUIDynamicArrayInstance *)&v8 fetchDataForIndexes:a3 generation:a4 block:v9];
+  v7 = blockCopy;
+  [(_TUIDynamicArrayInstance *)&v8 fetchDataForIndexes:indexes generation:generation block:v9];
 }
 
 @end

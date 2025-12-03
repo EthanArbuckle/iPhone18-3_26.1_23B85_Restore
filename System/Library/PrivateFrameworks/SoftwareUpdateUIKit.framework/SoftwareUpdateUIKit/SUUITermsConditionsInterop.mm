@@ -1,33 +1,33 @@
 @interface SUUITermsConditionsInterop
 + (id)sharedInstance;
 - (SUUITermsConditionsInterop)init;
-- (id)createTermsAndConditionsAgreementConfirmationMessage:(id)a3 bundle:(id)a4;
+- (id)createTermsAndConditionsAgreementConfirmationMessage:(id)message bundle:(id)bundle;
 - (id)currentPresentedSceneViewController;
-- (id)getTopViewControllerFrom:(id)a3;
-- (void)completePresentationWithResponse:(int64_t)a3 error:(id)a4;
-- (void)handleAgreeResponseFromRemoteUIObjectModel:(id)a3;
-- (void)handleDisagreeResponseFromRemoteUIObjectModel:(id)a3;
-- (void)handleTermsAndConditionsAgreementConfirmationAgreeResponse:(id)a3;
-- (void)presentRemoteUITermsAndConditionsWithContents:(id)a3 fromRemoteUICloudUrl:(id)a4;
-- (void)presentUpdateTermsAndConditions:(id)a3 forAccount:(id)a4 presentedBy:(id)a5 completionHandler:(id)a6;
-- (void)presentUpdateTermsAndConditions:(id)a3 fromRemoteUICloudUrl:(id)a4;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIControllerDidDismiss:(id)a3;
-- (void)reportUserAction:(int64_t)a3 agreeUrl:(id)a4;
+- (id)getTopViewControllerFrom:(id)from;
+- (void)completePresentationWithResponse:(int64_t)response error:(id)error;
+- (void)handleAgreeResponseFromRemoteUIObjectModel:(id)model;
+- (void)handleDisagreeResponseFromRemoteUIObjectModel:(id)model;
+- (void)handleTermsAndConditionsAgreementConfirmationAgreeResponse:(id)response;
+- (void)presentRemoteUITermsAndConditionsWithContents:(id)contents fromRemoteUICloudUrl:(id)url;
+- (void)presentUpdateTermsAndConditions:(id)conditions forAccount:(id)account presentedBy:(id)by completionHandler:(id)handler;
+- (void)presentUpdateTermsAndConditions:(id)conditions fromRemoteUICloudUrl:(id)url;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
+- (void)reportUserAction:(int64_t)action agreeUrl:(id)url;
 @end
 
 @implementation SUUITermsConditionsInterop
 
 + (id)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __44__SUUITermsConditionsInterop_sharedInstance__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedInstance__suui_once_t1;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -75,20 +75,20 @@ uint64_t __44__SUUITermsConditionsInterop_sharedInstance__block_invoke(uint64_t 
   return v6;
 }
 
-- (void)presentUpdateTermsAndConditions:(id)a3 forAccount:(id)a4 presentedBy:(id)a5 completionHandler:(id)a6
+- (void)presentUpdateTermsAndConditions:(id)conditions forAccount:(id)account presentedBy:(id)by completionHandler:(id)handler
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, conditions);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, account);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, by);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
-  objc_initWeak(&v20, v26);
-  queue = v26->_workQueue;
+  objc_storeStrong(&v21, handler);
+  objc_initWeak(&v20, selfCopy);
+  queue = selfCopy->_workQueue;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
@@ -418,19 +418,19 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   objc_storeStrong(location, 0);
 }
 
-- (void)reportUserAction:(int64_t)a3 agreeUrl:(id)a4
+- (void)reportUserAction:(int64_t)action agreeUrl:(id)url
 {
   v35 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  actionCopy = action;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, url);
   if (_os_feature_enabled_impl())
   {
     v10 = objc_alloc(MEMORY[0x277CBEB38]);
     v32 = *MEMORY[0x277CEC890];
-    v12 = SUUITermsConditionsActionToString(v28);
+    v12 = SUUITermsConditionsActionToString(actionCopy);
     v33 = v12;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v22 = [v10 initWithDictionary:?];
@@ -441,15 +441,15 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
       [v22 setObject:location forKeyedSubscript:@"agreeUrl"];
     }
 
-    v9 = [MEMORY[0x277D64B58] uiKitLogger];
-    v21 = [v9 oslog];
-    MEMORY[0x277D82BD8](v9);
+    uiKitLogger = [MEMORY[0x277D64B58] uiKitLogger];
+    oslog = [uiKitLogger oslog];
+    MEMORY[0x277D82BD8](uiKitLogger);
     v20 = 1;
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      v6 = v21;
+      v6 = oslog;
       v7 = v20;
-      v8 = SUUITermsConditionsActionToString(v28);
+      v8 = SUUITermsConditionsActionToString(actionCopy);
       v19 = MEMORY[0x277D82BE0](v8);
       __os_log_helper_16_2_2_8_32_8_66(v31, "[SUUITermsConditionsInterop reportUserAction:agreeUrl:]", v19);
       _os_log_impl(&dword_26AE88000, v6, v7, "%s: Terms & Conditions Reporting action: %{public}@.", v31, 0x16u);
@@ -457,30 +457,30 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
       objc_storeStrong(&v19, 0);
     }
 
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&oslog, 0);
     v5 = objc_opt_new();
-    v18 = [v5 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
     MEMORY[0x277D82BD8](v5);
     v4 = objc_alloc(MEMORY[0x277CEC850]);
-    v17 = [v4 initWithAccount:v18 parameters:v22];
+    v17 = [v4 initWithAccount:aa_primaryAppleAccount parameters:v22];
     [v17 reportEvent];
     objc_storeStrong(&v17, 0);
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&aa_primaryAppleAccount, 0);
     objc_storeStrong(&v22, 0);
     v23 = 0;
   }
 
   else
   {
-    v16 = [MEMORY[0x277D64B58] uiKitLogger];
-    v26 = [v16 oslog];
-    MEMORY[0x277D82BD8](v16);
+    uiKitLogger2 = [MEMORY[0x277D64B58] uiKitLogger];
+    oslog2 = [uiKitLogger2 oslog];
+    MEMORY[0x277D82BD8](uiKitLogger2);
     v25 = 1;
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_INFO))
     {
-      log = v26;
+      log = oslog2;
       type = v25;
-      v15 = SUUITermsConditionsActionToString(v28);
+      v15 = SUUITermsConditionsActionToString(actionCopy);
       v24 = MEMORY[0x277D82BE0](v15);
       __os_log_helper_16_2_2_8_32_8_66(v34, "[SUUITermsConditionsInterop reportUserAction:agreeUrl:]", v24);
       _os_log_impl(&dword_26AE88000, log, type, "%s: Terms & Conditions Reporting QFA feature flag disabled. Skipping on reporting terms %{public}@ action.", v34, 0x16u);
@@ -488,23 +488,23 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
       objc_storeStrong(&v24, 0);
     }
 
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&oslog2, 0);
     v23 = 1;
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [MEMORY[0x277D64B58] reactiveUILogger];
-  oslog = [v3 oslog];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, dismiss);
+  reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+  oslog = [reactiveUILogger oslog];
+  MEMORY[0x277D82BD8](reactiveUILogger);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
     __os_log_helper_16_2_1_8_32(v7, "[SUUITermsConditionsInterop remoteUIControllerDidDismiss:]");
@@ -512,34 +512,34 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUUITermsConditionsInterop *)v6 completePresentationWithResponse:0 error:?];
+  [(SUUITermsConditionsInterop *)selfCopy completePresentationWithResponse:0 error:?];
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, request);
   if (v12)
   {
-    v7 = [MEMORY[0x277D64B58] reactiveUILogger];
-    v10 = [v7 oslog];
-    MEMORY[0x277D82BD8](v7);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog = [reactiveUILogger oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger);
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
       __os_log_helper_16_2_2_8_32_8_66(v15, "[SUUITermsConditionsInterop remoteUIController:didFinishLoadWithError:forRequest:]", v12);
-      _os_log_debug_impl(&dword_26AE88000, v10, OS_LOG_TYPE_DEBUG, "%s: Apple Account Terms and Conditions iCloud Terms finished to load from server with error: %{public}@", v15, 0x16u);
+      _os_log_debug_impl(&dword_26AE88000, oslog, OS_LOG_TYPE_DEBUG, "%s: Apple Account Terms and Conditions iCloud Terms finished to load from server with error: %{public}@", v15, 0x16u);
     }
 
-    objc_storeStrong(&v10, 0);
-    v5 = v14;
+    objc_storeStrong(&oslog, 0);
+    v5 = selfCopy;
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:11 userInfo:0];
     [(SUUITermsConditionsInterop *)v5 completePresentationWithResponse:2 error:?];
     MEMORY[0x277D82BD8](v6);
@@ -550,29 +550,29 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   objc_storeStrong(location, 0);
 }
 
-- (void)presentUpdateTermsAndConditions:(id)a3 fromRemoteUICloudUrl:(id)a4
+- (void)presentUpdateTermsAndConditions:(id)conditions fromRemoteUICloudUrl:(id)url
 {
   v39[5] = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, conditions);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  dispatch_assert_queue_V2(v31[1]);
-  if (!v31[5])
+  objc_storeStrong(&v28, url);
+  dispatch_assert_queue_V2(selfCopy[1]);
+  if (!selfCopy[5])
   {
     _suui_precondition_failure_with_format();
     __break(1u);
   }
 
-  if (!v31[4])
+  if (!selfCopy[4])
   {
     _suui_precondition_failure_with_format();
     __break(1u);
   }
 
-  if (!v31[2])
+  if (!selfCopy[2])
   {
     _suui_precondition_failure_with_format();
     __break(1u);
@@ -582,9 +582,9 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   v38[0] = *MEMORY[0x277CEC720];
   v37[1] = @"version";
   v13 = MEMORY[0x277CCACA8];
-  v12 = [location productVersion];
-  v11 = [location productBuildVersion];
-  v10 = [v13 stringWithFormat:@"%@:%@", v12, v11];
+  productVersion = [location productVersion];
+  productBuildVersion = [location productBuildVersion];
+  v10 = [v13 stringWithFormat:@"%@:%@", productVersion, productBuildVersion];
   v38[1] = v10;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
   v39[0] = v9;
@@ -595,14 +595,14 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:5];
   MEMORY[0x277D82BD8](v9);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](productBuildVersion);
+  MEMORY[0x277D82BD8](productVersion);
   v35[0] = @"terms";
   v36[0] = v27;
   v35[1] = @"format";
   v36[1] = *MEMORY[0x277CEC948];
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-  v25 = [objc_alloc(MEMORY[0x277CEC800]) initWithAccount:v31[4] parameters:v26];
+  v25 = [objc_alloc(MEMORY[0x277CEC800]) initWithAccount:selfCopy[4] parameters:v26];
   v33 = @"X-Apple-iOS-SLA-Version";
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", objc_msgSend(MEMORY[0x277D4DA38], "versionOfAcceptedAgreement")];
   v34 = v8;
@@ -610,20 +610,20 @@ void __103__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_forAccoun
   [v25 setCustomHeaders:?];
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
-  v6 = [MEMORY[0x277D64B58] reactiveUILogger];
-  v24 = [v6 oslog];
-  MEMORY[0x277D82BD8](v6);
+  reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+  oslog = [reactiveUILogger oslog];
+  MEMORY[0x277D82BD8](reactiveUILogger);
   v23 = OS_LOG_TYPE_DEBUG;
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [v25 customHeaders];
-    __os_log_helper_16_2_2_8_32_8_66(v32, "[SUUITermsConditionsInterop presentUpdateTermsAndConditions:fromRemoteUICloudUrl:]", v5);
-    _os_log_debug_impl(&dword_26AE88000, v24, v23, "%s: Adding custom headers to Apple Account Terms and Conditions URL request: %{public}@", v32, 0x16u);
-    MEMORY[0x277D82BD8](v5);
+    customHeaders = [v25 customHeaders];
+    __os_log_helper_16_2_2_8_32_8_66(v32, "[SUUITermsConditionsInterop presentUpdateTermsAndConditions:fromRemoteUICloudUrl:]", customHeaders);
+    _os_log_debug_impl(&dword_26AE88000, oslog, v23, "%s: Adding custom headers to Apple Account Terms and Conditions URL request: %{public}@", v32, 0x16u);
+    MEMORY[0x277D82BD8](customHeaders);
   }
 
-  objc_storeStrong(&v24, 0);
-  objc_initWeak(&from, v31);
+  objc_storeStrong(&oslog, 0);
+  objc_initWeak(&from, selfCopy);
   v4 = v25;
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
@@ -818,37 +818,37 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
   objc_storeStrong(v19, 0);
 }
 
-- (void)presentRemoteUITermsAndConditionsWithContents:(id)a3 fromRemoteUICloudUrl:(id)a4
+- (void)presentRemoteUITermsAndConditionsWithContents:(id)contents fromRemoteUICloudUrl:(id)url
 {
   v52 = *MEMORY[0x277D85DE8];
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, contents);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, url);
   v4 = MEMORY[0x277D85CD0];
   v19 = MEMORY[0x277D85CD0];
   dispatch_assert_queue_V2(v19);
   MEMORY[0x277D82BD8](v19);
-  if (!v48->_hostViewController)
+  if (!selfCopy->_hostViewController)
   {
-    v18 = [MEMORY[0x277D64B58] reactiveUILogger];
-    v44 = [v18 oslog];
-    MEMORY[0x277D82BD8](v18);
+    reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog = [reactiveUILogger oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger);
     v43 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       __os_log_helper_16_2_1_8_32(v51, "[SUUITermsConditionsInterop presentRemoteUITermsAndConditionsWithContents:fromRemoteUICloudUrl:]");
-      _os_log_error_impl(&dword_26AE88000, v44, v43, "%s: Apple Account Terms and Conditions - _hostViewController is nil.Falling back to UIApplication's top view controller.", v51, 0xCu);
+      _os_log_error_impl(&dword_26AE88000, oslog, v43, "%s: Apple Account Terms and Conditions - _hostViewController is nil.Falling back to UIApplication's top view controller.", v51, 0xCu);
     }
 
-    objc_storeStrong(&v44, 0);
+    objc_storeStrong(&oslog, 0);
   }
 
-  v42 = _Block_copy(v48->_presentationCompletion);
-  v41 = MEMORY[0x277D82BE0](v48->_presentationAccount);
-  hostViewController = v48->_hostViewController;
+  v42 = _Block_copy(selfCopy->_presentationCompletion);
+  v41 = MEMORY[0x277D82BE0](selfCopy->_presentationAccount);
+  hostViewController = selfCopy->_hostViewController;
   v38 = 0;
   if (hostViewController)
   {
@@ -857,31 +857,31 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
 
   else
   {
-    v39 = [(SUUITermsConditionsInterop *)v48 currentPresentedSceneViewController];
+    currentPresentedSceneViewController = [(SUUITermsConditionsInterop *)selfCopy currentPresentedSceneViewController];
     v38 = 1;
-    v5 = MEMORY[0x277D82BE0](v39);
+    v5 = MEMORY[0x277D82BE0](currentPresentedSceneViewController);
   }
 
   v40 = v5;
   if (v38)
   {
-    MEMORY[0x277D82BD8](v39);
+    MEMORY[0x277D82BD8](currentPresentedSceneViewController);
   }
 
   if (v42 && v41 && v40)
   {
-    objc_initWeak(&from, v48);
+    objc_initWeak(&from, selfCopy);
     v12 = objc_alloc_init(MEMORY[0x277D46220]);
-    remoteUIController = v48->_remoteUIController;
-    v48->_remoteUIController = v12;
+    remoteUIController = selfCopy->_remoteUIController;
+    selfCopy->_remoteUIController = v12;
     MEMORY[0x277D82BD8](remoteUIController);
-    v11 = v48->_remoteUIController;
-    v10 = [MEMORY[0x277D46210] defaultStyle];
+    v11 = selfCopy->_remoteUIController;
+    defaultStyle = [MEMORY[0x277D46210] defaultStyle];
     [(RemoteUIController *)v11 setStyle:?];
-    MEMORY[0x277D82BD8](v10);
-    [(RemoteUIController *)v48->_remoteUIController setHostViewController:v40];
-    [(RemoteUIController *)v48->_remoteUIController setDelegate:v48];
-    v9 = v48->_remoteUIController;
+    MEMORY[0x277D82BD8](defaultStyle);
+    [(RemoteUIController *)selfCopy->_remoteUIController setHostViewController:v40];
+    [(RemoteUIController *)selfCopy->_remoteUIController setDelegate:selfCopy];
+    v9 = selfCopy->_remoteUIController;
     v28 = MEMORY[0x277D85DD0];
     v29 = -1073741824;
     v30 = 0;
@@ -890,7 +890,7 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
     objc_copyWeak(v33, &from);
     v33[1] = v47;
     [(RemoteUIController *)v9 setHandlerForElementName:@"agree" handler:&v28];
-    v8 = v48->_remoteUIController;
+    v8 = selfCopy->_remoteUIController;
     v22 = MEMORY[0x277D85DD0];
     v23 = -1073741824;
     v24 = 0;
@@ -899,9 +899,9 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
     objc_copyWeak(v27, &from);
     v27[1] = v47;
     [(RemoteUIController *)v8 setHandlerForElementName:@"disagree" handler:&v22];
-    v7 = [MEMORY[0x277D64B58] reactiveUILogger];
-    oslog = [v7 oslog];
-    MEMORY[0x277D82BD8](v7);
+    reactiveUILogger2 = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog = [reactiveUILogger2 oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger2);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       __os_log_helper_16_2_1_8_32(v49, "[SUUITermsConditionsInterop presentRemoteUITermsAndConditionsWithContents:fromRemoteUICloudUrl:]");
@@ -909,7 +909,7 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
     }
 
     objc_storeStrong(&oslog, 0);
-    [(RemoteUIController *)v48->_remoteUIController loadData:location baseURL:v45];
+    [(RemoteUIController *)selfCopy->_remoteUIController loadData:location baseURL:v45];
     objc_destroyWeak(v27);
     objc_destroyWeak(v33);
     objc_destroyWeak(&from);
@@ -918,20 +918,20 @@ void __83__SUUITermsConditionsInterop_presentUpdateTermsAndConditions_fromRemote
 
   else
   {
-    v16 = [MEMORY[0x277D64B58] reactiveUILogger];
-    v37 = [v16 oslog];
-    MEMORY[0x277D82BD8](v16);
+    reactiveUILogger3 = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog2 = [reactiveUILogger3 oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger3);
     v36 = OS_LOG_TYPE_FAULT;
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_FAULT))
     {
-      v15 = _Block_copy(v48->_presentationCompletion);
-      __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v50, "[SUUITermsConditionsInterop presentRemoteUITermsAndConditionsWithContents:fromRemoteUICloudUrl:]", v15, v48->_presentationAccount, v48->_hostViewController);
-      _os_log_fault_impl(&dword_26AE88000, v37, v36, "%s: Could not render the Apple Account Terms and Conditions as its state got invalidated during an async call, before reaching the main thread.\n\t- callback: %p\n\t- account: %p\n\t- callback: %p", v50, 0x2Au);
+      v15 = _Block_copy(selfCopy->_presentationCompletion);
+      __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v50, "[SUUITermsConditionsInterop presentRemoteUITermsAndConditionsWithContents:fromRemoteUICloudUrl:]", v15, selfCopy->_presentationAccount, selfCopy->_hostViewController);
+      _os_log_fault_impl(&dword_26AE88000, oslog2, v36, "%s: Could not render the Apple Account Terms and Conditions as its state got invalidated during an async call, before reaching the main thread.\n\t- callback: %p\n\t- account: %p\n\t- callback: %p", v50, 0x2Au);
       MEMORY[0x277D82BD8](v15);
     }
 
-    objc_storeStrong(&v37, 0);
-    v14 = v48;
+    objc_storeStrong(&oslog2, 0);
+    v14 = selfCopy;
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D64C28] code:11 userInfo:0];
     [(SUUITermsConditionsInterop *)v14 completePresentationWithResponse:2 error:?];
     MEMORY[0x277D82BD8](v13);
@@ -1037,42 +1037,42 @@ void __97__SUUITermsConditionsInterop_presentRemoteUITermsAndConditionsWithConte
   objc_storeStrong(location, 0);
 }
 
-- (void)handleAgreeResponseFromRemoteUIObjectModel:(id)a3
+- (void)handleAgreeResponseFromRemoteUIObjectModel:(id)model
 {
   v37 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [MEMORY[0x277D64B58] reactiveUILogger];
-  v32 = [v14 oslog];
-  MEMORY[0x277D82BD8](v14);
+  objc_storeStrong(location, model);
+  reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+  oslog = [reactiveUILogger oslog];
+  MEMORY[0x277D82BD8](reactiveUILogger);
   v31 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     __os_log_helper_16_2_1_8_32(v36, "[SUUITermsConditionsInterop handleAgreeResponseFromRemoteUIObjectModel:]");
-    _os_log_impl(&dword_26AE88000, v32, v31, "%s: Apple Account Terms and Conditions - RemoteUI reported Agree.", v36, 0xCu);
+    _os_log_impl(&dword_26AE88000, oslog, v31, "%s: Apple Account Terms and Conditions - RemoteUI reported Agree.", v36, 0xCu);
   }
 
-  objc_storeStrong(&v32, 0);
-  if (!v34->_hostViewController)
+  objc_storeStrong(&oslog, 0);
+  if (!selfCopy->_hostViewController)
   {
-    v13 = [MEMORY[0x277D64B58] reactiveUILogger];
-    v30 = [v13 oslog];
-    MEMORY[0x277D82BD8](v13);
+    reactiveUILogger2 = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog2 = [reactiveUILogger2 oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger2);
     v29 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       __os_log_helper_16_2_1_8_32(v35, "[SUUITermsConditionsInterop handleAgreeResponseFromRemoteUIObjectModel:]");
-      _os_log_error_impl(&dword_26AE88000, v30, v29, "%s: Apple Account Terms and Conditions - _hostViewController is nil.Falling back to UIApplication's top view controller.", v35, 0xCu);
+      _os_log_error_impl(&dword_26AE88000, oslog2, v29, "%s: Apple Account Terms and Conditions - _hostViewController is nil.Falling back to UIApplication's top view controller.", v35, 0xCu);
     }
 
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&oslog2, 0);
   }
 
   v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v27 = [v28 localizedStringForKey:@"Terms and Conditions" value:? table:?];
-  v26 = [(SUUITermsConditionsInterop *)v34 createTermsAndConditionsAgreementConfirmationMessage:location[0] bundle:v28];
+  v26 = [(SUUITermsConditionsInterop *)selfCopy createTermsAndConditionsAgreementConfirmationMessage:location[0] bundle:v28];
   v25 = [MEMORY[0x277D75110] alertControllerWithTitle:v27 message:v26 preferredStyle:?];
   v5 = MEMORY[0x277D750F8];
   v7 = [v28 localizedStringForKey:@"Cancel" value:&stru_287BA1850 table:@"Localizable"];
@@ -1088,31 +1088,31 @@ void __97__SUUITermsConditionsInterop_presentRemoteUITermsAndConditionsWithConte
   v20 = 0;
   v21 = __73__SUUITermsConditionsInterop_handleAgreeResponseFromRemoteUIObjectModel___block_invoke;
   v22 = &unk_279CC9690;
-  v23 = MEMORY[0x277D82BE0](v34);
+  v23 = MEMORY[0x277D82BE0](selfCopy);
   v24 = MEMORY[0x277D82BE0](location[0]);
   v10 = [v8 actionWithTitle:v11 style:0 handler:&v18];
   [v9 addAction:?];
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
-  v12 = [(UIViewController *)v34->_hostViewController presentedViewController];
+  presentedViewController = [(UIViewController *)selfCopy->_hostViewController presentedViewController];
   v15 = 0;
-  if (v12)
+  if (presentedViewController)
   {
-    v3 = MEMORY[0x277D82BE0](v12);
+    v3 = MEMORY[0x277D82BE0](presentedViewController);
   }
 
   else
   {
-    if (v34->_hostViewController)
+    if (selfCopy->_hostViewController)
     {
-      hostViewController = v34->_hostViewController;
+      hostViewController = selfCopy->_hostViewController;
     }
 
     else
     {
-      v16 = [(SUUITermsConditionsInterop *)v34 currentPresentedSceneViewController];
+      currentPresentedSceneViewController = [(SUUITermsConditionsInterop *)selfCopy currentPresentedSceneViewController];
       v15 = 1;
-      hostViewController = v16;
+      hostViewController = currentPresentedSceneViewController;
     }
 
     v3 = MEMORY[0x277D82BE0](hostViewController);
@@ -1121,10 +1121,10 @@ void __97__SUUITermsConditionsInterop_presentRemoteUITermsAndConditionsWithConte
   v17 = v3;
   if (v15)
   {
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](currentPresentedSceneViewController);
   }
 
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](presentedViewController);
   [v17 presentViewController:v25 animated:1 completion:?];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v24, 0);
@@ -1145,39 +1145,39 @@ void __73__SUUITermsConditionsInterop_handleAgreeResponseFromRemoteUIObjectModel
   objc_storeStrong(location, 0);
 }
 
-- (void)handleDisagreeResponseFromRemoteUIObjectModel:(id)a3
+- (void)handleDisagreeResponseFromRemoteUIObjectModel:(id)model
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [MEMORY[0x277D64B58] reactiveUILogger];
-  v12 = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(location, model);
+  reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+  oslog = [reactiveUILogger oslog];
+  MEMORY[0x277D82BD8](reactiveUILogger);
   v11 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     __os_log_helper_16_2_1_8_32(v15, "[SUUITermsConditionsInterop handleDisagreeResponseFromRemoteUIObjectModel:]");
-    _os_log_impl(&dword_26AE88000, v12, v11, "%s: Apple Account Terms and Conditions - RemoteUI reported Disagree.", v15, 0xCu);
+    _os_log_impl(&dword_26AE88000, oslog, v11, "%s: Apple Account Terms and Conditions - RemoteUI reported Disagree.", v15, 0xCu);
   }
 
-  objc_storeStrong(&v12, 0);
-  v10 = [location[0] clientInfo];
+  objc_storeStrong(&oslog, 0);
+  clientInfo = [location[0] clientInfo];
   v3 = objc_alloc(MEMORY[0x277CEC880]);
-  v4 = [v10 objectForKey:@"disagreeUrl"];
+  v4 = [clientInfo objectForKey:@"disagreeUrl"];
   v9 = [v3 initWithURLString:? account:?];
   MEMORY[0x277D82BD8](v4);
   v5 = v9;
-  v7 = [location[0] serverInfo];
-  v6 = [v7 objectForKeyedSubscript:@"serverInfoKey"];
+  serverInfo = [location[0] serverInfo];
+  v6 = [serverInfo objectForKeyedSubscript:@"serverInfoKey"];
   [v5 setServerInfo:?];
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](serverInfo);
   [v9 performRequestWithHandler:&__block_literal_global];
-  [(SUUITermsConditionsInterop *)v14 completePresentationWithResponse:1 error:?];
+  [(SUUITermsConditionsInterop *)selfCopy completePresentationWithResponse:1 error:?];
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&clientInfo, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -1244,21 +1244,21 @@ void __76__SUUITermsConditionsInterop_handleDisagreeResponseFromRemoteUIObjectMo
   objc_storeStrong(location, 0);
 }
 
-- (void)handleTermsAndConditionsAgreementConfirmationAgreeResponse:(id)a3
+- (void)handleTermsAndConditionsAgreementConfirmationAgreeResponse:(id)response
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [location[0] clientInfo];
-  v14 = [v15 objectForKey:@"agreeUrl"];
+  objc_storeStrong(location, response);
+  clientInfo = [location[0] clientInfo];
+  v14 = [clientInfo objectForKey:@"agreeUrl"];
   v3 = objc_alloc(MEMORY[0x277CEC878]);
-  v13 = [v3 initWithURLString:v14 account:v17->_presentationAccount];
+  v13 = [v3 initWithURLString:v14 account:selfCopy->_presentationAccount];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [location[0] serverInfo];
-    v12 = [v5 objectForKeyedSubscript:@"serverInfoKey"];
-    MEMORY[0x277D82BD8](v5);
+    serverInfo = [location[0] serverInfo];
+    v12 = [serverInfo objectForKeyedSubscript:@"serverInfoKey"];
+    MEMORY[0x277D82BD8](serverInfo);
     [v13 setServerInfo:v12];
     objc_storeStrong(&v12, 0);
   }
@@ -1269,12 +1269,12 @@ void __76__SUUITermsConditionsInterop_handleDisagreeResponseFromRemoteUIObjectMo
   v8 = 0;
   v9 = __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmationAgreeResponse___block_invoke;
   v10 = &unk_279CC96D8;
-  v11 = MEMORY[0x277D82BE0](v17);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   [v4 performRequestWithHandler:&v6];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&clientInfo, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -1309,23 +1309,23 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
   objc_storeStrong(location, 0);
 }
 
-- (id)createTermsAndConditionsAgreementConfirmationMessage:(id)a3 bundle:(id)a4
+- (id)createTermsAndConditionsAgreementConfirmationMessage:(id)message bundle:(id)bundle
 {
   v80 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v75 = 0;
-  objc_storeStrong(&v75, a4);
+  objc_storeStrong(&v75, bundle);
   v41 = objc_alloc(MEMORY[0x277CBEB18]);
   v42 = [v75 localizedStringForKey:@"OSName" value:&stru_287BA1850 table:@"Localizable"];
   v74 = [v41 initWithObjects:0];
   MEMORY[0x277D82BD8](v42);
   v73 = 0;
   memset(__b, 0, sizeof(__b));
-  v43 = [location[0] namedPages];
-  v44 = [v43 countByEnumeratingWithState:__b objects:v79 count:16];
+  namedPages = [location[0] namedPages];
+  v44 = [namedPages countByEnumeratingWithState:__b objects:v79 count:16];
   if (v44)
   {
     v37 = *__b[2];
@@ -1336,7 +1336,7 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
       v36 = v38;
       if (*__b[2] != v37)
       {
-        objc_enumerationMutation(v43);
+        objc_enumerationMutation(namedPages);
       }
 
       v72 = *(__b[1] + 8 * v38);
@@ -1373,7 +1373,7 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
       if (v36 + 1 >= v39)
       {
         v38 = 0;
-        v39 = [v43 countByEnumeratingWithState:__b objects:v79 count:16];
+        v39 = [namedPages countByEnumeratingWithState:__b objects:v79 count:16];
         if (!v39)
         {
           break;
@@ -1382,7 +1382,7 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
     }
   }
 
-  MEMORY[0x277D82BD8](v43);
+  MEMORY[0x277D82BD8](namedPages);
   v29 = [v74 count];
   switch(v29)
   {
@@ -1533,9 +1533,9 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
       v66 = 1;
       break;
     default:
-      v10 = [MEMORY[0x277D64B58] reactiveUILogger];
-      oslog = [v10 oslog];
-      MEMORY[0x277D82BD8](v10);
+      reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+      oslog = [reactiveUILogger oslog];
+      MEMORY[0x277D82BD8](reactiveUILogger);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
       {
         __os_log_helper_16_2_3_8_32_8_0_8_66(v78, "-[SUUITermsConditionsInterop createTermsAndConditionsAgreementConfirmationMessage:bundle:]", [v74 count], v74);
@@ -1550,18 +1550,18 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
       v45 = 0;
       if (v73)
       {
-        v52 = [MEMORY[0x277CCA8D8] mainBundle];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
         v51 = 1;
-        v50 = [v52 localizedStringForKey:@"I agree to the Terms and Conditions and the Apple Privacy Policy" value:&stru_287BA1850 table:0];
+        v50 = [mainBundle localizedStringForKey:@"I agree to the Terms and Conditions and the Apple Privacy Policy" value:&stru_287BA1850 table:0];
         v49 = 1;
         v8 = v50;
       }
 
       else
       {
-        v48 = [MEMORY[0x277CCA8D8] mainBundle];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
         v47 = 1;
-        v46 = [v48 localizedStringForKey:@"I agree to the Terms and Conditions" value:&stru_287BA1850 table:0];
+        v46 = [mainBundle2 localizedStringForKey:@"I agree to the Terms and Conditions" value:&stru_287BA1850 table:0];
         v45 = 1;
         v8 = v46;
       }
@@ -1574,7 +1574,7 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
 
       if (v47)
       {
-        MEMORY[0x277D82BD8](v48);
+        MEMORY[0x277D82BD8](mainBundle2);
       }
 
       if (v49)
@@ -1584,7 +1584,7 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
 
       if (v51)
       {
-        MEMORY[0x277D82BD8](v52);
+        MEMORY[0x277D82BD8](mainBundle);
       }
 
       v66 = 1;
@@ -1599,24 +1599,24 @@ void __89__SUUITermsConditionsInterop_handleTermsAndConditionsAgreementConfirmat
   return v6;
 }
 
-- (void)completePresentationWithResponse:(int64_t)a3 error:(id)a4
+- (void)completePresentationWithResponse:(int64_t)response error:(id)error
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  responseCopy = response;
   location = 0;
-  objc_storeStrong(&location, a4);
-  objc_initWeak(&v13, v17);
-  queue = v17->_workQueue;
+  objc_storeStrong(&location, error);
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_workQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __69__SUUITermsConditionsInterop_completePresentationWithResponse_error___block_invoke;
   v9 = &unk_279CC9750;
-  v10 = MEMORY[0x277D82BE0](v17);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_copyWeak(v12, &v13);
   v12[1] = v16;
-  v12[2] = v15;
+  v12[2] = responseCopy;
   v11 = MEMORY[0x277D82BE0](location);
   dispatch_async(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -1771,11 +1771,11 @@ void __69__SUUITermsConditionsInterop_completePresentationWithResponse_error___b
 - (id)currentPresentedSceneViewController
 {
   v38 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
-  v18 = [MEMORY[0x277D75128] sharedApplication];
-  v31[0] = [v18 connectedScenes];
-  MEMORY[0x277D82BD8](v18);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v31[0] = [mEMORY[0x277D75128] connectedScenes];
+  MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   location = 0;
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](v31[0]);
@@ -1827,8 +1827,8 @@ LABEL_10:
   {
     v24 = 0;
     memset(v22, 0, sizeof(v22));
-    v11 = [location windows];
-    v12 = [v11 countByEnumeratingWithState:v22 objects:v35 count:16];
+    windows = [location windows];
+    v12 = [windows countByEnumeratingWithState:v22 objects:v35 count:16];
     if (v12)
     {
       v8 = *v22[2];
@@ -1839,7 +1839,7 @@ LABEL_10:
         v7 = v9;
         if (*v22[2] != v8)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(windows);
         }
 
         v23 = *(v22[1] + 8 * v9);
@@ -1852,7 +1852,7 @@ LABEL_10:
         if (v7 + 1 >= v10)
         {
           v9 = 0;
-          v10 = [v11 countByEnumeratingWithState:v22 objects:v35 count:16];
+          v10 = [windows countByEnumeratingWithState:v22 objects:v35 count:16];
           if (!v10)
           {
             goto LABEL_23;
@@ -1870,28 +1870,28 @@ LABEL_23:
       v27 = 0;
     }
 
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](windows);
     if (v24)
     {
-      v4 = v32;
-      v5 = [v24 rootViewController];
+      v4 = selfCopy;
+      rootViewController = [v24 rootViewController];
       v33 = [(SUUITermsConditionsInterop *)v4 getTopViewControllerFrom:?];
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](rootViewController);
       v27 = 1;
     }
 
     else
     {
-      v6 = [MEMORY[0x277D64B58] reactiveUILogger];
-      v21 = [v6 oslog];
-      MEMORY[0x277D82BD8](v6);
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      reactiveUILogger = [MEMORY[0x277D64B58] reactiveUILogger];
+      oslog = [reactiveUILogger oslog];
+      MEMORY[0x277D82BD8](reactiveUILogger);
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         __os_log_helper_16_2_1_8_32(v34, "[SUUITermsConditionsInterop currentPresentedSceneViewController]");
-        _os_log_error_impl(&dword_26AE88000, v21, OS_LOG_TYPE_ERROR, "%s: Apple Account Terms and Conditions - couldn't find the active keyWindow.", v34, 0xCu);
+        _os_log_error_impl(&dword_26AE88000, oslog, OS_LOG_TYPE_ERROR, "%s: Apple Account Terms and Conditions - couldn't find the active keyWindow.", v34, 0xCu);
       }
 
-      objc_storeStrong(&v21, 0);
+      objc_storeStrong(&oslog, 0);
       v33 = 0;
       v27 = 1;
     }
@@ -1901,9 +1901,9 @@ LABEL_23:
 
   else
   {
-    v13 = [MEMORY[0x277D64B58] reactiveUILogger];
-    oslog = [v13 oslog];
-    MEMORY[0x277D82BD8](v13);
+    reactiveUILogger2 = [MEMORY[0x277D64B58] reactiveUILogger];
+    oslog = [reactiveUILogger2 oslog];
+    MEMORY[0x277D82BD8](reactiveUILogger2);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
@@ -1923,20 +1923,20 @@ LABEL_23:
   return v2;
 }
 
-- (id)getTopViewControllerFrom:(id)a3
+- (id)getTopViewControllerFrom:(id)from
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [location[0] presentedViewController];
-  MEMORY[0x277D82BD8](v11);
-  if (v11)
+  objc_storeStrong(location, from);
+  presentedViewController = [location[0] presentedViewController];
+  MEMORY[0x277D82BD8](presentedViewController);
+  if (presentedViewController)
   {
-    v9 = v16;
-    v10 = [location[0] presentedViewController];
+    v9 = selfCopy;
+    presentedViewController2 = [location[0] presentedViewController];
     v17 = [(SUUITermsConditionsInterop *)v9 getTopViewControllerFrom:?];
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](presentedViewController2);
     v14 = 1;
   }
 
@@ -1946,10 +1946,10 @@ LABEL_23:
     if (objc_opt_isKindOfClass())
     {
       v13 = MEMORY[0x277D82BE0](location[0]);
-      v7 = v16;
-      v8 = [v13 visibleViewController];
+      v7 = selfCopy;
+      visibleViewController = [v13 visibleViewController];
       v17 = [(SUUITermsConditionsInterop *)v7 getTopViewControllerFrom:?];
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](visibleViewController);
       v14 = 1;
       objc_storeStrong(&v13, 0);
     }
@@ -1960,10 +1960,10 @@ LABEL_23:
       if (objc_opt_isKindOfClass())
       {
         v12 = MEMORY[0x277D82BE0](location[0]);
-        v5 = v16;
-        v6 = [v12 selectedViewController];
+        v5 = selfCopy;
+        selectedViewController = [v12 selectedViewController];
         v17 = [(SUUITermsConditionsInterop *)v5 getTopViewControllerFrom:?];
-        MEMORY[0x277D82BD8](v6);
+        MEMORY[0x277D82BD8](selectedViewController);
         v14 = 1;
         objc_storeStrong(&v12, 0);
       }

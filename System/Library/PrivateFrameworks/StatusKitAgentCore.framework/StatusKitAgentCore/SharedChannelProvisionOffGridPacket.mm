@@ -1,12 +1,12 @@
 @interface SharedChannelProvisionOffGridPacket
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelProvisionOffGridPacket
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = SharedChannelProvisionOffGridPacket;
   v4 = [(SharedChannelProvisionOffGridPacket *)&v8 description];
-  v5 = [(SharedChannelProvisionOffGridPacket *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelProvisionOffGridPacket *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   publishPayload = self->_publishPayload;
   if (publishPayload)
   {
-    [v3 setObject:publishPayload forKey:@"publish_payload"];
+    [dictionary setObject:publishPayload forKey:@"publish_payload"];
   }
 
   channelTopic = self->_channelTopic;
@@ -54,93 +54,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_publishPayload)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelTopic)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelId)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_commitmentSalt)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_publishPayload)
   {
-    [v4 setPublishPayload:?];
-    v4 = v5;
+    [toCopy setPublishPayload:?];
+    toCopy = v5;
   }
 
   if (self->_channelTopic)
   {
     [v5 setChannelTopic:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelId)
   {
     [v5 setChannelId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_commitmentSalt)
   {
     [v5 setCommitmentSalt:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_publishPayload copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_publishPayload copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_channelTopic copyWithZone:a3];
+  v8 = [(NSString *)self->_channelTopic copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSData *)self->_channelId copyWithZone:a3];
+  v10 = [(NSData *)self->_channelId copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSData *)self->_commitmentSalt copyWithZone:a3];
+  v12 = [(NSData *)self->_commitmentSalt copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((publishPayload = self->_publishPayload, !(publishPayload | v4[4])) || -[NSData isEqual:](publishPayload, "isEqual:")) && ((channelTopic = self->_channelTopic, !(channelTopic | v4[2])) || -[NSString isEqual:](channelTopic, "isEqual:")) && ((channelId = self->_channelId, !(channelId | v4[1])) || -[NSData isEqual:](channelId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((publishPayload = self->_publishPayload, !(publishPayload | equalCopy[4])) || -[NSData isEqual:](publishPayload, "isEqual:")) && ((channelTopic = self->_channelTopic, !(channelTopic | equalCopy[2])) || -[NSString isEqual:](channelTopic, "isEqual:")) && ((channelId = self->_channelId, !(channelId | equalCopy[1])) || -[NSData isEqual:](channelId, "isEqual:")))
   {
     commitmentSalt = self->_commitmentSalt;
-    if (commitmentSalt | v4[3])
+    if (commitmentSalt | equalCopy[3])
     {
       v9 = [(NSData *)commitmentSalt isEqual:?];
     }
@@ -167,25 +167,25 @@
   return v4 ^ v5 ^ [(NSData *)self->_commitmentSalt hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(SharedChannelProvisionOffGridPacket *)self setPublishPayload:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SharedChannelProvisionOffGridPacket *)self setChannelTopic:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SharedChannelProvisionOffGridPacket *)self setChannelId:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SharedChannelProvisionOffGridPacket *)self setCommitmentSalt:?];
   }

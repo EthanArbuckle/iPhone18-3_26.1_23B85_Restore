@@ -1,29 +1,29 @@
 @interface _CNJumpToMainRunLoopScheduler
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _CNJumpToMainRunLoopScheduler
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   Main = CFRunLoopGetMain();
   v7 = *MEMORY[0x1E695E8D0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63___CNJumpToMainRunLoopScheduler_performBlock_qualityOfService___block_invoke;
   v16[3] = &unk_1E6ED5F68;
-  v8 = v5;
+  v8 = blockCopy;
   v17 = v8;
   v9 = v16;
   v10 = v9;
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 <= 4)
+    if (service <= 4)
     {
-      if (a4 == 3)
+      if (service == 3)
       {
         v11 = QOS_CLASS_UTILITY;
       }
@@ -36,13 +36,13 @@
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (service == 5)
     {
       v11 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (service == 6)
     {
       v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v9);
 LABEL_16:
@@ -55,9 +55,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (service)
   {
-    if (a4 == 2)
+    if (service == 2)
     {
       v11 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -78,9 +78,9 @@ LABEL_17:
   CFRunLoopWakeUp(v15);
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = objc_alloc_init(CNMainRunLoopSchedulerCancelationToken);
   Main = CFRunLoopGetMain();
   v8 = *MEMORY[0x1E695E8D0];
@@ -90,15 +90,15 @@ LABEL_17:
   v21[3] = &unk_1E6ED5858;
   v9 = v6;
   v22 = v9;
-  v10 = v5;
+  v10 = blockCopy;
   v23 = v10;
   v11 = v21;
   v12 = v11;
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 <= 4)
+    if (service <= 4)
     {
-      if (a4 == 3)
+      if (service == 3)
       {
         v13 = QOS_CLASS_UTILITY;
       }
@@ -111,13 +111,13 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (service == 5)
     {
       v13 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (service == 6)
     {
       v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v11);
 LABEL_16:
@@ -130,9 +130,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (service)
   {
-    if (a4 == 2)
+    if (service == 2)
     {
       v13 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -157,15 +157,15 @@ LABEL_17:
   return v9;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a4;
-  v7 = CFAbsoluteTimeGetCurrent() + a3;
+  blockCopy = block;
+  v7 = CFAbsoluteTimeGetCurrent() + delay;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74___CNJumpToMainRunLoopScheduler_afterDelay_performBlock_qualityOfService___block_invoke;
   block[3] = &unk_1E6ED8148;
-  v8 = v6;
+  v8 = blockCopy;
   v19 = v8;
   v9 = CFRunLoopTimerCreateWithHandler(0, v7, 0.0, 0, 0, block);
   if (v9)

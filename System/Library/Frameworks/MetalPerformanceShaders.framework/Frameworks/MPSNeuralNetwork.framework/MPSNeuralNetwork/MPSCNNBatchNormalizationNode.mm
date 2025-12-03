@@ -12,7 +12,7 @@
 
 + (MPSCNNBatchNormalizationNode)nodeWithSource:(MPSNNImageNode *)source dataSource:(id)dataSource
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v12 = objc_msgSend_initWithSource_dataSource_(v6, v7, source, dataSource, v8, v9, v10, v11);
 
   return v12;
@@ -27,13 +27,13 @@
 
   else
   {
-    v8 = self;
+    selfCopy = self;
     self = objc_msgSend_count(self->super._resultStates, a2, v2, v3, v4, v5, v6, v7);
     if (self)
     {
-      v15 = self;
+      selfCopy2 = self;
       v16 = 0;
-      for (i = objc_msgSend_objectAtIndexedSubscript_(v8->super._resultStates, v9, 0, v10, v11, v12, v13, v14); ; i = objc_msgSend_objectAtIndexedSubscript_(v8->super._resultStates, v18, v16, v19, v20, v21, v22, v23))
+      for (i = objc_msgSend_objectAtIndexedSubscript_(selfCopy->super._resultStates, v9, 0, v10, v11, v12, v13, v14); ; i = objc_msgSend_objectAtIndexedSubscript_(selfCopy->super._resultStates, v18, v16, v19, v20, v21, v22, v23))
       {
         if (i && ((*(i + 33) & 1) != 0 || *(i + 24)))
         {
@@ -41,7 +41,7 @@
           return self;
         }
 
-        if (v15 == ++v16)
+        if (selfCopy2 == ++v16)
         {
           break;
         }

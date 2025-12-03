@@ -1,8 +1,8 @@
 @interface HDCloudSyncSessionContext
-- (BOOL)addChangeData:(id)a3 changes:(id)a4 sessionIdentifier:(id)a5 outError:(id *)a6;
-- (BOOL)resetInvalidArchiveCreatorWithSessionUUID:(id)a3 error:(id *)a4;
+- (BOOL)addChangeData:(id)data changes:(id)changes sessionIdentifier:(id)identifier outError:(id *)error;
+- (BOOL)resetInvalidArchiveCreatorWithSessionUUID:(id)d error:(id *)error;
 - (HDCloudSyncSessionContext)init;
-- (HDCloudSyncSessionContext)initWithChangedSyncEntityCount:(unint64_t)a3 profile:(id)a4;
+- (HDCloudSyncSessionContext)initWithChangedSyncEntityCount:(unint64_t)count profile:(id)profile;
 - (HDProfile)profile;
 - (unint64_t)archiveSize;
 - (void)finishProgress;
@@ -20,23 +20,23 @@
   return 0;
 }
 
-- (HDCloudSyncSessionContext)initWithChangedSyncEntityCount:(unint64_t)a3 profile:(id)a4
+- (HDCloudSyncSessionContext)initWithChangedSyncEntityCount:(unint64_t)count profile:(id)profile
 {
-  v6 = a4;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDCloudSyncSessionContext;
   v7 = [(HDCloudSyncSessionContext *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_profile, v6);
+    objc_storeWeak(&v7->_profile, profileCopy);
     v9 = objc_alloc_init(HDSyncAnchorRangeMap);
     pendingAnchorRangeMap = v8->_pendingAnchorRangeMap;
     v8->_pendingAnchorRangeMap = v9;
 
     v8->_changesetCount = 0;
     v8->_archiveCount = 0;
-    v11 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:a3];
+    v11 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:count];
     progress = v8->_progress;
     v8->_progress = v11;
 
@@ -50,15 +50,15 @@
 
 - (unint64_t)archiveSize
 {
-  v2 = [(_HKArchiveCreator *)self->_archiveCreator fileHandle];
-  v3 = [v2 seekToEndOfFile];
+  fileHandle = [(_HKArchiveCreator *)self->_archiveCreator fileHandle];
+  seekToEndOfFile = [fileHandle seekToEndOfFile];
 
-  return v3;
+  return seekToEndOfFile;
 }
 
-- (BOOL)resetInvalidArchiveCreatorWithSessionUUID:(id)a3 error:(id *)a4
+- (BOOL)resetInvalidArchiveCreatorWithSessionUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   archiveCreator = self->_archiveCreator;
   if (archiveCreator && ([(_HKArchiveCreator *)archiveCreator archiveIsValid]& 1) != 0)
   {
@@ -69,14 +69,14 @@
   {
     v9 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v6 UUIDString];
-    v12 = [v10 stringWithFormat:@"syncarchive-%@-%llu", v11, self->_archiveCount];
+    uUIDString = [dCopy UUIDString];
+    v12 = [v10 stringWithFormat:@"syncarchive-%@-%llu", uUIDString, self->_archiveCount];
 
-    v13 = [v9 temporaryDirectory];
-    v14 = [v13 URLByAppendingPathComponent:v12];
+    temporaryDirectory = [v9 temporaryDirectory];
+    v14 = [temporaryDirectory URLByAppendingPathComponent:v12];
     v15 = [v14 URLByAppendingPathExtension:@"zip"];
 
-    v16 = HDAssetFileHandleForFileURL(v15, v9, a4);
+    v16 = HDAssetFileHandleForFileURL(v15, v9, error);
     v8 = v16 != 0;
     if (v16)
     {
@@ -95,21 +95,21 @@
   return v8;
 }
 
-- (BOOL)addChangeData:(id)a3 changes:(id)a4 sessionIdentifier:(id)a5 outError:(id *)a6
+- (BOOL)addChangeData:(id)data changes:(id)changes sessionIdentifier:(id)identifier outError:(id *)error
 {
   v78 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([(HDCloudSyncSessionContext *)self resetInvalidArchiveCreatorWithSessionUUID:a5 error:a6])
+  dataCopy = data;
+  changesCopy = changes;
+  if ([(HDCloudSyncSessionContext *)self resetInvalidArchiveCreatorWithSessionUUID:identifier error:error])
   {
-    v67 = a6;
-    v68 = v11;
-    v69 = v10;
+    errorCopy = error;
+    v68 = changesCopy;
+    v69 = dataCopy;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v12 = v11;
+    v12 = changesCopy;
     v13 = [v12 countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v13)
     {
@@ -137,10 +137,10 @@ LABEL_4:
           -[NSMutableSet addObject:](v20, "addObject:", [v17 syncEntityClassForProfile:v21]);
 
           v22 = [(NSMutableSet *)self->_syncEntityClassesWithProcessedChanges count];
-          v23 = [(NSProgress *)self->_progress totalUnitCount];
-          if (v22 >= v23)
+          totalUnitCount = [(NSProgress *)self->_progress totalUnitCount];
+          if (v22 >= totalUnitCount)
           {
-            v24 = v23;
+            v24 = totalUnitCount;
           }
 
           else
@@ -156,40 +156,40 @@ LABEL_4:
         objc_opt_self();
         v75 = 0;
         v76 = 0;
-        v27 = [v26 syncEntityIdentifier];
-        v28 = [(HDSyncAnchorRangeMap *)v25 getAnchorRange:&v75 forSyncEntityIdentifier:v27];
+        syncEntityIdentifier = [v26 syncEntityIdentifier];
+        v28 = [(HDSyncAnchorRangeMap *)v25 getAnchorRange:&v75 forSyncEntityIdentifier:syncEntityIdentifier];
 
         if (v28)
         {
-          v29 = [v26 sequenceNumber];
-          if ([v29 integerValue])
+          sequenceNumber = [v26 sequenceNumber];
+          if ([sequenceNumber integerValue])
           {
           }
 
           else
           {
-            v37 = [v26 syncAnchorRange];
+            syncAnchorRange = [v26 syncAnchorRange];
             v38 = v76;
 
-            v39 = v37 == v38;
+            v39 = syncAnchorRange == v38;
             v12 = v70;
             if (!v39)
             {
               v57 = MEMORY[0x277CCA9B8];
               v58 = objc_opt_class();
-              v59 = [v26 syncAnchorRange];
+              syncAnchorRange2 = [v26 syncAnchorRange];
               v60 = v76;
-              v61 = [v26 sequenceNumber];
-              [v57 hk_errorForInvalidArgument:@"@" class:v58 selector:sel__updateAnchorRangeMap_withChange_outError_ format:{@"startAnchor (%lld) != previous endAnchor (%lld), sequence (%@)", v59, v60, v61}];
+              sequenceNumber2 = [v26 sequenceNumber];
+              [v57 hk_errorForInvalidArgument:@"@" class:v58 selector:sel__updateAnchorRangeMap_withChange_outError_ format:{@"startAnchor (%lld) != previous endAnchor (%lld), sequence (%@)", syncAnchorRange2, v60, sequenceNumber2}];
               v62 = LABEL_30:;
               v63 = v62;
               if (v62)
               {
-                v11 = v68;
-                if (v67)
+                changesCopy = v68;
+                if (errorCopy)
                 {
                   v64 = v62;
-                  *v67 = v63;
+                  *errorCopy = v63;
                 }
 
                 else
@@ -200,18 +200,18 @@ LABEL_4:
 
               else
               {
-                v11 = v68;
+                changesCopy = v68;
               }
 
               v51 = 0;
-              v10 = v69;
+              dataCopy = v69;
               v47 = v70;
               goto LABEL_36;
             }
           }
 
-          v40 = [v26 sequenceNumber];
-          if ([v40 integerValue] < 1)
+          sequenceNumber3 = [v26 sequenceNumber];
+          if ([sequenceNumber3 integerValue] < 1)
           {
           }
 
@@ -230,15 +230,15 @@ LABEL_4:
               [v26 syncAnchorRange];
               v55 = v54;
               v56 = v76;
-              v61 = [v26 sequenceNumber];
-              [v52 hk_errorForInvalidArgument:@"@" class:v53 selector:sel__updateAnchorRangeMap_withChange_outError_ format:{@"endAnchor (%lld) != previous endAnchor (%lld), sequence (%@)", v55, v56, v61}];
+              sequenceNumber2 = [v26 sequenceNumber];
+              [v52 hk_errorForInvalidArgument:@"@" class:v53 selector:sel__updateAnchorRangeMap_withChange_outError_ format:{@"endAnchor (%lld) != previous endAnchor (%lld), sequence (%@)", v55, v56, sequenceNumber2}];
               goto LABEL_30;
             }
           }
 
           [v26 syncAnchorRange];
           v76 = v44;
-          v33 = [v26 syncEntityIdentifier];
+          syncEntityIdentifier2 = [v26 syncEntityIdentifier];
           v35 = v75;
           v36 = v76;
           v34 = v25;
@@ -246,18 +246,18 @@ LABEL_4:
 
         else
         {
-          v30 = [v26 syncAnchorRange];
+          syncAnchorRange3 = [v26 syncAnchorRange];
           v32 = v31;
-          v33 = [v26 syncEntityIdentifier];
+          syncEntityIdentifier2 = [v26 syncEntityIdentifier];
           v34 = v25;
-          v35 = v30;
+          v35 = syncAnchorRange3;
           v36 = v32;
         }
 
-        [(HDSyncAnchorRangeMap *)v34 setAnchorRange:v35 forSyncEntityIdentifier:v36, v33];
+        [(HDSyncAnchorRangeMap *)v34 setAnchorRange:v35 forSyncEntityIdentifier:v36, syncEntityIdentifier2];
 
-        v45 = [v26 sequenceNumber];
-        if (v45)
+        sequenceNumber4 = [v26 sequenceNumber];
+        if (sequenceNumber4)
         {
           v46 = [v26 done] ^ 1;
         }
@@ -286,12 +286,12 @@ LABEL_4:
     archiveCreator = self->_archiveCreator;
     v49 = [MEMORY[0x277CBEBC0] fileURLWithPath:v47 isDirectory:0];
     v50 = archiveCreator;
-    v10 = v69;
+    dataCopy = v69;
     [(_HKArchiveCreator *)v50 addDataToArchive:v69 pathInArchive:v49];
 
     ++self->_changesetCount;
     v51 = 1;
-    v11 = v68;
+    changesCopy = v68;
 LABEL_36:
   }
 

@@ -1,14 +1,14 @@
 @interface TDMicaElementProduction
-- (id)associatedFileURLWithDocument:(id)a3;
+- (id)associatedFileURLWithDocument:(id)document;
 - (id)baseKeySpec;
 - (id)copyDataFromAttributes;
 - (id)dataFromAttributes;
 - (id)relativePath;
-- (void)copyAttributesInto:(id)a3;
+- (void)copyAttributesInto:(id)into;
 - (void)dealloc;
-- (void)deleteRenditionsInDocument:(id)a3 shouldDeleteAssetFiles:(BOOL)a4;
-- (void)setAttributesFromCopyData:(id)a3;
-- (void)setAttributesFromData:(id)a3;
+- (void)deleteRenditionsInDocument:(id)document shouldDeleteAssetFiles:(BOOL)files;
+- (void)setAttributesFromCopyData:(id)data;
+- (void)setAttributesFromData:(id)data;
 @end
 
 @implementation TDMicaElementProduction
@@ -30,62 +30,62 @@
 
 - (id)relativePath
 {
-  v2 = [(TDMicaElementProduction *)self asset];
+  asset = [(TDMicaElementProduction *)self asset];
 
-  return [v2 sourceRelativePath];
+  return [asset sourceRelativePath];
 }
 
-- (id)associatedFileURLWithDocument:(id)a3
+- (id)associatedFileURLWithDocument:(id)document
 {
-  v4 = [(TDMicaElementProduction *)self asset];
+  asset = [(TDMicaElementProduction *)self asset];
 
-  return [v4 fileURLWithDocument:a3];
+  return [asset fileURLWithDocument:document];
 }
 
-- (void)deleteRenditionsInDocument:(id)a3 shouldDeleteAssetFiles:(BOOL)a4
+- (void)deleteRenditionsInDocument:(id)document shouldDeleteAssetFiles:(BOOL)files
 {
-  v4 = a4;
-  [a3 deleteObjects:{objc_msgSend(-[TDMicaElementProduction renditions](self, "renditions"), "allObjects")}];
-  v7 = [(TDMicaElementProduction *)self asset];
-  v8 = v7;
-  if (v4)
+  filesCopy = files;
+  [document deleteObjects:{objc_msgSend(-[TDMicaElementProduction renditions](self, "renditions"), "allObjects")}];
+  asset = [(TDMicaElementProduction *)self asset];
+  v8 = asset;
+  if (filesCopy)
   {
-    v9 = [v7 fileURLWithDocument:a3];
+    v9 = [asset fileURLWithDocument:document];
     if ([v9 checkResourceIsReachableAndReturnError:0])
     {
-      [a3 assetManagementDelegate];
+      [document assetManagementDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [objc_msgSend(a3 "assetManagementDelegate")];
+        [objc_msgSend(document "assetManagementDelegate")];
       }
 
       [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-      [a3 assetManagementDelegate];
+      [document assetManagementDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [objc_msgSend(a3 "assetManagementDelegate")];
+        [objc_msgSend(document "assetManagementDelegate")];
       }
     }
   }
 
-  [a3 deleteObject:v8];
+  [document deleteObject:v8];
 }
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
-  [a3 setRenditionType:{-[TDMicaElementProduction renditionType](self, "renditionType")}];
+  [into setRenditionType:{-[TDMicaElementProduction renditionType](self, "renditionType")}];
   v5 = [(TDMicaElementProduction *)self valueForKey:@"comment"];
 
-  [a3 setValue:v5 forKey:@"comment"];
+  [into setValue:v5 forKey:@"comment"];
 }
 
 - (id)dataFromAttributes
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:7];
-  v4 = [(TDMicaElementProduction *)self renditionType];
-  if (v4)
+  renditionType = [(TDMicaElementProduction *)self renditionType];
+  if (renditionType)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v4 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"renditionType"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(renditionType forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"renditionType"}];
   }
 
   [v3 setObject:objc_msgSend(-[TDMicaElementProduction baseKeySpec](self forKey:{"baseKeySpec"), "dataFromAttributes"), @"baseKeySpec"}];
@@ -94,10 +94,10 @@
   return [v5 dataWithPropertyList:v3 format:200 options:0 error:0];
 }
 
-- (void)setAttributesFromData:(id)a3
+- (void)setAttributesFromData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
-  v5 = [(TDMicaElementProduction *)self managedObjectContext];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
+  managedObjectContext = [(TDMicaElementProduction *)self managedObjectContext];
   v6 = [v4 objectForKey:@"baseKeySpec"];
   if (v6)
   {
@@ -107,7 +107,7 @@
   v7 = [v4 objectForKey:@"renditionType"];
   if (v7)
   {
-    v8 = [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}];
+    v8 = [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}];
 
     [(TDMicaElementProduction *)self setRenditionType:v8];
   }
@@ -147,10 +147,10 @@
     [v3 setObject:objc_msgSend(v8 forKey:{"copyDataFromAttributes"), @"baseKeySpec"}];
   }
 
-  v9 = [(TDMicaElementProduction *)self asset];
-  if (v9)
+  asset = [(TDMicaElementProduction *)self asset];
+  if (asset)
   {
-    [v3 setObject:objc_msgSend(v9 forKey:{"copyDataFromAttributes"), @"asset"}];
+    [v3 setObject:objc_msgSend(asset forKey:{"copyDataFromAttributes"), @"asset"}];
   }
 
   v10 = [(TDMicaElementProduction *)self mutableSetValueForKey:@"renditions"];
@@ -161,8 +161,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v10 allObjects];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    allObjects = [v10 allObjects];
+    v13 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -174,14 +174,14 @@
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allObjects);
           }
 
           [v11 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v16++), "copyDataFromAttributes")}];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -195,9 +195,9 @@
   return result;
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"comment"];
   if (v5)
   {

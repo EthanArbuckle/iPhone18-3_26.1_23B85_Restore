@@ -6,8 +6,8 @@
 
 - (id)accountTypeHost
 {
-  v2 = self;
-  v3 = [objc_allocWithZone(REMAccountTypeHost) initWithType:{-[REMCDAccountV2023MinorEMigratingToZREMCDBASELIST type](v2, "type")}];
+  selfCopy = self;
+  v3 = [objc_allocWithZone(REMAccountTypeHost) initWithType:{-[REMCDAccountV2023MinorEMigratingToZREMCDBASELIST type](selfCopy, "type")}];
 
   return v3;
 }

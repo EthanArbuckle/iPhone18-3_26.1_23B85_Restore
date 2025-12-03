@@ -1,7 +1,7 @@
 @interface UISearchSuggestionItem
 + (UISearchSuggestionItem)suggestionWithLocalizedAttributedSuggestion:(NSAttributedString *)suggestion descriptionString:(NSString *)description iconImage:(UIImage *)iconImage;
 + (UISearchSuggestionItem)suggestionWithLocalizedSuggestion:(NSString *)suggestion descriptionString:(NSString *)description iconImage:(UIImage *)iconImage;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (UISearchSuggestionItem)initWithLocalizedAttributedSuggestion:(NSAttributedString *)suggestion localizedDescription:(NSString *)description iconImage:(UIImage *)iconImage;
 - (UISearchSuggestionItem)initWithLocalizedSuggestion:(NSString *)suggestion localizedDescription:(NSString *)description iconImage:(UIImage *)iconImage;
@@ -44,9 +44,9 @@
     localizedAttributedSuggestion = v11->_localizedAttributedSuggestion;
     v11->_localizedAttributedSuggestion = v12;
 
-    v14 = [(NSAttributedString *)v8 string];
+    string = [(NSAttributedString *)v8 string];
     localizedSuggestion = v11->_localizedSuggestion;
-    v11->_localizedSuggestion = v14;
+    v11->_localizedSuggestion = string;
 
     v16 = [(NSString *)v9 copy];
     localizedDescription = v11->_localizedDescription;
@@ -87,18 +87,18 @@
   v5 = representedObject;
   if (v5 && (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISearchSuggestion.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"representedObject == nil || [representedObject respondsToSelector:@selector(isEqual:)]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchSuggestion.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"representedObject == nil || [representedObject respondsToSelector:@selector(isEqual:)]"}];
   }
 
   v6 = self->_representedObject;
   self->_representedObject = v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       localizedAttributedSuggestion = v5->_localizedAttributedSuggestion;
       v7 = self->_localizedAttributedSuggestion;
       v8 = localizedAttributedSuggestion;
@@ -244,8 +244,8 @@ LABEL_36:
   localizedAttributedSuggestion = self->_localizedAttributedSuggestion;
   if (localizedAttributedSuggestion)
   {
-    v5 = [(NSAttributedString *)localizedAttributedSuggestion string];
-    [v3 appendFormat:@" '%@'", v5];
+    string = [(NSAttributedString *)localizedAttributedSuggestion string];
+    [v3 appendFormat:@" '%@'", string];
   }
 
   else

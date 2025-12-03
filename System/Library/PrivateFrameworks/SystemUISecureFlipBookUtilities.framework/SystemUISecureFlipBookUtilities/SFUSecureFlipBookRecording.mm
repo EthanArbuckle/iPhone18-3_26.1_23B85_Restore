@@ -1,29 +1,29 @@
 @interface SFUSecureFlipBookRecording
-+ (id)recordingWithOptions:(id)a3;
-- (BOOL)appendFlipBookFrameFrom:(id)a3 bounds:(CGRect)a4 lockHeld:(BOOL)a5;
-- (BOOL)beginCaptureWithOptions:(id)a3;
++ (id)recordingWithOptions:(id)options;
+- (BOOL)appendFlipBookFrameFrom:(id)from bounds:(CGRect)bounds lockHeld:(BOOL)held;
+- (BOOL)beginCaptureWithOptions:(id)options;
 - (BOOL)endCapture;
-- (BOOL)startTransitionTo:(id)a3;
-- (BOOL)updateContentStreamOptions:(id)a3;
-- (SFUSecureFlipBookRecording)initWithOptions:(id)a3;
+- (BOOL)startTransitionTo:(id)to;
+- (BOOL)updateContentStreamOptions:(id)options;
+- (SFUSecureFlipBookRecording)initWithOptions:(id)options;
 - (id).cxx_construct;
-- (id)generateSecureAsset:(id *)a3;
+- (id)generateSecureAsset:(id *)asset;
 - (void)dealloc;
 - (void)endCapture;
 - (void)sanitizeFrames;
-- (void)setFallbackIndicatorRect:(CGRect)a3;
-- (void)streamCallbackFrom:(id)a3 with:(id)a4;
+- (void)setFallbackIndicatorRect:(CGRect)rect;
+- (void)streamCallbackFrom:(id)from with:(id)with;
 @end
 
 @implementation SFUSecureFlipBookRecording
 
-+ (id)recordingWithOptions:(id)a3
++ (id)recordingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"recordingName"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"recordingName"];
   if ([v5 length])
   {
-    v6 = [[a1 alloc] initWithOptions:v4];
+    v6 = [[self alloc] initWithOptions:optionsCopy];
   }
 
   else
@@ -40,22 +40,22 @@
   return v6;
 }
 
-- (SFUSecureFlipBookRecording)initWithOptions:(id)a3
+- (SFUSecureFlipBookRecording)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (MEMORY[0x26D6A5730]("[SFUSecureFlipBookRecording initWithOptions:]"))
   {
-    v5 = [v4 objectForKeyedSubscript:@"recordingName"];
+    v5 = [optionsCopy objectForKeyedSubscript:@"recordingName"];
     v6 = *(self + 1);
     *(self + 1) = v5;
 
-    v7 = [v4 objectForKeyedSubscript:@"recordingVerbose"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"recordingVerbose"];
     *(self + 300) = v7 != 0;
 
     v8 = *(MEMORY[0x277CBF398] + 16);
     *(self + 10) = *MEMORY[0x277CBF398];
     *(self + 11) = v8;
-    v9 = [v4 objectForKeyedSubscript:@"fallbackIndicatorFrame"];
+    v9 = [optionsCopy objectForKeyedSubscript:@"fallbackIndicatorFrame"];
     v10 = v9;
     if (v9)
     {
@@ -65,11 +65,11 @@
       *(self + 11) = v11;
     }
 
-    v12 = [MEMORY[0x277CD9E40] mainDisplay];
-    [v12 bounds];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    [mainDisplay bounds];
     v14 = v13;
     v16 = v15;
-    v17 = [v4 objectForKeyedSubscript:@"recordingExtent"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"recordingExtent"];
     v18 = v17;
     if (v17)
     {
@@ -78,19 +78,19 @@
       v16 = location[1];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"queueDepth"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"queueDepth"];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 unsignedIntValue];
+      unsignedIntValue = [v19 unsignedIntValue];
     }
 
     else
     {
-      v21 = 6;
+      unsignedIntValue = 6;
     }
 
-    v23 = [v12 displayId];
+    displayId = [mainDisplay displayId];
     v40.receiver = self;
     v40.super_class = SFUSecureFlipBookRecording;
     self = [(SFUSecureFlipBookRecording *)&v40 init];
@@ -108,12 +108,12 @@
       v29 = objc_opt_new();
       [v29 setPixelFormat:1111970369];
       [v29 setFrameSize:{*&v14, *&v16}];
-      [v29 setQueueDepth:v21];
-      [v29 setTargetDisplayId:v23];
+      [v29 setQueueDepth:unsignedIntValue];
+      [v29 setTargetDisplayId:displayId];
       [v29 setMinimumFrameTime:0.00833333333];
-      [v12 bounds];
+      [mainDisplay bounds];
       [v29 setSourceRect:?];
-      [v12 bounds];
+      [mainDisplay bounds];
       [v29 setDestinationRect:?];
       [v29 setAlwaysScaleToFit:1];
       objc_initWeak(location, self);
@@ -126,20 +126,20 @@
       v31 = [MEMORY[0x277CD9E28] contentStreamWithOptions:v29 queue:*(self + 5) handler:v30 error:0];
       if (v31)
       {
-        v32 = [MEMORY[0x277CD9E48] displayLinkWithDisplay:v12 target:objc_opt_class() selector:sel_linkCallback_];
+        v32 = [MEMORY[0x277CD9E48] displayLinkWithDisplay:mainDisplay target:objc_opt_class() selector:sel_linkCallback_];
         v33 = *(self + 4);
         *(self + 4) = v32;
 
         v34 = *(self + 4);
-        v35 = [MEMORY[0x277CBEB88] mainRunLoop];
-        [v34 addToRunLoop:v35 forMode:*MEMORY[0x277CBE640]];
+        mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+        [v34 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
         v43 = CAFrameRateRangeMake(120.0, 120.0, 120.0);
         [*(self + 4) setPreferredFrameRateRange:{*&v43.minimum, *&v43.maximum, *&v43.preferred}];
         [*(self + 4) setHighFrameRateReason:3211265];
         objc_storeStrong(self + 2, v29);
         objc_storeStrong(self + 3, v31);
-        v22 = self;
+        selfCopy = self;
       }
 
       else
@@ -150,7 +150,7 @@
           [SFUSecureFlipBookRecording initWithOptions:];
         }
 
-        v22 = 0;
+        selfCopy = 0;
       }
 
       objc_destroyWeak(&v39);
@@ -159,16 +159,16 @@
 
     else
     {
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -195,10 +195,10 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
   [(SFUSecureFlipBookRecording *)&v3 dealloc];
 }
 
-- (BOOL)updateContentStreamOptions:(id)a3
+- (BOOL)updateContentStreamOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"captureContextList"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"captureContextList"];
   if ([v5 count])
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
@@ -219,7 +219,7 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
     v9 = 0;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"captureLayerBounds"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"captureLayerBounds"];
   RenderId = CALayerGetRenderId();
   if ([*(self + 2) trackedLayer] != RenderId)
   {
@@ -230,11 +230,11 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
   return v9;
 }
 
-- (BOOL)beginCaptureWithOptions:(id)a3
+- (BOOL)beginCaptureWithOptions:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"captureFromState"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"captureFromState"];
   std::string::basic_string[abi:ne200100]<0>(&__str, [v5 UTF8String]);
 
   size = HIBYTE(__str.__r_.__value_.__r.__words[2]);
@@ -245,14 +245,14 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
 
   if (size)
   {
-    v7 = [v4 objectForKeyedSubscript:@"captureFlags"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"captureFlags"];
     [v7 unsignedIntValue];
 
     v8 = *MEMORY[0x277CBF398];
     v9 = *(MEMORY[0x277CBF398] + 8);
     v10 = *(MEMORY[0x277CBF398] + 16);
     v11 = *(MEMORY[0x277CBF398] + 24);
-    v12 = [v4 objectForKeyedSubscript:@"captureBounds"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"captureBounds"];
     v13 = v12;
     x = v8;
     y = v9;
@@ -268,10 +268,10 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
       height = v29.size.height;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"captureLayerBounds"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"captureLayerBounds"];
     if (CALayerGetRenderId() || (v30.origin.x = x, v30.origin.y = y, v30.size.width = width, v30.size.height = height, (validate_capture_bounds(v30) & 1) != 0))
     {
-      if (!-[SFUSecureFlipBookRecording updateContentStreamOptions:](self, "updateContentStreamOptions:", v4) || (dispatch_sync(*(self + 5), &__block_literal_global), ([*(self + 3) updateOptions:*(self + 2) error:0] & 1) != 0))
+      if (!-[SFUSecureFlipBookRecording updateContentStreamOptions:](self, "updateContentStreamOptions:", optionsCopy) || (dispatch_sync(*(self + 5), &__block_literal_global), ([*(self + 3) updateOptions:*(self + 2) error:0] & 1) != 0))
       {
         std::mutex::lock(self + 3);
         if (*(self + 36))
@@ -288,7 +288,7 @@ void __46__SFUSecureFlipBookRecording_initWithOptions___block_invoke(uint64_t a1
           if ([*(self + 3) start:0])
           {
             std::string::basic_string[abi:ne200100]<0>(&__p, "");
-            v20 = [v4 objectForKeyedSubscript:@"captureToState"];
+            v20 = [optionsCopy objectForKeyedSubscript:@"captureToState"];
             v21 = v20;
             if (v20)
             {
@@ -354,10 +354,10 @@ LABEL_27:
   return 0;
 }
 
-- (BOOL)startTransitionTo:(id)a3
+- (BOOL)startTransitionTo:(id)to
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   std::mutex::lock(self + 3);
   v5 = *(self + 36);
   if (!v5)
@@ -396,7 +396,7 @@ LABEL_6:
   }
 
   *(v5 + 168) = 1;
-  std::string::__assign_external((*(self + 36) + 40), [v4 UTF8String]);
+  std::string::__assign_external((*(self + 36) + 40), [toCopy UTF8String]);
   v10 = CACurrentMediaTime();
   v11 = ((v9 - v8) >> 1) - 1;
   v12 = *(self + 36);
@@ -461,15 +461,15 @@ LABEL_26:
   return v7;
 }
 
-- (BOOL)appendFlipBookFrameFrom:(id)a3 bounds:(CGRect)a4 lockHeld:(BOOL)a5
+- (BOOL)appendFlipBookFrameFrom:(id)from bounds:(CGRect)bounds lockHeld:(BOOL)held
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v60 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  [v10 surface];
+  fromCopy = from;
+  [fromCopy surface];
   v11 = CGImageCreateFromIOSurface();
   v61.origin.x = x;
   v61.origin.y = y;
@@ -587,7 +587,7 @@ LABEL_26:
 
   src_buffer = self + 192;
   LOBYTE(v53) = 0;
-  if (!a5)
+  if (!held)
   {
     std::unique_lock<std::mutex>::lock[abi:ne200100](&src_buffer);
   }
@@ -613,20 +613,20 @@ LABEL_26:
     *(v38 - 32) = v47;
     *(v38 - 40) = v48 * v47;
     *(v38 - 8) = *(v39 + 160);
-    v40 = [v10 updateTime];
+    updateTime = [fromCopy updateTime];
     if (host_time_to_time(unsigned long long)::once[0] != -1)
     {
       [SFUSecureFlipBookRecording appendFlipBookFrameFrom:bounds:lockHeld:];
     }
 
-    *(v38 - 56) = *&host_time_to_time(unsigned long long)::time_scale * v40;
-    v41 = [v10 displayTime];
+    *(v38 - 56) = *&host_time_to_time(unsigned long long)::time_scale * updateTime;
+    displayTime = [fromCopy displayTime];
     if (host_time_to_time(unsigned long long)::once[0] != -1)
     {
       [SFUSecureFlipBookRecording appendFlipBookFrameFrom:bounds:lockHeld:];
     }
 
-    *(v38 - 48) = *&host_time_to_time(unsigned long long)::time_scale * v41;
+    *(v38 - 48) = *&host_time_to_time(unsigned long long)::time_scale * displayTime;
     v42 = *(self + 74) + 1;
     *(self + 74) = v42;
     *(v38 - 16) = v42;
@@ -659,14 +659,14 @@ LABEL_35:
   return v37;
 }
 
-- (void)streamCallbackFrom:(id)a3 with:(id)a4
+- (void)streamCallbackFrom:(id)from with:(id)with
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 surface])
+  fromCopy = from;
+  withCopy = with;
+  if ([withCopy surface])
   {
-    v8 = [v7 updateTime];
+    updateTime = [withCopy updateTime];
     if (host_time_to_time(unsigned long long)::once[0] != -1)
     {
       [SFUSecureFlipBookRecording streamCallbackFrom:with:];
@@ -695,8 +695,8 @@ LABEL_35:
         v14 = *(v13 - 56);
       }
 
-      v17 = v9 * v8;
-      if (v7 && (*(self + 300) & 1) != 0 && [v7 surface])
+      v17 = v9 * updateTime;
+      if (withCopy && (*(self + 300) & 1) != 0 && [withCopy surface])
       {
         v18 = os_log_get();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -704,7 +704,7 @@ LABEL_35:
           v19 = *(self + 36);
           v21 = *(v19 + 64);
           v20 = *(v19 + 72);
-          v22 = [v7 displayTime];
+          displayTime = [withCopy displayTime];
           if (host_time_to_time(unsigned long long)::once[0] != -1)
           {
             [SFUSecureFlipBookRecording streamCallbackFrom:with:];
@@ -718,20 +718,20 @@ LABEL_35:
           v72 = 2048;
           v73 = v17 - v14;
           v74 = 2048;
-          v75 = *&host_time_to_time(unsigned long long)::time_scale * v22;
+          v75 = *&host_time_to_time(unsigned long long)::time_scale * displayTime;
           v76 = 1024;
           v77 = v23 + 1;
           v78 = 1024;
-          v79 = [v7 status];
+          status = [withCopy status];
           _os_log_impl(&dword_26C632000, v18, OS_LOG_TYPE_DEFAULT, "Got frame %u for t=%f - delta t=%f  display t=%f (potential render_id %u) - status %u", buf, 0x32u);
         }
 
         v24 = *(self + 39);
         v25 = *(self + 40);
-        v26 = [v7 surfaceId];
+        surfaceId = [withCopy surfaceId];
         if (v24 != v25)
         {
-          while (*v24 != v26)
+          while (*v24 != surfaceId)
           {
             if (++v24 == v25)
             {
@@ -743,7 +743,7 @@ LABEL_35:
 
         if (v24 == *(self + 40))
         {
-          v27 = [v7 surfaceId];
+          surfaceId2 = [withCopy surfaceId];
           v29 = *(self + 40);
           v28 = *(self + 41);
           if (v29 >= v28)
@@ -778,7 +778,7 @@ LABEL_35:
             v38 = (v29 - v31) >> 2;
             v39 = (4 * v33);
             v40 = (4 * v33 - 4 * v38);
-            *v39 = v27;
+            *v39 = surfaceId2;
             v30 = v39 + 1;
             memcpy(v40, v31, v32);
             v41 = *(self + 39);
@@ -793,7 +793,7 @@ LABEL_35:
 
           else
           {
-            *v29 = v27;
+            *v29 = surfaceId2;
             v30 = v29 + 4;
           }
 
@@ -808,10 +808,10 @@ LABEL_35:
       {
         if (CGRectIsNull(*(v42 + 88)))
         {
-          [v7 contentRect];
+          [withCopy contentRect];
           if (!CGRectIsEmpty(v81))
           {
-            [v7 contentRect];
+            [withCopy contentRect];
             v46 = *(self + 36);
             v46[11] = v47;
             v46[12] = v48;
@@ -823,7 +823,7 @@ LABEL_35:
         v51 = *(self + 36);
         if (v51[19])
         {
-          [v7 contentRect];
+          [withCopy contentRect];
           v53 = v52;
           v55 = v54;
           v57 = v56;
@@ -844,12 +844,12 @@ LABEL_35:
         block[2] = __54__SFUSecureFlipBookRecording_streamCallbackFrom_with___block_invoke;
         block[3] = &unk_279D425A0;
         block[4] = self;
-        v62 = v7;
+        v62 = withCopy;
         v64 = v53;
         v65 = v55;
         v66 = v57;
         v67 = v59;
-        v63 = v6;
+        v63 = fromCopy;
         dispatch_async(v60, block);
       }
 
@@ -864,7 +864,7 @@ LABEL_35:
           }
         }
 
-        [*(self + 3) releaseSurfaceWithId:objc_msgSend(v7 error:{"surfaceId"), 0}];
+        [*(self + 3) releaseSurfaceWithId:objc_msgSend(withCopy error:{"surfaceId"), 0}];
       }
     }
 
@@ -880,7 +880,7 @@ LABEL_35:
         }
       }
 
-      [v6 releaseSurfaceWithId:objc_msgSend(v7 error:{"surfaceId"), 0}];
+      [fromCopy releaseSurfaceWithId:objc_msgSend(withCopy error:{"surfaceId"), 0}];
     }
 
     std::mutex::unlock(self + 3);
@@ -891,7 +891,7 @@ LABEL_35:
     v15 = os_log_get();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      -[SFUSecureFlipBookRecording streamCallbackFrom:with:].cold.4(buf, [v7 status], v15);
+      -[SFUSecureFlipBookRecording streamCallbackFrom:with:].cold.4(buf, [withCopy status], v15);
     }
   }
 }
@@ -1442,15 +1442,15 @@ LABEL_25:
   return result;
 }
 
-- (void)setFallbackIndicatorRect:(CGRect)a3
+- (void)setFallbackIndicatorRect:(CGRect)rect
 {
-  *(self + 20) = *&a3.origin.x;
-  *(self + 21) = *&a3.origin.y;
-  *(self + 22) = *&a3.size.width;
-  *(self + 23) = *&a3.size.height;
+  *(self + 20) = *&rect.origin.x;
+  *(self + 21) = *&rect.origin.y;
+  *(self + 22) = *&rect.size.width;
+  *(self + 23) = *&rect.size.height;
 }
 
-- (id)generateSecureAsset:(id *)a3
+- (id)generateSecureAsset:(id *)asset
 {
   v308 = *MEMORY[0x277D85DE8];
   if (*(self + 300) == 1)
@@ -1458,11 +1458,11 @@ LABEL_25:
     v3 = os_log_get();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [*(self + 1) UTF8String];
+      uTF8String = [*(self + 1) UTF8String];
       v5 = *(self + 38);
       v6 = (*(self + 40) - *(self + 39)) >> 2;
       buf.A = 136315650;
-      *&buf.B = v4;
+      *&buf.B = uTF8String;
       LOWORD(buf.D) = 2048;
       *(&buf.D + 2) = v6;
       HIWORD(buf.Nh) = 2048;
@@ -2322,23 +2322,23 @@ LABEL_179:
         [SFUSecureFlipBookRecording generateSecureAsset:];
       }
 
-      if (a3)
+      if (asset)
       {
         v161 = MEMORY[0x277CCA9B8];
         v293 = *MEMORY[0x277CCA450];
         v294 = v159;
         v162 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v294 forKeys:&v293 count:1];
-        *a3 = [v161 errorWithDomain:@"SFUCaptureCoordinatorErrorDomain" code:3 userInfo:v162];
+        *asset = [v161 errorWithDomain:@"SFUCaptureCoordinatorErrorDomain" code:3 userInfo:v162];
       }
 
       v7 = 0;
       goto LABEL_281;
     }
 
-    v165 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v166 = v282.__begin_;
     end = v282.__end_;
-    v254 = v165;
+    v254 = dictionary;
     if (v282.__begin_ != v282.__end_)
     {
       while (1)
@@ -2399,10 +2399,10 @@ LABEL_179:
 
         v256 = v173;
         v178 = [v173 objectAtIndexedSubscript:0];
-        v179 = [v178 unsignedIntValue];
+        unsignedIntValue = [v178 unsignedIntValue];
 
         v180 = [v256 objectAtIndexedSubscript:1];
-        v181 = [v180 unsignedIntValue];
+        unsignedIntValue2 = [v180 unsignedIntValue];
 
         v182 = __srca;
         if (SHIBYTE(__srca->__r_.__value_.__r.__words[2]) < 0)
@@ -2441,14 +2441,14 @@ LABEL_209:
       }
 
       v275 = [MEMORY[0x277CCACA8] stringWithUTF8String:v184];
-      v185 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       v187 = *(v183 + 5);
       v186 = *(v183 + 6);
       while (1)
       {
         if (v187 == v186)
         {
-          [cfb setObject:v185 forKeyedSubscript:v275];
+          [cfb setObject:dictionary2 forKeyedSubscript:v275];
 
           v183 = *v183;
           if (!v183)
@@ -2461,12 +2461,12 @@ LABEL_209:
 
         if (*v187 == -2)
         {
-          v188 = v181;
+          v188 = unsignedIntValue2;
         }
 
         else
         {
-          v188 = *v187 + v179;
+          v188 = *v187 + unsignedIntValue;
         }
 
         if (v188 >= 0xFFFF)
@@ -2474,9 +2474,9 @@ LABEL_209:
           __assert_rtn("[SFUSecureFlipBookRecording generateSecureAsset:]", "SFUSecureFlipBookRecorder.mm", 1352, "abs_jump_frame < UINT16_MAX");
         }
 
-        if (v179 <= v188)
+        if (unsignedIntValue <= v188)
         {
-          if (v188 <= v181)
+          if (v188 <= unsignedIntValue2)
           {
             v190 = 1;
 LABEL_232:
@@ -2497,13 +2497,13 @@ LABEL_232:
             HIWORD(buf.Nh) = 1024;
             buf.data[0] = v188;
             LOWORD(buf.data[1]) = 1024;
-            *(&buf.data[1] + 2) = v179;
+            *(&buf.data[1] + 2) = unsignedIntValue;
             _os_log_error_impl(&dword_26C632000, v189, OS_LOG_TYPE_ERROR, "Jump frame for transition %@ -> %@ is before first frame of state %u < %u", &buf, 0x22u);
           }
 
-          if (v188 <= v181)
+          if (v188 <= unsignedIntValue2)
           {
-            if (v179 - v188 > 4)
+            if (unsignedIntValue - v188 > 4)
             {
               goto LABEL_229;
             }
@@ -2523,11 +2523,11 @@ LABEL_232:
           HIWORD(buf.Nh) = 1024;
           buf.data[0] = v188;
           LOWORD(buf.data[1]) = 1024;
-          *(&buf.data[1] + 2) = v181;
+          *(&buf.data[1] + 2) = unsignedIntValue2;
           _os_log_error_impl(&dword_26C632000, v191, OS_LOG_TYPE_ERROR, "Jump frame for transition %@ -> %@ is after last frame of state %u > %u", &buf, 0x22u);
         }
 
-        if (v188 - v181 >= 5)
+        if (v188 - unsignedIntValue2 >= 5)
         {
 LABEL_229:
           v193 = os_log_get();
@@ -2540,9 +2540,9 @@ LABEL_229:
             HIWORD(buf.Nh) = 1024;
             buf.data[0] = v188;
             LOWORD(buf.data[1]) = 1024;
-            *(&buf.data[1] + 2) = v179;
+            *(&buf.data[1] + 2) = unsignedIntValue;
             HIWORD(buf.data[2]) = 1024;
-            buf.data[3] = v181;
+            buf.data[3] = unsignedIntValue2;
             v194 = v193;
             v195 = "Invalid transition %@ -> %@ : Jump frame %u not contained in state loop [%u %u]";
             v196 = 40;
@@ -2555,22 +2555,22 @@ LABEL_238:
         }
 
         v190 = 0;
-        v192 = v181;
+        v192 = unsignedIntValue2;
 LABEL_233:
         v197 = create_ranges_from_frames(&v278, (v187 + 2));
-        if (v179 <= v188)
+        if (unsignedIntValue <= v188)
         {
           v198 = v192;
         }
 
         else
         {
-          v198 = v179;
+          v198 = unsignedIntValue;
         }
 
         v199 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v198];
-        v200 = [v199 stringValue];
-        [v185 setObject:v197 forKeyedSubscript:v200];
+        stringValue = [v199 stringValue];
+        [dictionary2 setObject:v197 forKeyedSubscript:stringValue];
 
         if ((v190 & 1) == 0)
         {
@@ -2582,9 +2582,9 @@ LABEL_233:
             LOWORD(buf.D) = 2112;
             *(&buf.D + 2) = v275;
             HIWORD(buf.Nh) = 1024;
-            buf.data[0] = v179;
+            buf.data[0] = unsignedIntValue;
             LOWORD(buf.data[1]) = 1024;
-            *(&buf.data[1] + 2) = v181;
+            *(&buf.data[1] + 2) = unsignedIntValue2;
             v194 = v193;
             v195 = "Jump frame for transition %@ -> %@ was clamped to valid range [%u %u]";
             v196 = 34;
@@ -2609,7 +2609,7 @@ LABEL_249:
         [SFUSecureFlipBookRecording generateSecureAsset:];
       }
 
-      if (!a3)
+      if (!asset)
       {
         v7 = 0;
         goto LABEL_280;
@@ -2620,14 +2620,14 @@ LABEL_249:
       v291 = @"Failed to validate some states";
       scratch_bufferb = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v291 forKeys:&v290 count:1];
       [v244 errorWithDomain:@"SFUCaptureCoordinatorErrorDomain" code:4 userInfo:scratch_bufferb];
-      *a3 = v7 = 0;
+      *asset = v7 = 0;
     }
 
     else
     {
       scratch_bufferb = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.bin", *(self + 1)];
       cfc = [MEMORY[0x277CBEB18] array];
-      v269 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       colorc = [MEMORY[0x277CBEB38] dictionary];
       [(CGColor *)colorc setObject:*(self + 1) forKeyedSubscript:@"name"];
       [(CGColor *)colorc setObject:&unk_287D274A0 forKeyedSubscript:@"type"];
@@ -2641,12 +2641,12 @@ LABEL_249:
 
       [(CGColor *)colorc setObject:v254 forKeyedSubscript:@"flipbook"];
       [(CGColor *)colorc setObject:*(self + 19) forKeyedSubscript:@"userInfo"];
-      v205 = [MEMORY[0x277CD9E40] mainDisplay];
-      [v205 bounds];
+      mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+      [mainDisplay bounds];
       v207 = v206;
       v209 = v208;
 
-      v276 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v211 = *&v279[8];
       v210 = *&v279[16];
       while (v211 != v210)
@@ -2704,12 +2704,12 @@ LABEL_249:
           [v219 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"delayed"];
         }
 
-        [v276 addObject:v219];
+        [array addObject:v219];
 
         v211 += 4;
       }
 
-      [(CGColor *)colorc setObject:v276 forKeyedSubscript:@"frames"];
+      [(CGColor *)colorc setObject:array forKeyedSubscript:@"frames"];
       [cfc addObject:colorc];
       v224 = [MEMORY[0x277CBEB18] arrayWithCapacity:(*(self + 14) - *(self + 13)) >> 5];
       v225 = *(self + 13);
@@ -2732,8 +2732,8 @@ LABEL_249:
         ++v228;
       }
 
-      [v269 setObject:v224 forKeyedSubscript:@"boundingBoxes"];
-      [v269 setObject:&unk_287D27510 forKeyedSubscript:@"minStaticLocationDuration"];
+      [dictionary3 setObject:v224 forKeyedSubscript:@"boundingBoxes"];
+      [dictionary3 setObject:&unk_287D27510 forKeyedSubscript:@"minStaticLocationDuration"];
       v231 = 0.0;
       v232 = 0.0;
       if (!CGRectIsNull(*(self + 5)))
@@ -2752,12 +2752,12 @@ LABEL_249:
       v235 = [MEMORY[0x277CCABB0] numberWithDouble:v232];
       v287[2] = v235;
       v236 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v287 forKeys:v286 count:3];
-      [v269 setObject:v236 forKeyedSubscript:@"fallbackInfo"];
+      [dictionary3 setObject:v236 forKeyedSubscript:@"fallbackInfo"];
 
       v237 = [MEMORY[0x277CBEB28] dataWithLength:16];
       CC_MD5_Init(&buf);
-      v238 = [*(&v278 + 1) bytes];
-      CC_MD5_Update(&buf, v238, [*(&v278 + 1) length]);
+      bytes = [*(&v278 + 1) bytes];
+      CC_MD5_Update(&buf, bytes, [*(&v278 + 1) length]);
       v239 = v237;
       CC_MD5_Final([v237 bytes], &buf);
       v283[0] = @"indicators";
@@ -2766,8 +2766,8 @@ LABEL_249:
       v284[1] = v237;
       v240 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v284 forKeys:v283 count:2];
       v241 = [SFUSecureFlipBookAsset alloc];
-      v242 = [(SFUSecureFlipBookRecording *)self name];
-      v7 = [(SFUSecureFlipBookAsset *)v241 initWith:v242 metadata:v240 constraints:v269 blob:*(&v278 + 1)];
+      name = [(SFUSecureFlipBookRecording *)self name];
+      v7 = [(SFUSecureFlipBookAsset *)v241 initWith:name metadata:v240 constraints:dictionary3 blob:*(&v278 + 1)];
     }
 
 LABEL_280:
@@ -2781,14 +2781,14 @@ LABEL_280:
     [SFUSecureFlipBookRecording generateSecureAsset:];
   }
 
-  if (a3)
+  if (asset)
   {
     v164 = MEMORY[0x277CCA9B8];
     v295 = *MEMORY[0x277CCA450];
     v296 = @"Empty frames";
     v159 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v296 forKeys:&v295 count:1];
     [v164 errorWithDomain:@"SFUCaptureCoordinatorErrorDomain" code:2 userInfo:?];
-    *a3 = v7 = 0;
+    *asset = v7 = 0;
 LABEL_281:
 
     goto LABEL_282;
@@ -2884,7 +2884,7 @@ LABEL_7:
 - (void)endCapture
 {
   v5 = *MEMORY[0x277D85DE8];
-  if (*a1 < 0)
+  if (*self < 0)
   {
     a2 = *a2;
   }

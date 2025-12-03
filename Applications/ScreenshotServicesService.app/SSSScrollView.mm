@@ -2,22 +2,22 @@
 - (BOOL)isMoving;
 - (CGRect)visibleRect;
 - (CGSize)_unscaledContentSize;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)animateSuperZoomToRect;
-- (void)setFrame:(CGRect)a3;
-- (void)setZoomScale:(double)a3 animated:(BOOL)a4;
-- (void)zoomToRect:(CGRect)a3 animated:(BOOL)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animateSuperZoomToRect;
+- (void)setFrame:(CGRect)frame;
+- (void)setZoomScale:(double)scale animated:(BOOL)animated;
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated;
 @end
 
 @implementation SSSScrollView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SSSScrollView *)self frame];
   if ((SSRectEqualToRect() & 1) == 0)
   {
@@ -27,12 +27,12 @@
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(SSSScrollView *)self contentInset];
   if ((SSEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -44,27 +44,27 @@
   }
 }
 
-- (void)setZoomScale:(double)a3 animated:(BOOL)a4
+- (void)setZoomScale:(double)scale animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(SSSScrollView *)self zoomScale];
-  if (v7 != a3)
+  if (v7 != scale)
   {
     self->_isInProgrammaticCall = 1;
     v8.receiver = self;
     v8.super_class = SSSScrollView;
-    [(SSSScrollView *)&v8 setZoomScale:v4 animated:a3];
+    [(SSSScrollView *)&v8 setZoomScale:animatedCopy animated:scale];
     self->_isInProgrammaticCall = 0;
   }
 }
 
-- (void)zoomToRect:(CGRect)a3 animated:(BOOL)a4
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (SSRectIsValid())
   {
     v11.origin.x = x;
@@ -74,16 +74,16 @@
     if (!CGRectIsEmpty(v11))
     {
       self->_inSuperZoomToRect = 1;
-      self->_animateSuperZoomToRect = v4;
+      self->_animateSuperZoomToRect = animatedCopy;
       v10.receiver = self;
       v10.super_class = SSSScrollView;
-      [(SSSScrollView *)&v10 zoomToRect:v4 animated:x, y, width, height];
+      [(SSSScrollView *)&v10 zoomToRect:animatedCopy animated:x, y, width, height];
       self->_inSuperZoomToRect = 0;
     }
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)animateSuperZoomToRect
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animateSuperZoomToRect
 {
   if (self->_inSuperZoomToRect)
   {
@@ -94,7 +94,7 @@
   v8 = v5;
   v6.receiver = self;
   v6.super_class = SSSScrollView;
-  [(SSSScrollView *)&v6 setContentOffset:animateSuperZoomToRect animated:a3.x, a3.y];
+  [(SSSScrollView *)&v6 setContentOffset:animateSuperZoomToRect animated:offset.x, offset.y];
 }
 
 - (CGSize)_unscaledContentSize
@@ -114,8 +114,8 @@
 
 - (CGRect)visibleRect
 {
-  v3 = [(SSSScrollView *)self delegate];
-  v4 = [v3 viewForZoomingInScrollView:self];
+  delegate = [(SSSScrollView *)self delegate];
+  v4 = [delegate viewForZoomingInScrollView:self];
 
   [(SSSScrollView *)self bounds];
   [v4 convertRect:self fromView:?];
@@ -137,20 +137,20 @@
 
 - (BOOL)isMoving
 {
-  v3 = [(SSSScrollView *)self isDragging];
-  v4 = [(SSSScrollView *)self isDecelerating];
-  v5 = [(SSSScrollView *)self isZooming];
-  return (v3 | v4 | v5 | [(SSSScrollView *)self isZoomBouncing]) & 1;
+  isDragging = [(SSSScrollView *)self isDragging];
+  isDecelerating = [(SSSScrollView *)self isDecelerating];
+  isZooming = [(SSSScrollView *)self isZooming];
+  return (isDragging | isDecelerating | isZooming | [(SSSScrollView *)self isZoomBouncing]) & 1;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = SSSScrollView;
-  v8 = [(SSSScrollView *)&v24 hitTest:v7 withEvent:x, y];
+  v8 = [(SSSScrollView *)&v24 hitTest:eventCopy withEvent:x, y];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -159,7 +159,7 @@
   v23 = 0;
   if ([(SSSScrollView *)self hitTestsUsingSubviews])
   {
-    v9 = [(SSSScrollView *)self subviews];
+    subviews = [(SSSScrollView *)self subviews];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10002D838;
@@ -167,9 +167,9 @@
     v16 = x;
     v17 = y;
     v13[4] = self;
-    v14 = v7;
+    v14 = eventCopy;
     v15 = &v18;
-    [v9 enumerateObjectsUsingBlock:v13];
+    [subviews enumerateObjectsUsingBlock:v13];
   }
 
   v10 = v19[5];

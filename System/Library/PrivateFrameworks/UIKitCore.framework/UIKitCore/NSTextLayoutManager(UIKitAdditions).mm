@@ -42,11 +42,11 @@
   v31 = "";
   v3 = MEMORY[0x1E695F060];
   v32 = *MEMORY[0x1E695F060];
-  v4 = [a1 textContentManager];
-  v5 = [v4 documentRange];
-  v6 = [v5 endLocation];
+  textContentManager = [self textContentManager];
+  documentRange = [textContentManager documentRange];
+  endLocation = [documentRange endLocation];
 
-  [a1 usageBoundsForTextContainer];
+  [self usageBoundsForTextContainer];
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;
@@ -56,8 +56,8 @@
     v12 = 0.0;
     if (([off_1E70ECBD0 coordinateSystemCompatibilityFor2022AndEarlierSDKEnabled] & 1) == 0)
     {
-      v13 = [a1 textContainer];
-      [v13 lineFragmentPadding];
+      textContainer = [self textContainer];
+      [textContainer lineFragmentPadding];
       v15 = v14;
 
       v12 = v15 + v15;
@@ -82,16 +82,16 @@
     v26[3] = &unk_1E711F2B0;
     v26[4] = &v28;
     v26[5] = v27;
-    v11 = [a1 enumerateTextLayoutFragmentsFromLocation:v6 options:11 usingBlock:v26];
+    v11 = [self enumerateTextLayoutFragmentsFromLocation:endLocation options:11 usingBlock:v26];
     _Block_object_dispose(v27, 8);
   }
 
   v16 = v2 & 1;
-  if (v6)
+  if (endLocation)
   {
-    v17 = [[off_1E70ECBF0 alloc] initWithLocation:v6];
-    [a1 ensureLayoutForRange:v17];
-    [a1 usageBoundsForTextContainer];
+    v17 = [[off_1E70ECBF0 alloc] initWithLocation:endLocation];
+    [self ensureLayoutForRange:v17];
+    [self usageBoundsForTextContainer];
     v29[5] = CGRectGetHeight(v35);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -99,17 +99,17 @@
     v24[3] = &unk_1E711F2D8;
     v25 = v16;
     v24[4] = &v28;
-    [a1 enumerateTextSegmentsInRange:v17 type:1 options:1 usingBlock:v24];
+    [self enumerateTextSegmentsInRange:v17 type:1 options:1 usingBlock:v24];
   }
 
   v18 = v29;
   if (v16)
   {
     v19 = v29[5];
-    [a1 usageBoundsForTextContainer];
+    [self usageBoundsForTextContainer];
     if (v19 == CGRectGetHeight(v36))
     {
-      [a1 estimatedSizeForLastTextContainer];
+      [self estimatedSizeForLastTextContainer];
       v18 = v29;
       if ((*v3 != v20 || v3[1] != v21) && v21 > v29[5])
       {
@@ -132,32 +132,32 @@
 
 - (id)viewportRangeForTextContainer:()UIKitAdditions
 {
-  v3 = [a3 textViewportLayoutController];
-  v4 = [v3 viewportRange];
+  textViewportLayoutController = [a3 textViewportLayoutController];
+  viewportRange = [textViewportLayoutController viewportRange];
 
-  return v4;
+  return viewportRange;
 }
 
 - (void)ui_ensureLayoutForViewportBoundsAtRange:()UIKitAdditions
 {
   v13 = a3;
-  v4 = [v13 endLocation];
-  v5 = [a1 textContainerForLocation:v4];
-  v6 = [v5 textViewportLayoutController];
-  v7 = [v6 viewportRange];
+  endLocation = [v13 endLocation];
+  v5 = [self textContainerForLocation:endLocation];
+  textViewportLayoutController = [v5 textViewportLayoutController];
+  viewportRange = [textViewportLayoutController viewportRange];
 
-  if ([v7 isNotEmpty] && ((objc_msgSend(v7, "containsRange:", v13) & 1) != 0 || (objc_msgSend(v7, "endLocation"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqual:", v4), v8, v9)))
+  if ([viewportRange isNotEmpty] && ((objc_msgSend(viewportRange, "containsRange:", v13) & 1) != 0 || (objc_msgSend(viewportRange, "endLocation"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqual:", endLocation), v8, v9)))
   {
     v10 = [off_1E70ECBF0 alloc];
-    v11 = [v7 location];
-    v12 = [v10 initWithLocation:v11 endLocation:v4];
+    location = [viewportRange location];
+    v12 = [v10 initWithLocation:location endLocation:endLocation];
 
-    [a1 ensureLayoutForRange:v12];
+    [self ensureLayoutForRange:v12];
   }
 
   else
   {
-    [a1 ensureLayoutForRange:v13];
+    [self ensureLayoutForRange:v13];
   }
 }
 

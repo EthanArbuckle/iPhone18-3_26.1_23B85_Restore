@@ -1,6 +1,6 @@
 @interface PKPaymentRemotePaymentInstrumentDataItem
 - (BOOL)hasAssociatedPeerPaymentAccount;
-- (BOOL)isValidWithError:(id *)a3;
+- (BOOL)isValidWithError:(id *)error;
 - (BOOL)requiresBillingAddress;
 - (CNContact)billingAddress;
 - (PKPaymentApplication)paymentApplication;
@@ -22,9 +22,9 @@
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentErrors];
-  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentErrors = [model paymentErrors];
+  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:paymentErrors];
 
   return v7;
 }
@@ -37,98 +37,98 @@
   v9[1] = @"name";
   v9[2] = @"phoneticName";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
-  v5 = [(PKPaymentDataItem *)self model];
-  v6 = [v5 paymentContactFormatErrors];
-  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:v6];
+  model = [(PKPaymentDataItem *)self model];
+  paymentContactFormatErrors = [model paymentContactFormatErrors];
+  v7 = [v3 pk_FilteredBillingErrorsForContactFields:v4 errors:paymentContactFormatErrors];
 
   return v7;
 }
 
 - (PKRemoteDevice)remoteDevice
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 remoteDevice];
+  model = [(PKPaymentDataItem *)self model];
+  remoteDevice = [model remoteDevice];
 
-  return v3;
+  return remoteDevice;
 }
 
 - (PKRemotePaymentInstrument)remotePaymentInstrument
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 remotePaymentInstrument];
+  model = [(PKPaymentDataItem *)self model];
+  remotePaymentInstrument = [model remotePaymentInstrument];
 
-  return v3;
+  return remotePaymentInstrument;
 }
 
 - (PKPaymentApplication)paymentApplication
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentApplication];
+  model = [(PKPaymentDataItem *)self model];
+  paymentApplication = [model paymentApplication];
 
-  return v3;
+  return paymentApplication;
 }
 
 - (CNContact)billingAddress
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 billingAddress];
+  model = [(PKPaymentDataItem *)self model];
+  billingAddress = [model billingAddress];
 
-  return v3;
+  return billingAddress;
 }
 
 - (BOOL)requiresBillingAddress
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentRequest];
-  v4 = [v3 requiredBillingContactFields];
-  v5 = [v4 containsObject:@"post"];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  requiredBillingContactFields = [paymentRequest requiredBillingContactFields];
+  v5 = [requiredBillingContactFields containsObject:@"post"];
 
   return v5;
 }
 
 - (BOOL)hasAssociatedPeerPaymentAccount
 {
-  v2 = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
-  v3 = [v2 hasAssociatedPeerPaymentAccount];
+  remotePaymentInstrument = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
+  hasAssociatedPeerPaymentAccount = [remotePaymentInstrument hasAssociatedPeerPaymentAccount];
 
-  return v3;
+  return hasAssociatedPeerPaymentAccount;
 }
 
 - (id)peerPaymentAccountBalance
 {
-  v2 = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
-  v3 = [v2 peerPaymentAccountBalance];
+  remotePaymentInstrument = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
+  peerPaymentAccountBalance = [remotePaymentInstrument peerPaymentAccountBalance];
 
-  return v3;
+  return peerPaymentAccountBalance;
 }
 
 - (unint64_t)peerPaymentAccountState
 {
-  v2 = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
-  v3 = [v2 peerPaymentAccountState];
+  remotePaymentInstrument = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
+  peerPaymentAccountState = [remotePaymentInstrument peerPaymentAccountState];
 
-  return v3;
+  return peerPaymentAccountState;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   v64[2] = *MEMORY[0x1E69E9840];
   if ([(PKPaymentRemotePaymentInstrumentDataItem *)self hasAssociatedPeerPaymentAccount])
   {
-    v5 = [(PKPaymentRemotePaymentInstrumentDataItem *)self peerPaymentAccountBalance];
-    v6 = [(PKPaymentDataItem *)self model];
-    v7 = [v6 currencyCode];
-    v8 = [(PKPaymentDataItem *)self model];
-    v9 = [v8 transactionAmount];
-    if ([v5 compareToCurrencyCode:v7 amount:v9] == -1)
+    peerPaymentAccountBalance = [(PKPaymentRemotePaymentInstrumentDataItem *)self peerPaymentAccountBalance];
+    model = [(PKPaymentDataItem *)self model];
+    currencyCode = [model currencyCode];
+    model2 = [(PKPaymentDataItem *)self model];
+    transactionAmount = [model2 transactionAmount];
+    if ([peerPaymentAccountBalance compareToCurrencyCode:currencyCode amount:transactionAmount] == -1)
     {
-      v10 = [(PKPaymentDataItem *)self model];
-      v11 = [v10 paymentRequest];
-      v12 = [v11 requestType];
+      model3 = [(PKPaymentDataItem *)self model];
+      paymentRequest = [model3 paymentRequest];
+      requestType = [paymentRequest requestType];
 
-      if (v12 != 10)
+      if (requestType != 10)
       {
-        if (!a3)
+        if (!error)
         {
           v22 = 0;
           if ([(PKPaymentDataItem *)self status]== 4)
@@ -146,9 +146,9 @@
         v63[1] = *MEMORY[0x1E696A588];
         v27 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa, 0);
         v64[1] = v27;
-        v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
-        [v35 errorWithDomain:@"PKPassKitErrorDomain" code:-1001 userInfo:v14];
-        *a3 = v22 = 0;
+        firstObject = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:v63 count:2];
+        [v35 errorWithDomain:@"PKPassKitErrorDomain" code:-1001 userInfo:firstObject];
+        *error = v22 = 0;
         goto LABEL_24;
       }
     }
@@ -164,31 +164,31 @@
     goto LABEL_25;
   }
 
-  v13 = [(PKPaymentRemotePaymentInstrumentDataItem *)self errors];
-  v14 = [v13 firstObject];
+  errors = [(PKPaymentRemotePaymentInstrumentDataItem *)self errors];
+  firstObject = [errors firstObject];
 
-  if (!v14)
+  if (!firstObject)
   {
-    v15 = [(PKPaymentRemotePaymentInstrumentDataItem *)self paymentContactFormatErrors];
-    v14 = [v15 firstObject];
+    paymentContactFormatErrors = [(PKPaymentRemotePaymentInstrumentDataItem *)self paymentContactFormatErrors];
+    firstObject = [paymentContactFormatErrors firstObject];
   }
 
-  v16 = [(PKPaymentDataItem *)self model];
-  v17 = [v16 billingAddress];
+  model4 = [(PKPaymentDataItem *)self model];
+  billingAddress = [model4 billingAddress];
 
-  if (!v17)
+  if (!billingAddress)
   {
-    if (!v14)
+    if (!firstObject)
     {
       goto LABEL_19;
     }
 
 LABEL_15:
     v21 = @"IN_APP_PAYMENT_BILLING_ADDRESS_INVALID";
-    if ([v14 code] == 2)
+    if ([firstObject code] == 2)
     {
-      v23 = [v14 userInfo];
-      v24 = [v23 PKStringForKey:@"PKPaymentErrorPostalAddress"];
+      userInfo = [firstObject userInfo];
+      v24 = [userInfo PKStringForKey:@"PKPaymentErrorPostalAddress"];
 
       if (v24)
       {
@@ -200,10 +200,10 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v18 = [v17 postalAddresses];
-  v19 = [v18 count];
+  postalAddresses = [billingAddress postalAddresses];
+  v19 = [postalAddresses count];
 
-  if (v14)
+  if (firstObject)
   {
     goto LABEL_15;
   }
@@ -224,7 +224,7 @@ LABEL_20:
     v25 = PKLocalizedPaymentString(&v21->isa, 0);
     v26 = PKLocalizedPaymentString(&v20->isa, 0);
     v27 = v26;
-    if (a3)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A588];
@@ -233,7 +233,7 @@ LABEL_20:
       v62[0] = v25;
       v62[1] = v26;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:2];
-      *a3 = [v28 errorWithDomain:@"PKPassKitErrorDomain" code:-3002 userInfo:v30];
+      *error = [v28 errorWithDomain:@"PKPassKitErrorDomain" code:-3002 userInfo:v30];
     }
 
     v22 = 0;
@@ -249,7 +249,7 @@ LABEL_24:
 LABEL_25:
   if ([(PKPaymentDataItem *)self status]== 4)
   {
-    if (!a3)
+    if (!error)
     {
 LABEL_37:
       v22 = 0;
@@ -258,33 +258,33 @@ LABEL_37:
 
     v31 = MEMORY[0x1E696ABC0];
     v59[0] = *MEMORY[0x1E696A578];
-    v32 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_5.isa, 0);
-    v60[0] = v32;
+    peerPaymentBalance = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_5.isa, 0);
+    v60[0] = peerPaymentBalance;
     v59[1] = *MEMORY[0x1E696A588];
     v33 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_6.isa, 0);
     v60[1] = v33;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:v59 count:2];
-    *a3 = [v31 errorWithDomain:@"PKPassKitErrorDomain" code:-3001 userInfo:v34];
+    *error = [v31 errorWithDomain:@"PKPassKitErrorDomain" code:-3001 userInfo:v34];
     goto LABEL_35;
   }
 
 LABEL_31:
   if ([(PKPaymentDataItem *)self status]== 5)
   {
-    v36 = [(PKPaymentDataItem *)self model];
-    v37 = [v36 pass];
-    v38 = [v37 hasAssociatedPeerPaymentAccount];
+    model5 = [(PKPaymentDataItem *)self model];
+    pass = [model5 pass];
+    hasAssociatedPeerPaymentAccount = [pass hasAssociatedPeerPaymentAccount];
 
-    if (v38)
+    if (hasAssociatedPeerPaymentAccount)
     {
-      v39 = [(PKPaymentDataItem *)self model];
-      v40 = [v39 pass];
-      v32 = [v40 peerPaymentBalance];
+      model6 = [(PKPaymentDataItem *)self model];
+      pass2 = [model6 pass];
+      peerPaymentBalance = [pass2 peerPaymentBalance];
 
-      v41 = [v32 minimalFormattedStringValue];
-      v33 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_7.isa, &stru_1F2281668.isa, v41);
+      minimalFormattedStringValue = [peerPaymentBalance minimalFormattedStringValue];
+      v33 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_7.isa, &stru_1F2281668.isa, minimalFormattedStringValue);
 
-      if (!a3)
+      if (!error)
       {
 LABEL_36:
 
@@ -300,7 +300,7 @@ LABEL_36:
       v34 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr.isa, 0);
       v58[1] = v34;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
-      *a3 = [v42 errorWithDomain:@"PKPassKitErrorDomain" code:-3009 userInfo:v45];
+      *error = [v42 errorWithDomain:@"PKPassKitErrorDomain" code:-3009 userInfo:v45];
 
 LABEL_35:
       goto LABEL_36;
@@ -308,10 +308,10 @@ LABEL_35:
   }
 
 LABEL_38:
-  v46 = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
-  if (!v46 || (-[PKPaymentDataItem model](self, "model"), v47 = objc_claimAutoreleasedReturnValue(), [v47 allAcceptedRemotePaymentInstruments], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v48, "containsObject:", v46), v48, v47, (v49 & 1) == 0))
+  remotePaymentInstrument = [(PKPaymentRemotePaymentInstrumentDataItem *)self remotePaymentInstrument];
+  if (!remotePaymentInstrument || (-[PKPaymentDataItem model](self, "model"), v47 = objc_claimAutoreleasedReturnValue(), [v47 allAcceptedRemotePaymentInstruments], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v48, "containsObject:", remotePaymentInstrument), v48, v47, (v49 & 1) == 0))
   {
-    if (a3)
+    if (error)
     {
       v50 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_3.isa, 0);
       v51 = MEMORY[0x1E696ABC0];
@@ -321,7 +321,7 @@ LABEL_38:
       v56[0] = v50;
       v56[1] = v50;
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
-      *a3 = [v51 errorWithDomain:@"PKPassKitErrorDomain" code:-3000 userInfo:v53];
+      *error = [v51 errorWithDomain:@"PKPassKitErrorDomain" code:-3000 userInfo:v53];
     }
 
     v22 = 0;

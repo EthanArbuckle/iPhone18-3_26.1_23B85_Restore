@@ -1,26 +1,26 @@
 @interface AMSUIEngagementWrapperViewController
-- (AMSUIEngagementWrapperViewController)initWithViewController:(id)a3;
+- (AMSUIEngagementWrapperViewController)initWithViewController:(id)controller;
 - (BOOL)isInViewServiceProcess;
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3;
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets;
 - (void)dealloc;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)updateContentOverlayInsetsOnTraitCollectionChange;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIEngagementWrapperViewController
 
-- (AMSUIEngagementWrapperViewController)initWithViewController:(id)a3
+- (AMSUIEngagementWrapperViewController)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AMSUIEngagementWrapperViewController;
   v6 = [(AMSUIEngagementWrapperViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
     [(AMSUIEngagementWrapperViewController *)v7 _setup];
   }
 
@@ -29,25 +29,25 @@
 
 - (void)dealloc
 {
-  v3 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
+  dismissBlock = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
 
-  if (v3)
+  if (dismissBlock)
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v4)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v4 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEBUG, "dismissing via dealloc", buf, 2u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "dismissing via dealloc", buf, 2u);
     }
 
-    v6 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
-    v6[2]();
+    dismissBlock2 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
+    dismissBlock2[2]();
 
     [(AMSUIEngagementWrapperViewController *)self setDismissBlock:0];
   }
@@ -57,12 +57,12 @@
   [(AMSUIEngagementWrapperViewController *)&v7 dealloc];
 }
 
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (-[AMSUIEngagementWrapperViewController isInViewServiceProcess](self, "isInViewServiceProcess") && (-[AMSUIEngagementWrapperViewController traitCollection](self, "traitCollection"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 verticalSizeClass], v8, v9 == 1))
   {
     if (left >= right)
@@ -89,10 +89,10 @@
   v5.receiver = self;
   v5.super_class = AMSUIEngagementWrapperViewController;
   [(AMSUICommonViewController *)&v5 loadView];
-  v3 = [(AMSUIEngagementWrapperViewController *)self viewController];
+  viewController = [(AMSUIEngagementWrapperViewController *)self viewController];
   v4.receiver = self;
   v4.super_class = AMSUIEngagementWrapperViewController;
-  [(AMSUICommonViewController *)&v4 setChildViewController:v3];
+  [(AMSUICommonViewController *)&v4 setChildViewController:viewController];
 
   [(AMSUIEngagementWrapperViewController *)self updateContentOverlayInsetsOnTraitCollectionChange];
 }
@@ -102,7 +102,7 @@
   v8[1] = *MEMORY[0x1E69E9840];
   if ([(AMSUIEngagementWrapperViewController *)self isInViewServiceProcess])
   {
-    v3 = [(AMSUICommonViewController *)self view];
+    view = [(AMSUICommonViewController *)self view];
     v8[0] = objc_opt_class();
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     v7[0] = MEMORY[0x1E69E9820];
@@ -110,7 +110,7 @@
     v7[2] = __89__AMSUIEngagementWrapperViewController_updateContentOverlayInsetsOnTraitCollectionChange__block_invoke;
     v7[3] = &unk_1E7F24D50;
     v7[4] = self;
-    v5 = [v3 registerForTraitChanges:v4 withHandler:v7];
+    v5 = [view registerForTraitChanges:v4 withHandler:v7];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -126,9 +126,9 @@ uint64_t __89__AMSUIEngagementWrapperViewController_updateContentOverlayInsetsOn
 
 - (BOOL)isInViewServiceProcess
 {
-  v2 = [MEMORY[0x1E698CAC8] currentProcess];
-  v3 = [v2 executableName];
-  v4 = [v3 isEqual:@"AMSEngagementViewService"];
+  currentProcess = [MEMORY[0x1E698CAC8] currentProcess];
+  executableName = [currentProcess executableName];
+  v4 = [executableName isEqual:@"AMSEngagementViewService"];
 
   return v4;
 }
@@ -138,38 +138,38 @@ uint64_t __89__AMSUIEngagementWrapperViewController_updateContentOverlayInsetsOn
   v14.receiver = self;
   v14.super_class = AMSUIEngagementWrapperViewController;
   [(AMSUIEngagementWrapperViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIEngagementWrapperViewController *)self viewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  viewController = [(AMSUIEngagementWrapperViewController *)self viewController];
+  view2 = [viewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
+  dismissBlock = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
 
-  if (v4)
+  if (dismissBlock)
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v5)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v5 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       *v8 = 0;
-      _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEBUG, "dismissing from presentation controller did dismiss.", v8, 2u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "dismissing from presentation controller did dismiss.", v8, 2u);
     }
 
-    v7 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
-    v7[2]();
+    dismissBlock2 = [(AMSUIEngagementWrapperViewController *)self dismissBlock];
+    dismissBlock2[2]();
 
     [(AMSUIEngagementWrapperViewController *)self setDismissBlock:0];
   }

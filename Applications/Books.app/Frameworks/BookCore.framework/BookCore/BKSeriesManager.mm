@@ -2,28 +2,28 @@
 + (id)itemFetchProperties;
 + (id)sharedManager;
 - (BKSeriesManager)init;
-- (BKSeriesManager)initWithDatabase:(id)a3 catalogService:(id)a4;
+- (BKSeriesManager)initWithDatabase:(id)database catalogService:(id)service;
 - (id)allSeriesContainerIds;
-- (id)allSeriesContainerIdsInManagedObjectContext:(id)a3;
+- (id)allSeriesContainerIdsInManagedObjectContext:(id)context;
 - (id)allSeriesItemAdamIds;
-- (id)allSeriesItemAdamIdsInManagedObjectContext:(id)a3;
-- (id)allSeriesItemsForAdamIDs:(id)a3;
-- (id)allSeriesItemsForAdamIDs:(id)a3 inManagedObjectContext:(id)a4;
-- (id)allSeriesItemsInSeries:(id)a3;
-- (id)allSeriesItemsInSeries:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesContainerIdsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesContainerWithSeriesId:(id)a3;
-- (id)seriesContainerWithSeriesId:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesIDsReferencedByAdamIds:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesItemAdamIdsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesItemWithAdamId:(id)a3;
-- (id)seriesItemWithAdamId:(id)a3 inManagedObjectContext:(id)a4;
-- (id)seriesItemsWithAdamIds:(id)a3;
-- (void)_updateSeriesForAssetAdamIDsWithTypes:(id)a3 forceCheck:(BOOL)a4 completion:(id)a5;
-- (void)_updateSeriesForSeriesAdamIDsWithTypes:(id)a3 forceCheck:(BOOL)a4 completion:(id)a5;
-- (void)fetchBuyParametersForSeriesWithAdamID:(id)a3 isAudiobook:(BOOL)a4 completionHandler:(id)a5;
-- (void)updateAssetsFromCloudSyncForAssetAdamIDsWithTypes:(id)a3 completion:(id)a4;
-- (void)updateExpiredSeriesForAssetAdamIDsWithTypes:(id)a3;
+- (id)allSeriesItemAdamIdsInManagedObjectContext:(id)context;
+- (id)allSeriesItemsForAdamIDs:(id)ds;
+- (id)allSeriesItemsForAdamIDs:(id)ds inManagedObjectContext:(id)context;
+- (id)allSeriesItemsInSeries:(id)series;
+- (id)allSeriesItemsInSeries:(id)series inManagedObjectContext:(id)context;
+- (id)seriesContainerIdsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context;
+- (id)seriesContainerWithSeriesId:(id)id;
+- (id)seriesContainerWithSeriesId:(id)id inManagedObjectContext:(id)context;
+- (id)seriesIDsReferencedByAdamIds:(id)ids inManagedObjectContext:(id)context;
+- (id)seriesItemAdamIdsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context;
+- (id)seriesItemWithAdamId:(id)id;
+- (id)seriesItemWithAdamId:(id)id inManagedObjectContext:(id)context;
+- (id)seriesItemsWithAdamIds:(id)ids;
+- (void)_updateSeriesForAssetAdamIDsWithTypes:(id)types forceCheck:(BOOL)check completion:(id)completion;
+- (void)_updateSeriesForSeriesAdamIDsWithTypes:(id)types forceCheck:(BOOL)check completion:(id)completion;
+- (void)fetchBuyParametersForSeriesWithAdamID:(id)d isAudiobook:(BOOL)audiobook completionHandler:(id)handler;
+- (void)updateAssetsFromCloudSyncForAssetAdamIDsWithTypes:(id)types completion:(id)completion;
+- (void)updateExpiredSeriesForAssetAdamIDsWithTypes:(id)types;
 @end
 
 @implementation BKSeriesManager
@@ -76,23 +76,23 @@
   return v2;
 }
 
-- (BKSeriesManager)initWithDatabase:(id)a3 catalogService:(id)a4
+- (BKSeriesManager)initWithDatabase:(id)database catalogService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = BKSeriesManager;
   v9 = [(BKSeriesManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
+    objc_storeStrong(&v9->_database, database);
     v10->_timeOut = 300.0;
     v11 = dispatch_queue_create("com.apple.BKSeriesManager", 0);
     queue = v10->_queue;
     v10->_queue = v11;
 
-    objc_storeStrong(&v10->_catalogService, a4);
+    objc_storeStrong(&v10->_catalogService, service);
   }
 
   return v10;
@@ -107,12 +107,12 @@
   return v5;
 }
 
-- (id)seriesContainerIdsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4
+- (id)seriesContainerIdsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v7 = +[BKSeriesItem fetchRequest];
-  [v7 setPredicate:v6];
+  [v7 setPredicate:predicateCopy];
 
   [v7 setResultType:2];
   v15[0] = @"objectID";
@@ -124,7 +124,7 @@
   [v7 setReturnsDistinctResults:1];
   [v7 setFetchBatchSize:128];
   v14 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v10 = v14;
   if (v9)
@@ -146,12 +146,12 @@
   return v11;
 }
 
-- (id)seriesItemAdamIdsMatchingPredicate:(id)a3 inManagedObjectContext:(id)a4
+- (id)seriesItemAdamIdsMatchingPredicate:(id)predicate inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v7 = +[BKSeriesItem fetchRequest];
-  [v7 setPredicate:v6];
+  [v7 setPredicate:predicateCopy];
 
   [v7 setResultType:2];
   v15[0] = @"objectID";
@@ -163,7 +163,7 @@
   [v7 setReturnsDistinctResults:1];
   [v7 setFetchBatchSize:128];
   v14 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v10 = v14;
   if (v9)
@@ -187,97 +187,97 @@
 
 - (id)allSeriesContainerIds
 {
-  v3 = [(BKSeriesManager *)self database];
-  v4 = [v3 newManagedObjectContext];
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v5 = [(BKSeriesManager *)self allSeriesContainerIdsInManagedObjectContext:v4];
+  v5 = [(BKSeriesManager *)self allSeriesContainerIdsInManagedObjectContext:newManagedObjectContext];
 
   return v5;
 }
 
 - (id)allSeriesItemAdamIds
 {
-  v3 = [(BKSeriesManager *)self database];
-  v4 = [v3 newManagedObjectContext];
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v5 = [(BKSeriesManager *)self allSeriesItemAdamIdsInManagedObjectContext:v4];
+  v5 = [(BKSeriesManager *)self allSeriesItemAdamIdsInManagedObjectContext:newManagedObjectContext];
 
   return v5;
 }
 
-- (id)allSeriesItemsForAdamIDs:(id)a3
+- (id)allSeriesItemsForAdamIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(BKSeriesManager *)self database];
-  v6 = [v5 newManagedObjectContext];
+  dsCopy = ds;
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v7 = [(BKSeriesManager *)self allSeriesItemsForAdamIDs:v4 inManagedObjectContext:v6];
+  v7 = [(BKSeriesManager *)self allSeriesItemsForAdamIDs:dsCopy inManagedObjectContext:newManagedObjectContext];
 
   return v7;
 }
 
-- (id)allSeriesItemsInSeries:(id)a3
+- (id)allSeriesItemsInSeries:(id)series
 {
-  v4 = a3;
-  v5 = [(BKSeriesManager *)self database];
-  v6 = [v5 newManagedObjectContext];
+  seriesCopy = series;
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v7 = [(BKSeriesManager *)self allSeriesItemsInSeries:v4 inManagedObjectContext:v6];
+  v7 = [(BKSeriesManager *)self allSeriesItemsInSeries:seriesCopy inManagedObjectContext:newManagedObjectContext];
 
   return v7;
 }
 
-- (id)seriesContainerWithSeriesId:(id)a3
+- (id)seriesContainerWithSeriesId:(id)id
 {
-  v4 = a3;
-  v5 = [(BKSeriesManager *)self database];
-  v6 = [v5 newManagedObjectContext];
+  idCopy = id;
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v7 = [(BKSeriesManager *)self seriesContainerWithSeriesId:v4 inManagedObjectContext:v6];
+  v7 = [(BKSeriesManager *)self seriesContainerWithSeriesId:idCopy inManagedObjectContext:newManagedObjectContext];
 
   return v7;
 }
 
-- (id)seriesItemWithAdamId:(id)a3
+- (id)seriesItemWithAdamId:(id)id
 {
-  v4 = a3;
-  v5 = [(BKSeriesManager *)self database];
-  v6 = [v5 newManagedObjectContext];
+  idCopy = id;
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
 
-  v7 = [(BKSeriesManager *)self seriesItemWithAdamId:v4 inManagedObjectContext:v6];
+  v7 = [(BKSeriesManager *)self seriesItemWithAdamId:idCopy inManagedObjectContext:newManagedObjectContext];
 
   return v7;
 }
 
-- (id)allSeriesContainerIdsInManagedObjectContext:(id)a3
+- (id)allSeriesContainerIdsInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[BKSeriesItem predicateForAllSeriesContainerItems];
-  v6 = [(BKSeriesManager *)self seriesContainerIdsMatchingPredicate:v5 inManagedObjectContext:v4];
+  v6 = [(BKSeriesManager *)self seriesContainerIdsMatchingPredicate:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }
 
-- (id)allSeriesItemAdamIdsInManagedObjectContext:(id)a3
+- (id)allSeriesItemAdamIdsInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[BKSeriesItem predicateForAllBookItems];
-  v6 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v5 inManagedObjectContext:v4];
+  v6 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }
 
-- (id)allSeriesItemsForAdamIDs:(id)a3 inManagedObjectContext:(id)a4
+- (id)allSeriesItemsForAdamIDs:(id)ds inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [(BKSeriesManager *)self seriesIDsReferencedByAdamIds:a3 inManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [(BKSeriesManager *)self seriesIDsReferencedByAdamIds:ds inManagedObjectContext:contextCopy];
   if ([v7 count])
   {
     v8 = [NSSet setWithArray:v7];
-    v9 = [v8 allObjects];
-    v10 = [BKSeriesItem predicateForAllItemsAndContainersInSeries:v9];
+    allObjects = [v8 allObjects];
+    v10 = [BKSeriesItem predicateForAllItemsAndContainersInSeries:allObjects];
 
-    v11 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v10 inManagedObjectContext:v6];
+    v11 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v10 inManagedObjectContext:contextCopy];
   }
 
   else
@@ -288,53 +288,53 @@
   return v11;
 }
 
-- (id)seriesIDsReferencedByAdamIds:(id)a3 inManagedObjectContext:(id)a4
+- (id)seriesIDsReferencedByAdamIds:(id)ids inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  idsCopy = ids;
   v7 = +[BKSeriesItem fetchRequest];
-  v8 = [NSPredicate predicateWithFormat:@"adamId IN %@ AND seriesAdamId != NULL", v6];
+  idsCopy = [NSPredicate predicateWithFormat:@"adamId IN %@ AND seriesAdamId != NULL", idsCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:idsCopy];
   v14 = @"seriesAdamId";
   v9 = [NSArray arrayWithObjects:&v14 count:1];
   [v7 setPropertiesToFetch:v9];
 
   v13 = 0;
-  v10 = [v5 executeFetchRequest:v7 error:&v13];
+  v10 = [contextCopy executeFetchRequest:v7 error:&v13];
 
   v11 = [v10 valueForKey:@"seriesAdamId"];
 
   return v11;
 }
 
-- (id)allSeriesItemsInSeries:(id)a3 inManagedObjectContext:(id)a4
+- (id)allSeriesItemsInSeries:(id)series inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [NSArray arrayWithObject:a3];
+  contextCopy = context;
+  v7 = [NSArray arrayWithObject:series];
   v8 = [BKSeriesItem predicateForAllItemsAndContainersInSeries:v7];
 
-  v9 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v8 inManagedObjectContext:v6];
+  v9 = [(BKSeriesManager *)self seriesItemAdamIdsMatchingPredicate:v8 inManagedObjectContext:contextCopy];
 
   return v9;
 }
 
-- (id)seriesContainerWithSeriesId:(id)a3 inManagedObjectContext:(id)a4
+- (id)seriesContainerWithSeriesId:(id)id inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [BKSeriesItem predicateForContainerWithSeriesId:v5];
+  idCopy = id;
+  contextCopy = context;
+  v7 = [BKSeriesItem predicateForContainerWithSeriesId:idCopy];
   v8 = +[BKSeriesItem fetchRequest];
   [v8 setPredicate:v7];
   [v8 setResultType:2];
-  v9 = [objc_opt_class() itemFetchProperties];
-  [v8 setPropertiesToFetch:v9];
+  itemFetchProperties = [objc_opt_class() itemFetchProperties];
+  [v8 setPropertiesToFetch:itemFetchProperties];
 
   [v8 setReturnsObjectsAsFaults:0];
   [v8 setReturnsDistinctResults:1];
   [v8 setFetchLimit:1];
   v17 = 0;
-  v10 = [v6 executeFetchRequest:v8 error:&v17];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v17];
 
   v11 = v17;
   if (!v10)
@@ -351,63 +351,63 @@
   if (![v10 count])
   {
 LABEL_8:
-    v12 = 0;
+    lastObject = 0;
     goto LABEL_9;
   }
 
-  v12 = [v10 lastObject];
-  if (!v12)
+  lastObject = [v10 lastObject];
+  if (!lastObject)
   {
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
   }
 
-  v13 = [BKSeriesInfo seriesInfoWithDictionary:v12];
+  v13 = [BKSeriesInfo seriesInfoWithDictionary:lastObject];
 LABEL_10:
   v15 = v13;
 
   return v13;
 }
 
-- (id)seriesItemsWithAdamIds:(id)a3
+- (id)seriesItemsWithAdamIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v5 = +[BKSeriesItem fetchRequest];
-  v6 = [BKSeriesItem predicateForAllItemsAndContainerWithAdamIdInList:v4];
+  v6 = [BKSeriesItem predicateForAllItemsAndContainerWithAdamIdInList:idsCopy];
 
   [v5 setPredicate:v6];
   [v5 setResultType:2];
-  v7 = [objc_opt_class() itemFetchProperties];
-  [v5 setPropertiesToFetch:v7];
+  itemFetchProperties = [objc_opt_class() itemFetchProperties];
+  [v5 setPropertiesToFetch:itemFetchProperties];
 
   [v5 setReturnsObjectsAsFaults:0];
   [v5 setReturnsDistinctResults:1];
   [v5 setFetchBatchSize:32];
-  v8 = [(BKSeriesManager *)self database];
-  v9 = [v8 newManagedObjectContext];
+  database = [(BKSeriesManager *)self database];
+  newManagedObjectContext = [database newManagedObjectContext];
   v12 = 0;
-  v10 = [v9 executeFetchRequest:v5 error:&v12];
+  v10 = [newManagedObjectContext executeFetchRequest:v5 error:&v12];
 
   return v10;
 }
 
-- (id)seriesItemWithAdamId:(id)a3 inManagedObjectContext:(id)a4
+- (id)seriesItemWithAdamId:(id)id inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [BKSeriesItem predicateForItemWithAdamId:v5];
+  idCopy = id;
+  contextCopy = context;
+  v7 = [BKSeriesItem predicateForItemWithAdamId:idCopy];
   v8 = +[BKSeriesItem fetchRequest];
   [v8 setPredicate:v7];
   [v8 setResultType:2];
-  v9 = [objc_opt_class() itemFetchProperties];
-  [v8 setPropertiesToFetch:v9];
+  itemFetchProperties = [objc_opt_class() itemFetchProperties];
+  [v8 setPropertiesToFetch:itemFetchProperties];
 
   [v8 setReturnsObjectsAsFaults:0];
   [v8 setReturnsDistinctResults:1];
   [v8 setFetchLimit:1];
   v17 = 0;
-  v10 = [v6 executeFetchRequest:v8 error:&v17];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v17];
 
   v11 = v17;
   if (!v10)
@@ -424,44 +424,44 @@ LABEL_10:
   if (![v10 count])
   {
 LABEL_8:
-    v12 = 0;
+    lastObject = 0;
     goto LABEL_9;
   }
 
-  v12 = [v10 lastObject];
-  if (!v12)
+  lastObject = [v10 lastObject];
+  if (!lastObject)
   {
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
   }
 
-  v13 = [BKSeriesInfo seriesInfoWithDictionary:v12];
+  v13 = [BKSeriesInfo seriesInfoWithDictionary:lastObject];
 LABEL_10:
   v15 = v13;
 
   return v13;
 }
 
-- (void)fetchBuyParametersForSeriesWithAdamID:(id)a3 isAudiobook:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchBuyParametersForSeriesWithAdamID:(id)d isAudiobook:(BOOL)audiobook completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  dCopy = d;
+  handlerCopy = handler;
+  if (audiobook)
   {
-    v21 = v8;
+    v21 = dCopy;
     v10 = [NSArray arrayWithObjects:&v21 count:1];
     v11 = &__NSArray0__struct;
   }
 
   else
   {
-    v22 = v8;
+    v22 = dCopy;
     v11 = [NSArray arrayWithObjects:&v22 count:1];
     v10 = &__NSArray0__struct;
   }
 
-  v12 = [(BKSeriesManager *)self catalogService];
+  catalogService = [(BKSeriesManager *)self catalogService];
   v13 = [BFMRequestMetadata alloc];
   v14 = [NSString stringWithFormat:@"%s", "BKSeriesManager.m"];
   v15 = [v13 initWithFileID:v14 line:392];
@@ -469,24 +469,24 @@ LABEL_10:
   v18[1] = 3221225472;
   v18[2] = sub_18A0F8;
   v18[3] = &unk_2CF120;
-  v19 = v8;
-  v20 = v9;
-  v16 = v9;
-  v17 = v8;
-  [v12 fetchMixedAssetsWithBookIds:v11 audiobookIds:v10 relationships:0 views:0 additionalParameters:0 batchSize:150 metadata:v15 completionHandler:v18];
+  v19 = dCopy;
+  v20 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dCopy;
+  [catalogService fetchMixedAssetsWithBookIds:v11 audiobookIds:v10 relationships:0 views:0 additionalParameters:0 batchSize:150 metadata:v15 completionHandler:v18];
 }
 
-- (void)_updateSeriesForSeriesAdamIDsWithTypes:(id)a3 forceCheck:(BOOL)a4 completion:(id)a5
+- (void)_updateSeriesForSeriesAdamIDsWithTypes:(id)types forceCheck:(BOOL)check completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  completionCopy = completion;
   v10 = BCSeriesManagerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_1EDBD0();
   }
 
-  if ([v8 hasSeriesTypes])
+  if ([typesCopy hasSeriesTypes])
   {
     v11 = BCSeriesManagerLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -495,21 +495,21 @@ LABEL_10:
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Begin Updating Series Adam IDs", buf, 2u);
     }
 
-    v12 = [(BKSeriesManager *)self queue];
+    queue = [(BKSeriesManager *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_18A354;
     v15[3] = &unk_2CC630;
     v15[4] = self;
-    v16 = v8;
-    v18 = a4;
-    v17 = v9;
-    dispatch_async(v12, v15);
+    v16 = typesCopy;
+    checkCopy = check;
+    v17 = completionCopy;
+    dispatch_async(queue, v15);
   }
 
   else
   {
-    v13 = objc_retainBlock(v9);
+    v13 = objc_retainBlock(completionCopy);
     v14 = v13;
     if (v13)
     {
@@ -518,35 +518,35 @@ LABEL_10:
   }
 }
 
-- (void)_updateSeriesForAssetAdamIDsWithTypes:(id)a3 forceCheck:(BOOL)a4 completion:(id)a5
+- (void)_updateSeriesForAssetAdamIDsWithTypes:(id)types forceCheck:(BOOL)check completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  completionCopy = completion;
   v10 = BCSeriesManagerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v19 = [v8 hasAssetTypes];
+    hasAssetTypes = [typesCopy hasAssetTypes];
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "updateSeriesForAssetAdamIDsWithTypes: hasAsset=%{BOOL}d", buf, 8u);
   }
 
-  if ([v8 hasAssetTypes])
+  if ([typesCopy hasAssetTypes])
   {
-    v11 = [(BKSeriesManager *)self queue];
+    queue = [(BKSeriesManager *)self queue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_18A690;
     v14[3] = &unk_2CC630;
     v14[4] = self;
-    v15 = v8;
-    v17 = a4;
-    v16 = v9;
-    dispatch_async(v11, v14);
+    v15 = typesCopy;
+    checkCopy = check;
+    v16 = completionCopy;
+    dispatch_async(queue, v14);
   }
 
   else
   {
-    v12 = objc_retainBlock(v9);
+    v12 = objc_retainBlock(completionCopy);
     v13 = v12;
     if (v12)
     {
@@ -555,31 +555,31 @@ LABEL_10:
   }
 }
 
-- (void)updateExpiredSeriesForAssetAdamIDsWithTypes:(id)a3
+- (void)updateExpiredSeriesForAssetAdamIDsWithTypes:(id)types
 {
-  v4 = a3;
-  if ([v4 hasAssetTypes])
+  typesCopy = types;
+  if ([typesCopy hasAssetTypes])
   {
-    v5 = [(BKSeriesManager *)self queue];
+    queue = [(BKSeriesManager *)self queue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_18A8E4;
     v6[3] = &unk_2C7BE8;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = typesCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)updateAssetsFromCloudSyncForAssetAdamIDsWithTypes:(id)a3 completion:(id)a4
+- (void)updateAssetsFromCloudSyncForAssetAdamIDsWithTypes:(id)types completion:(id)completion
 {
-  v5 = a3;
-  v19 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v6 = [typesCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -590,44 +590,44 @@ LABEL_10:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(typesCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
         v11 = BCSeriesManagerLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v5 objectForKeyedSubscript:v10];
+          v12 = [typesCopy objectForKeyedSubscript:v10];
           v13 = [v12 count];
-          v14 = [v5 objectForKeyedSubscript:v10];
-          v15 = [v14 bu_prettyDescription];
+          v14 = [typesCopy objectForKeyedSubscript:v10];
+          bu_prettyDescription = [v14 bu_prettyDescription];
           *buf = 138543874;
           v28 = v10;
           v29 = 2048;
           v30 = v13;
           v31 = 2112;
-          v32 = v15;
+          v32 = bu_prettyDescription;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Begin updating store cloud assets type=%{public}@, %lu adamIds=%@", buf, 0x20u);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v7 = [typesCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v7);
   }
 
-  if ([v5 count])
+  if ([typesCopy count])
   {
-    v16 = [v18 queue];
+    queue = [v18 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_18ABF4;
     block[3] = &unk_2C7B30;
     block[4] = v18;
-    v21 = v5;
-    v22 = v19;
-    dispatch_async(v16, block);
+    v21 = typesCopy;
+    v22 = completionCopy;
+    dispatch_async(queue, block);
   }
 }
 

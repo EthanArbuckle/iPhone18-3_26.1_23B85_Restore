@@ -1,24 +1,24 @@
 @interface UIDebuggingInformationVCDetailViewController
-- (UIDebuggingInformationVCDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UIDebuggingInformationVCDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIViewController)inspectedVC;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_updateDataAndReload:(BOOL)a3;
-- (void)inspectVC:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_updateDataAndReload:(BOOL)reload;
+- (void)inspectVC:(id)c;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIDebuggingInformationVCDetailViewController
 
-- (UIDebuggingInformationVCDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingInformationVCDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = UIDebuggingInformationVCDetailViewController;
-  v4 = [(UIViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [UITableView alloc];
@@ -39,40 +39,40 @@
   v9.super_class = UIDebuggingInformationVCDetailViewController;
   [(UIViewController *)&v9 viewDidLoad];
   v3 = +[UIColor whiteColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(UIViewController *)self view];
-  [v5 setAutoresizingMask:18];
+  view2 = [(UIViewController *)self view];
+  [view2 setAutoresizingMask:18];
 
   [(UIView *)self->_tableView setAutoresizingMask:18];
   tableView = self->_tableView;
-  v7 = [(UIViewController *)self view];
-  [v7 bounds];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
   [(UITableView *)tableView setFrame:?];
 
-  v8 = [(UIViewController *)self view];
-  [v8 addSubview:self->_tableView];
+  view4 = [(UIViewController *)self view];
+  [view4 addSubview:self->_tableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIDebuggingInformationVCDetailViewController;
-  [(UIViewController *)&v4 viewWillAppear:a3];
+  [(UIViewController *)&v4 viewWillAppear:appear];
   [(UIDebuggingInformationVCDetailViewController *)self _updateDataAndReload:1];
 }
 
-- (void)inspectVC:(id)a3
+- (void)inspectVC:(id)c
 {
-  [(UIDebuggingInformationVCDetailViewController *)self setInspectedVC:a3];
+  [(UIDebuggingInformationVCDetailViewController *)self setInspectedVC:c];
 
   [(UIDebuggingInformationVCDetailViewController *)self _updateDataAndReload:1];
 }
 
-- (void)_updateDataAndReload:(BOOL)a3
+- (void)_updateDataAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v39[6] = *MEMORY[0x1E69E9840];
   if (!self->_data)
   {
@@ -82,7 +82,7 @@
     v8 = [(_UIDebuggingOverlayDetail *)_UIDebuggingOverlayViewControllerDetail detailWithTitle:@"Class" detail:v7];
 
     v9 = objc_loadWeakRetained(&self->_inspectedVC);
-    v10 = [v9 view];
+    view = [v9 view];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = [(_UIDebuggingOverlayDetail *)_UIDebuggingOverlayViewDetail detailWithTitle:@"View" detail:v12];
@@ -115,14 +115,14 @@
     self->_data = v21;
   }
 
-  v23 = [(UIViewController *)self viewIfLoaded];
-  if (v23)
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v24 = v23;
-    v25 = [(UIViewController *)self view];
-    v26 = [v25 window];
+    v24 = viewIfLoaded;
+    view2 = [(UIViewController *)self view];
+    window = [view2 window];
 
-    if (v26)
+    if (window)
     {
       v36 = 0u;
       v37 = 0u;
@@ -154,7 +154,7 @@
         while (v29);
       }
 
-      if (v3)
+      if (reloadCopy)
       {
         [(UITableView *)self->_tableView reloadData];
       }
@@ -162,57 +162,57 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  if ([v11 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v5 = objc_alloc_init(UIDebuggingInformationVCDetailViewController);
-    v6 = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
-    v7 = [v6 childViewControllers];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v11, "row")}];
-    [(UIDebuggingInformationVCDetailViewController *)v5 setInspectedVC:v8];
+    viewController = objc_alloc_init(UIDebuggingInformationVCDetailViewController);
+    inspectedVC = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
+    childViewControllers = [inspectedVC childViewControllers];
+    v8 = [childViewControllers objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    [(UIDebuggingInformationVCDetailViewController *)viewController setInspectedVC:v8];
   }
 
   else
   {
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [v11 row]);
-    v5 = [v9 viewController];
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [pathCopy row]);
+    viewController = [v9 viewController];
 
-    if (!v5)
+    if (!viewController)
     {
       goto LABEL_5;
     }
   }
 
-  v10 = [(UIViewController *)self navigationController];
-  [v10 pushViewController:v5 animated:1];
+  navigationController = [(UIViewController *)self navigationController];
+  [navigationController pushViewController:viewController animated:1];
 
 LABEL_5:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"kCellReuseIdentifierDetail"];
-  v7 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [v5 row]);
-  if ([v5 section])
+  v7 = -[NSArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [pathCopy row]);
+  if ([pathCopy section])
   {
-    v8 = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
-    v9 = [v8 childViewControllers];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    inspectedVC = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
+    childViewControllers = [inspectedVC childViewControllers];
+    v10 = [childViewControllers objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [(UITableViewCell *)v6 textLabel];
-    [v13 setText:v12];
+    textLabel = [(UITableViewCell *)v6 textLabel];
+    [textLabel setText:v12];
 
     [(UITableViewCell *)v6 setAccessoryType:1];
   }
 
   else
   {
-    v14 = [v7 viewController];
-    if (v14)
+    viewController = [v7 viewController];
+    if (viewController)
     {
       v15 = 3;
     }
@@ -224,29 +224,29 @@ LABEL_5:
 
     [(UITableViewCell *)v6 setSelectionStyle:v15];
 
-    v16 = [v7 viewController];
-    [(UITableViewCell *)v6 setAccessoryType:v16 != 0];
+    viewController2 = [v7 viewController];
+    [(UITableViewCell *)v6 setAccessoryType:viewController2 != 0];
 
-    v17 = [v7 title];
-    v18 = [(UITableViewCell *)v6 textLabel];
-    [v18 setText:v17];
+    title = [v7 title];
+    textLabel2 = [(UITableViewCell *)v6 textLabel];
+    [textLabel2 setText:title];
 
-    v19 = [v7 detail];
-    v20 = [(UITableViewCell *)v6 detailTextLabel];
-    [v20 setText:v19];
+    detail = [v7 detail];
+    detailTextLabel = [(UITableViewCell *)v6 detailTextLabel];
+    [detailTextLabel setText:detail];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   [(UIDebuggingInformationVCDetailViewController *)self _updateDataAndReload:0];
-  if (a4)
+  if (section)
   {
-    v6 = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
-    v7 = [v6 childViewControllers];
-    v8 = [v7 count];
+    inspectedVC = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
+    childViewControllers = [inspectedVC childViewControllers];
+    v8 = [childViewControllers count];
 
     return v8;
   }
@@ -259,9 +259,9 @@ LABEL_5:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return @"Children";
   }
@@ -272,11 +272,11 @@ LABEL_5:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
-  v4 = [v3 childViewControllers];
-  if ([v4 count])
+  inspectedVC = [(UIDebuggingInformationVCDetailViewController *)self inspectedVC];
+  childViewControllers = [inspectedVC childViewControllers];
+  if ([childViewControllers count])
   {
     v5 = 2;
   }

@@ -63,22 +63,22 @@
       if (v6)
       {
         v7 = v6;
-        v8 = [(NSNumber *)self->inputMaskOpposite BOOLValue];
+        bOOLValue = [(NSNumber *)self->inputMaskOpposite BOOLValue];
         [(CIImage *)inputImage extent];
         v13 = v9;
         v14 = v10;
         v15 = v11;
         v16 = v12;
-        if (v8)
+        if (bOOLValue)
         {
-          v17 = [(CIImage *)inputImage imageByClampingToExtent];
+          imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
           v28.origin.x = v13;
           v28.origin.y = v14;
           v28.size.width = v15;
           v28.size.height = v16;
           v29 = CGRectInset(v28, -6.0, -6.0);
           inputRadius = self->inputRadius;
-          v25[0] = v17;
+          v25[0] = imageByClampingToExtent;
           v25[1] = inputRadius;
           inputColor = self->inputColor;
           v25[2] = self->inputBiasAmount;

@@ -1,9 +1,9 @@
 @interface HMDCameraReachabilityBulletinNotificationRegistrationRemote
-- (BOOL)isEqual:(id)a3;
-- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCameraReachabilityBulletinNotificationRegistration:(id)a3 source:(id)a4;
-- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCameraReachabilityBulletinNotificationRegistration:(id)registration source:(id)source;
+- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCoder:(id)coder;
 - (id)attributeDescriptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraReachabilityBulletinNotificationRegistrationRemote
@@ -12,12 +12,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self registration];
-  v5 = [v3 initWithName:@"registration" value:v4];
+  registration = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self registration];
+  v5 = [v3 initWithName:@"registration" value:registration];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
-  v8 = [v6 initWithName:@"source" value:v7];
+  source = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
+  v8 = [v6 initWithName:@"source" value:source];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -26,24 +26,24 @@
   return v9;
 }
 
-- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCoder:(id)a3
+- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDCRBNRR.ck.r"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDCRBNRR.ck.r"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDCRBNRR.ck.s"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDCRBNRR.ck.s"];
     if (v6)
     {
-      v7 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self initWithCameraReachabilityBulletinNotificationRegistration:v5 source:v6];
-      v8 = v7;
+      selfCopy2 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self initWithCameraReachabilityBulletinNotificationRegistration:v5 source:v6];
+      v8 = selfCopy2;
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -63,7 +63,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -83,23 +83,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self registration];
-  [v4 encodeObject:v5 forKey:@"HMDCRBNRR.ck.r"];
+  coderCopy = coder;
+  registration = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self registration];
+  [coderCopy encodeObject:registration forKey:@"HMDCRBNRR.ck.r"];
 
-  v6 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
-  [v4 encodeObject:v6 forKey:@"HMDCRBNRR.ck.s"];
+  source = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
+  [coderCopy encodeObject:source forKey:@"HMDCRBNRR.ck.s"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -110,9 +110,9 @@
   v6 = v5;
   if (v6 && (v11.receiver = self, v11.super_class = HMDCameraReachabilityBulletinNotificationRegistrationRemote, [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)&v11 isEqual:v6]))
   {
-    v7 = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
-    v8 = [v6 source];
-    v9 = [v7 isEqual:v8];
+    source = [(HMDCameraReachabilityBulletinNotificationRegistrationRemote *)self source];
+    source2 = [v6 source];
+    v9 = [source isEqual:source2];
   }
 
   else
@@ -123,18 +123,18 @@
   return v9;
 }
 
-- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCameraReachabilityBulletinNotificationRegistration:(id)a3 source:(id)a4
+- (HMDCameraReachabilityBulletinNotificationRegistrationRemote)initWithCameraReachabilityBulletinNotificationRegistration:(id)registration source:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  registrationCopy = registration;
+  sourceCopy = source;
+  if (!registrationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -147,8 +147,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_registration, a3);
-    objc_storeStrong(&v11->_source, a4);
+    objc_storeStrong(&v10->_registration, registration);
+    objc_storeStrong(&v11->_source, source);
   }
 
   return v11;

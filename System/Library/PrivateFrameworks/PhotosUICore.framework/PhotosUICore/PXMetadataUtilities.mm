@@ -1,122 +1,122 @@
 @interface PXMetadataUtilities
-+ (BOOL)isVisionProAsset:(id)a3;
-+ (id)_accessibilityDescriptionForFileType:(unint64_t)a3;
-+ (id)_apertureNumberFromString:(id)a3;
-+ (id)_cameraNominalFocalLengthForItem:(id)a3;
-+ (id)_fileTypeImageForType:(unint64_t)a3;
-+ (id)_focalLengthFromString:(id)a3;
-+ (id)_focalLengthStringFromString:(id)a3;
-+ (id)_formattedApertureStringWithString:(id)a3;
-+ (id)_formattedDeviceDescriptionForItem:(id)a3;
-+ (id)_formattedLensDescriptionForItem:(id)a3;
-+ (id)_loadImageWithName:(id)a3;
-+ (id)_secondaryFormattedLensDescriptionForItem:(id)a3;
-+ (id)cameraCaptureDeviceDisplayStringForItem:(id)a3;
-+ (id)cameraSettingsDisplayStringsForItem:(id)a3;
-+ (id)cameraSettingsForItem:(id)a3;
-+ (id)fileTypeImageForType:(unint64_t)a3;
-+ (id)flashImageForType:(unint64_t)a3;
-+ (id)hardwareDisplayStringsForItem:(id)a3;
-+ (id)localizedFileFormatForItem:(id)a3;
-+ (id)megaPixelsDisplayStringForItem:(id)a3 isAccessibility:(BOOL)a4;
-+ (id)meteringModeImageForType:(unint64_t)a3;
-+ (id)originalCreationDateForItem:(id)a3;
-+ (id)resolutionDisplayStringForItem:(id)a3 isAccessibility:(BOOL)a4;
-+ (id)semanticStylesDisplayStringForItem:(id)a3;
-+ (id)symbolSystemNamesForItem:(id)a3;
-+ (id)whiteBalanceImageForType:(unint64_t)a3;
-+ (int64_t)_cameraDeviceForItem:(id)a3;
-+ (unint64_t)codecTypeForItem:(id)a3;
-+ (unint64_t)fileTypeForItem:(id)a3;
-+ (unint64_t)fileTypeForItem:(id)a3 type:(unint64_t)a4;
-+ (unint64_t)flashTypeForItem:(id)a3;
-+ (unint64_t)meteringModeTypeForItem:(id)a3;
-+ (unint64_t)whiteBalanceTypeForItem:(id)a3;
-+ (void)_addDualCaptureBadgeIfNeededForItem:(id)a3 toSymbols:(id)a4;
-+ (void)processExifMetadataForItem:(id)a3 resultHandler:(id)a4 callbackQueue:(id)a5;
-+ (void)requestExifMetadataProcessingIfNeededForItem:(id)a3 onProcessingQueue:(id)a4 withResultHandler:(id)a5;
++ (BOOL)isVisionProAsset:(id)asset;
++ (id)_accessibilityDescriptionForFileType:(unint64_t)type;
++ (id)_apertureNumberFromString:(id)string;
++ (id)_cameraNominalFocalLengthForItem:(id)item;
++ (id)_fileTypeImageForType:(unint64_t)type;
++ (id)_focalLengthFromString:(id)string;
++ (id)_focalLengthStringFromString:(id)string;
++ (id)_formattedApertureStringWithString:(id)string;
++ (id)_formattedDeviceDescriptionForItem:(id)item;
++ (id)_formattedLensDescriptionForItem:(id)item;
++ (id)_loadImageWithName:(id)name;
++ (id)_secondaryFormattedLensDescriptionForItem:(id)item;
++ (id)cameraCaptureDeviceDisplayStringForItem:(id)item;
++ (id)cameraSettingsDisplayStringsForItem:(id)item;
++ (id)cameraSettingsForItem:(id)item;
++ (id)fileTypeImageForType:(unint64_t)type;
++ (id)flashImageForType:(unint64_t)type;
++ (id)hardwareDisplayStringsForItem:(id)item;
++ (id)localizedFileFormatForItem:(id)item;
++ (id)megaPixelsDisplayStringForItem:(id)item isAccessibility:(BOOL)accessibility;
++ (id)meteringModeImageForType:(unint64_t)type;
++ (id)originalCreationDateForItem:(id)item;
++ (id)resolutionDisplayStringForItem:(id)item isAccessibility:(BOOL)accessibility;
++ (id)semanticStylesDisplayStringForItem:(id)item;
++ (id)symbolSystemNamesForItem:(id)item;
++ (id)whiteBalanceImageForType:(unint64_t)type;
++ (int64_t)_cameraDeviceForItem:(id)item;
++ (unint64_t)codecTypeForItem:(id)item;
++ (unint64_t)fileTypeForItem:(id)item;
++ (unint64_t)fileTypeForItem:(id)item type:(unint64_t)type;
++ (unint64_t)flashTypeForItem:(id)item;
++ (unint64_t)meteringModeTypeForItem:(id)item;
++ (unint64_t)whiteBalanceTypeForItem:(id)item;
++ (void)_addDualCaptureBadgeIfNeededForItem:(id)item toSymbols:(id)symbols;
++ (void)processExifMetadataForItem:(id)item resultHandler:(id)handler callbackQueue:(id)queue;
++ (void)requestExifMetadataProcessingIfNeededForItem:(id)item onProcessingQueue:(id)queue withResultHandler:(id)handler;
 @end
 
 @implementation PXMetadataUtilities
 
-+ (id)semanticStylesDisplayStringForItem:(id)a3
++ (id)semanticStylesDisplayStringForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 fetchPropertySetsIfNeeded], v4 = objc_msgSend(v3, "currentSmartStyleCast"), v4))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([itemCopy fetchPropertySetsIfNeeded], v4 = objc_msgSend(itemCopy, "currentSmartStyleCast"), v4))
     {
       v5 = [MEMORY[0x1E69C4248] adjustmentStyleCastDisplayName:v4];
-      v6 = [v5 localizedUppercaseString];
+      localizedUppercaseString = [v5 localizedUppercaseString];
     }
 
     else
     {
-      v6 = 0;
+      localizedUppercaseString = 0;
     }
 
-    v7 = [v3 px_semanticStylePreset];
-    v8 = v7;
-    if (!v6 && v7)
+    px_semanticStylePreset = [itemCopy px_semanticStylePreset];
+    v8 = px_semanticStylePreset;
+    if (!localizedUppercaseString && px_semanticStylePreset)
     {
-      if ([v7 integerValue])
+      if ([px_semanticStylePreset integerValue])
       {
         v9 = CEKDisplayStringForSemanticStyleMakerPreset();
-        v6 = [v9 localizedUppercaseString];
+        localizedUppercaseString = [v9 localizedUppercaseString];
       }
 
       else
       {
-        v6 = 0;
+        localizedUppercaseString = 0;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    localizedUppercaseString = 0;
   }
 
-  return v6;
+  return localizedUppercaseString;
 }
 
-+ (BOOL)isVisionProAsset:(id)a3
++ (BOOL)isVisionProAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 px_make];
-  v5 = [v3 px_model];
+  assetCopy = asset;
+  px_make = [assetCopy px_make];
+  px_model = [assetCopy px_model];
 
-  v6 = [v4 lowercaseString];
-  v7 = [v6 isEqualToString:@"apple"];
+  lowercaseString = [px_make lowercaseString];
+  v7 = [lowercaseString isEqualToString:@"apple"];
 
   v8 = 0;
-  if (v7 && v5)
+  if (v7 && px_model)
   {
-    v9 = [v5 lowercaseString];
-    v8 = [v9 containsString:@"vision pro"];
+    lowercaseString2 = [px_model lowercaseString];
+    v8 = [lowercaseString2 containsString:@"vision pro"];
   }
 
   return v8;
 }
 
-+ (void)_addDualCaptureBadgeIfNeededForItem:(id)a3 toSymbols:(id)a4
++ (void)_addDualCaptureBadgeIfNeededForItem:(id)item toSymbols:(id)symbols
 {
-  v8 = a4;
-  if ([a3 px_isFrontRear])
+  symbolsCopy = symbols;
+  if ([item px_isFrontRear])
   {
     v5 = [PXMetadataDisplayItem alloc];
     v6 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionFrontBack", @"PhotosUICore");
     v7 = [(PXMetadataDisplayItem *)v5 initWithContent:@"person.crop.pip" accessibilityDescription:v6 accessibilityValue:0 accessibilityIdentifier:@"com.apple.photos.infoPanel.exif.symbol.frontrear" accessoryImageSystemName:0];
-    [v8 addObject:v7];
+    [symbolsCopy addObject:v7];
   }
 }
 
-+ (id)symbolSystemNamesForItem:(id)a3
++ (id)symbolSystemNamesForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([a1 flashTypeForItem:v4] == 2)
+  if ([self flashTypeForItem:itemCopy] == 2)
   {
     v6 = [PXMetadataDisplayItem alloc];
     v7 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionFlash", @"PhotosUICore");
@@ -124,7 +124,7 @@
     [v5 addObject:v8];
   }
 
-  v9 = [a1 codecTypeForItem:v4];
+  v9 = [self codecTypeForItem:itemCopy];
   if (v9 == 1)
   {
     v10 = [PXMetadataDisplayItem alloc];
@@ -133,7 +133,7 @@
     [v5 addObject:v12];
   }
 
-  if ([v4 px_isCinematicVideo])
+  if ([itemCopy px_isCinematicVideo])
   {
     v13 = [PXMetadataDisplayItem alloc];
     v14 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionCinematicVideo", @"PhotosUICore");
@@ -143,7 +143,7 @@
     goto LABEL_12;
   }
 
-  if ([v4 px_isActionModeVideo])
+  if ([itemCopy px_isActionModeVideo])
   {
     v16 = [PXMetadataDisplayItem alloc];
     v17 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionActionModeVideo", @"PhotosUICore");
@@ -154,11 +154,11 @@
 
   if (v9 != 1)
   {
-    if ([v4 px_isDepthEffect])
+    if ([itemCopy px_isDepthEffect])
     {
-      v22 = [v4 px_isLivePhoto];
+      px_isLivePhoto = [itemCopy px_isLivePhoto];
       v23 = [PXMetadataDisplayItem alloc];
-      if (v22)
+      if (px_isLivePhoto)
       {
         v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionLiveDepthEffect", @"PhotosUICore");
         v25 = @"livephoto.portrait";
@@ -173,7 +173,7 @@
       }
     }
 
-    else if ([v4 px_representsBurst])
+    else if ([itemCopy px_representsBurst])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionBurst", @"PhotosUICore");
@@ -181,7 +181,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.burst";
     }
 
-    else if ([v4 px_isPanorama])
+    else if ([itemCopy px_isPanorama])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionPano", @"PhotosUICore");
@@ -189,7 +189,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.pano";
     }
 
-    else if ([v4 px_isSelfie])
+    else if ([itemCopy px_isSelfie])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionSelfie", @"PhotosUICore");
@@ -197,7 +197,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.selfie";
     }
 
-    else if ([v4 px_isLivePhoto])
+    else if ([itemCopy px_isLivePhoto])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionLivePhoto", @"PhotosUICore");
@@ -205,7 +205,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.livePhoto";
     }
 
-    else if ([v4 px_isScreenshot])
+    else if ([itemCopy px_isScreenshot])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionScreenshot", @"PhotosUICore");
@@ -213,7 +213,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.screenshot";
     }
 
-    else if ([v4 px_isScreenRecording])
+    else if ([itemCopy px_isScreenRecording])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionScreenRecording", @"PhotosUICore");
@@ -221,7 +221,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.screenRecording";
     }
 
-    else if ([v4 px_isSloMo])
+    else if ([itemCopy px_isSloMo])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionSloMo", @"PhotosUICore");
@@ -229,7 +229,7 @@
       v26 = @"com.apple.photos.infoPanel.exif.symbol.slomo";
     }
 
-    else if ([v4 px_isTimelapse])
+    else if ([itemCopy px_isTimelapse])
     {
       v23 = [PXMetadataDisplayItem alloc];
       v24 = PXLocalizedStringFromTable(@"PXInfoPanelSymbolAXDescriptionTimelapse", @"PhotosUICore");
@@ -239,10 +239,10 @@
 
     else
     {
-      if (![v4 px_isVideo])
+      if (![itemCopy px_isVideo])
       {
 LABEL_38:
-        if (![v4 px_isSpatialMedia])
+        if (![itemCopy px_isSpatialMedia])
         {
           goto LABEL_10;
         }
@@ -256,7 +256,7 @@ LABEL_9:
         [v5 addObject:v20];
 
 LABEL_10:
-        [a1 _addDualCaptureBadgeIfNeededForItem:v4 toSymbols:v5];
+        [self _addDualCaptureBadgeIfNeededForItem:itemCopy toSymbols:v5];
         goto LABEL_12;
       }
 
@@ -277,14 +277,14 @@ LABEL_12:
   return v5;
 }
 
-+ (id)cameraSettingsDisplayStringsForItem:(id)a3
++ (id)cameraSettingsDisplayStringsForItem:(id)item
 {
   v53[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 cameraSettingsForItem:v4];
+  itemCopy = item;
+  v5 = [self cameraSettingsForItem:itemCopy];
   if (v5)
   {
-    if ([v4 px_isVideo])
+    if ([itemCopy px_isVideo])
     {
       v6 = [v5 objectForKeyedSubscript:@"fps"];
       v7 = [v5 objectForKeyedSubscript:@"duration"];
@@ -305,7 +305,7 @@ LABEL_12:
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:5];
     }
 
-    else if ([v4 px_isAudio])
+    else if ([itemCopy px_isAudio])
     {
       v6 = [v5 objectForKeyedSubscript:@"sampleRate"];
       v7 = [v5 objectForKeyedSubscript:@"bitrate"];
@@ -346,9 +346,9 @@ LABEL_12:
       v12 = [(PXMetadataDisplayItem *)v11 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F1741150];
       v43 = [v5 objectForKeyedSubscript:@"shutterSpeed"];
       v40 = [v5 objectForKeyedSubscript:@"shutterSpeed.ax"];
-      v22 = [v4 px_shotWithNightMode];
+      px_shotWithNightMode = [itemCopy px_shotWithNightMode];
       v23 = @"camera.nightmode";
-      if (!v22)
+      if (!px_shotWithNightMode)
       {
         v23 = 0;
       }
@@ -393,17 +393,17 @@ LABEL_12:
   return v13;
 }
 
-+ (id)_formattedApertureStringWithString:(id)a3
++ (id)_formattedApertureStringWithString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"f/" withString:@"ƒ" options:1 range:{0, objc_msgSend(v3, "length")}];
+  stringCopy = string;
+  v4 = [stringCopy stringByReplacingOccurrencesOfString:@"f/" withString:@"ƒ" options:1 range:{0, objc_msgSend(stringCopy, "length")}];
 
   return v4;
 }
 
-+ (id)_apertureNumberFromString:(id)a3
++ (id)_apertureNumberFromString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
+  v4 = [string componentsSeparatedByString:@" "];
   v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_633];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -414,7 +414,7 @@ LABEL_12:
   {
     v7 = [v4 objectAtIndexedSubscript:v5];
     v8 = [v7 substringFromIndex:2];
-    v9 = [a1 _numberStringResolvingDecimalSeparatorLocalization:v8];
+    v9 = [self _numberStringResolvingDecimalSeparatorLocalization:v8];
 
     [v9 doubleValue];
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -423,9 +423,9 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_focalLengthStringFromString:(id)a3
++ (id)_focalLengthStringFromString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
+  v3 = [string componentsSeparatedByString:@" "];
   v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_631];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -440,9 +440,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_focalLengthFromString:(id)a3
++ (id)_focalLengthFromString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
+  v4 = [string componentsSeparatedByString:@" "];
   v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_629];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -452,7 +452,7 @@ LABEL_12:
   else
   {
     v7 = [v4 objectAtIndexedSubscript:v5];
-    v8 = [a1 _numberStringResolvingDecimalSeparatorLocalization:v7];
+    v8 = [self _numberStringResolvingDecimalSeparatorLocalization:v7];
 
     v9 = MEMORY[0x1E696AD98];
     [v8 doubleValue];
@@ -462,12 +462,12 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_secondaryFormattedLensDescriptionForItem:(id)a3
++ (id)_secondaryFormattedLensDescriptionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = itemCopy;
 
     if (v4)
     {
@@ -481,15 +481,15 @@ LABEL_12:
     v4 = 0;
   }
 
-  v5 = [v3 px_model];
-  if ([v3 px_isFrontRear])
+  px_model = [itemCopy px_model];
+  if ([itemCopy px_isFrontRear])
   {
-    if (v5)
+    if (px_model)
     {
       v6 = [_apertureFormatter stringForObjectValue:&unk_1F190DF58];
       v7 = [v6 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F1741150];
 
-      v8 = [PXMetadataUtilitiesCameraDevice frontCameraDataForDeviceName:v5];
+      v8 = [PXMetadataUtilitiesCameraDevice frontCameraDataForDeviceName:px_model];
       v9 = v8;
       if (v8)
       {
@@ -519,20 +519,20 @@ LABEL_12:
   return v13;
 }
 
-+ (id)_formattedLensDescriptionForItem:(id)a3
++ (id)_formattedLensDescriptionForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 px_make];
-  v6 = [v4 px_model];
-  v7 = [v4 px_lensModel];
-  v8 = [v5 lowercaseString];
-  v9 = [v8 isEqualToString:@"apple"];
+  itemCopy = item;
+  px_make = [itemCopy px_make];
+  px_model = [itemCopy px_model];
+  px_lensModel = [itemCopy px_lensModel];
+  lowercaseString = [px_make lowercaseString];
+  v9 = [lowercaseString isEqualToString:@"apple"];
 
   if ((v9 & 1) == 0)
   {
-    if (v7)
+    if (px_lensModel)
     {
-      [a1 _formattedApertureStringWithString:v7];
+      [self _formattedApertureStringWithString:px_lensModel];
     }
 
     else
@@ -543,16 +543,16 @@ LABEL_12:
     goto LABEL_38;
   }
 
-  v10 = v7;
+  v10 = px_lensModel;
   v11 = v10;
-  if (!v6 || !v10)
+  if (!px_model || !v10)
   {
     goto LABEL_36;
   }
 
-  v12 = [v10 stringByReplacingOccurrencesOfString:v6 withString:&stru_1F1741150 options:1 range:{0, objc_msgSend(v10, "length")}];
+  v12 = [v10 stringByReplacingOccurrencesOfString:px_model withString:&stru_1F1741150 options:1 range:{0, objc_msgSend(v10, "length")}];
 
-  v13 = [a1 _apertureNumberFromString:v12];
+  v13 = [self _apertureNumberFromString:v12];
   v14 = _apertureFormatter;
   if (!_apertureFormatter)
   {
@@ -566,7 +566,7 @@ LABEL_12:
   v17 = [v14 stringForObjectValue:v13];
   v18 = [v17 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F1741150];
 
-  v19 = [a1 _focalLengthFromString:v12];
+  v19 = [self _focalLengthFromString:v12];
   if (!_focalLengthFormatter)
   {
     v20 = objc_alloc_init(PXFocalDistanceFormatter);
@@ -575,29 +575,29 @@ LABEL_12:
   }
 
   v69 = v18;
-  v66 = [a1 _cameraNominalFocalLengthForItem:v4];
-  v22 = +[PXMetadataUtilitiesCameraDevice cameraDeviceForDeviceName:camera:realLensFocalLength:nominalLensFocalLength:](PXMetadataUtilitiesCameraDevice, "cameraDeviceForDeviceName:camera:realLensFocalLength:nominalLensFocalLength:", v6, [a1 _cameraDeviceForItem:v4], v19, v66);
+  v66 = [self _cameraNominalFocalLengthForItem:itemCopy];
+  v22 = +[PXMetadataUtilitiesCameraDevice cameraDeviceForDeviceName:camera:realLensFocalLength:nominalLensFocalLength:](PXMetadataUtilitiesCameraDevice, "cameraDeviceForDeviceName:camera:realLensFocalLength:nominalLensFocalLength:", px_model, [self _cameraDeviceForItem:itemCopy], v19, v66);
   v23 = v19;
   v67 = v19;
   v68 = v13;
   v65 = v22;
   if (!v22)
   {
-    v64 = [v4 px_digitalZoomRatio];
-    v33 = [v4 px_focalLengthIn35mm];
-    v34 = [PXMetadataUtilities cameraCaptureDeviceDisplayStringForItem:v4];
-    v63 = v33;
-    if (!v23 || !v33)
+    px_digitalZoomRatio = [itemCopy px_digitalZoomRatio];
+    px_focalLengthIn35mm = [itemCopy px_focalLengthIn35mm];
+    v34 = [PXMetadataUtilities cameraCaptureDeviceDisplayStringForItem:itemCopy];
+    v63 = px_focalLengthIn35mm;
+    if (!v23 || !px_focalLengthIn35mm)
     {
       v31 = v12;
-      v27 = v64;
+      v27 = px_digitalZoomRatio;
       if (!v34)
       {
 LABEL_31:
-        v49 = [v31 capitalizedString];
+        capitalizedString = [v31 capitalizedString];
 
         v50 = PXLocalizedStringFromTable(@"PXInfoPanelLCDFaceTimeCamera", @"PhotosUICore");
-        v51 = [v49 stringByReplacingOccurrencesOfString:@"Facetime" withString:v50];
+        v51 = [capitalizedString stringByReplacingOccurrencesOfString:@"Facetime" withString:v50];
 
         v52 = PXLocalizedStringFromTable(@"PXInfoPanelLCDFrontiSightCamera", @"PhotosUICore");
         v53 = [v51 stringByReplacingOccurrencesOfString:@"Isight" withString:v52];
@@ -609,7 +609,7 @@ LABEL_31:
 
         v31 = [v56 stringByReplacingOccurrencesOfString:@"Camera " withString:@"Camera — "];
 
-        v27 = v64;
+        v27 = px_digitalZoomRatio;
         v12 = 0;
         goto LABEL_32;
       }
@@ -618,18 +618,18 @@ LABEL_20:
       v12 = v34;
 LABEL_32:
       v30 = v69;
-      v29 = v63;
+      displayName = v63;
       goto LABEL_33;
     }
 
-    v35 = v33;
+    v35 = px_focalLengthIn35mm;
     v61 = v34;
-    if (v64 && ([v64 doubleValue], v35 = v33, v36 > 0.0))
+    if (px_digitalZoomRatio && ([px_digitalZoomRatio doubleValue], v35 = px_focalLengthIn35mm, v36 > 0.0))
     {
       v37 = MEMORY[0x1E696AD98];
-      [v33 doubleValue];
+      [px_focalLengthIn35mm doubleValue];
       v39 = v38;
-      [v64 doubleValue];
+      [px_digitalZoomRatio doubleValue];
       v41 = [v37 numberWithDouble:v39 / v40];
     }
 
@@ -639,7 +639,7 @@ LABEL_32:
     }
 
     v42 = v41;
-    v62 = [a1 _focalLengthStringFromString:v12];
+    v62 = [self _focalLengthStringFromString:v12];
     v43 = _focalLengthFormatter;
     v44 = MEMORY[0x1E696AD98];
     [v42 floatValue];
@@ -649,12 +649,12 @@ LABEL_32:
     if (v61 && v62 && v47)
     {
       v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ — %@ %@", v61, v47, v69];
-      v27 = v64;
+      v27 = px_digitalZoomRatio;
     }
 
     else
     {
-      v27 = v64;
+      v27 = px_digitalZoomRatio;
       if (!v62 || !v47)
       {
 LABEL_30:
@@ -678,19 +678,19 @@ LABEL_30:
 
   v24 = v22;
   v25 = _focalLengthFormatter;
-  v26 = [v22 focalLengthIn35mm];
-  v27 = [v25 stringForObjectValue:v26];
+  focalLengthIn35mm = [v22 focalLengthIn35mm];
+  v27 = [v25 stringForObjectValue:focalLengthIn35mm];
 
   v28 = MEMORY[0x1E696AEC0];
-  v29 = [v24 displayName];
+  displayName = [v24 displayName];
   v30 = v69;
-  v31 = [v28 stringWithFormat:@"%@ — %@ %@", v29, v27, v69];
+  v31 = [v28 stringWithFormat:@"%@ — %@ %@", displayName, v27, v69];
 LABEL_33:
 
-  v57 = [a1 _formattedApertureStringWithString:v31];
+  v57 = [self _formattedApertureStringWithString:v31];
 
-  v58 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v11 = [v57 stringByTrimmingCharactersInSet:v58];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v11 = [v57 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (!v11 || ![v11 length])
   {
@@ -709,18 +709,18 @@ LABEL_38:
   return v32;
 }
 
-+ (id)_formattedDeviceDescriptionForItem:(id)a3
++ (id)_formattedDeviceDescriptionForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 px_formattedCameraModel];
-  if (!v4)
+  itemCopy = item;
+  px_formattedCameraModel = [itemCopy px_formattedCameraModel];
+  if (!px_formattedCameraModel)
   {
-    if ([v3 px_isScreenshot])
+    if ([itemCopy px_isScreenshot])
     {
       v5 = @"PXInfoPanelLCDScreenshot";
     }
 
-    else if ([v3 px_isScreenRecording])
+    else if ([itemCopy px_isScreenRecording])
     {
       v5 = @"PXInfoPanelLCDScreenRecording";
     }
@@ -730,49 +730,49 @@ LABEL_38:
       v5 = @"PXInfoPanelLCDUnknownCamera";
     }
 
-    v4 = PXLocalizedStringFromTable(v5, @"PhotosUICore");
+    px_formattedCameraModel = PXLocalizedStringFromTable(v5, @"PhotosUICore");
   }
 
-  return v4;
+  return px_formattedCameraModel;
 }
 
-+ (id)hardwareDisplayStringsForItem:(id)a3
++ (id)hardwareDisplayStringsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 fetchPropertySetsIfNeeded];
+    [itemCopy fetchPropertySetsIfNeeded];
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [a1 _formattedDeviceDescriptionForItem:v4];
-  [v5 setObject:v6 forKeyedSubscript:PXMetadataUtilitiesHardwareKeyDevice];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [self _formattedDeviceDescriptionForItem:itemCopy];
+  [dictionary setObject:v6 forKeyedSubscript:PXMetadataUtilitiesHardwareKeyDevice];
 
-  v7 = [a1 _formattedLensDescriptionForItem:v4];
-  [v5 setObject:v7 forKeyedSubscript:PXMetadataUtilitiesHardwareKeyFormattedLens];
+  v7 = [self _formattedLensDescriptionForItem:itemCopy];
+  [dictionary setObject:v7 forKeyedSubscript:PXMetadataUtilitiesHardwareKeyFormattedLens];
 
-  v8 = [a1 _secondaryFormattedLensDescriptionForItem:v4];
-  [v5 setObject:v8 forKeyedSubscript:PXMetadataUtilitiesHardwareKeySecondaryFormattedLens];
+  v8 = [self _secondaryFormattedLensDescriptionForItem:itemCopy];
+  [dictionary setObject:v8 forKeyedSubscript:PXMetadataUtilitiesHardwareKeySecondaryFormattedLens];
 
-  v9 = [v4 px_lensModel];
-  [v5 setObject:v9 forKeyedSubscript:PXMetadataUtilitiesHardwareKeyUnformattedLens];
+  px_lensModel = [itemCopy px_lensModel];
+  [dictionary setObject:px_lensModel forKeyedSubscript:PXMetadataUtilitiesHardwareKeyUnformattedLens];
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)resolutionDisplayStringForItem:(id)a3 isAccessibility:(BOOL)a4
++ (id)resolutionDisplayStringForItem:(id)item isAccessibility:(BOOL)accessibility
 {
-  v4 = a4;
-  v5 = [a3 px_resolution];
+  accessibilityCopy = accessibility;
+  px_resolution = [item px_resolution];
   v7 = v6;
-  v8 = [MEMORY[0x1E696AD98] numberWithLong:v5];
+  v8 = [MEMORY[0x1E696AD98] numberWithLong:px_resolution];
   v9 = [MEMORY[0x1E696AD98] numberWithLong:v7];
   [MEMORY[0x1E696ADA0] localizedStringFromNumber:v8 numberStyle:0];
   objc_claimAutoreleasedReturnValue();
   [MEMORY[0x1E696ADA0] localizedStringFromNumber:v9 numberStyle:0];
   objc_claimAutoreleasedReturnValue();
-  if (v4)
+  if (accessibilityCopy)
   {
     v10 = @"PXInfoPanelAXLCDResolutionFormat";
   }
@@ -787,68 +787,68 @@ LABEL_38:
   PXStringWithValidatedFormat();
 }
 
-+ (int64_t)_cameraDeviceForItem:(id)a3
++ (int64_t)_cameraDeviceForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = 0;
-    v9 = 0;
-    v6 = v3;
+    integerValue = 0;
+    v6 = itemCopy;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v4 = v3;
+  v4 = itemCopy;
 
   if (v4)
   {
     [v4 fetchPropertySetsIfNeeded];
-    v5 = [v4 originalImageProperties];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    originalImageProperties = [v4 originalImageProperties];
+    v6 = [originalImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69867B8]];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 integerValue];
+      integerValue = [v7 integerValue];
     }
 
     else
     {
-      v9 = 0;
+      integerValue = 0;
     }
 
     goto LABEL_10;
   }
 
-  v9 = 0;
+  integerValue = 0;
 LABEL_11:
 
-  return v9;
+  return integerValue;
 }
 
-+ (id)_cameraNominalFocalLengthForItem:(id)a3
++ (id)_cameraNominalFocalLengthForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = 0;
     v8 = 0;
-    v6 = v3;
+    v6 = itemCopy;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v4 = v3;
+  v4 = itemCopy;
 
   if (v4)
   {
     [v4 fetchPropertySetsIfNeeded];
-    v5 = [v4 originalImageProperties];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    originalImageProperties = [v4 originalImageProperties];
+    v6 = [originalImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69867E8]];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
@@ -870,16 +870,16 @@ LABEL_11:
   return v8;
 }
 
-+ (id)cameraCaptureDeviceDisplayStringForItem:(id)a3
++ (id)cameraCaptureDeviceDisplayStringForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemCopy;
     [v4 fetchPropertySetsIfNeeded];
-    v5 = [v4 originalImageProperties];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    originalImageProperties = [v4 originalImageProperties];
+    v6 = [originalImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
     v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69867B8]];
     v8 = v7;
@@ -902,15 +902,15 @@ LABEL_11:
   return v10;
 }
 
-+ (id)megaPixelsDisplayStringForItem:(id)a3 isAccessibility:(BOOL)a4
++ (id)megaPixelsDisplayStringForItem:(id)item isAccessibility:(BOOL)accessibility
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 px_resolution];
+  accessibilityCopy = accessibility;
+  itemCopy = item;
+  px_resolution = [itemCopy px_resolution];
   v8 = v7;
-  if ([v5 px_isImage])
+  if ([itemCopy px_isImage])
   {
-    *v9.i64 = v6 * v8 / 1000000.0;
+    *v9.i64 = px_resolution * v8 / 1000000.0;
     if (*v9.i64 >= 1.0)
     {
       *v10.i64 = *v9.i64 - trunc(*v9.i64);
@@ -933,7 +933,7 @@ LABEL_11:
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
     v19 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     v20 = v19;
-    if (v4)
+    if (accessibilityCopy)
     {
       v21 = 5;
     }
@@ -943,7 +943,7 @@ LABEL_11:
       v21 = 1;
     }
 
-    if (v4)
+    if (accessibilityCopy)
     {
       v22 = @"PXInfoPanelMegaPixelsAXFormat";
     }
@@ -962,16 +962,16 @@ LABEL_11:
   }
 
   v12 = 0;
-  if ([v5 px_isVideo])
+  if ([itemCopy px_isVideo])
   {
-    if (v6 >= v8)
+    if (px_resolution >= v8)
     {
       v13 = v8;
     }
 
     else
     {
-      v13 = v6;
+      v13 = px_resolution;
     }
 
     if (v13 <= 1439)
@@ -979,7 +979,7 @@ LABEL_11:
       switch(v13)
       {
         case 480:
-          if (v4)
+          if (accessibilityCopy)
           {
             v14 = @"PXInfoPanelVideoResolutionAX480p";
           }
@@ -991,7 +991,7 @@ LABEL_11:
 
           break;
         case 720:
-          if (v4)
+          if (accessibilityCopy)
           {
             v14 = @"PXInfoPanelVideoResolutionAX720p";
           }
@@ -1003,7 +1003,7 @@ LABEL_11:
 
           break;
         case 1080:
-          if (v4)
+          if (accessibilityCopy)
           {
             v14 = @"PXInfoPanelVideoResolutionAX1080p";
           }
@@ -1023,7 +1023,7 @@ LABEL_11:
     {
       if (v13 == 2160)
       {
-        if (v4)
+        if (accessibilityCopy)
         {
           v14 = @"PXInfoPanelVideoResolutionAX4k";
         }
@@ -1041,7 +1041,7 @@ LABEL_11:
           goto LABEL_48;
         }
 
-        if (v4)
+        if (accessibilityCopy)
         {
           v14 = @"PXInfoPanelVideoResolutionAX8k";
         }
@@ -1055,7 +1055,7 @@ LABEL_11:
 
     else if (v13 == 1440)
     {
-      if (v4)
+      if (accessibilityCopy)
       {
         v14 = @"PXInfoPanelVideoResolutionAX1440p";
       }
@@ -1073,7 +1073,7 @@ LABEL_11:
         goto LABEL_48;
       }
 
-      if (v4)
+      if (accessibilityCopy)
       {
         v14 = @"PXInfoPanelVideoResolutionAX28k";
       }
@@ -1092,29 +1092,29 @@ LABEL_48:
   return v12;
 }
 
-+ (id)fileTypeImageForType:(unint64_t)a3
++ (id)fileTypeImageForType:(unint64_t)type
 {
-  v5 = [a1 _fileTypeImageForType:?];
-  v6 = [a1 _accessibilityDescriptionForFileType:a3];
+  v5 = [self _fileTypeImageForType:?];
+  v6 = [self _accessibilityDescriptionForFileType:type];
   v7 = [[PXMetadataDisplayItem alloc] initWithContent:v5 accessibilityDescription:v6 accessibilityValue:0 accessibilityIdentifier:@"com.apple.photos.infoPanel.exif.fileType" accessoryImageSystemName:0];
 
   return v7;
 }
 
-+ (unint64_t)codecTypeForItem:(id)a3
++ (unint64_t)codecTypeForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 px_isProRes])
+  itemCopy = item;
+  if ([itemCopy px_isProRes])
   {
     v4 = 1;
   }
 
-  else if ([v3 px_isH264])
+  else if ([itemCopy px_isH264])
   {
     v4 = 2;
   }
 
-  else if ([v3 px_isHEVC])
+  else if ([itemCopy px_isHEVC])
   {
     v4 = 3;
   }
@@ -1127,31 +1127,31 @@ LABEL_48:
   return v4;
 }
 
-+ (id)_fileTypeImageForType:(unint64_t)a3
++ (id)_fileTypeImageForType:(unint64_t)type
 {
-  if (a3 > 0x12)
+  if (type > 0x12)
   {
     v3 = @"LCD-Filetype-JPEG";
   }
 
   else
   {
-    v3 = off_1E772CCB8[a3];
+    v3 = off_1E772CCB8[type];
   }
 
-  return [a1 _loadImageWithName:v3];
+  return [self _loadImageWithName:v3];
 }
 
-+ (id)_accessibilityDescriptionForFileType:(unint64_t)a3
++ (id)_accessibilityDescriptionForFileType:(unint64_t)type
 {
-  if (a3 > 0x10)
+  if (type > 0x10)
   {
     v4 = @"PXFileTypeAXDescriptionUnknown";
   }
 
   else
   {
-    v4 = off_1E772CC30[a3];
+    v4 = off_1E772CC30[type];
   }
 
   v5 = PXLocalizedStringFromTable(v4, @"PhotosUICore");
@@ -1159,26 +1159,26 @@ LABEL_48:
   return v5;
 }
 
-+ (id)meteringModeImageForType:(unint64_t)a3
++ (id)meteringModeImageForType:(unint64_t)type
 {
   v4 = @"camera.metering.unknown";
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         v4 = @"camera.metering.partial";
         return [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
       }
 
-      if (a3 != 255)
+      if (type != 255)
       {
         goto LABEL_13;
       }
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
       v4 = @"camera.metering.multispot";
     }
@@ -1189,9 +1189,9 @@ LABEL_48:
     }
   }
 
-  else if (a3 > 1)
+  else if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = @"camera.metering.center.weighted";
     }
@@ -1202,9 +1202,9 @@ LABEL_48:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = @"camera.metering.center.weighted.average";
       return [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
@@ -1217,26 +1217,26 @@ LABEL_13:
   return [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
 }
 
-+ (id)whiteBalanceImageForType:(unint64_t)a3
++ (id)whiteBalanceImageForType:(unint64_t)type
 {
-  if (a3 - 2 > 7)
+  if (type - 2 > 7)
   {
     v3 = @"LCD-WB";
   }
 
   else
   {
-    v3 = off_1E772CBF0[a3 - 2];
+    v3 = off_1E772CBF0[type - 2];
   }
 
-  return [a1 _loadImageWithName:v3];
+  return [self _loadImageWithName:v3];
 }
 
-+ (id)flashImageForType:(unint64_t)a3
++ (id)flashImageForType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v5 = [a1 _loadImageWithName:{@"LCD-Flash-Fired", v3}];
+    v5 = [self _loadImageWithName:{@"LCD-Flash-Fired", v3}];
   }
 
   else
@@ -1247,84 +1247,84 @@ LABEL_13:
   return v5;
 }
 
-+ (id)_loadImageWithName:(id)a3
++ (id)_loadImageWithName:(id)name
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleWithIdentifier:@"com.apple.PhotosUICore"];
-  v6 = [MEMORY[0x1E69DCAB8] imageNamed:v4 inBundle:v5 withConfiguration:0];
+  v6 = [MEMORY[0x1E69DCAB8] imageNamed:nameCopy inBundle:v5 withConfiguration:0];
 
   return v6;
 }
 
-+ (id)cameraSettingsForItem:(id)a3
++ (id)cameraSettingsForItem:(id)item
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  itemCopy = item;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = PXLocalizedStringFromTable(@"PXInfoPanelMissingValuePlaceholder", @"PhotosUICore");
   if (cameraSettingsForItem__onceToken != -1)
   {
     dispatch_once(&cameraSettingsForItem__onceToken, &__block_literal_global_1132);
   }
 
-  v43 = [v3 px_ISORating];
-  v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v43];
-  v6 = [v3 px_focalLengthIn35mm];
-  v7 = v6;
-  if (v6)
+  px_ISORating = [itemCopy px_ISORating];
+  v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", px_ISORating];
+  px_focalLengthIn35mm = [itemCopy px_focalLengthIn35mm];
+  v7 = px_focalLengthIn35mm;
+  if (px_focalLengthIn35mm)
   {
-    v8 = v6;
+    px_focalLength = px_focalLengthIn35mm;
   }
 
   else
   {
-    v8 = [v3 px_focalLength];
+    px_focalLength = [itemCopy px_focalLength];
   }
 
-  v45 = v8;
+  v45 = px_focalLength;
 
-  v9 = [v3 px_aperture];
+  px_aperture = [itemCopy px_aperture];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [_apertureFormatter stringForObjectValue:v9];
+  v11 = [_apertureFormatter stringForObjectValue:px_aperture];
   v41 = [v10 stringWithFormat:@"f %@", v11];
 
-  v12 = [v3 px_shutterSpeed];
-  v13 = [v3 px_exposureBias];
-  v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ e v", v13];
-  v44 = [v3 px_FPS];
-  v39 = [v3 px_duration];
-  v14 = [v3 px_bitRate];
+  px_shutterSpeed = [itemCopy px_shutterSpeed];
+  px_exposureBias = [itemCopy px_exposureBias];
+  v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ e v", px_exposureBias];
+  px_FPS = [itemCopy px_FPS];
+  px_duration = [itemCopy px_duration];
+  px_bitRate = [itemCopy px_bitRate];
   v15 = MEMORY[0x1E696AD98];
-  v16 = [v3 px_sampleRate];
-  [v16 doubleValue];
+  px_sampleRate = [itemCopy px_sampleRate];
+  [px_sampleRate doubleValue];
   v17 = [v15 numberWithDouble:?];
 
-  v18 = v43;
-  if (v43)
+  v18 = px_ISORating;
+  if (px_ISORating)
   {
-    v19 = [_isoFormatter stringForObjectValue:v43];
-    [v4 setObject:v19 forKeyedSubscript:@"iso"];
+    v19 = [_isoFormatter stringForObjectValue:px_ISORating];
+    [dictionary setObject:v19 forKeyedSubscript:@"iso"];
 
     v20 = v42;
   }
 
   else
   {
-    [v4 setObject:v5 forKeyedSubscript:@"iso"];
+    [dictionary setObject:v5 forKeyedSubscript:@"iso"];
     v20 = v5;
   }
 
-  [v4 setObject:v20 forKeyedSubscript:@"iso.ax"];
+  [dictionary setObject:v20 forKeyedSubscript:@"iso.ax"];
   if (v45)
   {
     v21 = [_focalLengthFormatter stringForObjectValue:?];
-    [v4 setObject:v21 forKeyedSubscript:@"focalLength"];
+    [dictionary setObject:v21 forKeyedSubscript:@"focalLength"];
 
-    if (v13)
+    if (px_exposureBias)
     {
 LABEL_11:
-      v22 = [_exposureFormatter stringForObjectValue:v13];
-      [v4 setObject:v22 forKeyedSubscript:@"exposure"];
+      v22 = [_exposureFormatter stringForObjectValue:px_exposureBias];
+      [dictionary setObject:v22 forKeyedSubscript:@"exposure"];
 
       v23 = v40;
       goto LABEL_14;
@@ -1333,47 +1333,47 @@ LABEL_11:
 
   else
   {
-    [v4 setObject:v5 forKeyedSubscript:@"focalLength"];
-    if (v13)
+    [dictionary setObject:v5 forKeyedSubscript:@"focalLength"];
+    if (px_exposureBias)
     {
       goto LABEL_11;
     }
   }
 
-  [v4 setObject:v5 forKeyedSubscript:@"exposure"];
+  [dictionary setObject:v5 forKeyedSubscript:@"exposure"];
   v23 = v5;
 LABEL_14:
-  [v4 setObject:v23 forKeyedSubscript:@"exposure.ax"];
-  if (v9)
+  [dictionary setObject:v23 forKeyedSubscript:@"exposure.ax"];
+  if (px_aperture)
   {
-    v24 = [_apertureFormatter stringForObjectValue:v9];
-    [v4 setObject:v24 forKeyedSubscript:@"aperture"];
+    v24 = [_apertureFormatter stringForObjectValue:px_aperture];
+    [dictionary setObject:v24 forKeyedSubscript:@"aperture"];
 
     v25 = v41;
   }
 
   else
   {
-    [v4 setObject:v5 forKeyedSubscript:@"aperture"];
+    [dictionary setObject:v5 forKeyedSubscript:@"aperture"];
     v25 = v5;
   }
 
-  [v4 setObject:v25 forKeyedSubscript:@"aperture.ax"];
-  if (v12)
+  [dictionary setObject:v25 forKeyedSubscript:@"aperture.ax"];
+  if (px_shutterSpeed)
   {
-    v26 = [_shutterSpeedFormatter stringForObjectValue:v12];
-    [v4 setObject:v26 forKeyedSubscript:@"shutterSpeed"];
+    v26 = [_shutterSpeedFormatter stringForObjectValue:px_shutterSpeed];
+    [dictionary setObject:v26 forKeyedSubscript:@"shutterSpeed"];
 
-    v27 = [_shutterSpeedAXFormatter stringForObjectValue:v12];
-    [v4 setObject:v27 forKeyedSubscript:@"shutterSpeed.ax"];
+    v27 = [_shutterSpeedAXFormatter stringForObjectValue:px_shutterSpeed];
+    [dictionary setObject:v27 forKeyedSubscript:@"shutterSpeed.ax"];
 
-    if (v14)
+    if (px_bitRate)
     {
       goto LABEL_19;
     }
 
 LABEL_22:
-    [v4 setObject:v5 forKeyedSubscript:@"bitrate"];
+    [dictionary setObject:v5 forKeyedSubscript:@"bitrate"];
     if (v17)
     {
       goto LABEL_20;
@@ -1382,44 +1382,44 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  [v4 setObject:v5 forKeyedSubscript:@"shutterSpeed"];
-  [v4 setObject:v5 forKeyedSubscript:@"shutterSpeed.ax"];
-  if (!v14)
+  [dictionary setObject:v5 forKeyedSubscript:@"shutterSpeed"];
+  [dictionary setObject:v5 forKeyedSubscript:@"shutterSpeed.ax"];
+  if (!px_bitRate)
   {
     goto LABEL_22;
   }
 
 LABEL_19:
-  v28 = [_mediaBitrateFormatter stringFromNumber:v14];
-  [v4 setObject:v28 forKeyedSubscript:@"bitrate"];
+  v28 = [_mediaBitrateFormatter stringFromNumber:px_bitRate];
+  [dictionary setObject:v28 forKeyedSubscript:@"bitrate"];
 
   if (v17)
   {
 LABEL_20:
     v29 = [_mediaSampleRateFormatter stringFromNumber:v17];
-    [v4 setObject:v29 forKeyedSubscript:@"sampleRate"];
+    [dictionary setObject:v29 forKeyedSubscript:@"sampleRate"];
 
     goto LABEL_24;
   }
 
 LABEL_23:
-  [v4 setObject:v5 forKeyedSubscript:@"sampleRate"];
+  [dictionary setObject:v5 forKeyedSubscript:@"sampleRate"];
 LABEL_24:
-  if (v44)
+  if (px_FPS)
   {
     v30 = [_mediaFPSFormatter stringFromNumber:?];
-    [v4 setObject:v30 forKeyedSubscript:@"fps"];
+    [dictionary setObject:v30 forKeyedSubscript:@"fps"];
   }
 
   else
   {
-    [v4 setObject:v5 forKeyedSubscript:@"fps"];
+    [dictionary setObject:v5 forKeyedSubscript:@"fps"];
   }
 
-  v31 = v39;
-  if (v39)
+  v31 = px_duration;
+  if (px_duration)
   {
-    [v39 doubleValue];
+    [px_duration doubleValue];
     v33 = round(v32);
     if (v33 <= 3600.0)
     {
@@ -1435,18 +1435,18 @@ LABEL_24:
     v35 = _mediaDurationFormatter;
     v36 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v33];
     v37 = [v35 stringFromDate:v36];
-    [v4 setObject:v37 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v37 forKeyedSubscript:@"duration"];
 
-    v31 = v39;
-    v18 = v43;
+    v31 = px_duration;
+    v18 = px_ISORating;
   }
 
   else
   {
-    [v4 setObject:v5 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"duration"];
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __45__PXMetadataUtilities_cameraSettingsForItem___block_invoke()
@@ -1561,10 +1561,10 @@ void __45__PXMetadataUtilities_cameraSettingsForItem___block_invoke()
   }
 }
 
-+ (id)localizedFileFormatForItem:(id)a3
++ (id)localizedFileFormatForItem:(id)item
 {
-  v3 = a3;
-  v4 = [PXMetadataUtilities codecTypeForItem:v3]- 1;
+  itemCopy = item;
+  v4 = [PXMetadataUtilities codecTypeForItem:itemCopy]- 1;
   if (v4 < 3)
   {
     v5 = &off_1E772CB48[v4];
@@ -1573,7 +1573,7 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  v7 = [PXMetadataUtilities fileTypeForItem:v3];
+  v7 = [PXMetadataUtilities fileTypeForItem:itemCopy];
   if (v7 < 0x12 && ((0x3C9FFu >> v7) & 1) != 0)
   {
     v5 = &off_1E772CB60[v7];
@@ -1586,45 +1586,45 @@ LABEL_8:
   return v6;
 }
 
-+ (unint64_t)fileTypeForItem:(id)a3 type:(unint64_t)a4
++ (unint64_t)fileTypeForItem:(id)item type:(unint64_t)type
 {
-  v5 = a3;
-  if ([v5 px_representsBurst])
+  itemCopy = item;
+  if ([itemCopy px_representsBurst])
   {
-    v6 = 11;
+    typeCopy = 11;
   }
 
   else
   {
-    v6 = 19;
-    switch(a4)
+    typeCopy = 19;
+    switch(type)
     {
       case 0uLL:
-        if ([v5 px_isLivePhoto])
+        if ([itemCopy px_isLivePhoto])
         {
-          v6 = 15;
+          typeCopy = 15;
         }
 
         else
         {
-          v6 = 1;
+          typeCopy = 1;
         }
 
         break;
       case 1uLL:
-        if ([v5 px_isLivePhoto])
+        if ([itemCopy px_isLivePhoto])
         {
-          v6 = 16;
+          typeCopy = 16;
         }
 
         else
         {
-          v6 = 2;
+          typeCopy = 2;
         }
 
         break;
       case 2uLL:
-        v6 = 0;
+        typeCopy = 0;
         break;
       case 3uLL:
       case 6uLL:
@@ -1632,71 +1632,71 @@ LABEL_8:
       case 8uLL:
       case 9uLL:
       case 0x12uLL:
-        v6 = a4;
+        typeCopy = type;
         break;
       case 4uLL:
-        v6 = 5;
+        typeCopy = 5;
         break;
       case 5uLL:
-        v6 = 4;
+        typeCopy = 4;
         break;
       case 0xAuLL:
-        if ([v5 px_isTimelapse])
+        if ([itemCopy px_isTimelapse])
         {
-          v6 = 13;
+          typeCopy = 13;
         }
 
         else
         {
-          v6 = 10;
+          typeCopy = 10;
         }
 
-        if ([v5 px_isSloMo])
+        if ([itemCopy px_isSloMo])
         {
-          v6 = 12;
+          typeCopy = 12;
         }
 
         break;
       case 0xBuLL:
-        v6 = 17;
+        typeCopy = 17;
         break;
       default:
         break;
     }
   }
 
-  return v6;
+  return typeCopy;
 }
 
-+ (unint64_t)fileTypeForItem:(id)a3
++ (unint64_t)fileTypeForItem:(id)item
 {
-  v4 = a3;
-  v5 = [a1 fileTypeForItem:v4 type:{objc_msgSend(v4, "px_originalType")}];
+  itemCopy = item;
+  v5 = [self fileTypeForItem:itemCopy type:{objc_msgSend(itemCopy, "px_originalType")}];
 
   return v5;
 }
 
-+ (unint64_t)meteringModeTypeForItem:(id)a3
++ (unint64_t)meteringModeTypeForItem:(id)item
 {
-  v3 = [a3 px_meteringMode];
-  v4 = [v3 unsignedIntegerValue];
+  px_meteringMode = [item px_meteringMode];
+  unsignedIntegerValue = [px_meteringMode unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)whiteBalanceTypeForItem:(id)a3
++ (unint64_t)whiteBalanceTypeForItem:(id)item
 {
-  v3 = [a3 px_whiteBalance];
-  v4 = [v3 integerValue];
-  if (v4 > 23)
+  px_whiteBalance = [item px_whiteBalance];
+  integerValue = [px_whiteBalance integerValue];
+  if (integerValue > 23)
   {
-    if ((v4 - 1006) <= 0xF && ((1 << (v4 + 18)) & 0xFE7B) != 0)
+    if ((integerValue - 1006) <= 0xF && ((1 << (integerValue + 18)) & 0xFE7B) != 0)
     {
       v5 = 9;
       goto LABEL_29;
     }
 
-    if (v4 != 24)
+    if (integerValue != 24)
     {
 LABEL_28:
       v5 = 0;
@@ -1708,19 +1708,19 @@ LABEL_26:
     goto LABEL_29;
   }
 
-  if (v4 <= 10)
+  if (integerValue <= 10)
   {
-    if (v4 <= 2)
+    if (integerValue <= 2)
     {
-      if (!v4)
+      if (!integerValue)
       {
         v5 = 1;
         goto LABEL_29;
       }
 
-      if (v4 != 1)
+      if (integerValue != 1)
       {
-        if (v4 != 2)
+        if (integerValue != 2)
         {
           goto LABEL_28;
         }
@@ -1731,11 +1731,11 @@ LABEL_26:
 
     else
     {
-      if (v4 <= 8)
+      if (integerValue <= 8)
       {
-        if (v4 != 3)
+        if (integerValue != 3)
         {
-          if (v4 == 4)
+          if (integerValue == 4)
           {
             v5 = 5;
             goto LABEL_29;
@@ -1747,7 +1747,7 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      if (v4 != 9)
+      if (integerValue != 9)
       {
         v5 = 6;
         goto LABEL_29;
@@ -1758,11 +1758,11 @@ LABEL_26:
     goto LABEL_29;
   }
 
-  if ((v4 - 17) >= 7)
+  if ((integerValue - 17) >= 7)
   {
-    if ((v4 - 12) >= 4)
+    if ((integerValue - 12) >= 4)
     {
-      if (v4 == 11)
+      if (integerValue == 11)
       {
         v5 = 7;
         goto LABEL_29;
@@ -1782,13 +1782,13 @@ LABEL_29:
   return v5;
 }
 
-+ (unint64_t)flashTypeForItem:(id)a3
++ (unint64_t)flashTypeForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 px_supportsImageProperties])
+  itemCopy = item;
+  if ([itemCopy px_supportsImageProperties])
   {
-    v4 = [v3 px_flash];
-    if ([v4 integerValue] == 1)
+    px_flash = [itemCopy px_flash];
+    if ([px_flash integerValue] == 1)
     {
       v5 = 2;
     }
@@ -1807,12 +1807,12 @@ LABEL_29:
   return v5;
 }
 
-+ (void)processExifMetadataForItem:(id)a3 resultHandler:(id)a4 callbackQueue:(id)a5
++ (void)processExifMetadataForItem:(id)item resultHandler:(id)handler callbackQueue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
+  queueCopy = queue;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1822,20 +1822,20 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = itemCopy;
     v12 = os_log_create(*MEMORY[0x1E69BDDA0], "InfoPanelEXIFMetadataSignPost");
-    v13 = os_signpost_id_make_with_pointer(v12, a1);
+    v13 = os_signpost_id_make_with_pointer(v12, self);
     v14 = v12;
     v15 = v14;
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
     {
-      v16 = [v11 uuid];
+      uuid = [v11 uuid];
       *buf = 138412290;
-      v28 = v16;
+      v28 = uuid;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "InfoPanelEXIFMetadataProcessing", "beginning exif processing for asset: %@", buf, 0xCu);
     }
 
-    v17 = [v11 photoLibrary];
+    photoLibrary = [v11 photoLibrary];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __78__PXMetadataUtilities_processExifMetadataForItem_resultHandler_callbackQueue___block_invoke;
@@ -1848,10 +1848,10 @@ LABEL_29:
     v24 = v13;
     v20 = v15;
     v21 = v26;
-    v22 = v10;
-    v23 = v9;
+    v22 = queueCopy;
+    v23 = handlerCopy;
     v18 = v15;
-    [v17 performChanges:v25 completionHandler:v19];
+    [photoLibrary performChanges:v25 completionHandler:v19];
   }
 }
 
@@ -1895,19 +1895,19 @@ void __78__PXMetadataUtilities_processExifMetadataForItem_resultHandler_callback
   dispatch_async(v9, v12);
 }
 
-+ (void)requestExifMetadataProcessingIfNeededForItem:(id)a3 onProcessingQueue:(id)a4 withResultHandler:(id)a5
++ (void)requestExifMetadataProcessingIfNeededForItem:(id)item onProcessingQueue:(id)queue withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __104__PXMetadataUtilities_requestExifMetadataProcessingIfNeededForItem_onProcessingQueue_withResultHandler___block_invoke;
   v11[3] = &unk_1E774C2F0;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  dispatch_async(a4, v11);
+  v12 = itemCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = itemCopy;
+  dispatch_async(queue, v11);
 }
 
 uint64_t __104__PXMetadataUtilities_requestExifMetadataProcessingIfNeededForItem_onProcessingQueue_withResultHandler___block_invoke(uint64_t a1)
@@ -1929,23 +1929,23 @@ uint64_t __104__PXMetadataUtilities_requestExifMetadataProcessingIfNeededForItem
   }
 }
 
-+ (id)originalCreationDateForItem:(id)a3
++ (id)originalCreationDateForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 px_originalCreationDate];
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  px_originalCreationDate = [itemCopy px_originalCreationDate];
+  v5 = px_originalCreationDate;
+  if (px_originalCreationDate)
   {
-    v6 = v4;
+    v6 = px_originalCreationDate;
   }
 
   else
   {
-    v7 = [v3 px_creationDate];
-    v8 = v7;
-    if (v7)
+    px_creationDate = [itemCopy px_creationDate];
+    v8 = px_creationDate;
+    if (px_creationDate)
     {
-      v9 = v7;
+      v9 = px_creationDate;
     }
 
     else

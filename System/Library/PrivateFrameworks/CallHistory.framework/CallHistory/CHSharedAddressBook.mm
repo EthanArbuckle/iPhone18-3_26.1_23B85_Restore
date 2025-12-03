@@ -1,14 +1,14 @@
 @interface CHSharedAddressBook
 + (id)get;
 - (CHSharedAddressBook)init;
-- (id)fetchAddressBookInfoFromCacheForKey:(id)a3;
+- (id)fetchAddressBookInfoFromCacheForKey:(id)key;
 - (unint64_t)cachedCount;
 - (void)cleanUpAddressBookCache_sync;
 - (void)dealloc;
-- (void)insertAddressBookInfoDictionaryIntoCache:(id)a3;
-- (void)insertAddressBookInfoIntoCache:(id)a3 forKey:(id)a4;
+- (void)insertAddressBookInfoDictionaryIntoCache:(id)cache;
+- (void)insertAddressBookInfoIntoCache:(id)cache forKey:(id)key;
 - (void)registerForContactsNotifications;
-- (void)revertAddressBook:(id)a3;
+- (void)revertAddressBook:(id)book;
 @end
 
 @implementation CHSharedAddressBook
@@ -53,8 +53,8 @@ uint64_t __26__CHSharedAddressBook_get__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CHSharedAddressBook;
@@ -79,11 +79,11 @@ void __55__CHSharedAddressBook_registerForContactsNotifications__block_invoke(ui
 
 - (void)cleanUpAddressBookCache_sync
 {
-  v2 = [(CHSharedAddressBook *)self addressBookCache];
-  [v2 removeAllObjects];
+  addressBookCache = [(CHSharedAddressBook *)self addressBookCache];
+  [addressBookCache removeAllObjects];
 }
 
-- (void)revertAddressBook:(id)a3
+- (void)revertAddressBook:(id)book
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -106,16 +106,16 @@ uint64_t __41__CHSharedAddressBook_revertAddressBook___block_invoke(uint64_t a1)
   return [*(a1 + 32) sendABChangedNotificationSyncWithUserInfo:0];
 }
 
-- (void)insertAddressBookInfoDictionaryIntoCache:(id)a3
+- (void)insertAddressBookInfoDictionaryIntoCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__CHSharedAddressBook_insertAddressBookInfoDictionaryIntoCache___block_invoke;
   v6[3] = &unk_1E81DBE38;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = cacheCopy;
+  selfCopy = self;
+  v5 = cacheCopy;
   [(CHSynchronizedLoggable *)self execute:v6];
 }
 
@@ -140,19 +140,19 @@ void __64__CHSharedAddressBook_insertAddressBookInfoDictionaryIntoCache___block_
   }
 }
 
-- (void)insertAddressBookInfoIntoCache:(id)a3 forKey:(id)a4
+- (void)insertAddressBookInfoIntoCache:(id)cache forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__CHSharedAddressBook_insertAddressBookInfoIntoCache_forKey___block_invoke;
   v10[3] = &unk_1E81DC2A8;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = cacheCopy;
+  v12 = keyCopy;
+  selfCopy = self;
+  v8 = keyCopy;
+  v9 = cacheCopy;
   [(CHSynchronizedLoggable *)self execute:v10];
 }
 
@@ -175,9 +175,9 @@ void __61__CHSharedAddressBook_insertAddressBookInfoIntoCache_forKey___block_inv
   }
 }
 
-- (id)fetchAddressBookInfoFromCacheForKey:(id)a3
+- (id)fetchAddressBookInfoFromCacheForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -190,7 +190,7 @@ void __61__CHSharedAddressBook_insertAddressBookInfoIntoCache_forKey___block_inv
   v8[3] = &unk_1E81DC2D0;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(CHSynchronizedLoggable *)self executeSync:v8];
   v6 = v12[5];

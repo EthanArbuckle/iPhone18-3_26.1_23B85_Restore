@@ -1,14 +1,14 @@
 @interface AXSettings.LiveSpeech
-- (id)liveSpeechVoiceIdentifierForKeyboardID:(id)a3;
+- (id)liveSpeechVoiceIdentifierForKeyboardID:(id)d;
 @end
 
 @implementation AXSettings.LiveSpeech
 
-- (id)liveSpeechVoiceIdentifierForKeyboardID:(id)a3
+- (id)liveSpeechVoiceIdentifierForKeyboardID:(id)d
 {
   v4 = sub_18B2C9894();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_18B272764(v4, v6);
   v9 = v8;
 

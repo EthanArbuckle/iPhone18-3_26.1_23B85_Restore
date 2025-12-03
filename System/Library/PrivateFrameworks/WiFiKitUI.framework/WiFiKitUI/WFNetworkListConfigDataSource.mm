@@ -1,58 +1,58 @@
 @interface WFNetworkListConfigDataSource
-- (void)setAskToJoinMode:(int64_t)a3;
-- (void)setAskToJoinModeTapHandler:(id)a3;
-- (void)setAutoInstantHotspotOption:(int64_t)a3;
-- (void)setAutoInstantHotspotTapHandler:(id)a3;
-- (void)setAutoUnlockEnabled:(BOOL)a3;
-- (void)setDataUsageHidden:(BOOL)a3;
-- (void)setDataUsageTapHandler:(id)a3;
-- (void)setIsCellularDevice:(BOOL)a3;
-- (void)setIsChinaDevice:(BOOL)a3;
-- (void)setNetworkModificationRestriction:(BOOL)a3;
-- (void)setPowerModificationRestriction:(BOOL)a3;
-- (void)setPowerState:(unint64_t)a3;
-- (void)setPowerToggleHandler:(id)a3;
-- (void)setUserAutoJoinEnabled:(BOOL)a3;
-- (void)setWAPIEnabled:(BOOL)a3;
-- (void)setWAPISwitchHandler:(id)a3;
-- (void)setWAPISwitchHidden:(BOOL)a3;
+- (void)setAskToJoinMode:(int64_t)mode;
+- (void)setAskToJoinModeTapHandler:(id)handler;
+- (void)setAutoInstantHotspotOption:(int64_t)option;
+- (void)setAutoInstantHotspotTapHandler:(id)handler;
+- (void)setAutoUnlockEnabled:(BOOL)enabled;
+- (void)setDataUsageHidden:(BOOL)hidden;
+- (void)setDataUsageTapHandler:(id)handler;
+- (void)setIsCellularDevice:(BOOL)device;
+- (void)setIsChinaDevice:(BOOL)device;
+- (void)setNetworkModificationRestriction:(BOOL)restriction;
+- (void)setPowerModificationRestriction:(BOOL)restriction;
+- (void)setPowerState:(unint64_t)state;
+- (void)setPowerToggleHandler:(id)handler;
+- (void)setUserAutoJoinEnabled:(BOOL)enabled;
+- (void)setWAPIEnabled:(BOOL)enabled;
+- (void)setWAPISwitchHandler:(id)handler;
+- (void)setWAPISwitchHidden:(BOOL)hidden;
 @end
 
 @implementation WFNetworkListConfigDataSource
 
-- (void)setNetworkModificationRestriction:(BOOL)a3
+- (void)setNetworkModificationRestriction:(BOOL)restriction
 {
-  v4 = self;
-  sub_274037B44(a3);
+  selfCopy = self;
+  sub_274037B44(restriction);
 }
 
-- (void)setPowerModificationRestriction:(BOOL)a3
+- (void)setPowerModificationRestriction:(BOOL)restriction
 {
-  v4 = self;
-  sub_274037F5C(a3);
+  selfCopy = self;
+  sub_274037F5C(restriction);
 }
 
-- (void)setPowerState:(unint64_t)a3
+- (void)setPowerState:(unint64_t)state
 {
-  v4 = self;
-  sub_274038374(a3);
+  selfCopy = self;
+  sub_274038374(state);
 }
 
-- (void)setAskToJoinMode:(int64_t)a3
+- (void)setAskToJoinMode:(int64_t)mode
 {
-  v4 = self;
-  sub_2740387F8(a3);
+  selfCopy = self;
+  sub_2740387F8(mode);
 }
 
-- (void)setAutoInstantHotspotOption:(int64_t)a3
+- (void)setAutoInstantHotspotOption:(int64_t)option
 {
-  v4 = self;
-  sub_274038C04(a3);
+  selfCopy = self;
+  sub_274038C04(option);
 }
 
-- (void)setAutoInstantHotspotTapHandler:(id)a3
+- (void)setAutoInstantHotspotTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -71,13 +71,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setAskToJoinModeTapHandler:(id)a3
+- (void)setAskToJoinModeTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -96,13 +96,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setWAPISwitchHandler:(id)a3
+- (void)setWAPISwitchHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -121,13 +121,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setDataUsageTapHandler:(id)a3
+- (void)setDataUsageTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -146,55 +146,55 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 
-- (void)setIsChinaDevice:(BOOL)a3
+- (void)setIsChinaDevice:(BOOL)device
 {
-  v4 = self;
-  sub_27403944C(a3);
+  selfCopy = self;
+  sub_27403944C(device);
 }
 
-- (void)setIsCellularDevice:(BOOL)a3
+- (void)setIsCellularDevice:(BOOL)device
 {
-  v4 = self;
-  sub_27403961C(a3);
+  selfCopy = self;
+  sub_27403961C(device);
 }
 
-- (void)setAutoUnlockEnabled:(BOOL)a3
+- (void)setAutoUnlockEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_2740397EC(a3);
+  selfCopy = self;
+  sub_2740397EC(enabled);
 }
 
-- (void)setWAPIEnabled:(BOOL)a3
+- (void)setWAPIEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_2740399BC(a3);
+  selfCopy = self;
+  sub_2740399BC(enabled);
 }
 
-- (void)setUserAutoJoinEnabled:(BOOL)a3
+- (void)setUserAutoJoinEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_274039E40(a3);
+  selfCopy = self;
+  sub_274039E40(enabled);
 }
 
-- (void)setDataUsageHidden:(BOOL)a3
+- (void)setDataUsageHidden:(BOOL)hidden
 {
-  v4 = self;
-  sub_27403A010(a3);
+  selfCopy = self;
+  sub_27403A010(hidden);
 }
 
-- (void)setWAPISwitchHidden:(BOOL)a3
+- (void)setWAPISwitchHidden:(BOOL)hidden
 {
-  v4 = self;
-  sub_27403A1FC(a3);
+  selfCopy = self;
+  sub_27403A1FC(hidden);
 }
 
-- (void)setPowerToggleHandler:(id)a3
+- (void)setPowerToggleHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -213,7 +213,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_273FBD2BC(v7);
 }
 

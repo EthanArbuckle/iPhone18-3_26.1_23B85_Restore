@@ -1,17 +1,17 @@
 @interface AmbientPhotoFrameControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)accessibilityPresentExtendedMetadataOverlay;
 @end
 
 @implementation AmbientPhotoFrameControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasInstanceMethod:@"accessibilityPresentExtendedMetadataOverlay" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasInstanceMethod:@"openVisibleAssetInPhotosApp" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasSwiftField:@"extendedMetadataOverlayView" withSwiftType:"Optional<AmbientPhotoFrameExtendedMetadataOverlayView>"];
-  [v3 validateClass:@"PhotosUIPrivate.AmbientPhotoFrameExtendedMetadataOverlayView" hasSwiftField:@"openPhotosLabel" withSwiftType:"Optional<UILabel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasInstanceMethod:@"accessibilityPresentExtendedMetadataOverlay" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasInstanceMethod:@"openVisibleAssetInPhotosApp" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PhotosUIPrivate.AmbientPhotoFrameController" hasSwiftField:@"extendedMetadataOverlayView" withSwiftType:"Optional<AmbientPhotoFrameExtendedMetadataOverlayView>"];
+  [validationsCopy validateClass:@"PhotosUIPrivate.AmbientPhotoFrameExtendedMetadataOverlayView" hasSwiftField:@"openPhotosLabel" withSwiftType:"Optional<UILabel>"];
 }
 
 - (void)accessibilityPresentExtendedMetadataOverlay

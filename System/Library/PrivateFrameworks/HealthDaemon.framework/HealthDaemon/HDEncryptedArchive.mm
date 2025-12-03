@@ -1,30 +1,30 @@
 @interface HDEncryptedArchive
-+ (BOOL)encryptContentsOfFileHandle:(id)a3 to:(id)a4 key:(id)a5 error:(id *)a6;
-+ (id)archiveForDecryptionWithFileHandle:(id)a3 key:(id)a4 error:(id *)a5;
-+ (id)archiveForEncryptionWithFileHandle:(id)a3 key:(id)a4 error:(id *)a5;
-+ (id)randomSymmetricKeyWithError:(id *)a3;
-- (BOOL)writeData:(id)a3 error:(id *)a4;
-- (HDEncryptedArchive)initWithContext:(AEAContext_impl *)a3 fileStream:(AAByteStream_impl *)a4 byteStream:(AAByteStream_impl *)a5 mode:(int64_t)a6;
-- (id)readDataOfLength:(int64_t)a3 offset:(int64_t)a4 error:(id *)a5;
++ (BOOL)encryptContentsOfFileHandle:(id)handle to:(id)to key:(id)key error:(id *)error;
++ (id)archiveForDecryptionWithFileHandle:(id)handle key:(id)key error:(id *)error;
++ (id)archiveForEncryptionWithFileHandle:(id)handle key:(id)key error:(id *)error;
++ (id)randomSymmetricKeyWithError:(id *)error;
+- (BOOL)writeData:(id)data error:(id *)error;
+- (HDEncryptedArchive)initWithContext:(AEAContext_impl *)context fileStream:(AAByteStream_impl *)stream byteStream:(AAByteStream_impl *)byteStream mode:(int64_t)mode;
+- (id)readDataOfLength:(int64_t)length offset:(int64_t)offset error:(id *)error;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation HDEncryptedArchive
 
-+ (id)archiveForDecryptionWithFileHandle:(id)a3 key:(id)a4 error:(id *)a5
++ (id)archiveForDecryptionWithFileHandle:(id)handle key:(id)key error:(id *)error
 {
-  v7 = a4;
-  v8 = dup([a3 fileDescriptor]);
+  keyCopy = key;
+  v8 = dup([handle fileDescriptor]);
   v9 = AAFileStreamOpenWithFD(v8, 1);
   if (!v9)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = @"Failed to open file stream.";
-    v20 = a5;
+    errorCopy2 = error;
     v21 = 922;
 LABEL_9:
-    [v18 hk_assignError:v20 code:v21 format:v19];
+    [v18 hk_assignError:errorCopy2 code:v21 format:v19];
     v22 = 0;
     goto LABEL_16;
   }
@@ -35,34 +35,34 @@ LABEL_9:
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = @"Failed to construct context from encrypted stream.";
-    v20 = a5;
+    errorCopy2 = error;
     v21 = 921;
     goto LABEL_9;
   }
 
   v12 = v11;
-  v13 = [v7 keyDataForDecryptionWithError:a5];
+  v13 = [keyCopy keyDataForDecryptionWithError:error];
   if (v13)
   {
-    v14 = [v7 symmetric];
-    v15 = [v13 bytes];
+    symmetric = [keyCopy symmetric];
+    bytes = [v13 bytes];
     v16 = [v13 length];
-    if (v14)
+    if (symmetric)
     {
-      v17 = AEAContextSetFieldBlob(v12, 9u, 0, v15, v16);
+      v17 = AEAContextSetFieldBlob(v12, 9u, 0, bytes, v16);
       if ((v17 & 0x80000000) != 0)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:921 format:{@"Failed to set symmetric key: %d", v17}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:921 format:{@"Failed to set symmetric key: %d", v17}];
         goto LABEL_14;
       }
     }
 
     else
     {
-      v23 = AEAContextSetFieldBlob(v12, 0xBu, 1u, v15, v16);
+      v23 = AEAContextSetFieldBlob(v12, 0xBu, 1u, bytes, v16);
       if ((v23 & 0x80000000) != 0)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:921 format:{@"Failed to set recipient private key: %d", v23}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:921 format:{@"Failed to set recipient private key: %d", v23}];
         goto LABEL_14;
       }
     }
@@ -85,11 +85,11 @@ LABEL_16:
   return v22;
 }
 
-+ (id)archiveForEncryptionWithFileHandle:(id)a3 key:(id)a4 error:(id *)a5
++ (id)archiveForEncryptionWithFileHandle:(id)handle key:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 symmetric])
+  handleCopy = handle;
+  keyCopy = key;
+  if ([keyCopy symmetric])
   {
     v9 = 1;
   }
@@ -102,24 +102,24 @@ LABEL_16:
   v10 = AEAContextCreateWithProfile(v9);
   if (!v10)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:921 format:@"Failed to create context."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:921 format:@"Failed to create context."];
     v19 = 0;
     goto LABEL_20;
   }
 
   v11 = v10;
-  v12 = [v8 keyDataForEncryptionWithError:a5];
+  v12 = [keyCopy keyDataForEncryptionWithError:error];
   if (!v12)
   {
     goto LABEL_18;
   }
 
-  v13 = [v8 symmetric];
-  v14 = [v12 bytes];
+  symmetric = [keyCopy symmetric];
+  bytes = [v12 bytes];
   v15 = [v12 length];
-  if (v13)
+  if (symmetric)
   {
-    v16 = AEAContextSetFieldBlob(v11, 9u, 0, v14, v15);
+    v16 = AEAContextSetFieldBlob(v11, 9u, 0, bytes, v15);
     if ((v16 & 0x80000000) != 0)
     {
       v17 = MEMORY[0x277CCA9B8];
@@ -127,10 +127,10 @@ LABEL_16:
       v18 = @"Failed to set symmetric key: %d";
 LABEL_16:
       v24 = v17;
-      v25 = a5;
+      errorCopy2 = error;
       v26 = 921;
 LABEL_17:
-      [v24 hk_assignError:v25 code:v26 format:{v18, v28}];
+      [v24 hk_assignError:errorCopy2 code:v26 format:{v18, v28}];
 LABEL_18:
       v19 = 0;
       goto LABEL_19;
@@ -139,7 +139,7 @@ LABEL_18:
 
   else
   {
-    v20 = AEAContextSetFieldBlob(v11, 0xAu, 1u, v14, v15);
+    v20 = AEAContextSetFieldBlob(v11, 0xAu, 1u, bytes, v15);
     if ((v20 & 0x80000000) != 0)
     {
       v17 = MEMORY[0x277CCA9B8];
@@ -158,13 +158,13 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  v22 = dup([v7 fileDescriptor]);
+  v22 = dup([handleCopy fileDescriptor]);
   v23 = AAFileStreamOpenWithFD(v22, 1);
   if (!v23)
   {
     v24 = MEMORY[0x277CCA9B8];
     v18 = @"Failed to open file stream.";
-    v25 = a5;
+    errorCopy2 = error;
     v26 = 922;
     goto LABEL_17;
   }
@@ -177,21 +177,21 @@ LABEL_20:
   return v19;
 }
 
-+ (BOOL)encryptContentsOfFileHandle:(id)a3 to:(id)a4 key:(id)a5 error:(id *)a6
++ (BOOL)encryptContentsOfFileHandle:(id)handle to:(id)to key:(id)key error:(id *)error
 {
-  v9 = a3;
-  v10 = [HDEncryptedArchive archiveForEncryptionWithFileHandle:a4 key:a5 error:a6];
+  handleCopy = handle;
+  v10 = [HDEncryptedArchive archiveForEncryptionWithFileHandle:to key:key error:error];
   if (v10)
   {
     while (1)
     {
-      v11 = [v9 readDataUpToLength:0x8000 error:a6];
+      v11 = [handleCopy readDataUpToLength:0x8000 error:error];
       if (![v11 length])
       {
         break;
       }
 
-      v12 = [v10 writeData:v11 error:a6];
+      v12 = [v10 writeData:v11 error:error];
 
       if (!v12)
       {
@@ -212,13 +212,13 @@ LABEL_4:
   return v13;
 }
 
-+ (id)randomSymmetricKeyWithError:(id *)a3
++ (id)randomSymmetricKeyWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
   v5 = SecRandomCopyBytes(*MEMORY[0x277CDC540], [v4 length], objc_msgSend(v4, "mutableBytes"));
   if (v5)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:2000 format:{@"Failed to generate random symmetric key: %d", v5}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:2000 format:{@"Failed to generate random symmetric key: %d", v5}];
     v6 = 0;
   }
 
@@ -230,17 +230,17 @@ LABEL_4:
   return v6;
 }
 
-- (HDEncryptedArchive)initWithContext:(AEAContext_impl *)a3 fileStream:(AAByteStream_impl *)a4 byteStream:(AAByteStream_impl *)a5 mode:(int64_t)a6
+- (HDEncryptedArchive)initWithContext:(AEAContext_impl *)context fileStream:(AAByteStream_impl *)stream byteStream:(AAByteStream_impl *)byteStream mode:(int64_t)mode
 {
   v11.receiver = self;
   v11.super_class = HDEncryptedArchive;
   result = [(HDEncryptedArchive *)&v11 init];
   if (result)
   {
-    result->_byteStream = a5;
-    result->_mode = a6;
-    result->_context = a3;
-    result->_fileStream = a4;
+    result->_byteStream = byteStream;
+    result->_mode = mode;
+    result->_context = context;
+    result->_fileStream = stream;
   }
 
   return result;
@@ -278,18 +278,18 @@ LABEL_4:
   }
 }
 
-- (BOOL)writeData:(id)a3 error:(id *)a4
+- (BOOL)writeData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   if (self->_mode)
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = @"Archive is not open for encryption.";
-    v10 = a4;
+    errorCopy2 = error;
     v11 = 126;
 LABEL_3:
-    [v8 hk_assignError:v10 code:v11 format:{v9, v16}];
+    [v8 hk_assignError:errorCopy2 code:v11 format:{v9, v16}];
     goto LABEL_4;
   }
 
@@ -298,19 +298,19 @@ LABEL_3:
   {
     v8 = MEMORY[0x277CCA9B8];
     v9 = @"Archive is not open.";
-    v10 = a4;
+    errorCopy2 = error;
     v11 = 3;
     goto LABEL_3;
   }
 
-  v15 = AAByteStreamWrite(byteStream, [v6 bytes], objc_msgSend(v6, "length"));
+  v15 = AAByteStreamWrite(byteStream, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   if ((v15 & 0x8000000000000000) == 0)
   {
     v12 = 1;
     goto LABEL_5;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:923 format:{@"Failed to write encrypted data: %ld", v15}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:923 format:{@"Failed to write encrypted data: %ld", v15}];
 LABEL_4:
   v12 = 0;
 LABEL_5:
@@ -318,16 +318,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)readDataOfLength:(int64_t)a3 offset:(int64_t)a4 error:(id *)a5
+- (id)readDataOfLength:(int64_t)length offset:(int64_t)offset error:(id *)error
 {
   if (self->_mode != 1)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = @"Archive is not open for decryption.";
-    v14 = a5;
+    errorCopy2 = error;
     v15 = 126;
 LABEL_9:
-    [v12 hk_assignError:v14 code:v15 format:v13];
+    [v12 hk_assignError:errorCopy2 code:v15 format:v13];
     v11 = 0;
     goto LABEL_12;
   }
@@ -336,24 +336,24 @@ LABEL_9:
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = @"Archive is not open.";
-    v14 = a5;
+    errorCopy2 = error;
     v15 = 3;
     goto LABEL_9;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a3];
-  v10 = AAByteStreamPRead(self->_byteStream, [v9 mutableBytes], a3, a4);
+  v9 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:length];
+  v10 = AAByteStreamPRead(self->_byteStream, [v9 mutableBytes], length, offset);
   if (v10 < 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:923 format:{@"Failed to read encrypted data at %lld (length %ld): %ld (errno: %d)", a4, a3, v10, *__error()}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:923 format:{@"Failed to read encrypted data at %lld (length %ld): %ld (errno: %d)", offset, length, v10, *__error()}];
     v11 = 0;
   }
 
   else
   {
-    if (a3 > v10)
+    if (length > v10)
     {
-      [v9 replaceBytesInRange:v10 withBytes:a3 - v10 length:{0, 0}];
+      [v9 replaceBytesInRange:v10 withBytes:length - v10 length:{0, 0}];
     }
 
     v11 = v9;

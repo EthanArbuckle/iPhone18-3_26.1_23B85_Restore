@@ -17,32 +17,32 @@
 
 - (NSDictionary)parentAccountMailProperties
 {
-  v2 = [(ACAccount *)[(MFAccount *)self->_mailAccount persistentAccount] parentAccount];
+  parentAccount = [(ACAccount *)[(MFAccount *)self->_mailAccount persistentAccount] parentAccount];
   v3 = *MEMORY[0x277CB9150];
 
-  return [v2 propertiesForDataclass:v3];
+  return [parentAccount propertiesForDataclass:v3];
 }
 
 - (BOOL)usesSSL
 {
-  v2 = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
-  v3 = [(NSDictionary *)v2 objectForKeyedSubscript:*MEMORY[0x277CB8B40]];
+  parentAccountMailProperties = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
+  v3 = [(NSDictionary *)parentAccountMailProperties objectForKeyedSubscript:*MEMORY[0x277CB8B40]];
 
   return [v3 BOOLValue];
 }
 
 - (id)hostname
 {
-  v2 = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
+  parentAccountMailProperties = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
   v3 = *MEMORY[0x277CB8B30];
 
-  return [(NSDictionary *)v2 objectForKeyedSubscript:v3];
+  return [(NSDictionary *)parentAccountMailProperties objectForKeyedSubscript:v3];
 }
 
 - (unsigned)portNumber
 {
-  v2 = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
-  v3 = [(NSDictionary *)v2 objectForKeyedSubscript:*MEMORY[0x277CB8B38]];
+  parentAccountMailProperties = [(MFOSXServerSMTPAccount *)self parentAccountMailProperties];
+  v3 = [(NSDictionary *)parentAccountMailProperties objectForKeyedSubscript:*MEMORY[0x277CB8B38]];
 
   return [v3 unsignedIntValue];
 }

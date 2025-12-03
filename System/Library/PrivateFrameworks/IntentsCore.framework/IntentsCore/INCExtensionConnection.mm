@@ -3,22 +3,22 @@
 - (BOOL)_cancelRequestTimer;
 - (BOOL)_carPlayIsActive;
 - (BOOL)_carPlaySupportsVideoPlayback;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)requiresTCC;
 - (BOOL)requiresTrustCheck;
-- (double)_timeoutIntervalForTransactionState:(id)a3;
-- (id)xpcListenerEndpointWithInterface:(id)a3 object:(id)a4;
+- (double)_timeoutIntervalForTransactionState:(id)state;
+- (id)xpcListenerEndpointWithInterface:(id)interface object:(id)object;
 - (void)_invalidateAssertions;
 - (void)_invalidateDisplayLayoutMonitor;
 - (void)_invalidateInUseAssertion;
 - (void)_invalidateRunningBoardAssertion;
-- (void)_setShouldObserveLayout:(BOOL)a3;
-- (void)_startRequestTimerWithExtensionProxy:(id)a3;
-- (void)_takeInUseAssertionForIntent:(id)a3 extensionBundleIdentifier:(id)a4;
+- (void)_setShouldObserveLayout:(BOOL)layout;
+- (void)_startRequestTimerWithExtensionProxy:(id)proxy;
+- (void)_takeInUseAssertionForIntent:(id)intent extensionBundleIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)reset;
-- (void)resumeWithCompletionHandler:(id)a3;
-- (void)setIntent:(id)a3;
+- (void)resumeWithCompletionHandler:(id)handler;
+- (void)setIntent:(id)intent;
 @end
 
 @implementation INCExtensionConnection
@@ -43,11 +43,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_ERROR))
     {
       v9 = v5;
-      v10 = [(INCExtensionConnection *)self intent];
+      intent = [(INCExtensionConnection *)self intent];
       v11 = 136315394;
       v12 = "[INCExtensionConnection _cancelRequestTimer]";
       v13 = 2112;
-      v14 = v10;
+      v14 = intent;
       _os_log_error_impl(&dword_255503000, v9, OS_LOG_TYPE_ERROR, "%s Intent handling already timed out, ignoring extension response for intent %@", &v11, 0x16u);
     }
 
@@ -147,23 +147,23 @@ void __31__INCExtensionConnection_reset__block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 24) cancel];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_xpcListener == v6 && self->_xpcInterface)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_xpcListener == listenerCopy && self->_xpcInterface)
   {
-    [(INCExtensionConnection *)self setXPCConnection:v7];
+    [(INCExtensionConnection *)self setXPCConnection:connectionCopy];
     objc_initWeak(&location, self);
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __61__INCExtensionConnection_listener_shouldAcceptNewConnection___block_invoke;
     v13 = &unk_2797E79A8;
     objc_copyWeak(&v14, &location);
-    [v7 setInvalidationHandler:&v10];
-    [v7 setExportedInterface:{self->_xpcInterface, v10, v11, v12, v13}];
-    [v7 setExportedObject:self->_xpcObject];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v10];
+    [connectionCopy setExportedInterface:{self->_xpcInterface, v10, v11, v12, v13}];
+    [connectionCopy setExportedObject:self->_xpcObject];
+    [connectionCopy resume];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
     v8 = 1;
@@ -183,13 +183,13 @@ void __61__INCExtensionConnection_listener_shouldAcceptNewConnection___block_inv
   [WeakRetained setXPCInterface:0];
 }
 
-- (void)_takeInUseAssertionForIntent:(id)a3 extensionBundleIdentifier:(id)a4
+- (void)_takeInUseAssertionForIntent:(id)intent extensionBundleIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
   if (!self->_backgroundHandlingAssertion)
   {
     v10 = 0;
-    v5 = [a3 _intents_backgroundHandlingAssertionForBundleIdentifier:a4 context:1 error:&v10];
+    v5 = [intent _intents_backgroundHandlingAssertionForBundleIdentifier:identifier context:1 error:&v10];
     v6 = v10;
     backgroundHandlingAssertion = self->_backgroundHandlingAssertion;
     self->_backgroundHandlingAssertion = v5;
@@ -211,17 +211,17 @@ void __61__INCExtensionConnection_listener_shouldAcceptNewConnection___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_timeoutIntervalForTransactionState:(id)a3
+- (double)_timeoutIntervalForTransactionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   requestTimeoutInterval = self->_requestTimeoutInterval;
-  v6 = [v4 intent];
+  intent = [stateCopy intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 type];
+    type = [stateCopy type];
 
-    if (v7 == 4)
+    if (type == 4)
     {
       requestTimeoutInterval = 60.0;
       goto LABEL_14;
@@ -232,13 +232,13 @@ void __61__INCExtensionConnection_listener_shouldAcceptNewConnection___block_inv
   {
   }
 
-  v8 = [v4 intent];
+  intent2 = [stateCopy intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 type];
+    type2 = [stateCopy type];
 
-    if (v9 == 4)
+    if (type2 == 4)
     {
       requestTimeoutInterval = 300.0;
       goto LABEL_14;
@@ -249,13 +249,13 @@ void __61__INCExtensionConnection_listener_shouldAcceptNewConnection___block_inv
   {
   }
 
-  v10 = [v4 intent];
+  intent3 = [stateCopy intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v4 type];
+    type3 = [stateCopy type];
 
-    if (v11 == 4)
+    if (type3 == 4)
     {
       requestTimeoutInterval = 180.0;
     }
@@ -272,32 +272,32 @@ LABEL_14:
 
 - (BOOL)_carPlaySupportsVideoPlayback
 {
-  v3 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
 
-  if (!v3)
+  if (!currentSession)
   {
     return 0;
   }
 
-  v4 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
-  v5 = [v4 configuration];
-  v6 = [v5 videoPlaybackSupported];
+  currentSession2 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  configuration = [currentSession2 configuration];
+  videoPlaybackSupported = [configuration videoPlaybackSupported];
 
-  return v6;
+  return videoPlaybackSupported;
 }
 
 - (BOOL)_carPlayIsActive
 {
-  v2 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
-  v3 = v2 != 0;
+  currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  v3 = currentSession != 0;
 
   return v3;
 }
 
-- (void)_startRequestTimerWithExtensionProxy:(id)a3
+- (void)_startRequestTimerWithExtensionProxy:(id)proxy
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   requestTimer = self->_requestTimer;
   if (requestTimer)
   {
@@ -313,26 +313,26 @@ LABEL_14:
     }
   }
 
-  if ([v4 _isExtensionBeingDebugged])
+  if ([proxyCopy _isExtensionBeingDebugged])
   {
     v7 = *MEMORY[0x277CD38C8];
     if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [(INCExtensionConnection *)self intent];
+      intent = [(INCExtensionConnection *)self intent];
       *buf = 136315394;
       v24 = "[INCExtensionConnection _startRequestTimerWithExtensionProxy:]";
       v25 = 2112;
-      v26 = v9;
+      v26 = intent;
       _os_log_impl(&dword_255503000, v8, OS_LOG_TYPE_INFO, "%s Waiting indefinitely for intent: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v10 = [(INCExtensionConnection *)self _transaction];
-    v11 = [v10 state];
-    [(INCExtensionConnection *)self _timeoutIntervalForTransactionState:v11];
+    _transaction = [(INCExtensionConnection *)self _transaction];
+    state = [_transaction state];
+    [(INCExtensionConnection *)self _timeoutIntervalForTransactionState:state];
     v13 = v12;
 
     objc_initWeak(buf, self);
@@ -343,8 +343,8 @@ LABEL_14:
     v19[2] = __63__INCExtensionConnection__startRequestTimerWithExtensionProxy___block_invoke;
     v19[3] = &unk_2797E7980;
     objc_copyWeak(&v22, buf);
-    v20 = v4;
-    v21 = self;
+    v20 = proxyCopy;
+    selfCopy = self;
     v16 = [v14 initWithTimeoutInterval:queue onQueue:v19 timeoutHandler:v13];
     v17 = self->_requestTimer;
     self->_requestTimer = v16;
@@ -400,24 +400,24 @@ void __63__INCExtensionConnection__startRequestTimerWithExtensionProxy___block_i
   }
 }
 
-- (void)_setShouldObserveLayout:(BOOL)a3
+- (void)_setShouldObserveLayout:(BOOL)layout
 {
-  if (self->_shouldObserveLayout != a3)
+  if (self->_shouldObserveLayout != layout)
   {
-    self->_shouldObserveLayout = a3;
+    self->_shouldObserveLayout = layout;
     [(INCExtensionConnection *)self _invalidateDisplayLayoutMonitor];
     if (self->_shouldObserveLayout)
     {
       os_unfair_lock_lock(&self->_displayLayoutMonitorLock);
-      v4 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+      configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
       objc_initWeak(&location, self);
       v7 = MEMORY[0x277D85DD0];
       v8 = 3221225472;
       v9 = __50__INCExtensionConnection__setShouldObserveLayout___block_invoke;
       v10 = &unk_2797E7938;
       objc_copyWeak(&v11, &location);
-      [v4 setTransitionHandler:&v7];
-      v5 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v4, v7, v8, v9, v10}];
+      [configurationForDefaultMainDisplayMonitor setTransitionHandler:&v7];
+      v5 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationForDefaultMainDisplayMonitor, v7, v8, v9, v10}];
       displayLayoutMonitor = self->_displayLayoutMonitor;
       self->_displayLayoutMonitor = v5;
 
@@ -439,18 +439,18 @@ void __50__INCExtensionConnection__setShouldObserveLayout___block_invoke(uint64_
   }
 }
 
-- (id)xpcListenerEndpointWithInterface:(id)a3 object:(id)a4
+- (id)xpcListenerEndpointWithInterface:(id)interface object:(id)object
 {
-  v6 = a4;
-  [(INCExtensionConnection *)self setXPCInterface:a3];
-  [(INCExtensionConnection *)self setXPCObject:v6];
+  objectCopy = object;
+  [(INCExtensionConnection *)self setXPCInterface:interface];
+  [(INCExtensionConnection *)self setXPCObject:objectCopy];
 
   xpcListener = self->_xpcListener;
   if (!xpcListener)
   {
-    v8 = [MEMORY[0x277CCAE98] anonymousListener];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     v9 = self->_xpcListener;
-    self->_xpcListener = v8;
+    self->_xpcListener = anonymousListener;
 
     [(NSXPCListener *)self->_xpcListener setDelegate:self];
     [(NSXPCListener *)self->_xpcListener resume];
@@ -460,17 +460,17 @@ void __50__INCExtensionConnection__setShouldObserveLayout___block_invoke(uint64_
   return [(NSXPCListener *)xpcListener endpoint];
 }
 
-- (void)resumeWithCompletionHandler:(id)a3
+- (void)resumeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__INCExtensionConnection_resumeWithCompletionHandler___block_invoke;
   v8[3] = &unk_2797E8068;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v8);
   dispatch_async(queue, v7);
 }
@@ -1059,37 +1059,37 @@ void __54__INCExtensionConnection_resumeWithCompletionHandler___block_invoke_2_5
 
 - (BOOL)requiresTrustCheck
 {
-  v2 = [(INCExtensionTransaction *)self->_transaction request];
-  v3 = [v2 requiresTrustCheck];
+  request = [(INCExtensionTransaction *)self->_transaction request];
+  requiresTrustCheck = [request requiresTrustCheck];
 
-  return v3;
+  return requiresTrustCheck;
 }
 
 - (BOOL)requiresTCC
 {
-  v2 = [(INCExtensionTransaction *)self->_transaction request];
-  v3 = [v2 requiresTCC];
+  request = [(INCExtensionTransaction *)self->_transaction request];
+  requiresTCC = [request requiresTCC];
 
-  return v3;
+  return requiresTCC;
 }
 
-- (void)setIntent:(id)a3
+- (void)setIntent:(id)intent
 {
-  v13 = a3;
-  v4 = [(INCExtensionTransaction *)self->_transaction currentIntent];
-  [v13 _setExecutionContext:{objc_msgSend(v4, "_executionContext")}];
+  intentCopy = intent;
+  currentIntent = [(INCExtensionTransaction *)self->_transaction currentIntent];
+  [intentCopy _setExecutionContext:{objc_msgSend(currentIntent, "_executionContext")}];
 
-  v5 = [(INCExtensionTransaction *)self->_transaction state];
-  v6 = [(INCExtensionTransaction *)self->_transaction state];
+  state = [(INCExtensionTransaction *)self->_transaction state];
+  state2 = [(INCExtensionTransaction *)self->_transaction state];
 
-  if (v6)
+  if (state2)
   {
     transaction = self->_transaction;
     v8 = [INCExtensionTransactionState alloc];
-    v9 = [v5 type];
-    v10 = [v5 intentResponse];
-    v11 = [v5 userActivities];
-    v12 = [(INCExtensionTransactionState *)v8 initWithType:v9 intent:v13 intentResponse:v10 userActivities:v11];
+    type = [state type];
+    intentResponse = [state intentResponse];
+    userActivities = [state userActivities];
+    v12 = [(INCExtensionTransactionState *)v8 initWithType:type intent:intentCopy intentResponse:intentResponse userActivities:userActivities];
     [(INCExtensionTransaction *)transaction setState:v12];
   }
 }
@@ -1153,7 +1153,7 @@ uint64_t __119__INCExtensionConnection_initWithIntent_supportedExtensionTypes_do
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

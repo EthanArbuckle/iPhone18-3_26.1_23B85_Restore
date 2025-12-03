@@ -1,9 +1,9 @@
 @interface MPFeedbackCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (id)newCommandEventWithState:(int64_t)a3;
+- (id)newCommandEventWithState:(int64_t)state;
 - (void)setActive:(BOOL)active;
 - (void)setLocalizedShortTitle:(NSString *)localizedShortTitle;
-- (void)setPresentationStyle:(int64_t)a3;
+- (void)setPresentationStyle:(int64_t)style;
 @end
 
 @implementation MPFeedbackCommand
@@ -38,24 +38,24 @@
   return v3;
 }
 
-- (id)newCommandEventWithState:(int64_t)a3
+- (id)newCommandEventWithState:(int64_t)state
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPRemoteCommand *)self mediaRemoteCommandType];
+  mediaRemoteCommandType = [(MPRemoteCommand *)self mediaRemoteCommandType];
   v10 = *MEMORY[0x1E69B1140];
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:a3 == -1];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:state == -1];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v8 = [(MPRemoteCommand *)self newCommandEventWithCommandType:v5 options:v7];
+  v8 = [(MPRemoteCommand *)self newCommandEventWithCommandType:mediaRemoteCommandType options:v7];
 
   return v8;
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  if (self->_presentationStyle != a3)
+  if (self->_presentationStyle != style)
   {
-    self->_presentationStyle = a3;
+    self->_presentationStyle = style;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

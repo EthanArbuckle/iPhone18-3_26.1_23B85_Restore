@@ -1,14 +1,14 @@
 @interface _PXCuratedLibraryLayoutAssetsSnapshot
-- ($610C715A8B7E26897ADA48D0AF0CD277)spriteSnapshotForAssetWithIdentifier:(SEL)a3;
+- ($610C715A8B7E26897ADA48D0AF0CD277)spriteSnapshotForAssetWithIdentifier:(SEL)identifier;
 - (CGPoint)offset;
 - (NSCopying)dominantAssetIdentifier;
-- (_PXCuratedLibraryLayoutAssetsSnapshot)initWithLayout:(id)a3;
-- (id)assetIdentifierForAssetReference:(id)a3;
-- (int64_t)_addSpriteSnapshot:(id *)a3;
+- (_PXCuratedLibraryLayoutAssetsSnapshot)initWithLayout:(id)layout;
+- (id)assetIdentifierForAssetReference:(id)reference;
+- (int64_t)_addSpriteSnapshot:(id *)snapshot;
 - (void)dealloc;
-- (void)enumerateAssetIdentifiersUsingBlock:(id)a3;
-- (void)enumerateAssetInfoForGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 count:(unsigned int)a6 options:(unint64_t)a7 usingBlock:(id)a8;
-- (void)setDominantAssetIdentifier:(id)a3;
+- (void)enumerateAssetIdentifiersUsingBlock:(id)block;
+- (void)enumerateAssetInfoForGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count options:(unint64_t)options usingBlock:(id)block;
+- (void)setDominantAssetIdentifier:(id)identifier;
 @end
 
 @implementation _PXCuratedLibraryLayoutAssetsSnapshot
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (void)setDominantAssetIdentifier:(id)a3
+- (void)setDominantAssetIdentifier:(id)identifier
 {
-  v5 = [(NSDictionary *)self->_spriteSnapshotIndexByAssetIdentifier objectForKeyedSubscript:a3];
+  v5 = [(NSDictionary *)self->_spriteSnapshotIndexByAssetIdentifier objectForKeyedSubscript:identifier];
   v27 = v5;
   if (!v5)
   {
@@ -32,13 +32,13 @@
     goto LABEL_6;
   }
 
-  v6 = [v5 integerValue];
-  v7 = v6;
-  if (v6 < 0 || (spriteSnapshotsCount = self->_spriteSnapshotsCount, v6 >= spriteSnapshotsCount))
+  integerValue = [v5 integerValue];
+  v7 = integerValue;
+  if (integerValue < 0 || (spriteSnapshotsCount = self->_spriteSnapshotsCount, integerValue >= spriteSnapshotsCount))
   {
 LABEL_6:
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"dominantIndex >= 0 && dominantIndex < _spriteSnapshotsCount"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"dominantIndex >= 0 && dominantIndex < _spriteSnapshotsCount"}];
 
     spriteSnapshotsCount = self->_spriteSnapshotsCount;
     if (spriteSnapshotsCount < 1)
@@ -169,20 +169,20 @@ LABEL_33:
   return v3;
 }
 
-- (void)enumerateAssetIdentifiersUsingBlock:(id)a3
+- (void)enumerateAssetIdentifiersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   spriteSnapshotIndexByAssetIdentifier = self->_spriteSnapshotIndexByAssetIdentifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77___PXCuratedLibraryLayoutAssetsSnapshot_enumerateAssetIdentifiersUsingBlock___block_invoke;
   v7[3] = &unk_1E773B7C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)spriteSnapshotIndexByAssetIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- ($610C715A8B7E26897ADA48D0AF0CD277)spriteSnapshotForAssetWithIdentifier:(SEL)a3
+- ($610C715A8B7E26897ADA48D0AF0CD277)spriteSnapshotForAssetWithIdentifier:(SEL)identifier
 {
   v7 = a4;
   if (v7)
@@ -192,12 +192,12 @@ LABEL_33:
     v7 = v15;
     if (v8)
     {
-      v9 = [v8 integerValue];
-      v10 = v9;
-      if (v9 < 0 || v9 >= self->_spriteSnapshotsCount)
+      integerValue = [v8 integerValue];
+      v10 = integerValue;
+      if (integerValue < 0 || integerValue >= self->_spriteSnapshotsCount)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a3 object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < _spriteSnapshotsCount"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:identifier object:self file:@"PXCuratedLibraryLayoutZoomLevelChangeToOrFromAllPhotosAnimationHelper.m" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < _spriteSnapshotsCount"}];
       }
 
       v11 = self->_spriteSnapshots + 56 * v10;
@@ -219,15 +219,15 @@ LABEL_33:
   return result;
 }
 
-- (id)assetIdentifierForAssetReference:(id)a3
+- (id)assetIdentifierForAssetReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
   dataSource = self->_dataSource;
   if (dataSource)
   {
-    [(PXAssetsDataSource *)dataSource indexPathForAssetReference:v4];
+    [(PXAssetsDataSource *)dataSource indexPathForAssetReference:referenceCopy];
     v6 = v11;
   }
 
@@ -252,18 +252,18 @@ LABEL_33:
   return v7;
 }
 
-- (void)enumerateAssetInfoForGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 count:(unsigned int)a6 options:(unint64_t)a7 usingBlock:(id)a8
+- (void)enumerateAssetInfoForGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count options:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a7;
-  v12 = a8;
+  optionsCopy = options;
+  blockCopy = block;
   [(PXAssetsDataSource *)self->_dataSource identifier];
-  if (a6)
+  if (count)
   {
     v13 = 0;
-    v14 = a5 + 1;
+    v14 = infos + 1;
     do
     {
-      if ((v8 & 1) != 0 || v14[-1].var1 == 2)
+      if ((optionsCopy & 1) != 0 || v14[-1].var1 == 2)
       {
         PXGSectionedSpriteTagDecompose();
       }
@@ -272,11 +272,11 @@ LABEL_33:
       v14 = (v14 + 40);
     }
 
-    while (a6 != v13);
+    while (count != v13);
   }
 }
 
-- (int64_t)_addSpriteSnapshot:(id *)a3
+- (int64_t)_addSpriteSnapshot:(id *)snapshot
 {
   spriteSnapshotsCount = self->_spriteSnapshotsCount;
   spriteSnapshotsCapacity = self->_spriteSnapshotsCapacity;
@@ -305,10 +305,10 @@ LABEL_33:
   }
 
   v7 = self->_spriteSnapshots + 56 * spriteSnapshotsCount;
-  origin = a3->var0.origin;
-  size = a3->var0.size;
-  v10 = *&a3->var1;
-  *(v7 + 6) = *&a3[1].var0.origin.y;
+  origin = snapshot->var0.origin;
+  size = snapshot->var0.size;
+  v10 = *&snapshot->var1;
+  *(v7 + 6) = *&snapshot[1].var0.origin.y;
   *(v7 + 1) = size;
   *(v7 + 2) = v10;
   *v7 = origin;
@@ -323,37 +323,37 @@ LABEL_33:
   [(_PXCuratedLibraryLayoutAssetsSnapshot *)&v3 dealloc];
 }
 
-- (_PXCuratedLibraryLayoutAssetsSnapshot)initWithLayout:(id)a3
+- (_PXCuratedLibraryLayoutAssetsSnapshot)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(_PXCuratedLibraryLayoutAssetsSnapshot *)self init];
   if (v5)
   {
-    [v4 visibleRect];
+    [layoutCopy visibleRect];
     v5->_visibleRect.origin.x = v6;
     v5->_visibleRect.origin.y = v7;
     v5->_visibleRect.size.width = v8;
     v5->_visibleRect.size.height = v9;
-    [v4 fullyVisibleRect];
+    [layoutCopy fullyVisibleRect];
     v5->_fullyVisibleRect.origin.x = v10;
     v5->_fullyVisibleRect.origin.y = v11;
     v5->_fullyVisibleRect.size.width = v12;
     v5->_fullyVisibleRect.size.height = v13;
-    v14 = [v4 presentedZoomLevel];
-    v5->_zoomLevel = v14;
-    if (v14 == 4)
+    presentedZoomLevel = [layoutCopy presentedZoomLevel];
+    v5->_zoomLevel = presentedZoomLevel;
+    if (presentedZoomLevel == 4)
     {
-      [v4 allPhotosLayout];
+      [layoutCopy allPhotosLayout];
     }
 
     else
     {
-      [v4 libraryBodyLayout];
+      [layoutCopy libraryBodyLayout];
     }
     v15 = ;
-    v16 = [v15 presentedDataSource];
+    presentedDataSource = [v15 presentedDataSource];
     dataSource = v5->_dataSource;
-    v5->_dataSource = v16;
+    v5->_dataSource = presentedDataSource;
 
     v43 = 0;
     v44 = &v43;
@@ -368,7 +368,7 @@ LABEL_33:
       {
 LABEL_10:
         v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v26 = [v4 numberOfSprites] << 32;
+        v26 = [layoutCopy numberOfSprites] << 32;
         v32 = MEMORY[0x1E69E9820];
         v33 = 3221225472;
         v34 = __56___PXCuratedLibraryLayoutAssetsSnapshot_initWithLayout___block_invoke_4;
@@ -378,7 +378,7 @@ LABEL_10:
         v38 = &v43;
         v28 = v25;
         v37 = v28;
-        [v4 enumerateSpritesInRange:v26 options:1 usingBlock:&v32];
+        [layoutCopy enumerateSpritesInRange:v26 options:1 usingBlock:&v32];
         v29 = [v28 copy];
         spriteSnapshotIndexByAssetIdentifier = v27->_spriteSnapshotIndexByAssetIdentifier;
         v27->_spriteSnapshotIndexByAssetIdentifier = v29;
@@ -391,22 +391,22 @@ LABEL_10:
       v39[1] = 3221225472;
       v39[2] = __56___PXCuratedLibraryLayoutAssetsSnapshot_initWithLayout___block_invoke;
       v39[3] = &unk_1E773B750;
-      v40 = v4;
+      v40 = layoutCopy;
       v41 = v5;
       v42 = &v43;
       [v40 enumerateVisibleAnchoringSpriteIndexesUsingBlock:v39];
 
-      v22 = v40;
+      keyAssetReference = v40;
     }
 
     else
     {
-      v19 = [v4 libraryBodyLayout];
-      v20 = [v19 dominantSectionLayout];
-      v21 = [v20 assetCollectionReference];
-      v22 = [v21 keyAssetReference];
+      libraryBodyLayout = [layoutCopy libraryBodyLayout];
+      dominantSectionLayout = [libraryBodyLayout dominantSectionLayout];
+      assetCollectionReference = [dominantSectionLayout assetCollectionReference];
+      keyAssetReference = [assetCollectionReference keyAssetReference];
 
-      v23 = [(_PXCuratedLibraryLayoutAssetsSnapshot *)v5 assetIdentifierForAssetReference:v22];
+      v23 = [(_PXCuratedLibraryLayoutAssetsSnapshot *)v5 assetIdentifierForAssetReference:keyAssetReference];
       v24 = v44[5];
       v44[5] = v23;
     }

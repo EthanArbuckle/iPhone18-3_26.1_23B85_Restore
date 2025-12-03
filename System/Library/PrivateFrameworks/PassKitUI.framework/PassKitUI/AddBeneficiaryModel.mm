@@ -1,13 +1,13 @@
 @interface AddBeneficiaryModel
 - (_TtC9PassKitUI19AddBeneficiaryModel)init;
-- (void)nextViewControllerWithCompletion:(id)a3;
+- (void)nextViewControllerWithCompletion:(id)completion;
 @end
 
 @implementation AddBeneficiaryModel
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -19,7 +19,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1BDA6F1BC(v5);
   sub_1BD0D4744(v5);
 }

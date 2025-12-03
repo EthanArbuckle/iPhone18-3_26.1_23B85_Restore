@@ -1,34 +1,34 @@
 @interface AXSSDialectMap
-- (AXSSDialectMap)initWithLocale:(id)a3 voiceName:(id)a4 specificLanguageID:(id)a5 voiceIdentifier:(id)a6 speakableCharacters:(id)a7 secondaryLanguageRange:(id)a8;
+- (AXSSDialectMap)initWithLocale:(id)locale voiceName:(id)name specificLanguageID:(id)d voiceIdentifier:(id)identifier speakableCharacters:(id)characters secondaryLanguageRange:(id)range;
 - (AXSSLanguageMap)languageMap;
-- (BOOL)canSpeakString:(id)a3 letterOnly:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canSpeakString:(id)string letterOnly:(BOOL)only;
+- (BOOL)isEqual:(id)equal;
 - (NSString)regionID;
 - (id)description;
 @end
 
 @implementation AXSSDialectMap
 
-- (AXSSDialectMap)initWithLocale:(id)a3 voiceName:(id)a4 specificLanguageID:(id)a5 voiceIdentifier:(id)a6 speakableCharacters:(id)a7 secondaryLanguageRange:(id)a8
+- (AXSSDialectMap)initWithLocale:(id)locale voiceName:(id)name specificLanguageID:(id)d voiceIdentifier:(id)identifier speakableCharacters:(id)characters secondaryLanguageRange:(id)range
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  localeCopy = locale;
+  nameCopy = name;
+  dCopy = d;
+  charactersCopy = characters;
+  rangeCopy = range;
   v34.receiver = self;
   v34.super_class = AXSSDialectMap;
   v19 = [(AXSSDialectMap *)&v34 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_locale, a3);
-    objc_storeStrong(&v20->_voiceName, a4);
-    objc_storeStrong(&v20->_speakableCharacters, a7);
-    objc_storeStrong(&v20->_secondaryLanguageRange, a8);
-    if (v16)
+    objc_storeStrong(&v19->_locale, locale);
+    objc_storeStrong(&v20->_voiceName, name);
+    objc_storeStrong(&v20->_speakableCharacters, characters);
+    objc_storeStrong(&v20->_secondaryLanguageRange, range);
+    if (dCopy)
     {
-      v21 = [v16 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+      v21 = [dCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
       specificLanguageID = v20->_specificLanguageID;
       v20->_specificLanguageID = v21;
     }
@@ -36,23 +36,23 @@
     else
     {
       specificLanguageID = [(AXSSDialectMap *)v20 locale];
-      v23 = [specificLanguageID localeIdentifier];
-      v24 = [v23 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+      localeIdentifier = [specificLanguageID localeIdentifier];
+      v24 = [localeIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
       v25 = v20->_specificLanguageID;
       v20->_specificLanguageID = v24;
     }
 
-    v26 = [(AXSSDialectMap *)v20 specificLanguageID];
-    v27 = [v26 hasPrefix:@"zh"];
+    specificLanguageID = [(AXSSDialectMap *)v20 specificLanguageID];
+    v27 = [specificLanguageID hasPrefix:@"zh"];
 
     if (v27)
     {
-      v28 = [(AXSSDialectMap *)v20 specificLanguageID];
-      v29 = [v28 stringByReplacingOccurrencesOfString:@"Hant-" withString:&stru_1F405A428];
+      specificLanguageID2 = [(AXSSDialectMap *)v20 specificLanguageID];
+      v29 = [specificLanguageID2 stringByReplacingOccurrencesOfString:@"Hant-" withString:&stru_1F405A428];
       [(AXSSDialectMap *)v20 setSpecificLanguageID:v29];
 
-      v30 = [(AXSSDialectMap *)v20 specificLanguageID];
-      v31 = [v30 stringByReplacingOccurrencesOfString:@"Hans-" withString:&stru_1F405A428];
+      specificLanguageID3 = [(AXSSDialectMap *)v20 specificLanguageID];
+      v31 = [specificLanguageID3 stringByReplacingOccurrencesOfString:@"Hans-" withString:&stru_1F405A428];
       [(AXSSDialectMap *)v20 setSpecificLanguageID:v31];
     }
 
@@ -65,29 +65,29 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXSSDialectMap *)self voiceName];
-  v5 = [(AXSSDialectMap *)self locale];
-  v6 = [v5 localeIdentifier];
-  v7 = [(AXSSDialectMap *)self specificLanguageID];
-  v8 = [v3 stringWithFormat:@"AXSSDialect Voice:%@. LocaleID:%@ LangID:%@", v4, v6, v7];
+  voiceName = [(AXSSDialectMap *)self voiceName];
+  locale = [(AXSSDialectMap *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  specificLanguageID = [(AXSSDialectMap *)self specificLanguageID];
+  v8 = [v3 stringWithFormat:@"AXSSDialect Voice:%@. LocaleID:%@ LangID:%@", voiceName, localeIdentifier, specificLanguageID];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AXSSDialectMap *)self specificLanguageID];
-    v7 = [v5 specificLanguageID];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    specificLanguageID = [(AXSSDialectMap *)self specificLanguageID];
+    specificLanguageID2 = [v5 specificLanguageID];
+    if ([specificLanguageID isEqual:specificLanguageID2])
     {
-      v8 = [(AXSSDialectMap *)self voiceIdentifier];
-      v9 = [v5 voiceIdentifier];
-      v10 = [v8 isEqual:v9];
+      voiceIdentifier = [(AXSSDialectMap *)self voiceIdentifier];
+      voiceIdentifier2 = [v5 voiceIdentifier];
+      v10 = [voiceIdentifier isEqual:voiceIdentifier2];
     }
 
     else
@@ -104,14 +104,14 @@
   return v10;
 }
 
-- (BOOL)canSpeakString:(id)a3 letterOnly:(BOOL)a4
+- (BOOL)canSpeakString:(id)string letterOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  onlyCopy = only;
+  stringCopy = string;
+  if (stringCopy)
   {
     v6 = +[AXSSLanguageManager shared];
-    v7 = [v5 length];
+    v7 = [stringCopy length];
     if (v7)
     {
       v8 = v7;
@@ -119,18 +119,18 @@
       v10 = 0;
       while (1)
       {
-        v11 = [v5 characterAtIndex:v10];
-        if (v4)
+        v11 = [stringCopy characterAtIndex:v10];
+        if (onlyCopy)
         {
-          v12 = [MEMORY[0x1E696AB08] letterCharacterSet];
-          if (([v12 characterIsMember:v11] & 1) == 0)
+          letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+          if (([letterCharacterSet characterIsMember:v11] & 1) == 0)
           {
 
             goto LABEL_13;
           }
 
-          v13 = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
-          v14 = [v13 characterIsMember:v11];
+          nonBaseCharacterSet = [MEMORY[0x1E696AB08] nonBaseCharacterSet];
+          v14 = [nonBaseCharacterSet characterIsMember:v11];
 
           if (v14)
           {
@@ -171,10 +171,10 @@ LABEL_17:
 
 - (NSString)regionID
 {
-  v2 = [(AXSSDialectMap *)self locale];
-  v3 = [v2 localeIdentifier];
+  locale = [(AXSSDialectMap *)self locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  return v3;
+  return localeIdentifier;
 }
 
 - (AXSSLanguageMap)languageMap

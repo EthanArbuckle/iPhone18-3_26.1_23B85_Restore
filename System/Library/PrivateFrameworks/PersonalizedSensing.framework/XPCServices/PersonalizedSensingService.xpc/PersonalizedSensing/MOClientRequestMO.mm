@@ -1,32 +1,32 @@
 @interface MOClientRequestMO
-+ (id)managedObjectWithClientRequest:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)updateManagedObject:(id)a3 withClientRequest:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithClientRequest:(id)request inManagedObjectContext:(id)context;
++ (void)updateManagedObject:(id)object withClientRequest:(id)request inManagedObjectContext:(id)context;
 @end
 
 @implementation MOClientRequestMO
 
-+ (id)managedObjectWithClientRequest:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithClientRequest:(id)request inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOClientRequestMO alloc] initWithContext:v5];
-  [MOClientRequestMO updateManagedObject:v7 withClientRequest:v6 inManagedObjectContext:v5];
+  contextCopy = context;
+  requestCopy = request;
+  v7 = [[MOClientRequestMO alloc] initWithContext:contextCopy];
+  [MOClientRequestMO updateManagedObject:v7 withClientRequest:requestCopy inManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (void)updateManagedObject:(id)a3 withClientRequest:(id)a4 inManagedObjectContext:(id)a5
++ (void)updateManagedObject:(id)object withClientRequest:(id)request inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [v6 requestIdentifier];
-  [v10 setRequestIdentifier:v7];
+  requestCopy = request;
+  objectCopy = object;
+  requestIdentifier = [requestCopy requestIdentifier];
+  [objectCopy setRequestIdentifier:requestIdentifier];
 
-  v8 = [v6 creationDate];
-  [v10 setCreationDate:v8];
+  creationDate = [requestCopy creationDate];
+  [objectCopy setCreationDate:creationDate];
 
-  v9 = [v6 requestType];
-  [v10 setRequestType:v9];
+  requestType = [requestCopy requestType];
+  [objectCopy setRequestType:requestType];
 }
 
 @end

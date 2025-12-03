@@ -1,9 +1,9 @@
 @interface PLAssetResourceUploadJobCoreAnalytics
-- (PLAssetResourceUploadJobCoreAnalytics)initWithPhotoLibrary:(id)a3;
+- (PLAssetResourceUploadJobCoreAnalytics)initWithPhotoLibrary:(id)library;
 - (id)_configurationAnalytics;
 - (id)_configurations;
 - (id)_createAndPopulateCoreAnalyticsEventManager;
-- (id)_jobAnalyticsForBundleIdentifiers:(id)a3;
+- (id)_jobAnalyticsForBundleIdentifiers:(id)identifiers;
 - (id)_jobFetchRequest;
 - (int64_t)_assetCount;
 - (void)publishCoreAnalyticsEvent;
@@ -69,8 +69,8 @@ void __56__PLAssetResourceUploadJobCoreAnalytics__configurations__block_invoke(u
 
   v35 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"configuration.bundleIdentifier"];
   v5 = MEMORY[0x1E696ABC8];
-  v6 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-  v41[0] = v6;
+  expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+  v41[0] = expressionForEvaluatedObject;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
   v34 = [v5 expressionForFunction:@"count:" arguments:v7];
 
@@ -134,17 +134,17 @@ void __56__PLAssetResourceUploadJobCoreAnalytics__configurations__block_invoke(u
   return v33;
 }
 
-- (id)_jobAnalyticsForBundleIdentifiers:(id)a3
+- (id)_jobAnalyticsForBundleIdentifiers:(id)identifiers
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v20 = [(PLAssetResourceUploadJobCoreAnalytics *)self _jobFetchRequest];
+  _jobFetchRequest = [(PLAssetResourceUploadJobCoreAnalytics *)self _jobFetchRequest];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v19 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v19)
   {
@@ -166,7 +166,7 @@ void __56__PLAssetResourceUploadJobCoreAnalytics__configurations__block_invoke(u
         v32 = __Block_byref_object_dispose__68021;
         v33 = 0;
         v8 = [(PLAssetResourceUploadJobCoreAnalytics *)self _jobPredicateForBundleIdentifier:v7];
-        [v20 setPredicate:v8];
+        [_jobFetchRequest setPredicate:v8];
 
         library = self->_library;
         v25[0] = MEMORY[0x1E69E9820];
@@ -175,7 +175,7 @@ void __56__PLAssetResourceUploadJobCoreAnalytics__configurations__block_invoke(u
         v25[3] = &unk_1E7578820;
         v27 = &v28;
         v25[4] = self;
-        v26 = v20;
+        v26 = _jobFetchRequest;
         [(PLPhotoLibrary *)library performBlockAndWait:v25];
         v23 = 0u;
         v24 = 0u;
@@ -248,16 +248,16 @@ void __75__PLAssetResourceUploadJobCoreAnalytics__jobAnalyticsForBundleIdentifie
 - (id)_configurationAnalytics
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PLAssetResourceUploadJobCoreAnalytics *)self _configurations];
-  v5 = v4;
-  if (v4)
+  _configurations = [(PLAssetResourceUploadJobCoreAnalytics *)self _configurations];
+  v5 = _configurations;
+  if (_configurations)
   {
     library = self->_library;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64__PLAssetResourceUploadJobCoreAnalytics__configurationAnalytics__block_invoke;
     v11[3] = &unk_1E7578848;
-    v12 = v4;
+    v12 = _configurations;
     v7 = v3;
     v13 = v7;
     [(PLPhotoLibrary *)library performBlockAndWait:v11];
@@ -370,16 +370,16 @@ void __52__PLAssetResourceUploadJobCoreAnalytics__assetCount__block_invoke(uint6
 {
   v65 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69BF1F0]);
-  v4 = [(PLAssetResourceUploadJobCoreAnalytics *)self _assetCount];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+  _assetCount = [(PLAssetResourceUploadJobCoreAnalytics *)self _assetCount];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:_assetCount];
   v6 = *MEMORY[0x1E69BF460];
   [v3 setPayloadValue:v5 forKey:*MEMORY[0x1E69BF478] onEventWithName:*MEMORY[0x1E69BF460]];
 
-  v7 = [(PLPhotoLibrary *)self->_library libraryServicesManager];
-  v8 = [v7 cplSettings];
-  v9 = [v8 isICPLEnabled];
+  libraryServicesManager = [(PLPhotoLibrary *)self->_library libraryServicesManager];
+  cplSettings = [libraryServicesManager cplSettings];
+  isICPLEnabled = [cplSettings isICPLEnabled];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:isICPLEnabled];
   [v3 setPayloadValue:v10 forKey:*MEMORY[0x1E69BF470] onEventWithName:v6];
 
   v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -407,14 +407,14 @@ void __52__PLAssetResourceUploadJobCoreAnalytics__assetCount__block_invoke(uint6
 
         v17 = *(*(&v59 + 1) + 8 * i);
         v18 = [obj objectForKeyedSubscript:v17];
-        v19 = [v18 isEnabled];
+        isEnabled = [v18 isEnabled];
         v20 = v53;
-        if (!v19)
+        if (!isEnabled)
         {
           v20 = v52;
         }
 
-        v14 += v19;
+        v14 += isEnabled;
         [v20 addObject:v17];
         v13 += [v18 attemptCount];
       }
@@ -529,22 +529,22 @@ void __52__PLAssetResourceUploadJobCoreAnalytics__assetCount__block_invoke(uint6
 - (void)publishCoreAnalyticsEvent
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PLAssetResourceUploadJobCoreAnalytics *)self _createAndPopulateCoreAnalyticsEventManager];
-  [v4 publishAllEvents];
+  _createAndPopulateCoreAnalyticsEventManager = [(PLAssetResourceUploadJobCoreAnalytics *)self _createAndPopulateCoreAnalyticsEventManager];
+  [_createAndPopulateCoreAnalyticsEventManager publishAllEvents];
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (PLAssetResourceUploadJobCoreAnalytics)initWithPhotoLibrary:(id)a3
+- (PLAssetResourceUploadJobCoreAnalytics)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PLAssetResourceUploadJobCoreAnalytics;
   v6 = [(PLAssetResourceUploadJobCoreAnalytics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
   }
 
   return v7;

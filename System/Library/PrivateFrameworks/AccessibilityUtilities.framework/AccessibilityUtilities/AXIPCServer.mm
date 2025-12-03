@@ -1,73 +1,73 @@
 @interface AXIPCServer
-- (AXIPCServer)initWithPort:(unsigned int)a3 serviceRunLoopSource:(__CFRunLoopSource *)a4;
-- (AXIPCServer)initWithServiceName:(id)a3 perPidService:(BOOL)a4;
-- (BOOL)__slowpath__clientWithAuditToken:(id *)a3 hasRequiredEntitlementFromSet:(id)a4;
-- (BOOL)_clientHasEntitlementWithPort:(unsigned int)a3 auditToken:(id *)a4 message:(id)a5 completion:(id)a6;
-- (BOOL)_handleErrorWithMessage:(id)a3 outError:(id *)a4;
-- (BOOL)_hasEntitlement:(id)a3 entitlements:(id)a4 clientPort:(unsigned int)a5 auditToken:(id *)a6 message:(id)a7 completion:(id)a8;
-- (BOOL)startServerWithError:(id *)a3;
-- (BOOL)stopServerWithError:(id *)a3;
+- (AXIPCServer)initWithPort:(unsigned int)port serviceRunLoopSource:(__CFRunLoopSource *)source;
+- (AXIPCServer)initWithServiceName:(id)name perPidService:(BOOL)service;
+- (BOOL)__slowpath__clientWithAuditToken:(id *)token hasRequiredEntitlementFromSet:(id)set;
+- (BOOL)_clientHasEntitlementWithPort:(unsigned int)port auditToken:(id *)token message:(id)message completion:(id)completion;
+- (BOOL)_handleErrorWithMessage:(id)message outError:(id *)error;
+- (BOOL)_hasEntitlement:(id)entitlement entitlements:(id)entitlements clientPort:(unsigned int)port auditToken:(id *)token message:(id)message completion:(id)completion;
+- (BOOL)startServerWithError:(id *)error;
+- (BOOL)stopServerWithError:(id *)error;
 - (NSString)description;
-- (id)_clientIdentificationForAuditToken:(id *)a3;
+- (id)_clientIdentificationForAuditToken:(id *)token;
 - (id)clientInvalidationCallback;
 - (id)defaultHandler;
-- (void)_addPossibleRequiredEntitlementsToMessageWithKey:(int)a3 first:(id)a4 vothers:(char *)a5;
+- (void)_addPossibleRequiredEntitlementsToMessageWithKey:(int)key first:(id)first vothers:(char *)vothers;
 - (void)_applyCustomQueueSize;
-- (void)_handleClientInvalidation:(unsigned int)a3;
-- (void)_handleClientRegistration:(id)a3;
-- (void)_handleIncomingMessage:(id)a3 securityToken:(id)a4 auditToken:(id *)a5 clientPort:(unsigned int)a6 completion:(id)a7;
-- (void)_processValidatedMessage:(id)a3 completion:(id)a4;
-- (void)_registerContext:(id)a3 forKey:(int)a4;
+- (void)_handleClientInvalidation:(unsigned int)invalidation;
+- (void)_handleClientRegistration:(id)registration;
+- (void)_handleIncomingMessage:(id)message securityToken:(id)token auditToken:(id *)auditToken clientPort:(unsigned int)port completion:(id)completion;
+- (void)_processValidatedMessage:(id)message completion:(id)completion;
+- (void)_registerContext:(id)context forKey:(int)key;
 - (void)_startServerThread;
-- (void)addPossibleRequiredEntitlement:(id)a3 forMessageWithKey:(int)a4;
+- (void)addPossibleRequiredEntitlement:(id)entitlement forMessageWithKey:(int)key;
 - (void)dealloc;
-- (void)removeAllHandlersForTarget:(id)a3;
-- (void)removeHandlerForKey:(int)a3;
-- (void)removePossibleRequiredEntitlement:(id)a3 forMessageWithKey:(int)a4;
-- (void)serverClientRegistrationInvalidated:(id)a3;
-- (void)setClientInvalidationCallback:(id)a3;
-- (void)setDefaultHandler:(id)a3;
-- (void)setHandler:(id)a3 forKey:(int)a4;
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5 forKey:(int)a6;
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5 forKey:(int)a6 possibleRequiredEntitlements:(id)a7;
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 forKey:(int)a5 possibleRequiredEntitlements:(id)a6;
-- (void)setServiceRunLoopSource:(__CFRunLoopSource *)a3;
+- (void)removeAllHandlersForTarget:(id)target;
+- (void)removeHandlerForKey:(int)key;
+- (void)removePossibleRequiredEntitlement:(id)entitlement forMessageWithKey:(int)key;
+- (void)serverClientRegistrationInvalidated:(id)invalidated;
+- (void)setClientInvalidationCallback:(id)callback;
+- (void)setDefaultHandler:(id)handler;
+- (void)setHandler:(id)handler forKey:(int)key;
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector async:(BOOL)async forKey:(int)key;
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector async:(BOOL)async forKey:(int)key possibleRequiredEntitlements:(id)entitlements;
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector forKey:(int)key possibleRequiredEntitlements:(id)entitlements;
+- (void)setServiceRunLoopSource:(__CFRunLoopSource *)source;
 @end
 
 @implementation AXIPCServer
 
-- (AXIPCServer)initWithServiceName:(id)a3 perPidService:(BOOL)a4
+- (AXIPCServer)initWithServiceName:(id)name perPidService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = AXIPCServer;
   v7 = [(AXIPCServer *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    [(AXIPCServer *)v7 setServiceName:v6];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXIPCServer *)v8 setHandlers:v9];
+    [(AXIPCServer *)v7 setServiceName:nameCopy];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(AXIPCServer *)v8 setHandlers:dictionary];
 
-    [(AXIPCServer *)v8 setPerPidService:v4];
-    v10 = [MEMORY[0x1E695DF70] array];
-    [(AXIPCServer *)v8 setDelayedMessages:v10];
+    [(AXIPCServer *)v8 setPerPidService:serviceCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(AXIPCServer *)v8 setDelayedMessages:array];
   }
 
   return v8;
 }
 
-- (AXIPCServer)initWithPort:(unsigned int)a3 serviceRunLoopSource:(__CFRunLoopSource *)a4
+- (AXIPCServer)initWithPort:(unsigned int)port serviceRunLoopSource:(__CFRunLoopSource *)source
 {
   v6 = [(AXIPCServer *)self initWithServiceName:0 perPidService:0];
   v7 = v6;
   if (v6)
   {
-    v6->_assignedServerPort = a3;
-    if (a4)
+    v6->_assignedServerPort = port;
+    if (source)
     {
-      v6->_serverRunLoopSource = CFRetain(a4);
+      v6->_serverRunLoopSource = CFRetain(source);
     }
   }
 
@@ -92,32 +92,32 @@
   v10.receiver = self;
   v10.super_class = AXIPCServer;
   v4 = [(AXIPCServer *)&v10 description];
-  v5 = [(AXIPCServer *)self serviceName];
-  v6 = [(AXIPCServer *)self isRunning];
+  serviceName = [(AXIPCServer *)self serviceName];
+  isRunning = [(AXIPCServer *)self isRunning];
   v7 = @"NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = @"YES";
   }
 
-  v8 = [v3 stringWithFormat:@"%@. Serivce Name:%@. Running:%@ Server Port:%d. Clients:%@. Entitlements:%@. RunLoopSource:%p", v4, v5, v7, self->_serverPort, self->_connectedClients, self->_entitlements, self->_serverRunLoopSource];
+  v8 = [v3 stringWithFormat:@"%@. Serivce Name:%@. Running:%@ Server Port:%d. Clients:%@. Entitlements:%@. RunLoopSource:%p", v4, serviceName, v7, self->_serverPort, self->_connectedClients, self->_entitlements, self->_serverRunLoopSource];
 
   return v8;
 }
 
-- (void)setServiceRunLoopSource:(__CFRunLoopSource *)a3
+- (void)setServiceRunLoopSource:(__CFRunLoopSource *)source
 {
   if (self->_serverRunLoopSource)
   {
     _AXAssert();
   }
 
-  if (a3)
+  if (source)
   {
-    CFRetain(a3);
+    CFRetain(source);
   }
 
-  self->_serverRunLoopSource = a3;
+  self->_serverRunLoopSource = source;
 }
 
 - (id)defaultHandler
@@ -156,27 +156,27 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
   return 0;
 }
 
-- (void)setDefaultHandler:(id)a3
+- (void)setDefaultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   defaultHandler = self->_defaultHandler;
-  if (defaultHandler != v4)
+  if (defaultHandler != handlerCopy)
   {
-    v8 = v4;
+    v8 = handlerCopy;
     if (defaultHandler)
     {
       self->_defaultHandler = 0;
 
-      v4 = v8;
+      handlerCopy = v8;
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       v6 = [v8 copy];
       v7 = self->_defaultHandler;
       self->_defaultHandler = v6;
 
-      v4 = v8;
+      handlerCopy = v8;
     }
   }
 }
@@ -188,35 +188,35 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
   return v2;
 }
 
-- (void)setClientInvalidationCallback:(id)a3
+- (void)setClientInvalidationCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   clientInvalidationHandler = self->_clientInvalidationHandler;
-  if (clientInvalidationHandler != v4)
+  if (clientInvalidationHandler != callbackCopy)
   {
-    v8 = v4;
+    v8 = callbackCopy;
     if (clientInvalidationHandler)
     {
       self->_clientInvalidationHandler = 0;
 
-      v4 = v8;
+      callbackCopy = v8;
     }
 
-    if (v4)
+    if (callbackCopy)
     {
       v6 = [v8 copy];
       v7 = self->_clientInvalidationHandler;
       self->_clientInvalidationHandler = v6;
 
-      v4 = v8;
+      callbackCopy = v8;
     }
   }
 }
 
-- (BOOL)startServerWithError:(id *)a3
+- (BOOL)startServerWithError:(id *)error
 {
-  v5 = [(AXIPCServer *)self serviceName];
-  if ([v5 length])
+  serviceName = [(AXIPCServer *)self serviceName];
+  if ([serviceName length])
   {
   }
 
@@ -227,7 +227,7 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
     if (!assignedServerPort)
     {
       v7 = @"Cannot start server. Service name was empty";
-      return ![(AXIPCServer *)self _handleErrorWithMessage:v7 outError:a3];
+      return ![(AXIPCServer *)self _handleErrorWithMessage:v7 outError:error];
     }
   }
 
@@ -242,10 +242,10 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
     v7 = 0;
   }
 
-  return ![(AXIPCServer *)self _handleErrorWithMessage:v7 outError:a3];
+  return ![(AXIPCServer *)self _handleErrorWithMessage:v7 outError:error];
 }
 
-- (BOOL)stopServerWithError:(id *)a3
+- (BOOL)stopServerWithError:(id *)error
 {
   if ([(AXIPCServer *)self isRunning])
   {
@@ -267,19 +267,19 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
     v6 = @"Cannot stop server. It is not running.";
   }
 
-  return ![(AXIPCServer *)self _handleErrorWithMessage:v6 outError:a3];
+  return ![(AXIPCServer *)self _handleErrorWithMessage:v6 outError:error];
 }
 
-- (void)setHandler:(id)a3 forKey:(int)a4
+- (void)setHandler:(id)handler forKey:(int)key
 {
-  v4 = *&a4;
-  v9 = a3;
-  if (v9)
+  v4 = *&key;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:v4];
-    v7 = [[AXIPCServerMessageHandlerContext alloc] initWithHandler:v9];
-    v8 = [(AXIPCServer *)self handlers];
-    [v8 setObject:v7 forKey:v6];
+    v7 = [[AXIPCServerMessageHandlerContext alloc] initWithHandler:handlerCopy];
+    handlers = [(AXIPCServer *)self handlers];
+    [handlers setObject:v7 forKey:v6];
   }
 
   else
@@ -288,30 +288,30 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
   }
 }
 
-- (void)removeHandlerForKey:(int)a3
+- (void)removeHandlerForKey:(int)key
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&a3];
-  v4 = [(AXIPCServer *)self handlers];
-  [v4 removeObjectForKey:v5];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&key];
+  handlers = [(AXIPCServer *)self handlers];
+  [handlers removeObjectForKey:v5];
 }
 
-- (void)_registerContext:(id)a3 forKey:(int)a4
+- (void)_registerContext:(id)context forKey:(int)key
 {
-  v4 = *&a4;
+  v4 = *&key;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
+  contextCopy = context;
   v9 = [[v6 alloc] initWithInt:v4];
-  v8 = [(AXIPCServer *)self handlers];
-  [v8 setObject:v7 forKey:v9];
+  handlers = [(AXIPCServer *)self handlers];
+  [handlers setObject:contextCopy forKey:v9];
 }
 
-- (void)_addPossibleRequiredEntitlementsToMessageWithKey:(int)a3 first:(id)a4 vothers:(char *)a5
+- (void)_addPossibleRequiredEntitlementsToMessageWithKey:(int)key first:(id)first vothers:(char *)vothers
 {
-  v6 = *&a3;
-  v8 = a4;
-  [(AXIPCServer *)self addPossibleRequiredEntitlement:v8 forMessageWithKey:v6];
-  v12 = a5 + 8;
-  v9 = *a5;
+  v6 = *&key;
+  firstCopy = first;
+  [(AXIPCServer *)self addPossibleRequiredEntitlement:firstCopy forMessageWithKey:v6];
+  v12 = vothers + 8;
+  v9 = *vothers;
   if (v9)
   {
     v10 = v9;
@@ -328,14 +328,14 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
   }
 }
 
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5 forKey:(int)a6
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector async:(BOOL)async forKey:(int)key
 {
-  v6 = *&a6;
-  v7 = a5;
-  v11 = a3;
-  if (v11 && a4)
+  v6 = *&key;
+  asyncCopy = async;
+  targetCopy = target;
+  if (targetCopy && selector)
   {
-    v10 = [[AXIPCServerMessageHandlerContext alloc] initWithTarget:v11 selector:a4 async:v7];
+    v10 = [[AXIPCServerMessageHandlerContext alloc] initWithTarget:targetCopy selector:selector async:asyncCopy];
     [(AXIPCServer *)self _registerContext:v10 forKey:v6];
   }
 
@@ -345,48 +345,48 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
   }
 }
 
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 forKey:(int)a5 possibleRequiredEntitlements:(id)a6
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector forKey:(int)key possibleRequiredEntitlements:(id)entitlements
 {
-  v6 = *&a5;
-  v10 = a6;
-  [(AXIPCServer *)self setHandlerWithTarget:a3 selector:a4 forKey:v6];
-  if (v10)
+  v6 = *&key;
+  entitlementsCopy = entitlements;
+  [(AXIPCServer *)self setHandlerWithTarget:target selector:selector forKey:v6];
+  if (entitlementsCopy)
   {
-    [(AXIPCServer *)self _addPossibleRequiredEntitlementsToMessageWithKey:v6 first:v10 vothers:&v11];
+    [(AXIPCServer *)self _addPossibleRequiredEntitlementsToMessageWithKey:v6 first:entitlementsCopy vothers:&v11];
   }
 }
 
-- (void)setHandlerWithTarget:(id)a3 selector:(SEL)a4 async:(BOOL)a5 forKey:(int)a6 possibleRequiredEntitlements:(id)a7
+- (void)setHandlerWithTarget:(id)target selector:(SEL)selector async:(BOOL)async forKey:(int)key possibleRequiredEntitlements:(id)entitlements
 {
-  v7 = *&a6;
-  v8 = a5;
-  v12 = a7;
-  [(AXIPCServer *)self setHandlerWithTarget:a3 selector:a4 async:v8 forKey:v7];
-  if (v12)
+  v7 = *&key;
+  asyncCopy = async;
+  entitlementsCopy = entitlements;
+  [(AXIPCServer *)self setHandlerWithTarget:target selector:selector async:asyncCopy forKey:v7];
+  if (entitlementsCopy)
   {
-    [(AXIPCServer *)self _addPossibleRequiredEntitlementsToMessageWithKey:v7 first:v12 vothers:&v13];
+    [(AXIPCServer *)self _addPossibleRequiredEntitlementsToMessageWithKey:v7 first:entitlementsCopy vothers:&v13];
   }
 }
 
-- (void)removeAllHandlersForTarget:(id)a3
+- (void)removeAllHandlersForTarget:(id)target
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  targetCopy = target;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__6;
   v22 = __Block_byref_object_dispose__6;
   v23 = 0;
-  v5 = [(AXIPCServer *)self handlers];
+  handlers = [(AXIPCServer *)self handlers];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42__AXIPCServer_removeAllHandlersForTarget___block_invoke;
   v15[3] = &unk_1E71EB098;
-  v6 = v4;
+  v6 = targetCopy;
   v16 = v6;
   v17 = &v18;
-  [v5 enumerateKeysAndObjectsUsingBlock:v15];
+  [handlers enumerateKeysAndObjectsUsingBlock:v15];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -406,7 +406,7 @@ uint64_t __29__AXIPCServer_defaultHandler__block_invoke(uint64_t a1, uint64_t a2
           objc_enumerationMutation(v7);
         }
 
-        [v5 removeObjectForKey:{*(*(&v11 + 1) + 8 * v10++), v11}];
+        [handlers removeObjectForKey:{*(*(&v11 + 1) + 8 * v10++), v11}];
       }
 
       while (v8 != v10);
@@ -442,10 +442,10 @@ void __42__AXIPCServer_removeAllHandlersForTarget___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)addPossibleRequiredEntitlement:(id)a3 forMessageWithKey:(int)a4
+- (void)addPossibleRequiredEntitlement:(id)entitlement forMessageWithKey:(int)key
 {
-  v4 = *&a4;
-  v10 = a3;
+  v4 = *&key;
+  entitlementCopy = entitlement;
   if (!self->_entitlements)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -461,19 +461,19 @@ void __42__AXIPCServer_removeAllHandlersForTarget___block_invoke(uint64_t a1, vo
     [(NSMutableDictionary *)self->_entitlements setObject:v9 forKey:v8];
   }
 
-  [v9 addObject:v10];
+  [v9 addObject:entitlementCopy];
 }
 
-- (void)removePossibleRequiredEntitlement:(id)a3 forMessageWithKey:(int)a4
+- (void)removePossibleRequiredEntitlement:(id)entitlement forMessageWithKey:(int)key
 {
-  v4 = *&a4;
-  v10 = a3;
+  v4 = *&key;
+  entitlementCopy = entitlement;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v4];
   v7 = [(NSMutableDictionary *)self->_entitlements objectForKey:v6];
   v8 = v7;
   if (v7)
   {
-    [v7 removeObject:v10];
+    [v7 removeObject:entitlementCopy];
     if (![v8 count])
     {
       [(NSMutableDictionary *)self->_entitlements removeObjectForKey:v6];
@@ -486,13 +486,13 @@ void __42__AXIPCServer_removeAllHandlersForTarget___block_invoke(uint64_t a1, vo
   }
 }
 
-- (BOOL)_clientHasEntitlementWithPort:(unsigned int)a3 auditToken:(id *)a4 message:(id)a5 completion:(id)a6
+- (BOOL)_clientHasEntitlementWithPort:(unsigned int)port auditToken:(id *)token message:(id)message completion:(id)completion
 {
-  v8 = *&a3;
+  v8 = *&port;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 key];
+  messageCopy = message;
+  completionCopy = completion;
+  v12 = [messageCopy key];
   entitlements = self->_entitlements;
   v14 = [MEMORY[0x1E696AD98] numberWithInt:v12];
   v15 = [(NSMutableDictionary *)entitlements objectForKey:v14];
@@ -507,19 +507,19 @@ void __42__AXIPCServer_removeAllHandlersForTarget___block_invoke(uint64_t a1, vo
     v28[3] = &__block_descriptor_36_e12_B24__0_8_B16l;
     v29 = v8;
     v18 = [(NSMutableSet *)connectedClients objectsPassingTest:v28];
-    v19 = [v18 anyObject];
+    anyObject = [v18 anyObject];
 
-    v20 = *&a4->var0[4];
-    *buf = *a4->var0;
+    v20 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v20;
-    v21 = [(AXIPCServer *)self _hasEntitlement:v19 entitlements:v16 clientPort:v8 auditToken:buf message:v10 completion:v11];
+    v21 = [(AXIPCServer *)self _hasEntitlement:anyObject entitlements:v16 clientPort:v8 auditToken:buf message:messageCopy completion:completionCopy];
     if (!v21)
     {
       v22 = AXLogIPC();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v24 = *&a4->var0[4];
-        *buf = *a4->var0;
+        v24 = *&token->var0[4];
+        *buf = *token->var0;
         *&buf[16] = v24;
         v25 = [(AXIPCServer *)self _clientIdentificationForAuditToken:buf];
         v26 = [v16 description];
@@ -527,7 +527,7 @@ void __42__AXIPCServer_removeAllHandlersForTarget___block_invoke(uint64_t a1, vo
         *buf = 138543874;
         *&buf[4] = v25;
         *&buf[12] = 2114;
-        *&buf[14] = v10;
+        *&buf[14] = messageCopy;
         *&buf[22] = 2114;
         *&buf[24] = v27;
         _os_log_error_impl(&dword_18B15E000, v22, OS_LOG_TYPE_ERROR, "Client (%{public}@) does not have required entitlement for message: %{public}@. \nNeeds one of:%{public}@", buf, 0x20u);
@@ -555,16 +555,16 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
   return v5 == v6;
 }
 
-- (BOOL)_hasEntitlement:(id)a3 entitlements:(id)a4 clientPort:(unsigned int)a5 auditToken:(id *)a6 message:(id)a7 completion:(id)a8
+- (BOOL)_hasEntitlement:(id)entitlement entitlements:(id)entitlements clientPort:(unsigned int)port auditToken:(id *)token message:(id)message completion:(id)completion
 {
   v77 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v43 = a7;
-  v44 = a8;
-  v45 = v14;
-  v42 = v13;
-  if (v13)
+  entitlementCopy = entitlement;
+  entitlementsCopy = entitlements;
+  messageCopy = message;
+  completionCopy = completion;
+  v45 = entitlementsCopy;
+  v42 = entitlementCopy;
+  if (entitlementCopy)
   {
     if (!self->_validSecurityTokens)
     {
@@ -577,7 +577,7 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v17 = v14;
+    v17 = entitlementsCopy;
     v18 = [v17 countByEnumeratingWithState:&v67 objects:v76 count:16];
     if (v18)
     {
@@ -592,7 +592,7 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
           }
 
           v21 = [(NSMutableDictionary *)self->_validSecurityTokens objectForKey:*(*(&v67 + 1) + 8 * i)];
-          v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a5];
+          v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:port];
           v23 = [v21 containsObject:v22];
 
           if (v23)
@@ -617,8 +617,8 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
     aBlock[1] = 3221225472;
     aBlock[2] = __85__AXIPCServer__hasEntitlement_entitlements_clientPort_auditToken_message_completion___block_invoke;
     aBlock[3] = &unk_1E71EB0E0;
-    v24 = *&a6->var0[4];
-    v65 = *a6->var0;
+    v24 = *&token->var0[4];
+    v65 = *token->var0;
     v66 = v24;
     aBlock[4] = self;
     v48 = _Block_copy(aBlock);
@@ -626,9 +626,9 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
     *(&buf + 1) = &buf;
     *&v75 = 0x2020000000;
     BYTE8(v75) = 0;
-    v25 = [(AXIPCServer *)self delayedMessages];
-    v26 = [[AXIPCDelayedMessage alloc] initWithMessage:v43 completion:v44];
-    [v25 addObject:v26];
+    delayedMessages = [(AXIPCServer *)self delayedMessages];
+    v26 = [[AXIPCDelayedMessage alloc] initWithMessage:messageCopy completion:completionCopy];
+    [delayedMessages addObject:v26];
 
     v62 = 0u;
     v63 = 0u;
@@ -692,7 +692,7 @@ BOOL __75__AXIPCServer__clientHasEntitlementWithPort_auditToken_message_completi
               [(NSMutableDictionary *)self->_validSecurityTokens setObject:v38 forKey:v29];
             }
 
-            v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a5];
+            v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:port];
             [v38 addObject:v39];
 
             v40 = AXLogIPC();
@@ -733,8 +733,8 @@ LABEL_35:
     v34 = AXLogIPC();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = *&a6->var0[4];
-      buf = *a6->var0;
+      v35 = *&token->var0[4];
+      buf = *token->var0;
       v75 = v35;
       v36 = [(AXIPCServer *)self _clientIdentificationForAuditToken:&buf];
       LODWORD(buf) = 138543362;
@@ -742,10 +742,10 @@ LABEL_35:
       _os_log_impl(&dword_18B15E000, v34, OS_LOG_TYPE_INFO, "taking entitlement slowpath for %{public}@", &buf, 0xCu);
     }
 
-    v37 = *&a6->var0[4];
-    buf = *a6->var0;
+    v37 = *&token->var0[4];
+    buf = *token->var0;
     v75 = v37;
-    v33 = [(AXIPCServer *)self __slowpath__clientWithAuditToken:&buf hasRequiredEntitlementFromSet:v14];
+    v33 = [(AXIPCServer *)self __slowpath__clientWithAuditToken:&buf hasRequiredEntitlementFromSet:entitlementsCopy];
   }
 
 LABEL_36:
@@ -836,20 +836,20 @@ void __85__AXIPCServer__hasEntitlement_entitlements_clientPort_auditToken_messag
   *(*(*(a1 + 56) + 8) + 24) = 1;
 }
 
-- (BOOL)__slowpath__clientWithAuditToken:(id *)a3 hasRequiredEntitlementFromSet:(id)a4
+- (BOOL)__slowpath__clientWithAuditToken:(id *)token hasRequiredEntitlementFromSet:(id)set
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  setCopy = set;
   v6 = *MEMORY[0x1E695E480];
-  v7 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &token);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v5;
+  v9 = setCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -886,8 +886,8 @@ void __85__AXIPCServer__hasEntitlement_entitlements_clientPort_auditToken_messag
           v19 = AXLogIPC();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v20 = *&a3->var0[4];
-            *token.val = *a3->var0;
+            v20 = *&token->var0[4];
+            *token.val = *token->var0;
             *&token.val[4] = v20;
             v21 = [(AXIPCServer *)self _clientIdentificationForAuditToken:&token];
             token.val[0] = 138543618;
@@ -934,7 +934,7 @@ LABEL_22:
   return v22;
 }
 
-- (void)_handleClientInvalidation:(unsigned int)a3
+- (void)_handleClientInvalidation:(unsigned int)invalidation
 {
   v38 = *MEMORY[0x1E69E9840];
   connectedClients = self->_connectedClients;
@@ -942,18 +942,18 @@ LABEL_22:
   v31[1] = 3221225472;
   v31[2] = __41__AXIPCServer__handleClientInvalidation___block_invoke;
   v31[3] = &__block_descriptor_36_e12_B24__0_8_B16l;
-  v32 = a3;
+  invalidationCopy = invalidation;
   v5 = [(NSMutableSet *)connectedClients objectsPassingTest:v31];
-  v6 = [v5 anyObject];
+  anyObject = [v5 anyObject];
 
-  if (v6)
+  if (anyObject)
   {
     clientInvalidationHandler = self->_clientInvalidationHandler;
     if (clientInvalidationHandler)
     {
-      v8 = [v6 port];
-      v9 = [v6 identifier];
-      clientInvalidationHandler[2](clientInvalidationHandler, v8, v9);
+      port = [anyObject port];
+      identifier = [anyObject identifier];
+      clientInvalidationHandler[2](clientInvalidationHandler, port, identifier);
     }
 
     v29 = 0u;
@@ -979,7 +979,7 @@ LABEL_22:
 
           v15 = *(*(&v27 + 1) + 8 * i);
           v16 = [(NSMutableDictionary *)self->_validSecurityTokens objectForKey:v15, v25];
-          v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "port")}];
+          v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(anyObject, "port")}];
           v18 = [v16 containsObject:v17];
 
           if (v18)
@@ -987,15 +987,15 @@ LABEL_22:
             v19 = AXLogIPC();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
-              v20 = [v6 identifier];
+              identifier2 = [anyObject identifier];
               *buf = v25;
               v34 = v15;
               v35 = 2114;
-              v36 = v20;
+              v36 = identifier2;
               _os_log_impl(&dword_18B15E000, v19, OS_LOG_TYPE_INFO, "Cleaned up cached validation entitlement for %{public}@ = %{public}@", buf, 0x16u);
             }
 
-            v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "port")}];
+            v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(anyObject, "port")}];
             [v16 removeObject:v21];
           }
         }
@@ -1009,13 +1009,13 @@ LABEL_22:
     v22 = AXLogIPC();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v6 identifier];
+      identifier3 = [anyObject identifier];
       *buf = 138543362;
-      v34 = v23;
+      v34 = identifier3;
       _os_log_impl(&dword_18B15E000, v22, OS_LOG_TYPE_INFO, "Client disconnected %{public}@", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_connectedClients removeObject:v6];
+    [(NSMutableSet *)self->_connectedClients removeObject:anyObject];
   }
 
   else
@@ -1044,7 +1044,7 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
 - (void)_applyCustomQueueSize
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4[0] = 67109376;
   v4[1] = v3;
   v5 = 1024;
@@ -1059,16 +1059,16 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
   _os_log_error_impl(v0, v1, v2, v3, v4, 0xCu);
 }
 
-- (void)serverClientRegistrationInvalidated:(id)a3
+- (void)serverClientRegistrationInvalidated:(id)invalidated
 {
-  v4 = [a3 port];
+  port = [invalidated port];
 
-  [(AXIPCServer *)self _handleClientInvalidation:v4];
+  [(AXIPCServer *)self _handleClientInvalidation:port];
 }
 
-- (void)_handleClientRegistration:(id)a3
+- (void)_handleClientRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   if (!self->_connectedClients)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1076,22 +1076,22 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
     self->_connectedClients = v5;
   }
 
-  v7 = [v4 clientPort];
-  v8 = [v4 payload];
-  v9 = [v8 objectForKey:@"identifier"];
+  clientPort = [registrationCopy clientPort];
+  payload = [registrationCopy payload];
+  v9 = [payload objectForKey:@"identifier"];
 
-  if (![v4 clientPort] || objc_msgSend(v4, "clientPort") == -1)
+  if (![registrationCopy clientPort] || objc_msgSend(registrationCopy, "clientPort") == -1)
   {
     v10 = AXLogIPC();
     if (os_log_type_enabled(&v10->super, OS_LOG_TYPE_ERROR))
     {
-      [AXIPCServer _handleClientRegistration:v4];
+      [AXIPCServer _handleClientRegistration:registrationCopy];
     }
   }
 
   else
   {
-    v10 = [[AXIPCServerClientRegistration alloc] initWithPort:v7 identifier:v9];
+    v10 = [[AXIPCServerClientRegistration alloc] initWithPort:clientPort identifier:v9];
     if ([(NSMutableSet *)self->_connectedClients containsObject:v10])
     {
       v11 = AXLogIPC();
@@ -1110,13 +1110,13 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_handleIncomingMessage:(id)a3 securityToken:(id)a4 auditToken:(id *)a5 clientPort:(unsigned int)a6 completion:(id)a7
+- (void)_handleIncomingMessage:(id)message securityToken:(id)token auditToken:(id *)auditToken clientPort:(unsigned int)port completion:(id)completion
 {
-  v7 = *&a6;
-  v11 = a7;
-  if (v11)
+  v7 = *&port;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v12 = v11;
+    v12 = completionCopy;
   }
 
   else
@@ -1124,7 +1124,7 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
     v12 = &__block_literal_global_150;
   }
 
-  v13 = [AXIPCMessage archivedMessageFromData:a3];
+  v13 = [AXIPCMessage archivedMessageFromData:message];
   v14 = v13;
   if (v13)
   {
@@ -1136,8 +1136,8 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
     v15 = v13;
     v24 = v15;
     v16 = _Block_copy(aBlock);
-    v17 = *&a5->var0[4];
-    v21 = *a5->var0;
+    v17 = *&auditToken->var0[4];
+    v21 = *auditToken->var0;
     v22 = v17;
     if ([(AXIPCServer *)self _clientHasEntitlementWithPort:v7 auditToken:&v21 message:v15 completion:v12])
     {
@@ -1148,8 +1148,8 @@ BOOL __41__AXIPCServer__handleClientInvalidation___block_invoke(uint64_t a1, voi
 
       else
       {
-        v20 = *&a5->var0[4];
-        v21 = *a5->var0;
+        v20 = *&auditToken->var0[4];
+        v21 = *auditToken->var0;
         v22 = v20;
         [v15 setAuditToken:&v21];
         [v15 setClientPort:v7];
@@ -1257,48 +1257,48 @@ BOOL __85__AXIPCServer__handleIncomingMessage_securityToken_auditToken_clientPor
   return v5;
 }
 
-- (void)_processValidatedMessage:(id)a3 completion:(id)a4
+- (void)_processValidatedMessage:(id)message completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 setProcessedMessage:1];
-  v8 = [v6 key];
+  messageCopy = message;
+  completionCopy = completion;
+  [messageCopy setProcessedMessage:1];
+  v8 = [messageCopy key];
   if (v8 == AXIPCRegisterClientWithServer)
   {
-    [(AXIPCServer *)self _handleClientRegistration:v6];
-    v7[2](v7, 0);
+    [(AXIPCServer *)self _handleClientRegistration:messageCopy];
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(v6, "key")}];
-    v10 = [(AXIPCServer *)self handlers];
-    v11 = [v10 objectForKey:v9];
+    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(messageCopy, "key")}];
+    handlers = [(AXIPCServer *)self handlers];
+    v11 = [handlers objectForKey:v9];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__AXIPCServer__processValidatedMessage_completion___block_invoke;
     aBlock[3] = &unk_1E71EB1A0;
-    v24 = v7;
+    v24 = completionCopy;
     v12 = _Block_copy(aBlock);
-    v13 = [v11 target];
-    v14 = [v11 selector];
-    if (v13 && (v15 = v14) != 0)
+    target = [v11 target];
+    selector = [v11 selector];
+    if (target && (v15 = selector) != 0)
     {
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v11 async];
-        v17 = [v13 methodForSelector:v15];
-        if (v16)
+        async = [v11 async];
+        v17 = [target methodForSelector:v15];
+        if (async)
         {
           v18 = _Block_copy(v12);
-          v19 = v17(v13, v15, v6, v18);
+          v19 = v17(target, v15, messageCopy, v18);
         }
 
         else
         {
-          v18 = (v17)(v13, v15, v6);
+          v18 = (v17)(target, v15, messageCopy);
           (*(v12 + 2))(v12, v18);
         }
       }
@@ -1315,22 +1315,22 @@ BOOL __85__AXIPCServer__handleIncomingMessage_securityToken_auditToken_clientPor
 
     else
     {
-      v20 = [v11 handler];
-      if (!v20)
+      handler = [v11 handler];
+      if (!handler)
       {
         v21 = AXLogIPC();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v6 key];
+          v22 = [messageCopy key];
           *buf = 67109120;
           v26 = v22;
           _os_log_impl(&dword_18B15E000, v21, OS_LOG_TYPE_DEFAULT, "Warning: no handler was for message key: (%d). Falling back to default handler", buf, 8u);
         }
 
-        v20 = [(AXIPCServer *)self defaultHandler];
+        handler = [(AXIPCServer *)self defaultHandler];
       }
 
-      v18 = (v20)[2](v20, v6);
+      v18 = (handler)[2](handler, messageCopy);
       (*(v12 + 2))(v12, v18);
     }
   }
@@ -1378,10 +1378,10 @@ void __51__AXIPCServer__processValidatedMessage_completion___block_invoke(uint64
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)_handleErrorWithMessage:(id)a3 outError:(id *)a4
+- (BOOL)_handleErrorWithMessage:(id)message outError:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  messageCopy = message;
+  if (messageCopy)
   {
     v6 = AXLogIPC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1389,28 +1389,28 @@ void __51__AXIPCServer__processValidatedMessage_completion___block_invoke(uint64
       [AXIPCServer _handleErrorWithMessage:outError:];
     }
 
-    if (a4)
+    if (error)
     {
-      v7 = [MEMORY[0x1E69887C8] errorWithDescription:{@"%@", v5}];
+      v7 = [MEMORY[0x1E69887C8] errorWithDescription:{@"%@", messageCopy}];
 LABEL_8:
       v8 = v7;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  return v5 != 0;
+  return messageCopy != 0;
 }
 
-- (id)_clientIdentificationForAuditToken:(id *)a3
+- (id)_clientIdentificationForAuditToken:(id *)token
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:a3->var0[5]];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:token->var0[5]];
   v5 = [v3 stringWithFormat:@"PID:%@", v4];
 
   return v5;

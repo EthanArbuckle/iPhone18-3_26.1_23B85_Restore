@@ -1,26 +1,26 @@
 @interface PlaceTableViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (PersonalizedItem)personalizedItemForQuickActionMenu;
-- (_TtC4Maps18PlaceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)ETAProviderUpdated:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)addTrailingEntityTypeFrom:(id)a3;
-- (void)configureWithTemplate:(id)a3 query:(id)a4 asyncDataManager:(id)a5 delegate:(id)a6;
+- (_TtC4Maps18PlaceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)ETAProviderUpdated:(id)updated;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)addTrailingEntityTypeFrom:(id)from;
+- (void)configureWithTemplate:(id)template query:(id)query asyncDataManager:(id)manager delegate:(id)delegate;
 - (void)prepareForReuse;
 - (void)updateContextLinesToDisplayVisitedState;
-- (void)updateEVChargerAvailabilityWithTemplate:(id)a3 mapItem:(id)a4;
-- (void)updateTrailingEntityUsing:(double)a3;
-- (void)updateViewModelWithAddStopWithTemplate:(id)a3;
-- (void)updateViewModelWithETA:(id)a3;
+- (void)updateEVChargerAvailabilityWithTemplate:(id)template mapItem:(id)item;
+- (void)updateTrailingEntityUsing:(double)using;
+- (void)updateViewModelWithAddStopWithTemplate:(id)template;
+- (void)updateViewModelWithETA:(id)a;
 @end
 
 @implementation PlaceTableViewCell
 
-- (_TtC4Maps18PlaceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC4Maps18PlaceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -29,12 +29,12 @@
     v6 = 0;
   }
 
-  return sub_100161D18(a3, a4, v6);
+  return sub_100161D18(style, identifier, v6);
 }
 
-- (void)configureWithTemplate:(id)a3 query:(id)a4 asyncDataManager:(id)a5 delegate:(id)a6
+- (void)configureWithTemplate:(id)template query:(id)query asyncDataManager:(id)manager delegate:(id)delegate
 {
-  if (a4)
+  if (query)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
@@ -46,34 +46,34 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = a5;
+  templateCopy = template;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v14 = self;
-  sub_100161FEC(a3, v9, v11, a5);
+  selfCopy = self;
+  sub_100161FEC(template, v9, v11, manager);
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateEVChargerAvailabilityWithTemplate:(id)a3 mapItem:(id)a4
+- (void)updateEVChargerAvailabilityWithTemplate:(id)template mapItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100162230(a3, a4);
+  templateCopy = template;
+  itemCopy = item;
+  selfCopy = self;
+  sub_100162230(template, item);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = objc_opt_self();
-  v11 = self;
+  selfCopy = self;
   [v10 setFrameStallSkipRequest:1];
-  v20.receiver = v11;
+  v20.receiver = selfCopy;
   v20.super_class = type metadata accessor for PlaceTableViewCell();
-  *&v12 = a4;
-  *&v13 = a5;
+  *&v12 = priority;
+  *&v13 = fittingPriority;
   [(PlaceTableViewCell *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v12, v13];
   v15 = v14;
   v17 = v16;
@@ -87,60 +87,60 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001628C8();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100162998();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)addTrailingEntityTypeFrom:(id)a3
+- (void)addTrailingEntityTypeFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_10016A620(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_10016A620(fromCopy);
 }
 
-- (void)updateViewModelWithETA:(id)a3
+- (void)updateViewModelWithETA:(id)a
 {
-  v4 = a3;
-  v5 = self;
+  aCopy = a;
+  selfCopy = self;
   sub_10016A78C();
 }
 
-- (void)updateViewModelWithAddStopWithTemplate:(id)a3
+- (void)updateViewModelWithAddStopWithTemplate:(id)template
 {
-  v4 = a3;
-  v5 = self;
+  templateCopy = template;
+  selfCopy = self;
   sub_10016E698();
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v5 = a3;
-  v6 = self;
-  sub_10016B394(a3);
+  updatedCopy = updated;
+  selfCopy = self;
+  sub_10016B394(updated);
 }
 
-- (void)updateTrailingEntityUsing:(double)a3
+- (void)updateTrailingEntityUsing:(double)using
 {
-  v4 = self;
-  sub_10016BAD8(a3);
+  selfCopy = self;
+  sub_10016BAD8(using);
 }
 
 - (void)updateContextLinesToDisplayVisitedState
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016BDBC();
 }
 

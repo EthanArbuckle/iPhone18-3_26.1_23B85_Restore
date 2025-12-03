@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (BOOL)_isPrimaryCellular;
 - (BOOL)autoAssociateWiFi;
-- (BOOL)hasWiFiAutoAssociationClientToken:(id)a3;
-- (BOOL)hasWoWClient:(id)a3;
+- (BOOL)hasWiFiAutoAssociationClientToken:(id)token;
+- (BOOL)hasWoWClient:(id)client;
 - (BOOL)isHostingWiFiHotSpot;
 - (BOOL)isWiFiAssociated;
 - (BOOL)isWiFiCaptive;
@@ -16,7 +16,7 @@
 - (NSNumber)wiFiScaledRate;
 - (NSNumber)wiFiSignalStrength;
 - (NSString)currentSSID;
-- (id)_ssidFromNetwork:(__WiFiNetwork *)a3;
+- (id)_ssidFromNetwork:(__WiFiNetwork *)network;
 - (void)_adjustWiFiAutoAssociation;
 - (void)_adjustWiFiAutoAssociationLocked;
 - (void)_adjustWoWState;
@@ -24,26 +24,26 @@
 - (void)_handleDeviceAttachedCallback;
 - (void)_handleDevicePowerCallback;
 - (void)_handleHostAPStateChangedCallback;
-- (void)_handlePotentialDeviceChange:(__WiFiDeviceClient *)a3;
+- (void)_handlePotentialDeviceChange:(__WiFiDeviceClient *)change;
 - (void)_performBackgroundInit;
-- (void)_performCurrentNetworkBlock:(id)a3 withDevice:(__WiFiDeviceClient *)a4 async:(BOOL)a5;
-- (void)_performDeviceBlock:(id)a3;
-- (void)_performDeviceBlock:(id)a3 useCache:(BOOL)a4;
+- (void)_performCurrentNetworkBlock:(id)block withDevice:(__WiFiDeviceClient *)device async:(BOOL)async;
+- (void)_performDeviceBlock:(id)block;
+- (void)_performDeviceBlock:(id)block useCache:(BOOL)cache;
 - (void)_performPowerReading;
-- (void)_setCurrentNetwork:(__WiFiNetwork *)a3;
+- (void)_setCurrentNetwork:(__WiFiNetwork *)network;
 - (void)_setupWifiNotifications;
 - (void)_threadedMain;
 - (void)_updateInitialWiFiState;
 - (void)_updateIsWiFiEnabled;
-- (void)addDelegate:(id)a3;
-- (void)addWiFiAutoAssociationClientToken:(id)a3;
-- (void)addWoWClient:(id)a3;
-- (void)currentWiFiNetworkPowerUsageWithCompletion:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addWiFiAutoAssociationClientToken:(id)token;
+- (void)addWoWClient:(id)client;
+- (void)currentWiFiNetworkPowerUsageWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
-- (void)removeWiFiAutoAssociationClientToken:(id)a3;
-- (void)removeWoWClient:(id)a3;
-- (void)setCurrentNetwork:(void *)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)removeWiFiAutoAssociationClientToken:(id)token;
+- (void)removeWoWClient:(id)client;
+- (void)setCurrentNetwork:(void *)network;
 - (void)showNetworkOptions;
 @end
 
@@ -125,8 +125,8 @@
   [(NSRecursiveLock *)self->_lock lock];
   if (self->_wifiManager)
   {
-    v3 = [(CUTWiFiManager *)self autoAssociateWiFi];
-    if (v3)
+    autoAssociateWiFi = [(CUTWiFiManager *)self autoAssociateWiFi];
+    if (autoAssociateWiFi)
     {
       if ([(CUTWiFiManager *)self autoAssociateWiFiAsForegroundClient])
       {
@@ -152,7 +152,7 @@
       {
         v9 = "disabling";
         wiFiAutoAssociationTokens = self->_wiFiAutoAssociationTokens;
-        if (v3)
+        if (autoAssociateWiFi)
         {
           v9 = "enabling";
         }
@@ -208,9 +208,9 @@
 
 - (void)_threadedMain
 {
-  v3 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   wifiRunLoop = self->_wifiRunLoop;
-  self->_wifiRunLoop = v3;
+  self->_wifiRunLoop = currentRunLoop;
 
   memset(&context, 0, sizeof(context));
   self->_runLoopSource = CFRunLoopSourceCreate(*MEMORY[0x1E695E480], 0, &context);
@@ -347,36 +347,36 @@
   [(CUTWiFiManager *)&v7 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   [(NSRecursiveLock *)self->_lock lock];
-  if (![(NSHashTable *)self->_delegateMap containsObject:v7])
+  if (![(NSHashTable *)self->_delegateMap containsObject:delegateCopy])
   {
     delegateMap = self->_delegateMap;
     if (!delegateMap)
     {
-      v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v6 = self->_delegateMap;
-      self->_delegateMap = v5;
+      self->_delegateMap = weakObjectsHashTable;
 
       delegateMap = self->_delegateMap;
     }
 
-    [(NSHashTable *)delegateMap addObject:v7];
+    [(NSHashTable *)delegateMap addObject:delegateCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     lock = self->_lock;
-    v5 = a3;
+    delegateCopy = delegate;
     [(NSRecursiveLock *)lock lock];
-    [(NSHashTable *)self->_delegateMap removeObject:v5];
+    [(NSHashTable *)self->_delegateMap removeObject:delegateCopy];
 
     if (![(NSHashTable *)self->_delegateMap count])
     {
@@ -390,24 +390,24 @@
   }
 }
 
-- (void)addWoWClient:(id)a3
+- (void)addWoWClient:(id)client
 {
-  v8 = a3;
+  clientCopy = client;
   [(NSRecursiveLock *)self->_lock lock];
   v4 = [(NSHashTable *)self->_wowClients count];
-  if (![(NSHashTable *)self->_wowClients containsObject:v8])
+  if (![(NSHashTable *)self->_wowClients containsObject:clientCopy])
   {
     wowClients = self->_wowClients;
     if (!wowClients)
     {
-      v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v7 = self->_wowClients;
-      self->_wowClients = v6;
+      self->_wowClients = weakObjectsHashTable;
 
       wowClients = self->_wowClients;
     }
 
-    [(NSHashTable *)wowClients addObject:v8];
+    [(NSHashTable *)wowClients addObject:clientCopy];
     if (!v4)
     {
       [(CUTWiFiManager *)self _adjustWoWState];
@@ -417,13 +417,13 @@
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)removeWoWClient:(id)a3
+- (void)removeWoWClient:(id)client
 {
   lock = self->_lock;
-  v5 = a3;
+  clientCopy = client;
   [(NSRecursiveLock *)lock lock];
   v6 = [(NSHashTable *)self->_wowClients count];
-  [(NSHashTable *)self->_wowClients removeObject:v5];
+  [(NSHashTable *)self->_wowClients removeObject:clientCopy];
 
   if (![(NSHashTable *)self->_wowClients count])
   {
@@ -441,12 +441,12 @@
   [(NSRecursiveLock *)v8 unlock];
 }
 
-- (BOOL)hasWoWClient:(id)a3
+- (BOOL)hasWoWClient:(id)client
 {
   lock = self->_lock;
-  v5 = a3;
+  clientCopy = client;
   [(NSRecursiveLock *)lock lock];
-  LOBYTE(lock) = [(NSHashTable *)self->_wowClients containsObject:v5];
+  LOBYTE(lock) = [(NSHashTable *)self->_wowClients containsObject:clientCopy];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return lock;
@@ -709,13 +709,13 @@
     Power = WiFiManagerClientGetPower();
     wifiManager = self->_wifiManager;
     v5 = WiFiManagerClientCopyProperty();
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
     if (v5)
     {
       CFRelease(v5);
     }
 
-    v7 = (Power != 0) & v6;
+    v7 = (Power != 0) & bOOLValue;
     self->_isWifiEnabled = v7;
     if (v7)
     {
@@ -740,20 +740,20 @@
   }
 }
 
-- (void)_performDeviceBlock:(id)a3 useCache:(BOOL)a4
+- (void)_performDeviceBlock:(id)block useCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  cacheCopy = cache;
+  blockCopy = block;
+  if (!blockCopy)
   {
     goto LABEL_16;
   }
 
-  v7 = v6;
-  v12 = [v6 copy];
+  v7 = blockCopy;
+  v12 = [blockCopy copy];
 
   [(NSRecursiveLock *)self->_lock lock];
-  if (v4)
+  if (cacheCopy)
   {
     wifiDevice = self->_wifiDevice;
     if (wifiDevice)
@@ -797,36 +797,36 @@ LABEL_13:
     CFRelease(wifiDevice);
   }
 
-  v6 = v12;
+  blockCopy = v12;
 LABEL_16:
 }
 
-- (void)_performDeviceBlock:(id)a3
+- (void)_performDeviceBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = objc_autoreleasePoolPush();
-  [(CUTWiFiManager *)self _performDeviceBlock:v5 useCache:1];
+  [(CUTWiFiManager *)self _performDeviceBlock:blockCopy useCache:1];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_performCurrentNetworkBlock:(id)a3 withDevice:(__WiFiDeviceClient *)a4 async:(BOOL)a5
+- (void)_performCurrentNetworkBlock:(id)block withDevice:(__WiFiDeviceClient *)device async:(BOOL)async
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1B232C3C4;
     v12[3] = &unk_1E7B20FE8;
     v12[4] = self;
-    v14 = a5;
-    v13 = v8;
+    asyncCopy = async;
+    v13 = blockCopy;
     v10 = MEMORY[0x1B2746240](v12);
-    if (a4)
+    if (device)
     {
       v11 = objc_autoreleasePoolPush();
-      (v10)[2](v10, a4);
+      (v10)[2](v10, device);
       objc_autoreleasePoolPop(v11);
     }
 
@@ -837,9 +837,9 @@ LABEL_16:
   }
 }
 
-- (id)_ssidFromNetwork:(__WiFiNetwork *)a3
+- (id)_ssidFromNetwork:(__WiFiNetwork *)network
 {
-  if (a3)
+  if (network)
   {
     SSID = WiFiNetworkGetSSID();
   }
@@ -880,12 +880,12 @@ LABEL_16:
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (void)_handlePotentialDeviceChange:(__WiFiDeviceClient *)a3
+- (void)_handlePotentialDeviceChange:(__WiFiDeviceClient *)change
 {
   v29 = *MEMORY[0x1E69E9840];
   [(NSRecursiveLock *)self->_lock lock];
   wifiDevice = self->_wifiDevice;
-  if (wifiDevice == a3)
+  if (wifiDevice == change)
   {
     self->_isWakeOnWiFiSupported = 1;
   }
@@ -903,10 +903,10 @@ LABEL_16:
       self->_wifiDevice = 0;
     }
 
-    if (a3)
+    if (change)
     {
-      self->_wifiDevice = a3;
-      CFRetain(a3);
+      self->_wifiDevice = change;
+      CFRetain(change);
       wifiManager = self->_wifiManager;
       self->_isWakeOnWiFiSupported = WiFiManagerClientGetWoWCapability() != 0;
       [(CUTWiFiManager *)self _updateIsWiFiEnabled];
@@ -973,22 +973,22 @@ LABEL_16:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentNetwork:(void *)a3
+- (void)setCurrentNetwork:(void *)network
 {
   v11 = *MEMORY[0x1E69E9840];
   [(NSRecursiveLock *)self->_lock lock];
   currentNetwork = self->_currentNetwork;
-  if (currentNetwork != a3)
+  if (currentNetwork != network)
   {
     if (currentNetwork)
     {
       CFRelease(currentNetwork);
     }
 
-    self->_currentNetwork = a3;
-    if (a3)
+    self->_currentNetwork = network;
+    if (network)
     {
-      CFRetain(a3);
+      CFRetain(network);
     }
 
     v6 = +[CUTLog network];
@@ -1005,10 +1005,10 @@ LABEL_16:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setCurrentNetwork:(__WiFiNetwork *)a3
+- (void)_setCurrentNetwork:(__WiFiNetwork *)network
 {
   [(NSRecursiveLock *)self->_lock lock];
-  [(CUTWiFiManager *)self setCurrentNetwork:a3];
+  [(CUTWiFiManager *)self setCurrentNetwork:network];
   [(CUTWiFiManager *)self _updateIsWiFiEnabled];
   lock = self->_lock;
 
@@ -1031,18 +1031,18 @@ LABEL_16:
   }
 }
 
-- (void)currentWiFiNetworkPowerUsageWithCompletion:(id)a3
+- (void)currentWiFiNetworkPowerUsageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1B232D188;
     v6[3] = &unk_1E7B21060;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(CUTWiFiManager *)self _performDeviceBlock:v6];
   }
 }
@@ -1077,27 +1077,27 @@ LABEL_16:
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (BOOL)hasWiFiAutoAssociationClientToken:(id)a3
+- (BOOL)hasWiFiAutoAssociationClientToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     return 0;
   }
 
   lock = self->_lock;
-  v5 = a3;
+  tokenCopy = token;
   [(NSRecursiveLock *)lock lock];
-  LOBYTE(lock) = [(NSMutableSet *)self->_wiFiAutoAssociationTokens containsObject:v5];
+  LOBYTE(lock) = [(NSMutableSet *)self->_wiFiAutoAssociationTokens containsObject:tokenCopy];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return lock;
 }
 
-- (void)addWiFiAutoAssociationClientToken:(id)a3
+- (void)addWiFiAutoAssociationClientToken:(id)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     [(NSRecursiveLock *)self->_lock lock];
     wiFiAutoAssociationTokens = self->_wiFiAutoAssociationTokens;
@@ -1110,13 +1110,13 @@ LABEL_16:
       wiFiAutoAssociationTokens = self->_wiFiAutoAssociationTokens;
     }
 
-    [(NSMutableSet *)wiFiAutoAssociationTokens addObject:v4];
+    [(NSMutableSet *)wiFiAutoAssociationTokens addObject:tokenCopy];
     v8 = +[CUTLog network];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = self->_wiFiAutoAssociationTokens;
       v11 = 138478083;
-      v12 = v4;
+      v12 = tokenCopy;
       v13 = 2113;
       v14 = v9;
       _os_log_impl(&dword_1B2321000, v8, OS_LOG_TYPE_DEFAULT, "Client token: %{private}@ was added to WiFi association clients (%{private}@)", &v11, 0x16u);
@@ -1129,11 +1129,11 @@ LABEL_16:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeWiFiAutoAssociationClientToken:(id)a3
+- (void)removeWiFiAutoAssociationClientToken:(id)token
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     [(NSRecursiveLock *)self->_lock lock];
     v5 = +[CUTLog network];
@@ -1141,13 +1141,13 @@ LABEL_16:
     {
       wiFiAutoAssociationTokens = self->_wiFiAutoAssociationTokens;
       v8 = 138478083;
-      v9 = v4;
+      v9 = tokenCopy;
       v10 = 2113;
       v11 = wiFiAutoAssociationTokens;
       _os_log_impl(&dword_1B2321000, v5, OS_LOG_TYPE_DEFAULT, "Client token: %{private}@ being removed from WiFi association clients (%{private}@)", &v8, 0x16u);
     }
 
-    [(NSMutableSet *)self->_wiFiAutoAssociationTokens removeObject:v4];
+    [(NSMutableSet *)self->_wiFiAutoAssociationTokens removeObject:tokenCopy];
     [(CUTWiFiManager *)self _adjustWiFiAutoAssociationLocked];
     [(NSRecursiveLock *)self->_lock unlock];
   }

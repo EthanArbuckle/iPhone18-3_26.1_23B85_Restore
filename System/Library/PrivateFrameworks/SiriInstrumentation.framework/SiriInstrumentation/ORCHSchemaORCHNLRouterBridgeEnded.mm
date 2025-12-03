@@ -1,25 +1,25 @@
 @interface ORCHSchemaORCHNLRouterBridgeEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHNLRouterBridgeEnded)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHNLRouterBridgeEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHNLRouterBridgeEnded)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHNLRouterBridgeEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHNLRouterBridgeEnded
 
-- (ORCHSchemaORCHNLRouterBridgeEnded)initWithDictionary:(id)a3
+- (ORCHSchemaORCHNLRouterBridgeEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ORCHSchemaORCHNLRouterBridgeEnded;
   v5 = [(ORCHSchemaORCHNLRouterBridgeEnded *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"routingDecision"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"routingDecision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHNLRouterBridgeEnded)initWithJSON:(id)a3
+- (ORCHSchemaORCHNLRouterBridgeEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHNLRouterBridgeEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHNLRouterBridgeEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_routingDecision)
   {
-    v4 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    routingDecision = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+    dictionaryRepresentation = [routingDecision dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"routingDecision"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"routingDecision"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"routingDecision"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"routingDecision"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
-    v6 = [v4 routingDecision];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    routingDecision = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+    routingDecision2 = [equalCopy routingDecision];
+    v7 = routingDecision2;
+    if ((routingDecision != 0) != (routingDecision2 == 0))
     {
-      v8 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
-      if (!v8)
+      routingDecision3 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+      if (!routingDecision3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
-      v11 = [v4 routingDecision];
-      v12 = [v10 isEqual:v11];
+      v9 = routingDecision3;
+      routingDecision4 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+      routingDecision5 = [equalCopy routingDecision];
+      v12 = [routingDecision4 isEqual:routingDecision5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+  toCopy = to;
+  routingDecision = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
 
-  if (v4)
+  if (routingDecision)
   {
-    v5 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
+    routingDecision2 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ORCHSchemaORCHNLRouterBridgeEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ORCHSchemaORCHNLRouterBridgeEnded *)self routingDecision:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ORCHSchemaORCHNLRouterBridgeEnded *)self deleteRoutingDecision];
   }

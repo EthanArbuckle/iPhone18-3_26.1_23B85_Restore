@@ -1,45 +1,45 @@
 @interface TSTWidthHeightCache
-- (BOOL)p_insertColumns:(unsigned int)a3 atColumn:(unsigned __int16)a4;
-- (BOOL)p_insertRows:(unsigned int)a3 atRow:(unsigned int)a4;
-- (TSTWidthHeightCache)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSTWidthHeightCache)initWithNumRows:(unsigned int)a3 andNumColumns:(unsigned int)a4;
-- (double)getFitHeightForRow:(unsigned int)a3;
-- (double)getModelHeightForRow:(unsigned int)a3;
-- (double)getModelWidthForColumn:(unsigned __int16)a3;
+- (BOOL)p_insertColumns:(unsigned int)columns atColumn:(unsigned __int16)column;
+- (BOOL)p_insertRows:(unsigned int)rows atRow:(unsigned int)row;
+- (TSTWidthHeightCache)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTWidthHeightCache)initWithNumRows:(unsigned int)rows andNumColumns:(unsigned int)columns;
+- (double)getFitHeightForRow:(unsigned int)row;
+- (double)getModelHeightForRow:(unsigned int)row;
+- (double)getModelWidthForColumn:(unsigned __int16)column;
 - (id).cxx_construct;
-- (id)columnToWidthMapFromCollectionArray:(id)a3;
-- (id)p_deleteColumnsStartingWith:(unsigned __int16)a3 upToColumn:(unsigned __int16)a4;
-- (id)p_resetFittingHeightsForRange:(TSUCellRect)a3;
-- (id)validateChangeDescriptors:(id)a3 tableInfo:(id)a4 numberOfRows:(unsigned int)a5 numberOfColumns:(unsigned __int16)a6;
-- (id)validateRowsNeedingFittingInfo:(id)a3 validationRegion:(id)a4 layoutEngine:(id)a5;
+- (id)columnToWidthMapFromCollectionArray:(id)array;
+- (id)p_deleteColumnsStartingWith:(unsigned __int16)with upToColumn:(unsigned __int16)column;
+- (id)p_resetFittingHeightsForRange:(TSUCellRect)range;
+- (id)validateChangeDescriptors:(id)descriptors tableInfo:(id)info numberOfRows:(unsigned int)rows numberOfColumns:(unsigned __int16)columns;
+- (id)validateRowsNeedingFittingInfo:(id)info validationRegion:(id)region layoutEngine:(id)engine;
 - (void)dealloc;
-- (void)finalizeLayoutPassWithRowsNeedingFittingInfo:(id)a3;
-- (void)getFitHeight:(double *)a3 andModelHeight:(double *)a4 forRow:(unsigned int)a5;
-- (void)p_deleteRowsStartingWith:(unsigned int)a3 upToRow:(unsigned int)a4;
-- (void)p_moveColumnsFrom:(TSUCellRect)a3 toColumn:(unsigned __int16)a4;
-- (void)p_moveRowsFrom:(TSUCellRect)a3 toRow:(unsigned int)a4;
-- (void)p_moveRowsUsingShuffleMapping:(id)a3;
-- (void)p_resetToRows:(unsigned int)a3 andNumColumns:(unsigned int)a4;
-- (void)p_setFittingHeightsFromCollectionWithLock:(id)a3;
-- (void)resetFittingRowHeightsStartingWith:(unsigned int)a3 upToRow:(unsigned int)a4;
+- (void)finalizeLayoutPassWithRowsNeedingFittingInfo:(id)info;
+- (void)getFitHeight:(double *)height andModelHeight:(double *)modelHeight forRow:(unsigned int)row;
+- (void)p_deleteRowsStartingWith:(unsigned int)with upToRow:(unsigned int)row;
+- (void)p_moveColumnsFrom:(TSUCellRect)from toColumn:(unsigned __int16)column;
+- (void)p_moveRowsFrom:(TSUCellRect)from toRow:(unsigned int)row;
+- (void)p_moveRowsUsingShuffleMapping:(id)mapping;
+- (void)p_resetToRows:(unsigned int)rows andNumColumns:(unsigned int)columns;
+- (void)p_setFittingHeightsFromCollectionWithLock:(id)lock;
+- (void)resetFittingRowHeightsStartingWith:(unsigned int)with upToRow:(unsigned int)row;
 - (void)resetModelCache;
-- (void)resetModelCacheRange:(TSUCellRect)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setFitHeight:(double)a3 forCellID:(TSUCellCoord)a4;
-- (void)setFittingHeightsFromCollection:(id)a3;
-- (void)setFittingHeightsFromCollectionArray:(id)a3;
-- (void)setModelHeight:(double)a3 forRow:(unsigned int)a4;
-- (void)setModelWidth:(double)a3 forColumn:(unsigned __int16)a4;
-- (void)willModifyIfNeeded:(id)a3;
-- (void)willModifyIfPossible:(id)a3;
+- (void)resetModelCacheRange:(TSUCellRect)range;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setFitHeight:(double)height forCellID:(TSUCellCoord)d;
+- (void)setFittingHeightsFromCollection:(id)collection;
+- (void)setFittingHeightsFromCollectionArray:(id)array;
+- (void)setModelHeight:(double)height forRow:(unsigned int)row;
+- (void)setModelWidth:(double)width forColumn:(unsigned __int16)column;
+- (void)willModifyIfNeeded:(id)needed;
+- (void)willModifyIfPossible:(id)possible;
 @end
 
 @implementation TSTWidthHeightCache
 
-- (TSTWidthHeightCache)initWithNumRows:(unsigned int)a3 andNumColumns:(unsigned int)a4
+- (TSTWidthHeightCache)initWithNumRows:(unsigned int)rows andNumColumns:(unsigned int)columns
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&columns;
+  v5 = *&rows;
   v11.receiver = self;
   v11.super_class = TSTWidthHeightCache;
   v6 = [(TSTWidthHeightCache *)&v11 init];
@@ -61,71 +61,71 @@
   [(TSTWidthHeightCache *)&v3 dealloc];
 }
 
-- (void)p_resetToRows:(unsigned int)a3 andNumColumns:(unsigned int)a4
+- (void)p_resetToRows:(unsigned int)rows andNumColumns:(unsigned int)columns
 {
   pthread_rwlock_wrlock(&self->_lock);
   begin = self->_columnModelWidths.__begin_;
   self->_rowHeights.__end_ = self->_rowHeights.__begin_;
   self->_columnModelWidths.__end_ = begin;
   sub_2213DD238(v8);
-  sub_2213D9A9C(&self->_rowHeights.__begin_, a3, v8);
+  sub_2213D9A9C(&self->_rowHeights.__begin_, rows, v8);
   v8[0] = 0;
-  sub_2213A1E8C(&self->_columnModelWidths.__begin_, a4, v8);
+  sub_2213A1E8C(&self->_columnModelWidths.__begin_, columns, v8);
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (void)setFitHeight:(double)a3 forCellID:(TSUCellCoord)a4
+- (void)setFitHeight:(double)height forCellID:(TSUCellCoord)d
 {
-  column = a4.column;
-  row = a4.row;
-  if (a4.row != 0x7FFFFFFFLL && (*&a4 & 0xFFFF00000000) != 0x7FFF00000000)
+  column = d.column;
+  row = d.row;
+  if (d.row != 0x7FFFFFFFLL && (*&d & 0xFFFF00000000) != 0x7FFF00000000)
   {
     pthread_rwlock_wrlock(&self->_lock);
     begin = self->_rowHeights.__begin_;
     if (row < 0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3))
     {
-      sub_2213DD4E4(begin + 72 * row + 8, column, a3);
+      sub_2213DD4E4(begin + 72 * row + 8, column, height);
     }
 
     pthread_rwlock_unlock(&self->_lock);
   }
 }
 
-- (void)p_setFittingHeightsFromCollectionWithLock:(id)a3
+- (void)p_setFittingHeightsFromCollectionWithLock:(id)lock
 {
-  v4 = a3;
-  if (objc_msgSend_hasWorkItems(v4, v5, v6, v7, v8))
+  lockCopy = lock;
+  if (objc_msgSend_hasWorkItems(lockCopy, v5, v6, v7, v8))
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2213D9C50;
     v12[3] = &unk_278464750;
     v12[4] = self;
-    objc_msgSend_enumerateFittingHeightsUsingBlock_(v4, v9, v12, v10, v11);
+    objc_msgSend_enumerateFittingHeightsUsingBlock_(lockCopy, v9, v12, v10, v11);
   }
 }
 
-- (void)setFittingHeightsFromCollection:(id)a3
+- (void)setFittingHeightsFromCollection:(id)collection
 {
-  v11 = a3;
-  if (objc_msgSend_hasWorkItems(v11, v4, v5, v6, v7))
+  collectionCopy = collection;
+  if (objc_msgSend_hasWorkItems(collectionCopy, v4, v5, v6, v7))
   {
     pthread_rwlock_wrlock(&self->_lock);
-    objc_msgSend_p_setFittingHeightsFromCollectionWithLock_(self, v8, v11, v9, v10);
+    objc_msgSend_p_setFittingHeightsFromCollectionWithLock_(self, v8, collectionCopy, v9, v10);
     pthread_rwlock_unlock(&self->_lock);
   }
 }
 
-- (void)setFittingHeightsFromCollectionArray:(id)a3
+- (void)setFittingHeightsFromCollectionArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   pthread_rwlock_wrlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = arrayCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v13, v17, 16);
   if (v10)
   {
@@ -153,16 +153,16 @@
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (id)columnToWidthMapFromCollectionArray:(id)a3
+- (id)columnToWidthMapFromCollectionArray:(id)array
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v8 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x277CCAB00], v4, v5, v6, v7);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v3;
+  v9 = arrayCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v22, v26, 16);
   if (v11)
   {
@@ -194,14 +194,14 @@
   return v8;
 }
 
-- (double)getFitHeightForRow:(unsigned int)a3
+- (double)getFitHeightForRow:(unsigned int)row
 {
   pthread_rwlock_rdlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
   v6 = 0.0;
-  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > a3)
+  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > row)
   {
-    v7 = &begin[72 * a3];
+    v7 = &begin[72 * row];
     v6 = 8.0;
     if (!*(v7 + 5))
     {
@@ -213,26 +213,26 @@
   return v6;
 }
 
-- (void)setModelWidth:(double)a3 forColumn:(unsigned __int16)a4
+- (void)setModelWidth:(double)width forColumn:(unsigned __int16)column
 {
-  v4 = a4;
+  columnCopy = column;
   pthread_rwlock_wrlock(&self->_lock);
   begin = self->_columnModelWidths.__begin_;
-  if (v4 < (self->_columnModelWidths.__end_ - begin))
+  if (columnCopy < (self->_columnModelWidths.__end_ - begin))
   {
-    begin[v4] = a3;
+    begin[columnCopy] = width;
   }
 
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (void)setModelHeight:(double)a3 forRow:(unsigned int)a4
+- (void)setModelHeight:(double)height forRow:(unsigned int)row
 {
   pthread_rwlock_wrlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
-  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > a4)
+  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > row)
   {
-    begin[9 * a4] = a3;
+    begin[9 * row] = height;
   }
 
   pthread_rwlock_unlock(&self->_lock);
@@ -275,10 +275,10 @@
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (void)resetModelCacheRange:(TSUCellRect)a3
+- (void)resetModelCacheRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
+  size = range.size;
+  origin = range.origin;
   pthread_rwlock_wrlock(&self->_lock);
   v6 = (*&origin & 0xFFFF00000000) != 0x7FFF00000000 && origin.row == 0x7FFFFFFF;
   if (v6)
@@ -438,44 +438,44 @@
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (double)getModelHeightForRow:(unsigned int)a3
+- (double)getModelHeightForRow:(unsigned int)row
 {
   pthread_rwlock_rdlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
   v6 = 0.0;
-  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > a3)
+  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > row)
   {
-    v6 = begin[9 * a3];
+    v6 = begin[9 * row];
   }
 
   pthread_rwlock_unlock(&self->_lock);
   return v6;
 }
 
-- (double)getModelWidthForColumn:(unsigned __int16)a3
+- (double)getModelWidthForColumn:(unsigned __int16)column
 {
-  v3 = a3;
+  columnCopy = column;
   pthread_rwlock_rdlock(&self->_lock);
   begin = self->_columnModelWidths.__begin_;
   v6 = 0.0;
-  if (v3 < (self->_columnModelWidths.__end_ - begin))
+  if (columnCopy < (self->_columnModelWidths.__end_ - begin))
   {
-    v6 = begin[v3];
+    v6 = begin[columnCopy];
   }
 
   pthread_rwlock_unlock(&self->_lock);
   return v6;
 }
 
-- (void)getFitHeight:(double *)a3 andModelHeight:(double *)a4 forRow:(unsigned int)a5
+- (void)getFitHeight:(double *)height andModelHeight:(double *)modelHeight forRow:(unsigned int)row
 {
   pthread_rwlock_rdlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
   v10 = 0.0;
   v11 = 0;
-  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > a5)
+  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) > row)
   {
-    v12 = &begin[72 * a5];
+    v12 = &begin[72 * row];
     v11 = *v12;
     v10 = 8.0;
     if (!*(v12 + 5))
@@ -485,36 +485,36 @@
   }
 
   pthread_rwlock_unlock(&self->_lock);
-  if (a3)
+  if (height)
   {
-    *a3 = v10;
+    *height = v10;
   }
 
-  if (a4)
+  if (modelHeight)
   {
-    *a4 = v11;
+    *modelHeight = v11;
   }
 }
 
-- (id)p_deleteColumnsStartingWith:(unsigned __int16)a3 upToColumn:(unsigned __int16)a4
+- (id)p_deleteColumnsStartingWith:(unsigned __int16)with upToColumn:(unsigned __int16)column
 {
-  if (a3 >= a4)
+  if (with >= column)
   {
     v8 = 0;
   }
 
   else
   {
-    v5 = a4;
-    v6 = a3;
-    v8 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, a3, a4, v4);
+    columnCopy = column;
+    withCopy = with;
+    v8 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, with, column, v4);
     pthread_rwlock_wrlock(&self->_lock);
     begin = self->_columnModelWidths.__begin_;
     end = self->_columnModelWidths.__end_;
     v11 = (end - begin) >> 3;
-    if (v11 >= v6)
+    if (v11 >= withCopy)
     {
-      v12 = v6;
+      v12 = withCopy;
     }
 
     else
@@ -522,9 +522,9 @@
       v12 = v11;
     }
 
-    if (v11 >= v5)
+    if (v11 >= columnCopy)
     {
-      v13 = v5;
+      v13 = columnCopy;
     }
 
     else
@@ -570,28 +570,28 @@
   return v8;
 }
 
-- (void)p_deleteRowsStartingWith:(unsigned int)a3 upToRow:(unsigned int)a4
+- (void)p_deleteRowsStartingWith:(unsigned int)with upToRow:(unsigned int)row
 {
-  if (a3 < a4)
+  if (with < row)
   {
     pthread_rwlock_wrlock(&self->_lock);
     begin = self->_rowHeights.__begin_;
     end = self->_rowHeights.__end_;
     v10 = 954437177 * ((end - begin) >> 3);
-    if (v10 > a3)
+    if (v10 > with)
     {
-      v11 = &begin[72 * a3];
-      if (v10 >= a4)
+      v11 = &begin[72 * with];
+      if (v10 >= row)
       {
-        v12 = a4;
+        rowCopy = row;
       }
 
       else
       {
-        v12 = v10;
+        rowCopy = v10;
       }
 
-      v13 = &v11[72 * (v12 - a3)];
+      v13 = &v11[72 * (rowCopy - with)];
       v14 = end - v13;
       if (end != v13)
       {
@@ -605,14 +605,14 @@
   }
 }
 
-- (BOOL)p_insertColumns:(unsigned int)a3 atColumn:(unsigned __int16)a4
+- (BOOL)p_insertColumns:(unsigned int)columns atColumn:(unsigned __int16)column
 {
-  LODWORD(v5) = a4;
-  LODWORD(v6) = a3;
-  if (a4 + a3 >= 0x3E9)
+  LODWORD(v5) = column;
+  LODWORD(v6) = columns;
+  if (column + columns >= 0x3E9)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_insertColumns:atColumn:]", a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_insertColumns:atColumn:]", column, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 671, 0, "attempt to insert column range beyond column width cache max columns; truncating");
 
@@ -684,70 +684,70 @@
   return 1;
 }
 
-- (BOOL)p_insertRows:(unsigned int)a3 atRow:(unsigned int)a4
+- (BOOL)p_insertRows:(unsigned int)rows atRow:(unsigned int)row
 {
-  if (a4 + a3 >= 0xF4241)
+  if (row + rows >= 0xF4241)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_insertRows:atRow:]", *&a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_insertRows:atRow:]", *&row, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 697, 0, "attempt to insert row range beyond row height cache max rows; truncating");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  if (a4 >= 0xF423F)
+  if (row >= 0xF423F)
   {
-    v19 = 999999;
+    rowCopy = 999999;
   }
 
   else
   {
-    v19 = a4;
+    rowCopy = row;
   }
 
-  if (1000000 - v19 >= a3)
+  if (1000000 - rowCopy >= rows)
   {
-    v20 = a3;
+    rowsCopy = rows;
   }
 
   else
   {
-    v20 = (1000000 - v19);
+    rowsCopy = (1000000 - rowCopy);
   }
 
   pthread_rwlock_wrlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
-  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) >= v19)
+  if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) >= rowCopy)
   {
-    v22 = &begin[72 * v19];
+    v22 = &begin[72 * rowCopy];
     sub_2213DD238(v24);
-    sub_2213DAF88(&self->_rowHeights.__begin_, v22, v20, v24);
+    sub_2213DAF88(&self->_rowHeights.__begin_, v22, rowsCopy, v24);
   }
 
   else
   {
     sub_2213DD238(v24);
-    sub_2213D9A9C(&self->_rowHeights.__begin_, (v20 + v19), v24);
+    sub_2213D9A9C(&self->_rowHeights.__begin_, (rowsCopy + rowCopy), v24);
   }
 
   pthread_rwlock_unlock(&self->_lock);
   return 1;
 }
 
-- (void)p_moveRowsFrom:(TSUCellRect)a3 toRow:(unsigned int)a4
+- (void)p_moveRowsFrom:(TSUCellRect)from toRow:(unsigned int)row
 {
-  row = a3.origin.row;
-  if (a3.origin.row != a4)
+  row = from.origin.row;
+  if (from.origin.row != row)
   {
-    numberOfRows = a3.size.numberOfRows;
-    v7 = a3.size.numberOfRows + a3.origin.row;
-    if (a3.size.numberOfRows + a3.origin.row != a4)
+    numberOfRows = from.size.numberOfRows;
+    v7 = from.size.numberOfRows + from.origin.row;
+    if (from.size.numberOfRows + from.origin.row != row)
     {
-      if (a3.origin.row <= a4 && v7 >= a4)
+      if (from.origin.row <= row && v7 >= row)
       {
         v9 = MEMORY[0x277D81150];
-        v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&a3.size, *&a4);
+        v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&from.size, *&row);
         v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v12, v13);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v15, v10, v14, 727, 0, "destination cannot be within the source range.");
 
@@ -757,17 +757,17 @@
       if (v7 >= 0xF4241)
       {
         v20 = MEMORY[0x277D81150];
-        v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&a3.size, *&a4);
+        v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&from.size, *&row);
         v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v23, v24);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v26, v21, v25, 728, 0, "src range for move exceeds max");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
       }
 
-      if (a4 >= 0xF4241)
+      if (row >= 0xF4241)
       {
         v31 = MEMORY[0x277D81150];
-        v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&a3.size, *&a4);
+        v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveRowsFrom:toRow:]", *&from.size, *&row);
         v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v34, v35);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v37, v32, v36, 729, 0, "dest range for move exceeds max");
 
@@ -775,26 +775,26 @@
       }
 
       pthread_rwlock_wrlock(&self->_lock);
-      if (v7 <= a4)
+      if (v7 <= row)
       {
-        v42 = a4;
+        rowCopy = row;
       }
 
       else
       {
-        v42 = v7;
+        rowCopy = v7;
       }
 
       begin = self->_rowHeights.__begin_;
       p_rowHeights = &self->_rowHeights;
-      if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) < v42)
+      if (0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3) < rowCopy)
       {
         sub_2213DD238(&v51);
-        sub_2213D9A9C(&self->_rowHeights.__begin_, v42, &v51);
+        sub_2213D9A9C(&self->_rowHeights.__begin_, rowCopy, &v51);
         begin = p_rowHeights->__begin_;
       }
 
-      v45 = row;
+      rowCopy2 = row;
       v46 = 9 * row;
       v47 = &begin[72 * row];
       v48 = &v47[72 * numberOfRows];
@@ -802,19 +802,19 @@
       v52 = 0;
       v53 = 0;
       sub_2213DD5AC(&v51, v47, v48, numberOfRows);
-      v49 = &begin[72 * a4];
+      v49 = &begin[72 * row];
       if (v49 <= v48)
       {
-        if (v45 != a4)
+        if (rowCopy2 != row)
         {
-          memmove(&v48[-(8 * v46 - 72 * a4)], v49, 8 * v46 - 72 * a4);
+          memmove(&v48[-(8 * v46 - 72 * row)], v49, 8 * v46 - 72 * row);
         }
       }
 
       else
       {
         memmove(v47, &v47[72 * numberOfRows], v49 - v48);
-        v49 = p_rowHeights->__begin_ + 72 * (a4 - numberOfRows);
+        v49 = p_rowHeights->__begin_ + 72 * (row - numberOfRows);
       }
 
       v50 = v51;
@@ -835,21 +835,21 @@
   }
 }
 
-- (void)p_moveColumnsFrom:(TSUCellRect)a3 toColumn:(unsigned __int16)a4
+- (void)p_moveColumnsFrom:(TSUCellRect)from toColumn:(unsigned __int16)column
 {
-  column = a3.origin.column;
-  if (a3.origin.column != a4)
+  column = from.origin.column;
+  if (from.origin.column != column)
   {
-    v5 = a4;
-    numberOfColumns = a3.size.numberOfColumns;
-    v7 = a3.origin.column + a3.size.numberOfColumns;
-    if (v7 != a4)
+    columnCopy = column;
+    numberOfColumns = from.size.numberOfColumns;
+    v7 = from.origin.column + from.size.numberOfColumns;
+    if (v7 != column)
     {
-      origin = a3.origin;
-      if (a3.origin.column <= a4 && v7 >= a4)
+      origin = from.origin;
+      if (from.origin.column <= column && v7 >= column)
       {
         v10 = MEMORY[0x277D81150];
-        v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&a3.size, a4);
+        v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&from.size, column);
         v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v13, v14);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v16, v11, v15, 777, 0, "destination cannot be within the source range.");
 
@@ -859,17 +859,17 @@
       if (v7 >= 0x3E9)
       {
         v21 = MEMORY[0x277D81150];
-        v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&a3.size, a4);
+        v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&from.size, column);
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v24, v25);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v27, v22, v26, 778, 0, "src range for move exceeds max");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
       }
 
-      if (v5 >= 0x3E9)
+      if (columnCopy >= 0x3E9)
       {
         v32 = MEMORY[0x277D81150];
-        v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&a3.size, a4);
+        v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache p_moveColumnsFrom:toColumn:]", *&from.size, column);
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v35, v36);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v38, v33, v37, 779, 0, "dest range for move exceeds max");
 
@@ -878,9 +878,9 @@
 
       v43 = HIDWORD(*&origin);
       pthread_rwlock_wrlock(&self->_lock);
-      if (v7 <= v5)
+      if (v7 <= columnCopy)
       {
-        v44 = v5;
+        v44 = columnCopy;
       }
 
       else
@@ -904,10 +904,10 @@
       v56 = 0;
       v57 = 0;
       sub_2212A41CC(&__p, &begin[v47 / 8], v49, numberOfColumns);
-      v50 = &begin[v5];
+      v50 = &begin[columnCopy];
       if (v48 >= v50)
       {
-        v51 = 8 * v5;
+        v51 = 8 * columnCopy;
         if (v47 != v51)
         {
           memmove(&v49[-(v47 - v51)], v50, v47 - v51);
@@ -921,7 +921,7 @@
           memmove(v48, v49, v50 - v49);
         }
 
-        v50 = &p_columnModelWidths->__begin_[v5 - numberOfColumns];
+        v50 = &p_columnModelWidths->__begin_[columnCopy - numberOfColumns];
       }
 
       if (v56 != __p)
@@ -935,7 +935,7 @@
       {
         for (i = 8; i != 72; i += 16)
         {
-          sub_2213DD770(&v52[i], column, numberOfColumns, v5);
+          sub_2213DD770(&v52[i], column, numberOfColumns, columnCopy);
         }
 
         v52 += 72;
@@ -952,9 +952,9 @@
   }
 }
 
-- (void)p_moveRowsUsingShuffleMapping:(id)a3
+- (void)p_moveRowsUsingShuffleMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   pthread_rwlock_wrlock(&self->_lock);
   v11[0] = 0;
   v11[1] = v11;
@@ -974,18 +974,18 @@
   v8[4] = self;
   v8[5] = v11;
   v8[6] = v9;
-  objc_msgSend_enumerateMappingFollowingSwapsUsingBlock_(v4, v5, v8, v6, v7);
+  objc_msgSend_enumerateMappingFollowingSwapsUsingBlock_(mappingCopy, v5, v8, v6, v7);
   _Block_object_dispose(v9, 8);
   _Block_object_dispose(v11, 8);
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (void)resetFittingRowHeightsStartingWith:(unsigned int)a3 upToRow:(unsigned int)a4
+- (void)resetFittingRowHeightsStartingWith:(unsigned int)with upToRow:(unsigned int)row
 {
-  if (a3 > a4)
+  if (with > row)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache resetFittingRowHeightsStartingWith:upToRow:]", *&a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTWidthHeightCache resetFittingRowHeightsStartingWith:upToRow:]", *&row, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTWidthHeightCache.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 853, 0, "startRow should be before endRow");
 
@@ -995,16 +995,16 @@
   pthread_rwlock_wrlock(&self->_lock);
   begin = self->_rowHeights.__begin_;
   v20 = 0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - begin) >> 3);
-  if (v20 > a3)
+  if (v20 > with)
   {
-    v21 = v20 - 1;
-    if (v21 >= a4)
+    rowCopy = v20 - 1;
+    if (rowCopy >= row)
     {
-      v21 = a4;
+      rowCopy = row;
     }
 
-    v22 = &begin[72 * v21 + 72];
-    for (i = &begin[72 * a3]; i < v22; i += 72)
+    v22 = &begin[72 * rowCopy + 72];
+    for (i = &begin[72 * with]; i < v22; i += 72)
     {
       for (j = 0; j != 4; ++j)
       {
@@ -1032,11 +1032,11 @@
   pthread_rwlock_unlock(&self->_lock);
 }
 
-- (id)p_resetFittingHeightsForRange:(TSUCellRect)a3
+- (id)p_resetFittingHeightsForRange:(TSUCellRect)range
 {
-  size = a3.size;
-  origin = a3.origin;
-  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, *&a3.origin, *&a3.size, v3, *&a3.origin, *&a3.size);
+  size = range.size;
+  origin = range.origin;
+  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, *&range.origin, *&range.size, v3, *&range.origin, *&range.size);
   pthread_rwlock_wrlock(&self->_lock);
   v8 = origin.row == 0x7FFFFFFF;
   if (v8 && (*&origin & 0xFFFF00000000) != 0x7FFF00000000)
@@ -1101,18 +1101,18 @@
   return v7;
 }
 
-- (id)validateChangeDescriptors:(id)a3 tableInfo:(id)a4 numberOfRows:(unsigned int)a5 numberOfColumns:(unsigned __int16)a6
+- (id)validateChangeDescriptors:(id)descriptors tableInfo:(id)info numberOfRows:(unsigned int)rows numberOfColumns:(unsigned __int16)columns
 {
   v119 = *MEMORY[0x277D85DE8];
-  v101 = a3;
-  v100 = a4;
-  objc_msgSend_willModifyIfPossible_(self, v8, v100, v9, v10);
+  descriptorsCopy = descriptors;
+  infoCopy = info;
+  objc_msgSend_willModifyIfPossible_(self, v8, infoCopy, v9, v10);
   v15 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v11, v12, v13, v14);
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  obj = v101;
+  obj = descriptorsCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v114, v118, 16);
   if (v21)
   {
@@ -1261,12 +1261,12 @@ LABEL_17:
   return v15;
 }
 
-- (id)validateRowsNeedingFittingInfo:(id)a3 validationRegion:(id)a4 layoutEngine:(id)a5
+- (id)validateRowsNeedingFittingInfo:(id)info validationRegion:(id)region layoutEngine:(id)engine
 {
-  v8 = a3;
-  v9 = a4;
-  v14 = a5;
-  if (!v8)
+  infoCopy = info;
+  regionCopy = region;
+  engineCopy = engine;
+  if (!infoCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTWidthHeightCache validateRowsNeedingFittingInfo:validationRegion:layoutEngine:]", v12, v13);
@@ -1277,18 +1277,18 @@ LABEL_17:
   }
 
   v26 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13);
-  if (objc_msgSend_cellCount(v9, v27, v28, v29, v30))
+  if (objc_msgSend_cellCount(regionCopy, v27, v28, v29, v30))
   {
-    objc_msgSend_addObject_(v26, v31, v9, v33, v34);
+    objc_msgSend_addObject_(v26, v31, regionCopy, v33, v34);
   }
 
-  hasMergeRanges = objc_msgSend_hasMergeRanges(v14, v31, v32, v33, v34);
+  hasMergeRanges = objc_msgSend_hasMergeRanges(engineCopy, v31, v32, v33, v34);
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
   v65 = sub_2213DCB10;
   v66 = sub_2213DCB20;
-  v54 = v9;
+  v54 = regionCopy;
   v67 = v54;
   while (objc_msgSend_count(v26, v36, v37, v38, v39))
   {
@@ -1298,15 +1298,15 @@ LABEL_17:
     v56[2] = sub_2213DCB28;
     v56[3] = &unk_2784647F0;
     v56[4] = self;
-    v57 = v8;
+    v57 = infoCopy;
     v61 = hasMergeRanges;
-    v58 = v14;
+    v58 = engineCopy;
     v60 = &v62;
     v59 = v26;
     objc_msgSend_enumerateCellRangesUsingBlock_(v44, v45, v56, v46, v47);
   }
 
-  if (objc_msgSend_count(v8, v40, v41, v42, v43))
+  if (objc_msgSend_count(infoCopy, v40, v41, v42, v43))
   {
     pthread_rwlock_wrlock(&self->_lock);
     v50 = 0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - self->_rowHeights.__begin_) >> 3);
@@ -1315,20 +1315,20 @@ LABEL_17:
     v55[2] = sub_2213DCC84;
     v55[3] = &unk_27845E958;
     v55[4] = self;
-    objc_msgSend_enumerateIndexesInRange_options_usingBlock_(v8, v51, 0, v50, 1, v55);
+    objc_msgSend_enumerateIndexesInRange_options_usingBlock_(infoCopy, v51, 0, v50, 1, v55);
     pthread_rwlock_unlock(&self->_lock);
   }
 
-  v52 = objc_msgSend_pairWithFirst_second_(MEMORY[0x277D812A8], v48, v8, v63[5], v49);
+  v52 = objc_msgSend_pairWithFirst_second_(MEMORY[0x277D812A8], v48, infoCopy, v63[5], v49);
   _Block_object_dispose(&v62, 8);
 
   return v52;
 }
 
-- (void)finalizeLayoutPassWithRowsNeedingFittingInfo:(id)a3
+- (void)finalizeLayoutPassWithRowsNeedingFittingInfo:(id)info
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  infoCopy = info;
+  if (objc_msgSend_count(infoCopy, v5, v6, v7, v8))
   {
     pthread_rwlock_wrlock(&self->_lock);
     v9 = 0x8E38E38E38E38E39 * ((self->_rowHeights.__end_ - self->_rowHeights.__begin_) >> 3);
@@ -1337,36 +1337,36 @@ LABEL_17:
     v11[2] = sub_2213DCD9C;
     v11[3] = &unk_27845E958;
     v11[4] = self;
-    objc_msgSend_enumerateIndexesInRange_options_usingBlock_(v4, v10, 0, v9, 1, v11);
+    objc_msgSend_enumerateIndexesInRange_options_usingBlock_(infoCopy, v10, 0, v9, 1, v11);
     pthread_rwlock_unlock(&self->_lock);
   }
 }
 
-- (void)willModifyIfNeeded:(id)a3
+- (void)willModifyIfNeeded:(id)needed
 {
-  v22 = a3;
+  neededCopy = needed;
   v8 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v4, v5, v6, v7);
   v13 = objc_msgSend_supportsAutoResizedTables(v8, v9, v10, v11, v12);
 
-  if ((v13 & 1) == 0 && !self->_needsToBeArchived && objc_msgSend_canModify(v22, v14, v15, v16, v17))
+  if ((v13 & 1) == 0 && !self->_needsToBeArchived && objc_msgSend_canModify(neededCopy, v14, v15, v16, v17))
   {
     self->_needsToBeArchived = 1;
-    objc_msgSend_willModify(v22, v18, v19, v20, v21);
+    objc_msgSend_willModify(neededCopy, v18, v19, v20, v21);
   }
 }
 
-- (void)willModifyIfPossible:(id)a3
+- (void)willModifyIfPossible:(id)possible
 {
-  v22 = a3;
+  possibleCopy = possible;
   v8 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, v4, v5, v6, v7);
   v13 = objc_msgSend_supportsAutoResizedTables(v8, v9, v10, v11, v12);
 
   if ((v13 & 1) == 0)
   {
-    if (objc_msgSend_canModify(v22, v14, v15, v16, v17))
+    if (objc_msgSend_canModify(possibleCopy, v14, v15, v16, v17))
     {
       self->_needsToBeArchived = 1;
-      objc_msgSend_willModify(v22, v18, v19, v20, v21);
+      objc_msgSend_willModify(possibleCopy, v18, v19, v20, v21);
     }
 
     else
@@ -1376,20 +1376,20 @@ LABEL_17:
   }
 }
 
-- (TSTWidthHeightCache)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTWidthHeightCache)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = *(a3 + 8);
-  v7 = *(a3 + 12);
-  if (*(a3 + 4))
+  v6 = *(archive + 8);
+  v7 = *(archive + 12);
+  if (*(archive + 4))
   {
     v8 = v7;
-    v9 = objc_msgSend_initWithNumRows_andNumColumns_(self, a2, *(a3 + 8), v7, v4);
+    v9 = objc_msgSend_initWithNumRows_andNumColumns_(self, a2, *(archive + 8), v7, v4);
   }
 
   else
   {
     v8 = 1;
-    v9 = objc_msgSend_initWithNumRows_andNumColumns_(self, a2, *(a3 + 8), 1, v4);
+    v9 = objc_msgSend_initWithNumRows_andNumColumns_(self, a2, *(archive + 8), 1, v4);
   }
 
   v10 = v9;
@@ -1398,7 +1398,7 @@ LABEL_17:
     if (v6)
     {
       v11 = 0;
-      v12 = *(a3 + 5) + 8;
+      v12 = *(archive + 5) + 8;
       v13 = 20;
       do
       {
@@ -1445,9 +1445,9 @@ LABEL_17:
   return v10;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v19 = a4;
+  archiverCopy = archiver;
   begin = self->_rowHeights.__begin_;
   if (self->_rowHeights.__end_ != begin)
   {
@@ -1455,20 +1455,20 @@ LABEL_17:
     v8 = 0;
     while (1)
     {
-      v9 = *(a3 + 5);
+      v9 = *(archive + 5);
       if (!v9)
       {
         goto LABEL_8;
       }
 
-      v10 = *(a3 + 8);
+      v10 = *(archive + 8);
       v11 = *v9;
       if (v10 >= *v9)
       {
         break;
       }
 
-      *(a3 + 8) = v10 + 1;
+      *(archive + 8) = v10 + 1;
       v12 = *&v9[2 * v10 + 2];
 LABEL_10:
       v15 = &begin[v7];
@@ -1490,27 +1490,27 @@ LABEL_10:
       }
     }
 
-    if (v11 == *(a3 + 9))
+    if (v11 == *(archive + 9))
     {
 LABEL_8:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-      v9 = *(a3 + 5);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+      v9 = *(archive + 5);
       v11 = *v9;
     }
 
     *v9 = v11 + 1;
-    v12 = google::protobuf::Arena::CreateMaybeMessage<TST::WidthHeightCacheFittingEntry>(*(a3 + 3));
-    v13 = *(a3 + 8);
-    v14 = *(a3 + 5) + 8 * v13;
-    *(a3 + 8) = v13 + 1;
+    v12 = google::protobuf::Arena::CreateMaybeMessage<TST::WidthHeightCacheFittingEntry>(*(archive + 3));
+    v13 = *(archive + 8);
+    v14 = *(archive + 5) + 8 * v13;
+    *(archive + 8) = v13 + 1;
     *(v14 + 8) = v12;
     goto LABEL_10;
   }
 
 LABEL_13:
   v18 = (self->_columnModelWidths.__end_ - self->_columnModelWidths.__begin_) >> 3;
-  *(a3 + 4) |= 1u;
-  *(a3 + 12) = v18;
+  *(archive + 4) |= 1u;
+  *(archive + 12) = v18;
 }
 
 - (id).cxx_construct

@@ -1,19 +1,19 @@
 @interface IPAPhotoAdjustmentStackSerializer_v10
-- (id)archiveFromData:(id)a3 error:(id *)a4;
-- (id)dataFromArchive:(id)a3 error:(id *)a4;
-- (id)dataFromPhotoAdjustmentStack:(id)a3 error:(id *)a4;
-- (id)photoAdjustmentFromArchive:(id)a3 error:(id *)a4;
-- (id)photoAdjustmentStackFromData:(id)a3 error:(id *)a4;
+- (id)archiveFromData:(id)data error:(id *)error;
+- (id)dataFromArchive:(id)archive error:(id *)error;
+- (id)dataFromPhotoAdjustmentStack:(id)stack error:(id *)error;
+- (id)photoAdjustmentFromArchive:(id)archive error:(id *)error;
+- (id)photoAdjustmentStackFromData:(id)data error:(id *)error;
 @end
 
 @implementation IPAPhotoAdjustmentStackSerializer_v10
 
-- (id)archiveFromData:(id)a3 error:(id *)a4
+- (id)archiveFromData:(id)data error:(id *)error
 {
-  v5 = [IPAAdjustmentStackSerializer decompressData:a3 error:?];
+  v5 = [IPAAdjustmentStackSerializer decompressData:data error:?];
   if (v5)
   {
-    v6 = [IPAAdjustmentStackSerializer JSONFromData:v5 error:a4];
+    v6 = [IPAAdjustmentStackSerializer JSONFromData:v5 error:error];
   }
 
   else
@@ -24,11 +24,11 @@
   return v6;
 }
 
-- (id)photoAdjustmentStackFromData:(id)a3 error:(id *)a4
+- (id)photoAdjustmentStackFromData:(id)data error:(id *)error
 {
   v86 = *MEMORY[0x277D85DE8];
   v84 = 0;
-  v6 = [IPAAdjustmentStackSerializer decompressData:a3 error:&v84];
+  v6 = [IPAAdjustmentStackSerializer decompressData:data error:&v84];
   v7 = v84;
   if (v6)
   {
@@ -57,7 +57,7 @@
     v10 = [v8 objectForKeyedSubscript:@"formatVersion"];
     if (v10)
     {
-      v11 = v10;
+      array = v10;
       v18 = [IPAAdjustmentVersion versionFromArchivalRepresentation:v10];
       if (v18)
       {
@@ -75,7 +75,7 @@
 
       else
       {
-        IPAAdjustmentError(1007, @"unable to parse stack formatVersion: %@", v12, v13, v14, v15, v16, v17, v11);
+        IPAAdjustmentError(1007, @"unable to parse stack formatVersion: %@", v12, v13, v14, v15, v16, v17, array);
       }
       v54 = ;
 
@@ -99,13 +99,13 @@ LABEL_8:
         v36 = IPAAdjustmentError(1001, @"bad input: archived '%@' missing or wrong type: %@", v30, v31, v32, v33, v34, v35, @"adjustments");
 LABEL_16:
         v37 = 0;
-        v11 = v9;
+        array = v9;
         v9 = v36;
 LABEL_54:
 
 LABEL_55:
         v7 = v9;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_58;
         }
@@ -116,20 +116,20 @@ LABEL_55:
 
     v45 = [v29 count];
     v72 = v28;
-    v73 = a4;
+    errorCopy = error;
     if (!v45)
     {
-      v11 = 0;
+      array = 0;
 LABEL_39:
-      if (!(v11 | v9))
+      if (!(array | v9))
       {
-        v11 = [MEMORY[0x277CBEA60] array];
+        array = [MEMORY[0x277CBEA60] array];
       }
 
-      if (v11)
+      if (array)
       {
         v37 = objc_opt_new();
-        [v37 setAdjustments:v11];
+        [v37 setAdjustments:array];
         [v37 setVersionInfo:v28];
         v55 = [v8 objectForKeyedSubscript:@"metadata"];
         obja = [v55 objectForKeyedSubscript:@"pipelineVersion"];
@@ -151,28 +151,28 @@ LABEL_39:
         if (v58 || ([v55 objectForKeyedSubscript:@"masterOrientation"], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v59 = v58;
-          v60 = [v58 integerValue];
+          integerValue = [v58 integerValue];
         }
 
         else
         {
-          v60 = 0;
+          integerValue = 0;
         }
 
-        [v37 setOrientation:v60];
+        [v37 setOrientation:integerValue];
         v61 = [v77 objectForKeyedSubscript:@"masterWidth"];
         v62 = [v77 objectForKeyedSubscript:@"masterHeight"];
         v63 = v62;
-        v64 = 0;
+        integerValue2 = 0;
         v65 = v61;
-        v66 = 0;
+        integerValue3 = 0;
         if (v61)
         {
           v67 = obja;
           if (v62)
           {
-            v64 = [v65 integerValue];
-            v66 = [v63 integerValue];
+            integerValue2 = [v65 integerValue];
+            integerValue3 = [v63 integerValue];
           }
         }
 
@@ -181,10 +181,10 @@ LABEL_39:
           v67 = obja;
         }
 
-        [v37 setInputSize:{v64, v66}];
+        [v37 setInputSize:{integerValue2, integerValue3}];
 
         v28 = v72;
-        a4 = v73;
+        error = errorCopy;
       }
 
       else
@@ -229,9 +229,9 @@ LABEL_39:
           if (v53)
           {
 
-            v11 = 0;
+            array = 0;
             v28 = v72;
-            a4 = v73;
+            error = errorCopy;
             goto LABEL_38;
           }
 
@@ -256,16 +256,16 @@ LABEL_39:
 
       if (v9)
       {
-        v11 = 0;
+        array = 0;
         v53 = v9;
         goto LABEL_37;
       }
     }
 
-    v11 = v76;
+    array = v76;
     v53 = 0;
 LABEL_37:
-    a4 = v73;
+    error = errorCopy;
 LABEL_38:
 
     v9 = v53;
@@ -276,7 +276,7 @@ LABEL_38:
   v28 = 0;
   v8 = 0;
   v37 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_58;
   }
@@ -285,7 +285,7 @@ LABEL_56:
   if (v7)
   {
     v68 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_58:
@@ -294,10 +294,10 @@ LABEL_58:
   return v37;
 }
 
-- (id)photoAdjustmentFromArchive:(id)a3 error:(id *)a4
+- (id)photoAdjustmentFromArchive:(id)archive error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"identifier"];
+  archiveCopy = archive;
+  v5 = [archiveCopy objectForKeyedSubscript:@"identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -310,14 +310,14 @@ LABEL_58:
   }
 
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:@"version"];
+  v8 = [archiveCopy objectForKeyedSubscript:@"version"];
   if (!v8)
   {
-    v8 = [v4 objectForKeyedSubscript:@"formatVersion"];
+    v8 = [archiveCopy objectForKeyedSubscript:@"formatVersion"];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"settings"];
-  v10 = [v4 objectForKeyedSubscript:@"enabled"];
+  v9 = [archiveCopy objectForKeyedSubscript:@"settings"];
+  v10 = [archiveCopy objectForKeyedSubscript:@"enabled"];
   if ([(__CFString *)v7 isEqualToString:@"PosterFrame"])
   {
     v11 = @"VideoPosterFrame";
@@ -344,8 +344,8 @@ LABEL_58:
     v14 = MEMORY[0x277CBEC38];
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"maskUUID"];
-  v16 = [v4 objectForKeyedSubscript:@"auto"];
+  v15 = [archiveCopy objectForKeyedSubscript:@"maskUUID"];
+  v16 = [archiveCopy objectForKeyedSubscript:@"auto"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![(__CFString *)v7 length])
   {
     v58 = objc_opt_class();
@@ -422,11 +422,11 @@ LABEL_41:
 
 LABEL_30:
   v31 = 0;
-  if (a4 && v17)
+  if (error && v17)
   {
     v32 = v17;
     v31 = 0;
-    *a4 = v17;
+    *error = v17;
   }
 
 LABEL_33:
@@ -434,12 +434,12 @@ LABEL_33:
   return v31;
 }
 
-- (id)dataFromArchive:(id)a3 error:(id *)a4
+- (id)dataFromArchive:(id)archive error:(id *)error
 {
-  v5 = [IPAAdjustmentStackSerializer dataFromJSON:a3 error:?];
+  v5 = [IPAAdjustmentStackSerializer dataFromJSON:archive error:?];
   if (v5)
   {
-    v6 = [IPAAdjustmentStackSerializer compressData:v5 error:a4];
+    v6 = [IPAAdjustmentStackSerializer compressData:v5 error:error];
   }
 
   else
@@ -450,19 +450,19 @@ LABEL_33:
   return v6;
 }
 
-- (id)dataFromPhotoAdjustmentStack:(id)a3 error:(id *)a4
+- (id)dataFromPhotoAdjustmentStack:(id)stack error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v13 = [v6 pipeline];
-  if (v13)
+  stackCopy = stack;
+  pipeline = [stackCopy pipeline];
+  if (pipeline)
   {
     v14 = objc_opt_new();
-    v15 = [v13 string];
-    v51 = v15;
-    if (v15)
+    string = [pipeline string];
+    v51 = string;
+    if (string)
     {
-      [v14 setObject:v15 forKeyedSubscript:@"pipelineVersion"];
+      [v14 setObject:string forKeyedSubscript:@"pipelineVersion"];
     }
 
     else
@@ -470,15 +470,15 @@ LABEL_33:
       _PFAssertContinueHandler();
     }
 
-    v53 = self;
-    v54 = v13;
-    v55 = a4;
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "orientation")}];
+    selfCopy = self;
+    v54 = pipeline;
+    errorCopy = error;
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(stackCopy, "orientation")}];
     [v14 setObject:v18 forKeyedSubscript:@"orientation"];
 
-    v19 = [v6 inputSize];
+    inputSize = [stackCopy inputSize];
     v21 = v20;
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:inputSize];
     [v14 setObject:v22 forKeyedSubscript:@"masterWidth"];
 
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
@@ -487,23 +487,23 @@ LABEL_33:
     v24 = objc_opt_new();
     v52 = v14;
     [v24 setObject:v14 forKeyedSubscript:@"metadata"];
-    v25 = [v6 versionInfo];
-    v26 = v25;
-    if (v25)
+    versionInfo = [stackCopy versionInfo];
+    v26 = versionInfo;
+    if (versionInfo)
     {
-      v27 = [v25 archivalRepresentation];
-      [v24 setObject:v27 forKeyedSubscript:@"versionInfo"];
+      archivalRepresentation = [versionInfo archivalRepresentation];
+      [v24 setObject:archivalRepresentation forKeyedSubscript:@"versionInfo"];
     }
 
     v49 = v26;
     v50 = v24;
-    v56 = v6;
+    v56 = stackCopy;
     v57 = objc_opt_new();
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    obj = [v6 adjustments];
+    obj = [stackCopy adjustments];
     v28 = [obj countByEnumeratingWithState:&v60 objects:v64 count:16];
     if (v28)
     {
@@ -520,8 +520,8 @@ LABEL_33:
           }
 
           v32 = *(*(&v60 + 1) + 8 * v31);
-          v33 = [v32 identifier];
-          if (!v33)
+          identifier = [v32 identifier];
+          if (!identifier)
           {
             v48 = v32;
 LABEL_17:
@@ -529,16 +529,16 @@ LABEL_17:
             goto LABEL_29;
           }
 
-          v34 = [v32 version];
-          if (v34)
+          version = [v32 version];
+          if (version)
           {
-            v35 = v34;
+            v35 = version;
           }
 
           else
           {
-            v36 = [v32 identifier];
-            v35 = IPAAdjustmentCurrentVersionForIdentifier(v36);
+            identifier2 = [v32 identifier];
+            v35 = IPAAdjustmentCurrentVersionForIdentifier(identifier2);
 
             if (!v35)
             {
@@ -547,31 +547,31 @@ LABEL_17:
             }
           }
 
-          v37 = [v35 archivalRepresentation];
-          if (v37)
+          archivalRepresentation2 = [v35 archivalRepresentation];
+          if (archivalRepresentation2)
           {
             v38 = objc_opt_new();
-            [v38 setObject:v33 forKeyedSubscript:@"identifier"];
+            [v38 setObject:identifier forKeyedSubscript:@"identifier"];
             v39 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v32, "enabled")}];
             [v38 setObject:v39 forKeyedSubscript:@"enabled"];
 
-            [v38 setObject:v37 forKeyedSubscript:@"formatVersion"];
-            v40 = [v32 maskUUID];
-            if (v40)
+            [v38 setObject:archivalRepresentation2 forKeyedSubscript:@"formatVersion"];
+            maskUUID = [v32 maskUUID];
+            if (maskUUID)
             {
-              [v38 setObject:v40 forKeyedSubscript:@"maskUUID"];
+              [v38 setObject:maskUUID forKeyedSubscript:@"maskUUID"];
             }
 
-            v41 = [v32 settings];
-            if (v41)
+            settings = [v32 settings];
+            if (settings)
             {
-              [v38 setObject:v41 forKeyedSubscript:@"settings"];
+              [v38 setObject:settings forKeyedSubscript:@"settings"];
             }
 
-            v42 = [v32 autoSettings];
-            if (v42)
+            autoSettings = [v32 autoSettings];
+            if (autoSettings)
             {
-              [v38 setObject:v42 forKeyedSubscript:@"auto"];
+              [v38 setObject:autoSettings forKeyedSubscript:@"auto"];
             }
 
             [v57 addObject:v38];
@@ -600,15 +600,15 @@ LABEL_29:
     [v50 setObject:&unk_287048FA0 forKeyedSubscript:@"formatVersion"];
 
     v16 = 0;
-    a4 = v55;
-    v6 = v56;
-    self = v53;
-    v13 = v54;
+    error = errorCopy;
+    stackCopy = v56;
+    self = selfCopy;
+    pipeline = v54;
   }
 
   else
   {
-    v16 = IPAAdjustmentError(1000, @"expected adjustment stack to have a pipeline: %@", v7, v8, v9, v10, v11, v12, v6);
+    v16 = IPAAdjustmentError(1000, @"expected adjustment stack to have a pipeline: %@", v7, v8, v9, v10, v11, v12, stackCopy);
     v17 = 0;
   }
 
@@ -616,10 +616,10 @@ LABEL_29:
   v44 = [(IPAPhotoAdjustmentStackSerializer_v10 *)self dataFromArchive:v17 error:&v59, v48];
   v45 = v59;
 
-  if (a4 && v45)
+  if (error && v45)
   {
     v46 = v45;
-    *a4 = v45;
+    *error = v45;
   }
 
   return v44;

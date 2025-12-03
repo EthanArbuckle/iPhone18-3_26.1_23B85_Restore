@@ -1,20 +1,20 @@
 @interface MPAssistantMusicPlaybackImminent
-- (void)_perform:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_perform:(id)_perform;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantMusicPlaybackImminent
 
-- (void)_perform:(id)a3
+- (void)_perform:(id)_perform
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D27878] systemMediaApplicationDestination];
+  _performCopy = _perform;
+  systemMediaApplicationDestination = [MEMORY[0x277D27878] systemMediaApplicationDestination];
   v6 = objc_alloc_init(MEMORY[0x277D27828]);
   v38[0] = *MEMORY[0x277D27D08];
-  v7 = [(MPAssistantMusicPlaybackImminent *)self refId];
+  refId = [(MPAssistantMusicPlaybackImminent *)self refId];
   v38[1] = *MEMORY[0x277D27DC0];
-  v39[0] = v7;
+  v39[0] = refId;
   v39[1] = @"com.apple.MediaAssistant.siri";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v9 = [v8 mutableCopy];
@@ -27,8 +27,8 @@
   {
     if (![(NSString *)self->_requestAceHash length])
     {
-      v13 = [(MPAssistantMusicPlaybackImminent *)self aceId];
-      v14 = sub_233505670(@"Music Playback Imminent", v13);
+      aceId = [(MPAssistantMusicPlaybackImminent *)self aceId];
+      v14 = sub_233505670(@"Music Playback Imminent", aceId);
       requestAceHash = self->_requestAceHash;
       self->_requestAceHash = v14;
     }
@@ -54,8 +54,8 @@ LABEL_10:
     [v9 setObject:v11 forKey:*MEMORY[0x277D27E18]];
     if (![(NSString *)self->_requestAceHash length])
     {
-      v21 = [(MPAssistantMusicPlaybackImminent *)self aceId];
-      v22 = sub_233505670(@"Music Playback Imminent", v21);
+      aceId2 = [(MPAssistantMusicPlaybackImminent *)self aceId];
+      v22 = sub_233505670(@"Music Playback Imminent", aceId2);
       v23 = self->_requestAceHash;
       self->_requestAceHash = v22;
     }
@@ -85,24 +85,24 @@ LABEL_10:
   v29[1] = 3221225472;
   v29[2] = sub_2334F1CF4;
   v29[3] = &unk_2789DBB20;
-  v31 = self;
-  v32 = v4;
+  selfCopy = self;
+  v32 = _performCopy;
   v30 = v6;
-  v26 = v4;
+  v26 = _performCopy;
   v27 = v6;
-  [v27 sendCommand:132 toDestination:v5 withOptions:v9 completion:v29];
+  [v27 sendCommand:132 toDestination:systemMediaApplicationDestination withOptions:v9 completion:v29];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantMusicPlaybackImminent *)self aceId];
-    v6 = sub_233505670(@"Music Playback Imminent", v5);
+    aceId = [(MPAssistantMusicPlaybackImminent *)self aceId];
+    v6 = sub_233505670(@"Music Playback Imminent", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -119,18 +119,18 @@ LABEL_10:
   v10 = sub_23350699C();
   dispatch_group_enter(v10);
   v11 = self->_requestAceHash;
-  v12 = [(SAMPMusicPlaybackImminent *)self preloadedUserSharedUserId];
-  v13 = [(SAMPMusicPlaybackImminent *)self preloadedUserSharedUserId];
+  preloadedUserSharedUserId = [(SAMPMusicPlaybackImminent *)self preloadedUserSharedUserId];
+  preloadedUserSharedUserId2 = [(SAMPMusicPlaybackImminent *)self preloadedUserSharedUserId];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2334F206C;
   v17[3] = &unk_2789DB4B8;
   v18 = v10;
-  v19 = v4;
+  v19 = completionCopy;
   v17[4] = self;
   v14 = v10;
-  v15 = v4;
-  sub_233506A24(@"Music Playback Imminent", v11, v12, v13, v17);
+  v15 = completionCopy;
+  sub_233506A24(@"Music Playback Imminent", v11, preloadedUserSharedUserId, preloadedUserSharedUserId2, v17);
 
   v16 = *MEMORY[0x277D85DE8];
 }

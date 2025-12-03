@@ -1,23 +1,23 @@
 @interface CKAppStripLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
-- (CGSize)collectionViewContentSizeForLayoutMode:(unint64_t)a3;
+- (CGSize)collectionViewContentSizeForLayoutMode:(unint64_t)mode;
 - (CKAppStripLayout)init;
-- (_Spec)_specForLayoutMode:(SEL)a3;
-- (id)_attributesForLayoutMode:(unint64_t)a3;
+- (_Spec)_specForLayoutMode:(SEL)mode;
+- (id)_attributesForLayoutMode:(unint64_t)mode;
 - (id)_currentAttributes;
 - (id)_currentSupplementryAttributes;
-- (id)_generateAttributesForSpec:(_Spec *)a3;
-- (id)_generateSupplementryAttributesForSpec:(_Spec *)a3 minified:(BOOL)a4;
-- (id)_supplementryAttributesForLayoutMode:(unint64_t)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)_generateAttributesForSpec:(_Spec *)spec;
+- (id)_generateSupplementryAttributesForSpec:(_Spec *)spec minified:(BOOL)minified;
+- (id)_supplementryAttributesForLayoutMode:(unint64_t)mode;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (int64_t)_favoritesCount;
 - (int64_t)_recentsCount;
 - (void)invalidateCachedLayout;
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (CGSize)collectionViewContentSizeForLayoutMode:(unint64_t)a3
+- (CGSize)collectionViewContentSizeForLayoutMode:(unint64_t)mode
 {
-  v5 = [(CKAppStripLayout *)self _itemCount];
-  [(CKAppStripLayout *)self _specForLayoutMode:a3];
+  _itemCount = [(CKAppStripLayout *)self _itemCount];
+  [(CKAppStripLayout *)self _specForLayoutMode:mode];
   v6 = 0.0;
-  v7 = 0.0 * (v5 - 1) + 0.0 * v5;
+  v7 = 0.0 * (_itemCount - 1) + 0.0 * _itemCount;
   result.height = v6;
   result.width = v7;
   return result;
@@ -71,54 +71,54 @@
 
 - (int64_t)_favoritesCount
 {
-  v3 = [(CKAppStripLayout *)self collectionView];
-  v4 = [v3 delegate];
+  collectionView = [(CKAppStripLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  if (!v4)
+  if (!delegate)
   {
     return 0;
   }
 
-  v5 = [(CKAppStripLayout *)self collectionView];
-  v6 = [v5 numberOfItemsInSection:0];
+  collectionView2 = [(CKAppStripLayout *)self collectionView];
+  v6 = [collectionView2 numberOfItemsInSection:0];
 
   return v6;
 }
 
 - (int64_t)_recentsCount
 {
-  v3 = [(CKAppStripLayout *)self collectionView];
-  v4 = [v3 delegate];
+  collectionView = [(CKAppStripLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
-  if (!v4)
+  if (!delegate)
   {
     return 0;
   }
 
-  v5 = [(CKAppStripLayout *)self collectionView];
-  v6 = [v5 numberOfItemsInSection:1];
+  collectionView2 = [(CKAppStripLayout *)self collectionView];
+  v6 = [collectionView2 numberOfItemsInSection:1];
 
   return v6;
 }
 
 - (id)_currentAttributes
 {
-  v3 = [(CKAppStripLayout *)self layoutMode];
+  layoutMode = [(CKAppStripLayout *)self layoutMode];
 
-  return [(CKAppStripLayout *)self _attributesForLayoutMode:v3];
+  return [(CKAppStripLayout *)self _attributesForLayoutMode:layoutMode];
 }
 
 - (id)_currentSupplementryAttributes
 {
-  v3 = [(CKAppStripLayout *)self layoutMode];
+  layoutMode = [(CKAppStripLayout *)self layoutMode];
 
-  return [(CKAppStripLayout *)self _supplementryAttributesForLayoutMode:v3];
+  return [(CKAppStripLayout *)self _supplementryAttributesForLayoutMode:layoutMode];
 }
 
-- (id)_attributesForLayoutMode:(unint64_t)a3
+- (id)_attributesForLayoutMode:(unint64_t)mode
 {
   v3 = &OBJC_IVAR___CKAppStripLayout__magnifiedAttributes;
-  if (!a3)
+  if (!mode)
   {
     v3 = &OBJC_IVAR___CKAppStripLayout__minifiedAttributes;
   }
@@ -126,10 +126,10 @@
   return *(&self->super.super.isa + *v3);
 }
 
-- (id)_supplementryAttributesForLayoutMode:(unint64_t)a3
+- (id)_supplementryAttributesForLayoutMode:(unint64_t)mode
 {
   v3 = &OBJC_IVAR___CKAppStripLayout__supplementryMagnifiedAttributes;
-  if (!a3)
+  if (!mode)
   {
     v3 = &OBJC_IVAR___CKAppStripLayout__supplementryMinifiedAttributes;
   }
@@ -137,14 +137,14 @@
   return *(&self->super.super.isa + *v3);
 }
 
-- (id)_generateAttributesForSpec:(_Spec *)a3
+- (id)_generateAttributesForSpec:(_Spec *)spec
 {
-  v5 = [(CKAppStripLayout *)self _favoritesCount];
-  v20 = [(CKAppStripLayout *)self _recentsCount];
+  _favoritesCount = [(CKAppStripLayout *)self _favoritesCount];
+  _recentsCount = [(CKAppStripLayout *)self _recentsCount];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[CKAppStripLayout _itemCount](self, "_itemCount")}];
   v7 = 0x1E696A000uLL;
   p_vtable = CKPhotosSearchResultsModeHeaderReusableView.vtable;
-  if (v5 < 1)
+  if (_favoritesCount < 1)
   {
     v10 = 0.0;
   }
@@ -159,12 +159,12 @@
       [p_vtable + 287 layoutAttributesForCellWithIndexPath:v11];
       v12 = p_vtable;
       v14 = v13 = v7;
-      [v14 setSize:{a3->var0.width, a3->var0.height}];
-      [v14 setFrame:{v10, 0.0, a3->var0.width, a3->var0.height}];
+      [v14 setSize:{spec->var0.width, spec->var0.height}];
+      [v14 setFrame:{v10, 0.0, spec->var0.width, spec->var0.height}];
       [v14 setShowsBorder:{-[CKAppStripLayout shouldShowCellBorders](self, "shouldShowCellBorders")}];
-      [v14 setAppStripSize:a3->var4];
+      [v14 setAppStripSize:spec->var4];
       [v6 addObject:v14];
-      v10 = v10 + a3->var3 + a3->var0.width;
+      v10 = v10 + spec->var3 + spec->var0.width;
 
       v7 = v13;
       p_vtable = v12;
@@ -172,20 +172,20 @@
       ++v9;
     }
 
-    while (v5 != v9);
+    while (_favoritesCount != v9);
   }
 
   if (CKIsRunningInCameraAppsClient())
   {
-    v15 = v20;
+    v15 = _recentsCount;
   }
 
   else
   {
-    v15 = v20;
-    if (v20)
+    v15 = _recentsCount;
+    if (_recentsCount)
     {
-      v10 = v10 + a3->var1.width + a3->var2 * 2.0;
+      v10 = v10 + spec->var1.width + spec->var2 * 2.0;
     }
   }
 
@@ -195,48 +195,48 @@
     {
       v17 = [*(v7 + 3208) indexPathForItem:i inSection:1];
       v18 = [p_vtable + 287 layoutAttributesForCellWithIndexPath:v17];
-      [v18 setSize:{a3->var0.width, a3->var0.height}];
-      [v18 setFrame:{v10, 0.0, a3->var0.width, a3->var0.height}];
+      [v18 setSize:{spec->var0.width, spec->var0.height}];
+      [v18 setFrame:{v10, 0.0, spec->var0.width, spec->var0.height}];
       [v18 setShowsBorder:{-[CKAppStripLayout shouldShowCellBorders](self, "shouldShowCellBorders")}];
-      [v18 setAppStripSize:a3->var4];
+      [v18 setAppStripSize:spec->var4];
       [v6 addObject:v18];
-      v10 = v10 + a3->var3 + a3->var0.width;
+      v10 = v10 + spec->var3 + spec->var0.width;
     }
   }
 
   return v6;
 }
 
-- (id)_generateSupplementryAttributesForSpec:(_Spec *)a3 minified:(BOOL)a4
+- (id)_generateSupplementryAttributesForSpec:(_Spec *)spec minified:(BOOL)minified
 {
-  v4 = a4;
+  minifiedCopy = minified;
   v24[1] = *MEMORY[0x1E69E9840];
-  v7 = [(CKAppStripLayout *)self _favoritesCount];
-  v8 = [(CKAppStripLayout *)self _recentsCount];
+  _favoritesCount = [(CKAppStripLayout *)self _favoritesCount];
+  _recentsCount = [(CKAppStripLayout *)self _recentsCount];
   v9 = CKIsRunningInCameraAppsClient();
   v10 = MEMORY[0x1E695E0F0];
-  if (!v9 && v7 && v8)
+  if (!v9 && _favoritesCount && _recentsCount)
   {
     v11 = &OBJC_IVAR___CKAppStripLayout__magnifiedAttributes;
-    if (v4)
+    if (minifiedCopy)
     {
       v11 = &OBJC_IVAR___CKAppStripLayout__minifiedAttributes;
     }
 
     v12 = *(&self->super.super.isa + *v11);
-    v13 = [v12 objectAtIndex:v7 - 1];
-    v14 = [v12 objectAtIndex:v7];
+    v13 = [v12 objectAtIndex:_favoritesCount - 1];
+    v14 = [v12 objectAtIndex:_favoritesCount];
     v15 = MEMORY[0x1E69DC858];
     v16 = +[CKBrowserSwitcherFooterAccessoryCell supplementryViewKind];
     v17 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
     v18 = [v15 layoutAttributesForSupplementaryViewOfKind:v16 withIndexPath:v17];
 
-    [v18 setSize:{a3->var1.width, a3->var1.height}];
+    [v18 setSize:{spec->var1.width, spec->var1.height}];
     v19 = *(MEMORY[0x1E695F058] + 8);
     [v13 frame];
     MaxX = CGRectGetMaxX(v26);
     [v14 frame];
-    v21 = MaxX + (CGRectGetMinX(v27) - MaxX) * 0.5 - a3->var1.width * 0.5;
+    v21 = MaxX + (CGRectGetMinX(v27) - MaxX) * 0.5 - spec->var1.width * 0.5;
     if (CKMainScreenScale_once_43 != -1)
     {
       [CKAppStripLayout _generateSupplementryAttributesForSpec:minified:];
@@ -248,7 +248,7 @@
       v22 = 1.0;
     }
 
-    [v18 setFrame:{round(v21 * v22) / v22, v19, a3->var1.width, a3->var1.height}];
+    [v18 setFrame:{round(v21 * v22) / v22, v19, spec->var1.width, spec->var1.height}];
     v24[0] = v18;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   }
@@ -256,7 +256,7 @@
   return v10;
 }
 
-- (_Spec)_specForLayoutMode:(SEL)a3
+- (_Spec)_specForLayoutMode:(SEL)mode
 {
   if (a4)
   {
@@ -277,11 +277,11 @@
   return self;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(CKAppStripLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(CKAppStripLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v8 = v7 != height || v6 != width;
 
@@ -290,9 +290,9 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(CKAppStripLayout *)self layoutMode];
+  layoutMode = [(CKAppStripLayout *)self layoutMode];
 
-  [(CKAppStripLayout *)self collectionViewContentSizeForLayoutMode:v3];
+  [(CKAppStripLayout *)self collectionViewContentSizeForLayoutMode:layoutMode];
   result.height = v5;
   result.width = v4;
   return result;
@@ -346,106 +346,106 @@
   }
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v4 section];
+  pathCopy = path;
+  item = [pathCopy item];
+  section = [pathCopy section];
 
-  if (v6 == 1)
+  if (section == 1)
   {
-    v5 += [(CKAppStripLayout *)self _favoritesCount];
+    item += [(CKAppStripLayout *)self _favoritesCount];
   }
 
   if (self->_inLayoutModeTransition)
   {
     if ([(CKAppStripLayout *)self layoutMode])
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
     else
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
     }
 
-    v9 = [(CKAppStripLayout *)v7 _attributesForLayoutMode:v8];
+    _currentAttributes = [(CKAppStripLayout *)selfCopy2 _attributesForLayoutMode:v8];
   }
 
   else
   {
-    v9 = [(CKAppStripLayout *)self _currentAttributes];
+    _currentAttributes = [(CKAppStripLayout *)self _currentAttributes];
   }
 
-  v10 = v9;
-  v11 = [v9 objectAtIndexedSubscript:v5];
+  v10 = _currentAttributes;
+  v11 = [_currentAttributes objectAtIndexedSubscript:item];
 
   return v11;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v4 section];
+  pathCopy = path;
+  item = [pathCopy item];
+  section = [pathCopy section];
 
-  if (v6 == 1)
+  if (section == 1)
   {
-    v5 += [(CKAppStripLayout *)self _favoritesCount];
+    item += [(CKAppStripLayout *)self _favoritesCount];
   }
 
-  v7 = [(CKAppStripLayout *)self _currentAttributes];
-  v8 = [v7 count];
+  _currentAttributes = [(CKAppStripLayout *)self _currentAttributes];
+  v8 = [_currentAttributes count];
 
-  if (v5 >= v8)
+  if (item >= v8)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(CKAppStripLayout *)self _currentAttributes];
-    v10 = [v9 objectAtIndexedSubscript:v5];
+    _currentAttributes2 = [(CKAppStripLayout *)self _currentAttributes];
+    v10 = [_currentAttributes2 objectAtIndexedSubscript:item];
   }
 
   return v10;
 }
 
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 item];
+  kindCopy = kind;
+  item = [path item];
   v8 = +[CKBrowserSwitcherFooterAccessoryCell supplementryViewKind];
-  v9 = [v6 isEqualToString:v8];
+  v9 = [kindCopy isEqualToString:v8];
 
-  if (v9 && (-[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v7 < v11))
+  if (v9 && (-[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, item < v11))
   {
     if (self->_inLayoutModeTransition)
     {
       if ([(CKAppStripLayout *)self layoutMode])
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 0;
       }
 
       else
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 1;
       }
 
-      v15 = [(CKAppStripLayout *)v12 _supplementryAttributesForLayoutMode:v13];
+      _currentSupplementryAttributes = [(CKAppStripLayout *)selfCopy2 _supplementryAttributesForLayoutMode:v13];
     }
 
     else
     {
-      v15 = [(CKAppStripLayout *)self _currentSupplementryAttributes];
+      _currentSupplementryAttributes = [(CKAppStripLayout *)self _currentSupplementryAttributes];
     }
 
-    v16 = v15;
-    v14 = [v15 objectAtIndexedSubscript:v7];
+    v16 = _currentSupplementryAttributes;
+    v14 = [_currentSupplementryAttributes objectAtIndexedSubscript:item];
   }
 
   else
@@ -456,17 +456,17 @@
   return v14;
 }
 
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  kindCopy = kind;
   v8 = +[CKBrowserSwitcherFooterAccessoryCell supplementryViewKind];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [kindCopy isEqualToString:v8];
 
-  if (v9 && (v10 = [v6 row], -[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
+  if (v9 && (v10 = [pathCopy row], -[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
   {
-    v13 = [(CKAppStripLayout *)self _currentSupplementryAttributes];
-    v14 = [v13 objectAtIndex:{objc_msgSend(v6, "row")}];
+    _currentSupplementryAttributes = [(CKAppStripLayout *)self _currentSupplementryAttributes];
+    v14 = [_currentSupplementryAttributes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -477,34 +477,34 @@
   return v14;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v4 section];
+  pathCopy = path;
+  item = [pathCopy item];
+  section = [pathCopy section];
 
-  if (v6 == 1)
+  if (section == 1)
   {
-    v5 += [(CKAppStripLayout *)self _favoritesCount];
+    item += [(CKAppStripLayout *)self _favoritesCount];
   }
 
-  v7 = [(CKAppStripLayout *)self _currentAttributes];
-  v8 = [v7 objectAtIndexedSubscript:v5];
+  _currentAttributes = [(CKAppStripLayout *)self _currentAttributes];
+  v8 = [_currentAttributes objectAtIndexedSubscript:item];
 
   return v8;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  kindCopy = kind;
   v8 = +[CKBrowserSwitcherFooterAccessoryCell supplementryViewKind];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [kindCopy isEqualToString:v8];
 
-  if (v9 && (v10 = [v6 row], -[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
+  if (v9 && (v10 = [pathCopy row], -[CKAppStripLayout _currentSupplementryAttributes](self, "_currentSupplementryAttributes"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10 < v12))
   {
-    v13 = [(CKAppStripLayout *)self _currentSupplementryAttributes];
-    v14 = [v13 objectAtIndex:{objc_msgSend(v6, "row")}];
+    _currentSupplementryAttributes = [(CKAppStripLayout *)self _currentSupplementryAttributes];
+    v14 = [_currentSupplementryAttributes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -515,20 +515,20 @@
   return v14;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v40 = *MEMORY[0x1E69E9840];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[CKAppStripLayout _itemCount](self, "_itemCount")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = [(CKAppStripLayout *)self _currentAttributes];
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  _currentAttributes = [(CKAppStripLayout *)self _currentAttributes];
+  v10 = [_currentAttributes countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
     v11 = v10;
@@ -539,7 +539,7 @@
       {
         if (*v35 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_currentAttributes);
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
@@ -558,7 +558,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v11 = [_currentAttributes countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v11);
@@ -568,8 +568,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = [(CKAppStripLayout *)self _currentSupplementryAttributes];
-  v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  _currentSupplementryAttributes = [(CKAppStripLayout *)self _currentSupplementryAttributes];
+  v20 = [_currentSupplementryAttributes countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v20)
   {
     v21 = v20;
@@ -580,7 +580,7 @@
       {
         if (*v31 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(_currentSupplementryAttributes);
         }
 
         v24 = *(*(&v30 + 1) + 8 * j);
@@ -599,7 +599,7 @@
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v21 = [_currentSupplementryAttributes countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v21);
@@ -608,21 +608,21 @@
   return v8;
 }
 
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 row];
-  v9 = [v7 section];
+  y = position.y;
+  x = position.x;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v9 == 1)
+  if (section == 1)
   {
     v8 += [(CKAppStripLayout *)self _favoritesCount];
   }
 
-  v10 = [(CKAppStripLayout *)self _currentAttributes];
-  v11 = [v10 objectAtIndexedSubscript:v8];
+  _currentAttributes = [(CKAppStripLayout *)self _currentAttributes];
+  v11 = [_currentAttributes objectAtIndexedSubscript:v8];
 
   v12 = [v11 copy];
   [v12 setCenter:{x, y}];

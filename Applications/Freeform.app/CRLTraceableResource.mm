@@ -1,19 +1,19 @@
 @interface CRLTraceableResource
 - (CRLTraceableResource)init;
-- (CRLTraceableResource)initWithName:(id)a3 logContext:(id)a4;
+- (CRLTraceableResource)initWithName:(id)name logContext:(id)context;
 - (id)description;
 - (id)p_tokenSerializationDescriptionFromQueue;
 - (id)tokenSerializationDescription;
-- (id)willAcquireResourceWithIntent:(id)a3 timeout:(unint64_t)a4 parent:(id)a5 context:(id)a6;
-- (void)addToken:(id)a3 isForTemporaryRelinquish:(BOOL)a4;
-- (void)didAcquireResourceWithToken:(id)a3;
-- (void)didRelinquishResourceWithToken:(id)a3;
-- (void)logSerializationAsErrorWithPrefix:(id)a3;
+- (id)willAcquireResourceWithIntent:(id)intent timeout:(unint64_t)timeout parent:(id)parent context:(id)context;
+- (void)addToken:(id)token isForTemporaryRelinquish:(BOOL)relinquish;
+- (void)didAcquireResourceWithToken:(id)token;
+- (void)didRelinquishResourceWithToken:(id)token;
+- (void)logSerializationAsErrorWithPrefix:(id)prefix;
 - (void)p_logDebugTokenSerializationDescriptionFromQueue;
-- (void)p_logErrorTokenSerializationDescriptionFromQueueWithPrefix:(id)a3;
-- (void)removeToken:(id)a3 isForTemporaryRelinquish:(BOOL)a4;
-- (void)scheduleRelinquishTimeoutForToken:(id)a3 timeout:(unint64_t)a4 isForTemporaryRelinquish:(BOOL)a5;
-- (void)temporarilyRelinquishForToken:(id)a3 usingBlock:(id)a4;
+- (void)p_logErrorTokenSerializationDescriptionFromQueueWithPrefix:(id)prefix;
+- (void)removeToken:(id)token isForTemporaryRelinquish:(BOOL)relinquish;
+- (void)scheduleRelinquishTimeoutForToken:(id)token timeout:(unint64_t)timeout isForTemporaryRelinquish:(BOOL)relinquish;
+- (void)temporarilyRelinquishForToken:(id)token usingBlock:(id)block;
 @end
 
 @implementation CRLTraceableResource
@@ -68,21 +68,21 @@
   objc_exception_throw(v10);
 }
 
-- (CRLTraceableResource)initWithName:(id)a3 logContext:(id)a4
+- (CRLTraceableResource)initWithName:(id)name logContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = CRLTraceableResource;
   v8 = [(CRLTraceableResource *)&v22 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
     v8->_printTimeoutAsError = 1;
-    objc_storeStrong(&v8->_logContext, a4);
+    objc_storeStrong(&v8->_logContext, context);
     v11 = objc_alloc_init(NSMutableArray);
     tokens = v8->_tokens;
     v8->_tokens = v11;
@@ -91,10 +91,10 @@
     timeoutBlocksMap = v8->_timeoutBlocksMap;
     v8->_timeoutBlocksMap = v13;
 
-    v15 = [[NSString alloc] initWithFormat:@"CRLTraceableResource.[%@]", v6];
-    v16 = [v15 UTF8String];
+    nameCopy = [[NSString alloc] initWithFormat:@"CRLTraceableResource.[%@]", nameCopy];
+    uTF8String = [nameCopy UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     queue = v8->_queue;
     v8->_queue = v18;
 
@@ -105,14 +105,14 @@
   return v8;
 }
 
-- (id)willAcquireResourceWithIntent:(id)a3 timeout:(unint64_t)a4 parent:(id)a5 context:(id)a6
+- (id)willAcquireResourceWithIntent:(id)intent timeout:(unint64_t)timeout parent:(id)parent context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  contextCopy = context;
+  parentCopy = parent;
+  intentCopy = intent;
   v13 = +[NSThread callStackReturnAddresses];
   +[NSDate timeIntervalSinceReferenceDate];
-  v15 = [[CRLTraceableResourceToken alloc] initWithIntent:v12 timeout:a4 parent:v11 context:v10 acquireCallStack:v13 acquireTime:self->_logContext logContext:v14];
+  v15 = [[CRLTraceableResourceToken alloc] initWithIntent:intentCopy timeout:timeout parent:parentCopy context:contextCopy acquireCallStack:v13 acquireTime:self->_logContext logContext:v14];
 
   queue = self->_queue;
   v21[0] = _NSConcreteStackBlock;
@@ -129,10 +129,10 @@
   return v17;
 }
 
-- (void)didAcquireResourceWithToken:(id)a3
+- (void)didAcquireResourceWithToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     sub_1004D5B78();
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -171,15 +171,15 @@
   block[1] = 3221225472;
   block[2] = sub_1004D5C48;
   block[3] = &unk_10183AB38;
-  v20 = v4;
-  v6 = v4;
+  v20 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didRelinquishResourceWithToken:(id)a3
+- (void)didRelinquishResourceWithToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     sub_1004D5B78();
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -213,7 +213,7 @@
     abort();
   }
 
-  v5 = v4;
+  v5 = tokenCopy;
   v6 = +[NSThread callStackReturnAddresses];
   +[NSDate timeIntervalSinceReferenceDate];
   queue = self->_queue;
@@ -224,17 +224,17 @@
   v24 = v5;
   v25 = v6;
   v27 = v8;
-  v26 = self;
+  selfCopy = self;
   v9 = v6;
   v10 = v5;
   dispatch_async(queue, block);
 }
 
-- (void)temporarilyRelinquishForToken:(id)a3 usingBlock:(id)a4
+- (void)temporarilyRelinquishForToken:(id)token usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  tokenCopy = token;
+  blockCopy = block;
+  if (!tokenCopy)
   {
     sub_1004D5B78();
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -269,7 +269,7 @@ LABEL_22:
     abort();
   }
 
-  v8 = v7;
+  v8 = blockCopy;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -277,7 +277,7 @@ LABEL_22:
   block[3] = &unk_10183AB38;
   block[4] = self;
   dispatch_sync(queue, block);
-  if (([(NSMutableArray *)self->_tokens containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->_tokens containsObject:tokenCopy]& 1) == 0)
   {
     sub_1004D5B78();
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -305,7 +305,7 @@ LABEL_22:
     sub_10028E070("Fatal Assertion failure: %{public}s %{public}s:%d Attempted to temporarily relinquish token that has already been relinquished: %{public}@", v28, v29, v30, v31, v32, v33, v34, "[CRLTraceableResource temporarilyRelinquishForToken:usingBlock:]");
     v35 = [NSString stringWithUTF8String:"[CRLTraceableResource temporarilyRelinquishForToken:usingBlock:]"];
     v36 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLTraceableResource.m"];
-    [CRLAssertionHandler handleFailureInFunction:v35 file:v36 lineNumber:187 isFatal:1 description:"Attempted to temporarily relinquish token that has already been relinquished: %{public}@", v6, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLTraceableResource.m", 187, v6];
+    [CRLAssertionHandler handleFailureInFunction:v35 file:v36 lineNumber:187 isFatal:1 description:"Attempted to temporarily relinquish token that has already been relinquished: %{public}@", tokenCopy, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLTraceableResource.m", 187, tokenCopy];
 
     goto LABEL_22;
   }
@@ -329,7 +329,7 @@ LABEL_22:
   v41 = v42;
   v12 = v10;
   v38 = v12;
-  v39 = self;
+  selfCopy = self;
   v13 = v11;
   v40 = v13;
   (v8)[2](v8, v37);
@@ -337,41 +337,41 @@ LABEL_22:
   _Block_object_dispose(v42, 8);
 }
 
-- (void)addToken:(id)a3 isForTemporaryRelinquish:(BOOL)a4
+- (void)addToken:(id)token isForTemporaryRelinquish:(BOOL)relinquish
 {
-  [(NSMutableArray *)self->_tokens addObject:a3];
-  if (!a4)
+  [(NSMutableArray *)self->_tokens addObject:token];
+  if (!relinquish)
   {
-    v6 = [(NSMutableArray *)self->_tokens firstObject];
-    if (v6)
+    firstObject = [(NSMutableArray *)self->_tokens firstObject];
+    if (firstObject)
     {
-      v7 = v6;
-      -[CRLTraceableResource scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:](self, "scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:", v6, [v6 timeout], 0);
-      v6 = v7;
+      v7 = firstObject;
+      -[CRLTraceableResource scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:](self, "scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:", firstObject, [firstObject timeout], 0);
+      firstObject = v7;
     }
   }
 }
 
-- (void)removeToken:(id)a3 isForTemporaryRelinquish:(BOOL)a4
+- (void)removeToken:(id)token isForTemporaryRelinquish:(BOOL)relinquish
 {
   tokens = self->_tokens;
-  v7 = a3;
-  [(NSMutableArray *)tokens removeObject:v7];
-  v8 = [(NSMapTable *)self->_timeoutBlocksMap objectForKey:v7];
-  [(NSMapTable *)self->_timeoutBlocksMap removeObjectForKey:v7];
+  tokenCopy = token;
+  [(NSMutableArray *)tokens removeObject:tokenCopy];
+  v8 = [(NSMapTable *)self->_timeoutBlocksMap objectForKey:tokenCopy];
+  [(NSMapTable *)self->_timeoutBlocksMap removeObjectForKey:tokenCopy];
 
   if (v8)
   {
     dispatch_block_cancel(v8);
   }
 
-  if (!a4)
+  if (!relinquish)
   {
-    v9 = [(NSMutableArray *)self->_tokens firstObject];
-    v10 = v9;
-    if (v9)
+    firstObject = [(NSMutableArray *)self->_tokens firstObject];
+    v10 = firstObject;
+    if (firstObject)
     {
-      -[CRLTraceableResource scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:](self, "scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:", v9, [v9 timeout], 0);
+      -[CRLTraceableResource scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:](self, "scheduleRelinquishTimeoutForToken:timeout:isForTemporaryRelinquish:", firstObject, [firstObject timeout], 0);
     }
   }
 
@@ -406,10 +406,10 @@ LABEL_22:
   }
 }
 
-- (void)scheduleRelinquishTimeoutForToken:(id)a3 timeout:(unint64_t)a4 isForTemporaryRelinquish:(BOOL)a5
+- (void)scheduleRelinquishTimeoutForToken:(id)token timeout:(unint64_t)timeout isForTemporaryRelinquish:(BOOL)relinquish
 {
-  v8 = a3;
-  v9 = [(NSMapTable *)self->_timeoutBlocksMap objectForKey:v8];
+  tokenCopy = token;
+  v9 = [(NSMapTable *)self->_timeoutBlocksMap objectForKey:tokenCopy];
 
   if (!v9)
   {
@@ -417,17 +417,17 @@ LABEL_22:
     v16 = 3221225472;
     v17 = sub_1004D6E60;
     v18 = &unk_101848F08;
-    v19 = self;
-    v10 = v8;
+    selfCopy = self;
+    v10 = tokenCopy;
     v20 = v10;
-    v21 = a4;
-    v22 = a5;
+    timeoutCopy = timeout;
+    relinquishCopy = relinquish;
     v11 = dispatch_block_create(0, &v15);
     timeoutBlocksMap = self->_timeoutBlocksMap;
     v13 = objc_retainBlock(v11);
-    [(NSMapTable *)timeoutBlocksMap setObject:v13 forKey:v10, v15, v16, v17, v18, v19];
+    [(NSMapTable *)timeoutBlocksMap setObject:v13 forKey:v10, v15, v16, v17, v18, selfCopy];
 
-    v14 = dispatch_time(0, 1000000000 * a4);
+    v14 = dispatch_time(0, 1000000000 * timeout);
     dispatch_after(v14, self->_queue, v11);
   }
 }
@@ -454,23 +454,23 @@ LABEL_22:
   return v3;
 }
 
-- (void)logSerializationAsErrorWithPrefix:(id)a3
+- (void)logSerializationAsErrorWithPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1004D7384;
   v7[3] = &unk_10183AE28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = prefixCopy;
+  v6 = prefixCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)p_logErrorTokenSerializationDescriptionFromQueueWithPrefix:(id)a3
+- (void)p_logErrorTokenSerializationDescriptionFromQueueWithPrefix:(id)prefix
 {
-  v50 = a3;
+  prefixCopy = prefix;
   add = atomic_fetch_add(&qword_101A35210, 1uLL);
   if (qword_101AD5A08 != -1)
   {
@@ -482,16 +482,16 @@ LABEL_22:
   {
     logContext = self->_logContext;
     v36 = v3;
-    v37 = [(CRLLogContext *)logContext publicString];
-    v38 = [(CRLLogContext *)self->_logContext privateString];
+    publicString = [(CRLLogContext *)logContext publicString];
+    privateString = [(CRLLogContext *)self->_logContext privateString];
     name = self->_name;
     v40 = [(NSMutableArray *)self->_tokens count];
     *buf = 138544642;
-    v59 = v37;
+    v59 = publicString;
     v60 = 2112;
-    v61 = v38;
+    v61 = privateString;
     v62 = 2114;
-    v63 = v50;
+    v63 = prefixCopy;
     v64 = 2048;
     v65 = add;
     v66 = 2112;
@@ -533,16 +533,16 @@ LABEL_22:
         {
           v16 = self->_logContext;
           v17 = v8;
-          v18 = [(CRLLogContext *)v16 publicString];
-          v19 = [(CRLLogContext *)self->_logContext privateString];
+          publicString2 = [(CRLLogContext *)v16 publicString];
+          privateString2 = [(CRLLogContext *)self->_logContext privateString];
           v20 = [NSNumber numberWithUnsignedInteger:v5];
           v21 = [v7 metadataDescriptionWithIndex:v20];
           *buf = 138544642;
-          v59 = v18;
+          v59 = publicString2;
           v60 = 2112;
-          v61 = v19;
+          v61 = privateString2;
           v62 = 2114;
-          v63 = v50;
+          v63 = prefixCopy;
           v64 = 2048;
           v65 = add;
           v66 = 2048;
@@ -564,16 +564,16 @@ LABEL_22:
         {
           v22 = self->_logContext;
           v23 = v9;
-          v24 = [(CRLLogContext *)v22 publicString];
-          v25 = [(CRLLogContext *)self->_logContext privateString];
+          publicString3 = [(CRLLogContext *)v22 publicString];
+          privateString3 = [(CRLLogContext *)self->_logContext privateString];
           v26 = [NSNumber numberWithUnsignedInteger:v5];
           v27 = [v7 acquireCallStackDescriptionWithIndex:v26];
           *buf = 138544642;
-          v59 = v24;
+          v59 = publicString3;
           v60 = 2112;
-          v61 = v25;
+          v61 = privateString3;
           v62 = 2114;
-          v63 = v50;
+          v63 = prefixCopy;
           v64 = 2048;
           v65 = add;
           v66 = 2048;
@@ -600,14 +600,14 @@ LABEL_22:
           {
             v28 = self->_logContext;
             v29 = v12;
-            v30 = [(CRLLogContext *)v28 publicString];
-            v31 = [(CRLLogContext *)self->_logContext privateString];
+            publicString4 = [(CRLLogContext *)v28 publicString];
+            privateString4 = [(CRLLogContext *)self->_logContext privateString];
             *buf = 138544642;
-            v59 = v30;
+            v59 = publicString4;
             v60 = 2112;
-            v61 = v31;
+            v61 = privateString4;
             v62 = 2114;
-            v63 = v50;
+            v63 = prefixCopy;
             v64 = 2048;
             v65 = add;
             v66 = 2048;
@@ -635,15 +635,15 @@ LABEL_22:
           {
             v32 = self->_logContext;
             log = v15;
-            v45 = [(CRLLogContext *)v32 publicString];
+            publicString5 = [(CRLLogContext *)v32 publicString];
             v4 = v47;
-            v33 = [(CRLLogContext *)self->_logContext privateString];
+            privateString5 = [(CRLLogContext *)self->_logContext privateString];
             *buf = 138544642;
-            v59 = v45;
+            v59 = publicString5;
             v60 = 2112;
-            v61 = v33;
+            v61 = privateString5;
             v62 = 2114;
-            v63 = v50;
+            v63 = prefixCopy;
             v64 = 2048;
             v65 = add;
             v66 = 2048;
@@ -676,14 +676,14 @@ LABEL_22:
   {
     v41 = self->_logContext;
     v42 = v34;
-    v43 = [(CRLLogContext *)v41 publicString];
-    v44 = [(CRLLogContext *)self->_logContext privateString];
+    publicString6 = [(CRLLogContext *)v41 publicString];
+    privateString6 = [(CRLLogContext *)self->_logContext privateString];
     *buf = 138544130;
-    v59 = v43;
+    v59 = publicString6;
     v60 = 2112;
-    v61 = v44;
+    v61 = privateString6;
     v62 = 2114;
-    v63 = v50;
+    v63 = prefixCopy;
     v64 = 2048;
     v65 = add;
     _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%{public}@ %@ %{public}@┗ %llx", buf, 0x2Au);
@@ -736,14 +736,14 @@ LABEL_22:
         {
           logContext = self->_logContext;
           v16 = v7;
-          v17 = [(CRLLogContext *)logContext publicString];
-          v18 = [(CRLLogContext *)self->_logContext privateString];
+          publicString = [(CRLLogContext *)logContext publicString];
+          privateString = [(CRLLogContext *)self->_logContext privateString];
           v19 = [NSNumber numberWithUnsignedInteger:v4];
           v20 = [v6 metadataDescriptionWithIndex:v19];
           *buf = 138544386;
-          v46 = v17;
+          v46 = publicString;
           v47 = 2112;
-          v48 = v18;
+          v48 = privateString;
           v49 = 2048;
           v50 = add;
           v51 = 2048;
@@ -765,14 +765,14 @@ LABEL_22:
         {
           v21 = self->_logContext;
           v22 = v8;
-          v23 = [(CRLLogContext *)v21 publicString];
-          v24 = [(CRLLogContext *)self->_logContext privateString];
+          publicString2 = [(CRLLogContext *)v21 publicString];
+          privateString2 = [(CRLLogContext *)self->_logContext privateString];
           v25 = [NSNumber numberWithUnsignedInteger:v4];
           v26 = [v6 acquireCallStackDescriptionWithIndex:v25];
           *buf = 138544386;
-          v46 = v23;
+          v46 = publicString2;
           v47 = 2112;
-          v48 = v24;
+          v48 = privateString2;
           v49 = 2048;
           v50 = add;
           v51 = 2048;
@@ -799,12 +799,12 @@ LABEL_22:
           {
             v27 = self->_logContext;
             v28 = v11;
-            v29 = [(CRLLogContext *)v27 publicString];
-            v30 = [(CRLLogContext *)self->_logContext privateString];
+            publicString3 = [(CRLLogContext *)v27 publicString];
+            privateString3 = [(CRLLogContext *)self->_logContext privateString];
             *buf = 138544386;
-            v46 = v29;
+            v46 = publicString3;
             v47 = 2112;
-            v48 = v30;
+            v48 = privateString3;
             v49 = 2048;
             v50 = add;
             v51 = 2048;
@@ -832,13 +832,13 @@ LABEL_22:
           {
             v31 = self->_logContext;
             log = v14;
-            v34 = [(CRLLogContext *)v31 publicString];
+            publicString4 = [(CRLLogContext *)v31 publicString];
             v3 = v36;
-            v32 = [(CRLLogContext *)self->_logContext privateString];
+            privateString4 = [(CRLLogContext *)self->_logContext privateString];
             *buf = 138544386;
-            v46 = v34;
+            v46 = publicString4;
             v47 = 2112;
-            v48 = v32;
+            v48 = privateString4;
             v49 = 2048;
             v50 = add;
             v51 = 2048;
@@ -943,9 +943,9 @@ LABEL_22:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLTraceableResource *)self name];
-  v6 = [(CRLTraceableResource *)self tokenSerializationDescription];
-  v7 = [NSString stringWithFormat:@"<%@: %p name='%@'>\n%@", v4, self, v5, v6];
+  name = [(CRLTraceableResource *)self name];
+  tokenSerializationDescription = [(CRLTraceableResource *)self tokenSerializationDescription];
+  v7 = [NSString stringWithFormat:@"<%@: %p name='%@'>\n%@", v4, self, name, tokenSerializationDescription];
 
   return v7;
 }

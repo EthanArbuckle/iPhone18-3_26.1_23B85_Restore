@@ -1,14 +1,14 @@
 @interface RPMediaControlSession
 - (RPMediaControlSession)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleMediaControlEvent:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleMediaControlEvent:(id)event;
 - (void)_invalidate;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)mediaCaptionSettingGetFromDestinationID:(id)a3 completion:(id)a4;
-- (void)mediaGetVolumeFromDestinationID:(id)a3 completion:(id)a4;
-- (void)mediaSetVolume:(double)a3 destinationID:(id)a4 completion:(id)a5;
-- (void)mediaSkipBySeconds:(double)a3 destinationID:(id)a4 completion:(id)a5;
+- (void)mediaCaptionSettingGetFromDestinationID:(id)d completion:(id)completion;
+- (void)mediaGetVolumeFromDestinationID:(id)d completion:(id)completion;
+- (void)mediaSetVolume:(double)volume destinationID:(id)d completion:(id)completion;
+- (void)mediaSkipBySeconds:(double)seconds destinationID:(id)d completion:(id)completion;
 @end
 
 @implementation RPMediaControlSession
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -46,35 +46,35 @@
   v9[2] = __48__RPMediaControlSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_messenger)
   {
     v7 = RPErrorF();
     if (gLogCategory_RPMediaControlSession <= 90 && (gLogCategory_RPMediaControlSession != -1 || _LogCategory_Initialize()))
     {
       [RPMediaControlSession _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_9:
 
       goto LABEL_15;
     }
 
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, v7);
     goto LABEL_9;
   }
 
@@ -98,7 +98,7 @@ LABEL_9:
   if (gLogCategory_RPMediaControlSession <= 30 && (gLogCategory_RPMediaControlSession != -1 || _LogCategory_Initialize()))
   {
     [RPMediaControlSession _activateWithCompletion:];
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_15;
     }
@@ -106,10 +106,10 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_14:
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_15:
@@ -152,7 +152,7 @@ LABEL_15:
   }
 }
 
-- (void)_handleMediaControlEvent:(id)a3
+- (void)_handleMediaControlEvent:(id)event
 {
   Int64 = CFDictionaryGetInt64();
   if (gLogCategory_RPMediaControlSession <= 30 && (gLogCategory_RPMediaControlSession != -1 || _LogCategory_Initialize()))
@@ -172,23 +172,23 @@ LABEL_15:
   }
 }
 
-- (void)mediaCaptionSettingGetFromDestinationID:(id)a3 completion:(id)a4
+- (void)mediaCaptionSettingGetFromDestinationID:(id)d completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   messenger = self->_messenger;
   v15 = @"_mcc";
   v16[0] = &unk_1F2EEC830;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a3;
+  dCopy = d;
   v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__RPMediaControlSession_mediaCaptionSettingGetFromDestinationID_completion___block_invoke;
   v13[3] = &unk_1E7C93780;
-  v14 = v6;
-  v11 = v6;
-  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v10 destinationID:v9 options:0 responseHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v10 destinationID:dCopy options:0 responseHandler:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -222,26 +222,26 @@ uint64_t __63__RPMediaControlSession_mediaCommand_destinationID_completion___blo
   return result;
 }
 
-- (void)mediaSkipBySeconds:(double)a3 destinationID:(id)a4 completion:(id)a5
+- (void)mediaSkipBySeconds:(double)seconds destinationID:(id)d completion:(id)completion
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   messenger = self->_messenger;
   v18[0] = @"_mcc";
   v18[1] = @"_skpS";
   v19[0] = &unk_1F2EEC860;
   v10 = MEMORY[0x1E696AD98];
-  v11 = a4;
-  v12 = [v10 numberWithDouble:a3];
+  dCopy = d;
+  v12 = [v10 numberWithDouble:seconds];
   v19[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__RPMediaControlSession_mediaSkipBySeconds_destinationID_completion___block_invoke;
   v16[3] = &unk_1E7C93780;
-  v17 = v8;
-  v14 = v8;
-  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v13 destinationID:v11 options:0 responseHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v13 destinationID:dCopy options:0 responseHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -257,23 +257,23 @@ uint64_t __69__RPMediaControlSession_mediaSkipBySeconds_destinationID_completion
   return result;
 }
 
-- (void)mediaGetVolumeFromDestinationID:(id)a3 completion:(id)a4
+- (void)mediaGetVolumeFromDestinationID:(id)d completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   messenger = self->_messenger;
   v15 = @"_mcc";
   v16[0] = &unk_1F2EEC878;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a3;
+  dCopy = d;
   v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__RPMediaControlSession_mediaGetVolumeFromDestinationID_completion___block_invoke;
   v13[3] = &unk_1E7C93780;
-  v14 = v6;
-  v11 = v6;
-  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v10 destinationID:v9 options:0 responseHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v10 destinationID:dCopy options:0 responseHandler:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -285,27 +285,27 @@ void __68__RPMediaControlSession_mediaGetVolumeFromDestinationID_completion___bl
   (*(*(a1 + 32) + 16))(v6);
 }
 
-- (void)mediaSetVolume:(double)a3 destinationID:(id)a4 completion:(id)a5
+- (void)mediaSetVolume:(double)volume destinationID:(id)d completion:(id)completion
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   messenger = self->_messenger;
   v19[0] = @"_mcc";
   v19[1] = @"_vol";
   v20[0] = &unk_1F2EEC890;
   v10 = MEMORY[0x1E696AD98];
-  v11 = a4;
-  v12 = [v10 numberWithDouble:a3];
+  dCopy = d;
+  v12 = [v10 numberWithDouble:volume];
   v20[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__RPMediaControlSession_mediaSetVolume_destinationID_completion___block_invoke;
   v16[3] = &unk_1E7C94AF8;
-  v18 = a3;
-  v17 = v8;
-  v14 = v8;
-  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v13 destinationID:v11 options:0 responseHandler:v16];
+  volumeCopy = volume;
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(RPMessageable *)messenger sendRequestID:@"_mcc" request:v13 destinationID:dCopy options:0 responseHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }

@@ -1,54 +1,54 @@
 @interface CHSConfiguredWidgetContainerDescriptor
 + (CHSConfiguredWidgetContainerDescriptor)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSystemConfigured;
 - (CHSConfiguredWidgetContainerDescriptor)init;
-- (CHSConfiguredWidgetContainerDescriptor)initWithCoder:(id)a3;
-- (CHSConfiguredWidgetContainerDescriptor)initWithUniqueIdentifier:(id)a3 location:(int64_t)a4 canAppearInSecureEnvironment:(BOOL)a5 page:(unint64_t)a6 family:(int64_t)a7 widgets:(id)a8 activeWidget:(id)a9;
+- (CHSConfiguredWidgetContainerDescriptor)initWithCoder:(id)coder;
+- (CHSConfiguredWidgetContainerDescriptor)initWithUniqueIdentifier:(id)identifier location:(int64_t)location canAppearInSecureEnvironment:(BOOL)environment page:(unint64_t)page family:(int64_t)family widgets:(id)widgets activeWidget:(id)widget;
 - (CHSConfiguredWidgetDescriptor)activeWidget;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSConfiguredWidgetContainerDescriptor
 
 + (CHSConfiguredWidgetContainerDescriptor)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:29 description:@"use the designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:29 description:@"use the designated initializer"];
 
   return 0;
 }
 
 - (CHSConfiguredWidgetContainerDescriptor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:34 description:@"use the designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:34 description:@"use the designated initializer"];
 
   return 0;
 }
 
-- (CHSConfiguredWidgetContainerDescriptor)initWithUniqueIdentifier:(id)a3 location:(int64_t)a4 canAppearInSecureEnvironment:(BOOL)a5 page:(unint64_t)a6 family:(int64_t)a7 widgets:(id)a8 activeWidget:(id)a9
+- (CHSConfiguredWidgetContainerDescriptor)initWithUniqueIdentifier:(id)identifier location:(int64_t)location canAppearInSecureEnvironment:(BOOL)environment page:(unint64_t)page family:(int64_t)family widgets:(id)widgets activeWidget:(id)widget
 {
   v44 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v12 = a8;
-  v13 = a9;
-  if ([v12 count])
+  identifierCopy = identifier;
+  widgetsCopy = widgets;
+  widgetCopy = widget;
+  if ([widgetsCopy count])
   {
-    if (v12)
+    if (widgetsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_13:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"widgets"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"widgets"}];
 
-    if (v13)
+    if (widgetCopy)
     {
       goto LABEL_4;
     }
@@ -58,16 +58,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:55 description:@"Widget count must be > 0."];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:55 description:@"Widget count must be > 0."];
 
-  if (!v12)
+  if (!widgetsCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  if (!v13)
+  if (!widgetCopy)
   {
     goto LABEL_14;
   }
@@ -75,11 +75,11 @@ LABEL_3:
 LABEL_4:
   v14 = 0;
   v15 = -1;
-  while (v14 < [v12 count])
+  while (v14 < [widgetsCopy count])
   {
-    v16 = [v12 objectAtIndexedSubscript:v14];
-    v17 = [v16 uniqueIdentifier];
-    v18 = [v17 isEqualToString:v13];
+    v16 = [widgetsCopy objectAtIndexedSubscript:v14];
+    uniqueIdentifier = [v16 uniqueIdentifier];
+    v18 = [uniqueIdentifier isEqualToString:widgetCopy];
 
     if (v18)
     {
@@ -89,10 +89,10 @@ LABEL_4:
     ++v14;
   }
 
-  if ((v15 & 0x8000000000000000) != 0 || v15 >= [v12 count])
+  if ((v15 & 0x8000000000000000) != 0 || v15 >= [widgetsCopy count])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:64 description:@"Active widget provided is invalid or not found in the widget list."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"CHSConfiguredWidgetContainerDescriptor.m" lineNumber:64 description:@"Active widget provided is invalid or not found in the widget list."];
   }
 
 LABEL_15:
@@ -105,7 +105,7 @@ LABEL_15:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v23 = v12;
+    v23 = widgetsCopy;
     v24 = [v23 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v24)
     {
@@ -129,15 +129,15 @@ LABEL_15:
     }
 
     v22->_activeWidgetIndex = v15;
-    objc_storeStrong(&v22->_activeWidgetUniqueIdentifier, a9);
-    v27 = [v37 copy];
+    objc_storeStrong(&v22->_activeWidgetUniqueIdentifier, widget);
+    v27 = [identifierCopy copy];
     uniqueIdentifier = v22->_uniqueIdentifier;
     v22->_uniqueIdentifier = v27;
 
-    v22->_canAppearInSecureEnvironment = a5;
-    v22->_location = a4;
-    v22->_page = a6;
-    v22->_family = a7;
+    v22->_canAppearInSecureEnvironment = environment;
+    v22->_location = location;
+    v22->_page = page;
+    v22->_family = family;
     v29 = [v23 copy];
     widgets = v22->_widgets;
     v22->_widgets = v29;
@@ -210,11 +210,11 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -306,47 +306,47 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendString:self->_uniqueIdentifier];
-  v5 = [v3 appendInteger:self->_location];
-  v6 = [v3 appendBool:self->_canAppearInSecureEnvironment];
-  v7 = [v3 appendUnsignedInteger:self->_page];
-  v8 = [v3 appendInteger:self->_family];
-  v9 = [v3 appendObject:self->_widgets];
-  v10 = [v3 appendString:self->_activeWidgetUniqueIdentifier];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendString:self->_uniqueIdentifier];
+  v5 = [builder appendInteger:self->_location];
+  v6 = [builder appendBool:self->_canAppearInSecureEnvironment];
+  v7 = [builder appendUnsignedInteger:self->_page];
+  v8 = [builder appendInteger:self->_family];
+  v9 = [builder appendObject:self->_widgets];
+  v10 = [builder appendString:self->_activeWidgetUniqueIdentifier];
+  v11 = [builder hash];
 
   return v11;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CHSConfiguredWidgetContainerDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSConfiguredWidgetContainerDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSConfiguredWidgetContainerDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSConfiguredWidgetContainerDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CHSConfiguredWidgetContainerDescriptor *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CHSConfiguredWidgetContainerDescriptor *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __80__CHSConfiguredWidgetContainerDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E7453000;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -372,33 +372,33 @@ uint64_t __80__CHSConfiguredWidgetContainerDescriptor_descriptionBuilderWithMult
   return [v8 appendString:v9 withName:@"activeWidget"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_uniqueIdentifier forKey:@"uid"];
-  [v5 encodeInteger:self->_location forKey:@"location"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uid"];
+  [coderCopy encodeInteger:self->_location forKey:@"location"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_page];
-  [v5 encodeObject:v4 forKey:@"page"];
+  [coderCopy encodeObject:v4 forKey:@"page"];
 
-  [v5 encodeInteger:self->_family forKey:@"family"];
-  [v5 encodeObject:self->_widgets forKey:@"widgets"];
-  [v5 encodeObject:self->_activeWidgetUniqueIdentifier forKey:@"activeWidget"];
-  [v5 encodeBool:self->_canAppearInSecureEnvironment forKey:@"canAppearInSE"];
+  [coderCopy encodeInteger:self->_family forKey:@"family"];
+  [coderCopy encodeObject:self->_widgets forKey:@"widgets"];
+  [coderCopy encodeObject:self->_activeWidgetUniqueIdentifier forKey:@"activeWidget"];
+  [coderCopy encodeBool:self->_canAppearInSecureEnvironment forKey:@"canAppearInSE"];
 }
 
-- (CHSConfiguredWidgetContainerDescriptor)initWithCoder:(id)a3
+- (CHSConfiguredWidgetContainerDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
-  v5 = [v4 decodeIntegerForKey:@"location"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"page"];
-  v7 = [v6 unsignedIntegerValue];
+  coderCopy = coder;
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uid"];
+  v5 = [coderCopy decodeIntegerForKey:@"location"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"page"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 decodeIntegerForKey:@"family"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeWidget"];
-  v22 = v7;
+  v8 = [coderCopy decodeIntegerForKey:@"family"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeWidget"];
+  v22 = unsignedIntegerValue;
   v23 = v5;
-  v10 = [v4 decodeBoolForKey:@"canAppearInSE"];
+  v10 = [coderCopy decodeBoolForKey:@"canAppearInSE"];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__CHSConfiguredWidgetContainerDescriptor_initWithCoder___block_invoke;
@@ -411,7 +411,7 @@ uint64_t __80__CHSConfiguredWidgetContainerDescriptor_descriptionBuilderWithMult
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"widgets"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"widgets"];
 
   v18 = v13[2](v13, v17);
 

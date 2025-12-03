@@ -1,13 +1,13 @@
 @interface CNiOSABFaultFulfillmentPredicate
 + (id)os_log;
-- (BOOL)isEqual:(id)a3;
-- (CNiOSABFaultFulfillmentPredicate)initWithCoder:(id)a3;
-- (CNiOSABFaultFulfillmentPredicate)initWithLegacyIdentifier:(int)a3 identifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CNiOSABFaultFulfillmentPredicate)initWithCoder:(id)coder;
+- (CNiOSABFaultFulfillmentPredicate)initWithLegacyIdentifier:(int)identifier identifier:(id)a4;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABFaultFulfillmentPredicate
@@ -33,29 +33,29 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNiOSABFaultFulfillmentPredicate)initWithLegacyIdentifier:(int)a3 identifier:(id)a4
+- (CNiOSABFaultFulfillmentPredicate)initWithLegacyIdentifier:(int)identifier identifier:(id)a4
 {
   v6 = a4;
   v10.receiver = self;
   v10.super_class = CNiOSABFaultFulfillmentPredicate;
   v7 = [(CNPredicate *)&v10 initWithPredicate:0];
-  v7->_legacyIdentifier = a3;
+  v7->_legacyIdentifier = identifier;
   identifier = v7->_identifier;
   v7->_identifier = v6;
 
   return v7;
 }
 
-- (CNiOSABFaultFulfillmentPredicate)initWithCoder:(id)a3
+- (CNiOSABFaultFulfillmentPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABFaultFulfillmentPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_legacyIdentifier = [v4 decodeInt32ForKey:@"_legacyIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v5->_legacyIdentifier = [coderCopy decodeInt32ForKey:@"_legacyIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
@@ -66,20 +66,20 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABFaultFulfillmentPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_legacyIdentifier forKey:{@"_legacyIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_identifier forKey:@"_identifier"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_legacyIdentifier forKey:{@"_legacyIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v13 = 0;
-  v8 = [(CNiOSABFaultFulfillmentPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v13];
+  v8 = [(CNiOSABFaultFulfillmentPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v13];
   v9 = v13;
   v10 = v9;
   if (v8)
@@ -87,18 +87,18 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    *a7 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  requestCopy = request;
   if ([(CNiOSABFaultFulfillmentPredicate *)self legacyIdentifier]<= 0)
   {
     v32 = @"CNKeyPaths";
@@ -107,7 +107,7 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
     v33[0] = v19;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
 
-    CNSetError(a7, 400, v12);
+    CNSetError(nserror, 400, v12);
     PersonWithRecordID = 0;
     goto LABEL_9;
   }
@@ -120,20 +120,20 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
   v12 = v11;
   v29 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [v10 keysToFetch];
+  keysToFetch = [requestCopy keysToFetch];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __107__CNiOSABFaultFulfillmentPredicate_cn_copyPeopleInAddressBook_fetchRequest_matchInfos_environment_nserror___block_invoke_2;
   v25 = &unk_1E74122F0;
   v15 = v13;
-  v26 = self;
+  selfCopy = self;
   v27 = v15;
-  v16 = [v14 _cn_any:&v22];
+  v16 = [keysToFetch _cn_any:&v22];
 
   v17 = [(CNiOSABFaultFulfillmentPredicate *)self legacyIdentifier:v22];
   if (v16)
   {
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a3, v17);
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID(book, v17);
     if (!PersonWithRecordID)
     {
       goto LABEL_8;
@@ -142,7 +142,7 @@ uint64_t __42__CNiOSABFaultFulfillmentPredicate_os_log__block_invoke()
     goto LABEL_7;
   }
 
-  v20 = [(CNiOSABFaultFulfillmentPredicate *)self identifier];
+  identifier = [(CNiOSABFaultFulfillmentPredicate *)self identifier];
   PersonWithRecordID = ABAddressBookPrimePersonContextForIdentifier();
 
   if (PersonWithRecordID)
@@ -248,33 +248,33 @@ void __107__CNiOSABFaultFulfillmentPredicate_cn_copyPeopleInAddressBook_fetchReq
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForFaultFulfillmentForLegacyIdentifier:identifier:]"];
   v5 = [v3 appendName:@"legacyIdentifier" intValue:{-[CNiOSABFaultFulfillmentPredicate legacyIdentifier](self, "legacyIdentifier")}];
-  v6 = [(CNiOSABFaultFulfillmentPredicate *)self identifier];
-  v7 = [v3 appendName:@"identifier" object:v6];
+  identifier = [(CNiOSABFaultFulfillmentPredicate *)self identifier];
+  v7 = [v3 appendName:@"identifier" object:identifier];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__CNiOSABFaultFulfillmentPredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __44__CNiOSABFaultFulfillmentPredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }

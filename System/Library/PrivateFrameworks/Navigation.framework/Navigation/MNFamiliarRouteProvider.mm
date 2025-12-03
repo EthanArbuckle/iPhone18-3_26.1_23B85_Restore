@@ -1,37 +1,37 @@
 @interface MNFamiliarRouteProvider
-- (MNFamiliarRouteProvider)initWithPurpose:(int64_t)a3 reason:(id)a4 date:(id)a5;
-- (id)_descriptionForLearnedRoute:(id)a3;
-- (id)_descriptionForLearnedRoutes:(id)a3;
-- (id)_familiarRouteForLearnedRoute:(id)a3;
-- (id)_fetchOptionsForWaypoints:(id)a3;
-- (id)_rawPathGeometryForLearnedRouteLocations:(id)a3;
-- (int)_transportTypeForRouteTravelMode:(int64_t)a3;
-- (void)_fetchFamiliarRouteWithWaypoints:(id)a3 handler:(id)a4;
-- (void)fetchFamiliarRouteWithWaypoints:(id)a3 handler:(id)a4;
+- (MNFamiliarRouteProvider)initWithPurpose:(int64_t)purpose reason:(id)reason date:(id)date;
+- (id)_descriptionForLearnedRoute:(id)route;
+- (id)_descriptionForLearnedRoutes:(id)routes;
+- (id)_familiarRouteForLearnedRoute:(id)route;
+- (id)_fetchOptionsForWaypoints:(id)waypoints;
+- (id)_rawPathGeometryForLearnedRouteLocations:(id)locations;
+- (int)_transportTypeForRouteTravelMode:(int64_t)mode;
+- (void)_fetchFamiliarRouteWithWaypoints:(id)waypoints handler:(id)handler;
+- (void)fetchFamiliarRouteWithWaypoints:(id)waypoints handler:(id)handler;
 @end
 
 @implementation MNFamiliarRouteProvider
 
-- (id)_descriptionForLearnedRoute:(id)a3
+- (id)_descriptionForLearnedRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 travelModeRoutes];
+  routeCopy = route;
+  travelModeRoutes = [routeCopy travelModeRoutes];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke;
   v16[3] = &unk_1E842FCB0;
   v16[4] = self;
-  v6 = [v5 _geo_map:v16];
+  v6 = [travelModeRoutes _geo_map:v16];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 learnedRouteIdentifier];
-  [v4 travelledDistanceEstimateForEntireRouteInMeters];
+  learnedRouteIdentifier = [routeCopy learnedRouteIdentifier];
+  [routeCopy travelledDistanceEstimateForEntireRouteInMeters];
   v10 = v9;
-  [v4 travelTimeEstimateForEntireRouteInSeconds];
+  [routeCopy travelTimeEstimateForEntireRouteInSeconds];
   v12 = v11;
 
   v13 = [v6 componentsJoinedByString:@"\n\t\t"];
-  v14 = [v7 stringWithFormat:@"%@ | %d meters, %d seconds:\n\t\t%@", v8, v10, v12, v13];
+  v14 = [v7 stringWithFormat:@"%@ | %d meters, %d seconds:\n\t\t%@", learnedRouteIdentifier, v10, v12, v13];
 
   return v14;
 }
@@ -77,17 +77,17 @@ id __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke(uint
   return v14;
 }
 
-- (id)_descriptionForLearnedRoutes:(id)a3
+- (id)_descriptionForLearnedRoutes:(id)routes
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__MNFamiliarRouteProvider__descriptionForLearnedRoutes___block_invoke;
   v10[3] = &unk_1E842FC88;
   v10[4] = self;
-  v3 = a3;
-  v4 = [v3 _geo_map:v10];
+  routesCopy = routes;
+  v4 = [routesCopy _geo_map:v10];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v3 count];
+  v6 = [routesCopy count];
 
   v7 = [v4 componentsJoinedByString:@"\n\t"];
   v8 = [v5 stringWithFormat:@"%d learned route(s) found:\n\t%@", v6, v7];
@@ -95,32 +95,32 @@ id __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke(uint
   return v8;
 }
 
-- (int)_transportTypeForRouteTravelMode:(int64_t)a3
+- (int)_transportTypeForRouteTravelMode:(int64_t)mode
 {
-  if ((a3 - 1) > 2)
+  if ((mode - 1) > 2)
   {
     return 4;
   }
 
   else
   {
-    return dword_1D328D4D8[a3 - 1];
+    return dword_1D328D4D8[mode - 1];
   }
 }
 
-- (id)_rawPathGeometryForLearnedRouteLocations:(id)a3
+- (id)_rawPathGeometryForLearnedRouteLocations:(id)locations
 {
-  v3 = a3;
-  if ([v3 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v4 = malloc_type_calloc([v3 count], 0x28uLL, 0x100004074F221ECuLL);
-    if ([v3 count])
+    v4 = malloc_type_calloc([locationsCopy count], 0x28uLL, 0x100004074F221ECuLL);
+    if ([locationsCopy count])
     {
       v5 = 0;
       v6 = v4 + 16;
       do
       {
-        v7 = [v3 objectAtIndexedSubscript:v5];
+        v7 = [locationsCopy objectAtIndexedSubscript:v5];
         [v7 latitude];
         *(v6 - 2) = v8;
         [v7 longitude];
@@ -134,10 +134,10 @@ id __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke(uint
         v6 += 40;
       }
 
-      while (v5 < [v3 count]);
+      while (v5 < [locationsCopy count]);
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E69A2410]) initWithCoordinates:v4 count:objc_msgSend(v3 allSupportPoints:"count") isLearnedRoute:{1, 1}];
+    v11 = [objc_alloc(MEMORY[0x1E69A2410]) initWithCoordinates:v4 count:objc_msgSend(locationsCopy allSupportPoints:"count") isLearnedRoute:{1, 1}];
     free(v4);
   }
 
@@ -149,17 +149,17 @@ id __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke(uint
   return v11;
 }
 
-- (id)_familiarRouteForLearnedRoute:(id)a3
+- (id)_familiarRouteForLearnedRoute:(id)route
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 travelModeRoutes];
+  routeCopy = route;
+  travelModeRoutes = [routeCopy travelModeRoutes];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__MNFamiliarRouteProvider__familiarRouteForLearnedRoute___block_invoke;
   v15[3] = &unk_1E842FC60;
   v15[4] = self;
-  v6 = [v5 _geo_compactMap:v15];
+  v6 = [travelModeRoutes _geo_compactMap:v15];
 
   v7 = MNGetMNFamiliarRouteProviderLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -171,10 +171,10 @@ id __55__MNFamiliarRouteProvider__descriptionForLearnedRoute___block_invoke(uint
   }
 
   v9 = objc_alloc(MEMORY[0x1E69A1D20]);
-  v10 = [v4 learnedRouteIdentifier];
+  learnedRouteIdentifier = [routeCopy learnedRouteIdentifier];
 
-  v11 = [v10 UUIDString];
-  v12 = [v9 initWithFamiliarRouteUUID:v11 segments:v6];
+  uUIDString = [learnedRouteIdentifier UUIDString];
+  v12 = [v9 initWithFamiliarRouteUUID:uUIDString segments:v6];
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -199,15 +199,15 @@ id __57__MNFamiliarRouteProvider__familiarRouteForLearnedRoute___block_invoke(ui
   return v12;
 }
 
-- (id)_fetchOptionsForWaypoints:(id)a3
+- (id)_fetchOptionsForWaypoints:(id)waypoints
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 clLocation];
+  waypointsCopy = waypoints;
+  firstObject = [waypointsCopy firstObject];
+  clLocation = [firstObject clLocation];
 
-  v7 = [v4 lastObject];
+  lastObject = [waypointsCopy lastObject];
 
-  v8 = [v7 clLocation];
+  clLocation2 = [lastObject clLocation];
 
   date = self->_date;
   if (date)
@@ -244,12 +244,12 @@ id __57__MNFamiliarRouteProvider__familiarRouteForLearnedRoute___block_invoke(ui
   LODWORD(v19) = 0;
   if (purpose == 1)
   {
-    v16 = [v15 initWithBundlePath:@"/System/Library/LocationBundles/NavdLocationBundleiOS.bundle" routeOriginLocation:v6 routeDestinationLocation:v8 routeDate:v11 routeFetchType:1 fetchAllRouteLocations:0 routeOriginType:v19];
+    v16 = [v15 initWithBundlePath:@"/System/Library/LocationBundles/NavdLocationBundleiOS.bundle" routeOriginLocation:clLocation routeDestinationLocation:clLocation2 routeDate:v11 routeFetchType:1 fetchAllRouteLocations:0 routeOriginType:v19];
   }
 
   else
   {
-    v16 = [v15 initWithBundleIdentifier:@"com.apple.Maps" routeOriginLocation:v6 routeDestinationLocation:v8 routeDate:v11 routeFetchType:1 fetchAllRouteLocations:0 routeOriginType:v19];
+    v16 = [v15 initWithBundleIdentifier:@"com.apple.Maps" routeOriginLocation:clLocation routeDestinationLocation:clLocation2 routeDate:v11 routeFetchType:1 fetchAllRouteLocations:0 routeOriginType:v19];
   }
 
   v17 = v16;
@@ -257,20 +257,20 @@ id __57__MNFamiliarRouteProvider__familiarRouteForLearnedRoute___block_invoke(ui
   return v17;
 }
 
-- (void)_fetchFamiliarRouteWithWaypoints:(id)a3 handler:(id)a4
+- (void)_fetchFamiliarRouteWithWaypoints:(id)waypoints handler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MNFamiliarRouteProvider *)self _fetchOptionsForWaypoints:v7];
-  v9 = [v7 firstObject];
-  [v9 coordinate];
+  handlerCopy = handler;
+  waypointsCopy = waypoints;
+  v8 = [(MNFamiliarRouteProvider *)self _fetchOptionsForWaypoints:waypointsCopy];
+  firstObject = [waypointsCopy firstObject];
+  [firstObject coordinate];
   v11 = v10;
   v13 = v12;
 
-  v14 = [v7 lastObject];
+  lastObject = [waypointsCopy lastObject];
 
-  [v14 coordinate];
+  [lastObject coordinate];
   v16 = v15;
   v18 = v17;
 
@@ -297,15 +297,15 @@ id __57__MNFamiliarRouteProvider__familiarRouteForLearnedRoute___block_invoke(ui
     _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_DEFAULT, "Checking learned routes for reason %@, from %{private}0.6f, %{private}0.6f to %{private}0.6f, %{private}0.6f on %@.", buf, 0x3Eu);
   }
 
-  v23 = [getRTRoutineManagerClass() defaultManager];
+  defaultManager = [getRTRoutineManagerClass() defaultManager];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __68__MNFamiliarRouteProvider__fetchFamiliarRouteWithWaypoints_handler___block_invoke;
   v26[3] = &unk_1E842FC38;
   v26[4] = self;
-  v27 = v6;
-  v24 = v6;
-  [v23 fetchLearnedRoutesWithOptions:v8 handler:v26];
+  v27 = handlerCopy;
+  v24 = handlerCopy;
+  [defaultManager fetchLearnedRoutesWithOptions:v8 handler:v26];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -371,15 +371,15 @@ void __68__MNFamiliarRouteProvider__fetchFamiliarRouteWithWaypoints_handler___bl
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchFamiliarRouteWithWaypoints:(id)a3 handler:(id)a4
+- (void)fetchFamiliarRouteWithWaypoints:(id)waypoints handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  waypointsCopy = waypoints;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (MapsFeature_IsEnabled_LocationIntelligenceMaps())
     {
-      if ([v6 count] == 2)
+      if ([waypointsCopy count] == 2)
       {
         objc_initWeak(location, self);
         purpose = self->_purpose;
@@ -388,8 +388,8 @@ void __68__MNFamiliarRouteProvider__fetchFamiliarRouteWithWaypoints_handler___bl
         v10[2] = __67__MNFamiliarRouteProvider_fetchFamiliarRouteWithWaypoints_handler___block_invoke;
         v10[3] = &unk_1E842FC10;
         objc_copyWeak(&v13, location);
-        v12 = v7;
-        v11 = v6;
+        v12 = handlerCopy;
+        v11 = waypointsCopy;
         [MNFamiliarRouteAuthorizationChecker checkAuthorizationForPurpose:purpose completionHandler:v10];
 
         objc_destroyWeak(&v13);
@@ -408,7 +408,7 @@ void __68__MNFamiliarRouteProvider__fetchFamiliarRouteWithWaypoints_handler___bl
       }
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_9:
@@ -441,10 +441,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (MNFamiliarRouteProvider)initWithPurpose:(int64_t)a3 reason:(id)a4 date:(id)a5
+- (MNFamiliarRouteProvider)initWithPurpose:(int64_t)purpose reason:(id)reason date:(id)date
 {
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = MNFamiliarRouteProvider;
   v11 = [(MNFamiliarRouteProvider *)&v14 init];
@@ -452,9 +452,9 @@ LABEL_8:
   {
     +[MNFamiliarRouteAuthorizationChecker shared];
 
-    v11->_purpose = a3;
-    objc_storeStrong(&v11->_reason, a4);
-    objc_storeStrong(&v11->_date, a5);
+    v11->_purpose = purpose;
+    objc_storeStrong(&v11->_reason, reason);
+    objc_storeStrong(&v11->_date, date);
     v12 = v11;
   }
 

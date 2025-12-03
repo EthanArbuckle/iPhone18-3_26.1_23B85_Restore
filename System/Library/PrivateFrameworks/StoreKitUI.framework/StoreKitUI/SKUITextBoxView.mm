@@ -1,38 +1,38 @@
 @interface SKUITextBoxView
-- (CGSize)_textSizeToFitSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUITextBoxView)initWithFrame:(CGRect)a3;
+- (CGSize)_textSizeToFitSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUITextBoxView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)titleInsets;
 - (__CTFrame)_textFrame;
 - (id)_moreButtonLabel;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 - (void)reset;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setFixedWidthTextFrame:(__CTFrame *)a3;
-- (void)setFixedWidthTitleTextFrame:(__CTFrame *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMoreButtonTitle:(id)a3;
-- (void)setNumberOfVisibleLines:(int64_t)a3;
-- (void)setRating:(double)a3;
-- (void)setRatingText:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTextFrameWithText:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTruncationStyle:(int64_t)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setFixedWidthTextFrame:(__CTFrame *)frame;
+- (void)setFixedWidthTitleTextFrame:(__CTFrame *)frame;
+- (void)setFrame:(CGRect)frame;
+- (void)setMoreButtonTitle:(id)title;
+- (void)setNumberOfVisibleLines:(int64_t)lines;
+- (void)setRating:(double)rating;
+- (void)setRatingText:(id)text;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTextFrameWithText:(id)text;
+- (void)setTitle:(id)title;
+- (void)setTruncationStyle:(int64_t)style;
 @end
 
 @implementation SKUITextBoxView
 
-- (SKUITextBoxView)initWithFrame:(CGRect)a3
+- (SKUITextBoxView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITextBoxView initWithFrame:];
@@ -40,18 +40,18 @@
 
   v11.receiver = self;
   v11.super_class = SKUITextBoxView;
-  v8 = [(SKUITextBoxView *)&v11 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUITextBoxView *)&v11 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
-    *&v8->_contentInsets.top = xmmword_215F3F220;
-    *&v8->_contentInsets.bottom = xmmword_215F3F020;
-    v8->_titleInsets.bottom = 2.0;
+    *&height->_contentInsets.top = xmmword_215F3F220;
+    *&height->_contentInsets.bottom = xmmword_215F3F020;
+    height->_titleInsets.bottom = 2.0;
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -92,31 +92,31 @@
   [(UILabel *)moreButtonLabel setHidden:1];
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v21 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v21 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     titleLabel = self->_titleLabel;
-    v7 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)titleLabel setTextColor:v7];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v8];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
 
     subtitleLabel = self->_subtitleLabel;
-    v10 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v10)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)subtitleLabel setTextColor:v10];
+      [(UILabel *)subtitleLabel setTextColor:secondaryTextColor2];
     }
 
     else
@@ -126,60 +126,60 @@
     }
 
     ratingLabel = self->_ratingLabel;
-    v13 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v13)
+    secondaryTextColor3 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor3)
     {
-      [(UILabel *)ratingLabel setTextColor:v13];
+      [(UILabel *)ratingLabel setTextColor:secondaryTextColor3];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)ratingLabel setTextColor:v14];
+      blackColor2 = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)ratingLabel setTextColor:blackColor2];
     }
 
     moreButtonLabel = self->_moreButtonLabel;
-    v16 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v16)
+    secondaryTextColor4 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor4)
     {
-      [(UILabel *)moreButtonLabel setTextColor:v16];
+      [(UILabel *)moreButtonLabel setTextColor:secondaryTextColor4];
     }
 
     else
     {
-      v17 = [(SKUITextBoxView *)self tintColor];
-      [(UILabel *)moreButtonLabel setTextColor:v17];
+      tintColor = [(SKUITextBoxView *)self tintColor];
+      [(UILabel *)moreButtonLabel setTextColor:tintColor];
     }
 
     v18 = self->_moreButtonLabel;
-    v19 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v19)
+    secondaryTextColor5 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor5)
     {
-      [(UILabel *)v18 setHighlightedTextColor:v19];
+      [(UILabel *)v18 setHighlightedTextColor:secondaryTextColor5];
     }
 
     else
     {
-      v20 = [MEMORY[0x277D75348] grayColor];
-      [(UILabel *)v18 setHighlightedTextColor:v20];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      [(UILabel *)v18 setHighlightedTextColor:grayColor];
     }
 
     [(SKUITextBoxView *)self setNeedsDisplay];
-    v5 = v21;
+    schemeCopy = v21;
   }
 }
 
-- (void)setFixedWidthTextFrame:(__CTFrame *)a3
+- (void)setFixedWidthTextFrame:(__CTFrame *)frame
 {
   textFrame = self->_textFrame;
-  if (textFrame != a3)
+  if (textFrame != frame)
   {
     if (textFrame)
     {
       CFRelease(textFrame);
     }
 
-    self->_textFrame = a3;
+    self->_textFrame = frame;
     underlyingText = self->_underlyingText;
     self->_underlyingText = 0;
 
@@ -195,20 +195,20 @@
   }
 }
 
-- (void)setFixedWidthTitleTextFrame:(__CTFrame *)a3
+- (void)setFixedWidthTitleTextFrame:(__CTFrame *)frame
 {
   titleTextFrame = self->_titleTextFrame;
-  if (titleTextFrame != a3)
+  if (titleTextFrame != frame)
   {
     if (titleTextFrame)
     {
       CFRelease(titleTextFrame);
     }
 
-    self->_titleTextFrame = a3;
-    if (a3)
+    self->_titleTextFrame = frame;
+    if (frame)
     {
-      CFRetain(a3);
+      CFRetain(frame);
       [(UILabel *)self->_titleLabel removeFromSuperview];
       titleLabel = self->_titleLabel;
       self->_titleLabel = 0;
@@ -218,33 +218,33 @@
   }
 }
 
-- (void)setMoreButtonTitle:(id)a3
+- (void)setMoreButtonTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(SKUITextBoxView *)self moreButtonTitle];
-  if (v4 != v6 && ([v4 isEqualToString:v6] & 1) == 0)
+  titleCopy = title;
+  moreButtonTitle = [(SKUITextBoxView *)self moreButtonTitle];
+  if (moreButtonTitle != titleCopy && ([moreButtonTitle isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [(SKUITextBoxView *)self _moreButtonLabel];
-    [v5 setText:v6];
-    [v5 sizeToFit];
+    _moreButtonLabel = [(SKUITextBoxView *)self _moreButtonLabel];
+    [_moreButtonLabel setText:titleCopy];
+    [_moreButtonLabel sizeToFit];
   }
 }
 
-- (void)setNumberOfVisibleLines:(int64_t)a3
+- (void)setNumberOfVisibleLines:(int64_t)lines
 {
-  if (self->_numberOfVisibleLines != a3)
+  if (self->_numberOfVisibleLines != lines)
   {
-    self->_numberOfVisibleLines = a3;
+    self->_numberOfVisibleLines = lines;
     [(SKUITextBoxView *)self setNeedsDisplay];
   }
 }
 
-- (void)setRating:(double)a3
+- (void)setRating:(double)rating
 {
-  if (self->_rating != a3)
+  if (self->_rating != rating)
   {
     ratingImageView = self->_ratingImageView;
-    if (a3 == 0.0)
+    if (rating == 0.0)
     {
       [(UIImageView *)ratingImageView removeFromSuperview];
       v8 = self->_ratingImageView;
@@ -264,7 +264,7 @@
 
       v8 = [SKUIRatingStarsCache cacheWithProperties:1];
       v9 = self->_ratingImageView;
-      v10 = [v8 ratingStarsImageForRating:a3];
+      v10 = [v8 ratingStarsImageForRating:rating];
       [(UIImageView *)v9 setImage:v10];
 
       [(UIImageView *)self->_ratingImageView sizeToFit];
@@ -273,17 +273,17 @@
     [(SKUITextBoxView *)self setNeedsLayout];
   }
 
-  self->_rating = a3;
+  self->_rating = rating;
 }
 
-- (void)setRatingText:(id)a3
+- (void)setRatingText:(id)text
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_ratingLabel text];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  textCopy = text;
+  text = [(UILabel *)self->_ratingLabel text];
+  if (text != textCopy && ([text isEqualToString:textCopy] & 1) == 0)
   {
     ratingLabel = self->_ratingLabel;
-    if (v16)
+    if (textCopy)
     {
       if (!ratingLabel)
       {
@@ -292,18 +292,18 @@
         self->_ratingLabel = v6;
 
         v8 = self->_ratingLabel;
-        v9 = [(SKUITextBoxView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUITextBoxView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_ratingLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_ratingLabel;
-        v13 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v13)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v12 setTextColor:v13];
+          [(UILabel *)v12 setTextColor:primaryTextColor];
         }
 
         else
@@ -330,14 +330,14 @@
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel text];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
+  if (text != subtitleCopy && ([text isEqualToString:subtitleCopy] & 1) == 0)
   {
     subtitleLabel = self->_subtitleLabel;
-    if (v16)
+    if (subtitleCopy)
     {
       if (!subtitleLabel)
       {
@@ -346,18 +346,18 @@
         self->_subtitleLabel = v6;
 
         v8 = self->_subtitleLabel;
-        v9 = [(SKUITextBoxView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUITextBoxView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_subtitleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_subtitleLabel;
-        v13 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v13)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v12 setTextColor:v13];
+          [(UILabel *)v12 setTextColor:secondaryTextColor];
         }
 
         else
@@ -385,11 +385,11 @@
   }
 }
 
-- (void)setTextFrameWithText:(id)a3
+- (void)setTextFrameWithText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_underlyingText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_underlyingText != textCopy)
   {
     textFrame = self->_textFrame;
     v9 = v5;
@@ -404,27 +404,27 @@
     underlyingText = self->_underlyingText;
     self->_underlyingText = v7;
 
-    v4 = [(SKUITextBoxView *)self setNeedsDisplay];
+    textCopy = [(SKUITextBoxView *)self setNeedsDisplay];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](textCopy, v5);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v20 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v20 && ([v4 isEqualToString:v20] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = v20;
-    if (v20)
+    v5 = titleCopy;
+    if (titleCopy)
     {
       titleTextFrame = self->_titleTextFrame;
       if (titleTextFrame)
       {
         CFRelease(titleTextFrame);
-        v5 = v20;
+        v5 = titleCopy;
         self->_titleTextFrame = 0;
       }
 
@@ -436,33 +436,33 @@
         self->_titleLabel = v8;
 
         v10 = self->_titleLabel;
-        v11 = [(SKUITextBoxView *)self backgroundColor];
-        [(UILabel *)v10 setBackgroundColor:v11];
+        backgroundColor = [(SKUITextBoxView *)self backgroundColor];
+        [(UILabel *)v10 setBackgroundColor:backgroundColor];
 
         v12 = self->_titleLabel;
         v13 = MEMORY[0x277D74300];
-        v14 = [MEMORY[0x277D75418] currentDevice];
-        [v14 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        [currentDevice userInterfaceIdiom];
 
         v15 = [v13 systemFontOfSize:17.0];
         [(UILabel *)v12 setFont:v15];
 
         v16 = self->_titleLabel;
-        v17 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v17)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v16 setTextColor:v17];
+          [(UILabel *)v16 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v19 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v16 setTextColor:v19];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v16 setTextColor:blackColor];
         }
 
         [(SKUITextBoxView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
-        v5 = v20;
+        v5 = titleCopy;
       }
 
       [(UILabel *)titleLabel setText:v5];
@@ -475,32 +475,32 @@
       self->_titleLabel = 0;
     }
 
-    self->_titleTextIsNaturallyRTL = [v20 _isNaturallyRTL];
+    self->_titleTextIsNaturallyRTL = [titleCopy _isNaturallyRTL];
     [(SKUITextBoxView *)self setNeedsLayout];
   }
 }
 
-- (void)setTruncationStyle:(int64_t)a3
+- (void)setTruncationStyle:(int64_t)style
 {
-  if (self->_truncationStyle != a3)
+  if (self->_truncationStyle != style)
   {
-    self->_truncationStyle = a3;
-    [(UILabel *)self->_moreButtonLabel setHidden:a3 == 1];
+    self->_truncationStyle = style;
+    [(UILabel *)self->_moreButtonLabel setHidden:style == 1];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v98 = *MEMORY[0x277D85DE8];
-  [(SKUITextBoxView *)self bounds:a3.origin.x];
+  [(SKUITextBoxView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v95 = v9;
   v96 = v8;
   if (self->_titleLabel)
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     height = 22.0;
   }
@@ -529,17 +529,17 @@
     *&v97.c = v18;
     *&v97.tx = v13[2];
     CGContextSetTextMatrix(CurrentContext, &v97);
-    v19 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    v20 = v19;
-    if (v19)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    v20 = secondaryTextColor;
+    if (secondaryTextColor)
     {
-      [v19 set];
+      [secondaryTextColor set];
     }
 
     else
     {
-      v21 = [MEMORY[0x277D75348] blackColor];
-      [v21 set];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [blackColor set];
     }
 
     Path = CTFrameGetPath(self->_titleTextFrame);
@@ -580,14 +580,14 @@
     CGContextRestoreGState(CurrentContext);
   }
 
-  v28 = [(SKUITextBoxView *)self _textFrame];
-  if (!v28)
+  _textFrame = [(SKUITextBoxView *)self _textFrame];
+  if (!_textFrame)
   {
     return;
   }
 
-  v29 = v28;
-  v30 = CTFrameGetLines(v28);
+  v29 = _textFrame;
+  v30 = CTFrameGetLines(_textFrame);
   v31 = CFArrayGetCount(v30);
   v32 = v31;
   v88[1] = v88;
@@ -626,11 +626,11 @@
   *&v97.c = v38;
   *&v97.tx = v13[2];
   CGContextSetTextMatrix(v37, &v97);
-  v39 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-  v40 = v39;
-  if (v39)
+  primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+  v40 = primaryTextColor;
+  if (primaryTextColor)
   {
-    [v39 set];
+    [primaryTextColor set];
   }
 
   else
@@ -703,8 +703,8 @@
   if (v46 > 0.00000011920929)
   {
 LABEL_38:
-    v49 = [MEMORY[0x277D75418] currentDevice];
-    [v49 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice2 userInterfaceIdiom];
 
     bottom = v46 + 1.0 + 5.0;
     goto LABEL_39;
@@ -780,16 +780,16 @@ LABEL_63:
     }
 
     v65 = v96 - p_contentInsets->left - p_contentInsets->right;
-    v66 = [(SKUITextBoxView *)self _moreButtonLabel];
-    [v66 frame];
+    _moreButtonLabel = [(SKUITextBoxView *)self _moreButtonLabel];
+    [_moreButtonLabel frame];
     v68 = v67;
     v70 = v69;
     v108 = CTLineGetBoundsWithOptions(self->_truncationToken, 0x20uLL);
     v71 = v108.size.width;
     v72 = v65 - v108.size.width;
-    v73 = [v66 isHidden];
+    isHidden = [_moreButtonLabel isHidden];
     v74 = v72 - (v68 + 1.0);
-    if (v73)
+    if (isHidden)
     {
       v74 = v72;
     }
@@ -810,14 +810,14 @@ LABEL_58:
         v78 = ceilf(v77);
         CGContextSetTextPosition(v37, v78, v62);
         CTLineDraw(self->_truncationToken, v37);
-        if (v66)
+        if (_moreButtonLabel)
         {
           v79 = v71 + v78 + 1.0;
           v80 = ceilf(v79);
           v81 = fabs(v62) - v70;
           v82 = floorf(v81);
-          v83 = [MEMORY[0x277D759A0] mainScreen];
-          [v83 scale];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen scale];
           v85 = v84 == 1.0;
           v86 = 3.5;
           if (v85)
@@ -828,7 +828,7 @@ LABEL_58:
           v87 = (v82 + v86);
 
           v52 = v92;
-          [v66 setFrame:{v80, v87, v68, v70}];
+          [_moreButtonLabel setFrame:{v80, v87, v68, v70}];
         }
 
         v5 = v91;
@@ -896,8 +896,8 @@ LABEL_64:
   if (titleLabel)
   {
     [(UILabel *)titleLabel frame];
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    [v20 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     v19 = 22.0;
   }
@@ -934,8 +934,8 @@ LABEL_64:
   {
     if (v11)
     {
-      v27 = [MEMORY[0x277D75418] currentDevice];
-      [v27 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice2 userInterfaceIdiom];
 
       bottom = 1.0;
     }
@@ -1033,21 +1033,21 @@ LABEL_64:
     [(UILabel *)v43 setFrame:?];
   }
 
-  v46 = [(SKUITextBoxView *)self _textFrame];
-  if (!v46 || self->_truncationStyle == 1)
+  _textFrame = [(SKUITextBoxView *)self _textFrame];
+  if (!_textFrame || self->_truncationStyle == 1)
   {
-    v47 = [(SKUITextBoxView *)self _moreButtonLabel];
-    v56 = v47;
+    _moreButtonLabel = [(SKUITextBoxView *)self _moreButtonLabel];
+    v56 = _moreButtonLabel;
 LABEL_43:
     v48 = 1;
     goto LABEL_44;
   }
 
-  Lines = CTFrameGetLines(v46);
+  Lines = CTFrameGetLines(_textFrame);
   Count = CFArrayGetCount(Lines);
   numberOfVisibleLines = self->_numberOfVisibleLines;
-  v47 = [(SKUITextBoxView *)self _moreButtonLabel];
-  v56 = v47;
+  _moreButtonLabel = [(SKUITextBoxView *)self _moreButtonLabel];
+  v56 = _moreButtonLabel;
   if (!numberOfVisibleLines || Count <= numberOfVisibleLines)
   {
     goto LABEL_43;
@@ -1055,28 +1055,28 @@ LABEL_43:
 
   v48 = 0;
 LABEL_44:
-  [v47 setHidden:v48];
+  [_moreButtonLabel setHidden:v48];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   moreButtonLabel = self->_moreButtonLabel;
-  v5 = a3;
-  [(UILabel *)moreButtonLabel setBackgroundColor:v5];
-  [(UILabel *)self->_subtitleLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
-  [(UILabel *)self->_ratingLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)moreButtonLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_subtitleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_ratingLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUITextBoxView;
-  [(SKUITextBoxView *)&v6 setBackgroundColor:v5];
+  [(SKUITextBoxView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_underlyingText)
   {
     if (self->_textFrame)
@@ -1096,16 +1096,16 @@ LABEL_44:
   [(SKUITextBoxView *)&v9 setFrame:x, y, width, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   p_contentInsets = &self->_contentInsets;
   top = self->_contentInsets.top;
   bottom = self->_contentInsets.bottom;
   if (self->_titleLabel)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice userInterfaceIdiom];
 
     v9 = 22.0;
   }
@@ -1177,29 +1177,29 @@ LABEL_44:
 
     [(UILabel *)self->_moreButtonLabel setHidden:self->_truncationStyle == 1];
     v8 = self->_moreButtonLabel;
-    v9 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v9)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)v8 setTextColor:v9];
+      [(UILabel *)v8 setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v10 = [(SKUITextBoxView *)self tintColor];
-      [(UILabel *)v8 setTextColor:v10];
+      tintColor = [(SKUITextBoxView *)self tintColor];
+      [(UILabel *)v8 setTextColor:tintColor];
     }
 
     v11 = self->_moreButtonLabel;
-    v12 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v12)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)v11 setHighlightedTextColor:v12];
+      [(UILabel *)v11 setHighlightedTextColor:secondaryTextColor2];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75348] grayColor];
-      [(UILabel *)v11 setHighlightedTextColor:v13];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      [(UILabel *)v11 setHighlightedTextColor:grayColor];
     }
 
     [(UILabel *)self->_moreButtonLabel setTextAlignment:2];
@@ -1251,12 +1251,12 @@ LABEL_44:
   return result;
 }
 
-- (CGSize)_textSizeToFitSize:(CGSize)a3
+- (CGSize)_textSizeToFitSize:(CGSize)size
 {
   if (self->_underlyingText)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     v5 = [SKUITextLayout newAttributedStringWithText:?];
     v6 = CTFramesetterCreateWithAttributedString(v5);
     v24.location = 0;

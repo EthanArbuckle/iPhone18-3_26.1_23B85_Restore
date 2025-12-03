@@ -1,22 +1,22 @@
 @interface AXLargeTextExplanationView
-- (AXLargeTextExplanationView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4;
+- (AXLargeTextExplanationView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
+- (void)layoutForWidth:(double)width inTableView:(id)view;
 - (void)layoutSubviews;
-- (void)refreshContentsWithSpecifier:(id)a3;
+- (void)refreshContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXLargeTextExplanationView
 
-- (AXLargeTextExplanationView)initWithSpecifier:(id)a3
+- (AXLargeTextExplanationView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = AXLargeTextExplanationView;
   v5 = [(AXLargeTextExplanationView *)&v18 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [v4 propertyForKey:@"BundleIdentifier"];
+    v6 = [specifierCopy propertyForKey:@"BundleIdentifier"];
     appID = v5->_appID;
     v5->_appID = v6;
 
@@ -28,8 +28,8 @@
     [(UILabel *)v5->_bodyExampleLabel setBackgroundColor:v10];
 
     v11 = +[PSListController appearance];
-    v12 = [v11 textColor];
-    [(UILabel *)v5->_bodyExampleLabel setTextColor:v12];
+    textColor = [v11 textColor];
+    [(UILabel *)v5->_bodyExampleLabel setTextColor:textColor];
 
     [(UILabel *)v5->_bodyExampleLabel setNumberOfLines:0];
     [(UILabel *)v5->_bodyExampleLabel setLineBreakMode:0];
@@ -47,9 +47,9 @@
   return v5;
 }
 
-- (void)refreshContentsWithSpecifier:(id)a3
+- (void)refreshContentsWithSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"BundleIdentifier"];
+  v4 = [specifier propertyForKey:@"BundleIdentifier"];
   appID = self->_appID;
   self->_appID = v4;
 
@@ -66,20 +66,20 @@
   [(AXLargeTextExplanationView *)&v6 layoutSubviews];
   [(AXLargeTextExplanationView *)self bounds];
   v4 = v3;
-  v5 = [(AXLargeTextExplanationView *)self superview];
-  [(AXLargeTextExplanationView *)self layoutForWidth:v5 inTableView:v4];
+  superview = [(AXLargeTextExplanationView *)self superview];
+  [(AXLargeTextExplanationView *)self layoutForWidth:superview inTableView:v4];
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
-  [(AXLargeTextExplanationView *)self layoutForWidth:a4 inTableView:a3];
+  [(AXLargeTextExplanationView *)self layoutForWidth:view inTableView:width];
   [(UILabel *)self->_bodyExampleLabel frame];
   return CGRectGetMaxY(v6) + 10.0;
 }
 
-- (void)layoutForWidth:(double)a3 inTableView:(id)a4
+- (void)layoutForWidth:(double)width inTableView:(id)view
 {
-  [a4 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -93,8 +93,8 @@
   v14 = v10 + (MinX - CGRectGetMinX(v21) + 25.0) * -2.0;
   if (v14 > 0.0)
   {
-    v15 = [(AXLargeTextExplanationView *)self categoryName];
-    v18 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v15];
+    categoryName = [(AXLargeTextExplanationView *)self categoryName];
+    v18 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:categoryName];
 
     v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v18];
     [(UILabel *)self->_bodyExampleLabel setFont:v16];

@@ -1,5 +1,5 @@
 @interface CDPDAnalyticsTransport
-+ (BOOL)isEventPrivacyApproved:(id)a3;
++ (BOOL)isEventPrivacyApproved:(id)approved;
 + (id)approvedRecoveryContactEventsForADPAndDNU;
 + (id)defaultTransport;
 + (id)getAllEventsForDataSanitization;
@@ -16,27 +16,27 @@
 + (id)getAllowedSecurityEvents;
 + (id)getAllowedStringsForInternalTelemetry;
 + (id)getAllowedStringsForTelemetry;
-+ (id)getApprovedEvents:(id)a3;
++ (id)getApprovedEvents:(id)events;
 + (id)getApprovedEventsForADPAndDNU;
 + (id)getApprovedEventsForAll;
-+ (id)transportForClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
-+ (id)transportForEvent:(id)a3;
++ (id)transportForClientType:(id)type clientBundleId:(id)id clientName:(id)name;
++ (id)transportForEvent:(id)event;
 + (void)flushCaches;
 + (void)flushTransportCache;
-- (BOOL)_isEventPrivacyApprovedIdentifiable:(id)a3;
-- (BOOL)shouldEnforcePrivacyComplianceForEvent:(id)a3;
-- (BOOL)shouldSanitizeEventForInternalReporting:(id)a3;
-- (CDPDAnalyticsTransport)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
-- (id)_sendEvent:(id)a3;
-- (void)_enforceIdentifiableDataPrivacyComplianceOnEvent:(id)a3 manager:(id)a4;
-- (void)_renewMissingDeviceSessionIDIfNeeded:(id)a3 manager:(id)a4 account:(id)a5;
-- (void)_replaceClientNameWithEvent:(id)a3;
-- (void)_updateEventWithDefaultMetadata:(id)a3;
-- (void)configureSessionForEvent:(id)a3 sendEventBlock:(id)a4 telemetryQueue:(id)a5;
-- (void)enforcePrivacyComplianceOnEvent:(id)a3 key:(id)a4 value:(id)a5;
-- (void)sanitizeEventForInternalReporting:(id)a3 key:(id)a4 value:(id)a5;
-- (void)santizeEventForPendingCFUType:(id)a3 value:(id)a4;
-- (void)sendEvent:(id)a3;
+- (BOOL)_isEventPrivacyApprovedIdentifiable:(id)identifiable;
+- (BOOL)shouldEnforcePrivacyComplianceForEvent:(id)event;
+- (BOOL)shouldSanitizeEventForInternalReporting:(id)reporting;
+- (CDPDAnalyticsTransport)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name;
+- (id)_sendEvent:(id)event;
+- (void)_enforceIdentifiableDataPrivacyComplianceOnEvent:(id)event manager:(id)manager;
+- (void)_renewMissingDeviceSessionIDIfNeeded:(id)needed manager:(id)manager account:(id)account;
+- (void)_replaceClientNameWithEvent:(id)event;
+- (void)_updateEventWithDefaultMetadata:(id)metadata;
+- (void)configureSessionForEvent:(id)event sendEventBlock:(id)block telemetryQueue:(id)queue;
+- (void)enforcePrivacyComplianceOnEvent:(id)event key:(id)key value:(id)value;
+- (void)sanitizeEventForInternalReporting:(id)reporting key:(id)key value:(id)value;
+- (void)santizeEventForPendingCFUType:(id)type value:(id)value;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation CDPDAnalyticsTransport
@@ -53,22 +53,22 @@
   return v3;
 }
 
-- (CDPDAnalyticsTransport)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
+- (CDPDAnalyticsTransport)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = CDPDAnalyticsTransport;
   v12 = [(CDPDAnalyticsTransport *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientType, a3);
-    objc_storeStrong(&v13->_clientBundleId, a4);
-    objc_storeStrong(&v13->_clientName, a5);
-    if (!v10)
+    objc_storeStrong(&v12->_clientType, type);
+    objc_storeStrong(&v13->_clientBundleId, id);
+    objc_storeStrong(&v13->_clientName, name);
+    if (!idCopy)
     {
       v14 = _CDPLogSystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -80,7 +80,7 @@
       v13->_clientBundleId = @"unknown";
     }
 
-    v16 = [MEMORY[0x277CE44F8] analyticsTransportRTCWithClientType:v9 clientBundleId:v10 clientName:v11];
+    v16 = [MEMORY[0x277CE44F8] analyticsTransportRTCWithClientType:typeCopy clientBundleId:idCopy clientName:nameCopy];
     transport = v13->_transport;
     v13->_transport = v16;
 
@@ -91,11 +91,11 @@
       {
         v27 = v13->_clientBundleId;
         *buf = 138412802;
-        v30 = v9;
+        v30 = typeCopy;
         v31 = 2112;
         v32 = v27;
         v33 = 2112;
-        v34 = v11;
+        v34 = nameCopy;
         _os_log_fault_impl(&dword_24510B000, v18, OS_LOG_TYPE_FAULT, "Underlying transport is nil. clientType = %@, clientBundleId = %@, clientName = %@", buf, 0x20u);
       }
     }
@@ -120,45 +120,45 @@
 + (id)defaultTransport
 {
   v3 = *MEMORY[0x277CFD928];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [a1 transportForClientType:v3 clientBundleId:v5 clientName:*MEMORY[0x277CFD920]];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [self transportForClientType:v3 clientBundleId:bundleIdentifier clientName:*MEMORY[0x277CFD920]];
 
   return v6;
 }
 
-+ (id)transportForEvent:(id)a3
++ (id)transportForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = _CDPLogSystemAnalytics();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [CDPDAnalyticsTransport transportForEvent:v3];
+    [CDPDAnalyticsTransport transportForEvent:eventCopy];
   }
 
-  v5 = [v3 clientName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CFD920]];
+  clientName = [eventCopy clientName];
+  v6 = [clientName isEqualToString:*MEMORY[0x277CFD920]];
 
   if (v6)
   {
-    v7 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE4588]];
+    v7 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277CE4588]];
 
     if (v7)
     {
-      [v3 setClientName:*MEMORY[0x277CFD918]];
+      [eventCopy setClientName:*MEMORY[0x277CFD918]];
       v8 = _CDPLogSystemAnalytics();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [CDPDAnalyticsTransport transportForEvent:v3];
+        [CDPDAnalyticsTransport transportForEvent:eventCopy];
       }
     }
   }
 
-  v9 = [v3 clientType];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v3 clientName];
-  v13 = [CDPDAnalyticsTransport transportForClientType:v9 clientBundleId:v11 clientName:v12];
+  clientType = [eventCopy clientType];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  clientName2 = [eventCopy clientName];
+  v13 = [CDPDAnalyticsTransport transportForClientType:clientType clientBundleId:bundleIdentifier clientName:clientName2];
 
   return v13;
 }
@@ -221,7 +221,7 @@ uint64_t __50__CDPDAnalyticsTransport_getAllowedSecurityEvents__block_invoke()
   block[1] = 3221225472;
   block[2] = __45__CDPDAnalyticsTransport_getAllowedDNUEvents__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getAllowedDNUEvents_onceToken != -1)
   {
     dispatch_once(&getAllowedDNUEvents_onceToken, block);
@@ -259,7 +259,7 @@ void __45__CDPDAnalyticsTransport_getAllowedDNUEvents__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__CDPDAnalyticsTransport_getAllowedADPEvents__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getAllowedADPEvents_onceToken != -1)
   {
     dispatch_once(&getAllowedADPEvents_onceToken, block);
@@ -322,7 +322,7 @@ uint64_t __55__CDPDAnalyticsTransport_getAllowedAccountAccessEvents__block_invok
   block[1] = 3221225472;
   block[2] = __55__CDPDAnalyticsTransport_getApprovedEventsForADPAndDNU__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getApprovedEventsForADPAndDNU_onceToken != -1)
   {
     dispatch_once(&getApprovedEventsForADPAndDNU_onceToken, block);
@@ -539,7 +539,7 @@ void __55__CDPDAnalyticsTransport_getApprovedEventsForADPAndDNU__block_invoke(ui
   block[1] = 3221225472;
   block[2] = __49__CDPDAnalyticsTransport_getApprovedEventsForAll__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getApprovedEventsForAll_onceToken != -1)
   {
     dispatch_once(&getApprovedEventsForAll_onceToken, block);
@@ -569,29 +569,29 @@ void __49__CDPDAnalyticsTransport_getApprovedEventsForAll__block_invoke(uint64_t
   [v8 unionSet:v9];
 }
 
-+ (id)getApprovedEvents:(id)a3
++ (id)getApprovedEvents:(id)events
 {
-  if (a3)
+  if (events)
   {
-    v4 = [a1 getApprovedEventsForAll];
+    getApprovedEventsForAll = [self getApprovedEventsForAll];
   }
 
   else
   {
-    v4 = 0;
+    getApprovedEventsForAll = 0;
   }
 
-  return v4;
+  return getApprovedEventsForAll;
 }
 
-+ (BOOL)isEventPrivacyApproved:(id)a3
++ (BOOL)isEventPrivacyApproved:(id)approved
 {
-  v3 = a3;
-  v4 = [CDPDAnalyticsTransport getApprovedEvents:v3];
-  v5 = [v3 eventName];
+  approvedCopy = approved;
+  v4 = [CDPDAnalyticsTransport getApprovedEvents:approvedCopy];
+  eventName = [approvedCopy eventName];
 
-  LOBYTE(v3) = [v4 containsObject:v5];
-  return v3;
+  LOBYTE(approvedCopy) = [v4 containsObject:eventName];
+  return approvedCopy;
 }
 
 + (id)getAllowedLocalSecretType
@@ -619,7 +619,7 @@ uint64_t __51__CDPDAnalyticsTransport_getAllowedLocalSecretType__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__CDPDAnalyticsTransport_getAllowedEscapeOffer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getAllowedEscapeOffer_onceToken != -1)
   {
     dispatch_once(&getAllowedEscapeOffer_onceToken, block);
@@ -817,14 +817,14 @@ void __63__CDPDAnalyticsTransport_getAllowedStringsForInternalTelemetry__block_i
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)transportForClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
++ (id)transportForClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
   if (transportCacheToken == -1)
   {
-    if (!v8)
+    if (!typeCopy)
     {
       goto LABEL_7;
     }
@@ -833,25 +833,25 @@ void __63__CDPDAnalyticsTransport_getAllowedStringsForInternalTelemetry__block_i
   else
   {
     +[CDPDAnalyticsTransport transportForClientType:clientBundleId:clientName:];
-    if (!v8)
+    if (!typeCopy)
     {
       goto LABEL_7;
     }
   }
 
-  if (v9 && v10)
+  if (idCopy && nameCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", v10, v8, v9];
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", nameCopy, typeCopy, idCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName___block_invoke_2;
     v15[3] = &unk_278E249A8;
-    v16 = v11;
-    v20 = a1;
-    v17 = v8;
-    v18 = v9;
-    v19 = v10;
-    v12 = v11;
+    v16 = idCopy;
+    selfCopy = self;
+    v17 = typeCopy;
+    v18 = idCopy;
+    v19 = nameCopy;
+    v12 = idCopy;
     os_unfair_lock_lock(&cacheLock);
     v13 = __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName___block_invoke_2(v15);
     os_unfair_lock_unlock(&cacheLock);
@@ -904,57 +904,57 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
   return v4;
 }
 
-- (BOOL)_isEventPrivacyApprovedIdentifiable:(id)a3
+- (BOOL)_isEventPrivacyApprovedIdentifiable:(id)identifiable
 {
-  v3 = a3;
+  identifiableCopy = identifiable;
   v4 = +[CDPDAnalyticsTransport getAllowedADPEvents];
   v5 = +[CDPDAnalyticsTransport getAllowedAccountAccessEvents];
-  v6 = [v3 eventName];
-  if ([v4 containsObject:v6])
+  eventName = [identifiableCopy eventName];
+  if ([v4 containsObject:eventName])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v3 eventName];
-    v7 = [v5 containsObject:v8];
+    eventName2 = [identifiableCopy eventName];
+    v7 = [v5 containsObject:eventName2];
   }
 
   return v7;
 }
 
-- (void)_renewMissingDeviceSessionIDIfNeeded:(id)a3 manager:(id)a4 account:(id)a5
+- (void)_renewMissingDeviceSessionIDIfNeeded:(id)needed manager:(id)manager account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  neededCopy = needed;
+  managerCopy = manager;
+  accountCopy = account;
   v10 = *MEMORY[0x277CE4588];
-  v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE4588]];
+  v11 = [neededCopy objectForKeyedSubscript:*MEMORY[0x277CE4588]];
   if (v11 == *MEMORY[0x277CF00F0] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12 = _CDPLogSystemAnalytics();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDAnalyticsTransport _renewMissingDeviceSessionIDIfNeeded:v7 manager:? account:?];
+      [CDPDAnalyticsTransport _renewMissingDeviceSessionIDIfNeeded:neededCopy manager:? account:?];
     }
 
-    v13 = [v8 renewDeviceSessionIDForAccount:v9];
-    [v7 setObject:v13 forKeyedSubscript:v10];
+    v13 = [managerCopy renewDeviceSessionIDForAccount:accountCopy];
+    [neededCopy setObject:v13 forKeyedSubscript:v10];
   }
 }
 
-- (void)_enforceIdentifiableDataPrivacyComplianceOnEvent:(id)a3 manager:(id)a4
+- (void)_enforceIdentifiableDataPrivacyComplianceOnEvent:(id)event manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  eventCopy = event;
+  managerCopy = manager;
+  if (eventCopy)
   {
     v8 = *MEMORY[0x277CE4588];
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CE4588]];
-    v10 = [(CDPDAnalyticsTransport *)self _isEventPrivacyApprovedIdentifiable:v6];
-    v11 = [v6 altDSID];
-    v12 = [v7 authKitAccountWithAltDSID:v11];
+    v9 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277CE4588]];
+    v10 = [(CDPDAnalyticsTransport *)self _isEventPrivacyApprovedIdentifiable:eventCopy];
+    altDSID = [eventCopy altDSID];
+    v12 = [managerCopy authKitAccountWithAltDSID:altDSID];
     if (!v10 || v9)
     {
       if (v9)
@@ -972,10 +972,10 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
         v16 = _CDPLogSystemAnalytics();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          [CDPDAnalyticsTransport _enforceIdentifiableDataPrivacyComplianceOnEvent:v6 manager:?];
+          [CDPDAnalyticsTransport _enforceIdentifiableDataPrivacyComplianceOnEvent:eventCopy manager:?];
         }
 
-        [v6 setObject:0 forKeyedSubscript:v8];
+        [eventCopy setObject:0 forKeyedSubscript:v8];
       }
     }
 
@@ -984,24 +984,24 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
       v13 = _CDPLogSystemAnalytics();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [CDPDAnalyticsTransport _enforceIdentifiableDataPrivacyComplianceOnEvent:v6 manager:?];
+        [CDPDAnalyticsTransport _enforceIdentifiableDataPrivacyComplianceOnEvent:eventCopy manager:?];
       }
 
-      v14 = [v7 telemetryDeviceSessionIDForAccount:v12];
-      [v6 setObject:v14 forKeyedSubscript:v8];
+      v14 = [managerCopy telemetryDeviceSessionIDForAccount:v12];
+      [eventCopy setObject:v14 forKeyedSubscript:v8];
     }
 
-    [(CDPDAnalyticsTransport *)self _renewMissingDeviceSessionIDIfNeeded:v6 manager:v7 account:v12];
+    [(CDPDAnalyticsTransport *)self _renewMissingDeviceSessionIDIfNeeded:eventCopy manager:managerCopy account:v12];
   }
 }
 
-- (void)_replaceClientNameWithEvent:(id)a3
+- (void)_replaceClientNameWithEvent:(id)event
 {
-  v3 = a3;
-  if (v3)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v6 = v3;
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE4588]];
+    v6 = eventCopy;
+    v4 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277CE4588]];
 
     v5 = MEMORY[0x277CFD920];
     if (v4)
@@ -1010,29 +1010,29 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
     }
 
     [v6 setClientName:*v5];
-    v3 = v6;
+    eventCopy = v6;
   }
 }
 
-- (void)enforcePrivacyComplianceOnEvent:(id)a3 key:(id)a4 value:(id)a5
+- (void)enforcePrivacyComplianceOnEvent:(id)event key:(id)key value:(id)value
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CF0130] sharedInstance];
-  [(CDPDAnalyticsTransport *)self _enforceIdentifiableDataPrivacyComplianceOnEvent:v8 manager:v11];
-  [(CDPDAnalyticsTransport *)self _replaceClientNameWithEvent:v8];
-  v12 = [v8 objectForKeyedSubscript:v9];
+  eventCopy = event;
+  keyCopy = key;
+  valueCopy = value;
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  [(CDPDAnalyticsTransport *)self _enforceIdentifiableDataPrivacyComplianceOnEvent:eventCopy manager:mEMORY[0x277CF0130]];
+  [(CDPDAnalyticsTransport *)self _replaceClientNameWithEvent:eventCopy];
+  v12 = [eventCopy objectForKeyedSubscript:keyCopy];
 
   if (v12)
   {
-    if ([v9 isEqualToString:*MEMORY[0x277CFD6C8]])
+    if ([keyCopy isEqualToString:*MEMORY[0x277CFD6C8]])
     {
-      v30 = v11;
+      v30 = mEMORY[0x277CF0130];
       v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v32 = v9;
-      v14 = [v8 objectForKeyedSubscript:v9];
+      v32 = keyCopy;
+      v14 = [eventCopy objectForKeyedSubscript:keyCopy];
       v15 = [v14 componentsSeparatedByString:{@", "}];
 
       v35 = 0u;
@@ -1046,7 +1046,7 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
         v18 = v17;
         v19 = *v34;
         v20 = *MEMORY[0x277CFDA50];
-        v31 = v8;
+        v31 = eventCopy;
         do
         {
           for (i = 0; i != v18; ++i)
@@ -1057,7 +1057,7 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
             }
 
             v22 = *(*(&v33 + 1) + 8 * i);
-            if ([v10 containsObject:v22])
+            if ([valueCopy containsObject:v22])
             {
               [v13 addObject:v22];
             }
@@ -1068,16 +1068,16 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
               v23 = _CDPLogSystem();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
               {
-                v24 = [v8 eventName];
+                eventName = [eventCopy eventName];
                 *buf = 138412802;
                 v38 = v22;
                 v39 = 2112;
-                v40 = v24;
+                v40 = eventName;
                 v41 = 2112;
                 v42 = v32;
                 _os_log_fault_impl(&dword_24510B000, v23, OS_LOG_TYPE_FAULT, "Received not approved data %@ for event %@ attribute %@", buf, 0x20u);
 
-                v8 = v31;
+                eventCopy = v31;
               }
             }
           }
@@ -1088,32 +1088,32 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
         while (v18);
       }
 
-      v25 = [v13 aaf_arrayAsCommaSeperatedString];
-      v9 = v32;
-      [v8 setObject:v25 forKeyedSubscript:v32];
+      aaf_arrayAsCommaSeperatedString = [v13 aaf_arrayAsCommaSeperatedString];
+      keyCopy = v32;
+      [eventCopy setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:v32];
 
-      v11 = v30;
+      mEMORY[0x277CF0130] = v30;
     }
 
-    else if ([v9 isEqualToString:*MEMORY[0x277CE45C8]])
+    else if ([keyCopy isEqualToString:*MEMORY[0x277CE45C8]])
     {
-      [(CDPDAnalyticsTransport *)self santizeEventForPendingCFUType:v8 value:v10];
+      [(CDPDAnalyticsTransport *)self santizeEventForPendingCFUType:eventCopy value:valueCopy];
     }
 
     else
     {
-      v26 = [v8 objectForKeyedSubscript:v9];
-      v27 = [v10 containsObject:v26];
+      v26 = [eventCopy objectForKeyedSubscript:keyCopy];
+      v27 = [valueCopy containsObject:v26];
 
       if ((v27 & 1) == 0)
       {
         v28 = _CDPLogSystem();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
         {
-          [CDPDAnalyticsTransport enforcePrivacyComplianceOnEvent:v8 key:v9 value:v28];
+          [CDPDAnalyticsTransport enforcePrivacyComplianceOnEvent:eventCopy key:keyCopy value:v28];
         }
 
-        [v8 setObject:*MEMORY[0x277CFDA50] forKeyedSubscript:v9];
+        [eventCopy setObject:*MEMORY[0x277CFDA50] forKeyedSubscript:keyCopy];
       }
     }
   }
@@ -1121,9 +1121,9 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldEnforcePrivacyComplianceForEvent:(id)a3
+- (BOOL)shouldEnforcePrivacyComplianceForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if ([MEMORY[0x277CFD560] isInternalBuild])
   {
     v4 = 0;
@@ -1131,22 +1131,22 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
 
   else
   {
-    v5 = [v3 eventCategory];
-    v4 = [v5 isEqualToNumber:*MEMORY[0x277CFD930]];
+    eventCategory = [eventCopy eventCategory];
+    v4 = [eventCategory isEqualToNumber:*MEMORY[0x277CFD930]];
   }
 
   return v4;
 }
 
-- (void)santizeEventForPendingCFUType:(id)a3 value:(id)a4
+- (void)santizeEventForPendingCFUType:(id)type value:(id)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  valueCopy = value;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = *MEMORY[0x277CE45C8];
-  v20 = v5;
-  v9 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE45C8]];
+  v20 = typeCopy;
+  v9 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CE45C8]];
   v10 = [v9 componentsSeparatedByString:{@", "}];
 
   v23 = 0u;
@@ -1169,7 +1169,7 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        if ([v6 containsObject:v16])
+        if ([valueCopy containsObject:v16])
         {
           [v7 addObject:v16];
         }
@@ -1194,33 +1194,33 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
     while (v13);
   }
 
-  v18 = [v7 aaf_arrayAsCommaSeperatedString];
-  [v20 setObject:v18 forKeyedSubscript:v8];
+  aaf_arrayAsCommaSeperatedString = [v7 aaf_arrayAsCommaSeperatedString];
+  [v20 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:v8];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sanitizeEventForInternalReporting:(id)a3 key:(id)a4 value:(id)a5
+- (void)sanitizeEventForInternalReporting:(id)reporting key:(id)key value:(id)value
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v11 objectForKeyedSubscript:v8];
+  reportingCopy = reporting;
+  keyCopy = key;
+  valueCopy = value;
+  v10 = [reportingCopy objectForKeyedSubscript:keyCopy];
 
-  if (v10 && [v8 isEqualToString:*MEMORY[0x277CE45C8]])
+  if (v10 && [keyCopy isEqualToString:*MEMORY[0x277CE45C8]])
   {
-    [(CDPDAnalyticsTransport *)self santizeEventForPendingCFUType:v11 value:v9];
+    [(CDPDAnalyticsTransport *)self santizeEventForPendingCFUType:reportingCopy value:valueCopy];
   }
 }
 
-- (BOOL)shouldSanitizeEventForInternalReporting:(id)a3
+- (BOOL)shouldSanitizeEventForInternalReporting:(id)reporting
 {
-  v3 = a3;
+  reportingCopy = reporting;
   if ([MEMORY[0x277CFD560] isInternalBuild])
   {
     v4 = +[CDPDAnalyticsTransport getAllEventsForDataSanitization];
-    v5 = [v3 eventName];
-    v6 = [v4 containsObject:v5];
+    eventName = [reportingCopy eventName];
+    v6 = [v4 containsObject:eventName];
   }
 
   else
@@ -1231,19 +1231,19 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
   return v6;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (sendEvent__onceToken != -1)
   {
     [CDPDAnalyticsTransport sendEvent:];
   }
 
-  [(CDPDAnalyticsTransport *)self _updateEventWithDefaultMetadata:v4];
+  [(CDPDAnalyticsTransport *)self _updateEventWithDefaultMetadata:eventCopy];
   v5 = _CDPLogSystemAnalytics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [CDPDAnalyticsTransport sendEvent:v4];
+    [CDPDAnalyticsTransport sendEvent:eventCopy];
   }
 
   v6 = os_transaction_create();
@@ -1255,8 +1255,8 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
   v7 = v6;
   v17 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(CDPDAnalyticsTransport *)self transport];
-  v10 = [v9 conformsToProtocol:&unk_28583B6D0];
+  transport = [(CDPDAnalyticsTransport *)self transport];
+  v10 = [transport conformsToProtocol:&unk_28583B6D0];
 
   if (v10)
   {
@@ -1266,7 +1266,7 @@ id __75__CDPDAnalyticsTransport_transportForClientType_clientBundleId_clientName
     block[2] = __36__CDPDAnalyticsTransport_sendEvent___block_invoke_2178;
     block[3] = &unk_278E24A20;
     block[4] = self;
-    v14 = v4;
+    v14 = eventCopy;
     v15 = v8;
     dispatch_async(v11, block);
   }
@@ -1368,31 +1368,31 @@ void __36__CDPDAnalyticsTransport_sendEvent___block_invoke_2178(uint64_t a1)
   }
 }
 
-- (void)configureSessionForEvent:(id)a3 sendEventBlock:(id)a4 telemetryQueue:(id)a5
+- (void)configureSessionForEvent:(id)event sendEventBlock:(id)block telemetryQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  blockCopy = block;
+  queueCopy = queue;
   v11 = _CDPLogSystemAnalytics();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [CDPDAnalyticsTransport configureSessionForEvent:sendEventBlock:telemetryQueue:];
   }
 
-  v12 = [(CDPDAnalyticsTransport *)self transport];
-  [v12 setSessionState:2];
+  transport = [(CDPDAnalyticsTransport *)self transport];
+  [transport setSessionState:2];
 
-  v13 = [(CDPDAnalyticsTransport *)self transport];
+  transport2 = [(CDPDAnalyticsTransport *)self transport];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_telemetryQueue___block_invoke;
   v19[3] = &unk_278E24A70;
-  v20 = v10;
-  v21 = self;
-  v22 = v9;
-  v14 = v9;
-  v15 = v10;
-  [v13 configureReportingSessionWithCompletion:v19];
+  v20 = queueCopy;
+  selfCopy = self;
+  v22 = blockCopy;
+  v14 = blockCopy;
+  v15 = queueCopy;
+  [transport2 configureReportingSessionWithCompletion:v19];
 
   v16 = _CDPLogSystemAnalytics();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1400,9 +1400,9 @@ void __36__CDPDAnalyticsTransport_sendEvent___block_invoke_2178(uint64_t a1)
     [CDPDAnalyticsTransport configureSessionForEvent:sendEventBlock:telemetryQueue:];
   }
 
-  v17 = [(CDPDAnalyticsTransport *)self transport];
-  v18 = [v17 eventQueue];
-  [v18 addObject:v8];
+  transport3 = [(CDPDAnalyticsTransport *)self transport];
+  eventQueue = [transport3 eventQueue];
+  [eventQueue addObject:eventCopy];
 }
 
 void __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_telemetryQueue___block_invoke(uint64_t a1)
@@ -1457,23 +1457,23 @@ uint64_t __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_te
   return +[CDPDAnalyticsTransport flushTransportCache];
 }
 
-- (void)_updateEventWithDefaultMetadata:(id)a3
+- (void)_updateEventWithDefaultMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = *MEMORY[0x277CFD8F8];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CFD8F8]];
+  v5 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277CFD8F8]];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCAE80] currentConnection];
-    v7 = v6;
-    if (v6)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v7 = currentConnection;
+    if (currentConnection)
     {
-      v8 = [v6 aaf_processName];
-      if (v8)
+      aaf_processName = [currentConnection aaf_processName];
+      if (aaf_processName)
       {
-        v9 = v8;
-        [v3 setObject:v8 forKeyedSubscript:v4];
+        v9 = aaf_processName;
+        [metadataCopy setObject:aaf_processName forKeyedSubscript:v4];
       }
     }
   }
@@ -1484,7 +1484,7 @@ uint64_t __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_te
   v30[3] = __Block_byref_object_copy__1;
   v30[4] = __Block_byref_object_dispose__1;
   v31 = 0;
-  v10 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE45B8]];
+  v10 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277CE45B8]];
   v11 = v10;
   if (v10)
   {
@@ -1494,7 +1494,7 @@ uint64_t __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_te
     v26 = &unk_278E24A98;
     v29 = v30;
     v27 = v10;
-    v28 = v3;
+    v28 = metadataCopy;
     v12 = v24;
     os_unfair_lock_lock(&cacheLock);
     v25(v12);
@@ -1505,28 +1505,28 @@ uint64_t __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_te
   if ([MEMORY[0x277CFD560] isInternalBuild])
   {
     v13 = *MEMORY[0x277CE45D8];
-    v14 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE45D8]];
+    v14 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277CE45D8]];
 
     if (!v14)
     {
       v15 = CFPreferencesCopyAppValue(@"TelemetryInternalSignature", @"com.apple.AAAFoundation");
       if (v15)
       {
-        [v3 setObject:v15 forKeyedSubscript:v13];
+        [metadataCopy setObject:v15 forKeyedSubscript:v13];
       }
 
       else
       {
-        v16 = [MEMORY[0x277CF0130] sharedInstance];
-        v17 = [MEMORY[0x277CF0130] sharedInstance];
-        v18 = [v17 primaryAuthKitAccount];
-        v19 = [v16 DSIDForAccount:v18];
+        mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+        mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+        primaryAuthKitAccount = [mEMORY[0x277CF0130]2 primaryAuthKitAccount];
+        v19 = [mEMORY[0x277CF0130] DSIDForAccount:primaryAuthKitAccount];
 
-        v20 = [MEMORY[0x277CFD4F8] sharedInstance];
-        v21 = [v20 serialNumber];
+        mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+        serialNumber = [mEMORY[0x277CFD4F8] serialNumber];
 
-        v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v19, v21];;
-        [v3 setObject:v22 forKeyedSubscript:v13];
+        v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v19, serialNumber];;
+        [metadataCopy setObject:v22 forKeyedSubscript:v13];
       }
     }
   }
@@ -1535,7 +1535,7 @@ uint64_t __81__CDPDAnalyticsTransport_configureSessionForEvent_sendEventBlock_te
   {
     v23 = @"VM";
 LABEL_18:
-    [v3 setObject:v23 forKeyedSubscript:*MEMORY[0x277CFD6B8]];
+    [metadataCopy setObject:v23 forKeyedSubscript:*MEMORY[0x277CFD6B8]];
     goto LABEL_19;
   }
 
@@ -1581,10 +1581,10 @@ void __58__CDPDAnalyticsTransport__updateEventWithDefaultMetadata___block_invoke
   }
 }
 
-- (id)_sendEvent:(id)a3
+- (id)_sendEvent:(id)event
 {
-  v4 = a3;
-  if ([(CDPDAnalyticsTransport *)self shouldSanitizeEventForInternalReporting:v4])
+  eventCopy = event;
+  if ([(CDPDAnalyticsTransport *)self shouldSanitizeEventForInternalReporting:eventCopy])
   {
     v5 = allowedStringsForInternalTelemetry;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1592,13 +1592,13 @@ void __58__CDPDAnalyticsTransport__updateEventWithDefaultMetadata___block_invoke
     v19[2] = __37__CDPDAnalyticsTransport__sendEvent___block_invoke;
     v19[3] = &unk_278E24AC0;
     v19[4] = self;
-    v20 = v4;
+    v20 = eventCopy;
     [v5 enumerateKeysAndObjectsUsingBlock:v19];
   }
 
-  if ([(CDPDAnalyticsTransport *)self shouldEnforcePrivacyComplianceForEvent:v4])
+  if ([(CDPDAnalyticsTransport *)self shouldEnforcePrivacyComplianceForEvent:eventCopy])
   {
-    if (![CDPDAnalyticsTransport isEventPrivacyApproved:v4])
+    if (![CDPDAnalyticsTransport isEventPrivacyApproved:eventCopy])
     {
       v7 = 0;
       goto LABEL_20;
@@ -1609,18 +1609,18 @@ void __58__CDPDAnalyticsTransport__updateEventWithDefaultMetadata___block_invoke
     v14 = 3221225472;
     v15 = __37__CDPDAnalyticsTransport__sendEvent___block_invoke_2;
     v16 = &unk_278E24AC0;
-    v17 = self;
-    v18 = v4;
+    selfCopy = self;
+    v18 = eventCopy;
     [v6 enumerateKeysAndObjectsUsingBlock:&v13];
   }
 
-  v7 = [v4 objectForKeyedSubscript:{*MEMORY[0x277CFD900], v13, v14, v15, v16, v17}];
+  v7 = [eventCopy objectForKeyedSubscript:{*MEMORY[0x277CFD900], v13, v14, v15, v16, selfCopy}];
   if (v7)
   {
     v8 = _CDPLogSystemAnalytics();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDAnalyticsTransport _sendEvent:v4];
+      [CDPDAnalyticsTransport _sendEvent:eventCopy];
     }
   }
 
@@ -1636,17 +1636,17 @@ void __58__CDPDAnalyticsTransport__updateEventWithDefaultMetadata___block_invoke
     transport = self->_transport;
   }
 
-  [(AAFAnalyticsTransportInProcessRTC *)transport sendEvent:v4];
+  [(AAFAnalyticsTransportInProcessRTC *)transport sendEvent:eventCopy];
   if (v7)
   {
     v11 = _CDPLogSystemAnalytics();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDAnalyticsTransport _sendEvent:v4];
+      [CDPDAnalyticsTransport _sendEvent:eventCopy];
     }
   }
 
-  [(CDPDTTRController *)self->_ttrController requestTTRIfSupportedForEvent:v4];
+  [(CDPDTTRController *)self->_ttrController requestTTRIfSupportedForEvent:eventCopy];
 LABEL_20:
 
   return v7;

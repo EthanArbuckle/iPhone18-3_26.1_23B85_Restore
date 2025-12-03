@@ -1,22 +1,22 @@
 @interface TLKStackView
-- (void)addArrangedSubview:(id)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setFlipsToVerticalAxisForAccessibilityContentSizes:(BOOL)a3;
+- (void)addArrangedSubview:(id)subview;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setAxis:(int64_t)axis;
+- (void)setFlipsToVerticalAxisForAccessibilityContentSizes:(BOOL)sizes;
 @end
 
 @implementation TLKStackView
 
-- (void)addArrangedSubview:(id)a3
+- (void)addArrangedSubview:(id)subview
 {
   v3.receiver = self;
   v3.super_class = TLKStackView;
-  [(TLKStackView *)&v3 addArrangedSubview:a3];
+  [(TLKStackView *)&v3 addArrangedSubview:subview];
 }
 
-- (void)setFlipsToVerticalAxisForAccessibilityContentSizes:(BOOL)a3
+- (void)setFlipsToVerticalAxisForAccessibilityContentSizes:(BOOL)sizes
 {
-  if (a3 && +[TLKLayoutUtilities isSuperLargeAccessibilitySize]&& ![(NUIContainerStackView *)self axis])
+  if (sizes && +[TLKLayoutUtilities isSuperLargeAccessibilitySize]&& ![(NUIContainerStackView *)self axis])
   {
     v5 = 1;
     [(TLKStackView *)self setAxis:1];
@@ -29,10 +29,10 @@
   }
 
   [(TLKStackView *)self setIsForcedToBeVertical:v5];
-  self->_flipsToVerticalAxisForAccessibilityContentSizes = a3;
+  self->_flipsToVerticalAxisForAccessibilityContentSizes = sizes;
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
   if ([(TLKStackView *)self flipsToVerticalAxisForAccessibilityContentSizes]&& +[TLKLayoutUtilities isSuperLargeAccessibilitySize])
   {
@@ -41,17 +41,17 @@
 
   else
   {
-    [(NUIContainerStackView *)&v5 setAxis:a3, self, TLKStackView, v6.receiver, v6.super_class];
+    [(NUIContainerStackView *)&v5 setAxis:axis, self, TLKStackView, v6.receiver, v6.super_class];
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
   if (![(TLKStackView *)self isForcedToBeVertical])
   {
     v5.receiver = self;
     v5.super_class = TLKStackView;
-    [(NUIContainerStackView *)&v5 setAlignment:a3];
+    [(NUIContainerStackView *)&v5 setAlignment:alignment];
   }
 }
 

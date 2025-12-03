@@ -1,11 +1,11 @@
 @interface CTLazuliSuggestedActionShowCoordinates
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliSuggestedActionShowCoordinates:(id)a3;
-- (CTLazuliSuggestedActionShowCoordinates)initWithCoder:(id)a3;
-- (CTLazuliSuggestedActionShowCoordinates)initWithReflection:(const SuggestedActionShowCoordinates *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliSuggestedActionShowCoordinates:(id)coordinates;
+- (CTLazuliSuggestedActionShowCoordinates)initWithCoder:(id)coder;
+- (CTLazuliSuggestedActionShowCoordinates)initWithReflection:(const SuggestedActionShowCoordinates *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliSuggestedActionShowCoordinates
@@ -13,29 +13,29 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
-  [v3 appendFormat:@", latitude = %@", v4];
+  latitude = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
+  [v3 appendFormat:@", latitude = %@", latitude];
 
-  v5 = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
-  [v3 appendFormat:@", longitude = %@", v5];
+  longitude = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
+  [v3 appendFormat:@", longitude = %@", longitude];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliSuggestedActionShowCoordinates:(id)a3
+- (BOOL)isEqualToCTLazuliSuggestedActionShowCoordinates:(id)coordinates
 {
-  v6 = a3;
-  v7 = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
-  v8 = [v6 latitude];
-  if (v7 != v8)
+  coordinatesCopy = coordinates;
+  latitude = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
+  latitude2 = [coordinatesCopy latitude];
+  if (latitude != latitude2)
   {
-    v3 = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
-    [v3 doubleValue];
+    latitude3 = [(CTLazuliSuggestedActionShowCoordinates *)self latitude];
+    [latitude3 doubleValue];
     v10 = v9;
-    v4 = [v6 latitude];
-    [v4 doubleValue];
+    latitude4 = [coordinatesCopy latitude];
+    [latitude4 doubleValue];
     if (v10 != v11)
     {
       v12 = 0;
@@ -45,24 +45,24 @@ LABEL_8:
     }
   }
 
-  v13 = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
-  v14 = [v6 longitude];
-  if (v13 == v14)
+  longitude = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
+  longitude2 = [coordinatesCopy longitude];
+  if (longitude == longitude2)
   {
     v12 = 1;
   }
 
   else
   {
-    v15 = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
-    [v15 doubleValue];
+    longitude3 = [(CTLazuliSuggestedActionShowCoordinates *)self longitude];
+    [longitude3 doubleValue];
     v17 = v16;
-    v18 = [v6 longitude];
-    [v18 doubleValue];
+    longitude4 = [coordinatesCopy longitude];
+    [longitude4 doubleValue];
     v12 = v17 == v19;
   }
 
-  if (v7 != v8)
+  if (latitude != latitude2)
   {
     goto LABEL_8;
   }
@@ -72,55 +72,55 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionShowCoordinates *)self isEqualToCTLazuliSuggestedActionShowCoordinates:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliSuggestedActionShowCoordinates *)self isEqualToCTLazuliSuggestedActionShowCoordinates:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliSuggestedActionShowCoordinates allocWithZone:?];
-  v6 = [(NSNumber *)self->_latitude copyWithZone:a3];
+  v6 = [(NSNumber *)self->_latitude copyWithZone:zone];
   [(CTLazuliSuggestedActionShowCoordinates *)v5 setLatitude:v6];
 
-  v7 = [(NSNumber *)self->_longitude copyWithZone:a3];
+  v7 = [(NSNumber *)self->_longitude copyWithZone:zone];
   [(CTLazuliSuggestedActionShowCoordinates *)v5 setLongitude:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_latitude forKey:@"kLatitudeKey"];
-  [v4 encodeObject:self->_longitude forKey:@"kLongitudeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_latitude forKey:@"kLatitudeKey"];
+  [coderCopy encodeObject:self->_longitude forKey:@"kLongitudeKey"];
 }
 
-- (CTLazuliSuggestedActionShowCoordinates)initWithCoder:(id)a3
+- (CTLazuliSuggestedActionShowCoordinates)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTLazuliSuggestedActionShowCoordinates;
   v5 = [(CTLazuliSuggestedActionShowCoordinates *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kLatitudeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kLatitudeKey"];
     latitude = v5->_latitude;
     v5->_latitude = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kLongitudeKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kLongitudeKey"];
     longitude = v5->_longitude;
     v5->_longitude = v8;
   }
@@ -128,18 +128,18 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliSuggestedActionShowCoordinates)initWithReflection:(const SuggestedActionShowCoordinates *)a3
+- (CTLazuliSuggestedActionShowCoordinates)initWithReflection:(const SuggestedActionShowCoordinates *)reflection
 {
   v10.receiver = self;
   v10.super_class = CTLazuliSuggestedActionShowCoordinates;
   v4 = [(CTLazuliSuggestedActionShowCoordinates *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3->var0];
+    v5 = [MEMORY[0x1E696AD98] numberWithDouble:reflection->var0];
     latitude = v4->_latitude;
     v4->_latitude = v5;
 
-    v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3->var1];
+    v7 = [MEMORY[0x1E696AD98] numberWithDouble:reflection->var1];
     longitude = v4->_longitude;
     v4->_longitude = v7;
   }

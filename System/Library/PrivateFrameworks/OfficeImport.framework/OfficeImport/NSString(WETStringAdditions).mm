@@ -85,16 +85,16 @@
 
 - (uint64_t)tc_fontTypeAtIndex:()WETStringAdditions effectiveRange:forXML:
 {
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
     return 0xFFFFFFFFLL;
   }
 
   v21 = 0;
-  v9 = [a1 characterAtIndex:a3];
+  v9 = [self characterAtIndex:a3];
   if (a5)
   {
-    v10 = [a1 fontTypeForCharacter:v9 isControl:&v21];
+    v10 = [self fontTypeForCharacter:v9 isControl:&v21];
   }
 
   else
@@ -106,7 +106,7 @@
   if (a4)
   {
     *a4 = a3;
-    v12 = [a1 length];
+    v12 = [self length];
     if (v12 >= a4[1])
     {
       v13 = a4[1];
@@ -117,7 +117,7 @@
       v13 = v12;
     }
 
-    v14 = [a1 length];
+    v14 = [self length];
     if (v14 >= *a4 + v13)
     {
       v15 = *a4 + v13;
@@ -134,10 +134,10 @@
       do
       {
         v20 = 0;
-        v17 = [a1 characterAtIndex:v16];
+        v17 = [self characterAtIndex:v16];
         if (a5)
         {
-          v18 = [a1 fontTypeForCharacter:v17 isControl:&v20];
+          v18 = [self fontTypeForCharacter:v17 isControl:&v20];
         }
 
         else

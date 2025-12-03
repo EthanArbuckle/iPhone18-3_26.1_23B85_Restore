@@ -1,24 +1,24 @@
 @interface AISSymptomReport
-- (AISSymptomReport)initWithAltDSID:(id)a3 symptoms:(id)a4 combinedProblemFlags:(unint64_t)a5;
+- (AISSymptomReport)initWithAltDSID:(id)d symptoms:(id)symptoms combinedProblemFlags:(unint64_t)flags;
 @end
 
 @implementation AISSymptomReport
 
-- (AISSymptomReport)initWithAltDSID:(id)a3 symptoms:(id)a4 combinedProblemFlags:(unint64_t)a5
+- (AISSymptomReport)initWithAltDSID:(id)d symptoms:(id)symptoms combinedProblemFlags:(unint64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  symptomsCopy = symptoms;
   v14.receiver = self;
   v14.super_class = AISSymptomReport;
   v10 = [(AISSymptomReport *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     altDSID = v10->_altDSID;
     v10->_altDSID = v11;
 
-    objc_storeStrong(&v10->_symptoms, a4);
-    v10->_combinedProblemFlags = a5;
+    objc_storeStrong(&v10->_symptoms, symptoms);
+    v10->_combinedProblemFlags = flags;
   }
 
   return v10;

@@ -1,27 +1,27 @@
 @interface CLPInstSchemaCLPCDMReplaySampleStarted
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithDictionary:(id)a3;
-- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasWasHabitualUserDuringCalendarWeek:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasWasHabitualUserDuringCalendarWeek:(BOOL)week;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaCLPCDMReplaySampleStarted
 
-- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithDictionary:(id)a3
+- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CLPInstSchemaCLPCDMReplaySampleStarted;
   v5 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(CLPInstSchemaCLPCDMReplaySampleStarted *)v5 setOriginalRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,21 +37,21 @@
       [(CLPInstSchemaCLPCDMReplaySampleStarted *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"utteranceRepetitionsInCalendarWeek"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"utteranceRepetitionsInCalendarWeek"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPCDMReplaySampleStarted setUtteranceRepetitionsInCalendarWeek:](v5, "setUtteranceRepetitionsInCalendarWeek:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"wasHabitualUserDuringCalendarWeek"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"wasHabitualUserDuringCalendarWeek"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaCLPCDMReplaySampleStarted setWasHabitualUserDuringCalendarWeek:](v5, "setWasHabitualUserDuringCalendarWeek:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trpId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithJSON:(id)a3
+- (CLPInstSchemaCLPCDMReplaySampleStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,43 +101,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_originalRequestId)
   {
-    v4 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+    dictionaryRepresentation = [originalRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"originalRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"originalRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalRequestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v7 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
+    v8 = [resultCandidateId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_trpId)
   {
-    v9 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    trpId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+    dictionaryRepresentation2 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"trpId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"trpId"];
     }
   }
 
@@ -145,7 +145,7 @@
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CLPInstSchemaCLPCDMReplaySampleStarted utteranceRepetitionsInCalendarWeek](self, "utteranceRepetitionsInCalendarWeek")}];
-    [v3 setObject:v13 forKeyedSubscript:@"utteranceRepetitionsInCalendarWeek"];
+    [dictionary setObject:v13 forKeyedSubscript:@"utteranceRepetitionsInCalendarWeek"];
 
     has = self->_has;
   }
@@ -153,12 +153,12 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaCLPCDMReplaySampleStarted wasHabitualUserDuringCalendarWeek](self, "wasHabitualUserDuringCalendarWeek")}];
-    [v3 setObject:v14 forKeyedSubscript:@"wasHabitualUserDuringCalendarWeek"];
+    [dictionary setObject:v14 forKeyedSubscript:@"wasHabitualUserDuringCalendarWeek"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -189,28 +189,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(SISchemaUUID *)self->_trpId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
-  v6 = [v4 originalRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+  originalRequestId2 = [equalCopy originalRequestId];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
-  if (v7)
+  originalRequestId3 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+  if (originalRequestId3)
   {
-    v8 = v7;
-    v9 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
-    v10 = [v4 originalRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalRequestId3;
+    originalRequestId4 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+    originalRequestId5 = [equalCopy originalRequestId];
+    v11 = [originalRequestId4 isEqual:originalRequestId5];
 
     if (!v11)
     {
@@ -222,20 +222,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
+  originalRequestId2 = [equalCopy resultCandidateId];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v12 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -248,7 +248,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v18 = v4[40];
+  v18 = equalCopy[40];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_24;
@@ -257,13 +257,13 @@ LABEL_3:
   if (*&has)
   {
     utteranceRepetitionsInCalendarWeek = self->_utteranceRepetitionsInCalendarWeek;
-    if (utteranceRepetitionsInCalendarWeek != [v4 utteranceRepetitionsInCalendarWeek])
+    if (utteranceRepetitionsInCalendarWeek != [equalCopy utteranceRepetitionsInCalendarWeek])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -275,23 +275,23 @@ LABEL_3:
   if (v20)
   {
     wasHabitualUserDuringCalendarWeek = self->_wasHabitualUserDuringCalendarWeek;
-    if (wasHabitualUserDuringCalendarWeek != [v4 wasHabitualUserDuringCalendarWeek])
+    if (wasHabitualUserDuringCalendarWeek != [equalCopy wasHabitualUserDuringCalendarWeek])
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+  originalRequestId2 = [equalCopy trpId];
+  if ((originalRequestId != 0) == (originalRequestId2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v22 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
-  if (!v22)
+  trpId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+  if (!trpId)
   {
 
 LABEL_27:
@@ -299,10 +299,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v23 = v22;
-  v24 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
-  v25 = [v4 trpId];
-  v26 = [v24 isEqual:v25];
+  v23 = trpId;
+  trpId2 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+  trpId3 = [equalCopy trpId];
+  v26 = [trpId2 isEqual:trpId3];
 
   if (v26)
   {
@@ -316,20 +316,20 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+  toCopy = to;
+  originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
 
-  if (v4)
+  if (originalRequestId)
   {
-    v5 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+    originalRequestId2 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
+  resultCandidateId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
@@ -346,21 +346,21 @@ LABEL_25:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+  trpId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (trpId)
   {
-    v10 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+    trpId2 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasWasHabitualUserDuringCalendarWeek:(BOOL)a3
+- (void)setHasWasHabitualUserDuringCalendarWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 2;
   }
@@ -373,26 +373,26 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = CLPInstSchemaCLPCDMReplaySampleStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originalRequestId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self originalRequestId];
+  v7 = [originalRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CLPInstSchemaCLPCDMReplaySampleStarted *)self deleteOriginalRequestId];
   }
 
-  v9 = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  trpId = [(CLPInstSchemaCLPCDMReplaySampleStarted *)self trpId];
+  v10 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CLPInstSchemaCLPCDMReplaySampleStarted *)self deleteTrpId];
   }

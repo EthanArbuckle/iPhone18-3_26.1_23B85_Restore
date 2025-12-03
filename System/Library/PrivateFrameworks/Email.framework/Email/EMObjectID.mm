@@ -1,17 +1,17 @@
 @interface EMObjectID
 + (OS_os_log)log;
 + (id)_decodableClasses;
-+ (id)objectIDFromSerializedRepresentation:(id)a3;
-+ (void)addDecodableClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectIDFromSerializedRepresentation:(id)representation;
++ (void)addDecodableClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (EFStringHash)stringHash;
-- (EMObjectID)initWithCoder:(id)a3;
-- (EMObjectID)initWithRepresentedObjectID:(id)a3;
+- (EMObjectID)initWithCoder:(id)coder;
+- (EMObjectID)initWithRepresentedObjectID:(id)d;
 - (NSData)serializedRepresentation;
 - (NSString)description;
 - (id)cachedSelf;
-- (void)_commonInitAsEphemeralID:(BOOL)a3 representedObjectID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitAsEphemeralID:(BOOL)d representedObjectID:(id)iD;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMObjectID
@@ -22,11 +22,11 @@
   stringHash = self->_stringHash;
   if (!stringHash)
   {
-    v4 = [(EMObjectID *)self representedObjectID];
+    representedObjectID = [(EMObjectID *)self representedObjectID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [objc_alloc(MEMORY[0x1E699B990]) initWithString:v4];
+      v5 = [objc_alloc(MEMORY[0x1E699B990]) initWithString:representedObjectID];
     }
 
     else
@@ -34,7 +34,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [objc_alloc(MEMORY[0x1E699B990]) initWithData:v4];
+        v5 = [objc_alloc(MEMORY[0x1E699B990]) initWithData:representedObjectID];
       }
 
       else
@@ -59,8 +59,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(EMObjectID *)self representedObjectID];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  representedObjectID = [(EMObjectID *)self representedObjectID];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, representedObjectID];
 
   return v6;
 }
@@ -116,7 +116,7 @@ void __24__EMObjectID_cachedSelf__block_invoke()
   block[1] = 3221225472;
   block[2] = __17__EMObjectID_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_27 != -1)
   {
     dispatch_once(&log_onceToken_27, block);
@@ -135,26 +135,26 @@ void __17__EMObjectID_log__block_invoke(uint64_t a1)
   log_log_27 = v1;
 }
 
-+ (void)addDecodableClass:(Class)a3
++ (void)addDecodableClass:(Class)class
 {
-  v4 = [a1 _decodableClasses];
-  [v4 addObject:a3];
+  _decodableClasses = [self _decodableClasses];
+  [_decodableClasses addObject:class];
 }
 
-+ (id)objectIDFromSerializedRepresentation:(id)a3
++ (id)objectIDFromSerializedRepresentation:(id)representation
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v4 error:0];
+  representationCopy = representation;
+  v5 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:representationCopy error:0];
   v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"kClassKey"];
   if ([(NSString *)v6 length])
   {
-    a1 = NSClassFromString(v6);
+    self = NSClassFromString(v6);
   }
 
-  if ([a1 isSubclassOfClass:objc_opt_class()])
+  if ([self isSubclassOfClass:objc_opt_class()])
   {
-    v7 = [[a1 alloc] initWithCoder:v5];
+    v7 = [[self alloc] initWithCoder:v5];
   }
 
   else
@@ -173,34 +173,34 @@ void __17__EMObjectID_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (EMObjectID)initWithRepresentedObjectID:(id)a3
+- (EMObjectID)initWithRepresentedObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = EMObjectID;
   v5 = [(EMObjectID *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EMObjectID *)v5 _commonInitAsEphemeralID:0 representedObjectID:v4];
+    [(EMObjectID *)v5 _commonInitAsEphemeralID:0 representedObjectID:dCopy];
   }
 
   return v6;
 }
 
-- (void)_commonInitAsEphemeralID:(BOOL)a3 representedObjectID:(id)a4
+- (void)_commonInitAsEphemeralID:(BOOL)d representedObjectID:(id)iD
 {
-  v6 = a4;
-  self->_ephemeral = a3;
-  if (v6)
+  iDCopy = iD;
+  self->_ephemeral = d;
+  if (iDCopy)
   {
-    v9 = v6;
-    v7 = [v6 copyWithZone:0];
+    v9 = iDCopy;
+    v7 = [iDCopy copyWithZone:0];
     representedObjectID = self->_representedObjectID;
     self->_representedObjectID = v7;
 
     self->_hash = [self->_representedObjectID hash];
-    v6 = v9;
+    iDCopy = v9;
   }
 }
 
@@ -208,22 +208,22 @@ void __17__EMObjectID_log__block_invoke(uint64_t a1)
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(EMObjectID *)self encodeWithCoder:v3];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (EMObjectID)initWithCoder:(id)a3
+- (EMObjectID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = EMObjectID;
   v5 = [(EMObjectID *)&v11 init];
   if (v5)
   {
-    v5->_ephemeral = [v4 decodeBoolForKey:@"EFPropertyKey_ephemeral"];
+    v5->_ephemeral = [coderCopy decodeBoolForKey:@"EFPropertyKey_ephemeral"];
     v6 = +[EMObjectID _decodableClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kRepresentedObjectIDKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"kRepresentedObjectIDKey"];
 
     v8 = [v7 copyWithZone:0];
     representedObjectID = v5->_representedObjectID;
@@ -235,20 +235,20 @@ void __17__EMObjectID_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeBool:-[EMObjectID isEphemeral](self forKey:{"isEphemeral"), @"EFPropertyKey_ephemeral"}];
-  [v6 encodeObject:self->_representedObjectID forKey:@"kRepresentedObjectIDKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[EMObjectID isEphemeral](self forKey:{"isEphemeral"), @"EFPropertyKey_ephemeral"}];
+  [coderCopy encodeObject:self->_representedObjectID forKey:@"kRepresentedObjectIDKey"];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v6 encodeObject:v5 forKey:@"kClassKey"];
+  [coderCopy encodeObject:v5 forKey:@"kClassKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -258,13 +258,13 @@ void __17__EMObjectID_log__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EMObjectID *)self isEphemeral];
-      if (v6 == [(EMObjectID *)v5 isEphemeral])
+      v5 = equalCopy;
+      isEphemeral = [(EMObjectID *)self isEphemeral];
+      if (isEphemeral == [(EMObjectID *)v5 isEphemeral])
       {
         representedObjectID = self->_representedObjectID;
-        v9 = [(EMObjectID *)v5 representedObjectID];
-        v7 = [representedObjectID isEqual:v9];
+        representedObjectID = [(EMObjectID *)v5 representedObjectID];
+        v7 = [representedObjectID isEqual:representedObjectID];
       }
 
       else

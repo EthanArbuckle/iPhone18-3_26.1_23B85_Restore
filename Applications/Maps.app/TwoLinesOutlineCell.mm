@@ -1,10 +1,10 @@
 @interface TwoLinesOutlineCell
 - (BOOL)_useStandardCellConfigurations;
-- (TwoLinesOutlineCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_accessoryButtonTapped:(id)a3 accessoryModel:(id)a4;
+- (TwoLinesOutlineCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_accessoryButtonTapped:(id)tapped accessoryModel:(id)model;
 - (void)_invalidateConstraints;
-- (void)_toggleDisclosureAccessory:(id)a3;
+- (void)_toggleDisclosureAccessory:(id)accessory;
 - (void)_updateAccessoryFromModel;
 - (void)_updateAccessoryVisibility;
 - (void)_updateActionViewFromModel;
@@ -13,19 +13,19 @@
 - (void)_updateDisclosureAccessoryInteraction;
 - (void)_updateFromModel;
 - (void)_updateTextColors;
-- (void)setCellModel:(id)a3;
-- (void)setHovering:(BOOL)a3;
-- (void)setUseLightForegroundColors:(BOOL)a3;
+- (void)setCellModel:(id)model;
+- (void)setHovering:(BOOL)hovering;
+- (void)setUseLightForegroundColors:(BOOL)colors;
 @end
 
 @implementation TwoLinesOutlineCell
 
 - (void)_updateActionViewFromModel
 {
-  v3 = [(TwoLinesOutlineCellModel *)self->_cellModel actionModel];
+  actionModel = [(TwoLinesOutlineCellModel *)self->_cellModel actionModel];
 
   actionView = self->_actionView;
-  if (v3)
+  if (actionModel)
   {
     if (!actionView)
     {
@@ -37,25 +37,25 @@
       actionView = self->_actionView;
     }
 
-    v7 = [(TwoLinesOutlineCellActionView *)actionView superview];
+    superview = [(TwoLinesOutlineCellActionView *)actionView superview];
 
-    if (!v7)
+    if (!superview)
     {
-      v8 = [(TwoLinesOutlineCell *)self contentView];
-      [v8 addSubview:self->_actionView];
+      contentView = [(TwoLinesOutlineCell *)self contentView];
+      [contentView addSubview:self->_actionView];
 
       [(TwoLinesOutlineCell *)self _invalidateConstraints];
     }
 
-    v10 = [(TwoLinesOutlineCellModel *)self->_cellModel actionModel];
-    [(TwoLinesOutlineCellActionView *)self->_actionView setViewModel:v10];
+    actionModel2 = [(TwoLinesOutlineCellModel *)self->_cellModel actionModel];
+    [(TwoLinesOutlineCellActionView *)self->_actionView setViewModel:actionModel2];
   }
 
   else
   {
-    v9 = [(TwoLinesOutlineCellActionView *)actionView superview];
+    superview2 = [(TwoLinesOutlineCellActionView *)actionView superview];
 
-    if (v9)
+    if (superview2)
     {
       [(TwoLinesOutlineCellActionView *)self->_actionView removeFromSuperview];
 
@@ -64,17 +64,17 @@
   }
 }
 
-- (void)_accessoryButtonTapped:(id)a3 accessoryModel:(id)a4
+- (void)_accessoryButtonTapped:(id)tapped accessoryModel:(id)model
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 delegate];
-  [v8 twoLinesOutlineCell:self accessoryViewTapped:v7 accessoryModel:v6];
+  modelCopy = model;
+  tappedCopy = tapped;
+  delegate = [modelCopy delegate];
+  [delegate twoLinesOutlineCell:self accessoryViewTapped:tappedCopy accessoryModel:modelCopy];
 }
 
-- (void)_toggleDisclosureAccessory:(id)a3
+- (void)_toggleDisclosureAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -97,8 +97,8 @@
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 accessoryType] == 2)
         {
-          v11 = [v10 delegate];
-          [v11 twoLinesOutlineCell:self accessoryViewTapped:v4 accessoryModel:v10];
+          delegate = [v10 delegate];
+          [delegate twoLinesOutlineCell:self accessoryViewTapped:accessoryCopy accessoryModel:v10];
         }
       }
 
@@ -177,31 +177,31 @@ LABEL_14:
   v7 = 3221225472;
   v8 = sub_100AF338C;
   v9 = &unk_101637C00;
-  v10 = self;
+  selfCopy = self;
   v11 = v3;
   v5 = v3;
   [(NSArray *)accessoryModels enumerateObjectsUsingBlock:&v6];
-  [(TwoLinesOutlineCell *)self setTrailingAccessoryConfigurations:v5, v6, v7, v8, v9, v10];
+  [(TwoLinesOutlineCell *)self setTrailingAccessoryConfigurations:v5, v6, v7, v8, v9, selfCopy];
 }
 
 - (void)_updateAccessoryFromModel
 {
   accessoryModels = self->_accessoryModels;
-  v4 = [(TwoLinesOutlineCellModel *)self->_cellModel accessoryModels];
-  if (accessoryModels == v4)
+  accessoryModels = [(TwoLinesOutlineCellModel *)self->_cellModel accessoryModels];
+  if (accessoryModels == accessoryModels)
   {
   }
 
   else
   {
-    obja = v4;
-    v5 = [(NSArray *)accessoryModels isEqual:v4];
+    obja = accessoryModels;
+    v5 = [(NSArray *)accessoryModels isEqual:accessoryModels];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(TwoLinesOutlineCellModel *)self->_cellModel accessoryModels];
+      accessoryModels2 = [(TwoLinesOutlineCellModel *)self->_cellModel accessoryModels];
       v7 = self->_accessoryModels;
-      self->_accessoryModels = v6;
+      self->_accessoryModels = accessoryModels2;
 
       v8 = objc_alloc_init(NSMutableArray);
       v21 = 0u;
@@ -292,35 +292,35 @@ LABEL_14:
   }
 
   v3 = +[UIListContentConfiguration subtitleCellConfiguration];
-  v4 = [(TwoLinesOutlineCellModel *)self->_cellModel contentModel];
-  v5 = [v4 titleText];
-  [v3 setText:v5];
+  contentModel = [(TwoLinesOutlineCellModel *)self->_cellModel contentModel];
+  titleText = [contentModel titleText];
+  [v3 setText:titleText];
 
-  v6 = [v4 attributedSubtitleText];
-  if (v6)
+  attributedSubtitleText = [contentModel attributedSubtitleText];
+  if (attributedSubtitleText)
   {
-    [v3 setSecondaryAttributedText:v6];
+    [v3 setSecondaryAttributedText:attributedSubtitleText];
   }
 
   else
   {
-    v7 = [v4 subtitleText];
-    [v3 setSecondaryText:v7];
+    subtitleText = [contentModel subtitleText];
+    [v3 setSecondaryText:subtitleText];
   }
 
   [v3 setImage:self->_fetchedImage];
-  v8 = [v3 imageProperties];
-  [v8 setReservedLayoutSize:{24.0, 24.0}];
+  imageProperties = [v3 imageProperties];
+  [imageProperties setReservedLayoutSize:{24.0, 24.0}];
 
-  v9 = [v3 imageProperties];
-  [v9 setMaximumSize:{24.0, 24.0}];
+  imageProperties2 = [v3 imageProperties];
+  [imageProperties2 setMaximumSize:{24.0, 24.0}];
 
-  v10 = [v4 imageStyle];
-  if (v10 <= 4)
+  imageStyle = [contentModel imageStyle];
+  if (imageStyle <= 4)
   {
-    v11 = dbl_1012153E8[v10];
-    v12 = [v3 imageProperties];
-    [v12 setCornerRadius:v11];
+    v11 = dbl_1012153E8[imageStyle];
+    imageProperties3 = [v3 imageProperties];
+    [imageProperties3 setCornerRadius:v11];
   }
 
   [(TwoLinesOutlineCell *)self setContentConfiguration:v3];
@@ -328,12 +328,12 @@ LABEL_14:
   {
     v13 = self->_imageFetchCounter + 1;
     self->_imageFetchCounter = v13;
-    v14 = [(TwoLinesOutlineCell *)self window];
-    v15 = [v14 screen];
-    v16 = v15;
-    if (v15)
+    window = [(TwoLinesOutlineCell *)self window];
+    screen = [window screen];
+    v16 = screen;
+    if (screen)
     {
-      [v15 scale];
+      [screen scale];
       v18 = v17;
     }
 
@@ -351,7 +351,7 @@ LABEL_14:
     v24[3] = &unk_101637BD8;
     objc_copyWeak(&v25, location);
     v26 = v13;
-    [v4 fetchImageForScreenScale:v24 withCompletionHandler:v18];
+    [contentModel fetchImageForScreenScale:v24 withCompletionHandler:v18];
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
   }
@@ -361,11 +361,11 @@ LABEL_14:
 {
   if (self->_twoLinesContentView)
   {
-    v3 = [(TwoLinesOutlineCellModel *)self->_cellModel contentModel];
-    [(TwoLinesContentView *)self->_twoLinesContentView setViewModel:v3];
+    contentModel = [(TwoLinesOutlineCellModel *)self->_cellModel contentModel];
+    [(TwoLinesContentView *)self->_twoLinesContentView setViewModel:contentModel];
 
-    v4 = [(TwoLinesOutlineCellModel *)self->_cellModel backgroundModel];
-    [(SidebarOutlineCell *)self setBackgroundModel:v4];
+    backgroundModel = [(TwoLinesOutlineCellModel *)self->_cellModel backgroundModel];
+    [(SidebarOutlineCell *)self setBackgroundModel:backgroundModel];
   }
 
   else
@@ -373,33 +373,33 @@ LABEL_14:
     [(TwoLinesOutlineCell *)self _updateContentConfigurationFromViewModel];
   }
 
-  v5 = [(SidebarOutlineCell *)self axSectionIdentifier];
-  if ([v5 length])
+  axSectionIdentifier = [(SidebarOutlineCell *)self axSectionIdentifier];
+  if ([axSectionIdentifier length])
   {
-    v6 = [(SidebarOutlineCell *)self axSectionIdentifier];
+    axSectionIdentifier2 = [(SidebarOutlineCell *)self axSectionIdentifier];
   }
 
   else
   {
-    v6 = &stru_1016631F0;
+    axSectionIdentifier2 = &stru_1016631F0;
   }
 
-  v12 = v6;
+  v12 = axSectionIdentifier2;
 
-  v7 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
-  v8 = [v7 axIdentifier];
-  if ([v8 length])
+  viewModel = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
+  axIdentifier = [viewModel axIdentifier];
+  if ([axIdentifier length])
   {
-    v9 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
-    v10 = [v9 axIdentifier];
+    viewModel2 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
+    axIdentifier2 = [viewModel2 axIdentifier];
   }
 
   else
   {
-    v10 = @"TwoLinesOutlineCell";
+    axIdentifier2 = @"TwoLinesOutlineCell";
   }
 
-  v11 = [(__CFString *)v12 stringByAppendingString:v10];
+  v11 = [(__CFString *)v12 stringByAppendingString:axIdentifier2];
   [(TwoLinesOutlineCell *)self setAccessibilityIdentifier:v11];
 
   [(TwoLinesOutlineCell *)self _updateAccessoryFromModel];
@@ -407,21 +407,21 @@ LABEL_14:
   [(TwoLinesOutlineCell *)self _updateTextColors];
 }
 
-- (void)setCellModel:(id)a3
+- (void)setCellModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cellModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_cellModel != modelCopy)
   {
-    v9 = v5;
-    v7 = [(TwoLinesOutlineCellModel *)v5 isEqual:?];
+    v9 = modelCopy;
+    v7 = [(TwoLinesOutlineCellModel *)modelCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
       fetchedImage = self->_fetchedImage;
       self->_fetchedImage = 0;
 
-      objc_storeStrong(&self->_cellModel, a3);
+      objc_storeStrong(&self->_cellModel, model);
       [(TwoLinesOutlineCell *)self _useStandardCellConfigurations];
       [(TwoLinesOutlineCell *)self _updateFromModel];
       v6 = v9;
@@ -429,38 +429,38 @@ LABEL_14:
   }
 }
 
-- (void)setUseLightForegroundColors:(BOOL)a3
+- (void)setUseLightForegroundColors:(BOOL)colors
 {
   v4.receiver = self;
   v4.super_class = TwoLinesOutlineCell;
-  [(SidebarOutlineCell *)&v4 setUseLightForegroundColors:a3];
+  [(SidebarOutlineCell *)&v4 setUseLightForegroundColors:colors];
   [(TwoLinesOutlineCell *)self _updateTextColors];
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
   v4.receiver = self;
   v4.super_class = TwoLinesOutlineCell;
-  [(SidebarOutlineCell *)&v4 setHovering:a3];
+  [(SidebarOutlineCell *)&v4 setHovering:hovering];
   [(TwoLinesOutlineCell *)self _updateAccessoryVisibility];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v10.receiver = self;
   v10.super_class = TwoLinesOutlineCell;
-  v5 = [(TwoLinesOutlineCell *)&v10 preferredLayoutAttributesFittingAttributes:v4];
-  v6 = [(TwoLinesOutlineCellActionView *)self->_actionView superview];
+  v5 = [(TwoLinesOutlineCell *)&v10 preferredLayoutAttributesFittingAttributes:attributesCopy];
+  superview = [(TwoLinesOutlineCellActionView *)self->_actionView superview];
 
-  if (v6)
+  if (superview)
   {
     [v5 frame];
     [(TwoLinesOutlineCell *)self setFrame:?];
     [(TwoLinesOutlineCell *)self layoutIfNeeded];
     v9.receiver = self;
     v9.super_class = TwoLinesOutlineCell;
-    v7 = [(TwoLinesOutlineCell *)&v9 preferredLayoutAttributesFittingAttributes:v4];
+    v7 = [(TwoLinesOutlineCell *)&v9 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
     v5 = v7;
   }
@@ -484,88 +484,88 @@ LABEL_14:
 {
   if (self->_twoLinesContentView && !self->_constraints)
   {
-    v3 = [(TwoLinesOutlineCellActionView *)self->_actionView superview];
+    superview = [(TwoLinesOutlineCellActionView *)self->_actionView superview];
 
-    v4 = [(TwoLinesContentView *)self->_twoLinesContentView topAnchor];
-    v43 = [(TwoLinesOutlineCell *)self contentView];
-    [v43 topAnchor];
-    v42 = v47 = v4;
-    v50 = [v4 constraintEqualToAnchor:?];
-    if (v3)
+    topAnchor = [(TwoLinesContentView *)self->_twoLinesContentView topAnchor];
+    contentView = [(TwoLinesOutlineCell *)self contentView];
+    [contentView topAnchor];
+    v42 = v47 = topAnchor;
+    v50 = [topAnchor constraintEqualToAnchor:?];
+    if (superview)
     {
       v52[0] = v50;
-      v36 = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
-      v38 = [(TwoLinesOutlineCell *)self contentView];
-      v37 = [v38 layoutMarginsGuide];
-      v49 = [v37 leadingAnchor];
-      v48 = [v36 constraintEqualToAnchor:?];
+      leadingAnchor = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
+      contentView2 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v48 = [leadingAnchor constraintEqualToAnchor:?];
       v52[1] = v48;
-      v5 = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
-      v45 = [(TwoLinesOutlineCell *)self contentView];
-      v44 = [v45 layoutMarginsGuide];
-      v39 = [v44 trailingAnchor];
-      v46 = v5;
-      v27 = [v5 constraintEqualToAnchor:v39];
+      trailingAnchor = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
+      contentView3 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v46 = trailingAnchor;
+      v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v52[2] = v27;
-      v32 = [(TwoLinesOutlineCellActionView *)self->_actionView topAnchor];
-      v6 = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
-      v41 = [v32 constraintEqualToAnchor:v6 constant:7.0];
+      topAnchor2 = [(TwoLinesOutlineCellActionView *)self->_actionView topAnchor];
+      bottomAnchor = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
+      v41 = [topAnchor2 constraintEqualToAnchor:bottomAnchor constant:7.0];
       v52[3] = v41;
-      v7 = [(TwoLinesOutlineCellActionView *)self->_actionView leadingAnchor];
-      v35 = [(TwoLinesOutlineCell *)self contentView];
-      v34 = [(NSArray *)v35 layoutMarginsGuide];
-      v33 = [v34 leadingAnchor];
-      v40 = v7;
-      v31 = [v7 constraintEqualToAnchor:v33 constant:32.0];
+      leadingAnchor3 = [(TwoLinesOutlineCellActionView *)self->_actionView leadingAnchor];
+      contentView4 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide3 = [(NSArray *)contentView4 layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+      v40 = leadingAnchor3;
+      v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:32.0];
       v52[4] = v31;
-      v29 = [(TwoLinesOutlineCellActionView *)self->_actionView trailingAnchor];
-      v30 = [(TwoLinesOutlineCell *)self contentView];
-      v28 = [v30 layoutMarginsGuide];
-      v8 = [v28 trailingAnchor];
-      v9 = [v29 constraintEqualToAnchor:v8];
+      trailingAnchor3 = [(TwoLinesOutlineCellActionView *)self->_actionView trailingAnchor];
+      contentView5 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+      trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+      v9 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v52[5] = v9;
-      v10 = [(TwoLinesOutlineCellActionView *)self->_actionView bottomAnchor];
-      v11 = [(TwoLinesOutlineCell *)self contentView];
-      v12 = [v11 bottomAnchor];
+      bottomAnchor2 = [(TwoLinesOutlineCellActionView *)self->_actionView bottomAnchor];
+      contentView6 = [(TwoLinesOutlineCell *)self contentView];
+      bottomAnchor3 = [contentView6 bottomAnchor];
       LODWORD(v13) = 1112276992;
-      v14 = [v10 constraintEqualToAnchor:v12 constant:-7.0 priority:v13];
+      v14 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-7.0 priority:v13];
       v52[6] = v14;
       v15 = [NSArray arrayWithObjects:v52 count:7];
       constraints = self->_constraints;
       self->_constraints = v15;
 
       v17 = v27;
-      v18 = v32;
+      bottomAnchor4 = topAnchor2;
 
-      v19 = v38;
-      v20 = v37;
+      contentView7 = contentView2;
+      layoutMarginsGuide5 = layoutMarginsGuide;
 
-      v21 = v36;
-      v22 = v35;
+      leadingAnchor5 = leadingAnchor;
+      v22 = contentView4;
     }
 
     else
     {
       v51[0] = v50;
-      v21 = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
-      v19 = [(TwoLinesOutlineCell *)self contentView];
-      v20 = [v19 layoutMarginsGuide];
-      v49 = [v20 leadingAnchor];
-      v48 = [v21 constraintEqualToAnchor:?];
+      leadingAnchor5 = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
+      contentView7 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide5 = [contentView7 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide5 leadingAnchor];
+      v48 = [leadingAnchor5 constraintEqualToAnchor:?];
       v51[1] = v48;
-      v23 = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
-      v45 = [(TwoLinesOutlineCell *)self contentView];
-      v44 = [v45 layoutMarginsGuide];
-      [v44 trailingAnchor];
-      v39 = v46 = v23;
-      v17 = [v23 constraintEqualToAnchor:v39];
+      trailingAnchor5 = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
+      contentView3 = [(TwoLinesOutlineCell *)self contentView];
+      layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+      [layoutMarginsGuide2 trailingAnchor];
+      trailingAnchor2 = v46 = trailingAnchor5;
+      v17 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor2];
       v51[2] = v17;
-      v18 = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
-      v6 = [(TwoLinesOutlineCell *)self contentView];
-      v24 = [v6 bottomAnchor];
+      bottomAnchor4 = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
+      bottomAnchor = [(TwoLinesOutlineCell *)self contentView];
+      v6BottomAnchor = [bottomAnchor bottomAnchor];
       LODWORD(v25) = 1112276992;
-      v41 = v24;
-      v40 = [v18 constraintEqualToAnchor:0.0 constant:v25 priority:?];
+      v41 = v6BottomAnchor;
+      v40 = [bottomAnchor4 constraintEqualToAnchor:0.0 constant:v25 priority:?];
       v51[3] = v40;
       v26 = [NSArray arrayWithObjects:v51 count:4];
       v22 = self->_constraints;
@@ -576,11 +576,11 @@ LABEL_14:
   }
 }
 
-- (TwoLinesOutlineCell)initWithFrame:(CGRect)a3
+- (TwoLinesOutlineCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TwoLinesOutlineCell;
-  v3 = [(SidebarOutlineCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SidebarOutlineCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -591,8 +591,8 @@ LABEL_14:
       v4->_twoLinesContentView = v5;
 
       [(TwoLinesContentView *)v4->_twoLinesContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v7 = [(TwoLinesOutlineCell *)v4 contentView];
-      [v7 addSubview:v4->_twoLinesContentView];
+      contentView = [(TwoLinesOutlineCell *)v4 contentView];
+      [contentView addSubview:v4->_twoLinesContentView];
     }
 
     [(TwoLinesOutlineCell *)v4 _invalidateConstraints];

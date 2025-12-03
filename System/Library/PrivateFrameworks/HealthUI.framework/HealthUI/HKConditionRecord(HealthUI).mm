@@ -11,20 +11,20 @@
 - (id)displayItems
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordItem];
-  [v2 hk_addNonNilObject:v3];
+  recordItem = [self recordItem];
+  [v2 hk_addNonNilObject:recordItem];
 
-  v4 = [a1 verificationStatusItem];
-  [v2 hk_addNonNilObject:v4];
+  verificationStatusItem = [self verificationStatusItem];
+  [v2 hk_addNonNilObject:verificationStatusItem];
 
-  v5 = [a1 categoryItem];
-  [v2 hk_addNonNilObject:v5];
+  categoryItem = [self categoryItem];
+  [v2 hk_addNonNilObject:categoryItem];
 
-  v6 = [a1 abatementItem];
-  [v2 hk_addNonNilObject:v6];
+  abatementItem = [self abatementItem];
+  [v2 hk_addNonNilObject:abatementItem];
 
-  v7 = [a1 asserterItem];
-  [v2 hk_addNonNilObject:v7];
+  asserterItem = [self asserterItem];
+  [v2 hk_addNonNilObject:asserterItem];
 
   v8 = [v2 copy];
 
@@ -35,17 +35,17 @@
 {
   v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v3 = [v2 localizedStringForKey:@"DETAIL_VIEW_RECORDS_VERIFICATION_STATUS_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v4 = [a1 verificationStatus];
-  v5 = [v4 localizedPreferredName];
-  v6 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:v5 style:1];
+  verificationStatus = [self verificationStatus];
+  localizedPreferredName = [verificationStatus localizedPreferredName];
+  v6 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:localizedPreferredName style:1];
 
   return v6;
 }
 
 - (id)categoryItem
 {
-  v1 = [a1 categories];
-  v2 = [v1 hk_map:&__block_literal_global_341];
+  categories = [self categories];
+  v2 = [categories hk_map:&__block_literal_global_341];
 
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v4 = [v3 localizedStringForKey:@"DETAIL_VIEW_RECORDS_CATEGORY_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
@@ -57,15 +57,15 @@
 
 - (id)abatementItem
 {
-  v2 = [a1 abatement];
+  abatement = [self abatement];
 
-  if (v2 && ([a1 abatement], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "valueType"), v3, v4 != 3))
+  if (abatement && ([self abatement], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "valueType"), v3, v4 != 3))
   {
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v7 = [v6 localizedStringForKey:@"DETAIL_VIEW_RECORDS_ABATEMENT_TITLE_ALLEVIATED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
-    v8 = [a1 sortDateTitle];
-    v9 = [v7 isEqualToString:v8];
+    sortDateTitle = [self sortDateTitle];
+    v9 = [v7 isEqualToString:sortDateTitle];
 
     if (v9)
     {
@@ -74,9 +74,9 @@
 
     else
     {
-      v10 = [a1 abatement];
-      v11 = [v10 displayString];
-      v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v7 detailText:v11 style:1];
+      abatement2 = [self abatement];
+      displayString = [abatement2 displayString];
+      v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v7 detailText:displayString style:1];
     }
   }
 
@@ -92,8 +92,8 @@
 {
   v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v3 = [v2 localizedStringForKey:@"DETAIL_VIEW_RECORDS_ASSERTER_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v4 = [a1 asserter];
-  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:v4 style:1];
+  asserter = [self asserter];
+  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:asserter style:1];
 
   return v5;
 }

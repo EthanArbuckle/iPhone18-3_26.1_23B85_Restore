@@ -1,22 +1,22 @@
 @interface KCJoiningRequestSecretSession
-+ (id)sessionWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8;
-+ (id)sessionWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setupSession:(id *)a3;
++ (id)sessionWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error;
++ (id)sessionWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid error:(id *)error;
+- (BOOL)setupSession:(id *)session;
 - (KCJoiningRequestSecretDelegate)secretDelegate;
-- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8;
-- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 rng:(ccrng_state *)a8 error:(id *)a9;
-- (id)copyResponseForChallenge:(id)a3 salt:(id)a4 secret:(id)a5 error:(id *)a6;
-- (id)copyResponseForSecret:(id)a3 error:(id *)a4;
+- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error;
+- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID rng:(ccrng_state *)rng error:(id *)error;
+- (id)copyResponseForChallenge:(id)challenge salt:(id)salt secret:(id)secret error:(id *)error;
+- (id)copyResponseForSecret:(id)secret error:(id *)error;
 - (id)createUUID;
 - (id)description;
-- (id)handleChallenge:(id)a3 error:(id *)a4;
-- (id)handleChallenge:(id)a3 secret:(id)a4 error:(id *)a5;
-- (id)handleChallengeData:(id)a3 secret:(id)a4 error:(id *)a5;
-- (id)handleVerification:(id)a3 error:(id *)a4;
-- (id)initialMessage:(id *)a3;
-- (id)processMessage:(id)a3 error:(id *)a4;
+- (id)handleChallenge:(id)challenge error:(id *)error;
+- (id)handleChallenge:(id)challenge secret:(id)secret error:(id *)error;
+- (id)handleChallengeData:(id)data secret:(id)secret error:(id *)error;
+- (id)handleVerification:(id)verification error:(id *)error;
+- (id)initialMessage:(id *)message;
+- (id)processMessage:(id)message error:(id *)error;
 - (id)stateString;
-- (void)setAltDSID:(id)a3;
+- (void)setAltDSID:(id)d;
 @end
 
 @implementation KCJoiningRequestSecretSession
@@ -31,37 +31,37 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(KCJoiningRequestSecretSession *)self dsid];
-  v5 = [(KCJoiningRequestSecretSession *)self stateString];
-  v6 = [(KCJoiningRequestSecretSession *)self context];
-  v7 = [v3 stringWithFormat:@"<KCJoiningAcceptSession@%p %lld %@ %@>", self, v4, v5, v6];
+  dsid = [(KCJoiningRequestSecretSession *)self dsid];
+  stateString = [(KCJoiningRequestSecretSession *)self stateString];
+  context = [(KCJoiningRequestSecretSession *)self context];
+  v7 = [v3 stringWithFormat:@"<KCJoiningAcceptSession@%p %lld %@ %@>", self, dsid, stateString, context];
 
   return v7;
 }
 
 - (id)stateString
 {
-  v3 = [(KCJoiningRequestSecretSession *)self state];
-  if (v3 >= 3)
+  state = [(KCJoiningRequestSecretSession *)self state];
+  if (state >= 3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[KCJoiningRequestSecretSession state](self, "state")];
   }
 
   else
   {
-    v4 = off_278863660[v3];
+    v4 = off_278863660[state];
   }
 
   return v4;
 }
 
-- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 rng:(ccrng_state *)a8 error:(id *)a9
+- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID rng:(ccrng_state *)rng error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  delegateCopy = delegate;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v18 = secLogObjForScope("joining");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,35 +75,35 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_secretDelegate, v14);
+    objc_storeWeak(&v19->_secretDelegate, delegateCopy);
     v20->_state = 0;
-    v20->_dsid = a4;
-    objc_storeStrong(&v20->_altDSID, a5);
-    objc_storeStrong(&v20->_flowID, a6);
-    objc_storeStrong(&v20->_deviceSessionID, a7);
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    v20->_dsid = dsid;
+    objc_storeStrong(&v20->_altDSID, d);
+    objc_storeStrong(&v20->_flowID, iD);
+    objc_storeStrong(&v20->_deviceSessionID, sessionID);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     defaults = v20->_defaults;
-    v20->_defaults = v21;
+    v20->_defaults = dictionary;
 
     v20->_piggy_version = 2;
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [v23 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     sessionUUID = v20->_sessionUUID;
-    v20->_sessionUUID = v24;
+    v20->_sessionUUID = uUIDString;
 
     v26 = secLogObjForScope("joining");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(KCJoiningRequestSecretSession *)v20 sessionUUID];
+      sessionUUID = [(KCJoiningRequestSecretSession *)v20 sessionUUID];
       *buf = 138412290;
-      v38 = v27;
+      v38 = sessionUUID;
       _os_log_impl(&dword_22EB09000, v26, OS_LOG_TYPE_DEFAULT, "joining: initWithSecretDelegate called, uuid=%@", buf, 0xCu);
     }
 
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a4];
+    dsid = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", dsid];
     v29 = [KCSRPClientContext alloc];
     v30 = ccsha256_di();
-    v31 = [(KCSRPContext *)v29 initWithUser:v28 digestInfo:v30 group:ccsrp_gp_rfc5054_3072() randomSource:a8];
+    v31 = [(KCSRPContext *)v29 initWithUser:dsid digestInfo:v30 group:ccsrp_gp_rfc5054_3072() randomSource:rng];
     context = v20->_context;
     v20->_context = v31;
   }
@@ -112,31 +112,31 @@
   return v20;
 }
 
-- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8
+- (KCJoiningRequestSecretSession)initWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  delegateCopy = delegate;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
   v18 = ccrng();
   if (v18)
   {
-    self = [(KCJoiningRequestSecretSession *)self initWithSecretDelegate:v14 dsid:a4 altDSID:v15 flowID:v16 deviceSessionID:v17 rng:v18 error:a8];
-    v24 = self;
+    self = [(KCJoiningRequestSecretSession *)self initWithSecretDelegate:delegateCopy dsid:dsid altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy rng:v18 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    CoreCryptoError(0, a8, @"RNG fetch failed", v19, v20, v21, v22, v23, v26);
-    v24 = 0;
+    CoreCryptoError(0, error, @"RNG fetch failed", v19, v20, v21, v22, v23, v26);
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (id)processMessage:(id)a3 error:(id *)a4
+- (id)processMessage:(id)message error:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = secLogObjForScope("joining");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -144,7 +144,7 @@
     _os_log_impl(&dword_22EB09000, v7, OS_LOG_TYPE_DEFAULT, "joining: KCJoiningRequestSecretSession processMessage called", &v18, 2u);
   }
 
-  v8 = [KCJoiningMessage messageWithDER:v6 error:a4];
+  v8 = [KCJoiningMessage messageWithDER:messageCopy error:error];
 
   if (v8)
   {
@@ -152,13 +152,13 @@
     switch(state)
     {
       case 2:
-        KCJoiningErrorCreate(6, a4, @"Done, no messages expected.", v9, v10, v11, v12, v13, v18);
+        KCJoiningErrorCreate(6, error, @"Done, no messages expected.", v9, v10, v11, v12, v13, v18);
         break;
       case 1:
-        v15 = [(KCJoiningRequestSecretSession *)self handleVerification:v8 error:a4];
+        v15 = [(KCJoiningRequestSecretSession *)self handleVerification:v8 error:error];
         goto LABEL_9;
       case 0:
-        v15 = [(KCJoiningRequestSecretSession *)self handleChallenge:v8 error:a4];
+        v15 = [(KCJoiningRequestSecretSession *)self handleChallenge:v8 error:error];
 LABEL_9:
         v16 = v15;
         goto LABEL_12;
@@ -171,10 +171,10 @@ LABEL_12:
   return v16;
 }
 
-- (id)handleVerification:(id)a3 error:(id *)a4
+- (id)handleVerification:(id)verification error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  verificationCopy = verification;
   v7 = secLogObjForScope("joining");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -183,19 +183,19 @@ LABEL_12:
   }
 
   v8 = [AAFAnalyticsEventSecurity alloc];
-  v9 = [(KCJoiningRequestSecretSession *)self altDSID];
-  v10 = [(KCJoiningRequestSecretSession *)self flowID];
-  v11 = [(KCJoiningRequestSecretSession *)self deviceSessionID];
+  altDSID = [(KCJoiningRequestSecretSession *)self altDSID];
+  flowID = [(KCJoiningRequestSecretSession *)self flowID];
+  deviceSessionID = [(KCJoiningRequestSecretSession *)self deviceSessionID];
   LOBYTE(v51) = 1;
-  v12 = [(AAFAnalyticsEventSecurity *)v8 initWithKeychainCircleMetrics:0 altDSID:v9 flowID:v10 deviceSessionID:v11 eventName:@"com.apple.security.piggybackingSessionInitiatorHandleVerification" testsAreEnabled:metricsAreEnabled canSendMetrics:v51 category:&unk_2843768F0];
+  v12 = [(AAFAnalyticsEventSecurity *)v8 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingSessionInitiatorHandleVerification" testsAreEnabled:metricsAreEnabled canSendMetrics:v51 category:&unk_2843768F0];
 
-  v13 = [(KCJoiningRequestSecretSession *)self secretDelegate];
-  if (![v6 type])
+  secretDelegate = [(KCJoiningRequestSecretSession *)self secretDelegate];
+  if (![verificationCopy type])
   {
-    v26 = [v6 firstData];
-    v27 = [v26 length];
+    firstData = [verificationCopy firstData];
+    v27 = [firstData length];
 
-    v28 = [v13 verificationFailed:v27 == 0];
+    v28 = [secretDelegate verificationFailed:v27 == 0];
     if (!v28)
     {
       v21 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:29 description:@"next secret is nil"];
@@ -203,32 +203,32 @@ LABEL_12:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v21;
+        selfCopy = v21;
         _os_log_impl(&dword_22EB09000, v39, OS_LOG_TYPE_DEFAULT, "joining: next secret is nil: %@", buf, 0xCu);
       }
 
       [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v21];
-      if (!a4)
+      if (!error)
       {
-        v25 = 0;
+        data = 0;
         goto LABEL_59;
       }
 
       v40 = v21;
-      v25 = 0;
+      data = 0;
 LABEL_58:
-      *a4 = v21;
+      *error = v21;
       goto LABEL_59;
     }
 
     if (v27)
     {
-      v29 = [v6 firstData];
+      firstData2 = [verificationCopy firstData];
       v55 = 0;
-      v25 = [(KCJoiningRequestSecretSession *)self handleChallengeData:v29 secret:v28 error:&v55];
+      data = [(KCJoiningRequestSecretSession *)self handleChallengeData:firstData2 secret:v28 error:&v55];
       v21 = v55;
 
-      if (v25 && !v21)
+      if (data && !v21)
       {
         v30 = secLogObjForScope("joining");
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -255,17 +255,17 @@ LABEL_36:
       }
 
       *buf = 138412290;
-      v58 = v21;
+      selfCopy = v21;
       v45 = "joining: failed to handle challenge data: %@";
     }
 
     else
     {
       v56 = 0;
-      v25 = [(KCJoiningRequestSecretSession *)self copyResponseForSecret:v28 error:&v56];
+      data = [(KCJoiningRequestSecretSession *)self copyResponseForSecret:v28 error:&v56];
       v41 = v56;
       v21 = v41;
-      if (v25 && !v41)
+      if (data && !v41)
       {
         v30 = secLogObjForScope("joining");
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -296,7 +296,7 @@ LABEL_59:
       }
 
       *buf = 138412290;
-      v58 = v21;
+      selfCopy = v21;
       v45 = "joining: Failed to copy response message: %@";
     }
 
@@ -304,7 +304,7 @@ LABEL_59:
 LABEL_56:
 
     [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v21];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_59;
     }
@@ -313,41 +313,41 @@ LABEL_56:
     goto LABEL_58;
   }
 
-  if ([v6 type] != 3)
+  if ([verificationCopy type] != 3)
   {
     v21 = [MEMORY[0x277CCA9B8] errorWithDomain:KCErrorDomain code:30 description:@"Expected verification!"];
     v32 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v58 = v21;
+      selfCopy = v21;
       _os_log_impl(&dword_22EB09000, v32, OS_LOG_TYPE_DEFAULT, "joining: expected vertification message type: %@", buf, 0xCu);
     }
 
     [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v21];
-    if (a4)
+    if (error)
     {
       v33 = v21;
-      v25 = 0;
-      *a4 = v21;
+      data = 0;
+      *error = v21;
       goto LABEL_69;
     }
 
     goto LABEL_68;
   }
 
-  v14 = [(KCJoiningRequestSecretSession *)self context];
-  v15 = [v6 firstData];
+  context = [(KCJoiningRequestSecretSession *)self context];
+  firstData3 = [verificationCopy firstData];
   v54 = 0;
-  v16 = [v14 verifyConfirmation:v15 error:&v54];
+  v16 = [context verifyConfirmation:firstData3 error:&v54];
   v17 = v54;
 
   if (v16)
   {
-    v18 = [(KCJoiningRequestSecretSession *)self session];
-    v19 = [v6 secondData];
+    session = [(KCJoiningRequestSecretSession *)self session];
+    secondData = [verificationCopy secondData];
     v53 = v17;
-    v20 = [v18 decryptAndVerify:v19 error:&v53];
+    v20 = [session decryptAndVerify:secondData error:&v53];
     v21 = v53;
 
     if (!v20 || v21)
@@ -361,15 +361,15 @@ LABEL_56:
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v21;
+        selfCopy = v21;
         _os_log_impl(&dword_22EB09000, v42, OS_LOG_TYPE_DEFAULT, "joining: decrypt and verify failed: %@", buf, 0xCu);
       }
 
       [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v21];
-      if (a4)
+      if (error)
       {
         v43 = v21;
-        *a4 = v21;
+        *error = v21;
       }
     }
 
@@ -381,13 +381,13 @@ LABEL_56:
       v21 = v23;
       if (v22 && !v23)
       {
-        v24 = [v13 processAccountCode:v22 error:a4];
+        v24 = [secretDelegate processAccountCode:v22 error:error];
 
         if (v24)
         {
           self->_state = 2;
           [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:1 error:0];
-          v25 = [MEMORY[0x277CBEA90] data];
+          data = [MEMORY[0x277CBEA90] data];
           v21 = 0;
           goto LABEL_69;
         }
@@ -405,20 +405,20 @@ LABEL_56:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v21;
+        selfCopy = v21;
         _os_log_impl(&dword_22EB09000, v47, OS_LOG_TYPE_DEFAULT, "joining: decode from der failed: %@", buf, 0xCu);
       }
 
       [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v21];
-      if (a4)
+      if (error)
       {
         v48 = v21;
-        *a4 = v21;
+        *error = v21;
       }
     }
 
 LABEL_68:
-    v25 = 0;
+    data = 0;
     goto LABEL_69;
   }
 
@@ -434,23 +434,23 @@ LABEL_68:
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v58 = self;
+    selfCopy = self;
     v59 = 2112;
     v60 = v17;
     _os_log_impl(&dword_22EB09000, v37, OS_LOG_TYPE_DEFAULT, "joining: Verification failed: %@, error: %@", buf, 0x16u);
   }
 
   [(AAFAnalyticsEventSecurity *)v12 sendMetricWithResult:0 error:v17];
-  if (a4)
+  if (error)
   {
     v38 = v17;
-    v25 = 0;
-    *a4 = v17;
+    data = 0;
+    *error = v17;
   }
 
   else
   {
-    v25 = 0;
+    data = 0;
   }
 
   v21 = v17;
@@ -458,24 +458,24 @@ LABEL_69:
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return data;
 }
 
-- (id)handleChallenge:(id)a3 error:(id *)a4
+- (id)handleChallenge:(id)challenge error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  challengeCopy = challenge;
   v7 = [AAFAnalyticsEventSecurity alloc];
-  v8 = [(KCJoiningRequestSecretSession *)self altDSID];
-  v9 = [(KCJoiningRequestSecretSession *)self flowID];
-  v10 = [(KCJoiningRequestSecretSession *)self deviceSessionID];
+  altDSID = [(KCJoiningRequestSecretSession *)self altDSID];
+  flowID = [(KCJoiningRequestSecretSession *)self flowID];
+  deviceSessionID = [(KCJoiningRequestSecretSession *)self deviceSessionID];
   LOBYTE(v20) = 1;
-  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:v8 flowID:v9 deviceSessionID:v10 eventName:@"com.apple.security.piggybackingSessionInitiatorHandleChallenge" testsAreEnabled:metricsAreEnabled canSendMetrics:v20 category:&unk_2843768F0];
+  v11 = [(AAFAnalyticsEventSecurity *)v7 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingSessionInitiatorHandleChallenge" testsAreEnabled:metricsAreEnabled canSendMetrics:v20 category:&unk_2843768F0];
 
-  v12 = [(KCJoiningRequestSecretSession *)self secretDelegate];
-  v13 = [v12 secret];
+  secretDelegate = [(KCJoiningRequestSecretSession *)self secretDelegate];
+  secret = [secretDelegate secret];
   v21 = 0;
-  v14 = [(KCJoiningRequestSecretSession *)self handleChallenge:v6 secret:v13 error:&v21];
+  v14 = [(KCJoiningRequestSecretSession *)self handleChallenge:challengeCopy secret:secret error:&v21];
 
   v15 = v21;
   if (!v14 || v15)
@@ -494,10 +494,10 @@ LABEL_69:
     }
 
     [(AAFAnalyticsEventSecurity *)v11 sendMetricWithResult:0 error:v15];
-    if (a4)
+    if (error)
     {
       v17 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -511,11 +511,11 @@ LABEL_69:
   return v14;
 }
 
-- (id)handleChallenge:(id)a3 secret:(id)a4 error:(id *)a5
+- (id)handleChallenge:(id)challenge secret:(id)secret error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  challengeCopy = challenge;
+  secretCopy = secret;
   v10 = secLogObjForScope("joining");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -523,10 +523,10 @@ LABEL_69:
     _os_log_impl(&dword_22EB09000, v10, OS_LOG_TYPE_DEFAULT, "joining: KCJoiningRequestSecretSession handleChallenge called", v34, 2u);
   }
 
-  if ([v8 type] == 1)
+  if ([challengeCopy type] == 1)
   {
-    v16 = [v8 secondData];
-    if (v16)
+    secondData = [challengeCopy secondData];
+    if (secondData)
     {
       v17 = 2;
     }
@@ -538,34 +538,34 @@ LABEL_69:
 
     [(KCJoiningRequestSecretSession *)self setPiggy_version:v17];
 
-    v18 = [(KCJoiningRequestSecretSession *)self piggy_version];
-    v19 = [(KCJoiningRequestSecretSession *)self session];
-    [v19 setPiggybackingVersion:v18];
+    piggy_version = [(KCJoiningRequestSecretSession *)self piggy_version];
+    session = [(KCJoiningRequestSecretSession *)self session];
+    [session setPiggybackingVersion:piggy_version];
 
-    v20 = [(KCJoiningRequestSecretSession *)self altDSID];
-    v21 = [(KCJoiningRequestSecretSession *)self session];
-    [v21 setAltDSID:v20];
+    altDSID = [(KCJoiningRequestSecretSession *)self altDSID];
+    session2 = [(KCJoiningRequestSecretSession *)self session];
+    [session2 setAltDSID:altDSID];
 
     if ([(KCJoiningRequestSecretSession *)self piggy_version]== 2)
     {
       v22 = [OTPairingMessage alloc];
-      v23 = [v8 secondData];
-      v24 = [(OTPairingMessage *)v22 initWithData:v23];
+      secondData2 = [challengeCopy secondData];
+      v24 = [(OTPairingMessage *)v22 initWithData:secondData2];
 
       if ([(OTPairingMessage *)v24 hasEpoch])
       {
         v25 = secLogObjForScope("octagon");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [(OTPairingMessage *)v24 epoch];
-          v27 = [v26 dictionaryRepresentation];
+          epoch = [(OTPairingMessage *)v24 epoch];
+          dictionaryRepresentation = [epoch dictionaryRepresentation];
           *v34 = 138412290;
-          *&v34[4] = v27;
+          *&v34[4] = dictionaryRepresentation;
           _os_log_impl(&dword_22EB09000, v25, OS_LOG_TYPE_DEFAULT, "received epoch message: %@", v34, 0xCu);
         }
 
-        v28 = [(OTPairingMessage *)v24 epoch];
-        -[KCJoiningRequestSecretSession setEpoch:](self, "setEpoch:", [v28 epoch]);
+        epoch2 = [(OTPairingMessage *)v24 epoch];
+        -[KCJoiningRequestSecretSession setEpoch:](self, "setEpoch:", [epoch2 epoch]);
       }
 
       else
@@ -581,13 +581,13 @@ LABEL_69:
       }
     }
 
-    v31 = [v8 firstData];
-    v29 = [(KCJoiningRequestSecretSession *)self handleChallengeData:v31 secret:v9 error:a5];
+    firstData = [challengeCopy firstData];
+    v29 = [(KCJoiningRequestSecretSession *)self handleChallengeData:firstData secret:secretCopy error:error];
   }
 
   else
   {
-    KCJoiningErrorCreate(6, a5, @"Expected challenge!", v11, v12, v13, v14, v15, *v34);
+    KCJoiningErrorCreate(6, error, @"Expected challenge!", v11, v12, v13, v14, v15, *v34);
     v29 = 0;
   }
 
@@ -596,10 +596,10 @@ LABEL_69:
   return v29;
 }
 
-- (id)handleChallengeData:(id)a3 secret:(id)a4 error:(id *)a5
+- (id)handleChallengeData:(id)data secret:(id)secret error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  secretCopy = secret;
+  dataCopy = data;
   v10 = secLogObjForScope("joining");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -609,34 +609,34 @@ LABEL_69:
 
   v16 = 0;
   v17 = 0;
-  v11 = [v9 decodeSequenceData:&v17 data:&v16 error:a5];
+  v11 = [dataCopy decodeSequenceData:&v17 data:&v16 error:error];
 
   v12 = v17;
   v13 = v16;
   v14 = 0;
   if (v11)
   {
-    v14 = [(KCJoiningRequestSecretSession *)self copyResponseForChallenge:v13 salt:v12 secret:v8 error:a5];
+    v14 = [(KCJoiningRequestSecretSession *)self copyResponseForChallenge:v13 salt:v12 secret:secretCopy error:error];
   }
 
   return v14;
 }
 
-- (id)copyResponseForSecret:(id)a3 error:(id *)a4
+- (id)copyResponseForSecret:(id)secret error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KCJoiningRequestSecretSession *)self challenge];
-  v8 = [(KCJoiningRequestSecretSession *)self salt];
-  v9 = [(KCJoiningRequestSecretSession *)self copyResponseForChallenge:v7 salt:v8 secret:v6 error:a4];
+  secretCopy = secret;
+  challenge = [(KCJoiningRequestSecretSession *)self challenge];
+  salt = [(KCJoiningRequestSecretSession *)self salt];
+  v9 = [(KCJoiningRequestSecretSession *)self copyResponseForChallenge:challenge salt:salt secret:secretCopy error:error];
 
   return v9;
 }
 
-- (id)copyResponseForChallenge:(id)a3 salt:(id)a4 secret:(id)a5 error:(id *)a6
+- (id)copyResponseForChallenge:(id)challenge salt:(id)salt secret:(id)secret error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  challengeCopy = challenge;
+  saltCopy = salt;
+  secretCopy = secret;
   v13 = secLogObjForScope("joining");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -644,13 +644,13 @@ LABEL_69:
     _os_log_impl(&dword_22EB09000, v13, OS_LOG_TYPE_DEFAULT, "joining: KCJoiningRequestSecretSession copyResponseForChallenge called", v18, 2u);
   }
 
-  v14 = [(KCSRPClientContext *)self->_context copyResposeToChallenge:v10 password:v12 salt:v11 error:a6];
-  if (v14 && [(KCJoiningRequestSecretSession *)self setupSession:a6])
+  v14 = [(KCSRPClientContext *)self->_context copyResposeToChallenge:challengeCopy password:secretCopy salt:saltCopy error:error];
+  if (v14 && [(KCJoiningRequestSecretSession *)self setupSession:error])
   {
-    [(KCJoiningRequestSecretSession *)self setChallenge:v10];
-    [(KCJoiningRequestSecretSession *)self setSalt:v11];
+    [(KCJoiningRequestSecretSession *)self setChallenge:challengeCopy];
+    [(KCJoiningRequestSecretSession *)self setSalt:saltCopy];
     self->_state = 1;
-    v15 = [KCJoiningMessage messageWithType:2 data:v14 error:a6];
+    v15 = [KCJoiningMessage messageWithType:2 data:v14 error:error];
     v16 = [v15 der];
   }
 
@@ -662,57 +662,57 @@ LABEL_69:
   return v16;
 }
 
-- (void)setAltDSID:(id)a3
+- (void)setAltDSID:(id)d
 {
-  objc_storeStrong(&self->_altDSID, a3);
-  v5 = a3;
-  v6 = [(KCJoiningRequestSecretSession *)self session];
-  [v6 setAltDSID:v5];
+  objc_storeStrong(&self->_altDSID, d);
+  dCopy = d;
+  session = [(KCJoiningRequestSecretSession *)self session];
+  [session setAltDSID:dCopy];
 }
 
-- (BOOL)setupSession:(id *)a3
+- (BOOL)setupSession:(id *)session
 {
-  v10 = [(KCSRPContext *)self->_context getKey];
-  if (v10)
+  getKey = [(KCSRPContext *)self->_context getKey];
+  if (getKey)
   {
-    v11 = [KCAESGCMDuplexSession sessionAsSender:v10 context:[(KCJoiningRequestSecretSession *)self dsid]];
+    v11 = [KCAESGCMDuplexSession sessionAsSender:getKey context:[(KCJoiningRequestSecretSession *)self dsid]];
     session = self->_session;
     self->_session = v11;
 
-    v13 = [(KCJoiningRequestSecretSession *)self sessionUUID];
-    v14 = [(KCJoiningRequestSecretSession *)self session];
-    [v14 setPairingUUID:v13];
+    sessionUUID = [(KCJoiningRequestSecretSession *)self sessionUUID];
+    session = [(KCJoiningRequestSecretSession *)self session];
+    [session setPairingUUID:sessionUUID];
 
-    v15 = [(KCJoiningRequestSecretSession *)self altDSID];
-    v16 = [(KCJoiningRequestSecretSession *)self session];
-    [v16 setAltDSID:v15];
+    altDSID = [(KCJoiningRequestSecretSession *)self altDSID];
+    session2 = [(KCJoiningRequestSecretSession *)self session];
+    [session2 setAltDSID:altDSID];
 
-    v17 = [(KCJoiningRequestSecretSession *)self piggy_version];
-    v18 = [(KCJoiningRequestSecretSession *)self session];
-    [v18 setPiggybackingVersion:v17];
+    piggy_version = [(KCJoiningRequestSecretSession *)self piggy_version];
+    session3 = [(KCJoiningRequestSecretSession *)self session];
+    [session3 setPiggybackingVersion:piggy_version];
 
-    v19 = [(KCJoiningRequestSecretSession *)self session];
-    v20 = v19 != 0;
+    session4 = [(KCJoiningRequestSecretSession *)self session];
+    v20 = session4 != 0;
   }
 
   else
   {
-    KCJoiningErrorCreate(7, a3, @"No session key available", v5, v6, v7, v8, v9, v22);
+    KCJoiningErrorCreate(7, session, @"No session key available", v5, v6, v7, v8, v9, v22);
     v20 = 0;
   }
 
   return v20;
 }
 
-- (id)initialMessage:(id *)a3
+- (id)initialMessage:(id *)message
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = [AAFAnalyticsEventSecurity alloc];
-  v6 = [(KCJoiningRequestSecretSession *)self altDSID];
-  v7 = [(KCJoiningRequestSecretSession *)self flowID];
-  v8 = [(KCJoiningRequestSecretSession *)self deviceSessionID];
+  altDSID = [(KCJoiningRequestSecretSession *)self altDSID];
+  flowID = [(KCJoiningRequestSecretSession *)self flowID];
+  deviceSessionID = [(KCJoiningRequestSecretSession *)self deviceSessionID];
   LOBYTE(v28) = 1;
-  v9 = [(AAFAnalyticsEventSecurity *)v5 initWithKeychainCircleMetrics:0 altDSID:v6 flowID:v7 deviceSessionID:v8 eventName:@"com.apple.security.piggybackingSessionInitiatorInitialMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v28 category:&unk_2843768F0];
+  v9 = [(AAFAnalyticsEventSecurity *)v5 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:@"com.apple.security.piggybackingSessionInitiatorInitialMessage" testsAreEnabled:metricsAreEnabled canSendMetrics:v28 category:&unk_2843768F0];
 
   context = self->_context;
   v29 = 0;
@@ -730,13 +730,13 @@ LABEL_69:
 
     if ([(KCJoiningRequestSecretSession *)self piggy_version]== 2)
     {
-      v15 = [(KCJoiningRequestSecretSession *)self createUUID];
+      createUUID = [(KCJoiningRequestSecretSession *)self createUUID];
       v16 = [@"o" dataUsingEncoding:134217984];
-      v17 = [MEMORY[0x277CBEB28] dataWithLength:{sizeof_initialmessage_version2(v11, 1, v15, v16)}];
+      v17 = [MEMORY[0x277CBEB28] dataWithLength:{sizeof_initialmessage_version2(v11, 1, createUUID, v16)}];
       [v17 mutableBytes];
       [v17 mutableBytes];
       [v17 length];
-      if (encode_initialmessage_version2(v11, v15, v16))
+      if (encode_initialmessage_version2(v11, createUUID, v16))
       {
 
 LABEL_14:
@@ -760,10 +760,10 @@ LABEL_29:
       }
 
       [(AAFAnalyticsEventSecurity *)v9 sendMetricWithResult:0 error:v13];
-      if (a3)
+      if (message)
       {
         v21 = v13;
-        *a3 = v13;
+        *message = v13;
       }
     }
 
@@ -790,11 +790,11 @@ LABEL_29:
         }
 
         [(AAFAnalyticsEventSecurity *)v9 sendMetricWithResult:0 error:v13];
-        if (a3)
+        if (message)
         {
           v27 = v13;
           v19 = 0;
-          *a3 = v13;
+          *message = v13;
           goto LABEL_29;
         }
 
@@ -803,12 +803,12 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v15 = [(KCJoiningRequestSecretSession *)self createUUID];
-      v17 = [MEMORY[0x277CBEB28] dataWithLength:{sizeof_initialmessage_version1(v11, 1, v15)}];
+      createUUID = [(KCJoiningRequestSecretSession *)self createUUID];
+      v17 = [MEMORY[0x277CBEB28] dataWithLength:{sizeof_initialmessage_version1(v11, 1, createUUID)}];
       [v17 mutableBytes];
       [v17 mutableBytes];
       [v17 length];
-      if (encode_initialmessage_version1(v11, v15))
+      if (encode_initialmessage_version1(v11, createUUID))
       {
         goto LABEL_14;
       }
@@ -823,10 +823,10 @@ LABEL_28:
       }
 
       [(AAFAnalyticsEventSecurity *)v9 sendMetricWithResult:0 error:v13];
-      if (a3)
+      if (message)
       {
         v23 = v13;
-        *a3 = v13;
+        *message = v13;
       }
     }
 
@@ -839,11 +839,11 @@ LABEL_28:
   }
 
   [(AAFAnalyticsEventSecurity *)v9 sendMetricWithResult:0 error:v13];
-  if (a3)
+  if (message)
   {
     v18 = v13;
     v19 = 0;
-    *a3 = v13;
+    *message = v13;
   }
 
   else
@@ -861,13 +861,13 @@ LABEL_30:
 - (id)createUUID
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v8[0] = 0xAAAAAAAAAAAAAAAALL;
   v8[1] = 0xAAAAAAAAAAAAAAAALL;
-  v4 = [v3 UUIDString];
-  [(KCJoiningRequestSecretSession *)self setPiggy_uuid:v4];
+  uUIDString = [uUID UUIDString];
+  [(KCJoiningRequestSecretSession *)self setPiggy_uuid:uUIDString];
 
-  [v3 getUUIDBytes:v8];
+  [uUID getUUIDBytes:v8];
   v5 = [MEMORY[0x277CBEA90] dataWithBytes:v8 length:16];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -875,21 +875,21 @@ LABEL_30:
   return v5;
 }
 
-+ (id)sessionWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 error:(id *)a5
++ (id)sessionWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid error:(id *)error
 {
-  v7 = a3;
-  v8 = [[KCJoiningRequestSecretSession alloc] initWithSecretDelegate:v7 dsid:a4 altDSID:0 flowID:0 deviceSessionID:0 error:a5];
+  delegateCopy = delegate;
+  v8 = [[KCJoiningRequestSecretSession alloc] initWithSecretDelegate:delegateCopy dsid:dsid altDSID:0 flowID:0 deviceSessionID:0 error:error];
 
   return v8;
 }
 
-+ (id)sessionWithSecretDelegate:(id)a3 dsid:(unint64_t)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 error:(id *)a8
++ (id)sessionWithSecretDelegate:(id)delegate dsid:(unint64_t)dsid altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID error:(id *)error
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
-  v17 = [[KCJoiningRequestSecretSession alloc] initWithSecretDelegate:v16 dsid:a4 altDSID:v15 flowID:v14 deviceSessionID:v13 error:a8];
+  sessionIDCopy = sessionID;
+  iDCopy = iD;
+  dCopy = d;
+  delegateCopy = delegate;
+  v17 = [[KCJoiningRequestSecretSession alloc] initWithSecretDelegate:delegateCopy dsid:dsid altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy error:error];
 
   return v17;
 }

@@ -1,17 +1,17 @@
 @interface MPSGraphExecutableEntryPointToSymbolAndFileNameMap
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
-- (BOOL)isEqualToPerEntryPointMap:(id)a3;
-- (MPSGraphExecutableEntryPointToSymbolAndFileNameMap)initWithPerEntryPointMap:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to;
+- (BOOL)isEqualToPerEntryPointMap:(id)map;
+- (MPSGraphExecutableEntryPointToSymbolAndFileNameMap)initWithPerEntryPointMap:(id)map;
 - (id)description;
 @end
 
 @implementation MPSGraphExecutableEntryPointToSymbolAndFileNameMap
 
-- (MPSGraphExecutableEntryPointToSymbolAndFileNameMap)initWithPerEntryPointMap:(id)a3
+- (MPSGraphExecutableEntryPointToSymbolAndFileNameMap)initWithPerEntryPointMap:(id)map
 {
   v33 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  mapCopy = map;
   v24.receiver = self;
   v24.super_class = MPSGraphExecutableEntryPointToSymbolAndFileNameMap;
   v16 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)&v24 init];
@@ -22,7 +22,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = v17;
+    v4 = mapCopy;
     v5 = [v4 countByEnumeratingWithState:&v20 objects:v32 count:16];
     if (v5)
     {
@@ -39,24 +39,24 @@
 
           v7 = *(*(&v20 + 1) + 8 * v6);
           v8 = [MPSGraphExecutableShapedEntryPoint alloc];
-          v9 = [v7 entryFunctionName];
-          v10 = [v7 inputTypes];
+          entryFunctionName = [v7 entryFunctionName];
+          inputTypes = [v7 inputTypes];
           v26 = 0;
           v27 = &v26;
           v28 = 0x3032000000;
           v29 = __Block_byref_object_copy__5;
           v30 = __Block_byref_object_dispose__5;
-          v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+          v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(inputTypes, "count")}];
           v25[0] = MEMORY[0x1E69E9820];
           v25[1] = 3221225472;
           v25[2] = ___Z18getShapesFromTypesP7NSArrayIP12MPSGraphTypeE_block_invoke;
           v25[3] = &unk_1E86D4F38;
           v25[4] = &v26;
-          [v10 enumerateObjectsUsingBlock:v25];
+          [inputTypes enumerateObjectsUsingBlock:v25];
           v11 = v27[5];
           _Block_object_dispose(&v26, 8);
 
-          v12 = [(MPSGraphExecutableShapedEntryPoint *)v8 initWithEntryFunctionName:v9 inputTypes:v11];
+          v12 = [(MPSGraphExecutableShapedEntryPoint *)v8 initWithEntryFunctionName:entryFunctionName inputTypes:v11];
           v13 = [v4 objectForKeyedSubscript:v7];
           [(NSDictionary *)v19 setObject:v13 forKeyedSubscript:v12];
 
@@ -77,12 +77,12 @@
   return v16;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4)
+  toCopy = to;
+  if (toCopy)
   {
-    v5 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)self isEqual:v4];
+    v5 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)self isEqual:toCopy];
 
     return v5;
   }
@@ -94,17 +94,17 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
 
     return 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)self isEqualToPerEntryPointMap:v5];
 
@@ -118,12 +118,12 @@
   }
 }
 
-- (BOOL)isEqualToPerEntryPointMap:(id)a3
+- (BOOL)isEqualToPerEntryPointMap:(id)map
 {
-  v4 = a3;
-  v5 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)self perEntryPointMap];
-  v6 = [v4 perEntryPointMap];
-  v7 = [v5 isEqualToDictionary:v6];
+  mapCopy = map;
+  perEntryPointMap = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)self perEntryPointMap];
+  perEntryPointMap2 = [mapCopy perEntryPointMap];
+  v7 = [perEntryPointMap isEqualToDictionary:perEntryPointMap2];
 
   return v7;
 }

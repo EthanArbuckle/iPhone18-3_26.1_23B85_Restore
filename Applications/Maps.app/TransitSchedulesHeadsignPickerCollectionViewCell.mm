@@ -1,9 +1,9 @@
 @interface TransitSchedulesHeadsignPickerCollectionViewCell
-- (TransitSchedulesHeadsignPickerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TransitSchedulesHeadsignPickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (TransitSchedulesHeadsignPickerCollectionViewCellDelegate)delegate;
-- (void)_updateDeparturePickerWithSelectedDepartureSequence:(id)a3;
+- (void)_updateDeparturePickerWithSelectedDepartureSequence:(id)sequence;
 - (void)configureViews;
-- (void)setDepartureSequences:(id)a3 withSelectedDepartureSequence:(id)a4;
+- (void)setDepartureSequences:(id)sequences withSelectedDepartureSequence:(id)sequence;
 @end
 
 @implementation TransitSchedulesHeadsignPickerCollectionViewCell
@@ -15,9 +15,9 @@
   return WeakRetained;
 }
 
-- (void)_updateDeparturePickerWithSelectedDepartureSequence:(id)a3
+- (void)_updateDeparturePickerWithSelectedDepartureSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = +[NSMutableArray array];
   objc_initWeak(&location, self);
   departureSequences = self->_departureSequences;
@@ -26,7 +26,7 @@
   v12 = sub_100C90090;
   v13 = &unk_10164FBF0;
   objc_copyWeak(&v16, &location);
-  v7 = v4;
+  v7 = sequenceCopy;
   v14 = v7;
   v8 = v5;
   v15 = v8;
@@ -38,58 +38,58 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setDepartureSequences:(id)a3 withSelectedDepartureSequence:(id)a4
+- (void)setDepartureSequences:(id)sequences withSelectedDepartureSequence:(id)sequence
 {
-  v8 = a4;
-  v6 = [a3 copy];
+  sequenceCopy = sequence;
+  v6 = [sequences copy];
   departureSequences = self->_departureSequences;
   self->_departureSequences = v6;
 
-  [(TransitSchedulesHeadsignPickerCollectionViewCell *)self _updateDeparturePickerWithSelectedDepartureSequence:v8];
+  [(TransitSchedulesHeadsignPickerCollectionViewCell *)self _updateDeparturePickerWithSelectedDepartureSequence:sequenceCopy];
 }
 
 - (void)configureViews
 {
-  v3 = [(TransitSchedulesHeadsignPickerCollectionViewCell *)self contentView];
-  [v3 setAccessibilityIdentifier:@"TransitSchedulesHeadsignPickerCollectionViewCell"];
+  contentView = [(TransitSchedulesHeadsignPickerCollectionViewCell *)self contentView];
+  [contentView setAccessibilityIdentifier:@"TransitSchedulesHeadsignPickerCollectionViewCell"];
   v4 = [UIButton buttonWithType:124];
   picker = self->_picker;
   self->_picker = v4;
 
-  v6 = [(UIButton *)self->_picker titleLabel];
-  [v6 setTextAlignment:0];
+  titleLabel = [(UIButton *)self->_picker titleLabel];
+  [titleLabel setTextAlignment:0];
 
   [(UIButton *)self->_picker setContentHorizontalAlignment:1];
   [(UIButton *)self->_picker setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_picker setShowsMenuAsPrimaryAction:1];
   [(UIButton *)self->_picker setContextMenuInteractionEnabled:1];
   [(UIButton *)self->_picker setAccessibilityIdentifier:@"TransitSchedulesHeadsignPickerCollectionViewCellPicker"];
-  [v3 addSubview:self->_picker];
-  v19 = [(UIButton *)self->_picker leadingAnchor];
-  v18 = [v3 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  [contentView addSubview:self->_picker];
+  leadingAnchor = [(UIButton *)self->_picker leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v17;
-  v16 = [(UIButton *)self->_picker trailingAnchor];
-  v7 = [v3 trailingAnchor];
-  v8 = [v16 constraintEqualToAnchor:v7];
+  trailingAnchor = [(UIButton *)self->_picker trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v8;
-  v9 = [(UIButton *)self->_picker topAnchor];
-  v10 = [v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(UIButton *)self->_picker topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[2] = v11;
-  v12 = [(UIButton *)self->_picker bottomAnchor];
-  v13 = [v3 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIButton *)self->_picker bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v14;
   v15 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v15];
 }
 
-- (TransitSchedulesHeadsignPickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (TransitSchedulesHeadsignPickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitSchedulesHeadsignPickerCollectionViewCell;
-  v3 = [(TransitSchedulesHeadsignPickerCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitSchedulesHeadsignPickerCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

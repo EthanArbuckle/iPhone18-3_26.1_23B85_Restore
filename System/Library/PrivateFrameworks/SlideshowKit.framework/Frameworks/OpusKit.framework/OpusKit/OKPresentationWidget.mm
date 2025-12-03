@@ -1,14 +1,14 @@
 @interface OKPresentationWidget
-+ (OKPresentationWidget)widgetWithName:(id)a3 templateName:(id)a4 className:(id)a5 settings:(id)a6 userData:(id)a7 subWidgets:(id)a8 materials:(id)a9;
++ (OKPresentationWidget)widgetWithName:(id)name templateName:(id)templateName className:(id)className settings:(id)settings userData:(id)data subWidgets:(id)widgets materials:(id)materials;
 - (OKPresentationWidget)init;
-- (OKPresentationWidget)initWithDictionary:(id)a3 forPresentation:(id)a4 andParent:(id)a5;
-- (id)canvasWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKPresentationWidget)initWithDictionary:(id)dictionary forPresentation:(id)presentation andParent:(id)parent;
+- (id)canvasWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)materialWithName:(id)a3;
+- (id)materialWithName:(id)name;
 - (id)parentPage;
 - (id)parentWidget;
-- (id)subWidgetWithName:(id)a3;
+- (id)subWidgetWithName:(id)name;
 - (id)widgetTemplate;
 - (void)dealloc;
 - (void)resolveIfNeeded;
@@ -38,28 +38,28 @@
   return result;
 }
 
-- (OKPresentationWidget)initWithDictionary:(id)a3 forPresentation:(id)a4 andParent:(id)a5
+- (OKPresentationWidget)initWithDictionary:(id)dictionary forPresentation:(id)presentation andParent:(id)parent
 {
   v34 = *MEMORY[0x277D85DE8];
   v8 = [(OKPresentationWidget *)self init];
   v9 = v8;
   if (v8)
   {
-    [(OKPresentationCanvas *)v8 setPresentation:a4];
-    [(OKPresentationCanvas *)v9 setParent:a5];
-    -[OKPresentationWidget setTemplateName:](v9, "setTemplateName:", [a3 objectForKey:@"template"]);
-    v9->_internalName = [objc_msgSend(a3 objectForKey:{@"name", "copy"}];
-    v9->_internalClassName = [objc_msgSend(a3 objectForKey:{@"class", "copy"}];
-    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"settings", 1}];
-    v9->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"userData", 1}];
+    [(OKPresentationCanvas *)v8 setPresentation:presentation];
+    [(OKPresentationCanvas *)v9 setParent:parent];
+    -[OKPresentationWidget setTemplateName:](v9, "setTemplateName:", [dictionary objectForKey:@"template"]);
+    v9->_internalName = [objc_msgSend(dictionary objectForKey:{@"name", "copy"}];
+    v9->_internalClassName = [objc_msgSend(dictionary objectForKey:{@"class", "copy"}];
+    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"settings", 1}];
+    v9->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"userData", 1}];
     v9->_internalSubWidgets = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9->_internalMaterials = objc_alloc_init(MEMORY[0x277CBEB18]);
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v23 = a3;
-    v10 = [a3 objectForKey:@"widgets"];
+    dictionaryCopy = dictionary;
+    v10 = [dictionary objectForKey:@"widgets"];
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v11)
     {
@@ -74,7 +74,7 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [[OKPresentationWidget alloc] initWithDictionary:*(*(&v28 + 1) + 8 * i) forPresentation:a4 andParent:v9];
+          v15 = [[OKPresentationWidget alloc] initWithDictionary:*(*(&v28 + 1) + 8 * i) forPresentation:presentation andParent:v9];
           [(NSMutableArray *)v9->_internalSubWidgets addObject:v15];
         }
 
@@ -88,7 +88,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [v23 objectForKey:@"materials"];
+    v16 = [dictionaryCopy objectForKey:@"materials"];
     v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v17)
     {
@@ -103,7 +103,7 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [[OKPresentationMaterial alloc] initWithDictionary:*(*(&v24 + 1) + 8 * j) forPresentation:a4 andParent:v9];
+          v21 = [[OKPresentationMaterial alloc] initWithDictionary:*(*(&v24 + 1) + 8 * j) forPresentation:presentation andParent:v9];
           [(NSMutableArray *)v9->_internalMaterials addObject:v21];
         }
 
@@ -115,7 +115,7 @@
 
     [(OKPresentationCanvas *)v9 setName:v9->_internalName];
     [(OKPresentationWidget *)v9 setClassName:v9->_internalClassName];
-    -[OKPresentationCanvas setProperties:](v9, "setProperties:", [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(v23 copyItems:{"objectForKey:", @"properties", 1}]);
+    -[OKPresentationCanvas setProperties:](v9, "setProperties:", [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionaryCopy copyItems:{"objectForKey:", @"properties", 1}]);
   }
 
   return v9;
@@ -198,28 +198,28 @@
   [(OKPresentationCanvas *)&v13 dealloc];
 }
 
-+ (OKPresentationWidget)widgetWithName:(id)a3 templateName:(id)a4 className:(id)a5 settings:(id)a6 userData:(id)a7 subWidgets:(id)a8 materials:(id)a9
++ (OKPresentationWidget)widgetWithName:(id)name templateName:(id)templateName className:(id)className settings:(id)settings userData:(id)data subWidgets:(id)widgets materials:(id)materials
 {
   v15 = objc_alloc_init(OKPresentationWidget);
-  [(OKPresentationWidget *)v15 setTemplateName:a4];
-  v15->_internalName = [a3 copy];
-  v15->_internalClassName = [a5 copy];
-  v15->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a6 copyItems:1];
-  v15->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a7 copyItems:1];
-  v15->_internalSubWidgets = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a8 copyItems:1];
-  v15->_internalMaterials = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a9 copyItems:1];
-  [(OKPresentationCanvas *)v15 setName:a3];
-  [(OKPresentationWidget *)v15 setClassName:a5];
+  [(OKPresentationWidget *)v15 setTemplateName:templateName];
+  v15->_internalName = [name copy];
+  v15->_internalClassName = [className copy];
+  v15->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:settings copyItems:1];
+  v15->_internalUserData = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:data copyItems:1];
+  v15->_internalSubWidgets = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:widgets copyItems:1];
+  v15->_internalMaterials = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:materials copyItems:1];
+  [(OKPresentationCanvas *)v15 setName:name];
+  [(OKPresentationWidget *)v15 setClassName:className];
   [(NSMutableArray *)v15->_internalSubWidgets makeObjectsPerformSelector:sel_setParent_ withObject:v15];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = OKPresentationWidget;
-  v4 = [(OKPresentationCanvas *)&v6 copyWithZone:a3];
+  v4 = [(OKPresentationCanvas *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[10] = [(NSString *)self->_templateName copy];
@@ -247,12 +247,12 @@
 - (id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   templateName = self->_templateName;
   if (templateName)
   {
-    [v3 setObject:templateName forKey:@"template"];
+    [dictionary setObject:templateName forKey:@"template"];
   }
 
   internalName = self->_internalName;
@@ -279,7 +279,7 @@
 
   if (self->_internalMaterials)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -299,7 +299,7 @@
             objc_enumerationMutation(internalMaterials);
           }
 
-          [v8 addObject:{objc_msgSend(*(*(&v25 + 1) + 8 * i), "dictionary")}];
+          [array addObject:{objc_msgSend(*(*(&v25 + 1) + 8 * i), "dictionary")}];
         }
 
         v11 = [(NSMutableArray *)internalMaterials countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -308,12 +308,12 @@
       while (v11);
     }
 
-    [v4 setObject:v8 forKey:@"materials"];
+    [v4 setObject:array forKey:@"materials"];
   }
 
   if ([(NSMutableArray *)self->_internalSubWidgets count])
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -333,7 +333,7 @@
             objc_enumerationMutation(internalSubWidgets);
           }
 
-          [v14 addObject:{objc_msgSend(*(*(&v21 + 1) + 8 * j), "dictionary")}];
+          [array2 addObject:{objc_msgSend(*(*(&v21 + 1) + 8 * j), "dictionary")}];
         }
 
         v17 = [(NSMutableArray *)internalSubWidgets countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -342,7 +342,7 @@
       while (v17);
     }
 
-    [v4 setObject:v14 forKey:@"widgets"];
+    [v4 setObject:array2 forKey:@"widgets"];
   }
 
   return v4;
@@ -412,7 +412,7 @@
   return 0;
 }
 
-- (id)subWidgetWithName:(id)a3
+- (id)subWidgetWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
   if ([(OKPresentationCanvas *)self presentation])
@@ -455,19 +455,19 @@
 
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:320 andFormat:@"Failed to resolve sub-widget %@ for widget %@: Sub-widget not found", a3, -[OKPresentationCanvas name](self, "name")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:320 andFormat:@"Failed to resolve sub-widget %@ for widget %@: Sub-widget not found", name, -[OKPresentationCanvas name](self, "name")];
     }
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:324 andFormat:@"Failed to resolve sub-widget %@ for widget %@: Not attached to any presentation", a3, -[OKPresentationCanvas name](self, "name")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:324 andFormat:@"Failed to resolve sub-widget %@ for widget %@: Not attached to any presentation", name, -[OKPresentationCanvas name](self, "name")];
   }
 
   return 0;
 }
 
-- (id)materialWithName:(id)a3
+- (id)materialWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
   if ([(OKPresentationCanvas *)self presentation])
@@ -510,25 +510,25 @@
 
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:344 andFormat:@"Failed to resolve material %@ for widget %@: Material not found", a3, -[OKPresentationCanvas name](self, "name")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:344 andFormat:@"Failed to resolve material %@ for widget %@: Material not found", name, -[OKPresentationCanvas name](self, "name")];
     }
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:348 andFormat:@"Failed to resolve material %@ for widget %@: Not attached to any presentation", a3, -[OKPresentationCanvas name](self, "name")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Model/OKPresentationWidget.m" line:348 andFormat:@"Failed to resolve material %@ for widget %@: Not attached to any presentation", name, -[OKPresentationCanvas name](self, "name")];
   }
 
   return 0;
 }
 
-- (id)canvasWithName:(id)a3
+- (id)canvasWithName:(id)name
 {
   result = [(OKPresentationWidget *)self subWidgetWithName:?];
   if (!result)
   {
 
-    return [(OKPresentationWidget *)self materialWithName:a3];
+    return [(OKPresentationWidget *)self materialWithName:name];
   }
 
   return result;
@@ -539,8 +539,8 @@
   v63 = *MEMORY[0x277D85DE8];
   if ([(OKPresentationCanvas *)self presentation])
   {
-    v3 = [(OKPresentationCanvas *)self isResolved];
-    if (!v3)
+    isResolved = [(OKPresentationCanvas *)self isResolved];
+    if (!isResolved)
     {
       subWidgets = self->_subWidgets;
       if (subWidgets)
@@ -610,7 +610,7 @@
       [(OKPresentationCanvas *)self setIsResolved:1];
     }
 
-    v14 = !v3;
+    v14 = !isResolved;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
@@ -679,16 +679,16 @@
 
     if (v14)
     {
-      v27 = [MEMORY[0x277CBEB38] dictionary];
-      v28 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       if (self->_templateName)
       {
         v29 = [[(OKPresentationCanvas *)self presentation] widgetTemplateWithName:self->_templateName];
         if (v29)
         {
           v30 = v29;
-          [v27 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", objc_msgSend(v29, "settings"), 1)}];
-          [v28 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", objc_msgSend(v30, "userData"), 1)}];
+          [dictionary addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", objc_msgSend(v29, "settings"), 1)}];
+          [dictionary2 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", objc_msgSend(v30, "userData"), 1)}];
         }
 
         else if (*MEMORY[0x277D62808] >= 4)
@@ -700,15 +700,15 @@
       internalSettings = self->_internalSettings;
       if (internalSettings && [(NSMutableDictionary *)internalSettings count])
       {
-        [v27 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", self->_internalSettings, 1)}];
+        [dictionary addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", self->_internalSettings, 1)}];
       }
 
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v32 = [v27 allKeys];
-      v33 = [v32 countByEnumeratingWithState:&v47 objects:v60 count:16];
+      allKeys = [dictionary allKeys];
+      v33 = [allKeys countByEnumeratingWithState:&v47 objects:v60 count:16];
       if (v33)
       {
         v34 = v33;
@@ -719,13 +719,13 @@
           {
             if (*v48 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(allKeys);
             }
 
-            -[OKPresentationCanvas setSettingsObject:forKeyPath:](self, "setSettingsObject:forKeyPath:", [v27 objectForKey:*(*(&v47 + 1) + 8 * k)], *(*(&v47 + 1) + 8 * k));
+            -[OKPresentationCanvas setSettingsObject:forKeyPath:](self, "setSettingsObject:forKeyPath:", [dictionary objectForKey:*(*(&v47 + 1) + 8 * k)], *(*(&v47 + 1) + 8 * k));
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v47 objects:v60 count:16];
+          v34 = [allKeys countByEnumeratingWithState:&v47 objects:v60 count:16];
         }
 
         while (v34);
@@ -734,15 +734,15 @@
       internalUserData = self->_internalUserData;
       if (internalUserData && [(NSMutableDictionary *)internalUserData count])
       {
-        [v28 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", self->_internalUserData, 1)}];
+        [dictionary2 addEntriesFromDictionary:{objc_msgSend(objc_alloc(MEMORY[0x277CBEAC0]), "initWithDictionary:copyItems:", self->_internalUserData, 1)}];
       }
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v38 = [v28 allKeys];
-      v39 = [v38 countByEnumeratingWithState:&v43 objects:v59 count:16];
+      allKeys2 = [dictionary2 allKeys];
+      v39 = [allKeys2 countByEnumeratingWithState:&v43 objects:v59 count:16];
       if (v39)
       {
         v40 = v39;
@@ -753,13 +753,13 @@
           {
             if (*v44 != v41)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(allKeys2);
             }
 
-            -[OKPresentationCanvas setUserDataObject:forKeyPath:](self, "setUserDataObject:forKeyPath:", [v28 objectForKey:*(*(&v43 + 1) + 8 * m)], *(*(&v43 + 1) + 8 * m));
+            -[OKPresentationCanvas setUserDataObject:forKeyPath:](self, "setUserDataObject:forKeyPath:", [dictionary2 objectForKey:*(*(&v43 + 1) + 8 * m)], *(*(&v43 + 1) + 8 * m));
           }
 
-          v40 = [v38 countByEnumeratingWithState:&v43 objects:v59 count:16];
+          v40 = [allKeys2 countByEnumeratingWithState:&v43 objects:v59 count:16];
         }
 
         while (v40);

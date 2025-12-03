@@ -1,18 +1,18 @@
 @interface SearchResultCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchResultCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"additionalDescription" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"additionalDescription" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.SearchResultCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

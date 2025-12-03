@@ -1,8 +1,8 @@
 @interface MTSplashViewController
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MTSplashViewController
@@ -26,28 +26,28 @@
   [v4 setViewControllers:v8];
 
   [(MTSplashViewController *)self addChildViewController:v4];
-  v9 = [v4 view];
-  v10 = [(MTSplashViewController *)self view];
-  [v10 bounds];
-  [v9 setFrame:?];
+  view = [v4 view];
+  view2 = [(MTSplashViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v11 = [(MTSplashViewController *)self view];
-  v12 = [v4 view];
-  [v11 addSubview:v12];
+  view3 = [(MTSplashViewController *)self view];
+  view4 = [v4 view];
+  [view3 addSubview:view4];
 
   [v4 didMoveToParentViewController:self];
-  v13 = [(MTSplashViewController *)self view];
+  view5 = [(MTSplashViewController *)self view];
   v14 = +[UIColor systemBackgroundColor];
-  [v13 setBackgroundColor:v14];
+  [view5 setBackgroundColor:v14];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(MTSplashViewController *)self setVisible:1];
   v7.receiver = self;
   v7.super_class = MTSplashViewController;
-  [(MTSplashViewController *)&v7 viewWillAppear:v3];
+  [(MTSplashViewController *)&v7 viewWillAppear:appearCopy];
   v5 = dispatch_time(0, 1500000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -57,13 +57,13 @@
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MTSplashViewController *)self setVisible:0];
   v5.receiver = self;
   v5.super_class = MTSplashViewController;
-  [(MTSplashViewController *)&v5 viewWillDisappear:v3];
+  [(MTSplashViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -71,13 +71,13 @@
   v62.receiver = self;
   v62.super_class = MTSplashViewController;
   [(MTSplashViewController *)&v62 viewDidLayoutSubviews];
-  v3 = [(MTSplashViewController *)self spinner];
+  spinner = [(MTSplashViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
     v4 = [(MTSplashViewController *)self vc];
-    v5 = [v4 view];
-    [v5 bounds];
+    view = [v4 view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -93,8 +93,8 @@
     else
     {
       v16 = [(MTSplashViewController *)self vc];
-      v17 = [v16 view];
-      [v17 bounds];
+      view2 = [v16 view];
+      [view2 bounds];
       v60 = 0;
       IMRectCenteredXInRectScale();
       v13 = v18;
@@ -103,17 +103,17 @@
       v61 = v21;
     }
 
-    v22 = [(MTSplashViewController *)self spinner];
-    [v22 frame];
+    spinner2 = [(MTSplashViewController *)self spinner];
+    [spinner2 frame];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(MTSplashViewController *)self label];
-    [v31 frame];
+    label = [(MTSplashViewController *)self label];
+    [label frame];
 
-    v32 = [(MTSplashViewController *)self label];
+    label2 = [(MTSplashViewController *)self label];
     v63.origin.x = v13;
     v63.origin.y = v14;
     v63.size.width = v15;
@@ -129,7 +129,7 @@
     v65.origin.y = v26;
     v65.size.width = v28;
     v65.size.height = v30;
-    [v32 sizeThatFits:{v34, Height - CGRectGetHeight(v65) + -15.0}];
+    [label2 sizeThatFits:{v34, Height - CGRectGetHeight(v65) + -15.0}];
 
     v66.origin.x = v24;
     v66.origin.y = v26;
@@ -150,8 +150,8 @@
     v67.size.width = v41;
     v67.size.height = v43;
     MinY = CGRectGetMinY(v67);
-    v51 = [(MTSplashViewController *)self spinner];
-    [v51 setFrame:{v45, MinY, v47, v49}];
+    spinner3 = [(MTSplashViewController *)self spinner];
+    [spinner3 setFrame:{v45, MinY, v47, v49}];
 
     IMRectCenteredXInRectScale();
     v53 = v52;
@@ -162,8 +162,8 @@
     v68.size.width = v47;
     v68.size.height = v49;
     v58 = CGRectGetMaxY(v68) + 15.0;
-    v59 = [(MTSplashViewController *)self label];
-    [v59 setFrame:{v53, v58, v55, v57}];
+    label3 = [(MTSplashViewController *)self label];
+    [label3 setFrame:{v53, v58, v55, v57}];
   }
 }
 

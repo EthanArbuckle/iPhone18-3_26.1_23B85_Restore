@@ -2,8 +2,8 @@
 + (void)disableSpeakThisServices;
 + (void)enableSpeakThisServices;
 - (SpeakThisServicesUI)init;
-- (void)_handleSpeakThisEnabledStatusDidChangeNotification:(id)a3;
-- (void)_kbFrameWillChange:(id)a3;
+- (void)_handleSpeakThisEnabledStatusDidChangeNotification:(id)notification;
+- (void)_kbFrameWillChange:(id)change;
 - (void)_registerForKBFrameNotifications;
 - (void)_unregisterForKBFrameNotifications;
 @end
@@ -33,8 +33,8 @@
   v2 = [(SpeakThisServicesUI *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleSpeakThisEnabledStatusDidChangeNotification_ name:*MEMORY[0x29EDC8500] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleSpeakThisEnabledStatusDidChangeNotification_ name:*MEMORY[0x29EDC8500] object:0];
 
     [(SpeakThisServicesUI *)v2 _handleSpeakThisEnabledStatusDidChangeNotification:0];
   }
@@ -42,7 +42,7 @@
   return v2;
 }
 
-- (void)_handleSpeakThisEnabledStatusDidChangeNotification:(id)a3
+- (void)_handleSpeakThisEnabledStatusDidChangeNotification:(id)notification
 {
   if (_AXSSpeakThisEnabled())
   {
@@ -61,8 +61,8 @@
 {
   if (_AXSSpeakThisEnabled())
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__kbFrameWillChange_ name:*MEMORY[0x29EDC81C8] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__kbFrameWillChange_ name:*MEMORY[0x29EDC81C8] object:0];
   }
 
   else
@@ -74,34 +74,34 @@
 
 - (void)_unregisterForKBFrameNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC81C8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC81C8] object:0];
 }
 
-- (void)_kbFrameWillChange:(id)a3
+- (void)_kbFrameWillChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v15 = objc_opt_new();
-  v4 = [getSpeakThisServicesClass() speakThisMessageKeyKBFrame];
-  v5 = [v3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC81B0]];
+  speakThisMessageKeyKBFrame = [getSpeakThisServicesClass() speakThisMessageKeyKBFrame];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC81B0]];
   [v6 CGRectValue];
   v7 = NSStringFromCGRect(v17);
-  [v15 setObject:v7 forKeyedSubscript:v4];
+  [v15 setObject:v7 forKeyedSubscript:speakThisMessageKeyKBFrame];
 
-  v8 = [v3 userInfo];
+  userInfo2 = [changeCopy userInfo];
   v9 = *MEMORY[0x29EDC8180];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x29EDC8180]];
+  v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x29EDC8180]];
   [v15 setObject:v10 forKeyedSubscript:v9];
 
-  v11 = [v3 userInfo];
+  userInfo3 = [changeCopy userInfo];
 
   v12 = *MEMORY[0x29EDC8188];
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x29EDC8188]];
+  v13 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x29EDC8188]];
   [v15 setObject:v13 forKeyedSubscript:v12];
 
-  v14 = [getSpeakThisServicesClass() sharedInstance];
-  [v14 keyboardFrameWillUpdate:v15 errorHandler:&__block_literal_global_3];
+  sharedInstance = [getSpeakThisServicesClass() sharedInstance];
+  [sharedInstance keyboardFrameWillUpdate:v15 errorHandler:&__block_literal_global_3];
 }
 
 void __42__SpeakThisServicesUI__kbFrameWillChange___block_invoke(uint64_t a1, void *a2)

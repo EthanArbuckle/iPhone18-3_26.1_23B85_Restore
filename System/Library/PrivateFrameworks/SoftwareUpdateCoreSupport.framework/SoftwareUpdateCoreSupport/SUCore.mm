@@ -1,28 +1,28 @@
 @interface SUCore
-+ (BOOL)arrayIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)dataIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)dateIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)dictionaryIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)errorIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)numberIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)objectIsEqual:(id)a3 to:(id)a4;
-+ (BOOL)setFileMetadata:(const char *)a3 forKey:(id)a4 value:(id)a5;
-+ (BOOL)stringIsEqual:(id)a3 to:(id)a4;
-+ (id)beginTransactionWithName:(id)a3;
-+ (id)getFileMetadata:(const char *)a3 forKey:(id)a4;
-+ (id)limitString:(id)a3 toMaxLength:(unint64_t)a4 providingSubstitutionMap:(id)a5;
++ (BOOL)arrayIsEqual:(id)equal to:(id)to;
++ (BOOL)dataIsEqual:(id)equal to:(id)to;
++ (BOOL)dateIsEqual:(id)equal to:(id)to;
++ (BOOL)dictionaryIsEqual:(id)equal to:(id)to;
++ (BOOL)errorIsEqual:(id)equal to:(id)to;
++ (BOOL)numberIsEqual:(id)equal to:(id)to;
++ (BOOL)objectIsEqual:(id)equal to:(id)to;
++ (BOOL)setFileMetadata:(const char *)metadata forKey:(id)key value:(id)value;
++ (BOOL)stringIsEqual:(id)equal to:(id)to;
++ (id)beginTransactionWithName:(id)name;
++ (id)getFileMetadata:(const char *)metadata forKey:(id)key;
++ (id)limitString:(id)string toMaxLength:(unint64_t)length providingSubstitutionMap:(id)map;
 + (id)sharedCore;
-+ (id)sharedSUCoreDomainAppending:(id)a3;
-+ (id)stringFromDate:(id)a3;
-+ (id)stringFromTriState:(int64_t)a3;
-+ (void)endTransaction:(id)a3 withName:(id)a4;
++ (id)sharedSUCoreDomainAppending:(id)appending;
++ (id)stringFromDate:(id)date;
++ (id)stringFromTriState:(int64_t)state;
++ (void)endTransaction:(id)transaction withName:(id)name;
 - (SUCore)init;
 - (id)commonDomain;
 - (id)commonFilesystemBaseDir;
-- (id)selectCompletionQueue:(id)a3;
-- (id)selectDelegateCallbackQueue:(id)a3;
-- (void)useDomain:(id)a3;
-- (void)useFilesystemBaseDir:(id)a3;
+- (id)selectCompletionQueue:(id)queue;
+- (id)selectDelegateCallbackQueue:(id)queue;
+- (void)useDomain:(id)domain;
+- (void)useFilesystemBaseDir:(id)dir;
 @end
 
 @implementation SUCore
@@ -53,27 +53,27 @@
     filesystemBaseDir = v3->_filesystemBaseDir;
     v3->_filesystemBaseDir = 0;
 
-    v6 = [@"com.apple.su.completions" UTF8String];
+    uTF8String = [@"com.apple.su.completions" UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     completionQueue = v3->_completionQueue;
     v3->_completionQueue = v8;
 
-    v10 = [@"com.apple.su.delegate_callbacks" UTF8String];
+    uTF8String2 = [@"com.apple.su.delegate_callbacks" UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String2, v11);
     delegateCallbackQueue = v3->_delegateCallbackQueue;
     v3->_delegateCallbackQueue = v12;
 
-    v14 = [@"com.apple.su.waited_operations" UTF8String];
+    uTF8String3 = [@"com.apple.su.waited_operations" UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String3, v15);
     waitedOperationQueue = v3->_waitedOperationQueue;
     v3->_waitedOperationQueue = v16;
 
-    v18 = [@"com.apple.su.misc_tasks" UTF8String];
+    uTF8String4 = [@"com.apple.su.misc_tasks" UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String4, v19);
     miscellaneousTaksQueue = v3->_miscellaneousTaksQueue;
     v3->_miscellaneousTaksQueue = v20;
   }
@@ -88,23 +88,23 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)useDomain:(id)a3
+- (void)useDomain:(id)domain
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SUCore *)v4 setBaseDomain:v5];
-  objc_sync_exit(v4);
+  domainCopy = domain;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUCore *)selfCopy setBaseDomain:domainCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)commonDomain
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCore *)v2 baseDomain];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  baseDomain = [(SUCore *)selfCopy baseDomain];
+  if (baseDomain)
   {
-    v4 = v3;
+    v4 = baseDomain;
   }
 
   else
@@ -112,28 +112,28 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
     v4 = @"com.apple.su";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)useFilesystemBaseDir:(id)a3
+- (void)useFilesystemBaseDir:(id)dir
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(SUCore *)v4 setFilesystemBaseDir:v5];
-  objc_sync_exit(v4);
+  dirCopy = dir;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUCore *)selfCopy setFilesystemBaseDir:dirCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)commonFilesystemBaseDir
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SUCore *)v2 filesystemBaseDir];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  filesystemBaseDir = [(SUCore *)selfCopy filesystemBaseDir];
+  if (filesystemBaseDir)
   {
-    v4 = v3;
+    v4 = filesystemBaseDir;
   }
 
   else
@@ -141,47 +141,47 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
     v4 = @"/var/tmp/SoftwareUpdateCore";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)selectCompletionQueue:(id)a3
+- (id)selectCompletionQueue:(id)queue
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  queueCopy = queue;
+  completionQueue = queueCopy;
+  if (!queueCopy)
   {
-    v5 = [(SUCore *)self completionQueue];
+    completionQueue = [(SUCore *)self completionQueue];
   }
 
-  return v5;
+  return completionQueue;
 }
 
-- (id)selectDelegateCallbackQueue:(id)a3
+- (id)selectDelegateCallbackQueue:(id)queue
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  queueCopy = queue;
+  delegateCallbackQueue = queueCopy;
+  if (!queueCopy)
   {
-    v5 = [(SUCore *)self delegateCallbackQueue];
+    delegateCallbackQueue = [(SUCore *)self delegateCallbackQueue];
   }
 
-  return v5;
+  return delegateCallbackQueue;
 }
 
-+ (id)beginTransactionWithName:(id)a3
++ (id)beginTransactionWithName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [SUCore sharedSUCoreDomainAppending:a3];
+  v3 = [SUCore sharedSUCoreDomainAppending:name];
   v4 = +[SUCoreLog sharedLogger];
-  v5 = [v4 oslog];
+  oslog = [v4 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
     v10 = v3;
-    _os_log_impl(&dword_1E0F71000, v5, OS_LOG_TYPE_DEFAULT, "[TRANSACTION] BEGIN with domain %{public}@", &v9, 0xCu);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[TRANSACTION] BEGIN with domain %{public}@", &v9, 0xCu);
   }
 
   [v3 UTF8String];
@@ -192,19 +192,19 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v6;
 }
 
-+ (void)endTransaction:(id)a3 withName:(id)a4
++ (void)endTransaction:(id)transaction withName:(id)name
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [SUCore sharedSUCoreDomainAppending:a4];
+  transactionCopy = transaction;
+  v6 = [SUCore sharedSUCoreDomainAppending:name];
   v7 = +[SUCoreLog sharedLogger];
 
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NOTNULL";
-    if (!v5)
+    if (!transactionCopy)
     {
       v9 = @"NULL";
     }
@@ -213,30 +213,30 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
     v12 = v6;
     v13 = 2114;
     v14 = v9;
-    _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[TRANSACTION] END   with domain %{public}@ (transaction=%{public}@)", &v11, 0x16u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[TRANSACTION] END   with domain %{public}@ (transaction=%{public}@)", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)sharedSUCoreDomainAppending:(id)a3
++ (id)sharedSUCoreDomainAppending:(id)appending
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ![v3 isEqualToString:&stru_1F5BDE410])
+  appendingCopy = appending;
+  v4 = appendingCopy;
+  if (appendingCopy && ![appendingCopy isEqualToString:&stru_1F5BDE410])
   {
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = +[SUCore sharedCore];
-    v7 = [v6 commonDomain];
-    v8 = [v9 initWithFormat:@"%@.%@", v7, v4];
+    commonDomain = [v6 commonDomain];
+    v8 = [v9 initWithFormat:@"%@.%@", commonDomain, v4];
   }
 
   else
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = +[SUCore sharedCore];
-    v7 = [v6 commonDomain];
-    v8 = [v5 initWithString:v7];
+    commonDomain = [v6 commonDomain];
+    v8 = [v5 initWithString:commonDomain];
   }
 
   v10 = v8;
@@ -244,20 +244,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v10;
 }
 
-+ (BOOL)stringIsEqual:(id)a3 to:(id)a4
++ (BOOL)stringIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToString:v7];
+        v8 = [equalCopy isEqualToString:v7];
       }
 
       else
@@ -275,20 +275,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)dictionaryIsEqual:(id)a3 to:(id)a4
++ (BOOL)dictionaryIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToDictionary:v7];
+        v8 = [equalCopy isEqualToDictionary:v7];
       }
 
       else
@@ -306,20 +306,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)arrayIsEqual:(id)a3 to:(id)a4
++ (BOOL)arrayIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToArray:v7];
+        v8 = [equalCopy isEqualToArray:v7];
       }
 
       else
@@ -337,20 +337,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)numberIsEqual:(id)a3 to:(id)a4
++ (BOOL)numberIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToNumber:v7];
+        v8 = [equalCopy isEqualToNumber:v7];
       }
 
       else
@@ -368,20 +368,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)dataIsEqual:(id)a3 to:(id)a4
++ (BOOL)dataIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToData:v7];
+        v8 = [equalCopy isEqualToData:v7];
       }
 
       else
@@ -399,20 +399,20 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)dateIsEqual:(id)a3 to:(id)a4
++ (BOOL)dateIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v8 = [v5 isEqualToDate:v7];
+        v8 = [equalCopy isEqualToDate:v7];
       }
 
       else
@@ -430,12 +430,12 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
   return v8;
 }
 
-+ (BOOL)errorIsEqual:(id)a3 to:(id)a4
++ (BOOL)errorIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  equalCopy = equal;
+  toCopy = to;
+  v7 = equalCopy;
+  v8 = toCopy;
   v9 = *MEMORY[0x1E696AA08];
   v10 = 10;
   v11 = v8;
@@ -464,9 +464,9 @@ uint64_t __20__SUCore_sharedCore__block_invoke()
       goto LABEL_11;
     }
 
-    v13 = [v12 domain];
-    v14 = [v11 domain];
-    v15 = [v13 isEqualToString:v14];
+    domain = [v12 domain];
+    domain2 = [v11 domain];
+    v15 = [domain isEqualToString:domain2];
 
     if (!v15 || (v16 = [v12 code], v16 != objc_msgSend(v11, "code")))
     {
@@ -475,11 +475,11 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v17 = [v12 userInfo];
-    v18 = [v17 safeObjectForKey:v9 ofClass:objc_opt_class()];
+    userInfo = [v12 userInfo];
+    v18 = [userInfo safeObjectForKey:v9 ofClass:objc_opt_class()];
 
-    v19 = [v11 userInfo];
-    v20 = [v19 safeObjectForKey:v9 ofClass:objc_opt_class()];
+    userInfo2 = [v11 userInfo];
+    v20 = [userInfo2 safeObjectForKey:v9 ofClass:objc_opt_class()];
 
     v11 = v20;
     v12 = v18;
@@ -500,17 +500,17 @@ LABEL_12:
   return v21;
 }
 
-+ (BOOL)objectIsEqual:(id)a3 to:(id)a4
++ (BOOL)objectIsEqual:(id)equal to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  equalCopy = equal;
+  toCopy = to;
+  v7 = toCopy;
+  if (equalCopy | toCopy)
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && toCopy)
     {
-      v8 = [v5 isEqual:v6];
+      v8 = [equalCopy isEqual:toCopy];
     }
   }
 
@@ -522,27 +522,27 @@ LABEL_12:
   return v8;
 }
 
-+ (id)limitString:(id)a3 toMaxLength:(unint64_t)a4 providingSubstitutionMap:(id)a5
++ (id)limitString:(id)string toMaxLength:(unint64_t)length providingSubstitutionMap:(id)map
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  stringCopy = string;
+  mapCopy = map;
+  v9 = stringCopy;
   v10 = v9;
   v11 = v9;
-  if (a4)
+  if (length)
   {
     v11 = v9;
-    if ([(__CFString *)v9 length]> a4)
+    if ([(__CFString *)v9 length]> length)
     {
-      if (v8)
+      if (mapCopy)
       {
-        v12 = [v8 count] + 1;
+        v12 = [mapCopy count] + 1;
         v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"KEYMAP(%llu)", v12];
 
         v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"  %@ = %@", v11, v10];
         if (v13)
         {
-          [v8 addObject:v13];
+          [mapCopy addObject:v13];
         }
       }
 
@@ -551,7 +551,7 @@ LABEL_12:
         v11 = @"(present)";
         v14 = [@"(present)" length];
 
-        if (v14 > a4)
+        if (v14 > length)
         {
           v11 = @"X";
         }
@@ -562,13 +562,13 @@ LABEL_12:
   return v11;
 }
 
-+ (id)stringFromDate:(id)a3
++ (id)stringFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
+  dateCopy = date;
+  v4 = dateCopy;
   if (stringFromDate__onceToken == -1)
   {
-    if (v3)
+    if (dateCopy)
     {
 LABEL_3:
       v5 = [stringFromDate____dateFormatter stringFromDate:v4];
@@ -605,23 +605,23 @@ void __25__SUCore_stringFromDate___block_invoke()
   [v2 setCalendar:v3];
 }
 
-+ (id)stringFromTriState:(int64_t)a3
++ (id)stringFromTriState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"SUCoreTriStateUnknown";
   }
 
   else
   {
-    return off_1E86FC8B0[a3];
+    return off_1E86FC8B0[state];
   }
 }
 
-+ (id)getFileMetadata:(const char *)a3 forKey:(id)a4
++ (id)getFileMetadata:(const char *)metadata forKey:(id)key
 {
-  v5 = [a4 UTF8String];
-  v6 = getxattr(a3, v5, 0, 0, 0, 1);
+  uTF8String = [key UTF8String];
+  v6 = getxattr(metadata, uTF8String, 0, 0, 0, 1);
   if (v6 < 0)
   {
     v10 = 0;
@@ -631,7 +631,7 @@ void __25__SUCore_stringFromDate___block_invoke()
   {
     v7 = v6;
     v8 = [MEMORY[0x1E695DF88] dataWithLength:v6];
-    v9 = getxattr(a3, v5, [v8 mutableBytes], v7, 0, 1);
+    v9 = getxattr(metadata, uTF8String, [v8 mutableBytes], v7, 0, 1);
     if (v9 < 0)
     {
       v10 = 0;
@@ -647,15 +647,15 @@ void __25__SUCore_stringFromDate___block_invoke()
   return v10;
 }
 
-+ (BOOL)setFileMetadata:(const char *)a3 forKey:(id)a4 value:(id)a5
++ (BOOL)setFileMetadata:(const char *)metadata forKey:(id)key value:(id)value
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a4 UTF8String];
-  v11 = [v9 bytes];
-  v12 = [v9 length];
+  keyCopy = key;
+  valueCopy = value;
+  uTF8String = [key UTF8String];
+  bytes = [valueCopy bytes];
+  v12 = [valueCopy length];
 
-  return setxattr(a3, v10, v11, v12, 0, 1) == 0;
+  return setxattr(metadata, uTF8String, bytes, v12, 0, 1) == 0;
 }
 
 @end

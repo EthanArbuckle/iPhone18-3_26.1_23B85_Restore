@@ -1,37 +1,37 @@
 @interface CAMIntervalometerTestHarness
-- (BOOL)_hasReceivedExpectedNumberOfResponsesForPersistenceUUID:(id)a3 failureReason:(id *)a4;
-- (BOOL)_hasReceivedExpectedNumberOfResponsesForRequestsWithFailureReason:(id *)a3;
+- (BOOL)_hasReceivedExpectedNumberOfResponsesForPersistenceUUID:(id)d failureReason:(id *)reason;
+- (BOOL)_hasReceivedExpectedNumberOfResponsesForRequestsWithFailureReason:(id *)reason;
 - (BOOL)_shouldDelayBeforeCapturing;
-- (BOOL)intervalometer:(id)a3 didGenerateCaptureRequest:(id)a4;
-- (CAMIntervalometerTestHarness)initWithTestName:(id)a3 expectedNumberOfCapturesPerRequest:(unint64_t)a4 captureController:(id)a5 performingWarmupCapture:(BOOL)a6 forCaptureMode:(int64_t)a7 delayBetweenCaptures:(double)a8;
-- (void)failedTestWithReason:(id)a3;
-- (void)intervalometer:(id)a3 didReachMaximumCountWithRequest:(id)a4;
+- (BOOL)intervalometer:(id)intervalometer didGenerateCaptureRequest:(id)request;
+- (CAMIntervalometerTestHarness)initWithTestName:(id)name expectedNumberOfCapturesPerRequest:(unint64_t)request captureController:(id)controller performingWarmupCapture:(BOOL)capture forCaptureMode:(int64_t)mode delayBetweenCaptures:(double)captures;
+- (void)failedTestWithReason:(id)reason;
+- (void)intervalometer:(id)intervalometer didReachMaximumCountWithRequest:(id)request;
 - (void)startTesting;
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4;
-- (void)stillImageRequestDidCompleteStillImageCapture:(id)a3 withResponse:(id)a4 error:(id)a5;
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error;
+- (void)stillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error;
 - (void)stopTesting;
 @end
 
 @implementation CAMIntervalometerTestHarness
 
-- (CAMIntervalometerTestHarness)initWithTestName:(id)a3 expectedNumberOfCapturesPerRequest:(unint64_t)a4 captureController:(id)a5 performingWarmupCapture:(BOOL)a6 forCaptureMode:(int64_t)a7 delayBetweenCaptures:(double)a8
+- (CAMIntervalometerTestHarness)initWithTestName:(id)name expectedNumberOfCapturesPerRequest:(unint64_t)request captureController:(id)controller performingWarmupCapture:(BOOL)capture forCaptureMode:(int64_t)mode delayBetweenCaptures:(double)captures
 {
-  v15 = a5;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = CAMIntervalometerTestHarness;
-  v16 = [(CAMPerformanceTestHarness *)&v21 initWithTestName:a3];
+  v16 = [(CAMPerformanceTestHarness *)&v21 initWithTestName:name];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_captureController, a5);
-    v17->_mode = a7;
-    v17->_expectedNumberOfResponsesPerRequest = a4;
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v16->_captureController, controller);
+    v17->_mode = mode;
+    v17->_expectedNumberOfResponsesPerRequest = request;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     numberOfResponsesForRequest = v17->_numberOfResponsesForRequest;
-    v17->_numberOfResponsesForRequest = v18;
+    v17->_numberOfResponsesForRequest = dictionary;
 
-    v17->_performWarmupCapture = a6;
-    v17->_delayBetweenCaptures = a8;
+    v17->_performWarmupCapture = capture;
+    v17->_delayBetweenCaptures = captures;
     v17->_lastCaptureCompletionTime = 0.0;
   }
 
@@ -42,8 +42,8 @@
 {
   if (self->_performWarmupCapture)
   {
-    v3 = [(CAMIntervalometerTestHarness *)self testIntervalometer];
-    [v3 manuallyGenerateRequest];
+    testIntervalometer = [(CAMIntervalometerTestHarness *)self testIntervalometer];
+    [testIntervalometer manuallyGenerateRequest];
   }
 
   else
@@ -76,38 +76,38 @@
   [(CAMPerformanceTestHarness *)&v6 stopTesting];
 }
 
-- (void)failedTestWithReason:(id)a3
+- (void)failedTestWithReason:(id)reason
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = v4;
+    v8 = reasonCopy;
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   v6.receiver = self;
   v6.super_class = CAMIntervalometerTestHarness;
-  [(CAMPerformanceTestHarness *)&v6 failedTestWithReason:v4];
+  [(CAMPerformanceTestHarness *)&v6 failedTestWithReason:reasonCopy];
 }
 
-- (void)stillImageRequestDidCompleteStillImageCapture:(id)a3 withResponse:(id)a4 error:(id)a5
+- (void)stillImageRequestDidCompleteStillImageCapture:(id)capture withResponse:(id)response error:(id)error
 {
-  v11 = a5;
-  v7 = [a3 persistenceUUID];
-  if (v11)
+  errorCopy = error;
+  persistenceUUID = [capture persistenceUUID];
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Capture failed with error: %@", v11];
-    [(CAMIntervalometerTestHarness *)self failedTestWithReason:v8];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Capture failed with error: %@", errorCopy];
+    [(CAMIntervalometerTestHarness *)self failedTestWithReason:errorCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_numberOfResponsesForRequest objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_numberOfResponsesForRequest objectForKeyedSubscript:persistenceUUID];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "unsignedIntegerValue") + 1}];
-  [(NSMutableDictionary *)self->_numberOfResponsesForRequest setObject:v10 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_numberOfResponsesForRequest setObject:v10 forKeyedSubscript:persistenceUUID];
 
-  if (self->_performWarmupCapture && [(CAMIntervalometerTestHarness *)self _hasReceivedExpectedNumberOfResponsesForPersistenceUUID:v7 failureReason:0])
+  if (self->_performWarmupCapture && [(CAMIntervalometerTestHarness *)self _hasReceivedExpectedNumberOfResponsesForPersistenceUUID:persistenceUUID failureReason:0])
   {
     self->_performWarmupCapture = 0;
     self->_waitingOnWarmupCapture = 0;
@@ -115,17 +115,17 @@
   }
 }
 
-- (void)stillImageRequestDidCompleteCapture:(id)a3 error:(id)a4
+- (void)stillImageRequestDidCompleteCapture:(id)capture error:(id)error
 {
-  v5 = a3;
+  captureCopy = capture;
   v6 = dispatch_time(0, 1000000000);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__CAMIntervalometerTestHarness_stillImageRequestDidCompleteCapture_error___block_invoke;
   v8[3] = &unk_1E76F7960;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = captureCopy;
+  v7 = captureCopy;
   dispatch_after(v6, MEMORY[0x1E69E96A0], v8);
 }
 
@@ -166,14 +166,14 @@ void __74__CAMIntervalometerTestHarness_stillImageRequestDidCompleteCapture_erro
   return self->_lastCaptureCompletionTime != 0.0 && CFAbsoluteTimeGetCurrent() - self->_lastCaptureCompletionTime < self->_delayBetweenCaptures;
 }
 
-- (BOOL)intervalometer:(id)a3 didGenerateCaptureRequest:(id)a4
+- (BOOL)intervalometer:(id)intervalometer didGenerateCaptureRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  intervalometerCopy = intervalometer;
+  requestCopy = request;
   v8 = self->_captureController;
   if (!self->_waitingOnWarmupCapture && ![(CAMIntervalometerTestHarness *)self _shouldDelayBeforeCapturing]&& ([(CUCaptureController *)v8 isCaptureAvailable]|| ![(CAMIntervalometerTestHarness *)self _allowOverlappingCaptures]))
   {
-    v11 = [v7 mutableCopy];
+    v11 = [requestCopy mutableCopy];
     v12 = +[CAMCaptureCapabilities capabilities];
     v13 = [v12 isCTMVideoCaptureSupportedForMode:self->_mode];
 
@@ -216,8 +216,8 @@ void __74__CAMIntervalometerTestHarness_stillImageRequestDidCompleteCapture_erro
     if (v19 & ~performWarmupCapture)
     {
       numberOfResponsesForRequest = self->_numberOfResponsesForRequest;
-      v22 = [v7 persistenceUUID];
-      [(NSMutableDictionary *)numberOfResponsesForRequest setObject:&unk_1F16C8438 forKeyedSubscript:v22];
+      persistenceUUID = [requestCopy persistenceUUID];
+      [(NSMutableDictionary *)numberOfResponsesForRequest setObject:&unk_1F16C8438 forKeyedSubscript:persistenceUUID];
 
       v9 = 1;
 LABEL_17:
@@ -236,39 +236,39 @@ LABEL_4:
   return v9;
 }
 
-- (void)intervalometer:(id)a3 didReachMaximumCountWithRequest:(id)a4
+- (void)intervalometer:(id)intervalometer didReachMaximumCountWithRequest:(id)request
 {
-  v5 = [a4 persistenceUUID];
+  persistenceUUID = [request persistenceUUID];
   finalRequestPersistenceUUID = self->_finalRequestPersistenceUUID;
-  self->_finalRequestPersistenceUUID = v5;
+  self->_finalRequestPersistenceUUID = persistenceUUID;
 
-  MEMORY[0x1EEE66BB8](v5, finalRequestPersistenceUUID);
+  MEMORY[0x1EEE66BB8](persistenceUUID, finalRequestPersistenceUUID);
 }
 
-- (BOOL)_hasReceivedExpectedNumberOfResponsesForPersistenceUUID:(id)a3 failureReason:(id *)a4
+- (BOOL)_hasReceivedExpectedNumberOfResponsesForPersistenceUUID:(id)d failureReason:(id *)reason
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_numberOfResponsesForRequest objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
-  v9 = v8;
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_numberOfResponsesForRequest objectForKeyedSubscript:dCopy];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  v9 = unsignedIntegerValue;
   expectedNumberOfResponsesPerRequest = self->_expectedNumberOfResponsesPerRequest;
-  if (a4 && v8 != expectedNumberOfResponsesPerRequest)
+  if (reason && unsignedIntegerValue != expectedNumberOfResponsesPerRequest)
   {
-    *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Did not receive the expected number of reponses for the given test (%lu instead of %lu for persistenceUUID %@)", v8, expectedNumberOfResponsesPerRequest, v6];
+    *reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"Did not receive the expected number of reponses for the given test (%lu instead of %lu for persistenceUUID %@)", unsignedIntegerValue, expectedNumberOfResponsesPerRequest, dCopy];
   }
 
   return v9 == expectedNumberOfResponsesPerRequest;
 }
 
-- (BOOL)_hasReceivedExpectedNumberOfResponsesForRequestsWithFailureReason:(id *)a3
+- (BOOL)_hasReceivedExpectedNumberOfResponsesForRequestsWithFailureReason:(id *)reason
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_numberOfResponsesForRequest allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_numberOfResponsesForRequest allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -279,17 +279,17 @@ LABEL_4:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        if (![(CAMIntervalometerTestHarness *)self _hasReceivedExpectedNumberOfResponsesForPersistenceUUID:*(*(&v12 + 1) + 8 * i) failureReason:a3])
+        if (![(CAMIntervalometerTestHarness *)self _hasReceivedExpectedNumberOfResponsesForPersistenceUUID:*(*(&v12 + 1) + 8 * i) failureReason:reason])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;

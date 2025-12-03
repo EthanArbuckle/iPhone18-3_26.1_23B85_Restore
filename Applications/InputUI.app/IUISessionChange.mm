@@ -1,43 +1,43 @@
 @interface IUISessionChange
-- (IUISessionChange)initWithCoder:(id)a3;
+- (IUISessionChange)initWithCoder:(id)coder;
 - (id)description;
-- (id)initBeginSession:(BOOL)a3 withID:(id)a4 documentTraits:(id)a5 documentState:(id)a6 andEndSessionWithID:(id)a7 options:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (id)initBeginSession:(BOOL)session withID:(id)d documentTraits:(id)traits documentState:(id)state andEndSessionWithID:(id)iD options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IUISessionChange
 
-- (id)initBeginSession:(BOOL)a3 withID:(id)a4 documentTraits:(id)a5 documentState:(id)a6 andEndSessionWithID:(id)a7 options:(id)a8
+- (id)initBeginSession:(BOOL)session withID:(id)d documentTraits:(id)traits documentState:(id)state andEndSessionWithID:(id)iD options:(id)options
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  traitsCopy = traits;
+  stateCopy = state;
+  iDCopy = iD;
+  optionsCopy = options;
   v32.receiver = self;
   v32.super_class = IUISessionChange;
   v19 = [(IUISessionChange *)&v32 init];
   v20 = v19;
   if (v19)
   {
-    v19->_isBeginningSession = a3;
-    v21 = [v14 copy];
+    v19->_isBeginningSession = session;
+    v21 = [dCopy copy];
     beginSessionID = v20->_beginSessionID;
     v20->_beginSessionID = v21;
 
-    v23 = [v15 copy];
+    v23 = [traitsCopy copy];
     beginSessionDocumentTraits = v20->_beginSessionDocumentTraits;
     v20->_beginSessionDocumentTraits = v23;
 
-    v25 = [v16 copy];
+    v25 = [stateCopy copy];
     beginSessionDocumentState = v20->_beginSessionDocumentState;
     v20->_beginSessionDocumentState = v25;
 
-    v27 = [v17 copy];
+    v27 = [iDCopy copy];
     endSessionID = v20->_endSessionID;
     v20->_endSessionID = v27;
 
-    v29 = [v18 copy];
+    v29 = [optionsCopy copy];
     options = v20->_options;
     v20->_options = v29;
   }
@@ -65,27 +65,27 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isBeginningSession = self->_isBeginningSession;
-  v5 = a3;
-  [v5 encodeBool:isBeginningSession forKey:@"isBeginningSession"];
-  [v5 encodeObject:self->_beginSessionID forKey:@"beginSessionID"];
-  [v5 encodeObject:self->_beginSessionDocumentTraits forKey:@"documentTraits"];
-  [v5 encodeObject:self->_beginSessionDocumentState forKey:@"documentState"];
-  [v5 encodeObject:self->_endSessionID forKey:@"endSessionID"];
-  [v5 encodeObject:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isBeginningSession forKey:@"isBeginningSession"];
+  [coderCopy encodeObject:self->_beginSessionID forKey:@"beginSessionID"];
+  [coderCopy encodeObject:self->_beginSessionDocumentTraits forKey:@"documentTraits"];
+  [coderCopy encodeObject:self->_beginSessionDocumentState forKey:@"documentState"];
+  [coderCopy encodeObject:self->_endSessionID forKey:@"endSessionID"];
+  [coderCopy encodeObject:self->_options forKey:@"options"];
 }
 
-- (IUISessionChange)initWithCoder:(id)a3
+- (IUISessionChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isBeginningSession"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beginSessionID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentTraits"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endSessionID"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isBeginningSession"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beginSessionID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentTraits"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endSessionID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
 
   v11 = [(IUISessionChange *)self initBeginSession:v5 withID:v6 documentTraits:v7 documentState:v8 andEndSessionWithID:v9 options:v10];
   return v11;

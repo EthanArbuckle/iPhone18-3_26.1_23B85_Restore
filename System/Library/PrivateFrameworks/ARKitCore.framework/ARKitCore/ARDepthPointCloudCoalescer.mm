@@ -1,10 +1,10 @@
 @interface ARDepthPointCloudCoalescer
 - (ADAggregationParameters)aggregationParameters;
 - (ARDepthPointCloudCoalescer)init;
-- (id)_createModifiedParametersIfNecessary:(id)a3;
-- (id)depthPointCloudWithPose:(id)a3 imageData:(id)a4;
-- (void)addDepthPointCloudData:(id)a3;
-- (void)setAggregationParameters:(id)a3;
+- (id)_createModifiedParametersIfNecessary:(id)necessary;
+- (id)depthPointCloudWithPose:(id)pose imageData:(id)data;
+- (void)addDepthPointCloudData:(id)data;
+- (void)setAggregationParameters:(id)parameters;
 @end
 
 @implementation ARDepthPointCloudCoalescer
@@ -30,13 +30,13 @@
   return v2;
 }
 
-- (void)setAggregationParameters:(id)a3
+- (void)setAggregationParameters:(id)parameters
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 ar_isEqualToParameters:self->_aggregationParameters] & 1) == 0)
+  parametersCopy = parameters;
+  if (([parametersCopy ar_isEqualToParameters:self->_aggregationParameters] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [parametersCopy copy];
     aggregationParameters = self->_aggregationParameters;
     self->_aggregationParameters = v5;
 
@@ -54,7 +54,7 @@
       v12 = 138543618;
       v13 = v10;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "%{public}@ <%p>: The aggregation parameters changed, deleting the aggregator", &v12, 0x16u);
     }
 
@@ -66,12 +66,12 @@
   }
 }
 
-- (id)_createModifiedParametersIfNecessary:(id)a3
+- (id)_createModifiedParametersIfNecessary:(id)necessary
 {
-  v4 = aggregationSizeForPointCloud(a3);
-  v5 = [(ADAggregationParameters *)self->_aggregationParameters aggregationSize];
+  v4 = aggregationSizeForPointCloud(necessary);
+  aggregationSize = [(ADAggregationParameters *)self->_aggregationParameters aggregationSize];
   aggregationParameters = self->_aggregationParameters;
-  if (v5 == v4)
+  if (aggregationSize == v4)
   {
     v7 = aggregationParameters;
   }
@@ -85,15 +85,15 @@
   return v7;
 }
 
-- (void)addDepthPointCloudData:(id)a3
+- (void)addDepthPointCloudData:(id)data
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_aggregatorLock);
   aggregator = self->_aggregator;
-  if (!aggregator || (-[ADPointCloudAggregator aggregationParameters](aggregator, "aggregationParameters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 aggregationSize], v8 = aggregationSizeForPointCloud(v4), v6, v7 != v8))
+  if (!aggregator || (-[ADPointCloudAggregator aggregationParameters](aggregator, "aggregationParameters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 aggregationSize], v8 = aggregationSizeForPointCloud(dataCopy), v6, v7 != v8))
   {
-    v9 = [(ARDepthPointCloudCoalescer *)self _createModifiedParametersIfNecessary:v4];
+    v9 = [(ARDepthPointCloudCoalescer *)self _createModifiedParametersIfNecessary:dataCopy];
     v10 = _ARLogGeneral_39();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -103,7 +103,7 @@
       v34 = 138543874;
       v35 = v12;
       v36 = 2048;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2048;
       v39 = v13;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: About to create a new ADPointCloudAggregator; old: (%p)", &v34, 0x20u);
@@ -119,47 +119,47 @@
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = self->_aggregator;
-      v20 = [(ADPointCloudAggregator *)v19 aggregationParameters];
-      v21 = [v20 aggregationSize];
-      v22 = [(ADPointCloudAggregator *)self->_aggregator aggregationParameters];
-      [v22 maxPointCloudAge];
+      aggregationParameters = [(ADPointCloudAggregator *)v19 aggregationParameters];
+      aggregationSize = [aggregationParameters aggregationSize];
+      aggregationParameters2 = [(ADPointCloudAggregator *)self->_aggregator aggregationParameters];
+      [aggregationParameters2 maxPointCloudAge];
       v34 = 138544386;
       v35 = v18;
       v36 = 2048;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2048;
       v39 = v19;
       v40 = 1024;
-      v41 = v21;
+      v41 = aggregationSize;
       v42 = 2048;
       v43 = v23;
       _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Created a new ADPointCloudAggregator (%p) with Size:%u Age:%lf", &v34, 0x30u);
     }
   }
 
-  [v4 timestamp];
-  v24 = [v4 pointCloud];
-  [v24 length];
+  [dataCopy timestamp];
+  pointCloud = [dataCopy pointCloud];
+  [pointCloud length];
   kdebug_trace();
 
   v25 = self->_aggregator;
-  v26 = [v4 pointCloud];
-  [v4 timestamp];
+  pointCloud2 = [dataCopy pointCloud];
+  [dataCopy timestamp];
   v28 = v27;
   v29 = MEMORY[0x1E698C198];
-  [v4 visionCameraTransform];
+  [dataCopy visionCameraTransform];
   [v29 transformMetersToMillimiters:?];
-  [(ADPointCloudAggregator *)v25 pushPointCloud:v26 timestamp:v28 worldToCameraTransform:v30, v31, v32, v33];
+  [(ADPointCloudAggregator *)v25 pushPointCloud:pointCloud2 timestamp:v28 worldToCameraTransform:v30, v31, v32, v33];
 
   kdebug_trace();
   os_unfair_lock_unlock(&self->_aggregatorLock);
 }
 
-- (id)depthPointCloudWithPose:(id)a3 imageData:(id)a4
+- (id)depthPointCloudWithPose:(id)pose imageData:(id)data
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  poseCopy = pose;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_aggregatorLock);
   aggregator = self->_aggregator;
   if (!aggregator)
@@ -168,17 +168,17 @@
     goto LABEL_35;
   }
 
-  v9 = [(ADPointCloudAggregator *)aggregator aggregationParameters];
-  [v9 aggregationSize];
-  CVPixelBufferGetWidth([v7 pixelBuffer]);
-  CVPixelBufferGetHeight([v7 pixelBuffer]);
-  [v7 timestamp];
+  aggregationParameters = [(ADPointCloudAggregator *)aggregator aggregationParameters];
+  [aggregationParameters aggregationSize];
+  CVPixelBufferGetWidth([dataCopy pixelBuffer]);
+  CVPixelBufferGetHeight([dataCopy pixelBuffer]);
+  [dataCopy timestamp];
   kdebug_trace();
-  v10 = [v7 calibrationData];
-  if (v10)
+  calibrationData = [dataCopy calibrationData];
+  if (calibrationData)
   {
     v11 = objc_alloc(MEMORY[0x1E698C160]);
-    v12 = [v11 ar_initWithImageData:v7 calibrationData:v10];
+    v12 = [v11 ar_initWithImageData:dataCopy calibrationData:calibrationData];
 
     if (v12)
     {
@@ -206,7 +206,7 @@
         *buf = 138544130;
         v68 = v17;
         v69 = 2048;
-        v70 = self;
+        selfCopy6 = self;
         v71 = 2114;
         v72 = v19;
         v73 = 2114;
@@ -226,7 +226,7 @@
       *buf = 138544130;
       v68 = v24;
       v69 = 2048;
-      v70 = self;
+      selfCopy6 = self;
       v71 = 2114;
       v72 = v26;
       v73 = 2114;
@@ -235,8 +235,8 @@
     }
   }
 
-  v29 = [v7 adCameraCalibration];
-  v30 = v29 == 0;
+  adCameraCalibration = [dataCopy adCameraCalibration];
+  v30 = adCameraCalibration == 0;
 
   if (v30)
   {
@@ -255,13 +255,13 @@ LABEL_25:
       {
         v54 = objc_opt_class();
         v55 = NSStringFromClass(v54);
-        v56 = [v7 cameraType];
+        cameraType = [dataCopy cameraType];
         *buf = 138543874;
         v68 = v55;
         v69 = 2048;
-        v70 = self;
+        selfCopy6 = self;
         v71 = 2114;
-        v72 = v56;
+        v72 = cameraType;
         _os_log_impl(&dword_1C241C000, v53, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not update aggregator calibration for image: %{public}@", buf, 0x20u);
       }
     }
@@ -270,18 +270,18 @@ LABEL_25:
     {
       v57 = objc_opt_class();
       v58 = NSStringFromClass(v57);
-      v59 = [v7 cameraType];
+      cameraType2 = [dataCopy cameraType];
       *buf = 138543874;
       v68 = v58;
       v69 = 2048;
-      v70 = self;
+      selfCopy6 = self;
       v71 = 2114;
-      v72 = v59;
+      v72 = cameraType2;
       _os_log_impl(&dword_1C241C000, v53, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not update aggregator calibration for image: %{public}@", buf, 0x20u);
     }
 
     v12 = 0;
-    if (v6)
+    if (poseCopy)
     {
       goto LABEL_16;
     }
@@ -293,8 +293,8 @@ LABEL_33:
   }
 
   v31 = MEMORY[0x1E698C160];
-  v32 = [v7 adCameraCalibration];
-  v12 = [v31 ar_calibrationWithImageData:v7 adCalibrationData:v32];
+  adCameraCalibration2 = [dataCopy adCameraCalibration];
+  v12 = [v31 ar_calibrationWithImageData:dataCopy adCalibrationData:adCameraCalibration2];
 
   if (!v12)
   {
@@ -319,7 +319,7 @@ LABEL_33:
         *buf = 138544130;
         v68 = v40;
         v69 = 2048;
-        v70 = self;
+        selfCopy6 = self;
         v71 = 2114;
         v72 = v42;
         v73 = 2114;
@@ -339,7 +339,7 @@ LABEL_33:
       *buf = 138544130;
       v68 = v46;
       v69 = 2048;
-      v70 = self;
+      selfCopy6 = self;
       v71 = 2114;
       v72 = v48;
       v73 = 2114;
@@ -356,20 +356,20 @@ LABEL_15:
   ARMatrix4x4FromMatrix4x3();
   v78 = __invert_f4(v77);
   [(ADPointCloudAggregator *)self->_aggregator setJasperToCameraTransform:*v78.columns[0].i64, *v78.columns[1].i64, *v78.columns[2].i64, *v78.columns[3].i64];
-  if (!v6)
+  if (!poseCopy)
   {
     goto LABEL_33;
   }
 
 LABEL_16:
   v33 = MEMORY[0x1E698C198];
-  [v6 visionCameraTransform];
+  [poseCopy visionCameraTransform];
   [v33 transformMetersToMillimiters:?];
   v65 = v35;
   v66 = v34;
 LABEL_34:
   v60 = self->_aggregator;
-  [v6 timestamp];
+  [poseCopy timestamp];
   v22 = [ADPointCloudAggregator aggregateForTime:v60 worldToCameraTransform:"aggregateForTime:worldToCameraTransform:"];
   [(ADPointCloudAggregator *)self->_aggregator jasperToCameraTransform];
   [(ADPointCloudAggregator *)self->_aggregator jasperToCameraTransform];
@@ -387,12 +387,12 @@ LABEL_34:
   [(ADPointCloudAggregator *)self->_aggregator jasperToCameraTransform];
   [(ADPointCloudAggregator *)self->_aggregator jasperToCameraTransform];
   kdebug_trace();
-  v61 = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
-  [v61 intrinsicMatrix];
-  v62 = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
-  [v62 intrinsicMatrix];
-  v63 = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
-  [v63 intrinsicMatrix];
+  colorCameraCalibration = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
+  [colorCameraCalibration intrinsicMatrix];
+  colorCameraCalibration2 = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
+  [colorCameraCalibration2 intrinsicMatrix];
+  colorCameraCalibration3 = [(ADPointCloudAggregator *)self->_aggregator colorCameraCalibration];
+  [colorCameraCalibration3 intrinsicMatrix];
   kdebug_trace();
 
   [v22 length];

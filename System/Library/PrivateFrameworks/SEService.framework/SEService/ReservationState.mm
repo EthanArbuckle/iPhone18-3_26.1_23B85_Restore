@@ -1,15 +1,15 @@
 @interface ReservationState
 - (_TtC9SEService16ReservationState)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ReservationState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ReservationState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ReservationState.encode(with:)(coderCopy);
 }
 
 - (_TtC9SEService16ReservationState)init

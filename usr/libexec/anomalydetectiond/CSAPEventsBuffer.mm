@@ -1,7 +1,7 @@
 @interface CSAPEventsBuffer
 - (CSAPEventsBuffer)init;
 - (id)readSamples;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)limitPending;
 - (void)reset;
 @end
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(CSTimestampedSample *)self->_pending addObject:?];
   [(CSAPEventsBuffer *)self limitPending];
 }

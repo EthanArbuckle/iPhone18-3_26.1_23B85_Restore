@@ -1,34 +1,34 @@
 @interface TSCH3DDataBufferResource
-+ (TSCH3DDataBufferResource)resourceWithBuffer:(id)a3;
-- (TSCH3DDataBufferResource)initWithBuffer:(id)a3;
++ (TSCH3DDataBufferResource)resourceWithBuffer:(id)buffer;
+- (TSCH3DDataBufferResource)initWithBuffer:(id)buffer;
 - (id)buffer;
 - (id)description;
 - (void)clear;
-- (void)setBuffer:(id)a3;
-- (void)setChanged:(BOOL)a3;
+- (void)setBuffer:(id)buffer;
+- (void)setChanged:(BOOL)changed;
 @end
 
 @implementation TSCH3DDataBufferResource
 
-+ (TSCH3DDataBufferResource)resourceWithBuffer:(id)a3
++ (TSCH3DDataBufferResource)resourceWithBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithBuffer_(v5, v6, v7, v8, v9, v4);
+  bufferCopy = buffer;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithBuffer_(v5, v6, v7, v8, v9, bufferCopy);
 
   return v10;
 }
 
-- (TSCH3DDataBufferResource)initWithBuffer:(id)a3
+- (TSCH3DDataBufferResource)initWithBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v9.receiver = self;
   v9.super_class = TSCH3DDataBufferResource;
   v6 = [(TSCH3DResource *)&v9 initWithCaching:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._cache, a3);
+    objc_storeStrong(&v6->super._cache, buffer);
     v7->super._cached = 1;
   }
 
@@ -46,11 +46,11 @@
   return v9;
 }
 
-- (void)setChanged:(BOOL)a3
+- (void)setChanged:(BOOL)changed
 {
   v4.receiver = self;
   v4.super_class = TSCH3DDataBufferResource;
-  [(TSCH3DResource *)&v4 setChanged:a3];
+  [(TSCH3DResource *)&v4 setChanged:changed];
   self->super._cached = 1;
 }
 
@@ -71,9 +71,9 @@
   return cache;
 }
 
-- (void)setBuffer:(id)a3
+- (void)setBuffer:(id)buffer
 {
-  objc_storeStrong(&self->super._cache, a3);
+  objc_storeStrong(&self->super._cache, buffer);
   objc_msgSend_setChanged_(self, v4, v5, v6, v7, 1);
   self->super._cached = 1;
 }

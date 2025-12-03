@@ -4,7 +4,7 @@
 - (BOOL)connectedToCar;
 - (BOOL)connectedToSpeaker;
 - (id)_init;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
 - (void)_registerForBluetoothNotifications;
 - (void)_unregisterForBluetoothNotifications;
 - (void)pause;
@@ -39,19 +39,19 @@ uint64_t __38__REBluetoothPredictor_bluetoothQueue__block_invoke()
 {
   v23.receiver = self;
   v23.super_class = REBluetoothPredictor;
-  v2 = [(REPredictor *)&v23 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(REPredictor *)&v23 _init];
+  v3 = _init;
+  if (_init)
   {
-    [v2 setLocalDevices:MEMORY[0x277CBEC10]];
+    [_init setLocalDevices:MEMORY[0x277CBEC10]];
     objc_initWeak(&location, v3);
-    v4 = [v3 queue];
+    queue = [v3 queue];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __29__REBluetoothPredictor__init__block_invoke;
     v20 = &unk_2785F9A90;
     objc_copyWeak(&v21, &location);
-    v5 = [REUpNextScheduler schedulerWithQueue:v4 delay:&v17 updateBlock:0.1];
+    v5 = [REUpNextScheduler schedulerWithQueue:queue delay:&v17 updateBlock:0.1];
     v6 = v3[10];
     v3[10] = v5;
 
@@ -60,15 +60,15 @@ uint64_t __38__REBluetoothPredictor_bluetoothQueue__block_invoke()
     v9 = [v7 setWithObject:v8];
 
     v10 = +[(RESingleton *)REDuetContextStore];
-    v11 = [v10 isConnectedToCarQuery];
+    isConnectedToCarQuery = [v10 isConnectedToCarQuery];
     v12 = v3[8];
-    v3[8] = v11;
+    v3[8] = isConnectedToCarQuery;
 
     [v3[8] setDevices:v9];
     v13 = +[(RESingleton *)REDuetContextStore];
-    v14 = [v13 isConnectedToAudioBluetoothDeviceQuery];
+    isConnectedToAudioBluetoothDeviceQuery = [v13 isConnectedToAudioBluetoothDeviceQuery];
     v15 = v3[9];
-    v3[9] = v14;
+    v3[9] = isConnectedToAudioBluetoothDeviceQuery;
 
     [v3[9] setDevices:v9];
     objc_destroyWeak(&v21);
@@ -100,26 +100,26 @@ void __29__REBluetoothPredictor__init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
-  v7 = a3;
+  featureCopy = feature;
   v8 = +[REFeature isConnectedToCarFeature];
-  v9 = [v7 isEqual:v8];
+  v9 = [featureCopy isEqual:v8];
 
   if (v9)
   {
-    v10 = [(REBluetoothPredictor *)self connectedToCar];
+    connectedToCar = [(REBluetoothPredictor *)self connectedToCar];
 LABEL_5:
-    v13 = [REFeatureValue featureValueWithBool:v10];
+    v13 = [REFeatureValue featureValueWithBool:connectedToCar];
     goto LABEL_7;
   }
 
   v11 = +[REFeature isConnectedToBluetoothSpeakerFeature];
-  v12 = [v7 isEqual:v11];
+  v12 = [featureCopy isEqual:v11];
 
   if (v12)
   {
-    v10 = [(REBluetoothPredictor *)self connectedToSpeaker];
+    connectedToCar = [(REBluetoothPredictor *)self connectedToSpeaker];
     goto LABEL_5;
   }
 
@@ -217,13 +217,13 @@ void __30__REBluetoothPredictor_resume__block_invoke_2(uint64_t a1, uint64_t a2,
       [REBluetoothPredictor update];
     }
 
-    v3 = [(REPredictor *)self queue];
+    queue = [(REPredictor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __30__REBluetoothPredictor_update__block_invoke_2;
     block[3] = &unk_2785F9AB8;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -329,8 +329,8 @@ void __30__REBluetoothPredictor_update__block_invoke_3(id *a1)
 
   else
   {
-    v4 = [(REBluetoothPredictor *)self localDevices];
-    [v4 allValues];
+    localDevices = [(REBluetoothPredictor *)self localDevices];
+    [localDevices allValues];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -350,8 +350,8 @@ void __30__REBluetoothPredictor_update__block_invoke_3(id *a1)
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 type];
-          if (v11 <= 0x2F && ((1 << v11) & 0x800000DB0000) != 0)
+          type = [v10 type];
+          if (type <= 0x2F && ((1 << type) & 0x800000DB0000) != 0)
           {
 
             v3 = 1;
@@ -388,8 +388,8 @@ LABEL_17:
 
   else
   {
-    v4 = [(REBluetoothPredictor *)self localDevices];
-    [v4 allValues];
+    localDevices = [(REBluetoothPredictor *)self localDevices];
+    [localDevices allValues];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -435,7 +435,7 @@ LABEL_13:
 {
   if (BluetoothManagerLibraryCore())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     bluetoothNotificationScheduler = self->_bluetoothNotificationScheduler;
     v35 = 0;
     v36 = &v35;
@@ -453,7 +453,7 @@ LABEL_13:
     _Block_object_dispose(&v35, 8);
     if (v5)
     {
-      [v3 addObserver:bluetoothNotificationScheduler selector:sel_schedule name:*v5 object:0];
+      [defaultCenter addObserver:bluetoothNotificationScheduler selector:sel_schedule name:*v5 object:0];
       v7 = self->_bluetoothNotificationScheduler;
       v35 = 0;
       v36 = &v35;
@@ -471,7 +471,7 @@ LABEL_13:
       _Block_object_dispose(&v35, 8);
       if (v8)
       {
-        [v3 addObserver:v7 selector:sel_schedule name:*v8 object:0];
+        [defaultCenter addObserver:v7 selector:sel_schedule name:*v8 object:0];
         v10 = self->_bluetoothNotificationScheduler;
         v35 = 0;
         v36 = &v35;
@@ -489,7 +489,7 @@ LABEL_13:
         _Block_object_dispose(&v35, 8);
         if (v11)
         {
-          [v3 addObserver:v10 selector:sel_schedule name:*v11 object:0];
+          [defaultCenter addObserver:v10 selector:sel_schedule name:*v11 object:0];
           v13 = self->_bluetoothNotificationScheduler;
           v35 = 0;
           v36 = &v35;
@@ -507,7 +507,7 @@ LABEL_13:
           _Block_object_dispose(&v35, 8);
           if (v14)
           {
-            [v3 addObserver:v13 selector:sel_schedule name:*v14 object:0];
+            [defaultCenter addObserver:v13 selector:sel_schedule name:*v14 object:0];
             v16 = self->_bluetoothNotificationScheduler;
             v35 = 0;
             v36 = &v35;
@@ -525,7 +525,7 @@ LABEL_13:
             _Block_object_dispose(&v35, 8);
             if (v17)
             {
-              [v3 addObserver:v16 selector:sel_schedule name:*v17 object:0];
+              [defaultCenter addObserver:v16 selector:sel_schedule name:*v17 object:0];
               v19 = self->_bluetoothNotificationScheduler;
               v35 = 0;
               v36 = &v35;
@@ -543,7 +543,7 @@ LABEL_13:
               _Block_object_dispose(&v35, 8);
               if (v20)
               {
-                [v3 addObserver:v19 selector:sel_schedule name:*v20 object:0];
+                [defaultCenter addObserver:v19 selector:sel_schedule name:*v20 object:0];
                 v22 = self->_bluetoothNotificationScheduler;
                 v35 = 0;
                 v36 = &v35;
@@ -561,7 +561,7 @@ LABEL_13:
                 _Block_object_dispose(&v35, 8);
                 if (v23)
                 {
-                  [v3 addObserver:v22 selector:sel_schedule name:*v23 object:0];
+                  [defaultCenter addObserver:v22 selector:sel_schedule name:*v23 object:0];
                   v25 = self->_bluetoothNotificationScheduler;
                   v35 = 0;
                   v36 = &v35;
@@ -579,7 +579,7 @@ LABEL_13:
                   _Block_object_dispose(&v35, 8);
                   if (v26)
                   {
-                    [v3 addObserver:v25 selector:sel_schedule name:*v26 object:0];
+                    [defaultCenter addObserver:v25 selector:sel_schedule name:*v26 object:0];
                     v28 = self->_bluetoothNotificationScheduler;
                     v35 = 0;
                     v36 = &v35;
@@ -597,7 +597,7 @@ LABEL_13:
                     _Block_object_dispose(&v35, 8);
                     if (v29)
                     {
-                      [v3 addObserver:v28 selector:sel_schedule name:*v29 object:0];
+                      [defaultCenter addObserver:v28 selector:sel_schedule name:*v29 object:0];
                       v31 = self->_bluetoothNotificationScheduler;
                       v35 = 0;
                       v36 = &v35;
@@ -615,7 +615,7 @@ LABEL_13:
                       _Block_object_dispose(&v35, 8);
                       if (v32)
                       {
-                        [v3 addObserver:v31 selector:sel_schedule name:*v32 object:0];
+                        [defaultCenter addObserver:v31 selector:sel_schedule name:*v32 object:0];
 
                         return;
                       }
@@ -676,8 +676,8 @@ LABEL_36:
 {
   if (BluetoothManagerLibraryCore())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_bluetoothNotificationScheduler];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_bluetoothNotificationScheduler];
   }
 }
 

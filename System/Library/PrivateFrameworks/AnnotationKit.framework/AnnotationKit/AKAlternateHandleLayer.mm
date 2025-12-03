@@ -23,11 +23,11 @@
 
     [(AKAlternateHandleLayer *)v2 setPath:?];
     [(AKAlternateHandleLayer *)v2 setLineWidth:1.0];
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    -[AKAlternateHandleLayer setStrokeColor:](v2, "setStrokeColor:", [v4 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[AKAlternateHandleLayer setStrokeColor:](v2, "setStrokeColor:", [whiteColor CGColor]);
 
-    v5 = [MEMORY[0x277D75348] greenColor];
-    -[AKAlternateHandleLayer setFillColor:](v2, "setFillColor:", [v5 CGColor]);
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    -[AKAlternateHandleLayer setFillColor:](v2, "setFillColor:", [greenColor CGColor]);
 
     [(AKAlternateHandleLayer *)v2 setBounds:0.0, 0.0, v3, v3];
     [(AKAlternateHandleLayer *)v2 setAnchorPoint:0.5, 0.5];

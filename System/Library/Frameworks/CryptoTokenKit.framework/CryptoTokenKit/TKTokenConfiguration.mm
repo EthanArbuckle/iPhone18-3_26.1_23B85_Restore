@@ -2,16 +2,16 @@
 + (BOOL)_hasSeparateKeysAndCertificatesObjectIDSpace;
 + (NSXPCInterface)interfaceForChangeProtocol;
 + (NSXPCInterface)interfaceForProtocol;
-+ (void)set_hasSeparateKeysAndCertificatesObjectIDSpace:(BOOL)a3;
++ (void)set_hasSeparateKeysAndCertificatesObjectIDSpace:(BOOL)space;
 - (NSArray)keychainItems;
 - (NSData)configurationData;
-- (TKTokenConfiguration)initWithTokenID:(id)a3 configurationConnection:(id)a4;
+- (TKTokenConfiguration)initWithTokenID:(id)d configurationConnection:(id)connection;
 - (TKTokenKeychainCertificate)certificateForObjectID:(TKTokenObjectID)objectID error:(NSError *)error;
 - (TKTokenKeychainKey)keyForObjectID:(TKTokenObjectID)objectID error:(NSError *)error;
 - (id)beginTransaction;
 - (void)setConfigurationData:(NSData *)configurationData;
 - (void)setKeychainItems:(NSArray *)keychainItems;
-- (void)tokenConfigurationChanged:(id)a3;
+- (void)tokenConfigurationChanged:(id)changed;
 @end
 
 @implementation TKTokenConfiguration
@@ -64,33 +64,33 @@ void __50__TKTokenConfiguration_interfaceForChangeProtocol__block_invoke()
   [interfaceForChangeProtocol_interface setClasses:v4 forSelector:sel_tokenConfigurationChanged_ argumentIndex:0 ofReply:0];
 }
 
-- (TKTokenConfiguration)initWithTokenID:(id)a3 configurationConnection:(id)a4
+- (TKTokenConfiguration)initWithTokenID:(id)d configurationConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = TKTokenConfiguration;
   v9 = [(TKTokenConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configurationConnection, a4);
-    [v8 registerForConfigurationChange:v10];
-    objc_storeStrong(&v10->_tokenID, a3);
+    objc_storeStrong(&v9->_configurationConnection, connection);
+    [connectionCopy registerForConfigurationChange:v10];
+    objc_storeStrong(&v10->_tokenID, d);
   }
 
   return v10;
 }
 
-- (void)tokenConfigurationChanged:(id)a3
+- (void)tokenConfigurationChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  changedCopy = changed;
+  v5 = [changedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -101,22 +101,22 @@ void __50__TKTokenConfiguration_interfaceForChangeProtocol__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changedCopy);
         }
 
         if ([(TKTokenID *)self->_tokenID isEqual:*(*(&v12 + 1) + 8 * i), v12])
         {
-          v9 = self;
-          objc_sync_enter(v9);
-          keychainItems = v9->_keychainItems;
-          v9->_keychainItems = 0;
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          keychainItems = selfCopy->_keychainItems;
+          selfCopy->_keychainItems = 0;
 
-          objc_sync_exit(v9);
+          objc_sync_exit(selfCopy);
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [changedCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -133,8 +133,8 @@ LABEL_11:
 
 - (id)beginTransaction
 {
-  v3 = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
-  [v3 beginTransactionWithReply:&__block_literal_global_130];
+  configurationProtocol = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
+  [configurationProtocol beginTransactionWithReply:&__block_literal_global_130];
 
   v4 = [[TKTokenConfigurationTransaction alloc] initWithConfigurationConnection:self->_configurationConnection];
 
@@ -149,14 +149,14 @@ LABEL_11:
   v11 = __Block_byref_object_copy__2;
   v12 = __Block_byref_object_dispose__2;
   v13 = 0;
-  v3 = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
-  v4 = [(TKTokenConfiguration *)self tokenID];
+  configurationProtocol = [(TKTokenConfigurationConnection *)self->_configurationConnection configurationProtocol];
+  tokenID = [(TKTokenConfiguration *)self tokenID];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__TKTokenConfiguration_configurationData__block_invoke;
   v7[3] = &unk_1E86B7570;
   v7[4] = &v8;
-  [v3 readDataForTokenID:v4 reply:v7];
+  [configurationProtocol readDataForTokenID:tokenID reply:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -168,38 +168,38 @@ LABEL_11:
 {
   configurationConnection = self->_configurationConnection;
   v5 = configurationData;
-  v7 = [(TKTokenConfigurationConnection *)configurationConnection configurationProtocol];
-  v6 = [(TKTokenConfiguration *)self tokenID];
-  [v7 updateTokenID:v6 data:v5 reply:&__block_literal_global_134];
+  configurationProtocol = [(TKTokenConfigurationConnection *)configurationConnection configurationProtocol];
+  tokenID = [(TKTokenConfiguration *)self tokenID];
+  [configurationProtocol updateTokenID:tokenID data:v5 reply:&__block_literal_global_134];
 }
 
 - (NSArray)keychainItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  keychainItems = v2->_keychainItems;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keychainItems = selfCopy->_keychainItems;
   if (!keychainItems)
   {
     v4 = [MEMORY[0x1E695E0F0] mutableCopy];
-    v5 = [(TKTokenConfigurationConnection *)v2->_configurationConnection configurationProtocol];
-    v6 = [(TKTokenConfiguration *)v2 tokenID];
+    configurationProtocol = [(TKTokenConfigurationConnection *)selfCopy->_configurationConnection configurationProtocol];
+    tokenID = [(TKTokenConfiguration *)selfCopy tokenID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __37__TKTokenConfiguration_keychainItems__block_invoke;
     v12[3] = &unk_1E86B7598;
     v7 = v4;
     v13 = v7;
-    [v5 getKeychainItemsForTokenID:v6 reply:v12];
+    [configurationProtocol getKeychainItemsForTokenID:tokenID reply:v12];
 
     v8 = [v7 copy];
-    v9 = v2->_keychainItems;
-    v2->_keychainItems = v8;
+    v9 = selfCopy->_keychainItems;
+    selfCopy->_keychainItems = v8;
 
-    keychainItems = v2->_keychainItems;
+    keychainItems = selfCopy->_keychainItems;
   }
 
   v10 = keychainItems;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
@@ -263,9 +263,9 @@ void __37__TKTokenConfiguration_keychainItems__block_invoke(uint64_t a1, void *a
   return v2 & 1;
 }
 
-+ (void)set_hasSeparateKeysAndCertificatesObjectIDSpace:(BOOL)a3
++ (void)set_hasSeparateKeysAndCertificatesObjectIDSpace:(BOOL)space
 {
-  _hasSeparateKeysAndCertificatesObjectIDSpace = a3;
+  _hasSeparateKeysAndCertificatesObjectIDSpace = space;
   _hasSeparateKeysAndCertificatesObjectIDSpaceIsSet = 1;
   _hasSeparateKeysAndCertificatesObjectIDSpaceIsSetExternally = 1;
 }
@@ -304,9 +304,9 @@ LABEL_23:
     while (1)
     {
       v9 = [(NSArray *)v3 objectAtIndexedSubscript:v8];
-      v10 = [v7 objectID];
-      v11 = [v9 objectID];
-      v12 = [v10 isEqual:v11];
+      objectID = [v7 objectID];
+      objectID2 = [v9 objectID];
+      v12 = [objectID isEqual:objectID2];
 
       if (v12)
       {
@@ -368,8 +368,8 @@ LABEL_18:
   }
 
 LABEL_24:
-  v17 = self;
-  objc_sync_enter(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v3, "count")}];
   v34 = 0u;
   v35 = 0u;
@@ -390,11 +390,11 @@ LABEL_24:
         }
 
         v23 = *(*(&v32 + 1) + 8 * i);
-        v24 = [(TKTokenConfiguration *)v17 tokenID];
-        [v23 setTokenID:v24];
+        tokenID = [(TKTokenConfiguration *)selfCopy tokenID];
+        [v23 setTokenID:tokenID];
 
-        v25 = [v23 keychainAttributes];
-        [v18 addObject:v25];
+        keychainAttributes = [v23 keychainAttributes];
+        [v18 addObject:keychainAttributes];
       }
 
       v20 = [(NSArray *)v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -403,15 +403,15 @@ LABEL_24:
     while (v20);
   }
 
-  v26 = [(TKTokenConfigurationConnection *)v17->_configurationConnection configurationProtocol];
-  v27 = [(TKTokenConfiguration *)v17 tokenID];
-  [v26 updateKeychainItemsForTokenID:v27 items:v18 reply:&__block_literal_global_148];
+  configurationProtocol = [(TKTokenConfigurationConnection *)selfCopy->_configurationConnection configurationProtocol];
+  tokenID2 = [(TKTokenConfiguration *)selfCopy tokenID];
+  [configurationProtocol updateKeychainItemsForTokenID:tokenID2 items:v18 reply:&__block_literal_global_148];
 
   v28 = [(NSArray *)v19 copy];
-  v29 = v17->_keychainItems;
-  v17->_keychainItems = v28;
+  v29 = selfCopy->_keychainItems;
+  selfCopy->_keychainItems = v28;
 
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
   v30 = *MEMORY[0x1E69E9840];
 }
 
@@ -423,8 +423,8 @@ LABEL_24:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(TKTokenConfiguration *)self keychainItems];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  keychainItems = [(TKTokenConfiguration *)self keychainItems];
+  v7 = [keychainItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -435,15 +435,15 @@ LABEL_24:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keychainItems);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 objectID];
-          v13 = [v12 isEqual:v5];
+          objectID = [v11 objectID];
+          v13 = [objectID isEqual:v5];
 
           if (v13)
           {
@@ -454,7 +454,7 @@ LABEL_24:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [keychainItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -496,8 +496,8 @@ LABEL_16:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(TKTokenConfiguration *)self keychainItems];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  keychainItems = [(TKTokenConfiguration *)self keychainItems];
+  v7 = [keychainItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -508,15 +508,15 @@ LABEL_16:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keychainItems);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 objectID];
-          v13 = [v12 isEqual:v5];
+          objectID = [v11 objectID];
+          v13 = [objectID isEqual:v5];
 
           if (v13)
           {
@@ -527,7 +527,7 @@ LABEL_16:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [keychainItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;

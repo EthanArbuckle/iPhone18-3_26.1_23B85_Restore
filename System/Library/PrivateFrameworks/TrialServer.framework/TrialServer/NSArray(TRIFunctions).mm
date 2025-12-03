@@ -9,7 +9,7 @@
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = a3;
-  v6 = [[v4 alloc] initWithArray:a1];
+  v6 = [[v4 alloc] initWithArray:self];
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
 
   v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:{objc_msgSend(v6, "intersectsSet:", v7)}];
@@ -21,7 +21,7 @@
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = a3;
-  v6 = [[v4 alloc] initWithArray:a1];
+  v6 = [[v4 alloc] initWithArray:self];
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
 
   v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:{objc_msgSend(v7, "isSubsetOfSet:", v6)}];

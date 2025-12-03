@@ -1,20 +1,20 @@
 @interface AVMetadataFaceIDReadinessObject
-+ (id)faceIDReadinessObjectWithReady:(BOOL)a3 coachingStatus:(int64_t)a4 userEngagementStatus:(int64_t)a5 input:(id)a6 time:(id *)a7;
-- (AVMetadataFaceIDReadinessObject)initWithReady:(BOOL)a3 coachingStatus:(int64_t)a4 userEngagementStatus:(int64_t)a5 time:(id *)a6 sourceCaptureInput:(id)a7;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
++ (id)faceIDReadinessObjectWithReady:(BOOL)ready coachingStatus:(int64_t)status userEngagementStatus:(int64_t)engagementStatus input:(id)input time:(id *)time;
+- (AVMetadataFaceIDReadinessObject)initWithReady:(BOOL)ready coachingStatus:(int64_t)status userEngagementStatus:(int64_t)engagementStatus time:(id *)time sourceCaptureInput:(id)input;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
 @end
 
 @implementation AVMetadataFaceIDReadinessObject
 
-+ (id)faceIDReadinessObjectWithReady:(BOOL)a3 coachingStatus:(int64_t)a4 userEngagementStatus:(int64_t)a5 input:(id)a6 time:(id *)a7
++ (id)faceIDReadinessObjectWithReady:(BOOL)ready coachingStatus:(int64_t)status userEngagementStatus:(int64_t)engagementStatus input:(id)input time:(id *)time
 {
-  v11 = a3;
+  readyCopy = ready;
   v12 = objc_alloc(objc_opt_class());
-  v14 = *a7;
-  return [v12 initWithReady:v11 coachingStatus:a4 userEngagementStatus:a5 time:&v14 sourceCaptureInput:a6];
+  v14 = *time;
+  return [v12 initWithReady:readyCopy coachingStatus:status userEngagementStatus:engagementStatus time:&v14 sourceCaptureInput:input];
 }
 
-- (AVMetadataFaceIDReadinessObject)initWithReady:(BOOL)a3 coachingStatus:(int64_t)a4 userEngagementStatus:(int64_t)a5 time:(id *)a6 sourceCaptureInput:(id)a7
+- (AVMetadataFaceIDReadinessObject)initWithReady:(BOOL)ready coachingStatus:(int64_t)status userEngagementStatus:(int64_t)engagementStatus time:(id *)time sourceCaptureInput:(id)input
 {
   v15 = *MEMORY[0x1E6960C70];
   v16 = *(MEMORY[0x1E6960C70] + 16);
@@ -24,26 +24,26 @@
   v13 = *(MEMORY[0x1E695F058] + 24);
   v18.receiver = self;
   v18.super_class = AVMetadataFaceIDReadinessObject;
-  v17 = *a6;
-  result = [(AVMetadataObject *)&v18 initWithType:@"FaceIDReadiness" time:&v17 duration:&v15 bounds:0 optionalInfoDict:0 originalMetadataObject:a7 sourceCaptureInput:v10, v11, v12, v13];
+  v17 = *time;
+  result = [(AVMetadataObject *)&v18 initWithType:@"FaceIDReadiness" time:&v17 duration:&v15 bounds:0 optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:v10, v11, v12, v13];
   if (result)
   {
-    result->_ready = a3;
-    result->_coachingStatus = a4;
-    result->_userEngagementStatus = a5;
+    result->_ready = ready;
+    result->_coachingStatus = status;
+    result->_userEngagementStatus = engagementStatus;
   }
 
   return result;
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
-  v8 = [a3 isReady];
-  v9 = [a3 coachingStatus];
-  v10 = [a3 userEngagementStatus];
-  if (a3)
+  isReady = [object isReady];
+  coachingStatus = [object coachingStatus];
+  userEngagementStatus = [object userEngagementStatus];
+  if (object)
   {
-    [a3 time];
+    [object time];
   }
 
   else
@@ -51,7 +51,7 @@
     memset(v12, 0, sizeof(v12));
   }
 
-  return -[AVMetadataFaceIDReadinessObject initWithReady:coachingStatus:userEngagementStatus:time:sourceCaptureInput:](self, "initWithReady:coachingStatus:userEngagementStatus:time:sourceCaptureInput:", v8, v9, v10, v12, [a3 input]);
+  return -[AVMetadataFaceIDReadinessObject initWithReady:coachingStatus:userEngagementStatus:time:sourceCaptureInput:](self, "initWithReady:coachingStatus:userEngagementStatus:time:sourceCaptureInput:", isReady, coachingStatus, userEngagementStatus, v12, [object input]);
 }
 
 @end

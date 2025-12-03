@@ -1,6 +1,6 @@
 @interface WBSAction
-+ (id)actionWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 handler:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)actionWithTitle:(id)title image:(id)image identifier:(id)identifier handler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (id)makeUIAction;
 @end
 
@@ -25,47 +25,47 @@
   return v9;
 }
 
-+ (id)actionWithTitle:(id)a3 image:(id)a4 identifier:(id)a5 handler:(id)a6
++ (id)actionWithTitle:(id)title image:(id)image identifier:(id)identifier handler:(id)handler
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = objc_alloc_init(a1);
-  v16 = [v14 copy];
+  imageCopy = image;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  titleCopy = title;
+  v15 = objc_alloc_init(self);
+  v16 = [titleCopy copy];
 
   v17 = *(v15 + 2);
   *(v15 + 2) = v16;
 
-  objc_storeStrong(v15 + 3, a4);
-  v18 = [v13 copy];
+  objc_storeStrong(v15 + 3, image);
+  v18 = [identifierCopy copy];
 
   if (v18)
   {
     v19 = v18;
-    v20 = *(v15 + 4);
+    uUID = *(v15 + 4);
     *(v15 + 4) = v19;
   }
 
   else
   {
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v20 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v22 = *(v15 + 4);
-    *(v15 + 4) = v21;
+    *(v15 + 4) = uUIDString;
   }
 
-  v23 = _Block_copy(v12);
+  v23 = _Block_copy(handlerCopy);
   v24 = *(v15 + 1);
   *(v15 + 1) = v23;
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -73,7 +73,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:v4->_identifier];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:equalCopy->_identifier];
   }
 
   return v5;

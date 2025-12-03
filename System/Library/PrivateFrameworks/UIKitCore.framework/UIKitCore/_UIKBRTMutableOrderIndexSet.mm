@@ -1,6 +1,6 @@
 @interface _UIKBRTMutableOrderIndexSet
 - (_UIKBRTMutableOrderIndexSet)init;
-- (_UIKBRTMutableOrderIndexSet)initWithIndexesInRange:(_NSRange)a3;
+- (_UIKBRTMutableOrderIndexSet)initWithIndexesInRange:(_NSRange)range;
 - (id)description;
 - (unint64_t)beginningIndex;
 - (unint64_t)endingIndex;
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (_UIKBRTMutableOrderIndexSet)initWithIndexesInRange:(_NSRange)a3
+- (_UIKBRTMutableOrderIndexSet)initWithIndexesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = _UIKBRTMutableOrderIndexSet;
   v5 = [(_UIKBRTMutableOrderIndexSet *)&v9 init];

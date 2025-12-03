@@ -13,55 +13,55 @@
 
 - (BOOL)isTransactionPending
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_elapsedCounter > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_elapsedCounter > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (double)elapsedTimeSinceLastEndTransaction
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = 0.0;
-  if (v2->_lastEndTransactionTime != 0.0)
+  if (selfCopy->_lastEndTransactionTime != 0.0)
   {
-    v3 = CFAbsoluteTimeGetCurrent() - v2->_lastEndTransactionTime;
+    v3 = CFAbsoluteTimeGetCurrent() - selfCopy->_lastEndTransactionTime;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (double)elapsedTimeSinceLastBeginTransaction
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = 0.0;
-  if (v2->_lastBeginTransactionTime != 0.0)
+  if (selfCopy->_lastBeginTransactionTime != 0.0)
   {
-    v3 = CFAbsoluteTimeGetCurrent() - v2->_lastBeginTransactionTime;
+    v3 = CFAbsoluteTimeGetCurrent() - selfCopy->_lastBeginTransactionTime;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (double)elapsedTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  elapsedTime = v2->_elapsedTime;
-  if (v2->_elapsedCounter >= 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  elapsedTime = selfCopy->_elapsedTime;
+  if (selfCopy->_elapsedCounter >= 1)
   {
-    elapsedTime = elapsedTime + CFAbsoluteTimeGetCurrent() - v2->_elapsedStart;
+    elapsedTime = elapsedTime + CFAbsoluteTimeGetCurrent() - selfCopy->_elapsedStart;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return elapsedTime;
 }

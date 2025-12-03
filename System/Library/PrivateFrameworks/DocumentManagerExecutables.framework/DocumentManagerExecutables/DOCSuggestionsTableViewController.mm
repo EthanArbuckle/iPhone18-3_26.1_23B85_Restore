@@ -1,23 +1,23 @@
 @interface DOCSuggestionsTableViewController
 - (BOOL)resignFirstResponder;
 - (NSArray)keyCommands;
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)keyCommandCancelSelection;
 - (void)keyCommandConfirmSelection;
 - (void)keyCommandMoveSelectionDown;
 - (void)keyCommandMoveSelectionUp;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation DOCSuggestionsTableViewController
 
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController_suggestionsTableViewDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -32,20 +32,20 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for DOCSuggestionsTableView());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:0 style:{0.0, 0.0, 0.0, 0.0}];
-  [(DOCSuggestionsTableViewController *)v5 setView:v4];
+  [(DOCSuggestionsTableViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.viewDidLoad()();
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCSuggestionsTableViewController.resignFirstResponder()();
 
   return v3;
@@ -69,45 +69,45 @@
 
 - (void)keyCommandMoveSelectionUp
 {
-  v2 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.changeSelection(_:notifyingDelegate:)(-1, 1, 1);
 }
 
 - (void)keyCommandMoveSelectionDown
 {
-  v2 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.changeSelection(_:notifyingDelegate:)(1, 1, 1);
 }
 
 - (void)keyCommandConfirmSelection
 {
-  v2 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.keyCommandConfirmSelection()();
 }
 
 - (void)keyCommandCancelSelection
 {
-  v2 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.changeSelection(_:notifyingDelegate:)(0, 2, 1);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   DOCSuggestionsTableViewController.notiftyDelegateForSelection(at:)();
 
   (*(v6 + 8))(v9, v5);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0x80);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   if (v6 >> 62)
   {
@@ -122,16 +122,16 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6, v8);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  DOCSuggestionsTableViewController.tableView(_:cellForRowAt:)(v11);
+  viewCopy = view;
+  selfCopy = self;
+  DOCSuggestionsTableViewController.tableView(_:cellForRowAt:)(viewCopy);
   v14 = v13;
 
   (*(v7 + 8))(v10, v6);
@@ -139,14 +139,14 @@
   return v14;
 }
 
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithStyle:(int64_t)a3
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables33DOCSuggestionsTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -26,13 +26,13 @@ void __51__PXContextualMemoriesPeopleSetting_resetToDefault__block_invoke(uint64
 - (NSString)title
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PXContextualMemoriesPeopleSetting *)self peopleNames];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  peopleNames = [(PXContextualMemoriesPeopleSetting *)self peopleNames];
+  v5 = [peopleNames countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,7 +44,7 @@ void __51__PXContextualMemoriesPeopleSetting_resetToDefault__block_invoke(uint64
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(peopleNames);
         }
 
         if (-v7 == i)
@@ -57,23 +57,23 @@ void __51__PXContextualMemoriesPeopleSetting_resetToDefault__block_invoke(uint64
           v10 = @"\n• %@";
         }
 
-        [v3 appendFormat:v10, *(*(&v12 + 1) + 8 * i)];
+        [string appendFormat:v10, *(*(&v12 + 1) + 8 * i)];
       }
 
       v7 += v6;
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [peopleNames countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (NSString)headerTitle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"People" value:&stru_1F1741150 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"People" value:&stru_1F1741150 table:0];
 
   return v3;
 }

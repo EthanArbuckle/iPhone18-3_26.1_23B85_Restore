@@ -44,12 +44,12 @@
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SFHeadphoneProxPairingEvent productID](self, "productID")}];
   v23[8] = v14;
   v22[9] = @"productIDString";
-  v15 = [(SFHeadphoneProxPairingEvent *)self productIDString];
-  v16 = v15;
+  productIDString = [(SFHeadphoneProxPairingEvent *)self productIDString];
+  v16 = productIDString;
   v17 = &stru_1F1D30528;
-  if (v15)
+  if (productIDString)
   {
-    v17 = v15;
+    v17 = productIDString;
   }
 
   v23[9] = v17;
@@ -63,8 +63,8 @@
 - (void)submitEvent
 {
   v4 = +[SFHeadphoneProxPairingEvent eventName];
-  v3 = [(SFHeadphoneProxPairingEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFHeadphoneProxPairingEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

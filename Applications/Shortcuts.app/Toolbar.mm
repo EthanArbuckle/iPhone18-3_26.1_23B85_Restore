@@ -1,33 +1,33 @@
 @interface Toolbar
 - (UIColor)backgroundColor;
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation Toolbar
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10004838C();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_100048434(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_100048434(color);
 }
 
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (list)
   {
     v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -37,8 +37,8 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  return sub_100048610(a3, v10, x, y, width, height);
+  viewCopy = view;
+  return sub_100048610(view, v10, x, y, width, height);
 }
 
 @end

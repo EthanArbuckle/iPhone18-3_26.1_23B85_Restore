@@ -1,31 +1,31 @@
 @interface ORCHSchemaORCHCandidateRequestContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (ORCHSchemaORCHCandidateRequestCancelled)cancelled;
-- (ORCHSchemaORCHCandidateRequestContext)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHCandidateRequestContext)initWithJSON:(id)a3;
+- (ORCHSchemaORCHCandidateRequestContext)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHCandidateRequestContext)initWithJSON:(id)n;
 - (ORCHSchemaORCHCandidateRequestStarted)started;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteCancelled;
 - (void)deleteStarted;
-- (void)setCancelled:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCancelled:(id)cancelled;
+- (void)setStarted:(id)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHCandidateRequestContext
 
-- (ORCHSchemaORCHCandidateRequestContext)initWithDictionary:(id)a3
+- (ORCHSchemaORCHCandidateRequestContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ORCHSchemaORCHCandidateRequestContext;
   v5 = [(ORCHSchemaORCHCandidateRequestContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(ORCHSchemaORCHCandidateRequestContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cancelled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cancelled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHCandidateRequestContext)initWithJSON:(id)a3
+- (ORCHSchemaORCHCandidateRequestContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHCandidateRequestContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHCandidateRequestContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHCandidateRequestContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cancelled)
   {
-    v4 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cancelled = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+    dictionaryRepresentation = [cancelled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cancelled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cancelled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cancelled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cancelled"];
     }
   }
 
   if (self->_started)
   {
-    v7 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    started = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+    dictionaryRepresentation2 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"started"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"started"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_13;
   }
 
-  v6 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
-  if (v8)
+  started3 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
-  v7 = [v4 cancelled];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+  started2 = [equalCopy cancelled];
+  if ((started != 0) != (started2 == 0))
   {
-    v13 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
-    if (!v13)
+    cancelled = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+    if (!cancelled)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
-    v16 = [v4 cancelled];
-    v17 = [v15 isEqual:v16];
+    v14 = cancelled;
+    cancelled2 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+    cancelled3 = [equalCopy cancelled];
+    v17 = [cancelled2 isEqual:cancelled3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+  toCopy = to;
+  started = [(ORCHSchemaORCHCandidateRequestContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+    started2 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+  cancelled = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
 
-  if (v6)
+  if (cancelled)
   {
-    v7 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+    cancelled2 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,21 +241,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)setCancelled:(id)a3
+- (void)setCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   started = self->_started;
   self->_started = 0;
 
   v6 = 3;
-  if (!v4)
+  if (!cancelledCopy)
   {
     v6 = 0;
   }
 
   self->_whichContextevent = v6;
   cancelled = self->_cancelled;
-  self->_cancelled = v4;
+  self->_cancelled = cancelledCopy;
 }
 
 - (void)deleteStarted
@@ -283,37 +283,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   cancelled = self->_cancelled;
   self->_cancelled = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = startedCopy != 0;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ORCHSchemaORCHCandidateRequestContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHCandidateRequestContext *)self started];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  started = [(ORCHSchemaORCHCandidateRequestContext *)self started];
+  v7 = [started applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHCandidateRequestContext *)self deleteStarted];
   }
 
-  v9 = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  cancelled = [(ORCHSchemaORCHCandidateRequestContext *)self cancelled];
+  v10 = [cancelled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHCandidateRequestContext *)self deleteCancelled];
   }

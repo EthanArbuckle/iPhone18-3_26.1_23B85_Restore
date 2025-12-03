@@ -10,13 +10,13 @@
   if (_UIApplicationIsWebKitLoaded())
   {
 
-    [a1 _webKitInitialized];
+    [self _webKitInitialized];
   }
 
   else
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:a1 selector:sel__webKitInitialized name:@"UIApplicationLoadedWebKit" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__webKitInitialized name:@"UIApplicationLoadedWebKit" object:0];
   }
 }
 
@@ -27,8 +27,8 @@
     +[AXWebKitGlueLegacy __webKitInitialized];
   }
 
-  v2 = [MEMORY[0x29EDBD690] sharedInstance];
-  [v2 addHandler:&__block_literal_global_372 forFramework:@"DataDetectors"];
+  mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+  [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_372 forFramework:@"DataDetectors"];
 }
 
 void __41__AXWebKitGlueLegacy___webKitInitialized__block_invoke()

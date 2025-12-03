@@ -1,59 +1,59 @@
 @interface NTKBellonaNumeralsView
 - (NTKBellonaNumeralsDelegate)backgroundView;
-- (NTKBellonaNumeralsView)initWithDevice:(id)a3;
+- (NTKBellonaNumeralsView)initWithDevice:(id)device;
 - (id)_filledDigitLayers;
 - (id)_outlinedDigitLayers;
-- (id)createLabel:(BOOL)a3;
-- (id)textForDigit:(unint64_t)a3;
-- (int64_t)updatedIndexForHour:(unint64_t)a3 currentIndex:(unint64_t)a4;
+- (id)createLabel:(BOOL)label;
+- (id)textForDigit:(unint64_t)digit;
+- (int64_t)updatedIndexForHour:(unint64_t)hour currentIndex:(unint64_t)index;
 - (void)_createDigits;
-- (void)hourChangeAnimationFromNow:(unint64_t)a3 withFraction:(double)a4 timeChanged:(BOOL)a5 overrideDate:(BOOL)a6;
-- (void)setDateIsOn:(BOOL)a3;
-- (void)updateBackgroundWithPalette:(id)a3;
-- (void)updateDigitsWithPalette:(id)a3;
+- (void)hourChangeAnimationFromNow:(unint64_t)now withFraction:(double)fraction timeChanged:(BOOL)changed overrideDate:(BOOL)date;
+- (void)setDateIsOn:(BOOL)on;
+- (void)updateBackgroundWithPalette:(id)palette;
+- (void)updateDigitsWithPalette:(id)palette;
 @end
 
 @implementation NTKBellonaNumeralsView
 
-- (NTKBellonaNumeralsView)initWithDevice:(id)a3
+- (NTKBellonaNumeralsView)initWithDevice:(id)device
 {
-  v5 = a3;
-  [v5 screenBounds];
+  deviceCopy = device;
+  [deviceCopy screenBounds];
   v9.receiver = self;
   v9.super_class = NTKBellonaNumeralsView;
   v6 = [(NTKBellonaNumeralsView *)&v9 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     [(NTKBellonaNumeralsView *)v7 _createDigits];
   }
 
   return v7;
 }
 
-- (void)setDateIsOn:(BOOL)a3
+- (void)setDateIsOn:(BOOL)on
 {
-  v3 = a3;
-  if (self->_dateIsOn != a3)
+  onCopy = on;
+  if (self->_dateIsOn != on)
   {
     v5 = [(NSArray *)self->_filledHourMarkers objectAtIndexedSubscript:2];
-    [v5 setHidden:v3];
+    [v5 setHidden:onCopy];
 
     v6 = [(NSArray *)self->_outlinedHourMarkers objectAtIndexedSubscript:2];
-    [v6 setHidden:v3];
+    [v6 setHidden:onCopy];
   }
 
-  self->_dateIsOn = v3;
+  self->_dateIsOn = onCopy;
 }
 
 - (void)_createDigits
 {
   sub_4080(self->_device, __src);
   memcpy(&unk_580E0, __src, 0x230uLL);
-  v3 = [(NTKBellonaNumeralsView *)self _filledDigitLayers];
+  _filledDigitLayers = [(NTKBellonaNumeralsView *)self _filledDigitLayers];
   filledHourMarkers = self->_filledHourMarkers;
-  self->_filledHourMarkers = v3;
+  self->_filledHourMarkers = _filledDigitLayers;
 
   v5 = self->_filledHourMarkers;
   v10[0] = _NSConcreteStackBlock;
@@ -62,9 +62,9 @@
   v10[3] = &unk_449E0;
   v10[4] = self;
   [(NSArray *)v5 enumerateObjectsUsingBlock:v10];
-  v6 = [(NTKBellonaNumeralsView *)self _outlinedDigitLayers];
+  _outlinedDigitLayers = [(NTKBellonaNumeralsView *)self _outlinedDigitLayers];
   outlinedHourMarkers = self->_outlinedHourMarkers;
-  self->_outlinedHourMarkers = v6;
+  self->_outlinedHourMarkers = _outlinedDigitLayers;
 
   v8 = self->_outlinedHourMarkers;
   v9[0] = _NSConcreteStackBlock;
@@ -77,13 +77,13 @@
   [(NSArray *)self->_outlinedHourMarkers enumerateObjectsUsingBlock:&stru_44A40];
 }
 
-- (id)createLabel:(BOOL)a3
+- (id)createLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   v5 = objc_alloc_init(UILabel);
   sub_4080(self->_device, v13);
   v6 = v14;
-  if (v3)
+  if (labelCopy)
   {
     sub_4080(self->_device, v12);
     v7 = [NTKZeusFontLoader capeCodInlineFontDescriptorWithInlineWidth:v12[61]];
@@ -104,12 +104,12 @@
   return v5;
 }
 
-- (id)textForDigit:(unint64_t)a3
+- (id)textForDigit:(unint64_t)digit
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
-  v4 = [v3 stringValue];
+  v3 = [NSNumber numberWithUnsignedInteger:digit];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (id)_filledDigitLayers
@@ -200,8 +200,8 @@
       v20 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
       v21 = [NSAttributedString alloc];
-      v22 = [v14 text];
-      v23 = [v21 initWithString:v22 attributes:v20];
+      text = [v14 text];
+      v23 = [v21 initWithString:text attributes:v20];
       [v14 setAttributedText:v23];
 
       if (v5 != 10)
@@ -277,8 +277,8 @@
       v15 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
       v16 = [NSAttributedString alloc];
-      v17 = [v9 text];
-      v18 = [v16 initWithString:v17 attributes:v15];
+      text = [v9 text];
+      v18 = [v16 initWithString:text attributes:v15];
       [v9 setAttributedText:v18];
 
       if (i != 11)
@@ -295,15 +295,15 @@
   return v3;
 }
 
-- (void)updateDigitsWithPalette:(id)a3
+- (void)updateDigitsWithPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   filledHourMarkers = self->_filledHourMarkers;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_3C78;
   v11[3] = &unk_449E0;
-  v6 = v4;
+  v6 = paletteCopy;
   v12 = v6;
   [(NSArray *)filledHourMarkers enumerateObjectsUsingBlock:v11];
   outlinedHourMarkers = self->_outlinedHourMarkers;
@@ -316,30 +316,30 @@
   [(NSArray *)outlinedHourMarkers enumerateObjectsUsingBlock:v9];
 }
 
-- (void)updateBackgroundWithPalette:(id)a3
+- (void)updateBackgroundWithPalette:(id)palette
 {
-  v4 = [a3 background];
-  [(NTKBellonaNumeralsView *)self setBackgroundColor:v4];
+  background = [palette background];
+  [(NTKBellonaNumeralsView *)self setBackgroundColor:background];
 }
 
-- (void)hourChangeAnimationFromNow:(unint64_t)a3 withFraction:(double)a4 timeChanged:(BOOL)a5 overrideDate:(BOOL)a6
+- (void)hourChangeAnimationFromNow:(unint64_t)now withFraction:(double)fraction timeChanged:(BOOL)changed overrideDate:(BOOL)date
 {
-  v6 = a6;
-  v7 = a5;
+  dateCopy = date;
+  changedCopy = changed;
   memset(v18, 0, 512);
   sub_4080(self->_device, v18);
-  v11 = v7 || v6;
+  v11 = changedCopy || dateCopy;
   v12 = 48;
   do
   {
     v13 = v12 - 48;
-    v14 = [(NSArray *)self->_filledHourMarkers objectAtIndexedSubscript:[(NTKBellonaNumeralsView *)self updatedIndexForHour:a3 currentIndex:v12 - 48]];
+    v14 = [(NSArray *)self->_filledHourMarkers objectAtIndexedSubscript:[(NTKBellonaNumeralsView *)self updatedIndexForHour:now currentIndex:v12 - 48]];
     if (v11)
     {
       if (v12 == 50 && self->_dateIsOn)
       {
         WeakRetained = objc_loadWeakRetained(&self->_backgroundView);
-        [WeakRetained hourChangeAnimationFromCurrentHour:a3 withFraction:1 timeChanged:a4];
+        [WeakRetained hourChangeAnimationFromCurrentHour:now withFraction:1 timeChanged:fraction];
       }
 
       v16 = *(v18 + v12);
@@ -350,7 +350,7 @@
       if (v12 == 50 && self->_dateIsOn)
       {
         v17 = objc_loadWeakRetained(&self->_backgroundView);
-        [v17 hourChangeAnimationFromCurrentHour:a3 withFraction:0 timeChanged:a4];
+        [v17 hourChangeAnimationFromCurrentHour:now withFraction:0 timeChanged:fraction];
 
         goto LABEL_10;
       }
@@ -367,15 +367,15 @@ LABEL_10:
   while (v13 != 11);
 }
 
-- (int64_t)updatedIndexForHour:(unint64_t)a3 currentIndex:(unint64_t)a4
+- (int64_t)updatedIndexForHour:(unint64_t)hour currentIndex:(unint64_t)index
 {
-  v4 = a3 - 12;
-  if (a3 <= 0xB)
+  hourCopy = hour - 12;
+  if (hour <= 0xB)
   {
-    v4 = a3;
+    hourCopy = hour;
   }
 
-  v5 = v4 + a4;
+  v5 = hourCopy + index;
   if (v5 <= 11)
   {
     return v5;

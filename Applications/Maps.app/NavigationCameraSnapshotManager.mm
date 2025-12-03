@@ -1,15 +1,15 @@
 @interface NavigationCameraSnapshotManager
-+ (BOOL)archiveTraceSnapshotsDictionary:(id)a3 toFile:(id)a4;
++ (BOOL)archiveTraceSnapshotsDictionary:(id)dictionary toFile:(id)file;
 + (id)sharedInstance;
-+ (id)traceSnapshotsDictionaryWithContentsOfArchiveFile:(id)a3;
++ (id)traceSnapshotsDictionaryWithContentsOfArchiveFile:(id)file;
 - (NSMutableDictionary)traceSnapshotsDictionary;
 - (NavigationCameraSnapshotManager)init;
-- (NavigationCameraSnapshotManager)initWithTraceSnapshotsDictionaryArchiveFile:(id)a3;
+- (NavigationCameraSnapshotManager)initWithTraceSnapshotsDictionaryArchiveFile:(id)file;
 - (NavigationCameraSnapshotsObserver)snapshotsObserver;
-- (id)cameraSnapshotsOfTraceFile:(id)a3;
+- (id)cameraSnapshotsOfTraceFile:(id)file;
 - (void)_commitTraceSnapshotsDictionaryToArchive;
-- (void)addCameraSnapshot:(id)a3 toTraceFile:(id)a4;
-- (void)removeCameraSnapshotAtIndex:(unint64_t)a3 fromTraceFile:(id)a4;
+- (void)addCameraSnapshot:(id)snapshot toTraceFile:(id)file;
+- (void)removeCameraSnapshotAtIndex:(unint64_t)index fromTraceFile:(id)file;
 @end
 
 @implementation NavigationCameraSnapshotManager
@@ -24,14 +24,14 @@
 - (void)_commitTraceSnapshotsDictionaryToArchive
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  traceSnapshotsDictionary = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  v5 = [v3 initWithCapacity:{objc_msgSend(traceSnapshotsDictionary, "count")}];
 
   v6 = [NSMutableArray alloc];
-  v7 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+  traceSnapshotsDictionary2 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  v8 = [v6 initWithCapacity:{objc_msgSend(traceSnapshotsDictionary2, "count")}];
 
-  v9 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  traceSnapshotsDictionary3 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_100FA26A8;
@@ -40,66 +40,66 @@
   v21 = v8;
   v10 = v8;
   v11 = v5;
-  [v9 enumerateKeysAndObjectsUsingBlock:&v16];
+  [traceSnapshotsDictionary3 enumerateKeysAndObjectsUsingBlock:&v16];
 
   v12 = [NSDictionary alloc];
   v13 = [v12 initWithObjects:v10 forKeys:{v11, v16, v17, v18, v19}];
   v14 = objc_opt_class();
-  v15 = [(NavigationCameraSnapshotManager *)self archivePath];
-  [v14 archiveTraceSnapshotsDictionary:v13 toFile:v15];
+  archivePath = [(NavigationCameraSnapshotManager *)self archivePath];
+  [v14 archiveTraceSnapshotsDictionary:v13 toFile:archivePath];
 }
 
-- (void)removeCameraSnapshotAtIndex:(unint64_t)a3 fromTraceFile:(id)a4
+- (void)removeCameraSnapshotAtIndex:(unint64_t)index fromTraceFile:(id)file
 {
-  v9 = a4;
-  v6 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v9];
+  fileCopy = file;
+  traceSnapshotsDictionary = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  v7 = [traceSnapshotsDictionary objectForKeyedSubscript:fileCopy];
 
-  if ([v7 count] > a3)
+  if ([v7 count] > index)
   {
-    [v7 removeObjectAtIndex:a3];
+    [v7 removeObjectAtIndex:index];
     WeakRetained = objc_loadWeakRetained(&self->_snapshotsObserver);
-    [WeakRetained cameraSnapshotsManager:self didRemoveAtIndex:a3 fromTraceFile:v9];
+    [WeakRetained cameraSnapshotsManager:self didRemoveAtIndex:index fromTraceFile:fileCopy];
 
     [(NavigationCameraSnapshotManager *)self _commitTraceSnapshotsDictionaryToArchive];
   }
 }
 
-- (void)addCameraSnapshot:(id)a3 toTraceFile:(id)a4
+- (void)addCameraSnapshot:(id)snapshot toTraceFile:(id)file
 {
-  v15 = a4;
-  v6 = a3;
-  v7 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-  v8 = [v7 objectForKeyedSubscript:v15];
+  fileCopy = file;
+  snapshotCopy = snapshot;
+  traceSnapshotsDictionary = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  v8 = [traceSnapshotsDictionary objectForKeyedSubscript:fileCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-    [v9 setObject:v8 forKeyedSubscript:v15];
+    traceSnapshotsDictionary2 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+    [traceSnapshotsDictionary2 setObject:v8 forKeyedSubscript:fileCopy];
   }
 
   v10 = [v8 count];
-  v11 = [(NavigationCameraSnapshotManager *)self _cameraSnapshotComparator];
-  v12 = [v8 indexOfObject:v6 inSortedRange:0 options:v10 usingComparator:{1536, v11}];
+  _cameraSnapshotComparator = [(NavigationCameraSnapshotManager *)self _cameraSnapshotComparator];
+  v12 = [v8 indexOfObject:snapshotCopy inSortedRange:0 options:v10 usingComparator:{1536, _cameraSnapshotComparator}];
 
-  [v8 insertObject:v6 atIndex:v12];
+  [v8 insertObject:snapshotCopy atIndex:v12];
   v13 = [v8 objectAtIndexedSubscript:v12];
 
-  if (v13 == v6)
+  if (v13 == snapshotCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_snapshotsObserver);
-    [WeakRetained cameraSnapshotsManager:self didInsertAtIndex:v12 toTraceFile:v15];
+    [WeakRetained cameraSnapshotsManager:self didInsertAtIndex:v12 toTraceFile:fileCopy];
 
     [(NavigationCameraSnapshotManager *)self _commitTraceSnapshotsDictionaryToArchive];
   }
 }
 
-- (id)cameraSnapshotsOfTraceFile:(id)a3
+- (id)cameraSnapshotsOfTraceFile:(id)file
 {
-  v4 = a3;
-  v5 = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  fileCopy = file;
+  traceSnapshotsDictionary = [(NavigationCameraSnapshotManager *)self traceSnapshotsDictionary];
+  v6 = [traceSnapshotsDictionary objectForKeyedSubscript:fileCopy];
 
   if ([v6 count])
   {
@@ -120,8 +120,8 @@
   if (!traceSnapshotsDictionary)
   {
     v4 = objc_opt_class();
-    v5 = [(NavigationCameraSnapshotManager *)self archivePath];
-    v6 = [v4 traceSnapshotsDictionaryWithContentsOfArchiveFile:v5];
+    archivePath = [(NavigationCameraSnapshotManager *)self archivePath];
+    v6 = [v4 traceSnapshotsDictionaryWithContentsOfArchiveFile:archivePath];
 
     v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
     v8 = self->_traceSnapshotsDictionary;
@@ -140,28 +140,28 @@
   return traceSnapshotsDictionary;
 }
 
-- (NavigationCameraSnapshotManager)initWithTraceSnapshotsDictionaryArchiveFile:(id)a3
+- (NavigationCameraSnapshotManager)initWithTraceSnapshotsDictionaryArchiveFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v14.receiver = self;
   v14.super_class = NavigationCameraSnapshotManager;
   v5 = [(NavigationCameraSnapshotManager *)&v14 init];
   if (v5)
   {
-    v6 = [v4 stringByDeletingLastPathComponent];
-    if (([v6 hasSuffix:@"/"] & 1) == 0)
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    if (([stringByDeletingLastPathComponent hasSuffix:@"/"] & 1) == 0)
     {
-      v7 = [v6 stringByAppendingString:@"/"];
+      v7 = [stringByDeletingLastPathComponent stringByAppendingString:@"/"];
 
-      v6 = v7;
+      stringByDeletingLastPathComponent = v7;
     }
 
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 isWritableFileAtPath:v6];
+    v9 = [v8 isWritableFileAtPath:stringByDeletingLastPathComponent];
 
     if (v9)
     {
-      v10 = [v4 copy];
+      v10 = [fileCopy copy];
       archivePath = v5->_archivePath;
       v5->_archivePath = v10;
 
@@ -192,23 +192,23 @@
   return v6;
 }
 
-+ (BOOL)archiveTraceSnapshotsDictionary:(id)a3 toFile:(id)a4
++ (BOOL)archiveTraceSnapshotsDictionary:(id)dictionary toFile:(id)file
 {
-  v5 = a4;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-  v7 = [v6 writeToFile:v5 atomically:1];
+  fileCopy = file;
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:0];
+  v7 = [v6 writeToFile:fileCopy atomically:1];
 
   return v7;
 }
 
-+ (id)traceSnapshotsDictionaryWithContentsOfArchiveFile:(id)a3
++ (id)traceSnapshotsDictionaryWithContentsOfArchiveFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [NSSet setWithObjects:v4, v5, v6, objc_opt_class(), 0];
-  v8 = [NSData dataWithContentsOfFile:v3];
+  v8 = [NSData dataWithContentsOfFile:fileCopy];
 
   v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v7 fromData:v8 error:0];
 

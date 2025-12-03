@@ -1,15 +1,15 @@
 @interface CHActivitySharingAvatarProvider
-+ (id)fetchAvatarImageForFriend:(id)a3 diameter:(double)a4;
++ (id)fetchAvatarImageForFriend:(id)friend diameter:(double)diameter;
 - (CHActivitySharingAvatarProvider)init;
 @end
 
 @implementation CHActivitySharingAvatarProvider
 
-+ (id)fetchAvatarImageForFriend:(id)a3 diameter:(double)a4
++ (id)fetchAvatarImageForFriend:(id)friend diameter:(double)diameter
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = sub_100549740(v6, a4);
+  friendCopy = friend;
+  v7 = sub_100549740(friendCopy, diameter);
 
   return v7;
 }

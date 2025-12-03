@@ -60,7 +60,7 @@ LABEL_34:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [a1 _sanitizedServerObject:*(*(&v32 + 1) + 8 * i)];
+          v17 = [self _sanitizedServerObject:*(*(&v32 + 1) + 8 * i)];
           if (v17)
           {
             [v6 addObject:v17];
@@ -99,7 +99,7 @@ LABEL_34:
             objc_enumerationMutation(v12);
           }
 
-          v22 = [a1 _sanitizedServerObject:*(*(&v28 + 1) + 8 * j)];
+          v22 = [self _sanitizedServerObject:*(*(&v28 + 1) + 8 * j)];
           if (v22)
           {
             [v6 addObject:v22];
@@ -123,7 +123,7 @@ LABEL_34:
     v26[1] = 3221225472;
     v26[2] = __45__NSObject_AMSUIWeb___sanitizedServerObject___block_invoke;
     v26[3] = &unk_1E7F27218;
-    v26[4] = a1;
+    v26[4] = self;
     v24 = v23;
     v27 = v24;
     [v4 enumerateKeysAndObjectsUsingBlock:v26];

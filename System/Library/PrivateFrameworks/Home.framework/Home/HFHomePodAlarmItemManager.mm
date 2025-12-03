@@ -1,24 +1,24 @@
 @interface HFHomePodAlarmItemManager
-- (HFHomePodAlarmItemManager)initWithDelegate:(id)a3 mediaProfileContainer:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HFHomePodAlarmItemManager)initWithDelegate:(id)delegate mediaProfileContainer:(id)container;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
 @end
 
 @implementation HFHomePodAlarmItemManager
 
-- (HFHomePodAlarmItemManager)initWithDelegate:(id)a3 mediaProfileContainer:(id)a4
+- (HFHomePodAlarmItemManager)initWithDelegate:(id)delegate mediaProfileContainer:(id)container
 {
-  v7 = a4;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = HFHomePodAlarmItemManager;
-  v8 = [(HFItemManager *)&v13 initWithDelegate:a3 sourceItem:0];
+  v8 = [(HFItemManager *)&v13 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaProfileContainer, a4);
-    v10 = [[HFHomePodAlarmItemModule alloc] initWithItemUpdater:v9 mediaProfileContainer:v7];
+    objc_storeStrong(&v8->_mediaProfileContainer, container);
+    v10 = [[HFHomePodAlarmItemModule alloc] initWithItemUpdater:v9 mediaProfileContainer:containerCopy];
     alarmItemModule = v9->_alarmItemModule;
     v9->_alarmItemModule = v10;
   }
@@ -26,22 +26,22 @@
   return v9;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v3 = [(HFHomePodAlarmItemManager *)self alarmItemModule];
-  v4 = [v3 itemProviders];
-  v5 = [v4 allObjects];
+  alarmItemModule = [(HFHomePodAlarmItemManager *)self alarmItemModule];
+  itemProviders = [alarmItemModule itemProviders];
+  allObjects = [itemProviders allObjects];
 
-  return v5;
+  return allObjects;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [(HFHomePodAlarmItemManager *)self alarmItemModule];
-    v6 = [v5 buildSectionsWithDisplayedItems:v4];
+    alarmItemModule = [(HFHomePodAlarmItemManager *)self alarmItemModule];
+    v6 = [alarmItemModule buildSectionsWithDisplayedItems:itemsCopy];
   }
 
   else
@@ -57,8 +57,8 @@
   v4.receiver = self;
   v4.super_class = HFHomePodAlarmItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HFHomePodAlarmItemManager *)self alarmItemModule];
-  [v3 registerForExternalUpdates];
+  alarmItemModule = [(HFHomePodAlarmItemManager *)self alarmItemModule];
+  [alarmItemModule registerForExternalUpdates];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -66,8 +66,8 @@
   v4.receiver = self;
   v4.super_class = HFHomePodAlarmItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HFHomePodAlarmItemManager *)self alarmItemModule];
-  [v3 unregisterForExternalUpdates];
+  alarmItemModule = [(HFHomePodAlarmItemManager *)self alarmItemModule];
+  [alarmItemModule unregisterForExternalUpdates];
 }
 
 @end

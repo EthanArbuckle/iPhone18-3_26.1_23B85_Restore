@@ -1,5 +1,5 @@
 @interface SSDownloadMonitorItem
-- (SSDownloadMonitorItem)initWithXPCEncoding:(id)a3;
+- (SSDownloadMonitorItem)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -13,19 +13,19 @@
   [(SSDownloadMonitorItem *)&v3 dealloc];
 }
 
-- (SSDownloadMonitorItem)initWithXPCEncoding:(id)a3
+- (SSDownloadMonitorItem)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     objc_opt_class();
-    self->_clientIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
-    self->_itemState = xpc_dictionary_get_int64(a3, "1");
+    self->_clientIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
+    self->_itemState = xpc_dictionary_get_int64(encoding, "1");
     objc_opt_class();
-    self->_statusString = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+    self->_statusString = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
     objc_opt_class();
-    self->_representativeTitle = SSXPCDictionaryCopyCFObjectWithClass(a3, "3");
-    self->_totalNumberOfItems = xpc_dictionary_get_int64(a3, "4");
-    self->_transferTypes = xpc_dictionary_get_int64(a3, "5");
+    self->_representativeTitle = SSXPCDictionaryCopyCFObjectWithClass(encoding, "3");
+    self->_totalNumberOfItems = xpc_dictionary_get_int64(encoding, "4");
+    self->_transferTypes = xpc_dictionary_get_int64(encoding, "5");
   }
 
   else

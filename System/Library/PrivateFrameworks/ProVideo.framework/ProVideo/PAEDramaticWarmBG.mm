@@ -1,14 +1,14 @@
 @interface PAEDramaticWarmBG
-- (PAEDramaticWarmBG)initWithAPIManager:(id)a3;
+- (PAEDramaticWarmBG)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEDramaticWarmBG
 
-- (PAEDramaticWarmBG)initWithAPIManager:(id)a3
+- (PAEDramaticWarmBG)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEDramaticWarmBG;
-  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:a3];
+  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->super.whichFilter = 21;

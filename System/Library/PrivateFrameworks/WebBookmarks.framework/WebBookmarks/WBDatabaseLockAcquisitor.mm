@@ -1,18 +1,18 @@
 @interface WBDatabaseLockAcquisitor
-- (BOOL)_attemptToLockSyncAndNotifyDelegateOnFailure:(BOOL)a3;
-- (WBDatabaseLockAcquisitor)initWithWebBookmarkCollectionClass:(Class)a3;
+- (BOOL)_attemptToLockSyncAndNotifyDelegateOnFailure:(BOOL)failure;
+- (WBDatabaseLockAcquisitor)initWithWebBookmarkCollectionClass:(Class)class;
 - (WBDatabaseLockAcquisitorDelegate)delegate;
-- (void)_retryTimerFired:(id)a3;
-- (void)_startTimerWithTimeout:(double)a3 retryInterval:(double)a4;
+- (void)_retryTimerFired:(id)fired;
+- (void)_startTimerWithTimeout:(double)timeout retryInterval:(double)interval;
 - (void)_stopTimer;
-- (void)acquireLockWithTimeout:(double)a3 retryInterval:(double)a4;
+- (void)acquireLockWithTimeout:(double)timeout retryInterval:(double)interval;
 - (void)dealloc;
 - (void)releaseLock;
 @end
 
 @implementation WBDatabaseLockAcquisitor
 
-- (WBDatabaseLockAcquisitor)initWithWebBookmarkCollectionClass:(Class)a3
+- (WBDatabaseLockAcquisitor)initWithWebBookmarkCollectionClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = WBDatabaseLockAcquisitor;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_webBookmarkCollectionClass = a3;
+    v4->_webBookmarkCollectionClass = class;
     v6 = v4;
   }
 
@@ -35,15 +35,15 @@
   [(WBDatabaseLockAcquisitor *)&v3 dealloc];
 }
 
-- (void)acquireLockWithTimeout:(double)a3 retryInterval:(double)a4
+- (void)acquireLockWithTimeout:(double)timeout retryInterval:(double)interval
 {
   [(objc_class *)self->_webBookmarkCollectionClass holdLockSync:self];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WBDatabaseLockAcquisitor_acquireLockWithTimeout_retryInterval___block_invoke;
   block[3] = &unk_279E77DA0;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = timeout;
+  *&block[6] = interval;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -89,20 +89,20 @@ uint64_t __65__WBDatabaseLockAcquisitor_acquireLockWithTimeout_retryInterval___b
   }
 }
 
-- (BOOL)_attemptToLockSyncAndNotifyDelegateOnFailure:(BOOL)a3
+- (BOOL)_attemptToLockSyncAndNotifyDelegateOnFailure:(BOOL)failure
 {
-  v3 = a3;
+  failureCopy = failure;
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
-  v7 = [(objc_class *)self->_webBookmarkCollectionClass isLockedSync];
-  if ((v7 & 1) == 0)
+  isLockedSync = [(objc_class *)self->_webBookmarkCollectionClass isLockedSync];
+  if ((isLockedSync & 1) == 0)
   {
-    v8 = [(objc_class *)self->_webBookmarkCollectionClass lockSync];
-    self->_lockAcquired = v8;
-    if (!v8)
+    lockSync = [(objc_class *)self->_webBookmarkCollectionClass lockSync];
+    self->_lockAcquired = lockSync;
+    if (!lockSync)
     {
-      if (!v3)
+      if (!failureCopy)
       {
         LOBYTE(v11) = 0;
         goto LABEL_7;
@@ -126,7 +126,7 @@ uint64_t __65__WBDatabaseLockAcquisitor_acquireLockWithTimeout_retryInterval___b
   {
     lockAcquired = self->_lockAcquired;
     v15[0] = 67109632;
-    v15[1] = v7;
+    v15[1] = isLockedSync;
     v16 = 1024;
     v17 = lockAcquired;
     v18 = 1024;
@@ -151,9 +151,9 @@ LABEL_7:
 - (void)_stopTimer
 {
   WeakRetained = objc_loadWeakRetained(&self->_timer);
-  v4 = [WeakRetained isValid];
+  isValid = [WeakRetained isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = objc_loadWeakRetained(&self->_timer);
     [v5 invalidate];
@@ -162,23 +162,23 @@ LABEL_7:
   }
 }
 
-- (void)_startTimerWithTimeout:(double)a3 retryInterval:(double)a4
+- (void)_startTimerWithTimeout:(double)timeout retryInterval:(double)interval
 {
   [(WBDatabaseLockAcquisitor *)self _stopTimer];
-  self->_maxRetryCount = llround(a3 / a4);
-  v7 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__retryTimerFired_ selector:0 userInfo:1 repeats:a4];
+  self->_maxRetryCount = llround(timeout / interval);
+  v7 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__retryTimerFired_ selector:0 userInfo:1 repeats:interval];
   objc_storeWeak(&self->_timer, v7);
 }
 
-- (void)_retryTimerFired:(id)a3
+- (void)_retryTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   maxRetryCount = self->_maxRetryCount;
   v6 = self->_retryCount + 1;
   self->_retryCount = v6;
   if (v6 >= maxRetryCount)
   {
-    v7 = v4;
+    v7 = firedCopy;
     if ([(WBDatabaseLockAcquisitor *)self _attemptToLockSyncAndNotifyDelegateOnFailure:1])
     {
       [(WBDatabaseLockAcquisitor *)self _stopTimer];
@@ -189,7 +189,7 @@ LABEL_7:
       [(WBDatabaseLockAcquisitor *)self releaseLock];
     }
 
-    v4 = v7;
+    firedCopy = v7;
   }
 }
 

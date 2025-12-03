@@ -1,78 +1,78 @@
 @interface IMServiceReachabilityHandleResult
-- (BOOL)isEqual:(id)a3;
-- (IMServiceReachabilityHandleResult)initWithCoder:(id)a3;
-- (IMServiceReachabilityHandleResult)initWithHandleID:(id)a3 service:(id)a4 isReachable:(BOOL)a5 supportsEncryption:(BOOL)a6 persistentMenuDictionary:(id)a7 brandInfoDictionary:(id)a8 brandLogoData:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (IMServiceReachabilityHandleResult)initWithCoder:(id)coder;
+- (IMServiceReachabilityHandleResult)initWithHandleID:(id)d service:(id)service isReachable:(BOOL)reachable supportsEncryption:(BOOL)encryption persistentMenuDictionary:(id)dictionary brandInfoDictionary:(id)infoDictionary brandLogoData:(id)data;
 - (id)brandInfoData;
 - (id)createDictionary;
 - (id)description;
 - (id)persistentMenuData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMServiceReachabilityHandleResult
 
-- (IMServiceReachabilityHandleResult)initWithHandleID:(id)a3 service:(id)a4 isReachable:(BOOL)a5 supportsEncryption:(BOOL)a6 persistentMenuDictionary:(id)a7 brandInfoDictionary:(id)a8 brandLogoData:(id)a9
+- (IMServiceReachabilityHandleResult)initWithHandleID:(id)d service:(id)service isReachable:(BOOL)reachable supportsEncryption:(BOOL)encryption persistentMenuDictionary:(id)dictionary brandInfoDictionary:(id)infoDictionary brandLogoData:(id)data
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  dCopy = d;
+  serviceCopy = service;
+  dictionaryCopy = dictionary;
+  infoDictionaryCopy = infoDictionary;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = IMServiceReachabilityHandleResult;
   v18 = [(IMServiceReachabilityHandleResult *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_handleID, a3);
-    objc_storeStrong(&v19->_service, a4);
-    v19->_reachable = a5;
-    v19->_supportsEncryption = a6;
-    objc_storeStrong(&v19->_persistentMenuDictionary, a7);
-    objc_storeStrong(&v19->_brandInfoDictionary, a8);
-    objc_storeStrong(&v19->_brandLogoData, a9);
+    objc_storeStrong(&v18->_handleID, d);
+    objc_storeStrong(&v19->_service, service);
+    v19->_reachable = reachable;
+    v19->_supportsEncryption = encryption;
+    objc_storeStrong(&v19->_persistentMenuDictionary, dictionary);
+    objc_storeStrong(&v19->_brandInfoDictionary, infoDictionary);
+    objc_storeStrong(&v19->_brandLogoData, data);
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handleID = self->_handleID;
-  v5 = a3;
-  [v5 encodeObject:handleID forKey:@"i"];
-  [v5 encodeObject:self->_service forKey:@"s"];
-  [v5 encodeBool:self->_reachable forKey:@"r"];
-  [v5 encodeBool:self->_supportsEncryption forKey:@"e"];
-  v6 = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
-  [v5 encodeObject:v6 forKey:@"pmd"];
+  coderCopy = coder;
+  [coderCopy encodeObject:handleID forKey:@"i"];
+  [coderCopy encodeObject:self->_service forKey:@"s"];
+  [coderCopy encodeBool:self->_reachable forKey:@"r"];
+  [coderCopy encodeBool:self->_supportsEncryption forKey:@"e"];
+  persistentMenuData = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
+  [coderCopy encodeObject:persistentMenuData forKey:@"pmd"];
 
-  v7 = [(IMServiceReachabilityHandleResult *)self brandInfoData];
-  [v5 encodeObject:v7 forKey:@"bid"];
+  brandInfoData = [(IMServiceReachabilityHandleResult *)self brandInfoData];
+  [coderCopy encodeObject:brandInfoData forKey:@"bid"];
 
-  v8 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
-  [v5 encodeObject:v8 forKey:@"bld"];
+  brandLogoData = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+  [coderCopy encodeObject:brandLogoData forKey:@"bld"];
 }
 
-- (IMServiceReachabilityHandleResult)initWithCoder:(id)a3
+- (IMServiceReachabilityHandleResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = IMServiceReachabilityHandleResult;
   v5 = [(IMServiceReachabilityHandleResult *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     handleID = v5->_handleID;
     v5->_handleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
     service = v5->_service;
     v5->_service = v8;
 
-    v5->_reachable = [v4 decodeBoolForKey:@"r"];
-    v5->_supportsEncryption = [v4 decodeBoolForKey:@"e"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pmd"];
+    v5->_reachable = [coderCopy decodeBoolForKey:@"r"];
+    v5->_supportsEncryption = [coderCopy decodeBoolForKey:@"e"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pmd"];
     v11 = v10;
     if (v10)
     {
@@ -82,7 +82,7 @@
     persistentMenuDictionary = v5->_persistentMenuDictionary;
     v5->_persistentMenuDictionary = v10;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
     v14 = v13;
     if (v13)
     {
@@ -92,7 +92,7 @@
     brandInfoDictionary = v5->_brandInfoDictionary;
     v5->_brandInfoDictionary = v13;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bld"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bld"];
     brandLogoData = v5->_brandLogoData;
     v5->_brandLogoData = v16;
   }
@@ -113,36 +113,36 @@
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
   v7 = [v3 initWithDictionary:v6];
 
-  v8 = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
+  persistentMenuDictionary = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
 
-  if (v8)
+  if (persistentMenuDictionary)
   {
-    v9 = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
-    if (v9)
+    persistentMenuData = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
+    if (persistentMenuData)
     {
-      [v7 setObject:v9 forKeyedSubscript:@"pmd"];
+      [v7 setObject:persistentMenuData forKeyedSubscript:@"pmd"];
     }
   }
 
-  v10 = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
+  brandInfoDictionary = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
 
-  if (v10)
+  if (brandInfoDictionary)
   {
-    v11 = [(IMServiceReachabilityHandleResult *)self brandInfoData];
-    if (v11)
+    brandInfoData = [(IMServiceReachabilityHandleResult *)self brandInfoData];
+    if (brandInfoData)
     {
-      [v7 setObject:v11 forKeyedSubscript:@"bid"];
+      [v7 setObject:brandInfoData forKeyedSubscript:@"bid"];
     }
   }
 
-  v12 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+  brandLogoData = [(IMServiceReachabilityHandleResult *)self brandLogoData];
 
-  if (v12)
+  if (brandLogoData)
   {
-    v13 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
-    if (v13)
+    brandLogoData2 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+    if (brandLogoData2)
     {
-      [v7 setObject:v13 forKeyedSubscript:@"bld"];
+      [v7 setObject:brandLogoData2 forKeyedSubscript:@"bld"];
     }
   }
 
@@ -151,8 +151,8 @@
     v14 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(IMServiceReachabilityHandleResult *)self handleID];
-      v16 = [(IMServiceReachabilityHandleResult *)self service];
+      handleID = [(IMServiceReachabilityHandleResult *)self handleID];
+      service = [(IMServiceReachabilityHandleResult *)self service];
       v17 = [v7 objectForKeyedSubscript:@"pmd"];
       if (v17)
       {
@@ -188,9 +188,9 @@
         v23 = @"NO";
       }
 
-      v26 = v15;
+      v26 = handleID;
       v27 = 2112;
-      v28 = v16;
+      v28 = service;
       v29 = 2112;
       v30 = v18;
       v31 = 2112;
@@ -204,65 +204,65 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
-    v7 = [v5 persistentMenuData];
-    if (v6 == v7)
+    v5 = equalCopy;
+    persistentMenuData = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
+    persistentMenuData2 = [v5 persistentMenuData];
+    if (persistentMenuData == persistentMenuData2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
-      v9 = [v5 persistentMenuData];
-      v10 = [v8 isEqualToData:v9];
+      persistentMenuData3 = [(IMServiceReachabilityHandleResult *)self persistentMenuData];
+      persistentMenuData4 = [v5 persistentMenuData];
+      v10 = [persistentMenuData3 isEqualToData:persistentMenuData4];
     }
 
-    v12 = [(IMServiceReachabilityHandleResult *)self brandInfoData];
-    v13 = [v5 brandInfoData];
-    if (v12 == v13)
+    brandInfoData = [(IMServiceReachabilityHandleResult *)self brandInfoData];
+    brandInfoData2 = [v5 brandInfoData];
+    if (brandInfoData == brandInfoData2)
     {
       v16 = 1;
     }
 
     else
     {
-      v14 = [(IMServiceReachabilityHandleResult *)self brandInfoData];
-      v15 = [v5 brandInfoData];
-      v16 = [v14 isEqualToData:v15];
+      brandInfoData3 = [(IMServiceReachabilityHandleResult *)self brandInfoData];
+      brandInfoData4 = [v5 brandInfoData];
+      v16 = [brandInfoData3 isEqualToData:brandInfoData4];
     }
 
-    v17 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
-    v18 = [v5 brandLogoData];
-    if (v17 == v18)
+    brandLogoData = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+    brandLogoData2 = [v5 brandLogoData];
+    if (brandLogoData == brandLogoData2)
     {
       v21 = 1;
     }
 
     else
     {
-      v19 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
-      v20 = [v5 brandLogoData];
-      v21 = [v19 isEqualToData:v20];
+      brandLogoData3 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+      brandLogoData4 = [v5 brandLogoData];
+      v21 = [brandLogoData3 isEqualToData:brandLogoData4];
     }
 
-    v22 = [v5 isReachable];
-    if (v22 == [(IMServiceReachabilityHandleResult *)self isReachable])
+    isReachable = [v5 isReachable];
+    if (isReachable == [(IMServiceReachabilityHandleResult *)self isReachable])
     {
-      v23 = [v5 service];
-      v24 = [(IMServiceReachabilityHandleResult *)self service];
-      if ([v23 isEqualToString:v24])
+      service = [v5 service];
+      service2 = [(IMServiceReachabilityHandleResult *)self service];
+      if ([service isEqualToString:service2])
       {
-        v25 = [v5 handleID];
-        v26 = [(IMServiceReachabilityHandleResult *)self handleID];
-        if ([v25 isEqualToString:v26])
+        handleID = [v5 handleID];
+        handleID2 = [(IMServiceReachabilityHandleResult *)self handleID];
+        if ([handleID isEqualToString:handleID2])
         {
           v11 = v10 & v16 & v21;
         }
@@ -297,8 +297,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IMServiceReachabilityHandleResult *)self handleID];
-  v6 = [(IMServiceReachabilityHandleResult *)self service];
+  handleID = [(IMServiceReachabilityHandleResult *)self handleID];
+  service = [(IMServiceReachabilityHandleResult *)self service];
   if ([(IMServiceReachabilityHandleResult *)self isReachable])
   {
     v7 = @"YES";
@@ -309,23 +309,23 @@
     v7 = @"NO";
   }
 
-  v8 = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
-  v9 = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
-  v10 = [(IMServiceReachabilityHandleResult *)self brandLogoData];
-  v11 = [v3 stringWithFormat:@"<%@ %p [ID: %@ service: %@ isReachable: %@ persistentMenu: %@ brandInfo: %@ brandLogo: %lu]>", v4, self, v5, v6, v7, v8, v9, objc_msgSend(v10, "length")];
+  persistentMenuDictionary = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
+  brandInfoDictionary = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
+  brandLogoData = [(IMServiceReachabilityHandleResult *)self brandLogoData];
+  v11 = [v3 stringWithFormat:@"<%@ %p [ID: %@ service: %@ isReachable: %@ persistentMenu: %@ brandInfo: %@ brandLogo: %lu]>", v4, self, handleID, service, v7, persistentMenuDictionary, brandInfoDictionary, objc_msgSend(brandLogoData, "length")];
 
   return v11;
 }
 
 - (id)persistentMenuData
 {
-  v3 = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
+  persistentMenuDictionary = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
 
-  if (v3)
+  if (persistentMenuDictionary)
   {
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
-    v6 = [v4 dataWithJSONObject:v5 options:0 error:0];
+    persistentMenuDictionary2 = [(IMServiceReachabilityHandleResult *)self persistentMenuDictionary];
+    v6 = [v4 dataWithJSONObject:persistentMenuDictionary2 options:0 error:0];
   }
 
   else
@@ -338,13 +338,13 @@
 
 - (id)brandInfoData
 {
-  v3 = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
+  brandInfoDictionary = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
 
-  if (v3)
+  if (brandInfoDictionary)
   {
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
-    v6 = [v4 dataWithJSONObject:v5 options:0 error:0];
+    brandInfoDictionary2 = [(IMServiceReachabilityHandleResult *)self brandInfoDictionary];
+    v6 = [v4 dataWithJSONObject:brandInfoDictionary2 options:0 error:0];
   }
 
   else

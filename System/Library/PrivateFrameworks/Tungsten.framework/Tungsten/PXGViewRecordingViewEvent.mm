@@ -1,15 +1,15 @@
 @interface PXGViewRecordingViewEvent
-+ (id)eventWithSpriteTexture:(id)a3 viewClass:(Class)a4 spriteIndex:(unsigned int)a5 needsParenting:(BOOL)a6;
-- (PXGViewRecordingViewEvent)initWithSpriteTexture:(id)a3 viewClass:(Class)a4 spriteIndex:(unsigned int)a5 needsParenting:(BOOL)a6;
++ (id)eventWithSpriteTexture:(id)texture viewClass:(Class)class spriteIndex:(unsigned int)index needsParenting:(BOOL)parenting;
+- (PXGViewRecordingViewEvent)initWithSpriteTexture:(id)texture viewClass:(Class)class spriteIndex:(unsigned int)index needsParenting:(BOOL)parenting;
 @end
 
 @implementation PXGViewRecordingViewEvent
 
-- (PXGViewRecordingViewEvent)initWithSpriteTexture:(id)a3 viewClass:(Class)a4 spriteIndex:(unsigned int)a5 needsParenting:(BOOL)a6
+- (PXGViewRecordingViewEvent)initWithSpriteTexture:(id)texture viewClass:(Class)class spriteIndex:(unsigned int)index needsParenting:(BOOL)parenting
 {
-  v6 = a6;
-  v7 = *&a5;
-  v10 = a3;
+  parentingCopy = parenting;
+  v7 = *&index;
+  textureCopy = texture;
   v18.receiver = self;
   v18.super_class = PXGViewRecordingViewEvent;
   v11 = [(PXGTungstenRecordingEvent *)&v18 initWithComponent:2 eventName:@"frameEnd"];
@@ -20,8 +20,8 @@
     v11->_serializable = v12;
 
     [(PXGViewRecordingViewSerializable *)v11->_serializable setSpriteIndex:v7];
-    -[PXGViewRecordingViewSerializable setPresentationType:](v11->_serializable, "setPresentationType:", [v10 presentationType]);
-    v14 = NSStringFromClass(a4);
+    -[PXGViewRecordingViewSerializable setPresentationType:](v11->_serializable, "setPresentationType:", [textureCopy presentationType]);
+    v14 = NSStringFromClass(class);
     v15 = v14;
     if (v14)
     {
@@ -35,18 +35,18 @@
 
     [(PXGViewRecordingViewSerializable *)v11->_serializable setPayloadViewClass:v16];
 
-    [(PXGViewRecordingViewSerializable *)v11->_serializable setNeedsParenting:v6];
+    [(PXGViewRecordingViewSerializable *)v11->_serializable setNeedsParenting:parentingCopy];
   }
 
   return v11;
 }
 
-+ (id)eventWithSpriteTexture:(id)a3 viewClass:(Class)a4 spriteIndex:(unsigned int)a5 needsParenting:(BOOL)a6
++ (id)eventWithSpriteTexture:(id)texture viewClass:(Class)class spriteIndex:(unsigned int)index needsParenting:(BOOL)parenting
 {
-  v6 = a6;
-  v7 = *&a5;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSpriteTexture:v10 viewClass:a4 spriteIndex:v7 needsParenting:v6];
+  parentingCopy = parenting;
+  v7 = *&index;
+  textureCopy = texture;
+  v11 = [[self alloc] initWithSpriteTexture:textureCopy viewClass:class spriteIndex:v7 needsParenting:parentingCopy];
 
   return v11;
 }

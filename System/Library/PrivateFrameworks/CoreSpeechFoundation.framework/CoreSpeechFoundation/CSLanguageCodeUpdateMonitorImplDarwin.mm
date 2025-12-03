@@ -1,30 +1,30 @@
 @interface CSLanguageCodeUpdateMonitorImplDarwin
-- (BOOL)isLanguageCodeCurrent:(id)a3;
+- (BOOL)isLanguageCodeCurrent:(id)current;
 - (CSLanguageCodeUpdateMonitorImplDarwin)init;
-- (void)_didReceiveLanguageCodeUpdate:(id)a3;
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveLanguageCodeUpdate:(id)update;
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSLanguageCodeUpdateMonitorImplDarwin
 
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code
 {
-  v7 = a3;
-  v6 = a4;
-  [(CSEventMonitor *)self notifyObserver:v7];
+  observerCopy = observer;
+  codeCopy = code;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v7 CSLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:v6];
+    [observerCopy CSLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:codeCopy];
   }
 }
 
-- (BOOL)isLanguageCodeCurrent:(id)a3
+- (BOOL)isLanguageCodeCurrent:(id)current
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSString *)self->_currentLanguageCode isEqualToString:v4];
+  currentCopy = current;
+  v5 = [(NSString *)self->_currentLanguageCode isEqualToString:currentCopy];
   if (v5)
   {
     v6 = CSLogContextFacilityCoreSpeech;
@@ -33,7 +33,7 @@
       v9 = 136315394;
       v10 = "[CSLanguageCodeUpdateMonitorImplDarwin isLanguageCodeCurrent:]";
       v11 = 2114;
-      v12 = v4;
+      v12 = currentCopy;
       _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_INFO, "%s language code already up-to-date : %{public}@", &v9, 0x16u);
     }
   }
@@ -42,31 +42,31 @@
   return v5;
 }
 
-- (void)_didReceiveLanguageCodeUpdate:(id)a3
+- (void)_didReceiveLanguageCodeUpdate:(id)update
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[CSLanguageCodeUpdateMonitorImplDarwin _didReceiveLanguageCodeUpdate:]";
     v13 = 2114;
-    v14 = v5;
+    v14 = updateCopy;
     _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_DEFAULT, "%s Siri language changed to : %{public}@", buf, 0x16u);
   }
 
-  if (v5)
+  if (updateCopy)
   {
-    if (![(CSLanguageCodeUpdateMonitorImplDarwin *)self isLanguageCodeCurrent:v5])
+    if (![(CSLanguageCodeUpdateMonitorImplDarwin *)self isLanguageCodeCurrent:updateCopy])
     {
-      objc_storeStrong(&self->_currentLanguageCode, a3);
+      objc_storeStrong(&self->_currentLanguageCode, update);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __71__CSLanguageCodeUpdateMonitorImplDarwin__didReceiveLanguageCodeUpdate___block_invoke;
       v9[3] = &unk_1E865B4E8;
       v9[4] = self;
-      v10 = v5;
+      v10 = updateCopy;
       [(CSEventMonitor *)self enumerateObserversInQueue:v9];
     }
   }
@@ -99,7 +99,7 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CSLogContextFacilityCoreSpeech;
@@ -128,15 +128,15 @@
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

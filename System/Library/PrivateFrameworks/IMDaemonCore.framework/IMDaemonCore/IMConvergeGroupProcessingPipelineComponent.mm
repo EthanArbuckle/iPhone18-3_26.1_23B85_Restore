@@ -1,57 +1,57 @@
 @interface IMConvergeGroupProcessingPipelineComponent
-- (IMConvergeGroupProcessingPipelineComponent)initWithIDSTrustedData:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMConvergeGroupProcessingPipelineComponent)initWithIDSTrustedData:(id)data;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMConvergeGroupProcessingPipelineComponent
 
-- (IMConvergeGroupProcessingPipelineComponent)initWithIDSTrustedData:(id)a3
+- (IMConvergeGroupProcessingPipelineComponent)initWithIDSTrustedData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = IMConvergeGroupProcessingPipelineComponent;
   v6 = [(IMConvergeGroupProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsTrustedData, a3);
+    objc_storeStrong(&v6->_idsTrustedData, data);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 chat];
+  inputCopy = input;
+  chat = [inputCopy chat];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = chat;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "<IMConvergeGroupProcessingPipelineComponent> Started processing for chat: %@", buf, 0xCu);
     }
   }
 
-  if (v4)
+  if (chat)
   {
-    if ([v4 style] != 43)
+    if ([chat style] != 43)
     {
       goto LABEL_24;
     }
 
-    v6 = [v3 GUID];
-    if (v6)
+    gUID = [inputCopy GUID];
+    if (gUID)
     {
       v7 = +[IMDMessageStore sharedInstance];
-      v8 = [v7 messageWithGUID:v6];
+      v8 = [v7 messageWithGUID:gUID];
 
       v9 = +[IMDServiceController sharedController];
-      v10 = [v3 replicationSourceServiceName];
-      v26 = [v9 serviceWithName:v10];
+      replicationSourceServiceName = [inputCopy replicationSourceServiceName];
+      v26 = [v9 serviceWithName:replicationSourceServiceName];
 
       if (v8)
       {
@@ -68,17 +68,17 @@
 
       else
       {
-        v25 = [v3 serviceSession];
-        v22 = [v3 account];
-        v24 = [v3 groupID];
-        v23 = [v3 participantIdentifiers];
-        v13 = [v3 fromIdentifier];
-        v14 = [v3 toIdentifier];
-        v15 = [v3 groupParticipantVersion];
-        v16 = [v3 groupProtocolVersion];
-        v17 = [v3 timestamp];
-        v18 = [v3 groupPhotoCreationTime];
-        [v4 _convergeGroupChatIfNeededWithServiceSession:v25 account:v22 replicationService:v26 groupID:v24 incomingParticipants:v23 fromIdentifier:v13 toIdentifier:v14 receivedGroupParticipantVersion:v15 receivedGroupProtocolVersion:v16 messageTimeStamp:v17 groupPhotoCreationTime:v18];
+        serviceSession = [inputCopy serviceSession];
+        account = [inputCopy account];
+        groupID = [inputCopy groupID];
+        participantIdentifiers = [inputCopy participantIdentifiers];
+        fromIdentifier = [inputCopy fromIdentifier];
+        toIdentifier = [inputCopy toIdentifier];
+        groupParticipantVersion = [inputCopy groupParticipantVersion];
+        groupProtocolVersion = [inputCopy groupProtocolVersion];
+        timestamp = [inputCopy timestamp];
+        groupPhotoCreationTime = [inputCopy groupPhotoCreationTime];
+        [chat _convergeGroupChatIfNeededWithServiceSession:serviceSession account:account replicationService:v26 groupID:groupID incomingParticipants:participantIdentifiers fromIdentifier:fromIdentifier toIdentifier:toIdentifier receivedGroupParticipantVersion:groupParticipantVersion receivedGroupProtocolVersion:groupProtocolVersion messageTimeStamp:timestamp groupPhotoCreationTime:groupPhotoCreationTime];
       }
     }
 
@@ -100,16 +100,16 @@
       goto LABEL_24;
     }
 
-    v6 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    gUID = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(gUID, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "<IMConvergeGroupProcessingPipelineComponent> No chat found, nothing to converge", buf, 2u);
+      _os_log_impl(&dword_22B4CC000, gUID, OS_LOG_TYPE_INFO, "<IMConvergeGroupProcessingPipelineComponent> No chat found, nothing to converge", buf, 2u);
     }
   }
 
 LABEL_24:
-  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 

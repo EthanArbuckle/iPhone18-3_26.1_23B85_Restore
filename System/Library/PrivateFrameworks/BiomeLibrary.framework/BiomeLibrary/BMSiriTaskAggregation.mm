@@ -1,26 +1,26 @@
 @interface BMSiriTaskAggregation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriTaskAggregation)initWithAbsoluteTimestamp:(id)a3 metadata:(id)a4 statistics:(id)a5 dimensions:(id)a6;
-- (BMSiriTaskAggregation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriTaskAggregation)initWithAbsoluteTimestamp:(id)timestamp metadata:(id)metadata statistics:(id)statistics dimensions:(id)dimensions;
+- (BMSiriTaskAggregation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriTaskAggregation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriTaskAggregation hasAbsoluteTimestamp](self, "hasAbsoluteTimestamp") || [v5 hasAbsoluteTimestamp])
     {
       if (![(BMSiriTaskAggregation *)self hasAbsoluteTimestamp])
@@ -42,18 +42,18 @@
       }
     }
 
-    v9 = [(BMSiriTaskAggregation *)self metadata];
-    v10 = [v5 metadata];
-    v11 = v10;
-    if (v9 == v10)
+    metadata = [(BMSiriTaskAggregation *)self metadata];
+    metadata2 = [v5 metadata];
+    v11 = metadata2;
+    if (metadata == metadata2)
     {
     }
 
     else
     {
-      v12 = [(BMSiriTaskAggregation *)self metadata];
-      v13 = [v5 metadata];
-      v14 = [v12 isEqual:v13];
+      metadata3 = [(BMSiriTaskAggregation *)self metadata];
+      metadata4 = [v5 metadata];
+      v14 = [metadata3 isEqual:metadata4];
 
       if (!v14)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v16 = [(BMSiriTaskAggregation *)self statistics];
-    v17 = [v5 statistics];
-    v18 = v17;
-    if (v16 == v17)
+    statistics = [(BMSiriTaskAggregation *)self statistics];
+    statistics2 = [v5 statistics];
+    v18 = statistics2;
+    if (statistics == statistics2)
     {
     }
 
     else
     {
-      v19 = [(BMSiriTaskAggregation *)self statistics];
-      v20 = [v5 statistics];
-      v21 = [v19 isEqual:v20];
+      statistics3 = [(BMSiriTaskAggregation *)self statistics];
+      statistics4 = [v5 statistics];
+      v21 = [statistics3 isEqual:statistics4];
 
       if (!v21)
       {
@@ -84,18 +84,18 @@ LABEL_15:
       }
     }
 
-    v23 = [(BMSiriTaskAggregation *)self dimensions];
-    v24 = [v5 dimensions];
-    if (v23 == v24)
+    dimensions = [(BMSiriTaskAggregation *)self dimensions];
+    dimensions2 = [v5 dimensions];
+    if (dimensions == dimensions2)
     {
       v15 = 1;
     }
 
     else
     {
-      v25 = [(BMSiriTaskAggregation *)self dimensions];
-      v26 = [v5 dimensions];
-      v15 = [v25 isEqual:v26];
+      dimensions3 = [(BMSiriTaskAggregation *)self dimensions];
+      dimensions4 = [v5 dimensions];
+      v15 = [dimensions3 isEqual:dimensions4];
     }
 
     goto LABEL_15;
@@ -123,51 +123,51 @@ LABEL_16:
     v5 = [v4 numberWithDouble:?];
   }
 
-  v6 = [(BMSiriTaskAggregation *)self metadata];
-  v7 = [v6 jsonDictionary];
+  metadata = [(BMSiriTaskAggregation *)self metadata];
+  jsonDictionary = [metadata jsonDictionary];
 
-  v8 = [(BMSiriTaskAggregation *)self statistics];
-  v9 = [v8 jsonDictionary];
+  statistics = [(BMSiriTaskAggregation *)self statistics];
+  jsonDictionary2 = [statistics jsonDictionary];
 
-  v10 = [(BMSiriTaskAggregation *)self dimensions];
-  v11 = [v10 jsonDictionary];
+  dimensions = [(BMSiriTaskAggregation *)self dimensions];
+  jsonDictionary3 = [dimensions jsonDictionary];
 
   v19[0] = @"absoluteTimestamp";
-  v12 = v5;
+  null = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[0] = v12;
+  v20[0] = null;
   v19[1] = @"metadata";
-  v13 = v7;
-  if (!v7)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[1] = v13;
+  v20[1] = null2;
   v19[2] = @"statistics";
-  v14 = v9;
-  if (!v9)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[2] = v14;
+  v20[2] = null3;
   v19[3] = @"dimensions";
-  v15 = v11;
-  if (!v11)
+  null4 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[3] = v15;
+  v20[3] = null4;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-  if (v11)
+  if (jsonDictionary3)
   {
-    if (v9)
+    if (jsonDictionary2)
     {
       goto LABEL_15;
     }
@@ -176,10 +176,10 @@ LABEL_16:
   else
   {
 
-    if (v9)
+    if (jsonDictionary2)
     {
 LABEL_15:
-      if (v7)
+      if (jsonDictionary)
       {
         goto LABEL_16;
       }
@@ -195,7 +195,7 @@ LABEL_22:
     }
   }
 
-  if (!v7)
+  if (!jsonDictionary)
   {
     goto LABEL_22;
   }
@@ -214,21 +214,21 @@ LABEL_17:
   return v16;
 }
 
-- (BMSiriTaskAggregation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriTaskAggregation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v7 = 0;
         v15 = 0;
-        v14 = self;
+        selfCopy6 = self;
         goto LABEL_48;
       }
 
@@ -240,7 +240,7 @@ LABEL_17:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
       v7 = 0;
       v15 = 0;
-      *a4 = [v19 initWithDomain:v20 code:2 userInfo:v9];
+      *error = [v19 initWithDomain:v20 code:2 userInfo:v9];
       goto LABEL_35;
     }
 
@@ -252,22 +252,22 @@ LABEL_17:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"metadata"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = 0;
 LABEL_7:
-    v10 = [v5 objectForKeyedSubscript:@"statistics"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"statistics"];
     v32 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
-          v14 = self;
+          selfCopy6 = self;
           goto LABEL_45;
         }
 
@@ -278,7 +278,7 @@ LABEL_7:
         v40 = v11;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v15 = 0;
-        *a4 = [v29 initWithDomain:v26 code:2 userInfo:v12];
+        *error = [v29 initWithDomain:v26 code:2 userInfo:v12];
         goto LABEL_43;
       }
 
@@ -288,16 +288,16 @@ LABEL_7:
       v18 = v35;
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v18 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
 LABEL_42:
         v15 = 0;
 LABEL_43:
-        v14 = self;
+        selfCopy6 = self;
         goto LABEL_44;
       }
     }
@@ -307,13 +307,13 @@ LABEL_43:
       v11 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"dimensions"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"dimensions"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = 0;
 LABEL_13:
-      v14 = [(BMSiriTaskAggregation *)self initWithAbsoluteTimestamp:v32 metadata:v9 statistics:v11 dimensions:v13];
-      v15 = v14;
+      selfCopy6 = [(BMSiriTaskAggregation *)self initWithAbsoluteTimestamp:v32 metadata:v9 statistics:v11 dimensions:v13];
+      v15 = selfCopy6;
 LABEL_41:
 
 LABEL_44:
@@ -337,19 +337,19 @@ LABEL_45:
         goto LABEL_13;
       }
 
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
 LABEL_40:
       v15 = 0;
-      v14 = self;
+      selfCopy6 = self;
       goto LABEL_41;
     }
 
-    if (a4)
+    if (error)
     {
       v31 = objc_alloc(MEMORY[0x1E696ABC0]);
       v30 = *MEMORY[0x1E698F240];
@@ -357,7 +357,7 @@ LABEL_40:
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"dimensions"];
       v38 = v13;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      *a4 = [v31 initWithDomain:v30 code:2 userInfo:v21];
+      *error = [v31 initWithDomain:v30 code:2 userInfo:v21];
       goto LABEL_40;
     }
 
@@ -377,10 +377,10 @@ LABEL_40:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     v15 = 0;
@@ -388,10 +388,10 @@ LABEL_40:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v15 = 0;
-      v14 = self;
+      selfCopy6 = self;
       goto LABEL_47;
     }
 
@@ -401,14 +401,14 @@ LABEL_40:
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"metadata"];
     v42 = v9;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    *a4 = [v23 initWithDomain:v24 code:2 userInfo:v25];
+    *error = [v23 initWithDomain:v24 code:2 userInfo:v25];
 
     v15 = 0;
     v16 = v8;
   }
 
 LABEL_35:
-  v14 = self;
+  selfCopy6 = self;
 LABEL_46:
 
   v8 = v16;
@@ -423,14 +423,14 @@ LABEL_48:
 {
   v3 = objc_opt_new();
   [(BMSiriTaskAggregation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasAbsoluteTimestamp)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -440,28 +440,28 @@ LABEL_48:
   if (self->_metadata)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriTaskAggregationMetadata *)self->_metadata writeTo:v4];
+    [(BMSiriTaskAggregationMetadata *)self->_metadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_statistics)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriTaskAggregationStatistics *)self->_statistics writeTo:v4];
+    [(BMSiriTaskAggregationStatistics *)self->_statistics writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_dimensions)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriTaskAggregationDimensions *)self->_dimensions writeTo:v4];
+    [(BMSiriTaskAggregationDimensions *)self->_dimensions writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMSiriTaskAggregation;
   v5 = [(BMEventBase *)&v25 init];
@@ -470,12 +470,12 @@ LABEL_48:
     goto LABEL_43;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -486,18 +486,18 @@ LABEL_48:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -514,9 +514,9 @@ LABEL_48:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -533,7 +533,7 @@ LABEL_16:
             goto LABEL_42;
           }
 
-          v16 = [[BMSiriTaskAggregationStatistics alloc] initByReadFrom:v4];
+          v16 = [[BMSiriTaskAggregationStatistics alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_42;
@@ -562,7 +562,7 @@ LABEL_29:
             goto LABEL_42;
           }
 
-          v16 = [[BMSiriTaskAggregationDimensions alloc] initByReadFrom:v4];
+          v16 = [[BMSiriTaskAggregationDimensions alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_42;
@@ -578,18 +578,18 @@ LABEL_29:
         {
           v5->_hasAbsoluteTimestamp = 1;
           v26 = 0.0;
-          v18 = [v4 position] + 8;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 8;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_absoluteTimestamp = v26;
@@ -608,7 +608,7 @@ LABEL_29:
           goto LABEL_42;
         }
 
-        v16 = [[BMSiriTaskAggregationMetadata alloc] initByReadFrom:v4];
+        v16 = [[BMSiriTaskAggregationMetadata alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_42;
@@ -622,13 +622,13 @@ LABEL_29:
 
       PBReaderRecallMark();
 LABEL_40:
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_42:
     v23 = 0;
@@ -649,30 +649,30 @@ LABEL_43:
   v4 = MEMORY[0x1E696AD98];
   [(BMSiriTaskAggregation *)self absoluteTimestamp];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMSiriTaskAggregation *)self metadata];
-  v7 = [(BMSiriTaskAggregation *)self statistics];
-  v8 = [(BMSiriTaskAggregation *)self dimensions];
-  v9 = [v3 initWithFormat:@"BMSiriTaskAggregation with absoluteTimestamp: %@, metadata: %@, statistics: %@, dimensions: %@", v5, v6, v7, v8];
+  metadata = [(BMSiriTaskAggregation *)self metadata];
+  statistics = [(BMSiriTaskAggregation *)self statistics];
+  dimensions = [(BMSiriTaskAggregation *)self dimensions];
+  v9 = [v3 initWithFormat:@"BMSiriTaskAggregation with absoluteTimestamp: %@, metadata: %@, statistics: %@, dimensions: %@", v5, metadata, statistics, dimensions];
 
   return v9;
 }
 
-- (BMSiriTaskAggregation)initWithAbsoluteTimestamp:(id)a3 metadata:(id)a4 statistics:(id)a5 dimensions:(id)a6
+- (BMSiriTaskAggregation)initWithAbsoluteTimestamp:(id)timestamp metadata:(id)metadata statistics:(id)statistics dimensions:(id)dimensions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  timestampCopy = timestamp;
+  metadataCopy = metadata;
+  statisticsCopy = statistics;
+  dimensionsCopy = dimensions;
   v17.receiver = self;
   v17.super_class = BMSiriTaskAggregation;
   v14 = [(BMEventBase *)&v17 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (timestampCopy)
     {
       v14->_hasAbsoluteTimestamp = 1;
-      [v10 doubleValue];
+      [timestampCopy doubleValue];
     }
 
     else
@@ -682,9 +682,9 @@ LABEL_43:
     }
 
     v14->_absoluteTimestamp = v15;
-    objc_storeStrong(&v14->_metadata, a4);
-    objc_storeStrong(&v14->_statistics, a5);
-    objc_storeStrong(&v14->_dimensions, a6);
+    objc_storeStrong(&v14->_metadata, metadata);
+    objc_storeStrong(&v14->_statistics, statistics);
+    objc_storeStrong(&v14->_dimensions, dimensions);
   }
 
   return v14;
@@ -756,9 +756,9 @@ id __32__BMSiriTaskAggregation_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -766,8 +766,8 @@ id __32__BMSiriTaskAggregation_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriTaskAggregation alloc] initByReadFrom:v7];
     v4 = v8;

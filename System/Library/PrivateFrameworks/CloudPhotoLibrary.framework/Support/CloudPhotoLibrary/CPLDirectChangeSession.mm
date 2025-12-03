@@ -1,28 +1,28 @@
 @interface CPLDirectChangeSession
 + (id)selfCrashResetReason;
-- (BOOL)processSessionContext:(id)a3 inStore:(id)a4 error:(id *)a5;
+- (BOOL)processSessionContext:(id)context inStore:(id)store error:(id *)error;
 - (BOOL)tearedDown;
-- (CPLDirectChangeSession)initWithAbstractObject:(id)a3;
+- (CPLDirectChangeSession)initWithAbstractObject:(id)object;
 - (NSString)description;
 - (id)clientWorkDescription;
 - (void)beginClientWork;
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)beginSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler;
+- (void)beginSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler;
 - (void)discardTentativeResetReason;
-- (void)dispatchCallback:(id)a3;
+- (void)dispatchCallback:(id)callback;
 - (void)endClientWork;
-- (void)finalizeWithCompletionHandler:(id)a3;
+- (void)finalizeWithCompletionHandler:(id)handler;
 - (void)registerTentativeResetReason;
-- (void)tearDownWithCompletionHandler:(id)a3;
+- (void)tearDownWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLDirectChangeSession
 
-- (CPLDirectChangeSession)initWithAbstractObject:(id)a3
+- (CPLDirectChangeSession)initWithAbstractObject:(id)object
 {
   v15.receiver = self;
   v15.super_class = CPLDirectChangeSession;
-  v3 = [(CPLDirectChangeSession *)&v15 initWithAbstractObject:a3];
+  v3 = [(CPLDirectChangeSession *)&v15 initWithAbstractObject:object];
   if (v3)
   {
     v4 = CPLCopyDefaultSerialQueueAttributes();
@@ -35,11 +35,11 @@
     callbackQueue = v3->_callbackQueue;
     v3->_callbackQueue = v8;
 
-    v10 = [(CPLDirectChangeSession *)v3 abstractObject];
-    v11 = [v10 libraryManager];
-    v12 = [v11 platformObject];
+    abstractObject = [(CPLDirectChangeSession *)v3 abstractObject];
+    libraryManager = [abstractObject libraryManager];
+    platformObject = [libraryManager platformObject];
     libraryManager = v3->_libraryManager;
-    v3->_libraryManager = v12;
+    v3->_libraryManager = platformObject;
   }
 
   return v3;
@@ -66,18 +66,18 @@
   dispatch_sync(lock, block);
 }
 
-- (BOOL)processSessionContext:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)processSessionContext:(id)context inStore:(id)store error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 scopes];
-  v10 = [v8 mainScopeIdentifier];
+  contextCopy = context;
+  storeCopy = store;
+  scopes = [storeCopy scopes];
+  mainScopeIdentifier = [storeCopy mainScopeIdentifier];
 
-  v11 = [v9 scopeWithIdentifier:v10];
+  v11 = [scopes scopeWithIdentifier:mainScopeIdentifier];
 
-  if (v11 && ((v12 = [v7 estimatedInitialSizeForLocalLibrary], v13 = objc_msgSend(v7, "estimatedInitialAssetCountForLocalLibrary"), v14 = objc_msgSend(v9, "estimatedSizeForScope:", v11), v13 > objc_msgSend(v9, "estimatedAssetCountForScope:", v11)) || v12 > v14))
+  if (v11 && ((v12 = [contextCopy estimatedInitialSizeForLocalLibrary], v13 = objc_msgSend(contextCopy, "estimatedInitialAssetCountForLocalLibrary"), v14 = objc_msgSend(scopes, "estimatedSizeForScope:", v11), v13 > objc_msgSend(scopes, "estimatedAssetCountForScope:", v11)) || v12 > v14))
   {
-    v15 = [v9 storeEstimatedSize:v12 estimatedAssetCount:v13 forScope:v11 error:a5];
+    v15 = [scopes storeEstimatedSize:v12 estimatedAssetCount:v13 forScope:v11 error:error];
   }
 
   else
@@ -88,31 +88,31 @@
   return v15;
 }
 
-- (void)beginSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)beginSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CPLDirectLibraryManager *)self->_libraryManager engineLibrary];
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
+  engineLibrary = [(CPLDirectLibraryManager *)self->_libraryManager engineLibrary];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013C358;
   v15[3] = &unk_100274798;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  [v11 beginChangeSessionWithSessionToken:self completionHandler:v15];
+  v16 = versionCopy;
+  v17 = contextCopy;
+  v18 = handlerCopy;
+  v12 = contextCopy;
+  v13 = versionCopy;
+  v14 = handlerCopy;
+  [engineLibrary beginChangeSessionWithSessionToken:self completionHandler:v15];
 }
 
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = +[NSAssertionHandler currentHandler];
   v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/DirectClientToEngine/CPLDirectChangeSession.m"];
   v14 = NSStringFromSelector(a2);
@@ -121,9 +121,9 @@
   abort();
 }
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = +[NSAssertionHandler currentHandler];
   v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/DirectClientToEngine/CPLDirectChangeSession.m"];
   v8 = NSStringFromSelector(a2);
@@ -143,9 +143,9 @@
   dispatch_sync(lock, block);
 }
 
-- (void)tearDownWithCompletionHandler:(id)a3
+- (void)tearDownWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CPLDirectChangeSession *)self discardTentativeResetReason];
   v15 = 0;
   v16 = &v15;
@@ -161,33 +161,33 @@
   dispatch_sync(lock, block);
   if (*(v16 + 24) == 1)
   {
-    v6 = [(CPLDirectLibraryManager *)self->_libraryManager engineLibrary];
-    v7 = [v6 store];
+    engineLibrary = [(CPLDirectLibraryManager *)self->_libraryManager engineLibrary];
+    store = [engineLibrary store];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10013C9A8;
     v10[3] = &unk_10027AE78;
-    v8 = v7;
+    v8 = store;
     v11 = v8;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = handlerCopy;
     v9 = [v8 performReadTransactionWithBlock:v10];
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)dispatchCallback:(id)a3
+- (void)dispatchCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   callbackQueue = self->_callbackQueue;
-  v6 = v4;
+  v6 = callbackCopy;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002C04;
@@ -236,8 +236,8 @@
     sub_1001B58D8(a2, self);
   }
 
-  v5 = [objc_opt_class() selfCrashResetReason];
-  v3 = [CPLResetTracker registerTentativeResetReasonIfCrashing:v5];
+  selfCrashResetReason = [objc_opt_class() selfCrashResetReason];
+  v3 = [CPLResetTracker registerTentativeResetReasonIfCrashing:selfCrashResetReason];
   tentativeReason = self->_tentativeReason;
   self->_tentativeReason = v3;
 }

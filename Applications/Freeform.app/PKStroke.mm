@@ -1,21 +1,21 @@
 @interface PKStroke
-+ (id)crl_strokePathsExcludingNonMaskedPathRangesForPKStroke:(id)a3;
++ (id)crl_strokePathsExcludingNonMaskedPathRangesForPKStroke:(id)stroke;
 - (CRLFill)crl_fill;
 - (double)crl_averageActualWidth;
 - (double)crl_maximumActualWidth;
 - (double)crl_particleOffset;
-- (double)crl_particleOffsetAt:(double)a3 forSecondaryParticles:(BOOL)a4;
+- (double)crl_particleOffsetAt:(double)at forSecondaryParticles:(BOOL)particles;
 - (double)crl_secondaryParticleOffset;
-- (id)crl_copyWithNewParticleOffset:(double)a3 secondaryParticleOffset:(double)a4;
-- (id)crl_strokeForTracingWithOutset:(double)a3 shouldIgnoreMask:(BOOL)a4;
+- (id)crl_copyWithNewParticleOffset:(double)offset secondaryParticleOffset:(double)particleOffset;
+- (id)crl_strokeForTracingWithOutset:(double)outset shouldIgnoreMask:(BOOL)mask;
 @end
 
 @implementation PKStroke
 
 - (double)crl_averageActualWidth
 {
-  v3 = [(PKStroke *)self path];
-  v4 = [v3 count];
+  path = [(PKStroke *)self path];
+  v4 = [path count];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
     v11 = 0.0;
     do
     {
-      v12 = [v3 objectAtIndexedSubscript:v6];
+      v12 = [path objectAtIndexedSubscript:v6];
       [v12 size];
       v7 = v7 + v13;
       v8 = v8 + v14;
@@ -75,8 +75,8 @@
       v42.size.height = height;
       v32 = (v31 + CGRectGetHeight(v42)) * 0.5;
       v33 = [(PKStroke *)self ink];
-      v34 = [v33 inkType];
-      v35 = [v34 isEqual:PKInkTypeWatercolor];
+      inkType = [v33 inkType];
+      v35 = [inkType isEqual:PKInkTypeWatercolor];
 
       if (v35)
       {
@@ -100,8 +100,8 @@
 
 - (double)crl_maximumActualWidth
 {
-  v3 = [(PKStroke *)self path];
-  v4 = [v3 count];
+  path = [(PKStroke *)self path];
+  v4 = [path count];
   if (v4)
   {
     v5 = v4;
@@ -118,7 +118,7 @@
     v16 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v17 = [v3 objectAtIndexedSubscript:v6];
+      v17 = [path objectAtIndexedSubscript:v6];
       [v17 size];
       if (v18 > v8)
       {
@@ -191,17 +191,17 @@
     y = CGRectNull.origin.y;
     width = CGRectNull.size.width;
     height = CGRectNull.size.height;
-    v32 = [v27 firstIndex];
-    if (v32 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v27 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v33 = v32;
+      v33 = firstIndex;
       v67 = CGPointZero.y;
       do
       {
         r1 = height;
         v69 = width;
         v70 = x;
-        v34 = [v3 objectAtIndexedSubscript:v33];
+        v34 = [path objectAtIndexedSubscript:v33];
         v35 = [PKStrokePoint alloc];
         [v34 size];
         v37 = v36;
@@ -330,7 +330,7 @@
   return result;
 }
 
-- (id)crl_copyWithNewParticleOffset:(double)a3 secondaryParticleOffset:(double)a4
+- (id)crl_copyWithNewParticleOffset:(double)offset secondaryParticleOffset:(double)particleOffset
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -344,7 +344,7 @@
 
   if (byte_101A34720)
   {
-    v7 = [(PKStroke *)self _copyWithNewParticleOffset:a3 secondaryParticleOffset:a4];
+    v7 = [(PKStroke *)self _copyWithNewParticleOffset:offset secondaryParticleOffset:particleOffset];
   }
 
   else
@@ -355,9 +355,9 @@
   return v7;
 }
 
-- (double)crl_particleOffsetAt:(double)a3 forSecondaryParticles:(BOOL)a4
+- (double)crl_particleOffsetAt:(double)at forSecondaryParticles:(BOOL)particles
 {
-  v4 = a4;
+  particlesCopy = particles;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100178B58;
@@ -373,14 +373,14 @@
     return 0.0;
   }
 
-  [(PKStroke *)self _particleOffsetAt:v4 forSecondaryParticles:a3];
+  [(PKStroke *)self _particleOffsetAt:particlesCopy forSecondaryParticles:at];
   return result;
 }
 
-- (id)crl_strokeForTracingWithOutset:(double)a3 shouldIgnoreMask:(BOOL)a4
+- (id)crl_strokeForTracingWithOutset:(double)outset shouldIgnoreMask:(BOOL)mask
 {
-  v7 = [(PKStroke *)self path];
-  v8 = [v7 count];
+  path = [(PKStroke *)self path];
+  v8 = [path count];
   if (v8)
   {
     v9 = v8;
@@ -418,12 +418,12 @@
       v10 = 1.0;
     }
 
-    v60 = a3;
-    v61 = a3 / v10 + a3 / v10;
+    outsetCopy = outset;
+    v61 = outset / v10 + outset / v10;
     v16 = objc_opt_new();
     for (i = 0; i != v9; ++i)
     {
-      v18 = [v7 objectAtIndexedSubscript:i];
+      v18 = [path objectAtIndexedSubscript:i];
       [v18 size];
       v20 = v61 + v19;
       if (v20 < 3.0)
@@ -462,23 +462,23 @@
     }
 
     v42 = [PKStrokePath alloc];
-    v43 = [v7 creationDate];
-    v44 = [v42 initWithControlPoints:v16 creationDate:v43];
+    creationDate = [path creationDate];
+    v44 = [v42 initWithControlPoints:v16 creationDate:creationDate];
 
     v45 = +[CRLColor blackColor];
-    v46 = [v45 UIColor];
+    uIColor = [v45 UIColor];
 
-    v47 = [[PKInk alloc] initWithInkType:PKInkTypePen color:v46];
-    if (!a4)
+    v47 = [[PKInk alloc] initWithInkType:PKInkTypePen color:uIColor];
+    if (!mask)
     {
-      v48 = [(PKStroke *)self mask];
-      if (!v48)
+      mask = [(PKStroke *)self mask];
+      if (!mask)
       {
 LABEL_22:
-        v51 = [v48 CGPath];
-        if (v51)
+        cGPath = [mask CGPath];
+        if (cGPath)
         {
-          v52 = [UIBezierPath bezierPathWithCGPath:v51];
+          v52 = [UIBezierPath bezierPathWithCGPath:cGPath];
         }
 
         else
@@ -489,51 +489,51 @@ LABEL_22:
         v54 = [PKStroke alloc];
         [(PKStroke *)self transform];
         v55 = [v54 initWithInk:v47 strokePath:v44 transform:v64 mask:v52];
-        v56 = [(PKStroke *)self _renderGroupID];
-        [v55 _setRenderGroupID:v56];
+        _renderGroupID = [(PKStroke *)self _renderGroupID];
+        [v55 _setRenderGroupID:_renderGroupID];
 
         [(PKStroke *)self _anchorPointForTexture];
-        v53 = [v55 copyWithNewAnchorPointForTexture:?];
+        selfCopy = [v55 copyWithNewAnchorPointForTexture:?];
 
         goto LABEL_27;
       }
 
-      v49 = [(PKStroke *)self mask];
-      v50 = [v49 isEmpty];
+      mask2 = [(PKStroke *)self mask];
+      isEmpty = [mask2 isEmpty];
 
-      if ((v50 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v58 = [(PKStroke *)self mask];
-        v59 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v58 CGPath]);
+        mask3 = [(PKStroke *)self mask];
+        v59 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [mask3 CGPath]);
 
-        v48 = [v59 bezierPathByOffsettingPath:1 joinStyle:v60];
+        mask = [v59 bezierPathByOffsettingPath:1 joinStyle:outsetCopy];
 
         goto LABEL_22;
       }
     }
 
-    v48 = 0;
+    mask = 0;
     goto LABEL_22;
   }
 
-  v53 = self;
+  selfCopy = self;
 LABEL_27:
 
-  return v53;
+  return selfCopy;
 }
 
-+ (id)crl_strokePathsExcludingNonMaskedPathRangesForPKStroke:(id)a3
++ (id)crl_strokePathsExcludingNonMaskedPathRangesForPKStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 maskedPathRanges];
-  v24 = v3;
-  v6 = [v3 path];
+  maskedPathRanges = [strokeCopy maskedPathRanges];
+  v24 = strokeCopy;
+  path = [strokeCopy path];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = maskedPathRanges;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -556,7 +556,7 @@ LABEL_27:
         v17 = objc_alloc_init(NSMutableArray);
         while (v14 <= v16)
         {
-          v18 = [v6 objectAtIndexedSubscript:v14];
+          v18 = [path objectAtIndexedSubscript:v14];
           [v17 addObject:v18];
 
           ++v14;
@@ -566,8 +566,8 @@ LABEL_27:
         {
           v19 = [PKStrokePath alloc];
           v20 = [v17 copy];
-          v21 = [v6 creationDate];
-          v22 = [v19 initWithControlPoints:v20 creationDate:v21];
+          creationDate = [path creationDate];
+          v22 = [v19 initWithControlPoints:v20 creationDate:creationDate];
 
           [v4 addObject:v22];
         }

@@ -1,14 +1,14 @@
 @interface PUPickerStyleablePhotoSuggestion
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerStyleablePhotoSuggestion
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PickerStyleablePhotoSuggestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PickerStyleablePhotoSuggestion.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface DSPublicSharingType
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (DSPublicSharingType)initWithSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DSPublicSharingType)initWithSource:(id)source;
 - (NSArray)allPublicResources;
 - (NSString)displayName;
 - (NSString)localizedDetailText;
 - (int64_t)score;
 - (unint64_t)hash;
-- (void)addPublicResource:(id)a3;
-- (void)removePublicResource:(id)a3;
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4;
-- (void)stopSharingResource:(id)a3 onQueue:(id)a4 completion:(id)a5;
+- (void)addPublicResource:(id)resource;
+- (void)removePublicResource:(id)resource;
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion;
+- (void)stopSharingResource:(id)resource onQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation DSPublicSharingType
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogPublicSharing = os_log_create("com.apple.DigitalSeparation", "DSLogPublicSharingType");
 
@@ -25,16 +25,16 @@
   }
 }
 
-- (DSPublicSharingType)initWithSource:(id)a3
+- (DSPublicSharingType)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = DSPublicSharingType;
   v5 = [(DSPublicSharingType *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(DSPublicSharingType *)v5 setSource:v4];
+    [(DSPublicSharingType *)v5 setSource:sourceCopy];
     v7 = [MEMORY[0x277CBEB58] set];
     [(DSPublicSharingType *)v6 setPublicResources:v7];
   }
@@ -42,53 +42,53 @@
   return v6;
 }
 
-- (void)addPublicResource:(id)a3
+- (void)addPublicResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(DSPublicSharingType *)self publicResources];
-  [v5 addObject:v4];
+  resourceCopy = resource;
+  publicResources = [(DSPublicSharingType *)self publicResources];
+  [publicResources addObject:resourceCopy];
 }
 
-- (void)removePublicResource:(id)a3
+- (void)removePublicResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(DSPublicSharingType *)self publicResources];
-  [v5 removeObject:v4];
+  resourceCopy = resource;
+  publicResources = [(DSPublicSharingType *)self publicResources];
+  [publicResources removeObject:resourceCopy];
 }
 
 - (NSArray)allPublicResources
 {
-  v2 = [(DSPublicSharingType *)self publicResources];
-  v3 = [v2 allObjects];
+  publicResources = [(DSPublicSharingType *)self publicResources];
+  allObjects = [publicResources allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (int64_t)score
 {
-  v2 = [(DSPublicSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [DSSourceDescriptor sourceDescriptorForSource:v3];
-  v5 = [v4 priority];
+  source = [(DSPublicSharingType *)self source];
+  name = [source name];
+  v4 = [DSSourceDescriptor sourceDescriptorForSource:name];
+  priority = [v4 priority];
 
-  return v5;
+  return priority;
 }
 
 - (NSString)displayName
 {
-  v2 = [(DSPublicSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [DSSourceDescriptor sourceDescriptorForSource:v3];
-  v5 = [v4 localizedName];
+  source = [(DSPublicSharingType *)self source];
+  name = [source name];
+  v4 = [DSSourceDescriptor sourceDescriptorForSource:name];
+  localizedName = [v4 localizedName];
 
-  return v5;
+  return localizedName;
 }
 
 - (NSString)localizedDetailText
 {
-  v3 = [(DSPublicSharingType *)self source];
-  v4 = [v3 name];
-  v5 = [DSSourceDescriptor sourceDescriptorForSource:v4];
+  source = [(DSPublicSharingType *)self source];
+  name = [source name];
+  v5 = [DSSourceDescriptor sourceDescriptorForSource:name];
 
   v6 = [v5 localizedPublicSharingDetailTextByType:self];
 
@@ -97,17 +97,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DSPublicSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [v3 hash];
+  source = [(DSPublicSharingType *)self source];
+  name = [source name];
+  v4 = [name hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -117,11 +117,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(DSPublicSharingType *)self source];
-      v6 = [v5 name];
-      v7 = [(DSPublicSharingType *)v4 source];
-      v8 = [v7 name];
-      v9 = [v6 isEqualToString:v8];
+      source = [(DSPublicSharingType *)self source];
+      name = [source name];
+      source2 = [(DSPublicSharingType *)equalCopy source];
+      name2 = [source2 name];
+      v9 = [name isEqualToString:name2];
     }
 
     else
@@ -133,19 +133,19 @@
   return v9;
 }
 
-- (void)stopSharingResource:(id)a3 onQueue:(id)a4 completion:(id)a5
+- (void)stopSharingResource:(id)resource onQueue:(id)queue completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(DSPublicSharingType *)self source];
-  v10 = [v7 visibility];
-  if (v10 == 1)
+  resourceCopy = resource;
+  completionCopy = completion;
+  source = [(DSPublicSharingType *)self source];
+  visibility = [resourceCopy visibility];
+  if (visibility == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v7 participationAccess];
-      if ((v17 & 2) != 0)
+      participationAccess = [resourceCopy participationAccess];
+      if ((participationAccess & 2) != 0)
       {
         if (objc_opt_respondsToSelector())
         {
@@ -153,12 +153,12 @@
           v26[1] = 3221225472;
           v26[2] = __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_invoke_14;
           v26[3] = &unk_278F72F90;
-          v27 = v9;
-          v28 = v7;
-          v29 = v8;
+          v27 = source;
+          v28 = resourceCopy;
+          v29 = completionCopy;
           [v27 updateParticipantAccessLevelTo:1 onResource:v28 withCompletion:v26];
 
-          v16 = v27;
+          name = v27;
 LABEL_18:
 
           goto LABEL_19;
@@ -167,13 +167,13 @@ LABEL_18:
         v23 = DSLogPublicSharing;
         if (os_log_type_enabled(DSLogPublicSharing, OS_LOG_TYPE_ERROR))
         {
-          [DSPublicSharingType stopSharingResource:v23 onQueue:v9 completion:?];
+          [DSPublicSharingType stopSharingResource:v23 onQueue:source completion:?];
         }
 
 LABEL_17:
-        v16 = [v9 name];
-        v21 = [DSError errorWithCode:2 sourceName:v16];
-        (*(v8 + 2))(v8, v21);
+        name = [source name];
+        v21 = [DSError errorWithCode:2 sourceName:name];
+        (*(completionCopy + 2))(completionCopy, v21);
 
         goto LABEL_18;
       }
@@ -181,27 +181,27 @@ LABEL_17:
 
     else
     {
-      v17 = 0;
+      participationAccess = 0;
     }
 
     v20 = DSLogPublicSharing;
     if (os_log_type_enabled(DSLogPublicSharing, OS_LOG_TYPE_FAULT))
     {
       v24 = v20;
-      v25 = [v9 name];
+      name2 = [source name];
       *buf = 138543874;
-      v35 = v25;
+      v35 = name2;
       v36 = 2050;
-      v37 = [v7 visibility];
+      visibility2 = [resourceCopy visibility];
       v38 = 2050;
-      v39 = v17;
+      v39 = participationAccess;
       _os_log_fault_impl(&dword_248C40000, v24, OS_LOG_TYPE_FAULT, "[%{public}@] Resource classified as public but visibility is %{public}ld and participation access is %{public}ld", buf, 0x20u);
     }
 
     goto LABEL_17;
   }
 
-  if (v10 == 2)
+  if (visibility == 2)
   {
     v11 = objc_opt_respondsToSelector();
     v12 = DSLogPublicSharing;
@@ -211,11 +211,11 @@ LABEL_17:
       if (v13)
       {
         v14 = v12;
-        v15 = [v9 name];
+        name3 = [source name];
         *buf = 138543618;
-        v35 = v15;
+        v35 = name3;
         v36 = 2114;
-        v37 = v7;
+        visibility2 = resourceCopy;
         _os_log_impl(&dword_248C40000, v14, OS_LOG_TYPE_INFO, "[%{public}@] Resource %{public}@ is publicly visible, attempting to change visibility to private", buf, 0x16u);
       }
 
@@ -223,9 +223,9 @@ LABEL_17:
       v32[1] = 3221225472;
       v32[2] = __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_invoke;
       v32[3] = &unk_278F72F68;
-      v33 = v8;
-      [v9 updateVisibilityTo:1 onResource:v7 withCompletion:v32];
-      v16 = v33;
+      v33 = completionCopy;
+      [source updateVisibilityTo:1 onResource:resourceCopy withCompletion:v32];
+      name = v33;
     }
 
     else
@@ -233,11 +233,11 @@ LABEL_17:
       if (v13)
       {
         v18 = v12;
-        v19 = [v9 name];
+        name4 = [source name];
         *buf = 138543618;
-        v35 = v19;
+        v35 = name4;
         v36 = 2114;
-        v37 = v7;
+        visibility2 = resourceCopy;
         _os_log_impl(&dword_248C40000, v18, OS_LOG_TYPE_INFO, "[%{public}@] Resource %{public}@ is publicly visible, attempting to stop sharing entirely", buf, 0x16u);
       }
 
@@ -245,9 +245,9 @@ LABEL_17:
       v30[1] = 3221225472;
       v30[2] = __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_invoke_7;
       v30[3] = &unk_278F72EA0;
-      v31 = v8;
-      [v9 stopSharing:v7 withCompletion:v30];
-      v16 = v31;
+      v31 = completionCopy;
+      [source stopSharing:resourceCopy withCompletion:v30];
+      name = v31;
     }
 
     goto LABEL_18;
@@ -287,20 +287,20 @@ void __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v7 = dispatch_group_create();
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(DSPublicSharingType *)self source];
+  array = [MEMORY[0x277CBEB18] array];
+  source = [(DSPublicSharingType *)self source];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [(DSPublicSharingType *)self publicResources];
-  v11 = [v10 copy];
+  publicResources = [(DSPublicSharingType *)self publicResources];
+  v11 = [publicResources copy];
 
   obj = v11;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -324,11 +324,11 @@ void __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_in
         v25[1] = 3221225472;
         v25[2] = __56__DSPublicSharingType_stopAllSharingOnQueue_completion___block_invoke;
         v25[3] = &unk_278F72FB8;
-        v26 = v9;
+        v26 = source;
         v27 = v16;
-        v28 = v8;
+        v28 = array;
         v29 = v7;
-        [(DSPublicSharingType *)self stopSharingResource:v16 onQueue:v6 completion:v25];
+        [(DSPublicSharingType *)self stopSharingResource:v16 onQueue:queueCopy completion:v25];
 
         ++v15;
       }
@@ -344,11 +344,11 @@ void __62__DSPublicSharingType_stopSharingResource_onQueue_completion___block_in
   block[1] = 3221225472;
   block[2] = __56__DSPublicSharingType_stopAllSharingOnQueue_completion___block_invoke_18;
   block[3] = &unk_278F726C8;
-  v23 = v8;
-  v24 = v20;
-  v17 = v20;
-  v18 = v8;
-  dispatch_group_notify(v7, v6, block);
+  v23 = array;
+  v24 = completionCopy;
+  v17 = completionCopy;
+  v18 = array;
+  dispatch_group_notify(v7, queueCopy, block);
 
   v19 = *MEMORY[0x277D85DE8];
 }

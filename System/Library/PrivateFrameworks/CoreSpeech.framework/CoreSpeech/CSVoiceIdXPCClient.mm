@@ -1,12 +1,12 @@
 @interface CSVoiceIdXPCClient
-+ (void)notifyImplicitUtterance:(id)a3 appContainerName:(id)a4 audioDeviceType:(id)a5 audioRecordType:(id)a6 voiceTriggerEventInfo:(id)a7 otherCtxt:(id)a8 completion:(id)a9;
-+ (void)notifyImplicitUtterance:(id)a3 audioDeviceType:(id)a4 audioRecordType:(id)a5 voiceTriggerEventInfo:(id)a6 otherCtxt:(id)a7 completion:(id)a8;
++ (void)notifyImplicitUtterance:(id)utterance appContainerName:(id)name audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion;
++ (void)notifyImplicitUtterance:(id)utterance audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion;
 - (CSVoiceIdXPCClient)init;
-- (id)_decodeError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_notifyImplicitUtterance:(id)a3 appContainerName:(id)a4 audioDeviceType:(id)a5 audioRecordType:(id)a6 voiceTriggerEventInfo:(id)a7 otherCtxt:(id)a8 completion:(id)a9;
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5;
+- (id)_decodeError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_notifyImplicitUtterance:(id)utterance appContainerName:(id)name audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion;
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
@@ -14,13 +14,13 @@
 
 @implementation CSVoiceIdXPCClient
 
-- (id)_decodeError:(id)a3
+- (id)_decodeError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    string = xpc_dictionary_get_string(v3, "resultErrorDomain");
+    string = xpc_dictionary_get_string(errorCopy, "resultErrorDomain");
     if (string)
     {
       int64 = xpc_dictionary_get_int64(v4, "resultErrorCode");
@@ -37,20 +37,20 @@
   return string;
 }
 
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion
 {
-  message = a3;
-  v8 = a4;
-  v9 = a5;
-  if (message && v8)
+  message = message;
+  connectionCopy = connection;
+  completionCopy = completion;
+  if (message && connectionCopy)
   {
-    v10 = xpc_connection_send_message_with_reply_sync(v8, message);
+    v10 = xpc_connection_send_message_with_reply_sync(connectionCopy, message);
     v11 = v10;
     if (v10)
     {
       v12 = xpc_dictionary_get_BOOL(v10, "result");
       v13 = [(CSVoiceIdXPCClient *)self _decodeError:v11];
-      if (!v9)
+      if (!completionCopy)
       {
 LABEL_6:
 
@@ -62,49 +62,49 @@ LABEL_6:
     {
       v13 = [NSError errorWithDomain:CSErrorDomain code:1251 userInfo:0];
       v12 = 0;
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    v9[2](v9, v12, v13);
+    completionCopy[2](completionCopy, v12, v13);
     goto LABEL_6;
   }
 
-  if (!v9)
+  if (!completionCopy)
   {
     goto LABEL_10;
   }
 
   v11 = [NSError errorWithDomain:CSErrorDomain code:1252 userInfo:0];
-  v9[2](v9, 0, v11);
+  completionCopy[2](completionCopy, 0, v11);
 LABEL_9:
 
 LABEL_10:
 }
 
-- (void)_notifyImplicitUtterance:(id)a3 appContainerName:(id)a4 audioDeviceType:(id)a5 audioRecordType:(id)a6 voiceTriggerEventInfo:(id)a7 otherCtxt:(id)a8 completion:(id)a9
+- (void)_notifyImplicitUtterance:(id)utterance appContainerName:(id)name audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion
 {
-  v37 = a3;
-  v36 = a4;
-  v14 = a5;
-  v38 = a6;
-  v15 = a7;
-  v16 = a8;
+  utteranceCopy = utterance;
+  nameCopy = name;
+  typeCopy = type;
+  recordTypeCopy = recordType;
+  infoCopy = info;
+  ctxtCopy = ctxt;
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1001347DC;
   v39[3] = &unk_100253220;
-  v17 = a9;
-  v40 = v17;
+  completionCopy = completion;
+  v40 = completionCopy;
   v18 = objc_retainBlock(v39);
-  v19 = [[NSDictionary alloc] initWithDictionary:v15];
+  v19 = [[NSDictionary alloc] initWithDictionary:infoCopy];
   *keys = *&off_100252468;
   v48 = *&off_100252478;
   v49 = "audioRecordCtx";
-  v20 = [v15 _cs_xpcObject];
-  if (!v20)
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
+  if (!_cs_xpcObject)
   {
 LABEL_15:
     v33 = CSLogContextFacilityCoreSpeech;
@@ -113,58 +113,58 @@ LABEL_15:
       LODWORD(values) = 136315138;
       *(&values + 4) = "[CSVoiceIdXPCClient _notifyImplicitUtterance:appContainerName:audioDeviceType:audioRecordType:voiceTriggerEventInfo:otherCtxt:completion:]";
       _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%s Required values is nil, bailout", &values, 0xCu);
-      if (!v17)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
     }
 
-    else if (!v17)
+    else if (!completionCopy)
     {
       goto LABEL_18;
     }
 
     v34 = [NSError errorWithDomain:CSErrorDomain code:1253 userInfo:0];
-    (*(v17 + 2))(v17, 0, v34);
+    (*(completionCopy + 2))(completionCopy, 0, v34);
 
     goto LABEL_18;
   }
 
-  v21 = [v16 _cs_xpcObject];
-  if (!v21)
+  _cs_xpcObject2 = [ctxtCopy _cs_xpcObject];
+  if (!_cs_xpcObject2)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v22 = [v14 xpcObject];
-  if (!v22)
+  xpcObject = [typeCopy xpcObject];
+  if (!xpcObject)
   {
 
     goto LABEL_14;
   }
 
-  v23 = [v38 xpcObject];
-  v24 = v23 == 0;
+  xpcObject2 = [recordTypeCopy xpcObject];
+  v24 = xpcObject2 == 0;
 
   if (v24)
   {
     goto LABEL_15;
   }
 
-  v25 = v37;
-  *&values = xpc_string_create([v37 UTF8String]);
+  v25 = utteranceCopy;
+  *&values = xpc_string_create([utteranceCopy UTF8String]);
   *(&values + 1) = [v19 _cs_xpcObject];
-  v44 = [v16 _cs_xpcObject];
-  v45 = [v14 xpcObject];
-  v46 = [v38 xpcObject];
+  _cs_xpcObject3 = [ctxtCopy _cs_xpcObject];
+  xpcObject3 = [typeCopy xpcObject];
+  xpcObject4 = [recordTypeCopy xpcObject];
   v26 = xpc_dictionary_create(keys, &values, 5uLL);
   v27 = v26;
-  if (v36 && v26)
+  if (nameCopy && v26)
   {
-    v28 = v36;
-    xpc_dictionary_set_string(v27, "appContainerName", [v36 UTF8String]);
+    v28 = nameCopy;
+    xpc_dictionary_set_string(v27, "appContainerName", [nameCopy UTF8String]);
   }
 
   *v42 = *off_100252E40;
@@ -185,11 +185,11 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v6 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  if (v3 == &_xpc_error_connection_invalid || v3 == &_xpc_error_connection_interrupted)
+  if (errorCopy == &_xpc_error_connection_invalid || errorCopy == &_xpc_error_connection_interrupted)
   {
     v6 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -222,7 +222,7 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  string = xpc_dictionary_get_string(v3, _xpc_error_key_description);
+  string = xpc_dictionary_get_string(errorCopy, _xpc_error_key_description);
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
@@ -239,13 +239,13 @@ LABEL_15:
 LABEL_13:
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_error)
     {
       [(CSVoiceIdXPCClient *)self _handleListenerError:v5];
@@ -335,15 +335,15 @@ LABEL_9:
   return v2;
 }
 
-+ (void)notifyImplicitUtterance:(id)a3 appContainerName:(id)a4 audioDeviceType:(id)a5 audioRecordType:(id)a6 voiceTriggerEventInfo:(id)a7 otherCtxt:(id)a8 completion:(id)a9
++ (void)notifyImplicitUtterance:(id)utterance appContainerName:(id)name audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  completionCopy = completion;
+  ctxtCopy = ctxt;
+  infoCopy = info;
+  recordTypeCopy = recordType;
+  typeCopy = type;
+  nameCopy = name;
+  utteranceCopy = utterance;
   v22 = objc_alloc_init(CSVoiceIdXPCClient);
   [(CSVoiceIdXPCClient *)v22 connect];
   v25[0] = _NSConcreteStackBlock;
@@ -351,20 +351,20 @@ LABEL_9:
   v25[2] = sub_100134E7C;
   v25[3] = &unk_100253270;
   v26 = v22;
-  v27 = v15;
-  v23 = v15;
+  v27 = completionCopy;
+  v23 = completionCopy;
   v24 = v22;
-  [(CSVoiceIdXPCClient *)v24 _notifyImplicitUtterance:v21 appContainerName:v20 audioDeviceType:v19 audioRecordType:v18 voiceTriggerEventInfo:v17 otherCtxt:v16 completion:v25];
+  [(CSVoiceIdXPCClient *)v24 _notifyImplicitUtterance:utteranceCopy appContainerName:nameCopy audioDeviceType:typeCopy audioRecordType:recordTypeCopy voiceTriggerEventInfo:infoCopy otherCtxt:ctxtCopy completion:v25];
 }
 
-+ (void)notifyImplicitUtterance:(id)a3 audioDeviceType:(id)a4 audioRecordType:(id)a5 voiceTriggerEventInfo:(id)a6 otherCtxt:(id)a7 completion:(id)a8
++ (void)notifyImplicitUtterance:(id)utterance audioDeviceType:(id)type audioRecordType:(id)recordType voiceTriggerEventInfo:(id)info otherCtxt:(id)ctxt completion:(id)completion
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  completionCopy = completion;
+  ctxtCopy = ctxt;
+  infoCopy = info;
+  recordTypeCopy = recordType;
+  typeCopy = type;
+  utteranceCopy = utterance;
   v19 = objc_alloc_init(CSVoiceIdXPCClient);
   [(CSVoiceIdXPCClient *)v19 connect];
   v22[0] = _NSConcreteStackBlock;
@@ -372,10 +372,10 @@ LABEL_9:
   v22[2] = sub_100135024;
   v22[3] = &unk_100253270;
   v23 = v19;
-  v24 = v13;
-  v20 = v13;
+  v24 = completionCopy;
+  v20 = completionCopy;
   v21 = v19;
-  [(CSVoiceIdXPCClient *)v21 _notifyImplicitUtterance:v18 appContainerName:0 audioDeviceType:v17 audioRecordType:v16 voiceTriggerEventInfo:v15 otherCtxt:v14 completion:v22];
+  [(CSVoiceIdXPCClient *)v21 _notifyImplicitUtterance:utteranceCopy appContainerName:0 audioDeviceType:typeCopy audioRecordType:recordTypeCopy voiceTriggerEventInfo:infoCopy otherCtxt:ctxtCopy completion:v22];
 }
 
 @end

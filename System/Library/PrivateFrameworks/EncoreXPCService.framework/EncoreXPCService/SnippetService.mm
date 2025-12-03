@@ -1,52 +1,52 @@
 @interface SnippetService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC16EncoreXPCService14SnippetService)init;
-- (void)echoWithEvent:(id)a3;
-- (void)handleEventWithEvent:(id)a3;
-- (void)publishWithEvent:(id)a3;
-- (void)subscribeWithCompletion:(id)a3;
+- (void)echoWithEvent:(id)event;
+- (void)handleEventWithEvent:(id)event;
+- (void)publishWithEvent:(id)event;
+- (void)subscribeWithCompletion:(id)completion;
 @end
 
 @implementation SnippetService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
   v9 = sub_24A043E18();
 
   return v9 & 1;
 }
 
-- (void)subscribeWithCompletion:(id)a3
+- (void)subscribeWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_24A04344C(sub_24A0443A8, v5);
 }
 
-- (void)handleEventWithEvent:(id)a3
+- (void)handleEventWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A0435F8(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_24A0435F8(eventCopy);
 }
 
-- (void)publishWithEvent:(id)a3
+- (void)publishWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A043A60(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_24A043A60(eventCopy);
 }
 
-- (void)echoWithEvent:(id)a3
+- (void)echoWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A043ADC(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_24A043ADC(eventCopy);
 }
 
 - (_TtC16EncoreXPCService14SnippetService)init

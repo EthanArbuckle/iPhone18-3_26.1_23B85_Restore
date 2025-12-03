@@ -1,8 +1,8 @@
 @interface SXClassFactory
-+ (Class)classForBaseClass:(Class)a3 type:(id)a4;
-+ (id)valueClassBlockForBaseClass:(Class)a3;
++ (Class)classForBaseClass:(Class)class type:(id)type;
++ (id)valueClassBlockForBaseClass:(Class)class;
 + (void)initialize;
-+ (void)registerClass:(Class)a3 type:(id)a4 baseClass:(Class)a5;
++ (void)registerClass:(Class)class type:(id)type baseClass:(Class)baseClass;
 + (void)startTesting;
 + (void)stopTesting;
 @end
@@ -11,9 +11,9 @@
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = __registeredClasses;
-  __registeredClasses = v2;
+  __registeredClasses = dictionary;
 
   +[SXJSONActionClassRegister registerClasses];
   +[SXAdditionClassRegister registerClasses];
@@ -25,20 +25,20 @@
   +[SXResourceClassRegister registerClasses];
 }
 
-+ (void)registerClass:(Class)a3 type:(id)a4 baseClass:(Class)a5
++ (void)registerClass:(Class)class type:(id)type baseClass:(Class)baseClass
 {
-  v8 = a4;
-  v7 = [__registeredClasses objectForKey:a5];
-  if (!v7)
+  typeCopy = type;
+  dictionary = [__registeredClasses objectForKey:baseClass];
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [__registeredClasses setObject:v7 forKey:a5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [__registeredClasses setObject:dictionary forKey:baseClass];
   }
 
-  [v7 setObject:a3 forKey:v8];
+  [dictionary setObject:class forKey:typeCopy];
 }
 
-+ (id)valueClassBlockForBaseClass:(Class)a3
++ (id)valueClassBlockForBaseClass:(Class)class
 {
   v4 = [__registeredClasses objectForKey:?];
   v8[0] = MEMORY[0x1E69E9820];
@@ -46,7 +46,7 @@
   v8[2] = __46__SXClassFactory_valueClassBlockForBaseClass___block_invoke;
   v8[3] = &unk_1E84FFB70;
   v9 = v4;
-  v10 = a3;
+  classCopy = class;
   v5 = v4;
   v6 = MEMORY[0x1DA716BE0](v8);
 
@@ -67,31 +67,31 @@ void *__46__SXClassFactory_valueClassBlockForBaseClass___block_invoke(uint64_t a
   return v4;
 }
 
-+ (Class)classForBaseClass:(Class)a3 type:(id)a4
++ (Class)classForBaseClass:(Class)class type:(id)type
 {
   v5 = __registeredClasses;
-  v6 = a4;
-  v7 = [v5 objectForKey:a3];
-  v8 = [v7 objectForKey:v6];
+  typeCopy = type;
+  v7 = [v5 objectForKey:class];
+  v8 = [v7 objectForKey:typeCopy];
 
   if (v8)
   {
-    a3 = v8;
+    class = v8;
   }
 
-  v9 = a3;
+  classCopy = class;
 
-  return a3;
+  return class;
 }
 
 + (void)startTesting
 {
   objc_storeStrong(&__registeredClassesWhileTesting, __registeredClasses);
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = __registeredClasses;
-  __registeredClasses = v2;
+  __registeredClasses = dictionary;
 
-  MEMORY[0x1EEE66BB8](v2, v3);
+  MEMORY[0x1EEE66BB8](dictionary, v3);
 }
 
 + (void)stopTesting

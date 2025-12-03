@@ -1,6 +1,6 @@
 @interface SBKeyboardFocusCoalitionPolicyEnforcer
 - (SBKeyboardFocusCoalitionPolicyEnforcer)init;
-- (void)enforce:(id)a3;
+- (void)enforce:(id)enforce;
 - (void)invalidate;
 @end
 
@@ -15,16 +15,16 @@
   if (v2)
   {
     v3 = objc_alloc_init(MEMORY[0x277CF0730]);
-    v4 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-    [v3 setEnvironment:v4];
+    keyboardFocusEnvironment = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+    [v3 setEnvironment:keyboardFocusEnvironment];
 
     v5 = +[SBHIDEventDispatchController symbolicDeferringTokenForKeyboardFocus];
     [v3 setToken:v5];
 
     v6 = [[_SBKeyboardFocusCoalitionPolicyEnforcer alloc] initWithDeferringRulePredicate:v3 deferringRuleReason:@"SB incoming to root scene (symbol)" debugName:@"SBKeyboardFocusPolicyEnforcer-Coalition-Symbolic"];
     v7 = objc_alloc_init(MEMORY[0x277CF0730]);
-    v8 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-    [v7 setEnvironment:v8];
+    keyboardFocusEnvironment2 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+    [v7 setEnvironment:keyboardFocusEnvironment2];
 
     v9 = [[_SBKeyboardFocusCoalitionPolicyEnforcer alloc] initWithDeferringRulePredicate:v7 deferringRuleReason:@"SB incoming to root scene" debugName:@"SBKeyboardFocusPolicyEnforcer-Coalition"];
     v10 = [SBKeyboardFocusPolicyEnforcerPipeline alloc];
@@ -40,17 +40,17 @@
   return v2;
 }
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
-  v5 = a3;
+  enforceCopy = enforce;
   enforcer = self->_enforcer;
   if (!enforcer)
   {
     [(SBKeyboardFocusCoalitionPolicyEnforcer *)a2 enforce:?];
   }
 
-  v7 = v5;
-  [(SBKeyboardFocusPolicyEnforcer *)enforcer enforce:v5];
+  v7 = enforceCopy;
+  [(SBKeyboardFocusPolicyEnforcer *)enforcer enforce:enforceCopy];
 }
 
 - (void)invalidate

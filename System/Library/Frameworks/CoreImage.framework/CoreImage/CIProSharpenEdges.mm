@@ -37,11 +37,11 @@
       v13 = 0.0;
     }
 
-    v14 = [(CIProSharpenEdges *)self _CIEdgesPrep];
+    _CIEdgesPrep = [(CIProSharpenEdges *)self _CIEdgesPrep];
     [(CIImage *)self->inputImage extent];
     v55[0] = self->inputImage;
-    v19 = [v14 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v55, 1), v15, v16, v17, v18}];
-    v20 = [(CIProSharpenEdges *)self _CIFindEdges];
+    v19 = [_CIEdgesPrep applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v55, 1), v15, v16, v17, v18}];
+    _CIFindEdges = [(CIProSharpenEdges *)self _CIFindEdges];
     [v19 extent];
     v22 = v21;
     v24 = v23;
@@ -49,35 +49,35 @@
     v28 = v27;
     v54[0] = v19;
     v54[1] = [MEMORY[0x1E696AD98] numberWithDouble:__exp10(v11)];
-    v29 = [v20 applyWithExtent:&__block_literal_global_48_0 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v54, 2), v22, v24, v26, v28}];
-    v30 = [(CIProSharpenEdges *)self _CIConvertRGBtoY];
+    v29 = [_CIFindEdges applyWithExtent:&__block_literal_global_48_0 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v54, 2), v22, v24, v26, v28}];
+    _CIConvertRGBtoY = [(CIProSharpenEdges *)self _CIConvertRGBtoY];
     [(CIImage *)self->inputImage extent];
     inputImage = self->inputImage;
-    v35 = [v30 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &inputImage, 1), v31, v32, v33, v34}];
-    v36 = [(CIProSharpenEdges *)self _CIBlur1];
+    v35 = [_CIConvertRGBtoY applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &inputImage, 1), v31, v32, v33, v34}];
+    _CIBlur1 = [(CIProSharpenEdges *)self _CIBlur1];
     [v35 extent];
     v58 = CGRectInset(v57, -1.0, -1.0);
     v52 = v35;
-    v37 = [v36 applyWithExtent:&__block_literal_global_51_0 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v52, 1), v58.origin.x, v58.origin.y, v58.size.width, v58.size.height}];
+    v37 = [_CIBlur1 applyWithExtent:&__block_literal_global_51_0 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v52, 1), v58.origin.x, v58.origin.y, v58.size.width, v58.size.height}];
     if (v12 > 0.0)
     {
-      v38 = [(CIProSharpenEdges *)self _CIBlur2];
+      _CIBlur2 = [(CIProSharpenEdges *)self _CIBlur2];
       [v37 extent];
       v60 = CGRectInset(v59, -2.0, -2.0);
       v51 = v37;
-      v37 = [v38 applyWithExtent:&__block_literal_global_53 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v51, 1), v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
+      v37 = [_CIBlur2 applyWithExtent:&__block_literal_global_53 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v51, 1), v60.origin.x, v60.origin.y, v60.size.width, v60.size.height}];
     }
 
     if (v13 > 0.0)
     {
-      v39 = [(CIProSharpenEdges *)self _CIBlur4];
+      _CIBlur4 = [(CIProSharpenEdges *)self _CIBlur4];
       [v37 extent];
       v62 = CGRectInset(v61, -4.0, -4.0);
       v50 = v37;
-      v37 = [v39 applyWithExtent:&__block_literal_global_55 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v50, 1), v62.origin.x, v62.origin.y, v62.size.width, v62.size.height}];
+      v37 = [_CIBlur4 applyWithExtent:&__block_literal_global_55 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v50, 1), v62.origin.x, v62.origin.y, v62.size.width, v62.size.height}];
     }
 
-    v40 = [(CIProSharpenEdges *)self _CISharpenCombineEdges];
+    _CISharpenCombineEdges = [(CIProSharpenEdges *)self _CISharpenCombineEdges];
     [v37 extent];
     v42 = v41;
     v44 = v43;
@@ -85,7 +85,7 @@
     v48 = v47;
     v49[2] = [CIVector vectorWithX:v8 Y:v12 Z:v13, self->inputImage, v37];
     v49[3] = v29;
-    return [v40 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v49, 4), v42, v44, v46, v48}];
+    return [_CISharpenCombineEdges applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v49, 4), v42, v44, v46, v48}];
   }
 
   else

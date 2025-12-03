@@ -19,9 +19,9 @@
     }
 
     v3 = objc_alloc_init(DaemonServiceMatcher);
-    v4 = [(DaemonServiceMatcher *)v3 waitForService];
+    waitForService = [(DaemonServiceMatcher *)v3 waitForService];
     v5 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (waitForService)
     {
       if (v5)
       {

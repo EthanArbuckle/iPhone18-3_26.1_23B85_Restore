@@ -1,41 +1,41 @@
 @interface PKPhysicalCardReaderModeActivationViewController
-- (PKPhysicalCardReaderModeActivationViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7;
+- (PKPhysicalCardReaderModeActivationViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card;
 - (void)_dismiss;
 - (void)_invalidate;
-- (void)_presentActivationWithActivationCode:(id)a3;
+- (void)_presentActivationWithActivationCode:(id)code;
 - (void)_startTagReaderSession;
 - (void)_stopTagReaderSession;
 - (void)dealloc;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)nfcTagReaderSession:(id)a3 didDetectTags:(id)a4;
-- (void)nfcTagReaderSessionDidEndUnexpectedly:(id)a3;
-- (void)nfcTagReaderSessionDidTimeout:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)nfcTagReaderSession:(id)session didDetectTags:(id)tags;
+- (void)nfcTagReaderSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)nfcTagReaderSessionDidTimeout:(id)timeout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPhysicalCardReaderModeActivationViewController
 
-- (PKPhysicalCardReaderModeActivationViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7
+- (PKPhysicalCardReaderModeActivationViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v20 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  userCopy = user;
+  passCopy = pass;
+  cardCopy = card;
   v21.receiver = self;
   v21.super_class = PKPhysicalCardReaderModeActivationViewController;
   v17 = [(PKExplanationViewController *)&v21 initWithContext:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_accountService, a3);
-    objc_storeStrong(&v18->_account, a4);
-    objc_storeStrong(&v18->_accountUser, a5);
-    objc_storeStrong(&v18->_physicalCard, a7);
-    objc_storeStrong(&v18->_paymentPass, a6);
-    v18->_feature = [v14 feature];
+    objc_storeStrong(&v17->_accountService, service);
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v18->_accountUser, user);
+    objc_storeStrong(&v18->_physicalCard, card);
+    objc_storeStrong(&v18->_paymentPass, pass);
+    v18->_feature = [accountCopy feature];
     v18->_deviceSupportsReaderMode = +[PKPhysicalCardController deviceSupportsContactlessActivation];
     [(PKExplanationViewController *)v18 setShowCancelButton:1];
     [(PKExplanationViewController *)v18 setShowDoneButton:0];
@@ -62,53 +62,53 @@
   self->_animationView = v3;
 
   v5 = self->_animationView;
-  v6 = [(PKPhysicalCard *)self->_physicalCard nameOnCard];
-  [(PKPhysicalCardActivationAnimationView *)v5 setNameOnCard:v6];
+  nameOnCard = [(PKPhysicalCard *)self->_physicalCard nameOnCard];
+  [(PKPhysicalCardActivationAnimationView *)v5 setNameOnCard:nameOnCard];
 
-  v7 = [(PKExplanationViewController *)self explanationView];
-  [v7 setDelegate:self];
-  [v7 setShowPrivacyView:0];
-  [v7 setForceShowSetupLaterButton:1];
-  [v7 setHeroView:self->_animationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setForceShowSetupLaterButton:1];
+  [explanationView setHeroView:self->_animationView];
   v8 = PKLocalizedFeatureString();
-  [v7 setTitleText:v8];
+  [explanationView setTitleText:v8];
 
   v9 = PKLocalizedFeatureString();
-  [v7 setBodyText:v9];
+  [explanationView setBodyText:v9];
 
-  v10 = [v7 dockView];
-  [v10 setPrimaryButton:0];
-  v11 = [v7 dockView];
-  v12 = [v11 footerView];
+  dockView = [explanationView dockView];
+  [dockView setPrimaryButton:0];
+  dockView2 = [explanationView dockView];
+  footerView = [dockView2 footerView];
 
-  v13 = [v12 setUpLaterButton];
+  setUpLaterButton = [footerView setUpLaterButton];
   v14 = PKLocalizedFeatureString();
-  [v13 setTitle:v14 forState:0];
+  [setUpLaterButton setTitle:v14 forState:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPhysicalCardReaderModeActivationViewController;
-  [(PKPhysicalCardReaderModeActivationViewController *)&v4 viewDidAppear:a3];
+  [(PKPhysicalCardReaderModeActivationViewController *)&v4 viewDidAppear:appear];
   [(PKPhysicalCardReaderModeActivationViewController *)self _startTagReaderSession];
   [(PKPhysicalCardActivationAnimationView *)self->_animationView startAnimation];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPhysicalCardReaderModeActivationViewController;
-  [(PKPhysicalCardReaderModeActivationViewController *)&v4 viewWillDisappear:a3];
+  [(PKPhysicalCardReaderModeActivationViewController *)&v4 viewWillDisappear:disappear];
   [(PKPhysicalCardReaderModeActivationViewController *)self _stopTagReaderSession];
 }
 
-- (void)nfcTagReaderSession:(id)a3 didDetectTags:(id)a4
+- (void)nfcTagReaderSession:(id)session didDetectTags:(id)tags
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  if (v8)
+  sessionCopy = session;
+  tagsCopy = tags;
+  firstObject = [tagsCopy firstObject];
+  if (firstObject)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -116,8 +116,8 @@
     v9[2] = __86__PKPhysicalCardReaderModeActivationViewController_nfcTagReaderSession_didDetectTags___block_invoke;
     v9[3] = &unk_1E801BC98;
     objc_copyWeak(&v11, &location);
-    v10 = v8;
-    [v6 readNDEFMessageFromTag:v10 completion:v9];
+    v10 = firstObject;
+    [sessionCopy readNDEFMessageFromTag:v10 completion:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -186,7 +186,7 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)nfcTagReaderSessionDidEndUnexpectedly:(id)a3
+- (void)nfcTagReaderSessionDidEndUnexpectedly:(id)unexpectedly
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -210,7 +210,7 @@ void __90__PKPhysicalCardReaderModeActivationViewController_nfcTagReaderSessionD
   [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)nfcTagReaderSessionDidTimeout:(id)a3
+- (void)nfcTagReaderSessionDidTimeout:(id)timeout
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -234,18 +234,18 @@ void __82__PKPhysicalCardReaderModeActivationViewController_nfcTagReaderSessionD
   [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v5 = [[PKPhysicalCardSupportViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:self->_accountUser paymentPass:self->_paymentPass physicalCard:self->_physicalCard];
-  v4 = [(PKPhysicalCardReaderModeActivationViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(PKPhysicalCardReaderModeActivationViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 - (void)_dismiss
 {
   [(PKPhysicalCardReaderModeActivationViewController *)self _stopTagReaderSession];
-  v3 = [(PKPhysicalCardReaderModeActivationViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKPhysicalCardReaderModeActivationViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_startTagReaderSession
@@ -351,13 +351,13 @@ LABEL_10:
   }
 }
 
-- (void)_presentActivationWithActivationCode:(id)a3
+- (void)_presentActivationWithActivationCode:(id)code
 {
-  v4 = a3;
-  v6 = [[PKPhysicalCardManualActivationViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:self->_accountUser paymentPass:self->_paymentPass physicalCard:self->_physicalCard activationCode:v4];
+  codeCopy = code;
+  v6 = [[PKPhysicalCardManualActivationViewController alloc] initWithAccountService:self->_accountService account:self->_account accountUser:self->_accountUser paymentPass:self->_paymentPass physicalCard:self->_physicalCard activationCode:codeCopy];
 
-  v5 = [(PKPhysicalCardReaderModeActivationViewController *)self navigationController];
-  [v5 pushViewController:v6 animated:1];
+  navigationController = [(PKPhysicalCardReaderModeActivationViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)_invalidate

@@ -1,7 +1,7 @@
 @interface SFProximityEstimatorMaxOfMean
-- (SFProximityEstimatorMaxOfMean)initWithProximityInfo:(id)a3;
+- (SFProximityEstimatorMaxOfMean)initWithProximityInfo:(id)info;
 - (id)description;
-- (int)_estimateRSSIForSFBLEDevice:(id)a3;
+- (int)_estimateRSSIForSFBLEDevice:(id)device;
 - (void)dealloc;
 @end
 
@@ -28,12 +28,12 @@
   [(SFProximityEstimatorMaxOfMean *)&v5 dealloc];
 }
 
-- (SFProximityEstimatorMaxOfMean)initWithProximityInfo:(id)a3
+- (SFProximityEstimatorMaxOfMean)initWithProximityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = SFProximityEstimatorMaxOfMean;
-  v5 = [(SFProximityEstimator *)&v16 initWithProximityInfo:v4];
+  v5 = [(SFProximityEstimator *)&v16 initWithProximityInfo:infoCopy];
   if (!v5)
   {
     goto LABEL_10;
@@ -90,8 +90,8 @@ LABEL_10:
 {
   NSAppendPrintF();
   v3 = 0;
-  v4 = [(SFProximityEstimator *)self descriptionParams];
-  if (v4)
+  descriptionParams = [(SFProximityEstimator *)self descriptionParams];
+  if (descriptionParams)
   {
     NSAppendPrintF();
     v5 = v3;
@@ -111,19 +111,19 @@ LABEL_10:
   return v3;
 }
 
-- (int)_estimateRSSIForSFBLEDevice:(id)a3
+- (int)_estimateRSSIForSFBLEDevice:(id)device
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 rssi];
-  if ((v5 & 0x8000000000000000) == 0)
+  deviceCopy = device;
+  rssi = [deviceCopy rssi];
+  if ((rssi & 0x8000000000000000) == 0)
   {
     goto LABEL_17;
   }
 
-  v6 = v5;
+  v6 = rssi;
   rssiIndex = self->_rssiIndex;
-  v8 = [v4 advertisementFields];
+  advertisementFields = [deviceCopy advertisementFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   self->_channelNumberArray[rssiIndex] = Int64Ranged;
@@ -202,7 +202,7 @@ LABEL_10:
     v23 = v20;
     if (gLogCategory_SFProximityEstimator <= 9 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
     {
-      v38 = v4;
+      v38 = deviceCopy;
       v26 = 0;
       v54 = 0u;
       v55 = 0u;
@@ -249,10 +249,10 @@ LABEL_10:
       }
 
       while (v26 != 4);
-      v4 = v38;
+      deviceCopy = v38;
       if (gLogCategory_SFProximityEstimator < 51 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
       {
-        v30 = [v38 identifier];
+        identifier = [v38 identifier];
         rssiNear = self->super._rssiNear;
         rssiFar = self->super._rssiFar;
         rssiExit = self->super._rssiExit;

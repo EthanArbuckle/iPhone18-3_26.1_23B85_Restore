@@ -1,10 +1,10 @@
 @interface CTSignalStrengthMeasurements
-- (BOOL)isEqual:(id)a3;
-- (CTSignalStrengthMeasurements)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTSignalStrengthMeasurements)initWithCoder:(id)coder;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSignalStrengthMeasurements
@@ -12,44 +12,44 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSignalStrengthMeasurements *)self rssi];
+  rssi = [(CTSignalStrengthMeasurements *)self rssi];
 
-  if (v4)
+  if (rssi)
   {
-    v5 = [(CTSignalStrengthMeasurements *)self rssi];
-    [v3 appendFormat:@", rssi=%@", v5];
+    rssi2 = [(CTSignalStrengthMeasurements *)self rssi];
+    [v3 appendFormat:@", rssi=%@", rssi2];
   }
 
-  v6 = [(CTSignalStrengthMeasurements *)self rscp];
+  rscp = [(CTSignalStrengthMeasurements *)self rscp];
 
-  if (v6)
+  if (rscp)
   {
-    v7 = [(CTSignalStrengthMeasurements *)self rscp];
-    [v3 appendFormat:@", rscp=%@", v7];
+    rscp2 = [(CTSignalStrengthMeasurements *)self rscp];
+    [v3 appendFormat:@", rscp=%@", rscp2];
   }
 
-  v8 = [(CTSignalStrengthMeasurements *)self ecn0];
+  ecn0 = [(CTSignalStrengthMeasurements *)self ecn0];
 
-  if (v8)
+  if (ecn0)
   {
-    v9 = [(CTSignalStrengthMeasurements *)self ecn0];
-    [v3 appendFormat:@", ecn0=%@", v9];
+    ecn02 = [(CTSignalStrengthMeasurements *)self ecn0];
+    [v3 appendFormat:@", ecn0=%@", ecn02];
   }
 
-  v10 = [(CTSignalStrengthMeasurements *)self rsrp];
+  rsrp = [(CTSignalStrengthMeasurements *)self rsrp];
 
-  if (v10)
+  if (rsrp)
   {
-    v11 = [(CTSignalStrengthMeasurements *)self rsrp];
-    [v3 appendFormat:@", rsrp=%@", v11];
+    rsrp2 = [(CTSignalStrengthMeasurements *)self rsrp];
+    [v3 appendFormat:@", rsrp=%@", rsrp2];
   }
 
-  v12 = [(CTSignalStrengthMeasurements *)self rsrq];
+  rsrq = [(CTSignalStrengthMeasurements *)self rsrq];
 
-  if (v12)
+  if (rsrq)
   {
-    v13 = [(CTSignalStrengthMeasurements *)self rsrq];
-    [v3 appendFormat:@", rsrq=%@", v13];
+    rsrq2 = [(CTSignalStrengthMeasurements *)self rsrq];
+    [v3 appendFormat:@", rsrq=%@", rsrq2];
   }
 
   v14 = [(CTSignalStrengthMeasurements *)self snr];
@@ -60,20 +60,20 @@
     [v3 appendFormat:@", snr=%@", v15];
   }
 
-  v16 = [(CTSignalStrengthMeasurements *)self ecio];
+  ecio = [(CTSignalStrengthMeasurements *)self ecio];
 
-  if (v16)
+  if (ecio)
   {
-    v17 = [(CTSignalStrengthMeasurements *)self ecio];
-    [v3 appendFormat:@", ecio=%@", v17];
+    ecio2 = [(CTSignalStrengthMeasurements *)self ecio];
+    [v3 appendFormat:@", ecio=%@", ecio2];
   }
 
-  v18 = [(CTSignalStrengthMeasurements *)self rxagc];
+  rxagc = [(CTSignalStrengthMeasurements *)self rxagc];
 
-  if (v18)
+  if (rxagc)
   {
-    v19 = [(CTSignalStrengthMeasurements *)self rxagc];
-    [v3 appendFormat:@", rxagc=%@", v19];
+    rxagc2 = [(CTSignalStrengthMeasurements *)self rxagc];
+    [v3 appendFormat:@", rxagc=%@", rxagc2];
   }
 
   [v3 appendString:@">"];
@@ -81,10 +81,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -94,14 +94,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       rssi = self->_rssi;
-      v8 = [(CTSignalStrengthMeasurements *)v6 rssi];
-      if (rssi != v8)
+      rssi = [(CTSignalStrengthMeasurements *)v6 rssi];
+      if (rssi != rssi)
       {
         v9 = self->_rssi;
-        v3 = [(CTSignalStrengthMeasurements *)v6 rssi];
-        if (![(NSNumber *)v9 isEqual:v3])
+        rssi2 = [(CTSignalStrengthMeasurements *)v6 rssi];
+        if (![(NSNumber *)v9 isEqual:rssi2])
         {
           v10 = 0;
           goto LABEL_48;
@@ -109,18 +109,18 @@
       }
 
       rscp = self->_rscp;
-      v12 = [(CTSignalStrengthMeasurements *)v6 rscp];
-      if (rscp != v12)
+      rscp = [(CTSignalStrengthMeasurements *)v6 rscp];
+      if (rscp != rscp)
       {
         v13 = self->_rscp;
-        v14 = [(CTSignalStrengthMeasurements *)v6 rscp];
-        if (![(NSNumber *)v13 isEqual:v14])
+        rscp2 = [(CTSignalStrengthMeasurements *)v6 rscp];
+        if (![(NSNumber *)v13 isEqual:rscp2])
         {
           v10 = 0;
 LABEL_46:
 
 LABEL_47:
-          if (rssi == v8)
+          if (rssi == rssi)
           {
 LABEL_49:
 
@@ -132,24 +132,24 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v57 = v14;
+        v57 = rscp2;
       }
 
       ecn0 = self->_ecn0;
-      v16 = [(CTSignalStrengthMeasurements *)v6 ecn0];
+      ecn0 = [(CTSignalStrengthMeasurements *)v6 ecn0];
       v58 = ecn0;
-      if (ecn0 != v16)
+      if (ecn0 != ecn0)
       {
         v17 = self->_ecn0;
-        v55 = [(CTSignalStrengthMeasurements *)v6 ecn0];
+        ecn02 = [(CTSignalStrengthMeasurements *)v6 ecn0];
         if (![(NSNumber *)v17 isEqual:?])
         {
           v10 = 0;
 LABEL_44:
 
 LABEL_45:
-          v14 = v57;
-          if (rscp == v12)
+          rscp2 = v57;
+          if (rscp == rscp)
           {
             goto LABEL_47;
           }
@@ -159,27 +159,27 @@ LABEL_45:
       }
 
       rsrp = self->_rsrp;
-      v56 = [(CTSignalStrengthMeasurements *)v6 rsrp];
+      rsrp = [(CTSignalStrengthMeasurements *)v6 rsrp];
       v54 = rsrp;
-      if (rsrp == v56)
+      if (rsrp == rsrp)
       {
-        v52 = v12;
+        v52 = rscp;
         v20 = rssi;
-        v21 = v16;
+        v21 = ecn0;
       }
 
       else
       {
         v19 = self->_rsrp;
-        v51 = [(CTSignalStrengthMeasurements *)v6 rsrp];
+        rsrp2 = [(CTSignalStrengthMeasurements *)v6 rsrp];
         if (![(NSNumber *)v19 isEqual:?])
         {
           v10 = 0;
-          v28 = v56;
+          v28 = rsrp;
 LABEL_42:
 
 LABEL_43:
-          if (v58 == v16)
+          if (v58 == ecn0)
           {
             goto LABEL_45;
           }
@@ -187,38 +187,38 @@ LABEL_43:
           goto LABEL_44;
         }
 
-        v52 = v12;
+        v52 = rscp;
         v20 = rssi;
-        v21 = v16;
+        v21 = ecn0;
       }
 
       rsrq = self->_rsrq;
-      v23 = [(CTSignalStrengthMeasurements *)v6 rsrq];
-      v24 = v23;
+      rsrq = [(CTSignalStrengthMeasurements *)v6 rsrq];
+      v24 = rsrq;
       v50 = rsrq;
       v53 = rscp;
-      if (rsrq == v23)
+      if (rsrq == rsrq)
       {
-        v16 = v21;
+        ecn0 = v21;
       }
 
       else
       {
-        v25 = v3;
-        v26 = v23;
+        v25 = rssi2;
+        v26 = rsrq;
         v27 = self->_rsrq;
-        v47 = [(CTSignalStrengthMeasurements *)v6 rsrq];
-        v16 = v21;
+        rsrq2 = [(CTSignalStrengthMeasurements *)v6 rsrq];
+        ecn0 = v21;
         if (![(NSNumber *)v27 isEqual:?])
         {
           v10 = 0;
-          v28 = v56;
+          v28 = rsrp;
           rssi = v20;
-          v12 = v52;
+          rscp = v52;
 LABEL_40:
 
 LABEL_41:
-          v3 = v25;
+          rssi2 = v25;
           rscp = v53;
           if (v54 == v28)
           {
@@ -229,7 +229,7 @@ LABEL_41:
         }
 
         v24 = v26;
-        v3 = v25;
+        rssi2 = v25;
       }
 
       rssi = v20;
@@ -238,16 +238,16 @@ LABEL_41:
       v49 = v24;
       v46 = snr;
       v30 = snr == v48;
-      v12 = v52;
+      rscp = v52;
       if (!v30)
       {
         v31 = self->_snr;
         v44 = [(CTSignalStrengthMeasurements *)v6 snr];
         if (![(NSNumber *)v31 isEqual:?])
         {
-          v25 = v3;
+          v25 = rssi2;
           v10 = 0;
-          v28 = v56;
+          v28 = rsrp;
           v32 = v48;
 LABEL_38:
 
@@ -263,13 +263,13 @@ LABEL_39:
       }
 
       ecio = self->_ecio;
-      v45 = [(CTSignalStrengthMeasurements *)v6 ecio];
+      ecio = [(CTSignalStrengthMeasurements *)v6 ecio];
       v43 = ecio;
-      if (ecio == v45 || (v34 = self->_ecio, [(CTSignalStrengthMeasurements *)v6 ecio], v42 = objc_claimAutoreleasedReturnValue(), [(NSNumber *)v34 isEqual:?]))
+      if (ecio == ecio || (v34 = self->_ecio, [(CTSignalStrengthMeasurements *)v6 ecio], v42 = objc_claimAutoreleasedReturnValue(), [(NSNumber *)v34 isEqual:?]))
       {
         rxagc = self->_rxagc;
-        v36 = [(CTSignalStrengthMeasurements *)v6 rxagc];
-        if (rxagc == v36)
+        rxagc = [(CTSignalStrengthMeasurements *)v6 rxagc];
+        if (rxagc == rxagc)
         {
           v10 = 1;
         }
@@ -277,19 +277,19 @@ LABEL_39:
         else
         {
           v37 = self->_rxagc;
-          v41 = v36;
-          v38 = [(CTSignalStrengthMeasurements *)v6 rxagc];
-          v10 = [(NSNumber *)v37 isEqual:v38];
+          v41 = rxagc;
+          rxagc2 = [(CTSignalStrengthMeasurements *)v6 rxagc];
+          v10 = [(NSNumber *)v37 isEqual:rxagc2];
 
-          v36 = v41;
+          rxagc = v41;
         }
 
-        v28 = v56;
+        v28 = rsrp;
 
-        v39 = v45;
-        if (v43 == v45)
+        v39 = ecio;
+        if (v43 == ecio)
         {
-          v25 = v3;
+          v25 = rssi2;
 LABEL_37:
 
           v32 = v48;
@@ -305,12 +305,12 @@ LABEL_37:
       else
       {
         v10 = 0;
-        v28 = v56;
+        v28 = rsrp;
       }
 
-      v25 = v3;
+      v25 = rssi2;
 
-      v39 = v45;
+      v39 = ecio;
       goto LABEL_37;
     }
 
@@ -322,109 +322,109 @@ LABEL_50:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTSignalStrengthMeasurements *)self rssi];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  rssi = [(CTSignalStrengthMeasurements *)self rssi];
+  v6 = [rssi copy];
   [v4 setRssi:v6];
 
-  v7 = [(CTSignalStrengthMeasurements *)self rscp];
-  v8 = [v7 copy];
+  rscp = [(CTSignalStrengthMeasurements *)self rscp];
+  v8 = [rscp copy];
   [v4 setRscp:v8];
 
-  v9 = [(CTSignalStrengthMeasurements *)self ecn0];
-  v10 = [v9 copy];
+  ecn0 = [(CTSignalStrengthMeasurements *)self ecn0];
+  v10 = [ecn0 copy];
   [v4 setEcn0:v10];
 
-  v11 = [(CTSignalStrengthMeasurements *)self rsrp];
-  v12 = [v11 copy];
+  rsrp = [(CTSignalStrengthMeasurements *)self rsrp];
+  v12 = [rsrp copy];
   [v4 setRsrp:v12];
 
-  v13 = [(CTSignalStrengthMeasurements *)self rsrq];
-  v14 = [v13 copy];
+  rsrq = [(CTSignalStrengthMeasurements *)self rsrq];
+  v14 = [rsrq copy];
   [v4 setRsrq:v14];
 
   v15 = [(CTSignalStrengthMeasurements *)self snr];
   v16 = [v15 copy];
   [v4 setSnr:v16];
 
-  v17 = [(CTSignalStrengthMeasurements *)self ecio];
-  v18 = [v17 copy];
+  ecio = [(CTSignalStrengthMeasurements *)self ecio];
+  v18 = [ecio copy];
   [v4 setEcio:v18];
 
-  v19 = [(CTSignalStrengthMeasurements *)self rxagc];
-  v20 = [v19 copy];
+  rxagc = [(CTSignalStrengthMeasurements *)self rxagc];
+  v20 = [rxagc copy];
   [v4 setRxagc:v20];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTSignalStrengthMeasurements *)self rssi];
-  [v4 encodeObject:v5 forKey:@"rssi"];
+  coderCopy = coder;
+  rssi = [(CTSignalStrengthMeasurements *)self rssi];
+  [coderCopy encodeObject:rssi forKey:@"rssi"];
 
-  v6 = [(CTSignalStrengthMeasurements *)self rscp];
-  [v4 encodeObject:v6 forKey:@"rscp"];
+  rscp = [(CTSignalStrengthMeasurements *)self rscp];
+  [coderCopy encodeObject:rscp forKey:@"rscp"];
 
-  v7 = [(CTSignalStrengthMeasurements *)self ecn0];
-  [v4 encodeObject:v7 forKey:@"ecn0"];
+  ecn0 = [(CTSignalStrengthMeasurements *)self ecn0];
+  [coderCopy encodeObject:ecn0 forKey:@"ecn0"];
 
-  v8 = [(CTSignalStrengthMeasurements *)self rsrp];
-  [v4 encodeObject:v8 forKey:@"rsrp"];
+  rsrp = [(CTSignalStrengthMeasurements *)self rsrp];
+  [coderCopy encodeObject:rsrp forKey:@"rsrp"];
 
-  v9 = [(CTSignalStrengthMeasurements *)self rsrq];
-  [v4 encodeObject:v9 forKey:@"rsrq"];
+  rsrq = [(CTSignalStrengthMeasurements *)self rsrq];
+  [coderCopy encodeObject:rsrq forKey:@"rsrq"];
 
   v10 = [(CTSignalStrengthMeasurements *)self snr];
-  [v4 encodeObject:v10 forKey:@"snr"];
+  [coderCopy encodeObject:v10 forKey:@"snr"];
 
-  v11 = [(CTSignalStrengthMeasurements *)self ecio];
-  [v4 encodeObject:v11 forKey:@"ecio"];
+  ecio = [(CTSignalStrengthMeasurements *)self ecio];
+  [coderCopy encodeObject:ecio forKey:@"ecio"];
 
-  v12 = [(CTSignalStrengthMeasurements *)self rxagc];
-  [v4 encodeObject:v12 forKey:@"rxagc"];
+  rxagc = [(CTSignalStrengthMeasurements *)self rxagc];
+  [coderCopy encodeObject:rxagc forKey:@"rxagc"];
 }
 
-- (CTSignalStrengthMeasurements)initWithCoder:(id)a3
+- (CTSignalStrengthMeasurements)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CTSignalStrengthMeasurements;
   v5 = [(CTSignalStrengthMeasurements *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
     rssi = v5->_rssi;
     v5->_rssi = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rscp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rscp"];
     rscp = v5->_rscp;
     v5->_rscp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecn0"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecn0"];
     ecn0 = v5->_ecn0;
     v5->_ecn0 = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsrp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsrp"];
     rsrp = v5->_rsrp;
     v5->_rsrp = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsrq"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsrq"];
     rsrq = v5->_rsrq;
     v5->_rsrq = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snr"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snr"];
     snr = v5->_snr;
     v5->_snr = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ecio"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ecio"];
     ecio = v5->_ecio;
     v5->_ecio = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rxagc"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rxagc"];
     rxagc = v5->_rxagc;
     v5->_rxagc = v20;
   }
@@ -435,47 +435,47 @@ LABEL_50:
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(CTSignalStrengthMeasurements *)self ct_shortName];
-  v5 = [v3 stringWithFormat:@"<%@", v4];
+  ct_shortName = [(CTSignalStrengthMeasurements *)self ct_shortName];
+  v5 = [v3 stringWithFormat:@"<%@", ct_shortName];
 
-  v6 = [(CTSignalStrengthMeasurements *)self rssi];
+  rssi = [(CTSignalStrengthMeasurements *)self rssi];
 
-  if (v6)
+  if (rssi)
   {
-    v7 = [(CTSignalStrengthMeasurements *)self rssi];
-    [v5 appendFormat:@" rssi=%@", v7];
+    rssi2 = [(CTSignalStrengthMeasurements *)self rssi];
+    [v5 appendFormat:@" rssi=%@", rssi2];
   }
 
-  v8 = [(CTSignalStrengthMeasurements *)self rscp];
+  rscp = [(CTSignalStrengthMeasurements *)self rscp];
 
-  if (v8)
+  if (rscp)
   {
-    v9 = [(CTSignalStrengthMeasurements *)self rscp];
-    [v5 appendFormat:@", rscp=%@", v9];
+    rscp2 = [(CTSignalStrengthMeasurements *)self rscp];
+    [v5 appendFormat:@", rscp=%@", rscp2];
   }
 
-  v10 = [(CTSignalStrengthMeasurements *)self ecn0];
+  ecn0 = [(CTSignalStrengthMeasurements *)self ecn0];
 
-  if (v10)
+  if (ecn0)
   {
-    v11 = [(CTSignalStrengthMeasurements *)self ecn0];
-    [v5 appendFormat:@", ecn0=%@", v11];
+    ecn02 = [(CTSignalStrengthMeasurements *)self ecn0];
+    [v5 appendFormat:@", ecn0=%@", ecn02];
   }
 
-  v12 = [(CTSignalStrengthMeasurements *)self rsrp];
+  rsrp = [(CTSignalStrengthMeasurements *)self rsrp];
 
-  if (v12)
+  if (rsrp)
   {
-    v13 = [(CTSignalStrengthMeasurements *)self rsrp];
-    [v5 appendFormat:@", rsrp=%@", v13];
+    rsrp2 = [(CTSignalStrengthMeasurements *)self rsrp];
+    [v5 appendFormat:@", rsrp=%@", rsrp2];
   }
 
-  v14 = [(CTSignalStrengthMeasurements *)self rsrq];
+  rsrq = [(CTSignalStrengthMeasurements *)self rsrq];
 
-  if (v14)
+  if (rsrq)
   {
-    v15 = [(CTSignalStrengthMeasurements *)self rsrq];
-    [v5 appendFormat:@", rsrq=%@", v15];
+    rsrq2 = [(CTSignalStrengthMeasurements *)self rsrq];
+    [v5 appendFormat:@", rsrq=%@", rsrq2];
   }
 
   v16 = [(CTSignalStrengthMeasurements *)self snr];
@@ -486,20 +486,20 @@ LABEL_50:
     [v5 appendFormat:@", snr=%@", v17];
   }
 
-  v18 = [(CTSignalStrengthMeasurements *)self ecio];
+  ecio = [(CTSignalStrengthMeasurements *)self ecio];
 
-  if (v18)
+  if (ecio)
   {
-    v19 = [(CTSignalStrengthMeasurements *)self ecio];
-    [v5 appendFormat:@", ecio=%@", v19];
+    ecio2 = [(CTSignalStrengthMeasurements *)self ecio];
+    [v5 appendFormat:@", ecio=%@", ecio2];
   }
 
-  v20 = [(CTSignalStrengthMeasurements *)self rxagc];
+  rxagc = [(CTSignalStrengthMeasurements *)self rxagc];
 
-  if (v20)
+  if (rxagc)
   {
-    v21 = [(CTSignalStrengthMeasurements *)self rxagc];
-    [v5 appendFormat:@", rxagc=%@", v21];
+    rxagc2 = [(CTSignalStrengthMeasurements *)self rxagc];
+    [v5 appendFormat:@", rxagc=%@", rxagc2];
   }
 
   [v5 appendString:@">"];

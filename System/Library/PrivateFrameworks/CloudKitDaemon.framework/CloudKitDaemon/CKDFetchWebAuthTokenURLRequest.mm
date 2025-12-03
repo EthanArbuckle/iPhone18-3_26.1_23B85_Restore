@@ -1,21 +1,21 @@
 @interface CKDFetchWebAuthTokenURLRequest
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchWebAuthTokenURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v9.receiver = self;
   v9.super_class = CKDFetchWebAuthTokenURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_APIToken(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"APIToken");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"APIToken");
 }
 
 - (id)requestOperationClasses
@@ -54,12 +54,12 @@
   return v22;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
-  if (objc_msgSend_hasWebAuthTokenRetrieveResponse(v4, v5, v6))
+  objectCopy = object;
+  if (objc_msgSend_hasWebAuthTokenRetrieveResponse(objectCopy, v5, v6))
   {
-    v9 = objc_msgSend_webAuthTokenRetrieveResponse(v4, v7, v8);
+    v9 = objc_msgSend_webAuthTokenRetrieveResponse(objectCopy, v7, v8);
     v12 = objc_msgSend_token(v9, v10, v11);
   }
 
@@ -73,22 +73,22 @@
   if (v13)
   {
     v16 = objc_msgSend_tokenFetchedBlock(self, v14, v15);
-    v19 = objc_msgSend_result(v4, v17, v18);
+    v19 = objc_msgSend_result(objectCopy, v17, v18);
     (v16)[2](v16, v12, v19);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v13 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_tokenFetchedBlock(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_tokenFetchedBlock(self, v7, v8);
-    v12 = objc_msgSend_result(v13, v10, v11);
+    v12 = objc_msgSend_result(failureCopy, v10, v11);
     (v9)[2](v9, 0, v12);
   }
 }

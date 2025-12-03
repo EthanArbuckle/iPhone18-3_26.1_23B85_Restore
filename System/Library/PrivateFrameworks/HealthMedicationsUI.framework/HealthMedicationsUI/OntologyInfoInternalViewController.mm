@@ -1,16 +1,16 @@
 @interface OntologyInfoInternalViewController
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithStyle:(int64_t)a3;
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithUsingInsetStyling:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithStyle:(int64_t)style;
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithUsingInsetStyling:(BOOL)styling;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation OntologyInfoInternalViewController
 
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithCoder:(id)coder
 {
   result = sub_228393300();
   __break(1u);
@@ -26,7 +26,7 @@
   sub_2282477F4();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI34OntologyInfoInternalViewController_conceptsDataSource))[11];
   if (!(v4 >> 62))
@@ -55,7 +55,7 @@ LABEL_6:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_22838F760();
   v7 = *(v6 - 8);
@@ -63,30 +63,30 @@ LABEL_6:
   MEMORY[0x28223BE20](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22838F720();
-  v11 = a3;
-  v12 = self;
-  v13 = OntologyInfoInternalViewController.tableView(_:cellForRowAt:)(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = OntologyInfoInternalViewController.tableView(_:cellForRowAt:)(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithStyle:(int64_t)a3
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HealthMedicationsUI34OntologyInfoInternalViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

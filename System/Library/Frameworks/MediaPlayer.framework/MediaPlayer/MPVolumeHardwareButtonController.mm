@@ -4,17 +4,17 @@
 - (id)_init;
 - (void)_applicationDidBecomeActiveNotification;
 - (void)_applicationWillResignActiveNotification;
-- (void)_changeVolumeBy:(double)a3;
+- (void)_changeVolumeBy:(double)by;
 - (void)_commitVolumeChange;
 - (void)_registerForButtonNotificationsIfNeeded;
 - (void)_unregisterForButtonNotificationsIfNeeded;
 - (void)cancelVolumeEvent;
 - (void)decreaseVolume;
-- (void)handleVolumeButtonWithType:(int64_t)a3 down:(BOOL)a4;
+- (void)handleVolumeButtonWithType:(int64_t)type down:(BOOL)down;
 - (void)handleVolumeDownButton;
 - (void)handleVolumeUpButton;
 - (void)increaseVolume;
-- (void)setActiveDataSource:(id)a3;
+- (void)setActiveDataSource:(id)source;
 @end
 
 @implementation MPVolumeHardwareButtonController
@@ -45,9 +45,9 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
   v2 = [(MPVolumeHardwareButtonController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__applicationDidBecomeActiveNotification name:*MEMORY[0x1E69DDAB0] object:0];
-    [v3 addObserver:v2 selector:sel__applicationWillResignActiveNotification name:*MEMORY[0x1E69DDBC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidBecomeActiveNotification name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillResignActiveNotification name:*MEMORY[0x1E69DDBC8] object:0];
   }
 
   return v2;
@@ -65,11 +65,11 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
 {
   if (!self->_didRegisterForButtonNotifications)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__volumeUpButtonTouchDown_ name:*MEMORY[0x1E69DE868] object:0];
-    [v5 addObserver:self selector:sel__volumeUpButtonTouchUp_ name:*MEMORY[0x1E69DE870] object:0];
-    [v5 addObserver:self selector:sel__volumeDownButtonTouchDown_ name:*MEMORY[0x1E69DE858] object:0];
-    [v5 addObserver:self selector:sel__volumeDownButtonTouchUp_ name:*MEMORY[0x1E69DE860] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__volumeUpButtonTouchDown_ name:*MEMORY[0x1E69DE868] object:0];
+    [defaultCenter addObserver:self selector:sel__volumeUpButtonTouchUp_ name:*MEMORY[0x1E69DE870] object:0];
+    [defaultCenter addObserver:self selector:sel__volumeDownButtonTouchDown_ name:*MEMORY[0x1E69DE858] object:0];
+    [defaultCenter addObserver:self selector:sel__volumeDownButtonTouchUp_ name:*MEMORY[0x1E69DE860] object:0];
     v4 = MPUIApplication();
     [v4 setWantsVolumeButtonEvents:1];
 
@@ -104,11 +104,11 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
 {
   if (self->_didRegisterForButtonNotifications)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE868] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE870] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE858] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE860] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE868] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE870] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE858] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE860] object:0];
     v4 = MPUIApplication();
     [v4 setWantsVolumeButtonEvents:0];
 
@@ -136,20 +136,20 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
   [(MPVolumeHardwareButtonController *)self decreaseVolume];
 }
 
-- (void)handleVolumeButtonWithType:(int64_t)a3 down:(BOOL)a4
+- (void)handleVolumeButtonWithType:(int64_t)type down:(BOOL)down
 {
-  v4 = a4;
+  downCopy = down;
   v14 = *MEMORY[0x1E69E9840];
   v7 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"unknown";
-    if (a3 == 102)
+    if (type == 102)
     {
       v8 = @"VOL+";
     }
 
-    if (a3 == 103)
+    if (type == 103)
     {
       v8 = @"VOL-";
     }
@@ -158,13 +158,13 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
     v10 = 138543618;
     v11 = v9;
     v12 = 1024;
-    v13 = v4;
+    v13 = downCopy;
     _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "[HardwareButtonController] Received hardware volume event: %{public}@, pressed: %{BOOL}u", &v10, 0x12u);
   }
 
-  if (a3 == 102)
+  if (type == 102)
   {
-    if (v4)
+    if (downCopy)
     {
       [(MPVolumeHardwareButtonController *)self handleVolumeUpButton];
       return;
@@ -173,12 +173,12 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
 
   else
   {
-    if (a3 != 103)
+    if (type != 103)
     {
       return;
     }
 
-    if (v4)
+    if (downCopy)
     {
       [(MPVolumeHardwareButtonController *)self handleVolumeDownButton];
       return;
@@ -245,17 +245,17 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
   [(MPVolumeHardwareButtonController *)self cancelVolumeEvent];
 }
 
-- (void)_changeVolumeBy:(double)a3
+- (void)_changeVolumeBy:(double)by
 {
-  v3 = -a3;
-  if (a3 >= 0.0)
+  byCopy = -by;
+  if (by >= 0.0)
   {
-    v3 = a3;
+    byCopy = by;
   }
 
-  if (v3 > 0.00000011920929)
+  if (byCopy > 0.00000011920929)
   {
-    v4 = self->_pendingVolumeChange + a3;
+    v4 = self->_pendingVolumeChange + by;
     if (v4 < 0.0)
     {
       v4 = 0.0;
@@ -266,19 +266,19 @@ void __52__MPVolumeHardwareButtonController_sharedController__block_invoke()
   }
 }
 
-- (void)setActiveDataSource:(id)a3
+- (void)setActiveDataSource:(id)source
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourceCopy = source;
   p_activeDataSource = &self->_activeDataSource;
-  if (self->_activeDataSource != v5)
+  if (self->_activeDataSource != sourceCopy)
   {
-    objc_storeStrong(&self->_activeDataSource, a3);
+    objc_storeStrong(&self->_activeDataSource, source);
     v7 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = v5;
+      v11 = sourceCopy;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "[HardwareButtonController] Volume dataSource changed to: %{public}@", buf, 0xCu);
     }
 

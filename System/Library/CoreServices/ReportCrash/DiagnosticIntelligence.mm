@@ -1,14 +1,14 @@
 @interface DiagnosticIntelligence
-+ (id)lookForPatternWithReport:(id)a3;
++ (id)lookForPatternWithReport:(id)report;
 - (_TtC11ReportCrash22DiagnosticIntelligence)init;
 @end
 
 @implementation DiagnosticIntelligence
 
-+ (id)lookForPatternWithReport:(id)a3
++ (id)lookForPatternWithReport:(id)report
 {
-  v3 = a3;
-  v4 = sub_10000B338(v3);
+  reportCopy = report;
+  v4 = sub_10000B338(reportCopy);
 
   return v4;
 }

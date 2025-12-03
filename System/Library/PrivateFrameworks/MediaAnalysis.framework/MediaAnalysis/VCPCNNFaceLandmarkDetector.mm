@@ -1,6 +1,6 @@
 @interface VCPCNNFaceLandmarkDetector
 + (id)detector;
-- (int)analyzeFrame:(__CVBuffer *)a3 withFaceBounds:(CGRect)a4;
+- (int)analyzeFrame:(__CVBuffer *)frame withFaceBounds:(CGRect)bounds;
 @end
 
 @implementation VCPCNNFaceLandmarkDetector
@@ -33,16 +33,16 @@ uint64_t __38__VCPCNNFaceLandmarkDetector_detector__block_invoke()
   return result;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withFaceBounds:(CGRect)a4
+- (int)analyzeFrame:(__CVBuffer *)frame withFaceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v64 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->_landmarks removeAllObjects];
-  v10 = CVPixelBufferGetWidth(a3);
-  v11 = CVPixelBufferGetHeight(a3);
+  v10 = CVPixelBufferGetWidth(frame);
+  v11 = CVPixelBufferGetHeight(frame);
   v12 = (v10 - 1);
   v52 = width;
   v53 = x;
@@ -109,17 +109,17 @@ uint64_t __38__VCPCNNFaceLandmarkDetector_detector__block_invoke()
 
   v58[0] = 0uLL;
   v54 = 0;
-  pixelBuffer = a3;
+  pixelBuffer = frame;
   unlockFlags = 1;
-  if (a3)
+  if (frame)
   {
-    v24 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v24 = CVPixelBufferLockBaseAddress(frame, 1uLL);
     v54 = v24;
-    if (!v24 || (v25 = v24, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v61 = a3, v62 = 1024, v63 = v25, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v25 = v54) == 0))
+    if (!v24 || (v25 = v24, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v61 = frame, v62 = 1024, v63 = v25, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v25 = v54) == 0))
     {
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-      v28 = [(VCPCNNFaceLandmarkDetector *)self getInputBuffer];
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(frame, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(frame, 0);
+      getInputBuffer = [(VCPCNNFaceLandmarkDetector *)self getInputBuffer];
       v29 = 0;
       v30 = v19 <= 0.0 ? 0.0 : v20 / 40.0;
       v31 = v22 <= 0.0 ? 0.0 : v23 / 40.0;
@@ -129,11 +129,11 @@ uint64_t __38__VCPCNNFaceLandmarkDetector_detector__block_invoke()
         {
           *&v33 = v30 * i;
           LOBYTE(v33) = BaseAddressOfPlane[BytesPerRowOfPlane * v17 + v14 + BytesPerRowOfPlane * (v31 * v29) + *&v33];
-          v28[i] = v33;
+          getInputBuffer[i] = v33;
         }
 
         ++v29;
-        v28 += 40;
+        getInputBuffer += 40;
       }
 
       while (v29 != 40);
@@ -143,9 +143,9 @@ uint64_t __38__VCPCNNFaceLandmarkDetector_detector__block_invoke()
         v25 = [(VCPCNNFaceLandmarkDetector *)self computeLandmarks:v58];
         if (!v25)
         {
-          v34 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           landmarks = self->_landmarks;
-          self->_landmarks = v34;
+          self->_landmarks = array;
 
           v36 = 0;
           v37 = v50 / v21;

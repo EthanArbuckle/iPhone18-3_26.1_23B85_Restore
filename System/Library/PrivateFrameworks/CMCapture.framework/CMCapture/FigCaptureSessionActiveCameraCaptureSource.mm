@@ -1,5 +1,5 @@
 @interface FigCaptureSessionActiveCameraCaptureSource
-- (id)initWithSource:(void *)a3 device:;
+- (id)initWithSource:(void *)source device:;
 - (void)dealloc;
 @end
 
@@ -18,22 +18,22 @@
   [(FigCaptureSessionActiveCameraCaptureSource *)&v4 dealloc];
 }
 
-- (id)initWithSource:(void *)a3 device:
+- (id)initWithSource:(void *)source device:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (!a2 || !a3)
+    if (!a2 || !source)
     {
       OUTLINED_FUNCTION_0();
       OUTLINED_FUNCTION_2_5();
       FigDebugAssert3();
     }
 
-    v11.receiver = v3;
+    v11.receiver = selfCopy;
     v11.super_class = FigCaptureSessionActiveCameraCaptureSource;
-    v3 = objc_msgSendSuper2(&v11, sel_init);
-    if (v3)
+    selfCopy = objc_msgSendSuper2(&v11, sel_init);
+    if (selfCopy)
     {
       if (a2)
       {
@@ -45,8 +45,8 @@
         v6 = 0;
       }
 
-      *(v3 + 1) = v6;
-      *(v3 + 2) = a3;
+      *(selfCopy + 1) = v6;
+      *(selfCopy + 2) = source;
       v10 = 0;
       v7 = *(*(CMBaseObjectGetVTable() + 8) + 48);
       if (v7)
@@ -60,12 +60,12 @@
         v8 = 0;
       }
 
-      *(v3 + 3) = [objc_msgSend(v8 objectForKeyedSubscript:{@"NonLocalizedName", "copy"}];
-      *(v3 + 8) = [objc_msgSend(v10 objectForKeyedSubscript:{@"DeviceType", "intValue"}];
+      *(selfCopy + 3) = [objc_msgSend(v8 objectForKeyedSubscript:{@"NonLocalizedName", "copy"}];
+      *(selfCopy + 8) = [objc_msgSend(v10 objectForKeyedSubscript:{@"DeviceType", "intValue"}];
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

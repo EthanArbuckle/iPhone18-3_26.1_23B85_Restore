@@ -1,19 +1,19 @@
 @interface VNPersonsModelAlgorithm
-- (VNPersonsModelAlgorithm)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNPersonsModelAlgorithm)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation VNPersonsModelAlgorithm
 
-- (VNPersonsModelAlgorithm)initWithCoder:(id)a3
+- (VNPersonsModelAlgorithm)initWithCoder:(id)coder
 {
   v4 = objc_alloc_init(objc_opt_class());
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 

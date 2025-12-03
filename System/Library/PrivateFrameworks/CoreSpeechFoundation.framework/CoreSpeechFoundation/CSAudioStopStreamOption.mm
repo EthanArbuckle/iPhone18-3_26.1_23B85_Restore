@@ -1,6 +1,6 @@
 @interface CSAudioStopStreamOption
-- (CSAudioStopStreamOption)initWithStopRecordingReason:(unint64_t)a3 expectedStopHostTime:(unint64_t)a4 trailingSilenceDurationAtEndpoint:(double)a5 holdRequest:(id)a6 supportsMagus:(BOOL)a7 requestId:(id)a8;
-- (CSAudioStopStreamOption)initWithXPCObject:(id)a3;
+- (CSAudioStopStreamOption)initWithStopRecordingReason:(unint64_t)reason expectedStopHostTime:(unint64_t)time trailingSilenceDurationAtEndpoint:(double)endpoint holdRequest:(id)request supportsMagus:(BOOL)magus requestId:(id)id;
+- (CSAudioStopStreamOption)initWithXPCObject:(id)object;
 - (id)description;
 - (id)xpcObject;
 @end
@@ -47,8 +47,8 @@
   holdRequest = self->_holdRequest;
   if (holdRequest)
   {
-    v5 = [(CSAudioStreamHoldRequestOption *)holdRequest xpcObject];
-    xpc_dictionary_set_value(v3, "holdRequest", v5);
+    xpcObject = [(CSAudioStreamHoldRequestOption *)holdRequest xpcObject];
+    xpc_dictionary_set_value(v3, "holdRequest", xpcObject);
   }
 
   requestId = self->_requestId;
@@ -67,19 +67,19 @@
   return v3;
 }
 
-- (CSAudioStopStreamOption)initWithXPCObject:(id)a3
+- (CSAudioStopStreamOption)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CSAudioStopStreamOption;
   v5 = [(CSAudioStopStreamOption *)&v14 init];
   if (v5)
   {
-    v5->_stopRecordingReason = xpc_dictionary_get_uint64(v4, "stopRecordingReason");
-    v5->_expectedStopHostTime = xpc_dictionary_get_uint64(v4, "expectedStopHostTime");
-    v5->_trailingSilenceDurationAtEndpoint = xpc_dictionary_get_double(v4, "trailingSilenceDurationAtEndpoint");
-    v5->_supportsMagus = xpc_dictionary_get_BOOL(v4, "supportsMagus");
-    string = xpc_dictionary_get_string(v4, "requestId");
+    v5->_stopRecordingReason = xpc_dictionary_get_uint64(objectCopy, "stopRecordingReason");
+    v5->_expectedStopHostTime = xpc_dictionary_get_uint64(objectCopy, "expectedStopHostTime");
+    v5->_trailingSilenceDurationAtEndpoint = xpc_dictionary_get_double(objectCopy, "trailingSilenceDurationAtEndpoint");
+    v5->_supportsMagus = xpc_dictionary_get_BOOL(objectCopy, "supportsMagus");
+    string = xpc_dictionary_get_string(objectCopy, "requestId");
     if (string)
     {
       string = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -88,12 +88,12 @@
     requestId = v5->_requestId;
     v5->_requestId = string;
 
-    v8 = xpc_dictionary_get_dictionary(v4, "holdRequest");
+    v8 = xpc_dictionary_get_dictionary(objectCopy, "holdRequest");
 
     if (v8)
     {
       v9 = [CSAudioStreamHoldRequestOption alloc];
-      v10 = xpc_dictionary_get_dictionary(v4, "holdRequest");
+      v10 = xpc_dictionary_get_dictionary(objectCopy, "holdRequest");
       v11 = [(CSAudioStreamHoldRequestOption *)v9 initWithXPCObject:v10];
       holdRequest = v5->_holdRequest;
       v5->_holdRequest = v11;
@@ -103,22 +103,22 @@
   return v5;
 }
 
-- (CSAudioStopStreamOption)initWithStopRecordingReason:(unint64_t)a3 expectedStopHostTime:(unint64_t)a4 trailingSilenceDurationAtEndpoint:(double)a5 holdRequest:(id)a6 supportsMagus:(BOOL)a7 requestId:(id)a8
+- (CSAudioStopStreamOption)initWithStopRecordingReason:(unint64_t)reason expectedStopHostTime:(unint64_t)time trailingSilenceDurationAtEndpoint:(double)endpoint holdRequest:(id)request supportsMagus:(BOOL)magus requestId:(id)id
 {
-  v15 = a6;
-  v16 = a8;
+  requestCopy = request;
+  idCopy = id;
   v20.receiver = self;
   v20.super_class = CSAudioStopStreamOption;
   v17 = [(CSAudioStopStreamOption *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_stopRecordingReason = a3;
-    v17->_expectedStopHostTime = a4;
-    v17->_trailingSilenceDurationAtEndpoint = a5;
-    objc_storeStrong(&v17->_holdRequest, a6);
-    v18->_supportsMagus = a7;
-    objc_storeStrong(&v18->_requestId, a8);
+    v17->_stopRecordingReason = reason;
+    v17->_expectedStopHostTime = time;
+    v17->_trailingSilenceDurationAtEndpoint = endpoint;
+    objc_storeStrong(&v17->_holdRequest, request);
+    v18->_supportsMagus = magus;
+    objc_storeStrong(&v18->_requestId, id);
   }
 
   return v18;

@@ -1,18 +1,18 @@
 @interface INTextNoteContent
-- (BOOL)isEqual:(id)a3;
-- (INTextNoteContent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INTextNoteContent)initWithCoder:(id)coder;
 - (INTextNoteContent)initWithText:(NSString *)text;
 - (id)_dictionaryRepresentation;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
 @end
 
 @implementation INTextNoteContent
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v4 = [(INTextNoteContent *)self text:a3];
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v4 = [(INTextNoteContent *)self text:localizer];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v6;
 }
@@ -22,13 +22,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"text";
   text = self->_text;
-  v3 = text;
+  null = text;
   if (!text)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!text)
   {
@@ -39,25 +39,25 @@
   return v4;
 }
 
-- (INTextNoteContent)initWithCoder:(id)a3
+- (INTextNoteContent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"text"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"text"];
 
   v9 = [objc_alloc(objc_opt_class()) initWithText:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     text = self->_text;
     v7 = text == v5[1] || [(NSString *)text isEqual:?];
   }

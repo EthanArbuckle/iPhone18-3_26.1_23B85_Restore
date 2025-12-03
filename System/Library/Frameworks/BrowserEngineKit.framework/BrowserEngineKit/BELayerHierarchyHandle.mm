@@ -1,10 +1,10 @@
 @interface BELayerHierarchyHandle
-+ (BELayerHierarchyHandle)handleWithXPCRepresentation:(id)a3 error:(id *)a4;
++ (BELayerHierarchyHandle)handleWithXPCRepresentation:(id)representation error:(id *)error;
 - (BELayerHierarchyHandle)init;
-- (BELayerHierarchyHandle)initWithCoder:(id)a3;
-- (id)_initWithToken:(id *)a1;
+- (BELayerHierarchyHandle)initWithCoder:(id)coder;
+- (id)_initWithToken:(id *)token;
 - (id)createXPCRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BELayerHierarchyHandle
@@ -22,7 +22,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BELayerHierarchyHandle.m";
     v17 = 1024;
@@ -38,42 +38,42 @@
   return result;
 }
 
-- (id)_initWithToken:(id *)a1
+- (id)_initWithToken:(id *)token
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (token)
   {
     v6 = v4;
     if (!v6)
     {
-      [(BELayerHierarchyHandle *)sel__initWithToken_ _initWithToken:a1];
+      [(BELayerHierarchyHandle *)sel__initWithToken_ _initWithToken:token];
     }
 
     v7 = v6;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(BELayerHierarchyHandle *)v7 _initWithToken:a1];
+      [(BELayerHierarchyHandle *)v7 _initWithToken:token];
     }
 
-    v10.receiver = a1;
+    v10.receiver = token;
     v10.super_class = BELayerHierarchyHandle;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    token = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
     }
   }
 
-  return a1;
+  return token;
 }
 
-+ (BELayerHierarchyHandle)handleWithXPCRepresentation:(id)a3 error:(id *)a4
++ (BELayerHierarchyHandle)handleWithXPCRepresentation:(id)representation error:(id *)error
 {
   v11 = 0;
-  v5 = [MEMORY[0x1E6979388] tokenFromXPCRepresentation:a3 error:&v11];
+  v5 = [MEMORY[0x1E6979388] tokenFromXPCRepresentation:representation error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -81,19 +81,19 @@
     v8 = [[BELayerHierarchyHandle alloc] _initWithToken:v5];
   }
 
-  else if (a4)
+  else if (error)
   {
     if (v6)
     {
       v10 = v6;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4866 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
   }
 
@@ -107,45 +107,45 @@
 
 - (id)createXPCRepresentation
 {
-  v2 = [(CAHostingToken *)self->_token createXPCRepresentation];
+  createXPCRepresentation = [(CAHostingToken *)self->_token createXPCRepresentation];
 
-  return v2;
+  return createXPCRepresentation;
 }
 
-- (BELayerHierarchyHandle)initWithCoder:(id)a3
+- (BELayerHierarchyHandle)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BELayerHierarchyHandle initWithCoder:a2];
   }
 
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   if (v6)
   {
     self = [(BELayerHierarchyHandle *)&self->super.isa _initWithToken:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [BELayerHierarchyHandle encodeWithCoder:a2];
   }
 
-  [v5 encodeObject:self->_token forKey:@"token"];
+  [coderCopy encodeObject:self->_token forKey:@"token"];
 }
 
 - (void)_initWithToken:(uint64_t)a3 .cold.1(void *a1, const char *a2, uint64_t a3)

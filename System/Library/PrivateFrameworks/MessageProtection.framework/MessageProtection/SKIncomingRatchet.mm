@@ -1,16 +1,16 @@
 @interface SKIncomingRatchet
 - (_TtC17MessageProtection17SKIncomingRatchet)init;
-- (id)openStatusWithIndex:(unint64_t)a3 encryptedMessage:(id)a4 authenticating:(id)a5 signature:(id)a6 error:(id *)a7;
+- (id)openStatusWithIndex:(unint64_t)index encryptedMessage:(id)message authenticating:(id)authenticating signature:(id)signature error:(id *)error;
 @end
 
 @implementation SKIncomingRatchet
 
-- (id)openStatusWithIndex:(unint64_t)a3 encryptedMessage:(id)a4 authenticating:(id)a5 signature:(id)a6 error:(id *)a7
+- (id)openStatusWithIndex:(unint64_t)index encryptedMessage:(id)message authenticating:(id)authenticating signature:(id)signature error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
+  messageCopy = message;
+  authenticatingCopy = authenticating;
+  signatureCopy = signature;
+  selfCopy = self;
   v15 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
 
@@ -20,7 +20,7 @@
   v21 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v23 = v22;
 
-  SKIncomingRatchet.openStatus(index:encryptedMessage:authenticating:signature:)(a3, v15, v17, v18, v20, v21, v23);
+  SKIncomingRatchet.openStatus(index:encryptedMessage:authenticating:signature:)(index, v15, v17, v18, v20, v21, v23);
   v25 = v24;
   v27 = v26;
 

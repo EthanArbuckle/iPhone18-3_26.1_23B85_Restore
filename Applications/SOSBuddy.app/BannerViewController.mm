@@ -2,19 +2,19 @@
 + (BOOL)_isSecureForRemoteViewService;
 - (BNPresentableContext)presentableContext;
 - (BOOL)_canShowWhileLocked;
-- (_TtC8SOSBuddy20BannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8SOSBuddy20BannerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTap;
 - (void)loadView;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BannerViewController
@@ -28,32 +28,32 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100215F14();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100216244();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100216570(a3, "[%{public}s] viewWillAppear", &selRef_viewWillAppear_);
+  selfCopy = self;
+  sub_100216570(appear, "[%{public}s] viewWillAppear", &selRef_viewWillAppear_);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100216570(a3, "[%{public}s] viewDidAppear", &selRef_viewDidAppear_);
+  selfCopy = self;
+  sub_100216570(appear, "[%{public}s] viewDidAppear", &selRef_viewDidAppear_);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100216570(a3, "[%{public}s] viewDidDisappear", &selRef_viewDidDisappear_);
+  selfCopy = self;
+  sub_100216570(disappear, "[%{public}s] viewDidDisappear", &selRef_viewDidDisappear_);
 }
 
 + (BOOL)_isSecureForRemoteViewService
@@ -65,7 +65,7 @@
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = self;
+  selfCopy = self;
   sub_100216908();
 
   return 1;
@@ -73,63 +73,63 @@
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100216A68();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_100216C94(a4, width, height);
+  selfCopy = self;
+  sub_100216C94(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC8SOSBuddy20BannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8SOSBuddy20BannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100217568();
   swift_unknownObjectRelease();
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_1001CD610(v4);
+    selfCopy = self;
+    sub_1001CD610(selfCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_10021764C(a4);
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_10021764C(reason);
   swift_unknownObjectRelease();
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    if (a4)
+    if (reason)
     {
-      v6 = a4;
-      v7 = self;
-      sub_1001CCDE0(v7, v6);
+      reasonCopy = reason;
+      selfCopy = self;
+      sub_1001CCDE0(selfCopy, reasonCopy);
       swift_unknownObjectRelease();
     }
 
@@ -140,13 +140,13 @@
   }
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = a4;
-    v7 = self;
-    sub_1001CE55C(v7, v6);
+    reasonCopy = reason;
+    selfCopy = self;
+    sub_1001CE55C(selfCopy, reasonCopy);
     swift_unknownObjectRelease();
   }
 }

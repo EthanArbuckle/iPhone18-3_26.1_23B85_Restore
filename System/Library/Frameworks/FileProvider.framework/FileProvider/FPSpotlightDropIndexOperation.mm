@@ -1,55 +1,55 @@
 @interface FPSpotlightDropIndexOperation
-+ (void)deleteSearchableItemsAndClearClientStateWithDomainIdentifier:(id)a3 index:(id)a4 dropReason:(unint64_t)a5 delegate:(id)a6 completionHandler:(id)a7;
-- (FPSpotlightDropIndexOperation)initWithIndexer:(id)a3 index:(id)a4 spotlightDomainIdentifier:(id)a5 dropReason:(unint64_t)a6 delegate:(id)a7;
++ (void)deleteSearchableItemsAndClearClientStateWithDomainIdentifier:(id)identifier index:(id)index dropReason:(unint64_t)reason delegate:(id)delegate completionHandler:(id)handler;
+- (FPSpotlightDropIndexOperation)initWithIndexer:(id)indexer index:(id)index spotlightDomainIdentifier:(id)identifier dropReason:(unint64_t)reason delegate:(id)delegate;
 - (void)main;
 @end
 
 @implementation FPSpotlightDropIndexOperation
 
-- (FPSpotlightDropIndexOperation)initWithIndexer:(id)a3 index:(id)a4 spotlightDomainIdentifier:(id)a5 dropReason:(unint64_t)a6 delegate:(id)a7
+- (FPSpotlightDropIndexOperation)initWithIndexer:(id)indexer index:(id)index spotlightDomainIdentifier:(id)identifier dropReason:(unint64_t)reason delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  indexerCopy = indexer;
+  indexCopy = index;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = FPSpotlightDropIndexOperation;
   v16 = [(FPOperation *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_indexer, v12);
-    objc_storeWeak(&v17->_delegate, v15);
-    objc_storeStrong(&v17->_index, a4);
-    objc_storeStrong(&v17->_spotlightDomainIdentifier, a5);
-    v17->_dropReason = a6;
+    objc_storeWeak(&v16->_indexer, indexerCopy);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_index, index);
+    objc_storeStrong(&v17->_spotlightDomainIdentifier, identifier);
+    v17->_dropReason = reason;
   }
 
   return v17;
 }
 
-+ (void)deleteSearchableItemsAndClearClientStateWithDomainIdentifier:(id)a3 index:(id)a4 dropReason:(unint64_t)a5 delegate:(id)a6 completionHandler:(id)a7
++ (void)deleteSearchableItemsAndClearClientStateWithDomainIdentifier:(id)identifier index:(id)index dropReason:(unint64_t)reason delegate:(id)delegate completionHandler:(id)handler
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
-  v15 = FPCSIndexReasonForFPIndexDropReason(a5);
-  v27[0] = v14;
+  indexCopy = index;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v15 = FPCSIndexReasonForFPIndexDropReason(reason);
+  v27[0] = identifierCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __138__FPSpotlightDropIndexOperation_deleteSearchableItemsAndClearClientStateWithDomainIdentifier_index_dropReason_delegate_completionHandler___block_invoke;
   v21[3] = &unk_1E793D038;
-  v24 = v13;
-  v25 = a5;
-  v22 = v12;
-  v23 = v11;
+  v24 = handlerCopy;
+  reasonCopy = reason;
+  v22 = delegateCopy;
+  v23 = indexCopy;
   v26 = v15;
-  v17 = v11;
-  v18 = v12;
-  v19 = v13;
+  v17 = indexCopy;
+  v18 = delegateCopy;
+  v19 = handlerCopy;
   [v17 deleteSearchableItemsWithDomainIdentifiers:v16 reason:v15 completionHandler:v21];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -81,7 +81,7 @@ void __138__FPSpotlightDropIndexOperation_deleteSearchableItemsAndClearClientSta
   v4 = 134218242;
   v5 = a2;
   v6 = 2112;
-  v7 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1AAAE1000, log, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx %@: dropping index", &v4, 0x16u);
   v3 = *MEMORY[0x1E69E9840];
 }

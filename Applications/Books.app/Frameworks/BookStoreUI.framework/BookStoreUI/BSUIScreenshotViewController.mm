@@ -1,37 +1,37 @@
 @interface BSUIScreenshotViewController
-+ (void)createAsync:(id)a3 :(int64_t)a4 :(id)a5;
++ (void)createAsync:(id)async :(int64_t)a4 :(id)a5;
 - (BOOL)_isRegularPad;
-- (BSUIScreenshotViewController)initWithScreenshots:(id)a3 andSelectedIndex:(int64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
+- (BSUIScreenshotViewController)initWithScreenshots:(id)screenshots andSelectedIndex:(int64_t)index;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
 - (id)cellBorderColor;
 - (id)cellPlaceholderColor;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_setupSubviews;
-- (void)_swipeGestureRecognizer:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_swipeGestureRecognizer:(id)recognizer;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateColors;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)screenshotLoader:(id)a3 failedToLoadImageforScreenshotAtIndex:(unint64_t)a4 withError:(id)a5;
-- (void)screenshotLoader:(id)a3 loadedImage:(id)a4 forScreenshotAtIndex:(unint64_t)a5;
-- (void)screenshotLoader:(id)a3 willLoadImageAtIndex:(unint64_t)a4 fromURL:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)screenshotLoader:(id)loader failedToLoadImageforScreenshotAtIndex:(unint64_t)index withError:(id)error;
+- (void)screenshotLoader:(id)loader loadedImage:(id)image forScreenshotAtIndex:(unint64_t)index;
+- (void)screenshotLoader:(id)loader willLoadImageAtIndex:(unint64_t)index fromURL:(id)l;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
 - (void)setNeedsColorUpdate;
-- (void)setSelectedIndex:(int64_t)a3;
+- (void)setSelectedIndex:(int64_t)index;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BSUIScreenshotViewController
 
-- (BSUIScreenshotViewController)initWithScreenshots:(id)a3 andSelectedIndex:(int64_t)a4
+- (BSUIScreenshotViewController)initWithScreenshots:(id)screenshots andSelectedIndex:(int64_t)index
 {
-  v6 = a3;
+  screenshotsCopy = screenshots;
   v27.receiver = self;
   v27.super_class = BSUIScreenshotViewController;
   v7 = [(BSUIScreenshotViewController *)&v27 init];
@@ -42,7 +42,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = v6;
+    v9 = screenshotsCopy;
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v10)
     {
@@ -74,15 +74,15 @@
     }
 
     objc_storeStrong(&v7->_screenshots, v8);
-    v7->_selectedIndex = a4;
-    v7->_initialSelectedIndex = a4;
+    v7->_selectedIndex = index;
+    v7->_initialSelectedIndex = index;
     v17 = [[BSUIScreenshotLoader alloc] initWithScreenshots:v8];
     screenshotLoader = v7->_screenshotLoader;
     v7->_screenshotLoader = v17;
 
     [(BSUIScreenshotLoader *)v7->_screenshotLoader setDelegate:v7];
-    v19 = [(BSUIScreenshotViewController *)v7 navigationItem];
-    [v19 setLargeTitleDisplayMode:2];
+    navigationItem = [(BSUIScreenshotViewController *)v7 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     v20 = +[UITraitCollection bc_allAPITraits];
     v21 = [(BSUIScreenshotViewController *)v7 registerForTraitChanges:v20 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
@@ -91,16 +91,16 @@
   return v7;
 }
 
-+ (void)createAsync:(id)a3 :(int64_t)a4 :(id)a5
++ (void)createAsync:(id)async :(int64_t)a4 :(id)a5
 {
-  v8 = a3;
+  asyncCopy = async;
   v9 = a5;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_430C;
   v15[3] = &unk_386C30;
-  v18 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = asyncCopy;
   v16 = v10;
   v19 = a4;
   v11 = v9;
@@ -133,48 +133,48 @@
   [(BSUIScreenshotViewController *)self _setupSubviews];
   v3 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:"_swipeGestureRecognizer:"];
   [v3 setDirection:8];
-  v4 = [(BSUIScreenshotViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(BSUIScreenshotViewController *)self view];
+  [view addGestureRecognizer:v3];
 
   [(BSUIScreenshotLoader *)self->_screenshotLoader startLoading];
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_dismiss:"];
-  v6 = [(BSUIScreenshotViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(BSUIScreenshotViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(BSUIScreenshotViewController *)self backgroundColor];
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  [v8 setBackgroundColor:v7];
+  backgroundColor = [(BSUIScreenshotViewController *)self backgroundColor];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView setBackgroundColor:backgroundColor];
 
-  v9 = [(BSUIScreenshotViewController *)self collectionView];
-  [v9 setAlwaysBounceHorizontal:1];
+  collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView2 setAlwaysBounceHorizontal:1];
 
-  v10 = [(BSUIScreenshotViewController *)self collectionView];
-  [v10 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v11 = [(BSUIScreenshotViewController *)self collectionView];
-  [v11 setDecelerationRate:UIScrollViewDecelerationRateFast];
+  collectionView4 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView4 setDecelerationRate:UIScrollViewDecelerationRateFast];
 
-  v12 = [(BSUIScreenshotViewController *)self collectionView];
-  [v12 setRemembersLastFocusedIndexPath:1];
+  collectionView5 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView5 setRemembersLastFocusedIndexPath:1];
 
-  v13 = [(BSUIScreenshotViewController *)self collectionView];
-  [v13 setContentInsetAdjustmentBehavior:2];
+  collectionView6 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView6 setContentInsetAdjustmentBehavior:2];
 
-  v14 = [(BSUIScreenshotViewController *)self collectionView];
-  v15 = [v14 topEdgeEffect];
-  [v15 setHidden:1];
+  collectionView7 = [(BSUIScreenshotViewController *)self collectionView];
+  topEdgeEffect = [collectionView7 topEdgeEffect];
+  [topEdgeEffect setHidden:1];
 
-  v16 = [(BSUIScreenshotViewController *)self collectionView];
-  [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"CellIdentifier"];
+  collectionView8 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"CellIdentifier"];
 
   [(BSUIScreenshotViewController *)self _updateColors];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = BSUIScreenshotViewController;
-  [(BSUIScreenshotViewController *)&v3 viewWillAppear:a3];
+  [(BSUIScreenshotViewController *)&v3 viewWillAppear:appear];
 }
 
 - (void)viewDidLayoutSubviews
@@ -186,21 +186,21 @@
   {
     if ([(BSUIScreenshotViewController *)self initialSelectedIndex]>= 1)
     {
-      v3 = [(BSUIScreenshotViewController *)self initialSelectedIndex];
-      v4 = [(BSUIScreenshotViewController *)self screenshots];
-      v5 = [v4 count];
+      initialSelectedIndex = [(BSUIScreenshotViewController *)self initialSelectedIndex];
+      screenshots = [(BSUIScreenshotViewController *)self screenshots];
+      v5 = [screenshots count];
 
-      if (v3 < v5)
+      if (initialSelectedIndex < v5)
       {
         objc_opt_class();
-        v6 = [(BSUIScreenshotViewController *)self collectionView];
-        v7 = [v6 superview];
+        collectionView = [(BSUIScreenshotViewController *)self collectionView];
+        superview = [collectionView superview];
         v8 = BUDynamicCast();
 
         [v8 layoutIfNeeded];
-        v9 = [(BSUIScreenshotViewController *)self collectionView];
+        collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
         v10 = [NSIndexPath indexPathForRow:[(BSUIScreenshotViewController *)self initialSelectedIndex] inSection:0];
-        [v9 scrollToItemAtIndexPath:v10 atScrollPosition:16 animated:0];
+        [collectionView2 scrollToItemAtIndexPath:v10 atScrollPosition:16 animated:0];
       }
     }
 
@@ -208,62 +208,62 @@
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 bc_userInterfaceStyleDark];
-  v6 = [(BSUIScreenshotViewController *)self traitCollection];
-  v7 = [v6 bc_userInterfaceStyleDark];
+  bc_userInterfaceStyleDark = [collection bc_userInterfaceStyleDark];
+  traitCollection = [(BSUIScreenshotViewController *)self traitCollection];
+  bc_userInterfaceStyleDark2 = [traitCollection bc_userInterfaceStyleDark];
 
-  if (v5 != v7)
+  if (bc_userInterfaceStyleDark != bc_userInterfaceStyleDark2)
   {
     [(BSUIScreenshotViewController *)self _updateColors];
   }
 
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v10 = [(BSUIScreenshotViewController *)self collectionView];
-  [v10 setNeedsLayout];
+  collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView2 setNeedsLayout];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = BSUIScreenshotViewController;
-  v7 = a4;
-  [(BSUIScreenshotViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  coordinatorCopy = coordinator;
+  [(BSUIScreenshotViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v10 = [(BSUIScreenshotViewController *)self collectionView];
-  [v10 setNeedsLayout];
+  collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView2 setNeedsLayout];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_496C;
   v11[3] = &unk_386C80;
   v11[4] = self;
-  [v7 animateAlongsideTransition:v11 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:0];
 }
 
 - (void)setNeedsColorUpdate
 {
-  v3 = [(BSUIScreenshotViewController *)self backgroundColor];
-  v4 = [(BSUIScreenshotViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  backgroundColor = [(BSUIScreenshotViewController *)self backgroundColor];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView setBackgroundColor:backgroundColor];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(BSUIScreenshotViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
+  visibleCells = [collectionView2 visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -275,25 +275,25 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [(BSUIScreenshotViewController *)self cellPlaceholderColor];
-        v13 = [v11 imageView];
-        [v13 setBackgroundColor:v12];
+        cellPlaceholderColor = [(BSUIScreenshotViewController *)self cellPlaceholderColor];
+        imageView = [v11 imageView];
+        [imageView setBackgroundColor:cellPlaceholderColor];
 
-        v14 = [(BSUIScreenshotViewController *)self cellBorderColor];
-        v15 = [v14 CGColor];
-        v16 = [v11 imageView];
-        v17 = [v16 layer];
-        [v17 setBorderColor:v15];
+        cellBorderColor = [(BSUIScreenshotViewController *)self cellBorderColor];
+        cGColor = [cellBorderColor CGColor];
+        imageView2 = [v11 imageView];
+        layer = [imageView2 layer];
+        [layer setBorderColor:cGColor];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -318,103 +318,103 @@
   return v4;
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
+    self->_selectedIndex = index;
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(BSUIScreenshotViewController *)self screenshots:a3];
+  v4 = [(BSUIScreenshotViewController *)self screenshots:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"CellIdentifier" forIndexPath:v6];
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"CellIdentifier" forIndexPath:pathCopy];
 
   v9 = BUDynamicCast();
 
-  v10 = [(BSUIScreenshotViewController *)self screenshots];
-  v11 = [v6 row];
+  screenshots = [(BSUIScreenshotViewController *)self screenshots];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [screenshots objectAtIndexedSubscript:v11];
 
-  v13 = [(BSUIScreenshotViewController *)self screenshotLoader];
-  v14 = [v13 imageForScreenshot:v12];
+  screenshotLoader = [(BSUIScreenshotViewController *)self screenshotLoader];
+  v14 = [screenshotLoader imageForScreenshot:v12];
 
   [v9 configureWithScreenshot:v12 image:v14];
-  v15 = [(BSUIScreenshotViewController *)self cellPlaceholderColor];
-  v16 = [v9 imageView];
-  [v16 setBackgroundColor:v15];
+  cellPlaceholderColor = [(BSUIScreenshotViewController *)self cellPlaceholderColor];
+  imageView = [v9 imageView];
+  [imageView setBackgroundColor:cellPlaceholderColor];
 
-  v17 = [(BSUIScreenshotViewController *)self cellBorderColor];
-  v18 = [v17 CGColor];
-  v19 = [v9 imageView];
-  v20 = [v19 layer];
-  [v20 setBorderColor:v18];
+  cellBorderColor = [(BSUIScreenshotViewController *)self cellBorderColor];
+  cGColor = [cellBorderColor CGColor];
+  imageView2 = [v9 imageView];
+  layer = [imageView2 layer];
+  [layer setBorderColor:cGColor];
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  [BSUIScreenshotCell minimumLineSpacingWithRegularPad:[(BSUIScreenshotViewController *)self _isRegularPad:a3]];
+  [BSUIScreenshotCell minimumLineSpacingWithRegularPad:[(BSUIScreenshotViewController *)self _isRegularPad:view]];
   v7 = v6;
   objc_opt_class();
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   v10 = BUDynamicCast();
 
   [v10 setMinimumLineSpacing:v7];
   return v7;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  [BSUIScreenshotCell minimumLineSpacingWithRegularPad:[(BSUIScreenshotViewController *)self _isRegularPad:a3]];
+  [BSUIScreenshotCell minimumLineSpacingWithRegularPad:[(BSUIScreenshotViewController *)self _isRegularPad:view]];
   v7 = v6;
   objc_opt_class();
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   v10 = BUDynamicCast();
 
   [v10 setMinimumInteritemSpacing:v7];
   return v7;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(BSUIScreenshotViewController *)self _isRegularPad];
-  [v6 bounds];
+  viewCopy = view;
+  _isRegularPad = [(BSUIScreenshotViewController *)self _isRegularPad];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
-  v12 = [(BSUIScreenshotViewController *)self screenshots];
-  v13 = [v12 firstObject];
-  [v13 size];
-  [BSUIScreenshotCell sectionInsetForRegularPad:v7 maxSize:v9 artworkSize:v11, v14, v15];
+  screenshots = [(BSUIScreenshotViewController *)self screenshots];
+  firstObject = [screenshots firstObject];
+  [firstObject size];
+  [BSUIScreenshotCell sectionInsetForRegularPad:_isRegularPad maxSize:v9 artworkSize:v11, v14, v15];
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(BSUIScreenshotViewController *)self _isRegularPad];
-  [v6 bounds];
+  _isRegularPad2 = [(BSUIScreenshotViewController *)self _isRegularPad];
+  [viewCopy bounds];
   v24 = v23;
   v26 = v25;
 
-  v27 = [(BSUIScreenshotViewController *)self screenshots];
-  v28 = [v27 lastObject];
-  [v28 size];
-  [BSUIScreenshotCell sectionInsetForRegularPad:v22 maxSize:v24 artworkSize:v26, v29, v30];
+  screenshots2 = [(BSUIScreenshotViewController *)self screenshots];
+  lastObject = [screenshots2 lastObject];
+  [lastObject size];
+  [BSUIScreenshotCell sectionInsetForRegularPad:_isRegularPad2 maxSize:v24 artworkSize:v26, v29, v30];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -430,8 +430,8 @@
   }
 
   objc_opt_class();
-  v37 = [(BSUIScreenshotViewController *)self collectionView];
-  v38 = [v37 collectionViewLayout];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   v39 = BUDynamicCast();
 
   [v39 setSectionInset:{v17, v19, v21, v36}];
@@ -446,41 +446,41 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(BSUIScreenshotViewController *)self _isRegularPad];
-  [v6 bounds];
+  viewCopy = view;
+  _isRegularPad = [(BSUIScreenshotViewController *)self _isRegularPad];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
 
-  [BSUIScreenshotCell itemSizeForRegularPad:v7 maxSize:v9, v11];
+  [BSUIScreenshotCell itemSizeForRegularPad:_isRegularPad maxSize:v9, v11];
   result.height = v13;
   result.width = v12;
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v5 = [v7 item];
-  if (v5 != [(BSUIScreenshotViewController *)self selectedIndex])
+  pathCopy = path;
+  item = [pathCopy item];
+  if (item != [(BSUIScreenshotViewController *)self selectedIndex])
   {
-    v6 = [(BSUIScreenshotViewController *)self collectionView];
-    [v6 scrollToItemAtIndexPath:v7 atScrollPosition:16 animated:1];
+    collectionView = [(BSUIScreenshotViewController *)self collectionView];
+    [collectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:16 animated:1];
 
-    -[BSUIScreenshotViewController setSelectedIndex:](self, "setSelectedIndex:", [v7 item]);
+    -[BSUIScreenshotViewController setSelectedIndex:](self, "setSelectedIndex:", [pathCopy item]);
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  [v4 contentOffset];
+  deceleratingCopy = decelerating;
+  [deceleratingCopy contentOffset];
   v6 = v5;
-  [v4 bounds];
+  [deceleratingCopy bounds];
   v7 = v6 + CGRectGetWidth(v21) * 0.5;
-  [v4 bounds];
+  [deceleratingCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -491,8 +491,8 @@
   v22.size.width = v13;
   v22.size.height = v15;
   v16 = CGRectGetHeight(v22) * 0.5;
-  v17 = [(BSUIScreenshotViewController *)self collectionView];
-  v19 = [v17 indexPathForItemAtPoint:{v7, v16}];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  v19 = [collectionView indexPathForItemAtPoint:{v7, v16}];
 
   v18 = v19;
   if (v19)
@@ -502,62 +502,62 @@
   }
 }
 
-- (void)screenshotLoader:(id)a3 willLoadImageAtIndex:(unint64_t)a4 fromURL:(id)a5
+- (void)screenshotLoader:(id)loader willLoadImageAtIndex:(unint64_t)index fromURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
+  loaderCopy = loader;
+  lCopy = l;
   v9 = JSALog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [NSNumber numberWithUnsignedInteger:a4];
+    v10 = [NSNumber numberWithUnsignedInteger:index];
     v11 = 138543874;
-    v12 = v7;
+    v12 = loaderCopy;
     v13 = 2114;
     v14 = v10;
     v15 = 2114;
-    v16 = v8;
+    v16 = lCopy;
     _os_log_debug_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@ about to load screenshot at index %{public}@ from url %{public}@", &v11, 0x20u);
   }
 }
 
-- (void)screenshotLoader:(id)a3 loadedImage:(id)a4 forScreenshotAtIndex:(unint64_t)a5
+- (void)screenshotLoader:(id)loader loadedImage:(id)image forScreenshotAtIndex:(unint64_t)index
 {
-  v7 = a4;
+  imageCopy = image;
   objc_opt_class();
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  v9 = [NSIndexPath indexPathForRow:a5 inSection:0];
-  v10 = [v8 cellForItemAtIndexPath:v9];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  v9 = [NSIndexPath indexPathForRow:index inSection:0];
+  v10 = [collectionView cellForItemAtIndexPath:v9];
   v12 = BUDynamicCast();
 
-  v11 = [v12 imageView];
-  [v11 setImage:v7];
+  imageView = [v12 imageView];
+  [imageView setImage:imageCopy];
 }
 
-- (void)screenshotLoader:(id)a3 failedToLoadImageforScreenshotAtIndex:(unint64_t)a4 withError:(id)a5
+- (void)screenshotLoader:(id)loader failedToLoadImageforScreenshotAtIndex:(unint64_t)index withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  loaderCopy = loader;
+  errorCopy = error;
   v9 = JSALog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [NSNumber numberWithUnsignedInteger:a4];
+    v10 = [NSNumber numberWithUnsignedInteger:index];
     v11 = 138543874;
-    v12 = v7;
+    v12 = loaderCopy;
     v13 = 2114;
     v14 = v10;
     v15 = 2114;
-    v16 = v8;
+    v16 = errorCopy;
     _os_log_error_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "%{public}@ failed to load screenshot at index %{public}@ with error %{public}@", &v11, 0x20u);
   }
 }
 
 - (BOOL)_isRegularPad
 {
-  v3 = [(BSUIScreenshotViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == &dword_0 + 1)
+  traitCollection = [(BSUIScreenshotViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == &dword_0 + 1)
   {
-    v4 = [(BSUIScreenshotViewController *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == &dword_0 + 2;
+    traitCollection2 = [(BSUIScreenshotViewController *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == &dword_0 + 2;
   }
 
   else
@@ -568,9 +568,9 @@
   return v5;
 }
 
-- (void)_swipeGestureRecognizer:(id)a3
+- (void)_swipeGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([recognizer state] == &dword_0 + 3)
   {
 
     [(BSUIScreenshotViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -584,62 +584,62 @@
   v5 = [v3 initWithFrame:v4 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(BSUIScreenshotViewController *)self setCollectionView:v5];
 
-  v6 = [(BSUIScreenshotViewController *)self view];
-  v7 = [v6 backgroundColor];
-  v8 = [(BSUIScreenshotViewController *)self collectionView];
-  [v8 setBackgroundColor:v7];
+  view = [(BSUIScreenshotViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  collectionView = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView setBackgroundColor:backgroundColor];
 
-  v9 = [(BSUIScreenshotViewController *)self collectionView];
-  [v9 setDelegate:self];
+  collectionView2 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v10 = [(BSUIScreenshotViewController *)self collectionView];
-  [v10 setDataSource:self];
+  collectionView3 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView3 setDataSource:self];
 
-  v11 = [(BSUIScreenshotViewController *)self collectionView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView4 = [(BSUIScreenshotViewController *)self collectionView];
+  [collectionView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(BSUIScreenshotViewController *)self collectionView];
-  v13 = [v12 widthAnchor];
-  v14 = [(BSUIScreenshotViewController *)self view];
-  [v14 bounds];
-  v16 = [v13 constraintEqualToConstant:v15];
+  collectionView5 = [(BSUIScreenshotViewController *)self collectionView];
+  widthAnchor = [collectionView5 widthAnchor];
+  view2 = [(BSUIScreenshotViewController *)self view];
+  [view2 bounds];
+  v16 = [widthAnchor constraintEqualToConstant:v15];
   [v16 setActive:1];
 
-  v17 = [(BSUIScreenshotViewController *)self collectionView];
-  v42 = v17;
+  collectionView6 = [(BSUIScreenshotViewController *)self collectionView];
+  v42 = collectionView6;
   v40 = [NSArray arrayWithObjects:&v42 count:1];
 
   v18 = [[UIStackView alloc] initWithArrangedSubviews:v40];
-  v19 = [(BSUIScreenshotViewController *)self backgroundColor];
-  v20 = [v19 CGColor];
-  v21 = [v18 layer];
-  [v21 setBackgroundColor:v20];
+  backgroundColor2 = [(BSUIScreenshotViewController *)self backgroundColor];
+  cGColor = [backgroundColor2 CGColor];
+  layer = [v18 layer];
+  [layer setBackgroundColor:cGColor];
 
   [v18 setAxis:0];
   [v18 setDistribution:3];
   [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [(BSUIScreenshotViewController *)self view];
-  [v22 addSubview:v18];
+  view3 = [(BSUIScreenshotViewController *)self view];
+  [view3 addSubview:v18];
 
-  v38 = [v18 leadingAnchor];
-  v39 = [(BSUIScreenshotViewController *)self view];
-  v37 = [v39 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor = [v18 leadingAnchor];
+  view4 = [(BSUIScreenshotViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v36;
-  v34 = [v18 trailingAnchor];
-  v35 = [(BSUIScreenshotViewController *)self view];
-  v33 = [v35 trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor = [v18 trailingAnchor];
+  view5 = [(BSUIScreenshotViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v32;
-  v23 = [v18 topAnchor];
-  v24 = [(BSUIScreenshotViewController *)self view];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  topAnchor = [v18 topAnchor];
+  view6 = [(BSUIScreenshotViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v26;
-  v27 = [v18 bottomAnchor];
-  v28 = [(BSUIScreenshotViewController *)self view];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  bottomAnchor = [v18 bottomAnchor];
+  view7 = [(BSUIScreenshotViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[3] = v30;
   v31 = [NSArray arrayWithObjects:v41 count:4];
   [NSLayoutConstraint activateConstraints:v31];

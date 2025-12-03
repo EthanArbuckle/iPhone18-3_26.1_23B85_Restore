@@ -1,5 +1,5 @@
 @interface PXPlacesMapLayoutChange
-- (PXPlacesMapLayoutChange)initWithSourceLayoutItem:(id)a3 targetLayoutItem:(id)a4 type:(int64_t)a5;
+- (PXPlacesMapLayoutChange)initWithSourceLayoutItem:(id)item targetLayoutItem:(id)layoutItem type:(int64_t)type;
 - (id)description;
 @end
 
@@ -13,40 +13,40 @@
   v4 = [(PXPlacesMapLayoutChange *)&v11 description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(PXPlacesMapLayoutChange *)self type];
-  if (v6 > 2)
+  type = [(PXPlacesMapLayoutChange *)self type];
+  if (type > 2)
   {
     v7 = @"UNKNOWN";
   }
 
   else
   {
-    v7 = off_1E7749240[v6];
+    v7 = off_1E7749240[type];
   }
 
   [v5 appendFormat:@"TYPE:\t%@\n", v7];
-  v8 = [(PXPlacesMapLayoutChange *)self sourceLayoutItem];
-  [v5 appendFormat:@"SOURCE:\t%@\n", v8];
+  sourceLayoutItem = [(PXPlacesMapLayoutChange *)self sourceLayoutItem];
+  [v5 appendFormat:@"SOURCE:\t%@\n", sourceLayoutItem];
 
-  v9 = [(PXPlacesMapLayoutChange *)self targetLayoutItem];
-  [v5 appendFormat:@"TARGET:\t%@\n", v9];
+  targetLayoutItem = [(PXPlacesMapLayoutChange *)self targetLayoutItem];
+  [v5 appendFormat:@"TARGET:\t%@\n", targetLayoutItem];
 
   return v5;
 }
 
-- (PXPlacesMapLayoutChange)initWithSourceLayoutItem:(id)a3 targetLayoutItem:(id)a4 type:(int64_t)a5
+- (PXPlacesMapLayoutChange)initWithSourceLayoutItem:(id)item targetLayoutItem:(id)layoutItem type:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  layoutItemCopy = layoutItem;
   v14.receiver = self;
   v14.super_class = PXPlacesMapLayoutChange;
   v11 = [(PXPlacesMapLayoutChange *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceLayoutItem, a3);
-    objc_storeStrong(&v12->_targetLayoutItem, a4);
-    v12->_type = a5;
+    objc_storeStrong(&v11->_sourceLayoutItem, item);
+    objc_storeStrong(&v12->_targetLayoutItem, layoutItem);
+    v12->_type = type;
   }
 
   return v12;

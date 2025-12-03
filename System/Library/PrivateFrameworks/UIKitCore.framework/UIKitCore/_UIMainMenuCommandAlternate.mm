@@ -1,46 +1,46 @@
 @interface _UIMainMenuCommandAlternate
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuCommandAlternate)initWithCoder:(id)a3;
-- (id)_initWithModifierFlags:(int64_t)a3 command:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuCommandAlternate)initWithCoder:(id)coder;
+- (id)_initWithModifierFlags:(int64_t)flags command:(id)command;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuCommandAlternate
 
-- (id)_initWithModifierFlags:(int64_t)a3 command:(id)a4
+- (id)_initWithModifierFlags:(int64_t)flags command:(id)command
 {
-  v7 = a4;
+  commandCopy = command;
   v11.receiver = self;
   v11.super_class = _UIMainMenuCommandAlternate;
   v8 = [(_UIMainMenuCommandAlternate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_modifierFlags = a3;
-    objc_storeStrong(&v8->_command, a4);
+    v8->_modifierFlags = flags;
+    objc_storeStrong(&v8->_command, command);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifierFlags = self->_modifierFlags;
-  v5 = a3;
-  [v5 encodeInteger:modifierFlags forKey:@"ModifierFlags"];
-  [v5 encodeObject:self->_command forKey:@"Command"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:modifierFlags forKey:@"ModifierFlags"];
+  [coderCopy encodeObject:self->_command forKey:@"Command"];
 }
 
-- (_UIMainMenuCommandAlternate)initWithCoder:(id)a3
+- (_UIMainMenuCommandAlternate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuCommandAlternate *)self init];
   if (v5)
   {
-    v5->_modifierFlags = [v4 decodeIntegerForKey:@"ModifierFlags"];
+    v5->_modifierFlags = [coderCopy decodeIntegerForKey:@"ModifierFlags"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"Command"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Command"];
     command = v5->_command;
     v5->_command = v7;
   }
@@ -48,10 +48,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -63,7 +63,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_modifierFlags == v7->_modifierFlags)
       {
@@ -109,9 +109,9 @@
   [v3 appendString:v4 withName:@"modifierFlags"];
 
   v5 = [v3 appendObject:self->_command withName:@"command"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

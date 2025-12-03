@@ -1,16 +1,16 @@
 @interface CKSuggestedReplyButton
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isHighlighted;
-- (_TtC7ChatKit22CKSuggestedReplyButton)initWithCoder:(id)a3;
-- (_TtC7ChatKit22CKSuggestedReplyButton)initWithFrame:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC7ChatKit22CKSuggestedReplyButton)initWithCoder:(id)coder;
+- (_TtC7ChatKit22CKSuggestedReplyButton)initWithFrame:(CGRect)frame;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CKSuggestedReplyButton
 
-- (_TtC7ChatKit22CKSuggestedReplyButton)initWithCoder:(id)a3
+- (_TtC7ChatKit22CKSuggestedReplyButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit22CKSuggestedReplyButton____lazy_storage___titleLabel) = 0;
   result = sub_190D58510();
@@ -25,47 +25,47 @@
   return [(CKSuggestedReplyButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_190CF8340(a3);
+  selfCopy = self;
+  sub_190CF8340(highlighted);
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  [(CKSuggestedReplyButton *)v8 setHighlighted:1];
-  v11.receiver = v8;
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  [(CKSuggestedReplyButton *)selfCopy setHighlighted:1];
+  v11.receiver = selfCopy;
   v11.super_class = type metadata accessor for CKSuggestedReplyButton();
-  v9 = [(CKSuggestedReplyButton *)&v11 beginTrackingWithTouch:v6 withEvent:v7];
+  v9 = [(CKSuggestedReplyButton *)&v11 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v9;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  [(CKSuggestedReplyButton *)v8 setHighlighted:0];
-  v9.receiver = v8;
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  [(CKSuggestedReplyButton *)selfCopy setHighlighted:0];
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for CKSuggestedReplyButton();
-  [(CKSuggestedReplyButton *)&v9 endTrackingWithTouch:v6 withEvent:v7];
+  [(CKSuggestedReplyButton *)&v9 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  [(CKSuggestedReplyButton *)v5 setHighlighted:0];
-  v6.receiver = v5;
+  eventCopy = event;
+  selfCopy = self;
+  [(CKSuggestedReplyButton *)selfCopy setHighlighted:0];
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CKSuggestedReplyButton();
-  [(CKSuggestedReplyButton *)&v6 cancelTrackingWithEvent:v4];
+  [(CKSuggestedReplyButton *)&v6 cancelTrackingWithEvent:eventCopy];
 }
 
-- (_TtC7ChatKit22CKSuggestedReplyButton)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit22CKSuggestedReplyButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

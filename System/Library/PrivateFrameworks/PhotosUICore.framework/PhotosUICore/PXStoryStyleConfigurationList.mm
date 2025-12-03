@@ -1,6 +1,6 @@
 @interface PXStoryStyleConfigurationList
-- (BOOL)isEqual:(id)a3;
-- (PXStoryStyleConfigurationList)initWithAutoEditStyleConfigurations:(id)a3 initialStyleConfiguration:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryStyleConfigurationList)initWithAutoEditStyleConfigurations:(id)configurations initialStyleConfiguration:(id)configuration;
 - (unint64_t)hash;
 @end
 
@@ -8,19 +8,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryStyleConfigurationList *)self autoEditStyleConfigurations];
-  v4 = [v3 hash];
+  autoEditStyleConfigurations = [(PXStoryStyleConfigurationList *)self autoEditStyleConfigurations];
+  v4 = [autoEditStyleConfigurations hash];
 
-  v5 = [(PXStoryStyleConfigurationList *)self initialStyleConfiguration];
-  v6 = [v5 hash];
+  initialStyleConfiguration = [(PXStoryStyleConfigurationList *)self initialStyleConfiguration];
+  v6 = [initialStyleConfiguration hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -30,21 +30,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryStyleConfigurationList *)self autoEditStyleConfigurations];
-      v7 = [(PXStoryStyleConfigurationList *)v5 autoEditStyleConfigurations];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      autoEditStyleConfigurations = [(PXStoryStyleConfigurationList *)self autoEditStyleConfigurations];
+      autoEditStyleConfigurations2 = [(PXStoryStyleConfigurationList *)v5 autoEditStyleConfigurations];
+      if (autoEditStyleConfigurations == autoEditStyleConfigurations2 || [autoEditStyleConfigurations isEqual:autoEditStyleConfigurations2])
       {
-        v8 = [(PXStoryStyleConfigurationList *)self initialStyleConfiguration];
-        v9 = [(PXStoryStyleConfigurationList *)v5 initialStyleConfiguration];
-        if (v8 == v9)
+        initialStyleConfiguration = [(PXStoryStyleConfigurationList *)self initialStyleConfiguration];
+        initialStyleConfiguration2 = [(PXStoryStyleConfigurationList *)v5 initialStyleConfiguration];
+        if (initialStyleConfiguration == initialStyleConfiguration2)
         {
           v10 = 1;
         }
 
         else
         {
-          v10 = [v8 isEqual:v9];
+          v10 = [initialStyleConfiguration isEqual:initialStyleConfiguration2];
         }
       }
 
@@ -63,20 +63,20 @@
   return v10;
 }
 
-- (PXStoryStyleConfigurationList)initWithAutoEditStyleConfigurations:(id)a3 initialStyleConfiguration:(id)a4
+- (PXStoryStyleConfigurationList)initWithAutoEditStyleConfigurations:(id)configurations initialStyleConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = PXStoryStyleConfigurationList;
   v8 = [(PXStoryStyleConfigurationList *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationsCopy copy];
     autoEditStyleConfigurations = v8->_autoEditStyleConfigurations;
     v8->_autoEditStyleConfigurations = v9;
 
-    objc_storeStrong(&v8->_initialStyleConfiguration, a4);
+    objc_storeStrong(&v8->_initialStyleConfiguration, configuration);
   }
 
   return v8;

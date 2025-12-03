@@ -1,6 +1,6 @@
 @interface CNFRegAppleIDSplashViewController
-+ (BOOL)shouldShowSplashViewForService:(id)a3 inProgressRegisteringNonPhoneAccount:(id *)a4;
-+ (id)_inProgressRegisteringNonPhoneAccountForService:(id)a3;
++ (BOOL)shouldShowSplashViewForService:(id)service inProgressRegisteringNonPhoneAccount:(id *)account;
++ (id)_inProgressRegisteringNonPhoneAccountForService:(id)service;
 - (id)_iCloudUserName;
 - (id)_imService;
 - (id)navigationItem;
@@ -8,30 +8,30 @@
 - (id)serviceFooter;
 - (id)serviceIcon;
 - (id)serviceName;
-- (void)_cnfSignInWithUsername:(id)a3 password:(id)a4;
+- (void)_cnfSignInWithUsername:(id)username password:(id)password;
 - (void)_completeIfAccountIsAlreadyRegistered;
-- (void)_handleRegistarResults:(BOOL)a3 alertController:(id)a4;
+- (void)_handleRegistarResults:(BOOL)results alertController:(id)controller;
 - (void)_showSettingsController;
-- (void)continueRegisteringAccount:(id)a3;
+- (void)continueRegisteringAccount:(id)account;
 - (void)dealloc;
-- (void)handleAuthCompletionWithResults:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)handleAuthCompletionWithResults:(id)results;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLoad;
-- (void)willBeginAuthWithContext:(id)a3;
+- (void)willBeginAuthWithContext:(id)context;
 @end
 
 @implementation CNFRegAppleIDSplashViewController
 
-+ (BOOL)shouldShowSplashViewForService:(id)a3 inProgressRegisteringNonPhoneAccount:(id *)a4
++ (BOOL)shouldShowSplashViewForService:(id)service inProgressRegisteringNonPhoneAccount:(id *)account
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D18998] sharedInstance];
-  v7 = [v6 currentSIMsWithError:0];
+  serviceCopy = service;
+  mEMORY[0x277D18998] = [MEMORY[0x277D18998] sharedInstance];
+  v7 = [mEMORY[0x277D18998] currentSIMsWithError:0];
   if ([v7 count])
   {
-    v8 = [MEMORY[0x277D18998] sharedInstance];
-    v9 = [v8 supportsIdentification] ^ 1;
+    mEMORY[0x277D18998]2 = [MEMORY[0x277D18998] sharedInstance];
+    v9 = [mEMORY[0x277D18998]2 supportsIdentification] ^ 1;
   }
 
   else
@@ -39,11 +39,11 @@
     LOBYTE(v9) = 1;
   }
 
-  v10 = [MEMORY[0x277D07DB0] sharedInstance];
-  v11 = [v10 supportsSMS];
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  supportsSMS = [mEMORY[0x277D07DB0] supportsSMS];
 
-  v12 = [MEMORY[0x277D18D28] sharedInstance];
-  v13 = [v12 accountsForService:v5];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  v13 = [mEMORY[0x277D18D28] accountsForService:serviceCopy];
 
   v37 = 0u;
   v38 = 0u;
@@ -54,10 +54,10 @@
   if (v15)
   {
     v16 = v15;
-    v31 = v11;
+    v31 = supportsSMS;
     v32 = v9;
-    v33 = a4;
-    v34 = v5;
+    accountCopy = account;
+    v34 = serviceCopy;
     v17 = 0;
     v18 = 0;
     v19 = 0;
@@ -73,9 +73,9 @@
 
         v22 = *(*(&v35 + 1) + 8 * i);
         v23 = [v22 accountType] == 2;
-        v24 = [v22 registrationStatus];
-        v25 = v24 == 5;
-        if (v24 == 1)
+        registrationStatus = [v22 registrationStatus];
+        v25 = registrationStatus == 5;
+        if (registrationStatus == 1)
         {
           v17 |= [v22 CNFRegIsSignedOut] ^ 1;
         }
@@ -89,9 +89,9 @@
 
     while (v16);
     v26 = v19 | v17;
-    a4 = v33;
-    v5 = v34;
-    v11 = v31;
+    account = accountCopy;
+    serviceCopy = v34;
+    supportsSMS = v31;
     LOBYTE(v9) = v32;
   }
 
@@ -101,11 +101,11 @@
     v26 = 0;
   }
 
-  v27 = [CNFRegAppleIDSplashViewController _inProgressRegisteringNonPhoneAccountForService:v5];
-  if (a4)
+  v27 = [CNFRegAppleIDSplashViewController _inProgressRegisteringNonPhoneAccountForService:serviceCopy];
+  if (account)
   {
     v27 = v27;
-    *a4 = v27;
+    *account = v27;
   }
 
   if (v26 & 1 | v18 & (v27 == 0))
@@ -115,19 +115,19 @@
 
   else
   {
-    v28 = v9 | v11 ^ 1;
+    v28 = v9 | supportsSMS ^ 1;
   }
 
   v29 = *MEMORY[0x277D85DE8];
   return v28 & 1;
 }
 
-+ (id)_inProgressRegisteringNonPhoneAccountForService:(id)a3
++ (id)_inProgressRegisteringNonPhoneAccountForService:(id)service
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D18D28] sharedInstance];
-  v5 = [v4 accountsForService:v3];
+  serviceCopy = service;
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  v5 = [mEMORY[0x277D18D28] accountsForService:serviceCopy];
 
   v18 = 0u;
   v19 = 0u;
@@ -148,9 +148,9 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 accountType];
-        v12 = [v10 registrationStatus];
-        if (v12 != 5 && v11 != 2 && (v12 - 2) <= 2)
+        accountType = [v10 accountType];
+        registrationStatus = [v10 registrationStatus];
+        if (registrationStatus != 5 && accountType != 2 && (registrationStatus - 2) <= 2)
         {
           v7 = v10;
           goto LABEL_14;
@@ -172,21 +172,21 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNFRegAppleIDSplashViewController;
   [(PSAppleIDSplashViewController *)&v4 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CNFRegAppleIDSplashViewController;
-  v4 = a3;
-  [(PSAppleIDSplashViewController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"ft-serviceType", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PSAppleIDSplashViewController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"ft-serviceType", v7.receiver, v7.super_class}];
 
   -[CNFRegAppleIDSplashViewController setServiceType:](self, "setServiceType:", [v5 integerValue]);
   CNFRegSetStringTableForServiceType([(CNFRegAppleIDSplashViewController *)self serviceType]);
@@ -196,15 +196,15 @@ LABEL_14:
 
 - (id)serviceName
 {
-  v2 = [(CNFRegAppleIDSplashViewController *)self serviceType];
-  if (v2 > 2)
+  serviceType = [(CNFRegAppleIDSplashViewController *)self serviceType];
+  if (serviceType > 2)
   {
     v6 = &stru_2856D3978;
   }
 
   else
   {
-    v3 = off_278DE8E38[v2];
+    v3 = off_278DE8E38[serviceType];
     v4 = CommunicationsSetupUIBundle();
     v5 = CNFRegStringTableName();
     v6 = [v4 localizedStringForKey:v3 value:&stru_2856D3978 table:v5];
@@ -244,18 +244,18 @@ LABEL_14:
 
 - (id)serviceIcon
 {
-  v2 = [(CNFRegAppleIDSplashViewController *)self serviceType];
-  if (v2 > 2)
+  serviceType = [(CNFRegAppleIDSplashViewController *)self serviceType];
+  if (serviceType > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v3 = off_278DE8E50[v2];
+    v3 = off_278DE8E50[serviceType];
     v4 = MEMORY[0x277D755B8];
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = [v4 _applicationIconImageForBundleIdentifier:v3 format:2 scale:?];
   }
 
@@ -267,49 +267,49 @@ LABEL_14:
   v4.receiver = self;
   v4.super_class = CNFRegAppleIDSplashViewController;
   [(PSAppleIDSplashViewController *)&v4 viewDidLoad];
-  v3 = [(CNFRegAppleIDSplashViewController *)self serviceName];
-  [(CNFRegAppleIDSplashViewController *)self setTitle:v3];
+  serviceName = [(CNFRegAppleIDSplashViewController *)self serviceName];
+  [(CNFRegAppleIDSplashViewController *)self setTitle:serviceName];
 }
 
 - (id)navigationItem
 {
-  v3 = [(CNFRegAppleIDSplashViewController *)self parentViewController];
-  if (v3 && (v4 = v3, [(CNFRegAppleIDSplashViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
+  parentViewController = [(CNFRegAppleIDSplashViewController *)self parentViewController];
+  if (parentViewController && (v4 = parentViewController, [(CNFRegAppleIDSplashViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
   {
-    v7 = [(CNFRegAppleIDSplashViewController *)self parentViewController];
-    v8 = [v7 navigationItem];
+    parentViewController2 = [(CNFRegAppleIDSplashViewController *)self parentViewController];
+    navigationItem = [parentViewController2 navigationItem];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CNFRegAppleIDSplashViewController;
-    v8 = [(CNFRegAppleIDSplashViewController *)&v10 navigationItem];
+    navigationItem = [(CNFRegAppleIDSplashViewController *)&v10 navigationItem];
   }
 
-  return v8;
+  return navigationItem;
 }
 
-- (void)willBeginAuthWithContext:(id)a3
+- (void)willBeginAuthWithContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = contextCopy;
     _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "willBeginAuthWithContext: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v12 = v4;
+    v12 = contextCopy;
     IMLogString();
   }
 
-  v6 = [(CNFRegAppleIDSplashViewController *)self regController];
-  v7 = [v6 serviceType] == 0;
+  regController = [(CNFRegAppleIDSplashViewController *)self regController];
+  v7 = [regController serviceType] == 0;
 
   if (v7)
   {
@@ -317,27 +317,27 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  v8 = [(CNFRegAppleIDSplashViewController *)self regController];
-  v9 = [v8 serviceType] == 1;
+  regController2 = [(CNFRegAppleIDSplashViewController *)self regController];
+  v9 = [regController2 serviceType] == 1;
 
   if (v9)
   {
     v10 = 4;
 LABEL_10:
-    [v4 setServiceType:v10];
+    [contextCopy setServiceType:v10];
   }
 
   v13.receiver = self;
   v13.super_class = CNFRegAppleIDSplashViewController;
-  [(PSAppleIDSplashViewController *)&v13 willBeginAuthWithContext:v4];
+  [(PSAppleIDSplashViewController *)&v13 willBeginAuthWithContext:contextCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continueRegisteringAccount:(id)a3
+- (void)continueRegisteringAccount:(id)account
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   [(PSAppleIDSplashViewController *)self showBusyUI];
   [(CNFRegAppleIDSplashViewController *)self setShowBusyUIOnAppearance:1];
   v10 = 0;
@@ -350,13 +350,13 @@ LABEL_10:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = accountCopy;
     _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Continuing registration of account: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v8 = v4;
+    v8 = accountCopy;
     IMLogString();
   }
 
@@ -367,7 +367,7 @@ LABEL_10:
   v9[3] = &unk_278DE8E18;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 continueRegistrationForAccount:v4 completionBlock:{v9, v8}];
+  [v6 continueRegistrationForAccount:accountCopy completionBlock:{v9, v8}];
   _Block_object_dispose(&v10, 8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -383,36 +383,36 @@ uint64_t __64__CNFRegAppleIDSplashViewController_continueRegisteringAccount___bl
 
 - (id)_imService
 {
-  v2 = [(CNFRegAppleIDSplashViewController *)self serviceType];
-  switch(v2)
+  serviceType = [(CNFRegAppleIDSplashViewController *)self serviceType];
+  switch(serviceType)
   {
     case 2:
       goto LABEL_4;
     case 1:
-      v3 = [MEMORY[0x277D18DE0] iMessageService];
+      iMessageService = [MEMORY[0x277D18DE0] iMessageService];
       break;
     case 0:
 LABEL_4:
-      v3 = [MEMORY[0x277D18DE0] facetimeService];
+      iMessageService = [MEMORY[0x277D18DE0] facetimeService];
       break;
     default:
-      v3 = 0;
+      iMessageService = 0;
       break;
   }
 
-  return v3;
+  return iMessageService;
 }
 
 - (void)_showSettingsController
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
 }
 
 - (void)_completeIfAccountIsAlreadyRegistered
 {
-  v3 = [(CNFRegAppleIDSplashViewController *)self _imService];
-  v4 = [CNFRegAppleIDSplashViewController shouldShowSplashViewForService:v3 inProgressRegisteringNonPhoneAccount:0];
+  _imService = [(CNFRegAppleIDSplashViewController *)self _imService];
+  v4 = [CNFRegAppleIDSplashViewController shouldShowSplashViewForService:_imService inProgressRegisteringNonPhoneAccount:0];
 
   if (!v4)
   {
@@ -421,14 +421,14 @@ LABEL_4:
   }
 }
 
-- (void)handleAuthCompletionWithResults:(id)a3
+- (void)handleAuthCompletionWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v11.receiver = self;
   v11.super_class = CNFRegAppleIDSplashViewController;
-  [(PSAppleIDSplashViewController *)&v11 handleAuthCompletionWithResults:v4];
-  v5 = [v4 objectForKey:*MEMORY[0x277CEFFD8]];
-  v6 = [v4 objectForKey:*MEMORY[0x277CEFFC8]];
+  [(PSAppleIDSplashViewController *)&v11 handleAuthCompletionWithResults:resultsCopy];
+  v5 = [resultsCopy objectForKey:*MEMORY[0x277CEFFD8]];
+  v6 = [resultsCopy objectForKey:*MEMORY[0x277CEFFC8]];
   v7 = v6;
   if (v5)
   {
@@ -459,38 +459,38 @@ LABEL_4:
   }
 }
 
-- (void)_handleRegistarResults:(BOOL)a3 alertController:(id)a4
+- (void)_handleRegistarResults:(BOOL)results alertController:(id)controller
 {
-  v4 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  controllerCopy = controller;
   [(PSAppleIDSplashViewController *)self hideBusyUI];
-  if (v4)
+  if (resultsCopy)
   {
     [(CNFRegAppleIDSplashViewController *)self _showSettingsController];
   }
 
   else
   {
-    v6 = v7;
-    if (!v7)
+    v6 = controllerCopy;
+    if (!controllerCopy)
     {
       goto LABEL_6;
     }
 
-    [(CNFRegAppleIDSplashViewController *)self presentViewController:v7 animated:1 completion:0];
+    [(CNFRegAppleIDSplashViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
-  v6 = v7;
+  v6 = controllerCopy;
 LABEL_6:
 }
 
-- (void)_cnfSignInWithUsername:(id)a3 password:(id)a4
+- (void)_cnfSignInWithUsername:(id)username password:(id)password
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNFRegAppleIDSplashViewController *)self _imService];
-  if (v8)
+  usernameCopy = username;
+  passwordCopy = password;
+  _imService = [(CNFRegAppleIDSplashViewController *)self _imService];
+  if (_imService)
   {
     *v16 = 0;
     v17 = v16;
@@ -502,16 +502,16 @@ LABEL_6:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v6;
+      v23 = usernameCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = _imService;
       _os_log_impl(&dword_243BE5000, v9, OS_LOG_TYPE_DEFAULT, "Registering account: %@ (service: %@)", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v13 = v6;
-      v14 = v8;
+      v13 = usernameCopy;
+      v14 = _imService;
       IMLogString();
     }
 
@@ -522,7 +522,7 @@ LABEL_6:
     v15[3] = &unk_278DE8E18;
     v15[4] = self;
     v15[5] = v16;
-    [v10 registerAccountWithUsername:v6 password:v7 service:v8 completionBlock:{v15, v13, v14}];
+    [v10 registerAccountWithUsername:usernameCopy password:passwordCopy service:_imService completionBlock:{v15, v13, v14}];
     _Block_object_dispose(v16, 8);
   }
 
@@ -547,10 +547,10 @@ LABEL_6:
 - (id)_iCloudUserName
 {
   v2 = objc_alloc_init(CUTWeakLinkClass());
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 username];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
 
-  return v4;
+  return username;
 }
 
 @end

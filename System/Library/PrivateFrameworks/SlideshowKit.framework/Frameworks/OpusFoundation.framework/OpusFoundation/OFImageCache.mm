@@ -1,23 +1,23 @@
 @interface OFImageCache
-+ (unint64_t)alignResolution:(unint64_t)a3;
-+ (unint64_t)bestResolutionForSize:(CGSize)a3;
-- (BOOL)hasImageForURL:(id)a3 withResolution:(unint64_t)a4;
-- (CGImage)bestImageDiskCacheForURL:(id)a3;
-- (CGImage)imageForURL:(id)a3 withResolution:(unint64_t)a4;
-- (CGImage)imageFromBestDiskCacheForURL:(id)a3 withResolution:(unint64_t)a4;
++ (unint64_t)alignResolution:(unint64_t)resolution;
++ (unint64_t)bestResolutionForSize:(CGSize)size;
+- (BOOL)hasImageForURL:(id)l withResolution:(unint64_t)resolution;
+- (CGImage)bestImageDiskCacheForURL:(id)l;
+- (CGImage)imageForURL:(id)l withResolution:(unint64_t)resolution;
+- (CGImage)imageFromBestDiskCacheForURL:(id)l withResolution:(unint64_t)resolution;
 - (OFImageCache)init;
-- (OFImageCache)initWithDiskCacheDirectory:(id)a3;
-- (id)_diskCacheDirectoryForURL:(id)a3;
-- (id)_diskCacheFilePathForURL:(id)a3 withResolution:(unint64_t)a4;
-- (id)_diskCacheResolutionsForURL:(id)a3;
+- (OFImageCache)initWithDiskCacheDirectory:(id)directory;
+- (id)_diskCacheDirectoryForURL:(id)l;
+- (id)_diskCacheFilePathForURL:(id)l withResolution:(unint64_t)resolution;
+- (id)_diskCacheResolutionsForURL:(id)l;
 - (void)_didEnterBackgroundNotification;
 - (void)_willTerminateNotification;
 - (void)dealloc;
-- (void)invalidateDiskCacheForURL:(id)a3;
+- (void)invalidateDiskCacheForURL:(id)l;
 - (void)invalidateDiskCaches;
 - (void)invalidateMemoryCaches;
-- (void)purgeDiskCache:(unint64_t)a3 progressBlock:(id)a4;
-- (void)setImage:(CGImage *)a3 withResolution:(unint64_t)a4 forURL:(id)a5;
+- (void)purgeDiskCache:(unint64_t)cache progressBlock:(id)block;
+- (void)setImage:(CGImage *)image withResolution:(unint64_t)resolution forURL:(id)l;
 @end
 
 @implementation OFImageCache
@@ -37,23 +37,23 @@
     v2->_diskCacheDirectoryForURLs = objc_alloc_init(MEMORY[0x277CBEB38]);
     v2->_useAsynchronousSerialDiskSaveQueue = 0;
     v2->_imageFormat = 0;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__didReceiveMemoryWarningNotification name:*MEMORY[0x277D76670] object:0];
-    [v5 addObserver:v2 selector:sel__didEnterBackgroundNotification name:*MEMORY[0x277D76660] object:0];
-    [v5 addObserver:v2 selector:sel__willTerminateNotification name:*MEMORY[0x277D76770] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didReceiveMemoryWarningNotification name:*MEMORY[0x277D76670] object:0];
+    [defaultCenter addObserver:v2 selector:sel__didEnterBackgroundNotification name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v2 selector:sel__willTerminateNotification name:*MEMORY[0x277D76770] object:0];
   }
 
   return v2;
 }
 
-- (OFImageCache)initWithDiskCacheDirectory:(id)a3
+- (OFImageCache)initWithDiskCacheDirectory:(id)directory
 {
   v4 = [(OFImageCache *)self init];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v9 = 0;
-    if ([v5 fileExistsAtPath:a3 isDirectory:&v9])
+    if ([v5 fileExistsAtPath:directory isDirectory:&v9])
     {
       if (!v9)
       {
@@ -67,7 +67,7 @@ LABEL_10:
     else
     {
       v8 = 0;
-      if (([v5 createDirectoryAtPath:a3 withIntermediateDirectories:1 attributes:0 error:&v8] & 1) == 0)
+      if (([v5 createDirectoryAtPath:directory withIntermediateDirectories:1 attributes:0 error:&v8] & 1) == 0)
       {
         if (OFLoggerLevel >= 4)
         {
@@ -80,7 +80,7 @@ LABEL_10:
       v9 = 1;
     }
 
-    v4->_diskCacheDirectory = [a3 copy];
+    v4->_diskCacheDirectory = [directory copy];
   }
 
   return v4;
@@ -88,10 +88,10 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76770] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76770] object:0];
   serialDiskSaveQueue = self->_serialDiskSaveQueue;
   if (serialDiskSaveQueue)
   {
@@ -124,13 +124,13 @@ LABEL_10:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__OFImageCache__didEnterBackgroundNotification__block_invoke;
   v7[3] = &unk_279C8A090;
   v7[4] = &v8;
-  v4 = [v3 beginBackgroundTaskWithExpirationHandler:v7];
+  v4 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v7];
   v9[3] = v4;
   if (v4 != *MEMORY[0x277D767B0])
   {
@@ -199,13 +199,13 @@ uint64_t __47__OFImageCache__didEnterBackgroundNotification__block_invoke_3(uint
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v7 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__OFImageCache__willTerminateNotification__block_invoke;
     v11[3] = &unk_279C8A090;
     v11[4] = &v12;
-    v8 = [v7 beginBackgroundTaskWithExpirationHandler:v11];
+    v8 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v11];
     v13[3] = v8;
     if (v8 != *MEMORY[0x277D767B0])
     {
@@ -238,23 +238,23 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
   return [v2 endBackgroundTask:v3];
 }
 
-- (id)_diskCacheDirectoryForURL:(id)a3
+- (id)_diskCacheDirectoryForURL:(id)l
 {
   diskCacheDirectoryForURLs = self->_diskCacheDirectoryForURLs;
   objc_sync_enter(diskCacheDirectoryForURLs);
-  v6 = [a3 absoluteString];
-  v7 = [(NSMutableDictionary *)self->_diskCacheDirectoryForURLs objectForKey:v6];
+  absoluteString = [l absoluteString];
+  v7 = [(NSMutableDictionary *)self->_diskCacheDirectoryForURLs objectForKey:absoluteString];
   if (!v7)
   {
-    v7 = -[NSString stringByAppendingPathComponent:](self->_diskCacheDirectory, "stringByAppendingPathComponent:", [objc_msgSend(v6 "sha1HashData")]);
-    [(NSMutableDictionary *)self->_diskCacheDirectoryForURLs setObject:v7 forKey:v6];
+    v7 = -[NSString stringByAppendingPathComponent:](self->_diskCacheDirectory, "stringByAppendingPathComponent:", [objc_msgSend(absoluteString "sha1HashData")]);
+    [(NSMutableDictionary *)self->_diskCacheDirectoryForURLs setObject:v7 forKey:absoluteString];
   }
 
   objc_sync_exit(diskCacheDirectoryForURLs);
   return v7;
 }
 
-- (id)_diskCacheFilePathForURL:(id)a3 withResolution:(unint64_t)a4
+- (id)_diskCacheFilePathForURL:(id)l withResolution:(unint64_t)resolution
 {
   if (self->_imageFormat == 1)
   {
@@ -266,19 +266,19 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
     v5 = @".jpg";
   }
 
-  v6 = [(OFImageCache *)self _diskCacheDirectoryForURL:a3];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu%@", a4, v5];
+  v6 = [(OFImageCache *)self _diskCacheDirectoryForURL:l];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu%@", resolution, v5];
 
   return [v6 stringByAppendingPathComponent:v7];
 }
 
-- (id)_diskCacheResolutionsForURL:(id)a3
+- (id)_diskCacheResolutionsForURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
   v21 = 0;
   v16 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v5 = [v16 subpathsOfDirectoryAtPath:-[OFImageCache _diskCacheDirectoryForURL:](self error:{"_diskCacheDirectoryForURL:", a3), &v21}];
-  v6 = [MEMORY[0x277CBEB18] array];
+  v5 = [v16 subpathsOfDirectoryAtPath:-[OFImageCache _diskCacheDirectoryForURL:](self error:{"_diskCacheDirectoryForURL:", l), &v21}];
+  array = [MEMORY[0x277CBEB18] array];
   imageFormat = self->_imageFormat;
   v17 = 0u;
   v18 = 0u;
@@ -308,11 +308,11 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
           objc_enumerationMutation(v5);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) lastPathComponent];
-        if ([v13 hasSuffix:v8])
+        lastPathComponent = [*(*(&v17 + 1) + 8 * i) lastPathComponent];
+        if ([lastPathComponent hasSuffix:v8])
         {
-          v14 = [v13 rangeOfString:@"."];
-          [v6 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(objc_msgSend(v13, "substringToIndex:", v14), "longLongValue"))}];
+          v14 = [lastPathComponent rangeOfString:@"."];
+          [array addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(objc_msgSend(lastPathComponent, "substringToIndex:", v14), "longLongValue"))}];
         }
       }
 
@@ -322,9 +322,9 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
     while (v10);
   }
 
-  [v6 sortUsingSelector:sel_compare_];
+  [array sortUsingSelector:sel_compare_];
 
-  return v6;
+  return array;
 }
 
 - (void)invalidateMemoryCaches
@@ -379,14 +379,14 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
   objc_sync_exit(self);
 }
 
-- (void)invalidateDiskCacheForURL:(id)a3
+- (void)invalidateDiskCacheForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     objc_sync_enter(self);
     v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v9 = 0;
-    v6 = [(OFImageCache *)self _diskCacheDirectoryForURL:a3];
+    v6 = [(OFImageCache *)self _diskCacheDirectoryForURL:l];
     if ([v5 fileExistsAtPath:v6])
     {
       v7 = [v5 removeItemAtPath:v6 error:&v9];
@@ -410,15 +410,15 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
   }
 }
 
-+ (unint64_t)alignResolution:(unint64_t)a3
++ (unint64_t)alignResolution:(unint64_t)resolution
 {
   v3 = 2048;
-  if (a3 <= 0x7FF)
+  if (resolution <= 0x7FF)
   {
-    v3 = (((a3 & 0xFFFFFFFFFFFFF87FLL) + 127) & 0xFFFFFFFFFFFFFF80) + (a3 & 0x780);
+    v3 = (((resolution & 0xFFFFFFFFFFFFF87FLL) + 127) & 0xFFFFFFFFFFFFFF80) + (resolution & 0x780);
   }
 
-  if (a3 >= 0x80)
+  if (resolution >= 0x80)
   {
     return v3;
   }
@@ -429,10 +429,10 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
   }
 }
 
-+ (unint64_t)bestResolutionForSize:(CGSize)a3
++ (unint64_t)bestResolutionForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_opt_class();
   if (width >= height)
   {
@@ -447,7 +447,7 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
   return [v5 alignResolution:v6];
 }
 
-- (void)purgeDiskCache:(unint64_t)a3 progressBlock:(id)a4
+- (void)purgeDiskCache:(unint64_t)cache progressBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -459,7 +459,7 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
     v7 = *MEMORY[0x277CBE8E8];
     v8 = *MEMORY[0x277CBE7A8];
     v9 = [v25 enumeratorAtURL:v6 includingPropertiesForKeys:objc_msgSend(MEMORY[0x277CBEA60] options:"arrayWithObjects:" errorHandler:{*MEMORY[0x277CBE8E8], *MEMORY[0x277CBE7A8], 0), 6, 0}];
-    v22 = a3;
+    cacheCopy = cache;
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = 0;
     if (self->_imageFormat == 1)
@@ -509,15 +509,15 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
       while (v11);
     }
 
-    if ([v26 count] >= v22)
+    if ([v26 count] >= cacheCopy)
     {
       [v26 sortUsingComparator:&__block_literal_global_4];
-      if ([v26 count] > v22)
+      if ([v26 count] > cacheCopy)
       {
         v15 = [v26 count];
         v28 = 0;
-        v16 = v15 - v22;
-        if (v15 != v22)
+        v16 = v15 - cacheCopy;
+        if (v15 != cacheCopy)
         {
           v17 = 1;
           do
@@ -533,9 +533,9 @@ uint64_t __42__OFImageCache__willTerminateNotification__block_invoke_2(uint64_t 
               }
             }
 
-            if (a4)
+            if (block)
             {
-              (*(a4 + 2))(a4, &v33, v17 / v16);
+              (*(block + 2))(block, &v33, v17 / v16);
             }
 
             if (v33)
@@ -565,19 +565,19 @@ uint64_t __45__OFImageCache_purgeDiskCache_progressBlock___block_invoke(uint64_t
   return [v3 compare:v4];
 }
 
-- (void)setImage:(CGImage *)a3 withResolution:(unint64_t)a4 forURL:(id)a5
+- (void)setImage:(CGImage *)image withResolution:(unint64_t)resolution forURL:(id)l
 {
-  if (a3 && a4 && a5)
+  if (image && resolution && l)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v7 = __47__OFImageCache_setImage_withResolution_forURL___block_invoke;
     v8 = &unk_279C8A0D8;
-    v9 = self;
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
-    CGImageRetain(a3);
+    selfCopy = self;
+    lCopy = l;
+    resolutionCopy = resolution;
+    imageCopy = image;
+    CGImageRetain(image);
     if (self->_useAsynchronousSerialDiskSaveQueue)
     {
       dispatch_async(self->_serialDiskSaveQueue, v6);
@@ -637,25 +637,25 @@ void __47__OFImageCache_setImage_withResolution_forURL___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (CGImage)imageForURL:(id)a3 withResolution:(unint64_t)a4
+- (CGImage)imageForURL:(id)l withResolution:(unint64_t)resolution
 {
-  v4 = [(OFImageCache *)self _diskCacheFilePathForURL:a3 withResolution:a4];
+  v4 = [(OFImageCache *)self _diskCacheFilePathForURL:l withResolution:resolution];
   v5 = OFCGImageCreateWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:v4], 1);
 
   return v5;
 }
 
-- (BOOL)hasImageForURL:(id)a3 withResolution:(unint64_t)a4
+- (BOOL)hasImageForURL:(id)l withResolution:(unint64_t)resolution
 {
   v7 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  LOBYTE(a4) = [v7 fileExistsAtPath:{-[OFImageCache _diskCacheFilePathForURL:withResolution:](self, "_diskCacheFilePathForURL:withResolution:", a3, a4)}];
+  LOBYTE(resolution) = [v7 fileExistsAtPath:{-[OFImageCache _diskCacheFilePathForURL:withResolution:](self, "_diskCacheFilePathForURL:withResolution:", l, resolution)}];
 
-  return a4;
+  return resolution;
 }
 
-- (CGImage)imageFromBestDiskCacheForURL:(id)a3 withResolution:(unint64_t)a4
+- (CGImage)imageFromBestDiskCacheForURL:(id)l withResolution:(unint64_t)resolution
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
@@ -673,20 +673,20 @@ void __47__OFImageCache_setImage_withResolution_forURL___block_invoke(uint64_t a
   }
 
   v9 = [objc_msgSend(v8 "lastObject")];
-  if (v9 <= a4)
+  if (v9 <= resolution)
   {
     return 0;
   }
 
-  v10 = [(OFImageCache *)self _diskCacheFilePathForURL:a3 withResolution:v9];
-  ThumbnailWithURL = OFCGImageCreateThumbnailWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:v10], a4, 1);
+  v10 = [(OFImageCache *)self _diskCacheFilePathForURL:l withResolution:v9];
+  ThumbnailWithURL = OFCGImageCreateThumbnailWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:v10], resolution, 1);
 
   return ThumbnailWithURL;
 }
 
-- (CGImage)bestImageDiskCacheForURL:(id)a3
+- (CGImage)bestImageDiskCacheForURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
@@ -704,7 +704,7 @@ void __47__OFImageCache_setImage_withResolution_forURL___block_invoke(uint64_t a
   }
 
   v7 = [objc_msgSend(v6 "lastObject")];
-  v8 = [(OFImageCache *)self _diskCacheFilePathForURL:a3 withResolution:v7];
+  v8 = [(OFImageCache *)self _diskCacheFilePathForURL:l withResolution:v7];
   ThumbnailWithURL = OFCGImageCreateThumbnailWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:v8], v7, 1);
 
   return ThumbnailWithURL;

@@ -1,12 +1,12 @@
 @interface ScrollSpringFactory
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation ScrollSpringFactory
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = _createSpringOfBasicAnimationDependingOnDebugState(a4, 0);
+  v5 = _createSpringOfBasicAnimationDependingOnDebugState(path, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

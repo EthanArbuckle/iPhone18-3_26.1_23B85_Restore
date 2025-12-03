@@ -1,23 +1,23 @@
 @interface ICInAppMessageEntry
-- (ICInAppMessageEntry)initWithApplicationMessage:(id)a3 bundleIdentifier:(id)a4;
-- (ICInAppMessageEntry)initWithCoder:(id)a3;
+- (ICInAppMessageEntry)initWithApplicationMessage:(id)message bundleIdentifier:(id)identifier;
+- (ICInAppMessageEntry)initWithCoder:(id)coder;
 - (NSDictionary)metadata;
 - (id)allCachedResourceLocations;
-- (id)cachedLocationForResourceWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cachedLocationForResourceWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)clearCachedResources;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCacheLocation:(id)a3 forResourceWithIdentifier:(id)a4;
-- (void)updateMetadataValue:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCacheLocation:(id)location forResourceWithIdentifier:(id)identifier;
+- (void)updateMetadataValue:(id)value forKey:(id)key;
 @end
 
 @implementation ICInAppMessageEntry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(ICIAMApplicationMessage *)self->_applicationMessage copyWithZone:?];
-  v6 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v7 = [[ICInAppMessageEntry allocWithZone:?]bundleIdentifier:"initWithApplicationMessage:bundleIdentifier:", v5, v6];
   if (v7)
   {
@@ -28,7 +28,7 @@
     block[3] = &unk_1E7BF58E0;
     block[4] = v7;
     block[5] = self;
-    block[6] = a3;
+    block[6] = zone;
     dispatch_sync(accessQueue, block);
   }
 
@@ -53,24 +53,24 @@ uint64_t __36__ICInAppMessageEntry_copyWithZone___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applicationMessage = self->_applicationMessage;
-  v5 = a3;
-  [v5 encodeObject:applicationMessage forKey:@"applicationMessage"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
-  [v5 encodeBool:-[ICInAppMessageEntry shouldDownloadResources](self forKey:{"shouldDownloadResources"), @"shouldDownloadResources"}];
-  [v5 encodeBool:-[ICInAppMessageEntry didCacheRequiredResources](self forKey:{"didCacheRequiredResources"), @"didCacheRequiredResources"}];
-  [v5 encodeBool:-[ICInAppMessageEntry isBadgingApplication](self forKey:{"isBadgingApplication"), @"isBadgingApplication"}];
-  [v5 encodeObject:self->_resourceCache forKey:@"resourceCache"];
+  coderCopy = coder;
+  [coderCopy encodeObject:applicationMessage forKey:@"applicationMessage"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeBool:-[ICInAppMessageEntry shouldDownloadResources](self forKey:{"shouldDownloadResources"), @"shouldDownloadResources"}];
+  [coderCopy encodeBool:-[ICInAppMessageEntry didCacheRequiredResources](self forKey:{"didCacheRequiredResources"), @"didCacheRequiredResources"}];
+  [coderCopy encodeBool:-[ICInAppMessageEntry isBadgingApplication](self forKey:{"isBadgingApplication"), @"isBadgingApplication"}];
+  [coderCopy encodeObject:self->_resourceCache forKey:@"resourceCache"];
 }
 
-- (ICInAppMessageEntry)initWithCoder:(id)a3
+- (ICInAppMessageEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationMessage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationMessage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
   v7 = [(ICInAppMessageEntry *)self initWithApplicationMessage:v5 bundleIdentifier:v6];
   if (v7)
   {
@@ -78,17 +78,17 @@ uint64_t __36__ICInAppMessageEntry_copyWithZone___block_invoke(uint64_t a1)
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"metadata"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"metadata"];
     metadata = v7->_metadata;
     v7->_metadata = v12;
 
-    -[ICInAppMessageEntry setShouldDownloadResources:](v7, "setShouldDownloadResources:", [v4 decodeBoolForKey:@"shouldDownloadResources"]);
-    -[ICInAppMessageEntry setDidCacheRequiredResources:](v7, "setDidCacheRequiredResources:", [v4 decodeBoolForKey:@"didCacheRequiredResources"]);
-    -[ICInAppMessageEntry setIsBadgingApplication:](v7, "setIsBadgingApplication:", [v4 decodeBoolForKey:@"isBadgingApplication"]);
+    -[ICInAppMessageEntry setShouldDownloadResources:](v7, "setShouldDownloadResources:", [coderCopy decodeBoolForKey:@"shouldDownloadResources"]);
+    -[ICInAppMessageEntry setDidCacheRequiredResources:](v7, "setDidCacheRequiredResources:", [coderCopy decodeBoolForKey:@"didCacheRequiredResources"]);
+    -[ICInAppMessageEntry setIsBadgingApplication:](v7, "setIsBadgingApplication:", [coderCopy decodeBoolForKey:@"isBadgingApplication"]);
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"resourceCache"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"resourceCache"];
     resourceCache = v7->_resourceCache;
     v7->_resourceCache = v17;
   }
@@ -176,26 +176,26 @@ void __43__ICInAppMessageEntry_clearCachedResources__block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 32) removeAllObjects];
 }
 
-- (void)setCacheLocation:(id)a3 forResourceWithIdentifier:(id)a4
+- (void)setCacheLocation:(id)location forResourceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__ICInAppMessageEntry_setCacheLocation_forResourceWithIdentifier___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = locationCopy;
+  v9 = locationCopy;
+  v10 = identifierCopy;
   dispatch_sync(accessQueue, block);
 }
 
-- (id)cachedLocationForResourceWithIdentifier:(id)a3
+- (id)cachedLocationForResourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -207,10 +207,10 @@ void __43__ICInAppMessageEntry_clearCachedResources__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __63__ICInAppMessageEntry_cachedLocationForResourceWithIdentifier___block_invoke;
   block[3] = &unk_1E7BF97E8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -229,20 +229,20 @@ uint64_t __63__ICInAppMessageEntry_cachedLocationForResourceWithIdentifier___blo
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)updateMetadataValue:(id)a3 forKey:(id)a4
+- (void)updateMetadataValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__ICInAppMessageEntry_updateMetadataValue_forKey___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -304,51 +304,51 @@ uint64_t __31__ICInAppMessageEntry_metadata__block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [(ICIAMApplicationMessage *)self->_applicationMessage messageType];
-  if (v7 < 5 && ((0x17u >> v7) & 1) != 0)
+  messageType = [(ICIAMApplicationMessage *)self->_applicationMessage messageType];
+  if (messageType < 5 && ((0x17u >> messageType) & 1) != 0)
   {
-    v8 = off_1E7BF4E70[v7];
+    v8 = off_1E7BF4E70[messageType];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", messageType];
   }
 
   v9 = MEMORY[0x1E696AEC0];
   bundleIdentifier = self->_bundleIdentifier;
-  v11 = [(ICIAMApplicationMessage *)self->_applicationMessage identifier];
-  v12 = [v9 stringWithFormat:@"[%@:%@, %@, (valid from %@ - %@), download=%d]", bundleIdentifier, v11, v8, v4, v6, self->_shouldDownloadResources];
+  identifier = [(ICIAMApplicationMessage *)self->_applicationMessage identifier];
+  v12 = [v9 stringWithFormat:@"[%@:%@, %@, (valid from %@ - %@), download=%d]", bundleIdentifier, identifier, v8, v4, v6, self->_shouldDownloadResources];
 
   return v12;
 }
 
-- (ICInAppMessageEntry)initWithApplicationMessage:(id)a3 bundleIdentifier:(id)a4
+- (ICInAppMessageEntry)initWithApplicationMessage:(id)message bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = ICInAppMessageEntry;
   v9 = [(ICInAppMessageEntry *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applicationMessage, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_applicationMessage, message);
+    v11 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     metadata = v10->_metadata;
-    v10->_metadata = v13;
+    v10->_metadata = dictionary;
 
     v15 = dispatch_queue_create("com.apple.iTunesCloud.ICInAppMessageEntry.accessQueue", 0);
     accessQueue = v10->_accessQueue;
     v10->_accessQueue = v15;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     resourceCache = v10->_resourceCache;
-    v10->_resourceCache = v17;
+    v10->_resourceCache = dictionary2;
   }
 
   return v10;

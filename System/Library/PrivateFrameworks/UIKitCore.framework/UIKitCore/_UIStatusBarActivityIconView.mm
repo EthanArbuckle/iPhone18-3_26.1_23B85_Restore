@@ -1,25 +1,25 @@
 @interface _UIStatusBarActivityIconView
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)_setupRingingLayersForStyleAttributes:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)_setupRingingLayersForStyleAttributes:(id)attributes;
 - (void)_teardownRingingLayers;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)resumePersistentAnimation;
-- (void)setRinging:(BOOL)a3 forUpdate:(id)a4;
+- (void)setRinging:(BOOL)ringing forUpdate:(id)update;
 @end
 
 @implementation _UIStatusBarActivityIconView
 
-- (void)_setupRingingLayersForStyleAttributes:(id)a3
+- (void)_setupRingingLayersForStyleAttributes:(id)attributes
 {
   if (!self->_innerRingShapeLayer)
   {
-    [a3 iconScale];
+    [attributes iconScale];
     self->_ringingIconScale = v4;
-    v5 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     innerRingShapeLayer = self->_innerRingShapeLayer;
-    self->_innerRingShapeLayer = v5;
+    self->_innerRingShapeLayer = layer;
 
     Mutable = CGPathCreateMutable();
     v8 = CGPathCreateMutable();
@@ -42,12 +42,12 @@
     -[CAShapeLayer setFillColor:](self->_innerRingShapeLayer, "setFillColor:", [v12 CGColor]);
 
     CGPathRelease(Mutable);
-    v13 = [(UIView *)self layer];
-    [v13 addSublayer:self->_innerRingShapeLayer];
+    layer2 = [(UIView *)self layer];
+    [layer2 addSublayer:self->_innerRingShapeLayer];
 
-    v14 = [MEMORY[0x1E69794A0] layer];
+    layer3 = [MEMORY[0x1E69794A0] layer];
     outerRingShapeLayer = self->_outerRingShapeLayer;
-    self->_outerRingShapeLayer = v14;
+    self->_outerRingShapeLayer = layer3;
 
     v16 = CGPathCreateMutable();
     v17 = CGPathCreateMutable();
@@ -69,8 +69,8 @@
     -[CAShapeLayer setFillColor:](self->_outerRingShapeLayer, "setFillColor:", [v20 CGColor]);
 
     CGPathRelease(v16);
-    v21 = [(UIView *)self layer];
-    [v21 addSublayer:self->_outerRingShapeLayer];
+    layer4 = [(UIView *)self layer];
+    [layer4 addSublayer:self->_outerRingShapeLayer];
   }
 }
 
@@ -103,14 +103,14 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
+  attributesCopy = attributes;
+  v5 = attributesCopy;
   if (self->_ringing)
   {
     ringingIconScale = self->_ringingIconScale;
-    [v4 iconScale];
+    [attributesCopy iconScale];
     if (ringingIconScale != v7)
     {
       v8 = self->_ringingIconScale;
@@ -122,12 +122,12 @@
         [(_UIStatusBarActivityIconView *)self resumePersistentAnimation];
       }
 
-      v10 = [v5 imageTintColor];
-      v11 = [v10 colorWithAlphaComponent:0.75];
+      imageTintColor = [v5 imageTintColor];
+      v11 = [imageTintColor colorWithAlphaComponent:0.75];
       -[CAShapeLayer setStrokeColor:](self->_innerRingShapeLayer, "setStrokeColor:", [v11 CGColor]);
 
-      v12 = [v5 imageTintColor];
-      v13 = [v12 colorWithAlphaComponent:0.5];
+      imageTintColor2 = [v5 imageTintColor];
+      v13 = [imageTintColor2 colorWithAlphaComponent:0.5];
       -[CAShapeLayer setStrokeColor:](self->_outerRingShapeLayer, "setStrokeColor:", [v13 CGColor]);
     }
   }
@@ -137,11 +137,11 @@
   [(_UIStatusBarImageView *)&v14 applyStyleAttributes:v5];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x1E6979EE0]])
+  layerCopy = layer;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E6979EE0]])
   {
     v8 = [UIViewBlockBasedCAAction alloc];
     v13[0] = MEMORY[0x1E69E9820];
@@ -156,7 +156,7 @@
   {
     v12.receiver = self;
     v12.super_class = _UIStatusBarActivityIconView;
-    v9 = [(UIView *)&v12 actionForLayer:v6 forKey:v7];
+    v9 = [(UIView *)&v12 actionForLayer:layerCopy forKey:keyCopy];
   }
 
   v10 = v9;
@@ -183,16 +183,16 @@
     [v4 setValues:v6];
 
     [v4 setDuration:1.85];
-    v7 = [MEMORY[0x1E6979308] animation];
-    [v7 setDuration:2.0];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setDuration:2.0];
     v19[0] = v3;
     v19[1] = v4;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-    [v7 setAnimations:v8];
+    [animation setAnimations:v8];
 
     LODWORD(v9) = 2139095040;
-    [v7 setRepeatCount:v9];
-    [(CAShapeLayer *)self->_innerRingShapeLayer addAnimation:v7 forKey:@"innerRing"];
+    [animation setRepeatCount:v9];
+    [(CAShapeLayer *)self->_innerRingShapeLayer addAnimation:animation forKey:@"innerRing"];
     v10 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
     [v10 setValues:&unk_1EFE2D858];
     [v10 setBeginTime:0.15];
@@ -208,31 +208,31 @@
 
     [v11 setBeginTime:0.15];
     [v11 setDuration:1.85];
-    v14 = [MEMORY[0x1E6979308] animation];
-    [v14 setDuration:2.0];
+    animation2 = [MEMORY[0x1E6979308] animation];
+    [animation2 setDuration:2.0];
     v17[0] = v10;
     v17[1] = v11;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-    [v14 setAnimations:v15];
+    [animation2 setAnimations:v15];
 
     LODWORD(v16) = 2139095040;
-    [v14 setRepeatCount:v16];
-    [(CAShapeLayer *)self->_outerRingShapeLayer addAnimation:v14 forKey:@"outerRing"];
+    [animation2 setRepeatCount:v16];
+    [(CAShapeLayer *)self->_outerRingShapeLayer addAnimation:animation2 forKey:@"outerRing"];
   }
 }
 
-- (void)setRinging:(BOOL)a3 forUpdate:(id)a4
+- (void)setRinging:(BOOL)ringing forUpdate:(id)update
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_ringing != v4)
+  ringingCopy = ringing;
+  updateCopy = update;
+  if (self->_ringing != ringingCopy)
   {
-    self->_ringing = v4;
-    v8 = v6;
-    if (v4)
+    self->_ringing = ringingCopy;
+    v8 = updateCopy;
+    if (ringingCopy)
     {
-      v7 = [v6 styleAttributes];
-      [(_UIStatusBarActivityIconView *)self _setupRingingLayersForStyleAttributes:v7];
+      styleAttributes = [updateCopy styleAttributes];
+      [(_UIStatusBarActivityIconView *)self _setupRingingLayersForStyleAttributes:styleAttributes];
 
       [(_UIStatusBarActivityIconView *)self resumePersistentAnimation];
     }
@@ -243,7 +243,7 @@
     }
 
     [(UIView *)self invalidateIntrinsicContentSize];
-    v6 = v8;
+    updateCopy = v8;
   }
 }
 

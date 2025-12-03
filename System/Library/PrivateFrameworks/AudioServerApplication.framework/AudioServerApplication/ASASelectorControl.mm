@@ -2,17 +2,17 @@
 - (NSArray)availableItems;
 - (NSArray)currentItems;
 - (id)coreAudioClassName;
-- (id)nameForItem:(unsigned int)a3;
+- (id)nameForItem:(unsigned int)item;
 - (unsigned)currentItem;
-- (void)setCurrentItem:(unsigned int)a3;
+- (void)setCurrentItem:(unsigned int)item;
 @end
 
 @implementation ASASelectorControl
 
-- (void)setCurrentItem:(unsigned int)a3
+- (void)setCurrentItem:(unsigned int)item
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1935893353 withData:&v4 ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  itemCopy = item;
+  if (![(ASAObject *)self setMainGlobalProperty:1935893353 withData:&itemCopy ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set current item property\n", v3, 2u);
@@ -43,7 +43,7 @@
     if ([(ASAObject *)self getMainGlobalProperty:1935893353 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0])
     {
       v7 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v7 >= 4)
       {
         v9 = v7 >> 2;
@@ -52,7 +52,7 @@
         {
           v11 = *v10++;
           v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
-          [v8 addObject:v12];
+          [array addObject:v12];
 
           --v9;
         }
@@ -69,7 +69,7 @@
         _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not read current items property\n", v14, 2u);
       }
 
-      v8 = 0;
+      array = 0;
     }
 
     free(v6);
@@ -77,10 +77,10 @@
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)availableItems
@@ -94,7 +94,7 @@
     if ([(ASAObject *)self getMainGlobalProperty:1935892841 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0])
     {
       v7 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v7 >= 4)
       {
         v9 = v7 >> 2;
@@ -103,7 +103,7 @@
         {
           v11 = *v10++;
           v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
-          [v8 addObject:v12];
+          [array addObject:v12];
 
           --v9;
         }
@@ -120,7 +120,7 @@
         _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not read available items property\n", v14, 2u);
       }
 
-      v8 = 0;
+      array = 0;
     }
 
     free(v6);
@@ -128,18 +128,18 @@
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
-- (id)nameForItem:(unsigned int)a3
+- (id)nameForItem:(unsigned int)item
 {
-  v8 = a3;
+  itemCopy = item;
   v7 = 8;
   cf = 0;
-  if ([(ASAObject *)self getMainGlobalProperty:1935894894 withData:&cf ofSize:&v7 withQualifier:&v8 ofSize:4])
+  if ([(ASAObject *)self getMainGlobalProperty:1935894894 withData:&cf ofSize:&v7 withQualifier:&itemCopy ofSize:4])
   {
     if (cf)
     {
@@ -163,15 +163,15 @@ LABEL_7:
 
 - (id)coreAudioClassName
 {
-  v2 = [(ASAObject *)self objectClass];
+  objectClass = [(ASAObject *)self objectClass];
   v3 = @"AudioSelectorControl";
   v4 = @"AudioDataSourceControl";
-  if (v2 != 1685287523)
+  if (objectClass != 1685287523)
   {
     v4 = @"AudioSelectorControl";
   }
 
-  if (v2 == 1751740518)
+  if (objectClass == 1751740518)
   {
     v5 = @"AudioHighPassFilterControl";
   }
@@ -181,7 +181,7 @@ LABEL_7:
     v5 = v4;
   }
 
-  if (v2 == 1852601964)
+  if (objectClass == 1852601964)
   {
     v6 = @"AudioLineLevelControl";
   }
@@ -191,17 +191,17 @@ LABEL_7:
     v6 = v5;
   }
 
-  if (v2 == 1684370292)
+  if (objectClass == 1684370292)
   {
     v3 = @"AudioDataDestinationControl";
   }
 
-  if (v2 == 1668047723)
+  if (objectClass == 1668047723)
   {
     v3 = @"AudioClockSourceControl";
   }
 
-  if (v2 <= 1685287522)
+  if (objectClass <= 1685287522)
   {
     return v3;
   }

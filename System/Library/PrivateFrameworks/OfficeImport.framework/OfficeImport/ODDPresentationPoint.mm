@@ -1,15 +1,15 @@
 @interface ODDPresentationPoint
 - (id)parent;
-- (void)addChild:(id)a3 order:(unint64_t)a4;
-- (void)setType:(int)a3;
+- (void)addChild:(id)child order:(unint64_t)order;
+- (void)setType:(int)type;
 @end
 
 @implementation ODDPresentationPoint
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
-  v3 = *&a3;
-  if (a3 != 4)
+  v3 = *&type;
+  if (type != 4)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODDException" format:@"Bad point type"];
   }
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (void)addChild:(id)a3 order:(unint64_t)a4
+- (void)addChild:(id)child order:(unint64_t)order
 {
-  v6 = a3;
-  WeakRetained = objc_loadWeakRetained(v6 + 5);
+  childCopy = child;
+  WeakRetained = objc_loadWeakRetained(childCopy + 5);
 
   if (WeakRetained)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODDException" format:@"Point already has a parent"];
   }
 
-  objc_storeWeak(v6 + 5, self);
+  objc_storeWeak(childCopy + 5, self);
   v8 = self->mChildren;
   v11 = v8;
-  [objc_opt_class() addConnectionToPoint:v6 order:a4 array:&v11];
+  [objc_opt_class() addConnectionToPoint:childCopy order:order array:&v11];
   v9 = v11;
 
   mChildren = self->mChildren;

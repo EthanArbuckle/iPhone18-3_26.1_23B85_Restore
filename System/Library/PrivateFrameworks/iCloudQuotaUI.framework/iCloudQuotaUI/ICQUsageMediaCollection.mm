@@ -1,25 +1,25 @@
 @interface ICQUsageMediaCollection
-- (void)removeItemAtIndex:(unint64_t)a3;
-- (void)setItemSizes:(id)a3;
-- (void)setItems:(id)a3;
-- (void)sortItemsByMediaKey:(id)a3;
+- (void)removeItemAtIndex:(unint64_t)index;
+- (void)setItemSizes:(id)sizes;
+- (void)setItems:(id)items;
+- (void)sortItemsByMediaKey:(id)key;
 @end
 
 @implementation ICQUsageMediaCollection
 
-- (void)removeItemAtIndex:(unint64_t)a3
+- (void)removeItemAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_itemSizes objectAtIndexedSubscript:?];
   [v5 floatValue];
   self->_totalSize = self->_totalSize - v6;
 
-  [(NSMutableArray *)self->_items removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_items removeObjectAtIndex:index];
   itemSizes = self->_itemSizes;
 
-  [(NSMutableArray *)itemSizes removeObjectAtIndex:a3];
+  [(NSMutableArray *)itemSizes removeObjectAtIndex:index];
 }
 
-- (void)sortItemsByMediaKey:(id)a3
+- (void)sortItemsByMediaKey:(id)key
 {
   if ([(ICQUsageMediaCollection *)self isGrouped])
   {
@@ -90,21 +90,21 @@ uint64_t __47__ICQUsageMediaCollection_sortItemsByMediaKey___block_invoke_3(uint
   return v13;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  if (self->_items != a3)
+  if (self->_items != items)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [items mutableCopy];
     items = self->_items;
     self->_items = v5;
   }
 }
 
-- (void)setItemSizes:(id)a3
+- (void)setItemSizes:(id)sizes
 {
-  if (self->_itemSizes != a3)
+  if (self->_itemSizes != sizes)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [sizes mutableCopy];
     itemSizes = self->_itemSizes;
     self->_itemSizes = v5;
   }

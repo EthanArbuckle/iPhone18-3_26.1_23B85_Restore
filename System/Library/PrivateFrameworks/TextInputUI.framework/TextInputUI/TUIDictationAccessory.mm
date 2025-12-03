@@ -1,9 +1,9 @@
 @interface TUIDictationAccessory
-- (BOOL)isEqual:(id)a3;
-- (TUIDictationAccessory)initWithCoder:(id)a3;
-- (TUIDictationAccessory)initWithLanguages:(id)a3 actionHandler:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TUIDictationAccessory)initWithCoder:(id)coder;
+- (TUIDictationAccessory)initWithLanguages:(id)languages actionHandler:(id)handler;
 - (id)additionalComponents;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUIDictationAccessory
@@ -12,23 +12,23 @@
 {
   v6.receiver = self;
   v6.super_class = TUIDictationAccessory;
-  v3 = [(TUICursorAccessory *)&v6 additionalComponents];
+  additionalComponents = [(TUICursorAccessory *)&v6 additionalComponents];
   if (self->_languages)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"languages = %@", self->_languages];
-    [v3 addObject:v4];
+    [additionalComponents addObject:v4];
   }
 
-  return v3;
+  return additionalComponents;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = self == v4 || [(NSArray *)self->_languages isEqualToArray:v4->_languages];
+    v6 = self == equalCopy || [(NSArray *)self->_languages isEqualToArray:equalCopy->_languages];
   }
 
   else
@@ -39,24 +39,24 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TUIDictationAccessory;
-  v4 = a3;
-  [(TUICursorAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_languages forKey:{@"TUILanguagesCodingKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TUICursorAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_languages forKey:{@"TUILanguagesCodingKey", v5.receiver, v5.super_class}];
 }
 
-- (TUIDictationAccessory)initWithCoder:(id)a3
+- (TUIDictationAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TUIDictationAccessory;
-  v5 = [(TUICursorAccessory *)&v9 initWithCoder:v4];
+  v5 = [(TUICursorAccessory *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"TUILanguagesCodingKey"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"TUILanguagesCodingKey"];
     languages = v5->_languages;
     v5->_languages = v6;
   }
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (TUIDictationAccessory)initWithLanguages:(id)a3 actionHandler:(id)a4
+- (TUIDictationAccessory)initWithLanguages:(id)languages actionHandler:(id)handler
 {
-  v7 = a3;
+  languagesCopy = languages;
   v11.receiver = self;
   v11.super_class = TUIDictationAccessory;
-  v8 = [(TUICursorAccessory *)&v11 initWithIdentifier:0 actionHandler:a4];
+  v8 = [(TUICursorAccessory *)&v11 initWithIdentifier:0 actionHandler:handler];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_languages, a3);
+    objc_storeStrong(&v8->_languages, languages);
   }
 
   return v9;

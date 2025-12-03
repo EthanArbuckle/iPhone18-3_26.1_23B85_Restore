@@ -1,7 +1,7 @@
 @interface _UIDebugIssueReport
 - (NSArray)issues;
 - (_UIDebugIssueReport)init;
-- (void)addIssue:(id)a3;
+- (void)addIssue:(id)issue;
 @end
 
 @implementation _UIDebugIssueReport
@@ -28,19 +28,19 @@
   return v2;
 }
 
-- (void)addIssue:(id)a3
+- (void)addIssue:(id)issue
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  issueCopy = issue;
+  v7 = issueCopy;
+  if (!issueCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"issue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"issue"}];
 
-    v5 = 0;
+    issueCopy = 0;
   }
 
-  [(NSMutableArray *)self->_mutableIssues addObject:v5];
+  [(NSMutableArray *)self->_mutableIssues addObject:issueCopy];
 }
 
 @end

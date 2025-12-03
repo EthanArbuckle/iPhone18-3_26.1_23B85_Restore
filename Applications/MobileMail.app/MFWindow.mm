@@ -1,10 +1,10 @@
 @interface MFWindow
 - (MFWindowDelegate)delegate;
 - (id)undoManager;
-- (void)_compositionStateChanged:(id)a3;
+- (void)_compositionStateChanged:(id)changed;
 - (void)becomeKeyWindow;
 - (void)resignKeyWindow;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation MFWindow
@@ -19,38 +19,38 @@
   [v3 addObserver:self selector:"_compositionStateChanged:" name:MFMailComposeViewDidDismiss object:0];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = MFWindow;
-  [(MFWindow *)&v7 sendEvent:v4];
+  [(MFWindow *)&v7 sendEvent:eventCopy];
   touchEventListener = self->_touchEventListener;
   if (touchEventListener)
   {
-    v6 = [v4 allTouches];
-    touchEventListener[2](touchEventListener, v6);
+    allTouches = [eventCopy allTouches];
+    touchEventListener[2](touchEventListener, allTouches);
   }
 }
 
 - (id)undoManager
 {
-  v3 = [(MFWindow *)self delegate];
-  v4 = [v3 undoManagerForWindow:self];
+  delegate = [(MFWindow *)self delegate];
+  v4 = [delegate undoManagerForWindow:self];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    undoManager = v4;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MFWindow;
-    v6 = [(MFWindow *)&v9 undoManager];
+    undoManager = [(MFWindow *)&v9 undoManager];
   }
 
-  v7 = v6;
+  v7 = undoManager;
 
   return v7;
 }
@@ -65,16 +65,16 @@
   [v3 removeObserver:self name:MFMailComposeViewDidDismiss object:0];
 }
 
-- (void)_compositionStateChanged:(id)a3
+- (void)_compositionStateChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [v7 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MFMailComposeViewWindowKey];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MFMailComposeViewWindowKey];
 
   if (v5 == self)
   {
-    v6 = [v7 name];
-    self->_composeActive = [v6 isEqualToString:MFMailComposeViewDidShow];
+    name = [changedCopy name];
+    self->_composeActive = [name isEqualToString:MFMailComposeViewDidShow];
   }
 }
 

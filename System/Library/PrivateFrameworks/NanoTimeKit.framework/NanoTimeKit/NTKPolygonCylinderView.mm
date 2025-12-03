@@ -1,12 +1,12 @@
 @interface NTKPolygonCylinderView
 - (NTKPolygonCylinderView)init;
 - (void)_informFaceViewsOfRotation;
-- (void)_setRotationAngle:(double)a3;
+- (void)_setRotationAngle:(double)angle;
 - (void)_updateTransform;
 - (void)layoutSubviews;
-- (void)setNumberOfSides:(unint64_t)a3;
-- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5;
-- (void)transitionToSideAtIndex:(unint64_t)a3;
+- (void)setNumberOfSides:(unint64_t)sides;
+- (void)transitionToFraction:(double)fraction fromSideAtIndex:(unint64_t)index toSideAtIndex:(unint64_t)atIndex;
+- (void)transitionToSideAtIndex:(unint64_t)index;
 @end
 
 @implementation NTKPolygonCylinderView
@@ -19,7 +19,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(NTKPolygonCylinderView *)v2 layer];
+    layer = [(NTKPolygonCylinderView *)v2 layer];
     v5 = *(MEMORY[0x277CD9DE8] + 48);
     v10[2] = *(MEMORY[0x277CD9DE8] + 32);
     v10[3] = v5;
@@ -33,7 +33,7 @@
     v8 = *(MEMORY[0x277CD9DE8] + 112);
     v13 = *(MEMORY[0x277CD9DE8] + 96);
     v14 = v8;
-    [v4 setSublayerTransform:v10];
+    [layer setSublayerTransform:v10];
 
     [(NTKPolygonCylinderView *)v3 _setRotationAngle:0.0];
   }
@@ -41,12 +41,12 @@
   return v3;
 }
 
-- (void)setNumberOfSides:(unint64_t)a3
+- (void)setNumberOfSides:(unint64_t)sides
 {
-  if ([(NTKPolygonCylinderView *)self numberOfSides]!= a3)
+  if ([(NTKPolygonCylinderView *)self numberOfSides]!= sides)
   {
     [(_NTKPolygonCylinderTransformView *)self->_transformView removeFromSuperview];
-    v5 = [[_NTKPolygonCylinderTransformView alloc] initWithNumberOfFaces:a3];
+    v5 = [[_NTKPolygonCylinderTransformView alloc] initWithNumberOfFaces:sides];
     transformView = self->_transformView;
     self->_transformView = v5;
 
@@ -56,24 +56,24 @@
   }
 }
 
-- (void)transitionToSideAtIndex:(unint64_t)a3
+- (void)transitionToSideAtIndex:(unint64_t)index
 {
-  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:a3];
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:index];
 
   [(NTKPolygonCylinderView *)self _setRotationAngle:?];
 }
 
-- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5
+- (void)transitionToFraction:(double)fraction fromSideAtIndex:(unint64_t)index toSideAtIndex:(unint64_t)atIndex
 {
-  v8 = [(NTKPolygonCylinderView *)self numberOfSides];
-  if (v8 - 1 == a4 && a5 == 0)
+  numberOfSides = [(NTKPolygonCylinderView *)self numberOfSides];
+  if (numberOfSides - 1 == index && atIndex == 0)
   {
-    a5 = v8;
+    atIndex = numberOfSides;
   }
 
-  if (a5 == v8 - 1)
+  if (atIndex == numberOfSides - 1)
   {
-    v10 = v8;
+    v10 = numberOfSides;
   }
 
   else
@@ -81,18 +81,18 @@
     v10 = 0;
   }
 
-  if (a4)
+  if (index)
   {
-    v11 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v11 = v10;
+    indexCopy = v10;
   }
 
-  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:v11];
-  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:a5];
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:indexCopy];
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:atIndex];
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKPolygonCylinderView *)self _setRotationAngle:?];
@@ -113,13 +113,13 @@
   [(NTKPolygonCylinderView *)self _updateTransform];
 }
 
-- (void)_setRotationAngle:(double)a3
+- (void)_setRotationAngle:(double)angle
 {
     ;
   }
 
-  v4 = a3;
-  self->_rotationAngle = fmodf(v4, 6.2832);
+  angleCopy = angle;
+  self->_rotationAngle = fmodf(angleCopy, 6.2832);
   [(NTKPolygonCylinderView *)self _updateTransform];
 
   [(NTKPolygonCylinderView *)self _informFaceViewsOfRotation];
@@ -161,9 +161,9 @@ void __52__NTKPolygonCylinderView__informFaceViewsOfRotation__block_invoke(uint6
   v6 = v8;
   CATransform3DRotate(&v7, &v6, rotationAngle, 1.0, 0.0, 0.0);
   v8 = v7;
-  v5 = [(_NTKPolygonCylinderTransformView *)self->_transformView layer];
+  layer = [(_NTKPolygonCylinderTransformView *)self->_transformView layer];
   v7 = v8;
-  [v5 setTransform:&v7];
+  [layer setTransform:&v7];
 }
 
 @end

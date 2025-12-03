@@ -1,13 +1,13 @@
 @interface _CDSizeMetricFamily
-+ (id)sizeMetricFamilyWithName:(uint64_t)a1;
++ (id)sizeMetricFamilyWithName:(uint64_t)name;
 - (id)description;
-- (id)sizeMetricWithName:(void *)a3 string:(uint64_t)a4 scale:;
-- (void)initWithName:(void *)a1;
+- (id)sizeMetricWithName:(void *)name string:(uint64_t)string scale:;
+- (void)initWithName:(void *)name;
 @end
 
 @implementation _CDSizeMetricFamily
 
-+ (id)sizeMetricFamilyWithName:(uint64_t)a1
++ (id)sizeMetricFamilyWithName:(uint64_t)name
 {
   v2 = a2;
   objc_opt_self();
@@ -64,32 +64,32 @@
   return v13;
 }
 
-- (void)initWithName:(void *)a1
+- (void)initWithName:(void *)name
 {
   v4 = a2;
-  if (a1)
+  if (name)
   {
-    v9.receiver = a1;
+    v9.receiver = name;
     v9.super_class = _CDSizeMetricFamily;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    name = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_opt_new();
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = name[2];
+      name[2] = v6;
     }
   }
 
-  return a1;
+  return name;
 }
 
-- (id)sizeMetricWithName:(void *)a3 string:(uint64_t)a4 scale:
+- (id)sizeMetricWithName:(void *)name string:(uint64_t)string scale:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
     v24 = 0;
     v25 = &v24;
@@ -105,10 +105,10 @@
     v17 = __55___CDSizeMetricFamily_sizeMetricWithName_string_scale___block_invoke;
     v18 = &unk_1E736ADA0;
     v22 = v12;
-    v19 = a1;
+    selfCopy = self;
     v20 = v7;
-    v21 = v8;
-    v23 = a4;
+    v21 = nameCopy;
+    stringCopy = string;
     dispatch_sync(v11, block);
     v13 = v25[5];
 

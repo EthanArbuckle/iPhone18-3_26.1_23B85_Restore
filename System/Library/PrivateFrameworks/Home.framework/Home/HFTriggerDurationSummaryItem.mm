@@ -1,39 +1,39 @@
 @interface HFTriggerDurationSummaryItem
-- (HFTriggerDurationSummaryItem)initWithTriggerBuilder:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFTriggerDurationSummaryItem)initWithTriggerBuilder:(id)builder;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFTriggerDurationSummaryItem
 
-- (HFTriggerDurationSummaryItem)initWithTriggerBuilder:(id)a3
+- (HFTriggerDurationSummaryItem)initWithTriggerBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = HFTriggerDurationSummaryItem;
   v6 = [(HFTriggerDurationSummaryItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_triggerBuilder, a3);
+    objc_storeStrong(&v6->_triggerBuilder, builder);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
-  if (([v5 supportsEndEvents] & 1) == 0)
+  triggerBuilder = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
+  if (([triggerBuilder supportsEndEvents] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v6 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
-  v7 = [v6 areActionsAffectedByEndEvents];
+  triggerBuilder2 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
+  areActionsAffectedByEndEvents = [triggerBuilder2 areActionsAffectedByEndEvents];
 
-  if ((v7 & 1) == 0)
+  if ((areActionsAffectedByEndEvents & 1) == 0)
   {
 LABEL_6:
     [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
@@ -44,19 +44,19 @@ LABEL_6:
   [v4 setObject:v8 forKeyedSubscript:@"title"];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
-  v11 = [v10 home];
-  v12 = [v9 numberWithInt:{objc_msgSend(v11, "hf_supportsSharedEventAutomation") ^ 1}];
+  triggerBuilder3 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
+  home = [triggerBuilder3 home];
+  v12 = [v9 numberWithInt:{objc_msgSend(home, "hf_supportsSharedEventAutomation") ^ 1}];
   [v4 setObject:v12 forKeyedSubscript:@"isDisabled"];
 
-  v13 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
-  v14 = [v13 designatedDurationEventBuilder];
+  triggerBuilder4 = [(HFTriggerDurationSummaryItem *)self triggerBuilder];
+  designatedDurationEventBuilder = [triggerBuilder4 designatedDurationEventBuilder];
 
   v15 = MEMORY[0x277CD19F8];
-  if (v14)
+  if (designatedDurationEventBuilder)
   {
     v16 = MEMORY[0x277CCABB0];
-    [v14 duration];
+    [designatedDurationEventBuilder duration];
     v17 = [v16 numberWithDouble:?];
   }
 
@@ -68,7 +68,7 @@ LABEL_6:
   v18 = [v15 hf_naturalLanguageTurnOffAfterDuration:v17 style:0];
   [v4 setObject:v18 forKeyedSubscript:@"description"];
 
-  if (v14)
+  if (designatedDurationEventBuilder)
   {
   }
 

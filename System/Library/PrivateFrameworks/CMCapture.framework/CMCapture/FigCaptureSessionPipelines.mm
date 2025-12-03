@@ -1,55 +1,55 @@
 @interface FigCaptureSessionPipelines
 - (FigCaptureCameraSourcePipeline)firstColorCameraSourcePipeline;
-- (id)audioDataSinkPipelineWithSinkID:(id)a3;
-- (id)audioFileSinkPipelineWithFileSinkNode:(id)a3;
-- (id)audioFileSinkPipelineWithSinkID:(id)a3;
-- (id)cameraCalibrationDataSinkPipelineWithSinkID:(id)a3;
-- (id)cameraSourcePipelineCompatibleWithCameraConfiguration:(id)a3;
-- (id)cameraSourcePipelineWithSourceID:(id)a3;
-- (id)cinematographyPipelineWithSourceID:(id)a3;
-- (id)depthDataSinkPipelineWithSinkID:(id)a3;
-- (id)depthDataSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)lidarDepthPipelineWithRGBCameraSourceID:(id)a3;
-- (id)metadataSinkPipelineWithSinkID:(id)a3;
-- (id)metadataSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)movieFileSinkPipelineWithFileCoordinatorNode:(id)a3;
-- (id)movieFileSinkPipelineWithFileSinkNode:(id)a3;
-- (id)movieFileSinkPipelineWithIrisStagingNode:(id)a3;
-- (id)movieFileSinkPipelineWithSinkID:(id)a3;
-- (id)movieFileSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)movieFileSinkPipelineWithVideoConnectionID:(id)a3;
-- (id)pointCloudDataSinkPipelineWithSinkID:(id)a3;
-- (id)previewSinkPipelineWithSinkID:(id)a3;
-- (id)previewSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)stillImageSinkPipelineSessionStorageWithSinkID:(id)a3;
-- (id)stillImageSinkPipelineSessionStorageWithStillImageCoordinator:(id)a3;
-- (id)videoDataSinkPipelineForMetadataWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)videoDataSinkPipelineWithSinkID:(id)a3;
-- (id)videoDataSinkPipelinesWithSourceID:(id)a3 sourceDeviceType:(int)a4;
-- (id)videoThumbnailSinkPipelineWithSinkID:(id)a3;
-- (id)visionDataSinkPipelineWithSinkID:(id)a3;
-- (void)addAudioDataSinkPipeline:(id)a3;
-- (void)addAudioFileSinkPipeline:(id)a3;
-- (void)addCameraCalibrationDataSinkPipeline:(id)a3;
-- (void)addCameraSourcePipeline:(id)a3;
-- (void)addCameraSourcePipeline:(id)a3 sessionID:(id)a4;
-- (void)addCinematographyPipeline:(id)a3;
-- (void)addDepthDataSinkPipeline:(id)a3;
-- (void)addLiDARDepthPipeline:(id)a3;
-- (void)addMetadataSinkPipeline:(id)a3;
-- (void)addMetadataSinkPipeline:(id)a3 sessionID:(id)a4;
-- (void)addMetadataSourcePipeline:(id)a3;
-- (void)addMovieFileSinkPipeline:(id)a3;
-- (void)addPointCloudDataSinkPipeline:(id)a3;
-- (void)addPreviewSinkPipeline:(id)a3;
-- (void)addStillImageSinkPipelineSessionStorage:(id)a3;
-- (void)addVideoDataSinkPipeline:(id)a3;
-- (void)addVideoThumbnailSinkPipeline:(id)a3;
-- (void)addVisionDataSinkPipeline:(id)a3;
+- (id)audioDataSinkPipelineWithSinkID:(id)d;
+- (id)audioFileSinkPipelineWithFileSinkNode:(id)node;
+- (id)audioFileSinkPipelineWithSinkID:(id)d;
+- (id)cameraCalibrationDataSinkPipelineWithSinkID:(id)d;
+- (id)cameraSourcePipelineCompatibleWithCameraConfiguration:(id)configuration;
+- (id)cameraSourcePipelineWithSourceID:(id)d;
+- (id)cinematographyPipelineWithSourceID:(id)d;
+- (id)depthDataSinkPipelineWithSinkID:(id)d;
+- (id)depthDataSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)lidarDepthPipelineWithRGBCameraSourceID:(id)d;
+- (id)metadataSinkPipelineWithSinkID:(id)d;
+- (id)metadataSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)movieFileSinkPipelineWithFileCoordinatorNode:(id)node;
+- (id)movieFileSinkPipelineWithFileSinkNode:(id)node;
+- (id)movieFileSinkPipelineWithIrisStagingNode:(id)node;
+- (id)movieFileSinkPipelineWithSinkID:(id)d;
+- (id)movieFileSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)movieFileSinkPipelineWithVideoConnectionID:(id)d;
+- (id)pointCloudDataSinkPipelineWithSinkID:(id)d;
+- (id)previewSinkPipelineWithSinkID:(id)d;
+- (id)previewSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)stillImageSinkPipelineSessionStorageWithSinkID:(id)d;
+- (id)stillImageSinkPipelineSessionStorageWithStillImageCoordinator:(id)coordinator;
+- (id)videoDataSinkPipelineForMetadataWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)videoDataSinkPipelineWithSinkID:(id)d;
+- (id)videoDataSinkPipelinesWithSourceID:(id)d sourceDeviceType:(int)type;
+- (id)videoThumbnailSinkPipelineWithSinkID:(id)d;
+- (id)visionDataSinkPipelineWithSinkID:(id)d;
+- (void)addAudioDataSinkPipeline:(id)pipeline;
+- (void)addAudioFileSinkPipeline:(id)pipeline;
+- (void)addCameraCalibrationDataSinkPipeline:(id)pipeline;
+- (void)addCameraSourcePipeline:(id)pipeline;
+- (void)addCameraSourcePipeline:(id)pipeline sessionID:(id)d;
+- (void)addCinematographyPipeline:(id)pipeline;
+- (void)addDepthDataSinkPipeline:(id)pipeline;
+- (void)addLiDARDepthPipeline:(id)pipeline;
+- (void)addMetadataSinkPipeline:(id)pipeline;
+- (void)addMetadataSinkPipeline:(id)pipeline sessionID:(id)d;
+- (void)addMetadataSourcePipeline:(id)pipeline;
+- (void)addMovieFileSinkPipeline:(id)pipeline;
+- (void)addPointCloudDataSinkPipeline:(id)pipeline;
+- (void)addPreviewSinkPipeline:(id)pipeline;
+- (void)addStillImageSinkPipelineSessionStorage:(id)storage;
+- (void)addVideoDataSinkPipeline:(id)pipeline;
+- (void)addVideoThumbnailSinkPipeline:(id)pipeline;
+- (void)addVisionDataSinkPipeline:(id)pipeline;
 - (void)dealloc;
-- (void)removeCameraSourcePipelineWithSessionID:(id)a3;
-- (void)removeMetadataSinkPipelineWithSessionID:(id)a3;
-- (void)updateClientAuditToken:(id *)a3;
+- (void)removeCameraSourcePipelineWithSessionID:(id)d;
+- (void)removeMetadataSinkPipelineWithSessionID:(id)d;
+- (void)updateClientAuditToken:(id *)token;
 @end
 
 @implementation FigCaptureSessionPipelines
@@ -79,9 +79,9 @@ LABEL_3:
     }
 
     v7 = *(*(&v12 + 1) + 8 * v6);
-    v8 = [-[FigCaptureCameraSourcePipeline captureDevice](v7) deviceType];
-    v9 = v8 > 0x14 || ((1 << v8) & 0x100420) == 0;
-    if (v9 && v8 - 21 < 0xFFFFFFFC)
+    deviceType = [-[FigCaptureCameraSourcePipeline captureDevice](v7) deviceType];
+    v9 = deviceType > 0x14 || ((1 << deviceType) & 0x100420) == 0;
+    if (v9 && deviceType - 21 < 0xFFFFFFFC)
     {
       return v7;
     }
@@ -106,7 +106,7 @@ LABEL_3:
   [(FigCaptureSessionPipelines *)&v3 dealloc];
 }
 
-- (void)addCameraSourcePipeline:(id)a3
+- (void)addCameraSourcePipeline:(id)pipeline
 {
   cameraSourcePipelines = self->_cameraSourcePipelines;
   if (!cameraSourcePipelines)
@@ -115,10 +115,10 @@ LABEL_3:
     self->_cameraSourcePipelines = cameraSourcePipelines;
   }
 
-  [(NSMutableArray *)cameraSourcePipelines addObject:a3];
+  [(NSMutableArray *)cameraSourcePipelines addObject:pipeline];
 }
 
-- (id)cameraSourcePipelineWithSourceID:(id)a3
+- (id)cameraSourcePipelineWithSourceID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -161,10 +161,10 @@ LABEL_3:
   }
 }
 
-- (id)cameraSourcePipelineCompatibleWithCameraConfiguration:(id)a3
+- (id)cameraSourcePipelineCompatibleWithCameraConfiguration:(id)configuration
 {
-  v5 = [a3 sourceDeviceType];
-  v6 = [a3 sourcePosition];
+  sourceDeviceType = [configuration sourceDeviceType];
+  sourcePosition = [configuration sourcePosition];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -188,10 +188,10 @@ LABEL_3:
     }
 
     v12 = *(*(&v16 + 1) + 8 * v11);
-    if ([-[FigCaptureCameraSourcePipeline captureDevice](v12) position] == v6)
+    if ([-[FigCaptureCameraSourcePipeline captureDevice](v12) position] == sourcePosition)
     {
-      v13 = [-[FigCaptureCameraSourcePipeline captureDevice](v12) deviceType];
-      if (FigCaptureSourceDeviceTypeIsSubsetOfDeviceType(v5, v13, v6))
+      deviceType = [-[FigCaptureCameraSourcePipeline captureDevice](v12) deviceType];
+      if (FigCaptureSourceDeviceTypeIsSubsetOfDeviceType(sourceDeviceType, deviceType, sourcePosition))
       {
         return v12;
       }
@@ -210,7 +210,7 @@ LABEL_3:
   }
 }
 
-- (void)addCameraSourcePipeline:(id)a3 sessionID:(id)a4
+- (void)addCameraSourcePipeline:(id)pipeline sessionID:(id)d
 {
   cameraSourcePipelinesBySessionID = self->_cameraSourcePipelinesBySessionID;
   if (!cameraSourcePipelinesBySessionID)
@@ -219,12 +219,12 @@ LABEL_3:
     self->_cameraSourcePipelinesBySessionID = cameraSourcePipelinesBySessionID;
   }
 
-  [(NSMutableDictionary *)cameraSourcePipelinesBySessionID setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)cameraSourcePipelinesBySessionID setObject:pipeline forKeyedSubscript:d];
 }
 
-- (void)removeCameraSourcePipelineWithSessionID:(id)a3
+- (void)removeCameraSourcePipelineWithSessionID:(id)d
 {
-  [(NSMutableDictionary *)self->_cameraSourcePipelinesBySessionID setObject:0 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_cameraSourcePipelinesBySessionID setObject:0 forKeyedSubscript:d];
   if (![(NSMutableDictionary *)self->_cameraSourcePipelinesBySessionID count])
   {
 
@@ -232,7 +232,7 @@ LABEL_3:
   }
 }
 
-- (void)addMetadataSourcePipeline:(id)a3
+- (void)addMetadataSourcePipeline:(id)pipeline
 {
   metadataSourcePipelines = self->_metadataSourcePipelines;
   if (!metadataSourcePipelines)
@@ -241,10 +241,10 @@ LABEL_3:
     self->_metadataSourcePipelines = metadataSourcePipelines;
   }
 
-  [(NSMutableArray *)metadataSourcePipelines addObject:a3];
+  [(NSMutableArray *)metadataSourcePipelines addObject:pipeline];
 }
 
-- (void)addPreviewSinkPipeline:(id)a3
+- (void)addPreviewSinkPipeline:(id)pipeline
 {
   previewSinkPipelines = self->_previewSinkPipelines;
   if (!previewSinkPipelines)
@@ -253,10 +253,10 @@ LABEL_3:
     self->_previewSinkPipelines = previewSinkPipelines;
   }
 
-  [(NSMutableArray *)previewSinkPipelines addObject:a3];
+  [(NSMutableArray *)previewSinkPipelines addObject:pipeline];
 }
 
-- (id)previewSinkPipelineWithSinkID:(id)a3
+- (id)previewSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -299,7 +299,7 @@ LABEL_3:
   }
 }
 
-- (id)previewSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)previewSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type
 {
   v16 = 0u;
   v17 = 0u;
@@ -324,7 +324,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if ([v11 sourceDeviceType] == a4 && (objc_msgSend(objc_msgSend(v11, "sourceID"), "isEqualToString:", a3) & 1) != 0)
+    if ([v11 sourceDeviceType] == type && (objc_msgSend(objc_msgSend(v11, "sourceID"), "isEqualToString:", d) & 1) != 0)
     {
       return v11;
     }
@@ -342,7 +342,7 @@ LABEL_3:
   }
 }
 
-- (void)addVideoDataSinkPipeline:(id)a3
+- (void)addVideoDataSinkPipeline:(id)pipeline
 {
   videoDataSinkPipelines = self->_videoDataSinkPipelines;
   if (!videoDataSinkPipelines)
@@ -351,10 +351,10 @@ LABEL_3:
     self->_videoDataSinkPipelines = videoDataSinkPipelines;
   }
 
-  [(NSMutableArray *)videoDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)videoDataSinkPipelines addObject:pipeline];
 }
 
-- (id)videoDataSinkPipelineWithSinkID:(id)a3
+- (id)videoDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -397,7 +397,7 @@ LABEL_3:
   }
 }
 
-- (id)videoDataSinkPipelineForMetadataWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)videoDataSinkPipelineForMetadataWithSourceID:(id)d sourceDeviceType:(int)type
 {
   v16 = 0u;
   v17 = 0u;
@@ -422,7 +422,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if (-[FigCaptureVideoDataSinkPipeline sourceDeviceType](v11) == a4 && [-[FigCaptureVideoDataSinkPipeline sourceID](v11) isEqualToString:a3] && (-[FigCaptureVideoDataSinkPipeline faceTrackingVideoCaptureOutput](v11) || -[FigCaptureVideoDataSinkPipeline offlineVISMotionDataCaptureOutput](v11)))
+    if (-[FigCaptureVideoDataSinkPipeline sourceDeviceType](v11) == type && [-[FigCaptureVideoDataSinkPipeline sourceID](v11) isEqualToString:d] && (-[FigCaptureVideoDataSinkPipeline faceTrackingVideoCaptureOutput](v11) || -[FigCaptureVideoDataSinkPipeline offlineVISMotionDataCaptureOutput](v11)))
     {
       return v11;
     }
@@ -440,9 +440,9 @@ LABEL_3:
   }
 }
 
-- (id)videoDataSinkPipelinesWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)videoDataSinkPipelinesWithSourceID:(id)d sourceDeviceType:(int)type
 {
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -463,9 +463,9 @@ LABEL_3:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if (-[FigCaptureVideoDataSinkPipeline sourceDeviceType](v13) == a4 && [-[FigCaptureVideoDataSinkPipeline sourceID](v13) isEqualToString:a3])
+        if (-[FigCaptureVideoDataSinkPipeline sourceDeviceType](v13) == type && [-[FigCaptureVideoDataSinkPipeline sourceID](v13) isEqualToString:d])
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -475,10 +475,10 @@ LABEL_3:
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (void)addMovieFileSinkPipeline:(id)a3
+- (void)addMovieFileSinkPipeline:(id)pipeline
 {
   movieFileSinkPipelines = self->_movieFileSinkPipelines;
   if (!movieFileSinkPipelines)
@@ -487,10 +487,10 @@ LABEL_3:
     self->_movieFileSinkPipelines = movieFileSinkPipelines;
   }
 
-  [(NSMutableArray *)movieFileSinkPipelines addObject:a3];
+  [(NSMutableArray *)movieFileSinkPipelines addObject:pipeline];
 }
 
-- (id)movieFileSinkPipelineWithSinkID:(id)a3
+- (id)movieFileSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -533,7 +533,7 @@ LABEL_3:
   }
 }
 
-- (id)movieFileSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)movieFileSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type
 {
   v16 = 0u;
   v17 = 0u;
@@ -558,7 +558,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if (-[FigCaptureMovieFileSinkPipeline videoSourceDeviceType](v11) == a4 && ([-[FigCaptureMovieFileSinkPipeline videoSourceID](v11) isEqualToString:a3] & 1) != 0)
+    if (-[FigCaptureMovieFileSinkPipeline videoSourceDeviceType](v11) == type && ([-[FigCaptureMovieFileSinkPipeline videoSourceID](v11) isEqualToString:d] & 1) != 0)
     {
       return v11;
     }
@@ -576,7 +576,7 @@ LABEL_3:
   }
 }
 
-- (id)movieFileSinkPipelineWithFileSinkNode:(id)a3
+- (id)movieFileSinkPipelineWithFileSinkNode:(id)node
 {
   v14 = 0u;
   v15 = 0u;
@@ -601,7 +601,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([-[FigCaptureMovieFileSinkPipeline movieFileSinkNodes](v9) indexOfObjectIdenticalTo:a3] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([-[FigCaptureMovieFileSinkPipeline movieFileSinkNodes](v9) indexOfObjectIdenticalTo:node] != 0x7FFFFFFFFFFFFFFFLL)
     {
       return v9;
     }
@@ -619,7 +619,7 @@ LABEL_3:
   }
 }
 
-- (id)movieFileSinkPipelineWithVideoConnectionID:(id)a3
+- (id)movieFileSinkPipelineWithVideoConnectionID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -644,7 +644,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([-[FigCaptureMovieFileSinkPipeline videoConnectionID](v9) isEqual:a3])
+    if ([-[FigCaptureMovieFileSinkPipeline videoConnectionID](v9) isEqual:d])
     {
       return v9;
     }
@@ -662,7 +662,7 @@ LABEL_3:
   }
 }
 
-- (id)movieFileSinkPipelineWithFileCoordinatorNode:(id)a3
+- (id)movieFileSinkPipelineWithFileCoordinatorNode:(id)node
 {
   v14 = 0u;
   v15 = 0u;
@@ -687,7 +687,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([(FigCaptureMovieFileSinkPipeline *)v9 fileCoordinatorNode]== a3)
+    if ([(FigCaptureMovieFileSinkPipeline *)v9 fileCoordinatorNode]== node)
     {
       return v9;
     }
@@ -705,7 +705,7 @@ LABEL_3:
   }
 }
 
-- (id)movieFileSinkPipelineWithIrisStagingNode:(id)a3
+- (id)movieFileSinkPipelineWithIrisStagingNode:(id)node
 {
   v14 = 0u;
   v15 = 0u;
@@ -730,7 +730,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([(FigCaptureMovieFileSinkPipeline *)v9 irisStagingNode]== a3)
+    if ([(FigCaptureMovieFileSinkPipeline *)v9 irisStagingNode]== node)
     {
       return v9;
     }
@@ -748,7 +748,7 @@ LABEL_3:
   }
 }
 
-- (void)addStillImageSinkPipelineSessionStorage:(id)a3
+- (void)addStillImageSinkPipelineSessionStorage:(id)storage
 {
   stillImageSinkPipelineStorages = self->_stillImageSinkPipelineStorages;
   if (!stillImageSinkPipelineStorages)
@@ -757,7 +757,7 @@ LABEL_3:
     self->_stillImageSinkPipelineStorages = stillImageSinkPipelineStorages;
   }
 
-  if (!a3)
+  if (!storage)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -769,10 +769,10 @@ LABEL_3:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Failure to create still image sink pipeline! This is a fatal error.", 0}]);
   }
 
-  [(NSMutableArray *)stillImageSinkPipelineStorages addObject:a3];
+  [(NSMutableArray *)stillImageSinkPipelineStorages addObject:storage];
 }
 
-- (id)stillImageSinkPipelineSessionStorageWithSinkID:(id)a3
+- (id)stillImageSinkPipelineSessionStorageWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -815,7 +815,7 @@ LABEL_3:
   }
 }
 
-- (id)stillImageSinkPipelineSessionStorageWithStillImageCoordinator:(id)a3
+- (id)stillImageSinkPipelineSessionStorageWithStillImageCoordinator:(id)coordinator
 {
   v24 = 0u;
   v25 = 0u;
@@ -844,8 +844,8 @@ LABEL_3:
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [v9 stillImageSinkPipelines];
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      stillImageSinkPipelines = [v9 stillImageSinkPipelines];
+      v11 = [stillImageSinkPipelines countByEnumeratingWithState:&v17 objects:v16 count:16];
       if (v11)
       {
         v12 = v11;
@@ -856,17 +856,17 @@ LABEL_8:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(stillImageSinkPipelines);
           }
 
-          if ([*(*(&v17 + 1) + 8 * v14) stillImageCoordinatorNode] == a3)
+          if ([*(*(&v17 + 1) + 8 * v14) stillImageCoordinatorNode] == coordinator)
           {
             return v9;
           }
 
           if (v12 == ++v14)
           {
-            v12 = [v10 countByEnumeratingWithState:&v17 objects:v16 count:16];
+            v12 = [stillImageSinkPipelines countByEnumeratingWithState:&v17 objects:v16 count:16];
             if (v12)
             {
               goto LABEL_8;
@@ -889,7 +889,7 @@ LABEL_8:
   }
 }
 
-- (void)addDepthDataSinkPipeline:(id)a3
+- (void)addDepthDataSinkPipeline:(id)pipeline
 {
   depthDataSinkPipelines = self->_depthDataSinkPipelines;
   if (!depthDataSinkPipelines)
@@ -898,10 +898,10 @@ LABEL_8:
     self->_depthDataSinkPipelines = depthDataSinkPipelines;
   }
 
-  [(NSMutableArray *)depthDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)depthDataSinkPipelines addObject:pipeline];
 }
 
-- (id)depthDataSinkPipelineWithSinkID:(id)a3
+- (id)depthDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -944,7 +944,7 @@ LABEL_3:
   }
 }
 
-- (id)depthDataSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)depthDataSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type
 {
   v16 = 0u;
   v17 = 0u;
@@ -969,7 +969,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if ([v11 sourceDeviceType] == a4 && (objc_msgSend(objc_msgSend(v11, "sourceID"), "isEqualToString:", a3) & 1) != 0)
+    if ([v11 sourceDeviceType] == type && (objc_msgSend(objc_msgSend(v11, "sourceID"), "isEqualToString:", d) & 1) != 0)
     {
       return v11;
     }
@@ -987,7 +987,7 @@ LABEL_3:
   }
 }
 
-- (void)addVideoThumbnailSinkPipeline:(id)a3
+- (void)addVideoThumbnailSinkPipeline:(id)pipeline
 {
   videoThumbnailSinkPipelines = self->_videoThumbnailSinkPipelines;
   if (!videoThumbnailSinkPipelines)
@@ -996,10 +996,10 @@ LABEL_3:
     self->_videoThumbnailSinkPipelines = videoThumbnailSinkPipelines;
   }
 
-  [(NSMutableArray *)videoThumbnailSinkPipelines addObject:a3];
+  [(NSMutableArray *)videoThumbnailSinkPipelines addObject:pipeline];
 }
 
-- (id)videoThumbnailSinkPipelineWithSinkID:(id)a3
+- (id)videoThumbnailSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1042,7 +1042,7 @@ LABEL_3:
   }
 }
 
-- (void)addMetadataSinkPipeline:(id)a3
+- (void)addMetadataSinkPipeline:(id)pipeline
 {
   metadataSinkPipelines = self->_metadataSinkPipelines;
   if (!metadataSinkPipelines)
@@ -1051,10 +1051,10 @@ LABEL_3:
     self->_metadataSinkPipelines = metadataSinkPipelines;
   }
 
-  [(NSMutableArray *)metadataSinkPipelines addObject:a3];
+  [(NSMutableArray *)metadataSinkPipelines addObject:pipeline];
 }
 
-- (void)addMetadataSinkPipeline:(id)a3 sessionID:(id)a4
+- (void)addMetadataSinkPipeline:(id)pipeline sessionID:(id)d
 {
   metadataSinkPipelinesBySessionID = self->_metadataSinkPipelinesBySessionID;
   if (!metadataSinkPipelinesBySessionID)
@@ -1063,12 +1063,12 @@ LABEL_3:
     self->_metadataSinkPipelinesBySessionID = metadataSinkPipelinesBySessionID;
   }
 
-  [(NSMutableDictionary *)metadataSinkPipelinesBySessionID setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)metadataSinkPipelinesBySessionID setObject:pipeline forKeyedSubscript:d];
 }
 
-- (void)removeMetadataSinkPipelineWithSessionID:(id)a3
+- (void)removeMetadataSinkPipelineWithSessionID:(id)d
 {
-  [(NSMutableDictionary *)self->_metadataSinkPipelinesBySessionID setObject:0 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_metadataSinkPipelinesBySessionID setObject:0 forKeyedSubscript:d];
   if (![(NSMutableDictionary *)self->_metadataSinkPipelinesBySessionID count])
   {
 
@@ -1076,7 +1076,7 @@ LABEL_3:
   }
 }
 
-- (id)metadataSinkPipelineWithSinkID:(id)a3
+- (id)metadataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1119,7 +1119,7 @@ LABEL_3:
   }
 }
 
-- (id)metadataSinkPipelineWithSourceID:(id)a3 sourceDeviceType:(int)a4
+- (id)metadataSinkPipelineWithSourceID:(id)d sourceDeviceType:(int)type
 {
   v16 = 0u;
   v17 = 0u;
@@ -1144,7 +1144,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if (-[FigCaptureMetadataSinkPipeline sourceDeviceType](v11) == a4 && ([-[FigCaptureMetadataSinkPipeline sourceID](v11) isEqualToString:a3] & 1) != 0)
+    if (-[FigCaptureMetadataSinkPipeline sourceDeviceType](v11) == type && ([-[FigCaptureMetadataSinkPipeline sourceID](v11) isEqualToString:d] & 1) != 0)
     {
       return v11;
     }
@@ -1162,7 +1162,7 @@ LABEL_3:
   }
 }
 
-- (void)addVisionDataSinkPipeline:(id)a3
+- (void)addVisionDataSinkPipeline:(id)pipeline
 {
   visionDataSinkPipelines = self->_visionDataSinkPipelines;
   if (!visionDataSinkPipelines)
@@ -1171,10 +1171,10 @@ LABEL_3:
     self->_visionDataSinkPipelines = visionDataSinkPipelines;
   }
 
-  [(NSMutableArray *)visionDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)visionDataSinkPipelines addObject:pipeline];
 }
 
-- (id)visionDataSinkPipelineWithSinkID:(id)a3
+- (id)visionDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1217,7 +1217,7 @@ LABEL_3:
   }
 }
 
-- (void)addAudioDataSinkPipeline:(id)a3
+- (void)addAudioDataSinkPipeline:(id)pipeline
 {
   audioDataSinkPipelines = self->_audioDataSinkPipelines;
   if (!audioDataSinkPipelines)
@@ -1226,10 +1226,10 @@ LABEL_3:
     self->_audioDataSinkPipelines = audioDataSinkPipelines;
   }
 
-  [(NSMutableArray *)audioDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)audioDataSinkPipelines addObject:pipeline];
 }
 
-- (id)audioDataSinkPipelineWithSinkID:(id)a3
+- (id)audioDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1272,7 +1272,7 @@ LABEL_3:
   }
 }
 
-- (void)addAudioFileSinkPipeline:(id)a3
+- (void)addAudioFileSinkPipeline:(id)pipeline
 {
   audioFileSinkPipelines = self->_audioFileSinkPipelines;
   if (!audioFileSinkPipelines)
@@ -1281,10 +1281,10 @@ LABEL_3:
     self->_audioFileSinkPipelines = audioFileSinkPipelines;
   }
 
-  [(NSMutableArray *)audioFileSinkPipelines addObject:a3];
+  [(NSMutableArray *)audioFileSinkPipelines addObject:pipeline];
 }
 
-- (id)audioFileSinkPipelineWithSinkID:(id)a3
+- (id)audioFileSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1327,7 +1327,7 @@ LABEL_3:
   }
 }
 
-- (id)audioFileSinkPipelineWithFileSinkNode:(id)a3
+- (id)audioFileSinkPipelineWithFileSinkNode:(id)node
 {
   v14 = 0u;
   v15 = 0u;
@@ -1352,7 +1352,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([(FigCaptureAudioFileSinkPipeline *)v9 audioFileSinkNode]== a3)
+    if ([(FigCaptureAudioFileSinkPipeline *)v9 audioFileSinkNode]== node)
     {
       return v9;
     }
@@ -1370,7 +1370,7 @@ LABEL_3:
   }
 }
 
-- (void)addPointCloudDataSinkPipeline:(id)a3
+- (void)addPointCloudDataSinkPipeline:(id)pipeline
 {
   pointCloudDataSinkPipelines = self->_pointCloudDataSinkPipelines;
   if (!pointCloudDataSinkPipelines)
@@ -1379,10 +1379,10 @@ LABEL_3:
     self->_pointCloudDataSinkPipelines = pointCloudDataSinkPipelines;
   }
 
-  [(NSMutableArray *)pointCloudDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)pointCloudDataSinkPipelines addObject:pipeline];
 }
 
-- (id)pointCloudDataSinkPipelineWithSinkID:(id)a3
+- (id)pointCloudDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1425,7 +1425,7 @@ LABEL_3:
   }
 }
 
-- (void)addCameraCalibrationDataSinkPipeline:(id)a3
+- (void)addCameraCalibrationDataSinkPipeline:(id)pipeline
 {
   cameraCalibrationDataSinkPipelines = self->_cameraCalibrationDataSinkPipelines;
   if (!cameraCalibrationDataSinkPipelines)
@@ -1434,10 +1434,10 @@ LABEL_3:
     self->_cameraCalibrationDataSinkPipelines = cameraCalibrationDataSinkPipelines;
   }
 
-  [(NSMutableArray *)cameraCalibrationDataSinkPipelines addObject:a3];
+  [(NSMutableArray *)cameraCalibrationDataSinkPipelines addObject:pipeline];
 }
 
-- (id)cameraCalibrationDataSinkPipelineWithSinkID:(id)a3
+- (id)cameraCalibrationDataSinkPipelineWithSinkID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1480,7 +1480,7 @@ LABEL_3:
   }
 }
 
-- (void)addCinematographyPipeline:(id)a3
+- (void)addCinematographyPipeline:(id)pipeline
 {
   cinematographyPipelines = self->_cinematographyPipelines;
   if (!cinematographyPipelines)
@@ -1489,10 +1489,10 @@ LABEL_3:
     self->_cinematographyPipelines = cinematographyPipelines;
   }
 
-  [(NSMutableArray *)cinematographyPipelines addObject:a3];
+  [(NSMutableArray *)cinematographyPipelines addObject:pipeline];
 }
 
-- (id)cinematographyPipelineWithSourceID:(id)a3
+- (id)cinematographyPipelineWithSourceID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1517,7 +1517,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v12 + 1) + 8 * v8);
-    if ([-[FigCaptureCinematographyPipeline sourceID](v9) isEqualToString:a3])
+    if ([-[FigCaptureCinematographyPipeline sourceID](v9) isEqualToString:d])
     {
       return v9;
     }
@@ -1535,7 +1535,7 @@ LABEL_3:
   }
 }
 
-- (void)addLiDARDepthPipeline:(id)a3
+- (void)addLiDARDepthPipeline:(id)pipeline
 {
   lidarDepthPipelines = self->_lidarDepthPipelines;
   if (!lidarDepthPipelines)
@@ -1544,10 +1544,10 @@ LABEL_3:
     self->_lidarDepthPipelines = lidarDepthPipelines;
   }
 
-  [(NSMutableArray *)lidarDepthPipelines addObject:a3];
+  [(NSMutableArray *)lidarDepthPipelines addObject:pipeline];
 }
 
-- (id)lidarDepthPipelineWithRGBCameraSourceID:(id)a3
+- (id)lidarDepthPipelineWithRGBCameraSourceID:(id)d
 {
   v14 = 0u;
   v15 = 0u;
@@ -1590,14 +1590,14 @@ LABEL_3:
   }
 }
 
-- (void)updateClientAuditToken:(id *)a3
+- (void)updateClientAuditToken:(id *)token
 {
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v5 = [(FigCaptureSessionPipelines *)self videoDataSinkPipelines];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v111 objects:v110 count:16];
+  videoDataSinkPipelines = [(FigCaptureSessionPipelines *)self videoDataSinkPipelines];
+  v6 = [(NSArray *)videoDataSinkPipelines countByEnumeratingWithState:&v111 objects:v110 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1609,19 +1609,19 @@ LABEL_3:
       {
         if (*v112 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(videoDataSinkPipelines);
         }
 
         v10 = *(*(&v111 + 1) + 8 * v9);
-        v11 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v11 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v11;
         [v10 updateClientAuditToken:&v108];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v111 objects:v110 count:16];
+      v7 = [(NSArray *)videoDataSinkPipelines countByEnumeratingWithState:&v111 objects:v110 count:16];
     }
 
     while (v7);
@@ -1631,8 +1631,8 @@ LABEL_3:
   v106 = 0u;
   v105 = 0u;
   v104 = 0u;
-  v12 = [(FigCaptureSessionPipelines *)self previewSinkPipelines];
-  v13 = [(NSArray *)v12 countByEnumeratingWithState:&v104 objects:v103 count:16];
+  previewSinkPipelines = [(FigCaptureSessionPipelines *)self previewSinkPipelines];
+  v13 = [(NSArray *)previewSinkPipelines countByEnumeratingWithState:&v104 objects:v103 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1644,19 +1644,19 @@ LABEL_3:
       {
         if (*v105 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(previewSinkPipelines);
         }
 
         v17 = *(*(&v104 + 1) + 8 * v16);
-        v18 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v18 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v18;
         [v17 updateClientAuditToken:&v108];
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [(NSArray *)v12 countByEnumeratingWithState:&v104 objects:v103 count:16];
+      v14 = [(NSArray *)previewSinkPipelines countByEnumeratingWithState:&v104 objects:v103 count:16];
     }
 
     while (v14);
@@ -1666,8 +1666,8 @@ LABEL_3:
   v101 = 0u;
   v100 = 0u;
   v99 = 0u;
-  v19 = [(FigCaptureSessionPipelines *)self depthDataSinkPipelines];
-  v20 = [(NSArray *)v19 countByEnumeratingWithState:&v99 objects:v98 count:16];
+  depthDataSinkPipelines = [(FigCaptureSessionPipelines *)self depthDataSinkPipelines];
+  v20 = [(NSArray *)depthDataSinkPipelines countByEnumeratingWithState:&v99 objects:v98 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1679,19 +1679,19 @@ LABEL_3:
       {
         if (*v100 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(depthDataSinkPipelines);
         }
 
         v24 = *(*(&v99 + 1) + 8 * v23);
-        v25 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v25 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v25;
         [v24 updateClientAuditToken:&v108];
         ++v23;
       }
 
       while (v21 != v23);
-      v21 = [(NSArray *)v19 countByEnumeratingWithState:&v99 objects:v98 count:16];
+      v21 = [(NSArray *)depthDataSinkPipelines countByEnumeratingWithState:&v99 objects:v98 count:16];
     }
 
     while (v21);
@@ -1701,8 +1701,8 @@ LABEL_3:
   v96 = 0u;
   v95 = 0u;
   v94 = 0u;
-  v26 = [(FigCaptureSessionPipelines *)self videoThumbnailSinkPipelines];
-  v27 = [(NSArray *)v26 countByEnumeratingWithState:&v94 objects:v93 count:16];
+  videoThumbnailSinkPipelines = [(FigCaptureSessionPipelines *)self videoThumbnailSinkPipelines];
+  v27 = [(NSArray *)videoThumbnailSinkPipelines countByEnumeratingWithState:&v94 objects:v93 count:16];
   if (v27)
   {
     v28 = v27;
@@ -1714,19 +1714,19 @@ LABEL_3:
       {
         if (*v95 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(videoThumbnailSinkPipelines);
         }
 
         v31 = *(*(&v94 + 1) + 8 * v30);
-        v32 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v32 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v32;
         [(FigCaptureVideoThumbnailSinkPipeline *)v31 updateClientAuditToken:?];
         ++v30;
       }
 
       while (v28 != v30);
-      v28 = [(NSArray *)v26 countByEnumeratingWithState:&v94 objects:v93 count:16];
+      v28 = [(NSArray *)videoThumbnailSinkPipelines countByEnumeratingWithState:&v94 objects:v93 count:16];
     }
 
     while (v28);
@@ -1736,8 +1736,8 @@ LABEL_3:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v33 = [(FigCaptureSessionPipelines *)self metadataSinkPipelines];
-  v34 = [(NSArray *)v33 countByEnumeratingWithState:&v89 objects:v88 count:16];
+  metadataSinkPipelines = [(FigCaptureSessionPipelines *)self metadataSinkPipelines];
+  v34 = [(NSArray *)metadataSinkPipelines countByEnumeratingWithState:&v89 objects:v88 count:16];
   if (v34)
   {
     v35 = v34;
@@ -1749,19 +1749,19 @@ LABEL_3:
       {
         if (*v90 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(metadataSinkPipelines);
         }
 
         v38 = *(*(&v89 + 1) + 8 * v37);
-        v39 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v39 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v39;
         [v38 updateClientAuditToken:&v108];
         ++v37;
       }
 
       while (v35 != v37);
-      v35 = [(NSArray *)v33 countByEnumeratingWithState:&v89 objects:v88 count:16];
+      v35 = [(NSArray *)metadataSinkPipelines countByEnumeratingWithState:&v89 objects:v88 count:16];
     }
 
     while (v35);
@@ -1771,8 +1771,8 @@ LABEL_3:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v40 = [(FigCaptureSessionPipelines *)self visionDataSinkPipelines];
-  v41 = [(NSArray *)v40 countByEnumeratingWithState:&v84 objects:v83 count:16];
+  visionDataSinkPipelines = [(FigCaptureSessionPipelines *)self visionDataSinkPipelines];
+  v41 = [(NSArray *)visionDataSinkPipelines countByEnumeratingWithState:&v84 objects:v83 count:16];
   if (v41)
   {
     v42 = v41;
@@ -1784,19 +1784,19 @@ LABEL_3:
       {
         if (*v85 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(visionDataSinkPipelines);
         }
 
         v45 = *(*(&v84 + 1) + 8 * v44);
-        v46 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v46 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v46;
         [v45 updateClientAuditToken:&v108];
         ++v44;
       }
 
       while (v42 != v44);
-      v42 = [(NSArray *)v40 countByEnumeratingWithState:&v84 objects:v83 count:16];
+      v42 = [(NSArray *)visionDataSinkPipelines countByEnumeratingWithState:&v84 objects:v83 count:16];
     }
 
     while (v42);
@@ -1806,8 +1806,8 @@ LABEL_3:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v47 = [(FigCaptureSessionPipelines *)self audioDataSinkPipelines];
-  v48 = [(NSArray *)v47 countByEnumeratingWithState:&v79 objects:v78 count:16];
+  audioDataSinkPipelines = [(FigCaptureSessionPipelines *)self audioDataSinkPipelines];
+  v48 = [(NSArray *)audioDataSinkPipelines countByEnumeratingWithState:&v79 objects:v78 count:16];
   if (v48)
   {
     v49 = v48;
@@ -1819,19 +1819,19 @@ LABEL_3:
       {
         if (*v80 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(audioDataSinkPipelines);
         }
 
         v52 = *(*(&v79 + 1) + 8 * v51);
-        v53 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v53 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v53;
         [v52 updateClientAuditToken:&v108];
         ++v51;
       }
 
       while (v49 != v51);
-      v49 = [(NSArray *)v47 countByEnumeratingWithState:&v79 objects:v78 count:16];
+      v49 = [(NSArray *)audioDataSinkPipelines countByEnumeratingWithState:&v79 objects:v78 count:16];
     }
 
     while (v49);
@@ -1841,8 +1841,8 @@ LABEL_3:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v54 = [(FigCaptureSessionPipelines *)self pointCloudDataSinkPipelines];
-  v55 = [(NSArray *)v54 countByEnumeratingWithState:&v74 objects:v73 count:16];
+  pointCloudDataSinkPipelines = [(FigCaptureSessionPipelines *)self pointCloudDataSinkPipelines];
+  v55 = [(NSArray *)pointCloudDataSinkPipelines countByEnumeratingWithState:&v74 objects:v73 count:16];
   if (v55)
   {
     v56 = v55;
@@ -1854,19 +1854,19 @@ LABEL_3:
       {
         if (*v75 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(pointCloudDataSinkPipelines);
         }
 
         v59 = *(*(&v74 + 1) + 8 * v58);
-        v60 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v60 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v60;
         [v59 updateClientAuditToken:&v108];
         ++v58;
       }
 
       while (v56 != v58);
-      v56 = [(NSArray *)v54 countByEnumeratingWithState:&v74 objects:v73 count:16];
+      v56 = [(NSArray *)pointCloudDataSinkPipelines countByEnumeratingWithState:&v74 objects:v73 count:16];
     }
 
     while (v56);
@@ -1876,8 +1876,8 @@ LABEL_3:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v61 = [(FigCaptureSessionPipelines *)self cameraCalibrationDataSinkPipelines];
-  v62 = [(NSArray *)v61 countByEnumeratingWithState:&v69 objects:v68 count:16];
+  cameraCalibrationDataSinkPipelines = [(FigCaptureSessionPipelines *)self cameraCalibrationDataSinkPipelines];
+  v62 = [(NSArray *)cameraCalibrationDataSinkPipelines countByEnumeratingWithState:&v69 objects:v68 count:16];
   if (v62)
   {
     v63 = v62;
@@ -1889,19 +1889,19 @@ LABEL_3:
       {
         if (*v70 != v64)
         {
-          objc_enumerationMutation(v61);
+          objc_enumerationMutation(cameraCalibrationDataSinkPipelines);
         }
 
         v66 = *(*(&v69 + 1) + 8 * v65);
-        v67 = *&a3->var0[4];
-        v108 = *a3->var0;
+        v67 = *&token->var0[4];
+        v108 = *token->var0;
         v109 = v67;
         [v66 updateClientAuditToken:&v108];
         ++v65;
       }
 
       while (v63 != v65);
-      v63 = [(NSArray *)v61 countByEnumeratingWithState:&v69 objects:v68 count:16];
+      v63 = [(NSArray *)cameraCalibrationDataSinkPipelines countByEnumeratingWithState:&v69 objects:v68 count:16];
     }
 
     while (v63);

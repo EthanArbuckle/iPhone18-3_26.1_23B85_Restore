@@ -1,24 +1,24 @@
 @interface PLCPLManagerMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
-- (void)_reportLibraryStatsWithCPLManager:(id)a3;
-- (void)_reportPhotoStateWithCPLManager:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
+- (void)_reportLibraryStatsWithCPLManager:(id)manager;
+- (void)_reportPhotoStateWithCPLManager:(id)manager;
 @end
 
 @implementation PLCPLManagerMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_10000B3B4;
   v23 = sub_10000B3C4;
   v24 = 0;
-  v5 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v6 = [v5 isSystemPhotoLibrary];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  isSystemPhotoLibrary = [libraryServicesManager isSystemPhotoLibrary];
 
-  if (v6)
+  if (isSystemPhotoLibrary)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -29,7 +29,7 @@
     dispatch_sync(&_dispatch_main_q, v18);
   }
 
-  [v20[5] startAssetRecoveryWithTransaction:v4];
+  [v20[5] startAssetRecoveryWithTransaction:transactionCopy];
   if (v20[5])
   {
     v7 = PLReportiCPLState();
@@ -47,10 +47,10 @@
       PLFinishReportiCPLState();
     }
 
-    v9 = [(PLMaintenanceTask *)self photoLibrary];
-    v10 = [v9 isCloudPhotoLibraryEnabled];
+    photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+    isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-    if (v10)
+    if (isCloudPhotoLibraryEnabled)
     {
       v11 = PLBackendGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -88,7 +88,7 @@
 
   else
   {
-    if (!v6)
+    if (!isSystemPhotoLibrary)
     {
       goto LABEL_21;
     }
@@ -107,15 +107,15 @@ LABEL_21:
   return 1;
 }
 
-- (void)_reportPhotoStateWithCPLManager:(id)a3
+- (void)_reportPhotoStateWithCPLManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:@"YES" forKey:CPLMiscInformationAppendCPLReport];
   v5 = +[PLAccountStore pl_sharedAccountStore];
-  v6 = [v5 cachedPrimaryAppleAccount];
+  cachedPrimaryAppleAccount = [v5 cachedPrimaryAppleAccount];
 
-  if ([v6 isEnabledForDataclass:kAccountDataclassSharedStreams])
+  if ([cachedPrimaryAppleAccount isEnabledForDataclass:kAccountDataclassSharedStreams])
   {
     v7 = @"YES";
   }
@@ -160,12 +160,12 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Reporting photo state: %@", &buf, 0xCu);
   }
 
-  [v3 reportMiscInformation:v4];
+  [managerCopy reportMiscInformation:v4];
 }
 
-- (void)_reportLibraryStatsWithCPLManager:(id)a3
+- (void)_reportLibraryStatsWithCPLManager:(id)manager
 {
-  v32 = a3;
+  managerCopy = manager;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = PLBackendGetLog();
@@ -176,9 +176,9 @@ LABEL_21:
   }
 
   v7 = [PLLibraryContentsEnumerator alloc];
-  v8 = [(PLMaintenanceTask *)self photoLibrary];
-  v9 = [v8 managedObjectContext];
-  v10 = [v7 initWithSourceManagedObjectContext:v9 concurrent:0 readOnly:1];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
+  v10 = [v7 initWithSourceManagedObjectContext:managedObjectContext concurrent:0 readOnly:1];
 
   v48 = 0;
   v11 = PLCreateShortLivedSyndicationPhotoLibrary();
@@ -186,8 +186,8 @@ LABEL_21:
   if (v11)
   {
     v12 = [PLLibraryContentsEnumerator alloc];
-    v13 = [v11 managedObjectContext];
-    v14 = [v12 initWithSourceManagedObjectContext:v13 concurrent:0 readOnly:1];
+    managedObjectContext2 = [v11 managedObjectContext];
+    v14 = [v12 initWithSourceManagedObjectContext:managedObjectContext2 concurrent:0 readOnly:1];
   }
 
   else
@@ -195,14 +195,14 @@ LABEL_21:
     v14 = 0;
   }
 
-  v15 = [(PLMaintenanceTask *)self photoLibrary];
-  v16 = [v15 isCloudPhotoLibraryEnabled];
+  photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary2 isCloudPhotoLibraryEnabled];
 
   v17 = +[NSDate date];
-  [PLAggdLogging configureEnumeratorForLibrarySizeLogging:v10 cloudPhotoLibraryEnabled:v16 dataForCA:v4 dataForCK:v5];
-  [PLAggdLogging configureEnumeratorForHyperionLocalResourcesLogging:v10 cloudPhotoLibraryEnabled:v16 dataForCA:v4 dataForCK:v5];
-  v18 = [(PLMaintenanceTask *)self libraryServicesManager];
-  [PLAggdLogging configureEnumeratorForLibrarySummaryForLibraryEnumerator:v10 withSyndicationLibraryEnumerator:v14 cloudPhotoLibraryEnabled:v16 dataForCA:v4 libraryServicesManager:v18];
+  [PLAggdLogging configureEnumeratorForLibrarySizeLogging:v10 cloudPhotoLibraryEnabled:isCloudPhotoLibraryEnabled dataForCA:v4 dataForCK:v5];
+  [PLAggdLogging configureEnumeratorForHyperionLocalResourcesLogging:v10 cloudPhotoLibraryEnabled:isCloudPhotoLibraryEnabled dataForCA:v4 dataForCK:v5];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  [PLAggdLogging configureEnumeratorForLibrarySummaryForLibraryEnumerator:v10 withSyndicationLibraryEnumerator:v14 cloudPhotoLibraryEnabled:isCloudPhotoLibraryEnabled dataForCA:v4 libraryServicesManager:libraryServicesManager];
 
   *buf = 0;
   v43 = buf;
@@ -250,7 +250,7 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Reporting device data: %@", v49, 0xCu);
     }
 
-    [v32 reportMiscInformation:v5];
+    [managerCopy reportMiscInformation:v5];
     v27 = +[NSUserDefaults standardUserDefaults];
     v28 = +[NSDate date];
     [v27 setObject:v28 forKey:@"PLDeviceDataFeedbackDate"];

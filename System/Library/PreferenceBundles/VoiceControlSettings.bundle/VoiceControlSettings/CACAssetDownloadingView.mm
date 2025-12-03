@@ -1,64 +1,64 @@
 @interface CACAssetDownloadingView
-- (CACAssetDownloadingView)initWithActivityIndicatorStyle:(int64_t)a3;
+- (CACAssetDownloadingView)initWithActivityIndicatorStyle:(int64_t)style;
 @end
 
 @implementation CACAssetDownloadingView
 
-- (CACAssetDownloadingView)initWithActivityIndicatorStyle:(int64_t)a3
+- (CACAssetDownloadingView)initWithActivityIndicatorStyle:(int64_t)style
 {
   v30.receiver = self;
   v30.super_class = CACAssetDownloadingView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(CACAssetDownloadingView *)&v30 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v7)
+  height = [(CACAssetDownloadingView *)&v30 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
-    v8 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:a3];
-    indicator = v7->_indicator;
-    v7->_indicator = v8;
+    v8 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+    indicator = height->_indicator;
+    height->_indicator = v8;
 
-    [(UIActivityIndicatorView *)v7->_indicator startAnimating];
+    [(UIActivityIndicatorView *)height->_indicator startAnimating];
     v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    downloadLabel = v7->_downloadLabel;
-    v7->_downloadLabel = v10;
+    downloadLabel = height->_downloadLabel;
+    height->_downloadLabel = v10;
 
     v12 = +[UIColor secondaryLabelColor];
-    [(UILabel *)v7->_downloadLabel setTextColor:v12];
+    [(UILabel *)height->_downloadLabel setTextColor:v12];
 
     v13 = settingsLocString(@"DOWNLOADING", @"CommandAndControlSettings");
-    [(UILabel *)v7->_downloadLabel setText:v13];
+    [(UILabel *)height->_downloadLabel setText:v13];
 
     v29 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody maximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
-    [(UILabel *)v7->_downloadLabel setFont:v29];
-    [(UILabel *)v7->_downloadLabel setAdjustsFontForContentSizeCategory:1];
-    [(UILabel *)v7->_downloadLabel setNumberOfLines:0];
-    [(UIActivityIndicatorView *)v7->_indicator setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v7->_downloadLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(CACAssetDownloadingView *)v7 addSubview:v7->_indicator];
-    [(CACAssetDownloadingView *)v7 addSubview:v7->_downloadLabel];
-    v14 = [(CACAssetDownloadingView *)v7 safeAreaLayoutGuide];
-    v28 = [(UIActivityIndicatorView *)v7->_indicator trailingAnchor];
-    v27 = [v14 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    [(UILabel *)height->_downloadLabel setFont:v29];
+    [(UILabel *)height->_downloadLabel setAdjustsFontForContentSizeCategory:1];
+    [(UILabel *)height->_downloadLabel setNumberOfLines:0];
+    [(UIActivityIndicatorView *)height->_indicator setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_downloadLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CACAssetDownloadingView *)height addSubview:height->_indicator];
+    [(CACAssetDownloadingView *)height addSubview:height->_downloadLabel];
+    safeAreaLayoutGuide = [(CACAssetDownloadingView *)height safeAreaLayoutGuide];
+    trailingAnchor = [(UIActivityIndicatorView *)height->_indicator trailingAnchor];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[0] = v26;
-    v25 = [(UIActivityIndicatorView *)v7->_indicator centerYAnchor];
-    v24 = [v14 centerYAnchor];
-    v15 = [v25 constraintEqualToAnchor:v24];
+    centerYAnchor = [(UIActivityIndicatorView *)height->_indicator centerYAnchor];
+    centerYAnchor2 = [safeAreaLayoutGuide centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v31[1] = v15;
-    v16 = [(UILabel *)v7->_downloadLabel trailingAnchor];
-    v17 = [(UIActivityIndicatorView *)v7->_indicator leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:-8.0];
+    trailingAnchor3 = [(UILabel *)height->_downloadLabel trailingAnchor];
+    leadingAnchor = [(UIActivityIndicatorView *)height->_indicator leadingAnchor];
+    v18 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-8.0];
     v31[2] = v18;
-    v19 = [(UILabel *)v7->_downloadLabel centerYAnchor];
-    v20 = [v14 centerYAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerYAnchor3 = [(UILabel *)height->_downloadLabel centerYAnchor];
+    centerYAnchor4 = [safeAreaLayoutGuide centerYAnchor];
+    v21 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v31[3] = v21;
     v22 = [NSArray arrayWithObjects:v31 count:4];
     [NSLayoutConstraint activateConstraints:v22];
   }
 
-  return v7;
+  return height;
 }
 
 @end

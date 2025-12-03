@@ -1,36 +1,36 @@
 @interface CRLPKStrokeConverter
-+ (id)pathFromPKStroke:(id)a3 pencilKitStrokePathData:(id *)a4;
-+ (id)pathFromPKStroke:(id)a3 startingAtPointIndex:(unint64_t)a4 endingAtPointIndex:(unint64_t)a5 pencilKitStrokePathData:(id *)a6;
-+ (id)pencilKitStrokesFromPath:(id)a3 inkStroke:(id)a4 strokePathCompactData:(id)a5 maskPath:(id)a6 snappedShapeType:(int64_t)a7;
++ (id)pathFromPKStroke:(id)stroke pencilKitStrokePathData:(id *)data;
++ (id)pathFromPKStroke:(id)stroke startingAtPointIndex:(unint64_t)index endingAtPointIndex:(unint64_t)pointIndex pencilKitStrokePathData:(id *)data;
++ (id)pencilKitStrokesFromPath:(id)path inkStroke:(id)stroke strokePathCompactData:(id)data maskPath:(id)maskPath snappedShapeType:(int64_t)type;
 @end
 
 @implementation CRLPKStrokeConverter
 
-+ (id)pencilKitStrokesFromPath:(id)a3 inkStroke:(id)a4 strokePathCompactData:(id)a5 maskPath:(id)a6 snappedShapeType:(int64_t)a7
++ (id)pencilKitStrokesFromPath:(id)path inkStroke:(id)stroke strokePathCompactData:(id)data maskPath:(id)maskPath snappedShapeType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  strokeCopy = stroke;
+  dataCopy = data;
+  maskPathCopy = maskPath;
   v57 = +[NSMutableArray array];
-  v14 = [v11 color];
-  v15 = [v14 UIColor];
+  color = [strokeCopy color];
+  uIColor = [color UIColor];
 
-  [v11 width];
+  [strokeCopy width];
   v17 = v16;
-  v18 = [v11 inkType];
-  [CRLPencilKitInkStroke unadjustedStrokeWidthFromAdjustedWidth:v18 forInkType:v17];
-  [PKInkingTool _weightForWidth:v18 type:?];
-  v50 = v15;
-  v19 = [PKInk inkWithIdentifier:v18 color:v15 weight:?];
-  v56 = [v19 _sixChannelVersion];
+  inkType = [strokeCopy inkType];
+  [CRLPencilKitInkStroke unadjustedStrokeWidthFromAdjustedWidth:inkType forInkType:v17];
+  [PKInkingTool _weightForWidth:inkType type:?];
+  v50 = uIColor;
+  v19 = [PKInk inkWithIdentifier:inkType color:uIColor weight:?];
+  _sixChannelVersion = [v19 _sixChannelVersion];
 
   memset(&v64, 0, sizeof(v64));
-  if (v12)
+  if (dataCopy)
   {
-    [v12 renderScaleX];
+    [dataCopy renderScaleX];
     v21 = v20;
-    [v12 renderScaleY];
+    [dataCopy renderScaleY];
     CGAffineTransformMakeScale(&v64, v21, v22);
   }
 
@@ -42,17 +42,17 @@
     *&v64.tx = *&CGAffineTransformIdentity.tx;
   }
 
-  v53 = v10;
-  v24 = [v10 copy];
+  v53 = pathCopy;
+  v24 = [pathCopy copy];
   v62 = v64;
   CGAffineTransformInvert(&v63, &v62);
   [v24 transformUsingAffineTransform:&v63];
   v48 = v24;
-  v25 = +[CRLPKStrokePathConverter strokePathsFromBezierPath:baseWidth:strokePathCompactData:inkType:isFountainPenInkV2:](CRLPKStrokePathConverter, "strokePathsFromBezierPath:baseWidth:strokePathCompactData:inkType:isFountainPenInkV2:", v24, v12, v18, [v11 isFountainPenInkV2], v17);
-  v51 = v13;
-  v52 = v11;
-  v49 = v18;
-  if (v13 && (+[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v13 CGPath]), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+  v25 = +[CRLPKStrokePathConverter strokePathsFromBezierPath:baseWidth:strokePathCompactData:inkType:isFountainPenInkV2:](CRLPKStrokePathConverter, "strokePathsFromBezierPath:baseWidth:strokePathCompactData:inkType:isFountainPenInkV2:", v24, dataCopy, inkType, [strokeCopy isFountainPenInkV2], v17);
+  v51 = maskPathCopy;
+  v52 = strokeCopy;
+  v49 = inkType;
+  if (maskPathCopy && (+[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [maskPathCopy CGPath]), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v27 = v26;
     v62 = v64;
@@ -89,11 +89,11 @@
 
         v33 = *(*(&v58 + 1) + 8 * i);
         v34 = [PKStroke alloc];
-        v35 = [v12 randomSeed];
+        randomSeed = [dataCopy randomSeed];
         v63 = v64;
-        v36 = [v34 initWithInk:v56 strokePath:v33 transform:&v63 mask:v28 randomSeed:v35];
+        v36 = [v34 initWithInk:_sixChannelVersion strokePath:v33 transform:&v63 mask:v28 randomSeed:randomSeed];
         v37 = [v36 _flags] & 0xFFFFFCFFFFFFFFFFLL;
-        if ([v12 shouldSolveMath])
+        if ([dataCopy shouldSolveMath])
         {
           v38 = 0x20000000000;
         }
@@ -103,7 +103,7 @@
           v38 = 0;
         }
 
-        if ([v12 isSynthesizedStroke])
+        if ([dataCopy isSynthesizedStroke])
         {
           v39 = 0x10000000000;
         }
@@ -114,16 +114,16 @@
         }
 
         [v36 _setFlags:v38 | v39 | v37];
-        v40 = [v12 renderGroupID];
-        [v36 _setRenderGroupID:v40];
+        renderGroupID = [dataCopy renderGroupID];
+        [v36 _setRenderGroupID:renderGroupID];
 
-        [v36 _setShapeType:{+[CRLFreehandDrawingShapeTypeHelper PKShapeTypeFromFreehandDrawingShapeType:](_TtC8Freeform33CRLFreehandDrawingShapeTypeHelper, "PKShapeTypeFromFreehandDrawingShapeType:", a7)}];
-        [v12 anchorPointForTexture];
+        [v36 _setShapeType:{+[CRLFreehandDrawingShapeTypeHelper PKShapeTypeFromFreehandDrawingShapeType:](_TtC8Freeform33CRLFreehandDrawingShapeTypeHelper, "PKShapeTypeFromFreehandDrawingShapeType:", type)}];
+        [dataCopy anchorPointForTexture];
         v41 = [v36 copyWithNewAnchorPointForTexture:?];
 
-        [v12 particleOffset];
+        [dataCopy particleOffset];
         v43 = v42;
-        [v12 secondaryParticleOffset];
+        [dataCopy secondaryParticleOffset];
         v45 = [v41 crl_copyWithNewParticleOffset:v43 secondaryParticleOffset:v44];
 
         [v57 addObject:v45];
@@ -138,13 +138,13 @@
   return v57;
 }
 
-+ (id)pathFromPKStroke:(id)a3 startingAtPointIndex:(unint64_t)a4 endingAtPointIndex:(unint64_t)a5 pencilKitStrokePathData:(id *)a6
++ (id)pathFromPKStroke:(id)stroke startingAtPointIndex:(unint64_t)index endingAtPointIndex:(unint64_t)pointIndex pencilKitStrokePathData:(id *)data
 {
-  v9 = a3;
-  v10 = [v9 path];
-  v11 = [v10 count];
+  strokeCopy = stroke;
+  path = [strokeCopy path];
+  v11 = [path count];
 
-  if (v11 < a4)
+  if (v11 < index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -173,7 +173,7 @@
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:123 isFatal:0 description:"Out-of-bounds startingAtPointIndex parameter."];
   }
 
-  if (v11 < a5)
+  if (v11 < pointIndex)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -202,28 +202,28 @@
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:124 isFatal:0 description:"Out-of-bounds endingAtPointIndex parameter."];
   }
 
-  if ((v11 - 1) < a4)
+  if ((v11 - 1) < index)
   {
-    a4 = (v11 - 1);
+    index = (v11 - 1);
   }
 
-  if ((v11 - 1) < a5)
+  if ((v11 - 1) < pointIndex)
   {
-    a5 = (v11 - 1);
+    pointIndex = (v11 - 1);
   }
 
-  v18 = [v9 path];
-  v19 = [v18 count];
+  path2 = [strokeCopy path];
+  v19 = [path2 count];
 
   if (v19 <= 1)
   {
-    v20 = [v9 path];
-    v21 = [v20 count];
+    path3 = [strokeCopy path];
+    v21 = [path3 count];
 
     if (v21)
     {
-      v22 = [v9 path];
-      v23 = [v22 objectAtIndexedSubscript:0];
+      path4 = [strokeCopy path];
+      v23 = [path4 objectAtIndexedSubscript:0];
     }
 
     else
@@ -279,15 +279,15 @@
     v69[0] = v23;
     v69[1] = v45;
     v47 = [NSArray arrayWithObjects:v69 count:2];
-    v48 = [v9 path];
-    v49 = [v48 creationDate];
-    v50 = [v46 initWithControlPoints:v47 creationDate:v49];
+    path5 = [strokeCopy path];
+    creationDate = [path5 creationDate];
+    v50 = [v46 initWithControlPoints:v47 creationDate:creationDate];
 
     v51 = [PKStroke alloc];
-    v52 = [v9 ink];
-    if (v9)
+    v52 = [strokeCopy ink];
+    if (strokeCopy)
     {
-      [v9 transform];
+      [strokeCopy transform];
     }
 
     else
@@ -297,28 +297,28 @@
       v66 = 0u;
     }
 
-    v53 = [v9 mask];
-    v54 = [v51 initWithInk:v52 strokePath:v50 transform:&v66 mask:v53 randomSeed:{objc_msgSend(v9, "randomSeed")}];
+    mask = [strokeCopy mask];
+    v54 = [v51 initWithInk:v52 strokePath:v50 transform:&v66 mask:mask randomSeed:{objc_msgSend(strokeCopy, "randomSeed")}];
 
-    a5 = 1;
-    v9 = v54;
+    pointIndex = 1;
+    strokeCopy = v54;
   }
 
-  if (a6)
+  if (data)
   {
-    *a6 = [CRLPKStrokePathConverter strokePathDataFromPKStroke:v9 startingAtIndex:a4 endingAtIndex:a5];
+    *data = [CRLPKStrokePathConverter strokePathDataFromPKStroke:strokeCopy startingAtIndex:index endingAtIndex:pointIndex];
   }
 
-  v55 = [v9 mask];
+  mask2 = [strokeCopy mask];
 
-  if (v55)
+  if (mask2)
   {
     v56 = [PKStroke alloc];
-    v57 = [v9 ink];
-    v58 = [v9 path];
-    if (v9)
+    v57 = [strokeCopy ink];
+    path6 = [strokeCopy path];
+    if (strokeCopy)
     {
-      [v9 transform];
+      [strokeCopy transform];
     }
 
     else
@@ -328,36 +328,36 @@
       v66 = 0u;
     }
 
-    v63 = [v56 initWithInk:v57 strokePath:v58 transform:&v66 mask:0 randomSeed:{objc_msgSend(v9, "randomSeed")}];
+    v63 = [v56 initWithInk:v57 strokePath:path6 transform:&v66 mask:0 randomSeed:{objc_msgSend(strokeCopy, "randomSeed")}];
 
     v62 = v63;
   }
 
   else
   {
-    if (!a4)
+    if (!index)
     {
-      v59 = [v9 path];
-      v60 = [v59 count] - 1;
+      path7 = [strokeCopy path];
+      v60 = [path7 count] - 1;
 
-      if (a5 == v60)
+      if (pointIndex == v60)
       {
-        v61 = [v9 _newPathRepresentation];
+        _newPathRepresentation = [strokeCopy _newPathRepresentation];
         goto LABEL_53;
       }
     }
 
-    v62 = [v9 _substrokeWithRange:{a4, a5 - a4 + 1}];
+    v62 = [strokeCopy _substrokeWithRange:{index, pointIndex - index + 1}];
     v63 = v62;
   }
 
-  v61 = [v62 _newPathRepresentation];
+  _newPathRepresentation = [v62 _newPathRepresentation];
 
 LABEL_53:
-  v64 = [CRLBezierPath bezierPathWithCGPath:v61];
-  if (v9)
+  v64 = [CRLBezierPath bezierPathWithCGPath:_newPathRepresentation];
+  if (strokeCopy)
   {
-    [v9 transform];
+    [strokeCopy transform];
   }
 
   else
@@ -368,19 +368,19 @@ LABEL_53:
   }
 
   [v64 transformUsingAffineTransform:&v66];
-  if (v61)
+  if (_newPathRepresentation)
   {
-    CFRelease(v61);
+    CFRelease(_newPathRepresentation);
   }
 
   return v64;
 }
 
-+ (id)pathFromPKStroke:(id)a3 pencilKitStrokePathData:(id *)a4
++ (id)pathFromPKStroke:(id)stroke pencilKitStrokePathData:(id *)data
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = +[CRLPKStrokeConverter pathFromPKStroke:startingAtPointIndex:endingAtPointIndex:pencilKitStrokePathData:](CRLPKStrokeConverter, "pathFromPKStroke:startingAtPointIndex:endingAtPointIndex:pencilKitStrokePathData:", v5, 0, [v6 count] - 1, a4);
+  strokeCopy = stroke;
+  path = [strokeCopy path];
+  v7 = +[CRLPKStrokeConverter pathFromPKStroke:startingAtPointIndex:endingAtPointIndex:pencilKitStrokePathData:](CRLPKStrokeConverter, "pathFromPKStroke:startingAtPointIndex:endingAtPointIndex:pencilKitStrokePathData:", strokeCopy, 0, [path count] - 1, data);
 
   return v7;
 }

@@ -2,33 +2,33 @@
 + (BOOL)shouldShowICloudKeychainSyncingView;
 + (BOOL)shouldShowStrongPasswordSavedView;
 - (CGSize)contentSize;
-- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithCoder:(id)a3;
-- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithCoder:(id)coder;
+- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PMSafariAutoFillStrongPasswordIntroductionViewControllerDelegate)delegate;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)setMode:(int64_t)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setMode:(int64_t)mode;
 @end
 
 @implementation PMSafariAutoFillStrongPasswordIntroductionViewController
 
 + (BOOL)shouldShowStrongPasswordSavedView
 {
-  v2 = [objc_opt_self() isPasswordsAppInstalled];
-  if (v2)
+  isPasswordsAppInstalled = [objc_opt_self() isPasswordsAppInstalled];
+  if (isPasswordsAppInstalled)
   {
-    LOBYTE(v2) = PMOnboardingHasShownStrongPasswordSavedView() ^ 1;
+    LOBYTE(isPasswordsAppInstalled) = PMOnboardingHasShownStrongPasswordSavedView() ^ 1;
   }
 
-  return v2;
+  return isPasswordsAppInstalled;
 }
 
 + (BOOL)shouldShowICloudKeychainSyncingView
 {
-  v2 = [objc_opt_self() pm_defaults];
-  v3 = [v2 BOOLForKey_];
+  pm_defaults = [objc_opt_self() pm_defaults];
+  bOOLForKey_ = [pm_defaults BOOLForKey_];
 
-  if (v3)
+  if (bOOLForKey_)
   {
     return 0;
   }
@@ -41,12 +41,12 @@
 
 - (CGSize)contentSize
 {
-  v2 = self;
-  v3 = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(PMSafariAutoFillStrongPasswordIntroductionViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v3;
-    [v3 intrinsicContentSize];
+    v6 = view;
+    [view intrinsicContentSize];
     v8 = v7;
     v10 = v9;
 
@@ -64,10 +64,10 @@
   return result;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  v4 = self;
-  sub_21C995CEC(a3);
+  selfCopy = self;
+  sub_21C995CEC(mode);
 }
 
 - (PMSafariAutoFillStrongPasswordIntroductionViewControllerDelegate)delegate
@@ -77,14 +77,14 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21C995E40();
 }
 
-- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithCoder:(id)a3
+- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_21CB861C4();
@@ -94,11 +94,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PMSafariAutoFillStrongPasswordIntroductionViewController.loadView()();
 }
 
-- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PMSafariAutoFillStrongPasswordIntroductionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

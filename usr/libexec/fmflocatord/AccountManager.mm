@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (AccountManager)init;
 - (NSArray)accounts;
-- (id)_existingAccountInStore:(id)a3 withUniqueId:(id)a4;
-- (id)accountOfType:(Class)a3 withUniqueId:(id)a4;
-- (id)activeAccountsOfType:(Class)a3;
-- (id)allAccountsOfType:(Class)a3;
+- (id)_existingAccountInStore:(id)store withUniqueId:(id)id;
+- (id)accountOfType:(Class)type withUniqueId:(id)id;
+- (id)activeAccountsOfType:(Class)type;
+- (id)allAccountsOfType:(Class)type;
 - (id)initSingleton;
-- (void)addAccount:(id)a3;
-- (void)deactivateAccount:(id)a3;
-- (void)deactivateAccountOfType:(Class)a3 havingUniqueId:(id)a4;
-- (void)deactivateAllAccountsOfType:(Class)a3;
+- (void)addAccount:(id)account;
+- (void)deactivateAccount:(id)account;
+- (void)deactivateAccountOfType:(Class)type havingUniqueId:(id)id;
+- (void)deactivateAllAccountsOfType:(Class)type;
 - (void)dealloc;
 - (void)loadExistingAccounts;
-- (void)providerUpdatedAccount:(id)a3;
-- (void)removeInactiveAccount:(id)a3;
-- (void)saveUpdatesToAccount:(id)a3;
-- (void)storeUpdatedAnAccount:(id)a3;
+- (void)providerUpdatedAccount:(id)account;
+- (void)removeInactiveAccount:(id)account;
+- (void)saveUpdatesToAccount:(id)account;
+- (void)storeUpdatedAnAccount:(id)account;
 @end
 
 @implementation AccountManager
@@ -98,47 +98,47 @@
 
 - (void)loadExistingAccounts
 {
-  v2 = [(AccountManager *)self accountToStoreMapping];
-  [v2 enumerateKeysAndObjectsUsingBlock:&stru_10005DE98];
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  [accountToStoreMapping enumerateKeysAndObjectsUsingBlock:&stru_10005DE98];
 }
 
 - (NSArray)accounts
 {
   v3 = +[NSMutableArray array];
-  v4 = [(AccountManager *)self accountToStoreMapping];
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CF84;
   v7[3] = &unk_10005D3D0;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [accountToStoreMapping enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (void)addAccount:(id)a3
+- (void)addAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AccountManager *)self accountToStoreMapping];
+  accountCopy = account;
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [accountToStoreMapping objectForKeyedSubscript:v7];
 
-  v9 = [v4 uniqueId];
-  v10 = [(AccountManager *)self _existingAccountInStore:v8 withUniqueId:v9];
+  uniqueId = [accountCopy uniqueId];
+  v10 = [(AccountManager *)self _existingAccountInStore:v8 withUniqueId:uniqueId];
 
-  [v4 setIsActive:1];
-  if (([v4 supportsMultipleActiveAccounts] & 1) == 0)
+  [accountCopy setIsActive:1];
+  if (([accountCopy supportsMultipleActiveAccounts] & 1) == 0)
   {
-    v11 = [v8 accounts];
+    accounts = [v8 accounts];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001D248;
     v16[3] = &unk_10005D3A8;
     v17 = v10;
-    v18 = self;
-    [v11 enumerateObjectsUsingBlock:v16];
+    selfCopy = self;
+    [accounts enumerateObjectsUsingBlock:v16];
   }
 
   if (!v10)
@@ -150,13 +150,13 @@
   {
     [v8 removeAccount:v10];
 LABEL_8:
-    [v8 addAccount:v4];
+    [v8 addAccount:accountCopy];
     dispatch_async(&_dispatch_main_q, &stru_10005DEB8);
     goto LABEL_9;
   }
 
-  v12 = [v10 hasSameRelevantInfoAs:v4];
-  [v10 copyInfoFromAccount:v4];
+  v12 = [v10 hasSameRelevantInfoAs:accountCopy];
+  [v10 copyInfoFromAccount:accountCopy];
   [v8 saveChanges];
   if ((v12 & 1) == 0)
   {
@@ -174,15 +174,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)deactivateAccount:(id)a3
+- (void)deactivateAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v5 = [(AccountManager *)self accountToStoreMapping];
+    accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 objectForKeyedSubscript:v7];
+    v8 = [accountToStoreMapping objectForKeyedSubscript:v7];
 
     v9 = sub_100002830();
     v10 = v9;
@@ -191,17 +191,17 @@ LABEL_9:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = accountCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Deactivating account %@", buf, 0xCu);
       }
 
-      [v4 setIsActive:0];
+      [accountCopy setIsActive:0];
       [v8 saveChanges];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10001D56C;
       block[3] = &unk_10005D2B0;
-      v13 = v4;
+      v13 = accountCopy;
       dispatch_async(&_dispatch_main_q, block);
       v10 = v13;
     }
@@ -216,12 +216,12 @@ LABEL_9:
   }
 }
 
-- (void)deactivateAccountOfType:(Class)a3 havingUniqueId:(id)a4
+- (void)deactivateAccountOfType:(Class)type havingUniqueId:(id)id
 {
-  v6 = a4;
-  v7 = [(AccountManager *)self accountToStoreMapping];
-  v8 = NSStringFromClass(a3);
-  v9 = [v7 objectForKeyedSubscript:v8];
+  idCopy = id;
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  v8 = NSStringFromClass(type);
+  v9 = [accountToStoreMapping objectForKeyedSubscript:v8];
 
   if (!v9)
   {
@@ -232,7 +232,7 @@ LABEL_9:
     }
 
     *buf = 138412290;
-    v19 = a3;
+    typeCopy2 = type;
     v13 = "Tried to deactivate an account of unknown type : %@";
     v14 = v11;
     v15 = 12;
@@ -243,7 +243,7 @@ LABEL_11:
 
   v10 = sub_100002830();
   v11 = v10;
-  if (!v6)
+  if (!idCopy)
   {
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -260,13 +260,13 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v19 = a3;
+    typeCopy2 = type;
     v20 = 2112;
-    v21 = v6;
+    v21 = idCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Deactivating accounts of type %@ with unique id %@", buf, 0x16u);
   }
 
-  v12 = [(AccountManager *)self _existingAccountInStore:v9 withUniqueId:v6];
+  v12 = [(AccountManager *)self _existingAccountInStore:v9 withUniqueId:idCopy];
   v11 = v12;
   if (v12)
   {
@@ -284,11 +284,11 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)deactivateAllAccountsOfType:(Class)a3
+- (void)deactivateAllAccountsOfType:(Class)type
 {
-  v4 = [(AccountManager *)self accountToStoreMapping];
-  v5 = NSStringFromClass(a3);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  v5 = NSStringFromClass(type);
+  v6 = [accountToStoreMapping objectForKeyedSubscript:v5];
 
   v7 = sub_100002830();
   v8 = v7;
@@ -297,12 +297,12 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = a3;
+      typeCopy2 = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Deactivating all accounts of type %@", &v10, 0xCu);
     }
 
-    v9 = [v6 accounts];
-    [v9 enumerateObjectsUsingBlock:&stru_10005DEF8];
+    accounts = [v6 accounts];
+    [accounts enumerateObjectsUsingBlock:&stru_10005DEF8];
 
     [v6 saveChanges];
   }
@@ -312,40 +312,40 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = a3;
+      typeCopy2 = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Tried to deactivate an account of unknown type : %@", &v10, 0xCu);
     }
   }
 }
 
-- (void)removeInactiveAccount:(id)a3
+- (void)removeInactiveAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AccountManager *)self accountToStoreMapping];
+  accountCopy = account;
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [accountToStoreMapping objectForKeyedSubscript:v7];
 
-  if ([v4 isActive])
+  if ([accountCopy isActive])
   {
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 uniqueId];
+      uniqueId = [accountCopy uniqueId];
       v13 = 138412290;
-      v14 = v10;
+      v14 = uniqueId;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Trying to remove an active account : %@", &v13, 0xCu);
     }
   }
 
   else
   {
-    v11 = [v8 accounts];
-    v12 = [v11 containsObject:v4];
+    accounts = [v8 accounts];
+    v12 = [accounts containsObject:accountCopy];
 
     if (v12)
     {
-      [v8 removeAccount:v4];
+      [v8 removeAccount:accountCopy];
     }
 
     dispatch_async(&_dispatch_main_q, &stru_10005DF18);
@@ -353,32 +353,32 @@ LABEL_12:
   }
 }
 
-- (id)activeAccountsOfType:(Class)a3
+- (id)activeAccountsOfType:(Class)type
 {
-  v4 = [(AccountManager *)self accountToStoreMapping];
-  v5 = NSStringFromClass(a3);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  v5 = NSStringFromClass(type);
+  v6 = [accountToStoreMapping objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 accounts];
+    accounts = [v6 accounts];
     +[NSMutableArray array];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10001DF50;
     v8 = v10[3] = &unk_10005D320;
     v11 = v8;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [accounts enumerateObjectsUsingBlock:v10];
   }
 
   else
   {
-    v7 = sub_100002830();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    accounts = sub_100002830();
+    if (os_log_type_enabled(accounts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = a3;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Tried to fetch accounts of unknown type : %@", buf, 0xCu);
+      typeCopy = type;
+      _os_log_impl(&_mh_execute_header, accounts, OS_LOG_TYPE_DEFAULT, "Tried to fetch accounts of unknown type : %@", buf, 0xCu);
     }
 
     v8 = 0;
@@ -387,16 +387,16 @@ LABEL_12:
   return v8;
 }
 
-- (id)allAccountsOfType:(Class)a3
+- (id)allAccountsOfType:(Class)type
 {
-  v4 = [(AccountManager *)self accountToStoreMapping];
-  v5 = NSStringFromClass(a3);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  v5 = NSStringFromClass(type);
+  v6 = [accountToStoreMapping objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [v6 accounts];
-    v8 = [v7 copy];
+    accounts = [v6 accounts];
+    v8 = [accounts copy];
   }
 
   else
@@ -405,7 +405,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Tried to fetch accounts of unknown type : %@", &v11, 0xCu);
     }
 
@@ -415,23 +415,23 @@ LABEL_12:
   return v8;
 }
 
-- (id)accountOfType:(Class)a3 withUniqueId:(id)a4
+- (id)accountOfType:(Class)type withUniqueId:(id)id
 {
-  v6 = a4;
-  v7 = [(AccountManager *)self accountToStoreMapping];
-  v8 = NSStringFromClass(a3);
-  v9 = [v7 objectForKeyedSubscript:v8];
+  idCopy = id;
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
+  v8 = NSStringFromClass(type);
+  v9 = [accountToStoreMapping objectForKeyedSubscript:v8];
 
-  v10 = [(AccountManager *)self _existingAccountInStore:v9 withUniqueId:v6];
+  v10 = [(AccountManager *)self _existingAccountInStore:v9 withUniqueId:idCopy];
 
   return v10;
 }
 
-- (id)_existingAccountInStore:(id)a3 withUniqueId:(id)a4
+- (id)_existingAccountInStore:(id)store withUniqueId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 accounts];
+  storeCopy = store;
+  idCopy = id;
+  accounts = [storeCopy accounts];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -442,10 +442,10 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_10001E2DC;
   v11[3] = &unk_10005DF40;
-  v8 = v6;
+  v8 = idCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [accounts enumerateObjectsUsingBlock:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -453,19 +453,19 @@ LABEL_12:
   return v9;
 }
 
-- (void)saveUpdatesToAccount:(id)a3
+- (void)saveUpdatesToAccount:(id)account
 {
-  if (a3)
+  if (account)
   {
-    v4 = a3;
-    v5 = [(AccountManager *)self accountToStoreMapping];
+    accountCopy = account;
+    accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 objectForKeyedSubscript:v7];
+    v8 = [accountToStoreMapping objectForKeyedSubscript:v7];
 
     [v8 saveChanges];
     v12 = @"account";
-    v13 = v4;
+    v13 = accountCopy;
     [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -476,22 +476,22 @@ LABEL_12:
   }
 }
 
-- (void)providerUpdatedAccount:(id)a3
+- (void)providerUpdatedAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AccountManager *)self accountToStoreMapping];
+  accountCopy = account;
+  accountToStoreMapping = [(AccountManager *)self accountToStoreMapping];
   v6 = objc_opt_class();
 
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [accountToStoreMapping objectForKeyedSubscript:v7];
 
   [v8 saveChanges];
 }
 
-- (void)storeUpdatedAnAccount:(id)a3
+- (void)storeUpdatedAnAccount:(id)account
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"account"];
+  userInfo = [account userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"account"];
 
   if (v4)
   {

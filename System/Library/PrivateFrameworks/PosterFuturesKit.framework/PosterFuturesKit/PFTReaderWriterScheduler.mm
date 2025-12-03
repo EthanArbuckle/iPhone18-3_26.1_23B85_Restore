@@ -2,35 +2,35 @@
 - (BOOL)isSuspended;
 - (NSString)description;
 - (PFTReaderWriterScheduler)init;
-- (PFTReaderWriterScheduler)initWithQueue:(id)a3;
-- (id)performReaderBlock:(id)a3;
-- (id)performWriterBlock:(id)a3;
-- (void)activateReader:(id)a3;
-- (void)activateWriter:(id)a3;
-- (void)addReaderWithIdentifier:(id)a3;
-- (void)addWriterWithIdentifier:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)performSynchronousReaderBlock:(id)a3;
-- (void)performSynchronousWriterBlock:(id)a3;
-- (void)removeReader:(id)a3;
-- (void)removeWriter:(id)a3;
+- (PFTReaderWriterScheduler)initWithQueue:(id)queue;
+- (id)performReaderBlock:(id)block;
+- (id)performWriterBlock:(id)block;
+- (void)activateReader:(id)reader;
+- (void)activateWriter:(id)writer;
+- (void)addReaderWithIdentifier:(id)identifier;
+- (void)addWriterWithIdentifier:(id)identifier;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)performSynchronousReaderBlock:(id)block;
+- (void)performSynchronousWriterBlock:(id)block;
+- (void)removeReader:(id)reader;
+- (void)removeWriter:(id)writer;
 - (void)resume;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 - (void)suspend;
 @end
 
 @implementation PFTReaderWriterScheduler
 
-- (PFTReaderWriterScheduler)initWithQueue:(id)a3
+- (PFTReaderWriterScheduler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = PFTReaderWriterScheduler;
   v6 = [(PFTReaderWriterScheduler *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     activeReaders = v7->_activeReaders;
     v7->_activeReaders = v8;
@@ -63,25 +63,25 @@
   return v6;
 }
 
-- (id)performReaderBlock:(id)a3
+- (id)performReaderBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(PFTCancellationToken);
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  [(PFTReaderWriterScheduler *)self addReaderWithIdentifier:v6];
-  v7 = [(PFTReaderWriterScheduler *)self queue];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(PFTReaderWriterScheduler *)self addReaderWithIdentifier:uUID];
+  queue = [(PFTReaderWriterScheduler *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__PFTReaderWriterScheduler_performReaderBlock___block_invoke;
   v14[3] = &unk_279A52B38;
   v14[4] = self;
-  v15 = v6;
-  v17 = v4;
+  v15 = uUID;
+  v17 = blockCopy;
   v8 = v5;
   v16 = v8;
-  v9 = v4;
-  v10 = v6;
-  dispatch_async(v7, v14);
+  v9 = blockCopy;
+  v10 = uUID;
+  dispatch_async(queue, v14);
 
   v11 = v16;
   v12 = v8;
@@ -100,25 +100,25 @@ uint64_t __47__PFTReaderWriterScheduler_performReaderBlock___block_invoke(uint64
   return [v3 removeReader:v4];
 }
 
-- (id)performWriterBlock:(id)a3
+- (id)performWriterBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(PFTCancellationToken);
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  [(PFTReaderWriterScheduler *)self addWriterWithIdentifier:v6];
-  v7 = [(PFTReaderWriterScheduler *)self queue];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(PFTReaderWriterScheduler *)self addWriterWithIdentifier:uUID];
+  queue = [(PFTReaderWriterScheduler *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__PFTReaderWriterScheduler_performWriterBlock___block_invoke;
   v14[3] = &unk_279A52B38;
   v14[4] = self;
-  v15 = v6;
-  v17 = v4;
+  v15 = uUID;
+  v17 = blockCopy;
   v8 = v5;
   v16 = v8;
-  v9 = v4;
-  v10 = v6;
-  dispatch_barrier_async(v7, v14);
+  v9 = blockCopy;
+  v10 = uUID;
+  dispatch_barrier_async(queue, v14);
 
   v11 = v16;
   v12 = v8;
@@ -137,22 +137,22 @@ uint64_t __47__PFTReaderWriterScheduler_performWriterBlock___block_invoke(uint64
   return [v3 removeWriter:v4];
 }
 
-- (void)performSynchronousReaderBlock:(id)a3
+- (void)performSynchronousReaderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  [(PFTReaderWriterScheduler *)self addReaderWithIdentifier:v5];
-  v6 = [(PFTReaderWriterScheduler *)self queue];
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(PFTReaderWriterScheduler *)self addReaderWithIdentifier:uUID];
+  queue = [(PFTReaderWriterScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__PFTReaderWriterScheduler_performSynchronousReaderBlock___block_invoke;
   block[3] = &unk_279A52B60;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_sync(v6, block);
+  v10 = uUID;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = uUID;
+  dispatch_sync(queue, block);
 }
 
 uint64_t __58__PFTReaderWriterScheduler_performSynchronousReaderBlock___block_invoke(uint64_t a1)
@@ -165,22 +165,22 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousReaderBlock___block_in
   return [v2 removeReader:v3];
 }
 
-- (void)performSynchronousWriterBlock:(id)a3
+- (void)performSynchronousWriterBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  [(PFTReaderWriterScheduler *)self addWriterWithIdentifier:v5];
-  v6 = [(PFTReaderWriterScheduler *)self queue];
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(PFTReaderWriterScheduler *)self addWriterWithIdentifier:uUID];
+  queue = [(PFTReaderWriterScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_invoke;
   block[3] = &unk_279A52B60;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_barrier_sync(v6, block);
+  v10 = uUID;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = uUID;
+  dispatch_barrier_sync(queue, block);
 }
 
 uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_invoke(uint64_t a1)
@@ -198,8 +198,8 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_in
   obj = self;
   objc_sync_enter(obj);
   ++obj->_suspendedCount;
-  v2 = [(PFTReaderWriterScheduler *)obj queue];
-  dispatch_suspend(v2);
+  queue = [(PFTReaderWriterScheduler *)obj queue];
+  dispatch_suspend(queue);
 
   objc_sync_exit(obj);
 }
@@ -216,25 +216,25 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_in
   }
 
   obj->_suspendedCount = suspendedCount - 1;
-  v3 = [(PFTReaderWriterScheduler *)obj queue];
-  dispatch_resume(v3);
+  queue = [(PFTReaderWriterScheduler *)obj queue];
+  dispatch_resume(queue);
 
   objc_sync_exit(obj);
 }
 
 - (BOOL)isSuspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_suspendedCount != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_suspendedCount != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (a3)
+  if (suspended)
   {
     [(PFTReaderWriterScheduler *)self suspend];
   }
@@ -245,82 +245,82 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_in
   }
 }
 
-- (void)addReaderWithIdentifier:(id)a3
+- (void)addReaderWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingReaders];
-  [v5 addObject:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(PFTReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders addObject:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateReader:(id)a3
+- (void)activateReader:(id)reader
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingReaders];
-  [v5 removeObject:v7];
+  readerCopy = reader;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(PFTReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders removeObject:readerCopy];
 
-  v6 = [(PFTReaderWriterScheduler *)v4 activeReaders];
-  [v6 addObject:v7];
+  activeReaders = [(PFTReaderWriterScheduler *)selfCopy activeReaders];
+  [activeReaders addObject:readerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeReader:(id)a3
+- (void)removeReader:(id)reader
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingReaders];
-  [v5 removeObject:v7];
+  readerCopy = reader;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(PFTReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders removeObject:readerCopy];
 
-  v6 = [(PFTReaderWriterScheduler *)v4 activeReaders];
-  [v6 removeObject:v7];
+  activeReaders = [(PFTReaderWriterScheduler *)selfCopy activeReaders];
+  [activeReaders removeObject:readerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addWriterWithIdentifier:(id)a3
+- (void)addWriterWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingWriters];
-  [v5 addObject:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(PFTReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters addObject:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateWriter:(id)a3
+- (void)activateWriter:(id)writer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingWriters];
-  [v5 removeObject:v7];
+  writerCopy = writer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(PFTReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters removeObject:writerCopy];
 
-  v6 = [(PFTReaderWriterScheduler *)v4 activeWriters];
-  [v6 addObject:v7];
+  activeWriters = [(PFTReaderWriterScheduler *)selfCopy activeWriters];
+  [activeWriters addObject:writerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeWriter:(id)a3
+- (void)removeWriter:(id)writer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 pendingWriters];
-  [v5 removeObject:v7];
+  writerCopy = writer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(PFTReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters removeObject:writerCopy];
 
-  v6 = [(PFTReaderWriterScheduler *)v4 activeWriters];
-  [v6 removeObject:v7];
+  activeWriters = [(PFTReaderWriterScheduler *)selfCopy activeWriters];
+  [activeWriters removeObject:writerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)description
@@ -330,7 +330,7 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_in
   v8 = 3221225472;
   v9 = __39__PFTReaderWriterScheduler_description__block_invoke;
   v10 = &unk_279A52B88;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -339,50 +339,50 @@ uint64_t __58__PFTReaderWriterScheduler_performSynchronousWriterBlock___block_in
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v19 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(PFTReaderWriterScheduler *)v4 activeWriters];
-  v6 = [v5 count];
+  streamCopy = stream;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeWriters = [(PFTReaderWriterScheduler *)selfCopy activeWriters];
+  v6 = [activeWriters count];
 
   if (v6)
   {
-    v7 = [v19 appendUnsignedInteger:v6 withName:@"active writers"];
+    v7 = [streamCopy appendUnsignedInteger:v6 withName:@"active writers"];
   }
 
-  v8 = [(PFTReaderWriterScheduler *)v4 pendingWriters];
-  v9 = [v8 count];
+  pendingWriters = [(PFTReaderWriterScheduler *)selfCopy pendingWriters];
+  v9 = [pendingWriters count];
 
   if (v9)
   {
-    v10 = [v19 appendUnsignedInteger:v9 withName:@"pending writers"];
+    v10 = [streamCopy appendUnsignedInteger:v9 withName:@"pending writers"];
   }
 
-  v11 = [(PFTReaderWriterScheduler *)v4 activeReaders];
-  v12 = [v11 count];
+  activeReaders = [(PFTReaderWriterScheduler *)selfCopy activeReaders];
+  v12 = [activeReaders count];
 
   if (v12)
   {
-    v13 = [v19 appendUnsignedInteger:v12 withName:@"active readers"];
+    v13 = [streamCopy appendUnsignedInteger:v12 withName:@"active readers"];
   }
 
-  v14 = [(PFTReaderWriterScheduler *)v4 pendingReaders];
-  v15 = [v14 count];
+  pendingReaders = [(PFTReaderWriterScheduler *)selfCopy pendingReaders];
+  v15 = [pendingReaders count];
 
   if (v15)
   {
-    v16 = [v19 appendUnsignedInteger:v15 withName:@"pending readers"];
+    v16 = [streamCopy appendUnsignedInteger:v15 withName:@"pending readers"];
   }
 
-  suspendedCount = v4->_suspendedCount;
+  suspendedCount = selfCopy->_suspendedCount;
   if (suspendedCount)
   {
-    v18 = [v19 appendUnsignedInteger:suspendedCount withName:@"suspended"];
+    v18 = [streamCopy appendUnsignedInteger:suspendedCount withName:@"suspended"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

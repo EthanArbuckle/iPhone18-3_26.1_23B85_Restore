@@ -1,17 +1,17 @@
 @interface DOCSBFolderFanCollectionViewLayout
 + (Class)layoutAttributesClass;
 - (NSSet)indexPathsOfItemsPinnedToBottom;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
-- (void)setIndexPathsOfItemsPinnedToBottom:(id)a3;
+- (void)setIndexPathsOfItemsPinnedToBottom:(id)bottom;
 @end
 
 @implementation DOCSBFolderFanCollectionViewLayout
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_100080360();
 }
 
@@ -33,7 +33,7 @@
   return v3.super.isa;
 }
 
-- (void)setIndexPathsOfItemsPinnedToBottom:(id)a3
+- (void)setIndexPathsOfItemsPinnedToBottom:(id)bottom
 {
   type metadata accessor for IndexPath();
   sub_100085DA8(&qword_1000BC4F8);
@@ -42,7 +42,7 @@
   *(self + OBJC_IVAR____TtC21DockFolderViewService34DOCSBFolderFanCollectionViewLayout_indexPathsOfItemsPinnedToBottom) = v4;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -52,7 +52,7 @@
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   v14 = sub_100080E8C(v10, v12);
 
   (*(v6 + 8))(v9, v5);
@@ -60,7 +60,7 @@
   return v14;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for IndexPath();
@@ -69,9 +69,9 @@
   __chkstk_darwin(v5);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v17.receiver = v10;
+  v17.receiver = selfCopy;
   v17.super_class = ObjectType;
   v12 = [(DOCSBFolderFanCollectionViewLayout *)&v17 layoutAttributesForItemAtIndexPath:isa];
 
@@ -85,7 +85,7 @@
       v15 = v12;
       sub_100080FD8(v14);
 
-      v10 = v15;
+      selfCopy = v15;
     }
   }
 

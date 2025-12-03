@@ -1,11 +1,11 @@
 @interface SecureMobileAssetManifestVerifier
 + (SecureMobileAssetManifestVerifier)sharedInstance;
-- (BOOL)verifyManifest:(id)a3 manifestType:(unint64_t)a4;
-- (BOOL)verifyPlist:(id)a3 manifest:(id)a4 manifestType:(unint64_t)a5 result:(id *)a6 error:(id *)a7;
+- (BOOL)verifyManifest:(id)manifest manifestType:(unint64_t)type;
+- (BOOL)verifyPlist:(id)plist manifest:(id)manifest manifestType:(unint64_t)type result:(id *)result error:(id *)error;
 - (SecureMobileAssetManifestVerifier)init;
-- (id)_manifestDigest:(id)a3;
-- (int)_verifyPlist:(id)a3 manifest:(id)a4 manifestType:(unint64_t)a5 result:(id *)a6;
-- (void)_logBase64Data:(id)a3 description:(id)a4;
+- (id)_manifestDigest:(id)digest;
+- (int)_verifyPlist:(id)plist manifest:(id)manifest manifestType:(unint64_t)type result:(id *)result;
+- (void)_logBase64Data:(id)data description:(id)description;
 @end
 
 @implementation SecureMobileAssetManifestVerifier
@@ -44,26 +44,26 @@ void __51__SecureMobileAssetManifestVerifier_sharedInstance__block_invoke(id a1)
   return v2;
 }
 
-- (BOOL)verifyManifest:(id)a3 manifestType:(unint64_t)a4
+- (BOOL)verifyManifest:(id)manifest manifestType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(SecureMobileAssetManifestVerifier *)self _manifestDigest:v6];
-  v8 = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
-  objc_sync_enter(v8);
-  v9 = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  manifestCopy = manifest;
+  v7 = [(SecureMobileAssetManifestVerifier *)self _manifestDigest:manifestCopy];
+  cachedManifestVerificationResults = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
+  objc_sync_enter(cachedManifestVerificationResults);
+  cachedManifestVerificationResults2 = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
+  v10 = [cachedManifestVerificationResults2 objectForKeyedSubscript:v7];
 
   if (!v10)
   {
-    v13 = [(SecureMobileAssetManifestVerifier *)self _verifyPlist:0 manifest:v6 manifestType:a4 result:0];
-    v12 = v13 == 0;
+    v13 = [(SecureMobileAssetManifestVerifier *)self _verifyPlist:0 manifest:manifestCopy manifestType:type result:0];
+    bOOLValue2 = v13 == 0;
     if (v13)
     {
       v14 = _MADLog(@"SecureMA");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v22 = 67109378;
-        v23 = v13;
+        bOOLValue = v13;
         v24 = 2080;
         v25 = strerror(v13);
         v15 = "[SMA] Manifest verification failed: %d (%s)";
@@ -90,8 +90,8 @@ LABEL_10:
     }
 
     v19 = [NSNumber numberWithInt:v13 == 0];
-    v20 = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
-    [v20 setObject:v19 forKeyedSubscript:v7];
+    cachedManifestVerificationResults3 = [(SecureMobileAssetManifestVerifier *)self cachedManifestVerificationResults];
+    [cachedManifestVerificationResults3 setObject:v19 forKeyedSubscript:v7];
 
     goto LABEL_12;
   }
@@ -100,20 +100,20 @@ LABEL_10:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 67109120;
-    v23 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[SMA] Cached manifest verification result: %i", &v22, 8u);
   }
 
-  v12 = [v10 BOOLValue];
+  bOOLValue2 = [v10 BOOLValue];
 LABEL_12:
 
-  objc_sync_exit(v8);
-  return v12;
+  objc_sync_exit(cachedManifestVerificationResults);
+  return bOOLValue2;
 }
 
-- (BOOL)verifyPlist:(id)a3 manifest:(id)a4 manifestType:(unint64_t)a5 result:(id *)a6 error:(id *)a7
+- (BOOL)verifyPlist:(id)plist manifest:(id)manifest manifestType:(unint64_t)type result:(id *)result error:(id *)error
 {
-  v8 = [(SecureMobileAssetManifestVerifier *)self _verifyPlist:a3 manifest:a4 manifestType:a5 result:a6];
+  v8 = [(SecureMobileAssetManifestVerifier *)self _verifyPlist:plist manifest:manifest manifestType:type result:result];
   v9 = _MADLog(@"SecureMA");
   v10 = v9;
   if (v8)
@@ -127,9 +127,9 @@ LABEL_12:
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "[SMA] Info plist verification failed: %d (%s)", v12, 0x12u);
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v8 userInfo:0];
+      *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:v8 userInfo:0];
     }
   }
 
@@ -145,13 +145,13 @@ LABEL_12:
   return v8 == 0;
 }
 
-- (id)_manifestDigest:(id)a3
+- (id)_manifestDigest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v9 = 0u;
   v10 = 0u;
   *md = 0u;
-  CC_SHA384([v3 bytes], objc_msgSend(v3, "length"), md);
+  CC_SHA384([digestCopy bytes], objc_msgSend(digestCopy, "length"), md);
   v4 = [NSMutableString stringWithCapacity:96];
   for (i = 0; i != 48; ++i)
   {
@@ -163,17 +163,17 @@ LABEL_12:
   return v6;
 }
 
-- (int)_verifyPlist:(id)a3 manifest:(id)a4 manifestType:(unint64_t)a5 result:(id *)a6
+- (int)_verifyPlist:(id)plist manifest:(id)manifest manifestType:(unint64_t)type result:(id *)result
 {
-  v9 = a3;
-  v10 = a4;
-  if ([v10 length])
+  plistCopy = plist;
+  manifestCopy = manifest;
+  if ([manifestCopy length])
   {
     if (__isPlatformVersionAtLeast(2, 18, 0, 0))
     {
       if (image4_environment_new())
       {
-        if (a5 == 2)
+        if (type == 2)
         {
           *buf = xmmword_4B49E0;
           v19 = *&off_4B49F0;
@@ -181,13 +181,13 @@ LABEL_12:
           image4_environment_set_callbacks();
         }
 
-        [v10 bytes];
-        [v10 length];
+        [manifestCopy bytes];
+        [manifestCopy length];
         v16 = image4_trust_new();
-        if (v9)
+        if (plistCopy)
         {
-          [v9 bytes];
-          [v9 length];
+          [plistCopy bytes];
+          [plistCopy length];
           image4_trust_set_payload();
         }
 
@@ -195,10 +195,10 @@ LABEL_12:
         image4_trust_evaluate();
         image4_trust_destroy();
         image4_environment_destroy();
-        [(SecureMobileAssetManifestVerifier *)self _logBase64Data:v10 description:@"failing manifest"];
-        if (v9)
+        [(SecureMobileAssetManifestVerifier *)self _logBase64Data:manifestCopy description:@"failing manifest"];
+        if (plistCopy)
         {
-          [(SecureMobileAssetManifestVerifier *)self _logBase64Data:v9 description:@"failing payload"];
+          [(SecureMobileAssetManifestVerifier *)self _logBase64Data:plistCopy description:@"failing payload"];
         }
 
         v11 = v15;
@@ -238,19 +238,19 @@ LABEL_12:
   return v11;
 }
 
-- (void)_logBase64Data:(id)a3 description:(id)a4
+- (void)_logBase64Data:(id)data description:(id)description
 {
-  v5 = a4;
-  v6 = [a3 base64EncodedStringWithOptions:0];
+  descriptionCopy = description;
+  v6 = [data base64EncodedStringWithOptions:0];
   v7 = _MADLog(@"SecureMA");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543874;
-    v9 = v5;
+    v9 = descriptionCopy;
     v10 = 2114;
     v11 = v6;
     v12 = 2114;
-    v13 = v5;
+    v13 = descriptionCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "[SMA] %{public}@:<<<<<<<<<<\n%{public}@\n%{public}@:>>>>>>>>>>", &v8, 0x20u);
   }
 }

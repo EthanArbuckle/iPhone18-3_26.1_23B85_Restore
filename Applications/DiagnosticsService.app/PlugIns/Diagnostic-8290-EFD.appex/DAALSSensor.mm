@@ -1,12 +1,12 @@
 @interface DAALSSensor
 - (BOOL)setupALSClient;
 - (BOOL)setupHIDSystemClient;
-- (DAALSSensor)initWithDelegate:(id)a3 threshold:(unsigned int)a4;
+- (DAALSSensor)initWithDelegate:(id)delegate threshold:(unsigned int)threshold;
 - (DAChamberSensorDelegate)delegate;
 - (id)averageSampleValue;
 - (void)dealloc;
 - (void)determineEnclosureState;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)releaseALSClient;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -14,21 +14,21 @@
 
 @implementation DAALSSensor
 
-- (DAALSSensor)initWithDelegate:(id)a3 threshold:(unsigned int)a4
+- (DAALSSensor)initWithDelegate:(id)delegate threshold:(unsigned int)threshold
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = DAALSSensor;
   v7 = [(DAALSSensor *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_alloc_init(NSMutableArray);
     ALSSamples = v8->_ALSSamples;
     v8->_ALSSamples = v9;
 
-    v8->_threshold = a4;
+    v8->_threshold = threshold;
     v8->_minimalALSSampleCount = 10;
     v8->_HIDSystemClient = 0;
     v8->_HIDServiceClient = 0;
@@ -79,8 +79,8 @@
   {
     [(DAALSSensor *)self setStarted:0];
     [(DAALSSensor *)self releaseALSClient];
-    v4 = [(DAALSSensor *)self ALSSamples];
-    [v4 removeAllObjects];
+    aLSSamples = [(DAALSSensor *)self ALSSamples];
+    [aLSSamples removeAllObjects];
 
     [(DAALSSensor *)self setMostRecentEvent:0];
   }
@@ -128,7 +128,7 @@
       sub_100010280(v3);
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(hIDSystemClient2) = 0;
   }
 
   else
@@ -139,7 +139,7 @@
       [(DAALSSensor *)self HIDSystemClient];
       IOHIDEventSystemClientRegisterEventCallback();
       [(DAALSSensor *)self HIDSystemClient];
-      v5 = [(DAALSSensor *)self HIDEventQueue];
+      hIDEventQueue = [(DAALSSensor *)self HIDEventQueue];
       IOHIDEventSystemClientScheduleWithDispatchQueue();
 
       block[0] = _NSConcreteStackBlock;
@@ -163,9 +163,9 @@
       v8 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(DAALSSensor *)self HIDSystemClient];
+        hIDSystemClient = [(DAALSSensor *)self HIDSystemClient];
         v10 = "success";
-        if (!v9)
+        if (!hIDSystemClient)
         {
           v10 = "failure";
         }
@@ -215,9 +215,9 @@ LABEL_22:
       v17 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(DAALSSensor *)self HIDServiceClient];
+        hIDServiceClient = [(DAALSSensor *)self HIDServiceClient];
         v19 = "success";
-        if (!v18)
+        if (!hIDServiceClient)
         {
           v19 = "failure";
         }
@@ -228,24 +228,24 @@ LABEL_22:
       }
     }
 
-    v4 = [(DAALSSensor *)self HIDSystemClient];
-    if (v4)
+    hIDSystemClient2 = [(DAALSSensor *)self HIDSystemClient];
+    if (hIDSystemClient2)
     {
-      LOBYTE(v4) = [(DAALSSensor *)self HIDServiceClient]!= 0;
+      LOBYTE(hIDSystemClient2) = [(DAALSSensor *)self HIDServiceClient]!= 0;
     }
   }
 
-  return v4;
+  return hIDSystemClient2;
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (IOHIDEventGetType() == 12 && [(DAALSSensor *)self started])
   {
     IntegerValue = IOHIDEventGetIntegerValue();
-    v5 = [(DAALSSensor *)self ALSSamples];
+    aLSSamples = [(DAALSSensor *)self ALSSamples];
     v6 = [NSNumber numberWithLong:IntegerValue];
-    [v5 addObject:v6];
+    [aLSSamples addObject:v6];
 
     [(DAALSSensor *)self determineEnclosureState];
   }
@@ -257,8 +257,8 @@ LABEL_22:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(DAALSSensor *)self ALSSamples];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  aLSSamples = [(DAALSSensor *)self ALSSamples];
+  v4 = [aLSSamples countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -270,13 +270,13 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(aLSSamples);
         }
 
         v6 += [*(*(&v12 + 1) + 8 * i) longValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [aLSSamples countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -287,8 +287,8 @@ LABEL_22:
     v6 = 0;
   }
 
-  v9 = [(DAALSSensor *)self ALSSamples];
-  [v9 removeAllObjects];
+  aLSSamples2 = [(DAALSSensor *)self ALSSamples];
+  [aLSSamples2 removeAllObjects];
 
   v10 = [NSNumber numberWithLong:v6 / [(DAALSSensor *)self minimalALSSampleCount]];
 
@@ -297,20 +297,20 @@ LABEL_22:
 
 - (void)determineEnclosureState
 {
-  v3 = [(DAALSSensor *)self ALSSamples];
-  v4 = [v3 count];
-  v5 = [(DAALSSensor *)self minimalALSSampleCount];
+  aLSSamples = [(DAALSSensor *)self ALSSamples];
+  v4 = [aLSSamples count];
+  minimalALSSampleCount = [(DAALSSensor *)self minimalALSSampleCount];
 
-  if (v4 >= v5)
+  if (v4 >= minimalALSSampleCount)
   {
-    v6 = [(DAALSSensor *)self averageSampleValue];
-    v7 = [v6 intValue];
+    averageSampleValue = [(DAALSSensor *)self averageSampleValue];
+    intValue = [averageSampleValue intValue];
 
-    v8 = [(DAALSSensor *)self threshold];
+    threshold = [(DAALSSensor *)self threshold];
     v9 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7 <= v8)
+      if (intValue <= threshold)
       {
         v10 = "Closed";
       }
@@ -323,13 +323,13 @@ LABEL_22:
       v16 = 136315650;
       v17 = v10;
       v18 = 1024;
-      v19 = v7;
+      v19 = intValue;
       v20 = 1024;
-      v21 = [(DAALSSensor *)self threshold];
+      threshold2 = [(DAALSSensor *)self threshold];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "DAALSSensor: Detect %s - average value= %d, ALS limit = %d", &v16, 0x18u);
     }
 
-    if (v7 > v8)
+    if (intValue > threshold)
     {
       v11 = 1;
     }
@@ -340,13 +340,13 @@ LABEL_22:
     }
 
     v12 = [[DAChamberSensorEvent alloc] initWithSensorType:0 eventType:v11];
-    v13 = [(DAALSSensor *)self mostRecentEvent];
-    v14 = [(DAChamberSensorEvent *)v12 isEqual:v13];
+    mostRecentEvent = [(DAALSSensor *)self mostRecentEvent];
+    v14 = [(DAChamberSensorEvent *)v12 isEqual:mostRecentEvent];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(DAALSSensor *)self delegate];
-      [v15 handleSensorEvent:v12];
+      delegate = [(DAALSSensor *)self delegate];
+      [delegate handleSensorEvent:v12];
 
       [(DAALSSensor *)self setMostRecentEvent:v12];
     }
@@ -359,9 +359,9 @@ LABEL_22:
   {
     [(DAALSSensor *)self HIDSystemClient];
     IOHIDEventSystemClientUnregisterEventCallback();
-    v3 = [(DAALSSensor *)self HIDSystemClient];
+    hIDSystemClient = [(DAALSSensor *)self HIDSystemClient];
 
-    _IOHIDEventSystemClientCancel(v3);
+    _IOHIDEventSystemClientCancel(hIDSystemClient);
   }
 }
 

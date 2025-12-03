@@ -1,13 +1,13 @@
 @interface PKInk
-+ (BOOL)crl_isSixChannelBlendingUsedByInkType:(id)a3;
++ (BOOL)crl_isSixChannelBlendingUsedByInkType:(id)type;
 @end
 
 @implementation PKInk
 
-+ (BOOL)crl_isSixChannelBlendingUsedByInkType:(id)a3
++ (BOOL)crl_isSixChannelBlendingUsedByInkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:PKInkTypeMarker] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", PKInkTypeWatercolor))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:PKInkTypeMarker] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", PKInkTypeWatercolor))
   {
     v4 = 1;
   }
@@ -15,7 +15,7 @@
   else
   {
     v5 = +[_TtC8Freeform20PKInkTypeSwiftHelper reedInkType];
-    v4 = [v3 isEqualToString:v5];
+    v4 = [typeCopy isEqualToString:v5];
   }
 
   return v4;

@@ -1,11 +1,11 @@
 @interface CLLocationManagerInternal
-- (CLLocationManagerInternal)initWithInfo:(id)a3 bundleIdentifier:(id)a4 bundlePath:(id)a5 websiteIdentifier:(id)a6 delegate:(id)a7 silo:(id)a8;
+- (CLLocationManagerInternal)initWithInfo:(id)info bundleIdentifier:(id)identifier bundlePath:(id)path websiteIdentifier:(id)websiteIdentifier delegate:(id)delegate silo:(id)silo;
 - (void)cancelLocationRequest;
 - (void)dealloc;
 - (void)invalidate;
 - (void)performCourtesyPromptIfNeeded;
-- (void)setAllowsBackgroundLocationUpdates:(BOOL)a3;
-- (void)setShowsBackgroundLocationIndicator:(BOOL)a3;
+- (void)setAllowsBackgroundLocationUpdates:(BOOL)updates;
+- (void)setShowsBackgroundLocationIndicator:(BOOL)indicator;
 - (void)stopUpdatingLocationAutoPaused;
 @end
 
@@ -96,7 +96,7 @@
   }
 }
 
-- (CLLocationManagerInternal)initWithInfo:(id)a3 bundleIdentifier:(id)a4 bundlePath:(id)a5 websiteIdentifier:(id)a6 delegate:(id)a7 silo:(id)a8
+- (CLLocationManagerInternal)initWithInfo:(id)info bundleIdentifier:(id)identifier bundlePath:(id)path websiteIdentifier:(id)websiteIdentifier delegate:(id)delegate silo:(id)silo
 {
   v17.receiver = self;
   v17.super_class = CLLocationManagerInternal;
@@ -104,10 +104,10 @@
   if (v11)
   {
     v12 = [CLLocationManagerStateTracker alloc];
-    *(v11 + 4) = [(CLLocationManagerStateTracker *)v12 initWithQueue:MEMORY[0x1E69E96A0] identifier:a3 state:&unk_1F0E6B680];
-    *(v11 + 36) = a8;
-    objc_storeWeak(v11 + 2, a7);
-    objc_storeWeak(v11 + 3, a3);
+    *(v11 + 4) = [(CLLocationManagerStateTracker *)v12 initWithQueue:MEMORY[0x1E69E96A0] identifier:info state:&unk_1F0E6B680];
+    *(v11 + 36) = silo;
+    objc_storeWeak(v11 + 2, delegate);
+    objc_storeWeak(v11 + 3, info);
     v13 = *MEMORY[0x1E695E480];
     v14 = *(v11 + 36);
     v15 = CLClientCreateWithBundleIdentifierAndPathWithWebsiteOnSilo();
@@ -127,22 +127,22 @@
   return v11;
 }
 
-- (void)setAllowsBackgroundLocationUpdates:(BOOL)a3
+- (void)setAllowsBackgroundLocationUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   [(CLLocationManagerStateTracker *)self->fState setAllowsBackgroundLocationUpdates:?];
   fClient = self->fClient;
 
-  sub_19B88EB50(fClient, v3);
+  sub_19B88EB50(fClient, updatesCopy);
 }
 
-- (void)setShowsBackgroundLocationIndicator:(BOOL)a3
+- (void)setShowsBackgroundLocationIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   [(CLLocationManagerStateTracker *)self->fState setShowsBackgroundLocationIndicator:?];
   fClient = self->fClient;
 
-  sub_19B88EC08(fClient, v3);
+  sub_19B88EC08(fClient, indicatorCopy);
 }
 
 - (void)stopUpdatingLocationAutoPaused

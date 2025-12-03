@@ -1,43 +1,43 @@
 @interface PKAddPassesRemoteAlertViewController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKAddPassesRemoteAlertViewController
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKAddPassesRemoteAlertViewController;
-  [(PKAddPassesRemoteAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKAddPassesRemoteAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKAddPassesRemoteAlertViewController;
-  [(PKAddPassesRemoteAlertViewController *)&v3 viewDidAppear:a3];
+  [(PKAddPassesRemoteAlertViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAddPassesRemoteAlertViewController;
-  [(PKAddPassesRemoteAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKAddPassesRemoteAlertViewController *)&v4 viewWillDisappear:disappear];
   [(PKAddPassesRemoteAlertViewController *)self _dismiss];
 }
 
@@ -54,23 +54,23 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKAddPassesRemoteAlertViewController *)self _remoteViewControllerProxy];
-  v9 = [v7 userInfo];
+  completionCopy = completion;
+  contextCopy = context;
+  _remoteViewControllerProxy = [(PKAddPassesRemoteAlertViewController *)self _remoteViewControllerProxy];
+  userInfo = [contextCopy userInfo];
 
-  v10 = 1;
-  [v8 setAllowsAlertItems:1];
-  [v8 setAllowsAlertStacking:1];
-  [v8 setAllowsBanners:1];
-  [v8 setAllowsSiri:0];
-  [v8 setDesiredHardwareButtonEvents:16];
-  [v8 setSwipeDismissalStyle:0];
-  [v8 setDismissalAnimationStyle:1];
-  [v8 setWallpaperStyle:0 withDuration:0.0];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
+  integerValue = 1;
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBFF8]];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     if (!v11)
@@ -78,13 +78,13 @@
       goto LABEL_5;
     }
 
-    v10 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
-  [v8 setLaunchingInterfaceOrientation:v10];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:integerValue];
 LABEL_5:
-  v12 = [v9 objectForKey:*MEMORY[0x1E69BBFE8]];
-  v13 = [v9 objectForKey:*MEMORY[0x1E69BBFF0]];
+  v12 = [userInfo objectForKey:*MEMORY[0x1E69BBFE8]];
+  v13 = [userInfo objectForKey:*MEMORY[0x1E69BBFF0]];
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -102,9 +102,9 @@ LABEL_5:
   v15 = v13;
   v16 = v12;
   dispatch_async(MEMORY[0x1E69E96A0], block);
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

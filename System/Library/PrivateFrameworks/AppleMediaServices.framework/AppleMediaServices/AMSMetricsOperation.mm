@@ -1,6 +1,6 @@
 @interface AMSMetricsOperation
 + (id)dropEventsOperation;
-+ (id)flushOperationWithStrategy:(id)a3 promise:(id)a4;
++ (id)flushOperationWithStrategy:(id)strategy promise:(id)promise;
 - (id)_init;
 @end
 
@@ -15,16 +15,16 @@
 
 + (id)dropEventsOperation
 {
-  v2 = [(AMSMetricsOperation *)[AMSMetricsDropEventsOperation alloc] _init];
+  _init = [(AMSMetricsOperation *)[AMSMetricsDropEventsOperation alloc] _init];
 
-  return v2;
+  return _init;
 }
 
-+ (id)flushOperationWithStrategy:(id)a3 promise:(id)a4
++ (id)flushOperationWithStrategy:(id)strategy promise:(id)promise
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AMSMetricsFlushOperation alloc] initWithStrategy:v6 promise:v5];
+  promiseCopy = promise;
+  strategyCopy = strategy;
+  v7 = [[AMSMetricsFlushOperation alloc] initWithStrategy:strategyCopy promise:promiseCopy];
 
   return v7;
 }

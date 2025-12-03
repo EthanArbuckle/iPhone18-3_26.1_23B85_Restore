@@ -1,6 +1,6 @@
 @interface ICNASceneSessionTracker
 - (BOOL)timerIsOn;
-- (ICNASceneSessionTracker)initWithSessionTypeEnum:(int64_t)a3;
+- (ICNASceneSessionTracker)initWithSessionTypeEnum:(int64_t)enum;
 - (id)sessionSummaryItemData;
 - (void)endTimer;
 - (void)startTimer;
@@ -8,7 +8,7 @@
 
 @implementation ICNASceneSessionTracker
 
-- (ICNASceneSessionTracker)initWithSessionTypeEnum:(int64_t)a3
+- (ICNASceneSessionTracker)initWithSessionTypeEnum:(int64_t)enum
 {
   v8.receiver = self;
   v8.super_class = ICNASceneSessionTracker;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sessionTypeEnum = a3;
+    v4->_sessionTypeEnum = enum;
     v4->_duration = 0.0;
     lastStartDate = v4->_lastStartDate;
     v4->_lastStartDate = 0;
@@ -32,8 +32,8 @@
   if (![(ICNASceneSessionTracker *)self timerIsOn])
   {
     [(ICNASceneSessionTracker *)self setCount:[(ICNASceneSessionTracker *)self count]+ 1];
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [(ICNASceneSessionTracker *)self setLastStartDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(ICNASceneSessionTracker *)self setLastStartDate:date];
   }
 }
 
@@ -41,9 +41,9 @@
 {
   if ([(ICNASceneSessionTracker *)self timerIsOn])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [(ICNASceneSessionTracker *)self lastStartDate];
-    [v3 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastStartDate = [(ICNASceneSessionTracker *)self lastStartDate];
+    [date timeIntervalSinceDate:lastStartDate];
     v6 = v5;
     [(ICNASceneSessionTracker *)self duration];
     [(ICNASceneSessionTracker *)self setDuration:v6 + v7];
@@ -57,12 +57,12 @@
   v3 = [[ICASSessionType alloc] initWithSessionType:[(ICNASceneSessionTracker *)self sessionTypeEnum]];
   [(ICNASceneSessionTracker *)self duration];
   v5 = v4;
-  v6 = [(ICNASceneSessionTracker *)self lastStartDate];
-  if (v6)
+  lastStartDate = [(ICNASceneSessionTracker *)self lastStartDate];
+  if (lastStartDate)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [(ICNASceneSessionTracker *)self lastStartDate];
-    [v7 timeIntervalSinceDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastStartDate2 = [(ICNASceneSessionTracker *)self lastStartDate];
+    [date timeIntervalSinceDate:lastStartDate2];
     v10 = v9;
   }
 
@@ -83,8 +83,8 @@
 
 - (BOOL)timerIsOn
 {
-  v2 = [(ICNASceneSessionTracker *)self lastStartDate];
-  v3 = v2 != 0;
+  lastStartDate = [(ICNASceneSessionTracker *)self lastStartDate];
+  v3 = lastStartDate != 0;
 
   return v3;
 }

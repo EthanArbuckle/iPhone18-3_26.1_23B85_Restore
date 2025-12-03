@@ -1,14 +1,14 @@
 @interface SharedTripsTableDataSource
 - (GEOSharedNavState)selectedTrip;
-- (SharedTripsTableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4 tableViewReloadEvent:(id)a5;
-- (id)sharedTripAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_updateCellForSharedTrip:(id)a3;
-- (void)_updateTableSelection:(BOOL)a3;
+- (SharedTripsTableDataSource)initWithTableView:(id)view cellProvider:(id)provider tableViewReloadEvent:(id)event;
+- (id)sharedTripAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_updateCellForSharedTrip:(id)trip;
+- (void)_updateTableSelection:(BOOL)selection;
 - (void)_updateTableView;
-- (void)_updateTableViewWithTrip:(id)a3;
+- (void)_updateTableViewWithTrip:(id)trip;
 - (void)dealloc;
-- (void)setSelectedTrip:(id)a3 animated:(BOOL)a4;
+- (void)setSelectedTrip:(id)trip animated:(BOOL)animated;
 @end
 
 @implementation SharedTripsTableDataSource
@@ -20,47 +20,47 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   cellProvider = self->_cellProvider;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SharedTripsTableDataSource *)self sharedTripAtIndexPath:v7];
-  v10 = cellProvider[2](cellProvider, v8, v7, v9);
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [(SharedTripsTableDataSource *)self sharedTripAtIndexPath:pathCopy];
+  v10 = cellProvider[2](cellProvider, viewCopy, pathCopy, v9);
 
   return v10;
 }
 
-- (void)_updateTableViewWithTrip:(id)a3
+- (void)_updateTableViewWithTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   v5 = self->_sharedTrips;
   v6 = +[MSPSharedTripService sharedInstance];
-  v7 = [v6 receivedTrips];
+  receivedTrips = [v6 receivedTrips];
 
   v8 = [(NSArray *)v5 count];
-  v9 = [v7 count];
+  v9 = [receivedTrips count];
   v10 = 1;
-  if (v4 && v8 == v9)
+  if (tripCopy && v8 == v9)
   {
     if ([(NSArray *)self->_sharedTrips count])
     {
-      v24 = v4;
+      v24 = tripCopy;
       v11 = 0;
       while (1)
       {
         v12 = [(NSArray *)v5 objectAtIndexedSubscript:v11];
-        v13 = [v7 objectAtIndexedSubscript:v11];
-        v14 = [v13 groupIdentifier];
-        if (!v14)
+        v13 = [receivedTrips objectAtIndexedSubscript:v11];
+        groupIdentifier = [v13 groupIdentifier];
+        if (!groupIdentifier)
         {
           break;
         }
 
-        v15 = v14;
-        v16 = [v12 groupIdentifier];
-        v17 = [v13 groupIdentifier];
-        v18 = [v16 isEqualToString:v17];
+        v15 = groupIdentifier;
+        groupIdentifier2 = [v12 groupIdentifier];
+        groupIdentifier3 = [v13 groupIdentifier];
+        v18 = [groupIdentifier2 isEqualToString:groupIdentifier3];
 
         if ((v18 & 1) != 0 && ++v11 < [(NSArray *)self->_sharedTrips count])
         {
@@ -73,7 +73,7 @@
 
       v10 = 1;
 LABEL_11:
-      v4 = v24;
+      tripCopy = v24;
     }
 
     else
@@ -83,16 +83,16 @@ LABEL_11:
   }
 
   v19 = +[MSPSharedTripService sharedInstance];
-  v20 = [v19 receivedTrips];
+  receivedTrips2 = [v19 receivedTrips];
   sharedTrips = self->_sharedTrips;
-  self->_sharedTrips = v20;
+  self->_sharedTrips = receivedTrips2;
 
   v22 = sub_100B693E8();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = sub_100021DB0(self->_sharedTrips, &stru_10163B038);
     *buf = 134349314;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v23;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Updated shared trips: %@", buf, 0x16u);
@@ -105,7 +105,7 @@ LABEL_11:
 
   else
   {
-    [(SharedTripsTableDataSource *)self _updateCellForSharedTrip:v4];
+    [(SharedTripsTableDataSource *)self _updateCellForSharedTrip:tripCopy];
   }
 }
 
@@ -122,11 +122,11 @@ LABEL_11:
   }
 }
 
-- (void)_updateCellForSharedTrip:(id)a3
+- (void)_updateCellForSharedTrip:(id)trip
 {
   sharedTrips = self->_sharedTrips;
-  v5 = [a3 equalityTest];
-  v6 = [(NSArray *)sharedTrips indexOfObjectPassingTest:v5];
+  equalityTest = [trip equalityTest];
+  v6 = [(NSArray *)sharedTrips indexOfObjectPassingTest:equalityTest];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -140,29 +140,29 @@ LABEL_11:
   }
 }
 
-- (void)_updateTableSelection:(BOOL)a3
+- (void)_updateTableSelection:(BOOL)selection
 {
-  v3 = a3;
-  v11 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  v5 = [(SharedTripsTableDataSource *)self selectedTrip];
-  if (v11)
+  selectionCopy = selection;
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  selectedTrip = [(SharedTripsTableDataSource *)self selectedTrip];
+  if (indexPathForSelectedRow)
   {
 
-    if (!v5)
+    if (!selectedTrip)
     {
-      [(UITableView *)self->_tableView deselectRowAtIndexPath:v11 animated:v3];
+      [(UITableView *)self->_tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:selectionCopy];
     }
   }
 
-  else if (v5)
+  else if (selectedTrip)
   {
     v6 = [(NSArray *)self->_sharedTrips count];
 
     if (v6)
     {
       sharedTrips = self->_sharedTrips;
-      v8 = [(SharedTripsTableDataSource *)self selectedTrip];
-      v9 = [(NSArray *)sharedTrips indexOfObject:v8];
+      selectedTrip2 = [(SharedTripsTableDataSource *)self selectedTrip];
+      v9 = [(NSArray *)sharedTrips indexOfObject:selectedTrip2];
 
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -174,16 +174,16 @@ LABEL_11:
         v10 = [NSIndexPath indexPathForRow:v9 inSection:0];
         if (([0 isEqual:v10] & 1) == 0)
         {
-          [(UITableView *)self->_tableView selectRowAtIndexPath:0 animated:v3 scrollPosition:1];
+          [(UITableView *)self->_tableView selectRowAtIndexPath:0 animated:selectionCopy scrollPosition:1];
         }
       }
     }
   }
 }
 
-- (id)sharedTripAtIndexPath:(id)a3
+- (id)sharedTripAtIndexPath:(id)path
 {
-  v4 = [a3 row];
+  v4 = [path row];
   if (v4 >= [(NSArray *)self->_sharedTrips count])
   {
     v5 = 0;
@@ -197,27 +197,27 @@ LABEL_11:
   return v5;
 }
 
-- (void)setSelectedTrip:(id)a3 animated:(BOOL)a4
+- (void)setSelectedTrip:(id)trip animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  tripCopy = trip;
   WeakRetained = objc_loadWeakRetained(&self->_selectedTrip);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != tripCopy)
   {
     v8 = sub_100B693E8();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 groupIdentifier];
+      groupIdentifier = [tripCopy groupIdentifier];
       v10 = 134349314;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v9;
+      v13 = groupIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Selecting trip: %@", &v10, 0x16u);
     }
 
-    objc_storeWeak(&self->_selectedTrip, v6);
-    [(SharedTripsTableDataSource *)self _updateTableSelection:v4];
+    objc_storeWeak(&self->_selectedTrip, tripCopy);
+    [(SharedTripsTableDataSource *)self _updateTableSelection:animatedCopy];
   }
 }
 
@@ -227,7 +227,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -236,34 +236,34 @@ LABEL_11:
   [(SharedTripsTableDataSource *)&v4 dealloc];
 }
 
-- (SharedTripsTableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4 tableViewReloadEvent:(id)a5
+- (SharedTripsTableDataSource)initWithTableView:(id)view cellProvider:(id)provider tableViewReloadEvent:(id)event
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  providerCopy = provider;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = SharedTripsTableDataSource;
   v12 = [(SharedTripsTableDataSource *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tableView, a3);
+    objc_storeStrong(&v12->_tableView, view);
     [(UITableView *)v13->_tableView setDataSource:v13];
-    v14 = [v10 copy];
+    v14 = [providerCopy copy];
     cellProvider = v13->_cellProvider;
     v13->_cellProvider = v14;
 
-    if (v11)
+    if (eventCopy)
     {
-      v16 = [v11 copy];
+      v16 = [eventCopy copy];
       tableViewReloadEvent = v13->_tableViewReloadEvent;
       v13->_tableViewReloadEvent = v16;
     }
 
     v18 = +[MSPSharedTripService sharedInstance];
-    v19 = [v18 receivedTrips];
+    receivedTrips = [v18 receivedTrips];
     sharedTrips = v13->_sharedTrips;
-    v13->_sharedTrips = v19;
+    v13->_sharedTrips = receivedTrips;
 
     v21 = sub_100B693E8();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))

@@ -1,13 +1,13 @@
 @interface SearchUIDragSource
-+ (id)dragSourceForView:(id)a3 dragObject:(id)a4 feedbackDelegate:(id)a5;
-- (SearchUIDragSource)initWithView:(id)a3 dragObject:(id)a4 feedbackDelegate:(id)a5;
++ (id)dragSourceForView:(id)view dragObject:(id)object feedbackDelegate:(id)delegate;
+- (SearchUIDragSource)initWithView:(id)view dragObject:(id)object feedbackDelegate:(id)delegate;
 - (SearchUIFeedbackDelegateInternal)feedbackDelegate;
 - (UIView)dragSourceView;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragParametersForPreviewView:(id)a3;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragParametersForPreviewView:(id)view;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
 - (void)sendDragFeedback;
 @end
 
@@ -20,14 +20,14 @@
   return WeakRetained;
 }
 
-+ (id)dragSourceForView:(id)a3 dragObject:(id)a4 feedbackDelegate:(id)a5
++ (id)dragSourceForView:(id)view dragObject:(id)object feedbackDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  objectCopy = object;
+  delegateCopy = delegate;
   if ([MEMORY[0x1E69DC988] isEnabledByDefault])
   {
-    v11 = [[a1 alloc] initWithView:v8 dragObject:v9 feedbackDelegate:v10];
+    v11 = [[self alloc] initWithView:viewCopy dragObject:objectCopy feedbackDelegate:delegateCopy];
   }
 
   else
@@ -38,68 +38,68 @@
   return v11;
 }
 
-- (SearchUIDragSource)initWithView:(id)a3 dragObject:(id)a4 feedbackDelegate:(id)a5
+- (SearchUIDragSource)initWithView:(id)view dragObject:(id)object feedbackDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  objectCopy = object;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SearchUIDragSource;
   v11 = [(SearchUIDragSource *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(SearchUIDragSource *)v11 setDragSourceView:v8];
-    [(SearchUIDragSource *)v12 setDragObject:v9];
-    [(SearchUIDragSource *)v12 setFeedbackDelegate:v10];
+    [(SearchUIDragSource *)v11 setDragSourceView:viewCopy];
+    [(SearchUIDragSource *)v12 setDragObject:objectCopy];
+    [(SearchUIDragSource *)v12 setFeedbackDelegate:delegateCopy];
     v13 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v12];
-    v14 = [(SearchUIDragSource *)v12 dragSourceView];
-    [v14 addInteraction:v13];
+    dragSourceView = [(SearchUIDragSource *)v12 dragSourceView];
+    [dragSourceView addInteraction:v13];
   }
 
   return v12;
 }
 
-- (id)dragParametersForPreviewView:(id)a3
+- (id)dragParametersForPreviewView:(id)view
 {
   v3 = MEMORY[0x1E69DC9A0];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x1E69DC728];
-  [v4 bounds];
+  [viewCopy bounds];
   v7 = [v6 bezierPathWithRoundedRect:? cornerRadius:?];
   [v5 setVisiblePath:v7];
 
-  v8 = [MEMORY[0x1E69D9108] bestAppearanceForView:v4];
+  v8 = [MEMORY[0x1E69D9108] bestAppearanceForView:viewCopy];
 
-  LODWORD(v4) = [v8 isDark];
-  if (v4)
+  LODWORD(viewCopy) = [v8 isDark];
+  if (viewCopy)
   {
-    v9 = [MEMORY[0x1E69DC888] grayColor];
-    [v5 setBackgroundColor:v9];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [v5 setBackgroundColor:grayColor];
   }
 
   return v5;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SearchUIDragSource *)self feedbackDelegate];
+  interactionCopy = interaction;
+  feedbackDelegate = [(SearchUIDragSource *)self feedbackDelegate];
   v8 = objc_opt_respondsToSelector();
   if (v8)
   {
-    v4 = [(SearchUIDragSource *)self feedbackDelegate];
-    if (([v4 dragInteractionEnabled] & 1) == 0)
+    feedbackDelegate2 = [(SearchUIDragSource *)self feedbackDelegate];
+    if (([feedbackDelegate2 dragInteractionEnabled] & 1) == 0)
     {
 
       goto LABEL_13;
     }
   }
 
-  v9 = [v6 view];
-  v10 = [SearchUIUtilities deviceIsAuthenticatedForView:v9];
+  view = [interactionCopy view];
+  v10 = [SearchUIUtilities deviceIsAuthenticatedForView:view];
 
   if ((v8 & 1) == 0)
   {
@@ -120,46 +120,46 @@ LABEL_13:
   }
 
 LABEL_7:
-  v11 = [(SearchUIDragSource *)self dragObject];
-  v12 = [SearchUICommandHandler handlerForRowModel:v11 environment:0];
-  v13 = [v12 itemProvider];
-  if (!v13)
+  dragObject = [(SearchUIDragSource *)self dragObject];
+  v12 = [SearchUICommandHandler handlerForRowModel:dragObject environment:0];
+  itemProvider = [v12 itemProvider];
+  if (!itemProvider)
   {
-    if ([v11 isDraggable] && objc_msgSend(v12, "supportsDrag") && (objc_msgSend(v11, "dragText"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v15))
+    if ([dragObject isDraggable] && objc_msgSend(v12, "supportsDrag") && (objc_msgSend(dragObject, "dragText"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v15))
     {
-      v13 = objc_opt_new();
-      v16 = [v11 dragText];
-      [v13 registerObject:v16 visibility:0];
+      itemProvider = objc_opt_new();
+      dragText = [dragObject dragText];
+      [itemProvider registerObject:dragText visibility:0];
     }
 
     else
     {
-      v13 = 0;
+      itemProvider = 0;
     }
   }
 
-  v18 = [v13 suggestedName];
+  suggestedName = [itemProvider suggestedName];
 
-  if (!v18)
+  if (!suggestedName)
   {
-    v20 = [v11 identifyingResult];
-    v21 = [v20 resultBundleId];
+    identifyingResult = [dragObject identifyingResult];
+    resultBundleId = [identifyingResult resultBundleId];
     v22 = [SearchUIUtilities bundleIdentifierForApp:8];
-    v23 = [v21 isEqualToString:v22];
+    v23 = [resultBundleId isEqualToString:v22];
 
     if (v23)
     {
-      [v11 dragSubtitle];
+      [dragObject dragSubtitle];
     }
 
     else
     {
-      [v11 dragTitle];
+      [dragObject dragTitle];
     }
     v24 = ;
-    [v13 setSuggestedName:v24];
+    [itemProvider setSuggestedName:v24];
 
-    if (v13)
+    if (itemProvider)
     {
       goto LABEL_17;
     }
@@ -169,13 +169,13 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v13)
+  if (!itemProvider)
   {
     goto LABEL_22;
   }
 
 LABEL_17:
-  v19 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v13];
+  v19 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:itemProvider];
   v26[0] = v19;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
 
@@ -185,50 +185,50 @@ LABEL_24:
   return v17;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = a3;
-  v7 = [v6 view];
-  v8 = [(SearchUIDragSource *)self dragParametersForPreviewView:v7];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  v8 = [(SearchUIDragSource *)self dragParametersForPreviewView:view];
 
   v9 = objc_alloc(MEMORY[0x1E69DD068]);
-  v10 = [v6 view];
+  view2 = [interactionCopy view];
 
-  v11 = [v9 initWithView:v10 parameters:v8];
+  v11 = [v9 initWithView:view2 parameters:v8];
 
   return v11;
 }
 
 - (void)sendDragFeedback
 {
-  v6 = [(SearchUIDragSource *)self feedbackDelegate];
-  v3 = [(SearchUIDragSource *)self dragObject];
-  v4 = [v3 identifyingResult];
+  feedbackDelegate = [(SearchUIDragSource *)self feedbackDelegate];
+  dragObject = [(SearchUIDragSource *)self dragObject];
+  identifyingResult = [dragObject identifyingResult];
 
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (identifyingResult && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69CA368]) initWithResult:v4 triggerEvent:18 destination:0];
-    [v6 didEngageResult:v5];
+    v5 = [objc_alloc(MEMORY[0x1E69CA368]) initWithResult:identifyingResult triggerEvent:18 destination:0];
+    [feedbackDelegate didEngageResult:v5];
   }
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   [(SearchUIDragSource *)self sendDragFeedback];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"SearchUIWillInitiateDragNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SearchUIWillInitiateDragNotification" object:0 userInfo:0];
 
-  v7 = [v5 items];
+  items = [beginCopy items];
 
-  v8 = [v7 firstObject];
+  firstObject = [items firstObject];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__SearchUIDragSource_dragInteraction_sessionWillBegin___block_invoke;
   v9[3] = &unk_1E85B2AA0;
   v9[4] = self;
-  [v8 setPreviewProvider:v9];
+  [firstObject setPreviewProvider:v9];
 }
 
 id __55__SearchUIDragSource_dragInteraction_sessionWillBegin___block_invoke(uint64_t a1)
@@ -304,29 +304,29 @@ LABEL_9:
   return v9;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = [(SearchUIDragSource *)self dragObject:a3];
-  v6 = [v5 identifyingResult];
-  v7 = [v6 applicationBundleIdentifier];
+  v5 = [(SearchUIDragSource *)self dragObject:interaction];
+  identifyingResult = [v5 identifyingResult];
+  applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
 
-  if (v7)
+  if (applicationBundleIdentifier)
   {
-    v8 = [v7 hasPrefix:@"com.apple."];
-    v9 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v10 = [v9 dragDropSourceManagementStateForBundleID:v7];
+    v8 = [applicationBundleIdentifier hasPrefix:@"com.apple."];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    v10 = [mEMORY[0x1E69ADFB8] dragDropSourceManagementStateForBundleID:applicationBundleIdentifier];
     if (v8)
     {
 
-      v11 = [MEMORY[0x1E69ADFB8] sharedConnection];
-      v12 = [v11 isOpenInRestrictionInEffect];
+      mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+      isOpenInRestrictionInEffect = [mEMORY[0x1E69ADFB8]2 isOpenInRestrictionInEffect];
 
-      v13 = 0;
-      if (v10 && v12)
+      dataOwnerType = 0;
+      if (v10 && isOpenInRestrictionInEffect)
       {
-        v14 = [(SearchUIDragSource *)self dragObject];
-        v15 = [v14 identifyingResult];
-        v13 = [v15 dataOwnerType];
+        dragObject = [(SearchUIDragSource *)self dragObject];
+        identifyingResult2 = [dragObject identifyingResult];
+        dataOwnerType = [identifyingResult2 dataOwnerType];
       }
     }
 
@@ -335,22 +335,22 @@ LABEL_9:
 
       if (v10 == 1)
       {
-        v13 = 2;
+        dataOwnerType = 2;
       }
 
       else
       {
-        v13 = v10 == 0;
+        dataOwnerType = v10 == 0;
       }
     }
   }
 
   else
   {
-    v13 = 0;
+    dataOwnerType = 0;
   }
 
-  return v13;
+  return dataOwnerType;
 }
 
 - (SearchUIFeedbackDelegateInternal)feedbackDelegate

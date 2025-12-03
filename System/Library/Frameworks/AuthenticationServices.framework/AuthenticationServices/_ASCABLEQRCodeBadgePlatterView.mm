@@ -1,15 +1,15 @@
 @interface _ASCABLEQRCodeBadgePlatterView
-- (_ASCABLEQRCodeBadgePlatterView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_ASCABLEQRCodeBadgePlatterView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _ASCABLEQRCodeBadgePlatterView
 
-- (_ASCABLEQRCodeBadgePlatterView)initWithFrame:(CGRect)a3
+- (_ASCABLEQRCodeBadgePlatterView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _ASCABLEQRCodeBadgePlatterView;
-  v3 = [(_ASCABLEQRCodeBadgePlatterView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_ASCABLEQRCodeBadgePlatterView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,9 +20,9 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(_ASCABLEQRCodeBadgePlatterView *)self bounds:a3.origin.x];
+  [(_ASCABLEQRCodeBadgePlatterView *)self bounds:rect.origin.x];
   v16 = CGRectInset(v15, 1.0, 1.0);
   x = v16.origin.x;
   y = v16.origin.y;
@@ -41,8 +41,8 @@
   [v11 setFill];
 
   [v10 fill];
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  [v12 setStroke];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor setStroke];
 
   [v13 stroke];
 }

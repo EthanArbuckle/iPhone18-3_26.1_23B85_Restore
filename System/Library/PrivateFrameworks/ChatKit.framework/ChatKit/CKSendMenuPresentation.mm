@@ -1,60 +1,60 @@
 @interface CKSendMenuPresentation
 + (BOOL)_shouldUseZoomTransitionForSendMenuPopover;
 - (CGRect)lastAnchorViewRectInWindow;
-- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)a3 presentingViewController:(id)a4 appCardContentViewController:(id)a5 appCardPresentationStyle:(unint64_t)a6 delegate:(id)a7;
-- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)a3 presentingViewController:(id)a4 sendMenuViewController:(id)a5 delegate:(id)a6;
+- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)context presentingViewController:(id)controller appCardContentViewController:(id)viewController appCardPresentationStyle:(unint64_t)style delegate:(id)delegate;
+- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)context presentingViewController:(id)controller sendMenuViewController:(id)viewController delegate:(id)delegate;
 - (CKSendMenuPresentationDelegate)delegate;
 - (UIViewController)presentingViewController;
 - (_TtC7ChatKit40CKSendMenuPopoverContainerViewController)popoverContainerViewController;
 - (id)newPopoverLayoutMetrics;
-- (void)__dismissPopoverPresentationAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_beginFullscreenPresentationWithCompletion:(id)a3;
-- (void)_beginPopoverPresentationWithCompletion:(id)a3;
+- (void)__dismissPopoverPresentationAnimated:(BOOL)animated completion:(id)completion;
+- (void)_beginFullscreenPresentationWithCompletion:(id)completion;
+- (void)_beginPopoverPresentationWithCompletion:(id)completion;
 - (void)_cleanUpSendMenuPresentation;
 - (void)_delegateDidDismissSendMenu;
-- (void)_dismissFullscreenPresentationAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_dismissPopoverPresentationAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_dismissFullscreenPresentationAnimated:(BOOL)animated completion:(id)completion;
+- (void)_dismissPopoverPresentationAnimated:(BOOL)animated completion:(id)completion;
 - (void)_layoutFullScreenSendMenuView;
-- (void)beginPresentationWithCompletion:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
+- (void)beginPresentationWithCompletion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
 - (void)enforceSendMenuOrderingInWindowSubviews;
 - (void)informSendMenuOfAnchorViewPositionChangeIfNecessary;
 - (void)layout;
-- (void)presentCardWithContentViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentCardWithContentViewController:(id)controller style:(unint64_t)style completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)rePresentSendMenu;
 - (void)removeSendMenuFromViewHierarchy;
 - (void)requestDismissKeyboardSnapshotForSendMenuIfNeeded;
-- (void)sendMenuFrameChanged:(CGRect)a3;
-- (void)sendMenuHasInitialFrame:(CGRect)a3;
-- (void)sendMenuPresentationControllerWantsToBeDismissed:(id)a3;
-- (void)sendMenuPresentationControllerWillDismiss:(id)a3;
+- (void)sendMenuFrameChanged:(CGRect)changed;
+- (void)sendMenuHasInitialFrame:(CGRect)frame;
+- (void)sendMenuPresentationControllerWantsToBeDismissed:(id)dismissed;
+- (void)sendMenuPresentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation CKSendMenuPresentation
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 presentedViewController];
-  v6 = [v5 transitionCoordinator];
-  v7 = [v6 initiallyInteractive];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  initiallyInteractive = [transitionCoordinator initiallyInteractive];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v12 = v5;
+      v12 = presentedViewController;
       v13 = 1024;
-      v14 = v7;
+      v14 = initiallyInteractive;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Send menu will dismiss, vc=%@, isInitiallyInteractive=%{BOOL}d", buf, 0x12u);
     }
   }
 
-  if (v7)
+  if (initiallyInteractive)
   {
     objc_initWeak(buf, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -62,7 +62,7 @@
     v9[2] = __60__CKSendMenuPresentation_presentationControllerWillDismiss___block_invoke;
     v9[3] = &unk_1E72F3630;
     objc_copyWeak(&v10, buf);
-    [v6 notifyWhenInteractionChangesUsingBlock:v9];
+    [transitionCoordinator notifyWhenInteractionChangesUsingBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
   }
@@ -110,13 +110,13 @@ void __60__CKSendMenuPresentation_presentationControllerWillDismiss___block_invo
 - (void)_cleanUpSendMenuPresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v4)
+  if (isPopoverSendMenuEnabled)
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     if (IMOSLoggingEnabled())
     {
@@ -124,7 +124,7 @@ void __60__CKSendMenuPresentation_presentationControllerWillDismiss___block_invo
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v18 = v6;
+        v18 = uUIDString;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "presentationControllerWillDismiss: Scheduling kb snapshot removal for id={%@}", buf, 0xCu);
       }
     }
@@ -134,9 +134,9 @@ void __60__CKSendMenuPresentation_presentationControllerWillDismiss___block_invo
     v12 = 3221225472;
     v13 = __54__CKSendMenuPresentation__cleanUpSendMenuPresentation__block_invoke;
     v14 = &unk_1E72EB8D0;
-    v15 = v6;
-    v16 = self;
-    v9 = v6;
+    v15 = uUIDString;
+    selfCopy = self;
+    v9 = uUIDString;
     dispatch_after(v8, MEMORY[0x1E69E96A0], &v11);
     v10 = [(CKSendMenuPopoverViewController *)self->_popoverRootViewController presentationController:v11];
     [(CKSendMenuPresentation *)self sendMenuPresentationControllerWillDismiss:v10];
@@ -161,92 +161,92 @@ uint64_t __54__CKSendMenuPresentation__cleanUpSendMenuPresentation__block_invoke
   return [*(a1 + 40) requestDismissKeyboardSnapshotForSendMenuIfNeeded];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sendMenuPresentationDidDismiss:self];
 }
 
-- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)a3 presentingViewController:(id)a4 sendMenuViewController:(id)a5 delegate:(id)a6
+- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)context presentingViewController:(id)controller sendMenuViewController:(id)viewController delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = CKSendMenuPresentation;
   v15 = [(CKSendMenuPresentation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_overlayPresentationContext, a3);
-    objc_storeWeak(&v16->_presentingViewController, v12);
-    objc_storeStrong(&v16->_sendMenuViewController, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_overlayPresentationContext, context);
+    objc_storeWeak(&v16->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v16->_sendMenuViewController, viewController);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v16->_presentationState = 0;
   }
 
   return v16;
 }
 
-- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)a3 presentingViewController:(id)a4 appCardContentViewController:(id)a5 appCardPresentationStyle:(unint64_t)a6 delegate:(id)a7
+- (CKSendMenuPresentation)initWithOverlayPresentationContext:(id)context presentingViewController:(id)controller appCardContentViewController:(id)viewController appCardPresentationStyle:(unint64_t)style delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  contextCopy = context;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CKSendMenuPresentation;
   v17 = [(CKSendMenuPresentation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_overlayPresentationContext, a3);
-    objc_storeWeak(&v18->_presentingViewController, v14);
-    objc_storeStrong(&v18->_appCardContentViewController, a5);
-    v18->_appCardPresentationStyle = a6;
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_overlayPresentationContext, context);
+    objc_storeWeak(&v18->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v18->_appCardContentViewController, viewController);
+    v18->_appCardPresentationStyle = style;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v18->_presentationState = 0;
   }
 
   return v18;
 }
 
-- (void)beginPresentationWithCompletion:(id)a3
+- (void)beginPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_presentationState)
   {
     self->_presentationState = 1;
-    v6 = [(CKSendMenuPresentation *)self presentingViewController];
-    v7 = [v6 traitCollection];
+    presentingViewController = [(CKSendMenuPresentation *)self presentingViewController];
+    traitCollection = [presentingViewController traitCollection];
 
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __58__CKSendMenuPresentation_beginPresentationWithCompletion___block_invoke;
     v16 = &unk_1E72ED1C8;
-    v17 = self;
+    selfCopy = self;
     v18 = v5;
     v8 = _Block_copy(&v13);
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isPopoverSendMenuEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-    if (v10)
+    if (isPopoverSendMenuEnabled)
     {
       goto LABEL_6;
     }
 
-    v11 = [(CKSendMenuPresentation *)self overlayPresentationContext];
-    v12 = [v11 presentationStyle];
+    overlayPresentationContext = [(CKSendMenuPresentation *)self overlayPresentationContext];
+    presentationStyle = [overlayPresentationContext presentationStyle];
 
-    if (!v12)
+    if (!presentationStyle)
     {
       [(CKSendMenuPresentation *)self _beginFullscreenPresentationWithCompletion:v8];
       goto LABEL_7;
     }
 
-    if (v12 == 1)
+    if (presentationStyle == 1)
     {
 LABEL_6:
       [(CKSendMenuPresentation *)self _beginPopoverPresentationWithCompletion:v8];
@@ -257,7 +257,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  (*(v4 + 2))(v4);
+  (*(completionCopy + 2))(completionCopy);
 LABEL_8:
 }
 
@@ -285,16 +285,16 @@ void __68__CKSendMenuPresentation__shouldUseZoomTransitionForSendMenuPopover__bl
   _shouldUseZoomTransitionForSendMenuPopover_zoomDisabled = [v0 BOOLForKey:@"ChatKitSendMenuPopoverZoomTransitionDisabled"];
 }
 
-- (void)_beginPopoverPresentationWithCompletion:(id)a3
+- (void)_beginPopoverPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isPopoverSendMenuEnabled];
+  completionCopy = completion;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v6)
+  if (isPopoverSendMenuEnabled)
   {
-    v7 = [(CKSendMenuPresentation *)self delegate];
-    v8 = [v7 sendMenuPresentationShouldUseKeyboardSnapshot:self];
+    delegate = [(CKSendMenuPresentation *)self delegate];
+    v8 = [delegate sendMenuPresentationShouldUseKeyboardSnapshot:self];
 
     if (v8)
     {
@@ -310,14 +310,14 @@ void __68__CKSendMenuPresentation__shouldUseZoomTransitionForSendMenuPopover__bl
     v10 = objc_alloc_init(CKSendMenuPopoverViewController);
     [(CKSendMenuPresentation *)self setPopoverRootViewController:v10];
 
-    v11 = [(CKSendMenuPresentation *)self popoverRootViewController];
-    [v11 setDelegate:self];
+    popoverRootViewController = [(CKSendMenuPresentation *)self popoverRootViewController];
+    [popoverRootViewController setDelegate:self];
 
     v12 = objc_alloc_init(CKSendMenuPopoverTransitioningDelegate);
     [(CKSendMenuPresentation *)self setSendMenuTransitioningDelegate:v12];
 
-    v13 = [(CKSendMenuPresentation *)self sendMenuTransitioningDelegate];
-    [(CKSendMenuPopoverViewController *)self->_popoverRootViewController setTransitioningDelegate:v13];
+    sendMenuTransitioningDelegate = [(CKSendMenuPresentation *)self sendMenuTransitioningDelegate];
+    [(CKSendMenuPopoverViewController *)self->_popoverRootViewController setTransitioningDelegate:sendMenuTransitioningDelegate];
 
     [(CKSendMenuPopoverViewController *)self->_popoverRootViewController setModalPresentationStyle:4];
   }
@@ -331,26 +331,26 @@ void __68__CKSendMenuPresentation__shouldUseZoomTransitionForSendMenuPopover__bl
     v17 = v16;
     v19 = v18;
 
-    v20 = [(CKSendMenuPresentation *)self sendMenuViewController];
-    v21 = [v20 view];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:1];
+    sendMenuViewController = [(CKSendMenuPresentation *)self sendMenuViewController];
+    view = [sendMenuViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-    v22 = [(CKSendMenuPresentation *)self sendMenuViewController];
-    v23 = [v22 view];
-    [v23 setAutoresizingMask:0];
+    sendMenuViewController2 = [(CKSendMenuPresentation *)self sendMenuViewController];
+    view2 = [sendMenuViewController2 view];
+    [view2 setAutoresizingMask:0];
 
-    v24 = [(CKSendMenuPresentation *)self sendMenuViewController];
-    v25 = [v24 view];
-    [v25 setFrame:{0.0, 0.0, v17, v19}];
+    sendMenuViewController3 = [(CKSendMenuPresentation *)self sendMenuViewController];
+    view3 = [sendMenuViewController3 view];
+    [view3 setFrame:{0.0, 0.0, v17, v19}];
 
-    v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LOBYTE(v25) = [v26 isPopoverSendMenuEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LOBYTE(view3) = [mEMORY[0x1E69A8070]2 isPopoverSendMenuEnabled];
 
-    if ((v25 & 1) == 0)
+    if ((view3 & 1) == 0)
     {
-      v27 = [(CKSendMenuPresentation *)self popoverRootViewController];
-      v28 = [v27 view];
-      [v28 setFrame:{0.0, 0.0, v17, v19}];
+      popoverRootViewController2 = [(CKSendMenuPresentation *)self popoverRootViewController];
+      view4 = [popoverRootViewController2 view];
+      [view4 setFrame:{0.0, 0.0, v17, v19}];
     }
   }
 
@@ -359,44 +359,44 @@ void __68__CKSendMenuPresentation__shouldUseZoomTransitionForSendMenuPopover__bl
     [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext willPresentAppCard];
   }
 
-  v29 = [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext anchorView];
-  v30 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v31 = [v30 isPopoverSendMenuEnabled];
+  anchorView = [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext anchorView];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled2 = [mEMORY[0x1E69A8070]3 isPopoverSendMenuEnabled];
 
-  if (v31)
+  if (isPopoverSendMenuEnabled2)
   {
-    v32 = [(CKSendMenuPresentation *)self popoverContainerViewController];
-    [(CKSendMenuPopoverViewController *)v32 setDelegate:self];
+    popoverContainerViewController = [(CKSendMenuPresentation *)self popoverContainerViewController];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController setDelegate:self];
     appCardContentViewController = self->_sendMenuViewController;
     if (!appCardContentViewController)
     {
       appCardContentViewController = self->_appCardContentViewController;
     }
 
-    [(CKSendMenuPopoverViewController *)v32 updateChildViewController:appCardContentViewController style:self->_appCardPresentationStyle completion:&__block_literal_global_210_0];
-    v34 = [(CKSendMenuPopoverViewController *)v32 presentationController];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController updateChildViewController:appCardContentViewController style:self->_appCardPresentationStyle completion:&__block_literal_global_210_0];
+    presentationController = [(CKSendMenuPopoverViewController *)popoverContainerViewController presentationController];
     if (objc_opt_respondsToSelector())
     {
       v35 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:0];
       [v35 setSubvariant:@"messagesTapback"];
       [v35 setFlexible:1];
       v36 = [MEMORY[0x1E69DCA68] effectWithGlass:v35];
-      [v34 setBackgroundEffect:v36];
+      [presentationController setBackgroundEffect:v36];
     }
 
     v37 = self->_sendMenuViewController;
     if (v37)
     {
       [(CKSendMenuViewController *)v37 preferredContentSize];
-      [(CKSendMenuPopoverViewController *)v32 setPreferredContentSize:?];
+      [(CKSendMenuPopoverViewController *)popoverContainerViewController setPreferredContentSize:?];
     }
 
-    [v34 setDelegate:self];
-    [v34 setSourceView:v29];
-    [v34 _setIgnoresKeyboardNotifications:1];
+    [presentationController setDelegate:self];
+    [presentationController setSourceView:anchorView];
+    [presentationController _setIgnoresKeyboardNotifications:1];
     if ([objc_opt_class() _shouldUseZoomTransitionForSendMenuPopover])
     {
-      objc_initWeak(&location, v29);
+      objc_initWeak(&location, anchorView);
       v38 = MEMORY[0x1E69DD260];
       v47 = MEMORY[0x1E69E9820];
       v48 = 3221225472;
@@ -404,58 +404,58 @@ void __68__CKSendMenuPresentation__shouldUseZoomTransitionForSendMenuPopover__bl
       v50 = &unk_1E72F3658;
       objc_copyWeak(&v51, &location);
       v39 = [v38 zoomWithOptions:0 sourceViewProvider:&v47];
-      [(CKSendMenuPopoverViewController *)v32 setPreferredTransition:v39, v47, v48, v49, v50];
-      v40 = [v29 traitCollection];
-      if ([v40 isTranscriptBackgroundActive] && objc_msgSend(v40, "isDiffusedSystemGlassSettingEnabled"))
+      [(CKSendMenuPopoverViewController *)popoverContainerViewController setPreferredTransition:v39, v47, v48, v49, v50];
+      traitCollection = [anchorView traitCollection];
+      if ([traitCollection isTranscriptBackgroundActive] && objc_msgSend(traitCollection, "isDiffusedSystemGlassSettingEnabled"))
       {
-        v41 = [v40 ck_systemUserInterfaceStyle];
+        ck_systemUserInterfaceStyle = [traitCollection ck_systemUserInterfaceStyle];
       }
 
       else
       {
-        v41 = 0;
+        ck_systemUserInterfaceStyle = 0;
       }
 
-      [(CKSendMenuPopoverViewController *)v32 setOverrideUserInterfaceStyle:v41];
+      [(CKSendMenuPopoverViewController *)popoverContainerViewController setOverrideUserInterfaceStyle:ck_systemUserInterfaceStyle];
 
       objc_destroyWeak(&v51);
       objc_destroyWeak(&location);
     }
 
-    v44 = self->_appCardContentViewController;
-    if (!v44 || !self->_sendMenuViewController)
+    presentingViewController2 = self->_appCardContentViewController;
+    if (!presentingViewController2 || !self->_sendMenuViewController)
     {
-      v46 = [(CKSendMenuPresentation *)self presentingViewController];
-      [v46 presentViewController:v32 animated:1 completion:v4];
+      presentingViewController = [(CKSendMenuPresentation *)self presentingViewController];
+      [presentingViewController presentViewController:popoverContainerViewController animated:1 completion:completionCopy];
 
       goto LABEL_30;
     }
 
-    popoverRootViewController = v32;
+    popoverRootViewController = popoverContainerViewController;
   }
 
   else
   {
-    v32 = [(CKSendMenuPopoverViewController *)self->_popoverRootViewController presentationController];
+    popoverContainerViewController = [(CKSendMenuPopoverViewController *)self->_popoverRootViewController presentationController];
     v42 = [CKSendMenuPopoverPresentationControllerAnchorItem alloc];
-    [v29 bounds];
-    v43 = [(CKSendMenuPopoverPresentationControllerAnchorItem *)v42 initWithView:v29 rect:?];
-    [(CKSendMenuPopoverViewController *)v32 setAnchorItem:v43];
+    [anchorView bounds];
+    v43 = [(CKSendMenuPopoverPresentationControllerAnchorItem *)v42 initWithView:anchorView rect:?];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController setAnchorItem:v43];
 
-    [(CKSendMenuPopoverViewController *)v32 setDelegate:self];
-    [(CKSendMenuPopoverViewController *)v32 setSendMenuViewController:self->_sendMenuViewController];
-    [(CKSendMenuPopoverViewController *)v32 setAppCardContentViewController:self->_appCardContentViewController];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController setDelegate:self];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController setSendMenuViewController:self->_sendMenuViewController];
+    [(CKSendMenuPopoverViewController *)popoverContainerViewController setAppCardContentViewController:self->_appCardContentViewController];
     if (self->_appCardContentViewController)
     {
-      [(CKSendMenuPopoverViewController *)v32 setAppCardPresentationStyle:self->_appCardPresentationStyle];
+      [(CKSendMenuPopoverViewController *)popoverContainerViewController setAppCardPresentationStyle:self->_appCardPresentationStyle];
     }
 
-    v44 = [(CKSendMenuPresentation *)self presentingViewController];
-    v34 = v44;
+    presentingViewController2 = [(CKSendMenuPresentation *)self presentingViewController];
+    presentationController = presentingViewController2;
     popoverRootViewController = self->_popoverRootViewController;
   }
 
-  [v44 presentViewController:popoverRootViewController animated:1 completion:v4];
+  [presentingViewController2 presentViewController:popoverRootViewController animated:1 completion:completionCopy];
 LABEL_30:
 }
 
@@ -493,8 +493,8 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
         return;
       }
 
-      v3 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      sendMenuViewController = IMLogHandleForCategory();
+      if (os_log_type_enabled(sendMenuViewController, OS_LOG_TYPE_ERROR))
       {
         [CKSendMenuPresentation rePresentSendMenu];
       }
@@ -502,8 +502,8 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
 
     else
     {
-      v3 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      sendMenuViewController = IMLogHandleForCategory();
+      if (os_log_type_enabled(sendMenuViewController, OS_LOG_TYPE_ERROR))
       {
         [CKSendMenuPresentation rePresentSendMenu];
       }
@@ -515,8 +515,8 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
     switch(presentationState)
     {
       case 2:
-        v3 = IMLogHandleForCategory();
-        if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+        sendMenuViewController = IMLogHandleForCategory();
+        if (os_log_type_enabled(sendMenuViewController, OS_LOG_TYPE_ERROR))
         {
           [CKSendMenuPresentation rePresentSendMenu];
         }
@@ -530,13 +530,13 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
         }
 
         self->_presentationState = 1;
-        v3 = [(CKSendMenuPresentation *)self sendMenuViewController];
-        [v3 rePresentSendMenu];
+        sendMenuViewController = [(CKSendMenuPresentation *)self sendMenuViewController];
+        [sendMenuViewController rePresentSendMenu];
         self->_presentationState = 2;
         break;
       case 4:
-        v3 = IMLogHandleForCategory();
-        if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+        sendMenuViewController = IMLogHandleForCategory();
+        if (os_log_type_enabled(sendMenuViewController, OS_LOG_TYPE_ERROR))
         {
           [CKSendMenuPresentation rePresentSendMenu];
         }
@@ -548,38 +548,38 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
   }
 }
 
-- (void)_beginFullscreenPresentationWithCompletion:(id)a3
+- (void)_beginFullscreenPresentationWithCompletion:(id)completion
 {
-  v21 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained requestShowKeyboardSnapshotForSendMenu];
 
   self->_hasRequestedKeyboardSnapshot = 1;
   v5 = objc_loadWeakRetained(&self->_presentingViewController);
-  v6 = [v5 view];
-  v7 = [v6 window];
-  [v7 bounds];
+  view = [v5 view];
+  window = [view window];
+  [window bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  view2 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
+  [view2 setFrame:{v9, v11, v13, v15}];
 
   v17 = objc_loadWeakRetained(&self->_presentingViewController);
-  v18 = [v17 view];
-  v19 = [v18 window];
-  v20 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
-  [v19 addSubview:v20];
+  view3 = [v17 view];
+  window2 = [view3 window];
+  view4 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
+  [window2 addSubview:view4];
 
-  v21[2]();
+  completionCopy[2]();
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if (self->_overlayPresentationContext)
   {
     if ((self->_presentationState - 1) < 2)
@@ -591,29 +591,29 @@ id __66__CKSendMenuPresentation__beginPopoverPresentationWithCompletion___block_
       v16 = __53__CKSendMenuPresentation_dismissAnimated_completion___block_invoke;
       v17 = &unk_1E72F3680;
       objc_copyWeak(&v19, location);
-      v18 = v6;
+      v18 = completionCopy;
       v7 = _Block_copy(&v14);
-      v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v9 = [v8 isPopoverSendMenuEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-      if (v9)
+      if (isPopoverSendMenuEnabled)
       {
         goto LABEL_4;
       }
 
-      v12 = [(CKSendMenuPresentation *)self overlayPresentationContext];
-      v13 = [v12 presentationStyle];
+      overlayPresentationContext = [(CKSendMenuPresentation *)self overlayPresentationContext];
+      presentationStyle = [overlayPresentationContext presentationStyle];
 
-      if (!v13)
+      if (!presentationStyle)
       {
-        [(CKSendMenuPresentation *)self _dismissFullscreenPresentationAnimated:v4 completion:v7];
+        [(CKSendMenuPresentation *)self _dismissFullscreenPresentationAnimated:animatedCopy completion:v7];
         goto LABEL_13;
       }
 
-      if (v13 == 1)
+      if (presentationStyle == 1)
       {
 LABEL_4:
-        [(CKSendMenuPresentation *)self _dismissPopoverPresentationAnimated:v4 completion:v7];
+        [(CKSendMenuPresentation *)self _dismissPopoverPresentationAnimated:animatedCopy completion:v7];
       }
 
 LABEL_13:
@@ -662,25 +662,25 @@ uint64_t __53__CKSendMenuPresentation_dismissAnimated_completion___block_invoke(
   return result;
 }
 
-- (void)__dismissPopoverPresentationAnimated:(BOOL)a3 completion:(id)a4
+- (void)__dismissPopoverPresentationAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isPopoverSendMenuEnabled];
+  animatedCopy = animated;
+  completionCopy = completion;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v8)
+  if (isPopoverSendMenuEnabled)
   {
-    v9 = [(CKSendMenuPresentation *)self popoverContainerViewController];
+    popoverContainerViewController = [(CKSendMenuPresentation *)self popoverContainerViewController];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_completion___block_invoke;
     v16[3] = &unk_1E72EE5D8;
     v10 = &v17;
     v16[4] = self;
-    v17 = v6;
-    v11 = v6;
-    [v9 dismissViewControllerAnimated:v4 completion:v16];
+    v17 = completionCopy;
+    v11 = completionCopy;
+    [popoverContainerViewController dismissViewControllerAnimated:animatedCopy completion:v16];
   }
 
   else
@@ -692,9 +692,9 @@ uint64_t __53__CKSendMenuPresentation_dismissAnimated_completion___block_invoke(
     v14[3] = &unk_1E72EE5D8;
     v10 = &v15;
     v14[4] = self;
-    v15 = v6;
-    v13 = v6;
-    [(CKSendMenuPopoverViewController *)popoverRootViewController dismissViewControllerAnimated:v4 completion:v14];
+    v15 = completionCopy;
+    v13 = completionCopy;
+    [(CKSendMenuPopoverViewController *)popoverRootViewController dismissViewControllerAnimated:animatedCopy completion:v14];
   }
 }
 
@@ -716,13 +716,13 @@ uint64_t __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_compl
   return [v2 setPopoverRootViewController:0];
 }
 
-- (void)_dismissPopoverPresentationAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissPopoverPresentationAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (animated)
   {
-    [(CKSendMenuPresentation *)self __dismissPopoverPresentationAnimated:1 completion:v6];
+    [(CKSendMenuPresentation *)self __dismissPopoverPresentationAnimated:1 completion:completionCopy];
   }
 
   else
@@ -734,37 +734,37 @@ uint64_t __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_compl
     v9[3] = &unk_1E72F36A8;
     v9[4] = self;
     v11 = 0;
-    v10 = v6;
+    v10 = completionCopy;
     [v8 _performWithoutDeferringTransitions:v9];
   }
 }
 
-- (void)_dismissFullscreenPresentationAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissFullscreenPresentationAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v8 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
-    v6 = [(CKSendMenuPresentation *)self sendMenuViewController];
-    [v6 performFullScreenDismissAnimationWithCompletion:v8];
+    sendMenuViewController = [(CKSendMenuPresentation *)self sendMenuViewController];
+    [sendMenuViewController performFullScreenDismissAnimationWithCompletion:completionCopy];
 
-    v7 = v6;
+    v7 = sendMenuViewController;
   }
 
   else
   {
     [(CKSendMenuPresentation *)self removeSendMenuFromViewHierarchy];
-    (*(v8 + 2))(v8, 1);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy, 1);
+    v7 = completionCopy;
   }
 }
 
 - (void)removeSendMenuFromViewHierarchy
 {
   [(CKSendMenuPresentation *)self requestDismissKeyboardSnapshotForSendMenuIfNeeded];
-  v3 = [(CKSendMenuPresentation *)self sendMenuViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  sendMenuViewController = [(CKSendMenuPresentation *)self sendMenuViewController];
+  view = [sendMenuViewController view];
+  [view removeFromSuperview];
 
   sendMenuViewController = self->_sendMenuViewController;
 
@@ -784,15 +784,15 @@ uint64_t __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_compl
 
 - (void)layout
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isPopoverSendMenuEnabled & 1) == 0)
   {
-    v5 = [(CKSendMenuPresentation *)self overlayPresentationContext];
-    v6 = [v5 presentationStyle];
+    overlayPresentationContext = [(CKSendMenuPresentation *)self overlayPresentationContext];
+    presentationStyle = [overlayPresentationContext presentationStyle];
 
-    if (!v6)
+    if (!presentationStyle)
     {
       [(CKSendMenuPresentation *)self _layoutFullScreenSendMenuView];
     }
@@ -803,19 +803,19 @@ uint64_t __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_compl
 
 - (void)informSendMenuOfAnchorViewPositionChangeIfNecessary
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isPopoverSendMenuEnabled & 1) == 0)
   {
-    v22 = [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext anchorView];
-    [v22 bounds];
+    anchorView = [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext anchorView];
+    [anchorView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v22 window];
-    [v22 convertRect:v13 toView:{v6, v8, v10, v12}];
+    window = [anchorView window];
+    [anchorView convertRect:window toView:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -839,50 +839,50 @@ uint64_t __74__CKSendMenuPresentation___dismissPopoverPresentationAnimated_compl
 
 - (void)_layoutFullScreenSendMenuView
 {
-  v14 = [(CKSendMenuPresentation *)self presentingViewController];
-  v3 = [v14 view];
-  v4 = [v3 window];
-  [v4 bounds];
+  presentingViewController = [(CKSendMenuPresentation *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  [window bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 }
 
 - (void)_delegateDidDismissSendMenu
 {
   [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext didDismissSendMenuPresentation];
-  v4 = [(CKSendMenuPresentation *)self delegate];
-  v3 = [(CKSendMenuPresentation *)self overlayPresentationContext];
-  [v4 didDismissSendMenu:self usingPresentationContext:v3];
+  delegate = [(CKSendMenuPresentation *)self delegate];
+  overlayPresentationContext = [(CKSendMenuPresentation *)self overlayPresentationContext];
+  [delegate didDismissSendMenu:self usingPresentationContext:overlayPresentationContext];
 }
 
-- (void)presentCardWithContentViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)presentCardWithContentViewController:(id)controller style:(unint64_t)style completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69A8070];
-  v10 = a3;
-  v11 = [v9 sharedFeatureFlags];
-  v12 = [v11 isPopoverSendMenuEnabled];
+  controllerCopy = controller;
+  sharedFeatureFlags = [v9 sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [sharedFeatureFlags isPopoverSendMenuEnabled];
 
-  if (v12)
+  if (isPopoverSendMenuEnabled)
   {
-    v13 = [(CKSendMenuPresentation *)self popoverContainerViewController];
+    popoverContainerViewController = [(CKSendMenuPresentation *)self popoverContainerViewController];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __80__CKSendMenuPresentation_presentCardWithContentViewController_style_completion___block_invoke;
     v14[3] = &unk_1E72EBDB8;
-    v15 = v8;
-    [v13 updateChildViewController:v10 style:a4 completion:v14];
+    v15 = completionCopy;
+    [popoverContainerViewController updateChildViewController:controllerCopy style:style completion:v14];
   }
 
   else
   {
     [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext willPresentAppCard];
-    v13 = [(CKSendMenuPopoverViewController *)self->_popoverRootViewController presentationController];
-    [v13 presentCardWithContentViewController:v10 style:a4 completion:v8];
+    popoverContainerViewController = [(CKSendMenuPopoverViewController *)self->_popoverRootViewController presentationController];
+    [popoverContainerViewController presentCardWithContentViewController:controllerCopy style:style completion:completionCopy];
   }
 }
 
@@ -899,64 +899,64 @@ uint64_t __80__CKSendMenuPresentation_presentCardWithContentViewController_style
 
 - (void)enforceSendMenuOrderingInWindowSubviews
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isPopoverSendMenuEnabled & 1) == 0)
   {
-    v5 = [(CKSendMenuPresentation *)self overlayPresentationContext];
-    v6 = [v5 presentationStyle];
+    overlayPresentationContext = [(CKSendMenuPresentation *)self overlayPresentationContext];
+    presentationStyle = [overlayPresentationContext presentationStyle];
 
-    if (!v6)
+    if (!presentationStyle)
     {
       WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-      v7 = [WeakRetained view];
-      v8 = [v7 window];
-      v9 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
-      [v8 bringSubviewToFront:v9];
+      view = [WeakRetained view];
+      window = [view window];
+      view2 = [(CKSendMenuViewController *)self->_sendMenuViewController view];
+      [window bringSubviewToFront:view2];
     }
   }
 }
 
 - (id)newPopoverLayoutMetrics
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v4)
+  if (isPopoverSendMenuEnabled)
   {
     popoverContainerViewController = self->_popoverContainerViewController;
     if (popoverContainerViewController)
     {
-      v6 = [(CKSendMenuPopoverContainerViewController *)popoverContainerViewController view];
-      v7 = [(CKSendMenuPopoverContainerViewController *)self->_popoverContainerViewController view];
-      [v7 bounds];
+      view = [(CKSendMenuPopoverContainerViewController *)popoverContainerViewController view];
+      view2 = [(CKSendMenuPopoverContainerViewController *)self->_popoverContainerViewController view];
+      [view2 bounds];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(CKSendMenuPresentation *)self presentingViewController];
-      v17 = [v16 view];
-      [v6 convertRect:v17 toView:{v9, v11, v13, v15}];
+      presentingViewController = [(CKSendMenuPresentation *)self presentingViewController];
+      view3 = [presentingViewController view];
+      [view convertRect:view3 toView:{v9, v11, v13, v15}];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
 
       v26 = self->_popoverContainerViewController;
-      v27 = [(CKSendMenuPopoverContainerViewController *)v26 childViewControllers];
-      v28 = [v27 firstObject];
-      LODWORD(v17) = v28 != self->_sendMenuViewController;
+      childViewControllers = [(CKSendMenuPopoverContainerViewController *)v26 childViewControllers];
+      firstObject = [childViewControllers firstObject];
+      LODWORD(view3) = firstObject != self->_sendMenuViewController;
 
-      v29 = 2 * v17;
+      v29 = 2 * view3;
       v30 = [CKPopoverViewLayoutMetrics alloc];
-      v31 = [(CKSendMenuPresentation *)self presentingViewController];
-      v32 = [v31 view];
-      v33 = [v32 coordinateSpace];
-      v34 = [(CKPopoverViewLayoutMetrics *)v30 initWithState:v29 frame:v33 coordinateSpace:v19, v21, v23, v25];
+      presentingViewController2 = [(CKSendMenuPresentation *)self presentingViewController];
+      view4 = [presentingViewController2 view];
+      coordinateSpace = [view4 coordinateSpace];
+      newPopoverLayoutMetrics = [(CKPopoverViewLayoutMetrics *)v30 initWithState:v29 frame:coordinateSpace coordinateSpace:v19, v21, v23, v25];
 
 LABEL_10:
-      return v34;
+      return newPopoverLayoutMetrics;
     }
   }
 
@@ -965,15 +965,15 @@ LABEL_10:
     popoverRootViewController = self->_popoverRootViewController;
     if (popoverRootViewController)
     {
-      v31 = [(CKSendMenuPopoverViewController *)popoverRootViewController presentationController];
-      if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      presentingViewController2 = [(CKSendMenuPopoverViewController *)popoverRootViewController presentationController];
+      if (presentingViewController2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v34 = [v31 newPopoverLayoutMetrics];
+        newPopoverLayoutMetrics = [presentingViewController2 newPopoverLayoutMetrics];
       }
 
       else
       {
-        v34 = 0;
+        newPopoverLayoutMetrics = 0;
       }
 
       goto LABEL_10;
@@ -983,7 +983,7 @@ LABEL_10:
   return 0;
 }
 
-- (void)sendMenuPresentationControllerWantsToBeDismissed:(id)a3
+- (void)sendMenuPresentationControllerWantsToBeDismissed:(id)dismissed
 {
   if (self->_presentationState == 2)
   {
@@ -991,28 +991,28 @@ LABEL_10:
   }
 }
 
-- (void)sendMenuPresentationControllerWillDismiss:(id)a3
+- (void)sendMenuPresentationControllerWillDismiss:(id)dismiss
 {
   [(CKSceneOverlayPresentationContext *)self->_overlayPresentationContext willDismissSendMenuPresentation];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sendMenuPresentationWillDismiss:self];
 }
 
-- (void)sendMenuHasInitialFrame:(CGRect)a3
+- (void)sendMenuHasInitialFrame:(CGRect)frame
 {
   sendMenuHasInitialFrame = self->_sendMenuHasInitialFrame;
   if (sendMenuHasInitialFrame)
   {
-    sendMenuHasInitialFrame[2](a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+    sendMenuHasInitialFrame[2](frame.origin, *&frame.origin.y, frame.size, *&frame.size.height);
   }
 }
 
-- (void)sendMenuFrameChanged:(CGRect)a3
+- (void)sendMenuFrameChanged:(CGRect)changed
 {
   sendMenuFrameChanged = self->_sendMenuFrameChanged;
   if (sendMenuFrameChanged)
   {
-    sendMenuFrameChanged[2](a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+    sendMenuFrameChanged[2](changed.origin, *&changed.origin.y, changed.size, *&changed.size.height);
   }
 }
 

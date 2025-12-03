@@ -1,12 +1,12 @@
 @interface THBookLinkResolver
-- (THBookLinkResolver)initWithDocumentLinkResolver:(id)a3 glossaryLinkResolver:(id)a4;
-- (id)anchorFromAbsoluteLink:(id)a3 presentationType:(id)a4;
+- (THBookLinkResolver)initWithDocumentLinkResolver:(id)resolver glossaryLinkResolver:(id)linkResolver;
+- (id)anchorFromAbsoluteLink:(id)link presentationType:(id)type;
 - (void)dealloc;
 @end
 
 @implementation THBookLinkResolver
 
-- (THBookLinkResolver)initWithDocumentLinkResolver:(id)a3 glossaryLinkResolver:(id)a4
+- (THBookLinkResolver)initWithDocumentLinkResolver:(id)resolver glossaryLinkResolver:(id)linkResolver
 {
   v9.receiver = self;
   v9.super_class = THBookLinkResolver;
@@ -14,8 +14,8 @@
   v7 = v6;
   if (v6)
   {
-    [(THBookLinkResolver *)v6 setDocumentLinkResolver:a3];
-    [(THBookLinkResolver *)v7 setGlossaryLinkResolver:a4];
+    [(THBookLinkResolver *)v6 setDocumentLinkResolver:resolver];
+    [(THBookLinkResolver *)v7 setGlossaryLinkResolver:linkResolver];
   }
 
   return v7;
@@ -30,7 +30,7 @@
   [(THBookLinkResolver *)&v3 dealloc];
 }
 
-- (id)anchorFromAbsoluteLink:(id)a3 presentationType:(id)a4
+- (id)anchorFromAbsoluteLink:(id)link presentationType:(id)type
 {
   if (![(THBookLinkResolver *)self documentLinkResolver])
   {
@@ -42,22 +42,22 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  result = [(THDocumentLinkResolver *)[(THBookLinkResolver *)self documentLinkResolver] anchorFromCustomLink:a3 presentationType:a4];
+  result = [(THDocumentLinkResolver *)[(THBookLinkResolver *)self documentLinkResolver] anchorFromCustomLink:link presentationType:type];
   if (!result)
   {
-    if ([a3 isRelative])
+    if ([link isRelative])
     {
       return 0;
     }
 
     else
     {
-      result = [(THDocumentLinkResolver *)[(THBookLinkResolver *)self documentLinkResolver] anchorFromAbsoluteLink:a3 presentationType:a4];
+      result = [(THDocumentLinkResolver *)[(THBookLinkResolver *)self documentLinkResolver] anchorFromAbsoluteLink:link presentationType:type];
       if (!result)
       {
-        v8 = [(THBookLinkResolver *)self glossaryLinkResolver];
+        glossaryLinkResolver = [(THBookLinkResolver *)self glossaryLinkResolver];
 
-        return [(THGlossaryLinkResolver *)v8 anchorFromAbsoluteLink:a3];
+        return [(THGlossaryLinkResolver *)glossaryLinkResolver anchorFromAbsoluteLink:link];
       }
     }
   }

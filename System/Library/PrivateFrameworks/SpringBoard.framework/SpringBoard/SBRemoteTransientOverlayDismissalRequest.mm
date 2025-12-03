@@ -1,13 +1,13 @@
 @interface SBRemoteTransientOverlayDismissalRequest
-- (SBRemoteTransientOverlayDismissalRequest)initWithViewController:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBRemoteTransientOverlayDismissalRequest)initWithViewController:(id)controller;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBRemoteTransientOverlayDismissalRequest
 
-- (SBRemoteTransientOverlayDismissalRequest)initWithViewController:(id)a3
+- (SBRemoteTransientOverlayDismissalRequest)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBRemoteTransientOverlayDismissalRequest;
   v6 = [(SBRemoteTransientOverlayDismissalRequest *)&v9 init];
@@ -15,13 +15,13 @@
   if (v6)
   {
     v6->_animated = 1;
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithViewController:self->_viewController];
   v5 = v4;

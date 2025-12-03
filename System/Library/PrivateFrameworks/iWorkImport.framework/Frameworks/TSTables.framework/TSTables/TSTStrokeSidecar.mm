@@ -1,66 +1,66 @@
 @interface TSTStrokeSidecar
 - (BOOL)isEmpty;
-- (BOOL)mightHaveCellBorderAtCellID:(TSUCellCoord)a3;
-- (TSTStrokeSidecar)initWithTableModel:(id)a3;
+- (BOOL)mightHaveCellBorderAtCellID:(TSUCellCoord)d;
+- (TSTStrokeSidecar)initWithTableModel:(id)model;
 - (TSUCellRect)p_strokeRect;
-- (id)cellBorderAtCellID:(TSUCellCoord)a3;
-- (id)initForUpgradeWithTableModel:(id)a3;
-- (id)p_flattenMajorStrokeLayer:(id)a3 minorStrokeLayer:(id)a4;
-- (id)strokeLayerForBottomOfRow:(unsigned int)a3;
-- (id)strokeLayerForLeftSideOfColumn:(unsigned __int16)a3;
-- (id)strokeLayerForRightSideOfColumn:(unsigned __int16)a3;
-- (id)strokeLayerForTopOfRow:(unsigned int)a3;
-- (id)unretainedStrokeLayerForBottomOfRow:(unsigned int)a3;
-- (id)unretainedStrokeLayerForLeftSideOfColumn:(unsigned __int16)a3;
-- (id)unretainedStrokeLayerForRightSideOfColumn:(unsigned __int16)a3;
-- (id)unretainedStrokeLayerForTopOfRow:(unsigned int)a3;
-- (vector<TSTCellBorder)accumulateCellBordersConcurrentlyInRow:(TSTStrokeSidecar *)self atColumns:(SEL)a3;
-- (void)enumerateStrokesInRegion:(id)a3 usingTopStrokeBlock:(id)a4 usingBottomStrokeBlock:(id)a5 usingLeftStrokeBlock:(id)a6 usingRightStrokeBlock:(id)a7;
+- (id)cellBorderAtCellID:(TSUCellCoord)d;
+- (id)initForUpgradeWithTableModel:(id)model;
+- (id)p_flattenMajorStrokeLayer:(id)layer minorStrokeLayer:(id)strokeLayer;
+- (id)strokeLayerForBottomOfRow:(unsigned int)row;
+- (id)strokeLayerForLeftSideOfColumn:(unsigned __int16)column;
+- (id)strokeLayerForRightSideOfColumn:(unsigned __int16)column;
+- (id)strokeLayerForTopOfRow:(unsigned int)row;
+- (id)unretainedStrokeLayerForBottomOfRow:(unsigned int)row;
+- (id)unretainedStrokeLayerForLeftSideOfColumn:(unsigned __int16)column;
+- (id)unretainedStrokeLayerForRightSideOfColumn:(unsigned __int16)column;
+- (id)unretainedStrokeLayerForTopOfRow:(unsigned int)row;
+- (vector<TSTCellBorder)accumulateCellBordersConcurrentlyInRow:(TSTStrokeSidecar *)self atColumns:(SEL)columns;
+- (void)enumerateStrokesInRegion:(id)region usingTopStrokeBlock:(id)block usingBottomStrokeBlock:(id)strokeBlock usingLeftStrokeBlock:(id)leftStrokeBlock usingRightStrokeBlock:(id)rightStrokeBlock;
 - (void)flattenStrokeOrder;
-- (void)insertColumns:(_NSRange)a3;
-- (void)insertRows:(_NSRange)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)moveColumnIndexRange:(_NSRange)a3 toIndex:(unsigned __int16)a4;
-- (void)moveRowIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4;
-- (void)p_setBottomStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5;
-- (void)p_setLeftStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5;
-- (void)p_setRightStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5;
-- (void)p_setStroke:(id)a3 order:(int)a4 inStrokesArray:(id)a5 atIndex:(unsigned int)a6 atRange:(TSTSimpleRange)a7;
-- (void)p_setTopStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5;
-- (void)removeColumns:(_NSRange)a3;
-- (void)removeRows:(_NSRange)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setBordersWithCellMap:(id)a3;
-- (void)setBordersWithConcurrentCellMap:(id)a3 forTableInfo:(id)a4;
-- (void)setCellBorder:(id)a3 atCellID:(TSUCellCoord)a4;
-- (void)setMaxOrder:(int)a3;
-- (void)setStroke:(id)a3 forBottomOfRow:(unsigned int)a4 order:(int)a5 columnRange:(TSTSimpleRange)a6;
-- (void)setStroke:(id)a3 forLeftOfColumn:(unsigned __int16)a4 order:(int)a5 rowRange:(TSTSimpleRange)a6;
-- (void)setStroke:(id)a3 forRightOfColumn:(unsigned __int16)a4 order:(int)a5 rowRange:(TSTSimpleRange)a6;
-- (void)setStroke:(id)a3 forTopOfRow:(unsigned int)a4 order:(int)a5 columnRange:(TSTSimpleRange)a6;
-- (void)setStrokeLayer:(id)a3 forBottomOfRow:(unsigned int)a4;
-- (void)setStrokeLayer:(id)a3 forLeftOfColumn:(unsigned __int16)a4;
-- (void)setStrokeLayer:(id)a3 forRightOfColumn:(unsigned __int16)a4;
-- (void)setStrokeLayer:(id)a3 forTopOfRow:(unsigned int)a4;
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4;
-- (void)updateForTableSize:(id)a3;
+- (void)insertColumns:(_NSRange)columns;
+- (void)insertRows:(_NSRange)rows;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)moveColumnIndexRange:(_NSRange)range toIndex:(unsigned __int16)index;
+- (void)moveRowIndexRange:(_NSRange)range toIndex:(unsigned int)index;
+- (void)p_setBottomStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d;
+- (void)p_setLeftStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d;
+- (void)p_setRightStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d;
+- (void)p_setStroke:(id)stroke order:(int)order inStrokesArray:(id)array atIndex:(unsigned int)index atRange:(TSTSimpleRange)range;
+- (void)p_setTopStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d;
+- (void)removeColumns:(_NSRange)columns;
+- (void)removeRows:(_NSRange)rows;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBordersWithCellMap:(id)map;
+- (void)setBordersWithConcurrentCellMap:(id)map forTableInfo:(id)info;
+- (void)setCellBorder:(id)border atCellID:(TSUCellCoord)d;
+- (void)setMaxOrder:(int)order;
+- (void)setStroke:(id)stroke forBottomOfRow:(unsigned int)row order:(int)order columnRange:(TSTSimpleRange)range;
+- (void)setStroke:(id)stroke forLeftOfColumn:(unsigned __int16)column order:(int)order rowRange:(TSTSimpleRange)range;
+- (void)setStroke:(id)stroke forRightOfColumn:(unsigned __int16)column order:(int)order rowRange:(TSTSimpleRange)range;
+- (void)setStroke:(id)stroke forTopOfRow:(unsigned int)row order:(int)order columnRange:(TSTSimpleRange)range;
+- (void)setStrokeLayer:(id)layer forBottomOfRow:(unsigned int)row;
+- (void)setStrokeLayer:(id)layer forLeftOfColumn:(unsigned __int16)column;
+- (void)setStrokeLayer:(id)layer forRightOfColumn:(unsigned __int16)column;
+- (void)setStrokeLayer:(id)layer forTopOfRow:(unsigned int)row;
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex;
+- (void)updateForTableSize:(id)size;
 @end
 
 @implementation TSTStrokeSidecar
 
-- (void)setMaxOrder:(int)a3
+- (void)setMaxOrder:(int)order
 {
-  if (self->_maxOrder != a3)
+  if (self->_maxOrder != order)
   {
-    objc_msgSend_willModify(self, a2, *&a3, v3, v4);
-    self->_maxOrder = a3;
+    objc_msgSend_willModify(self, a2, *&order, v3, v4);
+    self->_maxOrder = order;
   }
 }
 
-- (TSTStrokeSidecar)initWithTableModel:(id)a3
+- (TSTStrokeSidecar)initWithTableModel:(id)model
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  modelCopy = model;
+  v9 = objc_msgSend_context(modelCopy, v5, v6, v7, v8);
   v72.receiver = self;
   v72.super_class = TSTStrokeSidecar;
   v10 = [(TSTStrokeSidecar *)&v72 initWithContext:v9];
@@ -85,34 +85,34 @@
 
     v10->_maxOrder = 2;
     v35 = v10->_leftColumnStrokes;
-    v40 = objc_msgSend_numberOfColumns(v4, v36, v37, v38, v39);
+    v40 = objc_msgSend_numberOfColumns(modelCopy, v36, v37, v38, v39);
     objc_msgSend_setCount_(v35, v41, v40, v42, v43);
     v44 = v10->_rightColumnStrokes;
-    v49 = objc_msgSend_numberOfColumns(v4, v45, v46, v47, v48);
+    v49 = objc_msgSend_numberOfColumns(modelCopy, v45, v46, v47, v48);
     objc_msgSend_setCount_(v44, v50, v49, v51, v52);
     v53 = v10->_topRowStrokes;
-    v58 = objc_msgSend_numberOfRows(v4, v54, v55, v56, v57);
+    v58 = objc_msgSend_numberOfRows(modelCopy, v54, v55, v56, v57);
     objc_msgSend_setCount_(v53, v59, v58, v60, v61);
     v62 = v10->_bottomRowStrokes;
-    v67 = objc_msgSend_numberOfRows(v4, v63, v64, v65, v66);
+    v67 = objc_msgSend_numberOfRows(modelCopy, v63, v64, v65, v66);
     objc_msgSend_setCount_(v62, v68, v67, v69, v70);
   }
 
   return v10;
 }
 
-- (id)initForUpgradeWithTableModel:(id)a3
+- (id)initForUpgradeWithTableModel:(id)model
 {
-  v4 = a3;
-  v8 = objc_msgSend_initWithTableModel_(self, v5, v4, v6, v7);
+  modelCopy = model;
+  v8 = objc_msgSend_initWithTableModel_(self, v5, modelCopy, v6, v7);
   v13 = v8;
   if (v8)
   {
     v14 = objc_msgSend_documentRoot(v8, v9, v10, v11, v12);
     v19 = objc_msgSend_stylesheet(v14, v15, v16, v17, v18);
 
-    v24 = objc_msgSend_newCell(v4, v20, v21, v22, v23);
-    v38[0] = objc_msgSend_range(v4, v25, v26, v27, v28);
+    v24 = objc_msgSend_newCell(modelCopy, v20, v21, v22, v23);
+    v38[0] = objc_msgSend_range(modelCopy, v25, v26, v27, v28);
     v38[1] = v29;
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -120,7 +120,7 @@
     v33[3] = &unk_278460FF8;
     v30 = v24;
     v34 = v30;
-    v35 = v4;
+    v35 = modelCopy;
     v36 = v13;
     v31 = v19;
     v37 = v31;
@@ -130,21 +130,21 @@
   return v13;
 }
 
-- (void)p_setStroke:(id)a3 order:(int)a4 inStrokesArray:(id)a5 atIndex:(unsigned int)a6 atRange:(TSTSimpleRange)a7
+- (void)p_setStroke:(id)stroke order:(int)order inStrokesArray:(id)array atIndex:(unsigned int)index atRange:(TSTSimpleRange)range
 {
-  length = a7.length;
-  origin = a7.origin;
-  v9 = *&a6;
-  v11 = *&a4;
-  v49 = a3;
-  v13 = a5;
-  if (objc_msgSend_count(v13, v14, v15, v16, v17) <= v9)
+  length = range.length;
+  origin = range.origin;
+  v9 = *&index;
+  v11 = *&order;
+  strokeCopy = stroke;
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v14, v15, v16, v17) <= v9)
   {
-    objc_msgSend_setCount_(v13, v18, (v9 + 1), v19, v20);
+    objc_msgSend_setCount_(arrayCopy, v18, (v9 + 1), v19, v20);
   }
 
-  v25 = objc_msgSend_pointerAtIndex_(v13, v18, v9, v19, v20);
-  if (v49 | v25)
+  v25 = objc_msgSend_pointerAtIndex_(arrayCopy, v18, v9, v19, v20);
+  if (strokeCopy | v25)
   {
     objc_msgSend_willModify(self, v21, v22, v23, v24);
     if (!v25)
@@ -153,11 +153,11 @@
       v33 = objc_msgSend_context(self, v29, v30, v31, v32);
       v25 = objc_msgSend_initWithContext_columnOrRowIndex_(v28, v34, v33, v9, v35);
 
-      objc_msgSend_replacePointerAtIndex_withPointer_(v13, v36, v9, v25, v37);
+      objc_msgSend_replacePointerAtIndex_withPointer_(arrayCopy, v36, v9, v25, v37);
     }
 
     objc_msgSend_invalidateRange_(v25, v26, origin, length, v27);
-    if (v49)
+    if (strokeCopy)
     {
       v42 = objc_msgSend_maxOrder(self, v38, v39, v40, v41);
       if (v42 <= v11)
@@ -170,12 +170,12 @@
         objc_msgSend_setMaxOrder_(self, v43, v42, v44, v45);
       }
 
-      objc_msgSend_setStroke_inRange_order_(v25, v46, v49, origin, length, v11);
+      objc_msgSend_setStroke_inRange_order_(v25, v46, strokeCopy, origin, length, v11);
     }
 
     else if (objc_msgSend_isEmpty(v25, v38, v39, v40, v41))
     {
-      objc_msgSend_replacePointerAtIndex_withPointer_(v13, v47, v9, 0, v48);
+      objc_msgSend_replacePointerAtIndex_withPointer_(arrayCopy, v47, v9, 0, v48);
     }
   }
 
@@ -185,36 +185,36 @@
   }
 }
 
-- (void)p_setLeftStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5
+- (void)p_setLeftStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d
 {
-  v6 = *&a4;
-  v14 = a3;
+  v6 = *&order;
+  strokeCopy = stroke;
   v12 = objc_msgSend_leftColumnStrokes(self, v8, v9, v10, v11);
-  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, v14, v6, v12, a5.column, a5.row, 1);
+  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, strokeCopy, v6, v12, d.column, d.row, 1);
 }
 
-- (void)p_setRightStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5
+- (void)p_setRightStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d
 {
-  v6 = *&a4;
-  v14 = a3;
+  v6 = *&order;
+  strokeCopy = stroke;
   v12 = objc_msgSend_rightColumnStrokes(self, v8, v9, v10, v11);
-  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, v14, v6, v12, a5.column, a5.row, 1);
+  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, strokeCopy, v6, v12, d.column, d.row, 1);
 }
 
-- (void)p_setTopStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5
+- (void)p_setTopStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d
 {
-  v6 = *&a4;
-  v14 = a3;
+  v6 = *&order;
+  strokeCopy = stroke;
   v12 = objc_msgSend_topRowStrokes(self, v8, v9, v10, v11);
-  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, v14, v6, v12, a5, a5.column, 1);
+  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, strokeCopy, v6, v12, d, d.column, 1);
 }
 
-- (void)p_setBottomStroke:(id)a3 order:(int)a4 atCellID:(TSUCellCoord)a5
+- (void)p_setBottomStroke:(id)stroke order:(int)order atCellID:(TSUCellCoord)d
 {
-  v6 = *&a4;
-  v14 = a3;
+  v6 = *&order;
+  strokeCopy = stroke;
   v12 = objc_msgSend_bottomRowStrokes(self, v8, v9, v10, v11);
-  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, v14, v6, v12, a5, a5.column, 1);
+  objc_msgSend_p_setStroke_order_inStrokesArray_atIndex_atRange_(self, v13, strokeCopy, v6, v12, d, d.column, 1);
 }
 
 - (BOOL)isEmpty
@@ -405,19 +405,19 @@ LABEL_39:
   return v55;
 }
 
-- (BOOL)mightHaveCellBorderAtCellID:(TSUCellCoord)a3
+- (BOOL)mightHaveCellBorderAtCellID:(TSUCellCoord)d
 {
-  v7 = objc_msgSend_unretainedStrokeLayerForTopOfRow_(self, a2, *&a3, v3, v4);
+  v7 = objc_msgSend_unretainedStrokeLayerForTopOfRow_(self, a2, *&d, v3, v4);
   result = 1;
   if (!v7 || objc_msgSend_isEmpty(v7, v8, v9, v10, v11))
   {
-    v12 = objc_msgSend_unretainedStrokeLayerForLeftSideOfColumn_(self, v8, a3.column, v10, v11);
+    v12 = objc_msgSend_unretainedStrokeLayerForLeftSideOfColumn_(self, v8, d.column, v10, v11);
     if (!v12 || objc_msgSend_isEmpty(v12, v13, v14, v15, v16))
     {
-      v17 = objc_msgSend_unretainedStrokeLayerForBottomOfRow_(self, v13, *&a3, v15, v16);
+      v17 = objc_msgSend_unretainedStrokeLayerForBottomOfRow_(self, v13, *&d, v15, v16);
       if (!v17 || objc_msgSend_isEmpty(v17, v18, v19, v20, v21))
       {
-        v22 = objc_msgSend_unretainedStrokeLayerForRightSideOfColumn_(self, v18, a3.column, v20, v21);
+        v22 = objc_msgSend_unretainedStrokeLayerForRightSideOfColumn_(self, v18, d.column, v20, v21);
         if (!v22 || objc_msgSend_isEmpty(v22, v23, v24, v25, v26))
         {
           return 0;
@@ -429,21 +429,21 @@ LABEL_39:
   return result;
 }
 
-- (id)cellBorderAtCellID:(TSUCellCoord)a3
+- (id)cellBorderAtCellID:(TSUCellCoord)d
 {
-  v7 = objc_msgSend_cellBorder(TSTCellBorder, a2, *&a3, v3, v4);
-  v11 = objc_msgSend_strokeLayerForTopOfRow_(self, v8, *&a3, v9, v10);
+  v7 = objc_msgSend_cellBorder(TSTCellBorder, a2, *&d, v3, v4);
+  v11 = objc_msgSend_strokeLayerForTopOfRow_(self, v8, *&d, v9, v10);
   v15 = v11;
   if (v11)
   {
-    v16 = objc_msgSend_findStrokeAndRangeAtIndex_(v11, v12, a3.column, v13, v14);
+    v16 = objc_msgSend_findStrokeAndRangeAtIndex_(v11, v12, d.column, v13, v14);
     v21 = v16;
     if (v16)
     {
       v22 = objc_msgSend_range(v16, v17, v18, v19, v20);
       if (v23)
       {
-        if (v22 <= a3.column && &v23[v22 - 1] >= a3.column)
+        if (v22 <= d.column && &v23[v22 - 1] >= d.column)
         {
           v27 = objc_msgSend_stroke(v21, v23, v24, v25, v26);
           v32 = objc_msgSend_order(v21, v28, v29, v30, v31);
@@ -453,18 +453,18 @@ LABEL_39:
     }
   }
 
-  v35 = objc_msgSend_strokeLayerForLeftSideOfColumn_(self, v12, a3.column, v13, v14);
+  v35 = objc_msgSend_strokeLayerForLeftSideOfColumn_(self, v12, d.column, v13, v14);
   v39 = v35;
   if (v35)
   {
-    v40 = objc_msgSend_findStrokeAndRangeAtIndex_(v35, v36, a3.row, v37, v38);
+    v40 = objc_msgSend_findStrokeAndRangeAtIndex_(v35, v36, d.row, v37, v38);
     v45 = v40;
     if (v40)
     {
       v46 = objc_msgSend_range(v40, v41, v42, v43, v44);
       if (v47)
       {
-        if (v46 <= a3.row && &v47[v46 - 1] >= a3.row)
+        if (v46 <= d.row && &v47[v46 - 1] >= d.row)
         {
           v51 = objc_msgSend_stroke(v45, v47, v48, v49, v50);
           v56 = objc_msgSend_order(v45, v52, v53, v54, v55);
@@ -474,18 +474,18 @@ LABEL_39:
     }
   }
 
-  v59 = objc_msgSend_strokeLayerForBottomOfRow_(self, v36, *&a3, v37, v38);
+  v59 = objc_msgSend_strokeLayerForBottomOfRow_(self, v36, *&d, v37, v38);
   v63 = v59;
   if (v59)
   {
-    v64 = objc_msgSend_findStrokeAndRangeAtIndex_(v59, v60, a3.column, v61, v62);
+    v64 = objc_msgSend_findStrokeAndRangeAtIndex_(v59, v60, d.column, v61, v62);
     v69 = v64;
     if (v64)
     {
       v70 = objc_msgSend_range(v64, v65, v66, v67, v68);
       if (v71)
       {
-        if (v70 <= a3.column && &v71[v70 - 1] >= a3.column)
+        if (v70 <= d.column && &v71[v70 - 1] >= d.column)
         {
           v75 = objc_msgSend_stroke(v69, v71, v72, v73, v74);
           v80 = objc_msgSend_order(v69, v76, v77, v78, v79);
@@ -495,18 +495,18 @@ LABEL_39:
     }
   }
 
-  v83 = objc_msgSend_strokeLayerForRightSideOfColumn_(self, v60, a3.column, v61, v62);
+  v83 = objc_msgSend_strokeLayerForRightSideOfColumn_(self, v60, d.column, v61, v62);
   v87 = v83;
   if (v83)
   {
-    v88 = objc_msgSend_findStrokeAndRangeAtIndex_(v83, v84, a3.row, v85, v86);
+    v88 = objc_msgSend_findStrokeAndRangeAtIndex_(v83, v84, d.row, v85, v86);
     v93 = v88;
     if (v88)
     {
       v94 = objc_msgSend_range(v88, v89, v90, v91, v92);
       if (v95)
       {
-        if (v94 <= a3.row && &v95[v94 - 1] >= a3.row)
+        if (v94 <= d.row && &v95[v94 - 1] >= d.row)
         {
           v99 = objc_msgSend_stroke(v93, v95, v96, v97, v98);
           v104 = objc_msgSend_order(v93, v100, v101, v102, v103);
@@ -519,45 +519,45 @@ LABEL_39:
   return v7;
 }
 
-- (void)setCellBorder:(id)a3 atCellID:(TSUCellCoord)a4
+- (void)setCellBorder:(id)border atCellID:(TSUCellCoord)d
 {
-  v50 = a3;
-  v10 = objc_msgSend_topStroke(v50, v6, v7, v8, v9);
-  v15 = objc_msgSend_topStrokeOrder(v50, v11, v12, v13, v14);
-  objc_msgSend_p_setTopStroke_order_atCellID_(self, v16, v10, v15, *&a4);
+  borderCopy = border;
+  v10 = objc_msgSend_topStroke(borderCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_topStrokeOrder(borderCopy, v11, v12, v13, v14);
+  objc_msgSend_p_setTopStroke_order_atCellID_(self, v16, v10, v15, *&d);
 
-  v21 = objc_msgSend_leftStroke(v50, v17, v18, v19, v20);
-  v26 = objc_msgSend_leftStrokeOrder(v50, v22, v23, v24, v25);
-  objc_msgSend_p_setLeftStroke_order_atCellID_(self, v27, v21, v26, *&a4);
+  v21 = objc_msgSend_leftStroke(borderCopy, v17, v18, v19, v20);
+  v26 = objc_msgSend_leftStrokeOrder(borderCopy, v22, v23, v24, v25);
+  objc_msgSend_p_setLeftStroke_order_atCellID_(self, v27, v21, v26, *&d);
 
-  v32 = objc_msgSend_bottomStroke(v50, v28, v29, v30, v31);
-  v37 = objc_msgSend_bottomStrokeOrder(v50, v33, v34, v35, v36);
-  objc_msgSend_p_setBottomStroke_order_atCellID_(self, v38, v32, v37, *&a4);
+  v32 = objc_msgSend_bottomStroke(borderCopy, v28, v29, v30, v31);
+  v37 = objc_msgSend_bottomStrokeOrder(borderCopy, v33, v34, v35, v36);
+  objc_msgSend_p_setBottomStroke_order_atCellID_(self, v38, v32, v37, *&d);
 
-  v43 = objc_msgSend_rightStroke(v50, v39, v40, v41, v42);
-  v48 = objc_msgSend_rightStrokeOrder(v50, v44, v45, v46, v47);
-  objc_msgSend_p_setRightStroke_order_atCellID_(self, v49, v43, v48, *&a4);
+  v43 = objc_msgSend_rightStroke(borderCopy, v39, v40, v41, v42);
+  v48 = objc_msgSend_rightStrokeOrder(borderCopy, v44, v45, v46, v47);
+  objc_msgSend_p_setRightStroke_order_atCellID_(self, v49, v43, v48, *&d);
 }
 
-- (void)setBordersWithCellMap:(id)a3
+- (void)setBordersWithCellMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   objc_msgSend_willModify(self, v5, v6, v7, v8);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2211DDF30;
   v12[3] = &unk_27845DE10;
   v12[4] = self;
-  objc_msgSend_enumerateCellsWithIDsUsingBlock_(v4, v9, v12, v10, v11);
+  objc_msgSend_enumerateCellsWithIDsUsingBlock_(mapCopy, v9, v12, v10, v11);
 }
 
-- (void)setStroke:(id)a3 forTopOfRow:(unsigned int)a4 order:(int)a5 columnRange:(TSTSimpleRange)a6
+- (void)setStroke:(id)stroke forTopOfRow:(unsigned int)row order:(int)order columnRange:(TSTSimpleRange)range
 {
-  length = a6.length;
-  origin = a6.origin;
-  v8 = *&a5;
-  v9 = *&a4;
-  v40 = a3;
+  length = range.length;
+  origin = range.origin;
+  v8 = *&order;
+  v9 = *&row;
+  strokeCopy = stroke;
   objc_msgSend_willModify(self, v11, v12, v13, v14);
   v19 = objc_msgSend_topRowStrokes(self, v15, v16, v17, v18);
   v23 = objc_msgSend_pointerAtIndex_(v19, v20, v9, v21, v22);
@@ -572,16 +572,16 @@ LABEL_39:
     objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, v9, v23, v39);
   }
 
-  objc_msgSend_setStroke_inRange_order_(v23, v24, v40, origin, length, v8);
+  objc_msgSend_setStroke_inRange_order_(v23, v24, strokeCopy, origin, length, v8);
 }
 
-- (void)setStroke:(id)a3 forBottomOfRow:(unsigned int)a4 order:(int)a5 columnRange:(TSTSimpleRange)a6
+- (void)setStroke:(id)stroke forBottomOfRow:(unsigned int)row order:(int)order columnRange:(TSTSimpleRange)range
 {
-  length = a6.length;
-  origin = a6.origin;
-  v8 = *&a5;
-  v9 = *&a4;
-  v40 = a3;
+  length = range.length;
+  origin = range.origin;
+  v8 = *&order;
+  v9 = *&row;
+  strokeCopy = stroke;
   objc_msgSend_willModify(self, v11, v12, v13, v14);
   v19 = objc_msgSend_bottomRowStrokes(self, v15, v16, v17, v18);
   v23 = objc_msgSend_pointerAtIndex_(v19, v20, v9, v21, v22);
@@ -596,73 +596,73 @@ LABEL_39:
     objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, v9, v23, v39);
   }
 
-  objc_msgSend_setStroke_inRange_order_(v23, v24, v40, origin, length, v8);
+  objc_msgSend_setStroke_inRange_order_(v23, v24, strokeCopy, origin, length, v8);
 }
 
-- (void)setStroke:(id)a3 forLeftOfColumn:(unsigned __int16)a4 order:(int)a5 rowRange:(TSTSimpleRange)a6
+- (void)setStroke:(id)stroke forLeftOfColumn:(unsigned __int16)column order:(int)order rowRange:(TSTSimpleRange)range
 {
-  length = a6.length;
-  origin = a6.origin;
-  v8 = *&a5;
-  v9 = a4;
-  v40 = a3;
+  length = range.length;
+  origin = range.origin;
+  v8 = *&order;
+  columnCopy = column;
+  strokeCopy = stroke;
   objc_msgSend_willModify(self, v11, v12, v13, v14);
   v19 = objc_msgSend_leftColumnStrokes(self, v15, v16, v17, v18);
-  v23 = objc_msgSend_pointerAtIndex_(v19, v20, v9, v21, v22);
+  v23 = objc_msgSend_pointerAtIndex_(v19, v20, columnCopy, v21, v22);
 
   if (!v23)
   {
     v25 = [TSTMutableStrokeLayer alloc];
     v30 = objc_msgSend_context(self, v26, v27, v28, v29);
-    v23 = objc_msgSend_initWithContext_columnOrRowIndex_(v25, v31, v30, v9, v32);
+    v23 = objc_msgSend_initWithContext_columnOrRowIndex_(v25, v31, v30, columnCopy, v32);
 
     v37 = objc_msgSend_leftColumnStrokes(self, v33, v34, v35, v36);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, v9, v23, v39);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, columnCopy, v23, v39);
   }
 
-  objc_msgSend_setStroke_inRange_order_(v23, v24, v40, origin, length, v8);
+  objc_msgSend_setStroke_inRange_order_(v23, v24, strokeCopy, origin, length, v8);
 }
 
-- (void)setStroke:(id)a3 forRightOfColumn:(unsigned __int16)a4 order:(int)a5 rowRange:(TSTSimpleRange)a6
+- (void)setStroke:(id)stroke forRightOfColumn:(unsigned __int16)column order:(int)order rowRange:(TSTSimpleRange)range
 {
-  length = a6.length;
-  origin = a6.origin;
-  v8 = *&a5;
-  v9 = a4;
-  v40 = a3;
+  length = range.length;
+  origin = range.origin;
+  v8 = *&order;
+  columnCopy = column;
+  strokeCopy = stroke;
   objc_msgSend_willModify(self, v11, v12, v13, v14);
   v19 = objc_msgSend_rightColumnStrokes(self, v15, v16, v17, v18);
-  v23 = objc_msgSend_pointerAtIndex_(v19, v20, v9, v21, v22);
+  v23 = objc_msgSend_pointerAtIndex_(v19, v20, columnCopy, v21, v22);
 
   if (!v23)
   {
     v25 = [TSTMutableStrokeLayer alloc];
     v30 = objc_msgSend_context(self, v26, v27, v28, v29);
-    v23 = objc_msgSend_initWithContext_columnOrRowIndex_(v25, v31, v30, v9, v32);
+    v23 = objc_msgSend_initWithContext_columnOrRowIndex_(v25, v31, v30, columnCopy, v32);
 
     v37 = objc_msgSend_rightColumnStrokes(self, v33, v34, v35, v36);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, v9, v23, v39);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v37, v38, columnCopy, v23, v39);
   }
 
-  objc_msgSend_setStroke_inRange_order_(v23, v24, v40, origin, length, v8);
+  objc_msgSend_setStroke_inRange_order_(v23, v24, strokeCopy, origin, length, v8);
 }
 
-- (id)p_flattenMajorStrokeLayer:(id)a3 minorStrokeLayer:(id)a4
+- (id)p_flattenMajorStrokeLayer:(id)layer minorStrokeLayer:(id)strokeLayer
 {
-  v5 = a3;
-  v6 = a4;
+  layerCopy = layer;
+  strokeLayerCopy = strokeLayer;
   v7 = [TSTMutableStrokeLayer alloc];
-  v12 = objc_msgSend_context(v5, v8, v9, v10, v11);
-  v17 = objc_msgSend_columnOrRowIndex(v5, v13, v14, v15, v16);
+  v12 = objc_msgSend_context(layerCopy, v8, v9, v10, v11);
+  v17 = objc_msgSend_columnOrRowIndex(layerCopy, v13, v14, v15, v16);
   v20 = objc_msgSend_initWithContext_columnOrRowIndex_(v7, v18, v12, v17, v19);
 
   v21 = [TSTMutableStrokeLayer alloc];
-  v26 = objc_msgSend_context(v6, v22, v23, v24, v25);
-  v31 = objc_msgSend_columnOrRowIndex(v6, v27, v28, v29, v30);
+  v26 = objc_msgSend_context(strokeLayerCopy, v22, v23, v24, v25);
+  v31 = objc_msgSend_columnOrRowIndex(strokeLayerCopy, v27, v28, v29, v30);
   v34 = objc_msgSend_initWithContext_columnOrRowIndex_(v21, v32, v26, v31, v33);
 
   v35 = [TSTStrokeOrderedLayer alloc];
-  v37 = objc_msgSend_initWithContext_majorStrokeLayer_minorStrokeLayer_(v35, v36, 0, v5, v6);
+  v37 = objc_msgSend_initWithContext_majorStrokeLayer_minorStrokeLayer_(v35, v36, 0, layerCopy, strokeLayerCopy);
   v47 = MEMORY[0x277D85DD0];
   v48 = 3221225472;
   v49 = sub_2211DE734;
@@ -857,11 +857,11 @@ LABEL_36:
   }
 }
 
-- (void)updateForTableSize:(id)a3
+- (void)updateForTableSize:(id)size
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
-  v32 = objc_msgSend_topRowStrokes(self, a2, *&a3, v3, v4);
+  var0 = size.var0;
+  var1 = size.var1;
+  v32 = objc_msgSend_topRowStrokes(self, a2, *&size, v3, v4);
   objc_msgSend_setCount_(v32, v8, var1, v9, v10);
 
   v33 = objc_msgSend_bottomRowStrokes(self, v11, v12, v13, v14);
@@ -907,13 +907,13 @@ LABEL_36:
   return result;
 }
 
-- (void)enumerateStrokesInRegion:(id)a3 usingTopStrokeBlock:(id)a4 usingBottomStrokeBlock:(id)a5 usingLeftStrokeBlock:(id)a6 usingRightStrokeBlock:(id)a7
+- (void)enumerateStrokesInRegion:(id)region usingTopStrokeBlock:(id)block usingBottomStrokeBlock:(id)strokeBlock usingLeftStrokeBlock:(id)leftStrokeBlock usingRightStrokeBlock:(id)rightStrokeBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  regionCopy = region;
+  blockCopy = block;
+  strokeBlockCopy = strokeBlock;
+  leftStrokeBlockCopy = leftStrokeBlock;
+  rightStrokeBlockCopy = rightStrokeBlock;
   v21 = objc_msgSend_p_strokeRect(self, v17, v18, v19, v20);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -921,24 +921,24 @@ LABEL_36:
   v30[3] = &unk_278461098;
   v35 = v21;
   v36 = v22;
-  v23 = v13;
+  v23 = blockCopy;
   v30[4] = self;
   v31 = v23;
-  v24 = v14;
+  v24 = strokeBlockCopy;
   v32 = v24;
-  v25 = v15;
+  v25 = leftStrokeBlockCopy;
   v33 = v25;
-  v26 = v16;
+  v26 = rightStrokeBlockCopy;
   v34 = v26;
-  objc_msgSend_enumerateCellRangesUsingBlock_(v12, v27, v30, v28, v29);
+  objc_msgSend_enumerateCellRangesUsingBlock_(regionCopy, v27, v30, v28, v29);
 }
 
-- (void)insertColumns:(_NSRange)a3
+- (void)insertColumns:(_NSRange)columns
 {
-  length = a3.length;
-  location = a3.location;
+  length = columns.length;
+  location = columns.location;
   v53 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  objc_msgSend_willModify(self, a2, columns.location, columns.length, v3);
   v11 = objc_msgSend_leftColumnStrokes(self, v7, v8, v9, v10);
   objc_msgSend_tsu_insertRange_(v11, v12, location, length, v13);
 
@@ -1004,12 +1004,12 @@ LABEL_36:
   }
 }
 
-- (void)removeColumns:(_NSRange)a3
+- (void)removeColumns:(_NSRange)columns
 {
-  length = a3.length;
-  location = a3.location;
+  length = columns.length;
+  location = columns.location;
   v53 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  objc_msgSend_willModify(self, a2, columns.location, columns.length, v3);
   v11 = objc_msgSend_leftColumnStrokes(self, v7, v8, v9, v10);
   objc_msgSend_tsu_removeRange_(v11, v12, location, length, v13);
 
@@ -1075,12 +1075,12 @@ LABEL_36:
   }
 }
 
-- (void)insertRows:(_NSRange)a3
+- (void)insertRows:(_NSRange)rows
 {
-  length = a3.length;
-  location = a3.location;
+  length = rows.length;
+  location = rows.location;
   v53 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  objc_msgSend_willModify(self, a2, rows.location, rows.length, v3);
   v11 = objc_msgSend_topRowStrokes(self, v7, v8, v9, v10);
   objc_msgSend_tsu_insertRange_(v11, v12, location, length, v13);
 
@@ -1146,12 +1146,12 @@ LABEL_36:
   }
 }
 
-- (void)removeRows:(_NSRange)a3
+- (void)removeRows:(_NSRange)rows
 {
-  length = a3.length;
-  location = a3.location;
+  length = rows.length;
+  location = rows.location;
   v53 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  objc_msgSend_willModify(self, a2, rows.location, rows.length, v3);
   v11 = objc_msgSend_topRowStrokes(self, v7, v8, v9, v10);
   objc_msgSend_tsu_removeRange_(v11, v12, location, length, v13);
 
@@ -1217,13 +1217,13 @@ LABEL_36:
   }
 }
 
-- (void)moveColumnIndexRange:(_NSRange)a3 toIndex:(unsigned __int16)a4
+- (void)moveColumnIndexRange:(_NSRange)range toIndex:(unsigned __int16)index
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  indexCopy = index;
+  length = range.length;
+  location = range.location;
   v125 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, a4);
+  objc_msgSend_willModify(self, a2, range.location, range.length, index);
   v113 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v8, v9, v10, v11);
   v114 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v12, v13, v14, v15);
   objc_msgSend_setCount_(v113, v16, length, v17, v18);
@@ -1249,7 +1249,7 @@ LABEL_36:
   v52 = objc_msgSend_rightColumnStrokes(self, v48, v49, v50, v51);
   objc_msgSend_tsu_removeRange_(v52, v53, location, length, v54);
 
-  if (location >= v4)
+  if (location >= indexCopy)
   {
     v59 = 0;
   }
@@ -1260,7 +1260,7 @@ LABEL_36:
   }
 
   v60 = objc_msgSend_leftColumnStrokes(self, v55, v56, v57, v58);
-  v61 = (v4 - v59);
+  v61 = (indexCopy - v59);
   objc_msgSend_tsu_insertRange_(v60, v62, v61, length, v63);
 
   v68 = objc_msgSend_rightColumnStrokes(self, v64, v65, v66, v67);
@@ -1344,12 +1344,12 @@ LABEL_36:
   }
 }
 
-- (void)moveRowIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4
+- (void)moveRowIndexRange:(_NSRange)range toIndex:(unsigned int)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v125 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, *&a4);
+  objc_msgSend_willModify(self, a2, range.location, range.length, *&index);
   v113 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v8, v9, v10, v11);
   v114 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v12, v13, v14, v15);
   objc_msgSend_setCount_(v113, v16, length, v17, v18);
@@ -1375,7 +1375,7 @@ LABEL_36:
   v52 = objc_msgSend_bottomRowStrokes(self, v48, v49, v50, v51);
   objc_msgSend_tsu_removeRange_(v52, v53, location, length, v54);
 
-  if (location >= a4)
+  if (location >= index)
   {
     v59 = 0;
   }
@@ -1386,7 +1386,7 @@ LABEL_36:
   }
 
   v60 = objc_msgSend_topRowStrokes(self, v55, v56, v57, v58);
-  v61 = a4 - v59;
+  v61 = index - v59;
   objc_msgSend_tsu_insertRange_(v60, v62, v61, length, v63);
 
   v68 = objc_msgSend_bottomRowStrokes(self, v64, v65, v66, v67);
@@ -1474,35 +1474,35 @@ LABEL_36:
   }
 }
 
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex
 {
   v106 = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, *&a3, *&a4, v4);
+  objc_msgSend_willModify(self, a2, *&index, *&atIndex, v4);
   v12 = objc_msgSend_topRowStrokes(self, v8, v9, v10, v11);
-  v13 = a3;
-  v95 = objc_msgSend_pointerAtIndex_(v12, v14, a3, v15, v16);
+  indexCopy = index;
+  v95 = objc_msgSend_pointerAtIndex_(v12, v14, index, v15, v16);
 
   v21 = objc_msgSend_bottomRowStrokes(self, v17, v18, v19, v20);
-  v25 = objc_msgSend_pointerAtIndex_(v21, v22, a3, v23, v24);
+  v25 = objc_msgSend_pointerAtIndex_(v21, v22, index, v23, v24);
 
   v30 = objc_msgSend_topRowStrokes(self, v26, v27, v28, v29);
-  v31 = a4;
-  v35 = objc_msgSend_pointerAtIndex_(v30, v32, a4, v33, v34);
+  atIndexCopy = atIndex;
+  v35 = objc_msgSend_pointerAtIndex_(v30, v32, atIndex, v33, v34);
 
   v40 = objc_msgSend_bottomRowStrokes(self, v36, v37, v38, v39);
-  v44 = objc_msgSend_pointerAtIndex_(v40, v41, v31, v42, v43);
+  v44 = objc_msgSend_pointerAtIndex_(v40, v41, atIndexCopy, v42, v43);
 
   v49 = objc_msgSend_topRowStrokes(self, v45, v46, v47, v48);
-  objc_msgSend_replacePointerAtIndex_withPointer_(v49, v50, a3, v35, v51);
+  objc_msgSend_replacePointerAtIndex_withPointer_(v49, v50, index, v35, v51);
 
   v56 = objc_msgSend_bottomRowStrokes(self, v52, v53, v54, v55);
-  objc_msgSend_replacePointerAtIndex_withPointer_(v56, v57, a3, v44, v58);
+  objc_msgSend_replacePointerAtIndex_withPointer_(v56, v57, index, v44, v58);
 
   v63 = objc_msgSend_topRowStrokes(self, v59, v60, v61, v62);
-  objc_msgSend_replacePointerAtIndex_withPointer_(v63, v64, v31, v95, v65);
+  objc_msgSend_replacePointerAtIndex_withPointer_(v63, v64, atIndexCopy, v95, v65);
 
   v70 = objc_msgSend_bottomRowStrokes(self, v66, v67, v68, v69);
-  objc_msgSend_replacePointerAtIndex_withPointer_(v70, v71, v31, v25, v72);
+  objc_msgSend_replacePointerAtIndex_withPointer_(v70, v71, atIndexCopy, v25, v72);
 
   v102 = 0u;
   v103 = 0u;
@@ -1523,7 +1523,7 @@ LABEL_36:
           objc_enumerationMutation(v77);
         }
 
-        objc_msgSend_swapSegmentAtIndex_withSegmentAtIndex_(*(*(&v100 + 1) + 8 * v83++), v79, v13, v31, v80);
+        objc_msgSend_swapSegmentAtIndex_withSegmentAtIndex_(*(*(&v100 + 1) + 8 * v83++), v79, indexCopy, atIndexCopy, v80);
       }
 
       while (v81 != v83);
@@ -1552,7 +1552,7 @@ LABEL_36:
           objc_enumerationMutation(v88);
         }
 
-        objc_msgSend_swapSegmentAtIndex_withSegmentAtIndex_(*(*(&v96 + 1) + 8 * v94++), v90, v13, v31, v91);
+        objc_msgSend_swapSegmentAtIndex_withSegmentAtIndex_(*(*(&v96 + 1) + 8 * v94++), v90, indexCopy, atIndexCopy, v91);
       }
 
       while (v92 != v94);
@@ -1563,145 +1563,145 @@ LABEL_36:
   }
 }
 
-- (id)strokeLayerForLeftSideOfColumn:(unsigned __int16)a3
+- (id)strokeLayerForLeftSideOfColumn:(unsigned __int16)column
 {
-  v5 = a3;
-  if (objc_msgSend_count(self->_leftColumnStrokes, a2, a3, v3, v4) <= a3)
+  columnCopy = column;
+  if (objc_msgSend_count(self->_leftColumnStrokes, a2, column, v3, v4) <= column)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_leftColumnStrokes, v7, v5, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_leftColumnStrokes, v7, columnCopy, v8, v9);
   }
 
   return v10;
 }
 
-- (id)strokeLayerForRightSideOfColumn:(unsigned __int16)a3
+- (id)strokeLayerForRightSideOfColumn:(unsigned __int16)column
 {
-  v5 = a3;
-  if (objc_msgSend_count(self->_rightColumnStrokes, a2, a3, v3, v4) <= a3)
+  columnCopy = column;
+  if (objc_msgSend_count(self->_rightColumnStrokes, a2, column, v3, v4) <= column)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_rightColumnStrokes, v7, v5, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_rightColumnStrokes, v7, columnCopy, v8, v9);
   }
 
   return v10;
 }
 
-- (id)strokeLayerForTopOfRow:(unsigned int)a3
+- (id)strokeLayerForTopOfRow:(unsigned int)row
 {
-  if (objc_msgSend_count(self->_topRowStrokes, a2, *&a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_topRowStrokes, a2, *&row, v3, v4) <= row)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_topRowStrokes, v7, a3, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_topRowStrokes, v7, row, v8, v9);
   }
 
   return v10;
 }
 
-- (id)strokeLayerForBottomOfRow:(unsigned int)a3
+- (id)strokeLayerForBottomOfRow:(unsigned int)row
 {
-  if (objc_msgSend_count(self->_bottomRowStrokes, a2, *&a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_bottomRowStrokes, a2, *&row, v3, v4) <= row)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_bottomRowStrokes, v7, a3, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_bottomRowStrokes, v7, row, v8, v9);
   }
 
   return v10;
 }
 
-- (id)unretainedStrokeLayerForLeftSideOfColumn:(unsigned __int16)a3
+- (id)unretainedStrokeLayerForLeftSideOfColumn:(unsigned __int16)column
 {
-  v5 = a3;
-  if (objc_msgSend_count(self->_leftColumnStrokes, a2, a3, v3, v4) <= a3)
+  columnCopy = column;
+  if (objc_msgSend_count(self->_leftColumnStrokes, a2, column, v3, v4) <= column)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_leftColumnStrokes, v7, v5, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_leftColumnStrokes, v7, columnCopy, v8, v9);
   }
 
   return v10;
 }
 
-- (id)unretainedStrokeLayerForRightSideOfColumn:(unsigned __int16)a3
+- (id)unretainedStrokeLayerForRightSideOfColumn:(unsigned __int16)column
 {
-  v5 = a3;
-  if (objc_msgSend_count(self->_rightColumnStrokes, a2, a3, v3, v4) <= a3)
+  columnCopy = column;
+  if (objc_msgSend_count(self->_rightColumnStrokes, a2, column, v3, v4) <= column)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_rightColumnStrokes, v7, v5, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_rightColumnStrokes, v7, columnCopy, v8, v9);
   }
 
   return v10;
 }
 
-- (id)unretainedStrokeLayerForTopOfRow:(unsigned int)a3
+- (id)unretainedStrokeLayerForTopOfRow:(unsigned int)row
 {
-  if (objc_msgSend_count(self->_topRowStrokes, a2, *&a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_topRowStrokes, a2, *&row, v3, v4) <= row)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_topRowStrokes, v7, a3, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_topRowStrokes, v7, row, v8, v9);
   }
 
   return v10;
 }
 
-- (id)unretainedStrokeLayerForBottomOfRow:(unsigned int)a3
+- (id)unretainedStrokeLayerForBottomOfRow:(unsigned int)row
 {
-  if (objc_msgSend_count(self->_bottomRowStrokes, a2, *&a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_bottomRowStrokes, a2, *&row, v3, v4) <= row)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_bottomRowStrokes, v7, a3, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_bottomRowStrokes, v7, row, v8, v9);
   }
 
   return v10;
 }
 
-- (void)setBordersWithConcurrentCellMap:(id)a3 forTableInfo:(id)a4
+- (void)setBordersWithConcurrentCellMap:(id)map forTableInfo:(id)info
 {
-  v5 = a3;
+  mapCopy = map;
   objc_msgSend_willModify(self, v6, v7, v8, v9);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2211E0F48;
   v11[3] = &unk_27845FB10;
-  v12 = v5;
-  v13 = self;
-  v10 = v5;
+  v12 = mapCopy;
+  selfCopy = self;
+  v10 = mapCopy;
   dispatch_apply(4uLL, 0, v11);
 }
 
-- (vector<TSTCellBorder)accumulateCellBordersConcurrentlyInRow:(TSTStrokeSidecar *)self atColumns:(SEL)a3
+- (vector<TSTCellBorder)accumulateCellBordersConcurrentlyInRow:(TSTStrokeSidecar *)self atColumns:(SEL)columns
 {
   v5 = a5;
   v6 = *&a4._row;
@@ -1775,7 +1775,7 @@ LABEL_36:
 LABEL_19:
         v38 = v17;
         v39 = v12;
-        v40 = self;
+        selfCopy = self;
         v124 = objc_msgSend_cellBorder(TSTCellBorder, v28, v29, v30, v31);
         if (v26)
         {
@@ -1856,7 +1856,7 @@ LABEL_19:
         v119 = retstr->var0[v34];
         retstr->var0[v34] = v124;
 
-        self = v40;
+        self = selfCopy;
         v12 = v39;
         v17 = v38;
         v5 = v121;
@@ -1872,69 +1872,69 @@ LABEL_19:
   return result;
 }
 
-- (void)setStrokeLayer:(id)a3 forTopOfRow:(unsigned int)a4
+- (void)setStrokeLayer:(id)layer forTopOfRow:(unsigned int)row
 {
-  v24 = a3;
+  layerCopy = layer;
   v10 = objc_msgSend_topRowStrokes(self, v6, v7, v8, v9);
   v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
-  v16 = a4;
+  rowCopy = row;
 
-  if (v15 > a4)
+  if (v15 > row)
   {
     v21 = objc_msgSend_topRowStrokes(self, v17, v18, v19, v20);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, v24, v23);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, rowCopy, layerCopy, v23);
   }
 }
 
-- (void)setStrokeLayer:(id)a3 forBottomOfRow:(unsigned int)a4
+- (void)setStrokeLayer:(id)layer forBottomOfRow:(unsigned int)row
 {
-  v24 = a3;
+  layerCopy = layer;
   v10 = objc_msgSend_bottomRowStrokes(self, v6, v7, v8, v9);
   v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
-  v16 = a4;
+  rowCopy = row;
 
-  if (v15 > a4)
+  if (v15 > row)
   {
     v21 = objc_msgSend_bottomRowStrokes(self, v17, v18, v19, v20);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, v24, v23);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, rowCopy, layerCopy, v23);
   }
 }
 
-- (void)setStrokeLayer:(id)a3 forLeftOfColumn:(unsigned __int16)a4
+- (void)setStrokeLayer:(id)layer forLeftOfColumn:(unsigned __int16)column
 {
-  v4 = a4;
-  v24 = a3;
+  columnCopy = column;
+  layerCopy = layer;
   v10 = objc_msgSend_leftColumnStrokes(self, v6, v7, v8, v9);
   v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
-  v16 = v4;
+  v16 = columnCopy;
 
-  if (v15 > v4)
+  if (v15 > columnCopy)
   {
     v21 = objc_msgSend_leftColumnStrokes(self, v17, v18, v19, v20);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, v24, v23);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, layerCopy, v23);
   }
 }
 
-- (void)setStrokeLayer:(id)a3 forRightOfColumn:(unsigned __int16)a4
+- (void)setStrokeLayer:(id)layer forRightOfColumn:(unsigned __int16)column
 {
-  v4 = a4;
-  v24 = a3;
+  columnCopy = column;
+  layerCopy = layer;
   v10 = objc_msgSend_rightColumnStrokes(self, v6, v7, v8, v9);
   v15 = objc_msgSend_count(v10, v11, v12, v13, v14);
-  v16 = v4;
+  v16 = columnCopy;
 
-  if (v15 > v4)
+  if (v15 > columnCopy)
   {
     v21 = objc_msgSend_rightColumnStrokes(self, v17, v18, v19, v20);
-    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, v24, v23);
+    objc_msgSend_replacePointerAtIndex_withPointer_(v21, v22, v16, layerCopy, v23);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[96], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[96], v6, v7);
 
   v13 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v9, v10, v11, v12);
   leftColumnStrokes = self->_leftColumnStrokes;
@@ -1973,7 +1973,7 @@ LABEL_19:
   v88[3] = &unk_278461108;
   v88[4] = self;
   v89 = &unk_2834A2E28;
-  v70 = v4;
+  v70 = unarchiverCopy;
   v71 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v70, v72, (v8 + 6), v71, 0, v88);
 
@@ -2008,9 +2008,9 @@ LABEL_19:
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v79, v81, (v8 + 24), v80, 0, v82);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v9 = objc_msgSend_topRowStrokes(self, v5, v6, v7, v8);
   v14 = objc_msgSend_count(v9, v10, v11, v12, v13);
   v19 = objc_msgSend_bottomRowStrokes(self, v15, v16, v17, v18);
@@ -2041,7 +2041,7 @@ LABEL_19:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
   }
 
-  v70 = v4;
+  v70 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v73 = objc_msgSend_messageWithNewFunction_descriptor_(v70, v71, sub_2211E35D0, off_2812E4498[96], v72);
 

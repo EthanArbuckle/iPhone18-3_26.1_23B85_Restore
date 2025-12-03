@@ -1,19 +1,19 @@
 @interface AppCardContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation AppCardContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.AppCardContainerViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ChatKit.AppCardContainerViewController" hasSwiftField:@"remoteViewController" withSwiftType:"UIViewController & CKBrowserViewControllerProtocol"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIRemoteView"];
-  [v3 validateClass:@"UISheetPresentationController" hasInstanceMethod:@"_currentPresentedViewFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"UISheetPresentationController" hasInstanceMethod:@"selectedDetentIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.AppCardContainerViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ChatKit.AppCardContainerViewController" hasSwiftField:@"remoteViewController" withSwiftType:"UIViewController & CKBrowserViewControllerProtocol"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIRemoteView"];
+  [validationsCopy validateClass:@"UISheetPresentationController" hasInstanceMethod:@"_currentPresentedViewFrame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"UISheetPresentationController" hasInstanceMethod:@"selectedDetentIdentifier" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -34,8 +34,8 @@
   [v5 _setAccessibilityFrameForSortingBlock:v12];
   v11 = 0;
   objc_opt_class();
-  v6 = [v5 accessibilityElements];
-  v7 = [v6 firstObject];
+  accessibilityElements = [v5 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
   v8 = __UIAccessibilityCastAsClass();
 
   v9[0] = MEMORY[0x29EDCA5F8];

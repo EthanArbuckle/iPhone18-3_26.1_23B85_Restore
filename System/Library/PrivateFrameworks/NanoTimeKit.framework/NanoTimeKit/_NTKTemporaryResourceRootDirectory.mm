@@ -7,14 +7,14 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v3 = [a1 path];
-    [v5 removeItemAtPath:v3 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [self path];
+    [defaultManager removeItemAtPath:path error:0];
 
-    v4 = [a1 path];
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    path2 = [self path];
+    [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 

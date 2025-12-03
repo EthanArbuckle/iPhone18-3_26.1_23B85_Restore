@@ -1,47 +1,47 @@
 @interface ETCanvasViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
-- (ETCanvasViewAccessibility)initWithFrame:(CGRect)a3;
+- (ETCanvasViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityFocusChanged:(id)a3;
-- (void)_accessibilityInvalidateDirectTouchTimerAndReschedule:(BOOL)a3;
+- (void)_accessibilityFocusChanged:(id)changed;
+- (void)_accessibilityInvalidateDirectTouchTimerAndReschedule:(BOOL)reschedule;
 - (void)_checkForIdle;
 - (void)dealloc;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation ETCanvasViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETCanvasView"];
-  [v3 validateClass:@"ETCanvasView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"ETCanvasView" hasInstanceMethod:@"isComposing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ETCanvasView" hasInstanceVariable:@"_currentSketchView" withType:"ETGLSketchView"];
-  [v3 validateClass:@"ETCanvasView" hasInstanceVariable:@"_lastActivityTimestamp" withType:"d"];
-  [v3 validateClass:@"ETCanvasView" hasInstanceMethod:@"_sketchInProgress" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ETCanvasView" hasInstanceMethod:@"sendCurrentMessage" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETCanvasView" hasInstanceMethod:@"_setIsComposingMessageOfType:" withFullSignature:{"v", "S", 0}];
-  [v3 validateClass:@"ETCanvasView" hasInstanceMethod:@"_endMessage: withSend:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"MediaInstructionView"];
-  [v3 validateClass:@"MediaInstructionView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETCanvasView"];
+  [validationsCopy validateClass:@"ETCanvasView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceMethod:@"isComposing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceVariable:@"_currentSketchView" withType:"ETGLSketchView"];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceVariable:@"_lastActivityTimestamp" withType:"d"];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceMethod:@"_sketchInProgress" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceMethod:@"sendCurrentMessage" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceMethod:@"_setIsComposingMessageOfType:" withFullSignature:{"v", "S", 0}];
+  [validationsCopy validateClass:@"ETCanvasView" hasInstanceMethod:@"_endMessage: withSend:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"MediaInstructionView"];
+  [validationsCopy validateClass:@"MediaInstructionView" hasInstanceVariable:@"_textLabel" withType:"UILabel"];
 }
 
-- (ETCanvasViewAccessibility)initWithFrame:(CGRect)a3
+- (ETCanvasViewAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ETCanvasViewAccessibility;
-  v3 = [(ETCanvasViewAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETCanvasViewAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:v3 selector:sel__accessibilityFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accessibilityFocusChanged_ name:*MEMORY[0x29EDC7EB8] object:0];
   }
 
   return v3;
@@ -50,8 +50,8 @@
 - (void)dealloc
 {
   [(ETCanvasViewAccessibility *)self _accessibilityInvalidateDirectTouchTimerAndReschedule:0];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7EB8] object:0];
 
   v4.receiver = self;
   v4.super_class = ETCanvasViewAccessibility;
@@ -71,19 +71,19 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(ETCanvasViewAccessibility *)self storedIsAccessibilityElement];
-  v3 = v2;
-  if (v2)
+  storedIsAccessibilityElement = [(ETCanvasViewAccessibility *)self storedIsAccessibilityElement];
+  v3 = storedIsAccessibilityElement;
+  if (storedIsAccessibilityElement)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [storedIsAccessibilityElement BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (CGRect)accessibilityFrame
@@ -100,9 +100,9 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(ETCanvasViewAccessibility *)self _accessibilityIsDirectTouching];
+  _accessibilityIsDirectTouching = [(ETCanvasViewAccessibility *)self _accessibilityIsDirectTouching];
   v3 = MEMORY[0x29EDC7F68];
-  if (!v2)
+  if (!_accessibilityIsDirectTouching)
   {
     v3 = MEMORY[0x29EDC7FC8];
   }
@@ -159,7 +159,7 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = [v10 safeValueForKey:{@"_textLabel", v15}];
-          v11 = [v12 accessibilityLabel];
+          accessibilityLabel = [v12 accessibilityLabel];
 
           goto LABEL_11;
         }
@@ -175,29 +175,29 @@
     }
   }
 
-  v11 = 0;
+  accessibilityLabel = 0;
 LABEL_11:
 
   v13 = *MEMORY[0x29EDCA608];
 
-  return v11;
+  return accessibilityLabel;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   _axSetIsWaitingOnETMessageStart(0);
   v8.receiver = self;
   v8.super_class = ETCanvasViewAccessibility;
-  [(ETCanvasViewAccessibility *)&v8 touchesBegan:v7 withEvent:v6];
+  [(ETCanvasViewAccessibility *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = ETCanvasViewAccessibility;
-  [(ETCanvasViewAccessibility *)&v5 touchesEnded:a3 withEvent:a4];
+  [(ETCanvasViewAccessibility *)&v5 touchesEnded:ended withEvent:event];
   [(ETCanvasViewAccessibility *)self _accessibilityInvalidateDirectTouchTimerAndReschedule:1];
 }
 
@@ -211,13 +211,13 @@ LABEL_11:
   }
 }
 
-- (void)_accessibilityInvalidateDirectTouchTimerAndReschedule:(BOOL)a3
+- (void)_accessibilityInvalidateDirectTouchTimerAndReschedule:(BOOL)reschedule
 {
-  v3 = a3;
-  v5 = [(ETCanvasViewAccessibility *)self _accessibilityDisableDirectTouchTimer];
-  [v5 invalidate];
+  rescheduleCopy = reschedule;
+  _accessibilityDisableDirectTouchTimer = [(ETCanvasViewAccessibility *)self _accessibilityDisableDirectTouchTimer];
+  [_accessibilityDisableDirectTouchTimer invalidate];
 
-  if (v3)
+  if (rescheduleCopy)
   {
     v7[0] = MEMORY[0x29EDCA5F8];
     v7[1] = 3221225472;
@@ -246,15 +246,15 @@ void __83__ETCanvasViewAccessibility__accessibilityInvalidateDirectTouchTimerAnd
   UIAccessibilityPostNotification(v2, 0);
 }
 
-- (void)_accessibilityFocusChanged:(id)a3
+- (void)_accessibilityFocusChanged:(id)changed
 {
   v30 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
+  userInfo2 = [changedCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
 
   v9 = MEMORY[0x29C2D41C0](@"ETPaletteCircleView");
   v10 = MEMORY[0x29C2D41C0](@"ETCanvasView");
@@ -301,11 +301,11 @@ void __83__ETCanvasViewAccessibility__accessibilityInvalidateDirectTouchTimerAnd
     isKindOfClass = 0;
   }
 
-  v19 = [v6 accessibilityIdentifier];
-  v20 = [v19 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier = [v6 accessibilityIdentifier];
+  v20 = [accessibilityIdentifier isEqualToString:@"digital.touch.picker.circle.identifier"];
 
-  v21 = [v8 accessibilityIdentifier];
-  v22 = [v21 isEqualToString:@"digital.touch.picker.circle.identifier"];
+  accessibilityIdentifier2 = [v8 accessibilityIdentifier];
+  v22 = [accessibilityIdentifier2 isEqualToString:@"digital.touch.picker.circle.identifier"];
 
   if ((isKindOfClass & 1) != 0 || (v20 & 1) != 0 || v22)
   {

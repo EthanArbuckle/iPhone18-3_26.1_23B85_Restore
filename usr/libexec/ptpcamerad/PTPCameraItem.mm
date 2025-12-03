@@ -1,10 +1,10 @@
 @interface PTPCameraItem
-+ (id)UTTypeWithFilenameExtension:(id)a3;
++ (id)UTTypeWithFilenameExtension:(id)extension;
 - (BOOL)locked;
 - (BOOL)protectionStatus;
 - (NSString)name;
 - (NSUUID)relatedUUID;
-- (PTPCameraItem)initWithObjectInfo:(id)a3 parent:(id)a4 initiator:(id)a5;
+- (PTPCameraItem)initWithObjectInfo:(id)info parent:(id)parent initiator:(id)initiator;
 - (PTPCameraStorage)storage;
 - (PTPInitiator)initiator;
 - (id)baseName;
@@ -15,21 +15,21 @@
 - (unsigned)objHandle;
 - (unsigned)parentObject;
 - (unsigned)storageID;
-- (void)setCaptureDate:(unint64_t)a3;
-- (void)setModificationDate:(unint64_t)a3;
-- (void)setName:(id)a3;
-- (void)setSize:(unint64_t)a3;
+- (void)setCaptureDate:(unint64_t)date;
+- (void)setModificationDate:(unint64_t)date;
+- (void)setName:(id)name;
+- (void)setSize:(unint64_t)size;
 @end
 
 @implementation PTPCameraItem
 
-+ (id)UTTypeWithFilenameExtension:(id)a3
++ (id)UTTypeWithFilenameExtension:(id)extension
 {
-  v3 = a3;
-  v4 = v3;
+  extensionCopy = extension;
+  v4 = extensionCopy;
   if (qword_1000338B0 == -1)
   {
-    if (v3)
+    if (extensionCopy)
     {
       goto LABEL_3;
     }
@@ -65,115 +65,115 @@ LABEL_9:
 
 - (NSString)name
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 name];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  name = [cameraItemProxy name];
 
-  return v3;
+  return name;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(PTPCameraItem *)self cameraItemProxy];
-  [v5 setName:v4];
+  nameCopy = name;
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setName:nameCopy];
 }
 
 - (id)baseName
 {
-  v2 = [(PTPCameraItem *)self name];
-  v3 = [v2 stringByDeletingPathExtension];
+  name = [(PTPCameraItem *)self name];
+  stringByDeletingPathExtension = [name stringByDeletingPathExtension];
 
-  return v3;
+  return stringByDeletingPathExtension;
 }
 
 - (unint64_t)size
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 size];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  v3 = [cameraItemProxy size];
 
   return v3;
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  v4 = [(PTPCameraItem *)self cameraItemProxy];
-  [v4 setSize:a3];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setSize:size];
 }
 
 - (unsigned)objHandle
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 objectHandle];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  objectHandle = [cameraItemProxy objectHandle];
 
-  return v3;
+  return objectHandle;
 }
 
 - (unsigned)parentObject
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 parentObjectHandle];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  parentObjectHandle = [cameraItemProxy parentObjectHandle];
 
-  return v3;
+  return parentObjectHandle;
 }
 
 - (unsigned)storageID
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 storageID];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  storageID = [cameraItemProxy storageID];
 
-  return v3;
+  return storageID;
 }
 
 - (BOOL)protectionStatus
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 readOnly];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  readOnly = [cameraItemProxy readOnly];
 
-  return v3;
+  return readOnly;
 }
 
 - (unint64_t)captureDate
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 captureDate];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  captureDate = [cameraItemProxy captureDate];
 
-  return v3;
+  return captureDate;
 }
 
-- (void)setCaptureDate:(unint64_t)a3
+- (void)setCaptureDate:(unint64_t)date
 {
-  v4 = [(PTPCameraItem *)self cameraItemProxy];
-  [v4 setCaptureDate:a3];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setCaptureDate:date];
 }
 
 - (unint64_t)modificationDate
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 modificationDate];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  modificationDate = [cameraItemProxy modificationDate];
 
-  return v3;
+  return modificationDate;
 }
 
-- (void)setModificationDate:(unint64_t)a3
+- (void)setModificationDate:(unint64_t)date
 {
-  v4 = [(PTPCameraItem *)self cameraItemProxy];
-  [v4 setModificationDate:a3];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  [cameraItemProxy setModificationDate:date];
 }
 
 - (NSUUID)relatedUUID
 {
-  v2 = [(PTPCameraItem *)self cameraItemProxy];
-  v3 = [v2 keywords];
-  v4 = [v3 objectForKeyedSubscript:@"relatedUUID"];
+  cameraItemProxy = [(PTPCameraItem *)self cameraItemProxy];
+  keywords = [cameraItemProxy keywords];
+  v4 = [keywords objectForKeyedSubscript:@"relatedUUID"];
 
   return v4;
 }
 
-- (PTPCameraItem)initWithObjectInfo:(id)a3 parent:(id)a4 initiator:(id)a5
+- (PTPCameraItem)initWithObjectInfo:(id)info parent:(id)parent initiator:(id)initiator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  parentCopy = parent;
+  initiatorCopy = initiator;
   v19.receiver = self;
   v19.super_class = PTPCameraItem;
   v11 = [(PTPCameraItem *)&v19 init];
@@ -182,34 +182,34 @@ LABEL_9:
     v12 = objc_opt_new();
     [(PTPCameraItem *)v11 setCameraItemProxy:v12];
 
-    if (v8)
+    if (infoCopy)
     {
-      -[PTPCameraItem setObjectFormat:](v11, "setObjectFormat:", [v8 objectFormat]);
-      -[PTPCameraItem setProtectionStatus:](v11, "setProtectionStatus:", [v8 protectionStatus] == 1);
-      -[PTPCameraItem setParentObject:](v11, "setParentObject:", [v8 parentObject]);
-      v13 = [v8 captureDate];
-      [(PTPCameraItem *)v11 setPtpCaptureDate:v13];
+      -[PTPCameraItem setObjectFormat:](v11, "setObjectFormat:", [infoCopy objectFormat]);
+      -[PTPCameraItem setProtectionStatus:](v11, "setProtectionStatus:", [infoCopy protectionStatus] == 1);
+      -[PTPCameraItem setParentObject:](v11, "setParentObject:", [infoCopy parentObject]);
+      captureDate = [infoCopy captureDate];
+      [(PTPCameraItem *)v11 setPtpCaptureDate:captureDate];
 
-      v14 = [(PTPCameraItem *)v11 ptpCaptureDate];
+      ptpCaptureDate = [(PTPCameraItem *)v11 ptpCaptureDate];
       [(PTPCameraItem *)v11 setCaptureDate:ICTimeIntervalSince1970FromPTPString()];
 
-      v15 = [v8 modificationDate];
-      [(PTPCameraItem *)v11 setPtpModificationDate:v15];
+      modificationDate = [infoCopy modificationDate];
+      [(PTPCameraItem *)v11 setPtpModificationDate:modificationDate];
 
-      v16 = [(PTPCameraItem *)v11 ptpModificationDate];
+      ptpModificationDate = [(PTPCameraItem *)v11 ptpModificationDate];
       [(PTPCameraItem *)v11 setModificationDate:ICTimeIntervalSince1970FromPTPString()];
 
-      v17 = [v8 filename];
-      [(PTPCameraItem *)v11 setName:v17];
+      filename = [infoCopy filename];
+      [(PTPCameraItem *)v11 setName:filename];
 
-      -[PTPCameraItem setStorageID:](v11, "setStorageID:", [v8 storageID]);
-      -[PTPCameraItem setObjHandle:](v11, "setObjHandle:", [v8 objectHandle]);
-      -[PTPCameraItem setSize:](v11, "setSize:", [v8 objectCompressedSize64]);
+      -[PTPCameraItem setStorageID:](v11, "setStorageID:", [infoCopy storageID]);
+      -[PTPCameraItem setObjHandle:](v11, "setObjHandle:", [infoCopy objectHandle]);
+      -[PTPCameraItem setSize:](v11, "setSize:", [infoCopy objectCompressedSize64]);
     }
 
-    objc_storeWeak(&v11->_parent, v9);
+    objc_storeWeak(&v11->_parent, parentCopy);
     v11->_type = 0;
-    objc_storeWeak(&v11->_initiator, v10);
+    objc_storeWeak(&v11->_initiator, initiatorCopy);
   }
 
   return v11;
@@ -225,18 +225,18 @@ LABEL_9:
 
 - (BOOL)locked
 {
-  v3 = [(PTPCameraItem *)self storage];
-  if ([v3 locked])
+  storage = [(PTPCameraItem *)self storage];
+  if ([storage locked])
   {
-    v4 = 1;
+    protectionStatus = 1;
   }
 
   else
   {
-    v4 = [(PTPCameraItem *)self protectionStatus];
+    protectionStatus = [(PTPCameraItem *)self protectionStatus];
   }
 
-  return v4;
+  return protectionStatus;
 }
 
 - (id)parent

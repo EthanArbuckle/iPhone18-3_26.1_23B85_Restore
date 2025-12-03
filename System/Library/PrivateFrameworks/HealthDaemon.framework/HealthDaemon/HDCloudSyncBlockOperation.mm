@@ -1,22 +1,22 @@
 @interface HDCloudSyncBlockOperation
-- (HDCloudSyncBlockOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 block:(id)a5;
-- (HDCloudSyncBlockOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 synchronousBlock:(id)a5;
+- (HDCloudSyncBlockOperation)initWithConfiguration:(id)configuration cloudState:(id)state block:(id)block;
+- (HDCloudSyncBlockOperation)initWithConfiguration:(id)configuration cloudState:(id)state synchronousBlock:(id)block;
 - (void)main;
 - (void)skip;
 @end
 
 @implementation HDCloudSyncBlockOperation
 
-- (HDCloudSyncBlockOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 synchronousBlock:(id)a5
+- (HDCloudSyncBlockOperation)initWithConfiguration:(id)configuration cloudState:(id)state synchronousBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__HDCloudSyncBlockOperation_initWithConfiguration_cloudState_synchronousBlock___block_invoke;
   v12[3] = &unk_278625758;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(HDCloudSyncBlockOperation *)self initWithConfiguration:a3 cloudState:a4 block:v12];
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = [(HDCloudSyncBlockOperation *)self initWithConfiguration:configuration cloudState:state block:v12];
 
   return v10;
 }
@@ -32,15 +32,15 @@ void __79__HDCloudSyncBlockOperation_initWithConfiguration_cloudState_synchronou
   [v4 finishWithSuccess:v5 error:v6];
 }
 
-- (HDCloudSyncBlockOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 block:(id)a5
+- (HDCloudSyncBlockOperation)initWithConfiguration:(id)configuration cloudState:(id)state block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = HDCloudSyncBlockOperation;
-  v9 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v9 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:state];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v10;
   }

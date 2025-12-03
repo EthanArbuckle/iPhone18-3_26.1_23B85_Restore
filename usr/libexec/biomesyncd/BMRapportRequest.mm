@@ -1,21 +1,21 @@
 @interface BMRapportRequest
-- (BMRapportRequest)initWithUUID:(id)a3 activity:(id)a4 requestBlock:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)markAsDeliveredToDevice:(id)a3 withError:(id)a4;
+- (BMRapportRequest)initWithUUID:(id)d activity:(id)activity requestBlock:(id)block queue:(id)queue completionHandler:(id)handler;
+- (void)markAsDeliveredToDevice:(id)device withError:(id)error;
 - (void)requestTimeoutDidFire;
-- (void)runRequestOnDevice:(id)a3;
+- (void)runRequestOnDevice:(id)device;
 - (void)startRequestTimeout;
 - (void)stopRequestTimeout;
 @end
 
 @implementation BMRapportRequest
 
-- (BMRapportRequest)initWithUUID:(id)a3 activity:(id)a4 requestBlock:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (BMRapportRequest)initWithUUID:(id)d activity:(id)activity requestBlock:(id)block queue:(id)queue completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  activityCopy = activity;
+  blockCopy = block;
+  queueCopy = queue;
+  handlerCopy = handler;
   v33.receiver = self;
   v33.super_class = BMRapportRequest;
   v18 = [(BMRapportRequest *)&v33 init];
@@ -23,13 +23,13 @@
   if (v18)
   {
     v18->_state = 0;
-    objc_storeStrong(&v18->_uuid, a3);
-    objc_storeStrong(&v19->_activity, a4);
-    v20 = [v15 copy];
+    objc_storeStrong(&v18->_uuid, d);
+    objc_storeStrong(&v19->_activity, activity);
+    v20 = [blockCopy copy];
     requestBlock = v19->_requestBlock;
     v19->_requestBlock = v20;
 
-    v22 = [v17 copy];
+    v22 = [handlerCopy copy];
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v22;
 
@@ -45,7 +45,7 @@
     errorFromDevice = v19->_errorFromDevice;
     v19->_errorFromDevice = v28;
 
-    objc_storeStrong(&v19->_queue, a6);
+    objc_storeStrong(&v19->_queue, queue);
     v30 = os_transaction_create();
     transaction = v19->_transaction;
     v19->_transaction = v30;
@@ -56,26 +56,26 @@
   return v19;
 }
 
-- (void)runRequestOnDevice:(id)a3
+- (void)runRequestOnDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   [(BMRapportRequest *)self stopRequestTimeout];
   self->_state = 1;
-  v5 = [(BMRapportRequest *)self requestBlock];
-  v5[2](v5, v4);
+  requestBlock = [(BMRapportRequest *)self requestBlock];
+  requestBlock[2](requestBlock, deviceCopy);
 }
 
-- (void)markAsDeliveredToDevice:(id)a3 withError:(id)a4
+- (void)markAsDeliveredToDevice:(id)device withError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  [(NSMutableSet *)self->_inFlightToDevices removeObject:v9];
-  [(NSMutableSet *)self->_deliveredToDevices addObject:v9];
-  if (v6)
+  deviceCopy = device;
+  errorCopy = error;
+  [(NSMutableSet *)self->_inFlightToDevices removeObject:deviceCopy];
+  [(NSMutableSet *)self->_deliveredToDevices addObject:deviceCopy];
+  if (errorCopy)
   {
     errorFromDevice = self->_errorFromDevice;
-    v8 = [v9 rapportIdentifier];
-    [(NSMutableDictionary *)errorFromDevice setObject:v6 forKeyedSubscript:v8];
+    rapportIdentifier = [deviceCopy rapportIdentifier];
+    [(NSMutableDictionary *)errorFromDevice setObject:errorCopy forKeyedSubscript:rapportIdentifier];
   }
 }
 
@@ -126,12 +126,12 @@
 - (void)requestTimeoutDidFire
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BMRapportRequest *)self requestTimeoutHandler];
+  requestTimeoutHandler = [(BMRapportRequest *)self requestTimeoutHandler];
 
-  if (v3)
+  if (requestTimeoutHandler)
   {
-    v4 = [(BMRapportRequest *)self requestTimeoutHandler];
-    v4[2]();
+    requestTimeoutHandler2 = [(BMRapportRequest *)self requestTimeoutHandler];
+    requestTimeoutHandler2[2]();
   }
 }
 

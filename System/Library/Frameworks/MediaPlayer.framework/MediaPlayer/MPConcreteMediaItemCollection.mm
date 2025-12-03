@@ -1,19 +1,19 @@
 @interface MPConcreteMediaItemCollection
-+ (id)createUncachedMediaItemCollectionWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (MPConcreteMediaItemCollection)initWithCoder:(id)a3;
-- (MPConcreteMediaItemCollection)initWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7;
-- (MPConcreteMediaItemCollection)initWithMultiverseIdentifier:(id)a3 library:(id)a4;
-- (id)_initWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7 propertiesCache:(id)a8;
++ (id)createUncachedMediaItemCollectionWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (MPConcreteMediaItemCollection)initWithCoder:(id)coder;
+- (MPConcreteMediaItemCollection)initWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier;
+- (MPConcreteMediaItemCollection)initWithMultiverseIdentifier:(id)identifier library:(id)library;
+- (id)_initWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier propertiesCache:(id)cache;
 - (id)_tokenBinaryIdentifierAsString;
 - (id)representativeItem;
-- (id)valueForProperty:(id)a3;
-- (id)valuesForProperties:(id)a3;
+- (id)valueForProperty:(id)property;
+- (id)valuesForProperties:(id)properties;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateValuesForProperties:(id)a3 usingBlock:(id)a4;
-- (void)setValue:(id)a3 forProperty:(id)a4 withCompletionBlock:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateValuesForProperties:(id)properties usingBlock:(id)block;
+- (void)setValue:(id)value forProperty:(id)property withCompletionBlock:(id)block;
 @end
 
 @implementation MPConcreteMediaItemCollection
@@ -32,8 +32,8 @@
       v7 = v6;
       if (v6 && [v6 longLongValue])
       {
-        v8 = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
-        v9 = +[MPConcreteMediaItem concreteMediaItemWithPersistentID:library:](MPConcreteMediaItem, "concreteMediaItemWithPersistentID:library:", [v7 unsignedLongLongValue], v8);
+        mediaLibrary = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
+        v9 = +[MPConcreteMediaItem concreteMediaItemWithPersistentID:library:](MPConcreteMediaItem, "concreteMediaItemWithPersistentID:library:", [v7 unsignedLongLongValue], mediaLibrary);
         if ([v9 existsInLibrary])
         {
           objc_storeStrong(&self->_representativeItem, v9);
@@ -68,9 +68,9 @@ LABEL_12:
           }
 
           v15 = *(*(&v28 + 1) + 8 * v14);
-          v16 = [v15 artwork];
+          artwork = [v15 artwork];
 
-          if (v16)
+          if (artwork)
           {
             objc_storeStrong(&self->_representativeItem, v15);
           }
@@ -110,10 +110,10 @@ LABEL_12:
       {
         if (self->_representativeItem)
         {
-          v19 = [(MPConcreteMediaItemCollection *)self mediaLibrary];
-          v20 = [v19 writable];
+          mediaLibrary2 = [(MPConcreteMediaItemCollection *)self mediaLibrary];
+          writable = [mediaLibrary2 writable];
 
-          if (v20)
+          if (writable)
           {
             v21 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[MPMediaEntity persistentID](self->_representativeItem, "persistentID")}];
             [(MPConcreteMediaItemCollection *)self setValue:v21 forProperty:v5 withCompletionBlock:0];
@@ -123,17 +123,17 @@ LABEL_12:
 
       if (!self->_representativeItem)
       {
-        v22 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v23 = self->_representativeItem;
-        self->_representativeItem = v22;
+        self->_representativeItem = null;
       }
     }
 
     representativeItem = self->_representativeItem;
   }
 
-  v24 = [*(v4 + 4016) null];
-  if ([(MPMediaItem *)representativeItem isEqual:v24])
+  null2 = [*(v4 + 4016) null];
+  if ([(MPMediaItem *)representativeItem isEqual:null2])
   {
     v25 = 0;
   }
@@ -148,13 +148,13 @@ LABEL_12:
   return v25;
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 withCompletionBlock:(id)a5
+- (void)setValue:(id)value forProperty:(id)property withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPConcreteMediaItemCollection *)self mediaLibrary];
-  v12 = [v11 libraryDataProvider];
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
+  mediaLibrary = [(MPConcreteMediaItemCollection *)self mediaLibrary];
+  libraryDataProvider = [mediaLibrary libraryDataProvider];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
@@ -165,26 +165,26 @@ LABEL_12:
     aBlock[2] = __74__MPConcreteMediaItemCollection_setValue_forProperty_withCompletionBlock___block_invoke;
     aBlock[3] = &unk_1E7679888;
     objc_copyWeak(&v18, &location);
-    v17 = v10;
+    v17 = blockCopy;
     v14 = _Block_copy(aBlock);
     propertiesCache = self->_propertiesCache;
     if (propertiesCache)
     {
-      [(MPConcreteMediaEntityPropertiesCache *)propertiesCache cacheValue:v8 forProperty:v9 persistValueInBackgroundBlock:v14];
+      [(MPConcreteMediaEntityPropertiesCache *)propertiesCache cacheValue:valueCopy forProperty:propertyCopy persistValueInBackgroundBlock:v14];
     }
 
     else
     {
-      v14[2](v14, v8, v9);
+      v14[2](v14, valueCopy, propertyCopy);
     }
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
@@ -204,10 +204,10 @@ void __74__MPConcreteMediaItemCollection_setValue_forProperty_withCompletionBloc
   }
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -220,7 +220,7 @@ void __74__MPConcreteMediaItemCollection_setValue_forProperty_withCompletionBloc
   v9 = v8;
   v12 = v9;
   v13 = &v14;
-  [(MPConcreteMediaItemCollection *)self setValue:v6 forProperty:v7 withCompletionBlock:v11];
+  [(MPConcreteMediaItemCollection *)self setValue:valueCopy forProperty:propertyCopy withCompletionBlock:v11];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(self) = *(v15 + 24);
 
@@ -235,14 +235,14 @@ intptr_t __54__MPConcreteMediaItemCollection_setValue_forProperty___block_invoke
   return result;
 }
 
-- (id)valuesForProperties:(id)a3
+- (id)valuesForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
-  v6 = [v5 libraryDataProvider];
+  propertiesCopy = properties;
+  mediaLibrary = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
+  libraryDataProvider = [mediaLibrary libraryDataProvider];
 
-  v7 = [v4 mutableCopy];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  v7 = [propertiesCopy mutableCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __53__MPConcreteMediaItemCollection_valuesForProperties___block_invoke;
@@ -250,16 +250,16 @@ intptr_t __54__MPConcreteMediaItemCollection_setValue_forProperty___block_invoke
   v24[4] = self;
   v9 = v7;
   v25 = v9;
-  v10 = v8;
+  v10 = dictionary;
   v26 = v10;
-  [v4 enumerateObjectsUsingBlock:v24];
+  [propertiesCopy enumerateObjectsUsingBlock:v24];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__18853;
   v22 = __Block_byref_object_dispose__18854;
   v23 = 0;
-  if (v6 && [v9 count])
+  if (libraryDataProvider && [v9 count])
   {
     identifier = self->_identifier;
     grouping = self->_grouping;
@@ -270,7 +270,7 @@ intptr_t __54__MPConcreteMediaItemCollection_setValue_forProperty___block_invoke
     v15[4] = self;
     v16 = v9;
     v17 = &v18;
-    [v6 loadProperties:v16 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v15];
+    [libraryDataProvider loadProperties:v16 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v15];
   }
 
   if (v19[5])
@@ -308,11 +308,11 @@ void __53__MPConcreteMediaItemCollection_valuesForProperties___block_invoke_2(vo
   *(v4 + 40) = v3;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
-  v6 = [v5 libraryDataProvider];
+  propertyCopy = property;
+  mediaLibrary = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
+  libraryDataProvider = [mediaLibrary libraryDataProvider];
 
   v22 = 0;
   v16 = 0;
@@ -320,10 +320,10 @@ void __53__MPConcreteMediaItemCollection_valuesForProperties___block_invoke_2(vo
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__18853;
   v20 = __Block_byref_object_dispose__18854;
-  v21 = [(MPConcreteMediaEntityPropertiesCache *)self->_propertiesCache valueForProperty:v4 isCached:&v22];
-  if ((v22 & 1) == 0 && v6)
+  v21 = [(MPConcreteMediaEntityPropertiesCache *)self->_propertiesCache valueForProperty:propertyCopy isCached:&v22];
+  if ((v22 & 1) == 0 && libraryDataProvider)
   {
-    v7 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+    v7 = [MEMORY[0x1E695DFD8] setWithObject:propertyCopy];
     identifier = self->_identifier;
     grouping = self->_grouping;
     v12[0] = MEMORY[0x1E69E9820];
@@ -331,9 +331,9 @@ void __53__MPConcreteMediaItemCollection_valuesForProperties___block_invoke_2(vo
     v12[2] = __50__MPConcreteMediaItemCollection_valueForProperty___block_invoke;
     v12[3] = &unk_1E76796F8;
     v15 = &v16;
-    v13 = v4;
-    v14 = self;
-    [v6 loadProperties:v7 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v12];
+    v13 = propertyCopy;
+    selfCopy = self;
+    [libraryDataProvider loadProperties:v7 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v12];
   }
 
   v10 = v17[5];
@@ -356,14 +356,14 @@ uint64_t __50__MPConcreteMediaItemCollection_valueForProperty___block_invoke(voi
   return [v7 cacheValue:v8 forProperty:v6 persistValueInBackgroundBlock:0];
 }
 
-- (void)enumerateValuesForProperties:(id)a3 usingBlock:(id)a4
+- (void)enumerateValuesForProperties:(id)properties usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
-  v9 = [v8 libraryDataProvider];
+  propertiesCopy = properties;
+  blockCopy = block;
+  mediaLibrary = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
+  libraryDataProvider = [mediaLibrary libraryDataProvider];
 
-  v10 = [v6 mutableCopy];
+  v10 = [propertiesCopy mutableCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -375,10 +375,10 @@ uint64_t __50__MPConcreteMediaItemCollection_valueForProperty___block_invoke(voi
   v18[4] = self;
   v11 = v10;
   v19 = v11;
-  v12 = v7;
+  v12 = blockCopy;
   v20 = v12;
   v21 = &v22;
-  [v6 enumerateObjectsUsingBlock:v18];
+  [propertiesCopy enumerateObjectsUsingBlock:v18];
   if ((v23[3] & 1) == 0)
   {
     identifier = self->_identifier;
@@ -390,7 +390,7 @@ uint64_t __50__MPConcreteMediaItemCollection_valueForProperty___block_invoke(voi
     v15[4] = self;
     v16 = v11;
     v17 = v12;
-    [v9 loadProperties:v16 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v15];
+    [libraryDataProvider loadProperties:v16 ofCollectionWithIdentifier:identifier groupingType:grouping completionBlock:v15];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -461,36 +461,36 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
     v4 = v3;
   }
 
-  v5 = [(MPConcreteMediaItemCollection *)self persistentID];
-  v6 = [(MPConcreteMediaItemCollection *)self mediaLibrary];
-  v7 = [v6 ml3Library];
-  v8 = [v7 libraryUID];
-  v9 = [v3 URLForEntityWithPersistentID:v5 libraryUID:v8];
-  v10 = [v9 absoluteString];
+  persistentID = [(MPConcreteMediaItemCollection *)self persistentID];
+  mediaLibrary = [(MPConcreteMediaItemCollection *)self mediaLibrary];
+  ml3Library = [mediaLibrary ml3Library];
+  libraryUID = [ml3Library libraryUID];
+  v9 = [v3 URLForEntityWithPersistentID:persistentID libraryUID:libraryUID];
+  absoluteString = [v9 absoluteString];
 
-  return v10;
+  return absoluteString;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v4 = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
-    [v5 encodeObject:v4 forKey:@"MPLibrary"];
+    mediaLibrary = [(MPMediaQuery *)self->_itemsQuery mediaLibrary];
+    [coderCopy encodeObject:mediaLibrary forKey:@"MPLibrary"];
 
-    [v5 encodeObject:self->_itemsQuery forKey:@"MPQuery"];
-    [v5 encodeInt64:self->_identifier forKey:@"id"];
-    [v5 encodeInteger:self->_grouping forKey:@"group"];
+    [coderCopy encodeObject:self->_itemsQuery forKey:@"MPQuery"];
+    [coderCopy encodeInt64:self->_identifier forKey:@"id"];
+    [coderCopy encodeInteger:self->_grouping forKey:@"group"];
   }
 }
 
-- (MPConcreteMediaItemCollection)initWithCoder:(id)a3
+- (MPConcreteMediaItemCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPLibrary"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPLibrary"];
     if (v5)
     {
       v11.receiver = self;
@@ -498,79 +498,79 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
       v6 = [(MPMediaItemCollection *)&v11 initWithItems:0];
       if (v6)
       {
-        v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPQuery"];
+        v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPQuery"];
         itemsQuery = v6->_itemsQuery;
         v6->_itemsQuery = v7;
 
-        v6->_identifier = [v4 decodeInt64ForKey:@"id"];
-        v6->_grouping = [v4 decodeIntegerForKey:@"group"];
+        v6->_identifier = [coderCopy decodeInt64ForKey:@"id"];
+        v6->_grouping = [coderCopy decodeIntegerForKey:@"group"];
       }
 
       self = v6;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(MPConcreteMediaItemCollection *)self mediaLibrary];
-  v4 = [v3 libraryDataProvider];
-  v5 = [v4 entityCache];
-  [v5 removeEntityWithIdentifier:self->_identifier dataProviderEntityClass:{-[MPConcreteMediaEntityPropertiesCache dataProviderEntityClass](self->_propertiesCache, "dataProviderEntityClass")}];
+  mediaLibrary = [(MPConcreteMediaItemCollection *)self mediaLibrary];
+  libraryDataProvider = [mediaLibrary libraryDataProvider];
+  entityCache = [libraryDataProvider entityCache];
+  [entityCache removeEntityWithIdentifier:self->_identifier dataProviderEntityClass:{-[MPConcreteMediaEntityPropertiesCache dataProviderEntityClass](self->_propertiesCache, "dataProviderEntityClass")}];
 
   v6.receiver = self;
   v6.super_class = MPConcreteMediaItemCollection;
   [(MPConcreteMediaItemCollection *)&v6 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[9] == self->_identifier && v4[11] == self->_grouping;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[9] == self->_identifier && equalCopy[11] == self->_grouping;
 
   return v5;
 }
 
-- (MPConcreteMediaItemCollection)initWithMultiverseIdentifier:(id)a3 library:(id)a4
+- (MPConcreteMediaItemCollection)initWithMultiverseIdentifier:(id)identifier library:(id)library
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mediaObjectType];
-  v49 = v9 - 1;
-  if ((v9 - 1) > 7)
+  identifierCopy = identifier;
+  libraryCopy = library;
+  mediaObjectType = [identifierCopy mediaObjectType];
+  v49 = mediaObjectType - 1;
+  if ((mediaObjectType - 1) > 7)
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v10 = qword_1A273EE58[(v9 - 1)];
+    v10 = qword_1A273EE58[(mediaObjectType - 1)];
   }
 
-  v11 = [v7 libraryIdentifiers];
-  v51 = self;
-  v52 = v7;
-  v50 = v8;
-  v47 = v9;
+  libraryIdentifiers = [identifierCopy libraryIdentifiers];
+  selfCopy = self;
+  v52 = identifierCopy;
+  v50 = libraryCopy;
+  v47 = mediaObjectType;
   v48 = a2;
-  if (v8)
+  if (libraryCopy)
   {
-    v12 = v8;
+    v12 = libraryCopy;
   }
 
   else
@@ -579,13 +579,13 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
   }
 
   v53 = v12;
-  v13 = [v12 uniqueIdentifier];
+  uniqueIdentifier = [v12 uniqueIdentifier];
   v59 = 0;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v14 = v11;
+  v14 = libraryIdentifiers;
   v15 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (!v15)
   {
@@ -604,22 +604,22 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
       }
 
       v19 = *(*(&v55 + 1) + 8 * i);
-      v20 = [v19 libraryName];
-      if (![v20 length])
+      libraryName = [v19 libraryName];
+      if (![libraryName length])
       {
 
         continue;
       }
 
-      v21 = [v19 libraryName];
-      v22 = v21;
-      if (v21 == v13)
+      libraryName2 = [v19 libraryName];
+      v22 = libraryName2;
+      if (libraryName2 == uniqueIdentifier)
       {
       }
 
       else
       {
-        v23 = [v21 isEqual:v13];
+        v23 = [libraryName2 isEqual:uniqueIdentifier];
 
         if ((v23 & 1) == 0)
         {
@@ -627,11 +627,11 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
         }
       }
 
-      v54 = [v19 libraryId];
-      if ([v53 collectionExistsContainedWithinPersistentIDs:&v54 count:1 groupingType:v10 existentPID:&v59])
+      libraryId = [v19 libraryId];
+      if ([v53 collectionExistsContainedWithinPersistentIDs:&libraryId count:1 groupingType:v10 existentPID:&v59])
       {
         v29 = v14;
-        v25 = v51;
+        v25 = selfCopy;
         v24 = v52;
         goto LABEL_27;
       }
@@ -649,16 +649,16 @@ void __73__MPConcreteMediaItemCollection_enumerateValuesForProperties_usingBlock
 LABEL_21:
 
   v24 = v52;
-  v25 = v51;
+  v25 = selfCopy;
   if ([v52 hasCloudUniversalLibraryId])
   {
-    v26 = [v52 cloudUniversalLibraryId];
-    v27 = [v26 length];
+    cloudUniversalLibraryId = [v52 cloudUniversalLibraryId];
+    v27 = [cloudUniversalLibraryId length];
 
     if (v27)
     {
-      v28 = [v52 cloudUniversalLibraryId];
-      v29 = [MPMediaPropertyPredicate predicateWithValue:v28 forProperty:@"storeCloudAlbumID"];
+      cloudUniversalLibraryId2 = [v52 cloudUniversalLibraryId];
+      v29 = [MPMediaPropertyPredicate predicateWithValue:cloudUniversalLibraryId2 forProperty:@"storeCloudAlbumID"];
 
       v30 = [MPMediaQuery alloc];
       v31 = [MEMORY[0x1E695DFD8] setWithObject:v29];
@@ -666,20 +666,20 @@ LABEL_21:
 
       [(MPMediaQuery *)v32 setEntityLimit:1];
       [(MPMediaQuery *)v32 setGroupingType:v10];
-      v33 = [(MPMediaQuery *)v32 items];
-      v34 = [v33 firstObject];
+      items = [(MPMediaQuery *)v32 items];
+      firstObject = [items firstObject];
 
-      v35 = [v34 albumPersistentID];
-      if (v34 && v35)
+      albumPersistentID = [firstObject albumPersistentID];
+      if (firstObject && albumPersistentID)
       {
-        v59 = v35;
+        v59 = albumPersistentID;
 
 LABEL_27:
 LABEL_28:
         if (v49 > 7 || ((0xCFu >> v49) & 1) == 0 || (v36 = *off_1E7679A40[v49]) == 0)
         {
-          v37 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v37 handleFailureInMethod:v48 object:v25 file:@"MPMediaLibraryDataProvider.m" lineNumber:617 description:{@"No persistent ID property could be found for media object of type %d", v47}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:v48 object:v25 file:@"MPMediaLibraryDataProvider.m" lineNumber:617 description:{@"No persistent ID property could be found for media object of type %d", v47}];
 
           v36 = 0;
         }
@@ -707,8 +707,8 @@ LABEL_28:
 
   if ([v52 hasName])
   {
-    v44 = [v52 name];
-    v45 = [v53 collectionExistsWithName:v44 groupingType:v10 existentPID:&v59];
+    name = [v52 name];
+    v45 = [v53 collectionExistsWithName:name groupingType:v10 existentPID:&v59];
 
     if (v45)
     {
@@ -722,15 +722,15 @@ LABEL_40:
   return v43;
 }
 
-- (MPConcreteMediaItemCollection)initWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7
+- (MPConcreteMediaItemCollection)initWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [v13 mediaLibrary];
-  v15 = v14;
-  if (v14)
+  propertiesCopy = properties;
+  queryCopy = query;
+  mediaLibrary = [queryCopy mediaLibrary];
+  v15 = mediaLibrary;
+  if (mediaLibrary)
   {
-    v16 = v14;
+    v16 = mediaLibrary;
   }
 
   else
@@ -740,22 +740,22 @@ LABEL_40:
 
   v17 = v16;
 
-  v18 = [v17 libraryDataProvider];
-  v19 = [v18 entityCache];
+  libraryDataProvider = [v17 libraryDataProvider];
+  entityCache = [libraryDataProvider entityCache];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __121__MPConcreteMediaItemCollection_initWithIdentifier_valuesForProperties_itemsQuery_grouping_representativeItemIdentifier___block_invoke;
   v25[3] = &unk_1E7679810;
-  v26 = v12;
-  v27 = self;
-  v28 = v13;
-  v29 = a3;
-  v30 = a6;
-  v31 = a7;
-  v20 = v13;
-  v21 = self;
-  v22 = v12;
-  v23 = [v19 collectionWithIdentifier:a3 grouping:a6 loadEntityBlock:v25];
+  v26 = propertiesCopy;
+  selfCopy = self;
+  v28 = queryCopy;
+  identifierCopy = identifier;
+  groupingCopy = grouping;
+  itemIdentifierCopy = itemIdentifier;
+  v20 = queryCopy;
+  selfCopy2 = self;
+  v22 = propertiesCopy;
+  v23 = [entityCache collectionWithIdentifier:identifier grouping:grouping loadEntityBlock:v25];
 
   return v23;
 }
@@ -774,27 +774,27 @@ id __121__MPConcreteMediaItemCollection_initWithIdentifier_valuesForProperties_i
   return v8;
 }
 
-- (id)_initWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7 propertiesCache:(id)a8
+- (id)_initWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier propertiesCache:(id)cache
 {
-  v13 = a5;
-  v14 = a8;
+  queryCopy = query;
+  cacheCopy = cache;
   v24.receiver = self;
   v24.super_class = MPConcreteMediaItemCollection;
   v15 = [(MPMediaItemCollection *)&v24 initWithItems:0];
   v16 = v15;
   if (v15)
   {
-    v15->_identifier = a3;
-    v17 = [v13 copy];
+    v15->_identifier = identifier;
+    v17 = [queryCopy copy];
     itemsQuery = v16->_itemsQuery;
     v16->_itemsQuery = v17;
 
-    v16->_grouping = a6;
-    objc_storeStrong(&v16->_propertiesCache, a8);
-    if (a7)
+    v16->_grouping = grouping;
+    objc_storeStrong(&v16->_propertiesCache, cache);
+    if (itemIdentifier)
     {
-      v19 = [v13 mediaLibrary];
-      v20 = [MPConcreteMediaItem concreteMediaItemWithPersistentID:a7 library:v19];
+      mediaLibrary = [queryCopy mediaLibrary];
+      v20 = [MPConcreteMediaItem concreteMediaItemWithPersistentID:itemIdentifier library:mediaLibrary];
       representativeItem = v16->_representativeItem;
       v16->_representativeItem = v20;
 
@@ -809,11 +809,11 @@ id __121__MPConcreteMediaItemCollection_initWithIdentifier_valuesForProperties_i
   return v16;
 }
 
-+ (id)createUncachedMediaItemCollectionWithIdentifier:(int64_t)a3 valuesForProperties:(id)a4 itemsQuery:(id)a5 grouping:(int64_t)a6 representativeItemIdentifier:(int64_t)a7
++ (id)createUncachedMediaItemCollectionWithIdentifier:(int64_t)identifier valuesForProperties:(id)properties itemsQuery:(id)query grouping:(int64_t)grouping representativeItemIdentifier:(int64_t)itemIdentifier
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = [[a1 alloc] _initWithIdentifier:a3 valuesForProperties:v13 itemsQuery:v12 grouping:a6 representativeItemIdentifier:a7 propertiesCache:0];
+  queryCopy = query;
+  propertiesCopy = properties;
+  v14 = [[self alloc] _initWithIdentifier:identifier valuesForProperties:propertiesCopy itemsQuery:queryCopy grouping:grouping representativeItemIdentifier:itemIdentifier propertiesCache:0];
 
   return v14;
 }

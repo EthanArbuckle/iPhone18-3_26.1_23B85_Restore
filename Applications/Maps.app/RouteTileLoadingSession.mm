@@ -1,28 +1,28 @@
 @interface RouteTileLoadingSession
-- (RouteTileLoadingSession)initWithRoute:(id)a3 overlayManager:(id)a4 traits:(id)a5 options:(unint64_t)a6;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
+- (RouteTileLoadingSession)initWithRoute:(id)route overlayManager:(id)manager traits:(id)traits options:(unint64_t)options;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
 - (void)_tilesFlushed;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)routePreloader:(uint64_t)a3 failedToLoadTileKey:(__int128 *)a4 error:;
-- (void)routePreloader:(void *)a3 loadedTileKey:(__int128 *)a4 source:(uint64_t)a5;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)routePreloader:(uint64_t)preloader failedToLoadTileKey:(__int128 *)key error:;
+- (void)routePreloader:(void *)preloader loadedTileKey:(__int128 *)key source:(uint64_t)source;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation RouteTileLoadingSession
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_debugOverlay == v7)
+  viewCopy = view;
+  overlayCopy = overlay;
+  v8 = overlayCopy;
+  if (self->_debugOverlay == overlayCopy)
   {
     debugOverlayRenderer = self->_debugOverlayRenderer;
     if (!debugOverlayRenderer)
     {
-      v11 = [[RouteTileLoadingDebugOverlayRenderer alloc] initWithOverlay:v7];
+      v11 = [[RouteTileLoadingDebugOverlayRenderer alloc] initWithOverlay:overlayCopy];
       v12 = self->_debugOverlayRenderer;
       self->_debugOverlayRenderer = v11;
 
@@ -34,13 +34,13 @@
 
   else
   {
-    if (self->_cellularCoverageOverlay != v7)
+    if (self->_cellularCoverageOverlay != overlayCopy)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v13 = [[RouteCellularCoverageDebugOverlayRenderer alloc] initWithOverlay:v7];
+    v13 = [[RouteCellularCoverageDebugOverlayRenderer alloc] initWithOverlay:overlayCopy];
   }
 
   v9 = v13;
@@ -49,59 +49,59 @@ LABEL_9:
   return v9;
 }
 
-- (void)routePreloader:(uint64_t)a3 failedToLoadTileKey:(__int128 *)a4 error:
+- (void)routePreloader:(uint64_t)preloader failedToLoadTileKey:(__int128 *)key error:
 {
-  if (*(a1 + 24) == 1)
+  if (*(self + 24) == 1)
   {
     v10 = v4;
     v11 = v5;
-    [*(a1 + 32) addFailedKey:a4];
-    v9 = *a4;
+    [*(self + 32) addFailedKey:key];
+    v9 = *key;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100EA6C18;
     block[3] = &unk_1016575B0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)routePreloader:(void *)a3 loadedTileKey:(__int128 *)a4 source:(uint64_t)a5
+- (void)routePreloader:(void *)preloader loadedTileKey:(__int128 *)key source:(uint64_t)source
 {
-  v8 = a3;
-  if (*(a1 + 24) == 1)
+  preloaderCopy = preloader;
+  if (*(self + 24) == 1)
   {
-    v9 = *(a1 + 32);
-    if (a5 == 2)
+    v9 = *(self + 32);
+    if (source == 2)
     {
-      [v9 addLoadedTileKey:a4];
+      [v9 addLoadedTileKey:key];
     }
 
     else
     {
-      [v9 addCachedTileKey:a4];
+      [v9 addCachedTileKey:key];
     }
 
-    v11 = *a4;
+    v11 = *key;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100EA6D24;
     block[3] = &unk_1016575B0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = [a3 lastLocation];
-  v6 = [v4 _navigation_routeMatch];
+  lastLocation = [location lastLocation];
+  _navigation_routeMatch = [lastLocation _navigation_routeMatch];
 
-  v5 = v6;
-  if (v6)
+  v5 = _navigation_routeMatch;
+  if (_navigation_routeMatch)
   {
-    [(GEORoutePreloader *)self->_preloader updateWithRouteMatch:v6];
-    v5 = v6;
+    [(GEORoutePreloader *)self->_preloader updateWithRouteMatch:_navigation_routeMatch];
+    v5 = _navigation_routeMatch;
   }
 }
 
@@ -182,18 +182,18 @@ LABEL_7:
 
       [(OverlayManager *)self->_overlayManager addOverlay:self->_debugOverlay level:0 fromProvider:self];
       v7 = [RouteCellularCoverageDebugOverlay alloc];
-      v8 = [(RouteTileLoadingSession *)self route];
-      v9 = [(RouteCellularCoverageDebugOverlay *)v7 initWithRoute:v8];
+      route = [(RouteTileLoadingSession *)self route];
+      v9 = [(RouteCellularCoverageDebugOverlay *)v7 initWithRoute:route];
       cellularCoverageOverlay = self->_cellularCoverageOverlay;
       self->_cellularCoverageOverlay = v9;
 
       [(OverlayManager *)self->_overlayManager addOverlay:self->_cellularCoverageOverlay level:1 fromProvider:self];
     }
 
-    v11 = [(RouteTileLoadingSession *)self route];
-    v12 = [v11 transportType];
+    route2 = [(RouteTileLoadingSession *)self route];
+    transportType = [route2 transportType];
 
-    if (v12 == 1)
+    if (transportType == 1)
     {
       v13 = objc_alloc_init(GEOTransitRoutePreloadStrategy);
       [v13 addTileSetStyle:1 betweenZoom:11 andZoom:15];
@@ -229,10 +229,10 @@ LABEL_26:
     options = self->_options;
     [v13 setForceDisableMetros:options & 1];
     [v13 addTileSetStyle:53 betweenZoom:11 andZoom:17];
-    v16 = [(RouteTileLoadingSession *)self route];
-    v17 = [v16 transportType];
+    route3 = [(RouteTileLoadingSession *)self route];
+    transportType2 = [route3 transportType];
 
-    if (v17)
+    if (transportType2)
     {
       [v13 addTileSetStyle:30 betweenZoom:11 andZoom:17];
     }
@@ -254,8 +254,8 @@ LABEL_16:
 
       [v13 addTileSetStyle:73 betweenZoom:11 andZoom:17];
       v18 = +[GEOResourceManifestManager modernManager];
-      v19 = [v18 activeTileGroup];
-      v20 = [v19 activeTileSetForStyle:68];
+      activeTileGroup = [v18 activeTileGroup];
+      v20 = [activeTileGroup activeTileSetForStyle:68];
 
       if (v20)
       {
@@ -333,14 +333,14 @@ LABEL_27:
   [(RouteTileLoadingSession *)&v6 dealloc];
 }
 
-- (RouteTileLoadingSession)initWithRoute:(id)a3 overlayManager:(id)a4 traits:(id)a5 options:(unint64_t)a6
+- (RouteTileLoadingSession)initWithRoute:(id)route overlayManager:(id)manager traits:(id)traits options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  v15 = 0;
-  if (v11 && v13)
+  routeCopy = route;
+  managerCopy = manager;
+  traitsCopy = traits;
+  v14 = traitsCopy;
+  selfCopy = 0;
+  if (routeCopy && traitsCopy)
   {
     v21.receiver = self;
     v21.super_class = RouteTileLoadingSession;
@@ -348,22 +348,22 @@ LABEL_27:
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_route, a3);
-      objc_storeStrong(&v17->_overlayManager, a4);
+      objc_storeStrong(&v16->_route, route);
+      objc_storeStrong(&v17->_overlayManager, manager);
       v18 = [v14 copy];
       traits = v17->_traits;
       v17->_traits = v18;
 
       [(GEOMapServiceTraits *)v17->_traits setSource:19];
       v17->_drawDebugOverlay = GEOConfigGetBOOL();
-      v17->_options = a6;
+      v17->_options = options;
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

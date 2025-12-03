@@ -1,68 +1,68 @@
 @interface PKMediaPlayerItem
-- (BOOL)isEqual:(id)a3;
-- (PKMediaPlayerItem)initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKMediaPlayerItem)initWithURL:(id)l;
 - (id)description;
 - (unint64_t)hash;
 - (void)invalidate;
-- (void)setPlaybackNotificationTimeRanges:(id)a3 withTimeRangeHandler:(id)a4;
-- (void)setPlayerItem:(id)a3;
+- (void)setPlaybackNotificationTimeRanges:(id)ranges withTimeRangeHandler:(id)handler;
+- (void)setPlayerItem:(id)item;
 @end
 
 @implementation PKMediaPlayerItem
 
-- (PKMediaPlayerItem)initWithURL:(id)a3
+- (PKMediaPlayerItem)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PKMediaPlayerItem;
   v6 = [(PKMediaPlayerItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-- (void)setPlaybackNotificationTimeRanges:(id)a3 withTimeRangeHandler:(id)a4
+- (void)setPlaybackNotificationTimeRanges:(id)ranges withTimeRangeHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  handlerCopy = handler;
+  v7 = [ranges copy];
   playbackNotificationTimeRanges = self->_playbackNotificationTimeRanges;
   self->_playbackNotificationTimeRanges = v7;
 
-  v9 = [v6 copy];
+  v9 = [handlerCopy copy];
   timeRangeHandler = self->_timeRangeHandler;
   self->_timeRangeHandler = v9;
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v12 = a3;
-  v4 = [(PKMediaPlayerItem *)self playerItems];
-  [v4 removeAllObjects];
+  itemCopy = item;
+  playerItems = [(PKMediaPlayerItem *)self playerItems];
+  [playerItems removeAllObjects];
 
-  v5 = [(PKMediaPlayerItem *)self playerItems];
+  playerItems2 = [(PKMediaPlayerItem *)self playerItems];
 
-  if (!v5)
+  if (!playerItems2)
   {
     v6 = objc_opt_new();
     [(PKMediaPlayerItem *)self setPlayerItems:v6];
   }
 
-  v7 = [(PKMediaPlayerItem *)self playerItems];
-  [v7 addObject:v12];
+  playerItems3 = [(PKMediaPlayerItem *)self playerItems];
+  [playerItems3 addObject:itemCopy];
 
   if ([(PKMediaPlayerItem *)self shouldLoop])
   {
-    v8 = [(PKMediaPlayerItem *)self playerItems];
-    v9 = [v12 copy];
-    [v8 addObject:v9];
+    playerItems4 = [(PKMediaPlayerItem *)self playerItems];
+    v9 = [itemCopy copy];
+    [playerItems4 addObject:v9];
 
-    v10 = [(PKMediaPlayerItem *)self playerItems];
-    v11 = [v12 copy];
-    [v10 addObject:v11];
+    playerItems5 = [(PKMediaPlayerItem *)self playerItems];
+    v11 = [itemCopy copy];
+    [playerItems5 addObject:v11];
   }
 }
 
@@ -89,7 +89,7 @@
 
   if ([(NSMutableArray *)self->_playerItems count])
   {
-    v13 = [(NSMutableArray *)self->_playerItems firstObject];
+    firstObject = [(NSMutableArray *)self->_playerItems firstObject];
     NSAppendPrintF();
     v4 = v3;
 
@@ -144,15 +144,15 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(PKMediaPlayerItem *)self url];
       v7 = [(PKMediaPlayerItem *)v5 url];
       v8 = v6;

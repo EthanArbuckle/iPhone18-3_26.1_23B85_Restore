@@ -1,18 +1,18 @@
 @interface TKSmartCardTokenRegistrationXPCClient
-- (BOOL)registerSmartCardWithTokenID:(id)a3 promptMessage:(id)a4 callerBundleID:(id)a5 error:(id *)a6;
-- (BOOL)unregisterSmartCardWithTokenID:(id)a3 callerBundleID:(id)a4 error:(id *)a5;
+- (BOOL)registerSmartCardWithTokenID:(id)d promptMessage:(id)message callerBundleID:(id)iD error:(id *)error;
+- (BOOL)unregisterSmartCardWithTokenID:(id)d callerBundleID:(id)iD error:(id *)error;
 - (TKSmartCardTokenRegistrationXPCClient)init;
-- (id)_connectionWithErrorHandler:(id)a3;
+- (id)_connectionWithErrorHandler:(id)handler;
 - (id)_remoteObjectProxy;
 - (id)_synchronousRemoteObjectProxy;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)registeredSmartCardTokens;
 - (void)_handleConnectionClose;
-- (void)connectionDidActivate:(id)a3;
+- (void)connectionDidActivate:(id)activate;
 - (void)dealloc;
-- (void)registerSmartCardWithTokenID:(id)a3 promptMessage:(id)a4 callerBundleID:(id)a5 completion:(id)a6;
-- (void)registeredSmartCardsWithCompletion:(id)a3;
-- (void)unregisterSmartCardWithTokenID:(id)a3 callerBundleID:(id)a4 completion:(id)a5;
+- (void)registerSmartCardWithTokenID:(id)d promptMessage:(id)message callerBundleID:(id)iD completion:(id)completion;
+- (void)registeredSmartCardsWithCompletion:(id)completion;
+- (void)unregisterSmartCardWithTokenID:(id)d callerBundleID:(id)iD completion:(id)completion;
 @end
 
 @implementation TKSmartCardTokenRegistrationXPCClient
@@ -38,30 +38,30 @@
   [(TKSmartCardTokenRegistrationXPCClient *)&v3 dealloc];
 }
 
-- (BOOL)registerSmartCardWithTokenID:(id)a3 promptMessage:(id)a4 callerBundleID:(id)a5 error:(id *)a6
+- (BOOL)registerSmartCardWithTokenID:(id)d promptMessage:(id)message callerBundleID:(id)iD error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  messageCopy = message;
+  iDCopy = iD;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v13 = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
+  _synchronousRemoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __105__TKSmartCardTokenRegistrationXPCClient_registerSmartCardWithTokenID_promptMessage_callerBundleID_error___block_invoke;
   v18[3] = &unk_1E86B7610;
-  v14 = v10;
+  v14 = dCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = iDCopy;
   v20 = v15;
   v21 = &v22;
-  [v13 registerSmartCardWithTokenID:v14 promptMessage:v11 callerBundleID:v15 completion:v18];
+  [_synchronousRemoteObjectProxy registerSmartCardWithTokenID:v14 promptMessage:messageCopy callerBundleID:v15 completion:v18];
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v16 = *(v23 + 24);
@@ -91,27 +91,27 @@ void __105__TKSmartCardTokenRegistrationXPCClient_registerSmartCardWithTokenID_p
   *(*(*(a1 + 48) + 8) + 24) = a2;
 }
 
-- (BOOL)unregisterSmartCardWithTokenID:(id)a3 callerBundleID:(id)a4 error:(id *)a5
+- (BOOL)unregisterSmartCardWithTokenID:(id)d callerBundleID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v10 = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
+  _synchronousRemoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__TKSmartCardTokenRegistrationXPCClient_unregisterSmartCardWithTokenID_callerBundleID_error___block_invoke;
   v14[3] = &unk_1E86B7638;
-  v11 = v8;
+  v11 = dCopy;
   v15 = v11;
   v16 = &v17;
-  [v10 unregisterSmartCardWithTokenID:v11 callerBundleID:v9 completion:v14];
+  [_synchronousRemoteObjectProxy unregisterSmartCardWithTokenID:v11 callerBundleID:iDCopy completion:v14];
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v12 = *(v18 + 24);
@@ -148,14 +148,14 @@ void __93__TKSmartCardTokenRegistrationXPCClient_unregisterSmartCardWithTokenID_
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
-  v12 = [MEMORY[0x1E695DEC8] array];
-  v3 = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
+  array = [MEMORY[0x1E695DEC8] array];
+  _synchronousRemoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _synchronousRemoteObjectProxy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__TKSmartCardTokenRegistrationXPCClient_registeredSmartCardTokens__block_invoke;
   v6[3] = &unk_1E86B7660;
   v6[4] = &v7;
-  [v3 registeredSmartCardsWithCompletion:v6];
+  [_synchronousRemoteObjectProxy registeredSmartCardsWithCompletion:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -163,44 +163,44 @@ void __93__TKSmartCardTokenRegistrationXPCClient_unregisterSmartCardWithTokenID_
   return v4;
 }
 
-- (void)registerSmartCardWithTokenID:(id)a3 promptMessage:(id)a4 callerBundleID:(id)a5 completion:(id)a6
+- (void)registerSmartCardWithTokenID:(id)d promptMessage:(id)message callerBundleID:(id)iD completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
-  [v14 registerSmartCardWithTokenID:v13 promptMessage:v12 callerBundleID:v11 completion:v10];
+  completionCopy = completion;
+  iDCopy = iD;
+  messageCopy = message;
+  dCopy = d;
+  _remoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerSmartCardWithTokenID:dCopy promptMessage:messageCopy callerBundleID:iDCopy completion:completionCopy];
 }
 
-- (void)unregisterSmartCardWithTokenID:(id)a3 callerBundleID:(id)a4 completion:(id)a5
+- (void)unregisterSmartCardWithTokenID:(id)d callerBundleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
-  [v11 unregisterSmartCardWithTokenID:v10 callerBundleID:v9 completion:v8];
+  completionCopy = completion;
+  iDCopy = iD;
+  dCopy = d;
+  _remoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy unregisterSmartCardWithTokenID:dCopy callerBundleID:iDCopy completion:completionCopy];
 }
 
-- (void)registeredSmartCardsWithCompletion:(id)a3
+- (void)registeredSmartCardsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
-  [v5 registeredSmartCardsWithCompletion:v4];
+  completionCopy = completion;
+  _remoteObjectProxy = [(TKSmartCardTokenRegistrationXPCClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registeredSmartCardsWithCompletion:completionCopy];
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TKSmartCardTokenRegistrationXPCClient *)self _connectionWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(TKSmartCardTokenRegistrationXPCClient *)self _connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_connectionWithErrorHandler:(id)a3
+- (id)_connectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_connectionLock);
   if (self->_connection)
   {
@@ -227,9 +227,9 @@ LABEL_3:
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithCode:-2 debugDescription:@"XPC connection to TKSmartCardTokenRegistrationXPC could not be created"];
     v7 = v11;
-    if (v4 && v11)
+    if (handlerCopy && v11)
     {
-      v4[2](v4, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
   }
 
@@ -270,9 +270,9 @@ TKXPCConnectionDefault *__69__TKSmartCardTokenRegistrationXPCClient__connectionW
 - (id)_remoteObjectProxy
 {
   v2 = [(TKSmartCardTokenRegistrationXPCClient *)self _connectionWithErrorHandler:&__block_literal_global_5];
-  v3 = [v2 remoteObjectProxy];
+  remoteObjectProxy = [v2 remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 void __59__TKSmartCardTokenRegistrationXPCClient__remoteObjectProxy__block_invoke(uint64_t a1, void *a2)
@@ -313,9 +313,9 @@ void __70__TKSmartCardTokenRegistrationXPCClient__synchronousRemoteObjectProxy__
   }
 }
 
-- (void)connectionDidActivate:(id)a3
+- (void)connectionDidActivate:(id)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   v4 = TK_LOG_smartcard_0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {

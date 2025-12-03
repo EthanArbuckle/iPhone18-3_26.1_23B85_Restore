@@ -2,8 +2,8 @@
 + (id)sharedJanitor;
 - (MCProvisioningProfileJanitor)init;
 - (void)didUnenrollFromMDM;
-- (void)syncMCTrustedCodeSigningIdentities:(id)a3;
-- (void)updateMISTrustAndValidateApps:(id)a3 validateManagedApps:(BOOL)a4 completion:(id)a5;
+- (void)syncMCTrustedCodeSigningIdentities:(id)identities;
+- (void)updateMISTrustAndValidateApps:(id)apps validateManagedApps:(BOOL)managedApps completion:(id)completion;
 @end
 
 @implementation MCProvisioningProfileJanitor
@@ -43,10 +43,10 @@
   return v3;
 }
 
-- (void)updateMISTrustAndValidateApps:(id)a3 validateManagedApps:(BOOL)a4 completion:(id)a5
+- (void)updateMISTrustAndValidateApps:(id)apps validateManagedApps:(BOOL)managedApps completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  appsCopy = apps;
+  completionCopy = completion;
   v10 = [[DMCPowerAssertion alloc] initWithReason:@"profiled-UpdateMISTrustValidateApps"];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -54,23 +54,23 @@
   block[2] = sub_100068138;
   block[3] = &unk_10011C950;
   block[4] = self;
-  v16 = v8;
-  v19 = a4;
+  v16 = appsCopy;
+  managedAppsCopy = managedApps;
   v17 = v10;
-  v18 = v9;
+  v18 = completionCopy;
   v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v13 = completionCopy;
+  v14 = appsCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)syncMCTrustedCodeSigningIdentities:(id)a3
+- (void)syncMCTrustedCodeSigningIdentities:(id)identities
 {
-  v3 = a3;
+  identitiesCopy = identities;
   v4 = +[MDMProvisioningProfileTrust allTrustedSignerIdentities];
   if (v4)
   {
-    v5 = [v3 isEqualToSet:v4];
+    v5 = [identitiesCopy isEqualToSet:v4];
     v6 = _MCLogObjects[11];
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5)
@@ -78,7 +78,7 @@
       if (v7)
       {
         v14 = 138412290;
-        v15 = v3;
+        v15 = identitiesCopy;
         v8 = "MCProvisioningProfileJanitor maintaining MC signers: %@";
         v9 = v6;
         v10 = OS_LOG_TYPE_DEFAULT;
@@ -97,8 +97,8 @@ LABEL_7:
       }
 
       v12 = +[MCRestrictionManagerWriter sharedManager];
-      v13 = [v4 allObjects];
-      [v12 setUnionValues:v13 forSetting:MCFeatureTrustedCodeSigningIdentities sender:@"MCProvisioningProfileJanitor.syncMCTrustedCodeSigningIdentities:"];
+      allObjects = [v4 allObjects];
+      [v12 setUnionValues:allObjects forSetting:MCFeatureTrustedCodeSigningIdentities sender:@"MCProvisioningProfileJanitor.syncMCTrustedCodeSigningIdentities:"];
     }
   }
 
@@ -108,7 +108,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v3;
+      v15 = identitiesCopy;
       v8 = "MCProvisioningProfileJanitor skipping signer sync after MIS enumeration failed. Maintaining MC signers: %@";
       v9 = v11;
       v10 = OS_LOG_TYPE_ERROR;
@@ -119,8 +119,8 @@ LABEL_7:
 
 - (void)didUnenrollFromMDM
 {
-  v3 = [(MCProvisioningProfileJanitor *)self profileTrust];
-  [v3 didUnenrollFromMDM];
+  profileTrust = [(MCProvisioningProfileJanitor *)self profileTrust];
+  [profileTrust didUnenrollFromMDM];
 
   [(MCProvisioningProfileJanitor *)self syncMCTrustedCodeSigningIdentities:0];
 }

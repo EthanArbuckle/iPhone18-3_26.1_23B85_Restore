@@ -1,5 +1,5 @@
 @interface RouteRequestBuilder
-- (RouteRequestBuilder)initWithWaypointSet:(id)a3 maximumRouteCount:(unint64_t)a4 routeAttributesBuilders:(id)a5 currentUserLocation:(id)a6 initiator:(unint64_t)a7 traits:(id)a8 isResumingMultipointRoute:(BOOL)a9 resumeRouteHandle:(id)a10 persistentData:(id)a11;
+- (RouteRequestBuilder)initWithWaypointSet:(id)set maximumRouteCount:(unint64_t)count routeAttributesBuilders:(id)builders currentUserLocation:(id)location initiator:(unint64_t)initiator traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)self0 persistentData:(id)self1;
 - (id)appIdentifierForInitiator;
 - (id)buildDirectionsRequestDetails;
 - (int)sourceFromInitiator;
@@ -22,15 +22,15 @@
 
 - (int)sourceFromInitiator
 {
-  v2 = [(RouteRequestBuilder *)self initiator];
-  if (v2 > 8)
+  initiator = [(RouteRequestBuilder *)self initiator];
+  if (initiator > 8)
   {
     return 2;
   }
 
   else
   {
-    return dword_101213638[v2];
+    return dword_101213638[initiator];
   }
 }
 
@@ -41,8 +41,8 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v4 = [(RouteRequestBuilder *)self routeAttributesBuilders];
-  v5 = [v4 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  routeAttributesBuilders = [(RouteRequestBuilder *)self routeAttributesBuilders];
+  v5 = [routeAttributesBuilders countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,56 +53,56 @@
       {
         if (*v47 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routeAttributesBuilders);
         }
 
         [*(*(&v46 + 1) + 8 * i) fillRouteAttributes:v3];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v6 = [routeAttributesBuilders countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(RouteRequestBuilder *)self waypointSet];
-  v10 = [v9 areAllValidWaypoints];
+  waypointSet = [(RouteRequestBuilder *)self waypointSet];
+  areAllValidWaypoints = [waypointSet areAllValidWaypoints];
 
-  if ((v10 & 1) == 0)
+  if ((areAllValidWaypoints & 1) == 0)
   {
     v11 = sub_100035E6C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(RouteRequestBuilder *)self waypointSet];
+      waypointSet2 = [(RouteRequestBuilder *)self waypointSet];
       *buf = 138412290;
-      v51 = v12;
+      selfCopy2 = waypointSet2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "making a directions request with waypoints: %@", buf, 0xCu);
     }
   }
 
-  v13 = [(RouteRequestBuilder *)self waypointSet];
-  v14 = [v13 count];
+  waypointSet3 = [(RouteRequestBuilder *)self waypointSet];
+  v14 = [waypointSet3 count];
 
   if (v14 <= 1)
   {
     v15 = sub_100035E6C();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(RouteRequestBuilder *)self waypointSet];
+      waypointSet4 = [(RouteRequestBuilder *)self waypointSet];
       *buf = 134218242;
-      v51 = v14;
+      selfCopy2 = v14;
       v52 = 2112;
-      v53 = v16;
+      v53 = waypointSet4;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Invalid number of waypoints: %lu, waypointSet: %@", buf, 0x16u);
     }
   }
 
-  v17 = [v3 mainTransportType];
-  if (v17 <= 2)
+  mainTransportType = [v3 mainTransportType];
+  if (mainTransportType <= 2)
   {
-    if (v17 != 1)
+    if (mainTransportType != 1)
     {
-      if (v17 == 2)
+      if (mainTransportType == 2)
       {
         IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_30;
@@ -133,9 +133,9 @@ LABEL_22:
     goto LABEL_34;
   }
 
-  if (v17 != 3)
+  if (mainTransportType != 3)
   {
-    if (v17 != 6)
+    if (mainTransportType != 6)
     {
       goto LABEL_25;
     }
@@ -163,17 +163,17 @@ LABEL_34:
   {
     for (j = 0; j != v14; ++j)
     {
-      v22 = [(RouteRequestBuilder *)self waypointSet];
-      v23 = [v22 waypointAtIndex:j];
+      waypointSet5 = [(RouteRequestBuilder *)self waypointSet];
+      v23 = [waypointSet5 waypointAtIndex:j];
 
       if (v23)
       {
         v24 = [GEOMapRegion alloc];
-        v25 = [v23 latLng];
-        [v25 lat];
+        latLng = [v23 latLng];
+        [latLng lat];
         v27 = v26;
-        v28 = [v23 latLng];
-        [v28 lng];
+        latLng2 = [v23 latLng];
+        [latLng2 lng];
         v30 = [v24 initWithLatitude:v27 longitude:v29];
 
         v31 = +[MapsOfflineUIHelper sharedHelper];
@@ -186,29 +186,29 @@ LABEL_34:
   }
 
   v33 = [[MNDirectionsRequestDetails alloc] initWithWaypoints:v45 routeAttributes:v3];
-  v34 = [(RouteRequestBuilder *)self traits];
-  [v33 setTraits:v34];
+  traits = [(RouteRequestBuilder *)self traits];
+  [v33 setTraits:traits];
 
   [v33 setMaxRouteCount:{-[RouteRequestBuilder maximumRouteCount](self, "maximumRouteCount")}];
-  v35 = [(RouteRequestBuilder *)self currentUserLocation];
-  [v33 setCurrentUserLocation:v35];
+  currentUserLocation = [(RouteRequestBuilder *)self currentUserLocation];
+  [v33 setCurrentUserLocation:currentUserLocation];
 
   [v33 setIsResumingMultipointRoute:{-[RouteRequestBuilder isResumingMultipointRoute](self, "isResumingMultipointRoute")}];
-  v36 = [(RouteRequestBuilder *)self resumeRouteHandle];
-  [v33 setResumeRouteHandle:v36];
+  resumeRouteHandle = [(RouteRequestBuilder *)self resumeRouteHandle];
+  [v33 setResumeRouteHandle:resumeRouteHandle];
 
-  v37 = [(RouteRequestBuilder *)self persistentData];
-  [v33 setPersistentData:v37];
+  persistentData = [(RouteRequestBuilder *)self persistentData];
+  [v33 setPersistentData:persistentData];
 
   v38 = objc_alloc_init(GEODirectionsRequestFeedback);
   [v38 setPurpose:4];
   [v38 setSource:{-[RouteRequestBuilder sourceFromInitiator](self, "sourceFromInitiator")}];
   v39 = +[NSBundle mainBundle];
-  v40 = [v39 bundleIdentifier];
-  [v38 setRequestingAppId:v40];
+  bundleIdentifier = [v39 bundleIdentifier];
+  [v38 setRequestingAppId:bundleIdentifier];
 
-  v41 = [(RouteRequestBuilder *)self appIdentifierForInitiator];
-  [v38 setAppIdentifier:v41];
+  appIdentifierForInitiator = [(RouteRequestBuilder *)self appIdentifierForInitiator];
+  [v38 setAppIdentifier:appIdentifierForInitiator];
 
   [v33 setDirectionsRequestFeedback:v38];
   if (+[PedestrianARSessionTask isPedestrianARModeSupported])
@@ -220,7 +220,7 @@ LABEL_34:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v51 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "[%{public}p] Marking route request with supportsArMode", buf, 0xCu);
     }
   }
@@ -231,7 +231,7 @@ LABEL_34:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v51 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "[%{public}p] NOT marking route request with supportsArMode", buf, 0xCu);
     }
   }
@@ -239,35 +239,35 @@ LABEL_34:
   return v33;
 }
 
-- (RouteRequestBuilder)initWithWaypointSet:(id)a3 maximumRouteCount:(unint64_t)a4 routeAttributesBuilders:(id)a5 currentUserLocation:(id)a6 initiator:(unint64_t)a7 traits:(id)a8 isResumingMultipointRoute:(BOOL)a9 resumeRouteHandle:(id)a10 persistentData:(id)a11
+- (RouteRequestBuilder)initWithWaypointSet:(id)set maximumRouteCount:(unint64_t)count routeAttributesBuilders:(id)builders currentUserLocation:(id)location initiator:(unint64_t)initiator traits:(id)traits isResumingMultipointRoute:(BOOL)route resumeRouteHandle:(id)self0 persistentData:(id)self1
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v30 = a8;
-  v29 = a10;
-  v20 = a11;
+  setCopy = set;
+  buildersCopy = builders;
+  locationCopy = location;
+  traitsCopy = traits;
+  handleCopy = handle;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = RouteRequestBuilder;
   v21 = [(RouteRequestBuilder *)&v31 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_waypointSet, a3);
-    v22->_maximumRouteCount = a4;
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_waypointSet, set);
+    v22->_maximumRouteCount = count;
+    v23 = [buildersCopy copy];
     routeAttributesBuilders = v22->_routeAttributesBuilders;
     v22->_routeAttributesBuilders = v23;
 
-    v25 = [v19 copy];
+    v25 = [locationCopy copy];
     currentUserLocation = v22->_currentUserLocation;
     v22->_currentUserLocation = v25;
 
-    v22->_initiator = a7;
-    objc_storeStrong(&v22->_traits, a8);
-    v22->_isResumingMultipointRoute = a9;
-    objc_storeStrong(&v22->_resumeRouteHandle, a10);
-    objc_storeStrong(&v22->_persistentData, a11);
+    v22->_initiator = initiator;
+    objc_storeStrong(&v22->_traits, traits);
+    v22->_isResumingMultipointRoute = route;
+    objc_storeStrong(&v22->_resumeRouteHandle, handle);
+    objc_storeStrong(&v22->_persistentData, data);
   }
 
   return v22;

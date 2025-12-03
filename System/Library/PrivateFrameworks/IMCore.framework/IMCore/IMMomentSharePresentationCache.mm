@@ -1,18 +1,18 @@
 @interface IMMomentSharePresentationCache
-- (IMMomentSharePresentationCache)initWithMomentShareCache:(id)a3;
+- (IMMomentSharePresentationCache)initWithMomentShareCache:(id)cache;
 - (IMMomentSharePresentationCacheDelegate)delegate;
-- (id)statusPresentationForMomentShareURLString:(id)a3;
-- (void)_momentShareCacheDidChange:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)registerMomentShareItemForMessage:(id)a3;
-- (void)registerMomentShareURLString:(id)a3;
+- (id)statusPresentationForMomentShareURLString:(id)string;
+- (void)_momentShareCacheDidChange:(id)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)registerMomentShareItemForMessage:(id)message;
+- (void)registerMomentShareURLString:(id)string;
 @end
 
 @implementation IMMomentSharePresentationCache
 
-- (IMMomentSharePresentationCache)initWithMomentShareCache:(id)a3
+- (IMMomentSharePresentationCache)initWithMomentShareCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v14.receiver = self;
   v14.super_class = IMMomentSharePresentationCache;
   v6 = [(IMMomentSharePresentationCache *)&v14 init];
@@ -22,7 +22,7 @@
     cache = v6->_cache;
     v6->_cache = v7;
 
-    objc_storeStrong(&v6->_momentShareCache, a3);
+    objc_storeStrong(&v6->_momentShareCache, cache);
     v11 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v9, v10);
     objc_msgSend_addObserver_selector_name_object_(v11, v12, v6, sel__momentShareCacheDidChange_, @"IMMomentShareCacheDidChangeNotification", v6->_momentShareCache);
   }
@@ -30,20 +30,20 @@
   return v6;
 }
 
-- (id)statusPresentationForMomentShareURLString:(id)a3
+- (id)statusPresentationForMomentShareURLString:(id)string
 {
-  v4 = a3;
-  objc_msgSend_registerMomentShareURLString_(self, v5, v4);
-  v7 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v6, v4);
+  stringCopy = string;
+  objc_msgSend_registerMomentShareURLString_(self, v5, stringCopy);
+  v7 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v6, stringCopy);
 
   return v7;
 }
 
-- (void)registerMomentShareItemForMessage:(id)a3
+- (void)registerMomentShareItemForMessage:(id)message
 {
-  v13 = a3;
-  v6 = IMCoreMomentShareURLForMessage(v13);
-  if (v6 && (objc_msgSend_isSenderUnknown(v13, v4, v5) & 1) == 0)
+  messageCopy = message;
+  v6 = IMCoreMomentShareURLForMessage(messageCopy);
+  if (v6 && (objc_msgSend_isSenderUnknown(messageCopy, v4, v5) & 1) == 0)
   {
     v9 = objc_msgSend_absoluteString(v6, v7, v8);
     if (objc_msgSend_length(v9, v10, v11))
@@ -53,10 +53,10 @@
   }
 }
 
-- (void)registerMomentShareURLString:(id)a3
+- (void)registerMomentShareURLString:(id)string
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v5, v4);
+  stringCopy = string;
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->_cache, v5, stringCopy);
 
   if (!v6)
   {
@@ -66,24 +66,24 @@
     v9[2] = sub_1A82CACF8;
     v9[3] = &unk_1E7811720;
     v9[4] = self;
-    v10 = v4;
+    v10 = stringCopy;
     objc_msgSend_momentShareForURLString_completionHandler_(momentShareCache, v8, v10, v9);
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x1400C) != 0 && qword_1EB2E4C78 == a5)
+  if ((change & 0x1400C) != 0 && qword_1EB2E4C78 == context)
   {
-    v9 = objc_msgSend_delegate(self, a2, a3);
+    v9 = objc_msgSend_delegate(self, a2, observable);
     objc_msgSend_momentSharePresentationCacheDidChange_(v9, v8, self);
   }
 }
 
-- (void)_momentShareCacheDidChange:(id)a3
+- (void)_momentShareCacheDidChange:(id)change
 {
-  v4 = a3;
-  v7 = objc_msgSend_userInfo(v4, v5, v6);
+  changeCopy = change;
+  v7 = objc_msgSend_userInfo(changeCopy, v5, v6);
   v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, @"IMMomentShareCacheNotificationURLStringsUserInfoKey");
 
   v23 = 0;
@@ -97,7 +97,7 @@
   v19[3] = &unk_1E7811748;
   v13 = v9;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v22 = &v23;
   objc_msgSend_enumerateObjectsUsingBlock_(v12, v14, v19);
 

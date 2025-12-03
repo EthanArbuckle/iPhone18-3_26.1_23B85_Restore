@@ -7,7 +7,7 @@
 - (void)turnPage
 {
   objc_opt_class();
-  v3 = [(PPTBasicTest *)self bookController];
+  bookController = [(PPTBasicTest *)self bookController];
   v4 = BUDynamicCast();
 
   if (v4)
@@ -20,8 +20,8 @@
     goto LABEL_8;
   }
 
-  v5 = [(PPTBasicTest *)self bookController];
-  v6 = [_TtC5Books12RETestDriver isValidWithViewController:v5];
+  bookController2 = [(PPTBasicTest *)self bookController];
+  v6 = [_TtC5Books12RETestDriver isValidWithViewController:bookController2];
 
   if (!v6)
   {
@@ -35,8 +35,8 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Asking RETestDriver to simulate manual page turn", v10, 2u);
   }
 
-  v8 = [(PPTBasicTest *)self bookController];
-  v9 = [_TtC5Books12RETestDriver simulateManualPageTurnWithViewController:v8 rtl:1 time:2.0];
+  bookController3 = [(PPTBasicTest *)self bookController];
+  v9 = [_TtC5Books12RETestDriver simulateManualPageTurnWithViewController:bookController3 rtl:1 time:2.0];
 
   if ((v9 & 1) == 0)
   {

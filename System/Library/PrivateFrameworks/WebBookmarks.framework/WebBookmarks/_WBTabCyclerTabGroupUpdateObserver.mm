@@ -1,37 +1,37 @@
 @interface _WBTabCyclerTabGroupUpdateObserver
-+ (id)observeTabGroupManager:(id)a3 waitForTabGroups:(BOOL)a4 handler:(id)a5;
-- (_WBTabCyclerTabGroupUpdateObserver)initWithTabGroupManager:(id)a3 handler:(id)a4;
++ (id)observeTabGroupManager:(id)manager waitForTabGroups:(BOOL)groups handler:(id)handler;
+- (_WBTabCyclerTabGroupUpdateObserver)initWithTabGroupManager:(id)manager handler:(id)handler;
 - (void)_timeout;
 - (void)startObserving;
-- (void)tabGroupManagerDidUpdateTabGroups:(id)a3;
+- (void)tabGroupManagerDidUpdateTabGroups:(id)groups;
 @end
 
 @implementation _WBTabCyclerTabGroupUpdateObserver
 
-+ (id)observeTabGroupManager:(id)a3 waitForTabGroups:(BOOL)a4 handler:(id)a5
++ (id)observeTabGroupManager:(id)manager waitForTabGroups:(BOOL)groups handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[_WBTabCyclerTabGroupUpdateObserver alloc] initWithTabGroupManager:v8 handler:v7];
+  handlerCopy = handler;
+  managerCopy = manager;
+  v9 = [[_WBTabCyclerTabGroupUpdateObserver alloc] initWithTabGroupManager:managerCopy handler:handlerCopy];
 
-  v9->_waitForTabGroups = a4;
+  v9->_waitForTabGroups = groups;
   [(_WBTabCyclerTabGroupUpdateObserver *)v9 startObserving];
 
   return v9;
 }
 
-- (_WBTabCyclerTabGroupUpdateObserver)initWithTabGroupManager:(id)a3 handler:(id)a4
+- (_WBTabCyclerTabGroupUpdateObserver)initWithTabGroupManager:(id)manager handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = _WBTabCyclerTabGroupUpdateObserver;
   v9 = [(_WBTabCyclerTabGroupUpdateObserver *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tabGroupManager, a3);
-    v11 = MEMORY[0x2743D6830](v8);
+    objc_storeStrong(&v9->_tabGroupManager, manager);
+    v11 = MEMORY[0x2743D6830](handlerCopy);
     handler = v10->_handler;
     v10->_handler = v11;
 
@@ -40,7 +40,7 @@
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   return v10;
@@ -72,9 +72,9 @@
   (*(self->_handler + 2))();
 }
 
-- (void)tabGroupManagerDidUpdateTabGroups:(id)a3
+- (void)tabGroupManagerDidUpdateTabGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -82,7 +82,7 @@
     _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_INFO, "Received notification of Tab Group updates", buf, 2u);
   }
 
-  if (self->_waitForTabGroups && ([v4 allNamedTabGroupsUnsorted], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, !v7))
+  if (self->_waitForTabGroups && ([groupsCopy allNamedTabGroupsUnsorted], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, !v7))
   {
     v8 = WBS_LOG_CHANNEL_PREFIXCycler();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))

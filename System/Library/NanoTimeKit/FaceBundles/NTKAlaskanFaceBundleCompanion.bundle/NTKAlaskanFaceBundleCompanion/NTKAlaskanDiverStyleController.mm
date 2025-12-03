@@ -1,60 +1,60 @@
 @interface NTKAlaskanDiverStyleController
-- (BOOL)_cancelPreCountUpWithCompletionBlock:(id)a3 animated:(BOOL)a4;
-- (BOOL)crownInputHandlerCanChangeProgress:(id)a3;
-- (NTKAlaskanDiverStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4 storage:(id)a5;
+- (BOOL)_cancelPreCountUpWithCompletionBlock:(id)block animated:(BOOL)animated;
+- (BOOL)crownInputHandlerCanChangeProgress:(id)progress;
+- (NTKAlaskanDiverStyleController)initWithContentView:(id)view crownInputHandler:(id)handler storage:(id)storage;
 - (NTKAlaskanDiverStyleView)diverView;
 - (NTKTroutFaceView)faceView;
-- (double)alphaValueForAngle:(double)a3;
+- (double)alphaValueForAngle:(double)angle;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
-- (void)alaskanDiverStyleView:(id)a3 didRotateDialToMinuteOffset:(int64_t)a4;
-- (void)alaskanDiverStyleViewDidStartCountUpWithDate:(id)a3;
+- (void)alaskanDiverStyleView:(id)view didRotateDialToMinuteOffset:(int64_t)offset;
+- (void)alaskanDiverStyleViewDidStartCountUpWithDate:(id)date;
 - (void)alaskanDiverStyleViewDidStartPreCountUp;
-- (void)alaskanDiverStyleViewWantsToShowAlert:(id)a3;
-- (void)crownInputHandler:(id)a3 didChangeProgress:(double)a4;
-- (void)crownInputHandlerDidBecomeIdle:(id)a3;
+- (void)alaskanDiverStyleViewWantsToShowAlert:(id)alert;
+- (void)crownInputHandler:(id)handler didChangeProgress:(double)progress;
+- (void)crownInputHandlerDidBecomeIdle:(id)idle;
 - (void)dealloc;
-- (void)handleExitingEditModeAnimated:(BOOL)a3;
+- (void)handleExitingEditModeAnimated:(BOOL)animated;
 - (void)rotateToMinuteHand;
-- (void)setDatamode:(int64_t)a3;
-- (void)setFaceView:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setStorage:(id)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)updateCrownInputHandlerProgress:(double)a3;
+- (void)setDatamode:(int64_t)datamode;
+- (void)setFaceView:(id)view;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setStorage:(id)storage;
+- (void)setTimeOffset:(double)offset;
+- (void)updateCrownInputHandlerProgress:(double)progress;
 - (void)updateTimeViewHandsVisibility;
 @end
 
 @implementation NTKAlaskanDiverStyleController
 
-- (NTKAlaskanDiverStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4 storage:(id)a5
+- (NTKAlaskanDiverStyleController)initWithContentView:(id)view crownInputHandler:(id)handler storage:(id)storage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  handlerCopy = handler;
+  storageCopy = storage;
   v20.receiver = self;
   v20.super_class = NTKAlaskanDiverStyleController;
   v11 = [(NTKAlaskanDiverStyleController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    [(NTKAlaskanDiverStyleController *)v11 setStorage:v10];
-    v13 = objc_storeWeak(&v12->_diverView, v8);
-    [v8 setDelegate:v12];
+    [(NTKAlaskanDiverStyleController *)v11 setStorage:storageCopy];
+    v13 = objc_storeWeak(&v12->_diverView, viewCopy);
+    [viewCopy setDelegate:v12];
 
-    v14 = [(NTKAlaskanDiverStyleController *)v12 storage];
-    v15 = [v14 diverCountUpStartDate];
+    storage = [(NTKAlaskanDiverStyleController *)v12 storage];
+    diverCountUpStartDate = [storage diverCountUpStartDate];
 
-    if (v15)
+    if (diverCountUpStartDate)
     {
       WeakRetained = objc_loadWeakRetained(&v12->_diverView);
       [WeakRetained setCurrentMode:2];
     }
 
     v17 = objc_loadWeakRetained(&v12->_diverView);
-    [v17 setStartDate:v15];
+    [v17 setStartDate:diverCountUpStartDate];
 
-    objc_storeStrong(&v12->_crownInputHandler, a4);
+    objc_storeStrong(&v12->_crownInputHandler, handler);
     [(NTKCrownInputHandler *)v12->_crownInputHandler setDelegate:v12];
     v18 = objc_loadWeakRetained(&v12->_diverView);
     -[NTKAlaskanDiverStyleController updateCrownInputHandlerProgress:](v12, "updateCrownInputHandlerProgress:", [v18 angleOffset] / 360.0);
@@ -74,34 +74,34 @@
   [(NTKAlaskanDiverStyleController *)&v3 dealloc];
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  objc_storeStrong(&self->_storage, a3);
-  v6 = [(NTKAlaskanDiverStyleController *)self storage];
-  v4 = [v6 diverCountUpStartDate];
+  objc_storeStrong(&self->_storage, storage);
+  storage = [(NTKAlaskanDiverStyleController *)self storage];
+  diverCountUpStartDate = [storage diverCountUpStartDate];
   WeakRetained = objc_loadWeakRetained(&self->_diverView);
-  [WeakRetained setStartDate:v4];
+  [WeakRetained setStartDate:diverCountUpStartDate];
 }
 
-- (void)setFaceView:(id)a3
+- (void)setFaceView:(id)view
 {
-  objc_storeWeak(&self->_faceView, a3);
+  objc_storeWeak(&self->_faceView, view);
 
   [(NTKAlaskanDiverStyleController *)self updateTimeViewHandsVisibility];
 }
 
-- (void)setDatamode:(int64_t)a3
+- (void)setDatamode:(int64_t)datamode
 {
-  if (a3 > 5)
+  if (datamode > 5)
   {
     return;
   }
 
-  if (((1 << a3) & 0x35) != 0)
+  if (((1 << datamode) & 0x35) != 0)
   {
-    v4 = [(NTKAlaskanPersistenceStorage *)self->_storage diverCountUpStartDate];
+    diverCountUpStartDate = [(NTKAlaskanPersistenceStorage *)self->_storage diverCountUpStartDate];
     WeakRetained = objc_loadWeakRetained(&self->_diverView);
-    [WeakRetained setStartDate:v4];
+    [WeakRetained setStartDate:diverCountUpStartDate];
 
 LABEL_4:
     v6 = objc_loadWeakRetained(&self->_diverView);
@@ -113,30 +113,30 @@ LABEL_4:
     return;
   }
 
-  if (a3 != 1)
+  if (datamode != 1)
   {
-    v4 = objc_loadWeakRetained(&self->_diverView);
-    [v4 setStartDate:0];
+    diverCountUpStartDate = objc_loadWeakRetained(&self->_diverView);
+    [diverCountUpStartDate setStartDate:0];
     goto LABEL_4;
   }
 
-  v14 = [(NTKAlaskanPersistenceStorage *)self->_storage diverCountUpStartDate];
-  if (v14)
+  diverCountUpStartDate2 = [(NTKAlaskanPersistenceStorage *)self->_storage diverCountUpStartDate];
+  if (diverCountUpStartDate2)
   {
     v7 = objc_loadWeakRetained(&self->_diverView);
     [v7 setCurrentMode:2];
 
-    v8 = [(NTKAlaskanDiverStyleController *)self faceView];
-    [v8 updateTimeViewColor];
+    faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+    [faceView updateTimeViewColor];
 
-    v9 = [(NTKAlaskanDiverStyleController *)self faceView];
-    v10 = [v9 timeView];
-    v11 = [v10 secondHandView];
-    [v11 setAlpha:0.0];
+    faceView2 = [(NTKAlaskanDiverStyleController *)self faceView];
+    timeView = [faceView2 timeView];
+    secondHandView = [timeView secondHandView];
+    [secondHandView setAlpha:0.0];
   }
 
   v12 = objc_loadWeakRetained(&self->_diverView);
-  [v12 setStartDate:v14];
+  [v12 setStartDate:diverCountUpStartDate2];
 
   v13 = objc_loadWeakRetained(&self->_diverView);
   [v13 setUserInteractionEnabled:1];
@@ -144,63 +144,63 @@ LABEL_4:
   [(NTKAlaskanDiverStyleController *)self _startClockUpdates];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v5 = a3;
-  v6 = [(NTKAlaskanDiverStyleController *)self diverView];
-  [v6 setOverrideDate:v5];
+  dateCopy = date;
+  diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+  [diverView setOverrideDate:dateCopy];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  v4 = [(NTKAlaskanDiverStyleController *)self diverView];
-  [v4 setTimeOffset:a3];
+  diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+  [diverView setTimeOffset:offset];
 }
 
-- (void)crownInputHandler:(id)a3 didChangeProgress:(double)a4
+- (void)crownInputHandler:(id)handler didChangeProgress:(double)progress
 {
-  v6 = a3;
+  handlerCopy = handler;
   if (!self->_animationInProgress)
   {
-    v11 = v6;
+    v11 = handlerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_diverView);
-    v8 = [WeakRetained currentMode];
+    currentMode = [WeakRetained currentMode];
 
-    v6 = v11;
-    if (v8 == &dword_0 + 1)
+    handlerCopy = v11;
+    if (currentMode == &dword_0 + 1)
     {
-      self->_previousProgress = a4;
+      self->_previousProgress = progress;
       v9 = objc_loadWeakRetained(&self->_diverView);
-      [v9 setAngleOffset:(a4 * 360.0)];
+      [v9 setAngleOffset:(progress * 360.0)];
 
       v10 = objc_loadWeakRetained(&self->_diverView);
       [v10 setSyncMarkerWithMinuteHand:1];
 
-      v6 = v11;
+      handlerCopy = v11;
     }
   }
 }
 
-- (BOOL)crownInputHandlerCanChangeProgress:(id)a3
+- (BOOL)crownInputHandlerCanChangeProgress:(id)progress
 {
-  v4 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v5 = [v4 dataMode] == &dword_0 + 1 && !self->_animationInProgress;
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  v5 = [faceView dataMode] == &dword_0 + 1 && !self->_animationInProgress;
 
   return v5;
 }
 
-- (void)crownInputHandlerDidBecomeIdle:(id)a3
+- (void)crownInputHandlerDidBecomeIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   WeakRetained = objc_loadWeakRetained(&self->_diverView);
-  v6 = [WeakRetained currentMode];
+  currentMode = [WeakRetained currentMode];
 
-  if (v6 == &dword_0 + 1)
+  if (currentMode == &dword_0 + 1)
   {
     v7 = objc_loadWeakRetained(&self->_diverView);
     [v7 setSyncMarkerWithMinuteHand:0];
 
-    [v4 progress];
+    [idleCopy progress];
     v9 = v8 * 360.0;
     v10 = objc_loadWeakRetained(&self->_diverView);
     [v10 targetAngleOffsetForOffset:v9];
@@ -228,7 +228,7 @@ LABEL_4:
 
   else
   {
-    [v4 progress];
+    [idleCopy progress];
     self->_previousProgress = v16;
   }
 }
@@ -288,49 +288,49 @@ LABEL_4:
 
 - (void)updateTimeViewHandsVisibility
 {
-  v3 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v4 = [v3 currentDisplayDate];
-  [NTKAnalogHandsView minuteHandAngleForDate:v4];
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  currentDisplayDate = [faceView currentDisplayDate];
+  [NTKAnalogHandsView minuteHandAngleForDate:currentDisplayDate];
   [(NTKAlaskanDiverStyleController *)self alphaValueForAngle:?];
   v6 = v5;
-  v7 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v8 = [v7 timeView];
-  v9 = [v8 minuteHandView];
-  [v9 setAlpha:v6];
+  faceView2 = [(NTKAlaskanDiverStyleController *)self faceView];
+  timeView = [faceView2 timeView];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setAlpha:v6];
 
-  v16 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v10 = [v16 currentDisplayDate];
-  [NTKAnalogHandsView hourHandAngleForDate:v10];
+  faceView3 = [(NTKAlaskanDiverStyleController *)self faceView];
+  currentDisplayDate2 = [faceView3 currentDisplayDate];
+  [NTKAnalogHandsView hourHandAngleForDate:currentDisplayDate2];
   [(NTKAlaskanDiverStyleController *)self alphaValueForAngle:?];
   v12 = v11;
-  v13 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v14 = [v13 timeView];
-  v15 = [v14 hourHandView];
-  [v15 setAlpha:v12];
+  faceView4 = [(NTKAlaskanDiverStyleController *)self faceView];
+  timeView2 = [faceView4 timeView];
+  hourHandView = [timeView2 hourHandView];
+  [hourHandView setAlpha:v12];
 }
 
-- (double)alphaValueForAngle:(double)a3
+- (double)alphaValueForAngle:(double)angle
 {
-  v4 = [(NTKAlaskanDiverStyleController *)self diverView];
-  if (![v4 currentMode])
+  diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+  if (![diverView currentMode])
   {
 
     return 1.0;
   }
 
-  if (a3 >= 0.0 && a3 <= 55.0)
+  if (angle >= 0.0 && angle <= 55.0)
   {
 
     return 0.5;
   }
 
-  if (a3 < 305.0)
+  if (angle < 305.0)
   {
     return 1.0;
   }
 
   result = 0.5;
-  if (a3 > 360.0)
+  if (angle > 360.0)
   {
     return 1.0;
   }
@@ -338,23 +338,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)_cancelPreCountUpWithCompletionBlock:(id)a3 animated:(BOOL)a4
+- (BOOL)_cancelPreCountUpWithCompletionBlock:(id)block animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_diverView);
-  v8 = [WeakRetained currentMode];
+  currentMode = [WeakRetained currentMode];
 
-  if (v8 == &dword_0 + 1)
+  if (currentMode == &dword_0 + 1)
   {
-    v9 = [(NTKAlaskanDiverStyleController *)self faceView];
-    [v9 disableCrownEventReception];
+    faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+    [faceView disableCrownEventReception];
 
     v10 = objc_loadWeakRetained(&self->_diverView);
     [v10 setCurrentMode:0];
 
-    v11 = [(NTKAlaskanDiverStyleController *)self diverView];
-    [v11 angleOffsetForDate:0];
+    diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+    [diverView angleOffsetForDate:0];
     v13 = v12;
 
     objc_initWeak(&location, self);
@@ -369,22 +369,22 @@ LABEL_4:
     v18 = sub_9328;
     v19 = &unk_38BA0;
     objc_copyWeak(&v21, &location);
-    v20 = v6;
-    [v14 setAngleOffset:v4 animated:v22 progressCallback:&v16 completionBlock:v13 animationDuration:0.2];
+    v20 = blockCopy;
+    [v14 setAngleOffset:animatedCopy animated:v22 progressCallback:&v16 completionBlock:v13 animationDuration:0.2];
 
-    [(NTKAlaskanDiverStyleController *)self handleExitingEditModeAnimated:v4, v16, v17, v18, v19];
+    [(NTKAlaskanDiverStyleController *)self handleExitingEditModeAnimated:animatedCopy, v16, v17, v18, v19];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
   }
 
-  return v8 == &dword_0 + 1;
+  return currentMode == &dword_0 + 1;
 }
 
 - (void)alaskanDiverStyleViewDidStartPreCountUp
 {
-  v3 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v3 enableCrownEventReception];
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView enableCrownEventReception];
 
   [(NTKCrownInputHandler *)self->_crownInputHandler generateMajorDetents];
   WeakRetained = objc_loadWeakRetained(&self->_diverView);
@@ -394,12 +394,12 @@ LABEL_4:
   self->_trackSeconds = 1;
   [(NTKAlaskanDiverStyleController *)self _startClockUpdates];
   [(NTKAlaskanDiverStyleController *)self rotateToMinuteHand];
-  v5 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v5 enumerateComplicationDisplayWrappersWithBlock:&stru_38BC0];
+  faceView2 = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView2 enumerateComplicationDisplayWrappersWithBlock:&stru_38BC0];
 
-  v6 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v7 = [v6 delegate];
-  [v7 faceViewWantsStatusBarHidden:1 animated:1];
+  faceView3 = [(NTKAlaskanDiverStyleController *)self faceView];
+  delegate = [faceView3 delegate];
+  [delegate faceViewWantsStatusBarHidden:1 animated:1];
 
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
@@ -413,16 +413,16 @@ LABEL_4:
   v15[3] = &unk_38C10;
   objc_copyWeak(&v16, &location);
   [UIView animateWithDuration:v17 animations:v15 completion:0.3];
-  v8 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v9 = [(NTKAlaskanDiverStyleController *)self diverView];
-  v10 = [v9 palette];
-  v11 = [v8 colorForDateComplicationPalette:v10];
-  v12 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v13 = [v12 dateComplicationView];
-  [v13 setForegroundColor:v11];
+  faceView4 = [(NTKAlaskanDiverStyleController *)self faceView];
+  diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+  palette = [diverView palette];
+  v11 = [faceView4 colorForDateComplicationPalette:palette];
+  faceView5 = [(NTKAlaskanDiverStyleController *)self faceView];
+  dateComplicationView = [faceView5 dateComplicationView];
+  [dateComplicationView setForegroundColor:v11];
 
-  v14 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v14 updateTimeViewColor];
+  faceView6 = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView6 updateTimeViewColor];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
@@ -433,8 +433,8 @@ LABEL_4:
 {
   self->_animationInProgress = 1;
   v3 = objc_loadWeakRetained(&self->_diverView);
-  v4 = [v3 currentDate];
-  [v3 angleOffsetForDate:v4];
+  currentDate = [v3 currentDate];
+  [v3 angleOffsetForDate:currentDate];
   v6 = v5;
 
   objc_initWeak(&location, self);
@@ -457,18 +457,18 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)alaskanDiverStyleViewDidStartCountUpWithDate:(id)a3
+- (void)alaskanDiverStyleViewDidStartCountUpWithDate:(id)date
 {
   crownInputHandler = self->_crownInputHandler;
-  v5 = a3;
+  dateCopy = date;
   [(NTKCrownInputHandler *)crownInputHandler generateMajorDetents];
-  v6 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v6 enableCrownEventReception];
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView enableCrownEventReception];
 
-  v7 = [(NTKAlaskanDiverStyleController *)self storage];
-  [v7 setDiverCountUpStartDate:v5];
+  storage = [(NTKAlaskanDiverStyleController *)self storage];
+  [storage setDiverCountUpStartDate:dateCopy];
 
-  if (!v5)
+  if (!dateCopy)
   {
     [(NTKAlaskanDiverStyleController *)self _stopClockUpdates];
     [(NTKAlaskanDiverStyleController *)self updateCrownInputHandlerProgress:0.0];
@@ -477,29 +477,29 @@ LABEL_4:
   [(NTKAlaskanDiverStyleController *)self handleExitingEditModeAnimated:1];
 }
 
-- (void)alaskanDiverStyleViewWantsToShowAlert:(id)a3
+- (void)alaskanDiverStyleViewWantsToShowAlert:(id)alert
 {
-  v4 = a3;
-  v6 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v5 = [v6 delegate];
-  [v5 faceViewWantsToPresentViewController:v4];
+  alertCopy = alert;
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  delegate = [faceView delegate];
+  [delegate faceViewWantsToPresentViewController:alertCopy];
 }
 
-- (void)handleExitingEditModeAnimated:(BOOL)a3
+- (void)handleExitingEditModeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NTKAlaskanDiverStyleController *)self _stopClockUpdates];
   self->_trackSeconds = 0;
   [(NTKAlaskanDiverStyleController *)self _startClockUpdates];
-  v5 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v5 enumerateComplicationDisplayWrappersWithBlock:&stru_38C58];
+  faceView = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView enumerateComplicationDisplayWrappersWithBlock:&stru_38C58];
 
-  v6 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v7 = [v6 delegate];
-  [v7 faceViewWantsStatusBarHidden:0 animated:1];
+  faceView2 = [(NTKAlaskanDiverStyleController *)self faceView];
+  delegate = [faceView2 delegate];
+  [delegate faceViewWantsStatusBarHidden:0 animated:1];
 
-  v8 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v8 disableCrownEventReception];
+  faceView3 = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView3 disableCrownEventReception];
 
   objc_initWeak(&location, self);
   v26[0] = _NSConcreteStackBlock;
@@ -515,7 +515,7 @@ LABEL_4:
   objc_copyWeak(&v25, &location);
   v10 = objc_retainBlock(v24);
   v11 = v10;
-  if (v3)
+  if (animatedCopy)
   {
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
@@ -532,42 +532,42 @@ LABEL_4:
   }
 
   v12 = [(NTKAlaskanDiverStyleController *)self faceView:v19];
-  v13 = [(NTKAlaskanDiverStyleController *)self diverView];
-  v14 = [v13 palette];
-  v15 = [v12 colorForDateComplicationPalette:v14];
-  v16 = [(NTKAlaskanDiverStyleController *)self faceView];
-  v17 = [v16 dateComplicationView];
-  [v17 setForegroundColor:v15];
+  diverView = [(NTKAlaskanDiverStyleController *)self diverView];
+  palette = [diverView palette];
+  v15 = [v12 colorForDateComplicationPalette:palette];
+  faceView4 = [(NTKAlaskanDiverStyleController *)self faceView];
+  dateComplicationView = [faceView4 dateComplicationView];
+  [dateComplicationView setForegroundColor:v15];
 
-  v18 = [(NTKAlaskanDiverStyleController *)self faceView];
-  [v18 updateTimeViewColor];
+  faceView5 = [(NTKAlaskanDiverStyleController *)self faceView];
+  [faceView5 updateTimeViewColor];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
 }
 
-- (void)alaskanDiverStyleView:(id)a3 didRotateDialToMinuteOffset:(int64_t)a4
+- (void)alaskanDiverStyleView:(id)view didRotateDialToMinuteOffset:(int64_t)offset
 {
-  v5 = [(NTKAlaskanDiverStyleController *)self crownInputHandler];
-  v6 = v5;
-  if (a4)
+  crownInputHandler = [(NTKAlaskanDiverStyleController *)self crownInputHandler];
+  v6 = crownInputHandler;
+  if (offset)
   {
-    [v5 generateMinorDetents];
+    [crownInputHandler generateMinorDetents];
   }
 
   else
   {
-    [v5 generateMajorDetents];
+    [crownInputHandler generateMajorDetents];
   }
 }
 
-- (void)updateCrownInputHandlerProgress:(double)a3
+- (void)updateCrownInputHandlerProgress:(double)progress
 {
-  v5 = [(NTKAlaskanDiverStyleController *)self crownInputHandler];
-  [v5 setProgress:a3];
+  crownInputHandler = [(NTKAlaskanDiverStyleController *)self crownInputHandler];
+  [crownInputHandler setProgress:progress];
 
-  self->_previousProgress = a3;
+  self->_previousProgress = progress;
 }
 
 - (NTKTroutFaceView)faceView

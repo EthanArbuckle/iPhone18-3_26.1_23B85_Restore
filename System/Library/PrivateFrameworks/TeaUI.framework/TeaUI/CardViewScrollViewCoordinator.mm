@@ -1,22 +1,22 @@
 @interface CardViewScrollViewCoordinator
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation CardViewScrollViewCoordinator
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  CardViewScrollViewCoordinator.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  CardViewScrollViewCoordinator.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  CardViewScrollViewCoordinator.scrollViewWillBeginDragging(_:)(v5);
+  draggingCopy = dragging;
+  selfCopy = self;
+  CardViewScrollViewCoordinator.scrollViewWillBeginDragging(_:)(selfCopy);
 }
 
 @end

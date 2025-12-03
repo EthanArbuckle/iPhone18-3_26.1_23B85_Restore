@@ -1,6 +1,6 @@
 @interface IDSFamilyDevice
-- (IDSFamilyDevice)initWithDictionary:(id)a3;
-- (IDSFamilyDevice)initWithOwnerHandle:(id)a3 deviceName:(id)a4 deviceType:(int64_t)a5 deviceColor:(id)a6 buildVersion:(id)a7 deviceUniqueID:(id)a8;
+- (IDSFamilyDevice)initWithDictionary:(id)dictionary;
+- (IDSFamilyDevice)initWithOwnerHandle:(id)handle deviceName:(id)name deviceType:(int64_t)type deviceColor:(id)color buildVersion:(id)version deviceUniqueID:(id)d;
 - (id)dictionaryRepresentation;
 @end
 
@@ -49,34 +49,34 @@
   return v4;
 }
 
-- (IDSFamilyDevice)initWithDictionary:(id)a3
+- (IDSFamilyDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = IDSFamilyDevice;
   v5 = [(IDSFamilyDevice *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"FamilyDeviceOwnerHandleKey"];
+    v6 = [dictionaryCopy objectForKey:@"FamilyDeviceOwnerHandleKey"];
     ownerHandle = v5->_ownerHandle;
     v5->_ownerHandle = v6;
 
-    v8 = [v4 objectForKey:@"FamilyDeviceNameKey"];
+    v8 = [dictionaryCopy objectForKey:@"FamilyDeviceNameKey"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v8;
 
-    v10 = [v4 objectForKey:@"FamilyDeviceTypeKey"];
+    v10 = [dictionaryCopy objectForKey:@"FamilyDeviceTypeKey"];
     v5->_deviceType = [v10 integerValue];
 
-    v11 = [v4 objectForKey:@"FamilyDeviceColorKey"];
+    v11 = [dictionaryCopy objectForKey:@"FamilyDeviceColorKey"];
     deviceColor = v5->_deviceColor;
     v5->_deviceColor = v11;
 
-    v13 = [v4 objectForKey:@"FamilyDeviceBuildVersionKey"];
+    v13 = [dictionaryCopy objectForKey:@"FamilyDeviceBuildVersionKey"];
     buildVersion = v5->_buildVersion;
     v5->_buildVersion = v13;
 
-    v15 = [v4 objectForKey:@"FamilyDeviceUniqueIDKey"];
+    v15 = [dictionaryCopy objectForKey:@"FamilyDeviceUniqueIDKey"];
     deviceUniqueID = v5->_deviceUniqueID;
     v5->_deviceUniqueID = v15;
   }
@@ -84,25 +84,25 @@
   return v5;
 }
 
-- (IDSFamilyDevice)initWithOwnerHandle:(id)a3 deviceName:(id)a4 deviceType:(int64_t)a5 deviceColor:(id)a6 buildVersion:(id)a7 deviceUniqueID:(id)a8
+- (IDSFamilyDevice)initWithOwnerHandle:(id)handle deviceName:(id)name deviceType:(int64_t)type deviceColor:(id)color buildVersion:(id)version deviceUniqueID:(id)d
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  handleCopy = handle;
+  nameCopy = name;
+  colorCopy = color;
+  versionCopy = version;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = IDSFamilyDevice;
   v18 = [(IDSFamilyDevice *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_ownerHandle, a3);
-    objc_storeStrong(&v19->_deviceName, a4);
-    v19->_deviceType = a5;
-    objc_storeStrong(&v19->_deviceColor, a6);
-    objc_storeStrong(&v19->_buildVersion, a7);
-    objc_storeStrong(&v19->_deviceUniqueID, a8);
+    objc_storeStrong(&v18->_ownerHandle, handle);
+    objc_storeStrong(&v19->_deviceName, name);
+    v19->_deviceType = type;
+    objc_storeStrong(&v19->_deviceColor, color);
+    objc_storeStrong(&v19->_buildVersion, version);
+    objc_storeStrong(&v19->_deviceUniqueID, d);
   }
 
   return v19;

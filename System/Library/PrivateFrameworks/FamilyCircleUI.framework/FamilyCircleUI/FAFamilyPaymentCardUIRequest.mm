@@ -6,10 +6,10 @@
 
 - (id)urlString
 {
-  v2 = [MEMORY[0x277CEC860] urlConfiguration];
-  v3 = [v2 familyPaymentCardUIURL];
+  urlConfiguration = [MEMORY[0x277CEC860] urlConfiguration];
+  familyPaymentCardUIURL = [urlConfiguration familyPaymentCardUIURL];
 
-  return v3;
+  return familyPaymentCardUIURL;
 }
 
 @end

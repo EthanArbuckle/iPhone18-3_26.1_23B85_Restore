@@ -1,18 +1,18 @@
 @interface HomesStore.CoreData.XPCStoreServer.RequestHandlingPolicy
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3;
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context;
 - (_TtCCOC11HomeKitCore10HomesStore8CoreData14XPCStoreServer21RequestHandlingPolicy)init;
 @end
 
 @implementation HomesStore.CoreData.XPCStoreServer.RequestHandlingPolicy
 
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_2530ECC6C(v3);
+  contextCopy = context;
+  contextCopy2 = context;
+  selfCopy = self;
+  LOBYTE(contextCopy) = sub_2530ECC6C(contextCopy);
 
-  return v3 & 1;
+  return contextCopy & 1;
 }
 
 - (_TtCCOC11HomeKitCore10HomesStore8CoreData14XPCStoreServer21RequestHandlingPolicy)init

@@ -1,16 +1,16 @@
 @interface AVAudioSessionPortDescription
-+ (id)privateCreateArray:(id)a3 owningSession:(id)a4;
++ (id)privateCreateArray:(id)array owningSession:(id)session;
 - (AVAudioSessionDataSourceDescription)preferredDataSource;
 - (AVAudioSessionDataSourceDescription)selectedDataSource;
-- (AVAudioSessionPortDescription)initWithRawPortDescriptionXPC:(id)a3 owningSession:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPort:(id)a3 compareStrict:(BOOL)a4;
+- (AVAudioSessionPortDescription)initWithRawPortDescriptionXPC:(id)c owningSession:(id)session;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPort:(id)port compareStrict:(BOOL)strict;
 - (BOOL)setPreferredDataSource:(AVAudioSessionDataSourceDescription *)dataSource error:(NSError *)outError;
 - (NSArray)channels;
 - (NSArray)dataSources;
 - (id)description;
 - (unint64_t)hash;
-- (void)configureChannelsAndDataSources:(id)a3;
+- (void)configureChannelsAndDataSources:(id)sources;
 - (void)dealloc;
 @end
 
@@ -33,10 +33,10 @@
 
 - (NSArray)dataSources
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2->_impl + 10);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy->_impl + 10);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -50,40 +50,40 @@
   v7 = *(impl + 2);
   v8 = *(impl + 3);
   v9 = *(impl + 4);
-  v10 = [*(impl + 11) dataSourceName];
-  v11 = [v4 stringWithFormat:@"<%@: %p, type = %@ name = %@; UID = %@; selectedDataSource = %@>", v6, self, v7, v8, v9, v10];;
+  dataSourceName = [*(impl + 11) dataSourceName];
+  v11 = [v4 stringWithFormat:@"<%@: %p, type = %@ name = %@; UID = %@; selectedDataSource = %@>", v6, self, v7, v8, v9, dataSourceName];;
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionPortDescription *)self isEqualToPort:v5 compareStrict:1];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(AVAudioSessionPortDescription *)self isEqualToPort:v5 compareStrict:1];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPort:(id)a3 compareStrict:(BOOL)a4
+- (BOOL)isEqualToPort:(id)port compareStrict:(BOOL)strict
 {
-  v4 = a4;
-  v6 = a3;
-  if (self == v6)
+  strictCopy = strict;
+  portCopy = port;
+  if (self == portCopy)
   {
     goto LABEL_19;
   }
 
   v7 = [(AVAudioSessionPortDescription *)self UID];
-  v8 = [(AVAudioSessionPortDescription *)v6 UID];
+  v8 = [(AVAudioSessionPortDescription *)portCopy UID];
   v9 = [v7 isEqualToString:v8];
 
   if ((v9 & 1) == 0)
@@ -91,41 +91,41 @@
     goto LABEL_20;
   }
 
-  v10 = [(AVAudioSessionPortDescription *)self portType];
-  v11 = [(AVAudioSessionPortDescription *)v6 portType];
-  v12 = [v10 isEqualToString:v11];
+  portType = [(AVAudioSessionPortDescription *)self portType];
+  portType2 = [(AVAudioSessionPortDescription *)portCopy portType];
+  v12 = [portType isEqualToString:portType2];
 
   if ((v12 & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  v13 = [(AVAudioSessionPortDescription *)self portName];
-  v14 = [(AVAudioSessionPortDescription *)v6 portName];
-  v15 = [v13 isEqualToString:v14];
+  portName = [(AVAudioSessionPortDescription *)self portName];
+  portName2 = [(AVAudioSessionPortDescription *)portCopy portName];
+  v15 = [portName isEqualToString:portName2];
 
   if ((v15 & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  if (v4)
+  if (strictCopy)
   {
-    v16 = [(AVAudioSessionPortDescription *)self channels];
-    v17 = [(AVAudioSessionPortDescription *)v6 channels];
-    v18 = (v16 == 0) ^ (v17 != 0);
+    channels = [(AVAudioSessionPortDescription *)self channels];
+    channels2 = [(AVAudioSessionPortDescription *)portCopy channels];
+    v18 = (channels == 0) ^ (channels2 != 0);
 
     if ((v18 & 1) == 0)
     {
       goto LABEL_20;
     }
 
-    v19 = [(AVAudioSessionPortDescription *)self channels];
-    if (v19)
+    channels3 = [(AVAudioSessionPortDescription *)self channels];
+    if (channels3)
     {
-      v20 = [(AVAudioSessionPortDescription *)self channels];
-      v21 = [(AVAudioSessionPortDescription *)v6 channels];
-      v22 = [v20 isEqualToArray:v21];
+      channels4 = [(AVAudioSessionPortDescription *)self channels];
+      channels5 = [(AVAudioSessionPortDescription *)portCopy channels];
+      v22 = [channels4 isEqualToArray:channels5];
 
       if ((v22 & 1) == 0)
       {
@@ -133,56 +133,56 @@
       }
     }
 
-    v23 = [(AVAudioSessionPortDescription *)self dataSources];
-    if (v23)
+    dataSources = [(AVAudioSessionPortDescription *)self dataSources];
+    if (dataSources)
     {
     }
 
     else
     {
-      v24 = [(AVAudioSessionPortDescription *)v6 dataSources];
+      dataSources2 = [(AVAudioSessionPortDescription *)portCopy dataSources];
 
-      if (!v24)
+      if (!dataSources2)
       {
         goto LABEL_19;
       }
     }
 
-    v25 = [(AVAudioSessionPortDescription *)self dataSources];
-    if (v25)
+    dataSources3 = [(AVAudioSessionPortDescription *)self dataSources];
+    if (dataSources3)
     {
-      v26 = [(AVAudioSessionPortDescription *)v6 dataSources];
+      dataSources4 = [(AVAudioSessionPortDescription *)portCopy dataSources];
 
-      if (!v26)
+      if (!dataSources4)
       {
         goto LABEL_20;
       }
     }
 
-    v27 = [(AVAudioSessionPortDescription *)self dataSources];
-    v28 = [(AVAudioSessionPortDescription *)v6 dataSources];
-    v29 = [v27 isEqualToArray:v28];
+    dataSources5 = [(AVAudioSessionPortDescription *)self dataSources];
+    dataSources6 = [(AVAudioSessionPortDescription *)portCopy dataSources];
+    v29 = [dataSources5 isEqualToArray:dataSources6];
 
     if ((v29 & 1) == 0)
     {
       goto LABEL_20;
     }
 
-    v30 = [(AVAudioSessionPortDescription *)self selectedDataSource];
-    if (v30)
+    selectedDataSource = [(AVAudioSessionPortDescription *)self selectedDataSource];
+    if (selectedDataSource)
     {
 
       goto LABEL_18;
     }
 
-    v31 = [(AVAudioSessionPortDescription *)v6 selectedDataSource];
+    selectedDataSource2 = [(AVAudioSessionPortDescription *)portCopy selectedDataSource];
 
-    if (v31)
+    if (selectedDataSource2)
     {
 LABEL_18:
-      v32 = [(AVAudioSessionPortDescription *)self selectedDataSource];
-      v33 = [(AVAudioSessionPortDescription *)v6 selectedDataSource];
-      v34 = [v32 isEqual:v33];
+      selectedDataSource3 = [(AVAudioSessionPortDescription *)self selectedDataSource];
+      selectedDataSource4 = [(AVAudioSessionPortDescription *)portCopy selectedDataSource];
+      v34 = [selectedDataSource3 isEqual:selectedDataSource4];
 
       if (v34)
       {
@@ -212,20 +212,20 @@ LABEL_21:
 
 - (NSArray)channels
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2->_impl + 9);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy->_impl + 9);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (AVAudioSessionDataSourceDescription)selectedDataSource
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2->_impl + 11);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy->_impl + 11);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -239,8 +239,8 @@ LABEL_21:
 
   if (v5)
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -260,8 +260,8 @@ LABEL_21:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 dataSourceID];
-          v13 = [v5 isEqualToNumber:v12];
+          dataSourceID = [v11 dataSourceID];
+          v13 = [v5 isEqualToNumber:dataSourceID];
 
           if (v13)
           {
@@ -282,7 +282,7 @@ LABEL_21:
 
 LABEL_12:
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -299,25 +299,25 @@ LABEL_12:
 {
   v29[2] = *MEMORY[0x1E69E9840];
   v6 = dataSource;
-  v7 = [(AVAudioSessionPortDescription *)self privateGetImplementation];
-  p_var0 = &v7->var0;
+  privateGetImplementation = [(AVAudioSessionPortDescription *)self privateGetImplementation];
+  p_var0 = &privateGetImplementation->var0;
   if (v6)
   {
     v9 = *MEMORY[0x1E69B06A8];
     v28[0] = v9;
-    v10 = [(AVAudioSessionPortDescription *)self privateGetID];
-    v29[0] = v10;
+    privateGetID = [(AVAudioSessionPortDescription *)self privateGetID];
+    v29[0] = privateGetID;
     v11 = *MEMORY[0x1E69B0698];
     v28[1] = v11;
-    v12 = [(AVAudioSessionDataSourceDescription *)v6 dataSourceID];
-    v29[1] = v12;
+    dataSourceID = [(AVAudioSessionDataSourceDescription *)v6 dataSourceID];
+    v29[1] = dataSourceID;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
     v14 = MEMORY[0x1E69B0240];
   }
 
   else
   {
-    if (!v7->var16)
+    if (!privateGetImplementation->var16)
     {
       v19 = 1;
       goto LABEL_12;
@@ -325,12 +325,12 @@ LABEL_12:
 
     v9 = *MEMORY[0x1E69B06A8];
     v26[0] = v9;
-    v10 = [(AVAudioSessionPortDescription *)self privateGetID];
-    v27[0] = v10;
+    privateGetID = [(AVAudioSessionPortDescription *)self privateGetID];
+    v27[0] = privateGetID;
     v11 = *MEMORY[0x1E69B0698];
     v26[1] = v11;
-    v12 = [p_var0[12] dataSourceID];
-    v27[1] = v12;
+    dataSourceID = [p_var0[12] dataSourceID];
+    v27[1] = dataSourceID;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
     v14 = MEMORY[0x1E69AFED8];
   }
@@ -367,11 +367,11 @@ LABEL_12:
   return v19;
 }
 
-- (AVAudioSessionPortDescription)initWithRawPortDescriptionXPC:(id)a3 owningSession:(id)a4
+- (AVAudioSessionPortDescription)initWithRawPortDescriptionXPC:(id)c owningSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cCopy = c;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = AVAudioSessionPortDescription;
   if ([(AVAudioSessionPortDescription *)&v11 init])
@@ -385,31 +385,31 @@ LABEL_12:
   return v8;
 }
 
-- (void)configureChannelsAndDataSources:(id)a3
+- (void)configureChannelsAndDataSources:(id)sources
 {
   v40 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v4 = [(AVAudioSessionPortDescription *)self privateGetImplementation];
+  sourcesCopy = sources;
+  privateGetImplementation = [(AVAudioSessionPortDescription *)self privateGetImplementation];
   v25 = *MEMORY[0x1E69B0650];
-  v5 = [v31 objectForKey:?];
+  v5 = [sourcesCopy objectForKey:?];
   v28 = *MEMORY[0x1E69B05D8];
-  v6 = [v31 objectForKey:?];
-  v7 = self;
-  objc_sync_enter(v7);
+  v6 = [sourcesCopy objectForKey:?];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v27 = v6;
-  v8 = [AVAudioSessionChannelDescription privateCreateArray:v6 portUID:v4->var4];
-  var13 = v4->var13;
-  v4->var13 = v8;
+  v8 = [AVAudioSessionChannelDescription privateCreateArray:v6 portUID:privateGetImplementation->var4];
+  var13 = privateGetImplementation->var13;
+  privateGetImplementation->var13 = v8;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69B05F0];
   v30 = *MEMORY[0x1E69B0600];
   v26 = v10;
-  v32 = [v31 objectForKey:v10];
-  WeakRetained = objc_loadWeakRetained(&v4->var0);
+  v32 = [sourcesCopy objectForKey:v10];
+  WeakRetained = objc_loadWeakRetained(&privateGetImplementation->var0);
   if ([WeakRetained allowAllBuiltInDataSources])
   {
-    v33 = [v31 objectForKey:v30];
+    v33 = [sourcesCopy objectForKey:v30];
   }
 
   else
@@ -430,16 +430,16 @@ LABEL_12:
     v34 = 0;
   }
 
-  obj = v7;
+  obj = selfCopy;
   objc_sync_enter(obj);
-  var1 = v4->var1;
-  v13 = objc_loadWeakRetained(&v4->var0);
+  var1 = privateGetImplementation->var1;
+  v13 = objc_loadWeakRetained(&privateGetImplementation->var0);
   v14 = +[AVAudioSessionDataSourceDescription privateCreateArray:portID:sessionID:](AVAudioSessionDataSourceDescription, "privateCreateArray:portID:sessionID:", v34, var1, [v13 opaqueSessionID]);
-  var14 = v4->var14;
-  v4->var14 = v14;
+  var14 = privateGetImplementation->var14;
+  privateGetImplementation->var14 = v14;
 
-  var15 = v4->var15;
-  v4->var15 = 0;
+  var15 = privateGetImplementation->var15;
+  privateGetImplementation->var15 = 0;
 
   if (v5)
   {
@@ -447,7 +447,7 @@ LABEL_12:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = v4->var14;
+    v17 = privateGetImplementation->var14;
     v18 = [v17 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v18)
     {
@@ -462,12 +462,12 @@ LABEL_12:
           }
 
           v21 = *(*(&v35 + 1) + 8 * i);
-          v22 = [v21 dataSourceID];
-          v23 = [v22 isEqualToNumber:v5];
+          dataSourceID = [v21 dataSourceID];
+          v23 = [dataSourceID isEqualToNumber:v5];
 
           if (v23)
           {
-            objc_storeStrong(&v4->var15, v21);
+            objc_storeStrong(&privateGetImplementation->var15, v21);
             goto LABEL_19;
           }
         }
@@ -487,24 +487,24 @@ LABEL_19:
 
   objc_sync_exit(obj);
 
-  PortDescriptionImpl::ValidateRequiredFields(v4);
+  PortDescriptionImpl::ValidateRequiredFields(privateGetImplementation);
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)privateCreateArray:(id)a3 owningSession:(id)a4
++ (id)privateCreateArray:(id)array owningSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  arrayCopy = array;
+  sessionCopy = session;
+  if (arrayCopy)
   {
-    v7 = [v5 count];
+    v7 = [arrayCopy count];
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
-        v10 = [v5 objectAtIndex:i];
-        v11 = [[AVAudioSessionPortDescription alloc] initWithRawPortDescriptionXPC:v10 owningSession:v6];
+        v10 = [arrayCopy objectAtIndex:i];
+        v11 = [[AVAudioSessionPortDescription alloc] initWithRawPortDescriptionXPC:v10 owningSession:sessionCopy];
         if (v11)
         {
           [v8 insertObject:v11 atIndex:i];

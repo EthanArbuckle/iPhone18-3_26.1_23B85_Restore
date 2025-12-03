@@ -1,27 +1,27 @@
 @interface IRCandidateInspectionServicePackage
-- (IRCandidateInspectionServicePackage)initWithRules:(id)a3 classification:(int64_t)a4 orderOfExecution:(id)a5 andClassificationDescription:(id)a6 forCandidate:(id)a7;
+- (IRCandidateInspectionServicePackage)initWithRules:(id)rules classification:(int64_t)classification orderOfExecution:(id)execution andClassificationDescription:(id)description forCandidate:(id)candidate;
 - (id)exportCandidateInspectionAsDictionary;
 @end
 
 @implementation IRCandidateInspectionServicePackage
 
-- (IRCandidateInspectionServicePackage)initWithRules:(id)a3 classification:(int64_t)a4 orderOfExecution:(id)a5 andClassificationDescription:(id)a6 forCandidate:(id)a7
+- (IRCandidateInspectionServicePackage)initWithRules:(id)rules classification:(int64_t)classification orderOfExecution:(id)execution andClassificationDescription:(id)description forCandidate:(id)candidate
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  rulesCopy = rules;
+  executionCopy = execution;
+  descriptionCopy = description;
+  candidateCopy = candidate;
   v20.receiver = self;
   v20.super_class = IRCandidateInspectionServicePackage;
   v17 = [(IRCandidateInspectionServicePackage *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_rules, a3);
-    objc_storeStrong(&v18->_candidate, a7);
-    v18->_classification = a4;
-    objc_storeStrong(&v18->_classificationDescription, a6);
-    objc_storeStrong(&v18->_orderOfExecution, a5);
+    objc_storeStrong(&v17->_rules, rules);
+    objc_storeStrong(&v18->_candidate, candidate);
+    v18->_classification = classification;
+    objc_storeStrong(&v18->_classificationDescription, description);
+    objc_storeStrong(&v18->_orderOfExecution, execution);
   }
 
   return v18;
@@ -35,9 +35,9 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v35 = self;
-  v3 = [(IRCandidateInspectionServicePackage *)self rules];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  selfCopy = self;
+  rules = [(IRCandidateInspectionServicePackage *)self rules];
+  v4 = [rules countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,16 +48,16 @@
       {
         if (*v43 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rules);
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
         v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v10 = [v8 evaluation];
-        if ([v10 hasBoolean])
+        evaluation = [v8 evaluation];
+        if ([evaluation hasBoolean])
         {
-          v11 = [v8 evaluation];
-          if ([v11 BOOLean])
+          evaluation2 = [v8 evaluation];
+          if ([evaluation2 BOOLean])
           {
             v12 = @"Yes";
           }
@@ -75,11 +75,11 @@
           [v9 setObject:@"Invalid" forKeyedSubscript:@"evaluation"];
         }
 
-        v13 = [v8 ruleName];
-        [v37 setObject:v9 forKeyedSubscript:v13];
+        ruleName = [v8 ruleName];
+        [v37 setObject:v9 forKeyedSubscript:ruleName];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v5 = [rules countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v5);
@@ -90,11 +90,11 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v15 = [(IRCandidateInspectionServicePackage *)v35 candidate];
-  v16 = [v15 nodes];
+  candidate = [(IRCandidateInspectionServicePackage *)selfCopy candidate];
+  nodes = [candidate nodes];
 
-  obj = v16;
-  v17 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  obj = nodes;
+  v17 = [nodes countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v17)
   {
     v18 = v17;
@@ -110,11 +110,11 @@
 
         v21 = *(*(&v38 + 1) + 8 * j);
         v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v23 = [v21 avOutpuDeviceIdentifier];
-        if (v23)
+        avOutpuDeviceIdentifier = [v21 avOutpuDeviceIdentifier];
+        if (avOutpuDeviceIdentifier)
         {
-          v24 = [v21 avOutpuDeviceIdentifier];
-          [v22 setObject:v24 forKeyedSubscript:@"avOutpuDeviceIdentifier"];
+          avOutpuDeviceIdentifier2 = [v21 avOutpuDeviceIdentifier];
+          [v22 setObject:avOutpuDeviceIdentifier2 forKeyedSubscript:@"avOutpuDeviceIdentifier"];
         }
 
         else
@@ -122,11 +122,11 @@
           [v22 setObject:&stru_286755D18 forKeyedSubscript:@"avOutpuDeviceIdentifier"];
         }
 
-        v25 = [v21 rapportIdentifier];
-        if (v25)
+        rapportIdentifier = [v21 rapportIdentifier];
+        if (rapportIdentifier)
         {
-          v26 = [v21 rapportIdentifier];
-          [v22 setObject:v26 forKeyedSubscript:@"rapportIdentifier"];
+          rapportIdentifier2 = [v21 rapportIdentifier];
+          [v22 setObject:rapportIdentifier2 forKeyedSubscript:@"rapportIdentifier"];
         }
 
         else
@@ -134,11 +134,11 @@
           [v22 setObject:&stru_286755D18 forKeyedSubscript:@"rapportIdentifier"];
         }
 
-        v27 = [v21 idsIdentifier];
-        if (v27)
+        idsIdentifier = [v21 idsIdentifier];
+        if (idsIdentifier)
         {
-          v28 = [v21 idsIdentifier];
-          [v22 setObject:v28 forKeyedSubscript:@"idsIdentifier"];
+          idsIdentifier2 = [v21 idsIdentifier];
+          [v22 setObject:idsIdentifier2 forKeyedSubscript:@"idsIdentifier"];
         }
 
         else
@@ -158,13 +158,13 @@
   v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v29 setObject:v37 forKeyedSubscript:@"rules"];
   [v29 setObject:v14 forKeyedSubscript:@"nodes"];
-  [(IRCandidateInspectionServicePackage *)v35 classification];
+  [(IRCandidateInspectionServicePackage *)selfCopy classification];
   v30 = IRCandidateClassificationToString();
   [v29 setObject:v30 forKeyedSubscript:@"classification"];
 
-  v31 = [(IRCandidateInspectionServicePackage *)v35 candidate];
-  v32 = [v31 candidateIdentifier];
-  [v29 setObject:v32 forKeyedSubscript:@"candidateIdentifier"];
+  candidate2 = [(IRCandidateInspectionServicePackage *)selfCopy candidate];
+  candidateIdentifier = [candidate2 candidateIdentifier];
+  [v29 setObject:candidateIdentifier forKeyedSubscript:@"candidateIdentifier"];
 
   v33 = *MEMORY[0x277D85DE8];
 

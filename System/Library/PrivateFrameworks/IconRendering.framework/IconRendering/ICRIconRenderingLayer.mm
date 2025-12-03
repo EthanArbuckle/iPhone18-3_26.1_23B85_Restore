@@ -1,20 +1,20 @@
 @interface ICRIconRenderingLayer
 - (void)display;
-- (void)drawInDisplayList:(id)a3;
+- (void)drawInDisplayList:(id)list;
 @end
 
 @implementation ICRIconRenderingLayer
 
-- (void)drawInDisplayList:(id)a3
+- (void)drawInDisplayList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B15C6590(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_1B15C6590(listCopy);
 }
 
 - (void)display
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B15C5790();
 }
 

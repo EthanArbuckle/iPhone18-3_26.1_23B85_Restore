@@ -1,15 +1,15 @@
 @interface LoggingCardCarouselCollectionViewFlowLayout
 + (Class)layoutAttributesClass;
 - (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)init;
-- (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)initWithCoder:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)initWithCoder:(id)coder;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)prepareLayout;
 @end
 
 @implementation LoggingCardCarouselCollectionViewFlowLayout
 
-- (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout_scaleFactor) = 0x3FC3333333333333;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout_scaleAlphaFactor) = 0x3FB999999999999ALL;
@@ -28,17 +28,17 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E27C898();
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_29E27C9A0(x, y, width, height);
   v9 = v8;
 
@@ -56,27 +56,27 @@
   return v10;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = [(UICollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
+  height = [(UICollectionViewFlowLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
   objc_opt_self();
   v9 = swift_dynamicCastObjCClass();
   if (v9)
   {
     v10 = v9;
-    v11 = v8;
+    v11 = height;
     [v10 setInvalidateFlowLayoutDelegateMetrics_];
     [v10 setInvalidateFlowLayoutAttributes_];
   }
 
-  return v8;
+  return height;
 }
 
 - (_TtC24MenstrualCyclesAppPlugin43LoggingCardCarouselCollectionViewFlowLayout)init

@@ -7,19 +7,19 @@
 
 - (id)displayName
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(MFMailboxUid *)self name];
-  v5 = [v3 displayNameAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  name = [(MFMailboxUid *)self name];
+  v5 = [defaultManager displayNameAtPath:name];
 
   return v5;
 }
 
 - (id)tildeAbbreviatedPath
 {
-  v2 = [(MFMailboxUid *)self name];
-  v3 = [v2 mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath];
+  name = [(MFMailboxUid *)self name];
+  mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath = [name mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath];
 
-  return v3;
+  return mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath;
 }
 
 @end

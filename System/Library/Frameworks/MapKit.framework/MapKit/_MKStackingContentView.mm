@@ -1,37 +1,37 @@
 @interface _MKStackingContentView
-- (_MKStackingContentView)initWithViewController:(id)a3;
-- (void)setBottomView:(id)a3;
-- (void)setTopView:(id)a3;
+- (_MKStackingContentView)initWithViewController:(id)controller;
+- (void)setBottomView:(id)view;
+- (void)setTopView:(id)view;
 - (void)updateConstraints;
 @end
 
 @implementation _MKStackingContentView
 
-- (void)setBottomView:(id)a3
+- (void)setBottomView:(id)view
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(UIView *)self->_bottomView superview];
+  viewCopy = view;
+  superview = [(UIView *)self->_bottomView superview];
 
-  if (v6 == self)
+  if (superview == self)
   {
     [(UIView *)self->_bottomView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_bottomView, a3);
+  objc_storeStrong(&self->_bottomView, view);
   bottomView = self->_bottomView;
   if (bottomView)
   {
     [(UIView *)bottomView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_MKStackingContentView *)self addSubview:self->_bottomView];
     v8 = MEMORY[0x1E696ACD8];
-    v9 = [(UIView *)self->_bottomView leftAnchor];
-    v10 = [(_MKStackingContentView *)self leftAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leftAnchor = [(UIView *)self->_bottomView leftAnchor];
+    leftAnchor2 = [(_MKStackingContentView *)self leftAnchor];
+    v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v16[0] = v11;
-    v12 = [(_MKStackingContentView *)self rightAnchor];
-    v13 = [(UIView *)self->_bottomView rightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    rightAnchor = [(_MKStackingContentView *)self rightAnchor];
+    rightAnchor2 = [(UIView *)self->_bottomView rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v16[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     [v8 activateConstraints:v15];
@@ -47,34 +47,34 @@
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
 
-- (void)setTopView:(id)a3
+- (void)setTopView:(id)view
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   topView = self->_topView;
-  if (topView != v5)
+  if (topView != viewCopy)
   {
-    v7 = [(UIView *)topView superview];
+    superview = [(UIView *)topView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_topView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_topView, a3);
+    objc_storeStrong(&self->_topView, view);
     v8 = self->_topView;
     if (v8)
     {
       [(UIView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(_MKStackingContentView *)self addSubview:self->_topView];
       v9 = MEMORY[0x1E696ACD8];
-      v10 = [(UIView *)self->_topView leftAnchor];
-      v11 = [(_MKStackingContentView *)self leftAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      leftAnchor = [(UIView *)self->_topView leftAnchor];
+      leftAnchor2 = [(_MKStackingContentView *)self leftAnchor];
+      v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v17[0] = v12;
-      v13 = [(_MKStackingContentView *)self rightAnchor];
-      v14 = [(UIView *)self->_topView rightAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      rightAnchor = [(_MKStackingContentView *)self rightAnchor];
+      rightAnchor2 = [(UIView *)self->_topView rightAnchor];
+      v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       v17[1] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
       [v9 activateConstraints:v16];
@@ -127,9 +127,9 @@ LABEL_9:
       bottomView = self->_bottomView;
     }
 
-    v8 = [(UIView *)bottomView topAnchor];
-    v9 = [(_MKStackingContentView *)self topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [(UIView *)bottomView topAnchor];
+    topAnchor2 = [(_MKStackingContentView *)self topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v11 = self->_topConstraint;
     self->_topConstraint = v10;
 
@@ -144,9 +144,9 @@ LABEL_9:
       if (!self->_middleConstraint)
       {
 LABEL_17:
-        v13 = [(UIView *)v12 topAnchor];
-        v14 = [*p_topView bottomAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        topAnchor3 = [(UIView *)v12 topAnchor];
+        bottomAnchor = [*p_topView bottomAnchor];
+        v15 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
         middleConstraint = self->_middleConstraint;
         self->_middleConstraint = v15;
 
@@ -167,7 +167,7 @@ LABEL_18:
   if (!v17 || ![(NSLayoutConstraint *)v17 isActive])
   {
     v18 = self->_bottomView;
-    v19 = [(_MKStackingContentView *)self bottomAnchor];
+    bottomAnchor2 = [(_MKStackingContentView *)self bottomAnchor];
     if (v18)
     {
       p_bottomView = &self->_bottomView;
@@ -178,8 +178,8 @@ LABEL_18:
       p_bottomView = p_topView;
     }
 
-    v21 = [(UIView *)*p_bottomView bottomAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    bottomAnchor3 = [(UIView *)*p_bottomView bottomAnchor];
+    v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v23 = self->_bottomConstraint;
     self->_bottomConstraint = v22;
 
@@ -192,11 +192,11 @@ LABEL_24:
   [(_MKStackingContentView *)&v24 updateConstraints];
 }
 
-- (_MKStackingContentView)initWithViewController:(id)a3
+- (_MKStackingContentView)initWithViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = _MKStackingContentView;
-  return [(_MKUIViewControllerRootView *)&v4 initWithViewController:a3];
+  return [(_MKUIViewControllerRootView *)&v4 initWithViewController:controller];
 }
 
 @end

@@ -4,60 +4,60 @@
 - (BOOL)_isRatchetCollapsed;
 - (BOOL)shouldCollect;
 - (EvaluationRequest)request;
-- (LAAnalyticsDTO)initWithEvaluationRequest:(id)a3;
+- (LAAnalyticsDTO)initWithEvaluationRequest:(id)request;
 - (NSDate)persistentStatusCheckTime;
 - (NSString)description;
 - (double)_monitoringInterval;
 - (id)_coolDownTimeInterval;
 - (id)buildPayload;
-- (id)initForOneOffDTOAnalyticsWithEvaluationRequest:(id)a3 dtoEnvironment:(id)a4;
-- (id)initForStatusMonitoringWithEnvironment:(id)a3 workQueue:(id)a4;
-- (int64_t)_dtoResultFromLAResult:(id)a3 error:(id)a4 locationState:(int64_t)a5;
-- (int64_t)_eventForLocationState:(int64_t)a3 familiarLocationEvent:(int64_t)a4 familiarLocationWithoutFullConfirmationEvent:(int64_t)a5 unfamiliarLocationEvent:(int64_t)a6;
-- (int64_t)_stateWithEnvironment:(id)a3;
+- (id)initForOneOffDTOAnalyticsWithEvaluationRequest:(id)request dtoEnvironment:(id)environment;
+- (id)initForStatusMonitoringWithEnvironment:(id)environment workQueue:(id)queue;
+- (int64_t)_dtoResultFromLAResult:(id)result error:(id)error locationState:(int64_t)state;
+- (int64_t)_eventForLocationState:(int64_t)state familiarLocationEvent:(int64_t)event familiarLocationWithoutFullConfirmationEvent:(int64_t)confirmationEvent unfamiliarLocationEvent:(int64_t)locationEvent;
+- (int64_t)_stateWithEnvironment:(id)environment;
 - (int64_t)coolDownBucket;
 - (int64_t)state;
 - (unsigned)_uid;
-- (void)_checkStatusWithEnvironment:(id)a3;
-- (void)_checkStatusWithReason:(id)a3;
+- (void)_checkStatusWithEnvironment:(id)environment;
+- (void)_checkStatusWithReason:(id)reason;
 - (void)_setupStatusMonitoring;
 - (void)collectIfNeeded;
-- (void)evaluationResult:(id)a3 error:(id)a4;
-- (void)pendingEvaluationController:(id)a3 updatedPendingEvaluation:(id)a4;
-- (void)setPersistentStatusCheckTime:(id)a3;
+- (void)evaluationResult:(id)result error:(id)error;
+- (void)pendingEvaluationController:(id)controller updatedPendingEvaluation:(id)evaluation;
+- (void)setPersistentStatusCheckTime:(id)time;
 @end
 
 @implementation LAAnalyticsDTO
 
-- (LAAnalyticsDTO)initWithEvaluationRequest:(id)a3
+- (LAAnalyticsDTO)initWithEvaluationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = LAAnalyticsDTO;
   v5 = [(LAAnalytics *)&v13 initWithEventName:@"com.apple.LocalAuthentication.DTO"];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_request, v4);
-    v7 = [v4 serviceLocator];
+    objc_storeWeak(&v5->_request, requestCopy);
+    serviceLocator = [requestCopy serviceLocator];
     v8 = NSStringFromProtocol(&unk_284B76EE0);
-    v9 = [v7 serviceWithIdentifier:v8];
+    v9 = [serviceLocator serviceWithIdentifier:v8];
 
     if (v9 && [v9 conformsToProtocol:&unk_284B76EE0])
     {
       objc_storeStrong(&v6->_dtoService, v9);
-      v10 = [(LACDTOService *)v6->_dtoService pendingPolicyEvaluationController];
-      [v10 addObserver:v6];
+      pendingPolicyEvaluationController = [(LACDTOService *)v6->_dtoService pendingPolicyEvaluationController];
+      [pendingPolicyEvaluationController addObserver:v6];
     }
 
     else
     {
-      v11 = [(LAAnalyticsDTO *)v6 request];
-      v10 = [v11 log];
+      request = [(LAAnalyticsDTO *)v6 request];
+      pendingPolicyEvaluationController = [request log];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(pendingPolicyEvaluationController, OS_LOG_TYPE_FAULT))
       {
-        [(LAAnalyticsDTO *)v6 initWithEvaluationRequest:v10];
+        [(LAAnalyticsDTO *)v6 initWithEvaluationRequest:pendingPolicyEvaluationController];
       }
     }
   }
@@ -65,17 +65,17 @@
   return v6;
 }
 
-- (id)initForStatusMonitoringWithEnvironment:(id)a3 workQueue:(id)a4
+- (id)initForStatusMonitoringWithEnvironment:(id)environment workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  environmentCopy = environment;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = LAAnalyticsDTO;
   v9 = [(LAAnalytics *)&v15 initWithEventName:@"com.apple.LocalAuthentication.DTO"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environmentProvider, a3);
+    objc_storeStrong(&v9->_environmentProvider, environment);
     [(LAAnalytics *)v10 setAllowsMultipleCollections:1];
     v11 = v10;
     block[0] = MEMORY[0x277D85DD0];
@@ -83,37 +83,37 @@
     block[2] = __67__LAAnalyticsDTO_initForStatusMonitoringWithEnvironment_workQueue___block_invoke;
     block[3] = &unk_278A61588;
     v14 = v11;
-    dispatch_async(v8, block);
+    dispatch_async(queueCopy, block);
   }
 
   return v10;
 }
 
-- (id)initForOneOffDTOAnalyticsWithEvaluationRequest:(id)a3 dtoEnvironment:(id)a4
+- (id)initForOneOffDTOAnalyticsWithEvaluationRequest:(id)request dtoEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  environmentCopy = environment;
   v11.receiver = self;
   v11.super_class = LAAnalyticsDTO;
   v8 = [(LAAnalytics *)&v11 initWithEventName:@"com.apple.LocalAuthentication.DTO"];
   p_isa = &v8->super.super.isa;
   if (v8)
   {
-    objc_storeWeak(&v8->_request, v6);
-    objc_storeStrong(p_isa + 5, a4);
+    objc_storeWeak(&v8->_request, requestCopy);
+    objc_storeStrong(p_isa + 5, environment);
   }
 
   return p_isa;
 }
 
-- (void)evaluationResult:(id)a3 error:(id)a4
+- (void)evaluationResult:(id)result error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(LAAnalyticsDTO *)self request];
-  v8 = [v7 dtoEnvironment];
-  v9 = [v8 locationState];
-  v10 = -[LAAnalyticsDTO _dtoResultFromLAResult:error:locationState:](self, "_dtoResultFromLAResult:error:locationState:", v14, v6, [v9 rawValue]);
+  resultCopy = result;
+  errorCopy = error;
+  request = [(LAAnalyticsDTO *)self request];
+  dtoEnvironment = [request dtoEnvironment];
+  locationState = [dtoEnvironment locationState];
+  v10 = -[LAAnalyticsDTO _dtoResultFromLAResult:error:locationState:](self, "_dtoResultFromLAResult:error:locationState:", resultCopy, errorCopy, [locationState rawValue]);
 
   if ([(LAAnalyticsDTO *)self _isRatchetArmingEvaluation])
   {
@@ -136,7 +136,7 @@ LABEL_6:
   evaluationFinished = self->_evaluationFinished;
   self->_evaluationFinished = v12;
 
-  self->_evaluationSuccessful = v14 != 0;
+  self->_evaluationSuccessful = resultCopy != 0;
 }
 
 - (id)buildPayload
@@ -178,8 +178,8 @@ LABEL_6:
     return 1;
   }
 
-  v4 = [(LAAnalyticsDTO *)self request];
-  if ([v4 isInteractive])
+  request = [(LAAnalyticsDTO *)self request];
+  if ([request isInteractive])
   {
   }
 
@@ -193,10 +193,10 @@ LABEL_6:
     }
   }
 
-  v6 = [(LAAnalyticsDTO *)self request];
-  v7 = [v6 isImmediateSuccess];
+  request2 = [(LAAnalyticsDTO *)self request];
+  isImmediateSuccess = [request2 isImmediateSuccess];
 
-  if (v7)
+  if (isImmediateSuccess)
   {
     return 0;
   }
@@ -214,47 +214,47 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = LAAnalyticsDTO;
   [(LAAnalytics *)&v4 collectIfNeeded];
-  v3 = [(LACDTOService *)self->_dtoService pendingPolicyEvaluationController];
-  [v3 removeObserver:self];
+  pendingPolicyEvaluationController = [(LACDTOService *)self->_dtoService pendingPolicyEvaluationController];
+  [pendingPolicyEvaluationController removeObserver:self];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(LAAnalyticsDTO *)self ratchetResult];
-  v5 = [(LAAnalyticsDTO *)self policyResult];
-  v6 = [(LAAnalyticsDTO *)self state];
-  v7 = [(LAAnalyticsDTO *)self coolDownBucket];
+  ratchetResult = [(LAAnalyticsDTO *)self ratchetResult];
+  policyResult = [(LAAnalyticsDTO *)self policyResult];
+  state = [(LAAnalyticsDTO *)self state];
+  coolDownBucket = [(LAAnalyticsDTO *)self coolDownBucket];
   v8 = [MEMORY[0x277CCA968] localizedStringFromDate:self->_coolOffStarted dateStyle:3 timeStyle:3];
-  v9 = [v3 stringWithFormat:@"<LAAnalyticsDTO RatchetResult:%d, PolicyResult:%d, State:%d, CoolDownBucket:%d (coolOffStarted: %@)>", v4, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<LAAnalyticsDTO RatchetResult:%d, PolicyResult:%d, State:%d, CoolDownBucket:%d (coolOffStarted: %@)>", ratchetResult, policyResult, state, coolDownBucket, v8];
 
   return v9;
 }
 
-- (void)pendingEvaluationController:(id)a3 updatedPendingEvaluation:(id)a4
+- (void)pendingEvaluationController:(id)controller updatedPendingEvaluation:(id)evaluation
 {
-  v11 = a4;
-  v5 = [v11 identifier];
-  v6 = [(LAAnalyticsDTO *)self request];
-  v7 = [v6 dtoRequestIdentifier];
-  v8 = [v5 isEqualToString:v7];
+  evaluationCopy = evaluation;
+  identifier = [evaluationCopy identifier];
+  request = [(LAAnalyticsDTO *)self request];
+  dtoRequestIdentifier = [request dtoRequestIdentifier];
+  v8 = [identifier isEqualToString:dtoRequestIdentifier];
 
   if (v8)
   {
-    v9 = [v11 coolOffStarted];
+    coolOffStarted = [evaluationCopy coolOffStarted];
     coolOffStarted = self->_coolOffStarted;
-    self->_coolOffStarted = v9;
+    self->_coolOffStarted = coolOffStarted;
   }
 }
 
 - (void)_setupStatusMonitoring
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(LAAnalyticsDTO *)self persistentStatusCheckTime];
-  if (v3)
+  persistentStatusCheckTime = [(LAAnalyticsDTO *)self persistentStatusCheckTime];
+  if (persistentStatusCheckTime)
   {
-    v4 = [MEMORY[0x277CCA968] localizedStringFromDate:v3 dateStyle:1 timeStyle:2];
-    [v3 timeIntervalSinceNow];
+    v4 = [MEMORY[0x277CCA968] localizedStringFromDate:persistentStatusCheckTime dateStyle:1 timeStyle:2];
+    [persistentStatusCheckTime timeIntervalSinceNow];
     if (v5 >= 0.0)
     {
       v7 = v5;
@@ -304,8 +304,8 @@ void __40__LAAnalyticsDTO__setupStatusMonitoring__block_invoke(uint64_t a1)
 
 - (NSDate)persistentStatusCheckTime
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"LA.dto.statusCheckTime"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"LA.dto.statusCheckTime"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -320,31 +320,31 @@ void __40__LAAnalyticsDTO__setupStatusMonitoring__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setPersistentStatusCheckTime:(id)a3
+- (void)setPersistentStatusCheckTime:(id)time
 {
-  v5 = a3;
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = v3;
-  if (v5)
+  timeCopy = time;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = standardUserDefaults;
+  if (timeCopy)
   {
-    [v3 setObject:v5 forKey:@"LA.dto.statusCheckTime"];
+    [standardUserDefaults setObject:timeCopy forKey:@"LA.dto.statusCheckTime"];
   }
 
   else
   {
-    [v3 removeObjectForKey:@"LA.dto.statusCheckTime"];
+    [standardUserDefaults removeObjectForKey:@"LA.dto.statusCheckTime"];
   }
 }
 
-- (void)_checkStatusWithReason:(id)a3
+- (void)_checkStatusWithReason:(id)reason
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = LA_LOG_3();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&dword_238B7F000, v5, OS_LOG_TYPE_DEFAULT, "Checking status now (%{public}@)", buf, 0xCu);
   }
 
@@ -449,9 +449,9 @@ LABEL_4:
   return v14;
 }
 
-- (void)_checkStatusWithEnvironment:(id)a3
+- (void)_checkStatusWithEnvironment:(id)environment
 {
-  objc_storeStrong(&self->_environment, a3);
+  objc_storeStrong(&self->_environment, environment);
 
   [(LAAnalyticsDTO *)self collectIfNeeded];
 }
@@ -466,46 +466,46 @@ LABEL_4:
 
   else
   {
-    v4 = [(LAAnalyticsDTO *)self request];
-    v5 = [v4 dtoEnvironment];
-    v6 = [(LAAnalyticsDTO *)self _stateWithEnvironment:v5];
+    request = [(LAAnalyticsDTO *)self request];
+    dtoEnvironment = [request dtoEnvironment];
+    v6 = [(LAAnalyticsDTO *)self _stateWithEnvironment:dtoEnvironment];
 
     return v6;
   }
 }
 
-- (int64_t)_stateWithEnvironment:(id)a3
+- (int64_t)_stateWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 featureState];
-  v6 = [v5 isSupported];
+  environmentCopy = environment;
+  featureState = [environmentCopy featureState];
+  isSupported = [featureState isSupported];
 
-  if (v6)
+  if (isSupported)
   {
-    v7 = [v4 featureState];
-    v8 = [v7 isAvailable];
+    featureState2 = [environmentCopy featureState];
+    isAvailable = [featureState2 isAvailable];
 
-    if (v8)
+    if (isAvailable)
     {
-      v9 = [v4 featureState];
-      v10 = [v9 isEnabled];
+      featureState3 = [environmentCopy featureState];
+      isEnabled = [featureState3 isEnabled];
 
-      if (v10)
+      if (isEnabled)
       {
-        v11 = [v4 ratchetState];
-        v12 = [v11 rawValue];
+        ratchetState = [environmentCopy ratchetState];
+        rawValue = [ratchetState rawValue];
 
-        if (v12 == 4)
+        if (rawValue == 4)
         {
           v13 = 4;
         }
 
         else
         {
-          v20 = [v4 featureState];
-          v21 = [v20 isStrictModeEnabled];
+          featureState4 = [environmentCopy featureState];
+          isStrictModeEnabled = [featureState4 isStrictModeEnabled];
 
-          if (v21)
+          if (isStrictModeEnabled)
           {
             v13 = 7;
           }
@@ -525,8 +525,8 @@ LABEL_4:
 
     else
     {
-      v15 = [MEMORY[0x277CD4800] sharedInstance];
-      v16 = [v15 isPasscodeSetForUser:-[LAAnalyticsDTO _uid](self error:{"_uid"), 0}];
+      mEMORY[0x277CD4800] = [MEMORY[0x277CD4800] sharedInstance];
+      v16 = [mEMORY[0x277CD4800] isPasscodeSetForUser:-[LAAnalyticsDTO _uid](self error:{"_uid"), 0}];
 
       if (v16)
       {
@@ -562,30 +562,30 @@ LABEL_4:
 
 - (unsigned)_uid
 {
-  v3 = [(LAAnalyticsDTO *)self request];
-  if (v3)
+  request = [(LAAnalyticsDTO *)self request];
+  if (request)
   {
-    v4 = [(LAAnalyticsDTO *)self request];
-    v5 = [v4 evaluationUserId];
+    request2 = [(LAAnalyticsDTO *)self request];
+    evaluationUserId = [request2 evaluationUserId];
   }
 
   else
   {
-    v5 = geteuid();
+    evaluationUserId = geteuid();
   }
 
-  return v5;
+  return evaluationUserId;
 }
 
 - (int64_t)coolDownBucket
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(LAAnalyticsDTO *)self _coolDownTimeInterval];
-  v3 = v2;
-  if (v2)
+  _coolDownTimeInterval = [(LAAnalyticsDTO *)self _coolDownTimeInterval];
+  v3 = _coolDownTimeInterval;
+  if (_coolDownTimeInterval)
   {
     v4 = 0;
-    v5 = [v2 intValue] / 60;
+    v5 = [_coolDownTimeInterval intValue] / 60;
     v8[0] = xmmword_238B8D8F0;
     v8[1] = xmmword_238B8D900;
     v9 = 360;
@@ -637,44 +637,44 @@ LABEL_4:
 
 - (BOOL)_isLocationBasedPolicyEvaluation
 {
-  v2 = [(LAAnalyticsDTO *)self request];
-  v3 = [v2 policy];
+  request = [(LAAnalyticsDTO *)self request];
+  policy = [request policy];
 
-  return v3 == 1025 || v3 == 1028;
+  return policy == 1025 || policy == 1028;
 }
 
 - (BOOL)_isRatchetArmingEvaluation
 {
-  v2 = [(LAAnalyticsDTO *)self request];
-  v3 = [v2 policy] == 1026;
+  request = [(LAAnalyticsDTO *)self request];
+  v3 = [request policy] == 1026;
 
   return v3;
 }
 
 - (BOOL)_isRatchetCollapsed
 {
-  v2 = [(LAAnalyticsDTO *)self request];
-  v3 = [v2 dtoEnvironment];
-  v4 = [v3 ratchetState];
-  v5 = [v4 rawValue] == 4;
+  request = [(LAAnalyticsDTO *)self request];
+  dtoEnvironment = [request dtoEnvironment];
+  ratchetState = [dtoEnvironment ratchetState];
+  v5 = [ratchetState rawValue] == 4;
 
   return v5;
 }
 
-- (int64_t)_dtoResultFromLAResult:(id)a3 error:(id)a4 locationState:(int64_t)a5
+- (int64_t)_dtoResultFromLAResult:(id)result error:(id)error locationState:(int64_t)state
 {
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  resultCopy = result;
+  errorCopy = error;
+  v10 = errorCopy;
   v11 = *MEMORY[0x277D23E38];
   v12 = *MEMORY[0x277D23E40];
-  v14 = *MEMORY[0x277D23E38] == a5 || v12 == a5;
-  if (!v8 || !v9)
+  v14 = *MEMORY[0x277D23E38] == state || v12 == state;
+  if (!resultCopy || !errorCopy)
   {
-    if (v8 | v9)
+    if (resultCopy | errorCopy)
     {
-      if (v9)
+      if (errorCopy)
       {
         goto LABEL_14;
       }
@@ -682,8 +682,8 @@ LABEL_4:
 
     else
     {
-      v26 = [(LAAnalyticsDTO *)self request];
-      v27 = [v26 log];
+      request = [(LAAnalyticsDTO *)self request];
+      v27 = [request log];
 
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
@@ -691,13 +691,13 @@ LABEL_4:
       }
     }
 
-    v28 = [v8 objectForKeyedSubscript:&unk_284B71D50];
-    v29 = [v28 BOOLValue];
+    v28 = [resultCopy objectForKeyedSubscript:&unk_284B71D50];
+    bOOLValue = [v28 BOOLValue];
 
-    if (v29)
+    if (bOOLValue)
     {
-      v17 = self;
-      v18 = a5;
+      selfCopy9 = self;
+      stateCopy9 = state;
       v19 = 0;
       v20 = 24;
       v21 = 1;
@@ -705,13 +705,13 @@ LABEL_4:
 
     else
     {
-      v30 = [v8 objectForKeyedSubscript:&unk_284B71D68];
-      v31 = [v30 BOOLValue];
+      v30 = [resultCopy objectForKeyedSubscript:&unk_284B71D68];
+      bOOLValue2 = [v30 BOOLValue];
 
-      if (v31)
+      if (bOOLValue2)
       {
-        v17 = self;
-        v18 = a5;
+        selfCopy9 = self;
+        stateCopy9 = state;
         v19 = 2;
         v20 = 25;
         v21 = 3;
@@ -719,22 +719,22 @@ LABEL_4:
 
       else
       {
-        if (!v8)
+        if (!resultCopy)
         {
           goto LABEL_46;
         }
 
-        v32 = [(LAAnalyticsDTO *)self request];
-        v33 = [v32 options];
-        v34 = [v33 objectForKeyedSubscript:&unk_284B71D80];
-        v35 = [v34 BOOLValue];
+        request2 = [(LAAnalyticsDTO *)self request];
+        options = [request2 options];
+        v34 = [options objectForKeyedSubscript:&unk_284B71D80];
+        bOOLValue3 = [v34 BOOLValue];
 
-        if (v35)
+        if (bOOLValue3)
         {
           if (!v14 && ![(LAAnalyticsDTO *)self state])
           {
-            v36 = [(LAAnalyticsDTO *)self request];
-            v37 = [v36 log];
+            request3 = [(LAAnalyticsDTO *)self request];
+            v37 = [request3 log];
 
             if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
             {
@@ -742,8 +742,8 @@ LABEL_4:
             }
           }
 
-          v17 = self;
-          v18 = a5;
+          selfCopy9 = self;
+          stateCopy9 = state;
           v19 = 4;
           v20 = 26;
           v21 = 5;
@@ -752,16 +752,16 @@ LABEL_4:
         else
         {
 LABEL_46:
-          v38 = [(LAAnalyticsDTO *)self request];
-          v39 = [v38 log];
+          request4 = [(LAAnalyticsDTO *)self request];
+          v39 = [request4 log];
 
           if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
           {
             [LAAnalyticsDTO _dtoResultFromLAResult:? error:? locationState:?];
           }
 
-          v17 = self;
-          v18 = a5;
+          selfCopy9 = self;
+          stateCopy9 = state;
           v19 = 6;
           v20 = 27;
           v21 = 7;
@@ -772,29 +772,29 @@ LABEL_46:
     goto LABEL_58;
   }
 
-  v15 = [(LAAnalyticsDTO *)self request];
-  v16 = [v15 log];
+  request5 = [(LAAnalyticsDTO *)self request];
+  v16 = [request5 log];
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
   {
-    v51 = [(LAAnalyticsDTO *)self request];
-    v47 = [v51 dtoRequestIdentifier];
-    v50 = [(LAAnalyticsDTO *)self request];
-    v46 = [v50 policy];
-    v49 = [(LAAnalyticsDTO *)self request];
-    v40 = [v49 options];
-    v48 = [(LAAnalyticsDTO *)self request];
-    [v48 dtoEnvironment];
+    request6 = [(LAAnalyticsDTO *)self request];
+    dtoRequestIdentifier = [request6 dtoRequestIdentifier];
+    request7 = [(LAAnalyticsDTO *)self request];
+    policy = [request7 policy];
+    request8 = [(LAAnalyticsDTO *)self request];
+    options2 = [request8 options];
+    request9 = [(LAAnalyticsDTO *)self request];
+    [request9 dtoEnvironment];
     *buf = 138544642;
-    v53 = v47;
+    v53 = dtoRequestIdentifier;
     v54 = 1024;
-    v55 = v46;
+    v55 = policy;
     v56 = 2114;
-    v57 = v40;
+    v57 = options2;
     v59 = v58 = 2114;
     v41 = v59;
     v60 = 2114;
-    v61 = v8;
+    v61 = resultCopy;
     v62 = 2114;
     v63 = v10;
     _os_log_fault_impl(&dword_238B7F000, v16, OS_LOG_TYPE_FAULT, "Both result and error were set by client %{public}@ for policy %d with options %{public}@ in DTO environment %{public}@: %{public}@, %{public}@", buf, 0x3Au);
@@ -803,33 +803,33 @@ LABEL_46:
 LABEL_14:
   if ([MEMORY[0x277CD47F0] error:v10 hasCodeFromArray:&unk_284B71E70])
   {
-    v17 = self;
-    v18 = a5;
+    selfCopy9 = self;
+    stateCopy9 = state;
     v19 = 10;
     v20 = 29;
     v21 = 11;
 LABEL_58:
-    v25 = [(LAAnalyticsDTO *)v17 _eventForLocationState:v18 familiarLocationEvent:v19 familiarLocationWithoutFullConfirmationEvent:v20 unfamiliarLocationEvent:v21];
+    v25 = [(LAAnalyticsDTO *)selfCopy9 _eventForLocationState:stateCopy9 familiarLocationEvent:v19 familiarLocationWithoutFullConfirmationEvent:v20 unfamiliarLocationEvent:v21];
     goto LABEL_59;
   }
 
   if ([MEMORY[0x277CD47F0] error:v10 hasCode:-1 subcode:6])
   {
     v22 = 17;
-    if (v12 == a5)
+    if (v12 == state)
     {
       v22 = 28;
     }
 
-    v23 = v11 == a5;
+    v23 = v11 == state;
     v24 = 8;
     goto LABEL_20;
   }
 
   if ([MEMORY[0x277CD47F0] error:v10 hasCode:-1 subcode:30])
   {
-    v17 = self;
-    v18 = a5;
+    selfCopy9 = self;
+    stateCopy9 = state;
     v19 = 22;
     v20 = 33;
     v21 = 23;
@@ -840,8 +840,8 @@ LABEL_58:
   {
     if ([MEMORY[0x277CD47F0] error:v10 hasCode:-9])
     {
-      v17 = self;
-      v18 = a5;
+      selfCopy9 = self;
+      stateCopy9 = state;
       v19 = 18;
       v20 = 31;
       v21 = 19;
@@ -849,8 +849,8 @@ LABEL_58:
 
     else if ([MEMORY[0x277CD47F0] error:v10 hasCode:-4])
     {
-      v17 = self;
-      v18 = a5;
+      selfCopy9 = self;
+      stateCopy9 = state;
       v19 = 20;
       v20 = 32;
       v21 = 21;
@@ -860,8 +860,8 @@ LABEL_58:
     {
       if ([MEMORY[0x277CD47F0] error:v10 hasCode:-1001])
       {
-        v42 = [(LAAnalyticsDTO *)self request];
-        v43 = [v42 log];
+        request10 = [(LAAnalyticsDTO *)self request];
+        v43 = [request10 log];
 
         if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
         {
@@ -869,8 +869,8 @@ LABEL_58:
         }
       }
 
-      v17 = self;
-      v18 = a5;
+      selfCopy9 = self;
+      stateCopy9 = state;
       v19 = 12;
       v20 = 30;
       v21 = 9;
@@ -879,7 +879,7 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  if (v11 == a5)
+  if (v11 == state)
   {
     v25 = 8;
   }
@@ -912,21 +912,21 @@ LABEL_59:
   return v25;
 }
 
-- (int64_t)_eventForLocationState:(int64_t)a3 familiarLocationEvent:(int64_t)a4 familiarLocationWithoutFullConfirmationEvent:(int64_t)a5 unfamiliarLocationEvent:(int64_t)a6
+- (int64_t)_eventForLocationState:(int64_t)state familiarLocationEvent:(int64_t)event familiarLocationWithoutFullConfirmationEvent:(int64_t)confirmationEvent unfamiliarLocationEvent:(int64_t)locationEvent
 {
-  if (*MEMORY[0x277D23E40] != a3)
+  if (*MEMORY[0x277D23E40] != state)
   {
-    a5 = a6;
+    confirmationEvent = locationEvent;
   }
 
-  if (*MEMORY[0x277D23E38] == a3)
+  if (*MEMORY[0x277D23E38] == state)
   {
-    return a4;
+    return event;
   }
 
   else
   {
-    return a5;
+    return confirmationEvent;
   }
 }
 

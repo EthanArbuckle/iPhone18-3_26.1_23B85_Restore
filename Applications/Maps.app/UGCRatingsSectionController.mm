@@ -1,18 +1,18 @@
 @interface UGCRatingsSectionController
 - (NSArray)rowItems;
 - (UGCPOIEnrichmentAnalyticsDelegate)analyticsDelegate;
-- (UGCRatingsSectionController)initWithRatingsForm:(id)a3 mapItem:(id)a4 analyticsDelegate:(id)a5 isInlineMode:(BOOL)a6;
+- (UGCRatingsSectionController)initWithRatingsForm:(id)form mapItem:(id)item analyticsDelegate:(id)delegate isInlineMode:(BOOL)mode;
 - (UGCSectionControllerDelegate)delegate;
 - (id)_mapItemAppleRatings;
-- (id)_ratingKeyForAppleRating:(id)a3;
-- (id)_ratingKeyForCategory:(id)a3;
-- (int64_t)_countAdjustmentForCategory:(id)a3;
+- (id)_ratingKeyForAppleRating:(id)rating;
+- (id)_ratingKeyForCategory:(id)category;
+- (int64_t)_countAdjustmentForCategory:(id)category;
 - (void)_updateCategoryViewModels;
 - (void)handleSuccessfulSubmission;
-- (void)rateThisPlaceCellWasTapped:(id)a3;
-- (void)ratingCategoryCell:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4;
-- (void)ratingCategoryCellChangedState:(int64_t)a3 forKey:(id)a4;
-- (void)setFormInteractionEnabled:(BOOL)a3;
+- (void)rateThisPlaceCellWasTapped:(id)tapped;
+- (void)ratingCategoryCell:(id)cell presentInformedConsentIfNeededWithCompletion:(id)completion;
+- (void)ratingCategoryCellChangedState:(int64_t)state forKey:(id)key;
+- (void)setFormInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation UGCRatingsSectionController
@@ -31,7 +31,7 @@
   return WeakRetained;
 }
 
-- (void)rateThisPlaceCellWasTapped:(id)a3
+- (void)rateThisPlaceCellWasTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&OBJC_PROTOCOL___UGCRatingsSectionControllerDelegate])
@@ -49,18 +49,18 @@
   [v6 ratingsSectionControllerPresentPOIEnrichment:self];
 }
 
-- (void)setFormInteractionEnabled:(BOOL)a3
+- (void)setFormInteractionEnabled:(BOOL)enabled
 {
-  if (self->_formInteractionEnabled != a3)
+  if (self->_formInteractionEnabled != enabled)
   {
-    v3 = a3;
-    self->_formInteractionEnabled = a3;
+    enabledCopy = enabled;
+    self->_formInteractionEnabled = enabled;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSDictionary *)self->_ratingCells allValues];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [(NSDictionary *)self->_ratingCells allValues];
+    v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -72,15 +72,15 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v9 + 1) + 8 * v8) setEnabled:v3];
+          [*(*(&v9 + 1) + 8 * v8) setEnabled:enabledCopy];
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -95,13 +95,13 @@
     goto LABEL_4;
   }
 
-  v3 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  if ([v3 _hasUserRatingScore])
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  if ([_geoMapItem _hasUserRatingScore])
   {
-    v4 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v5 = [v4 _hasAppleRatings];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _hasAppleRatings = [_geoMapItem2 _hasAppleRatings];
 
-    if (!v5)
+    if (!_hasAppleRatings)
     {
 LABEL_4:
       v6 = 0;
@@ -118,10 +118,10 @@ LABEL_4:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v9 = [v8 _appleRatings];
+  _geoMapItem3 = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _appleRatings = [_geoMapItem3 _appleRatings];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [_appleRatings countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -132,7 +132,7 @@ LABEL_4:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_appleRatings);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -143,7 +143,7 @@ LABEL_4:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [_appleRatings countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -155,13 +155,13 @@ LABEL_16:
   return v6;
 }
 
-- (int64_t)_countAdjustmentForCategory:(id)a3
+- (int64_t)_countAdjustmentForCategory:(id)category
 {
-  v3 = a3;
-  v4 = [v3 initialState];
-  v5 = [v3 currentState];
+  categoryCopy = category;
+  initialState = [categoryCopy initialState];
+  currentState = [categoryCopy currentState];
 
-  if (v5)
+  if (currentState)
   {
     v6 = 0;
   }
@@ -171,54 +171,54 @@ LABEL_16:
     v6 = -1;
   }
 
-  if (v4)
+  if (initialState)
   {
     return v6;
   }
 
   else
   {
-    return v5 != 0;
+    return currentState != 0;
   }
 }
 
-- (id)_ratingKeyForAppleRating:(id)a3
+- (id)_ratingKeyForAppleRating:(id)rating
 {
-  v3 = a3;
-  if ([v3 ratingType])
+  ratingCopy = rating;
+  if ([ratingCopy ratingType])
   {
-    v4 = [v3 localizedTitle];
+    localizedTitle = [ratingCopy localizedTitle];
   }
 
   else
   {
-    v4 = &stru_1016631F0;
+    localizedTitle = &stru_1016631F0;
   }
 
-  return v4;
+  return localizedTitle;
 }
 
-- (id)_ratingKeyForCategory:(id)a3
+- (id)_ratingKeyForCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 ratingType] == 1)
+  categoryCopy = category;
+  if ([categoryCopy ratingType] == 1)
   {
-    v4 = &stru_1016631F0;
+    localizedTitle = &stru_1016631F0;
   }
 
   else
   {
-    v4 = [v3 localizedTitle];
+    localizedTitle = [categoryCopy localizedTitle];
   }
 
-  return v4;
+  return localizedTitle;
 }
 
 - (void)_updateCategoryViewModels
 {
   if (self->_ratingCells)
   {
-    v3 = [(UGCRatingsSectionController *)self _mapItemAppleRatings];
+    _mapItemAppleRatings = [(UGCRatingsSectionController *)self _mapItemAppleRatings];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -244,12 +244,12 @@ LABEL_16:
         v8 = *(*(&v22 + 1) + 8 * i);
         v9 = [(UGCRatingsSectionController *)self _ratingKeyForCategory:v8];
         v10 = [(UGCRatingsSectionController *)self _countAdjustmentForCategory:v8];
-        if (v3)
+        if (_mapItemAppleRatings)
         {
           v11 = v10;
           if (v9)
           {
-            v12 = [v3 objectForKeyedSubscript:v9];
+            v12 = [_mapItemAppleRatings objectForKeyedSubscript:v9];
             if (v12)
             {
               v13 = v12;
@@ -263,15 +263,15 @@ LABEL_16:
           }
 
           v15 = [MUUnratedCategoryRatingViewModel alloc];
-          v16 = [v8 localizedTitle];
-          v17 = [v15 initWithCategoryTitle:v16 clientCountAdjustment:v11];
+          localizedTitle = [v8 localizedTitle];
+          v17 = [v15 initWithCategoryTitle:localizedTitle clientCountAdjustment:v11];
         }
 
         else
         {
           v18 = [MUTitleOnlyCategoryRatingViewModel alloc];
-          v16 = [v8 localizedTitle];
-          v17 = [v18 initWithCategoryTitle:v16];
+          localizedTitle = [v8 localizedTitle];
+          v17 = [v18 initWithCategoryTitle:localizedTitle];
         }
 
         v14 = v17;
@@ -332,9 +332,9 @@ LABEL_18:
 
           [(UGCRatingCategoryCell *)v11 setDelegate:self];
           [(UGCRatingCategoryCell *)v11 setEnabled:self->_formInteractionEnabled];
-          v13 = [(UGCRatingsForm *)self->_ratingsForm allRatingCategories];
-          v14 = [v13 lastObject];
-          v15 = v9 != v14 && !self->_isInlineMode;
+          allRatingCategories = [(UGCRatingsForm *)self->_ratingsForm allRatingCategories];
+          lastObject = [allRatingCategories lastObject];
+          v15 = v9 != lastObject && !self->_isInlineMode;
           [(UGCPOIEnrichmentEditorCell *)v11 setShowBottomHairline:v15];
 
           [v4 setObject:v11 forKeyedSubscript:v10];
@@ -379,8 +379,8 @@ LABEL_18:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(UGCRatingsForm *)self->_ratingsForm allRatingCategories];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self->_ratingsForm allRatingCategories];
+  v4 = [allRatingCategories countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -391,14 +391,14 @@ LABEL_18:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         if ([v8 isEdited] && objc_msgSend(v8, "currentState"))
         {
-          v9 = [v8 currentState];
-          if (v9 == 2)
+          currentState = [v8 currentState];
+          if (currentState == 2)
           {
             v10 = 2144;
           }
@@ -408,7 +408,7 @@ LABEL_18:
             v10 = 17099;
           }
 
-          if (v9 == 1)
+          if (currentState == 1)
           {
             v11 = 2143;
           }
@@ -418,23 +418,23 @@ LABEL_18:
             v11 = v10;
           }
 
-          v12 = [(UGCRatingsSectionController *)self analyticsDelegate];
-          v13 = [v8 localizedTitle];
-          [v12 captureUserAction:v11 withValue:v13];
+          analyticsDelegate = [(UGCRatingsSectionController *)self analyticsDelegate];
+          localizedTitle = [v8 localizedTitle];
+          [analyticsDelegate captureUserAction:v11 withValue:localizedTitle];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allRatingCategories countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)ratingCategoryCellChangedState:(int64_t)a3 forKey:(id)a4
+- (void)ratingCategoryCellChangedState:(int64_t)state forKey:(id)key
 {
-  v10 = [(UGCRatingsForm *)self->_ratingsForm categoryForKey:a4];
-  [v10 setCurrentState:a3];
+  v10 = [(UGCRatingsForm *)self->_ratingsForm categoryForKey:key];
+  [v10 setCurrentState:state];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&OBJC_PROTOCOL___UGCRatingsSectionControllerDelegate])
   {
@@ -448,13 +448,13 @@ LABEL_18:
 
   v8 = v7;
 
-  v9 = [v10 localizedTitle];
-  [v8 ratingsSectionController:self userActionCapturedForRatingCategoryState:a3 value:v9];
+  localizedTitle = [v10 localizedTitle];
+  [v8 ratingsSectionController:self userActionCapturedForRatingCategoryState:state value:localizedTitle];
 }
 
-- (void)ratingCategoryCell:(id)a3 presentInformedConsentIfNeededWithCompletion:(id)a4
+- (void)ratingCategoryCell:(id)cell presentInformedConsentIfNeededWithCompletion:(id)completion
 {
-  v8 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&OBJC_PROTOCOL___UGCRatingsSectionControllerDelegate])
   {
@@ -468,24 +468,24 @@ LABEL_18:
 
   v7 = v6;
 
-  [v7 ratingsSectionController:self presentInformedConsentIfNeededWithCompletion:v8];
+  [v7 ratingsSectionController:self presentInformedConsentIfNeededWithCompletion:completionCopy];
 }
 
-- (UGCRatingsSectionController)initWithRatingsForm:(id)a3 mapItem:(id)a4 analyticsDelegate:(id)a5 isInlineMode:(BOOL)a6
+- (UGCRatingsSectionController)initWithRatingsForm:(id)form mapItem:(id)item analyticsDelegate:(id)delegate isInlineMode:(BOOL)mode
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  formCopy = form;
+  itemCopy = item;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = UGCRatingsSectionController;
   v14 = [(UGCRatingsSectionController *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_ratingsForm, a3);
-    objc_storeStrong(&v15->_mapItem, a4);
-    objc_storeWeak(&v15->_analyticsDelegate, v13);
-    v15->_isInlineMode = a6;
+    objc_storeStrong(&v14->_ratingsForm, form);
+    objc_storeStrong(&v15->_mapItem, item);
+    objc_storeWeak(&v15->_analyticsDelegate, delegateCopy);
+    v15->_isInlineMode = mode;
     [(UGCForm *)v15->_ratingsForm addObserver:v15];
   }
 

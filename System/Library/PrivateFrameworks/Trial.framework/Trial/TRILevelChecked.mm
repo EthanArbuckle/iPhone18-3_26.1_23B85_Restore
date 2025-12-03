@@ -1,7 +1,7 @@
 @interface TRILevelChecked
-+ (id)wrapLevel:(id)a3;
++ (id)wrapLevel:(id)level;
 - (BOOL)BOOLeanValue;
-- (TRILevelChecked)initWithLevel:(id)a3;
+- (TRILevelChecked)initWithLevel:(id)level;
 - (double)doubleValue;
 - (float)floatValue;
 - (id)binaryValue;
@@ -17,46 +17,46 @@
 
 - (id)fileValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 100 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 100 || levelOneOfCase == 0)
   {
-    v7 = [(TRILevel *)self->_wrapped fileValue];
+    fileValue = [(TRILevel *)self->_wrapped fileValue];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:141 description:{@"requested fileValue, but TRILevel contained type (%u) is not File", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:141 description:{@"requested fileValue, but TRILevel contained type (%u) is not File", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
-    v7 = 0;
+    fileValue = 0;
   }
 
-  return v7;
+  return fileValue;
 }
 
 - (id)directoryValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 101 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 101 || levelOneOfCase == 0)
   {
-    v7 = [(TRILevel *)self->_wrapped directoryValue];
+    directoryValue = [(TRILevel *)self->_wrapped directoryValue];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:154 description:{@"requested directoryValue, but TRILevel contained type (%u) is not Directory", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:154 description:{@"requested directoryValue, but TRILevel contained type (%u) is not Directory", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
-    v7 = 0;
+    directoryValue = 0;
   }
 
-  return v7;
+  return directoryValue;
 }
 
 - (double)doubleValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 15 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 15 || levelOneOfCase == 0)
   {
     wrapped = self->_wrapped;
 
@@ -65,8 +65,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:115 description:{@"requested doubleValue, but TRILevel contained type (%u) is not Double", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:115 description:{@"requested doubleValue, but TRILevel contained type (%u) is not Double", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
     return 0.0;
   }
@@ -76,8 +76,8 @@
 
 - (BOOL)BOOLeanValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 10 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 10 || levelOneOfCase == 0)
   {
     wrapped = self->_wrapped;
 
@@ -86,8 +86,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:50 description:{@"requested BOOLeanValue, but TRILevel contained type (%u) is not Boolean", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:50 description:{@"requested BOOLeanValue, but TRILevel contained type (%u) is not Boolean", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
     return 0;
   }
@@ -95,8 +95,8 @@
 
 - (int64_t)longValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 13 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 13 || levelOneOfCase == 0)
   {
     wrapped = self->_wrapped;
 
@@ -105,8 +105,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:89 description:{@"requested longValue, but TRILevel contained type (%u) is not Long", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:89 description:{@"requested longValue, but TRILevel contained type (%u) is not Long", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
     return 0;
   }
@@ -114,56 +114,56 @@
 
 - (id)stringValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 11 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 11 || levelOneOfCase == 0)
   {
-    v7 = [(TRILevel *)self->_wrapped stringValue];
+    stringValue = [(TRILevel *)self->_wrapped stringValue];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:63 description:{@"requested stringValue, but TRILevel contained type (%u) is not String", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:63 description:{@"requested stringValue, but TRILevel contained type (%u) is not String", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
-    v7 = 0;
+    stringValue = 0;
   }
 
-  return v7;
+  return stringValue;
 }
 
-- (TRILevelChecked)initWithLevel:(id)a3
+- (TRILevelChecked)initWithLevel:(id)level
 {
-  v5 = a3;
+  levelCopy = level;
   v9.receiver = self;
   v9.super_class = TRILevelChecked;
   v6 = [(TRILevelChecked *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrapped, a3);
+    objc_storeStrong(&v6->_wrapped, level);
   }
 
   return v7;
 }
 
-+ (id)wrapLevel:(id)a3
++ (id)wrapLevel:(id)level
 {
-  v5 = a3;
-  if (!v5)
+  levelCopy = level;
+  if (!levelCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"TRILevelChecked.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"level"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"level"}];
   }
 
-  v6 = [[TRILevelChecked alloc] initWithLevel:v5];
+  v6 = [[TRILevelChecked alloc] initWithLevel:levelCopy];
 
   return v6;
 }
 
 - (int)intValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 12 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 12 || levelOneOfCase == 0)
   {
     wrapped = self->_wrapped;
 
@@ -172,8 +172,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:76 description:{@"requested intValue, but TRILevel contained type (%u) is not Int", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:76 description:{@"requested intValue, but TRILevel contained type (%u) is not Int", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
     return 0;
   }
@@ -181,8 +181,8 @@
 
 - (float)floatValue
 {
-  v4 = [(TRILevel *)self->_wrapped levelOneOfCase];
-  if (v4 == 14 || v4 == 0)
+  levelOneOfCase = [(TRILevel *)self->_wrapped levelOneOfCase];
+  if (levelOneOfCase == 14 || levelOneOfCase == 0)
   {
     wrapped = self->_wrapped;
 
@@ -191,8 +191,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:102 description:{@"requested floatValue, but TRILevel contained type (%u) is not Float", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:102 description:{@"requested floatValue, but TRILevel contained type (%u) is not Float", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
     return 0.0;
   }
@@ -204,18 +204,18 @@
 {
   if (([(TRILevel *)self->_wrapped levelOneOfCase]| 0x10) == 0x10)
   {
-    v4 = [(TRILevel *)self->_wrapped binaryValue];
+    binaryValue = [(TRILevel *)self->_wrapped binaryValue];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:128 description:{@"requested binaryValue, but TRILevel contained type (%u) is not Binary", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRILevelChecked.m" lineNumber:128 description:{@"requested binaryValue, but TRILevel contained type (%u) is not Binary", -[TRILevel levelOneOfCase](self->_wrapped, "levelOneOfCase")}];
 
-    v4 = 0;
+    binaryValue = 0;
   }
 
-  return v4;
+  return binaryValue;
 }
 
 - (id)description

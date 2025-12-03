@@ -1,34 +1,34 @@
 @interface HUMediaSystemEditorUtilities
-+ (BOOL)wouldPairingAccessoriesNecessitateConfiguration:(id)a3;
++ (BOOL)wouldPairingAccessoriesNecessitateConfiguration:(id)configuration;
 @end
 
 @implementation HUMediaSystemEditorUtilities
 
-+ (BOOL)wouldPairingAccessoriesNecessitateConfiguration:(id)a3
++ (BOOL)wouldPairingAccessoriesNecessitateConfiguration:(id)configuration
 {
-  v3 = a3;
-  if ([v3 na_any:&__block_literal_global_215])
+  configurationCopy = configuration;
+  if ([configurationCopy na_any:&__block_literal_global_215])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [v3 anyObject];
+    anyObject = [configurationCopy anyObject];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __80__HUMediaSystemEditorUtilities_wouldPairingAccessoriesNecessitateConfiguration___block_invoke_2;
     v10[3] = &unk_277DB8EC0;
-    v6 = v5;
+    v6 = anyObject;
     v11 = v6;
-    if ([v3 na_all:v10])
+    if ([configurationCopy na_all:v10])
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __80__HUMediaSystemEditorUtilities_wouldPairingAccessoriesNecessitateConfiguration___block_invoke_3;
       v8[3] = &unk_277DB8EC0;
       v9 = v6;
-      v4 = [v3 na_all:v8] ^ 1;
+      v4 = [configurationCopy na_all:v8] ^ 1;
     }
 
     else

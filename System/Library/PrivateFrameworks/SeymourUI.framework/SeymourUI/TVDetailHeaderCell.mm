@@ -1,10 +1,10 @@
 @interface TVDetailHeaderCell
 - (BOOL)canBecomeFocused;
 - (NSArray)accessibilityMediaTags;
-- (void)handleTappedButton:(id)a3;
+- (void)handleTappedButton:(id)button;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityMediaTags:(id)a3;
+- (void)setAccessibilityMediaTags:(id)tags;
 @end
 
 @implementation TVDetailHeaderCell
@@ -12,8 +12,8 @@
 - (BOOL)canBecomeFocused
 {
   v2 = *(self + OBJC_IVAR____TtC9SeymourUI18TVDetailHeaderCell_buttonStackView);
-  v3 = self;
-  v4 = [v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [v2 arrangedSubviews];
   sub_20B51C88C(0, &qword_27C762910);
   v5 = sub_20C13CC74();
 
@@ -32,21 +32,21 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B93AEDC();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B93B088();
 }
 
-- (void)handleTappedButton:(id)a3
+- (void)handleTappedButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_20B93CA14(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_20B93CA14(buttonCopy);
 }
 
 - (NSArray)accessibilityMediaTags
@@ -65,9 +65,9 @@
   return v2;
 }
 
-- (void)setAccessibilityMediaTags:(id)a3
+- (void)setAccessibilityMediaTags:(id)tags
 {
-  if (a3)
+  if (tags)
   {
     v4 = sub_20C13CC74();
   }

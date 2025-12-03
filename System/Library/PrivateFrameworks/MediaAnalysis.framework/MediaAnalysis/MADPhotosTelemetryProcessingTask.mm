@@ -1,8 +1,8 @@
 @interface MADPhotosTelemetryProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
-+ (void)updateProgressForPhotoLibrary:(id)a3 cancelBlock:(id)a4;
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
++ (void)updateProgressForPhotoLibrary:(id)library cancelBlock:(id)block;
 - (BOOL)isCancelled;
-- (MADPhotosTelemetryProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
+- (MADPhotosTelemetryProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
 - (int)_collectAndReportAnalysisProgress;
 - (int)_run;
 - (int)run;
@@ -12,26 +12,26 @@
 
 @implementation MADPhotosTelemetryProcessingTask
 
-- (MADPhotosTelemetryProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
+- (MADPhotosTelemetryProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = MADPhotosTelemetryProcessingTask;
   v15 = [(MADPhotosTelemetryProcessingTask *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibraries, a3);
-    v17 = objc_retainBlock(v12);
+    objc_storeStrong(&v15->_photoLibraries, libraries);
+    v17 = objc_retainBlock(handlerCopy);
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v17;
 
-    if (v13)
+    if (completionHandlerCopy)
     {
-      v19 = v13;
+      v19 = completionHandlerCopy;
     }
 
     else
@@ -43,9 +43,9 @@
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v20;
 
-    if (v14)
+    if (blockCopy)
     {
-      v22 = v14;
+      v22 = blockCopy;
     }
 
     else
@@ -61,13 +61,13 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 andProgressHandler:v10 andCompletionHandler:v11 andCancelBlock:v12];
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy andCancelBlock:blockCopy];
 
   return v13;
 }
@@ -156,12 +156,12 @@
   }
 }
 
-+ (void)updateProgressForPhotoLibrary:(id)a3 cancelBlock:(id)a4
++ (void)updateProgressForPhotoLibrary:(id)library cancelBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v5];
-  if ([v5 isSystemPhotoLibrary])
+  libraryCopy = library;
+  blockCopy = block;
+  v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  if ([libraryCopy isSystemPhotoLibrary])
   {
     v21 = 0u;
     v22 = 0u;
@@ -183,7 +183,7 @@ LABEL_4:
 
         v11 = *(*(&v19 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        if (v6 && v6[2](v6))
+        if (blockCopy && blockCopy[2](blockCopy))
         {
           if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
           {
@@ -200,9 +200,9 @@ LABEL_4:
           v16[1] = 3221225472;
           v16[2] = sub_1000584E0;
           v16[3] = &unk_1002842C8;
-          v17 = v6;
+          v17 = blockCopy;
           v14 = objc_retainBlock(v16);
-          +[MADProgressManager updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:](MADProgressManager, "updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:", [v11 intValue], v5, 1, v14);
+          +[MADProgressManager updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:](MADProgressManager, "updateProgressForTask:photoLibrary:reuseCachedValue:cancelOrExtendTimeoutBlock:", [v11 intValue], libraryCopy, 1, v14);
 
           v13 = 1;
         }
@@ -270,10 +270,10 @@ LABEL_7:
 
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
       {
-        v11 = [v8 photoLibraryURL];
-        v12 = [v11 path];
+        photoLibraryURL = [v8 photoLibraryURL];
+        path = [photoLibraryURL path];
         *buf = 138412290;
-        *v61 = v12;
+        *v61 = path;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Reporting analysis progress for PHPhotoLibrary (%@) ... ", buf, 0xCu);
       }
 
@@ -333,12 +333,12 @@ LABEL_35:
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v47))
           {
-            v16 = [v8 photoLibraryURL];
-            v17 = [v16 path];
+            photoLibraryURL2 = [v8 photoLibraryURL];
+            path2 = [photoLibraryURL2 path];
             *buf = 67109378;
             *v61 = PerAssetBucketDataToBiome;
             *&v61[4] = 2112;
-            *&v61[6] = v17;
+            *&v61[6] = path2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v47, "Error(%d) during daily reporting for lib %@", buf, 0x12u);
           }
 
@@ -364,10 +364,10 @@ LABEL_35:
       {
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
         {
-          v19 = [v8 photoLibraryURL];
-          v20 = [v19 path];
+          photoLibraryURL3 = [v8 photoLibraryURL];
+          path3 = [photoLibraryURL3 path];
           *buf = 138412290;
-          *v61 = v20;
+          *v61 = path3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Cancelled progress report for %@", buf, 0xCu);
         }
 
@@ -380,13 +380,13 @@ LABEL_35:
       {
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v46))
         {
-          v43 = [v18 error];
-          v21 = [v8 photoLibraryURL];
-          v22 = [v21 path];
+          error = [v18 error];
+          photoLibraryURL4 = [v8 photoLibraryURL];
+          path4 = [photoLibraryURL4 path];
           *buf = 67109378;
-          *v61 = v43;
+          *v61 = error;
           *&v61[4] = 2112;
-          *&v61[6] = v22;
+          *&v61[6] = path4;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v46, "Error(%d) during progress report for %@", buf, 0x12u);
         }
 
@@ -397,10 +397,10 @@ LABEL_35:
       {
         if (([v8 vcp_isSyndicationLibrary] & 1) == 0)
         {
-          v44 = [v8 vcp_visionCacheStorageDirectoryURL];
+          vcp_visionCacheStorageDirectoryURL = [v8 vcp_visionCacheStorageDirectoryURL];
           v23 = [VUWGallery alloc];
           v52 = 0;
-          v24 = [v23 initWithClient:0 path:v44 error:&v52];
+          v24 = [v23 initWithClient:0 path:vcp_visionCacheStorageDirectoryURL error:&v52];
           v41 = v52;
           v42 = v24;
           if (v24)
@@ -569,24 +569,24 @@ LABEL_80:
   v3 = +[NSDate now];
   v4 = +[VCPMADCoreAnalyticsManager sharedManager];
   [v4 accumulateInt64Value:1 forField:@"ProgressCheckStart" andEvent:@"com.apple.mediaanalysisd.TelemetryRunSession"];
-  v5 = [(MADPhotosTelemetryProcessingTask *)self _collectAndReportAnalysisProgress];
-  if (!v5)
+  _collectAndReportAnalysisProgress = [(MADPhotosTelemetryProcessingTask *)self _collectAndReportAnalysisProgress];
+  if (!_collectAndReportAnalysisProgress)
   {
     [v3 timeIntervalSinceNow];
     [v4 accumulateDoubleValue:@"ProgressCheckDuration" forField:@"com.apple.mediaanalysisd.TelemetryRunSession" andEvent:-v6];
   }
 
-  return v5;
+  return _collectAndReportAnalysisProgress;
 }
 
 - (int)run
 {
   atomic_store(1u, &self->_started);
-  v3 = [(MADPhotosTelemetryProcessingTask *)self _run];
-  v4 = v3;
-  if (v3 != -128)
+  _run = [(MADPhotosTelemetryProcessingTask *)self _run];
+  v4 = _run;
+  if (_run != -128)
   {
-    if (v3)
+    if (_run)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {

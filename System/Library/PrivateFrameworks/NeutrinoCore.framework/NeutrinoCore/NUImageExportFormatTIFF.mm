@@ -1,25 +1,25 @@
 @interface NUImageExportFormatTIFF
 - (NUImageExportFormatTIFF)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)pixelFormat;
-- (void)addImageDestinationOptionsToImageProperties:(id)a3;
+- (void)addImageDestinationOptionsToImageProperties:(id)properties;
 @end
 
 @implementation NUImageExportFormatTIFF
 
-- (void)addImageDestinationOptionsToImageProperties:(id)a3
+- (void)addImageDestinationOptionsToImageProperties:(id)properties
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  propertiesCopy = properties;
   v9 = [[v4 alloc] initWithCapacity:1];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_compression];
   [v9 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696DF10]];
 
   v7 = [v9 copy];
-  [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696DF28]];
+  [propertiesCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E696DF28]];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[NUImageExportFormatTIFF depth](self, "depth")}];
-  [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696D890]];
+  [propertiesCopy setObject:v8 forKeyedSubscript:*MEMORY[0x1E696D890]];
 }
 
 - (id)pixelFormat
@@ -36,9 +36,9 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     *(result + 2) = self->_pixelType;

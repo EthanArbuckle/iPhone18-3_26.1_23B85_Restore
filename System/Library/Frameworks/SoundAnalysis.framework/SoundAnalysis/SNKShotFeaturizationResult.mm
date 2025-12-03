@@ -1,6 +1,6 @@
 @interface SNKShotFeaturizationResult
 - (MLMultiArray)exemplar;
-- (void)setExemplar:(id)a3;
+- (void)setExemplar:(id)exemplar;
 @end
 
 @implementation SNKShotFeaturizationResult
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setExemplar:(id)a3
+- (void)setExemplar:(id)exemplar
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B3908(v4);
+  exemplarCopy = exemplar;
+  selfCopy = self;
+  sub_1C97B3908(exemplarCopy);
 }
 
 @end

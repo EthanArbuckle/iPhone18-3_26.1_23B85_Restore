@@ -1,12 +1,12 @@
 @interface SFOpenFileProviderItemCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFOpenFileProviderItemCommand)initWithCoder:(id)a3;
-- (SFOpenFileProviderItemCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFOpenFileProviderItemCommand)initWithCoder:(id)coder;
+- (SFOpenFileProviderItemCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFOpenFileProviderItemCommand
@@ -16,35 +16,35 @@
   v10.receiver = self;
   v10.super_class = SFOpenFileProviderItemCommand;
   v3 = [(SFCommand *)&v10 hash];
-  v4 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
-  v7 = v5 ^ [v6 hash];
+  coreSpotlightIdentifier = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+  v5 = [coreSpotlightIdentifier hash];
+  fileProviderIdentifier = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
+  v7 = v5 ^ [fileProviderIdentifier hash];
   v8 = v7 ^ [(SFOpenFileProviderItemCommand *)self shouldRevealFile];
 
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(SFOpenFileProviderItemCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFOpenFileProviderItemCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v23.receiver = self;
       v23.super_class = SFOpenFileProviderItemCommand;
-      if ([(SFCommand *)&v23 isEqual:v5])
+      if ([(SFCommand *)&v23 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-        v8 = [(SFOpenFileProviderItemCommand *)v6 coreSpotlightIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        coreSpotlightIdentifier = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+        coreSpotlightIdentifier2 = [(SFOpenFileProviderItemCommand *)v6 coreSpotlightIdentifier];
+        if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
         {
           LOBYTE(v11) = 0;
 LABEL_25:
@@ -52,47 +52,47 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v9 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-        if (v9)
+        coreSpotlightIdentifier3 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+        if (coreSpotlightIdentifier3)
         {
-          v10 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-          v3 = [(SFOpenFileProviderItemCommand *)v6 coreSpotlightIdentifier];
-          if (![v10 isEqual:v3])
+          coreSpotlightIdentifier4 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+          coreSpotlightIdentifier5 = [(SFOpenFileProviderItemCommand *)v6 coreSpotlightIdentifier];
+          if (![coreSpotlightIdentifier4 isEqual:coreSpotlightIdentifier5])
           {
             LOBYTE(v11) = 0;
             goto LABEL_23;
           }
 
-          v22 = v10;
+          v22 = coreSpotlightIdentifier4;
         }
 
-        v12 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
-        v13 = [(SFOpenFileProviderItemCommand *)v6 fileProviderIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        fileProviderIdentifier = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
+        fileProviderIdentifier2 = [(SFOpenFileProviderItemCommand *)v6 fileProviderIdentifier];
+        v14 = fileProviderIdentifier2;
+        if ((fileProviderIdentifier != 0) == (fileProviderIdentifier2 == 0))
         {
 
           LOBYTE(v11) = 0;
           goto LABEL_22;
         }
 
-        v15 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
-        if (v15)
+        fileProviderIdentifier3 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
+        if (fileProviderIdentifier3)
         {
-          v19 = v3;
-          v16 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
-          v20 = [(SFOpenFileProviderItemCommand *)v6 fileProviderIdentifier];
-          v21 = v16;
-          if (![v16 isEqual:?])
+          v19 = coreSpotlightIdentifier5;
+          fileProviderIdentifier4 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
+          fileProviderIdentifier5 = [(SFOpenFileProviderItemCommand *)v6 fileProviderIdentifier];
+          v21 = fileProviderIdentifier4;
+          if (![fileProviderIdentifier4 isEqual:?])
           {
             LOBYTE(v11) = 0;
-            v3 = v19;
+            coreSpotlightIdentifier5 = v19;
 LABEL_20:
 
 LABEL_21:
 LABEL_22:
-            v10 = v22;
-            if (!v9)
+            coreSpotlightIdentifier4 = v22;
+            if (!coreSpotlightIdentifier3)
             {
 LABEL_24:
 
@@ -104,12 +104,12 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v3 = v19;
+          coreSpotlightIdentifier5 = v19;
         }
 
-        v17 = [(SFOpenFileProviderItemCommand *)self shouldRevealFile];
-        v11 = v17 ^ [(SFOpenFileProviderItemCommand *)v6 shouldRevealFile]^ 1;
-        if (!v15)
+        shouldRevealFile = [(SFOpenFileProviderItemCommand *)self shouldRevealFile];
+        v11 = shouldRevealFile ^ [(SFOpenFileProviderItemCommand *)v6 shouldRevealFile]^ 1;
+        if (!fileProviderIdentifier3)
         {
           goto LABEL_21;
         }
@@ -126,17 +126,17 @@ LABEL_26:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFOpenFileProviderItemCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  coreSpotlightIdentifier = [(SFOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+  v6 = [coreSpotlightIdentifier copy];
   [v4 setCoreSpotlightIdentifier:v6];
 
-  v7 = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
-  v8 = [v7 copy];
+  fileProviderIdentifier = [(SFOpenFileProviderItemCommand *)self fileProviderIdentifier];
+  v8 = [fileProviderIdentifier copy];
   [v4 setFileProviderIdentifier:v8];
 
   [v4 setShouldRevealFile:{-[SFOpenFileProviderItemCommand shouldRevealFile](self, "shouldRevealFile")}];
@@ -146,87 +146,87 @@ LABEL_26:
 - (NSData)jsonData
 {
   v2 = [[_SFPBOpenFileProviderItemCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenFileProviderItemCommand *)v2 jsonData];
+  jsonData = [(_SFPBOpenFileProviderItemCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBOpenFileProviderItemCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenFileProviderItemCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBOpenFileProviderItemCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFOpenFileProviderItemCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFOpenFileProviderItemCommand)initWithCoder:(id)a3
+- (SFOpenFileProviderItemCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFOpenFileProviderItemCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 coreSpotlightIdentifier];
-    [(SFOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:v9];
+    coreSpotlightIdentifier = [(SFCommand *)v8 coreSpotlightIdentifier];
+    [(SFOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier];
 
-    v10 = [(SFCommand *)v8 fileProviderIdentifier];
-    [(SFOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:v10];
+    fileProviderIdentifier = [(SFCommand *)v8 fileProviderIdentifier];
+    [(SFOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:fileProviderIdentifier];
 
     [(SFOpenFileProviderItemCommand *)v5 setShouldRevealFile:[(SFCommand *)v8 shouldRevealFile]];
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFOpenFileProviderItemCommand)initWithProtobuf:(id)a3
+- (SFOpenFileProviderItemCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFOpenFileProviderItemCommand;
   v5 = [(SFOpenFileProviderItemCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [protobufCopy coreSpotlightIdentifier];
 
-    if (v6)
+    if (coreSpotlightIdentifier)
     {
-      v7 = [v4 coreSpotlightIdentifier];
-      [(SFOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:v7];
+      coreSpotlightIdentifier2 = [protobufCopy coreSpotlightIdentifier];
+      [(SFOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
-    v8 = [v4 fileProviderIdentifier];
+    fileProviderIdentifier = [protobufCopy fileProviderIdentifier];
 
-    if (v8)
+    if (fileProviderIdentifier)
     {
-      v9 = [v4 fileProviderIdentifier];
-      [(SFOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:v9];
+      fileProviderIdentifier2 = [protobufCopy fileProviderIdentifier];
+      [(SFOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:fileProviderIdentifier2];
     }
 
-    if ([v4 shouldRevealFile])
+    if ([protobufCopy shouldRevealFile])
     {
-      -[SFOpenFileProviderItemCommand setShouldRevealFile:](v5, "setShouldRevealFile:", [v4 shouldRevealFile]);
+      -[SFOpenFileProviderItemCommand setShouldRevealFile:](v5, "setShouldRevealFile:", [protobufCopy shouldRevealFile]);
     }
 
     v10 = v5;

@@ -1,28 +1,28 @@
 @interface IOGPUMetalIndirectArgumentEncoder
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation IOGPUMetalIndirectArgumentEncoder
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
-  v6 = [a3 privateICBuffer];
+  privateICBuffer = [buffer privateICBuffer];
 
-  [(IOGPUMetalIndirectArgumentEncoder *)self setBuffer:v6 offset:0 atIndex:a4];
+  [(IOGPUMetalIndirectArgumentEncoder *)self setBuffer:privateICBuffer offset:0 atIndex:index];
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *buffers++;
       -[IOGPUMetalIndirectArgumentEncoder setBuffer:offset:atIndex:](self, "setBuffer:offset:atIndex:", [v8 privateICBuffer], 0, location++);
       --length;
     }
@@ -31,13 +31,13 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (([(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [a3 visibleFunctionTable];
+    visibleFunctionTable = [table visibleFunctionTable];
 
-    [(IOGPUMetalIndirectArgumentEncoder *)self setVisibleFunctionTable:v8 atBufferIndex:a4];
+    [(IOGPUMetalIndirectArgumentEncoder *)self setVisibleFunctionTable:visibleFunctionTable atBufferIndex:index];
   }
 
   else
@@ -47,10 +47,10 @@
   }
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
   if (([(MTLDevice *)[(_MTLIndirectArgumentEncoder *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
@@ -60,7 +60,7 @@
       v10 = length;
       do
       {
-        v11 = *a3++;
+        v11 = *tables++;
         *v9++ = [v11 visibleFunctionTable];
         --v10;
       }

@@ -5,8 +5,8 @@
 - (BOOL)preflightClientAllowed;
 - (BOOL)retryIfLocked;
 - (BOOL)skipIfUnchanged;
-- (MCMCommandSetDataProtection)initWithContainerIdentity:(id)a3 thirdParty:(BOOL)a4 dataProtectionClass:(int)a5 retryIfLocked:(BOOL)a6 skipIfUnchanged:(BOOL)a7 context:(id)a8 resultPromise:(id)a9;
-- (MCMCommandSetDataProtection)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandSetDataProtection)initWithContainerIdentity:(id)identity thirdParty:(BOOL)party dataProtectionClass:(int)class retryIfLocked:(BOOL)locked skipIfUnchanged:(BOOL)unchanged context:(id)context resultPromise:(id)promise;
+- (MCMCommandSetDataProtection)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMContainerIdentity)containerIdentity;
 - (int)dataProtectionClass;
 - (void)execute;
@@ -58,20 +58,20 @@
 {
   v53 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommandSetDataProtection *)self containerIdentity];
-  v5 = [(MCMCommand *)self resultPromise];
+  containerIdentity = [(MCMCommandSetDataProtection *)self containerIdentity];
+  resultPromise = [(MCMCommand *)self resultPromise];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __38__MCMCommandSetDataProtection_execute__block_invoke;
   aBlock[3] = &unk_1E86B0AA8;
   aBlock[4] = self;
-  v6 = v4;
+  v6 = containerIdentity;
   v45 = v6;
-  v7 = v5;
+  v7 = resultPromise;
   v46 = v7;
   v35 = _Block_copy(aBlock);
-  v8 = [v6 containerClass];
-  if (v8 > 0xB || ((1 << v8) & 0xED4) == 0 || (v9 = [v6 containerClass], v9 == 13) || v9 == 7)
+  containerClass = [v6 containerClass];
+  if (containerClass > 0xB || ((1 << containerClass) & 0xED4) == 0 || (v9 = [v6 containerClass], v9 == 13) || v9 == 7)
   {
     v10 = [[MCMError alloc] initWithErrorType:11 category:3];
     v11 = [[MCMResultBase alloc] initWithError:v10];
@@ -82,10 +82,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v18 = [(MCMCommand *)self context];
-  v19 = [v18 containerCache];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
   v43 = 0;
-  v12 = [v19 entryForContainerIdentity:v6 error:&v43];
+  v12 = [containerCache entryForContainerIdentity:v6 error:&v43];
   v10 = v43;
 
   if (!v12)
@@ -122,10 +122,10 @@ LABEL_19:
 
   if (v22)
   {
-    v33 = [(MCMCommand *)self context];
-    v23 = [v33 containerCache];
+    context2 = [(MCMCommand *)self context];
+    containerCache2 = [context2 containerCache];
     v40 = v10;
-    v24 = [v23 addContainerMetadata:v13 error:&v40];
+    v24 = [containerCache2 addContainerMetadata:v13 error:&v40];
     v34 = v40;
 
     v25 = v24;
@@ -134,12 +134,12 @@ LABEL_19:
       v26 = container_log_handle_for_category();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v31 = [v13 identifier];
-        v32 = [v13 containerClass];
+        identifier = [v13 identifier];
+        containerClass2 = [v13 containerClass];
         *buf = 138412802;
-        v48 = v31;
+        v48 = identifier;
         v49 = 2048;
-        v50 = v32;
+        v50 = containerClass2;
         v51 = 2112;
         v52 = v34;
         _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Could not update metadata in cache when asked to change data protection on [%@(%llu)]: %@", buf, 0x20u);
@@ -153,7 +153,7 @@ LABEL_19:
     block[3] = &unk_1E86B0AD0;
     v13 = v13;
     v37 = v13;
-    v38 = self;
+    selfCopy = self;
     v39 = v35;
     dispatch_async(v27, block);
 
@@ -167,12 +167,12 @@ LABEL_19:
     v28 = container_log_handle_for_category();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v13 identifier];
-      v30 = [v13 containerClass];
+      identifier2 = [v13 identifier];
+      containerClass3 = [v13 containerClass];
       *buf = 138412802;
-      v48 = v29;
+      v48 = identifier2;
       v49 = 2048;
-      v50 = v30;
+      v50 = containerClass3;
       v51 = 2112;
       v52 = v10;
       _os_log_error_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_ERROR, "Could not save metadata when asked to change data protection on [%@(%llu)]: %@", buf, 0x20u);
@@ -192,8 +192,8 @@ LABEL_7:
 
   if (v11)
   {
-    v16 = [(MCMCommand *)self resultPromise];
-    [v16 completeWithResult:v11];
+    resultPromise2 = [(MCMCommand *)self resultPromise];
+    [resultPromise2 completeWithResult:v11];
   }
 
   objc_autoreleasePoolPop(v3);
@@ -270,51 +270,51 @@ void __38__MCMCommandSetDataProtection_execute__block_invoke_4(void *a1)
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToSetDataProtection];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToSetDataProtection = [clientIdentity isAllowedToSetDataProtection];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToSetDataProtection;
 }
 
-- (MCMCommandSetDataProtection)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandSetDataProtection)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandSetDataProtection;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 containerIdentity];
+    containerIdentity = [messageCopy containerIdentity];
     v11 = *(v9 + 6);
-    *(v9 + 6) = v10;
+    *(v9 + 6) = containerIdentity;
 
-    v9[40] = [v8 isThirdParty];
-    *(v9 + 11) = [v8 dataProtectionClass];
-    *(v9 + 41) = [v8 retryIfLocked];
+    v9[40] = [messageCopy isThirdParty];
+    *(v9 + 11) = [messageCopy dataProtectionClass];
+    *(v9 + 41) = [messageCopy retryIfLocked];
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (MCMCommandSetDataProtection)initWithContainerIdentity:(id)a3 thirdParty:(BOOL)a4 dataProtectionClass:(int)a5 retryIfLocked:(BOOL)a6 skipIfUnchanged:(BOOL)a7 context:(id)a8 resultPromise:(id)a9
+- (MCMCommandSetDataProtection)initWithContainerIdentity:(id)identity thirdParty:(BOOL)party dataProtectionClass:(int)class retryIfLocked:(BOOL)locked skipIfUnchanged:(BOOL)unchanged context:(id)context resultPromise:(id)promise
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  identityCopy = identity;
   v21.receiver = self;
   v21.super_class = MCMCommandSetDataProtection;
-  v17 = [(MCMCommand *)&v21 initWithContext:a8 resultPromise:a9];
+  v17 = [(MCMCommand *)&v21 initWithContext:context resultPromise:promise];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_containerIdentity, a3);
-    v18->_thirdParty = a4;
-    v18->_dataProtectionClass = a5;
-    v18->_retryIfLocked = a6;
-    v18->_skipIfUnchanged = a7;
+    objc_storeStrong(&v17->_containerIdentity, identity);
+    v18->_thirdParty = party;
+    v18->_dataProtectionClass = class;
+    v18->_retryIfLocked = locked;
+    v18->_skipIfUnchanged = unchanged;
   }
 
   v19 = *MEMORY[0x1E69E9840];

@@ -25,7 +25,7 @@
         _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "ATXContextActionIdentifier: skipping recent topic: %@, %@", &v18, 0x16u);
       }
 
-      v11 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -39,8 +39,8 @@
         v15 = [v14 hash];
         if (-[NSObject length](v10, "length") && [v12 length] && -[NSObject length](v13, "length") && v15)
         {
-          a1 = [a1 initWithContext:v10 subType:v13 instanceIdentifierInteger:v15];
-          v11 = a1;
+          self = [self initWithContext:v10 subType:v13 instanceIdentifierInteger:v15];
+          selfCopy = self;
         }
 
         else
@@ -59,7 +59,7 @@
             _os_log_debug_impl(&dword_1BF549000, v16, OS_LOG_TYPE_DEBUG, "ATXContextActionIdentifier: expected component missing: %@, %@, %@, %@", &v18, 0x2Au);
           }
 
-          v11 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -71,17 +71,17 @@
           [(ATXContextActionIdentifier(Topic) *)v8 initWithTopic:v6 sectionBundleIdentifier:v13];
         }
 
-        v11 = 0;
+        selfCopy = 0;
       }
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)initWithTopic:()Topic sectionBundleIdentifier:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

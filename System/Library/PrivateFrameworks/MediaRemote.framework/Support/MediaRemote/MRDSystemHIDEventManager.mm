@@ -1,7 +1,7 @@
 @interface MRDSystemHIDEventManager
 - (MRDSystemHIDEventManager)init;
 - (void)dealloc;
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3;
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation MRDSystemHIDEventManager
@@ -33,16 +33,16 @@
   [(MRDSystemHIDEventManager *)&v3 dealloc];
 }
 
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event
 {
-  CFRetain(a3);
+  CFRetain(event);
   serialQueue = self->_serialQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006B7A4;
   v6[3] = &unk_1004B7650;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = event;
   dispatch_async(serialQueue, v6);
 }
 

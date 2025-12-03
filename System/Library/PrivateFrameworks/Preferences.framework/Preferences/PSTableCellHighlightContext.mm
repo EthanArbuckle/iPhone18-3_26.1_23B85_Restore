@@ -1,19 +1,19 @@
 @interface PSTableCellHighlightContext
-+ (PSTableCellHighlightContext)contextWithCell:(id)a3;
++ (PSTableCellHighlightContext)contextWithCell:(id)cell;
 - (UITableViewCell)cell;
 - (void)_killTimer;
 - (void)_timerFired;
 - (void)dealloc;
-- (void)performHighlightForDuration:(double)a3 animateUnhighlight:(BOOL)a4;
+- (void)performHighlightForDuration:(double)duration animateUnhighlight:(BOOL)unhighlight;
 @end
 
 @implementation PSTableCellHighlightContext
 
-+ (PSTableCellHighlightContext)contextWithCell:(id)a3
++ (PSTableCellHighlightContext)contextWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setCell:v4];
+  cellCopy = cell;
+  v5 = objc_alloc_init(self);
+  [v5 setCell:cellCopy];
 
   return v5;
 }
@@ -26,10 +26,10 @@
   [(PSTableCellHighlightContext *)&v3 dealloc];
 }
 
-- (void)performHighlightForDuration:(double)a3 animateUnhighlight:(BOOL)a4
+- (void)performHighlightForDuration:(double)duration animateUnhighlight:(BOOL)unhighlight
 {
   [(PSTableCellHighlightContext *)self _killTimer];
-  self->_animateUnhighlight = a4;
+  self->_animateUnhighlight = unhighlight;
   WeakRetained = objc_loadWeakRetained(&self->_cell);
   self->_originalSelectionStyle = [WeakRetained selectionStyle];
 
@@ -40,7 +40,7 @@
   v9 = objc_loadWeakRetained(&self->_cell);
   [v9 setHighlighted:1 animated:0];
 
-  v10 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__timerFired selector:0 userInfo:0 repeats:a3];
+  v10 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__timerFired selector:0 userInfo:0 repeats:duration];
   timer = self->_timer;
   self->_timer = v10;
 }

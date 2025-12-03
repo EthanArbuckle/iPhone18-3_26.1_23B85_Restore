@@ -1,27 +1,27 @@
 @interface HKHRCardioFitnessAnalyticsClientSignalSource
-- (HKHRCardioFitnessAnalyticsClientSignalSource)initWithHealthStore:(id)a3;
-- (id)biologicalSexStringWithError:(id *)a3;
-- (int64_t)bucketedAgeWithError:(id *)a3;
+- (HKHRCardioFitnessAnalyticsClientSignalSource)initWithHealthStore:(id)store;
+- (id)biologicalSexStringWithError:(id *)error;
+- (int64_t)bucketedAgeWithError:(id *)error;
 @end
 
 @implementation HKHRCardioFitnessAnalyticsClientSignalSource
 
-- (HKHRCardioFitnessAnalyticsClientSignalSource)initWithHealthStore:(id)a3
+- (HKHRCardioFitnessAnalyticsClientSignalSource)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = HKHRCardioFitnessAnalyticsClientSignalSource;
   v6 = [(HKHRCardioFitnessAnalyticsClientSignalSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
   }
 
   return v7;
 }
 
-- (int64_t)bucketedAgeWithError:(id *)a3
+- (int64_t)bucketedAgeWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   healthStore = self->_healthStore;
@@ -37,10 +37,10 @@
       [HKHRCardioFitnessAnalyticsClientSignalSource bucketedAgeWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -60,7 +60,7 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228942000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: No date of birth components, returning invalid value", buf, 0xCu);
     }
 
@@ -74,7 +74,7 @@ LABEL_13:
   return v10;
 }
 
-- (id)biologicalSexStringWithError:(id *)a3
+- (id)biologicalSexStringWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   healthStore = self->_healthStore;
@@ -90,11 +90,11 @@ LABEL_13:
       [HKHRCardioFitnessAnalyticsClientSignalSource biologicalSexStringWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v9 = v7;
-      v10 = 0;
-      *a3 = v7;
+      biologicalSex = 0;
+      *error = v7;
       goto LABEL_13;
     }
 
@@ -105,7 +105,7 @@ LABEL_13:
   {
     if (v6)
     {
-      v10 = [v6 biologicalSex];
+      biologicalSex = [v6 biologicalSex];
       goto LABEL_13;
     }
 
@@ -114,14 +114,14 @@ LABEL_13:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228942000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: No biological sex object, returning value for not set", buf, 0xCu);
     }
   }
 
-  v10 = 0;
+  biologicalSex = 0;
 LABEL_13:
-  v12 = [(HKHRCardioFitnessAnalyticsSignalSource *)self biologicalSexStringForBiologicalSex:v10];
+  v12 = [(HKHRCardioFitnessAnalyticsSignalSource *)self biologicalSexStringForBiologicalSex:biologicalSex];
 
   v13 = *MEMORY[0x277D85DE8];
 

@@ -1,8 +1,8 @@
 @interface HAPMetadataService
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataService)initWithName:(id)a3 uuid:(id)a4 description:(id)a5 mandatoryChrTypes:(id)a6 properties:(id)a7 linkedServices:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataService)initWithName:(id)name uuid:(id)uuid description:(id)description mandatoryChrTypes:(id)types properties:(id)properties linkedServices:(id)services;
 - (id)description;
-- (id)generateDictionary:(id)a3 metadata:(id)a4;
+- (id)generateDictionary:(id)dictionary metadata:(id)metadata;
 - (unint64_t)hash;
 - (void)dump;
 @end
@@ -11,37 +11,37 @@
 
 - (unint64_t)hash
 {
-  v21 = [(HAPMetadataService *)self name];
-  v3 = [v21 hash];
-  v4 = [(HAPMetadataService *)self uuidStr];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(HAPMetadataService *)self svcDescription];
-  v7 = [v6 hash];
-  v8 = [(HAPMetadataService *)self btleuuidStr];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(HAPMetadataService *)self properties];
-  v11 = [v10 hash];
-  v12 = [(HAPMetadataService *)self linkedServices];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(HAPMetadataService *)self mandatoryCharacteristics];
-  v15 = v9 ^ v13 ^ [v14 hash];
-  v16 = [(HAPMetadataService *)self optionalCharacteristics];
-  v17 = v15 ^ [v16 hash];
+  name = [(HAPMetadataService *)self name];
+  v3 = [name hash];
+  uuidStr = [(HAPMetadataService *)self uuidStr];
+  v5 = [uuidStr hash] ^ v3;
+  svcDescription = [(HAPMetadataService *)self svcDescription];
+  v7 = [svcDescription hash];
+  btleuuidStr = [(HAPMetadataService *)self btleuuidStr];
+  v9 = v5 ^ v7 ^ [btleuuidStr hash];
+  properties = [(HAPMetadataService *)self properties];
+  v11 = [properties hash];
+  linkedServices = [(HAPMetadataService *)self linkedServices];
+  v13 = v11 ^ [linkedServices hash];
+  mandatoryCharacteristics = [(HAPMetadataService *)self mandatoryCharacteristics];
+  v15 = v9 ^ v13 ^ [mandatoryCharacteristics hash];
+  optionalCharacteristics = [(HAPMetadataService *)self optionalCharacteristics];
+  v17 = v15 ^ [optionalCharacteristics hash];
   v18 = [MEMORY[0x277CCABB0] numberWithBool:{-[HAPMetadataService allowAssociatedService](self, "allowAssociatedService")}];
   v19 = [v18 hash];
 
   return v17 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self != v5)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
     }
 
     else
@@ -58,9 +58,9 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v8 = [(HAPMetadataService *)self name];
-    v9 = [(HAPMetadataService *)v7 name];
-    if (![v8 isEqualToString:v9])
+    name = [(HAPMetadataService *)self name];
+    name2 = [(HAPMetadataService *)v7 name];
+    if (![name isEqualToString:name2])
     {
       LOBYTE(v14) = 0;
 LABEL_63:
@@ -68,9 +68,9 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v10 = [(HAPMetadataService *)self uuidStr];
-    v11 = [(HAPMetadataService *)v7 uuidStr];
-    if (![v10 isEqualToString:v11])
+    uuidStr = [(HAPMetadataService *)self uuidStr];
+    uuidStr2 = [(HAPMetadataService *)v7 uuidStr];
+    if (![uuidStr isEqualToString:uuidStr2])
     {
       LOBYTE(v14) = 0;
 LABEL_62:
@@ -78,9 +78,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v12 = [(HAPMetadataService *)self svcDescription];
-    v13 = [(HAPMetadataService *)v7 svcDescription];
-    if (![v12 isEqualToString:v13])
+    svcDescription = [(HAPMetadataService *)self svcDescription];
+    svcDescription2 = [(HAPMetadataService *)v7 svcDescription];
+    if (![svcDescription isEqualToString:svcDescription2])
     {
       LOBYTE(v14) = 0;
 LABEL_61:
@@ -88,13 +88,13 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v43 = [(HAPMetadataService *)self btleuuidStr];
-    if (v43 || ([(HAPMetadataService *)v7 btleuuidStr], (v36 = objc_claimAutoreleasedReturnValue()) != 0))
+    btleuuidStr = [(HAPMetadataService *)self btleuuidStr];
+    if (btleuuidStr || ([(HAPMetadataService *)v7 btleuuidStr], (v36 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(HAPMetadataService *)self btleuuidStr];
-      v40 = [(HAPMetadataService *)v7 btleuuidStr];
-      v41 = v3;
-      if (![v3 isEqualToString:?])
+      btleuuidStr2 = [(HAPMetadataService *)self btleuuidStr];
+      btleuuidStr3 = [(HAPMetadataService *)v7 btleuuidStr];
+      v41 = btleuuidStr2;
+      if (![btleuuidStr2 isEqualToString:?])
       {
         LOBYTE(v14) = 0;
         goto LABEL_57;
@@ -109,13 +109,13 @@ LABEL_61:
       v39 = 0;
     }
 
-    v42 = [(HAPMetadataService *)self properties];
-    if (v42 || ([(HAPMetadataService *)v7 properties], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+    properties = [(HAPMetadataService *)self properties];
+    if (properties || ([(HAPMetadataService *)v7 properties], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(HAPMetadataService *)self properties];
+      btleuuidStr2 = [(HAPMetadataService *)self properties];
       [(HAPMetadataService *)v7 properties];
-      v37 = v38 = v3;
-      if (![v3 isEqualToNumber:v37])
+      v37 = v38 = btleuuidStr2;
+      if (![btleuuidStr2 isEqualToNumber:v37])
       {
         LOBYTE(v14) = 0;
         goto LABEL_54;
@@ -130,13 +130,13 @@ LABEL_61:
       v35 = 0;
     }
 
-    v34 = [(HAPMetadataService *)self linkedServices];
-    if (v34 || ([(HAPMetadataService *)v7 linkedServices], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    linkedServices = [(HAPMetadataService *)self linkedServices];
+    if (linkedServices || ([(HAPMetadataService *)v7 linkedServices], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(HAPMetadataService *)self linkedServices];
-      v32 = [(HAPMetadataService *)v7 linkedServices];
-      v33 = v3;
-      if (![v3 isEqualToArray:v32])
+      btleuuidStr2 = [(HAPMetadataService *)self linkedServices];
+      linkedServices2 = [(HAPMetadataService *)v7 linkedServices];
+      v33 = btleuuidStr2;
+      if (![btleuuidStr2 isEqualToArray:linkedServices2])
       {
         LOBYTE(v14) = 0;
         goto LABEL_51;
@@ -151,13 +151,13 @@ LABEL_61:
       v30 = 0;
     }
 
-    v29 = [(HAPMetadataService *)self mandatoryCharacteristics];
-    if (v29 || ([(HAPMetadataService *)v7 mandatoryCharacteristics], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    mandatoryCharacteristics = [(HAPMetadataService *)self mandatoryCharacteristics];
+    if (mandatoryCharacteristics || ([(HAPMetadataService *)v7 mandatoryCharacteristics], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(HAPMetadataService *)self mandatoryCharacteristics];
-      v27 = [(HAPMetadataService *)v7 mandatoryCharacteristics];
-      v28 = v3;
-      if (![v3 isEqual:v27])
+      btleuuidStr2 = [(HAPMetadataService *)self mandatoryCharacteristics];
+      mandatoryCharacteristics2 = [(HAPMetadataService *)v7 mandatoryCharacteristics];
+      v28 = btleuuidStr2;
+      if (![btleuuidStr2 isEqual:mandatoryCharacteristics2])
       {
         LOBYTE(v14) = 0;
         goto LABEL_48;
@@ -172,21 +172,21 @@ LABEL_61:
       v25 = 0;
     }
 
-    v24 = [(HAPMetadataService *)self optionalCharacteristics];
-    if (v24 || ([(HAPMetadataService *)v7 optionalCharacteristics], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+    optionalCharacteristics = [(HAPMetadataService *)self optionalCharacteristics];
+    if (optionalCharacteristics || ([(HAPMetadataService *)v7 optionalCharacteristics], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = [(HAPMetadataService *)self optionalCharacteristics];
-      v16 = [(HAPMetadataService *)v7 optionalCharacteristics];
-      v23 = v15;
-      v17 = v15;
-      v3 = v16;
-      if (![v17 isEqual:v16])
+      optionalCharacteristics2 = [(HAPMetadataService *)self optionalCharacteristics];
+      optionalCharacteristics3 = [(HAPMetadataService *)v7 optionalCharacteristics];
+      v23 = optionalCharacteristics2;
+      v17 = optionalCharacteristics2;
+      btleuuidStr2 = optionalCharacteristics3;
+      if (![v17 isEqual:optionalCharacteristics3])
       {
         LOBYTE(v14) = 0;
 LABEL_45:
 
 LABEL_46:
-        if (v24)
+        if (optionalCharacteristics)
         {
 
           if (!v25)
@@ -201,7 +201,7 @@ LABEL_46:
           if ((v25 & 1) == 0)
           {
 LABEL_49:
-            if (v29)
+            if (mandatoryCharacteristics)
             {
 
               if (!v30)
@@ -216,7 +216,7 @@ LABEL_49:
               if ((v30 & 1) == 0)
               {
 LABEL_52:
-                if (v34)
+                if (linkedServices)
                 {
 
                   if (!v35)
@@ -231,13 +231,13 @@ LABEL_52:
                   if ((v35 & 1) == 0)
                   {
 LABEL_55:
-                    if (v42)
+                    if (properties)
                     {
 
                       if (!v39)
                       {
 LABEL_58:
-                        if (!v43)
+                        if (!btleuuidStr)
                         {
                         }
 
@@ -286,8 +286,8 @@ LABEL_48:
       v21 = 0;
     }
 
-    v18 = [(HAPMetadataService *)self allowAssociatedService];
-    v14 = v18 ^ [(HAPMetadataService *)v7 allowAssociatedService]^ 1;
+    allowAssociatedService = [(HAPMetadataService *)self allowAssociatedService];
+    v14 = allowAssociatedService ^ [(HAPMetadataService *)v7 allowAssociatedService]^ 1;
     if (!v21)
     {
       goto LABEL_46;
@@ -310,17 +310,17 @@ LABEL_65:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPMetadataService *)self name];
-    v7 = [(HAPMetadataService *)self uuidStr];
-    v8 = [(HAPMetadataService *)self svcDescription];
+    name = [(HAPMetadataService *)self name];
+    uuidStr = [(HAPMetadataService *)self uuidStr];
+    svcDescription = [(HAPMetadataService *)self svcDescription];
     *buf = 138544130;
     v59 = v5;
     v60 = 2112;
-    v61 = v6;
+    v61 = name;
     v62 = 2112;
-    v63 = v7;
+    v63 = uuidStr;
     v64 = 2112;
-    v65 = v8;
+    v65 = svcDescription;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%{public}@HAPMetadataCharacteristic %@(%@):  description: %@", buf, 0x2Au);
   }
 
@@ -332,19 +332,19 @@ LABEL_65:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HAPMetadataService *)self allowAssociatedService];
+      allowAssociatedService = [(HAPMetadataService *)self allowAssociatedService];
       *buf = 138543618;
       v59 = v11;
       v60 = 2048;
-      v61 = v12;
+      v61 = allowAssociatedService;
       _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_INFO, "%{public}@AllowAssociatedService: %ld", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
   }
 
-  v13 = [(HAPMetadataService *)self mandatoryCharacteristics];
-  v14 = [v13 count];
+  mandatoryCharacteristics = [(HAPMetadataService *)self mandatoryCharacteristics];
+  v14 = [mandatoryCharacteristics count];
 
   if (v14)
   {
@@ -384,17 +384,17 @@ LABEL_65:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             v25 = HMFGetLogIdentifier();
-            v26 = [v22 name];
-            v27 = [v22 uuidStr];
-            v28 = [v22 chrDescription];
+            name2 = [v22 name];
+            uuidStr2 = [v22 uuidStr];
+            chrDescription = [v22 chrDescription];
             *buf = 138544130;
             v59 = v25;
             v60 = 2112;
-            v61 = v26;
+            v61 = name2;
             v62 = 2112;
-            v63 = v27;
+            v63 = uuidStr2;
             v64 = 2112;
-            v65 = v28;
+            v65 = chrDescription;
             _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@%@(%@) - %@", buf, 0x2Au);
           }
 
@@ -408,8 +408,8 @@ LABEL_65:
     }
   }
 
-  v29 = [(HAPMetadataService *)self optionalCharacteristics];
-  v30 = [v29 count];
+  optionalCharacteristics = [(HAPMetadataService *)self optionalCharacteristics];
+  v30 = [optionalCharacteristics count];
 
   if (v30)
   {
@@ -449,17 +449,17 @@ LABEL_65:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             v41 = HMFGetLogIdentifier();
-            v42 = [v38 name];
-            v43 = [v38 uuidStr];
-            v44 = [v38 chrDescription];
+            name3 = [v38 name];
+            uuidStr3 = [v38 uuidStr];
+            chrDescription2 = [v38 chrDescription];
             *buf = 138544130;
             v59 = v41;
             v60 = 2112;
-            v61 = v42;
+            v61 = name3;
             v62 = 2112;
-            v63 = v43;
+            v63 = uuidStr3;
             v64 = 2112;
-            v65 = v44;
+            v65 = chrDescription2;
             _os_log_impl(&dword_22AADC000, v40, OS_LOG_TYPE_INFO, "%{public}@%@(%@) - %@", buf, 0x2Au);
           }
 
@@ -479,13 +479,13 @@ LABEL_65:
 - (id)description
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(HAPMetadataService *)self mandatoryCharacteristics];
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  mandatoryCharacteristics = [(HAPMetadataService *)self mandatoryCharacteristics];
+  v5 = [mandatoryCharacteristics countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
@@ -496,28 +496,28 @@ LABEL_65:
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mandatoryCharacteristics);
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v9 uuidStr];
-        [v3 appendFormat:@"%@(%@), ", v10, v11];
+        name = [v9 name];
+        uuidStr = [v9 uuidStr];
+        [string appendFormat:@"%@(%@), ", name, uuidStr];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v6 = [mandatoryCharacteristics countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [MEMORY[0x277CCAB68] string];
+  string2 = [MEMORY[0x277CCAB68] string];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(HAPMetadataService *)self optionalCharacteristics];
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  optionalCharacteristics = [(HAPMetadataService *)self optionalCharacteristics];
+  v14 = [optionalCharacteristics countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -528,64 +528,64 @@ LABEL_65:
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(optionalCharacteristics);
         }
 
         v18 = *(*(&v28 + 1) + 8 * j);
-        v19 = [v18 name];
-        v20 = [v18 uuidStr];
-        [v12 appendFormat:@"%@(%@), ", v19, v20];
+        name2 = [v18 name];
+        uuidStr2 = [v18 uuidStr];
+        [string2 appendFormat:@"%@(%@), ", name2, uuidStr2];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v15 = [optionalCharacteristics countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v15);
   }
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [(HAPMetadataService *)self name];
-  v23 = [(HAPMetadataService *)self uuidStr];
-  v24 = [(HAPMetadataService *)self svcDescription];
-  v25 = [v21 stringWithFormat:@"HAPMetadataService %@(%@) - %@ - mandatory %@, optional %@", v22, v23, v24, v3, v12];
+  name3 = [(HAPMetadataService *)self name];
+  uuidStr3 = [(HAPMetadataService *)self uuidStr];
+  svcDescription = [(HAPMetadataService *)self svcDescription];
+  v25 = [v21 stringWithFormat:@"HAPMetadataService %@(%@) - %@ - mandatory %@, optional %@", name3, uuidStr3, svcDescription, string, string2];
 
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-- (id)generateDictionary:(id)a3 metadata:(id)a4
+- (id)generateDictionary:(id)dictionary metadata:(id)metadata
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [(HAPMetadataService *)self uuidStr];
-  v32 = v6;
-  v10 = [HAPMetadata shortenHAPType:v9 baseUUIDSuffix:v6];
-  [v8 setObject:v10 forKeyedSubscript:@"ShortUUID"];
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uuidStr = [(HAPMetadataService *)self uuidStr];
+  v32 = dictionaryCopy;
+  v10 = [HAPMetadata shortenHAPType:uuidStr baseUUIDSuffix:dictionaryCopy];
+  [dictionary setObject:v10 forKeyedSubscript:@"ShortUUID"];
 
-  v11 = [(HAPMetadataService *)self svcDescription];
-  [v8 setObject:v11 forKeyedSubscript:@"DefaultDescription"];
+  svcDescription = [(HAPMetadataService *)self svcDescription];
+  [dictionary setObject:svcDescription forKeyedSubscript:@"DefaultDescription"];
 
-  [v8 setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
-  v12 = [(HAPMetadataService *)self btleuuidStr];
+  [dictionary setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
+  btleuuidStr = [(HAPMetadataService *)self btleuuidStr];
 
-  if (v12)
+  if (btleuuidStr)
   {
-    v13 = [(HAPMetadataService *)self btleuuidStr];
-    [v8 setObject:v13 forKeyedSubscript:@"BTLE_ShortUUID"];
+    btleuuidStr2 = [(HAPMetadataService *)self btleuuidStr];
+    [dictionary setObject:btleuuidStr2 forKeyedSubscript:@"BTLE_ShortUUID"];
   }
 
-  v33 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [MEMORY[0x277CBEB18] array];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = objc_autoreleasePoolPush();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v16 = [(HAPMetadataService *)self mandatoryCharacteristics];
-  v17 = [v16 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  mandatoryCharacteristics = [(HAPMetadataService *)self mandatoryCharacteristics];
+  v17 = [mandatoryCharacteristics countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v17)
   {
     v18 = v17;
@@ -596,37 +596,37 @@ LABEL_65:
       {
         if (*v39 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(mandatoryCharacteristics);
         }
 
-        v21 = [v7 characteristicUTIFromType:*(*(&v38 + 1) + 8 * i)];
+        v21 = [metadataCopy characteristicUTIFromType:*(*(&v38 + 1) + 8 * i)];
         if (v21)
         {
-          [v14 addObject:v21];
+          [array addObject:v21];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v18 = [mandatoryCharacteristics countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v18);
   }
 
   objc_autoreleasePoolPop(v15);
-  if ([v14 count])
+  if ([array count])
   {
-    [v33 setObject:v14 forKeyedSubscript:@"Required"];
+    [dictionary2 setObject:array forKeyedSubscript:@"Required"];
   }
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
 
   v23 = objc_autoreleasePoolPush();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v24 = [(HAPMetadataService *)self optionalCharacteristics];
-  v25 = [v24 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  optionalCharacteristics = [(HAPMetadataService *)self optionalCharacteristics];
+  v25 = [optionalCharacteristics countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v25)
   {
     v26 = v25;
@@ -637,74 +637,74 @@ LABEL_65:
       {
         if (*v35 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(optionalCharacteristics);
         }
 
-        v29 = [v7 characteristicUTIFromType:*(*(&v34 + 1) + 8 * j)];
+        v29 = [metadataCopy characteristicUTIFromType:*(*(&v34 + 1) + 8 * j)];
         if (v29)
         {
-          [v22 addObject:v29];
+          [array2 addObject:v29];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v26 = [optionalCharacteristics countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v26);
   }
 
   objc_autoreleasePoolPop(v23);
-  if ([v22 count])
+  if ([array2 count])
   {
-    [v33 setObject:v22 forKeyedSubscript:@"Optional"];
+    [dictionary2 setObject:array2 forKeyedSubscript:@"Optional"];
   }
 
-  if ([v33 count])
+  if ([dictionary2 count])
   {
-    [v8 setObject:v33 forKeyedSubscript:@"Characteristics"];
+    [dictionary setObject:dictionary2 forKeyedSubscript:@"Characteristics"];
   }
 
   if ([(HAPMetadataService *)self allowAssociatedService])
   {
-    [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"AllowAssociatedService"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"AllowAssociatedService"];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary;
 }
 
-- (HAPMetadataService)initWithName:(id)a3 uuid:(id)a4 description:(id)a5 mandatoryChrTypes:(id)a6 properties:(id)a7 linkedServices:(id)a8
+- (HAPMetadataService)initWithName:(id)name uuid:(id)uuid description:(id)description mandatoryChrTypes:(id)types properties:(id)properties linkedServices:(id)services
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  uuidCopy = uuid;
+  descriptionCopy = description;
+  typesCopy = types;
+  propertiesCopy = properties;
+  servicesCopy = services;
   v20 = 0;
-  if (v14 && v15 && v16)
+  if (nameCopy && uuidCopy && descriptionCopy)
   {
     v29.receiver = self;
     v29.super_class = HAPMetadataService;
     v20 = [(HAPMetadataService *)&v29 init];
     if (v20)
     {
-      v21 = [v14 copy];
+      v21 = [nameCopy copy];
       v22 = *(v20 + 2);
       *(v20 + 2) = v21;
 
-      v23 = [v15 copy];
+      v23 = [uuidCopy copy];
       v24 = *(v20 + 4);
       *(v20 + 4) = v23;
 
-      v25 = [v16 copy];
+      v25 = [descriptionCopy copy];
       v26 = *(v20 + 3);
       *(v20 + 3) = v25;
 
-      objc_storeStrong(v20 + 8, a6);
-      objc_storeStrong(v20 + 6, a7);
-      v27 = v19;
+      objc_storeStrong(v20 + 8, types);
+      objc_storeStrong(v20 + 6, properties);
+      v27 = servicesCopy;
       self = *(v20 + 7);
       *(v20 + 7) = v27;
     }

@@ -1,71 +1,71 @@
 @interface DEDController
 + (id)archivedClasses;
-- (BOOL)hasCompletionBlockWithIdentifier:(id)a3;
-- (BOOL)hasDevice:(id)a3;
-- (BOOL)hasRecentlyFinishedSessionWithIdentifier:(id)a3;
-- (BOOL)induceTimeOutIfNeededAndReturnCanProceedWithDevice:(id)a3 sessionId:(id)a4;
+- (BOOL)hasCompletionBlockWithIdentifier:(id)identifier;
+- (BOOL)hasDevice:(id)device;
+- (BOOL)hasRecentlyFinishedSessionWithIdentifier:(id)identifier;
+- (BOOL)induceTimeOutIfNeededAndReturnCanProceedWithDevice:(id)device sessionId:(id)id;
 - (DEDClientProtocol)clientDelegate;
 - (DEDController)init;
 - (DEDPairingProtocol)pairingDelegate;
 - (DEDWorkerProtocol)workerDelegate;
 - (OS_dispatch_queue)bugSessionCallbackQueue;
-- (id)_allKnownDevicesWithIdentifier:(id)a3;
-- (id)_deviceForIncomingDevice:(id)a3 needsReady:(BOOL)a4;
-- (id)_sharingDeviceForIncomingDevice:(id)a3;
-- (id)connector:(id)a3 needsXPCInboundForPid:(id)a4;
+- (id)_allKnownDevicesWithIdentifier:(id)identifier;
+- (id)_deviceForIncomingDevice:(id)device needsReady:(BOOL)ready;
+- (id)_sharingDeviceForIncomingDevice:(id)device;
+- (id)connector:(id)connector needsXPCInboundForPid:(id)pid;
 - (id)idsConnection;
 - (id)knownSessions;
-- (id)popDidStartSessionCompletionWithIdentifier:(id)a3;
-- (id)popSessionStartCompletionWithIdentifier:(id)a3;
-- (id)sessionForIdentifier:(id)a3;
+- (id)popDidStartSessionCompletionWithIdentifier:(id)identifier;
+- (id)popSessionStartCompletionWithIdentifier:(id)identifier;
+- (id)sessionForIdentifier:(id)identifier;
 - (id)sharingConnection;
-- (void)_didAbortSessionWithID:(id)a3;
-- (void)_timeOutSessionStartBlockWithIdentifier:(id)a3 targetDevice:(id)a4 timeout:(double)a5;
-- (void)abortSession:(id)a3;
-- (void)abortSession:(id)a3 withCompletion:(id)a4;
-- (void)addDevice:(id)a3;
-- (void)addDidStartSessionCompletion:(id)a3 withIdentifier:(id)a4;
-- (void)addSessionStartCompletion:(id)a3 withIdentifier:(id)a4 configuration:(id)a5 targetDevice:(id)a6;
+- (void)_didAbortSessionWithID:(id)d;
+- (void)_timeOutSessionStartBlockWithIdentifier:(id)identifier targetDevice:(id)device timeout:(double)timeout;
+- (void)abortSession:(id)session;
+- (void)abortSession:(id)session withCompletion:(id)completion;
+- (void)addDevice:(id)device;
+- (void)addDidStartSessionCompletion:(id)completion withIdentifier:(id)identifier;
+- (void)addSessionStartCompletion:(id)completion withIdentifier:(id)identifier configuration:(id)configuration targetDevice:(id)device;
 - (void)configureForDaemon;
-- (void)configureForSharing:(BOOL)a3;
-- (void)connector:(id)a3 didLooseConnectionToProcessWithPid:(int)a4;
-- (void)didFinishSessionWithIdentifier:(id)a3;
-- (void)didStartBugSessionWithInfo:(id)a3;
-- (void)discoverDevicesWithCompletion:(id)a3;
-- (void)forceRemoveNotificationOfType:(int64_t)a3 identifier:(id)a4 hostIdentifier:(id)a5;
-- (void)hasActiveSessionForIdentifier:(id)a3 completion:(id)a4;
-- (void)idsInbound_devicesChanged:(id)a3 completion:(id)a4;
-- (void)insertNewSession:(id)a3;
-- (void)listXPCConnections:(id)a3;
+- (void)configureForSharing:(BOOL)sharing;
+- (void)connector:(id)connector didLooseConnectionToProcessWithPid:(int)pid;
+- (void)didFinishSessionWithIdentifier:(id)identifier;
+- (void)didStartBugSessionWithInfo:(id)info;
+- (void)discoverDevicesWithCompletion:(id)completion;
+- (void)forceRemoveNotificationOfType:(int64_t)type identifier:(id)identifier hostIdentifier:(id)hostIdentifier;
+- (void)hasActiveSessionForIdentifier:(id)identifier completion:(id)completion;
+- (void)idsInbound_devicesChanged:(id)changed completion:(id)completion;
+- (void)insertNewSession:(id)session;
+- (void)listXPCConnections:(id)connections;
 - (void)logDeviceCounts;
-- (void)pingDaemonWithCompletion:(id)a3;
-- (void)purgeStaleSessions:(id)a3 completion:(id)a4;
-- (void)removeSessionWithIdentifier:(id)a3;
+- (void)pingDaemonWithCompletion:(id)completion;
+- (void)purgeStaleSessions:(id)sessions completion:(id)completion;
+- (void)removeSessionWithIdentifier:(id)identifier;
 - (void)reset;
-- (void)sharingInbound_promptPINForDevice:(id)a3 fromInbound:(id)a4;
-- (void)sharingInbound_successPINForDevice:(id)a3 fromInbound:(id)a4;
+- (void)sharingInbound_promptPINForDevice:(id)device fromInbound:(id)inbound;
+- (void)sharingInbound_successPINForDevice:(id)device fromInbound:(id)inbound;
 - (void)start;
-- (void)startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6 fromInbound:(id)a7;
-- (void)startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 target:(id)a5 completion:(id)a6;
-- (void)startPairSetupForDevice:(id)a3;
+- (void)startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target fromInbound:(id)inbound;
+- (void)startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration target:(id)target completion:(id)completion;
+- (void)startPairSetupForDevice:(id)device;
 - (void)stopDiscovery;
-- (void)tryPIN:(id)a3 forDevice:(id)a4;
+- (void)tryPIN:(id)n forDevice:(id)device;
 - (void)upgradeToClassCDataProtectionIfNeeded;
-- (void)xpcInbound_didDiscoverDevices:(id)a3;
-- (void)xpcInbound_discoverAllAvailableDevices:(id)a3;
-- (void)xpcInbound_forceRemoveNotificationOfType:(int64_t)a3 identifier:(id)a4 hostIdentifier:(id)a5;
-- (void)xpcInbound_gotDeviceUpdate:(id)a3;
-- (void)xpcInbound_hasActiveSession:(id)a3 fromInbound:(id)a4;
-- (void)xpcInbound_hasActiveSessionReply:(id)a3 isActive:(BOOL)a4;
-- (void)xpcInbound_listClientXPCConnectionsReply:(id)a3;
-- (void)xpcInbound_ping:(id)a3;
+- (void)xpcInbound_didDiscoverDevices:(id)devices;
+- (void)xpcInbound_discoverAllAvailableDevices:(id)devices;
+- (void)xpcInbound_forceRemoveNotificationOfType:(int64_t)type identifier:(id)identifier hostIdentifier:(id)hostIdentifier;
+- (void)xpcInbound_gotDeviceUpdate:(id)update;
+- (void)xpcInbound_hasActiveSession:(id)session fromInbound:(id)inbound;
+- (void)xpcInbound_hasActiveSessionReply:(id)reply isActive:(BOOL)active;
+- (void)xpcInbound_listClientXPCConnectionsReply:(id)reply;
+- (void)xpcInbound_ping:(id)inbound_ping;
 - (void)xpcInbound_pong;
-- (void)xpcInbound_promptPINForDevice:(id)a3;
-- (void)xpcInbound_startPairSetupForDevice:(id)a3 fromInbound:(id)a4;
-- (void)xpcInbound_stopDeviceDiscovery:(id)a3;
-- (void)xpcInbound_successPINForDevice:(id)a3;
-- (void)xpcInbound_tryPIN:(id)a3 forDevice:(id)a4 fromInbound:(id)a5;
-- (void)xpc_listClientXPCConnectionsFromInbound:(id)a3;
+- (void)xpcInbound_promptPINForDevice:(id)device;
+- (void)xpcInbound_startPairSetupForDevice:(id)device fromInbound:(id)inbound;
+- (void)xpcInbound_stopDeviceDiscovery:(id)discovery;
+- (void)xpcInbound_successPINForDevice:(id)device;
+- (void)xpcInbound_tryPIN:(id)n forDevice:(id)device fromInbound:(id)inbound;
+- (void)xpc_listClientXPCConnectionsFromInbound:(id)inbound;
 @end
 
 @implementation DEDController
@@ -98,9 +98,9 @@
     v3->_xpcConnector = 0;
 
     v12 = +[DEDConfiguration sharedInstance];
-    v13 = [v12 connectionType];
+    connectionType = [v12 connectionType];
 
-    if (v13 == 1)
+    if (connectionType == 1)
     {
       v14 = dispatch_queue_create("com.apple.diagnosticextensionsd.embedded-work-queue", 0);
     }
@@ -151,9 +151,9 @@
 
   else
   {
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 environment];
-    v6 = [v5 objectForKeyedSubscript:@"USE-DEBUG-SERVICE"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    v6 = [environment objectForKeyedSubscript:@"USE-DEBUG-SERVICE"];
 
     if (!v6)
     {
@@ -164,9 +164,9 @@
   [(DEDController *)self setUseIDS:0];
 }
 
-- (void)configureForSharing:(BOOL)a3
+- (void)configureForSharing:(BOOL)sharing
 {
-  if (a3)
+  if (sharing)
   {
     v4 = [(DEDController *)self log];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -276,18 +276,18 @@ void __22__DEDController_start__block_invoke(uint64_t a1, void *a2)
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-- (void)pingDaemonWithCompletion:(id)a3
+- (void)pingDaemonWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(DEDController *)self setPongBlock:v4];
+  completionCopy = completion;
+  [(DEDController *)self setPongBlock:completionCopy];
   objc_initWeak(&location, self);
-  v5 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DEDController_pingDaemonWithCompletion___block_invoke;
   v6[3] = &unk_278F65830;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(replyQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -301,9 +301,9 @@ void __42__DEDController_pingDaemonWithCompletion___block_invoke(uint64_t a1)
   [v2 xpc_ping];
 }
 
-- (void)discoverDevicesWithCompletion:(id)a3
+- (void)discoverDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,15 +311,15 @@ void __42__DEDController_pingDaemonWithCompletion___block_invoke(uint64_t a1)
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "started device discovery", buf, 2u);
   }
 
-  [(DEDController *)self setDevicesCompletion:v4];
+  [(DEDController *)self setDevicesCompletion:completionCopy];
   objc_initWeak(buf, self);
-  v6 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__DEDController_discoverDevicesWithCompletion___block_invoke;
   block[3] = &unk_278F65830;
   objc_copyWeak(&v8, buf);
-  dispatch_async(v6, block);
+  dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -344,13 +344,13 @@ void __47__DEDController_discoverDevicesWithCompletion___block_invoke(uint64_t a
 
   [(DEDController *)self setDevicesCompletion:0];
   objc_initWeak(buf, self);
-  v4 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__DEDController_stopDiscovery__block_invoke;
   block[3] = &unk_278F65830;
   objc_copyWeak(&v6, buf);
-  dispatch_async(v4, block);
+  dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -364,22 +364,22 @@ void __30__DEDController_stopDiscovery__block_invoke(uint64_t a1)
   [v2 xpc_stopDeviceDiscovery];
 }
 
-- (id)_allKnownDevicesWithIdentifier:(id)a3
+- (id)_allKnownDevicesWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DEDController *)v5 devices];
-  v7 = [v6 allValues];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devices = [(DEDController *)selfCopy devices];
+  allValues = [devices allValues];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__DEDController__allKnownDevicesWithIdentifier___block_invoke;
   v11[3] = &unk_278F65858;
-  v8 = v4;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = [v7 ded_selectItemsPassingTest:v11];
+  v9 = [allValues ded_selectItemsPassingTest:v11];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -411,33 +411,33 @@ uint64_t __48__DEDController__allKnownDevicesWithIdentifier___block_invoke(uint6
   return v7;
 }
 
-- (void)startPairSetupForDevice:(id)a3
+- (void)startPairSetupForDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 publicLogDescription];
+    publicLogDescription = [deviceCopy publicLogDescription];
     *buf = 136446466;
     v15 = "[DEDController startPairSetupForDevice:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = publicLogDescription;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  v7 = [(DEDController *)self _sharingDeviceForIncomingDevice:v4];
+  v7 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v7 transport] == 2)
   {
     objc_initWeak(buf, self);
-    v8 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__DEDController_startPairSetupForDevice___block_invoke;
     v11[3] = &unk_278F65880;
     objc_copyWeak(&v13, buf);
     v12 = v7;
-    dispatch_async(v8, v11);
+    dispatch_async(replyQueue, v11);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -463,35 +463,35 @@ void __41__DEDController_startPairSetupForDevice___block_invoke(uint64_t a1)
   [v3 xpc_startPairSetupForDevice:*(a1 + 32)];
 }
 
-- (void)tryPIN:(id)a3 forDevice:(id)a4
+- (void)tryPIN:(id)n forDevice:(id)device
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nCopy = n;
+  deviceCopy = device;
   v8 = [(DEDController *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 publicLogDescription];
+    publicLogDescription = [deviceCopy publicLogDescription];
     *buf = 136446466;
     v19 = "[DEDController tryPIN:forDevice:]";
     v20 = 2114;
-    v21 = v9;
+    v21 = publicLogDescription;
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  v10 = [(DEDController *)self _sharingDeviceForIncomingDevice:v7];
+  v10 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v10 transport] == 2)
   {
     objc_initWeak(buf, self);
-    v11 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__DEDController_tryPIN_forDevice___block_invoke;
     block[3] = &unk_278F658A8;
     objc_copyWeak(&v17, buf);
-    v15 = v6;
+    v15 = nCopy;
     v16 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(replyQueue, block);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -517,52 +517,52 @@ void __34__DEDController_tryPIN_forDevice___block_invoke(uint64_t a1)
   [v3 xpc_tryPIN:*(a1 + 32) forDevice:*(a1 + 40)];
 }
 
-- (id)_sharingDeviceForIncomingDevice:(id)a3
+- (id)_sharingDeviceForIncomingDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DEDController *)self _deviceForIncomingDevice:v4 needsReady:0];
+  deviceCopy = device;
+  v5 = [(DEDController *)self _deviceForIncomingDevice:deviceCopy needsReady:0];
   v6 = [(DEDController *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(DEDController *)v4 _sharingDeviceForIncomingDevice:v5, v6];
+    [(DEDController *)deviceCopy _sharingDeviceForIncomingDevice:v5, v6];
   }
 
   return v5;
 }
 
-- (id)_deviceForIncomingDevice:(id)a3 needsReady:(BOOL)a4
+- (id)_deviceForIncomingDevice:(id)device needsReady:(BOOL)ready
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(DEDController *)v7 devices];
-  v9 = [v6 hashingKey];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devices = [(DEDController *)selfCopy devices];
+  hashingKey = [deviceCopy hashingKey];
+  v10 = [devices objectForKeyedSubscript:hashingKey];
 
   if (!v10)
   {
-    v11 = [(DEDController *)v7 log];
+    v11 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "could not match device by transport-identifier, trying address", buf, 2u);
     }
 
-    v12 = [(DEDController *)v7 devices];
-    v13 = [v12 allValues];
+    devices2 = [(DEDController *)selfCopy devices];
+    allValues = [devices2 allValues];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __53__DEDController__deviceForIncomingDevice_needsReady___block_invoke;
     v25 = &unk_278F658D0;
-    v14 = v6;
+    v14 = deviceCopy;
     v26 = v14;
-    v27 = a4;
-    v10 = [v13 ded_findWithBlock:&v22];
+    readyCopy = ready;
+    v10 = [allValues ded_findWithBlock:&v22];
 
     if (v10)
     {
-      v15 = [(DEDController *)v7 log:v22];
+      v15 = [(DEDController *)selfCopy log:v22];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = [v14 description];
@@ -573,17 +573,17 @@ void __34__DEDController_tryPIN_forDevice___block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  v17 = [(DEDController *)v7 log];
+  v17 = [(DEDController *)selfCopy log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v6 publicLogSafeIdentifier];
-    v19 = [v10 publicLogSafeIdentifier];
+    publicLogSafeIdentifier = [deviceCopy publicLogSafeIdentifier];
+    publicLogSafeIdentifier2 = [v10 publicLogSafeIdentifier];
     *buf = 138543618;
-    v29 = v18;
+    v29 = publicLogSafeIdentifier;
     v30 = 2114;
-    v31 = v19;
+    v31 = publicLogSafeIdentifier2;
     _os_log_impl(&dword_248AD7000, v17, OS_LOG_TYPE_INFO, "device for incoming device %{public}@ -> %{public}@", buf, 0x16u);
   }
 
@@ -618,116 +618,116 @@ uint64_t __53__DEDController__deviceForIncomingDevice_needsReady___block_invoke(
   return v9 & 1;
 }
 
-- (BOOL)hasDevice:(id)a3
+- (BOOL)hasDevice:(id)device
 {
-  v3 = [(DEDController *)self _deviceForIncomingDevice:a3];
+  v3 = [(DEDController *)self _deviceForIncomingDevice:device];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 target:(id)a5 completion:(id)a6
+- (void)startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration target:(id)target completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  targetCopy = target;
+  completionCopy = completion;
   [(DEDController *)self logDeviceCounts];
   v14 = +[DEDDevice currentDevice];
   v15 = DEDSessionStartLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v14 name];
-    v18 = [v12 name];
-    v19 = [v12 address];
+    name = [v14 name];
+    name2 = [targetCopy name];
+    address = [targetCopy address];
     v20 = 136316162;
     v21 = "[DEDController startBugSessionWithIdentifier:configuration:target:completion:]";
     v22 = 2112;
-    v23 = v10;
+    v23 = identifierCopy;
     v24 = 2112;
-    v25 = v17;
+    v25 = name;
     v26 = 2112;
-    v27 = v18;
+    v27 = name2;
     v28 = 2112;
-    v29 = v19;
+    v29 = address;
     _os_log_debug_impl(&dword_248AD7000, v15, OS_LOG_TYPE_DEBUG, "%s %@:%@ -> %@ (%@)", &v20, 0x34u);
   }
 
-  if (v10 && v13)
+  if (identifierCopy && completionCopy)
   {
-    [(DEDController *)self addSessionStartCompletion:v13 withIdentifier:v10 configuration:v11 targetDevice:v12];
-    [(DEDController *)self startBugSessionWithIdentifier:v10 configuration:v11 caller:v14 target:v12 fromInbound:0];
+    [(DEDController *)self addSessionStartCompletion:completionCopy withIdentifier:identifierCopy configuration:configurationCopy targetDevice:targetCopy];
+    [(DEDController *)self startBugSessionWithIdentifier:identifierCopy configuration:configurationCopy caller:v14 target:targetCopy fromInbound:0];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sessionForIdentifier:(id)a3
+- (id)sessionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DEDController *)v5 sessions];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessions = [(DEDController *)selfCopy sessions];
+  v7 = [sessions objectForKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)insertNewSession:(id)a3
+- (void)insertNewSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DEDController *)v4 insertNewSession:v5];
+    [(DEDController *)sessionCopy insertNewSession:v5];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_alloc(MEMORY[0x277CBEB38]);
-  v8 = [(DEDController *)v6 sessions];
-  v9 = [v7 initWithDictionary:v8];
+  sessions = [(DEDController *)selfCopy sessions];
+  v9 = [v7 initWithDictionary:sessions];
 
-  v10 = [v4 identifier];
-  [v9 setObject:v4 forKeyedSubscript:v10];
+  identifier = [sessionCopy identifier];
+  [v9 setObject:sessionCopy forKeyedSubscript:identifier];
 
   v11 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v9];
-  [(DEDController *)v6 setSessions:v11];
+  [(DEDController *)selfCopy setSessions:v11];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeSessionWithIdentifier:(id)a3
+- (void)removeSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DEDController removeSessionWithIdentifier:];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_alloc(MEMORY[0x277CBEB38]);
-  v8 = [(DEDController *)v6 sessions];
-  v9 = [v7 initWithDictionary:v8];
+  sessions = [(DEDController *)selfCopy sessions];
+  v9 = [v7 initWithDictionary:sessions];
 
-  [v9 removeObjectForKey:v4];
+  [v9 removeObjectForKey:identifierCopy];
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
-  [(DEDController *)v6 setSessions:v10];
+  [(DEDController *)selfCopy setSessions:v10];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)knownSessions
 {
-  v2 = [(DEDController *)self sessions];
-  v3 = [v2 allKeys];
+  sessions = [(DEDController *)self sessions];
+  allKeys = [sessions allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (void)reset
@@ -745,10 +745,10 @@ uint64_t __53__DEDController__deviceForIncomingDevice_needsReady___block_invoke(
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(DEDController *)self sessions];
-  v5 = [v4 allValues];
+  sessions = [(DEDController *)self sessions];
+  allValues = [sessions allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -760,14 +760,14 @@ uint64_t __53__DEDController__deviceForIncomingDevice_needsReady___block_invoke(
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [(DEDController *)self abortSession:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -776,18 +776,18 @@ uint64_t __53__DEDController__deviceForIncomingDevice_needsReady___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listXPCConnections:(id)a3
+- (void)listXPCConnections:(id)connections
 {
-  v4 = a3;
-  [(DEDController *)self setXpcConnectionsCompletion:v4];
+  connectionsCopy = connections;
+  [(DEDController *)self setXpcConnectionsCompletion:connectionsCopy];
   objc_initWeak(&location, self);
-  v5 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__DEDController_listXPCConnections___block_invoke;
   v6[3] = &unk_278F65830;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(replyQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -801,21 +801,21 @@ void __36__DEDController_listXPCConnections___block_invoke(uint64_t a1)
   [v2 xpc_listClientXPCConnections];
 }
 
-- (void)abortSession:(id)a3 withCompletion:(id)a4
+- (void)abortSession:(id)session withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = [(DEDController *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [(DEDController *)v8 abortSession:v9 withCompletion:v10];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v11 = [(DEDController *)self didCancelCompletion];
+    didCancelCompletion = [(DEDController *)self didCancelCompletion];
 
-    if (v11)
+    if (didCancelCompletion)
     {
       v12 = [(DEDController *)self log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -825,14 +825,14 @@ void __36__DEDController_listXPCConnections___block_invoke(uint64_t a1)
       }
     }
 
-    [(DEDController *)self setDidCancelCompletion:v7];
+    [(DEDController *)self setDidCancelCompletion:completionCopy];
   }
 
-  v13 = [v6 identifier];
-  if (v13)
+  identifier = [sessionCopy identifier];
+  if (identifier)
   {
-    v14 = [(DEDController *)self sessions];
-    v15 = [v14 objectForKey:v13];
+    sessions = [(DEDController *)self sessions];
+    v15 = [sessions objectForKey:identifier];
 
     if (!v15)
     {
@@ -847,69 +847,69 @@ void __36__DEDController_listXPCConnections___block_invoke(uint64_t a1)
   }
 }
 
-- (void)abortSession:(id)a3
+- (void)abortSession:(id)session
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_INFO, "Aborting session %@", &v8, 0xCu);
   }
 
-  [(DEDController *)self abortSession:v4 withCompletion:0];
+  [(DEDController *)self abortSession:sessionCopy withCompletion:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didAbortSessionWithID:(id)a3
+- (void)_didAbortSessionWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(DEDController *)self didCancelCompletion];
+  dCopy = d;
+  didCancelCompletion = [(DEDController *)self didCancelCompletion];
 
-  if (v5)
+  if (didCancelCompletion)
   {
-    v6 = [(DEDController *)self didCancelCompletion];
-    v7 = [(DEDController *)self replyQueue];
+    didCancelCompletion2 = [(DEDController *)self didCancelCompletion];
+    replyQueue = [(DEDController *)self replyQueue];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __40__DEDController__didAbortSessionWithID___block_invoke;
     v12 = &unk_278F653F8;
-    v14 = v6;
-    v13 = v4;
-    v8 = v6;
-    dispatch_async(v7, &v9);
+    v14 = didCancelCompletion2;
+    v13 = dCopy;
+    v8 = didCancelCompletion2;
+    dispatch_async(replyQueue, &v9);
 
     [(DEDController *)self setDidCancelCompletion:0, v9, v10, v11, v12];
   }
 }
 
-- (void)hasActiveSessionForIdentifier:(id)a3 completion:(id)a4
+- (void)hasActiveSessionForIdentifier:(id)identifier completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(DEDController *)self setSessionExistsCompletion:v7];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  [(DEDController *)self setSessionExistsCompletion:completionCopy];
   v8 = [(DEDController *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "Retrieving active session: %{public}@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__DEDController_hasActiveSessionForIdentifier_completion___block_invoke;
   v12[3] = &unk_278F65880;
   objc_copyWeak(&v14, buf);
-  v13 = v6;
-  v10 = v6;
-  dispatch_async(v9, v12);
+  v13 = identifierCopy;
+  v10 = identifierCopy;
+  dispatch_async(replyQueue, v12);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -925,62 +925,62 @@ void __58__DEDController_hasActiveSessionForIdentifier_completion___block_invoke
   [v3 xpc_hasActiveSession:*(a1 + 32)];
 }
 
-- (BOOL)hasRecentlyFinishedSessionWithIdentifier:(id)a3
+- (BOOL)hasRecentlyFinishedSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDController *)self recentlyFinishedSessions];
+  identifierCopy = identifier;
+  recentlyFinishedSessions = [(DEDController *)self recentlyFinishedSessions];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__DEDController_hasRecentlyFinishedSessionWithIdentifier___block_invoke;
   v10[3] = &unk_278F658F8;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 ded_findWithBlock:v10];
+  v11 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [recentlyFinishedSessions ded_findWithBlock:v10];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (void)forceRemoveNotificationOfType:(int64_t)a3 identifier:(id)a4 hostIdentifier:(id)a5
+- (void)forceRemoveNotificationOfType:(int64_t)type identifier:(id)identifier hostIdentifier:(id)hostIdentifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  hostIdentifierCopy = hostIdentifier;
   v10 = [(DEDController *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (type > 3)
     {
       v11 = "Unknown";
     }
 
     else
     {
-      v11 = off_278F65B40[a3];
+      v11 = off_278F65B40[type];
     }
 
     *buf = 136446722;
     v21 = v11;
     v22 = 2114;
-    v23 = v8;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v9;
+    v25 = hostIdentifierCopy;
     _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_DEFAULT, "Force removing notification of type [%{public}s] identifier [%{public}@] app [%{public}@]", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  v12 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__DEDController_forceRemoveNotificationOfType_identifier_hostIdentifier___block_invoke;
   v16[3] = &unk_278F65920;
   objc_copyWeak(v19, buf);
-  v19[1] = a3;
-  v17 = v8;
-  v18 = v9;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v12, v16);
+  v19[1] = type;
+  v17 = identifierCopy;
+  v18 = hostIdentifierCopy;
+  v13 = hostIdentifierCopy;
+  v14 = identifierCopy;
+  dispatch_async(replyQueue, v16);
 
   objc_destroyWeak(v19);
   objc_destroyWeak(buf);
@@ -995,13 +995,13 @@ void __73__DEDController_forceRemoveNotificationOfType_identifier_hostIdentifier
   [v3 xpc_forceRemoveNotificationOfType:*(a1 + 56) identifier:*(a1 + 32) hostIdentifier:*(a1 + 40)];
 }
 
-- (void)connector:(id)a3 didLooseConnectionToProcessWithPid:(int)a4
+- (void)connector:(id)connector didLooseConnectionToProcessWithPid:(int)pid
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(DEDController *)self isDaemon];
+  isDaemon = [(DEDController *)self isDaemon];
   v7 = [(DEDController *)self log];
-  v8 = v7;
-  if (!v6)
+  sharingConnection = v7;
+  if (!isDaemon)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -1014,8 +1014,8 @@ void __73__DEDController_forceRemoveNotificationOfType_identifier_hostIdentifier
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109120;
-    v11[1] = a4;
-    _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "Daemon DED Controller lost connection to app with pid [%i]", v11, 8u);
+    v11[1] = pid;
+    _os_log_impl(&dword_248AD7000, sharingConnection, OS_LOG_TYPE_DEFAULT, "Daemon DED Controller lost connection to app with pid [%i]", v11, 8u);
   }
 
   if ([(DEDController *)self useSharing])
@@ -1027,46 +1027,46 @@ void __73__DEDController_forceRemoveNotificationOfType_identifier_hostIdentifier
       _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "Daemon DED Controller will stop discovery", v11, 2u);
     }
 
-    v8 = [(DEDController *)self sharingConnection];
-    [v8 stopDiscovery];
+    sharingConnection = [(DEDController *)self sharingConnection];
+    [sharingConnection stopDiscovery];
 LABEL_10:
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)connector:(id)a3 needsXPCInboundForPid:(id)a4
+- (id)connector:(id)connector needsXPCInboundForPid:(id)pid
 {
-  v5 = a4;
-  v6 = [[DEDXPCInbound alloc] initWithDelegate:self senderPid:v5];
+  pidCopy = pid;
+  v6 = [[DEDXPCInbound alloc] initWithDelegate:self senderPid:pidCopy];
 
   return v6;
 }
 
-- (void)xpcInbound_forceRemoveNotificationOfType:(int64_t)a3 identifier:(id)a4 hostIdentifier:(id)a5
+- (void)xpcInbound_forceRemoveNotificationOfType:(int64_t)type identifier:(id)identifier hostIdentifier:(id)hostIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 2)
+  identifierCopy = identifier;
+  hostIdentifierCopy = hostIdentifier;
+  if (type == 2)
   {
     v11 = DEDFollowUpNotifier;
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v11 = DEDUserNotificationNotifier;
 LABEL_9:
-    [(__objc2_class *)v11 forceRemoveNotificationWithIdentifier:v8 hostIdentifier:v9];
+    [(__objc2_class *)v11 forceRemoveNotificationWithIdentifier:identifierCopy hostIdentifier:hostIdentifierCopy];
     goto LABEL_13;
   }
 
-  if (a3)
+  if (type)
   {
     v12 = [(DEDController *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      [DEDController xpcInbound_forceRemoveNotificationOfType:a3 identifier:v12 hostIdentifier:?];
+      [DEDController xpcInbound_forceRemoveNotificationOfType:type identifier:v12 hostIdentifier:?];
     }
   }
 
@@ -1082,19 +1082,19 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)xpcInbound_ping:(id)a3
+- (void)xpcInbound_ping:(id)inbound_ping
 {
-  v4 = a3;
+  inbound_pingCopy = inbound_ping;
   objc_initWeak(&location, self);
-  v5 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__DEDController_xpcInbound_ping___block_invoke;
   block[3] = &unk_278F65880;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = inbound_pingCopy;
+  v6 = inbound_pingCopy;
+  dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1111,13 +1111,13 @@ void __33__DEDController_xpcInbound_ping___block_invoke(uint64_t a1)
 - (void)xpcInbound_pong
 {
   objc_initWeak(&location, self);
-  v3 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__DEDController_xpcInbound_pong__block_invoke;
   v4[3] = &unk_278F65830;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(replyQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1136,9 +1136,9 @@ void __32__DEDController_xpcInbound_pong__block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpcInbound_discoverAllAvailableDevices:(id)a3
+- (void)xpcInbound_discoverAllAvailableDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = objc_initWeak(&location, self);
   v6 = [(DEDController *)self log];
 
@@ -1148,16 +1148,16 @@ void __32__DEDController_xpcInbound_pong__block_invoke(uint64_t a1)
     _os_log_impl(&dword_248AD7000, v6, OS_LOG_TYPE_DEFAULT, "'Will start device discovery", buf, 2u);
   }
 
-  v7 = [(DEDController *)self workQueue];
+  workQueue = [(DEDController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__DEDController_xpcInbound_discoverAllAvailableDevices___block_invoke;
   block[3] = &unk_278F658A8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
-  dispatch_async(v7, block);
+  v10 = devicesCopy;
+  selfCopy = self;
+  v8 = devicesCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1474,30 +1474,30 @@ void __56__DEDController_xpcInbound_discoverAllAvailableDevices___block_invoke_4
   [v3 xpc_didDiscoverDevices:v5];
 }
 
-- (void)xpcInbound_gotDeviceUpdate:(id)a3
+- (void)xpcInbound_gotDeviceUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = [(DEDController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [updateCopy name];
     *buf = 138412546;
-    v12 = v6;
+    v12 = name;
     v13 = 2048;
-    v14 = [v4 status];
+    status = [updateCopy status];
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_INFO, "Update: %@ status %ld", buf, 0x16u);
   }
 
-  [(DEDController *)self addDevice:v4];
+  [(DEDController *)self addDevice:updateCopy];
   objc_initWeak(buf, self);
-  v7 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__DEDController_xpcInbound_gotDeviceUpdate___block_invoke;
   block[3] = &unk_278F65830;
   objc_copyWeak(&v10, buf);
-  dispatch_async(v7, block);
+  dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -1532,15 +1532,15 @@ void __44__DEDController_xpcInbound_gotDeviceUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpcInbound_didDiscoverDevices:(id)a3
+- (void)xpcInbound_didDiscoverDevices:(id)devices
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devicesCopy = devices;
+  v5 = [devicesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -1551,27 +1551,27 @@ void __44__DEDController_xpcInbound_gotDeviceUpdate___block_invoke(uint64_t a1)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
         [(DEDController *)self addDevice:*(*(&v13 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [devicesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
   objc_initWeak(&location, self);
-  v8 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__DEDController_xpcInbound_didDiscoverDevices___block_invoke;
   v10[3] = &unk_278F65830;
   objc_copyWeak(&v11, &location);
-  dispatch_async(v8, v10);
+  dispatch_async(replyQueue, v10);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1606,35 +1606,35 @@ void __47__DEDController_xpcInbound_didDiscoverDevices___block_invoke(uint64_t a
   }
 }
 
-- (void)xpcInbound_stopDeviceDiscovery:(id)a3
+- (void)xpcInbound_stopDeviceDiscovery:(id)discovery
 {
   if ([(DEDController *)self useSharing])
   {
-    v4 = [(DEDController *)self sharingConnection];
-    [v4 stopDiscovery];
+    sharingConnection = [(DEDController *)self sharingConnection];
+    [sharingConnection stopDiscovery];
   }
 }
 
-- (void)xpcInbound_hasActiveSession:(id)a3 fromInbound:(id)a4
+- (void)xpcInbound_hasActiveSession:(id)session fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDController *)self sessions];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  sessionCopy = session;
+  inboundCopy = inbound;
+  sessions = [(DEDController *)self sessions];
+  v9 = [sessions objectForKeyedSubscript:sessionCopy];
 
   objc_initWeak(&location, self);
-  v10 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__DEDController_xpcInbound_hasActiveSession_fromInbound___block_invoke;
   block[3] = &unk_278F65998;
   objc_copyWeak(&v16, &location);
-  v14 = v7;
-  v15 = v6;
+  v14 = inboundCopy;
+  v15 = sessionCopy;
   v17 = v9 != 0;
-  v11 = v6;
-  v12 = v7;
-  dispatch_async(v10, block);
+  v11 = sessionCopy;
+  v12 = inboundCopy;
+  dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -1648,40 +1648,40 @@ void __57__DEDController_xpcInbound_hasActiveSession_fromInbound___block_invoke(
   [v3 xpc_hasActiveSessionReply:*(a1 + 40) isActive:*(a1 + 56)];
 }
 
-- (void)xpcInbound_hasActiveSessionReply:(id)a3 isActive:(BOOL)a4
+- (void)xpcInbound_hasActiveSessionReply:(id)reply isActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  replyCopy = reply;
   v7 = [(DEDController *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"No";
-    if (v4)
+    if (activeCopy)
     {
       v8 = @"Yes";
     }
 
     *buf = 138543618;
-    v16 = v6;
+    v16 = replyCopy;
     v17 = 2114;
     v18 = v8;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Session %{public}@ is active %{public}@", buf, 0x16u);
   }
 
-  v9 = [(DEDController *)self sessionExistsCompletion];
+  sessionExistsCompletion = [(DEDController *)self sessionExistsCompletion];
 
-  if (v9)
+  if (sessionExistsCompletion)
   {
     objc_initWeak(buf, self);
-    v10 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__DEDController_xpcInbound_hasActiveSessionReply_isActive___block_invoke;
     v12[3] = &unk_278F659C0;
     objc_copyWeak(&v13, buf);
-    v14 = v4;
-    dispatch_async(v10, v12);
+    v14 = activeCopy;
+    dispatch_async(replyQueue, v12);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -1700,24 +1700,24 @@ void __59__DEDController_xpcInbound_hasActiveSessionReply_isActive___block_invok
   [v4 setSessionExistsCompletion:0];
 }
 
-- (void)xpc_listClientXPCConnectionsFromInbound:(id)a3
+- (void)xpc_listClientXPCConnectionsFromInbound:(id)inbound
 {
-  v4 = a3;
-  v5 = [(DEDController *)self xpcConnector];
-  v6 = [v5 clientConnections];
+  inboundCopy = inbound;
+  xpcConnector = [(DEDController *)self xpcConnector];
+  clientConnections = [xpcConnector clientConnections];
 
   objc_initWeak(&location, self);
-  v7 = [(DEDController *)self replyQueue];
+  replyQueue = [(DEDController *)self replyQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__DEDController_xpc_listClientXPCConnectionsFromInbound___block_invoke;
   v10[3] = &unk_278F658A8;
   objc_copyWeak(&v13, &location);
-  v11 = v4;
-  v12 = v6;
-  v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, v10);
+  v11 = inboundCopy;
+  v12 = clientConnections;
+  v8 = clientConnections;
+  v9 = inboundCopy;
+  dispatch_async(replyQueue, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1731,22 +1731,22 @@ void __57__DEDController_xpc_listClientXPCConnectionsFromInbound___block_invoke(
   [v3 xpc_listClientXPCConnectionsReply:*(a1 + 40)];
 }
 
-- (void)xpcInbound_listClientXPCConnectionsReply:(id)a3
+- (void)xpcInbound_listClientXPCConnectionsReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(DEDController *)self xpcConnectionsCompletion];
+  replyCopy = reply;
+  xpcConnectionsCompletion = [(DEDController *)self xpcConnectionsCompletion];
 
-  if (v5)
+  if (xpcConnectionsCompletion)
   {
     objc_initWeak(&location, self);
-    v6 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__DEDController_xpcInbound_listClientXPCConnectionsReply___block_invoke;
     block[3] = &unk_278F65880;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = replyCopy;
+    dispatch_async(replyQueue, block);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1763,39 +1763,39 @@ void __58__DEDController_xpcInbound_listClientXPCConnectionsReply___block_invoke
   [v4 setXpcConnectionsCompletion:0];
 }
 
-- (void)xpcInbound_startPairSetupForDevice:(id)a3 fromInbound:(id)a4
+- (void)xpcInbound_startPairSetupForDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:v6];
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v8 transport] == 3)
   {
-    v9 = [(DEDController *)self sharingConnection];
-    [v9 sharing_startPairSetupForDevice:v8 fromInbound:v7];
+    sharingConnection = [(DEDController *)self sharingConnection];
+    [sharingConnection sharing_startPairSetupForDevice:v8 fromInbound:inboundCopy];
   }
 
   else
   {
-    v9 = [(DEDController *)self log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    sharingConnection = [(DEDController *)self log];
+    if (os_log_type_enabled(sharingConnection, OS_LOG_TYPE_ERROR))
     {
       [DEDController xpcInbound_startPairSetupForDevice:fromInbound:];
     }
   }
 }
 
-- (void)xpcInbound_promptPINForDevice:(id)a3
+- (void)xpcInbound_promptPINForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DEDController *)self pairingDelegate];
+  deviceCopy = device;
+  pairingDelegate = [(DEDController *)self pairingDelegate];
 
-  if (v5)
+  if (pairingDelegate)
   {
-    v6 = [(DEDController *)self _sharingDeviceForIncomingDevice:v4];
+    v6 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
     if ([v6 transport]== 2)
     {
       objc_initWeak(&location, self);
-      v7 = [(DEDController *)self replyQueue];
+      replyQueue = [(DEDController *)self replyQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __47__DEDController_xpcInbound_promptPINForDevice___block_invoke;
@@ -1803,7 +1803,7 @@ void __58__DEDController_xpcInbound_listClientXPCConnectionsReply___block_invoke
       objc_copyWeak(&v11, &location);
       v6 = v6;
       v10 = v6;
-      dispatch_async(v7, block);
+      dispatch_async(replyQueue, block);
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -1836,43 +1836,43 @@ void __47__DEDController_xpcInbound_promptPINForDevice___block_invoke(uint64_t a
   [v2 promptPINForDevice:*(a1 + 32)];
 }
 
-- (void)xpcInbound_tryPIN:(id)a3 forDevice:(id)a4 fromInbound:(id)a5
+- (void)xpcInbound_tryPIN:(id)n forDevice:(id)device fromInbound:(id)inbound
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DEDController *)self _sharingDeviceForIncomingDevice:v9];
+  nCopy = n;
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v11 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v11 transport] == 3)
   {
-    v12 = [(DEDController *)self sharingConnection];
-    [v12 sharing_tryPIN:v8 forDevice:v9 fromInbound:v10];
+    sharingConnection = [(DEDController *)self sharingConnection];
+    [sharingConnection sharing_tryPIN:nCopy forDevice:deviceCopy fromInbound:inboundCopy];
   }
 
   else
   {
-    v12 = [(DEDController *)self log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    sharingConnection = [(DEDController *)self log];
+    if (os_log_type_enabled(sharingConnection, OS_LOG_TYPE_ERROR))
     {
       [DEDController xpcInbound_tryPIN:forDevice:fromInbound:];
     }
   }
 }
 
-- (void)xpcInbound_successPINForDevice:(id)a3
+- (void)xpcInbound_successPINForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DEDController *)self _sharingDeviceForIncomingDevice:v4];
+  deviceCopy = device;
+  v5 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v5 transport] == 2)
   {
     objc_initWeak(&location, self);
-    v6 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__DEDController_xpcInbound_successPINForDevice___block_invoke;
     block[3] = &unk_278F65880;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(replyQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1895,23 +1895,23 @@ void __48__DEDController_xpcInbound_successPINForDevice___block_invoke(uint64_t 
   [v2 successPINForDevice:*(a1 + 32)];
 }
 
-- (void)sharingInbound_promptPINForDevice:(id)a3 fromInbound:(id)a4
+- (void)sharingInbound_promptPINForDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:v6];
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v8 transport] == 3)
   {
     objc_initWeak(&location, self);
-    v9 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__DEDController_sharingInbound_promptPINForDevice_fromInbound___block_invoke;
     v11[3] = &unk_278F658A8;
     objc_copyWeak(&v14, &location);
-    v12 = v7;
+    v12 = inboundCopy;
     v13 = v8;
-    dispatch_async(v9, v11);
+    dispatch_async(replyQueue, v11);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -1935,23 +1935,23 @@ void __63__DEDController_sharingInbound_promptPINForDevice_fromInbound___block_i
   [v3 xpc_promptPINForDevice:*(a1 + 40)];
 }
 
-- (void)sharingInbound_successPINForDevice:(id)a3 fromInbound:(id)a4
+- (void)sharingInbound_successPINForDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:v6];
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v8 = [(DEDController *)self _sharingDeviceForIncomingDevice:deviceCopy];
   if ([v8 transport] == 3)
   {
     objc_initWeak(&location, self);
-    v9 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__DEDController_sharingInbound_successPINForDevice_fromInbound___block_invoke;
     v11[3] = &unk_278F658A8;
     objc_copyWeak(&v14, &location);
-    v12 = v7;
+    v12 = inboundCopy;
     v13 = v8;
-    dispatch_async(v9, v11);
+    dispatch_async(replyQueue, v11);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -1975,20 +1975,20 @@ void __64__DEDController_sharingInbound_successPINForDevice_fromInbound___block_
   [v3 xpc_successPINForDevice:*(a1 + 40)];
 }
 
-- (void)idsInbound_devicesChanged:(id)a3 completion:(id)a4
+- (void)idsInbound_devicesChanged:(id)changed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__DEDController_idsInbound_devicesChanged_completion___block_invoke;
   block[3] = &unk_278F659E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = changedCopy;
   dispatch_async(v8, block);
 }
 
@@ -2143,22 +2143,22 @@ uint64_t __54__DEDController_idsInbound_devicesChanged_completion___block_invoke
   return v5;
 }
 
-- (void)startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6 fromInbound:(id)a7
+- (void)startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target fromInbound:(id)inbound
 {
   v146 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v90 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  callerCopy = caller;
+  targetCopy = target;
+  inboundCopy = inbound;
   objc_initWeak(&location, self);
-  if (![(DEDController *)self induceTimeOutIfNeededAndReturnCanProceedWithDevice:v14 sessionId:v12])
+  if (![(DEDController *)self induceTimeOutIfNeededAndReturnCanProceedWithDevice:targetCopy sessionId:identifierCopy])
   {
     goto LABEL_67;
   }
 
   [(DEDController *)self logDeviceCounts];
-  if (!v14)
+  if (!targetCopy)
   {
     v23 = DEDSessionStartLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2169,14 +2169,14 @@ uint64_t __54__DEDController_idsInbound_devicesChanged_completion___block_invoke
     goto LABEL_12;
   }
 
-  v16 = [(DEDController *)self _deviceForIncomingDevice:v14 needsReady:1];
+  v16 = [(DEDController *)self _deviceForIncomingDevice:targetCopy needsReady:1];
   if (!v16)
   {
     v23 = DEDSessionStartLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v14 hashingKey];
-      [DEDController startBugSessionWithIdentifier:v24 configuration:buf caller:v23 target:? fromInbound:?];
+      hashingKey = [targetCopy hashingKey];
+      [DEDController startBugSessionWithIdentifier:hashingKey configuration:buf caller:v23 target:? fromInbound:?];
     }
 
 LABEL_12:
@@ -2187,89 +2187,89 @@ LABEL_12:
       [DEDController startBugSessionWithIdentifier:configuration:caller:target:fromInbound:];
     }
 
-    v26 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke;
     block[3] = &unk_278F658A8;
     objc_copyWeak(&v135, &location);
-    v133 = v12;
+    v133 = identifierCopy;
     v134 = 0;
-    dispatch_async(v26, block);
+    dispatch_async(replyQueue, block);
 
     objc_destroyWeak(&v135);
     goto LABEL_67;
   }
 
-  v17 = [v13 requestedCapabilities];
-  v18 = [v14 hasCapabilities:v17];
+  requestedCapabilities = [configurationCopy requestedCapabilities];
+  v18 = [targetCopy hasCapabilities:requestedCapabilities];
 
   if (v18)
   {
     v19 = DEDSessionStartLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v14 identifier];
-      v21 = [v14 transport];
-      if (v21 > 4)
+      identifier = [targetCopy identifier];
+      transport = [targetCopy transport];
+      if (transport > 4)
       {
         v22 = "Unknown";
       }
 
       else
       {
-        v22 = off_278F65C08[v21];
+        v22 = off_278F65C08[transport];
       }
 
       *buf = 138543874;
-      *&buf[4] = v20;
+      *&buf[4] = identifier;
       *&buf[12] = 2082;
       *&buf[14] = v22;
       *&buf[22] = 2114;
-      v144 = v12;
+      v144 = identifierCopy;
       _os_log_impl(&dword_248AD7000, v19, OS_LOG_TYPE_DEFAULT, "inTarget device: [%{public}@] - [%{public}s] - [%{public}@]", buf, 0x20u);
     }
 
     v30 = DEDSessionStartLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v16 identifier];
-      v32 = [v16 transport];
-      if (v32 > 4)
+      identifier2 = [v16 identifier];
+      transport2 = [v16 transport];
+      if (transport2 > 4)
       {
         v33 = "Unknown";
       }
 
       else
       {
-        v33 = off_278F65C08[v32];
+        v33 = off_278F65C08[transport2];
       }
 
       *buf = 138543874;
-      *&buf[4] = v31;
+      *&buf[4] = identifier2;
       *&buf[12] = 2082;
       *&buf[14] = v33;
       *&buf[22] = 2114;
-      v144 = v12;
+      v144 = identifierCopy;
       _os_log_impl(&dword_248AD7000, v30, OS_LOG_TYPE_DEFAULT, "target device: [%{public}@] - [%{public}s] - [%{public}@]", buf, 0x20u);
     }
 
     v34 = DEDSessionStartLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      v79 = [v90 name];
-      v80 = [v16 name];
-      v81 = [v16 address];
+      name = [callerCopy name];
+      name2 = [v16 name];
+      address = [v16 address];
       *buf = 136316162;
       *&buf[4] = "[DEDController startBugSessionWithIdentifier:configuration:caller:target:fromInbound:]";
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = identifierCopy;
       *&buf[22] = 2112;
-      v144 = v79;
+      v144 = name;
       *v145 = 2112;
-      *&v145[2] = v80;
+      *&v145[2] = name2;
       *&v145[10] = 2112;
-      *&v145[12] = v81;
+      *&v145[12] = address;
       _os_log_debug_impl(&dword_248AD7000, v34, OS_LOG_TYPE_DEBUG, "%s %@:%@ -> %@ (%@)", buf, 0x34u);
     }
 
@@ -2279,8 +2279,8 @@ LABEL_12:
     v144 = __Block_byref_object_copy__0;
     *v145 = __Block_byref_object_dispose__0;
     *&v145[8] = 0;
-    v35 = [(DEDController *)self sessions];
-    v36 = [v35 objectForKeyedSubscript:v12];
+    sessions = [(DEDController *)self sessions];
+    v36 = [sessions objectForKeyedSubscript:identifierCopy];
 
     if (v36)
     {
@@ -2288,18 +2288,18 @@ LABEL_12:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *v137 = 138543362;
-        v138 = v12;
+        v138 = identifierCopy;
         _os_log_impl(&dword_248AD7000, v37, OS_LOG_TYPE_DEFAULT, "found existing session [%{public}@]", v137, 0xCu);
       }
 
-      v38 = [(DEDController *)self sessions];
-      v39 = [v38 objectForKeyedSubscript:v12];
+      sessions2 = [(DEDController *)self sessions];
+      v39 = [sessions2 objectForKeyedSubscript:identifierCopy];
       v40 = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v39;
 
       if ([*(*&buf[8] + 40) hasCapability:@"mutable-bug-session"])
       {
-        [*(*&buf[8] + 40) setConfig:v13];
+        [*(*&buf[8] + 40) setConfig:configurationCopy];
       }
     }
 
@@ -2309,37 +2309,37 @@ LABEL_12:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *v137 = 138543362;
-        v138 = v12;
+        v138 = identifierCopy;
         _os_log_impl(&dword_248AD7000, v41, OS_LOG_TYPE_DEFAULT, "creating new session [%{public}@]", v137, 0xCu);
       }
 
-      v42 = [[DEDBugSession alloc] initWithConfiguration:v13];
+      v42 = [[DEDBugSession alloc] initWithConfiguration:configurationCopy];
       v43 = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v42;
 
-      [*(*&buf[8] + 40) setIdentifier:v12];
-      v44 = [v16 identifier];
-      [*(*&buf[8] + 40) setDeviceIdentifier:v44];
+      [*(*&buf[8] + 40) setIdentifier:identifierCopy];
+      identifier3 = [v16 identifier];
+      [*(*&buf[8] + 40) setDeviceIdentifier:identifier3];
     }
 
-    v45 = [(DEDController *)self bugSessionCallbackQueue];
-    [*(*&buf[8] + 40) setCallbackQueue:v45];
+    bugSessionCallbackQueue = [(DEDController *)self bugSessionCallbackQueue];
+    [*(*&buf[8] + 40) setCallbackQueue:bugSessionCallbackQueue];
 
     [*(*&buf[8] + 40) didStart];
     v141[0] = @"DEDExtensionIdentifierManager";
-    v46 = [*(*&buf[8] + 40) identifierManager];
-    v47 = [v46 JSONRepresentation];
+    identifierManager = [*(*&buf[8] + 40) identifierManager];
+    jSONRepresentation = [identifierManager JSONRepresentation];
     v141[1] = @"identifier";
-    v142[0] = v47;
-    v142[1] = v12;
+    v142[0] = jSONRepresentation;
+    v142[1] = identifierCopy;
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v142 forKeys:v141 count:2];
 
     v49 = DEDSessionStartLog();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [*(*&buf[8] + 40) identifier];
+      identifier4 = [*(*&buf[8] + 40) identifier];
       *v137 = 138543618;
-      v138 = v50;
+      v138 = identifier4;
       v139 = 2114;
       v140 = v48;
       _os_log_impl(&dword_248AD7000, v49, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting with sessionSyncData [%{public}@]", v137, 0x16u);
@@ -2351,14 +2351,14 @@ LABEL_12:
     v119[3] = &unk_278F65A38;
     v126 = buf;
     v120 = @"DEDExtensionIdentifierManager";
-    v51 = v12;
+    v51 = identifierCopy;
     v121 = v51;
     objc_copyWeak(&v127, &location);
-    v52 = v90;
+    v52 = callerCopy;
     v122 = v52;
     v89 = v16;
     v123 = v89;
-    v85 = v15;
+    v85 = inboundCopy;
     v124 = v85;
     v87 = v48;
     v125 = v87;
@@ -2366,38 +2366,38 @@ LABEL_12:
     [(DEDController *)self addDidStartSessionCompletion:v88 withIdentifier:v51];
     if ([v52 transport] == 1)
     {
-      v53 = objc_alloc_init(DEDLocalTransport);
-      v54 = [(DEDController *)self clientDelegate];
-      [(DEDLocalTransport *)v53 setClientDelegate:v54];
+      xpcConnector = objc_alloc_init(DEDLocalTransport);
+      clientDelegate = [(DEDController *)self clientDelegate];
+      [(DEDLocalTransport *)xpcConnector setClientDelegate:clientDelegate];
 
-      [*(*&buf[8] + 40) setClient:v53];
+      [*(*&buf[8] + 40) setClient:xpcConnector];
     }
 
     else if ([v52 transport] == 2)
     {
       v55 = [DEDXPCOutbound alloc];
-      v53 = [(DEDController *)self xpcConnector];
-      v56 = [(DEDLocalTransport *)v53 clientXPCInterfaceFromInbound:v85];
+      xpcConnector = [(DEDController *)self xpcConnector];
+      v56 = [(DEDLocalTransport *)xpcConnector clientXPCInterfaceFromInbound:v85];
       v57 = [(DEDXPCOutbound *)v55 initWithRemoteObject:v56];
       [*(*&buf[8] + 40) setClient:v57];
     }
 
     else if ([v52 transport] == 4)
     {
-      v53 = [v52 address];
-      v58 = [(DEDController *)self idsConnection];
-      v59 = [DEDIDSOutbound outboundWithSessionID:v51 withDeviceAtAddress:v53 connection:v58];
+      xpcConnector = [v52 address];
+      idsConnection = [(DEDController *)self idsConnection];
+      v59 = [DEDIDSOutbound outboundWithSessionID:v51 withDeviceAtAddress:xpcConnector connection:idsConnection];
       [*(*&buf[8] + 40) setClient:v59];
     }
 
     else if ([v52 transport] == 3)
     {
-      v60 = [(DEDController *)self sharingConnection];
-      v61 = [v60 sharingOutboundForBugSessionIdentifier:v51 device:v52 fromInbound:v85];
+      sharingConnection = [(DEDController *)self sharingConnection];
+      v61 = [sharingConnection sharingOutboundForBugSessionIdentifier:v51 device:v52 fromInbound:v85];
       [*(*&buf[8] + 40) setClient:v61];
 
-      v62 = [*(*&buf[8] + 40) client];
-      v63 = v62 == 0;
+      client = [*(*&buf[8] + 40) client];
+      v63 = client == 0;
 
       if (!v63)
       {
@@ -2406,11 +2406,11 @@ LABEL_50:
         if ([v89 transport] == 1)
         {
           v64 = objc_alloc_init(DEDLocalTransport);
-          v65 = [(DEDController *)self workerDelegate];
-          [(DEDLocalTransport *)v64 setWorkerDelegate:v65];
+          workerDelegate = [(DEDController *)self workerDelegate];
+          [(DEDLocalTransport *)v64 setWorkerDelegate:workerDelegate];
 
           [*(*&buf[8] + 40) setWorker:v64];
-          v66 = [(DEDController *)self replyQueue];
+          replyQueue2 = [(DEDController *)self replyQueue];
           v115[0] = MEMORY[0x277D85DD0];
           v115[1] = 3221225472;
           v115[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_84;
@@ -2418,14 +2418,14 @@ LABEL_50:
           objc_copyWeak(&v118, &location);
           v116 = v51;
           v117 = v87;
-          dispatch_async(v66, v115);
+          dispatch_async(replyQueue2, v115);
 
           objc_destroyWeak(&v118);
         }
 
         else if ([v89 transport] == 2)
         {
-          v67 = [(DEDController *)self replyQueue];
+          replyQueue3 = [(DEDController *)self replyQueue];
           v108[0] = MEMORY[0x277D85DD0];
           v108[1] = 3221225472;
           v108[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_85;
@@ -2433,45 +2433,45 @@ LABEL_50:
           objc_copyWeak(&v114, &location);
           v113 = buf;
           v109 = v51;
-          v110 = v13;
+          v110 = configurationCopy;
           v111 = v86;
           v112 = v89;
-          dispatch_async(v67, v108);
+          dispatch_async(replyQueue3, v108);
 
           objc_destroyWeak(&v114);
         }
 
         else if ([v89 transport] == 4)
         {
-          v68 = [v89 address];
-          v69 = [(DEDController *)self idsConnection];
-          v70 = [DEDIDSOutbound outboundWithSessionID:v51 withDeviceAtAddress:v68 connection:v69];
+          address2 = [v89 address];
+          idsConnection2 = [(DEDController *)self idsConnection];
+          v70 = [DEDIDSOutbound outboundWithSessionID:v51 withDeviceAtAddress:address2 connection:idsConnection2];
           [*(*&buf[8] + 40) setWorker:v70];
 
-          v71 = [(DEDController *)self replyQueue];
+          replyQueue4 = [(DEDController *)self replyQueue];
           v102[0] = MEMORY[0x277D85DD0];
           v102[1] = 3221225472;
           v102[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_2_86;
           v102[3] = &unk_278F65A88;
           objc_copyWeak(&v107, &location);
           v103 = v51;
-          v104 = v13;
+          v104 = configurationCopy;
           v105 = v86;
           v106 = v89;
-          dispatch_async(v71, v102);
+          dispatch_async(replyQueue4, v102);
 
           objc_destroyWeak(&v107);
         }
 
         else if ([v89 transport] == 3)
         {
-          v72 = [(DEDController *)self sharingConnection];
-          v84 = [v72 sharingOutboundForBugSessionIdentifier:v51 device:v89 fromInbound:v85];
+          sharingConnection2 = [(DEDController *)self sharingConnection];
+          v84 = [sharingConnection2 sharingOutboundForBugSessionIdentifier:v51 device:v89 fromInbound:v85];
 
           if (v84)
           {
             [*(*&buf[8] + 40) setWorker:?];
-            v73 = [(DEDController *)self replyQueue];
+            replyQueue5 = [(DEDController *)self replyQueue];
             v95[0] = MEMORY[0x277D85DD0];
             v95[1] = 3221225472;
             v95[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_3_87;
@@ -2479,15 +2479,15 @@ LABEL_50:
             v74 = &v101;
             objc_copyWeak(&v101, &location);
             v96 = v51;
-            v97 = v13;
+            v97 = configurationCopy;
             v98 = v86;
             v99 = v89;
             v100 = v85;
-            dispatch_async(v73, v95);
+            dispatch_async(replyQueue5, v95);
 
             v75 = &v96;
             v76 = &v97;
-            v77 = v98;
+            replyQueue6 = v98;
           }
 
           else
@@ -2499,7 +2499,7 @@ LABEL_50:
               _os_log_impl(&dword_248AD7000, v82, OS_LOG_TYPE_DEFAULT, "Bug session start failed. Could not find sharing outbound on worker", v137, 2u);
             }
 
-            v77 = [(DEDController *)self replyQueue];
+            replyQueue6 = [(DEDController *)self replyQueue];
             v91[0] = MEMORY[0x277D85DD0];
             v91[1] = 3221225472;
             v91[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_88;
@@ -2510,7 +2510,7 @@ LABEL_50:
             v92 = v51;
             v76 = &v93;
             v93 = v89;
-            dispatch_async(v77, v91);
+            dispatch_async(replyQueue6, v91);
           }
 
           objc_destroyWeak(v74);
@@ -2531,18 +2531,18 @@ LABEL_50:
         goto LABEL_67;
       }
 
-      v53 = DEDSessionStartLog();
-      if (os_log_type_enabled(&v53->super, OS_LOG_TYPE_DEFAULT))
+      xpcConnector = DEDSessionStartLog();
+      if (os_log_type_enabled(&xpcConnector->super, OS_LOG_TYPE_DEFAULT))
       {
         *v137 = 0;
-        _os_log_impl(&dword_248AD7000, &v53->super, OS_LOG_TYPE_DEFAULT, "Bug session start failed. Could not find sharing outbound on client", v137, 2u);
+        _os_log_impl(&dword_248AD7000, &xpcConnector->super, OS_LOG_TYPE_DEFAULT, "Bug session start failed. Could not find sharing outbound on client", v137, 2u);
       }
     }
 
     else
     {
-      v53 = [(DEDController *)self log];
-      if (os_log_type_enabled(&v53->super, OS_LOG_TYPE_ERROR))
+      xpcConnector = [(DEDController *)self log];
+      if (os_log_type_enabled(&xpcConnector->super, OS_LOG_TYPE_ERROR))
       {
         [DEDController startBugSessionWithIdentifier:configuration:caller:target:fromInbound:];
       }
@@ -2557,16 +2557,16 @@ LABEL_50:
     [DEDController startBugSessionWithIdentifier:configuration:caller:target:fromInbound:];
   }
 
-  v28 = [(DEDController *)self replyQueue];
+  replyQueue7 = [(DEDController *)self replyQueue];
   v128[0] = MEMORY[0x277D85DD0];
   v128[1] = 3221225472;
   v128[2] = __87__DEDController_startBugSessionWithIdentifier_configuration_caller_target_fromInbound___block_invoke_63;
   v128[3] = &unk_278F658A8;
   objc_copyWeak(&v131, &location);
-  v129 = v12;
+  v129 = identifierCopy;
   v130 = v16;
   v29 = v16;
-  dispatch_async(v28, v128);
+  dispatch_async(replyQueue7, v128);
 
   objc_destroyWeak(&v131);
 LABEL_67:
@@ -2920,22 +2920,22 @@ void __87__DEDController_startBugSessionWithIdentifier_configuration_caller_targ
   }
 }
 
-- (void)didStartBugSessionWithInfo:(id)a3
+- (void)didStartBugSessionWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"identifier"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"identifier"];
   if (v5)
   {
     objc_initWeak(&location, self);
-    v6 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__DEDController_didStartBugSessionWithInfo___block_invoke;
     v8[3] = &unk_278F658A8;
     objc_copyWeak(&v11, &location);
     v9 = v5;
-    v10 = v4;
-    dispatch_async(v6, v8);
+    v10 = infoCopy;
+    dispatch_async(replyQueue, v8);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -2977,13 +2977,13 @@ void __44__DEDController_didStartBugSessionWithInfo___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFinishSessionWithIdentifier:(id)a3
+- (void)didFinishSessionWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDController *)self recentlyFinishedSessions];
+  identifierCopy = identifier;
+  recentlyFinishedSessions = [(DEDController *)self recentlyFinishedSessions];
 
-  if (!v5)
+  if (!recentlyFinishedSessions)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:5];
     [(DEDController *)self setRecentlyFinishedSessions:v6];
@@ -2993,42 +2993,42 @@ void __44__DEDController_didStartBugSessionWithInfo___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Did finish session [%{public}@]", &v10, 0xCu);
   }
 
-  v8 = [(DEDController *)self recentlyFinishedSessions];
-  [v8 addObject:v4];
+  recentlyFinishedSessions2 = [(DEDController *)self recentlyFinishedSessions];
+  [recentlyFinishedSessions2 addObject:identifierCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)induceTimeOutIfNeededAndReturnCanProceedWithDevice:(id)a3 sessionId:(id)a4
+- (BOOL)induceTimeOutIfNeededAndReturnCanProceedWithDevice:(id)device sessionId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (+[DEDUtils isInternalInstall](DEDUtils, "isInternalInstall") && (+[DEDPersistence sharedInstance](DEDPersistence, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 canProceedWithDevice:v6], v8, (v9 & 1) == 0))
+  deviceCopy = device;
+  idCopy = id;
+  if (+[DEDUtils isInternalInstall](DEDUtils, "isInternalInstall") && (+[DEDPersistence sharedInstance](DEDPersistence, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 canProceedWithDevice:deviceCopy], v8, (v9 & 1) == 0))
   {
     v11 = [(DEDController *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 hashingKey];
+      hashingKey = [deviceCopy hashingKey];
       *buf = 138543362;
-      v21 = v12;
+      v21 = hashingKey;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "Inducing device timeout for device [%{public}@]", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v13 = [(DEDController *)self replyQueue];
+    replyQueue = [(DEDController *)self replyQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__DEDController_induceTimeOutIfNeededAndReturnCanProceedWithDevice_sessionId___block_invoke;
     block[3] = &unk_278F658A8;
     objc_copyWeak(&v19, buf);
-    v17 = v7;
-    v18 = v6;
-    dispatch_async(v13, block);
+    v17 = idCopy;
+    v18 = deviceCopy;
+    dispatch_async(replyQueue, block);
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(buf);
@@ -3085,8 +3085,8 @@ void __78__DEDController_induceTimeOutIfNeededAndReturnCanProceedWithDevice_sess
 
 - (void)upgradeToClassCDataProtectionIfNeeded
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"DEDUpgradedToClassC"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"DEDUpgradedToClassC"];
 
   if (v3)
   {
@@ -3101,8 +3101,8 @@ void __78__DEDController_induceTimeOutIfNeededAndReturnCanProceedWithDevice_sess
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = +[DEDConfiguration sharedInstance];
-    v7 = [v6 identifier];
-    v11 = [v5 stringWithFormat:@"%@.c-data-class-upgrade", v7];
+    identifier = [v6 identifier];
+    v11 = [v5 stringWithFormat:@"%@.c-data-class-upgrade", identifier];
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v9 = v11;
@@ -3198,14 +3198,14 @@ void __54__DEDController_upgradeToClassCDataProtectionIfNeeded__block_invoke()
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeStaleSessions:(id)a3 completion:(id)a4
+- (void)purgeStaleSessions:(id)sessions completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  sessionsCopy = sessions;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCACA8];
   v8 = +[DEDConfiguration sharedInstance];
-  v9 = [v8 identifier];
-  v10 = [v7 stringWithFormat:@"%@.purge", v9];
+  identifier = [v8 identifier];
+  v10 = [v7 stringWithFormat:@"%@.purge", identifier];
 
   v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
   v12 = dispatch_queue_create([v10 UTF8String], v11);
@@ -3213,10 +3213,10 @@ void __54__DEDController_upgradeToClassCDataProtectionIfNeeded__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__DEDController_purgeStaleSessions_completion___block_invoke;
   block[3] = &unk_278F65B20;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = sessionsCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = sessionsCopy;
   dispatch_async(v12, block);
 }
 
@@ -3462,104 +3462,104 @@ void __47__DEDController_purgeStaleSessions_completion___block_invoke_112(id *a1
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
   v105 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 platform];
-  v6 = [v5 isEqualToString:@"xros"];
+  deviceCopy = device;
+  platform = [deviceCopy platform];
+  v6 = [platform isEqualToString:@"xros"];
 
   if (v6)
   {
-    [v4 setPlatform:@"visionos"];
+    [deviceCopy setPlatform:@"visionos"];
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  if ([v4 status] == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([deviceCopy status] == 1)
   {
-    v8 = [(DEDController *)v7 log];
+    v8 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v67 = [v4 identifier];
-      v65 = [v4 idsIdentifier];
-      v63 = [v4 address];
-      v62 = [v4 model];
-      v61 = [v4 name];
-      v60 = [v4 platform];
-      v9 = [v4 deviceType];
-      if ((v9 - 1) > 6)
+      identifier = [deviceCopy identifier];
+      idsIdentifier = [deviceCopy idsIdentifier];
+      address = [deviceCopy address];
+      model = [deviceCopy model];
+      name = [deviceCopy name];
+      platform2 = [deviceCopy platform];
+      deviceType = [deviceCopy deviceType];
+      if ((deviceType - 1) > 6)
       {
         v10 = "Unknown";
       }
 
       else
       {
-        v10 = off_278F65BB0[v9 - 1];
+        v10 = off_278F65BB0[deviceType - 1];
       }
 
       v57 = v10;
-      v59 = [v4 build];
-      v21 = [v4 remoteTransport];
-      if (v21 > 4)
+      build = [deviceCopy build];
+      remoteTransport = [deviceCopy remoteTransport];
+      if (remoteTransport > 4)
       {
         v22 = "Unknown";
       }
 
       else
       {
-        v22 = off_278F65C08[v21];
+        v22 = off_278F65C08[remoteTransport];
       }
 
       v56 = v22;
-      v25 = [v4 transport];
-      if (v25 > 4)
+      transport = [deviceCopy transport];
+      if (transport > 4)
       {
         v26 = "Unknown";
       }
 
       else
       {
-        v26 = off_278F65C08[v25];
+        v26 = off_278F65C08[transport];
       }
 
       v55 = v26;
-      v27 = [v4 status];
-      if ((v27 - 1) > 3)
+      status = [deviceCopy status];
+      if ((status - 1) > 3)
       {
         v28 = "Unknown";
       }
 
       else
       {
-        v28 = off_278F65BE8[v27 - 1];
+        v28 = off_278F65BE8[status - 1];
       }
 
       v54 = v28;
-      v58 = [v4 deviceClass];
-      v29 = [v4 productType];
-      v30 = [v4 color];
-      v31 = [v4 enclosureColor];
-      v32 = [v4 homeButtonType];
-      v33 = [v4 isHomeKitResident];
-      v34 = [v4 mediaSystemRole];
-      v35 = [v4 capabilities];
+      deviceClass = [deviceCopy deviceClass];
+      productType = [deviceCopy productType];
+      color = [deviceCopy color];
+      enclosureColor = [deviceCopy enclosureColor];
+      homeButtonType = [deviceCopy homeButtonType];
+      isHomeKitResident = [deviceCopy isHomeKitResident];
+      mediaSystemRole = [deviceCopy mediaSystemRole];
+      capabilities = [deviceCopy capabilities];
       *buf = 138547971;
-      *v72 = v67;
+      *v72 = identifier;
       *&v72[8] = 2114;
-      *&v72[10] = v65;
+      *&v72[10] = idsIdentifier;
       *&v72[18] = 2113;
-      *&v72[20] = v63;
+      *&v72[20] = address;
       v73 = 2114;
-      v74 = v62;
+      v74 = model;
       v75 = 2113;
-      v76 = v61;
+      v76 = name;
       v77 = 2114;
-      v78 = v60;
+      v78 = platform2;
       v79 = 2082;
       v80 = v57;
       v81 = 2114;
-      v82 = v59;
+      v82 = build;
       v83 = 2082;
       v84 = v56;
       v85 = 2082;
@@ -3567,46 +3567,46 @@ void __47__DEDController_purgeStaleSessions_completion___block_invoke_112(id *a1
       v87 = 2082;
       v88 = v54;
       v89 = 2114;
-      v90 = v58;
+      v90 = deviceClass;
       v91 = 2114;
-      v92 = v29;
+      v92 = productType;
       v93 = 2114;
-      v94 = v30;
+      v94 = color;
       v95 = 2114;
-      v96 = v31;
+      v96 = enclosureColor;
       v97 = 2048;
-      v98 = v32;
+      v98 = homeButtonType;
       v99 = 1024;
-      v100 = v33;
+      v100 = isHomeKitResident;
       v101 = 2048;
-      v102 = v34;
+      v102 = mediaSystemRole;
       v103 = 2114;
-      v104 = v35;
+      v104 = capabilities;
       _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_INFO, "Device ready:\nidentifier: %{public}@\nidsIdentifier: %{public}@\naddress: %{private}@\nmodel: %{public}@\nname: %{private}@\nplatform: %{public}@\ndeviceType: %{public}s\nbuild: %{public}@\nremoteTransport: %{public}s\ntransport: %{public}s\nstatus: %{public}s\ndeviceClass: %{public}@\nproductType: %{public}@\ncolor: %{public}@\nenclosureColor: %{public}@\nhomeButtonType: %li\nisHomeKitResident: %d\nmediaSystemRole: %li\ncapabilities: %{public}@\n", buf, 0xBCu);
     }
   }
 
   else
   {
-    v8 = [(DEDController *)v7 log];
+    v8 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v68 = [v4 name];
-      v11 = [v4 deviceType];
-      if ((v11 - 1) > 6)
+      name2 = [deviceCopy name];
+      deviceType2 = [deviceCopy deviceType];
+      if ((deviceType2 - 1) > 6)
       {
         v12 = "Unknown";
       }
 
       else
       {
-        v12 = off_278F65BB0[v11 - 1];
+        v12 = off_278F65BB0[deviceType2 - 1];
       }
 
       v64 = v12;
-      v66 = [v4 build];
-      v13 = [v4 productType];
-      v14 = [v4 status] - 1;
+      build2 = [deviceCopy build];
+      productType2 = [deviceCopy productType];
+      v14 = [deviceCopy status] - 1;
       if (v14 > 3)
       {
         v15 = "Unknown";
@@ -3617,86 +3617,86 @@ void __47__DEDController_purgeStaleSessions_completion___block_invoke_112(id *a1
         v15 = off_278F65BE8[v14];
       }
 
-      v16 = [v4 transport];
-      if (v16 > 4)
+      transport2 = [deviceCopy transport];
+      if (transport2 > 4)
       {
         v17 = "Unknown";
       }
 
       else
       {
-        v17 = off_278F65C08[v16];
+        v17 = off_278F65C08[transport2];
       }
 
-      v18 = [v4 publicLogSafeIdentifier];
-      v19 = [v4 remoteTransport];
-      if (v19 > 4)
+      publicLogSafeIdentifier = [deviceCopy publicLogSafeIdentifier];
+      remoteTransport2 = [deviceCopy remoteTransport];
+      if (remoteTransport2 > 4)
       {
         v20 = "Unknown";
       }
 
       else
       {
-        v20 = off_278F65C08[v19];
+        v20 = off_278F65C08[remoteTransport2];
       }
 
-      v23 = [v4 address];
-      v24 = [v4 idsIdentifier];
+      address2 = [deviceCopy address];
+      idsIdentifier2 = [deviceCopy idsIdentifier];
       *buf = 138480131;
-      *v72 = v68;
+      *v72 = name2;
       *&v72[8] = 2082;
       *&v72[10] = v64;
       *&v72[18] = 2114;
-      *&v72[20] = v66;
+      *&v72[20] = build2;
       v73 = 2114;
-      v74 = v13;
+      v74 = productType2;
       v75 = 2082;
       v76 = v15;
       v77 = 2082;
       v78 = v17;
       v79 = 2114;
-      v80 = v18;
+      v80 = publicLogSafeIdentifier;
       v81 = 2082;
       v82 = v20;
       v83 = 2113;
-      v84 = v23;
+      v84 = address2;
       v85 = 2114;
-      v86 = v24;
+      v86 = idsIdentifier2;
       _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_INFO, "Will try to add device:\n%{private}@ - %{public}s %{public}@ (%{public}@) -- %{public}s \n%{public}s (%{public}@) \n%{public}s Remote: (%{private}@ - %{public}@)", buf, 0x66u);
     }
   }
 
-  v36 = [v4 hashingKeyForTempDevice];
-  v37 = [(DEDController *)v7 devices];
-  v38 = [v37 objectForKeyedSubscript:v36];
+  hashingKeyForTempDevice = [deviceCopy hashingKeyForTempDevice];
+  devices = [(DEDController *)selfCopy devices];
+  v38 = [devices objectForKeyedSubscript:hashingKeyForTempDevice];
 
   if (v38)
   {
-    v39 = [(DEDController *)v7 log];
+    v39 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
-      v40 = [v38 publicLogSafeIdentifier];
+      publicLogSafeIdentifier2 = [v38 publicLogSafeIdentifier];
       *buf = 138543619;
-      *v72 = v40;
+      *v72 = publicLogSafeIdentifier2;
       *&v72[8] = 2113;
-      *&v72[10] = v36;
+      *&v72[10] = hashingKeyForTempDevice;
       _os_log_impl(&dword_248AD7000, v39, OS_LOG_TYPE_INFO, "found temp device [%{public}@] for key [%{private}@]", buf, 0x16u);
     }
 
-    v41 = [(DEDController *)v7 devices];
-    [v41 removeObjectForKey:v36];
+    devices2 = [(DEDController *)selfCopy devices];
+    [devices2 removeObjectForKey:hashingKeyForTempDevice];
   }
 
-  if ([v4 isTemporaryDevice])
+  if ([deviceCopy isTemporaryDevice])
   {
-    v42 = [(DEDController *)v7 devices];
-    v43 = [v42 allValues];
+    devices3 = [(DEDController *)selfCopy devices];
+    allValues = [devices3 allValues];
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
     v69[2] = __27__DEDController_addDevice___block_invoke;
     v69[3] = &unk_278F65858;
-    v70 = v4;
-    v44 = [v43 ded_findWithBlock:v69];
+    v70 = deviceCopy;
+    v44 = [allValues ded_findWithBlock:v69];
   }
 
   else
@@ -3704,19 +3704,19 @@ void __47__DEDController_purgeStaleSessions_completion___block_invoke_112(id *a1
     v44 = 0;
   }
 
-  v45 = [v4 hashingKey];
+  hashingKey = [deviceCopy hashingKey];
   if (v44)
   {
-    v46 = [(DEDController *)v7 log];
+    v46 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
-      v47 = [v4 transport];
-      v48 = [v4 publicLogSafeIdentifier];
+      transport3 = [deviceCopy transport];
+      publicLogSafeIdentifier3 = [deviceCopy publicLogSafeIdentifier];
       v49 = [v44 description];
       *buf = 67109634;
-      *v72 = v47;
+      *v72 = transport3;
       *&v72[4] = 2114;
-      *&v72[6] = v48;
+      *&v72[6] = publicLogSafeIdentifier3;
       *&v72[14] = 2114;
       *&v72[16] = v49;
       _os_log_impl(&dword_248AD7000, v46, OS_LOG_TYPE_INFO, "Not adding temp device [%i-%{public}@], already have [%{public}@]", buf, 0x1Cu);
@@ -3725,24 +3725,24 @@ void __47__DEDController_purgeStaleSessions_completion___block_invoke_112(id *a1
 
   else
   {
-    v50 = [(DEDController *)v7 devices];
-    [v50 setObject:v4 forKeyedSubscript:v45];
+    devices4 = [(DEDController *)selfCopy devices];
+    [devices4 setObject:deviceCopy forKeyedSubscript:hashingKey];
 
-    v46 = [(DEDController *)v7 log];
+    v46 = [(DEDController *)selfCopy log];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = [v4 transport];
-      v52 = [v4 publicLogSafeIdentifier];
+      transport4 = [deviceCopy transport];
+      publicLogSafeIdentifier4 = [deviceCopy publicLogSafeIdentifier];
       *buf = 67109378;
-      *v72 = v51;
+      *v72 = transport4;
       *&v72[4] = 2114;
-      *&v72[6] = v52;
+      *&v72[6] = publicLogSafeIdentifier4;
       _os_log_impl(&dword_248AD7000, v46, OS_LOG_TYPE_DEFAULT, "Did add device [%i-%{public}@]", buf, 0x12u);
     }
   }
 
-  [(DEDController *)v7 logDeviceCounts];
-  objc_sync_exit(v7);
+  [(DEDController *)selfCopy logDeviceCounts];
+  objc_sync_exit(selfCopy);
 
   v53 = *MEMORY[0x277D85DE8];
 }
@@ -3769,17 +3769,17 @@ uint64_t __27__DEDController_addDevice___block_invoke(uint64_t a1, void *a2)
 - (void)logDeviceCounts
 {
   v29 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DEDController *)v2 devices];
-  v4 = [v3 allValues];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  devices = [(DEDController *)selfCopy devices];
+  allValues = [devices allValues];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = 0;
   v7 = 0;
   v8 = 0;
@@ -3798,26 +3798,26 @@ uint64_t __27__DEDController_addDevice___block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v5);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) status];
-        if (v13 > 2)
+        status = [*(*(&v16 + 1) + 8 * v12) status];
+        if (status > 2)
         {
-          if (v13 == 3)
+          if (status == 3)
           {
             ++v7;
           }
 
-          else if (v13 == 4)
+          else if (status == 4)
           {
             ++v6;
           }
         }
 
-        else if (v13 == 1)
+        else if (status == 1)
         {
           ++v9;
         }
 
-        else if (v13 == 2)
+        else if (status == 2)
         {
           ++v8;
         }
@@ -3832,7 +3832,7 @@ uint64_t __27__DEDController_addDevice___block_invoke(uint64_t a1, void *a2)
     while (v10);
   }
 
-  v14 = [(DEDController *)v2 log];
+  v14 = [(DEDController *)selfCopy log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218752;
@@ -3928,138 +3928,138 @@ void __34__DEDController_sharingConnection__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)addDidStartSessionCompletion:(id)a3 withIdentifier:(id)a4
+- (void)addDidStartSessionCompletion:(id)completion withIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(DEDController *)self sessionDidStartBlocks];
-  objc_sync_enter(v7);
-  v8 = [(DEDController *)self sessionDidStartBlocks];
-  v9 = MEMORY[0x24C1E5320](v10);
-  [v8 setObject:v9 forKey:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  sessionDidStartBlocks = [(DEDController *)self sessionDidStartBlocks];
+  objc_sync_enter(sessionDidStartBlocks);
+  sessionDidStartBlocks2 = [(DEDController *)self sessionDidStartBlocks];
+  v9 = MEMORY[0x24C1E5320](completionCopy);
+  [sessionDidStartBlocks2 setObject:v9 forKey:identifierCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(sessionDidStartBlocks);
 }
 
-- (id)popDidStartSessionCompletionWithIdentifier:(id)a3
+- (id)popDidStartSessionCompletionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDController *)self sessionDidStartBlocks];
-  objc_sync_enter(v5);
-  v6 = [(DEDController *)self sessionDidStartBlocks];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  sessionDidStartBlocks = [(DEDController *)self sessionDidStartBlocks];
+  objc_sync_enter(sessionDidStartBlocks);
+  sessionDidStartBlocks2 = [(DEDController *)self sessionDidStartBlocks];
+  v7 = [sessionDidStartBlocks2 objectForKey:identifierCopy];
 
   if (v7)
   {
-    v8 = [(DEDController *)self sessionDidStartBlocks];
-    [v8 removeObjectForKey:v4];
+    sessionDidStartBlocks3 = [(DEDController *)self sessionDidStartBlocks];
+    [sessionDidStartBlocks3 removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v8 = DEDSessionStartLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    sessionDidStartBlocks3 = DEDSessionStartLog();
+    if (os_log_type_enabled(sessionDidStartBlocks3, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "tried to pop a nil session did start block", v11, 2u);
+      _os_log_impl(&dword_248AD7000, sessionDidStartBlocks3, OS_LOG_TYPE_DEFAULT, "tried to pop a nil session did start block", v11, 2u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(sessionDidStartBlocks);
   v9 = MEMORY[0x24C1E5320](v7);
 
   return v9;
 }
 
-- (void)addSessionStartCompletion:(id)a3 withIdentifier:(id)a4 configuration:(id)a5 targetDevice:(id)a6
+- (void)addSessionStartCompletion:(id)completion withIdentifier:(id)identifier configuration:(id)configuration targetDevice:(id)device
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(DEDController *)self sessionDidStartBlocks];
-  objc_sync_enter(v13);
-  v14 = [(DEDController *)self sessionStartBlocks];
-  v15 = MEMORY[0x24C1E5320](v16);
-  [v14 setObject:v15 forKey:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  deviceCopy = device;
+  sessionDidStartBlocks = [(DEDController *)self sessionDidStartBlocks];
+  objc_sync_enter(sessionDidStartBlocks);
+  sessionStartBlocks = [(DEDController *)self sessionStartBlocks];
+  v15 = MEMORY[0x24C1E5320](completionCopy);
+  [sessionStartBlocks setObject:v15 forKey:identifierCopy];
 
-  [v11 bugSessionStartTimeout];
-  [(DEDController *)self _timeOutSessionStartBlockWithIdentifier:v10 targetDevice:v12 timeout:?];
-  objc_sync_exit(v13);
+  [configurationCopy bugSessionStartTimeout];
+  [(DEDController *)self _timeOutSessionStartBlockWithIdentifier:identifierCopy targetDevice:deviceCopy timeout:?];
+  objc_sync_exit(sessionDidStartBlocks);
 }
 
-- (id)popSessionStartCompletionWithIdentifier:(id)a3
+- (id)popSessionStartCompletionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDController *)self sessionDidStartBlocks];
-  objc_sync_enter(v5);
-  v6 = [(DEDController *)self sessionStartBlocks];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  sessionDidStartBlocks = [(DEDController *)self sessionDidStartBlocks];
+  objc_sync_enter(sessionDidStartBlocks);
+  sessionStartBlocks = [(DEDController *)self sessionStartBlocks];
+  v7 = [sessionStartBlocks objectForKey:identifierCopy];
 
   if (v7)
   {
-    v8 = [(DEDController *)self sessionStartBlocks];
-    [v8 removeObjectForKey:v4];
+    sessionStartBlocks2 = [(DEDController *)self sessionStartBlocks];
+    [sessionStartBlocks2 removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v8 = DEDSessionStartLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    sessionStartBlocks2 = DEDSessionStartLog();
+    if (os_log_type_enabled(sessionStartBlocks2, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "tried to pop a nil session start block", v11, 2u);
+      _os_log_impl(&dword_248AD7000, sessionStartBlocks2, OS_LOG_TYPE_DEFAULT, "tried to pop a nil session start block", v11, 2u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(sessionDidStartBlocks);
   v9 = MEMORY[0x24C1E5320](v7);
 
   return v9;
 }
 
-- (BOOL)hasCompletionBlockWithIdentifier:(id)a3
+- (BOOL)hasCompletionBlockWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDController *)self sessionStartBlocks];
-  objc_sync_enter(v5);
-  v6 = [(DEDController *)self sessionStartBlocks];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  sessionStartBlocks = [(DEDController *)self sessionStartBlocks];
+  objc_sync_enter(sessionStartBlocks);
+  sessionStartBlocks2 = [(DEDController *)self sessionStartBlocks];
+  v7 = [sessionStartBlocks2 objectForKey:identifierCopy];
   v8 = v7 != 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(sessionStartBlocks);
   return v8;
 }
 
-- (void)_timeOutSessionStartBlockWithIdentifier:(id)a3 targetDevice:(id)a4 timeout:(double)a5
+- (void)_timeOutSessionStartBlockWithIdentifier:(id)identifier targetDevice:(id)device timeout:(double)timeout
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   v10 = [(DEDController *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = v8;
+    v22 = identifierCopy;
     v23 = 2048;
-    v24 = a5;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_DEFAULT, "Session [%{public}@] will timeout after [%.1lf] seconds", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v11 = dispatch_time(0, (a5 * 1000000000.0));
+  v11 = dispatch_time(0, (timeout * 1000000000.0));
   WeakRetained = objc_loadWeakRetained(buf);
-  v13 = [WeakRetained replyQueue];
+  replyQueue = [WeakRetained replyQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__DEDController_CompletionBlocks___timeOutSessionStartBlockWithIdentifier_targetDevice_timeout___block_invoke;
   block[3] = &unk_278F658A8;
   objc_copyWeak(&v20, buf);
-  v18 = v8;
-  v19 = v9;
-  v14 = v9;
-  v15 = v8;
-  dispatch_after(v11, v13, block);
+  v18 = identifierCopy;
+  v19 = deviceCopy;
+  v14 = deviceCopy;
+  v15 = identifierCopy;
+  dispatch_after(v11, replyQueue, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);

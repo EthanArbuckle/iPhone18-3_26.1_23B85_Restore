@@ -1,16 +1,16 @@
 @interface STDowngradeMigrator
 - (STDowngradeMigrator)init;
-- (void)triggerMigrationWithPersistenceController:(id)a3 andRequestManager:(id)a4 outError:(id *)a5;
+- (void)triggerMigrationWithPersistenceController:(id)controller andRequestManager:(id)manager outError:(id *)error;
 @end
 
 @implementation STDowngradeMigrator
 
-- (void)triggerMigrationWithPersistenceController:(id)a3 andRequestManager:(id)a4 outError:(id *)a5
+- (void)triggerMigrationWithPersistenceController:(id)controller andRequestManager:(id)manager outError:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  sub_1000B457C(a3, v8);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1000B457C(controller, managerCopy);
   swift_unknownObjectRelease();
 }
 

@@ -1,29 +1,29 @@
 @interface ADEspressoStillImageInferenceDescriptor
-- (ADEspressoStillImageInferenceDescriptor)initWithNetworkProvider:(id)a3;
+- (ADEspressoStillImageInferenceDescriptor)initWithNetworkProvider:(id)provider;
 @end
 
 @implementation ADEspressoStillImageInferenceDescriptor
 
-- (ADEspressoStillImageInferenceDescriptor)initWithNetworkProvider:(id)a3
+- (ADEspressoStillImageInferenceDescriptor)initWithNetworkProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 url];
-  v6 = [v4 layoutNamesDict];
+  providerCopy = provider;
+  v5 = [providerCopy url];
+  layoutNamesDict = [providerCopy layoutNamesDict];
   v15.receiver = self;
   v15.super_class = ADEspressoStillImageInferenceDescriptor;
-  v7 = [(ADEspressoInferenceDescriptor *)&v15 initWithUrl:v5 layoutNames:v6];
+  v7 = [(ADEspressoInferenceDescriptor *)&v15 initWithUrl:v5 layoutNames:layoutNamesDict];
 
   if (v7)
   {
-    v8 = [v4 descriptorForBuffer:@"rgb" isInput:1 pixelFormat:1111970369];
+    v8 = [providerCopy descriptorForBuffer:@"rgb" isInput:1 pixelFormat:1111970369];
     colorInput = v7->_colorInput;
     v7->_colorInput = v8;
 
-    v10 = [v4 descriptorForBuffer:@"jasper" isInput:1 pixelFormat:1717856627];
+    v10 = [providerCopy descriptorForBuffer:@"jasper" isInput:1 pixelFormat:1717856627];
     jasperInput = v7->_jasperInput;
     v7->_jasperInput = v10;
 
-    v12 = [v4 descriptorForBuffer:@"depth" isInput:0 pixelFormat:1717856627];
+    v12 = [providerCopy descriptorForBuffer:@"depth" isInput:0 pixelFormat:1717856627];
     depthOutput = v7->_depthOutput;
     v7->_depthOutput = v12;
   }

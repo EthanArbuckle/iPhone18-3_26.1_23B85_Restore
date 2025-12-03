@@ -1,8 +1,8 @@
 @interface FTOpenArbitraryURLEngagementDescriptor
 - (FTOpenArbitraryURLEngagementDescriptor)init;
-- (FTOpenArbitraryURLEngagementDescriptor)initWithURL:(id)a3 engagementReporter:(id)a4;
-- (id)openInNewsReferralItemWithTrackableWidgetState:(id)a3 assetHandlesByRemoteURL:(id)a4;
-- (id)userEngagementWithWidgetEventTracker:(id)a3 trackableWidgetState:(id)a4;
+- (FTOpenArbitraryURLEngagementDescriptor)initWithURL:(id)l engagementReporter:(id)reporter;
+- (id)openInNewsReferralItemWithTrackableWidgetState:(id)state assetHandlesByRemoteURL:(id)l;
+- (id)userEngagementWithWidgetEventTracker:(id)tracker trackableWidgetState:(id)state;
 @end
 
 @implementation FTOpenArbitraryURLEngagementDescriptor
@@ -30,20 +30,20 @@
   objc_exception_throw(v4);
 }
 
-- (FTOpenArbitraryURLEngagementDescriptor)initWithURL:(id)a3 engagementReporter:(id)a4
+- (FTOpenArbitraryURLEngagementDescriptor)initWithURL:(id)l engagementReporter:(id)reporter
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  reporterCopy = reporter;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C5314();
-    if (v7)
+    if (reporterCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (reporterCopy)
   {
     goto LABEL_6;
   }
@@ -59,11 +59,11 @@ LABEL_6:
   v8 = [(FTOpenArbitraryURLEngagementDescriptor *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     targetURL = v8->_targetURL;
     v8->_targetURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [reporterCopy copy];
     reporter = v8->_reporter;
     v8->_reporter = v11;
   }
@@ -71,20 +71,20 @@ LABEL_6:
   return v8;
 }
 
-- (id)userEngagementWithWidgetEventTracker:(id)a3 trackableWidgetState:(id)a4
+- (id)userEngagementWithWidgetEventTracker:(id)tracker trackableWidgetState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  trackerCopy = tracker;
+  stateCopy = state;
+  if (!trackerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C549C();
-    if (v7)
+    if (stateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (stateCopy)
   {
     goto LABEL_6;
   }
@@ -95,17 +95,17 @@ LABEL_6:
   }
 
 LABEL_6:
-  v8 = [(FTOpenArbitraryURLEngagementDescriptor *)self reporter];
-  v9 = (v8)[2](v8, v6, v7);
+  reporter = [(FTOpenArbitraryURLEngagementDescriptor *)self reporter];
+  v9 = (reporter)[2](reporter, trackerCopy, stateCopy);
 
   return v9;
 }
 
-- (id)openInNewsReferralItemWithTrackableWidgetState:(id)a3 assetHandlesByRemoteURL:(id)a4
+- (id)openInNewsReferralItemWithTrackableWidgetState:(id)state assetHandlesByRemoteURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  stateCopy = state;
+  lCopy = l;
+  if (!stateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C5624();
   }

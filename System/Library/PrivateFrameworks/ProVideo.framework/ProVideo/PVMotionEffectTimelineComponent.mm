@@ -1,7 +1,7 @@
 @interface PVMotionEffectTimelineComponent
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)a3 documentInfo:(id *)a4;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)lock documentInfo:(id *)info;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)introDuration_NoLock;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)loopTimeOverride;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)loopTimeOverride_NoLock;
@@ -11,70 +11,70 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineFrameDuration_NoLock;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineLastFrame;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineLastFrame_NoLock;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 documentInfo:(id *)a4;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 editRange:(id *)a4 forcePosterFrame:(id *)a5 documentInfo:(BOOL)a6;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 forcePosterFrame:(id *)a4 documentInfo:(BOOL)a5;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)a3 documentInfo:(id *)a4;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)a3 documentInfo:(id *)a4;
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock documentInfo:(id *)info;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock editRange:(id *)range forcePosterFrame:(id *)frame documentInfo:(BOOL)info;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock forcePosterFrame:(id *)frame documentInfo:(BOOL)info;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)lock documentInfo:(id *)info;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)lock documentInfo:(id *)info;
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info;
 - (BOOL)forceDisableBuildAnimation;
 - (BOOL)forceDisableBuildAnimation_NoLock;
 - (BOOL)forceDisableLoop;
 - (BOOL)forceDisableLoop_NoLock;
 - (BOOL)isForceRenderAtPosterFrameEnabled;
-- (BOOL)isForceRenderAtPosterFrameEnabled:(id)a3;
+- (BOOL)isForceRenderAtPosterFrameEnabled:(id)enabled;
 - (BOOL)loopTimeOverrideEnabled;
 - (BOOL)loopTimeOverrideEnabled_NoLock;
-- (BOOL)motionEffect:(id)a3 propertiesDisableCache:(id)a4 time:(id *)a5 forcePosterFrame:(BOOL)a6;
-- (BOOL)motionEffect:(id)a3 shouldInvalidateCachedRenderForProperty:(id)a4 oldValue:(id)a5 newValue:(id)a6;
-- (PVMotionEffectTimelineComponent)initWithMotionEffect:(id)a3;
+- (BOOL)motionEffect:(id)effect propertiesDisableCache:(id)cache time:(id *)time forcePosterFrame:(BOOL)frame;
+- (BOOL)motionEffect:(id)effect shouldInvalidateCachedRenderForProperty:(id)property oldValue:(id)value newValue:(id)newValue;
+- (PVMotionEffectTimelineComponent)initWithMotionEffect:(id)effect;
 - (double)timelineDurationInSeconds;
 - (double)timelineDurationInSeconds_NoLock;
 - (double)timelineFrameRate;
 - (double)timelineFrameRate_NoLock;
-- (id)motionEffectPropertyKeysThatInvalidateCachedRender:(id)a3;
+- (id)motionEffectPropertyKeysThatInvalidateCachedRender:(id)render;
 - (id)posterFrameMarker;
-- (id)posterFrameMarker_NoLock:(const void *)a3;
+- (id)posterFrameMarker_NoLock:(const void *)lock;
 - (id)timelineMarkers;
-- (id)timelineMarkersOfType:(int)a3;
-- (id)timelineMarkersOfType_NoLock:(int)a3 documentInfo:(const void *)a4;
-- (id)timelineMarkers_NoLock:(const void *)a3;
+- (id)timelineMarkersOfType:(int)type;
+- (id)timelineMarkersOfType_NoLock:(int)lock documentInfo:(const void *)info;
+- (id)timelineMarkers_NoLock:(const void *)lock;
 - (unsigned)timelineDurationInFrames;
 - (unsigned)timelineDurationInFrames_NoLock;
-- (void)applyProperties_NoLock:(id)a3 defaultProperties:(id)a4 documentInfo:(const void *)a5;
-- (void)computeIntroOutroPoints_NoLock:(const void *)a3;
+- (void)applyProperties_NoLock:(id)lock defaultProperties:(id)properties documentInfo:(const void *)info;
+- (void)computeIntroOutroPoints_NoLock:(const void *)lock;
 - (void)dealloc;
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5;
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5;
-- (void)motionEffectDidUnload:(id)a3;
-- (void)setBuildInEnabled_NoLock:(BOOL)a3;
-- (void)setBuildOutEnabled_NoLock:(BOOL)a3;
-- (void)setForceDisableBuildAnimation:(BOOL)a3;
-- (void)setForceDisableBuildAnimation_NoLock:(BOOL)a3;
-- (void)setForceDisableLoop:(BOOL)a3;
-- (void)setForceDisableLoop_NoLock:(BOOL)a3;
-- (void)setLoopTimeOverride:(id *)a3;
-- (void)setLoopTimeOverrideEnabled:(BOOL)a3;
-- (void)setLoopTimeOverrideEnabled_NoLock:(BOOL)a3;
-- (void)setLoopTimeOverride_NoLock:(id *)a3;
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties;
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties;
+- (void)motionEffectDidUnload:(id)unload;
+- (void)setBuildInEnabled_NoLock:(BOOL)lock;
+- (void)setBuildOutEnabled_NoLock:(BOOL)lock;
+- (void)setForceDisableBuildAnimation:(BOOL)animation;
+- (void)setForceDisableBuildAnimation_NoLock:(BOOL)lock;
+- (void)setForceDisableLoop:(BOOL)loop;
+- (void)setForceDisableLoop_NoLock:(BOOL)lock;
+- (void)setLoopTimeOverride:(id *)override;
+- (void)setLoopTimeOverrideEnabled:(BOOL)enabled;
+- (void)setLoopTimeOverrideEnabled_NoLock:(BOOL)lock;
+- (void)setLoopTimeOverride_NoLock:(id *)lock;
 - (void)setNeedsToUpdateSceneDuration_NoLock;
-- (void)setRenderStartOffset_NoLock:(id *)a3;
-- (void)updateSceneDuration_NoLock:(const void *)a3;
+- (void)setRenderStartOffset_NoLock:(id *)lock;
+- (void)updateSceneDuration_NoLock:(const void *)lock;
 @end
 
 @implementation PVMotionEffectTimelineComponent
 
-- (PVMotionEffectTimelineComponent)initWithMotionEffect:(id)a3
+- (PVMotionEffectTimelineComponent)initWithMotionEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v15.receiver = self;
   v15.super_class = PVMotionEffectTimelineComponent;
-  v5 = [(PVMotionEffectComponent *)&v15 initWithMotionEffect:v4];
+  v5 = [(PVMotionEffectComponent *)&v15 initWithMotionEffect:effectCopy];
   v6 = v5;
   if (v5)
   {
@@ -133,14 +133,14 @@
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = &unk_260C3B1FE;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __51__PVMotionEffectTimelineComponent_timelineDuration__block_invoke;
   v7[3] = &unk_279AA5B80;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v7];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v7];
 
   *retstr = v9[2];
   _Block_object_dispose(&v8, 8);
@@ -170,11 +170,11 @@ double __51__PVMotionEffectTimelineComponent_timelineDuration__block_invoke(uint
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineDuration_NoLock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v7 = 120000 * [(PVMotionEffectTimelineComponent *)self timelineDurationInFrames_NoLock];
   [(PVMotionEffectTimelineComponent *)self timelineFrameRate_NoLock];
@@ -188,18 +188,18 @@ double __51__PVMotionEffectTimelineComponent_timelineDuration__block_invoke(uint
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = *"";
   v5[2] = __59__PVMotionEffectTimelineComponent_timelineDurationInFrames__block_invoke;
   v5[3] = &unk_279AA5B80;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v5];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v5];
 
-  LODWORD(v3) = *(v7 + 6);
+  LODWORD(motionEffect) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return motionEffect;
 }
 
 uint64_t __59__PVMotionEffectTimelineComponent_timelineDurationInFrames__block_invoke(uint64_t a1)
@@ -211,11 +211,11 @@ uint64_t __59__PVMotionEffectTimelineComponent_timelineDurationInFrames__block_i
 
 - (unsigned)timelineDurationInFrames_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   return self->_numFrames;
 }
@@ -226,14 +226,14 @@ uint64_t __59__PVMotionEffectTimelineComponent_timelineDurationInFrames__block_i
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __60__PVMotionEffectTimelineComponent_timelineDurationInSeconds__block_invoke;
   v6[3] = &unk_279AA5B80;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v6];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -249,11 +249,11 @@ uint64_t __60__PVMotionEffectTimelineComponent_timelineDurationInSeconds__block_
 
 - (double)timelineDurationInSeconds_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   LODWORD(v5) = self->_numFrames;
   return v5 / self->_frameRate;
@@ -265,14 +265,14 @@ uint64_t __60__PVMotionEffectTimelineComponent_timelineDurationInSeconds__block_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __52__PVMotionEffectTimelineComponent_timelineFrameRate__block_invoke;
   v6[3] = &unk_279AA5B80;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v6];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -288,11 +288,11 @@ uint64_t __52__PVMotionEffectTimelineComponent_timelineFrameRate__block_invoke(u
 
 - (double)timelineFrameRate_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   return self->_frameRate;
 }
@@ -305,14 +305,14 @@ uint64_t __52__PVMotionEffectTimelineComponent_timelineFrameRate__block_invoke(u
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = &unk_260C3B1FE;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __56__PVMotionEffectTimelineComponent_timelineFrameDuration__block_invoke;
   v7[3] = &unk_279AA5B80;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v7];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v7];
 
   *retstr = v9[2];
   _Block_object_dispose(&v8, 8);
@@ -342,11 +342,11 @@ double __56__PVMotionEffectTimelineComponent_timelineFrameDuration__block_invoke
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineFrameDuration_NoLock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   *retstr = self->_frameDuration;
   return result;
@@ -360,14 +360,14 @@ double __56__PVMotionEffectTimelineComponent_timelineFrameDuration__block_invoke
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = &unk_260C3B1FE;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __52__PVMotionEffectTimelineComponent_timelineLastFrame__block_invoke;
   v7[3] = &unk_279AA5B80;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v7];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v7];
 
   *retstr = v9[2];
   _Block_object_dispose(&v8, 8);
@@ -397,11 +397,11 @@ double __52__PVMotionEffectTimelineComponent_timelineLastFrame__block_invoke(uin
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineLastFrame_NoLock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v7 = 120000 * self->_numFrames - 120000;
   v8 = (self->_frameRate * 120000.0);
@@ -409,7 +409,7 @@ double __52__PVMotionEffectTimelineComponent_timelineLastFrame__block_invoke(uin
   return CMTimeMake(retstr, v7, v8);
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime:(SEL)time
 {
   v11 = 0;
   v12 = &v11;
@@ -417,7 +417,7 @@ double __52__PVMotionEffectTimelineComponent_timelineLastFrame__block_invoke(uin
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = &unk_260C3B1FE;
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = *"";
   v9[2] = __65__PVMotionEffectTimelineComponent_componentTimeFromTimelineTime___block_invoke;
@@ -425,7 +425,7 @@ double __52__PVMotionEffectTimelineComponent_timelineLastFrame__block_invoke(uin
   v9[4] = self;
   v9[5] = &v11;
   v10 = *a4;
-  [v7 runEnsuringDocumentReadyAndLockingDocument:v9];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v9];
 
   *retstr = v12[2];
   _Block_object_dispose(&v11, 8);
@@ -455,7 +455,7 @@ double __65__PVMotionEffectTimelineComponent_componentTimeFromTimelineTime___blo
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime:(SEL)time
 {
   v11 = 0;
   v12 = &v11;
@@ -463,7 +463,7 @@ double __65__PVMotionEffectTimelineComponent_componentTimeFromTimelineTime___blo
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = &unk_260C3B1FE;
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = *"";
   v9[2] = __65__PVMotionEffectTimelineComponent_timelineTimeFromComponentTime___block_invoke;
@@ -471,7 +471,7 @@ double __65__PVMotionEffectTimelineComponent_componentTimeFromTimelineTime___blo
   v9[4] = self;
   v9[5] = &v11;
   v10 = *a4;
-  [v7 runEnsuringDocumentReadyAndLockingDocument:v9];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v9];
 
   *retstr = v12[2];
   _Block_object_dispose(&v11, 8);
@@ -501,7 +501,7 @@ double __65__PVMotionEffectTimelineComponent_timelineTimeFromComponentTime___blo
   return result;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange:(SEL)range
 {
   v16 = 0;
   v17 = &v16;
@@ -509,7 +509,7 @@ double __65__PVMotionEffectTimelineComponent_timelineTimeFromComponentTime___blo
   v19 = __Block_byref_object_copy__73;
   v20 = __Block_byref_object_dispose__74;
   v21 = &unk_260C3B1FE;
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = *"";
   v12[2] = __75__PVMotionEffectTimelineComponent_componentTimeRangeFromTimelineTimeRange___block_invoke;
@@ -520,7 +520,7 @@ double __65__PVMotionEffectTimelineComponent_timelineTimeFromComponentTime___blo
   v13 = *&a4->var0.var0;
   v14 = v8;
   v15 = *&a4->var1.var1;
-  [v7 runEnsuringDocumentReadyAndLockingDocument:v12];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v12];
 
   v9 = v17;
   v10 = *(v17 + 4);
@@ -559,7 +559,7 @@ double __75__PVMotionEffectTimelineComponent_componentTimeRangeFromTimelineTimeR
   return result;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)a3
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange:(SEL)range
 {
   v16 = 0;
   v17 = &v16;
@@ -567,7 +567,7 @@ double __75__PVMotionEffectTimelineComponent_componentTimeRangeFromTimelineTimeR
   v19 = __Block_byref_object_copy__73;
   v20 = __Block_byref_object_dispose__74;
   v21 = &unk_260C3B1FE;
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = *"";
   v12[2] = __75__PVMotionEffectTimelineComponent_timelineTimeRangeFromComponentTimeRange___block_invoke;
@@ -578,7 +578,7 @@ double __75__PVMotionEffectTimelineComponent_componentTimeRangeFromTimelineTimeR
   v13 = *&a4->var0.var0;
   v14 = v8;
   v15 = *&a4->var1.var1;
-  [v7 runEnsuringDocumentReadyAndLockingDocument:v12];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v12];
 
   v9 = v17;
   v10 = *(v17 + 4);
@@ -625,14 +625,14 @@ double __75__PVMotionEffectTimelineComponent_timelineTimeRangeFromComponentTimeR
   v10 = __Block_byref_object_copy__77;
   v11 = __Block_byref_object_dispose__78;
   v12 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __50__PVMotionEffectTimelineComponent_timelineMarkers__block_invoke;
   v6[3] = &unk_279AA5B80;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v6];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -648,22 +648,22 @@ void __50__PVMotionEffectTimelineComponent_timelineMarkers__block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (id)timelineMarkers_NoLock:(const void *)a3
+- (id)timelineMarkers_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  v7 = OZXMarkerCount(*a3);
+  v7 = OZXMarkerCount(*lock);
   if (v7)
   {
     v8 = v7;
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
     for (i = 0; i != v8; ++i)
     {
-      if (!OZXGetMarkerFigTime(*a3, i, v13))
+      if (!OZXGetMarkerFigTime(*lock, i, v13))
       {
         v11 = [PVTimelineMarker markerWithOZXTimeMarkerFigTime:v13];
         [v9 addObject:v11];
@@ -679,7 +679,7 @@ void __50__PVMotionEffectTimelineComponent_timelineMarkers__block_invoke(uint64_
   return v9;
 }
 
-- (id)timelineMarkersOfType:(int)a3
+- (id)timelineMarkersOfType:(int)type
 {
   v10 = 0;
   v11 = &v10;
@@ -687,15 +687,15 @@ void __50__PVMotionEffectTimelineComponent_timelineMarkers__block_invoke(uint64_
   v13 = __Block_byref_object_copy__77;
   v14 = __Block_byref_object_dispose__78;
   v15 = 0;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __57__PVMotionEffectTimelineComponent_timelineMarkersOfType___block_invoke;
   v8[3] = &unk_279AA5BF8;
   v8[4] = self;
   v8[5] = &v10;
-  v9 = a3;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v8];
+  typeCopy = type;
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -711,22 +711,22 @@ void __57__PVMotionEffectTimelineComponent_timelineMarkersOfType___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (id)timelineMarkersOfType_NoLock:(int)a3 documentInfo:(const void *)a4
+- (id)timelineMarkersOfType_NoLock:(int)lock documentInfo:(const void *)info
 {
-  v7 = [(PVMotionEffectComponent *)self motionEffect];
-  [v7 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  v9 = OZXMarkerCount(*a4);
+  v9 = OZXMarkerCount(*info);
   if (v9)
   {
     v10 = v9;
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v9];
     for (i = 0; i != v10; ++i)
     {
-      if (!OZXGetMarkerFigTimeOfType(*a4, i, a3, v15))
+      if (!OZXGetMarkerFigTimeOfType(*info, i, lock, v15))
       {
         v13 = [PVTimelineMarker markerWithOZXTimeMarkerFigTime:v15];
         [v11 addObject:v13];
@@ -750,14 +750,14 @@ void __57__PVMotionEffectTimelineComponent_timelineMarkersOfType___block_invoke(
   v10 = __Block_byref_object_copy__77;
   v11 = __Block_byref_object_dispose__78;
   v12 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __52__PVMotionEffectTimelineComponent_posterFrameMarker__block_invoke;
   v6[3] = &unk_279AA5B80;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v6];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -773,21 +773,21 @@ void __52__PVMotionEffectTimelineComponent_posterFrameMarker__block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (id)posterFrameMarker_NoLock:(const void *)a3
+- (id)posterFrameMarker_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   posterFrameMarker = self->_posterFrameMarker;
   if (!posterFrameMarker)
   {
-    v8 = [(PVMotionEffectTimelineComponent *)self timelineMarkersOfType_NoLock:8 documentInfo:a3];
-    v9 = [v8 firstObject];
+    v8 = [(PVMotionEffectTimelineComponent *)self timelineMarkersOfType_NoLock:8 documentInfo:lock];
+    firstObject = [v8 firstObject];
     v10 = self->_posterFrameMarker;
-    self->_posterFrameMarker = v9;
+    self->_posterFrameMarker = firstObject;
 
     v11 = self->_posterFrameMarker;
     if (!v11 || ([(PVTimelineMarker *)v11 timeRange], (BYTE12(v17[0]) & 1) == 0))
@@ -809,27 +809,27 @@ void __52__PVMotionEffectTimelineComponent_posterFrameMarker__block_invoke(uint6
   return v15;
 }
 
-- (void)setLoopTimeOverrideEnabled:(BOOL)a3
+- (void)setLoopTimeOverrideEnabled:(BOOL)enabled
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __62__PVMotionEffectTimelineComponent_setLoopTimeOverrideEnabled___block_invoke;
   v6[3] = &unk_279AA5C20;
   v6[4] = self;
-  v7 = a3;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+  enabledCopy = enabled;
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 }
 
-- (void)setLoopTimeOverrideEnabled_NoLock:(BOOL)a3
+- (void)setLoopTimeOverrideEnabled_NoLock:(BOOL)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  self->_loopTimeOverrideEnabled = a3;
+  self->_loopTimeOverrideEnabled = lock;
 }
 
 - (BOOL)loopTimeOverrideEnabled
@@ -838,18 +838,18 @@ void __52__PVMotionEffectTimelineComponent_posterFrameMarker__block_invoke(uint6
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = *"";
   v5[2] = __58__PVMotionEffectTimelineComponent_loopTimeOverrideEnabled__block_invoke;
   v5[3] = &unk_279AA5B80;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v5];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(motionEffect) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return motionEffect;
 }
 
 uint64_t __58__PVMotionEffectTimelineComponent_loopTimeOverrideEnabled__block_invoke(uint64_t a1)
@@ -861,25 +861,25 @@ uint64_t __58__PVMotionEffectTimelineComponent_loopTimeOverrideEnabled__block_in
 
 - (BOOL)loopTimeOverrideEnabled_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   return self->_loopTimeOverrideEnabled;
 }
 
-- (void)setLoopTimeOverride:(id *)a3
+- (void)setLoopTimeOverride:(id *)override
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __55__PVMotionEffectTimelineComponent_setLoopTimeOverride___block_invoke;
   v6[3] = &unk_279AA5C48;
   v6[4] = self;
-  v7 = *a3;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+  v7 = *override;
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 }
 
 uint64_t __55__PVMotionEffectTimelineComponent_setLoopTimeOverride___block_invoke(uint64_t a1)
@@ -890,16 +890,16 @@ uint64_t __55__PVMotionEffectTimelineComponent_setLoopTimeOverride___block_invok
   return [v1 setLoopTimeOverride_NoLock:&v3];
 }
 
-- (void)setLoopTimeOverride_NoLock:(id *)a3
+- (void)setLoopTimeOverride_NoLock:(id *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  var3 = a3->var3;
-  *(&self->_loopTimeOverrideEnabled + 4) = *&a3->var0;
+  var3 = lock->var3;
+  *(&self->_loopTimeOverrideEnabled + 4) = *&lock->var0;
   *&self->_loopTimeOverride.flags = var3;
 }
 
@@ -911,14 +911,14 @@ uint64_t __55__PVMotionEffectTimelineComponent_setLoopTimeOverride___block_invok
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = &unk_260C3B1FE;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __51__PVMotionEffectTimelineComponent_loopTimeOverride__block_invoke;
   v7[3] = &unk_279AA5B80;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v7];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v7];
 
   *retstr = v9[2];
   _Block_object_dispose(&v8, 8);
@@ -948,37 +948,37 @@ double __51__PVMotionEffectTimelineComponent_loopTimeOverride__block_invoke(uint
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)loopTimeOverride_NoLock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   *retstr = *(&self->_loopTimeOverrideEnabled + 4);
   return result;
 }
 
-- (void)setForceDisableLoop:(BOOL)a3
+- (void)setForceDisableLoop:(BOOL)loop
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __55__PVMotionEffectTimelineComponent_setForceDisableLoop___block_invoke;
   v6[3] = &unk_279AA5C20;
   v6[4] = self;
-  v7 = a3;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+  loopCopy = loop;
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 }
 
-- (void)setForceDisableLoop_NoLock:(BOOL)a3
+- (void)setForceDisableLoop_NoLock:(BOOL)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  METimeRemap::setForceDisableLoop(&self->_timeRemap, a3);
+  METimeRemap::setForceDisableLoop(&self->_timeRemap, lock);
 }
 
 - (BOOL)forceDisableLoop
@@ -987,18 +987,18 @@ double __51__PVMotionEffectTimelineComponent_loopTimeOverride__block_invoke(uint
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = *"";
   v5[2] = __51__PVMotionEffectTimelineComponent_forceDisableLoop__block_invoke;
   v5[3] = &unk_279AA5B80;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v5];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(motionEffect) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return motionEffect;
 }
 
 uint64_t __51__PVMotionEffectTimelineComponent_forceDisableLoop__block_invoke(uint64_t a1)
@@ -1010,36 +1010,36 @@ uint64_t __51__PVMotionEffectTimelineComponent_forceDisableLoop__block_invoke(ui
 
 - (BOOL)forceDisableLoop_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   return METimeRemap::forceDisableLoop(&self->_timeRemap);
 }
 
-- (void)setForceDisableBuildAnimation:(BOOL)a3
+- (void)setForceDisableBuildAnimation:(BOOL)animation
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = *"";
   v6[2] = __65__PVMotionEffectTimelineComponent_setForceDisableBuildAnimation___block_invoke;
   v6[3] = &unk_279AA5C20;
   v6[4] = self;
-  v7 = a3;
-  [v5 runEnsuringDocumentReadyAndLockingDocument:v6];
+  animationCopy = animation;
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v6];
 }
 
-- (void)setForceDisableBuildAnimation_NoLock:(BOOL)a3
+- (void)setForceDisableBuildAnimation_NoLock:(BOOL)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  METimeRemap::setForceDisableBuildAnimation(&self->_timeRemap, a3);
+  METimeRemap::setForceDisableBuildAnimation(&self->_timeRemap, lock);
 }
 
 - (BOOL)forceDisableBuildAnimation
@@ -1048,18 +1048,18 @@ uint64_t __51__PVMotionEffectTimelineComponent_forceDisableLoop__block_invoke(ui
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = *"";
   v5[2] = __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block_invoke;
   v5[3] = &unk_279AA5B80;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 runEnsuringDocumentReadyAndLockingDocument:v5];
+  [motionEffect runEnsuringDocumentReadyAndLockingDocument:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(motionEffect) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return motionEffect;
 }
 
 uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block_invoke(uint64_t a1)
@@ -1071,48 +1071,48 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
 
 - (BOOL)forceDisableBuildAnimation_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   return METimeRemap::forceDisableBuildAnimation(&self->_timeRemap);
 }
 
 - (BOOL)isForceRenderAtPosterFrameEnabled
 {
-  v2 = [(PVMotionEffectComponent *)self motionEffect];
-  v3 = [v2 inspectablePropertyForKey:@"RenderAtPosterTime"];
-  v4 = [v3 BOOLValue];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  v3 = [motionEffect inspectablePropertyForKey:@"RenderAtPosterTime"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isForceRenderAtPosterFrameEnabled:(id)a3
+- (BOOL)isForceRenderAtPosterFrameEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:@"RenderAtPosterTime"];
-  v4 = [v3 BOOLValue];
+  v3 = [enabled objectForKeyedSubscript:@"RenderAtPosterTime"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)a3 documentInfo:(id *)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)lock documentInfo:(id *)info
 {
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v9 = [(PVMotionEffectComponent *)self motionEffect];
-  [v9 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  v11 = v10;
-  if (v10)
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  v11 = motionEffect3;
+  if (motionEffect3)
   {
-    [v10 effectRange];
+    [motionEffect3 effectRange];
   }
 
   else
@@ -1122,8 +1122,8 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
     v17 = 0u;
   }
 
-  v12 = *&a4->var0;
-  var3 = a4->var3;
+  v12 = *&info->var0;
+  var3 = info->var3;
   v14[0] = v17;
   v14[1] = v18;
   v14[2] = v19;
@@ -1131,37 +1131,37 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
   return [(PVMotionEffectTimelineComponent *)self componentTimeFromTimelineTime_NoLock:&v15 editRange:v14 documentInfo:a5];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)componentTimeFromTimelineTime_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info
 {
-  v10 = [(PVMotionEffectComponent *)self motionEffect:a4];
+  v10 = [(PVMotionEffectComponent *)self motionEffect:range];
   [v10 assertDocumentIsLocked];
 
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
-  [v11 assertDocumentStatusIsLoadedOrReady];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentStatusIsLoadedOrReady];
 
-  v12 = *&a5->var0.var3;
-  *&range1.start.value = *&a5->var0.var0;
+  v12 = *&info->var0.var3;
+  *&range1.start.value = *&info->var0.var0;
   *&range1.start.epoch = v12;
-  *&range1.duration.timescale = *&a5->var1.var1;
+  *&range1.duration.timescale = *&info->var1.var1;
   v13 = *(MEMORY[0x277CC08C8] + 16);
   *&range2.start.value = *MEMORY[0x277CC08C8];
   *&range2.start.epoch = v13;
   *&range2.duration.timescale = *(MEMORY[0x277CC08C8] + 32);
   if (CMTimeRangeEqual(&range1, &range2))
   {
-    v14 = *&a5->var0.var3;
-    *&range1.start.value = *&a5->var0.var0;
+    v14 = *&info->var0.var3;
+    *&range1.start.value = *&info->var0.var0;
     *&range1.start.epoch = v14;
-    *&range1.duration.timescale = *&a5->var1.var1;
+    *&range1.duration.timescale = *&info->var1.var1;
     v15 = CMTimeRangeCopyDescription(0, &range1);
-    v16 = [(PVMotionEffectComponent *)self motionEffect];
-    v17 = [(PVMotionEffectComponent *)self motionEffect];
-    v18 = [v17 debugDisplayName];
-    NSLog(&cfstr_WarningInvalid.isa, v15, v16, v18);
+    motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+    debugDisplayName = [motionEffect3 debugDisplayName];
+    NSLog(&cfstr_WarningInvalid.isa, v15, motionEffect2, debugDisplayName);
   }
 
   memset(&range1, 0, 24);
-  METimeRemap::componentTimeFromMotionTime(&self->_timeRemap, a4, a5, &range1);
+  METimeRemap::componentTimeFromMotionTime(&self->_timeRemap, range, info, &range1);
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
@@ -1171,22 +1171,22 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
   return CMTimeSubtract(retstr, &range2.start, &rhs);
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 documentInfo:(id *)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock documentInfo:(id *)info
 {
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v9 = [(PVMotionEffectComponent *)self motionEffect];
-  [v9 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  v11 = v10;
-  if (v10)
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  v11 = motionEffect3;
+  if (motionEffect3)
   {
-    [v10 effectRange];
+    [motionEffect3 effectRange];
   }
 
   else
@@ -1196,8 +1196,8 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
     v17 = 0u;
   }
 
-  v12 = *&a4->var0;
-  var3 = a4->var3;
+  v12 = *&info->var0;
+  var3 = info->var3;
   v14[0] = v17;
   v14[1] = v18;
   v14[2] = v19;
@@ -1205,71 +1205,71 @@ uint64_t __61__PVMotionEffectTimelineComponent_forceDisableBuildAnimation__block
   return [(PVMotionEffectTimelineComponent *)self timelineTimeFromComponentTime_NoLock:&v15 editRange:v14 documentInfo:a5];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info
 {
-  v10 = [(PVMotionEffectComponent *)self motionEffect:a4];
+  v10 = [(PVMotionEffectComponent *)self motionEffect:range];
   [v10 assertDocumentIsLocked];
 
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
-  [v11 assertDocumentStatusIsLoadedOrReady];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentStatusIsLoadedOrReady];
 
-  v12 = *&a5->var0.var3;
-  *&range1.start.value = *&a5->var0.var0;
+  v12 = *&info->var0.var3;
+  *&range1.start.value = *&info->var0.var0;
   *&range1.start.epoch = v12;
-  *&range1.duration.timescale = *&a5->var1.var1;
+  *&range1.duration.timescale = *&info->var1.var1;
   v13 = *(MEMORY[0x277CC08C8] + 16);
   *&range2.start.value = *MEMORY[0x277CC08C8];
   *&range2.start.epoch = v13;
   *&range2.duration.timescale = *(MEMORY[0x277CC08C8] + 32);
   if (CMTimeRangeEqual(&range1, &range2))
   {
-    v14 = *&a5->var0.var3;
-    *&range1.start.value = *&a5->var0.var0;
+    v14 = *&info->var0.var3;
+    *&range1.start.value = *&info->var0.var0;
     *&range1.start.epoch = v14;
-    *&range1.duration.timescale = *&a5->var1.var1;
+    *&range1.duration.timescale = *&info->var1.var1;
     v15 = CMTimeRangeCopyDescription(0, &range1);
-    v16 = [(PVMotionEffectComponent *)self motionEffect];
-    v17 = [(PVMotionEffectComponent *)self motionEffect];
-    v18 = [v17 debugDisplayName];
-    NSLog(&cfstr_WarningInvalid.isa, v15, v16, v18);
+    motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+    motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+    debugDisplayName = [motionEffect3 debugDisplayName];
+    NSLog(&cfstr_WarningInvalid.isa, v15, motionEffect2, debugDisplayName);
   }
 
   v19 = MEMORY[0x277CC0898];
   *&retstr->var0 = *MEMORY[0x277CC0898];
   retstr->var3 = *(v19 + 16);
-  v20 = [(PVMotionEffectComponent *)self motionEffect];
-  v21 = [v20 isTranscription];
+  motionEffect4 = [(PVMotionEffectComponent *)self motionEffect];
+  isTranscription = [motionEffect4 isTranscription];
 
-  if (!v21)
+  if (!isTranscription)
   {
     memset(&range1, 0, 24);
-    *&range2.start.value = *&a4->var0;
-    range2.start.epoch = a4->var3;
+    *&range2.start.value = *&range->var0;
+    range2.start.epoch = range->var3;
     rhs = self->_renderStartOffset;
     CMTimeAdd(&range1.start, &range2.start, &rhs);
-    METimeRemap::motionTimeFromComponentTime(&self->_timeRemap, &range1.start, a5, 0, retstr);
+    METimeRemap::motionTimeFromComponentTime(&self->_timeRemap, &range1.start, info, 0, retstr);
     goto LABEL_14;
   }
 
-  v22 = [(PVMotionEffectComponent *)self motionEffect];
-  v23 = [v22 isPreview];
+  motionEffect5 = [(PVMotionEffectComponent *)self motionEffect];
+  isPreview = [motionEffect5 isPreview];
 
-  if (!v23)
+  if (!isPreview)
   {
-    *&range2.start.value = *&a4->var0;
-    range2.start.epoch = a4->var3;
-    rhs = a5->var0;
+    *&range2.start.value = *&range->var0;
+    range2.start.epoch = range->var3;
+    rhs = info->var0;
     CMTimeSubtract(&range1.start, &range2.start, &rhs);
     goto LABEL_9;
   }
 
-  v24 = [(PVMotionEffectComponent *)self motionEffect];
-  v25 = [v24 isRecording];
+  motionEffect6 = [(PVMotionEffectComponent *)self motionEffect];
+  isRecording = [motionEffect6 isRecording];
 
-  if (v25)
+  if (isRecording)
   {
-    *&range1.start.value = *&a4->var0;
-    range1.start.epoch = a4->var3;
+    *&range1.start.value = *&range->var0;
+    range1.start.epoch = range->var3;
 LABEL_9:
     *&range2.start.value = *&self->_renderStartOffset.value;
     range2.start.epoch = self->_renderStartOffset.epoch;
@@ -1286,7 +1286,7 @@ LABEL_9:
   epoch = p_loopTime->epoch;
   v29 = 0uLL;
   v30 = 0;
-  operator/(&a4->var0, &v31, &v29);
+  operator/(&range->var0, &v31, &v29);
   CMTimeMake(&v35, 1, 1);
   *&range1.start.value = v29;
   range1.start.epoch = v30;
@@ -1306,9 +1306,9 @@ LABEL_9:
 LABEL_14:
   if ((retstr->var2 & 1) == 0)
   {
-    *&range1.start.value = *&a4->var0;
-    range1.start.epoch = a4->var3;
-    rhs = a5->var0;
+    *&range1.start.value = *&range->var0;
+    range1.start.epoch = range->var3;
+    rhs = info->var0;
     CMTimeSubtract(&range2.start, &range1.start, &rhs);
     rhs = self->_renderStartOffset;
     result = CMTimeAdd(&range1.start, &range2.start, &rhs);
@@ -1319,23 +1319,23 @@ LABEL_14:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 forcePosterFrame:(id *)a4 documentInfo:(BOOL)a5
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock forcePosterFrame:(id *)frame documentInfo:(BOOL)info
 {
-  v7 = a5;
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  [v10 assertDocumentIsLocked];
+  infoCopy = info;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
-  [v11 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
-  v12 = [(PVMotionEffectComponent *)self motionEffect];
-  v13 = v12;
-  if (v12)
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  v13 = motionEffect3;
+  if (motionEffect3)
   {
-    [v12 effectRange];
+    [motionEffect3 effectRange];
   }
 
   else
@@ -1345,26 +1345,26 @@ LABEL_14:
     v19 = 0u;
   }
 
-  v14 = *&a4->var0;
-  var3 = a4->var3;
+  v14 = *&frame->var0;
+  var3 = frame->var3;
   v16[0] = v19;
   v16[1] = v20;
   v16[2] = v21;
   v17 = v14;
-  return [(PVMotionEffectTimelineComponent *)self timelineTimeFromComponentTime_NoLock:&v17 editRange:v16 forcePosterFrame:v7 documentInfo:a6];
+  return [(PVMotionEffectTimelineComponent *)self timelineTimeFromComponentTime_NoLock:&v17 editRange:v16 forcePosterFrame:infoCopy documentInfo:a6];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)a3 editRange:(id *)a4 forcePosterFrame:(id *)a5 documentInfo:(BOOL)a6
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timelineTimeFromComponentTime_NoLock:(SEL)lock editRange:(id *)range forcePosterFrame:(id *)frame documentInfo:(BOOL)info
 {
-  v8 = a6;
-  v13 = [(PVMotionEffectComponent *)self motionEffect];
-  [v13 assertDocumentIsLocked];
+  infoCopy = info;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v14 = [(PVMotionEffectComponent *)self motionEffect];
-  [v14 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   *retstr = **&MEMORY[0x277CC0898];
-  if (!v8)
+  if (!infoCopy)
   {
     goto LABEL_5;
   }
@@ -1381,34 +1381,34 @@ LABEL_14:
   if ((retstr->var2 & 1) == 0)
   {
 LABEL_5:
-    v19 = *&a4->var0;
-    var3 = a4->var3;
-    v18 = *&a5->var0.var3;
-    v21 = *&a5->var0.var0;
+    v19 = *&range->var0;
+    var3 = range->var3;
+    v18 = *&frame->var0.var3;
+    v21 = *&frame->var0.var0;
     v22 = v18;
-    v23 = *&a5->var1.var1;
+    v23 = *&frame->var1.var1;
     return [(PVMotionEffectTimelineComponent *)self timelineTimeFromComponentTime_NoLock:&v19 editRange:&v21 documentInfo:a7];
   }
 
   return result;
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)a3 documentInfo:(id *)a4
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)lock documentInfo:(id *)info
 {
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v9 = [(PVMotionEffectComponent *)self motionEffect];
-  [v9 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  v11 = v10;
-  if (v10)
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  v11 = motionEffect3;
+  if (motionEffect3)
   {
-    [v10 effectRange];
+    [motionEffect3 effectRange];
   }
 
   else
@@ -1418,44 +1418,44 @@ LABEL_5:
     v16 = 0u;
   }
 
-  v12 = *&a4->var0.var3;
-  v15[0] = *&a4->var0.var0;
+  v12 = *&info->var0.var3;
+  v15[0] = *&info->var0.var0;
   v15[1] = v12;
-  v15[2] = *&a4->var1.var1;
+  v15[2] = *&info->var1.var1;
   v14[0] = v16;
   v14[1] = v17;
   v14[2] = v18;
   return [(PVMotionEffectTimelineComponent *)self componentTimeRangeFromTimelineTimeRange_NoLock:v15 editRange:v14 documentInfo:a5];
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)componentTimeRangeFromTimelineTimeRange_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info
 {
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
-  [v11 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v12 = [(PVMotionEffectComponent *)self motionEffect];
-  [v12 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v23 = 0uLL;
   v24 = 0;
-  v13 = *&a4->var0.var0;
-  v22.epoch = a4->var0.var3;
-  v14 = *&a5->var0.var3;
-  v19 = *&a5->var0.var0;
+  v13 = *&range->var0.var0;
+  v22.epoch = range->var0.var3;
+  v14 = *&info->var0.var3;
+  v19 = *&info->var0.var0;
   v20 = v14;
-  v21 = *&a5->var1.var1;
+  v21 = *&info->var1.var1;
   *&v22.value = v13;
   [(PVMotionEffectTimelineComponent *)self componentTimeFromTimelineTime_NoLock:&v22 editRange:&v19 documentInfo:a6];
   memset(&v22, 0, sizeof(v22));
-  v15 = *&a4->var0.var3;
-  v19 = *&a4->var0.var0;
+  v15 = *&range->var0.var3;
+  v19 = *&range->var0.var0;
   v20 = v15;
-  v21 = *&a4->var1.var1;
+  v21 = *&range->var1.var1;
   PC_CMTimeRangeEnd(&v19, &v18);
-  v16 = *&a5->var0.var3;
-  v19 = *&a5->var0.var0;
+  v16 = *&info->var0.var3;
+  v19 = *&info->var0.var0;
   v20 = v16;
-  v21 = *&a5->var1.var1;
+  v21 = *&info->var1.var1;
   [(PVMotionEffectTimelineComponent *)self componentTimeFromTimelineTime_NoLock:&v18 editRange:&v19 documentInfo:a6];
   v19 = v23;
   *&v20 = v24;
@@ -1463,22 +1463,22 @@ LABEL_5:
   return PC_CMTimeRangeMakeWithStartEnd(&v19, &v18, retstr);
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)a3 documentInfo:(id *)a4
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)lock documentInfo:(id *)info
 {
-  v8 = [(PVMotionEffectComponent *)self motionEffect];
-  [v8 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v9 = [(PVMotionEffectComponent *)self motionEffect];
-  [v9 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  v11 = v10;
-  if (v10)
+  motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+  v11 = motionEffect3;
+  if (motionEffect3)
   {
-    [v10 effectRange];
+    [motionEffect3 effectRange];
   }
 
   else
@@ -1488,44 +1488,44 @@ LABEL_5:
     v16 = 0u;
   }
 
-  v12 = *&a4->var0.var3;
-  v15[0] = *&a4->var0.var0;
+  v12 = *&info->var0.var3;
+  v15[0] = *&info->var0.var0;
   v15[1] = v12;
-  v15[2] = *&a4->var1.var1;
+  v15[2] = *&info->var1.var1;
   v14[0] = v16;
   v14[1] = v17;
   v14[2] = v18;
   return [(PVMotionEffectTimelineComponent *)self timelineTimeRangeFromComponentTimeRange_NoLock:v15 editRange:v14 documentInfo:a5];
 }
 
-- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)a3 editRange:(id *)a4 documentInfo:(id *)a5
+- ($948BFCBB2DDE7F94AFEDE1DD48437795)timelineTimeRangeFromComponentTimeRange_NoLock:(SEL)lock editRange:(id *)range documentInfo:(id *)info
 {
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
-  [v11 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v12 = [(PVMotionEffectComponent *)self motionEffect];
-  [v12 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v23 = 0uLL;
   v24 = 0;
-  v13 = *&a4->var0.var0;
-  v22.epoch = a4->var0.var3;
-  v14 = *&a5->var0.var3;
-  v19 = *&a5->var0.var0;
+  v13 = *&range->var0.var0;
+  v22.epoch = range->var0.var3;
+  v14 = *&info->var0.var3;
+  v19 = *&info->var0.var0;
   v20 = v14;
-  v21 = *&a5->var1.var1;
+  v21 = *&info->var1.var1;
   *&v22.value = v13;
   [(PVMotionEffectTimelineComponent *)self componentTimeFromTimelineTime_NoLock:&v22 editRange:&v19 documentInfo:a6];
   memset(&v22, 0, sizeof(v22));
-  v15 = *&a4->var0.var3;
-  v19 = *&a4->var0.var0;
+  v15 = *&range->var0.var3;
+  v19 = *&range->var0.var0;
   v20 = v15;
-  v21 = *&a4->var1.var1;
+  v21 = *&range->var1.var1;
   PC_CMTimeRangeEnd(&v19, &v18);
-  v16 = *&a5->var0.var3;
-  v19 = *&a5->var0.var0;
+  v16 = *&info->var0.var3;
+  v19 = *&info->var0.var0;
   v20 = v16;
-  v21 = *&a5->var1.var1;
+  v21 = *&info->var1.var1;
   [(PVMotionEffectTimelineComponent *)self componentTimeFromTimelineTime_NoLock:&v18 editRange:&v19 documentInfo:a6];
   v19 = v23;
   *&v20 = v24;
@@ -1533,34 +1533,34 @@ LABEL_5:
   return PC_CMTimeRangeMakeWithStartEnd(&v19, &v18, retstr);
 }
 
-- (void)updateSceneDuration_NoLock:(const void *)a3
+- (void)updateSceneDuration_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   if (self->_needsToUpdateSceneDuration)
   {
-    OZXGetSceneDuration(*a3, &self->_numFrames, &self->_frameRate, &self->_frameDuration);
+    OZXGetSceneDuration(*lock, &self->_numFrames, &self->_frameRate, &self->_frameDuration);
     self->_needsToUpdateSceneDuration = 0;
 
-    [(PVMotionEffectTimelineComponent *)self computeIntroOutroPoints_NoLock:a3];
+    [(PVMotionEffectTimelineComponent *)self computeIntroOutroPoints_NoLock:lock];
   }
 }
 
-- (void)computeIntroOutroPoints_NoLock:(const void *)a3
+- (void)computeIntroOutroPoints_NoLock:(const void *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   memset(&v20, 0, sizeof(v20));
   [(PVMotionEffectTimelineComponent *)self timelineDuration_NoLock];
-  v7 = OZXMarkerCount(*a3);
+  v7 = OZXMarkerCount(*lock);
   if (!v7)
   {
     METimeRemap::setIntroDuration(&self->_timeRemap, MEMORY[0x277CC08F0]);
@@ -1575,7 +1575,7 @@ LABEL_18:
   v11 = 1;
   do
   {
-    OZXGetMarkerFigTime(*a3, v11 - 1, &v18);
+    OZXGetMarkerFigTime(*lock, v11 - 1, &v18);
     if ((v10 & 1) != 0 || (v19 - 3) > 1)
     {
       if ((v9 & 1) == 0)
@@ -1651,69 +1651,69 @@ LABEL_19:
 
 - (void)setNeedsToUpdateSceneDuration_NoLock
 {
-  v3 = [(PVMotionEffectComponent *)self motionEffect];
-  [v3 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v4 = [(PVMotionEffectComponent *)self motionEffect];
-  [v4 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   self->_needsToUpdateSceneDuration = 1;
 }
 
-- (void)setRenderStartOffset_NoLock:(id *)a3
+- (void)setRenderStartOffset_NoLock:(id *)lock
 {
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  var3 = a3->var3;
-  *&self->_renderStartOffset.value = *&a3->var0;
+  var3 = lock->var3;
+  *&self->_renderStartOffset.value = *&lock->var0;
   self->_renderStartOffset.epoch = var3;
 }
 
-- (void)setBuildInEnabled_NoLock:(BOOL)a3
+- (void)setBuildInEnabled_NoLock:(BOOL)lock
 {
-  v3 = a3;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  lockCopy = lock;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v8 = *(self->_buildInEnableChan->var0 + 89);
 
-  v7.n128_f64[0] = v3;
+  v7.n128_f64[0] = lockCopy;
   v8(v7);
 }
 
-- (void)setBuildOutEnabled_NoLock:(BOOL)a3
+- (void)setBuildOutEnabled_NoLock:(BOOL)lock
 {
-  v3 = a3;
-  v5 = [(PVMotionEffectComponent *)self motionEffect];
-  [v5 assertDocumentIsLocked];
+  lockCopy = lock;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v6 = [(PVMotionEffectComponent *)self motionEffect];
-  [v6 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
   v8 = *(self->_buildOutEnableChan->var0 + 89);
 
-  v7.n128_f64[0] = v3;
+  v7.n128_f64[0] = lockCopy;
   v8(v7);
 }
 
-- (void)applyProperties_NoLock:(id)a3 defaultProperties:(id)a4 documentInfo:(const void *)a5
+- (void)applyProperties_NoLock:(id)lock defaultProperties:(id)properties documentInfo:(const void *)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PVMotionEffectComponent *)self motionEffect];
-  [v9 assertDocumentIsLocked];
+  lockCopy = lock;
+  propertiesCopy = properties;
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect assertDocumentIsLocked];
 
-  v10 = [(PVMotionEffectComponent *)self motionEffect];
-  [v10 assertDocumentStatusIsLoadedOrReady];
+  motionEffect2 = [(PVMotionEffectComponent *)self motionEffect];
+  [motionEffect2 assertDocumentStatusIsLoadedOrReady];
 
-  v11 = [MEMORY[0x277CBEAC0] objectForKey:@"RenderStartOffset" inDictionary:v7 orInDefaultDictionary:v8];
+  v11 = [MEMORY[0x277CBEAC0] objectForKey:@"RenderStartOffset" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   v12 = v11;
   if (v11)
   {
@@ -1721,35 +1721,35 @@ LABEL_19:
     [(PVMotionEffectTimelineComponent *)self setRenderStartOffset_NoLock:v23];
   }
 
-  v13 = [MEMORY[0x277CBEAC0] objectForKey:@"RenderAtPosterTime" inDictionary:v7 orInDefaultDictionary:v8];
+  v13 = [MEMORY[0x277CBEAC0] objectForKey:@"RenderAtPosterTime" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   if (v13)
   {
-    v14 = [(PVMotionEffectComponent *)self motionEffect];
-    [v14 didSetCacheInvalidatingParameter_NoLock:v13 forKey:@"RenderAtPosterTime"];
+    motionEffect3 = [(PVMotionEffectComponent *)self motionEffect];
+    [motionEffect3 didSetCacheInvalidatingParameter_NoLock:v13 forKey:@"RenderAtPosterTime"];
   }
 
-  v15 = [MEMORY[0x277CBEAC0] objectForKey:@"TitleBuildIn" inDictionary:v7 orInDefaultDictionary:v8];
+  v15 = [MEMORY[0x277CBEAC0] objectForKey:@"TitleBuildIn" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   v16 = v15;
   if (v15)
   {
     -[PVMotionEffectTimelineComponent setBuildInEnabled_NoLock:](self, "setBuildInEnabled_NoLock:", [v15 BOOLValue]);
   }
 
-  v17 = [MEMORY[0x277CBEAC0] objectForKey:@"TitleBuildOut" inDictionary:v7 orInDefaultDictionary:v8];
+  v17 = [MEMORY[0x277CBEAC0] objectForKey:@"TitleBuildOut" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   v18 = v17;
   if (v17)
   {
     -[PVMotionEffectTimelineComponent setBuildOutEnabled_NoLock:](self, "setBuildOutEnabled_NoLock:", [v17 BOOLValue]);
   }
 
-  v19 = [MEMORY[0x277CBEAC0] objectForKey:@"ForceDisableLoop" inDictionary:v7 orInDefaultDictionary:v8];
+  v19 = [MEMORY[0x277CBEAC0] objectForKey:@"ForceDisableLoop" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   v20 = v19;
   if (v19)
   {
     -[PVMotionEffectTimelineComponent setForceDisableLoop_NoLock:](self, "setForceDisableLoop_NoLock:", [v19 BOOLValue]);
   }
 
-  v21 = [MEMORY[0x277CBEAC0] objectForKey:@"ForceDisableBuildAnimation" inDictionary:v7 orInDefaultDictionary:v8];
+  v21 = [MEMORY[0x277CBEAC0] objectForKey:@"ForceDisableBuildAnimation" inDictionary:lockCopy orInDefaultDictionary:propertiesCopy];
   v22 = v21;
   if (v21)
   {
@@ -1757,23 +1757,23 @@ LABEL_19:
   }
 }
 
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
+  effectCopy = effect;
+  propertiesCopy = properties;
   v10.receiver = self;
   v10.super_class = PVMotionEffectTimelineComponent;
-  [(PVMotionEffectComponent *)&v10 motionEffect:v8 didBecomeReady:a4 properties:v9];
-  [(PVMotionEffectTimelineComponent *)self updateSceneDuration_NoLock:a4];
-  [(PVMotionEffectTimelineComponent *)self applyProperties_NoLock:0 defaultProperties:v9 documentInfo:a4];
+  [(PVMotionEffectComponent *)&v10 motionEffect:effectCopy didBecomeReady:ready properties:propertiesCopy];
+  [(PVMotionEffectTimelineComponent *)self updateSceneDuration_NoLock:ready];
+  [(PVMotionEffectTimelineComponent *)self applyProperties_NoLock:0 defaultProperties:propertiesCopy documentInfo:ready];
 }
 
-- (void)motionEffectDidUnload:(id)a3
+- (void)motionEffectDidUnload:(id)unload
 {
-  v4 = a3;
+  unloadCopy = unload;
   v12.receiver = self;
   v12.super_class = PVMotionEffectTimelineComponent;
-  [(PVMotionEffectComponent *)&v12 motionEffectDidUnload:v4];
+  [(PVMotionEffectComponent *)&v12 motionEffectDidUnload:unloadCopy];
   self->_numFrames = 0;
   self->_frameRate = 0.0;
   v5 = MEMORY[0x277CC08F0];
@@ -1804,74 +1804,74 @@ LABEL_19:
   self->_needsToUpdateSceneDuration = 1;
 }
 
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  effectCopy = effect;
+  propertiesCopy = properties;
+  allPropertiesCopy = allProperties;
   v17.receiver = self;
   v17.super_class = PVMotionEffectTimelineComponent;
-  [(PVMotionEffectComponent *)&v17 effect:v8 updateProperties:v9 allProperties:v10];
-  v11 = [(PVMotionEffectComponent *)self motionEffect];
+  [(PVMotionEffectComponent *)&v17 effect:effectCopy updateProperties:propertiesCopy allProperties:allPropertiesCopy];
+  motionEffect = [(PVMotionEffectComponent *)self motionEffect];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = *"";
   v14[2] = __73__PVMotionEffectTimelineComponent_effect_updateProperties_allProperties___block_invoke;
   v14[3] = &unk_279AA5468;
   v14[4] = self;
-  v12 = v9;
+  v12 = propertiesCopy;
   v15 = v12;
-  v13 = v10;
+  v13 = allPropertiesCopy;
   v16 = v13;
-  [v11 runWithDocument_NoLock:v14];
+  [motionEffect runWithDocument_NoLock:v14];
 }
 
-- (BOOL)motionEffect:(id)a3 propertiesDisableCache:(id)a4 time:(id *)a5 forcePosterFrame:(BOOL)a6
+- (BOOL)motionEffect:(id)effect propertiesDisableCache:(id)cache time:(id *)time forcePosterFrame:(BOOL)frame
 {
-  v8 = *a5;
+  v8 = *time;
   v7.receiver = self;
   v7.super_class = PVMotionEffectTimelineComponent;
-  return [(PVMotionEffectComponent *)&v7 motionEffect:a3 propertiesDisableCache:a4 time:&v8 forcePosterFrame:?]|| !a6;
+  return [(PVMotionEffectComponent *)&v7 motionEffect:effect propertiesDisableCache:cache time:&v8 forcePosterFrame:?]|| !frame;
 }
 
-- (id)motionEffectPropertyKeysThatInvalidateCachedRender:(id)a3
+- (id)motionEffectPropertyKeysThatInvalidateCachedRender:(id)render
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = PVMotionEffectTimelineComponent;
-  v3 = [(PVMotionEffectComponent *)&v10 motionEffectPropertyKeysThatInvalidateCachedRender:a3];
+  v3 = [(PVMotionEffectComponent *)&v10 motionEffectPropertyKeysThatInvalidateCachedRender:render];
   v4 = MEMORY[0x277CBEB58];
   v11[0] = @"RenderAtPosterTime";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v6 = [v4 setWithArray:v5];
 
-  v7 = [v3 anyObject];
-  LOBYTE(v5) = v7 == 0;
+  anyObject = [v3 anyObject];
+  LOBYTE(v5) = anyObject == 0;
 
   if ((v5 & 1) == 0)
   {
-    v8 = [v3 allObjects];
-    [v6 addObjectsFromArray:v8];
+    allObjects = [v3 allObjects];
+    [v6 addObjectsFromArray:allObjects];
   }
 
   return v6;
 }
 
-- (BOOL)motionEffect:(id)a3 shouldInvalidateCachedRenderForProperty:(id)a4 oldValue:(id)a5 newValue:(id)a6
+- (BOOL)motionEffect:(id)effect shouldInvalidateCachedRenderForProperty:(id)property oldValue:(id)value newValue:(id)newValue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  effectCopy = effect;
+  propertyCopy = property;
+  valueCopy = value;
+  newValueCopy = newValue;
   v16.receiver = self;
   v16.super_class = PVMotionEffectTimelineComponent;
-  if ([(PVMotionEffectComponent *)&v16 motionEffect:v10 shouldInvalidateCachedRenderForProperty:v11 oldValue:v12 newValue:v13])
+  if ([(PVMotionEffectComponent *)&v16 motionEffect:effectCopy shouldInvalidateCachedRenderForProperty:propertyCopy oldValue:valueCopy newValue:newValueCopy])
   {
     LOBYTE(v14) = 1;
   }
 
-  else if ([v11 isEqualToString:@"RenderAtPosterTime"])
+  else if ([propertyCopy isEqualToString:@"RenderAtPosterTime"])
   {
-    v14 = PVNumbersAreEqualAsBooleans(v12, v13) ^ 1;
+    v14 = PVNumbersAreEqualAsBooleans(valueCopy, newValueCopy) ^ 1;
   }
 
   else

@@ -1,16 +1,16 @@
 @interface CESRDictionaryLog
-- (BOOL)_loadLogOrCreate:(BOOL)a3 readOnly:(BOOL)a4 error:(id *)a5;
-- (BOOL)clear:(id *)a3;
-- (BOOL)clearObjectForKey:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDictionaryLog:(id)a3;
+- (BOOL)_loadLogOrCreate:(BOOL)create readOnly:(BOOL)only error:(id *)error;
+- (BOOL)clear:(id *)clear;
+- (BOOL)clearObjectForKey:(id)key error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDictionaryLog:(id)log;
 - (BOOL)isReadOnly;
-- (BOOL)writeUpdatedObject:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)writeUpdatedObjects:(id)a3 forKeys:(id)a4 error:(id *)a5;
+- (BOOL)writeUpdatedObject:(id)object forKey:(id)key error:(id *)error;
+- (BOOL)writeUpdatedObjects:(id)objects forKeys:(id)keys error:(id *)error;
 - (CESRDictionaryLog)init;
 - (id)description;
-- (id)mutableDictionaryForKey:(id)a3 error:(id *)a4;
-- (id)objectForKey:(id)a3;
+- (id)mutableDictionaryForKey:(id)key error:(id *)error;
+- (id)objectForKey:(id)key;
 - (unint64_t)hash;
 @end
 
@@ -26,12 +26,12 @@
   return v5 ^ v6;
 }
 
-- (BOOL)isEqualToDictionaryLog:(id)a3
+- (BOOL)isEqualToDictionaryLog:(id)log
 {
-  v4 = a3;
-  if ([(NSURL *)self->_logFileURL isEqual:v4[1]]&& self->_protectionClass == *(v4 + 6))
+  logCopy = log;
+  if ([(NSURL *)self->_logFileURL isEqual:logCopy[1]]&& self->_protectionClass == *(logCopy + 6))
   {
-    v5 = [(NSDictionary *)self->_log isEqual:v4[2]];
+    v5 = [(NSDictionary *)self->_log isEqual:logCopy[2]];
   }
 
   else
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRDictionaryLog *)self isEqualToDictionaryLog:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRDictionaryLog *)self isEqualToDictionaryLog:equalCopy];
 
   return v5;
 }
 
-- (BOOL)clear:(id *)a3
+- (BOOL)clear:(id *)clear
 {
   v27[1] = *MEMORY[0x277D85DE8];
   if ([(CESRDictionaryLog *)self isReadOnly])
@@ -59,23 +59,23 @@
     v26 = *MEMORY[0x277CCA450];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"instance: %@ is read only.", self];
     v27[0] = v6;
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    v8 = [v5 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:3 userInfo:v7];
-    v9 = v8;
+    defaultManager = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
+    v8 = [v5 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:3 userInfo:defaultManager];
+    path = v8;
     v10 = 0;
-    if (a3 && v8)
+    if (clear && v8)
     {
       v11 = v8;
       v10 = 0;
-      *a3 = v9;
+      *clear = path;
     }
 
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [(NSURL *)self->_logFileURL path];
-  if (!v9 || ![v7 fileExistsAtPath:v9])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_logFileURL path];
+  if (!path || ![defaultManager fileExistsAtPath:path])
   {
     v14 = 0;
     goto LABEL_17;
@@ -83,7 +83,7 @@
 
   logFileURL = self->_logFileURL;
   v21 = 0;
-  v13 = [v7 removeItemAtURL:logFileURL error:&v21];
+  v13 = [defaultManager removeItemAtURL:logFileURL error:&v21];
   v14 = v21;
   if (v13)
   {
@@ -95,7 +95,7 @@ LABEL_17:
   }
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to remove log file at path: %@", v9];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to remove log file at path: %@", path];
   [v15 setObject:v16 forKey:*MEMORY[0x277CCA450]];
 
   if (v14)
@@ -105,10 +105,10 @@ LABEL_17:
 
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:8 userInfo:v15];
 
-  if (a3 && v6)
+  if (clear && v6)
   {
     v17 = v6;
-    *a3 = v6;
+    *clear = v6;
   }
 
   v18 = *MEMORY[0x277CEF0E8];
@@ -128,10 +128,10 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)clearObjectForKey:(id)a3 error:(id *)a4
+- (BOOL)clearObjectForKey:(id)key error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyCopy = key;
   if ([(CESRDictionaryLog *)self isReadOnly])
   {
     v7 = MEMORY[0x277CCA9B8];
@@ -144,7 +144,7 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     v20 = MEMORY[0x277CCA9B8];
     v35 = *MEMORY[0x277CCA450];
@@ -155,21 +155,21 @@ LABEL_18:
     v11 = 1;
 LABEL_10:
     v21 = [v10 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:v11 userInfo:v9];
-    if (a4 && v21)
+    if (error && v21)
     {
       v21 = v21;
-      *a4 = v21;
+      *error = v21;
     }
 
     v16 = 0;
     goto LABEL_26;
   }
 
-  v12 = [(NSDictionary *)self->_log objectForKey:v6];
+  v12 = [(NSDictionary *)self->_log objectForKey:keyCopy];
   if (v12)
   {
     v8 = v12;
-    [(NSDictionary *)self->_log removeObjectForKey:v6];
+    [(NSDictionary *)self->_log removeObjectForKey:keyCopy];
     logFileURL = self->_logFileURL;
     log = self->_log;
     protectionClass = self->_protectionClass;
@@ -185,7 +185,7 @@ LABEL_10:
         v31 = 2112;
         v32 = v8;
         v33 = 2112;
-        v34 = v6;
+        v34 = keyCopy;
         _os_log_debug_impl(&dword_225EEB000, v18, OS_LOG_TYPE_DEBUG, "%s Removed object: %@ for key: %@", buf, 0x20u);
       }
 
@@ -194,9 +194,9 @@ LABEL_10:
 
     else
     {
-      [(NSDictionary *)self->_log setObject:v8 forKey:v6];
+      [(NSDictionary *)self->_log setObject:v8 forKey:keyCopy];
       v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write removal for key: %@ reverting to prior object: %@", v6, v8];
+      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write removal for key: %@ reverting to prior object: %@", keyCopy, v8];
       [v23 setObject:v24 forKey:*MEMORY[0x277CCA450]];
 
       if (v17)
@@ -206,10 +206,10 @@ LABEL_10:
 
       v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:8 userInfo:v23];
 
-      if (a4 && v19)
+      if (error && v19)
       {
         v25 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
       v26 = *MEMORY[0x277CEF0E8];
@@ -232,7 +232,7 @@ LABEL_10:
       *buf = 136315394;
       v30 = "[CESRDictionaryLog clearObjectForKey:error:]";
       v31 = 2112;
-      v32 = v6;
+      v32 = keyCopy;
       _os_log_debug_impl(&dword_225EEB000, v22, OS_LOG_TYPE_DEBUG, "%s No object exists for key: %@", buf, 0x16u);
     }
 
@@ -246,54 +246,54 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)writeUpdatedObjects:(id)a3 forKeys:(id)a4 error:(id *)a5
+- (BOOL)writeUpdatedObjects:(id)objects forKeys:(id)keys error:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  objectsCopy = objects;
+  keysCopy = keys;
   if ([(CESRDictionaryLog *)self isReadOnly])
   {
     v10 = MEMORY[0x277CCA9B8];
     v65 = *MEMORY[0x277CCA450];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"instance: %@ is read only.", self];
-    v66[0] = v11;
+    keysCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"instance: %@ is read only.", self];
+    v66[0] = keysCopy;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:&v65 count:1];
     v13 = v10;
     v14 = 3;
     goto LABEL_18;
   }
 
-  v15 = [v8 count];
-  if (v15 != [v9 count])
+  v15 = [objectsCopy count];
+  if (v15 != [keysCopy count])
   {
     v23 = MEMORY[0x277CCA9B8];
     v63 = *MEMORY[0x277CCA450];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected number of objects: %@ for keys: %@", v8, v9];
-    v64 = v11;
+    keysCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected number of objects: %@ for keys: %@", objectsCopy, keysCopy];
+    v64 = keysCopy;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
     v13 = v23;
     v14 = 1;
 LABEL_18:
     v24 = [v13 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:v14 userInfo:v12];
-    if (a5 && v24)
+    if (error && v24)
     {
       v24 = v24;
-      *a5 = v24;
+      *error = v24;
     }
 
     goto LABEL_22;
   }
 
-  v48 = a5;
-  v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v16 = [v8 count];
-  if ([v8 count])
+  errorCopy = error;
+  keysCopy = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(keysCopy, "count")}];
+  v16 = [objectsCopy count];
+  if ([objectsCopy count])
   {
-    for (i = 0; i < [v8 count]; ++i)
+    for (i = 0; i < [objectsCopy count]; ++i)
     {
-      v18 = [v8 objectAtIndex:i];
-      v19 = [v9 objectAtIndex:i];
-      v20 = [v11 objectForKey:v19];
+      v18 = [objectsCopy objectAtIndex:i];
+      v19 = [keysCopy objectAtIndex:i];
+      v20 = [keysCopy objectForKey:v19];
       if (v20)
       {
         v21 = v20;
@@ -326,7 +326,7 @@ LABEL_18:
         goto LABEL_15;
       }
 
-      [v11 setObject:v21 forKey:v19];
+      [keysCopy setObject:v21 forKey:v19];
 LABEL_14:
       [(NSDictionary *)self->_log setObject:v18 forKey:v19];
 LABEL_15:
@@ -354,11 +354,11 @@ LABEL_15:
       *buf = 136315906;
       v55 = "[CESRDictionaryLog writeUpdatedObjects:forKeys:error:]";
       v56 = 2112;
-      v57 = v8;
+      v57 = objectsCopy;
       v58 = 2112;
-      v59 = v9;
+      v59 = keysCopy;
       v60 = 2112;
-      v61 = v11;
+      v61 = keysCopy;
       _os_log_debug_impl(&dword_225EEB000, v34, OS_LOG_TYPE_DEBUG, "%s Updated object(s): %@ for key(s): %@ replacing prior object(s): %@", buf, 0x2Au);
     }
 
@@ -372,7 +372,7 @@ LABEL_15:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v35 = v9;
+  v35 = keysCopy;
   v36 = [v35 countByEnumeratingWithState:&v49 objects:v62 count:16];
   if (v36)
   {
@@ -388,7 +388,7 @@ LABEL_15:
         }
 
         v40 = *(*(&v49 + 1) + 8 * j);
-        v41 = [v11 objectForKey:v40];
+        v41 = [keysCopy objectForKey:v40];
         v42 = self->_log;
         if (v41)
         {
@@ -408,7 +408,7 @@ LABEL_15:
   }
 
   v43 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write updated object(s): %@ for key(s): %@ reverting to prior object(s): %@", v8, v35, v11];
+  v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write updated object(s): %@ for key(s): %@ reverting to prior object(s): %@", objectsCopy, v35, keysCopy];
   [v43 setObject:v44 forKey:*MEMORY[0x277CCA450]];
 
   if (v47)
@@ -418,10 +418,10 @@ LABEL_15:
 
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:8 userInfo:v43];
 
-  if (v48 && v12)
+  if (errorCopy && v12)
   {
     v45 = v12;
-    *v48 = v12;
+    *errorCopy = v12;
   }
 
   v46 = *MEMORY[0x277CEF0E8];
@@ -443,20 +443,20 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)writeUpdatedObject:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)writeUpdatedObject:(id)object forKey:(id)key error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (object && key)
   {
-    v23 = a3;
+    objectCopy = object;
     v8 = MEMORY[0x277CBEA60];
-    v9 = a4;
-    v10 = a3;
-    v11 = [v8 arrayWithObjects:&v23 count:1];
-    v22 = v9;
+    keyCopy = key;
+    objectCopy2 = object;
+    keyCopy2 = [v8 arrayWithObjects:&objectCopy count:1];
+    v22 = keyCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
 
-    v13 = [(CESRDictionaryLog *)self writeUpdatedObjects:v11 forKeys:v12 error:a5];
+    v13 = [(CESRDictionaryLog *)self writeUpdatedObjects:keyCopy2 forKeys:v12 error:error];
   }
 
   else
@@ -464,17 +464,17 @@ LABEL_24:
     v14 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
     v15 = MEMORY[0x277CCACA8];
-    v16 = a4;
-    v17 = a3;
-    v11 = [v15 stringWithFormat:@"Invalid {object: %@ key: %@}", v17, v16];
-    v25[0] = v11;
+    keyCopy2 = key;
+    objectCopy3 = object;
+    keyCopy2 = [v15 stringWithFormat:@"Invalid {object: %@ key: %@}", objectCopy3, keyCopy2];
+    v25[0] = keyCopy2;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v18 = [v14 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:1 userInfo:v12];
 
-    if (a5 && v18)
+    if (error && v18)
     {
       v19 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     v13 = 0;
@@ -484,11 +484,11 @@ LABEL_24:
   return v13;
 }
 
-- (id)mutableDictionaryForKey:(id)a3 error:(id *)a4
+- (id)mutableDictionaryForKey:(id)key error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CESRDictionaryLog *)self objectForKey:v6];
+  keyCopy = key;
+  v7 = [(CESRDictionaryLog *)self objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -516,15 +516,15 @@ LABEL_13:
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v10 stringWithFormat:@"Unexpected object: %@ for key: %@ expected: %@", v7, v6, v12];
+  v13 = [v10 stringWithFormat:@"Unexpected object: %@ for key: %@ expected: %@", v7, keyCopy, v12];
   v26[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v15 = [v9 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:4 userInfo:v14];
 
-  if (a4 && v15)
+  if (error && v15)
   {
     v16 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   v17 = *MEMORY[0x277CEF0E8];
@@ -545,9 +545,9 @@ LABEL_14:
   return v18;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_log objectForKey:a3];
+  v3 = [(NSDictionary *)self->_log objectForKey:key];
   v4 = [v3 copy];
 
   return v4;
@@ -565,17 +565,17 @@ LABEL_14:
   v7.receiver = self;
   v7.super_class = CESRDictionaryLog;
   v3 = [(CESRDictionaryLog *)&v7 description];
-  v4 = [(NSURL *)self->_logFileURL path];
-  v5 = [v3 stringByAppendingFormat:@" logFile: %@", v4];
+  path = [(NSURL *)self->_logFileURL path];
+  v5 = [v3 stringByAppendingFormat:@" logFile: %@", path];
 
   return v5;
 }
 
-- (BOOL)_loadLogOrCreate:(BOOL)a3 readOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)_loadLogOrCreate:(BOOL)create readOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
+  onlyCopy = only;
   v62[1] = *MEMORY[0x277D85DE8];
-  v9 = [(NSURL *)self->_logFileURL path];
+  path = [(NSURL *)self->_logFileURL path];
   logFileURL = self->_logFileURL;
   v11 = SFReadPropertyList();
   v12 = 0;
@@ -584,16 +584,16 @@ LABEL_14:
 
   if (!self->_log)
   {
-    v24 = [v12 code];
+    code = [v12 code];
     v25 = *MEMORY[0x277CEF0E8];
-    if (v24 == 260)
+    if (code == 260)
     {
       if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315394;
         v52 = "[CESRDictionaryLog _loadLogOrCreate:readOnly:error:]";
         v53 = 2112;
-        v54 = v9;
+        v54 = path;
         _os_log_debug_impl(&dword_225EEB000, v25, OS_LOG_TYPE_DEBUG, "%s No prior log found at path: %@", buf, 0x16u);
       }
 
@@ -607,18 +607,18 @@ LABEL_26:
       v43 = [v28 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:v29 userInfo:v27];
 
       v12 = v43;
-      if (a3)
+      if (create)
       {
         goto LABEL_14;
       }
 
 LABEL_27:
       v36 = 0;
-      if (a5 && v12)
+      if (error && v12)
       {
         v44 = v12;
         v36 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       goto LABEL_30;
@@ -629,7 +629,7 @@ LABEL_27:
       *buf = 136315650;
       v52 = "[CESRDictionaryLog _loadLogOrCreate:readOnly:error:]";
       v53 = 2112;
-      v54 = v9;
+      v54 = path;
       v55 = 2112;
       v56 = v12;
       _os_log_error_impl(&dword_225EEB000, v25, OS_LOG_TYPE_ERROR, "%s Failed to read prior log file at path: %@ error: %@", buf, 0x20u);
@@ -658,7 +658,7 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (onlyCopy)
     {
       goto LABEL_16;
     }
@@ -670,7 +670,7 @@ LABEL_25:
       goto LABEL_16;
     }
 
-    v48 = a5;
+    errorCopy2 = error;
     v47 = MEMORY[0x277CCA9B8];
     v61 = *MEMORY[0x277CCA450];
     v15 = MEMORY[0x277CCACA8];
@@ -679,7 +679,7 @@ LABEL_25:
     v18 = self->_log;
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v21 = [v15 stringWithFormat:@"Expected mutable plist class (%@) but received class (%@) for object: %@ at path: %@", v17, v20, self->_log, v9];
+    v21 = [v15 stringWithFormat:@"Expected mutable plist class (%@) but received class (%@) for object: %@ at path: %@", v17, v20, self->_log, path];
     v62[0] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:&v61 count:1];
     v23 = [v47 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:5 userInfo:v22];
@@ -689,14 +689,14 @@ LABEL_25:
 
   else
   {
-    v48 = a5;
+    errorCopy2 = error;
     v30 = MEMORY[0x277CCA9B8];
     v59 = *MEMORY[0x277CCA450];
     v31 = MEMORY[0x277CCACA8];
     v32 = self->_log;
     v33 = objc_opt_class();
     v17 = NSStringFromClass(v33);
-    v20 = [v31 stringWithFormat:@"Unexpected plist class (%@) of object: %@ at path: %@", v17, self->_log, v9];
+    v20 = [v31 stringWithFormat:@"Unexpected plist class (%@) of object: %@ at path: %@", v17, self->_log, path];
     v60 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
     v23 = [v30 errorWithDomain:@"com.apple.siri.speech-dictionary-log" code:5 userInfo:v21];
@@ -713,14 +713,14 @@ LABEL_25:
   }
 
   v12 = v23;
-  a5 = v48;
-  if (!a3)
+  error = errorCopy2;
+  if (!create)
   {
     goto LABEL_27;
   }
 
 LABEL_14:
-  if (v6)
+  if (onlyCopy)
   {
     v35 = self->_log;
     self->_log = MEMORY[0x277CBEC10];
@@ -736,7 +736,7 @@ LABEL_16:
     *buf = 136315394;
     v52 = "[CESRDictionaryLog _loadLogOrCreate:readOnly:error:]";
     v53 = 2112;
-    v54 = v9;
+    v54 = path;
     _os_log_impl(&dword_225EEB000, v37, OS_LOG_TYPE_INFO, "%s Initializing empty log file at path: %@", buf, 0x16u);
   }
 

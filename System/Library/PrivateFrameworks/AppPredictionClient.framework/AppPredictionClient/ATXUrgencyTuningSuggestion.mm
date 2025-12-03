@@ -1,13 +1,13 @@
 @interface ATXUrgencyTuningSuggestion
 - (ATXUrgencyTuningSuggestion)init;
-- (ATXUrgencyTuningSuggestion)initWithCoder:(id)a3;
-- (ATXUrgencyTuningSuggestion)initWithProto:(id)a3;
-- (ATXUrgencyTuningSuggestion)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXUrgencyTuningSuggestion)initWithCoder:(id)coder;
+- (ATXUrgencyTuningSuggestion)initWithProto:(id)proto;
+- (ATXUrgencyTuningSuggestion)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUrgencyTuningSuggestion
@@ -19,64 +19,64 @@
   return [(ATXUrgencyTuningSuggestion *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUrgencyTuningSuggestion *)self isEqualToATXUrgencyTuningSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUrgencyTuningSuggestion *)self isEqualToATXUrgencyTuningSuggestion:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [ATXUrgencyTuningSuggestion allocWithZone:a3];
+  v3 = [ATXUrgencyTuningSuggestion allocWithZone:zone];
 
   return [(ATXUrgencyTuningSuggestion *)v3 init];
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUrgencyTuningSuggestion *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUrgencyTuningSuggestion *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUrgencyTuningSuggestion)initWithProtoData:(id)a3
+- (ATXUrgencyTuningSuggestion)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUrgencyTuningSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUrgencyTuningSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXUrgencyTuningSuggestion *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXUrgencyTuningSuggestion)initWithProto:(id)a3
+- (ATXUrgencyTuningSuggestion)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -93,10 +93,10 @@ LABEL_7:
   }
 
   self = [(ATXUrgencyTuningSuggestion *)self init];
-  v5 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)proto
@@ -106,17 +106,17 @@ LABEL_8:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUrgencyTuningSuggestion *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUrgencyTuningSuggestion *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUrgencyTuningSuggestion)initWithCoder:(id)a3
+- (ATXUrgencyTuningSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXUrgencyTuningSuggestion *)self initWithProtoData:v5];
   return v6;

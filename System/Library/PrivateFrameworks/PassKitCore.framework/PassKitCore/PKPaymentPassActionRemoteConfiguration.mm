@@ -1,74 +1,74 @@
 @interface PKPaymentPassActionRemoteConfiguration
-- (PKPaymentPassActionRemoteConfiguration)initWithCoder:(id)a3;
-- (PKPaymentPassActionRemoteConfiguration)initWithDictionary:(id)a3;
-- (PKPaymentPassActionRemoteConfiguration)initWithRequiresAppletData:(BOOL)a3 appletDataRequiresEncryption:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentPassActionRemoteConfiguration)initWithCoder:(id)coder;
+- (PKPaymentPassActionRemoteConfiguration)initWithDictionary:(id)dictionary;
+- (PKPaymentPassActionRemoteConfiguration)initWithRequiresAppletData:(BOOL)data appletDataRequiresEncryption:(BOOL)encryption;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentPassActionRemoteConfiguration
 
-- (PKPaymentPassActionRemoteConfiguration)initWithDictionary:(id)a3
+- (PKPaymentPassActionRemoteConfiguration)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 PKBoolForKey:@"requiresAppletData"];
-    v6 = [v4 PKBoolForKey:@"appletDataRequiresEncryption"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy PKBoolForKey:@"requiresAppletData"];
+    v6 = [dictionaryCopy PKBoolForKey:@"appletDataRequiresEncryption"];
 
     self = [(PKPaymentPassActionRemoteConfiguration *)self initWithRequiresAppletData:v5 appletDataRequiresEncryption:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PKPaymentPassActionRemoteConfiguration)initWithRequiresAppletData:(BOOL)a3 appletDataRequiresEncryption:(BOOL)a4
+- (PKPaymentPassActionRemoteConfiguration)initWithRequiresAppletData:(BOOL)data appletDataRequiresEncryption:(BOOL)encryption
 {
   v7.receiver = self;
   v7.super_class = PKPaymentPassActionRemoteConfiguration;
   result = [(PKPaymentPassActionRemoteConfiguration *)&v7 init];
   if (result)
   {
-    result->_requiresAppletData = a3;
-    result->_appletDataRequiresEncryption = a3 && a4;
+    result->_requiresAppletData = data;
+    result->_appletDataRequiresEncryption = data && encryption;
   }
 
   return result;
 }
 
-- (PKPaymentPassActionRemoteConfiguration)initWithCoder:(id)a3
+- (PKPaymentPassActionRemoteConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPaymentPassActionRemoteConfiguration;
   v5 = [(PKPaymentPassActionRemoteConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_requiresAppletData = [v4 decodeBoolForKey:@"requiresAppletData"];
-    v5->_appletDataRequiresEncryption = [v4 decodeBoolForKey:@"appletDataRequiresEncryption"];
+    v5->_requiresAppletData = [coderCopy decodeBoolForKey:@"requiresAppletData"];
+    v5->_appletDataRequiresEncryption = [coderCopy decodeBoolForKey:@"appletDataRequiresEncryption"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requiresAppletData = self->_requiresAppletData;
-  v5 = a3;
-  [v5 encodeBool:requiresAppletData forKey:@"requiresAppletData"];
-  [v5 encodeBool:self->_appletDataRequiresEncryption forKey:@"appletDataRequiresEncryption"];
+  coderCopy = coder;
+  [coderCopy encodeBool:requiresAppletData forKey:@"requiresAppletData"];
+  [coderCopy encodeBool:self->_appletDataRequiresEncryption forKey:@"appletDataRequiresEncryption"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 8) = self->_requiresAppletData;
   *(result + 9) = self->_appletDataRequiresEncryption;
   return result;

@@ -1,34 +1,34 @@
 @interface CRLConnectionLineOrthogonalLayout
-- (BOOL)p_connectionLineComingFromSideOfOriginObject:(id)a3;
+- (BOOL)p_connectionLineComingFromSideOfOriginObject:(id)object;
 - (BOOL)p_tailComingFromNorth;
 - (BOOL)p_tailComingFromSouth;
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGPoint)outsetFromMagnetPosition:(CGPoint)a3 withRect:(CGRect)a4 controlPoint:(CGPoint)a5 distance:(double)a6;
-- (CGPoint)p_getControlKnobPositionToMakeSingleCornerIfPossible:(CGPoint)a3 pointA:(CGPoint)a4 pointB:(CGPoint)a5;
-- (CGPoint)p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:(CGPoint)a3 pointA:(CGPoint)a4 pointB:(CGPoint)a5;
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGPoint)outsetFromMagnetPosition:(CGPoint)position withRect:(CGRect)rect controlPoint:(CGPoint)point distance:(double)distance;
+- (CGPoint)p_getControlKnobPositionToMakeSingleCornerIfPossible:(CGPoint)possible pointA:(CGPoint)a pointB:(CGPoint)b;
+- (CGPoint)p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:(CGPoint)knobs pointA:(CGPoint)a pointB:(CGPoint)b;
 - (CGPoint)p_getExistingUserSetControlPointToMatch;
-- (CGPoint)p_getLineEndPointAdjustedToCardinalForClineLayout:(id)a3 withHead:(CGPoint)a4 withTail:(CGPoint)a5 forLineEnd:(unint64_t)a6;
-- (CGPoint)p_getOverriddenControlPointWithPointA:(CGPoint)a3 pointB:(CGPoint)a4;
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4;
-- (CRLConnectionLineOrthogonalLayout)initWithInfo:(id)a3;
+- (CGPoint)p_getLineEndPointAdjustedToCardinalForClineLayout:(id)layout withHead:(CGPoint)head withTail:(CGPoint)tail forLineEnd:(unint64_t)end;
+- (CGPoint)p_getOverriddenControlPointWithPointA:(CGPoint)a pointB:(CGPoint)b;
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset;
+- (CRLConnectionLineOrthogonalLayout)initWithInfo:(id)info;
 - (double)p_getAdjustedShapeOutset;
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3] clipPath:(BOOL)a6;
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3] clipPath:(BOOL)path;
 - (id)getClippedHeadPortion;
 - (id)getClippedTailPortion;
-- (void)addEndpointSnapsToXs:(void *)a3 andYs:(void *)a4;
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4;
-- (void)setUserDidSetControlPoint:(BOOL)a3;
+- (void)addEndpointSnapsToXs:(void *)xs andYs:(void *)ys;
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker;
+- (void)setUserDidSetControlPoint:(BOOL)point;
 @end
 
 @implementation CRLConnectionLineOrthogonalLayout
 
-- (CRLConnectionLineOrthogonalLayout)initWithInfo:(id)a3
+- (CRLConnectionLineOrthogonalLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = CRLConnectionLineOrthogonalLayout;
-  result = [(CRLConnectionLineAbstractLayout *)&v4 initWithInfo:a3];
+  result = [(CRLConnectionLineAbstractLayout *)&v4 initWithInfo:info];
   if (result)
   {
     *(&result->super.mTailMagnetCanvasPosition + 3) = xmmword_1014629F0;
@@ -40,19 +40,19 @@
   return result;
 }
 
-- (void)setUserDidSetControlPoint:(BOOL)a3
+- (void)setUserDidSetControlPoint:(BOOL)point
 {
   v4.receiver = self;
   v4.super_class = CRLConnectionLineOrthogonalLayout;
-  [(CRLConnectionLineAbstractLayout *)&v4 setUserDidSetControlPoint:a3];
+  [(CRLConnectionLineAbstractLayout *)&v4 setUserDidSetControlPoint:point];
   *(&self->super.mTailMagnetCanvasPosition + 3) = xmmword_1014629F0;
 }
 
 - (id)getClippedHeadPortion
 {
-  v3 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+  connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedTo];
 
-  if (!v3)
+  if (!connectedTo)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -82,12 +82,12 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:179 isFatal:0 description:"invalid nil value for '%{public}s'", "self.connectedTo"];
   }
 
-  v9 = [(CRLCanvasLayout *)self pureGeometry];
-  [v9 size];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  [pureGeometry size];
   if (v10 == 0.0 || fabs(v10) < 0.00999999978)
   {
-    v11 = [(CRLCanvasLayout *)self pureGeometry];
-    [v11 size];
+    pureGeometry2 = [(CRLCanvasLayout *)self pureGeometry];
+    [pureGeometry2 size];
     v13 = fabs(v12) >= 0.00999999978 && v12 != 0.0;
 
     if (!v13)
@@ -102,11 +102,11 @@
   }
 
   memset(&v36, 0, sizeof(v36));
-  v14 = [(CRLCanvasLayout *)self pureGeometry];
-  v15 = v14;
-  if (v14)
+  pureGeometry3 = [(CRLCanvasLayout *)self pureGeometry];
+  v15 = pureGeometry3;
+  if (pureGeometry3)
   {
-    [v14 transform];
+    [pureGeometry3 transform];
   }
 
   else
@@ -114,17 +114,17 @@
     memset(&v36, 0, sizeof(v36));
   }
 
-  v16 = [(CRLCanvasAbstractLayout *)self parent];
-  v17 = v16 == 0;
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v17 = parent == 0;
 
   if (!v17)
   {
-    v18 = [(CRLCanvasAbstractLayout *)self parent];
-    v19 = [v18 geometryInParent];
-    v20 = v19;
-    if (v19)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    geometryInParent = [parent2 geometryInParent];
+    v20 = geometryInParent;
+    if (geometryInParent)
     {
-      [v19 transform];
+      [geometryInParent transform];
     }
 
     else
@@ -143,8 +143,8 @@
   v26 = *&v36.a;
   v27 = *&v36.c;
   v28 = *&v36.tx;
-  v29 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-  [v29 getCardinalPositionWithParentTransformFromType:1];
+  connectedTo2 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+  [connectedTo2 getCardinalPositionWithParentTransformFromType:1];
   v21 = [CRLBezierPath bezierPathWithStart:*&v28 + v25 * *&v27 + *&v26 * v23 end:*(&v28 + 1) + v25 * *(&v27 + 1) + *(&v26 + 1) * v23, v30, v31];
 
 LABEL_28:
@@ -154,9 +154,9 @@ LABEL_28:
 
 - (id)getClippedTailPortion
 {
-  v3 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
 
-  if (!v3)
+  if (!connectedFrom)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -186,12 +186,12 @@ LABEL_28:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:192 isFatal:0 description:"invalid nil value for '%{public}s'", "self.connectedFrom"];
   }
 
-  v9 = [(CRLCanvasLayout *)self pureGeometry];
-  [v9 size];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  [pureGeometry size];
   if (v10 == 0.0 || fabs(v10) < 0.00999999978)
   {
-    v11 = [(CRLCanvasLayout *)self pureGeometry];
-    [v11 size];
+    pureGeometry2 = [(CRLCanvasLayout *)self pureGeometry];
+    [pureGeometry2 size];
     v13 = fabs(v12) >= 0.00999999978 && v12 != 0.0;
 
     if (!v13)
@@ -206,11 +206,11 @@ LABEL_28:
   }
 
   memset(&v36, 0, sizeof(v36));
-  v14 = [(CRLCanvasLayout *)self pureGeometry];
-  v15 = v14;
-  if (v14)
+  pureGeometry3 = [(CRLCanvasLayout *)self pureGeometry];
+  v15 = pureGeometry3;
+  if (pureGeometry3)
   {
-    [v14 transform];
+    [pureGeometry3 transform];
   }
 
   else
@@ -218,17 +218,17 @@ LABEL_28:
     memset(&v36, 0, sizeof(v36));
   }
 
-  v16 = [(CRLCanvasAbstractLayout *)self parent];
-  v17 = v16 == 0;
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v17 = parent == 0;
 
   if (!v17)
   {
-    v18 = [(CRLCanvasAbstractLayout *)self parent];
-    v19 = [v18 geometryInParent];
-    v20 = v19;
-    if (v19)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    geometryInParent = [parent2 geometryInParent];
+    v20 = geometryInParent;
+    if (geometryInParent)
     {
-      [v19 transform];
+      [geometryInParent transform];
     }
 
     else
@@ -247,8 +247,8 @@ LABEL_28:
   v26 = *&v36.a;
   v27 = *&v36.c;
   v28 = *&v36.tx;
-  v29 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v29 getCardinalPositionWithParentTransformFromType:1];
+  connectedFrom2 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom2 getCardinalPositionWithParentTransformFromType:1];
   v21 = [CRLBezierPath bezierPathWithStart:*&v28 + v25 * *&v27 + *&v26 * v23 end:*(&v28 + 1) + v25 * *(&v27 + 1) + *(&v26 + 1) * v23, v30, v31];
 
 LABEL_28:
@@ -256,10 +256,10 @@ LABEL_28:
   return v21;
 }
 
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset
 {
-  v6 = a3;
-  v7 = [v6 centerForConnecting];
+  layoutCopy = layout;
+  centerForConnecting = [layoutCopy centerForConnecting];
   v9 = v8;
   v11 = v10;
   v45 = 0;
@@ -268,12 +268,12 @@ LABEL_28:
   v48 = sub_10030D2A8;
   v49 = nullsub_44;
   v50 = &unk_1016A8115;
-  v56 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v7, v12);
+  v56 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(centerForConnecting, v12);
   v51 = v13;
   v52 = v14;
   v53 = v15;
   v54 = v16;
-  [v6 boundsForStandardKnobs];
+  [layoutCopy boundsForStandardKnobs];
   if (v17 <= v18)
   {
     v19 = v18;
@@ -294,11 +294,11 @@ LABEL_28:
   v34 = &unk_101855600;
   v39 = v9;
   v40 = v11;
-  v41 = a4 + 10.0 + v19;
-  v35 = self;
-  v20 = v6;
+  v41 = outset + 10.0 + v19;
+  selfCopy = self;
+  v20 = layoutCopy;
   v21 = 0;
-  v42 = a4;
+  outsetCopy = outset;
   v36 = v20;
   v37 = v43;
   v38 = &v45;
@@ -333,13 +333,13 @@ LABEL_28:
   return result;
 }
 
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3] clipPath:(BOOL)a6
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3] clipPath:(BOOL)path
 {
-  v9 = a3;
-  v10 = a4;
+  fromCopy = from;
+  toCopy = to;
   for (i = 0; i != 6; i += 2)
   {
-    v12 = sub_10011F340(a5[i / 2].x, a5[i / 2].y, 10.0);
+    v12 = sub_10011F340(points[i / 2].x, points[i / 2].y, 10.0);
     v13 = &v138[i];
     *v13 = v12;
     *(v13 + 1) = v14;
@@ -419,11 +419,11 @@ LABEL_28:
   v122 = 0u;
   v123 = 0u;
   v124 = 0;
-  if (v9)
+  if (fromCopy)
   {
     [(CRLConnectionLineAbstractLayout *)self outsetFrom];
-    [(CRLConnectionLineOrthogonalLayout *)self orthoRectOfLayout:v9 outset:?];
-    [v9 centerForConnecting];
+    [(CRLConnectionLineOrthogonalLayout *)self orthoRectOfLayout:fromCopy outset:?];
+    [fromCopy centerForConnecting];
     sub_1002BC97C(v39, v40, 10.0);
     v29 = v41;
     v31 = v42;
@@ -438,11 +438,11 @@ LABEL_28:
     }
   }
 
-  if (v10)
+  if (toCopy)
   {
     [(CRLConnectionLineAbstractLayout *)self outsetTo];
-    [(CRLConnectionLineOrthogonalLayout *)self orthoRectOfLayout:v10 outset:?];
-    [v10 centerForConnecting];
+    [(CRLConnectionLineOrthogonalLayout *)self orthoRectOfLayout:toCopy outset:?];
+    [toCopy centerForConnecting];
     sub_1002BC97C(v47, v48, 10.0);
     v32 = v49;
     v34 = v50;
@@ -527,11 +527,11 @@ LABEL_28:
   v61 = v60;
   v62 = v54 / 10.0;
   v63 = v56 / 10.0;
-  if (!v9)
+  if (!fromCopy)
   {
     v74 = 0;
     v72 = 0;
-    if (v10)
+    if (toCopy)
     {
       goto LABEL_33;
     }
@@ -542,32 +542,32 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v64 = [v9 pureGeometry];
-  [v64 frame];
+  pureGeometry = [fromCopy pureGeometry];
+  [pureGeometry frame];
   [(CRLConnectionLineOrthogonalLayout *)self outsetFromMagnetPosition:v19 withRect:v20 controlPoint:v65 distance:v66, v67, v68, v62, v63, v61];
   sub_1002BC97C(v69, v70, 10.0);
   v72 = v71;
   v74 = v73;
 
-  if (!v10)
+  if (!toCopy)
   {
     goto LABEL_35;
   }
 
 LABEL_33:
-  v75 = [v10 pureGeometry];
-  [v75 frame];
+  pureGeometry2 = [toCopy pureGeometry];
+  [pureGeometry2 frame];
   [(CRLConnectionLineOrthogonalLayout *)self outsetFromMagnetPosition:v15 withRect:v16 controlPoint:v76 distance:v77, v78, v79, v62, v63, v61];
   sub_1002BC97C(v80, v81, 10.0);
   v83 = v82;
   v85 = v84;
 
 LABEL_36:
-  x = a5->x;
-  y = a5->y;
-  v88 = a5[1].x;
-  v89 = a5[1].y;
-  if (sub_100120090(a5->x, y, v88, v89) >= 10.0 && (v90 = a5[2].x, v91 = a5[2].y, sub_100120090(v90, v91, v88, v89) >= 10.0))
+  x = points->x;
+  y = points->y;
+  v88 = points[1].x;
+  v89 = points[1].y;
+  if (sub_100120090(points->x, y, v88, v89) >= 10.0 && (v90 = points[2].x, v91 = points[2].y, sub_100120090(v90, v91, v88, v89) >= 10.0))
   {
     if (sub_100120090(x, y, v90, v91) >= 10.0)
     {
@@ -587,18 +587,18 @@ LABEL_36:
     }
 
     v92 = +[CRLBezierPath bezierPath];
-    [v92 moveToPoint:{a5->x, a5->y}];
-    [v92 lineToPoint:{a5->x, a5[1].y}];
-    [v92 lineToPoint:{a5[1].x, a5[1].y}];
-    [v92 lineToPoint:{a5[1].x, a5->y}];
-    [v92 lineToPoint:{a5[2].x, a5[2].y}];
+    [v92 moveToPoint:{points->x, points->y}];
+    [v92 lineToPoint:{points->x, points[1].y}];
+    [v92 lineToPoint:{points[1].x, points[1].y}];
+    [v92 lineToPoint:{points[1].x, points->y}];
+    [v92 lineToPoint:{points[2].x, points[2].y}];
   }
 
   else
   {
     v92 = +[CRLBezierPath bezierPath];
-    [v92 moveToPoint:{a5->x, a5->y}];
-    [v92 lineToPoint:{a5[2].x, a5[2].y}];
+    [v92 moveToPoint:{points->x, points->y}];
+    [v92 lineToPoint:{points[2].x, points[2].y}];
   }
 
   if (v110)
@@ -621,81 +621,81 @@ LABEL_36:
   v3 = 20.0;
   if (![(CRLConnectionLineAbstractLayout *)self userDidSetControlPoint])
   {
-    v4 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    v5 = [(CRLConnectionLineAbstractLayout *)self tailMagnetType];
-    if (!v5)
+    connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    tailMagnetType = [(CRLConnectionLineAbstractLayout *)self tailMagnetType];
+    if (!tailMagnetType)
     {
-      v6 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
+      tailNearestLayoutForRouting = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
 
-      if (v6)
+      if (tailNearestLayoutForRouting)
       {
-        v7 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
+        tailNearestLayoutForRouting2 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
 
-        v5 = [(CRLConnectionLineAbstractLayout *)self tailNearestMagnetTypeForRouting];
-        v4 = v7;
+        tailMagnetType = [(CRLConnectionLineAbstractLayout *)self tailNearestMagnetTypeForRouting];
+        connectedFrom = tailNearestLayoutForRouting2;
       }
 
       else
       {
-        v5 = 0;
+        tailMagnetType = 0;
       }
     }
 
-    v8 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-    v9 = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
-    if (!v9)
+    connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+    headMagnetType = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
+    if (!headMagnetType)
     {
-      v9 = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
+      headMagnetType = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
 
-      if (v9)
+      if (headMagnetType)
       {
-        v10 = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
+        headNearestLayoutForRouting = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
 
-        v9 = [(CRLConnectionLineAbstractLayout *)self headNearestMagnetTypeForRouting];
-        v8 = v10;
+        headMagnetType = [(CRLConnectionLineAbstractLayout *)self headNearestMagnetTypeForRouting];
+        connectedTo = headNearestLayoutForRouting;
       }
     }
 
-    if (!v4)
+    if (!connectedFrom)
     {
       goto LABEL_23;
     }
 
-    if (!v8)
+    if (!connectedTo)
     {
       goto LABEL_23;
     }
 
-    [v4 transform];
+    [connectedFrom transform];
     if (sub_1001399C0(v17) != 0.0)
     {
       goto LABEL_23;
     }
 
-    [v8 transform];
+    [connectedTo transform];
     if (sub_1001399C0(v17) != 0.0)
     {
       goto LABEL_23;
     }
 
-    if (v9 == 3 && v5 == 5)
+    if (headMagnetType == 3 && tailMagnetType == 5)
     {
-      [v4 cardinalWestPosition];
+      [connectedFrom cardinalWestPosition];
       v12 = v11;
-      [v8 cardinalEastPosition];
+      [connectedTo cardinalEastPosition];
     }
 
     else
     {
       v14 = 20.0;
-      if (v9 != 5 || v5 != 3)
+      if (headMagnetType != 5 || tailMagnetType != 3)
       {
         goto LABEL_20;
       }
 
-      [v8 cardinalWestPosition];
+      [connectedTo cardinalWestPosition];
       v12 = v15;
-      [v4 cardinalEastPosition];
+      [connectedFrom cardinalEastPosition];
     }
 
     v14 = v12 - v13;
@@ -716,22 +716,22 @@ LABEL_23:
   return v3;
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = b.y;
+  x = b.x;
+  v9 = a.y;
+  v10 = a.x;
   v12 = objc_opt_class();
   v13 = *(&self->super.super.mCachedEditableBezierPathSource + 3);
-  v14 = v13;
+  pathSource = v13;
   if (!v13)
   {
-    v6 = [(CRLShapeLayout *)self shapeInfo];
-    v14 = [v6 pathSource];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo pathSource];
   }
 
-  v15 = sub_100014370(v12, v14);
+  v15 = sub_100014370(v12, pathSource);
   if (!v13)
   {
   }
@@ -739,7 +739,7 @@ LABEL_23:
   v16 = *(&self->super.super.mCachedPathSource + 3);
   if (v16)
   {
-    v17 = v16;
+    geometry = v16;
     v30 = 0u;
     v31 = 0u;
     v29 = 0u;
@@ -747,19 +747,19 @@ LABEL_23:
 
   else
   {
-    v18 = [(CRLCanvasLayout *)self info];
-    v17 = [v18 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
 
     v30 = 0u;
     v31 = 0u;
     v29 = 0u;
-    if (!v17)
+    if (!geometry)
     {
       goto LABEL_9;
     }
   }
 
-  [v17 transform];
+  [geometry transform];
 LABEL_9:
   *(&self->mOverriddenControlPoint.x + 3) = v10;
   *(&self->mOverriddenControlPoint.y + 3) = v9;
@@ -797,13 +797,13 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)p_getOverriddenControlPointWithPointA:(CGPoint)a3 pointB:(CGPoint)a4
+- (CGPoint)p_getOverriddenControlPointWithPointA:(CGPoint)a pointB:(CGPoint)b
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = sub_100120ABC(a3.x, a3.y, a4.x, a4.y, 0.5);
+  y = b.y;
+  x = b.x;
+  v6 = a.y;
+  v7 = a.x;
+  v9 = sub_100120ABC(a.x, a.y, b.x, b.y, 0.5);
   v40 = v10;
   v41 = v9;
   [CRLConnectionLineOrthogonalLayout p_getControlKnobPositionToMakeSingleCornerIfPossible:"p_getControlKnobPositionToMakeSingleCornerIfPossible:pointA:pointB:" pointA:? pointB:?];
@@ -814,8 +814,8 @@ LABEL_9:
   [CRLConnectionLineOrthogonalLayout p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:"p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:pointA:pointB:" pointA:? pointB:?];
   v45 = v12;
   v46 = v11;
-  v13 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-  [v13 frame];
+  connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+  [connectedTo frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -839,8 +839,8 @@ LABEL_9:
 
   else
   {
-    v30 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    [v30 frame];
+    connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    [connectedFrom frame];
     v51.origin.x = v22;
     v51.origin.y = v24;
     v51.size.width = v26;
@@ -904,88 +904,88 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)p_getControlKnobPositionToMakeSingleCornerIfPossible:(CGPoint)a3 pointA:(CGPoint)a4 pointB:(CGPoint)a5
+- (CGPoint)p_getControlKnobPositionToMakeSingleCornerIfPossible:(CGPoint)possible pointA:(CGPoint)a pointB:(CGPoint)b
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v7 frame];
+  y = a.y;
+  x = a.x;
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(CRLConnectionLineAbstractLayout *)self tailMagnetType];
+  tailMagnetType = [(CRLConnectionLineAbstractLayout *)self tailMagnetType];
   v126 = x;
-  if (!v16)
+  if (!tailMagnetType)
   {
-    v17 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
+    tailNearestLayoutForRouting = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
 
-    if (!v17)
+    if (!tailNearestLayoutForRouting)
     {
       goto LABEL_5;
     }
 
-    v18 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
-    [v18 frame];
+    tailNearestLayoutForRouting2 = [(CRLConnectionLineAbstractLayout *)self tailNearestLayoutForRouting];
+    [tailNearestLayoutForRouting2 frame];
     v9 = v19;
     v11 = v20;
     v13 = v21;
     v15 = v22;
 
-    v16 = [(CRLConnectionLineAbstractLayout *)self tailNearestMagnetTypeForRouting];
+    tailMagnetType = [(CRLConnectionLineAbstractLayout *)self tailNearestMagnetTypeForRouting];
   }
 
-  v17 = v16;
+  tailNearestLayoutForRouting = tailMagnetType;
 LABEL_5:
-  v23 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-  [v23 frame];
+  connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+  [connectedTo frame];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
-  if (v32)
+  headMagnetType = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
+  if (headMagnetType)
   {
-    v33 = v32;
+    headNearestLayoutForRouting = headMagnetType;
     v127 = 0;
-    v34 = v17 != 0;
+    v34 = tailNearestLayoutForRouting != 0;
   }
 
   else
   {
-    v33 = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
+    headNearestLayoutForRouting = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
 
-    if (v33)
+    if (headNearestLayoutForRouting)
     {
-      v23 = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
-      [v23 frame];
+      connectedTo = [(CRLConnectionLineAbstractLayout *)self headNearestLayoutForRouting];
+      [connectedTo frame];
       v25 = v40;
       v27 = v41;
       v29 = v42;
       v31 = v43;
 
-      v33 = [(CRLConnectionLineAbstractLayout *)self headNearestMagnetTypeForRouting];
+      headNearestLayoutForRouting = [(CRLConnectionLineAbstractLayout *)self headNearestMagnetTypeForRouting];
     }
 
-    v127 = v33 == 0;
-    v34 = v17 != 0;
-    if (!v33 && v17)
+    v127 = headNearestLayoutForRouting == 0;
+    v34 = tailNearestLayoutForRouting != 0;
+    if (!headNearestLayoutForRouting && tailNearestLayoutForRouting)
     {
-      v33 = 0;
+      headNearestLayoutForRouting = 0;
       v37 = 0;
-      v39 = v17 == 1;
+      v39 = tailNearestLayoutForRouting == 1;
       v34 = 1;
       v127 = 1;
-      v36 = 1;
+      connectedFrom5 = 1;
       goto LABEL_29;
     }
   }
 
-  if (v33)
+  if (headNearestLayoutForRouting)
   {
-    v35 = v17 == 0;
+    v35 = tailNearestLayoutForRouting == 0;
   }
 
   else
@@ -993,31 +993,31 @@ LABEL_5:
     v35 = 0;
   }
 
-  v36 = v35;
-  v37 = v33 == 1;
-  if (v33 != 1 || v17 != 1)
+  connectedFrom5 = v35;
+  v37 = headNearestLayoutForRouting == 1;
+  if (headNearestLayoutForRouting != 1 || tailNearestLayoutForRouting != 1)
   {
-    if (v17 == 1)
+    if (tailNearestLayoutForRouting == 1)
     {
       v39 = 1;
-      if (v33 > 3)
+      if (headNearestLayoutForRouting > 3)
       {
-        if (v33 == 4)
+        if (headNearestLayoutForRouting == 4)
         {
           v37 = 0;
           v123 = 0;
-          v36 = v31 + v27 < v11;
+          connectedFrom5 = v31 + v27 < v11;
           goto LABEL_16;
         }
 
-        if (v33 == 5)
+        if (headNearestLayoutForRouting == 5)
         {
           if (v25 > v9 + v13)
           {
             v37 = 0;
             v123 = 0;
-            v36 = 1;
-            v33 = 5;
+            connectedFrom5 = 1;
+            headNearestLayoutForRouting = 5;
             goto LABEL_16;
           }
 
@@ -1027,28 +1027,28 @@ LABEL_5:
 
       else
       {
-        if (v33 == 2)
+        if (headNearestLayoutForRouting == 2)
         {
           v37 = 0;
           v123 = 0;
-          v36 = v27 > v11 + v15;
+          connectedFrom5 = v27 > v11 + v15;
           goto LABEL_16;
         }
 
-        if (v33 == 3)
+        if (headNearestLayoutForRouting == 3)
         {
           if (v29 + v25 < v9)
           {
             v37 = 0;
             v123 = 0;
-            v36 = 1;
-            v33 = 3;
+            connectedFrom5 = 1;
+            headNearestLayoutForRouting = 3;
             goto LABEL_16;
           }
 
 LABEL_67:
           v123 = 0;
-          v36 = v27 > v11 + v15 && v33 == 2;
+          connectedFrom5 = v27 > v11 + v15 && headNearestLayoutForRouting == 2;
           goto LABEL_16;
         }
       }
@@ -1060,28 +1060,28 @@ LABEL_67:
     }
 
 LABEL_29:
-    v44 = (v17 & 0xFFFFFFFFFFFFFFFELL) == 4 || (v17 & 0xFFFFFFFFFFFFFFFELL) == 2;
+    v44 = (tailNearestLayoutForRouting & 0xFFFFFFFFFFFFFFFELL) == 4 || (tailNearestLayoutForRouting & 0xFFFFFFFFFFFFFFFELL) == 2;
     if (v44 && v37)
     {
-      if (v17 == 5 && v9 > v29 + v25 || v17 == 3 && v9 + v13 < v25)
+      if (tailNearestLayoutForRouting == 5 && v9 > v29 + v25 || tailNearestLayoutForRouting == 3 && v9 + v13 < v25)
       {
         v37 = 1;
 LABEL_40:
-        v36 = 1;
+        connectedFrom5 = 1;
         goto LABEL_88;
       }
 
-      v36 = v11 > v31 + v27 && v17 == 2;
-      if (v17 == 4)
+      connectedFrom5 = v11 > v31 + v27 && tailNearestLayoutForRouting == 2;
+      if (tailNearestLayoutForRouting == 4)
       {
-        v36 = v11 + v15 < v27;
+        connectedFrom5 = v11 + v15 < v27;
         v38 = v126;
         v123 = 0;
         if (!v39)
         {
           v125 = v11 + v15 < v27;
           v48 = 0;
-          v36 = 0;
+          connectedFrom5 = 0;
           goto LABEL_97;
         }
 
@@ -1102,76 +1102,76 @@ LABEL_88:
       goto LABEL_89;
     }
 
-    if (v33 == 0 || !v34)
+    if (headNearestLayoutForRouting == 0 || !v34)
     {
       goto LABEL_88;
     }
 
-    v36 = 0;
-    if (v33 > 3)
+    connectedFrom5 = 0;
+    if (headNearestLayoutForRouting > 3)
     {
-      if (v33 == 4)
+      if (headNearestLayoutForRouting == 4)
       {
-        if ((v17 == 5 || v17 == 3) && v31 + v27 < v11)
+        if ((tailNearestLayoutForRouting == 5 || tailNearestLayoutForRouting == 3) && v31 + v27 < v11)
         {
           goto LABEL_40;
         }
 
-        v36 = 0;
+        connectedFrom5 = 0;
         v123 = 0;
         v45 = 0;
-        v33 = 4;
+        headNearestLayoutForRouting = 4;
       }
 
       else
       {
-        if (v33 != 5)
+        if (headNearestLayoutForRouting != 5)
         {
           goto LABEL_88;
         }
 
-        if (v17 != 4 && v17 != 2)
+        if (tailNearestLayoutForRouting != 4 && tailNearestLayoutForRouting != 2)
         {
-          v36 = 0;
+          connectedFrom5 = 0;
           goto LABEL_88;
         }
 
         v123 = 0;
         v45 = 0;
-        v36 = v25 > v9 + v13;
-        v33 = 5;
+        connectedFrom5 = v25 > v9 + v13;
+        headNearestLayoutForRouting = 5;
       }
     }
 
-    else if (v33 == 2)
+    else if (headNearestLayoutForRouting == 2)
     {
-      if ((v17 == 5 || v17 == 3) && v27 > v11 + v15)
+      if ((tailNearestLayoutForRouting == 5 || tailNearestLayoutForRouting == 3) && v27 > v11 + v15)
       {
         goto LABEL_40;
       }
 
-      v36 = 0;
+      connectedFrom5 = 0;
       v123 = 0;
       v45 = 0;
-      v33 = 2;
+      headNearestLayoutForRouting = 2;
     }
 
     else
     {
-      if (v33 != 3)
+      if (headNearestLayoutForRouting != 3)
       {
         goto LABEL_88;
       }
 
-      if ((v17 == 4 || v17 == 2) && v29 + v25 < v9)
+      if ((tailNearestLayoutForRouting == 4 || tailNearestLayoutForRouting == 2) && v29 + v25 < v9)
       {
         goto LABEL_40;
       }
 
-      v36 = 0;
+      connectedFrom5 = 0;
       v123 = 0;
       v45 = 0;
-      v33 = 3;
+      headNearestLayoutForRouting = 3;
     }
 
     v38 = v126;
@@ -1183,8 +1183,8 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  v36 = 1;
-  v33 = 1;
+  connectedFrom5 = 1;
+  headNearestLayoutForRouting = 1;
   v37 = 1;
   v123 = 1;
 LABEL_16:
@@ -1193,16 +1193,16 @@ LABEL_89:
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
   v50 = v49;
   v52 = v51;
-  v23 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v23 cardinalNorthPosition];
+  connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedTo cardinalNorthPosition];
   if (!sub_10011ED38(v50, v52, v53, v54))
   {
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
     v56 = v55;
     v58 = v57;
-    v59 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    [v59 cardinalSouthPosition];
-    v125 = v36;
+    connectedFrom2 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    [connectedFrom2 cardinalSouthPosition];
+    v125 = connectedFrom5;
     LODWORD(v45) = v127 & sub_10011ED38(v56, v58, v60, v61);
     if (v45 & 1) != 0 || ((v37 ^ 1))
     {
@@ -1211,25 +1211,25 @@ LABEL_89:
       goto LABEL_109;
     }
 
-    v119 = v59;
+    v119 = connectedFrom2;
     v48 = 1;
-    v36 = 1;
+    connectedFrom5 = 1;
     goto LABEL_97;
   }
 
   v45 = 1;
   if (v127)
   {
-    v125 = v36;
+    v125 = connectedFrom5;
     goto LABEL_109;
   }
 
   v127 = 0;
 LABEL_96:
-  v125 = v36;
+  v125 = connectedFrom5;
   v48 = 0;
   v62 = v37;
-  v36 = v45;
+  connectedFrom5 = v45;
   LOBYTE(v37) = 0;
   LOBYTE(v45) = 0;
   if (!v62)
@@ -1241,29 +1241,29 @@ LABEL_97:
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:11 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3), v119];
   v64 = v63;
   v66 = v65;
-  v67 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v67 cardinalNorthPosition];
+  connectedFrom3 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom3 cardinalNorthPosition];
   if (sub_10011ED38(v64, v66, v68, v69))
   {
-    LOBYTE(v45) = v17 == 0;
+    LOBYTE(v45) = tailNearestLayoutForRouting == 0;
     goto LABEL_101;
   }
 
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:11 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
   v71 = v70;
   v73 = v72;
-  v74 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v74 cardinalSouthPosition];
+  connectedFrom4 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom4 cardinalSouthPosition];
   if (sub_10011ED38(v71, v73, v75, v76))
   {
-    LOBYTE(v45) = v17 == 0;
+    LOBYTE(v45) = tailNearestLayoutForRouting == 0;
 
 LABEL_101:
     if (v48)
     {
 LABEL_102:
 
-      if ((v36 & 1) == 0)
+      if ((connectedFrom5 & 1) == 0)
       {
         v77 = 0;
         v78 = 0;
@@ -1286,7 +1286,7 @@ LABEL_102:
 LABEL_107:
   LOBYTE(v37) = 1;
 LABEL_108:
-  if ((v36 & 1) == 0)
+  if ((connectedFrom5 & 1) == 0)
   {
     v78 = 0;
     goto LABEL_116;
@@ -1297,15 +1297,15 @@ LABEL_109:
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
   v80 = v79;
   v82 = v81;
-  v23 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v23 cardinalEastPosition];
+  connectedTo = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedTo cardinalEastPosition];
   if (!sub_10011ED38(v80, v82, v83, v84))
   {
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
     v87 = v86;
     v89 = v88;
-    v36 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    [v36 cardinalWestPosition];
+    connectedFrom5 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    [connectedFrom5 cardinalWestPosition];
     if ((v127 & sub_10011ED38(v87, v89, v90, v91)) == 1)
     {
 
@@ -1333,8 +1333,8 @@ LABEL_109:
     }
 
 LABEL_145:
-    v111 = a3.x;
-    v112 = a3.y;
+    v111 = possible.x;
+    v112 = possible.y;
     goto LABEL_164;
   }
 
@@ -1361,11 +1361,11 @@ LABEL_122:
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3), v119];
     v93 = v92;
     v95 = v94;
-    v96 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    [v96 cardinalEastPosition];
+    connectedFrom6 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    [connectedFrom6 cardinalEastPosition];
     if (sub_10011ED38(v93, v95, v97, v98))
     {
-      v85 = v17 == 0;
+      v85 = tailNearestLayoutForRouting == 0;
     }
 
     else
@@ -1373,8 +1373,8 @@ LABEL_122:
       [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
       v100 = v99;
       v102 = v101;
-      v103 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-      [v103 cardinalWestPosition];
+      connectedFrom7 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+      [connectedFrom7 cardinalWestPosition];
       if (!sub_10011ED38(v100, v102, v104, v105))
       {
 
@@ -1406,7 +1406,7 @@ LABEL_128:
         goto LABEL_135;
       }
 
-      v85 = v17 == 0;
+      v85 = tailNearestLayoutForRouting == 0;
     }
 
     if (v120)
@@ -1427,23 +1427,23 @@ LABEL_118:
 LABEL_135:
   if (v123)
   {
-    v106 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    [v106 centerForConnecting];
+    connectedFrom8 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    [connectedFrom8 centerForConnecting];
     if (v38 == v107 || vabdd_f64(v38, v107) < 0.00999999978)
     {
     }
 
     else
     {
-      v108 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-      [v108 centerForConnecting];
+      connectedTo2 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+      [connectedTo2 centerForConnecting];
       v110 = v109;
 
-      if (a5.x != v110)
+      if (b.x != v110)
       {
         v111 = v38;
-        v112 = a5.y;
-        if (vabdd_f64(a5.x, v110) < 0.00999999978)
+        v112 = b.y;
+        if (vabdd_f64(b.x, v110) < 0.00999999978)
         {
           goto LABEL_164;
         }
@@ -1453,21 +1453,21 @@ LABEL_135:
         if (y == v114 || vabdd_f64(y, v114) < 0.00999999978)
         {
 
-          v111 = a5.x;
+          v111 = b.x;
           v112 = y;
           goto LABEL_164;
         }
 
-        v115 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-        [v115 centerForConnecting];
+        connectedTo3 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+        [connectedTo3 centerForConnecting];
         v117 = v116;
 
-        if (a5.y != v117)
+        if (b.y != v117)
         {
-          v111 = a3.x;
-          v112 = a3.y;
-          v118 = a5.x;
-          if (vabdd_f64(a5.y, v117) >= 0.00999999978)
+          v111 = possible.x;
+          v112 = possible.y;
+          v118 = b.x;
+          if (vabdd_f64(b.y, v117) >= 0.00999999978)
           {
             goto LABEL_164;
           }
@@ -1480,42 +1480,42 @@ LABEL_144:
 
 LABEL_157:
         v112 = y;
-        v111 = a5.x;
+        v111 = b.x;
         goto LABEL_164;
       }
     }
 
 LABEL_154:
     v111 = v38;
-    v112 = a5.y;
+    v112 = b.y;
     goto LABEL_164;
   }
 
-  if (v17 == 2 || v17 == 4 || (v45 & 1) != 0)
+  if (tailNearestLayoutForRouting == 2 || tailNearestLayoutForRouting == 4 || (v45 & 1) != 0)
   {
     goto LABEL_154;
   }
 
-  if (v17 == 3)
+  if (tailNearestLayoutForRouting == 3)
   {
     goto LABEL_157;
   }
 
   v112 = y;
-  v118 = a5.x;
-  if (v17 == 5 || v85)
+  v118 = b.x;
+  if (tailNearestLayoutForRouting == 5 || v85)
   {
-    v111 = a5.x;
+    v111 = b.x;
     goto LABEL_164;
   }
 
-  if (v33 > 3)
+  if (headNearestLayoutForRouting > 3)
   {
-    if (v33 != 5)
+    if (headNearestLayoutForRouting != 5)
     {
-      v111 = a3.x;
-      v112 = a3.y;
-      if (v33 != 4)
+      v111 = possible.x;
+      v112 = possible.y;
+      if (headNearestLayoutForRouting != 4)
       {
         goto LABEL_164;
       }
@@ -1526,12 +1526,12 @@ LABEL_154:
     goto LABEL_154;
   }
 
-  v111 = a5.x;
-  if (v33 != 2)
+  v111 = b.x;
+  if (headNearestLayoutForRouting != 2)
   {
-    v111 = a3.x;
-    v112 = a3.y;
-    if (v33 == 3)
+    v111 = possible.x;
+    v112 = possible.y;
+    if (headNearestLayoutForRouting == 3)
     {
       goto LABEL_154;
     }
@@ -1543,12 +1543,12 @@ LABEL_164:
   return result;
 }
 
-- (CGPoint)p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:(CGPoint)a3 pointA:(CGPoint)a4 pointB:(CGPoint)a5
+- (CGPoint)p_getControlKnobPositionToSnapToAnyExistingSetControlKnobs:(CGPoint)knobs pointA:(CGPoint)a pointB:(CGPoint)b
 {
-  y = a5.y;
-  v6 = a3.y;
-  x = a3.x;
-  v9 = sub_100120ABC(a4.x, a4.y, a5.x, a5.y, 0.5);
+  y = b.y;
+  v6 = knobs.y;
+  x = knobs.x;
+  v9 = sub_100120ABC(a.x, a.y, b.x, b.y, 0.5);
   [(CRLConnectionLineOrthogonalLayout *)self p_getExistingUserSetControlPointToMatch];
   v11 = v10;
   if (sub_1001208AC(v12, v10))
@@ -1583,10 +1583,10 @@ LABEL_164:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  v6 = [v5 connectedLayouts];
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  connectedLayouts = [connectedFrom connectedLayouts];
 
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v7 = [connectedLayouts countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
     v8 = *v31;
@@ -1597,7 +1597,7 @@ LABEL_164:
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(connectedLayouts);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
@@ -1610,10 +1610,10 @@ LABEL_164:
           {
             if ([(CRLConnectionLineOrthogonalLayout *)self p_connectionLineComingFromSideOfOriginObject:v11])
             {
-              v14 = [(CRLConnectionLineAbstractLayout *)v11 connectionLineInfo];
-              v15 = [v14 connectionLinePathSource];
+              connectionLineInfo = [(CRLConnectionLineAbstractLayout *)v11 connectionLineInfo];
+              connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
 
-              [v15 getControlKnobPosition:12];
+              [connectionLinePathSource getControlKnobPosition:12];
               v24 = v17;
               v25 = v16;
               if (v11)
@@ -1644,7 +1644,7 @@ LABEL_164:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v7 = [connectedLayouts countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v7);
@@ -1662,8 +1662,8 @@ LABEL_164:
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v7 cardinalNorthPosition];
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom cardinalNorthPosition];
   v10 = sub_10011ED38(v4, v6, v8, v9);
 
   return v10;
@@ -1674,16 +1674,16 @@ LABEL_164:
   [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  [v7 cardinalSouthPosition];
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  [connectedFrom cardinalSouthPosition];
   v10 = sub_10011ED38(v4, v6, v8, v9);
 
   return v10;
 }
 
-- (BOOL)p_connectionLineComingFromSideOfOriginObject:(id)a3
+- (BOOL)p_connectionLineComingFromSideOfOriginObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([(CRLConnectionLineAbstractLayout *)self tailMagnetType]== 1)
   {
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:*(&self->mLastPtA.x + 3) forLineEnd:*(&self->mLastPtA.y + 3), *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
@@ -1697,78 +1697,78 @@ LABEL_164:
     v8 = *(&self->mOverriddenControlPoint.y + 3);
   }
 
-  v9 = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
+  headMagnetType = [(CRLConnectionLineAbstractLayout *)self headMagnetType];
   v11 = *(&self->mLastPtA.x + 3);
   v10 = *(&self->mLastPtA.y + 3);
-  if (v9 == 1)
+  if (headMagnetType == 1)
   {
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:11 withTail:v11 forLineEnd:v10, *(&self->mOverriddenControlPoint.x + 3), *(&self->mOverriddenControlPoint.y + 3)];
     v11 = v12;
     v10 = v13;
   }
 
-  if ([v4 tailMagnetType] == 1)
+  if ([objectCopy tailMagnetType] == 1)
   {
-    [v4 headMagnetCanvasPosition];
+    [objectCopy headMagnetCanvasPosition];
     v15 = v14;
     v17 = v16;
-    [v4 tailMagnetCanvasPosition];
+    [objectCopy tailMagnetCanvasPosition];
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:10 withTail:v15 forLineEnd:v17, v18, v19];
   }
 
   else
   {
-    [v4 tailMagnetCanvasPosition];
+    [objectCopy tailMagnetCanvasPosition];
   }
 
   v22 = v20;
   v23 = v21;
-  if ([v4 headMagnetType] == 1)
+  if ([objectCopy headMagnetType] == 1)
   {
-    [v4 headMagnetCanvasPosition];
+    [objectCopy headMagnetCanvasPosition];
     v25 = v24;
     v27 = v26;
-    [v4 tailMagnetCanvasPosition];
+    [objectCopy tailMagnetCanvasPosition];
     [(CRLConnectionLineOrthogonalLayout *)self p_getLineEndPointAdjustedToCardinalForClineLayout:self withHead:11 withTail:v25 forLineEnd:v27, v28, v29];
   }
 
   else
   {
-    [v4 headMagnetCanvasPosition];
+    [objectCopy headMagnetCanvasPosition];
   }
 
   v32 = v30;
   v33 = v31;
-  v34 = [v4 connectedTo];
-  v35 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-  if (v34 == v35 && sub_100120090(v32, v33, v11, v10) < 5.0)
+  connectedTo = [objectCopy connectedTo];
+  connectedTo2 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+  if (connectedTo == connectedTo2 && sub_100120090(v32, v33, v11, v10) < 5.0)
   {
     v36 = 1;
   }
 
   else
   {
-    v37 = [v4 connectedFrom];
-    v38 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
-    if (v37 == v38 && sub_100120090(v22, v23, v11, v10) < 5.0)
+    connectedFrom = [objectCopy connectedFrom];
+    connectedTo3 = [(CRLConnectionLineAbstractLayout *)self connectedTo];
+    if (connectedFrom == connectedTo3 && sub_100120090(v22, v23, v11, v10) < 5.0)
     {
       v36 = 1;
     }
 
     else
     {
-      v39 = [v4 connectedTo];
-      v40 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-      if (v39 == v40 && sub_100120090(v32, v33, v6, v8) < 5.0)
+      connectedTo4 = [objectCopy connectedTo];
+      connectedFrom2 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+      if (connectedTo4 == connectedFrom2 && sub_100120090(v32, v33, v6, v8) < 5.0)
       {
         v36 = 1;
       }
 
       else
       {
-        v41 = [v4 connectedFrom];
-        v42 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-        v36 = v41 == v42 && sub_100120090(v22, v23, v6, v8) < 5.0;
+        connectedFrom3 = [objectCopy connectedFrom];
+        connectedFrom4 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+        v36 = connectedFrom3 == connectedFrom4 && sub_100120090(v22, v23, v6, v8) < 5.0;
       }
     }
   }
@@ -1776,15 +1776,15 @@ LABEL_164:
   return v36;
 }
 
-- (CGPoint)p_getLineEndPointAdjustedToCardinalForClineLayout:(id)a3 withHead:(CGPoint)a4 withTail:(CGPoint)a5 forLineEnd:(unint64_t)a6
+- (CGPoint)p_getLineEndPointAdjustedToCardinalForClineLayout:(id)layout withHead:(CGPoint)head withTail:(CGPoint)tail forLineEnd:(unint64_t)end
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v11 = a3;
-  v12 = v11;
-  if (a6 == 11)
+  y = tail.y;
+  x = tail.x;
+  v9 = head.y;
+  v10 = head.x;
+  layoutCopy = layout;
+  v12 = layoutCopy;
+  if (end == 11)
   {
     x = v10;
     v13 = v9;
@@ -1795,24 +1795,24 @@ LABEL_164:
     v13 = y;
   }
 
-  if (v9 > y && a6 == 11)
+  if (v9 > y && end == 11)
   {
-    v16 = [v11 connectedTo];
-    [v16 cardinalNorthPosition];
+    connectedTo = [layoutCopy connectedTo];
+    [connectedTo cardinalNorthPosition];
     goto LABEL_17;
   }
 
-  if (y > v9 && a6 == 10)
+  if (y > v9 && end == 10)
   {
-    v16 = [v11 connectedFrom];
-    [v16 cardinalNorthPosition];
+    connectedTo = [layoutCopy connectedFrom];
+    [connectedTo cardinalNorthPosition];
     goto LABEL_17;
   }
 
-  if (y > v9 && a6 == 11)
+  if (y > v9 && end == 11)
   {
-    v16 = [v11 connectedTo];
-    [v16 cardinalSouthPosition];
+    connectedTo = [layoutCopy connectedTo];
+    [connectedTo cardinalSouthPosition];
 LABEL_17:
     x = v17;
     v13 = v18;
@@ -1820,10 +1820,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v9 > y && a6 == 10)
+  if (v9 > y && end == 10)
   {
-    v16 = [v11 connectedFrom];
-    [v16 cardinalSouthPosition];
+    connectedTo = [layoutCopy connectedFrom];
+    [connectedTo cardinalSouthPosition];
     goto LABEL_17;
   }
 
@@ -1836,7 +1836,7 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
 {
   begin = a4->__begin_;
   end = a4->__end_;
@@ -1915,7 +1915,7 @@ LABEL_18:
   }
 
   v21 = result.x - v8;
-  if (v20 < a6)
+  if (v20 < std)
   {
     result.x = v21;
   }
@@ -1927,7 +1927,7 @@ LABEL_18:
   }
 
   v23 = result.y - v15;
-  if (v22 < a6)
+  if (v22 < std)
   {
     result.y = v23;
   }
@@ -1935,63 +1935,63 @@ LABEL_18:
   return result;
 }
 
-- (void)addEndpointSnapsToXs:(void *)a3 andYs:(void *)a4
+- (void)addEndpointSnapsToXs:(void *)xs andYs:(void *)ys
 {
-  v7 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  if (v7)
+  connectedFrom = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  if (connectedFrom)
   {
-    v8 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    v9 = [v8 parent];
-    v10 = [(CRLCanvasAbstractLayout *)self parent];
-    if (v9 == v10)
+    connectedFrom2 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    parent = [connectedFrom2 parent];
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    if (parent == parent2)
     {
-      v11 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+      connectedFrom3 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
     }
 
     else
     {
-      v11 = 0;
+      connectedFrom3 = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    connectedFrom3 = 0;
   }
 
-  v12 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-  if (v12)
+  connectedFrom4 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+  if (connectedFrom4)
   {
-    v13 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
-    v14 = [v13 parent];
-    v15 = [(CRLCanvasAbstractLayout *)self parent];
-    if (v14 == v15)
+    connectedFrom5 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+    parent3 = [connectedFrom5 parent];
+    parent4 = [(CRLCanvasAbstractLayout *)self parent];
+    if (parent3 == parent4)
     {
-      v16 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
+      connectedFrom6 = [(CRLConnectionLineAbstractLayout *)self connectedFrom];
     }
 
     else
     {
-      v16 = 0;
+      connectedFrom6 = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    connectedFrom6 = 0;
   }
 
-  v17 = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
-  v18 = v17;
-  if (v11)
+  connectedPathSource = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
+  v18 = connectedPathSource;
+  if (connectedFrom3)
   {
-    [v11 centerForConnecting];
+    [connectedFrom3 centerForConnecting];
     v45.f64[0] = v19;
     v45.f64[1] = v20;
-    if (v16)
+    if (connectedFrom6)
     {
 LABEL_15:
-      [v16 centerForConnecting];
+      [connectedFrom6 centerForConnecting];
       v44.f64[0] = v21;
       v44.f64[1] = v22;
       goto LABEL_24;
@@ -2000,14 +2000,14 @@ LABEL_15:
 
   else
   {
-    [v17 getControlKnobPosition:10];
+    [connectedPathSource getControlKnobPosition:10];
     v37 = v24;
     v39 = v23;
-    v25 = [(CRLCanvasLayout *)self pureGeometry];
-    v26 = v25;
-    if (v25)
+    pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+    v26 = pureGeometry;
+    if (pureGeometry)
     {
-      [v25 transform];
+      [pureGeometry transform];
       v27 = v41;
       v28 = v42;
       v29 = v43;
@@ -2022,7 +2022,7 @@ LABEL_15:
 
     v45 = vaddq_f64(v29, vmlaq_n_f64(vmulq_n_f64(v28, v37), v27, v39));
 
-    if (v16)
+    if (connectedFrom6)
     {
       goto LABEL_15;
     }
@@ -2031,11 +2031,11 @@ LABEL_15:
   [v18 getControlKnobPosition:11];
   v38 = v31;
   v40 = v30;
-  v32 = [(CRLCanvasLayout *)self pureGeometry];
-  v33 = v32;
-  if (v32)
+  pureGeometry2 = [(CRLCanvasLayout *)self pureGeometry];
+  v33 = pureGeometry2;
+  if (pureGeometry2)
   {
-    [v32 transform];
+    [pureGeometry2 transform];
     v34 = v41;
     v35 = v42;
     v36 = v43;
@@ -2051,19 +2051,19 @@ LABEL_15:
   v44 = vaddq_f64(v36, vmlaq_n_f64(vmulq_n_f64(v35, v38), v34, v40));
 
 LABEL_24:
-  sub_10030DE08(a3, &v45);
-  sub_10030DE08(a4, &v45.f64[1]);
-  sub_10030DE08(a3, &v44);
-  sub_10030DE08(a4, &v44.f64[1]);
+  sub_10030DE08(xs, &v45);
+  sub_10030DE08(ys, &v45.f64[1]);
+  sub_10030DE08(xs, &v44);
+  sub_10030DE08(ys, &v44.f64[1]);
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v5 = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
-  [v5 getControlKnobPosition:a3];
+  connectedPathSource = [(CRLConnectionLineAbstractLayout *)self connectedPathSource];
+  [connectedPathSource getControlKnobPosition:position];
   v7 = v6;
   v23.f64[0] = v8;
-  if (a3 == 12)
+  if (position == 12)
   {
     v38 = 0;
     v39 = 0;
@@ -2073,11 +2073,11 @@ LABEL_24:
     v37 = 0;
     [(CRLConnectionLineOrthogonalLayout *)self addEndpointSnapsToXs:&v38 andYs:&v35];
     memset(&v34, 0, sizeof(v34));
-    v9 = [(CRLCanvasLayout *)self pureGeometry];
-    v10 = v9;
-    if (v9)
+    pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+    v10 = pureGeometry;
+    if (pureGeometry)
     {
-      [v9 transform];
+      [pureGeometry transform];
     }
 
     else
@@ -2144,21 +2144,21 @@ LABEL_24:
   return result;
 }
 
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
-  v53 = a4;
-  v5 = [v53 knob];
-  v6 = [v5 tag];
+  y = to.y;
+  x = to.x;
+  trackerCopy = tracker;
+  knob = [trackerCopy knob];
+  v6 = [knob tag];
 
   if (v6 == 12)
   {
-    v7 = [(CRLCanvasLayout *)self originalGeometry];
-    v8 = v7;
-    if (v7)
+    originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
+    v8 = originalGeometry;
+    if (originalGeometry)
     {
-      [v7 transform];
+      [originalGeometry transform];
       a = v73.a;
       b = v73.b;
       c = v73.c;
@@ -2188,10 +2188,10 @@ LABEL_24:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v16 = [(CRLCanvasAbstractLayout *)self parent];
-    v17 = [v16 children];
+    parent = [(CRLCanvasAbstractLayout *)self parent];
+    children = [parent children];
 
-    v18 = [v17 countByEnumeratingWithState:&v63 objects:v74 count:16];
+    v18 = [children countByEnumeratingWithState:&v63 objects:v74 count:16];
     if (v18)
     {
       v19 = *v64;
@@ -2201,7 +2201,7 @@ LABEL_24:
         {
           if (*v64 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(children);
           }
 
           v21 = *(*(&v63 + 1) + 8 * i);
@@ -2212,13 +2212,13 @@ LABEL_24:
             v24 = v23;
             if (v23)
             {
-              v25 = [v23 path];
+              path = [v23 path];
               memset(&v73, 0, sizeof(v73));
-              v26 = [v24 pureGeometry];
-              v27 = v26;
-              if (v26)
+              pureGeometry = [v24 pureGeometry];
+              v27 = pureGeometry;
+              if (pureGeometry)
               {
-                [v26 transform];
+                [pureGeometry transform];
               }
 
               else
@@ -2226,14 +2226,14 @@ LABEL_24:
                 memset(&v73, 0, sizeof(v73));
               }
 
-              [v25 elementAtIndex:0 associatedPoints:&v55];
+              [path elementAtIndex:0 associatedPoints:&v55];
               *&v55.a = vaddq_f64(*&v73.tx, vmlaq_n_f64(vmulq_n_f64(*&v73.c, v55.b), *&v73.a, v55.a));
-              v28 = [v25 elementCount];
-              if (v28 >= 2)
+              elementCount = [path elementCount];
+              if (elementCount >= 2)
               {
-                for (j = 1; v28 != j; ++j)
+                for (j = 1; elementCount != j; ++j)
                 {
-                  [v25 elementAtIndex:j associatedPoints:&v62];
+                  [path elementAtIndex:j associatedPoints:&v62];
                   v62 = vaddq_f64(*&v73.tx, vmlaq_n_f64(vmulq_n_f64(*&v73.c, v62.f64[1]), *&v73.a, v62.f64[0]));
                   v30 = fabs(sub_10011F31C(v62.f64[0], v62.f64[1], v55.a));
                   v32 = fabs(v31);
@@ -2263,7 +2263,7 @@ LABEL_25:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v63 objects:v74 count:16];
+        v18 = [children countByEnumeratingWithState:&v63 objects:v74 count:16];
       }
 
       while (v18);
@@ -2277,7 +2277,7 @@ LABEL_25:
     v57 = 0;
     v58 = 0;
     sub_100312EF0(&__p, v67, v68, (v68 - v67) >> 3);
-    v35 = [v53 icc];
+    v35 = [trackerCopy icc];
     [v35 viewScale];
     [(CRLConnectionLineOrthogonalLayout *)self axisSnapPoint:&v59 toXs:&__p toYs:tx + y * c + a * x withThreshold:ty + y * d + b * x, 7 / v36];
     v48 = v38;
@@ -2302,11 +2302,11 @@ LABEL_25:
       v48 = *(&self->mSnappedUserSetControlPoint.y + 3);
     }
 
-    v40 = [(CRLCanvasLayout *)self originalGeometry];
-    v41 = v40;
-    if (v40)
+    originalGeometry2 = [(CRLCanvasLayout *)self originalGeometry];
+    v41 = originalGeometry2;
+    if (originalGeometry2)
     {
-      [v40 transform];
+      [originalGeometry2 transform];
     }
 
     else
@@ -2348,20 +2348,20 @@ LABEL_25:
 
   v54.receiver = self;
   v54.super_class = CRLConnectionLineOrthogonalLayout;
-  [(CRLConnectionLineAbstractLayout *)&v54 dynamicallyMovedSmartShapeKnobTo:v53 withTracker:*&v15, *&v44];
+  [(CRLConnectionLineAbstractLayout *)&v54 dynamicallyMovedSmartShapeKnobTo:trackerCopy withTracker:*&v15, *&v44];
 }
 
-- (CGPoint)outsetFromMagnetPosition:(CGPoint)a3 withRect:(CGRect)a4 controlPoint:(CGPoint)a5 distance:(double)a6
+- (CGPoint)outsetFromMagnetPosition:(CGPoint)position withRect:(CGRect)rect controlPoint:(CGPoint)point distance:(double)distance
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v8 = a4.origin.y;
-  v9 = a4.origin.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v12 = sub_100120414(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  y = point.y;
+  x = point.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
+  v10 = position.y;
+  v11 = position.x;
+  v12 = sub_100120414(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v14 = v13;
   v31 = height;
   v15 = sqrt(height * height + width * width) * 0.5 + 2.0;
@@ -2377,9 +2377,9 @@ LABEL_25:
   v22 = v10 + v20;
   if (sub_10011FA28(v11, v10, v21, v10 + v20, v9, v8, v9 + width, v8))
   {
-    if (y <= v8 - a6 || y > v10 + 2.0)
+    if (y <= v8 - distance || y > v10 + 2.0)
     {
-      v10 = v8 - a6;
+      v10 = v8 - distance;
     }
 
     else
@@ -2394,9 +2394,9 @@ LABEL_25:
     v32 = v9 + width;
     if (sub_10011FA28(v34, v33, v21, v22, v9, v24, v9 + width, v24))
     {
-      if (y >= v24 + a6 || y < v10 + -2.0)
+      if (y >= v24 + distance || y < v10 + -2.0)
       {
-        v10 = v24 + a6;
+        v10 = v24 + distance;
       }
 
       else
@@ -2407,9 +2407,9 @@ LABEL_25:
 
     else if (sub_10011FA28(v34, v33, v21, v22, v9, v8, v9, v24))
     {
-      if (x <= v9 - a6 || x > v11 + 2.0)
+      if (x <= v9 - distance || x > v11 + 2.0)
       {
-        v11 = v9 - a6;
+        v11 = v9 - distance;
       }
 
       else
@@ -2418,9 +2418,9 @@ LABEL_25:
       }
     }
 
-    else if (x >= v32 + a6 || x < v11 + -2.0)
+    else if (x >= v32 + distance || x < v11 + -2.0)
     {
-      v11 = v32 + a6;
+      v11 = v32 + distance;
     }
 
     else

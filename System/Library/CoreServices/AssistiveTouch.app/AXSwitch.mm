@@ -9,10 +9,10 @@
 {
   v3 = [(AXSwitch *)self action]== 104 || [(AXSwitch *)self action]== 105;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v4 assistiveTouchLongPressEnabled];
 
-  v6 = v5 | v3;
-  if (v5 && !v3)
+  v6 = assistiveTouchLongPressEnabled | v3;
+  if (assistiveTouchLongPressEnabled && !v3)
   {
     v6 = [(AXSwitch *)self longPressAction]== 104 || [(AXSwitch *)self longPressAction]== 105;
   }
@@ -24,10 +24,10 @@
 {
   v3 = [(AXSwitch *)self action]== 103 || [(AXSwitch *)self action]== 109;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v4 assistiveTouchLongPressEnabled];
 
-  v6 = v5 | v3;
-  if (v5 && !v3)
+  v6 = assistiveTouchLongPressEnabled | v3;
+  if (assistiveTouchLongPressEnabled && !v3)
   {
     v6 = [(AXSwitch *)self longPressAction]== 103 || [(AXSwitch *)self longPressAction]== 109;
   }

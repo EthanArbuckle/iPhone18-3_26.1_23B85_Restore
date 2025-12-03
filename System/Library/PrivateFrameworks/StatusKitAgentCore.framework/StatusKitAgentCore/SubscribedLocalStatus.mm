@@ -1,41 +1,41 @@
 @interface SubscribedLocalStatus
-+ (id)predicateForSubscribedLocalStatusIDSIdentifier:(id)a3;
-+ (id)predicateForSubscribedLocalStatusIdentifier:(id)a3;
-+ (id)predicateForSubscribedLocalStatusIdentifier:(id)a3 idsIdentifier:(id)a4;
++ (id)predicateForSubscribedLocalStatusIDSIdentifier:(id)identifier;
++ (id)predicateForSubscribedLocalStatusIdentifier:(id)identifier;
++ (id)predicateForSubscribedLocalStatusIdentifier:(id)identifier idsIdentifier:(id)idsIdentifier;
 @end
 
 @implementation SubscribedLocalStatus
 
-+ (id)predicateForSubscribedLocalStatusIdentifier:(id)a3
++ (id)predicateForSubscribedLocalStatusIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SubscribedLocalStatus identifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForSubscribedLocalStatusIDSIdentifier:(id)a3
++ (id)predicateForSubscribedLocalStatusIDSIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SubscribedLocalStatus idsIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForSubscribedLocalStatusIdentifier:(id)a3 idsIdentifier:(id)a4
++ (id)predicateForSubscribedLocalStatusIdentifier:(id)identifier idsIdentifier:(id)idsIdentifier
 {
   v5 = MEMORY[0x277CCAC30];
-  v6 = a4;
-  v7 = a3;
+  idsIdentifierCopy = idsIdentifier;
+  identifierCopy = identifier;
   v8 = +[SubscribedLocalStatus idsIdentifierKeyPath];
   v9 = +[SubscribedLocalStatus identifierKeyPath];
-  v10 = [v5 predicateWithFormat:@"%K == %@ AND %K == %@", v8, v6, v9, v7];
+  identifierCopy = [v5 predicateWithFormat:@"%K == %@ AND %K == %@", v8, idsIdentifierCopy, v9, identifierCopy];
 
-  return v10;
+  return identifierCopy;
 }
 
 @end

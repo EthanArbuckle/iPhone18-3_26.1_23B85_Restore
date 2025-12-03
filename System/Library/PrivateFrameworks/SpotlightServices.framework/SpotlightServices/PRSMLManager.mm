@@ -3,10 +3,10 @@
 + (id)getSPMLSharedInstance;
 - (id)getLastSavedCategoryRankings;
 - (id)initManager;
-- (unint64_t)getCountForCategory:(id)a3;
+- (unint64_t)getCountForCategory:(id)category;
 - (unint64_t)getTotalResultsUsedCountForDuet;
 - (void)dumpPredictionStatsToFlatFiles;
-- (void)saveLastRankingForCategories:(id)a3;
+- (void)saveLastRankingForCategories:(id)categories;
 @end
 
 @implementation PRSMLManager
@@ -39,9 +39,9 @@ uint64_t __37__PRSMLManager_getSPMLSharedInstance__block_invoke()
 + (id)createPathToSpotlightPrefFile
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:firstObject];
   [v4 appendString:@"/com.apple.spotlight/"];
 
   return v4;
@@ -98,8 +98,8 @@ uint64_t __37__PRSMLManager_getSPMLSharedInstance__block_invoke()
   objc_sync_enter(v3);
   dictCoreDuetInfo = self->_dictCoreDuetInfo;
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
-  v6 = [v5 stringValue];
-  v7 = [(NSMutableDictionary *)dictCoreDuetInfo objectForKey:v6];
+  stringValue = [v5 stringValue];
+  v7 = [(NSMutableDictionary *)dictCoreDuetInfo objectForKey:stringValue];
 
   objc_sync_exit(v3);
 
@@ -112,52 +112,52 @@ uint64_t __37__PRSMLManager_getSPMLSharedInstance__block_invoke()
   objc_sync_enter(v3);
   dictCoreDuetInfo = self->_dictCoreDuetInfo;
   v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:1];
-  v6 = [v5 stringValue];
-  v7 = [(NSMutableDictionary *)dictCoreDuetInfo objectForKey:v6];
-  v8 = [v7 integerValue];
+  stringValue = [v5 stringValue];
+  v7 = [(NSMutableDictionary *)dictCoreDuetInfo objectForKey:stringValue];
+  integerValue = [v7 integerValue];
 
   objc_sync_exit(v3);
-  return v8;
+  return integerValue;
 }
 
-- (unint64_t)getCountForCategory:(id)a3
+- (unint64_t)getCountForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = self->_dictCoreDuetInfo;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_dictCoreDuetInfo objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_dictCoreDuetInfo objectForKey:categoryCopy];
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_dictCoreDuetInfo objectForKey:v4];
-    v8 = [v7 integerValue];
+    v7 = [(NSMutableDictionary *)self->_dictCoreDuetInfo objectForKey:categoryCopy];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   objc_sync_exit(v5);
 
-  return v8;
+  return integerValue;
 }
 
-- (void)saveLastRankingForCategories:(id)a3
+- (void)saveLastRankingForCategories:(id)categories
 {
-  v4 = a3;
-  if (v4)
+  categoriesCopy = categories;
+  if (categoriesCopy)
   {
-    v9 = v4;
+    v9 = categoriesCopy;
     v5 = self->_dictCoreDuetInfo;
     objc_sync_enter(v5);
     dictCoreDuetInfo = self->_dictCoreDuetInfo;
     v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
-    v8 = [v7 stringValue];
-    [(NSMutableDictionary *)dictCoreDuetInfo setObject:v9 forKey:v8];
+    stringValue = [v7 stringValue];
+    [(NSMutableDictionary *)dictCoreDuetInfo setObject:v9 forKey:stringValue];
 
     objc_sync_exit(v5);
-    v4 = v9;
+    categoriesCopy = v9;
   }
 }
 

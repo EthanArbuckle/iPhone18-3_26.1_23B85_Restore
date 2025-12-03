@@ -1,14 +1,14 @@
 @interface PDDPZoneIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsZoneIdentifierType:(id)a3;
+- (int)StringAsZoneIdentifierType:(id)type;
 - (int)zoneIdentifierType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPZoneIdentifier
@@ -26,25 +26,25 @@
   }
 }
 
-- (int)StringAsZoneIdentifierType:(id)a3
+- (int)StringAsZoneIdentifierType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ZONE_IDENTIFIER_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_ZONE_IDENTIFIER_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PERSON_LINK_ID_TYPE"])
+  else if ([typeCopy isEqualToString:@"PERSON_LINK_ID_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CLASS_ID_TYPE"])
+  else if ([typeCopy isEqualToString:@"CLASS_ID_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ZONE_NAME_TYPE"])
+  else if ([typeCopy isEqualToString:@"ZONE_NAME_TYPE"])
   {
     v4 = 3;
   }
@@ -62,8 +62,8 @@
   v7.receiver = self;
   v7.super_class = PDDPZoneIdentifier;
   v3 = [(PDDPZoneIdentifier *)&v7 description];
-  v4 = [(PDDPZoneIdentifier *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPZoneIdentifier *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -96,44 +96,44 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     zoneIdentifierType = self->_zoneIdentifierType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zoneIdentifierId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_zoneIdentifierType;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_zoneIdentifierType;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_zoneIdentifierId)
   {
-    v5 = v4;
-    [v4 setZoneIdentifierId:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setZoneIdentifierId:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -141,31 +141,31 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSString *)self->_zoneIdentifierId copyWithZone:a3];
+  v7 = [(NSString *)self->_zoneIdentifierId copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_zoneIdentifierType != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_zoneIdentifierType != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -173,7 +173,7 @@ LABEL_9:
   }
 
   zoneIdentifierId = self->_zoneIdentifierId;
-  if (zoneIdentifierId | *(v4 + 1))
+  if (zoneIdentifierId | *(equalCopy + 1))
   {
     v7 = [(NSString *)zoneIdentifierId isEqual:?];
   }
@@ -203,20 +203,20 @@ LABEL_10:
   return [(NSString *)self->_zoneIdentifierId hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_zoneIdentifierType = v4[4];
+    self->_zoneIdentifierType = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(PDDPZoneIdentifier *)self setZoneIdentifierId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

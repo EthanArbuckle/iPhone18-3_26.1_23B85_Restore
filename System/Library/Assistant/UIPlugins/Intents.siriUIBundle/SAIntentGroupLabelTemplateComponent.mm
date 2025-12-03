@@ -1,21 +1,21 @@
 @interface SAIntentGroupLabelTemplateComponent
 - (unint64_t)style;
-- (void)setStyle:(unint64_t)a3;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation SAIntentGroupLabelTemplateComponent
 
 - (unint64_t)style
 {
-  v2 = [(SAIntentGroupLabelTemplateComponent *)self labelTemplateComponentStyle];
-  v3 = [SiriIntentsTemplateModelEnumMapper componentLabelStyleFromString:v2];
+  labelTemplateComponentStyle = [(SAIntentGroupLabelTemplateComponent *)self labelTemplateComponentStyle];
+  v3 = [SiriIntentsTemplateModelEnumMapper componentLabelStyleFromString:labelTemplateComponentStyle];
 
   return v3;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  v4 = [SiriIntentsTemplateModelEnumMapper stringFromComponentLabelStyle:a3];
+  v4 = [SiriIntentsTemplateModelEnumMapper stringFromComponentLabelStyle:style];
   [(SAIntentGroupLabelTemplateComponent *)self setLabelTemplateComponentStyle:v4];
 }
 

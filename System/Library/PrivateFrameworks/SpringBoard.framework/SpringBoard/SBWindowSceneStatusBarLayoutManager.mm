@@ -1,35 +1,35 @@
 @interface SBWindowSceneStatusBarLayoutManager
-- (BOOL)statusBarOrientationShouldFollowWindow:(id)a3;
-- (SBWindowSceneStatusBarLayoutManager)initWithWindowScene:(id)a3;
+- (BOOL)statusBarOrientationShouldFollowWindow:(id)window;
+- (SBWindowSceneStatusBarLayoutManager)initWithWindowScene:(id)scene;
 - (UIEdgeInsets)statusBarEdgeInsets;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)orientationWindowForLayoutLayer:(unint64_t)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)orientationWindowForLayoutLayer:(unint64_t)layer;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)topmostActiveLayoutLayer;
 - (void)_applyEdgeInsetsToStatusBar;
 - (void)_updateStatusBarOrientationForTopMostActiveLayer;
 - (void)_updateWindowLevel;
-- (void)addActiveLayoutLayer:(unint64_t)a3;
-- (void)removeActiveLayoutLayer:(unint64_t)a3;
-- (void)removeWindowLevelOverrideReason:(id)a3;
-- (void)setOrientationWindow:(id)a3 forStatusBarLayoutLayer:(unint64_t)a4;
-- (void)setStatusBarEdgeInsets:(UIEdgeInsets)a3 forLayoutLayer:(unint64_t)a4;
-- (void)setWindowLevel:(double)a3 forOverrideReason:(id)a4;
+- (void)addActiveLayoutLayer:(unint64_t)layer;
+- (void)removeActiveLayoutLayer:(unint64_t)layer;
+- (void)removeWindowLevelOverrideReason:(id)reason;
+- (void)setOrientationWindow:(id)window forStatusBarLayoutLayer:(unint64_t)layer;
+- (void)setStatusBarEdgeInsets:(UIEdgeInsets)insets forLayoutLayer:(unint64_t)layer;
+- (void)setWindowLevel:(double)level forOverrideReason:(id)reason;
 @end
 
 @implementation SBWindowSceneStatusBarLayoutManager
 
 - (unint64_t)topmostActiveLayoutLayer
 {
-  v2 = [(NSMutableSet *)self->_activeLayoutLayers allObjects];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSMutableSet *)self->_activeLayoutLayers allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-  v4 = [v3 lastObject];
-  v5 = [v4 unsignedIntegerValue];
+  lastObject = [v3 lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (void)_updateStatusBarOrientationForTopMostActiveLayer
@@ -41,8 +41,8 @@
   if (v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v6 = [WeakRetained statusBarManager];
-    [v6 setStatusBarOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
+    statusBarManager = [WeakRetained statusBarManager];
+    [statusBarManager setStatusBarOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
   }
 }
 
@@ -50,10 +50,10 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained statusBarManager];
+  statusBarManager = [WeakRetained statusBarManager];
 
-  v5 = [v4 statusBarWindow];
-  [v4 statusBarWindowFrame];
+  statusBarWindow = [statusBarManager statusBarWindow];
+  [statusBarManager statusBarWindowFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -71,15 +71,15 @@
     v40.bottom = v19;
     v40.right = v21;
     v31 = NSStringFromUIEdgeInsets(v40);
-    v32 = [(SBWindowSceneStatusBarLayoutManager *)self topmostActiveLayoutLayer];
-    if (v32 > 2)
+    topmostActiveLayoutLayer = [(SBWindowSceneStatusBarLayoutManager *)self topmostActiveLayoutLayer];
+    if (topmostActiveLayoutLayer > 2)
     {
       v33 = @"invalid";
     }
 
     else
     {
-      v33 = off_2783C5118[v32];
+      v33 = off_2783C5118[topmostActiveLayoutLayer];
     }
 
     v34 = 138412546;
@@ -93,7 +93,7 @@
   v24 = v9 + v15;
   v25 = v11 - (v17 + v21);
   v26 = v13 - (v15 + v19);
-  [v5 frame];
+  [statusBarWindow frame];
   v41.origin.x = v27;
   v41.origin.y = v28;
   v41.size.width = v29;
@@ -104,7 +104,7 @@
   v39.size.height = v26;
   if (!CGRectEqualToRect(v39, v41))
   {
-    [v5 setFrame:{v23, v24, v25, v26}];
+    [statusBarWindow setFrame:{v23, v24, v25, v26}];
   }
 }
 
@@ -136,28 +136,28 @@
   if ([(NSMutableOrderedSet *)self->_windowLevelOverrideReasons count])
   {
     windowLevelOverrideMap = self->_windowLevelOverrideMap;
-    v5 = [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons firstObject];
-    v6 = [(NSMutableDictionary *)windowLevelOverrideMap objectForKey:v5];
+    firstObject = [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons firstObject];
+    v6 = [(NSMutableDictionary *)windowLevelOverrideMap objectForKey:firstObject];
     [v6 floatValue];
     defaultWindowLevel = v7;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v8 = [WeakRetained statusBarManager];
-  v9 = [v8 statusBarWindow];
-  [v9 setWindowLevel:defaultWindowLevel];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBarWindow = [statusBarManager statusBarWindow];
+  [statusBarWindow setWindowLevel:defaultWindowLevel];
 }
 
-- (SBWindowSceneStatusBarLayoutManager)initWithWindowScene:(id)a3
+- (SBWindowSceneStatusBarLayoutManager)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v19.receiver = self;
   v19.super_class = SBWindowSceneStatusBarLayoutManager;
   v5 = [(SBWindowSceneStatusBarLayoutManager *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v6->_defaultWindowLevel = *MEMORY[0x277D772B8] + -1.0;
     v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
     windowLevelOverrideReasons = v6->_windowLevelOverrideReasons;
@@ -193,7 +193,7 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
   return v2;
 }
 
-- (void)addActiveLayoutLayer:(unint64_t)a3
+- (void)addActiveLayoutLayer:(unint64_t)layer
 {
   v5 = [(NSMutableSet *)self->_activeLayoutLayers count];
   activeLayoutLayers = self->_activeLayoutLayers;
@@ -206,7 +206,7 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
     activeLayoutLayers = self->_activeLayoutLayers;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layer];
   [(NSMutableSet *)activeLayoutLayers addObject:v9];
 
   if ([(NSMutableSet *)self->_activeLayoutLayers count]!= v5)
@@ -215,23 +215,23 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
     v10 = SBLogStatusBarish();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(SBWindowSceneStatusBarLayoutManager *)a3 addActiveLayoutLayer:v10];
+      [(SBWindowSceneStatusBarLayoutManager *)layer addActiveLayoutLayer:v10];
     }
 
     [(SBWindowSceneStatusBarLayoutManager *)self _applyEdgeInsetsToStatusBar];
   }
 }
 
-- (void)removeActiveLayoutLayer:(unint64_t)a3
+- (void)removeActiveLayoutLayer:(unint64_t)layer
 {
-  if (!a3)
+  if (!layer)
   {
     [(SBWindowSceneStatusBarLayoutManager *)a2 removeActiveLayoutLayer:?];
   }
 
   v5 = [(NSMutableSet *)self->_activeLayoutLayers count];
   activeLayoutLayers = self->_activeLayoutLayers;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layer];
   [(NSMutableSet *)activeLayoutLayers removeObject:v7];
 
   if ([(NSMutableSet *)self->_activeLayoutLayers count]!= v5)
@@ -240,19 +240,19 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
     v8 = SBLogStatusBarish();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(SBWindowSceneStatusBarLayoutManager *)a3 removeActiveLayoutLayer:v8];
+      [(SBWindowSceneStatusBarLayoutManager *)layer removeActiveLayoutLayer:v8];
     }
 
     [(SBWindowSceneStatusBarLayoutManager *)self _applyEdgeInsetsToStatusBar];
   }
 }
 
-- (void)setStatusBarEdgeInsets:(UIEdgeInsets)a3 forLayoutLayer:(unint64_t)a4
+- (void)setStatusBarEdgeInsets:(UIEdgeInsets)insets forLayoutLayer:(unint64_t)layer
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   edgeInsetsDictionary = self->_edgeInsetsDictionary;
   if (!edgeInsetsDictionary)
   {
@@ -264,92 +264,92 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
   }
 
   v13 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{top, left, bottom, right}];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layer];
   [(NSMutableDictionary *)edgeInsetsDictionary setObject:v13 forKey:v14];
 
   [(SBWindowSceneStatusBarLayoutManager *)self _applyEdgeInsetsToStatusBar];
 }
 
-- (void)setWindowLevel:(double)a3 forOverrideReason:(id)a4
+- (void)setWindowLevel:(double)level forOverrideReason:(id)reason
 {
-  v7 = a4;
-  v10 = v7;
-  if (!v7)
+  reasonCopy = reason;
+  v10 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBWindowSceneStatusBarLayoutManager setWindowLevel:a2 forOverrideReason:self];
-    v7 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons addObject:v7];
+  [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons addObject:reasonCopy];
   windowLevelOverrideMap = self->_windowLevelOverrideMap;
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:level];
   [(NSMutableDictionary *)windowLevelOverrideMap setObject:v9 forKey:v10];
 
   [(SBWindowSceneStatusBarLayoutManager *)self _updateWindowLevel];
 }
 
-- (void)removeWindowLevelOverrideReason:(id)a3
+- (void)removeWindowLevelOverrideReason:(id)reason
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v6 = reasonCopy;
+  if (!reasonCopy)
   {
     [(SBWindowSceneStatusBarLayoutManager *)a2 removeWindowLevelOverrideReason:?];
-    v5 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons removeObject:v5];
+  [(NSMutableOrderedSet *)self->_windowLevelOverrideReasons removeObject:reasonCopy];
   [(NSMutableDictionary *)self->_windowLevelOverrideMap removeObjectForKey:v6];
   [(SBWindowSceneStatusBarLayoutManager *)self _updateWindowLevel];
 }
 
-- (void)setOrientationWindow:(id)a3 forStatusBarLayoutLayer:(unint64_t)a4
+- (void)setOrientationWindow:(id)window forStatusBarLayoutLayer:(unint64_t)layer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  windowCopy = window;
   v7 = SBLogStatusBarish();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (a4 > 2)
+    if (layer > 2)
     {
       v8 = @"invalid";
     }
 
     else
     {
-      v8 = off_2783C5118[a4];
+      v8 = off_2783C5118[layer];
     }
 
     v11 = 138412546;
-    v12 = v6;
+    v12 = windowCopy;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Updating window for status bar orientation updates to %@ for layer %@.", &v11, 0x16u);
   }
 
-  if (v6)
+  if (windowCopy)
   {
     orientationWindowDictionary = self->_orientationWindowDictionary;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)orientationWindowDictionary setObject:v6 forKey:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layer];
+    [(NSMutableDictionary *)orientationWindowDictionary setObject:windowCopy forKey:v10];
   }
 }
 
-- (BOOL)statusBarOrientationShouldFollowWindow:(id)a3
+- (BOOL)statusBarOrientationShouldFollowWindow:(id)window
 {
   orientationWindowDictionary = self->_orientationWindowDictionary;
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
+  windowCopy = window;
   v7 = [v5 numberWithUnsignedInteger:{-[SBWindowSceneStatusBarLayoutManager topmostActiveLayoutLayer](self, "topmostActiveLayoutLayer")}];
   v8 = [(NSMutableDictionary *)orientationWindowDictionary objectForKey:v7];
 
-  return v8 == v6;
+  return v8 == windowCopy;
 }
 
-- (id)orientationWindowForLayoutLayer:(unint64_t)a3
+- (id)orientationWindowForLayoutLayer:(unint64_t)layer
 {
   orientationWindowDictionary = self->_orientationWindowDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:layer];
   v5 = [(NSMutableDictionary *)orientationWindowDictionary objectForKey:v4];
 
   return v5;
@@ -357,10 +357,10 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowSceneStatusBarLayoutManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowSceneStatusBarLayoutManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -372,7 +372,7 @@ id __59__SBWindowSceneStatusBarLayoutManager_initWithWindowScene___block_invoke(
   v8[3] = &unk_2783A92D8;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -397,18 +397,18 @@ id __65__SBWindowSceneStatusBarLayoutManager_succinctDescriptionBuilder__block_i
   return [*(a1 + 32) appendFloat:@"defaultWindowLevel" withName:*(*(a1 + 40) + 48)];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWindowSceneStatusBarLayoutManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWindowSceneStatusBarLayoutManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -416,8 +416,8 @@ id __65__SBWindowSceneStatusBarLayoutManager_succinctDescriptionBuilder__block_i
   v10[3] = &unk_2783A92D8;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

@@ -1,24 +1,24 @@
 @interface HoverTextFontPickerViewController
-- (BOOL)_isDisallowedFontFamily:(id)a3;
+- (BOOL)_isDisallowedFontFamily:(id)family;
 - (BOOL)_isLargeTextTypingController;
 - (id)specifiers;
-- (void)_updateCheckmarkForCell:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateTableCheckedSelection:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_updateCheckmarkForCell:(id)cell;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateTableCheckedSelection:(id)selection;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HoverTextFontPickerViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HoverTextFontPickerViewController;
-  [(HoverTextFontPickerViewController *)&v8 viewWillAppear:a3];
-  v4 = [(HoverTextFontPickerViewController *)self _isLargeTextTypingController];
+  [(HoverTextFontPickerViewController *)&v8 viewWillAppear:appear];
+  _isLargeTextTypingController = [(HoverTextFontPickerViewController *)self _isLargeTextTypingController];
   v5 = +[AXSettings sharedInstance];
   v6 = v5;
-  if (v4)
+  if (_isLargeTextTypingController)
   {
     [v5 hoverTextTypingFontName];
   }
@@ -107,16 +107,16 @@
   return v3;
 }
 
-- (BOOL)_isDisallowedFontFamily:(id)a3
+- (BOOL)_isDisallowedFontFamily:(id)family
 {
   v3 = _isDisallowedFontFamily__onceToken;
-  v4 = a3;
+  familyCopy = family;
   if (v3 != -1)
   {
     [HoverTextFontPickerViewController _isDisallowedFontFamily:];
   }
 
-  v5 = [_isDisallowedFontFamily__IrregularFontNames containsObject:v4];
+  v5 = [_isDisallowedFontFamily__IrregularFontNames containsObject:familyCopy];
 
   return v5;
 }
@@ -130,13 +130,13 @@ void __61__HoverTextFontPickerViewController__isDisallowedFontFamily___block_inv
   _objc_release_x1(v1, v2);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = HoverTextFontPickerViewController;
-  [(HoverTextFontPickerViewController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HoverTextFontPickerViewController *)self specifierAtIndex:[(HoverTextFontPickerViewController *)self indexForIndexPath:v6]];
+  [(HoverTextFontPickerViewController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(HoverTextFontPickerViewController *)self specifierAtIndex:[(HoverTextFontPickerViewController *)self indexForIndexPath:pathCopy]];
   v8 = [v7 propertyForKey:PSIDKey];
   if ([v8 isEqualToString:@"DefaultFontCellID"])
   {
@@ -149,31 +149,31 @@ void __61__HoverTextFontPickerViewController__isDisallowedFontFamily___block_inv
   }
 
   [(HoverTextFontPickerViewController *)self setSelectedFont:v9];
-  v10 = [(HoverTextFontPickerViewController *)self _isLargeTextTypingController];
-  v11 = [(HoverTextFontPickerViewController *)self selectedFont];
+  _isLargeTextTypingController = [(HoverTextFontPickerViewController *)self _isLargeTextTypingController];
+  selectedFont = [(HoverTextFontPickerViewController *)self selectedFont];
   v12 = +[AXSettings sharedInstance];
   v13 = v12;
-  if (v10)
+  if (_isLargeTextTypingController)
   {
-    [v12 setHoverTextTypingFontName:v11];
+    [v12 setHoverTextTypingFontName:selectedFont];
   }
 
   else
   {
-    [v12 setHoverTextFontName:v11];
+    [v12 setHoverTextFontName:selectedFont];
   }
 
-  [(HoverTextFontPickerViewController *)self updateTableCheckedSelection:v6];
+  [(HoverTextFontPickerViewController *)self updateTableCheckedSelection:pathCopy];
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] visibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  visibleCells = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] visibleCells];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -185,7 +185,7 @@ void __61__HoverTextFontPickerViewController__isDisallowedFontFamily___block_inv
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(HoverTextFontPickerViewController *)self _updateCheckmarkForCell:*(*(&v9 + 1) + 8 * v8)];
@@ -193,21 +193,21 @@ void __61__HoverTextFontPickerViewController__isDisallowedFontFamily___block_inv
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateCheckmarkForCell:(id)a3
+- (void)_updateCheckmarkForCell:(id)cell
 {
-  v9 = a3;
-  v4 = [v9 specifier];
-  v5 = [v4 propertyForKey:PSIDKey];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v5 = [specifier propertyForKey:PSIDKey];
 
-  v6 = [(HoverTextFontPickerViewController *)self selectedFont];
-  if ([v5 isEqualToString:v6])
+  selectedFont = [(HoverTextFontPickerViewController *)self selectedFont];
+  if ([v5 isEqualToString:selectedFont])
   {
 
 LABEL_3:
@@ -217,9 +217,9 @@ LABEL_3:
 
   if ([v5 isEqualToString:@"DefaultFontCellID"])
   {
-    v8 = [(HoverTextFontPickerViewController *)self selectedFont];
+    selectedFont2 = [(HoverTextFontPickerViewController *)self selectedFont];
 
-    if (!v8)
+    if (!selectedFont2)
     {
       goto LABEL_3;
     }
@@ -231,7 +231,7 @@ LABEL_3:
 
   v7 = 0;
 LABEL_9:
-  [v9 setChecked:v7];
+  [cellCopy setChecked:v7];
 }
 
 - (BOOL)_isLargeTextTypingController
@@ -239,8 +239,8 @@ LABEL_9:
   v3 = AXHasCapability();
   if (v3)
   {
-    v4 = [(HoverTextFontPickerViewController *)self specifier];
-    v5 = [v4 propertyForKey:PSIDKey];
+    specifier = [(HoverTextFontPickerViewController *)self specifier];
+    v5 = [specifier propertyForKey:PSIDKey];
     v6 = [v5 isEqualToString:@"HoverTypingStyle"];
 
     LOBYTE(v3) = v6;

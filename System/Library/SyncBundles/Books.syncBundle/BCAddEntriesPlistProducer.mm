@@ -1,5 +1,5 @@
 @interface BCAddEntriesPlistProducer
-- (BCAddEntriesPlistProducer)initWithPath:(id)a3 entries:(id)a4;
+- (BCAddEntriesPlistProducer)initWithPath:(id)path entries:(id)entries;
 - (BOOL)shouldRetry;
 - (id)produceData;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation BCAddEntriesPlistProducer
 
-- (BCAddEntriesPlistProducer)initWithPath:(id)a3 entries:(id)a4
+- (BCAddEntriesPlistProducer)initWithPath:(id)path entries:(id)entries
 {
-  v5 = [(BCPlistProducer *)self initWithPath:a3];
+  v5 = [(BCPlistProducer *)self initWithPath:path];
   if (v5)
   {
-    v5->_entries = a4;
+    v5->_entries = entries;
   }
 
   return v5;

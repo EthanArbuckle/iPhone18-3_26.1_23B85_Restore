@@ -1,33 +1,33 @@
 @interface PDDPAuthorizationStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAuthorizationStatus
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAuthorizationStatus;
   v3 = [(PDDPAuthorizationStatus *)&v7 description];
-  v4 = [(PDDPAuthorizationStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAuthorizationStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,9 +66,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_parentObjectId)
   {
     PBDataWriterWriteStringField();
@@ -113,29 +113,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_parentObjectId)
   {
-    [v4 setParentObjectId:?];
-    v4 = v9;
+    [toCopy setParentObjectId:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_isAuthorizable;
-    v4[28] |= 1u;
+    toCopy[24] = self->_isAuthorizable;
+    toCopy[28] |= 1u;
   }
 
   if ([(PDDPAuthorizationStatus *)self classIdsCount])
   {
     [v9 clearClassIds];
-    v5 = [(PDDPAuthorizationStatus *)self classIdsCount];
-    if (v5)
+    classIdsCount = [(PDDPAuthorizationStatus *)self classIdsCount];
+    if (classIdsCount)
     {
-      v6 = v5;
+      v6 = classIdsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPAuthorizationStatus *)self classIdsAtIndex:i];
@@ -145,10 +145,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v5 addClassIds:v13];
       }
 
@@ -190,16 +190,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 2))
+  if (parentObjectId | *(equalCopy + 2))
   {
     if (![(NSString *)parentObjectId isEqual:?])
     {
@@ -207,18 +207,18 @@
     }
   }
 
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (!self->_isAuthorizable)
   {
 LABEL_5:
@@ -232,14 +232,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ((*(v4 + 24) & 1) == 0)
+  if ((*(equalCopy + 24) & 1) == 0)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
   classIds = self->_classIds;
-  if (classIds | *(v4 + 1))
+  if (classIds | *(equalCopy + 1))
   {
     v8 = [(NSMutableArray *)classIds isEqual:?];
   }
@@ -270,17 +270,17 @@ LABEL_10:
   return v4 ^ [(NSMutableArray *)self->_classIds hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(PDDPAuthorizationStatus *)self setParentObjectId:?];
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_isAuthorizable = *(v4 + 24);
+    self->_isAuthorizable = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -288,7 +288,7 @@ LABEL_10:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

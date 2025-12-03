@@ -1,9 +1,9 @@
 @interface _NSPersonNameComponentsFormatterData
-- (BOOL)isEqualToFormatterData:(void *)a1;
-- (_NSPersonNameComponentsFormatterData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToFormatterData:(void *)data;
+- (_NSPersonNameComponentsFormatterData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSPersonNameComponentsFormatterData
@@ -23,7 +23,7 @@
   [(_NSPersonNameComponentsFormatterData *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(_NSPersonNameComponentsFormatterData);
   v5->_style = self->_style;
@@ -31,13 +31,13 @@
   v5->_forceFamilyNameFirst = self->_forceFamilyNameFirst;
   v5->_forceGivenNameFirst = self->_forceGivenNameFirst;
   v5->_ignoresFallbacks = self->_ignoresFallbacks;
-  v5->_locale = [(NSLocale *)self->_locale copyWithZone:a3];
+  v5->_locale = [(NSLocale *)self->_locale copyWithZone:zone];
   return v5;
 }
 
-- (_NSPersonNameComponentsFormatterData)initWithCoder:(id)a3
+- (_NSPersonNameComponentsFormatterData)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v6 = [NSString stringWithFormat:@"%@ cannot be decoded by non-keyed archivers", objc_opt_class()];
 
@@ -46,69 +46,69 @@
 
   if (self)
   {
-    self->_style = [a3 decodeIntegerForKey:@"NS.nameFormatterStyle"];
-    self->_phonetic = [a3 decodeBoolForKey:@"NS.nameFormatterIsPhonetic"];
-    self->_forceFamilyNameFirst = [a3 decodeBoolForKey:@"NS.nameFormatterForceFamilyNameFirst"];
-    self->_forceGivenNameFirst = [a3 decodeBoolForKey:@"NS.nameFormatterForceGivenNameFirst"];
-    self->_ignoresFallbacks = [a3 decodeBoolForKey:@"NS.nameFormatterIgnoresFallbacks"];
-    if ([a3 containsValueForKey:@"NS.nameFormatterLocale"])
+    self->_style = [coder decodeIntegerForKey:@"NS.nameFormatterStyle"];
+    self->_phonetic = [coder decodeBoolForKey:@"NS.nameFormatterIsPhonetic"];
+    self->_forceFamilyNameFirst = [coder decodeBoolForKey:@"NS.nameFormatterForceFamilyNameFirst"];
+    self->_forceGivenNameFirst = [coder decodeBoolForKey:@"NS.nameFormatterForceGivenNameFirst"];
+    self->_ignoresFallbacks = [coder decodeBoolForKey:@"NS.nameFormatterIgnoresFallbacks"];
+    if ([coder containsValueForKey:@"NS.nameFormatterLocale"])
     {
-      self->_locale = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameFormatterLocale", "copy"}];
+      self->_locale = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameFormatterLocale", "copy"}];
     }
   }
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeInteger:self->_style forKey:@"NS.nameFormatterStyle"];
-  [a3 encodeBool:self->_phonetic forKey:@"NS.nameFormatterIsPhonetic"];
-  [a3 encodeBool:self->_forceFamilyNameFirst forKey:@"NS.nameFormatterForceFamilyNameFirst"];
-  [a3 encodeBool:self->_forceGivenNameFirst forKey:@"NS.nameFormatterForceGivenNameFirst"];
-  [a3 encodeBool:self->_ignoresFallbacks forKey:@"NS.nameFormatterIgnoresFallbacks"];
+  [coder encodeInteger:self->_style forKey:@"NS.nameFormatterStyle"];
+  [coder encodeBool:self->_phonetic forKey:@"NS.nameFormatterIsPhonetic"];
+  [coder encodeBool:self->_forceFamilyNameFirst forKey:@"NS.nameFormatterForceFamilyNameFirst"];
+  [coder encodeBool:self->_forceGivenNameFirst forKey:@"NS.nameFormatterForceGivenNameFirst"];
+  [coder encodeBool:self->_ignoresFallbacks forKey:@"NS.nameFormatterIgnoresFallbacks"];
   locale = self->_locale;
 
-  [a3 encodeObject:locale forKey:@"NS.nameFormatterLocale"];
+  [coder encodeObject:locale forKey:@"NS.nameFormatterLocale"];
 }
 
-- (BOOL)isEqualToFormatterData:(void *)a1
+- (BOOL)isEqualToFormatterData:(void *)data
 {
   result = 0;
-  if (a1 && a2)
+  if (data && a2)
   {
-    if ([a1 locale] && objc_msgSend(a2, "locale"))
+    if ([data locale] && objc_msgSend(a2, "locale"))
     {
-      if (([objc_msgSend(a1 "locale")] & 1) == 0)
+      if (([objc_msgSend(data "locale")] & 1) == 0)
       {
         return 0;
       }
     }
 
-    else if ([a1 locale] || objc_msgSend(a2, "locale"))
+    else if ([data locale] || objc_msgSend(a2, "locale"))
     {
       return 0;
     }
 
-    v5 = [a1 phonetic];
-    if (v5 == [a2 phonetic])
+    phonetic = [data phonetic];
+    if (phonetic == [a2 phonetic])
     {
-      v6 = [a1 forceFamilyNameFirst];
-      if (v6 == [a2 forceFamilyNameFirst])
+      forceFamilyNameFirst = [data forceFamilyNameFirst];
+      if (forceFamilyNameFirst == [a2 forceFamilyNameFirst])
       {
-        v7 = [a1 forceGivenNameFirst];
-        if (v7 == [a2 forceGivenNameFirst])
+        forceGivenNameFirst = [data forceGivenNameFirst];
+        if (forceGivenNameFirst == [a2 forceGivenNameFirst])
         {
-          v8 = [a1 ignoresFallbacks];
-          if (v8 == [a2 ignoresFallbacks])
+          ignoresFallbacks = [data ignoresFallbacks];
+          if (ignoresFallbacks == [a2 ignoresFallbacks])
           {
-            v9 = [a1 style];
-            return v9 == [a2 style];
+            style = [data style];
+            return style == [a2 style];
           }
         }
       }

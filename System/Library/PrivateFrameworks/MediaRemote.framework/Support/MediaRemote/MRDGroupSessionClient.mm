@@ -1,52 +1,52 @@
 @interface MRDGroupSessionClient
 - (MRDGroupSession)session;
-- (MRDGroupSessionClient)initWithConnection:(id)a3 bundleID:(id)a4;
+- (MRDGroupSessionClient)initWithConnection:(id)connection bundleID:(id)d;
 - (id)client;
-- (id)infoFromGroupSession:(id)a3;
-- (id)initialStateFromSession:(id)a3 token:(id)a4;
-- (id)transportParticipants:(id)a3 forSession:(id)a4;
-- (void)connectToDiscoveryWithReply:(id)a3;
-- (void)connectToSession:(id)a3 reply:(id)a4;
+- (id)infoFromGroupSession:(id)session;
+- (id)initialStateFromSession:(id)session token:(id)token;
+- (id)transportParticipants:(id)participants forSession:(id)session;
+- (void)connectToDiscoveryWithReply:(id)reply;
+- (void)connectToSession:(id)session reply:(id)reply;
 - (void)dealloc;
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4;
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 didJoinRemoteGroupSession:(id)a4;
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4;
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4;
-- (void)reevaluatePendingStateFromSession:(id)a3;
-- (void)session:(id)a3 approvePendingParticipant:(id)a4 reply:(id)a5;
-- (void)session:(id)a3 denyPendingParticipant:(id)a4 reply:(id)a5;
-- (void)session:(id)a3 didChangeState:(int64_t)a4;
-- (void)session:(id)a3 didUpdateMembers:(id)a4;
-- (void)session:(id)a3 didUpdateParticipants:(id)a4;
-- (void)session:(id)a3 didUpdatePendingParticipants:(id)a4;
-- (void)session:(id)a3 didUpdateSynchronizedMetadata:(id)a4;
-- (void)session:(id)a3 removeAllParticipantsWithReply:(id)a4;
-- (void)session:(id)a3 removeParticipant:(id)a4 reply:(id)a5;
-- (void)sessionDidEnterLowPowerMode:(id)a3;
-- (void)sessionDidExitLowPowerMode:(id)a3;
+- (void)manager:(id)manager activeSessionDidChange:(id)change;
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session;
+- (void)manager:(id)manager didJoinRemoteGroupSession:(id)session;
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session;
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session;
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change;
+- (void)reevaluatePendingStateFromSession:(id)session;
+- (void)session:(id)session approvePendingParticipant:(id)participant reply:(id)reply;
+- (void)session:(id)session denyPendingParticipant:(id)participant reply:(id)reply;
+- (void)session:(id)session didChangeState:(int64_t)state;
+- (void)session:(id)session didUpdateMembers:(id)members;
+- (void)session:(id)session didUpdateParticipants:(id)participants;
+- (void)session:(id)session didUpdatePendingParticipants:(id)participants;
+- (void)session:(id)session didUpdateSynchronizedMetadata:(id)metadata;
+- (void)session:(id)session removeAllParticipantsWithReply:(id)reply;
+- (void)session:(id)session removeParticipant:(id)participant reply:(id)reply;
+- (void)sessionDidEnterLowPowerMode:(id)mode;
+- (void)sessionDidExitLowPowerMode:(id)mode;
 @end
 
 @implementation MRDGroupSessionClient
 
-- (MRDGroupSessionClient)initWithConnection:(id)a3 bundleID:(id)a4
+- (MRDGroupSessionClient)initWithConnection:(id)connection bundleID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = MRDGroupSessionClient;
   v9 = [(MRDGroupSessionClient *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_bundleID, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_bundleID, d);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = +[MRDMediaRemoteServer server];
-    v13 = [v12 groupSessionServer];
-    v14 = [v13 messageQueue];
-    v15 = dispatch_queue_create_with_target_V2("com.apple.MRDGroupSessionClient.queue", v11, v14);
+    groupSessionServer = [v12 groupSessionServer];
+    messageQueue = [groupSessionServer messageQueue];
+    v15 = dispatch_queue_create_with_target_V2("com.apple.MRDGroupSessionClient.queue", v11, messageQueue);
     queue = v10->_queue;
     v10->_queue = v15;
   }
@@ -60,7 +60,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] <%p> Dealloc.", buf, 0xCu);
   }
 
@@ -71,163 +71,163 @@
 
 - (id)client
 {
-  v3 = [(MRDGroupSessionClient *)self connection];
+  connection = [(MRDGroupSessionClient *)self connection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100051A0C;
   v6[3] = &unk_1004B6FC0;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
 
-- (void)session:(id)a3 didUpdateParticipants:(id)a4
+- (void)session:(id)session didUpdateParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDGroupSessionClient *)self queue];
+  sessionCopy = session;
+  participantsCopy = participants;
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051BB0;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = participantsCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = participantsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)session:(id)a3 didUpdateMembers:(id)a4
+- (void)session:(id)session didUpdateMembers:(id)members
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDGroupSessionClient *)self queue];
+  sessionCopy = session;
+  membersCopy = members;
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051D10;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  v13 = membersCopy;
+  v9 = membersCopy;
+  v10 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)session:(id)a3 didChangeState:(int64_t)a4
+- (void)session:(id)session didChangeState:(int64_t)state
 {
-  v6 = a3;
-  if (a4 == 4)
+  sessionCopy = session;
+  if (state == 4)
   {
-    v7 = [(MRDGroupSessionClient *)self queue];
+    queue = [(MRDGroupSessionClient *)self queue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100051E58;
     v8[3] = &unk_1004B68F0;
-    v9 = v6;
-    v10 = self;
-    dispatch_async(v7, v8);
+    v9 = sessionCopy;
+    selfCopy = self;
+    dispatch_async(queue, v8);
   }
 }
 
-- (void)session:(id)a3 didUpdatePendingParticipants:(id)a4
+- (void)session:(id)session didUpdatePendingParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDGroupSessionClient *)self queue];
+  sessionCopy = session;
+  participantsCopy = participants;
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051FDC;
   block[3] = &unk_1004B69D0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = participantsCopy;
+  selfCopy = self;
+  v14 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = participantsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)session:(id)a3 didUpdateSynchronizedMetadata:(id)a4
+- (void)session:(id)session didUpdateSynchronizedMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDGroupSessionClient *)self queue];
+  sessionCopy = session;
+  metadataCopy = metadata;
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000522D0;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sessionCopy;
+  v13 = metadataCopy;
+  v9 = metadataCopy;
+  v10 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)sessionDidEnterLowPowerMode:(id)a3
+- (void)sessionDidEnterLowPowerMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(MRDGroupSessionClient *)self queue];
+  modeCopy = mode;
+  queue = [(MRDGroupSessionClient *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000523F4;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = modeCopy;
+  v6 = modeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)sessionDidExitLowPowerMode:(id)a3
+- (void)sessionDidExitLowPowerMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(MRDGroupSessionClient *)self queue];
+  modeCopy = mode;
+  queue = [(MRDGroupSessionClient *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100052518;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = modeCopy;
+  v6 = modeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)manager:(id)a3 discoveredSessionsDidChange:(id)a4
+- (void)manager:(id)manager discoveredSessionsDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(MRDGroupSessionClient *)self queue];
+  changeCopy = change;
+  queue = [(MRDGroupSessionClient *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005263C;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = changeCopy;
+  v7 = changeCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)manager:(id)a3 didJoinRemoteGroupSession:(id)a4
+- (void)manager:(id)manager didJoinRemoteGroupSession:(id)session
 {
-  v5 = a4;
-  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:v5];
-  v7 = [(MRDGroupSessionClient *)self queue];
+  sessionCopy = session;
+  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:sessionCopy];
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100052790;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v11 = v5;
+  v11 = sessionCopy;
   v12 = v6;
   v8 = v6;
-  v9 = v5;
-  dispatch_async(v7, block);
+  v9 = sessionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)manager:(id)a3 didLeaveRemoteGroupSession:(id)a4
+- (void)manager:(id)manager didLeaveRemoteGroupSession:(id)session
 {
-  v5 = [(MRDGroupSessionClient *)self queue:a3];
+  v5 = [(MRDGroupSessionClient *)self queue:manager];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000528A0;
@@ -236,12 +236,12 @@
   dispatch_async(v5, block);
 }
 
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session
 {
-  v5 = a4;
-  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:v5];
+  sessionCopy = session;
+  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:sessionCopy];
 
-  v7 = [(MRDGroupSessionClient *)self queue];
+  queue = [(MRDGroupSessionClient *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000529E4;
@@ -249,12 +249,12 @@
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  dispatch_async(v7, v9);
+  dispatch_async(queue, v9);
 }
 
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session
 {
-  v5 = [(MRDGroupSessionClient *)self queue:a3];
+  v5 = [(MRDGroupSessionClient *)self queue:manager];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100052ADC;
@@ -263,67 +263,67 @@
   dispatch_async(v5, block);
 }
 
-- (void)manager:(id)a3 activeSessionDidChange:(id)a4
+- (void)manager:(id)manager activeSessionDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:v5];
-  v7 = [(MRDGroupSessionClient *)self queue];
+  changeCopy = change;
+  v6 = [[MRGroupSessionInfo alloc] initWithGroupSession:changeCopy];
+  queue = [(MRDGroupSessionClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100052C30;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v11 = v5;
+  v11 = changeCopy;
   v12 = v6;
   v8 = v6;
-  v9 = v5;
-  dispatch_async(v7, block);
+  v9 = changeCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)connectToSession:(id)a3 reply:(id)a4
+- (void)connectToSession:(id)session reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  replyCopy = reply;
   [(MRDGroupSessionClient *)self setType:0];
-  [(MRDGroupSessionClient *)self setSessionIdentifier:v6];
+  [(MRDGroupSessionClient *)self setSessionIdentifier:sessionCopy];
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 groupSessionServer];
-  v46 = [v9 sessionManager];
+  groupSessionServer = [v8 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  v10 = [v46 session];
+  session = [sessionManager session];
   v11 = +[MRDMediaRemoteServer server];
-  v12 = [v11 routingServer];
-  v13 = [v12 systemEndpointController];
+  routingServer = [v11 routingServer];
+  systemEndpointController = [routingServer systemEndpointController];
 
-  v14 = [v13 activeOutputDeviceUID:0];
-  v15 = [v13 originClientForDeviceUID:v14];
-  v16 = [v15 deviceInfo];
-  v17 = [v16 groupSessionToken];
-  v45 = [v17 copy];
+  v14 = [systemEndpointController activeOutputDeviceUID:0];
+  v15 = [systemEndpointController originClientForDeviceUID:v14];
+  deviceInfo = [v15 deviceInfo];
+  groupSessionToken = [deviceInfo groupSessionToken];
+  v45 = [groupSessionToken copy];
 
   v18 = +[MRDMediaRemoteServer server];
-  v19 = [v18 nowPlayingServer];
+  nowPlayingServer = [v18 nowPlayingServer];
 
-  v20 = [v19 originClientForDeviceUID:v6];
-  v44 = [v20 deviceInfo];
+  v20 = [nowPlayingServer originClientForDeviceUID:sessionCopy];
+  deviceInfo2 = [v20 deviceInfo];
 
-  v21 = [v10 identifier];
-  v22 = v21;
-  if (v21 == v6)
+  identifier = [session identifier];
+  v22 = identifier;
+  if (identifier == sessionCopy)
   {
 
     goto LABEL_11;
   }
 
-  v23 = [v21 isEqual:v6];
+  v23 = [identifier isEqual:sessionCopy];
 
   if (v23)
   {
 LABEL_11:
-    [(MRDGroupSessionClient *)self setSession:v10];
-    [v10 addObserver:self];
-    v34 = [v10 joinToken];
-    v35 = [(MRDGroupSessionClient *)self initialStateFromSession:v10 token:v34];
+    [(MRDGroupSessionClient *)self setSession:session];
+    [session addObserver:self];
+    joinToken = [session joinToken];
+    v35 = [(MRDGroupSessionClient *)self initialStateFromSession:session token:joinToken];
 
     v36 = _MRLogForCategory();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -331,27 +331,27 @@ LABEL_11:
       sub_1003A4EE4(v35, self);
     }
 
-    v7[2](v7, v35, 0);
+    replyCopy[2](replyCopy, v35, 0);
     goto LABEL_14;
   }
 
-  v24 = [v45 sessionIdentifier];
-  if ([v24 isEqualToString:v6])
+  sessionIdentifier = [v45 sessionIdentifier];
+  if ([sessionIdentifier isEqualToString:sessionCopy])
   {
-    v25 = [v45 sharedSecret];
+    sharedSecret = [v45 sharedSecret];
 
-    if (v25)
+    if (sharedSecret)
     {
       v26 = _MRLogForCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(MRDGroupSessionClient *)self sessionIdentifier];
+        sessionIdentifier2 = [(MRDGroupSessionClient *)self sessionIdentifier];
         *buf = 138412290;
-        v56 = v27;
+        v56 = sessionIdentifier2;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Connecting to pending session: %@", buf, 0xCu);
       }
 
-      [v46 addObserver:self];
+      [sessionManager addObserver:self];
       objc_initWeak(&location, self);
       v28 = [MSVBlockGuard alloc];
       v47[0] = _NSConcreteStackBlock;
@@ -359,9 +359,9 @@ LABEL_11:
       v47[2] = sub_1000532F0;
       v47[3] = &unk_1004B7188;
       objc_copyWeak(&v51, &location);
-      v48 = v6;
-      v49 = v46;
-      v50 = v10;
+      v48 = sessionCopy;
+      v49 = sessionManager;
+      v50 = session;
       v29 = [v28 initWithTimeout:v47 interruptionHandler:30.0];
       connectTimeoutGuard = self->_connectTimeoutGuard;
       self->_connectTimeoutGuard = v29;
@@ -370,11 +370,11 @@ LABEL_11:
       v32 = _MRLogForCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [(MRDGroupSessionClient *)self connection];
-        sub_1003A4D48(v31, v33, buf, v32);
+        connection = [(MRDGroupSessionClient *)self connection];
+        sub_1003A4D48(v31, connection, buf, v32);
       }
 
-      v7[2](v7, v31, 0);
+      replyCopy[2](replyCopy, v31, 0);
       objc_destroyWeak(&v51);
       objc_destroyWeak(&location);
       goto LABEL_14;
@@ -385,14 +385,14 @@ LABEL_11:
   {
   }
 
-  if ([v44 hasPlaceholderGroupSession])
+  if ([deviceInfo2 hasPlaceholderGroupSession])
   {
-    v37 = [[MRGroupSessionToken alloc] initWithDeviceInfo:v44];
+    v37 = [[MRGroupSessionToken alloc] initWithDeviceInfo:deviceInfo2];
     v53[0] = _MRGroupSessionTokenInitialSyncKey;
     v43 = v37;
-    v38 = [v37 data];
+    data = [v37 data];
     v53[1] = _MRGroupSessionPlaceholderInitialSyncKey;
-    v54[0] = v38;
+    v54[0] = data;
     v54[1] = &__kCFBooleanTrue;
     v39 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:2];
 
@@ -402,7 +402,7 @@ LABEL_11:
       sub_1003A4E44(v39, self);
     }
 
-    v7[2](v7, v39, 0);
+    replyCopy[2](replyCopy, v39, 0);
   }
 
   else
@@ -414,30 +414,30 @@ LABEL_11:
     }
 
     v42 = [NSError msv_errorWithDomain:MRGroupSessionError code:2 debugDescription:@"Could not find session for provided identifier."];
-    (v7)[2](v7, 0, v42);
+    (replyCopy)[2](replyCopy, 0, v42);
   }
 
 LABEL_14:
 }
 
-- (id)initialStateFromSession:(id)a3 token:(id)a4
+- (id)initialStateFromSession:(id)session token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 members];
-  v9 = [NSSet setWithArray:v8];
+  sessionCopy = session;
+  tokenCopy = token;
+  members = [sessionCopy members];
+  v9 = [NSSet setWithArray:members];
 
-  v10 = [v6 participants];
-  v11 = [(MRDGroupSessionClient *)self transportParticipants:v10 forSession:v6];
+  participants = [sessionCopy participants];
+  v11 = [(MRDGroupSessionClient *)self transportParticipants:participants forSession:sessionCopy];
 
-  v12 = [v6 pendingParticipants];
-  v13 = [v12 msv_compactMap:&stru_1004B71A8];
+  pendingParticipants = [sessionCopy pendingParticipants];
+  v13 = [pendingParticipants msv_compactMap:&stru_1004B71A8];
   v14 = [NSSet setWithArray:v13];
 
   v15 = +[NSMutableDictionary dictionary];
-  if (v6)
+  if (sessionCopy)
   {
-    if ([v6 isLowPowerMode])
+    if ([sessionCopy isLowPowerMode])
     {
       v16 = 1;
     }
@@ -459,33 +459,33 @@ LABEL_14:
   [v15 setObject:v11 forKeyedSubscript:_MRGroupSessionParticipantsInitialSyncKey];
   [v15 setObject:v14 forKeyedSubscript:_MRGroupSessionPendingParticipantsInitialSyncKey];
   [v15 setObject:v9 forKeyedSubscript:_MRGroupSessionMembersInitialSyncKey];
-  v18 = [v7 data];
+  data = [tokenCopy data];
 
-  [v15 setObject:v18 forKeyedSubscript:_MRGroupSessionTokenInitialSyncKey];
+  [v15 setObject:data forKeyedSubscript:_MRGroupSessionTokenInitialSyncKey];
 
   return v15;
 }
 
-- (void)session:(id)a3 approvePendingParticipant:(id)a4 reply:(id)a5
+- (void)session:(id)session approvePendingParticipant:(id)participant reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MRDGroupSessionClient *)self session];
-  v12 = [v11 identifier];
-  v13 = v12;
-  if (v12 == v8)
+  sessionCopy = session;
+  participantCopy = participant;
+  replyCopy = reply;
+  session = [(MRDGroupSessionClient *)self session];
+  identifier = [session identifier];
+  v13 = identifier;
+  if (identifier == sessionCopy)
   {
   }
 
   else
   {
-    v14 = [v8 isEqual:v12];
+    v14 = [sessionCopy isEqual:identifier];
 
     if ((v14 & 1) == 0)
     {
       v15 = [NSError msv_errorWithDomain:MRGroupSessionError code:2 debugDescription:@"Session identifier does not match connected session."];
-      v10[2](v10, v15);
+      replyCopy[2](replyCopy, v15);
 
       goto LABEL_8;
     }
@@ -494,42 +494,42 @@ LABEL_14:
   v16 = _MRLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v9 identifier];
-    v18 = [(MRDGroupSessionClient *)self bundleID];
+    identifier2 = [participantCopy identifier];
+    bundleID = [(MRDGroupSessionClient *)self bundleID];
     v20 = 138412546;
-    v21 = v17;
+    v21 = identifier2;
     v22 = 2112;
-    v23 = v18;
+    v23 = bundleID;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Handling approve pending participant %@ from client: %@", &v20, 0x16u);
   }
 
-  v19 = [v9 identifier];
-  [v11 approvePendingParticipant:v19];
+  identifier3 = [participantCopy identifier];
+  [session approvePendingParticipant:identifier3];
 
-  v10[2](v10, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_8:
 }
 
-- (void)session:(id)a3 denyPendingParticipant:(id)a4 reply:(id)a5
+- (void)session:(id)session denyPendingParticipant:(id)participant reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MRDGroupSessionClient *)self session];
-  v12 = [v11 identifier];
-  v13 = v12;
-  if (v12 == v8)
+  sessionCopy = session;
+  participantCopy = participant;
+  replyCopy = reply;
+  session = [(MRDGroupSessionClient *)self session];
+  identifier = [session identifier];
+  v13 = identifier;
+  if (identifier == sessionCopy)
   {
   }
 
   else
   {
-    v14 = [v8 isEqual:v12];
+    v14 = [sessionCopy isEqual:identifier];
 
     if ((v14 & 1) == 0)
     {
       v15 = [NSError msv_errorWithDomain:MRGroupSessionError code:2 debugDescription:@"Session identifier does not match connected session."];
-      v10[2](v10, v15);
+      replyCopy[2](replyCopy, v15);
 
       goto LABEL_8;
     }
@@ -538,42 +538,42 @@ LABEL_8:
   v16 = _MRLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v9 identifier];
-    v18 = [(MRDGroupSessionClient *)self bundleID];
+    identifier2 = [participantCopy identifier];
+    bundleID = [(MRDGroupSessionClient *)self bundleID];
     v20 = 138412546;
-    v21 = v17;
+    v21 = identifier2;
     v22 = 2112;
-    v23 = v18;
+    v23 = bundleID;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Handling deny pending participant %@ from client: %@", &v20, 0x16u);
   }
 
-  v19 = [v9 identifier];
-  [v11 denyPendingParticipant:v19];
+  identifier3 = [participantCopy identifier];
+  [session denyPendingParticipant:identifier3];
 
-  v10[2](v10, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_8:
 }
 
-- (void)session:(id)a3 removeParticipant:(id)a4 reply:(id)a5
+- (void)session:(id)session removeParticipant:(id)participant reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MRDGroupSessionClient *)self session];
-  v12 = [v11 identifier];
-  v13 = v12;
-  if (v12 == v8)
+  sessionCopy = session;
+  participantCopy = participant;
+  replyCopy = reply;
+  session = [(MRDGroupSessionClient *)self session];
+  identifier = [session identifier];
+  v13 = identifier;
+  if (identifier == sessionCopy)
   {
   }
 
   else
   {
-    v14 = [v8 isEqual:v12];
+    v14 = [sessionCopy isEqual:identifier];
 
     if ((v14 & 1) == 0)
     {
       v15 = [NSError msv_errorWithDomain:MRGroupSessionError code:2 debugDescription:@"Session identifier does not match connected session."];
-      v10[2](v10, v15);
+      replyCopy[2](replyCopy, v15);
 
       goto LABEL_8;
     }
@@ -582,39 +582,39 @@ LABEL_8:
   v16 = _MRLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(MRDGroupSessionClient *)self bundleID];
+    bundleID = [(MRDGroupSessionClient *)self bundleID];
     v18 = 138412546;
-    v19 = v9;
+    v19 = participantCopy;
     v20 = 2112;
-    v21 = v17;
+    v21 = bundleID;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Handling remove participant %@ from client: %@", &v18, 0x16u);
   }
 
-  [v11 revokeAutoApprovalForParticipant:v9];
-  [v11 removeParticipant:v9];
-  v10[2](v10, 0);
+  [session revokeAutoApprovalForParticipant:participantCopy];
+  [session removeParticipant:participantCopy];
+  replyCopy[2](replyCopy, 0);
 LABEL_8:
 }
 
-- (void)session:(id)a3 removeAllParticipantsWithReply:(id)a4
+- (void)session:(id)session removeAllParticipantsWithReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDGroupSessionClient *)self session];
-  v9 = [v8 identifier];
-  v10 = v9;
-  if (v9 == v6)
+  sessionCopy = session;
+  replyCopy = reply;
+  session = [(MRDGroupSessionClient *)self session];
+  identifier = [session identifier];
+  v10 = identifier;
+  if (identifier == sessionCopy)
   {
   }
 
   else
   {
-    v11 = [v6 isEqual:v9];
+    v11 = [sessionCopy isEqual:identifier];
 
     if ((v11 & 1) == 0)
     {
       v12 = [NSError msv_errorWithDomain:MRGroupSessionError code:2 debugDescription:@"Session identifier does not match connected session."];
-      v7[2](v7, v12);
+      replyCopy[2](replyCopy, v12);
 
       goto LABEL_8;
     }
@@ -623,70 +623,70 @@ LABEL_8:
   v13 = _MRLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MRDGroupSessionClient *)self bundleID];
+    bundleID = [(MRDGroupSessionClient *)self bundleID];
     v15 = 138412290;
-    v16 = v14;
+    v16 = bundleID;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Handling remove all command from client: %@", &v15, 0xCu);
   }
 
-  [v8 revokeAutoApprovalForAllParticipants];
-  [v8 removeAllParticipants];
-  v7[2](v7, 0);
+  [session revokeAutoApprovalForAllParticipants];
+  [session removeAllParticipants];
+  replyCopy[2](replyCopy, 0);
 LABEL_8:
 }
 
-- (void)connectToDiscoveryWithReply:(id)a3
+- (void)connectToDiscoveryWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(MRDGroupSessionClient *)self setType:1];
   v5 = +[MRDMediaRemoteServer server];
-  v6 = [v5 groupSessionServer];
-  v10 = [v6 sessionManager];
+  groupSessionServer = [v5 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  [v10 addObserver:self];
-  v7 = [v10 discoveredSessions];
-  v8 = [v10 session];
-  v9 = [(MRDGroupSessionClient *)self infoFromGroupSession:v8];
-  v4[2](v4, v7, v9);
+  [sessionManager addObserver:self];
+  discoveredSessions = [sessionManager discoveredSessions];
+  session = [sessionManager session];
+  v9 = [(MRDGroupSessionClient *)self infoFromGroupSession:session];
+  replyCopy[2](replyCopy, discoveredSessions, v9);
 }
 
-- (void)reevaluatePendingStateFromSession:(id)a3
+- (void)reevaluatePendingStateFromSession:(id)session
 {
-  v4 = a3;
-  v5 = [(MRDGroupSessionClient *)self sessionIdentifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqual:v6];
+  sessionCopy = session;
+  sessionIdentifier = [(MRDGroupSessionClient *)self sessionIdentifier];
+  identifier = [sessionCopy identifier];
+  v7 = [sessionIdentifier isEqual:identifier];
 
   if (v7)
   {
-    v8 = [(MRDGroupSessionClient *)self connectTimeoutGuard];
-    v9 = [v8 disarm];
+    connectTimeoutGuard = [(MRDGroupSessionClient *)self connectTimeoutGuard];
+    disarm = [connectTimeoutGuard disarm];
 
     v10 = _MRLogForCategory();
-    v11 = v10;
-    if (v9)
+    sessionManager = v10;
+    if (disarm)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(MRDGroupSessionClient *)self sessionIdentifier];
+        sessionIdentifier2 = [(MRDGroupSessionClient *)self sessionIdentifier];
         v19 = 138412290;
-        v20 = v12;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Pending session: %@ joined", &v19, 0xCu);
+        v20 = sessionIdentifier2;
+        _os_log_impl(&_mh_execute_header, sessionManager, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionClient] Pending session: %@ joined", &v19, 0xCu);
       }
 
       v13 = +[MRDMediaRemoteServer server];
-      v14 = [v13 groupSessionServer];
-      v11 = [v14 sessionManager];
+      groupSessionServer = [v13 groupSessionServer];
+      sessionManager = [groupSessionServer sessionManager];
 
-      [v11 removeObserver:self];
-      [(MRDGroupSessionClient *)self setSession:v4];
-      [v4 addObserver:self];
-      v15 = [v4 joinToken];
-      v16 = [(MRDGroupSessionClient *)self initialStateFromSession:v4 token:v15];
+      [sessionManager removeObserver:self];
+      [(MRDGroupSessionClient *)self setSession:sessionCopy];
+      [sessionCopy addObserver:self];
+      joinToken = [sessionCopy joinToken];
+      v16 = [(MRDGroupSessionClient *)self initialStateFromSession:sessionCopy token:joinToken];
 
-      v17 = [(MRDGroupSessionClient *)self client];
-      v18 = [v4 identifier];
-      [v17 session:v18 didConnectWithInitialState:v16];
+      client = [(MRDGroupSessionClient *)self client];
+      identifier2 = [sessionCopy identifier];
+      [client session:identifier2 didConnectWithInitialState:v16];
     }
 
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -697,20 +697,20 @@ LABEL_8:
 
   else
   {
-    v11 = _MRLogForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    sessionManager = _MRLogForCategory();
+    if (os_log_type_enabled(sessionManager, OS_LOG_TYPE_ERROR))
     {
-      sub_1003A5000(v4, self);
+      sub_1003A5000(sessionCopy, self);
     }
   }
 }
 
-- (id)transportParticipants:(id)a3 forSession:(id)a4
+- (id)transportParticipants:(id)participants forSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 localParticipant];
-  v8 = [v6 leader];
+  participantsCopy = participants;
+  sessionCopy = session;
+  localParticipant = [sessionCopy localParticipant];
+  leader = [sessionCopy leader];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -719,23 +719,23 @@ LABEL_8:
   v19[1] = 3221225472;
   v19[2] = sub_1000543C0;
   v19[3] = &unk_1004B71D0;
-  v9 = v7;
+  v9 = localParticipant;
   v20 = v9;
   v22 = &v23;
-  v10 = v8;
+  v10 = leader;
   v21 = v10;
-  v11 = [v5 msv_compactMap:v19];
+  v11 = [participantsCopy msv_compactMap:v19];
   v12 = [NSMutableSet setWithArray:v11];
 
   if ((v24[3] & 1) == 0)
   {
     v13 = [MRCodableGroupSessionParticipant alloc];
-    v14 = [v9 identifier];
-    v15 = [v9 identity];
-    v16 = [v13 initWithIdentifier:v14 identity:v15 connected:1 guest:objc_msgSend(v9 hidden:{"guest"), objc_msgSend(v9, "hidden")}];
+    identifier = [v9 identifier];
+    identity = [v9 identity];
+    v16 = [v13 initWithIdentifier:identifier identity:identity connected:1 guest:objc_msgSend(v9 hidden:{"guest"), objc_msgSend(v9, "hidden")}];
 
     [v16 setLocal:1];
-    [v16 setHost:{objc_msgSend(v6, "isHosted")}];
+    [v16 setHost:{objc_msgSend(sessionCopy, "isHosted")}];
     [v12 addObject:v16];
   }
 
@@ -746,12 +746,12 @@ LABEL_8:
   return v17;
 }
 
-- (id)infoFromGroupSession:(id)a3
+- (id)infoFromGroupSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    v3 = a3;
-    v4 = [[MRGroupSessionInfo alloc] initWithGroupSession:v3];
+    sessionCopy = session;
+    v4 = [[MRGroupSessionInfo alloc] initWithGroupSession:sessionCopy];
   }
 
   else

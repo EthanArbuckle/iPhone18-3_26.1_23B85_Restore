@@ -1,52 +1,52 @@
 @interface DNDMutableAppInfo
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setApplicationIdentifier:(id)a3;
-- (void)setCachedIconURL:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setStoreIconURL:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setApplicationIdentifier:(id)identifier;
+- (void)setCachedIconURL:(id)l;
+- (void)setDisplayName:(id)name;
+- (void)setStoreIconURL:(id)l;
 @end
 
 @implementation DNDMutableAppInfo
 
-- (void)setStoreIconURL:(id)a3
+- (void)setStoreIconURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   storeIconURL = self->super._storeIconURL;
   self->super._storeIconURL = v4;
 
   MEMORY[0x2821F96F8](v4, storeIconURL);
 }
 
-- (void)setCachedIconURL:(id)a3
+- (void)setCachedIconURL:(id)l
 {
-  v4 = [a3 copy];
+  v4 = [l copy];
   cachedIconURL = self->super._cachedIconURL;
   self->super._cachedIconURL = v4;
 
   MEMORY[0x2821F96F8](v4, cachedIconURL);
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->super._displayName;
   self->super._displayName = v4;
 
   MEMORY[0x2821F96F8](v4, displayName);
 }
 
-- (void)setApplicationIdentifier:(id)a3
+- (void)setApplicationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationIdentifier = self->super._applicationIdentifier;
   self->super._applicationIdentifier = v4;
 
   MEMORY[0x2821F96F8](v4, applicationIdentifier);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDAppInfo allocWithZone:a3];
+  v4 = [DNDAppInfo allocWithZone:zone];
 
   return [(DNDAppInfo *)v4 _initWithAppInfo:self];
 }

@@ -1,18 +1,18 @@
 @interface CNProcessSharedLock
-+ (CNProcessSharedLock)sharedLockWithLockFilePath:(id)a3;
++ (CNProcessSharedLock)sharedLockWithLockFilePath:(id)path;
 + (id)os_log;
-+ (id)recursiveSharedLockWithLockFilePath:(id)a3;
-+ (id)semaphoreSharedLockWithLockFilePath:(id)a3;
-- (BOOL)ensureFileDescriptorIsInvalid:(id)a3;
-- (BOOL)ensureFileIsLocal:(id)a3;
-- (BOOL)open:(id *)a3;
-- (BOOL)openLockFile:(id)a3;
++ (id)recursiveSharedLockWithLockFilePath:(id)path;
++ (id)semaphoreSharedLockWithLockFilePath:(id)path;
+- (BOOL)ensureFileDescriptorIsInvalid:(id)invalid;
+- (BOOL)ensureFileIsLocal:(id)local;
+- (BOOL)open:(id *)open;
+- (BOOL)openLockFile:(id)file;
 - (CNProcessSharedLock)init;
-- (CNProcessSharedLock)initWithLockFilePath:(id)a3 localLock:(id)a4;
-- (CNProcessSharedLock)initWithLockFilePath:(id)a3 localLock:(id)a4 fileServices:(id)a5;
+- (CNProcessSharedLock)initWithLockFilePath:(id)path localLock:(id)lock;
+- (CNProcessSharedLock)initWithLockFilePath:(id)path localLock:(id)lock fileServices:(id)services;
 - (id)description;
-- (id)errorUserInfoWithDescription:(id)a3;
-- (id)exceptionWithName:(id)a3 reason:(id)a4;
+- (id)errorUserInfoWithDescription:(id)description;
+- (id)exceptionWithName:(id)name reason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 - (void)lock;
@@ -43,31 +43,31 @@ uint64_t __29__CNProcessSharedLock_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (CNProcessSharedLock)sharedLockWithLockFilePath:(id)a3
++ (CNProcessSharedLock)sharedLockWithLockFilePath:(id)path
 {
   v4 = MEMORY[0x1E696AD10];
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(v4);
-  v7 = [[a1 alloc] initWithLockFilePath:v5 localLock:v6];
+  v7 = [[self alloc] initWithLockFilePath:pathCopy localLock:v6];
 
   return v7;
 }
 
-+ (id)recursiveSharedLockWithLockFilePath:(id)a3
++ (id)recursiveSharedLockWithLockFilePath:(id)path
 {
   v4 = MEMORY[0x1E696AE68];
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(v4);
-  v7 = [[a1 alloc] initWithLockFilePath:v5 localLock:v6];
+  v7 = [[self alloc] initWithLockFilePath:pathCopy localLock:v6];
 
   return v7;
 }
 
-+ (id)semaphoreSharedLockWithLockFilePath:(id)a3
++ (id)semaphoreSharedLockWithLockFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(CNBinarySemaphoreLock);
-  v6 = [[a1 alloc] initWithLockFilePath:v4 localLock:v5];
+  v6 = [[self alloc] initWithLockFilePath:pathCopy localLock:v5];
 
   return v6;
 }
@@ -78,33 +78,33 @@ uint64_t __29__CNProcessSharedLock_os_log__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (CNProcessSharedLock)initWithLockFilePath:(id)a3 localLock:(id)a4
+- (CNProcessSharedLock)initWithLockFilePath:(id)path localLock:(id)lock
 {
-  v6 = a4;
-  v7 = a3;
+  lockCopy = lock;
+  pathCopy = path;
   v8 = +[CNFileServices sharedInstance];
-  v9 = [(CNProcessSharedLock *)self initWithLockFilePath:v7 localLock:v6 fileServices:v8];
+  v9 = [(CNProcessSharedLock *)self initWithLockFilePath:pathCopy localLock:lockCopy fileServices:v8];
 
   return v9;
 }
 
-- (CNProcessSharedLock)initWithLockFilePath:(id)a3 localLock:(id)a4 fileServices:(id)a5
+- (CNProcessSharedLock)initWithLockFilePath:(id)path localLock:(id)lock fileServices:(id)services
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  lockCopy = lock;
+  servicesCopy = services;
   v18.receiver = self;
   v18.super_class = CNProcessSharedLock;
   v11 = [(CNProcessSharedLock *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     lockFilePath = v11->_lockFilePath;
     v11->_lockFilePath = v12;
 
-    objc_storeStrong(&v11->_localLock, a4);
+    objc_storeStrong(&v11->_localLock, lock);
     v11->_fileDescriptor = -1;
-    objc_storeStrong(&v11->_fileServices, a5);
+    objc_storeStrong(&v11->_fileServices, services);
     v14 = [CNInhibitor runningboardInhibitorWithExplanation:@"Contacts shared filesystem lock"];
     runningBoardInhibitor = v11->_runningBoardInhibitor;
     v11->_runningBoardInhibitor = v14;
@@ -123,29 +123,29 @@ uint64_t __29__CNProcessSharedLock_os_log__block_invoke()
   [(CNProcessSharedLock *)&v3 dealloc];
 }
 
-- (BOOL)open:(id *)a3
+- (BOOL)open:(id *)open
 {
-  v4 = CNMakeErrorHelper(a3);
+  v4 = CNMakeErrorHelper(open);
   v5 = [(CNProcessSharedLock *)self ensureFileDescriptorIsInvalid:v4]&& [(CNProcessSharedLock *)self openLockFile:v4]&& [(CNProcessSharedLock *)self ensureFileIsLocal:v4];
 
   return v5;
 }
 
-- (BOOL)ensureFileDescriptorIsInvalid:(id)a3
+- (BOOL)ensureFileDescriptorIsInvalid:(id)invalid
 {
-  v4 = a3;
-  v5 = [(CNProcessSharedLock *)self isValidFileDescriptor];
-  if (v5)
+  invalidCopy = invalid;
+  isValidFileDescriptor = [(CNProcessSharedLock *)self isValidFileDescriptor];
+  if (isValidFileDescriptor)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__CNProcessSharedLock_ensureFileDescriptorIsInvalid___block_invoke;
     v7[3] = &unk_1E6ED8090;
     v7[4] = self;
-    v4[2](v4, v7);
+    invalidCopy[2](invalidCopy, v7);
   }
 
-  return !v5;
+  return !isValidFileDescriptor;
 }
 
 id __53__CNProcessSharedLock_ensureFileDescriptorIsInvalid___block_invoke(uint64_t a1)
@@ -158,23 +158,23 @@ id __53__CNProcessSharedLock_ensureFileDescriptorIsInvalid___block_invoke(uint64
   return v4;
 }
 
-- (BOOL)openLockFile:(id)a3
+- (BOOL)openLockFile:(id)file
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   self->_fileDescriptor = [(CNFileServices *)self->_fileServices open:[(NSString *)self->_lockFilePath fileSystemRepresentation]];
-  v5 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     lockFilePath = self->_lockFilePath;
     fileDescriptor = self->_fileDescriptor;
     *buf = 134218498;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = lockFilePath;
     v16 = 1024;
     v17 = fileDescriptor;
-    _os_log_debug_impl(&dword_1859F0000, v5, OS_LOG_TYPE_DEBUG, "%p: lockFilePath: %@, file descriptor: %d", buf, 0x1Cu);
+    _os_log_debug_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_DEBUG, "%p: lockFilePath: %@, file descriptor: %d", buf, 0x1Cu);
   }
 
   v6 = self->_fileDescriptor;
@@ -185,7 +185,7 @@ id __53__CNProcessSharedLock_ensureFileDescriptorIsInvalid___block_invoke(uint64
     v11[2] = __36__CNProcessSharedLock_openLockFile___block_invoke;
     v11[3] = &unk_1E6ED8090;
     v11[4] = self;
-    v4[2](v4, v11);
+    fileCopy[2](fileCopy, v11);
     self->_fileDescriptor = -1;
   }
 
@@ -202,10 +202,10 @@ id __36__CNProcessSharedLock_openLockFile___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)ensureFileIsLocal:(id)a3
+- (BOOL)ensureFileIsLocal:(id)local
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localCopy = local;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -260,7 +260,7 @@ id __36__CNProcessSharedLock_openLockFile___block_invoke(uint64_t a1)
   v5[2] = v6;
   v5[3] = &unk_1E6ED8090;
   v5[4] = self;
-  v4[2](v4);
+  localCopy[2](localCopy);
   close(self->_fileDescriptor);
   v7 = 0;
   self->_fileDescriptor = -1;
@@ -324,36 +324,36 @@ id __41__CNProcessSharedLock_ensureFileIsLocal___block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)exceptionWithName:(id)a3 reason:(id)a4
+- (id)exceptionWithName:(id)name reason:(id)reason
 {
   fileServices = self->_fileServices;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNFileServices *)fileServices errnoValue];
-  v10 = [(CNProcessSharedLock *)self errorUserInfo];
-  v11 = [CNFoundationError errorWithErrno:v9 userInfo:v10];
+  reasonCopy = reason;
+  nameCopy = name;
+  errnoValue = [(CNFileServices *)fileServices errnoValue];
+  errorUserInfo = [(CNProcessSharedLock *)self errorUserInfo];
+  v11 = [CNFoundationError errorWithErrno:errnoValue userInfo:errorUserInfo];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", v7, self];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", reasonCopy, self];
 
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v11, *MEMORY[0x1E696AA08], 0}];
-  v14 = [MEMORY[0x1E695DF30] exceptionWithName:v8 reason:v12 userInfo:v13];
+  v14 = [MEMORY[0x1E695DF30] exceptionWithName:nameCopy reason:v12 userInfo:v13];
 
   return v14;
 }
 
-- (id)errorUserInfoWithDescription:(id)a3
+- (id)errorUserInfoWithDescription:(id)description
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 setObject:self->_name forKeyedSubscript:@"CNLockName"];
+  descriptionCopy = description;
+  dictionary = [v4 dictionary];
+  [dictionary setObject:self->_name forKeyedSubscript:@"CNLockName"];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_fileDescriptor];
-  [v6 setObject:v7 forKeyedSubscript:@"CNFileDescriptor"];
+  [dictionary setObject:v7 forKeyedSubscript:@"CNFileDescriptor"];
 
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  [v6 setObject:self->_lockFilePath forKeyedSubscript:*MEMORY[0x1E696A368]];
+  [dictionary setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x1E696A578]];
+  [dictionary setObject:self->_lockFilePath forKeyedSubscript:*MEMORY[0x1E696A368]];
 
-  return v6;
+  return dictionary;
 }
 
 - (id)description
@@ -361,9 +361,9 @@ id __41__CNProcessSharedLock_ensureFileIsLocal___block_invoke_2(uint64_t a1)
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendNamesAndObjects:{@"name", self->_name, @"lockFilePath", self->_lockFilePath, @"localLock", self->_localLock, 0}];
   v5 = [v3 appendName:@"fileDescriptor" intValue:self->_fileDescriptor];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

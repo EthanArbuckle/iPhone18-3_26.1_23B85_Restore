@@ -1,13 +1,13 @@
 @interface BLSHInactiveBudgetBucket
-- (BLSHInactiveBudgetBucket)initWithFutureSpecifier:(id)a3;
-- (BLSHInactiveBudgetBucket)initWithInvalidation:(id)a3;
-- (BOOL)validAtDate:(id)a3;
-- (double)addSpecifier:(char)a3 allowBeforeStart:(void *)a4 withCountBlock:;
-- (double)applyRenderedSpecifier:(id)a3 allowBeforeStart:(BOOL)a4;
+- (BLSHInactiveBudgetBucket)initWithFutureSpecifier:(id)specifier;
+- (BLSHInactiveBudgetBucket)initWithInvalidation:(id)invalidation;
+- (BOOL)validAtDate:(id)date;
+- (double)addSpecifier:(char)specifier allowBeforeStart:(void *)start withCountBlock:;
+- (double)applyRenderedSpecifier:(id)specifier allowBeforeStart:(BOOL)start;
 - (id)debugDescription;
 - (id)description;
 - (id)shortLoggingString;
-- (void)initWithStartDate:(void *)a1;
+- (void)initWithStartDate:(void *)date;
 - (void)recomputeMinuteBoundary;
 - (void)resetFutureAndRenderedSpecifiers;
 - (void)resetFutureSpecifiers;
@@ -18,22 +18,22 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_startDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"start"];
+  bls_shortLoggingString = [(NSDate *)self->_startDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"start"];
 
   v5 = [v3 appendInt:-[BLSHInactiveBudgetBucketEntryCount count](self->_entryCount withName:{"count"), @"count"}];
   v6 = [v3 appendBool:-[BLSHInactiveBudgetBucketEntryCount isSecondsFidelity](self->_entryCount withName:"isSecondsFidelity") ifEqualTo:{@"isSecondsFidelity", 1}];
   v7 = [v3 appendBool:self->_containsInvalidation withName:@"containsInvalidation" ifEqualTo:1];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (id)debugDescription
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_startDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"start"];
+  bls_shortLoggingString = [(NSDate *)self->_startDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"start"];
 
   v5 = [v3 appendInt:-[BLSHInactiveBudgetBucketEntryCount count](self->_entryCount withName:{"count"), @"count"}];
   v6 = [v3 appendBool:-[BLSHInactiveBudgetBucketEntryCount isSecondsFidelity](self->_entryCount withName:"isSecondsFidelity") ifEqualTo:{@"isSecondsFidelity", 1}];
@@ -43,12 +43,12 @@
   v13 = __44__BLSHInactiveBudgetBucket_debugDescription__block_invoke;
   v14 = &unk_27841E538;
   v15 = v3;
-  v16 = self;
+  selfCopy = self;
   v8 = v3;
   [v8 appendBodySectionWithName:0 multilinePrefix:@"        " block:&v11];
-  v9 = [v8 build];
+  build = [v8 build];
 
-  return v9;
+  return build;
 }
 
 id __44__BLSHInactiveBudgetBucket_debugDescription__block_invoke(uint64_t a1)
@@ -61,12 +61,12 @@ id __44__BLSHInactiveBudgetBucket_debugDescription__block_invoke(uint64_t a1)
 - (id)shortLoggingString
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSDate *)self->_startDate bls_shortLoggingString];
+  bls_shortLoggingString = [(NSDate *)self->_startDate bls_shortLoggingString];
   v5 = [(BLSHInactiveBudgetBucketEntryCount *)self->_entryCount count];
-  v6 = [(BLSHInactiveBudgetBucketEntryCount *)self->_entryCount isSecondsFidelity];
+  isSecondsFidelity = [(BLSHInactiveBudgetBucketEntryCount *)self->_entryCount isSecondsFidelity];
   v7 = "";
   v8 = " seconds";
-  if (!v6)
+  if (!isSecondsFidelity)
   {
     v8 = "";
   }
@@ -76,7 +76,7 @@ id __44__BLSHInactiveBudgetBucket_debugDescription__block_invoke(uint64_t a1)
     v7 = " invalidation(s)";
   }
 
-  v9 = [v3 stringWithFormat:@"<%p %@ (%ld)%s%s>", self, v4, v5, v8, v7];;
+  v9 = [v3 stringWithFormat:@"<%p %@ (%ld)%s%s>", self, bls_shortLoggingString, v5, v8, v7];;
 
   return v9;
 }
@@ -150,99 +150,99 @@ uint64_t __78__BLSHInactiveBudgetBucket_addInvalidation_hasSecondsBudget_allowBe
   self->_rendered = 0;
 }
 
-- (BOOL)validAtDate:(id)a3
+- (BOOL)validAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BLSHInactiveBudgetBucket *)self isSecondsFidelity];
+  dateCopy = date;
+  isSecondsFidelity = [(BLSHInactiveBudgetBucket *)self isSecondsFidelity];
   v6 = -60.0;
-  if (v5)
+  if (isSecondsFidelity)
   {
     v6 = -3600.0;
   }
 
-  v7 = [v4 dateByAddingTimeInterval:v6];
+  v7 = [dateCopy dateByAddingTimeInterval:v6];
 
   v8 = [v7 isBeforeDate:self->_startDate];
   return v8;
 }
 
-- (void)initWithStartDate:(void *)a1
+- (void)initWithStartDate:(void *)date
 {
   v4 = a2;
-  if (a1)
+  if (date)
   {
-    v13.receiver = a1;
+    v13.receiver = date;
     v13.super_class = BLSHInactiveBudgetBucket;
     v5 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v5;
+    date = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
       v7 = objc_alloc_init(BLSHInactiveBudgetBucketEntryCount);
-      v8 = a1[4];
-      a1[4] = v7;
+      v8 = date[4];
+      date[4] = v7;
 
       v9 = objc_alloc_init(BLSHInactiveBudgetBucketEntryCount);
-      v10 = a1[5];
-      a1[5] = v9;
+      v10 = date[5];
+      date[5] = v9;
 
       v11 = objc_alloc_init(BLSHInactiveBudgetBucketEntryCount);
-      v12 = a1[6];
-      a1[6] = v11;
+      v12 = date[6];
+      date[6] = v11;
 
-      [(BLSHInactiveBudgetBucket *)a1 recomputeMinuteBoundary];
+      [(BLSHInactiveBudgetBucket *)date recomputeMinuteBoundary];
     }
   }
 
-  return a1;
+  return date;
 }
 
 - (void)recomputeMinuteBoundary
 {
-  if (a1)
+  if (self)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v9 setSecond:0];
-    v2 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
-    v3 = [v2 nextDateAfterDate:*(a1 + 16) matchingComponents:v9 options:5120];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    v3 = [autoupdatingCurrentCalendar nextDateAfterDate:*(self + 16) matchingComponents:v9 options:5120];
 
-    [v3 timeIntervalSinceDate:*(a1 + 16)];
+    [v3 timeIntervalSinceDate:*(self + 16)];
     v5 = v4;
     [MEMORY[0x277CF0920] secondsFidelityThreshold];
     if (v5 < v6)
     {
-      v7 = v3;
+      distantFuture = v3;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
-    v8 = *(a1 + 24);
-    *(a1 + 24) = v7;
+    v8 = *(self + 24);
+    *(self + 24) = distantFuture;
   }
 }
 
-- (BLSHInactiveBudgetBucket)initWithFutureSpecifier:(id)a3
+- (BLSHInactiveBudgetBucket)initWithFutureSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 date];
-  v6 = [(BLSHInactiveBudgetBucket *)self initWithStartDate:v5];
+  specifierCopy = specifier;
+  date = [specifierCopy date];
+  v6 = [(BLSHInactiveBudgetBucket *)self initWithStartDate:date];
 
   if (v6)
   {
-    [(BLSHInactiveBudgetBucketEntryCount *)v6->_entryCount countSpecifier:v4 hasSecondsBudget:1 isCoalesceAllowed:1];
+    [(BLSHInactiveBudgetBucketEntryCount *)v6->_entryCount countSpecifier:specifierCopy hasSecondsBudget:1 isCoalesceAllowed:1];
   }
 
   return v6;
 }
 
-- (BLSHInactiveBudgetBucket)initWithInvalidation:(id)a3
+- (BLSHInactiveBudgetBucket)initWithInvalidation:(id)invalidation
 {
-  v4 = a3;
-  v5 = [v4 date];
-  v6 = [(BLSHInactiveBudgetBucket *)self initWithStartDate:v5];
+  invalidationCopy = invalidation;
+  date = [invalidationCopy date];
+  v6 = [(BLSHInactiveBudgetBucket *)self initWithStartDate:date];
 
   if (v6)
   {
@@ -254,23 +254,23 @@ uint64_t __78__BLSHInactiveBudgetBucket_addInvalidation_hasSecondsBudget_allowBe
   return v6;
 }
 
-- (double)addSpecifier:(char)a3 allowBeforeStart:(void *)a4 withCountBlock:
+- (double)addSpecifier:(char)specifier allowBeforeStart:(void *)start withCountBlock:
 {
   v45 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  if (!a1)
+  startCopy = start;
+  if (!self)
   {
     v16 = 0.0;
     goto LABEL_19;
   }
 
-  v9 = [v7 date];
+  date = [v7 date];
   [MEMORY[0x277CF0920] secondsFidelityThreshold];
   v11 = v10;
-  [v9 timeIntervalSinceDate:*(a1 + 16)];
+  [date timeIntervalSinceDate:*(self + 16)];
   v13 = v12;
-  [*(a1 + 32) timeIntervalFromLastEntryToDate:v9];
+  [*(self + 32) timeIntervalFromLastEntryToDate:date];
   v15 = v14;
   if (v13 >= 0.0)
   {
@@ -281,8 +281,8 @@ uint64_t __78__BLSHInactiveBudgetBucket_addInvalidation_hasSecondsBudget_allowBe
     }
 
 LABEL_7:
-    v17 = [*(a1 + 32) count];
-    v18 = v8[2](v8);
+    v17 = [*(self + 32) count];
+    v18 = startCopy[2](startCopy);
     if (v18)
     {
       v16 = 0.0;
@@ -298,18 +298,18 @@ LABEL_7:
       v20 = bls_budget_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = *(a1 + 16);
-        [v21 timeIntervalSinceDate:v9];
+        v21 = *(self + 16);
+        [v21 timeIntervalSinceDate:date];
         v23 = v22;
-        v24 = [*(a1 + 32) count];
+        v24 = [*(self + 32) count];
         v27 = 134220034;
-        v28 = a1;
+        selfCopy = self;
         v29 = 2114;
         v30 = v7;
         v31 = 2114;
         v32 = v21;
         v33 = 2114;
-        v34 = v9;
+        v34 = date;
         v35 = 2048;
         v36 = v23;
         v37 = 2048;
@@ -323,15 +323,15 @@ LABEL_7:
         _os_log_debug_impl(&dword_21FD11000, v20, OS_LOG_TYPE_DEBUG, "%p added addSpecifier:%{public}@ start date will change:%{public}@->%{public}@ (%.3lfs) (intervalSinceStart:%lf; intervalAfterEnd:%lf) (count:%d->%d)", &v27, 0x54u);
       }
 
-      objc_storeStrong((a1 + 16), v9);
-      [(BLSHInactiveBudgetBucket *)a1 recomputeMinuteBoundary];
+      objc_storeStrong((self + 16), date);
+      [(BLSHInactiveBudgetBucket *)self recomputeMinuteBoundary];
       v16 = 0.0;
     }
 
     goto LABEL_18;
   }
 
-  if (v14 > -v11 && (a3 & 1) != 0)
+  if (v14 > -v11 && (specifier & 1) != 0)
   {
     goto LABEL_7;
   }
@@ -344,17 +344,17 @@ LABEL_19:
   return v16;
 }
 
-- (double)applyRenderedSpecifier:(id)a3 allowBeforeStart:(BOOL)a4
+- (double)applyRenderedSpecifier:(id)specifier allowBeforeStart:(BOOL)start
 {
-  v6 = a3;
+  specifierCopy = specifier;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__BLSHInactiveBudgetBucket_applyRenderedSpecifier_allowBeforeStart___block_invoke;
   v10[3] = &unk_27841FCA0;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(BLSHInactiveBudgetBucket *)self addSpecifier:v7 allowBeforeStart:a4 withCountBlock:v10];
+  v11 = specifierCopy;
+  v7 = specifierCopy;
+  v8 = [(BLSHInactiveBudgetBucket *)self addSpecifier:v7 allowBeforeStart:start withCountBlock:v10];
 
   return v8;
 }

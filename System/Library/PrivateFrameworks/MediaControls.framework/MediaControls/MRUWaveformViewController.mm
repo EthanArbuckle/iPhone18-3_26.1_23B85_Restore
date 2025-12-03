@@ -1,41 +1,41 @@
 @interface MRUWaveformViewController
-- (CAFrameRateRange)framerateRangeForData:(id)a3;
-- (MRUWaveformViewController)initWithContext:(unint64_t)a3 waveformController:(id)a4;
-- (MRUWaveformViewController)initWithContext:(unint64_t)a3 waveformController:(id)a4 settings:(id)a5;
+- (CAFrameRateRange)framerateRangeForData:(id)data;
+- (MRUWaveformViewController)initWithContext:(unint64_t)context waveformController:(id)controller;
+- (MRUWaveformViewController)initWithContext:(unint64_t)context waveformController:(id)controller settings:(id)settings;
 - (void)loadView;
-- (void)processInfoPowerStateDidChange:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
+- (void)processInfoPowerStateDidChange:(id)change;
+- (void)setOnScreen:(BOOL)screen;
 - (void)updateState;
 - (void)updateVisibility;
-- (void)updateWaveformWithData:(id)a3 immediately:(BOOL)a4;
+- (void)updateWaveformWithData:(id)data immediately:(BOOL)immediately;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)waveformController:(id)a3 artworkImageDidChange:(id)a4;
-- (void)waveformControllerTrackDidChange:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)waveformController:(id)controller artworkImageDidChange:(id)change;
+- (void)waveformControllerTrackDidChange:(id)change;
 @end
 
 @implementation MRUWaveformViewController
 
-- (MRUWaveformViewController)initWithContext:(unint64_t)a3 waveformController:(id)a4 settings:(id)a5
+- (MRUWaveformViewController)initWithContext:(unint64_t)context waveformController:(id)controller settings:(id)settings
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  settingsCopy = settings;
   v18.receiver = self;
   v18.super_class = MRUWaveformViewController;
   v11 = [(MRUWaveformViewController *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_settings, a5);
-    objc_storeStrong(&v12->_controller, a4);
-    v12->_context = a3;
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v12 selector:sel_processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    objc_storeStrong(&v11->_settings, settings);
+    objc_storeStrong(&v12->_controller, controller);
+    v12->_context = context;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
 
-    v14 = [MEMORY[0x1E696AE30] processInfo];
-    v12->_lowPowerModeEnabled = [v14 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v12->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
     v19[0] = objc_opt_class();
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -45,11 +45,11 @@
   return v12;
 }
 
-- (MRUWaveformViewController)initWithContext:(unint64_t)a3 waveformController:(id)a4
+- (MRUWaveformViewController)initWithContext:(unint64_t)context waveformController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = +[MRUWaveformSettings currentSettings];
-  v8 = [(MRUWaveformViewController *)self initWithContext:a3 waveformController:v6 settings:v7];
+  v8 = [(MRUWaveformViewController *)self initWithContext:context waveformController:controllerCopy settings:v7];
 
   return v8;
 }
@@ -70,29 +70,29 @@
   [(MRUWaveformViewController *)self updateState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRUWaveformViewController;
-  [(MRUWaveformViewController *)&v4 viewWillAppear:a3];
+  [(MRUWaveformViewController *)&v4 viewWillAppear:appear];
   self->_hasAppeared = 1;
   [(MRUWaveformViewController *)self updateVisibility];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRUWaveformViewController;
-  [(MRUWaveformViewController *)&v4 viewWillDisappear:a3];
+  [(MRUWaveformViewController *)&v4 viewWillDisappear:disappear];
   self->_hasAppeared = 0;
   [(MRUWaveformViewController *)self updateVisibility];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     [(MRUWaveformViewController *)self updateVisibility];
   }
 }
@@ -101,8 +101,8 @@
 {
   if ([(MRUWaveformViewController *)self isOnScreen]&& self->_hasAppeared)
   {
-    v4 = [(MRUWaveformViewController *)self traitCollection];
-    -[MRUWaveformController setVisible:](self->_controller, "setVisible:", [v4 mr_shouldDim] ^ 1);
+    traitCollection = [(MRUWaveformViewController *)self traitCollection];
+    -[MRUWaveformController setVisible:](self->_controller, "setVisible:", [traitCollection mr_shouldDim] ^ 1);
   }
 
   else
@@ -113,17 +113,17 @@
   }
 }
 
-- (void)updateWaveformWithData:(id)a3 immediately:(BOOL)a4
+- (void)updateWaveformWithData:(id)data immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
-  [(MRUWaveformViewController *)self framerateRangeForData:v6];
+  immediatelyCopy = immediately;
+  dataCopy = data;
+  [(MRUWaveformViewController *)self framerateRangeForData:dataCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MRUWaveformController *)self->_controller isPlaying];
+  isPlaying = [(MRUWaveformController *)self->_controller isPlaying];
   settings = self->_settings;
-  if (v13)
+  if (isPlaying)
   {
     [(MRUWaveformSettings *)settings animationDuration];
     v16 = v15;
@@ -146,13 +146,13 @@
   v30 = v8;
   v31 = v10;
   v32 = v12;
-  v28 = self;
-  v21 = v6;
+  selfCopy = self;
+  v21 = dataCopy;
   v29 = v21;
   [v19 animateWithDuration:0 delay:&v24 usingSpringWithDamping:0 initialSpringVelocity:v16 options:0.0 animations:v20 completion:0.0];
-  if (v4)
+  if (immediatelyCopy)
   {
-    [MEMORY[0x1E6979518] setUpdateDeadline:{CACurrentMediaTime() + (1.0 / v12), v24, v25, v26, v27, v28}];
+    [MEMORY[0x1E6979518] setUpdateDeadline:{CACurrentMediaTime() + (1.0 / v12), v24, v25, v26, v27, selfCopy}];
     [MEMORY[0x1E6979518] flush];
   }
 
@@ -184,58 +184,58 @@ void __64__MRUWaveformViewController_updateWaveformWithData_immediately___block_
   [v2 setWaveformData:v1];
 }
 
-- (CAFrameRateRange)framerateRangeForData:(id)a3
+- (CAFrameRateRange)framerateRangeForData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(MRUWaveformSettings *)self->_settings supportsVariableFramerate])
   {
-    [v4 maxAbsoluteDifferenceFrom:self->_waveformData];
+    [dataCopy maxAbsoluteDifferenceFrom:self->_waveformData];
     v6 = v5;
-    v7 = [(MRUWaveformSettings *)self->_settings minimumFramerate];
-    v8 = [(MRUWaveformViewController *)self context];
+    minimumFramerate = [(MRUWaveformSettings *)self->_settings minimumFramerate];
+    context = [(MRUWaveformViewController *)self context];
     settings = self->_settings;
-    if (v8)
+    if (context)
     {
-      v10 = [(MRUWaveformSettings *)settings maximumFramerate];
+      maximumFramerate = [(MRUWaveformSettings *)settings maximumFramerate];
     }
 
     else
     {
-      v10 = [(MRUWaveformSettings *)settings maximumJindoFramerate];
+      maximumFramerate = [(MRUWaveformSettings *)settings maximumJindoFramerate];
     }
 
     if (self->_lowPowerModeEnabled)
     {
-      v10 = [(MRUWaveformSettings *)self->_settings lowPowerModeMaximumFramerate];
+      maximumFramerate = [(MRUWaveformSettings *)self->_settings lowPowerModeMaximumFramerate];
     }
 
-    v16 = v10;
+    v16 = maximumFramerate;
     [(MRUWaveformSettings *)self->_settings framerateThreshold];
-    v18 = v7 + ((v6 / v17) * (v16 - v7));
+    v18 = minimumFramerate + ((v6 / v17) * (v16 - minimumFramerate));
     if (v18 <= v16)
     {
-      v13 = v18;
+      nonVariableFramerate3 = v18;
     }
 
     else
     {
-      v13 = v16;
+      nonVariableFramerate3 = v16;
     }
 
-    v14 = v7;
+    v14 = minimumFramerate;
     v15 = v16;
   }
 
   else
   {
-    v11 = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
-    v12 = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
-    v13 = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
-    v14 = v11;
-    v15 = v12;
+    nonVariableFramerate = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
+    nonVariableFramerate2 = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
+    nonVariableFramerate3 = [(MRUWaveformSettings *)self->_settings nonVariableFramerate];
+    v14 = nonVariableFramerate;
+    v15 = nonVariableFramerate2;
   }
 
-  v25 = CAFrameRateRangeMake(v14, v15, v13);
+  v25 = CAFrameRateRangeMake(v14, v15, nonVariableFramerate3);
   minimum = v25.minimum;
   maximum = v25.maximum;
   preferred = v25.preferred;
@@ -251,17 +251,17 @@ void __64__MRUWaveformViewController_updateWaveformWithData_immediately___block_
 
 - (void)updateState
 {
-  v3 = [(MRUWaveformController *)self->_controller artworkImage];
-  v4 = [(MRUWaveformViewController *)self view];
-  [v4 setArtworkImage:v3];
+  artworkImage = [(MRUWaveformController *)self->_controller artworkImage];
+  view = [(MRUWaveformViewController *)self view];
+  [view setArtworkImage:artworkImage];
 
-  v5 = [(MRUWaveformController *)self->_controller waveform];
-  [(MRUWaveformViewController *)self updateWaveformWithData:v5 immediately:0];
+  waveform = [(MRUWaveformController *)self->_controller waveform];
+  [(MRUWaveformViewController *)self updateWaveformWithData:waveform immediately:0];
 }
 
-- (void)waveformControllerTrackDidChange:(id)a3
+- (void)waveformControllerTrackDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   self->_delayArtworkChange = 1;
   v5 = dispatch_time(0, 100000000);
   v7[0] = MEMORY[0x1E69E9820];
@@ -269,8 +269,8 @@ void __64__MRUWaveformViewController_updateWaveformWithData_immediately___block_
   v7[2] = __62__MRUWaveformViewController_waveformControllerTrackDidChange___block_invoke;
   v7[3] = &unk_1E76639D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], v7);
 }
 
@@ -283,17 +283,17 @@ void __62__MRUWaveformViewController_waveformControllerTrackDidChange___block_in
   *(*(a1 + 32) + 994) = 0;
 }
 
-- (void)waveformController:(id)a3 artworkImageDidChange:(id)a4
+- (void)waveformController:(id)controller artworkImageDidChange:(id)change
 {
-  if (!a4 || !self->_delayArtworkChange)
+  if (!change || !self->_delayArtworkChange)
   {
-    v5 = a4;
-    v6 = [(MRUWaveformViewController *)self view];
-    [v6 setArtworkImage:v5];
+    changeCopy = change;
+    view = [(MRUWaveformViewController *)self view];
+    [view setArtworkImage:changeCopy];
   }
 }
 
-- (void)processInfoPowerStateDidChange:(id)a3
+- (void)processInfoPowerStateDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

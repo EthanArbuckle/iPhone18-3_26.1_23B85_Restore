@@ -20,11 +20,11 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC11AssetViewer15CheckoutPlatter_traitManager);
   v3 = objc_opt_self();
 
-  v4 = [v3 currentTraitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  currentTraitCollection = [v3 currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
   v6 = *(v2 + 24);
-  *(v2 + 24) = v5;
+  *(v2 + 24) = preferredContentSizeCategory;
 
   sub_2413400EC();
 }

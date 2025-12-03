@@ -1,22 +1,22 @@
 @interface _SBWidgetExtensionDebugHomeScreenDataSource
-- (_SBWidgetExtensionDebugHomeScreenDataSource)initWithIconManager:(id)a3;
-- (id)hasExistingWidgetFromExtension:(id)a3;
-- (void)_reallyLaunchWidgetOnHomeScreen:(id)a3 widgetFamily:(int64_t)a4;
-- (void)launchWidget:(id)a3 widgetFamily:(int64_t)a4 completion:(id)a5;
+- (_SBWidgetExtensionDebugHomeScreenDataSource)initWithIconManager:(id)manager;
+- (id)hasExistingWidgetFromExtension:(id)extension;
+- (void)_reallyLaunchWidgetOnHomeScreen:(id)screen widgetFamily:(int64_t)family;
+- (void)launchWidget:(id)widget widgetFamily:(int64_t)family completion:(id)completion;
 @end
 
 @implementation _SBWidgetExtensionDebugHomeScreenDataSource
 
-- (_SBWidgetExtensionDebugHomeScreenDataSource)initWithIconManager:(id)a3
+- (_SBWidgetExtensionDebugHomeScreenDataSource)initWithIconManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = _SBWidgetExtensionDebugHomeScreenDataSource;
   v6 = [(_SBWidgetExtensionDebugHomeScreenDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconManager, a3);
+    objc_storeStrong(&v6->_iconManager, manager);
     v8 = [MEMORY[0x277CCAA50] hashTableWithOptions:0];
     inFlightAnimationTransactions = v7->_inFlightAnimationTransactions;
     v7->_inFlightAnimationTransactions = v8;
@@ -25,22 +25,22 @@
   return v7;
 }
 
-- (id)hasExistingWidgetFromExtension:(id)a3
+- (id)hasExistingWidgetFromExtension:(id)extension
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self->_iconManager iconModel];
-  v6 = [v5 widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:v4 kind:0 sizeClass:0];
+  extensionCopy = extension;
+  iconModel = [(SBHIconManager *)self->_iconManager iconModel];
+  v6 = [iconModel widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:extensionCopy kind:0 sizeClass:0];
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v7 widgets];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    widgets = [firstObject widgets];
+    v9 = [widgets countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = *v20;
@@ -50,25 +50,25 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(widgets);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 extensionBundleIdentifier];
-          v14 = [v13 isEqualToString:v4];
+          extensionBundleIdentifier = [v12 extensionBundleIdentifier];
+          v14 = [extensionBundleIdentifier isEqualToString:extensionCopy];
 
           if (v14)
           {
-            v15 = [v12 kind];
-            v16 = [v7 gridSizeClass];
+            kind = [v12 kind];
+            gridSizeClass = [firstObject gridSizeClass];
             v17 = CHSWidgetFamilyForSBHIconGridSizeClass();
 
-            v9 = [[SBWidgetExtensionDebugSearchResult alloc] initWithKind:v15 family:v17];
+            v9 = [[SBWidgetExtensionDebugSearchResult alloc] initWithKind:kind family:v17];
             goto LABEL_12;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [widgets countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v9)
         {
           continue;
@@ -89,20 +89,20 @@ LABEL_12:
   return v9;
 }
 
-- (void)launchWidget:(id)a3 widgetFamily:(int64_t)a4 completion:(id)a5
+- (void)launchWidget:(id)widget widgetFamily:(int64_t)family completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  widgetCopy = widget;
+  completionCopy = completion;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __84___SBWidgetExtensionDebugHomeScreenDataSource_launchWidget_widgetFamily_completion___block_invoke;
   v23[3] = &unk_2783C4BF0;
-  v10 = v9;
+  v10 = completionCopy;
   v25 = v10;
   v23[4] = self;
-  v11 = v8;
+  v11 = widgetCopy;
   v24 = v11;
-  v26 = a4;
+  familyCopy = family;
   v12 = MEMORY[0x223D6F7F0](v23);
   v13 = [[SBDismissOverlaysAnimationController alloc] initWithTransitionContextProvider:0 options:-1];
   objc_initWeak(&location, v13);
@@ -111,26 +111,26 @@ LABEL_12:
   v17 = __84___SBWidgetExtensionDebugHomeScreenDataSource_launchWidget_widgetFamily_completion___block_invoke_3;
   v18 = &unk_2783B1460;
   v14 = v12;
-  v19 = self;
+  selfCopy = self;
   v20 = v14;
   objc_copyWeak(&v21, &location);
   [(SBDismissOverlaysAnimationController *)v13 setCompletionBlock:&v15];
-  [(NSHashTable *)self->_inFlightAnimationTransactions addObject:v13, v15, v16, v17, v18, v19];
+  [(NSHashTable *)self->_inFlightAnimationTransactions addObject:v13, v15, v16, v17, v18, selfCopy];
   [(SBDismissOverlaysAnimationController *)v13 begin];
   objc_destroyWeak(&v21);
 
   objc_destroyWeak(&location);
 }
 
-- (void)_reallyLaunchWidgetOnHomeScreen:(id)a3 widgetFamily:(int64_t)a4
+- (void)_reallyLaunchWidgetOnHomeScreen:(id)screen widgetFamily:(int64_t)family
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  screenCopy = screen;
   v7 = SBLogWidgets();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 debugDescription];
-    v9 = MEMORY[0x223D6C060](a4);
+    v8 = [screenCopy debugDescription];
+    v9 = MEMORY[0x223D6C060](family);
     *buf = 138412546;
     v19 = v8;
     v20 = 2112;
@@ -138,25 +138,25 @@ LABEL_12:
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBAvocadoDebuggingController ensuring widget is visible for descriptor: %@ family: %@", buf, 0x16u);
   }
 
-  [(SBHIconManager *)self->_iconManager _ensureWidgetIsVisibleForDebuggingWithDescriptor:v6 sizeClass:a4];
-  v10 = [v6 extensionIdentity];
-  v11 = [v10 containerBundleIdentifier];
+  [(SBHIconManager *)self->_iconManager _ensureWidgetIsVisibleForDebuggingWithDescriptor:screenCopy sizeClass:family];
+  extensionIdentity = [screenCopy extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
   v12 = SBLogWidgets();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(_SBWidgetExtensionDebugHomeScreenDataSource *)v11 _reallyLaunchWidgetOnHomeScreen:v6 widgetFamily:v12];
+    [(_SBWidgetExtensionDebugHomeScreenDataSource *)containerBundleIdentifier _reallyLaunchWidgetOnHomeScreen:screenCopy widgetFamily:v12];
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CFA340]);
-  v14 = [v6 kind];
+  kind = [screenCopy kind];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __92___SBWidgetExtensionDebugHomeScreenDataSource__reallyLaunchWidgetOnHomeScreen_widgetFamily___block_invoke;
   v16[3] = &unk_2783B0F28;
-  v17 = v11;
-  v15 = v11;
-  [v13 reloadTimelinesOfKind:v14 containedIn:v15 reason:@"Tools" completion:v16];
+  v17 = containerBundleIdentifier;
+  v15 = containerBundleIdentifier;
+  [v13 reloadTimelinesOfKind:kind containedIn:v15 reason:@"Tools" completion:v16];
 }
 
 - (void)_reallyLaunchWidgetOnHomeScreen:(NSObject *)a3 widgetFamily:.cold.1(uint64_t a1, void *a2, NSObject *a3)

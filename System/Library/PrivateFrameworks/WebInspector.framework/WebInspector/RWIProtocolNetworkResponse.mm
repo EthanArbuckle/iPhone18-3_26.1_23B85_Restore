@@ -8,23 +8,23 @@
 - (RWIProtocolSecurity)security;
 - (int)status;
 - (int64_t)source;
-- (void)setHeaders:(id)a3;
-- (void)setMimeType:(id)a3;
-- (void)setRequestHeaders:(id)a3;
-- (void)setSecurity:(id)a3;
-- (void)setSource:(int64_t)a3;
-- (void)setStatusText:(id)a3;
-- (void)setTiming:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setHeaders:(id)headers;
+- (void)setMimeType:(id)type;
+- (void)setRequestHeaders:(id)headers;
+- (void)setSecurity:(id)security;
+- (void)setSource:(int64_t)source;
+- (void)setStatusText:(id)text;
+- (void)setTiming:(id)timing;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolNetworkResponse
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -43,11 +43,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"status"];
 }
 
-- (void)setStatusText:(id)a3
+- (void)setStatusText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"statusText"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"statusText"];
 }
 
 - (NSString)statusText
@@ -59,11 +59,11 @@
   return v2;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"headers"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"headers"];
 }
 
 - (RWIProtocolNetworkHeaders)headers
@@ -121,11 +121,11 @@
   return v7;
 }
 
-- (void)setMimeType:(id)a3
+- (void)setMimeType:(id)type
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"mimeType"];
+  [(RWIProtocolJSONObject *)&v3 setString:type forKey:@"mimeType"];
 }
 
 - (NSString)mimeType
@@ -137,7 +137,7 @@
   return v2;
 }
 
-- (void)setSource:(int64_t)a3
+- (void)setSource:(int64_t)source
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -205,11 +205,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setRequestHeaders:(id)a3
+- (void)setRequestHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"requestHeaders"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"requestHeaders"];
 }
 
 - (RWIProtocolNetworkHeaders)requestHeaders
@@ -267,11 +267,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setTiming:(id)a3
+- (void)setTiming:(id)timing
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"timing"];
+  [(RWIProtocolJSONObject *)&v3 setObject:timing forKey:@"timing"];
 }
 
 - (RWIProtocolNetworkResourceTiming)timing
@@ -329,11 +329,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setSecurity:(id)a3
+- (void)setSecurity:(id)security
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResponse;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"security"];
+  [(RWIProtocolJSONObject *)&v3 setObject:security forKey:@"security"];
 }
 
 - (RWIProtocolSecurity)security

@@ -1,17 +1,17 @@
 @interface _UIContextLayerHostView
 - (UISceneAsynchronousRenderingOptions)asynchronousRenderingOptions;
-- (_UIContextLayerHostView)initWithSceneLayer:(id)a3;
+- (_UIContextLayerHostView)initWithSceneLayer:(id)layer;
 - (id)layer;
 - (unint64_t)renderingMode;
 - (void)_prepareForWindowDealloc;
-- (void)setAsynchronousRenderingOptions:(id)a3;
-- (void)setInheritsSecurity:(BOOL)a3;
-- (void)setRenderingMode:(unint64_t)a3;
-- (void)setResizesHostedContext:(BOOL)a3;
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3;
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3;
-- (void)setZombifiesHostedContext:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAsynchronousRenderingOptions:(id)options;
+- (void)setInheritsSecurity:(BOOL)security;
+- (void)setRenderingMode:(unint64_t)mode;
+- (void)setResizesHostedContext:(BOOL)context;
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation;
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation;
+- (void)setZombifiesHostedContext:(BOOL)context;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIContextLayerHostView
@@ -20,164 +20,164 @@
 {
   v4.receiver = self;
   v4.super_class = _UIContextLayerHostView;
-  v2 = [(UIView *)&v4 layer];
+  layer = [(UIView *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 - (unint64_t)renderingMode
 {
-  v2 = [(_UIContextLayerHostView *)self layer];
-  v3 = [v2 rendersAsynchronously];
+  layer = [(_UIContextLayerHostView *)self layer];
+  rendersAsynchronously = [layer rendersAsynchronously];
 
-  return v3;
+  return rendersAsynchronously;
 }
 
-- (_UIContextLayerHostView)initWithSceneLayer:(id)a3
+- (_UIContextLayerHostView)initWithSceneLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v10.receiver = self;
   v10.super_class = _UIContextLayerHostView;
-  v5 = [(_UISceneLayerHostView *)&v10 initWithSceneLayer:v4];
+  v5 = [(_UISceneLayerHostView *)&v10 initWithSceneLayer:layerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(_UIContextLayerHostView *)v5 layer];
-    [v7 setContextId:{objc_msgSend(v4, "contextID")}];
+    layer = [(_UIContextLayerHostView *)v5 layer];
+    [layer setContextId:{objc_msgSend(layerCopy, "contextID")}];
 
-    v8 = [(_UIContextLayerHostView *)v6 layer];
-    [v8 setInheritsTiming:0];
+    layer2 = [(_UIContextLayerHostView *)v6 layer];
+    [layer2 setInheritsTiming:0];
   }
 
   return v6;
 }
 
-- (void)setRenderingMode:(unint64_t)a3
+- (void)setRenderingMode:(unint64_t)mode
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([(_UIContextLayerHostView *)self renderingMode]!= a3)
+  if ([(_UIContextLayerHostView *)self renderingMode]!= mode)
   {
     v5 = UIScenePresentationLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(_UIContextLayerHostView *)self layer];
-      v8 = [v7 contextId];
-      v9 = NSStringFromUISceneRenderingMode(a3);
+      layer = [(_UIContextLayerHostView *)self layer];
+      contextId = [layer contextId];
+      v9 = NSStringFromUISceneRenderingMode(mode);
       v10 = 134218498;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
-      v13 = v8;
+      v13 = contextId;
       v14 = 2114;
       v15 = v9;
       _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "%p - rendering context %d %{public}@", &v10, 0x1Cu);
     }
 
-    v6 = [(_UIContextLayerHostView *)self layer];
-    [v6 setRendersAsynchronously:a3 == 1];
+    layer2 = [(_UIContextLayerHostView *)self layer];
+    [layer2 setRendersAsynchronously:mode == 1];
   }
 }
 
-- (void)setAsynchronousRenderingOptions:(id)a3
+- (void)setAsynchronousRenderingOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = objc_alloc_init(UISceneAsynchronousRenderingOptions);
+    optionsCopy = objc_alloc_init(UISceneAsynchronousRenderingOptions);
   }
 
-  v10 = v4;
-  v5 = [(_UIContextLayerHostView *)self layer];
-  v6 = [(UISceneAsynchronousRenderingOptions *)v10 renderTimes];
-  [v5 setAsynchronousRenderTimes:v6];
+  v10 = optionsCopy;
+  layer = [(_UIContextLayerHostView *)self layer];
+  renderTimes = [(UISceneAsynchronousRenderingOptions *)v10 renderTimes];
+  [layer setAsynchronousRenderTimes:renderTimes];
 
-  v7 = [(_UIContextLayerHostView *)self layer];
+  layer2 = [(_UIContextLayerHostView *)self layer];
   [(UISceneAsynchronousRenderingOptions *)v10 renderPeriod];
-  [v7 setAsynchronousRenderPeriod:?];
+  [layer2 setAsynchronousRenderPeriod:?];
 
-  v8 = [(_UIContextLayerHostView *)self layer];
+  layer3 = [(_UIContextLayerHostView *)self layer];
   [(UISceneAsynchronousRenderingOptions *)v10 renderMaxAPL];
-  [v8 setAsynchronousRenderMaxAPL:?];
+  [layer3 setAsynchronousRenderMaxAPL:?];
 
-  v9 = [(_UIContextLayerHostView *)self layer];
-  [v9 setAsynchronousOpaque:{-[UISceneAsynchronousRenderingOptions opaque](v10, "opaque")}];
+  layer4 = [(_UIContextLayerHostView *)self layer];
+  [layer4 setAsynchronousOpaque:{-[UISceneAsynchronousRenderingOptions opaque](v10, "opaque")}];
 }
 
 - (UISceneAsynchronousRenderingOptions)asynchronousRenderingOptions
 {
   v3 = objc_alloc_init(UIMutableSceneAsynchronousRenderingOptions);
-  v4 = [(_UIContextLayerHostView *)self layer];
-  v5 = [v4 asynchronousRenderTimes];
-  [(UIMutableSceneAsynchronousRenderingOptions *)v3 setRenderTimes:v5];
+  layer = [(_UIContextLayerHostView *)self layer];
+  asynchronousRenderTimes = [layer asynchronousRenderTimes];
+  [(UIMutableSceneAsynchronousRenderingOptions *)v3 setRenderTimes:asynchronousRenderTimes];
 
-  v6 = [(_UIContextLayerHostView *)self layer];
-  [v6 asynchronousRenderPeriod];
+  layer2 = [(_UIContextLayerHostView *)self layer];
+  [layer2 asynchronousRenderPeriod];
   [(UIMutableSceneAsynchronousRenderingOptions *)v3 setRenderPeriod:?];
 
-  v7 = [(_UIContextLayerHostView *)self layer];
-  [v7 asynchronousRenderMaxAPL];
+  layer3 = [(_UIContextLayerHostView *)self layer];
+  [layer3 asynchronousRenderMaxAPL];
   [(UIMutableSceneAsynchronousRenderingOptions *)v3 setRenderMaxAPL:?];
 
-  v8 = [(_UIContextLayerHostView *)self layer];
-  -[UIMutableSceneAsynchronousRenderingOptions setOpaque:](v3, "setOpaque:", [v8 asynchronousOpaque]);
+  layer4 = [(_UIContextLayerHostView *)self layer];
+  -[UIMutableSceneAsynchronousRenderingOptions setOpaque:](v3, "setOpaque:", [layer4 asynchronousOpaque]);
 
   return v3;
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
-  v3 = a3;
+  securityCopy = security;
   v6.receiver = self;
   v6.super_class = _UIContextLayerHostView;
   [(_UISceneLayerHostView *)&v6 setInheritsSecurity:?];
-  v5 = [(_UIContextLayerHostView *)self layer];
-  [v5 setInheritsSecurity:v3];
+  layer = [(_UIContextLayerHostView *)self layer];
+  [layer setInheritsSecurity:securityCopy];
 }
 
-- (void)setResizesHostedContext:(BOOL)a3
+- (void)setResizesHostedContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = _UIContextLayerHostView;
   [(_UISceneLayerHostView *)&v6 setResizesHostedContext:?];
-  v5 = [(_UIContextLayerHostView *)self layer];
-  [v5 setResizesHostedContext:v3];
+  layer = [(_UIContextLayerHostView *)self layer];
+  [layer setResizesHostedContext:contextCopy];
 }
 
-- (void)setZombifiesHostedContext:(BOOL)a3
+- (void)setZombifiesHostedContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = _UIContextLayerHostView;
   [(_UISceneLayerHostView *)&v8 setZombifiesHostedContext:?];
-  v5 = [(_UIContextLayerHostView *)self layer];
-  v6 = v5;
+  layer = [(_UIContextLayerHostView *)self layer];
+  v6 = layer;
   v7 = MEMORY[0x1E6979E48];
-  if (!v3)
+  if (!contextCopy)
   {
     v7 = MEMORY[0x1E6979E50];
   }
 
-  [v5 setZombificationMode:*v7];
+  [layer setZombificationMode:*v7];
 }
 
-- (void)setStopsHitTestTransformAccumulation:(BOOL)a3
+- (void)setStopsHitTestTransformAccumulation:(BOOL)accumulation
 {
-  v3 = a3;
+  accumulationCopy = accumulation;
   v6.receiver = self;
   v6.super_class = _UIContextLayerHostView;
   [(_UISceneLayerHostView *)&v6 setStopsHitTestTransformAccumulation:?];
-  v5 = [(_UIContextLayerHostView *)self layer];
-  [v5 setStopsHitTestTransformAccumulation:v3];
+  layer = [(_UIContextLayerHostView *)self layer];
+  [layer setStopsHitTestTransformAccumulation:accumulationCopy];
 }
 
-- (void)setStopsSecureSuperlayersValidation:(BOOL)a3
+- (void)setStopsSecureSuperlayersValidation:(BOOL)validation
 {
-  v3 = a3;
+  validationCopy = validation;
   v6.receiver = self;
   v6.super_class = _UIContextLayerHostView;
   [(_UISceneLayerHostView *)&v6 setStopsSecureSuperlayersValidation:?];
-  v5 = [(_UIContextLayerHostView *)self layer];
-  [v5 setStopsSecureSuperlayersValidation:v3];
+  layer = [(_UIContextLayerHostView *)self layer];
+  [layer setStopsSecureSuperlayersValidation:validationCopy];
 }
 
 - (void)_prepareForWindowDealloc
@@ -186,16 +186,16 @@
   v5.super_class = _UIContextLayerHostView;
   [(UIView *)&v5 _prepareForWindowDealloc];
   v3 = +[_UISceneHostingGraph sharedInstance];
-  v4 = [(_UISceneLayerHostView *)self sceneLayer];
-  [v3 _noteContextID:objc_msgSend(v4 hostedByWindow:{"contextID"), 0}];
+  sceneLayer = [(_UISceneLayerHostView *)self sceneLayer];
+  [v3 _noteContextID:objc_msgSend(sceneLayer hostedByWindow:{"contextID"), 0}];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v6 = +[_UISceneHostingGraph sharedInstance];
-  v5 = [(_UISceneLayerHostView *)self sceneLayer];
-  [v6 _noteContextID:objc_msgSend(v5 hostedByWindow:{"contextID"), v4}];
+  sceneLayer = [(_UISceneLayerHostView *)self sceneLayer];
+  [v6 _noteContextID:objc_msgSend(sceneLayer hostedByWindow:{"contextID"), windowCopy}];
 }
 
 @end

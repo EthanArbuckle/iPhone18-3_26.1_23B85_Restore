@@ -1,29 +1,29 @@
 @interface CNChangeHistoryAddGroupEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryAddGroupEvent)init;
-- (CNChangeHistoryAddGroupEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryAddGroupEvent)initWithGroup:(id)a3 containerIdentifier:(id)a4;
+- (CNChangeHistoryAddGroupEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryAddGroupEvent)initWithGroup:(id)group containerIdentifier:(id)identifier;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryAddGroupEvent
 
 - (CNChangeHistoryAddGroupEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryAddGroupEvent)initWithGroup:(id)a3 containerIdentifier:(id)a4
+- (CNChangeHistoryAddGroupEvent)initWithGroup:(id)group containerIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  groupCopy = group;
+  identifierCopy = identifier;
+  if (!groupCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -43,8 +43,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_group, a3);
-    v12 = [v8 copy];
+    objc_storeStrong(&v10->_group, group);
+    v12 = [identifierCopy copy];
     containerIdentifier = v11->_containerIdentifier;
     v11->_containerIdentifier = v12;
 
@@ -54,43 +54,43 @@
   return v11;
 }
 
-- (CNChangeHistoryAddGroupEvent)initWithCoder:(id)a3
+- (CNChangeHistoryAddGroupEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_group"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
 
   v7 = [(CNChangeHistoryAddGroupEvent *)self initWithGroup:v5 containerIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   group = self->_group;
-  v5 = a3;
-  [v5 encodeObject:group forKey:@"_group"];
-  [v5 encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:group forKey:@"_group"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __40__CNChangeHistoryAddGroupEvent_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __40__CNChangeHistoryAddGroupEvent_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -158,34 +158,34 @@ uint64_t __36__CNChangeHistoryAddGroupEvent_hash__block_invoke_2(uint64_t a1)
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryAddGroupEvent *)self group];
-  v5 = [v3 appendName:@"group" object:v4];
+  group = [(CNChangeHistoryAddGroupEvent *)self group];
+  v5 = [v3 appendName:@"group" object:group];
 
-  v6 = [(CNChangeHistoryAddGroupEvent *)self containerIdentifier];
-  v7 = [v3 appendName:@"containerIdentifier" object:v6];
+  containerIdentifier = [(CNChangeHistoryAddGroupEvent *)self containerIdentifier];
+  v7 = [v3 appendName:@"containerIdentifier" object:containerIdentifier];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitAddGroupEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryAddGroupEvent *)self group];
-  v6 = [v5 identifier];
-  v7 = [v4 group];
+  classCopy = class;
+  group = [(CNChangeHistoryAddGroupEvent *)self group];
+  identifier = [group identifier];
+  group2 = [classCopy group];
 
-  v8 = [v7 identifier];
-  v9 = [v6 compare:v8];
+  identifier2 = [group2 identifier];
+  v9 = [identifier compare:identifier2];
 
   return v9;
 }

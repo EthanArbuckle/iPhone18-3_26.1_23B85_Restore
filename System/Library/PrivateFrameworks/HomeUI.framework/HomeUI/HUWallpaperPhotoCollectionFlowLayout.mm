@@ -1,11 +1,11 @@
 @interface HUWallpaperPhotoCollectionFlowLayout
-- (HUWallpaperPhotoCollectionFlowLayout)initWithAssetCollectionSubtype:(int64_t)a3;
+- (HUWallpaperPhotoCollectionFlowLayout)initWithAssetCollectionSubtype:(int64_t)subtype;
 - (void)prepareLayout;
 @end
 
 @implementation HUWallpaperPhotoCollectionFlowLayout
 
-- (HUWallpaperPhotoCollectionFlowLayout)initWithAssetCollectionSubtype:(int64_t)a3
+- (HUWallpaperPhotoCollectionFlowLayout)initWithAssetCollectionSubtype:(int64_t)subtype
 {
   v7.receiver = self;
   v7.super_class = HUWallpaperPhotoCollectionFlowLayout;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_assetCollectionSubtype = a3;
+    v4->_assetCollectionSubtype = subtype;
     [(UICollectionViewFlowLayout *)v4 setMinimumInteritemSpacing:1.0];
   }
 
@@ -25,19 +25,19 @@
   v13.receiver = self;
   v13.super_class = HUWallpaperPhotoCollectionFlowLayout;
   [(UICollectionViewFlowLayout *)&v13 prepareLayout];
-  v3 = [(HUWallpaperPhotoCollectionFlowLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(HUWallpaperPhotoCollectionFlowLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
   v7 = (v5 + v6 * -3.0) * 0.25;
 
-  v8 = [(HUWallpaperPhotoCollectionFlowLayout *)self assetCollectionSubtype];
+  assetCollectionSubtype = [(HUWallpaperPhotoCollectionFlowLayout *)self assetCollectionSubtype];
   v9 = 1.0;
   v10 = v7;
-  if (v8 == 201)
+  if (assetCollectionSubtype == 201)
   {
-    v11 = [(HUWallpaperPhotoCollectionFlowLayout *)self collectionView];
-    [v11 bounds];
+    collectionView2 = [(HUWallpaperPhotoCollectionFlowLayout *)self collectionView];
+    [collectionView2 bounds];
     v10 = v12 + -16.0;
 
     v9 = 8.0;

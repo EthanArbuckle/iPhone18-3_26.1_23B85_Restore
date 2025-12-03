@@ -27,7 +27,7 @@
   v1 = safari_defaultDataStore_dataStore;
   if (!safari_defaultDataStore_dataStore)
   {
-    v2 = [a1 safari_defaultDataStoreWithSourceApplicationSecondaryIdentifier:0];
+    v2 = [self safari_defaultDataStoreWithSourceApplicationSecondaryIdentifier:0];
     v3 = safari_defaultDataStore_dataStore;
     safari_defaultDataStore_dataStore = v2;
 
@@ -39,10 +39,10 @@
 
 + (id)safari_allPersistentDataStores
 {
-  v0 = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
-  v1 = [v0 allValues];
-  v2 = [MEMORY[0x1E69853B8] safari_defaultDataStore];
-  v3 = [v1 arrayByAddingObject:v2];
+  _dataStoresByProfileIdentifier = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
+  allValues = [_dataStoresByProfileIdentifier allValues];
+  safari_defaultDataStore = [MEMORY[0x1E69853B8] safari_defaultDataStore];
+  v3 = [allValues arrayByAddingObject:safari_defaultDataStore];
 
   return v3;
 }
@@ -52,9 +52,9 @@
   v0 = _dataStoresByProfileIdentifier_dataStoresByProfileIdentifier;
   if (!_dataStoresByProfileIdentifier_dataStoresByProfileIdentifier)
   {
-    v1 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v2 = _dataStoresByProfileIdentifier_dataStoresByProfileIdentifier;
-    _dataStoresByProfileIdentifier_dataStoresByProfileIdentifier = v1;
+    _dataStoresByProfileIdentifier_dataStoresByProfileIdentifier = dictionary;
 
     v0 = _dataStoresByProfileIdentifier_dataStoresByProfileIdentifier;
   }
@@ -64,7 +64,7 @@
 
 - (id)safari_secIdentitiesCache
 {
-  v2 = objc_getAssociatedObject(a1, sel_safari_secIdentitiesCache);
+  v2 = objc_getAssociatedObject(self, sel_safari_secIdentitiesCache);
   v3 = v2;
   if (v2)
   {
@@ -74,12 +74,12 @@
   else
   {
     v4 = objc_alloc_init(MEMORY[0x1E69C9060]);
-    objc_setAssociatedObject(a1, sel_safari_secIdentitiesCache, v4, 1);
+    objc_setAssociatedObject(self, sel_safari_secIdentitiesCache, v4, 1);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__WKWebsiteDataStore_SafariSharedExtras__safari_secIdentitiesCache__block_invoke;
     block[3] = &unk_1E8283080;
-    block[4] = a1;
+    block[4] = self;
     if (safari_secIdentitiesCache_once[0] != -1)
     {
       dispatch_once(safari_secIdentitiesCache_once, block);
@@ -119,8 +119,8 @@
 
 + (id)safari_allDataTypes
 {
-  v0 = [MEMORY[0x1E69853B8] allWebsiteDataTypes];
-  v1 = [v0 mutableCopy];
+  allWebsiteDataTypes = [MEMORY[0x1E69853B8] allWebsiteDataTypes];
+  v1 = [allWebsiteDataTypes mutableCopy];
 
   [v1 addObject:*MEMORY[0x1E6985500]];
   [v1 addObject:*MEMORY[0x1E69854F8]];
@@ -190,13 +190,13 @@
   v7 = a3;
   if ([*MEMORY[0x1E69C8B58] isEqualToString:v7])
   {
-    v8 = [MEMORY[0x1E69853B8] safari_defaultDataStore];
+    safari_defaultDataStore = [MEMORY[0x1E69853B8] safari_defaultDataStore];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    _dataStoresByProfileIdentifier = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
+    v10 = [_dataStoresByProfileIdentifier objectForKeyedSubscript:v7];
 
     if (v10)
     {
@@ -213,15 +213,15 @@
       v10 = [MEMORY[0x1E69853B8] _newDataStoreForProfileIdentifier:v7];
       if (a5)
       {
-        v12 = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
-        [v12 setObject:v10 forKeyedSubscript:v7];
+        _dataStoresByProfileIdentifier2 = [MEMORY[0x1E69853B8] _dataStoresByProfileIdentifier];
+        [_dataStoresByProfileIdentifier2 setObject:v10 forKeyedSubscript:v7];
       }
     }
 
-    v8 = v10;
+    safari_defaultDataStore = v10;
   }
 
-  return v8;
+  return safari_defaultDataStore;
 }
 
 + (void)safari_removeDataStoreForProfileWithIdentifier:()SafariSharedExtras completionHandler:
@@ -229,8 +229,8 @@
   v5 = MEMORY[0x1E69853B8];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 _dataStoresByProfileIdentifier];
-  [v8 setObject:0 forKeyedSubscript:v7];
+  _dataStoresByProfileIdentifier = [v5 _dataStoresByProfileIdentifier];
+  [_dataStoresByProfileIdentifier setObject:0 forKeyedSubscript:v7];
 
   v9 = MEMORY[0x1E69853B8];
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
@@ -249,11 +249,11 @@
   v11[3] = &unk_1E8289AE0;
   v15 = v8;
   v13 = v7;
-  v14 = a1;
+  selfCopy = self;
   v12 = v6;
   v9 = v7;
   v10 = v6;
-  [a1 _fetchAllIdentifiers:v11];
+  [self _fetchAllIdentifiers:v11];
 }
 
 + (uint64_t)_newDataStoreForProfileIdentifier:()SafariSharedExtras
@@ -275,9 +275,9 @@
   v0 = _dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier;
   if (!_dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier)
   {
-    v1 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v2 = _dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier;
-    _dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier = v1;
+    _dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier = strongToWeakObjectsMapTable;
 
     v0 = _dataStoresByAutomationSessionIdentifier__dataStoresByAutomationSessionIdentifier;
   }
@@ -311,32 +311,32 @@
   v4 = a3;
   if ([v4 length] && (objc_msgSend(MEMORY[0x1E6985430], "instancesRespondToSelector:", sel_initWithDirectory_) & 1) != 0)
   {
-    v5 = [MEMORY[0x1E69853B8] _dataStoresByAutomationSessionIdentifier];
-    v6 = [v5 objectForKey:v4];
+    _dataStoresByAutomationSessionIdentifier = [MEMORY[0x1E69853B8] _dataStoresByAutomationSessionIdentifier];
+    v6 = [_dataStoresByAutomationSessionIdentifier objectForKey:v4];
 
     if (!v6)
     {
       v6 = [MEMORY[0x1E69853B8] _newDataStoreForAutomationSessionIdentifier:v4];
-      v7 = [MEMORY[0x1E69853B8] _dataStoresByAutomationSessionIdentifier];
-      [v7 setObject:v6 forKey:v4];
+      _dataStoresByAutomationSessionIdentifier2 = [MEMORY[0x1E69853B8] _dataStoresByAutomationSessionIdentifier];
+      [_dataStoresByAutomationSessionIdentifier2 setObject:v6 forKey:v4];
     }
 
-    v8 = v6;
+    safari_nonPersistentDataStore = v6;
   }
 
   else
   {
-    v8 = [a1 safari_nonPersistentDataStore];
+    safari_nonPersistentDataStore = [self safari_nonPersistentDataStore];
   }
 
-  return v8;
+  return safari_nonPersistentDataStore;
 }
 
 + (id)safari_nonPersistentDataStore
 {
-  v0 = [objc_alloc(MEMORY[0x1E6985430]) initNonPersistentConfiguration];
-  [MEMORY[0x1E69853B8] safari_setCommonProperties:v0];
-  v1 = [objc_alloc(MEMORY[0x1E69853B8]) _initWithConfiguration:v0];
+  initNonPersistentConfiguration = [objc_alloc(MEMORY[0x1E6985430]) initNonPersistentConfiguration];
+  [MEMORY[0x1E69853B8] safari_setCommonProperties:initNonPersistentConfiguration];
+  v1 = [objc_alloc(MEMORY[0x1E69853B8]) _initWithConfiguration:initNonPersistentConfiguration];
 
   return v1;
 }
@@ -373,13 +373,13 @@
 
 - (void)safari_profileIdentifier
 {
-  v1 = [a1 _configuration];
-  v2 = [v1 identifier];
-  v3 = [v2 UUIDString];
-  v4 = v3;
-  if (v3)
+  _configuration = [self _configuration];
+  identifier = [_configuration identifier];
+  uUIDString = [identifier UUIDString];
+  v4 = uUIDString;
+  if (uUIDString)
   {
-    v5 = v3;
+    v5 = uUIDString;
   }
 
   else

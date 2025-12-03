@@ -1,7 +1,7 @@
 @interface DMFFetchRestrictionsRequest
 - (DMFFetchRestrictionsRequest)init;
-- (DMFFetchRestrictionsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFFetchRestrictionsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchRestrictionsRequest
@@ -19,35 +19,35 @@
   return result;
 }
 
-- (DMFFetchRestrictionsRequest)initWithCoder:(id)a3
+- (DMFFetchRestrictionsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DMFFetchRestrictionsRequest;
-  v5 = [(CATTaskRequest *)&v9 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"includeProfileRestrictions"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"includeProfileRestrictions"];
     v5->_includeProfileRestrictions = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileFilterFlags"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileFilterFlags"];
     v5->_profileFilterFlags = [v7 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFFetchRestrictionsRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFFetchRestrictionsRequest includeProfileRestrictions](self, "includeProfileRestrictions", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"includeProfileRestrictions"];
+  [coderCopy encodeObject:v5 forKey:@"includeProfileRestrictions"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFFetchRestrictionsRequest profileFilterFlags](self, "profileFilterFlags")}];
-  [v4 encodeObject:v6 forKey:@"profileFilterFlags"];
+  [coderCopy encodeObject:v6 forKey:@"profileFilterFlags"];
 }
 
 @end

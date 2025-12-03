@@ -1,16 +1,16 @@
 @interface PLBatteryUIGraphViewTableCell
-- (PLBatteryUIGraphViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PLBatteryUIGraphViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PLBatteryUIGraphViewTableCell
 
-- (PLBatteryUIGraphViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PLBatteryUIGraphViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = PLBatteryUIGraphViewTableCell;
-  v4 = [(PLBatteryUIGraphViewTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PLBatteryUIGraphViewTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -30,38 +30,38 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"PLBatteryUIGraphViewControllerKey"];
+  v4 = [specifier propertyForKey:@"PLBatteryUIGraphViewControllerKey"];
   controller = self->_controller;
   if (controller != v4)
   {
     obj = v4;
     if (controller)
     {
-      v6 = [(PLBUIChartViewController *)controller view];
-      [v6 removeFromSuperview];
+      view = [(PLBUIChartViewController *)controller view];
+      [view removeFromSuperview];
     }
 
     objc_storeStrong(&self->_controller, obj);
-    v7 = [(PLBatteryUIGraphViewTableCell *)self contentView];
-    [v7 bounds];
+    contentView = [(PLBatteryUIGraphViewTableCell *)self contentView];
+    [contentView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(PLBUIChartViewController *)self->_controller view];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    view2 = [(PLBUIChartViewController *)self->_controller view];
+    [view2 setFrame:{v9, v11, v13, v15}];
 
-    v17 = [(PLBUIChartViewController *)self->_controller view];
-    [v17 setAutoresizingMask:18];
+    view3 = [(PLBUIChartViewController *)self->_controller view];
+    [view3 setAutoresizingMask:18];
 
-    v18 = [(PLBUIChartViewController *)self->_controller view];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:1];
+    view4 = [(PLBUIChartViewController *)self->_controller view];
+    [view4 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-    v19 = [(PLBatteryUIGraphViewTableCell *)self contentView];
-    v20 = [(PLBUIChartViewController *)self->_controller view];
-    [v19 addSubview:v20];
+    contentView2 = [(PLBatteryUIGraphViewTableCell *)self contentView];
+    view5 = [(PLBUIChartViewController *)self->_controller view];
+    [contentView2 addSubview:view5];
   }
 
   _objc_release_x1();

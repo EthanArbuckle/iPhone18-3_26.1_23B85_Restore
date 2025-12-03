@@ -1,24 +1,24 @@
 @interface HOHomeScreenQuickActionController
-- (HOHomeScreenQuickActionController)initWithApplication:(id)a3;
-- (id)_executeActionSetForShortcutItem:(id)a3 navigator:(id)a4;
-- (id)_generateShortcutItemForActionSetItem:(id)a3;
-- (id)performActionForShortcutItem:(id)a3 navigator:(id)a4;
+- (HOHomeScreenQuickActionController)initWithApplication:(id)application;
+- (id)_executeActionSetForShortcutItem:(id)item navigator:(id)navigator;
+- (id)_generateShortcutItemForActionSetItem:(id)item;
+- (id)performActionForShortcutItem:(id)item navigator:(id)navigator;
 - (void)_updateShortcutItems;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
 @end
 
 @implementation HOHomeScreenQuickActionController
 
-- (HOHomeScreenQuickActionController)initWithApplication:(id)a3
+- (HOHomeScreenQuickActionController)initWithApplication:(id)application
 {
-  v6 = a3;
+  applicationCopy = application;
   v17.receiver = self;
   v17.super_class = HOHomeScreenQuickActionController;
   v7 = [(HOHomeScreenQuickActionController *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_application, a3);
+    objc_storeStrong(&v7->_application, application);
     v9 = [[HOHomeScreenQuickActionItemManager alloc] initWithDelegate:v8];
     itemManager = v8->_itemManager;
     v8->_itemManager = v9;
@@ -40,28 +40,28 @@
   return v8;
 }
 
-- (id)performActionForShortcutItem:(id)a3 navigator:(id)a4
+- (id)performActionForShortcutItem:(id)item navigator:(id)navigator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 type];
-  v9 = [v8 isEqualToString:@"HOHomeScreenQuickActionExecuteSceneType"];
+  navigatorCopy = navigator;
+  itemCopy = item;
+  type = [itemCopy type];
+  v9 = [type isEqualToString:@"HOHomeScreenQuickActionExecuteSceneType"];
 
   if (v9)
   {
-    v10 = [(HOHomeScreenQuickActionController *)self _executeActionSetForShortcutItem:v7 navigator:v6];
+    v10 = [(HOHomeScreenQuickActionController *)self _executeActionSetForShortcutItem:itemCopy navigator:navigatorCopy];
   }
 
   else
   {
-    v11 = [v7 type];
+    type2 = [itemCopy type];
 
-    v12 = [v11 isEqualToString:@"HOHomeScreenQuickActionCreateSceneType"];
+    v12 = [type2 isEqualToString:@"HOHomeScreenQuickActionCreateSceneType"];
     if (v12)
     {
       v13 = +[HFHomeKitDispatcher sharedDispatcher];
-      v14 = [v13 homeFuture];
-      v15 = [v6 createOrEditActionSetWithName:0 home:v14 switchToHomeTab:0];
+      homeFuture = [v13 homeFuture];
+      v15 = [navigatorCopy createOrEditActionSetWithName:0 home:homeFuture switchToHomeTab:0];
 
       v10 = +[NAFuture futureWithNoResult];
     }
@@ -75,17 +75,17 @@
   return v10;
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
-  [a4 performWithOptions:0];
+  [request performWithOptions:0];
 
   [(HOHomeScreenQuickActionController *)self _updateShortcutItems];
 }
 
 - (void)_updateShortcutItems
 {
-  v3 = [(HOHomeScreenQuickActionController *)self itemManager];
-  v4 = [v3 displayedItemsInSection:0];
+  itemManager = [(HOHomeScreenQuickActionController *)self itemManager];
+  v4 = [itemManager displayedItemsInSection:0];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000A434;
@@ -103,26 +103,26 @@
   v8 = [v7 addCompletionBlock:v9];
 }
 
-- (id)_generateShortcutItemForActionSetItem:(id)a3
+- (id)_generateShortcutItemForActionSetItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:HFResultDisplayTitleKey];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:HFResultDisplayTitleKey];
 
   if (v6)
   {
-    v7 = [(HOHomeScreenQuickActionController *)self itemManager];
-    v8 = [v7 home];
-    v9 = [v8 uniqueIdentifier];
-    v10 = [v9 UUIDString];
+    itemManager = [(HOHomeScreenQuickActionController *)self itemManager];
+    home = [itemManager home];
+    uniqueIdentifier = [home uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
 
-    v11 = [v4 actionSet];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v12 UUIDString];
+    actionSet = [itemCopy actionSet];
+    uniqueIdentifier2 = [actionSet uniqueIdentifier];
+    uUIDString2 = [uniqueIdentifier2 UUIDString];
 
-    if (v13 && v10)
+    if (uUIDString2 && uUIDString)
     {
-      v14 = [v4 copy];
+      v14 = [itemCopy copy];
 
       v15 = objc_alloc_init(NAFuture);
       v16 = +[NAScheduler globalAsyncScheduler];
@@ -130,10 +130,10 @@
       v24[1] = 3221225472;
       v24[2] = sub_10000AB1C;
       v24[3] = &unk_1000C2098;
-      v25 = v13;
-      v26 = v10;
-      v4 = v14;
-      v27 = v4;
+      v25 = uUIDString2;
+      v26 = uUIDString;
+      itemCopy = v14;
+      v27 = itemCopy;
       v28 = v6;
       v29 = v15;
       v17 = v15;
@@ -145,9 +145,9 @@
 
     else
     {
-      v21 = [(HOHomeScreenQuickActionController *)self itemManager];
-      v22 = [v21 home];
-      NSLog(@"No action set or home identifier for action set item: %@. Home: %@", v4, v22);
+      itemManager2 = [(HOHomeScreenQuickActionController *)self itemManager];
+      home2 = [itemManager2 home];
+      NSLog(@"No action set or home identifier for action set item: %@. Home: %@", itemCopy, home2);
 
       v17 = [NSError hf_errorWithCode:33];
       v19 = [NAFuture futureWithError:v17];
@@ -156,7 +156,7 @@
 
   else
   {
-    NSLog(@"No title for action set item: %@", v4);
+    NSLog(@"No title for action set item: %@", itemCopy);
     v20 = [NSError hf_errorWithCode:33];
     v19 = [NAFuture futureWithError:v20];
   }
@@ -164,13 +164,13 @@
   return v19;
 }
 
-- (id)_executeActionSetForShortcutItem:(id)a3 navigator:(id)a4
+- (id)_executeActionSetForShortcutItem:(id)item navigator:(id)navigator
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  navigatorCopy = navigator;
   objc_opt_class();
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"HOHomeScreenQuickActionActionSetIdentifierKey"];
+  userInfo = [itemCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"HOHomeScreenQuickActionActionSetIdentifierKey"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -184,8 +184,8 @@
   v10 = v9;
 
   objc_opt_class();
-  v11 = [v5 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"HOHomeScreenQuickActionHomeIdentifierKey"];
+  userInfo2 = [itemCopy userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:@"HOHomeScreenQuickActionHomeIdentifierKey"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -203,16 +203,16 @@
     if (v14)
     {
       v15 = +[HFHomeKitDispatcher sharedDispatcher];
-      v16 = [v15 allHomesFuture];
+      allHomesFuture = [v15 allHomesFuture];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10000AF58;
       v20[3] = &unk_1000C2110;
       v21 = v14;
-      v22 = v5;
+      v22 = itemCopy;
       v23 = v10;
-      v24 = v6;
-      v17 = [v16 flatMap:v20];
+      v24 = navigatorCopy;
+      v17 = [allHomesFuture flatMap:v20];
 
       goto LABEL_13;
     }
@@ -220,11 +220,11 @@
     goto LABEL_11;
   }
 
-  NSLog(@"No action set identifier in shortcut item: %@", v5);
+  NSLog(@"No action set identifier in shortcut item: %@", itemCopy);
   if (!v14)
   {
 LABEL_11:
-    NSLog(@"No home identifier in shortcut item: %@", v5);
+    NSLog(@"No home identifier in shortcut item: %@", itemCopy);
   }
 
   v18 = [NSError hf_errorWithCode:33];

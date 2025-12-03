@@ -1,5 +1,5 @@
 @interface BCSExecutionTimer
-+ (unint64_t)timeExecutionOfBlock:(id)a3;
++ (unint64_t)timeExecutionOfBlock:(id)block;
 - (BCSExecutionTimer)init;
 - (unint64_t)nanoseconds;
 @end
@@ -19,14 +19,14 @@
   return v2;
 }
 
-+ (unint64_t)timeExecutionOfBlock:(id)a3
++ (unint64_t)timeExecutionOfBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(BCSExecutionTimer);
-  v3[2](v3);
+  blockCopy[2](blockCopy);
 
-  v5 = [(BCSExecutionTimer *)v4 nanoseconds];
-  return v5;
+  nanoseconds = [(BCSExecutionTimer *)v4 nanoseconds];
+  return nanoseconds;
 }
 
 - (unint64_t)nanoseconds

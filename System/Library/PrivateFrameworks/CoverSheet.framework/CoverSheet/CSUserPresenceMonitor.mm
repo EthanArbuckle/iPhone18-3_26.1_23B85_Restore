@@ -1,31 +1,31 @@
 @interface CSUserPresenceMonitor
-+ (void)synthesizeUserPresenceForReason:(id)a3;
-- (BOOL)_handleBiometricEvent:(unint64_t)a3;
-- (BOOL)handleEvent:(id)a3;
-- (CSUserPresenceMonitor)initWithBiometricResource:(id)a3;
-- (CSUserPresenceMonitor)initWithBiometricResource:(id)a3 attentionAwarenessClient:(id)a4;
++ (void)synthesizeUserPresenceForReason:(id)reason;
+- (BOOL)_handleBiometricEvent:(unint64_t)event;
+- (BOOL)handleEvent:(id)event;
+- (CSUserPresenceMonitor)initWithBiometricResource:(id)resource;
+- (CSUserPresenceMonitor)initWithBiometricResource:(id)resource attentionAwarenessClient:(id)client;
 - (void)_cancelPollForAttention;
 - (void)_configureAttentionAwarenessClient;
-- (void)_handleAttentionAwarenessEvent:(id)a3;
+- (void)_handleAttentionAwarenessEvent:(id)event;
 - (void)_monitorForInjectedUserPresence;
 - (void)_pollForAttention;
 - (void)_resumeAttentionAwarenessClient;
-- (void)_setUserPresenceDetectedRecently:(BOOL)a3;
-- (void)_setUserPresenceDetectedSinceWake:(BOOL)a3;
+- (void)_setUserPresenceDetectedRecently:(BOOL)recently;
+- (void)_setUserPresenceDetectedSinceWake:(BOOL)wake;
 - (void)_suspendAttentionAwarenessClient;
-- (void)_updateFaceDetectionStateForMonitorType:(int64_t)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateFaceDetectionStateForMonitorType:(int64_t)type;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)disableDetectionForReason:(id)a3 monitorType:(int64_t)a4;
-- (void)enableDetectionForReason:(id)a3 monitorType:(int64_t)a4;
+- (void)disableDetectionForReason:(id)reason monitorType:(int64_t)type;
+- (void)enableDetectionForReason:(id)reason monitorType:(int64_t)type;
 @end
 
 @implementation CSUserPresenceMonitor
 
 - (void)_pollForAttention
 {
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v3 timeIntervalSinceNow];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceNow];
   v5 = v4;
 
   objc_initWeak(&location, self);
@@ -123,28 +123,28 @@ void __42__CSUserPresenceMonitor__pollForAttention__block_invoke(uint64_t a1, ui
   }
 }
 
-- (CSUserPresenceMonitor)initWithBiometricResource:(id)a3
+- (CSUserPresenceMonitor)initWithBiometricResource:(id)resource
 {
   v4 = MEMORY[0x277CEF760];
-  v5 = a3;
+  resourceCopy = resource;
   v6 = objc_alloc_init(v4);
-  v7 = [(CSUserPresenceMonitor *)self initWithBiometricResource:v5 attentionAwarenessClient:v6];
+  v7 = [(CSUserPresenceMonitor *)self initWithBiometricResource:resourceCopy attentionAwarenessClient:v6];
 
   return v7;
 }
 
-- (CSUserPresenceMonitor)initWithBiometricResource:(id)a3 attentionAwarenessClient:(id)a4
+- (CSUserPresenceMonitor)initWithBiometricResource:(id)resource attentionAwarenessClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = CSUserPresenceMonitor;
   v9 = [(CSUserPresenceMonitor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_biometricResource, a3);
-    objc_storeStrong(&v10->_attentionAwarenessClient, a4);
+    objc_storeStrong(&v9->_biometricResource, resource);
+    objc_storeStrong(&v10->_attentionAwarenessClient, client);
     [(CSUserPresenceMonitor *)v10 _monitorForInjectedUserPresence];
     [(CSUserPresenceMonitor *)v10 _configureAttentionAwarenessClient];
   }
@@ -154,14 +154,14 @@ void __42__CSUserPresenceMonitor__pollForAttention__block_invoke(uint64_t a1, ui
 
 - (void)_monitorForInjectedUserPresence
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__CSUserPresenceMonitor__monitorForInjectedUserPresence__block_invoke;
   v6[3] = &unk_27838DC48;
   v6[4] = self;
-  v5 = [v3 addObserverForName:@"cs-inject-user-presence" object:0 queue:v4 usingBlock:v6];
+  v5 = [defaultCenter addObserverForName:@"cs-inject-user-presence" object:0 queue:mainQueue usingBlock:v6];
 }
 
 void __56__CSUserPresenceMonitor__monitorForInjectedUserPresence__block_invoke(uint64_t a1, void *a2)
@@ -192,64 +192,64 @@ void __56__CSUserPresenceMonitor__monitorForInjectedUserPresence__block_invoke(u
   [(CSUserPresenceMonitor *)&v4 dealloc];
 }
 
-- (void)enableDetectionForReason:(id)a3 monitorType:(int64_t)a4
+- (void)enableDetectionForReason:(id)reason monitorType:(int64_t)type
 {
-  v6 = a3;
+  reasonCopy = reason;
   activationReasons = self->_activationReasons;
-  v10 = v6;
+  v10 = reasonCopy;
   if (!activationReasons)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v9 = self->_activationReasons;
     self->_activationReasons = v8;
 
-    v6 = v10;
+    reasonCopy = v10;
     activationReasons = self->_activationReasons;
   }
 
-  [(NSMutableSet *)activationReasons addObject:v6];
-  [(CSUserPresenceMonitor *)self _updateFaceDetectionStateForMonitorType:a4];
+  [(NSMutableSet *)activationReasons addObject:reasonCopy];
+  [(CSUserPresenceMonitor *)self _updateFaceDetectionStateForMonitorType:type];
 }
 
-- (void)disableDetectionForReason:(id)a3 monitorType:(int64_t)a4
+- (void)disableDetectionForReason:(id)reason monitorType:(int64_t)type
 {
-  [(NSMutableSet *)self->_activationReasons removeObject:a3];
+  [(NSMutableSet *)self->_activationReasons removeObject:reason];
 
-  [(CSUserPresenceMonitor *)self _updateFaceDetectionStateForMonitorType:a4];
+  [(CSUserPresenceMonitor *)self _updateFaceDetectionStateForMonitorType:type];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 <= 10)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type <= 10)
   {
-    if (v5 == 5)
+    if (type == 5)
     {
       [(CSUserPresenceMonitor *)self _setUserPresenceDetectedSinceWake:1];
     }
 
     else
     {
-      if (v5 != 10)
+      if (type != 10)
       {
         goto LABEL_14;
       }
@@ -262,7 +262,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 11:
       self->_coverSheetResignedActive = 0;
@@ -272,8 +272,8 @@ LABEL_13:
       [(CSUserPresenceMonitor *)self _cancelPollForAttention];
       goto LABEL_13;
     case 15:
-      v6 = [v4 value];
-      v7 = -[CSUserPresenceMonitor _handleBiometricEvent:](self, "_handleBiometricEvent:", [v6 unsignedIntegerValue]);
+      value = [eventCopy value];
+      v7 = -[CSUserPresenceMonitor _handleBiometricEvent:](self, "_handleBiometricEvent:", [value unsignedIntegerValue]);
 
       if (v7)
       {
@@ -288,12 +288,12 @@ LABEL_14:
   return 0;
 }
 
-- (void)_setUserPresenceDetectedSinceWake:(BOOL)a3
+- (void)_setUserPresenceDetectedSinceWake:(BOOL)wake
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_userPresenceDetectedSinceWake != a3)
+  if (self->_userPresenceDetectedSinceWake != wake)
   {
-    self->_userPresenceDetectedSinceWake = a3;
+    self->_userPresenceDetectedSinceWake = wake;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -326,12 +326,12 @@ LABEL_14:
   }
 }
 
-- (void)_setUserPresenceDetectedRecently:(BOOL)a3
+- (void)_setUserPresenceDetectedRecently:(BOOL)recently
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_userPresenceDetectedRecently != a3)
+  if (self->_userPresenceDetectedRecently != recently)
   {
-    self->_userPresenceDetectedRecently = a3;
+    self->_userPresenceDetectedRecently = recently;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -364,12 +364,12 @@ LABEL_14:
   }
 }
 
-- (BOOL)_handleBiometricEvent:(unint64_t)a3
+- (BOOL)_handleBiometricEvent:(unint64_t)event
 {
   result = 0;
-  if (a3 <= 0x16)
+  if (event <= 0x16)
   {
-    if (((1 << a3) & 0x724000) != 0)
+    if (((1 << event) & 0x724000) != 0)
     {
       v5 = SBLogDashBoard();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -384,7 +384,7 @@ LABEL_6:
       return 1;
     }
 
-    if (a3 == 13)
+    if (event == 13)
     {
       v7 = SBLogDashBoard();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -410,13 +410,13 @@ LABEL_6:
   [(AWAttentionAwarenessClient *)self->_attentionAwarenessClient setConfiguration:v3];
 }
 
-- (void)_handleAttentionAwarenessEvent:(id)a3
+- (void)_handleAttentionAwarenessEvent:(id)event
 {
-  v4 = a3;
-  if (([v4 eventMask] & 0x80) != 0)
+  eventCopy = event;
+  if (([eventCopy eventMask] & 0x80) != 0)
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = eventCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -451,10 +451,10 @@ LABEL_6:
 
     v10 = 1;
     [(CSUserPresenceMonitor *)self _setUserPresenceDetectedSinceWake:1];
-    v11 = [v8 faceState];
-    if (v11 != 1)
+    faceState = [v8 faceState];
+    if (faceState != 1)
     {
-      if (v11 != 3)
+      if (faceState != 3)
       {
 LABEL_14:
 
@@ -471,19 +471,19 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_updateFaceDetectionStateForMonitorType:(int64_t)a3
+- (void)_updateFaceDetectionStateForMonitorType:(int64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(CSUserPresenceMonitor *)self isUserPresenceDetectionSupported];
-  v6 = [(CSUserPresenceMonitor *)self _isFaceDetectPermitted];
-  v7 = v6;
+  isUserPresenceDetectionSupported = [(CSUserPresenceMonitor *)self isUserPresenceDetectionSupported];
+  _isFaceDetectPermitted = [(CSUserPresenceMonitor *)self _isFaceDetectPermitted];
+  v7 = _isFaceDetectPermitted;
   v8 = 0;
-  if (v5 && v6)
+  if (isUserPresenceDetectionSupported && _isFaceDetectPermitted)
   {
     if (!self->_coverSheetResignedActive)
     {
       v8 = [(NSMutableSet *)self->_activationReasons count]!= 0;
-      if (a3)
+      if (type)
       {
         goto LABEL_8;
       }
@@ -494,7 +494,7 @@ LABEL_15:
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     goto LABEL_8;
   }
@@ -513,7 +513,7 @@ LABEL_8:
     coverSheetResignedActive = self->_coverSheetResignedActive;
     activationReasons = self->_activationReasons;
     v15[0] = 67110402;
-    v15[1] = v5;
+    v15[1] = isUserPresenceDetectionSupported;
     v16 = 1024;
     v17 = v7;
     v18 = 1024;
@@ -554,15 +554,15 @@ LABEL_8:
   }
 }
 
-+ (void)synthesizeUserPresenceForReason:(id)a3
++ (void)synthesizeUserPresenceForReason:(id)reason
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  reasonCopy = reason;
   v6 = objc_alloc_init(v3);
-  [v6 setValue:v4 forKey:@"reason"];
+  [v6 setValue:reasonCopy forKey:@"reason"];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"cs-inject-user-presence" object:0 userInfo:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"cs-inject-user-presence" object:0 userInfo:v6];
 }
 
 @end

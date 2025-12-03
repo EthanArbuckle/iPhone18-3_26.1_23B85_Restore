@@ -31,14 +31,14 @@
 
 - (void)prepareFeedback
 {
-  v2 = [(NTK_PUSelectionFeedbackGenerator *)self feedbackGenerator];
-  [v2 prepare];
+  feedbackGenerator = [(NTK_PUSelectionFeedbackGenerator *)self feedbackGenerator];
+  [feedbackGenerator prepare];
 }
 
 - (void)performFeedback
 {
-  v2 = [(NTK_PUSelectionFeedbackGenerator *)self feedbackGenerator];
-  [v2 selectionChanged];
+  feedbackGenerator = [(NTK_PUSelectionFeedbackGenerator *)self feedbackGenerator];
+  [feedbackGenerator selectionChanged];
 }
 
 @end

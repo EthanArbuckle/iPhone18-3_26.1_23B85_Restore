@@ -1,36 +1,36 @@
 @interface VUIMediaTagsViewHelper
-- (BOOL)_isValidNumber:(id)a3;
-- (VUIMediaTagsViewHelper)initWithContentMetadata:(id)a3 additionalMetadata:(id)a4;
-- (VUIMediaTagsViewHelper)initWithVUIMediaEntity:(id)a3;
-- (VUIMediaTagsViewHelper)initWithVUIMediaItem:(id)a3;
-- (id)_commonSenseString:(id)a3;
-- (id)_durationDescriptionFromDuration:(id)a3;
-- (id)_releaseDateDescriptionFromDate:(id)a3;
-- (void)_mediaBagdesWithVUIMediaEntity:(id)a3;
-- (void)parseDictionaryForContentMetadata:(id)a3 additionalMetadata:(id)a4;
+- (BOOL)_isValidNumber:(id)number;
+- (VUIMediaTagsViewHelper)initWithContentMetadata:(id)metadata additionalMetadata:(id)additionalMetadata;
+- (VUIMediaTagsViewHelper)initWithVUIMediaEntity:(id)entity;
+- (VUIMediaTagsViewHelper)initWithVUIMediaItem:(id)item;
+- (id)_commonSenseString:(id)string;
+- (id)_durationDescriptionFromDuration:(id)duration;
+- (id)_releaseDateDescriptionFromDate:(id)date;
+- (void)_mediaBagdesWithVUIMediaEntity:(id)entity;
+- (void)parseDictionaryForContentMetadata:(id)metadata additionalMetadata:(id)additionalMetadata;
 @end
 
 @implementation VUIMediaTagsViewHelper
 
-- (VUIMediaTagsViewHelper)initWithContentMetadata:(id)a3 additionalMetadata:(id)a4
+- (VUIMediaTagsViewHelper)initWithContentMetadata:(id)metadata additionalMetadata:(id)additionalMetadata
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  additionalMetadataCopy = additionalMetadata;
   v11.receiver = self;
   v11.super_class = VUIMediaTagsViewHelper;
   v8 = [(VUIMediaTagsViewHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VUIMediaTagsViewHelper *)v8 parseDictionaryForContentMetadata:v6 additionalMetadata:v7];
+    [(VUIMediaTagsViewHelper *)v8 parseDictionaryForContentMetadata:metadataCopy additionalMetadata:additionalMetadataCopy];
   }
 
   return v9;
 }
 
-- (VUIMediaTagsViewHelper)initWithVUIMediaItem:(id)a3
+- (VUIMediaTagsViewHelper)initWithVUIMediaItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = VUIMediaTagsViewHelper;
   v5 = [(VUIMediaTagsViewHelper *)&v14 init];
@@ -41,26 +41,26 @@
     v5->_tagsViewDictionary = v6;
 
     v8 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-    v9 = [v4 duration];
-    v10 = [v8 transformedValue:v9];
+    duration = [itemCopy duration];
+    v10 = [v8 transformedValue:duration];
 
-    v11 = [v4 releaseDate];
-    v12 = [MEMORY[0x1E696AB78] localizedStringFromDate:v11 dateStyle:3 timeStyle:0];
+    releaseDate = [itemCopy releaseDate];
+    v12 = [MEMORY[0x1E696AB78] localizedStringFromDate:releaseDate dateStyle:3 timeStyle:0];
     [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:v10 forKeyedSubscript:VUIMediaTagKeyDuration];
     [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:v12 forKeyedSubscript:VUIMediaTagKeyReleasedDate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VUIMediaTagsViewHelper *)v5 _mediaBagdesWithVUIMediaEntity:v4];
+      [(VUIMediaTagsViewHelper *)v5 _mediaBagdesWithVUIMediaEntity:itemCopy];
     }
   }
 
   return v5;
 }
 
-- (VUIMediaTagsViewHelper)initWithVUIMediaEntity:(id)a3
+- (VUIMediaTagsViewHelper)initWithVUIMediaEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v22.receiver = self;
   v22.super_class = VUIMediaTagsViewHelper;
   v5 = [(VUIMediaTagsViewHelper *)&v22 init];
@@ -70,36 +70,36 @@
     tagsViewDictionary = v5->_tagsViewDictionary;
     v5->_tagsViewDictionary = v6;
 
-    v8 = [v4 type];
+    type = [entityCopy type];
     v9 = +[VUIMediaEntityType movie];
-    if (v8 != v9)
+    if (type != v9)
     {
-      v10 = [v4 type];
+      type2 = [entityCopy type];
       v11 = +[VUIMediaEntityType movieRental];
       v12 = v11;
-      if (v10 != v11)
+      if (type2 != v11)
       {
-        v13 = [v4 type];
+        type3 = [entityCopy type];
         v14 = +[VUIMediaEntityType homeVideo];
 
-        if (v13 != v14)
+        if (type3 != v14)
         {
 LABEL_9:
-          v18 = [v4 releaseYear];
-          v19 = [v18 stringValue];
+          releaseYear = [entityCopy releaseYear];
+          stringValue = [releaseYear stringValue];
 
-          [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:v19 forKeyedSubscript:VUIMediaTagKeyReleasedDate];
-          v20 = [v4 genreTitle];
-          [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:v20 forKeyedSubscript:VUIMediaTagKeyGenre];
+          [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:stringValue forKeyedSubscript:VUIMediaTagKeyReleasedDate];
+          genreTitle = [entityCopy genreTitle];
+          [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:genreTitle forKeyedSubscript:VUIMediaTagKeyGenre];
 
-          [(VUIMediaTagsViewHelper *)v5 _mediaBagdesWithVUIMediaEntity:v4];
+          [(VUIMediaTagsViewHelper *)v5 _mediaBagdesWithVUIMediaEntity:entityCopy];
           goto LABEL_10;
         }
 
 LABEL_8:
         v15 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-        v16 = [v4 duration];
-        v17 = [v15 transformedValue:v16];
+        duration = [entityCopy duration];
+        v17 = [v15 transformedValue:duration];
 
         [(NSMutableDictionary *)v5->_tagsViewDictionary setObject:v17 forKeyedSubscript:VUIMediaTagKeyDuration];
         goto LABEL_9;
@@ -114,10 +114,10 @@ LABEL_10:
   return v5;
 }
 
-- (void)parseDictionaryForContentMetadata:(id)a3 additionalMetadata:(id)a4
+- (void)parseDictionaryForContentMetadata:(id)metadata additionalMetadata:(id)additionalMetadata
 {
-  v183 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  additionalMetadataCopy = additionalMetadata;
   if (!self->_tagsViewDictionary)
   {
     v7 = objc_opt_new();
@@ -146,95 +146,95 @@ LABEL_10:
   }
 
   [(NSMutableDictionary *)self->_tagsViewDictionary removeAllObjects];
-  v13 = [v183 title];
-  v14 = [v13 length];
+  title = [metadataCopy title];
+  v14 = [title length];
 
   if (v14)
   {
-    v15 = [v183 title];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v15 forKeyedSubscript:VUIMediaTagKeyTitle];
+    title2 = [metadataCopy title];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:title2 forKeyedSubscript:VUIMediaTagKeyTitle];
   }
 
-  v16 = [v183 subtitle];
-  v17 = [v16 length];
+  subtitle = [metadataCopy subtitle];
+  v17 = [subtitle length];
 
   if (v17)
   {
-    v18 = [v183 subtitle];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v18 forKeyedSubscript:VUIMediaTagKeySubtitle];
+    subtitle2 = [metadataCopy subtitle];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:subtitle2 forKeyedSubscript:VUIMediaTagKeySubtitle];
   }
 
-  v19 = [v183 mediaDescription];
-  v20 = [v19 length];
+  mediaDescription = [metadataCopy mediaDescription];
+  v20 = [mediaDescription length];
 
   if (v20)
   {
-    v21 = [v183 mediaDescription];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v21 forKeyedSubscript:VUIMediaTagKeyDescription];
+    mediaDescription2 = [metadataCopy mediaDescription];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:mediaDescription2 forKeyedSubscript:VUIMediaTagKeyDescription];
   }
 
-  v22 = [v183 formattedReleaseDate];
+  formattedReleaseDate = [metadataCopy formattedReleaseDate];
 
-  if (v22)
+  if (formattedReleaseDate)
   {
-    v23 = [v183 formattedReleaseDate];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v23 forKeyedSubscript:VUIMediaTagKeyReleasedDate];
+    formattedReleaseDate2 = [metadataCopy formattedReleaseDate];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:formattedReleaseDate2 forKeyedSubscript:VUIMediaTagKeyReleasedDate];
   }
 
   else
   {
-    v24 = [v183 releasedDate];
+    releasedDate = [metadataCopy releasedDate];
 
-    if (!v24)
+    if (!releasedDate)
     {
       goto LABEL_18;
     }
 
-    v23 = [v183 releasedDate];
-    v25 = [(VUIMediaTagsViewHelper *)self _releaseDateDescriptionFromDate:v23];
+    formattedReleaseDate2 = [metadataCopy releasedDate];
+    v25 = [(VUIMediaTagsViewHelper *)self _releaseDateDescriptionFromDate:formattedReleaseDate2];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v25 forKeyedSubscript:VUIMediaTagKeyReleasedDate];
   }
 
 LABEL_18:
-  v26 = [v183 duration];
+  duration = [metadataCopy duration];
 
-  if (v26)
+  if (duration)
   {
-    v27 = [v183 duration];
-    v28 = [(VUIMediaTagsViewHelper *)self _durationDescriptionFromDuration:v27];
+    duration2 = [metadataCopy duration];
+    v28 = [(VUIMediaTagsViewHelper *)self _durationDescriptionFromDuration:duration2];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v28 forKeyedSubscript:VUIMediaTagKeyDuration];
   }
 
-  v29 = [v183 genre];
-  v30 = [v29 length];
+  genre = [metadataCopy genre];
+  v30 = [genre length];
 
   if (v30)
   {
-    v31 = [v183 genre];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v31 forKeyedSubscript:VUIMediaTagKeyGenre];
+    genre2 = [metadataCopy genre];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:genre2 forKeyedSubscript:VUIMediaTagKeyGenre];
   }
 
-  v32 = [v183 genres];
+  genres = [metadataCopy genres];
 
-  if (v32)
+  if (genres)
   {
-    v33 = [v183 genres];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v33 forKeyedSubscript:VUIMediaTagKeyGenres];
+    genres2 = [metadataCopy genres];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:genres2 forKeyedSubscript:VUIMediaTagKeyGenres];
   }
 
-  v34 = [v183 genreSeparator];
-  v35 = [v34 length];
+  genreSeparator = [metadataCopy genreSeparator];
+  v35 = [genreSeparator length];
 
   if (v35)
   {
-    v36 = [v183 genreSeparator];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v36 forKeyedSubscript:VUIMediaTagKeyGenreSeparator];
+    genreSeparator2 = [metadataCopy genreSeparator];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:genreSeparator2 forKeyedSubscript:VUIMediaTagKeyGenreSeparator];
   }
 
-  v37 = [v183 hasClosedCaptions];
-  v38 = [v37 BOOLValue];
+  hasClosedCaptions = [metadataCopy hasClosedCaptions];
+  bOOLValue = [hasClosedCaptions BOOLValue];
 
-  if (v38)
+  if (bOOLValue)
   {
     v39 = +[VUILocalizationManager sharedInstance];
     v40 = [v39 localizedStringForKey:@"TV.Accessibility.CC"];
@@ -242,10 +242,10 @@ LABEL_18:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v41 forKeyedSubscript:VUIMediaTagKeyClosedCaptionImage];
   }
 
-  v42 = [v183 hasADLocales];
-  v43 = [v42 BOOLValue];
+  hasADLocales = [metadataCopy hasADLocales];
+  bOOLValue2 = [hasADLocales BOOLValue];
 
-  if (v43)
+  if (bOOLValue2)
   {
     v44 = +[VUILocalizationManager sharedInstance];
     v45 = [v44 localizedStringForKey:@"TV.Accessibility.AD"];
@@ -253,10 +253,10 @@ LABEL_18:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v46 forKeyedSubscript:VUIMediaTagKeyADLocalesImage];
   }
 
-  v47 = [v183 hasSDHLocales];
-  v48 = [v47 BOOLValue];
+  hasSDHLocales = [metadataCopy hasSDHLocales];
+  bOOLValue3 = [hasSDHLocales BOOLValue];
 
-  if (v48)
+  if (bOOLValue3)
   {
     v49 = +[VUILocalizationManager sharedInstance];
     v50 = [v49 localizedStringForKey:@"TV.Accessibility.SDH"];
@@ -264,55 +264,55 @@ LABEL_18:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v51 forKeyedSubscript:VUIMediaTagKeySDHLocalesImage];
   }
 
-  v52 = [v183 tomatoPercentage];
-  v53 = [(VUIMediaTagsViewHelper *)self _isValidNumber:v52];
+  tomatoPercentage = [metadataCopy tomatoPercentage];
+  v53 = [(VUIMediaTagsViewHelper *)self _isValidNumber:tomatoPercentage];
 
   if (v53)
   {
     v54 = self->_tomatoPercentFormatter;
-    v55 = [v183 tomatoPercentage];
-    v56 = [(NSNumberFormatter *)v54 stringFromNumber:v55];
+    tomatoPercentage2 = [metadataCopy tomatoPercentage];
+    v56 = [(NSNumberFormatter *)v54 stringFromNumber:tomatoPercentage2];
 
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v56 forKeyedSubscript:VUIMediaTagKeyTomatoPercentage];
   }
 
-  v57 = [v183 commonSenseRecommendedAge];
-  v58 = [(VUIMediaTagsViewHelper *)self _isValidNumber:v57];
+  commonSenseRecommendedAge = [metadataCopy commonSenseRecommendedAge];
+  v58 = [(VUIMediaTagsViewHelper *)self _isValidNumber:commonSenseRecommendedAge];
 
   if (v58)
   {
-    v59 = [v183 commonSenseRecommendedAge];
-    v60 = [(VUIMediaTagsViewHelper *)self _commonSenseString:v59];
+    commonSenseRecommendedAge2 = [metadataCopy commonSenseRecommendedAge];
+    v60 = [(VUIMediaTagsViewHelper *)self _commonSenseString:commonSenseRecommendedAge2];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v60 forKeyedSubscript:VUIMediaTagKeyCommonSenseRating];
 
     v61 = +[VUILocalizationManager sharedInstance];
     [v61 localizedStringForKey:@"ACCESSIBILITY_COMMON_SENSE"];
-    v63 = v62 = v6;
+    v63 = v62 = additionalMetadataCopy;
     v64 = [VUIMediaTagsImageHelper imageWithName:@"cs_badge_white" flatten:0 accessibilityDescription:v63];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v64 forKeyedSubscript:VUIMediaTagKeyCommonSenseImage];
 
-    v6 = v62;
+    additionalMetadataCopy = v62;
     v65 = +[VUILocalizationManager sharedInstance];
     v66 = [v65 localizedStringForKey:@"ACCESSIBILITY_COMMON_SENSE"];
     v67 = [VUIMediaTagsImageHelper imageWithName:@"cs_badge_black" flatten:0 accessibilityDescription:v66];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v67 forKeyedSubscript:VUIMediaTagKeyCommonSenseDarkImage];
   }
 
-  v68 = [v183 ratingAuxiliaryName];
-  if ([v68 length])
+  ratingAuxiliaryName = [metadataCopy ratingAuxiliaryName];
+  if ([ratingAuxiliaryName length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v68 forKeyedSubscript:VUIMediaTagKeyContentRatingAuxiliaryName];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:ratingAuxiliaryName forKeyedSubscript:VUIMediaTagKeyContentRatingAuxiliaryName];
   }
 
-  v173 = v68;
-  v69 = [v183 ratingName];
-  v70 = [v183 ratingSystem];
-  if ([v70 length] && objc_msgSend(v69, "length"))
+  v173 = ratingAuxiliaryName;
+  ratingName = [metadataCopy ratingName];
+  ratingSystem = [metadataCopy ratingSystem];
+  if ([ratingSystem length] && objc_msgSend(ratingName, "length"))
   {
-    v71 = [v183 ratingValue];
-    v72 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:v70 ratingLabel:v69 rank:objc_msgSend(v71 ratingDescription:{"unsignedIntegerValue"), 0}];
-    v73 = [MEMORY[0x1E69DF6C0] sharedInstance];
-    v74 = [v73 badgeForContentRating:v72 drawUnknownRatingBadge:1];
+    ratingValue = [metadataCopy ratingValue];
+    v72 = [objc_alloc(MEMORY[0x1E69DF6B8]) initWithRatingSystemString:ratingSystem ratingLabel:ratingName rank:objc_msgSend(ratingValue ratingDescription:{"unsignedIntegerValue"), 0}];
+    mEMORY[0x1E69DF6C0] = [MEMORY[0x1E69DF6C0] sharedInstance];
+    v74 = [mEMORY[0x1E69DF6C0] badgeForContentRating:v72 drawUnknownRatingBadge:1];
 
     if (v74)
     {
@@ -320,19 +320,19 @@ LABEL_18:
     }
   }
 
-  v172 = v69;
-  v75 = [v183 tomatoFreshness];
+  v172 = ratingName;
+  tomatoFreshness = [metadataCopy tomatoFreshness];
   v76 = +[VUILocalizationManager sharedInstance];
   v77 = [v76 localizedStringForKey:@"TV.Accessibility.TomatoRating"];
   v78 = [VUIMediaTagsImageHelper imageWithName:@"RTLargeRotten" flatten:0 accessibilityDescription:v77];
 
-  if (v75 == 1)
+  if (tomatoFreshness == 1)
   {
     v79 = @"RTLargeFresh";
     goto LABEL_47;
   }
 
-  if (v75 == 2)
+  if (tomatoFreshness == 2)
   {
     v79 = @"RTLargeCertified";
 LABEL_47:
@@ -348,14 +348,14 @@ LABEL_47:
 LABEL_49:
   v170 = v83;
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
-  v180 = [v183 videoDynamicRange];
+  videoDynamicRange = [metadataCopy videoDynamicRange];
   if (![(VUIMediaTagsViewHelper *)self _isValidNumber:?])
   {
     goto LABEL_58;
   }
 
-  v84 = [v180 integerValue];
-  if (v84 == 2)
+  integerValue = [videoDynamicRange integerValue];
+  if (integerValue == 2)
   {
     v85 = +[VUILocalizationManager sharedInstance];
     v86 = [v85 localizedStringForKey:@"ACCESSIBILITY_HDR"];
@@ -367,9 +367,9 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if (v84 != 4)
+  if (integerValue != 4)
   {
-    if (v84 != 3)
+    if (integerValue != 3)
     {
       goto LABEL_58;
     }
@@ -385,18 +385,18 @@ LABEL_56:
 LABEL_57:
 
 LABEL_58:
-  v89 = [v183 videoResolutionClass];
-  if ([(VUIMediaTagsViewHelper *)self _isValidNumber:v89])
+  videoResolutionClass = [metadataCopy videoResolutionClass];
+  if ([(VUIMediaTagsViewHelper *)self _isValidNumber:videoResolutionClass])
   {
-    v90 = [v89 integerValue];
-    if (v90 == 3)
+    integerValue2 = [videoResolutionClass integerValue];
+    if (integerValue2 == 3)
     {
       v91 = @"4k";
       v92 = @"ACCESSIBILITY_4K";
       goto LABEL_63;
     }
 
-    if (v90 == 2)
+    if (integerValue2 == 2)
     {
       v91 = @"hd";
       v92 = @"TV.Accessibility.HD";
@@ -408,8 +408,8 @@ LABEL_63:
     }
   }
 
-  v96 = [v183 has3D];
-  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:", v96) && [v96 BOOLValue])
+  has3D = [metadataCopy has3D];
+  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:", has3D) && [has3D BOOLValue])
   {
     v97 = +[VUILocalizationManager sharedInstance];
     v98 = [v97 localizedStringForKey:@"LIBRARY_MOVIES_3D"];
@@ -417,8 +417,8 @@ LABEL_63:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v99 forKeyedSubscript:VUIMediaTagKey3DImage];
   }
 
-  v179 = [v183 hasImmersive];
-  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [v179 BOOLValue])
+  hasImmersive = [metadataCopy hasImmersive];
+  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [hasImmersive BOOLValue])
   {
     v100 = +[VUILocalizationManager sharedInstance];
     v101 = [v100 localizedStringForKey:@"TV.Immersive"];
@@ -426,29 +426,29 @@ LABEL_63:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v102 forKeyedSubscript:VUIMediaTagKeyImmersiveImage];
   }
 
-  v103 = [v183 immersiveText];
-  if ([v103 length])
+  immersiveText = [metadataCopy immersiveText];
+  if ([immersiveText length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v103 forKeyedSubscript:VUIMediaTagKeyImmersiveText];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:immersiveText forKeyedSubscript:VUIMediaTagKeyImmersiveText];
   }
 
-  v178 = [v183 hasHighMotion];
-  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [v178 BOOLValue])
+  hasHighMotion = [metadataCopy hasHighMotion];
+  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [hasHighMotion BOOLValue])
   {
     v104 = [VUIMediaTagsImageHelper imageWithName:@"high.motion.badge" flatten:1 accessibilityDescription:0];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v104 forKeyedSubscript:VUIMediaTagKeyHighMotionImage];
   }
 
-  v105 = [v183 highMotionText];
-  if ([v105 length])
+  highMotionText = [metadataCopy highMotionText];
+  if ([highMotionText length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v105 forKeyedSubscript:VUIMediaTagKeyHighMotionText];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:highMotionText forKeyedSubscript:VUIMediaTagKeyHighMotionText];
   }
 
-  v177 = [v183 hasDolbyAtmos];
-  v166 = v105;
-  v167 = v103;
-  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [v177 BOOLValue])
+  hasDolbyAtmos = [metadataCopy hasDolbyAtmos];
+  v166 = highMotionText;
+  v167 = immersiveText;
+  if (-[VUIMediaTagsViewHelper _isValidNumber:](self, "_isValidNumber:") && [hasDolbyAtmos BOOLValue])
   {
     v106 = +[VUILocalizationManager sharedInstance];
     v107 = [v106 localizedStringForKey:@"ACCESSIBILITY_DOLBY_ATMOS"];
@@ -456,22 +456,22 @@ LABEL_63:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v108 forKeyedSubscript:VUIMediaTagKeyDolbyAtmosImage];
   }
 
-  v109 = [v183 rentalExpiration];
-  if (v109)
+  rentalExpiration = [metadataCopy rentalExpiration];
+  if (rentalExpiration)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v109 forKeyedSubscript:VUIMediaTagKeyRentalExpiration];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:rentalExpiration forKeyedSubscript:VUIMediaTagKeyRentalExpiration];
   }
 
-  v165 = v109;
-  v110 = [v6 vui_stringForKey:@"comingSoonText"];
+  v165 = rentalExpiration;
+  v110 = [additionalMetadataCopy vui_stringForKey:@"comingSoonText"];
   if ([v110 length])
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v110 forKeyedSubscript:VUIMediaTagKeyComingSoonText];
   }
 
   v164 = v110;
-  v111 = [v6 vui_stringForKey:@"availabilityText"];
-  v112 = [v6 vui_attrStringForKey:@"availabilityText"];
+  v111 = [additionalMetadataCopy vui_stringForKey:@"availabilityText"];
+  v112 = [additionalMetadataCopy vui_attrStringForKey:@"availabilityText"];
   if ([v111 length] || objc_msgSend(v112, "length"))
   {
     if ([v111 length])
@@ -488,7 +488,7 @@ LABEL_63:
   }
 
   [(VUIMediaTagsViewHelper *)self addSeperatorKey:@"·"];
-  v114 = [v6 vui_stringForKey:@"availabilityImage"];
+  v114 = [additionalMetadataCopy vui_stringForKey:@"availabilityImage"];
   v161 = v114;
   if ([v114 length])
   {
@@ -496,173 +496,173 @@ LABEL_63:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v115 forKeyedSubscript:VUIMediaTagKeyAvailabilityImage];
   }
 
-  v116 = [v6 vui_stringForKey:@"episodeNumberTitleAbbreviated"];
+  v116 = [additionalMetadataCopy vui_stringForKey:@"episodeNumberTitleAbbreviated"];
   if ([v116 length])
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v116 forKeyedSubscript:VUIMediaTagKeyEpisodeNumberTitle];
   }
 
   v160 = v116;
-  if ([v183 isSharedWatchEnabled] && objc_msgSend(v6, "vui_BOOLForKey:defaultValue:", @"isGroupWatchActivityEligible", 0))
+  if ([metadataCopy isSharedWatchEnabled] && objc_msgSend(additionalMetadataCopy, "vui_BOOLForKey:defaultValue:", @"isGroupWatchActivityEligible", 0))
   {
     v117 = [VUIMediaTagsImageHelper imageWithName:@"shareplay" flatten:1 accessibilityDescription:0];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v117 forKeyedSubscript:VUIMediaTagKeyGroupActivityImage];
   }
 
-  v118 = [v183 episodeNumber];
-  v119 = [v183 seasonNumber];
-  v181 = [v183 numberOfSeasons];
-  v120 = [v183 seasonTitle];
-  v175 = v119;
-  v176 = v118;
-  v171 = v70;
-  v168 = v96;
-  v169 = v89;
+  episodeNumber = [metadataCopy episodeNumber];
+  seasonNumber = [metadataCopy seasonNumber];
+  numberOfSeasons = [metadataCopy numberOfSeasons];
+  seasonTitle = [metadataCopy seasonTitle];
+  v175 = seasonNumber;
+  v176 = episodeNumber;
+  v171 = ratingSystem;
+  v168 = has3D;
+  v169 = videoResolutionClass;
   v162 = v112;
   v163 = v111;
-  v174 = v120;
-  if (v118 && v119)
+  v174 = seasonTitle;
+  if (episodeNumber && seasonNumber)
   {
     v121 = +[VUILocalizationManager sharedInstance];
     v122 = [v121 localizedStringForKey:@"TV.SeasonEpisode.Abbreviated"];
-    v123 = [v119 vui_languageAwareDescription];
-    v124 = [v122 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:v123];
+    vui_languageAwareDescription = [seasonNumber vui_languageAwareDescription];
+    v124 = [v122 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:vui_languageAwareDescription];
     [v176 vui_languageAwareDescription];
-    v126 = v125 = v6;
+    v126 = v125 = additionalMetadataCopy;
     v127 = [v124 stringByReplacingOccurrencesOfString:@"@@episodeNumber@@" withString:v126];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v127 forKeyedSubscript:VUIMediaTagKeySeasonEpisode];
 
-    v6 = v125;
+    additionalMetadataCopy = v125;
   }
 
-  else if (v120)
+  else if (seasonTitle)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v120 forKeyedSubscript:VUIMediaTagKeySeasonEpisode];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:seasonTitle forKeyedSubscript:VUIMediaTagKeySeasonEpisode];
   }
 
-  if (v181)
+  if (numberOfSeasons)
   {
     v128 = MEMORY[0x1E696AEC0];
     v129 = +[VUILocalizationManager sharedInstance];
     v130 = [v129 localizedStringForKey:@"TV.SeasonsCount"];
-    v131 = [v128 stringWithValidatedFormat:v130 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v181, "intValue")];
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v131 forKeyedSubscript:VUIMediaTagKeySeasonCount];
+    vui_languageAwareDescription2 = [v128 stringWithValidatedFormat:v130 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfSeasons, "intValue")];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:vui_languageAwareDescription2 forKeyedSubscript:VUIMediaTagKeySeasonCount];
   }
 
   else
   {
-    if (!v119)
+    if (!seasonNumber)
     {
       goto LABEL_107;
     }
 
     v129 = +[VUILocalizationManager sharedInstance];
     v130 = [v129 localizedStringForKey:@"TV.SeasonsOrdinalCount"];
-    v131 = [v119 vui_languageAwareDescription];
-    v132 = [v130 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:v131];
+    vui_languageAwareDescription2 = [seasonNumber vui_languageAwareDescription];
+    v132 = [v130 stringByReplacingOccurrencesOfString:@"@@seasonNumber@@" withString:vui_languageAwareDescription2];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v132 forKeyedSubscript:VUIMediaTagKeySeasonCount];
   }
 
 LABEL_107:
-  v133 = [v183 channelName];
-  if (v133)
+  channelName = [metadataCopy channelName];
+  if (channelName)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v133 forKeyedSubscript:VUIMediaTagKeyChannel];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:channelName forKeyedSubscript:VUIMediaTagKeyChannel];
   }
 
-  if ([v183 isFederated])
+  if ([metadataCopy isFederated])
   {
     v134 = [VUIMediaTagsImageHelper imageWithName:@"arrow.up.forward.square.fill" flatten:1 accessibilityDescription:0];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v134 forKeyedSubscript:VUIMediaTagKeyFederated];
   }
 
-  v135 = [v183 leagueShortName];
-  if (v135)
+  leagueShortName = [metadataCopy leagueShortName];
+  if (leagueShortName)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v135 forKeyedSubscript:VUIMediaTagKeyLeagueShortName];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:leagueShortName forKeyedSubscript:VUIMediaTagKeyLeagueShortName];
   }
 
-  v136 = [v183 gameStartTime];
-  if (v136)
+  gameStartTime = [metadataCopy gameStartTime];
+  if (gameStartTime)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v136 forKeyedSubscript:VUIMediaTagKeyGameStartTime];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:gameStartTime forKeyedSubscript:VUIMediaTagKeyGameStartTime];
   }
 
-  v137 = [v183 gameVenue];
-  if (v137)
+  gameVenue = [metadataCopy gameVenue];
+  if (gameVenue)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v137 forKeyedSubscript:VUIMediaTagKeyGameVenue];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:gameVenue forKeyedSubscript:VUIMediaTagKeyGameVenue];
   }
 
-  v138 = [v183 liveTextBadge];
-  if (v138)
+  liveTextBadge = [metadataCopy liveTextBadge];
+  if (liveTextBadge)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v138 forKeyedSubscript:VUIMediaTagKeyLiveTextBadge];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:liveTextBadge forKeyedSubscript:VUIMediaTagKeyLiveTextBadge];
   }
 
-  v155 = v138;
-  v139 = [v183 timeTextBadge];
-  if (v139)
+  v155 = liveTextBadge;
+  timeTextBadge = [metadataCopy timeTextBadge];
+  if (timeTextBadge)
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v139 forKeyedSubscript:VUIMediaTagKeyTimeTextBadge];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:timeTextBadge forKeyedSubscript:VUIMediaTagKeyTimeTextBadge];
   }
 
-  v140 = [v183 versionCount];
-  if ([v140 length])
+  versionCount = [metadataCopy versionCount];
+  if ([versionCount length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v140 forKeyedSubscript:VUIMediaTagKeyVersionCount];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:versionCount forKeyedSubscript:VUIMediaTagKeyVersionCount];
   }
 
-  v159 = v133;
-  v141 = [v183 teamAbbreviation];
-  if ([v141 length])
+  v159 = channelName;
+  teamAbbreviation = [metadataCopy teamAbbreviation];
+  if ([teamAbbreviation length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v141 forKeyedSubscript:VUIMediaTagKeyTeamAbbreviation];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:teamAbbreviation forKeyedSubscript:VUIMediaTagKeyTeamAbbreviation];
   }
 
-  v158 = v135;
-  v142 = [v183 shootoutsText];
-  if ([v142 length])
+  v158 = leagueShortName;
+  shootoutsText = [metadataCopy shootoutsText];
+  if ([shootoutsText length])
   {
-    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v142 forKeyedSubscript:VUIMediaTagKeyShootoutsText];
+    [(NSMutableDictionary *)self->_tagsViewDictionary setObject:shootoutsText forKeyedSubscript:VUIMediaTagKeyShootoutsText];
   }
 
-  v182 = v6;
-  v143 = [v6 objectForKey:VUIMediaTagKeyEntitlementCue];
+  v182 = additionalMetadataCopy;
+  v143 = [additionalMetadataCopy objectForKey:VUIMediaTagKeyEntitlementCue];
   if (v143)
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v143 forKeyedSubscript:VUIMediaTagKeyEntitlementCue];
   }
 
-  v144 = [v183 contentUnavailabilityText];
-  v145 = v144;
-  if (v144 && [v144 length])
+  contentUnavailabilityText = [metadataCopy contentUnavailabilityText];
+  v145 = contentUnavailabilityText;
+  if (contentUnavailabilityText && [contentUnavailabilityText length])
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v145 forKeyedSubscript:VUIMediaTagKeyContentUnavailabilityText];
   }
 
-  v156 = v137;
-  v157 = v136;
+  v156 = gameVenue;
+  v157 = gameStartTime;
   v146 = [v182 objectForKey:@"BrandLinkbutton"];
   if (v146)
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v146 forKeyedSubscript:VUIMediaTagKeyBrandLinkButton];
   }
 
-  v147 = [v183 isBlackedOut];
-  v148 = [v147 BOOLValue];
+  isBlackedOut = [metadataCopy isBlackedOut];
+  bOOLValue4 = [isBlackedOut BOOLValue];
 
-  if (v148)
+  if (bOOLValue4)
   {
     v149 = +[VUILocalizationManager sharedInstance];
     v150 = [v149 localizedStringForKey:@"TV.Blackout"];
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v150 forKeyedSubscript:VUIMediaTagKeyIsBlackedOut];
   }
 
-  v151 = [v183 isUpgradeEligible];
-  v152 = [v151 BOOLValue];
+  isUpgradeEligible = [metadataCopy isUpgradeEligible];
+  bOOLValue5 = [isUpgradeEligible BOOLValue];
 
-  if (v152)
+  if (bOOLValue5)
   {
     v153 = +[VUILocalizationManager sharedInstance];
     v154 = [v153 localizedStringForKey:@"TV.UpgradeToWatch"];
@@ -670,13 +670,13 @@ LABEL_107:
   }
 }
 
-- (BOOL)_isValidNumber:(id)a3
+- (BOOL)_isValidNumber:(id)number
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  numberCopy = number;
+  if (numberCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [MEMORY[0x1E696AB90] notANumber];
-    v5 = [v3 isEqualToNumber:v4] ^ 1;
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v5 = [numberCopy isEqualToNumber:notANumber] ^ 1;
   }
 
   else
@@ -687,17 +687,17 @@ LABEL_107:
   return v5;
 }
 
-- (id)_releaseDateDescriptionFromDate:(id)a3
+- (id)_releaseDateDescriptionFromDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (_releaseDateDescriptionFromDate__onceToken != -1)
     {
       [VUIMediaTagsViewHelper _releaseDateDescriptionFromDate:];
     }
 
-    v4 = [_releaseDateDescriptionFromDate__dateFormatter stringFromDate:v3];
+    v4 = [_releaseDateDescriptionFromDate__dateFormatter stringFromDate:dateCopy];
   }
 
   else
@@ -719,11 +719,11 @@ uint64_t __58__VUIMediaTagsViewHelper__releaseDateDescriptionFromDate___block_in
   return [v2 setLocalizedDateFormatFromTemplate:@"y"];
 }
 
-- (id)_durationDescriptionFromDuration:(id)a3
+- (id)_durationDescriptionFromDuration:(id)duration
 {
-  if (a3)
+  if (duration)
   {
-    [a3 doubleValue];
+    [duration doubleValue];
     v5 = v4;
     if (v4 >= 600.0)
     {
@@ -748,56 +748,56 @@ uint64_t __58__VUIMediaTagsViewHelper__releaseDateDescriptionFromDate___block_in
   return v8;
 }
 
-- (void)_mediaBagdesWithVUIMediaEntity:(id)a3
+- (void)_mediaBagdesWithVUIMediaEntity:(id)entity
 {
-  v45 = a3;
-  v4 = [v45 HLSResolution];
-  v5 = v4;
-  if (v4)
+  entityCopy = entity;
+  hLSResolution = [entityCopy HLSResolution];
+  v5 = hLSResolution;
+  if (hLSResolution)
   {
-    v6 = v4;
+    resolution = hLSResolution;
   }
 
   else
   {
-    v6 = [v45 resolution];
+    resolution = [entityCopy resolution];
   }
 
-  v7 = v6;
+  v7 = resolution;
 
-  v8 = [v45 HLSColorCapability];
-  v9 = v8;
-  if (v8)
+  hLSColorCapability = [entityCopy HLSColorCapability];
+  v9 = hLSColorCapability;
+  if (hLSColorCapability)
   {
-    v10 = v8;
-  }
-
-  else
-  {
-    v10 = [v45 colorCapability];
-  }
-
-  v11 = v10;
-
-  v12 = [v45 HLSAudioCapability];
-  if (v12)
-  {
-    v13 = v12;
+    colorCapability = hLSColorCapability;
   }
 
   else
   {
-    v13 = [v45 audioCapability];
+    colorCapability = [entityCopy colorCapability];
   }
 
-  v14 = v13;
+  v11 = colorCapability;
 
-  v15 = [v7 unsignedIntegerValue];
-  v16 = [v11 unsignedIntegerValue];
-  v17 = [v14 unsignedIntegerValue];
-  if ((v15 - 1) >= 2)
+  hLSAudioCapability = [entityCopy HLSAudioCapability];
+  if (hLSAudioCapability)
   {
-    if (v15 != 3)
+    audioCapability = hLSAudioCapability;
+  }
+
+  else
+  {
+    audioCapability = [entityCopy audioCapability];
+  }
+
+  v14 = audioCapability;
+
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v14 unsignedIntegerValue];
+  if ((unsignedIntegerValue - 1) >= 2)
+  {
+    if (unsignedIntegerValue != 3)
     {
       goto LABEL_15;
     }
@@ -819,13 +819,13 @@ uint64_t __58__VUIMediaTagsViewHelper__releaseDateDescriptionFromDate___block_in
 
 LABEL_15:
   IsHDRCapable = SSDeviceIsHDRCapable();
-  v24 = v45;
+  v24 = entityCopy;
   if (!IsHDRCapable)
   {
     goto LABEL_21;
   }
 
-  if ((v16 & 2) != 0)
+  if ((unsignedIntegerValue2 & 2) != 0)
   {
     v25 = @"dolby-vision";
     v26 = @"ACCESSIBILITY_DOLBY_VISION";
@@ -833,7 +833,7 @@ LABEL_15:
 
   else
   {
-    if ((v16 & 1) == 0)
+    if ((unsignedIntegerValue2 & 1) == 0)
     {
       goto LABEL_21;
     }
@@ -847,18 +847,18 @@ LABEL_15:
   v29 = [VUIMediaTagsImageHelper imageWithName:v25 flatten:1 accessibilityDescription:v28];
   [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v29 forKeyedSubscript:VUIMediaTagKeyVideoDynamicRangeImage];
 
-  v24 = v45;
+  v24 = entityCopy;
 LABEL_21:
-  v30 = [v24 contentRating];
-  v31 = [MEMORY[0x1E69DF6C0] sharedInstance];
-  v32 = [v31 badgeForContentRating:v30 drawUnknownRatingBadge:1];
+  contentRating = [v24 contentRating];
+  mEMORY[0x1E69DF6C0] = [MEMORY[0x1E69DF6C0] sharedInstance];
+  v32 = [mEMORY[0x1E69DF6C0] badgeForContentRating:contentRating drawUnknownRatingBadge:1];
 
   if (v32)
   {
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v32 forKeyedSubscript:VUIMediaTagKeyRatingImage];
   }
 
-  if (v17)
+  if (unsignedIntegerValue3)
   {
     v33 = +[VUILocalizationManager sharedInstance];
     v34 = [v33 localizedStringForKey:@"ACCESSIBILITY_DOLBY_ATMOS"];
@@ -866,27 +866,27 @@ LABEL_21:
     [(NSMutableDictionary *)self->_tagsViewDictionary setObject:v35 forKeyedSubscript:VUIMediaTagKeyDolbyAtmosImage];
   }
 
-  v36 = [v45 type];
+  type = [entityCopy type];
   v37 = +[VUIMediaEntityType movie];
   v38 = v37;
-  if (v36 == v37)
+  if (type == v37)
   {
   }
 
   else
   {
-    v39 = [v45 type];
+    type2 = [entityCopy type];
     v40 = +[VUIMediaEntityType homeVideo];
 
-    if (v39 != v40)
+    if (type2 != v40)
     {
       goto LABEL_31;
     }
   }
 
-  v41 = [v45 extrasURL];
-  v42 = [v41 absoluteString];
-  v43 = [v42 length];
+  extrasURL = [entityCopy extrasURL];
+  absoluteString = [extrasURL absoluteString];
+  v43 = [absoluteString length];
 
   if (v43)
   {
@@ -897,13 +897,13 @@ LABEL_21:
 LABEL_31:
 }
 
-- (id)_commonSenseString:(id)a3
+- (id)_commonSenseString:(id)string
 {
-  v3 = [a3 unsignedIntValue];
+  unsignedIntValue = [string unsignedIntValue];
   v4 = MEMORY[0x1E696AEC0];
   v5 = +[VUILocalizationManager sharedInstance];
   v6 = [v5 localizedStringForKey:@"TV.CommonSense.AgeRating"];
-  v7 = [v4 localizedStringWithValidatedFormat:v6 validFormatSpecifiers:@"%u" error:0, v3];
+  v7 = [v4 localizedStringWithValidatedFormat:v6 validFormatSpecifiers:@"%u" error:0, unsignedIntValue];
 
   return v7;
 }

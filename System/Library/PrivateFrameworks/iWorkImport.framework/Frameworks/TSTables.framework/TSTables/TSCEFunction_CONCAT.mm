@@ -1,19 +1,19 @@
 @interface TSCEFunction_CONCAT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CONCAT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v51 = 0;
-  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, a3, a4, 0, 0, &v51);
+  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, context, spec, 0, 0, &v51);
   v9 = v51;
   if (v9)
   {
     v14 = v9;
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v9, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v9, v12, v13);
   }
 
   else
@@ -22,9 +22,9 @@
     v50[0] = 0;
     *(v50 + 7) = 0;
     v16 = objc_msgSend_count(v8, v10, v11, v12, v13);
-    v17 = a3;
-    v43[0] = v17;
-    v43[1] = a4;
+    contextCopy = context;
+    v43[0] = contextCopy;
+    v43[1] = spec;
     v44 = 0;
     v45[0] = 0;
     *(v45 + 7) = 0;
@@ -33,7 +33,7 @@
     v48 = 0;
     if (v16)
     {
-      v22 = v17;
+      v22 = contextCopy;
       v23 = 0;
       v24 = 0;
       isRegexString = 1;
@@ -45,7 +45,7 @@
           v42 = 0;
           if (v26)
           {
-            objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v26, v31, v22, a4, 0, &v42);
+            objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v26, v31, v22, spec, 0, &v42);
             v14 = v42;
           }
 

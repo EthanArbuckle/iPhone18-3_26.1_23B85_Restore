@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  return [a1 setIndicatorStyle:v4];
+  return [self setIndicatorStyle:v4];
 }
 
 @end

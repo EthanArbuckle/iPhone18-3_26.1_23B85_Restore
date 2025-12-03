@@ -1,62 +1,62 @@
 @interface TRSetupProxyAuthenticationRequest
-- (TRSetupProxyAuthenticationRequest)initWithCoder:(id)a3;
+- (TRSetupProxyAuthenticationRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupProxyAuthenticationRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TRSetupProxyAuthenticationRequest;
-  [(TRMessage *)&v8 encodeWithCoder:v4];
+  [(TRMessage *)&v8 encodeWithCoder:coderCopy];
   account = self->_account;
   if (account)
   {
-    [v4 encodeObject:account forKey:@"TRSetupAuthenticationMessages_ac"];
+    [coderCopy encodeObject:account forKey:@"TRSetupAuthenticationMessages_ac"];
   }
 
   rawPassword = self->_rawPassword;
   if (rawPassword)
   {
-    [v4 encodeObject:rawPassword forKey:@"TRSetupAuthenticationMessages_rP"];
+    [coderCopy encodeObject:rawPassword forKey:@"TRSetupAuthenticationMessages_rP"];
   }
 
   targetedAccountServices = self->_targetedAccountServices;
   if (targetedAccountServices)
   {
-    [v4 encodeObject:targetedAccountServices forKey:@"TRSetupAuthenticationMessages_tAS"];
+    [coderCopy encodeObject:targetedAccountServices forKey:@"TRSetupAuthenticationMessages_tAS"];
   }
 
-  [v4 encodeBool:self->_shouldUseAIDA forKey:@"TRSetupAuthenticationMessages_sUA"];
+  [coderCopy encodeBool:self->_shouldUseAIDA forKey:@"TRSetupAuthenticationMessages_sUA"];
 }
 
-- (TRSetupProxyAuthenticationRequest)initWithCoder:(id)a3
+- (TRSetupProxyAuthenticationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = TRSetupProxyAuthenticationRequest;
-  v5 = [(TRMessage *)&v16 initWithCoder:v4];
+  v5 = [(TRMessage *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupAuthenticationMessages_ac"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupAuthenticationMessages_ac"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupAuthenticationMessages_rP"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupAuthenticationMessages_rP"];
     rawPassword = v5->_rawPassword;
     v5->_rawPassword = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"TRSetupAuthenticationMessages_tAS"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"TRSetupAuthenticationMessages_tAS"];
     targetedAccountServices = v5->_targetedAccountServices;
     v5->_targetedAccountServices = v13;
 
-    v5->_shouldUseAIDA = [v4 decodeBoolForKey:@"TRSetupAuthenticationMessages_sUA"];
+    v5->_shouldUseAIDA = [coderCopy decodeBoolForKey:@"TRSetupAuthenticationMessages_sUA"];
   }
 
   return v5;

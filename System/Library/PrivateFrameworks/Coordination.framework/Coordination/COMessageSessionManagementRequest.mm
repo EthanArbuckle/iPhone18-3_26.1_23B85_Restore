@@ -1,84 +1,84 @@
 @interface COMessageSessionManagementRequest
 + (id)acceptableResponses;
-- (COMessageSessionManagementRequest)initWithCoder:(id)a3;
-- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)a3 error:(id)a4 topic:(id)a5 subTopic:(id)a6;
-- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)a3 payload:(id)a4 payloadType:(id)a5 topic:(id)a6 subTopic:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (COMessageSessionManagementRequest)initWithCoder:(id)coder;
+- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)type error:(id)error topic:(id)topic subTopic:(id)subTopic;
+- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)type payload:(id)payload payloadType:(id)payloadType topic:(id)topic subTopic:(id)subTopic;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMessageSessionManagementRequest
 
-- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)a3 payload:(id)a4 payloadType:(id)a5 topic:(id)a6 subTopic:(id)a7
+- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)type payload:(id)payload payloadType:(id)payloadType topic:(id)topic subTopic:(id)subTopic
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  payloadCopy = payload;
+  payloadTypeCopy = payloadType;
+  topicCopy = topic;
+  subTopicCopy = subTopic;
   v20.receiver = self;
   v20.super_class = COMessageSessionManagementRequest;
   v17 = [(COMessageChannelRequest *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_commandType = a3;
-    objc_storeStrong(&v17->_payload, a4);
-    objc_storeStrong(&v18->_payloadType, a5);
-    objc_storeStrong(&v18->_topic, a6);
-    objc_storeStrong(&v18->_subTopic, a7);
+    v17->_commandType = type;
+    objc_storeStrong(&v17->_payload, payload);
+    objc_storeStrong(&v18->_payloadType, payloadType);
+    objc_storeStrong(&v18->_topic, topic);
+    objc_storeStrong(&v18->_subTopic, subTopic);
   }
 
   return v18;
 }
 
-- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)a3 error:(id)a4 topic:(id)a5 subTopic:(id)a6
+- (COMessageSessionManagementRequest)initWithCommandType:(int64_t)type error:(id)error topic:(id)topic subTopic:(id)subTopic
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  topicCopy = topic;
+  subTopicCopy = subTopic;
   v17.receiver = self;
   v17.super_class = COMessageSessionManagementRequest;
   v14 = [(COMessageChannelRequest *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_commandType = a3;
-    objc_storeStrong(&v14->_remoteError, a4);
-    objc_storeStrong(&v15->_topic, a5);
-    objc_storeStrong(&v15->_subTopic, a6);
+    v14->_commandType = type;
+    objc_storeStrong(&v14->_remoteError, error);
+    objc_storeStrong(&v15->_topic, topic);
+    objc_storeStrong(&v15->_subTopic, subTopic);
   }
 
   return v15;
 }
 
-- (COMessageSessionManagementRequest)initWithCoder:(id)a3
+- (COMessageSessionManagementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = COMessageSessionManagementRequest;
-  v5 = [(COMessageChannelRequest *)&v19 initWithCoder:v4];
+  v5 = [(COMessageChannelRequest *)&v19 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_9;
   }
 
-  v5->_commandType = [v4 decodeIntegerForKey:@"requestCommandType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+  v5->_commandType = [coderCopy decodeIntegerForKey:@"requestCommandType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
   payload = v5->_payload;
   v5->_payload = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payloadType"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payloadType"];
   payloadType = v5->_payloadType;
   v5->_payloadType = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
   topic = v5->_topic;
   v5->_topic = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTopic"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTopic"];
   subTopic = v5->_subTopic;
   v5->_subTopic = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteError"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteError"];
   remoteError = v5->_remoteError;
   v5->_remoteError = v14;
 
@@ -106,27 +106,27 @@ LABEL_9:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = COMessageSessionManagementRequest;
-  v4 = a3;
-  [(COMessageChannelRequest *)&v10 encodeWithCoder:v4];
-  [v4 encodeInteger:-[COMessageSessionManagementRequest commandType](self forKey:{"commandType", v10.receiver, v10.super_class), @"requestCommandType"}];
-  v5 = [(COMessageSessionManagementRequest *)self payload];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  coderCopy = coder;
+  [(COMessageChannelRequest *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[COMessageSessionManagementRequest commandType](self forKey:{"commandType", v10.receiver, v10.super_class), @"requestCommandType"}];
+  payload = [(COMessageSessionManagementRequest *)self payload];
+  [coderCopy encodeObject:payload forKey:@"payload"];
 
-  v6 = [(COMessageSessionManagementRequest *)self payloadType];
-  [v4 encodeObject:v6 forKey:@"payloadType"];
+  payloadType = [(COMessageSessionManagementRequest *)self payloadType];
+  [coderCopy encodeObject:payloadType forKey:@"payloadType"];
 
-  v7 = [(COMessageSessionManagementRequest *)self topic];
-  [v4 encodeObject:v7 forKey:@"topic"];
+  topic = [(COMessageSessionManagementRequest *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 
-  v8 = [(COMessageSessionManagementRequest *)self subTopic];
-  [v4 encodeObject:v8 forKey:@"subTopic"];
+  subTopic = [(COMessageSessionManagementRequest *)self subTopic];
+  [coderCopy encodeObject:subTopic forKey:@"subTopic"];
 
-  v9 = [(COMessageSessionManagementRequest *)self remoteError];
-  [v4 encodeObject:v9 forKey:@"remoteError"];
+  remoteError = [(COMessageSessionManagementRequest *)self remoteError];
+  [coderCopy encodeObject:remoteError forKey:@"remoteError"];
 }
 
 + (id)acceptableResponses

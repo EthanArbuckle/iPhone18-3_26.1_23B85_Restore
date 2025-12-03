@@ -1,14 +1,14 @@
 @interface RoutePlanningRefinementBarView
 - (NSArray)refinements;
 - (RoutePlanningRefinementDelegate)delegate;
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithCoder:(id)a3;
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithDelegate:(id)a3 refinements:(id)a4;
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithFrame:(CGRect)a3;
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithCoder:(id)coder;
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithDelegate:(id)delegate refinements:(id)refinements;
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)reloadRefinementBar;
 - (void)resetScrollPosition;
-- (void)setDelegate:(id)a3;
-- (void)setRefinements:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setRefinements:(id)refinements;
 @end
 
 @implementation RoutePlanningRefinementBarView
@@ -20,11 +20,11 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
-  v5 = a3;
-  v6 = self;
+  delegateCopy = delegate;
+  selfCopy = self;
   sub_1003FD870(0x65746167656C6564, 0xE800000000000000);
 }
 
@@ -37,24 +37,24 @@
   return v2.super.isa;
 }
 
-- (void)setRefinements:(id)a3
+- (void)setRefinements:(id)refinements
 {
   sub_100014C84(0, &unk_1019202B0);
   *(self + OBJC_IVAR____TtC4Maps30RoutePlanningRefinementBarView_refinements) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
 
   sub_1003FD870(0x656D656E69666572, 0xEB0000000073746ELL);
 }
 
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithDelegate:(id)a3 refinements:(id)a4
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithDelegate:(id)delegate refinements:(id)refinements
 {
   sub_100014C84(0, &unk_1019202B0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  return sub_1003FD9C4(a3, v5);
+  delegateCopy = delegate;
+  return sub_1003FD9C4(delegate, v5);
 }
 
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithCoder:(id)a3
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC4Maps30RoutePlanningRefinementBarView_filterBarContainerVC) = 0;
@@ -69,23 +69,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003FEA0C();
 }
 
 - (void)resetScrollPosition
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003FEB34();
 }
 
 - (void)reloadRefinementBar
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003FEE34();
 }
 
-- (_TtC4Maps30RoutePlanningRefinementBarView)initWithFrame:(CGRect)a3
+- (_TtC4Maps30RoutePlanningRefinementBarView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

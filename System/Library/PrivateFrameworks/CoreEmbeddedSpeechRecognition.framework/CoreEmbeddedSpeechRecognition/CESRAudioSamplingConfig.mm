@@ -1,15 +1,15 @@
 @interface CESRAudioSamplingConfig
-- (CESRAudioSamplingConfig)initWithConfigDictionary:(id)a3;
-- (CESRAudioSamplingConfig)initWithConfigPath:(id)a3;
-- (id)getSamplingRateFromDimension:(id)a3;
+- (CESRAudioSamplingConfig)initWithConfigDictionary:(id)dictionary;
+- (CESRAudioSamplingConfig)initWithConfigPath:(id)path;
+- (id)getSamplingRateFromDimension:(id)dimension;
 @end
 
 @implementation CESRAudioSamplingConfig
 
-- (id)getSamplingRateFromDimension:(id)a3
+- (id)getSamplingRateFromDimension:(id)dimension
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dimensionCopy = dimension;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -30,7 +30,7 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if ([v10 isMatchedSamplingDimension:{v4, v16}])
+        if ([v10 isMatchedSamplingDimension:{dimensionCopy, v16}])
         {
           v13 = *MEMORY[0x277CEF0E8];
           if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -38,13 +38,13 @@
             *buf = 136315650;
             v21 = "[CESRAudioSamplingConfig getSamplingRateFromDimension:]";
             v22 = 2112;
-            v23 = v4;
+            v23 = dimensionCopy;
             v24 = 2112;
             v25 = v10;
             _os_log_debug_impl(&dword_225EEB000, v13, OS_LOG_TYPE_DEBUG, "%s The dimension %@ matches the sampling policy %@ .", buf, 0x20u);
           }
 
-          v12 = [v10 samplingRate];
+          samplingRate = [v10 samplingRate];
 
           goto LABEL_15;
         }
@@ -68,22 +68,22 @@
     _os_log_debug_impl(&dword_225EEB000, v11, OS_LOG_TYPE_DEBUG, "%s No Sampling Policy Available", buf, 0xCu);
   }
 
-  v12 = 0;
+  samplingRate = 0;
 LABEL_15:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return samplingRate;
 }
 
-- (CESRAudioSamplingConfig)initWithConfigPath:(id)a3
+- (CESRAudioSamplingConfig)initWithConfigPath:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     v17 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v4 options:0 error:&v17];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:0 error:&v17];
     v6 = v17;
     if (v6)
     {
@@ -104,7 +104,7 @@ LABEL_15:
         *buf = 136315650;
         v19 = "[CESRAudioSamplingConfig initWithConfigPath:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = pathCopy;
         v22 = 2112;
         v23 = v8;
         _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s Can't Read File From %@, Error: %@", buf, 0x20u);
@@ -121,7 +121,7 @@ LABEL_15:
       {
         self = [(CESRAudioSamplingConfig *)self initWithConfigDictionary:v11];
         v8 = v5;
-        v10 = self;
+        selfCopy = self;
 LABEL_17:
 
         goto LABEL_18;
@@ -133,40 +133,40 @@ LABEL_17:
         *buf = 136315650;
         v19 = "[CESRAudioSamplingConfig initWithConfigPath:]";
         v20 = 2112;
-        v21 = v4;
+        v21 = pathCopy;
         v22 = 2112;
         v23 = v8;
         _os_log_error_impl(&dword_225EEB000, v13, OS_LOG_TYPE_ERROR, "%s Can't Parse JSON From %@, Error: %@", buf, 0x20u);
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
     v11 = v5;
     goto LABEL_17;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_18:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v10;
+  return selfCopy;
 }
 
-- (CESRAudioSamplingConfig)initWithConfigDictionary:(id)a3
+- (CESRAudioSamplingConfig)initWithConfigDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = CESRAudioSamplingConfig;
   v5 = [(CESRAudioSamplingConfig *)&v33 init];
   if (v5)
   {
     v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v4)
+    if (dictionaryCopy)
     {
       v26 = v5;
-      v27 = v4;
-      v6 = [v4 objectForKeyedSubscript:@"samplingPolicies"];
+      v27 = dictionaryCopy;
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"samplingPolicies"];
       v7 = v6;
       if (v6)
       {
@@ -228,7 +228,7 @@ LABEL_18:
       }
 
       v5 = v26;
-      v4 = v27;
+      dictionaryCopy = v27;
     }
 
     [(NSArray *)v28 sortWithOptions:16 usingComparator:&__block_literal_global_2261];

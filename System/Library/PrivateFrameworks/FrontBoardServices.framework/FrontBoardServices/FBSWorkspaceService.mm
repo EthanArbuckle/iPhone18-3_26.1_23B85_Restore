@@ -1,12 +1,12 @@
 @interface FBSWorkspaceService
-+ (id)localServiceWithIdentifier:(id)a3;
++ (id)localServiceWithIdentifier:(id)identifier;
 - (FBSWorkspaceService)init;
-- (id)_initWithTarget:(id)a3 identifier:(id)a4;
-- (id)createScene:(id)a3;
-- (id)createScene:(id)a3 completion:(id)a4;
+- (id)_initWithTarget:(id)target identifier:(id)identifier;
+- (id)createScene:(id)scene;
+- (id)createScene:(id)scene completion:(id)completion;
 - (id)description;
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4;
-- (void)sendActions:(id)a3 completion:(id)a4;
+- (void)requestSceneWithOptions:(id)options completion:(id)completion;
+- (void)sendActions:(id)actions completion:(id)completion;
 @end
 
 @implementation FBSWorkspaceService
@@ -24,7 +24,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSWorkspace.m";
     v16 = 1024;
@@ -38,23 +38,23 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithTarget:(id)a3 identifier:(id)a4
+- (id)_initWithTarget:(id)target identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  targetCopy = target;
+  identifierCopy = identifier;
+  if (!targetCopy)
   {
     [FBSWorkspaceService _initWithTarget:a2 identifier:?];
   }
 
-  v10 = v9;
+  v10 = identifierCopy;
   v16.receiver = self;
   v16.super_class = FBSWorkspaceService;
   v11 = [(FBSWorkspaceService *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_target, a3);
+    objc_storeStrong(&v11->_target, target);
     v13 = [v10 copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
@@ -78,18 +78,18 @@
     identifier = @"(default)";
   }
 
-  v7 = [(FBSWorkspaceServiceTarget *)self->_target identifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p %@; %@>", v5, self, identifier, v7];;
+  identifier = [(FBSWorkspaceServiceTarget *)self->_target identifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p %@; %@>", v5, self, identifier, identifier];;
 
   return v8;
 }
 
-- (void)sendActions:(id)a3 completion:(id)a4
+- (void)sendActions:(id)actions completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  actionsCopy = actions;
+  completionCopy = completion;
+  v9 = actionsCopy;
   if (v9)
   {
     NSClassFromString(&cfstr_Nsset.isa);
@@ -104,7 +104,7 @@
     v10 = FBLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(FBSWorkspaceServiceTarget *)self->_target identifier];
+      identifier = [(FBSWorkspaceServiceTarget *)self->_target identifier];
       if (self->_identifier)
       {
         identifier = self->_identifier;
@@ -115,13 +115,13 @@
         identifier = @"(default)";
       }
 
-      v13 = [v9 fbs_singleLineDescriptionOfBSActions];
+      fbs_singleLineDescriptionOfBSActions = [v9 fbs_singleLineDescriptionOfBSActions];
       *buf = 138543874;
-      v20 = v11;
+      v20 = identifier;
       v21 = 2114;
       v22 = identifier;
       v23 = 2114;
-      v24 = v13;
+      v24 = fbs_singleLineDescriptionOfBSActions;
       _os_log_impl(&dword_1A2DBB000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending action(s) to workspace %{public}@: %{public}@", buf, 0x20u);
     }
   }
@@ -133,8 +133,8 @@
   v17[2] = __46__FBSWorkspaceService_sendActions_completion___block_invoke;
   v17[3] = &unk_1E76BDD00;
   v17[4] = self;
-  v18 = v8;
-  v16 = v8;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [(FBSWorkspaceServiceTarget *)target sendActions:v9 toWorkspaceID:v15 completion:v17];
 }
 
@@ -157,13 +157,13 @@ void __46__FBSWorkspaceService_sendActions_completion___block_invoke(uint64_t a1
   }
 }
 
-- (id)createScene:(id)a3
+- (id)createScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = [[FBSClientSceneFutureDefinition alloc] initWithWorkspaceID:self->_identifier];
-  if (v4)
+  if (sceneCopy)
   {
-    v4[2](v4, v5);
+    sceneCopy[2](sceneCopy, v5);
   }
 
   v6 = [(FBSWorkspaceServiceTarget *)self->_target createSceneFutureWithDefinition:v5];
@@ -171,32 +171,32 @@ void __46__FBSWorkspaceService_sendActions_completion___block_invoke(uint64_t a1
   return v6;
 }
 
-- (id)createScene:(id)a3 completion:(id)a4
+- (id)createScene:(id)scene completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FBSWorkspaceService *)self createScene:a3];
-  [v7 activateWithCompletion:v6];
+  completionCopy = completion;
+  v7 = [(FBSWorkspaceService *)self createScene:scene];
+  [v7 activateWithCompletion:completionCopy];
 
   return v7;
 }
 
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4
+- (void)requestSceneWithOptions:(id)options completion:(id)completion
 {
   identifier = self->_identifier;
-  v7 = a4;
-  v8 = a3;
-  [v8 setWorkspaceIdentifier:identifier];
-  [(FBSWorkspaceServiceTarget *)self->_target requestSceneWithOptions:v8 completion:v7];
+  completionCopy = completion;
+  optionsCopy = options;
+  [optionsCopy setWorkspaceIdentifier:identifier];
+  [(FBSWorkspaceServiceTarget *)self->_target requestSceneWithOptions:optionsCopy completion:completionCopy];
 }
 
-+ (id)localServiceWithIdentifier:(id)a3
++ (id)localServiceWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = NSClassFromString(&cfstr_Fblocalsynchro.isa);
   if (v4)
   {
-    v5 = [(objc_class *)v4 sharedInstance];
-    v6 = [[FBSWorkspaceService alloc] _initWithTarget:v5 identifier:v3];
+    sharedInstance = [(objc_class *)v4 sharedInstance];
+    v6 = [[FBSWorkspaceService alloc] _initWithTarget:sharedInstance identifier:identifierCopy];
   }
 
   else

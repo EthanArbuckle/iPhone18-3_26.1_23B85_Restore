@@ -1,20 +1,20 @@
 @interface _FIMutableProxyNode
-- (_FIMutableProxyNode)initWithSubject:(id)a3;
+- (_FIMutableProxyNode)initWithSubject:(id)subject;
 - (id)nodesToObserve;
-- (void)dispatchNodeEvent:(id)a3;
-- (void)setSubjectNode:(id)a3;
+- (void)dispatchNodeEvent:(id)event;
+- (void)setSubjectNode:(id)node;
 - (void)startObservingSubject;
 - (void)stopObservingSubject;
 @end
 
 @implementation _FIMutableProxyNode
 
-- (_FIMutableProxyNode)initWithSubject:(id)a3
+- (_FIMutableProxyNode)initWithSubject:(id)subject
 {
-  v4 = a3;
+  subjectCopy = subject;
   v7.receiver = self;
   v7.super_class = _FIMutableProxyNode;
-  v5 = [(FIProxyNode *)&v7 initWithSubject:v4];
+  v5 = [(FIProxyNode *)&v7 initWithSubject:subjectCopy];
   [(_FIMutableProxyNode *)v5 startObservingSubject];
 
   return v5;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (void)setSubjectNode:(id)a3
+- (void)setSubjectNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   [(_FIMutableProxyNode *)self stopObservingSubject];
   v5.receiver = self;
   v5.super_class = _FIMutableProxyNode;
-  [(FIProxyNode *)&v5 setSubjectNode:v4];
+  [(FIProxyNode *)&v5 setSubjectNode:nodeCopy];
   [(_FIMutableProxyNode *)self startObservingSubject];
 }
 
 - (void)startObservingSubject
 {
-  v3 = [(FIProxyNode *)self subjectNode];
-  v4 = [FINodeObserver observerForProxy:self subjectNode:v3];
+  subjectNode = [(FIProxyNode *)self subjectNode];
+  v4 = [FINodeObserver observerForProxy:self subjectNode:subjectNode];
 
   [(_FIMutableProxyNode *)self setSubjectObserver:v4];
   [v4 startObserving:19];
@@ -51,29 +51,29 @@
 
 - (void)stopObservingSubject
 {
-  v3 = [(_FIMutableProxyNode *)self subjectObserver];
-  [v3 stopObserving:19];
+  subjectObserver = [(_FIMutableProxyNode *)self subjectObserver];
+  [subjectObserver stopObserving:19];
 
   [(_FIMutableProxyNode *)self setSubjectObserver:0];
 }
 
-- (void)dispatchNodeEvent:(id)a3
+- (void)dispatchNodeEvent:(id)event
 {
-  NodeEventFromNodeEventRef(a3, &v12);
+  NodeEventFromNodeEventRef(event, &v12);
   v4 = *TNodeEventPtr::operator->(&v12);
   v5 = *(TNodeEventPtr::operator->(&v12) + 16);
-  v6 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   v8 = v4 > 0x32 || ((1 << v4) & 0x4000000000058) == 0;
-  v9 = v6;
+  v9 = selfCopy;
   if (!v8)
   {
     v9 = *(TNodeEventPtr::operator->(&v12) + 8);
   }
 
-  v10 = [(FIProxyNode *)v7 subjectNode];
+  subjectNode = [(FIProxyNode *)v7 subjectNode];
 
-  if (v9 == v10)
+  if (v9 == subjectNode)
   {
     v11 = v7;
 

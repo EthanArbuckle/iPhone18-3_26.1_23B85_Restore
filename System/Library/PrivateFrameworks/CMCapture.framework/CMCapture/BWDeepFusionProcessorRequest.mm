@@ -1,6 +1,6 @@
 @interface BWDeepFusionProcessorRequest
 - (id)description;
-- (id)initWithInput:(void *)a3 delegate:;
+- (id)initWithInput:(void *)input delegate:;
 - (uint64_t)receivedAllBuffers;
 - (void)dealloc;
 @end
@@ -13,8 +13,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(BWDeepFusionProcessorInput *)self->_input inputBuffers];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  inputBuffers = [(BWDeepFusionProcessorInput *)self->_input inputBuffers];
+  v4 = [(NSArray *)inputBuffers countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -26,7 +26,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputBuffers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -36,7 +36,7 @@
         CVBufferRemoveAttachment([v9 buffer], v7);
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v5 = [(NSArray *)inputBuffers countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v5);
@@ -56,25 +56,25 @@
   return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@ cache:%d", v4, self, -[BWStillImageCaptureSettings settingsID](-[BWStillImageProcessorControllerInput captureSettings](self->_input, "captureSettings"), "settingsID"), BWPhotoEncoderStringFromEncodingScheme(-[BWStillImageCaptureStreamSettings captureType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "captureType")), -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "portType"), self->_cacheBuffers];
 }
 
-- (id)initWithInput:(void *)a3 delegate:
+- (id)initWithInput:(void *)input delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = BWDeepFusionProcessorRequest;
   v5 = objc_msgSendSuper2(&v16, sel_init);
   if (v5)
   {
     *(v5 + 1) = a2;
-    *(v5 + 2) = a3;
-    v6 = [*(v5 + 1) captureStreamSettings];
-    v7 = [v6 captureFlags];
-    if ((v7 & 4) != 0)
+    *(v5 + 2) = input;
+    captureStreamSettings = [*(v5 + 1) captureStreamSettings];
+    captureFlags = [captureStreamSettings captureFlags];
+    if ((captureFlags & 4) != 0)
     {
-      v8 = ((v7 >> 2) >> 31) + [v6 expectedEVZeroFrameCount] - 1;
+      v8 = ((captureFlags >> 2) >> 31) + [captureStreamSettings expectedEVZeroFrameCount] - 1;
     }
 
     else
@@ -83,13 +83,13 @@
     }
 
     *(v5 + 6) = v8;
-    v9 = [*(v5 + 1) captureStreamSettings];
+    captureStreamSettings2 = [*(v5 + 1) captureStreamSettings];
     v10 = *(v5 + 6);
-    v11 = [v9 captureFlags];
-    if ((v11 & 4) == 0)
+    captureFlags2 = [captureStreamSettings2 captureFlags];
+    if ((captureFlags2 & 4) == 0)
     {
       v12 = [MEMORY[0x1E695DFA8] setWithArray:&unk_1F2249CA8];
-      if ((v11 & 0x400000) != 0)
+      if ((captureFlags2 & 0x400000) != 0)
       {
         v13 = &unk_1F2246DE0;
 LABEL_18:
@@ -108,13 +108,13 @@ LABEL_19:
       [v14 addObject:&unk_1F2246D20];
     }
 
-    if ((v11 & 0x200000000) != 0)
+    if ((captureFlags2 & 0x200000000) != 0)
     {
       [v12 addObject:&unk_1F2246D38];
-      if ((v11 & 0x100000) == 0)
+      if ((captureFlags2 & 0x100000) == 0)
       {
 LABEL_13:
-        if ((v11 & 0x400000) == 0)
+        if ((captureFlags2 & 0x400000) == 0)
         {
           goto LABEL_19;
         }
@@ -123,13 +123,13 @@ LABEL_13:
       }
     }
 
-    else if ((v11 & 0x100000) == 0)
+    else if ((captureFlags2 & 0x100000) == 0)
     {
       goto LABEL_13;
     }
 
     [v12 addObject:&unk_1F2246D50];
-    if ((v11 & 0x400000) == 0)
+    if ((captureFlags2 & 0x400000) == 0)
     {
       goto LABEL_19;
     }
@@ -159,8 +159,8 @@ LABEL_17:
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v3 = [*(v1 + 8) inputBuffers];
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      inputBuffers = [*(v1 + 8) inputBuffers];
+      v4 = [inputBuffers countByEnumeratingWithState:&v11 objects:v10 count:16];
       if (v4)
       {
         v5 = v4;
@@ -172,7 +172,7 @@ LABEL_17:
           {
             if (*v12 != v7)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(inputBuffers);
             }
 
             v9 = *(*(&v11 + 1) + 8 * i);
@@ -189,7 +189,7 @@ LABEL_17:
             }
           }
 
-          v5 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+          v5 = [inputBuffers countByEnumeratingWithState:&v11 objects:v10 count:16];
         }
 
         while (v5);

@@ -4,7 +4,7 @@
 - (id)getFormat;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
-- (void)fillWithInt:(int)a3 withInt:(int)a4 withLong:(int64_t)a5;
+- (void)fillWithInt:(int)int withInt:(int)withInt withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPacked64SingleBlock
@@ -26,10 +26,10 @@
   return OrgApacheLuceneUtilRamUsageEstimator_sizeOfWithLongArray_(self->blocks_) + v4;
 }
 
-- (void)fillWithInt:(int)a3 withInt:(int)a4 withLong:(int64_t)a5
+- (void)fillWithInt:(int)int withInt:(int)withInt withLong:(int64_t)long
 {
   v11 = 64 / self->super.bitsPerValue_;
-  if (a4 - a3 <= 2 * v11)
+  if (withInt - int <= 2 * v11)
   {
     v30.receiver = self;
     v30.super_class = OrgApacheLuceneUtilPackedPacked64SingleBlock;
@@ -38,20 +38,20 @@
 
   else
   {
-    v12 = a3 % v11;
-    if (!(a3 % v11) || v11 < 0)
+    v12 = int % v11;
+    if (!(int % v11) || v11 < 0)
     {
-      v13 = a3;
+      intCopy = int;
     }
 
     else
     {
       do
       {
-        v13 = a3 + 1;
+        intCopy = int + 1;
         [OrgApacheLuceneUtilPackedPacked64SingleBlock setWithInt:"setWithInt:withLong:" withLong:?];
         ++v12;
-        a3 = v13;
+        int = intCopy;
       }
 
       while (v12 < v11);
@@ -69,7 +69,7 @@
       v16 = vdup_n_s32(v11 - 1);
       v17 = vld1_dup_f32(p_bitsPerValue);
       v18 = &_mh_execute_header;
-      v19 = vdupq_n_s64(a5);
+      v19 = vdupq_n_s64(long);
       v20 = 0uLL;
       do
       {
@@ -91,17 +91,17 @@
       v28 = vorr_s8(*v27.i8, *&vextq_s8(v27, v27, 8uLL));
     }
 
-    JavaUtilArrays_fillWithLongArray_withInt_withInt_withLong_(self->blocks_, (v13 / v11), (a4 / v11), v28, a5, v5, v6, v7);
-    v29 = (a4 / v11 * v11);
-    if (v29 < a4)
+    JavaUtilArrays_fillWithLongArray_withInt_withInt_withLong_(self->blocks_, (intCopy / v11), (withInt / v11), v28, long, v5, v6, v7);
+    v29 = (withInt / v11 * v11);
+    if (v29 < withInt)
     {
       do
       {
-        [(OrgApacheLuceneUtilPackedPacked64SingleBlock *)self setWithInt:v29 withLong:a5];
+        [(OrgApacheLuceneUtilPackedPacked64SingleBlock *)self setWithInt:v29 withLong:long];
         v29 = (v29 + 1);
       }
 
-      while (a4 != v29);
+      while (withInt != v29);
     }
   }
 }
@@ -140,7 +140,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = 0x2000000015;
     v2[0] = xmmword_1003140A8;

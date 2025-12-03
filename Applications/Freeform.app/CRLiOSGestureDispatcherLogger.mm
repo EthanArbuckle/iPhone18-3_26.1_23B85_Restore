@@ -1,20 +1,20 @@
 @interface CRLiOSGestureDispatcherLogger
 - (BOOL)logNextGesture;
 - (void)endGestureLoggingSession;
-- (void)logEndStateForGesture:(id)a3;
-- (void)logGesture:(id)a3 atUnscaledLocation:(CGPoint)a4;
-- (void)logStartStateForGesture:(id)a3;
-- (void)setLogNextGesture:(BOOL)a3;
+- (void)logEndStateForGesture:(id)gesture;
+- (void)logGesture:(id)gesture atUnscaledLocation:(CGPoint)location;
+- (void)logStartStateForGesture:(id)gesture;
+- (void)setLogNextGesture:(BOOL)gesture;
 - (void)startGestureLoggingSession;
 @end
 
 @implementation CRLiOSGestureDispatcherLogger
 
-- (void)setLogNextGesture:(BOOL)a3
+- (void)setLogNextGesture:(BOOL)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"TSDDebugDumpNextTextGesture"];
+  [v4 setBool:gestureCopy forKey:@"TSDDebugDumpNextTextGesture"];
 }
 
 - (BOOL)logNextGesture
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)logStartStateForGesture:(id)a3
+- (void)logStartStateForGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(CRLiOSGestureDispatcherLogger *)self logNextGesture])
   {
     if (![(CRLiOSGestureDispatcherLogger *)self gestureSessionStarted])
@@ -70,47 +70,47 @@
       [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:59 isFatal:0 description:"The gesture session should have been started before logging"];
     }
 
-    v8 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
-    v9 = [v4 gestureKind];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    gestureLogDictionary = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+    gestureKind = [gestureCopy gestureKind];
+    v10 = [gestureLogDictionary objectForKeyedSubscript:gestureKind];
 
     if (!v10)
     {
       v10 = objc_opt_new();
-      v11 = [v4 gestureKind];
-      [v10 setObject:v11 forKeyedSubscript:@"gestureKind"];
+      gestureKind2 = [gestureCopy gestureKind];
+      [v10 setObject:gestureKind2 forKeyedSubscript:@"gestureKind"];
 
       v12 = objc_opt_new();
       [v10 setObject:v12 forKeyedSubscript:@"allTouchesArray"];
 
-      v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 inputType]);
+      v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [gestureCopy inputType]);
       [v10 setObject:v13 forKeyedSubscript:@"inputType"];
 
-      v14 = [v4 cachedGestureTarget];
+      cachedGestureTarget = [gestureCopy cachedGestureTarget];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [v4 cachedGestureTarget];
-        v17 = [v16 targetStateForGestureLog];
-        [v10 setObject:v17 forKeyedSubscript:@"targetStartState"];
+        cachedGestureTarget2 = [gestureCopy cachedGestureTarget];
+        targetStateForGestureLog = [cachedGestureTarget2 targetStateForGestureLog];
+        [v10 setObject:targetStateForGestureLog forKeyedSubscript:@"targetStartState"];
       }
 
-      v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 tsdModifierFlags]);
+      v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [gestureCopy tsdModifierFlags]);
       [v10 setObject:v18 forKeyedSubscript:@"modifierFlags"];
 
-      v19 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
-      v20 = [v4 gestureKind];
-      [v19 setObject:v10 forKeyedSubscript:v20];
+      gestureLogDictionary2 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+      gestureKind3 = [gestureCopy gestureKind];
+      [gestureLogDictionary2 setObject:v10 forKeyedSubscript:gestureKind3];
     }
   }
 }
 
-- (void)logGesture:(id)a3 atUnscaledLocation:(CGPoint)a4
+- (void)logGesture:(id)gesture atUnscaledLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  gestureCopy = gesture;
   if ([(CRLiOSGestureDispatcherLogger *)self logNextGesture])
   {
     if (![(CRLiOSGestureDispatcherLogger *)self gestureSessionStarted])
@@ -142,14 +142,14 @@
       [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:80 isFatal:0 description:"The gesture session should have been started before logging"];
     }
 
-    v11 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
-    v12 = [v7 gestureKind];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    gestureLogDictionary = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+    gestureKind = [gestureCopy gestureKind];
+    v13 = [gestureLogDictionary objectForKeyedSubscript:gestureKind];
 
     if (v13)
     {
       v14 = objc_opt_new();
-      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 gestureState]);
+      v15 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [gestureCopy gestureState]);
       [v14 setObject:v15 forKeyedSubscript:@"gestureState"];
 
       v16 = [NSNumber numberWithDouble:x];
@@ -194,9 +194,9 @@
   }
 }
 
-- (void)logEndStateForGesture:(id)a3
+- (void)logEndStateForGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(CRLiOSGestureDispatcherLogger *)self logNextGesture])
   {
     if (![(CRLiOSGestureDispatcherLogger *)self gestureSessionStarted])
@@ -228,25 +228,25 @@
       [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:96 isFatal:0 description:"The gesture session should have been started before logging"];
     }
 
-    v8 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
-    v9 = [v4 gestureKind];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    gestureLogDictionary = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+    gestureKind = [gestureCopy gestureKind];
+    v10 = [gestureLogDictionary objectForKeyedSubscript:gestureKind];
 
     if (v10)
     {
-      v11 = [v4 cachedGestureTarget];
+      cachedGestureTarget = [gestureCopy cachedGestureTarget];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [v4 cachedGestureTarget];
-        v14 = [v13 targetStateForGestureLog];
-        [v10 setObject:v14 forKeyedSubscript:@"targetEndState"];
+        cachedGestureTarget2 = [gestureCopy cachedGestureTarget];
+        targetStateForGestureLog = [cachedGestureTarget2 targetStateForGestureLog];
+        [v10 setObject:targetStateForGestureLog forKeyedSubscript:@"targetEndState"];
       }
 
-      v15 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
-      v16 = [v4 gestureKind];
-      [v15 setObject:v10 forKeyedSubscript:v16];
+      gestureLogDictionary2 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+      gestureKind2 = [gestureCopy gestureKind];
+      [gestureLogDictionary2 setObject:v10 forKeyedSubscript:gestureKind2];
     }
 
     else
@@ -273,9 +273,9 @@
         sub_10130DA10(v17);
       }
 
-      v15 = [NSString stringWithUTF8String:"[CRLiOSGestureDispatcherLogger logEndStateForGesture:]"];
-      v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSGestureDispatcherLogger.m"];
-      [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:98 isFatal:0 description:"invalid nil value for '%{public}s'", "singleGestureStateDictionary"];
+      gestureLogDictionary2 = [NSString stringWithUTF8String:"[CRLiOSGestureDispatcherLogger logEndStateForGesture:]"];
+      gestureKind2 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSGestureDispatcherLogger.m"];
+      [CRLAssertionHandler handleFailureInFunction:gestureLogDictionary2 file:gestureKind2 lineNumber:98 isFatal:0 description:"invalid nil value for '%{public}s'", "singleGestureStateDictionary"];
     }
   }
 }
@@ -284,9 +284,9 @@
 {
   if ([(CRLiOSGestureDispatcherLogger *)self logNextGesture])
   {
-    v3 = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
+    gestureLogDictionary = [(CRLiOSGestureDispatcherLogger *)self gestureLogDictionary];
     v9 = 0;
-    v4 = [NSJSONSerialization dataWithJSONObject:v3 options:1 error:&v9];
+    v4 = [NSJSONSerialization dataWithJSONObject:gestureLogDictionary options:1 error:&v9];
 
     v5 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
     v6 = [v5 objectAtIndex:0];

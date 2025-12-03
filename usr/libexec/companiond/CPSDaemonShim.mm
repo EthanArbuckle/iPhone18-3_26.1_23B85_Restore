@@ -2,7 +2,7 @@
 + (_TtC10companiond13CPSDaemonShim)shared;
 - (_TtC10companiond13CPSDaemonShim)init;
 - (void)activate;
-- (void)handleXPCEvent:(id)a3;
+- (void)handleXPCEvent:(id)event;
 @end
 
 @implementation CPSDaemonShim
@@ -21,15 +21,15 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   CPSDaemonShim.activate()();
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  CPSDaemonShim.handleXPCEvent(_:)(a3);
+  selfCopy = self;
+  CPSDaemonShim.handleXPCEvent(_:)(event);
   swift_unknownObjectRelease();
 }
 

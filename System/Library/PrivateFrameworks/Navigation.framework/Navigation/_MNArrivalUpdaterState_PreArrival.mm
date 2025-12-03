@@ -1,6 +1,6 @@
 @interface _MNArrivalUpdaterState_PreArrival
 - (double)parkingDetectionExcludeRadius;
-- (void)onEnterState:(id)a3;
+- (void)onEnterState:(id)state;
 - (void)updateForLocation;
 @end
 
@@ -8,8 +8,8 @@
 
 - (double)parkingDetectionExcludeRadius
 {
-  v2 = [(_MNArrivalUpdaterState *)self location];
-  [v2 horizontalAccuracy];
+  location = [(_MNArrivalUpdaterState *)self location];
+  [location horizontalAccuracy];
   v4 = v3 + 10.0;
 
   return v4;
@@ -25,14 +25,14 @@
   }
 }
 
-- (void)onEnterState:(id)a3
+- (void)onEnterState:(id)state
 {
-  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:a3];
-  v7 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  v4 = [v7 safeDelegate];
-  v5 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  v6 = [(_MNArrivalUpdaterState *)self targetLeg];
-  [v4 arrivalUpdater:v5 didEnterPreArrivalStateForLegIndex:{objc_msgSend(v6, "legIndex")}];
+  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:state];
+  arrivalUpdater = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  safeDelegate = [arrivalUpdater safeDelegate];
+  arrivalUpdater2 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  targetLeg = [(_MNArrivalUpdaterState *)self targetLeg];
+  [safeDelegate arrivalUpdater:arrivalUpdater2 didEnterPreArrivalStateForLegIndex:{objc_msgSend(targetLeg, "legIndex")}];
 }
 
 @end

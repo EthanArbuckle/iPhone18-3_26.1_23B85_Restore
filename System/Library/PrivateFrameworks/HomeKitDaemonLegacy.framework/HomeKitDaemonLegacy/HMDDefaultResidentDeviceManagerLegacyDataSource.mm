@@ -1,44 +1,44 @@
 @interface HMDDefaultResidentDeviceManagerLegacyDataSource
 - (BOOL)isResidentCapable;
 - (HMDDefaultResidentDeviceManagerLegacyDataSource)init;
-- (id)createElectionAddOnWithContext:(id)a3;
-- (id)createInitialReachabilityManagerWithUUID:(id)a3;
-- (id)createResidentDeviceWithModel:(id)a3;
-- (id)logIdentifierForHome:(id)a3;
+- (id)createElectionAddOnWithContext:(id)context;
+- (id)createInitialReachabilityManagerWithUUID:(id)d;
+- (id)createResidentDeviceWithModel:(id)model;
+- (id)logIdentifierForHome:(id)home;
 @end
 
 @implementation HMDDefaultResidentDeviceManagerLegacyDataSource
 
-- (id)createInitialReachabilityManagerWithUUID:(id)a3
+- (id)createInitialReachabilityManagerWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomePrimaryResidentInitialReachabilityManager alloc];
-  v6 = [(HMDDefaultResidentDeviceManagerLegacyDataSource *)self queue];
-  v7 = [(HMDHomePrimaryResidentInitialReachabilityManager *)v5 initWithUUID:v4 workQueue:v6];
+  queue = [(HMDDefaultResidentDeviceManagerLegacyDataSource *)self queue];
+  v7 = [(HMDHomePrimaryResidentInitialReachabilityManager *)v5 initWithUUID:dCopy workQueue:queue];
 
   return v7;
 }
 
-- (id)createResidentDeviceWithModel:(id)a3
+- (id)createResidentDeviceWithModel:(id)model
 {
-  v3 = a3;
-  v4 = [[HMDResidentDevice alloc] initWithModel:v3];
+  modelCopy = model;
+  v4 = [[HMDResidentDevice alloc] initWithModel:modelCopy];
 
   return v4;
 }
 
-- (id)logIdentifierForHome:(id)a3
+- (id)logIdentifierForHome:(id)home
 {
-  v3 = [a3 uuid];
-  v4 = [v3 UUIDString];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)createElectionAddOnWithContext:(id)a3
+- (id)createElectionAddOnWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [[HMDPrimaryElectionCoordinationAddOn alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[HMDPrimaryElectionCoordinationAddOn alloc] initWithContext:contextCopy];
 
   return v4;
 }
@@ -46,9 +46,9 @@
 - (BOOL)isResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 - (HMDDefaultResidentDeviceManagerLegacyDataSource)init

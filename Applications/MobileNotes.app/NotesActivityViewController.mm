@@ -1,31 +1,31 @@
 @interface NotesActivityViewController
-- (BOOL)_shouldShowSystemActivityType:(id)a3;
-- (void)_prepareActivity:(id)a3;
+- (BOOL)_shouldShowSystemActivityType:(id)type;
+- (void)_prepareActivity:(id)activity;
 @end
 
 @implementation NotesActivityViewController
 
-- (BOOL)_shouldShowSystemActivityType:(id)a3
+- (BOOL)_shouldShowSystemActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:UIActivityTypeMessage] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIActivityTypeMail) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", UIActivityTypePrint))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:UIActivityTypeMessage] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", UIActivityTypeMail) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", UIActivityTypePrint))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:UIActivityTypeCopyToPasteboard];
+    v4 = [typeCopy isEqualToString:UIActivityTypeCopyToPasteboard];
   }
 
   return v4;
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(NotesActivityViewController *)self displayController];
-  v6 = [v5 note];
+  activityCopy = activity;
+  displayController = [(NotesActivityViewController *)self displayController];
+  note = [displayController note];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -33,25 +33,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = v4;
-      v7 = [v4 mailComposeViewController];
+      v39 = activityCopy;
+      mailComposeViewController = [activityCopy mailComposeViewController];
       v21 = +[UIColor _systemInteractionTintColor];
-      v22 = [v7 view];
-      [v22 _setInteractionTintColor:v21];
+      view = [mailComposeViewController view];
+      [view _setInteractionTintColor:v21];
 
-      v23 = [v6 title];
-      [v7 setSubject:v23];
+      title = [note title];
+      [mailComposeViewController setSubject:title];
 
-      v24 = [v6 content];
-      [v7 setMessageBody:v24 isHTML:{objc_msgSend(v6, "isPlainText") ^ 1}];
+      content = [note content];
+      [mailComposeViewController setMessageBody:content isHTML:{objc_msgSend(note, "isPlainText") ^ 1}];
 
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v38 = v6;
-      v11 = [v6 attachments];
-      v25 = [v11 countByEnumeratingWithState:&v41 objects:v50 count:16];
+      v38 = note;
+      attachments = [note attachments];
+      v25 = [attachments countByEnumeratingWithState:&v41 objects:v50 count:16];
       if (v25)
       {
         v26 = v25;
@@ -62,7 +62,7 @@
           {
             if (*v42 != v27)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(attachments);
             }
 
             v29 = *(*(&v41 + 1) + 8 * i);
@@ -71,22 +71,22 @@
             v31 = v40;
             if (v30)
             {
-              v32 = [v29 mimeType];
-              v33 = [v29 filename];
+              mimeType = [v29 mimeType];
+              filename = [v29 filename];
 
-              [v7 addAttachmentData:v30 mimeType:v32 fileName:v33];
+              [mailComposeViewController addAttachmentData:v30 mimeType:mimeType fileName:filename];
             }
 
             else
             {
-              v32 = [v29 contentID];
-              v33 = [v31 localizedDescription];
+              mimeType = [v29 contentID];
+              filename = [v31 localizedDescription];
 
-              NSLog(@"Couldn't attach data to Mail for contentID: %@, error: %@", v32, v33);
+              NSLog(@"Couldn't attach data to Mail for contentID: %@, error: %@", mimeType, filename);
             }
           }
 
-          v26 = [v11 countByEnumeratingWithState:&v41 objects:v50 count:16];
+          v26 = [attachments countByEnumeratingWithState:&v41 objects:v50 count:16];
         }
 
         while (v26);
@@ -98,23 +98,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![v6 isPlainText])
+      if (![note isPlainText])
       {
-        v34 = [(NotesActivityViewController *)self displayController];
-        [v34 copyNoteHTMLToPasteboard];
+        displayController2 = [(NotesActivityViewController *)self displayController];
+        [displayController2 copyNoteHTMLToPasteboard];
         goto LABEL_34;
       }
 
-      v34 = [v6 contentAsPlainTextPreservingNewlines];
-      if (!v34)
+      displayController2 = [note contentAsPlainTextPreservingNewlines];
+      if (!displayController2)
       {
 LABEL_34:
 
         goto LABEL_25;
       }
 
-      v35 = [v4 pasteboard];
-      [v35 setString:v34];
+      pasteboard = [activityCopy pasteboard];
+      [pasteboard setString:displayController2];
     }
 
     else
@@ -125,34 +125,34 @@ LABEL_34:
         goto LABEL_25;
       }
 
-      v34 = [v4 socialComposeViewController];
+      displayController2 = [activityCopy socialComposeViewController];
       v36 = +[UIColor _systemInteractionTintColor];
-      v37 = [v34 view];
-      [v37 _setInteractionTintColor:v36];
+      view2 = [displayController2 view];
+      [view2 _setInteractionTintColor:v36];
 
-      v35 = [v6 contentAsPlainTextPreservingNewlines];
-      [v34 setInitialText:v35];
+      pasteboard = [note contentAsPlainTextPreservingNewlines];
+      [displayController2 setInitialText:pasteboard];
     }
 
     goto LABEL_34;
   }
 
-  v39 = v4;
-  v7 = [v4 messageComposeViewController];
+  v39 = activityCopy;
+  mailComposeViewController = [activityCopy messageComposeViewController];
   v8 = +[UIColor _systemInteractionTintColor];
-  v9 = [v7 view];
-  [v9 _setInteractionTintColor:v8];
+  view3 = [mailComposeViewController view];
+  [view3 _setInteractionTintColor:v8];
 
-  v10 = [v6 contentAsPlainTextPreservingNewlines];
-  [v7 setBody:v10];
+  contentAsPlainTextPreservingNewlines = [note contentAsPlainTextPreservingNewlines];
+  [mailComposeViewController setBody:contentAsPlainTextPreservingNewlines];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v38 = v6;
-  v11 = [v6 attachments];
-  v12 = [v11 countByEnumeratingWithState:&v46 objects:v51 count:16];
+  v38 = note;
+  attachments = [note attachments];
+  v12 = [attachments countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v12)
   {
     v13 = v12;
@@ -163,7 +163,7 @@ LABEL_34:
       {
         if (*v47 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(attachments);
         }
 
         v16 = *(*(&v46 + 1) + 8 * j);
@@ -172,22 +172,22 @@ LABEL_34:
         v18 = v45;
         if (v17)
         {
-          v19 = [v16 mimeType];
-          v20 = [v16 filename];
+          mimeType2 = [v16 mimeType];
+          filename2 = [v16 filename];
 
-          [v7 addAttachmentData:v17 typeIdentifier:v19 filename:v20];
+          [mailComposeViewController addAttachmentData:v17 typeIdentifier:mimeType2 filename:filename2];
         }
 
         else
         {
-          v19 = [v16 contentID];
-          v20 = [v18 localizedDescription];
+          mimeType2 = [v16 contentID];
+          filename2 = [v18 localizedDescription];
 
-          NSLog(@"Couldn't attach data to Message for contentID: %@, error: %@", v19, v20);
+          NSLog(@"Couldn't attach data to Message for contentID: %@, error: %@", mimeType2, filename2);
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      v13 = [attachments countByEnumeratingWithState:&v46 objects:v51 count:16];
     }
 
     while (v13);
@@ -195,8 +195,8 @@ LABEL_34:
 
 LABEL_24:
 
-  v6 = v38;
-  v4 = v39;
+  note = v38;
+  activityCopy = v39;
 LABEL_25:
 }
 

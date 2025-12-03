@@ -1,23 +1,23 @@
 @interface SPSlicingInterfaceInfo
-+ (id)_coreTelephonyInterface:(id)a3;
-+ (id)_coreTelephonyInterfaceList:(id)a3;
++ (id)_coreTelephonyInterface:(id)interface;
++ (id)_coreTelephonyInterfaceList:(id)list;
 - (id)description;
 @end
 
 @implementation SPSlicingInterfaceInfo
 
-+ (id)_coreTelephonyInterface:(id)a3
++ (id)_coreTelephonyInterface:(id)interface
 {
-  if (a3)
+  if (interface)
   {
-    v3 = a3;
+    interfaceCopy = interface;
     v4 = objc_opt_new();
-    v5 = [v3 interface];
-    [v4 setInterface:v5];
+    interface = [interfaceCopy interface];
+    [v4 setInterface:interface];
 
-    v6 = [v3 trafficDescriptors];
+    trafficDescriptors = [interfaceCopy trafficDescriptors];
 
-    v7 = [SPSlicingDescriptor _coreTelephonyDescritorList:v6];
+    v7 = [SPSlicingDescriptor _coreTelephonyDescritorList:trafficDescriptors];
     [v4 setTrafficDescriptors:v7];
   }
 
@@ -29,17 +29,17 @@
   return v4;
 }
 
-+ (id)_coreTelephonyInterfaceList:(id)a3
++ (id)_coreTelephonyInterfaceList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_opt_new();
-  if (v3)
+  if (listCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v3;
+    v5 = listCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -73,9 +73,9 @@
 - (id)description
 {
   v3 = [objc_opt_class() description];
-  v4 = [(SPSlicingInterfaceInfo *)self interface];
-  v5 = [(SPSlicingInterfaceInfo *)self trafficDescriptors];
-  v6 = [NSString stringWithFormat:@"<%@: interface=%@ descriptors=%@>", v3, v4, v5];
+  interface = [(SPSlicingInterfaceInfo *)self interface];
+  trafficDescriptors = [(SPSlicingInterfaceInfo *)self trafficDescriptors];
+  v6 = [NSString stringWithFormat:@"<%@: interface=%@ descriptors=%@>", v3, interface, trafficDescriptors];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface BLAssetContainerEbookiOS
-- (id)installOperationForInstallInfo:(id)a3;
+- (id)installOperationForInstallInfo:(id)info;
 @end
 
 @implementation BLAssetContainerEbookiOS
 
-- (id)installOperationForInstallInfo:(id)a3
+- (id)installOperationForInstallInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[BLEBookInstallOperation alloc] initWithInfo:v3];
+  infoCopy = info;
+  v4 = [[BLEBookInstallOperation alloc] initWithInfo:infoCopy];
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface CKSearchCollectionView
 - (CGRect)gradientFrame;
 - (UIEdgeInsets)marginInsets;
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4;
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5;
-- (void)_ck_setEditing:(BOOL)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setDataSource:(id)a3;
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path;
+- (void)_ck_setEditing:(BOOL)editing;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation CKSearchCollectionView
 
-- (id)dequeueReusableCellWithReuseIdentifier:(id)a3 forIndexPath:(id)a4
+- (id)dequeueReusableCellWithReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CKSearchCollectionView;
-  v5 = [(CKSearchCollectionView *)&v7 dequeueReusableCellWithReuseIdentifier:a3 forIndexPath:a4];
+  v5 = [(CKSearchCollectionView *)&v7 dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
     [(CKSearchCollectionView *)self marginInsets];
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (id)dequeueReusableSupplementaryViewOfKind:(id)a3 withReuseIdentifier:(id)a4 forIndexPath:(id)a5
+- (id)dequeueReusableSupplementaryViewOfKind:(id)kind withReuseIdentifier:(id)identifier forIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = CKSearchCollectionView;
-  v6 = [(CKSearchCollectionView *)&v13 dequeueReusableSupplementaryViewOfKind:a3 withReuseIdentifier:a4 forIndexPath:a5];
+  v6 = [(CKSearchCollectionView *)&v13 dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
     [(CKSearchCollectionView *)self marginInsets];
@@ -55,29 +55,29 @@
   }
 
   v10 = v8;
-  v11 = [v6 layer];
+  layer = [v6 layer];
 
-  [v11 setZPosition:v10];
+  [layer setZPosition:v10];
 LABEL_8:
 
   return v6;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (![(CKSearchCollectionView *)self suppressDatasourceUpdates])
   {
     v5.receiver = self;
     v5.super_class = CKSearchCollectionView;
-    [(CKSearchCollectionView *)&v5 setDataSource:v4];
+    [(CKSearchCollectionView *)&v5 setDataSource:sourceCopy];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (![(CKSearchCollectionView *)self lockContentOffset])
   {
     [(CKSearchCollectionView *)self contentOffset];
@@ -90,22 +90,22 @@ LABEL_8:
   }
 }
 
-- (void)_ck_setEditing:(BOOL)a3
+- (void)_ck_setEditing:(BOOL)editing
 {
-  if (self->__ck_editing != a3)
+  if (self->__ck_editing != editing)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->__ck_editing = a3;
-    if (!a3)
+    self->__ck_editing = editing;
+    if (!editing)
     {
-      v6 = [(CKSearchCollectionView *)self indexPathsForSelectedItems];
+      indexPathsForSelectedItems = [(CKSearchCollectionView *)self indexPathsForSelectedItems];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __41__CKSearchCollectionView__ck_setEditing___block_invoke;
       v7[3] = &unk_1E72F42A8;
       v7[4] = self;
-      [v6 enumerateObjectsUsingBlock:v7];
+      [indexPathsForSelectedItems enumerateObjectsUsingBlock:v7];
     }
   }
 }

@@ -1,14 +1,14 @@
 @interface AudioExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AudioExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AudioExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AudioExperience.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface EFByteSet
 + (id)asciiWhitespaceSet;
 - (EFByteSet)init;
-- (EFByteSet)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (EFByteSet)initWithCString:(const char *)a3;
-- (EFByteSet)initWithRange:(_NSRange)a3;
+- (EFByteSet)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (EFByteSet)initWithCString:(const char *)string;
+- (EFByteSet)initWithRange:(_NSRange)range;
 - (id).cxx_construct;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EFByteSet
@@ -30,15 +30,15 @@ void __31__EFByteSet_asciiWhitespaceSet__block_invoke()
   +[EFByteSet asciiWhitespaceSet]::set = v0;
 }
 
-- (EFByteSet)initWithRange:(_NSRange)a3
+- (EFByteSet)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a3.location + a3.length;
-  if (a3.location + a3.length >= 0x101)
+  length = range.length;
+  location = range.location;
+  v6 = range.location + range.length;
+  if (range.location + range.length >= 0x101)
   {
     v7 = MEMORY[0x1E695DF30];
-    v8 = NSStringFromRange(a3);
+    v8 = NSStringFromRange(range);
     [v7 raise:*MEMORY[0x1E695D940] format:{@"range extends beyond {0..255}: (NSRange) %@", v8}];
   }
 
@@ -81,14 +81,14 @@ void __31__EFByteSet_asciiWhitespaceSet__block_invoke()
   return result;
 }
 
-- (EFByteSet)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (EFByteSet)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v9.receiver = self;
   v9.super_class = EFByteSet;
   result = [(EFByteSet *)&v9 init];
   if (result)
   {
-    v7 = a4 == 0;
+    v7 = length == 0;
   }
 
   else
@@ -100,13 +100,13 @@ void __31__EFByteSet_asciiWhitespaceSet__block_invoke()
   {
     do
     {
-      v8 = *a3;
-      a3 = a3 + 1;
+      v8 = *bytes;
+      bytes = bytes + 1;
       *(result->_bitString.__first_ + ((v8 >> 3) & 0x18)) |= 1 << v8;
-      --a4;
+      --length;
     }
 
-    while (a4);
+    while (length);
   }
 
   return result;
@@ -119,34 +119,34 @@ void __31__EFByteSet_asciiWhitespaceSet__block_invoke()
   return [(EFByteSet *)&v3 init];
 }
 
-- (EFByteSet)initWithCString:(const char *)a3
+- (EFByteSet)initWithCString:(const char *)string
 {
-  v5 = strlen(a3);
+  v5 = strlen(string);
 
-  return [(EFByteSet *)self initWithBytes:a3 length:v5];
+  return [(EFByteSet *)self initWithBytes:string length:v5];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 256; ++i)
   {
     if ((*(self->_bitString.__first_ + ((i >> 3) & 0x1FFFFFFFFFFFFFF8)) >> i))
     {
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02zX", i];
-      [v3 addObject:v5];
+      [array addObject:v5];
     }
   }
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  v8 = [v3 componentsJoinedByString:{@", "}];
+  v8 = [array componentsJoinedByString:{@", "}];
   v9 = [v6 stringWithFormat:@"<%@: %p> {%@}", v7, self, v8];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(EFMutableByteSet);
   if (result)

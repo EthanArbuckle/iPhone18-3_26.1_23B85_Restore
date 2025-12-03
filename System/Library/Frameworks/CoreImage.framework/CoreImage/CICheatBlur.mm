@@ -31,9 +31,9 @@
       y = v45.origin.y;
       width = v45.size.width;
       height = v45.size.height;
-      v19 = [(CICheatBlur *)self _CIBox6];
+      _CIBox6 = [(CICheatBlur *)self _CIBox6];
       v43[0] = inputImage;
-      inputImage = [v19 applyWithExtent:&__block_literal_global_7 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 1), x, y, width, height}];
+      inputImage = [_CIBox6 applyWithExtent:&__block_literal_global_7 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 1), x, y, width, height}];
       v4 = v4 * 0.166666667;
       v6 = v6 * 6.0;
     }
@@ -58,9 +58,9 @@
     v29 = v47.origin.y;
     v30 = v47.size.width;
     v31 = v47.size.height;
-    v32 = [(CICheatBlur *)self _CIBox4];
+    _CIBox4 = [(CICheatBlur *)self _CIBox4];
     v42 = inputImage;
-    inputImage = [v32 applyWithExtent:&__block_literal_global_5 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v42, 1), v28, v29, v30, v31}];
+    inputImage = [_CIBox4 applyWithExtent:&__block_literal_global_5 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v42, 1), v28, v29, v30, v31}];
     v4 = v4 * 0.25;
     v6 = v6 * 4.0;
   }
@@ -86,12 +86,12 @@
     v34 = v49.origin.y;
     v35 = v49.size.width;
     v36 = v49.size.height;
-    v37 = [(CICheatBlur *)self _CICross4];
+    _CICross4 = [(CICheatBlur *)self _CICross4];
     v41[0] = inputImage;
     v38 = v4 * 0.333333333;
     *&v38 = v4 * 0.333333333;
     v41[1] = [MEMORY[0x1E696AD98] numberWithFloat:v38];
-    inputImage = [v37 applyWithExtent:&__block_literal_global_7 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v41, 2), v33, v34, v35, v36}];
+    inputImage = [_CICross4 applyWithExtent:&__block_literal_global_7 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v41, 2), v33, v34, v35, v36}];
   }
 
   if (v6 > 1.0)

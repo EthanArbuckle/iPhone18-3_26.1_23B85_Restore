@@ -2,54 +2,54 @@
 + (BOOL)_hasMTImageStoreContent;
 + (BOOL)_needsImageStoreMigration;
 + (BOOL)globalDownloadPolicyRequiresMigration;
-+ (BOOL)hasBeenInactiveForTimeInterval:(double)a3;
-+ (BOOL)isDefaultSettingsForPlaylist:(id)a3 title:(id)a4 episodesToShow:(int64_t)a5 showPlayedEpisodes:(BOOL)a6 includeAllPodcasts:(BOOL)a7;
++ (BOOL)hasBeenInactiveForTimeInterval:(double)interval;
++ (BOOL)isDefaultSettingsForPlaylist:(id)playlist title:(id)title episodesToShow:(int64_t)show showPlayedEpisodes:(BOOL)episodes includeAllPodcasts:(BOOL)podcasts;
 + (BOOL)moveSQLiteFilesFromDocumentsToSharedContainer;
 + (BOOL)needToMigrateDataToSharedContainer;
 + (BOOL)needsMigration;
 + (BOOL)needsToComputeLastLaunch;
-+ (BOOL)podcastMigrationForVersion8to9:(id)a3;
++ (BOOL)podcastMigrationForVersion8to9:(id)version8to9;
 + (BOOL)runCoreDataMigration;
 + (BOOL)runDataMigration;
 + (BOOL)runImageFormatMigration;
 + (BOOL)runImageStoreMigration;
 + (BOOL)runImageStorePathMigration;
-+ (BOOL)runMigrationForPodcast:(id)a3 version:(int64_t)a4;
++ (BOOL)runMigrationForPodcast:(id)podcast version:(int64_t)version;
 + (id)_fetchRequestForMostRecentlyPlayedEpisode;
 + (id)_mostRecentPlayTimeFromDatabase;
 + (id)legacyLibraryPath;
 + (int)episodesToKeepDefaultValue;
-+ (int64_t)episodesToKeepToEpisodeLimit:(int)a3;
++ (int64_t)episodesToKeepToEpisodeLimit:(int)limit;
 + (void)_migrateToImageProvider;
 + (void)_removeImageStoreContent;
-+ (void)_updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:(id)a3;
-+ (void)allEpisodesMigrationForVersion40to41In:(id)a3;
-+ (void)allEpisodesMigrationForVersion43to44In:(id)a3;
-+ (void)allEpisodesMigrationForVersion45to46In:(id)a3;
-+ (void)allEpisodesMigrationForVersion46to47In:(id)a3;
-+ (void)allEpisodesMigrationForVersion47to48In:(id)a3;
-+ (void)allEpisodesMigrationForVersion51to52In:(id)a3;
-+ (void)allEpisodesMigrationForVersion53to54In:(id)a3;
-+ (void)allEpisodesMigrationForVersion54to55In:(id)a3;
-+ (void)allEpisodesMigrationForVersion59to60In:(id)a3;
-+ (void)allEpisodesMigrationForVersion65to66In:(id)a3;
-+ (void)allEpisodesMigrationForVersion68to69In:(id)a3;
++ (void)_updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:(id)defaults;
++ (void)allEpisodesMigrationForVersion40to41In:(id)in;
++ (void)allEpisodesMigrationForVersion43to44In:(id)in;
++ (void)allEpisodesMigrationForVersion45to46In:(id)in;
++ (void)allEpisodesMigrationForVersion46to47In:(id)in;
++ (void)allEpisodesMigrationForVersion47to48In:(id)in;
++ (void)allEpisodesMigrationForVersion51to52In:(id)in;
++ (void)allEpisodesMigrationForVersion53to54In:(id)in;
++ (void)allEpisodesMigrationForVersion54to55In:(id)in;
++ (void)allEpisodesMigrationForVersion59to60In:(id)in;
++ (void)allEpisodesMigrationForVersion65to66In:(id)in;
++ (void)allEpisodesMigrationForVersion68to69In:(id)in;
 + (void)deleteDuplicateVideoEpisodesForRdar59691904;
-+ (void)deleteOrUpdatePlaylist:(id)a3 ifIsDefault:(BOOL)a4;
-+ (void)episodeMigrationForVersion0to1:(id)a3;
-+ (void)episodeMigrationForVersion13to14:(id)a3;
-+ (void)episodeMigrationForVersion16to17:(id)a3;
-+ (void)episodeMigrationForVersion17to18:(id)a3;
-+ (void)episodeMigrationForVersion21to22:(id)a3;
-+ (void)episodeMigrationForVersion23to24:(id)a3;
-+ (void)episodeMigrationForVersion29to30:(id)a3;
-+ (void)episodeMigrationForVersion6to7:(id)a3;
++ (void)deleteOrUpdatePlaylist:(id)playlist ifIsDefault:(BOOL)default;
++ (void)episodeMigrationForVersion0to1:(id)version0to1;
++ (void)episodeMigrationForVersion13to14:(id)version13to14;
++ (void)episodeMigrationForVersion16to17:(id)version16to17;
++ (void)episodeMigrationForVersion17to18:(id)version17to18;
++ (void)episodeMigrationForVersion21to22:(id)version21to22;
++ (void)episodeMigrationForVersion23to24:(id)version23to24;
++ (void)episodeMigrationForVersion29to30:(id)version29to30;
++ (void)episodeMigrationForVersion6to7:(id)version6to7;
 + (void)fixupDataMigrationVersion;
 + (void)migrateDatabaseToSharedContainerIfNeeded;
 + (void)migrateDefaultPlaylistsForVersion18to19;
 + (void)migratePlaylistDefaultsForVersion66to67;
 + (void)migratePlaylistDefaultsForVersion7to8;
-+ (void)migratePlaylistsForVersion:(int64_t)a3;
++ (void)migratePlaylistsForVersion:(int64_t)version;
 + (void)migrateSerpentId;
 + (void)migrateSettingDefaultsForVersion10to11;
 + (void)migrateSettingDefaultsForVersion42to43;
@@ -59,36 +59,36 @@
 + (void)migrateSettingDefaultsForVersion60to61;
 + (void)migrateSettingDefaultsForVersion6to7;
 + (void)migrateSettingDefaultsForVersion9to10;
-+ (void)migrateSettingsForVersion:(unint64_t)a3;
++ (void)migrateSettingsForVersion:(unint64_t)version;
 + (void)moveEpisodeAssetsToSharedContainer;
-+ (void)podcastMigrationForVersion11to12:(id)a3;
-+ (void)podcastMigrationForVersion14to15:(id)a3;
-+ (void)podcastMigrationForVersion19to20:(id)a3;
-+ (void)podcastMigrationForVersion27to28:(id)a3;
-+ (void)podcastMigrationForVersion28to29:(id)a3;
-+ (void)podcastMigrationForVersion34to35:(id)a3;
-+ (void)podcastMigrationForVersion36to37:(id)a3;
-+ (void)podcastMigrationForVersion38to39:(id)a3;
-+ (void)podcastMigrationForVersion41to42:(id)a3;
-+ (void)podcastMigrationForVersion42to43:(id)a3;
-+ (void)podcastMigrationForVersion44to45:(id)a3;
-+ (void)podcastMigrationForVersion49to50:(id)a3;
-+ (void)podcastMigrationForVersion50to51:(id)a3;
-+ (void)podcastMigrationForVersion55to56:(id)a3;
-+ (void)podcastMigrationForVersion56to57:(id)a3;
-+ (void)podcastMigrationForVersion57to58:(id)a3;
-+ (void)podcastMigrationForVersion58to59:(id)a3;
-+ (void)podcastMigrationForVersion59to60:(id)a3;
-+ (void)podcastMigrationForVersion62to63:(id)a3;
-+ (void)podcastMigrationForVersion66to67:(id)a3;
-+ (void)podcastMigrationForVersion6to7:(id)a3;
-+ (void)podcastMigrationForVersion9to10:(id)a3;
++ (void)podcastMigrationForVersion11to12:(id)version11to12;
++ (void)podcastMigrationForVersion14to15:(id)version14to15;
++ (void)podcastMigrationForVersion19to20:(id)version19to20;
++ (void)podcastMigrationForVersion27to28:(id)version27to28;
++ (void)podcastMigrationForVersion28to29:(id)version28to29;
++ (void)podcastMigrationForVersion34to35:(id)version34to35;
++ (void)podcastMigrationForVersion36to37:(id)version36to37;
++ (void)podcastMigrationForVersion38to39:(id)version38to39;
++ (void)podcastMigrationForVersion41to42:(id)version41to42;
++ (void)podcastMigrationForVersion42to43:(id)version42to43;
++ (void)podcastMigrationForVersion44to45:(id)version44to45;
++ (void)podcastMigrationForVersion49to50:(id)version49to50;
++ (void)podcastMigrationForVersion50to51:(id)version50to51;
++ (void)podcastMigrationForVersion55to56:(id)version55to56;
++ (void)podcastMigrationForVersion56to57:(id)version56to57;
++ (void)podcastMigrationForVersion57to58:(id)version57to58;
++ (void)podcastMigrationForVersion58to59:(id)version58to59;
++ (void)podcastMigrationForVersion59to60:(id)version59to60;
++ (void)podcastMigrationForVersion62to63:(id)version62to63;
++ (void)podcastMigrationForVersion66to67:(id)version66to67;
++ (void)podcastMigrationForVersion6to7:(id)version6to7;
++ (void)podcastMigrationForVersion9to10:(id)version9to10;
 + (void)prunePersistentHistory;
 + (void)recalculateAllPlaylists;
 + (void)removeAllEpisodesFromMediaLibrary;
-+ (void)rollbackMigrationV40IfNeededInContext:(id)a3;
-+ (void)runMigrationOnAllEpisodesForVersion:(int64_t)a3;
-+ (void)runMigrationOnEpisodesByPodcastForVersion:(int64_t)a3;
++ (void)rollbackMigrationV40IfNeededInContext:(id)context;
++ (void)runMigrationOnAllEpisodesForVersion:(int64_t)version;
++ (void)runMigrationOnEpisodesByPodcastForVersion:(int64_t)version;
 + (void)setLastLaunchFromDatabase;
 + (void)touchAllMigrationVersions;
 + (void)touchCoreDataMigrationVersion;
@@ -101,12 +101,12 @@
 {
   if ((+[MTDB quickCheckForNeedsContainerMigration]& 1) == 0)
   {
-    if ([a1 needToMigrateDataToSharedContainer])
+    if ([self needToMigrateDataToSharedContainer])
     {
-      [a1 moveSQLiteFilesFromDocumentsToSharedContainer];
+      [self moveSQLiteFilesFromDocumentsToSharedContainer];
     }
 
-    if (([a1 needToMigrateDataToSharedContainer] & 1) == 0)
+    if (([self needToMigrateDataToSharedContainer] & 1) == 0)
     {
 
       [MTDB setQuickCheckForNeedsContainerMigration:1];
@@ -119,12 +119,12 @@
   if (+[MTLibraryMigrationUtil isNewInstall])
   {
     [IMMetrics recordUserAction:@"is_new_install"];
-    [a1 touchAllMigrationVersions];
+    [self touchAllMigrationVersions];
     return 0;
   }
 
-  [a1 fixupDataMigrationVersion];
-  if (+[MTLibraryMigrationUtil needsCoreDataMigration](MTLibraryMigrationUtil, "needsCoreDataMigration") & 1) != 0 || (+[MTLibraryMigrationUtil needsDataMigration](MTLibraryMigrationUtil, "needsDataMigration") & 1) != 0 || (+[MTLibraryMigrationUtil needsImageStoreMigration](MTLibraryMigrationUtil, "needsImageStoreMigration") & 1) != 0 || (+[MTDB isCorrupt](MTDB, "isCorrupt") & 1) != 0 || (+[MTDB needsSerpentIdEpisodeMigration](MTDB, "needsSerpentIdEpisodeMigration") & 1) != 0 || (+[MTDB needsCacheBustForFreeAndPaidUrlStorage](MTDB, "needsCacheBustForFreeAndPaidUrlStorage") & 1) != 0 || (+[MTDB needsMigrationToDeltaFeedUpdates](MTDB, "needsMigrationToDeltaFeedUpdates") & 1) != 0 || ([a1 globalDownloadPolicyRequiresMigration] & 1) != 0 || +[MTDataMigrator requiresMigration](MTDataMigrator, "requiresMigration") || (objc_msgSend(a1, "_needsImageStoreMigration"))
+  [self fixupDataMigrationVersion];
+  if (+[MTLibraryMigrationUtil needsCoreDataMigration](MTLibraryMigrationUtil, "needsCoreDataMigration") & 1) != 0 || (+[MTLibraryMigrationUtil needsDataMigration](MTLibraryMigrationUtil, "needsDataMigration") & 1) != 0 || (+[MTLibraryMigrationUtil needsImageStoreMigration](MTLibraryMigrationUtil, "needsImageStoreMigration") & 1) != 0 || (+[MTDB isCorrupt](MTDB, "isCorrupt") & 1) != 0 || (+[MTDB needsSerpentIdEpisodeMigration](MTDB, "needsSerpentIdEpisodeMigration") & 1) != 0 || (+[MTDB needsCacheBustForFreeAndPaidUrlStorage](MTDB, "needsCacheBustForFreeAndPaidUrlStorage") & 1) != 0 || (+[MTDB needsMigrationToDeltaFeedUpdates](MTDB, "needsMigrationToDeltaFeedUpdates") & 1) != 0 || ([self globalDownloadPolicyRequiresMigration] & 1) != 0 || +[MTDataMigrator requiresMigration](MTDataMigrator, "requiresMigration") || (objc_msgSend(self, "_needsImageStoreMigration"))
   {
     return 1;
   }
@@ -134,7 +134,7 @@
     return 0;
   }
 
-  return [a1 _hasMTImageStoreContent];
+  return [self _hasMTImageStoreContent];
 }
 
 + (void)fixupDataMigrationVersion
@@ -161,30 +161,30 @@
 
 + (BOOL)globalDownloadPolicyRequiresMigration
 {
-  if ([a1 needsToComputeLastLaunch])
+  if ([self needsToComputeLastLaunch])
   {
     return 1;
   }
 
-  [a1 inactiveIntervalForDownloadPolicyUpgrade];
+  [self inactiveIntervalForDownloadPolicyUpgrade];
 
-  return [a1 hasBeenInactiveForTimeInterval:?];
+  return [self hasBeenInactiveForTimeInterval:?];
 }
 
 + (BOOL)needsToComputeLastLaunch
 {
   v2 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 lastAppUseDate];
+  lastAppUseDate = [v2 lastAppUseDate];
 
   v4 = _MTLogCategoryLifecycle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = lastAppUseDate;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Last application use: %@", &v6, 0xCu);
   }
 
-  return v3 == 0;
+  return lastAppUseDate == 0;
 }
 
 + (BOOL)_needsImageStoreMigration
@@ -200,8 +200,8 @@
   v2 = +[MTImageStoreConstants defaultImageStoreURL];
   v3 = +[NSFileManager defaultManager];
   v8 = 0;
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:&v8];
+  path = [v2 path];
+  v5 = [v3 fileExistsAtPath:path isDirectory:&v8];
   v6 = v8;
 
   return v5 & v6;
@@ -239,7 +239,7 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Deleted orphaned episodes.", v25, 2u);
     }
 
-    [a1 migrateSettingsForVersion:v5];
+    [self migrateSettingsForVersion:v5];
     v9 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -247,7 +247,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Finished migration for settings.", v25, 2u);
     }
 
-    [a1 migratePlaylistsForVersion:v5];
+    [self migratePlaylistsForVersion:v5];
     v10 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -255,7 +255,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Finished migration for playlists.", v25, 2u);
     }
 
-    [a1 runMigrationOnEpisodesByPodcastForVersion:v5];
+    [self runMigrationOnEpisodesByPodcastForVersion:v5];
     v11 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -263,7 +263,7 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Finished migration for episodes by podcast.", v25, 2u);
     }
 
-    [a1 runMigrationOnAllEpisodesForVersion:v5];
+    [self runMigrationOnAllEpisodesForVersion:v5];
     v12 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -279,7 +279,7 @@
           goto LABEL_28;
         }
 
-        [a1 deleteDuplicateVideoEpisodesForRdar59691904];
+        [self deleteDuplicateVideoEpisodesForRdar59691904];
         v13 = _MTLogCategoryDatabase();
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
@@ -303,7 +303,7 @@
 
         break;
       case 3:
-        [a1 recalculateAllPlaylists];
+        [self recalculateAllPlaylists];
         v13 = _MTLogCategoryDatabase();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
@@ -328,11 +328,11 @@ LABEL_26:
           }
 
 LABEL_34:
-          [a1 prunePersistentHistory];
+          [self prunePersistentHistory];
 LABEL_35:
           +[MTFeedManager resetCache];
 LABEL_36:
-          [a1 touchLibraryMigrationVersion];
+          [self touchLibraryMigrationVersion];
           v20 = _MTLogCategoryDatabase();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
@@ -379,7 +379,7 @@ LABEL_28:
 LABEL_39:
   if (+[MTDB needsSerpentIdEpisodeMigration])
   {
-    [a1 migrateSerpentId];
+    [self migrateSerpentId];
     v4 = 1;
   }
 
@@ -396,18 +396,18 @@ LABEL_39:
     +[MTDB setMigrationToDeltaFeedUpdatesComplete];
   }
 
-  if ([a1 needsToComputeLastLaunch])
+  if ([self needsToComputeLastLaunch])
   {
-    [a1 setLastLaunchFromDatabase];
+    [self setLastLaunchFromDatabase];
   }
 
-  [a1 updateGlobalDownloadPolicyIfNecessary];
-  if ([a1 _needsImageStoreMigration])
+  [self updateGlobalDownloadPolicyIfNecessary];
+  if ([self _needsImageStoreMigration])
   {
-    [a1 _migrateToImageProvider];
+    [self _migrateToImageProvider];
   }
 
-  else if ([a1 _hasMTImageStoreContent])
+  else if ([self _hasMTImageStoreContent])
   {
     v22 = _MTLogCategoryArtworkDownload();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -416,7 +416,7 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "ImageProvider migration is complete, but images remain in MTImageStore. Attempting deletion...", v25, 2u);
     }
 
-    [a1 _removeImageStoreContent];
+    [self _removeImageStoreContent];
   }
 
   +[MTDataMigrator migrate];
@@ -448,7 +448,7 @@ LABEL_39:
   v7[2] = sub_10014B0EC;
   v7[3] = &unk_1004DDCA0;
   v8 = v4;
-  v9 = a1;
+  selfCopy = self;
   v6 = v4;
   [v5 migrateLibraryArtworkFromImageStoreWithCompletionHandler:v7];
 }
@@ -503,51 +503,51 @@ LABEL_9:
 LABEL_11:
 }
 
-+ (void)migratePlaylistsForVersion:(int64_t)a3
++ (void)migratePlaylistsForVersion:(int64_t)version
 {
-  if ((a3 - 19) >= 0x31)
+  if ((version - 19) >= 0x31)
   {
-    if ((a3 - 7) >= 0xC)
+    if ((version - 7) >= 0xC)
     {
-      if (a3 > 6)
+      if (version > 6)
       {
         return;
       }
 
-      [a1 migratePlaylistDefaultsForVersion7to8];
+      [self migratePlaylistDefaultsForVersion7to8];
     }
 
-    [a1 migrateDefaultPlaylistsForVersion18to19];
+    [self migrateDefaultPlaylistsForVersion18to19];
   }
 
-  [a1 migratePlaylistDefaultsForVersion66to67];
+  [self migratePlaylistDefaultsForVersion66to67];
 }
 
 + (void)migratePlaylistDefaultsForVersion66to67
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10014B4AC;
   v5[3] = &unk_1004D8358;
-  v6 = v3;
-  v4 = v3;
+  v6 = mainOrPrivateContext;
+  v4 = mainOrPrivateContext;
   [v4 performBlockAndWaitWithSave:v5];
 }
 
 + (void)migratePlaylistDefaultsForVersion7to8
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10014B6A4;
   v5[3] = &unk_1004D8358;
-  v6 = v3;
-  v4 = v3;
+  v6 = mainOrPrivateContext;
+  v4 = mainOrPrivateContext;
   [v4 performBlockAndWaitWithSave:v5];
 }
 
@@ -561,47 +561,47 @@ LABEL_11:
   }
 
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014B8E8;
   v7[3] = &unk_1004D9720;
-  v8 = v5;
-  v9 = a1;
-  v6 = v5;
+  v8 = mainOrPrivateContext;
+  selfCopy = self;
+  v6 = mainOrPrivateContext;
   [v6 performBlockAndWaitWithSave:v7];
 }
 
-+ (void)deleteOrUpdatePlaylist:(id)a3 ifIsDefault:(BOOL)a4
++ (void)deleteOrUpdatePlaylist:(id)playlist ifIsDefault:(BOOL)default
 {
-  if (a4)
+  if (default)
   {
-    v4 = a3;
-    v5 = +[MTLibrary sharedInstance];
-    [v5 deletePlaylist:v4];
+    playlistCopy = playlist;
+    playlistCopy2 = +[MTLibrary sharedInstance];
+    [playlistCopy2 deletePlaylist:playlistCopy];
   }
 
   else
   {
-    v5 = a3;
-    [v5 setIsBuiltIn:0];
+    playlistCopy2 = playlist;
+    [playlistCopy2 setIsBuiltIn:0];
   }
 }
 
-+ (BOOL)isDefaultSettingsForPlaylist:(id)a3 title:(id)a4 episodesToShow:(int64_t)a5 showPlayedEpisodes:(BOOL)a6 includeAllPodcasts:(BOOL)a7
++ (BOOL)isDefaultSettingsForPlaylist:(id)playlist title:(id)title episodesToShow:(int64_t)show showPlayedEpisodes:(BOOL)episodes includeAllPodcasts:(BOOL)podcasts
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 title];
-  v14 = [v13 isEqualToString:v12];
+  podcastsCopy = podcasts;
+  episodesCopy = episodes;
+  playlistCopy = playlist;
+  titleCopy = title;
+  title = [playlistCopy title];
+  v14 = [title isEqualToString:titleCopy];
 
   if (v14)
   {
-    v15 = [v11 defaultSettings];
-    v16 = [v15 episodesToShow] == a5 && objc_msgSend(v15, "showPlayedEpisodes") == v8 && objc_msgSend(v11, "includesAllPodcasts") == v7 && objc_msgSend(v15, "mediaType") == 0;
+    defaultSettings = [playlistCopy defaultSettings];
+    v16 = [defaultSettings episodesToShow] == show && objc_msgSend(defaultSettings, "showPlayedEpisodes") == episodesCopy && objc_msgSend(playlistCopy, "includesAllPodcasts") == podcastsCopy && objc_msgSend(defaultSettings, "mediaType") == 0;
   }
 
   else
@@ -612,22 +612,22 @@ LABEL_11:
   return v16;
 }
 
-+ (void)migrateSettingsForVersion:(unint64_t)a3
++ (void)migrateSettingsForVersion:(unint64_t)version
 {
-  if (a3 <= 30)
+  if (version <= 30)
   {
-    if (a3 > 10)
+    if (version > 10)
     {
 LABEL_15:
-      [a1 migrateSettingDefaultsForVersion30to31];
+      [self migrateSettingDefaultsForVersion30to31];
       goto LABEL_16;
     }
 
-    if (a3 >= 7)
+    if (version >= 7)
     {
-      if (a3 - 7 >= 3)
+      if (version - 7 >= 3)
       {
-        if (a3 != 10)
+        if (version != 10)
         {
           return;
         }
@@ -638,40 +638,40 @@ LABEL_15:
 
     else
     {
-      [a1 migrateSettingDefaultsForVersion6to7];
+      [self migrateSettingDefaultsForVersion6to7];
     }
 
-    [a1 migrateSettingDefaultsForVersion9to10];
+    [self migrateSettingDefaultsForVersion9to10];
 LABEL_14:
-    [a1 migrateSettingDefaultsForVersion10to11];
+    [self migrateSettingDefaultsForVersion10to11];
     goto LABEL_15;
   }
 
-  if (a3 > 0x3C)
+  if (version > 0x3C)
   {
     goto LABEL_9;
   }
 
-  if (((1 << a3) & 0x7FE000000000000) != 0)
+  if (((1 << version) & 0x7FE000000000000) != 0)
   {
 LABEL_19:
-    [a1 migrateSettingDefaultsForVersion58to59];
+    [self migrateSettingDefaultsForVersion58to59];
     goto LABEL_20;
   }
 
-  if (((1 << a3) & 0x1E00000000000) != 0)
+  if (((1 << version) & 0x1E00000000000) != 0)
   {
 LABEL_18:
-    [a1 migrateSettingDefaultsForVersion48to49];
+    [self migrateSettingDefaultsForVersion48to49];
     goto LABEL_19;
   }
 
-  if (((1 << a3) & 0x1800000000000000) == 0)
+  if (((1 << version) & 0x1800000000000000) == 0)
   {
 LABEL_9:
-    if (a3 - 31 >= 0xC)
+    if (version - 31 >= 0xC)
     {
-      if (a3 - 43 >= 2)
+      if (version - 43 >= 2)
       {
         return;
       }
@@ -680,15 +680,15 @@ LABEL_9:
     }
 
 LABEL_16:
-    [a1 migrateSettingDefaultsForVersion42to43];
+    [self migrateSettingDefaultsForVersion42to43];
 LABEL_17:
-    [a1 migrateSettingDefaultsForVersion44to45];
+    [self migrateSettingDefaultsForVersion44to45];
     goto LABEL_18;
   }
 
 LABEL_20:
 
-  [a1 migrateSettingDefaultsForVersion60to61];
+  [self migrateSettingDefaultsForVersion60to61];
 }
 
 + (void)migrateSettingDefaultsForVersion6to7
@@ -700,7 +700,7 @@ LABEL_20:
   v6 = +[NSUserDefaults standardUserDefaults];
   [v6 setBool:(v5 - 1) < 2 forKey:@"MTAutoDownloadDefaultKey"];
 
-  v7 = [a1 episodesToKeepToEpisodeLimit:{objc_msgSend(a1, "episodesToKeepDefaultValue")}];
+  v7 = [self episodesToKeepToEpisodeLimit:{objc_msgSend(self, "episodesToKeepDefaultValue")}];
   v8 = +[NSUserDefaults standardUserDefaults];
   [v8 setInteger:v7 forKey:kMTPodcastEpisodeLimitDefaultKey];
 }
@@ -787,13 +787,13 @@ LABEL_20:
     v18 = 0x2020000000;
     v19 = 0;
     v6 = +[MTDB sharedInstance];
-    v7 = [v6 mainOrPrivateContext];
+    mainOrPrivateContext = [v6 mainOrPrivateContext];
 
     v10 = _NSConcreteStackBlock;
     v11 = 3221225472;
     v12 = sub_10014C24C;
     v13 = &unk_1004D8CC8;
-    v8 = v7;
+    v8 = mainOrPrivateContext;
     v14 = v8;
     v15 = buf;
     [v8 performBlockAndWait:&v10];
@@ -823,39 +823,39 @@ LABEL_20:
 + (void)migrateSettingDefaultsForVersion60to61
 {
   v2 = +[UITraitCollection currentTraitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     [v4 removeObjectForKey:@"didPresentNowPlayingScrollingTip"];
   }
 }
 
-+ (void)runMigrationOnEpisodesByPodcastForVersion:(int64_t)a3
++ (void)runMigrationOnEpisodesByPodcastForVersion:(int64_t)version
 {
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10014C5B8;
   v8[3] = &unk_1004DDCC8;
-  v9 = v6;
-  v10 = a3;
-  v11 = a1;
-  v7 = v6;
+  v9 = mainOrPrivateContext;
+  versionCopy = version;
+  selfCopy = self;
+  v7 = mainOrPrivateContext;
   [v7 performBlockAndWaitWithSave:v8];
 }
 
-+ (void)episodeMigrationForVersion29to30:(id)a3
++ (void)episodeMigrationForVersion29to30:(id)version29to30
 {
-  v8 = a3;
-  if ([v8 isBackCatalogItem] && objc_msgSend(v8, "saved"))
+  version29to30Copy = version29to30;
+  if ([version29to30Copy isBackCatalogItem] && objc_msgSend(version29to30Copy, "saved"))
   {
-    [v8 playhead];
+    [version29to30Copy playhead];
     v4 = v3;
-    if ([v8 isPartiallyPlayedBackCatalogItem])
+    if ([version29to30Copy isPartiallyPlayedBackCatalogItem])
     {
       v5 = 1;
     }
@@ -866,17 +866,17 @@ LABEL_20:
     }
 
     v6 = +[MTLibrary sharedInstance];
-    [v6 setPlayState:v5 manually:1 forUserActionOnEpisode:v8 saveChanges:0];
+    [v6 setPlayState:v5 manually:1 forUserActionOnEpisode:version29to30Copy saveChanges:0];
 
     LODWORD(v7) = v4;
-    [v8 setPlayhead:v7];
+    [version29to30Copy setPlayhead:v7];
   }
 }
 
 + (void)migrateSerpentId
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v4 = [NSFetchRequest fetchRequestWithEntityName:kMTEpisodeEntityName];
   [v4 setReturnsObjectsAsFaults:0];
@@ -885,56 +885,56 @@ LABEL_20:
   v8 = 3221225472;
   v9 = sub_10014CF20;
   v10 = &unk_1004D8798;
-  v11 = v3;
+  v11 = mainOrPrivateContext;
   v12 = v4;
   v5 = v4;
-  v6 = v3;
+  v6 = mainOrPrivateContext;
   [v6 performBlockAndWaitWithSave:&v7];
   [MTDB setSerpentIdMigrationComplete:1, v7, v8, v9, v10];
 }
 
-+ (void)episodeMigrationForVersion0to1:(id)a3
++ (void)episodeMigrationForVersion0to1:(id)version0to1
 {
-  v5 = a3;
-  v3 = [v5 flags];
-  if (v3)
+  version0to1Copy = version0to1;
+  flags = [version0to1Copy flags];
+  if (flags)
   {
-    v4 = v3;
-    [v5 setVideo:(v3 >> 3) & 1];
-    [v5 setAudio:(v4 >> 4) & 1];
-    [v5 setExternalType:(v4 >> 5) & 1];
-    [v5 setFlags:0];
+    v4 = flags;
+    [version0to1Copy setVideo:(flags >> 3) & 1];
+    [version0to1Copy setAudio:(v4 >> 4) & 1];
+    [version0to1Copy setExternalType:(v4 >> 5) & 1];
+    [version0to1Copy setFlags:0];
   }
 }
 
-+ (void)episodeMigrationForVersion6to7:(id)a3
++ (void)episodeMigrationForVersion6to7:(id)version6to7
 {
-  v16 = a3;
-  if (![v16 playState])
+  version6to7Copy = version6to7;
+  if (![version6to7Copy playState])
   {
-    v3 = +[MTLibraryLegacyUtil playStateFromHasBeenPlayed:andPlayCount:](MTLibraryLegacyUtil, "playStateFromHasBeenPlayed:andPlayCount:", [v16 hasBeenPlayed], objc_msgSend(v16, "playCount"));
-    if (![v16 visible])
+    v3 = +[MTLibraryLegacyUtil playStateFromHasBeenPlayed:andPlayCount:](MTLibraryLegacyUtil, "playStateFromHasBeenPlayed:andPlayCount:", [version6to7Copy hasBeenPlayed], objc_msgSend(version6to7Copy, "playCount"));
+    if (![version6to7Copy visible])
     {
       v3 = 0;
     }
 
     if (v3)
     {
-      v4 = [v16 manuallyAdded];
+      manuallyAdded = [version6to7Copy manuallyAdded];
     }
 
     else
     {
-      v4 = ([v16 visible] ^ 1);
+      manuallyAdded = ([version6to7Copy visible] ^ 1);
     }
 
-    [v16 setPlayState:v3 manually:v4 source:8];
+    [version6to7Copy setPlayState:v3 manually:manuallyAdded source:8];
   }
 
-  if ([v16 persistentID])
+  if ([version6to7Copy persistentID])
   {
     v5 = +[MPMediaLibrary defaultMediaLibrary];
-    v6 = [v5 itemWithPersistentID:{objc_msgSend(v16, "persistentID")}];
+    v6 = [v5 itemWithPersistentID:{objc_msgSend(version6to7Copy, "persistentID")}];
 
     v7 = [MTMLMediaItem itemWithMPMediaItem:v6];
     v8 = v7;
@@ -950,41 +950,41 @@ LABEL_20:
 
     if (!v9)
     {
-      [v16 setIsFromITunesSync:{objc_msgSend(v7, "isFromITunesSync")}];
+      [version6to7Copy setIsFromITunesSync:{objc_msgSend(v7, "isFromITunesSync")}];
       if ([v8 isMissingAsset])
       {
-        [v16 setAssetURL:0];
+        [version6to7Copy setAssetURL:0];
       }
 
-      v10 = [v16 persistentID];
-      [v16 playhead];
-      +[MTMediaLibraryUtil updateMediaLibraryItem:playhead:playState:playCount:](MTMediaLibraryUtil, "updateMediaLibraryItem:playhead:playState:playCount:", v10, [v16 playState], objc_msgSend(v16, "playCount"), v11);
+      persistentID = [version6to7Copy persistentID];
+      [version6to7Copy playhead];
+      +[MTMediaLibraryUtil updateMediaLibraryItem:playhead:playState:playCount:](MTMediaLibraryUtil, "updateMediaLibraryItem:playhead:playState:playCount:", persistentID, [version6to7Copy playState], objc_msgSend(version6to7Copy, "playCount"), v11);
     }
   }
 
-  v12 = [v16 podcast];
-  if ([v12 deletePlayedEpisodesResolvedValue])
+  podcast = [version6to7Copy podcast];
+  if ([podcast deletePlayedEpisodesResolvedValue])
   {
-    if ([v16 manuallyAdded])
+    if ([version6to7Copy manuallyAdded])
     {
-      if ([v16 visible])
+      if ([version6to7Copy visible])
       {
-        if (([v16 userDeleted] & 1) == 0)
+        if (([version6to7Copy userDeleted] & 1) == 0)
         {
-          v13 = [v16 assetURL];
-          if (v13)
+          assetURL = [version6to7Copy assetURL];
+          if (assetURL)
           {
-            v14 = v13;
-            v15 = [v16 isFromITunesSync];
+            v14 = assetURL;
+            isFromITunesSync = [version6to7Copy isFromITunesSync];
 
-            if (v15)
+            if (isFromITunesSync)
             {
               goto LABEL_25;
             }
 
-            [v16 setSaved:1];
-            v12 = [v16 podcast];
-            [v12 setShowPlacardForSavedEpisodes:1];
+            [version6to7Copy setSaved:1];
+            podcast = [version6to7Copy podcast];
+            [podcast setShowPlacardForSavedEpisodes:1];
           }
         }
       }
@@ -992,100 +992,100 @@ LABEL_20:
   }
 
 LABEL_25:
-  [v16 setSuppressAutoDownload:1];
-  [v16 pubDate];
-  [v16 setImportDate:?];
+  [version6to7Copy setSuppressAutoDownload:1];
+  [version6to7Copy pubDate];
+  [version6to7Copy setImportDate:?];
 }
 
-+ (void)episodeMigrationForVersion13to14:(id)a3
++ (void)episodeMigrationForVersion13to14:(id)version13to14
 {
-  v3 = a3;
-  v7 = [v3 podcast];
-  [v3 pubDate];
+  version13to14Copy = version13to14;
+  podcast = [version13to14Copy podcast];
+  [version13to14Copy pubDate];
   v5 = v4;
-  [v7 lastTouchDate];
-  [v3 setIsNew:v5 > v6];
+  [podcast lastTouchDate];
+  [version13to14Copy setIsNew:v5 > v6];
 }
 
-+ (void)episodeMigrationForVersion16to17:(id)a3
++ (void)episodeMigrationForVersion16to17:(id)version16to17
 {
-  v3 = a3;
-  if (![v3 playState] && objc_msgSend(v3, "playStateManuallySet") && objc_msgSend(v3, "playStateSource") == 6)
+  version16to17Copy = version16to17;
+  if (![version16to17Copy playState] && objc_msgSend(version16to17Copy, "playStateManuallySet") && objc_msgSend(version16to17Copy, "playStateSource") == 6)
   {
-    [v3 setBackCatalog:1];
+    [version16to17Copy setBackCatalog:1];
   }
 }
 
-+ (void)episodeMigrationForVersion17to18:(id)a3
++ (void)episodeMigrationForVersion17to18:(id)version17to18
 {
-  v3 = a3;
-  v4 = [v3 itemDescription];
-  [v3 setItemDescriptionHasHTML:{objc_msgSend(v4, "hasHTML")}];
+  version17to18Copy = version17to18;
+  itemDescription = [version17to18Copy itemDescription];
+  [version17to18Copy setItemDescriptionHasHTML:{objc_msgSend(itemDescription, "hasHTML")}];
 }
 
-+ (void)episodeMigrationForVersion21to22:(id)a3
++ (void)episodeMigrationForVersion21to22:(id)version21to22
 {
-  v5 = a3;
-  if ([v5 itemDescriptionHasHTML])
+  version21to22Copy = version21to22;
+  if ([version21to22Copy itemDescriptionHasHTML])
   {
-    v3 = [v5 itemDescription];
-    v4 = [v3 stringBySmartlyStrippingHTML];
-    [v5 setItemDescriptionWithoutHTML:v4];
+    itemDescription = [version21to22Copy itemDescription];
+    stringBySmartlyStrippingHTML = [itemDescription stringBySmartlyStrippingHTML];
+    [version21to22Copy setItemDescriptionWithoutHTML:stringBySmartlyStrippingHTML];
   }
 }
 
-+ (void)episodeMigrationForVersion23to24:(id)a3
++ (void)episodeMigrationForVersion23to24:(id)version23to24
 {
-  v12 = a3;
+  version23to24Copy = version23to24;
   +[MTUniversalPlaybackPositionDataSource uppLastSyncTime];
   v4 = v3;
-  v5 = [v12 managedObjectContext];
-  v6 = [v12 metadataIdentifier];
-  v7 = [v5 uppMetadataForMetadataIdentifier:v6];
+  managedObjectContext = [version23to24Copy managedObjectContext];
+  metadataIdentifier = [version23to24Copy metadataIdentifier];
+  v7 = [managedObjectContext uppMetadataForMetadataIdentifier:metadataIdentifier];
 
   if (v7)
   {
-    [v12 metadataTimestamp];
+    [version23to24Copy metadataTimestamp];
     v9 = v8;
     [v7 timestamp];
     if (v9 != v10)
     {
-      [v12 metadataTimestamp];
+      [version23to24Copy metadataTimestamp];
       if (v11 < v4)
       {
-        [v12 updateUPPTimestamp];
+        [version23to24Copy updateUPPTimestamp];
       }
     }
   }
 }
 
-+ (BOOL)runMigrationForPodcast:(id)a3 version:(int64_t)a4
++ (BOOL)runMigrationForPodcast:(id)podcast version:(int64_t)version
 {
-  v6 = a3;
+  podcastCopy = podcast;
   v7 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
+    uuid = [podcastCopy uuid];
     v13 = 138543618;
-    v14 = v8;
+    v14 = uuid;
     v15 = 2048;
-    v16 = a4;
+    versionCopy = version;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Running migration on podcast with uuid %{public}@ for version %ld", &v13, 0x16u);
   }
 
-  switch(a4)
+  switch(version)
   {
     case 0:
     case 1:
     case 2:
-      if (([v6 flags] & 0x40) != 0)
+      if (([podcastCopy flags] & 0x40) != 0)
       {
         v9 = 0x7FFFFFFFLL;
       }
 
       else
       {
-        if (![v6 autoDownload])
+        if (![podcastCopy autoDownload])
         {
           goto LABEL_9;
         }
@@ -1093,28 +1093,28 @@ LABEL_25:
         v9 = 1;
       }
 
-      [v6 setAutoDownloadType:v9];
+      [podcastCopy setAutoDownloadType:v9];
       goto LABEL_9;
     case 3:
     case 4:
     case 5:
 LABEL_9:
-      [v6 setUpdateInterval:0];
-      v10 = [v6 darkCount];
-      if (v10 < kMTGoDarkCountLimit)
+      [podcastCopy setUpdateInterval:0];
+      darkCount = [podcastCopy darkCount];
+      if (darkCount < kMTGoDarkCountLimit)
       {
-        [v6 updateLastTouchDate];
+        [podcastCopy updateLastTouchDate];
       }
 
       goto LABEL_11;
     case 6:
 LABEL_11:
-      [a1 podcastMigrationForVersion6to7:v6];
+      [self podcastMigrationForVersion6to7:podcastCopy];
       goto LABEL_12;
     case 7:
     case 8:
 LABEL_12:
-      if (([a1 podcastMigrationForVersion8to9:v6] & 1) == 0)
+      if (([self podcastMigrationForVersion8to9:podcastCopy] & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -1123,18 +1123,18 @@ LABEL_12:
       goto LABEL_42;
     case 9:
 LABEL_14:
-      [a1 podcastMigrationForVersion9to10:v6];
+      [self podcastMigrationForVersion9to10:podcastCopy];
       goto LABEL_15;
     case 10:
     case 11:
 LABEL_15:
-      [a1 podcastMigrationForVersion11to12:v6];
+      [self podcastMigrationForVersion11to12:podcastCopy];
       goto LABEL_16;
     case 12:
     case 13:
     case 14:
 LABEL_16:
-      [a1 podcastMigrationForVersion14to15:v6];
+      [self podcastMigrationForVersion14to15:podcastCopy];
       goto LABEL_17;
     case 15:
     case 16:
@@ -1142,74 +1142,74 @@ LABEL_16:
     case 18:
     case 19:
 LABEL_17:
-      [a1 podcastMigrationForVersion19to20:v6];
+      [self podcastMigrationForVersion19to20:podcastCopy];
       goto LABEL_18;
     case 20:
 LABEL_18:
-      [a1 podcastMigrationForVersion20to21:v6];
+      [self podcastMigrationForVersion20to21:podcastCopy];
       goto LABEL_19;
     case 21:
     case 22:
     case 23:
     case 24:
 LABEL_19:
-      [a1 podcastMigrationForVersion24to25:v6];
+      [self podcastMigrationForVersion24to25:podcastCopy];
       goto LABEL_20;
     case 25:
 LABEL_20:
-      [a1 podcastMigrationForVersion25to26:v6];
+      [self podcastMigrationForVersion25to26:podcastCopy];
       goto LABEL_21;
     case 26:
 LABEL_21:
-      [a1 podcastMigrationForVersion26to27:v6];
+      [self podcastMigrationForVersion26to27:podcastCopy];
       goto LABEL_22;
     case 27:
 LABEL_22:
-      [a1 podcastMigrationForVersion27to28:v6];
+      [self podcastMigrationForVersion27to28:podcastCopy];
       goto LABEL_23;
     case 28:
 LABEL_23:
-      [a1 podcastMigrationForVersion28to29:v6];
+      [self podcastMigrationForVersion28to29:podcastCopy];
       goto LABEL_24;
     case 29:
     case 30:
     case 31:
 LABEL_24:
-      [a1 podcastMigrationForVersion32to33:v6];
+      [self podcastMigrationForVersion32to33:podcastCopy];
       goto LABEL_25;
     case 32:
     case 33:
     case 34:
 LABEL_25:
-      [a1 podcastMigrationForVersion34to35:v6];
+      [self podcastMigrationForVersion34to35:podcastCopy];
       goto LABEL_26;
     case 35:
 LABEL_26:
-      [a1 podcastMigrationForVersion35to36:v6];
+      [self podcastMigrationForVersion35to36:podcastCopy];
       goto LABEL_27;
     case 36:
 LABEL_27:
-      [a1 podcastMigrationForVersion36to37:v6];
+      [self podcastMigrationForVersion36to37:podcastCopy];
       goto LABEL_28;
     case 37:
     case 38:
 LABEL_28:
-      [a1 podcastMigrationForVersion38to39:v6];
+      [self podcastMigrationForVersion38to39:podcastCopy];
       goto LABEL_29;
     case 39:
     case 40:
     case 41:
 LABEL_29:
-      [a1 podcastMigrationForVersion41to42:v6];
+      [self podcastMigrationForVersion41to42:podcastCopy];
       goto LABEL_30;
     case 42:
 LABEL_30:
-      [a1 podcastMigrationForVersion42to43:v6];
+      [self podcastMigrationForVersion42to43:podcastCopy];
       goto LABEL_31;
     case 43:
     case 44:
 LABEL_31:
-      [a1 podcastMigrationForVersion44to45:v6];
+      [self podcastMigrationForVersion44to45:podcastCopy];
       goto LABEL_32;
     case 45:
     case 46:
@@ -1217,11 +1217,11 @@ LABEL_31:
     case 48:
     case 49:
 LABEL_32:
-      [a1 podcastMigrationForVersion49to50:v6];
+      [self podcastMigrationForVersion49to50:podcastCopy];
       goto LABEL_33;
     case 50:
 LABEL_33:
-      [a1 podcastMigrationForVersion50to51:v6];
+      [self podcastMigrationForVersion50to51:podcastCopy];
       goto LABEL_34;
     case 51:
     case 52:
@@ -1229,36 +1229,36 @@ LABEL_33:
     case 54:
     case 55:
 LABEL_34:
-      [a1 podcastMigrationForVersion55to56:v6];
+      [self podcastMigrationForVersion55to56:podcastCopy];
       goto LABEL_35;
     case 56:
 LABEL_35:
-      [a1 podcastMigrationForVersion56to57:v6];
+      [self podcastMigrationForVersion56to57:podcastCopy];
       goto LABEL_36;
     case 57:
 LABEL_36:
-      [a1 podcastMigrationForVersion57to58:v6];
+      [self podcastMigrationForVersion57to58:podcastCopy];
       goto LABEL_37;
     case 58:
 LABEL_37:
-      [a1 podcastMigrationForVersion58to59:v6];
+      [self podcastMigrationForVersion58to59:podcastCopy];
       goto LABEL_38;
     case 59:
 LABEL_38:
-      [a1 podcastMigrationForVersion59to60:v6];
+      [self podcastMigrationForVersion59to60:podcastCopy];
       goto LABEL_39;
     case 60:
     case 61:
     case 62:
 LABEL_39:
-      [a1 podcastMigrationForVersion62to63:v6];
+      [self podcastMigrationForVersion62to63:podcastCopy];
       goto LABEL_40;
     case 63:
     case 64:
     case 65:
     case 66:
 LABEL_40:
-      [a1 podcastMigrationForVersion66to67:v6];
+      [self podcastMigrationForVersion66to67:podcastCopy];
       break;
     default:
       break;
@@ -1270,71 +1270,71 @@ LABEL_42:
   return v11;
 }
 
-+ (void)podcastMigrationForVersion66to67:(id)a3
++ (void)podcastMigrationForVersion66to67:(id)version66to67
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  version66to67Copy = version66to67;
+  managedObjectContext = [version66to67Copy managedObjectContext];
   v5 = [NSFetchRequest fetchRequestWithEntityName:kMTEpisodeEntityName];
   [v5 setReturnsObjectsAsFaults:0];
   [v5 setFetchBatchSize:200];
-  v6 = [v3 uuid];
-  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v6];
+  uuid = [version66to67Copy uuid];
+  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid];
   [v5 setPredicate:v7];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10014DA34;
   v11[3] = &unk_1004D94C8;
-  v12 = v4;
+  v12 = managedObjectContext;
   v13 = v5;
-  v14 = v3;
-  v8 = v3;
+  v14 = version66to67Copy;
+  v8 = version66to67Copy;
   v9 = v5;
-  v10 = v4;
+  v10 = managedObjectContext;
   [v10 performBlockAndWaitWithSave:v11];
 }
 
-+ (void)podcastMigrationForVersion62to63:(id)a3
++ (void)podcastMigrationForVersion62to63:(id)version62to63
 {
-  v3 = a3;
-  [v3 managedObjectContext];
+  version62to63Copy = version62to63;
+  [version62to63Copy managedObjectContext];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10014DC30;
   v6[3] = &unk_1004D8798;
-  v8 = v7 = v3;
+  v8 = v7 = version62to63Copy;
   v4 = v8;
-  v5 = v3;
+  v5 = version62to63Copy;
   [v4 performBlockAndWait:v6];
 }
 
-+ (void)podcastMigrationForVersion59to60:(id)a3
++ (void)podcastMigrationForVersion59to60:(id)version59to60
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
-  [v3 calculateNewEpisodeCountIn:v4 serialShowsUseExperimentalRules:0];
+  version59to60Copy = version59to60;
+  managedObjectContext = [version59to60Copy managedObjectContext];
+  [version59to60Copy calculateNewEpisodeCountIn:managedObjectContext serialShowsUseExperimentalRules:0];
 }
 
-+ (void)podcastMigrationForVersion58to59:(id)a3
++ (void)podcastMigrationForVersion58to59:(id)version58to59
 {
-  v7 = a3;
+  version58to59Copy = version58to59;
   v3 = +[NSUserDefaults _applePodcastsFoundationSettingsUserDefaults];
   v4 = [v3 episodeLimitForKey:kMTPodcastEpisodeLimitDefaultKey];
 
-  if ([v7 autoDownloadEnabled])
+  if ([version58to59Copy autoDownloadEnabled])
   {
-    if ([v7 episodeLimit] != v4)
+    if ([version58to59Copy episodeLimit] != v4)
     {
       goto LABEL_8;
     }
 
-    v5 = v7;
+    v5 = version58to59Copy;
     v6 = &_mh_execute_header + 1;
   }
 
   else
   {
-    v5 = v7;
+    v5 = version58to59Copy;
     if (v4 == &_mh_execute_header)
     {
       v6 = (&_mh_execute_header.magic + 1);
@@ -1350,62 +1350,62 @@ LABEL_42:
 LABEL_8:
 }
 
-+ (void)podcastMigrationForVersion57to58:(id)a3
++ (void)podcastMigrationForVersion57to58:(id)version57to58
 {
-  v3 = a3;
-  v13 = [v3 managedObjectContext];
-  v4 = [v3 uuid];
-  v5 = [MTEpisode predicateForDownloadedEpisodesOnPodcastUuid:v4];
+  version57to58Copy = version57to58;
+  managedObjectContext = [version57to58Copy managedObjectContext];
+  uuid = [version57to58Copy uuid];
+  v5 = [MTEpisode predicateForDownloadedEpisodesOnPodcastUuid:uuid];
   v6 = [MTEpisode predicateForVisuallyPlayed:0];
   v7 = [v5 AND:v6];
 
   v8 = kMTEpisodeEntityName;
-  [v3 setDownloadedUnplayedEpisodesCount:{objc_msgSend(v13, "countOfObjectsInEntity:predicate:", kMTEpisodeEntityName, v7)}];
-  v9 = [v3 uuid];
-  v10 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:v9];
+  [version57to58Copy setDownloadedUnplayedEpisodesCount:{objc_msgSend(managedObjectContext, "countOfObjectsInEntity:predicate:", kMTEpisodeEntityName, v7)}];
+  uuid2 = [version57to58Copy uuid];
+  v10 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:uuid2];
   v11 = [MTEpisode predicateForVisuallyPlayed:0];
   v12 = [v10 AND:v11];
 
-  [v3 setSavedUnplayedEpisodesCount:{objc_msgSend(v13, "countOfObjectsInEntity:predicate:", v8, v12)}];
+  [version57to58Copy setSavedUnplayedEpisodesCount:{objc_msgSend(managedObjectContext, "countOfObjectsInEntity:predicate:", v8, v12)}];
 }
 
-+ (void)podcastMigrationForVersion56to57:(id)a3
++ (void)podcastMigrationForVersion56to57:(id)version56to57
 {
-  v4 = a3;
-  if ([v4 hidden])
+  version56to57Copy = version56to57;
+  if ([version56to57Copy hidden])
   {
-    v3 = 1;
+    isImplicitlyFollowed = 1;
   }
 
   else
   {
-    v3 = [v4 isImplicitlyFollowed];
+    isImplicitlyFollowed = [version56to57Copy isImplicitlyFollowed];
   }
 
-  [v4 setIsHiddenOrImplicitlyFollowed:v3];
+  [version56to57Copy setIsHiddenOrImplicitlyFollowed:isImplicitlyFollowed];
 }
 
-+ (void)podcastMigrationForVersion55to56:(id)a3
++ (void)podcastMigrationForVersion55to56:(id)version55to56
 {
-  v3 = a3;
-  if ([v3 isSerialShowTypeInFeed] && objc_msgSend(v3, "showTypeUserSetting") == 1)
+  version55to56Copy = version55to56;
+  if ([version55to56Copy isSerialShowTypeInFeed] && objc_msgSend(version55to56Copy, "showTypeUserSetting") == 1)
   {
-    [v3 setShowTypeSetting:2];
+    [version55to56Copy setShowTypeSetting:2];
   }
 }
 
-+ (void)podcastMigrationForVersion50to51:(id)a3
++ (void)podcastMigrationForVersion50to51:(id)version50to51
 {
-  v5 = a3;
+  version50to51Copy = version50to51;
   v3 = +[NSUserDefaults _applePodcastsFoundationSettingsUserDefaults];
   v4 = [v3 BOOLForKey:kMTPodcastAutoDownloadStateDefaultKey];
 
-  [v5 setAutoDownloadEnabled:v4];
+  [version50to51Copy setAutoDownloadEnabled:v4];
 }
 
-+ (void)podcastMigrationForVersion49to50:(id)a3
++ (void)podcastMigrationForVersion49to50:(id)version49to50
 {
-  v3 = a3;
+  version49to50Copy = version49to50;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1413,79 +1413,79 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Migrating podcasts from version 49 to 50.", v20, 2u);
   }
 
-  v5 = [v3 managedObjectContext];
+  managedObjectContext = [version49to50Copy managedObjectContext];
   v6 = kMTEpisodeEntityName;
-  v7 = [v3 uuid];
-  v8 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:v7];
-  v9 = [v5 countOfObjectsInEntity:v6 predicate:v8];
+  uuid = [version49to50Copy uuid];
+  v8 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:uuid];
+  v9 = [managedObjectContext countOfObjectsInEntity:v6 predicate:v8];
 
-  [v3 setSavedEpisodesCount:v9];
-  v10 = [v3 uuid];
-  v11 = [MTEpisode predicateForDownloadedEpisodesOnPodcastUuid:v10];
-  v12 = [v5 countOfObjectsInEntity:v6 predicate:v11];
+  [version49to50Copy setSavedEpisodesCount:v9];
+  uuid2 = [version49to50Copy uuid];
+  v11 = [MTEpisode predicateForDownloadedEpisodesOnPodcastUuid:uuid2];
+  v12 = [managedObjectContext countOfObjectsInEntity:v6 predicate:v11];
 
-  [v3 setDownloadedEpisodesCount:v12];
-  v13 = [v3 uuid];
-  v14 = [MTEpisode predicateForLibraryEpisodesOnPodcastUuid:v13];
-  v15 = [v5 countOfObjectsInEntity:v6 predicate:v14];
+  [version49to50Copy setDownloadedEpisodesCount:v12];
+  uuid3 = [version49to50Copy uuid];
+  v14 = [MTEpisode predicateForLibraryEpisodesOnPodcastUuid:uuid3];
+  v15 = [managedObjectContext countOfObjectsInEntity:v6 predicate:v14];
 
-  [v3 setLibraryEpisodesCount:v15];
-  v16 = [v3 uuid];
-  v17 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:v16];
+  [version49to50Copy setLibraryEpisodesCount:v15];
+  uuid4 = [version49to50Copy uuid];
+  v17 = [MTEpisode predicateForBookmarkedEpisodesOnPodcastUuid:uuid4];
   v18 = [MTEpisode predicateForVisuallyPlayed:0];
   v19 = [v17 AND:v18];
 
-  [v3 setSavedUnplayedEpisodesCount:{objc_msgSend(v5, "countOfObjectsInEntity:predicate:", v6, v19)}];
+  [version49to50Copy setSavedUnplayedEpisodesCount:{objc_msgSend(managedObjectContext, "countOfObjectsInEntity:predicate:", v6, v19)}];
 }
 
-+ (void)podcastMigrationForVersion44to45:(id)a3
++ (void)podcastMigrationForVersion44to45:(id)version44to45
 {
-  v5 = a3;
+  version44to45Copy = version44to45;
   v3 = +[NSUserDefaults _applePodcastsFoundationSettingsUserDefaults];
   v4 = [v3 integerForKey:kMTPodcastAutoDownloadStateDefaultKey];
 
-  if ([v5 autoDownloadType] == 0x7FFFFFFF)
+  if ([version44to45Copy autoDownloadType] == 0x7FFFFFFF)
   {
-    [v5 setAutoDownloadType:v4];
+    [version44to45Copy setAutoDownloadType:v4];
   }
 }
 
-+ (void)podcastMigrationForVersion42to43:(id)a3
++ (void)podcastMigrationForVersion42to43:(id)version42to43
 {
-  v3 = a3;
-  if ([v3 autoDownloadType] == 1)
+  version42to43Copy = version42to43;
+  if ([version42to43Copy autoDownloadType] == 1)
   {
-    [v3 setAutoDownloadType:3];
+    [version42to43Copy setAutoDownloadType:3];
   }
 }
 
-+ (void)podcastMigrationForVersion41to42:(id)a3
++ (void)podcastMigrationForVersion41to42:(id)version41to42
 {
-  v5 = a3;
-  v3 = [v5 displayType];
+  version41to42Copy = version41to42;
+  displayType = [version41to42Copy displayType];
 
-  if (!v3)
+  if (!displayType)
   {
     v4 = NSPersistentStringForMTDisplayType();
-    [v5 setDisplayType:v4];
+    [version41to42Copy setDisplayType:v4];
   }
 }
 
-+ (void)podcastMigrationForVersion38to39:(id)a3
++ (void)podcastMigrationForVersion38to39:(id)version38to39
 {
-  v8 = a3;
-  v3 = [v8 showTypeSetting];
-  if (v3 == 3)
+  version38to39Copy = version38to39;
+  showTypeSetting = [version38to39Copy showTypeSetting];
+  if (showTypeSetting == 3)
   {
     v5 = +[MTPodcast defaultShowType];
   }
 
   else
   {
-    if (v3 == 2)
+    if (showTypeSetting == 2)
     {
-      v6 = [v8 isSerialShowTypeInFeed] == 0;
-      v7 = v8;
+      v6 = [version38to39Copy isSerialShowTypeInFeed] == 0;
+      v7 = version38to39Copy;
       if (v6)
       {
         v5 = 4;
@@ -1499,18 +1499,18 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    v4 = v8;
-    if (v3)
+    v4 = version38to39Copy;
+    if (showTypeSetting)
     {
       goto LABEL_16;
     }
 
-    if ([v8 sortAscending] && (objc_msgSend(v8, "isSerialShowTypeInFeed") & 1) != 0)
+    if ([version38to39Copy sortAscending] && (objc_msgSend(version38to39Copy, "isSerialShowTypeInFeed") & 1) != 0)
     {
       v5 = 2;
     }
 
-    else if ([v8 sortAscending])
+    else if ([version38to39Copy sortAscending])
     {
       v5 = 4;
     }
@@ -1521,22 +1521,22 @@ LABEL_8:
     }
   }
 
-  v7 = v8;
+  v7 = version38to39Copy;
 LABEL_15:
   [v7 setShowTypeSetting:v5];
-  v4 = v8;
+  v4 = version38to39Copy;
 LABEL_16:
 }
 
-+ (void)podcastMigrationForVersion36to37:(id)a3
++ (void)podcastMigrationForVersion36to37:(id)version36to37
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  version36to37Copy = version36to37;
+  managedObjectContext = [version36to37Copy managedObjectContext];
   v5 = kMTEpisodeEntityName;
-  v6 = [v3 uuid];
-  v7 = [MTEpisode predicateForListenNowForPodcastUuid:v6];
+  uuid = [version36to37Copy uuid];
+  v7 = [MTEpisode predicateForListenNowForPodcastUuid:uuid];
   v8 = +[MTEpisode sortDescriptorsForListenNow];
-  v9 = [v4 objectsInEntity:v5 predicate:v7 sortDescriptors:v8 returnsObjectsAsFaults:0 limit:0];
+  v9 = [managedObjectContext objectsInEntity:v5 predicate:v7 sortDescriptors:v8 returnsObjectsAsFaults:0 limit:0];
 
   v21 = 0u;
   v22 = 0u;
@@ -1558,9 +1558,9 @@ LABEL_16:
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        v17 = [v3 nextEpisodeUuid];
-        v18 = [v16 isEqualToString:v17];
+        uuid2 = [v15 uuid];
+        nextEpisodeUuid = [version36to37Copy nextEpisodeUuid];
+        v18 = [uuid2 isEqualToString:nextEpisodeUuid];
 
         if ((v18 & 1) == 0)
         {
@@ -1575,90 +1575,90 @@ LABEL_16:
   }
 }
 
-+ (void)podcastMigrationForVersion34to35:(id)a3
++ (void)podcastMigrationForVersion34to35:(id)version34to35
 {
-  v16 = a3;
-  v3 = [v16 managedObjectContext];
-  v4 = [v16 uuid];
-  v5 = [MTRecencyUtil upNextForPodcastUuid:v4 excludeExplicit:0 ctx:v3];
+  version34to35Copy = version34to35;
+  managedObjectContext = [version34to35Copy managedObjectContext];
+  uuid = [version34to35Copy uuid];
+  v5 = [MTRecencyUtil upNextForPodcastUuid:uuid excludeExplicit:0 ctx:managedObjectContext];
 
   [v5 modifiedDate];
-  [v16 setModifiedDate:?];
-  v6 = [v16 nextEpisodeUuid];
-  v7 = [v5 episodeUuid];
-  v8 = [v6 isEqualToString:v7];
+  [version34to35Copy setModifiedDate:?];
+  nextEpisodeUuid = [version34to35Copy nextEpisodeUuid];
+  episodeUuid = [v5 episodeUuid];
+  v8 = [nextEpisodeUuid isEqualToString:episodeUuid];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [v16 nextEpisodeUuid];
+    nextEpisodeUuid2 = [version34to35Copy nextEpisodeUuid];
 
-    if (v9)
+    if (nextEpisodeUuid2)
     {
-      v10 = [v16 nextEpisodeUuid];
-      v11 = [v3 episodeForUuid:v10];
+      nextEpisodeUuid3 = [version34to35Copy nextEpisodeUuid];
+      v11 = [managedObjectContext episodeForUuid:nextEpisodeUuid3];
 
       [v11 setListenNowEpisode:0];
     }
 
-    v12 = [v5 episodeUuid];
+    episodeUuid2 = [v5 episodeUuid];
 
-    if (v12)
+    if (episodeUuid2)
     {
-      v13 = [v5 episodeUuid];
-      v14 = [v3 episodeForUuid:v13];
+      episodeUuid3 = [v5 episodeUuid];
+      v14 = [managedObjectContext episodeForUuid:episodeUuid3];
 
       [v14 setListenNowEpisode:1];
     }
 
-    v15 = [v5 episodeUuid];
-    [v16 setNextEpisodeUuid:v15];
+    episodeUuid4 = [v5 episodeUuid];
+    [version34to35Copy setNextEpisodeUuid:episodeUuid4];
   }
 }
 
-+ (void)podcastMigrationForVersion28to29:(id)a3
++ (void)podcastMigrationForVersion28to29:(id)version28to29
 {
-  v9 = a3;
-  [v9 addedDate];
+  version28to29Copy = version28to29;
+  [version28to29Copy addedDate];
   v4 = v3;
-  v5 = [v9 newestEpisode];
-  [v5 pubDate];
+  newestEpisode = [version28to29Copy newestEpisode];
+  [newestEpisode pubDate];
   if (v6 <= 0.0)
   {
-    [v5 importDate];
+    [newestEpisode importDate];
     if (v8 <= 0.0)
     {
       goto LABEL_6;
     }
 
-    [v5 importDate];
+    [newestEpisode importDate];
   }
 
   else
   {
-    [v5 pubDate];
+    [newestEpisode pubDate];
   }
 
   v4 = v7;
 LABEL_6:
-  [v9 setFeedChangedDate:v4];
+  [version28to29Copy setFeedChangedDate:v4];
 }
 
-+ (void)podcastMigrationForVersion27to28:(id)a3
++ (void)podcastMigrationForVersion27to28:(id)version27to28
 {
-  v3 = a3;
-  if ([v3 episodeLimit] == 0xFFFFFFFFLL)
+  version27to28Copy = version27to28;
+  if ([version27to28Copy episodeLimit] == 0xFFFFFFFFLL)
   {
-    [v3 setEpisodeLimit:{+[MTPodcast episodeLimitDefaultValue](MTPodcast, "episodeLimitDefaultValue")}];
+    [version27to28Copy setEpisodeLimit:{+[MTPodcast episodeLimitDefaultValue](MTPodcast, "episodeLimitDefaultValue")}];
   }
 }
 
-+ (void)podcastMigrationForVersion19to20:(id)a3
++ (void)podcastMigrationForVersion19to20:(id)version19to20
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  version19to20Copy = version19to20;
+  managedObjectContext = [version19to20Copy managedObjectContext];
   v5 = kMTEpisodeEntityName;
-  v6 = [v3 uuid];
-  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v6];
+  uuid = [version19to20Copy uuid];
+  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid];
   v8 = kEpisodeLastDatePlayed;
   v9 = [NSSortDescriptor sortDescriptorWithKey:kEpisodeLastDatePlayed ascending:0];
   v17 = v9;
@@ -1666,70 +1666,70 @@ LABEL_6:
   v16 = v8;
   v11 = [NSArray arrayWithObjects:&v16 count:1];
   LOBYTE(v15) = 0;
-  v12 = [v4 objectDictionariesInEntity:v5 predicate:v7 sortDescriptors:v10 propertiesToFetch:v11 includeObjectId:0 limit:1 distinct:v15 groupBy:0];
+  v12 = [managedObjectContext objectDictionariesInEntity:v5 predicate:v7 sortDescriptors:v10 propertiesToFetch:v11 includeObjectId:0 limit:1 distinct:v15 groupBy:0];
 
-  v13 = [v12 firstObject];
-  v14 = [v13 objectForKeyedSubscript:v8];
+  firstObject = [v12 firstObject];
+  v14 = [firstObject objectForKeyedSubscript:v8];
 
   if (v14)
   {
     [v14 timeIntervalSinceReferenceDate];
-    [v3 setLastDatePlayed:?];
+    [version19to20Copy setLastDatePlayed:?];
   }
 }
 
-+ (void)podcastMigrationForVersion14to15:(id)a3
++ (void)podcastMigrationForVersion14to15:(id)version14to15
 {
-  v9 = a3;
-  [v9 setNeedsArtworkUpdate:1];
-  v3 = [v9 imageURL];
+  version14to15Copy = version14to15;
+  [version14to15Copy setNeedsArtworkUpdate:1];
+  imageURL = [version14to15Copy imageURL];
 
-  if (v3)
+  if (imageURL)
   {
     v4 = [_TtC18PodcastsFoundation22DownloadableURLOptions alloc];
-    v5 = [v9 imageURL];
-    v6 = [v4 init:v5 nonAppInitiated:{objc_msgSend(v9, "requestsAreNonAppInitiated")}];
+    imageURL2 = [version14to15Copy imageURL];
+    v6 = [v4 init:imageURL2 nonAppInitiated:{objc_msgSend(version14to15Copy, "requestsAreNonAppInitiated")}];
 
     v7 = +[MTImageDownloader sharedInstance];
-    v8 = [v9 uuid];
-    [v7 downloadImageForPodcastUuid:v8 urlOptions:v6 userInitiated:0 useBackgroundFetch:0 callback:0];
+    uuid = [version14to15Copy uuid];
+    [v7 downloadImageForPodcastUuid:uuid urlOptions:v6 userInitiated:0 useBackgroundFetch:0 callback:0];
   }
 }
 
-+ (void)podcastMigrationForVersion11to12:(id)a3
++ (void)podcastMigrationForVersion11to12:(id)version11to12
 {
-  v3 = a3;
-  if ([v3 autoDownloadType] == -1)
+  version11to12Copy = version11to12;
+  if ([version11to12Copy autoDownloadType] == -1)
   {
-    [v3 setAutoDownloadType:0x7FFFFFFFLL];
+    [version11to12Copy setAutoDownloadType:0x7FFFFFFFLL];
   }
 }
 
-+ (void)podcastMigrationForVersion9to10:(id)a3
++ (void)podcastMigrationForVersion9to10:(id)version9to10
 {
-  v3 = a3;
-  [v3 setDarkCountLocal:{objc_msgSend(v3, "darkCount")}];
+  version9to10Copy = version9to10;
+  [version9to10Copy setDarkCountLocal:{objc_msgSend(version9to10Copy, "darkCount")}];
 }
 
-+ (void)podcastMigrationForVersion6to7:(id)a3
++ (void)podcastMigrationForVersion6to7:(id)version6to7
 {
-  v9 = a3;
-  v4 = [v9 uuid];
+  version6to7Copy = version6to7;
+  uuid = [version6to7Copy uuid];
 
-  if (!v4)
+  if (!uuid)
   {
     v5 = +[NSString UUID];
-    [v9 setUuid:v5];
+    [version6to7Copy setUuid:v5];
   }
 
-  v6 = [v9 keepEpisodes];
-  v7 = v6;
-  if (v6 == -1)
+  keepEpisodes = [version6to7Copy keepEpisodes];
+  episodesToKeepDefaultValue = keepEpisodes;
+  if (keepEpisodes == -1)
   {
-    v7 = [a1 episodesToKeepDefaultValue];
+    episodesToKeepDefaultValue = [self episodesToKeepDefaultValue];
   }
 
-  if (v7 == 1)
+  if (episodesToKeepDefaultValue == 1)
   {
     v8 = 0xFFFFFFFFLL;
   }
@@ -1739,60 +1739,60 @@ LABEL_6:
     v8 = 0;
   }
 
-  [v9 setDeletePlayedEpisodes:v8];
-  if (v7 != 1)
+  [version6to7Copy setDeletePlayedEpisodes:v8];
+  if (episodesToKeepDefaultValue != 1)
   {
-    [v9 setShowPlacardForRemovePlayedEpisodes:1];
+    [version6to7Copy setShowPlacardForRemovePlayedEpisodes:1];
   }
 
-  [v9 setEpisodeLimit:{objc_msgSend(a1, "episodesToKeepToEpisodeLimit:", v6)}];
-  if ([v9 autoDownloadType] == 2)
+  [version6to7Copy setEpisodeLimit:{objc_msgSend(self, "episodesToKeepToEpisodeLimit:", keepEpisodes)}];
+  if ([version6to7Copy autoDownloadType] == 2)
   {
-    [v9 setAutoDownloadType:1];
+    [version6to7Copy setAutoDownloadType:1];
   }
 }
 
-+ (BOOL)podcastMigrationForVersion8to9:(id)a3
++ (BOOL)podcastMigrationForVersion8to9:(id)version8to9
 {
-  v3 = a3;
-  v4 = [v3 feedURL];
-  if (![v4 length])
+  version8to9Copy = version8to9;
+  feedURL = [version8to9Copy feedURL];
+  if (![feedURL length])
   {
-    v5 = [v3 episodes];
-    v6 = [v5 count];
+    episodes = [version8to9Copy episodes];
+    v6 = [episodes count];
 
     if (v6 != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = [v3 episodes];
-    v8 = [v7 anyObject];
+    episodes2 = [version8to9Copy episodes];
+    anyObject = [episodes2 anyObject];
 
-    v9 = [v8 assetURL];
-    if ([v9 length])
+    assetURL = [anyObject assetURL];
+    if ([assetURL length])
     {
     }
 
     else
     {
-      v12 = [v8 enclosureURL];
-      v13 = [v12 length];
+      enclosureURL = [anyObject enclosureURL];
+      v13 = [enclosureURL length];
 
       if (!v13)
       {
         v14 = _MTLogCategoryDatabase();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v3 uuid];
+          uuid = [version8to9Copy uuid];
           v18 = 138543362;
-          v19 = v15;
+          v19 = uuid;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Will delete podcast %{public}@ during migration", &v18, 0xCu);
         }
 
         v16 = +[MTLibrary sharedInstance];
-        v17 = [v3 uuid];
-        [v16 deletePodcastWithUuid:v17];
+        uuid2 = [version8to9Copy uuid];
+        [v16 deletePodcastWithUuid:uuid2];
 
         v10 = 1;
         goto LABEL_10;
@@ -1812,33 +1812,33 @@ LABEL_7:
   return v10;
 }
 
-+ (void)runMigrationOnAllEpisodesForVersion:(int64_t)a3
++ (void)runMigrationOnAllEpisodesForVersion:(int64_t)version
 {
   v5 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = a3;
+    versionCopy = version;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) Running migration on all episodes for version %ld", buf, 0xCu);
   }
 
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mainOrPrivateContext = [v6 mainOrPrivateContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10014F064;
   v9[3] = &unk_1004DDCC8;
-  v11 = a3;
-  v12 = a1;
-  v10 = v7;
-  v8 = v7;
+  versionCopy2 = version;
+  selfCopy = self;
+  v10 = mainOrPrivateContext;
+  v8 = mainOrPrivateContext;
   [v8 performBlockAndWaitWithSave:v9];
 }
 
-+ (void)allEpisodesMigrationForVersion68to69In:(id)a3
++ (void)allEpisodesMigrationForVersion68to69In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1860,7 +1860,7 @@ LABEL_7:
   [v7 setPropertiesToUpdate:v10];
 
   v20 = 0;
-  v11 = [v3 executeRequest:v7 error:&v20];
+  v11 = [inCopy executeRequest:v7 error:&v20];
   v12 = v20;
   v13 = _MTLogCategoryDatabase();
   v14 = v13;
@@ -1893,9 +1893,9 @@ LABEL_8:
   }
 }
 
-+ (void)allEpisodesMigrationForVersion65to66In:(id)a3
++ (void)allEpisodesMigrationForVersion65to66In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1904,18 +1904,18 @@ LABEL_8:
   }
 
   v5 = +[MTEpisode predicateForListenNow];
-  [v3 objectsInEntity:kMTEpisodeEntityName predicate:v5 sortDescriptors:0];
+  [inCopy objectsInEntity:kMTEpisodeEntityName predicate:v5 sortDescriptors:0];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014F50C;
   v8 = v7[3] = &unk_1004D8358;
   v6 = v8;
-  [v3 performBlockAndWaitWithSave:v7];
+  [inCopy performBlockAndWaitWithSave:v7];
 }
 
-+ (void)allEpisodesMigrationForVersion59to60In:(id)a3
++ (void)allEpisodesMigrationForVersion59to60In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1924,9 +1924,9 @@ LABEL_8:
   }
 
   v5 = kEpisodeEpisodeNumber;
-  v6 = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeEpisodeNumber];
+  kEpisodeEpisodeNumber = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeEpisodeNumber];
   v7 = [MTEpisode predicateForEpisodeType:1];
-  v8 = [v6 AND:v7];
+  v8 = [kEpisodeEpisodeNumber AND:v7];
 
   v9 = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:kMTEpisodeEntityName];
   [v9 setPredicate:v8];
@@ -1938,7 +1938,7 @@ LABEL_8:
 
   [v9 setResultType:2];
   v17 = 0;
-  v12 = [v3 executeRequest:v9 error:&v17];
+  v12 = [inCopy executeRequest:v9 error:&v17];
 
   v13 = v17;
   v14 = _MTLogCategoryDatabase();
@@ -1955,16 +1955,16 @@ LABEL_8:
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v12 result];
+    result = [v12 result];
     *buf = 138412290;
-    v19 = v16;
+    v19 = result;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ episodes successfully migrated from episode 0 to null", buf, 0xCu);
   }
 }
 
-+ (void)allEpisodesMigrationForVersion54to55In:(id)a3
++ (void)allEpisodesMigrationForVersion54to55In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1973,9 +1973,9 @@ LABEL_8:
   }
 
   v5 = kEpisodeEpisodeNumber;
-  v6 = [NSPredicate predicateWithFormat:@"(%K = NULL)", kEpisodeEpisodeNumber];
+  kEpisodeEpisodeNumber = [NSPredicate predicateWithFormat:@"(%K = NULL)", kEpisodeEpisodeNumber];
   v7 = [MTEpisode predicateForEpisodeType:1];
-  v8 = [v6 AND:v7];
+  v8 = [kEpisodeEpisodeNumber AND:v7];
 
   v9 = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:kMTEpisodeEntityName];
   [v9 setPredicate:v8];
@@ -1986,7 +1986,7 @@ LABEL_8:
 
   [v9 setResultType:2];
   v16 = 0;
-  v11 = [v3 executeRequest:v9 error:&v16];
+  v11 = [inCopy executeRequest:v9 error:&v16];
 
   v12 = v16;
   v13 = _MTLogCategoryDatabase();
@@ -2003,16 +2003,16 @@ LABEL_8:
 
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 result];
+    result = [v11 result];
     *buf = 138412290;
-    v18 = v15;
+    v18 = result;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ episodes successfully migrated from episode 0 to null", buf, 0xCu);
   }
 }
 
-+ (void)allEpisodesMigrationForVersion53to54In:(id)a3
++ (void)allEpisodesMigrationForVersion53to54In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2021,9 +2021,9 @@ LABEL_8:
   }
 
   v5 = kEpisodeEpisodeNumber;
-  v6 = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeEpisodeNumber];
+  kEpisodeEpisodeNumber = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeEpisodeNumber];
   v7 = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:kMTEpisodeEntityName];
-  [v7 setPredicate:v6];
+  [v7 setPredicate:kEpisodeEpisodeNumber];
   v18 = v5;
   v8 = +[NSNull null];
   v19 = v8;
@@ -2032,7 +2032,7 @@ LABEL_8:
 
   [v7 setResultType:2];
   v15 = 0;
-  v10 = [v3 executeRequest:v7 error:&v15];
+  v10 = [inCopy executeRequest:v7 error:&v15];
 
   v11 = v15;
   v12 = _MTLogCategoryDatabase();
@@ -2049,16 +2049,16 @@ LABEL_8:
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 result];
+    result = [v10 result];
     *buf = 138412290;
-    v17 = v14;
+    v17 = result;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ episodes successfully migrated from episode 0 to null", buf, 0xCu);
   }
 }
 
-+ (void)allEpisodesMigrationForVersion51to52In:(id)a3
++ (void)allEpisodesMigrationForVersion51to52In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2067,9 +2067,9 @@ LABEL_8:
   }
 
   v5 = kEpisodeSeasonNumber;
-  v6 = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeSeasonNumber];
+  kEpisodeSeasonNumber = [NSPredicate predicateWithFormat:@"(%K = 0)", kEpisodeSeasonNumber];
   v7 = [NSBatchUpdateRequest batchUpdateRequestWithEntityName:kMTEpisodeEntityName];
-  [v7 setPredicate:v6];
+  [v7 setPredicate:kEpisodeSeasonNumber];
   v18 = v5;
   v8 = +[NSNull null];
   v19 = v8;
@@ -2078,7 +2078,7 @@ LABEL_8:
 
   [v7 setResultType:2];
   v15 = 0;
-  v10 = [v3 executeRequest:v7 error:&v15];
+  v10 = [inCopy executeRequest:v7 error:&v15];
 
   v11 = v15;
   v12 = _MTLogCategoryDatabase();
@@ -2095,16 +2095,16 @@ LABEL_8:
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 result];
+    result = [v10 result];
     *buf = 138412290;
-    v17 = v14;
+    v17 = result;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ episodes successfully migrated from season 0 to null", buf, 0xCu);
   }
 }
 
-+ (void)allEpisodesMigrationForVersion47to48In:(id)a3
++ (void)allEpisodesMigrationForVersion47to48In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2126,7 +2126,7 @@ LABEL_8:
 
   [v9 setResultType:2];
   v16 = 0;
-  v11 = [v3 executeRequest:v9 error:&v16];
+  v11 = [inCopy executeRequest:v9 error:&v16];
 
   v12 = v16;
   v13 = _MTLogCategoryDatabase();
@@ -2143,18 +2143,18 @@ LABEL_8:
 
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 result];
+    result = [v11 result];
     *buf = 138412290;
-    v18 = v15;
+    v18 = result;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ My Episodes successfully migrated undownloaded episodes to MTEpisodeDownloadBehaviorAutomaticSuppressed", buf, 0xCu);
   }
 }
 
-+ (void)allEpisodesMigrationForVersion46to47In:(id)a3
++ (void)allEpisodesMigrationForVersion46to47In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = +[MTEpisode predicateForEpisodesWhichNeedEntitlementStateUpdate];
-  v5 = [v3 objectsInEntity:kMTEpisodeEntityName predicate:v4 sortDescriptors:0];
+  v5 = [inCopy objectsInEntity:kMTEpisodeEntityName predicate:v4 sortDescriptors:0];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -2186,30 +2186,30 @@ LABEL_8:
   }
 }
 
-+ (void)allEpisodesMigrationForVersion45to46In:(id)a3
++ (void)allEpisodesMigrationForVersion45to46In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = [MTEpisode predicateForSaved:1];
   v5 = [MTEpisode predicateForDownloaded:1 excludeHidden:0];
   v6 = [v4 AND:v5];
 
-  [v3 objectsInEntity:kMTEpisodeEntityName predicate:v6 sortDescriptors:0];
+  [inCopy objectsInEntity:kMTEpisodeEntityName predicate:v6 sortDescriptors:0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100150458;
   v9 = v8[3] = &unk_1004D8358;
   v7 = v9;
-  [v3 performBlockAndWaitWithSave:v8];
+  [inCopy performBlockAndWaitWithSave:v8];
 }
 
-+ (void)allEpisodesMigrationForVersion43to44In:(id)a3
++ (void)allEpisodesMigrationForVersion43to44In:(id)in
 {
-  v4 = a3;
-  [a1 rollbackMigrationV40IfNeededInContext:v4];
+  inCopy = in;
+  [self rollbackMigrationV40IfNeededInContext:inCopy];
   v5 = kMTEpisodeEntityName;
   v6 = [MTEpisode predicateForSaved:1];
   v7 = [MTEpisode sortDescriptorsForPubDateAscending:0];
-  v8 = [v4 objectsInEntity:v5 predicate:v6 sortDescriptors:v7];
+  v8 = [inCopy objectsInEntity:v5 predicate:v6 sortDescriptors:v7];
 
   v29 = 0u;
   v30 = 0u;
@@ -2282,7 +2282,7 @@ LABEL_8:
 
   [v18 setResultType:2];
   v26 = 0;
-  v21 = [v4 executeRequest:v18 error:&v26];
+  v21 = [inCopy executeRequest:v18 error:&v26];
   v22 = v26;
   v23 = _MTLogCategoryDatabase();
   v24 = v23;
@@ -2298,31 +2298,31 @@ LABEL_8:
 
   else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v21 result];
+    result = [v21 result];
     *buf = 138412290;
-    v34 = v25;
+    v34 = result;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[Migration] (Data) %@ My Episodes successfully migrated to Recovered Episodes.", buf, 0xCu);
   }
 }
 
-+ (void)rollbackMigrationV40IfNeededInContext:(id)a3
++ (void)rollbackMigrationV40IfNeededInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [_TtC8Podcasts26BookmarksMigrationRegistry migrationRegisteredAtVersion:40];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 uuids];
-    v7 = [NSSet setWithArray:v6];
+    uuids = [v4 uuids];
+    v7 = [NSSet setWithArray:uuids];
     v8 = [MTEpisode predicateForEpisodeUuids:v7];
 
     v9 = +[MTEpisode predicateForAllBookmarkedEpisodes];
     v10 = [MTEpisode predicateForSaved:0];
-    v11 = [v5 date];
-    v12 = [v11 dateByAddingTimeInterval:120.0];
+    date = [v5 date];
+    v12 = [date dateByAddingTimeInterval:120.0];
 
-    v13 = [v5 date];
-    v14 = [v13 dateByAddingTimeInterval:-120.0];
+    date2 = [v5 date];
+    v14 = [date2 dateByAddingTimeInterval:-120.0];
 
     v15 = kEpisodeLastBookmarkedDate;
     v29 = v12;
@@ -2344,7 +2344,7 @@ LABEL_8:
     [v19 setPropertiesToUpdate:v23];
 
     v32 = 0;
-    v24 = [v3 executeRequest:v19 error:&v32];
+    v24 = [contextCopy executeRequest:v19 error:&v32];
     v25 = v32;
     v26 = _MTLogCategoryDatabase();
     v27 = v26;
@@ -2381,16 +2381,16 @@ LABEL_8:
   }
 }
 
-+ (void)allEpisodesMigrationForVersion40to41In:(id)a3
++ (void)allEpisodesMigrationForVersion40to41In:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v4 = [NSFetchRequest fetchRequestWithEntityName:kMTEpisodeEntityName];
   v5 = [MTEpisode predicateForSuppressAutoDownload:1];
   [v4 setPredicate:v5];
 
   [v4 setReturnsObjectsAsFaults:0];
   [v4 setFetchBatchSize:200];
-  [v3 executeFetchRequest:v4];
+  [inCopy executeFetchRequest:v4];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2417,7 +2417,7 @@ LABEL_8:
         [v13 setDownloadBehavior:{1, v15}];
         if (!(v12 % [v4 fetchBatchSize]))
         {
-          [v3 saveInCurrentBlock];
+          [inCopy saveInCurrentBlock];
         }
 
         objc_autoreleasePoolPop(v14);
@@ -2433,7 +2433,7 @@ LABEL_8:
     while (v8);
   }
 
-  [v3 saveInCurrentBlock];
+  [inCopy saveInCurrentBlock];
 }
 
 + (void)deleteDuplicateVideoEpisodesForRdar59691904
@@ -2445,14 +2445,14 @@ LABEL_8:
   v10 = sub_10003B5CC;
   v11 = 0;
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100150FD0;
   v5[3] = &unk_1004D8688;
   v5[4] = &v6;
-  [v3 performBlockAndWait:v5];
+  [mainOrPrivateContext performBlockAndWait:v5];
   v4 = +[MTLibrary sharedInstance];
   [v4 deleteEpisodeUuids:v7[5] forced:1];
 
@@ -2462,7 +2462,7 @@ LABEL_8:
 + (void)moveEpisodeAssetsToSharedContainer
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v4 = +[NSFileManager defaultManager];
   v5 = [NSFetchRequest fetchRequestWithEntityName:kMTEpisodeEntityName];
@@ -2478,12 +2478,12 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = sub_1001513C4;
   v11[3] = &unk_1004D94C8;
-  v12 = v3;
+  v12 = mainOrPrivateContext;
   v13 = v5;
   v14 = v4;
   v8 = v4;
   v9 = v5;
-  v10 = v3;
+  v10 = mainOrPrivateContext;
   [v10 performBlockAndWaitWithSave:v11];
 }
 
@@ -2505,16 +2505,16 @@ LABEL_8:
   [v3 setPropertiesToUpdate:v4];
 
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100151A8C;
   v9[3] = &unk_1004D8798;
-  v10 = v6;
+  v10 = mainOrPrivateContext;
   v11 = v3;
   v7 = v3;
-  v8 = v6;
+  v8 = mainOrPrivateContext;
   [v8 performBlockAndWait:v9];
 }
 
@@ -2532,17 +2532,17 @@ LABEL_8:
   v4 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:v3];
 
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100151D1C;
   v9[3] = &unk_1004DD110;
-  v10 = v6;
+  v10 = mainOrPrivateContext;
   v11 = v4;
   v12 = 14;
   v7 = v4;
-  v8 = v6;
+  v8 = mainOrPrivateContext;
   [v8 performBlockAndWait:v9];
 }
 
@@ -2554,48 +2554,48 @@ LABEL_8:
   return v3;
 }
 
-+ (int64_t)episodesToKeepToEpisodeLimit:(int)a3
++ (int64_t)episodesToKeepToEpisodeLimit:(int)limit
 {
-  if ((a3 + 1) > 7)
+  if ((limit + 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_1003FEAB0[a3 + 1];
+    return qword_1003FEAB0[limit + 1];
   }
 }
 
 + (void)recalculateAllPlaylists
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 mainOrPrivateContext];
+  mainOrPrivateContext = [v2 mainOrPrivateContext];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100151F64;
   v5[3] = &unk_1004D8358;
-  v6 = v3;
-  v4 = v3;
+  v6 = mainOrPrivateContext;
+  v4 = mainOrPrivateContext;
   [v4 performBlockAndWaitWithSave:v5];
 }
 
 + (void)touchAllMigrationVersions
 {
-  [a1 touchLibraryMigrationVersion];
+  [self touchLibraryMigrationVersion];
 
-  [a1 touchCoreDataMigrationVersion];
+  [self touchCoreDataMigrationVersion];
 }
 
 + (void)touchCoreDataMigrationVersion
 {
   v2 = +[MTDB managedObjectModel];
-  v3 = [v2 versionChecksum];
+  versionChecksum = [v2 versionChecksum];
 
-  if (v3)
+  if (versionChecksum)
   {
-    [MTDB setCoreDataChecksum:v3];
+    [MTDB setCoreDataChecksum:versionChecksum];
   }
 
   else
@@ -2611,17 +2611,17 @@ LABEL_8:
 
 + (BOOL)needToMigrateDataToSharedContainer
 {
-  v2 = [objc_opt_class() legacyLibraryPath];
-  v3 = [v2 path];
+  legacyLibraryPath = [objc_opt_class() legacyLibraryPath];
+  path = [legacyLibraryPath path];
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:path];
 
   v6 = +[MTDB libraryPath];
-  v7 = [v6 path];
+  path2 = [v6 path];
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  v9 = [v8 fileExistsAtPath:path2];
 
   v10 = +[IMLogger sharedLogger];
   v11 = v10;
@@ -2672,15 +2672,15 @@ LABEL_8:
       {
         v8 = +[MTDB coreDataChecksum];
         v9 = +[MTDB managedObjectModel];
-        v10 = [v9 versionChecksum];
+        versionChecksum = [v9 versionChecksum];
         v13 = 138412546;
         v14 = v8;
         v15 = 2112;
-        v16 = v10;
+        v16 = versionChecksum;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Migration] (CoreData) Successfully migrated. Set migration version from %@ to %@", &v13, 0x16u);
       }
 
-      [a1 touchCoreDataMigrationVersion];
+      [self touchCoreDataMigrationVersion];
     }
 
     os_unfair_lock_unlock(&stru_100583DAC);
@@ -2707,48 +2707,48 @@ LABEL_8:
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 URLsForDirectory:9 inDomains:1];
 
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
   v5 = [NSString alloc];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 initWithFormat:@"%@.sqlite", v7];
 
-  v9 = [v4 URLByAppendingPathComponent:v8];
+  v9 = [lastObject URLByAppendingPathComponent:v8];
 
   return v9;
 }
 
 + (BOOL)moveSQLiteFilesFromDocumentsToSharedContainer
 {
-  v2 = [objc_opt_class() legacyLibraryPath];
+  legacyLibraryPath = [objc_opt_class() legacyLibraryPath];
   v3 = +[MTDB libraryPath];
   v4 = +[NSFileManager defaultManager];
   v35 = 0;
-  v5 = [v4 moveItemAtURL:v2 toURL:v3 error:&v35];
+  v5 = [v4 moveItemAtURL:legacyLibraryPath toURL:v3 error:&v35];
   v6 = v35;
 
   if (v6)
   {
     v7 = +[IMLogger sharedLogger];
-    [v7 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2722 format:{@"Error moving database to %@ from %@", v3, v2}];
+    [v7 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2722 format:{@"Error moving database to %@ from %@", v3, legacyLibraryPath}];
 
     [v6 logAndThrow:0 printStackTrace:0];
   }
 
-  v8 = [v2 absoluteString];
-  v9 = [v8 stringByAppendingString:@"-shm"];
+  absoluteString = [legacyLibraryPath absoluteString];
+  v9 = [absoluteString stringByAppendingString:@"-shm"];
   v10 = [NSURL URLWithString:v9];
 
   if (v5)
   {
     v11 = +[NSFileManager defaultManager];
-    v12 = [v10 path];
-    v13 = [v11 fileExistsAtPath:v12];
+    path = [v10 path];
+    v13 = [v11 fileExistsAtPath:path];
 
     if (v13)
     {
-      v14 = [v3 absoluteString];
-      v15 = [v14 stringByAppendingString:@"-shm"];
+      absoluteString2 = [v3 absoluteString];
+      v15 = [absoluteString2 stringByAppendingString:@"-shm"];
       v16 = [NSURL URLWithString:v15];
 
       v17 = +[NSFileManager defaultManager];
@@ -2766,20 +2766,20 @@ LABEL_8:
     }
   }
 
-  v20 = [v2 absoluteString];
-  v21 = [v20 stringByAppendingString:@"-wal"];
+  absoluteString3 = [legacyLibraryPath absoluteString];
+  v21 = [absoluteString3 stringByAppendingString:@"-wal"];
   v22 = [NSURL URLWithString:v21];
 
   if (v5)
   {
     v23 = +[NSFileManager defaultManager];
-    v24 = [v22 path];
-    v25 = [v23 fileExistsAtPath:v24];
+    path2 = [v22 path];
+    v25 = [v23 fileExistsAtPath:path2];
 
     if (v25)
     {
-      v26 = [v3 absoluteString];
-      v27 = [v26 stringByAppendingString:@"-wal"];
+      absoluteString4 = [v3 absoluteString];
+      v27 = [absoluteString4 stringByAppendingString:@"-wal"];
       v28 = [NSURL URLWithString:v27];
 
       v29 = +[NSFileManager defaultManager];
@@ -2809,8 +2809,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Migration] (ImageStore) Start image store migration.", buf, 2u);
   }
 
-  v4 = [a1 runImageStorePathMigration];
-  v5 = [a1 runImageFormatMigration];
+  runImageStorePathMigration = [self runImageStorePathMigration];
+  runImageFormatMigration = [self runImageFormatMigration];
   v6 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2818,7 +2818,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Migration] (ImageStore) Image store migration has been completed.", v8, 2u);
   }
 
-  return (v4 | v5) & 1;
+  return (runImageStorePathMigration | runImageFormatMigration) & 1;
 }
 
 + (BOOL)runImageStorePathMigration
@@ -2826,22 +2826,22 @@ LABEL_8:
   if (+[MTLibraryMigrationUtil needsImageStoreMigration])
   {
     v2 = +[MTImageStoreConstants deprecatedImageStoreURL];
-    v3 = [v2 path];
+    path = [v2 path];
 
     v4 = +[MTImageStoreConstants defaultImageStoreURL];
-    v5 = [v4 path];
+    path2 = [v4 path];
 
     v6 = &kPlaylistITunesPlaylistUuid_ptr;
     v7 = +[NSFileManager defaultManager];
-    v44 = v3;
-    v8 = v3;
-    v9 = v5;
+    v44 = path;
+    v8 = path;
+    v9 = path2;
     v10 = [v7 fileExistsAtPath:v8];
 
     if (v10)
     {
       v11 = +[NSFileManager defaultManager];
-      v12 = [v11 fileExistsAtPath:v5];
+      v12 = [v11 fileExistsAtPath:path2];
 
       if ((v12 & 1) == 0)
       {
@@ -2853,8 +2853,8 @@ LABEL_8:
         if ((v14 & 1) == 0)
         {
           v16 = +[IMLogger sharedLogger];
-          v17 = [v15 localizedDescription];
-          [v16 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2785 format:{@"Failed to create new image store at %@: %@", v9, v17}];
+          localizedDescription = [v15 localizedDescription];
+          [v16 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2785 format:{@"Failed to create new image store at %@: %@", v9, localizedDescription}];
         }
       }
 
@@ -2866,8 +2866,8 @@ LABEL_8:
       if (v20)
       {
         v21 = +[IMLogger sharedLogger];
-        v22 = [v20 localizedDescription];
-        [v21 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2794 format:{@"Error enumerating image cache directory for migration: %@", v22}];
+        localizedDescription2 = [v20 localizedDescription];
+        [v21 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2794 format:{@"Error enumerating image cache directory for migration: %@", localizedDescription2}];
       }
 
       v41 = v20;
@@ -2894,9 +2894,9 @@ LABEL_8:
             v27 = *(*(&v47 + 1) + 8 * i);
             v28 = [v44 stringByAppendingPathComponent:v27];
             v29 = [v9 stringByAppendingPathComponent:v27];
-            v30 = [v6[123] defaultManager];
+            defaultManager = [v6[123] defaultManager];
             v46 = 0;
-            [v30 moveItemAtPath:v28 toPath:v29 error:&v46];
+            [defaultManager moveItemAtPath:v28 toPath:v29 error:&v46];
             v31 = v46;
 
             if (v31)
@@ -2918,16 +2918,16 @@ LABEL_8:
         while (v24);
       }
 
-      v36 = [v6[123] defaultManager];
+      defaultManager2 = [v6[123] defaultManager];
       v45 = 0;
-      [v36 removeItemAtPath:v44 error:&v45];
+      [defaultManager2 removeItemAtPath:v44 error:&v45];
       v37 = v45;
 
       if (v37)
       {
         v38 = +[IMLogger sharedLogger];
-        v39 = [v37 localizedDescription];
-        [v38 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2815 format:{@"Error deleting old image cache: %@", v39}];
+        localizedDescription3 = [v37 localizedDescription];
+        [v38 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2815 format:{@"Error deleting old image cache: %@", localizedDescription3}];
       }
 
       LOBYTE(v10) = v42;
@@ -2947,7 +2947,7 @@ LABEL_8:
   v2 = +[MTImageStoreConstants fileType];
   v3 = +[MTImageStoreConstants defaultImageStoreURL];
   v4 = +[IMImageStore defaultStore];
-  v5 = [v4 diskCache];
+  diskCache = [v4 diskCache];
 
   v6 = +[NSFileManager defaultManager];
   v20 = NSURLContentTypeKey;
@@ -2959,8 +2959,8 @@ LABEL_8:
   if (v9)
   {
     v10 = +[IMLogger sharedLogger];
-    v11 = [v9 localizedDescription];
-    [v10 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2834 format:{@"Error enumerating image cache directory for migration: %@", v11}];
+    localizedDescription = [v9 localizedDescription];
+    [v10 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Library/Migration/MTLibraryMigrator.m" lineNumber:2834 format:{@"Error enumerating image cache directory for migration: %@", localizedDescription}];
   }
 
   v12 = dispatch_get_global_queue(2, 0);
@@ -2969,8 +2969,8 @@ LABEL_8:
   v16[2] = sub_100153200;
   v16[3] = &unk_1004DDD40;
   v17 = v2;
-  v18 = v5;
-  v13 = v5;
+  v18 = diskCache;
+  v13 = diskCache;
   v14 = v2;
   [v8 concurrentMapWithStrideSize:5 on:v12 withBlock:v16];
 
@@ -2991,7 +2991,7 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "SourceLastLaunchFromDB", "", &v13, 2u);
   }
 
-  v8 = [a1 _mostRecentPlayTimeFromDatabase];
+  _mostRecentPlayTimeFromDatabase = [self _mostRecentPlayTimeFromDatabase];
   v9 = v7;
   v10 = v9;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -3002,16 +3002,16 @@ LABEL_8:
 
   v11 = _MTLogCategoryLifecycle();
   v12 = v11;
-  if (v8)
+  if (_mostRecentPlayTimeFromDatabase)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = _mostRecentPlayTimeFromDatabase;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Setting new value for last use from database: %@", &v13, 0xCu);
     }
 
-    [v3 setLastAppUseDate:v8];
+    [v3 setLastAppUseDate:_mostRecentPlayTimeFromDatabase];
   }
 
   else
@@ -3027,7 +3027,7 @@ LABEL_8:
 + (id)_mostRecentPlayTimeFromDatabase
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 privateQueueContext];
+  privateQueueContext = [v3 privateQueueContext];
 
   v12 = 0;
   v13 = &v12;
@@ -3039,8 +3039,8 @@ LABEL_8:
   v8[1] = 3221225472;
   v8[2] = sub_10015371C;
   v8[3] = &unk_1004D90B8;
-  v11 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = privateQueueContext;
   v9 = v5;
   v10 = &v12;
   [v5 performBlockAndWait:v8];
@@ -3078,19 +3078,19 @@ LABEL_8:
 + (void)updateGlobalDownloadPolicyIfNecessary
 {
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  [a1 inactiveIntervalForDownloadPolicyUpgrade];
-  if ([a1 hasBeenInactiveForTimeInterval:?])
+  [self inactiveIntervalForDownloadPolicyUpgrade];
+  if ([self hasBeenInactiveForTimeInterval:?])
   {
-    [a1 _updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:v3];
+    [self _updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:v3];
   }
 }
 
-+ (void)_updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:(id)a3
++ (void)_updateGlobalPolicyLimitIfMoreRestrictiveInDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = kMTPodcastEpisodeLimitDefaultKey;
-  v8 = v3;
-  v5 = [v3 episodeLimitForKey:kMTPodcastEpisodeLimitDefaultKey];
+  v8 = defaultsCopy;
+  v5 = [defaultsCopy episodeLimitForKey:kMTPodcastEpisodeLimitDefaultKey];
   +[MTPreferences defaultEpisodeLimit];
   v6 = PFMostRestrictiveLimit();
   if (v6 != v5)
@@ -3100,17 +3100,17 @@ LABEL_8:
   }
 }
 
-+ (BOOL)hasBeenInactiveForTimeInterval:(double)a3
++ (BOOL)hasBeenInactiveForTimeInterval:(double)interval
 {
   v4 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  v5 = [v4 lastAppUseDate];
-  if (v5)
+  lastAppUseDate = [v4 lastAppUseDate];
+  if (lastAppUseDate)
   {
     v6 = +[NSDate now];
-    [v6 timeIntervalSinceDate:v5];
+    [v6 timeIntervalSinceDate:lastAppUseDate];
     v8 = v7;
 
-    v9 = v8 > a3;
+    v9 = v8 > interval;
   }
 
   else

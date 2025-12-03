@@ -1,18 +1,18 @@
 @interface STSharedCoreDataTransformerComponent
-+ (BOOL)managingOrganizationIsFamilyOrganizationForCoreUser:(id)a3 inContext:(id)a4;
-+ (id)changedObjectFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5;
++ (BOOL)managingOrganizationIsFamilyOrganizationForCoreUser:(id)user inContext:(id)context;
++ (id)changedObjectFromCoreDataChange:(id)change inContext:(id)context error:(id *)error;
 @end
 
 @implementation STSharedCoreDataTransformerComponent
 
-+ (id)changedObjectFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)changedObjectFromCoreDataChange:(id)change inContext:(id)context error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 changeIdentifier];
+  contextCopy = context;
+  changeIdentifier = [change changeIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a5 = [v7 objectWithID:v8];
+    error = [contextCopy objectWithID:changeIdentifier];
   }
 
   else
@@ -20,29 +20,29 @@
     v9 = +[STLog coreDataTransformer];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100120398(v8, v9);
+      sub_100120398(changeIdentifier, v9);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = [NSError alloc];
       v11 = STErrorDomain;
-      v12 = [NSString stringWithFormat:@"Change Identifier: %@", v8, NSLocalizedDescriptionKey];
-      v16 = v12;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Change Identifier: %@", changeIdentifier, NSLocalizedDescriptionKey];
+      v16 = nSLocalizedDescriptionKey;
       v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a5 = [v10 initWithDomain:v11 code:33 userInfo:v13];
+      *error = [v10 initWithDomain:v11 code:33 userInfo:v13];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)managingOrganizationIsFamilyOrganizationForCoreUser:(id)a3 inContext:(id)a4
++ (BOOL)managingOrganizationIsFamilyOrganizationForCoreUser:(id)user inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  userCopy = user;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -51,10 +51,10 @@
   v10[1] = 3221225472;
   v10[2] = sub_10008D830;
   v10[3] = &unk_1001A3C98;
-  v7 = v5;
+  v7 = userCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 performBlockAndWait:v10];
+  [contextCopy performBlockAndWait:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);

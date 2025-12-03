@@ -6,9 +6,9 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPBadTokenInfoStats *)self tierType];
+  tierType = [(NSPBadTokenInfoStats *)self tierType];
 
-  if (!v3)
+  if (!tierType)
   {
     v11 = nplog_obj();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -24,22 +24,22 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v4 = [(NSPBadTokenInfoStats *)self tokenProxy];
+  tokenProxy = [(NSPBadTokenInfoStats *)self tokenProxy];
 
-  if (v4)
+  if (tokenProxy)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    v6 = [(NSPBadTokenInfoStats *)self tierType];
-    [v5 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPBadTokenInfoStats *)self tierType];
+    [v5 setObject:tierType2 forKeyedSubscript:@"TierType"];
 
-    v7 = [(NSPBadTokenInfoStats *)self tokenProxy];
-    [v5 setObject:v7 forKeyedSubscript:@"TokenProxy"];
+    tokenProxy2 = [(NSPBadTokenInfoStats *)self tokenProxy];
+    [v5 setObject:tokenProxy2 forKeyedSubscript:@"TokenProxy"];
 
     v8 = [NSNumber numberWithUnsignedInteger:[(NSPBadTokenInfoStats *)self configAgeHours]];
     [v5 setObject:v8 forKeyedSubscript:@"ConfigAge"];
 
-    v9 = [(NSPBadTokenInfoStats *)self configTag];
-    [v5 setObject:v9 forKeyedSubscript:@"ConfigTag"];
+    configTag = [(NSPBadTokenInfoStats *)self configTag];
+    [v5 setObject:configTag forKeyedSubscript:@"ConfigTag"];
 
     goto LABEL_4;
   }

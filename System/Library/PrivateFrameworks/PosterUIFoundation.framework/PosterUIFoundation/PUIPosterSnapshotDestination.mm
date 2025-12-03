@@ -1,40 +1,40 @@
 @interface PUIPosterSnapshotDestination
-+ (id)destinationForCache:(id)a3 clientAuditToken:(id)a4 error:(id *)a5;
-+ (id)destinationForPosterPath:(id)a3 clientAuditToken:(id)a4 error:(id *)a5;
-+ (id)destinationForSQLiteCacheAtURL:(id)a3 clientAuditToken:(id)a4 error:(id *)a5;
-+ (id)destinationForSandboxExtendedURL:(id)a3 error:(id *)a4;
-+ (id)destinationWithTemporaryDirectoryWithAuditToken:(id)a3 error:(id *)a4;
-+ (id)destinationWithTemporaryDirectoryWithError:(id *)a3;
-- (BOOL)checkDestinationIsReachableAndReturnError:(id *)a3;
++ (id)destinationForCache:(id)cache clientAuditToken:(id)token error:(id *)error;
++ (id)destinationForPosterPath:(id)path clientAuditToken:(id)token error:(id *)error;
++ (id)destinationForSQLiteCacheAtURL:(id)l clientAuditToken:(id)token error:(id *)error;
++ (id)destinationForSandboxExtendedURL:(id)l error:(id *)error;
++ (id)destinationWithTemporaryDirectoryWithAuditToken:(id)token error:(id *)error;
++ (id)destinationWithTemporaryDirectoryWithError:(id *)error;
+- (BOOL)checkDestinationIsReachableAndReturnError:(id *)error;
 - (NSURL)URL;
 - (PUIPosterSnapshotDestination)init;
-- (PUIPosterSnapshotDestination)initWithSandboxExtendedURL:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (PUIPosterSnapshotDestination)initWithURL:(id)a3 type:(int64_t)a4 error:(id *)a5;
+- (PUIPosterSnapshotDestination)initWithSandboxExtendedURL:(id)l type:(int64_t)type error:(id *)error;
+- (PUIPosterSnapshotDestination)initWithURL:(id)l type:(int64_t)type error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PUIPosterSnapshotDestination
 
-+ (id)destinationForSandboxExtendedURL:(id)a3 error:(id *)a4
++ (id)destinationForSandboxExtendedURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithSandboxExtendedURL:v6 type:3 error:a4];
+  lCopy = l;
+  v7 = [[self alloc] initWithSandboxExtendedURL:lCopy type:3 error:error];
 
   return v7;
 }
 
-+ (id)destinationForPosterPath:(id)a3 clientAuditToken:(id)a4 error:(id *)a5
++ (id)destinationForPosterPath:(id)path clientAuditToken:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 ensureScratchURLIsReachableAndReturnError:a5])
+  pathCopy = path;
+  tokenCopy = token;
+  if ([pathCopy ensureScratchURLIsReachableAndReturnError:error])
   {
-    v10 = [v8 snapshotCacheURL];
-    v11 = [v10 URLByDeletingLastPathComponent];
+    snapshotCacheURL = [pathCopy snapshotCacheURL];
+    uRLByDeletingLastPathComponent = [snapshotCacheURL URLByDeletingLastPathComponent];
 
-    v12 = [objc_alloc(MEMORY[0x1E69C51D8]) initWithURL:v11 options:4 auditToken:v9 error:a5];
-    v13 = [a1 destinationForSandboxExtendedURL:v12 error:a5];
+    v12 = [objc_alloc(MEMORY[0x1E69C51D8]) initWithURL:uRLByDeletingLastPathComponent options:4 auditToken:tokenCopy error:error];
+    v13 = [self destinationForSandboxExtendedURL:v12 error:error];
     [v13 setType:5];
   }
 
@@ -46,16 +46,16 @@
   return v13;
 }
 
-+ (id)destinationForSQLiteCacheAtURL:(id)a3 clientAuditToken:(id)a4 error:(id *)a5
++ (id)destinationForSQLiteCacheAtURL:(id)l clientAuditToken:(id)token error:(id *)error
 {
   v8 = MEMORY[0x1E69C51D8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithURL:v10 options:4 auditToken:v9 error:a5];
+  tokenCopy = token;
+  lCopy = l;
+  v11 = [[v8 alloc] initWithURL:lCopy options:4 auditToken:tokenCopy error:error];
 
   if (v11)
   {
-    v12 = [[a1 alloc] initWithSandboxExtendedURL:v11 type:5 error:a5];
+    v12 = [[self alloc] initWithSandboxExtendedURL:v11 type:5 error:error];
   }
 
   else
@@ -66,12 +66,12 @@
   return v12;
 }
 
-+ (id)destinationForCache:(id)a3 clientAuditToken:(id)a4 error:(id *)a5
++ (id)destinationForCache:(id)cache clientAuditToken:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 cacheURL];
-  v11 = [objc_alloc(MEMORY[0x1E69C51D8]) initWithURL:v10 options:4 auditToken:v9 error:a5];
+  cacheCopy = cache;
+  tokenCopy = token;
+  cacheURL = [cacheCopy cacheURL];
+  v11 = [objc_alloc(MEMORY[0x1E69C51D8]) initWithURL:cacheURL options:4 auditToken:tokenCopy error:error];
 
   if (v11)
   {
@@ -82,7 +82,7 @@
     {
       v14 = 5;
 LABEL_6:
-      v17 = [[a1 alloc] initWithSandboxExtendedURL:v11 type:v14 error:a5];
+      v17 = [[self alloc] initWithSandboxExtendedURL:v11 type:v14 error:error];
       goto LABEL_8;
     }
 
@@ -102,12 +102,12 @@ LABEL_8:
   return v17;
 }
 
-+ (id)destinationWithTemporaryDirectoryWithAuditToken:(id)a3 error:(id *)a4
++ (id)destinationWithTemporaryDirectoryWithAuditToken:(id)token error:(id *)error
 {
-  v6 = [MEMORY[0x1E69C51D8] temporaryReadwriteSandboxExtendedURLForAuditToken:a3 error:?];
+  v6 = [MEMORY[0x1E69C51D8] temporaryReadwriteSandboxExtendedURLForAuditToken:token error:?];
   if (v6)
   {
-    v7 = [a1 destinationForSandboxExtendedURL:v6 error:a4];
+    v7 = [self destinationForSandboxExtendedURL:v6 error:error];
   }
 
   else
@@ -118,56 +118,56 @@ LABEL_8:
   return v7;
 }
 
-+ (id)destinationWithTemporaryDirectoryWithError:(id *)a3
++ (id)destinationWithTemporaryDirectoryWithError:(id *)error
 {
   v4 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:@"PUIPosterSnapshotDestination"];
-  v5 = [[PUIPosterSnapshotDestination alloc] initWithURL:v4 type:4 error:a3];
+  v5 = [[PUIPosterSnapshotDestination alloc] initWithURL:v4 type:4 error:error];
 
   return v5;
 }
 
-- (PUIPosterSnapshotDestination)initWithSandboxExtendedURL:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (PUIPosterSnapshotDestination)initWithSandboxExtendedURL:(id)l type:(int64_t)type error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  lCopy = l;
+  if (!lCopy)
   {
     [PUIPosterSnapshotDestination initWithSandboxExtendedURL:a2 type:? error:?];
   }
 
-  if (!a4)
+  if (!type)
   {
     [PUIPosterSnapshotDestination initWithSandboxExtendedURL:a2 type:? error:?];
   }
 
-  v10 = v9;
+  v10 = lCopy;
   v14.receiver = self;
   v14.super_class = PUIPosterSnapshotDestination;
   v11 = [(PUIPosterSnapshotDestination *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a4;
-    objc_storeStrong(&v11->_sandboxExtendedURL, a3);
+    v11->_type = type;
+    objc_storeStrong(&v11->_sandboxExtendedURL, l);
   }
 
   return v12;
 }
 
-- (PUIPosterSnapshotDestination)initWithURL:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (PUIPosterSnapshotDestination)initWithURL:(id)l type:(int64_t)type error:(id *)error
 {
-  v10 = a3;
-  if (!v10)
+  lCopy = l;
+  if (!lCopy)
   {
     [PUIPosterSnapshotDestination initWithURL:a2 type:? error:?];
   }
 
-  if (!a4)
+  if (!type)
   {
     [PUIPosterSnapshotDestination initWithURL:a2 type:? error:?];
   }
 
-  v11 = v10;
-  if ([v10 checkResourceIsReachableAndReturnError:a5])
+  v11 = lCopy;
+  if ([lCopy checkResourceIsReachableAndReturnError:error])
   {
     v16.receiver = self;
     v16.super_class = PUIPosterSnapshotDestination;
@@ -175,20 +175,20 @@ LABEL_8:
     v13 = v12;
     if (v12)
     {
-      v12->_type = a4;
-      objc_storeStrong(&v12->_basicURL, a3);
+      v12->_type = type;
+      objc_storeStrong(&v12->_basicURL, l);
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (PUIPosterSnapshotDestination)init
@@ -222,17 +222,17 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)checkDestinationIsReachableAndReturnError:(id *)a3
+- (BOOL)checkDestinationIsReachableAndReturnError:(id *)error
 {
   basicURL = self->_basicURL;
   if (basicURL)
   {
-    return [(NSURL *)basicURL checkResourceIsReachableAndReturnError:a3];
+    return [(NSURL *)basicURL checkResourceIsReachableAndReturnError:error];
   }
 
   else
   {
-    return [(PFSandboxExtendedURL *)self->_sandboxExtendedURL isValidWithError:a3];
+    return [(PFSandboxExtendedURL *)self->_sandboxExtendedURL isValidWithError:error];
   }
 }
 
@@ -244,8 +244,8 @@ LABEL_8:
 
   if (self->_type == 4)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    [v4 removeItemAtURL:self->_basicURL error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:self->_basicURL error:0];
   }
 
   basicURL = self->_basicURL;

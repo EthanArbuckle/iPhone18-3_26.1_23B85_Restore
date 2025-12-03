@@ -1,9 +1,9 @@
 @interface DSGeneralLogCollector
 + (id)latestRootLog;
 + (id)latestUserLog;
-- (DSGeneralLogCollector)initWithLogIDs:(id)a3;
-- (id)logFilesFromEnumerator:(id)a3;
-- (void)enumerateLogLinesWithBlock:(id)a3;
+- (DSGeneralLogCollector)initWithLogIDs:(id)ds;
+- (id)logFilesFromEnumerator:(id)enumerator;
+- (void)enumerateLogLinesWithBlock:(id)block;
 - (void)getLogFiles;
 @end
 
@@ -29,19 +29,19 @@
   return v5;
 }
 
-- (DSGeneralLogCollector)initWithLogIDs:(id)a3
+- (DSGeneralLogCollector)initWithLogIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = DSGeneralLogCollector;
   v6 = [(DSGeneralLogCollector *)&v11 init];
-  if (!v5)
+  if (!dsCopy)
   {
     goto LABEL_7;
   }
 
   v7 = +[NSNull null];
-  if ([v5 isEqual:v7])
+  if ([dsCopy isEqual:v7])
   {
 
 LABEL_7:
@@ -55,7 +55,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v8 = [v5 count];
+  v8 = [dsCopy count];
 
   if (!v8)
   {
@@ -64,7 +64,7 @@ LABEL_7:
 
   if (v6)
   {
-    objc_storeStrong(&v6->_logIDs, a3);
+    objc_storeStrong(&v6->_logIDs, ds);
     [(DSGeneralLogCollector *)v6 getLogFiles];
   }
 
@@ -98,15 +98,15 @@ LABEL_10:
   self->_logFiles = v14;
 }
 
-- (id)logFilesFromEnumerator:(id)a3
+- (id)logFilesFromEnumerator:(id)enumerator
 {
-  v3 = a3;
+  enumeratorCopy = enumerator;
   v4 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = enumeratorCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -139,15 +139,15 @@ LABEL_10:
   return v4;
 }
 
-- (void)enumerateLogLinesWithBlock:(id)a3
+- (void)enumerateLogLinesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = DiagnosticLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(DSGeneralLogCollector *)self logIDs];
+    logIDs = [(DSGeneralLogCollector *)self logIDs];
     *buf = 138412290;
-    v20 = v6;
+    v20 = logIDs;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Requesting log lines for: %@", buf, 0xCu);
   }
 
@@ -155,8 +155,8 @@ LABEL_10:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(DSGeneralLogCollector *)self logFiles];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  logFiles = [(DSGeneralLogCollector *)self logFiles];
+  v8 = [logFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -167,12 +167,12 @@ LABEL_5:
     {
       if (*v15 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(logFiles);
       }
 
       v12 = *(*(&v14 + 1) + 8 * v11);
-      v13 = [(DSGeneralLogCollector *)self logIDs];
-      LOBYTE(v12) = [v12 enumerateLogLinesWithIDs:v13 usingBlock:v4];
+      logIDs2 = [(DSGeneralLogCollector *)self logIDs];
+      LOBYTE(v12) = [v12 enumerateLogLinesWithIDs:logIDs2 usingBlock:blockCopy];
 
       if (v12)
       {
@@ -181,7 +181,7 @@ LABEL_5:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [logFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           goto LABEL_5;

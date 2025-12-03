@@ -1,44 +1,44 @@
 @interface SBViewControllerTransitionContext
 - (BOOL)_animatorIsInteractive;
 - (BOOL)_animatorSupportsRestarting;
-- (BOOL)_objectSupportsRestarting:(id)a3;
-- (BOOL)animateAlongsideTransition:(id)a3 completion:(id)a4;
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)_objectSupportsRestarting:(id)restarting;
+- (BOOL)animateAlongsideTransition:(id)transition completion:(id)completion;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (BOOL)isAnimated;
 - (BOOL)requiresCancellableAnimations;
 - (BOOL)supportsRestarting;
 - (CGAffineTransform)targetTransform;
-- (CGRect)finalFrameForViewController:(id)a3;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (SBViewControllerTransitionContext)init;
 - (SBViewControllerTransitionContextDelegate)delegate;
 - (double)completionVelocity;
 - (id)_acquireTransitionCompletion;
 - (id)_interactiveAnimator;
 - (id)_reversibleAnimator;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)completionCurve;
 - (void)_completeTransition;
 - (void)_completeTransitionIfPossible;
 - (void)_runAlongsideAnimationBlocksInEnclosingAnimationContext;
-- (void)_runAlongsideAnimationBlocksWithFactory:(id)a3 options:(unint64_t)a4;
+- (void)_runAlongsideAnimationBlocksWithFactory:(id)factory options:(unint64_t)options;
 - (void)_runInteractionEndedHandlers;
 - (void)_updateTransitionAnimationFactoryAndOptions;
-- (void)addTransitionContinuation:(id)a3;
+- (void)addTransitionContinuation:(id)continuation;
 - (void)cancelInteractiveTransition;
 - (void)cancelTransition;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)dealloc;
 - (void)finishInteractiveTransition;
-- (void)notifyWhenInteractionEndsUsingBlock:(id)a3;
+- (void)notifyWhenInteractionEndsUsingBlock:(id)block;
 - (void)restartTransition;
-- (void)setFinalFrame:(CGRect)a3 forViewController:(id)a4;
-- (void)setInitialFrame:(CGRect)a3 forViewController:(id)a4;
-- (void)setTargetTransform:(CGAffineTransform *)a3;
+- (void)setFinalFrame:(CGRect)frame forViewController:(id)controller;
+- (void)setInitialFrame:(CGRect)frame forViewController:(id)controller;
+- (void)setTargetTransform:(CGAffineTransform *)transform;
 - (void)startTransition;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation SBViewControllerTransitionContext
@@ -73,26 +73,26 @@
     finalFramesByViewController = v3->_finalFramesByViewController;
     v3->_finalFramesByViewController = v12;
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     alongsideAnimations = v3->_alongsideAnimations;
-    v3->_alongsideAnimations = v14;
+    v3->_alongsideAnimations = array;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     alongsideCompletions = v3->_alongsideCompletions;
-    v3->_alongsideCompletions = v16;
+    v3->_alongsideCompletions = array2;
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     alongsideInteractionEndedHandlers = v3->_alongsideInteractionEndedHandlers;
-    v3->_alongsideInteractionEndedHandlers = v18;
+    v3->_alongsideInteractionEndedHandlers = array3;
 
     v20 = [MEMORY[0x1E695DFA8] set];
     alongsideAnimationViews = v3->_alongsideAnimationViews;
     v3->_alongsideAnimationViews = v20;
 
     v3->_wantsAnimation = 1;
-    v22 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     transitionContinuations = v3->_transitionContinuations;
-    v3->_transitionContinuations = v22;
+    v3->_transitionContinuations = array4;
   }
 
   return v3;
@@ -100,18 +100,18 @@
 
 - (void)startTransition
 {
-  v2 = self;
-  v8 = v2;
-  if (v2->_interactor)
+  selfCopy = self;
+  v8 = selfCopy;
+  if (selfCopy->_interactor)
   {
-    [(SBViewControllerTransitionContext *)v2 _interactorSupportsRestarting];
-    v2 = v8;
+    [(SBViewControllerTransitionContext *)selfCopy _interactorSupportsRestarting];
+    selfCopy = v8;
   }
 
-  v3 = [(SBViewControllerTransitionContext *)v2 delegate];
+  delegate = [(SBViewControllerTransitionContext *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionWillBegin:v8];
+    [delegate transitionWillBegin:v8];
   }
 
   v8->_transitionStarted = 1;
@@ -120,8 +120,8 @@
     if ([(SBViewControllerTransitionContext *)v8 isAnimated])
     {
       [(SBViewControllerTransitionContext *)v8 _updateTransitionAnimationFactoryAndOptions];
-      v6 = [(SBViewControllerTransitionContext *)v8 transitionAnimationFactory];
-      [(SBViewControllerTransitionContext *)v8 _runAlongsideAnimationBlocksWithFactory:v6 options:[(SBViewControllerTransitionContext *)v8 transitionAnimationOptions]];
+      transitionAnimationFactory = [(SBViewControllerTransitionContext *)v8 transitionAnimationFactory];
+      [(SBViewControllerTransitionContext *)v8 _runAlongsideAnimationBlocksWithFactory:transitionAnimationFactory options:[(SBViewControllerTransitionContext *)v8 transitionAnimationOptions]];
     }
 
     else
@@ -149,7 +149,7 @@ LABEL_12:
   if (!v4->_transitionDidBeginCalled && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v8->_transitionDidBeginCalled = 1;
-    [v3 transitionDidBegin:?];
+    [delegate transitionDidBegin:?];
   }
 
   if (v5)
@@ -176,24 +176,24 @@ LABEL_12:
 - (void)_completeTransition
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = [(SBViewControllerTransitionContext *)v2 delegate];
+  selfCopy = self;
+  delegate = [(SBViewControllerTransitionContext *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionWillFinish:v2];
+    [delegate transitionWillFinish:selfCopy];
   }
 
-  v2->_transitionFinished = 1;
-  if (v2->_animator && (objc_opt_respondsToSelector() & 1) != 0)
+  selfCopy->_transitionFinished = 1;
+  if (selfCopy->_animator && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(UIViewControllerAnimatedTransitioning *)v2->_animator animationEnded:!v2->_transitionIsCancelled];
+    [(UIViewControllerAnimatedTransitioning *)selfCopy->_animator animationEnded:!selfCopy->_transitionIsCancelled];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2->_alongsideCompletions;
+  v4 = selfCopy->_alongsideCompletions;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -220,31 +220,31 @@ LABEL_12:
     while (v6);
   }
 
-  [(NSMutableArray *)v2->_alongsideAnimations removeAllObjects];
-  [(NSMutableArray *)v2->_alongsideCompletions removeAllObjects];
-  [(NSMutableArray *)v2->_alongsideInteractionEndedHandlers removeAllObjects];
-  [(NSMutableSet *)v2->_alongsideAnimationViews removeAllObjects];
-  [(NSMutableArray *)v2->_transitionContinuations removeAllObjects];
+  [(NSMutableArray *)selfCopy->_alongsideAnimations removeAllObjects];
+  [(NSMutableArray *)selfCopy->_alongsideCompletions removeAllObjects];
+  [(NSMutableArray *)selfCopy->_alongsideInteractionEndedHandlers removeAllObjects];
+  [(NSMutableSet *)selfCopy->_alongsideAnimationViews removeAllObjects];
+  [(NSMutableArray *)selfCopy->_transitionContinuations removeAllObjects];
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionDidFinish:v2];
+    [delegate transitionDidFinish:selfCopy];
   }
 
-  [(NSMutableDictionary *)v2->_viewControllersByKey removeAllObjects];
-  [(NSMutableDictionary *)v2->_viewsByKey removeAllObjects];
-  [(NSMapTable *)v2->_initialFramesByViewController removeAllObjects];
-  [(NSMapTable *)v2->_finalFramesByViewController removeAllObjects];
-  transitionAnimationFactory = v2->_transitionAnimationFactory;
-  v2->_transitionAnimationFactory = 0;
+  [(NSMutableDictionary *)selfCopy->_viewControllersByKey removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_viewsByKey removeAllObjects];
+  [(NSMapTable *)selfCopy->_initialFramesByViewController removeAllObjects];
+  [(NSMapTable *)selfCopy->_finalFramesByViewController removeAllObjects];
+  transitionAnimationFactory = selfCopy->_transitionAnimationFactory;
+  selfCopy->_transitionAnimationFactory = 0;
 
-  animator = v2->_animator;
-  v2->_animator = 0;
+  animator = selfCopy->_animator;
+  selfCopy->_animator = 0;
 
-  interactor = v2->_interactor;
-  v2->_interactor = 0;
+  interactor = selfCopy->_interactor;
+  selfCopy->_interactor = 0;
 
-  v2->_transitionPercentComplete = 1.0;
-  v2->_transitionAnimationOptions = 0;
+  selfCopy->_transitionPercentComplete = 1.0;
+  selfCopy->_transitionAnimationOptions = 0;
 }
 
 - (BOOL)isAnimated
@@ -312,13 +312,13 @@ LABEL_12:
 
 - (BOOL)_animatorIsInteractive
 {
-  v2 = [(SBViewControllerTransitionContext *)self _animatorIsReversible];
-  if (v2)
+  _animatorIsReversible = [(SBViewControllerTransitionContext *)self _animatorIsReversible];
+  if (_animatorIsReversible)
   {
-    LOBYTE(v2) = objc_opt_respondsToSelector();
+    LOBYTE(_animatorIsReversible) = objc_opt_respondsToSelector();
   }
 
-  return v2 & 1;
+  return _animatorIsReversible & 1;
 }
 
 - (void)_runAlongsideAnimationBlocksInEnclosingAnimationContext
@@ -359,19 +359,19 @@ LABEL_12:
 - (void)finishInteractiveTransition
 {
   self->_transitionWasInteractive = 1;
-  v8 = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
+  _interactiveAnimator = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
   [(SBViewControllerTransitionContext *)self completionVelocity];
   v4 = v3;
-  v5 = [(SBViewControllerTransitionContext *)self completionCurve];
+  completionCurve = [(SBViewControllerTransitionContext *)self completionCurve];
   interactor = self->_interactor;
   self->_interactor = 0;
 
   [(SBViewControllerTransitionContext *)self _runInteractionEndedHandlers];
   [(SBViewControllerTransitionContext *)self _updateTransitionAnimationFactoryAndOptions];
-  v7 = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
-  [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:v7 options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
+  transitionAnimationFactory = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
+  [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:transitionAnimationFactory options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
 
-  [v8 finishInteractiveTransition:self withCompletionSpeed:v5 completionCurve:v4];
+  [_interactiveAnimator finishInteractiveTransition:self withCompletionSpeed:completionCurve completionCurve:v4];
 }
 
 - (double)completionVelocity
@@ -434,54 +434,54 @@ LABEL_12:
   }
 }
 
-- (void)setInitialFrame:(CGRect)a3 forViewController:(id)a4
+- (void)setInitialFrame:(CGRect)frame forViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   initialFramesByViewController = self->_initialFramesByViewController;
   v9 = MEMORY[0x1E696B098];
-  v10 = a4;
+  controllerCopy = controller;
   v11 = [v9 valueWithCGRect:{x, y, width, height}];
-  [(NSMapTable *)initialFramesByViewController setObject:v11 forKey:v10];
+  [(NSMapTable *)initialFramesByViewController setObject:v11 forKey:controllerCopy];
 }
 
-- (void)setFinalFrame:(CGRect)a3 forViewController:(id)a4
+- (void)setFinalFrame:(CGRect)frame forViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   finalFramesByViewController = self->_finalFramesByViewController;
   v9 = MEMORY[0x1E696B098];
-  v10 = a4;
+  controllerCopy = controller;
   v11 = [v9 valueWithCGRect:{x, y, width, height}];
-  [(NSMapTable *)finalFramesByViewController setObject:v11 forKey:v10];
+  [(NSMapTable *)finalFramesByViewController setObject:v11 forKey:controllerCopy];
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
-  v5 = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
-  self->_transitionPercentComplete = a3;
+  _interactiveAnimator = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
+  self->_transitionPercentComplete = transition;
   [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksInEnclosingAnimationContext];
-  [v5 updateTransition:self withPercentComplete:a3];
+  [_interactiveAnimator updateTransition:self withPercentComplete:transition];
 }
 
 - (void)cancelInteractiveTransition
 {
-  v3 = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
+  _interactiveAnimator = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
   [(SBViewControllerTransitionContext *)self cancelTransition];
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(SBViewControllerTransitionContext *)self delegate];
+  delegate = [(SBViewControllerTransitionContext *)self delegate];
   if (!self->_transitionDidBeginCalled && (objc_opt_respondsToSelector() & 1) != 0)
   {
     self->_transitionDidBeginCalled = 1;
-    [v4 transitionDidBegin:self];
+    [delegate transitionDidBegin:self];
   }
 
   self->_animationFinished = 1;
@@ -506,8 +506,8 @@ LABEL_12:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(SBViewControllerTransitionContext *)self _acquireTransitionCompletion];
-        (*(v10 + 16))(v10, self, v11);
+        _acquireTransitionCompletion = [(SBViewControllerTransitionContext *)self _acquireTransitionCompletion];
+        (*(v10 + 16))(v10, self, _acquireTransitionCompletion);
 
         ++v9;
       }
@@ -522,9 +522,9 @@ LABEL_12:
   [(SBViewControllerTransitionContext *)self _completeTransitionIfPossible];
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
-  v3 = [(NSMapTable *)self->_initialFramesByViewController objectForKey:a3];
+  v3 = [(NSMapTable *)self->_initialFramesByViewController objectForKey:controller];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -542,9 +542,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
-  v3 = [(NSMapTable *)self->_finalFramesByViewController objectForKey:a3];
+  v3 = [(NSMapTable *)self->_finalFramesByViewController objectForKey:controller];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -565,16 +565,16 @@ LABEL_12:
 - (void)cancelTransition
 {
   self->_transitionWasInteractive = [(SBViewControllerTransitionContext *)self isInteractive];
-  v9 = [(SBViewControllerTransitionContext *)self _reversibleAnimator];
-  v3 = [(SBViewControllerTransitionContext *)self delegate];
+  _reversibleAnimator = [(SBViewControllerTransitionContext *)self _reversibleAnimator];
+  delegate = [(SBViewControllerTransitionContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionWillReverse:self];
+    [delegate transitionWillReverse:self];
   }
 
   [(SBViewControllerTransitionContext *)self completionVelocity];
   v5 = v4;
-  v6 = [(SBViewControllerTransitionContext *)self completionCurve];
+  completionCurve = [(SBViewControllerTransitionContext *)self completionCurve];
   self->_animationFinished = 0;
   *&self->_transitionIsCancelled = 257;
   interactor = self->_interactor;
@@ -587,14 +587,14 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionDidReverse:self];
+    [delegate transitionDidReverse:self];
   }
 
   if ([(SBViewControllerTransitionContext *)self isAnimated])
   {
     [(SBViewControllerTransitionContext *)self _updateTransitionAnimationFactoryAndOptions];
-    v8 = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
-    [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:v8 options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
+    transitionAnimationFactory = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
+    [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:transitionAnimationFactory options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
   }
 
   else
@@ -602,36 +602,36 @@ LABEL_12:
     [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksInEnclosingAnimationContext];
   }
 
-  [v9 cancelTransition:self withCompletionSpeed:v6 completionCurve:v5];
+  [_reversibleAnimator cancelTransition:self withCompletionSpeed:completionCurve completionCurve:v5];
 }
 
 - (BOOL)supportsRestarting
 {
-  v3 = [(SBViewControllerTransitionContext *)self _animatorSupportsRestarting];
-  if (v3)
+  _animatorSupportsRestarting = [(SBViewControllerTransitionContext *)self _animatorSupportsRestarting];
+  if (_animatorSupportsRestarting)
   {
     if (self->_interactor)
     {
 
-      LOBYTE(v3) = [(SBViewControllerTransitionContext *)self _interactorSupportsRestarting];
+      LOBYTE(_animatorSupportsRestarting) = [(SBViewControllerTransitionContext *)self _interactorSupportsRestarting];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_animatorSupportsRestarting) = 1;
     }
   }
 
-  return v3;
+  return _animatorSupportsRestarting;
 }
 
 - (void)restartTransition
 {
-  v6 = [(SBViewControllerTransitionContext *)self _reversibleAnimator];
-  v3 = [(SBViewControllerTransitionContext *)self delegate];
+  _reversibleAnimator = [(SBViewControllerTransitionContext *)self _reversibleAnimator];
+  delegate = [(SBViewControllerTransitionContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionWillReverse:self];
+    [delegate transitionWillReverse:self];
   }
 
   self->_animationFinished = 0;
@@ -639,13 +639,13 @@ LABEL_12:
   self->_transitionWasInteractive = 0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 transitionDidReverse:self];
+    [delegate transitionDidReverse:self];
   }
 
   if (self->_interactor)
   {
-    v4 = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
-    [v4 percentComplete];
+    _interactiveAnimator = [(SBViewControllerTransitionContext *)self _interactiveAnimator];
+    [_interactiveAnimator percentComplete];
     self->_transitionBeganInteractively = 1;
     [(SBViewControllerTransitionContext *)self updateInteractiveTransition:?];
     [(UIViewControllerInteractiveTransitioning *)self->_interactor startInteractiveTransition:self];
@@ -657,8 +657,8 @@ LABEL_12:
     if ([(SBViewControllerTransitionContext *)self isAnimated])
     {
       [(SBViewControllerTransitionContext *)self _updateTransitionAnimationFactoryAndOptions];
-      v5 = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
-      [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:v5 options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
+      transitionAnimationFactory = [(SBViewControllerTransitionContext *)self transitionAnimationFactory];
+      [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksWithFactory:transitionAnimationFactory options:[(SBViewControllerTransitionContext *)self transitionAnimationOptions]];
     }
 
     else
@@ -666,57 +666,57 @@ LABEL_12:
       [(SBViewControllerTransitionContext *)self _runAlongsideAnimationBlocksInEnclosingAnimationContext];
     }
 
-    [v6 animateTransition:self];
+    [_reversibleAnimator animateTransition:self];
   }
 }
 
-- (BOOL)animateAlongsideTransition:(id)a3 completion:(id)a4
+- (BOOL)animateAlongsideTransition:(id)transition completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 | v7)
+  transitionCopy = transition;
+  completionCopy = completion;
+  if (transitionCopy | completionCopy)
   {
-    if (v6)
+    if (transitionCopy)
     {
       alongsideAnimations = self->_alongsideAnimations;
-      v9 = [v6 copy];
+      v9 = [transitionCopy copy];
       v10 = _Block_copy(v9);
       [(NSMutableArray *)alongsideAnimations addObject:v10];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       alongsideCompletions = self->_alongsideCompletions;
-      v12 = [v7 copy];
+      v12 = [completionCopy copy];
       v13 = _Block_copy(v12);
       [(NSMutableArray *)alongsideCompletions addObject:v13];
     }
   }
 
-  return (v6 | v7) != 0;
+  return (transitionCopy | completionCopy) != 0;
 }
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(SBViewControllerTransitionContext *)self animateAlongsideTransition:a4 completion:a5];
+  viewCopy = view;
+  v9 = [(SBViewControllerTransitionContext *)self animateAlongsideTransition:animation completion:completion];
   if (v9)
   {
-    v10 = [(SBViewControllerTransitionContext *)self containerView];
+    containerView = [(SBViewControllerTransitionContext *)self containerView];
 
-    if (v10 != v8)
+    if (containerView != viewCopy)
     {
-      [(NSMutableSet *)self->_alongsideAnimationViews addObject:v8];
+      [(NSMutableSet *)self->_alongsideAnimationViews addObject:viewCopy];
     }
   }
 
   return v9;
 }
 
-- (void)notifyWhenInteractionEndsUsingBlock:(id)a3
+- (void)notifyWhenInteractionEndsUsingBlock:(id)block
 {
   alongsideInteractionEndedHandlers = self->_alongsideInteractionEndedHandlers;
-  v5 = [a3 copy];
+  v5 = [block copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)alongsideInteractionEndedHandlers addObject:v4];
 }
@@ -731,10 +731,10 @@ LABEL_12:
   return [(SBViewControllerTransitionContext *)self _animatorIsReversible];
 }
 
-- (void)addTransitionContinuation:(id)a3
+- (void)addTransitionContinuation:(id)continuation
 {
   transitionContinuations = self->_transitionContinuations;
-  v5 = [a3 copy];
+  v5 = [continuation copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)transitionContinuations addObject:v4];
 }
@@ -770,41 +770,41 @@ LABEL_12:
 
 - (BOOL)_animatorSupportsRestarting
 {
-  v3 = [(SBViewControllerTransitionContext *)self _animatorIsReversible];
-  if (v3)
+  _animatorIsReversible = [(SBViewControllerTransitionContext *)self _animatorIsReversible];
+  if (_animatorIsReversible)
   {
     animator = self->_animator;
 
-    LOBYTE(v3) = [(SBViewControllerTransitionContext *)self _objectSupportsRestarting:animator];
+    LOBYTE(_animatorIsReversible) = [(SBViewControllerTransitionContext *)self _objectSupportsRestarting:animator];
   }
 
-  return v3;
+  return _animatorIsReversible;
 }
 
-- (BOOL)_objectSupportsRestarting:(id)a3
+- (BOOL)_objectSupportsRestarting:(id)restarting
 {
-  v3 = a3;
+  restartingCopy = restarting;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 supportsRestarting];
+    supportsRestarting = [restartingCopy supportsRestarting];
   }
 
   else
   {
-    v4 = 0;
+    supportsRestarting = 0;
   }
 
-  return v4;
+  return supportsRestarting;
 }
 
-- (void)_runAlongsideAnimationBlocksWithFactory:(id)a3 options:(unint64_t)a4
+- (void)_runAlongsideAnimationBlocksWithFactory:(id)factory options:(unint64_t)options
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __85__SBViewControllerTransitionContext__runAlongsideAnimationBlocksWithFactory_options___block_invoke;
   v4[3] = &unk_1E8088C90;
   v4[4] = self;
-  [MEMORY[0x1E698E7D0] animateWithFactory:a3 options:a4 actions:v4];
+  [MEMORY[0x1E698E7D0] animateWithFactory:factory options:options actions:v4];
 }
 
 void __85__SBViewControllerTransitionContext__runAlongsideAnimationBlocksWithFactory_options___block_invoke(uint64_t a1)
@@ -842,17 +842,17 @@ void __85__SBViewControllerTransitionContext__runAlongsideAnimationBlocksWithFac
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBViewControllerTransitionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBViewControllerTransitionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v6 = [v5 appendBool:-[SBViewControllerTransitionContext isInteractive](self withName:{"isInteractive"), @"isInteractive"}];
   v7 = [v5 appendBool:-[SBViewControllerTransitionContext isInterruptible](self withName:{"isInterruptible"), @"isInterruptible"}];
@@ -863,11 +863,11 @@ void __85__SBViewControllerTransitionContext__runAlongsideAnimationBlocksWithFac
   v12 = [v5 appendBool:-[SBViewControllerTransitionContext isTransitioning](self withName:{"isTransitioning"), @"isTransitioning"}];
   [(SBViewControllerTransitionContext *)self percentComplete];
   v13 = [v5 appendFloat:@"percentComplete" withName:?];
-  v14 = [(SBViewControllerTransitionContext *)self containerView];
-  v15 = [v5 appendPointer:v14 withName:@"containerView"];
+  containerView = [(SBViewControllerTransitionContext *)self containerView];
+  v15 = [v5 appendPointer:containerView withName:@"containerView"];
 
-  v16 = [(SBViewControllerTransitionContext *)self delegate];
-  v17 = [v5 appendPointer:v16 withName:@"delegate"];
+  delegate = [(SBViewControllerTransitionContext *)self delegate];
+  v17 = [v5 appendPointer:delegate withName:@"delegate"];
 
   v18 = [(SBViewControllerTransitionContext *)self viewControllerForKey:*MEMORY[0x1E69DE768]];
   if (v18)
@@ -890,7 +890,7 @@ void __85__SBViewControllerTransitionContext__runAlongsideAnimationBlocksWithFac
   v21[3] = &unk_1E8088F88;
   v21[4] = self;
   v22 = v5;
-  v23 = v4;
+  v23 = prefixCopy;
   [v22 appendBodySectionWithName:@"ViewControllers" multilinePrefix:v23 block:v21];
 
 LABEL_5:
@@ -961,10 +961,10 @@ void __75__SBViewControllerTransitionContext_descriptionBuilderWithMultilinePref
 
 - (id)succinctDescription
 {
-  v2 = [(SBViewControllerTransitionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBViewControllerTransitionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (CGAffineTransform)targetTransform
@@ -976,11 +976,11 @@ void __75__SBViewControllerTransitionContext_descriptionBuilderWithMultilinePref
   return self;
 }
 
-- (void)setTargetTransform:(CGAffineTransform *)a3
+- (void)setTargetTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_targetTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_targetTransform.c = *&transform->c;
   *&self->_targetTransform.tx = v4;
   *&self->_targetTransform.a = v3;
 }

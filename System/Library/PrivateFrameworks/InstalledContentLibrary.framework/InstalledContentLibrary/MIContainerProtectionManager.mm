@@ -1,6 +1,6 @@
 @interface MIContainerProtectionManager
 + (id)defaultManager;
-- (void)setDataProtectionOnDataContainer:(id)a3 forNewBundle:(id)a4 retryIfLocked:(BOOL)a5;
+- (void)setDataProtectionOnDataContainer:(id)container forNewBundle:(id)bundle retryIfLocked:(BOOL)locked;
 @end
 
 @implementation MIContainerProtectionManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __46__MIContainerProtectionManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken != -1)
   {
     dispatch_once(&defaultManager_onceToken, block);
@@ -29,18 +29,18 @@ uint64_t __46__MIContainerProtectionManager_defaultManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDataProtectionOnDataContainer:(id)a3 forNewBundle:(id)a4 retryIfLocked:(BOOL)a5
+- (void)setDataProtectionOnDataContainer:(id)container forNewBundle:(id)bundle retryIfLocked:(BOOL)locked
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 dataProtectionClass];
-  [v7 bundleType];
-  [v6 containerClass];
-  v8 = [v7 identifier];
+  containerCopy = container;
+  bundleCopy = bundle;
+  [bundleCopy dataProtectionClass];
+  [bundleCopy bundleType];
+  [containerCopy containerClass];
+  identifier = [bundleCopy identifier];
 
-  [v8 UTF8String];
-  v10 = v6;
-  v9 = v6;
+  [identifier UTF8String];
+  v10 = containerCopy;
+  v9 = containerCopy;
   container_set_data_protection_for_current_user();
 }
 

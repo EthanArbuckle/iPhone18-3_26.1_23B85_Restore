@@ -1,17 +1,17 @@
 @interface PPTopicDissector
 + (id)sharedInstance;
 - (PPTopicDissector)init;
-- (PPTopicDissector)initWithContextClient:(id)a3;
-- (id)extractionsFromContextKitWithText:(id)a3 isPlainText:(BOOL)a4 bundleId:(id)a5 language:(id)a6 weight:(double)a7;
-- (void)_collectHighLevelTopicsWithText:(id)a3 bundleId:(id)a4 addTopic:(id)a5 weight:(double)a6;
+- (PPTopicDissector)initWithContextClient:(id)client;
+- (id)extractionsFromContextKitWithText:(id)text isPlainText:(BOOL)plainText bundleId:(id)id language:(id)language weight:(double)weight;
+- (void)_collectHighLevelTopicsWithText:(id)text bundleId:(id)id addTopic:(id)topic weight:(double)weight;
 @end
 
 @implementation PPTopicDissector
 
-- (void)_collectHighLevelTopicsWithText:(id)a3 bundleId:(id)a4 addTopic:(id)a5 weight:(double)a6
+- (void)_collectHighLevelTopicsWithText:(id)text bundleId:(id)id addTopic:(id)topic weight:(double)weight
 {
-  v8 = a5;
-  v9 = a3;
+  topicCopy = topic;
+  textCopy = text;
   v10 = pp_default_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -24,9 +24,9 @@
   v14[1] = 3221225472;
   v14[2] = __77__PPTopicDissector__collectHighLevelTopicsWithText_bundleId_addTopic_weight___block_invoke;
   v14[3] = &unk_2789722D0;
-  v15 = v8;
-  v12 = v8;
-  [(PPTextToTopicTransform *)transform iterateTopicsForText:v9 block:v14];
+  v15 = topicCopy;
+  v12 = topicCopy;
+  [(PPTextToTopicTransform *)transform iterateTopicsForText:textCopy block:v14];
 
   v13 = pp_default_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -135,31 +135,31 @@ void __116__PPTopicDissector_topicsInText_isPlainText_source_cloudSync_language_
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)extractionsFromContextKitWithText:(id)a3 isPlainText:(BOOL)a4 bundleId:(id)a5 language:(id)a6 weight:(double)a7
+- (id)extractionsFromContextKitWithText:(id)text isPlainText:(BOOL)plainText bundleId:(id)id language:(id)language weight:(double)weight
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(CKContextClient *)self->_contextClient newRequest];
-  [v15 setText:v12];
+  plainTextCopy = plainText;
+  textCopy = text;
+  idCopy = id;
+  languageCopy = language;
+  newRequest = [(CKContextClient *)self->_contextClient newRequest];
+  [newRequest setText:textCopy];
   v16 = MEMORY[0x277CBEAF8];
-  v17 = v14;
-  if (!v14)
+  languageCode = languageCopy;
+  if (!languageCopy)
   {
-    a5 = [MEMORY[0x277CBEAF8] currentLocale];
-    v17 = [a5 languageCode];
+    id = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [id languageCode];
   }
 
-  v18 = [v16 componentsFromLocaleIdentifier:v17];
+  v18 = [v16 componentsFromLocaleIdentifier:languageCode];
   v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
-  [v15 setLanguageTag:v19];
+  [newRequest setLanguageTag:v19];
 
-  if (!v14)
+  if (!languageCopy)
   {
   }
 
-  [v15 setTextIsRaw:!v10];
+  [newRequest setTextIsRaw:!plainTextCopy];
   v20 = dispatch_semaphore_create(0);
   v21 = objc_opt_new();
   *(v21 + 8) = 0;
@@ -180,17 +180,17 @@ void __116__PPTopicDissector_topicsInText_isPlainText_source_cloudSync_language_
   v42[1] = 3221225472;
   v42[2] = __91__PPTopicDissector_extractionsFromContextKitWithText_isPlainText_bundleId_language_weight___block_invoke;
   v42[3] = &unk_278972208;
-  v29 = v13;
+  v29 = idCopy;
   v43 = v29;
-  v48 = v10;
+  v48 = plainTextCopy;
   v30 = v28;
   v44 = v30;
-  v47 = a7;
-  v31 = v14;
+  weightCopy = weight;
+  v31 = languageCopy;
   v45 = v31;
   v32 = v20;
   v46 = v32;
-  [v15 executeWithReply:v42];
+  [newRequest executeWithReply:v42];
   [MEMORY[0x277D425A0] waitForSemaphore:v32 timeoutSeconds:0 onAcquire:&__block_literal_global_140 onTimeout:3.0];
   v36 = 0;
   v37 = &v36;
@@ -514,8 +514,8 @@ void __91__PPTopicDissector_extractionsFromContextKitWithText_isPlainText_bundle
   v4 = init__pasExprOnceResult;
   if (!v4)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PPTopicDissector.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"contextClient"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPTopicDissector.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"contextClient"}];
   }
 
   v5 = [(PPTopicDissector *)self initWithContextClient:v4];
@@ -533,16 +533,16 @@ void __24__PPTopicDissector_init__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (PPTopicDissector)initWithContextClient:(id)a3
+- (PPTopicDissector)initWithContextClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = PPTopicDissector;
   v6 = [(PPTopicDissector *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextClient, a3);
+    objc_storeStrong(&v6->_contextClient, client);
     v8 = +[PPTextToTopicTransform sharedInstance];
     transform = v7->_transform;
     v7->_transform = v8;

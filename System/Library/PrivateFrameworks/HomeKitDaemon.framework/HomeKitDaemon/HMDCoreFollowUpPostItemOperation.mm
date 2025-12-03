@@ -1,5 +1,5 @@
 @interface HMDCoreFollowUpPostItemOperation
-- (HMDCoreFollowUpPostItemOperation)initWithItemToPost:(id)a3 followUpController:(id)a4;
+- (HMDCoreFollowUpPostItemOperation)initWithItemToPost:(id)post followUpController:(id)controller;
 - (void)_postFollowUpItem;
 - (void)main;
 @end
@@ -10,28 +10,28 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDCoreFollowUpPostItemOperation *)v4 itemToPost];
+    itemToPost = [(HMDCoreFollowUpPostItemOperation *)selfCopy itemToPost];
     *buf = 138543618;
     v13 = v6;
     v14 = 2112;
-    v15 = v7;
+    v15 = itemToPost;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Posting advertisement for new followup item: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  objc_initWeak(buf, v4);
-  v8 = [(HMDCoreFollowUpPostItemOperation *)v4 followUpController];
+  objc_initWeak(buf, selfCopy);
+  followUpController = [(HMDCoreFollowUpPostItemOperation *)selfCopy followUpController];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__HMDCoreFollowUpPostItemOperation_main__block_invoke;
   v10[3] = &unk_278676BF0;
   objc_copyWeak(&v11, buf);
-  [v8 pendingFollowUpItemsWithCompletion:v10];
+  [followUpController pendingFollowUpItemsWithCompletion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -294,32 +294,32 @@ void __93__HMDCoreFollowUpPostItemOperation__postFollowUpItemIfDifferentFromExis
 - (void)_postFollowUpItem
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = a1;
+    selfCopy = self;
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = HMFGetLogIdentifier();
-      v6 = [v3 itemToPost];
+      itemToPost = [selfCopy itemToPost];
       *buf = 138543618;
       v13 = v5;
       v14 = 2112;
-      v15 = v6;
+      v15 = itemToPost;
       _os_log_impl(&dword_229538000, v4, OS_LOG_TYPE_INFO, "%{public}@Posting followup item: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v2);
-    objc_initWeak(buf, v3);
-    v7 = [v3 followUpController];
-    v8 = [v3 itemToPost];
+    objc_initWeak(buf, selfCopy);
+    followUpController = [selfCopy followUpController];
+    itemToPost2 = [selfCopy itemToPost];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__HMDCoreFollowUpPostItemOperation__postFollowUpItem__block_invoke;
     v10[3] = &unk_278681398;
     objc_copyWeak(&v11, buf);
-    [v7 postFollowUpItem:v8 completion:v10];
+    [followUpController postFollowUpItem:itemToPost2 completion:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
@@ -377,17 +377,17 @@ void __53__HMDCoreFollowUpPostItemOperation__postFollowUpItem__block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCoreFollowUpPostItemOperation)initWithItemToPost:(id)a3 followUpController:(id)a4
+- (HMDCoreFollowUpPostItemOperation)initWithItemToPost:(id)post followUpController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  postCopy = post;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!postCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -395,15 +395,15 @@ LABEL_7:
     return result;
   }
 
-  v9 = v8;
+  v9 = controllerCopy;
   v15.receiver = self;
   v15.super_class = HMDCoreFollowUpPostItemOperation;
   v10 = [(HMFOperation *)&v15 initWithTimeout:0.0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_itemToPost, a3);
-    objc_storeStrong(&v11->_followUpController, a4);
+    objc_storeStrong(&v10->_itemToPost, post);
+    objc_storeStrong(&v11->_followUpController, controller);
   }
 
   return v11;

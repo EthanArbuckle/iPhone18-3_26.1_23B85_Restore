@@ -1,14 +1,14 @@
 @interface CRAppClipsDeclarationSession
 - (CRAppClipsDeclarationAgent)declarationAgent;
-- (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CRAppClipsDeclarationSession
 
-- (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -16,12 +16,12 @@
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_INFO, "received request for supported App Clips", v11, 2u);
   }
 
-  v9 = [(CRAppClipsDeclarationSession *)self declarationAgent];
-  v10 = [v9 appClipDeclarer];
+  declarationAgent = [(CRAppClipsDeclarationSession *)self declarationAgent];
+  appClipDeclarer = [declarationAgent appClipDeclarer];
 
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (appClipDeclarer && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 supportedAppClipsForPairedVehicleIdentifier:v6 completion:v7];
+    [appClipDeclarer supportedAppClipsForPairedVehicleIdentifier:identifierCopy completion:completionCopy];
   }
 }
 

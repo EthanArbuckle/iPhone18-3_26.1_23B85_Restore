@@ -1,7 +1,7 @@
 @interface WFStopSharingWorkflowActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityViewController;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation WFStopSharingWorkflowActivity
@@ -25,7 +25,7 @@
   v18 = &unk_279EE81B0;
   v11 = v6;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v12 = [v10 _actionWithTitle:v3 descriptiveText:0 image:0 style:2 handler:&v15 shouldDismissHandler:&__block_literal_global_204];
   [v11 addAction:{v12, v15, v16, v17, v18}];
   v13 = v11;
@@ -159,22 +159,22 @@ uint64_t __55__WFStopSharingWorkflowActivity_activityViewController__block_invok
   return [v1 dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = a3;
-  v6 = [v4 objectsMatchingClass:objc_opt_class()];
+  itemsCopy = items;
+  v6 = [itemsCopy objectsMatchingClass:objc_opt_class()];
 
-  v5 = [v6 firstObject];
-  [(WFStopSharingWorkflowActivity *)self setShortcut:v5];
+  firstObject = [v6 firstObject];
+  [(WFStopSharingWorkflowActivity *)self setShortcut:firstObject];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 objectsMatchingClass:objc_opt_class()];
+  itemsCopy = items;
+  v4 = [itemsCopy objectsMatchingClass:objc_opt_class()];
 
-  LOBYTE(v3) = [v4 count] != 0;
-  return v3;
+  LOBYTE(itemsCopy) = [v4 count] != 0;
+  return itemsCopy;
 }
 
 @end

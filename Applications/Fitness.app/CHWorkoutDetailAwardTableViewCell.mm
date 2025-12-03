@@ -1,16 +1,16 @@
 @interface CHWorkoutDetailAwardTableViewCell
 - (CGRect)badgeRect;
-- (CHWorkoutDetailAwardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForAchievement:(id)a3 badgeImageFactory:(id)a4 localizationProvider:(id)a5 isLastCell:(BOOL)a6;
+- (CHWorkoutDetailAwardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForAchievement:(id)achievement badgeImageFactory:(id)factory localizationProvider:(id)provider isLastCell:(BOOL)cell;
 @end
 
 @implementation CHWorkoutDetailAwardTableViewCell
 
-- (CHWorkoutDetailAwardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailAwardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,22 +19,22 @@
     v6 = 0;
   }
 
-  return sub_100601B60(a3, a4, v6);
+  return sub_100601B60(style, identifier, v6);
 }
 
-- (void)configureForAchievement:(id)a3 badgeImageFactory:(id)a4 localizationProvider:(id)a5 isLastCell:(BOOL)a6
+- (void)configureForAchievement:(id)achievement badgeImageFactory:(id)factory localizationProvider:(id)provider isLastCell:(BOOL)cell
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  sub_1006022F8(v10, v11, v12, a6);
+  achievementCopy = achievement;
+  factoryCopy = factory;
+  providerCopy = provider;
+  selfCopy = self;
+  sub_1006022F8(achievementCopy, factoryCopy, providerCopy, cell);
 }
 
 - (CGRect)badgeRect
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR___CHWorkoutDetailAwardTableViewCell_achievementBadgeView);
-  v3 = self;
+  selfCopy = self;
   [v2 frame];
   v5 = v4;
   v7 = v6;

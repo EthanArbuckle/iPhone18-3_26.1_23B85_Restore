@@ -1,33 +1,33 @@
 @interface IFPlatformSchemaIFPlatformClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (IFPlatformSchemaIFPlatformClientEvent)initWithDictionary:(id)a3;
-- (IFPlatformSchemaIFPlatformClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (IFPlatformSchemaIFPlatformClientEvent)initWithDictionary:(id)dictionary;
+- (IFPlatformSchemaIFPlatformClientEvent)initWithJSON:(id)n;
 - (IFPlatformSchemaIFPlatformTargetContext)ifPlatformTargetContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (int)componentName;
 - (void)deleteIfPlatformTargetContext;
-- (void)setIfPlatformTargetContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setIfPlatformTargetContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFPlatformSchemaIFPlatformClientEvent
 
-- (IFPlatformSchemaIFPlatformClientEvent)initWithDictionary:(id)a3
+- (IFPlatformSchemaIFPlatformClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFPlatformSchemaIFPlatformClientEvent;
   v5 = [(IFPlatformSchemaIFPlatformClientEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFPlatformSchemaIFPlatformClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ifPlatformTargetContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ifPlatformTargetContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFPlatformSchemaIFPlatformClientEvent)initWithJSON:(id)a3
+- (IFPlatformSchemaIFPlatformClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFPlatformSchemaIFPlatformClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFPlatformSchemaIFPlatformClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFPlatformSchemaIFPlatformClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,72 +85,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_ifPlatformTargetContext)
   {
-    v7 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ifPlatformTargetContext = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+    dictionaryRepresentation2 = [ifPlatformTargetContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ifPlatformTargetContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ifPlatformTargetContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ifPlatformTargetContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ifPlatformTargetContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -162,12 +162,12 @@
   {
   }
 
-  v6 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
-  v7 = [v4 ifPlatformTargetContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+  eventMetadata2 = [equalCopy ifPlatformTargetContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v13 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
-    if (!v13)
+    ifPlatformTargetContext = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+    if (!ifPlatformTargetContext)
     {
 
 LABEL_16:
@@ -175,10 +175,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
-    v16 = [v4 ifPlatformTargetContext];
-    v17 = [v15 isEqual:v16];
+    v14 = ifPlatformTargetContext;
+    ifPlatformTargetContext2 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+    ifPlatformTargetContext3 = [equalCopy ifPlatformTargetContext];
+    v17 = [ifPlatformTargetContext2 isEqual:ifPlatformTargetContext3];
 
     if (v17)
     {
@@ -198,22 +198,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+    eventMetadata2 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+  ifPlatformTargetContext = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
 
-  if (v6)
+  if (ifPlatformTargetContext)
   {
-    v7 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+    ifPlatformTargetContext2 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -243,16 +243,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)setIfPlatformTargetContext:(id)a3
+- (void)setIfPlatformTargetContext:(id)context
 {
   v3 = 101;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_ifPlatformTargetContext, a3);
+  objc_storeStrong(&self->_ifPlatformTargetContext, context);
 }
 
 - (id)qualifiedMessageName
@@ -268,26 +268,26 @@ LABEL_14:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFPlatformSchemaIFPlatformClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFPlatformSchemaIFPlatformClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ifPlatformTargetContext = [(IFPlatformSchemaIFPlatformClientEvent *)self ifPlatformTargetContext];
+  v10 = [ifPlatformTargetContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFPlatformSchemaIFPlatformClientEvent *)self deleteIfPlatformTargetContext];
   }
@@ -305,70 +305,70 @@ LABEL_14:
 
 - (int)componentName
 {
-  v2 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-  v3 = [v2 ifSessionId];
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  ifSessionId = [eventMetadata ifSessionId];
 
-  if (v3)
+  if (ifSessionId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [ifSessionId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [ifSessionId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 53;
+        LODWORD(value) = 53;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
-  v3 = [v2 ifSessionId];
+  eventMetadata = [(IFPlatformSchemaIFPlatformClientEvent *)self eventMetadata];
+  ifSessionId = [eventMetadata ifSessionId];
 
-  if (!v3)
+  if (!ifSessionId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [ifSessionId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [ifSessionId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = ifSessionId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
@@ -386,9 +386,9 @@ LABEL_6:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"ifPlatformTargetContext";
   }

@@ -2,7 +2,7 @@
 + (id)pivotArea;
 - (EDPivotArea)init;
 - (id)description;
-- (void)setOffset:(id)a3;
+- (void)setOffset:(id)offset;
 @end
 
 @implementation EDPivotArea
@@ -33,16 +33,16 @@
   return v2;
 }
 
-- (void)setOffset:(id)a3
+- (void)setOffset:(id)offset
 {
-  v5 = a3;
+  offsetCopy = offset;
   mOffset = self->mOffset;
   p_mOffset = &self->mOffset;
-  if (mOffset != v5)
+  if (mOffset != offsetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mOffset, a3);
-    v5 = v8;
+    v8 = offsetCopy;
+    objc_storeStrong(p_mOffset, offset);
+    offsetCopy = v8;
   }
 }
 

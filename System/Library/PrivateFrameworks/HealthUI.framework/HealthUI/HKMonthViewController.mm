@@ -1,36 +1,36 @@
 @interface HKMonthViewController
-- (HKMonthViewController)initWithCoder:(id)a3;
-- (HKMonthViewController)initWithDateCache:(id)a3 date:(id)a4;
-- (HKMonthViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (HKMonthViewController)initWithCoder:(id)coder;
+- (HKMonthViewController)initWithDateCache:(id)cache date:(id)date;
+- (HKMonthViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (HKMonthViewControllerDelegate)delegate;
-- (id)_titleStringForDate:(id)a3;
+- (id)_titleStringForDate:(id)date;
 - (void)_didTapBackButton;
-- (void)_setCurrentDate:(id)a3;
+- (void)_setCurrentDate:(id)date;
 - (void)_updateBackButton;
-- (void)_updateCurrentMonthBarButtonItemWithDate:(id)a3;
-- (void)calendarScrollViewController:(id)a3 didSelectDate:(id)a4;
+- (void)_updateCurrentMonthBarButtonItemWithDate:(id)date;
+- (void)calendarScrollViewController:(id)controller didSelectDate:(id)date;
 - (void)createCalendarScrollViewController;
 - (void)createTitleLabel;
-- (void)setCurrentDate:(id)a3 animateIfPossible:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCurrentDate:(id)date animateIfPossible:(BOOL)possible;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKMonthViewController
 
-- (HKMonthViewController)initWithDateCache:(id)a3 date:(id)a4
+- (HKMonthViewController)initWithDateCache:(id)cache date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = HKMonthViewController;
   v9 = [(HKMonthViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateCache, a3);
-    objc_storeStrong(&v10->_currentDate, a4);
+    objc_storeStrong(&v9->_dateCache, cache);
+    objc_storeStrong(&v10->_currentDate, date);
     [(HKMonthViewController *)v10 _updateBackButton];
     [(HKMonthViewController *)v10 createCalendarScrollViewController];
     [(HKMonthViewController *)v10 setTitleAlignment:4];
@@ -44,11 +44,11 @@
   v3 = [[HKCalendarScrollViewController alloc] initWithSelectedDate:self->_currentDate];
   [(HKMonthViewController *)self setCalendarScrollViewController:v3];
 
-  v4 = [(HKMonthViewController *)self calendarScrollViewController];
-  [v4 setDelegate:self];
+  calendarScrollViewController = [(HKMonthViewController *)self calendarScrollViewController];
+  [calendarScrollViewController setDelegate:self];
 
-  v5 = [(HKMonthViewController *)self calendarScrollViewController];
-  [(HKMonthViewController *)self addChildViewController:v5];
+  calendarScrollViewController2 = [(HKMonthViewController *)self calendarScrollViewController];
+  [(HKMonthViewController *)self addChildViewController:calendarScrollViewController2];
 }
 
 - (void)viewDidLoad
@@ -56,13 +56,13 @@
   v7.receiver = self;
   v7.super_class = HKMonthViewController;
   [(HKMonthViewController *)&v7 viewDidLoad];
-  v3 = [(HKMonthViewController *)self view];
-  v4 = [(HKMonthViewController *)self calendarScrollViewController];
-  v5 = [v4 view];
-  [v3 addSubview:v5];
+  view = [(HKMonthViewController *)self view];
+  calendarScrollViewController = [(HKMonthViewController *)self calendarScrollViewController];
+  view2 = [calendarScrollViewController view];
+  [view addSubview:view2];
 
-  v6 = [(HKMonthViewController *)self calendarScrollViewController];
-  [v6 didMoveToParentViewController:self];
+  calendarScrollViewController2 = [(HKMonthViewController *)self calendarScrollViewController];
+  [calendarScrollViewController2 didMoveToParentViewController:self];
 
   [(HKMonthViewController *)self createTitleLabel];
 }
@@ -72,25 +72,25 @@
   v14.receiver = self;
   v14.super_class = HKMonthViewController;
   [(HKMonthViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(HKMonthViewController *)self view];
-  [v3 bounds];
+  view = [(HKMonthViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HKMonthViewController *)self calendarScrollViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  calendarScrollViewController = [(HKMonthViewController *)self calendarScrollViewController];
+  view2 = [calendarScrollViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)createTitleLabel
 {
   if ([(HKMonthViewController *)self titleAlignment]== 1)
   {
-    v11 = [(HKMonthViewController *)self currentDate];
-    v3 = HKLocalizedStringForDateAndTemplate(v11, 1);
-    v4 = [(HKMonthViewController *)self navigationItem];
-    [v4 setTitle:v3];
+    currentDate = [(HKMonthViewController *)self currentDate];
+    v3 = HKLocalizedStringForDateAndTemplate(currentDate, 1);
+    navigationItem = [(HKMonthViewController *)self navigationItem];
+    [navigationItem setTitle:v3];
   }
 
   else
@@ -103,23 +103,23 @@
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(HKMonthViewController *)self setTitleLabel:v5];
 
-    v6 = [(HKMonthViewController *)self currentDate];
-    v7 = [(HKMonthViewController *)self _titleStringForDate:v6];
-    v8 = [(HKMonthViewController *)self titleLabel];
-    [v8 setAttributedText:v7];
+    currentDate2 = [(HKMonthViewController *)self currentDate];
+    v7 = [(HKMonthViewController *)self _titleStringForDate:currentDate2];
+    titleLabel = [(HKMonthViewController *)self titleLabel];
+    [titleLabel setAttributedText:v7];
 
-    v9 = [(HKMonthViewController *)self titleLabel];
-    [v9 sizeToFit];
+    titleLabel2 = [(HKMonthViewController *)self titleLabel];
+    [titleLabel2 sizeToFit];
 
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
-    v11 = [(HKMonthViewController *)self titleLabel];
+    currentDate = [(HKMonthViewController *)self titleLabel];
     v3 = [v10 initWithCustomView:?];
-    v4 = [(HKMonthViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    navigationItem = [(HKMonthViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 }
 
-- (HKMonthViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKMonthViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -129,83 +129,83 @@
   return 0;
 }
 
-- (HKMonthViewController)initWithCoder:(id)a3
+- (HKMonthViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKMonthViewController;
-  return [(HKMonthViewController *)&v4 initWithCoder:a3];
+  return [(HKMonthViewController *)&v4 initWithCoder:coder];
 }
 
-- (void)setCurrentDate:(id)a3 animateIfPossible:(BOOL)a4
+- (void)setCurrentDate:(id)date animateIfPossible:(BOOL)possible
 {
-  v4 = a4;
-  v6 = a3;
-  [(HKMonthViewController *)self _setCurrentDate:v6];
-  v7 = [(HKMonthViewController *)self calendarScrollViewController];
-  [v7 scrollToDate:v6 animateIfPossible:v4];
+  possibleCopy = possible;
+  dateCopy = date;
+  [(HKMonthViewController *)self _setCurrentDate:dateCopy];
+  calendarScrollViewController = [(HKMonthViewController *)self calendarScrollViewController];
+  [calendarScrollViewController scrollToDate:dateCopy animateIfPossible:possibleCopy];
 }
 
-- (void)_setCurrentDate:(id)a3
+- (void)_setCurrentDate:(id)date
 {
-  objc_storeStrong(&self->_currentDate, a3);
+  objc_storeStrong(&self->_currentDate, date);
 
   [(HKMonthViewController *)self _updateBackButton];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = HKMonthViewController;
-  [(HKMonthViewController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKMonthViewController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKMonthViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKMonthViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(HKMonthViewController *)self delegate];
-      [v9 monthViewController:self didSelectDate:self->_currentDate];
+      delegate = [(HKMonthViewController *)self delegate];
+      [delegate monthViewController:self didSelectDate:self->_currentDate];
     }
   }
 }
 
-- (void)calendarScrollViewController:(id)a3 didSelectDate:(id)a4
+- (void)calendarScrollViewController:(id)controller didSelectDate:(id)date
 {
-  v5 = a4;
-  [(HKMonthViewController *)self _setCurrentDate:v5];
-  v6 = [(HKMonthViewController *)self delegate];
-  [v6 monthViewController:self didSelectDate:v5];
+  dateCopy = date;
+  [(HKMonthViewController *)self _setCurrentDate:dateCopy];
+  delegate = [(HKMonthViewController *)self delegate];
+  [delegate monthViewController:self didSelectDate:dateCopy];
 }
 
 - (void)_updateBackButton
 {
-  v3 = [(HKMonthViewController *)self currentDate];
-  v4 = [(HKMonthViewController *)self dateCache];
-  v7 = HKRelativeMonthYearText(v3, v4);
+  currentDate = [(HKMonthViewController *)self currentDate];
+  dateCache = [(HKMonthViewController *)self dateCache];
+  v7 = HKRelativeMonthYearText(currentDate, dateCache);
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v7 style:0 target:self action:sel__didTapBackButton];
-  v6 = [(HKMonthViewController *)self navigationItem];
-  [v6 setBackBarButtonItem:v5];
+  navigationItem = [(HKMonthViewController *)self navigationItem];
+  [navigationItem setBackBarButtonItem:v5];
 }
 
-- (void)_updateCurrentMonthBarButtonItemWithDate:(id)a3
+- (void)_updateCurrentMonthBarButtonItemWithDate:(id)date
 {
-  v11 = a3;
-  v4 = [(HKMonthViewController *)self dateCache];
-  v5 = [v4 calendar];
-  v6 = [v5 components:12 fromDate:v11];
+  dateCopy = date;
+  dateCache = [(HKMonthViewController *)self dateCache];
+  calendar = [dateCache calendar];
+  v6 = [calendar components:12 fromDate:dateCopy];
 
   if (([(NSDateComponents *)self->_cachedDateComponents isEqual:v6]& 1) == 0)
   {
     if ([(HKMonthViewController *)self titleAlignment]== 1)
     {
-      v7 = HKLocalizedStringForDateAndTemplate(v11, 1);
-      v8 = [(HKMonthViewController *)self navigationItem];
-      [v8 setTitle:v7];
+      titleLabel2 = HKLocalizedStringForDateAndTemplate(dateCopy, 1);
+      navigationItem = [(HKMonthViewController *)self navigationItem];
+      [navigationItem setTitle:titleLabel2];
     }
 
     else
@@ -217,12 +217,12 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v9 = [(HKMonthViewController *)self titleLabel];
-      v10 = [(HKMonthViewController *)self _titleStringForDate:v11];
-      [v9 setAttributedText:v10];
+      titleLabel = [(HKMonthViewController *)self titleLabel];
+      v10 = [(HKMonthViewController *)self _titleStringForDate:dateCopy];
+      [titleLabel setAttributedText:v10];
 
-      v7 = [(HKMonthViewController *)self titleLabel];
-      [v7 sizeToFit];
+      titleLabel2 = [(HKMonthViewController *)self titleLabel];
+      [titleLabel2 sizeToFit];
     }
 
     goto LABEL_7;
@@ -231,13 +231,13 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_titleStringForDate:(id)a3
+- (id)_titleStringForDate:(id)date
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = HKLocalizedStringForDateAndTemplate(v3, 6);
-  v5 = HKLocalizedStringForDateAndTemplate(v3, 5);
-  v6 = HKLocalizedStringForDateAndTemplate(v3, 1);
+  dateCopy = date;
+  v4 = HKLocalizedStringForDateAndTemplate(dateCopy, 6);
+  v5 = HKLocalizedStringForDateAndTemplate(dateCopy, 5);
+  v6 = HKLocalizedStringForDateAndTemplate(dateCopy, 1);
 
   v7 = [v4 rangeOfString:v5];
   v9 = v8;
@@ -250,8 +250,8 @@ LABEL_8:
     v26 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:*MEMORY[0x1E69DB978]];
     v39[0] = v26;
     v38[1] = *MEMORY[0x1E69DB650];
-    v27 = [MEMORY[0x1E69DC888] labelColor];
-    v39[1] = v27;
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v39[1] = labelColor;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
     v17 = [v13 initWithString:v4 attributes:v28];
   }
@@ -262,8 +262,8 @@ LABEL_8:
     v36 = v12;
     v14 = *MEMORY[0x1E69DB650];
     v44 = *MEMORY[0x1E69DB650];
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    v45[0] = v15;
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    v45[0] = labelColor2;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v17 = [v13 initWithString:v4 attributes:v16];
 
@@ -292,8 +292,8 @@ LABEL_8:
     v31 = [MEMORY[0x1E69DB878] systemFontOfSize:v25 weight:*MEMORY[0x1E69DB970]];
     v42[1] = v14;
     v43[0] = v31;
-    v32 = [MEMORY[0x1E69DC888] labelColor];
-    v43[1] = v32;
+    labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+    v43[1] = labelColor3;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
     [v17 setAttributes:v33 range:{v7, v35}];
 
@@ -301,8 +301,8 @@ LABEL_8:
     v26 = [MEMORY[0x1E69DB878] systemFontOfSize:v25 weight:*MEMORY[0x1E69DB998]];
     v40[1] = v14;
     v41[0] = v26;
-    v27 = [MEMORY[0x1E69DC888] labelColor];
-    v41[1] = v27;
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v41[1] = labelColor;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
     [v17 setAttributes:v28 range:{v10, v36}];
     v5 = v37;
@@ -313,8 +313,8 @@ LABEL_8:
 
 - (void)_didTapBackButton
 {
-  v3 = [(HKMonthViewController *)self delegate];
-  [v3 didTapBackButtonForMonthViewController:self];
+  delegate = [(HKMonthViewController *)self delegate];
+  [delegate didTapBackButtonForMonthViewController:self];
 }
 
 - (HKMonthViewControllerDelegate)delegate

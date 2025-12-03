@@ -1,5 +1,5 @@
 @interface _UIBackdropViewSettingsUltraColored
-- (void)setColorTint:(id)a3;
+- (void)setColorTint:(id)tint;
 - (void)setDefaultValues;
 @end
 
@@ -10,8 +10,8 @@
   v10.receiver = self;
   v10.super_class = _UIBackdropViewSettingsUltraColored;
   [(_UIBackdropViewSettings *)&v10 setDefaultValues];
-  v3 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v3 == 10)
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality == 10)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:0];
@@ -44,7 +44,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 100)
+  if (graphicsQuality == 100)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:1];
@@ -66,17 +66,17 @@ LABEL_7:
   [(_UIBackdropViewSettings *)self setLegibleColor:v9];
 }
 
-- (void)setColorTint:(id)a3
+- (void)setColorTint:(id)tint
 {
-  v4 = a3;
+  tintCopy = tint;
   if (dyld_program_sdk_at_least())
   {
-    v5 = [v4 colorWithAlphaComponent:1.0];
+    v5 = [tintCopy colorWithAlphaComponent:1.0];
   }
 
   else
   {
-    v5 = v4;
+    v5 = tintCopy;
   }
 
   v6 = v5;

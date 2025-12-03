@@ -22,13 +22,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "MapsAppTestTransit - _performRTTest", buf, 2u);
   }
 
-  v4 = [(MapsAppTest *)self testCoordinator];
-  v5 = [v4 pptTestMoveToBoardStep];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestMoveToBoardStep = [testCoordinator pptTestMoveToBoardStep];
 
-  if (v5)
+  if (pptTestMoveToBoardStep)
   {
-    v6 = [(MapsAppTest *)self testCoordinator];
-    [v6 pptTestPauseRealtimeTransitUpdates];
+    testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator2 pptTestPauseRealtimeTransitUpdates];
 
     objc_initWeak(buf, self);
     v20[0] = _NSConcreteStackBlock;

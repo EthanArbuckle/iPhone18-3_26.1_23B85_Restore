@@ -1,26 +1,26 @@
 @interface MADPreheatingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-+ (int)clearPixelBuffer:(__CVBuffer *)a3;
-- (BOOL)run:(id *)a3;
-- (MADPreheatingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
++ (int)clearPixelBuffer:(__CVBuffer *)buffer;
+- (BOOL)run:(id *)run;
+- (MADPreheatingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)dealloc;
 @end
 
 @implementation MADPreheatingTask
 
-- (MADPreheatingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (MADPreheatingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v16.receiver = self;
   v16.super_class = MADPreheatingTask;
-  v11 = [(MADPreheatingTask *)&v16 initWithCompletionHandler:v10];
+  v11 = [(MADPreheatingTask *)&v16 initWithCompletionHandler:completionHandlerCopy];
   if (v11)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v12 = v9;
+      v12 = handlerCopy;
     }
 
     else
@@ -32,29 +32,29 @@
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v13;
 
-    [(MADPreheatingTask *)v11 setCancelBlock:v8];
+    [(MADPreheatingTask *)v11 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 completionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-+ (int)clearPixelBuffer:(__CVBuffer *)a3
++ (int)clearPixelBuffer:(__CVBuffer *)buffer
 {
-  pixelBuffer = a3;
+  pixelBuffer = buffer;
   unlockFlags = 0;
-  if (a3)
+  if (buffer)
   {
-    v4 = CVPixelBufferLockBaseAddress(a3, 0);
+    v4 = CVPixelBufferLockBaseAddress(buffer, 0);
     LODWORD(v10) = v4;
     if (v4)
     {
@@ -67,9 +67,9 @@
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      Height = CVPixelBufferGetHeight(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+      Height = CVPixelBufferGetHeight(buffer);
       memset(BaseAddress, 255, Height * BytesPerRow);
       v5 = sub_1000337A8(&v10);
       if (pixelBuffer && !v10 && CVPixelBufferUnlockBaseAddress(pixelBuffer, unlockFlags) && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@
   return v5;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v4 = +[NSMutableArray array];
   v5 = objc_alloc_init(MADRemoveBackgroundMaskRequest);
@@ -149,8 +149,8 @@
     v18 = +[VCPClientManager sharedManager];
     [v18 removeClientHandler:v10];
 
-    v19 = [(MADPreheatingTask *)self completionHandler];
-    v19[2](v19, 0, 0);
+    completionHandler = [(MADPreheatingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
   }
 
   else
@@ -162,7 +162,7 @@
     v42[2] = sub_1000D014C;
     v42[3] = &unk_100285C80;
     v43 = v10;
-    v44 = self;
+    selfCopy = self;
     v20 = [VCPMADServiceImageProcessingTask taskWithRequests:v4 forAsset:v37 cancelBlock:v17 andCompletionHandler:v42];
     v21 = self->_preheat_queue;
     block[0] = _NSConcreteStackBlock;
@@ -227,7 +227,7 @@ LABEL_22:
     v9 = v33;
     v10 = v32;
 
-    v19 = v43;
+    completionHandler = v43;
   }
 
   objc_destroyWeak(&v46);
@@ -241,8 +241,8 @@ LABEL_22:
 
   else
   {
-    v30 = [(MADPreheatingTask *)self completionHandler];
-    v30[2](v30, 0, 0);
+    completionHandler2 = [(MADPreheatingTask *)self completionHandler];
+    completionHandler2[2](completionHandler2, 0, 0);
 
     v29 = !self->_preheat_timed_out;
   }

@@ -1,12 +1,12 @@
 @interface MTKMeshBufferAllocator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTKMeshBufferAllocator)initWithDevice:(id)device;
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4;
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5;
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5;
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4;
-- (id)newZone:(unint64_t)a3;
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4;
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type;
+- (id)newBufferWithData:(id)data type:(unint64_t)type;
+- (id)newZone:(unint64_t)zone;
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type;
 @end
 
 @implementation MTKMeshBufferAllocator
@@ -26,44 +26,44 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[1] == self->_device;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[1] == self->_device;
 
   return v5;
 }
 
-- (id)newZone:(unint64_t)a3
+- (id)newZone:(unint64_t)zone
 {
   v5 = [MTKMeshBufferZone alloc];
 
-  return [(MTKMeshBufferZone *)v5 initWithCapacity:a3 allocator:self];
+  return [(MTKMeshBufferZone *)v5 initWithCapacity:zone allocator:self];
 }
 
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 == [v7 count])
+  sizeCopy = size;
+  typeCopy = type;
+  v8 = [sizeCopy count];
+  if (v8 == [typeCopy count])
   {
-    v9 = [(MTLDevice *)self->_device minConstantBufferAlignmentBytes];
-    if ([v6 count])
+    minConstantBufferAlignmentBytes = [(MTLDevice *)self->_device minConstantBufferAlignmentBytes];
+    if ([sizeCopy count])
     {
       v10 = 0;
       v11 = 0;
-      v12 = v9 - 1;
+      v12 = minConstantBufferAlignmentBytes - 1;
       do
       {
-        v13 = [v6 objectAtIndexedSubscript:v10];
+        v13 = [sizeCopy objectAtIndexedSubscript:v10];
         v14 = [v13 unsignedIntegerValue] + v11;
 
-        v15 = [v7 objectAtIndexedSubscript:v10];
-        v16 = [v15 unsignedIntegerValue];
+        v15 = [typeCopy objectAtIndexedSubscript:v10];
+        unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-        if (v16 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v17 = v12;
         }
@@ -77,7 +77,7 @@
         ++v10;
       }
 
-      while (v10 < [v6 count]);
+      while (v10 < [sizeCopy count]);
     }
 
     else
@@ -96,29 +96,29 @@
   return v18;
 }
 
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type
 {
   v7 = [MTKMeshBuffer alloc];
 
-  return [(MTKMeshBuffer *)v7 _initWithLength:a3 allocator:self type:a4];
+  return [(MTKMeshBuffer *)v7 _initWithLength:buffer allocator:self type:type];
 }
 
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4
+- (id)newBufferWithData:(id)data type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[MTKMeshBuffer alloc] _initWithData:v6 allocator:self type:a4];
+  dataCopy = data;
+  v7 = [[MTKMeshBuffer alloc] _initWithData:dataCopy allocator:self type:type];
 
   return v7;
 }
 
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  zoneCopy = zone;
+  v9 = zoneCopy;
+  if (zoneCopy)
   {
-    v10 = [v8 allocator];
-    v11 = [v10 isEqual:self];
+    allocator = [zoneCopy allocator];
+    v11 = [allocator isEqual:self];
 
     if (!v11)
     {
@@ -126,12 +126,12 @@
       goto LABEL_7;
     }
 
-    v12 = [v9 newBufferWithLength:a4 type:a5];
+    v12 = [v9 newBufferWithLength:length type:type];
   }
 
   else
   {
-    v12 = [(MTKMeshBufferAllocator *)self newBuffer:a4 type:a5];
+    v12 = [(MTKMeshBufferAllocator *)self newBuffer:length type:type];
   }
 
   v13 = v12;
@@ -140,13 +140,13 @@ LABEL_7:
   return v13;
 }
 
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = -[MTKMeshBufferAllocator newBufferFromZone:length:type:](self, "newBufferFromZone:length:type:", v9, [v8 length], a5);
+  dataCopy = data;
+  zoneCopy = zone;
+  v10 = -[MTKMeshBufferAllocator newBufferFromZone:length:type:](self, "newBufferFromZone:length:type:", zoneCopy, [dataCopy length], type);
 
-  [v10 fillData:v8 offset:0];
+  [v10 fillData:dataCopy offset:0];
   return v10;
 }
 

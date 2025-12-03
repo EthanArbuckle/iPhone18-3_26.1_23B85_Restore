@@ -1,33 +1,33 @@
 @interface SSAppPurchaseHistoryEntry
-+ (id)disambiguatedSQLForProperty:(id)a3;
++ (id)disambiguatedSQLForProperty:(id)property;
 + (id)predicateForHasMessagesExtension;
-+ (id)predicateForIs32BitOnly:(BOOL)a3;
++ (id)predicateForIs32BitOnly:(BOOL)only;
 + (id)predicateForNotHidden;
-+ (id)supportsPlatformPredicate:(BOOL)a3;
++ (id)supportsPlatformPredicate:(BOOL)predicate;
 @end
 
 @implementation SSAppPurchaseHistoryEntry
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
   v5 = @"IFNULL(app_purchase_history.is_first_party, 0)";
-  if (([a3 isEqualToString:{@"IFNULL(app_purchase_history.is_first_party, 0)"}] & 1) == 0)
+  if (([property isEqualToString:{@"IFNULL(app_purchase_history.is_first_party, 0)"}] & 1) == 0)
   {
     v5 = @"IFNULL(app_purchase_history.is_preorder, 0)";
-    if (([a3 isEqualToString:{@"IFNULL(app_purchase_history.is_preorder, 0)"}] & 1) == 0)
+    if (([property isEqualToString:{@"IFNULL(app_purchase_history.is_preorder, 0)"}] & 1) == 0)
     {
-      v7.receiver = a1;
+      v7.receiver = self;
       v7.super_class = &OBJC_METACLASS___SSAppPurchaseHistoryEntry;
-      return objc_msgSendSuper2(&v7, sel_disambiguatedSQLForProperty_, a3);
+      return objc_msgSendSuper2(&v7, sel_disambiguatedSQLForProperty_, property);
     }
   }
 
   return v5;
 }
 
-+ (id)supportsPlatformPredicate:(BOOL)a3
++ (id)supportsPlatformPredicate:(BOOL)predicate
 {
-  if (a3)
+  if (predicate)
   {
     v3 = @"supports_ipad";
   }
@@ -56,9 +56,9 @@
   return [SSSQLiteComparisonPredicate predicateWithProperty:@"has_messages_extension" equalToValue:v2];
 }
 
-+ (id)predicateForIs32BitOnly:(BOOL)a3
++ (id)predicateForIs32BitOnly:(BOOL)only
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:only];
 
   return [SSSQLiteComparisonPredicate predicateWithProperty:@"is_32_bit_only" equalToValue:v3];
 }

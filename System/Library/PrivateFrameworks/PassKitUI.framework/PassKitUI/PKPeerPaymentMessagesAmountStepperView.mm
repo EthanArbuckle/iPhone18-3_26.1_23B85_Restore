@@ -1,55 +1,55 @@
 @interface PKPeerPaymentMessagesAmountStepperView
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3;
-+ (CGSize)sizeThatFits:(CGSize)a3 forSizeCategory:(unint64_t)a4;
-+ (double)_amountLabelFontSizeForSizeCategory:(unint64_t)a3;
-+ (id)_amountLabelFontForSizeCategory:(unint64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category;
++ (CGSize)sizeThatFits:(CGSize)fits forSizeCategory:(unint64_t)category;
++ (double)_amountLabelFontSizeForSizeCategory:(unint64_t)category;
++ (id)_amountLabelFontForSizeCategory:(unint64_t)category;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKCurrencyAmount)amount;
-- (PKPeerPaymentMessagesAmountStepperView)initWithSizeCategory:(unint64_t)a3;
-- (id)_decimalNumberFromPosixString:(id)a3;
+- (PKPeerPaymentMessagesAmountStepperView)initWithSizeCategory:(unint64_t)category;
+- (id)_decimalNumberFromPosixString:(id)string;
 - (id)_posixFormatter;
 - (id)_posixLocale;
-- (id)_posixStringFromDecimalNumber:(id)a3;
-- (id)_stepperButtonWithSymbolName:(id)a3;
-- (id)_stringForAction:(unint64_t)a3;
-- (id)_updatePosixString:(id)a3 withAction:(unint64_t)a4 maxDigits:(unint64_t)a5 maxDecimalPlaces:(unint64_t)a6;
+- (id)_posixStringFromDecimalNumber:(id)number;
+- (id)_stepperButtonWithSymbolName:(id)name;
+- (id)_stringForAction:(unint64_t)action;
+- (id)_updatePosixString:(id)string withAction:(unint64_t)action maxDigits:(unint64_t)digits maxDecimalPlaces:(unint64_t)places;
 - (void)_cleanupPosixString;
 - (void)_decrementAmount;
-- (void)_handleLongPress:(id)a3;
-- (void)_handleTap:(id)a3;
+- (void)_handleLongPress:(id)press;
+- (void)_handleTap:(id)tap;
 - (void)_incrementAmount;
 - (void)_shakeAmountLabel;
 - (void)_updateContent;
 - (void)dealloc;
-- (void)handleNumberPadAction:(unint64_t)a3;
+- (void)handleNumberPadAction:(unint64_t)action;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setAmount:(id)a3;
-- (void)setPlusMinusVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSizeCategory:(unint64_t)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setAmount:(id)amount;
+- (void)setPlusMinusVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setSizeCategory:(unint64_t)category;
+- (void)setStyle:(unint64_t)style;
+- (void)traitCollectionDidChange:(id)change;
 - (void)validateNumberPadInput;
 @end
 
 @implementation PKPeerPaymentMessagesAmountStepperView
 
-+ (CGSize)referenceSizeForSizeCategory:(unint64_t)a3
++ (CGSize)referenceSizeForSizeCategory:(unint64_t)category
 {
-  [a1 sizeThatFits:a3 forSizeCategory:{300.0, 0.0}];
+  [self sizeThatFits:category forSizeCategory:{300.0, 0.0}];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PKPeerPaymentMessagesAmountStepperView)initWithSizeCategory:(unint64_t)a3
+- (PKPeerPaymentMessagesAmountStepperView)initWithSizeCategory:(unint64_t)category
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  [objc_opt_class() referenceSizeForSizeCategory:a3];
+  [objc_opt_class() referenceSizeForSizeCategory:category];
   v5 = v4;
   v7 = v6;
   v8 = *MEMORY[0x1E695EFF8];
@@ -59,19 +59,19 @@
   v10 = [(PKPeerPaymentMessagesAmountStepperView *)&v54 initWithFrame:v8, v9, v5, v7];
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     minAmount = v10->_minAmount;
-    v10->_minAmount = v11;
+    v10->_minAmount = zero;
 
     amountCurrency = v10->_amountCurrency;
     v10->_amountCurrency = @"USD";
 
-    v14 = [(PKPeerPaymentMessagesAmountStepperView *)v10 traitCollection];
-    v15 = [v14 preferredContentSizeCategory];
-    v10->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v15, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+    traitCollection = [(PKPeerPaymentMessagesAmountStepperView *)v10 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v10->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
 
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKPeerPaymentMessagesAmountStepperView *)v10 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKPeerPaymentMessagesAmountStepperView *)v10 setBackgroundColor:clearColor];
 
     v17 = objc_alloc(MEMORY[0x1E69DD250]);
     [(PKPeerPaymentMessagesAmountStepperView *)v10 bounds];
@@ -80,8 +80,8 @@
     v10->_centerView = v18;
 
     v20 = v10->_centerView;
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v20 setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v20 setBackgroundColor:clearColor2];
 
     [(PKPeerPaymentMessagesAmountStepperView *)v10 addSubview:v10->_centerView];
     v22 = objc_alloc(MEMORY[0x1E6979378]);
@@ -94,8 +94,8 @@
     v10->_amountLabel = v25;
 
     v27 = v10->_amountLabel;
-    v28 = [(PKPeerPaymentMessagesAmountStepperView *)v10 _amountLabelFont];
-    [(UILabel *)v27 setFont:v28];
+    _amountLabelFont = [(PKPeerPaymentMessagesAmountStepperView *)v10 _amountLabelFont];
+    [(UILabel *)v27 setFont:_amountLabelFont];
 
     v29 = v10->_amountLabel;
     v30 = +[PKPeerPaymentTheme primaryTextColor];
@@ -104,10 +104,10 @@
     [(UILabel *)v10->_amountLabel setTextAlignment:1];
     [(UILabel *)v10->_amountLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v10->_amountLabel setAccessibilityIdentifier:@"AppleCash.Amount.Label"];
-    v31 = [(UILabel *)v10->_amountLabel layer];
+    layer = [(UILabel *)v10->_amountLabel layer];
     v58[0] = v23;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:1];
-    [v31 setFilters:v32];
+    [layer setFilters:v32];
 
     [(PKPeerPaymentMessagesAmountStepperView *)v10 addSubview:v10->_amountLabel];
     v33 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -117,8 +117,8 @@
     v10->_compactAmountLabel = v34;
 
     v36 = v10->_compactAmountLabel;
-    v37 = [(PKPeerPaymentMessagesAmountStepperView *)v10 _amountLabelFont];
-    [(UILabel *)v36 setFont:v37];
+    _amountLabelFont2 = [(PKPeerPaymentMessagesAmountStepperView *)v10 _amountLabelFont];
+    [(UILabel *)v36 setFont:_amountLabelFont2];
 
     v38 = v10->_compactAmountLabel;
     v39 = +[PKPeerPaymentTheme primaryTextColor];
@@ -127,10 +127,10 @@
     [(UILabel *)v10->_compactAmountLabel setTextAlignment:1];
     [(UILabel *)v10->_compactAmountLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v10->_compactAmountLabel setAccessibilityIdentifier:@"AppleCash.Amount.Label"];
-    v40 = [(UILabel *)v10->_compactAmountLabel layer];
+    layer2 = [(UILabel *)v10->_compactAmountLabel layer];
     v57 = v23;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-    [v40 setFilters:v41];
+    [layer2 setFilters:v41];
 
     [(UIView *)v10->_centerView addSubview:v10->_compactAmountLabel];
     v42 = [(PKPeerPaymentMessagesAmountStepperView *)v10 _stepperButtonWithSymbolName:@"plus"];
@@ -147,15 +147,15 @@
     [(UIButton *)v10->_minusButton addTarget:v10 action:sel__decrementAmount forControlEvents:64];
     [(UIButton *)v10->_minusButton setAccessibilityIdentifier:*MEMORY[0x1E69B9B58]];
     [(PKPeerPaymentMessagesAmountStepperView *)v10 addSubview:v10->_minusButton];
-    v46 = [(UIButton *)v10->_plusButton layer];
+    layer3 = [(UIButton *)v10->_plusButton layer];
     v56 = v23;
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-    [v46 setFilters:v47];
+    [layer3 setFilters:v47];
 
-    v48 = [(UIButton *)v10->_minusButton layer];
+    layer4 = [(UIButton *)v10->_minusButton layer];
     v55 = v23;
     v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
-    [v48 setFilters:v49];
+    [layer4 setFilters:v49];
 
     [(PKPeerPaymentMessagesAmountStepperView *)v10 setPlusMinusVisible:1 animated:0];
     v50 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v10 action:sel__handleTap_];
@@ -172,9 +172,9 @@
   return v10;
 }
 
-- (id)_stepperButtonWithSymbolName:(id)a3
+- (id)_stepperButtonWithSymbolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (_UISolariumFeatureFlagEnabled())
   {
     v5 = 21.0;
@@ -196,16 +196,16 @@
   }
 
   v7 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v6 weight:v5];
-  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4 withConfiguration:v7];
+  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy withConfiguration:v7];
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v9 = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
-    [v9 setImage:v8];
+    _clearGlassButtonConfiguration = [MEMORY[0x1E69DC740] _clearGlassButtonConfiguration];
+    [_clearGlassButtonConfiguration setImage:v8];
     v10 = +[PKPeerPaymentTheme primaryTextColor];
-    [v9 setBaseForegroundColor:v10];
+    [_clearGlassButtonConfiguration setBaseForegroundColor:v10];
 
-    v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:0];
+    v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:_clearGlassButtonConfiguration primaryAction:0];
   }
 
   else
@@ -214,8 +214,8 @@
     [(PKPeerPaymentMessagesAmountStepperView *)self bounds];
     v11 = [(PKPeerPaymentMessagesButton *)v12 initWithFrame:?];
     [(PKPeerPaymentMessagesButton *)v11 setImage:v8 forState:0];
-    v9 = +[PKPeerPaymentTheme primaryTextColor];
-    [(PKPeerPaymentMessagesButton *)v11 setTintColor:v9];
+    _clearGlassButtonConfiguration = +[PKPeerPaymentTheme primaryTextColor];
+    [(PKPeerPaymentMessagesButton *)v11 setTintColor:_clearGlassButtonConfiguration];
   }
 
   return v11;
@@ -242,19 +242,19 @@
   [(PKPeerPaymentMessagesAmountStepperView *)&v5 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [PKPeerPaymentMessagesAmountStepperView sizeThatFits:self->_sizeCategory forSizeCategory:a3.width, a3.height];
+  [PKPeerPaymentMessagesAmountStepperView sizeThatFits:self->_sizeCategory forSizeCategory:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 forSizeCategory:(unint64_t)a4
++ (CGSize)sizeThatFits:(CGSize)fits forSizeCategory:(unint64_t)category
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [a1 _amountLabelFontForSizeCategory:a4];
+  height = fits.height;
+  width = fits.width;
+  v6 = [self _amountLabelFontForSizeCategory:category];
   v7 = [MEMORY[0x1E696AAB0] pkui_attriutedStringWithString:@"$" font:v6 paragraphStyle:0];
   [v7 pkui_sizeThatFits:{width, height}];
   *&v8 = 50.0;
@@ -335,33 +335,33 @@
   [(UIButton *)plusButton _setContinuousCornerRadius:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PKPeerPaymentMessagesAmountStepperView;
-  v4 = a3;
-  [(PKPeerPaymentMessagesAmountStepperView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PKPeerPaymentMessagesAmountStepperView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PKPeerPaymentMessagesAmountStepperView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
 
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v7 isEqualToString:v6];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory2 isEqualToString:preferredContentSizeCategory];
+  if ((changeCopy & 1) == 0)
   {
-    self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+    self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
     [(PKPeerPaymentMessagesAmountStepperView *)self setNeedsLayout];
   }
 }
 
-- (void)handleNumberPadAction:(unint64_t)a3
+- (void)handleNumberPadAction:(unint64_t)action
 {
   self->_usedKeypad = 1;
   if (self->_nextNumberPadActionCausesReset)
   {
     self->_nextNumberPadActionCausesReset = 0;
-    v5 = [(NSString *)self->_amountString pk_posixStringHasPeriod];
-    if (a3 - 10 >= 3 && (v5 & 1) == 0)
+    pk_posixStringHasPeriod = [(NSString *)self->_amountString pk_posixStringHasPeriod];
+    if (action - 10 >= 3 && (pk_posixStringHasPeriod & 1) == 0)
     {
       amountString = self->_amountString;
       self->_amountString = &stru_1F3BD7330;
@@ -379,30 +379,30 @@
     v8 = 5;
   }
 
-  v16 = [(PKPeerPaymentMessagesAmountStepperView *)self _updatePosixString:self->_amountString withAction:a3 maxDigits:v8 maxDecimalPlaces:[(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits]];
+  v16 = [(PKPeerPaymentMessagesAmountStepperView *)self _updatePosixString:self->_amountString withAction:action maxDigits:v8 maxDecimalPlaces:[(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits]];
   objc_storeStrong(&self->_amountString, v16);
   [(PKPeerPaymentMessagesAmountStepperView *)self _updateContent];
-  v9 = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
+  amount = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
   amountChangedHandler = self->_amountChangedHandler;
   if (amountChangedHandler)
   {
-    amountChangedHandler[2](amountChangedHandler, v9);
+    amountChangedHandler[2](amountChangedHandler, amount);
   }
 
-  v11 = [v9 amount];
-  if (v11)
+  v9Amount = [amount amount];
+  if (v9Amount)
   {
     minAmount = self->_minAmount;
     if (minAmount)
     {
-      v13 = [(NSDecimalNumber *)minAmount compare:v11];
+      v13 = [(NSDecimalNumber *)minAmount compare:v9Amount];
       if (!self->_maxAmount || v13 == 1)
       {
 LABEL_17:
         if (v13 == 1)
         {
-          v14 = [MEMORY[0x1E696AB90] zero];
-          v15 = [v11 isEqualToNumber:v14];
+          zero = [MEMORY[0x1E696AB90] zero];
+          v15 = [v9Amount isEqualToNumber:zero];
 
           if ((v15 & 1) == 0)
           {
@@ -419,7 +419,7 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    v13 = [v11 compare:?];
+    v13 = [v9Amount compare:?];
     goto LABEL_17;
   }
 
@@ -433,48 +433,48 @@ LABEL_20:
   [(PKPeerPaymentMessagesAmountStepperView *)self _updateContent];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesAmountStepperView;
-  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesBegan:a3 withEvent:a4];
+  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesBegan:began withEvent:event];
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesAmountStepperView;
-  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesChanged:a3 withEvent:a4];
+  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesChanged:changed withEvent:event];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesAmountStepperView;
-  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesCancelled:a3 withEvent:a4];
+  [(PKPeerPaymentMessagesAmountStepperView *)&v4 pressesCancelled:cancelled withEvent:event];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [endedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v8)
   {
 LABEL_41:
     v19.receiver = self;
     v19.super_class = PKPeerPaymentMessagesAmountStepperView;
-    [(PKPeerPaymentMessagesAmountStepperView *)&v19 pressesEnded:v6 withEvent:v7];
+    [(PKPeerPaymentMessagesAmountStepperView *)&v19 pressesEnded:endedCopy withEvent:eventCopy];
     goto LABEL_42;
   }
 
   v9 = v8;
-  v18 = v7;
+  v18 = eventCopy;
   v10 = 0;
   v11 = *v21;
   do
@@ -483,75 +483,75 @@ LABEL_41:
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(endedCopy);
       }
 
       v13 = [*(*(&v20 + 1) + 8 * i) key];
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 characters];
-        if ([v15 isEqualToString:@"1"])
+        characters = [v13 characters];
+        if ([characters isEqualToString:@"1"])
         {
           v16 = 1;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"2"])
+        if ([characters isEqualToString:@"2"])
         {
           v16 = 2;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"3"])
+        if ([characters isEqualToString:@"3"])
         {
           v16 = 3;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"4"])
+        if ([characters isEqualToString:@"4"])
         {
           v16 = 4;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"5"])
+        if ([characters isEqualToString:@"5"])
         {
           v16 = 5;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"6"])
+        if ([characters isEqualToString:@"6"])
         {
           v16 = 6;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"7"])
+        if ([characters isEqualToString:@"7"])
         {
           v16 = 7;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"8"])
+        if ([characters isEqualToString:@"8"])
         {
           v16 = 8;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"9"])
+        if ([characters isEqualToString:@"9"])
         {
           v16 = 9;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"."])
+        if ([characters isEqualToString:@"."])
         {
           v16 = 10;
           goto LABEL_31;
         }
 
-        if ([v15 isEqualToString:@"0"])
+        if ([characters isEqualToString:@"0"])
         {
           v16 = 11;
           goto LABEL_31;
@@ -578,11 +578,11 @@ LABEL_31:
       }
     }
 
-    v9 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [endedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v9);
-  v7 = v18;
+  eventCopy = v18;
   if ((v10 & 1) == 0)
   {
     goto LABEL_41;
@@ -591,27 +591,27 @@ LABEL_31:
 LABEL_42:
 }
 
-- (id)_stringForAction:(unint64_t)a3
+- (id)_stringForAction:(unint64_t)action
 {
-  if (a3 - 10 >= 3)
+  if (action - 10 >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%i", a3];
+    action = [MEMORY[0x1E696AEC0] stringWithFormat:@"%i", action];
   }
 
   else
   {
-    v4 = off_1E8018238[a3 - 10];
+    action = off_1E8018238[action - 10];
   }
 
-  return v4;
+  return action;
 }
 
 - (id)_posixLocale
 {
-  v2 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixFormatter];
-  v3 = [v2 locale];
+  _posixFormatter = [(PKPeerPaymentMessagesAmountStepperView *)self _posixFormatter];
+  locale = [_posixFormatter locale];
 
-  return v3;
+  return locale;
 }
 
 - (id)_posixFormatter
@@ -644,31 +644,31 @@ uint64_t __57__PKPeerPaymentMessagesAmountStepperView__posixFormatter__block_inv
   return [v4 setDecimalSeparator:@"."];
 }
 
-- (id)_decimalNumberFromPosixString:(id)a3
+- (id)_decimalNumberFromPosixString:(id)string
 {
-  v4 = a3;
-  if (!v4)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v7 = 0;
 LABEL_6:
-    v10 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
 
     goto LABEL_7;
   }
 
   v5 = MEMORY[0x1E696AB90];
-  v6 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixLocale];
-  v7 = [v5 decimalNumberWithString:v4 locale:v6];
+  _posixLocale = [(PKPeerPaymentMessagesAmountStepperView *)self _posixLocale];
+  v7 = [v5 decimalNumberWithString:stringCopy locale:_posixLocale];
 
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [MEMORY[0x1E696AB90] notANumber];
-  v9 = [v7 isEqualToNumber:v8];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v9 = [v7 isEqualToNumber:notANumber];
 
-  v10 = v7;
+  zero = v7;
   if (v9)
   {
     goto LABEL_6;
@@ -676,24 +676,24 @@ LABEL_6:
 
 LABEL_7:
 
-  return v10;
+  return zero;
 }
 
-- (id)_posixStringFromDecimalNumber:(id)a3
+- (id)_posixStringFromDecimalNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixFormatter];
-  v6 = [v5 stringFromNumber:v4];
+  numberCopy = number;
+  _posixFormatter = [(PKPeerPaymentMessagesAmountStepperView *)self _posixFormatter];
+  v6 = [_posixFormatter stringFromNumber:numberCopy];
 
   return v6;
 }
 
-- (id)_updatePosixString:(id)a3 withAction:(unint64_t)a4 maxDigits:(unint64_t)a5 maxDecimalPlaces:(unint64_t)a6
+- (id)_updatePosixString:(id)string withAction:(unint64_t)action maxDigits:(unint64_t)digits maxDecimalPlaces:(unint64_t)places
 {
-  v10 = a3;
-  if (v10)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v11 = v10;
+    v11 = stringCopy;
   }
 
   else
@@ -702,15 +702,15 @@ LABEL_7:
   }
 
   v12 = [(__CFString *)v11 length];
-  v13 = [(__CFString *)v11 pk_posixStringHasPeriod];
-  v14 = [(__CFString *)v11 pk_posixStringDecimalPlaces];
+  pk_posixStringHasPeriod = [(__CFString *)v11 pk_posixStringHasPeriod];
+  pk_posixStringDecimalPlaces = [(__CFString *)v11 pk_posixStringDecimalPlaces];
   v15 = v11;
   v16 = v15;
-  if (a4 == 10)
+  if (action == 10)
   {
-    if (a6)
+    if (places)
     {
-      v19 = v13;
+      v19 = pk_posixStringHasPeriod;
     }
 
     else
@@ -741,7 +741,7 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  if (a4 == 12)
+  if (action == 12)
   {
     v17 = v15;
     if (![(__CFString *)v15 length])
@@ -754,10 +754,10 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  if (v13)
+  if (pk_posixStringHasPeriod)
   {
     v17 = v15;
-    if (v14 >= a6)
+    if (pk_posixStringDecimalPlaces >= places)
     {
       goto LABEL_20;
     }
@@ -766,12 +766,12 @@ LABEL_7:
   }
 
   v17 = v15;
-  if (v12 < a5)
+  if (v12 < digits)
   {
-    if (a4 != 11 || (v17 = v15, v12))
+    if (action != 11 || (v17 = v15, v12))
     {
 LABEL_18:
-      v18 = [(PKPeerPaymentMessagesAmountStepperView *)self _stringForAction:a4];
+      v18 = [(PKPeerPaymentMessagesAmountStepperView *)self _stringForAction:action];
       v17 = [(__CFString *)v16 stringByAppendingString:v18];
 
 LABEL_19:
@@ -783,14 +783,14 @@ LABEL_20:
   return v17;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v12 = a3;
-  v4 = [v12 state];
-  v5 = v12;
-  if (v4 == 3)
+  tapCopy = tap;
+  state = [tapCopy state];
+  v5 = tapCopy;
+  if (state == 3)
   {
-    [v12 locationInView:self];
+    [tapCopy locationInView:self];
     v7 = v6;
     [(PKPeerPaymentMessagesAmountStepperView *)self bounds];
     v9 = v8 / 3.0;
@@ -807,24 +807,24 @@ LABEL_20:
     else
     {
       amountTappedHandler = self->_amountTappedHandler;
-      v5 = v12;
+      v5 = tapCopy;
       if (!amountTappedHandler)
       {
         goto LABEL_13;
       }
 
-      amountTappedHandler[2](amountTappedHandler, v12);
+      amountTappedHandler[2](amountTappedHandler, tapCopy);
     }
 
-    v5 = v12;
+    v5 = tapCopy;
   }
 
 LABEL_13:
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if (self->_plusMinusVisible)
   {
     if (!self->_longPressTimer)
@@ -841,7 +841,7 @@ LABEL_13:
       handler[2] = __59__PKPeerPaymentMessagesAmountStepperView__handleLongPress___block_invoke;
       handler[3] = &unk_1E80110E0;
       objc_copyWeak(&v10, &location);
-      v9 = v4;
+      v9 = pressCopy;
       dispatch_source_set_event_handler(v7, handler);
       self->_longPressTimerSuspended = 1;
 
@@ -849,7 +849,7 @@ LABEL_13:
       objc_destroyWeak(&location);
     }
 
-    if ([v4 state] == 1)
+    if ([pressCopy state] == 1)
     {
       if (self->_longPressTimerSuspended)
       {
@@ -858,7 +858,7 @@ LABEL_13:
       }
     }
 
-    else if ([v4 state] != 2 && !self->_longPressTimerSuspended)
+    else if ([pressCopy state] != 2 && !self->_longPressTimerSuspended)
     {
       dispatch_suspend(self->_longPressTimer);
       self->_longPressTimerSuspended = 1;
@@ -900,20 +900,20 @@ LABEL_7:
 - (void)_decrementAmount
 {
   v23 = [(PKPeerPaymentMessagesAmountStepperView *)self _decimalNumberFromPosixString:self->_amountString];
-  v3 = [MEMORY[0x1E696AB90] zero];
-  if (v23 && ([v23 pk_isEqualToDecimalNumber:v3] & 1) == 0)
+  zero = [MEMORY[0x1E696AB90] zero];
+  if (v23 && ([v23 pk_isEqualToDecimalNumber:zero] & 1) == 0)
   {
     v4 = [MEMORY[0x1E696AB90] one];
     v5 = [v23 decimalNumberBySubtracting:v4];
 
-    if ([(NSDecimalNumber *)v5 pk_isLessThan:v3])
+    if ([(NSDecimalNumber *)v5 pk_isLessThan:zero])
     {
-      v6 = v3;
+      v6 = zero;
 
       v5 = v6;
     }
 
-    if ([(NSDecimalNumber *)v5 pk_isEqualToDecimalNumber:v3])
+    if ([(NSDecimalNumber *)v5 pk_isEqualToDecimalNumber:zero])
     {
       allowOpenRequest = self->_allowOpenRequest;
     }
@@ -961,12 +961,12 @@ LABEL_7:
       }
     }
 
-    v16 = [(NSString *)self->_amountString pk_posixStringDecimalPlaces];
+    pk_posixStringDecimalPlaces = [(NSString *)self->_amountString pk_posixStringDecimalPlaces];
     v17 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixStringFromDecimalNumber:v5];
     amountString = self->_amountString;
     self->_amountString = v17;
 
-    v19 = [(NSString *)self->_amountString pk_posixStringWithMinimumDecimalPlaces:v16];
+    v19 = [(NSString *)self->_amountString pk_posixStringWithMinimumDecimalPlaces:pk_posixStringDecimalPlaces];
     v20 = self->_amountString;
     self->_amountString = v19;
 
@@ -974,8 +974,8 @@ LABEL_7:
     amountChangedHandler = self->_amountChangedHandler;
     if (amountChangedHandler)
     {
-      v22 = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
-      amountChangedHandler[2](amountChangedHandler, v22);
+      amount = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
+      amountChangedHandler[2](amountChangedHandler, amount);
     }
 
     self->_nextNumberPadActionCausesReset = 0;
@@ -1006,12 +1006,12 @@ LABEL_7:
       v5 = v8;
     }
 
-    v9 = [(NSString *)self->_amountString pk_posixStringDecimalPlaces];
+    pk_posixStringDecimalPlaces = [(NSString *)self->_amountString pk_posixStringDecimalPlaces];
     v10 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixStringFromDecimalNumber:v5];
     amountString = self->_amountString;
     self->_amountString = v10;
 
-    v12 = [(NSString *)self->_amountString pk_posixStringWithMinimumDecimalPlaces:v9];
+    v12 = [(NSString *)self->_amountString pk_posixStringWithMinimumDecimalPlaces:pk_posixStringDecimalPlaces];
     v13 = self->_amountString;
     self->_amountString = v12;
 
@@ -1019,8 +1019,8 @@ LABEL_7:
     amountChangedHandler = self->_amountChangedHandler;
     if (amountChangedHandler)
     {
-      v15 = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
-      amountChangedHandler[2](amountChangedHandler, v15);
+      amount = [(PKPeerPaymentMessagesAmountStepperView *)self amount];
+      amountChangedHandler[2](amountChangedHandler, amount);
     }
 
     self->_nextNumberPadActionCausesReset = 0;
@@ -1038,27 +1038,27 @@ LABEL_7:
   return v4;
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  v4 = a3;
-  if (v4)
+  amountCopy = amount;
+  if (amountCopy)
   {
-    v19 = v4;
-    if (!self->_currencyFormatter || (amountCurrency = self->_amountCurrency, [v4 currency], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(amountCurrency) = -[NSString isEqualToString:](amountCurrency, "isEqualToString:", v6), v6, (amountCurrency & 1) == 0))
+    v19 = amountCopy;
+    if (!self->_currencyFormatter || (amountCurrency = self->_amountCurrency, [amountCopy currency], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(amountCurrency) = -[NSString isEqualToString:](amountCurrency, "isEqualToString:", v6), v6, (amountCurrency & 1) == 0))
     {
-      v7 = [v19 currency];
+      currency = [v19 currency];
       v8 = PKMutableNumberFormatterForCurrencyCode();
       currencyFormatter = self->_currencyFormatter;
       self->_currencyFormatter = v8;
     }
 
     v10 = [(PKPeerPaymentMessagesAmountStepperView *)self _decimalNumberFromPosixString:self->_amountString];
-    v11 = [v19 amount];
-    if ([v10 isEqualToNumber:v11])
+    amount = [v19 amount];
+    if ([v10 isEqualToNumber:amount])
     {
       v12 = self->_amountCurrency;
-      v13 = [v19 currency];
-      LOBYTE(v12) = [(NSString *)v12 isEqualToString:v13];
+      currency2 = [v19 currency];
+      LOBYTE(v12) = [(NSString *)v12 isEqualToString:currency2];
 
       if (v12)
       {
@@ -1070,20 +1070,20 @@ LABEL_7:
     {
     }
 
-    v14 = [v19 amount];
-    v15 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixStringFromDecimalNumber:v14];
+    amount2 = [v19 amount];
+    v15 = [(PKPeerPaymentMessagesAmountStepperView *)self _posixStringFromDecimalNumber:amount2];
     amountString = self->_amountString;
     self->_amountString = v15;
 
-    v17 = [v19 currency];
+    currency3 = [v19 currency];
     v18 = self->_amountCurrency;
-    self->_amountCurrency = v17;
+    self->_amountCurrency = currency3;
 
     [(PKPeerPaymentMessagesAmountStepperView *)self _cleanupPosixString];
     [(PKPeerPaymentMessagesAmountStepperView *)self _updateContent];
 LABEL_10:
 
-    v4 = v19;
+    amountCopy = v19;
   }
 }
 
@@ -1101,20 +1101,20 @@ LABEL_10:
   {
     if ([v3 pk_isIntegralNumber])
     {
-      v4 = 0;
+      maximumFractionDigits = 0;
     }
 
     else
     {
-      v4 = [(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits];
+      maximumFractionDigits = [(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits];
     }
 
-    [(NSNumberFormatter *)self->_currencyFormatter setMinimumFractionDigits:v4];
+    [(NSNumberFormatter *)self->_currencyFormatter setMinimumFractionDigits:maximumFractionDigits];
     [(NSNumberFormatter *)self->_currencyFormatter setAlwaysShowsDecimalSeparator:0];
   }
 
-  v5 = [MEMORY[0x1E696AB90] zero];
-  if (![v11 pk_isEqualToDecimalNumber:v5] || !self->_allowOpenRequest)
+  zero = [MEMORY[0x1E696AB90] zero];
+  if (![v11 pk_isEqualToDecimalNumber:zero] || !self->_allowOpenRequest)
   {
     goto LABEL_14;
   }
@@ -1135,7 +1135,7 @@ LABEL_10:
         }
 
 LABEL_15:
-        v9 = [(NSNumberFormatter *)self->_currencyFormatter stringFromNumber:v11];
+        currencySymbol = [(NSNumberFormatter *)self->_currencyFormatter stringFromNumber:v11];
         goto LABEL_16;
       }
 
@@ -1146,10 +1146,10 @@ LABEL_14:
   }
 
 LABEL_20:
-  v9 = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
+  currencySymbol = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
 LABEL_16:
-  v10 = v9;
-  [(UILabel *)self->_compactAmountLabel setText:v9];
+  v10 = currencySymbol;
+  [(UILabel *)self->_compactAmountLabel setText:currencySymbol];
   [(UILabel *)self->_amountLabel setText:v10];
   [(PKPeerPaymentMessagesAmountStepperView *)self setNeedsLayout];
 }
@@ -1185,13 +1185,13 @@ LABEL_16:
 LABEL_7:
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    self->_nextNumberPadActionCausesReset |= a3 != 0;
-    if (!a3)
+    self->_style = style;
+    self->_nextNumberPadActionCausesReset |= style != 0;
+    if (!style)
     {
       [(PKPeerPaymentMessagesAmountStepperView *)self _cleanupPosixString];
     }
@@ -1200,14 +1200,14 @@ LABEL_7:
   }
 }
 
-- (void)setSizeCategory:(unint64_t)a3
+- (void)setSizeCategory:(unint64_t)category
 {
-  if (self->_sizeCategory != a3)
+  if (self->_sizeCategory != category)
   {
-    self->_sizeCategory = a3;
-    v5 = [(PKPeerPaymentMessagesAmountStepperView *)self _amountLabelFont];
-    [(UILabel *)self->_compactAmountLabel setFont:v5];
-    [(UILabel *)self->_amountLabel setFont:v5];
+    self->_sizeCategory = category;
+    _amountLabelFont = [(PKPeerPaymentMessagesAmountStepperView *)self _amountLabelFont];
+    [(UILabel *)self->_compactAmountLabel setFont:_amountLabelFont];
+    [(UILabel *)self->_amountLabel setFont:_amountLabelFont];
   }
 }
 
@@ -1219,18 +1219,18 @@ LABEL_7:
     v2 = 10;
   }
 
-  v5 = [*(&self->super.super.super.isa + OBJC_IVAR___PKPeerPaymentMessagesButton__highlightedBackgroundColor[v2]) layer];
-  [v5 removeAllAnimations];
-  v3 = [MEMORY[0x1E6979300] pkui_smallShakeAnimation];
-  v4 = [v5 pkui_addAdditiveAnimation:v3];
+  layer = [*(&self->super.super.super.isa + OBJC_IVAR___PKPeerPaymentMessagesButton__highlightedBackgroundColor[v2]) layer];
+  [layer removeAllAnimations];
+  pkui_smallShakeAnimation = [MEMORY[0x1E6979300] pkui_smallShakeAnimation];
+  v4 = [layer pkui_addAdditiveAnimation:pkui_smallShakeAnimation];
 }
 
-+ (double)_amountLabelFontSizeForSizeCategory:(unint64_t)a3
++ (double)_amountLabelFontSizeForSizeCategory:(unint64_t)category
 {
   if (PKIsVision())
   {
     result = 52.0;
-    if (a3 - 1 < 3)
+    if (category - 1 < 3)
     {
       return 100.0;
     }
@@ -1238,52 +1238,52 @@ LABEL_7:
 
   else if (PKIsPad())
   {
-    if (a3 - 1 >= 3)
+    if (category - 1 >= 3)
     {
       return 70.0;
     }
 
     else
     {
-      return dbl_1BE115170[a3 - 1];
+      return dbl_1BE115170[category - 1];
     }
   }
 
-  else if (a3 >= 4)
+  else if (category >= 4)
   {
     return 100.0;
   }
 
   else
   {
-    return dbl_1BE115188[a3];
+    return dbl_1BE115188[category];
   }
 
   return result;
 }
 
-+ (id)_amountLabelFontForSizeCategory:(unint64_t)a3
++ (id)_amountLabelFontForSizeCategory:(unint64_t)category
 {
   v3 = MEMORY[0x1E69DB878];
-  [a1 _amountLabelFontSizeForSizeCategory:a3];
+  [self _amountLabelFontSizeForSizeCategory:category];
   v4 = [v3 pk_peerPaymentChiseledCashFontOfSize:?];
-  v5 = [v4 pk_fixedWidthFont];
+  pk_fixedWidthFont = [v4 pk_fixedWidthFont];
 
-  return v5;
+  return pk_fixedWidthFont;
 }
 
-- (void)setPlusMinusVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setPlusMinusVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (self->_plusMinusVisible != a3 || !a4)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if (self->_plusMinusVisible != visible || !animated)
   {
-    self->_plusMinusVisible = a3;
-    v7 = [(UIButton *)self->_plusButton layer];
-    v8 = [(UIButton *)self->_minusButton layer];
-    v9 = [(UILabel *)self->_compactAmountLabel layer];
-    v10 = [(UILabel *)self->_amountLabel layer];
-    if (v4)
+    self->_plusMinusVisible = visible;
+    layer = [(UIButton *)self->_plusButton layer];
+    layer2 = [(UIButton *)self->_minusButton layer];
+    layer3 = [(UILabel *)self->_compactAmountLabel layer];
+    layer4 = [(UILabel *)self->_amountLabel layer];
+    if (animatedCopy)
     {
       v38 = 0;
       v39 = 0;
@@ -1291,13 +1291,13 @@ LABEL_7:
       v37 = 0;
       ContentViewVisibilityAnimations(&v39, &v38, &v37, &v36);
       v12 = v39;
-      v13 = v8;
-      v14 = v7;
+      v13 = layer2;
+      v14 = layer;
       v15 = v38;
       v16 = v37;
       v17 = v36;
       v18 = v17;
-      if (v5)
+      if (visibleCopy)
       {
         v19 = v15;
       }
@@ -1309,7 +1309,7 @@ LABEL_7:
 
       v20 = v12;
       v35 = v12;
-      if (v5)
+      if (visibleCopy)
       {
         v12 = v16;
         v21 = v17;
@@ -1320,7 +1320,7 @@ LABEL_7:
         v21 = v15;
       }
 
-      if (!v5)
+      if (!visibleCopy)
       {
         v20 = v16;
       }
@@ -1331,50 +1331,50 @@ LABEL_7:
       v23 = [v14 pkui_addAdditiveAnimation:v12];
       v24 = [v13 pkui_addAdditiveAnimation:v19];
       v25 = [v13 pkui_addAdditiveAnimation:v12];
-      v26 = [v9 pkui_addAdditiveAnimation:v19];
-      v27 = [v9 pkui_addAdditiveAnimation:v12];
-      v28 = [v10 pkui_addAdditiveAnimation:v33];
-      v29 = [v10 pkui_addAdditiveAnimation:v34];
+      v26 = [layer3 pkui_addAdditiveAnimation:v19];
+      v27 = [layer3 pkui_addAdditiveAnimation:v12];
+      v28 = [layer4 pkui_addAdditiveAnimation:v33];
+      v29 = [layer4 pkui_addAdditiveAnimation:v34];
 
-      v7 = v14;
-      v8 = v13;
+      layer = v14;
+      layer2 = v13;
     }
 
-    if (v5)
+    if (visibleCopy)
     {
       LODWORD(v11) = 1.0;
-      [v7 setOpacity:v11];
-      [v7 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer setOpacity:v11];
+      [layer setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
       LODWORD(v30) = 1.0;
-      [v8 setOpacity:v30];
-      [v8 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer2 setOpacity:v30];
+      [layer2 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
       LODWORD(v31) = 1.0;
-      [v9 setOpacity:v31];
-      [v9 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-      [v10 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-      [v10 setOpacity:0.0];
+      [layer3 setOpacity:v31];
+      [layer3 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer4 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer4 setOpacity:0.0];
     }
 
     else
     {
-      [v7 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-      [v7 setOpacity:0.0];
-      [v8 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-      [v8 setOpacity:0.0];
-      [v9 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
-      [v9 setOpacity:0.0];
+      [layer setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer setOpacity:0.0];
+      [layer2 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer2 setOpacity:0.0];
+      [layer3 setValue:&unk_1F3CC6C38 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer3 setOpacity:0.0];
       LODWORD(v32) = 1.0;
-      [v10 setOpacity:v32];
-      [v10 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer4 setOpacity:v32];
+      [layer4 setValue:&unk_1F3CC6C28 forKeyPath:@"filters.gaussianBlur.inputRadius"];
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_tapGestureRecognizer == a3)
+  if (self->_tapGestureRecognizer == recognizer)
   {
-    [a4 locationInView:self->_centerView];
+    [touch locationInView:self->_centerView];
     [(UIView *)self->_centerView bounds];
   }
 

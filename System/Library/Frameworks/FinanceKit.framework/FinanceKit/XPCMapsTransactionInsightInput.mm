@@ -1,24 +1,24 @@
 @interface XPCMapsTransactionInsightInput
 - (XPCMapsTransactionInsightInput)init;
-- (XPCMapsTransactionInsightInput)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (XPCMapsTransactionInsightInput)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMapsTransactionInsightInput
 
-- (XPCMapsTransactionInsightInput)initWithCoder:(id)a3
+- (XPCMapsTransactionInsightInput)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  v4 = sub_1B7209CFC(a3);
+  v4 = sub_1B7209CFC(coder);
   swift_deallocPartialClassInstance();
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s10FinanceKit27MapsTransactionInsightInputV3XPCC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s10FinanceKit27MapsTransactionInsightInputV3XPCC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (XPCMapsTransactionInsightInput)init

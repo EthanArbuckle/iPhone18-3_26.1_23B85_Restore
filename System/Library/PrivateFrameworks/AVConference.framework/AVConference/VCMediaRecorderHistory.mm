@@ -1,60 +1,60 @@
 @interface VCMediaRecorderHistory
-+ (id)fileNameForMediaType:(unsigned __int8)a3 dateString:(id)a4;
-+ (int)rewriteMovieMetadataWithURL:(id)a3 transactionID:(id)a4;
-+ (unsigned)mediaTypeFromWriterMode:(unsigned __int8)a3;
-+ (unsigned)writerModeFromMediaType:(unsigned __int8)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)setUpStillImageWithContext:(SEL)a3 visibleRect:(id)a4 cameraStatusBit:(CGRect *)a5 imageType:(char *)a6;
++ (id)fileNameForMediaType:(unsigned __int8)type dateString:(id)string;
++ (int)rewriteMovieMetadataWithURL:(id)l transactionID:(id)d;
++ (unsigned)mediaTypeFromWriterMode:(unsigned __int8)mode;
++ (unsigned)writerModeFromMediaType:(unsigned __int8)type;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)setUpStillImageWithContext:(SEL)context visibleRect:(id)rect cameraStatusBit:(CGRect *)bit imageType:(char *)type;
 - (BOOL)setUpAudioBuffers;
-- (BOOL)setUpDelegateQueue:(id)a3;
+- (BOOL)setUpDelegateQueue:(id)queue;
 - (BOOL)setUpVideoBuffers;
-- (VCMediaRecorderHistory)initWithDelegateQueue:(id)a3;
+- (VCMediaRecorderHistory)initWithDelegateQueue:(id)queue;
 - (id)_getActiveWriters;
-- (id)fileExtensionForMediaType:(unsigned __int8)a3;
-- (id)fileURLWithDirectoryURL:(id)a3 transactionID:(id)a4 type:(unsigned __int8)a5;
-- (id)handleCopyRequestWithTransactionID:(id)a3 sourceURL:(id)a4 errorCode:(int *)a5;
-- (id)writeToFileWithTimestamp:(unsigned int)a3 transactionID:(id)a4 directoryURL:(id)a5 imageType:(int)a6;
-- (id)writeToLivePhotoToFileWithFrame:(__CVBuffer *)a3 transactionID:(id)a4 directoryURL:(id)a5 imageType:(int)a6 cameraStatusBits:(unsigned __int8)a7;
+- (id)fileExtensionForMediaType:(unsigned __int8)type;
+- (id)fileURLWithDirectoryURL:(id)l transactionID:(id)d type:(unsigned __int8)type;
+- (id)handleCopyRequestWithTransactionID:(id)d sourceURL:(id)l errorCode:(int *)code;
+- (id)writeToFileWithTimestamp:(unsigned int)timestamp transactionID:(id)d directoryURL:(id)l imageType:(int)type;
+- (id)writeToLivePhotoToFileWithFrame:(__CVBuffer *)frame transactionID:(id)d directoryURL:(id)l imageType:(int)type cameraStatusBits:(unsigned __int8)bits;
 - (int)imageType;
 - (int)videoCodec;
-- (unsigned)_mediaTypeForBuffer:(id)a3;
-- (void)appendSampleWithWriter:(id)a3 buffer:(id)a4 sample:(opaqueCMSampleBuffer *)a5 mediaType:(unsigned __int8)a6;
-- (void)cancelRequestWithTransactionID:(id)a3;
+- (unsigned)_mediaTypeForBuffer:(id)buffer;
+- (void)appendSampleWithWriter:(id)writer buffer:(id)buffer sample:(opaqueCMSampleBuffer *)sample mediaType:(unsigned __int8)type;
+- (void)cancelRequestWithTransactionID:(id)d;
 - (void)cleanupTransferSession;
 - (void)dealloc;
 - (void)dispatchedFinishWritingAllRequests;
-- (void)dispatchedStartRecordingWithContext:(id)a3 fileURL:(id)a4 completionHandler:(id)a5;
-- (void)endRecording:(id)a3 timestamp:(unsigned int)a4 completionHandler:(id)a5;
+- (void)dispatchedStartRecordingWithContext:(id)context fileURL:(id)l completionHandler:(id)handler;
+- (void)endRecording:(id)recording timestamp:(unsigned int)timestamp completionHandler:(id)handler;
 - (void)flushHistoryBuffers;
-- (void)handlePendingRequestSuccessWithSourceURL:(id)a3;
-- (void)handlePendingRequestWithError:(id)a3;
-- (void)handlePendingRequestsWithSourceURL:(id)a3 error:(id)a4;
-- (void)handleSinglePendingRequestWithTransactionID:(id)a3 sourceURL:(id)a4;
-- (void)historyBuffer:(id)a3 didDequeueSample:(opaqueCMSampleBuffer *)a4 timestamp:(unsigned int)a5;
-- (void)invokeStartCompletionHandler:(id)a3 withErrorCode:(int)a4 ontoRecordingQueue:(BOOL)a5;
-- (void)registerDirectoryWithURL:(id)a3;
-- (void)setCompletionHandler:(id)a3 forTransactionID:(id)a4;
-- (void)setFrameRate:(float)a3;
-- (void)setImageType:(int)a3;
+- (void)handlePendingRequestSuccessWithSourceURL:(id)l;
+- (void)handlePendingRequestWithError:(id)error;
+- (void)handlePendingRequestsWithSourceURL:(id)l error:(id)error;
+- (void)handleSinglePendingRequestWithTransactionID:(id)d sourceURL:(id)l;
+- (void)historyBuffer:(id)buffer didDequeueSample:(opaqueCMSampleBuffer *)sample timestamp:(unsigned int)timestamp;
+- (void)invokeStartCompletionHandler:(id)handler withErrorCode:(int)code ontoRecordingQueue:(BOOL)queue;
+- (void)registerDirectoryWithURL:(id)l;
+- (void)setCompletionHandler:(id)handler forTransactionID:(id)d;
+- (void)setFrameRate:(float)rate;
+- (void)setImageType:(int)type;
 - (void)setUpAudioBuffers;
-- (void)setUpCaptureFormatForWriter:(id)a3 atTimestamp:(unsigned int)a4;
+- (void)setUpCaptureFormatForWriter:(id)writer atTimestamp:(unsigned int)timestamp;
 - (void)setUpVideoBuffers;
-- (void)setUpWriterWithContext:(id)a3 fileURL:(id)a4 stillImageTime:(id *)a5 visibleRect:(CGRect)a6 cameraStatusBit:(unsigned __int8)a7;
-- (void)setVideoCodec:(int)a3;
-- (void)setupResizingSessionsWithVisibleRect:(CGRect)a3 cameraStatusBit:(unsigned __int8)a4;
-- (void)startRecordingWithContext:(id)a3 completionHandler:(id)a4;
-- (void)stopProcessingTransactionID:(id)a3;
-- (void)takeLivePhotoWithContext:(id)a3 completionHandler:(id)a4;
-- (void)takePhotoWithContext:(id)a3 completionHandler:(id)a4;
+- (void)setUpWriterWithContext:(id)context fileURL:(id)l stillImageTime:(id *)time visibleRect:(CGRect)rect cameraStatusBit:(unsigned __int8)bit;
+- (void)setVideoCodec:(int)codec;
+- (void)setupResizingSessionsWithVisibleRect:(CGRect)rect cameraStatusBit:(unsigned __int8)bit;
+- (void)startRecordingWithContext:(id)context completionHandler:(id)handler;
+- (void)stopProcessingTransactionID:(id)d;
+- (void)takeLivePhotoWithContext:(id)context completionHandler:(id)handler;
+- (void)takePhotoWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation VCMediaRecorderHistory
 
-- (BOOL)setUpDelegateQueue:(id)a3
+- (BOOL)setUpDelegateQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
-    self->_delegateQueue = a3;
+    dispatch_retain(queue);
+    self->_delegateQueue = queue;
   }
 
   else
@@ -157,7 +157,7 @@
   return 1;
 }
 
-- (VCMediaRecorderHistory)initWithDelegateQueue:(id)a3
+- (VCMediaRecorderHistory)initWithDelegateQueue:(id)queue
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -178,7 +178,7 @@ LABEL_8:
 
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
   *(v4 + 1) = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCMediaRecorderHistory.recordingQueue", 0, CustomRootQueue);
-  if (![v4 setUpDelegateQueue:a3])
+  if (![v4 setUpDelegateQueue:queue])
   {
     goto LABEL_8;
   }
@@ -425,7 +425,7 @@ LABEL_36:
   return FigSampleBufferRelease();
 }
 
-- (void)setFrameRate:(float)a3
+- (void)setFrameRate:(float)rate
 {
   v6 = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -434,7 +434,7 @@ LABEL_36:
   block[2] = __39__VCMediaRecorderHistory_setFrameRate___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  rateCopy = rate;
   dispatch_async(recordingQueue, block);
 }
 
@@ -467,20 +467,20 @@ VCMediaRecorderHistoryBuffer *__39__VCMediaRecorderHistory_setFrameRate___block_
   return result;
 }
 
-- (void)takePhotoWithContext:(id)a3 completionHandler:(id)a4
+- (void)takePhotoWithContext:(id)context completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B590](&dword_1DB56E000, "[VCMediaRecorderHistory takePhotoWithContext:completionHandler:]");
-  if (a3)
+  if (context)
   {
     recordingQueue = self->_recordingQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__VCMediaRecorderHistory_takePhotoWithContext_completionHandler___block_invoke;
     block[3] = &unk_1E85F4CA0;
-    block[4] = a3;
+    block[4] = context;
     block[5] = self;
-    block[6] = a4;
+    block[6] = handler;
     v8 = block;
 LABEL_3:
     dispatch_async(recordingQueue, v8);
@@ -514,9 +514,9 @@ LABEL_3:
         v21 = 2112;
         v22 = v9;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid request context passed", buf, 0x30u);
-        if (!a4)
+        if (!handler)
         {
           return;
         }
@@ -526,7 +526,7 @@ LABEL_3:
     }
 
 LABEL_15:
-    if (a4)
+    if (handler)
     {
       goto LABEL_16;
     }
@@ -546,7 +546,7 @@ LABEL_15:
   }
 
   [VCMediaRecorderHistory takePhotoWithContext:completionHandler:];
-  if (a4)
+  if (handler)
   {
 LABEL_16:
     recordingQueue = self->_recordingQueue;
@@ -555,7 +555,7 @@ LABEL_16:
     v12[2] = __65__VCMediaRecorderHistory_takePhotoWithContext_completionHandler___block_invoke_2;
     v12[3] = &unk_1E85F4CF0;
     v12[4] = self;
-    v12[5] = a4;
+    v12[5] = handler;
     v13 = -7;
     v8 = v12;
     goto LABEL_3;
@@ -726,20 +726,20 @@ uint64_t __65__VCMediaRecorderHistory_takePhotoWithContext_completionHandler___b
   return v3(v1, 0, 0, v2);
 }
 
-- (void)takeLivePhotoWithContext:(id)a3 completionHandler:(id)a4
+- (void)takeLivePhotoWithContext:(id)context completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B590](&dword_1DB56E000, "[VCMediaRecorderHistory takeLivePhotoWithContext:completionHandler:]");
-  if (a3)
+  if (context)
   {
     recordingQueue = self->_recordingQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler___block_invoke;
     block[3] = &unk_1E85F4CA0;
-    block[4] = a3;
+    block[4] = context;
     block[5] = self;
-    block[6] = a4;
+    block[6] = handler;
     v8 = block;
 LABEL_3:
     dispatch_async(recordingQueue, v8);
@@ -773,9 +773,9 @@ LABEL_3:
         v21 = 2112;
         v22 = v9;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid request context passed", buf, 0x30u);
-        if (!a4)
+        if (!handler)
         {
           return;
         }
@@ -785,7 +785,7 @@ LABEL_3:
     }
 
 LABEL_15:
-    if (a4)
+    if (handler)
     {
       goto LABEL_16;
     }
@@ -805,7 +805,7 @@ LABEL_15:
   }
 
   [VCMediaRecorderHistory takeLivePhotoWithContext:completionHandler:];
-  if (a4)
+  if (handler)
   {
 LABEL_16:
     recordingQueue = self->_recordingQueue;
@@ -814,7 +814,7 @@ LABEL_16:
     v12[2] = __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler___block_invoke_2;
     v12[3] = &unk_1E85F4CF0;
     v12[4] = self;
-    v12[5] = a4;
+    v12[5] = handler;
     v13 = -7;
     v8 = v12;
     goto LABEL_3;
@@ -1056,9 +1056,9 @@ uint64_t __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler
   return v3(v1, 0, 0, v2);
 }
 
-+ (unsigned)mediaTypeFromWriterMode:(unsigned __int8)a3
++ (unsigned)mediaTypeFromWriterMode:(unsigned __int8)mode
 {
-  if ((a3 - 1) >= 4u)
+  if ((mode - 1) >= 4u)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -1074,15 +1074,15 @@ uint64_t __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler
 
   else
   {
-    return 0x5040203u >> (8 * ((a3 - 1) & 0x1F));
+    return 0x5040203u >> (8 * ((mode - 1) & 0x1F));
   }
 
   return v3;
 }
 
-+ (unsigned)writerModeFromMediaType:(unsigned __int8)a3
++ (unsigned)writerModeFromMediaType:(unsigned __int8)type
 {
-  if ((a3 - 2) >= 4u)
+  if ((type - 2) >= 4u)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -1090,7 +1090,7 @@ uint64_t __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler
       v6 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCMediaRecorderHistory *)v5 writerModeFromMediaType:a3, v6];
+        [(VCMediaRecorderHistory *)v5 writerModeFromMediaType:type, v6];
       }
     }
 
@@ -1099,26 +1099,26 @@ uint64_t __69__VCMediaRecorderHistory_takeLivePhotoWithContext_completionHandler
 
   else
   {
-    return 0x4030102u >> (8 * ((a3 - 2) & 0x1F));
+    return 0x4030102u >> (8 * ((type - 2) & 0x1F));
   }
 
   return v3;
 }
 
-- (void)invokeStartCompletionHandler:(id)a3 withErrorCode:(int)a4 ontoRecordingQueue:(BOOL)a5
+- (void)invokeStartCompletionHandler:(id)handler withErrorCode:(int)code ontoRecordingQueue:(BOOL)queue
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (handler)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v8 = __88__VCMediaRecorderHistory_invokeStartCompletionHandler_withErrorCode_ontoRecordingQueue___block_invoke;
     v9 = &unk_1E85F4CF0;
-    v12 = a4;
-    v10 = self;
-    v11 = a3;
+    codeCopy = code;
+    selfCopy = self;
+    handlerCopy = handler;
     recordingQueue = self->_recordingQueue;
-    if (a5)
+    if (queue)
     {
       dispatch_assert_queue_not_V2(recordingQueue);
       dispatch_async(self->_recordingQueue, v7);
@@ -1157,26 +1157,26 @@ void __88__VCMediaRecorderHistory_invokeStartCompletionHandler_withErrorCode_ont
   dispatch_async(v4, block);
 }
 
-- (void)startRecordingWithContext:(id)a3 completionHandler:(id)a4
+- (void)startRecordingWithContext:(id)context completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!context)
   {
     [VCMediaRecorderHistory startRecordingWithContext:buf completionHandler:?];
 LABEL_10:
-    [(VCMediaRecorderHistory *)self invokeStartCompletionHandler:a4 withErrorCode:*buf ontoRecordingQueue:1];
+    [(VCMediaRecorderHistory *)self invokeStartCompletionHandler:handler withErrorCode:*buf ontoRecordingQueue:1];
     return;
   }
 
-  v7 = [a3 mediaType];
-  if (![VCMediaRecorderHistory isRecordingOnlyMediaType:v7])
+  mediaType = [context mediaType];
+  if (![VCMediaRecorderHistory isRecordingOnlyMediaType:mediaType])
   {
-    [VCMediaRecorderHistory startRecordingWithContext:v7 completionHandler:buf];
+    [VCMediaRecorderHistory startRecordingWithContext:mediaType completionHandler:buf];
     goto LABEL_10;
   }
 
-  v8 = [a3 timestamp];
-  v9 = [a3 transactionID];
+  timestamp = [context timestamp];
+  transactionID = [context transactionID];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v10 = VRTraceErrorLogLevelToCSTR();
@@ -1190,9 +1190,9 @@ LABEL_10:
       v19 = 1024;
       v20 = 590;
       v21 = 1024;
-      v22 = v8;
+      v22 = timestamp;
       v23 = 2112;
-      v24 = VCMediaRecorderUtil_DescriptionForMediaType(v7);
+      v24 = VCMediaRecorderUtil_DescriptionForMediaType(mediaType);
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d timestamp=%d, mediaType=%@", buf, 0x2Cu);
     }
   }
@@ -1202,11 +1202,11 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __70__VCMediaRecorderHistory_startRecordingWithContext_completionHandler___block_invoke;
   block[3] = &unk_1E85F4D40;
-  block[4] = a3;
+  block[4] = context;
   block[5] = self;
-  v14 = v7;
-  block[6] = v9;
-  block[7] = a4;
+  v14 = mediaType;
+  block[6] = transactionID;
+  block[7] = handler;
   dispatch_async(recordingQueue, block);
 }
 
@@ -1226,7 +1226,7 @@ uint64_t __70__VCMediaRecorderHistory_startRecordingWithContext_completionHandle
   return [v4 dispatchedStartRecordingWithContext:v5 fileURL:v3 completionHandler:v6];
 }
 
-- (void)endRecording:(id)a3 timestamp:(unsigned int)a4 completionHandler:(id)a5
+- (void)endRecording:(id)recording timestamp:(unsigned int)timestamp completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1242,7 +1242,7 @@ uint64_t __70__VCMediaRecorderHistory_startRecordingWithContext_completionHandle
       v18 = 1024;
       v19 = 613;
       v20 = 1024;
-      v21 = a4;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d timestamp=%d", buf, 0x22u);
     }
   }
@@ -1253,11 +1253,11 @@ uint64_t __70__VCMediaRecorderHistory_startRecordingWithContext_completionHandle
   v12[2] = __67__VCMediaRecorderHistory_endRecording_timestamp_completionHandler___block_invoke;
   v12[3] = &unk_1E85F4D68;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a5;
-  v13 = a4;
+  v12[5] = recording;
+  v12[6] = handler;
+  timestampCopy2 = timestamp;
   dispatch_async(recordingQueue, v12);
-  [(VCMediaRecorderHistory *)self stopProcessingTransactionID:a3];
+  [(VCMediaRecorderHistory *)self stopProcessingTransactionID:recording];
 }
 
 void __67__VCMediaRecorderHistory_endRecording_timestamp_completionHandler___block_invoke(uint64_t a1)
@@ -1313,16 +1313,16 @@ void __67__VCMediaRecorderHistory_endRecording_timestamp_completionHandler___blo
   return v4;
 }
 
-- (void)historyBuffer:(id)a3 didDequeueSample:(opaqueCMSampleBuffer *)a4 timestamp:(unsigned int)a5
+- (void)historyBuffer:(id)buffer didDequeueSample:(opaqueCMSampleBuffer *)sample timestamp:(unsigned int)timestamp
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!sample)
   {
     [VCMediaRecorderHistory historyBuffer:? didDequeueSample:? timestamp:?];
     return;
   }
 
-  v6 = *&a5;
+  v6 = *&timestamp;
   v9 = [(VCMediaRecorderHistory *)self _mediaTypeForBuffer:?];
   if (objc_opt_class() == self)
   {
@@ -1400,9 +1400,9 @@ void __67__VCMediaRecorderHistory_endRecording_timestamp_completionHandler___blo
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       __str = 0;
-      v12 = [(__CFString *)v10 UTF8String];
+      uTF8String = [(__CFString *)v10 UTF8String];
       v13 = -[VCMediaRecorderHistory _getActiveWriters](self, "_getActiveWriters") ? [objc_msgSend(-[VCMediaRecorderHistory _getActiveWriters](self "_getActiveWriters")] : "<nil>";
-      asprintf(&__str, "%s(%p) %s", v12, self, v13);
+      asprintf(&__str, "%s(%p) %s", uTF8String, self, v13);
       if (__str)
       {
         __lasts = 0;
@@ -1462,8 +1462,8 @@ LABEL_33:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = [(VCMediaRecorderHistory *)self _getActiveWriters];
-  v23 = [v22 countByEnumeratingWithState:&v32 objects:v31 count:16];
+  _getActiveWriters = [(VCMediaRecorderHistory *)self _getActiveWriters];
+  v23 = [_getActiveWriters countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1474,11 +1474,11 @@ LABEL_33:
       {
         if (*v33 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(_getActiveWriters);
         }
 
         v27 = *(*(&v32 + 1) + 8 * i);
-        if (self->_localAudioBuffer == a3 && [*(*(&v32 + 1) + 8 * i) shouldFinishWritingSampleBuffer:a4 RTPtimeStamp:v6 mediaType:v9])
+        if (self->_localAudioBuffer == buffer && [*(*(&v32 + 1) + 8 * i) shouldFinishWritingSampleBuffer:sample RTPtimeStamp:v6 mediaType:v9])
         {
           v28[0] = MEMORY[0x1E69E9820];
           v28[1] = 3221225472;
@@ -1488,13 +1488,13 @@ LABEL_33:
           [v27 finishWritingWithHandler:v28];
         }
 
-        else if ([v27 shouldAppendSampleBuffer:a4 RTPtimeStamp:v6 mediaType:v9])
+        else if ([v27 shouldAppendSampleBuffer:sample RTPtimeStamp:v6 mediaType:v9])
         {
-          [(VCMediaRecorderHistory *)self appendSampleWithWriter:v27 buffer:a3 sample:a4 mediaType:v9];
+          [(VCMediaRecorderHistory *)self appendSampleWithWriter:v27 buffer:buffer sample:sample mediaType:v9];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v32 objects:v31 count:16];
+      v24 = [_getActiveWriters countByEnumeratingWithState:&v32 objects:v31 count:16];
     }
 
     while (v24);
@@ -1505,13 +1505,13 @@ LABEL_33:
 {
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v3 = [(VCMediaRecorderHistory *)self _getActiveWriters];
+  _getActiveWriters = [(VCMediaRecorderHistory *)self _getActiveWriters];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v5 = v3 ? [objc_msgSend(v3 "description")] : "<nil>";
+      v5 = _getActiveWriters ? [objc_msgSend(_getActiveWriters "description")] : "<nil>";
       asprintf(&__str, "%s", v5);
       if (__str)
       {
@@ -1564,9 +1564,9 @@ LABEL_33:
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v6 = [(__CFString *)v4 UTF8String];
-      v7 = v3 ? [objc_msgSend(v3 "description")] : "<nil>";
-      asprintf(&__str, "%s(%p) %s", v6, self, v7);
+      uTF8String = [(__CFString *)v4 UTF8String];
+      v7 = _getActiveWriters ? [objc_msgSend(_getActiveWriters "description")] : "<nil>";
+      asprintf(&__str, "%s(%p) %s", uTF8String, self, v7);
       if (__str)
       {
         __lasts = 0;
@@ -1608,7 +1608,7 @@ LABEL_26:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [v3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  v16 = [_getActiveWriters countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1619,7 +1619,7 @@ LABEL_26:
       {
         if (*v26 != v18)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_getActiveWriters);
         }
 
         v20 = *(*(&v25 + 1) + 8 * i);
@@ -1631,7 +1631,7 @@ LABEL_26:
         [v20 finishWritingWithHandler:v21];
       }
 
-      v17 = [v3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v17 = [_getActiveWriters countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v17);
@@ -1774,7 +1774,7 @@ LABEL_11:
   }
 }
 
-- (void)stopProcessingTransactionID:(id)a3
+- (void)stopProcessingTransactionID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -1783,7 +1783,7 @@ LABEL_11:
   block[2] = __54__VCMediaRecorderHistory_stopProcessingTransactionID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(recordingQueue, block);
 }
 
@@ -1873,7 +1873,7 @@ LABEL_13:
   }
 }
 
-- (void)cancelRequestWithTransactionID:(id)a3
+- (void)cancelRequestWithTransactionID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -1882,7 +1882,7 @@ LABEL_13:
   block[2] = __57__VCMediaRecorderHistory_cancelRequestWithTransactionID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_sync(recordingQueue, block);
 }
 
@@ -2005,7 +2005,7 @@ void __57__VCMediaRecorderHistory_cancelRequestWithTransactionID___block_invoke_
   return v3;
 }
 
-- (void)setImageType:(int)a3
+- (void)setImageType:(int)type
 {
   v6 = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -2014,7 +2014,7 @@ void __57__VCMediaRecorderHistory_cancelRequestWithTransactionID___block_invoke_
   block[2] = __39__VCMediaRecorderHistory_setImageType___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_sync(recordingQueue, block);
 }
 
@@ -2066,7 +2066,7 @@ void __39__VCMediaRecorderHistory_setImageType___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setVideoCodec:(int)a3
+- (void)setVideoCodec:(int)codec
 {
   v6 = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -2075,7 +2075,7 @@ void __39__VCMediaRecorderHistory_setImageType___block_invoke(uint64_t a1)
   block[2] = __40__VCMediaRecorderHistory_setVideoCodec___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  codecCopy = codec;
   dispatch_sync(recordingQueue, block);
 }
 
@@ -2107,10 +2107,10 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   *(*(a1 + 32) + 288) = *(a1 + 40);
 }
 
-- (id)writeToFileWithTimestamp:(unsigned int)a3 transactionID:(id)a4 directoryURL:(id)a5 imageType:(int)a6
+- (id)writeToFileWithTimestamp:(unsigned int)timestamp transactionID:(id)d directoryURL:(id)l imageType:(int)type
 {
-  v6 = *&a6;
-  v9 = *&a3;
+  v6 = *&type;
+  v9 = *&timestamp;
   v32 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2144,7 +2144,7 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v16 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:a5 transactionID:a4 type:1];
+  v16 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:l transactionID:d type:1];
   if (([v15 writeToURL:v16 atomically:1] & 1) == 0)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2153,9 +2153,9 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
       v18 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        if (a4)
+        if (d)
         {
-          v19 = [objc_msgSend(a4 "description")];
+          v19 = [objc_msgSend(d "description")];
         }
 
         else
@@ -2183,14 +2183,14 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)writeToLivePhotoToFileWithFrame:(__CVBuffer *)a3 transactionID:(id)a4 directoryURL:(id)a5 imageType:(int)a6 cameraStatusBits:(unsigned __int8)a7
+- (id)writeToLivePhotoToFileWithFrame:(__CVBuffer *)frame transactionID:(id)d directoryURL:(id)l imageType:(int)type cameraStatusBits:(unsigned __int8)bits
 {
-  v7 = a7;
-  v8 = *&a6;
+  bitsCopy = bits;
+  v8 = *&type;
   v44 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   v15 = self->_bufferPoolResolution.width == Width && self->_bufferPoolResolution.height == Height;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -2237,7 +2237,7 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
       }
     }
 
-    ResizeFrame = CVBufferRetain(a3);
+    ResizeFrame = CVBufferRetain(frame);
   }
 
   else
@@ -2268,7 +2268,7 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
       }
     }
 
-    ResizeFrame = VCMediaRecorderUtil_CreateResizeFrame(a3, self->_transferSession, self->_bufferPool);
+    ResizeFrame = VCMediaRecorderUtil_CreateResizeFrame(frame, self->_transferSession, self->_bufferPool);
     if (!ResizeFrame)
     {
       [VCMediaRecorderHistory writeToLivePhotoToFileWithFrame:v32 transactionID:? directoryURL:? imageType:? cameraStatusBits:?];
@@ -2276,8 +2276,8 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
     }
   }
 
-  v28 = [VideoUtil convertPixelBuffer:ResizeFrame toImageType:v8 withAssetIdentifier:a4 cameraStatusBits:v7 allowTimeMetaData:0];
-  v29 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:a5 transactionID:a4 type:1];
+  v28 = [VideoUtil convertPixelBuffer:ResizeFrame toImageType:v8 withAssetIdentifier:d cameraStatusBits:bitsCopy allowTimeMetaData:0];
+  v29 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:l transactionID:d type:1];
   v30 = [v28 writeToURL:v29 atomically:1];
   CVPixelBufferRelease(ResizeFrame);
   if ((v30 & 1) == 0)
@@ -2297,30 +2297,30 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   return v29;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)setUpStillImageWithContext:(SEL)a3 visibleRect:(id)a4 cameraStatusBit:(CGRect *)a5 imageType:(char *)a6
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)setUpStillImageWithContext:(SEL)context visibleRect:(id)rect cameraStatusBit:(CGRect *)bit imageType:(char *)type
 {
   v7 = *&a7;
   v40 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v13 = [a4 timestamp];
-  v14 = [a4 transactionID];
-  v15 = [(VCMediaRecorderHistoryBuffer *)self->_frameBuffer getClosestSampleForTimestamp:v13];
+  timestamp = [rect timestamp];
+  transactionID = [rect transactionID];
+  v15 = [(VCMediaRecorderHistoryBuffer *)self->_frameBuffer getClosestSampleForTimestamp:timestamp];
   *retstr = **&MEMORY[0x1E6960C70];
-  v16 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:v14];
+  v16 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:transactionID];
   if (v15)
   {
     v17 = FigSampleBufferRetain();
     v18 = CMGetAttachment(v17, @"bCameraStatusBits", 0);
-    CFNumberGetValue(v18, kCFNumberSInt8Type, a6);
+    CFNumberGetValue(v18, kCFNumberSInt8Type, type);
     ImageBuffer = CMSampleBufferGetImageBuffer(v17);
     CVBufferRetain(ImageBuffer);
-    VideoUtil_GetVisibleRect(ImageBuffer, a5);
+    VideoUtil_GetVisibleRect(ImageBuffer, bit);
     if (self->_resize)
     {
-      [(VCMediaRecorderHistory *)self setupResizingSessionsWithVisibleRect:*a6 cameraStatusBit:a5->origin.x, a5->origin.y, a5->size.width, a5->size.height];
+      [(VCMediaRecorderHistory *)self setupResizingSessionsWithVisibleRect:*type cameraStatusBit:bit->origin.x, bit->origin.y, bit->size.width, bit->size.height];
     }
 
-    v20 = -[VCMediaRecorderHistory writeToLivePhotoToFileWithFrame:transactionID:directoryURL:imageType:cameraStatusBits:](self, "writeToLivePhotoToFileWithFrame:transactionID:directoryURL:imageType:cameraStatusBits:", ImageBuffer, v14, [a4 deserializeDirectoryURL], v7, *a6);
+    v20 = -[VCMediaRecorderHistory writeToLivePhotoToFileWithFrame:transactionID:directoryURL:imageType:cameraStatusBits:](self, "writeToLivePhotoToFileWithFrame:transactionID:directoryURL:imageType:cameraStatusBits:", ImageBuffer, transactionID, [rect deserializeDirectoryURL], v7, *type);
     CVBufferRelease(ImageBuffer);
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -2346,7 +2346,7 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
     {
       CMSampleBufferGetPresentationTimeStamp(retstr, v17);
       FigSampleBufferRelease();
-      return [(NSMutableDictionary *)self->_stillImageURLs setObject:v20 forKeyedSubscript:v14];
+      return [(NSMutableDictionary *)self->_stillImageURLs setObject:v20 forKeyedSubscript:transactionID];
     }
 
     else
@@ -2389,12 +2389,12 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setupResizingSessionsWithVisibleRect:(CGRect)a3 cameraStatusBit:(unsigned __int8)a4
+- (void)setupResizingSessionsWithVisibleRect:(CGRect)rect cameraStatusBit:(unsigned __int8)bit
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
   p_bufferPool = &self->_bufferPool;
   bufferPool = self->_bufferPool;
@@ -2405,7 +2405,7 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
     self->_bufferPoolResolution = *MEMORY[0x1E695F060];
   }
 
-  v12 = VCMediaWriterUtil_CalculateImageSizeWithVisibleRect(a4, self->_captureWidth, self->_captureHeight, x, y, width, height);
+  v12 = VCMediaWriterUtil_CalculateImageSizeWithVisibleRect(bit, self->_captureWidth, self->_captureHeight, x, y, width, height);
   v14 = v13;
   if (VCMediaRecorderUtil_SetupBufferPool(@"AVConference:MediaRecorderResize", p_bufferPool, v12, v13))
   {
@@ -2450,25 +2450,25 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setUpWriterWithContext:(id)a3 fileURL:(id)a4 stillImageTime:(id *)a5 visibleRect:(CGRect)a6 cameraStatusBit:(unsigned __int8)a7
+- (void)setUpWriterWithContext:(id)context fileURL:(id)l stillImageTime:(id *)time visibleRect:(CGRect)rect cameraStatusBit:(unsigned __int8)bit
 {
-  v7 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  bitCopy = bit;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   block[6] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v16 = [a3 transactionID];
-  v17 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:v16];
-  v18 = VCMediaWriterUtil_NewWriter(a4, v16, [VideoUtil videoCodecForPayload:self->_videoCodec], 30.0);
+  transactionID = [context transactionID];
+  v17 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:transactionID];
+  v18 = VCMediaWriterUtil_NewWriter(l, transactionID, [VideoUtil videoCodecForPayload:self->_videoCodec], 30.0);
   self->_writer = v18;
   if (v18)
   {
-    -[VCMovieWriterProtocol setDirectoryURL:](self->_writer, "setDirectoryURL:", [a3 deserializeDirectoryURL]);
-    if (a3)
+    -[VCMovieWriterProtocol setDirectoryURL:](self->_writer, "setDirectoryURL:", [context deserializeDirectoryURL]);
+    if (context)
     {
-      [a3 movieFragmentInterval];
+      [context movieFragmentInterval];
     }
 
     else
@@ -2481,11 +2481,11 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
     v23 = v25;
     var3 = v26;
     [(VCMovieWriterProtocol *)writer setMovieFragmentInterval:&v23];
-    VCMediaWriterUtil_SetUpWriterWithCaptureFormat(self->_writer, v7, self->_captureWidth, self->_captureHeight, self->_resize, x, y, width, height);
+    VCMediaWriterUtil_SetUpWriterWithCaptureFormat(self->_writer, bitCopy, self->_captureWidth, self->_captureHeight, self->_resize, x, y, width, height);
     [(VCMovieWriterProtocol *)self->_writer setupWriterWithMode:1];
     v22 = self->_writer;
-    v23 = *&a5->var0;
-    var3 = a5->var3;
+    v23 = *&time->var0;
+    var3 = time->var3;
     [(VCMovieWriterProtocol *)v22 setStillImageTime:&v23];
   }
 
@@ -2503,16 +2503,16 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   }
 }
 
-- (id)fileExtensionForMediaType:(unsigned __int8)a3
+- (id)fileExtensionForMediaType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_recordingQueue);
-  if ((v3 - 2) < 4)
+  if ((typeCopy - 2) < 4)
   {
     return @"MOV";
   }
 
-  if (v3 != 1)
+  if (typeCopy != 1)
   {
     return 0;
   }
@@ -2525,47 +2525,47 @@ void __40__VCMediaRecorderHistory_setVideoCodec___block_invoke(uint64_t a1)
   return @"JPG";
 }
 
-+ (id)fileNameForMediaType:(unsigned __int8)a3 dateString:(id)a4
++ (id)fileNameForMediaType:(unsigned __int8)type dateString:(id)string
 {
-  if (a3 == 5)
+  if (type == 5)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"moments_%@-audio", a4, v5];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"moments_%@-audio", string, v5];
   }
 
   else
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s_recording_%@", VCMediaRecorderUtil_FilePrefixForMediaType(a3), a4];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s_recording_%@", VCMediaRecorderUtil_FilePrefixForMediaType(type), string];
   }
 }
 
-- (id)fileURLWithDirectoryURL:(id)a3 transactionID:(id)a4 type:(unsigned __int8)a5
+- (id)fileURLWithDirectoryURL:(id)l transactionID:(id)d type:(unsigned __int8)type
 {
-  v5 = a5;
+  typeCopy = type;
   v37[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!a3)
+  lCopy = l;
+  if (!l)
   {
     v10 = MEMORY[0x1E695DFF8];
     v37[0] = NSTemporaryDirectory();
     v37[1] = @"avconference";
-    v9 = [v10 fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v37, 2)}];
+    lCopy = [v10 fileURLWithPathComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v37, 2)}];
   }
 
-  v11 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v12 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v12 setDateFormat:@"MM_dd_HH_mm_ss"];
   [v12 setLocale:{objc_msgSend(MEMORY[0x1E695DF58], "localeWithLocaleIdentifier:", @"en_US_POSIX"}];
-  v13 = [v12 stringFromDate:v11];
+  v13 = [v12 stringFromDate:date];
 
-  v14 = [(VCMediaRecorderHistory *)self fileExtensionForMediaType:v5];
-  if (!a3)
+  v14 = [(VCMediaRecorderHistory *)self fileExtensionForMediaType:typeCopy];
+  if (!l)
   {
-    v9 = [v9 URLByAppendingPathComponent:a4];
-    [objc_msgSend(objc_msgSend(v9 "URLByStandardizingPath")];
+    lCopy = [lCopy URLByAppendingPathComponent:d];
+    [objc_msgSend(objc_msgSend(lCopy "URLByStandardizingPath")];
     VCDiskUtils_CreateDirectory();
   }
 
-  v15 = [objc_msgSend(v9 URLByAppendingPathComponent:{+[VCMediaRecorderHistory fileNameForMediaType:dateString:](VCMediaRecorderHistory, "fileNameForMediaType:dateString:", v5, v13)), "URLByAppendingPathExtension:", v14}];
+  v15 = [objc_msgSend(lCopy URLByAppendingPathComponent:{+[VCMediaRecorderHistory fileNameForMediaType:dateString:](VCMediaRecorderHistory, "fileNameForMediaType:dateString:", typeCopy, v13)), "URLByAppendingPathExtension:", v14}];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2618,7 +2618,7 @@ LABEL_15:
         v31 = 2112;
         v32 = v16;
         v33 = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 2112;
         v36 = v15;
         v19 = " [%s] %s:%d %@(%p) filePath=%@";
@@ -2632,7 +2632,7 @@ LABEL_15:
   return v15;
 }
 
-+ (int)rewriteMovieMetadataWithURL:(id)a3 transactionID:(id)a4
++ (int)rewriteMovieMetadataWithURL:(id)l transactionID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2648,12 +2648,12 @@ LABEL_15:
       v21 = 1024;
       v22 = 986;
       v23 = 2112;
-      v24 = a4;
+      dCopy = d;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d for %@", &v17, 0x26u);
     }
   }
 
-  MetaDataArrayWithIndentifier = VCMediaWriterUtil_GetMetaDataArrayWithIndentifier(a4);
+  MetaDataArrayWithIndentifier = VCMediaWriterUtil_GetMetaDataArrayWithIndentifier(d);
   DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], MetaDataArrayWithIndentifier, 1uLL);
   ValueAtIndex = CFArrayGetValueAtIndex(DeepCopy, 0);
   Value = CFDictionaryGetValue(ValueAtIndex, *MEMORY[0x1E6971F90]);
@@ -2674,11 +2674,11 @@ LABEL_15:
       v21 = 1024;
       v22 = 994;
       v23 = 2112;
-      v24 = v12;
+      dCopy = v12;
       v25 = 2112;
-      v26 = a4;
+      dCopy2 = d;
       v27 = 2112;
-      v28 = a3;
+      lCopy = l;
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d rewriteMovieMetadata %@ for transactionID %@ with URL %@", &v17, 0x3Au);
     }
   }
@@ -2708,14 +2708,14 @@ LABEL_15:
   return v13;
 }
 
-- (id)handleCopyRequestWithTransactionID:(id)a3 sourceURL:(id)a4 errorCode:(int *)a5
+- (id)handleCopyRequestWithTransactionID:(id)d sourceURL:(id)l errorCode:(int *)code
 {
   v55 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
   v40 = 0;
   if ([-[VCMovieWriterProtocol transactionID](self->_writer "transactionID")])
   {
-    *a5 = -7;
+    *code = -7;
     if (objc_opt_class() != self)
     {
       if (objc_opt_respondsToSelector())
@@ -2740,7 +2740,7 @@ LABEL_15:
         return 0;
       }
 
-      v31 = [(VCMovieWriterProtocol *)self->_writer transactionID];
+      transactionID = [(VCMovieWriterProtocol *)self->_writer transactionID];
       *buf = 136316674;
       v42 = v29;
       v43 = 2080;
@@ -2748,13 +2748,13 @@ LABEL_15:
       v45 = 1024;
       v46 = 1021;
       v47 = 2112;
-      v48 = v20;
+      dCopy3 = v20;
       v49 = 2048;
-      v50 = self;
+      selfCopy5 = self;
       v51 = 2112;
-      v52 = a3;
+      dCopy4 = d;
       v53 = 2112;
-      v54 = v31;
+      lCopy2 = transactionID;
       v27 = " [%s] %s:%d %@(%p) Redundant copy - proposed transactionID=%@ matches main writer transactionID=%@";
 LABEL_61:
       v28 = v30;
@@ -2774,7 +2774,7 @@ LABEL_61:
       return 0;
     }
 
-    v26 = [(VCMovieWriterProtocol *)self->_writer transactionID];
+    transactionID2 = [(VCMovieWriterProtocol *)self->_writer transactionID];
     *buf = 136316162;
     v42 = v24;
     v43 = 2080;
@@ -2782,9 +2782,9 @@ LABEL_61:
     v45 = 1024;
     v46 = 1021;
     v47 = 2112;
-    v48 = a3;
+    dCopy3 = d;
     v49 = 2112;
-    v50 = v26;
+    selfCopy5 = transactionID2;
     v27 = " [%s] %s:%d Redundant copy - proposed transactionID=%@ matches main writer transactionID=%@";
     v28 = v25;
     goto LABEL_49;
@@ -2793,7 +2793,7 @@ LABEL_61:
   v9 = [VCMediaRecorderHistory mediaTypeFromWriterMode:[(VCMovieWriterProtocol *)self->_writer writerMode]];
   if (!v9)
   {
-    *a5 = -10;
+    *code = -10;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2831,9 +2831,9 @@ LABEL_61:
         v45 = 1024;
         v46 = 1024;
         v47 = 2112;
-        v48 = v21;
+        dCopy3 = v21;
         v49 = 2048;
-        v50 = self;
+        selfCopy5 = self;
         v27 = " [%s] %s:%d %@(%p) Failed to retrieve valid mediaType from writerMode";
         v28 = v33;
 LABEL_49:
@@ -2846,7 +2846,7 @@ LABEL_62:
     return 0;
   }
 
-  v10 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:[(VCMovieWriterProtocol *)self->_writer directoryURL] transactionID:a3 type:v9];
+  v10 = [(VCMediaRecorderHistory *)self fileURLWithDirectoryURL:[(VCMovieWriterProtocol *)self->_writer directoryURL] transactionID:d type:v9];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2862,9 +2862,9 @@ LABEL_62:
         v45 = 1024;
         v46 = 1028;
         v47 = 2112;
-        v48 = a3;
+        dCopy3 = d;
         v49 = 2112;
-        v50 = a4;
+        selfCopy5 = l;
         v14 = " [%s] %s:%d copying live photo for transactionID=%@, sourceURL=%@";
         v15 = v13;
         v16 = 48;
@@ -2899,13 +2899,13 @@ LABEL_13:
         v45 = 1024;
         v46 = 1028;
         v47 = 2112;
-        v48 = v11;
+        dCopy3 = v11;
         v49 = 2048;
-        v50 = self;
+        selfCopy5 = self;
         v51 = 2112;
-        v52 = a3;
+        dCopy4 = d;
         v53 = 2112;
-        v54 = a4;
+        lCopy2 = l;
         v14 = " [%s] %s:%d %@(%p) copying live photo for transactionID=%@, sourceURL=%@";
         v15 = v18;
         v16 = 68;
@@ -2916,7 +2916,7 @@ LABEL_13:
 
   if (([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) == 0)
   {
-    *a5 = -8;
+    *code = -8;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2954,11 +2954,11 @@ LABEL_13:
         v45 = 1024;
         v46 = 1030;
         v47 = 2112;
-        v48 = v22;
+        dCopy3 = v22;
         v49 = 2048;
-        v50 = self;
+        selfCopy5 = self;
         v51 = 2112;
-        v52 = v40;
+        dCopy4 = v40;
         v27 = " [%s] %s:%d %@(%p) copying file failed with error=%@";
         v28 = v36;
         v34 = 58;
@@ -2969,9 +2969,9 @@ LABEL_13:
     return 0;
   }
 
-  if ([VCMediaRecorderHistory rewriteMovieMetadataWithURL:v10 transactionID:a3])
+  if ([VCMediaRecorderHistory rewriteMovieMetadataWithURL:v10 transactionID:d])
   {
-    *a5 = -9;
+    *code = -9;
     if (v10)
     {
       if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && !v40)
@@ -3010,13 +3010,13 @@ LABEL_13:
         v45 = 1024;
         v46 = 1040;
         v47 = 2112;
-        v48 = v23;
+        dCopy3 = v23;
         v49 = 2048;
-        v50 = self;
+        selfCopy5 = self;
         v51 = 2112;
-        v52 = v10;
+        dCopy4 = v10;
         v53 = 2112;
-        v54 = v40;
+        lCopy2 = v40;
         v27 = " [%s] %s:%d %@(%p) Failed to remove destinationURL=%@ error=%@";
         goto LABEL_61;
       }
@@ -3040,9 +3040,9 @@ LABEL_13:
       v45 = 1024;
       v46 = 1040;
       v47 = 2112;
-      v48 = v10;
+      dCopy3 = v10;
       v49 = 2112;
-      v50 = v40;
+      selfCopy5 = v40;
       v27 = " [%s] %s:%d Failed to remove destinationURL=%@ error=%@";
       v28 = v38;
       goto LABEL_49;
@@ -3052,31 +3052,31 @@ LABEL_13:
   return v10;
 }
 
-- (void)handleSinglePendingRequestWithTransactionID:(id)a3 sourceURL:(id)a4
+- (void)handleSinglePendingRequestWithTransactionID:(id)d sourceURL:(id)l
 {
   v56 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
   v39 = 0;
-  v7 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:a3];
+  v7 = [(NSMutableDictionary *)self->_completionHandlers objectForKeyedSubscript:d];
   if (v7)
   {
     v8 = v7;
-    writer = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:a3];
+    writer = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:d];
     v10 = writer;
     if (!writer)
     {
       writer = self->_writer;
     }
 
-    v11 = [(VCMovieWriterProtocol *)writer directoryURL];
-    v12 = a4;
+    directoryURL = [(VCMovieWriterProtocol *)writer directoryURL];
+    lCopy = l;
     if (!v10)
     {
-      v12 = [(VCMediaRecorderHistory *)self handleCopyRequestWithTransactionID:a3 sourceURL:a4 errorCode:&v39];
+      lCopy = [(VCMediaRecorderHistory *)self handleCopyRequestWithTransactionID:d sourceURL:l errorCode:&v39];
     }
 
     v13 = objc_opt_class();
-    if (v12)
+    if (lCopy)
     {
       if (v13 == self)
       {
@@ -3092,7 +3092,7 @@ LABEL_13:
           goto LABEL_18;
         }
 
-        v17 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:a3];
+        v17 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:d];
         *buf = 136316418;
         v41 = v15;
         v42 = 2080;
@@ -3100,11 +3100,11 @@ LABEL_13:
         v44 = 1024;
         v45 = 1069;
         v46 = 2112;
-        v47 = v12;
+        lCopy2 = lCopy;
         v48 = 2112;
-        v49 = a3;
+        selfCopy2 = d;
         v50 = 2112;
-        v51 = v17;
+        lCopy3 = v17;
         v18 = " [%s] %s:%d destinationURL=%@ transactionID=%@ writer=%@";
         v19 = v16;
         v20 = 58;
@@ -3134,7 +3134,7 @@ LABEL_13:
           goto LABEL_18;
         }
 
-        v23 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:a3];
+        v23 = [(NSMutableDictionary *)self->_writers objectForKeyedSubscript:d];
         *buf = 136316930;
         v41 = v21;
         v42 = 2080;
@@ -3142,13 +3142,13 @@ LABEL_13:
         v44 = 1024;
         v45 = 1069;
         v46 = 2112;
-        v47 = v14;
+        lCopy2 = v14;
         v48 = 2048;
-        v49 = self;
+        selfCopy2 = self;
         v50 = 2112;
-        v51 = v12;
+        lCopy3 = lCopy;
         v52 = 2112;
-        v53 = a3;
+        dCopy4 = d;
         v54 = 2112;
         v55 = v23;
         v18 = " [%s] %s:%d %@(%p) destinationURL=%@ transactionID=%@ writer=%@";
@@ -3158,15 +3158,15 @@ LABEL_13:
 
       _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, v18, buf, v20);
 LABEL_18:
-      v24 = [(NSMutableDictionary *)self->_stillImageURLs objectForKeyedSubscript:a3];
+      v24 = [(NSMutableDictionary *)self->_stillImageURLs objectForKeyedSubscript:d];
       delegateQueue = self->_delegateQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_sourceURL___block_invoke;
       block[3] = &unk_1E85F4DB8;
       block[4] = v24;
-      block[5] = v12;
-      block[6] = v11;
+      block[5] = lCopy;
+      block[6] = directoryURL;
       block[7] = v8;
       v26 = block;
       goto LABEL_19;
@@ -3199,7 +3199,7 @@ LABEL_33:
         v26 = v37;
 LABEL_19:
         dispatch_async(delegateQueue, v26);
-        if (!a3)
+        if (!d)
         {
           return;
         }
@@ -3214,9 +3214,9 @@ LABEL_19:
       v44 = 1024;
       v45 = 1068;
       v46 = 2112;
-      v47 = a4;
+      lCopy2 = l;
       v48 = 2112;
-      v49 = a3;
+      selfCopy2 = d;
       v30 = " [%s] %s:%d Failed to obtain a valid destinationURL for sourceURL=%@ transactionID=%@";
       v31 = v29;
       v32 = 48;
@@ -3253,13 +3253,13 @@ LABEL_19:
       v44 = 1024;
       v45 = 1068;
       v46 = 2112;
-      v47 = v27;
+      lCopy2 = v27;
       v48 = 2048;
-      v49 = self;
+      selfCopy2 = self;
       v50 = 2112;
-      v51 = a4;
+      lCopy3 = l;
       v52 = 2112;
-      v53 = a3;
+      dCopy4 = d;
       v30 = " [%s] %s:%d %@(%p) Failed to obtain a valid destinationURL for sourceURL=%@ transactionID=%@";
       v31 = v34;
       v32 = 68;
@@ -3269,12 +3269,12 @@ LABEL_19:
     goto LABEL_33;
   }
 
-  [VCMediaRecorderHistory handleSinglePendingRequestWithTransactionID:a3 sourceURL:?];
-  if (a3)
+  [VCMediaRecorderHistory handleSinglePendingRequestWithTransactionID:d sourceURL:?];
+  if (d)
   {
 LABEL_20:
-    [(NSMutableDictionary *)self->_completionHandlers setObject:0 forKeyedSubscript:a3];
-    [(NSMutableDictionary *)self->_stillImageURLs setObject:0 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_completionHandlers setObject:0 forKeyedSubscript:d];
+    [(NSMutableDictionary *)self->_stillImageURLs setObject:0 forKeyedSubscript:d];
   }
 }
 
@@ -3284,7 +3284,7 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
   v2 = *(a1 + 48);
 }
 
-- (void)handlePendingRequestWithError:(id)a3
+- (void)handlePendingRequestWithError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
@@ -3316,7 +3316,7 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
           v13[1] = 3221225472;
           v13[2] = __56__VCMediaRecorderHistory_handlePendingRequestWithError___block_invoke;
           v13[3] = &unk_1E85F4D18;
-          v13[4] = a3;
+          v13[4] = error;
           v13[5] = v11;
           dispatch_async(delegateQueue, v13);
         }
@@ -3335,7 +3335,7 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
   }
 }
 
-- (void)handlePendingRequestSuccessWithSourceURL:(id)a3
+- (void)handlePendingRequestSuccessWithSourceURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -3357,7 +3357,7 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
           objc_enumerationMutation(pendingRequests);
         }
 
-        [(VCMediaRecorderHistory *)self handleSinglePendingRequestWithTransactionID:*(*(&v11 + 1) + 8 * i) sourceURL:a3];
+        [(VCMediaRecorderHistory *)self handleSinglePendingRequestWithTransactionID:*(*(&v11 + 1) + 8 * i) sourceURL:l];
       }
 
       v7 = [(NSMutableArray *)pendingRequests countByEnumeratingWithState:&v11 objects:v10 count:16];
@@ -3367,7 +3367,7 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
   }
 }
 
-- (void)handlePendingRequestsWithSourceURL:(id)a3 error:(id)a4
+- (void)handlePendingRequestsWithSourceURL:(id)l error:(id)error
 {
   v5[7] = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
@@ -3375,9 +3375,9 @@ void __80__VCMediaRecorderHistory_handleSinglePendingRequestWithTransactionID_so
   v5[1] = 3221225472;
   v5[2] = __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___block_invoke;
   v5[3] = &unk_1E85F3E30;
-  v5[4] = a4;
+  v5[4] = error;
   v5[5] = self;
-  v5[6] = a3;
+  v5[6] = l;
   dispatch_async(recordingQueue, v5);
 }
 
@@ -3533,31 +3533,31 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
   while (!v7 || (v6 & 1) != 0);
 }
 
-- (unsigned)_mediaTypeForBuffer:(id)a3
+- (unsigned)_mediaTypeForBuffer:(id)buffer
 {
-  if (self->_frameBuffer == a3)
+  if (self->_frameBuffer == buffer)
   {
     return 3;
   }
 
-  if (self->_localAudioBuffer == a3)
+  if (self->_localAudioBuffer == buffer)
   {
     return 1;
   }
 
-  return 2 * (self->_remoteAudioBuffer == a3);
+  return 2 * (self->_remoteAudioBuffer == buffer);
 }
 
-- (void)appendSampleWithWriter:(id)a3 buffer:(id)a4 sample:(opaqueCMSampleBuffer *)a5 mediaType:(unsigned __int8)a6
+- (void)appendSampleWithWriter:(id)writer buffer:(id)buffer sample:(opaqueCMSampleBuffer *)sample mediaType:(unsigned __int8)type
 {
-  v6 = a6;
+  typeCopy = type;
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_frameBuffer == a4)
+  if (self->_frameBuffer == buffer)
   {
     valuePtr = 0;
-    if (a5)
+    if (sample)
     {
-      v9 = CMGetAttachment(a5, @"bCameraStatusBits", 0);
+      v9 = CMGetAttachment(sample, @"bCameraStatusBits", 0);
       CFNumberGetValue(v9, kCFNumberSInt8Type, &valuePtr);
       v10 = valuePtr;
     }
@@ -3567,21 +3567,21 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
       v10 = 0;
     }
 
-    [a3 appendVideoSampleBuffer:a5 cameraStatus:v10 mediaType:v6];
+    [writer appendVideoSampleBuffer:sample cameraStatus:v10 mediaType:typeCopy];
   }
 
   else
   {
 
-    [a3 appendAudioSampleBuffer:a5 mediaType:a6];
+    [writer appendAudioSampleBuffer:sample mediaType:type];
   }
 }
 
-- (void)registerDirectoryWithURL:(id)a3
+- (void)registerDirectoryWithURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v3URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
   v5 = FigSandboxRegisterDirectoryURL();
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v7 = MEMORY[0x1E6986650];
@@ -3591,9 +3591,9 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
     v9 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3)
+      if (uRLByDeletingLastPathComponent)
       {
-        v10 = [objc_msgSend(v3 "description")];
+        v10 = [objc_msgSend(uRLByDeletingLastPathComponent "description")];
       }
 
       else
@@ -3622,9 +3622,9 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
     v13 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (v3URLByDeletingLastPathComponent)
       {
-        v14 = [objc_msgSend(v4 "description")];
+        v14 = [objc_msgSend(v3URLByDeletingLastPathComponent "description")];
       }
 
       else
@@ -3647,10 +3647,10 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
   }
 }
 
-- (void)setCompletionHandler:(id)a3 forTransactionID:(id)a4
+- (void)setCompletionHandler:(id)handler forTransactionID:(id)d
 {
-  v6 = _Block_copy(a3);
-  [(NSMutableDictionary *)self->_completionHandlers setObject:v6 forKeyedSubscript:a4];
+  v6 = _Block_copy(handler);
+  [(NSMutableDictionary *)self->_completionHandlers setObject:v6 forKeyedSubscript:d];
 
   _Block_release(v6);
 }
@@ -3688,9 +3688,9 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
   self->_copyPool = 0;
 }
 
-- (void)setUpCaptureFormatForWriter:(id)a3 atTimestamp:(unsigned int)a4
+- (void)setUpCaptureFormatForWriter:(id)writer atTimestamp:(unsigned int)timestamp
 {
-  v4 = *&a4;
+  v4 = *&timestamp;
   v15 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
   v7 = [(VCMediaRecorderHistoryBuffer *)self->_frameBuffer getClosestSampleForTimestamp:v4];
@@ -3705,18 +3705,18 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
     v13 = v10;
     ImageBuffer = CMSampleBufferGetImageBuffer(v8);
     VideoUtil_GetVisibleRect(ImageBuffer, &v12);
-    VCMediaWriterUtil_SetUpWriterWithCaptureFormat(a3, valuePtr, self->_captureWidth, self->_captureHeight, self->_resize, *&v12, *(&v12 + 1), *&v13, *(&v13 + 1));
+    VCMediaWriterUtil_SetUpWriterWithCaptureFormat(writer, valuePtr, self->_captureWidth, self->_captureHeight, self->_resize, *&v12, *(&v12 + 1), *&v13, *(&v13 + 1));
   }
 }
 
-- (void)dispatchedStartRecordingWithContext:(id)a3 fileURL:(id)a4 completionHandler:(id)a5
+- (void)dispatchedStartRecordingWithContext:(id)context fileURL:(id)l completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v9 = [a3 timestamp];
-  v10 = [a3 transactionID];
-  v11 = +[VCMediaRecorderHistory writerModeFromMediaType:](VCMediaRecorderHistory, "writerModeFromMediaType:", [a3 mediaType]);
-  if ([(NSMutableDictionary *)self->_writers objectForKeyedSubscript:v10])
+  timestamp = [context timestamp];
+  transactionID = [context transactionID];
+  v11 = +[VCMediaRecorderHistory writerModeFromMediaType:](VCMediaRecorderHistory, "writerModeFromMediaType:", [context mediaType]);
+  if ([(NSMutableDictionary *)self->_writers objectForKeyedSubscript:transactionID])
   {
     if (objc_opt_class() == self)
     {
@@ -3736,7 +3736,7 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
       *&buf[4] = v16;
       *&buf[12] = 2080;
       OUTLINED_FUNCTION_16_3();
-      v28 = v10;
+      v28 = transactionID;
       v18 = " [%s] %s:%d writer for transactionID=%@ exists";
       v19 = v17;
       v20 = 38;
@@ -3772,9 +3772,9 @@ void __67__VCMediaRecorderHistory_handlePendingRequestsWithSourceURL_error___blo
       OUTLINED_FUNCTION_16_3();
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v31 = v23;
-      v32 = v10;
+      v32 = transactionID;
       v18 = " [%s] %s:%d %@(%p) writer for transactionID=%@ exists";
       v19 = v22;
       v20 = 58;
@@ -3786,14 +3786,14 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v12 = VCMediaWriterUtil_NewWriter(a4, v10, [VideoUtil videoCodecForPayload:self->_videoCodec], 1.0);
+  v12 = VCMediaWriterUtil_NewWriter(l, transactionID, [VideoUtil videoCodecForPayload:self->_videoCodec], 1.0);
   if (v12)
   {
     v13 = v12;
-    [v12 setDirectoryURL:{objc_msgSend(a3, "deserializeDirectoryURL")}];
-    if (a3)
+    [v12 setDirectoryURL:{objc_msgSend(context, "deserializeDirectoryURL")}];
+    if (context)
     {
-      [a3 movieFragmentInterval];
+      [context movieFragmentInterval];
     }
 
     else
@@ -3806,11 +3806,11 @@ LABEL_18:
     v27 = v25;
     [v13 setMovieFragmentInterval:buf];
     [v13 setupWriterWithMode:v11];
-    [v13 setStartRTPTimeStamp:v9];
-    [(VCMediaRecorderHistory *)self setUpCaptureFormatForWriter:v13 atTimestamp:v9];
-    [(NSMutableDictionary *)self->_writers setObject:v13 forKeyedSubscript:v10];
+    [v13 setStartRTPTimeStamp:timestamp];
+    [(VCMediaRecorderHistory *)self setUpCaptureFormatForWriter:v13 atTimestamp:timestamp];
+    [(NSMutableDictionary *)self->_writers setObject:v13 forKeyedSubscript:transactionID];
 
-    [(NSMutableArray *)self->_pendingRequests addObject:v10];
+    [(NSMutableArray *)self->_pendingRequests addObject:transactionID];
     v14 = 0;
   }
 
@@ -3820,7 +3820,7 @@ LABEL_18:
   }
 
 LABEL_7:
-  [(VCMediaRecorderHistory *)self invokeStartCompletionHandler:a5 withErrorCode:v14 ontoRecordingQueue:0];
+  [(VCMediaRecorderHistory *)self invokeStartCompletionHandler:handler withErrorCode:v14 ontoRecordingQueue:0];
 }
 
 - (void)setUpDelegateQueue:(uint64_t)a1 .cold.1(uint64_t a1)

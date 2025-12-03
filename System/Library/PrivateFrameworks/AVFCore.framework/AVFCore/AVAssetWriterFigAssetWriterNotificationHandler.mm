@@ -1,40 +1,40 @@
 @interface AVAssetWriterFigAssetWriterNotificationHandler
-- (AVAssetWriterFigAssetWriterNotificationHandler)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3;
+- (AVAssetWriterFigAssetWriterNotificationHandler)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer;
 - (AVAssetWriterFigAssetWriterNotificationHandlerDelegate)delegate;
-- (void)_callDelegateIfNotCalledWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_callDelegateIfNotCalledWithSuccess:(BOOL)success error:(id)error;
 - (void)_handleCompletedWritingNotification;
-- (void)_handleFailedNotificationWithError:(id)a3;
+- (void)_handleFailedNotificationWithError:(id)error;
 - (void)_handleServerDiedNotification;
 - (void)_teardownNotificationHandlers;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AVAssetWriterFigAssetWriterNotificationHandler
 
 - (AVAssetWriterFigAssetWriterNotificationHandlerDelegate)delegate
 {
-  v2 = [(AVAssetWriterFigAssetWriterNotificationHandler *)self _weakReferenceToDelegate];
+  _weakReferenceToDelegate = [(AVAssetWriterFigAssetWriterNotificationHandler *)self _weakReferenceToDelegate];
 
-  return [(AVWeakReference *)v2 referencedObject];
+  return [(AVWeakReference *)_weakReferenceToDelegate referencedObject];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+  v4 = [[AVWeakReference alloc] initWithReferencedObject:delegate];
   [(AVAssetWriterFigAssetWriterNotificationHandler *)self _setWeakReferenceToDelegate:v4];
 }
 
-- (AVAssetWriterFigAssetWriterNotificationHandler)initWithFigAssetWriter:(OpaqueFigAssetWriter *)a3
+- (AVAssetWriterFigAssetWriterNotificationHandler)initWithFigAssetWriter:(OpaqueFigAssetWriter *)writer
 {
   v8.receiver = self;
   v8.super_class = AVAssetWriterFigAssetWriterNotificationHandler;
   v4 = [(AVAssetWriterFigAssetWriterNotificationHandler *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (writer)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(writer);
     }
 
     else
@@ -71,14 +71,14 @@
   [(AVAssetWriterFigAssetWriterNotificationHandler *)&v4 dealloc];
 }
 
-- (void)_callDelegateIfNotCalledWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_callDelegateIfNotCalledWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a3;
+  successCopy = success;
   if (FigAtomicCompareAndSwap32())
   {
-    v7 = [(AVAssetWriterFigAssetWriterNotificationHandler *)self delegate];
+    delegate = [(AVAssetWriterFigAssetWriterNotificationHandler *)self delegate];
 
-    [(AVAssetWriterFigAssetWriterNotificationHandlerDelegate *)v7 didReceiveFigAssetWriterNotificationWithSuccess:v5 error:a4];
+    [(AVAssetWriterFigAssetWriterNotificationHandlerDelegate *)delegate didReceiveFigAssetWriterNotificationWithSuccess:successCopy error:error];
   }
 }
 
@@ -111,9 +111,9 @@
   [(AVAssetWriterFigAssetWriterNotificationHandler *)self _teardownNotificationHandlers];
 }
 
-- (void)_handleFailedNotificationWithError:(id)a3
+- (void)_handleFailedNotificationWithError:(id)error
 {
-  [(AVAssetWriterFigAssetWriterNotificationHandler *)self _callDelegateIfNotCalledWithSuccess:0 error:a3];
+  [(AVAssetWriterFigAssetWriterNotificationHandler *)self _callDelegateIfNotCalledWithSuccess:0 error:error];
 
   [(AVAssetWriterFigAssetWriterNotificationHandler *)self _teardownNotificationHandlers];
 }

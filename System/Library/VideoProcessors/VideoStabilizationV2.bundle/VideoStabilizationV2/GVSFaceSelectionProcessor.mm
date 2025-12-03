@@ -1,9 +1,9 @@
 @interface GVSFaceSelectionProcessor
 - (CGRect)faceRectangle;
 - (GVSFaceSelectionProcessor)init;
-- (float)_computeFaceRectangleScore:(CGRect)a3 finalCropRect:(CGRect)a4 imageCenterNormalized:;
+- (float)_computeFaceRectangleScore:(CGRect)score finalCropRect:(CGRect)rect imageCenterNormalized:;
 - (void)reset;
-- (void)updateFaceSelectionWithFaceDetections:(GVSFaceSelectionProcessor *)self imageCenter:(SEL)a2 sourcePixelBufferDimensions:(id)a3 finalCropRect:(CGRect)a4 currentCaptureTime:(double)a5;
+- (void)updateFaceSelectionWithFaceDetections:(GVSFaceSelectionProcessor *)self imageCenter:(SEL)center sourcePixelBufferDimensions:(id)dimensions finalCropRect:(CGRect)rect currentCaptureTime:(double)time;
 @end
 
 @implementation GVSFaceSelectionProcessor
@@ -34,17 +34,17 @@
   self->_faceLatestActiveTime = -1.0;
 }
 
-- (float)_computeFaceRectangleScore:(CGRect)a3 finalCropRect:(CGRect)a4 imageCenterNormalized:
+- (float)_computeFaceRectangleScore:(CGRect)score finalCropRect:(CGRect)rect imageCenterNormalized:
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  IsNull = CGRectIsNull(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = score.size.height;
+  v9 = score.size.width;
+  v10 = score.origin.y;
+  v11 = score.origin.x;
+  IsNull = CGRectIsNull(score);
   result = 0.0;
   if (!IsNull)
   {
@@ -79,25 +79,25 @@
   return result;
 }
 
-- (void)updateFaceSelectionWithFaceDetections:(GVSFaceSelectionProcessor *)self imageCenter:(SEL)a2 sourcePixelBufferDimensions:(id)a3 finalCropRect:(CGRect)a4 currentCaptureTime:(double)a5
+- (void)updateFaceSelectionWithFaceDetections:(GVSFaceSelectionProcessor *)self imageCenter:(SEL)center sourcePixelBufferDimensions:(id)dimensions finalCropRect:(CGRect)rect currentCaptureTime:(double)time
 {
   v7 = v6;
   v8 = v5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dimensionsCopy = dimensions;
   size = CGRectNull.size;
-  v44.origin = CGRectNull.origin;
-  v44.size = size;
-  v37 = self;
+  rectCopy.origin = CGRectNull.origin;
+  rectCopy.size = size;
+  selfCopy = self;
   faceIdentifier = self->_faceIdentifier;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v18 = v15;
+  v18 = dimensionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (v19)
   {
@@ -125,32 +125,32 @@
         if (v29)
         {
           v30 = [v27 objectForKeyedSubscript:v24];
-          v31 = [v30 intValue];
+          intValue = [v30 intValue];
 
-          [(GVSFaceSelectionProcessor *)v37 _computeFaceRectangleScore:rect.origin.x finalCropRect:rect.origin.y imageCenterNormalized:rect.size.width, rect.size.height, width, height, a5, v8, *&v21];
-          if (faceIdentifier == v31)
+          [(GVSFaceSelectionProcessor *)selfCopy _computeFaceRectangleScore:rect.origin.x finalCropRect:rect.origin.y imageCenterNormalized:rect.size.width, rect.size.height, width, height, time, v8, *&v21];
+          if (faceIdentifier == intValue)
           {
-            if (v32 >= v37->_minScoreForTracking)
+            if (v32 >= selfCopy->_minScoreForTracking)
             {
-              v37->_faceLatestActiveTime = v7;
+              selfCopy->_faceLatestActiveTime = v7;
               faceLatestActiveTime = v7;
             }
 
             else
             {
-              faceLatestActiveTime = v37->_faceLatestActiveTime;
+              faceLatestActiveTime = selfCopy->_faceLatestActiveTime;
             }
 
-            if (v7 - faceLatestActiveTime >= v37->_waitTimeForExit)
+            if (v7 - faceLatestActiveTime >= selfCopy->_waitTimeForExit)
             {
-              [(GVSFaceSelectionProcessor *)v37 reset];
+              [(GVSFaceSelectionProcessor *)selfCopy reset];
             }
 
             else
             {
               v35 = rect.size;
-              v37->_faceRectangle.origin = rect.origin;
-              v37->_faceRectangle.size = v35;
+              selfCopy->_faceRectangle.origin = rect.origin;
+              selfCopy->_faceRectangle.size = v35;
             }
 
             goto LABEL_24;
@@ -158,8 +158,8 @@
 
           if (v32 > v25)
           {
-            v44 = rect;
-            v36 = v31;
+            rectCopy = rect;
+            v36 = intValue;
             v25 = v32;
           }
         }
@@ -181,18 +181,18 @@
     v36 = -1;
   }
 
-  if (v25 <= v37->_minScoreForEntry)
+  if (v25 <= selfCopy->_minScoreForEntry)
   {
-    [(GVSFaceSelectionProcessor *)v37 reset];
+    [(GVSFaceSelectionProcessor *)selfCopy reset];
   }
 
   else
   {
-    v37->_faceIdentifier = v36;
-    v34 = v44.size;
-    v37->_faceRectangle.origin = v44.origin;
-    v37->_faceRectangle.size = v34;
-    v37->_faceLatestActiveTime = v7;
+    selfCopy->_faceIdentifier = v36;
+    v34 = rectCopy.size;
+    selfCopy->_faceRectangle.origin = rectCopy.origin;
+    selfCopy->_faceRectangle.size = v34;
+    selfCopy->_faceLatestActiveTime = v7;
   }
 
 LABEL_24:

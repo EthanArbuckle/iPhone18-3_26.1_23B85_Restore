@@ -1,17 +1,17 @@
 @interface SKUIScreenshotsView
-- (SKUIScreenshotsView)initWithFrame:(CGRect)a3;
+- (SKUIScreenshotsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setPrimaryView:(id)a3;
+- (void)setPrimaryView:(id)view;
 @end
 
 @implementation SKUIScreenshotsView
 
-- (SKUIScreenshotsView)initWithFrame:(CGRect)a3
+- (SKUIScreenshotsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIScreenshotsView initWithFrame:];
@@ -19,38 +19,38 @@
 
   v14.receiver = self;
   v14.super_class = SKUIScreenshotsView;
-  v8 = [(SKUIScreenshotsView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIScreenshotsView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-    separatorView = v8->_separatorView;
-    v8->_separatorView = v9;
+    separatorView = height->_separatorView;
+    height->_separatorView = v9;
 
-    v11 = v8->_separatorView;
+    v11 = height->_separatorView;
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v11 setBackgroundColor:v12];
 
-    [(SKUIScreenshotsView *)v8 addSubview:v8->_separatorView];
+    [(SKUIScreenshotsView *)height addSubview:height->_separatorView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setPrimaryView:(id)a3
+- (void)setPrimaryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   primaryView = self->_primaryView;
-  if (primaryView != v5)
+  if (primaryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)primaryView removeFromSuperview];
-    objc_storeStrong(&self->_primaryView, a3);
+    objc_storeStrong(&self->_primaryView, view);
     [(SKUIScreenshotsView *)self addSubview:self->_primaryView];
     primaryView = [(SKUIScreenshotsView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](primaryView, v5);
+  MEMORY[0x2821F96F8](primaryView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -68,11 +68,11 @@
   {
     [(SKUIScreenshotsView *)self bringSubviewToFront:?];
     separatorView = self->_separatorView;
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v6 - 1.0 / v9;
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     [(UIView *)separatorView setFrame:15.0, v10, v4 + -15.0, 1.0 / v12];
   }
 }

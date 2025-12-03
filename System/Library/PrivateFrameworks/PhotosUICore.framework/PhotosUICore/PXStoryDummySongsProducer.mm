@@ -1,14 +1,14 @@
 @interface PXStoryDummySongsProducer
 - (PXStoryDummySongsProducer)init;
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
-- (void)_queue_requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
+- (void)_queue_requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryDummySongsProducer
 
-- (void)_queue_requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (void)_queue_requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -57,9 +57,9 @@ id __74__PXStoryDummySongsProducer__queue_requestSongsWithOptions_resultHandler_
   return v6;
 }
 
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -67,9 +67,9 @@ id __74__PXStoryDummySongsProducer__queue_requestSongsWithOptions_resultHandler_
   v10[2] = __67__PXStoryDummySongsProducer_requestSongsWithOptions_resultHandler___block_invoke;
   v10[3] = &unk_1E773C1F8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v11 = v6;
-  v8 = v6;
+  v12[1] = options;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, v10);
 
   objc_destroyWeak(v12);

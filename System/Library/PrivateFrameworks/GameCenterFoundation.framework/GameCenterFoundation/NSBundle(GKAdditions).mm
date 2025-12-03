@@ -29,27 +29,27 @@
 {
   v0 = GKGameCenterUIFrameworkBundle();
   v1 = MEMORY[0x277CCA8D8];
-  v2 = [v0 localizations];
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = [v1 preferredLocalizationsFromArray:v2 forPreferences:v3];
+  localizations = [v0 localizations];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v4 = [v1 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
-  v5 = [v4 firstObject];
-  v6 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:v5];
+  firstObject = [v4 firstObject];
+  v6 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:firstObject];
 
   return v6;
 }
 
 - (uint64_t)_gkIsPreferences
 {
-  v1 = [a1 bundleIdentifier];
-  if ([v1 isEqualToString:@"com.apple.Preferences"] & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"com.apple.preferences.internetaccounts.remoteservice") & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"com.apple.Game-Center-Settings.extension") & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"com.apple.GameCenterUI.GameCenterHostingContainer") & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", @"com.apple.TVSettings"))
+  bundleIdentifier = [self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.Preferences"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.preferences.internetaccounts.remoteservice") & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.Game-Center-Settings.extension") & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.GameCenterUI.GameCenterHostingContainer") & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.TVSettings"))
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqualToString:@"com.apple.gamecenterctl"];
+    v2 = [bundleIdentifier isEqualToString:@"com.apple.gamecenterctl"];
   }
 
   return v2;
@@ -57,15 +57,15 @@
 
 - (uint64_t)_gkIsGameCenter
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.gamecenter"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.gamecenter"];
 
   return v2;
 }
 
 - (BOOL)_gkIsEligibleForNearbyAdvertising
 {
-  if ([a1 _gkIsKnownFirstParty])
+  if ([self _gkIsKnownFirstParty])
   {
     if (!os_log_GKGeneral)
     {
@@ -81,7 +81,7 @@
     }
   }
 
-  else if ([a1 _gkIsPreferences])
+  else if ([self _gkIsPreferences])
   {
     if (!os_log_GKGeneral)
     {
@@ -97,7 +97,7 @@
     }
   }
 
-  else if ([a1 _gkIsGameCenter])
+  else if ([self _gkIsGameCenter])
   {
     if (!os_log_GKGeneral)
     {
@@ -128,14 +128,14 @@
     [NSBundle(GKAdditions) _gkIsKnownFirstParty];
   }
 
-  if ([a1 _gkIsContacts] & 1) != 0 || (objc_msgSend(a1, "_gkIsAnyOverlayUI"))
+  if ([self _gkIsContacts] & 1) != 0 || (objc_msgSend(self, "_gkIsAnyOverlayUI"))
   {
     return 1;
   }
 
   v3 = _gkIsKnownFirstParty_firstPartySetIdentifiers;
-  v4 = [a1 bundleIdentifier];
-  v5 = [v3 containsObject:v4];
+  bundleIdentifier = [self bundleIdentifier];
+  v5 = [v3 containsObject:bundleIdentifier];
 
   return v5;
 }
@@ -143,8 +143,8 @@
 - (uint64_t)_gkIsContacts
 {
   v1 = MEMORY[0x277CCA8D8];
-  v2 = [a1 bundleIdentifier];
-  v3 = [v1 _gkBundleIdentifierIsRelatedToContactsUI:v2];
+  bundleIdentifier = [self bundleIdentifier];
+  v3 = [v1 _gkBundleIdentifierIsRelatedToContactsUI:bundleIdentifier];
 
   return v3;
 }
@@ -164,8 +164,8 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:8];
   v4 = [v2 setWithArray:v3];
 
-  v5 = [a1 bundleIdentifier];
-  v6 = [v4 containsObject:v5];
+  bundleIdentifier = [self bundleIdentifier];
+  v6 = [v4 containsObject:bundleIdentifier];
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
@@ -173,8 +173,8 @@
 
 - (uint64_t)_gkIsGameDaemon
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.gamed"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.gamed"];
 
   return v2;
 }
@@ -182,8 +182,8 @@
 - (uint64_t)_gkIsAnyOverlayUI
 {
   v1 = MEMORY[0x277CCA8D8];
-  v2 = [a1 bundleIdentifier];
-  v3 = [v1 _gkBundleIdentifierIsAnyOverlayUI:v2];
+  bundleIdentifier = [self bundleIdentifier];
+  v3 = [v1 _gkBundleIdentifierIsAnyOverlayUI:bundleIdentifier];
 
   return v3;
 }
@@ -201,13 +201,13 @@
 - (id)_gkPathForSoundWithName:()GKAdditions
 {
   v4 = a3;
-  v5 = [a1 pathForResource:v4 ofType:@"caf"];
+  v5 = [self pathForResource:v4 ofType:@"caf"];
   if (!v5)
   {
-    v5 = [a1 pathForResource:v4 ofType:@"aif"];
+    v5 = [self pathForResource:v4 ofType:@"aif"];
     if (!v5)
     {
-      v5 = [a1 pathForResource:v4 ofType:@"wav"];
+      v5 = [self pathForResource:v4 ofType:@"wav"];
     }
   }
 
@@ -218,30 +218,30 @@
 
 - (id)_gkBundleVersion
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKey:*MEMORY[0x277CBED58]];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKey:*MEMORY[0x277CBED58]];
 
   return v2;
 }
 
 - (id)_gkBundleShortVersion
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKey:@"CFBundleShortVersionString"];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   return v2;
 }
 
 - (id)_gkLocalizedName
 {
-  v2 = [a1 infoDictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBEC40]];
+  infoDictionary = [self infoDictionary];
+  v3 = [infoDictionary objectForKey:*MEMORY[0x277CBEC40]];
   if (!v3)
   {
-    v3 = [v2 objectForKey:*MEMORY[0x277CBED50]];
+    v3 = [infoDictionary objectForKey:*MEMORY[0x277CBED50]];
   }
 
-  v4 = GKGetLocalizedStringFromTableInBundle(v3, @"InfoPlist", a1);
+  v4 = GKGetLocalizedStringFromTableInBundle(v3, @"InfoPlist", self);
 
   return v4;
 }
@@ -249,14 +249,14 @@
 + (id)_gkPreferredUserLanguage
 {
   v26 = *MEMORY[0x277D85DE8];
-  v1 = [a1 _gkPreferredSystemLanguage];
+  _gkPreferredSystemLanguage = [self _gkPreferredSystemLanguage];
   v2 = 0x277CBE000uLL;
-  v3 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v1];
-  v4 = [v3 countryCode];
+  v3 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:_gkPreferredSystemLanguage];
+  countryCode = [v3 countryCode];
 
-  if (!v4)
+  if (!countryCode)
   {
-    v19 = v1;
+    v19 = _gkPreferredSystemLanguage;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -277,21 +277,21 @@
           }
 
           v10 = [objc_alloc(*(v2 + 2808)) initWithLocaleIdentifier:*(*(&v21 + 1) + 8 * i)];
-          v11 = [v10 countryCode];
-          if (v11)
+          countryCode2 = [v10 countryCode];
+          if (countryCode2)
           {
-            v12 = v11;
+            v12 = countryCode2;
             [v3 languageCode];
             v14 = v13 = v2;
-            v15 = [v10 languageCode];
-            v16 = [v14 isEqualToString:v15];
+            languageCode = [v10 languageCode];
+            v16 = [v14 isEqualToString:languageCode];
 
             v2 = v13;
             if (v16)
             {
-              v5 = [v10 localeIdentifier];
+              localeIdentifier = [v10 localeIdentifier];
 
-              v1 = v19;
+              _gkPreferredSystemLanguage = v19;
               goto LABEL_14;
             }
           }
@@ -307,15 +307,15 @@
       }
     }
 
-    v1 = v19;
+    _gkPreferredSystemLanguage = v19;
   }
 
-  v5 = v1;
+  localeIdentifier = _gkPreferredSystemLanguage;
 LABEL_14:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return localeIdentifier;
 }
 
 - (id)_gkSystemLocalizedStringForKey:()GKAdditions value:table:
@@ -334,14 +334,14 @@ LABEL_14:
   {
     obj = v7;
     v12 = GKGameCenterUIFrameworkBundle();
-    v13 = [v12 localizations];
+    localizations = [v12 localizations];
 
-    v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(localizations, "count")}];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v15 = v13;
+    v15 = localizations;
     v16 = [v15 countByEnumeratingWithState:&v57 objects:v63 count:16];
     if (v16)
     {
@@ -377,7 +377,7 @@ LABEL_14:
   }
 
   v23 = v7;
-  v24 = [MEMORY[0x277CCA8D8] _gkPreferredSystemLanguage];
+  _gkPreferredSystemLanguage = [MEMORY[0x277CCA8D8] _gkPreferredSystemLanguage];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -402,11 +402,11 @@ LABEL_14:
         }
 
         v31 = *(*(&v53 + 1) + 8 * v30);
-        v32 = __68__NSBundle_GKAdditions___gkSystemLocalizedStringForKey_value_table___block_invoke_2(v26, v31, v23, v48, v8, v24);
+        v32 = __68__NSBundle_GKAdditions___gkSystemLocalizedStringForKey_value_table___block_invoke_2(v26, v31, v23, v48, v8, _gkPreferredSystemLanguage);
 
         if ([v32 isEqualToString:v23])
         {
-          v33 = [_gkSystemLocalizedStringForKey_value_table____localizationLookup objectForKey:v24];
+          v33 = [_gkSystemLocalizedStringForKey_value_table____localizationLookup objectForKey:_gkPreferredSystemLanguage];
           v34 = v33;
           if (v33)
           {
@@ -416,9 +416,9 @@ LABEL_14:
           }
         }
 
-        if ([v32 isEqualToString:{v23, obja}] && (v36 = objc_msgSend(v24, "rangeOfString:options:", @"-", 4), v36 != 0x7FFFFFFFFFFFFFFFLL))
+        if ([v32 isEqualToString:{v23, obja}] && (v36 = objc_msgSend(_gkPreferredSystemLanguage, "rangeOfString:options:", @"-", 4), v36 != 0x7FFFFFFFFFFFFFFFLL))
         {
-          v37 = [v24 substringToIndex:v36];
+          v37 = [_gkPreferredSystemLanguage substringToIndex:v36];
           v27 = __68__NSBundle_GKAdditions___gkSystemLocalizedStringForKey_value_table___block_invoke_2(v37, v31, v23, v48, v8, v37);
         }
 
@@ -532,7 +532,7 @@ LABEL_33:
     v10 = 0;
   }
 
-  v11 = [a1 _gkSystemLocalizedStringForKey:v8 value:v8 table:0];
+  v11 = [self _gkSystemLocalizedStringForKey:v8 value:v8 table:0];
   v12 = v11;
   if (v11 && [v11 length])
   {
@@ -576,8 +576,8 @@ LABEL_18:
 
 - (uint64_t)_gkIsPurpleBuddy
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.purplebuddy"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
   return v2;
 }
@@ -588,7 +588,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __53__NSBundle_GKAdditions___gkIsEligibleForOnboardingUI__block_invoke;
   block[3] = &unk_2785DD760;
-  block[4] = a1;
+  block[4] = self;
   if (_gkIsEligibleForOnboardingUI_onceToken != -1)
   {
     dispatch_once(&_gkIsEligibleForOnboardingUI_onceToken, block);
@@ -616,8 +616,8 @@ LABEL_18:
 - (void)_gkIsEligibleForNearbyAdvertising
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 bundleIdentifier];
+  selfCopy = self;
+  bundleIdentifier = [a2 bundleIdentifier];
   OUTLINED_FUNCTION_1_6(&dword_227904000, v5, v6, "[%@]Current game is a known first party process and not eligible for nearby.", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];

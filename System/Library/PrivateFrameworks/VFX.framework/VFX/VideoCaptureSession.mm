@@ -1,6 +1,6 @@
 @interface VideoCaptureSession
 - (_TtC3VFX19VideoCaptureSession)init;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 @end
 
 @implementation VideoCaptureSession
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1AFD03840(v8, v9);
+  outputCopy = output;
+  bufferCopy = buffer;
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_1AFD03840(outputCopy, bufferCopy);
 }
 
 @end

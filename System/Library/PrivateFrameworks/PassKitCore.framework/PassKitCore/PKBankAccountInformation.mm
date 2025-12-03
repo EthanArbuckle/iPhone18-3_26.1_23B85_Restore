@@ -1,17 +1,17 @@
 @interface PKBankAccountInformation
-+ (Class)_classForType:(int64_t)a3;
++ (Class)_classForType:(int64_t)type;
 - (BOOL)isValid;
 - (PKBankAccountInformation)init;
-- (PKBankAccountInformation)initWithCoder:(id)a3;
-- (PKBankAccountInformation)initWithType:(int64_t)a3;
+- (PKBankAccountInformation)initWithCoder:(id)coder;
+- (PKBankAccountInformation)initWithType:(int64_t)type;
 - (id)accountSuffix;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)maskedAccountNumber;
 - (void)_commonDeleteAllBankInformation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountNumber:(id)a3;
-- (void)setRoutingNumber:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountNumber:(id)number;
+- (void)setRoutingNumber:(id)number;
 @end
 
 @implementation PKBankAccountInformation
@@ -36,16 +36,16 @@
   return v5;
 }
 
-- (PKBankAccountInformation)initWithType:(int64_t)a3
+- (PKBankAccountInformation)initWithType:(int64_t)type
 {
-  v4 = objc_alloc_init([objc_opt_class() _classForType:a3]);
+  v4 = objc_alloc_init([objc_opt_class() _classForType:type]);
 
   return v4;
 }
 
-+ (Class)_classForType:(int64_t)a3
++ (Class)_classForType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = 0;
   }
@@ -58,15 +58,15 @@
   return v4;
 }
 
-- (PKBankAccountInformation)initWithCoder:(id)a3
+- (PKBankAccountInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    if ([v4 containsValueForKey:@"type"])
+    if ([coderCopy containsValueForKey:@"type"])
     {
-      v17 = [v4 decodeIntegerForKey:@"type"];
+      v17 = [coderCopy decodeIntegerForKey:@"type"];
     }
 
     else
@@ -74,7 +74,7 @@
       v17 = 0;
     }
 
-    v6 = [objc_alloc(objc_msgSend(objc_opt_class() _classForType:{v17)), "initWithCoder:", v4}];
+    v6 = [objc_alloc(objc_msgSend(objc_opt_class() _classForType:{v17)), "initWithCoder:", coderCopy}];
   }
 
   else
@@ -84,57 +84,57 @@
     v6 = [(PKBankAccountInformation *)&v19 init];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankName"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankName"];
       bankName = v6->_bankName;
       v6->_bankName = v7;
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
-      v10 = [v9 pk_zString];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
+      pk_zString = [v9 pk_zString];
       accountNumber = v6->_accountNumber;
-      v6->_accountNumber = v10;
+      v6->_accountNumber = pk_zString;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
-      v13 = [v12 pk_zString];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
+      pk_zString2 = [v12 pk_zString];
       routingNumber = v6->_routingNumber;
-      v6->_routingNumber = v13;
+      v6->_routingNumber = pk_zString2;
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       identifier = v6->_identifier;
       v6->_identifier = v15;
 
-      v6->_status = [v4 decodeIntegerForKey:@"status"];
+      v6->_status = [coderCopy decodeIntegerForKey:@"status"];
     }
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bankName = self->_bankName;
-  v6 = a3;
-  [v6 encodeObject:bankName forKey:@"bankName"];
-  [v6 encodeObject:self->_routingNumber forKey:@"routingNumber"];
-  [v6 encodeObject:self->_accountNumber forKey:@"accountNumber"];
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bankName forKey:@"bankName"];
+  [coderCopy encodeObject:self->_routingNumber forKey:@"routingNumber"];
+  [coderCopy encodeObject:self->_accountNumber forKey:@"accountNumber"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKBankAccountInformation type](self, "type")}];
-  [v6 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  [v6 encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
 }
 
-- (void)setAccountNumber:(id)a3
+- (void)setAccountNumber:(id)number
 {
-  v4 = [a3 pk_zString];
+  pk_zString = [number pk_zString];
   accountNumber = self->_accountNumber;
-  self->_accountNumber = v4;
+  self->_accountNumber = pk_zString;
 }
 
-- (void)setRoutingNumber:(id)a3
+- (void)setRoutingNumber:(id)number
 {
-  v4 = [a3 pk_zString];
+  pk_zString = [number pk_zString];
   routingNumber = self->_routingNumber;
-  self->_routingNumber = v4;
+  self->_routingNumber = pk_zString;
 }
 
 - (void)_commonDeleteAllBankInformation
@@ -207,8 +207,8 @@ LABEL_4:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = PKPANMask();
-  v5 = [(PKBankAccountInformation *)self accountSuffix];
-  v6 = [v3 stringWithFormat:@"(%@ %@)", v4, v5];
+  accountSuffix = [(PKBankAccountInformation *)self accountSuffix];
+  v6 = [v3 stringWithFormat:@"(%@ %@)", v4, accountSuffix];
 
   return v6;
 }
@@ -228,22 +228,22 @@ LABEL_4:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_bankName copyWithZone:a3];
+  v8 = [(NSString *)self->_bankName copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_accountNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_accountNumber copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_routingNumber copyWithZone:a3];
+  v12 = [(NSString *)self->_routingNumber copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 

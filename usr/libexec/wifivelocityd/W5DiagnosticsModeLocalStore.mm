@@ -1,10 +1,10 @@
 @interface W5DiagnosticsModeLocalStore
-- (BOOL)_updateCachedLocalStore:(id)a3 error:(id)a4;
+- (BOOL)_updateCachedLocalStore:(id)store error:(id)error;
 - (W5DiagnosticsModeLocalStore)init;
-- (id)_getCachedLocalStore:(id)a3;
-- (id)infoMatchingDiagnosticMode:(id)a3;
-- (void)addToStore:(id)a3 newInfo:(id)a4;
-- (void)updateStoreWithInfo:(id)a3 info:(id)a4;
+- (id)_getCachedLocalStore:(id)store;
+- (id)infoMatchingDiagnosticMode:(id)mode;
+- (void)addToStore:(id)store newInfo:(id)info;
+- (void)updateStoreWithInfo:(id)info info:(id)a4;
 @end
 
 @implementation W5DiagnosticsModeLocalStore
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (id)_getCachedLocalStore:(id)a3
+- (id)_getCachedLocalStore:(id)store
 {
-  v20 = a3;
+  storeCopy = store;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 persistentDomainForName:@"com.apple.wifi.diagnosticsMode"];
 
@@ -48,7 +48,7 @@
   v19 = objc_opt_class();
   v12 = v5;
   v13 = [NSSet setWithObjects:v6, v7, v8, v9, v10, v11, v19, objc_opt_class(), 0];
-  v21 = v20;
+  v21 = storeCopy;
   v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:v5 error:&v21];
   v15 = v21;
 
@@ -79,14 +79,14 @@
   return v14;
 }
 
-- (id)infoMatchingDiagnosticMode:(id)a3
+- (id)infoMatchingDiagnosticMode:(id)mode
 {
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v5 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-    v6 = [v4 uuid];
-    v7 = [v5 objectForKey:v6];
+    localDiagnosticsStore = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+    uuid = [modeCopy uuid];
+    v7 = [localDiagnosticsStore objectForKey:uuid];
   }
 
   else
@@ -103,12 +103,12 @@
   return v7;
 }
 
-- (void)updateStoreWithInfo:(id)a3 info:(id)a4
+- (void)updateStoreWithInfo:(id)info info:(id)a4
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = a4;
   v8 = v7;
-  if (!v6)
+  if (!infoCopy)
   {
     v19 = sub_100098A04();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -133,30 +133,30 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-  v10 = [v6 uuid];
-  v11 = [v9 objectForKey:v10];
+  localDiagnosticsStore = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+  uuid = [infoCopy uuid];
+  v11 = [localDiagnosticsStore objectForKey:uuid];
 
   if (v11)
   {
-    v12 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-    v13 = [v6 uuid];
-    [v12 removeObjectForKey:v13];
+    localDiagnosticsStore2 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+    uuid2 = [infoCopy uuid];
+    [localDiagnosticsStore2 removeObjectForKey:uuid2];
   }
 
-  v14 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-  v15 = [v6 uuid];
-  [v14 setObject:v8 forKey:v15];
+  localDiagnosticsStore3 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+  uuid3 = [infoCopy uuid];
+  [localDiagnosticsStore3 setObject:v8 forKey:uuid3];
 
   v16 = sub_100098A04();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v6 uuid];
+    uuid4 = [infoCopy uuid];
     _os_log_send_and_compose_impl();
   }
 
-  v17 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-  v18 = [(W5DiagnosticsModeLocalStore *)self _updateCachedLocalStore:v17 error:0];
+  localDiagnosticsStore4 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+  v18 = [(W5DiagnosticsModeLocalStore *)self _updateCachedLocalStore:localDiagnosticsStore4 error:0];
 
   if ((v18 & 1) == 0)
   {
@@ -172,13 +172,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)addToStore:(id)a3 newInfo:(id)a4
+- (void)addToStore:(id)store newInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
-  v9 = [v6 uuid];
-  v10 = [v8 objectForKey:v9];
+  storeCopy = store;
+  infoCopy = info;
+  localDiagnosticsStore = [(W5DiagnosticsModeLocalStore *)self localDiagnosticsStore];
+  uuid = [storeCopy uuid];
+  v10 = [localDiagnosticsStore objectForKey:uuid];
 
   if (!v10)
   {
@@ -191,13 +191,13 @@ LABEL_15:
   v12[3] = &unk_1000E1388;
   v13 = v10;
   v11 = v10;
-  [v7 enumerateKeysAndObjectsUsingBlock:v12];
-  [(W5DiagnosticsModeLocalStore *)self updateStoreWithInfo:v6 info:v11];
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v12];
+  [(W5DiagnosticsModeLocalStore *)self updateStoreWithInfo:storeCopy info:v11];
 }
 
-- (BOOL)_updateCachedLocalStore:(id)a3 error:(id)a4
+- (BOOL)_updateCachedLocalStore:(id)store error:(id)error
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 persistentDomainForName:@"com.apple.wifi.diagnosticsMode"];
   v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
@@ -214,13 +214,13 @@ LABEL_15:
     v23 = 2080;
     v24 = "[W5DiagnosticsModeLocalStore _updateCachedLocalStore:error:]";
     v25 = 2114;
-    v26 = v4;
+    v26 = storeCopy;
     LODWORD(v15) = 48;
     v14 = &v17;
     _os_log_send_and_compose_impl();
   }
 
-  if (!v4)
+  if (!storeCopy)
   {
     v9 = 0;
     v10 = 0;
@@ -228,7 +228,7 @@ LABEL_15:
   }
 
   v16 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v16];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:storeCopy requiringSecureCoding:1 error:&v16];
   v10 = v16;
   if (v9)
   {

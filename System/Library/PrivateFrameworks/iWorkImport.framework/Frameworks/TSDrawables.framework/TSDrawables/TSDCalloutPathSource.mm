@@ -1,10 +1,10 @@
 @interface TSDCalloutPathSource
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6;
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOval;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGPoint)p_adjustedCenterForPath:(id)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGPoint)p_adjustedCenterForPath:(id)path;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGPoint)p_tailCenter;
 - (CGPoint)p_tailPosition;
@@ -12,39 +12,39 @@
 - (CGPoint)tailKnobPosition;
 - (CGPoint)tailSizeKnobPosition;
 - (CGSize)naturalSize;
-- (TSDCalloutPathSource)initWithArchive:(const void *)a3;
-- (TSDCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7;
+- (TSDCalloutPathSource)initWithArchive:(const void *)archive;
+- (TSDCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center;
 - (double)clampedCalloutTailSize;
 - (double)clampedCornerRadius;
 - (double)maxTailSize;
 - (id)copy;
 - (id)description;
 - (id)inferredAccessibilityDescription;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)name;
 - (id)p_basePath;
 - (id)p_buildPath;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2];
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setTailKnobPosition:(CGPoint)a3;
-- (void)setTailSize:(double)a3;
-- (void)setTailSizeKnobPosition:(CGPoint)a3;
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2];
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)saveToArchive:(void *)archive;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setCornerRadius:(double)radius;
+- (void)setTailKnobPosition:(CGPoint)position;
+- (void)setTailSize:(double)size;
+- (void)setTailSizeKnobPosition:(CGPoint)position;
 @end
 
 @implementation TSDCalloutPathSource
 
-- (TSDCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7
+- (TSDCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
+  centerCopy = center;
+  height = naturalSize.height;
+  width = naturalSize.width;
+  y = position.y;
+  x = position.x;
   v26.receiver = self;
   v26.super_class = TSDCalloutPathSource;
   v14 = [(TSDCalloutPathSource *)&v26 init];
@@ -52,35 +52,35 @@
   if (v14)
   {
     objc_msgSend_p_setNaturalSize_(v14, v15, v16, width, height);
-    objc_msgSend_p_setCornerRadius_(v17, v18, v19, a3);
+    objc_msgSend_p_setCornerRadius_(v17, v18, v19, radius);
     objc_msgSend_p_setTailPosition_(v17, v20, v21, x, y);
-    objc_msgSend_p_setTailSize_(v17, v22, v23, a5);
-    objc_msgSend_p_setTailAtCenter_(v17, v24, v7);
+    objc_msgSend_p_setTailSize_(v17, v22, v23, size);
+    objc_msgSend_p_setTailAtCenter_(v17, v24, centerCopy);
   }
 
   return v17;
 }
 
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
-  v12 = [a1 alloc];
-  v14 = objc_msgSend_initWithCornerRadius_tailPosition_tailSize_naturalSize_tailAtCenter_(v12, v13, 0, a3, x, y, a5, width, height);
+  height = naturalSize.height;
+  width = naturalSize.width;
+  y = position.y;
+  x = position.x;
+  v12 = [self alloc];
+  v14 = objc_msgSend_initWithCornerRadius_tailPosition_tailSize_naturalSize_tailAtCenter_(v12, v13, 0, radius, x, y, size, width, height);
 
   return v14;
 }
 
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  height = a5.height;
-  width = a5.width;
-  y = a3.y;
-  x = a3.x;
-  v10 = [a1 alloc];
-  v12 = objc_msgSend_initWithCornerRadius_tailPosition_tailSize_naturalSize_tailAtCenter_(v10, v11, 1, width + 10.0, x, y, a4, width, height);
+  height = naturalSize.height;
+  width = naturalSize.width;
+  y = position.y;
+  x = position.x;
+  v10 = [self alloc];
+  v12 = objc_msgSend_initWithCornerRadius_tailPosition_tailSize_naturalSize_tailAtCenter_(v10, v11, 1, width + 10.0, x, y, size, width, height);
 
   return v12;
 }
@@ -98,10 +98,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -110,7 +110,7 @@
   {
     v21.receiver = self;
     v21.super_class = TSDCalloutPathSource;
-    if ([(TSDPathSource *)&v21 isEqual:v4])
+    if ([(TSDPathSource *)&v21 isEqual:equalCopy])
     {
       objc_opt_class();
       v5 = TSUDynamicCast();
@@ -164,9 +164,9 @@
   return v6;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  switch(a3)
+  switch(position)
   {
     case 0xEuLL:
       objc_msgSend_tailSizeKnobPosition(self, a2, 14);
@@ -188,9 +188,9 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  objc_msgSend_p_setCornerRadius_(self, a2, v3, a3);
+  objc_msgSend_p_setCornerRadius_(self, a2, v3, radius);
   cornerRadius = self->_cornerRadius;
   v8 = 0.0;
   if (cornerRadius >= 0.0)
@@ -223,9 +223,9 @@
   return fmin(v5, v8);
 }
 
-- (void)setTailSize:(double)a3
+- (void)setTailSize:(double)size
 {
-  objc_msgSend_p_setTailSize_(self, a2, v3, a3);
+  objc_msgSend_p_setTailSize_(self, a2, v3, size);
   height = self->_naturalSize.height;
   if (height < self->_naturalSize.width)
   {
@@ -369,7 +369,7 @@ LABEL_11:
   return fmin(v5, v8);
 }
 
-- (void)setTailSizeKnobPosition:(CGPoint)a3
+- (void)setTailSizeKnobPosition:(CGPoint)position
 {
   v23 = *MEMORY[0x277D85DE8];
   objc_msgSend_naturalSize(self, a2, v3);
@@ -399,10 +399,10 @@ LABEL_11:
   self->_tailSize = v19;
 }
 
-- (void)setTailKnobPosition:(CGPoint)a3
+- (void)setTailKnobPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   objc_msgSend_naturalSize(self, a2, v3);
   v8 = v7;
   v10 = v9;
@@ -457,10 +457,10 @@ LABEL_11:
   return result;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_uniformScaleForScalingToNaturalSize_(self, a2, v3);
   v8 = v7;
   objc_msgSend_naturalSize(self, v9, v10);
@@ -556,9 +556,9 @@ LABEL_11:
   return v10;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -592,9 +592,9 @@ LABEL_12:
   return v29;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -629,10 +629,10 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)p_adjustedCenterForPath:(id)a3
+- (CGPoint)p_adjustedCenterForPath:(id)path
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   objc_msgSend_p_tailCenter(self, v5, v6);
   v8 = v7;
   v10 = v9;
@@ -642,7 +642,7 @@ LABEL_12:
   *&v28[2] = v8;
   *&v28[3] = v10;
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  objc_msgSend_addIntersectionsWithLine_to_(v4, v16, v28, v15);
+  objc_msgSend_addIntersectionsWithLine_to_(pathCopy, v16, v28, v15);
 
   if (objc_msgSend_count(v15, v17, v18))
   {
@@ -659,16 +659,16 @@ LABEL_12:
   return result;
 }
 
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2]
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2]
 {
   v76[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  pathCopy = path;
   objc_msgSend_tailSize(self, v11, v12);
   v14 = v13;
   objc_msgSend_p_tailPosition(self, v15, v16);
   v18 = v17;
   v20 = v19;
-  objc_msgSend_p_adjustedCenterForPath_(self, v21, v10);
+  objc_msgSend_p_adjustedCenterForPath_(self, v21, pathCopy);
   v23 = v22;
   v25 = v24;
   objc_msgSend_maxTailSize(self, v26, v27);
@@ -696,8 +696,8 @@ LABEL_12:
   v75[3] = v33;
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  objc_msgSend_addIntersectionsWithLine_to_(v10, v36, v76, v34);
-  objc_msgSend_addIntersectionsWithLine_to_(v10, v37, v75, v35);
+  objc_msgSend_addIntersectionsWithLine_to_(pathCopy, v36, v76, v34);
+  objc_msgSend_addIntersectionsWithLine_to_(pathCopy, v37, v75, v35);
   if (objc_msgSend_count(v34, v38, v39))
   {
     v41 = objc_msgSend_objectAtIndexedSubscript_(v34, v40, 0);
@@ -715,7 +715,7 @@ LABEL_12:
 
   else
   {
-    v53 = v10;
+    v53 = pathCopy;
     v56 = objc_msgSend_CGPath(v53, v54, v55);
     v51 = sub_27666B350(v56, v76);
   }
@@ -739,24 +739,24 @@ LABEL_12:
 
   else
   {
-    v70 = v10;
+    v70 = pathCopy;
     v73 = objc_msgSend_CGPath(v70, v71, v72);
     v68 = sub_27666B350(v73, v75);
   }
 
-  a6->x = v57;
-  a6->y = v58;
-  a6[1].x = v68;
-  a6[1].y = v69;
-  if (a4)
+  intersections->x = v57;
+  intersections->y = v58;
+  intersections[1].x = v68;
+  intersections[1].y = v69;
+  if (center)
   {
-    a4->x = v23;
-    a4->y = v25;
+    center->x = v23;
+    center->y = v25;
   }
 
-  if (a5)
+  if (size)
   {
-    *a5 = v74;
+    *size = v74;
   }
 }
 
@@ -849,7 +849,7 @@ LABEL_12:
   return v14;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
   objc_msgSend_maxCornerRadius(self, a2, v3);
   TSUClamp();
@@ -907,11 +907,11 @@ LABEL_12:
   return result;
 }
 
-- (TSDCalloutPathSource)initWithArchive:(const void *)a3
+- (TSDCalloutPathSource)initWithArchive:(const void *)archive
 {
-  if (*(a3 + 8))
+  if (*(archive + 8))
   {
-    v5 = *(a3 + 8);
+    v5 = *(archive + 8);
   }
 
   else
@@ -968,27 +968,27 @@ LABEL_12:
   v20 = v18;
   if (v18)
   {
-    objc_msgSend_loadSharedFromArchive_(v18, v19, a3);
+    objc_msgSend_loadSharedFromArchive_(v18, v19, archive);
   }
 
   return v20;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  objc_msgSend_saveSharedToArchive_(self, a2, a3);
-  *(a3 + 4) |= 0x20u;
-  v7 = *(a3 + 8);
+  objc_msgSend_saveSharedToArchive_(self, a2, archive);
+  *(archive + 4) |= 0x20u;
+  v7 = *(archive + 8);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSD::CalloutPathSourceArchive>(v8);
-    *(a3 + 8) = v7;
+    *(archive + 8) = v7;
   }
 
   objc_msgSend_naturalSize(self, v5, v6);

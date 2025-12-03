@@ -1,50 +1,50 @@
 @interface ASCPlatformPublicKeyCredentialLoginChoice
-- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCoder:(id)a3;
-- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCredentialIdentity:(id)a3 publicKeyCredentialOperationUUID:(id)a4 clientDataHash:(id)a5 userVerificationPreference:(id)a6 supportedAlgorithms:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCoder:(id)coder;
+- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCredentialIdentity:(id)identity publicKeyCredentialOperationUUID:(id)d clientDataHash:(id)hash userVerificationPreference:(id)preference supportedAlgorithms:(id)algorithms;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSharedCredential;
 - (NSString)localizedCredentialProviderName;
-- (id)_initAsRegistrationChoice:(BOOL)a3 withName:(id)a4 displayName:(id)a5 customTitle:(id)a6 identifier:(id)a7 userHandle:(id)a8 relyingPartyIdentifier:(id)a9 publicKeyCredentialOperationUUID:(id)a10 externalCredentialProviderName:(id)a11 externalCredentialProviderBundleID:(id)a12 supportedAlgorithms:(id)a13 excludedCredentials:(id)a14 groupID:(id)a15 groupName:(id)a16;
-- (id)initRegistrationChoiceWithOptions:(id)a3;
-- (id)initRegistrationChoiceWithOptions:(id)a3 externalCredentialProviderName:(id)a4 externalCredentialProviderBundleID:(id)a5;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initAsRegistrationChoice:(BOOL)choice withName:(id)name displayName:(id)displayName customTitle:(id)title identifier:(id)identifier userHandle:(id)handle relyingPartyIdentifier:(id)partyIdentifier publicKeyCredentialOperationUUID:(id)self0 externalCredentialProviderName:(id)self1 externalCredentialProviderBundleID:(id)self2 supportedAlgorithms:(id)self3 excludedCredentials:(id)self4 groupID:(id)self5 groupName:(id)self6;
+- (id)initRegistrationChoiceWithOptions:(id)options;
+- (id)initRegistrationChoiceWithOptions:(id)options externalCredentialProviderName:(id)name externalCredentialProviderBundleID:(id)d;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPlatformPublicKeyCredentialLoginChoice
 
-- (id)_initAsRegistrationChoice:(BOOL)a3 withName:(id)a4 displayName:(id)a5 customTitle:(id)a6 identifier:(id)a7 userHandle:(id)a8 relyingPartyIdentifier:(id)a9 publicKeyCredentialOperationUUID:(id)a10 externalCredentialProviderName:(id)a11 externalCredentialProviderBundleID:(id)a12 supportedAlgorithms:(id)a13 excludedCredentials:(id)a14 groupID:(id)a15 groupName:(id)a16
+- (id)_initAsRegistrationChoice:(BOOL)choice withName:(id)name displayName:(id)displayName customTitle:(id)title identifier:(id)identifier userHandle:(id)handle relyingPartyIdentifier:(id)partyIdentifier publicKeyCredentialOperationUUID:(id)self0 externalCredentialProviderName:(id)self1 externalCredentialProviderBundleID:(id)self2 supportedAlgorithms:(id)self3 excludedCredentials:(id)self4 groupID:(id)self5 groupName:(id)self6
 {
-  v62 = a4;
-  v61 = a5;
-  v20 = a6;
-  v63 = a7;
-  v21 = a8;
-  v22 = a9;
-  v60 = a10;
-  v23 = a11;
-  v24 = v21;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  titleCopy = title;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  partyIdentifierCopy = partyIdentifier;
+  dCopy = d;
+  providerNameCopy = providerName;
+  v24 = handleCopy;
+  iDCopy = iD;
+  algorithmsCopy = algorithms;
+  credentialsCopy = credentials;
+  groupIDCopy = groupID;
+  groupNameCopy = groupName;
   v64.receiver = self;
   v64.super_class = ASCPlatformPublicKeyCredentialLoginChoice;
   v30 = [(ASCPlatformPublicKeyCredentialLoginChoice *)&v64 init];
   v31 = v30;
   if (v30)
   {
-    v30->_isRegistrationRequest = a3;
-    v32 = [v62 copy];
+    v30->_isRegistrationRequest = choice;
+    v32 = [nameCopy copy];
     name = v31->_name;
     v31->_name = v32;
 
-    v34 = [v61 copy];
+    v34 = [displayNameCopy copy];
     displayName = v31->_displayName;
     v31->_displayName = v34;
 
-    v36 = [v63 copy];
+    v36 = [identifierCopy copy];
     identifier = v31->_identifier;
     v31->_identifier = v36;
 
@@ -52,41 +52,41 @@
     userHandle = v31->_userHandle;
     v31->_userHandle = v38;
 
-    v40 = [v22 copy];
+    v40 = [partyIdentifierCopy copy];
     relyingPartyIdentifier = v31->_relyingPartyIdentifier;
     v31->_relyingPartyIdentifier = v40;
 
-    objc_storeStrong(&v31->_publicKeyCredentialOperationUUID, a10);
-    v42 = [v20 length];
+    objc_storeStrong(&v31->_publicKeyCredentialOperationUUID, d);
+    v42 = [titleCopy length];
     if (v42)
     {
-      v42 = [v20 copy];
+      v42 = [titleCopy copy];
     }
 
     customTitle = v31->_customTitle;
     v31->_customTitle = v42;
 
-    v44 = [v23 copy];
+    v44 = [providerNameCopy copy];
     externalCredentialProviderName = v31->_externalCredentialProviderName;
     v31->_externalCredentialProviderName = v44;
 
-    v46 = [v25 copy];
+    v46 = [iDCopy copy];
     externalCredentialProviderBundleID = v31->_externalCredentialProviderBundleID;
     v31->_externalCredentialProviderBundleID = v46;
 
-    v48 = [v26 copy];
+    v48 = [algorithmsCopy copy];
     supportedAlgorithms = v31->_supportedAlgorithms;
     v31->_supportedAlgorithms = v48;
 
-    v50 = [v27 copy];
+    v50 = [credentialsCopy copy];
     excludedCredentials = v31->_excludedCredentials;
     v31->_excludedCredentials = v50;
 
-    v52 = [v28 copy];
+    v52 = [groupIDCopy copy];
     groupID = v31->_groupID;
     v31->_groupID = v52;
 
-    v54 = [v29 copy];
+    v54 = [groupNameCopy copy];
     groupName = v31->_groupName;
     v31->_groupName = v54;
 
@@ -96,49 +96,49 @@
   return v31;
 }
 
-- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCredentialIdentity:(id)a3 publicKeyCredentialOperationUUID:(id)a4 clientDataHash:(id)a5 userVerificationPreference:(id)a6 supportedAlgorithms:(id)a7
+- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCredentialIdentity:(id)identity publicKeyCredentialOperationUUID:(id)d clientDataHash:(id)hash userVerificationPreference:(id)preference supportedAlgorithms:(id)algorithms
 {
-  v12 = a3;
-  v42 = a5;
-  v41 = a6;
-  v13 = a7;
-  v14 = a4;
-  v15 = [v12 user];
-  v16 = [v12 user];
+  identityCopy = identity;
+  hashCopy = hash;
+  preferenceCopy = preference;
+  algorithmsCopy = algorithms;
+  dCopy = d;
+  user = [identityCopy user];
+  user2 = [identityCopy user];
   v17 = objc_alloc(MEMORY[0x1E69C89D8]);
-  v18 = [v12 credentialID];
-  v19 = [v17 initWithCredentialID:v18 groupID:&stru_1F41A3CA0];
-  v20 = [v12 userHandle];
-  v21 = [v12 serviceIdentifier];
-  v22 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self initWithName:v15 displayName:v16 customTitle:0 identifier:v19 userHandle:v20 relyingPartyIdentifier:v21 publicKeyCredentialOperationUUID:v14 groupID:0 groupName:0];
+  credentialID = [identityCopy credentialID];
+  v19 = [v17 initWithCredentialID:credentialID groupID:&stru_1F41A3CA0];
+  userHandle = [identityCopy userHandle];
+  serviceIdentifier = [identityCopy serviceIdentifier];
+  v22 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self initWithName:user displayName:user2 customTitle:0 identifier:v19 userHandle:userHandle relyingPartyIdentifier:serviceIdentifier publicKeyCredentialOperationUUID:dCopy groupID:0 groupName:0];
 
   if (v22)
   {
-    v23 = [v12 copy];
+    v23 = [identityCopy copy];
     credentialIdentity = v22->_credentialIdentity;
     v22->_credentialIdentity = v23;
 
-    v25 = [v12 owningExtensionState];
-    v26 = [v25 localizedDisplayName];
-    v27 = [v26 copy];
+    owningExtensionState = [identityCopy owningExtensionState];
+    localizedDisplayName = [owningExtensionState localizedDisplayName];
+    v27 = [localizedDisplayName copy];
     externalCredentialProviderName = v22->_externalCredentialProviderName;
     v22->_externalCredentialProviderName = v27;
 
-    v29 = [v12 owningExtensionState];
-    v30 = [v29 providerBundleID];
-    v31 = [v30 copy];
+    owningExtensionState2 = [identityCopy owningExtensionState];
+    providerBundleID = [owningExtensionState2 providerBundleID];
+    v31 = [providerBundleID copy];
     externalCredentialProviderBundleID = v22->_externalCredentialProviderBundleID;
     v22->_externalCredentialProviderBundleID = v31;
 
-    v33 = [v42 copy];
+    v33 = [hashCopy copy];
     clientDataHash = v22->_clientDataHash;
     v22->_clientDataHash = v33;
 
-    v35 = [v41 copy];
+    v35 = [preferenceCopy copy];
     userVerificationPreference = v22->_userVerificationPreference;
     v22->_userVerificationPreference = v35;
 
-    v37 = [v13 copy];
+    v37 = [algorithmsCopy copy];
     supportedAlgorithms = v22->_supportedAlgorithms;
     v22->_supportedAlgorithms = v37;
 
@@ -148,54 +148,54 @@
   return v22;
 }
 
-- (id)initRegistrationChoiceWithOptions:(id)a3
+- (id)initRegistrationChoiceWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 userName];
-  v6 = [v4 userDisplayName];
-  v7 = [v4 userIdentifier];
-  v8 = [v7 base64EncodedStringWithOptions:0];
-  v9 = [v4 relyingPartyIdentifier];
-  v10 = [v4 supportedAlgorithmIdentifiers];
-  v11 = [v4 excludedCredentials];
+  optionsCopy = options;
+  userName = [optionsCopy userName];
+  userDisplayName = [optionsCopy userDisplayName];
+  userIdentifier = [optionsCopy userIdentifier];
+  v8 = [userIdentifier base64EncodedStringWithOptions:0];
+  relyingPartyIdentifier = [optionsCopy relyingPartyIdentifier];
+  supportedAlgorithmIdentifiers = [optionsCopy supportedAlgorithmIdentifiers];
+  excludedCredentials = [optionsCopy excludedCredentials];
 
-  v12 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self _initAsRegistrationChoice:1 withName:v5 displayName:v6 customTitle:0 identifier:0 userHandle:v8 relyingPartyIdentifier:v9 publicKeyCredentialOperationUUID:0 externalCredentialProviderName:0 externalCredentialProviderBundleID:0 supportedAlgorithms:v10 excludedCredentials:v11 groupID:0 groupName:0];
+  v12 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self _initAsRegistrationChoice:1 withName:userName displayName:userDisplayName customTitle:0 identifier:0 userHandle:v8 relyingPartyIdentifier:relyingPartyIdentifier publicKeyCredentialOperationUUID:0 externalCredentialProviderName:0 externalCredentialProviderBundleID:0 supportedAlgorithms:supportedAlgorithmIdentifiers excludedCredentials:excludedCredentials groupID:0 groupName:0];
   return v12;
 }
 
-- (id)initRegistrationChoiceWithOptions:(id)a3 externalCredentialProviderName:(id)a4 externalCredentialProviderBundleID:(id)a5
+- (id)initRegistrationChoiceWithOptions:(id)options externalCredentialProviderName:(id)name externalCredentialProviderBundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self initRegistrationChoiceWithOptions:v8];
+  optionsCopy = options;
+  nameCopy = name;
+  dCopy = d;
+  v11 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self initRegistrationChoiceWithOptions:optionsCopy];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [nameCopy copy];
     v13 = v11[10];
     v11[10] = v12;
 
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     v15 = v11[11];
     v11[11] = v14;
 
-    v16 = [v8 clientDataHash];
-    v17 = [v16 copy];
+    clientDataHash = [optionsCopy clientDataHash];
+    v17 = [clientDataHash copy];
     v18 = v11[12];
     v11[12] = v17;
 
-    v19 = [v8 userVerificationPreference];
-    v20 = [v19 copy];
+    userVerificationPreference = [optionsCopy userVerificationPreference];
+    v20 = [userVerificationPreference copy];
     v21 = v11[13];
     v11[13] = v20;
 
-    v22 = [v8 supportedAlgorithmIdentifiers];
-    v23 = [v22 copy];
+    supportedAlgorithmIdentifiers = [optionsCopy supportedAlgorithmIdentifiers];
+    v23 = [supportedAlgorithmIdentifiers copy];
     v24 = v11[14];
     v11[14] = v23;
 
-    v25 = [v8 excludedCredentials];
-    v26 = [v25 copy];
+    excludedCredentials = [optionsCopy excludedCredentials];
+    v26 = [excludedCredentials copy];
     v27 = v11[15];
     v11[15] = v26;
 
@@ -223,21 +223,21 @@
 
 - (BOOL)isSharedCredential
 {
-  v2 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self groupID];
-  v3 = [v2 length] != 0;
+  groupID = [(ASCPlatformPublicKeyCredentialLoginChoice *)self groupID];
+  v3 = [groupID length] != 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     publicKeyCredentialOperationUUID = self->_publicKeyCredentialOperationUUID;
-    v7 = [v5 publicKeyCredentialOperationUUID];
+    publicKeyCredentialOperationUUID = [v5 publicKeyCredentialOperationUUID];
     LODWORD(publicKeyCredentialOperationUUID) = WBSIsEqual();
 
     if (!publicKeyCredentialOperationUUID)
@@ -331,29 +331,29 @@ LABEL_18:
   return v28;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self externalCredentialProviderName];
-  if (v5 && (v6 = v5, [v4 externalCredentialProviderName], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  compareCopy = compare;
+  externalCredentialProviderName = [(ASCPlatformPublicKeyCredentialLoginChoice *)self externalCredentialProviderName];
+  if (externalCredentialProviderName && (v6 = externalCredentialProviderName, [compareCopy externalCredentialProviderName], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v13 = -1;
   }
 
   else
   {
-    v8 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self externalCredentialProviderName];
-    if (v8)
+    externalCredentialProviderName2 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self externalCredentialProviderName];
+    if (externalCredentialProviderName2)
     {
 
 LABEL_5:
-      v9 = [(ASCPlatformPublicKeyCredentialLoginChoice *)self credentialIdentity];
-      v10 = [v4 credentialIdentity];
-      v11 = v10;
-      if (v9 && v10)
+      credentialIdentity = [(ASCPlatformPublicKeyCredentialLoginChoice *)self credentialIdentity];
+      credentialIdentity2 = [compareCopy credentialIdentity];
+      v11 = credentialIdentity2;
+      if (credentialIdentity && credentialIdentity2)
       {
-        v12 = [v9 rank];
-        if (v12 > [v11 rank])
+        rank = [credentialIdentity rank];
+        if (rank > [v11 rank])
         {
           v13 = -1;
 LABEL_15:
@@ -361,8 +361,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v15 = [v9 rank];
-        if (v15 < [v11 rank])
+        rank2 = [credentialIdentity rank];
+        if (rank2 < [v11 rank])
         {
           v13 = 1;
           goto LABEL_15;
@@ -373,9 +373,9 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v14 = [v4 externalCredentialProviderName];
+    externalCredentialProviderName3 = [compareCopy externalCredentialProviderName];
 
-    if (!v14)
+    if (!externalCredentialProviderName3)
     {
       goto LABEL_5;
     }
@@ -388,55 +388,55 @@ LABEL_16:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v6 = a3;
-  [v6 encodeObject:name forKey:@"name"];
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
-  [v6 encodeObject:self->_customTitle forKey:@"customTitle"];
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_customTitle forKey:@"customTitle"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isRegistrationRequest];
-  [v6 encodeObject:v5 forKey:@"registrationRequestIndicator"];
+  [coderCopy encodeObject:v5 forKey:@"registrationRequestIndicator"];
 
-  [v6 encodeObject:self->_userHandle forKey:@"userHandle"];
-  [v6 encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v6 encodeObject:self->_publicKeyCredentialOperationUUID forKey:@"publicKeyCredentialOperationUUID"];
-  [v6 encodeObject:self->_credentialIdentity forKey:@"credentialIdentity"];
-  [v6 encodeObject:self->_externalCredentialProviderName forKey:@"externalCredentialProviderName"];
-  [v6 encodeObject:self->_externalCredentialProviderBundleID forKey:@"externalCredentialProviderBundleID"];
-  [v6 encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
-  [v6 encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
-  [v6 encodeObject:self->_supportedAlgorithms forKey:@"supportedAlgorithms"];
-  [v6 encodeObject:self->_excludedCredentials forKey:@"excludedCredentials"];
-  [v6 encodeObject:self->_groupID forKey:@"groupID"];
-  [v6 encodeObject:self->_groupName forKey:@"groupName"];
+  [coderCopy encodeObject:self->_userHandle forKey:@"userHandle"];
+  [coderCopy encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_publicKeyCredentialOperationUUID forKey:@"publicKeyCredentialOperationUUID"];
+  [coderCopy encodeObject:self->_credentialIdentity forKey:@"credentialIdentity"];
+  [coderCopy encodeObject:self->_externalCredentialProviderName forKey:@"externalCredentialProviderName"];
+  [coderCopy encodeObject:self->_externalCredentialProviderBundleID forKey:@"externalCredentialProviderBundleID"];
+  [coderCopy encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
+  [coderCopy encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
+  [coderCopy encodeObject:self->_supportedAlgorithms forKey:@"supportedAlgorithms"];
+  [coderCopy encodeObject:self->_excludedCredentials forKey:@"excludedCredentials"];
+  [coderCopy encodeObject:self->_groupID forKey:@"groupID"];
+  [coderCopy encodeObject:self->_groupName forKey:@"groupName"];
 }
 
-- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCoder:(id)a3
+- (ASCPlatformPublicKeyCredentialLoginChoice)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v27 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"customTitle"];
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"registrationRequestIndicator"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"userHandle"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyCredentialOperationUUID"];
-  obj = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentity"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"externalCredentialProviderName"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"externalCredentialProviderBundleID"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
-  v8 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedAlgorithms"];
+  coderCopy = coder;
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customTitle"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registrationRequestIndicator"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userHandle"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyCredentialOperationUUID"];
+  obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentity"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalCredentialProviderName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalCredentialProviderBundleID"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"supportedAlgorithms"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"excludedCredentials"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"excludedCredentials"];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
 
   v15 = -[ASCPlatformPublicKeyCredentialLoginChoice _initAsRegistrationChoice:withName:displayName:customTitle:identifier:userHandle:relyingPartyIdentifier:publicKeyCredentialOperationUUID:externalCredentialProviderName:externalCredentialProviderBundleID:supportedAlgorithms:excludedCredentials:groupID:groupName:](self, "_initAsRegistrationChoice:withName:displayName:customTitle:identifier:userHandle:relyingPartyIdentifier:publicKeyCredentialOperationUUID:externalCredentialProviderName:externalCredentialProviderBundleID:supportedAlgorithms:excludedCredentials:groupID:groupName:", [v4 BOOLValue], v27, v28, v26, v25, v19, v5, v6, v7, v8, v12, v13, v14);
   v16 = v15;

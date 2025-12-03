@@ -1,42 +1,42 @@
 @interface CRKConcreteIDSAccount
-- (CRKConcreteIDSAccount)initWithAccount:(id)a3;
+- (CRKConcreteIDSAccount)initWithAccount:(id)account;
 - (NSString)description;
 - (NSString)loginID;
-- (void)account:(id)a3 isActiveChanged:(BOOL)a4;
+- (void)account:(id)account isActiveChanged:(BOOL)changed;
 - (void)updateIsActive;
-- (void)updateWithAccount:(id)a3;
+- (void)updateWithAccount:(id)account;
 @end
 
 @implementation CRKConcreteIDSAccount
 
-- (CRKConcreteIDSAccount)initWithAccount:(id)a3
+- (CRKConcreteIDSAccount)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = CRKConcreteIDSAccount;
   v5 = [(CRKConcreteIDSAccount *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CRKConcreteIDSAccount *)v5 updateWithAccount:v4];
+    [(CRKConcreteIDSAccount *)v5 updateWithAccount:accountCopy];
   }
 
   return v6;
 }
 
-- (void)updateWithAccount:(id)a3
+- (void)updateWithAccount:(id)account
 {
-  v7 = a3;
-  v4 = [(CRKConcreteIDSAccount *)self account];
+  accountCopy = account;
+  account = [(CRKConcreteIDSAccount *)self account];
 
-  if (v4 != v7)
+  if (account != accountCopy)
   {
-    v5 = [(CRKConcreteIDSAccount *)self account];
-    [v5 removeDelegate:self];
+    account2 = [(CRKConcreteIDSAccount *)self account];
+    [account2 removeDelegate:self];
 
-    [(CRKConcreteIDSAccount *)self setAccount:v7];
-    v6 = [(CRKConcreteIDSAccount *)self account];
-    [v6 addDelegate:self queue:MEMORY[0x277D85CD0]];
+    [(CRKConcreteIDSAccount *)self setAccount:accountCopy];
+    account3 = [(CRKConcreteIDSAccount *)self account];
+    [account3 addDelegate:self queue:MEMORY[0x277D85CD0]];
 
     [(CRKConcreteIDSAccount *)self updateIsActive];
   }
@@ -44,29 +44,29 @@
 
 - (void)updateIsActive
 {
-  v3 = [(CRKConcreteIDSAccount *)self isActive];
-  v4 = [(CRKConcreteIDSAccount *)self account];
-  v5 = [v4 isActive];
+  isActive = [(CRKConcreteIDSAccount *)self isActive];
+  account = [(CRKConcreteIDSAccount *)self account];
+  isActive2 = [account isActive];
 
-  if (v3 != v5)
+  if (isActive != isActive2)
   {
-    v6 = [(CRKConcreteIDSAccount *)self account];
-    -[CRKConcreteIDSAccount setActive:](self, "setActive:", [v6 isActive]);
+    account2 = [(CRKConcreteIDSAccount *)self account];
+    -[CRKConcreteIDSAccount setActive:](self, "setActive:", [account2 isActive]);
   }
 }
 
 - (NSString)loginID
 {
-  v2 = [(CRKConcreteIDSAccount *)self account];
-  v3 = [v2 loginID];
+  account = [(CRKConcreteIDSAccount *)self account];
+  loginID = [account loginID];
 
-  return v3;
+  return loginID;
 }
 
-- (void)account:(id)a3 isActiveChanged:(BOOL)a4
+- (void)account:(id)account isActiveChanged:(BOOL)changed
 {
   v8 = *MEMORY[0x277D85DE8];
-  [(CRKConcreteIDSAccount *)self updateIsActive:a3];
+  [(CRKConcreteIDSAccount *)self updateIsActive:account];
   if (_CRKLogASM_onceToken_17 != -1)
   {
     [CRKConcreteIDSAccount account:isActiveChanged:];
@@ -76,7 +76,7 @@
   if (os_log_type_enabled(_CRKLogASM_logObj_17, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ : Account activity did change.", &v6, 0xCu);
   }
 }
@@ -85,15 +85,15 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKConcreteIDSAccount *)self loginID];
-  v6 = [(CRKConcreteIDSAccount *)self isActive];
+  loginID = [(CRKConcreteIDSAccount *)self loginID];
+  isActive = [(CRKConcreteIDSAccount *)self isActive];
   v7 = @"NO";
-  if (v6)
+  if (isActive)
   {
     v7 = @"YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p { loginID = %@, isActive = %@ }>", v4, self, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p { loginID = %@, isActive = %@ }>", v4, self, loginID, v7];
 
   return v8;
 }

@@ -1,16 +1,16 @@
 @interface SAURlSizersManager
-+ (id)addURLSizerConfiguration:(id)a3;
-+ (id)getURLSizerConfiguration:(id)a3;
-+ (id)setUniqueIDForURLSizer:(id)a3;
-+ (void)callURLSizer:(id)a3 withResults:(id)a4 error:(id)a5;
-+ (void)removeURLSizerHandler:(id)a3;
++ (id)addURLSizerConfiguration:(id)configuration;
++ (id)getURLSizerConfiguration:(id)configuration;
++ (id)setUniqueIDForURLSizer:(id)sizer;
++ (void)callURLSizer:(id)sizer withResults:(id)results error:(id)error;
++ (void)removeURLSizerHandler:(id)handler;
 @end
 
 @implementation SAURlSizersManager
 
-+ (id)setUniqueIDForURLSizer:(id)a3
++ (id)setUniqueIDForURLSizer:(id)sizer
 {
-  v3 = a3;
+  sizerCopy = sizer;
   v4 = 0;
   while (1)
   {
@@ -39,20 +39,20 @@
     objc_sync_exit(v6);
   }
 
-  [qword_100073720 setObject:v3 forKey:v4];
+  [qword_100073720 setObject:sizerCopy forKey:v4];
   objc_sync_exit(v6);
 
-  [v3 setSizerID:v4];
+  [sizerCopy setSizerID:v4];
 
   return v4;
 }
 
-+ (id)getURLSizerConfiguration:(id)a3
++ (id)getURLSizerConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = qword_100073720;
   objc_sync_enter(v4);
-  v5 = [qword_100073720 objectForKey:v3];
+  v5 = [qword_100073720 objectForKey:configurationCopy];
   objc_sync_exit(v4);
 
   if (!v5)
@@ -60,17 +60,17 @@
     v6 = SALog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10003F948(v3, v6);
+      sub_10003F948(configurationCopy, v6);
     }
   }
 
   return v5;
 }
 
-+ (id)addURLSizerConfiguration:(id)a3
++ (id)addURLSizerConfiguration:(id)configuration
 {
-  v18 = a3;
-  v4 = [a1 setUniqueIDForURLSizer:?];
+  configurationCopy = configuration;
+  v4 = [self setUniqueIDForURLSizer:?];
   obj = qword_100073718;
   objc_sync_enter(obj);
   if (!qword_100073718)
@@ -84,8 +84,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v18 urls];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  urls = [configurationCopy urls];
+  v8 = [urls countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = *v20;
@@ -95,7 +95,7 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(urls);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
@@ -114,7 +114,7 @@
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [urls countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -125,14 +125,14 @@
   return v4;
 }
 
-+ (void)removeURLSizerHandler:(id)a3
++ (void)removeURLSizerHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = qword_100073720;
   objc_sync_enter(v4);
-  if (qword_100073720 && ([qword_100073720 objectForKeyedSubscript:v3], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (qword_100073720 && ([qword_100073720 objectForKeyedSubscript:handlerCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    [qword_100073720 removeObjectForKey:v3];
+    [qword_100073720 removeObjectForKey:handlerCopy];
     objc_sync_exit(v4);
 
     obj = qword_100073718;
@@ -162,7 +162,7 @@
 
           v8 = [qword_100073718 objectForKeyedSubscript:*(*(&v27 + 1) + 8 * v10)];
 
-          [v8 removeObject:v3];
+          [v8 removeObject:handlerCopy];
           v10 = v10 + 1;
           v11 = v8;
         }
@@ -219,44 +219,44 @@
     v19 = SALog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_10003F9E4(v3, v19);
+      sub_10003F9E4(handlerCopy, v19);
     }
 
     objc_sync_exit(v4);
   }
 }
 
-+ (void)callURLSizer:(id)a3 withResults:(id)a4 error:(id)a5
++ (void)callURLSizer:(id)sizer withResults:(id)results error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sizerCopy = sizer;
+  resultsCopy = results;
+  errorCopy = error;
   v10 = SALog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10003FA5C(v10);
   }
 
-  v11 = [v7 sizerID];
-  v12 = [v7 replyController];
+  sizerID = [sizerCopy sizerID];
+  replyController = [sizerCopy replyController];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100023598;
   v23[3] = &unk_1000652A8;
-  v13 = v11;
+  v13 = sizerID;
   v24 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v23];
+  v14 = [replyController remoteObjectProxyWithErrorHandler:v23];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100023608;
   v19[3] = &unk_100065348;
   v20 = v13;
-  v21 = v7;
-  v22 = v8;
-  v15 = v8;
-  v16 = v7;
+  v21 = sizerCopy;
+  v22 = resultsCopy;
+  v15 = resultsCopy;
+  v16 = sizerCopy;
   v17 = v13;
-  [v14 callURLSizerHandlerWithResults:v15 error:v9 withHandlerResultsBlock:v19];
+  [v14 callURLSizerHandlerWithResults:v15 error:errorCopy withHandlerResultsBlock:v19];
 
   v18 = SALog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))

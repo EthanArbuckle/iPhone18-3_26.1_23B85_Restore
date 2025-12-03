@@ -1,71 +1,71 @@
 @interface PBBProtoTransferPerformanceResults
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMacroActivites:(id)a3;
-- (void)addMeasures:(id)a3;
-- (void)addMilestones:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMacroActivites:(id)activites;
+- (void)addMeasures:(id)measures;
+- (void)addMilestones:(id)milestones;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoTransferPerformanceResults
 
-- (void)addMilestones:(id)a3
+- (void)addMilestones:(id)milestones
 {
-  v4 = a3;
+  milestonesCopy = milestones;
   milestones = self->_milestones;
-  v8 = v4;
+  v8 = milestonesCopy;
   if (!milestones)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_milestones;
     self->_milestones = v6;
 
-    v4 = v8;
+    milestonesCopy = v8;
     milestones = self->_milestones;
   }
 
-  [(NSMutableArray *)milestones addObject:v4];
+  [(NSMutableArray *)milestones addObject:milestonesCopy];
 }
 
-- (void)addMeasures:(id)a3
+- (void)addMeasures:(id)measures
 {
-  v4 = a3;
+  measuresCopy = measures;
   measures = self->_measures;
-  v8 = v4;
+  v8 = measuresCopy;
   if (!measures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_measures;
     self->_measures = v6;
 
-    v4 = v8;
+    measuresCopy = v8;
     measures = self->_measures;
   }
 
-  [(NSMutableArray *)measures addObject:v4];
+  [(NSMutableArray *)measures addObject:measuresCopy];
 }
 
-- (void)addMacroActivites:(id)a3
+- (void)addMacroActivites:(id)activites
 {
-  v4 = a3;
+  activitesCopy = activites;
   macroActivites = self->_macroActivites;
-  v8 = v4;
+  v8 = activitesCopy;
   if (!macroActivites)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_macroActivites;
     self->_macroActivites = v6;
 
-    v4 = v8;
+    activitesCopy = v8;
     macroActivites = self->_macroActivites;
   }
 
-  [(NSMutableArray *)macroActivites addObject:v4];
+  [(NSMutableArray *)macroActivites addObject:activitesCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = PBBProtoTransferPerformanceResults;
   v4 = [(PBBProtoTransferPerformanceResults *)&v8 description];
-  v5 = [(PBBProtoTransferPerformanceResults *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoTransferPerformanceResults *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,7 +83,7 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_milestones count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_milestones, "count")}];
@@ -106,8 +106,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -116,7 +116,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"milestones"];
+    [dictionary setObject:v4 forKey:@"milestones"];
   }
 
   if ([(NSMutableArray *)self->_measures count])
@@ -141,8 +141,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -151,7 +151,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"measures"];
+    [dictionary setObject:v11 forKey:@"measures"];
   }
 
   if ([(NSMutableArray *)self->_macroActivites count])
@@ -176,8 +176,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v27 + 1) + 8 * k) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v27 + 1) + 8 * k) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -186,18 +186,18 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"macroActivites"];
+    [dictionary setObject:v18 forKey:@"macroActivites"];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -297,59 +297,59 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if ([(PBBProtoTransferPerformanceResults *)self milestonesCount])
   {
-    [v16 clearMilestones];
-    v4 = [(PBBProtoTransferPerformanceResults *)self milestonesCount];
-    if (v4)
+    [toCopy clearMilestones];
+    milestonesCount = [(PBBProtoTransferPerformanceResults *)self milestonesCount];
+    if (milestonesCount)
     {
-      v5 = v4;
+      v5 = milestonesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PBBProtoTransferPerformanceResults *)self milestonesAtIndex:i];
-        [v16 addMilestones:v7];
+        [toCopy addMilestones:v7];
       }
     }
   }
 
   if ([(PBBProtoTransferPerformanceResults *)self measuresCount])
   {
-    [v16 clearMeasures];
-    v8 = [(PBBProtoTransferPerformanceResults *)self measuresCount];
-    if (v8)
+    [toCopy clearMeasures];
+    measuresCount = [(PBBProtoTransferPerformanceResults *)self measuresCount];
+    if (measuresCount)
     {
-      v9 = v8;
+      v9 = measuresCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PBBProtoTransferPerformanceResults *)self measuresAtIndex:j];
-        [v16 addMeasures:v11];
+        [toCopy addMeasures:v11];
       }
     }
   }
 
   if ([(PBBProtoTransferPerformanceResults *)self macroActivitesCount])
   {
-    [v16 clearMacroActivites];
-    v12 = [(PBBProtoTransferPerformanceResults *)self macroActivitesCount];
-    if (v12)
+    [toCopy clearMacroActivites];
+    macroActivitesCount = [(PBBProtoTransferPerformanceResults *)self macroActivitesCount];
+    if (macroActivitesCount)
     {
-      v13 = v12;
+      v13 = macroActivitesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PBBProtoTransferPerformanceResults *)self macroActivitesAtIndex:k];
-        [v16 addMacroActivites:v15];
+        [toCopy addMacroActivites:v15];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -370,7 +370,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addMilestones:v11];
 
         ++v10;
@@ -403,7 +403,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addMeasures:v17];
 
         ++v16;
@@ -436,7 +436,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addMacroActivites:v23];
 
         ++v22;
@@ -453,13 +453,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((milestones = self->_milestones, !(milestones | v4[3])) || -[NSMutableArray isEqual:](milestones, "isEqual:")) && ((measures = self->_measures, !(measures | v4[2])) || -[NSMutableArray isEqual:](measures, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((milestones = self->_milestones, !(milestones | equalCopy[3])) || -[NSMutableArray isEqual:](milestones, "isEqual:")) && ((measures = self->_measures, !(measures | equalCopy[2])) || -[NSMutableArray isEqual:](measures, "isEqual:")))
   {
     macroActivites = self->_macroActivites;
-    if (macroActivites | v4[1])
+    if (macroActivites | equalCopy[1])
     {
       v8 = [(NSMutableArray *)macroActivites isEqual:?];
     }
@@ -485,15 +485,15 @@
   return v4 ^ [(NSMutableArray *)self->_macroActivites hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v4[3];
+  v5 = fromCopy[3];
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -523,7 +523,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -553,7 +553,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v4[1];
+  v15 = fromCopy[1];
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {

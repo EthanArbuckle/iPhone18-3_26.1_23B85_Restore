@@ -1,11 +1,11 @@
 @interface SCATAxisLayer
 + (double)rangeLayerBorderWidth;
 - (BOOL)isAnimatingForwards;
-- (SCATAxisLayer)initWithAxis:(int)a3;
+- (SCATAxisLayer)initWithAxis:(int)axis;
 - (id)description;
-- (void)setBackgroundColor:(CGColor *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)updateLayerTreePosition:(CGPoint)a3;
+- (void)setBackgroundColor:(CGColor *)color;
+- (void)setFrame:(CGRect)frame;
+- (void)updateLayerTreePosition:(CGPoint)position;
 @end
 
 @implementation SCATAxisLayer
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (SCATAxisLayer)initWithAxis:(int)a3
+- (SCATAxisLayer)initWithAxis:(int)axis
 {
-  v3 = *&a3;
+  v3 = *&axis;
   v9.receiver = self;
   v9.super_class = SCATAxisLayer;
   v4 = [(SCATAxisLayer *)&v9 init];
@@ -55,30 +55,30 @@
   v17 = [NSNumber numberWithUnsignedInt:[(SCATAxisLayer *)self theme]];
   [(SCATAxisLayer *)self position];
   v15 = NSStringFromCGPoint(v24);
-  v20 = [(SCATAxisLayer *)self presentationLayer];
-  [v20 position];
+  presentationLayer = [(SCATAxisLayer *)self presentationLayer];
+  [presentationLayer position];
   v13 = NSStringFromCGPoint(v25);
-  v18 = [(SCATAxisLayer *)self animationKeys];
-  v16 = [v18 description];
+  animationKeys = [(SCATAxisLayer *)self animationKeys];
+  v16 = [animationKeys description];
   v14 = [v16 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-  v4 = [(SCATAxisLayer *)self backgroundColor];
-  v5 = [(SCATAxisLayer *)self borderColor];
-  v6 = [(SCATAxisLayer *)self foregroundLayer];
-  v7 = [(SCATAxisLayer *)self foregroundLayer];
-  [v7 frame];
+  backgroundColor = [(SCATAxisLayer *)self backgroundColor];
+  borderColor = [(SCATAxisLayer *)self borderColor];
+  foregroundLayer = [(SCATAxisLayer *)self foregroundLayer];
+  foregroundLayer2 = [(SCATAxisLayer *)self foregroundLayer];
+  [foregroundLayer2 frame];
   v8 = NSStringFromCGRect(v26);
-  v9 = [(SCATAxisLayer *)self foregroundLayer];
-  v10 = [v9 backgroundColor];
-  v11 = [(SCATAxisLayer *)self foregroundLayer];
-  v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p>. axis:%@ theme:%@ position:%@ presentationPosition:%@ animations:%@ bgColor:%@ borderColor:%@ (fg-layer:%p frame:%@ bgColor:%@ borderColor:%@)", v21, self, v19, v17, v15, v13, v14, v4, v5, v6, v8, v10, [v11 borderColor]);
+  foregroundLayer3 = [(SCATAxisLayer *)self foregroundLayer];
+  backgroundColor2 = [foregroundLayer3 backgroundColor];
+  foregroundLayer4 = [(SCATAxisLayer *)self foregroundLayer];
+  v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p>. axis:%@ theme:%@ position:%@ presentationPosition:%@ animations:%@ bgColor:%@ borderColor:%@ (fg-layer:%p frame:%@ bgColor:%@ borderColor:%@)", v21, self, v19, v17, v15, v13, v14, backgroundColor, borderColor, foregroundLayer, v8, backgroundColor2, [foregroundLayer4 borderColor]);
 
   return v22;
 }
 
-- (void)updateLayerTreePosition:(CGPoint)a3
+- (void)updateLayerTreePosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(SCATAxisLayer *)self setPosition:x, y];
@@ -92,31 +92,31 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SCATAxisLayer *)self animationKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animationKeys = [(SCATAxisLayer *)self animationKeys];
+  v4 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v13;
-    v7 = 1;
+    forwardDirection = 1;
     do
     {
       for (i = 0; i != v5; i = i + 1)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(animationKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 rangeOfString:@"SCATRangeAnimationID"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v9, "rangeOfString:", @"SCATLineAnimationID") != 0x7FFFFFFFFFFFFFFFLL)
         {
           v10 = [(SCATAxisLayer *)self animationForKey:v9];
-          v7 = [v10 forwardDirection];
+          forwardDirection = [v10 forwardDirection];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -124,31 +124,31 @@
 
   else
   {
-    v7 = 1;
+    forwardDirection = 1;
   }
 
-  return v7 & 1;
+  return forwardDirection & 1;
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
   v6.receiver = self;
   v6.super_class = SCATAxisLayer;
   [(SCATAxisLayer *)&v6 setBackgroundColor:?];
-  v5 = [(SCATAxisLayer *)self compositingLayer];
-  [v5 setBackgroundColor:a3];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
+  [compositingLayer setBackgroundColor:color];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v8.receiver = self;
   v8.super_class = SCATAxisLayer;
-  [(SCATAxisLayer *)&v8 setFrame:a3.origin.x, a3.origin.y];
+  [(SCATAxisLayer *)&v8 setFrame:frame.origin.x, frame.origin.y];
   y = CGPointZero.y;
-  v7 = [(SCATAxisLayer *)self compositingLayer];
-  [v7 setFrame:{CGPointZero.x, y, width, height}];
+  compositingLayer = [(SCATAxisLayer *)self compositingLayer];
+  [compositingLayer setFrame:{CGPointZero.x, y, width, height}];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface DDSearchResultFooterSection
-- (DDSearchResultFooterSection)initWithQuery:(id)a3 queryId:(unint64_t)a4;
+- (DDSearchResultFooterSection)initWithQuery:(id)query queryId:(unint64_t)id;
 @end
 
 @implementation DDSearchResultFooterSection
 
-- (DDSearchResultFooterSection)initWithQuery:(id)a3 queryId:(unint64_t)a4
+- (DDSearchResultFooterSection)initWithQuery:(id)query queryId:(unint64_t)id
 {
-  v6 = a3;
+  queryCopy = query;
   v16.receiver = self;
   v16.super_class = DDSearchResultFooterSection;
   v7 = [(DDSearchResultFooterSection *)&v16 init];
@@ -21,11 +21,11 @@
 
     if (v11 != 2)
     {
-      v12 = [[DDSearchResultSearchWebResult alloc] initWithQuery:v6 queryId:a4];
+      v12 = [[DDSearchResultSearchWebResult alloc] initWithQuery:queryCopy queryId:id];
       [(NSArray *)v9 addObject:v12];
     }
 
-    v13 = [[DDSearchResultManageDictionariesResult alloc] initWithQuery:v6 queryId:a4];
+    v13 = [[DDSearchResultManageDictionariesResult alloc] initWithQuery:queryCopy queryId:id];
     [(NSArray *)v9 addObject:v13];
 
     results = v8->_results;

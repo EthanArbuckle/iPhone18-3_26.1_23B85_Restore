@@ -1,32 +1,32 @@
 @interface _MessageList
-- (_MessageList)initWithPersistencePath:(id)a3;
-- (id)_getComplicationDescriptor:(id)a3;
-- (id)_getFaceUUID:(id)a3;
-- (id)_messageAtIndex:(unint64_t)a3;
+- (_MessageList)initWithPersistencePath:(id)path;
+- (id)_getComplicationDescriptor:(id)descriptor;
+- (id)_getFaceUUID:(id)d;
+- (id)_messageAtIndex:(unint64_t)index;
 - (id)firstMessage;
 - (id)messageEnumerator;
-- (int64_t)_getMessageType:(id)a3;
-- (void)_enqueueMessageDict:(id)a3;
+- (int64_t)_getMessageType:(id)type;
+- (void)_enqueueMessageDict:(id)dict;
 - (void)_persistMessageDictionaries;
-- (void)_pruneMessagesMadeObsoleteByNewMessageOfType:(int64_t)a3 withFaceUUID:(id)a4 clientID:(id)a5 family:(id)a6 complicationDescriptor:(id)a7 complicationCollectionIdentifier:(id)a8;
+- (void)_pruneMessagesMadeObsoleteByNewMessageOfType:(int64_t)type withFaceUUID:(id)d clientID:(id)iD family:(id)family complicationDescriptor:(id)descriptor complicationCollectionIdentifier:(id)identifier;
 - (void)clearAllMessages;
-- (void)clearMessageCount:(unint64_t)a3;
+- (void)clearMessageCount:(unint64_t)count;
 - (void)dequeueFirstMessage;
-- (void)enqueueMessage:(id)a3;
+- (void)enqueueMessage:(id)message;
 - (void)resumeCoalescing;
 @end
 
 @implementation _MessageList
 
-- (_MessageList)initWithPersistencePath:(id)a3
+- (_MessageList)initWithPersistencePath:(id)path
 {
-  v15 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = _MessageList;
   v16 = [(_MessageList *)&v21 init];
   if (v16)
   {
-    objc_storeStrong(&v16->_persistencePath, a3);
+    objc_storeStrong(&v16->_persistencePath, path);
     v5 = [NSArray arrayWithContentsOfFile:v16->_persistencePath];
     if (v5)
     {
@@ -91,63 +91,63 @@
   return v16;
 }
 
-- (void)enqueueMessage:(id)a3
+- (void)enqueueMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "message list enqueue message %@", buf, 0xCu);
   }
 
   v6 = +[NSMutableDictionary dictionary];
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 messageType]);
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [messageCopy messageType]);
   [v6 setObject:v7 forKey:@"message-type"];
 
-  v8 = [v4 faceUUID];
-  v9 = v8;
-  if (v8)
+  faceUUID = [messageCopy faceUUID];
+  v9 = faceUUID;
+  if (faceUUID)
   {
-    v10 = [v8 UUIDString];
-    [v6 setObject:v10 forKey:@"face-uuid"];
+    uUIDString = [faceUUID UUIDString];
+    [v6 setObject:uUIDString forKey:@"face-uuid"];
   }
 
-  v11 = [v4 complicationClientID];
-  if (v11)
+  complicationClientID = [messageCopy complicationClientID];
+  if (complicationClientID)
   {
-    [v6 setObject:v11 forKey:@"complicaiton-clientID"];
+    [v6 setObject:complicationClientID forKey:@"complicaiton-clientID"];
   }
 
-  v12 = [v4 complicationFamily];
-  if (v12)
+  complicationFamily = [messageCopy complicationFamily];
+  if (complicationFamily)
   {
-    [v6 setObject:v12 forKey:@"complication-family"];
+    [v6 setObject:complicationFamily forKey:@"complication-family"];
   }
 
-  v13 = [v4 complicationDescriptor];
-  v14 = v13;
-  if (v13)
+  complicationDescriptor = [messageCopy complicationDescriptor];
+  v14 = complicationDescriptor;
+  if (complicationDescriptor)
   {
-    v15 = [v13 JSONObjectRepresentation];
-    [v6 setObject:v15 forKey:@"complication-descriptor"];
+    jSONObjectRepresentation = [complicationDescriptor JSONObjectRepresentation];
+    [v6 setObject:jSONObjectRepresentation forKey:@"complication-descriptor"];
   }
 
-  v16 = [v4 complicationCollectionIdentifier];
-  if (v16)
+  complicationCollectionIdentifier = [messageCopy complicationCollectionIdentifier];
+  if (complicationCollectionIdentifier)
   {
-    [v6 setObject:v16 forKey:@"complication-collection-identifier"];
+    [v6 setObject:complicationCollectionIdentifier forKey:@"complication-collection-identifier"];
   }
 
-  if ([v4 payloadSize])
+  if ([messageCopy payloadSize])
   {
-    v22 = self;
+    selfCopy = self;
     v17 = +[NSUUID UUID];
-    v18 = [v17 UUIDString];
+    uUIDString2 = [v17 UUIDString];
 
-    v19 = sub_10003C230(v18);
-    v20 = [v4 getPayloadDataIntoFile:v19];
+    v19 = sub_10003C230(uUIDString2);
+    v20 = [messageCopy getPayloadDataIntoFile:v19];
 
     if ((v20 & 1) == 0)
     {
@@ -158,9 +158,9 @@
       }
     }
 
-    [v6 setObject:v18 forKey:@"payload-id"];
+    [v6 setObject:uUIDString2 forKey:@"payload-id"];
 
-    self = v22;
+    self = selfCopy;
   }
 
   [(_MessageList *)self _enqueueMessageDict:v6];
@@ -174,16 +174,16 @@
   [(_MessageList *)self clearMessageCount:v3];
 }
 
-- (void)clearMessageCount:(unint64_t)a3
+- (void)clearMessageCount:(unint64_t)count
 {
   messageDictionaries = self->_messageDictionaries;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003C3CC;
   v6[3] = &unk_10005E3B8;
-  v6[4] = a3;
+  v6[4] = count;
   [(NSMutableArray *)messageDictionaries enumerateObjectsUsingBlock:v6];
-  [(NSMutableArray *)self->_messageDictionaries removeObjectsInRange:0, a3];
+  [(NSMutableArray *)self->_messageDictionaries removeObjectsInRange:0, count];
   [(_MessageList *)self _persistMessageDictionaries];
 }
 
@@ -276,9 +276,9 @@
   [(_MessageList *)self _persistMessageDictionaries];
 }
 
-- (id)_messageAtIndex:(unint64_t)a3
+- (id)_messageAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_messageDictionaries objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_messageDictionaries objectAtIndex:index];
   v5 = objc_alloc_init(NTKDSyncMessage);
   [v5 setMessageType:{-[_MessageList _getMessageType:](self, "_getMessageType:", v4)}];
   v6 = [(_MessageList *)self _getFaceUUID:v4];
@@ -307,21 +307,21 @@
   return v5;
 }
 
-- (void)_enqueueMessageDict:(id)a3
+- (void)_enqueueMessageDict:(id)dict
 {
-  v10 = a3;
+  dictCopy = dict;
   if (!self->_coalescingSuspended)
   {
-    v4 = [(_MessageList *)self _getMessageType:v10];
-    v5 = [(_MessageList *)self _getFaceUUID:v10];
-    v6 = [(_MessageList *)self _getClientID:v10];
-    v7 = [(_MessageList *)self _getFamily:v10];
-    v8 = [(_MessageList *)self _getComplicationDescriptor:v10];
-    v9 = [(_MessageList *)self _getComplicationCollectionIdentifier:v10];
+    v4 = [(_MessageList *)self _getMessageType:dictCopy];
+    v5 = [(_MessageList *)self _getFaceUUID:dictCopy];
+    v6 = [(_MessageList *)self _getClientID:dictCopy];
+    v7 = [(_MessageList *)self _getFamily:dictCopy];
+    v8 = [(_MessageList *)self _getComplicationDescriptor:dictCopy];
+    v9 = [(_MessageList *)self _getComplicationCollectionIdentifier:dictCopy];
     [(_MessageList *)self _pruneMessagesMadeObsoleteByNewMessageOfType:v4 withFaceUUID:v5 clientID:v6 family:v7 complicationDescriptor:v8 complicationCollectionIdentifier:v9];
   }
 
-  [(NSMutableArray *)self->_messageDictionaries addObject:v10];
+  [(NSMutableArray *)self->_messageDictionaries addObject:dictCopy];
 }
 
 - (void)_persistMessageDictionaries
@@ -344,28 +344,28 @@
   }
 }
 
-- (void)_pruneMessagesMadeObsoleteByNewMessageOfType:(int64_t)a3 withFaceUUID:(id)a4 clientID:(id)a5 family:(id)a6 complicationDescriptor:(id)a7 complicationCollectionIdentifier:(id)a8
+- (void)_pruneMessagesMadeObsoleteByNewMessageOfType:(int64_t)type withFaceUUID:(id)d clientID:(id)iD family:(id)family complicationDescriptor:(id)descriptor complicationCollectionIdentifier:(id)identifier
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  familyCopy = family;
+  descriptorCopy = descriptor;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10003CD38;
   v35[3] = &unk_10005E408;
-  v40 = a8;
-  v41 = a3;
+  identifierCopy = identifier;
+  typeCopy = type;
   v35[4] = self;
-  v36 = v14;
-  v37 = v15;
-  v38 = v16;
-  v39 = v17;
-  v18 = v40;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v36 = dCopy;
+  v37 = iDCopy;
+  v38 = familyCopy;
+  v39 = descriptorCopy;
+  v18 = identifierCopy;
+  v19 = descriptorCopy;
+  v20 = familyCopy;
+  v21 = iDCopy;
+  v22 = dCopy;
   v23 = objc_retainBlock(v35);
   v24 = +[NSMutableIndexSet indexSet];
   messageDictionaries = self->_messageDictionaries;
@@ -375,24 +375,24 @@
   v31 = &unk_10005E430;
   v33 = v24;
   v34 = v23;
-  v32 = self;
+  selfCopy = self;
   v26 = v24;
   v27 = v23;
   [(NSMutableArray *)messageDictionaries enumerateObjectsUsingBlock:&v28];
-  [(NSMutableArray *)self->_messageDictionaries removeObjectsAtIndexes:v26, v28, v29, v30, v31, v32];
+  [(NSMutableArray *)self->_messageDictionaries removeObjectsAtIndexes:v26, v28, v29, v30, v31, selfCopy];
 }
 
-- (int64_t)_getMessageType:(id)a3
+- (int64_t)_getMessageType:(id)type
 {
-  v3 = [a3 objectForKey:@"message-type"];
-  v4 = [v3 integerValue];
+  v3 = [type objectForKey:@"message-type"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (id)_getFaceUUID:(id)a3
+- (id)_getFaceUUID:(id)d
 {
-  v3 = [a3 objectForKey:@"face-uuid"];
+  v3 = [d objectForKey:@"face-uuid"];
   if (v3)
   {
     v4 = [[NSUUID alloc] initWithUUIDString:v3];
@@ -406,9 +406,9 @@
   return v4;
 }
 
-- (id)_getComplicationDescriptor:(id)a3
+- (id)_getComplicationDescriptor:(id)descriptor
 {
-  v3 = [a3 objectForKey:@"complication-descriptor"];
+  v3 = [descriptor objectForKey:@"complication-descriptor"];
   if (v3)
   {
     v4 = [[CLKComplicationDescriptor alloc] initWithJSONObjectRepresentation:v3];

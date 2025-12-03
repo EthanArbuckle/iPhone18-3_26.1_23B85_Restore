@@ -2,7 +2,7 @@
 + (id)constantToTypeMap;
 + (id)secureCodedPropertyKeys;
 + (id)typeToConstantMap;
-- (GKPlayerActivitySpecialItemInternal)initWithDictionary:(id)a3;
+- (GKPlayerActivitySpecialItemInternal)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -42,44 +42,44 @@ void __62__GKPlayerActivitySpecialItemInternal_secureCodedPropertyKeys__block_in
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivitySpecialItemInternal)initWithDictionary:(id)a3
+- (GKPlayerActivitySpecialItemInternal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = GKPlayerActivitySpecialItemInternal;
   v5 = [(GKPlayerActivitySpecialItemInternal *)&v18 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     v8 = [v6 _gkDateFromServerTimestamp:v7];
     [(GKPlayerActivitySpecialItemInternal *)v5 setTimeStamp:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"message"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"message"];
     [(GKPlayerActivitySpecialItemInternal *)v5 setMessage:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"alternate-message"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"alternate-message"];
     [(GKPlayerActivitySpecialItemInternal *)v5 setAlternateMessage:v10];
 
     v11 = +[GKPlayerActivitySpecialItemInternal constantToTypeMap];
-    v12 = [v4 objectForKeyedSubscript:@"type"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v13 = [v11 objectForKeyedSubscript:v12];
 
     if (v13)
     {
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
     }
 
     else
     {
-      v14 = 0;
+      integerValue = 0;
     }
 
-    [(GKPlayerActivitySpecialItemInternal *)v5 setActivityType:v14];
-    v15 = [v4 objectForKeyedSubscript:@"symbol"];
+    [(GKPlayerActivitySpecialItemInternal *)v5 setActivityType:integerValue];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"symbol"];
     [(GKPlayerActivitySpecialItemInternal *)v5 setSfSymbol:v15];
 
-    v16 = [v4 objectForKeyedSubscript:@"instKey"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"instKey"];
     [(GKPlayerActivitySpecialItemInternal *)v5 setInstrumentationKey:v16];
   }
 
@@ -136,16 +136,16 @@ void __56__GKPlayerActivitySpecialItemInternal_constantToTypeMap__block_invoke()
 
 - (id)description
 {
-  v13 = self;
+  selfCopy = self;
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKPlayerActivitySpecialItemInternal activityType](self, "activityType")}];
-  v6 = [(GKPlayerActivitySpecialItemInternal *)self message];
-  v7 = [(GKPlayerActivitySpecialItemInternal *)self alternateMessage];
-  v8 = [(GKPlayerActivitySpecialItemInternal *)self sfSymbol];
-  v9 = [(GKPlayerActivitySpecialItemInternal *)self timeStamp];
-  v10 = [(GKPlayerActivitySpecialItemInternal *)self instrumentationKey];
-  v11 = [v3 stringWithFormat:@"<%@ %p>: {\n            \tactivityType: %@ \n            \tmessage: %@ \n            \talternateMessage: %@ \n            \tsfSymbol: %@ \n            \ttimestamp: %@ \n            \tinstrumentationKey: %@ \n            }", v4, &v13, v5, v6, v7, v8, v9, v10];
+  message = [(GKPlayerActivitySpecialItemInternal *)self message];
+  alternateMessage = [(GKPlayerActivitySpecialItemInternal *)self alternateMessage];
+  sfSymbol = [(GKPlayerActivitySpecialItemInternal *)self sfSymbol];
+  timeStamp = [(GKPlayerActivitySpecialItemInternal *)self timeStamp];
+  instrumentationKey = [(GKPlayerActivitySpecialItemInternal *)self instrumentationKey];
+  v11 = [v3 stringWithFormat:@"<%@ %p>: {\n            \tactivityType: %@ \n            \tmessage: %@ \n            \talternateMessage: %@ \n            \tsfSymbol: %@ \n            \ttimestamp: %@ \n            \tinstrumentationKey: %@ \n            }", v4, &selfCopy, v5, message, alternateMessage, sfSymbol, timeStamp, instrumentationKey];
 
   return v11;
 }

@@ -1,24 +1,24 @@
 @interface _UILabelLightInertLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation _UILabelLightInertLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v11 = [(_UILabelLightInertLayer *)self superlayer];
-  v5 = [v11 delegate];
+  superlayer = [(_UILabelLightInertLayer *)self superlayer];
+  delegate = [superlayer delegate];
   [(_UILabelLightInertLayer *)self frame];
   v7 = v6;
   v9 = v8;
-  [v5 _setDrawingLightInertLayer:1];
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, -v7, -v9);
-  v10 = [v5 layer];
-  [v10 drawInContext:a3];
+  [delegate _setDrawingLightInertLayer:1];
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, -v7, -v9);
+  layer = [delegate layer];
+  [layer drawInContext:context];
 
-  CGContextRestoreGState(a3);
-  [v5 _setDrawingLightInertLayer:0];
+  CGContextRestoreGState(context);
+  [delegate _setDrawingLightInertLayer:0];
 }
 
 @end

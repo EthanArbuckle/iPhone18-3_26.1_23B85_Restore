@@ -1,8 +1,8 @@
 @interface HVSearchableItemSerializedAttributes
-+ (id)serializedAttributesWithAttributeSetData:(id)a3 attributeSetCoder:(id)a4 htmlContentData:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSerializedAttributes:(id)a3;
-- (HVSearchableItemSerializedAttributes)initWithAttributeSetData:(id)a3 attributeSetCoder:(id)a4 htmlContentData:(id)a5;
++ (id)serializedAttributesWithAttributeSetData:(id)data attributeSetCoder:(id)coder htmlContentData:(id)contentData;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSerializedAttributes:(id)attributes;
+- (HVSearchableItemSerializedAttributes)initWithAttributeSetData:(id)data attributeSetCoder:(id)coder htmlContentData:(id)contentData;
 - (unint64_t)hash;
 @end
 
@@ -15,35 +15,35 @@
   return [(NSData *)self->_htmlContentData hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(HVSearchableItemSerializedAttributes *)self isEqualToSerializedAttributes:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(HVSearchableItemSerializedAttributes *)self isEqualToSerializedAttributes:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSerializedAttributes:(id)a3
+- (BOOL)isEqualToSerializedAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (!attributesCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_attributeSetData == 0;
-  v7 = [v4 attributeSetData];
-  v8 = v7 != 0;
+  attributeSetData = [attributesCopy attributeSetData];
+  v8 = attributeSetData != 0;
 
   if (v6 == v8)
   {
@@ -53,8 +53,8 @@
   attributeSetData = self->_attributeSetData;
   if (attributeSetData)
   {
-    v10 = [v5 attributeSetData];
-    v11 = [(NSData *)attributeSetData isEqual:v10];
+    attributeSetData2 = [v5 attributeSetData];
+    v11 = [(NSData *)attributeSetData isEqual:attributeSetData2];
 
     if (!v11)
     {
@@ -63,8 +63,8 @@
   }
 
   v12 = self->_attributeSetCoder == 0;
-  v13 = [v5 attributeSetCoder];
-  v14 = v13 != 0;
+  attributeSetCoder = [v5 attributeSetCoder];
+  v14 = attributeSetCoder != 0;
 
   if (v12 == v14)
   {
@@ -74,8 +74,8 @@
   attributeSetCoder = self->_attributeSetCoder;
   if (attributeSetCoder)
   {
-    v16 = [v5 attributeSetCoder];
-    v17 = [(CSCoder *)attributeSetCoder isEqual:v16];
+    attributeSetCoder2 = [v5 attributeSetCoder];
+    v17 = [(CSCoder *)attributeSetCoder isEqual:attributeSetCoder2];
 
     if (!v17)
     {
@@ -84,8 +84,8 @@
   }
 
   v18 = self->_htmlContentData == 0;
-  v19 = [v5 htmlContentData];
-  v20 = v19 != 0;
+  htmlContentData = [v5 htmlContentData];
+  v20 = htmlContentData != 0;
 
   if (v18 == v20)
   {
@@ -98,8 +98,8 @@ LABEL_11:
     htmlContentData = self->_htmlContentData;
     if (htmlContentData)
     {
-      v22 = [v5 htmlContentData];
-      v23 = [(NSData *)htmlContentData isEqual:v22];
+      htmlContentData2 = [v5 htmlContentData];
+      v23 = [(NSData *)htmlContentData isEqual:htmlContentData2];
     }
 
     else
@@ -111,14 +111,14 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (HVSearchableItemSerializedAttributes)initWithAttributeSetData:(id)a3 attributeSetCoder:(id)a4 htmlContentData:(id)a5
+- (HVSearchableItemSerializedAttributes)initWithAttributeSetData:(id)data attributeSetCoder:(id)coder htmlContentData:(id)contentData
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  dataCopy = data;
+  coderCopy = coder;
+  contentDataCopy = contentData;
+  if (dataCopy)
   {
-    if (v11)
+    if (coderCopy)
     {
       goto LABEL_3;
     }
@@ -126,17 +126,17 @@ LABEL_11:
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HVSearchableItemSerializedAttributes.m" lineNumber:12 description:{@"Invalid parameter not satisfying: %@", @"attributeSetData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVSearchableItemSerializedAttributes.m" lineNumber:12 description:{@"Invalid parameter not satisfying: %@", @"attributeSetData"}];
 
-    if (v11)
+    if (coderCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HVSearchableItemSerializedAttributes.m" lineNumber:13 description:{@"Invalid parameter not satisfying: %@", @"attributeSetCoder"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HVSearchableItemSerializedAttributes.m" lineNumber:13 description:{@"Invalid parameter not satisfying: %@", @"attributeSetCoder"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -145,20 +145,20 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_attributeSetData, a3);
-    objc_storeStrong(&v14->_attributeSetCoder, a4);
-    objc_storeStrong(&v14->_htmlContentData, a5);
+    objc_storeStrong(&v13->_attributeSetData, data);
+    objc_storeStrong(&v14->_attributeSetCoder, coder);
+    objc_storeStrong(&v14->_htmlContentData, contentData);
   }
 
   return v14;
 }
 
-+ (id)serializedAttributesWithAttributeSetData:(id)a3 attributeSetCoder:(id)a4 htmlContentData:(id)a5
++ (id)serializedAttributesWithAttributeSetData:(id)data attributeSetCoder:(id)coder htmlContentData:(id)contentData
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithAttributeSetData:v10 attributeSetCoder:v9 htmlContentData:v8];
+  contentDataCopy = contentData;
+  coderCopy = coder;
+  dataCopy = data;
+  v11 = [[self alloc] initWithAttributeSetData:dataCopy attributeSetCoder:coderCopy htmlContentData:contentDataCopy];
 
   return v11;
 }

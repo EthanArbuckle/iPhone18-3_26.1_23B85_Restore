@@ -1,7 +1,7 @@
 @interface TUIFocusItemLayout
 - (CGRect)computedErasableBoundsPrimitive;
 - (id)collectLinkEntities;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation TUIFocusItemLayout
@@ -9,28 +9,28 @@
 - (id)collectLinkEntities
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 linkEntities];
+  linkEntities = [v2 linkEntities];
 
-  return v3;
+  return linkEntities;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  if (a3 < 4)
+  if (kind < 4)
   {
     return 0;
   }
 
-  v5 = [a4 renderModelForContainerLayout:self kind:6];
+  v5 = [context renderModelForContainerLayout:self kind:6];
   v15 = [(TUILayout *)self box];
-  v6 = [v15 identifier];
+  identifier = [v15 identifier];
   v7 = [(TUILayout *)self box];
-  v8 = [v7 focusStyle];
+  focusStyle = [v7 focusStyle];
   v9 = [(TUILayout *)self box];
-  v10 = [v9 actionHandler];
+  actionHandler = [v9 actionHandler];
   v11 = [(TUILayout *)self box];
-  v12 = [v11 linkEntities];
-  v13 = [TUIFocusContainerView renderModelWithSubviewsModel:v5 identifier:v6 focusStyle:v8 actionHandler:v10 linkEntities:v12];
+  linkEntities = [v11 linkEntities];
+  v13 = [TUIFocusContainerView renderModelWithSubviewsModel:v5 identifier:identifier focusStyle:focusStyle actionHandler:actionHandler linkEntities:linkEntities];
 
   return v13;
 }
@@ -45,12 +45,12 @@
   width = v7;
   height = v9;
   v11 = [(TUILayout *)self box];
-  v12 = [v11 focusStyle];
+  focusStyle = [v11 focusStyle];
 
-  if (v12)
+  if (focusStyle)
   {
     [(TUILayout *)self computedBounds];
-    [v12 erasableBoundsWithBounds:?];
+    [focusStyle erasableBoundsWithBounds:?];
     v25.origin.x = v13;
     v25.origin.y = v14;
     v25.size.width = v15;

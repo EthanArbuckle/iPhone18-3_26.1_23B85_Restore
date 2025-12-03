@@ -1,32 +1,32 @@
 @interface MPSPluginNDArrayConvolutionDescriptor
-- (MPSPluginNDArrayConvolutionDescriptor)initWithKernelSizes:(MPSPluginNDArrayConvolutionSizes *)a3 inputFeatureChannels:(unint64_t)a4 outputFeatureChannels:(unint64_t)a5 strides:(MPSPluginNDArrayConvolutionSizes *)a6 dilationRates:(MPSPluginNDArrayConvolutionSizes *)a7 groups:(unint64_t)a8 channelMultiplier:(unint64_t)a9 subPixelScaleFactor:(unint64_t)a10 dataFormat:(unsigned int)a11 weightsFormat:(unsigned int)a12;
+- (MPSPluginNDArrayConvolutionDescriptor)initWithKernelSizes:(MPSPluginNDArrayConvolutionSizes *)sizes inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels strides:(MPSPluginNDArrayConvolutionSizes *)strides dilationRates:(MPSPluginNDArrayConvolutionSizes *)rates groups:(unint64_t)groups channelMultiplier:(unint64_t)multiplier subPixelScaleFactor:(unint64_t)self0 dataFormat:(unsigned int)self1 weightsFormat:(unsigned int)self2;
 @end
 
 @implementation MPSPluginNDArrayConvolutionDescriptor
 
-- (MPSPluginNDArrayConvolutionDescriptor)initWithKernelSizes:(MPSPluginNDArrayConvolutionSizes *)a3 inputFeatureChannels:(unint64_t)a4 outputFeatureChannels:(unint64_t)a5 strides:(MPSPluginNDArrayConvolutionSizes *)a6 dilationRates:(MPSPluginNDArrayConvolutionSizes *)a7 groups:(unint64_t)a8 channelMultiplier:(unint64_t)a9 subPixelScaleFactor:(unint64_t)a10 dataFormat:(unsigned int)a11 weightsFormat:(unsigned int)a12
+- (MPSPluginNDArrayConvolutionDescriptor)initWithKernelSizes:(MPSPluginNDArrayConvolutionSizes *)sizes inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels strides:(MPSPluginNDArrayConvolutionSizes *)strides dilationRates:(MPSPluginNDArrayConvolutionSizes *)rates groups:(unint64_t)groups channelMultiplier:(unint64_t)multiplier subPixelScaleFactor:(unint64_t)self0 dataFormat:(unsigned int)self1 weightsFormat:(unsigned int)self2
 {
   v22.receiver = self;
   v22.super_class = MPSPluginNDArrayConvolutionDescriptor;
   result = [(MPSPluginNDArrayConvolutionDescriptor *)&v22 init];
   if (result)
   {
-    v19 = *a3->size;
-    result->_kernelSizes.size[2] = a3->size[2];
+    v19 = *sizes->size;
+    result->_kernelSizes.size[2] = sizes->size[2];
     *result->_kernelSizes.size = v19;
-    result->_inputFeatureChannels = a4;
-    result->_outputFeatureChannels = a5;
-    v20 = *a6->size;
-    result->_strides.size[2] = a6->size[2];
+    result->_inputFeatureChannels = channels;
+    result->_outputFeatureChannels = featureChannels;
+    v20 = *strides->size;
+    result->_strides.size[2] = strides->size[2];
     *result->_strides.size = v20;
-    v21 = *a7->size;
-    result->_dilationRates.size[2] = a7->size[2];
+    v21 = *rates->size;
+    result->_dilationRates.size[2] = rates->size[2];
     *result->_dilationRates.size = v21;
-    result->_groups = a8;
-    result->_channelMultiplier = a9;
-    result->_subPixelScaleFactor = a10;
-    result->_dataFormat = a11;
-    result->_weightsFormat = a12;
+    result->_groups = groups;
+    result->_channelMultiplier = multiplier;
+    result->_subPixelScaleFactor = factor;
+    result->_dataFormat = format;
+    result->_weightsFormat = weightsFormat;
   }
 
   return result;

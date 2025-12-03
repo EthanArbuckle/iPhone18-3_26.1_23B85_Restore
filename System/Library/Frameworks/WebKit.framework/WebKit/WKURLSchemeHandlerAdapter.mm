@@ -1,12 +1,12 @@
 @interface WKURLSchemeHandlerAdapter
 - (_TtC6WebKit25WKURLSchemeHandlerAdapter)init;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation WKURLSchemeHandlerAdapter
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -16,15 +16,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_19D637DC4(a4);
+  selfCopy = self;
+  sub_19D637DC4(task);
 
   swift_unknownObjectRelease();
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -36,8 +36,8 @@
 
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_19D637540(a4);
+  selfCopy = self;
+  v7 = sub_19D637540(task);
   swift_endAccess();
   if (v7)
   {

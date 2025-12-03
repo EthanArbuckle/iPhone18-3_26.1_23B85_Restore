@@ -1,14 +1,14 @@
 @interface SATimerDismiss
 - (id)_ad_timerRequestRepresentation;
-- (id)_ad_timerResponseForResponse:(id)a3;
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7;
+- (id)_ad_timerResponseForResponse:(id)response;
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower;
 @end
 
 @implementation SATimerDismiss
 
-- (id)_ad_timerResponseForResponse:(id)a3
+- (id)_ad_timerResponseForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -32,13 +32,13 @@
   return v2;
 }
 
-- (id)ad_executionDeviceForDeviceContextTuples:(id)a3 executionContext:(id)a4 proximityMap:(id)a5 sharedUserID:(id)a6 localDeviceIsFollower:(BOOL)a7
+- (id)ad_executionDeviceForDeviceContextTuples:(id)tuples executionContext:(id)context proximityMap:(id)map sharedUserID:(id)d localDeviceIsFollower:(BOOL)follower
 {
-  v9 = a5;
-  v10 = sub_100015560(a3);
-  v11 = [(SATimerDismiss *)self timerIds];
+  mapCopy = map;
+  v10 = sub_100015560(tuples);
+  timerIds = [(SATimerDismiss *)self timerIds];
   v12 = v10;
-  v13 = v11;
+  v13 = timerIds;
   *v34 = _NSConcreteStackBlock;
   *&v34[8] = 3221225472;
   *&v34[16] = sub_100099960;
@@ -55,10 +55,10 @@
     v15 = [v12 objectAtIndexedSubscript:v14];
   }
 
-  v16 = [v15 deviceInfo];
-  v17 = sub_1002BC960(v9, v16);
+  deviceInfo = [v15 deviceInfo];
+  v17 = sub_1002BC960(mapCopy, deviceInfo);
 
-  v18 = [(SATimerDismiss *)self timerIds];
+  timerIds2 = [(SATimerDismiss *)self timerIds];
   v19 = v15;
   v20 = v19;
   if (v19)
@@ -73,7 +73,7 @@
         *&v34[12] = 2112;
         *&v34[14] = @"dismiss";
         *&v34[22] = 2112;
-        v35 = v18;
+        v35 = timerIds2;
         _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s #hal %@ local timers: %@", v34, 0x20u);
       }
 
@@ -82,8 +82,8 @@
 
     else
     {
-      v24 = [v20 deviceInfo];
-      v25 = sub_10001A498(v24, 0);
+      deviceInfo2 = [v20 deviceInfo];
+      v25 = sub_10001A498(deviceInfo2, 0);
 
       v26 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -96,7 +96,7 @@
         *&v34[12] = 2112;
         *&v34[14] = @"dismiss";
         *&v34[22] = 2112;
-        v35 = v18;
+        v35 = timerIds2;
         *v36 = 2112;
         *&v36[2] = v32;
         v37 = 2112;
@@ -108,9 +108,9 @@
     }
 
     v27 = [ADDeviceRouterResult alloc];
-    v28 = [v20 identifier];
-    v29 = [v20 contextCollectorSource];
-    v23 = [(ADDeviceRouterResult *)v27 initWithPeerInfo:v22 contextIdentifier:v28 proximity:v17 commandRelayProxyIdentifier:v29 error:0];
+    identifier = [v20 identifier];
+    contextCollectorSource = [v20 contextCollectorSource];
+    v23 = [(ADDeviceRouterResult *)v27 initWithPeerInfo:v22 contextIdentifier:identifier proximity:v17 commandRelayProxyIdentifier:contextCollectorSource error:0];
   }
 
   else

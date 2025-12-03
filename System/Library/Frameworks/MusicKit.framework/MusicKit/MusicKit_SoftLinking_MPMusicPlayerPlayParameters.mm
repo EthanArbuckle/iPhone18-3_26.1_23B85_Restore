@@ -1,12 +1,12 @@
 @interface MusicKit_SoftLinking_MPMusicPlayerPlayParameters
-- (MusicKit_SoftLinking_MPMusicPlayerPlayParameters)initWithDictionary:(id)a3;
+- (MusicKit_SoftLinking_MPMusicPlayerPlayParameters)initWithDictionary:(id)dictionary;
 @end
 
 @implementation MusicKit_SoftLinking_MPMusicPlayerPlayParameters
 
-- (MusicKit_SoftLinking_MPMusicPlayerPlayParameters)initWithDictionary:(id)a3
+- (MusicKit_SoftLinking_MPMusicPlayerPlayParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPMusicPlayerPlayParameters;
   v5 = [(MusicKit_SoftLinking_MPMusicPlayerPlayParameters *)&v11 init];
@@ -30,7 +30,7 @@
 
     v7 = v6;
     _Block_object_dispose(&v13, 8);
-    v8 = [[v6 alloc] initWithDictionary:v4];
+    v8 = [[v6 alloc] initWithDictionary:dictionaryCopy];
     underlyingPlayParameters = v5->_underlyingPlayParameters;
     v5->_underlyingPlayParameters = v8;
 

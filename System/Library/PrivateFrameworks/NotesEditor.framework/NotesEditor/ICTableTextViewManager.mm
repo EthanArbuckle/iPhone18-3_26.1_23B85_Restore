@@ -1,44 +1,44 @@
 @interface ICTableTextViewManager
-- (BOOL)cellContainingPoint:(CGPoint)a3 columnID:(id *)a4 rowID:(id *)a5;
+- (BOOL)cellContainingPoint:(CGPoint)point columnID:(id *)d rowID:(id *)iD;
 - (CGPoint)anchorPoint;
-- (CGPoint)initialScrollPointForViewport:(CGRect)a3;
-- (CGPoint)redrawAllWithViewport:(CGRect)a3;
-- (CGPoint)updateTilesWithViewport:(CGRect)a3 redrawAll:(BOOL)a4;
+- (CGPoint)initialScrollPointForViewport:(CGRect)viewport;
+- (CGPoint)redrawAllWithViewport:(CGRect)viewport;
+- (CGPoint)updateTilesWithViewport:(CGRect)viewport redrawAll:(BOOL)all;
 - (CGRect)boundingRect;
-- (CGRect)frameOfCellAtColumn:(id)a3 row:(id)a4;
-- (CGRect)frameOfColumn:(id)a3;
-- (CGRect)frameOfRow:(id)a3;
+- (CGRect)frameOfCellAtColumn:(id)column row:(id)row;
+- (CGRect)frameOfColumn:(id)column;
+- (CGRect)frameOfRow:(id)row;
 - (ICTableContentView)contentView;
 - (ICTableTextViewManager)init;
-- (ICTableTextViewManager)initWithTableLayoutManager:(id)a3 view:(id)a4 cachedWidths:(id)a5 cachedRowHeights:(id)a6 cachedCellHeights:(id)a7;
+- (ICTableTextViewManager)initWithTableLayoutManager:(id)manager view:(id)view cachedWidths:(id)widths cachedRowHeights:(id)heights cachedCellHeights:(id)cellHeights;
 - (ICTableTextViewManagerDelegate)delegate;
 - (NSArray)columnIDs;
 - (NSArray)rowIDs;
-- (double)addColumn:(id)a3 atEnd:(BOOL)a4;
-- (double)addRow:(id)a3 atEnd:(BOOL)a4;
-- (double)ensureChunkOfPopulatedColumnsForColumn:(id)a3;
-- (double)ensureChunkOfPopulatedRowsForRow:(id)a3 shouldForce:(BOOL)a4;
-- (double)preAddColumn:(id)a3;
-- (double)preAddRow:(id)a3 atYPosition:(double)a4;
-- (id)columnContainingX:(double)a3;
-- (id)rowContainingY:(double)a3;
-- (id)textViewForColumn:(id)a3 createIfNeeded:(BOOL)a4;
+- (double)addColumn:(id)column atEnd:(BOOL)end;
+- (double)addRow:(id)row atEnd:(BOOL)end;
+- (double)ensureChunkOfPopulatedColumnsForColumn:(id)column;
+- (double)ensureChunkOfPopulatedRowsForRow:(id)row shouldForce:(BOOL)force;
+- (double)preAddColumn:(id)column;
+- (double)preAddRow:(id)row atYPosition:(double)position;
+- (id)columnContainingX:(double)x;
+- (id)rowContainingY:(double)y;
+- (id)textViewForColumn:(id)column createIfNeeded:(BOOL)needed;
 - (void)adjustOnscreenPositions;
-- (void)clearColumn:(id)a3;
-- (void)clearColumnsOutsideFrame:(CGRect)a3;
-- (void)clearRow:(id)a3;
-- (void)clearRowsOutsideFrame:(CGRect)a3;
+- (void)clearColumn:(id)column;
+- (void)clearColumnsOutsideFrame:(CGRect)frame;
+- (void)clearRow:(id)row;
+- (void)clearRowsOutsideFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)ensureCellPositionForColumn:(id)a3 andRow:(id)a4;
-- (void)enumerateTextViewsWithBlock:(id)a3;
-- (void)heightChangedForRow:(id)a3 by:(double)a4;
-- (void)moveColumnAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)moveRowAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
+- (void)ensureCellPositionForColumn:(id)column andRow:(id)row;
+- (void)enumerateTextViewsWithBlock:(id)block;
+- (void)heightChangedForRow:(id)row by:(double)by;
+- (void)moveColumnAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)moveRowAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (void)parentViewDidChange;
-- (void)removeColumn:(id)a3;
+- (void)removeColumn:(id)column;
 - (void)restyleCells;
-- (void)restyleTextView:(id)a3;
-- (void)validateRowHeightsForColumn:(id)a3;
+- (void)restyleTextView:(id)view;
+- (void)validateRowHeightsForColumn:(id)column;
 @end
 
 @implementation ICTableTextViewManager
@@ -50,39 +50,39 @@
   return 0;
 }
 
-- (ICTableTextViewManager)initWithTableLayoutManager:(id)a3 view:(id)a4 cachedWidths:(id)a5 cachedRowHeights:(id)a6 cachedCellHeights:(id)a7
+- (ICTableTextViewManager)initWithTableLayoutManager:(id)manager view:(id)view cachedWidths:(id)widths cachedRowHeights:(id)heights cachedCellHeights:(id)cellHeights
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  managerCopy = manager;
+  viewCopy = view;
+  widthsCopy = widths;
+  heightsCopy = heights;
+  cellHeightsCopy = cellHeights;
   v28.receiver = self;
   v28.super_class = ICTableTextViewManager;
   v18 = [(ICTableTextViewManager *)&v28 init];
   if (v18)
   {
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     columnIdentifiers = v18->_columnIdentifiers;
-    v18->_columnIdentifiers = v19;
+    v18->_columnIdentifiers = array;
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     rowIdentifiers = v18->_rowIdentifiers;
-    v18->_rowIdentifiers = v21;
+    v18->_rowIdentifiers = array2;
 
     v23 = [MEMORY[0x277CBEB58] set];
     prepopulatedColumns = v18->_prepopulatedColumns;
     v18->_prepopulatedColumns = v23;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     columnTextViews = v18->_columnTextViews;
-    v18->_columnTextViews = v25;
+    v18->_columnTextViews = dictionary;
 
-    objc_storeStrong(&v18->_tableLayoutManager, a3);
-    objc_storeWeak(&v18->_contentView, v14);
-    objc_storeStrong(&v18->_cachedColumnWidths, a5);
-    objc_storeStrong(&v18->_cachedRowHeights, a6);
-    objc_storeStrong(&v18->_cachedCellHeights, a7);
+    objc_storeStrong(&v18->_tableLayoutManager, manager);
+    objc_storeWeak(&v18->_contentView, viewCopy);
+    objc_storeStrong(&v18->_cachedColumnWidths, widths);
+    objc_storeStrong(&v18->_cachedRowHeights, heights);
+    objc_storeStrong(&v18->_cachedCellHeights, cellHeights);
     v18->_anchorColumn = 0;
     v18->_anchorRow = 0;
     v18->_anchorPoint = *MEMORY[0x277CBF348];
@@ -98,10 +98,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ICTableTextViewManager *)self columnTextViews];
-  v4 = [v3 allValues];
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  allValues = [columnTextViews allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -113,14 +113,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) removeFromSuperview];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -131,46 +131,46 @@
   [(ICTableTextViewManager *)&v9 dealloc];
 }
 
-- (CGPoint)initialScrollPointForViewport:(CGRect)a3
+- (CGPoint)initialScrollPointForViewport:(CGRect)viewport
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
   v8 = MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
-  v10 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v11 = [v10 table];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  table = [tableLayoutManager table];
 
-  if ([v11 isRightToLeft])
+  if ([table isRightToLeft])
   {
-    v12 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v13 = [v12 table];
-    v14 = [v12 columnWidthManager];
-    v15 = [v13 columnCount];
+    tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+    table2 = [tableLayoutManager2 table];
+    columnWidthManager = [tableLayoutManager2 columnWidthManager];
+    columnCount = [table2 columnCount];
     v30.origin.x = x;
     v30.origin.y = y;
     v30.size.width = width;
     v30.size.height = height;
     v16 = CGRectGetWidth(v30);
-    v17 = [(ICTableTextViewManager *)self cachedColumnWidths];
-    if (v16 > 0.0 && v15)
+    cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+    if (v16 > 0.0 && columnCount)
     {
       v18 = 0.0;
       v19 = 1;
       do
       {
-        v20 = [v13 identifierForColumnAtIndex:v19 - 1];
-        [v14 widthOfColumn:v20];
+        v20 = [table2 identifierForColumnAtIndex:v19 - 1];
+        [columnWidthManager widthOfColumn:v20];
         v22 = v21;
-        [v17 setDimension:v20 forKey:?];
+        [cachedColumnWidths setDimension:v20 forKey:?];
         v18 = v18 + v22;
       }
 
-      while (v18 < v16 && v19++ < v15);
+      while (v18 < v16 && v19++ < columnCount);
     }
 
-    [v17 sum];
+    [cachedColumnWidths sum];
     v25 = v24 - v16;
     if (v25 >= 0.0)
     {
@@ -197,10 +197,10 @@
 
 - (CGRect)boundingRect
 {
-  v3 = [(ICTableTextViewManager *)self columnTextViews];
-  v4 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v5 = [v4 lastObject];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  lastObject = [columnIdentifiers lastObject];
+  v6 = [columnTextViews objectForKeyedSubscript:lastObject];
 
   [v6 frame];
   MaxX = CGRectGetMaxX(v31);
@@ -216,17 +216,17 @@
     v10 = 0.0;
   }
 
-  v11 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v12 = [v11 lastObject];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  lastObject2 = [rowIdentifiers lastObject];
 
-  v13 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v14 = [v13 rowPositions];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  rowPositions = [tableLayoutManager rowPositions];
+  v15 = [rowPositions objectForKeyedSubscript:lastObject2];
   [v15 doubleValue];
   v17 = v16;
 
-  v18 = [(ICTableTextViewManager *)self cachedRowHeights];
-  [v18 dimensionForKey:v12];
+  cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+  [cachedRowHeights dimensionForKey:lastObject2];
   v20 = v17 + v19;
 
   [(ICTableTextViewManager *)self anchorPoint];
@@ -258,32 +258,32 @@
 
 - (NSArray)columnIDs
 {
-  v2 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v3 = [v2 copy];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v3 = [columnIdentifiers copy];
 
   return v3;
 }
 
 - (NSArray)rowIDs
 {
-  v2 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v3 = [v2 copy];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v3 = [rowIdentifiers copy];
 
   return v3;
 }
 
-- (void)enumerateTextViewsWithBlock:(id)a3
+- (void)enumerateTextViewsWithBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
-  v5 = [(ICTableTextViewManager *)self columnTextViews];
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v7 = [columnIdentifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -294,11 +294,11 @@ LABEL_3:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(columnIdentifiers);
       }
 
-      v11 = [v5 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v10)];
-      v4[2](v4, v11, &v17);
+      v11 = [columnTextViews objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v10)];
+      blockCopy[2](blockCopy, v11, &v17);
       v12 = v17;
 
       if (v12)
@@ -308,7 +308,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [columnIdentifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -333,8 +333,8 @@ LABEL_3:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = [(ICTableTextViewManager *)self columnIDs];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  columnIDs = [(ICTableTextViewManager *)self columnIDs];
+  v9 = [columnIDs countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v9)
   {
     v10 = v9;
@@ -346,36 +346,36 @@ LABEL_3:
       {
         if (*v43 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(columnIDs);
         }
 
         v13 = *(*(&v42 + 1) + 8 * v12);
-        v14 = [(ICTableTextViewManager *)self columnTextViews];
-        v15 = [v14 objectForKey:v13];
+        columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+        v15 = [columnTextViews objectForKey:v13];
 
         if (!v15)
         {
           [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((columnTextView) != nil)" functionName:"-[ICTableTextViewManager adjustOnscreenPositions]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "columnTextView"}];
         }
 
-        v16 = [(ICTableTextViewManager *)self cachedColumnWidths];
-        [v16 dimensionForKey:v13];
+        cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+        [cachedColumnWidths dimensionForKey:v13];
         v18 = v17;
 
         [v15 frame];
         v20 = v19;
         [v15 frame];
         [v15 setFrame:{MinX, v20, v18}];
-        v21 = [(ICTableTextViewManager *)self contentView];
+        contentView = [(ICTableTextViewManager *)self contentView];
         v22 = [MEMORY[0x277CCABB0] numberWithDouble:MinX];
-        [v21 setVerticalLinePosition:v22 forKey:v13];
+        [contentView setVerticalLinePosition:v22 forKey:v13];
 
         MinX = MinX + v18;
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v10 = [columnIDs countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v10);
@@ -386,8 +386,8 @@ LABEL_3:
   v50.size.width = width;
   v50.size.height = height;
   MinY = CGRectGetMinY(v50);
-  v24 = [(ICTableTextViewManager *)self rowIdentifiers];
-  if ([v24 count])
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  if ([rowIdentifiers count])
   {
     [(ICTableTextViewManager *)self rowIdentifiers];
   }
@@ -419,15 +419,15 @@ LABEL_3:
         }
 
         v31 = *(*(&v38 + 1) + 8 * v30);
-        v32 = [(ICTableTextViewManager *)self contentView];
+        contentView2 = [(ICTableTextViewManager *)self contentView];
         v33 = [MEMORY[0x277CCABB0] numberWithDouble:MinY];
-        [v32 setHorizontalLinePosition:v33 forKey:v31];
+        [contentView2 setHorizontalLinePosition:v33 forKey:v31];
 
-        v34 = [(ICTableTextViewManager *)self tableLayoutManager];
-        [v34 setYPosition:v31 forRow:1 shouldInvalidate:MinY];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+        [tableLayoutManager setYPosition:v31 forRow:1 shouldInvalidate:MinY];
 
-        v35 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v35 dimensionForKey:v31];
+        cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights dimensionForKey:v31];
         v37 = v36;
 
         MinY = MinY + v37;
@@ -442,12 +442,12 @@ LABEL_3:
   }
 }
 
-- (void)validateRowHeightsForColumn:(id)a3
+- (void)validateRowHeightsForColumn:(id)column
 {
   v51 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v4 = [(ICTableTextViewManager *)self rowIdentifiers];
-  if ([v4 count])
+  columnCopy = column;
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  if ([rowIdentifiers count])
   {
     [(ICTableTextViewManager *)self rowIdentifiers];
   }
@@ -458,9 +458,9 @@ LABEL_3:
   }
   v5 = ;
 
-  v6 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v7 = [v6 table];
-  v8 = [v7 textStorageForColumn:v40];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  table = [tableLayoutManager table];
+  v8 = [table textStorageForColumn:columnCopy];
 
   v47 = 0u;
   v48 = 0u;
@@ -490,16 +490,16 @@ LABEL_3:
     while (v11);
   }
 
-  v14 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v15 = [v14 columnLayoutManagerForColumn:v40];
+  tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+  v15 = [tableLayoutManager2 columnLayoutManagerForColumn:columnCopy];
 
   if ([v9 count])
   {
-    v16 = [v9 firstObject];
-    v17 = [v9 lastObject];
-    v18 = [v8 characterRangeForRowID:v16];
+    firstObject = [v9 firstObject];
+    lastObject = [v9 lastObject];
+    v18 = [v8 characterRangeForRowID:firstObject];
     v20 = v19;
-    v53.location = [v8 characterRangeForRowID:v17];
+    v53.location = [v8 characterRangeForRowID:lastObject];
     v53.length = v21;
     v52.location = v18;
     v52.length = v20;
@@ -530,8 +530,8 @@ LABEL_3:
         }
 
         v30 = *(*(&v41 + 1) + 8 * j);
-        v31 = [(ICTableTextViewManager *)self cachedCellHeights];
-        v32 = [v31 objectForKey:v30];
+        cachedCellHeights = [(ICTableTextViewManager *)self cachedCellHeights];
+        v32 = [cachedCellHeights objectForKey:v30];
 
         if (!v32)
         {
@@ -539,9 +539,9 @@ LABEL_3:
         }
 
         [v15 heightOfCellAtRowID:v30];
-        [v32 setDimension:v40 forKey:?];
-        v33 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v33 dimensionForKey:v30];
+        [v32 setDimension:columnCopy forKey:?];
+        cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights dimensionForKey:v30];
         v35 = v34;
 
         [v32 max];
@@ -557,8 +557,8 @@ LABEL_3:
 
         if (v35 != v37)
         {
-          v38 = [(ICTableTextViewManager *)self cachedRowHeights];
-          [v38 setDimension:v30 forKey:v37];
+          cachedRowHeights2 = [(ICTableTextViewManager *)self cachedRowHeights];
+          [cachedRowHeights2 setDimension:v30 forKey:v37];
 
           v26 = 1;
         }
@@ -581,44 +581,44 @@ LABEL_3:
   }
 }
 
-- (double)addColumn:(id)a3 atEnd:(BOOL)a4
+- (double)addColumn:(id)column atEnd:(BOOL)end
 {
-  v4 = a4;
-  v6 = a3;
-  [(ICTableTextViewManager *)self validateRowHeightsForColumn:v6];
+  endCopy = end;
+  columnCopy = column;
+  [(ICTableTextViewManager *)self validateRowHeightsForColumn:columnCopy];
   [(ICTableTextViewManager *)self boundingRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v16 = v15;
-  if (v4)
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v16 = columnIdentifiers;
+  if (endCopy)
   {
-    v17 = [(ICTableTextViewManager *)self columnIdentifiers];
-    [v16 insertObject:v6 atIndex:{objc_msgSend(v17, "count")}];
+    columnIdentifiers2 = [(ICTableTextViewManager *)self columnIdentifiers];
+    [v16 insertObject:columnCopy atIndex:{objc_msgSend(columnIdentifiers2, "count")}];
   }
 
   else
   {
-    [v15 insertObject:v6 atIndex:0];
+    [columnIdentifiers insertObject:columnCopy atIndex:0];
   }
 
-  v18 = [(ICTableTextViewManager *)self prepopulatedColumns];
-  v19 = [v18 containsObject:v6];
+  prepopulatedColumns = [(ICTableTextViewManager *)self prepopulatedColumns];
+  v19 = [prepopulatedColumns containsObject:columnCopy];
 
   if (v19)
   {
-    v20 = [(ICTableTextViewManager *)self prepopulatedColumns];
-    [v20 removeObject:v6];
+    prepopulatedColumns2 = [(ICTableTextViewManager *)self prepopulatedColumns];
+    [prepopulatedColumns2 removeObject:columnCopy];
   }
 
-  v21 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v22 = [v21 columnWidthManager];
-  [v22 widthOfColumn:v6];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  columnWidthManager = [tableLayoutManager columnWidthManager];
+  [columnWidthManager widthOfColumn:columnCopy];
   v24 = v23;
 
-  if (v4)
+  if (endCopy)
   {
     v41.origin.x = v8;
     v41.origin.y = v10;
@@ -638,17 +638,17 @@ LABEL_3:
     MaxX = v27 - v24;
   }
 
-  v28 = [(ICTableTextViewManager *)self contentView];
-  [v28 bounds];
+  contentView = [(ICTableTextViewManager *)self contentView];
+  [contentView bounds];
   v30 = v29;
 
-  v31 = [(ICTableTextViewManager *)self textViewForColumn:v6 createIfNeeded:1];
+  v31 = [(ICTableTextViewManager *)self textViewForColumn:columnCopy createIfNeeded:1];
   [v31 setFrame:{MaxX, 0.0, v24, v30}];
-  v32 = [(ICTableTextViewManager *)self contentView];
-  [v32 addSubview:v31];
+  contentView2 = [(ICTableTextViewManager *)self contentView];
+  [contentView2 addSubview:v31];
 
-  v33 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
-  v34 = [v33 containsObject:v6];
+  columnsNeedingRestyle = [(ICTableTextViewManager *)self columnsNeedingRestyle];
+  v34 = [columnsNeedingRestyle containsObject:columnCopy];
 
   if (v34)
   {
@@ -656,11 +656,11 @@ LABEL_3:
   }
 
   [(ICTableTextViewManager *)self updateAuthorHighlights];
-  v35 = [(ICTableTextViewManager *)self contentView];
+  contentView3 = [(ICTableTextViewManager *)self contentView];
   v36 = [MEMORY[0x277CCABB0] numberWithDouble:MaxX];
-  [v35 setVerticalLinePosition:v36 forKey:v6];
+  [contentView3 setVerticalLinePosition:v36 forKey:columnCopy];
 
-  if (!v4)
+  if (!endCopy)
   {
     [(ICTableTextViewManager *)self setAnchorColumn:[(ICTableTextViewManager *)self anchorColumn]- 1];
     [(ICTableTextViewManager *)self anchorPoint];
@@ -669,34 +669,34 @@ LABEL_3:
     [(ICTableTextViewManager *)self setAnchorPoint:v38];
   }
 
-  v39 = [(ICTableTextViewManager *)self cachedColumnWidths];
-  [v39 setDimension:v6 forKey:v24];
+  cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+  [cachedColumnWidths setDimension:columnCopy forKey:v24];
 
-  [(ICTableTextViewManager *)self validateRowHeightsForColumn:v6];
+  [(ICTableTextViewManager *)self validateRowHeightsForColumn:columnCopy];
   return v24;
 }
 
-- (double)ensureChunkOfPopulatedColumnsForColumn:(id)a3
+- (double)ensureChunkOfPopulatedColumnsForColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v6 = [v5 columnLayoutManagerForColumn:v4];
+  columnCopy = column;
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  v6 = [tableLayoutManager columnLayoutManagerForColumn:columnCopy];
 
-  v7 = [v6 columnTextStorage];
-  v8 = [v7 populatedRows];
-  v9 = [v8 count];
+  columnTextStorage = [v6 columnTextStorage];
+  populatedRows = [columnTextStorage populatedRows];
+  v9 = [populatedRows count];
 
   if (!v9)
   {
-    v10 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v11 = [v10 table];
+    tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+    table = [tableLayoutManager2 table];
 
-    v12 = [v11 columnIndexForIdentifier:v4];
+    v12 = [table columnIndexForIdentifier:columnCopy];
     v13 = *MEMORY[0x277D36600] + v12;
-    v14 = [v11 columnCount];
-    if (v13 >= v14)
+    columnCount = [table columnCount];
+    if (v13 >= columnCount)
     {
-      v15 = v14;
+      v15 = columnCount;
     }
 
     else
@@ -708,7 +708,7 @@ LABEL_3:
     {
       do
       {
-        v16 = [v11 identifierForColumnAtIndex:v12];
+        v16 = [table identifierForColumnAtIndex:v12];
         [(ICTableTextViewManager *)self preAddColumn:v16];
 
         ++v12;
@@ -718,67 +718,67 @@ LABEL_3:
     }
   }
 
-  [(ICTableTextViewManager *)self addColumn:v4 atEnd:1];
+  [(ICTableTextViewManager *)self addColumn:columnCopy atEnd:1];
   v18 = v17;
 
   return v18;
 }
 
-- (double)preAddColumn:(id)a3
+- (double)preAddColumn:(id)column
 {
-  v4 = a3;
-  [(ICTableTextViewManager *)self validateRowHeightsForColumn:v4];
-  v5 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v6 = [v5 columnWidthManager];
-  [v6 widthOfColumn:v4];
+  columnCopy = column;
+  [(ICTableTextViewManager *)self validateRowHeightsForColumn:columnCopy];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  columnWidthManager = [tableLayoutManager columnWidthManager];
+  [columnWidthManager widthOfColumn:columnCopy];
   v8 = v7;
 
-  v9 = [(ICTableTextViewManager *)self columnIdentifiers];
-  LOBYTE(v6) = [v9 containsObject:v4];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  LOBYTE(columnWidthManager) = [columnIdentifiers containsObject:columnCopy];
 
-  if ((v6 & 1) == 0)
+  if ((columnWidthManager & 1) == 0)
   {
-    v10 = [(ICTableTextViewManager *)self prepopulatedColumns];
-    [v10 addObject:v4];
+    prepopulatedColumns = [(ICTableTextViewManager *)self prepopulatedColumns];
+    [prepopulatedColumns addObject:columnCopy];
   }
 
-  v11 = [(ICTableTextViewManager *)self cachedColumnWidths];
-  [v11 setDimension:v4 forKey:v8];
+  cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+  [cachedColumnWidths setDimension:columnCopy forKey:v8];
 
   return v8;
 }
 
-- (double)addRow:(id)a3 atEnd:(BOOL)a4
+- (double)addRow:(id)row atEnd:(BOOL)end
 {
-  v4 = a4;
+  endCopy = end;
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  rowCopy = row;
   [(ICTableTextViewManager *)self boundingRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v16 = v15;
-  if (v4)
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v16 = rowIdentifiers;
+  if (endCopy)
   {
-    v17 = [(ICTableTextViewManager *)self rowIdentifiers];
-    [v16 insertObject:v6 atIndex:{objc_msgSend(v17, "count")}];
+    rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+    [v16 insertObject:rowCopy atIndex:{objc_msgSend(rowIdentifiers2, "count")}];
   }
 
   else
   {
-    [v15 insertObject:v6 atIndex:0];
+    [rowIdentifiers insertObject:rowCopy atIndex:0];
   }
 
-  v18 = [(ICTableTextViewManager *)self cachedCellHeights];
-  v19 = [v18 objectForKey:v6];
+  cachedCellHeights = [(ICTableTextViewManager *)self cachedCellHeights];
+  v19 = [cachedCellHeights objectForKey:rowCopy];
 
   if (!v19)
   {
     v19 = [objc_alloc(MEMORY[0x277D35EB0]) initWithComparator:&__block_literal_global_31];
-    v20 = [(ICTableTextViewManager *)self cachedCellHeights];
-    [v20 setObject:v19 forKey:v6];
+    cachedCellHeights2 = [(ICTableTextViewManager *)self cachedCellHeights];
+    [cachedCellHeights2 setObject:v19 forKey:rowCopy];
   }
 
   v56 = 0u;
@@ -791,7 +791,7 @@ LABEL_3:
   {
     v22 = v21;
     v23 = *v55;
-    v51 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v22; ++i)
@@ -802,19 +802,19 @@ LABEL_3:
         }
 
         v25 = *(*(&v54 + 1) + 8 * i);
-        v26 = [(ICTableTextViewManager *)self tableLayoutManager];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
         v53 = v25;
-        v27 = [v26 columnLayoutManagerForColumn:v25];
+        v27 = [tableLayoutManager columnLayoutManagerForColumn:v25];
 
-        if (v4)
+        if (endCopy)
         {
-          v28 = [v27 columnTextStorage];
-          [v28 populatedRows];
-          v30 = v29 = v4;
-          v31 = [v30 containsObject:v6];
+          columnTextStorage = [v27 columnTextStorage];
+          [columnTextStorage populatedRows];
+          v30 = v29 = endCopy;
+          v31 = [v30 containsObject:rowCopy];
 
-          v4 = v29;
-          self = v51;
+          endCopy = v29;
+          self = selfCopy;
 
           if ((v31 & 1) == 0)
           {
@@ -823,18 +823,18 @@ LABEL_3:
             v60.size.width = v12;
             v60.size.height = v14;
             MaxY = CGRectGetMaxY(v60);
-            [(ICTableTextViewManager *)v51 anchorPoint];
+            [(ICTableTextViewManager *)selfCopy anchorPoint];
             if (MaxY < v33)
             {
               MaxY = v33;
             }
 
-            v34 = [(ICTableTextViewManager *)v51 tableLayoutManager];
-            [v34 setYPosition:v6 forRow:0 shouldInvalidate:MaxY];
+            tableLayoutManager2 = [(ICTableTextViewManager *)selfCopy tableLayoutManager];
+            [tableLayoutManager2 setYPosition:rowCopy forRow:0 shouldInvalidate:MaxY];
           }
         }
 
-        [v27 heightOfCellAtRowID:v6];
+        [v27 heightOfCellAtRowID:rowCopy];
         [v19 setDimension:v53 forKey:?];
       }
 
@@ -846,8 +846,8 @@ LABEL_3:
 
   [v19 max];
   v36 = v35;
-  v37 = [(ICTableTextViewManager *)self tableLayoutManager];
-  [v37 emptyCellHeight];
+  tableLayoutManager3 = [(ICTableTextViewManager *)self tableLayoutManager];
+  [tableLayoutManager3 emptyCellHeight];
   v39 = v38;
 
   if (v36 < v39)
@@ -855,7 +855,7 @@ LABEL_3:
     v36 = v39;
   }
 
-  if (v4)
+  if (endCopy)
   {
     v61.origin.x = v8;
     v61.origin.y = v10;
@@ -875,14 +875,14 @@ LABEL_3:
     v40 = v42 - v36;
   }
 
-  v43 = [(ICTableTextViewManager *)self tableLayoutManager];
-  [v43 setYPosition:v6 forRow:1 shouldInvalidate:v40];
+  tableLayoutManager4 = [(ICTableTextViewManager *)self tableLayoutManager];
+  [tableLayoutManager4 setYPosition:rowCopy forRow:1 shouldInvalidate:v40];
 
-  v44 = [(ICTableTextViewManager *)self contentView];
+  contentView = [(ICTableTextViewManager *)self contentView];
   v45 = [MEMORY[0x277CCABB0] numberWithDouble:v40];
-  [v44 setHorizontalLinePosition:v45 forKey:v6];
+  [contentView setHorizontalLinePosition:v45 forKey:rowCopy];
 
-  if (!v4)
+  if (!endCopy)
   {
     [(ICTableTextViewManager *)self setAnchorRow:[(ICTableTextViewManager *)self anchorRow]- 1];
     [(ICTableTextViewManager *)self anchorPoint];
@@ -891,28 +891,28 @@ LABEL_3:
     [(ICTableTextViewManager *)self setAnchorPoint:v47, v48 - v36];
   }
 
-  v49 = [(ICTableTextViewManager *)self cachedRowHeights];
-  [v49 setDimension:v6 forKey:v36];
+  cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+  [cachedRowHeights setDimension:rowCopy forKey:v36];
 
   return v36;
 }
 
-- (double)ensureChunkOfPopulatedRowsForRow:(id)a3 shouldForce:(BOOL)a4
+- (double)ensureChunkOfPopulatedRowsForRow:(id)row shouldForce:(BOOL)force
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  rowCopy = row;
+  if (force)
   {
 LABEL_12:
-    v18 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v7 = [v18 table];
+    tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+    table = [tableLayoutManager table];
 
-    v19 = [v7 rowIndexForIdentifier:v6];
+    v19 = [table rowIndexForIdentifier:rowCopy];
     v20 = *MEMORY[0x277D36638] + v19;
-    v21 = [v7 rowCount];
-    if (v20 >= v21)
+    rowCount = [table rowCount];
+    if (v20 >= rowCount)
     {
-      v22 = v21;
+      v22 = rowCount;
     }
 
     else
@@ -932,7 +932,7 @@ LABEL_12:
 
       do
       {
-        v25 = [v7 identifierForRowAtIndex:v19];
+        v25 = [table identifierForRowAtIndex:v19];
         [(ICTableTextViewManager *)self preAddRow:v25 atYPosition:MaxY];
         MaxY = MaxY + v26;
 
@@ -949,8 +949,8 @@ LABEL_12:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = [(ICTableTextViewManager *)self columnIdentifiers];
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    table = [(ICTableTextViewManager *)self columnIdentifiers];
+    v8 = [table countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
@@ -961,16 +961,16 @@ LABEL_12:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(table);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
-          v13 = [(ICTableTextViewManager *)self tableLayoutManager];
-          v14 = [v13 columnLayoutManagerForColumn:v12];
+          tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+          v14 = [tableLayoutManager2 columnLayoutManagerForColumn:v12];
 
-          v15 = [v14 columnTextStorage];
-          v16 = [v15 populatedRows];
-          v17 = [v16 containsObject:v6];
+          columnTextStorage = [v14 columnTextStorage];
+          populatedRows = [columnTextStorage populatedRows];
+          v17 = [populatedRows containsObject:rowCopy];
 
           if (!v17)
           {
@@ -979,7 +979,7 @@ LABEL_12:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v9 = [table countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v9)
         {
           continue;
@@ -990,32 +990,32 @@ LABEL_12:
     }
   }
 
-  [(ICTableTextViewManager *)self addRow:v6 atEnd:1];
+  [(ICTableTextViewManager *)self addRow:rowCopy atEnd:1];
   v28 = v27;
 
   return v28;
 }
 
-- (double)preAddRow:(id)a3 atYPosition:(double)a4
+- (double)preAddRow:(id)row atYPosition:(double)position
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICTableTextViewManager *)self cachedCellHeights];
-  v8 = [v7 objectForKey:v6];
+  rowCopy = row;
+  cachedCellHeights = [(ICTableTextViewManager *)self cachedCellHeights];
+  v8 = [cachedCellHeights objectForKey:rowCopy];
 
   v42 = v8;
   if (!v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D35EB0]) initWithComparator:&__block_literal_global_26];
-    v10 = [(ICTableTextViewManager *)self cachedCellHeights];
+    cachedCellHeights2 = [(ICTableTextViewManager *)self cachedCellHeights];
     v42 = v9;
-    [v10 setObject:v9 forKey:v6];
+    [cachedCellHeights2 setObject:v9 forKey:rowCopy];
   }
 
-  v11 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v12 = [(ICTableTextViewManager *)self prepopulatedColumns];
-  v13 = [v12 allObjects];
-  v14 = [v11 arrayByAddingObjectsFromArray:v13];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  prepopulatedColumns = [(ICTableTextViewManager *)self prepopulatedColumns];
+  allObjects = [prepopulatedColumns allObjects];
+  v14 = [columnIdentifiers arrayByAddingObjectsFromArray:allObjects];
 
   v45 = 0u;
   v46 = 0u;
@@ -1037,23 +1037,23 @@ LABEL_12:
         }
 
         v19 = *(*(&v43 + 1) + 8 * i);
-        v20 = [(ICTableTextViewManager *)self tableLayoutManager];
-        v21 = [v20 columnLayoutManagerForColumn:v19];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+        v21 = [tableLayoutManager columnLayoutManagerForColumn:v19];
 
-        v22 = [v21 columnTextStorage];
-        v23 = [v22 populatedRows];
-        v24 = [v23 containsObject:v6];
+        columnTextStorage = [v21 columnTextStorage];
+        populatedRows = [columnTextStorage populatedRows];
+        v24 = [populatedRows containsObject:rowCopy];
 
         if ((v24 & 1) == 0)
         {
-          v25 = [(ICTableTextViewManager *)self tableLayoutManager];
-          v26 = [v25 rowPositions];
-          v27 = [v26 objectForKey:v6];
+          tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+          rowPositions = [tableLayoutManager2 rowPositions];
+          v27 = [rowPositions objectForKey:rowCopy];
 
           if (v27)
           {
             [v27 doubleValue];
-            v29 = v28 != a4;
+            v29 = v28 != position;
           }
 
           else
@@ -1061,11 +1061,11 @@ LABEL_12:
             v29 = 0;
           }
 
-          v30 = [(ICTableTextViewManager *)self tableLayoutManager];
-          [v30 setYPosition:v6 forRow:v29 shouldInvalidate:a4];
+          tableLayoutManager3 = [(ICTableTextViewManager *)self tableLayoutManager];
+          [tableLayoutManager3 setYPosition:rowCopy forRow:v29 shouldInvalidate:position];
         }
 
-        [v21 heightOfCellAtRowID:v6];
+        [v21 heightOfCellAtRowID:rowCopy];
         [v42 setDimension:v19 forKey:?];
       }
 
@@ -1075,17 +1075,17 @@ LABEL_12:
     while (v16);
   }
 
-  v31 = [(ICTableTextViewManager *)self tableLayoutManager];
-  [v31 setYPosition:v6 forRow:1 shouldInvalidate:a4];
+  tableLayoutManager4 = [(ICTableTextViewManager *)self tableLayoutManager];
+  [tableLayoutManager4 setYPosition:rowCopy forRow:1 shouldInvalidate:position];
 
-  v32 = [(ICTableTextViewManager *)self contentView];
-  v33 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  [v32 setHorizontalLinePosition:v33 forKey:v6];
+  contentView = [(ICTableTextViewManager *)self contentView];
+  v33 = [MEMORY[0x277CCABB0] numberWithDouble:position];
+  [contentView setHorizontalLinePosition:v33 forKey:rowCopy];
 
   [v42 max];
   v35 = v34;
-  v36 = [(ICTableTextViewManager *)self tableLayoutManager];
-  [v36 emptyCellHeight];
+  tableLayoutManager5 = [(ICTableTextViewManager *)self tableLayoutManager];
+  [tableLayoutManager5 emptyCellHeight];
   v38 = v37;
 
   if (v35 < v38)
@@ -1093,28 +1093,28 @@ LABEL_12:
     v35 = v38;
   }
 
-  v39 = [(ICTableTextViewManager *)self cachedRowHeights];
-  [v39 setDimension:v6 forKey:v35];
+  cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+  [cachedRowHeights setDimension:rowCopy forKey:v35];
 
   return v35;
 }
 
-- (void)ensureCellPositionForColumn:(id)a3 andRow:(id)a4
+- (void)ensureCellPositionForColumn:(id)column andRow:(id)row
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICTableTextViewManager *)self textViewForColumn:v6 createIfNeeded:1];
-  v9 = [v8 superview];
+  columnCopy = column;
+  rowCopy = row;
+  v8 = [(ICTableTextViewManager *)self textViewForColumn:columnCopy createIfNeeded:1];
+  superview = [v8 superview];
 
-  if (!v9)
+  if (!superview)
   {
-    v10 = [(ICTableTextViewManager *)self contentView];
-    [v10 addSubview:v8];
+    contentView = [(ICTableTextViewManager *)self contentView];
+    [contentView addSubview:v8];
 
-    v11 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v12 = [v11 table];
+    tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+    table = [tableLayoutManager table];
 
-    v13 = [v12 columnIndexForIdentifier:v6];
+    v13 = [table columnIndexForIdentifier:columnCopy];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_40:
@@ -1123,12 +1123,12 @@ LABEL_40:
     }
 
     v14 = v13;
-    v15 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v16 = [v15 columnWidthManager];
-    [v16 widthOfColumn:v6];
+    tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+    columnWidthManager = [tableLayoutManager2 columnWidthManager];
+    [columnWidthManager widthOfColumn:columnCopy];
     v18 = v17;
 
-    if (!v14 && ([v12 isLeftToRight] & 1) != 0)
+    if (!v14 && ([table isLeftToRight] & 1) != 0)
     {
       v19 = 0;
       v20 = 1;
@@ -1137,29 +1137,29 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    if (v14 != [v12 columnCount] - 1 || (MaxX = 0.0, (objc_msgSend(v12, "isRightToLeft") & 1) == 0))
+    if (v14 != [table columnCount] - 1 || (MaxX = 0.0, (objc_msgSend(table, "isRightToLeft") & 1) == 0))
     {
-      if (v14 != [v12 columnCount] - 1 || (objc_msgSend(v12, "isLeftToRight") & 1) == 0)
+      if (v14 != [table columnCount] - 1 || (objc_msgSend(table, "isLeftToRight") & 1) == 0)
       {
         if (v14)
         {
           v20 = 0;
           MaxX = 0.0;
 LABEL_17:
-          v24 = [v12 identifierForColumnAtIndex:v14 - 1];
+          v24 = [table identifierForColumnAtIndex:v14 - 1];
           v19 = v24;
           if ((v20 & 1) == 0 && v24)
           {
-            v25 = [(ICTableTextViewManager *)self columnTextViews];
-            v26 = [v25 allKeys];
-            v27 = [v26 containsObject:v19];
+            columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+            allKeys = [columnTextViews allKeys];
+            v27 = [allKeys containsObject:v19];
 
             if (v27)
             {
               v28 = [(ICTableTextViewManager *)self textViewForColumn:v19];
-              v29 = [v12 isLeftToRight];
+              isLeftToRight = [table isLeftToRight];
               [v28 frame];
-              if (v29)
+              if (isLeftToRight)
               {
                 MaxX = CGRectGetMaxX(*&v30);
               }
@@ -1179,14 +1179,14 @@ LABEL_17:
           }
 
 LABEL_28:
-          if (v14 >= [v12 columnCount] - 1)
+          if (v14 >= [table columnCount] - 1)
           {
             v34 = 0;
           }
 
           else
           {
-            v34 = [v12 identifierForColumnAtIndex:v14 + 1];
+            v34 = [table identifierForColumnAtIndex:v14 + 1];
             if (v34)
             {
               v35 = v20;
@@ -1199,16 +1199,16 @@ LABEL_28:
 
             if (v35 != 1)
             {
-              v36 = [(ICTableTextViewManager *)self columnTextViews];
-              v37 = [v36 allKeys];
-              v38 = [v37 containsObject:v34];
+              columnTextViews2 = [(ICTableTextViewManager *)self columnTextViews];
+              allKeys2 = [columnTextViews2 allKeys];
+              v38 = [allKeys2 containsObject:v34];
 
               if (v38)
               {
                 v39 = [(ICTableTextViewManager *)self textViewForColumn:v34];
-                v40 = [v12 isLeftToRight];
+                isLeftToRight2 = [table isLeftToRight];
                 [v39 frame];
-                if (v40)
+                if (isLeftToRight2)
                 {
                   MaxX = CGRectGetMinX(*&v41) - v18;
                 }
@@ -1228,20 +1228,20 @@ LABEL_28:
           if (v20)
           {
 LABEL_39:
-            v46 = [(ICTableTextViewManager *)self contentView];
-            [v46 bounds];
+            contentView2 = [(ICTableTextViewManager *)self contentView];
+            [contentView2 bounds];
             [v8 setFrame:{MaxX, 0.0, v18}];
 
             goto LABEL_40;
           }
 
 LABEL_38:
-          [(ICTableTextViewManager *)self frameOfCellAtColumn:v6 row:v7];
+          [(ICTableTextViewManager *)self frameOfCellAtColumn:columnCopy row:rowCopy];
           MaxX = v45;
           goto LABEL_39;
         }
 
-        if (![v12 isRightToLeft])
+        if (![table isRightToLeft])
         {
           v19 = 0;
           v20 = 0;
@@ -1249,7 +1249,7 @@ LABEL_38:
         }
       }
 
-      if ([v12 isLeftToRight])
+      if ([table isLeftToRight])
       {
         v51 = 0;
         v52 = &v51;
@@ -1259,10 +1259,10 @@ LABEL_38:
         v47[1] = 3221225472;
         v47[2] = __61__ICTableTextViewManager_ensureCellPositionForColumn_andRow___block_invoke;
         v47[3] = &unk_2781AF9D8;
-        v48 = v6;
-        v49 = self;
+        v48 = columnCopy;
+        selfCopy = self;
         v50 = &v51;
-        [v12 enumerateColumnsWithBlock:v47];
+        [table enumerateColumnsWithBlock:v47];
         MaxX = v52[3];
 
         _Block_object_dispose(&v51, 8);
@@ -1270,8 +1270,8 @@ LABEL_38:
 
       else
       {
-        v22 = [(ICTableTextViewManager *)self cachedColumnWidths];
-        [v22 sum];
+        cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+        [cachedColumnWidths sum];
         MaxX = v23 - v18;
       }
     }
@@ -1308,53 +1308,53 @@ void __61__ICTableTextViewManager_ensureCellPositionForColumn_andRow___block_inv
   }
 }
 
-- (void)clearColumn:(id)a3
+- (void)clearColumn:(id)column
 {
-  v8 = a3;
-  v4 = [(ICTableTextViewManager *)self columnTextViews];
-  v5 = [v4 objectForKey:v8];
+  columnCopy = column;
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  v5 = [columnTextViews objectForKey:columnCopy];
 
   if (([v5 ic_isFirstResponder] & 1) == 0)
   {
     [v5 removeFromSuperview];
   }
 
-  v6 = [(ICTableTextViewManager *)self contentView];
-  [v6 setVerticalLinePosition:0 forKey:v8];
+  contentView = [(ICTableTextViewManager *)self contentView];
+  [contentView setVerticalLinePosition:0 forKey:columnCopy];
 
-  v7 = [(ICTableTextViewManager *)self columnIdentifiers];
-  [v7 removeObject:v8];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  [columnIdentifiers removeObject:columnCopy];
 }
 
-- (void)clearRow:(id)a3
+- (void)clearRow:(id)row
 {
-  v8 = a3;
-  v4 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v5 = [v4 containsObject:v8];
+  rowCopy = row;
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v5 = [rowIdentifiers containsObject:rowCopy];
 
   if (v5)
   {
-    v6 = [(ICTableTextViewManager *)self contentView];
-    [v6 setHorizontalLinePosition:0 forKey:v8];
+    contentView = [(ICTableTextViewManager *)self contentView];
+    [contentView setHorizontalLinePosition:0 forKey:rowCopy];
 
-    v7 = [(ICTableTextViewManager *)self rowIdentifiers];
-    [v7 removeObject:v8];
+    rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+    [rowIdentifiers2 removeObject:rowCopy];
   }
 }
 
-- (void)clearColumnsOutsideFrame:(CGRect)a3
+- (void)clearColumnsOutsideFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v50 = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = [(ICTableTextViewManager *)self columnIDs];
-  v9 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  columnIDs = [(ICTableTextViewManager *)self columnIDs];
+  v9 = [columnIDs countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1365,12 +1365,12 @@ void __61__ICTableTextViewManager_ensureCellPositionForColumn_andRow___block_inv
       {
         if (*v45 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(columnIDs);
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        v14 = [(ICTableTextViewManager *)self columnTextViews];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+        v15 = [columnTextViews objectForKeyedSubscript:v13];
 
         [v15 frame];
         v17 = v16;
@@ -1391,8 +1391,8 @@ void __61__ICTableTextViewManager_ensureCellPositionForColumn_andRow___block_inv
 
         [(ICTableTextViewManager *)self clearColumn:v13];
         [(ICTableTextViewManager *)self setAnchorColumn:[(ICTableTextViewManager *)self anchorColumn]+ 1];
-        v21 = [(ICTableTextViewManager *)self cachedColumnWidths];
-        [v21 dimensionForKey:v13];
+        cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+        [cachedColumnWidths dimensionForKey:v13];
         v23 = v22;
 
         [(ICTableTextViewManager *)self anchorPoint];
@@ -1401,7 +1401,7 @@ void __61__ICTableTextViewManager_ensureCellPositionForColumn_andRow___block_inv
         [(ICTableTextViewManager *)self setAnchorPoint:v25];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v10 = [columnIDs countByEnumeratingWithState:&v44 objects:v49 count:16];
       if (v10)
       {
         continue;
@@ -1417,10 +1417,10 @@ LABEL_12:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v26 = [(ICTableTextViewManager *)self columnIDs];
-  v27 = [v26 reverseObjectEnumerator];
+  columnIDs2 = [(ICTableTextViewManager *)self columnIDs];
+  reverseObjectEnumerator = [columnIDs2 reverseObjectEnumerator];
 
-  v28 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v28)
   {
     v29 = v28;
@@ -1431,12 +1431,12 @@ LABEL_12:
       {
         if (*v41 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v32 = *(*(&v40 + 1) + 8 * j);
-        v33 = [(ICTableTextViewManager *)self columnTextViews];
-        v34 = [v33 objectForKeyedSubscript:v32];
+        columnTextViews2 = [(ICTableTextViewManager *)self columnTextViews];
+        v34 = [columnTextViews2 objectForKeyedSubscript:v32];
 
         [v34 frame];
         v36 = v35;
@@ -1458,7 +1458,7 @@ LABEL_12:
         [(ICTableTextViewManager *)self clearColumn:v32];
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v29 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v29)
       {
         continue;
@@ -1471,24 +1471,24 @@ LABEL_12:
 LABEL_23:
 }
 
-- (void)clearRowsOutsideFrame:(CGRect)a3
+- (void)clearRowsOutsideFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v56 = *MEMORY[0x277D85DE8];
-  v8 = [(ICTableTextViewManager *)self columnIDs];
-  v9 = [v8 firstObject];
+  columnIDs = [(ICTableTextViewManager *)self columnIDs];
+  firstObject = [columnIDs firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v10 = [(ICTableTextViewManager *)self rowIDs];
-    v11 = [v10 countByEnumeratingWithState:&v50 objects:v55 count:16];
+    rowIDs = [(ICTableTextViewManager *)self rowIDs];
+    v11 = [rowIDs countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1499,18 +1499,18 @@ LABEL_4:
       {
         if (*v51 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(rowIDs);
         }
 
         v15 = *(*(&v50 + 1) + 8 * v14);
-        v16 = [(ICTableTextViewManager *)self tableLayoutManager];
-        v17 = [v16 rowPositions];
-        v18 = [v17 objectForKey:v15];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+        rowPositions = [tableLayoutManager rowPositions];
+        v18 = [rowPositions objectForKey:v15];
         [v18 doubleValue];
         v20 = v19;
 
-        v21 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v21 dimensionForKey:v15];
+        cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights dimensionForKey:v15];
         v23 = v22;
 
         v57.origin.x = x;
@@ -1526,8 +1526,8 @@ LABEL_4:
           break;
         }
 
-        v24 = [(ICTableTextViewManager *)self draggedRows];
-        v25 = [v24 containsObject:v15];
+        draggedRows = [(ICTableTextViewManager *)self draggedRows];
+        v25 = [draggedRows containsObject:v15];
 
         if (v25)
         {
@@ -1542,7 +1542,7 @@ LABEL_4:
         [(ICTableTextViewManager *)self setAnchorPoint:v27, v23 + v28];
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v50 objects:v55 count:16];
+          v12 = [rowIDs countByEnumeratingWithState:&v50 objects:v55 count:16];
           if (v12)
           {
             goto LABEL_4;
@@ -1557,10 +1557,10 @@ LABEL_4:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v29 = [(ICTableTextViewManager *)self rowIDs];
-    v30 = [v29 reverseObjectEnumerator];
+    rowIDs2 = [(ICTableTextViewManager *)self rowIDs];
+    reverseObjectEnumerator = [rowIDs2 reverseObjectEnumerator];
 
-    v31 = [v30 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    v31 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v31)
     {
       v32 = v31;
@@ -1571,18 +1571,18 @@ LABEL_13:
       {
         if (*v47 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v35 = *(*(&v46 + 1) + 8 * v34);
-        v36 = [(ICTableTextViewManager *)self tableLayoutManager];
-        v37 = [v36 rowPositions];
-        v38 = [v37 objectForKey:v35];
+        tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+        rowPositions2 = [tableLayoutManager2 rowPositions];
+        v38 = [rowPositions2 objectForKey:v35];
         [v38 doubleValue];
         v40 = v39;
 
-        v41 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v41 dimensionForKey:v35];
+        cachedRowHeights2 = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights2 dimensionForKey:v35];
         v43 = v42;
 
         v58.origin.x = x;
@@ -1598,8 +1598,8 @@ LABEL_13:
           break;
         }
 
-        v44 = [(ICTableTextViewManager *)self draggedRows];
-        v45 = [v44 containsObject:v35];
+        draggedRows2 = [(ICTableTextViewManager *)self draggedRows];
+        v45 = [draggedRows2 containsObject:v35];
 
         if (v45)
         {
@@ -1609,7 +1609,7 @@ LABEL_13:
         [(ICTableTextViewManager *)self clearRow:v35];
         if (v32 == ++v34)
         {
-          v32 = [v30 countByEnumeratingWithState:&v46 objects:v54 count:16];
+          v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v54 count:16];
           if (v32)
           {
             goto LABEL_13;
@@ -1622,17 +1622,17 @@ LABEL_13:
   }
 }
 
-- (CGPoint)updateTilesWithViewport:(CGRect)a3 redrawAll:(BOOL)a4
+- (CGPoint)updateTilesWithViewport:(CGRect)viewport redrawAll:(BOOL)all
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  allCopy = all;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
   v140 = *MEMORY[0x277D85DE8];
-  v10 = [(ICTableTextViewManager *)self isUpdatingTiles];
+  isUpdatingTiles = [(ICTableTextViewManager *)self isUpdatingTiles];
   v11 = MEMORY[0x277CBF348];
-  if (v10)
+  if (isUpdatingTiles)
   {
     v12 = *MEMORY[0x277CBF348];
     v13 = *(MEMORY[0x277CBF348] + 8);
@@ -1646,9 +1646,9 @@ LABEL_13:
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v129 = self;
-    v22 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v23 = [v22 table];
+    selfCopy = self;
+    tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+    table = [tableLayoutManager table];
 
     v152.size.width = width;
     v152.origin.y = y;
@@ -1664,7 +1664,7 @@ LABEL_13:
     {
       v13 = obj;
       v12 = v125;
-      v37 = self;
+      selfCopy3 = self;
     }
 
     else
@@ -1673,34 +1673,34 @@ LABEL_13:
       v122 = v19;
       [(ICTableTextViewManager *)self clearColumnsOutsideFrame:x, y, width, height];
       [(ICTableTextViewManager *)self clearRowsOutsideFrame:x, y, width, height];
-      v24 = [(ICTableTextViewManager *)self draggedColumns];
-      v25 = [v24 count];
+      draggedColumns = [(ICTableTextViewManager *)self draggedColumns];
+      v25 = [draggedColumns count];
 
       if (v25)
       {
         v26 = objc_alloc(MEMORY[0x277CBEB58]);
-        v27 = [(ICTableTextViewManager *)self columnIdentifiers];
-        v28 = [v26 initWithArray:v27];
+        columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+        v28 = [v26 initWithArray:columnIdentifiers];
 
-        v29 = [(ICTableTextViewManager *)self draggedColumns];
-        [v28 intersectSet:v29];
+        draggedColumns2 = [(ICTableTextViewManager *)self draggedColumns];
+        [v28 intersectSet:draggedColumns2];
 
         v25 = [v28 count];
       }
 
-      v30 = [(ICTableTextViewManager *)self draggedRows];
-      v31 = [v30 count];
+      draggedRows = [(ICTableTextViewManager *)self draggedRows];
+      v31 = [draggedRows count];
 
       v123 = v17;
       v124 = v15;
       if (v31)
       {
         v32 = objc_alloc(MEMORY[0x277CBEB58]);
-        v33 = [(ICTableTextViewManager *)self rowIdentifiers];
-        v34 = [v32 initWithArray:v33];
+        rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+        v34 = [v32 initWithArray:rowIdentifiers];
 
-        v35 = [(ICTableTextViewManager *)self draggedRows];
-        [v34 intersectSet:v35];
+        draggedRows2 = [(ICTableTextViewManager *)self draggedRows];
+        [v34 intersectSet:draggedRows2];
 
         v36 = [v34 count];
       }
@@ -1710,7 +1710,7 @@ LABEL_13:
         v36 = 0;
       }
 
-      v37 = self;
+      selfCopy3 = self;
       [(ICTableTextViewManager *)self anchorPoint];
       v39 = v38;
       v144.origin.x = x;
@@ -1719,33 +1719,33 @@ LABEL_13:
       rect = height;
       v144.size.height = height;
       MinX = CGRectGetMinX(v144);
-      v41 = [(ICTableTextViewManager *)self anchorColumn];
+      anchorColumn = [(ICTableTextViewManager *)self anchorColumn];
       v12 = v125;
       if (v39 > MinX)
       {
-        v42 = v41 + v25;
+        v42 = anchorColumn + v25;
         v12 = v125;
-        if ((v41 + v25) >= 1)
+        if ((anchorColumn + v25) >= 1)
         {
           v12 = v125;
           do
           {
-            if (([v23 isLeftToRight] & 1) == 0)
+            if (([table isLeftToRight] & 1) == 0)
             {
-              [v23 columnCount];
+              [table columnCount];
             }
 
             --v42;
-            v43 = [v23 identifierForColumnAtIndex:?];
+            v43 = [table identifierForColumnAtIndex:?];
             if (v43)
             {
-              v44 = [(ICTableTextViewManager *)self columnIdentifiers];
-              v45 = [v44 containsObject:v43];
+              columnIdentifiers2 = [(ICTableTextViewManager *)self columnIdentifiers];
+              v45 = [columnIdentifiers2 containsObject:v43];
 
               if ((v45 & 1) == 0)
               {
-                v46 = [(ICTableTextViewManager *)self cachedColumnWidths];
-                [v46 dimensionForKey:v43];
+                cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+                [cachedColumnWidths dimensionForKey:v43];
                 v48 = v47;
 
                 [(ICTableTextViewManager *)self addColumn:v43 atEnd:0];
@@ -1781,21 +1781,21 @@ LABEL_13:
       v146.size.width = width;
       v146.size.height = rect;
       v54 = CGRectGetMaxX(v146);
-      v55 = [(ICTableTextViewManager *)self anchorColumn];
-      v56 = [(ICTableTextViewManager *)self columnIDs];
-      v57 = [v56 count];
+      anchorColumn2 = [(ICTableTextViewManager *)self anchorColumn];
+      columnIDs = [(ICTableTextViewManager *)self columnIDs];
+      v57 = [columnIDs count];
 
       if (v53 < v54)
       {
-        v58 = v55 - v25 + v57;
+        v58 = anchorColumn2 - v25 + v57;
         do
         {
-          if (v58 >= [v23 columnCount])
+          if (v58 >= [table columnCount])
           {
             break;
           }
 
-          if ([v23 isLeftToRight])
+          if ([table isLeftToRight])
           {
             v59 = v58++;
           }
@@ -1803,18 +1803,18 @@ LABEL_13:
           else
           {
             ++v58;
-            v59 = [v23 columnCount] - v58;
+            v59 = [table columnCount] - v58;
           }
 
-          v60 = [v23 identifierForColumnAtIndex:v59];
+          v60 = [table identifierForColumnAtIndex:v59];
           if (v60)
           {
-            v61 = [(ICTableTextViewManager *)v129 columnIdentifiers];
-            v62 = [v61 containsObject:v60];
+            columnIdentifiers3 = [(ICTableTextViewManager *)selfCopy columnIdentifiers];
+            v62 = [columnIdentifiers3 containsObject:v60];
 
             if ((v62 & 1) == 0)
             {
-              [(ICTableTextViewManager *)v129 ensureChunkOfPopulatedColumnsForColumn:v60];
+              [(ICTableTextViewManager *)selfCopy ensureChunkOfPopulatedColumnsForColumn:v60];
               v53 = v53 + v63;
             }
           }
@@ -1823,14 +1823,14 @@ LABEL_13:
         while (v53 < v54);
       }
 
-      [(ICTableTextViewManager *)v129 anchorPoint];
+      [(ICTableTextViewManager *)selfCopy anchorPoint];
       v65 = v64;
       v147.origin.x = x;
       v147.origin.y = y;
       v147.size.width = width;
       v147.size.height = rect;
       MinY = CGRectGetMinY(v147);
-      v67 = [(ICTableTextViewManager *)v129 anchorRow]+ v36;
+      v67 = [(ICTableTextViewManager *)selfCopy anchorRow]+ v36;
       v68 = v65 <= MinY || v67 < 1;
       v13 = obj;
       if (!v68)
@@ -1838,19 +1838,19 @@ LABEL_13:
         v13 = obj;
         do
         {
-          v69 = [v23 identifierForRowAtIndex:v67 - 1];
+          v69 = [table identifierForRowAtIndex:v67 - 1];
           if (v69)
           {
-            v70 = [(ICTableTextViewManager *)v129 rowIdentifiers];
-            v71 = [v70 containsObject:v69];
+            rowIdentifiers2 = [(ICTableTextViewManager *)selfCopy rowIdentifiers];
+            v71 = [rowIdentifiers2 containsObject:v69];
 
             if ((v71 & 1) == 0)
             {
-              v72 = [(ICTableTextViewManager *)v129 cachedRowHeights];
-              [v72 dimensionForKey:v69];
+              cachedRowHeights = [(ICTableTextViewManager *)selfCopy cachedRowHeights];
+              [cachedRowHeights dimensionForKey:v69];
               v74 = v73;
 
-              [(ICTableTextViewManager *)v129 addRow:v69 atEnd:0];
+              [(ICTableTextViewManager *)selfCopy addRow:v69 atEnd:0];
               v65 = v65 - v75;
               v13 = v13 + v75 - v74;
             }
@@ -1860,7 +1860,7 @@ LABEL_13:
         while (v65 > MinY && v67-- > 1);
       }
 
-      [(ICTableTextViewManager *)v129 anchorPoint];
+      [(ICTableTextViewManager *)selfCopy anchorPoint];
       v78 = v77;
       v148.origin.y = v123;
       v148.origin.x = v124;
@@ -1882,29 +1882,29 @@ LABEL_13:
       v149.size.width = width;
       v149.size.height = rect;
       v81 = CGRectGetMaxY(v149);
-      v82 = [(ICTableTextViewManager *)v129 anchorRow];
-      v83 = [(ICTableTextViewManager *)v129 rowIDs];
-      v84 = [v83 count];
+      anchorRow = [(ICTableTextViewManager *)selfCopy anchorRow];
+      rowIDs = [(ICTableTextViewManager *)selfCopy rowIDs];
+      v84 = [rowIDs count];
 
       if (v80 < v81)
       {
-        v85 = v82 - v36 + v84;
+        v85 = anchorRow - v36 + v84;
         do
         {
-          if (v85 >= [v23 rowCount])
+          if (v85 >= [table rowCount])
           {
             break;
           }
 
-          v86 = [v23 identifierForRowAtIndex:v85];
+          v86 = [table identifierForRowAtIndex:v85];
           if (v86)
           {
-            v87 = [(ICTableTextViewManager *)v129 rowIdentifiers];
-            v88 = [v87 containsObject:v86];
+            rowIdentifiers3 = [(ICTableTextViewManager *)selfCopy rowIdentifiers];
+            v88 = [rowIdentifiers3 containsObject:v86];
 
             if ((v88 & 1) == 0)
             {
-              [(ICTableTextViewManager *)v129 ensureChunkOfPopulatedRowsForRow:v86 shouldForce:v4];
+              [(ICTableTextViewManager *)selfCopy ensureChunkOfPopulatedRowsForRow:v86 shouldForce:allCopy];
               v80 = v80 + v89;
             }
           }
@@ -1915,18 +1915,18 @@ LABEL_13:
         while (v80 < v81);
       }
 
-      v90 = [(ICTableTextViewManager *)v129 contentView];
+      contentView = [(ICTableTextViewManager *)selfCopy contentView];
       if (v12 != v125 || v13 != obj)
       {
-        v120 = v23;
+        v120 = table;
         if (v12 != 0.0)
         {
           v136 = 0u;
           v137 = 0u;
           v134 = 0u;
           v135 = 0u;
-          v92 = [(ICTableTextViewManager *)v129 columnIdentifiers];
-          v93 = [v92 countByEnumeratingWithState:&v134 objects:v139 count:16];
+          columnIdentifiers4 = [(ICTableTextViewManager *)selfCopy columnIdentifiers];
+          v93 = [columnIdentifiers4 countByEnumeratingWithState:&v134 objects:v139 count:16];
           if (v93)
           {
             v94 = v93;
@@ -1937,12 +1937,12 @@ LABEL_13:
               {
                 if (*v135 != v95)
                 {
-                  objc_enumerationMutation(v92);
+                  objc_enumerationMutation(columnIdentifiers4);
                 }
 
                 v97 = *(*(&v134 + 1) + 8 * i);
-                v98 = [(ICTableTextViewManager *)v129 columnTextViews];
-                v99 = [v98 objectForKeyedSubscript:v97];
+                columnTextViews = [(ICTableTextViewManager *)selfCopy columnTextViews];
+                v99 = [columnTextViews objectForKeyedSubscript:v97];
 
                 [v99 frame];
                 v151 = CGRectOffset(v150, v12, 0.0);
@@ -1950,16 +1950,16 @@ LABEL_13:
                 v100 = MEMORY[0x277CCABB0];
                 [v99 frame];
                 v101 = [v100 numberWithDouble:?];
-                [v90 setVerticalLinePosition:v101 forKey:v97];
+                [contentView setVerticalLinePosition:v101 forKey:v97];
               }
 
-              v94 = [v92 countByEnumeratingWithState:&v134 objects:v139 count:16];
+              v94 = [columnIdentifiers4 countByEnumeratingWithState:&v134 objects:v139 count:16];
             }
 
             while (v94);
           }
 
-          v23 = v120;
+          table = v120;
         }
 
         if (v13 != 0.0)
@@ -1968,7 +1968,7 @@ LABEL_13:
           v133 = 0u;
           v130 = 0u;
           v131 = 0u;
-          obja = [(ICTableTextViewManager *)v129 rowIdentifiers];
+          obja = [(ICTableTextViewManager *)selfCopy rowIdentifiers];
           v102 = [obja countByEnumeratingWithState:&v130 objects:v138 count:16];
           if (v102)
           {
@@ -1984,18 +1984,18 @@ LABEL_13:
                 }
 
                 v106 = *(*(&v130 + 1) + 8 * j);
-                v107 = [(ICTableTextViewManager *)v129 tableLayoutManager];
-                v108 = [v107 rowPositions];
-                v109 = [v108 objectForKey:v106];
+                tableLayoutManager2 = [(ICTableTextViewManager *)selfCopy tableLayoutManager];
+                rowPositions = [tableLayoutManager2 rowPositions];
+                v109 = [rowPositions objectForKey:v106];
                 [v109 doubleValue];
                 v111 = v110;
 
                 v112 = v13 + v111;
-                v113 = [(ICTableTextViewManager *)v129 tableLayoutManager];
-                [v113 setYPosition:v106 forRow:1 shouldInvalidate:v112];
+                tableLayoutManager3 = [(ICTableTextViewManager *)selfCopy tableLayoutManager];
+                [tableLayoutManager3 setYPosition:v106 forRow:1 shouldInvalidate:v112];
 
                 v114 = [MEMORY[0x277CCABB0] numberWithDouble:v112];
-                [v90 setHorizontalLinePosition:v114 forKey:v106];
+                [contentView setHorizontalLinePosition:v114 forKey:v106];
               }
 
               v103 = [obja countByEnumeratingWithState:&v130 objects:v138 count:16];
@@ -2004,18 +2004,18 @@ LABEL_13:
             while (v103);
           }
 
-          v37 = v129;
-          v23 = v120;
+          selfCopy3 = selfCopy;
+          table = v120;
         }
 
-        [(ICTableTextViewManager *)v37 anchorPoint];
+        [(ICTableTextViewManager *)selfCopy3 anchorPoint];
         v116 = v12 + v115;
-        [(ICTableTextViewManager *)v37 anchorPoint];
-        [(ICTableTextViewManager *)v37 setAnchorPoint:v116, v13 + v117];
+        [(ICTableTextViewManager *)selfCopy3 anchorPoint];
+        [(ICTableTextViewManager *)selfCopy3 setAnchorPoint:v116, v13 + v117];
       }
     }
 
-    [(ICTableTextViewManager *)v37 setUpdatingTiles:0];
+    [(ICTableTextViewManager *)selfCopy3 setUpdatingTiles:0];
   }
 
   v118 = v12;
@@ -2025,26 +2025,26 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)redrawAllWithViewport:(CGRect)a3
+- (CGPoint)redrawAllWithViewport:(CGRect)viewport
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v9 = [v8 table];
-  v10 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v11 = [v10 copy];
-  v12 = [v9 rowsIntersectingWithRows:v11];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  table = [tableLayoutManager table];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v11 = [rowIdentifiers copy];
+  v12 = [table rowsIntersectingWithRows:v11];
   [(ICTableTextViewManager *)self setPreviousRowIdentifiers:v12];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v14 = [v13 copy];
+  rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+  v14 = [rowIdentifiers2 copy];
 
   v15 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v15)
@@ -2075,8 +2075,8 @@ LABEL_13:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v20 = [v19 copy];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v20 = [columnIdentifiers copy];
 
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v21)
@@ -2114,37 +2114,37 @@ LABEL_13:
   return result;
 }
 
-- (void)heightChangedForRow:(id)a3 by:(double)a4
+- (void)heightChangedForRow:(id)row by:(double)by
 {
-  v21 = a3;
-  if (a4 != 0.0)
+  rowCopy = row;
+  if (by != 0.0)
   {
-    v6 = [(ICTableTextViewManager *)self rowIdentifiers];
-    v7 = [v6 indexOfObject:v21];
+    rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+    v7 = [rowIdentifiers indexOfObject:rowCopy];
 
-    v8 = [(ICTableTextViewManager *)self rowIdentifiers];
-    v9 = [v8 count];
+    rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+    v9 = [rowIdentifiers2 count];
 
     v10 = v7 + 1;
     if (v10 < v9)
     {
       do
       {
-        v11 = [(ICTableTextViewManager *)self rowIdentifiers];
-        v12 = [v11 objectAtIndex:v10];
+        rowIdentifiers3 = [(ICTableTextViewManager *)self rowIdentifiers];
+        v12 = [rowIdentifiers3 objectAtIndex:v10];
 
-        v13 = [(ICTableTextViewManager *)self tableLayoutManager];
-        v14 = [v13 rowPositions];
-        v15 = [v14 objectForKey:v12];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+        rowPositions = [tableLayoutManager rowPositions];
+        v15 = [rowPositions objectForKey:v12];
         [v15 doubleValue];
-        v17 = v16 + a4;
+        v17 = v16 + by;
 
-        v18 = [(ICTableTextViewManager *)self tableLayoutManager];
-        [v18 setYPosition:v12 forRow:1 shouldInvalidate:v17];
+        tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+        [tableLayoutManager2 setYPosition:v12 forRow:1 shouldInvalidate:v17];
 
-        v19 = [(ICTableTextViewManager *)self contentView];
+        contentView = [(ICTableTextViewManager *)self contentView];
         v20 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
-        [v19 setHorizontalLinePosition:v20 forKey:v12];
+        [contentView setHorizontalLinePosition:v20 forKey:v12];
 
         ++v10;
       }
@@ -2154,73 +2154,73 @@ LABEL_13:
   }
 }
 
-- (void)removeColumn:(id)a3
+- (void)removeColumn:(id)column
 {
-  v7 = a3;
-  v4 = [(ICTableTextViewManager *)self columnTextViews];
-  v5 = [v4 objectForKey:v7];
+  columnCopy = column;
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  v5 = [columnTextViews objectForKey:columnCopy];
 
   [v5 removeFromSuperview];
   if (v5)
   {
-    v6 = [(ICTableTextViewManager *)self columnTextViews];
-    [v6 removeObjectForKey:v7];
+    columnTextViews2 = [(ICTableTextViewManager *)self columnTextViews];
+    [columnTextViews2 removeObjectForKey:columnCopy];
   }
 }
 
-- (void)moveColumnAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveColumnAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v7 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v10 = [v7 objectAtIndex:a3];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v10 = [columnIdentifiers objectAtIndex:index];
 
-  v8 = [(ICTableTextViewManager *)self columnIdentifiers];
-  [v8 removeObjectAtIndex:a3];
+  columnIdentifiers2 = [(ICTableTextViewManager *)self columnIdentifiers];
+  [columnIdentifiers2 removeObjectAtIndex:index];
 
-  v9 = [(ICTableTextViewManager *)self columnIdentifiers];
-  [v9 insertObject:v10 atIndex:a4];
+  columnIdentifiers3 = [(ICTableTextViewManager *)self columnIdentifiers];
+  [columnIdentifiers3 insertObject:v10 atIndex:toIndex];
 }
 
-- (void)moveRowAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveRowAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v7 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v10 = [v7 objectAtIndex:a3];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v10 = [rowIdentifiers objectAtIndex:index];
 
-  v8 = [(ICTableTextViewManager *)self rowIdentifiers];
-  [v8 removeObjectAtIndex:a3];
+  rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+  [rowIdentifiers2 removeObjectAtIndex:index];
 
-  v9 = [(ICTableTextViewManager *)self rowIdentifiers];
-  [v9 insertObject:v10 atIndex:a4];
+  rowIdentifiers3 = [(ICTableTextViewManager *)self rowIdentifiers];
+  [rowIdentifiers3 insertObject:v10 atIndex:toIndex];
 }
 
-- (BOOL)cellContainingPoint:(CGPoint)a3 columnID:(id *)a4 rowID:(id *)a5
+- (BOOL)cellContainingPoint:(CGPoint)point columnID:(id *)d rowID:(id *)iD
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = [(ICTableTextViewManager *)self contentView];
-  v11 = [v10 hitTest:0 withEvent:{x, y}];
+  contentView = [(ICTableTextViewManager *)self contentView];
+  v11 = [contentView hitTest:0 withEvent:{x, y}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v12 = ICCheckedDynamicCast();
-    v13 = [v12 columnID];
-    if (v13)
+    columnID = [v12 columnID];
+    if (columnID)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v14 = [(ICTableTextViewManager *)self rowIdentifiers];
-      v15 = [v14 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+      v15 = [rowIdentifiers countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v15)
       {
         v16 = v15;
-        v36 = v13;
+        v36 = columnID;
         v37 = v12;
-        v34 = a4;
-        v35 = a5;
+        dCopy = d;
+        iDCopy = iD;
         v17 = *v39;
         do
         {
@@ -2228,40 +2228,40 @@ LABEL_13:
           {
             if (*v39 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(rowIdentifiers);
             }
 
             v19 = *(*(&v38 + 1) + 8 * i);
-            v20 = [(ICTableTextViewManager *)self tableLayoutManager];
-            v21 = [v20 rowPositions];
-            v22 = [v21 objectForKey:v19];
+            tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+            rowPositions = [tableLayoutManager rowPositions];
+            v22 = [rowPositions objectForKey:v19];
             [v22 doubleValue];
             v24 = v23;
 
-            v25 = [(ICTableTextViewManager *)self cachedRowHeights];
-            [v25 dimensionForKey:v19];
+            cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+            [cachedRowHeights dimensionForKey:v19];
             v27 = v26;
 
             v28 = v24 + v27;
             if (v24 <= y && v28 >= y)
             {
-              v13 = v36;
+              columnID = v36;
               v30 = v36;
-              *v34 = v36;
+              *dCopy = v36;
               v31 = v19;
-              *v35 = v19;
+              *iDCopy = v19;
               v32 = 1;
               v12 = v37;
               goto LABEL_19;
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v38 objects:v42 count:{16, v28}];
+          v16 = [rowIdentifiers countByEnumeratingWithState:&v38 objects:v42 count:{16, v28}];
         }
 
         while (v16);
         v32 = 0;
-        v13 = v36;
+        columnID = v36;
         v12 = v37;
       }
 
@@ -2287,15 +2287,15 @@ LABEL_19:
   return v32;
 }
 
-- (id)columnContainingX:(double)a3
+- (id)columnContainingX:(double)x
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ICTableTextViewManager *)self columnIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+  v6 = [columnIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2306,16 +2306,16 @@ LABEL_19:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(columnIdentifiers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(ICTableTextViewManager *)self textViewForColumn:v10];
         [v11 frame];
-        if (CGRectGetMinX(v21) <= a3)
+        if (CGRectGetMinX(v21) <= x)
         {
           [v11 frame];
-          if (CGRectGetMaxX(v22) >= a3)
+          if (CGRectGetMaxX(v22) >= x)
           {
             v12 = v10;
 
@@ -2324,7 +2324,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [columnIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -2340,15 +2340,15 @@ LABEL_12:
   return v12;
 }
 
-- (id)rowContainingY:(double)a3
+- (id)rowContainingY:(double)y
 {
   v28 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v6 = [rowIdentifiers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2359,29 +2359,29 @@ LABEL_12:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rowIdentifiers);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [(ICTableTextViewManager *)self tableLayoutManager];
-        v12 = [v11 rowPositions];
-        v13 = [v12 objectForKey:v10];
+        tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+        rowPositions = [tableLayoutManager rowPositions];
+        v13 = [rowPositions objectForKey:v10];
         [v13 doubleValue];
         v15 = v14;
 
-        v16 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v16 dimensionForKey:v10];
+        cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights dimensionForKey:v10];
         v18 = v17;
 
         v19 = v15 + v18;
-        if (v15 <= a3 && v19 >= a3)
+        if (v15 <= y && v19 >= y)
         {
           v21 = v10;
           goto LABEL_14;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:{16, v19}];
+      v7 = [rowIdentifiers countByEnumeratingWithState:&v23 objects:v27 count:{16, v19}];
     }
 
     while (v7);
@@ -2393,58 +2393,58 @@ LABEL_14:
   return v21;
 }
 
-- (id)textViewForColumn:(id)a3 createIfNeeded:(BOOL)a4
+- (id)textViewForColumn:(id)column createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ICTableTextViewManager *)self columnTextViews];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  columnCopy = column;
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  v8 = [columnTextViews objectForKeyedSubscript:columnCopy];
 
-  if (!v8 && v4)
+  if (!v8 && neededCopy)
   {
-    v9 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v10 = [v9 columnLayoutManagerForColumn:v6];
+    tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+    v10 = [tableLayoutManager columnLayoutManagerForColumn:columnCopy];
 
     v11 = [ICTableColumnTextView alloc];
-    v12 = [v10 textContainer];
-    v8 = [(ICTableColumnTextView *)v11 initWithFrame:v12 textContainer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    textContainer = [v10 textContainer];
+    v8 = [(ICTableColumnTextView *)v11 initWithFrame:textContainer textContainer:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
     [(ICTableColumnTextView *)v8 setAutoresizingMask:20];
     [v10 setTextView:v8];
     [(ICTableColumnTextView *)v8 setDataDetectorTypes:-1];
-    v13 = [(ICTableTextViewManager *)self delegate];
-    v14 = [v13 noteTextView];
-    -[ICTableColumnTextView _setDataOwnerForCopy:](v8, "_setDataOwnerForCopy:", [v14 _dataOwnerForCopy]);
+    delegate = [(ICTableTextViewManager *)self delegate];
+    noteTextView = [delegate noteTextView];
+    -[ICTableColumnTextView _setDataOwnerForCopy:](v8, "_setDataOwnerForCopy:", [noteTextView _dataOwnerForCopy]);
 
-    v15 = [(ICTableTextViewManager *)self delegate];
-    v16 = [v15 noteTextView];
-    -[ICTableColumnTextView _setDataOwnerForPaste:](v8, "_setDataOwnerForPaste:", [v16 _dataOwnerForPaste]);
+    delegate2 = [(ICTableTextViewManager *)self delegate];
+    noteTextView2 = [delegate2 noteTextView];
+    -[ICTableColumnTextView _setDataOwnerForPaste:](v8, "_setDataOwnerForPaste:", [noteTextView2 _dataOwnerForPaste]);
 
-    v17 = [(ICTableTextViewManager *)self delegate];
-    v18 = [v17 noteTextView];
-    v19 = [v18 editorController];
-    [(ICTableColumnTextView *)v8 setEditorController:v19];
+    delegate3 = [(ICTableTextViewManager *)self delegate];
+    noteTextView3 = [delegate3 noteTextView];
+    editorController = [noteTextView3 editorController];
+    [(ICTableColumnTextView *)v8 setEditorController:editorController];
 
-    v20 = [(ICTableColumnTextView *)v8 textContainer];
-    [v20 setWidthTracksTextView:1];
+    textContainer2 = [(ICTableColumnTextView *)v8 textContainer];
+    [textContainer2 setWidthTracksTextView:1];
 
-    v21 = [(ICTableColumnTextView *)v8 textContainer];
-    [v21 setHeightTracksTextView:0];
+    textContainer3 = [(ICTableColumnTextView *)v8 textContainer];
+    [textContainer3 setHeightTracksTextView:0];
 
     [(ICTableColumnTextView *)v8 setSelectable:1];
-    [(ICTableColumnTextView *)v8 setColumnID:v6];
-    v22 = [v10 textContainer];
-    [v22 replaceLayoutManager:v10];
+    [(ICTableColumnTextView *)v8 setColumnID:columnCopy];
+    textContainer4 = [v10 textContainer];
+    [textContainer4 replaceLayoutManager:v10];
 
-    v23 = [(ICTableTextViewManager *)self columnTextViews];
-    [v23 setObject:v8 forKeyedSubscript:v6];
+    columnTextViews2 = [(ICTableTextViewManager *)self columnTextViews];
+    [columnTextViews2 setObject:v8 forKeyedSubscript:columnCopy];
 
-    v24 = [(ICTableTextViewManager *)self delegate];
+    delegate4 = [(ICTableTextViewManager *)self delegate];
 
-    if (v24)
+    if (delegate4)
     {
-      v25 = [(ICTableTextViewManager *)self delegate];
-      [v25 setupTableTextView:v8];
+      delegate5 = [(ICTableTextViewManager *)self delegate];
+      [delegate5 setupTableTextView:v8];
     }
   }
 
@@ -2453,9 +2453,9 @@ LABEL_14:
 
 - (void)parentViewDidChange
 {
-  v3 = [(ICTableTextViewManager *)self delegate];
+  delegate = [(ICTableTextViewManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -2479,28 +2479,28 @@ void __45__ICTableTextViewManager_parentViewDidChange__block_invoke(uint64_t a1,
 - (void)restyleCells
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
+  columnsNeedingRestyle = [(ICTableTextViewManager *)self columnsNeedingRestyle];
 
-  if (!v3)
+  if (!columnsNeedingRestyle)
   {
     v4 = MEMORY[0x277CBEB58];
-    v5 = [(ICTableTextViewManager *)self columnTextViews];
-    v6 = [v4 setWithCapacity:{objc_msgSend(v5, "count")}];
+    columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+    v6 = [v4 setWithCapacity:{objc_msgSend(columnTextViews, "count")}];
     [(ICTableTextViewManager *)self setColumnsNeedingRestyle:v6];
   }
 
-  v7 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
-  v8 = [(ICTableTextViewManager *)self prepopulatedColumns];
-  [v7 unionSet:v8];
+  columnsNeedingRestyle2 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
+  prepopulatedColumns = [(ICTableTextViewManager *)self prepopulatedColumns];
+  [columnsNeedingRestyle2 unionSet:prepopulatedColumns];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(ICTableTextViewManager *)self columnTextViews];
-  v10 = [v9 allKeys];
+  columnTextViews2 = [(ICTableTextViewManager *)self columnTextViews];
+  allKeys = [columnTextViews2 allKeys];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2512,18 +2512,18 @@ void __45__ICTableTextViewManager_parentViewDidChange__block_invoke(uint64_t a1,
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
-        [v16 addObject:v15];
+        columnsNeedingRestyle3 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
+        [columnsNeedingRestyle3 addObject:v15];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -2537,29 +2537,29 @@ void __45__ICTableTextViewManager_parentViewDidChange__block_invoke(uint64_t a1,
   [(ICTableTextViewManager *)self enumerateTextViewsWithBlock:v17];
 }
 
-- (void)restyleTextView:(id)a3
+- (void)restyleTextView:(id)view
 {
-  v4 = a3;
-  v14 = [v4 columnTextStorage];
-  [v14 setShouldPreventUndoCommands:1];
-  [v14 beginPreventEditingUpdates];
-  v5 = [(ICTableTextViewManager *)self delegate];
-  v6 = [v5 noteTextView];
-  v7 = [v6 TTTextStorage];
-  v8 = [v7 styler];
-  v9 = [v8 zoomController];
-  v10 = [v14 styler];
-  [v10 setZoomController:v9];
+  viewCopy = view;
+  columnTextStorage = [viewCopy columnTextStorage];
+  [columnTextStorage setShouldPreventUndoCommands:1];
+  [columnTextStorage beginPreventEditingUpdates];
+  delegate = [(ICTableTextViewManager *)self delegate];
+  noteTextView = [delegate noteTextView];
+  tTTextStorage = [noteTextView TTTextStorage];
+  styler = [tTTextStorage styler];
+  zoomController = [styler zoomController];
+  styler2 = [columnTextStorage styler];
+  [styler2 setZoomController:zoomController];
 
-  v11 = [v14 styler];
-  [v11 styleText:v14 inRange:0 fixModelAttributes:{objc_msgSend(v14, "length"), 0}];
+  styler3 = [columnTextStorage styler];
+  [styler3 styleText:columnTextStorage inRange:0 fixModelAttributes:{objc_msgSend(columnTextStorage, "length"), 0}];
 
-  [v14 endPreventEditingUpdates];
-  [v14 setShouldPreventUndoCommands:0];
-  v12 = [(ICTableTextViewManager *)self columnsNeedingRestyle];
-  v13 = [v4 columnID];
+  [columnTextStorage endPreventEditingUpdates];
+  [columnTextStorage setShouldPreventUndoCommands:0];
+  columnsNeedingRestyle = [(ICTableTextViewManager *)self columnsNeedingRestyle];
+  columnID = [viewCopy columnID];
 
-  [v12 removeObject:v13];
+  [columnsNeedingRestyle removeObject:columnID];
 }
 
 void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t a1, void *a2)
@@ -2574,33 +2574,33 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
   [v4 performHighlightUpdatesForRange:v5 inTextStorage:v6 updates:{v7, 0}];
 }
 
-- (CGRect)frameOfCellAtColumn:(id)a3 row:(id)a4
+- (CGRect)frameOfCellAtColumn:(id)column row:(id)row
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  rowCopy = row;
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
   height = *(MEMORY[0x277CBF3A0] + 24);
-  v12 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v13 = [v12 columnWidthManager];
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  columnWidthManager = [tableLayoutManager columnWidthManager];
 
-  v14 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v15 = [v14 table];
+  tableLayoutManager2 = [(ICTableTextViewManager *)self tableLayoutManager];
+  table = [tableLayoutManager2 table];
 
-  v16 = [(ICTableTextViewManager *)self anchorColumn];
-  v17 = [(ICTableTextViewManager *)self anchorRow];
+  anchorColumn = [(ICTableTextViewManager *)self anchorColumn];
+  anchorRow = [(ICTableTextViewManager *)self anchorRow];
   [(ICTableTextViewManager *)self boundingRect];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(ICTableTextViewManager *)self columnTextViews];
-  v27 = [v26 objectForKey:v6];
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  v27 = [columnTextViews objectForKey:columnCopy];
 
   v85 = v27;
   rect = v23;
-  if (v27 && (-[ICTableTextViewManager columnIdentifiers](self, "columnIdentifiers"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 containsObject:v6], v28, v29))
+  if (v27 && (-[ICTableTextViewManager columnIdentifiers](self, "columnIdentifiers"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 containsObject:columnCopy], v28, v29))
   {
     v30 = v25;
     [v27 frame];
@@ -2616,11 +2616,11 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
     height = v87.size.height;
   }
 
-  else if ([v15 containsColumn:{v6, *&v23, v27}])
+  else if ([table containsColumn:{columnCopy, *&v23, v27}])
   {
-    v33 = [v15 columnIndexForIdentifier:v6];
-    v34 = [(ICTableTextViewManager *)self columnIdentifiers];
-    v35 = [v34 count] + v16;
+    v33 = [table columnIndexForIdentifier:columnCopy];
+    columnIdentifiers = [(ICTableTextViewManager *)self columnIdentifiers];
+    v35 = [columnIdentifiers count] + anchorColumn;
 
     if (v33 >= v35)
     {
@@ -2639,16 +2639,16 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
       y = v102.origin.y;
       width = v102.size.width;
       height = v102.size.height;
-      v68 = [(ICTableTextViewManager *)self columnIdentifiers];
-      v69 = [v68 count] + v16;
+      columnIdentifiers2 = [(ICTableTextViewManager *)self columnIdentifiers];
+      v69 = [columnIdentifiers2 count] + anchorColumn;
 
       while (v69 < v33)
       {
-        v70 = [v15 identifierForColumnAtIndex:v69];
-        [v13 widthOfColumn:v70];
+        v70 = [table identifierForColumnAtIndex:v69];
+        [columnWidthManager widthOfColumn:v70];
         v72 = v71;
-        v73 = [(ICTableTextViewManager *)self cachedColumnWidths];
-        [v73 setDimension:v70 forKey:v72];
+        cachedColumnWidths = [(ICTableTextViewManager *)self cachedColumnWidths];
+        [cachedColumnWidths setDimension:v70 forKey:v72];
 
         v103.origin.x = x;
         v103.origin.y = y;
@@ -2666,7 +2666,7 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
 
     else
     {
-      if (v33 >= v16)
+      if (v33 >= anchorColumn)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"columnIndex < origColumn" functionName:"-[ICTableTextViewManager frameOfCellAtColumn:row:]" simulateCrash:1 showAlert:0 format:@"Expected column to be outside current cells"];
       }
@@ -2686,13 +2686,13 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
       y = v90.origin.y;
       width = v90.size.width;
       height = v90.size.height;
-      while (v16 > v33)
+      while (anchorColumn > v33)
       {
-        v37 = [v15 identifierForColumnAtIndex:--v16];
-        [v13 widthOfColumn:v37];
+        v37 = [table identifierForColumnAtIndex:--anchorColumn];
+        [columnWidthManager widthOfColumn:v37];
         v39 = v38;
-        v40 = [(ICTableTextViewManager *)self cachedColumnWidths];
-        [v40 setDimension:v37 forKey:v39];
+        cachedColumnWidths2 = [(ICTableTextViewManager *)self cachedColumnWidths];
+        [cachedColumnWidths2 setDimension:v37 forKey:v39];
 
         v91.origin.x = x;
         v91.origin.y = y;
@@ -2712,14 +2712,14 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
     v30 = v25;
   }
 
-  v41 = [(ICTableTextViewManager *)self rowIdentifiers];
-  v42 = [v41 containsObject:v7];
+  rowIdentifiers = [(ICTableTextViewManager *)self rowIdentifiers];
+  v42 = [rowIdentifiers containsObject:rowCopy];
 
   if (v42)
   {
-    v43 = [(ICTableTextViewManager *)self tableLayoutManager];
-    v44 = [v43 rowPositions];
-    v45 = [v44 objectForKey:v7];
+    tableLayoutManager3 = [(ICTableTextViewManager *)self tableLayoutManager];
+    rowPositions = [tableLayoutManager3 rowPositions];
+    v45 = [rowPositions objectForKey:rowCopy];
     [v45 doubleValue];
     v47 = v46;
 
@@ -2732,11 +2732,11 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
     y = v94.origin.y;
   }
 
-  else if ([v15 containsRow:v7])
+  else if ([table containsRow:rowCopy])
   {
-    v48 = [v15 rowIndexForIdentifier:v7];
-    v49 = [(ICTableTextViewManager *)self rowIdentifiers];
-    v50 = [v49 count] + v17;
+    v48 = [table rowIndexForIdentifier:rowCopy];
+    rowIdentifiers2 = [(ICTableTextViewManager *)self rowIdentifiers];
+    v50 = [rowIdentifiers2 count] + anchorRow;
 
     if (v48 >= v50)
     {
@@ -2754,14 +2754,14 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
       y = v107.origin.y;
       v75 = v107.size.width;
       v76 = v107.size.height;
-      v77 = [(ICTableTextViewManager *)self rowIdentifiers];
-      v78 = [v77 count] + v17;
+      rowIdentifiers3 = [(ICTableTextViewManager *)self rowIdentifiers];
+      v78 = [rowIdentifiers3 count] + anchorRow;
 
       while (v78 < v48)
       {
-        v79 = [v15 identifierForRowAtIndex:v78];
-        v80 = [(ICTableTextViewManager *)self cachedRowHeights];
-        [v80 dimensionForKey:v79];
+        v79 = [table identifierForRowAtIndex:v78];
+        cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+        [cachedRowHeights dimensionForKey:v79];
         v82 = v81;
 
         v108.origin.x = x;
@@ -2780,7 +2780,7 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
 
     else
     {
-      if (v48 >= v17)
+      if (v48 >= anchorRow)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"rowIndex < origRow" functionName:"-[ICTableTextViewManager frameOfCellAtColumn:row:]" simulateCrash:1 showAlert:0 format:@"Expected row to be outside current cells"];
       }
@@ -2797,15 +2797,15 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
       v97 = CGRectOffset(v96, 0.0, MinY);
       x = v97.origin.x;
       y = v97.origin.y;
-      if (v48 < v17)
+      if (v48 < anchorRow)
       {
         v52 = v97.size.width;
         v53 = v97.size.height;
         do
         {
-          v54 = [v15 identifierForRowAtIndex:--v17];
-          v55 = [(ICTableTextViewManager *)self cachedRowHeights];
-          [v55 dimensionForKey:v54];
+          v54 = [table identifierForRowAtIndex:--anchorRow];
+          cachedRowHeights2 = [(ICTableTextViewManager *)self cachedRowHeights];
+          [cachedRowHeights2 dimensionForKey:v54];
           v57 = v56;
 
           v98.origin.x = x;
@@ -2819,15 +2819,15 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
           v53 = v99.size.height;
         }
 
-        while (v17 > v48);
+        while (anchorRow > v48);
       }
     }
   }
 
-  [v13 widthOfColumn:v6];
+  [columnWidthManager widthOfColumn:columnCopy];
   v59 = v58;
-  v60 = [(ICTableTextViewManager *)self cachedRowHeights];
-  [v60 dimensionForKey:v7];
+  cachedRowHeights3 = [(ICTableTextViewManager *)self cachedRowHeights];
+  [cachedRowHeights3 dimensionForKey:rowCopy];
   v62 = v61;
 
   v63 = x;
@@ -2841,11 +2841,11 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
   return result;
 }
 
-- (CGRect)frameOfColumn:(id)a3
+- (CGRect)frameOfColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(ICTableTextViewManager *)self columnTextViews];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  columnCopy = column;
+  columnTextViews = [(ICTableTextViewManager *)self columnTextViews];
+  v6 = [columnTextViews objectForKeyedSubscript:columnCopy];
 
   [v6 frame];
   v8 = v7;
@@ -2864,21 +2864,21 @@ void __48__ICTableTextViewManager_updateAuthorHighlights__block_invoke(uint64_t 
   return result;
 }
 
-- (CGRect)frameOfRow:(id)a3
+- (CGRect)frameOfRow:(id)row
 {
-  v4 = a3;
-  v5 = [(ICTableTextViewManager *)self tableLayoutManager];
-  v6 = [v5 rowPositions];
-  v7 = [v6 objectForKey:v4];
+  rowCopy = row;
+  tableLayoutManager = [(ICTableTextViewManager *)self tableLayoutManager];
+  rowPositions = [tableLayoutManager rowPositions];
+  v7 = [rowPositions objectForKey:rowCopy];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [(ICTableTextViewManager *)self cachedRowHeights];
-  [v10 dimensionForKey:v4];
+  cachedRowHeights = [(ICTableTextViewManager *)self cachedRowHeights];
+  [cachedRowHeights dimensionForKey:rowCopy];
   v12 = v11;
 
-  v13 = [(ICTableTextViewManager *)self contentView];
-  [v13 bounds];
+  contentView = [(ICTableTextViewManager *)self contentView];
+  [contentView bounds];
   v15 = v14;
 
   v16 = 0.0;

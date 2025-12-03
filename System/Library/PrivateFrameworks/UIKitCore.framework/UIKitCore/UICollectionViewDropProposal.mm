@@ -1,7 +1,7 @@
 @interface UICollectionViewDropProposal
 - (UICollectionViewDropProposal)initWithDropOperation:(UIDropOperation)operation intent:(UICollectionViewDropIntent)intent;
-- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)a3;
-- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)a3 dropLocation:(int64_t)a4;
+- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)operation;
+- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)operation dropLocation:(int64_t)location;
 - (id)description;
 - (int64_t)dropLocation;
 @end
@@ -21,15 +21,15 @@
   return result;
 }
 
-- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)a3 dropLocation:(int64_t)a4
+- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)operation dropLocation:(int64_t)location
 {
   v7.receiver = self;
   v7.super_class = UICollectionViewDropProposal;
-  result = [(UIDropProposal *)&v7 initWithDropOperation:a3];
+  result = [(UIDropProposal *)&v7 initWithDropOperation:operation];
   if (result)
   {
-    v6 = 2 * (a4 == 1);
-    if (!a4)
+    v6 = 2 * (location == 1);
+    if (!location)
     {
       v6 = 1;
     }
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)a3
+- (UICollectionViewDropProposal)initWithDropOperation:(unint64_t)operation
 {
   v4.receiver = self;
   v4.super_class = UICollectionViewDropProposal;
-  result = [(UIDropProposal *)&v4 initWithDropOperation:a3];
+  result = [(UIDropProposal *)&v4 initWithDropOperation:operation];
   if (result)
   {
     result->_intent = 0;
@@ -78,15 +78,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIDropProposal *)self operation];
-  if (v6 > UIDropOperationMove)
+  operation = [(UIDropProposal *)self operation];
+  if (operation > UIDropOperationMove)
   {
     v7 = &stru_1EFB14550;
   }
 
   else
   {
-    v7 = off_1E71003D0[v6];
+    v7 = off_1E71003D0[operation];
   }
 
   intent = self->_intent;

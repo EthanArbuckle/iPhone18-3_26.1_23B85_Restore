@@ -1,13 +1,13 @@
 @interface NEIKEv2AuthenticationProtocol
-+ (uint64_t)getAlgorithmForRSAPSSParameters:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2AuthenticationProtocol)initWithDigitalSignature:(unint64_t)a3;
-- (NEIKEv2AuthenticationProtocol)initWithMethod:(unint64_t)a3;
-- (NEIKEv2AuthenticationProtocol)initWithNonStandardDigitalSignature:(unint64_t)a3;
-- (NEIKEv2AuthenticationProtocol)initWithSecurePassword:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (uint64_t)getAlgorithmForRSAPSSParameters:(uint64_t)parameters;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2AuthenticationProtocol)initWithDigitalSignature:(unint64_t)signature;
+- (NEIKEv2AuthenticationProtocol)initWithMethod:(unint64_t)method;
+- (NEIKEv2AuthenticationProtocol)initWithNonStandardDigitalSignature:(unint64_t)signature;
+- (NEIKEv2AuthenticationProtocol)initWithSecurePassword:(unint64_t)password;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)copyHashForDataVector:(uint64_t)a1;
+- (uint64_t)copyHashForDataVector:(uint64_t)vector;
 - (uint64_t)hashType;
 - (uint64_t)isECDSA;
 - (uint64_t)isRSA;
@@ -17,54 +17,54 @@
 
 @implementation NEIKEv2AuthenticationProtocol
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(NEIKEv2AuthenticationProtocol *)self method]== 14)
   {
-    v5 = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
-    v6 = [objc_opt_class() allocWithZone:a3];
-    v7 = [(NEIKEv2AuthenticationProtocol *)self digitalSignatureAlgorithm];
-    if (v5)
+    isNonStandard = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
+    v6 = [objc_opt_class() allocWithZone:zone];
+    digitalSignatureAlgorithm = [(NEIKEv2AuthenticationProtocol *)self digitalSignatureAlgorithm];
+    if (isNonStandard)
     {
 
-      return [v6 initWithNonStandardDigitalSignature:v7];
+      return [v6 initWithNonStandardDigitalSignature:digitalSignatureAlgorithm];
     }
 
     else
     {
 
-      return [v6 initWithDigitalSignature:v7];
+      return [v6 initWithDigitalSignature:digitalSignatureAlgorithm];
     }
   }
 
   else
   {
-    v9 = [(NEIKEv2AuthenticationProtocol *)self method];
-    v10 = [objc_opt_class() allocWithZone:a3];
-    if (v9 == 12)
+    method = [(NEIKEv2AuthenticationProtocol *)self method];
+    v10 = [objc_opt_class() allocWithZone:zone];
+    if (method == 12)
     {
-      v11 = [(NEIKEv2AuthenticationProtocol *)self securePasswordMethod];
+      securePasswordMethod = [(NEIKEv2AuthenticationProtocol *)self securePasswordMethod];
 
-      return [v10 initWithSecurePassword:v11];
+      return [v10 initWithSecurePassword:securePasswordMethod];
     }
 
     else
     {
-      v12 = [(NEIKEv2AuthenticationProtocol *)self method];
+      method2 = [(NEIKEv2AuthenticationProtocol *)self method];
 
-      return [v10 initWithMethod:v12];
+      return [v10 initWithMethod:method2];
     }
   }
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NEIKEv2AuthenticationProtocol *)self method];
-  v4 = v3 + 10000 * [(NEIKEv2AuthenticationProtocol *)self digitalSignatureAlgorithm];
+  method = [(NEIKEv2AuthenticationProtocol *)self method];
+  v4 = method + 10000 * [(NEIKEv2AuthenticationProtocol *)self digitalSignatureAlgorithm];
   v5 = v4 + 100000 * [(NEIKEv2AuthenticationProtocol *)self securePasswordMethod];
-  v6 = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
+  isNonStandard = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
   v7 = 100;
-  if (!v6)
+  if (!isNonStandard)
   {
     v7 = 0;
   }
@@ -72,17 +72,17 @@
   return v5 + v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2AuthenticationProtocol *)self method];
-    if (v6 == [v5 method] && (v7 = -[NEIKEv2AuthenticationProtocol digitalSignatureAlgorithm](self, "digitalSignatureAlgorithm"), v7 == objc_msgSend(v5, "digitalSignatureAlgorithm")) && (v8 = -[NEIKEv2AuthenticationProtocol securePasswordMethod](self, "securePasswordMethod"), v8 == objc_msgSend(v5, "securePasswordMethod")))
+    v5 = equalCopy;
+    method = [(NEIKEv2AuthenticationProtocol *)self method];
+    if (method == [v5 method] && (v7 = -[NEIKEv2AuthenticationProtocol digitalSignatureAlgorithm](self, "digitalSignatureAlgorithm"), v7 == objc_msgSend(v5, "digitalSignatureAlgorithm")) && (v8 = -[NEIKEv2AuthenticationProtocol securePasswordMethod](self, "securePasswordMethod"), v8 == objc_msgSend(v5, "securePasswordMethod")))
     {
-      v9 = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
-      v10 = v9 ^ [v5 isNonStandard] ^ 1;
+      isNonStandard = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
+      v10 = isNonStandard ^ [v5 isNonStandard] ^ 1;
     }
 
     else
@@ -103,18 +103,18 @@
 {
   if ([(NEIKEv2AuthenticationProtocol *)self method]== 14)
   {
-    v3 = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
+    isNonStandard = [(NEIKEv2AuthenticationProtocol *)self isNonStandard];
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
     String = NEIKEv2DigitalSignatureAlgorithmCreateString([(NEIKEv2AuthenticationProtocol *)self digitalSignatureAlgorithm]);
     v6 = String;
-    if (v3)
+    if (isNonStandard)
     {
-      v7 = [v4 initWithFormat:@"DigitalSignatureNonStandard%@", String];
+      string = [v4 initWithFormat:@"DigitalSignatureNonStandard%@", String];
     }
 
     else
     {
-      v7 = [v4 initWithFormat:@"DigitalSignature%@", String];
+      string = [v4 initWithFormat:@"DigitalSignature%@", String];
     }
 
     goto LABEL_7;
@@ -124,9 +124,9 @@
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = NEIKEv2SecurePasswordMethodCreateString([(NEIKEv2AuthenticationProtocol *)self securePasswordMethod]);
-    v7 = [v8 initWithFormat:@"SecurePassword%@", v6];
+    string = [v8 initWithFormat:@"SecurePassword%@", v6];
 LABEL_7:
-    v9 = v7;
+    v9 = string;
 
     goto LABEL_9;
   }
@@ -137,25 +137,25 @@ LABEL_9:
   return v9;
 }
 
-- (NEIKEv2AuthenticationProtocol)initWithNonStandardDigitalSignature:(unint64_t)a3
+- (NEIKEv2AuthenticationProtocol)initWithNonStandardDigitalSignature:(unint64_t)signature
 {
-  if (a3 - 4 >= 0xFFFFFFFFFFFFFFFELL)
+  if (signature - 4 >= 0xFFFFFFFFFFFFFFFELL)
   {
     v4 = [(NEIKEv2AuthenticationProtocol *)self initWithDigitalSignature:?];
     v4->_isNonStandard = 1;
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (NEIKEv2AuthenticationProtocol)initWithSecurePassword:(unint64_t)a3
+- (NEIKEv2AuthenticationProtocol)initWithSecurePassword:(unint64_t)password
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2AuthenticationProtocol;
@@ -164,7 +164,7 @@ LABEL_9:
   if (v4)
   {
     v4->_method = 12;
-    v4->_securePasswordMethod = a3;
+    v4->_securePasswordMethod = password;
     v6 = v4;
   }
 
@@ -181,7 +181,7 @@ LABEL_9:
   return v5;
 }
 
-- (NEIKEv2AuthenticationProtocol)initWithDigitalSignature:(unint64_t)a3
+- (NEIKEv2AuthenticationProtocol)initWithDigitalSignature:(unint64_t)signature
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2AuthenticationProtocol;
@@ -190,7 +190,7 @@ LABEL_9:
   if (v4)
   {
     v4->_method = 14;
-    v4->_digitalSignatureAlgorithm = a3;
+    v4->_digitalSignatureAlgorithm = signature;
     v6 = v4;
   }
 
@@ -207,10 +207,10 @@ LABEL_9:
   return v5;
 }
 
-- (NEIKEv2AuthenticationProtocol)initWithMethod:(unint64_t)a3
+- (NEIKEv2AuthenticationProtocol)initWithMethod:(unint64_t)method
 {
   p_super = &self->super;
-  if (a3 == 14)
+  if (method == 14)
   {
     v6 = ne_log_obj();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -227,7 +227,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (a3 == 12)
+  if (method == 12)
   {
     v6 = ne_log_obj();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -245,7 +245,7 @@ LABEL_13:
   result = [(NEIKEv2AuthenticationProtocol *)&v8 init];
   if (result)
   {
-    result->_method = a3;
+    result->_method = method;
     return result;
   }
 
@@ -271,22 +271,22 @@ LABEL_11:
     {
       if (result == 14)
       {
-        v2 = [v1 digitalSignatureAlgorithm];
-        if (v2 <= 6 && ((1 << v2) & 0x62) != 0)
+        digitalSignatureAlgorithm = [v1 digitalSignatureAlgorithm];
+        if (digitalSignatureAlgorithm <= 6 && ((1 << digitalSignatureAlgorithm) & 0x62) != 0)
         {
           return 1;
         }
       }
 
-      v3 = [v1 method];
-      if (v3 == 245)
+      method = [v1 method];
+      if (method == 245)
       {
         return 1;
       }
 
       else
       {
-        return v3 == 14 && ([v1 digitalSignatureAlgorithm] - 9) < 3;
+        return method == 14 && ([v1 digitalSignatureAlgorithm] - 9) < 3;
       }
     }
   }
@@ -296,16 +296,16 @@ LABEL_11:
 
 - (uint64_t)isECDSA
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 method];
-    if ((v2 - 9) >= 3)
+    method = [self method];
+    if ((method - 9) >= 3)
     {
-      if (v2 == 14)
+      if (method == 14)
       {
-        v4 = [a1 digitalSignatureAlgorithm];
-        v3 = 0x184u >> v4;
-        if (v4 >= 9)
+        digitalSignatureAlgorithm = [self digitalSignatureAlgorithm];
+        v3 = 0x184u >> digitalSignatureAlgorithm;
+        if (digitalSignatureAlgorithm >= 9)
         {
           LOBYTE(v3) = 0;
         }
@@ -363,10 +363,10 @@ LABEL_11:
       {
         if (result == 14)
         {
-          v2 = [v1 digitalSignatureAlgorithm];
-          if ((v2 - 1) < 0xB)
+          digitalSignatureAlgorithm = [v1 digitalSignatureAlgorithm];
+          if ((digitalSignatureAlgorithm - 1) < 0xB)
           {
-            return qword_1BAA4F640[v2 - 1];
+            return qword_1BAA4F640[digitalSignatureAlgorithm - 1];
           }
         }
 
@@ -382,17 +382,17 @@ LABEL_11:
 
 - (uint64_t)signatureAlgorithm
 {
-  v2 = [a1 method];
+  method = [self method];
   result = 0;
-  if (v2 <= 9)
+  if (method <= 9)
   {
-    if (v2 == 1)
+    if (method == 1)
     {
       v5 = MEMORY[0x1E697B180];
       return *v5;
     }
 
-    if (v2 != 9)
+    if (method != 9)
     {
       return result;
     }
@@ -400,35 +400,35 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v2 == 10)
+  if (method == 10)
   {
     v5 = MEMORY[0x1E697B0F0];
     return *v5;
   }
 
-  if (v2 == 11)
+  if (method == 11)
   {
     v5 = MEMORY[0x1E697B0F8];
     return *v5;
   }
 
-  if (v2 != 14)
+  if (method != 14)
   {
     return result;
   }
 
-  v4 = [a1 digitalSignatureAlgorithm];
+  digitalSignatureAlgorithm = [self digitalSignatureAlgorithm];
   result = 0;
-  if (v4 <= 5)
+  if (digitalSignatureAlgorithm <= 5)
   {
-    if (v4 > 2)
+    if (digitalSignatureAlgorithm > 2)
     {
-      if (v4 == 3)
+      if (digitalSignatureAlgorithm == 3)
       {
         v5 = MEMORY[0x1E697B148];
       }
 
-      else if (v4 == 4)
+      else if (digitalSignatureAlgorithm == 4)
       {
         v5 = MEMORY[0x1E697B150];
       }
@@ -441,18 +441,18 @@ LABEL_11:
       return *v5;
     }
 
-    if (v4 == 1)
+    if (digitalSignatureAlgorithm == 1)
     {
       v5 = MEMORY[0x1E697B188];
       return *v5;
     }
 
-    if (v4 != 2)
+    if (digitalSignatureAlgorithm != 2)
     {
       return result;
     }
 
-    if (![a1 isNonStandard])
+    if (![self isNonStandard])
     {
       v5 = MEMORY[0x1E697B108];
       return *v5;
@@ -463,14 +463,14 @@ LABEL_12:
     return *v5;
   }
 
-  if (v4 <= 8)
+  if (digitalSignatureAlgorithm <= 8)
   {
-    if (v4 == 6)
+    if (digitalSignatureAlgorithm == 6)
     {
       v5 = MEMORY[0x1E697B198];
     }
 
-    else if (v4 == 7)
+    else if (digitalSignatureAlgorithm == 7)
     {
       v5 = MEMORY[0x1E697B110];
     }
@@ -483,7 +483,7 @@ LABEL_12:
     return *v5;
   }
 
-  switch(v4)
+  switch(digitalSignatureAlgorithm)
   {
     case 9:
       v5 = MEMORY[0x1E697B1A0];
@@ -499,16 +499,16 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)copyHashForDataVector:(uint64_t)a1
+- (uint64_t)copyHashForDataVector:(uint64_t)vector
 {
   v3 = a2;
-  v4 = [(NEIKEv2AuthenticationProtocol *)a1 hashType];
-  v5 = [NEIKEv2Crypto copyHashForDataVector:v3 hashType:v4];
+  hashType = [(NEIKEv2AuthenticationProtocol *)vector hashType];
+  v5 = [NEIKEv2Crypto copyHashForDataVector:v3 hashType:hashType];
 
   return v5;
 }
 
-+ (uint64_t)getAlgorithmForRSAPSSParameters:(uint64_t)a1
++ (uint64_t)getAlgorithmForRSAPSSParameters:(uint64_t)parameters
 {
   v47 = *MEMORY[0x1E69E9840];
   objc_opt_self();

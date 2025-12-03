@@ -1,39 +1,39 @@
 @interface SBPictureInPictureWindow
-- (SBPictureInPictureWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setRootViewController:(id)a3;
-- (void)setWindowScene:(id)a3;
+- (SBPictureInPictureWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setRootViewController:(id)controller;
+- (void)setWindowScene:(id)scene;
 @end
 
 @implementation SBPictureInPictureWindow
 
-- (SBPictureInPictureWindow)initWithWindowScene:(id)a3
+- (SBPictureInPictureWindow)initWithWindowScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = SBPictureInPictureWindow;
-  v3 = [(SBPictureInPictureWindow *)&v7 initWithWindowScene:a3];
+  v3 = [(SBPictureInPictureWindow *)&v7 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBPictureInPictureWindow *)v3 layer];
-    [v5 setDisableUpdateMask:32];
+    layer = [(SBPictureInPictureWindow *)v3 layer];
+    [layer setDisableUpdateMask:32];
   }
 
   return v4;
 }
 
-- (void)setWindowScene:(id)a3
+- (void)setWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = SBPictureInPictureWindow;
-  [(SBPictureInPictureWindow *)&v5 setWindowScene:a3];
-  v4 = [(SBPictureInPictureWindow *)self rootViewController];
-  [v4 noteWindowSceneDidChange];
+  [(SBPictureInPictureWindow *)&v5 setWindowScene:scene];
+  rootViewController = [(SBPictureInPictureWindow *)self rootViewController];
+  [rootViewController noteWindowSceneDidChange];
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -42,14 +42,14 @@
 
   v6.receiver = self;
   v6.super_class = SBPictureInPictureWindow;
-  [(SBPictureInPictureWindow *)&v6 setRootViewController:v5];
+  [(SBPictureInPictureWindow *)&v6 setRootViewController:controllerCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBPictureInPictureWindow;
-  v5 = [(SBPictureInPictureWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBPictureInPictureWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   if (v5 == self || (-[SBPictureInPictureWindow rootViewController](self, "rootViewController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 view], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5 == v7))
   {
 

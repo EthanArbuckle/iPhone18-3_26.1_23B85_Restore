@@ -2,13 +2,13 @@
 + (id)os_log;
 - (NSString)description;
 - (_PFTOffMainThreadScheduler)init;
-- (_PFTOffMainThreadScheduler)initWithBackgroundScheduler:(id)a3;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancellableBlock:(id)a3;
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (_PFTOffMainThreadScheduler)initWithBackgroundScheduler:(id)scheduler;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancellableBlock:(id)block;
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _PFTOffMainThreadScheduler
@@ -33,10 +33,10 @@
   return v4;
 }
 
-- (_PFTOffMainThreadScheduler)initWithBackgroundScheduler:(id)a3
+- (_PFTOffMainThreadScheduler)initWithBackgroundScheduler:(id)scheduler
 {
-  v5 = a3;
-  if (!v5)
+  schedulerCopy = scheduler;
+  if (!schedulerCopy)
   {
     if (PFTGuardOSLog_pft_once_token_7 != -1)
     {
@@ -59,7 +59,7 @@
     alreadyOffMainThreadScheduler = v7->_alreadyOffMainThreadScheduler;
     v7->_alreadyOffMainThreadScheduler = v8;
 
-    objc_storeStrong(&v7->_needToGetOffMainThreadScheduler, a3);
+    objc_storeStrong(&v7->_needToGetOffMainThreadScheduler, scheduler);
     v10 = v7;
   }
 
@@ -70,17 +70,17 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_needToGetOffMainThreadScheduler withName:@"backgroundScheduler"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v6 = 8;
-  if (v5)
+  if (isMainThread)
   {
     v6 = 16;
   }
@@ -91,17 +91,17 @@
   v9[2] = __43___PFTOffMainThreadScheduler_performBlock___block_invoke;
   v9[3] = &unk_279A52D20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 performBlock:v9];
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v8 = 8;
-  if (v7)
+  if (isMainThread)
   {
     v8 = 16;
   }
@@ -112,17 +112,17 @@
   v11[2] = __60___PFTOffMainThreadScheduler_performBlock_qualityOfService___block_invoke;
   v11[3] = &unk_279A52D20;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 performBlock:v11 qualityOfService:a4];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [v9 performBlock:v11 qualityOfService:service];
 }
 
-- (id)performCancellableBlock:(id)a3
+- (id)performCancellableBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v6 = 8;
-  if (v5)
+  if (isMainThread)
   {
     v6 = 16;
   }
@@ -133,19 +133,19 @@
   v11[2] = __54___PFTOffMainThreadScheduler_performCancellableBlock___block_invoke;
   v11[3] = &unk_279A52D48;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
+  v12 = blockCopy;
+  v8 = blockCopy;
   v9 = [v7 performCancellableBlock:v11];
 
   return v9;
 }
 
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v8 = 8;
-  if (v7)
+  if (isMainThread)
   {
     v8 = 16;
   }
@@ -156,19 +156,19 @@
   v13[2] = __71___PFTOffMainThreadScheduler_performCancellableBlock_qualityOfService___block_invoke;
   v13[3] = &unk_279A52D48;
   v13[4] = self;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 performCancellableBlock:v13 qualityOfService:a4];
+  v14 = blockCopy;
+  v10 = blockCopy;
+  v11 = [v9 performCancellableBlock:v13 qualityOfService:service];
 
   return v11;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v8 = 8;
-  if (v7)
+  if (isMainThread)
   {
     v8 = 16;
   }
@@ -179,19 +179,19 @@
   v13[2] = __54___PFTOffMainThreadScheduler_afterDelay_performBlock___block_invoke;
   v13[3] = &unk_279A52D20;
   v13[4] = self;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 afterDelay:v13 performBlock:a3];
+  v14 = blockCopy;
+  v10 = blockCopy;
+  v11 = [v9 afterDelay:v13 performBlock:delay];
 
   return v11;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
-  v9 = [MEMORY[0x277CCACC8] isMainThread];
+  blockCopy = block;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v10 = 8;
-  if (v9)
+  if (isMainThread)
   {
     v10 = 16;
   }
@@ -202,9 +202,9 @@
   v15[2] = __71___PFTOffMainThreadScheduler_afterDelay_performBlock_qualityOfService___block_invoke;
   v15[3] = &unk_279A52D20;
   v15[4] = self;
-  v16 = v8;
-  v12 = v8;
-  v13 = [v11 afterDelay:v15 performBlock:a5 qualityOfService:a3];
+  v16 = blockCopy;
+  v12 = blockCopy;
+  v13 = [v11 afterDelay:v15 performBlock:service qualityOfService:delay];
 
   return v13;
 }

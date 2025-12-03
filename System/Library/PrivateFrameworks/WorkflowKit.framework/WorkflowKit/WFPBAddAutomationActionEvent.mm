@@ -1,43 +1,43 @@
 @interface WFPBAddAutomationActionEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBAddAutomationActionEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(WFPBAddAutomationActionEvent *)self setKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFPBAddAutomationActionEvent *)self setShortcutIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
-    self->_actionIndex = v4[4];
+    self->_actionIndex = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFPBAddAutomationActionEvent *)self setActionIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -58,16 +58,16 @@
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_actionIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -76,7 +76,7 @@
   }
 
   shortcutIdentifier = self->_shortcutIdentifier;
-  if (shortcutIdentifier | *(v4 + 4))
+  if (shortcutIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)shortcutIdentifier isEqual:?])
     {
@@ -84,16 +84,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_actionIndex != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_actionIndex != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -101,7 +101,7 @@ LABEL_13:
   }
 
   actionIdentifier = self->_actionIdentifier;
-  if (actionIdentifier | *(v4 + 1))
+  if (actionIdentifier | *(equalCopy + 1))
   {
     v9 = [(NSString *)actionIdentifier isEqual:?];
   }
@@ -116,14 +116,14 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_shortcutIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_shortcutIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -133,80 +133,80 @@ LABEL_14:
     *(v5 + 40) |= 1u;
   }
 
-  v10 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_shortcutIdentifier)
   {
     [v5 setShortcutIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_actionIndex;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_actionIndex;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_actionIdentifier)
   {
     [v5 setActionIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_shortcutIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     actionIndex = self->_actionIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_actionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   shortcutIdentifier = self->_shortcutIdentifier;
@@ -236,8 +236,8 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = WFPBAddAutomationActionEvent;
   v4 = [(WFPBAddAutomationActionEvent *)&v8 description];
-  v5 = [(WFPBAddAutomationActionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBAddAutomationActionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface STSListener
 - (STSListener)init;
 - (STSListenerDelegate)delegate;
-- (id)startWithDelegate:(id)a3;
+- (id)startWithDelegate:(id)delegate;
 - (id)stop;
 - (void)didEndSession;
-- (void)didEnterField:(id)a3;
+- (void)didEnterField:(id)field;
 - (void)didExitField;
-- (void)didStartSession:(id)a3;
-- (void)fieldDetectSession:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)fieldDetectSessionDidEndUnexpectedly:(id)a3;
-- (void)fieldDetectSessionDidExitField:(id)a3;
+- (void)didStartSession:(id)session;
+- (void)fieldDetectSession:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)fieldDetectSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)fieldDetectSessionDidExitField:(id)field;
 @end
 
 @implementation STSListener
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (id)startWithDelegate:(id)a3
+- (id)startWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _os_activity_create(&dword_26536F000, "startWithDelegate:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -48,21 +48,21 @@
   os_activity_scope_leave(&state);
 
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener startWithDelegate:]", 44, self, @"Starting withdelegate", v6, v7, v12[0]);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   state.opaque[0] = 0;
   state.opaque[1] = &state;
   v14 = 0x3032000000;
   v15 = sub_265391338;
   v16 = sub_265391348;
   v17 = 0;
-  v8 = [(STSHardwareManagerWrapper *)self->_nfHwManager manager];
+  manager = [(STSHardwareManagerWrapper *)self->_nfHwManager manager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_265391350;
   v12[3] = &unk_279B94008;
   v12[4] = self;
   v12[5] = &state;
-  v9 = [v8 startFieldDetectSession:v12];
+  v9 = [manager startFieldDetectSession:v12];
 
   v10 = *(state.opaque[1] + 40);
   _Block_object_dispose(&state, 8);
@@ -100,9 +100,9 @@
   dispatch_async(callbackQueue, block);
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener didStartSession:]", 87, self, &stru_2876E3E50, v5, v6, v9[0]);
   callbackQueue = self->_callbackQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -110,14 +110,14 @@
   v9[2] = sub_26539170C;
   v9[3] = &unk_279B93898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = sessionCopy;
+  v8 = sessionCopy;
   dispatch_async(callbackQueue, v9);
 }
 
-- (void)didEnterField:(id)a3
+- (void)didEnterField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener didEnterField:]", 98, self, &stru_2876E3E50, v5, v6, v9[0]);
   callbackQueue = self->_callbackQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -125,8 +125,8 @@
   v9[2] = sub_265391860;
   v9[3] = &unk_279B93898;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = fieldCopy;
+  v8 = fieldCopy;
   dispatch_async(callbackQueue, v9);
 }
 
@@ -142,23 +142,23 @@
   dispatch_async(callbackQueue, block);
 }
 
-- (void)fieldDetectSession:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)fieldDetectSession:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener fieldDetectSession:didEnterFieldWithNotification:]", 126, self, @"%@", v6, v7, v5);
-  v8 = sub_265399348(v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener fieldDetectSession:didEnterFieldWithNotification:]", 126, self, @"%@", v6, v7, notificationCopy);
+  v8 = sub_265399348(notificationCopy);
 
   [(STSListener *)self didEnterField:v8];
 }
 
-- (void)fieldDetectSessionDidExitField:(id)a3
+- (void)fieldDetectSessionDidExitField:(id)field
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSListener fieldDetectSessionDidExitField:]", 132, self, &stru_2876E3E50, v3, v4, v6);
 
   MEMORY[0x2821F9670](self, sel_didExitField);
 }
 
-- (void)fieldDetectSessionDidEndUnexpectedly:(id)a3
+- (void)fieldDetectSessionDidEndUnexpectedly:(id)unexpectedly
 {
   sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSListener fieldDetectSessionDidEndUnexpectedly:]", 137, self, &stru_2876E3E50, v3, v4, v6);
 

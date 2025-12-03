@@ -1,12 +1,12 @@
 @interface SBRouteToAppExposeSwitcherModifier
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4;
-- (SBRouteToAppExposeSwitcherModifier)initWithTransitionID:(id)a3 appExposeModifier:(id)a4;
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4;
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity;
+- (SBRouteToAppExposeSwitcherModifier)initWithTransitionID:(id)d appExposeModifier:(id)modifier;
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale;
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)appExposeAccessoryButtonsBundleIdentifier;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleTransitionEvent:(id)event;
 - (id)scrollViewAttributes;
 - (int64_t)appExposeAccessoryButtonsOverrideUserInterfaceStyle;
 - (int64_t)plusButtonStyle;
@@ -14,30 +14,30 @@
 
 @implementation SBRouteToAppExposeSwitcherModifier
 
-- (SBRouteToAppExposeSwitcherModifier)initWithTransitionID:(id)a3 appExposeModifier:(id)a4
+- (SBRouteToAppExposeSwitcherModifier)initWithTransitionID:(id)d appExposeModifier:(id)modifier
 {
-  v7 = a4;
+  modifierCopy = modifier;
   v11.receiver = self;
   v11.super_class = SBRouteToAppExposeSwitcherModifier;
-  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:a3];
+  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appExposeModifier, a4);
+    objc_storeStrong(&v8->_appExposeModifier, modifier);
     v9->_isTransitioningOutOfAppExpose = 0;
   }
 
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 fromAppExposeBundleID];
-  if (v5)
+  eventCopy = event;
+  fromAppExposeBundleID = [eventCopy fromAppExposeBundleID];
+  if (fromAppExposeBundleID)
   {
-    v6 = [v4 toAppExposeBundleID];
-    self->_isTransitioningOutOfAppExpose = v6 == 0;
+    toAppExposeBundleID = [eventCopy toAppExposeBundleID];
+    self->_isTransitioningOutOfAppExpose = toAppExposeBundleID == 0;
   }
 
   else
@@ -47,25 +47,25 @@
 
   v9.receiver = self;
   v9.super_class = SBRouteToAppExposeSwitcherModifier;
-  v7 = [(SBTransitionSwitcherModifier *)&v9 handleTransitionEvent:v4];
+  v7 = [(SBTransitionSwitcherModifier *)&v9 handleTransitionEvent:eventCopy];
 
   return v7;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
-  v5 = v4;
+  layoutsCopy = layouts;
+  v5 = layoutsCopy;
   if (self->_isTransitioningOutOfAppExpose)
   {
     v20.receiver = self;
     v20.super_class = SBRouteToAppExposeSwitcherModifier;
-    v6 = [(SBTransitionSwitcherModifier *)&v20 adjustedAppLayoutsForAppLayouts:v4];
+    v6 = [(SBTransitionSwitcherModifier *)&v20 adjustedAppLayoutsForAppLayouts:layoutsCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = layoutsCopy;
   }
 
   v14 = 0;
@@ -181,9 +181,9 @@ uint64_t __53__SBRouteToAppExposeSwitcherModifier_plusButtonStyle__block_invoke(
   return result;
 }
 
-- (double)snapshotScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)snapshotScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -194,9 +194,9 @@ uint64_t __53__SBRouteToAppExposeSwitcherModifier_plusButtonStyle__block_invoke(
   v11[2] = __77__SBRouteToAppExposeSwitcherModifier_snapshotScaleForLayoutRole_inAppLayout___block_invoke;
   v11[3] = &unk_2783AA668;
   v13 = &v15;
-  v14 = a3;
+  roleCopy = role;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v11];
   v9 = v16[3];
@@ -212,9 +212,9 @@ uint64_t __77__SBRouteToAppExposeSwitcherModifier_snapshotScaleForLayoutRole_inA
   return result;
 }
 
-- (double)contentPageViewScaleForAppLayout:(id)a3 withScale:(double)a4
+- (double)contentPageViewScaleForAppLayout:(id)layout withScale:(double)scale
 {
-  v6 = a3;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -226,9 +226,9 @@ uint64_t __77__SBRouteToAppExposeSwitcherModifier_snapshotScaleForLayoutRole_inA
   v11[3] = &unk_2783AA668;
   v13 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
-  v14 = a4;
+  scaleCopy = scale;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v11];
   v9 = v16[3];
 
@@ -273,7 +273,7 @@ void __58__SBRouteToAppExposeSwitcherModifier_scrollViewAttributes__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v10 = 0;
   v11 = &v10;
@@ -287,8 +287,8 @@ void __58__SBRouteToAppExposeSwitcherModifier_scrollViewAttributes__block_invoke
   v9[3] = &unk_2783AA6B8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = index;
+  v9[7] = alignment;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v9];
   v5 = v11[4];
   v6 = v11[5];
@@ -309,7 +309,7 @@ uint64_t __70__SBRouteToAppExposeSwitcherModifier_contentOffsetForIndex_alignmen
   return result;
 }
 
-- (CGPoint)restingOffsetForScrollOffset:(CGPoint)a3 velocity:(CGPoint)a4
+- (CGPoint)restingOffsetForScrollOffset:(CGPoint)offset velocity:(CGPoint)velocity
 {
   v12 = 0;
   v13 = &v12;
@@ -323,8 +323,8 @@ uint64_t __70__SBRouteToAppExposeSwitcherModifier_contentOffsetForIndex_alignmen
   v9[3] = &unk_2783AEEC0;
   v9[4] = self;
   v9[5] = &v12;
-  v10 = a3;
-  v11 = a4;
+  offsetCopy = offset;
+  velocityCopy = velocity;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appExposeModifier usingBlock:v9];
   v5 = v13[4];
   v6 = v13[5];

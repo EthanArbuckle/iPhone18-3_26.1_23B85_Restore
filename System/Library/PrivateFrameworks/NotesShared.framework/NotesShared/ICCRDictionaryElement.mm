@@ -1,33 +1,33 @@
 @interface ICCRDictionaryElement
-+ (id)temporaryElementWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICCRDictionaryElement)initWithValue:(id)a3;
-- (ICCRDictionaryElement)initWithValue:(id)a3 timestamp:(id)a4;
++ (id)temporaryElementWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (ICCRDictionaryElement)initWithValue:(id)value;
+- (ICCRDictionaryElement)initWithValue:(id)value timestamp:(id)timestamp;
 - (id)description;
 - (unint64_t)hash;
-- (void)mergeWith:(id)a3;
+- (void)mergeWith:(id)with;
 @end
 
 @implementation ICCRDictionaryElement
 
-+ (id)temporaryElementWithValue:(id)a3
++ (id)temporaryElementWithValue:(id)value
 {
-  v3 = a3;
-  v4 = [[ICCRDictionaryElement alloc] initWithValue:v3 timestamp:0];
+  valueCopy = value;
+  v4 = [[ICCRDictionaryElement alloc] initWithValue:valueCopy timestamp:0];
 
   return v4;
 }
 
-- (ICCRDictionaryElement)initWithValue:(id)a3
+- (ICCRDictionaryElement)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = ICCRDictionaryElement;
   v6 = [(ICCRDictionaryElement *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
     v8 = objc_alloc_init(ICCRVectorTimestamp);
     timestamp = v7->_timestamp;
     v7->_timestamp = v8;
@@ -36,18 +36,18 @@
   return v7;
 }
 
-- (ICCRDictionaryElement)initWithValue:(id)a3 timestamp:(id)a4
+- (ICCRDictionaryElement)initWithValue:(id)value timestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  timestampCopy = timestamp;
   v12.receiver = self;
   v12.super_class = ICCRDictionaryElement;
   v9 = [(ICCRDictionaryElement *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_value, a3);
-    objc_storeStrong(&v10->_timestamp, a4);
+    objc_storeStrong(&v9->_value, value);
+    objc_storeStrong(&v10->_timestamp, timestamp);
   }
 
   return v10;
@@ -55,21 +55,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ICCRDictionaryElement *)self value];
-  v3 = [v2 hash];
+  value = [(ICCRDictionaryElement *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCRDictionaryElement *)self value];
-    v6 = [v4 value];
-    v7 = [v5 isEqual:v6];
+    value = [(ICCRDictionaryElement *)self value];
+    value2 = [equalCopy value];
+    v7 = [value isEqual:value2];
   }
 
   else
@@ -80,16 +80,16 @@
   return v7;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v8 = a3;
-  v4 = [(ICCRDictionaryElement *)self timestamp];
-  v5 = [v8 timestamp];
-  [v4 mergeWith:v5];
+  withCopy = with;
+  timestamp = [(ICCRDictionaryElement *)self timestamp];
+  timestamp2 = [withCopy timestamp];
+  [timestamp mergeWith:timestamp2];
 
-  v6 = [(ICCRDictionaryElement *)self value];
-  v7 = [v8 value];
-  [v6 mergeWith:v7];
+  value = [(ICCRDictionaryElement *)self value];
+  value2 = [withCopy value];
+  [value mergeWith:value2];
 }
 
 - (id)description
@@ -97,10 +97,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCRDictionaryElement *)self timestamp];
-  v7 = [v6 shortDescription];
-  v8 = [(ICCRDictionaryElement *)self value];
-  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, v7, v8];
+  timestamp = [(ICCRDictionaryElement *)self timestamp];
+  shortDescription = [timestamp shortDescription];
+  value = [(ICCRDictionaryElement *)self value];
+  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, shortDescription, value];
 
   return v9;
 }

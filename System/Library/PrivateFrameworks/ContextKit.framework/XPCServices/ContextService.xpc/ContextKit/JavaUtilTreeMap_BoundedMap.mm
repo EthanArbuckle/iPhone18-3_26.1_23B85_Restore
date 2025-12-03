@@ -1,34 +1,34 @@
 @interface JavaUtilTreeMap_BoundedMap
-- (BOOL)containsKeyWithId:(id)a3;
-- (id)boundWithJavaUtilTreeMap_Node:(id)a3 withJavaUtilTreeMap_BoundEnum:(id)a4 withJavaUtilTreeMap_BoundEnum:(id)a5;
-- (id)ceilingEntryWithId:(id)a3;
-- (id)ceilingKeyWithId:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (id)boundWithJavaUtilTreeMap_Node:(id)node withJavaUtilTreeMap_BoundEnum:(id)enum withJavaUtilTreeMap_BoundEnum:(id)boundEnum;
+- (id)ceilingEntryWithId:(id)id;
+- (id)ceilingKeyWithId:(id)id;
 - (id)comparator;
 - (id)descendingKeySet;
 - (id)descendingMap;
 - (id)entrySet;
 - (id)firstEntry;
 - (id)firstKey;
-- (id)floorEntryWithId:(id)a3;
-- (id)floorKeyWithId:(id)a3;
-- (id)getWithId:(id)a3;
-- (id)headMapWithId:(id)a3;
-- (id)headMapWithId:(id)a3 withBoolean:(BOOL)a4;
-- (id)higherEntryWithId:(id)a3;
-- (id)higherKeyWithId:(id)a3;
+- (id)floorEntryWithId:(id)id;
+- (id)floorKeyWithId:(id)id;
+- (id)getWithId:(id)id;
+- (id)headMapWithId:(id)id;
+- (id)headMapWithId:(id)id withBoolean:(BOOL)boolean;
+- (id)higherEntryWithId:(id)id;
+- (id)higherKeyWithId:(id)id;
 - (id)lastEntry;
 - (id)lastKey;
-- (id)lowerEntryWithId:(id)a3;
-- (id)lowerKeyWithId:(id)a3;
+- (id)lowerEntryWithId:(id)id;
+- (id)lowerKeyWithId:(id)id;
 - (id)navigableKeySet;
 - (id)pollFirstEntry;
 - (id)pollLastEntry;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
-- (id)subMapWithId:(id)a3 withBoolean:(BOOL)a4 withId:(id)a5 withBoolean:(BOOL)a6;
-- (id)subMapWithId:(id)a3 withId:(id)a4;
-- (id)tailMapWithId:(id)a3;
-- (id)tailMapWithId:(id)a3 withBoolean:(BOOL)a4;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
+- (id)subMapWithId:(id)id withBoolean:(BOOL)boolean withId:(id)withId withBoolean:(BOOL)withBoolean;
+- (id)subMapWithId:(id)id withId:(id)withId;
+- (id)tailMapWithId:(id)id;
+- (id)tailMapWithId:(id)id withBoolean:(BOOL)boolean;
 - (id)values;
 - (id)writeReplace;
 - (int)size;
@@ -39,77 +39,77 @@
 
 - (int)size
 {
-  v2 = [(JavaUtilTreeMap_BoundedMap *)self entrySet];
-  if (!v2)
+  entrySet = [(JavaUtilTreeMap_BoundedMap *)self entrySet];
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [v2 iterator];
+  iterator = [entrySet iterator];
 
-  return JavaUtilTreeMap_countWithJavaUtilIterator_(v3);
+  return JavaUtilTreeMap_countWithJavaUtilIterator_(iterator);
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (!sub_1001E0314(self, a3, self->fromBound_, self->toBound_))
+  if (!sub_1001E0314(self, id, self->fromBound_, self->toBound_))
   {
     return 0;
   }
 
   v5 = self->this$0_;
 
-  return [(JavaUtilTreeMap *)v5 getWithId:a3];
+  return [(JavaUtilTreeMap *)v5 getWithId:id];
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
-  v5 = sub_1001E0314(self, a3, self->fromBound_, self->toBound_);
+  v5 = sub_1001E0314(self, id, self->fromBound_, self->toBound_);
   if (v5)
   {
     v6 = self->this$0_;
 
-    LOBYTE(v5) = [(JavaUtilTreeMap *)v6 containsKeyWithId:a3];
+    LOBYTE(v5) = [(JavaUtilTreeMap *)v6 containsKeyWithId:id];
   }
 
   return v5;
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
-  if ((sub_1001E0314(self, a3, self->fromBound_, self->toBound_) & 1) == 0)
+  if ((sub_1001E0314(self, id, self->fromBound_, self->toBound_) & 1) == 0)
   {
-    v9 = sub_1001E01BC(self, a3, self->fromBound_, self->toBound_);
+    v9 = sub_1001E01BC(self, id, self->fromBound_, self->toBound_);
     objc_exception_throw(v9);
   }
 
   v7 = self->this$0_;
 
-  return [(JavaUtilTreeMap *)v7 putInternalWithId:a3 withId:a4];
+  return [(JavaUtilTreeMap *)v7 putInternalWithId:id withId:withId];
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
-  if (!sub_1001E0314(self, a3, self->fromBound_, self->toBound_))
+  if (!sub_1001E0314(self, id, self->fromBound_, self->toBound_))
   {
     return 0;
   }
 
   v5 = self->this$0_;
 
-  return [(JavaUtilTreeMap *)v5 removeWithId:a3];
+  return [(JavaUtilTreeMap *)v5 removeWithId:id];
 }
 
-- (id)boundWithJavaUtilTreeMap_Node:(id)a3 withJavaUtilTreeMap_BoundEnum:(id)a4 withJavaUtilTreeMap_BoundEnum:(id)a5
+- (id)boundWithJavaUtilTreeMap_Node:(id)node withJavaUtilTreeMap_BoundEnum:(id)enum withJavaUtilTreeMap_BoundEnum:(id)boundEnum
 {
-  if (!a3)
+  if (!node)
   {
     return 0;
   }
 
-  if (sub_1001E0314(self, [a3 getKey], a4, a5))
+  if (sub_1001E0314(self, [node getKey], enum, boundEnum))
   {
-    return a3;
+    return node;
   }
 
   return 0;
@@ -195,14 +195,14 @@
   return [v2 getKey];
 }
 
-- (id)lowerEntryWithId:(id)a3
+- (id)lowerEntryWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, JavaUtilTreeMap_RelationEnum_values_[0]);
+  result = sub_1001E0700(self, id, JavaUtilTreeMap_RelationEnum_values_[0]);
   if (result)
   {
     v6 = new_JavaUtilAbstractMap_SimpleImmutableEntry_initWithJavaUtilMap_Entry_(result);
@@ -213,14 +213,14 @@
   return result;
 }
 
-- (id)lowerKeyWithId:(id)a3
+- (id)lowerKeyWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, JavaUtilTreeMap_RelationEnum_values_[0]);
+  result = sub_1001E0700(self, id, JavaUtilTreeMap_RelationEnum_values_[0]);
   if (result)
   {
 
@@ -230,14 +230,14 @@
   return result;
 }
 
-- (id)floorEntryWithId:(id)a3
+- (id)floorEntryWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558068);
+  result = sub_1001E0700(self, id, qword_100558068);
   if (result)
   {
     v6 = new_JavaUtilAbstractMap_SimpleImmutableEntry_initWithJavaUtilMap_Entry_(result);
@@ -248,14 +248,14 @@
   return result;
 }
 
-- (id)floorKeyWithId:(id)a3
+- (id)floorKeyWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558068);
+  result = sub_1001E0700(self, id, qword_100558068);
   if (result)
   {
 
@@ -265,14 +265,14 @@
   return result;
 }
 
-- (id)ceilingEntryWithId:(id)a3
+- (id)ceilingEntryWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558080);
+  result = sub_1001E0700(self, id, qword_100558080);
   if (result)
   {
     v6 = new_JavaUtilAbstractMap_SimpleImmutableEntry_initWithJavaUtilMap_Entry_(result);
@@ -283,14 +283,14 @@
   return result;
 }
 
-- (id)ceilingKeyWithId:(id)a3
+- (id)ceilingKeyWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558080);
+  result = sub_1001E0700(self, id, qword_100558080);
   if (result)
   {
 
@@ -300,14 +300,14 @@
   return result;
 }
 
-- (id)higherEntryWithId:(id)a3
+- (id)higherEntryWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558088);
+  result = sub_1001E0700(self, id, qword_100558088);
   if (result)
   {
     v6 = new_JavaUtilAbstractMap_SimpleImmutableEntry_initWithJavaUtilMap_Entry_(result);
@@ -318,14 +318,14 @@
   return result;
 }
 
-- (id)higherKeyWithId:(id)a3
+- (id)higherKeyWithId:(id)id
 {
   if ((atomic_load_explicit(&JavaUtilTreeMap_RelationEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37B0();
   }
 
-  result = sub_1001E0700(self, a3, qword_100558088);
+  result = sub_1001E0700(self, id, qword_100558088);
   if (result)
   {
 
@@ -415,10 +415,10 @@
   return [(JavaUtilTreeMap_BoundedMap *)v9 navigableKeySet];
 }
 
-- (id)subMapWithId:(id)a3 withBoolean:(BOOL)a4 withId:(id)a5 withBoolean:(BOOL)a6
+- (id)subMapWithId:(id)id withBoolean:(BOOL)boolean withId:(id)withId withBoolean:(BOOL)withBoolean
 {
-  v6 = a6;
-  v8 = a4;
+  withBooleanCopy = withBoolean;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37BC();
@@ -431,7 +431,7 @@
     sub_1001E37BC();
   }
 
-  if (v8)
+  if (booleanCopy)
   {
     v13 = v11;
   }
@@ -442,17 +442,17 @@
   }
 
   v14 = &qword_100558098;
-  if (v6)
+  if (withBooleanCopy)
   {
     v14 = JavaUtilTreeMap_BoundEnum_values_;
   }
 
   v15 = *v14;
 
-  return sub_1001E1314(self, a3, v13, a5, v15);
+  return sub_1001E1314(self, id, v13, withId, v15);
 }
 
-- (id)subMapWithId:(id)a3 withId:(id)a4
+- (id)subMapWithId:(id)id withId:(id)withId
 {
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -467,12 +467,12 @@
 
   v8 = qword_100558098;
 
-  return sub_1001E1314(self, a3, v7, a4, v8);
+  return sub_1001E1314(self, id, v7, withId, v8);
 }
 
-- (id)headMapWithId:(id)a3 withBoolean:(BOOL)a4
+- (id)headMapWithId:(id)id withBoolean:(BOOL)boolean
 {
-  v4 = a4;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37BC();
@@ -485,7 +485,7 @@
     sub_1001E37BC();
   }
 
-  if (v4)
+  if (booleanCopy)
   {
     v9 = v7;
   }
@@ -497,10 +497,10 @@
 
   v10 = qword_1005580A0;
 
-  return sub_1001E1314(self, 0, v10, a3, v9);
+  return sub_1001E1314(self, 0, v10, id, v9);
 }
 
-- (id)headMapWithId:(id)a3
+- (id)headMapWithId:(id)id
 {
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -515,12 +515,12 @@
 
   v6 = qword_100558098;
 
-  return sub_1001E1314(self, 0, v5, a3, v6);
+  return sub_1001E1314(self, 0, v5, id, v6);
 }
 
-- (id)tailMapWithId:(id)a3 withBoolean:(BOOL)a4
+- (id)tailMapWithId:(id)id withBoolean:(BOOL)boolean
 {
-  v4 = a4;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1001E37BC();
@@ -533,7 +533,7 @@
     sub_1001E37BC();
   }
 
-  if (v4)
+  if (booleanCopy)
   {
     v9 = v7;
   }
@@ -545,10 +545,10 @@
 
   v10 = qword_1005580A0;
 
-  return sub_1001E1314(self, a3, v9, 0, v10);
+  return sub_1001E1314(self, id, v9, 0, v10);
 }
 
-- (id)tailMapWithId:(id)a3
+- (id)tailMapWithId:(id)id
 {
   if ((atomic_load_explicit(JavaUtilTreeMap_BoundEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -563,7 +563,7 @@
 
   v6 = qword_1005580A0;
 
-  return sub_1001E1314(self, a3, v5, 0, v6);
+  return sub_1001E1314(self, id, v5, 0, v6);
 }
 
 - (id)writeReplace

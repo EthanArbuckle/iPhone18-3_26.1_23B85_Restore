@@ -1,29 +1,29 @@
 @interface CNMeCardSharingOnboardingAvatarCarouselLayout
-+ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)a3 collectionView:(id)a4 layout:(id)a5;
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4;
-- (double)pageOffsetForIndex:(int64_t)a3;
++ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)offset collectionView:(id)view layout:(id)layout;
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds;
+- (double)pageOffsetForIndex:(int64_t)index;
 - (double)pagingLength;
 - (double)pagingOrigin;
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5;
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items;
 - (int64_t)selectedPageIndex;
 @end
 
 @implementation CNMeCardSharingOnboardingAvatarCarouselLayout
 
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = [MEMORY[0x1E696AD50] indexSet];
-  v11 = [(UICollectionViewFlowLayout *)self layoutAttributesForElementsInRect:x, y, width, height];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  height = [(UICollectionViewFlowLayout *)self layoutAttributesForElementsInRect:x, y, width, height];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v12 = [height countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -34,34 +34,34 @@
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(height);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 indexPath];
-        v18 = [v17 section];
+        indexPath = [v16 indexPath];
+        section = [indexPath section];
 
-        if (!v18)
+        if (!section)
         {
-          v19 = [v16 indexPath];
-          [v10 addIndex:{objc_msgSend(v19, "row")}];
+          indexPath2 = [v16 indexPath];
+          [indexSet addIndex:{objc_msgSend(indexPath2, "row")}];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [height countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
   }
 
-  v20 = [v10 copy];
+  v20 = [indexSet copy];
 
   return v20;
 }
 
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds
 {
-  v5 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:{0, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v5 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:{0, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   v6 = [(UICollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:v5];
   [v6 frame];
   v8 = v7;
@@ -80,22 +80,22 @@
   return result;
 }
 
-- (double)pageOffsetForIndex:(int64_t)a3
+- (double)pageOffsetForIndex:(int64_t)index
 {
-  v5 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  collectionView = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
 
-  if (v6 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    v7 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-    a3 = [v7 numberOfItemsInSection:0] + ~a3;
+    collectionView2 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+    index = [collectionView2 numberOfItemsInSection:0] + ~index;
   }
 
-  v8 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  v9 = v8;
-  if (a3 <= 0)
+  collectionView3 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  v9 = collectionView3;
+  if (index <= 0)
   {
-    [v8 _firstPageOffset];
+    [collectionView3 _firstPageOffset];
     v13 = v14;
   }
 
@@ -104,7 +104,7 @@
     [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self pagingLength];
     v11 = v10;
     [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self pagingOrigin];
-    v13 = v12 + v11 * a3;
+    v13 = v12 + v11 * index;
   }
 
   return v13;
@@ -112,21 +112,21 @@
 
 - (int64_t)selectedPageIndex
 {
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
   v7 = v6;
-  v8 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  v9 = [CNMeCardSharingOnboardingAvatarCarouselLayout indexPathForNearestItemToCenterWithOffset:v8 collectionView:self layout:v5, v7];
+  collectionView2 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  v9 = [CNMeCardSharingOnboardingAvatarCarouselLayout indexPathForNearestItemToCenterWithOffset:collectionView2 collectionView:self layout:v5, v7];
 
-  v10 = [v9 item];
-  return v10;
+  item = [v9 item];
+  return item;
 }
 
 - (double)pagingOrigin
 {
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   [(UICollectionViewFlowLayout *)self itemSize];
   v7 = (v5 - v6) * -0.5;
@@ -136,19 +136,19 @@
 
 - (double)pagingLength
 {
-  v3 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
-  v6 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v6 bounds];
+  collectionView2 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView2 bounds];
   v8 = floor(v5 - v7) * 0.5;
 
   v9 = floor(v8 * 0.5) + -10.0;
-  v10 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v10 bounds];
+  collectionView3 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView3 bounds];
   v12 = v11;
-  v13 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
-  [v13 bounds];
+  collectionView4 = [(CNMeCardSharingOnboardingAvatarCarouselLayout *)self collectionView];
+  [collectionView4 bounds];
   v15 = v14;
   [(UICollectionViewFlowLayout *)self itemSize];
   v17 = v12 - (v15 - v16 - v9);
@@ -156,34 +156,34 @@
   return v17;
 }
 
-+ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)a3 collectionView:(id)a4 layout:(id)a5
++ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)offset collectionView:(id)view layout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = a5;
-  [v8 contentSize];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  layoutCopy = layout;
+  [viewCopy contentSize];
   v11 = v10;
-  [v8 contentInset];
+  [viewCopy contentInset];
   v13 = v11 + v12;
-  [v8 bounds];
+  [viewCopy bounds];
   v14 = v13 - CGRectGetWidth(v52);
   if (x >= v14)
   {
     x = v14;
   }
 
-  [v8 _firstPageOffset];
+  [viewCopy _firstPageOffset];
   if (v15 >= x)
   {
     x = v15;
   }
 
-  [v8 bounds];
+  [viewCopy bounds];
   v16 = CGRectGetWidth(v53) * 0.5 + x;
-  [v8 bounds];
+  [viewCopy bounds];
   v17 = y + CGRectGetHeight(v54) * 0.5;
-  [v8 bounds];
+  [viewCopy bounds];
   UIRectCenteredAboutPoint();
   v19 = v18;
   v21 = v20;
@@ -204,12 +204,12 @@
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0x7FFFFFFFFFFFFFFFLL;
-  v27 = [v9 indexesForElementsInRect:objc_msgSend(v8 visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), v19, v21, v23, v25, v19, v21, v23, v25}];
+  v27 = [layoutCopy indexesForElementsInRect:objc_msgSend(viewCopy visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), v19, v21, v23, v25, v19, v21, v23, v25}];
   v33 = MEMORY[0x1E69E9820];
   v34 = 3221225472;
   v35 = __113__CNMeCardSharingOnboardingAvatarCarouselLayout_indexPathForNearestItemToCenterWithOffset_collectionView_layout___block_invoke_2;
   v36 = &unk_1E74E2E88;
-  v28 = v9;
+  v28 = layoutCopy;
   v37 = v28;
   v41 = v19;
   v42 = v21;

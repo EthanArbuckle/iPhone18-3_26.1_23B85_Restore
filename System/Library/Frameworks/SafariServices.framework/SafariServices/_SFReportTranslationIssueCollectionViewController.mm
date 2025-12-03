@@ -1,30 +1,30 @@
 @interface _SFReportTranslationIssueCollectionViewController
-- (_SFReportTranslationIssueCollectionViewController)initWithBrowserContentController:(id)a3;
-- (id)_issueStringForRowAtIndexPath:(id)a3;
-- (void)_reportFeedbackForSelectedRowIndex:(int64_t)a3 selectedSubCategoryRowIndex:(int64_t)a4;
+- (_SFReportTranslationIssueCollectionViewController)initWithBrowserContentController:(id)controller;
+- (id)_issueStringForRowAtIndexPath:(id)path;
+- (void)_reportFeedbackForSelectedRowIndex:(int64_t)index selectedSubCategoryRowIndex:(int64_t)rowIndex;
 @end
 
 @implementation _SFReportTranslationIssueCollectionViewController
 
-- (_SFReportTranslationIssueCollectionViewController)initWithBrowserContentController:(id)a3
+- (_SFReportTranslationIssueCollectionViewController)initWithBrowserContentController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _SFReportTranslationIssueCollectionViewController;
-  v5 = [(_SFReportFeedbackCollectionViewController *)&v9 initWithBrowserContentController:v4];
+  v5 = [(_SFReportFeedbackCollectionViewController *)&v9 initWithBrowserContentController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserContentController, v4);
+    objc_storeWeak(&v5->_browserContentController, controllerCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (id)_issueStringForRowAtIndexPath:(id)a3
+- (id)_issueStringForRowAtIndexPath:(id)path
 {
-  v3 = [a3 row];
+  v3 = [path row];
   v4 = 0;
   if (v3 <= 2)
   {
@@ -47,13 +47,13 @@ LABEL_8:
   return v4;
 }
 
-- (void)_reportFeedbackForSelectedRowIndex:(int64_t)a3 selectedSubCategoryRowIndex:(int64_t)a4
+- (void)_reportFeedbackForSelectedRowIndex:(int64_t)index selectedSubCategoryRowIndex:(int64_t)rowIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 translationContext];
+  activeDocument = [WeakRetained activeDocument];
+  translationContext = [activeDocument translationContext];
 
-  [v7 requestSendFeedbackForTranslationIssue:a3];
+  [translationContext requestSendFeedbackForTranslationIssue:index];
 }
 
 @end

@@ -4,8 +4,8 @@
 - (NSArray)observingCollections;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForegroundNotification;
-- (void)collectionDidStartObserving:(id)a3;
-- (void)collectionDidStopObserving:(id)a3;
+- (void)collectionDidStartObserving:(id)observing;
+- (void)collectionDidStopObserving:(id)observing;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__DOCFPItemCollectionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_1 != -1)
   {
     dispatch_once(&sharedManager_onceToken_1, block);
@@ -46,21 +46,21 @@ uint64_t __43__DOCFPItemCollectionManager_sharedManager__block_invoke(uint64_t a
   v2->_activeCollections = v3;
 
   objc_initWeak(&location, v2);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __34__DOCFPItemCollectionManager_init__block_invoke;
   v18[3] = &unk_278F9C218;
   objc_copyWeak(&v19, &location);
-  v6 = [v5 addObserverForName:@"UIApplicationDidEnterBackgroundNotification" object:0 queue:0 usingBlock:v18];
+  v6 = [defaultCenter addObserverForName:@"UIApplicationDidEnterBackgroundNotification" object:0 queue:0 usingBlock:v18];
   v22[0] = v6;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __34__DOCFPItemCollectionManager_init__block_invoke_2;
   v16 = &unk_278F9C218;
   objc_copyWeak(&v17, &location);
-  v8 = [v7 addObserverForName:@"UIApplicationWillEnterForegroundNotification" object:0 queue:0 usingBlock:&v13];
+  v8 = [defaultCenter2 addObserverForName:@"UIApplicationWillEnterForegroundNotification" object:0 queue:0 usingBlock:&v13];
   v22[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:{2, v13, v14, v15, v16}];
   notificationObservances = v2->_notificationObservances;
@@ -82,7 +82,7 @@ void __34__DOCFPItemCollectionManager_init__block_invoke_2(uint64_t a1)
 - (void)applicationWillEnterForegroundNotification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(DOCFPItemCollectionManager *)self observingCollections];
+  observingCollections = [(DOCFPItemCollectionManager *)self observingCollections];
   v3 = docLogHandle;
   if (!docLogHandle)
   {
@@ -93,7 +93,7 @@ void __34__DOCFPItemCollectionManager_init__block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v2;
+    v19 = observingCollections;
     _os_log_impl(&dword_249340000, v3, OS_LOG_TYPE_DEFAULT, "App will become foreground. Starting collections %@", buf, 0xCu);
   }
 
@@ -101,7 +101,7 @@ void __34__DOCFPItemCollectionManager_init__block_invoke_2(uint64_t a1)
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = observingCollections;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -117,13 +117,13 @@ void __34__DOCFPItemCollectionManager_init__block_invoke_2(uint64_t a1)
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 workingQueue];
+        workingQueue = [v9 workingQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __72__DOCFPItemCollectionManager_applicationWillEnterForegroundNotification__block_invoke;
         block[3] = &unk_278F9B408;
         block[4] = v9;
-        dispatch_async(v10, block);
+        dispatch_async(workingQueue, block);
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -137,12 +137,12 @@ void __34__DOCFPItemCollectionManager_init__block_invoke_2(uint64_t a1)
 
 - (NSArray)observingCollections
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSCountedSet *)v2->_activeCollections allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSCountedSet *)selfCopy->_activeCollections allObjects];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allObjects;
 }
 
 void __34__DOCFPItemCollectionManager_init__block_invoke(uint64_t a1)
@@ -153,14 +153,14 @@ void __34__DOCFPItemCollectionManager_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   notificationObservances = self->_notificationObservances;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__DOCFPItemCollectionManager_dealloc__block_invoke;
   v7[3] = &unk_278F9C240;
-  v8 = v3;
-  v5 = v3;
+  v8 = defaultCenter;
+  v5 = defaultCenter;
   [(NSArray *)notificationObservances enumerateObjectsUsingBlock:v7];
 
   v6.receiver = self;
@@ -183,13 +183,13 @@ void __34__DOCFPItemCollectionManager_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_249340000, v3, OS_LOG_TYPE_DEFAULT, "App did enter background. Calling process activity to suspend FPItemCollection enumeration", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAC38] processInfo];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __59__DOCFPItemCollectionManager_applicationDidEnterBackground__block_invoke;
   v5[3] = &unk_278F9C268;
   v5[4] = self;
-  [v4 performExpiringActivityWithReason:@"suspend FPItemCollection enumeration" usingBlock:v5];
+  [processInfo performExpiringActivityWithReason:@"suspend FPItemCollection enumeration" usingBlock:v5];
 }
 
 void __59__DOCFPItemCollectionManager_applicationDidEnterBackground__block_invoke(uint64_t a1, int a2)
@@ -380,22 +380,22 @@ void __59__DOCFPItemCollectionManager_applicationDidEnterBackground__block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectionDidStartObserving:(id)a3
+- (void)collectionDidStartObserving:(id)observing
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSCountedSet *)v4->_activeCollections addObject:v5];
-  objc_sync_exit(v4);
+  observingCopy = observing;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSCountedSet *)selfCopy->_activeCollections addObject:observingCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)collectionDidStopObserving:(id)a3
+- (void)collectionDidStopObserving:(id)observing
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSCountedSet *)v4->_activeCollections removeObject:v5];
-  objc_sync_exit(v4);
+  observingCopy = observing;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSCountedSet *)selfCopy->_activeCollections removeObject:observingCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

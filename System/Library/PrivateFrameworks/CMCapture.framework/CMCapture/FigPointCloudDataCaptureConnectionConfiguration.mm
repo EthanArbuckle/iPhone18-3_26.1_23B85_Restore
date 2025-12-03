@@ -1,16 +1,16 @@
 @interface FigPointCloudDataCaptureConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigPointCloudDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigPointCloudDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
 
 @implementation FigPointCloudDataCaptureConnectionConfiguration
 
-- (FigPointCloudDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigPointCloudDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (!a3)
+  if (!encoding)
   {
 
     self = 0;
@@ -18,12 +18,12 @@
 
   v6.receiver = self;
   v6.super_class = FigPointCloudDataCaptureConnectionConfiguration;
-  v4 = [(FigVideoCaptureConnectionConfiguration *)&v6 initWithXPCEncoding:a3];
+  v4 = [(FigVideoCaptureConnectionConfiguration *)&v6 initWithXPCEncoding:encoding];
   if (v4)
   {
-    *&v4->super._coreMediaFaceTrackingEnabled = xpc_dictionary_get_int64(a3, "projectorMode");
-    *(&v4->super._coreMediaFaceTrackingEnabled + 4) = xpc_dictionary_get_BOOL(a3, "supplementalPointCloudData");
-    *(&v4->super._coreMediaFaceTrackingEnabled + 5) = xpc_dictionary_get_BOOL(a3, "pointCloudOutputDisabled");
+    *&v4->super._coreMediaFaceTrackingEnabled = xpc_dictionary_get_int64(encoding, "projectorMode");
+    *(&v4->super._coreMediaFaceTrackingEnabled + 4) = xpc_dictionary_get_BOOL(encoding, "supplementalPointCloudData");
+    *(&v4->super._coreMediaFaceTrackingEnabled + 5) = xpc_dictionary_get_BOOL(encoding, "pointCloudOutputDisabled");
   }
 
   return v4;
@@ -33,17 +33,17 @@
 {
   v5.receiver = self;
   v5.super_class = FigPointCloudDataCaptureConnectionConfiguration;
-  v3 = [(FigVideoCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_int64(v3, "projectorMode", [(FigPointCloudDataCaptureConnectionConfiguration *)self projectorMode]);
-  xpc_dictionary_set_BOOL(v3, "supplementalPointCloudData", [(FigPointCloudDataCaptureConnectionConfiguration *)self supplementalPointCloudData]);
-  xpc_dictionary_set_BOOL(v3, "pointCloudOutputDisabled", [(FigPointCloudDataCaptureConnectionConfiguration *)self pointCloudOutputDisabled]);
-  return v3;
+  copyXPCEncoding = [(FigVideoCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_int64(copyXPCEncoding, "projectorMode", [(FigPointCloudDataCaptureConnectionConfiguration *)self projectorMode]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "supplementalPointCloudData", [(FigPointCloudDataCaptureConnectionConfiguration *)self supplementalPointCloudData]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "pointCloudOutputDisabled", [(FigPointCloudDataCaptureConnectionConfiguration *)self pointCloudOutputDisabled]);
+  return copyXPCEncoding;
 }
 
 - (id)description
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
-  if (v3 == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
+  underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+  if (underlyingDeviceType == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
   {
     v4 = &stru_1F216A3D0;
   }
@@ -60,18 +60,18 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigPointCloudDataCaptureConnectionConfiguration;
-  v4 = [(FigVideoCaptureConnectionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigVideoCaptureConnectionConfiguration *)&v6 copyWithZone:zone];
   [v4 setProjectorMode:{-[FigPointCloudDataCaptureConnectionConfiguration projectorMode](self, "projectorMode")}];
   [v4 setSupplementalPointCloudData:{-[FigPointCloudDataCaptureConnectionConfiguration supplementalPointCloudData](self, "supplementalPointCloudData")}];
   [v4 setPointCloudOutputDisabled:{-[FigPointCloudDataCaptureConnectionConfiguration pointCloudOutputDisabled](self, "pointCloudOutputDisabled")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -79,27 +79,27 @@
     return 0;
   }
 
-  v5 = [(FigPointCloudDataCaptureConnectionConfiguration *)self projectorMode];
-  if (v5 != [a3 projectorMode])
+  projectorMode = [(FigPointCloudDataCaptureConnectionConfiguration *)self projectorMode];
+  if (projectorMode != [equal projectorMode])
   {
     return 0;
   }
 
-  v6 = [(FigPointCloudDataCaptureConnectionConfiguration *)self supplementalPointCloudData];
-  if (v6 != [a3 supplementalPointCloudData])
+  supplementalPointCloudData = [(FigPointCloudDataCaptureConnectionConfiguration *)self supplementalPointCloudData];
+  if (supplementalPointCloudData != [equal supplementalPointCloudData])
   {
     return 0;
   }
 
-  v7 = [(FigPointCloudDataCaptureConnectionConfiguration *)self pointCloudOutputDisabled];
-  if (v7 != [a3 pointCloudOutputDisabled])
+  pointCloudOutputDisabled = [(FigPointCloudDataCaptureConnectionConfiguration *)self pointCloudOutputDisabled];
+  if (pointCloudOutputDisabled != [equal pointCloudOutputDisabled])
   {
     return 0;
   }
 
   v9.receiver = self;
   v9.super_class = FigPointCloudDataCaptureConnectionConfiguration;
-  return [(FigVideoCaptureConnectionConfiguration *)&v9 isEqual:a3];
+  return [(FigVideoCaptureConnectionConfiguration *)&v9 isEqual:equal];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface SectionHeaderLayoutProvider
-- (id)createSectionHeaderLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outAlignment:(unint64_t *)a7;
+- (id)createSectionHeaderLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment;
 @end
 
 @implementation SectionHeaderLayoutProvider
 
-- (id)createSectionHeaderLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outAlignment:(unint64_t *)a7
+- (id)createSectionHeaderLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment
 {
-  var0 = a5->var0;
-  var1 = a5->var1;
-  var2 = a5->var2;
-  var3 = a5->var3;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = self;
-  v18 = sub_29EC7219C(v14, v15, var0, var1, var2, var3, v16);
+  var0 = path->var0;
+  var1 = path->var1;
+  var2 = path->var2;
+  var3 = path->var3;
+  layoutCopy = layout;
+  sourceCopy = source;
+  specCopy = spec;
+  selfCopy = self;
+  v18 = sub_29EC7219C(layoutCopy, sourceCopy, var0, var1, var2, var3, specCopy);
 
   return v18;
 }

@@ -1,31 +1,31 @@
 @interface _BlastDoorLPWalletPassMetadata
-- (BOOL)isEqual:(id)a3;
-- (_BlastDoorLPWalletPassMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_BlastDoorLPWalletPassMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPWalletPassMetadata
 
-- (_BlastDoorLPWalletPassMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPWalletPassMetadata)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _BlastDoorLPWalletPassMetadata;
   v5 = [(_BlastDoorLPWalletPassMetadata *)&v15 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v8 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"eventDate"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v8 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"eventDate"];
     eventDate = v5->_eventDate;
     v5->_eventDate = v8;
 
-    v10 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v10 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v10;
 
@@ -36,30 +36,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 _bd_lp_encodeObjectIfNotNil:name forKey:@"name"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_eventDate forKey:@"eventDate"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:name forKey:@"name"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_eventDate forKey:@"eventDate"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPWalletPassMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPWalletPassMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPWalletPassMetadata *)self name];
-    [(_BlastDoorLPWalletPassMetadata *)v4 setName:v5];
+    name = [(_BlastDoorLPWalletPassMetadata *)self name];
+    [(_BlastDoorLPWalletPassMetadata *)v4 setName:name];
 
     [(_BlastDoorLPWalletPassMetadata *)v4 setStyle:[(_BlastDoorLPWalletPassMetadata *)self style]];
-    v6 = [(_BlastDoorLPWalletPassMetadata *)self eventDate];
-    [(_BlastDoorLPWalletPassMetadata *)v4 setEventDate:v6];
+    eventDate = [(_BlastDoorLPWalletPassMetadata *)self eventDate];
+    [(_BlastDoorLPWalletPassMetadata *)v4 setEventDate:eventDate];
 
-    v7 = [(_BlastDoorLPWalletPassMetadata *)self expirationDate];
-    [(_BlastDoorLPWalletPassMetadata *)v4 setExpirationDate:v7];
+    expirationDate = [(_BlastDoorLPWalletPassMetadata *)self expirationDate];
+    [(_BlastDoorLPWalletPassMetadata *)v4 setExpirationDate:expirationDate];
 
     v8 = v4;
   }
@@ -67,13 +67,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorLPWalletPassMetadata;
-  if ([(_BlastDoorLPWalletPassMetadata *)&v12 isEqual:v4])
+  if ([(_BlastDoorLPWalletPassMetadata *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[2];
       if ((!(v7 | self->_name) || [v7 isEqual:?]) && v6[3] == self->_style && ((v8 = v6[4], !(v8 | self->_eventDate)) || objc_msgSend(v8, "isEqual:")))
       {

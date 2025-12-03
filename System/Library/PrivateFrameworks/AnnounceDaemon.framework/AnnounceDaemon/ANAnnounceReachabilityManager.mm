@@ -2,26 +2,26 @@
 - (ANAnnounceReachabilityManager)init;
 - (ANAnnounceReachabilityManagerDelegate)delegate;
 - (NSArray)monitoredHomes;
-- (id)monitoredRoomsForHome:(id)a3;
-- (unint64_t)_filteredReachabilityLevelFromReachabilityLevel:(unint64_t)a3 forHome:(id)a4;
-- (unint64_t)_reachabilityForHome:(id)a3;
-- (unint64_t)_reachabilityForRoom:(id)a3 inHome:(id)a4;
-- (unint64_t)reachabilityForHome:(id)a3;
-- (unint64_t)reachabilityForRoom:(id)a3 inHome:(id)a4;
+- (id)monitoredRoomsForHome:(id)home;
+- (unint64_t)_filteredReachabilityLevelFromReachabilityLevel:(unint64_t)level forHome:(id)home;
+- (unint64_t)_reachabilityForHome:(id)home;
+- (unint64_t)_reachabilityForRoom:(id)room inHome:(id)home;
+- (unint64_t)reachabilityForHome:(id)home;
+- (unint64_t)reachabilityForRoom:(id)room inHome:(id)home;
 - (void)_initializeReachabilityStatus;
-- (void)_notifyClientsReachabilityChangeForHome:(id)a3 toLevel:(unint64_t)a4;
-- (void)_notifyClientsReachabilityChangeForRoom:(id)a3 inHome:(id)a4 toLevel:(unint64_t)a5;
-- (void)_rapportActivationHandler:(id)a3;
-- (void)_reevaluateHomeKitReachabilityForHome:(id)a3;
-- (void)_updateReachabilityLevelWithReachabilityLevel:(unint64_t)a3 forAccessory:(id)a4 operation:(unint64_t)a5;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)connection:(id)a3 didFindDevice:(id)a4;
-- (void)connection:(id)a3 didLoseDevice:(id)a4;
-- (void)didAddHome:(id)a3;
-- (void)didRemoveHome:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)_notifyClientsReachabilityChangeForHome:(id)home toLevel:(unint64_t)level;
+- (void)_notifyClientsReachabilityChangeForRoom:(id)room inHome:(id)home toLevel:(unint64_t)level;
+- (void)_rapportActivationHandler:(id)handler;
+- (void)_reevaluateHomeKitReachabilityForHome:(id)home;
+- (void)_updateReachabilityLevelWithReachabilityLevel:(unint64_t)level forAccessory:(id)accessory operation:(unint64_t)operation;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)connection:(id)connection didFindDevice:(id)device;
+- (void)connection:(id)connection didLoseDevice:(id)device;
+- (void)didAddHome:(id)home;
+- (void)didRemoveHome:(id)home;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
@@ -60,18 +60,18 @@
   return v2;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  handlerCopy = handler;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__ANAnnounceReachabilityManager_startWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C86840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __60__ANAnnounceReachabilityManager_startWithCompletionHandler___block_invoke(uint64_t a1)
@@ -158,13 +158,13 @@ uint64_t __60__ANAnnounceReachabilityManager_startWithCompletionHandler___block_
 
 - (void)stop
 {
-  v3 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ANAnnounceReachabilityManager_stop__block_invoke;
   block[3] = &unk_278C86910;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __37__ANAnnounceReachabilityManager_stop__block_invoke(uint64_t a1)
@@ -180,23 +180,23 @@ void __37__ANAnnounceReachabilityManager_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)reachabilityForHome:(id)a3
+- (unint64_t)reachabilityForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ANAnnounceReachabilityManager_reachabilityForHome___block_invoke;
   block[3] = &unk_278C86640;
   block[4] = self;
-  v10 = v4;
+  v10 = homeCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = homeCopy;
+  dispatch_sync(serialQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -211,26 +211,26 @@ uint64_t __53__ANAnnounceReachabilityManager_reachabilityForHome___block_invoke(
   return result;
 }
 
-- (unint64_t)reachabilityForRoom:(id)a3 inHome:(id)a4
+- (unint64_t)reachabilityForRoom:(id)room inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  roomCopy = room;
+  homeCopy = home;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__ANAnnounceReachabilityManager_reachabilityForRoom_inHome___block_invoke;
   v13[3] = &unk_278C86938;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = homeCopy;
+  v15 = roomCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v13);
+  v9 = roomCopy;
+  v10 = homeCopy;
+  dispatch_sync(serialQueue, v13);
 
   v11 = v18[3];
   _Block_object_dispose(&v17, 8);
@@ -245,31 +245,31 @@ uint64_t __60__ANAnnounceReachabilityManager_reachabilityForRoom_inHome___block_
   return result;
 }
 
-- (id)monitoredRoomsForHome:(id)a3
+- (id)monitoredRoomsForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = objc_opt_new();
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ANAnnounceReachabilityManager_monitoredRoomsForHome___block_invoke;
   block[3] = &unk_278C86640;
   block[4] = self;
-  v6 = v4;
+  v6 = homeCopy;
   v10 = v6;
   v11 = &v12;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
-  v7 = [v13[5] allObjects];
+  allObjects = [v13[5] allObjects];
 
   _Block_object_dispose(&v12, 8);
 
-  return v7;
+  return allObjects;
 }
 
 void __55__ANAnnounceReachabilityManager_monitoredRoomsForHome___block_invoke(uint64_t a1)
@@ -331,19 +331,19 @@ void __55__ANAnnounceReachabilityManager_monitoredRoomsForHome___block_invoke(ui
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = objc_opt_new();
-  v3 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__ANAnnounceReachabilityManager_monitoredHomes__block_invoke;
   v6[3] = &unk_278C86618;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
-  v4 = [v8[5] allObjects];
+  allObjects = [v8[5] allObjects];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return allObjects;
 }
 
 void __47__ANAnnounceReachabilityManager_monitoredHomes__block_invoke(uint64_t a1)
@@ -394,40 +394,40 @@ void __47__ANAnnounceReachabilityManager_monitoredHomes__block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_filteredReachabilityLevelFromReachabilityLevel:(unint64_t)a3 forHome:(id)a4
+- (unint64_t)_filteredReachabilityLevelFromReachabilityLevel:(unint64_t)level forHome:(id)home
 {
-  v5 = a4;
+  homeCopy = home;
   v6 = +[ANHomeManager shared];
-  v7 = [v6 currentAccessory];
-  if (v7)
+  currentAccessory = [v6 currentAccessory];
+  if (currentAccessory)
   {
   }
 
   else
   {
-    v8 = [v5 hmu_isRemoteAccessAllowedForCurrentUser];
+    hmu_isRemoteAccessAllowedForCurrentUser = [homeCopy hmu_isRemoteAccessAllowedForCurrentUser];
 
-    if (!v8)
+    if (!hmu_isRemoteAccessAllowedForCurrentUser)
     {
-      a3 &= ~2uLL;
+      level &= ~2uLL;
     }
   }
 
-  return a3;
+  return level;
 }
 
 - (void)_initializeReachabilityStatus
 {
-  v3 = [MEMORY[0x277CEABF0] sharedManager];
-  [v3 transaction:*MEMORY[0x277CEAB10] setActive:1];
+  mEMORY[0x277CEABF0] = [MEMORY[0x277CEABF0] sharedManager];
+  [mEMORY[0x277CEABF0] transaction:*MEMORY[0x277CEAB10] setActive:1];
 
-  v4 = [(ANAnnounceReachabilityManager *)self serialQueue];
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_invoke;
   block[3] = &unk_278C86910;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(serialQueue, block);
 }
 
 void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_invoke(uint64_t a1)
@@ -592,21 +592,21 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reevaluateHomeKitReachabilityForHome:(id)a3
+- (void)_reevaluateHomeKitReachabilityForHome:(id)home
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  homeCopy = home;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
   v6 = MEMORY[0x277CD1650];
-  v23 = v4;
-  v7 = [v4 accessories];
-  v8 = [v6 announceAccessoriesWithAnnounceEnabledFromAccessories:v7];
+  v23 = homeCopy;
+  accessories = [homeCopy accessories];
+  v8 = [v6 announceAccessoriesWithAnnounceEnabledFromAccessories:accessories];
 
   obj = v8;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v35 count:16];
@@ -627,22 +627,22 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
         v14 = [(ANAnnounceReachabilityManager *)self log];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 home];
-          v16 = [v15 name];
-          v17 = [v13 name];
-          v18 = [v13 settings];
-          v19 = [v18 isControllable];
+          home = [v13 home];
+          name = [home name];
+          name2 = [v13 name];
+          settings = [v13 settings];
+          isControllable = [settings isControllable];
           *buf = 138412802;
-          v30 = v16;
+          v30 = name;
           v31 = 2112;
-          v32 = v17;
+          v32 = name2;
           v33 = 1024;
-          v34 = v19;
+          v34 = isControllable;
           _os_log_impl(&dword_23F525000, v14, OS_LOG_TYPE_DEFAULT, "Re-evaluating Reachability for Accessory [Home = %@]: %@, Controllable = %d", buf, 0x1Cu);
         }
 
-        v20 = [v13 settings];
-        v21 = [v20 isControllable] ^ 1;
+        settings2 = [v13 settings];
+        v21 = [settings2 isControllable] ^ 1;
 
         [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:2 forAccessory:v13 operation:v21];
       }
@@ -656,40 +656,40 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rapportActivationHandler:(id)a3
+- (void)_rapportActivationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if (v4)
+  if (handlerCopy)
   {
     [(ANAnnounceReachabilityManager *)self setStarted:0];
     v6 = [(ANAnnounceReachabilityManager *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ANAnnounceReachabilityManager *)v4 _rapportActivationHandler:v6];
+      [(ANAnnounceReachabilityManager *)handlerCopy _rapportActivationHandler:v6];
     }
   }
 
   else
   {
-    v7 = [(ANAnnounceReachabilityManager *)self rapportConnection];
-    v8 = [(ANAnnounceReachabilityManager *)self serialQueue];
-    [v7 addDeviceDelegate:self queue:v8];
+    rapportConnection = [(ANAnnounceReachabilityManager *)self rapportConnection];
+    serialQueue2 = [(ANAnnounceReachabilityManager *)self serialQueue];
+    [rapportConnection addDeviceDelegate:self queue:serialQueue2];
   }
 }
 
-- (unint64_t)_reachabilityForHome:(id)a3
+- (unint64_t)_reachabilityForHome:(id)home
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANAnnounceReachabilityManager *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  homeCopy = home;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(ANAnnounceReachabilityManager *)self homeReachability];
-  v7 = [v4 uniqueIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v8 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
   if (v8)
   {
@@ -738,18 +738,18 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   return v12;
 }
 
-- (unint64_t)_reachabilityForRoom:(id)a3 inHome:(id)a4
+- (unint64_t)_reachabilityForRoom:(id)room inHome:(id)home
 {
   v36 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
-  v7 = [(ANAnnounceReachabilityManager *)self serialQueue];
-  dispatch_assert_queue_V2(v7);
+  roomCopy = room;
+  homeCopy = home;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v8 = [(ANAnnounceReachabilityManager *)self homeReachability];
-  v30 = v6;
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+  v30 = homeCopy;
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v10 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
   if (v10)
   {
@@ -779,10 +779,10 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 room];
-            v20 = [v19 uniqueIdentifier];
-            v21 = [v29 uniqueIdentifier];
-            v22 = [v20 isEqual:v21];
+            room = [v17 room];
+            uniqueIdentifier2 = [room uniqueIdentifier];
+            uniqueIdentifier3 = [roomCopy uniqueIdentifier];
+            v22 = [uniqueIdentifier2 isEqual:uniqueIdentifier3];
 
             if (v22)
             {
@@ -816,40 +816,40 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   return v24;
 }
 
-- (void)_updateReachabilityLevelWithReachabilityLevel:(unint64_t)a3 forAccessory:(id)a4 operation:(unint64_t)a5
+- (void)_updateReachabilityLevelWithReachabilityLevel:(unint64_t)level forAccessory:(id)accessory operation:(unint64_t)operation
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(ANAnnounceReachabilityManager *)self serialQueue];
-  dispatch_assert_queue_V2(v9);
+  accessoryCopy = accessory;
+  serialQueue = [(ANAnnounceReachabilityManager *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v10 = [(ANAnnounceReachabilityManager *)self homeReachability];
-  v11 = [v8 home];
-  v12 = [v11 uniqueIdentifier];
-  v13 = [v10 objectForKeyedSubscript:v12];
+  homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+  home = [accessoryCopy home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  v13 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
   if (v13)
   {
-    v14 = [v8 uniqueIdentifier];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+    v15 = [v13 objectForKeyedSubscript:uniqueIdentifier2];
 
     if (v15)
     {
-      v16 = [v8 home];
-      v17 = [v8 room];
-      v18 = [(ANAnnounceReachabilityManager *)self _reachabilityForRoom:v17 inHome:v16];
-      v37 = [(ANAnnounceReachabilityManager *)self _reachabilityForHome:v16];
-      v19 = [v15 unsignedIntegerValue];
-      v20 = v19;
-      v21 = v19 | a3;
-      if (a5)
+      home2 = [accessoryCopy home];
+      room = [accessoryCopy room];
+      v18 = [(ANAnnounceReachabilityManager *)self _reachabilityForRoom:room inHome:home2];
+      v37 = [(ANAnnounceReachabilityManager *)self _reachabilityForHome:home2];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
+      v20 = unsignedIntegerValue;
+      v21 = unsignedIntegerValue | level;
+      if (operation)
       {
-        v21 = v19;
+        v21 = unsignedIntegerValue;
       }
 
-      if (a5 == 1)
+      if (operation == 1)
       {
-        v22 = v19 & ~a3;
+        v22 = unsignedIntegerValue & ~level;
       }
 
       else
@@ -857,16 +857,16 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
         v22 = v21;
       }
 
-      v23 = [(ANAnnounceReachabilityManager *)self _filteredReachabilityLevelFromReachabilityLevel:v22 forHome:v16];
+      v23 = [(ANAnnounceReachabilityManager *)self _filteredReachabilityLevelFromReachabilityLevel:v22 forHome:home2];
       if (v23 != v20)
       {
         v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
-        v25 = [v8 uniqueIdentifier];
-        [v13 setObject:v24 forKeyedSubscript:v25];
+        uniqueIdentifier3 = [accessoryCopy uniqueIdentifier];
+        [v13 setObject:v24 forKeyedSubscript:uniqueIdentifier3];
       }
 
-      v26 = [(ANAnnounceReachabilityManager *)self _reachabilityForRoom:v17 inHome:v16];
-      v27 = [(ANAnnounceReachabilityManager *)self _reachabilityForHome:v16];
+      v26 = [(ANAnnounceReachabilityManager *)self _reachabilityForRoom:room inHome:home2];
+      v27 = [(ANAnnounceReachabilityManager *)self _reachabilityForHome:home2];
       if (v26 != v18)
       {
         v36 = [MEMORY[0x277CEAB40] stringForAnnounceReachabilityLevel:v18];
@@ -874,10 +874,10 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
         v28 = [(ANAnnounceReachabilityManager *)self log];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v16 name];
-          [v17 name];
+          name = [home2 name];
+          [room name];
           *buf = 138413058;
-          v40 = v34;
+          v40 = name;
           v42 = v41 = 2112;
           v29 = v42;
           v43 = 2112;
@@ -887,7 +887,7 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
           _os_log_impl(&dword_23F525000, v28, OS_LOG_TYPE_DEFAULT, "Reachability Changed [Home = %@, Room = %@]: %@ -> %@", buf, 0x2Au);
         }
 
-        [(ANAnnounceReachabilityManager *)self _notifyClientsReachabilityChangeForRoom:v17 inHome:v16 toLevel:v26];
+        [(ANAnnounceReachabilityManager *)self _notifyClientsReachabilityChangeForRoom:room inHome:home2 toLevel:v26];
       }
 
       if (v27 != v37)
@@ -897,9 +897,9 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
         v31 = [(ANAnnounceReachabilityManager *)self log];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v16 name];
+          name2 = [home2 name];
           *buf = 138412802;
-          v40 = v32;
+          v40 = name2;
           v41 = 2112;
           v42 = v38;
           v43 = 2112;
@@ -907,7 +907,7 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
           _os_log_impl(&dword_23F525000, v31, OS_LOG_TYPE_DEFAULT, "Reachability Changed [Home = %@]: %@ -> %@", buf, 0x20u);
         }
 
-        [(ANAnnounceReachabilityManager *)self _notifyClientsReachabilityChangeForHome:v16 toLevel:v27];
+        [(ANAnnounceReachabilityManager *)self _notifyClientsReachabilityChangeForHome:home2 toLevel:v27];
       }
     }
   }
@@ -915,28 +915,28 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyClientsReachabilityChangeForRoom:(id)a3 inHome:(id)a4 toLevel:(unint64_t)a5
+- (void)_notifyClientsReachabilityChangeForRoom:(id)room inHome:(id)home toLevel:(unint64_t)level
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(ANAnnounceReachabilityManager *)self delegate];
+  roomCopy = room;
+  homeCopy = home;
+  delegate = [(ANAnnounceReachabilityManager *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(ANAnnounceReachabilityManager *)self delegate];
-    [v10 reachabilityLevel:a5 didChangeForRoom:v11 inHome:v8];
+    delegate2 = [(ANAnnounceReachabilityManager *)self delegate];
+    [delegate2 reachabilityLevel:level didChangeForRoom:roomCopy inHome:homeCopy];
   }
 }
 
-- (void)_notifyClientsReachabilityChangeForHome:(id)a3 toLevel:(unint64_t)a4
+- (void)_notifyClientsReachabilityChangeForHome:(id)home toLevel:(unint64_t)level
 {
-  v8 = a3;
-  v6 = [(ANAnnounceReachabilityManager *)self delegate];
+  homeCopy = home;
+  delegate = [(ANAnnounceReachabilityManager *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(ANAnnounceReachabilityManager *)self delegate];
-    [v7 reachabilityLevel:a4 didChangeForHome:v8];
+    delegate2 = [(ANAnnounceReachabilityManager *)self delegate];
+    [delegate2 reachabilityLevel:level didChangeForHome:homeCopy];
   }
 }
 
@@ -947,45 +947,45 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
   return WeakRetained;
 }
 
-- (void)didAddHome:(id)a3
+- (void)didAddHome:(id)home
 {
-  v10 = a3;
-  v4 = [(ANAnnounceReachabilityManager *)self homeReachability];
-  v5 = [v10 uniqueIdentifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  homeCopy = home;
+  homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v6 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
   if (!v6)
   {
     v7 = objc_opt_new();
-    v8 = [(ANAnnounceReachabilityManager *)self homeReachability];
-    v9 = [v10 uniqueIdentifier];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    homeReachability2 = [(ANAnnounceReachabilityManager *)self homeReachability];
+    uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+    [homeReachability2 setObject:v7 forKeyedSubscript:uniqueIdentifier2];
   }
 }
 
-- (void)didRemoveHome:(id)a3
+- (void)didRemoveHome:(id)home
 {
-  v4 = a3;
-  v6 = [(ANAnnounceReachabilityManager *)self homeReachability];
-  v5 = [v4 uniqueIdentifier];
+  homeCopy = home;
+  homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
 
-  [v6 setObject:0 forKeyedSubscript:v5];
+  [homeReachability setObject:0 forKeyedSubscript:uniqueIdentifier];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v6 hmu_isHomePod] && objc_msgSend(v6, "an_supportsAnnounce"))
+  homeCopy = home;
+  accessoryCopy = accessory;
+  if ([accessoryCopy hmu_isHomePod] && objc_msgSend(accessoryCopy, "an_supportsAnnounce"))
   {
-    v7 = [(ANAnnounceReachabilityManager *)self homeReachability];
-    v8 = [v14 uniqueIdentifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    v9 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
     if (v9)
     {
-      v10 = [v6 settings];
-      if ([v10 isControllable])
+      settings = [accessoryCopy settings];
+      if ([settings isControllable])
       {
         v11 = 2;
       }
@@ -996,73 +996,73 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
       }
 
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-      v13 = [v6 uniqueIdentifier];
-      [v9 setObject:v12 forKeyedSubscript:v13];
+      uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+      [v9 setObject:v12 forKeyedSubscript:uniqueIdentifier2];
 
-      [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:v11 forAccessory:v6 operation:0];
+      [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:v11 forAccessory:accessoryCopy operation:0];
     }
   }
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 hmu_isHomePod])
+  homeCopy = home;
+  accessoryCopy = accessory;
+  if ([accessoryCopy hmu_isHomePod])
   {
-    v7 = [(ANAnnounceReachabilityManager *)self homeReachability];
-    v8 = [v11 uniqueIdentifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    homeReachability = [(ANAnnounceReachabilityManager *)self homeReachability];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    v9 = [homeReachability objectForKeyedSubscript:uniqueIdentifier];
 
     if (v9)
     {
-      [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:3 forAccessory:v6 operation:1];
-      v10 = [v6 uniqueIdentifier];
-      [v9 setObject:0 forKeyedSubscript:v10];
+      [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:3 forAccessory:accessoryCopy operation:1];
+      uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+      [v9 setObject:0 forKeyedSubscript:uniqueIdentifier2];
     }
   }
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v6 = a3;
-  if ([v6 hmu_isHomePod])
+  controllableCopy = controllable;
+  if ([controllableCopy hmu_isHomePod])
   {
-    v4 = [v6 settings];
-    v5 = [v4 isControllable] ^ 1;
+    settings = [controllableCopy settings];
+    v5 = [settings isControllable] ^ 1;
 
-    [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:2 forAccessory:v6 operation:v5];
+    [(ANAnnounceReachabilityManager *)self _updateReachabilityLevelWithReachabilityLevel:2 forAccessory:controllableCopy operation:v5];
   }
 }
 
-- (void)connection:(id)a3 didFindDevice:(id)a4
+- (void)connection:(id)connection didFindDevice:(id)device
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isAccessory])
+  deviceCopy = device;
+  if ([deviceCopy isAccessory])
   {
     v6 = [(ANAnnounceReachabilityManager *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v5;
+      v38 = deviceCopy;
       _os_log_impl(&dword_23F525000, v6, OS_LOG_TYPE_DEFAULT, "Rapport Did Find Accessory Device: %@", buf, 0xCu);
     }
 
     v7 = +[ANHomeManager shared];
-    v8 = [v7 allHomes];
+    allHomes = [v7 allHomes];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v8;
+    v9 = allHomes;
     v25 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v25)
     {
       v10 = *v32;
       v23 = *v32;
-      v24 = self;
+      selfCopy = self;
       v26 = v9;
       do
       {
@@ -1078,8 +1078,8 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v13 = [v12 accessories];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          accessories = [v12 accessories];
+          v14 = [accessories countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -1090,24 +1090,24 @@ void __62__ANAnnounceReachabilityManager__initializeReachabilityStatus__block_in
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(accessories);
                 }
 
                 v18 = *(*(&v27 + 1) + 8 * j);
-                v19 = [v18 uniqueIdentifier];
-                v20 = [v5 homeKitIdentifier];
-                v21 = [v19 isEqual:v20];
+                uniqueIdentifier = [v18 uniqueIdentifier];
+                homeKitIdentifier = [deviceCopy homeKitIdentifier];
+                v21 = [uniqueIdentifier isEqual:homeKitIdentifier];
 
                 if (v21)
                 {
-                  [(ANAnnounceReachabilityManager *)v24 _updateReachabilityLevelWithReachabilityLevel:1 forAccessory:v18 operation:0];
+                  [(ANAnnounceReachabilityManager *)selfCopy _updateReachabilityLevelWithReachabilityLevel:1 forAccessory:v18 operation:0];
 
                   v9 = v26;
                   goto LABEL_21;
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [accessories countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v15)
               {
                 continue;
@@ -1133,34 +1133,34 @@ LABEL_21:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didLoseDevice:(id)a4
+- (void)connection:(id)connection didLoseDevice:(id)device
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isAccessory])
+  deviceCopy = device;
+  if ([deviceCopy isAccessory])
   {
     v6 = [(ANAnnounceReachabilityManager *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v5;
+      v38 = deviceCopy;
       _os_log_impl(&dword_23F525000, v6, OS_LOG_TYPE_DEFAULT, "Rapport Did Lose Accessory Device: %@", buf, 0xCu);
     }
 
     v7 = +[ANHomeManager shared];
-    v8 = [v7 allHomes];
+    allHomes = [v7 allHomes];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v8;
+    v9 = allHomes;
     v25 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v25)
     {
       v10 = *v32;
       v23 = *v32;
-      v24 = self;
+      selfCopy = self;
       v26 = v9;
       do
       {
@@ -1176,8 +1176,8 @@ LABEL_21:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v13 = [v12 accessories];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          accessories = [v12 accessories];
+          v14 = [accessories countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -1188,24 +1188,24 @@ LABEL_21:
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(accessories);
                 }
 
                 v18 = *(*(&v27 + 1) + 8 * j);
-                v19 = [v18 uniqueIdentifier];
-                v20 = [v5 homeKitIdentifier];
-                v21 = [v19 isEqual:v20];
+                uniqueIdentifier = [v18 uniqueIdentifier];
+                homeKitIdentifier = [deviceCopy homeKitIdentifier];
+                v21 = [uniqueIdentifier isEqual:homeKitIdentifier];
 
                 if (v21)
                 {
-                  [(ANAnnounceReachabilityManager *)v24 _updateReachabilityLevelWithReachabilityLevel:1 forAccessory:v18 operation:1];
+                  [(ANAnnounceReachabilityManager *)selfCopy _updateReachabilityLevelWithReachabilityLevel:1 forAccessory:v18 operation:1];
 
                   v9 = v26;
                   goto LABEL_21;
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [accessories countByEnumeratingWithState:&v27 objects:v35 count:16];
               if (v15)
               {
                 continue;

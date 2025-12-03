@@ -1,23 +1,23 @@
 @interface SBHMultiplexingManager
-- (BOOL)_cacheLastDiscardedViewController:(id)a3 forIdentifier:(id)a4;
-- (BOOL)hasViewControllerForIdentifier:(id)a3;
-- (SBHMultiplexingManager)initWithDelegate:(id)a3;
+- (BOOL)_cacheLastDiscardedViewController:(id)controller forIdentifier:(id)identifier;
+- (BOOL)hasViewControllerForIdentifier:(id)identifier;
+- (SBHMultiplexingManager)initWithDelegate:(id)delegate;
 - (SBHMultiplexingManagerDelegate)delegate;
-- (id)_activeMultiplexingViewControllerForIdentifier:(id)a3;
-- (id)activeMultiplexingViewControllerForViewController:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)newMultiplexingViewControllerForIdentifier:(id)a3 atLevel:(double)a4;
+- (id)_activeMultiplexingViewControllerForIdentifier:(id)identifier;
+- (id)activeMultiplexingViewControllerForViewController:(id)controller;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)newMultiplexingViewControllerForIdentifier:(id)identifier atLevel:(double)level;
 - (id)succinctDescription;
-- (id)viewControllerForIdentifier:(id)a3;
-- (void)_modifyViewControllersForIdentifier:(id)a3 reusingCacheViewControllersIfNecessary:(BOOL)a4 withBlock:(id)a5;
+- (id)viewControllerForIdentifier:(id)identifier;
+- (void)_modifyViewControllersForIdentifier:(id)identifier reusingCacheViewControllersIfNecessary:(BOOL)necessary withBlock:(id)block;
 - (void)_trimCachedRecentViewControllers;
 - (void)discardCachedRecentViewControllers;
-- (void)discardCachedRecentViewControllersForIdentifier:(id)a3;
-- (void)discardMultiplexingViewController:(id)a3;
-- (void)enumerateAllViewControllersUsingBlock:(id)a3;
-- (void)setCachedRecentViewControllerCountLimit:(unint64_t)a3;
-- (void)setViewController:(id)a3 forIdentifier:(id)a4;
+- (void)discardCachedRecentViewControllersForIdentifier:(id)identifier;
+- (void)discardMultiplexingViewController:(id)controller;
+- (void)enumerateAllViewControllersUsingBlock:(id)block;
+- (void)setCachedRecentViewControllerCountLimit:(unint64_t)limit;
+- (void)setViewController:(id)controller forIdentifier:(id)identifier;
 @end
 
 @implementation SBHMultiplexingManager
@@ -32,11 +32,11 @@
 - (void)_trimCachedRecentViewControllers
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHMultiplexingManager *)self cachedRecentViewControllerCountLimit];
+  cachedRecentViewControllerCountLimit = [(SBHMultiplexingManager *)self cachedRecentViewControllerCountLimit];
   v4 = [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers count];
-  if (v4 >= v3)
+  if (v4 >= cachedRecentViewControllerCountLimit)
   {
-    v6 = v4 - v3;
+    v6 = v4 - cachedRecentViewControllerCountLimit;
   }
 
   else
@@ -44,20 +44,20 @@
     v6 = 0;
   }
 
-  if (v4 > v3)
+  if (v4 > cachedRecentViewControllerCountLimit)
   {
     v7 = 0;
     *&v5 = 138543874;
     v15 = v5;
     do
     {
-      v8 = [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers lastObject];
-      if (!v8)
+      lastObject = [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers lastObject];
+      if (!lastObject)
       {
         break;
       }
 
-      v9 = v8;
+      v9 = lastObject;
       v10 = SBLogWidgetMultiplexing();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -66,7 +66,7 @@
         *buf = v15;
         v17 = v12;
         v18 = 2048;
-        v19 = self;
+        selfCopy = self;
         v20 = 2114;
         v21 = v9;
         _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Discarding oldest view controller for identifier: %{public}@", buf, 0x20u);
@@ -86,29 +86,29 @@
   }
 }
 
-- (SBHMultiplexingManager)initWithDelegate:(id)a3
+- (SBHMultiplexingManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SBHMultiplexingManager;
   v5 = [(SBHMultiplexingManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)setViewController:(id)a3 forIdentifier:(id)a4
+- (void)setViewController:(id)controller forIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   if (self->_viewControllersForIdentifier)
   {
-    if (v6)
+    if (controllerCopy)
     {
 LABEL_3:
       v8 = SBLogWidgetMultiplexing();
@@ -121,42 +121,42 @@ LABEL_3:
         v22 = 138544386;
         v23 = v10;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2114;
         v27 = v12;
         v28 = 2048;
-        v29 = v6;
+        v29 = controllerCopy;
         v30 = 2114;
-        v31 = v7;
+        v31 = identifierCopy;
         _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> set view controller controller <%{public}@:%p> for %{public}@", &v22, 0x34u);
       }
 
-      [(NSMutableDictionary *)self->_viewControllersForIdentifier setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)self->_viewControllersForIdentifier setObject:controllerCopy forKey:identifierCopy];
       goto LABEL_12;
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     viewControllersForIdentifier = self->_viewControllersForIdentifier;
-    self->_viewControllersForIdentifier = v13;
+    self->_viewControllersForIdentifier = dictionary;
 
-    if (v6)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:v7];
+  v15 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:identifierCopy];
   [v15 bs_endAppearanceTransition:0];
-  if (![(SBHMultiplexingManager *)self _cacheLastDiscardedViewController:v15 forIdentifier:v7])
+  if (![(SBHMultiplexingManager *)self _cacheLastDiscardedViewController:v15 forIdentifier:identifierCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained multiplexingManager:self willRemoveViewController:v15 forIdentifier:v7];
+    [WeakRetained multiplexingManager:self willRemoveViewController:v15 forIdentifier:identifierCopy];
   }
 
-  [(NSMutableDictionary *)self->_viewControllersForIdentifier removeObjectForKey:v7];
+  [(NSMutableDictionary *)self->_viewControllersForIdentifier removeObjectForKey:identifierCopy];
   v17 = SBLogWidgetMultiplexing();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,43 +167,43 @@ LABEL_3:
     v22 = 138544386;
     v23 = v19;
     v24 = 2048;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2114;
     v27 = v21;
     v28 = 2048;
     v29 = v15;
     v30 = 2114;
-    v31 = v7;
+    v31 = identifierCopy;
     _os_log_impl(&dword_1BEB18000, v17, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> removed view controller controller <%{public}@:%p> for %{public}@", &v22, 0x34u);
   }
 
 LABEL_12:
 }
 
-- (id)viewControllerForIdentifier:(id)a3
+- (id)viewControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
-    v5 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier objectForKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (BOOL)hasViewControllerForIdentifier:(id)a3
+- (BOOL)hasViewControllerForIdentifier:(id)identifier
 {
-  v3 = [(SBHMultiplexingManager *)self viewControllerForIdentifier:a3];
+  v3 = [(SBHMultiplexingManager *)self viewControllerForIdentifier:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)activeMultiplexingViewControllerForViewController:(id)a3
+- (id)activeMultiplexingViewControllerForViewController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -226,7 +226,7 @@ LABEL_3:
       v10 = *(*(&v16 + 1) + 8 * v9);
       v11 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:v10, v16];
       v12 = v11;
-      if (v11 == v4)
+      if (v11 == controllerCopy)
       {
         break;
       }
@@ -265,23 +265,23 @@ LABEL_12:
   return v13;
 }
 
-- (id)newMultiplexingViewControllerForIdentifier:(id)a3 atLevel:(double)a4
+- (id)newMultiplexingViewControllerForIdentifier:(id)identifier atLevel:(double)level
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![(SBHMultiplexingManager *)self hasViewControllerForIdentifier:v7])
+  identifierCopy = identifier;
+  if (![(SBHMultiplexingManager *)self hasViewControllerForIdentifier:identifierCopy])
   {
     [SBHMultiplexingManager newMultiplexingViewControllerForIdentifier:a2 atLevel:self];
   }
 
   if (!self->_multiplexingViewControllersForIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     multiplexingViewControllersForIdentifier = self->_multiplexingViewControllersForIdentifier;
-    self->_multiplexingViewControllersForIdentifier = v8;
+    self->_multiplexingViewControllersForIdentifier = dictionary;
   }
 
-  v10 = [[SBHMultiplexingViewController alloc] initWithLevel:v7 identifier:a4];
+  v10 = [[SBHMultiplexingViewController alloc] initWithLevel:identifierCopy identifier:level];
   [(SBHMultiplexingViewController *)v10 setMultiplexingManager:self];
   v11 = SBLogWidgetMultiplexing();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -293,15 +293,15 @@ LABEL_12:
     *buf = 138544642;
     v25 = v13;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
     v29 = v15;
     v30 = 2048;
     v31 = v10;
     v32 = 2114;
-    v33 = v7;
+    v33 = identifierCopy;
     v34 = 2048;
-    v35 = a4;
+    levelCopy = level;
     _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> creating new multiplexing view controller controller <%{public}@:%p> for %{public}@ at level: %.f", buf, 0x3Eu);
   }
 
@@ -310,10 +310,10 @@ LABEL_12:
   v21[2] = __77__SBHMultiplexingManager_newMultiplexingViewControllerForIdentifier_atLevel___block_invoke;
   v21[3] = &unk_1E8088F88;
   v21[4] = self;
-  v22 = v7;
+  v22 = identifierCopy;
   v16 = v10;
   v23 = v16;
-  v17 = v7;
+  v17 = identifierCopy;
   [(SBHMultiplexingManager *)self _modifyViewControllersForIdentifier:v17 reusingCacheViewControllersIfNecessary:1 withBlock:v21];
   v18 = v23;
   v19 = v16;
@@ -336,11 +336,11 @@ void __77__SBHMultiplexingManager_newMultiplexingViewControllerForIdentifier_atL
   [v4 compact];
 }
 
-- (void)discardMultiplexingViewController:(id)a3
+- (void)discardMultiplexingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = controllerCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -363,15 +363,15 @@ void __77__SBHMultiplexingManager_newMultiplexingViewControllerForIdentifier_atL
 
   if (v8)
   {
-    v9 = [v8 identifier];
+    identifier = [v8 identifier];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invoke;
     v11[3] = &unk_1E8088F88;
     v11[4] = self;
-    v12 = v9;
+    v12 = identifier;
     v13 = v8;
-    v10 = v9;
+    v10 = identifier;
     [(SBHMultiplexingManager *)self _modifyViewControllersForIdentifier:v10 reusingCacheViewControllersIfNecessary:0 withBlock:v11];
   }
 }
@@ -416,16 +416,16 @@ void __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invo
   }
 }
 
-- (void)_modifyViewControllersForIdentifier:(id)a3 reusingCacheViewControllersIfNecessary:(BOOL)a4 withBlock:(id)a5
+- (void)_modifyViewControllersForIdentifier:(id)identifier reusingCacheViewControllersIfNecessary:(BOOL)necessary withBlock:(id)block
 {
-  v6 = a4;
+  necessaryCopy = necessary;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBHMultiplexingManager *)self _activeMultiplexingViewControllerForIdentifier:v8];
-  v9[2](v9);
+  identifierCopy = identifier;
+  blockCopy = block;
+  v10 = [(SBHMultiplexingManager *)self _activeMultiplexingViewControllerForIdentifier:identifierCopy];
+  blockCopy[2](blockCopy);
 
-  v11 = [(SBHMultiplexingManager *)self _activeMultiplexingViewControllerForIdentifier:v8];
+  v11 = [(SBHMultiplexingManager *)self _activeMultiplexingViewControllerForIdentifier:identifierCopy];
   v12 = v11;
   if (v10 == v11)
   {
@@ -434,9 +434,9 @@ void __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invo
       goto LABEL_26;
     }
 
-    v20 = [v11 multiplexedViewController];
+    multiplexedViewController = [v11 multiplexedViewController];
 
-    if (v20)
+    if (multiplexedViewController)
     {
       goto LABEL_26;
     }
@@ -460,7 +460,7 @@ void __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invo
     *v34 = 2048;
     *&v34[2] = v10;
     *&v34[10] = 2114;
-    *&v34[12] = v8;
+    *&v34[12] = identifierCopy;
     v23 = "<%{public}@:%p> active view controller did not change but does not have the active multiplexed view controller: <%{public}@:%p> for %{public}@";
     goto LABEL_16;
   }
@@ -488,7 +488,7 @@ void __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invo
       *v34 = 2048;
       *&v34[2] = v10;
       *&v34[10] = 2114;
-      *&v34[12] = v8;
+      *&v34[12] = identifierCopy;
       v23 = "<%{public}@:%p> active view controller changed from <%{public}@:%p> to NONE for %{public}@";
     }
 
@@ -518,7 +518,7 @@ void __60__SBHMultiplexingManager_discardMultiplexingViewController___block_invo
       *v34 = 2048;
       *&v34[2] = v12;
       *&v34[10] = 2114;
-      *&v34[12] = v8;
+      *&v34[12] = identifierCopy;
       v23 = "<%{public}@:%p> active view controller changed NONE to <%{public}@:%p> for %{public}@";
     }
 
@@ -549,7 +549,7 @@ LABEL_16:
     *&v34[20] = 2048;
     *&v34[22] = v12;
     v35 = 2114;
-    v36 = v8;
+    v36 = identifierCopy;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> active view controller changed from <%{public}@:%p> to <%{public}@:%p> for %{public}@", v32, 0x48u);
 
 LABEL_17:
@@ -558,10 +558,10 @@ LABEL_17:
 LABEL_18:
 
 LABEL_19:
-  v28 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:v8, *v32, *&v32[16], v33, *v34, *&v34[16]];
-  if (!v28 && v6)
+  v28 = [(NSMutableDictionary *)self->_viewControllersForIdentifier objectForKey:identifierCopy, *v32, *&v32[16], v33, *v34, *&v34[16]];
+  if (!v28 && necessaryCopy)
   {
-    v28 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier objectForKey:v8];
+    v28 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier objectForKey:identifierCopy];
     if (v28)
     {
       v29 = SBLogWidgetMultiplexing();
@@ -574,13 +574,13 @@ LABEL_19:
         *&v32[12] = 2048;
         *&v32[14] = self;
         *&v32[22] = 2114;
-        v33 = v8;
+        v33 = identifierCopy;
         _os_log_impl(&dword_1BEB18000, v29, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Reusing recent view controller for identifier: %{public}@", v32, 0x20u);
       }
 
-      [(NSMutableDictionary *)self->_viewControllersForIdentifier setObject:v28 forKey:v8];
-      [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier removeObjectForKey:v8];
-      [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers removeObject:v8];
+      [(NSMutableDictionary *)self->_viewControllersForIdentifier setObject:v28 forKey:identifierCopy];
+      [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier removeObjectForKey:identifierCopy];
+      [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers removeObject:identifierCopy];
     }
   }
 
@@ -590,14 +590,14 @@ LABEL_19:
 LABEL_26:
 }
 
-- (id)_activeMultiplexingViewControllerForIdentifier:(id)a3
+- (id)_activeMultiplexingViewControllerForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_multiplexingViewControllersForIdentifier objectForKey:a3];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_13_0];
-  v6 = [v5 lastObject];
+  v3 = [(NSMutableDictionary *)self->_multiplexingViewControllersForIdentifier objectForKey:identifier];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_13_0];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
 uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -616,17 +616,17 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
   return v11;
 }
 
-- (BOOL)_cacheLastDiscardedViewController:(id)a3 forIdentifier:(id)a4
+- (BOOL)_cacheLastDiscardedViewController:(id)controller forIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHMultiplexingManager *)self cachedRecentViewControllerCountLimit];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  cachedRecentViewControllerCountLimit = [(SBHMultiplexingManager *)self cachedRecentViewControllerCountLimit];
   v9 = 0;
-  if (v6 && v8)
+  if (controllerCopy && cachedRecentViewControllerCountLimit)
   {
-    v10 = [(SBHMultiplexingManager *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v10 multiplexingManager:self shouldCacheRecentViewController:v6 forIdentifier:v7])
+    delegate = [(SBHMultiplexingManager *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate multiplexingManager:self shouldCacheRecentViewController:controllerCopy forIdentifier:identifierCopy])
     {
       v9 = 0;
     }
@@ -641,9 +641,9 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
         v21 = 138543874;
         v22 = v13;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2114;
-        v26 = v7;
+        v26 = identifierCopy;
         _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Caching recent view controller for identifier: %{public}@", &v21, 0x20u);
       }
 
@@ -657,7 +657,7 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
         cachedRecentViewControllersForIdentifier = self->_cachedRecentViewControllersForIdentifier;
       }
 
-      [(NSMutableDictionary *)cachedRecentViewControllersForIdentifier setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)cachedRecentViewControllersForIdentifier setObject:controllerCopy forKey:identifierCopy];
       cachedRecentViewControllerIdentifiers = self->_cachedRecentViewControllerIdentifiers;
       if (!cachedRecentViewControllerIdentifiers)
       {
@@ -668,12 +668,12 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
         cachedRecentViewControllerIdentifiers = self->_cachedRecentViewControllerIdentifiers;
       }
 
-      [(NSMutableOrderedSet *)cachedRecentViewControllerIdentifiers removeObject:v7];
-      [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers insertObject:v7 atIndex:0];
+      [(NSMutableOrderedSet *)cachedRecentViewControllerIdentifiers removeObject:identifierCopy];
+      [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers insertObject:identifierCopy atIndex:0];
       [(SBHMultiplexingManager *)self _trimCachedRecentViewControllers];
       if (objc_opt_respondsToSelector())
       {
-        [v10 multiplexingManager:self cachedRecentViewController:v6 forIdentifier:v7];
+        [delegate multiplexingManager:self cachedRecentViewController:controllerCopy forIdentifier:identifierCopy];
       }
 
       v9 = 1;
@@ -683,38 +683,38 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
   return v9;
 }
 
-- (void)setCachedRecentViewControllerCountLimit:(unint64_t)a3
+- (void)setCachedRecentViewControllerCountLimit:(unint64_t)limit
 {
-  if (self->_cachedRecentViewControllerCountLimit != a3)
+  if (self->_cachedRecentViewControllerCountLimit != limit)
   {
-    self->_cachedRecentViewControllerCountLimit = a3;
+    self->_cachedRecentViewControllerCountLimit = limit;
     [(SBHMultiplexingManager *)self _trimCachedRecentViewControllers];
   }
 }
 
-- (void)discardCachedRecentViewControllersForIdentifier:(id)a3
+- (void)discardCachedRecentViewControllersForIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier objectForKey:?];
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained multiplexingManager:self willRemoveViewController:v4 forIdentifier:v6];
+    [WeakRetained multiplexingManager:self willRemoveViewController:v4 forIdentifier:identifierCopy];
 
-    [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier removeObjectForKey:v6];
-    [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers removeObject:v6];
+    [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier removeObjectForKey:identifierCopy];
+    [(NSMutableOrderedSet *)self->_cachedRecentViewControllerIdentifiers removeObject:identifierCopy];
   }
 }
 
 - (void)discardCachedRecentViewControllers
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cachedRecentViewControllersForIdentifier allKeys];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -726,23 +726,23 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(SBHMultiplexingManager *)self discardCachedRecentViewControllersForIdentifier:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)enumerateAllViewControllersUsingBlock:(id)a3
+- (void)enumerateAllViewControllersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -751,7 +751,7 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
   v10 = 3221225472;
   v11 = __64__SBHMultiplexingManager_enumerateAllViewControllersUsingBlock___block_invoke;
   v12 = &unk_1E808F9B0;
-  v5 = v4;
+  v5 = blockCopy;
   v13 = v5;
   v14 = &v15;
   v6 = _Block_copy(&v9);
@@ -760,8 +760,8 @@ uint64_t __73__SBHMultiplexingManager__activeMultiplexingViewControllerForIdenti
 
   if ((v16[3] & 1) == 0)
   {
-    v8 = [(SBHMultiplexingManager *)self cachedRecentViewControllersForIdentifier];
-    [v8 enumerateKeysAndObjectsUsingBlock:v6];
+    cachedRecentViewControllersForIdentifier = [(SBHMultiplexingManager *)self cachedRecentViewControllersForIdentifier];
+    [cachedRecentViewControllersForIdentifier enumerateKeysAndObjectsUsingBlock:v6];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -780,15 +780,15 @@ uint64_t __64__SBHMultiplexingManager_enumerateAllViewControllersUsingBlock___bl
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHMultiplexingManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHMultiplexingManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendObject:self->_viewControllersForIdentifier withName:@"viewControllersForIdentifier"];
@@ -800,10 +800,10 @@ uint64_t __64__SBHMultiplexingManager_enumerateAllViewControllersUsingBlock___bl
 
 - (id)succinctDescription
 {
-  v2 = [(SBHMultiplexingManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHMultiplexingManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)newMultiplexingViewControllerForIdentifier:(const char *)a1 atLevel:(uint64_t)a2 .cold.1(const char *a1, uint64_t a2)

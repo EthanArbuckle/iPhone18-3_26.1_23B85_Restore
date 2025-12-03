@@ -1,29 +1,29 @@
 @interface HMDReselectedStreamConfigurationWrite
 - (BOOL)_parseFromTLVData;
-- (HMDReselectedStreamConfigurationWrite)initWithCoder:(id)a3;
-- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)a3;
-- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)a3 videoParameters:(id)a4;
+- (HMDReselectedStreamConfigurationWrite)initWithCoder:(id)coder;
+- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)control;
+- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)control videoParameters:(id)parameters;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDReselectedStreamConfigurationWrite
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
-  [v4 encodeObject:v5 forKey:@"kSelectedStreamConfigurationWrite__SessionControl"];
+  coderCopy = coder;
+  sessionControl = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
+  [coderCopy encodeObject:sessionControl forKey:@"kSelectedStreamConfigurationWrite__SessionControl"];
 
-  v6 = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
-  [v4 encodeObject:v6 forKey:@"kSelectedStreamConfigurationWrite__SelectedVideoParameters"];
+  videoParameters = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
+  [coderCopy encodeObject:videoParameters forKey:@"kSelectedStreamConfigurationWrite__SelectedVideoParameters"];
 }
 
-- (HMDReselectedStreamConfigurationWrite)initWithCoder:(id)a3
+- (HMDReselectedStreamConfigurationWrite)initWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HMDReselectedStreamConfigurationWrite;
   v5 = [(HMDReselectedStreamConfigurationWrite *)&v18 init];
@@ -33,7 +33,7 @@
     v20[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSelectedStreamConfigurationWrite__SessionControl"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSelectedStreamConfigurationWrite__SessionControl"];
     sessionControl = v5->_sessionControl;
     v5->_sessionControl = v9;
 
@@ -41,7 +41,7 @@
     v19 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kSelectedStreamConfigurationWrite__SelectedVideoParameters"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kSelectedStreamConfigurationWrite__SelectedVideoParameters"];
     videoParameters = v5->_videoParameters;
     v5->_videoParameters = v14;
   }
@@ -50,17 +50,17 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
-  v9 = [v8 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ sessionControl = %@ ", v6, v9];
+  indentCopy = indent;
+  descriptionCopy = description;
+  sessionControl = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
+  v9 = [sessionControl descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ sessionControl = %@ ", indentCopy, v9];
 
-  v11 = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
-  v10 = [v11 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ videoParameters = %@ ", v6, v10];
+  videoParameters = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
+  v10 = [videoParameters descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ videoParameters = %@ ", indentCopy, v10];
 }
 
 - (BOOL)_parseFromTLVData
@@ -77,14 +77,14 @@
   if (v7)
   {
     v8 = [HMDSessionControl alloc];
-    v9 = [v3 field];
-    v10 = [(HAPTLVBase *)v8 initWithTLVData:v9];
+    field = [v3 field];
+    v10 = [(HAPTLVBase *)v8 initWithTLVData:field];
     sessionControl = self->_sessionControl;
     self->_sessionControl = v10;
 
     v12 = [HMDReselectedVideoParameters alloc];
-    v13 = [v4 field];
-    v14 = [(HAPTLVBase *)v12 initWithTLVData:v13];
+    field2 = [v4 field];
+    v14 = [(HAPTLVBase *)v12 initWithTLVData:field2];
     videoParameters = self->_videoParameters;
     self->_videoParameters = v14;
 
@@ -102,47 +102,47 @@
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
-  v5 = [v4 tlvData];
+  creator = [MEMORY[0x277CFEC80] creator];
+  sessionControl = [(HMDReselectedStreamConfigurationWrite *)self sessionControl];
+  tlvData = [sessionControl tlvData];
 
-  [v3 addTLV:1 data:v5];
-  v6 = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
-  v7 = [v6 tlvData];
+  [creator addTLV:1 data:tlvData];
+  videoParameters = [(HMDReselectedStreamConfigurationWrite *)self videoParameters];
+  tlvData2 = [videoParameters tlvData];
 
-  [v3 addTLV:2 data:v7];
-  v8 = [v3 serialize];
+  [creator addTLV:2 data:tlvData2];
+  serialize = [creator serialize];
 
-  return v8;
+  return serialize;
 }
 
-- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)a3
+- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = HMDReselectedStreamConfigurationWrite;
   v6 = [(HMDReselectedStreamConfigurationWrite *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionControl, a3);
+    objc_storeStrong(&v6->_sessionControl, control);
   }
 
   return v7;
 }
 
-- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)a3 videoParameters:(id)a4
+- (HMDReselectedStreamConfigurationWrite)initWithSessionControl:(id)control videoParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  controlCopy = control;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = HMDReselectedStreamConfigurationWrite;
   v9 = [(HMDReselectedStreamConfigurationWrite *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionControl, a3);
-    objc_storeStrong(&v10->_videoParameters, a4);
+    objc_storeStrong(&v9->_sessionControl, control);
+    objc_storeStrong(&v10->_videoParameters, parameters);
   }
 
   return v10;

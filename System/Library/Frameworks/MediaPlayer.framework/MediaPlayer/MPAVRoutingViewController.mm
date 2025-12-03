@@ -1,80 +1,80 @@
 @interface MPAVRoutingViewController
-- (BOOL)_operationRequiresOptimisticState:(int64_t)a3 routes:(id)a4;
-- (BOOL)_shouldDisplayRouteAsPicked:(id)a3;
-- (BOOL)_wouldShareAudioForPickedRoute:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5;
+- (BOOL)_operationRequiresOptimisticState:(int64_t)state routes:(id)routes;
+- (BOOL)_shouldDisplayRouteAsPicked:(id)picked;
+- (BOOL)_wouldShareAudioForPickedRoute:(id)route operation:(int64_t)operation pickedRoutes:(id)routes;
 - (BOOL)hasCarKitRoute;
 - (BOOL)isInCarPlay;
 - (BOOL)isInVehicle;
-- (BOOL)shouldOverrideContentSizeCategory:(id)a3;
+- (BOOL)shouldOverrideContentSizeCategory:(id)category;
 - (CGSize)preferredContentSize;
-- (MPAVRoutingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MPAVRoutingViewController)initWithStyle:(unint64_t)a3;
-- (MPAVRoutingViewController)initWithStyle:(unint64_t)a3 routingController:(id)a4;
+- (MPAVRoutingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (MPAVRoutingViewController)initWithStyle:(unint64_t)style;
+- (MPAVRoutingViewController)initWithStyle:(unint64_t)style routingController:(id)controller;
 - (MPAVRoutingViewControllerDelegate)delegate;
 - (MPAVRoutingViewControllerThemeDelegate)themeDelegate;
 - (double)_tableViewFooterViewHeight;
 - (double)_tableViewHeaderViewHeight;
 - (double)_tableViewHeightAccordingToDataSource;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_createRefreshUpdate;
 - (id)_createReloadUpdate;
-- (id)_createRoutingViewItemsForRoutes:(id)a3;
-- (id)_createSectionedCollection:(id)a3 withPickedRoutes:(id)a4;
-- (id)_displayAsPickedRoutesInRoutes:(id)a3;
-- (id)_displayableRoutesInRoutes:(id)a3;
+- (id)_createRoutingViewItemsForRoutes:(id)routes;
+- (id)_createSectionedCollection:(id)collection withPickedRoutes:(id)routes;
+- (id)_displayAsPickedRoutesInRoutes:(id)routes;
+- (id)_displayableRoutesInRoutes:(id)routes;
 - (id)_stateDumpObject;
-- (id)_volumeCapableRoutesInRoutes:(id)a3;
+- (id)_volumeCapableRoutesInRoutes:(id)routes;
 - (id)endpointGroupUID;
-- (id)groupUIDForRoute:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
-- (void)_applyUpdate:(id)a3;
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4;
-- (void)_createUpdateWithCompletion:(id)a3;
-- (void)_diplayShareAudioDisabledAlertForReason:(id)a3;
+- (id)groupUIDForRoute:(id)route;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
+- (void)_applyUpdate:(id)update;
+- (void)_configureCell:(id)cell forIndexPath:(id)path;
+- (void)_createUpdateWithCompletion:(id)completion;
+- (void)_diplayShareAudioDisabledAlertForReason:(id)reason;
 - (void)_endUpdates;
-- (void)_enqueueUpdate:(id)a3;
-- (void)_initWithStyle:(unint64_t)a3 routingController:(id)a4;
+- (void)_enqueueUpdate:(id)update;
+- (void)_initWithStyle:(unint64_t)style routingController:(id)controller;
 - (void)_registerCarPlayObserver;
 - (void)_registerNotifications;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_setNeedsDisplayedRoutesUpdate;
 - (void)_setNeedsRouteDiscoveryModeUpdate;
-- (void)_setRouteDiscoveryMode:(int64_t)a3;
-- (void)_setTableCellsBackgroundColor:(id)a3;
-- (void)_setTableCellsContentColor:(id)a3;
+- (void)_setRouteDiscoveryMode:(int64_t)mode;
+- (void)_setTableCellsBackgroundColor:(id)color;
+- (void)_setTableCellsContentColor:(id)color;
 - (void)_setupUpdateTimerIfNecessary;
 - (void)_unregisterNotifications;
 - (void)_updateDisplayedRoutes;
-- (void)_volumeSliderVolumeControlAvailabilityDidChangeNotification:(id)a3;
+- (void)_volumeSliderVolumeControlAvailabilityDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)enqueueRefreshUpdate;
 - (void)registerTableViewCells;
-- (void)routingCellDidTapToExpand:(id)a3;
-- (void)routingController:(id)a3 shouldHijackRoute:(id)a4 alertStyle:(int64_t)a5 busyRouteName:(id)a6 presentingAppName:(id)a7 completion:(id)a8;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setAVItemType:(int64_t)a3;
-- (void)setDiscoveryModeOverride:(id)a3;
-- (void)setEndpointRoute:(id)a3;
-- (void)setGroupSliderCoordinator:(id)a3;
-- (void)setIconStyle:(unint64_t)a3;
-- (void)setMirroringStyle:(unint64_t)a3;
-- (void)setOptimisticUpdate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)routingCellDidTapToExpand:(id)expand;
+- (void)routingController:(id)controller shouldHijackRoute:(id)route alertStyle:(int64_t)style busyRouteName:(id)name presentingAppName:(id)appName completion:(id)completion;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setAVItemType:(int64_t)type;
+- (void)setDiscoveryModeOverride:(id)override;
+- (void)setEndpointRoute:(id)route;
+- (void)setGroupSliderCoordinator:(id)coordinator;
+- (void)setIconStyle:(unint64_t)style;
+- (void)setMirroringStyle:(unint64_t)style;
+- (void)setOptimisticUpdate:(id)update;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateExpandedGroups;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -132,41 +132,41 @@
   return v11;
 }
 
-- (id)_createSectionedCollection:(id)a3 withPickedRoutes:(id)a4
+- (id)_createSectionedCollection:(id)collection withPickedRoutes:(id)routes
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  routesCopy = routes;
+  collectionCopy = collection;
   v8 = objc_alloc_init(MPMutableSectionedCollection);
-  v9 = [v7 localDevices];
-  v10 = [v7 headphones];
-  v11 = [v7 speakersAndTVs];
+  localDevices = [collectionCopy localDevices];
+  headphones = [collectionCopy headphones];
+  speakersAndTVs = [collectionCopy speakersAndTVs];
 
-  if ([v9 count])
+  if ([localDevices count])
   {
     [(MPMutableSectionedCollection *)v8 appendSection:@"LOCAL DEVICES"];
-    [(MPMutableSectionedCollection *)v8 appendItems:v9];
+    [(MPMutableSectionedCollection *)v8 appendItems:localDevices];
   }
 
-  if ([v10 count] || _MPAVRoutingViewControllerRoutesContainsSplitterCapableRoute(v6))
+  if ([headphones count] || _MPAVRoutingViewControllerRoutesContainsSplitterCapableRoute(routesCopy))
   {
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v13 = [v12 localizedStringForKey:@"ROUTING_VIEW_HEADER_HEADPHONES" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     [(MPMutableSectionedCollection *)v8 appendSection:v13];
 
-    [(MPMutableSectionedCollection *)v8 appendItems:v10];
-    v14 = [(MPAVRoutingViewController *)self endpointRoute];
-    if ([v14 isSplitRoute])
+    [(MPMutableSectionedCollection *)v8 appendItems:headphones];
+    endpointRoute = [(MPAVRoutingViewController *)self endpointRoute];
+    if ([endpointRoute isSplitRoute])
     {
 
       goto LABEL_15;
     }
 
-    v15 = _MPAVRoutingViewControllerRoutesContainsSplitterCapableRoute(v6);
+    v15 = _MPAVRoutingViewControllerRoutesContainsSplitterCapableRoute(routesCopy);
 
     if (v15)
     {
-      v16 = [(MPAVRoutingViewController *)self isInVehicle];
+      isInVehicle = [(MPAVRoutingViewController *)self isInVehicle];
       if ([(MPAVRoutingViewController *)self isInCarPlay])
       {
         v17 = @"ROUTING_VIEW_SHARE_AUDIO_DISABLED_CARPLAY";
@@ -189,7 +189,7 @@
 LABEL_14:
       v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
       v21 = [v20 localizedStringForKey:@"ROUTING_VIEW_SHARE_AUDIO" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-      v22 = [MPAVRoutingViewItem itemWithActionTitle:v21 subtitle:v19 enabled:!v16 identifier:@"Share Audio" image:0];
+      v22 = [MPAVRoutingViewItem itemWithActionTitle:v21 subtitle:v19 enabled:!isInVehicle identifier:@"Share Audio" image:0];
 
       v27[0] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
@@ -198,41 +198,41 @@ LABEL_14:
   }
 
 LABEL_15:
-  if ([v11 count])
+  if ([speakersAndTVs count])
   {
     v24 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v25 = [v24 localizedStringForKey:@"ROUTING_VIEW_HEADER_SPEAKERS_AND_TVS" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     [(MPMutableSectionedCollection *)v8 appendSection:v25];
 
-    [(MPMutableSectionedCollection *)v8 appendItems:v11];
+    [(MPMutableSectionedCollection *)v8 appendItems:speakersAndTVs];
   }
 
   return v8;
 }
 
-- (id)_createRoutingViewItemsForRoutes:(id)a3
+- (id)_createRoutingViewItemsForRoutes:(id)routes
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v63 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v62 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v53 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v58 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  routesCopy = routes;
+  v63 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(routesCopy, "count")}];
+  v62 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(routesCopy, "count")}];
+  v53 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(routesCopy, "count")}];
+  v58 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(routesCopy, "count")}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v6 = MRAVEndpointGetLocalEndpoint();
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [v6 outputDeviceUIDs];
-  v56 = [v7 setWithArray:v8];
+  outputDeviceUIDs = [v6 outputDeviceUIDs];
+  v56 = [v7 setWithArray:outputDeviceUIDs];
 
-  v55 = [MEMORY[0x1E69B09A8] localDeviceUID];
+  localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
   v50 = v6;
-  v9 = [v6 outputDevices];
-  v10 = [v9 firstObject];
-  v52 = [v10 uid];
+  outputDevices = [v6 outputDevices];
+  firstObject = [outputDevices firstObject];
+  v52 = [firstObject uid];
 
-  v51 = v4;
-  v11 = [v4 mutableCopy];
-  v64 = self;
+  v51 = routesCopy;
+  v11 = [routesCopy mutableCopy];
+  selfCopy = self;
   if ([(MPAVRoutingViewController *)self shouldGroupRoutingViewItems])
   {
     obj = v11;
@@ -240,7 +240,7 @@ LABEL_15:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v12 = v4;
+    v12 = routesCopy;
     v13 = [v12 countByEnumeratingWithState:&v72 objects:v77 count:16];
     if (!v13)
     {
@@ -264,19 +264,19 @@ LABEL_15:
         if ((objc_opt_isKindOfClass() & 1) != 0 && ([v17 isDeviceSpeakerRoute] & 1) == 0)
         {
           v18 = v17;
-          v19 = [(MPAVRoutingViewController *)v64 groupUIDForRoute:v18];
-          v20 = [v18 routeUID];
-          v21 = [v20 isEqualToString:v52];
+          v19 = [(MPAVRoutingViewController *)selfCopy groupUIDForRoute:v18];
+          routeUID = [v18 routeUID];
+          v21 = [routeUID isEqualToString:v52];
 
           if (v21)
           {
             v22 = v5;
             v23 = v18;
-            v24 = v55;
+            v24 = localDeviceUID;
             goto LABEL_15;
           }
 
-          if ([v18 isGroupLeader] && v19 && v19 != v55)
+          if ([v18 isGroupLeader] && v19 && v19 != localDeviceUID)
           {
             v22 = v5;
             v23 = v18;
@@ -354,20 +354,20 @@ LABEL_24:
         }
 
         v33 = v31;
-        v34 = [(MPAVRoutingViewController *)v64 groupUIDForRoute:v33];
-        v35 = [v33 routeUID];
-        v36 = [v56 containsObject:v35];
+        v34 = [(MPAVRoutingViewController *)selfCopy groupUIDForRoute:v33];
+        routeUID2 = [v33 routeUID];
+        v36 = [v56 containsObject:routeUID2];
 
         if (v36)
         {
-          v37 = v55;
+          v37 = localDeviceUID;
 
           v34 = v37;
         }
 
         v38 = [v57 objectForKeyedSubscript:v34];
         v39 = [v58 objectForKeyedSubscript:v34];
-        v40 = [(NSMutableSet *)v64->_expandedGroupUIDs containsObject:v34];
+        v40 = [(NSMutableSet *)selfCopy->_expandedGroupUIDs containsObject:v34];
         v41 = [v39 count];
         v42 = 1;
         if (v34 && v41)
@@ -398,13 +398,13 @@ LABEL_24:
         if (v42)
         {
 LABEL_41:
-          v45 = [v31 isDeviceSpeakerRoute];
+          isDeviceSpeakerRoute = [v31 isDeviceSpeakerRoute];
           v46 = v63;
-          if ((v45 & 1) == 0)
+          if ((isDeviceSpeakerRoute & 1) == 0)
           {
-            v47 = [v31 isShareableRoute];
+            isShareableRoute = [v31 isShareableRoute];
             v46 = v62;
-            if ((v47 & 1) == 0)
+            if ((isShareableRoute & 1) == 0)
             {
               if ([v31 isHeadphonesRoute])
               {
@@ -476,13 +476,13 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
   }
 }
 
-- (id)groupUIDForRoute:(id)a3
+- (id)groupUIDForRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = MRAVEndpointGetLocalEndpoint();
-  v5 = [v4 outputDeviceUIDs];
-  v6 = [v3 routeUID];
-  v7 = [v5 containsObject:v6];
+  outputDeviceUIDs = [v4 outputDeviceUIDs];
+  routeUID = [routeCopy routeUID];
+  v7 = [outputDeviceUIDs containsObject:routeUID];
 
   if (v7)
   {
@@ -491,7 +491,7 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
 
   else
   {
-    [v3 groupUID];
+    [routeCopy groupUID];
   }
   v8 = ;
 
@@ -500,20 +500,20 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
 
 - (void)_endUpdates
 {
-  v2 = [(MPAVRoutingViewController *)self _routingController];
-  [v2 setDelegate:0];
+  _routingController = [(MPAVRoutingViewController *)self _routingController];
+  [_routingController setDelegate:0];
 }
 
-- (BOOL)_shouldDisplayRouteAsPicked:(id)a3
+- (BOOL)_shouldDisplayRouteAsPicked:(id)picked
 {
-  v3 = self;
+  selfCopy = self;
   routingController = self->_routingController;
-  v5 = a3;
+  pickedCopy = picked;
   [(MPAVRoutingController *)routingController supportsMultipleSelection];
-  [(MPAVRoutingController *)v3->_routingController hasPendingPickedRoutes];
-  LOBYTE(v3) = [v5 isDisplayedAsPicked];
+  [(MPAVRoutingController *)selfCopy->_routingController hasPendingPickedRoutes];
+  LOBYTE(selfCopy) = [pickedCopy isDisplayedAsPicked];
 
-  return v3;
+  return selfCopy;
 }
 
 - (double)_tableViewFooterViewHeight
@@ -538,30 +538,30 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
   return result;
 }
 
-- (void)_applyUpdate:(id)a3
+- (void)_applyUpdate:(id)update
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   if (self->_tableView)
   {
     v5 = [(MPSectionedCollection *)self->_routingViewItems copy];
-    v6 = [v4 displayableAvailableRoutes];
-    v27 = [(MPAVRoutingViewController *)self _createRoutingViewItemsForRoutes:v6];
+    displayableAvailableRoutes = [updateCopy displayableAvailableRoutes];
+    v27 = [(MPAVRoutingViewController *)self _createRoutingViewItemsForRoutes:displayableAvailableRoutes];
 
-    v7 = [v27 routeGrouping];
-    v8 = [v4 pickedRoutes];
-    v9 = [(MPAVRoutingViewController *)self _createSectionedCollection:v27 withPickedRoutes:v8];
+    routeGrouping = [v27 routeGrouping];
+    pickedRoutes = [updateCopy pickedRoutes];
+    v9 = [(MPAVRoutingViewController *)self _createSectionedCollection:v27 withPickedRoutes:pickedRoutes];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __42__MPAVRoutingViewController__applyUpdate___block_invoke;
     aBlock[3] = &unk_1E767C7D0;
     aBlock[4] = self;
-    v10 = v4;
+    v10 = updateCopy;
     v43 = v10;
     v11 = v9;
     v44 = v11;
-    v25 = v7;
+    v25 = routeGrouping;
     v45 = v25;
     v12 = _Block_copy(aBlock);
     v39[0] = MEMORY[0x1E69E9820];
@@ -583,7 +583,7 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
     v36 = v16;
     v17 = v10;
     v37 = v17;
-    v38 = self;
+    selfCopy = self;
     v18 = _Block_copy(v34);
     if (-[MPAVRoutingViewControllerUpdate shouldReload](v17, "shouldReload") || ([v15 changeDetailsToSectionedCollection:v16 isEqualBlock:v26 isUpdatedBlock:v18], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
     {
@@ -606,7 +606,7 @@ void __62__MPAVRoutingViewController__createRoutingViewItemsForRoutes___block_in
       v33 = v12;
       v21 = v19;
       v31 = v21;
-      v32 = self;
+      selfCopy2 = self;
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __42__MPAVRoutingViewController__applyUpdate___block_invoke_6;
@@ -890,45 +890,45 @@ void *__42__MPAVRoutingViewController__applyUpdate___block_invoke_7(uint64_t a1)
 - (void)updateExpandedGroups
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(NSDictionary *)self->_cachedRouteGrouping allKeys];
-  v7 = [v3 setWithArray:v4];
+  allKeys = [(NSDictionary *)self->_cachedRouteGrouping allKeys];
+  v7 = [v3 setWithArray:allKeys];
 
   [(NSMutableSet *)self->_expandedGroupUIDs intersectSet:v7];
   if ([(NSArray *)self->_cachedPickedRoutes count]== 1)
   {
     expandedGroupUIDs = self->_expandedGroupUIDs;
-    v6 = [(MPAVRoutingViewController *)self endpointGroupUID];
-    [(NSMutableSet *)expandedGroupUIDs addObject:v6];
+    endpointGroupUID = [(MPAVRoutingViewController *)self endpointGroupUID];
+    [(NSMutableSet *)expandedGroupUIDs addObject:endpointGroupUID];
   }
 }
 
 - (id)endpointGroupUID
 {
-  v2 = [(MPAVEndpointRoute *)self->_endpointRoute endpoint];
-  v3 = [v2 designatedGroupLeader];
-  v4 = [v3 groupID];
-  v5 = v4;
-  if (v4)
+  endpoint = [(MPAVEndpointRoute *)self->_endpointRoute endpoint];
+  designatedGroupLeader = [endpoint designatedGroupLeader];
+  groupID = [designatedGroupLeader groupID];
+  v5 = groupID;
+  if (groupID)
   {
-    v6 = v4;
+    localDeviceUID = groupID;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69B09A8] localDeviceUID];
+    localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
   }
 
-  v7 = v6;
+  v7 = localDeviceUID;
 
   return v7;
 }
 
 - (id)_createReloadUpdate
 {
-  v2 = [(MPAVRoutingViewController *)self _createRefreshUpdate];
-  [v2 setShouldReload:1];
+  _createRefreshUpdate = [(MPAVRoutingViewController *)self _createRefreshUpdate];
+  [_createRefreshUpdate setShouldReload:1];
 
-  return v2;
+  return _createRefreshUpdate;
 }
 
 - (id)_createRefreshUpdate
@@ -943,37 +943,37 @@ void *__42__MPAVRoutingViewController__applyUpdate___block_invoke_7(uint64_t a1)
   return v3;
 }
 
-- (void)_enqueueUpdate:(id)a3
+- (void)_enqueueUpdate:(id)update
 {
-  v5 = a3;
-  v7 = v5;
+  updateCopy = update;
+  v7 = updateCopy;
   if (!self->_optimisticUpdate)
   {
-    v8 = v5;
+    v8 = updateCopy;
     if (self->_isAnimatingUpdate)
     {
-      objc_storeStrong(&self->_pendingUpdate, a3);
+      objc_storeStrong(&self->_pendingUpdate, update);
     }
 
     else
     {
-      v5 = [(MPAVRoutingViewController *)self _applyUpdate:v5];
+      updateCopy = [(MPAVRoutingViewController *)self _applyUpdate:updateCopy];
     }
 
     v7 = v8;
   }
 
-  MEMORY[0x1EEE66BE0](v5, v6, v7);
+  MEMORY[0x1EEE66BE0](updateCopy, v6, v7);
 }
 
-- (void)setOptimisticUpdate:(id)a3
+- (void)setOptimisticUpdate:(id)update
 {
-  v5 = a3;
-  v7 = v5;
-  if (v5)
+  updateCopy = update;
+  v7 = updateCopy;
+  if (updateCopy)
   {
-    [(MPAVRoutingViewController *)self _enqueueUpdate:v5];
-    objc_storeStrong(&self->_optimisticUpdate, a3);
+    [(MPAVRoutingViewController *)self _enqueueUpdate:updateCopy];
+    objc_storeStrong(&self->_optimisticUpdate, update);
   }
 
   else
@@ -1000,17 +1000,17 @@ void *__42__MPAVRoutingViewController__applyUpdate___block_invoke_7(uint64_t a1)
   }
 }
 
-- (void)_createUpdateWithCompletion:(id)a3
+- (void)_createUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   routingController = self->_routingController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke;
   v7[3] = &unk_1E76765E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(MPAVRoutingController *)routingController fetchAvailableRoutesWithCompletionHandler:v7];
 }
 
@@ -1131,13 +1131,13 @@ void __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke(
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_volumeCapableRoutesInRoutes:(id)a3
+- (id)_volumeCapableRoutesInRoutes:(id)routes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(MPAVRoutingController *)self->_routingController pickedRoutes];
-  v6 = [v5 count];
+  pickedRoutes = [(MPAVRoutingController *)self->_routingController pickedRoutes];
+  v6 = [pickedRoutes count];
 
   if (v6 >= 2)
   {
@@ -1145,8 +1145,8 @@ void __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke(
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v18 = v4;
-    v7 = v4;
+    v18 = routesCopy;
+    v7 = routesCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -1163,11 +1163,11 @@ void __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke(
 
           v12 = *(*(&v20 + 1) + 8 * i);
           outputDeviceVolumeSliders = self->_outputDeviceVolumeSliders;
-          v14 = [v12 routeUID];
-          v15 = [(NSMapTable *)outputDeviceVolumeSliders objectForKey:v14];
-          v16 = [v15 volumeController];
+          routeUID = [v12 routeUID];
+          v15 = [(NSMapTable *)outputDeviceVolumeSliders objectForKey:routeUID];
+          volumeController = [v15 volumeController];
 
-          if ([v16 isVolumeControlAvailable] && -[MPAVRoutingViewController _shouldDisplayRouteAsPicked:](self, "_shouldDisplayRouteAsPicked:", v12))
+          if ([volumeController isVolumeControlAvailable] && -[MPAVRoutingViewController _shouldDisplayRouteAsPicked:](self, "_shouldDisplayRouteAsPicked:", v12))
           {
             [v19 addObject:v12];
           }
@@ -1179,22 +1179,22 @@ void __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke(
       while (v9);
     }
 
-    v4 = v18;
+    routesCopy = v18;
   }
 
   return v19;
 }
 
-- (id)_displayAsPickedRoutesInRoutes:(id)a3
+- (id)_displayAsPickedRoutesInRoutes:(id)routes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = routesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1225,17 +1225,17 @@ void __57__MPAVRoutingViewController__createUpdateWithCompletion___block_invoke(
   return v5;
 }
 
-- (id)_displayableRoutesInRoutes:(id)a3
+- (id)_displayableRoutesInRoutes:(id)routes
 {
-  v4 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
-  v5 = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
-  v6 = [(MPAVRoutingController *)self->_routingController hasPendingPickedRoutes];
+  v4 = [MEMORY[0x1E695DF70] arrayWithArray:routes];
+  supportsMultipleSelection = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
+  hasPendingPickedRoutes = [(MPAVRoutingController *)self->_routingController hasPendingPickedRoutes];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MPAVRoutingViewController__displayableRoutesInRoutes___block_invoke;
   v8[3] = &unk_1E76765B8;
-  v9 = v5;
-  v10 = v6;
+  v9 = supportsMultipleSelection;
+  v10 = hasPendingPickedRoutes;
   v8[4] = self;
   v8[5] = 577;
   [v4 sortUsingComparator:v8];
@@ -1428,7 +1428,7 @@ LABEL_46:
   return v10;
 }
 
-- (void)_volumeSliderVolumeControlAvailabilityDidChangeNotification:(id)a3
+- (void)_volumeSliderVolumeControlAvailabilityDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1477,11 +1477,11 @@ LABEL_46:
   }
 }
 
-- (void)_setRouteDiscoveryMode:(int64_t)a3
+- (void)_setRouteDiscoveryMode:(int64_t)mode
 {
-  if (self->_routeDiscoveryMode != a3)
+  if (self->_routeDiscoveryMode != mode)
   {
-    self->_routeDiscoveryMode = a3;
+    self->_routeDiscoveryMode = mode;
     [(MPAVRoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
   }
 }
@@ -1521,11 +1521,11 @@ void __57__MPAVRoutingViewController__setupUpdateTimerIfNecessary__block_invoke(
 
 - (void)_unregisterNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B1308] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 removeObserver:self name:@"MPVolumeSliderVolumeControlLabelDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B1308] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter removeObserver:self name:@"MPVolumeSliderVolumeControlLabelDidChangeNotification" object:0];
 }
 
 - (void)_registerCarPlayObserver
@@ -1557,26 +1557,26 @@ void __57__MPAVRoutingViewController__setupUpdateTimerIfNecessary__block_invoke(
 
 - (void)_registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 addObserver:self selector:sel__volumeSliderVolumeControlAvailabilityDidChangeNotification_ name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter addObserver:self selector:sel__volumeSliderVolumeControlAvailabilityDidChangeNotification_ name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:0];
 }
 
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4
+- (void)_configureCell:(id)cell forIndexPath:(id)path
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v62 = a4;
-  [v6 setMirroringStyle:self->_mirroringStyle];
-  [v6 setIconStyle:self->_iconStyle];
-  [v6 setShouldHideSectionBottomSeparator:1];
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy setMirroringStyle:self->_mirroringStyle];
+  [cellCopy setIconStyle:self->_iconStyle];
+  [cellCopy setShouldHideSectionBottomSeparator:1];
   if (self->_tableCellsContentColor)
   {
-    [v6 setTintColor:?];
+    [cellCopy setTintColor:?];
   }
 
-  v63 = v6;
+  v63 = cellCopy;
   v7 = self->_cachedDisplayableAvailableRoutes;
   v68 = 0u;
   v69 = 0u;
@@ -1625,9 +1625,9 @@ LABEL_15:
   v60 = v14;
 
   v15 = v63;
-  v16 = [v63 delegate];
+  delegate = [v63 delegate];
 
-  if (!v16)
+  if (!delegate)
   {
     [v63 setDelegate:self];
   }
@@ -1636,28 +1636,28 @@ LABEL_15:
   v17 = *(MEMORY[0x1E69DDCE0] + 8);
   v20 = *(MEMORY[0x1E69DDCE0] + 16);
   v19 = *(MEMORY[0x1E69DDCE0] + 24);
-  v21 = v62;
-  v22 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v62];
-  v23 = [v22 mainRoute];
-  v59 = [v22 type];
+  v21 = pathCopy;
+  v22 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  mainRoute = [v22 mainRoute];
+  type = [v22 type];
   v24 = [(MPAVRoutingViewController *)self style]== 3;
-  v25 = [v23 supportsGrouping];
-  v26 = v24 & [(MPAVRoutingController *)self->_routingController supportsMultipleSelection]& v25;
-  v27 = [v62 section];
-  v61 = v23;
-  if (v27 < [(MPSectionedCollection *)self->_routingViewItems numberOfSections])
+  supportsGrouping = [mainRoute supportsGrouping];
+  v26 = v24 & [(MPAVRoutingController *)self->_routingController supportsMultipleSelection]& supportsGrouping;
+  section = [pathCopy section];
+  v61 = mainRoute;
+  if (section < [(MPSectionedCollection *)self->_routingViewItems numberOfSections])
   {
-    v28 = [v62 row];
-    v29 = v28 == -[MPSectionedCollection numberOfItemsInSection:](self->_routingViewItems, "numberOfItemsInSection:", [v62 section]) - 1 ? 0 : v26;
+    v28 = [pathCopy row];
+    v29 = v28 == -[MPSectionedCollection numberOfItemsInSection:](self->_routingViewItems, "numberOfItemsInSection:", [pathCopy section]) - 1 ? 0 : v26;
     if (v29 == 1)
     {
-      v30 = [v62 row];
+      v30 = [pathCopy row];
       routingViewItems = self->_routingViewItems;
-      v32 = [MEMORY[0x1E696AC88] indexPathForItem:v30 + 1 inSection:{objc_msgSend(v62, "section")}];
+      v32 = [MEMORY[0x1E696AC88] indexPathForItem:v30 + 1 inSection:{objc_msgSend(pathCopy, "section")}];
       v33 = [(MPSectionedCollection *)routingViewItems itemAtIndexPath:v32];
 
-      v34 = [v33 mainRoute];
-      if ([v34 supportsGrouping])
+      mainRoute2 = [v33 mainRoute];
+      if ([mainRoute2 supportsGrouping])
       {
         v19 = 0.0;
         v17 = 69.0;
@@ -1674,8 +1674,8 @@ LABEL_15:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v35 = [v22 routes];
-  v36 = [v35 countByEnumeratingWithState:&v64 objects:v72 count:16];
+  routes = [v22 routes];
+  v36 = [routes countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (!v36)
   {
 
@@ -1695,7 +1695,7 @@ LABEL_15:
     {
       if (*v65 != v40)
       {
-        objc_enumerationMutation(v35);
+        objc_enumerationMutation(routes);
       }
 
       v42 = *(*(&v64 + 1) + 8 * j);
@@ -1703,14 +1703,14 @@ LABEL_15:
       v39 |= [(NSArray *)self->_cachedDisplayAsPickedRoutes containsObject:v42];
     }
 
-    v37 = [v35 countByEnumeratingWithState:&v64 objects:v72 count:16];
+    v37 = [routes countByEnumeratingWithState:&v64 objects:v72 count:16];
   }
 
   while (v37);
 
   if (v38 & 1 | ((v39 & 1) == 0))
   {
-    v21 = v62;
+    v21 = pathCopy;
     v15 = v63;
     v22 = v58;
 LABEL_35:
@@ -1720,7 +1720,7 @@ LABEL_35:
 
   LOBYTE(v38) = 0;
   v43 = 3;
-  v21 = v62;
+  v21 = pathCopy;
   v15 = v63;
   v22 = v58;
 LABEL_37:
@@ -1728,20 +1728,20 @@ LABEL_37:
   [v15 setIsDisplayedAsPicked:v39 & 1];
   [v15 setPendingSelection:v38 & 1];
   v44 = [(NSArray *)self->_cachedVolumeCapableRoutes containsObject:v61];
-  v45 = v59 != 1 && v44;
+  v45 = type != 1 && v44;
   if (v45)
   {
     outputDeviceVolumeSliders = self->_outputDeviceVolumeSliders;
-    v47 = [v61 routeUID];
-    v48 = [(NSMapTable *)outputDeviceVolumeSliders objectForKey:v47];
+    routeUID = [v61 routeUID];
+    v48 = [(NSMapTable *)outputDeviceVolumeSliders objectForKey:routeUID];
 
     [v15 setVolumeSlider:v48];
-    v49 = [v15 volumeSlider];
-    v50 = [v49 volumeController];
-    [v50 updateVolumeValue];
+    volumeSlider = [v15 volumeSlider];
+    volumeController = [volumeSlider volumeController];
+    [volumeController updateVolumeValue];
 
-    v51 = [v15 volumeSlider];
-    [v51 updateVolume];
+    volumeSlider2 = [v15 volumeSlider];
+    [volumeSlider2 updateVolume];
   }
 
   else
@@ -1750,8 +1750,8 @@ LABEL_37:
   }
 
   [v15 setShowingVolumeSlider:v45];
-  v52 = [(MPAVRoutingViewController *)self endpointRoute];
-  [v15 updateForEndpoint:v52 routeItem:v22 inferLocalizedModelName:v60];
+  endpointRoute = [(MPAVRoutingViewController *)self endpointRoute];
+  [v15 updateForEndpoint:endpointRoute routeItem:v22 inferLocalizedModelName:v60];
 
   if (self->_tableCellsBackgroundColor)
   {
@@ -1760,11 +1760,11 @@ LABEL_37:
 
   else
   {
-    v53 = [(MPAVRoutingViewController *)self _tableView];
-    v54 = [v53 backgroundColor];
+    _tableView = [(MPAVRoutingViewController *)self _tableView];
+    backgroundColor = [_tableView backgroundColor];
 
-    v55 = [MEMORY[0x1E69DC888] clearColor];
-    v56 = [v54 isEqual:v55];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v56 = [backgroundColor isEqual:clearColor];
 
     if (v56)
     {
@@ -1780,22 +1780,22 @@ LABEL_37:
   }
 }
 
-- (BOOL)_operationRequiresOptimisticState:(int64_t)a3 routes:(id)a4
+- (BOOL)_operationRequiresOptimisticState:(int64_t)state routes:(id)routes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  routesCopy = routes;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 count] > 1;
+  v6 = [routesCopy count] > 1;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = routesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
 
 LABEL_12:
-    v14 = (a3 == 2) & v6;
+    v14 = (state == 2) & v6;
     goto LABEL_13;
   }
 
@@ -1821,7 +1821,7 @@ LABEL_12:
 
   while (v9);
 
-  if (((a3 == 1) & v10) != 1 || [v7 count] != 1)
+  if (((state == 1) & v10) != 1 || [v7 count] != 1)
   {
     goto LABEL_12;
   }
@@ -1832,7 +1832,7 @@ LABEL_13:
   return v14;
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
   if (self->_discoveryModeBeforeEnteringBackground)
   {
@@ -1842,7 +1842,7 @@ LABEL_13:
   self->_suspendedDiscoveryModeDueToApplicationState = 0;
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   self->_suspendedDiscoveryModeDueToApplicationState = 1;
   self->_discoveryModeBeforeEnteringBackground = [(MPAVRoutingController *)self->_routingController discoveryMode];
@@ -1868,9 +1868,9 @@ LABEL_13:
   return v6 + v9 * v7 + v4 + v10;
 }
 
-- (void)_diplayShareAudioDisabledAlertForReason:(id)a3
+- (void)_diplayShareAudioDisabledAlertForReason:(id)reason
 {
-  v8 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:a3 preferredStyle:1];
+  v8 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:reason preferredStyle:1];
   v4 = MEMORY[0x1E69DC648];
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v6 = [v5 localizedStringForKey:@"OK" value:&stru_1F149ECA8 table:@"MediaPlayer"];
@@ -1880,65 +1880,65 @@ LABEL_13:
   [(MPAVRoutingViewController *)self showViewController:v8 sender:self];
 }
 
-- (BOOL)_wouldShareAudioForPickedRoute:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5
+- (BOOL)_wouldShareAudioForPickedRoute:(id)route operation:(int64_t)operation pickedRoutes:(id)routes
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 firstObject];
-  if (a4 == 1 && [v8 count] == 1 && objc_msgSend(v7, "isShareableRoute") && objc_msgSend(v9, "isShareableRoute") && objc_msgSend(v7, "supportsGrouping"))
+  routeCopy = route;
+  routesCopy = routes;
+  firstObject = [routesCopy firstObject];
+  if (operation == 1 && [routesCopy count] == 1 && objc_msgSend(routeCopy, "isShareableRoute") && objc_msgSend(firstObject, "isShareableRoute") && objc_msgSend(routeCopy, "supportsGrouping"))
   {
-    v10 = [v9 supportsGrouping];
+    supportsGrouping = [firstObject supportsGrouping];
   }
 
   else
   {
-    v10 = 0;
+    supportsGrouping = 0;
   }
 
-  return v10;
+  return supportsGrouping;
 }
 
-- (void)_setTableCellsContentColor:(id)a3
+- (void)_setTableCellsContentColor:(id)color
 {
-  v5 = a3;
-  if (self->_tableCellsContentColor != v5)
+  colorCopy = color;
+  if (self->_tableCellsContentColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_tableCellsContentColor, a3);
-    v6 = [(MPAVRoutingViewController *)self _createReloadUpdate];
-    [(MPAVRoutingViewController *)self _enqueueUpdate:v6];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_tableCellsContentColor, color);
+    _createReloadUpdate = [(MPAVRoutingViewController *)self _createReloadUpdate];
+    [(MPAVRoutingViewController *)self _enqueueUpdate:_createReloadUpdate];
 
-    v5 = v7;
-  }
-}
-
-- (void)_setTableCellsBackgroundColor:(id)a3
-{
-  v5 = a3;
-  if (self->_tableCellsBackgroundColor != v5)
-  {
-    v7 = v5;
-    objc_storeStrong(&self->_tableCellsBackgroundColor, a3);
-    v6 = [(MPAVRoutingViewController *)self _createReloadUpdate];
-    [(MPAVRoutingViewController *)self _enqueueUpdate:v6];
-
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setEndpointRoute:(id)a3
+- (void)_setTableCellsBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_endpointRoute != v5)
+  colorCopy = color;
+  if (self->_tableCellsBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_endpointRoute, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_tableCellsBackgroundColor, color);
+    _createReloadUpdate = [(MPAVRoutingViewController *)self _createReloadUpdate];
+    [(MPAVRoutingViewController *)self _enqueueUpdate:_createReloadUpdate];
+
+    colorCopy = v7;
+  }
+}
+
+- (void)setEndpointRoute:(id)route
+{
+  routeCopy = route;
+  if (self->_endpointRoute != routeCopy)
+  {
+    v7 = routeCopy;
+    objc_storeStrong(&self->_endpointRoute, route);
     [(NSMapTable *)self->_outputDeviceVolumeSliders removeAllObjects];
     v6 = objc_alloc_init(MPAVRoutingViewControllerUpdate);
     [(MPAVRoutingViewControllerUpdate *)v6 setShouldReload:1];
     [(MPAVRoutingViewController *)self _enqueueUpdate:v6];
 
-    v5 = v7;
+    routeCopy = v7;
   }
 }
 
@@ -1959,7 +1959,7 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
   [v1 _enqueueUpdate:v2];
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -1973,7 +1973,7 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
   [(MPAVRoutingViewController *)self enqueueRefreshUpdate];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -1987,59 +1987,59 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
   [(MPAVRoutingViewController *)self enqueueRefreshUpdate];
 }
 
-- (void)routingCellDidTapToExpand:(id)a3
+- (void)routingCellDidTapToExpand:(id)expand
 {
-  v7 = [(MPAVClippingTableView *)self->_tableView indexPathForCell:a3];
+  v7 = [(MPAVClippingTableView *)self->_tableView indexPathForCell:expand];
   v4 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:?];
   if ([v4 type] == 1)
   {
-    v5 = [v4 mainRoute];
-    v6 = [(MPAVRoutingViewController *)self groupUIDForRoute:v5];
+    mainRoute = [v4 mainRoute];
+    v6 = [(MPAVRoutingViewController *)self groupUIDForRoute:mainRoute];
 
     [(NSMutableSet *)self->_expandedGroupUIDs addObject:v6];
     [(MPAVRoutingViewController *)self enqueueRefreshUpdate];
   }
 }
 
-- (void)routingController:(id)a3 shouldHijackRoute:(id)a4 alertStyle:(int64_t)a5 busyRouteName:(id)a6 presentingAppName:(id)a7 completion:(id)a8
+- (void)routingController:(id)controller shouldHijackRoute:(id)route alertStyle:(int64_t)style busyRouteName:(id)name presentingAppName:(id)appName completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v45 = a6;
-  v44 = a7;
-  v16 = a8;
-  v17 = v16;
-  v43 = v15;
-  if (a5)
+  controllerCopy = controller;
+  routeCopy = route;
+  nameCopy = name;
+  appNameCopy = appName;
+  completionCopy = completion;
+  v17 = completionCopy;
+  v43 = routeCopy;
+  if (style)
   {
-    if (a5 != 1)
+    if (style != 1)
     {
-      v25 = 0;
+      nameCopy2 = 0;
       v32 = 0;
       v34 = 0;
-      v21 = 0;
+      nameCopy = 0;
       goto LABEL_13;
     }
 
-    v42 = v16;
+    v42 = completionCopy;
     v18 = MEMORY[0x1E696AEC0];
     v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v20 = [v19 localizedStringForKey:@"ROUTING_SPEAKER_HIJACK_INTERRUPT_LOCAL_MULTITASK_TITLE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v21 = [v18 stringWithFormat:v20, v45];
+    nameCopy = [v18 stringWithFormat:v20, nameCopy];
 
     v22 = MEMORY[0x1E696AEC0];
     v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v24 = [v23 localizedStringForKey:@"ROUTING_SPEAKER_HIJACK_INTERRUPT_LOCAL_MULTITASK_MESSAGE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v25 = [v22 stringWithFormat:v24, v44, v45];
+    nameCopy2 = [v22 stringWithFormat:v24, appNameCopy, nameCopy];
   }
 
   else
   {
-    v42 = v16;
-    v26 = [v15 isTVRoute];
+    v42 = completionCopy;
+    isTVRoute = [routeCopy isTVRoute];
     v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v28 = v27;
-    if (v26)
+    if (isTVRoute)
     {
       v29 = @"ROUTING_SPEAKER_HIJACK_NAG_MULTITASK_TV_TITLE";
     }
@@ -2049,9 +2049,9 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
       v29 = @"ROUTING_SPEAKER_HIJACK_NAG_MULTITASK_SPEAKER_TITLE";
     }
 
-    v21 = [v27 localizedStringForKey:v29 value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    nameCopy = [v27 localizedStringForKey:v29 value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
-    if ([v15 isTVRoute])
+    if ([routeCopy isTVRoute])
     {
       v30 = @"ROUTING_SPEAKER_HIJACK_NAG_MULTITASK_TV_MESSAGE";
     }
@@ -2062,7 +2062,7 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
     }
 
     v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
-    v25 = [v23 localizedStringForKey:v30 value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    nameCopy2 = [v23 localizedStringForKey:v30 value:&stru_1F149ECA8 table:@"MediaPlayer"];
   }
 
   v31 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
@@ -2073,7 +2073,7 @@ void __49__MPAVRoutingViewController_enqueueRefreshUpdate__block_invoke(uint64_t
 
   v17 = v42;
 LABEL_13:
-  v35 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v21 message:v25 preferredStyle:1];
+  v35 = [MEMORY[0x1E69DC650] alertControllerWithTitle:nameCopy message:nameCopy2 preferredStyle:1];
   v36 = MEMORY[0x1E69DC648];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
@@ -2097,7 +2097,7 @@ LABEL_13:
   [(MPAVRoutingViewController *)self showViewController:v35 sender:self];
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
   updatesSincePresentation = self->_updatesSincePresentation;
   self->_updatesSincePresentation = updatesSincePresentation + 1;
@@ -2112,41 +2112,41 @@ LABEL_13:
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  [(MPAVRoutingViewController *)self _normalCellHeight:a3];
-  v5 = [(MPAVRoutingViewController *)self traitCollection];
-  [v5 displayScale];
+  [(MPAVRoutingViewController *)self _normalCellHeight:view];
+  traitCollection = [(MPAVRoutingViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v7 = v6;
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  [(MPAVRoutingViewController *)self _normalCellHeight:a3];
-  v5 = [(MPAVRoutingViewController *)self traitCollection];
-  [v5 displayScale];
+  [(MPAVRoutingViewController *)self _normalCellHeight:view];
+  traitCollection = [(MPAVRoutingViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v7 = v6;
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v7];
-  v30 = [v8 routes];
-  v9 = [v8 mainRoute];
-  v10 = [v8 type];
-  if (v10 >= 2)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  routes = [v8 routes];
+  mainRoute = [v8 mainRoute];
+  type = [v8 type];
+  if (type >= 2)
   {
-    if (v10 != 2)
+    if (type != 2)
     {
       goto LABEL_15;
     }
@@ -2154,18 +2154,18 @@ LABEL_13:
     v12 = os_log_create("com.apple.amp.mediaplayer", "Routing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 actionIdentifier];
+      actionIdentifier = [v8 actionIdentifier];
       *buf = 138543362;
-      *&buf[4] = v13;
+      *&buf[4] = actionIdentifier;
       _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "RCS user selected: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_14;
   }
 
-  if (!self->_shouldPickRouteOnSelection || v9 == 0)
+  if (!self->_shouldPickRouteOnSelection || mainRoute == 0)
   {
-    if (v9)
+    if (mainRoute)
     {
       goto LABEL_15;
     }
@@ -2181,20 +2181,20 @@ LABEL_13:
   }
 
   self->_hasUserSelections = 1;
-  if ([(MPAVRoutingController *)self->_routingController routeIsPendingPick:v9])
+  if ([(MPAVRoutingController *)self->_routingController routeIsPendingPick:mainRoute])
   {
     LOBYTE(v15) = 0;
   }
 
   else
   {
-    v15 = [v9 isPicked] ^ 1;
+    v15 = [mainRoute isPicked] ^ 1;
   }
 
-  v16 = [(MPAVRoutingController *)self->_routingController routeIsPendingPick:v9];
+  v16 = [(MPAVRoutingController *)self->_routingController routeIsPendingPick:mainRoute];
   if (v16)
   {
-    LOBYTE(v16) = [v9 isPicked];
+    LOBYTE(v16) = [mainRoute isPicked];
   }
 
   v17 = v15 | v16;
@@ -2208,11 +2208,11 @@ LABEL_13:
     v18 = 2;
   }
 
-  v19 = [(MPAVRoutingController *)self->_routingController pickedRoutes];
-  v20 = [(MPAVRoutingViewController *)self _wouldShareAudioForPickedRoute:v9 operation:v18 pickedRoutes:v19];
+  pickedRoutes = [(MPAVRoutingController *)self->_routingController pickedRoutes];
+  v20 = [(MPAVRoutingViewController *)self _wouldShareAudioForPickedRoute:mainRoute operation:v18 pickedRoutes:pickedRoutes];
 
-  v21 = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
-  if ((v17 & 1) == 0 && [v9 isDeviceSpeakerRoute])
+  supportsMultipleSelection = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
+  if ((v17 & 1) == 0 && [mainRoute isDeviceSpeakerRoute])
   {
     v12 = os_log_create("com.apple.amp.mediaplayer", "Routing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2226,23 +2226,23 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([(MPAVRoutingViewController *)self isInVehicle]&& v21 && v20)
+  if ([(MPAVRoutingViewController *)self isInVehicle]&& supportsMultipleSelection && v20)
   {
     v22 = os_log_create("com.apple.amp.mediaplayer", "Routing");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(MPAVRoutingController *)self->_routingController pickedRoutes];
+      pickedRoutes2 = [(MPAVRoutingController *)self->_routingController pickedRoutes];
       *buf = 138543618;
-      *&buf[4] = v9;
+      *&buf[4] = mainRoute;
       *&buf[12] = 2114;
-      *&buf[14] = v23;
+      *&buf[14] = pickedRoutes2;
       _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "Can't share audio while in the Car. Route: %{public}@, picked: %{public}@", buf, 0x16u);
     }
 
-    v24 = [(MPAVRoutingViewController *)self isInCarPlay];
+    isInCarPlay = [(MPAVRoutingViewController *)self isInCarPlay];
     v25 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v26 = v25;
-    if (v24)
+    if (isInCarPlay)
     {
       v27 = @"ROUTING_VIEW_SHARE_AUDIO_DISABLED_CARPLAY_SAME_OWNER";
     }
@@ -2267,17 +2267,17 @@ LABEL_15:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v39 = [(MPAVRoutingViewController *)self _operationRequiresOptimisticState:v18 routes:v30];
+  v39 = [(MPAVRoutingViewController *)self _operationRequiresOptimisticState:v18 routes:routes];
   routingController = self->_routingController;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v32[3] = &unk_1E7676540;
   v37 = v18;
-  v33 = v30;
-  v34 = self;
+  v33 = routes;
+  selfCopy = self;
   v36 = buf;
-  v35 = v9;
+  v35 = mainRoute;
   [(MPAVRoutingController *)routingController selectRoutes:v33 operation:v18 completion:v32];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -2364,30 +2364,30 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v6 = [(MPAVRoutingViewController *)self themeDelegate];
+  cellCopy = cell;
+  themeDelegate = [(MPAVRoutingViewController *)self themeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 routingViewController:self willDisplayCell:v7];
+    [themeDelegate routingViewController:self willDisplayCell:cellCopy];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"_MPAVRoutingViewCellIdentifier" forIndexPath:v6];
-  [(MPAVRoutingViewController *)self _configureCell:v7 forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"_MPAVRoutingViewCellIdentifier" forIndexPath:pathCopy];
+  [(MPAVRoutingViewController *)self _configureCell:v7 forIndexPath:pathCopy];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = [(MPSectionedCollection *)self->_routingViewItems sectionAtIndex:a4];
+    v5 = [(MPSectionedCollection *)self->_routingViewItems sectionAtIndex:section];
   }
 
   else
@@ -2398,12 +2398,12 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 && [(MPAVRoutingViewController *)self style]== 3)
+  viewCopy = view;
+  if (section && [(MPAVRoutingViewController *)self style]== 3)
   {
-    v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"_MPAVRoutingViewHeaderIdentifier"];
+    v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"_MPAVRoutingViewHeaderIdentifier"];
   }
 
   else
@@ -2414,10 +2414,10 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 24.0;
-  if (!a4)
+  if (!section)
   {
     return 0.0;
   }
@@ -2429,8 +2429,8 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
 {
   if (self->_tableView)
   {
-    v3 = [(MPAVRoutingViewController *)self view];
-    [v3 layoutIfNeeded];
+    view = [(MPAVRoutingViewController *)self view];
+    [view layoutIfNeeded];
 
     [(MPAVClippingTableView *)self->_tableView layoutIfNeeded];
     [(MPAVRoutingViewController *)self _tableViewHeightAccordingToDataSource];
@@ -2452,13 +2452,13 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   return result;
 }
 
-- (BOOL)shouldOverrideContentSizeCategory:(id)a3
+- (BOOL)shouldOverrideContentSizeCategory:(id)category
 {
-  v3 = a3;
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  categoryCopy = category;
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(categoryCopy);
   v5 = *MEMORY[0x1E69DDC50];
 
-  return v5 == v3 || IsAccessibilityCategory;
+  return v5 == categoryCopy || IsAccessibilityCategory;
 }
 
 - (void)viewWillLayoutSubviews
@@ -2466,34 +2466,34 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   v12.receiver = self;
   v12.super_class = MPAVRoutingViewController;
   [(MPAVRoutingViewController *)&v12 viewWillLayoutSubviews];
-  v3 = [(MPAVRoutingViewController *)self view];
-  [v3 bounds];
+  view = [(MPAVRoutingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
   [(MPAVClippingTableView *)self->_tableView setFrame:0.0, 0.0, v5, v7];
-  v8 = [(MPAVRoutingViewController *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
+  traitCollection = [(MPAVRoutingViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([(MPAVRoutingViewController *)self shouldOverrideContentSizeCategory:v9])
+  if ([(MPAVRoutingViewController *)self shouldOverrideContentSizeCategory:preferredContentSizeCategory])
   {
-    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC58]];
-    v11 = [(MPAVRoutingViewController *)self view];
-    [v11 _setLocalOverrideTraitCollection:v10];
+    view3 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC58]];
+    view2 = [(MPAVRoutingViewController *)self view];
+    [view2 _setLocalOverrideTraitCollection:view3];
   }
 
   else
   {
-    v10 = [(MPAVRoutingViewController *)self view];
-    [v10 _setLocalOverrideTraitCollection:0];
+    view3 = [(MPAVRoutingViewController *)self view];
+    [view3 _setLocalOverrideTraitCollection:0];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MPAVRoutingViewController;
-  [(MPAVRoutingViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(MPAVRoutingViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   if (!self->_onScreen)
   {
     [(MPAVRoutingViewController *)self _endRouteDiscovery];
@@ -2505,11 +2505,11 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MPAVRoutingViewController;
-  [(MPAVRoutingViewController *)&v5 viewDidDisappear:a3];
+  [(MPAVRoutingViewController *)&v5 viewDidDisappear:disappear];
   [(MPAVRoutingViewController *)self _endRouteDiscovery];
   [(MPWeakTimer *)self->_updateTimer invalidate];
   updateTimer = self->_updateTimer;
@@ -2521,11 +2521,11 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   [(MPAVRoutingViewController *)self resetDisplayedRoutes];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MPAVRoutingViewController;
-  [(MPAVRoutingViewController *)&v4 viewDidAppear:a3];
+  [(MPAVRoutingViewController *)&v4 viewDidAppear:appear];
   if (self->_suspendedDiscoveryModeDueToApplicationState)
   {
     self->_discoveryModeBeforeEnteringBackground = 3;
@@ -2540,11 +2540,11 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   [(MPAVRoutingViewController *)self _updateDisplayedRoutes];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MPAVRoutingViewController;
-  [(MPAVRoutingViewController *)&v4 viewWillAppear:a3];
+  [(MPAVRoutingViewController *)&v4 viewWillAppear:appear];
   self->_onScreen = 1;
   [(MPAVRoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
 }
@@ -2563,7 +2563,7 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   v21.receiver = self;
   v21.super_class = MPAVRoutingViewController;
   [(MPAVRoutingViewController *)&v21 viewDidLoad];
-  v3 = [(MPAVRoutingViewController *)self view];
+  view = [(MPAVRoutingViewController *)self view];
   v4 = self->_style == 1;
   v5 = [MPAVClippingTableView alloc];
   v6 = *MEMORY[0x1E695F058];
@@ -2581,25 +2581,25 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   [(MPAVClippingTableView *)self->_tableView setTableFooterView:v12];
 
   continuousCornerRadius = self->_continuousCornerRadius;
-  v14 = [(MPAVClippingTableView *)self->_tableView layer];
-  [v14 setCornerRadius:continuousCornerRadius];
+  layer = [(MPAVClippingTableView *)self->_tableView layer];
+  [layer setCornerRadius:continuousCornerRadius];
 
-  v15 = [(MPAVClippingTableView *)self->_tableView layer];
-  [v15 setMasksToBounds:1];
+  layer2 = [(MPAVClippingTableView *)self->_tableView layer];
+  [layer2 setMasksToBounds:1];
 
   [(MPAVRoutingViewController *)self registerTableViewCells];
-  [v3 addSubview:self->_tableView];
+  [view addSubview:self->_tableView];
   style = self->_style;
   if (style == 3)
   {
-    v18 = [MEMORY[0x1E69DC888] whiteColor];
-    [(MPAVRoutingViewController *)self _setTableCellsContentColor:v18];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(MPAVRoutingViewController *)self _setTableCellsContentColor:whiteColor];
 
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [v3 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(MPAVClippingTableView *)self->_tableView setBackgroundColor:v20];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(MPAVClippingTableView *)self->_tableView setBackgroundColor:clearColor2];
 
     [(MPAVClippingTableView *)self->_tableView setIndicatorStyle:2];
     [(MPAVRoutingViewController *)self setIconStyle:1];
@@ -2607,16 +2607,16 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
 
   else if (!style)
   {
-    v17 = [MEMORY[0x1E69DC888] whiteColor];
-    [v3 setBackgroundColor:v17];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [view setBackgroundColor:whiteColor2];
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  self->_continuousCornerRadius = a3;
-  v4 = [(MPAVClippingTableView *)self->_tableView layer];
-  [v4 setCornerRadius:a3];
+  self->_continuousCornerRadius = radius;
+  layer = [(MPAVClippingTableView *)self->_tableView layer];
+  [layer setCornerRadius:radius];
 }
 
 - (BOOL)isInVehicle
@@ -2636,8 +2636,8 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(MPAVRoutingController *)self->_routingController availableRoutes];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  availableRoutes = [(MPAVRoutingController *)self->_routingController availableRoutes];
+  v3 = [availableRoutes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -2647,7 +2647,7 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(availableRoutes);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) routeSubtype] == 19)
@@ -2657,7 +2657,7 @@ void __63__MPAVRoutingViewController_tableView_didSelectRowAtIndexPath___block_i
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [availableRoutes countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -2674,57 +2674,57 @@ LABEL_11:
 
 - (BOOL)isInCarPlay
 {
-  v2 = [(CARSessionStatus *)self->_carPlayStatus currentSession];
-  v3 = v2 != 0;
+  currentSession = [(CARSessionStatus *)self->_carPlayStatus currentSession];
+  v3 = currentSession != 0;
 
   return v3;
 }
 
-- (void)setGroupSliderCoordinator:(id)a3
+- (void)setGroupSliderCoordinator:(id)coordinator
 {
-  v6 = a3;
-  if (self->_groupSliderCoordinator != v6)
+  coordinatorCopy = coordinator;
+  if (self->_groupSliderCoordinator != coordinatorCopy)
   {
-    objc_storeStrong(&self->_groupSliderCoordinator, a3);
+    objc_storeStrong(&self->_groupSliderCoordinator, coordinator);
     [(NSMapTable *)self->_outputDeviceVolumeSliders removeAllObjects];
     [(MPVolumeGroupSliderCoordinator *)self->_groupSliderCoordinator removeAllIndividualVolumeSliders];
   }
 
-  v5 = [(MPAVRoutingViewController *)self _createReloadUpdate];
-  [(MPAVRoutingViewController *)self _enqueueUpdate:v5];
+  _createReloadUpdate = [(MPAVRoutingViewController *)self _createReloadUpdate];
+  [(MPAVRoutingViewController *)self _enqueueUpdate:_createReloadUpdate];
 }
 
-- (void)setDiscoveryModeOverride:(id)a3
+- (void)setDiscoveryModeOverride:(id)override
 {
-  objc_storeStrong(&self->_discoveryModeOverride, a3);
+  objc_storeStrong(&self->_discoveryModeOverride, override);
 
   [(MPAVRoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
 }
 
-- (void)setIconStyle:(unint64_t)a3
+- (void)setIconStyle:(unint64_t)style
 {
-  if (self->_iconStyle != a3)
+  if (self->_iconStyle != style)
   {
-    self->_iconStyle = a3;
-    v5 = [(MPAVRoutingViewController *)self _createReloadUpdate];
-    [(MPAVRoutingViewController *)self _enqueueUpdate:v5];
+    self->_iconStyle = style;
+    _createReloadUpdate = [(MPAVRoutingViewController *)self _createReloadUpdate];
+    [(MPAVRoutingViewController *)self _enqueueUpdate:_createReloadUpdate];
   }
 }
 
-- (void)setMirroringStyle:(unint64_t)a3
+- (void)setMirroringStyle:(unint64_t)style
 {
-  if (self->_mirroringStyle != a3)
+  if (self->_mirroringStyle != style)
   {
-    self->_mirroringStyle = a3;
+    self->_mirroringStyle = style;
     [(MPAVRoutingViewController *)self _setNeedsDisplayedRoutesUpdate];
   }
 }
 
-- (void)setAVItemType:(int64_t)a3
+- (void)setAVItemType:(int64_t)type
 {
-  if (self->_avItemType != a3)
+  if (self->_avItemType != type)
   {
-    self->_avItemType = a3;
+    self->_avItemType = type;
     [(MPAVRoutingViewController *)self _setNeedsDisplayedRoutesUpdate];
   }
 }
@@ -2740,22 +2740,22 @@ LABEL_11:
   [(MPAVRoutingViewController *)&v3 dealloc];
 }
 
-- (MPAVRoutingViewController)initWithStyle:(unint64_t)a3 routingController:(id)a4
+- (MPAVRoutingViewController)initWithStyle:(unint64_t)style routingController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MPAVRoutingViewController;
   v7 = [(MPAVRoutingViewController *)&v10 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    [(MPAVRoutingViewController *)v7 _initWithStyle:a3 routingController:v6];
+    [(MPAVRoutingViewController *)v7 _initWithStyle:style routingController:controllerCopy];
   }
 
   return v8;
 }
 
-- (MPAVRoutingViewController)initWithStyle:(unint64_t)a3
+- (MPAVRoutingViewController)initWithStyle:(unint64_t)style
 {
   v7.receiver = self;
   v7.super_class = MPAVRoutingViewController;
@@ -2763,17 +2763,17 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    [(MPAVRoutingViewController *)v4 _initWithStyle:a3 routingController:0];
+    [(MPAVRoutingViewController *)v4 _initWithStyle:style routingController:0];
   }
 
   return v5;
 }
 
-- (MPAVRoutingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MPAVRoutingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = MPAVRoutingViewController;
-  v4 = [(MPAVRoutingViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(MPAVRoutingViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -2783,29 +2783,29 @@ LABEL_11:
   return v5;
 }
 
-- (void)_initWithStyle:(unint64_t)a3 routingController:(id)a4
+- (void)_initWithStyle:(unint64_t)style routingController:(id)controller
 {
-  v6 = a4;
-  self->_style = a3;
+  controllerCopy = controller;
+  self->_style = style;
   self->_mirroringStyle = 0;
   self->_routeDiscoveryMode = 0;
-  if (!v6)
+  if (!controllerCopy)
   {
     v7 = [MPAVRoutingController alloc];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v6 = [(MPAVRoutingController *)v7 initWithName:v9];
+    controllerCopy = [(MPAVRoutingController *)v7 initWithName:v9];
   }
 
-  objc_storeStrong(&self->_routingController, v6);
+  objc_storeStrong(&self->_routingController, controllerCopy);
   [(MPAVRoutingController *)self->_routingController setDelegate:self];
   self->_suspendedDiscoveryModeDueToApplicationState = 0;
   self->_discoveryModeBeforeEnteringBackground = 0;
   self->_shouldAutomaticallyUpdateRoutesList = 1;
   self->_shouldPickRouteOnSelection = 1;
-  v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   outputDeviceVolumeSliders = self->_outputDeviceVolumeSliders;
-  self->_outputDeviceVolumeSliders = v10;
+  self->_outputDeviceVolumeSliders = strongToStrongObjectsMapTable;
 
   v12 = objc_opt_new();
   expandedGroupUIDs = self->_expandedGroupUIDs;

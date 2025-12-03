@@ -1,36 +1,36 @@
 @interface _SBKeyboardServiceConnectionListener
-- (_SBKeyboardServiceConnectionListener)initWithServiceQueue:(id)a3;
+- (_SBKeyboardServiceConnectionListener)initWithServiceQueue:(id)queue;
 - (_SBKeyboardServiceConnectionListenerDelegate)delegate;
-- (id)_clientForConnectionContext:(id)a3;
-- (void)_handleDisconnectForServiceConnection:(id)a3;
-- (void)deferAdditionalEnvironments:(id)a3 whenSceneHasKeyboardFocus:(id)a4 pid:(id)a5;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeKeyboardFocusFromSceneIdentity:(id)a3 pid:(id)a4;
-- (void)requestKeyboardFocusForSceneIdentity:(id)a3 pid:(id)a4 completion:(id)a5;
-- (void)setExternalSceneIdentities:(id)a3;
-- (void)stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)a3 pid:(id)a4;
+- (id)_clientForConnectionContext:(id)context;
+- (void)_handleDisconnectForServiceConnection:(id)connection;
+- (void)deferAdditionalEnvironments:(id)environments whenSceneHasKeyboardFocus:(id)focus pid:(id)pid;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeKeyboardFocusFromSceneIdentity:(id)identity pid:(id)pid;
+- (void)requestKeyboardFocusForSceneIdentity:(id)identity pid:(id)pid completion:(id)completion;
+- (void)setExternalSceneIdentities:(id)identities;
+- (void)stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)focus pid:(id)pid;
 @end
 
 @implementation _SBKeyboardServiceConnectionListener
 
-- (_SBKeyboardServiceConnectionListener)initWithServiceQueue:(id)a3
+- (_SBKeyboardServiceConnectionListener)initWithServiceQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = _SBKeyboardServiceConnectionListener;
   v6 = [(_SBKeyboardServiceConnectionListener *)&v19 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     connectionContextToClientMap = v6->_connectionContextToClientMap;
-    v6->_connectionContextToClientMap = v7;
+    v6->_connectionContextToClientMap = strongToStrongObjectsMapTable;
 
     v9 = objc_alloc(MEMORY[0x277D0AAF8]);
     v10 = [v9 initWithEntitlement:*MEMORY[0x277D66FE8]];
     serviceClientAuthenticator = v6->_serviceClientAuthenticator;
     v6->_serviceClientAuthenticator = v10;
 
-    objc_storeStrong(&v6->_serviceQueue, a3);
+    objc_storeStrong(&v6->_serviceQueue, queue);
     v12 = MEMORY[0x277CF32A0];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -46,27 +46,27 @@
   return v6;
 }
 
-- (id)_clientForConnectionContext:(id)a3
+- (id)_clientForConnectionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_connectionContextToClientMap objectForKey:v4];
+  contextCopy = context;
+  v5 = [(NSMapTable *)self->_connectionContextToClientMap objectForKey:contextCopy];
   if (!v5)
   {
-    v5 = [[_SBKeyboardServiceClient alloc] initWithConnectionContext:v4];
-    [(NSMapTable *)self->_connectionContextToClientMap setObject:v5 forKey:v4];
+    v5 = [[_SBKeyboardServiceClient alloc] initWithConnectionContext:contextCopy];
+    [(NSMapTable *)self->_connectionContextToClientMap setObject:v5 forKey:contextCopy];
   }
 
   return v5;
 }
 
-- (void)requestKeyboardFocusForSceneIdentity:(id)a3 pid:(id)a4 completion:(id)a5
+- (void)requestKeyboardFocusForSceneIdentity:(id)identity pid:(id)pid completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  pidCopy = pid;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v11 = [MEMORY[0x277CF3280] currentContext];
-  v12 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v11];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v12 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v12)
   {
@@ -74,10 +74,10 @@
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v14 = [MEMORY[0x277CF3280] currentContext];
-  v15 = [v14 remoteToken];
+  currentContext2 = [MEMORY[0x277CF3280] currentContext];
+  remoteToken = [currentContext2 remoteToken];
   v20 = 0;
-  v16 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v15 error:&v20];
+  v16 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:remoteToken error:&v20];
   v17 = v20;
 
   if (v16)
@@ -88,7 +88,7 @@
       [_SBKeyboardServiceConnectionListener requestKeyboardFocusForSceneIdentity:pid:completion:];
     }
 
-    [WeakRetained client:v12 requestKeyboardFocusForSceneIdentity:v8 pid:v9 completion:v10];
+    [WeakRetained client:v12 requestKeyboardFocusForSceneIdentity:identityCopy pid:pidCopy completion:completionCopy];
   }
 
   else
@@ -99,17 +99,17 @@
       [_SBKeyboardServiceConnectionListener requestKeyboardFocusForSceneIdentity:pid:completion:];
     }
 
-    v10[2](v10, MEMORY[0x277CBEC28], v17);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEC28], v17);
   }
 }
 
-- (void)removeKeyboardFocusFromSceneIdentity:(id)a3 pid:(id)a4
+- (void)removeKeyboardFocusFromSceneIdentity:(id)identity pid:(id)pid
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  pidCopy = pid;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v8];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v9)
   {
@@ -117,9 +117,9 @@
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v11 = [v9 auditToken];
+  auditToken = [v9 auditToken];
   v15 = 0;
-  v12 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v11 error:&v15];
+  v12 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v15];
   v13 = v15;
 
   if (v12)
@@ -130,7 +130,7 @@
       [_SBKeyboardServiceConnectionListener removeKeyboardFocusFromSceneIdentity:pid:];
     }
 
-    [WeakRetained client:v9 removeKeyboardFocusFromSceneIdentity:v6 pid:v7];
+    [WeakRetained client:v9 removeKeyboardFocusFromSceneIdentity:identityCopy pid:pidCopy];
   }
 
   else
@@ -143,14 +143,14 @@
   }
 }
 
-- (void)deferAdditionalEnvironments:(id)a3 whenSceneHasKeyboardFocus:(id)a4 pid:(id)a5
+- (void)deferAdditionalEnvironments:(id)environments whenSceneHasKeyboardFocus:(id)focus pid:(id)pid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentsCopy = environments;
+  focusCopy = focus;
+  pidCopy = pid;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v11 = [MEMORY[0x277CF3280] currentContext];
-  v12 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v11];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v12 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v12)
   {
@@ -158,9 +158,9 @@
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v14 = [v12 auditToken];
+  auditToken = [v12 auditToken];
   v18 = 0;
-  v15 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v14 error:&v18];
+  v15 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v18];
   v16 = v18;
 
   if (v15)
@@ -171,7 +171,7 @@
       [_SBKeyboardServiceConnectionListener deferAdditionalEnvironments:whenSceneHasKeyboardFocus:pid:];
     }
 
-    [WeakRetained client:v12 deferAdditionalEnvironments:v8 whenSceneHasKeyboardFocus:v9 pid:v10];
+    [WeakRetained client:v12 deferAdditionalEnvironments:environmentsCopy whenSceneHasKeyboardFocus:focusCopy pid:pidCopy];
   }
 
   else
@@ -184,13 +184,13 @@
   }
 }
 
-- (void)stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)a3 pid:(id)a4
+- (void)stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:(id)focus pid:(id)pid
 {
-  v6 = a3;
-  v7 = a4;
+  focusCopy = focus;
+  pidCopy = pid;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v8];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v9)
   {
@@ -198,9 +198,9 @@
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v11 = [v9 auditToken];
+  auditToken = [v9 auditToken];
   v15 = 0;
-  v12 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v11 error:&v15];
+  v12 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v15];
   v13 = v15;
 
   if (v12)
@@ -211,7 +211,7 @@
       [_SBKeyboardServiceConnectionListener stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:pid:];
     }
 
-    [WeakRetained client:v9 stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:v6 pid:v7];
+    [WeakRetained client:v9 stopApplyingAdditionalDeferringRulesWhenSceneHasKeyboardFocus:focusCopy pid:pidCopy];
   }
 
   else
@@ -224,12 +224,12 @@
   }
 }
 
-- (void)setExternalSceneIdentities:(id)a3
+- (void)setExternalSceneIdentities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v5];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v6 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v6)
   {
@@ -237,9 +237,9 @@
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v8 = [v6 auditToken];
+  auditToken = [v6 auditToken];
   v12 = 0;
-  v9 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v8 error:&v12];
+  v9 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v12];
   v10 = v12;
 
   if (v9)
@@ -250,7 +250,7 @@
       [_SBKeyboardServiceConnectionListener setExternalSceneIdentities:];
     }
 
-    [WeakRetained client:v6 setExternalSceneIdentities:v4];
+    [WeakRetained client:v6 setExternalSceneIdentities:identitiesCopy];
   }
 
   else
@@ -263,12 +263,12 @@
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v6 = MEMORY[0x277CF3280];
-  v7 = a4;
-  v8 = [v6 currentContext];
-  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v8];
+  connectionCopy = connection;
+  currentContext = [v6 currentContext];
+  v9 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v9)
   {
@@ -280,26 +280,26 @@
   v11[2] = __82___SBKeyboardServiceConnectionListener_listener_didReceiveConnection_withContext___block_invoke;
   v11[3] = &unk_2783AB730;
   v11[4] = self;
-  [v7 configureConnection:v11];
+  [connectionCopy configureConnection:v11];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained clientDidConnect:v9];
 
-  [v7 activate];
+  [connectionCopy activate];
 }
 
-- (void)_handleDisconnectForServiceConnection:(id)a3
+- (void)_handleDisconnectForServiceConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v4 = [MEMORY[0x277CF3280] currentContext];
-  v5 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:v4];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v5 = [(_SBKeyboardServiceConnectionListener *)self _clientForConnectionContext:currentContext];
 
   if (!v5)
   {
     [_SBKeyboardServiceConnectionListener _handleDisconnectForServiceConnection:];
   }
 
-  [(_SBKeyboardServiceConnectionListener *)self _removeClientForConnectionContext:v7];
+  [(_SBKeyboardServiceConnectionListener *)self _removeClientForConnectionContext:connectionCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained clientDidDisconnect:v5];
 }

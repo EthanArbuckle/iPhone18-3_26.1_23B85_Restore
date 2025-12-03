@@ -1,5 +1,5 @@
 @interface SecConcrete_sec_certificate
-- (SecConcrete_sec_certificate)initWithCertificate:(__SecCertificate *)a3;
+- (SecConcrete_sec_certificate)initWithCertificate:(__SecCertificate *)certificate;
 - (void)dealloc;
 @end
 
@@ -19,30 +19,30 @@
   [(SecConcrete_sec_certificate *)&v4 dealloc];
 }
 
-- (SecConcrete_sec_certificate)initWithCertificate:(__SecCertificate *)a3
+- (SecConcrete_sec_certificate)initWithCertificate:(__SecCertificate *)certificate
 {
-  v3 = a3;
-  if (a3)
+  selfCopy2 = certificate;
+  if (certificate)
   {
     v6.receiver = self;
     v6.super_class = SecConcrete_sec_certificate;
     self = [(SecConcrete_sec_certificate *)&v6 init];
     if (self)
     {
-      v4 = self;
-      CFRetain(v3);
-      v4->certificate = v3;
-      self = v4;
-      v3 = self;
+      selfCopy = self;
+      CFRetain(selfCopy2);
+      selfCopy->certificate = selfCopy2;
+      self = selfCopy;
+      selfCopy2 = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v3;
+  return selfCopy2;
 }
 
 @end

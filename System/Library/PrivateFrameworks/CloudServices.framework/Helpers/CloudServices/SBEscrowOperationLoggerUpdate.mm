@@ -2,16 +2,16 @@
 - (NSArray)completedOperations;
 - (NSArray)failedOperations;
 - (NSArray)successfulOperations;
-- (SBEscrowOperationLoggerUpdate)initWithLog:(id)a3 event:(id)a4 context:(id)a5;
+- (SBEscrowOperationLoggerUpdate)initWithLog:(id)log event:(id)event context:(id)context;
 @end
 
 @implementation SBEscrowOperationLoggerUpdate
 
-- (SBEscrowOperationLoggerUpdate)initWithLog:(id)a3 event:(id)a4 context:(id)a5
+- (SBEscrowOperationLoggerUpdate)initWithLog:(id)log event:(id)event context:(id)context
 {
-  v59 = a3;
-  v63 = a4;
-  v62 = a5;
+  logCopy = log;
+  eventCopy = event;
+  contextCopy = context;
   v90.receiver = self;
   v90.super_class = SBEscrowOperationLoggerUpdate;
   v60 = [(SBEscrowOperationLoggerUpdate *)&v90 init];
@@ -52,14 +52,14 @@
     v54 = v12;
     v79 = v54;
     v14 = objc_retainBlock(v72);
-    if (v63)
+    if (eventCopy)
     {
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v15 = [v59 activities];
-      v16 = [(ESAEscrowActivityUpdateResult *)v15 countByEnumeratingWithState:&v68 objects:v92 count:16];
+      activities = [logCopy activities];
+      v16 = [(ESAEscrowActivityUpdateResult *)activities countByEnumeratingWithState:&v68 objects:v92 count:16];
       if (v16)
       {
         v17 = *v69;
@@ -69,13 +69,13 @@ LABEL_5:
         {
           if (*v69 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(activities);
           }
 
           v19 = *(*(&v68 + 1) + 8 * v18);
-          v20 = [v63 activityId];
+          activityId = [eventCopy activityId];
           v21 = [v19 id];
-          LOBYTE(v19) = [v20 isEqual:v21];
+          LOBYTE(v19) = [activityId isEqual:v21];
 
           if (v19)
           {
@@ -84,7 +84,7 @@ LABEL_5:
 
           if (v16 == ++v18)
           {
-            v16 = [(ESAEscrowActivityUpdateResult *)v15 countByEnumeratingWithState:&v68 objects:v92 count:16];
+            v16 = [(ESAEscrowActivityUpdateResult *)activities countByEnumeratingWithState:&v68 objects:v92 count:16];
             if (v16)
             {
               goto LABEL_5;
@@ -100,8 +100,8 @@ LABEL_5:
 LABEL_11:
 
         v22 = [ESAEscrowActivityUpdateResult alloc];
-        v15 = [(ESAEscrowActivityUpdateResult *)v22 initWithActivity:0 event:v63 context:v62 totalPreviousOperations:v87[3]];
-        (v14[2])(v14, v15);
+        activities = [(ESAEscrowActivityUpdateResult *)v22 initWithActivity:0 event:eventCopy context:contextCopy totalPreviousOperations:v87[3]];
+        (v14[2])(v14, activities);
       }
     }
 
@@ -109,8 +109,8 @@ LABEL_11:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v23 = [v59 activities];
-    obj = [v23 reverseObjectEnumerator];
+    activities2 = [logCopy activities];
+    obj = [activities2 reverseObjectEnumerator];
 
     v24 = [obj countByEnumeratingWithState:&v64 objects:v91 count:16];
     if (v24)
@@ -127,13 +127,13 @@ LABEL_11:
 
           v27 = *(*(&v64 + 1) + 8 * i);
           v28 = [v27 id];
-          v29 = [v63 activityId];
-          v30 = [v28 isEqual:v29];
+          activityId2 = [eventCopy activityId];
+          v30 = [v28 isEqual:activityId2];
 
           v31 = [ESAEscrowActivityUpdateResult alloc];
           if (v30)
           {
-            v32 = v63;
+            v32 = eventCopy;
           }
 
           else
@@ -141,7 +141,7 @@ LABEL_11:
             v32 = 0;
           }
 
-          v33 = [(ESAEscrowActivityUpdateResult *)v31 initWithActivity:v27 event:v32 context:v62 totalPreviousOperations:v87[3]];
+          v33 = [(ESAEscrowActivityUpdateResult *)v31 initWithActivity:v27 event:v32 context:contextCopy totalPreviousOperations:v87[3]];
           (v14[2])(v14, v33);
         }
 
@@ -191,15 +191,15 @@ LABEL_11:
 
 - (NSArray)completedOperations
 {
-  v3 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  updatedOperations = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [updatedOperations count]);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  updatedOperations2 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v6 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -210,7 +210,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(updatedOperations2);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -220,7 +220,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -231,15 +231,15 @@ LABEL_11:
 
 - (NSArray)successfulOperations
 {
-  v3 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  updatedOperations = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [updatedOperations count]);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  updatedOperations2 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v6 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -250,7 +250,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(updatedOperations2);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -260,7 +260,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -271,15 +271,15 @@ LABEL_11:
 
 - (NSArray)failedOperations
 {
-  v3 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  updatedOperations = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [updatedOperations count]);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  updatedOperations2 = [(SBEscrowOperationLoggerUpdate *)self updatedOperations];
+  v6 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -290,7 +290,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(updatedOperations2);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -300,7 +300,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [updatedOperations2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

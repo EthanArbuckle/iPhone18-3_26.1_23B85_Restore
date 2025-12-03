@@ -1,6 +1,6 @@
 @interface _UIPhysicalButtonConfigurationResolutionContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
@@ -8,16 +8,16 @@
 
 @implementation _UIPhysicalButtonConfigurationResolutionContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3 && _NSIsNSObject())
+  if (equal && _NSIsNSObject())
   {
-    v5 = a3;
+    equalCopy = equal;
     v6 = objc_opt_class();
     if (v6 != objc_opt_class())
     {
@@ -25,12 +25,12 @@
     }
 
     v7 = [(_UIPhysicalButtonConfigurationResolutionContext *)self hash];
-    if (v7 != [v5 hash])
+    if (v7 != [equalCopy hash])
     {
       goto LABEL_16;
     }
 
-    v8 = v5[1];
+    v8 = equalCopy[1];
     v9 = self->_configurations;
     v10 = v8;
     v11 = v10;
@@ -56,7 +56,7 @@ LABEL_16:
       }
     }
 
-    v13 = _deferringTokenEqualToToken(self->_configurationToInteractionMap, v5[2]);
+    v13 = _deferringTokenEqualToToken(self->_configurationToInteractionMap, equalCopy[2]);
 LABEL_17:
 
     return v13;
@@ -67,24 +67,24 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_configurations];
-  v5 = [v3 appendObject:self->_configurationToInteractionMap];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_configurations];
+  v5 = [builder appendObject:self->_configurationToInteractionMap];
+  v6 = [builder hash];
 
   return v6;
 }
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-    v4 = _UIPhysicalButtonSuccinctConfigurationsDescriptionForSet(*(v2 + 8));
+    v4 = _UIPhysicalButtonSuccinctConfigurationsDescriptionForSet(*(selfCopy + 8));
     v5 = [v3 appendObject:v4 withName:@"configurations"];
 
-    v6 = *(v2 + 16);
+    v6 = *(selfCopy + 16);
     if (v6)
     {
       v7 = MEMORY[0x1E696AEC0];
@@ -101,15 +101,15 @@ LABEL_17:
 
     v12 = [v3 appendObject:v11 withName:@"configurationToInteractionMap"];
 
-    v2 = [v3 build];
+    selfCopy = [v3 build];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = [MEMORY[0x1E698E680] builderWithObject:self];
@@ -120,17 +120,17 @@ LABEL_17:
     v11 = &unk_1E70F35B8;
     v4 = v3;
     v12 = v4;
-    v13 = v2;
+    v13 = selfCopy;
     v5 = [v4 modifyBody:&v8];
     v6 = v4;
 
-    v2 = [v6 build];
+    selfCopy = [v6 build];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setConfigurations:self->_configurations];

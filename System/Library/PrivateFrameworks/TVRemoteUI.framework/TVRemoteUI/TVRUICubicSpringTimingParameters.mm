@@ -1,6 +1,6 @@
 @interface TVRUICubicSpringTimingParameters
 + (id)standardTimingParameters;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TVRUICubicSpringTimingParameters
@@ -14,13 +14,13 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TVRUICubicSpringTimingParameters;
-  v4 = [(TVRUICubicSpringTimingParameters *)&v7 copyWithZone:a3];
-  v5 = [(TVRUICubicSpringTimingParameters *)self springCubicTimingParameters];
-  [v4 setSpringCubicTimingParameters:v5];
+  v4 = [(TVRUICubicSpringTimingParameters *)&v7 copyWithZone:zone];
+  springCubicTimingParameters = [(TVRUICubicSpringTimingParameters *)self springCubicTimingParameters];
+  [v4 setSpringCubicTimingParameters:springCubicTimingParameters];
 
   return v4;
 }

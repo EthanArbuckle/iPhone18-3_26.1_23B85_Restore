@@ -1,8 +1,8 @@
 @interface COSAutoUpdateOptInController
 + (BOOL)controllerNeedsToRun;
-+ (BOOL)skipControllerForExpressMode:(id)a3;
-+ (id)expressModeSettingsItem:(id)a3;
-+ (id)expressModeSettingsString:(id)a3;
++ (BOOL)skipControllerForExpressMode:(id)mode;
++ (id)expressModeSettingsItem:(id)item;
++ (id)expressModeSettingsString:(id)string;
 - (COSAutoUpdateOptInController)init;
 - (id)alternateButtonTitle;
 - (id)detailString;
@@ -10,8 +10,8 @@
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSAutoUpdateOptInController
@@ -20,40 +20,40 @@
 {
   v2 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v3 = [v2 valueForProperty:NRDevicePropertyGreenTeaDevice];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if ((v4 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     sub_10002DDC4(1);
   }
 
-  v5 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v6 = [[NSUUID alloc] initWithUUIDString:@"D5737C61-3EE6-43DA-B714-00F3746C50E1"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [activeWatch supportsCapability:v6];
 
-  return v7 & v4;
+  return v7 & bOOLValue;
 }
 
-+ (BOOL)skipControllerForExpressMode:(id)a3
++ (BOOL)skipControllerForExpressMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = [NPSDomainAccessor alloc];
-  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:v3];
+  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:modeCopy];
 
-  v6 = [v5 synchronize];
+  synchronize = [v5 synchronize];
   v7 = [v5 objectForKey:@"AutoUpdate"];
-  LOBYTE(v3) = v7 != 0;
+  LOBYTE(modeCopy) = v7 != 0;
 
-  return v3;
+  return modeCopy;
 }
 
-+ (id)expressModeSettingsString:(id)a3
++ (id)expressModeSettingsString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [NPSDomainAccessor alloc];
-  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:v3];
+  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:stringCopy];
 
-  v6 = [v5 synchronize];
+  synchronize = [v5 synchronize];
   v7 = [v5 BOOLForKey:@"AutoUpdate"];
   v8 = @"NO";
   if (v7)
@@ -66,13 +66,13 @@
   return v9;
 }
 
-+ (id)expressModeSettingsItem:(id)a3
++ (id)expressModeSettingsItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [NPSDomainAccessor alloc];
-  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:v3];
+  v5 = [v4 initWithDomain:kBridgeDomain pairedDevice:itemCopy];
 
-  v6 = [v5 synchronize];
+  synchronize = [v5 synchronize];
   v7 = [v5 BOOLForKey:@"AutoUpdate"];
   v8 = objc_opt_new();
   v9 = +[NSBundle mainBundle];
@@ -134,7 +134,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   sub_10002DDC4(1);
   v4 = pbb_setupflow_log();
@@ -145,11 +145,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Is Auto Update enabled: %d", v6, 8u);
   }
 
-  v5 = [(COSAutoUpdateOptInController *)self delegate];
-  [v5 buddyControllerDone:self];
+  delegate = [(COSAutoUpdateOptInController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = pbb_setupflow_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -160,19 +160,19 @@
   }
 
   sub_10002DDC4(0);
-  v5 = [(COSAutoUpdateOptInController *)self delegate];
-  [v5 buddyControllerDone:self];
+  delegate = [(COSAutoUpdateOptInController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle
 {
   v2 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v3 = [v2 valueForProperty:NRDevicePropertyGreenTeaDevice];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     v7 = @"AUTOUPDATE_ACCEPT";
   }

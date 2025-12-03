@@ -1,10 +1,10 @@
 @interface DebugPersonalizationSubmitView
-- (_TtC8NewsFeed30DebugPersonalizationSubmitView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed30DebugPersonalizationSubmitView)initWithCoder:(id)coder;
 @end
 
 @implementation DebugPersonalizationSubmitView
 
-- (_TtC8NewsFeed30DebugPersonalizationSubmitView)initWithCoder:(id)a3
+- (_TtC8NewsFeed30DebugPersonalizationSubmitView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed30DebugPersonalizationSubmitView_submitButton;
   *(&self->super.super.super.isa + v4) = sub_1D5EDD29C();

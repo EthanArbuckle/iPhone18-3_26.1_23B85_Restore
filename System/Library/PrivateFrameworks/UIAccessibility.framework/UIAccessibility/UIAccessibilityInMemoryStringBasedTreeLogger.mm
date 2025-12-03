@@ -1,16 +1,16 @@
 @interface UIAccessibilityInMemoryStringBasedTreeLogger
-- (UIAccessibilityInMemoryStringBasedTreeLogger)initWithPrefix:(id)a3 elementDescriptionKey:(id)a4;
+- (UIAccessibilityInMemoryStringBasedTreeLogger)initWithPrefix:(id)prefix elementDescriptionKey:(id)key;
 - (id)stringRepresentation;
-- (void)logElement:(id)a3;
+- (void)logElement:(id)element;
 @end
 
 @implementation UIAccessibilityInMemoryStringBasedTreeLogger
 
-- (UIAccessibilityInMemoryStringBasedTreeLogger)initWithPrefix:(id)a3 elementDescriptionKey:(id)a4
+- (UIAccessibilityInMemoryStringBasedTreeLogger)initWithPrefix:(id)prefix elementDescriptionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v8 length])
+  prefixCopy = prefix;
+  keyCopy = key;
+  if (![keyCopy length])
   {
     [UIAccessibilityInMemoryStringBasedTreeLogger initWithPrefix:a2 elementDescriptionKey:self];
   }
@@ -28,11 +28,11 @@
     currentPrefix = v9->_currentPrefix;
     v9->_currentPrefix = v12;
 
-    v14 = [v7 copy];
+    v14 = [prefixCopy copy];
     prefix = v9->_prefix;
     v9->_prefix = v14;
 
-    v16 = [v8 copy];
+    v16 = [keyCopy copy];
     descriptionKey = v9->_descriptionKey;
     v9->_descriptionKey = v16;
   }
@@ -47,13 +47,13 @@
   return v2;
 }
 
-- (void)logElement:(id)a3
+- (void)logElement:(id)element
 {
   currentPrefix = self->_currentPrefix;
-  v5 = a3;
+  elementCopy = element;
   v8 = [(NSMutableArray *)currentPrefix componentsJoinedByString:&stru_1F1DB9E20];
   objc_opt_class();
-  v6 = [v5 safeValueForKey:self->_descriptionKey];
+  v6 = [elementCopy safeValueForKey:self->_descriptionKey];
 
   v7 = __UIAccessibilityCastAsClass();
 

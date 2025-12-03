@@ -1,27 +1,27 @@
 @interface SigningPublicKey
-- (BOOL)verifySignature:(id)a3 formatter:(id)a4;
-- (BOOL)verifySignature:(id)a3 ofData:(id)a4;
+- (BOOL)verifySignature:(id)signature formatter:(id)formatter;
+- (BOOL)verifySignature:(id)signature ofData:(id)data;
 - (id)description;
 - (id)tetraWrapped;
 @end
 
 @implementation SigningPublicKey
 
-- (BOOL)verifySignature:(id)a3 formatter:(id)a4
+- (BOOL)verifySignature:(id)signature formatter:(id)formatter
 {
-  v6 = a3;
-  v7 = [a4 signedData];
-  LOBYTE(self) = [(SigningPublicKey *)self verifySignature:v6 ofData:v7];
+  signatureCopy = signature;
+  signedData = [formatter signedData];
+  LOBYTE(self) = [(SigningPublicKey *)self verifySignature:signatureCopy ofData:signedData];
 
   return self;
 }
 
-- (BOOL)verifySignature:(id)a3 ofData:(id)a4
+- (BOOL)verifySignature:(id)signature ofData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  signatureCopy = signature;
   v8 = [(PublicKey *)self key];
-  v9 = [v8 verifySignature:v7 data:v6];
+  v9 = [v8 verifySignature:signatureCopy data:dataCopy];
 
   return v9;
 }
@@ -29,8 +29,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PublicKey *)self dataRepresentation];
-  v4 = [v2 stringWithFormat:@"SigningPublicKey with data representation: %@", v3];
+  dataRepresentation = [(PublicKey *)self dataRepresentation];
+  v4 = [v2 stringWithFormat:@"SigningPublicKey with data representation: %@", dataRepresentation];
 
   return v4;
 }

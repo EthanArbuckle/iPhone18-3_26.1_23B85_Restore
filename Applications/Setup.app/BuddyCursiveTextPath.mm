@@ -1,48 +1,48 @@
 @interface BuddyCursiveTextPath
-- (BuddyCursiveTextPath)initWithURL:(id)a3;
-- (BuddyCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4;
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5;
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4;
+- (BuddyCursiveTextPath)initWithURL:(id)l;
+- (BuddyCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution;
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped;
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length;
 @end
 
 @implementation BuddyCursiveTextPath
 
-- (BuddyCursiveTextPath)initWithURL:(id)a3
+- (BuddyCursiveTextPath)initWithURL:(id)l
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [v3 initWithURL:location[0] resolution:40];
-  v4 = v7;
+  objc_storeStrong(location, l);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v3 initWithURL:location[0] resolution:40];
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
-- (BuddyCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4
+- (BuddyCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution
 {
-  v62 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v60 = a4;
-  v5 = v62;
-  v62 = 0;
+  objc_storeStrong(location, l);
+  resolutionCopy = resolution;
+  v5 = selfCopy;
+  selfCopy = 0;
   v59.receiver = v5;
   v59.super_class = BuddyCursiveTextPath;
-  v62 = [(BuddyCursiveTextPath *)&v59 init];
-  objc_storeStrong(&v62, v62);
-  if (!v62)
+  selfCopy = [(BuddyCursiveTextPath *)&v59 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (!selfCopy)
   {
     goto LABEL_27;
   }
 
-  *(v62 + 1) = 0x3FE4CCCCC0000000;
-  *(v62 + 2) = 0x3FF0000000000000;
-  *(v62 + 3) = 0x3FD0000000000000;
+  *(selfCopy + 1) = 0x3FE4CCCCC0000000;
+  *(selfCopy + 2) = 0x3FF0000000000000;
+  *(selfCopy + 3) = 0x3FD0000000000000;
   v58 = [NSData dataWithContentsOfURL:location[0]];
   if (v58)
   {
@@ -55,15 +55,15 @@
     {
       v7 = [v55 objectForKeyedSubscript:@"unitsPerEm"];
       [v7 floatValue];
-      *(v62 + 10) = v8;
+      *(selfCopy + 10) = v8;
 
       v9 = [v55 objectForKeyedSubscript:@"ascender"];
       [v9 floatValue];
-      *(v62 + 11) = v10;
+      *(selfCopy + 11) = v10;
 
       v11 = [v55 objectForKeyedSubscript:@"descender"];
       [v11 floatValue];
-      *(v62 + 12) = v12;
+      *(selfCopy + 12) = v12;
 
       v53 = 0uLL;
       v13 = [v55 objectForKeyedSubscript:@"scale"];
@@ -112,7 +112,7 @@
 
       v53 = v37;
       v52 = [v55 objectForKeyedSubscript:@"strokes"];
-      sub_1001FA118(v62 + 13, [v52 count]);
+      sub_1001FA118(selfCopy + 13, [v52 count]);
       v50 = 0u;
       v49 = 0u;
       v48 = 0u;
@@ -162,7 +162,7 @@
               while (v30);
             }
 
-            sub_1001FA340(v62 + 13, v46);
+            sub_1001FA340(selfCopy + 13, v46);
             sub_1001FA3BC(v46);
           }
 
@@ -172,19 +172,19 @@
         while (v26);
       }
 
-      *(v62 + 16) = v60;
-      path = [v62 pathForFraction:1 calculateLength:0.0];
+      *(selfCopy + 16) = resolutionCopy;
+      path = [selfCopy pathForFraction:1 calculateLength:0.0];
       PathBoundingBox = CGPathGetPathBoundingBox(path);
       *&v38 = PathBoundingBox.origin.x;
       *(&v38 + 1) = *&PathBoundingBox.origin.y;
       *&v39 = PathBoundingBox.size.width;
       *(&v39 + 1) = *&PathBoundingBox.size.height;
-      v33 = v62;
-      *(v62 + 4) = v39;
+      v33 = selfCopy;
+      *(selfCopy + 4) = v39;
       v33[3] = v38;
       CGPathRelease(path);
-      *(v62 + 5) = *(v62 + 4) / 300.0;
-      v34 = *(v62 + 5);
+      *(selfCopy + 5) = *(selfCopy + 4) / 300.0;
+      v34 = *(selfCopy + 5);
       v69 = v34;
       v68 = 0;
       v67 = 1092616192;
@@ -197,7 +197,7 @@
       v88 = v84;
       v87 = 1092616192;
       v35 = sub_1001FA3F4((fminf(v84, 10.0) / 10.0) - 1.0);
-      *(v62 + 5) = ((v35 + 1.0) * 5.0);
+      *(selfCopy + 5) = ((v35 + 1.0) * 5.0);
       objc_storeStrong(&v52, 0);
       v57 = 0;
     }
@@ -222,31 +222,31 @@
   if (!v57)
   {
 LABEL_27:
-    v63 = v62;
+    v63 = selfCopy;
     v57 = 1;
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v62, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v63;
 }
 
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped
 {
-  *&v52 = a4.origin.x;
-  *(&v52 + 1) = *&a4.origin.y;
-  *&v53 = a4.size.width;
-  *(&v53 + 1) = *&a4.size.height;
-  v51 = self;
-  v50 = a3;
-  v49 = a5;
+  *&v52 = size.origin.x;
+  *(&v52 + 1) = *&size.origin.y;
+  *&v53 = size.size.width;
+  *(&v53 + 1) = *&size.size.height;
+  selfCopy = self;
+  rectCopy = rect;
+  flippedCopy = flipped;
   v48 = a6;
-  v47 = v51->_ascender - v51->_descender;
+  v47 = selfCopy->_ascender - selfCopy->_descender;
   v46 = -self->_descender / v47;
-  v45 = v47 / self->_unitsPerM * a5;
+  v45 = v47 / self->_unitsPerM * flipped;
   v43 = v53;
   v42 = v52;
-  v44 = (CGRectGetHeight(a4) - v45) * 0.5;
+  v44 = (CGRectGetHeight(size) - v45) * 0.5;
   if (v48)
   {
     v7 = 1.0 - v46;
@@ -258,8 +258,8 @@ LABEL_27:
   }
 
   v41 = v44 + v7 * v45;
-  origin = v51->_boundingBoxOfPath.origin;
-  v40.size = v51->_boundingBoxOfPath.size;
+  origin = selfCopy->_boundingBoxOfPath.origin;
+  v40.size = selfCopy->_boundingBoxOfPath.size;
   v40.origin = origin;
   *&retstr->tx = 0u;
   *&retstr->c = 0u;
@@ -273,7 +273,7 @@ LABEL_27:
   rect = v40;
   v13 = CGRectGetWidth(v40);
   CGAffineTransformMakeTranslation(retstr, v12 + -v13 * 0.5, 0.0);
-  sx = v49 / v51->_unitsPerM;
+  sx = flippedCopy / selfCopy->_unitsPerM;
   v36 = v40.size.width * sx;
   if (v40.size.width * sx > *&v53 && v36 > 0.0 && *&v53 > 0.0)
   {
@@ -324,14 +324,14 @@ LABEL_27:
   return memcpy(retstr, &__src, sizeof(CGAffineTransform));
 }
 
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length
 {
-  v69 = self;
+  selfCopy = self;
   v68 = a2;
-  v67 = a3;
-  v66 = a4;
+  fractionCopy = fraction;
+  lengthCopy = length;
   v65 = self->_rampTime / self->_duration;
-  v64 = -(v65 - (v65 + 1.0) * a3);
+  v64 = -(v65 - (v65 + 1.0) * fraction);
   sub_1001FB1D8(v63);
   v62 = 0.0;
   v77 = 0;
@@ -342,8 +342,8 @@ LABEL_27:
   v61 = v74;
   v60 = 0;
   v59 = 0;
-  p_bezierArrays = &v69->_bezierArrays;
-  v57 = sub_1001FB210(&v69->_bezierArrays);
+  p_bezierArrays = &selfCopy->_bezierArrays;
+  v57 = sub_1001FB210(&selfCopy->_bezierArrays);
   v56 = sub_1001FB258(p_bezierArrays);
   while (sub_1001FB2A0(&v57, &v56))
   {
@@ -368,13 +368,13 @@ LABEL_27:
 
       else
       {
-        resolution = v69->_resolution;
+        resolution = selfCopy->_resolution;
       }
 
       v49 = resolution;
       for (i = 0; i <= v49; ++i)
       {
-        v47 = 1.0 / v69->_resolution * i;
+        v47 = 1.0 / selfCopy->_resolution * i;
         v46 = 0uLL;
         v6 = v47;
         *v7.i64 = sub_1001FB408(v50, v6);
@@ -461,7 +461,7 @@ LABEL_27:
 
         v61 = v45;
         v60 = 1;
-        v40 = v62 / v69->_length;
+        v40 = v62 / selfCopy->_length;
         v11 = v40;
         v12 = v64;
         v13 = v11 - v12;
@@ -478,14 +478,14 @@ LABEL_27:
         v104 = v100;
         v103 = 1065353216;
         v39 = 1.0 - fminf(v100, 1.0);
-        initialWeight = v69->_initialWeight;
-        finalWeight = v69->_finalWeight;
+        initialWeight = selfCopy->_initialWeight;
+        finalWeight = selfCopy->_finalWeight;
         v17 = powf(v39 - 1.0, 3.0);
         v98 = initialWeight;
         v97 = finalWeight;
         v96 = v17 + 1.0;
         v38 = ((initialWeight + ((v17 + 1.0) * (finalWeight - initialWeight))) * v46.f32[3]);
-        if (!v66 && v40 > v64 + v65)
+        if (!lengthCopy && v40 > v64 + v65)
         {
           sub_1001FB61C(v63, v54);
           v36 = 9;
@@ -515,9 +515,9 @@ LABEL_23:
     sub_1001FB790(&v57);
   }
 
-  if (v66)
+  if (lengthCopy)
   {
-    v69->_length = v62;
+    selfCopy->_length = v62;
   }
 
   path = CGPathCreateMutable();

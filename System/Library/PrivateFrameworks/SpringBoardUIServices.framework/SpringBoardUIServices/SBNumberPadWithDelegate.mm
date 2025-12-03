@@ -1,59 +1,59 @@
 @interface SBNumberPadWithDelegate
-- (BOOL)touchAtPoint:(CGPoint)a3 isCloseToButton:(id)a4;
+- (BOOL)touchAtPoint:(CGPoint)point isCloseToButton:(id)button;
 - (SBNumberPadDelegate)delegate;
-- (SBNumberPadWithDelegate)initWithButtons:(id)a3;
-- (id)buttonForPoint:(CGPoint)a3 forEvent:(id)a4;
-- (void)buttonCancelled:(id)a3;
-- (void)buttonDown:(id)a3;
-- (void)buttonUp:(id)a3;
+- (SBNumberPadWithDelegate)initWithButtons:(id)buttons;
+- (id)buttonForPoint:(CGPoint)point forEvent:(id)event;
+- (void)buttonCancelled:(id)cancelled;
+- (void)buttonDown:(id)down;
+- (void)buttonUp:(id)up;
 @end
 
 @implementation SBNumberPadWithDelegate
 
-- (SBNumberPadWithDelegate)initWithButtons:(id)a3
+- (SBNumberPadWithDelegate)initWithButtons:(id)buttons
 {
   v4.receiver = self;
   v4.super_class = SBNumberPadWithDelegate;
-  return [(TPNumberPad *)&v4 initWithButtons:a3];
+  return [(TPNumberPad *)&v4 initWithButtons:buttons];
 }
 
-- (void)buttonUp:(id)a3
+- (void)buttonUp:(id)up
 {
-  v6 = a3;
-  v4 = [(SBNumberPadWithDelegate *)self delegate];
+  upCopy = up;
+  delegate = [(SBNumberPadWithDelegate *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained buttonUp:v6];
+    [WeakRetained buttonUp:upCopy];
   }
 }
 
-- (void)buttonDown:(id)a3
+- (void)buttonDown:(id)down
 {
-  v6 = a3;
-  v4 = [(SBNumberPadWithDelegate *)self delegate];
+  downCopy = down;
+  delegate = [(SBNumberPadWithDelegate *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained buttonDown:v6];
+    [WeakRetained buttonDown:downCopy];
   }
 }
 
-- (void)buttonCancelled:(id)a3
+- (void)buttonCancelled:(id)cancelled
 {
-  v5 = a3;
-  v4 = [(SBNumberPadWithDelegate *)self delegate];
+  cancelledCopy = cancelled;
+  delegate = [(SBNumberPadWithDelegate *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 buttonCancelled:v5];
+    [delegate buttonCancelled:cancelledCopy];
   }
 }
 
-- (id)buttonForPoint:(CGPoint)a3 forEvent:(id)a4
+- (id)buttonForPoint:(CGPoint)point forEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBNumberPadWithDelegate;
-  v4 = [(SBNumberPadWithDelegate *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v4 = [(SBNumberPadWithDelegate *)&v7 hitTest:event withEvent:point.x, point.y];
   if (v4)
   {
     do
@@ -64,22 +64,22 @@
         break;
       }
 
-      v5 = [v4 superview];
+      superview = [v4 superview];
 
-      v4 = v5;
+      v4 = superview;
     }
 
-    while (v5);
+    while (superview);
   }
 
   return v4;
 }
 
-- (BOOL)touchAtPoint:(CGPoint)a3 isCloseToButton:(id)a4
+- (BOOL)touchAtPoint:(CGPoint)point isCloseToButton:(id)button
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 frame];
+  y = point.y;
+  x = point.x;
+  [button frame];
   v11 = CGRectInset(v10, -20.0, -20.0);
   v6 = x;
   v7 = y;

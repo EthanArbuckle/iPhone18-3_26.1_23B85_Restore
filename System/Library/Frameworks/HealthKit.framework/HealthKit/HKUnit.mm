@@ -1,5 +1,5 @@
 @interface HKUnit
-+ (BOOL)_isValidUnitString:(id)a3;
++ (BOOL)_isValidUnitString:(id)string;
 + (HKUnit)gramUnitWithMetricPrefix:(HKMetricPrefix)prefix;
 + (HKUnit)hertzUnitWithMetricPrefix:(HKMetricPrefix)prefix;
 + (HKUnit)jouleUnitWithMetricPrefix:(HKMetricPrefix)prefix;
@@ -21,32 +21,32 @@
 + (NSEnergyFormatterUnit)energyFormatterUnitFromUnit:(HKUnit *)unit;
 + (NSLengthFormatterUnit)lengthFormatterUnitFromUnit:(HKUnit *)unit;
 + (NSMassFormatterUnit)massFormatterUnitFromUnit:(HKUnit *)unit;
-+ (id)_changeInUnit:(id)a3;
++ (id)_changeInUnit:(id)unit;
 + (id)_countPerMinuteUnit;
 + (id)_countPerSecondUnit;
-+ (id)_distanceUnitForLocale:(id)a3;
-+ (id)_foodEnergyUnitForLocale:(id)a3;
++ (id)_distanceUnitForLocale:(id)locale;
++ (id)_foodEnergyUnitForLocale:(id)locale;
 + (id)_foundationBaseUnits;
-+ (id)_heightUnitForLocale:(id)a3;
-+ (id)_internationalUnitWithMassEquivalent:(double)a3;
-+ (id)_internationalUnitWithMetricPrefix:(int64_t)a3 massEquivalent:(double)a4;
-+ (id)_internationalUnitWithMetricPrefix:(int64_t)a3 volumeEquivalent:(double)a4;
-+ (id)_internationalUnitWithVolumeEquivalent:(double)a3;
++ (id)_heightUnitForLocale:(id)locale;
++ (id)_internationalUnitWithMassEquivalent:(double)equivalent;
++ (id)_internationalUnitWithMetricPrefix:(int64_t)prefix massEquivalent:(double)equivalent;
++ (id)_internationalUnitWithMetricPrefix:(int64_t)prefix volumeEquivalent:(double)equivalent;
++ (id)_internationalUnitWithVolumeEquivalent:(double)equivalent;
 + (id)_milligramsPerDeciliterUnit;
 + (id)_millimolesBloodGlucosePerLiterUnit;
 + (id)_nullUnit;
-+ (id)_personMassUnitForLocale:(id)a3;
-+ (id)_temperatureUnitForLocale:(id)a3;
++ (id)_personMassUnitForLocale:(id)locale;
++ (id)_temperatureUnitForLocale:(id)locale;
 + (id)_unitForStringPrewarmCache;
-+ (id)equivalentsUnitWithMolarMass:(double)a3 valence:(int64_t)a4;
++ (id)equivalentsUnitWithMolarMass:(double)mass valence:(int64_t)valence;
 + (void)_prewarmUnitForStringCache;
-- (BOOL)_isCompatibleWithDimension:(id)a3;
-- (BOOL)_isCompatibleWithUnit:(id)a3;
+- (BOOL)_isCompatibleWithDimension:(id)dimension;
+- (BOOL)_isCompatibleWithUnit:(id)unit;
 - (BOOL)_isMetricDistance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNull;
 - (HKUnit)init;
-- (HKUnit)initWithCoder:(id)a3;
+- (HKUnit)initWithCoder:(id)coder;
 - (HKUnit)reciprocalUnit;
 - (HKUnit)unitDividedByUnit:(HKUnit *)unit;
 - (HKUnit)unitMultipliedByUnit:(HKUnit *)unit;
@@ -54,19 +54,19 @@
 - (NSString)unitString;
 - (_HKDimension)dimension;
 - (_HKFactorization)_baseUnits;
-- (double)_convertFromBaseUnit:(double)a3;
-- (double)_convertToBaseUnit:(double)a3;
-- (double)_valueByConvertingValue:(double)a3 toUnit:(id)a4;
+- (double)_convertFromBaseUnit:(double)unit;
+- (double)_convertToBaseUnit:(double)unit;
+- (double)_valueByConvertingValue:(double)value toUnit:(id)unit;
 - (id)_baseUnitReduction;
-- (id)_baseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4;
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4;
+- (id)_baseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set;
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set;
 - (id)_customizedFoundationUnit;
 - (id)_dimensionReduction;
 - (id)_foundationUnit;
 - (id)_init;
 - (unint64_t)hash;
-- (void)_reduceIfNecessaryWithCycleSet:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reduceIfNecessaryWithCycleSet:(id)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUnit
@@ -136,8 +136,8 @@
   }
 
   v3 = _customizedFoundationUnit_nsUnits;
-  v4 = [(HKUnit *)self unitString];
-  v5 = [v3 objectForKey:v4];
+  unitString = [(HKUnit *)self unitString];
+  v5 = [v3 objectForKey:unitString];
 
   return v5;
 }
@@ -199,11 +199,11 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 
 - (id)_foundationUnit
 {
-  v3 = [(HKUnit *)self _customizedFoundationUnit];
-  v4 = v3;
-  if (v3)
+  _customizedFoundationUnit = [(HKUnit *)self _customizedFoundationUnit];
+  v4 = _customizedFoundationUnit;
+  if (_customizedFoundationUnit)
   {
-    v5 = v3;
+    v5 = _customizedFoundationUnit;
   }
 
   else
@@ -230,10 +230,10 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 - (HKUnit)unitMultipliedByUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [(HKUnit *)self _baseUnits];
-  v6 = [(HKUnit *)v4 _baseUnits];
+  _baseUnits = [(HKUnit *)self _baseUnits];
+  _baseUnits2 = [(HKUnit *)v4 _baseUnits];
 
-  v7 = [v5 factorizationByMultiplying:v6];
+  v7 = [_baseUnits factorizationByMultiplying:_baseUnits2];
 
   v8 = [_HKCompoundUnit unitWithBaseUnits:v7];
 
@@ -243,11 +243,11 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 - (HKUnit)unitDividedByUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [(HKUnit *)self _baseUnits];
-  v6 = [(HKUnit *)v4 _baseUnits];
+  _baseUnits = [(HKUnit *)self _baseUnits];
+  _baseUnits2 = [(HKUnit *)v4 _baseUnits];
 
-  v7 = [v6 reciprocal];
-  v8 = [v5 factorizationByMultiplying:v7];
+  reciprocal = [_baseUnits2 reciprocal];
+  v8 = [_baseUnits factorizationByMultiplying:reciprocal];
 
   v9 = [_HKCompoundUnit unitWithBaseUnits:v8];
 
@@ -256,8 +256,8 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 
 - (HKUnit)unitRaisedToPower:(NSInteger)power
 {
-  v4 = [(HKUnit *)self _baseUnits];
-  v5 = [v4 factorizationByRaisingToExponent:power];
+  _baseUnits = [(HKUnit *)self _baseUnits];
+  v5 = [_baseUnits factorizationByRaisingToExponent:power];
 
   v6 = [_HKCompoundUnit unitWithBaseUnits:v5];
 
@@ -266,18 +266,18 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 
 - (HKUnit)reciprocalUnit
 {
-  v2 = [(HKUnit *)self _baseUnits];
-  v3 = [v2 reciprocal];
+  _baseUnits = [(HKUnit *)self _baseUnits];
+  reciprocal = [_baseUnits reciprocal];
 
-  v4 = [_HKCompoundUnit unitWithBaseUnits:v3];
+  v4 = [_HKCompoundUnit unitWithBaseUnits:reciprocal];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -287,9 +287,9 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HKUnit *)self unitString];
-      v6 = [(HKUnit *)v4 unitString];
-      v7 = [v5 isEqualToString:v6];
+      unitString = [(HKUnit *)self unitString];
+      unitString2 = [(HKUnit *)equalCopy unitString];
+      v7 = [unitString isEqualToString:unitString2];
     }
 
     else
@@ -303,8 +303,8 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(HKUnit *)self unitString];
-  v3 = [v2 hash];
+  unitString = [(HKUnit *)self unitString];
+  v3 = [unitString hash];
 
   return v3;
 }
@@ -313,24 +313,24 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    gramUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 gramUnit];
+    gramUnit = [self gramUnit];
   }
 
-  return v5;
+  return gramUnit;
 }
 
 + (HKUnit)moleUnitWithMetricPrefix:(HKMetricPrefix)prefix molarMass:(double)gramsPerMole
 {
   if (prefix)
   {
-    v5 = [a1 _prefixStringForMetricPrefix:?];
+    v5 = [self _prefixStringForMetricPrefix:?];
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:gramsPerMole];
     v7 = +[(HKUnit *)HKBaseUnit];
     v8 = [HKBaseUnit _uniquedUnitWithPrefix:v5 conversionConstant:v6 rootUnit:v7];
@@ -338,7 +338,7 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 
   else
   {
-    v8 = [a1 moleUnitWithMolarMass:gramsPerMole];
+    v8 = [self moleUnitWithMolarMass:gramsPerMole];
   }
 
   return v8;
@@ -357,232 +357,232 @@ void __43__HKUnit_NSUnit___customizedFoundationUnit__block_invoke()
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    meterUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 meterUnit];
+    meterUnit = [self meterUnit];
   }
 
-  return v5;
+  return meterUnit;
 }
 
 + (HKUnit)literUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    literUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 literUnit];
+    literUnit = [self literUnit];
   }
 
-  return v5;
+  return literUnit;
 }
 
 + (HKUnit)pascalUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    pascalUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 pascalUnit];
+    pascalUnit = [self pascalUnit];
   }
 
-  return v5;
+  return pascalUnit;
 }
 
 + (HKUnit)secondUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    secondUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 secondUnit];
+    secondUnit = [self secondUnit];
   }
 
-  return v5;
+  return secondUnit;
 }
 
 + (HKUnit)jouleUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    jouleUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 jouleUnit];
+    jouleUnit = [self jouleUnit];
   }
 
-  return v5;
+  return jouleUnit;
 }
 
 + (HKUnit)siemenUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    siemenUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 siemenUnit];
+    siemenUnit = [self siemenUnit];
   }
 
-  return v5;
+  return siemenUnit;
 }
 
 + (HKUnit)voltUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v4 = [a1 _prefixStringForMetricPrefix:?];
-    v5 = [a1 _voltBaseUnit];
-    v6 = [HKBaseUnit _uniquedUnitWithPrefix:v4 rootUnit:v5];
+    v4 = [self _prefixStringForMetricPrefix:?];
+    _voltBaseUnit = [self _voltBaseUnit];
+    voltUnit = [HKBaseUnit _uniquedUnitWithPrefix:v4 rootUnit:_voltBaseUnit];
   }
 
   else
   {
-    v6 = [a1 voltUnit];
+    voltUnit = [self voltUnit];
   }
 
-  return v6;
+  return voltUnit;
 }
 
 + (HKUnit)hertzUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    hertzUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 hertzUnit];
+    hertzUnit = [self hertzUnit];
   }
 
-  return v5;
+  return hertzUnit;
 }
 
 + (HKUnit)wattUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    wattUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 wattUnit];
+    wattUnit = [self wattUnit];
   }
 
-  return v5;
+  return wattUnit;
 }
 
 + (HKUnit)radianAngleUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    radianAngleUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 radianAngleUnit];
+    radianAngleUnit = [self radianAngleUnit];
   }
 
-  return v5;
+  return radianAngleUnit;
 }
 
 + (HKUnit)luxUnitWithMetricPrefix:(HKMetricPrefix)prefix
 {
   if (prefix)
   {
-    v3 = [a1 _prefixStringForMetricPrefix:?];
+    v3 = [self _prefixStringForMetricPrefix:?];
     v4 = +[(HKUnit *)HKBaseUnit];
-    v5 = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
+    luxUnit = [HKBaseUnit _uniquedUnitWithPrefix:v3 rootUnit:v4];
   }
 
   else
   {
-    v5 = [a1 luxUnit];
+    luxUnit = [self luxUnit];
   }
 
-  return v5;
+  return luxUnit;
 }
 
-+ (id)_internationalUnitWithMetricPrefix:(int64_t)a3 massEquivalent:(double)a4
++ (id)_internationalUnitWithMetricPrefix:(int64_t)prefix massEquivalent:(double)equivalent
 {
-  v5 = [a1 _prefixStringForMetricPrefix:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v5 = [self _prefixStringForMetricPrefix:prefix];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:equivalent];
   v7 = +[(HKUnit *)HKBaseUnit];
   v8 = [HKBaseUnit _uniquedUnitWithPrefix:v5 conversionConstant:v6 rootUnit:v7];
 
   return v8;
 }
 
-+ (id)_internationalUnitWithMassEquivalent:(double)a3
++ (id)_internationalUnitWithMassEquivalent:(double)equivalent
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithDouble:equivalent];
   v4 = +[(HKUnit *)HKBaseUnit];
   v5 = [HKBaseUnit _uniquedUnitWithPrefix:0 conversionConstant:v3 rootUnit:v4];
 
   return v5;
 }
 
-+ (id)_internationalUnitWithMetricPrefix:(int64_t)a3 volumeEquivalent:(double)a4
++ (id)_internationalUnitWithMetricPrefix:(int64_t)prefix volumeEquivalent:(double)equivalent
 {
-  v5 = [a1 _prefixStringForMetricPrefix:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v5 = [self _prefixStringForMetricPrefix:prefix];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:equivalent];
   v7 = +[(HKUnit *)HKBaseUnit];
   v8 = [HKBaseUnit _uniquedUnitWithPrefix:v5 conversionConstant:v6 rootUnit:v7];
 
   return v8;
 }
 
-+ (id)_internationalUnitWithVolumeEquivalent:(double)a3
++ (id)_internationalUnitWithVolumeEquivalent:(double)equivalent
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithDouble:equivalent];
   v4 = +[(HKUnit *)HKBaseUnit];
   v5 = [HKBaseUnit _uniquedUnitWithPrefix:0 conversionConstant:v3 rootUnit:v4];
 
   return v5;
 }
 
-+ (id)equivalentsUnitWithMolarMass:(double)a3 valence:(int64_t)a4
++ (id)equivalentsUnitWithMolarMass:(double)mass valence:(int64_t)valence
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3 / a4];
+  valence = [MEMORY[0x1E696AD98] numberWithDouble:mass / valence];
   v5 = +[(HKUnit *)HKBaseUnit];
-  v6 = [HKBaseUnit _uniquedUnitWithPrefix:0 conversionConstant:v4 rootUnit:v5];
+  v6 = [HKBaseUnit _uniquedUnitWithPrefix:0 conversionConstant:valence rootUnit:v5];
 
   return v6;
 }
@@ -647,36 +647,36 @@ void __45__HKUnit__millimolesBloodGlucosePerLiterUnit__block_invoke()
   _millimolesBloodGlucosePerLiterUnit_unit = v1;
 }
 
-+ (id)_changeInUnit:(id)a3
++ (id)_changeInUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [a1 degreeCelsiusUnit];
-  v6 = [v4 isEqual:v5];
+  unitCopy = unit;
+  degreeCelsiusUnit = [self degreeCelsiusUnit];
+  v6 = [unitCopy isEqual:degreeCelsiusUnit];
 
   if (v6)
   {
-    v7 = [a1 _changeInDegreeCelsiusUnit];
+    _changeInDegreeCelsiusUnit = [self _changeInDegreeCelsiusUnit];
   }
 
   else
   {
-    v8 = [a1 degreeFahrenheitUnit];
-    v9 = [v4 isEqual:v8];
+    degreeFahrenheitUnit = [self degreeFahrenheitUnit];
+    v9 = [unitCopy isEqual:degreeFahrenheitUnit];
 
     if (v9)
     {
-      [a1 _changeInDegreeFahrenheitUnit];
+      [self _changeInDegreeFahrenheitUnit];
     }
 
     else
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"No unit is defined for change in %@", v4}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"No unit is defined for change in %@", unitCopy}];
       +[HKUnit _nullUnit];
     }
-    v7 = ;
+    _changeInDegreeCelsiusUnit = ;
   }
 
-  v10 = v7;
+  v10 = _changeInDegreeCelsiusUnit;
 
   return v10;
 }
@@ -694,8 +694,8 @@ void __45__HKUnit__millimolesBloodGlucosePerLiterUnit__block_invoke()
     v3 = unitForStringCache;
   }
 
-  v6 = [a1 _unitForStringPrewarmCache];
-  [v3 addEntriesFromDictionary:v6];
+  _unitForStringPrewarmCache = [self _unitForStringPrewarmCache];
+  [v3 addEntriesFromDictionary:_unitForStringPrewarmCache];
 
   os_unfair_lock_unlock(&unitForStringCacheLock);
 }
@@ -934,16 +934,16 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
     if ([v7 factorCount] == 1 && (objc_msgSend(v7, "anyFactor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "exponentForFactor:", v8), v8, v9 == 1))
     {
-      v10 = [v7 anyFactor];
+      anyFactor = [v7 anyFactor];
     }
 
     else
     {
-      v10 = [_HKCompoundUnit unitWithBaseUnits:v7];
+      anyFactor = [_HKCompoundUnit unitWithBaseUnits:v7];
     }
 
-    v5 = v10;
-    if (v10)
+    v5 = anyFactor;
+    if (anyFactor)
     {
       v11 = unitForStringCache;
       if (!unitForStringCache)
@@ -966,17 +966,17 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
 + (HKUnit)unitFromMassFormatterUnit:(NSMassFormatterUnit)massFormatterUnit
 {
-  v4 = 0;
+  gramUnit = 0;
   if (massFormatterUnit <= 1536)
   {
     if (massFormatterUnit == NSMassFormatterUnitGram)
     {
-      v4 = [a1 gramUnit];
+      gramUnit = [self gramUnit];
     }
 
     else if (massFormatterUnit == NSMassFormatterUnitKilogram)
     {
-      v4 = [a1 gramUnitWithMetricPrefix:9];
+      gramUnit = [self gramUnitWithMetricPrefix:9];
     }
   }
 
@@ -985,25 +985,25 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
     switch(massFormatterUnit)
     {
       case NSMassFormatterUnitOunce:
-        v4 = [a1 ounceUnit];
+        gramUnit = [self ounceUnit];
         break;
       case NSMassFormatterUnitPound:
-        v4 = [a1 poundUnit];
+        gramUnit = [self poundUnit];
         break;
       case NSMassFormatterUnitStone:
-        v4 = [a1 stoneUnit];
+        gramUnit = [self stoneUnit];
         break;
     }
   }
 
-  return v4;
+  return gramUnit;
 }
 
 + (NSMassFormatterUnit)massFormatterUnitFromUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [a1 gramUnit];
-  v6 = [(HKUnit *)v4 isEqual:v5];
+  gramUnit = [self gramUnit];
+  v6 = [(HKUnit *)v4 isEqual:gramUnit];
 
   if (v6)
   {
@@ -1012,7 +1012,7 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
   else
   {
-    v8 = [a1 gramUnitWithMetricPrefix:9];
+    v8 = [self gramUnitWithMetricPrefix:9];
     v9 = [(HKUnit *)v4 isEqual:v8];
 
     if (v9)
@@ -1022,8 +1022,8 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
     else
     {
-      v10 = [a1 ounceUnit];
-      v11 = [(HKUnit *)v4 isEqual:v10];
+      ounceUnit = [self ounceUnit];
+      v11 = [(HKUnit *)v4 isEqual:ounceUnit];
 
       if (v11)
       {
@@ -1032,8 +1032,8 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
       else
       {
-        v12 = [a1 poundUnit];
-        v13 = [(HKUnit *)v4 isEqual:v12];
+        poundUnit = [self poundUnit];
+        v13 = [(HKUnit *)v4 isEqual:poundUnit];
 
         if (v13)
         {
@@ -1042,8 +1042,8 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
         else
         {
-          v14 = [a1 stoneUnit];
-          v15 = [(HKUnit *)v4 isEqual:v14];
+          stoneUnit = [self stoneUnit];
+          v15 = [(HKUnit *)v4 isEqual:stoneUnit];
 
           if (v15)
           {
@@ -1065,19 +1065,19 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
 
 + (HKUnit)unitFromLengthFormatterUnit:(NSLengthFormatterUnit)lengthFormatterUnit
 {
-  v4 = 0;
+  yardUnit = 0;
   if (lengthFormatterUnit > 1280)
   {
     if (lengthFormatterUnit > NSLengthFormatterUnitFoot)
     {
       if (lengthFormatterUnit == NSLengthFormatterUnitYard)
       {
-        v4 = [a1 yardUnit];
+        yardUnit = [self yardUnit];
       }
 
       else if (lengthFormatterUnit == NSLengthFormatterUnitMile)
       {
-        v4 = [a1 mileUnit];
+        yardUnit = [self mileUnit];
       }
     }
 
@@ -1085,14 +1085,14 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
     {
       if (lengthFormatterUnit == NSLengthFormatterUnitInch)
       {
-        [a1 inchUnit];
+        [self inchUnit];
       }
 
       else
       {
-        [a1 footUnit];
+        [self footUnit];
       }
-      v4 = ;
+      yardUnit = ;
     }
   }
 
@@ -1102,7 +1102,7 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
     {
       if (lengthFormatterUnit == NSLengthFormatterUnitMillimeter)
       {
-        v5 = a1;
+        selfCopy3 = self;
         v6 = 4;
       }
 
@@ -1113,12 +1113,12 @@ void __30__HKUnit__foundationBaseUnits__block_invoke()
           goto LABEL_21;
         }
 
-        v5 = a1;
+        selfCopy3 = self;
         v6 = 5;
       }
 
 LABEL_17:
-      v4 = [v5 meterUnitWithMetricPrefix:v6];
+      yardUnit = [selfCopy3 meterUnitWithMetricPrefix:v6];
       goto LABEL_21;
     }
 
@@ -1129,23 +1129,23 @@ LABEL_17:
         goto LABEL_21;
       }
 
-      v5 = a1;
+      selfCopy3 = self;
       v6 = 9;
       goto LABEL_17;
     }
 
-    v4 = [a1 meterUnit];
+    yardUnit = [self meterUnit];
   }
 
 LABEL_21:
 
-  return v4;
+  return yardUnit;
 }
 
 + (NSLengthFormatterUnit)lengthFormatterUnitFromUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [a1 meterUnitWithMetricPrefix:5];
+  v5 = [self meterUnitWithMetricPrefix:5];
   v6 = [(HKUnit *)v4 isEqual:v5];
 
   if (v6)
@@ -1155,8 +1155,8 @@ LABEL_21:
 
   else
   {
-    v8 = [a1 footUnit];
-    v9 = [(HKUnit *)v4 isEqual:v8];
+    footUnit = [self footUnit];
+    v9 = [(HKUnit *)v4 isEqual:footUnit];
 
     if (v9)
     {
@@ -1165,8 +1165,8 @@ LABEL_21:
 
     else
     {
-      v10 = [a1 inchUnit];
-      v11 = [(HKUnit *)v4 isEqual:v10];
+      inchUnit = [self inchUnit];
+      v11 = [(HKUnit *)v4 isEqual:inchUnit];
 
       if (v11)
       {
@@ -1175,7 +1175,7 @@ LABEL_21:
 
       else
       {
-        v12 = [a1 meterUnitWithMetricPrefix:9];
+        v12 = [self meterUnitWithMetricPrefix:9];
         v13 = [(HKUnit *)v4 isEqual:v12];
 
         if (v13)
@@ -1185,8 +1185,8 @@ LABEL_21:
 
         else
         {
-          v14 = [a1 meterUnit];
-          v15 = [(HKUnit *)v4 isEqual:v14];
+          meterUnit = [self meterUnit];
+          v15 = [(HKUnit *)v4 isEqual:meterUnit];
 
           if (v15)
           {
@@ -1195,8 +1195,8 @@ LABEL_21:
 
           else
           {
-            v16 = [a1 mileUnit];
-            v17 = [(HKUnit *)v4 isEqual:v16];
+            mileUnit = [self mileUnit];
+            v17 = [(HKUnit *)v4 isEqual:mileUnit];
 
             if (v17)
             {
@@ -1205,7 +1205,7 @@ LABEL_21:
 
             else
             {
-              v18 = [a1 meterUnitWithMetricPrefix:4];
+              v18 = [self meterUnitWithMetricPrefix:4];
               v19 = [(HKUnit *)v4 isEqual:v18];
 
               if (v19)
@@ -1215,8 +1215,8 @@ LABEL_21:
 
               else
               {
-                v20 = [a1 yardUnit];
-                v21 = [(HKUnit *)v4 isEqual:v20];
+                yardUnit = [self yardUnit];
+                v21 = [(HKUnit *)v4 isEqual:yardUnit];
 
                 if (v21)
                 {
@@ -1241,38 +1241,38 @@ LABEL_21:
 
 + (HKUnit)unitFromEnergyFormatterUnit:(NSEnergyFormatterUnit)energyFormatterUnit
 {
-  v4 = 0;
+  kilocalorieUnit = 0;
   if (energyFormatterUnit > 1792)
   {
     if (energyFormatterUnit == NSEnergyFormatterUnitKilocalorie)
     {
-      v4 = [a1 kilocalorieUnit];
+      kilocalorieUnit = [self kilocalorieUnit];
     }
 
     else if (energyFormatterUnit == NSEnergyFormatterUnitCalorie)
     {
-      v4 = [a1 smallCalorieUnit];
+      kilocalorieUnit = [self smallCalorieUnit];
     }
   }
 
   else if (energyFormatterUnit == NSEnergyFormatterUnitJoule)
   {
-    v4 = [a1 jouleUnit];
+    kilocalorieUnit = [self jouleUnit];
   }
 
   else if (energyFormatterUnit == NSEnergyFormatterUnitKilojoule)
   {
-    v4 = [a1 kilojoulesUnit];
+    kilocalorieUnit = [self kilojoulesUnit];
   }
 
-  return v4;
+  return kilocalorieUnit;
 }
 
 + (NSEnergyFormatterUnit)energyFormatterUnitFromUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [a1 smallCalorieUnit];
-  v6 = [(HKUnit *)v4 isEqual:v5];
+  smallCalorieUnit = [self smallCalorieUnit];
+  v6 = [(HKUnit *)v4 isEqual:smallCalorieUnit];
 
   if (v6)
   {
@@ -1280,8 +1280,8 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  v8 = [a1 jouleUnit];
-  v9 = [(HKUnit *)v4 isEqual:v8];
+  jouleUnit = [self jouleUnit];
+  v9 = [(HKUnit *)v4 isEqual:jouleUnit];
 
   if (v9)
   {
@@ -1289,8 +1289,8 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  v10 = [a1 kilocalorieUnit];
-  if ([(HKUnit *)v4 isEqual:v10])
+  kilocalorieUnit = [self kilocalorieUnit];
+  if ([(HKUnit *)v4 isEqual:kilocalorieUnit])
   {
 
 LABEL_8:
@@ -1298,16 +1298,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [a1 largeCalorieUnit];
-  v12 = [(HKUnit *)v4 isEqual:v11];
+  largeCalorieUnit = [self largeCalorieUnit];
+  v12 = [(HKUnit *)v4 isEqual:largeCalorieUnit];
 
   if (v12)
   {
     goto LABEL_8;
   }
 
-  v14 = [a1 kilojoulesUnit];
-  v15 = [(HKUnit *)v4 isEqual:v14];
+  kilojoulesUnit = [self kilojoulesUnit];
+  v15 = [(HKUnit *)v4 isEqual:kilojoulesUnit];
 
   if (v15)
   {
@@ -1359,61 +1359,61 @@ LABEL_9:
   return v4;
 }
 
-+ (BOOL)_isValidUnitString:(id)a3
++ (BOOL)_isValidUnitString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_opt_class() unitFromString:v3];
+  stringCopy = string;
+  v4 = [objc_opt_class() unitFromString:stringCopy];
 
   return 1;
 }
 
-- (double)_valueByConvertingValue:(double)a3 toUnit:(id)a4
+- (double)_valueByConvertingValue:(double)value toUnit:(id)unit
 {
-  v6 = a4;
-  if (![(HKUnit *)self _isCompatibleWithUnit:v6])
+  unitCopy = unit;
+  if (![(HKUnit *)self _isCompatibleWithUnit:unitCopy])
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to convert incompatible units: %@, %@", self, v6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Attempt to convert incompatible units: %@, %@", self, unitCopy}];
   }
 
-  if (![(HKUnit *)self isEqual:v6])
+  if (![(HKUnit *)self isEqual:unitCopy])
   {
-    [(HKUnit *)self _convertToBaseUnit:a3];
-    [v6 _convertFromBaseUnit:?];
-    a3 = v7;
+    [(HKUnit *)self _convertToBaseUnit:value];
+    [unitCopy _convertFromBaseUnit:?];
+    value = v7;
   }
 
-  return a3;
+  return value;
 }
 
-- (BOOL)_isCompatibleWithUnit:(id)a3
+- (BOOL)_isCompatibleWithUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(HKUnit *)self _dimensionReduction];
-  v6 = [v4 _dimensionReduction];
+  unitCopy = unit;
+  _dimensionReduction = [(HKUnit *)self _dimensionReduction];
+  _dimensionReduction2 = [unitCopy _dimensionReduction];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(unitCopy) = [_dimensionReduction isEqual:_dimensionReduction2];
+  return unitCopy;
 }
 
-- (BOOL)_isCompatibleWithDimension:(id)a3
+- (BOOL)_isCompatibleWithDimension:(id)dimension
 {
-  v4 = a3;
-  v5 = [(HKUnit *)self _dimensionReduction];
-  v6 = [v4 reduction];
+  dimensionCopy = dimension;
+  _dimensionReduction = [(HKUnit *)self _dimensionReduction];
+  reduction = [dimensionCopy reduction];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(dimensionCopy) = [_dimensionReduction isEqual:reduction];
+  return dimensionCopy;
 }
 
-- (void)_reduceIfNecessaryWithCycleSet:(id)a3
+- (void)_reduceIfNecessaryWithCycleSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_dimensionReductionLock);
   if (!self->_dimensionReduction)
   {
-    if (v4)
+    if (setCopy)
     {
-      v5 = v4;
+      v5 = setCopy;
     }
 
     else
@@ -1450,12 +1450,12 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   [v4 multiplyByFactor:v5 exponent:a3];
 }
 
-- (id)_baseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4
+- (id)_baseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set
 {
-  [(HKUnit *)self _reduceIfNecessaryWithCycleSet:a4];
-  if (a3)
+  [(HKUnit *)self _reduceIfNecessaryWithCycleSet:set];
+  if (size)
   {
-    *a3 = self->_reducedProportionalSize;
+    *size = self->_reducedProportionalSize;
   }
 
   baseUnitReduction = self->_baseUnitReduction;
@@ -1471,36 +1471,36 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return baseUnitReduction;
 }
 
-- (double)_convertToBaseUnit:(double)a3
+- (double)_convertToBaseUnit:(double)unit
 {
   [(HKUnit *)self _reducedProportionalSize];
   v6 = v5;
   [(HKUnit *)self scaleOffset];
-  return v7 + a3 * v6;
+  return v7 + unit * v6;
 }
 
-- (double)_convertFromBaseUnit:(double)a3
+- (double)_convertFromBaseUnit:(double)unit
 {
   [(HKUnit *)self scaleOffset];
-  v6 = a3 - v5;
+  v6 = unit - v5;
   [(HKUnit *)self _reducedProportionalSize];
   return v6 / v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKUnit *)self unitString];
-  [v4 encodeObject:v5 forKey:@"HKUnitStringKey"];
+  coderCopy = coder;
+  unitString = [(HKUnit *)self unitString];
+  [coderCopy encodeObject:unitString forKey:@"HKUnitStringKey"];
 }
 
-- (HKUnit)initWithCoder:(id)a3
+- (HKUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"HKUnitStringKey"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"HKUnitStringKey"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKUnitStringKey"];
-    v6 = [HKUnit unitFromString:v5];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKUnitStringKey"];
+    selfCopy = [HKUnit unitFromString:v5];
   }
 
   else
@@ -1508,18 +1508,18 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
     v8.receiver = self;
     v8.super_class = HKUnit;
     self = [(HKUnit *)&v8 init];
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)_heightUnitForLocale:(id)a3
++ (id)_heightUnitForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695DA08]];
-  v4 = [v3 BOOLValue];
+  v3 = [locale objectForKey:*MEMORY[0x1E695DA08]];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     [HKUnit meterUnitWithMetricPrefix:5];
   }
@@ -1533,12 +1533,12 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (id)_distanceUnitForLocale:(id)a3
++ (id)_distanceUnitForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695DA08]];
-  v4 = [v3 BOOLValue];
+  v3 = [locale objectForKey:*MEMORY[0x1E695DA08]];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     [HKUnit meterUnitWithMetricPrefix:9];
   }
@@ -1552,11 +1552,11 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (id)_personMassUnitForLocale:(id)a3
++ (id)_personMassUnitForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 localeIdentifier];
-  v5 = [v4 isEqualToString:@"en_GB"];
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
+  v5 = [localeIdentifier isEqualToString:@"en_GB"];
 
   if (v5)
   {
@@ -1565,10 +1565,10 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
 
   else
   {
-    v7 = [v3 objectForKey:*MEMORY[0x1E695DA08]];
-    v8 = [v7 BOOLValue];
+    v7 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       [HKUnit gramUnitWithMetricPrefix:9];
     }
@@ -1585,12 +1585,12 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return v9;
 }
 
-+ (id)_temperatureUnitForLocale:(id)a3
++ (id)_temperatureUnitForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695DA08]];
-  v4 = [v3 BOOLValue];
+  v3 = [locale objectForKey:*MEMORY[0x1E695DA08]];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     +[HKUnit degreeCelsiusUnit];
   }
@@ -1604,12 +1604,12 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-+ (id)_foodEnergyUnitForLocale:(id)a3
++ (id)_foodEnergyUnitForLocale:(id)locale
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E695DA08]];
-  v4 = [v3 BOOLValue];
+  v3 = [locale objectForKey:*MEMORY[0x1E695DA08]];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     [HKUnit jouleUnitWithMetricPrefix:9];
   }
@@ -1644,7 +1644,7 @@ void __41__HKUnit__reduceIfNecessaryWithCycleSet___block_invoke(uint64_t a1, voi
   return 0;
 }
 
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set
 {
   OUTLINED_FUNCTION_1_2();
   OUTLINED_FUNCTION_0_4();

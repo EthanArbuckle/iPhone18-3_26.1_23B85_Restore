@@ -1,34 +1,34 @@
 @interface CLKUIAnalogTimeView
-- (CLKUIAnalogTimeView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (CLKUIAnalogTimeView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)layoutSubviews;
-- (void)setAodTransform:(CGAffineTransform *)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)setAodTransform:(CGAffineTransform *)transform;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setState:(unint64_t)state;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation CLKUIAnalogTimeView
 
-- (CLKUIAnalogTimeView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (CLKUIAnalogTimeView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = CLKUIAnalogTimeView;
-  v7 = [(CLKUITimeView *)&v16 initWithDevice:v6 clockTimer:a4];
+  v7 = [(CLKUITimeView *)&v16 initWithDevice:deviceCopy clockTimer:timer];
   if (v7)
   {
     v8 = objc_alloc([objc_opt_class() _handsViewClass]);
-    ___LayoutConstants_block_invoke_3(v6, v14);
-    v9 = [v8 initWithDiameter:v6 forDevice:v15];
+    ___LayoutConstants_block_invoke_3(deviceCopy, v14);
+    v9 = [v8 initWithDiameter:deviceCopy forDevice:v15];
     handsView = v7->_handsView;
     v7->_handsView = v9;
 
-    v11 = [(CLKUIAnalogHandsView *)v7->_handsView hourHandView];
-    [v11 setEnableBackgroundColorAction:1];
+    hourHandView = [(CLKUIAnalogHandsView *)v7->_handsView hourHandView];
+    [hourHandView setEnableBackgroundColorAction:1];
 
-    v12 = [(CLKUIAnalogHandsView *)v7->_handsView minuteHandView];
-    [v12 setEnableBackgroundColorAction:1];
+    minuteHandView = [(CLKUIAnalogHandsView *)v7->_handsView minuteHandView];
+    [minuteHandView setEnableBackgroundColorAction:1];
 
     [(CLKUIAnalogTimeView *)v7 addSubview:v7->_handsView];
   }
@@ -66,8 +66,8 @@
   {
     [(CLKUIAnalogTimeView *)self bounds];
     MidX = CGRectGetMidX(v22);
-    v16 = [(UIView *)self->_backgroundView layer];
-    [v16 setCornerRadius:MidX];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:MidX];
 
     [(CLKUIAnalogTimeView *)self bounds];
     [(UIView *)self->_backgroundView setFrame:?];
@@ -77,23 +77,23 @@
   {
     [(CLKUIAnalogTimeView *)self bounds];
     v17 = CGRectGetMidX(v23);
-    v18 = [(UIView *)self->_inactiveBackgroundView layer];
-    [v18 setCornerRadius:v17];
+    layer2 = [(UIView *)self->_inactiveBackgroundView layer];
+    [layer2 setCornerRadius:v17];
 
     [(CLKUIAnalogTimeView *)self bounds];
     [(UIView *)self->_inactiveBackgroundView setFrame:?];
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v43.receiver = self;
   v43.super_class = CLKUIAnalogTimeView;
-  [(CLKUITimeView *)&v43 setConfiguration:v4];
-  v5 = [v4 showsDialTicks];
+  [(CLKUITimeView *)&v43 setConfiguration:configurationCopy];
+  showsDialTicks = [configurationCopy showsDialTicks];
   ticksView = self->_ticksView;
-  if (v5)
+  if (showsDialTicks)
   {
     if (ticksView)
     {
@@ -105,8 +105,8 @@
       v42 = 0;
       v40 = 0u;
       v41 = 0u;
-      v7 = [(CLKUITimeView *)self device];
-      ___LayoutConstants_block_invoke_3(v7, &v40);
+      device = [(CLKUITimeView *)self device];
+      ___LayoutConstants_block_invoke_3(device, &v40);
 
       v8 = v42;
       v9 = [CLKUIDualTimeAnalogTicksView alloc];
@@ -125,19 +125,19 @@
       [(CLKUIAnalogTimeView *)self insertSubview:self->_ticksView atIndex:0];
     }
 
-    v12 = [v4 majorTickColor];
-    v13 = v12;
-    if (v12)
+    majorTickColor = [configurationCopy majorTickColor];
+    v13 = majorTickColor;
+    if (majorTickColor)
     {
-      v14 = v12;
+      timeColor = majorTickColor;
     }
 
     else
     {
-      v14 = [(CLKUITimeView *)self timeColor];
+      timeColor = [(CLKUITimeView *)self timeColor];
     }
 
-    v15 = v14;
+    v15 = timeColor;
 
     v16 = self->_ticksView;
     v17 = [v15 colorWithAlphaComponent:0.5];
@@ -149,21 +149,21 @@
     [(CLKUIDualTimeAnalogTicksView *)ticksView setHidden:1];
   }
 
-  v18 = [v4 backgroundView];
+  backgroundView = [configurationCopy backgroundView];
 
   backgroundView = self->_backgroundView;
-  if (v18)
+  if (backgroundView)
   {
     if (backgroundView)
     {
       [(UIView *)backgroundView removeFromSuperview];
     }
 
-    v20 = [v4 backgroundView];
+    backgroundView2 = [configurationCopy backgroundView];
     v21 = self->_backgroundView;
-    self->_backgroundView = v20;
+    self->_backgroundView = backgroundView2;
 
-    -[UIView setClipsToBounds:](self->_backgroundView, "setClipsToBounds:", [v4 backgroundViewClipsToBounds]);
+    -[UIView setClipsToBounds:](self->_backgroundView, "setClipsToBounds:", [configurationCopy backgroundViewClipsToBounds]);
     [(CLKUIAnalogTimeView *)self insertSubview:self->_backgroundView atIndex:0];
   }
 
@@ -174,21 +174,21 @@
     self->_backgroundView = 0;
   }
 
-  v23 = [v4 inactiveBackgroundView];
+  inactiveBackgroundView = [configurationCopy inactiveBackgroundView];
 
   inactiveBackgroundView = self->_inactiveBackgroundView;
-  if (v23)
+  if (inactiveBackgroundView)
   {
     if (inactiveBackgroundView)
     {
       [(UIView *)inactiveBackgroundView removeFromSuperview];
     }
 
-    v25 = [v4 inactiveBackgroundView];
+    inactiveBackgroundView2 = [configurationCopy inactiveBackgroundView];
     v26 = self->_inactiveBackgroundView;
-    self->_inactiveBackgroundView = v25;
+    self->_inactiveBackgroundView = inactiveBackgroundView2;
 
-    -[UIView setClipsToBounds:](self->_inactiveBackgroundView, "setClipsToBounds:", [v4 inactiveBackgroundViewClipsToBounds]);
+    -[UIView setClipsToBounds:](self->_inactiveBackgroundView, "setClipsToBounds:", [configurationCopy inactiveBackgroundViewClipsToBounds]);
     [(UIView *)self->_inactiveBackgroundView setAlpha:0.0];
     [(CLKUIAnalogTimeView *)self insertSubview:self->_inactiveBackgroundView atIndex:0];
   }
@@ -200,31 +200,31 @@
     self->_inactiveBackgroundView = 0;
   }
 
-  -[CLKUIAnalogHandsView setSecondHandDisabled:](self->_handsView, "setSecondHandDisabled:", [v4 secondHandDisabled]);
-  v28 = [v4 secondHandColor];
-  v29 = [v4 hourMinuteHandInlayColor];
-  v30 = [v4 hourMinuteHandOutlineColor];
-  [(CLKUIAnalogHandsView *)self->_handsView applySecondHandColor:v28];
-  [(CLKUIAnalogHandsView *)self->_handsView setInlayColor:v29];
-  v31 = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
-  [v31 setColor:v30];
+  -[CLKUIAnalogHandsView setSecondHandDisabled:](self->_handsView, "setSecondHandDisabled:", [configurationCopy secondHandDisabled]);
+  secondHandColor = [configurationCopy secondHandColor];
+  hourMinuteHandInlayColor = [configurationCopy hourMinuteHandInlayColor];
+  hourMinuteHandOutlineColor = [configurationCopy hourMinuteHandOutlineColor];
+  [(CLKUIAnalogHandsView *)self->_handsView applySecondHandColor:secondHandColor];
+  [(CLKUIAnalogHandsView *)self->_handsView setInlayColor:hourMinuteHandInlayColor];
+  minuteHandView = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
+  [minuteHandView setColor:hourMinuteHandOutlineColor];
 
-  v32 = [(CLKUIAnalogHandsView *)self->_handsView hourHandView];
-  [v32 setColor:v30];
+  hourHandView = [(CLKUIAnalogHandsView *)self->_handsView hourHandView];
+  [hourHandView setColor:hourMinuteHandOutlineColor];
 
-  v33 = [MEMORY[0x1E69DC888] blackColor];
-  v34 = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
-  [v34 setHandDotColor:v33];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  secondHandView = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
+  [secondHandView setHandDotColor:blackColor];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v6.receiver = self;
   v6.super_class = CLKUIAnalogTimeView;
   [(CLKUITimeView *)&v6 setState:?];
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -240,44 +240,44 @@
   [(CLKUIAnalogHandsView *)self->_handsView setFrozen:v5];
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5.receiver = self;
   v5.super_class = CLKUIAnalogTimeView;
-  v4 = a3;
-  [(CLKUITimeView *)&v5 setOverrideDate:v4];
-  [(CLKUIHandsView *)self->_handsView setOverrideDate:v4, v5.receiver, v5.super_class];
+  dateCopy = date;
+  [(CLKUITimeView *)&v5 setOverrideDate:dateCopy];
+  [(CLKUIHandsView *)self->_handsView setOverrideDate:dateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setAodTransform:(CGAffineTransform *)a3
+- (void)setAodTransform:(CGAffineTransform *)transform
 {
   v10.receiver = self;
   v10.super_class = CLKUIAnalogTimeView;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v5;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUITimeView *)&v10 setAodTransform:&v7];
-  v6 = *&a3->c;
-  v7 = *&a3->a;
+  v6 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v6;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUIAnalogTimeView *)self setTransform:&v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(CLKUIAnalogTimeView *)self traitCollection];
-  v7 = [v6 activeAppearance];
-  v8 = [v5 activeAppearance];
+  collectionCopy = collection;
+  traitCollection = [(CLKUIAnalogTimeView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
+  activeAppearance2 = [collectionCopy activeAppearance];
 
-  if (v7 != v8)
+  if (activeAppearance != activeAppearance2)
   {
-    v9 = [(CLKUIAnalogTimeView *)self traitCollection];
-    v10 = [v9 activeAppearance];
+    traitCollection2 = [(CLKUIAnalogTimeView *)self traitCollection];
+    activeAppearance3 = [traitCollection2 activeAppearance];
 
-    if (v10)
+    if (activeAppearance3)
     {
       v11 = 1.0;
     }
@@ -287,63 +287,63 @@
       v11 = 0.0;
     }
 
-    v12 = [(CLKUITimeView *)self configuration];
-    v28 = v12;
-    if (v10)
+    configuration = [(CLKUITimeView *)self configuration];
+    v28 = configuration;
+    if (activeAppearance3)
     {
-      v13 = [v12 hourMinuteHandInlayColor];
-      v14 = [v28 hourMinuteHandOutlineColor];
-      v15 = v13;
-      v16 = v15;
+      hourMinuteHandInlayColor = [configuration hourMinuteHandInlayColor];
+      hourMinuteHandOutlineColor = [v28 hourMinuteHandOutlineColor];
+      blackColor = hourMinuteHandInlayColor;
+      inactiveHourMinuteHandInlayColor = blackColor;
     }
 
     else
     {
-      v16 = [v12 inactiveHourMinuteHandInlayColor];
-      v14 = [v28 inactiveHourMinuteHandOutlineColor];
-      v15 = [MEMORY[0x1E69DC888] blackColor];
+      inactiveHourMinuteHandInlayColor = [configuration inactiveHourMinuteHandInlayColor];
+      hourMinuteHandOutlineColor = [v28 inactiveHourMinuteHandOutlineColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    [(CLKUIAnalogHandsView *)self->_handsView setInlayColor:v16];
-    v17 = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
-    [v17 setColor:v14];
+    [(CLKUIAnalogHandsView *)self->_handsView setInlayColor:inactiveHourMinuteHandInlayColor];
+    minuteHandView = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
+    [minuteHandView setColor:hourMinuteHandOutlineColor];
 
-    v18 = [(CLKUIAnalogHandsView *)self->_handsView hourHandView];
-    [v18 setColor:v14];
+    hourHandView = [(CLKUIAnalogHandsView *)self->_handsView hourHandView];
+    [hourHandView setColor:hourMinuteHandOutlineColor];
 
-    v19 = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
-    [v19 setHandDotColor:v15];
+    minuteHandView2 = [(CLKUIAnalogHandsView *)self->_handsView minuteHandView];
+    [minuteHandView2 setHandDotColor:blackColor];
 
-    v20 = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
-    [v20 setAlpha:v11];
+    secondHandView = [(CLKUIAnalogHandsView *)self->_handsView secondHandView];
+    [secondHandView setAlpha:v11];
 
     if (self->_ticksView)
     {
-      if (v10)
+      if (activeAppearance3)
       {
-        v21 = [v28 majorTickColor];
-        v22 = v21;
-        if (v21)
+        majorTickColor = [v28 majorTickColor];
+        v22 = majorTickColor;
+        if (majorTickColor)
         {
-          v23 = v21;
+          timeColor = majorTickColor;
         }
 
         else
         {
-          v23 = [(CLKUITimeView *)self timeColor];
+          timeColor = [(CLKUITimeView *)self timeColor];
         }
 
-        v24 = v23;
+        inactiveMajorTickColor = timeColor;
       }
 
       else
       {
-        v24 = [v28 inactiveMajorTickColor];
+        inactiveMajorTickColor = [v28 inactiveMajorTickColor];
       }
 
       ticksView = self->_ticksView;
-      v26 = [v24 colorWithAlphaComponent:0.5];
-      [(CLKUIDualTimeAnalogTicksView *)ticksView setHourTickColor:v24 minuteTickColor:v26];
+      v26 = [inactiveMajorTickColor colorWithAlphaComponent:0.5];
+      [(CLKUIDualTimeAnalogTicksView *)ticksView setHourTickColor:inactiveMajorTickColor minuteTickColor:v26];
     }
 
     inactiveBackgroundView = self->_inactiveBackgroundView;

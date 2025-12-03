@@ -5,7 +5,7 @@
 - (NSString)testNoteIdentifier;
 - (id)_testAccountProxy;
 - (void)didFinishPostLaunchTasks;
-- (void)waitForPostLaunchTasksThenPerformBlock:(id)a3;
+- (void)waitForPostLaunchTasksThenPerformBlock:(id)block;
 @end
 
 @implementation ICApplicationTestingHelper
@@ -37,13 +37,13 @@
   [v3 postNotificationName:@"NotesLaunchPostTasksCompleted" object:self];
 }
 
-- (void)waitForPostLaunchTasksThenPerformBlock:(id)a3
+- (void)waitForPostLaunchTasksThenPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(ICApplicationTestingHelper *)self launchPostTasksCompleted])
   {
     v5 = dispatch_time(0, 3000000000);
-    dispatch_after(v5, &_dispatch_main_q, v4);
+    dispatch_after(v5, &_dispatch_main_q, blockCopy);
   }
 
   else
@@ -55,7 +55,7 @@
     v9[2] = sub_10010A9FC;
     v9[3] = &unk_10064A2C8;
     v9[4] = self;
-    v10 = v4;
+    v10 = blockCopy;
     v8 = [v6 addObserverForName:@"NotesLaunchPostTasksCompleted" object:0 queue:v7 usingBlock:v9];
   }
 }
@@ -63,8 +63,8 @@
 - (ICAccount)testAccount
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
-  v4 = [ICAccount defaultAccountInContext:v3];
+  managedObjectContext = [v2 managedObjectContext];
+  v4 = [ICAccount defaultAccountInContext:managedObjectContext];
 
   if (!v4)
   {
@@ -76,22 +76,22 @@
 
 - (id)_testAccountProxy
 {
-  v2 = [(ICApplicationTestingHelper *)self testAccount];
-  v3 = [v2 accountProxy];
-  if (!v3)
+  testAccount = [(ICApplicationTestingHelper *)self testAccount];
+  accountProxy = [testAccount accountProxy];
+  if (!accountProxy)
   {
     [ICAssert handleFailedAssertWithCondition:"((allNotesContainer) != nil)" functionName:"[ICApplicationTestingHelper _testAccountProxy]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "allNotesContainer"];
   }
 
-  return v2;
+  return testAccount;
 }
 
 - (ICNoteContainer)testEnglishNotesListContainer
 {
-  v2 = [(ICApplicationTestingHelper *)self testAccount];
-  v3 = [v2 defaultFolder];
+  testAccount = [(ICApplicationTestingHelper *)self testAccount];
+  defaultFolder = [testAccount defaultFolder];
 
-  return v3;
+  return defaultFolder;
 }
 
 @end

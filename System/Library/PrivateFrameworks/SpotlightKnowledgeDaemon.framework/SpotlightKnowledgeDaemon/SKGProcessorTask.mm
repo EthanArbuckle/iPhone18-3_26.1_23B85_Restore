@@ -1,11 +1,11 @@
 @interface SKGProcessorTask
 - (BOOL)allowed;
 - (BOOL)enabled;
-- (BOOL)supportsBundleID:(id)a3;
-- (BOOL)supportsEvent:(int64_t)a3;
-- (BOOL)supportsEvent:(int64_t)a3 bundleID:(id)a4;
-- (BOOL)supportsEvent:(int64_t)a3 record:(id)a4 bundleID:(id)a5;
-- (SKGProcessorTask)initWithName:(id)a3;
+- (BOOL)supportsBundleID:(id)d;
+- (BOOL)supportsEvent:(int64_t)event;
+- (BOOL)supportsEvent:(int64_t)event bundleID:(id)d;
+- (BOOL)supportsEvent:(int64_t)event record:(id)record bundleID:(id)d;
+- (SKGProcessorTask)initWithName:(id)name;
 - (id)_additionalQuery;
 - (id)_backgroundQuery;
 - (id)_cleanupQuery;
@@ -17,44 +17,44 @@
 - (id)_notIncludedQuery;
 - (id)_updatesQuery;
 - (id)_versionQuery;
-- (id)processorAttributesForEvent:(int64_t)a3 failed:(BOOL)a4;
-- (id)queryForEvent:(int64_t)a3;
-- (void)commonInitWithName:(id)a3;
-- (void)setRequiredAttributes:(id)a3;
-- (void)setSupportedEvent:(int64_t)a3;
-- (void)setTrackingAttributes:(id)a3;
+- (id)processorAttributesForEvent:(int64_t)event failed:(BOOL)failed;
+- (id)queryForEvent:(int64_t)event;
+- (void)commonInitWithName:(id)name;
+- (void)setRequiredAttributes:(id)attributes;
+- (void)setSupportedEvent:(int64_t)event;
+- (void)setTrackingAttributes:(id)attributes;
 @end
 
 @implementation SKGProcessorTask
 
-- (SKGProcessorTask)initWithName:(id)a3
+- (SKGProcessorTask)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = SKGProcessorTask;
   v5 = [(SKGProcessorTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SKGProcessorTask *)v5 commonInitWithName:v4];
+    [(SKGProcessorTask *)v5 commonInitWithName:nameCopy];
   }
 
   return v6;
 }
 
-- (void)commonInitWithName:(id)a3
+- (void)commonInitWithName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  objc_storeStrong(&self->_name, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_name, name);
+  nameCopy = name;
   *&self->_flags = xmmword_231C225C0;
   *&self->_ignoreInternalBundles = 0;
   bgstOptions = self->_bgstOptions;
   self->_bgstOptions = MEMORY[0x277CBEC10];
 
-  if (v5)
+  if (nameCopy)
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   else
@@ -109,174 +109,174 @@
 - (id)_versionQuery
 {
   v22 = objc_alloc_init(SKGQueryStringBuilder);
-  v21 = [(SKGQueryStringBuilder *)v22 beginGroup];
-  v3 = [v21 withAttribute];
-  v19 = [(SKGProcessorTask *)self versionAttributeKey];
-  v20 = v3;
-  v18 = (*(v3 + 16))(v3, v19, @"!=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v22 beginGroup];
+  withAttribute = [beginGroup withAttribute];
+  versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
+  v20 = withAttribute;
+  v18 = (*(withAttribute + 16))(withAttribute, versionAttributeKey, @"!=", @"*");
   v17 = [v18 or];
-  v16 = [v17 beginGroup];
-  v4 = [v16 withAttribute];
-  v5 = [(SKGProcessorTask *)self versionAttributeKey];
-  v6 = (v4)[2](v4, v5, @"=", @"*");
+  beginGroup2 = [v17 beginGroup];
+  withAttribute2 = [beginGroup2 withAttribute];
+  versionAttributeKey2 = [(SKGProcessorTask *)self versionAttributeKey];
+  v6 = (withAttribute2)[2](withAttribute2, versionAttributeKey2, @"=", @"*");
   v7 = [v6 and];
-  v8 = [v7 withAttribute];
-  v9 = [(SKGProcessorTask *)self versionAttributeKey];
-  v10 = [(SKGProcessorTask *)self versionValue];
-  v11 = (v8)[2](v8, v9, @"!=", v10);
-  v12 = [v11 endGroup];
-  v13 = [v12 endGroup];
+  withAttribute3 = [v7 withAttribute];
+  versionAttributeKey3 = [(SKGProcessorTask *)self versionAttributeKey];
+  versionValue = [(SKGProcessorTask *)self versionValue];
+  v11 = (withAttribute3)[2](withAttribute3, versionAttributeKey3, @"!=", versionValue);
+  endGroup = [v11 endGroup];
+  v12EndGroup = [endGroup endGroup];
 
-  v14 = [v13 build];
+  build = [v12EndGroup build];
 
-  return v14;
+  return build;
 }
 
 - (id)_invalidVersionQuery
 {
   v15 = objc_alloc_init(SKGQueryStringBuilder);
-  v3 = [(SKGQueryStringBuilder *)v15 beginGroup];
-  v4 = [v3 withAttribute];
-  v5 = [(SKGProcessorTask *)self versionAttributeKey];
-  v6 = (v4)[2](v4, v5, @"=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v15 beginGroup];
+  withAttribute = [beginGroup withAttribute];
+  versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
+  v6 = (withAttribute)[2](withAttribute, versionAttributeKey, @"=", @"*");
   v7 = [v6 and];
-  v8 = [v7 withAttribute];
-  v9 = [(SKGProcessorTask *)self versionAttributeKey];
-  v10 = [(SKGProcessorTask *)self versionValue];
-  v11 = (v8)[2](v8, v9, @"!=", v10);
-  v12 = [v11 endGroup];
+  withAttribute2 = [v7 withAttribute];
+  versionAttributeKey2 = [(SKGProcessorTask *)self versionAttributeKey];
+  versionValue = [(SKGProcessorTask *)self versionValue];
+  v11 = (withAttribute2)[2](withAttribute2, versionAttributeKey2, @"!=", versionValue);
+  endGroup = [v11 endGroup];
 
-  v13 = [v12 build];
+  build = [endGroup build];
 
-  return v13;
+  return build;
 }
 
 - (id)_journalQuery
 {
   v22 = objc_alloc_init(SKGQueryStringBuilder);
-  v21 = [(SKGQueryStringBuilder *)v22 beginGroup];
-  v3 = [v21 withAttribute];
-  v19 = [(SKGProcessorTask *)self versionAttributeKey];
-  v20 = v3;
-  v18 = (*(v3 + 16))(v3, v19, @"!=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v22 beginGroup];
+  withAttribute = [beginGroup withAttribute];
+  versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
+  v20 = withAttribute;
+  v18 = (*(withAttribute + 16))(withAttribute, versionAttributeKey, @"!=", @"*");
   v17 = [v18 or];
-  v16 = [v17 beginGroup];
-  v4 = [v16 withAttribute];
-  v5 = [(SKGProcessorTask *)self versionAttributeKey];
-  v6 = (v4)[2](v4, v5, @"=", @"*");
+  beginGroup2 = [v17 beginGroup];
+  withAttribute2 = [beginGroup2 withAttribute];
+  versionAttributeKey2 = [(SKGProcessorTask *)self versionAttributeKey];
+  v6 = (withAttribute2)[2](withAttribute2, versionAttributeKey2, @"=", @"*");
   v7 = [v6 and];
-  v8 = [v7 withAttribute];
-  v9 = [(SKGProcessorTask *)self versionAttributeKey];
-  v10 = [(SKGProcessorTask *)self versionValue];
-  v11 = (v8)[2](v8, v9, @"!=", v10);
-  v12 = [v11 endGroup];
-  v13 = [v12 endGroup];
+  withAttribute3 = [v7 withAttribute];
+  versionAttributeKey3 = [(SKGProcessorTask *)self versionAttributeKey];
+  versionValue = [(SKGProcessorTask *)self versionValue];
+  v11 = (withAttribute3)[2](withAttribute3, versionAttributeKey3, @"!=", versionValue);
+  endGroup = [v11 endGroup];
+  v12EndGroup = [endGroup endGroup];
 
-  v14 = [v13 build];
+  build = [v12EndGroup build];
 
-  return v14;
+  return build;
 }
 
 - (id)_excludedQuery
 {
-  v3 = [(SKGProcessorTask *)self excludeBundles];
-  v4 = [v3 count];
+  excludeBundles = [(SKGProcessorTask *)self excludeBundles];
+  v4 = [excludeBundles count];
 
   if (v4)
   {
     v5 = objc_alloc_init(SKGQueryStringBuilder);
-    v6 = [(SKGQueryStringBuilder *)v5 beginGroup];
-    v7 = [v6 withFieldMatch];
-    v8 = [(SKGProcessorTask *)self excludeBundles];
-    v9 = (v7)[2](v7, @"_kMDItemBundleID", v8);
-    v10 = [v9 endGroup];
+    beginGroup = [(SKGQueryStringBuilder *)v5 beginGroup];
+    withFieldMatch = [beginGroup withFieldMatch];
+    excludeBundles2 = [(SKGProcessorTask *)self excludeBundles];
+    v9 = (withFieldMatch)[2](withFieldMatch, @"_kMDItemBundleID", excludeBundles2);
+    endGroup = [v9 endGroup];
 
-    v11 = [v10 build];
+    build = [endGroup build];
   }
 
   else
   {
-    v11 = @"false";
+    build = @"false";
   }
 
-  return v11;
+  return build;
 }
 
 - (id)_notExcludedQuery
 {
-  v3 = [(SKGProcessorTask *)self excludeBundles];
-  v4 = [v3 count];
+  excludeBundles = [(SKGProcessorTask *)self excludeBundles];
+  v4 = [excludeBundles count];
 
   if (v4)
   {
     v5 = objc_alloc_init(SKGQueryStringBuilder);
-    v6 = [(SKGQueryStringBuilder *)v5 beginGroup];
-    v7 = [v6 not];
-    v8 = [v7 withFieldMatch];
-    v9 = [(SKGProcessorTask *)self excludeBundles];
-    v10 = (v8)[2](v8, @"_kMDItemBundleID", v9);
-    v11 = [v10 endGroup];
+    beginGroup = [(SKGQueryStringBuilder *)v5 beginGroup];
+    v7 = [beginGroup not];
+    withFieldMatch = [v7 withFieldMatch];
+    excludeBundles2 = [(SKGProcessorTask *)self excludeBundles];
+    v10 = (withFieldMatch)[2](withFieldMatch, @"_kMDItemBundleID", excludeBundles2);
+    endGroup = [v10 endGroup];
 
-    v12 = [v11 build];
+    build = [endGroup build];
   }
 
   else
   {
-    v12 = @"true";
+    build = @"true";
   }
 
-  return v12;
+  return build;
 }
 
 - (id)_includedQuery
 {
-  v3 = [(SKGProcessorTask *)self includeBundles];
-  v4 = [v3 count];
+  includeBundles = [(SKGProcessorTask *)self includeBundles];
+  v4 = [includeBundles count];
 
   if (v4)
   {
     v5 = objc_alloc_init(SKGQueryStringBuilder);
-    v6 = [(SKGQueryStringBuilder *)v5 beginGroup];
-    v7 = [v6 withFieldMatch];
-    v8 = [(SKGProcessorTask *)self includeBundles];
-    v9 = (v7)[2](v7, @"_kMDItemBundleID", v8);
-    v10 = [v9 endGroup];
+    beginGroup = [(SKGQueryStringBuilder *)v5 beginGroup];
+    withFieldMatch = [beginGroup withFieldMatch];
+    includeBundles2 = [(SKGProcessorTask *)self includeBundles];
+    v9 = (withFieldMatch)[2](withFieldMatch, @"_kMDItemBundleID", includeBundles2);
+    endGroup = [v9 endGroup];
 
-    v11 = [v10 build];
+    build = [endGroup build];
   }
 
   else
   {
-    v11 = @"true";
+    build = @"true";
   }
 
-  return v11;
+  return build;
 }
 
 - (id)_notIncludedQuery
 {
-  v3 = [(SKGProcessorTask *)self includeBundles];
-  v4 = [v3 count];
+  includeBundles = [(SKGProcessorTask *)self includeBundles];
+  v4 = [includeBundles count];
 
   if (v4)
   {
     v5 = objc_alloc_init(SKGQueryStringBuilder);
-    v6 = [(SKGQueryStringBuilder *)v5 beginGroup];
-    v7 = [v6 not];
-    v8 = [v7 withFieldMatch];
-    v9 = [(SKGProcessorTask *)self includeBundles];
-    v10 = (v8)[2](v8, @"_kMDItemBundleID", v9);
-    v11 = [v10 endGroup];
+    beginGroup = [(SKGQueryStringBuilder *)v5 beginGroup];
+    v7 = [beginGroup not];
+    withFieldMatch = [v7 withFieldMatch];
+    includeBundles2 = [(SKGProcessorTask *)self includeBundles];
+    v10 = (withFieldMatch)[2](withFieldMatch, @"_kMDItemBundleID", includeBundles2);
+    endGroup = [v10 endGroup];
 
-    v12 = [v11 build];
+    build = [endGroup build];
   }
 
   else
   {
-    v12 = @"false";
+    build = @"false";
   }
 
-  return v12;
+  return build;
 }
 
 - (id)_backgroundQuery
@@ -284,47 +284,47 @@
   if ([(SKGProcessorTask *)self allowed]&& [(SKGProcessorTask *)self supportsEvent:4])
   {
     v36 = objc_alloc_init(SKGQueryStringBuilder);
-    v35 = [(SKGQueryStringBuilder *)v36 beginGroup];
-    v3 = [v35 withQuery];
-    v33 = [(SKGProcessorTask *)self _notExcludedQuery];
-    v34 = v3;
-    v32 = (*(v3 + 16))(v3, v33);
+    beginGroup = [(SKGQueryStringBuilder *)v36 beginGroup];
+    withQuery = [beginGroup withQuery];
+    _notExcludedQuery = [(SKGProcessorTask *)self _notExcludedQuery];
+    v34 = withQuery;
+    v32 = (*(withQuery + 16))(withQuery, _notExcludedQuery);
     v31 = [v32 and];
-    v4 = [v31 withQuery];
-    v29 = [(SKGProcessorTask *)self _includedQuery];
-    v30 = v4;
-    v28 = (*(v4 + 16))(v4, v29);
+    withQuery2 = [v31 withQuery];
+    _includedQuery = [(SKGProcessorTask *)self _includedQuery];
+    v30 = withQuery2;
+    v28 = (*(withQuery2 + 16))(withQuery2, _includedQuery);
     v27 = [v28 and];
-    v26 = [v27 beginGroup];
-    v25 = [v26 withAttribute];
-    v24 = (v25)[2](v25, @"kMDItemTextContent", @"!=", @"*");
-    v23 = [v24 endGroup];
-    v22 = [v23 and];
-    v5 = [v22 withQuery];
-    v21 = [(SKGProcessorTask *)self _versionQuery];
-    v19 = (v5)[2](v5, v21);
+    beginGroup2 = [v27 beginGroup];
+    withAttribute = [beginGroup2 withAttribute];
+    v24 = (withAttribute)[2](withAttribute, @"kMDItemTextContent", @"!=", @"*");
+    endGroup = [v24 endGroup];
+    v22 = [endGroup and];
+    withQuery3 = [v22 withQuery];
+    _versionQuery = [(SKGProcessorTask *)self _versionQuery];
+    v19 = (withQuery3)[2](withQuery3, _versionQuery);
     v18 = [v19 and];
-    v17 = [v18 beginGroup];
-    v6 = [v17 withQuery];
-    v7 = [(SKGProcessorTask *)self _additionalQuery];
-    v8 = (v6)[2](v6, v7);
+    beginGroup3 = [v18 beginGroup];
+    withQuery4 = [beginGroup3 withQuery];
+    _additionalQuery = [(SKGProcessorTask *)self _additionalQuery];
+    v8 = (withQuery4)[2](withQuery4, _additionalQuery);
     v9 = [v8 or];
-    v10 = [v9 withQuery];
-    v11 = [(SKGProcessorTask *)self requiredAttributes];
-    v12 = [SKGQueryStringBuilder queryForAttributesExist:v11];
-    v13 = (v10)[2](v10, v12);
-    v14 = [v13 endGroup];
-    v20 = [v14 endGroup];
+    withQuery5 = [v9 withQuery];
+    requiredAttributes = [(SKGProcessorTask *)self requiredAttributes];
+    v12 = [SKGQueryStringBuilder queryForAttributesExist:requiredAttributes];
+    v13 = (withQuery5)[2](withQuery5, v12);
+    endGroup2 = [v13 endGroup];
+    v14EndGroup = [endGroup2 endGroup];
 
-    v15 = [v20 build];
+    build = [v14EndGroup build];
   }
 
   else
   {
-    v15 = 0;
+    build = 0;
   }
 
-  return v15;
+  return build;
 }
 
 - (id)_updatesQuery
@@ -332,47 +332,47 @@
   if ([(SKGProcessorTask *)self allowed]&& [(SKGProcessorTask *)self supportsEvent:2])
   {
     v36 = objc_alloc_init(SKGQueryStringBuilder);
-    v35 = [(SKGQueryStringBuilder *)v36 beginGroup];
-    v3 = [v35 withQuery];
-    v33 = [(SKGProcessorTask *)self _notExcludedQuery];
-    v34 = v3;
-    v32 = (*(v3 + 16))(v3, v33);
+    beginGroup = [(SKGQueryStringBuilder *)v36 beginGroup];
+    withQuery = [beginGroup withQuery];
+    _notExcludedQuery = [(SKGProcessorTask *)self _notExcludedQuery];
+    v34 = withQuery;
+    v32 = (*(withQuery + 16))(withQuery, _notExcludedQuery);
     v31 = [v32 and];
-    v4 = [v31 withQuery];
-    v29 = [(SKGProcessorTask *)self _includedQuery];
-    v30 = v4;
-    v28 = (*(v4 + 16))(v4, v29);
+    withQuery2 = [v31 withQuery];
+    _includedQuery = [(SKGProcessorTask *)self _includedQuery];
+    v30 = withQuery2;
+    v28 = (*(withQuery2 + 16))(withQuery2, _includedQuery);
     v27 = [v28 and];
-    v26 = [v27 beginGroup];
-    v25 = [v26 withAttribute];
-    v24 = (v25)[2](v25, @"kMDItemTextContent", @"=", @"*");
-    v23 = [v24 endGroup];
-    v22 = [v23 and];
-    v5 = [v22 withQuery];
-    v21 = [(SKGProcessorTask *)self _versionQuery];
-    v19 = (v5)[2](v5, v21);
+    beginGroup2 = [v27 beginGroup];
+    withAttribute = [beginGroup2 withAttribute];
+    v24 = (withAttribute)[2](withAttribute, @"kMDItemTextContent", @"=", @"*");
+    endGroup = [v24 endGroup];
+    v22 = [endGroup and];
+    withQuery3 = [v22 withQuery];
+    _versionQuery = [(SKGProcessorTask *)self _versionQuery];
+    v19 = (withQuery3)[2](withQuery3, _versionQuery);
     v18 = [v19 and];
-    v17 = [v18 beginGroup];
-    v6 = [v17 withQuery];
-    v7 = [(SKGProcessorTask *)self _additionalQuery];
-    v8 = (v6)[2](v6, v7);
+    beginGroup3 = [v18 beginGroup];
+    withQuery4 = [beginGroup3 withQuery];
+    _additionalQuery = [(SKGProcessorTask *)self _additionalQuery];
+    v8 = (withQuery4)[2](withQuery4, _additionalQuery);
     v9 = [v8 or];
-    v10 = [v9 withQuery];
-    v11 = [(SKGProcessorTask *)self requiredAttributes];
-    v12 = [SKGQueryStringBuilder queryForAttributesExist:v11];
-    v13 = (v10)[2](v10, v12);
-    v14 = [v13 endGroup];
-    v20 = [v14 endGroup];
+    withQuery5 = [v9 withQuery];
+    requiredAttributes = [(SKGProcessorTask *)self requiredAttributes];
+    v12 = [SKGQueryStringBuilder queryForAttributesExist:requiredAttributes];
+    v13 = (withQuery5)[2](withQuery5, v12);
+    endGroup2 = [v13 endGroup];
+    v14EndGroup = [endGroup2 endGroup];
 
-    v15 = [v20 build];
+    build = [v14EndGroup build];
   }
 
   else
   {
-    v15 = 0;
+    build = 0;
   }
 
-  return v15;
+  return build;
 }
 
 - (id)_cleanupQuery
@@ -380,87 +380,87 @@
   v3 = objc_alloc_init(SKGQueryStringBuilder);
   if ([(SKGProcessorTask *)self enabled])
   {
-    v29 = [(SKGQueryStringBuilder *)v3 beginGroup];
-    v26 = [v29 beginGroup];
-    v24 = [v26 beginGroup];
-    v4 = [v24 withQuery];
-    v31 = [(SKGProcessorTask *)self _excludedQuery];
-    v32 = v4;
-    v30 = (*(v4 + 16))(v4, v31);
+    beginGroup = [(SKGQueryStringBuilder *)v3 beginGroup];
+    v29BeginGroup = [beginGroup beginGroup];
+    v26BeginGroup = [v29BeginGroup beginGroup];
+    withQuery = [v26BeginGroup withQuery];
+    _excludedQuery = [(SKGProcessorTask *)self _excludedQuery];
+    v32 = withQuery;
+    v30 = (*(withQuery + 16))(withQuery, _excludedQuery);
     v28 = [v30 or];
-    v5 = [v28 withQuery];
-    v25 = [(SKGProcessorTask *)self _notIncludedQuery];
-    v27 = v5;
-    v23 = (*(v5 + 16))(v5, v25);
-    v22 = [v23 endGroup];
-    v21 = [v22 and];
-    v6 = [v21 withQuery];
-    v20 = [(SKGProcessorTask *)self donationAttributes];
-    v7 = [SKGQueryStringBuilder queryForAttributesExist:v20];
-    v8 = (v6)[2](v6, v7);
-    v9 = [v8 endGroup];
-    v10 = [v9 or];
-    v11 = [v10 withQuery];
-    v12 = [(SKGProcessorTask *)self _invalidVersionQuery];
-    v13 = (v11)[2](v11, v12);
-    v14 = [v13 endGroup];
+    withQuery2 = [v28 withQuery];
+    _notIncludedQuery = [(SKGProcessorTask *)self _notIncludedQuery];
+    v27 = withQuery2;
+    v23 = (*(withQuery2 + 16))(withQuery2, _notIncludedQuery);
+    endGroup = [v23 endGroup];
+    v21 = [endGroup and];
+    withQuery3 = [v21 withQuery];
+    donationAttributes = [(SKGProcessorTask *)self donationAttributes];
+    v7 = [SKGQueryStringBuilder queryForAttributesExist:donationAttributes];
+    v8 = (withQuery3)[2](withQuery3, v7);
+    endGroup2 = [v8 endGroup];
+    v10 = [endGroup2 or];
+    withQuery4 = [v10 withQuery];
+    _invalidVersionQuery = [(SKGProcessorTask *)self _invalidVersionQuery];
+    v13 = (withQuery4)[2](withQuery4, _invalidVersionQuery);
+    endGroup3 = [v13 endGroup];
 
-    v15 = v24;
-    v16 = v26;
+    v15 = v26BeginGroup;
+    donationAttributes2 = v29BeginGroup;
 
-    v17 = v29;
+    withQuery5 = beginGroup;
     v3 = v32;
   }
 
   else
   {
-    v17 = [(SKGQueryStringBuilder *)v3 withQuery];
-    v16 = [(SKGProcessorTask *)self donationAttributes];
-    v15 = [SKGQueryStringBuilder queryForAttributesExist:v16];
-    v14 = (v17)[2](v17, v15);
+    withQuery5 = [(SKGQueryStringBuilder *)v3 withQuery];
+    donationAttributes2 = [(SKGProcessorTask *)self donationAttributes];
+    v15 = [SKGQueryStringBuilder queryForAttributesExist:donationAttributes2];
+    endGroup3 = (withQuery5)[2](withQuery5, v15);
   }
 
-  v18 = [v14 build];
+  build = [endGroup3 build];
 
-  return v18;
+  return build;
 }
 
 - (id)_additionalQuery
 {
   if ([(SKGProcessorTask *)self allowed])
   {
-    v3 = [(SKGProcessorTask *)self additionalQueries];
-    v4 = [v3 count];
+    additionalQueries = [(SKGProcessorTask *)self additionalQueries];
+    v4 = [additionalQueries count];
 
     if (v4)
     {
       v5 = objc_alloc_init(SKGQueryStringBuilder);
-      v6 = [(SKGQueryStringBuilder *)v5 withQueries];
-      v7 = [(SKGProcessorTask *)self additionalQueries];
-      v8 = (v6)[2](v6, v7, @"||");
+      withQueries = [(SKGQueryStringBuilder *)v5 withQueries];
+      additionalQueries2 = [(SKGProcessorTask *)self additionalQueries];
+      v8 = (withQueries)[2](withQueries, additionalQueries2, @"||");
 
-      v9 = [v8 build];
+      build = [v8 build];
     }
 
     else
     {
-      v9 = @"(true)";
+      build = @"(true)";
     }
   }
 
   else
   {
-    v9 = @"(false)";
+    build = @"(false)";
   }
 
-  return v9;
+  return build;
 }
 
-- (void)setSupportedEvent:(int64_t)a3
+- (void)setSupportedEvent:(int64_t)event
 {
-  if ((a3 - 1) <= 3)
+  if ((event - 1) <= 3)
   {
-    self->_events |= qword_231C22720[a3 - 1];
+    self->_events |= qword_231C22720[event - 1];
   }
 }
 
@@ -475,47 +475,47 @@
   return *(&self->super.isa + v2);
 }
 
-- (void)setRequiredAttributes:(id)a3
+- (void)setRequiredAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_requiredAttributes, a3);
-  v5 = a3;
-  [(NSMutableSet *)self->_fetchAttributes addObjectsFromArray:v5];
+  objc_storeStrong(&self->_requiredAttributes, attributes);
+  attributesCopy = attributes;
+  [(NSMutableSet *)self->_fetchAttributes addObjectsFromArray:attributesCopy];
 }
 
-- (void)setTrackingAttributes:(id)a3
+- (void)setTrackingAttributes:(id)attributes
 {
-  objc_storeStrong(&self->_trackingAttributes, a3);
-  v5 = a3;
-  [(NSMutableSet *)self->_fetchAttributes addObjectsFromArray:v5];
+  objc_storeStrong(&self->_trackingAttributes, attributes);
+  attributesCopy = attributes;
+  [(NSMutableSet *)self->_fetchAttributes addObjectsFromArray:attributesCopy];
 }
 
 - (BOOL)allowed
 {
-  v3 = [(SKGProcessorTask *)self canRun];
-  if (v3)
+  canRun = [(SKGProcessorTask *)self canRun];
+  if (canRun)
   {
 
-    LOBYTE(v3) = [(SKGProcessorTask *)self enabled];
+    LOBYTE(canRun) = [(SKGProcessorTask *)self enabled];
   }
 
-  return v3;
+  return canRun;
 }
 
-- (BOOL)supportsBundleID:(id)a3
+- (BOOL)supportsBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(SKGProcessorTask *)self enabled])
   {
     goto LABEL_13;
   }
 
-  if ([v4 length])
+  if ([dCopy length])
   {
-    v5 = [(SKGProcessorTask *)self includeBundles];
-    if ([v5 count])
+    includeBundles = [(SKGProcessorTask *)self includeBundles];
+    if ([includeBundles count])
     {
-      v6 = [(SKGProcessorTask *)self includeBundles];
-      v7 = [v6 containsObject:v4];
+      includeBundles2 = [(SKGProcessorTask *)self includeBundles];
+      v7 = [includeBundles2 containsObject:dCopy];
 
       if (v7)
       {
@@ -527,11 +527,11 @@
     {
     }
 
-    v9 = [(SKGProcessorTask *)self excludeBundles];
-    if ([v9 count])
+    excludeBundles = [(SKGProcessorTask *)self excludeBundles];
+    if ([excludeBundles count])
     {
-      v10 = [(SKGProcessorTask *)self excludeBundles];
-      v11 = [v10 containsObject:v4];
+      excludeBundles2 = [(SKGProcessorTask *)self excludeBundles];
+      v11 = [excludeBundles2 containsObject:dCopy];
 
       if (v11)
       {
@@ -545,7 +545,7 @@ LABEL_13:
     {
     }
 
-    v12 = [v4 hasPrefix:@"com.apple."];
+    v12 = [dCopy hasPrefix:@"com.apple."];
     if (![(SKGProcessorTask *)self ignoreInternalBundles]|| (v12 & 1) == 0)
     {
       v8 = ![(SKGProcessorTask *)self ignoreExternalBundles]| v12;
@@ -562,32 +562,32 @@ LABEL_14:
   return v8 & 1;
 }
 
-- (BOOL)supportsEvent:(int64_t)a3
+- (BOOL)supportsEvent:(int64_t)event
 {
-  v5 = [(SKGProcessorTask *)self allowed];
-  if (v5)
+  allowed = [(SKGProcessorTask *)self allowed];
+  if (allowed)
   {
-    if ((a3 - 1) > 3)
+    if ((event - 1) > 3)
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(allowed) = 0;
     }
 
     else
     {
-      v6 = qword_231C22720[a3 - 1];
-      LOBYTE(v5) = ([(SKGProcessorTask *)self events]& v6) != 0;
+      v6 = qword_231C22720[event - 1];
+      LOBYTE(allowed) = ([(SKGProcessorTask *)self events]& v6) != 0;
     }
   }
 
-  return v5;
+  return allowed;
 }
 
-- (BOOL)supportsEvent:(int64_t)a3 bundleID:(id)a4
+- (BOOL)supportsEvent:(int64_t)event bundleID:(id)d
 {
-  v6 = a4;
-  if ([(SKGProcessorTask *)self supportsEvent:a3])
+  dCopy = d;
+  if ([(SKGProcessorTask *)self supportsEvent:event])
   {
-    v7 = [(SKGProcessorTask *)self supportsBundleID:v6];
+    v7 = [(SKGProcessorTask *)self supportsBundleID:dCopy];
   }
 
   else
@@ -598,19 +598,19 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)supportsEvent:(int64_t)a3 record:(id)a4 bundleID:(id)a5
+- (BOOL)supportsEvent:(int64_t)event record:(id)record bundleID:(id)d
 {
-  v7 = a4;
-  if (![(SKGProcessorTask *)self supportsBundleID:a5])
+  recordCopy = record;
+  if (![(SKGProcessorTask *)self supportsBundleID:d])
   {
     goto LABEL_13;
   }
 
-  v8 = [(SKGProcessorTask *)self requiredAttributes];
-  if ([v8 count])
+  requiredAttributes = [(SKGProcessorTask *)self requiredAttributes];
+  if ([requiredAttributes count])
   {
-    v9 = [(SKGProcessorTask *)self requiredAttributes];
-    v10 = [v7 queryRecordIncludesAttributes:v9];
+    requiredAttributes2 = [(SKGProcessorTask *)self requiredAttributes];
+    v10 = [recordCopy queryRecordIncludesAttributes:requiredAttributes2];
 
     if (!v10)
     {
@@ -622,11 +622,11 @@ LABEL_14:
   {
   }
 
-  v11 = [(SKGProcessorTask *)self trackingAttributes];
-  if ([v11 count])
+  trackingAttributes = [(SKGProcessorTask *)self trackingAttributes];
+  if ([trackingAttributes count])
   {
-    v12 = [(SKGProcessorTask *)self trackingAttributes];
-    v13 = [v7 queryRecordIncludesAttributes:v12];
+    trackingAttributes2 = [(SKGProcessorTask *)self trackingAttributes];
+    v13 = [recordCopy queryRecordIncludesAttributes:trackingAttributes2];
 
     if (!v13)
     {
@@ -638,15 +638,15 @@ LABEL_14:
   {
   }
 
-  v14 = [(SKGProcessorTask *)self versionAttributeKey];
+  versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
 
-  if (!v14)
+  if (!versionAttributeKey)
   {
     goto LABEL_15;
   }
 
-  v15 = [(SKGProcessorTask *)self versionAttributeKey];
-  v16 = [v7 queryRecordNumberValueForKey:v15];
+  versionAttributeKey2 = [(SKGProcessorTask *)self versionAttributeKey];
+  v16 = [recordCopy queryRecordNumberValueForKey:versionAttributeKey2];
 
   if (!v16 || (-[SKGProcessorTask versionValue](self, "versionValue"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v16 isEqualToNumber:v17], v17, v16, (v18 & 1) == 0))
   {
@@ -662,65 +662,65 @@ LABEL_14:
   return v19;
 }
 
-- (id)queryForEvent:(int64_t)a3
+- (id)queryForEvent:(int64_t)event
 {
-  switch(a3)
+  switch(event)
   {
     case 2:
-      v3 = [(SKGProcessorTask *)self _updatesQuery];
+      _updatesQuery = [(SKGProcessorTask *)self _updatesQuery];
       break;
     case 4:
-      v3 = [(SKGProcessorTask *)self _backgroundQuery];
+      _updatesQuery = [(SKGProcessorTask *)self _backgroundQuery];
       break;
     case 3:
-      v3 = [(SKGProcessorTask *)self _cleanupQuery];
+      _updatesQuery = [(SKGProcessorTask *)self _cleanupQuery];
       break;
     default:
-      v3 = 0;
+      _updatesQuery = 0;
       break;
   }
 
-  return v3;
+  return _updatesQuery;
 }
 
-- (id)processorAttributesForEvent:(int64_t)a3 failed:(BOOL)a4
+- (id)processorAttributesForEvent:(int64_t)event failed:(BOOL)failed
 {
-  v4 = a4;
+  failedCopy = failed;
   if (![(SKGProcessorTask *)self supportsEvent:?])
   {
     goto LABEL_6;
   }
 
-  if (a3 == 4)
+  if (event == 4)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if (v4)
+    if (failedCopy)
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = [(SKGProcessorTask *)self errorAttributeKey];
-      v15 = [v13 stringWithFormat:@":INC:%@", v14];
+      errorAttributeKey = [(SKGProcessorTask *)self errorAttributeKey];
+      versionValue = [v13 stringWithFormat:@":INC:%@", errorAttributeKey];
 
-      [v7 setObject:&unk_2846E7E78 forKey:v15];
+      [v7 setObject:&unk_2846E7E78 forKey:versionValue];
       v16 = *MEMORY[0x277CBEEE8];
-      v17 = [(SKGProcessorTask *)self versionAttributeKey];
+      versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
       v18 = v7;
       v19 = v16;
     }
 
     else
     {
-      v15 = [(SKGProcessorTask *)self versionValue];
-      v17 = [(SKGProcessorTask *)self versionAttributeKey];
+      versionValue = [(SKGProcessorTask *)self versionValue];
+      versionAttributeKey = [(SKGProcessorTask *)self versionAttributeKey];
       v18 = v7;
-      v19 = v15;
+      v19 = versionValue;
     }
 
-    [v18 setObject:v19 forKey:v17];
+    [v18 setObject:v19 forKey:versionAttributeKey];
 
     goto LABEL_13;
   }
 
-  if (a3 != 1)
+  if (event != 1)
   {
 LABEL_6:
     v7 = 0;
@@ -728,29 +728,29 @@ LABEL_6:
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v4)
+  if (failedCopy)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(SKGProcessorTask *)self errorAttributeKey];
-    v10 = [v8 stringWithFormat:@":INC:%@", v9];
+    errorAttributeKey2 = [(SKGProcessorTask *)self errorAttributeKey];
+    v10 = [v8 stringWithFormat:@":INC:%@", errorAttributeKey2];
 
     [v7 setObject:&unk_2846E7E78 forKey:v10];
     v11 = *MEMORY[0x277CBEEE8];
-    v12 = [(SKGProcessorTask *)self versionAttributeKey];
-    [v7 setObject:v11 forKey:v12];
+    versionAttributeKey2 = [(SKGProcessorTask *)self versionAttributeKey];
+    [v7 setObject:v11 forKey:versionAttributeKey2];
   }
 
   else
   {
-    v20 = [(SKGProcessorTask *)self versionValue];
-    v21 = [(SKGProcessorTask *)self versionAttributeKey];
-    [v7 setObject:v20 forKey:v21];
+    versionValue2 = [(SKGProcessorTask *)self versionValue];
+    versionAttributeKey3 = [(SKGProcessorTask *)self versionAttributeKey];
+    [v7 setObject:versionValue2 forKey:versionAttributeKey3];
 
     v11 = *MEMORY[0x277CBEEE8];
   }
 
-  v15 = [(SKGProcessorTask *)self journalAttributeKey];
-  [v7 setObject:v11 forKey:v15];
+  versionValue = [(SKGProcessorTask *)self journalAttributeKey];
+  [v7 setObject:v11 forKey:versionValue];
 LABEL_13:
 
 LABEL_14:

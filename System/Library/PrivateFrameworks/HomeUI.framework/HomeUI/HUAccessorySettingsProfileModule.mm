@@ -1,35 +1,35 @@
 @interface HUAccessorySettingsProfileModule
-- (HUAccessorySettingsProfileModule)initWithItemUpdater:(id)a3 settingGroupItem:(id)a4;
+- (HUAccessorySettingsProfileModule)initWithItemUpdater:(id)updater settingGroupItem:(id)item;
 - (HUAccessorySettingsProfileModuleDelegate)delegate;
-- (id)_actuallyRemoveProfileItem:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)_actuallyRemoveProfileItem:(id)item;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
-- (id)promptForRemoveProfileItem:(id)a3;
-- (void)managedConfigurationAdapterSettingsWereUpdated:(id)a3;
+- (id)promptForRemoveProfileItem:(id)item;
+- (void)managedConfigurationAdapterSettingsWereUpdated:(id)updated;
 @end
 
 @implementation HUAccessorySettingsProfileModule
 
-- (HUAccessorySettingsProfileModule)initWithItemUpdater:(id)a3 settingGroupItem:(id)a4
+- (HUAccessorySettingsProfileModule)initWithItemUpdater:(id)updater settingGroupItem:(id)item
 {
-  v7 = a4;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = HUAccessorySettingsProfileModule;
-  v8 = [(HFItemModule *)&v20 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v20 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_settingGroupItem, a4);
-    v10 = [v7 homeKitSettingsVendor];
-    v11 = [v10 hf_settingsAdapterManager];
-    v12 = [v11 adapterForIdentifier:*MEMORY[0x277D13328]];
+    objc_storeStrong(&v8->_settingGroupItem, item);
+    homeKitSettingsVendor = [itemCopy homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor hf_settingsAdapterManager];
+    v12 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13328]];
     adapter = v9->_adapter;
     v9->_adapter = v12;
 
     v14 = [HUAccessorySettingsProfileItemProvider alloc];
     v15 = v9->_adapter;
-    v16 = [v7 settingGroup];
-    v17 = [(HUAccessorySettingsProfileItemProvider *)v14 initWithAdapter:v15 settingGroup:v16];
+    settingGroup = [itemCopy settingGroup];
+    v17 = [(HUAccessorySettingsProfileItemProvider *)v14 initWithAdapter:v15 settingGroup:settingGroup];
     profileItemProvider = v9->_profileItemProvider;
     v9->_profileItemProvider = v17;
 
@@ -42,20 +42,20 @@
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUAccessorySettingsProfileModule *)self profileItemProvider];
-  v4 = [v2 setWithObject:v3];
+  profileItemProvider = [(HUAccessorySettingsProfileModule *)self profileItemProvider];
+  v4 = [v2 setWithObject:profileItemProvider];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v4 = [v3 allObjects];
-    v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_124];
+    allObjects = [itemsCopy allObjects];
+    v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_124];
 
     v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"!!!ProfileZone!!!!"];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMobileDeviceManagement", @"HUMobileDeviceManagement", 1);
@@ -82,11 +82,11 @@
     v12 = [v5 na_filter:v23];
     [v6 setItems:v12];
 
-    v13 = [v6 items];
-    v14 = [v13 count];
+    items = [v6 items];
+    v14 = [items count];
 
-    v15 = [v8 items];
-    v16 = [v15 count];
+    items2 = [v8 items];
+    v16 = [items2 count];
     v17 = v16;
     if (v14)
     {
@@ -243,32 +243,32 @@ uint64_t __68__HUAccessorySettingsProfileModule_buildSectionsWithDisplayedItems_
   return v7;
 }
 
-- (id)promptForRemoveProfileItem:(id)a3
+- (id)promptForRemoveProfileItem:(id)item
 {
-  v5 = a3;
-  v6 = [(HUAccessorySettingsProfileModule *)self delegate];
+  itemCopy = item;
+  delegate = [(HUAccessorySettingsProfileModule *)self delegate];
 
-  if (!v6)
+  if (!delegate)
   {
     NSLog(&cfstr_NoDelegateSome.isa);
   }
 
-  if (!v5)
+  if (!itemCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileModule.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"profileItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileModule.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"profileItem"}];
   }
 
   objc_initWeak(&location, self);
-  v7 = [(HUAccessorySettingsProfileModule *)self delegate];
-  v8 = [v7 settingsProfileModule:self wantsProfileItemDeleted:v5];
+  delegate2 = [(HUAccessorySettingsProfileModule *)self delegate];
+  v8 = [delegate2 settingsProfileModule:self wantsProfileItemDeleted:itemCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__HUAccessorySettingsProfileModule_promptForRemoveProfileItem___block_invoke;
   v13[3] = &unk_277DBC1A0;
   objc_copyWeak(&v15, &location);
-  v9 = v5;
+  v9 = itemCopy;
   v14 = v9;
   v10 = [v8 addCompletionBlock:v13];
 
@@ -297,23 +297,23 @@ void __63__HUAccessorySettingsProfileModule_promptForRemoveProfileItem___block_i
   }
 }
 
-- (id)_actuallyRemoveProfileItem:(id)a3
+- (id)_actuallyRemoveProfileItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileModule.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"profileItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileModule.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"profileItem"}];
   }
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D14788];
-  v7 = [(HUAccessorySettingsProfileModule *)self itemProviders];
-  v8 = [v6 requestToReloadItemProviders:v7 senderSelector:a2];
+  itemProviders = [(HUAccessorySettingsProfileModule *)self itemProviders];
+  v8 = [v6 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v9 = [(HUAccessorySettingsProfileModule *)self adapter];
-  v10 = [v5 profile];
-  v11 = [v9 removeProfileFromHomeKit:v10];
+  adapter = [(HUAccessorySettingsProfileModule *)self adapter];
+  profile = [itemCopy profile];
+  v11 = [adapter removeProfileFromHomeKit:profile];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HUAccessorySettingsProfileModule__actuallyRemoveProfileItem___block_invoke;
@@ -346,14 +346,14 @@ void __63__HUAccessorySettingsProfileModule__actuallyRemoveProfileItem___block_i
   }
 }
 
-- (void)managedConfigurationAdapterSettingsWereUpdated:(id)a3
+- (void)managedConfigurationAdapterSettingsWereUpdated:(id)updated
 {
   v5 = MEMORY[0x277D14788];
-  v6 = [(HUAccessorySettingsProfileModule *)self itemProviders];
-  v9 = [v5 requestToReloadItemProviders:v6 senderSelector:a2];
+  itemProviders = [(HUAccessorySettingsProfileModule *)self itemProviders];
+  v9 = [v5 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v7 = [(HFItemModule *)self itemUpdater];
-  v8 = [v7 performItemUpdateRequest:v9];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v8 = [itemUpdater performItemUpdateRequest:v9];
 }
 
 - (HUAccessorySettingsProfileModuleDelegate)delegate

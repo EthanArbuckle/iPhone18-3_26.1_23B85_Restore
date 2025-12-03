@@ -1,67 +1,67 @@
 @interface CKMessageEntryTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsSMSPlaceholderVisible;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityGetValue;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (id)_axCreateEmojiRotor;
 - (id)_axEmojiCandidatesFromEmojiKit;
-- (id)_axTextRangeForRange:(_NSRange)a3;
+- (id)_axTextRangeForRange:(_NSRange)range;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityPlaceholderValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axRemoveElementFromEmojiCandidates:(id)a3;
-- (void)_axReplaceEmojiWithElement:(id)a3;
-- (void)_axShowOverlayWithEmojiElement:(id)a3;
+- (void)_axRemoveElementFromEmojiCandidates:(id)candidates;
+- (void)_axReplaceEmojiWithElement:(id)element;
+- (void)_axShowOverlayWithEmojiElement:(id)element;
 - (void)_axUpdateEmojiCandidates;
-- (void)_startTextKit1EmojiDisplayUpdateTimer:(id)a3;
-- (void)_stopTextKit1EmojiDisplayUpdateTimer:(id)a3;
+- (void)_startTextKit1EmojiDisplayUpdateTimer:(id)timer;
+- (void)_stopTextKit1EmojiDisplayUpdateTimer:(id)timer;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 - (void)updateTextView;
 @end
 
 @implementation CKMessageEntryTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessageEntryTextView" isKindOfClass:@"EMKTextView"];
-  [v3 validateClass:@"EMKTextView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EMKTextView" hasInstanceVariable:@"_emojiConversionActive" withType:"B"];
-  [v3 validateClass:@"EMKTextView" hasInstanceMethod:@"personalizedEmojiTokenListForList:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"EMKTextView" hasInstanceMethod:@"_startTextKit1EmojiDisplayUpdateTimer:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"EMKTextView" hasInstanceMethod:@"_stopTextKit1EmojiDisplayUpdateTimer:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"EMKOverlayView" hasInstanceMethod:@"initWithView:anchorRect:emojiTokenList:selectionHandler:" withFullSignature:{"@", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "@?", 0}];
-  [v3 validateClass:@"EMKLayoutManager"];
-  [v3 validateClass:@"EMKLayoutManager" hasInstanceMethod:@"attributes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EMFEmojiToken"];
-  [v3 validateClass:@"EMFEmojiToken" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EMKEmojiTokenList" hasInstanceMethod:@"emojiTokenArray" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EMKTextView" hasInstanceVariable:@"_textKit2Controller" withType:"_EMKTextKit2Controller"];
-  [v3 validateClass:@"_EMKTextKit2Controller" hasInstanceMethod:@"replaceRange:withEmojiToken:language:" withFullSignature:{"v", "{_NSRange=QQ}", "@", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryTextView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"_placeholderLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"sendingService" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isSMS" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryTextView" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
-  [v3 validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"placeholderText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"updateTextView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKActionMenuWindow"];
-  [v3 validateClass:@"CKActionMenuWindow" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessageEntryTextView" isKindOfClass:@"EMKTextView"];
+  [validationsCopy validateClass:@"EMKTextView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EMKTextView" hasInstanceVariable:@"_emojiConversionActive" withType:"B"];
+  [validationsCopy validateClass:@"EMKTextView" hasInstanceMethod:@"personalizedEmojiTokenListForList:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"EMKTextView" hasInstanceMethod:@"_startTextKit1EmojiDisplayUpdateTimer:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"EMKTextView" hasInstanceMethod:@"_stopTextKit1EmojiDisplayUpdateTimer:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"EMKOverlayView" hasInstanceMethod:@"initWithView:anchorRect:emojiTokenList:selectionHandler:" withFullSignature:{"@", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "@?", 0}];
+  [validationsCopy validateClass:@"EMKLayoutManager"];
+  [validationsCopy validateClass:@"EMKLayoutManager" hasInstanceMethod:@"attributes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EMFEmojiToken"];
+  [validationsCopy validateClass:@"EMFEmojiToken" hasInstanceMethod:@"string" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EMKEmojiTokenList" hasInstanceMethod:@"emojiTokenArray" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EMKTextView" hasInstanceVariable:@"_textKit2Controller" withType:"_EMKTextKit2Controller"];
+  [validationsCopy validateClass:@"_EMKTextKit2Controller" hasInstanceMethod:@"replaceRange:withEmojiToken:language:" withFullSignature:{"v", "{_NSRange=QQ}", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"_placeholderLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"sendingService" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isSMS" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"placeholderText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"updateTextView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKActionMenuWindow"];
+  [validationsCopy validateClass:@"CKActionMenuWindow" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKMessageEntryTextViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"messageBodyField"];
+  accessibilityIdentifier = [(CKMessageEntryTextViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"messageBodyField"];
 
   if (v4)
   {
@@ -73,8 +73,8 @@
 
     else
     {
-      v8 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiRotor];
-      if (v8)
+      _axEmojiRotor = [(CKMessageEntryTextViewAccessibility *)self _axEmojiRotor];
+      if (_axEmojiRotor)
       {
         v6 = accessibilityLocalizedString(@"emoji.replacements.available");
       }
@@ -100,23 +100,23 @@
 {
   if ([(CKMessageEntryTextViewAccessibility *)self _axIsSMSPlaceholderVisible])
   {
-    v3 = 0;
+    _accessibilityGetValue = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CKMessageEntryTextViewAccessibility;
-    v3 = [(CKMessageEntryTextViewAccessibility *)&v5 _accessibilityGetValue];
+    _accessibilityGetValue = [(CKMessageEntryTextViewAccessibility *)&v5 _accessibilityGetValue];
   }
 
-  return v3;
+  return _accessibilityGetValue;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
-  v3 = [v2 count];
+  _axEmojiCandidates = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
+  v3 = [_axEmojiCandidates count];
 
   if (v3)
   {
@@ -134,29 +134,29 @@
 - (BOOL)isAccessibilityElement
 {
   objc_opt_class();
-  v2 = [NSClassFromString(&cfstr_Ckactionmenuwi.isa) sharedInstance];
+  nSClassFromString(&cfstr_Ckactionmenuwi.isa) = [NSClassFromString(&cfstr_Ckactionmenuwi.isa) sharedInstance];
   v3 = __UIAccessibilityCastAsClass();
 
-  LOBYTE(v2) = [v3 _accessibilityViewIsVisible];
-  return v2 ^ 1;
+  LOBYTE(nSClassFromString(&cfstr_Ckactionmenuwi.isa)) = [v3 _accessibilityViewIsVisible];
+  return nSClassFromString(&cfstr_Ckactionmenuwi.isa) ^ 1;
 }
 
 - (id)accessibilityCustomRotors
 {
   v7.receiver = self;
   v7.super_class = CKMessageEntryTextViewAccessibility;
-  v3 = [(CKMessageEntryTextViewAccessibility *)&v7 accessibilityCustomRotors];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomRotors = [(CKMessageEntryTextViewAccessibility *)&v7 accessibilityCustomRotors];
+  array = [accessibilityCustomRotors mutableCopy];
 
-  if (!v4)
+  if (!array)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v5 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiRotor];
-  [v4 axSafelyAddObject:v5];
+  _axEmojiRotor = [(CKMessageEntryTextViewAccessibility *)self _axEmojiRotor];
+  [array axSafelyAddObject:_axEmojiRotor];
 
-  return v4;
+  return array;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -204,12 +204,12 @@
 
 - (void)_axUpdateEmojiCandidates
 {
-  v4 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidatesFromEmojiKit];
-  if ([v4 count])
+  _axEmojiCandidatesFromEmojiKit = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidatesFromEmojiKit];
+  if ([_axEmojiCandidatesFromEmojiKit count])
   {
-    [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiCandidates:v4];
-    v3 = [(CKMessageEntryTextViewAccessibility *)self _axCreateEmojiRotor];
-    [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiRotor:v3];
+    [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiCandidates:_axEmojiCandidatesFromEmojiKit];
+    _axCreateEmojiRotor = [(CKMessageEntryTextViewAccessibility *)self _axCreateEmojiRotor];
+    [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiRotor:_axCreateEmojiRotor];
 
     if (UIAccessibilityIsSwitchControlRunning())
     {
@@ -224,19 +224,19 @@
   }
 }
 
-- (void)_startTextKit1EmojiDisplayUpdateTimer:(id)a3
+- (void)_startTextKit1EmojiDisplayUpdateTimer:(id)timer
 {
   v4.receiver = self;
   v4.super_class = CKMessageEntryTextViewAccessibility;
-  [(CKMessageEntryTextViewAccessibility *)&v4 _startTextKit1EmojiDisplayUpdateTimer:a3];
+  [(CKMessageEntryTextViewAccessibility *)&v4 _startTextKit1EmojiDisplayUpdateTimer:timer];
   [(CKMessageEntryTextViewAccessibility *)self _axUpdateEmojiCandidates];
 }
 
-- (void)_stopTextKit1EmojiDisplayUpdateTimer:(id)a3
+- (void)_stopTextKit1EmojiDisplayUpdateTimer:(id)timer
 {
   v4.receiver = self;
   v4.super_class = CKMessageEntryTextViewAccessibility;
-  [(CKMessageEntryTextViewAccessibility *)&v4 _stopTextKit1EmojiDisplayUpdateTimer:a3];
+  [(CKMessageEntryTextViewAccessibility *)&v4 _stopTextKit1EmojiDisplayUpdateTimer:timer];
   [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiCandidates:0];
   [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiRotor:0];
   if (UIAccessibilityIsSwitchControlRunning())
@@ -245,12 +245,12 @@
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v5.receiver = self;
   v5.super_class = CKMessageEntryTextViewAccessibility;
   [(CKMessageEntryTextViewAccessibility *)&v5 setAttributedText:?];
-  if (!a3)
+  if (!text)
   {
     [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiCandidates:0];
     [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiRotor:0];
@@ -334,15 +334,15 @@ LABEL_14:
   return v10;
 }
 
-- (id)_axTextRangeForRange:(_NSRange)a3
+- (id)_axTextRangeForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 positionFromPosition:v6 offset:location];
-  v8 = [v5 positionFromPosition:v6 offset:location + length];
+  beginningOfDocument = [v5 beginningOfDocument];
+  v7 = [v5 positionFromPosition:beginningOfDocument offset:location];
+  v8 = [v5 positionFromPosition:beginningOfDocument offset:location + length];
   v9 = v8;
   if (v7)
   {
@@ -373,15 +373,15 @@ LABEL_14:
   if ([v3 safeBoolForKey:@"__ck_isSMS"])
   {
     v4 = [(CKMessageEntryTextViewAccessibility *)self safeValueForKey:@"_placeholderLabel"];
-    v5 = [v4 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilityViewIsVisible = 0;
   }
 
-  return v5;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)_axEmojiCandidatesFromEmojiKit
@@ -391,18 +391,18 @@ LABEL_14:
     v15 = 0;
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [MEMORY[0x29EDB8DE8] array];
-    v5 = [v3 textLayoutManager];
+    array = [MEMORY[0x29EDB8DE8] array];
+    textLayoutManager = [v3 textLayoutManager];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = __69__CKMessageEntryTextViewAccessibility__axEmojiCandidatesFromEmojiKit__block_invoke;
     v12[3] = &unk_29F2B0DD0;
     v12[4] = self;
     v13 = v3;
-    v6 = v4;
+    v6 = array;
     v14 = v6;
     v7 = v3;
-    v8 = [v5 enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v12];
+    v8 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v12];
     v9 = v14;
     v10 = v6;
   }
@@ -488,17 +488,17 @@ uint64_t __69__CKMessageEntryTextViewAccessibility__axEmojiCandidatesFromEmojiKi
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_axShowOverlayWithEmojiElement:(id)a3
+- (void)_axShowOverlayWithEmojiElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   v6 = [(CKMessageEntryTextViewAccessibility *)self safeValueForKey:@"anchorRect"];
   [v6 rectValue];
 
   NSClassFromString(&cfstr_Emkoverlayview.isa);
-  v9 = v4;
-  v7 = v4;
+  v9 = elementCopy;
+  v7 = elementCopy;
   v8 = v5;
   AXPerformSafeBlock();
   [v8 setNeedsLayout];
@@ -537,14 +537,14 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], a1[6]);
 }
 
-- (void)_axReplaceEmojiWithElement:(id)a3
+- (void)_axReplaceEmojiWithElement:(id)element
 {
   v50 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [v4 candidateRange];
+  elementCopy = element;
+  candidateRange = [elementCopy candidateRange];
   v7 = v6;
-  v8 = [v4 currentEmoji];
-  v9 = [v4 conversionLanguage];
+  currentEmoji = [elementCopy currentEmoji];
+  conversionLanguage = [elementCopy conversionLanguage];
   v10 = [(CKMessageEntryTextViewAccessibility *)self safeValueForKey:@"_textKit2Controller"];
   v40 = MEMORY[0x29EDCA5F8];
   v41 = 3221225472;
@@ -552,19 +552,19 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
   v43 = &unk_29F2B0E48;
   v30 = v10;
   v44 = v30;
-  v47 = v5;
+  v47 = candidateRange;
   v48 = v7;
-  v33 = v8;
+  v33 = currentEmoji;
   v45 = v33;
-  v29 = v9;
+  v29 = conversionLanguage;
   v46 = v29;
   AXPerformSafeBlock();
   v39 = 0;
   objc_opt_class();
   v11 = __UIAccessibilityCastAsClass();
-  [(CKMessageEntryTextViewAccessibility *)self _axRemoveElementFromEmojiCandidates:v4];
-  v28 = v4;
-  v12 = [v4 candidateRange];
+  [(CKMessageEntryTextViewAccessibility *)self _axRemoveElementFromEmojiCandidates:elementCopy];
+  v28 = elementCopy;
+  candidateRange2 = [elementCopy candidateRange];
   v32 = v13;
   v35 = 0u;
   v36 = 0u;
@@ -587,13 +587,13 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [v18 candidateRange];
+        candidateRange3 = [v18 candidateRange];
         v21 = v20;
-        if (v19 > v12)
+        if (candidateRange3 > candidateRange2)
         {
           v22 = v15;
           v23 = v16;
-          v24 = self;
+          selfCopy = self;
           v39 = 0;
           objc_opt_class();
           v25 = [v33 safeValueForKey:@"string"];
@@ -604,16 +604,16 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
             abort();
           }
 
-          v19 = v19 - v32 + [v26 length];
+          candidateRange3 = candidateRange3 - v32 + [v26 length];
 
-          self = v24;
+          self = selfCopy;
           v16 = v23;
           v15 = v22;
           v11 = v31;
         }
 
-        [v18 setCandidateRange:{v19, v21}];
-        v27 = [(CKMessageEntryTextViewAccessibility *)self _axTextRangeForRange:v19, v21];
+        [v18 setCandidateRange:{candidateRange3, v21}];
+        v27 = [(CKMessageEntryTextViewAccessibility *)self _axTextRangeForRange:candidateRange3, v21];
         [(UIView *)v11 firstRectForRange:v27];
         v52 = UIAccessibilityConvertFrameToScreenCoordinates(v51, v11);
         [(UIView *)v11 convertRect:0 toView:v52.origin.x, v52.origin.y, v52.size.width, v52.size.height];
@@ -627,13 +627,13 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
   }
 }
 
-- (void)_axRemoveElementFromEmojiCandidates:(id)a3
+- (void)_axRemoveElementFromEmojiCandidates:(id)candidates
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
-  v6 = [v5 mutableCopy];
+  candidatesCopy = candidates;
+  _axEmojiCandidates = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
+  v6 = [_axEmojiCandidates mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:candidatesCopy];
   [(CKMessageEntryTextViewAccessibility *)self _axSetEmojiCandidates:v6];
 }
 
@@ -642,11 +642,11 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
   v19[1] = *MEMORY[0x29EDCA608];
   v18.receiver = self;
   v18.super_class = CKMessageEntryTextViewAccessibility;
-  v3 = [(CKMessageEntryTextViewAccessibility *)&v18 _accessibilitySupplementaryHeaderViews];
+  _accessibilitySupplementaryHeaderViews = [(CKMessageEntryTextViewAccessibility *)&v18 _accessibilitySupplementaryHeaderViews];
   v4 = [(CKMessageEntryTextViewAccessibility *)self _accessibilityValueForKey:@"AXPlaceholderEmojiView"];
   if ((UIAccessibilityIsSwitchControlRunning() || _AXSAutomationEnabled()) && (-[CKMessageEntryTextViewAccessibility _axEmojiCandidates](self, "_axEmojiCandidates"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
   {
-    v7 = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
+    _axEmojiCandidates = [(CKMessageEntryTextViewAccessibility *)self _axEmojiCandidates];
     if (!v4 || ([v4 window], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
     {
       [v4 removeFromSuperview];
@@ -658,15 +658,15 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
       v4 = v13;
     }
 
-    [v4 setAccessibilityElements:v7];
-    if (([v3 containsObject:v4] & 1) == 0)
+    [v4 setAccessibilityElements:_axEmojiCandidates];
+    if (([_accessibilitySupplementaryHeaderViews containsObject:v4] & 1) == 0)
     {
       v14 = MEMORY[0x29EDB8D80];
       v19[0] = v4;
       v15 = [MEMORY[0x29EDB8D80] arrayWithObjects:v19 count:1];
-      v16 = [v14 axArrayWithPossiblyNilArrays:{2, v3, v15}];
+      v16 = [v14 axArrayWithPossiblyNilArrays:{2, _accessibilitySupplementaryHeaderViews, v15}];
 
-      v3 = v16;
+      _accessibilitySupplementaryHeaderViews = v16;
     }
   }
 
@@ -676,7 +676,7 @@ void __70__CKMessageEntryTextViewAccessibility__axShowOverlayWithEmojiElement___
     [(CKMessageEntryTextViewAccessibility *)self _accessibilityRemoveValueForKey:@"AXPlaceholderEmojiView"];
   }
 
-  return v3;
+  return _accessibilitySupplementaryHeaderViews;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface VCAudioToolboxAudioComponentMock
 + (id)sharedInstance;
-- (BOOL)copyName:(OpaqueAudioComponent *)a3 outName:(const __CFString *)a4 outStatus:(int *)a5;
-- (BOOL)findNextComponent:(OpaqueAudioComponent *)a3 description:(const AudioComponentDescription *)a4 outComponent:(OpaqueAudioComponent *)a5;
-- (BOOL)getVersion:(OpaqueAudioComponent *)a3 outVersion:(unsigned int *)a4 outStatus:(int *)a5;
-- (BOOL)instanceDispose:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4;
-- (BOOL)instanceNew:(OpaqueAudioComponent *)a3 outInstance:(OpaqueAudioComponentInstance *)a4 outStatus:(int *)a5;
+- (BOOL)copyName:(OpaqueAudioComponent *)name outName:(const __CFString *)outName outStatus:(int *)status;
+- (BOOL)findNextComponent:(OpaqueAudioComponent *)component description:(const AudioComponentDescription *)description outComponent:(OpaqueAudioComponent *)outComponent;
+- (BOOL)getVersion:(OpaqueAudioComponent *)version outVersion:(unsigned int *)outVersion outStatus:(int *)status;
+- (BOOL)instanceDispose:(OpaqueAudioComponentInstance *)dispose outStatus:(int *)status;
+- (BOOL)instanceNew:(OpaqueAudioComponent *)new outInstance:(OpaqueAudioComponentInstance *)instance outStatus:(int *)status;
 - (void)start;
 - (void)stop;
 @end
@@ -60,15 +60,15 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
   objc_sync_exit(self);
 }
 
-- (BOOL)findNextComponent:(OpaqueAudioComponent *)a3 description:(const AudioComponentDescription *)a4 outComponent:(OpaqueAudioComponent *)a5
+- (BOOL)findNextComponent:(OpaqueAudioComponent *)component description:(const AudioComponentDescription *)description outComponent:(OpaqueAudioComponent *)outComponent
 {
-  if (a3 || a4->componentType != 1635086197 || a4->componentFlags || a4->componentFlagsMask)
+  if (component || description->componentType != 1635086197 || description->componentFlags || description->componentFlagsMask)
   {
     return 0;
   }
 
   result = 0;
-  componentSubType = a4->componentSubType;
+  componentSubType = description->componentSubType;
   if (componentSubType > 1919512418)
   {
     if (componentSubType == 1919512419)
@@ -102,23 +102,23 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     v7 = 1650616687;
   }
 
-  *a5 = v7;
+  *outComponent = v7;
   return 1;
 }
 
-- (BOOL)instanceNew:(OpaqueAudioComponent *)a3 outInstance:(OpaqueAudioComponentInstance *)a4 outStatus:(int *)a5
+- (BOOL)instanceNew:(OpaqueAudioComponent *)new outInstance:(OpaqueAudioComponentInstance *)instance outStatus:(int *)status
 {
   result = 0;
-  if (a3 <= 1684366946)
+  if (new <= 1684366946)
   {
-    if (a3 == 1635017072)
+    if (new == 1635017072)
     {
       v6 = "isys";
     }
 
     else
     {
-      if (a3 != 1650616687)
+      if (new != 1650616687)
       {
         return result;
       }
@@ -127,19 +127,19 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     }
   }
 
-  else if (a3 == 1684366947)
+  else if (new == 1684366947)
   {
     v6 = "ifed";
   }
 
-  else if (a3 == 1919512419)
+  else if (new == 1919512419)
   {
     v6 = "ioir";
   }
 
   else
   {
-    if (a3 != 1987078511)
+    if (new != 1987078511)
     {
       return result;
     }
@@ -147,38 +147,38 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     v6 = "nipv";
   }
 
-  *a4 = *v6;
-  *a5 = 0;
-  [+[VCCoreAudio_AudioUnitMock sharedInstance](VCCoreAudio_AudioUnitMock registerAudioUnitMockInstance:"registerAudioUnitMockInstance:", *a4];
+  *instance = *v6;
+  *status = 0;
+  [+[VCCoreAudio_AudioUnitMock sharedInstance](VCCoreAudio_AudioUnitMock registerAudioUnitMockInstance:"registerAudioUnitMockInstance:", *instance];
   return 1;
 }
 
-- (BOOL)instanceDispose:(OpaqueAudioComponentInstance *)a3 outStatus:(int *)a4
+- (BOOL)instanceDispose:(OpaqueAudioComponentInstance *)dispose outStatus:(int *)status
 {
-  v7 = *"nipv" == a3 || *"nibb" == a3 || *"ioir" == a3 || *"ifed" == a3 || *"isys" == a3;
+  v7 = *"nipv" == dispose || *"nibb" == dispose || *"ioir" == dispose || *"ifed" == dispose || *"isys" == dispose;
   v8 = v7;
   if (v7)
   {
-    *a4 = 0;
-    [+[VCCoreAudio_AudioUnitMock sharedInstance](VCCoreAudio_AudioUnitMock unregisterAudioUnitMockInstance:"unregisterAudioUnitMockInstance:", a3];
+    *status = 0;
+    [+[VCCoreAudio_AudioUnitMock sharedInstance](VCCoreAudio_AudioUnitMock unregisterAudioUnitMockInstance:"unregisterAudioUnitMockInstance:", dispose];
   }
 
   return v8;
 }
 
-- (BOOL)getVersion:(OpaqueAudioComponent *)a3 outVersion:(unsigned int *)a4 outStatus:(int *)a5
+- (BOOL)getVersion:(OpaqueAudioComponent *)version outVersion:(unsigned int *)outVersion outStatus:(int *)status
 {
   result = 0;
-  if (a3 <= 1684366946)
+  if (version <= 1684366946)
   {
-    if (a3 == 1635017072)
+    if (version == 1635017072)
     {
       v6 = 1937339254;
     }
 
     else
     {
-      if (a3 != 1650616687)
+      if (version != 1650616687)
       {
         return result;
       }
@@ -187,19 +187,19 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     }
   }
 
-  else if (a3 == 1684366947)
+  else if (version == 1684366947)
   {
     v6 = 1734700918;
   }
 
-  else if (a3 == 1919512419)
+  else if (version == 1919512419)
   {
     v6 = 1919512438;
   }
 
   else
   {
-    if (a3 != 1987078511)
+    if (version != 1987078511)
     {
       return result;
     }
@@ -207,24 +207,24 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     v6 = 1987081843;
   }
 
-  *a4 = v6;
-  *a5 = 0;
+  *outVersion = v6;
+  *status = 0;
   return 1;
 }
 
-- (BOOL)copyName:(OpaqueAudioComponent *)a3 outName:(const __CFString *)a4 outStatus:(int *)a5
+- (BOOL)copyName:(OpaqueAudioComponent *)name outName:(const __CFString *)outName outStatus:(int *)status
 {
   result = 0;
-  if (a3 <= 1684366946)
+  if (name <= 1684366946)
   {
-    if (a3 == 1635017072)
+    if (name == 1635017072)
     {
       v7 = &VCAudioToolboxAudioComponentMock_SystemAudioOutputName;
     }
 
     else
     {
-      if (a3 != 1650616687)
+      if (name != 1650616687)
       {
         return result;
       }
@@ -233,19 +233,19 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     }
   }
 
-  else if (a3 == 1684366947)
+  else if (name == 1684366947)
   {
     v7 = &VCAudioToolboxAudioComponentMock_DefaultOutputName;
   }
 
-  else if (a3 == 1919512419)
+  else if (name == 1919512419)
   {
     v7 = &VCAudioToolboxAudioComponentMock_RemoteIOName;
   }
 
   else
   {
-    if (a3 != 1987078511)
+    if (name != 1987078511)
     {
       return result;
     }
@@ -253,8 +253,8 @@ VCAudioToolboxAudioComponentMock *__50__VCAudioToolboxAudioComponentMock_sharedI
     v7 = &VCAudioToolboxAudioComponentMock_VoiceProcessorName;
   }
 
-  *a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:*v7];
-  *a5 = 0;
+  *outName = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:*v7];
+  *status = 0;
   return 1;
 }
 

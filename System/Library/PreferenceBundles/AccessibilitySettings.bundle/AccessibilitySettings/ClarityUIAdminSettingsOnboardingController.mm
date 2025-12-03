@@ -1,13 +1,13 @@
 @interface ClarityUIAdminSettingsOnboardingController
-- (ClarityUIAdminSettingsOnboardingController)initWithCompletion:(id)a3;
+- (ClarityUIAdminSettingsOnboardingController)initWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation ClarityUIAdminSettingsOnboardingController
 
-- (ClarityUIAdminSettingsOnboardingController)initWithCompletion:(id)a3
+- (ClarityUIAdminSettingsOnboardingController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"CLARITY_ADMIN_SETTINGS_TITLE", @"ClarityUISettings");
   v6 = AXLocStringKeyForHomeButtonAndExclusiveModel();
   v7 = settingsLocString(v6, @"ClarityUISettings");
@@ -17,7 +17,7 @@
 
   if (v8)
   {
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(completionCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v9;
 
@@ -26,8 +26,8 @@
     [v11 setTitle:v12 forState:0];
 
     [v11 addTarget:v8 action:"_nextButtonTapped:" forControlEvents:0x2000];
-    v13 = [(ClarityUIAdminSettingsOnboardingController *)v8 buttonTray];
-    [v13 addButton:v11];
+    buttonTray = [(ClarityUIAdminSettingsOnboardingController *)v8 buttonTray];
+    [buttonTray addButton:v11];
   }
 
   return v8;
@@ -39,13 +39,13 @@
   v12.super_class = ClarityUIAdminSettingsOnboardingController;
   [(ClarityUIAdminSettingsOnboardingController *)&v12 viewDidLoad];
   v3 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  v4 = [(ClarityUIAdminSettingsOnboardingController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(ClarityUIAdminSettingsOnboardingController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = objc_alloc_init(ClarityOnboardingAdminPreviewView);
   [(ClarityOnboardingAdminPreviewView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(ClarityUIAdminSettingsOnboardingController *)self contentView];
-  [v6 addSubview:v5];
+  contentView = [(ClarityUIAdminSettingsOnboardingController *)self contentView];
+  [contentView addSubview:v5];
 
   v7 = objc_opt_new();
   v8 = _NSDictionaryOfVariableBindings(@"previewView", v5, 0);

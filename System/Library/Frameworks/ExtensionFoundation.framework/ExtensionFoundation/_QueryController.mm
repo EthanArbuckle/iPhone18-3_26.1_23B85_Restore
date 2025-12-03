@@ -1,18 +1,18 @@
 @interface _QueryController
 - (NSString)description;
 - (_TtC19ExtensionFoundation16_QueryController)init;
-- (void)queryControllerDidUpdate:(id)a3;
+- (void)queryControllerDidUpdate:(id)update;
 @end
 
 @implementation _QueryController
 
-- (void)queryControllerDidUpdate:(id)a3
+- (void)queryControllerDidUpdate:(id)update
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC19ExtensionFoundation16_QueryController_handler);
   v4 = *&self->controller[OBJC_IVAR____TtC19ExtensionFoundation16_QueryController_handler];
-  v9 = a3;
-  v6 = self;
-  v7 = [v9 extensionIdentities];
+  updateCopy = update;
+  selfCopy = self;
+  extensionIdentities = [updateCopy extensionIdentities];
   type metadata accessor for _EXExtensionIdentity();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -22,7 +22,7 @@
 - (NSString)description
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC19ExtensionFoundation16_QueryController_controller);
-  v3 = self;
+  selfCopy = self;
   v4 = [v2 description];
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;

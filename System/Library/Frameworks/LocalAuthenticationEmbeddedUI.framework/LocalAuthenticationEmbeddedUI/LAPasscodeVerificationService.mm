@@ -1,10 +1,10 @@
 @interface LAPasscodeVerificationService
 - (LAPasscodeVerificationService)init;
-- (LAPasscodeVerificationService)initWithControllerBuilder:(id)a3;
-- (void)_startOperation:(id)a3 completion:(id)a4;
+- (LAPasscodeVerificationService)initWithControllerBuilder:(id)builder;
+- (void)_startOperation:(id)operation completion:(id)completion;
 - (void)cancel;
-- (void)startInParentVC:(id)a3 completion:(id)a4;
-- (void)startInParentVC:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)startInParentVC:(id)c completion:(id)completion;
+- (void)startInParentVC:(id)c options:(id)options completion:(id)completion;
 @end
 
 @implementation LAPasscodeVerificationService
@@ -17,44 +17,44 @@
   return v4;
 }
 
-- (LAPasscodeVerificationService)initWithControllerBuilder:(id)a3
+- (LAPasscodeVerificationService)initWithControllerBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = LAPasscodeVerificationService;
   v6 = [(LAPasscodeVerificationService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_builder, a3);
+    objc_storeStrong(&v6->_builder, builder);
   }
 
   return v7;
 }
 
-- (void)startInParentVC:(id)a3 completion:(id)a4
+- (void)startInParentVC:(id)c completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  cCopy = c;
   v8 = objc_alloc_init(LAPasscodeVerificationServiceOptions);
-  [(LAPasscodeVerificationService *)self startInParentVC:v7 options:v8 completion:v6];
+  [(LAPasscodeVerificationService *)self startInParentVC:cCopy options:v8 completion:completionCopy];
 }
 
-- (void)startInParentVC:(id)a3 options:(id)a4 completion:(id)a5
+- (void)startInParentVC:(id)c options:(id)options completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cCopy = c;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = LACLogPasscodeService();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v8;
+    v28 = cCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = optionsCopy;
     _os_log_impl(&dword_238BCD000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ will start on parentVC: %{public}@ with options: %@", buf, 0x20u);
   }
 
@@ -64,9 +64,9 @@
   v22[1] = 3221225472;
   v22[2] = __68__LAPasscodeVerificationService_startInParentVC_options_completion___block_invoke;
   v22[3] = &unk_278A65868;
-  v13 = v8;
+  v13 = cCopy;
   v23 = v13;
-  v14 = v9;
+  v14 = optionsCopy;
   v24 = v14;
   v15 = __68__LAPasscodeVerificationService_startInParentVC_options_completion___block_invoke(v22);
   v16 = [(LAPSPasscodeChangeControllerProviding *)builder passcodeVerificationControllerWithOptions:v15];
@@ -75,7 +75,7 @@
   v19[2] = __68__LAPasscodeVerificationService_startInParentVC_options_completion___block_invoke_2;
   v19[3] = &unk_278A65890;
   objc_copyWeak(&v21, buf);
-  v17 = v10;
+  v17 = completionCopy;
   v20 = v17;
   [(LAPasscodeVerificationService *)self _startOperation:v16 completion:v19];
 
@@ -157,25 +157,25 @@ void __68__LAPasscodeVerificationService_startInParentVC_options_completion___bl
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_238BCD000, a2, OS_LOG_TYPE_ERROR, "%{public}@ will cancel", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOperation:(id)a3 completion:(id)a4
+- (void)_startOperation:(id)operation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_operation, v6);
+  operationCopy = operation;
+  completionCopy = completion;
+  objc_storeWeak(&self->_operation, operationCopy);
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__LAPasscodeVerificationService__startOperation_completion___block_invoke;
   v10[3] = &unk_278A658B8;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = operationCopy;
   v11 = v9;
   [v9 startWithCompletion:v10];
 

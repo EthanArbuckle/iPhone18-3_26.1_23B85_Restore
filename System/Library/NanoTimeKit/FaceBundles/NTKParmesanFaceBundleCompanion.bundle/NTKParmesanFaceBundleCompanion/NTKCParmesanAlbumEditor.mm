@@ -1,32 +1,32 @@
 @interface NTKCParmesanAlbumEditor
-- (BOOL)_writeImageList:(id)a3 version:(int64_t)a4 toDirectory:(id)a5;
-- (BOOL)setShuffleSelection:(id)a3 withKeyAssetIdentifier:(id)a4 albumName:(id)a5;
-- (NTKCParmesanAlbumEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4 shouldFinalize:(BOOL)a5;
+- (BOOL)_writeImageList:(id)list version:(int64_t)version toDirectory:(id)directory;
+- (BOOL)setShuffleSelection:(id)selection withKeyAssetIdentifier:(id)identifier albumName:(id)name;
+- (NTKCParmesanAlbumEditor)initWithResourceDirectory:(id)directory forDevice:(id)device shouldFinalize:(BOOL)finalize;
 - (id)_fetchSingleAsset;
 - (id)localizedShuffleDescription;
 - (id)optionsForSingleAsset;
-- (id)titleForCollectionWithIdentifier:(id)a3;
-- (void)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)a3 completion:(id)a4;
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)setAlbumIdentifier:(id)a3;
-- (void)setShouldFinalize:(BOOL)a3;
+- (id)titleForCollectionWithIdentifier:(id)identifier;
+- (void)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)only completion:(id)completion;
+- (void)finalizeWithProgress:(id)progress completion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)setAlbumIdentifier:(id)identifier;
+- (void)setShouldFinalize:(BOOL)finalize;
 @end
 
 @implementation NTKCParmesanAlbumEditor
 
-- (NTKCParmesanAlbumEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4 shouldFinalize:(BOOL)a5
+- (NTKCParmesanAlbumEditor)initWithResourceDirectory:(id)directory forDevice:(id)device shouldFinalize:(BOOL)finalize
 {
-  v5 = a5;
-  v8 = a3;
+  finalizeCopy = finalize;
+  directoryCopy = directory;
   v42.receiver = self;
   v42.super_class = NTKCParmesanAlbumEditor;
-  v9 = [(NTKCompanionResourceDirectoryEditor *)&v42 initWithResourceDirectory:v8 forDevice:a4];
+  v9 = [(NTKCompanionResourceDirectoryEditor *)&v42 initWithResourceDirectory:directoryCopy forDevice:device];
   v12 = v9;
   if (v9)
   {
-    objc_msgSend_setShouldFinalize_(v9, v10, v5, v11);
-    v15 = objc_msgSend_readerForResourceDirectory_(NTKParmesanAssetReader, v13, v8, v14);
+    objc_msgSend_setShouldFinalize_(v9, v10, finalizeCopy, v11);
+    v15 = objc_msgSend_readerForResourceDirectory_(NTKParmesanAssetReader, v13, directoryCopy, v14);
     v22 = objc_msgSend_shuffleSelection(v15, v16, v17, v18);
     if (!v22)
     {
@@ -57,25 +57,25 @@
   return v12;
 }
 
-- (void)setAlbumIdentifier:(id)a3
+- (void)setAlbumIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v5 = [NTKParmesanShuffleSelection alloc];
-    v8 = objc_msgSend_initWithCollection_(v5, v6, v4, v7);
+    v8 = objc_msgSend_initWithCollection_(v5, v6, identifierCopy, v7);
 
     shuffleSelection = self->_shuffleSelection;
     self->_shuffleSelection = v8;
   }
 }
 
-- (void)setShouldFinalize:(BOOL)a3
+- (void)setShouldFinalize:(BOOL)finalize
 {
-  v4 = a3;
-  if (objc_msgSend_state(self, a2, a3, v3) < 3)
+  finalizeCopy = finalize;
+  if (objc_msgSend_state(self, a2, finalize, v3) < 3)
   {
-    if (v4)
+    if (finalizeCopy)
     {
       v10 = 2;
     }
@@ -98,17 +98,17 @@
   }
 }
 
-- (BOOL)setShuffleSelection:(id)a3 withKeyAssetIdentifier:(id)a4 albumName:(id)a5
+- (BOOL)setShuffleSelection:(id)selection withKeyAssetIdentifier:(id)identifier albumName:(id)name
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v15 = objc_msgSend_shuffleTypesAsNSNumbers(v9, v12, v13, v14);
+  selectionCopy = selection;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v15 = objc_msgSend_shuffleTypesAsNSNumbers(selectionCopy, v12, v13, v14);
   v19 = objc_msgSend_count(v15, v16, v17, v18);
-  v23 = objc_msgSend_collectionIdentifier(v9, v20, v21, v22);
+  v23 = objc_msgSend_collectionIdentifier(selectionCopy, v20, v21, v22);
 
-  isDaily = objc_msgSend_isDaily(v9, v24, v25, v26);
+  isDaily = objc_msgSend_isDaily(selectionCopy, v24, v25, v26);
   if (!v19 && !v23 && (isDaily & 1) == 0)
   {
     v31 = objc_msgSend_logObject(NTKParmesanFaceBundle, v28, v29, v30);
@@ -126,7 +126,7 @@ LABEL_15:
   if (v19)
   {
     v32 = objc_msgSend_containsObject_(v15, v28, &unk_284ED4650, v30);
-    v36 = objc_msgSend_personIdentifiers(v9, v33, v34, v35);
+    v36 = objc_msgSend_personIdentifiers(selectionCopy, v33, v34, v35);
     v40 = v32 ^ (objc_msgSend_count(v36, v37, v38, v39) == 0);
 
     if ((v40 & 1) == 0)
@@ -141,21 +141,21 @@ LABEL_15:
     }
   }
 
-  if ((objc_msgSend_isEqual_(self->_shuffleSelection, v28, v9, v30) & 1) == 0)
+  if ((objc_msgSend_isEqual_(self->_shuffleSelection, v28, selectionCopy, v30) & 1) == 0)
   {
     v45 = objc_msgSend_logObject(NTKParmesanFaceBundle, v42, v43, v44);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
       v51 = 138412546;
-      v52 = v9;
+      v52 = selectionCopy;
       v53 = 2112;
-      v54 = v10;
+      v54 = identifierCopy;
       _os_log_impl(&dword_23BF0C000, v45, OS_LOG_TYPE_DEFAULT, "setShuffleSelection: setting new shuffle selection to %@, keyAsset: %@", &v51, 0x16u);
     }
 
-    objc_storeStrong(&self->_shuffleSelection, a3);
-    objc_storeStrong(&self->_albumName, a5);
-    objc_storeStrong(&self->_keyAssetIdentifier, a4);
+    objc_storeStrong(&self->_shuffleSelection, selection);
+    objc_storeStrong(&self->_albumName, name);
+    objc_storeStrong(&self->_keyAssetIdentifier, identifier);
     uuidString = self->_uuidString;
     self->_uuidString = 0;
 
@@ -168,10 +168,10 @@ LABEL_16:
   return v49;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v8 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -195,7 +195,7 @@ LABEL_16:
   p_buf = &buf;
   v38 = v13;
   aBlock[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v36 = v14;
   v15 = _Block_copy(aBlock);
   if (objc_msgSend_state(self, v16, v17, v18) && objc_msgSend_state(self, v19, v20, v21) <= 2)
@@ -262,17 +262,17 @@ LABEL_7:
   return v13;
 }
 
-- (id)titleForCollectionWithIdentifier:(id)a3
+- (id)titleForCollectionWithIdentifier:(id)identifier
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CD9948];
-  v4 = a3;
+  identifierCopy = identifier;
   v8 = objc_msgSend_sharedPhotoLibrary(v3, v5, v6, v7);
   v12 = objc_msgSend_librarySpecificFetchOptions(v8, v9, v10, v11);
 
   objc_msgSend_setWantsIncrementalChangeDetails_(v12, v13, 0, v14);
   v15 = MEMORY[0x277CD97B8];
-  v29[0] = v4;
+  v29[0] = identifierCopy;
   v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v16, v29, 1);
   v19 = objc_msgSend_fetchAssetCollectionsWithLocalIdentifiers_options_(v15, v18, v17, v12);
 
@@ -282,11 +282,11 @@ LABEL_7:
   return v27;
 }
 
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4
+- (void)finalizeWithProgress:(id)progress completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = objc_msgSend_logObject(NTKParmesanFaceBundle, v8, v9, v10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -314,7 +314,7 @@ LABEL_7:
     block[2] = sub_23BF33F18;
     block[3] = &unk_278BA6B68;
     v24 = &v42;
-    v42 = v7;
+    v42 = completionCopy;
     v25 = MEMORY[0x277D85CD0];
     v26 = block;
 LABEL_8:
@@ -338,7 +338,7 @@ LABEL_8:
     v39[3] = &unk_278BA6EF8;
     v24 = &v40;
     v39[4] = self;
-    v40 = v7;
+    v40 = completionCopy;
     v25 = MEMORY[0x277D85CD0];
     v26 = v39;
     goto LABEL_8;
@@ -358,8 +358,8 @@ LABEL_8:
   v36[3] = &unk_278BA6FC0;
   v24 = &v37;
   v36[4] = self;
-  v37 = v6;
-  v38 = v7;
+  v37 = progressCopy;
+  v38 = completionCopy;
   dispatch_async(v35, v36);
 
 LABEL_9:
@@ -386,10 +386,10 @@ LABEL_9:
   return v2;
 }
 
-- (void)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)a3 completion:(id)a4
+- (void)_createResourceDirectoryForSinglePHAssetWithPreviewOnly:(BOOL)only completion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -412,19 +412,19 @@ LABEL_9:
       v19[3] = &unk_278BA7520;
       v19[4] = self;
       v21 = &v22;
-      v20 = v5;
+      v20 = completionCopy;
       objc_msgSend_transcodeAssetsWithIdentifiers_to_completion_(v10, v18, v16, v17, v19);
     }
 
     else
     {
-      (*(v5 + 2))(v5, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -500,16 +500,16 @@ LABEL_9:
   return v32;
 }
 
-- (BOOL)_writeImageList:(id)a3 version:(int64_t)a4 toDirectory:(id)a5
+- (BOOL)_writeImageList:(id)list version:(int64_t)version toDirectory:(id)directory
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  directoryCopy = directory;
+  listCopy = list;
   v10 = objc_opt_new();
-  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v11, a4, v12);
+  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v11, version, v12);
   objc_msgSend_setObject_forKeyedSubscript_(v10, v14, v13, kParmesanReaderVersionKey);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v10, v15, v9, kParmesanReaderImageListKey);
+  objc_msgSend_setObject_forKeyedSubscript_(v10, v15, listCopy, kParmesanReaderImageListKey);
   v19 = objc_msgSend_collectionIdentifier(self->_shuffleSelection, v16, v17, v18);
 
   if (v19)
@@ -582,7 +582,7 @@ LABEL_9:
     objc_msgSend_setObject_forKeyedSubscript_(v10, v60, uuidString, kParmesanReaderUUIDStringKey);
   }
 
-  v63 = objc_msgSend_stringByAppendingPathComponent_(v8, v60, kParmesanReaderImagelistFileName, v61);
+  v63 = objc_msgSend_stringByAppendingPathComponent_(directoryCopy, v60, kParmesanReaderImagelistFileName, v61);
   v67 = objc_msgSend_logObject(NTKParmesanFaceBundle, v64, v65, v66);
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {

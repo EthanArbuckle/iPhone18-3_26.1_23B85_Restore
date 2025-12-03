@@ -1,12 +1,12 @@
 @interface SCNActionScale
-+ (id)scaleBy:(double)a3 duration:(double)a4;
-+ (id)scaleTo:(double)a3 duration:(double)a4;
++ (id)scaleBy:(double)by duration:(double)duration;
++ (id)scaleTo:(double)to duration:(double)duration;
 - (SCNActionScale)init;
-- (SCNActionScale)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionScale)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionScale
@@ -23,7 +23,7 @@
   return 0;
 }
 
-- (SCNActionScale)initWithCoder:(id)a3
+- (SCNActionScale)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionScale;
@@ -35,29 +35,29 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionScale;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var21), @"_lastRatio"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_scaleTarget"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var20), @"_scaleTargetReversed"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var23), @"_deltaScale"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_mycaction->var24), @"_isReversed"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_mycaction->var25), @"_isRelative"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var21), @"_lastRatio"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_scaleTarget"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var20), @"_scaleTargetReversed"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var23), @"_deltaScale"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_mycaction->var24), @"_isReversed"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_mycaction->var25), @"_isRelative"}];
 }
 
-+ (id)scaleBy:(double)a3 duration:(double)a4
++ (id)scaleBy:(double)by duration:(double)duration
 {
   v6 = objc_alloc_init(SCNActionScale);
   v7 = v6;
-  v8 = a3;
+  byCopy = by;
   mycaction = v6->_mycaction;
-  mycaction->var19 = v8;
-  if ((LODWORD(v8) & 0x60000000) != 0)
+  mycaction->var19 = byCopy;
+  if ((LODWORD(byCopy) & 0x60000000) != 0)
   {
-    v10 = 1.0 / a3;
+    v10 = 1.0 / by;
   }
 
   else
@@ -67,27 +67,27 @@
 
   mycaction->var20 = v10;
   mycaction->var25 = 1;
-  [(SCNAction *)v6 setDuration:a4];
+  [(SCNAction *)v6 setDuration:duration];
   return v7;
 }
 
-+ (id)scaleTo:(double)a3 duration:(double)a4
++ (id)scaleTo:(double)to duration:(double)duration
 {
   v6 = objc_alloc_init(SCNActionScale);
   mycaction = v6->_mycaction;
-  v8 = a3;
-  mycaction->var19 = v8;
-  mycaction->var20 = v8;
+  toCopy = to;
+  mycaction->var19 = toCopy;
+  mycaction->var20 = toCopy;
   mycaction->var25 = 0;
-  [(SCNAction *)v6 setDuration:a4];
+  [(SCNAction *)v6 setDuration:duration];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SCNActionScale;
-  result = [(SCNAction *)&v7 copyWithZone:a3];
+  result = [(SCNAction *)&v7 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 152) = mycaction->var21;

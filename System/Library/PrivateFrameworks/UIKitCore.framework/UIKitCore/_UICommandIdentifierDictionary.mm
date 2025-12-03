@@ -1,15 +1,15 @@
 @interface _UICommandIdentifierDictionary
-- (BOOL)intersectsEntriesFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)intersectsEntriesFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (_UICommandIdentifierDictionary)init;
-- (_UICommandIdentifierDictionary)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)intersectingIdentifiersFromDictionary:(id)a3;
-- (id)objectForAction:(SEL)a3 propertyList:(id)a4;
-- (void)addEntriesFromDictionary:(id)a3;
-- (void)removeEntriesFromDictionary:(id)a3;
-- (void)removeObjectForAction:(SEL)a3 propertyList:(id)a4;
-- (void)setObject:(id)a3 forAction:(SEL)a4 propertyList:(id)a5;
+- (_UICommandIdentifierDictionary)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)intersectingIdentifiersFromDictionary:(id)dictionary;
+- (id)objectForAction:(SEL)action propertyList:(id)list;
+- (void)addEntriesFromDictionary:(id)dictionary;
+- (void)removeEntriesFromDictionary:(id)dictionary;
+- (void)removeObjectForAction:(SEL)action propertyList:(id)list;
+- (void)setObject:(id)object forAction:(SEL)action propertyList:(id)list;
 @end
 
 @implementation _UICommandIdentifierDictionary
@@ -33,19 +33,19 @@
   return v2;
 }
 
-- (_UICommandIdentifierDictionary)initWithDictionary:(id)a3
+- (_UICommandIdentifierDictionary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _UICommandIdentifierDictionary;
   v5 = [(_UICommandIdentifierDictionary *)&v11 init];
   if (v5)
   {
-    v6 = [v4[1] copy];
+    v6 = [dictionaryCopy[1] copy];
     actionDictionary = v5->_actionDictionary;
     v5->_actionDictionary = v6;
 
-    v8 = [v4[2] mutableCopy];
+    v8 = [dictionaryCopy[2] mutableCopy];
     actionPropertyListDictionary = v5->_actionPropertyListDictionary;
     v5->_actionPropertyListDictionary = v8;
   }
@@ -53,47 +53,47 @@
   return v5;
 }
 
-- (id)objectForAction:(SEL)a3 propertyList:(id)a4
+- (id)objectForAction:(SEL)action propertyList:(id)list
 {
-  if (a4)
+  if (list)
   {
     actionPropertyListDictionary = self->_actionPropertyListDictionary;
-    v5 = [_UICommandIdentifier identifierWithAction:a3 propertyList:?];
+    v5 = [_UICommandIdentifier identifierWithAction:action propertyList:?];
     v6 = [(NSMutableDictionary *)actionPropertyListDictionary objectForKeyedSubscript:v5];
   }
 
   else
   {
-    v6 = [(_UISelectorDictionary *)self->_actionDictionary objectForSelector:a3];
+    v6 = [(_UISelectorDictionary *)self->_actionDictionary objectForSelector:action];
   }
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forAction:(SEL)a4 propertyList:(id)a5
+- (void)setObject:(id)object forAction:(SEL)action propertyList:(id)list
 {
-  if (a5)
+  if (list)
   {
     actionPropertyListDictionary = self->_actionPropertyListDictionary;
-    v8 = a3;
-    v10 = [_UICommandIdentifier identifierWithAction:a4 propertyList:a5];
-    [(NSMutableDictionary *)actionPropertyListDictionary setObject:v8 forKeyedSubscript:?];
+    objectCopy = object;
+    objectCopy2 = [_UICommandIdentifier identifierWithAction:action propertyList:list];
+    [(NSMutableDictionary *)actionPropertyListDictionary setObject:objectCopy forKeyedSubscript:?];
   }
 
   else
   {
     actionDictionary = self->_actionDictionary;
-    v10 = a3;
+    objectCopy2 = object;
     [_UISelectorDictionary setObject:"setObject:forSelector:" forSelector:?];
   }
 }
 
-- (void)removeObjectForAction:(SEL)a3 propertyList:(id)a4
+- (void)removeObjectForAction:(SEL)action propertyList:(id)list
 {
-  if (a4)
+  if (list)
   {
     actionPropertyListDictionary = self->_actionPropertyListDictionary;
-    v7 = [_UICommandIdentifier identifierWithAction:a3 propertyList:?];
+    v7 = [_UICommandIdentifier identifierWithAction:action propertyList:?];
     [(NSMutableDictionary *)actionPropertyListDictionary removeObjectForKey:v7];
   }
 
@@ -101,20 +101,20 @@
   {
     actionDictionary = self->_actionDictionary;
 
-    [(_UISelectorDictionary *)actionDictionary removeObjectForSelector:a3];
+    [(_UISelectorDictionary *)actionDictionary removeObjectForSelector:action];
   }
 }
 
-- (BOOL)intersectsEntriesFromDictionary:(id)a3
+- (BOOL)intersectsEntriesFromDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = self->_actionPropertyListDictionary;
-  v6 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allSelectors = self->_actionPropertyListDictionary;
+  v6 = [(NSMutableDictionary *)allSelectors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -125,10 +125,10 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSelectors);
         }
 
-        v10 = [v4[2] objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v10 = [dictionaryCopy[2] objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
 
         if (v10)
         {
@@ -137,7 +137,7 @@
         }
       }
 
-      v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [(NSMutableDictionary *)allSelectors countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -147,32 +147,32 @@
     }
   }
 
-  v5 = [(_UISelectorDictionary *)self->_actionDictionary allSelectors];
-  v11 = [v4[1] allSelectors];
-  v12 = [(NSMutableDictionary *)v5 intersectsSet:v11];
+  allSelectors = [(_UISelectorDictionary *)self->_actionDictionary allSelectors];
+  allSelectors2 = [dictionaryCopy[1] allSelectors];
+  v12 = [(NSMutableDictionary *)allSelectors intersectsSet:allSelectors2];
 
 LABEL_11:
   return v12;
 }
 
-- (id)intersectingIdentifiersFromDictionary:(id)a3
+- (id)intersectingIdentifiersFromDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E695DFA8];
   actionPropertyListDictionary = self->_actionPropertyListDictionary;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)actionPropertyListDictionary allKeys];
-  v8 = [v4 setWithArray:v7];
+  dictionaryCopy = dictionary;
+  allKeys = [(NSMutableDictionary *)actionPropertyListDictionary allKeys];
+  v8 = [v4 setWithArray:allKeys];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [v6[2] allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys2 = [dictionaryCopy[2] allKeys];
+  v11 = [v9 setWithArray:allKeys2];
   [v8 intersectSet:v11];
 
-  v12 = [(_UISelectorDictionary *)self->_actionDictionary allSelectors];
-  v13 = v6[1];
+  allSelectors = [(_UISelectorDictionary *)self->_actionDictionary allSelectors];
+  v13 = dictionaryCopy[1];
 
-  v14 = [v13 allSelectors];
-  [v12 intersectSet:v14];
+  allSelectors2 = [v13 allSelectors];
+  [allSelectors intersectSet:allSelectors2];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -180,52 +180,52 @@ LABEL_11:
   v17[3] = &unk_1E71074D8;
   v15 = v8;
   v18 = v15;
-  [v12 enumerateSelectorsUsingBlock:v17];
+  [allSelectors enumerateSelectorsUsingBlock:v17];
 
   return v15;
 }
 
-- (void)removeEntriesFromDictionary:(id)a3
+- (void)removeEntriesFromDictionary:(id)dictionary
 {
   actionPropertyListDictionary = self->_actionPropertyListDictionary;
-  v5 = *(a3 + 2);
-  v6 = a3;
-  v7 = [v5 allKeys];
-  [(NSMutableDictionary *)actionPropertyListDictionary removeObjectsForKeys:v7];
+  v5 = *(dictionary + 2);
+  dictionaryCopy = dictionary;
+  allKeys = [v5 allKeys];
+  [(NSMutableDictionary *)actionPropertyListDictionary removeObjectsForKeys:allKeys];
 
   actionDictionary = self->_actionDictionary;
-  v9 = v6[1];
+  v9 = dictionaryCopy[1];
 
-  v10 = [v9 allSelectors];
-  [(_UISelectorDictionary *)actionDictionary removeObjectsForSelectors:v10];
+  allSelectors = [v9 allSelectors];
+  [(_UISelectorDictionary *)actionDictionary removeObjectsForSelectors:allSelectors];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
   actionPropertyListDictionary = self->_actionPropertyListDictionary;
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v5 = *(dictionary + 2);
+  dictionaryCopy = dictionary;
   [(NSMutableDictionary *)actionPropertyListDictionary addEntriesFromDictionary:v5];
   actionDictionary = self->_actionDictionary;
-  v8 = v6[1];
+  v8 = dictionaryCopy[1];
 
   [(_UISelectorDictionary *)actionDictionary addEntriesFromDictionary:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UICommandIdentifierDictionary alloc];
 
   return [(_UICommandIdentifierDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(_UISelectorDictionary *)self->_actionDictionary isEqual:v4[1]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(_UISelectorDictionary *)self->_actionDictionary isEqual:equalCopy[1]])
   {
-    v5 = [(NSMutableDictionary *)self->_actionPropertyListDictionary isEqualToDictionary:v4[2]];
+    v5 = [(NSMutableDictionary *)self->_actionPropertyListDictionary isEqualToDictionary:equalCopy[2]];
   }
 
   else

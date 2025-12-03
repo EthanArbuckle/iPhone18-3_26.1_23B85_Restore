@@ -1,144 +1,144 @@
 @interface MPPlaybackArchive
-- (BOOL)isEqual:(id)a3;
-- (MPPlaybackArchive)initWithBlock:(id)a3;
-- (MPPlaybackArchive)initWithCoder:(id)a3;
-- (MPPlaybackArchive)initWithType:(int64_t)a3 sessionIdentifier:(id)a4 data:(id)a5 dataType:(id)a6 bundleIdentifier:(id)a7 supportedOptions:(unint64_t)a8 displayProperties:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (MPPlaybackArchive)initWithBlock:(id)block;
+- (MPPlaybackArchive)initWithCoder:(id)coder;
+- (MPPlaybackArchive)initWithType:(int64_t)type sessionIdentifier:(id)identifier data:(id)data dataType:(id)dataType bundleIdentifier:(id)bundleIdentifier supportedOptions:(unint64_t)options displayProperties:(id)properties;
 - (NSString)description;
-- (id)copyWithOptions:(unint64_t)a3;
+- (id)copyWithOptions:(unint64_t)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBOOLValue:(BOOL)a3 forOption:(int64_t)a4;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setDisplayProperties:(id)a3;
-- (void)setFallbackStoreIdentifier:(id)a3;
-- (void)setSessionIdentifier:(id)a3 type:(id)a4 data:(id)a5;
-- (void)setSupportedOptions:(unint64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBOOLValue:(BOOL)value forOption:(int64_t)option;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setDisplayProperties:(id)properties;
+- (void)setFallbackStoreIdentifier:(id)identifier;
+- (void)setSessionIdentifier:(id)identifier type:(id)type data:(id)data;
+- (void)setSupportedOptions:(unint64_t)options;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation MPPlaybackArchive
 
-- (void)setFallbackStoreIdentifier:(id)a3
+- (void)setFallbackStoreIdentifier:(id)identifier
 {
-  v5 = a3;
-  v8 = v5;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   if (self->_final)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:253 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:253 description:@"Attempt to mutate after finalization."];
 
-    v5 = v8;
+    identifierCopy = v8;
   }
 
-  v6 = [v5 copy];
+  v6 = [identifierCopy copy];
   [(NSMutableDictionary *)self->_storage setObject:v6 forKeyedSubscript:@"fsi"];
 }
 
-- (void)setDisplayProperties:(id)a3
+- (void)setDisplayProperties:(id)properties
 {
-  v5 = a3;
-  v9 = v5;
+  propertiesCopy = properties;
+  v9 = propertiesCopy;
   if (self->_final)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:248 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:248 description:@"Attempt to mutate after finalization."];
 
-    v5 = v9;
+    propertiesCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [propertiesCopy copy];
   displayProperties = self->_displayProperties;
   self->_displayProperties = v6;
 }
 
-- (void)setSupportedOptions:(unint64_t)a3
+- (void)setSupportedOptions:(unint64_t)options
 {
   if (self->_final)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:243 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:243 description:@"Attempt to mutate after finalization."];
   }
 
-  self->_supportedOptions = a3;
+  self->_supportedOptions = options;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v9 = v5;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   if (self->_final)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:238 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:238 description:@"Attempt to mutate after finalization."];
 
-    v5 = v9;
+    identifierCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [identifierCopy copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v6;
 }
 
-- (void)setSessionIdentifier:(id)a3 type:(id)a4 data:(id)a5
+- (void)setSessionIdentifier:(id)identifier type:(id)type data:(id)data
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeCopy = type;
+  dataCopy = data;
   if (self->_final)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:231 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:231 description:@"Attempt to mutate after finalization."];
   }
 
-  v11 = [v18 copy];
+  v11 = [identifierCopy copy];
   playbackSessionIdentifier = self->_playbackSessionIdentifier;
   self->_playbackSessionIdentifier = v11;
 
-  v13 = [v9 copy];
+  v13 = [typeCopy copy];
   playbackSessionType = self->_playbackSessionType;
   self->_playbackSessionType = v13;
 
-  v15 = [v10 copy];
+  v15 = [dataCopy copy];
   playbackSessionData = self->_playbackSessionData;
   self->_playbackSessionData = v15;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   if (self->_final)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:226 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchive.m" lineNumber:226 description:@"Attempt to mutate after finalization."];
   }
 
-  self->_type = a3;
+  self->_type = type;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"archiveType"];
-  [v5 encodeObject:self->_playbackSessionIdentifier forKey:@"sessionID"];
-  [v5 encodeObject:self->_playbackSessionData forKey:@"data"];
-  [v5 encodeObject:self->_playbackSessionType forKey:@"sessionType"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
-  [v5 encodeInteger:self->_supportedOptions forKey:@"supportedOptions"];
-  [v5 encodeObject:self->_displayProperties forKey:@"displayProperties"];
-  [v5 encodeInteger:self->_copyOptions forKey:@"copyOptions"];
-  [v5 encodeInteger:self->_queueControlOptions forKey:@"queueControlOptions"];
-  [v5 encodeObject:self->_storage forKey:@"storage"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"archiveType"];
+  [coderCopy encodeObject:self->_playbackSessionIdentifier forKey:@"sessionID"];
+  [coderCopy encodeObject:self->_playbackSessionData forKey:@"data"];
+  [coderCopy encodeObject:self->_playbackSessionType forKey:@"sessionType"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleID"];
+  [coderCopy encodeInteger:self->_supportedOptions forKey:@"supportedOptions"];
+  [coderCopy encodeObject:self->_displayProperties forKey:@"displayProperties"];
+  [coderCopy encodeInteger:self->_copyOptions forKey:@"copyOptions"];
+  [coderCopy encodeInteger:self->_queueControlOptions forKey:@"queueControlOptions"];
+  [coderCopy encodeObject:self->_storage forKey:@"storage"];
 }
 
-- (MPPlaybackArchive)initWithCoder:(id)a3
+- (MPPlaybackArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__MPPlaybackArchive_initWithCoder___block_invoke;
   v11[3] = &unk_1E767A500;
-  v12 = v4;
-  v5 = v4;
+  v12 = coderCopy;
+  v5 = coderCopy;
   v6 = [(MPPlaybackArchive *)self initWithBlock:v11];
   v6->_copyOptions = [v5 decodeIntegerForKey:@"copyOptions"];
   v6->_queueControlOptions = [v5 decodeIntegerForKey:@"queueControlOptions"];
@@ -179,14 +179,14 @@ void __35__MPPlaybackArchive_initWithCoder___block_invoke(uint64_t a1, void *a2)
   v8 = v5 ^ 0x7465646279746573;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   v12 = [v10 length];
   if (v12 >= 8)
   {
     v13 = v12 & 0xFFFFFFFFFFFFFFF8;
     do
     {
-      v14 = *v11++;
+      v14 = *uTF8String++;
       v15 = (v4 + v6) ^ __ROR8__(v6, 51);
       v16 = v7 + (v8 ^ v14);
       v17 = __ROR8__(v8 ^ v14, 48);
@@ -221,8 +221,8 @@ LABEL_5:
   v21 = v12;
   do
   {
-    v22 = *v11;
-    v11 = (v11 + 1);
+    v22 = *uTF8String;
+    uTF8String = (uTF8String + 1);
     v20 |= v22 << v19;
     v19 += 8;
     --v21;
@@ -280,7 +280,7 @@ LABEL_10:
 
   v378 = v36;
   v44 = self->_playbackSessionIdentifier;
-  v45 = [(NSString *)v44 UTF8String];
+  uTF8String2 = [(NSString *)v44 UTF8String];
   v46 = [(NSString *)v44 length];
   v47 = v46;
   v48 = HIBYTE(v378);
@@ -296,7 +296,7 @@ LABEL_10:
     }
 
     v53 = 8 * v50;
-    v54 = v45;
+    v54 = uTF8String2;
     v55 = v378 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -316,7 +316,7 @@ LABEL_10:
     v372 = v61;
     v354 = v60 ^ v55;
     v360 = v62 ^ __ROR8__(v57, 47);
-    v45 += v51;
+    uTF8String2 += v51;
     v378 = (v51 + v48) << 56;
     v47 = v52;
   }
@@ -329,8 +329,8 @@ LABEL_10:
     v65 = v372;
     do
     {
-      v67 = *v45;
-      v45 += 8;
+      v67 = *uTF8String2;
+      uTF8String2 += 8;
       v68 = v65 ^ v67;
       v69 = v63 + v64;
       v70 = v69 ^ __ROR8__(v64, 51);
@@ -362,7 +362,7 @@ LABEL_24:
     v77 = v47;
     do
     {
-      v78 = *v45++;
+      v78 = *uTF8String2++;
       v76 |= v78 << v75;
       v75 += 8;
       --v77;
@@ -394,7 +394,7 @@ LABEL_24:
 LABEL_33:
 
   v80 = self->_playbackSessionData;
-  v81 = [(NSData *)v80 bytes];
+  bytes = [(NSData *)v80 bytes];
   v82 = [(NSData *)v80 length];
   v83 = v82;
   v84 = HIBYTE(v378);
@@ -410,7 +410,7 @@ LABEL_33:
     }
 
     v89 = 8 * v86;
-    v90 = v81;
+    v90 = bytes;
     v91 = v378 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -430,7 +430,7 @@ LABEL_33:
     v372 = v97;
     v354 = v96 ^ v91;
     v360 = v98 ^ __ROR8__(v93, 47);
-    v81 = (v81 + v87);
+    bytes = (bytes + v87);
     v378 = (v87 + v84) << 56;
     v83 = v88;
   }
@@ -443,7 +443,7 @@ LABEL_33:
     v101 = v372;
     do
     {
-      v103 = *v81++;
+      v103 = *bytes++;
       v104 = v101 ^ v103;
       v105 = v99 + v100;
       v106 = v105 ^ __ROR8__(v100, 51);
@@ -475,8 +475,8 @@ LABEL_42:
     v113 = v83;
     do
     {
-      v114 = *v81;
-      v81 = (v81 + 1);
+      v114 = *bytes;
+      bytes = (bytes + 1);
       v112 |= v114 << v111;
       v111 += 8;
       --v113;
@@ -508,7 +508,7 @@ LABEL_42:
 LABEL_51:
 
   v116 = self->_playbackSessionType;
-  v117 = [(NSString *)v116 UTF8String];
+  uTF8String3 = [(NSString *)v116 UTF8String];
   v118 = [(NSString *)v116 length];
   v119 = v118;
   v120 = HIBYTE(v378);
@@ -524,7 +524,7 @@ LABEL_51:
     }
 
     v125 = 8 * v122;
-    v126 = v117;
+    v126 = uTF8String3;
     v127 = v378 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -544,7 +544,7 @@ LABEL_51:
     v372 = v133;
     v354 = v132 ^ v127;
     v360 = v134 ^ __ROR8__(v129, 47);
-    v117 += v123;
+    uTF8String3 += v123;
     v378 = (v123 + v120) << 56;
     v119 = v124;
   }
@@ -557,8 +557,8 @@ LABEL_51:
     v137 = v372;
     do
     {
-      v139 = *v117;
-      v117 += 8;
+      v139 = *uTF8String3;
+      uTF8String3 += 8;
       v140 = v137 ^ v139;
       v141 = v135 + v136;
       v142 = v141 ^ __ROR8__(v136, 51);
@@ -590,7 +590,7 @@ LABEL_60:
     v149 = v119;
     do
     {
-      v150 = *v117++;
+      v150 = *uTF8String3++;
       v148 |= v150 << v147;
       v147 += 8;
       --v149;
@@ -622,7 +622,7 @@ LABEL_60:
 LABEL_69:
 
   v152 = self->_bundleIdentifier;
-  v153 = [(NSString *)v152 UTF8String];
+  uTF8String4 = [(NSString *)v152 UTF8String];
   v154 = [(NSString *)v152 length];
   v155 = v154;
   v156 = HIBYTE(v378);
@@ -638,7 +638,7 @@ LABEL_69:
     }
 
     v161 = 8 * v158;
-    v162 = v153;
+    v162 = uTF8String4;
     v163 = v378 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -658,7 +658,7 @@ LABEL_69:
     v372 = v169;
     v354 = v168 ^ v163;
     v360 = v170 ^ __ROR8__(v165, 47);
-    v153 += v159;
+    uTF8String4 += v159;
     v378 = (v159 + v156) << 56;
     v155 = v160;
   }
@@ -671,8 +671,8 @@ LABEL_69:
     v173 = v372;
     do
     {
-      v175 = *v153;
-      v153 += 8;
+      v175 = *uTF8String4;
+      uTF8String4 += 8;
       v176 = v173 ^ v175;
       v177 = v171 + v172;
       v178 = v177 ^ __ROR8__(v172, 51);
@@ -704,7 +704,7 @@ LABEL_78:
     v185 = v155;
     do
     {
-      v186 = *v153++;
+      v186 = *uTF8String4++;
       v184 |= v186 << v183;
       v183 += 8;
       --v185;
@@ -1040,10 +1040,10 @@ LABEL_87:
   return (v349 + v350) ^ __ROR8__(v349, 47) ^ v352 ^ __ROR8__(v349 + v350, 32) ^ v352 ^ __ROR8__(v350 ^ v351, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v22 = 1;
   }
@@ -1053,40 +1053,40 @@ LABEL_87:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(MPPlaybackArchive *)v5 type])
       {
         playbackSessionIdentifier = self->_playbackSessionIdentifier;
-        v8 = [(MPPlaybackArchive *)v5 playbackSessionIdentifier];
-        if (playbackSessionIdentifier == v8 || [(NSString *)playbackSessionIdentifier isEqual:v8])
+        playbackSessionIdentifier = [(MPPlaybackArchive *)v5 playbackSessionIdentifier];
+        if (playbackSessionIdentifier == playbackSessionIdentifier || [(NSString *)playbackSessionIdentifier isEqual:playbackSessionIdentifier])
         {
           playbackSessionData = self->_playbackSessionData;
-          v10 = [(MPPlaybackArchive *)v5 playbackSessionData];
-          if (playbackSessionData == v10 || [(NSData *)playbackSessionData isEqual:v10])
+          playbackSessionData = [(MPPlaybackArchive *)v5 playbackSessionData];
+          if (playbackSessionData == playbackSessionData || [(NSData *)playbackSessionData isEqual:playbackSessionData])
           {
             playbackSessionType = self->_playbackSessionType;
-            v12 = [(MPPlaybackArchive *)v5 playbackSessionType];
-            if (playbackSessionType == v12 || [(NSString *)playbackSessionType isEqual:v12])
+            playbackSessionType = [(MPPlaybackArchive *)v5 playbackSessionType];
+            if (playbackSessionType == playbackSessionType || [(NSString *)playbackSessionType isEqual:playbackSessionType])
             {
               bundleIdentifier = self->_bundleIdentifier;
-              v14 = [(MPPlaybackArchive *)v5 bundleIdentifier];
-              if ((bundleIdentifier == v14 || [(NSString *)bundleIdentifier isEqual:v14]) && (supportedOptions = self->_supportedOptions, supportedOptions == [(MPPlaybackArchive *)v5 supportedOptions]))
+              bundleIdentifier = [(MPPlaybackArchive *)v5 bundleIdentifier];
+              if ((bundleIdentifier == bundleIdentifier || [(NSString *)bundleIdentifier isEqual:bundleIdentifier]) && (supportedOptions = self->_supportedOptions, supportedOptions == [(MPPlaybackArchive *)v5 supportedOptions]))
               {
                 displayProperties = self->_displayProperties;
-                v17 = [(MPPlaybackArchive *)v5 displayProperties];
-                if ((displayProperties == v17 || [(MPPlaybackArchiveDisplayProperties *)displayProperties isEqual:v17]) && (copyOptions = self->_copyOptions, copyOptions == [(MPPlaybackArchive *)v5 copyOptions]) && (queueControlOptions = self->_queueControlOptions, queueControlOptions == [(MPPlaybackArchive *)v5 queueControlOptions]))
+                displayProperties = [(MPPlaybackArchive *)v5 displayProperties];
+                if ((displayProperties == displayProperties || [(MPPlaybackArchiveDisplayProperties *)displayProperties isEqual:displayProperties]) && (copyOptions = self->_copyOptions, copyOptions == [(MPPlaybackArchive *)v5 copyOptions]) && (queueControlOptions = self->_queueControlOptions, queueControlOptions == [(MPPlaybackArchive *)v5 queueControlOptions]))
                 {
                   storage = self->_storage;
-                  v21 = [(MPPlaybackArchive *)v5 storage];
-                  if (storage == v21)
+                  storage = [(MPPlaybackArchive *)v5 storage];
+                  if (storage == storage)
                   {
                     v22 = 1;
                   }
 
                   else
                   {
-                    v22 = [(NSMutableDictionary *)storage isEqual:v21];
+                    v22 = [(NSMutableDictionary *)storage isEqual:storage];
                   }
                 }
 
@@ -1139,22 +1139,22 @@ LABEL_87:
 {
   v16 = MEMORY[0x1E696AEC0];
   v15 = objc_opt_class();
-  v14 = [(MPPlaybackArchive *)self type];
-  v3 = [(MPPlaybackArchive *)self playbackSessionIdentifier];
-  v4 = [(MPPlaybackArchive *)self playbackSessionData];
-  v5 = [(MPPlaybackArchive *)self playbackSessionType];
-  v6 = [(MPPlaybackArchive *)self bundleIdentifier];
-  v7 = [(MPPlaybackArchive *)self supportedOptions];
-  v8 = [(MPPlaybackArchive *)self queueControlOptions];
-  v9 = [(MPPlaybackArchive *)self displayProperties];
-  v10 = [(MPPlaybackArchive *)self copyOptions];
-  v11 = [(MPPlaybackArchive *)self storage];
-  v12 = [v16 stringWithFormat:@"<%@: %p type=%ld playbackSessionIdentifier=%@ playbackSessionData=%@ playbackSessionType=%@ bundleIdentifier=%@ supportedOptions=%lu queueControlOptions=%lu displayProperties=%@ copyOptions=%lu> storage=%@", v15, self, v14, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  type = [(MPPlaybackArchive *)self type];
+  playbackSessionIdentifier = [(MPPlaybackArchive *)self playbackSessionIdentifier];
+  playbackSessionData = [(MPPlaybackArchive *)self playbackSessionData];
+  playbackSessionType = [(MPPlaybackArchive *)self playbackSessionType];
+  bundleIdentifier = [(MPPlaybackArchive *)self bundleIdentifier];
+  supportedOptions = [(MPPlaybackArchive *)self supportedOptions];
+  queueControlOptions = [(MPPlaybackArchive *)self queueControlOptions];
+  displayProperties = [(MPPlaybackArchive *)self displayProperties];
+  copyOptions = [(MPPlaybackArchive *)self copyOptions];
+  storage = [(MPPlaybackArchive *)self storage];
+  v12 = [v16 stringWithFormat:@"<%@: %p type=%ld playbackSessionIdentifier=%@ playbackSessionData=%@ playbackSessionType=%@ bundleIdentifier=%@ supportedOptions=%lu queueControlOptions=%lu displayProperties=%@ copyOptions=%lu> storage=%@", v15, self, type, playbackSessionIdentifier, playbackSessionData, playbackSessionType, bundleIdentifier, supportedOptions, queueControlOptions, displayProperties, copyOptions, storage];
 
   return v12;
 }
 
-- (id)copyWithOptions:(unint64_t)a3
+- (id)copyWithOptions:(unint64_t)options
 {
   v5 = [MPPlaybackArchive alloc];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1162,9 +1162,9 @@ LABEL_87:
   v9[2] = __37__MPPlaybackArchive_copyWithOptions___block_invoke;
   v9[3] = &unk_1E767A4D8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = options;
   v6 = [(MPPlaybackArchive *)v5 initWithBlock:v9];
-  [(MPPlaybackArchive *)v6 setCopyOptions:a3];
+  [(MPPlaybackArchive *)v6 setCopyOptions:options];
   [(MPPlaybackArchive *)v6 setQueueControlOptions:self->_queueControlOptions];
   v7 = [(NSMutableDictionary *)self->_storage copy];
   [(MPPlaybackArchive *)v6 setStorage:v7];
@@ -1193,10 +1193,10 @@ void __37__MPPlaybackArchive_copyWithOptions___block_invoke(uint64_t a1, void *a
   [v9 setDisplayProperties:v8];
 }
 
-- (void)setBOOLValue:(BOOL)a3 forOption:(int64_t)a4
+- (void)setBOOLValue:(BOOL)value forOption:(int64_t)option
 {
-  v5 = 1 << a4;
-  if (a3)
+  v5 = 1 << option;
+  if (value)
   {
     v6 = [(MPPlaybackArchive *)self queueControlOptions]| v5;
   }
@@ -1209,29 +1209,29 @@ void __37__MPPlaybackArchive_copyWithOptions___block_invoke(uint64_t a1, void *a
   [(MPPlaybackArchive *)self setQueueControlOptions:v6];
 }
 
-- (MPPlaybackArchive)initWithType:(int64_t)a3 sessionIdentifier:(id)a4 data:(id)a5 dataType:(id)a6 bundleIdentifier:(id)a7 supportedOptions:(unint64_t)a8 displayProperties:(id)a9
+- (MPPlaybackArchive)initWithType:(int64_t)type sessionIdentifier:(id)identifier data:(id)data dataType:(id)dataType bundleIdentifier:(id)bundleIdentifier supportedOptions:(unint64_t)options displayProperties:(id)properties
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  identifierCopy = identifier;
+  dataCopy = data;
+  dataTypeCopy = dataType;
+  bundleIdentifierCopy = bundleIdentifier;
+  propertiesCopy = properties;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __118__MPPlaybackArchive_initWithType_sessionIdentifier_data_dataType_bundleIdentifier_supportedOptions_displayProperties___block_invoke;
   v27[3] = &unk_1E767A4B0;
-  v28 = v15;
-  v29 = v17;
-  v30 = v16;
-  v31 = v18;
-  v33 = a3;
-  v34 = a8;
-  v32 = v19;
-  v20 = v19;
-  v21 = v18;
-  v22 = v16;
-  v23 = v17;
-  v24 = v15;
+  v28 = identifierCopy;
+  v29 = dataTypeCopy;
+  v30 = dataCopy;
+  v31 = bundleIdentifierCopy;
+  typeCopy = type;
+  optionsCopy = options;
+  v32 = propertiesCopy;
+  v20 = propertiesCopy;
+  v21 = bundleIdentifierCopy;
+  v22 = dataCopy;
+  v23 = dataTypeCopy;
+  v24 = identifierCopy;
   v25 = [(MPPlaybackArchive *)self initWithBlock:v27];
 
   return v25;
@@ -1248,19 +1248,19 @@ void __118__MPPlaybackArchive_initWithType_sessionIdentifier_data_dataType_bundl
   [v4 setDisplayProperties:a1[8]];
 }
 
-- (MPPlaybackArchive)initWithBlock:(id)a3
+- (MPPlaybackArchive)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = MPPlaybackArchive;
   v5 = [(MPPlaybackArchive *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v5->_storage;
-    v5->_storage = v6;
+    v5->_storage = dictionary;
 
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_final = 1;
   }
 

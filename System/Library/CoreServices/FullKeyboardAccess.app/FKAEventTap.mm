@@ -1,12 +1,12 @@
 @interface FKAEventTap
-- (BOOL)_handleEventRepresentation:(id)a3;
+- (BOOL)_handleEventRepresentation:(id)representation;
 - (FKAEventTap)init;
 - (FKAEventTapDelegate)delegate;
-- (id)_keyboardEventForEventRepresentation:(id)a3;
-- (void)_repostEventRepresentation:(id)a3;
+- (id)_keyboardEventForEventRepresentation:(id)representation;
+- (void)_repostEventRepresentation:(id)representation;
 - (void)_updateForContinuityStateChange;
 - (void)dealloc;
-- (void)repostDownAndUpForKeyboardEvent:(id)a3;
+- (void)repostDownAndUpForKeyboardEvent:(id)event;
 @end
 
 @implementation FKAEventTap
@@ -69,10 +69,10 @@
   [(FKAEventTap *)&v4 dealloc];
 }
 
-- (BOOL)_handleEventRepresentation:(id)a3
+- (BOOL)_handleEventRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([v4 senderID] == 0x8000000817319378 || (objc_msgSend(v4, "keyInfo"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || objc_msgSend(v4, "senderID") == 0x8000000817319373)
+  representationCopy = representation;
+  if ([representationCopy senderID] == 0x8000000817319378 || (objc_msgSend(representationCopy, "keyInfo"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || objc_msgSend(representationCopy, "senderID") == 0x8000000817319373)
   {
     v6 = 0;
   }
@@ -84,7 +84,7 @@
     v8[2] = sub_100003DA0;
     v8[3] = &unk_100028790;
     v8[4] = self;
-    v9 = v4;
+    v9 = representationCopy;
     dispatch_async(&_dispatch_main_q, v8);
 
     v6 = 1;
@@ -93,9 +93,9 @@
   return v6;
 }
 
-- (void)repostDownAndUpForKeyboardEvent:(id)a3
+- (void)repostDownAndUpForKeyboardEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = FKALogCommon();
@@ -105,99 +105,99 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = eventCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Reposting %@", &v14, 0xCu);
     }
 
-    v7 = v4;
+    v7 = eventCopy;
     if (([v7 isDownEvent]& 1) == 0)
     {
-      v8 = [(FKAEventTap *)self keyCodesToDownEventRepresentations];
+      keyCodesToDownEventRepresentations = [(FKAEventTap *)self keyCodesToDownEventRepresentations];
       v9 = [NSNumber numberWithUnsignedInteger:[v7 keyCode]];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v10 = [keyCodesToDownEventRepresentations objectForKeyedSubscript:v9];
 
       [(FKAEventTap *)self _repostEventRepresentation:v10];
     }
 
-    v11 = [v7 eventRepresentation];
-    [(FKAEventTap *)self _repostEventRepresentation:v11];
+    eventRepresentation = [v7 eventRepresentation];
+    [(FKAEventTap *)self _repostEventRepresentation:eventRepresentation];
 
     if ([v7 isDownEvent])
     {
-      v12 = [(FKAEventTap *)self keyCodesRequiringRepostForUpEvent];
+      keyCodesRequiringRepostForUpEvent = [(FKAEventTap *)self keyCodesRequiringRepostForUpEvent];
       v13 = [NSNumber numberWithUnsignedInteger:[v7 keyCode]];
-      [v12 addObject:v13];
+      [keyCodesRequiringRepostForUpEvent addObject:v13];
     }
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100014174(v4, v7);
+    sub_100014174(eventCopy, v7);
   }
 }
 
-- (void)_repostEventRepresentation:(id)a3
+- (void)_repostEventRepresentation:(id)representation
 {
-  v4 = [a3 copy];
+  v4 = [representation copy];
   [v4 setUseOriginalHIDTime:1];
   v3 = +[AXEventTapManager sharedManager];
   [v3 sendHIDSystemEvent:v4 senderID:0x8000000817319378];
 }
 
-- (id)_keyboardEventForEventRepresentation:(id)a3
+- (id)_keyboardEventForEventRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 keyInfo];
-  v6 = [v4 keyInfo];
+  representationCopy = representation;
+  keyInfo = [representationCopy keyInfo];
+  keyInfo2 = [representationCopy keyInfo];
 
-  if (v6)
+  if (keyInfo2)
   {
-    if (v5)
+    if (keyInfo)
     {
 LABEL_3:
-      [v5 translateKeycode];
-      v7 = [v5 keyCode];
-      v8 = [v5 keyDown];
+      [keyInfo translateKeycode];
+      keyCode = [keyInfo keyCode];
+      keyDown = [keyInfo keyDown];
       v9 = objc_opt_new();
-      [v9 setEventRepresentation:v4];
-      [v9 setKeyCode:v7];
-      [v9 setIsDownEvent:v8];
-      v10 = [v5 gsModifierState];
-      [v9 setIsLeftCommandDown:HIWORD(v10) & 1];
-      [v9 setIsRightCommandDown:HIBYTE(v10) & 1];
-      [v9 setIsLeftOptionDown:(v10 >> 19) & 1];
-      [v9 setIsRightOptionDown:(v10 >> 22) & 1];
-      [v9 setIsLeftControlDown:(v10 >> 20) & 1];
-      [v9 setIsRightControlDown:(v10 >> 23) & 1];
-      [v9 setIsLeftShiftDown:(v10 >> 17) & 1];
-      [v9 setIsRightShiftDown:(v10 >> 21) & 1];
-      [v9 setIsFnDown:{(objc_msgSend(v5, "modifierState") >> 6) & 1}];
-      v11 = [NSNumber numberWithUnsignedInteger:v7];
-      if (v8)
+      [v9 setEventRepresentation:representationCopy];
+      [v9 setKeyCode:keyCode];
+      [v9 setIsDownEvent:keyDown];
+      gsModifierState = [keyInfo gsModifierState];
+      [v9 setIsLeftCommandDown:HIWORD(gsModifierState) & 1];
+      [v9 setIsRightCommandDown:HIBYTE(gsModifierState) & 1];
+      [v9 setIsLeftOptionDown:(gsModifierState >> 19) & 1];
+      [v9 setIsRightOptionDown:(gsModifierState >> 22) & 1];
+      [v9 setIsLeftControlDown:(gsModifierState >> 20) & 1];
+      [v9 setIsRightControlDown:(gsModifierState >> 23) & 1];
+      [v9 setIsLeftShiftDown:(gsModifierState >> 17) & 1];
+      [v9 setIsRightShiftDown:(gsModifierState >> 21) & 1];
+      [v9 setIsFnDown:{(objc_msgSend(keyInfo, "modifierState") >> 6) & 1}];
+      v11 = [NSNumber numberWithUnsignedInteger:keyCode];
+      if (keyDown)
       {
-        v12 = [v5 unmodifiedInput];
-        v13 = [v5 backupUnmodifiedInput];
-        v14 = [(FKAEventTap *)self keyCodesToUnicodeCharacters];
-        [v14 setObject:v12 forKeyedSubscript:v11];
+        unmodifiedInput = [keyInfo unmodifiedInput];
+        backupUnmodifiedInput = [keyInfo backupUnmodifiedInput];
+        keyCodesToUnicodeCharacters = [(FKAEventTap *)self keyCodesToUnicodeCharacters];
+        [keyCodesToUnicodeCharacters setObject:unmodifiedInput forKeyedSubscript:v11];
 
-        v15 = [(FKAEventTap *)self keyCodesToBackupUnicodeCharacters];
-        [v15 setObject:v13 forKeyedSubscript:v11];
+        keyCodesToBackupUnicodeCharacters = [(FKAEventTap *)self keyCodesToBackupUnicodeCharacters];
+        [keyCodesToBackupUnicodeCharacters setObject:backupUnmodifiedInput forKeyedSubscript:v11];
 
-        v16 = [(FKAEventTap *)self keyCodesToDownEventRepresentations];
-        [v16 setObject:v4 forKeyedSubscript:v11];
+        keyCodesToDownEventRepresentations = [(FKAEventTap *)self keyCodesToDownEventRepresentations];
+        [keyCodesToDownEventRepresentations setObject:representationCopy forKeyedSubscript:v11];
       }
 
       else
       {
-        v18 = [(FKAEventTap *)self keyCodesToUnicodeCharacters];
-        v12 = [v18 objectForKeyedSubscript:v11];
+        keyCodesToUnicodeCharacters2 = [(FKAEventTap *)self keyCodesToUnicodeCharacters];
+        unmodifiedInput = [keyCodesToUnicodeCharacters2 objectForKeyedSubscript:v11];
 
-        v16 = [(FKAEventTap *)self keyCodesToBackupUnicodeCharacters];
-        v13 = [v16 objectForKeyedSubscript:v11];
+        keyCodesToDownEventRepresentations = [(FKAEventTap *)self keyCodesToBackupUnicodeCharacters];
+        backupUnmodifiedInput = [keyCodesToDownEventRepresentations objectForKeyedSubscript:v11];
       }
 
-      [v9 setUnicodeCharacter:v12];
-      [v9 setBackupUnicodeCharacter:v13];
+      [v9 setUnicodeCharacter:unmodifiedInput];
+      [v9 setBackupUnicodeCharacter:backupUnmodifiedInput];
       [v9 setIsRepeatEvent:0];
       [v9 setIsModifierChangedEvent:0];
 
@@ -213,7 +213,7 @@ LABEL_3:
       sub_1000141EC(v17);
     }
 
-    if (v5)
+    if (keyInfo)
     {
       goto LABEL_3;
     }
@@ -228,16 +228,16 @@ LABEL_11:
 - (void)_updateForContinuityStateChange
 {
   v2 = +[AXSpringBoardServer server];
-  v3 = [v2 isContinuitySessionActive];
+  isContinuitySessionActive = [v2 isContinuitySessionActive];
 
   v4 = +[AXEventTapManager sharedManager];
-  [v4 setIgnoreEventsForContinuitySession:v3];
+  [v4 setIgnoreEventsForContinuitySession:isContinuitySessionActive];
 
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (isContinuitySessionActive)
     {
       v6 = @"YES";
     }

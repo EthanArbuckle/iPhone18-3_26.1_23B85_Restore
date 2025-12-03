@@ -1,8 +1,8 @@
 @interface WLDAppVisibilityManager
 + (id)sharedManager;
 - (WLDAppVisibilityManager)init;
-- (void)_accountDidChangeNotification:(id)a3;
-- (void)_networkReachabilityDidChangeNotification:(id)a3;
+- (void)_accountDidChangeNotification:(id)notification;
+- (void)_networkReachabilityDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)updateAppVisibility;
 @end
@@ -72,14 +72,14 @@ void __40__WLDAppVisibilityManager_sharedManager__block_invoke(id a1)
   [(WLDAppVisibilityManager *)&v9 dealloc];
 }
 
-- (void)_networkReachabilityDidChangeNotification:(id)a3
+- (void)_networkReachabilityDidChangeNotification:(id)notification
 {
   if (self->_updateRequestedOnNetworkChange)
   {
     v4 = +[WLKReachabilityMonitor sharedInstance];
-    v5 = [v4 isNetworkReachable];
+    isNetworkReachable = [v4 isNetworkReachable];
 
-    if (v5)
+    if (isNetworkReachable)
     {
       NSLog(@"WLDAppVisibilityManager - reachability changed");
 
@@ -88,7 +88,7 @@ void __40__WLDAppVisibilityManager_sharedManager__block_invoke(id a1)
   }
 }
 
-- (void)_accountDidChangeNotification:(id)a3
+- (void)_accountDidChangeNotification:(id)notification
 {
   if (self->_updateRequestedOnAccountChange)
   {
@@ -136,8 +136,8 @@ void __40__WLDAppVisibilityManager_sharedManager__block_invoke(id a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSOperationQueue *)self->_queue operations];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v21 count:16];
+  operations = [(NSOperationQueue *)self->_queue operations];
+  v7 = [operations countByEnumeratingWithState:&v12 objects:v21 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -147,7 +147,7 @@ void __40__WLDAppVisibilityManager_sharedManager__block_invoke(id a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(operations);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -158,7 +158,7 @@ void __40__WLDAppVisibilityManager_sharedManager__block_invoke(id a1)
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v21 count:16];
+      v7 = [operations countByEnumeratingWithState:&v12 objects:v21 count:16];
     }
 
     while (v7);

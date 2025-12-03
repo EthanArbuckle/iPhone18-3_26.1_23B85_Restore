@@ -1,7 +1,7 @@
 @interface MKHairlineView
-- (MKHairlineView)initWithFrame:(CGRect)a3;
+- (MKHairlineView)initWithFrame:(CGRect)frame;
 - (UIColor)fillColor;
-- (id)_bestStyleProviderForTraitCollection:(id)a3;
+- (id)_bestStyleProviderForTraitCollection:(id)collection;
 - (void)_createVibrancyEffectViewIfNeeded;
 - (void)_fetchVibrancyGroupNameIfNeeded;
 - (void)_invalidateStyleProvider;
@@ -9,15 +9,15 @@
 - (void)_updateViewPositioning;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setFillColor:(id)a3;
+- (void)setFillColor:(id)color;
 @end
 
 @implementation MKHairlineView
 
 - (void)_invalidateStyleProvider
 {
-  v3 = [(MKHairlineView *)self traitCollection];
-  v4 = [(MKHairlineView *)self _bestStyleProviderForTraitCollection:v3];
+  traitCollection = [(MKHairlineView *)self traitCollection];
+  v4 = [(MKHairlineView *)self _bestStyleProviderForTraitCollection:traitCollection];
   styleProvider = self->_styleProvider;
   self->_styleProvider = v4;
 
@@ -26,28 +26,28 @@
 
 - (void)_updateAppearanceForVibrancyChange
 {
-  v3 = [(MKHairlineView *)self fillColor];
-  [(UIView *)self->_contentView setBackgroundColor:v3];
+  fillColor = [(MKHairlineView *)self fillColor];
+  [(UIView *)self->_contentView setBackgroundColor:fillColor];
 
-  v4 = [(MKHairlineView *)self traitCollection];
-  v5 = [v4 _vibrancy];
+  traitCollection = [(MKHairlineView *)self traitCollection];
+  _vibrancy = [traitCollection _vibrancy];
 
-  if (v5 == 1)
+  if (_vibrancy == 1)
   {
     [(MKHairlineView *)self _createVibrancyEffectViewIfNeeded];
     [(UIVisualEffectView *)self->_vibrancyEffectView setHidden:0];
     styleProvider = self->_styleProvider;
-    v7 = [(MKHairlineView *)self traitCollection];
-    v8 = [(MKHairlineViewStyleProvider *)styleProvider vibrancyEffectForTraitCollection:v7];
+    traitCollection2 = [(MKHairlineView *)self traitCollection];
+    v8 = [(MKHairlineViewStyleProvider *)styleProvider vibrancyEffectForTraitCollection:traitCollection2];
     [(UIVisualEffectView *)self->_vibrancyEffectView setEffect:v8];
 
     [(MKHairlineView *)self _fetchVibrancyGroupNameIfNeeded];
-    v9 = [(UIVisualEffectView *)self->_vibrancyEffectView contentView];
-    [v9 addSubview:self->_contentView];
+    contentView = [(UIVisualEffectView *)self->_vibrancyEffectView contentView];
+    [contentView addSubview:self->_contentView];
 
-    v10 = [(UIVisualEffectView *)self->_vibrancyEffectView superview];
+    superview = [(UIVisualEffectView *)self->_vibrancyEffectView superview];
 
-    if (v10 != self)
+    if (superview != self)
     {
       [(MKHairlineView *)self addSubview:self->_vibrancyEffectView];
 
@@ -70,34 +70,34 @@
   fillColor = self->_fillColor;
   if (fillColor)
   {
-    v3 = fillColor;
+    fillColor = fillColor;
   }
 
   else
   {
-    v3 = [(MKHairlineViewStyleProvider *)self->_styleProvider fillColor];
+    fillColor = [(MKHairlineViewStyleProvider *)self->_styleProvider fillColor];
   }
 
-  return v3;
+  return fillColor;
 }
 
 - (void)_updateViewPositioning
 {
   [(MKHairlineView *)self bounds];
   [(UIVisualEffectView *)self->_vibrancyEffectView setFrame:?];
-  v3 = [(UIView *)self->_contentView superview];
-  [v3 bounds];
+  superview = [(UIView *)self->_contentView superview];
+  [superview bounds];
   [(UIView *)self->_contentView setFrame:?];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_fillColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
-    v5 = [(MKHairlineView *)self fillColor];
-    [(UIView *)self->_contentView setBackgroundColor:v5];
+    objc_storeStrong(&self->_fillColor, color);
+    fillColor = [(MKHairlineView *)self fillColor];
+    [(UIView *)self->_contentView setBackgroundColor:fillColor];
   }
 }
 
@@ -119,46 +119,46 @@
 
 - (void)_fetchVibrancyGroupNameIfNeeded
 {
-  v3 = [(MKHairlineView *)self window];
+  window = [(MKHairlineView *)self window];
 
-  if (v3)
+  if (window)
   {
     vibrancyEffectView = self->_vibrancyEffectView;
     if (vibrancyEffectView)
     {
       if (([(UIVisualEffectView *)vibrancyEffectView isHidden]& 1) == 0)
       {
-        v5 = [(UIVisualEffectView *)self->_vibrancyEffectView _groupName];
-        v6 = [v5 length];
+        _groupName = [(UIVisualEffectView *)self->_vibrancyEffectView _groupName];
+        v6 = [_groupName length];
 
         if (!v6)
         {
-          v7 = [(MKHairlineView *)self window];
+          window2 = [(MKHairlineView *)self window];
 
-          if (v7)
+          if (window2)
           {
-            v8 = [(MKHairlineView *)self superview];
-            if (v8)
+            superview = [(MKHairlineView *)self superview];
+            if (superview)
             {
               while (1)
               {
-                v11 = v8;
+                v11 = superview;
                 if (objc_opt_respondsToSelector())
                 {
                   break;
                 }
 
-                v9 = [v11 superview];
+                superview2 = [v11 superview];
 
-                v8 = v9;
-                if (!v9)
+                superview = superview2;
+                if (!superview2)
                 {
                   return;
                 }
               }
 
-              v10 = [v11 vibrancyGroupName];
-              [(UIVisualEffectView *)self->_vibrancyEffectView _setGroupName:v10];
+              vibrancyGroupName = [v11 vibrancyGroupName];
+              [(UIVisualEffectView *)self->_vibrancyEffectView _setGroupName:vibrancyGroupName];
             }
           }
         }
@@ -177,11 +177,11 @@
   }
 }
 
-- (id)_bestStyleProviderForTraitCollection:(id)a3
+- (id)_bestStyleProviderForTraitCollection:(id)collection
 {
-  v3 = [a3 _vibrancy];
+  _vibrancy = [collection _vibrancy];
   v4 = off_1E76C4BB0;
-  if (v3 != 1)
+  if (_vibrancy != 1)
   {
     v4 = off_1E76C4AC8;
   }
@@ -191,12 +191,12 @@
   return v5;
 }
 
-- (MKHairlineView)initWithFrame:(CGRect)a3
+- (MKHairlineView)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = MKHairlineView;
-  v3 = [(MKHairlineView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKHairlineView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);

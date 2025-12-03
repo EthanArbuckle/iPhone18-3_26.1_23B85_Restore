@@ -1,35 +1,35 @@
 @interface EvergreenCollectionViewCell
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation EvergreenCollectionViewCell
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for EvergreenCollectionViewCell();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(EvergreenCollectionViewCell *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(EvergreenCollectionViewCell *)&v13 hitTest:eventCopy withEvent:x, y];
   if (v9)
   {
     v10 = v9;
     type metadata accessor for NSAttributedString(0, &lazy cache variable for type metadata for UIButton);
-    v11 = [v10 isKindOfClass_];
+    isKindOfClass_ = [v10 isKindOfClass_];
 
-    if (v11)
+    if (isKindOfClass_)
     {
-      v8 = v7;
+      eventCopy = v7;
     }
 
     else
     {
-      v8 = v10;
+      eventCopy = v10;
     }
 
-    if (v11)
+    if (isKindOfClass_)
     {
       v7 = v10;
     }

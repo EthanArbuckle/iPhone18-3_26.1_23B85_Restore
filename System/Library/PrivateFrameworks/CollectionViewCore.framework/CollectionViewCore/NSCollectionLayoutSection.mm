@@ -1,24 +1,24 @@
 @interface NSCollectionLayoutSection
 + (NSCollectionLayoutSection)sectionWithGroup:(NSCollectionLayoutGroup *)group;
 + (id)_emptySection;
-- (BOOL)_containsBackgroundDecorationItem:(id)a3;
+- (BOOL)_containsBackgroundDecorationItem:(id)item;
 - (BOOL)_containsEstimatedSizeElement;
 - (BOOL)_hasVisibleItemsHandler;
-- (BOOL)_isListSolverCompatibleForLayoutAxis:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isListSolverCompatibleForLayoutAxis:(unint64_t)axis;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)contentSize;
 - (CVCDirectionalEdgeInsets)_clippingInsets;
 - (CVCDirectionalEdgeInsets)_minimumContentInsetsReferenceInsets;
 - (CVCDirectionalEdgeInsets)_minimumSupplementaryContentInsetsReferenceInsets;
-- (NSCollectionLayoutSection)initWithGroup:(id)a3 contentInsets:(CVCDirectionalEdgeInsets)a4 contentInsetsReference:(int64_t)a5 supplementaryItems:(id)a6 boundarySupplementaryItems:(id)a7 pinnedSupplementaryItemIndexes:(id)a8 interGroupSpacing:(double)a9 visibleItemsInvalidationHandler:(id)a10 supplementariesFollowInsets:(BOOL)a11 decorationItems:(id)a12 orthogonalScrollingBehavior:(int64_t)a13 isEmptySection:(BOOL)a14 prefersListSolver:(BOOL)a15;
-- (NSCollectionLayoutSection)initWithLayoutGroup:(id)a3;
+- (NSCollectionLayoutSection)initWithGroup:(id)group contentInsets:(CVCDirectionalEdgeInsets)insets contentInsetsReference:(int64_t)reference supplementaryItems:(id)items boundarySupplementaryItems:(id)supplementaryItems pinnedSupplementaryItemIndexes:(id)indexes interGroupSpacing:(double)spacing visibleItemsInvalidationHandler:(id)self0 supplementariesFollowInsets:(BOOL)self1 decorationItems:(id)self2 orthogonalScrollingBehavior:(int64_t)self3 isEmptySection:(BOOL)self4 prefersListSolver:(BOOL)self5;
+- (NSCollectionLayoutSection)initWithLayoutGroup:(id)group;
 - (NSDictionary)supplementaryItemsDict;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (UICollectionLayoutSectionOrthogonalScrollingProperties)orthogonalScrollingProperties;
-- (id)_auxillaryItemForElementKind:(id)a3 category:(unint64_t)a4;
+- (id)_auxillaryItemForElementKind:(id)kind category:(unint64_t)category;
 - (id)_backgroundDecorationViewsRequiringCustomViewClassRegistration;
 - (id)_descriptionProperties;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decorationItemsDict;
 - (id)description;
 - (id)pinnedBoundarySupplementaryItemIndexes;
@@ -66,8 +66,8 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(NSCollectionLayoutSection *)self decorationItems];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    decorationItems = [(NSCollectionLayoutSection *)self decorationItems];
+    v5 = [decorationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -78,7 +78,7 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(decorationItems);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -88,7 +88,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [decorationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -128,17 +128,17 @@
     v21[6] = &v22;
     v21[7] = a2;
     v4 = MEMORY[0x245D4B4A0](v21);
-    v5 = [(NSCollectionLayoutSection *)self group];
+    group = [(NSCollectionLayoutSection *)self group];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAndThrowIfFound__block_invoke_2;
     v19[3] = &unk_278DE56B8;
     v6 = v4;
     v20 = v6;
-    [v5 _enumerateItemsWithHandler:v19];
+    [group _enumerateItemsWithHandler:v19];
 
-    v7 = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
-    (*(v6 + 2))(v6, v7);
+    boundarySupplementaryItems = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
+    (*(v6 + 2))(v6, boundarySupplementaryItems);
 
     v8 = [v23[5] count];
     if (v8 != [v29[5] count])
@@ -153,8 +153,8 @@
       v11 = v9;
       v17 = v11;
       [v10 enumerateObjectsUsingBlock:&v13];
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1408 description:{@"Error: Every supplementary must have a unique elementKind: duplicates detected: %@", v11, v13, v14, v15, v16}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1408 description:{@"Error: Every supplementary must have a unique elementKind: duplicates detected: %@", v11, v13, v14, v15, v16}];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -238,13 +238,13 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
     v11 = __Block_byref_object_copy_;
     v12 = __Block_byref_object_dispose_;
     v13 = objc_alloc_init(MEMORY[0x277CCAB58]);
-    v5 = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
+    boundarySupplementaryItems = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes__block_invoke;
     v7[3] = &unk_278DE56E0;
     v7[4] = &v8;
-    [v5 enumerateObjectsUsingBlock:v7];
+    [boundarySupplementaryItems enumerateObjectsUsingBlock:v7];
 
     objc_storeStrong(p_pinnedBoundarySupplementaryItemIndexes, v9[5]);
     _Block_object_dispose(&v8, 8);
@@ -257,8 +257,8 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
 
 - (BOOL)_hasVisibleItemsHandler
 {
-  v2 = [(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler];
-  v3 = v2 != 0;
+  visibleItemsInvalidationHandler = [(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler];
+  v3 = visibleItemsInvalidationHandler != 0;
 
   return v3;
 }
@@ -292,9 +292,9 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
         }
 
         v9 = [*(*(&v11 + 1) + 8 * v8) size];
-        v10 = [v9 isEstimated];
+        isEstimated = [v9 isEstimated];
 
-        if (v10)
+        if (isEstimated)
         {
 
           return 1;
@@ -335,8 +335,8 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = [(NSCollectionLayoutSection *)self decorationItems];
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      decorationItems = [(NSCollectionLayoutSection *)self decorationItems];
+      v7 = [decorationItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         v8 = v7;
@@ -347,15 +347,15 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
           {
             if (*v16 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(decorationItems);
             }
 
             v11 = *(*(&v15 + 1) + 8 * i);
-            v12 = [v11 elementKind];
-            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:v12];
+            elementKind = [v11 elementKind];
+            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:elementKind];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v8 = [decorationItems countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v8);
@@ -414,22 +414,22 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
   return result;
 }
 
-- (NSCollectionLayoutSection)initWithGroup:(id)a3 contentInsets:(CVCDirectionalEdgeInsets)a4 contentInsetsReference:(int64_t)a5 supplementaryItems:(id)a6 boundarySupplementaryItems:(id)a7 pinnedSupplementaryItemIndexes:(id)a8 interGroupSpacing:(double)a9 visibleItemsInvalidationHandler:(id)a10 supplementariesFollowInsets:(BOOL)a11 decorationItems:(id)a12 orthogonalScrollingBehavior:(int64_t)a13 isEmptySection:(BOOL)a14 prefersListSolver:(BOOL)a15
+- (NSCollectionLayoutSection)initWithGroup:(id)group contentInsets:(CVCDirectionalEdgeInsets)insets contentInsetsReference:(int64_t)reference supplementaryItems:(id)items boundarySupplementaryItems:(id)supplementaryItems pinnedSupplementaryItemIndexes:(id)indexes interGroupSpacing:(double)spacing visibleItemsInvalidationHandler:(id)self0 supplementariesFollowInsets:(BOOL)self1 decorationItems:(id)self2 orthogonalScrollingBehavior:(int64_t)self3 isEmptySection:(BOOL)self4 prefersListSolver:(BOOL)self5
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  v27 = a3;
-  v28 = a6;
-  v29 = a7;
-  v30 = a8;
-  v31 = a10;
-  v32 = a12;
-  if (!v27 && !a14)
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  groupCopy = group;
+  itemsCopy = items;
+  supplementaryItemsCopy = supplementaryItems;
+  indexesCopy = indexes;
+  handlerCopy = handler;
+  decorationItemsCopy = decorationItems;
+  if (!groupCopy && !section)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"group"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"group"}];
   }
 
   v49.receiver = self;
@@ -437,7 +437,7 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
   v33 = [(NSCollectionLayoutSection *)&v49 init];
   if (v33)
   {
-    v34 = [v27 copy];
+    v34 = [groupCopy copy];
     group = v33->_group;
     v33->_group = v34;
 
@@ -445,49 +445,49 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
     v33->_contentInsets.leading = leading;
     v33->_contentInsets.bottom = bottom;
     v33->_contentInsets.trailing = trailing;
-    v33->_contentInsetsReference = a5;
-    v36 = [v28 copy];
+    v33->_contentInsetsReference = reference;
+    v36 = [itemsCopy copy];
     supplementaryItems = v33->_supplementaryItems;
     v33->_supplementaryItems = v36;
 
-    v38 = [v29 copy];
+    v38 = [supplementaryItemsCopy copy];
     boundarySupplementaryItems = v33->_boundarySupplementaryItems;
     v33->_boundarySupplementaryItems = v38;
 
-    v40 = [v30 copy];
+    v40 = [indexesCopy copy];
     pinnedSupplementaryItemIndexes = v33->_pinnedSupplementaryItemIndexes;
     v33->_pinnedSupplementaryItemIndexes = v40;
 
-    v33->_interGroupSpacing = a9;
-    v42 = [v31 copy];
+    v33->_interGroupSpacing = spacing;
+    v42 = [handlerCopy copy];
     visibleItemsInvalidationHandler = v33->_visibleItemsInvalidationHandler;
     v33->_visibleItemsInvalidationHandler = v42;
 
-    v33->_supplementariesFollowContentInsets = a11;
+    v33->_supplementariesFollowContentInsets = followInsets;
     pinnedBoundarySupplementaryItemIndexes = v33->_pinnedBoundarySupplementaryItemIndexes;
     v33->_pinnedBoundarySupplementaryItemIndexes = 0;
 
-    v45 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v32 copyItems:1];
+    v45 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:decorationItemsCopy copyItems:1];
     decorationItems = v33->_decorationItems;
     v33->_decorationItems = v45;
 
     v33->_hasBackgroundDecorationItem = [(NSCollectionLayoutSection *)v33 _containsBackgroundDecorationItem:v33->_decorationItems];
-    v33->_orthogonalScrollingBehavior = a13;
-    v33->_isEmptySection = a14;
-    v33->_prefersListSolver = a15;
+    v33->_orthogonalScrollingBehavior = behavior;
+    v33->_isEmptySection = section;
+    v33->_prefersListSolver = solver;
   }
 
   return v33;
 }
 
-- (NSCollectionLayoutSection)initWithLayoutGroup:(id)a3
+- (NSCollectionLayoutSection)initWithLayoutGroup:(id)group
 {
   v4 = MEMORY[0x277CCAA78];
-  v5 = a3;
-  v6 = [v4 indexSet];
+  groupCopy = group;
+  indexSet = [v4 indexSet];
   LOWORD(v10) = 0;
   LOBYTE(v9) = 1;
-  v7 = [(NSCollectionLayoutSection *)self initWithGroup:v5 contentInsets:0 contentInsetsReference:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] boundarySupplementaryItems:v6 pinnedSupplementaryItemIndexes:0 interGroupSpacing:0.0 visibleItemsInvalidationHandler:0.0 supplementariesFollowInsets:0.0 decorationItems:0.0 orthogonalScrollingBehavior:0.0 isEmptySection:v9 prefersListSolver:0, 0, v10];
+  v7 = [(NSCollectionLayoutSection *)self initWithGroup:groupCopy contentInsets:0 contentInsetsReference:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] boundarySupplementaryItems:indexSet pinnedSupplementaryItemIndexes:0 interGroupSpacing:0.0 visibleItemsInvalidationHandler:0.0 supplementariesFollowInsets:0.0 decorationItems:0.0 orthogonalScrollingBehavior:0.0 isEmptySection:v9 prefersListSolver:0, 0, v10];
 
   return v7;
 }
@@ -495,7 +495,7 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
 + (NSCollectionLayoutSection)sectionWithGroup:(NSCollectionLayoutGroup *)group
 {
   v4 = group;
-  v5 = [[a1 alloc] initWithLayoutGroup:v4];
+  v5 = [[self alloc] initWithLayoutGroup:v4];
 
   return v5;
 }
@@ -526,17 +526,17 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
 {
   if (supplementariesFollowContentInsets && [(NSCollectionLayoutSection *)self supplementaryContentInsetsReference])
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1072 description:@"Mixing supplementariesFollowContentInsets and supplementaryContentInsetsReference is not supported. Please use supplementaryContentInsetsReference and the contentInsets property on the boundary supplementary item to get the desired behavior."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1072 description:@"Mixing supplementariesFollowContentInsets and supplementaryContentInsetsReference is not supported. Please use supplementaryContentInsetsReference and the contentInsets property on the boundary supplementary item to get the desired behavior."];
   }
 
   self->_supplementariesFollowContentInsets = supplementariesFollowContentInsets;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_6;
   }
@@ -548,12 +548,12 @@ uint64_t __67__NSCollectionLayoutSection_pinnedBoundarySupplementaryItemIndexes_
   }
 
   isEmptySection = self->_isEmptySection;
-  if (isEmptySection != [(NSCollectionLayoutSection *)v4 _isEmptySection])
+  if (isEmptySection != [(NSCollectionLayoutSection *)equalCopy _isEmptySection])
   {
     goto LABEL_17;
   }
 
-  if (self->_isEmptySection && [(NSCollectionLayoutSection *)v4 _isEmptySection])
+  if (self->_isEmptySection && [(NSCollectionLayoutSection *)equalCopy _isEmptySection])
   {
 LABEL_6:
     v6 = 1;
@@ -561,7 +561,7 @@ LABEL_6:
   }
 
   prefersListSolver = self->_prefersListSolver;
-  if (prefersListSolver != [(NSCollectionLayoutSection *)v4 prefersListSolver]|| (v8 = [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets], v8 != [(NSCollectionLayoutSection *)v4 supplementariesFollowContentInsets]) || (v9 = [(NSCollectionLayoutSection *)self supplementaryContentInsetsReference], v9 != [(NSCollectionLayoutSection *)v4 supplementaryContentInsetsReference]) || (v10 = [(NSCollectionLayoutSection *)self orthogonalScrollingBehavior], v10 != [(NSCollectionLayoutSection *)v4 orthogonalScrollingBehavior]) || (v11 = [(NSCollectionLayoutSection *)self contentInsetsReference], v11 != [(NSCollectionLayoutSection *)v4 contentInsetsReference]) || (v12 = [(NSCollectionLayoutSection *)self _clipsContentToBounds], v12 != [(NSCollectionLayoutSection *)v4 _clipsContentToBounds]) || (v13 = [(NSCollectionLayoutSection *)self _excludesBoundarySupplementariesFromClipping], v13 != [(NSCollectionLayoutSection *)v4 _excludesBoundarySupplementariesFromClipping]) || (v14 = [(NSCollectionLayoutSection *)self _clipsBackgroundDecorationsToContent], v14 != [(NSCollectionLayoutSection *)v4 _clipsBackgroundDecorationsToContent]) || ([(NSCollectionLayoutSection *)self interGroupSpacing], v16 = v15, [(NSCollectionLayoutSection *)v4 interGroupSpacing], vabdd_f64(v16, v17) > 0.0001) || ([(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler], v18 = objc_claimAutoreleasedReturnValue(), [(NSCollectionLayoutSection *)v4 visibleItemsInvalidationHandler], v19 = objc_claimAutoreleasedReturnValue(), v20 = (v18 == 0) ^ (v19 == 0), v19, v18, (v20 & 1) != 0))
+  if (prefersListSolver != [(NSCollectionLayoutSection *)equalCopy prefersListSolver]|| (v8 = [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets], v8 != [(NSCollectionLayoutSection *)equalCopy supplementariesFollowContentInsets]) || (v9 = [(NSCollectionLayoutSection *)self supplementaryContentInsetsReference], v9 != [(NSCollectionLayoutSection *)equalCopy supplementaryContentInsetsReference]) || (v10 = [(NSCollectionLayoutSection *)self orthogonalScrollingBehavior], v10 != [(NSCollectionLayoutSection *)equalCopy orthogonalScrollingBehavior]) || (v11 = [(NSCollectionLayoutSection *)self contentInsetsReference], v11 != [(NSCollectionLayoutSection *)equalCopy contentInsetsReference]) || (v12 = [(NSCollectionLayoutSection *)self _clipsContentToBounds], v12 != [(NSCollectionLayoutSection *)equalCopy _clipsContentToBounds]) || (v13 = [(NSCollectionLayoutSection *)self _excludesBoundarySupplementariesFromClipping], v13 != [(NSCollectionLayoutSection *)equalCopy _excludesBoundarySupplementariesFromClipping]) || (v14 = [(NSCollectionLayoutSection *)self _clipsBackgroundDecorationsToContent], v14 != [(NSCollectionLayoutSection *)equalCopy _clipsBackgroundDecorationsToContent]) || ([(NSCollectionLayoutSection *)self interGroupSpacing], v16 = v15, [(NSCollectionLayoutSection *)equalCopy interGroupSpacing], vabdd_f64(v16, v17) > 0.0001) || ([(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler], v18 = objc_claimAutoreleasedReturnValue(), [(NSCollectionLayoutSection *)equalCopy visibleItemsInvalidationHandler], v19 = objc_claimAutoreleasedReturnValue(), v20 = (v18 == 0) ^ (v19 == 0), v19, v18, (v20 & 1) != 0))
   {
 LABEL_17:
     v6 = 0;
@@ -573,13 +573,13 @@ LABEL_17:
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  [(NSCollectionLayoutSection *)v4 contentInsets];
+  [(NSCollectionLayoutSection *)equalCopy contentInsets];
   v6 = 0;
   if (v25 == v33 && v23 == v30 && v29 == v32 && v27 == v31)
   {
     [(NSCollectionLayoutSection *)self _cornerRadius];
     v35 = v34;
-    [(NSCollectionLayoutSection *)v4 _cornerRadius];
+    [(NSCollectionLayoutSection *)equalCopy _cornerRadius];
     if (vabdd_f64(v35, v36) > 0.0001)
     {
       goto LABEL_17;
@@ -587,7 +587,7 @@ LABEL_17:
 
     [(NSCollectionLayoutSection *)self _preBoundaryPadding];
     v38 = v37;
-    [(NSCollectionLayoutSection *)v4 _preBoundaryPadding];
+    [(NSCollectionLayoutSection *)equalCopy _preBoundaryPadding];
     if (vabdd_f64(v38, v39) > 0.0001)
     {
       goto LABEL_17;
@@ -595,7 +595,7 @@ LABEL_17:
 
     [(NSCollectionLayoutSection *)self _postBoundaryPadding];
     v41 = v40;
-    [(NSCollectionLayoutSection *)v4 _postBoundaryPadding];
+    [(NSCollectionLayoutSection *)equalCopy _postBoundaryPadding];
     if (vabdd_f64(v41, v42) > 0.0001)
     {
       goto LABEL_17;
@@ -606,7 +606,7 @@ LABEL_17:
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    [(NSCollectionLayoutSection *)v4 _clippingInsets];
+    [(NSCollectionLayoutSection *)equalCopy _clippingInsets];
     v6 = 0;
     if (v46 == v54 && v44 == v51 && v50 == v53 && v48 == v52)
     {
@@ -615,7 +615,7 @@ LABEL_17:
       v58 = v57;
       v60 = v59;
       v62 = v61;
-      [(NSCollectionLayoutSection *)v4 _minimumContentInsetsReferenceInsets];
+      [(NSCollectionLayoutSection *)equalCopy _minimumContentInsetsReferenceInsets];
       v6 = 0;
       if (v58 == v66 && v56 == v63 && v62 == v65 && v60 == v64)
       {
@@ -624,22 +624,22 @@ LABEL_17:
         v70 = v69;
         v72 = v71;
         v74 = v73;
-        [(NSCollectionLayoutSection *)v4 _minimumSupplementaryContentInsetsReferenceInsets];
+        [(NSCollectionLayoutSection *)equalCopy _minimumSupplementaryContentInsetsReferenceInsets];
         v6 = 0;
         if (v70 == v78 && v68 == v75 && v74 == v77 && v72 == v76)
         {
-          v79 = [(NSCollectionLayoutSection *)self decorationItems];
-          v80 = [(NSCollectionLayoutSection *)v4 decorationItems];
-          v81 = __objectEqual(v79, v80);
+          decorationItems = [(NSCollectionLayoutSection *)self decorationItems];
+          decorationItems2 = [(NSCollectionLayoutSection *)equalCopy decorationItems];
+          v81 = __objectEqual(decorationItems, decorationItems2);
 
           if (!v81)
           {
             goto LABEL_17;
           }
 
-          v82 = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
-          v83 = [(NSCollectionLayoutSection *)v4 pinnedBoundarySupplementaryItemIndexes];
-          if ((v82 == 0) != (v83 == 0))
+          pinnedBoundarySupplementaryItemIndexes = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
+          pinnedBoundarySupplementaryItemIndexes2 = [(NSCollectionLayoutSection *)equalCopy pinnedBoundarySupplementaryItemIndexes];
+          if ((pinnedBoundarySupplementaryItemIndexes == 0) != (pinnedBoundarySupplementaryItemIndexes2 == 0))
           {
             v6 = 0;
 LABEL_41:
@@ -647,13 +647,13 @@ LABEL_41:
             goto LABEL_18;
           }
 
-          v84 = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
-          if (v84)
+          pinnedBoundarySupplementaryItemIndexes3 = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
+          if (pinnedBoundarySupplementaryItemIndexes3)
           {
-            v85 = v84;
-            v86 = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
-            v87 = [(NSCollectionLayoutSection *)v4 pinnedBoundarySupplementaryItemIndexes];
-            v88 = [v86 isEqualToIndexSet:v87];
+            v85 = pinnedBoundarySupplementaryItemIndexes3;
+            pinnedBoundarySupplementaryItemIndexes4 = [(NSCollectionLayoutSection *)self pinnedBoundarySupplementaryItemIndexes];
+            pinnedBoundarySupplementaryItemIndexes5 = [(NSCollectionLayoutSection *)equalCopy pinnedBoundarySupplementaryItemIndexes];
+            v88 = [pinnedBoundarySupplementaryItemIndexes4 isEqualToIndexSet:pinnedBoundarySupplementaryItemIndexes5];
 
             if (!v88)
             {
@@ -665,46 +665,46 @@ LABEL_41:
           {
           }
 
-          v89 = [(NSCollectionLayoutSection *)self supplementaryItems];
-          v90 = [(NSCollectionLayoutSection *)v4 supplementaryItems];
-          v91 = __objectEqual(v89, v90);
+          supplementaryItems = [(NSCollectionLayoutSection *)self supplementaryItems];
+          supplementaryItems2 = [(NSCollectionLayoutSection *)equalCopy supplementaryItems];
+          v91 = __objectEqual(supplementaryItems, supplementaryItems2);
 
           if (!v91)
           {
             goto LABEL_17;
           }
 
-          v92 = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
-          v93 = [(NSCollectionLayoutSection *)v4 boundarySupplementaryItems];
-          v94 = __objectEqual(v92, v93);
+          boundarySupplementaryItems = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
+          boundarySupplementaryItems2 = [(NSCollectionLayoutSection *)equalCopy boundarySupplementaryItems];
+          v94 = __objectEqual(boundarySupplementaryItems, boundarySupplementaryItems2);
 
           if (!v94)
           {
             goto LABEL_17;
           }
 
-          v95 = [(NSCollectionLayoutSection *)self _orthogonalScrollingProperties];
-          if (v95)
+          _orthogonalScrollingProperties = [(NSCollectionLayoutSection *)self _orthogonalScrollingProperties];
+          if (_orthogonalScrollingProperties)
           {
           }
 
           else
           {
-            v96 = [(NSCollectionLayoutSection *)v4 _orthogonalScrollingProperties];
+            _orthogonalScrollingProperties2 = [(NSCollectionLayoutSection *)equalCopy _orthogonalScrollingProperties];
 
-            if (!v96)
+            if (!_orthogonalScrollingProperties2)
             {
 LABEL_52:
-              v82 = [(NSCollectionLayoutSection *)self group];
-              v83 = [(NSCollectionLayoutSection *)v4 group];
-              v6 = [v82 isEqual:v83];
+              pinnedBoundarySupplementaryItemIndexes = [(NSCollectionLayoutSection *)self group];
+              pinnedBoundarySupplementaryItemIndexes2 = [(NSCollectionLayoutSection *)equalCopy group];
+              v6 = [pinnedBoundarySupplementaryItemIndexes isEqual:pinnedBoundarySupplementaryItemIndexes2];
               goto LABEL_41;
             }
           }
 
-          v97 = [(NSCollectionLayoutSection *)self orthogonalScrollingProperties];
-          v98 = [(NSCollectionLayoutSection *)v4 orthogonalScrollingProperties];
-          v99 = [v97 isEqual:v98];
+          orthogonalScrollingProperties = [(NSCollectionLayoutSection *)self orthogonalScrollingProperties];
+          orthogonalScrollingProperties2 = [(NSCollectionLayoutSection *)equalCopy orthogonalScrollingProperties];
+          v99 = [orthogonalScrollingProperties isEqual:orthogonalScrollingProperties2];
 
           if (!v99)
           {
@@ -722,30 +722,30 @@ LABEL_18:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v33 = [objc_opt_class() allocWithZone:a3];
-  v4 = [(NSCollectionLayoutSection *)self group];
+  v33 = [objc_opt_class() allocWithZone:zone];
+  group = [(NSCollectionLayoutSection *)self group];
   [(NSCollectionLayoutSection *)self contentInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v32 = [(NSCollectionLayoutSection *)self contentInsetsReference];
-  v13 = [(NSCollectionLayoutSection *)self supplementaryItems];
-  v14 = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
-  v15 = [(NSCollectionLayoutSection *)self pinnedSupplementaryItemIndexes];
+  contentInsetsReference = [(NSCollectionLayoutSection *)self contentInsetsReference];
+  supplementaryItems = [(NSCollectionLayoutSection *)self supplementaryItems];
+  boundarySupplementaryItems = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
+  pinnedSupplementaryItemIndexes = [(NSCollectionLayoutSection *)self pinnedSupplementaryItemIndexes];
   [(NSCollectionLayoutSection *)self interGroupSpacing];
   v17 = v16;
-  v18 = [(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler];
-  v19 = [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets];
-  v20 = [(NSCollectionLayoutSection *)self decorationItems];
-  v21 = [(NSCollectionLayoutSection *)self orthogonalScrollingBehavior];
-  v22 = [(NSCollectionLayoutSection *)self _isEmptySection];
+  visibleItemsInvalidationHandler = [(NSCollectionLayoutSection *)self visibleItemsInvalidationHandler];
+  supplementariesFollowContentInsets = [(NSCollectionLayoutSection *)self supplementariesFollowContentInsets];
+  decorationItems = [(NSCollectionLayoutSection *)self decorationItems];
+  orthogonalScrollingBehavior = [(NSCollectionLayoutSection *)self orthogonalScrollingBehavior];
+  _isEmptySection = [(NSCollectionLayoutSection *)self _isEmptySection];
   BYTE1(v31) = [(NSCollectionLayoutSection *)self prefersListSolver];
-  LOBYTE(v31) = v22;
-  LOBYTE(v30) = v19;
-  v23 = [v33 initWithGroup:v4 contentInsets:v32 contentInsetsReference:v13 supplementaryItems:v14 boundarySupplementaryItems:v15 pinnedSupplementaryItemIndexes:v18 interGroupSpacing:v6 visibleItemsInvalidationHandler:v8 supplementariesFollowInsets:v10 decorationItems:v12 orthogonalScrollingBehavior:v17 isEmptySection:v30 prefersListSolver:{v20, v21, v31}];
+  LOBYTE(v31) = _isEmptySection;
+  LOBYTE(v30) = supplementariesFollowContentInsets;
+  v23 = [v33 initWithGroup:group contentInsets:contentInsetsReference contentInsetsReference:supplementaryItems supplementaryItems:boundarySupplementaryItems boundarySupplementaryItems:pinnedSupplementaryItemIndexes pinnedSupplementaryItemIndexes:visibleItemsInvalidationHandler interGroupSpacing:v6 visibleItemsInvalidationHandler:v8 supplementariesFollowInsets:v10 decorationItems:v12 orthogonalScrollingBehavior:v17 isEmptySection:v30 prefersListSolver:{decorationItems, orthogonalScrollingBehavior, v31}];
 
   v24 = [(UICollectionLayoutSectionOrthogonalScrollingProperties *)self->_orthogonalScrollingProperties copy];
   v25 = *(v23 + 48);
@@ -859,11 +859,11 @@ LABEL_18:
 
 - (id)description
 {
-  v3 = [(NSCollectionLayoutSection *)self _descriptionProperties];
+  _descriptionProperties = [(NSCollectionLayoutSection *)self _descriptionProperties];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v3 componentsJoinedByString:@" "];;
+  v7 = [_descriptionProperties componentsJoinedByString:@" "];;
   v8 = [v4 stringWithFormat:@"<%@: %p %@>", v6, self, v7];;
 
   return v8;
@@ -871,7 +871,7 @@ LABEL_18:
 
 + (id)_emptySection
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_alloc_init(MEMORY[0x277CCAA78]);
   LOWORD(v7) = 1;
   LOBYTE(v6) = 0;
@@ -880,15 +880,15 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)_containsBackgroundDecorationItem:(id)a3
+- (BOOL)_containsBackgroundDecorationItem:(id)item
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  itemCopy = item;
+  v4 = [itemCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -898,7 +898,7 @@ LABEL_18:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isBackgroundDecoration])
@@ -908,7 +908,7 @@ LABEL_18:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [itemCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -933,27 +933,27 @@ void __84__NSCollectionLayoutSection__checkForDuplicateSupplementaryItemKindsAnd
   }
 }
 
-- (id)_auxillaryItemForElementKind:(id)a3 category:(unint64_t)a4
+- (id)_auxillaryItemForElementKind:(id)kind category:(unint64_t)category
 {
-  v6 = a3;
-  v7 = v6;
+  kindCopy = kind;
+  v7 = kindCopy;
   v8 = 0;
-  if (a4 && !self->_isEmptySection)
+  if (category && !self->_isEmptySection)
   {
-    if ([v6 length])
+    if ([kindCopy length])
     {
-      if (a4 == 1)
+      if (category == 1)
       {
-        v9 = [(NSCollectionLayoutSection *)self supplementaryItemsDict];
+        supplementaryItemsDict = [(NSCollectionLayoutSection *)self supplementaryItemsDict];
         goto LABEL_9;
       }
 
-      if (a4 == 2)
+      if (category == 2)
       {
-        v9 = [(NSCollectionLayoutSection *)self decorationItemsDict];
+        supplementaryItemsDict = [(NSCollectionLayoutSection *)self decorationItemsDict];
 LABEL_9:
-        v10 = v9;
-        v8 = [v9 objectForKeyedSubscript:v7];
+        v10 = supplementaryItemsDict;
+        v8 = [supplementaryItemsDict objectForKeyedSubscript:v7];
 
         goto LABEL_10;
       }
@@ -985,8 +985,8 @@ LABEL_10:
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = [(NSCollectionLayoutSection *)self supplementaryItems];
-      v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      supplementaryItems = [(NSCollectionLayoutSection *)self supplementaryItems];
+      v7 = [supplementaryItems countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v7)
       {
         v8 = v7;
@@ -997,15 +997,15 @@ LABEL_10:
           {
             if (*v27 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(supplementaryItems);
             }
 
             v11 = *(*(&v26 + 1) + 8 * i);
-            v12 = [v11 elementKind];
-            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:v12];
+            elementKind = [v11 elementKind];
+            [(NSDictionary *)v5 setObject:v11 forKeyedSubscript:elementKind];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v8 = [supplementaryItems countByEnumeratingWithState:&v26 objects:v31 count:16];
         }
 
         while (v8);
@@ -1015,8 +1015,8 @@ LABEL_10:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v13 = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
-      v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      boundarySupplementaryItems = [(NSCollectionLayoutSection *)self boundarySupplementaryItems];
+      v14 = [boundarySupplementaryItems countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1027,15 +1027,15 @@ LABEL_10:
           {
             if (*v23 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(boundarySupplementaryItems);
             }
 
             v18 = *(*(&v22 + 1) + 8 * j);
-            v19 = [v18 elementKind];
-            [(NSDictionary *)v5 setObject:v18 forKeyedSubscript:v19];
+            elementKind2 = [v18 elementKind];
+            [(NSDictionary *)v5 setObject:v18 forKeyedSubscript:elementKind2];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v15 = [boundarySupplementaryItems countByEnumeratingWithState:&v22 objects:v30 count:16];
         }
 
         while (v15);
@@ -1053,18 +1053,18 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)_isListSolverCompatibleForLayoutAxis:(unint64_t)a3
+- (BOOL)_isListSolverCompatibleForLayoutAxis:(unint64_t)axis
 {
   if (!self->_prefersListSolver)
   {
     return 0;
   }
 
-  v5 = [(NSCollectionLayoutSection *)self scrollsOrthogonally];
-  v6 = [(NSCollectionLayoutSection *)self group];
-  LOBYTE(a3) = [v6 _isListSolverCompatibleForLayoutAxis:a3];
+  scrollsOrthogonally = [(NSCollectionLayoutSection *)self scrollsOrthogonally];
+  group = [(NSCollectionLayoutSection *)self group];
+  LOBYTE(axis) = [group _isListSolverCompatibleForLayoutAxis:axis];
 
-  return !v5 & a3;
+  return !scrollsOrthogonally & axis;
 }
 
 - (CGSize)contentSize

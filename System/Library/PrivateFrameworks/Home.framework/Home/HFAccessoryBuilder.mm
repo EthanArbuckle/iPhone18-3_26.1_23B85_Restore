@@ -1,11 +1,11 @@
 @interface HFAccessoryBuilder
 - (BOOL)_shouldUpdateNilNameWithRoomName;
 - (BOOL)supportsFavoriting;
-- (HFAccessoryBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFAccessoryBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSString)originalName;
 - (id)_lazilyUpdateName;
 - (id)_lazilyUpdateRoom;
-- (id)_lazilyUpdateValueForContextType:(unint64_t)a3;
+- (id)_lazilyUpdateValueForContextType:(unint64_t)type;
 - (id)accessories;
 - (id)commitItem;
 - (id)removeItemFromHome;
@@ -13,40 +13,40 @@
 
 @implementation HFAccessoryBuilder
 
-- (HFAccessoryBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFAccessoryBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  objectCopy = object;
+  homeCopy = home;
+  if (!objectCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HFAccessoryBuilder.m" lineNumber:43 description:{@"%@ can only be used with existing HMAccessories", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryBuilder.m" lineNumber:43 description:{@"%@ can only be used with existing HMAccessories", objc_opt_class()}];
   }
 
   v22.receiver = self;
   v22.super_class = HFAccessoryBuilder;
-  v9 = [(HFItemBuilder *)&v22 initWithExistingObject:v7 inHome:v8];
+  v9 = [(HFItemBuilder *)&v22 initWithExistingObject:objectCopy inHome:homeCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(HFItemBuilder *)v9 homeKitRepresentation];
-    v12 = [HFNamingComponents namingComponentFromAccessory:v11];
+    homeKitRepresentation = [(HFItemBuilder *)v9 homeKitRepresentation];
+    v12 = [HFNamingComponents namingComponentFromAccessory:homeKitRepresentation];
     [(HFAccessoryBuilder *)v10 setNamingComponent:v12];
 
-    v13 = [(HFAccessoryBuilder *)v10 originalName];
-    [(HFAccessoryBuilder *)v10 setName:v13];
+    originalName = [(HFAccessoryBuilder *)v10 originalName];
+    [(HFAccessoryBuilder *)v10 setName:originalName];
 
     v14 = [HFRoomBuilder alloc];
-    v15 = [(HFAccessoryBuilder *)v10 accessory];
-    v16 = [v15 room];
-    v17 = [(HFRoomBuilder *)v14 initWithExistingObject:v16 inHome:v8];
+    accessory = [(HFAccessoryBuilder *)v10 accessory];
+    room = [accessory room];
+    v17 = [(HFRoomBuilder *)v14 initWithExistingObject:room inHome:homeCopy];
     [(HFAccessoryBuilder *)v10 setRoom:v17];
 
-    v18 = [(HFAccessoryBuilder *)v10 accessory];
-    -[HFAccessoryBuilder setShowInHomeDashboard:](v10, "setShowInHomeDashboard:", [v18 hf_effectiveShowInHomeDashboard]);
+    accessory2 = [(HFAccessoryBuilder *)v10 accessory];
+    -[HFAccessoryBuilder setShowInHomeDashboard:](v10, "setShowInHomeDashboard:", [accessory2 hf_effectiveShowInHomeDashboard]);
 
-    v19 = [(HFAccessoryBuilder *)v10 accessory];
-    -[HFAccessoryBuilder setIsFavorite:](v10, "setIsFavorite:", [v19 hf_effectiveIsFavorite]);
+    accessory3 = [(HFAccessoryBuilder *)v10 accessory];
+    -[HFAccessoryBuilder setIsFavorite:](v10, "setIsFavorite:", [accessory3 hf_effectiveIsFavorite]);
 
     [(HFAccessoryBuilder *)v10 setSkipPropagateFavoriteToServices:0];
   }
@@ -56,48 +56,48 @@
 
 - (NSString)originalName
 {
-  v2 = [(HFAccessoryBuilder *)self namingComponent];
-  v3 = [v2 name];
+  namingComponent = [(HFAccessoryBuilder *)self namingComponent];
+  name = [namingComponent name];
 
-  return v3;
+  return name;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryBuilder *)self accessory];
-  v4 = [v2 setWithObject:v3];
+  accessory = [(HFAccessoryBuilder *)self accessory];
+  v4 = [v2 setWithObject:accessory];
 
   return v4;
 }
 
 - (BOOL)supportsFavoriting
 {
-  v2 = [(HFAccessoryBuilder *)self accessory];
-  v3 = [v2 hf_isNetworkRouter];
+  accessory = [(HFAccessoryBuilder *)self accessory];
+  hf_isNetworkRouter = [accessory hf_isNetworkRouter];
 
-  return v3 ^ 1;
+  return hf_isNetworkRouter ^ 1;
 }
 
 - (id)removeItemFromHome
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HFAccessoryBuilder *)self accessories];
-  v5 = [v4 anyObject];
+  accessories = [(HFAccessoryBuilder *)self accessories];
+  anyObject = [accessories anyObject];
 
   v6 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 hf_prettyDescription];
+    hf_prettyDescription = [anyObject hf_prettyDescription];
     *buf = 138412290;
-    v22 = v7;
+    v22 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Removing accessory from home: %@", buf, 0xCu);
   }
 
-  v8 = [(HFItemBuilder *)self home];
-  v9 = [v3 errorOnlyCompletionHandlerAdapter];
-  [v8 removeAccessory:v5 completionHandler:v9];
+  home = [(HFItemBuilder *)self home];
+  errorOnlyCompletionHandlerAdapter = [v3 errorOnlyCompletionHandlerAdapter];
+  [home removeAccessory:anyObject completionHandler:errorOnlyCompletionHandlerAdapter];
 
   objc_initWeak(buf, self);
   v18[0] = MEMORY[0x277D85DD0];
@@ -105,7 +105,7 @@
   v18[2] = __40__HFAccessoryBuilder_removeItemFromHome__block_invoke;
   v18[3] = &unk_277DF6F48;
   objc_copyWeak(&v20, buf);
-  v10 = v5;
+  v10 = anyObject;
   v19 = v10;
   v11 = [v3 flatMap:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -204,27 +204,27 @@ id __40__HFAccessoryBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void
 
 - (BOOL)_shouldUpdateNilNameWithRoomName
 {
-  v5 = [(HFAccessoryBuilder *)self name];
+  name = [(HFAccessoryBuilder *)self name];
 
-  if (!v5)
+  if (!name)
   {
-    v7 = [(HFAccessoryBuilder *)self accessory];
-    v8 = [v7 hf_isMediaAccessory];
-    if (v8)
+    accessory = [(HFAccessoryBuilder *)self accessory];
+    hf_isMediaAccessory = [accessory hf_isMediaAccessory];
+    if (hf_isMediaAccessory)
     {
-      v2 = [(HFAccessoryBuilder *)self accessory];
-      if ([v2 hf_isHomePod])
+      accessory2 = [(HFAccessoryBuilder *)self accessory];
+      if ([accessory2 hf_isHomePod])
       {
         v9 = 0;
       }
 
       else
       {
-        v3 = [(HFAccessoryBuilder *)self accessory];
-        if (([v3 hf_isAppleTV] & 1) == 0)
+        accessory3 = [(HFAccessoryBuilder *)self accessory];
+        if (([accessory3 hf_isAppleTV] & 1) == 0)
         {
 
-          v6 = 1;
+          hf_isTelevision = 1;
           goto LABEL_15;
         }
 
@@ -237,19 +237,19 @@ id __40__HFAccessoryBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void
       v9 = 0;
     }
 
-    v10 = [(HFAccessoryBuilder *)self accessory];
-    v6 = [v10 hf_isTelevision];
+    accessory4 = [(HFAccessoryBuilder *)self accessory];
+    hf_isTelevision = [accessory4 hf_isTelevision];
 
     if (v9)
     {
 
-      if ((v8 & 1) == 0)
+      if ((hf_isMediaAccessory & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!v8)
+    else if (!hf_isMediaAccessory)
     {
       goto LABEL_16;
     }
@@ -257,7 +257,7 @@ id __40__HFAccessoryBuilder_removeItemFromHome__block_invoke_2(uint64_t a1, void
 LABEL_15:
 
 LABEL_16:
-    return v6;
+    return hf_isTelevision;
   }
 
   return 0;
@@ -270,23 +270,23 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Starting commit (%@)", buf, 0xCu);
   }
 
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  home = [(HFItemBuilder *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v5)
+  if (hf_currentUserIsAdministrator)
   {
     v6 = objc_opt_new();
     v7 = [(HFAccessoryBuilder *)self _lazilyUpdateValueForContextType:3];
     [v6 na_safeAddObject:v7];
 
-    v8 = [(HFAccessoryBuilder *)self accessory];
-    v9 = [v8 hf_isCamera];
+    accessory = [(HFAccessoryBuilder *)self accessory];
+    hf_isCamera = [accessory hf_isCamera];
 
-    if ((v9 & 1) == 0)
+    if ((hf_isCamera & 1) == 0)
     {
       v10 = [(HFAccessoryBuilder *)self _lazilyUpdateValueForContextType:2];
       [v6 na_safeAddObject:v10];
@@ -295,12 +295,12 @@ LABEL_16:
     v11 = [MEMORY[0x277D2C900] combineAllFutures:v6];
     v12 = @"HFOperationEditService";
     v13 = MEMORY[0x277D2C900];
-    v14 = [(HFAccessoryBuilder *)self _performValidation];
-    v26[0] = v14;
-    v15 = [(HFAccessoryBuilder *)self _lazilyUpdateName];
-    v26[1] = v15;
-    v16 = [(HFAccessoryBuilder *)self _lazilyUpdateRoom];
-    v26[2] = v16;
+    _performValidation = [(HFAccessoryBuilder *)self _performValidation];
+    v26[0] = _performValidation;
+    _lazilyUpdateName = [(HFAccessoryBuilder *)self _lazilyUpdateName];
+    v26[1] = _lazilyUpdateName;
+    _lazilyUpdateRoom = [(HFAccessoryBuilder *)self _lazilyUpdateRoom];
+    v26[2] = _lazilyUpdateRoom;
     v26[3] = v11;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
     v18 = [v13 chainFutures:v17];
@@ -309,8 +309,8 @@ LABEL_16:
     v23[2] = __32__HFAccessoryBuilder_commitItem__block_invoke;
     v23[3] = &unk_277DF2D30;
     v24 = v12;
-    v25 = self;
-    v19 = [v18 recover:v23];
+    selfCopy2 = self;
+    futureWithNoResult = [v18 recover:v23];
   }
 
   else
@@ -322,12 +322,12 @@ LABEL_16:
       _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Ignoring request to commit because the current user is not an administrator", buf, 2u);
     }
 
-    v19 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return futureWithNoResult;
 }
 
 id __32__HFAccessoryBuilder_commitItem__block_invoke(uint64_t a1, void *a2)
@@ -349,23 +349,23 @@ id __32__HFAccessoryBuilder_commitItem__block_invoke(uint64_t a1, void *a2)
   v27 = *MEMORY[0x277D85DE8];
   if ([(HFAccessoryBuilder *)self _shouldUpdateNilNameWithRoomName])
   {
-    v3 = [(HFAccessoryBuilder *)self room];
-    v4 = [v3 name];
-    [(HFAccessoryBuilder *)self setName:v4];
+    room = [(HFAccessoryBuilder *)self room];
+    name = [room name];
+    [(HFAccessoryBuilder *)self setName:name];
   }
 
   else
   {
-    v3 = [(HFAccessoryBuilder *)self namingComponent];
-    v4 = [(HFAccessoryBuilder *)self name];
-    v5 = [v3 commitableNameForString:v4];
+    room = [(HFAccessoryBuilder *)self namingComponent];
+    name = [(HFAccessoryBuilder *)self name];
+    v5 = [room commitableNameForString:name];
     [(HFAccessoryBuilder *)self setName:v5];
   }
 
-  v6 = [(HFAccessoryBuilder *)self name];
-  v7 = [(HFAccessoryBuilder *)self originalName];
-  v8 = v6;
-  v9 = v7;
+  name2 = [(HFAccessoryBuilder *)self name];
+  originalName = [(HFAccessoryBuilder *)self originalName];
+  v8 = name2;
+  v9 = originalName;
   v10 = v9;
   if (v8 == v9)
   {
@@ -377,18 +377,18 @@ id __32__HFAccessoryBuilder_commitItem__block_invoke(uint64_t a1, void *a2)
     {
 
 LABEL_13:
-      v15 = [(HFAccessoryBuilder *)self accessory];
-      v16 = [(HFAccessoryBuilder *)self name];
+      accessory = [(HFAccessoryBuilder *)self accessory];
+      name3 = [(HFAccessoryBuilder *)self name];
       v17 = MEMORY[0x277D2C900];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __39__HFAccessoryBuilder__lazilyUpdateName__block_invoke;
       v22[3] = &unk_277DF28D8;
-      v23 = v15;
-      v24 = v16;
-      v18 = v16;
-      v19 = v15;
-      v14 = [v17 lazyFutureWithBlock:v22];
+      v23 = accessory;
+      v24 = name3;
+      v18 = name3;
+      v19 = accessory;
+      futureWithNoResult = [v17 lazyFutureWithBlock:v22];
 
       goto LABEL_14;
     }
@@ -404,17 +404,17 @@ LABEL_13:
   v12 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(HFAccessoryBuilder *)self name];
+    name4 = [(HFAccessoryBuilder *)self name];
     *buf = 138412290;
-    v26 = v13;
+    v26 = name4;
     _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Not updating name because it hasn't changed (%@)", buf, 0xCu);
   }
 
-  v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 void __39__HFAccessoryBuilder__lazilyUpdateName__block_invoke(uint64_t a1, void *a2)
@@ -650,18 +650,18 @@ void __39__HFAccessoryBuilder__lazilyUpdateName__block_invoke_43(uint64_t a1, vo
 
 - (id)_lazilyUpdateRoom
 {
-  v3 = [(HFAccessoryBuilder *)self accessory];
-  v4 = [v3 room];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [(HFAccessoryBuilder *)self room];
-  v7 = [v6 room];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v5 isEqual:v8];
+  accessory = [(HFAccessoryBuilder *)self accessory];
+  room = [accessory room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  room2 = [(HFAccessoryBuilder *)self room];
+  v6Room = [room2 room];
+  uniqueIdentifier2 = [v6Room uniqueIdentifier];
+  v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   v10 = MEMORY[0x277D2C900];
   if (v9)
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -671,11 +671,11 @@ void __39__HFAccessoryBuilder__lazilyUpdateName__block_invoke_43(uint64_t a1, vo
     v13[2] = __39__HFAccessoryBuilder__lazilyUpdateRoom__block_invoke;
     v13[3] = &unk_277DF28D8;
     v13[4] = self;
-    v14 = v3;
-    v11 = [v10 lazyFutureWithBlock:v13];
+    v14 = accessory;
+    futureWithNoResult = [v10 lazyFutureWithBlock:v13];
   }
 
-  return v11;
+  return futureWithNoResult;
 }
 
 void __39__HFAccessoryBuilder__lazilyUpdateRoom__block_invoke(uint64_t a1, void *a2)
@@ -757,28 +757,28 @@ void __39__HFAccessoryBuilder__lazilyUpdateRoom__block_invoke_48(uint64_t a1, vo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lazilyUpdateValueForContextType:(unint64_t)a3
+- (id)_lazilyUpdateValueForContextType:(unint64_t)type
 {
   v5 = 0;
   v27 = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_10;
       }
 
-      v6 = [(HFAccessoryBuilder *)self showInHomeDashboard];
+      showInHomeDashboard = [(HFAccessoryBuilder *)self showInHomeDashboard];
 LABEL_9:
-      v5 = v6;
+      v5 = showInHomeDashboard;
 LABEL_10:
-      v7 = [(HFAccessoryBuilder *)self accessory];
-      v8 = [v7 home];
-      v9 = [v8 accessories];
-      v10 = [(HFAccessoryBuilder *)self accessory];
-      v11 = [v9 containsObject:v10];
+      accessory = [(HFAccessoryBuilder *)self accessory];
+      home = [accessory home];
+      accessories = [home accessories];
+      accessory2 = [(HFAccessoryBuilder *)self accessory];
+      v11 = [accessories containsObject:accessory2];
 
       if ((v11 & 1) == 0)
       {
@@ -786,21 +786,21 @@ LABEL_10:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v24 = a3;
+          typeCopy2 = type;
           _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Not updating overall state for context type: %lu because accessory was removed from the home", buf, 0xCu);
         }
 
         goto LABEL_19;
       }
 
-      v12 = [(HFAccessoryBuilder *)self accessory];
-      if (v5 == [v12 hf_shouldBeOnForContextType:a3])
+      accessory3 = [(HFAccessoryBuilder *)self accessory];
+      if (v5 == [accessory3 hf_shouldBeOnForContextType:type])
       {
-        v13 = [(HFAccessoryBuilder *)self accessory];
-        if (v5 == [v13 hf_isOnForContextType:a3])
+        accessory4 = [(HFAccessoryBuilder *)self accessory];
+        if (v5 == [accessory4 hf_isOnForContextType:type])
         {
-          v18 = [(HFAccessoryBuilder *)self accessory];
-          v19 = [v18 hf_hasSetForContextType:a3];
+          accessory5 = [(HFAccessoryBuilder *)self accessory];
+          v19 = [accessory5 hf_hasSetForContextType:type];
 
           if (v19)
           {
@@ -808,7 +808,7 @@ LABEL_10:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218240;
-              v24 = a3;
+              typeCopy2 = type;
               v25 = 1024;
               v26 = v5;
               _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "HFAccessoryBuilder: Not updating overall state for context type: %lu because it hasn't changed (state = %{BOOL}d)", buf, 0x12u);
@@ -824,8 +824,8 @@ LABEL_15:
           v21[3] = &unk_277DF7088;
           v22 = v5;
           v21[4] = self;
-          v21[5] = a3;
-          v14 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v21];
+          v21[5] = type;
+          futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v21];
           goto LABEL_20;
         }
       }
@@ -834,27 +834,27 @@ LABEL_15:
     }
 
 LABEL_8:
-    v6 = [(HFAccessoryBuilder *)self isFavorite];
+    showInHomeDashboard = [(HFAccessoryBuilder *)self isFavorite];
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_10;
   }
 
   NSLog(&cfstr_IncludeInStatu.isa, a2);
 LABEL_19:
-  v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_20:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 void __55__HFAccessoryBuilder__lazilyUpdateValueForContextType___block_invoke(uint64_t a1, void *a2)

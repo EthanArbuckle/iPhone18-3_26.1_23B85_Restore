@@ -1,6 +1,6 @@
 @interface WCM_UCMClientController
 - (int)getMyClientType;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation WCM_UCMClientController
@@ -18,9 +18,9 @@
   return 0;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64)
   {
     [WCM_Logging logLevel:2 message:@"Received UCMClient message-id: %lld", uint64];
@@ -42,7 +42,7 @@
 
         v6 = +[WCM_UCMClientManager WCM_UCMClientManagerSingleton];
 
-        [v6 getHomeKitBtLoad:a3];
+        [v6 getHomeKitBtLoad:message];
       }
     }
 
@@ -53,17 +53,17 @@
         case 2804:
           v7 = +[WCM_UCMClientManager WCM_UCMClientManagerSingleton];
 
-          [v7 enableHomeKitTimer:a3];
+          [v7 enableHomeKitTimer:message];
           break;
         case 2805:
           v8 = +[WCM_UCMClientManager WCM_UCMClientManagerSingleton];
 
-          [v8 enableFrequencyUpdatesForMic:a3];
+          [v8 enableFrequencyUpdatesForMic:message];
           break;
         case 2807:
           v5 = +[WCM_UCMClientManager WCM_UCMClientManagerSingleton];
 
-          [v5 enableULFrequencyUpdates:a3];
+          [v5 enableULFrequencyUpdates:message];
           return;
         default:
 LABEL_26:

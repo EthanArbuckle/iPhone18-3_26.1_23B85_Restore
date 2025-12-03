@@ -1,5 +1,5 @@
 @interface BKAppLaunchAssertion
-- (BKAppLaunchAssertion)initWithQueue:(id)a3 releaseBlock:(id)a4;
+- (BKAppLaunchAssertion)initWithQueue:(id)queue releaseBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -14,14 +14,14 @@
   v10 = sub_1000274B0;
   v11 = sub_100027690;
   v12 = 0;
-  v3 = [(BKAppLaunchAssertion *)self queue];
+  queue = [(BKAppLaunchAssertion *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002790C;
   v6[3] = &unk_100A036C0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   if (v8[5])
   {
@@ -49,18 +49,18 @@
   [(BKAppLaunchAssertion *)&v3 dealloc];
 }
 
-- (BKAppLaunchAssertion)initWithQueue:(id)a3 releaseBlock:(id)a4
+- (BKAppLaunchAssertion)initWithQueue:(id)queue releaseBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = BKAppLaunchAssertion;
   v9 = [(BKAppLaunchAssertion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [blockCopy copy];
     releaseBlock = v10->_releaseBlock;
     v10->_releaseBlock = v11;
   }

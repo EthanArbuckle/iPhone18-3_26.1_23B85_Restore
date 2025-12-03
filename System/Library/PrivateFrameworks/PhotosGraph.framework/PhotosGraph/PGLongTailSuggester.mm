@@ -1,60 +1,60 @@
 @interface PGLongTailSuggester
 - (BOOL)_shouldUsePreviousBatchOfCandidateAssets;
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4;
-- (BOOL)isMomentNodeInteresting:(id)a3 withNeighborScoreComputer:(id)a4;
-- (_NSRange)_randomRangeWithLocationUpperBound:(unint64_t)a3 maxLength:(unint64_t)a4;
-- (id)_assetUUIDByWeightedProbablisticSamplingFromAssetUUIDS:(id)a3 weights:(id)a4;
-- (id)_assetUUIDsFromAssets:(id)a3 atIndices:(id)a4;
-- (id)_batchOfRandomAssetsWithCount:(unint64_t)a3 progress:(id)a4;
-- (id)_bestAssetUUIDsFromCandidates:(id)a3 percentile:(unint64_t)a4;
-- (id)_candidateByAssetUUIDsFromAssets:(id)a3;
-- (id)_eligibleAssetUUIDsWithProgress:(id)a3;
-- (id)_fetchVerifiedPersonUUIDsByAssetUUIds:(id)a3;
-- (id)_nextCandidateAssetsWithProgress:(id)a3;
-- (id)allInterestingMomentsFromGraph:(id)a3 progress:(id)a4;
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date;
+- (BOOL)isMomentNodeInteresting:(id)interesting withNeighborScoreComputer:(id)computer;
+- (_NSRange)_randomRangeWithLocationUpperBound:(unint64_t)bound maxLength:(unint64_t)length;
+- (id)_assetUUIDByWeightedProbablisticSamplingFromAssetUUIDS:(id)s weights:(id)weights;
+- (id)_assetUUIDsFromAssets:(id)assets atIndices:(id)indices;
+- (id)_batchOfRandomAssetsWithCount:(unint64_t)count progress:(id)progress;
+- (id)_bestAssetUUIDsFromCandidates:(id)candidates percentile:(unint64_t)percentile;
+- (id)_candidateByAssetUUIDsFromAssets:(id)assets;
+- (id)_eligibleAssetUUIDsWithProgress:(id)progress;
+- (id)_fetchVerifiedPersonUUIDsByAssetUUIds:(id)ids;
+- (id)_nextCandidateAssetsWithProgress:(id)progress;
+- (id)allInterestingMomentsFromGraph:(id)graph progress:(id)progress;
 - (id)highlightedAssetInternalPredicate;
-- (id)nextSuggestedAssetWithProgress:(id)a3;
-- (id)nextSuggestionWithProgress:(id)a3;
-- (id)reasonsForSuggestion:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (unint64_t)_longTailScoreWithAsset:(id)a3 withAdditionalOptions:(id)a4;
-- (void)captureInformationFromGraph:(id)a3;
+- (id)nextSuggestedAssetWithProgress:(id)progress;
+- (id)nextSuggestionWithProgress:(id)progress;
+- (id)reasonsForSuggestion:(id)suggestion;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (unint64_t)_longTailScoreWithAsset:(id)asset withAdditionalOptions:(id)options;
+- (void)captureInformationFromGraph:(id)graph;
 - (void)reset;
-- (void)startSuggestingWithOptions:(id)a3;
+- (void)startSuggestingWithOptions:(id)options;
 @end
 
 @implementation PGLongTailSuggester
 
-- (_NSRange)_randomRangeWithLocationUpperBound:(unint64_t)a3 maxLength:(unint64_t)a4
+- (_NSRange)_randomRangeWithLocationUpperBound:(unint64_t)bound maxLength:(unint64_t)length
 {
-  if (a3 <= a4)
+  if (bound <= length)
   {
-    v6 = a3;
+    lengthCopy = bound;
     v5 = 0;
   }
 
   else
   {
-    v5 = [PGLongTailSuggester randomIntegerWithUpperBound:a3 - a4 + 1 seed:self->_randomSeed];
-    v6 = a4;
+    v5 = [PGLongTailSuggester randomIntegerWithUpperBound:bound - length + 1 seed:self->_randomSeed];
+    lengthCopy = length;
   }
 
-  result.length = v6;
+  result.length = lengthCopy;
   result.location = v5;
   return result;
 }
 
-- (id)_assetUUIDsFromAssets:(id)a3 atIndices:(id)a4
+- (id)_assetUUIDsFromAssets:(id)assets atIndices:(id)indices
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  indicesCopy = indices;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v5 objectsAtIndexes:{v6, 0}];
+  v8 = [assetsCopy objectsAtIndexes:{indicesCopy, 0}];
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -69,8 +69,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) uuid];
-        [v7 addObject:v13];
+        uuid = [*(*(&v16 + 1) + 8 * i) uuid];
+        [v7 addObject:uuid];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -84,15 +84,15 @@
   return v7;
 }
 
-- (id)reasonsForSuggestion:(id)a3
+- (id)reasonsForSuggestion:(id)suggestion
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 keyAssets];
-  v5 = [v4 firstObject];
+  keyAssets = [suggestion keyAssets];
+  firstObject = [keyAssets firstObject];
 
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"score = %lu", -[PGLongTailSuggester _longTailScoreWithAsset:withAdditionalOptions:](self, "_longTailScoreWithAsset:withAdditionalOptions:", v5, self->_additionalOptions)];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"score = %lu", -[PGLongTailSuggester _longTailScoreWithAsset:withAdditionalOptions:](self, "_longTailScoreWithAsset:withAdditionalOptions:", firstObject, self->_additionalOptions)];
   v7 = MEMORY[0x277CCACA8];
-  [v5 overallAestheticScore];
+  [firstObject overallAestheticScore];
   v9 = [v7 stringWithFormat:@"aesthetics = %.3f", v8];
   v13[0] = v6;
   v13[1] = v9;
@@ -103,17 +103,17 @@
   return v10;
 }
 
-- (id)_assetUUIDByWeightedProbablisticSamplingFromAssetUUIDS:(id)a3 weights:(id)a4
+- (id)_assetUUIDByWeightedProbablisticSamplingFromAssetUUIDS:(id)s weights:(id)weights
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sCopy = s;
+  weightsCopy = weights;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = sCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -130,11 +130,11 @@
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v6 objectForKeyedSubscript:v13];
-        v16 = [v15 score];
-        if (v16)
+        v15 = [weightsCopy objectForKeyedSubscript:v13];
+        score = [v15 score];
+        if (score)
         {
-          v17 = v16;
+          v17 = score;
           do
           {
             [v7 addObject:v13];
@@ -169,10 +169,10 @@
   return v19;
 }
 
-- (id)_bestAssetUUIDsFromCandidates:(id)a3 percentile:(unint64_t)a4
+- (id)_bestAssetUUIDsFromCandidates:(id)candidates percentile:(unint64_t)percentile
 {
-  v5 = [a3 keysSortedByValueUsingComparator:&__block_literal_global_25908];
-  v6 = (a4 / 100.0 * [v5 count]);
+  v5 = [candidates keysSortedByValueUsingComparator:&__block_literal_global_25908];
+  v6 = (percentile / 100.0 * [v5 count]);
   v7 = v5;
   if (v6)
   {
@@ -213,16 +213,16 @@ uint64_t __64__PGLongTailSuggester__bestAssetUUIDsFromCandidates_percentile___bl
   }
 }
 
-- (id)_candidateByAssetUUIDsFromAssets:(id)a3
+- (id)_candidateByAssetUUIDsFromAssets:(id)assets
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v4;
+  obj = assetsCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -239,11 +239,11 @@ uint64_t __64__PGLongTailSuggester__bestAssetUUIDsFromCandidates_percentile___bl
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 uuid];
+        uuid = [v9 uuid];
         v12 = [[PGLongTailSuggestionCandidate alloc] initWithAsset:v9 score:[(PGLongTailSuggester *)self _longTailScoreWithAsset:v9 withAdditionalOptions:self->_additionalOptions]];
         if ([(PGLongTailSuggestionCandidate *)v12 isValidWithMeNodeLocalIdentifier:self->_meNodeLocalIdentifier])
         {
-          [v15 setValue:v12 forKey:v11];
+          [v15 setValue:v12 forKey:uuid];
         }
 
         objc_autoreleasePoolPop(v10);
@@ -260,11 +260,11 @@ uint64_t __64__PGLongTailSuggester__bestAssetUUIDsFromCandidates_percentile___bl
   return v15;
 }
 
-- (id)_eligibleAssetUUIDsWithProgress:(id)a3
+- (id)_eligibleAssetUUIDsWithProgress:(id)progress
 {
   v91 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v4 = _Block_copy(v54);
+  progressCopy = progress;
+  v4 = _Block_copy(progressCopy);
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -304,16 +304,16 @@ LABEL_12:
 
   if (!self->_eligibleAssetUUIDs)
   {
-    v10 = [(PGAbstractSuggester *)self session];
-    v49 = self;
-    if (v10)
+    session = [(PGAbstractSuggester *)self session];
+    selfCopy = self;
+    if (session)
     {
-      v48 = v10;
-      v11 = [v10 loggingConnection];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      v48 = session;
+      loggingConnection = [session loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
-        _os_log_debug_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_DEBUG, "Long Tail: Fetching all interesting moments", buf, 2u);
+        _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail: Fetching all interesting moments", buf, 2u);
       }
 
       *buf = 0;
@@ -322,7 +322,7 @@ LABEL_12:
       v88 = __Block_byref_object_copy__25916;
       v89 = __Block_byref_object_dispose__25917;
       v90 = 0;
-      v12 = [v48 workingContext];
+      workingContext = [v48 workingContext];
       v64[0] = MEMORY[0x277D85DD0];
       v64[1] = 3221225472;
       v64[2] = __55__PGLongTailSuggester__eligibleAssetUUIDsWithProgress___block_invoke;
@@ -334,7 +334,7 @@ LABEL_12:
       v67 = &v70;
       v68 = &v74;
       v69 = 0x3F847AE147AE147BLL;
-      [v12 performSynchronousConcurrentGraphReadUsingBlock:v64];
+      [workingContext performSynchronousConcurrentGraphReadUsingBlock:v64];
 
       if (*(v75 + 24) == 1)
       {
@@ -351,7 +351,7 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v14 = v11;
+      v14 = loggingConnection;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v44 = [*(v87 + 40) count];
@@ -402,8 +402,8 @@ LABEL_19:
         _os_log_debug_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_DEBUG, "Long Tail: Fetching all UUIDs of assets highlighted in interesting moments in curated library", v82, 2u);
       }
 
-      v17 = [(PGLongTailSuggester *)self highlightedAssetInternalPredicate];
-      v53 = [(PGAbstractSuggester *)self defaultAssetFetchOptionsWithInternalPredicate:v17];
+      highlightedAssetInternalPredicate = [(PGLongTailSuggester *)self highlightedAssetInternalPredicate];
+      v53 = [(PGAbstractSuggester *)self defaultAssetFetchOptionsWithInternalPredicate:highlightedAssetInternalPredicate];
 
       v81 = *MEMORY[0x277CD9AA8];
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
@@ -477,8 +477,8 @@ LABEL_19:
                       objc_enumerationMutation(v35);
                     }
 
-                    v39 = [*(*(&v55 + 1) + 8 * j) uuid];
-                    [v22 addObject:v39];
+                    uuid = [*(*(&v55 + 1) + 8 * j) uuid];
+                    [v22 addObject:uuid];
                   }
 
                   v36 = [v35 countByEnumeratingWithState:&v55 objects:v78 count:16];
@@ -496,7 +496,7 @@ LABEL_19:
             {
 
               _Block_object_dispose(buf, 8);
-              v11 = oslog;
+              loggingConnection = oslog;
               goto LABEL_58;
             }
           }
@@ -511,7 +511,7 @@ LABEL_19:
         }
       }
 
-      objc_storeStrong(&v49->_eligibleAssetUUIDs, v22);
+      objc_storeStrong(&selfCopy->_eligibleAssetUUIDs, v22);
       v40 = oslog;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
@@ -522,10 +522,10 @@ LABEL_19:
       }
 
       _Block_object_dispose(buf, 8);
-      v10 = v48;
+      session = v48;
     }
 
-    self = v49;
+    self = selfCopy;
     if (v4)
     {
       goto LABEL_8;
@@ -618,12 +618,12 @@ void __55__PGLongTailSuggester__eligibleAssetUUIDsWithProgress___block_invoke_2(
   }
 }
 
-- (id)allInterestingMomentsFromGraph:(id)a3 progress:(id)a4
+- (id)allInterestingMomentsFromGraph:(id)graph progress:(id)progress
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  graphCopy = graph;
+  progressCopy = progress;
+  v8 = _Block_copy(progressCopy);
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -658,7 +658,7 @@ void __55__PGLongTailSuggester__eligibleAssetUUIDsWithProgress___block_invoke_2(
     v33[1] = v33;
     v33[2] = 0x2020000000;
     v33[3] = 0;
-    v13 = [v6 momentNodes];
+    momentNodes = [graphCopy momentNodes];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __63__PGLongTailSuggester_allInterestingMomentsFromGraph_progress___block_invoke;
@@ -673,7 +673,7 @@ void __55__PGLongTailSuggester__eligibleAssetUUIDsWithProgress___block_invoke_2(
     v15 = v12;
     v26 = v15;
     p_buf = &buf;
-    [v13 enumerateNodesUsingBlock:v25];
+    [momentNodes enumerateNodesUsingBlock:v25];
 
     if (*(v39 + 24) == 1)
     {
@@ -692,9 +692,9 @@ void __55__PGLongTailSuggester__eligibleAssetUUIDsWithProgress___block_invoke_2(
     else
     {
       v16 = *(v47 + 40);
-      v17 = [(PGAbstractSuggester *)self session];
-      v18 = [v17 photoLibrary];
-      v19 = [v6 momentsForMomentNodes:v16 inPhotoLibrary:v18 sortChronologically:0];
+      session = [(PGAbstractSuggester *)self session];
+      photoLibrary = [session photoLibrary];
+      v19 = [graphCopy momentsForMomentNodes:v16 inPhotoLibrary:photoLibrary sortChronologically:0];
 
       if (v8 && (Current = CFAbsoluteTimeGetCurrent(), Current - v35[3] >= 0.01) && (v35[3] = Current, v24 = 0, (*(v14 + 2))(v14, &v24, 1.0), v21 = *(v39 + 24) | v24, *(v39 + 24) = v21, (v21 & 1) != 0))
       {
@@ -745,18 +745,18 @@ void __63__PGLongTailSuggester_allInterestingMomentsFromGraph_progress___block_i
   }
 }
 
-- (BOOL)isMomentNodeInteresting:(id)a3 withNeighborScoreComputer:(id)a4
+- (BOOL)isMomentNodeInteresting:(id)interesting withNeighborScoreComputer:(id)computer
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isInteresting] & 1) != 0 || (objc_msgSend(v5, "isSmartInteresting") & 1) != 0 || (objc_msgSend(v5, "isMeaningful") & 1) != 0 || (objc_msgSend(v5, "isPartOfTrip") & 1) != 0 || (objc_msgSend(v5, "isInterestingForMemories"))
+  interestingCopy = interesting;
+  computerCopy = computer;
+  if ([interestingCopy isInteresting] & 1) != 0 || (objc_msgSend(interestingCopy, "isSmartInteresting") & 1) != 0 || (objc_msgSend(interestingCopy, "isMeaningful") & 1) != 0 || (objc_msgSend(interestingCopy, "isPartOfTrip") & 1) != 0 || (objc_msgSend(interestingCopy, "isInterestingForMemories"))
   {
     v7 = 1;
   }
 
   else
   {
-    [v6 neighborScoreWithMomentNode:v5];
+    [computerCopy neighborScoreWithMomentNode:interestingCopy];
     v7 = [PGGraphMomentNode breakoutOfRoutineTypeWithNeighborScore:?]!= 0;
   }
 
@@ -769,11 +769,11 @@ void __63__PGLongTailSuggester_allInterestingMomentsFromGraph_progress___block_i
   v2 = MEMORY[0x277CCAC30];
   [MEMORY[0x277D3CAA8] legacyAestheticScoreThresholdToBeAestheticallyPrettyGood];
   v4 = [v2 predicateWithFormat:@"highlightBeingExtendedAssets != nil AND overallAestheticScore >= %f AND (kindSubtype & %d) == 0", v3, 1];
-  v5 = [objc_opt_class() noVideoPredicate];
+  noVideoPredicate = [objc_opt_class() noVideoPredicate];
   v6 = [objc_opt_class() internalPredicateForProcessedAssetsWithMinimumSceneAnalysisVersion:33];
   v7 = MEMORY[0x277CCA920];
   v12[0] = v4;
-  v12[1] = v5;
+  v12[1] = noVideoPredicate;
   v12[2] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
   v9 = [v7 andPredicateWithSubpredicates:v8];
@@ -783,18 +783,18 @@ void __63__PGLongTailSuggester_allInterestingMomentsFromGraph_progress___block_i
   return v9;
 }
 
-- (id)_batchOfRandomAssetsWithCount:(unint64_t)a3 progress:(id)a4
+- (id)_batchOfRandomAssetsWithCount:(unint64_t)count progress:(id)progress
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PGAbstractSuggester *)self session];
-  if (!v7)
+  progressCopy = progress;
+  session = [(PGAbstractSuggester *)self session];
+  if (!session)
   {
     v11 = 0;
     goto LABEL_51;
   }
 
-  v8 = _Block_copy(v6);
+  v8 = _Block_copy(progressCopy);
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -858,7 +858,7 @@ LABEL_11:
   {
     if (!v8 || (v15 = CFAbsoluteTimeGetCurrent(), v15 - v48[3] < 0.01) || (v48[3] = v15, v46 = 0, v12[2](v12, &v46, 0.5), v16 = *(v52 + 24) | v46, *(v52 + 24) = v16, (v16 & 1) == 0))
     {
-      oslog = [v7 loggingConnection];
+      oslog = [session loggingConnection];
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
@@ -868,7 +868,7 @@ LABEL_11:
       v17 = [v13 count];
       if (v17)
       {
-        v18 = [(PGLongTailSuggester *)self _randomRangeWithLocationUpperBound:v17 maxLength:a3];
+        v18 = [(PGLongTailSuggester *)self _randomRangeWithLocationUpperBound:v17 maxLength:count];
         v20 = v19;
         if (v8 && (v21 = CFAbsoluteTimeGetCurrent(), v21 - v48[3] >= 0.01) && (v48[3] = v21, v46 = 0, v12[2](v12, &v46, 0.7), v22 = *(v52 + 24) | v46, *(v52 + 24) = v22, (v22 & 1) != 0))
         {
@@ -919,9 +919,9 @@ LABEL_11:
           else
           {
             v30 = MEMORY[0x277CD97A8];
-            v31 = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
-            v32 = [v7 curationContext];
-            v33 = [v30 clsAllAssetsFromFetchResult:v39 prefetchOptions:v31 curationContext:v32];
+            clsPrefetchOptionsForKeyAsset = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
+            curationContext = [session curationContext];
+            v33 = [v30 clsAllAssetsFromFetchResult:v39 prefetchOptions:clsPrefetchOptionsForKeyAsset curationContext:curationContext];
 
             if (v8 && (v34 = CFAbsoluteTimeGetCurrent(), v34 - v48[3] >= 0.01) && (v48[3] = v34, v46 = 0, v12[2](v12, &v46, 1.0), v35 = *(v52 + 24) | v46, *(v52 + 24) = v35, (v35 & 1) != 0))
             {
@@ -1002,20 +1002,20 @@ void __62__PGLongTailSuggester__batchOfRandomAssetsWithCount_progress___block_in
   }
 }
 
-- (id)_fetchVerifiedPersonUUIDsByAssetUUIds:(id)a3
+- (id)_fetchVerifiedPersonUUIDsByAssetUUIds:(id)ids
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = v5;
-  if (v5)
+  idsCopy = ids;
+  session = [(PGAbstractSuggester *)self session];
+  v6 = session;
+  if (session)
   {
-    v7 = [v5 photoLibrary];
-    v8 = [v7 librarySpecificFetchOptions];
+    photoLibrary = [session photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"personForFace.type", -1];
-    [v8 setInternalPredicate:v9];
+    [librarySpecificFetchOptions setInternalPredicate:v9];
 
-    v10 = [MEMORY[0x277CD9938] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:v4 options:v8];
+    v10 = [MEMORY[0x277CD9938] fetchVerifiedPersonUUIDsGroupedByAssetUUIDForAssetUUIDs:idsCopy options:librarySpecificFetchOptions];
   }
 
   else
@@ -1026,11 +1026,11 @@ void __62__PGLongTailSuggester__batchOfRandomAssetsWithCount_progress___block_in
   return v10;
 }
 
-- (unint64_t)_longTailScoreWithAsset:(id)a3 withAdditionalOptions:(id)a4
+- (unint64_t)_longTailScoreWithAsset:(id)asset withAdditionalOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFavorite])
+  assetCopy = asset;
+  optionsCopy = options;
+  if ([assetCopy isFavorite])
   {
     v8 = 2;
   }
@@ -1040,47 +1040,47 @@ void __62__PGLongTailSuggester__batchOfRandomAssetsWithCount_progress___block_in
     v8 = 1;
   }
 
-  v9 = v8 + [v6 isIncludedInCloudFeeds];
-  if ([v6 clsShareCount])
+  v9 = v8 + [assetCopy isIncludedInCloudFeeds];
+  if ([assetCopy clsShareCount])
   {
     ++v9;
   }
 
-  if ([v6 clsPeopleCount])
+  if ([assetCopy clsPeopleCount])
   {
     ++v9;
   }
 
-  v10 = [(PGAbstractSuggester *)self session];
-  [v10 topTierAestheticScore];
+  session = [(PGAbstractSuggester *)self session];
+  [session topTierAestheticScore];
   v12 = v11;
 
   if (v12 != 0.0)
   {
-    [v6 clsAestheticScore];
+    [assetCopy clsAestheticScore];
     if (v13 >= v12)
     {
-      v9 += [v7 topTierAestheticScoreValue];
+      v9 += [optionsCopy topTierAestheticScoreValue];
     }
   }
 
   verifiedPersonUUIDsByAssetUUIds = self->_verifiedPersonUUIDsByAssetUUIds;
-  v15 = [v6 uuid];
-  v16 = [(NSDictionary *)verifiedPersonUUIDsByAssetUUIds objectForKeyedSubscript:v15];
+  uuid = [assetCopy uuid];
+  v16 = [(NSDictionary *)verifiedPersonUUIDsByAssetUUIds objectForKeyedSubscript:uuid];
 
   if ([v16 count])
   {
-    v9 += [v7 verifiedPersonScoreValue];
+    v9 += [optionsCopy verifiedPersonScoreValue];
   }
 
   return v9;
 }
 
-- (id)nextSuggestedAssetWithProgress:(id)a3
+- (id)nextSuggestedAssetWithProgress:(id)progress
 {
   v66 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v4 = _Block_copy(v42);
+  progressCopy = progress;
+  v4 = _Block_copy(progressCopy);
   v57 = 0;
   v58 = &v57;
   v59 = 0x2020000000;
@@ -1178,8 +1178,8 @@ LABEL_10:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v43 + 1) + 8 * v18) uuid];
-          v14 = [v19 arrayByAddingObject:v20];
+          uuid = [*(*(&v43 + 1) + 8 * v18) uuid];
+          v14 = [v19 arrayByAddingObject:uuid];
 
           ++v18;
           v19 = v14;
@@ -1298,8 +1298,8 @@ LABEL_62:
       if (!v4 || (v33 = CFAbsoluteTimeGetCurrent(), v33 - v54[3] < 0.01) || (v54[3] = v33, v52 = 0, (*(v8 + 2))(v8, &v52, 0.9), v34 = *(v58 + 24) | v52, *(v58 + 24) = v34, (v34 & 1) == 0))
       {
         v35 = [v26 objectForKeyedSubscript:v32];
-        v36 = [v35 asset];
-        [(NSMutableSet *)self->_suggestedAssetsFromPreviousBatch addObject:v36];
+        asset = [v35 asset];
+        [(NSMutableSet *)self->_suggestedAssetsFromPreviousBatch addObject:asset];
         ++self->_numberOfGeneratedSuggestions;
         if (v4 && (v37 = CFAbsoluteTimeGetCurrent(), v37 - v54[3] >= 0.01) && (v54[3] = v37, v52 = 0, (*(v8 + 2))(v8, &v52, 1.0), v38 = *(v58 + 24) | v52, *(v58 + 24) = v38, (v38 & 1) != 0))
         {
@@ -1317,7 +1317,7 @@ LABEL_62:
 
         else
         {
-          v7 = v36;
+          v7 = asset;
         }
 
         goto LABEL_59;
@@ -1377,19 +1377,19 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
   }
 }
 
-- (id)_nextCandidateAssetsWithProgress:(id)a3
+- (id)_nextCandidateAssetsWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   [(NSMutableSet *)self->_candidateAssetsFromPreviousBatch minusSet:self->_suggestedAssetsFromPreviousBatch];
   if ([(PGLongTailSuggester *)self _shouldUsePreviousBatchOfCandidateAssets])
   {
-    v5 = [(NSMutableSet *)self->_candidateAssetsFromPreviousBatch allObjects];
+    allObjects = [(NSMutableSet *)self->_candidateAssetsFromPreviousBatch allObjects];
   }
 
   else
   {
-    v5 = [(PGLongTailSuggester *)self _batchOfRandomAssetsWithCount:200 progress:v4];
-    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v5];
+    allObjects = [(PGLongTailSuggester *)self _batchOfRandomAssetsWithCount:200 progress:progressCopy];
+    v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:allObjects];
     candidateAssetsFromPreviousBatch = self->_candidateAssetsFromPreviousBatch;
     self->_candidateAssetsFromPreviousBatch = v6;
 
@@ -1398,7 +1398,7 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
     self->_suggestedAssetsFromPreviousBatch = v8;
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (BOOL)_shouldUsePreviousBatchOfCandidateAssets
@@ -1418,18 +1418,18 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
 
 - (void)reset
 {
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     *v11 = 0;
-    _os_log_debug_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Resetting", v11, 2u);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Resetting", v11, 2u);
   }
 
   [(PGAbstractSuggester *)self setLastSuggestionWasColliding:0];
-  v5 = [(PGSuggestionOptions *)self->_options localToday];
-  [v5 timeIntervalSince1970];
+  localToday = [(PGSuggestionOptions *)self->_options localToday];
+  [localToday timeIntervalSince1970];
   self->_randomSeed = v6;
 
   self->_numberOfGeneratedSuggestions = 0;
@@ -1442,24 +1442,24 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
   self->_candidateAssetsFromPreviousBatch = v9;
 }
 
-- (id)nextSuggestionWithProgress:(id)a3
+- (id)nextSuggestionWithProgress:(id)progress
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  progressCopy = progress;
   if (self->_numberOfGeneratedSuggestions < 0x65)
   {
-    v6 = [(PGAbstractSuggester *)self session];
-    v7 = v6;
-    if (v6)
+    session = [(PGAbstractSuggester *)self session];
+    v7 = session;
+    if (session)
     {
-      v8 = [v6 loggingConnection];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      loggingConnection = [session loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
       {
         LOWORD(v16) = 0;
-        _os_log_debug_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: nextSuggestion", &v16, 2u);
+        _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: nextSuggestion", &v16, 2u);
       }
 
-      v9 = [(PGLongTailSuggester *)self nextSuggestedAssetWithProgress:v4];
+      v9 = [(PGLongTailSuggester *)self nextSuggestedAssetWithProgress:progressCopy];
       if (v9 && (v10 = [[PGSingleAssetSuggestion alloc] initWithType:5 subtype:502 asset:v9]) != 0)
       {
         v5 = v10;
@@ -1469,24 +1469,24 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
           [(PGSingleAssetSuggestion *)v5 setReasons:v11];
         }
 
-        v12 = v8;
+        v12 = loggingConnection;
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [(PGSingleAssetSuggestion *)v5 reasons];
+          reasons = [(PGSingleAssetSuggestion *)v5 reasons];
           v16 = 138478083;
           v17 = v5;
           v18 = 2112;
-          v19 = v15;
+          v19 = reasons;
           _os_log_debug_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Suggesting %{private}@ with reasons: %@", &v16, 0x16u);
         }
       }
 
       else
       {
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
         {
           LOWORD(v16) = 0;
-          _os_log_debug_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Nothing to suggest", &v16, 2u);
+          _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Nothing to suggest", &v16, 2u);
         }
 
         v5 = 0;
@@ -1521,26 +1521,26 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
   return v5;
 }
 
-- (void)startSuggestingWithOptions:(id)a3
+- (void)startSuggestingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_debug_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Starting suggestion", buf, 2u);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail Suggester: Starting suggestion", buf, 2u);
   }
 
   [(PGAbstractSuggester *)self setLastSuggestionWasColliding:0];
   options = self->_options;
-  self->_options = v4;
-  v8 = v4;
+  self->_options = optionsCopy;
+  v8 = optionsCopy;
 
-  v9 = [(PGSuggestionOptions *)self->_options maximumNumberOfSuggestions];
-  if (v9)
+  maximumNumberOfSuggestions = [(PGSuggestionOptions *)self->_options maximumNumberOfSuggestions];
+  if (maximumNumberOfSuggestions)
   {
-    v10 = v9;
+    v10 = maximumNumberOfSuggestions;
   }
 
   else
@@ -1550,8 +1550,8 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
 
   self->_maximumNumberOfSuggestions = v10;
   self->_numberOfGeneratedSuggestions = 0;
-  v11 = [(PGSuggestionOptions *)v8 localToday];
-  [v11 timeIntervalSince1970];
+  localToday = [(PGSuggestionOptions *)v8 localToday];
+  [localToday timeIntervalSince1970];
   self->_randomSeed = v12;
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -1563,18 +1563,18 @@ void __54__PGLongTailSuggester_nextSuggestedAssetWithProgress___block_invoke(uin
   self->_candidateAssetsFromPreviousBatch = v15;
 
   v17 = [PGLongTailAdditionalOptions alloc];
-  v18 = [(PGSuggestionOptions *)v8 additionalOptions];
-  v19 = [(PGLongTailAdditionalOptions *)v17 initWithDictionary:v18];
+  additionalOptions = [(PGSuggestionOptions *)v8 additionalOptions];
+  v19 = [(PGLongTailAdditionalOptions *)v17 initWithDictionary:additionalOptions];
   additionalOptions = self->_additionalOptions;
   self->_additionalOptions = v19;
 
-  v21 = [v5 workingContext];
+  workingContext = [session workingContext];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __50__PGLongTailSuggester_startSuggestingWithOptions___block_invoke;
   v22[3] = &unk_27888A3B8;
   v22[4] = self;
-  [v21 performSynchronousConcurrentGraphReadUsingBlock:v22];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v22];
 }
 
 void __50__PGLongTailSuggester_startSuggestingWithOptions___block_invoke(uint64_t a1, void *a2)
@@ -1584,55 +1584,55 @@ void __50__PGLongTailSuggester_startSuggestingWithOptions___block_invoke(uint64_
   [v2 captureInformationFromGraph:v3];
 }
 
-- (void)captureInformationFromGraph:(id)a3
+- (void)captureInformationFromGraph:(id)graph
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 meNodeWithFallbackInferredMeNode];
-  v5 = [v4 localIdentifier];
+  meNodeWithFallbackInferredMeNode = [graph meNodeWithFallbackInferredMeNode];
+  localIdentifier = [meNodeWithFallbackInferredMeNode localIdentifier];
   meNodeLocalIdentifier = self->_meNodeLocalIdentifier;
-  self->_meNodeLocalIdentifier = v5;
+  self->_meNodeLocalIdentifier = localIdentifier;
 
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     v10 = self->_meNodeLocalIdentifier;
     v11 = 138412290;
     v12 = v10;
-    _os_log_debug_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEBUG, "Long Tail: meNode local identifier is: %@", &v11, 0xCu);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "Long Tail: meNode local identifier is: %@", &v11, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGAbstractSuggester *)self session];
+  assetCopy = asset;
+  dateCopy = date;
+  session = [(PGAbstractSuggester *)self session];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v9 = [v8 photoLibrary];
-  v10 = [v8 workingContext];
+  photoLibrary = [session photoLibrary];
+  workingContext = [session workingContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__PGLongTailSuggester_canGenerateSuggestionWithAsset_onDate___block_invoke;
   v14[3] = &unk_278889308;
   v14[4] = self;
-  v11 = v6;
+  v11 = assetCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = photoLibrary;
   v16 = v12;
   v17 = &v18;
-  [v10 performSynchronousConcurrentGraphReadUsingBlock:v14];
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v14];
 
-  LOBYTE(v10) = *(v19 + 24);
+  LOBYTE(workingContext) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
 
-  return v10;
+  return workingContext;
 }
 
 void __61__PGLongTailSuggester_canGenerateSuggestionWithAsset_onDate___block_invoke(uint64_t a1, void *a2)
@@ -1709,13 +1709,13 @@ void __61__PGLongTailSuggester_canGenerateSuggestionWithAsset_onDate___block_inv
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v49 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  aBlock = a4;
-  v28 = [(PGAbstractSuggester *)self session];
-  if (v28)
+  optionsCopy = options;
+  aBlock = progress;
+  session = [(PGAbstractSuggester *)self session];
+  if (session)
   {
     v6 = _Block_copy(aBlock);
     v41 = 0;
@@ -1742,7 +1742,7 @@ void __61__PGLongTailSuggester_canGenerateSuggestionWithAsset_onDate___block_inv
 
     else
     {
-      [(PGLongTailSuggester *)self startSuggestingWithOptions:v25];
+      [(PGLongTailSuggester *)self startSuggestingWithOptions:optionsCopy];
       v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v10 = 0;
       v11 = 1.0 / self->_maximumNumberOfSuggestions;

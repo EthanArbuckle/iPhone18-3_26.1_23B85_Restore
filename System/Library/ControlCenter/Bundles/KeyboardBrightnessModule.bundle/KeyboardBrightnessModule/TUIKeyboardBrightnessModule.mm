@@ -1,11 +1,11 @@
 @interface TUIKeyboardBrightnessModule
-- (id)backgroundViewControllerForContext:(id)a3;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)backgroundViewControllerForContext:(id)context;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation TUIKeyboardBrightnessModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v4 = objc_alloc_init(TUIKeyboardBrightnessModuleViewController);
   v5 = MEMORY[0x29EDB9F48];
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (id)backgroundViewControllerForContext:(id)a3
+- (id)backgroundViewControllerForContext:(id)context
 {
   v4 = objc_alloc_init(TUIKeyboardBrightnessBackgroundViewController);
   objc_storeStrong(&self->_backgroundViewController, v4);

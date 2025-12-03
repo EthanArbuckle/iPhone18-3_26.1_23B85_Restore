@@ -1,30 +1,30 @@
 @interface RTLocationOfInterestDataSource
-+ (id)configureDateRangeString:(id)a3 dateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5;
++ (id)configureDateRangeString:(id)string dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle;
 - (NSArray)recentRecords;
 - (NSDateInterval)summaryInterval;
-- (RTLocationOfInterestDataSource)initWithRoutineManager:(id)a3 locationShifter:(id)a4;
+- (RTLocationOfInterestDataSource)initWithRoutineManager:(id)manager locationShifter:(id)shifter;
 - (unint64_t)summaryRecordCount;
-- (void)loadLocationsOfInterestWithHandler:(id)a3;
-- (void)processLocationsOfInterest:(id)a3 handler:(id)a4;
+- (void)loadLocationsOfInterestWithHandler:(id)handler;
+- (void)processLocationsOfInterest:(id)interest handler:(id)handler;
 - (void)reset;
-- (void)shiftLocationOfInterestCoordinates:(id)a3 handler:(id)a4;
+- (void)shiftLocationOfInterestCoordinates:(id)coordinates handler:(id)handler;
 @end
 
 @implementation RTLocationOfInterestDataSource
 
-- (RTLocationOfInterestDataSource)initWithRoutineManager:(id)a3 locationShifter:(id)a4
+- (RTLocationOfInterestDataSource)initWithRoutineManager:(id)manager locationShifter:(id)shifter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  shifterCopy = shifter;
+  v9 = shifterCopy;
+  if (!managerCopy)
   {
     v15 = sub_10DB8(&qword_21AA0);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -35,7 +35,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!shifterCopy)
   {
     v15 = sub_10DB8(&qword_21AA0);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -59,29 +59,29 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [(RTLocationOfInterestDataSource *)v12 UTF8String];
+      uTF8String = [(RTLocationOfInterestDataSource *)v12 UTF8String];
     }
 
     else
     {
       v18 = [NSString stringWithFormat:@"%@-%p", objc_opt_class(), v12];
-      v14 = [v18 UTF8String];
+      uTF8String = [v18 UTF8String];
     }
 
-    v19 = dispatch_queue_create(v14, v13);
+    v19 = dispatch_queue_create(uTF8String, v13);
 
     queue = v12->_queue;
     v12->_queue = v19;
 
-    objc_storeStrong(&v12->_routineManager, a3);
-    objc_storeStrong(&v12->_locationShifter, a4);
+    objc_storeStrong(&v12->_routineManager, manager);
+    objc_storeStrong(&v12->_locationShifter, shifter);
   }
 
   self = v11;
-  v17 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v17;
+  return selfCopy;
 }
 
 - (unint64_t)summaryRecordCount
@@ -147,11 +147,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)loadLocationsOfInterestWithHandler:(id)a3
+- (void)loadLocationsOfInterestWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -159,7 +159,7 @@ LABEL_13:
     v8[2] = sub_F2D8;
     v8[3] = &unk_1D9F8;
     v8[4] = self;
-    v9 = v4;
+    v9 = handlerCopy;
     dispatch_async(queue, v8);
   }
 
@@ -174,16 +174,16 @@ LABEL_13:
   }
 }
 
-- (void)processLocationsOfInterest:(id)a3 handler:(id)a4
+- (void)processLocationsOfInterest:(id)interest handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  interestCopy = interest;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 count])
+    if ([interestCopy count])
     {
-      v51 = self;
-      v49 = v7;
+      selfCopy = self;
+      v49 = handlerCopy;
       v59 = objc_opt_new();
       v57 = objc_opt_new();
       v60 = [NSDate dateWithTimeIntervalSinceNow:-4838400.0];
@@ -191,8 +191,8 @@ LABEL_13:
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v50 = v6;
-      obj = v6;
+      v50 = interestCopy;
+      obj = interestCopy;
       v54 = [obj countByEnumeratingWithState:&v70 objects:v77 count:16];
       if (v54)
       {
@@ -213,8 +213,8 @@ LABEL_13:
             v67 = 0u;
             v68 = 0u;
             v69 = 0u;
-            v10 = [v9 visits];
-            v11 = [v10 countByEnumeratingWithState:&v66 objects:v76 count:16];
+            visits = [v9 visits];
+            v11 = [visits countByEnumeratingWithState:&v66 objects:v76 count:16];
             if (v11)
             {
               v12 = v11;
@@ -225,24 +225,24 @@ LABEL_13:
                 {
                   if (*v67 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(visits);
                   }
 
                   v15 = *(*(&v66 + 1) + 8 * i);
-                  v16 = [v15 entryDate];
-                  v17 = [v16 earlierDate:v60];
-                  v18 = [v15 entryDate];
-                  v19 = [v17 isEqualToDate:v18];
+                  entryDate = [v15 entryDate];
+                  v17 = [entryDate earlierDate:v60];
+                  entryDate2 = [v15 entryDate];
+                  v19 = [v17 isEqualToDate:entryDate2];
 
                   if ((v19 & 1) == 0)
                   {
                     [v59 addObject:v15];
-                    v20 = [v15 identifier];
-                    [v57 setObject:v9 forKeyedSubscript:v20];
+                    identifier = [v15 identifier];
+                    [v57 setObject:v9 forKeyedSubscript:identifier];
                   }
                 }
 
-                v12 = [v10 countByEnumeratingWithState:&v66 objects:v76 count:16];
+                v12 = [visits countByEnumeratingWithState:&v66 objects:v76 count:16];
               }
 
               while (v12);
@@ -284,13 +284,13 @@ LABEL_13:
       v65 = v32;
       [v59 enumerateObjectsWithOptions:2 usingBlock:v61];
       v33 = [v59 count];
-      v34 = v51;
-      v51->_summaryRecordCount = v33;
+      v34 = selfCopy;
+      selfCopy->_summaryRecordCount = v33;
       if (v33)
       {
         v35 = [NSDateInterval alloc];
-        v36 = [v59 firstObject];
-        v37 = [v36 entryDate];
+        firstObject = [v59 firstObject];
+        entryDate3 = [firstObject entryDate];
         [v59 lastObject];
         v58 = v32;
         v39 = v38 = v27;
@@ -298,9 +298,9 @@ LABEL_13:
         v40 = v31;
         v41 = v26;
         v43 = v42 = v25;
-        v44 = [v35 initWithStartDate:v37 endDate:v43];
-        summaryInterval = v51->_summaryInterval;
-        v51->_summaryInterval = v44;
+        v44 = [v35 initWithStartDate:entryDate3 endDate:v43];
+        summaryInterval = selfCopy->_summaryInterval;
+        selfCopy->_summaryInterval = v44;
 
         v25 = v42;
         v26 = v41;
@@ -310,22 +310,22 @@ LABEL_13:
         v32 = v58;
         v23 = v59;
 
-        v34 = v51;
+        v34 = selfCopy;
       }
 
       recentRecords = v34->_recentRecords;
       v34->_recentRecords = v30;
       v47 = v30;
 
-      v7 = v49;
+      handlerCopy = v49;
       v49[2](v49, 0);
 
-      v6 = v50;
+      interestCopy = v50;
     }
 
     else
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -340,25 +340,25 @@ LABEL_13:
   }
 }
 
-- (void)shiftLocationOfInterestCoordinates:(id)a3 handler:(id)a4
+- (void)shiftLocationOfInterestCoordinates:(id)coordinates handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  coordinatesCopy = coordinates;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 count])
+    if ([coordinatesCopy count])
     {
-      v76 = self;
-      v71 = v7;
-      v75 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v6 count]);
+      selfCopy = self;
+      v71 = handlerCopy;
+      v75 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [coordinatesCopy count]);
       v78 = objc_opt_new();
       v8 = objc_opt_new();
       v91 = 0u;
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v72 = v6;
-      v9 = v6;
+      v72 = coordinatesCopy;
+      v9 = coordinatesCopy;
       v10 = [v9 countByEnumeratingWithState:&v91 objects:v97 count:16];
       if (v10)
       {
@@ -374,11 +374,11 @@ LABEL_13:
             }
 
             v14 = *(*(&v91 + 1) + 8 * i);
-            v15 = [v14 location];
-            [v15 latitude];
+            location = [v14 location];
+            [location latitude];
             v17 = v16;
-            v18 = [v14 location];
-            [v18 longitude];
+            location2 = [v14 location];
+            [location2 longitude];
             v20 = v19;
 
             if ([GEOLocationShifter isLocationShiftRequiredForCoordinate:v17, v20])
@@ -423,35 +423,35 @@ LABEL_13:
             }
 
             v26 = *(*(&v87 + 1) + 8 * j);
-            v27 = [v26 mapItem];
-            if (v27 && (v28 = v27, [v26 mapItem], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "location"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "referenceFrame"), v30, v29, v28, v31 == 2))
+            mapItem = [v26 mapItem];
+            if (mapItem && (v28 = mapItem, [v26 mapItem], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "location"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "referenceFrame"), v30, v29, v28, v31 == 2))
             {
               v32 = [RTLocation alloc];
-              v33 = [v26 mapItem];
-              v34 = [v33 location];
-              [v34 latitude];
+              mapItem2 = [v26 mapItem];
+              location3 = [mapItem2 location];
+              [location3 latitude];
               v36 = v35;
-              v37 = [v26 mapItem];
-              v38 = [v37 location];
-              [v38 longitude];
+              mapItem3 = [v26 mapItem];
+              location4 = [mapItem3 location];
+              [location4 longitude];
               v40 = v39;
-              v41 = [v26 location];
-              [v41 horizontalUncertainty];
+              location5 = [v26 location];
+              [location5 horizontalUncertainty];
               v43 = v42;
-              v44 = [v26 mapItem];
-              v45 = [v44 location];
-              v46 = [v32 initWithLatitude:0 longitude:objc_msgSend(v45 horizontalUncertainty:"referenceFrame") date:v36 referenceFrame:{v40, v43}];
+              mapItem4 = [v26 mapItem];
+              location6 = [mapItem4 location];
+              v46 = [v32 initWithLatitude:0 longitude:objc_msgSend(location6 horizontalUncertainty:"referenceFrame") date:v36 referenceFrame:{v40, v43}];
 
               v47 = [RTLocationOfInterest alloc];
               [v26 confidence];
               v49 = v48;
-              v50 = [v26 identifier];
-              v51 = [v26 type];
-              v52 = [v26 typeSource];
-              v53 = [v26 visits];
-              v54 = [v26 customLabel];
-              v55 = [v26 mapItem];
-              v56 = [v47 initWithLocation:v46 confidence:v50 identifier:v51 type:v52 typeSource:v53 visits:v54 customLabel:v49 mapItem:v55];
+              identifier = [v26 identifier];
+              type = [v26 type];
+              typeSource = [v26 typeSource];
+              visits = [v26 visits];
+              customLabel = [v26 customLabel];
+              mapItem5 = [v26 mapItem];
+              v56 = [v47 initWithLocation:v46 confidence:identifier identifier:type type:typeSource typeSource:visits visits:customLabel customLabel:v49 mapItem:mapItem5];
 
               v23 = v75;
               if (v56)
@@ -459,7 +459,7 @@ LABEL_13:
                 [v75 addObject:v56];
               }
 
-              self = v76;
+              self = selfCopy;
               v24 = v73;
               v22 = v74;
             }
@@ -467,16 +467,16 @@ LABEL_13:
             else
             {
               dispatch_group_enter(v22);
-              v57 = [v26 location];
-              [v57 latitude];
+              location7 = [v26 location];
+              [location7 latitude];
               v59 = v58;
-              v60 = [v26 location];
-              [v60 longitude];
+              location8 = [v26 location];
+              [location8 longitude];
               v62 = CLLocationCoordinate2DMake(v59, v61);
 
               locationShifter = self->_locationShifter;
-              v64 = [v26 location];
-              [v64 horizontalUncertainty];
+              location9 = [v26 location];
+              [location9 horizontalUncertainty];
               v66 = v65;
               v84[0] = _NSConcreteStackBlock;
               v84[1] = 3221225472;
@@ -503,18 +503,18 @@ LABEL_13:
       block[3] = &unk_1D9A8;
       v81 = v23;
       v82 = v78;
-      v7 = v71;
+      handlerCopy = v71;
       v83 = v71;
       v68 = v78;
       v69 = v23;
       dispatch_group_notify(v22, queue, block);
 
-      v6 = v72;
+      coordinatesCopy = v72;
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -540,15 +540,15 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-+ (id)configureDateRangeString:(id)a3 dateStyle:(unint64_t)a4 timeStyle:(unint64_t)a5
++ (id)configureDateRangeString:(id)string dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle
 {
-  if (a3)
+  if (string)
   {
-    v7 = a3;
+    stringCopy = string;
     v8 = objc_alloc_init(NSDateIntervalFormatter);
-    [v8 setDateStyle:a4];
-    [v8 setTimeStyle:a5];
-    v9 = [v8 stringFromDateInterval:v7];
+    [v8 setDateStyle:style];
+    [v8 setTimeStyle:timeStyle];
+    v9 = [v8 stringFromDateInterval:stringCopy];
   }
 
   else

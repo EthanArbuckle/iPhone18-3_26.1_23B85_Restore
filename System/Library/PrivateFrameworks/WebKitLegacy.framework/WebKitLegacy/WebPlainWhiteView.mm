@@ -1,10 +1,10 @@
 @interface WebPlainWhiteView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation WebPlainWhiteView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = WKGetCurrentGraphicsContext();
   WebCore::cachedCGColor();

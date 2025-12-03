@@ -1,40 +1,40 @@
 @interface BookmarksBarLabelButton
 + (id)labelButton;
-+ (id)labelButtonWithButtonStyle:(int64_t)a3;
++ (id)labelButtonWithButtonStyle:(int64_t)style;
 + (id)labelButtonWithSiteIcon;
 - (BOOL)_canShowIcon;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BookmarksBarLabelButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BookmarksBarLabelButton)initWithFrame:(CGRect)frame;
 - (BookmarksBarLabelButtonDelegate)delegate;
 - (CGRect)_bookmarksBarLabelButtonHitRect;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)cursorRegionInset;
 - (id)accessibilityIdentifier;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (void)_editBookmark:(id)a3;
-- (void)_handleLongPressGestureRecognizer:(id)a3;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (void)_editBookmark:(id)bookmark;
+- (void)_handleLongPressGestureRecognizer:(id)recognizer;
 - (void)_installFaviconView;
-- (void)_openInNewTabs:(id)a3;
-- (void)_setIcon:(id)a3;
-- (void)_updateFaviconForURL:(id)a3;
-- (void)setBookmark:(id)a3;
+- (void)_openInNewTabs:(id)tabs;
+- (void)_setIcon:(id)icon;
+- (void)_updateFaviconForURL:(id)l;
+- (void)setBookmark:(id)bookmark;
 @end
 
 @implementation BookmarksBarLabelButton
 
-+ (id)labelButtonWithButtonStyle:(int64_t)a3
++ (id)labelButtonWithButtonStyle:(int64_t)style
 {
-  v4 = [a1 buttonWithType:1];
+  v4 = [self buttonWithType:1];
   v5 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v6 = [v4 titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v5];
 
-  [v4 setButtonStyle:a3];
-  if (a3 <= 1)
+  [v4 setButtonStyle:style];
+  if (style <= 1)
   {
     [v4 _installFaviconView];
   }
@@ -44,10 +44,10 @@
 
 + (id)labelButtonWithSiteIcon
 {
-  v2 = [a1 buttonWithType:1];
+  v2 = [self buttonWithType:1];
   v3 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v4 = [v2 titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setFont:v3];
 
   [v2 _installFaviconView];
 
@@ -56,19 +56,19 @@
 
 + (id)labelButton
 {
-  v2 = [a1 buttonWithType:1];
+  v2 = [self buttonWithType:1];
   v3 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v4 = [v2 titleLabel];
-  [v4 setFont:v3];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setFont:v3];
 
   return v2;
 }
 
-- (BookmarksBarLabelButton)initWithFrame:(CGRect)a3
+- (BookmarksBarLabelButton)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = BookmarksBarLabelButton;
-  v3 = [(BookmarksBarLabelButton *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BookmarksBarLabelButton *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v3 action:sel__handleLongPressGestureRecognizer_];
@@ -236,19 +236,19 @@ void __46__BookmarksBarLabelButton__installFaviconView__block_invoke(uint64_t a1
   [WeakRetained setNeedsLayout];
 }
 
-- (void)_handleLongPressGestureRecognizer:(id)a3
+- (void)_handleLongPressGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     v4 = MEMORY[0x277D754C0];
-    [v6 locationInView:self];
+    [recognizerCopy locationInView:self];
     v5 = [v4 configurationWithIdentifier:0 sourcePoint:?];
     [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v5];
   }
 }
 
-- (void)_openInNewTabs:(id)a3
+- (void)_openInNewTabs:(id)tabs
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -257,7 +257,7 @@ void __46__BookmarksBarLabelButton__installFaviconView__block_invoke(uint64_t a1
   }
 }
 
-- (void)_editBookmark:(id)a3
+- (void)_editBookmark:(id)bookmark
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -266,12 +266,12 @@ void __46__BookmarksBarLabelButton__installFaviconView__block_invoke(uint64_t a1
   }
 }
 
-- (void)_setIcon:(id)a3
+- (void)_setIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   if ([(BookmarksBarLabelButton *)self _canShowIcon])
   {
-    v4 = v5;
+    v4 = iconCopy;
   }
 
   else
@@ -282,20 +282,20 @@ void __46__BookmarksBarLabelButton__installFaviconView__block_invoke(uint64_t a1
   [(SFFaviconView *)self->_faviconView setIcon:v4];
 }
 
-- (void)_updateFaviconForURL:(id)a3
+- (void)_updateFaviconForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (self->_faviconView)
   {
-    v5 = [objc_alloc(MEMORY[0x277D4A730]) initWithURL:v4 iconSize:1 fallbackType:1 iconDownloadingEnabled:{16.0, 16.0}];
+    v5 = [objc_alloc(MEMORY[0x277D4A730]) initWithURL:lCopy iconSize:1 fallbackType:1 iconDownloadingEnabled:{16.0, 16.0}];
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__BookmarksBarLabelButton__updateFaviconForURL___block_invoke;
     v9[3] = &unk_2781D5D78;
     objc_copyWeak(&v10, &location);
-    v7 = [v6 registerRequest:v5 priority:2 responseHandler:v9];
+    v7 = [mEMORY[0x277D28F58] registerRequest:v5 priority:2 responseHandler:v9];
     faviconToken = self->_faviconToken;
     self->_faviconToken = v7;
 
@@ -315,12 +315,12 @@ void __48__BookmarksBarLabelButton__updateFaviconForURL___block_invoke(uint64_t 
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v12.receiver = self;
   v12.super_class = BookmarksBarLabelButton;
-  [(BookmarksBarLabelButton *)&v12 sizeThatFits:a3.width, a3.height];
+  [(BookmarksBarLabelButton *)&v12 sizeThatFits:fits.width, fits.height];
   v7 = v6;
   if (self->_buttonStyle == 1)
   {
@@ -357,18 +357,18 @@ void __48__BookmarksBarLabelButton__updateFaviconForURL___block_invoke(uint64_t 
   return result;
 }
 
-- (void)setBookmark:(id)a3
+- (void)setBookmark:(id)bookmark
 {
-  v5 = a3;
-  if (self->_bookmark != v5)
+  bookmarkCopy = bookmark;
+  if (self->_bookmark != bookmarkCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_bookmark, a3);
-    v6 = [(WebBookmark *)self->_bookmark title];
-    self->_hasLeadingEmoji = [(__CFString *)v6 safari_hasLeadingEmojiSafariIsRightToLeft:[(BookmarksBarLabelButton *)self _sf_usesLeftToRightLayout]^ 1];
-    v7 = [(WebBookmark *)self->_bookmark showIconOnly];
+    v18 = bookmarkCopy;
+    objc_storeStrong(&self->_bookmark, bookmark);
+    title = [(WebBookmark *)self->_bookmark title];
+    self->_hasLeadingEmoji = [(__CFString *)title safari_hasLeadingEmojiSafariIsRightToLeft:[(BookmarksBarLabelButton *)self _sf_usesLeftToRightLayout]^ 1];
+    showIconOnly = [(WebBookmark *)self->_bookmark showIconOnly];
     buttonStyle = self->_buttonStyle;
-    if (v7)
+    if (showIconOnly)
     {
       if (buttonStyle != 2)
       {
@@ -383,15 +383,15 @@ LABEL_6:
         {
           if (self->_hasLeadingEmoji)
           {
-            v9 = [(__CFString *)v6 safari_leadingEmojiSafariIsRightToLeft:[(BookmarksBarLabelButton *)self _sf_usesLeftToRightLayout]^ 1];
+            v9 = [(__CFString *)title safari_leadingEmojiSafariIsRightToLeft:[(BookmarksBarLabelButton *)self _sf_usesLeftToRightLayout]^ 1];
 
-            v6 = v9;
+            title = v9;
           }
 
           else
           {
 
-            v6 = &stru_2827BF158;
+            title = &stru_2827BF158;
           }
         }
       }
@@ -402,7 +402,7 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    [(BookmarksBarLabelButton *)self setTitle:v6 forState:0];
+    [(BookmarksBarLabelButton *)self setTitle:title forState:0];
     if ([(WebBookmark *)self->_bookmark isFolder])
     {
       v10 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.down"];
@@ -419,26 +419,26 @@ LABEL_6:
 
     else
     {
-      v15 = [MEMORY[0x277D28F20] fallbackFavicon];
-      [(BookmarksBarLabelButton *)self _setIcon:v15];
+      fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
+      [(BookmarksBarLabelButton *)self _setIcon:fallbackFavicon];
 
       v16 = objc_alloc(MEMORY[0x277CBEBC0]);
-      v17 = [(WebBookmark *)self->_bookmark address];
-      v14 = [v16 initWithString:v17];
+      address = [(WebBookmark *)self->_bookmark address];
+      v14 = [v16 initWithString:address];
 
       [(BookmarksBarLabelButton *)self _updateFaviconForURL:v14];
     }
 
     [(BookmarksBarLabelButton *)self setNeedsLayout];
-    v5 = v18;
+    bookmarkCopy = v18;
   }
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v30.receiver = self;
   v30.super_class = BookmarksBarLabelButton;
-  [(BookmarksBarLabelButton *)&v30 titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BookmarksBarLabelButton *)&v30 titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   if ([(BookmarksBarLabelButton *)self _canShowIcon])
@@ -468,8 +468,8 @@ LABEL_6:
     v20 = [(BookmarksBarLabelButton *)self imageForState:0];
     if (v20)
     {
-      v21 = [(BookmarksBarLabelButton *)self _imageView];
-      [v21 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+      _imageView = [(BookmarksBarLabelButton *)self _imageView];
+      [_imageView sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
       v23 = v22;
     }
 
@@ -509,12 +509,12 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(BookmarksBarLabelButton *)self titleRectForContentRect:?];
   v9 = v8;
   v11 = v10;
@@ -581,10 +581,10 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(BookmarksBarLabelButton *)self _bookmarksBarLabelButtonHitRect];
   v10 = x;
   v11 = y;
@@ -592,25 +592,25 @@ LABEL_6:
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v5 = MEMORY[0x277D75880];
-  [(BookmarksBarLabelButton *)self _bookmarksBarLabelButtonHitRect:a3];
+  [(BookmarksBarLabelButton *)self _bookmarksBarLabelButtonHitRect:interaction];
 
   return [v5 regionWithRect:@"BookmarksBarLabelButton" identifier:?];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-  v8 = [(BookmarksBarLabelButton *)self bookmark];
-  v9 = [v7 bookmarkContainsLeafBookmark:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+  bookmark = [(BookmarksBarLabelButton *)self bookmark];
+  v9 = [mainBookmarkCollection bookmarkContainsLeafBookmark:bookmark];
 
   if (v9)
   {
-    v10 = [(BookmarksBarLabelButton *)self bookmark];
-    [v10 isFolder];
+    bookmark2 = [(BookmarksBarLabelButton *)self bookmark];
+    [bookmark2 isFolder];
     v11 = SFOpenInNewTabTitle();
 
     v12 = MEMORY[0x277D75370];
@@ -618,7 +618,7 @@ LABEL_6:
     v14 = [v12 commandWithTitle:v11 image:v13 action:sel__openInNewTabs_ propertyList:0];
 
     [v14 setAccessibilityIdentifier:@"OpenInNewTab"];
-    [v6 addObject:v14];
+    [array addObject:v14];
   }
 
   v15 = _WBSLocalizedString();
@@ -627,16 +627,16 @@ LABEL_6:
   v18 = [v16 commandWithTitle:v15 image:v17 action:sel__editBookmark_ propertyList:0];
 
   [v18 setAccessibilityIdentifier:@"Edit"];
-  [v6 addObject:v18];
-  v19 = [MEMORY[0x277D75710] menuWithChildren:v6];
+  [array addObject:v18];
+  v19 = [MEMORY[0x277D75710] menuWithChildren:array];
   [v19 setAccessibilityIdentifier:@"SafariContextMenu"];
 
   return v19;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  [(BookmarksBarLabelButton *)self bounds:a3];
+  [(BookmarksBarLabelButton *)self bounds:interaction];
   if (self->_buttonStyle != 1)
   {
     goto LABEL_4;
@@ -650,8 +650,8 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [(BookmarksBarLabelButton *)self titleLabel];
-  [v7 bounds];
+  titleLabel = [(BookmarksBarLabelButton *)self titleLabel];
+  [titleLabel bounds];
   v6 = v8;
 
 LABEL_6:
@@ -668,27 +668,27 @@ LABEL_6:
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v12[0] = @"Type";
-  v3 = [(WebBookmark *)self->_bookmark isFolder];
+  isFolder = [(WebBookmark *)self->_bookmark isFolder];
   v4 = @"Bookmark";
-  if (v3)
+  if (isFolder)
   {
     v4 = @"Folder";
   }
 
   v13[0] = v4;
   v12[1] = @"PerBookmarkShowTitle";
-  v5 = [(WebBookmark *)self->_bookmark showIconOnly];
+  showIconOnly = [(WebBookmark *)self->_bookmark showIconOnly];
   v6 = @"true";
-  if (v5)
+  if (showIconOnly)
   {
     v6 = @"false";
   }
 
   v13[1] = v6;
   v12[2] = @"ShowingIcon";
-  v7 = [(BookmarksBarLabelButton *)self _canShowIcon];
+  _canShowIcon = [(BookmarksBarLabelButton *)self _canShowIcon];
   v8 = @"Emoji";
-  if (v7)
+  if (_canShowIcon)
   {
     v8 = @"Favicon";
   }

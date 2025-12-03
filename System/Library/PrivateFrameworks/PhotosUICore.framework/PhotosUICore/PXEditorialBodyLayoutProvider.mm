@@ -1,12 +1,12 @@
 @interface PXEditorialBodyLayoutProvider
 - ($7A74DE1ADD4D9428579EDAA94466197A)bodyCornerRadius;
 - (PXEditorialBodyLayoutProvider)init;
-- (PXEditorialBodyLayoutProvider)initWithViewModel:(id)a3;
+- (PXEditorialBodyLayoutProvider)initWithViewModel:(id)model;
 - (PXPhotosSectionBodyLayoutProviderInvalidationDelegate)invalidationDelegate;
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7;
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5;
-- (void)setAvoidsFullWidthHeroes:(BOOL)a3;
-- (void)setBodyCornerRadius:(id)a3;
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration;
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout;
+- (void)setAvoidsFullWidthHeroes:(BOOL)heroes;
+- (void)setBodyCornerRadius:(id)radius;
 @end
 
 @implementation PXEditorialBodyLayoutProvider
@@ -25,12 +25,12 @@
   return WeakRetained;
 }
 
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration
 {
-  *a7 = 1;
-  v9 = a4;
+  *decoration = 1;
+  sourceCopy = source;
   v10 = objc_alloc_init(PXEditorialSectionBodyLayout);
-  v11 = [v9 numberOfItemsInSection:a5->section];
+  v11 = [sourceCopy numberOfItemsInSection:path->section];
 
   [(PXGGeneratedLayout *)v10 setPadding:*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
   if (v11 > [PXSmallCollectionLayoutGenerator maximumNumberOfItemsSupportedForStyle:0]|| [(PXPhotosViewModel *)self->_viewModel gridStyle]== 3)
@@ -56,12 +56,12 @@
   return v10;
 }
 
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v22 = v9;
+  layoutCopy = layout;
+  sectionLayoutCopy = sectionLayout;
+  sectionedLayoutCopy = sectionedLayout;
+  v22 = layoutCopy;
   if (v22)
   {
     objc_opt_class();
@@ -70,44 +70,44 @@
       goto LABEL_3;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v19 = NSStringFromClass(v20);
-    v21 = [v22 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"bodyLayout", v19, v21}];
+    px_descriptionForAssertionMessage = [v22 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"bodyLayout", v19, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v17 handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"bodyLayout", v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"bodyLayout", v19}];
   }
 
 LABEL_3:
-  [v22 setDelegate:v10];
+  [v22 setDelegate:sectionLayoutCopy];
   [v22 setMediaKind:2];
-  [v22 setContentSource:v10];
-  [v22 setKeyItemIndex:{objc_msgSend(v10, "keyItemIndex")}];
-  v12 = [v10 numberOfAssets];
-  if ([v22 numberOfItems] != v12)
+  [v22 setContentSource:sectionLayoutCopy];
+  [v22 setKeyItemIndex:{objc_msgSend(sectionLayoutCopy, "keyItemIndex")}];
+  numberOfAssets = [sectionLayoutCopy numberOfAssets];
+  if ([v22 numberOfItems] != numberOfAssets)
   {
-    [v22 setNumberOfItems:v12];
+    [v22 setNumberOfItems:numberOfAssets];
   }
 
-  v13 = [(PXPhotosViewModel *)self->_viewModel specManager];
-  v14 = [v13 extendedTraitCollection];
+  specManager = [(PXPhotosViewModel *)self->_viewModel specManager];
+  extendedTraitCollection = [specManager extendedTraitCollection];
 
   v15 = [PXAssetsSectionBodyLemonadeEditorialLayoutSpec alloc];
-  [v11 preferredCornerRadius];
-  v16 = [(PXAssetsSectionBodyLemonadeEditorialLayoutSpec *)v15 initWithExtendedTraitCollection:v14 bodyCornerRadius:?];
+  [sectionedLayoutCopy preferredCornerRadius];
+  v16 = [(PXAssetsSectionBodyLemonadeEditorialLayoutSpec *)v15 initWithExtendedTraitCollection:extendedTraitCollection bodyCornerRadius:?];
   [v22 setSpec:v16];
 
   [v22 setLazy:1];
 }
 
-- (void)setBodyCornerRadius:(id)a3
+- (void)setBodyCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -117,39 +117,39 @@ LABEL_3:
     self->_bodyCornerRadius.var0.var0.topRight = v4;
     self->_bodyCornerRadius.var0.var0.bottomLeft = v5;
     self->_bodyCornerRadius.var0.var0.bottomRight = v6;
-    v9 = [(PXEditorialBodyLayoutProvider *)self invalidationDelegate:*&a3.var0.var0.var0];
+    v9 = [(PXEditorialBodyLayoutProvider *)self invalidationDelegate:*&radius.var0.var0.var0];
     [v9 photosSectionBodyLayoutInvalidateConfiguredLayouts:self];
   }
 }
 
-- (void)setAvoidsFullWidthHeroes:(BOOL)a3
+- (void)setAvoidsFullWidthHeroes:(BOOL)heroes
 {
-  if (self->_avoidsFullWidthHeroes != a3)
+  if (self->_avoidsFullWidthHeroes != heroes)
   {
-    self->_avoidsFullWidthHeroes = a3;
-    v5 = [(PXEditorialBodyLayoutProvider *)self invalidationDelegate];
-    [v5 photosSectionBodyLayoutInvalidateConfiguredLayouts:self];
+    self->_avoidsFullWidthHeroes = heroes;
+    invalidationDelegate = [(PXEditorialBodyLayoutProvider *)self invalidationDelegate];
+    [invalidationDelegate photosSectionBodyLayoutInvalidateConfiguredLayouts:self];
   }
 }
 
 - (PXEditorialBodyLayoutProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXEditorialBodyLayoutProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXEditorialBodyLayoutProvider.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXEditorialBodyLayoutProvider init]"}];
 
   abort();
 }
 
-- (PXEditorialBodyLayoutProvider)initWithViewModel:(id)a3
+- (PXEditorialBodyLayoutProvider)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXEditorialBodyLayoutProvider;
   v6 = [(PXEditorialBodyLayoutProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;

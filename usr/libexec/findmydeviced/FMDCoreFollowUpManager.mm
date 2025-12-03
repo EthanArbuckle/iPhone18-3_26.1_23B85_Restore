@@ -1,15 +1,15 @@
 @interface FMDCoreFollowUpManager
 + (FMDCoreFollowUpManager)sharedInstance;
-- (id)_getDeviceClassesFromCoverage:(unint64_t)a3;
+- (id)_getDeviceClassesFromCoverage:(unint64_t)coverage;
 - (void)_forceTheftAndLossCFU;
-- (void)_getTheftAndLossFollowUpStringsWithCompletion:(id)a3;
+- (void)_getTheftAndLossFollowUpStringsWithCompletion:(id)completion;
 - (void)_handleTheftAndLossReminderBackgroundTask;
 - (void)_registerTheftAndLossCFUBackgroundTask;
 - (void)clearTheftAndLossCFU;
 - (void)handleNDOCoverageUpdate;
 - (void)registerAndSubmitBGSTForFirstUnlock;
-- (void)requestTheftAndLossCFU:(unint64_t)a3;
-- (void)submitTheftAndLossReminderBackgroundTask:(id)a3;
+- (void)requestTheftAndLossCFU:(unint64_t)u;
+- (void)submitTheftAndLossReminderBackgroundTask:(id)task;
 @end
 
 @implementation FMDCoreFollowUpManager
@@ -26,24 +26,24 @@
   return v3;
 }
 
-- (id)_getDeviceClassesFromCoverage:(unint64_t)a3
+- (id)_getDeviceClassesFromCoverage:(unint64_t)coverage
 {
   v4 = +[FMDSystemConfig sharedInstance];
-  v5 = [v4 deviceClass];
+  deviceClass = [v4 deviceClass];
 
-  if (a3 <= 2)
+  if (coverage <= 2)
   {
-    if (a3 == 1)
+    if (coverage == 1)
     {
-      v6 = v5 - 1;
-      if (v5 - 1) < 6 && ((0x2Bu >> v6))
+      v6 = deviceClass - 1;
+      if (deviceClass - 1) < 6 && ((0x2Bu >> v6))
       {
         v7 = off_1002CF800;
         return v7[v6];
       }
     }
 
-    else if (a3 == 2)
+    else if (coverage == 2)
     {
       return @"Watch";
     }
@@ -51,11 +51,11 @@
 
   else
   {
-    switch(a3)
+    switch(coverage)
     {
       case 3uLL:
-        v6 = v5 - 1;
-        if (v5 - 1) < 6 && ((0x2Bu >> v6))
+        v6 = deviceClass - 1;
+        if (deviceClass - 1) < 6 && ((0x2Bu >> v6))
         {
           v7 = off_1002CF860;
           return v7[v6];
@@ -65,8 +65,8 @@
       case 4uLL:
         return @"Watches";
       case 5uLL:
-        v6 = v5 - 1;
-        if (v5 - 1) < 6 && ((0x2Bu >> v6))
+        v6 = deviceClass - 1;
+        if (deviceClass - 1) < 6 && ((0x2Bu >> v6))
         {
           v7 = off_1002CF830;
           return v7[v6];
@@ -95,27 +95,27 @@
   [(FMDCoreFollowUpManager *)self _getTheftAndLossFollowUpStringsWithCompletion:v2];
 }
 
-- (void)_getTheftAndLossFollowUpStringsWithCompletion:(id)a3
+- (void)_getTheftAndLossFollowUpStringsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[FMDSharedConfigurationManager sharedInstance];
-  v6 = [(FMDCoreFollowUpManager *)self serialNumber];
+  serialNumber = [(FMDCoreFollowUpManager *)self serialNumber];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10017A7B8;
   v8[3] = &unk_1002CF770;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 getTheftAndLossCoverageWithSerialNumber:v6 timeout:v8 completion:120.0];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v5 getTheftAndLossCoverageWithSerialNumber:serialNumber timeout:v8 completion:120.0];
 }
 
 - (void)_handleTheftAndLossReminderBackgroundTask
 {
   v3 = +[FMDSharedConfiguration sharedInstance];
-  v4 = [v3 readFindMySignOutTimeFromFile];
+  readFindMySignOutTimeFromFile = [v3 readFindMySignOutTimeFromFile];
 
-  if (v4)
+  if (readFindMySignOutTimeFromFile)
   {
 
     [(FMDCoreFollowUpManager *)self _forceTheftAndLossCFU];
@@ -133,14 +133,14 @@
   }
 }
 
-- (void)submitTheftAndLossReminderBackgroundTask:(id)a3
+- (void)submitTheftAndLossReminderBackgroundTask:(id)task
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10017AA6C;
   v5[3] = &unk_1002CF748;
-  v6 = a3;
-  v4 = v6;
+  taskCopy = task;
+  v4 = taskCopy;
   [(FMDCoreFollowUpManager *)self _getTheftAndLossFollowUpStringsWithCompletion:v5];
 }
 
@@ -151,27 +151,27 @@
 
   if (v4)
   {
-    v5 = sub_100002880();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    readFindMySignOutTimeFromFile = sub_100002880();
+    if (os_log_type_enabled(readFindMySignOutTimeFromFile, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v16 = @"com.apple.findmy.theftandlosscfu";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ already submitted", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, readFindMySignOutTimeFromFile, OS_LOG_TYPE_DEFAULT, "%@ already submitted", buf, 0xCu);
     }
   }
 
   else
   {
     v6 = +[FMDSharedConfiguration sharedInstance];
-    v5 = [v6 readFindMySignOutTimeFromFile];
+    readFindMySignOutTimeFromFile = [v6 readFindMySignOutTimeFromFile];
 
-    if (v5)
+    if (readFindMySignOutTimeFromFile)
     {
       v7 = sub_100002880();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = readFindMySignOutTimeFromFile;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Last FMiP signout: %@", buf, 0xCu);
       }
 
@@ -184,7 +184,7 @@
       [v8 registerForTaskWithIdentifier:@"com.apple.findmy.theftandlosscfu" usingQueue:0 launchHandler:v14];
 
       v9 = +[FMDSharedConfiguration sharedInstance];
-      v10 = [v9 localeString];
+      localeString = [v9 localeString];
 
       v11 = +[FMDSharedConfigurationManager sharedInstance];
       v12[0] = _NSConcreteStackBlock;
@@ -192,9 +192,9 @@
       v12[2] = sub_10017B020;
       v12[3] = &unk_1002CE320;
       v12[4] = self;
-      v5 = v5;
-      v13 = v5;
-      [v11 downloadSharedConfigurationWithLocale:v10 reply:v12];
+      readFindMySignOutTimeFromFile = readFindMySignOutTimeFromFile;
+      v13 = readFindMySignOutTimeFromFile;
+      [v11 downloadSharedConfigurationWithLocale:localeString reply:v12];
     }
   }
 }
@@ -202,15 +202,15 @@
 - (void)registerAndSubmitBGSTForFirstUnlock
 {
   v3 = +[FMDSharedConfiguration sharedInstance];
-  v4 = [v3 readFindMySignOutTimeFromFile];
+  readFindMySignOutTimeFromFile = [v3 readFindMySignOutTimeFromFile];
 
-  if (v4)
+  if (readFindMySignOutTimeFromFile)
   {
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = readFindMySignOutTimeFromFile;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User signed out of FMIP %@", buf, 0xCu);
     }
 
@@ -263,11 +263,11 @@
   }
 }
 
-- (void)requestTheftAndLossCFU:(unint64_t)a3
+- (void)requestTheftAndLossCFU:(unint64_t)u
 {
-  if (a3 <= 2)
+  if (u <= 2)
   {
-    if (a3 == 1)
+    if (u == 1)
     {
       v9 = +[FMDSharedConfigurationManager sharedInstance];
       v12[0] = _NSConcreteStackBlock;
@@ -280,16 +280,16 @@
       return;
     }
 
-    if (a3 != 2)
+    if (u != 2)
     {
       goto LABEL_14;
     }
 
 LABEL_10:
     v5 = +[FMDSystemConfig sharedInstance];
-    v6 = [v5 unlockState];
+    unlockState = [v5 unlockState];
 
-    if (v6 == 1)
+    if (unlockState == 1)
     {
       v7 = sub_100002880();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -309,9 +309,9 @@ LABEL_10:
     return;
   }
 
-  if (a3 != 3)
+  if (u != 3)
   {
-    if (a3 != 4)
+    if (u != 4)
     {
 LABEL_14:
       v8 = sub_100002880();
@@ -355,13 +355,13 @@ LABEL_14:
 - (void)handleNDOCoverageUpdate
 {
   v3 = +[FMDSharedConfigurationManager sharedInstance];
-  v4 = [(FMDCoreFollowUpManager *)self serialNumber];
+  serialNumber = [(FMDCoreFollowUpManager *)self serialNumber];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10017B840;
   v5[3] = &unk_1002CF7C0;
   v5[4] = self;
-  [v3 getTheftAndLossCoverageWithSerialNumber:v4 completion:v5];
+  [v3 getTheftAndLossCoverageWithSerialNumber:serialNumber completion:v5];
 }
 
 @end

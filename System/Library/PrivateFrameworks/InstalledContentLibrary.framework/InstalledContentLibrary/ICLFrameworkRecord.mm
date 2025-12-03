@@ -9,8 +9,8 @@
   v3 = objc_opt_new();
   v7.receiver = self;
   v7.super_class = ICLFrameworkRecord;
-  v4 = [(ICLBundleRecord *)&v7 legacyRecordDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  legacyRecordDictionary = [(ICLBundleRecord *)&v7 legacyRecordDictionary];
+  [v3 addEntriesFromDictionary:legacyRecordDictionary];
 
   [v3 setObject:@"Framework" forKeyedSubscript:@"ApplicationType"];
   v5 = [v3 copy];

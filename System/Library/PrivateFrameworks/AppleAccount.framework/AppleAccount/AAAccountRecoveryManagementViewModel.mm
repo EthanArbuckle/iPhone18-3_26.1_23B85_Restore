@@ -15,7 +15,7 @@
 - (NSString)title;
 - (NSURL)footerLearnMoreURL;
 - (NSURL)recoveryKeyLearnMoreURL;
-- (id)recoveryKeyStatusText:(BOOL)a3;
+- (id)recoveryKeyStatusText:(BOOL)text;
 @end
 
 @implementation AAAccountRecoveryManagementViewModel
@@ -126,12 +126,12 @@
   return v3;
 }
 
-- (id)recoveryKeyStatusText:(BOOL)a3
+- (id)recoveryKeyStatusText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v5 = v4;
-  if (v3)
+  if (textCopy)
   {
     v6 = @"ACCOUNT_RECOVERY_RECOVERY_KEY_ON";
   }

@@ -1,177 +1,177 @@
 @interface TPPaginatedPageController
-+ (id)existingOwnedPaginatedPageControllerForDelegate:(id)a3;
-+ (id)ownedPaginatedPageControllerForDelegate:(id)a3;
-+ (id)paginatedPageControllerForDelegate:(id)a3;
-+ (void)disownPaginatedPageControllerForDelegate:(id)a3;
++ (id)existingOwnedPaginatedPageControllerForDelegate:(id)delegate;
++ (id)ownedPaginatedPageControllerForDelegate:(id)delegate;
++ (id)paginatedPageControllerForDelegate:(id)delegate;
++ (void)disownPaginatedPageControllerForDelegate:(id)delegate;
 + (void)initialize;
-- (BOOL)canProvideInfoForPageIndex:(unint64_t)a3;
-- (BOOL)canProvideNumberingInfoForPageIndex:(unint64_t)a3;
+- (BOOL)canProvideInfoForPageIndex:(unint64_t)index;
+- (BOOL)canProvideNumberingInfoForPageIndex:(unint64_t)index;
 - (BOOL)isPageLayoutRightToLeft;
 - (BOOL)isPaginationComplete;
-- (BOOL)isPaginationCompleteForSelection:(id)a3 inFlow:(id)a4;
+- (BOOL)isPaginationCompleteForSelection:(id)selection inFlow:(id)flow;
 - (BOOL)isPaginationInProgress;
-- (BOOL)isSectionInfo:(id)a3 onPage:(unint64_t)a4;
-- (BOOL)okToAnchorDrawable:(id)a3 toPageIndex:(unint64_t)a4;
-- (BOOL)okToAnchorDrawables:(id)a3 toPageIndex:(unint64_t)a4;
-- (BOOL)p_canAnchorDrawable:(id)a3 toPageLayout:(id)a4;
-- (BOOL)p_couldBeFirstPageIndex:(unint64_t)a3 forPartitionedAttachmentCharIndex:(unint64_t)a4;
+- (BOOL)isSectionInfo:(id)info onPage:(unint64_t)page;
+- (BOOL)okToAnchorDrawable:(id)drawable toPageIndex:(unint64_t)index;
+- (BOOL)okToAnchorDrawables:(id)drawables toPageIndex:(unint64_t)index;
+- (BOOL)p_canAnchorDrawable:(id)drawable toPageLayout:(id)layout;
+- (BOOL)p_couldBeFirstPageIndex:(unint64_t)index forPartitionedAttachmentCharIndex:(unint64_t)charIndex;
 - (BOOL)p_didLayOut;
 - (BOOL)p_isBodyLayoutComplete;
 - (BOOL)p_layOutNextPageOnceWithOffscreenLayoutController;
-- (BOOL)pageAtIndexHasBody:(unint64_t)a3;
-- (BOOL)pageBeginsWithPaginatedAttachment:(unint64_t)a3;
-- (BOOL)pageEndsWithPaginatedAttachment:(unint64_t)a3;
+- (BOOL)pageAtIndexHasBody:(unint64_t)body;
+- (BOOL)pageBeginsWithPaginatedAttachment:(unint64_t)attachment;
+- (BOOL)pageEndsWithPaginatedAttachment:(unint64_t)attachment;
 - (BOOL)performBackgroundPagination;
-- (BOOL)shouldHeaderFooterBeVisibleForPageIndex:(unint64_t)a3;
-- (BOOL)shouldUseFacingPagesForPageIndex:(unint64_t)a3;
-- (CGPoint)pageOriginForPageIndex:(unint64_t)a3 allowAfterPaginationPoint:(BOOL)a4;
-- (CGRect)pageRectForPageIndex:(unint64_t)a3 allowAfterPaginationPoint:(BOOL)a4;
-- (CGSize)canvasSizeToFitAllPagesForPageViewState:(int64_t)a3;
+- (BOOL)shouldHeaderFooterBeVisibleForPageIndex:(unint64_t)index;
+- (BOOL)shouldUseFacingPagesForPageIndex:(unint64_t)index;
+- (CGPoint)pageOriginForPageIndex:(unint64_t)index allowAfterPaginationPoint:(BOOL)point;
+- (CGRect)pageRectForPageIndex:(unint64_t)index allowAfterPaginationPoint:(BOOL)point;
+- (CGSize)canvasSizeToFitAllPagesForPageViewState:(int64_t)state;
 - (TPPageControllerDelegate)delegate;
-- (TPPaginatedPageController)initWithDelegate:(id)a3;
-- (_NSRange)anchoredRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)p_anchoredRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (_NSRange)p_bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (_NSRange)p_footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (_NSRange)p_pageRangeAffectedByInfo:(id)a3;
-- (_NSRange)p_pageRangeForRange:(_NSRange)a3 forcePagination:(BOOL)a4 includingEmptyPages:(BOOL)a5 caretAffinity:(int64_t)a6 leadingCharIndex:(unint64_t)a7 outEndIsValid:(BOOL *)a8;
-- (_NSRange)pageRangeForSelection:(id)a3 includingEmptyPages:(BOOL)a4 outEndIsValid:(BOOL *)a5;
-- (_NSRange)sectionBodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)sectionPageRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 outEndIsValid:(BOOL *)a5;
-- (_NSRange)validPageRangeForSelection:(id)a3;
+- (TPPaginatedPageController)initWithDelegate:(id)delegate;
+- (_NSRange)anchoredRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)p_anchoredRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (_NSRange)p_bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (_NSRange)p_footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (_NSRange)p_pageRangeAffectedByInfo:(id)info;
+- (_NSRange)p_pageRangeForRange:(_NSRange)range forcePagination:(BOOL)pagination includingEmptyPages:(BOOL)pages caretAffinity:(int64_t)affinity leadingCharIndex:(unint64_t)index outEndIsValid:(BOOL *)valid;
+- (_NSRange)pageRangeForSelection:(id)selection includingEmptyPages:(BOOL)pages outEndIsValid:(BOOL *)valid;
+- (_NSRange)sectionBodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)sectionPageRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination outEndIsValid:(BOOL *)valid;
+- (_NSRange)validPageRangeForSelection:(id)selection;
 - (double)verticalPageSeparation;
-- (id)anchoredDrawablesOnPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (id)backgroundFillForPageIndex:(unint64_t)a3;
-- (id)displayPageNumberForCharIndex:(unint64_t)a3 withSystemFormatting:(BOOL)a4;
-- (id)displayPageNumberForPageIndex:(unint64_t)a3 withSystemFormatting:(BOOL)a4;
+- (id)anchoredDrawablesOnPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (id)backgroundFillForPageIndex:(unint64_t)index;
+- (id)displayPageNumberForCharIndex:(unint64_t)index withSystemFormatting:(BOOL)formatting;
+- (id)displayPageNumberForPageIndex:(unint64_t)index withSystemFormatting:(BOOL)formatting;
 - (id)footnoteLayoutController;
-- (id)headerFooterProviderForPageIndex:(unint64_t)a3;
-- (id)i_columnAfterPageIndex:(unint64_t)a3;
-- (id)i_columnPriorToPageIndex:(unint64_t)a3;
-- (id)i_firstChildHintAfterPageIndex:(unint64_t)a3;
-- (id)i_pageHintForPageIndex:(unint64_t)a3;
-- (id)i_pageIndexPathForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (id)i_textPageHintPrecedingPageIndex:(unint64_t *)a3;
-- (id)i_topicNumberHintsAfterPageIndex:(unint64_t)a3;
-- (id)metricsCacheForStorage:(id)a3;
+- (id)headerFooterProviderForPageIndex:(unint64_t)index;
+- (id)i_columnAfterPageIndex:(unint64_t)index;
+- (id)i_columnPriorToPageIndex:(unint64_t)index;
+- (id)i_firstChildHintAfterPageIndex:(unint64_t)index;
+- (id)i_pageHintForPageIndex:(unint64_t)index;
+- (id)i_pageIndexPathForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (id)i_textPageHintPrecedingPageIndex:(unint64_t *)index;
+- (id)i_topicNumberHintsAfterPageIndex:(unint64_t)index;
+- (id)metricsCacheForStorage:(id)storage;
 - (id)numberOfPagesInEachSection;
 - (id)offscreenLayoutController;
-- (id)p_cachedPageLayoutForPageIndex:(unint64_t)a3 preferredLayoutController:(id)a4;
+- (id)p_cachedPageLayoutForPageIndex:(unint64_t)index preferredLayoutController:(id)controller;
 - (id)p_lastValidPageHint;
-- (id)p_lastValidTextPageHint:(unint64_t *)a3;
-- (id)p_pageHintForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (id)p_pageHintForPageIndexPath:(id)a3;
-- (id)p_pageHintPrecedingPageIndexPath:(id)a3;
-- (id)p_pageIndicesForFlow:(id)a3 withSelection:(id)a4 forcePagination:(BOOL)a5;
-- (id)p_pageInfoForPageAtIndex:(unint64_t)a3;
-- (id)p_pageInfosForBodySelection:(id)a3;
-- (id)p_pageInfosForFlow:(id)a3 withSelection:(id)a4;
-- (id)p_pageMasterForPageIndex:(unint64_t)a3 inSection:(id)a4 sectionHint:(id)a5;
-- (id)p_sectionAtSectionIndex:(unint64_t)a3;
-- (id)p_sectionHintForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5;
-- (id)p_textPageHintFollowingPageIndexPath:(id)a3;
-- (id)p_textPageHintPrecedingPageIndexPath:(id)a3;
-- (id)pageIndexesForSelection:(id)a3 forcePagination:(BOOL)a4 outEndIsValid:(BOOL *)a5;
-- (id)pageIndicesForPartitionableAttachmentAtBodyCharIndex:(unint64_t)a3 selectionPath:(id)a4 forcePagination:(BOOL)a5;
-- (id)pageInfoForPageIndex:(unint64_t)a3;
-- (id)pageNumberFormatForSectionOnPageIndex:(unint64_t)a3;
-- (id)sectionForPageIndex:(unint64_t)a3;
-- (id)sectionTemplateDrawableProviderForPageIndex:(unint64_t)a3;
-- (id)topicNumbersForStorage:(id)a3;
-- (int64_t)pageKindForPageIndex:(unint64_t)a3;
-- (unint64_t)adjacentPageIndexForPageIndex:(unint64_t)a3;
-- (unint64_t)calculatePageIndexFromCanvasPoint:(CGPoint)a3;
-- (unint64_t)contentFlagsForPageIndex:(unint64_t)a3;
-- (unint64_t)p_backupPageIndexForCharIndex:(unint64_t)a3;
+- (id)p_lastValidTextPageHint:(unint64_t *)hint;
+- (id)p_pageHintForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (id)p_pageHintForPageIndexPath:(id)path;
+- (id)p_pageHintPrecedingPageIndexPath:(id)path;
+- (id)p_pageIndicesForFlow:(id)flow withSelection:(id)selection forcePagination:(BOOL)pagination;
+- (id)p_pageInfoForPageAtIndex:(unint64_t)index;
+- (id)p_pageInfosForBodySelection:(id)selection;
+- (id)p_pageInfosForFlow:(id)flow withSelection:(id)selection;
+- (id)p_pageMasterForPageIndex:(unint64_t)index inSection:(id)section sectionHint:(id)hint;
+- (id)p_sectionAtSectionIndex:(unint64_t)index;
+- (id)p_sectionHintForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point;
+- (id)p_textPageHintFollowingPageIndexPath:(id)path;
+- (id)p_textPageHintPrecedingPageIndexPath:(id)path;
+- (id)pageIndexesForSelection:(id)selection forcePagination:(BOOL)pagination outEndIsValid:(BOOL *)valid;
+- (id)pageIndicesForPartitionableAttachmentAtBodyCharIndex:(unint64_t)index selectionPath:(id)path forcePagination:(BOOL)pagination;
+- (id)pageInfoForPageIndex:(unint64_t)index;
+- (id)pageNumberFormatForSectionOnPageIndex:(unint64_t)index;
+- (id)sectionForPageIndex:(unint64_t)index;
+- (id)sectionTemplateDrawableProviderForPageIndex:(unint64_t)index;
+- (id)topicNumbersForStorage:(id)storage;
+- (int64_t)pageKindForPageIndex:(unint64_t)index;
+- (unint64_t)adjacentPageIndexForPageIndex:(unint64_t)index;
+- (unint64_t)calculatePageIndexFromCanvasPoint:(CGPoint)point;
+- (unint64_t)contentFlagsForPageIndex:(unint64_t)index;
+- (unint64_t)p_backupPageIndexForCharIndex:(unint64_t)index;
 - (unint64_t)p_firstPageColumn;
 - (unint64_t)p_lastValidCharIndex;
 - (unint64_t)p_lastValidFootnoteIndex;
 - (unint64_t)p_lastValidTextPageIndex;
-- (unint64_t)p_pageHintIndexForAnchoredCharIndex:(unint64_t)a3;
-- (unint64_t)p_pageHintIndexForCharIndex:(unint64_t)a3;
-- (unint64_t)p_pageIndexContainingIndex:(unint64_t)a3 ofType:(unint64_t)a4;
-- (unint64_t)p_pageIndexForAnchoredCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4 searchAfterPaginationPoint:(BOOL)a5;
-- (unint64_t)p_pageIndexForCharIndex:(unint64_t)a3 includeEmptyPages:(BOOL)a4 caretAffinity:(int64_t)a5 forcePagination:(BOOL)a6 searchAfterPaginationPoint:(BOOL)a7;
-- (unint64_t)p_pageIndexForFootnoteIndex:(unint64_t)a3 forcePagination:(BOOL)a4 searchAfterPaginationPoint:(BOOL)a5;
-- (unint64_t)p_pageNumberForContinuousSectionsAtPageIndex:(unint64_t)a3 finalPage:(BOOL)a4;
-- (unint64_t)p_textPageIndexPrecedingPageIndex:(unint64_t)a3;
-- (unint64_t)pageCountForPageIndex:(unint64_t)a3;
-- (unint64_t)pageHeightCountForPageViewState:(int64_t)a3;
-- (unint64_t)pageIndexForAnchoredAttachment:(id)a3 forcePagination:(BOOL)a4;
-- (unint64_t)pageIndexForAnchoredCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (unint64_t)pageIndexForCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (unint64_t)pageIndexForFootnoteIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)a3;
-- (unint64_t)pageNumberForPageIndex:(unint64_t)a3;
-- (unint64_t)sectionIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (unint64_t)sectionPageIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (void)accquireLockAndPerformAction:(id)a3;
-- (void)addPaginationObserver:(id)a3;
+- (unint64_t)p_pageHintIndexForAnchoredCharIndex:(unint64_t)index;
+- (unint64_t)p_pageHintIndexForCharIndex:(unint64_t)index;
+- (unint64_t)p_pageIndexContainingIndex:(unint64_t)index ofType:(unint64_t)type;
+- (unint64_t)p_pageIndexForAnchoredCharIndex:(unint64_t)index forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point;
+- (unint64_t)p_pageIndexForCharIndex:(unint64_t)index includeEmptyPages:(BOOL)pages caretAffinity:(int64_t)affinity forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point;
+- (unint64_t)p_pageIndexForFootnoteIndex:(unint64_t)index forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point;
+- (unint64_t)p_pageNumberForContinuousSectionsAtPageIndex:(unint64_t)index finalPage:(BOOL)page;
+- (unint64_t)p_textPageIndexPrecedingPageIndex:(unint64_t)index;
+- (unint64_t)pageCountForPageIndex:(unint64_t)index;
+- (unint64_t)pageHeightCountForPageViewState:(int64_t)state;
+- (unint64_t)pageIndexForAnchoredAttachment:(id)attachment forcePagination:(BOOL)pagination;
+- (unint64_t)pageIndexForAnchoredCharIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (unint64_t)pageIndexForCharIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (unint64_t)pageIndexForFootnoteIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)point;
+- (unint64_t)pageNumberForPageIndex:(unint64_t)index;
+- (unint64_t)sectionIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (unint64_t)sectionPageIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (void)accquireLockAndPerformAction:(id)action;
+- (void)addPaginationObserver:(id)observer;
 - (void)backgroundPaginationDidEnd;
-- (void)canvasDidValidateLayouts:(id)a3;
+- (void)canvasDidValidateLayouts:(id)layouts;
 - (void)changeTrackingVisibilityDidChange;
-- (void)d_timePaginationResettingMetrics:(BOOL)a3;
+- (void)d_timePaginationResettingMetrics:(BOOL)metrics;
 - (void)dealloc;
-- (void)enumerateHeaderFooterFragmentsOnPageIndex:(unint64_t)a3 usingBlock:(id)a4;
-- (void)i_inflateColumnsInBodyLayout:(id)a3;
-- (void)i_inflateFootnotesInFootnoteContainer:(id)a3;
-- (void)i_inflateTextFlowsOnPage:(id)a3;
-- (void)i_invalidateFlows:(id)a3 startingPage:(id)a4;
-- (void)i_invalidatePageIndex:(unint64_t)a3;
-- (void)i_rebuildCachedLayoutChildrenFromStartPage:(unint64_t)a3 toEndPage:(unint64_t)a4 setNeedsLayout:(BOOL)a5;
-- (void)i_registerPageLayout:(id)a3;
-- (void)i_setNeedsDynamicLayoutForLayoutController:(id)a3 onPageIndex:(unint64_t)a4;
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
-- (void)i_unregisterPageLayout:(id)a3;
+- (void)enumerateHeaderFooterFragmentsOnPageIndex:(unint64_t)index usingBlock:(id)block;
+- (void)i_inflateColumnsInBodyLayout:(id)layout;
+- (void)i_inflateFootnotesInFootnoteContainer:(id)container;
+- (void)i_inflateTextFlowsOnPage:(id)page;
+- (void)i_invalidateFlows:(id)flows startingPage:(id)page;
+- (void)i_invalidatePageIndex:(unint64_t)index;
+- (void)i_rebuildCachedLayoutChildrenFromStartPage:(unint64_t)page toEndPage:(unint64_t)endPage setNeedsLayout:(BOOL)layout;
+- (void)i_registerPageLayout:(id)layout;
+- (void)i_setNeedsDynamicLayoutForLayoutController:(id)controller onPageIndex:(unint64_t)index;
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount;
+- (void)i_unregisterPageLayout:(id)layout;
 - (void)invalidateAllPageLayoutsSizeAndPosition;
-- (void)layoutManager:(id)a3 didClearDirtyRangeWithDelta:(int64_t)a4 afterCharIndex:(unint64_t)a5;
-- (void)layoutManagerNeedsLayout:(id)a3;
+- (void)layoutManager:(id)manager didClearDirtyRangeWithDelta:(int64_t)delta afterCharIndex:(unint64_t)index;
+- (void)layoutManagerNeedsLayout:(id)layout;
 - (void)p_advanceSectionIndex;
 - (void)p_checkForBackUp;
 - (void)p_destroyBodyLayoutState;
-- (void)p_hasBodyChanged:(id)a3;
+- (void)p_hasBodyChanged:(id)changed;
 - (void)p_invalidatePageIndex:(unint64_t)LaidOutDocumentPageIndex;
-- (void)p_invalidateThumbnailForPageIndex:(unint64_t)a3;
-- (void)p_invalidateThumbnailsFromSectionIndexToEnd:(unint64_t)a3;
-- (void)p_invalidateThumbnailsFromSectionToEnd:(id)a3;
-- (void)p_layOutFootnotesIntoPageLayout:(id)a3;
-- (void)p_layOutIntoPageLayout:(id)a3 outDidSync:(BOOL *)a4;
-- (void)p_layOutNextPageForLayoutController:(id)a3 dirtyRange:(id)a4;
-- (void)p_layOutTextIntoPageLayout:(id)a3 didSync:(BOOL *)a4 initialFootnoteIndex:(unint64_t *)a5;
-- (void)p_notifyObserversDidLayoutWhileSyncing:(BOOL)a3;
-- (void)p_paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4 clearOffscreenInfos:(BOOL)a5;
-- (void)p_performPaginationResetAndMetricsReset:(BOOL)a3;
-- (void)p_performWithCachedPageLayouts:(id)a3;
+- (void)p_invalidateThumbnailForPageIndex:(unint64_t)index;
+- (void)p_invalidateThumbnailsFromSectionIndexToEnd:(unint64_t)end;
+- (void)p_invalidateThumbnailsFromSectionToEnd:(id)end;
+- (void)p_layOutFootnotesIntoPageLayout:(id)layout;
+- (void)p_layOutIntoPageLayout:(id)layout outDidSync:(BOOL *)sync;
+- (void)p_layOutNextPageForLayoutController:(id)controller dirtyRange:(id)range;
+- (void)p_layOutTextIntoPageLayout:(id)layout didSync:(BOOL *)sync initialFootnoteIndex:(unint64_t *)index;
+- (void)p_notifyObserversDidLayoutWhileSyncing:(BOOL)syncing;
+- (void)p_paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller clearOffscreenInfos:(BOOL)infos;
+- (void)p_performPaginationResetAndMetricsReset:(BOOL)reset;
+- (void)p_performWithCachedPageLayouts:(id)layouts;
 - (void)p_preparePageHintForNextPage;
 - (void)p_preparePaginationStateForNextPage;
 - (void)p_prepareSectionHintForNextPage;
 - (void)p_processBodyLayoutInvalidation;
-- (void)p_processWidowsAndInflationForLayoutController:(id)a3;
-- (void)p_rebuildPageLayoutsContainingDrawableUUIDs:(id)a3;
-- (void)p_removeDeletedFootnotesOnPageLayout:(id)a3;
+- (void)p_processWidowsAndInflationForLayoutController:(id)controller;
+- (void)p_rebuildPageLayoutsContainingDrawableUUIDs:(id)ds;
+- (void)p_removeDeletedFootnotesOnPageLayout:(id)layout;
 - (void)p_removeFinishedPageGenerators;
 - (void)p_resetPageGenerators;
-- (void)p_setNeedsLayoutFromSectionIndexToEnd:(unint64_t)a3;
-- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)a3;
-- (void)p_syncFromNextPageWithDirtyRanges:(id)a3 pageTextRange:(const _NSRange *)a4;
-- (void)p_updateNonTextHintAtPageIndexPath:(id)a3 pageLayout:(id)a4;
+- (void)p_setNeedsLayoutFromSectionIndexToEnd:(unint64_t)end;
+- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)index;
+- (void)p_syncFromNextPageWithDirtyRanges:(id)ranges pageTextRange:(const _NSRange *)range;
+- (void)p_updateNonTextHintAtPageIndexPath:(id)path pageLayout:(id)layout;
 - (void)p_updatePageCount;
-- (void)p_updateTextHintAtPageIndexPath:(id)a3 withTarget:(id)a4;
-- (void)p_withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5;
-- (void)paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4;
-- (void)performBlockForExport:(id)a3;
-- (void)removePaginationObserver:(id)a3;
-- (void)restoreFromLayoutState:(id)a3;
+- (void)p_updateTextHintAtPageIndexPath:(id)path withTarget:(id)target;
+- (void)p_withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block;
+- (void)paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller;
+- (void)performBlockForExport:(id)export;
+- (void)removePaginationObserver:(id)observer;
+- (void)restoreFromLayoutState:(id)state;
 - (void)teardown;
-- (void)withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5;
+- (void)withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block;
 @end
 
 @implementation TPPaginatedPageController
 
-- (BOOL)canProvideInfoForPageIndex:(unint64_t)a3
+- (BOOL)canProvideInfoForPageIndex:(unint64_t)index
 {
   v24 = 0;
   v25 = &v24;
@@ -179,7 +179,7 @@
   v26 = 0x2020000000;
   v27 = 0;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
@@ -196,7 +196,7 @@
     v23[3] = &unk_27A6A8B30;
     v23[4] = self;
     v23[5] = &v24;
-    v23[6] = a3;
+    v23[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v16, v17, v18, v19, v20, v23);
     v21 = *(v25 + 24);
   }
@@ -205,7 +205,7 @@
   return v21 & 1;
 }
 
-- (BOOL)canProvideNumberingInfoForPageIndex:(unint64_t)a3
+- (BOOL)canProvideNumberingInfoForPageIndex:(unint64_t)index
 {
   v24 = 0;
   v25 = &v24;
@@ -213,7 +213,7 @@
   v26 = 0x2020000000;
   v27 = 0;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
@@ -230,7 +230,7 @@
     v23[3] = &unk_27A6A8B58;
     v23[4] = self;
     v23[5] = &v24;
-    v23[6] = a3;
+    v23[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v16, v17, v18, v19, v20, v23);
     v21 = *(v25 + 24);
   }
@@ -239,7 +239,7 @@
   return v21 & 1;
 }
 
-- (id)backgroundFillForPageIndex:(unint64_t)a3
+- (id)backgroundFillForPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_documentRoot(self, v10, v11, v12, v13, v14);
@@ -250,7 +250,7 @@
     goto LABEL_8;
   }
 
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v27, v28, v29, v30, v31, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v27, v28, v29, v30, v31, index, v9);
 
   if (!isPageTemplatePageIndex_documentRoot)
   {
@@ -268,7 +268,7 @@ LABEL_8:
     v136[3] = &unk_27A6A8B58;
     v136[4] = self;
     v136[5] = &v137;
-    v136[6] = a3;
+    v136[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v32, v33, v34, v35, v36, v136);
     v104 = v138[5];
     if (v104)
@@ -285,7 +285,7 @@ LABEL_8:
       v111 = MEMORY[0x277D81150];
       v112 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v105, v107, v108, v109, v110, "[TPPaginatedPageController(LayoutInfoProvider) backgroundFillForPageIndex:]");
       v118 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v113, v114, v115, v116, v117, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController_LayoutInfoProvider.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v111, v119, v120, v121, v122, v123, v112, v118, 87, 0, "unable to determine section index for page index %lu", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v111, v119, v120, v121, v122, v123, v112, v118, 87, 0, "unable to determine section index for page index %lu", index);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v124, v125, v126, v127, v128);
     }
@@ -297,7 +297,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v38 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v32, v33, v34, v35, v36, a3, v9);
+  v38 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v32, v33, v34, v35, v36, index, v9);
   v44 = objc_msgSend_pageTemplates(v9, v39, v40, v41, v42, v43);
   v50 = objc_msgSend_count(v44, v45, v46, v47, v48, v49);
 
@@ -332,7 +332,7 @@ LABEL_14:
   return v98;
 }
 
-- (id)sectionForPageIndex:(unint64_t)a3
+- (id)sectionForPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_documentRoot(self, v10, v11, v12, v13, v14);
@@ -343,7 +343,7 @@ LABEL_14:
 
   else
   {
-    isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v27, v28, v29, v30, v31, a3, v9);
+    isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v27, v28, v29, v30, v31, index, v9);
 
     if (isPageTemplatePageIndex_documentRoot)
     {
@@ -365,7 +365,7 @@ LABEL_14:
   v70[3] = &unk_27A6A8B58;
   v70[4] = self;
   v70[5] = &v71;
-  v70[6] = a3;
+  v70[6] = index;
   objc_msgSend_accquireLockAndPerformAction_(self, v32, v33, v34, v35, v36, v70);
   v44 = v72[5];
   if (v44)
@@ -380,7 +380,7 @@ LABEL_14:
     v51 = MEMORY[0x277D81150];
     v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v45, v47, v48, v49, v50, "[TPPaginatedPageController(LayoutInfoProvider) sectionForPageIndex:]");
     v58 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v53, v54, v55, v56, v57, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController_LayoutInfoProvider.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v59, v60, v61, v62, v63, v52, v58, 112, 0, "unable to determine section index for page index %lu", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v59, v60, v61, v62, v63, v52, v58, 112, 0, "unable to determine section index for page index %lu", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65, v66, v67, v68);
   }
@@ -394,7 +394,7 @@ LABEL_11:
   return v38;
 }
 
-- (id)headerFooterProviderForPageIndex:(unint64_t)a3
+- (id)headerFooterProviderForPageIndex:(unint64_t)index
 {
   v24 = 0;
   v25 = &v24;
@@ -404,7 +404,7 @@ LABEL_11:
   v28 = sub_275FFADBC;
   v29 = 0;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if ((isPageTemplatePageIndex_documentRoot & 1) == 0)
   {
@@ -415,7 +415,7 @@ LABEL_11:
     v23[3] = &unk_27A6A8B30;
     v23[4] = self;
     v23[5] = &v24;
-    v23[6] = a3;
+    v23[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v16, v17, v18, v19, v20, v23);
   }
 
@@ -425,7 +425,7 @@ LABEL_11:
   return v21;
 }
 
-- (BOOL)shouldHeaderFooterBeVisibleForPageIndex:(unint64_t)a3
+- (BOOL)shouldHeaderFooterBeVisibleForPageIndex:(unint64_t)index
 {
   v23 = 0;
   v24 = &v23;
@@ -433,7 +433,7 @@ LABEL_11:
   v25 = 0x2020000000;
   v26 = 1;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  if (objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9))
+  if (objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9))
   {
     v20 = 0;
     *(v24 + 24) = 0;
@@ -448,7 +448,7 @@ LABEL_11:
     v22[3] = &unk_27A6A8B30;
     v22[4] = self;
     v22[5] = &v23;
-    v22[6] = a3;
+    v22[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v15, v16, v17, v18, v19, v22);
     v20 = *(v24 + 24);
   }
@@ -457,7 +457,7 @@ LABEL_11:
   return v20 & 1;
 }
 
-- (id)sectionTemplateDrawableProviderForPageIndex:(unint64_t)a3
+- (id)sectionTemplateDrawableProviderForPageIndex:(unint64_t)index
 {
   v105 = 0;
   v106 = &v105;
@@ -467,12 +467,12 @@ LABEL_11:
   v109 = sub_275FFADBC;
   v110 = 0;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
     v21 = objc_msgSend_documentRoot(self, v16, v17, v18, v19, v20);
-    v27 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v22, v23, v24, v25, v26, a3, v21);
+    v27 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v22, v23, v24, v25, v26, index, v21);
 
     v33 = objc_msgSend_documentRoot(self, v28, v29, v30, v31, v32);
     v39 = objc_msgSend_pageTemplates(v33, v34, v35, v36, v37, v38);
@@ -512,7 +512,7 @@ LABEL_11:
     v104[3] = &unk_27A6A8B30;
     v104[4] = self;
     v104[5] = &v105;
-    v104[6] = a3;
+    v104[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v16, v17, v18, v19, v20, v104);
   }
 
@@ -522,15 +522,15 @@ LABEL_11:
   return v102;
 }
 
-- (unint64_t)pageNumberForPageIndex:(unint64_t)a3
+- (unint64_t)pageNumberForPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
     v21 = objc_msgSend_documentRoot(self, v16, v17, v18, v19, v20);
-    v27 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v22, v23, v24, v25, v26, a3, v21);
+    v27 = objc_msgSend_pageTemplateIndexFromPageIndex_documentRoot_(TPPageInfo, v22, v23, v24, v25, v26, index, v21);
 
     return v27 + 1;
   }
@@ -542,10 +542,10 @@ LABEL_11:
   }
 }
 
-- (unint64_t)pageCountForPageIndex:(unint64_t)a3
+- (unint64_t)pageCountForPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
@@ -563,7 +563,7 @@ LABEL_11:
   }
 }
 
-- (id)pageNumberFormatForSectionOnPageIndex:(unint64_t)a3
+- (id)pageNumberFormatForSectionOnPageIndex:(unint64_t)index
 {
   v63 = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D80E68];
@@ -571,11 +571,11 @@ LABEL_11:
   v16 = objc_msgSend_defaultPageNumberFormatForLocale_(v9, v11, v12, v13, v14, v15, v10);
 
   v22 = objc_msgSend_documentRoot(self, v17, v18, v19, v20, v21);
-  LOBYTE(v10) = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v23, v24, v25, v26, v27, a3, v22);
+  LOBYTE(v10) = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v23, v24, v25, v26, v27, index, v22);
 
   if ((v10 & 1) == 0)
   {
-    v33 = objc_msgSend_headerFooterProviderForPageIndex_(self, v28, v29, v30, v31, v32, a3);
+    v33 = objc_msgSend_headerFooterProviderForPageIndex_(self, v28, v29, v30, v31, v32, index);
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
@@ -629,23 +629,23 @@ LABEL_13:
   return v16;
 }
 
-- (id)displayPageNumberForCharIndex:(unint64_t)a3 withSystemFormatting:(BOOL)a4
+- (id)displayPageNumberForCharIndex:(unint64_t)index withSystemFormatting:(BOOL)formatting
 {
-  objc_msgSend_pageIndexForCharIndex_forcePagination_(self, a2, v4, v5, v6, v7, a3, 0);
+  objc_msgSend_pageIndexForCharIndex_forcePagination_(self, a2, v4, v5, v6, v7, index, 0);
 
   return MEMORY[0x2821F9670](self, sel_displayPageNumberForPageIndex_withSystemFormatting_, v9, v10, v11, v12);
 }
 
-- (id)displayPageNumberForPageIndex:(unint64_t)a3 withSystemFormatting:(BOOL)a4
+- (id)displayPageNumberForPageIndex:(unint64_t)index withSystemFormatting:(BOOL)formatting
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = &stru_288501738;
   }
 
   else
   {
-    v9 = a4;
+    formattingCopy = formatting;
     v12 = objc_msgSend_pageNumberForPageIndex_(self, a2, v4, v5, v6, v7);
     if (v12 <= 1)
     {
@@ -657,7 +657,7 @@ LABEL_13:
       v18 = v12;
     }
 
-    if (v9)
+    if (formattingCopy)
     {
       v19 = objc_alloc_init(MEMORY[0x277CCABB8]);
       objc_msgSend_setNumberStyle_(v19, v20, v21, v22, v23, v24, 1);
@@ -667,7 +667,7 @@ LABEL_13:
 
     else
     {
-      v19 = objc_msgSend_pageNumberFormatForSectionOnPageIndex_(self, v13, v14, v15, v16, v17, a3);
+      v19 = objc_msgSend_pageNumberFormatForSectionOnPageIndex_(self, v13, v14, v15, v16, v17, index);
       v8 = objc_msgSend_stringFromNumber_forFormatName_(MEMORY[0x277D80E68], v36, v37, v38, v39, v40, v18, v19);
     }
   }
@@ -675,7 +675,7 @@ LABEL_13:
   return v8;
 }
 
-- (unint64_t)contentFlagsForPageIndex:(unint64_t)a3
+- (unint64_t)contentFlagsForPageIndex:(unint64_t)index
 {
   v59 = 0;
   v60 = &v59;
@@ -683,7 +683,7 @@ LABEL_13:
   v61 = 0x2020000000;
   v62 = 31;
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if (isPageTemplatePageIndex_documentRoot)
   {
@@ -717,7 +717,7 @@ LABEL_13:
     v58[3] = &unk_27A6A8B30;
     v58[4] = self;
     v58[5] = &v59;
-    v58[6] = a3;
+    v58[6] = index;
     objc_msgSend_accquireLockAndPerformAction_(self, v52, v53, v54, v55, v56, v58);
 
     v21 = v60[3];
@@ -727,18 +727,18 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)shouldUseFacingPagesForPageIndex:(unint64_t)a3
+- (BOOL)shouldUseFacingPagesForPageIndex:(unint64_t)index
 {
-  v7 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6, index);
   v13 = objc_msgSend_settings(v7, v8, v9, v10, v11, v12);
   hasFacingPages = objc_msgSend_hasFacingPages(v13, v14, v15, v16, v17, v18);
 
   return hasFacingPages;
 }
 
-- (BOOL)isSectionInfo:(id)a3 onPage:(unint64_t)a4
+- (BOOL)isSectionInfo:(id)info onPage:(unint64_t)page
 {
-  v6 = a3;
+  infoCopy = info;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -747,31 +747,31 @@ LABEL_13:
   v14[1] = 3221225472;
   v14[2] = sub_275FFC268;
   v14[3] = &unk_27A6A8B80;
-  v7 = v6;
+  v7 = infoCopy;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v19;
-  v18 = a4;
+  pageCopy = page;
   objc_msgSend_accquireLockAndPerformAction_(self, v8, v9, v10, v11, v12, v14);
-  LOBYTE(a4) = *(v20 + 24);
+  LOBYTE(page) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return a4;
+  return page;
 }
 
-- (void)enumerateHeaderFooterFragmentsOnPageIndex:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateHeaderFooterFragmentsOnPageIndex:(unint64_t)index usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12 = objc_msgSend_documentRoot(self, v7, v8, v9, v10, v11);
   v18 = objc_msgSend_settings(v12, v13, v14, v15, v16, v17);
 
   hasHeaders = objc_msgSend_hasHeaders(v18, v19, v20, v21, v22, v23);
   hasFooters = objc_msgSend_hasFooters(v18, v25, v26, v27, v28, v29);
   v36 = hasFooters;
-  if (((hasHeaders & 1) != 0 || hasFooters) && objc_msgSend_shouldHeaderFooterBeVisibleForPageIndex_(self, v31, v32, v33, v34, v35, a3))
+  if (((hasHeaders & 1) != 0 || hasFooters) && objc_msgSend_shouldHeaderFooterBeVisibleForPageIndex_(self, v31, v32, v33, v34, v35, index))
   {
     v62 = v18;
-    v42 = objc_msgSend_headerFooterProviderForPageIndex_(self, v37, v38, v39, v40, v41, a3);
+    v42 = objc_msgSend_headerFooterProviderForPageIndex_(self, v37, v38, v39, v40, v41, index);
     v48 = objc_msgSend_usesSingleHeaderFooter(v42, v43, v44, v45, v46, v47);
     v54 = 1;
     if (!v36)
@@ -807,7 +807,7 @@ LABEL_13:
       {
         v59 = objc_msgSend_headerFooter_fragmentAtIndex_(v42, v49, v50, v51, v52, v53, v55, v58);
         v63 = 0;
-        v6[2](v6, v55, v58, v59, &v63);
+        blockCopy[2](blockCopy, v55, v58, v59, &v63);
         v60 = v63;
 
         if (v60)
@@ -838,48 +838,48 @@ LABEL_13:
   }
 }
 
-- (id)p_sectionAtSectionIndex:(unint64_t)a3
+- (id)p_sectionAtSectionIndex:(unint64_t)index
 {
   v8 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   v14 = objc_msgSend_bodyStorage(v8, v9, v10, v11, v12, v13);
 
-  if (objc_msgSend_sectionCount(v14, v15, v16, v17, v18, v19) <= a3)
+  if (objc_msgSend_sectionCount(v14, v15, v16, v17, v18, v19) <= index)
   {
     v25 = 0;
   }
 
   else
   {
-    v25 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(v14, v20, v21, v22, v23, v24, a3, 0);
+    v25 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(v14, v20, v21, v22, v23, v24, index, 0);
   }
 
   return v25;
 }
 
-- (id)p_pageMasterForPageIndex:(unint64_t)a3 inSection:(id)a4 sectionHint:(id)a5
+- (id)p_pageMasterForPageIndex:(unint64_t)index inSection:(id)section sectionHint:(id)hint
 {
-  v7 = a4;
-  v8 = a5;
-  if (objc_msgSend_sectionTemplateFirstPageDifferent(v7, v9, v10, v11, v12, v13) && objc_msgSend_documentStartPageIndex(v8, v14, v15, v16, v17, v18) == a3)
+  sectionCopy = section;
+  hintCopy = hint;
+  if (objc_msgSend_sectionTemplateFirstPageDifferent(sectionCopy, v9, v10, v11, v12, v13) && objc_msgSend_documentStartPageIndex(hintCopy, v14, v15, v16, v17, v18) == index)
   {
-    objc_msgSend_sectionTemplatePageForType_(v7, v14, v15, v16, v17, v18, 0);
+    objc_msgSend_sectionTemplatePageForType_(sectionCopy, v14, v15, v16, v17, v18, 0);
   }
 
-  else if ((a3 & objc_msgSend_sectionTemplateEvenOddPagesDifferent(v7, v14, v15, v16, v17, v18)) != 0)
+  else if ((index & objc_msgSend_sectionTemplateEvenOddPagesDifferent(sectionCopy, v14, v15, v16, v17, v18)) != 0)
   {
-    objc_msgSend_sectionTemplatePageForType_(v7, v19, v20, v21, v22, v23, 1);
+    objc_msgSend_sectionTemplatePageForType_(sectionCopy, v19, v20, v21, v22, v23, 1);
   }
 
   else
   {
-    objc_msgSend_sectionTemplatePageForType_(v7, v19, v20, v21, v22, v23, 2);
+    objc_msgSend_sectionTemplatePageForType_(sectionCopy, v19, v20, v21, v22, v23, 2);
   }
   v24 = ;
 
   return v24;
 }
 
-- (unint64_t)p_pageNumberForContinuousSectionsAtPageIndex:(unint64_t)a3 finalPage:(BOOL)a4
+- (unint64_t)p_pageNumberForContinuousSectionsAtPageIndex:(unint64_t)index finalPage:(BOOL)page
 {
   v12 = 0;
   v13 = &v12;
@@ -891,9 +891,9 @@ LABEL_13:
   v10[2] = sub_275FFC6D4;
   v10[3] = &unk_27A6A8BA8;
   v10[5] = &v12;
-  v10[6] = a3;
+  v10[6] = index;
   v10[4] = self;
-  v11 = a4;
+  pageCopy = page;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -902,7 +902,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7 = objc_msgSend_weakToWeakObjectsMapTable(MEMORY[0x277CCAB00], v2, v3, v4, v5, v6);
     v8 = qword_280A404E0;
@@ -914,28 +914,28 @@ LABEL_13:
   }
 }
 
-+ (id)paginatedPageControllerForDelegate:(id)a3
++ (id)paginatedPageControllerForDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = qword_280A404E0;
   objc_sync_enter(v5);
-  v12 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E0, v6, v7, v8, v9, v10, v4);
+  v12 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E0, v6, v7, v8, v9, v10, delegateCopy);
   if (!v12)
   {
-    v17 = [a1 alloc];
-    v12 = objc_msgSend_initWithDelegate_(v17, v18, v19, v20, v21, v22, v4);
+    v17 = [self alloc];
+    v12 = objc_msgSend_initWithDelegate_(v17, v18, v19, v20, v21, v22, delegateCopy);
     objc_msgSend_setObject_forKeyedSubscript_(qword_280A404E0, v23, v24, v25, v26, v27);
   }
 
   v28 = objc_msgSend_delegate(v12, v11, v13, v14, v15, v16);
 
-  if (v28 != v4)
+  if (v28 != delegateCopy)
   {
     v34 = MEMORY[0x277D81150];
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, v30, v31, v32, v33, "+[TPPaginatedPageController paginatedPageControllerForDelegate:]");
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, v37, v38, v39, v40, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
     v47 = objc_msgSend_delegate(v12, v42, v43, v44, v45, v46);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v48, v49, v50, v51, v52, v35, v41, 236, 0, "Page controller's delegate doesn't match expected.  %@ != %@", v47, v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v48, v49, v50, v51, v52, v35, v41, 236, 0, "Page controller's delegate doesn't match expected.  %@ != %@", v47, delegateCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56, v57);
   }
@@ -945,25 +945,25 @@ LABEL_13:
   return v12;
 }
 
-+ (id)ownedPaginatedPageControllerForDelegate:(id)a3
++ (id)ownedPaginatedPageControllerForDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = qword_280A404E8;
   objc_sync_enter(v5);
-  v11 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E8, v6, v7, v8, v9, v10, v4);
+  v11 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E8, v6, v7, v8, v9, v10, delegateCopy);
   if (!v11)
   {
     v12 = qword_280A404E0;
     objc_sync_enter(v12);
-    v11 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E0, v13, v14, v15, v16, v17, v4);
+    v11 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E0, v13, v14, v15, v16, v17, delegateCopy);
     if (!v11)
     {
-      v23 = [a1 alloc];
-      v11 = objc_msgSend_initWithDelegate_(v23, v24, v25, v26, v27, v28, v4);
+      v23 = [self alloc];
+      v11 = objc_msgSend_initWithDelegate_(v23, v24, v25, v26, v27, v28, delegateCopy);
       objc_msgSend_setObject_forKeyedSubscript_(qword_280A404E0, v29, v30, v31, v32, v33);
     }
 
-    objc_msgSend_setObject_forKeyedSubscript_(qword_280A404E8, v18, v19, v20, v21, v22, v11, v4);
+    objc_msgSend_setObject_forKeyedSubscript_(qword_280A404E8, v18, v19, v20, v21, v22, v11, delegateCopy);
     objc_sync_exit(v12);
   }
 
@@ -972,35 +972,35 @@ LABEL_13:
   return v11;
 }
 
-+ (id)existingOwnedPaginatedPageControllerForDelegate:(id)a3
++ (id)existingOwnedPaginatedPageControllerForDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = qword_280A404E8;
   objc_sync_enter(v4);
-  v10 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E8, v5, v6, v7, v8, v9, v3);
+  v10 = objc_msgSend_objectForKeyedSubscript_(qword_280A404E8, v5, v6, v7, v8, v9, delegateCopy);
   objc_sync_exit(v4);
 
   return v10;
 }
 
-+ (void)disownPaginatedPageControllerForDelegate:(id)a3
++ (void)disownPaginatedPageControllerForDelegate:(id)delegate
 {
-  v15 = a3;
+  delegateCopy = delegate;
   v3 = qword_280A404E8;
   objc_sync_enter(v3);
   v4 = qword_280A404E0;
   objc_sync_enter(v4);
-  objc_msgSend_removeObjectForKey_(qword_280A404E8, v5, v6, v7, v8, v9, v15);
-  objc_msgSend_removeObjectForKey_(qword_280A404E0, v10, v11, v12, v13, v14, v15);
+  objc_msgSend_removeObjectForKey_(qword_280A404E8, v5, v6, v7, v8, v9, delegateCopy);
+  objc_msgSend_removeObjectForKey_(qword_280A404E0, v10, v11, v12, v13, v14, delegateCopy);
   objc_sync_exit(v4);
 
   objc_sync_exit(v3);
 }
 
-- (TPPaginatedPageController)initWithDelegate:(id)a3
+- (TPPaginatedPageController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v10 = objc_msgSend_documentRoot(v4, v5, v6, v7, v8, v9);
+  delegateCopy = delegate;
+  v10 = objc_msgSend_documentRoot(delegateCopy, v5, v6, v7, v8, v9);
   v232.receiver = self;
   v232.super_class = TPPaginatedPageController;
   v11 = [(TPPageController *)&v232 initWithDocumentRoot:v10];
@@ -1033,7 +1033,7 @@ LABEL_5:
   if (v11)
   {
     WeakRetained = objc_loadWeakRetained(&v11->super._documentRoot);
-    objc_storeWeak(&v11->_delegate, v4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v71 = objc_alloc(MEMORY[0x277D801E0]);
     v72 = objc_opt_class();
     v78 = objc_msgSend_initWithLayoutControllerClass_delegate_(v71, v73, v74, v75, v76, v77, v72, 0);
@@ -1151,16 +1151,16 @@ LABEL_5:
   [(TPPageController *)&v2 dealloc];
 }
 
-- (void)restoreFromLayoutState:(id)a3
+- (void)restoreFromLayoutState:(id)state
 {
   v158 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v153 = 0;
   v154 = &v153;
   v5.n128_u64[0] = 0x2020000000;
   v155 = 0x2020000000;
   v156 = 1;
-  if (objc_msgSend_bodyLength(v4, v6, v5, v7, v8, v9) == 0x7FFFFFFFFFFFFFFFLL)
+  if (objc_msgSend_bodyLength(stateCopy, v6, v5, v7, v8, v9) == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ((v154[3] & 1) == 0)
     {
@@ -1174,7 +1174,7 @@ LABEL_5:
   v21 = objc_msgSend_bodyStorage(v15, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_length(v21, v22, v23, v24, v25, v26);
 
-  if (objc_msgSend_bodyLength(v4, v28, v29, v30, v31, v32) != v27)
+  if (objc_msgSend_bodyLength(stateCopy, v28, v29, v30, v31, v32) != v27)
   {
     v38 = MEMORY[0x277D81150];
     v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v34, v35, v36, v37, "[TPPaginatedPageController restoreFromLayoutState:]");
@@ -1184,12 +1184,12 @@ LABEL_5:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v51, v52, v53, v54, v55);
   }
 
-  v56 = objc_msgSend_bodyLength(v4, v33, v34, v35, v36, v37);
+  v56 = objc_msgSend_bodyLength(stateCopy, v33, v34, v35, v36, v37);
   *(v154 + 24) = v56 == v27;
   if (v56 == v27)
   {
 LABEL_7:
-    v57 = objc_msgSend_missingFonts(v4, v10, v11, v12, v13, v14);
+    v57 = objc_msgSend_missingFonts(stateCopy, v10, v11, v12, v13, v14);
     v63 = objc_msgSend_documentRoot(self, v58, v59, v60, v61, v62);
     v69 = objc_msgSend_unavailableDocumentFonts(v63, v64, v65, v66, v67, v68);
     isEqualToSet = objc_msgSend_isEqualToSet_(v57, v70, v71, v72, v73, v74, v69);
@@ -1233,7 +1233,7 @@ LABEL_23:
 
 LABEL_12:
   v90 = objc_alloc(MEMORY[0x277CBEB18]);
-  v96 = objc_msgSend_sectionHints(v4, v91, v92, v93, v94, v95);
+  v96 = objc_msgSend_sectionHints(stateCopy, v91, v92, v93, v94, v95);
   v102 = objc_msgSend_count(v96, v97, v98, v99, v100, v101);
   v108 = objc_msgSend_initWithCapacity_(v90, v103, v104, v105, v106, v107, v102);
 
@@ -1241,7 +1241,7 @@ LABEL_12:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v113 = objc_msgSend_sectionHints(v4, v109, 0, v110, v111, v112);
+  v113 = objc_msgSend_sectionHints(stateCopy, v109, 0, v110, v111, v112);
   v120 = objc_msgSend_countByEnumeratingWithState_objects_count_(v113, v114, v115, v116, v117, v118, &v149, v157, 16);
   if (v120)
   {
@@ -1273,7 +1273,7 @@ LABEL_12:
   v145[2] = sub_276015EE0;
   v145[3] = &unk_27A6A9108;
   v145[4] = self;
-  v146 = v4;
+  v146 = stateCopy;
   v148 = &v153;
   v133 = v108;
   v147 = v133;
@@ -1283,12 +1283,12 @@ LABEL_24:
   _Block_object_dispose(&v153, 8);
 }
 
-- (void)accquireLockAndPerformAction:(id)a3
+- (void)accquireLockAndPerformAction:(id)action
 {
-  v52 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_isTornDown)
+  actionCopy = action;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isTornDown)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v6, v7, v8, v9, "[TPPaginatedPageController accquireLockAndPerformAction:]");
@@ -1298,55 +1298,55 @@ LABEL_24:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26, v27);
   }
 
-  v28 = objc_msgSend_documentRoot(v4, v5, v6, v7, v8, v9);
+  v28 = objc_msgSend_documentRoot(selfCopy, v5, v6, v7, v8, v9);
   if (v28)
   {
-    isTornDown = v4->_isTornDown;
+    isTornDown = selfCopy->_isTornDown;
 
     if (!isTornDown)
     {
-      objc_msgSend_setIsInvalid_(v4->_paginationState, v30, v31, v32, v33, v34, 0);
-      objc_msgSend_coalesce(v4->_pageLayoutCache, v35, v36, v37, v38, v39);
-      v52[2]();
-      if (objc_msgSend_isInvalid(v4->_paginationState, v40, v41, v42, v43, v44))
+      objc_msgSend_setIsInvalid_(selfCopy->_paginationState, v30, v31, v32, v33, v34, 0);
+      objc_msgSend_coalesce(selfCopy->_pageLayoutCache, v35, v36, v37, v38, v39);
+      actionCopy[2]();
+      if (objc_msgSend_isInvalid(selfCopy->_paginationState, v40, v41, v42, v43, v44))
       {
-        v50 = objc_msgSend_copyForCaching(v4->_paginationState, v45, v46, v47, v48, v49);
-        cachedPaginationState = v4->_cachedPaginationState;
-        v4->_cachedPaginationState = v50;
+        v50 = objc_msgSend_copyForCaching(selfCopy->_paginationState, v45, v46, v47, v48, v49);
+        cachedPaginationState = selfCopy->_cachedPaginationState;
+        selfCopy->_cachedPaginationState = v50;
       }
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4
+- (void)paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276016D54;
   v13[3] = &unk_27A6A84B8;
-  v14 = v6;
-  v15 = a3;
+  v14 = controllerCopy;
+  indexCopy = index;
   v13[4] = self;
-  v7 = v6;
+  v7 = controllerCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v8, v9, v10, v11, v12, v13);
 }
 
-- (void)canvasDidValidateLayouts:(id)a3
+- (void)canvasDidValidateLayouts:(id)layouts
 {
-  if (objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, v3, v4, v5, v6, a3))
+  if (objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, v3, v4, v5, v6, layouts))
   {
     self->_bodyLayoutInvalidated = 0;
   }
 }
 
-- (id)pageIndexesForSelection:(id)a3 forcePagination:(BOOL)a4 outEndIsValid:(BOOL *)a5
+- (id)pageIndexesForSelection:(id)selection forcePagination:(BOOL)pagination outEndIsValid:(BOOL *)valid
 {
-  v8 = a3;
+  selectionCopy = selection;
   v9 = objc_opt_new();
-  if (objc_msgSend_isValid(v8, v10, v11, v12, v13, v14) && (v20 = objc_msgSend_superRange(v8, v15, v16, v17, v18, v19), v22 = v21, objc_msgSend_documentRoot(self, v21, v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend_bodyStorage(v27, v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend_length(v33, v34, v35, v36, v37, v38), v33, v27, &v22[v20] > v39))
+  if (objc_msgSend_isValid(selectionCopy, v10, v11, v12, v13, v14) && (v20 = objc_msgSend_superRange(selectionCopy, v15, v16, v17, v18, v19), v22 = v21, objc_msgSend_documentRoot(self, v21, v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend_bodyStorage(v27, v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend_length(v33, v34, v35, v36, v37, v38), v33, v27, &v22[v20] > v39))
   {
     v45 = MEMORY[0x277D81150];
     v46 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, v41, v42, v43, v44, "[TPPaginatedPageController pageIndexesForSelection:forcePagination:outEndIsValid:]");
@@ -1362,24 +1362,24 @@ LABEL_24:
     v69[1] = 3221225472;
     v69[2] = sub_276016FC0;
     v69[3] = &unk_27A6A9158;
-    v70 = v8;
-    v71 = self;
-    v74 = a4;
+    v70 = selectionCopy;
+    selfCopy = self;
+    paginationCopy = pagination;
     v72 = v9;
-    v73 = a5;
+    validCopy = valid;
     objc_msgSend_accquireLockAndPerformAction_(self, v63, v64, v65, v66, v67, v69);
   }
 
   return v9;
 }
 
-- (_NSRange)pageRangeForSelection:(id)a3 includingEmptyPages:(BOOL)a4 outEndIsValid:(BOOL *)a5
+- (_NSRange)pageRangeForSelection:(id)selection includingEmptyPages:(BOOL)pages outEndIsValid:(BOOL *)valid
 {
-  v85 = a4;
-  v7 = a3;
+  pagesCopy = pages;
+  selectionCopy = selection;
   IsValid = *MEMORY[0x277D81510];
   v9 = *(MEMORY[0x277D81510] + 8);
-  if (objc_msgSend_isValid(v7, v10, v11, v12, v13, v14) && (v20 = objc_msgSend_superRange(v7, v15, v16, v17, v18, v19), v22 = v21, objc_msgSend_documentRoot(self, v21, v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend_bodyStorage(v27, v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend_length(v33, v34, v35, v36, v37, v38), v33, v27, &v22[v20] > v39))
+  if (objc_msgSend_isValid(selectionCopy, v10, v11, v12, v13, v14) && (v20 = objc_msgSend_superRange(selectionCopy, v15, v16, v17, v18, v19), v22 = v21, objc_msgSend_documentRoot(self, v21, v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend_bodyStorage(v27, v28, v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend_length(v33, v34, v35, v36, v37, v38), v33, v27, &v22[v20] > v39))
   {
     v40 = MEMORY[0x277D81150];
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, v19, "[TPPaginatedPageController pageRangeForSelection:includingEmptyPages:outEndIsValid:]");
@@ -1389,13 +1389,13 @@ LABEL_24:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56, v57);
   }
 
-  else if (objc_msgSend_isValid(v7, v15, v16, v17, v18, v19))
+  else if (objc_msgSend_isValid(selectionCopy, v15, v16, v17, v18, v19))
   {
-    v63 = objc_msgSend_superRange(v7, v58, v59, v60, v61, v62);
+    v63 = objc_msgSend_superRange(selectionCopy, v58, v59, v60, v61, v62);
     v65 = v64;
-    v70 = objc_msgSend_caretLFAffinity(v7, v64, v66, v67, v68, v69);
-    v76 = objc_msgSend_leadingCharIndex(v7, v71, v72, v73, v74, v75);
-    IsValid = objc_msgSend_p_pageRangeForRange_forcePagination_includingEmptyPages_caretAffinity_leadingCharIndex_outEndIsValid_(self, v77, v78, v79, v80, v81, v63, v65, 0, v85, v70, v76, a5);
+    v70 = objc_msgSend_caretLFAffinity(selectionCopy, v64, v66, v67, v68, v69);
+    v76 = objc_msgSend_leadingCharIndex(selectionCopy, v71, v72, v73, v74, v75);
+    IsValid = objc_msgSend_p_pageRangeForRange_forcePagination_includingEmptyPages_caretAffinity_leadingCharIndex_outEndIsValid_(self, v77, v78, v79, v80, v81, v63, v65, 0, pagesCopy, v70, v76, valid);
     v9 = v82;
   }
 
@@ -1406,7 +1406,7 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)p_pageRangeForRange:(_NSRange)a3 forcePagination:(BOOL)a4 includingEmptyPages:(BOOL)a5 caretAffinity:(int64_t)a6 leadingCharIndex:(unint64_t)a7 outEndIsValid:(BOOL *)a8
+- (_NSRange)p_pageRangeForRange:(_NSRange)range forcePagination:(BOOL)pagination includingEmptyPages:(BOOL)pages caretAffinity:(int64_t)affinity leadingCharIndex:(unint64_t)index outEndIsValid:(BOOL *)valid
 {
   v23 = 0;
   v24 = &v23;
@@ -1416,9 +1416,9 @@ LABEL_24:
   v28 = &unk_2760658C2;
   v11 = *MEMORY[0x277D81510];
   v29 = *MEMORY[0x277D81510];
-  if (a8)
+  if (valid)
   {
-    *a8 = 0;
+    *valid = 0;
   }
 
   v16[0] = MEMORY[0x277D85DD0];
@@ -1426,14 +1426,14 @@ LABEL_24:
   v16[1] = 3221225472;
   v16[2] = sub_27601746C;
   v16[3] = &unk_27A6A9180;
-  v17 = a3;
-  v21 = a5;
+  rangeCopy = range;
+  pagesCopy = pages;
   v16[4] = self;
   v16[5] = &v23;
-  v18 = a7;
-  v19 = a8;
-  v20 = a6;
-  v22 = a4;
+  indexCopy = index;
+  validCopy = valid;
+  affinityCopy = affinity;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v11, v8, v9, v10, v16);
   v12 = v24[6];
   v13 = v24[7];
@@ -1445,9 +1445,9 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)validPageRangeForSelection:(id)a3
+- (_NSRange)validPageRangeForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v19 = 0;
   v20 = &v19;
   v21 = 0x4012000000;
@@ -1459,10 +1459,10 @@ LABEL_24:
   v15[1] = 3221225472;
   v15[2] = sub_276017BD8;
   v15[3] = &unk_27A6A91A8;
-  v16 = v4;
-  v17 = self;
+  v16 = selectionCopy;
+  selfCopy = self;
   v18 = &v19;
-  v5 = v4;
+  v5 = selectionCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v6, v7, v8, v9, v10, v15);
   v11 = v20[6];
   v12 = v20[7];
@@ -1475,7 +1475,7 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v14 = 0;
   v15 = &v14;
@@ -1492,8 +1492,8 @@ LABEL_24:
   v12[3] = &unk_27A6A91D0;
   v12[4] = self;
   v12[5] = &v14;
-  v12[6] = a3;
-  v13 = a4;
+  v12[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v7, v4, v5, v6, v12);
   v8 = v15[6];
   v9 = v15[7];
@@ -1505,7 +1505,7 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)anchoredRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)anchoredRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v14 = 0;
   v15 = &v14;
@@ -1522,8 +1522,8 @@ LABEL_24:
   v12[3] = &unk_27A6A91D0;
   v12[4] = self;
   v12[5] = &v14;
-  v12[6] = a3;
-  v13 = a4;
+  v12[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v7, v4, v5, v6, v12);
   v8 = v15[6];
   v9 = v15[7];
@@ -1535,9 +1535,9 @@ LABEL_24:
   return result;
 }
 
-- (id)anchoredDrawablesOnPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (id)anchoredDrawablesOnPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
-  v9 = objc_msgSend_anchoredRangeForPageIndex_forcePagination_(self, a2, v4, v5, v6, v7, a3, a4);
+  v9 = objc_msgSend_anchoredRangeForPageIndex_forcePagination_(self, a2, v4, v5, v6, v7, index, pagination);
   v11 = v10;
   v16 = objc_msgSend_documentRoot(self, v10, v12, v13, v14, v15);
   v22 = objc_msgSend_bodyStorage(v16, v17, v18, v19, v20, v21);
@@ -1584,7 +1584,7 @@ LABEL_24:
   return v31;
 }
 
-- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v14 = 0;
   v15 = &v14;
@@ -1601,8 +1601,8 @@ LABEL_24:
   v12[3] = &unk_27A6A91D0;
   v12[4] = self;
   v12[5] = &v14;
-  v12[6] = a3;
-  v13 = a4;
+  v12[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v7, v4, v5, v6, v12);
   v8 = v15[6];
   v9 = v15[7];
@@ -1614,7 +1614,7 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)pageBeginsWithPaginatedAttachment:(unint64_t)a3
+- (BOOL)pageBeginsWithPaginatedAttachment:(unint64_t)attachment
 {
   v10 = 0;
   v11 = &v10;
@@ -1626,7 +1626,7 @@ LABEL_24:
   v9[2] = sub_27601835C;
   v9[3] = &unk_27A6A91F8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = attachment;
   v9[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = *(v11 + 24);
@@ -1634,7 +1634,7 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)pageEndsWithPaginatedAttachment:(unint64_t)a3
+- (BOOL)pageEndsWithPaginatedAttachment:(unint64_t)attachment
 {
   v10 = 0;
   v11 = &v10;
@@ -1646,7 +1646,7 @@ LABEL_24:
   v9[2] = sub_276018550;
   v9[3] = &unk_27A6A91F8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = attachment;
   v9[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = *(v11 + 24);
@@ -1654,7 +1654,7 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)pageAtIndexHasBody:(unint64_t)a3
+- (BOOL)pageAtIndexHasBody:(unint64_t)body
 {
   v10 = 0;
   v11 = &v10;
@@ -1666,7 +1666,7 @@ LABEL_24:
   v9[2] = sub_276018744;
   v9[3] = &unk_27A6A91F8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = body;
   v9[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = *(v11 + 24);
@@ -1674,7 +1674,7 @@ LABEL_24:
   return v7;
 }
 
-- (unint64_t)pageIndexForCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)pageIndexForCharIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v12 = 0;
   v13 = &v12;
@@ -1687,15 +1687,15 @@ LABEL_24:
   v10[3] = &unk_27A6A91D0;
   v10[4] = self;
   v10[5] = &v12;
-  v10[6] = a3;
-  v11 = a4;
+  v10[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v8;
 }
 
-- (unint64_t)pageIndexForAnchoredCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)pageIndexForAnchoredCharIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v12 = 0;
   v13 = &v12;
@@ -1708,26 +1708,26 @@ LABEL_24:
   v10[3] = &unk_27A6A91D0;
   v10[4] = self;
   v10[5] = &v12;
-  v10[6] = a3;
-  v11 = a4;
+  v10[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v8;
 }
 
-- (unint64_t)pageIndexForAnchoredAttachment:(id)a3 forcePagination:(BOOL)a4
+- (unint64_t)pageIndexForAnchoredAttachment:(id)attachment forcePagination:(BOOL)pagination
 {
-  v4 = a4;
-  v6 = a3;
-  v12 = v6;
-  if (v6)
+  paginationCopy = pagination;
+  attachmentCopy = attachment;
+  v12 = attachmentCopy;
+  if (attachmentCopy)
   {
-    CharIndex = objc_msgSend_findCharIndex(v6, v7, v8, v9, v10, v11);
+    CharIndex = objc_msgSend_findCharIndex(attachmentCopy, v7, v8, v9, v10, v11);
     v19 = 0x7FFFFFFFFFFFFFFFLL;
     if (CharIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = objc_msgSend_pageIndexForAnchoredCharIndex_forcePagination_(self, v13, v15, v16, v17, v18, CharIndex, v4);
+      v19 = objc_msgSend_pageIndexForAnchoredCharIndex_forcePagination_(self, v13, v15, v16, v17, v18, CharIndex, paginationCopy);
     }
   }
 
@@ -1739,7 +1739,7 @@ LABEL_24:
   return v19;
 }
 
-- (unint64_t)pageIndexForFootnoteIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)pageIndexForFootnoteIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v12 = 0;
   v13 = &v12;
@@ -1752,15 +1752,15 @@ LABEL_24:
   v10[3] = &unk_27A6A91D0;
   v10[4] = self;
   v10[5] = &v12;
-  v10[6] = a3;
-  v11 = a4;
+  v10[6] = index;
+  paginationCopy = pagination;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v8;
 }
 
-- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v14 = 0;
   v15 = &v14;
@@ -1775,9 +1775,9 @@ LABEL_24:
   v12[1] = 3221225472;
   v12[2] = sub_276018D14;
   v12[3] = &unk_27A6A9220;
-  v13 = a4;
+  paginationCopy = pagination;
   v12[5] = &v14;
-  v12[6] = a3;
+  v12[6] = index;
   v12[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v7, v4, v5, v6, v12);
   v8 = v15[6];
@@ -1790,7 +1790,7 @@ LABEL_24:
   return result;
 }
 
-- (unint64_t)sectionIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)sectionIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v12 = 0;
   v13 = &v12;
@@ -1802,8 +1802,8 @@ LABEL_24:
   v10[2] = sub_276018F44;
   v10[3] = &unk_27A6A9220;
   v10[5] = &v12;
-  v10[6] = a3;
-  v11 = a4;
+  v10[6] = index;
+  paginationCopy = pagination;
   v10[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
@@ -1811,7 +1811,7 @@ LABEL_24:
   return v8;
 }
 
-- (_NSRange)sectionBodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)sectionBodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v13 = 0;
   v14 = &v13;
@@ -1825,8 +1825,8 @@ LABEL_24:
   v11[2] = sub_2760190C4;
   v11[3] = &unk_27A6A9220;
   v11[5] = &v13;
-  v11[6] = a3;
-  v12 = a4;
+  v11[6] = index;
+  paginationCopy = pagination;
   v11[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, 0xC0000000uLL, v4, v5, v6, v11);
   v7 = v14[6];
@@ -1839,7 +1839,7 @@ LABEL_24:
   return result;
 }
 
-- (unint64_t)sectionPageIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)sectionPageIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v12 = 0;
   v13 = &v12;
@@ -1851,8 +1851,8 @@ LABEL_24:
   v10[2] = sub_276019328;
   v10[3] = &unk_27A6A9220;
   v10[5] = &v12;
-  v10[6] = a3;
-  v11 = a4;
+  v10[6] = index;
+  paginationCopy = pagination;
   v10[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v10);
   v8 = v13[3];
@@ -1860,7 +1860,7 @@ LABEL_24:
   return v8;
 }
 
-- (_NSRange)sectionPageRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 outEndIsValid:(BOOL *)a5
+- (_NSRange)sectionPageRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination outEndIsValid:(BOOL *)valid
 {
   v14 = 0;
   v15 = &v14;
@@ -1873,11 +1873,11 @@ LABEL_24:
   v12[1] = 3221225472;
   v12[2] = sub_2760194AC;
   v12[3] = &unk_27A6A9248;
-  v13 = a4;
+  paginationCopy = pagination;
   v12[4] = self;
   v12[5] = &v14;
-  v12[6] = a3;
-  v12[7] = a5;
+  v12[6] = index;
+  v12[7] = valid;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, 0xC0000000uLL, v5, v6, v7, v12);
   v8 = v15[6];
   v9 = v15[7];
@@ -1889,7 +1889,7 @@ LABEL_24:
   return result;
 }
 
-- (id)pageInfoForPageIndex:(unint64_t)a3
+- (id)pageInfoForPageIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -1903,7 +1903,7 @@ LABEL_24:
   v9[2] = sub_2760196C4;
   v9[3] = &unk_27A6A91F8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = index;
   v9[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = v11[5];
@@ -1935,18 +1935,18 @@ LABEL_24:
   return v12;
 }
 
-- (id)pageIndicesForPartitionableAttachmentAtBodyCharIndex:(unint64_t)a3 selectionPath:(id)a4 forcePagination:(BOOL)a5
+- (id)pageIndicesForPartitionableAttachmentAtBodyCharIndex:(unint64_t)index selectionPath:(id)path forcePagination:(BOOL)pagination
 {
-  v8 = a4;
+  pathCopy = path;
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_276019C14;
   v20[3] = &unk_27A6A9158;
   v20[4] = self;
-  v23 = a3;
-  v24 = a5;
-  v10 = v8;
+  indexCopy = index;
+  paginationCopy = pagination;
+  v10 = pathCopy;
   v21 = v10;
   v11 = v9;
   v22 = v11;
@@ -1957,20 +1957,20 @@ LABEL_24:
   return v11;
 }
 
-- (void)withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5
+- (void)withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  blockCopy = block;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_27601A1F0;
   v17[3] = &unk_27A6A92B8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = a3;
-  v10 = v9;
-  v11 = v8;
+  v18 = controllerCopy;
+  v19 = blockCopy;
+  indexCopy = index;
+  v10 = blockCopy;
+  v11 = controllerCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v12, v13, v14, v15, v16, v17);
 }
 
@@ -1982,10 +1982,10 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)isPaginationCompleteForSelection:(id)a3 inFlow:(id)a4
+- (BOOL)isPaginationCompleteForSelection:(id)selection inFlow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  flowCopy = flow;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1995,11 +1995,11 @@ LABEL_24:
   v16[2] = sub_27601AA24;
   v16[3] = &unk_27A6A92E0;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
+  v17 = flowCopy;
+  v18 = selectionCopy;
   v19 = &v20;
-  v8 = v6;
-  v9 = v7;
+  v8 = selectionCopy;
+  v9 = flowCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v10, v11, v12, v13, v14, v16);
   LOBYTE(self) = *(v21 + 24);
 
@@ -2061,12 +2061,12 @@ LABEL_24:
   return footnoteLayoutController;
 }
 
-- (BOOL)p_canAnchorDrawable:(id)a3 toPageLayout:(id)a4
+- (BOOL)p_canAnchorDrawable:(id)drawable toPageLayout:(id)layout
 {
   v191 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_bodyLayout(v7, v8, v9, v10, v11, v12);
+  drawableCopy = drawable;
+  layoutCopy = layout;
+  v13 = objc_msgSend_bodyLayout(layoutCopy, v8, v9, v10, v11, v12);
   v180 = v13;
   if (v13)
   {
@@ -2114,7 +2114,7 @@ LABEL_48:
     v59 = objc_msgSend_countByEnumeratingWithState_objects_count_(v52, v53, v54, v55, v56, v57, &v185, v190, 16);
     if (v59)
     {
-      v176 = v7;
+      v176 = layoutCopy;
       v64 = 0;
       v65 = 0;
       v66 = *v186;
@@ -2151,7 +2151,7 @@ LABEL_48:
 
       v74 = 1;
 LABEL_23:
-      v7 = v176;
+      layoutCopy = v176;
     }
 
     else
@@ -2173,8 +2173,8 @@ LABEL_23:
       if ((v74 & 1) == 0)
       {
         v175 = v80;
-        v177 = v7;
-        v174 = v6;
+        v177 = layoutCopy;
+        v174 = drawableCopy;
         v88 = *MEMORY[0x277D81490];
         v87 = *(MEMORY[0x277D81490] + 8);
         v181 = 0u;
@@ -2186,7 +2186,7 @@ LABEL_23:
         if (!v96)
         {
 
-          v6 = v174;
+          drawableCopy = v174;
           goto LABEL_55;
         }
 
@@ -2237,24 +2237,24 @@ LABEL_23:
 
         while (v96);
 
-        v6 = v174;
-        v7 = v177;
+        drawableCopy = v174;
+        layoutCopy = v177;
         if (location <= v88 || location < v88 + v87)
         {
 LABEL_55:
-          v156 = objc_msgSend_sectionTemplatePageOwningInfo_(v175, v120, v121, v122, v123, v124, v6, v174);
+          v156 = objc_msgSend_sectionTemplatePageOwningInfo_(v175, v120, v121, v122, v123, v124, drawableCopy, v174);
           LODWORD(v13) = v156 == 0;
 
           if (v13)
           {
             v86 = v175;
-            if (objc_msgSend_elementKind(v6, v157, v158, v159, v160, v161) != 4)
+            if (objc_msgSend_elementKind(drawableCopy, v157, v158, v159, v160, v161) != 4)
             {
               LOBYTE(v13) = 1;
               goto LABEL_27;
             }
 
-            v167 = objc_msgSend_bodyLayout(v7, v162, v163, v164, v165, v166);
+            v167 = objc_msgSend_bodyLayout(layoutCopy, v162, v163, v164, v165, v166);
             IsVertical = objc_msgSend_textIsVertical(v167, v168, v169, v170, v171, v172);
 
             LOBYTE(v13) = IsVertical ^ 1;
@@ -2270,16 +2270,16 @@ LABEL_60:
       }
     }
 
-    else if (v6 && objc_msgSend_elementKind(v6, v81, v82, v83, v84, v85) == 4)
+    else if (drawableCopy && objc_msgSend_elementKind(drawableCopy, v81, v82, v83, v84, v85) == 4)
     {
       v175 = v86;
       v132 = objc_msgSend_floatingDrawables(v86, v127, v128, v129, v130, v131);
-      v138 = objc_msgSend_pageIndex(v7, v133, v134, v135, v136, v137);
+      v138 = objc_msgSend_pageIndex(layoutCopy, v133, v134, v135, v136, v137);
       v144 = objc_msgSend_drawablesOnPageIndex_(v132, v139, v140, v141, v142, v143, v138);
 
       if (objc_msgSend_count(v144, v145, v146, v147, v148, v149) == 1)
       {
-        v155 = objc_msgSend_member_(v144, v150, v151, v152, v153, v154, v6);
+        v155 = objc_msgSend_member_(v144, v150, v151, v152, v153, v154, drawableCopy);
         LOBYTE(v13) = v155 != 0;
       }
 
@@ -2304,17 +2304,17 @@ LABEL_49:
   return v13 & 1;
 }
 
-- (BOOL)okToAnchorDrawable:(id)a3 toPageIndex:(unint64_t)a4
+- (BOOL)okToAnchorDrawable:(id)drawable toPageIndex:(unint64_t)index
 {
-  v10 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, v4, v5, v6, v7, a3);
-  LOBYTE(a4) = objc_msgSend_okToAnchorDrawables_toPageIndex_(self, v11, v12, v13, v14, v15, v10, a4);
+  v10 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, v4, v5, v6, v7, drawable);
+  LOBYTE(index) = objc_msgSend_okToAnchorDrawables_toPageIndex_(self, v11, v12, v13, v14, v15, v10, index);
 
-  return a4;
+  return index;
 }
 
-- (BOOL)okToAnchorDrawables:(id)a3 toPageIndex:(unint64_t)a4
+- (BOOL)okToAnchorDrawables:(id)drawables toPageIndex:(unint64_t)index
 {
-  v6 = a3;
+  drawablesCopy = drawables;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -2324,10 +2324,10 @@ LABEL_49:
   v14[2] = sub_27601B464;
   v14[3] = &unk_27A6A9358;
   v14[4] = self;
-  v15 = v6;
+  v15 = drawablesCopy;
   v16 = &v18;
-  v17 = a4;
-  v7 = v6;
+  indexCopy = index;
+  v7 = drawablesCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v8, v9, v10, v11, v12, v14);
   LOBYTE(self) = *(v19 + 24);
 
@@ -2335,18 +2335,18 @@ LABEL_49:
   return self;
 }
 
-- (void)addPaginationObserver:(id)a3
+- (void)addPaginationObserver:(id)observer
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (observerCopy)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = sub_27601B928;
     v34[3] = &unk_27A6A8418;
     v34[4] = self;
-    v35 = v4;
+    v35 = observerCopy;
     objc_msgSend_accquireLockAndPerformAction_(self, v11, v12, v13, v14, v15, v34);
   }
 
@@ -2361,11 +2361,11 @@ LABEL_49:
   }
 }
 
-- (void)removePaginationObserver:(id)a3
+- (void)removePaginationObserver:(id)observer
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (observerCopy)
   {
     if (self->_layoutObservers)
     {
@@ -2374,7 +2374,7 @@ LABEL_49:
       v52[2] = sub_27601BBA8;
       v52[3] = &unk_27A6A8418;
       v52[4] = self;
-      v53 = v4;
+      v53 = observerCopy;
       objc_msgSend_accquireLockAndPerformAction_(self, v11, v12, v13, v14, v15, v52);
 
       goto LABEL_7;
@@ -2408,10 +2408,10 @@ LABEL_49:
 LABEL_7:
 }
 
-- (void)layoutManagerNeedsLayout:(id)a3
+- (void)layoutManagerNeedsLayout:(id)layout
 {
-  v27 = a3;
-  if (self->_bodyLayoutManager != v27)
+  layoutCopy = layout;
+  if (self->_bodyLayoutManager != layoutCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, v8, "[TPPaginatedPageController layoutManagerNeedsLayout:]");
@@ -2436,12 +2436,12 @@ LABEL_7:
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v2, v3, v4, v5, v6);
 }
 
-- (id)topicNumbersForStorage:(id)a3
+- (id)topicNumbersForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v10 = objc_msgSend_documentRoot(self, v5, v6, v7, v8, v9);
   v17 = objc_msgSend_bodyStorage(v10, v11, v12, v13, v14, v15);
-  if (v17 == v4)
+  if (v17 == storageCopy)
   {
     v22 = objc_msgSend_bodyTopicNumbers(self, v16, v18, v19, v20, v21);
   }
@@ -2454,9 +2454,9 @@ LABEL_7:
   return v22;
 }
 
-- (void)layoutManager:(id)a3 didClearDirtyRangeWithDelta:(int64_t)a4 afterCharIndex:(unint64_t)a5
+- (void)layoutManager:(id)manager didClearDirtyRangeWithDelta:(int64_t)delta afterCharIndex:(unint64_t)index
 {
-  if ((objc_msgSend_isPaginating(self, a2, v5, v6, v7, v8, a3) & 1) == 0)
+  if ((objc_msgSend_isPaginating(self, a2, v5, v6, v7, v8, manager) & 1) == 0)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, v16, "[TPPaginatedPageController layoutManager:didClearDirtyRangeWithDelta:afterCharIndex:]");
@@ -2466,7 +2466,7 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33, v34);
   }
 
-  if (a4)
+  if (delta)
   {
     v35 = objc_msgSend_sectionHints(self->_paginationState, v12, v13, v14, v15, v16);
     v41 = objc_msgSend_documentPageIndex(self->_paginationState, v36, v37, v38, v39, v40);
@@ -2484,7 +2484,7 @@ LABEL_7:
       if (sub_275FFD3B8(v64, v48, v49, v50, v51, v52) != 5)
       {
         v58 = sub_275FFD320(v64, v53, v54, v55, v56, v57);
-        objc_msgSend_offsetStartCharIndexBy_charIndex_(v58, v59, v60, v61, v62, v63, a4, a5);
+        objc_msgSend_offsetStartCharIndexBy_charIndex_(v58, v59, v60, v61, v62, v63, delta, index);
       }
 
       sub_275FFCF2C(v64, v53, v54, v55, v56, v57);
@@ -2494,12 +2494,12 @@ LABEL_7:
   }
 }
 
-- (id)metricsCacheForStorage:(id)a3
+- (id)metricsCacheForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v10 = objc_msgSend_documentRoot(self, v5, v6, v7, v8, v9);
   v17 = objc_msgSend_bodyStorage(v10, v11, v12, v13, v14, v15);
-  if (v17 != v4)
+  if (v17 != storageCopy)
   {
     goto LABEL_4;
   }
@@ -2544,9 +2544,9 @@ LABEL_6:
   return v18;
 }
 
-- (CGPoint)pageOriginForPageIndex:(unint64_t)a3 allowAfterPaginationPoint:(BOOL)a4
+- (CGPoint)pageOriginForPageIndex:(unint64_t)index allowAfterPaginationPoint:(BOOL)point
 {
-  v10 = objc_msgSend_documentRoot(self, a2, v4, v5, v6, v7, a3, a4);
+  v10 = objc_msgSend_documentRoot(self, a2, v4, v5, v6, v7, index, point);
   objc_msgSend_pageSize(v10, v11, v12, v13, v14, v15);
   v17 = v16;
   v19 = v18;
@@ -2565,9 +2565,9 @@ LABEL_6:
     v87 = 0x2020000000;
     v88 = 0x7FFFFFFFFFFFFFFFLL;
     v32 = self->_cachedPaginationState;
-    if (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(v32, v33, v34, v35, v36, v37, a3))
+    if (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(v32, v33, v34, v35, v36, v37, index))
     {
-      v43 = objc_msgSend_pageHintForPageIndex_(v32, v38, v39, v40, v41, v42, a3);
+      v43 = objc_msgSend_pageHintForPageIndex_(v32, v38, v39, v40, v41, v42, index);
       v49 = v43;
       if (v43)
       {
@@ -2588,7 +2588,7 @@ LABEL_6:
       }
     }
 
-    else if (a3)
+    else if (index)
     {
       v84[0] = MEMORY[0x277D85DD0];
       v39.n128_u64[0] = 3221225472;
@@ -2598,7 +2598,7 @@ LABEL_6:
       v84[4] = self;
       v84[5] = &v89;
       v84[6] = &v85;
-      v84[7] = a3;
+      v84[7] = index;
       objc_msgSend_accquireLockAndPerformAction_(self, v38, v39, v40, v41, v42, v84);
     }
 
@@ -2629,7 +2629,7 @@ LABEL_6:
 
   else
   {
-    v57 = (v19 + self->_verticalGapBetweenPages) * a3;
+    v57 = (v19 + self->_verticalGapBetweenPages) * index;
     v58 = 0.0;
   }
 
@@ -2640,9 +2640,9 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)pageRectForPageIndex:(unint64_t)a3 allowAfterPaginationPoint:(BOOL)a4
+- (CGRect)pageRectForPageIndex:(unint64_t)index allowAfterPaginationPoint:(BOOL)point
 {
-  objc_msgSend_pageOriginForPageIndex_allowAfterPaginationPoint_(self, a2, v4, v5, v6, v7, a3, a4);
+  objc_msgSend_pageOriginForPageIndex_allowAfterPaginationPoint_(self, a2, v4, v5, v6, v7, index, point);
   v10 = v9.n128_u64[0];
   v12 = v11.n128_u64[0];
   v16 = objc_msgSend_documentRoot(self, v13, v9, v11, v14, v15);
@@ -2661,11 +2661,11 @@ LABEL_6:
   return result;
 }
 
-- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)a3
+- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  result = objc_msgSend_pageCount(self, a2, a3, *&a3.y, v3, v4);
+  y = point.y;
+  x = point.x;
+  result = objc_msgSend_pageCount(self, a2, point, *&point.y, v3, v4);
   if (result)
   {
     v14 = result;
@@ -2681,7 +2681,7 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)pageKindForPageIndex:(unint64_t)a3
+- (int64_t)pageKindForPageIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -2694,19 +2694,19 @@ LABEL_6:
   v9[3] = &unk_27A6A93A8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = index;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v7;
 }
 
-- (unint64_t)calculatePageIndexFromCanvasPoint:(CGPoint)a3
+- (unint64_t)calculatePageIndexFromCanvasPoint:(CGPoint)point
 {
   v3.n128_u64[0] = 0;
-  if (a3.x >= 0.0)
+  if (point.x >= 0.0)
   {
-    x = a3.x;
+    x = point.x;
   }
 
   else
@@ -2714,9 +2714,9 @@ LABEL_6:
     x = 0.0;
   }
 
-  if (a3.y >= 0.0)
+  if (point.y >= 0.0)
   {
-    y = a3.y;
+    y = point.y;
   }
 
   else
@@ -2724,7 +2724,7 @@ LABEL_6:
     y = 0.0;
   }
 
-  v8 = objc_msgSend_documentRoot(self, a2, a3, *&a3.y, v3, v4);
+  v8 = objc_msgSend_documentRoot(self, a2, point, *&point.y, v3, v4);
   objc_msgSend_pageSize(v8, v9, v10, v11, v12, v13);
   v15 = v14;
   v17 = v16;
@@ -2821,14 +2821,14 @@ LABEL_6:
   }
 }
 
-- (unint64_t)pageHeightCountForPageViewState:(int64_t)a3
+- (unint64_t)pageHeightCountForPageViewState:(int64_t)state
 {
   v11 = 0;
   v12 = &v11;
   v3.n128_u64[0] = 0x2020000000;
   v13 = 0x2020000000;
   v14 = 0;
-  if (a3 == 1)
+  if (state == 1)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v3.n128_u64[0] = 3221225472;
@@ -2861,21 +2861,21 @@ LABEL_6:
   return v7;
 }
 
-- (CGSize)canvasSizeToFitAllPagesForPageViewState:(int64_t)a3
+- (CGSize)canvasSizeToFitAllPagesForPageViewState:(int64_t)state
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   objc_msgSend_pageSize(v9, v10, v11, v12, v13, v14);
   v16 = v15;
   v18 = v17;
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v20.n128_u64[0] = *&self->_horizontalGapBetweenPages;
     v21.n128_u64[0] = 2.0;
     v16 = v20.n128_f64[0] + v16 * 2.0;
   }
 
-  v24 = objc_msgSend_pageHeightCountForPageViewState_(self, v19, v20, v21, v22, v23, a3);
+  v24 = objc_msgSend_pageHeightCountForPageViewState_(self, v19, v20, v21, v22, v23, state);
   v25 = v24;
   v26 = self->_verticalGapBetweenPages * (v24 - 1);
   if ((atomic_load_explicit(&qword_280A404F0, memory_order_acquire) & 1) == 0)
@@ -2952,7 +2952,7 @@ LABEL_6:
   return v47;
 }
 
-- (unint64_t)adjacentPageIndexForPageIndex:(unint64_t)a3
+- (unint64_t)adjacentPageIndexForPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_delegate(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_pageViewState(v9, v10, v11, v12, v13, v14);
@@ -2965,9 +2965,9 @@ LABEL_6:
     v73 = 0x2020000000;
     v74 = 0x7FFFFFFFFFFFFFFFLL;
     v17 = self->_cachedPaginationState;
-    if (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(v17, v18, v19, v20, v21, v22, a3))
+    if (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(v17, v18, v19, v20, v21, v22, index))
     {
-      v28 = objc_msgSend_pageHintForPageIndex_(v17, v23, v24, v25, v26, v27, a3);
+      v28 = objc_msgSend_pageHintForPageIndex_(v17, v23, v24, v25, v26, v27, index);
       v34 = v28;
       if (v28)
       {
@@ -2986,7 +2986,7 @@ LABEL_6:
       }
     }
 
-    else if (a3)
+    else if (index)
     {
       v70[0] = MEMORY[0x277D85DD0];
       v24.n128_u64[0] = 3221225472;
@@ -2995,7 +2995,7 @@ LABEL_6:
       v70[3] = &unk_27A6A91F8;
       v70[4] = self;
       v70[5] = &v71;
-      v70[6] = a3;
+      v70[6] = index;
       objc_msgSend_accquireLockAndPerformAction_(self, v23, v24, v25, v26, v27, v70);
     }
 
@@ -3011,13 +3011,13 @@ LABEL_6:
       v60 = objc_msgSend_documentPageIndex(self->_paginationState, v36, v37, v38, v39, v40);
       isPageLayoutRightToLeft = objc_msgSend_isPageLayoutRightToLeft(self, v61, v62, v63, v64, v65);
       v67 = v72[3];
-      if (a3 || (v68 = v67 == isPageLayoutRightToLeft, v67 = isPageLayoutRightToLeft, v68))
+      if (index || (v68 = v67 == isPageLayoutRightToLeft, v67 = isPageLayoutRightToLeft, v68))
       {
-        if (v67 != isPageLayoutRightToLeft || (v16 = a3 + 1, a3 + 1 >= v60))
+        if (v67 != isPageLayoutRightToLeft || (v16 = index + 1, index + 1 >= v60))
         {
-          if (a3 != 0 && v67 != isPageLayoutRightToLeft)
+          if (index != 0 && v67 != isPageLayoutRightToLeft)
           {
-            v16 = a3 - 1;
+            v16 = index - 1;
           }
 
           else
@@ -3034,11 +3034,11 @@ LABEL_6:
   return v16;
 }
 
-- (void)i_rebuildCachedLayoutChildrenFromStartPage:(unint64_t)a3 toEndPage:(unint64_t)a4 setNeedsLayout:(BOOL)a5
+- (void)i_rebuildCachedLayoutChildrenFromStartPage:(unint64_t)page toEndPage:(unint64_t)endPage setNeedsLayout:(BOOL)layout
 {
-  v9 = a5;
+  layoutCopy = layout;
   v42 = *MEMORY[0x277D85DE8];
-  objc_msgSend_pageLayoutsFromStartIndex_toEndIndex_(self->_pageLayoutCache, a2, v5, v6, v7, v8, a3, a4);
+  objc_msgSend_pageLayoutsFromStartIndex_toEndIndex_(self->_pageLayoutCache, a2, v5, v6, v7, v8, page, endPage);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -3058,13 +3058,13 @@ LABEL_6:
         }
 
         v25 = *(*(&v37 + 1) + 8 * v24);
-        if (v9)
+        if (layoutCopy)
         {
           v26 = objc_msgSend_pageIndex(*(*(&v37 + 1) + 8 * v24), v17, v19, v20, v21, v22, v37);
           objc_msgSend_p_setNeedsLayoutOnPageIndex_(self, v27, v28, v29, v30, v31, v26);
         }
 
-        objc_msgSend_rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects_(v25, v17, v19, v20, v21, v22, v9, v37);
+        objc_msgSend_rebuildChildLayoutsOnNextValidationForcingTextLayoutOnTopLevelObjects_(v25, v17, v19, v20, v21, v22, layoutCopy, v37);
         objc_msgSend_invalidate(v25, v32, v33, v34, v35, v36);
         ++v24;
       }
@@ -3077,30 +3077,30 @@ LABEL_6:
   }
 }
 
-- (void)p_performWithCachedPageLayouts:(id)a3
+- (void)p_performWithCachedPageLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v10 = objc_msgSend_pageLayouts(self->_pageLayoutCache, v5, v6, v7, v8, v9);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_27601DF98;
   v17[3] = &unk_27A6A93D0;
-  v11 = v4;
+  v11 = layoutsCopy;
   v18 = v11;
   objc_msgSend_enumerateObjectsUsingBlock_(v10, v12, v13, v14, v15, v16, v17);
 }
 
-- (void)p_rebuildPageLayoutsContainingDrawableUUIDs:(id)a3
+- (void)p_rebuildPageLayoutsContainingDrawableUUIDs:(id)ds
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8, v9))
+  dsCopy = ds;
+  if (objc_msgSend_count(dsCopy, v5, v6, v7, v8, v9))
   {
     v10 = objc_alloc_init(MEMORY[0x277CCAB58]);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_27601E198;
     v23[3] = &unk_27A6A93F8;
-    v24 = v4;
+    v24 = dsCopy;
     v11 = v10;
     v25 = v11;
     objc_msgSend_p_performWithCachedPageLayouts_(self, v12, v13, v14, v15, v16, v23);
@@ -3113,15 +3113,15 @@ LABEL_6:
   }
 }
 
-- (_NSRange)p_pageRangeAffectedByInfo:(id)a3
+- (_NSRange)p_pageRangeAffectedByInfo:(id)info
 {
   v185 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = *MEMORY[0x277D81490];
   v6 = *(MEMORY[0x277D81490] + 8);
-  v179 = v4;
+  v179 = infoCopy;
   objc_opt_class();
-  v12 = objc_msgSend_owningAttachment(v4, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_owningAttachment(infoCopy, v7, v8, v9, v10, v11);
   v13 = TSUDynamicCast();
   v19 = objc_msgSend_topLevelAttachment(v13, v14, v15, v16, v17, v18);
 
@@ -3426,12 +3426,12 @@ LABEL_6:
   return result;
 }
 
-- (unint64_t)p_backupPageIndexForCharIndex:(unint64_t)a3
+- (unint64_t)p_backupPageIndexForCharIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_bodyStorage(v9, v10, v11, v12, v13, v14);
 
-  v21 = objc_msgSend_paragraphIndexAtCharIndex_(v15, v16, v17, v18, v19, v20, a3);
+  v21 = objc_msgSend_paragraphIndexAtCharIndex_(v15, v16, v17, v18, v19, v20, index);
   if (v21)
   {
     v46 = *MEMORY[0x277D81490];
@@ -3484,25 +3484,25 @@ LABEL_6:
   return v32;
 }
 
-- (void)p_hasBodyChanged:(id)a3
+- (void)p_hasBodyChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_27601ED74;
   v11[3] = &unk_27A6A8418;
   v11[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = changedCopy;
+  v5 = changedCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v6, v7, v8, v9, v10, v11);
 }
 
-- (void)p_setNeedsLayoutFromSectionIndexToEnd:(unint64_t)a3
+- (void)p_setNeedsLayoutFromSectionIndexToEnd:(unint64_t)end
 {
   v9 = objc_msgSend_sectionHints(self->_paginationState, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_count(v9, v10, v11, v12, v13, v14);
 
-  if (v15 <= a3)
+  if (v15 <= end)
   {
     v39 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -3510,7 +3510,7 @@ LABEL_6:
   else
   {
     v21 = objc_msgSend_sectionHints(self->_paginationState, v16, v17, v18, v19, v20);
-    v27 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, v23, v24, v25, v26, a3);
+    v27 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, v23, v24, v25, v26, end);
 
     v33 = objc_msgSend_documentPageRange(v27, v28, v29, v30, v31, v32);
     v39 = v33;
@@ -3552,9 +3552,9 @@ LABEL_6:
   v43 = objc_msgSend_sectionHints(self->_paginationState, v16, v17, v18, v19, v20);
   v49 = objc_msgSend_count(v43, v44, v45, v46, v47, v48);
 
-  if (v49 > a3)
+  if (v49 > end)
   {
-    objc_msgSend_trimSectionHintsFromIndex_(self->_paginationState, v50, v51, v52, v53, v54, a3);
+    objc_msgSend_trimSectionHintsFromIndex_(self->_paginationState, v50, v51, v52, v53, v54, end);
   }
 
   if (self->_completePageCount >= v39)
@@ -3582,15 +3582,15 @@ LABEL_22:
   objc_msgSend_p_interruptBackgroundPagination(self, v50, v51, v52, v53, v54);
 }
 
-- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)a3
+- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)index
 {
   v51 = *MEMORY[0x277D85DE8];
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, a3, v9);
+  isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(TPPageInfo, v10, v11, v12, v13, v14, index, v9);
 
   if ((isPageTemplatePageIndex_documentRoot & 1) == 0)
   {
-    objc_msgSend_p_invalidatePageIndex_(self, v16, v17, v18, v19, v20, a3);
+    objc_msgSend_p_invalidatePageIndex_(self, v16, v17, v18, v19, v20, index);
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -3770,11 +3770,11 @@ LABEL_21:
   return v15;
 }
 
-- (id)p_cachedPageLayoutForPageIndex:(unint64_t)a3 preferredLayoutController:(id)a4
+- (id)p_cachedPageLayoutForPageIndex:(unint64_t)index preferredLayoutController:(id)controller
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  objc_msgSend_pageLayoutsWithPageIndex_(self->_pageLayoutCache, v7, v8, v9, v10, v11, a3);
+  controllerCopy = controller;
+  objc_msgSend_pageLayoutsWithPageIndex_(self->_pageLayoutCache, v7, v8, v9, v10, v11, index);
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -3796,13 +3796,13 @@ LABEL_3:
 
       v19 = *(*(&v44 + 1) + 8 * v21);
 
-      if (!v6)
+      if (!controllerCopy)
       {
         break;
       }
 
       v28 = objc_msgSend_layoutController(v19, v23, v24, v25, v26, v27, v44);
-      v29 = v28 == v6;
+      v29 = v28 == controllerCopy;
 
       if (v29)
       {
@@ -3831,14 +3831,14 @@ LABEL_10:
 
     v19 = 0;
     v40 = 0;
-    if (!v6)
+    if (!controllerCopy)
     {
       goto LABEL_19;
     }
 
 LABEL_12:
     v41 = objc_msgSend_layoutController(v19, v35, v36, v37, v38, v39, v44);
-    v42 = v41 == v6;
+    v42 = v41 == controllerCopy;
 
     if (!v42)
     {
@@ -3862,15 +3862,15 @@ LABEL_19:
   return v40;
 }
 
-- (void)p_withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5
+- (void)p_withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block
 {
   v243[1] = *MEMORY[0x277D85DE8];
-  v242 = a4;
-  v8 = a5;
-  if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, v9, v10, v11, v12, v13, a3) & 1) == 0 && (!objc_msgSend_p_isPaginationComplete(self, v14, v15, v16, v17, v18) || self->_lastKnownPageCount < a3))
+  controllerCopy = controller;
+  blockCopy = block;
+  if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, v9, v10, v11, v12, v13, index) & 1) == 0 && (!objc_msgSend_p_isPaginationComplete(self, v14, v15, v16, v17, v18) || self->_lastKnownPageCount < index))
   {
     v19 = objc_msgSend_documentRoot(self, v14, v15, v16, v17, v18);
-    isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v20, v21, v22, v23, v24, a3, v19);
+    isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v20, v21, v22, v23, v24, index, v19);
 
     if ((isAlternativePageIndex_documentRoot & 1) == 0)
     {
@@ -3883,7 +3883,7 @@ LABEL_19:
     }
   }
 
-  v44 = objc_msgSend_p_cachedPageLayoutForPageIndex_preferredLayoutController_(self, v14, v15, v16, v17, v18, a3, v242);
+  v44 = objc_msgSend_p_cachedPageLayoutForPageIndex_preferredLayoutController_(self, v14, v15, v16, v17, v18, index, controllerCopy);
   v50 = v44;
   if (v44 && (objc_msgSend_bodyLayout(v44, v45, v46, v47, v48, v49), v51 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend_needsInflation(v51, v52, v53, v54, v55, v56), v51, (v57 & 1) == 0))
   {
@@ -3918,14 +3918,14 @@ LABEL_19:
     v58 = objc_msgSend_canvas(self->_offscreenSearchDelegate, v45, v46, v47, v48, v49);
     v64 = objc_msgSend_layoutController(v58, v59, v60, v61, v62, v63);
 
-    v70 = objc_msgSend_p_pageInfoForPageAtIndex_(self, v65, v66, v67, v68, v69, a3);
+    v70 = objc_msgSend_p_pageInfoForPageAtIndex_(self, v65, v66, v67, v68, v69, index);
     v76 = objc_msgSend_canvas(self->_offscreenSearchDelegate, v71, v72, v73, v74, v75);
     v243[0] = v70;
     v82 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v77, v78, v79, v80, v81, v243, 1);
     objc_msgSend_setInfosToDisplay_(v76, v83, v84, v85, v86, v87, v82);
 
     objc_msgSend_validateLayouts(v64, v88, v89, v90, v91, v92);
-    v98 = objc_msgSend_p_cachedPageLayoutForPageIndex_preferredLayoutController_(self, v93, v94, v95, v96, v97, a3, v64);
+    v98 = objc_msgSend_p_cachedPageLayoutForPageIndex_preferredLayoutController_(self, v93, v94, v95, v96, v97, index, v64);
 
     v105 = objc_msgSend_bodyLayout(v98, v99, v100, v101, v102, v103);
     if (v105)
@@ -3956,53 +3956,53 @@ LABEL_19:
     }
   }
 
-  v8[2](v8, v98);
+  blockCopy[2](blockCopy, v98);
   if (objc_msgSend_withPageLayoutRecursionCount(self, v232, v233, v234, v235, v236) <= 0)
   {
     objc_msgSend_evacuateOldChildLayoutCache(v98, v237, v238, v239, v240, v241);
   }
 }
 
-- (id)p_pageInfoForPageAtIndex:(unint64_t)a3
+- (id)p_pageInfoForPageAtIndex:(unint64_t)index
 {
   v5 = objc_alloc(objc_opt_class());
   v11 = objc_msgSend_documentRoot(self, v6, v7, v8, v9, v10);
-  v17 = objc_msgSend_initWithPageIndex_documentRoot_layoutInfoProvider_(v5, v12, v13, v14, v15, v16, a3, v11, self);
+  v17 = objc_msgSend_initWithPageIndex_documentRoot_layoutInfoProvider_(v5, v12, v13, v14, v15, v16, index, v11, self);
 
   return v17;
 }
 
-- (unint64_t)p_pageIndexForCharIndex:(unint64_t)a3 includeEmptyPages:(BOOL)a4 caretAffinity:(int64_t)a5 forcePagination:(BOOL)a6 searchAfterPaginationPoint:(BOOL)a7
+- (unint64_t)p_pageIndexForCharIndex:(unint64_t)index includeEmptyPages:(BOOL)pages caretAffinity:(int64_t)affinity forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point
 {
-  v11 = a7;
-  v12 = a6;
+  pointCopy = point;
+  paginationCopy = pagination;
   v15 = objc_msgSend_documentRoot(self, a2, v7, v8, v9, v10);
   v21 = objc_msgSend_bodyStorage(v15, v16, v17, v18, v19, v20);
 
   v188 = v21;
-  if (a3)
+  if (index)
   {
-    if (objc_msgSend_length(v21, v22, v23, v24, v25, v26) < a3)
+    if (objc_msgSend_length(v21, v22, v23, v24, v25, v26) < index)
     {
       v32 = MEMORY[0x277D81150];
       v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, v28, v29, v30, v31, "[TPPaginatedPageController p_pageIndexForCharIndex:includeEmptyPages:caretAffinity:forcePagination:searchAfterPaginationPoint:]");
       v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, v35, v36, v37, v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
       v45 = objc_msgSend_length(v21, v40, v41, v42, v43, v44);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v46, v47, v48, v49, v50, v33, v39, 3756, 0, "Given char index is beyond the storage: %lu vs %lu", v45, a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v46, v47, v48, v49, v50, v33, v39, 3756, 0, "Given char index is beyond the storage: %lu vs %lu", v45, index);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v51, v52, v53, v54, v55);
     }
 
     if (objc_msgSend_length(v21, v27, v28, v29, v30, v31))
     {
-      if (objc_msgSend_length(v21, v56, v57, v58, v59, v60) <= a3 - 1)
+      if (objc_msgSend_length(v21, v56, v57, v58, v59, v60) <= index - 1)
       {
         v68 = 0;
       }
 
       else
       {
-        v66 = objc_msgSend_characterAtIndex_(v21, v61, v62, v63, v64, v65, a3 - 1);
+        v66 = objc_msgSend_characterAtIndex_(v21, v61, v62, v63, v64, v65, index - 1);
         v67 = IsParagraphBreakingCharacter();
         if (v66 == 8232)
         {
@@ -4015,13 +4015,13 @@ LABEL_19:
         }
       }
 
-      v70 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, v61, v62, v63, v64, v65, a3 - 1, 0);
+      v70 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, v61, v62, v63, v64, v65, index - 1, 0);
     }
 
     else
     {
       v68 = 0;
-      v70 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, v56, v57, v58, v59, v60, a3 - 1, 0);
+      v70 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, v56, v57, v58, v59, v60, index - 1, 0);
     }
 
     v69 = v70;
@@ -4037,25 +4037,25 @@ LABEL_19:
   {
     v76 = MEMORY[0x277D81150];
     v77 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v71, v72, v73, v74, v75, "[TPPaginatedPageController p_pageIndexForCharIndex:includeEmptyPages:caretAffinity:forcePagination:searchAfterPaginationPoint:]");
-    v78 = a3;
+    indexCopy = index;
     v84 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v79, v80, v81, v82, v83, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v76, v85, v86, v87, v88, v89, v77, v84, 3760, 0, "Start page index should be a valid index");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v90, v91, v92, v93, v94);
-    a3 = v78;
+    index = indexCopy;
   }
 
-  v191 = a3;
+  indexCopy2 = index;
   while (1)
   {
-    v95 = v12 && (v69 != self->_didLayOutPageIndex);
-    v97 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v71, v72, v73, v74, v75, v69, v95, v11);
-    if (!v97 || !v11 && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v96, v98, v99, v100, v101, v69) & 1) == 0)
+    v95 = paginationCopy && (v69 != self->_didLayOutPageIndex);
+    v97 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v71, v72, v73, v74, v75, v69, v95, pointCopy);
+    if (!v97 || !pointCopy && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v96, v98, v99, v100, v101, v69) & 1) == 0)
     {
       break;
     }
 
-    if (objc_msgSend_pageKind(v97, v96, v98, v99, v100, v101) != 1 || !objc_msgSend_lineCount(v97, v102, v103, v104, v105, v106) && !a4)
+    if (objc_msgSend_pageKind(v97, v96, v98, v99, v100, v101) != 1 || !objc_msgSend_lineCount(v97, v102, v103, v104, v105, v106) && !pages)
     {
       v107 = objc_msgSend_documentRoot(self, v102, v103, v104, v105, v106);
       v113 = objc_msgSend_settings(v107, v108, v109, v110, v111, v112);
@@ -4078,18 +4078,18 @@ LABEL_28:
     v126 = objc_msgSend_range(v97, v102, v103, v104, v105, v106);
     v132 = v126;
     v124 = v69;
-    if (&v127[v126] > v191)
+    if (&v127[v126] > indexCopy2)
     {
       goto LABEL_42;
     }
 
-    v124 = &v127[v126] == v191 ? v69 : 0x7FFFFFFFFFFFFFFFLL;
-    if (((&v127[v126] == v191) & ((a5 != 1) | v68)) != 1)
+    v124 = &v127[v126] == indexCopy2 ? v69 : 0x7FFFFFFFFFFFFFFFLL;
+    if (((&v127[v126] == indexCopy2) & ((affinity != 1) | v68)) != 1)
     {
       goto LABEL_42;
     }
 
-    if (!(v127 | a5))
+    if (!(v127 | affinity))
     {
       v144 = v188;
       v107 = objc_msgSend_firstChildHint(v97, v127, v128, v129, v130, v131);
@@ -4184,11 +4184,11 @@ LABEL_61:
   return v124;
 }
 
-- (_NSRange)p_bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (_NSRange)p_bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
   v10 = *MEMORY[0x277D81490];
   v9 = *(MEMORY[0x277D81490] + 8);
-  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, a3, a4, a5);
+  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, index, pagination, point);
   v17 = v11;
   if (v11)
   {
@@ -4213,11 +4213,11 @@ LABEL_61:
   return result;
 }
 
-- (_NSRange)p_anchoredRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (_NSRange)p_anchoredRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
   v10 = *MEMORY[0x277D81490];
   v9 = *(MEMORY[0x277D81490] + 8);
-  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, a3, a4, a5);
+  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, index, pagination, point);
   v17 = v11;
   if (v11)
   {
@@ -4245,11 +4245,11 @@ LABEL_61:
   return result;
 }
 
-- (_NSRange)p_footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (_NSRange)p_footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
   v9 = *MEMORY[0x277D81490];
   v10 = *(MEMORY[0x277D81490] + 8);
-  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, a3, a4, a5);
+  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, index, pagination, point);
   v17 = v11;
   if (v11 && objc_msgSend_pageKind(v11, v12, v13, v14, v15, v16) != 5)
   {
@@ -4264,7 +4264,7 @@ LABEL_61:
   return result;
 }
 
-- (unint64_t)p_pageIndexContainingIndex:(unint64_t)a3 ofType:(unint64_t)a4
+- (unint64_t)p_pageIndexContainingIndex:(unint64_t)index ofType:(unint64_t)type
 {
   LaidOutDocumentPageIndex = objc_msgSend_lastLaidOutDocumentPageIndex(self->_paginationState, a2, v4, v5, v6, v7);
   if (LaidOutDocumentPageIndex <= 0x7FFFFFFFFFFFFFFELL)
@@ -4276,18 +4276,18 @@ LABEL_61:
       v16 = (v18 + v17) >> 1;
       v19 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v11, v12, v13, v14, v15, v16, 0, 0);
       v51 = v19;
-      if (!a4)
+      if (!type)
       {
         v25 = objc_msgSend_range(v19, v20, v21, v22, v23, v24);
         goto LABEL_10;
       }
 
-      if (a4 == 1)
+      if (type == 1)
       {
         break;
       }
 
-      if (a4 == 2)
+      if (type == 2)
       {
         v25 = objc_msgSend_footnoteLayoutRange(v19, v20, v21, v22, v23, v24);
 LABEL_10:
@@ -4303,20 +4303,20 @@ LABEL_12:
       {
         v28 = MEMORY[0x277D81150];
         v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, v24, "[TPPaginatedPageController p_pageIndexContainingIndex:ofType:]");
-        v30 = a4;
-        v31 = a3;
+        typeCopy = type;
+        indexCopy = index;
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, v33, v34, v35, v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v38, v39, v40, v41, v42, v29, v37, 3892, 0, "Index range should be valid for laid out pages.");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46, v47);
-        a3 = v31;
-        a4 = v30;
+        index = indexCopy;
+        type = typeCopy;
       }
 
-      if (v26 <= a3)
+      if (v26 <= index)
       {
         v48 = v51;
-        if (&v27[v26] > a3)
+        if (&v27[v26] > index)
         {
 
           return v16;
@@ -4344,21 +4344,21 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)p_couldBeFirstPageIndex:(unint64_t)a3 forPartitionedAttachmentCharIndex:(unint64_t)a4
+- (BOOL)p_couldBeFirstPageIndex:(unint64_t)index forPartitionedAttachmentCharIndex:(unint64_t)charIndex
 {
-  if (!a3)
+  if (!index)
   {
     return 1;
   }
 
   v10 = 1;
-  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v4, v5, v6, v7, a3, 0, 1);
+  v11 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v4, v5, v6, v7, index, 0, 1);
   if (v11)
   {
     objc_opt_class();
     v17 = objc_msgSend_documentRoot(self, v12, v13, v14, v15, v16);
     v23 = objc_msgSend_bodyStorage(v17, v18, v19, v20, v21, v22);
-    v29 = objc_msgSend_attachmentAtCharIndex_(v23, v24, v25, v26, v27, v28, a4);
+    v29 = objc_msgSend_attachmentAtCharIndex_(v23, v24, v25, v26, v27, v28, charIndex);
     v30 = TSUCheckedDynamicCast();
 
     if ((objc_msgSend_isPartitioned(v30, v31, v32, v33, v34, v35) & 1) == 0)
@@ -4381,7 +4381,7 @@ LABEL_12:
   return v10;
 }
 
-- (unint64_t)p_pageIndexForAnchoredCharIndex:(unint64_t)a3 forcePagination:(BOOL)a4 searchAfterPaginationPoint:(BOOL)a5
+- (unint64_t)p_pageIndexForAnchoredCharIndex:(unint64_t)index forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point
 {
   paginationState = self->_paginationState;
   if (!paginationState)
@@ -4389,11 +4389,11 @@ LABEL_12:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = a5;
-  v12 = a4;
-  if (a3)
+  pointCopy = point;
+  paginationCopy = pagination;
+  if (index)
   {
-    v14 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, a2, v5, v6, v7, v8, a3 - 1, 1);
+    v14 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, a2, v5, v6, v7, v8, index - 1, 1);
     if (v14 > objc_msgSend_lastLaidOutDocumentPageIndex(self->_paginationState, v15, v16, v17, v18, v19))
     {
       v25 = MEMORY[0x277D81150];
@@ -4413,8 +4413,8 @@ LABEL_12:
 
   while (1)
   {
-    v44 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v20, v21, v22, v23, v24, v14, v12, v11);
-    if (!v44 || !v11 && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v43, v45, v46, v47, v48, v14) & 1) == 0)
+    v44 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v20, v21, v22, v23, v24, v14, paginationCopy, pointCopy);
+    if (!v44 || !pointCopy && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v43, v45, v46, v47, v48, v14) & 1) == 0)
     {
       break;
     }
@@ -4426,9 +4426,9 @@ LABEL_12:
 
     v54 = objc_msgSend_anchoredRange(v44, v49, v50, v51, v52, v53);
     v60 = v14;
-    if (&v55[v54] <= a3)
+    if (&v55[v54] <= index)
     {
-      if (&v55[v54] == a3 && objc_msgSend_p_isPaginationComplete(self, v55, v56, v57, v58, v59))
+      if (&v55[v54] == index && objc_msgSend_p_isPaginationComplete(self, v55, v56, v57, v58, v59))
       {
         if (v14 == objc_msgSend_p_lastValidTextPageIndex(self, v61, v62, v63, v64, v65))
         {
@@ -4459,7 +4459,7 @@ LABEL_17:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)p_pageHintIndexForCharIndex:(unint64_t)a3
+- (unint64_t)p_pageHintIndexForCharIndex:(unint64_t)index
 {
   v81 = 0;
   v82 = &v81;
@@ -4484,17 +4484,17 @@ LABEL_17:
     v76[3] = &unk_27A6A9420;
     v76[4] = &v81;
     v76[5] = &v77;
-    v76[6] = a3;
+    v76[6] = index;
     objc_msgSend_enumerateObjectsUsingBlock_(v27, v29, v28, v30, v31, v32, v76);
   }
 
   else
   {
-    v78[3] = a3;
+    v78[3] = index;
     v33 = objc_msgSend_sectionHints(self->_paginationState, v22, v23, v24, v25, v26);
     v39 = objc_msgSend_count(v33, v34, v35, v36, v37, v38);
 
-    if (v39 <= a3)
+    if (v39 <= index)
     {
       goto LABEL_7;
     }
@@ -4527,7 +4527,7 @@ LABEL_7:
   return v74;
 }
 
-- (unint64_t)p_pageHintIndexForAnchoredCharIndex:(unint64_t)a3
+- (unint64_t)p_pageHintIndexForAnchoredCharIndex:(unint64_t)index
 {
   v40 = 0;
   v41 = &v40;
@@ -4552,7 +4552,7 @@ LABEL_7:
     v35[3] = &unk_27A6A9420;
     v35[4] = &v40;
     v35[5] = &v36;
-    v35[6] = a3;
+    v35[6] = index;
     objc_msgSend_enumerateObjectsUsingBlock_(v27, v29, v28, v30, v31, v32, v35);
   }
 
@@ -4571,13 +4571,13 @@ LABEL_7:
   return v33;
 }
 
-- (unint64_t)p_pageIndexForFootnoteIndex:(unint64_t)a3 forcePagination:(BOOL)a4 searchAfterPaginationPoint:(BOOL)a5
+- (unint64_t)p_pageIndexForFootnoteIndex:(unint64_t)index forcePagination:(BOOL)pagination searchAfterPaginationPoint:(BOOL)point
 {
-  v9 = a5;
-  v10 = a4;
-  if (a3)
+  pointCopy = point;
+  paginationCopy = pagination;
+  if (index)
   {
-    v13 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, a2, v5, v6, v7, v8, a3 - 1, 2);
+    v13 = objc_msgSend_p_pageIndexContainingIndex_ofType_(self, a2, v5, v6, v7, v8, index - 1, 2);
   }
 
   else
@@ -4597,8 +4597,8 @@ LABEL_7:
 
   while (1)
   {
-    v38 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v14, v15, v16, v17, v18, v13, v10, v9);
-    if (!v38 || !v9 && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v37, v39, v40, v41, v42, v13) & 1) == 0)
+    v38 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v14, v15, v16, v17, v18, v13, paginationCopy, pointCopy);
+    if (!v38 || !pointCopy && (objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, v37, v39, v40, v41, v42, v13) & 1) == 0)
     {
       break;
     }
@@ -4607,7 +4607,7 @@ LABEL_7:
     if (objc_msgSend_pageKind(v38, v37, v39, v40, v41, v42) != 5)
     {
       v49 = objc_msgSend_footnoteLayoutRange(v38, v43, v44, v45, v46, v47);
-      if (v49 + v50 <= a3)
+      if (v49 + v50 <= index)
       {
         v48 = 0x7FFFFFFFFFFFFFFFLL;
       }
@@ -4628,11 +4628,11 @@ LABEL_7:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)p_processWidowsAndInflationForLayoutController:(id)a3
+- (void)p_processWidowsAndInflationForLayoutController:(id)controller
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v10 = objc_msgSend_documentPageIndex(self->_paginationState, v4, v6, v7, v8, v9);
     objc_msgSend_pageLayoutsUpToPageIndex_(self->_pageLayoutCache, v11, v12, v13, v14, v15, v10);
@@ -4655,7 +4655,7 @@ LABEL_7:
 
           v30 = *(*(&v38 + 1) + 8 * i);
           v31 = objc_msgSend_layoutController(v30, v22, v24, v25, v26, v27, v38);
-          v32 = v31 == v5;
+          v32 = v31 == controllerCopy;
 
           if (v32)
           {
@@ -4672,43 +4672,43 @@ LABEL_7:
   }
 }
 
-- (id)p_pageInfosForBodySelection:(id)a3
+- (id)p_pageInfosForBodySelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8, v9);
-  if (v4)
+  if (selectionCopy)
   {
-    v16 = objc_msgSend_pageIndexesForSelection_forcePagination_outEndIsValid_(self, v10, v12, v13, v14, v15, v4, 0, 0);
+    v16 = objc_msgSend_pageIndexesForSelection_forcePagination_outEndIsValid_(self, v10, v12, v13, v14, v15, selectionCopy, 0, 0);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_27602182C;
     v23[3] = &unk_27A6A9448;
     v24 = v11;
-    v25 = self;
+    selfCopy = self;
     objc_msgSend_enumerateIndexesUsingBlock_(v16, v17, v18, v19, v20, v21, v23);
   }
 
   return v11;
 }
 
-- (id)p_pageIndicesForFlow:(id)a3 withSelection:(id)a4 forcePagination:(BOOL)a5
+- (id)p_pageIndicesForFlow:(id)flow withSelection:(id)selection forcePagination:(BOOL)pagination
 {
-  v184 = a5;
+  paginationCopy = pagination;
   v195 = *MEMORY[0x277D85DE8];
-  v183 = a3;
-  v187 = a4;
+  flowCopy = flow;
+  selectionCopy = selection;
   v186 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v6, v7, v8, v9, v10);
   v189 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v11, v12, v13, v14, v15);
   v21 = objc_msgSend_documentRoot(self, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_floatingDrawables(v21, v22, v23, v24, v25, v26);
 
-  v182 = objc_msgSend_DEPRECATED_range(v187, v28, v29, v30, v31, v32);
+  v182 = objc_msgSend_DEPRECATED_range(selectionCopy, v28, v29, v30, v31, v32);
   range1 = v33;
-  isInsertionPoint = objc_msgSend_isInsertionPoint(v187, v33, v34, v35, v36, v37);
-  v174 = objc_msgSend_caretLFAffinity(v187, v39, v40, v41, v42, v43);
-  v173 = objc_msgSend_textStorage(v183, v44, v45, v46, v47, v48);
+  isInsertionPoint = objc_msgSend_isInsertionPoint(selectionCopy, v33, v34, v35, v36, v37);
+  v174 = objc_msgSend_caretLFAffinity(selectionCopy, v39, v40, v41, v42, v43);
+  v173 = objc_msgSend_textStorage(flowCopy, v44, v45, v46, v47, v48);
   v181 = objc_msgSend_length(v173, v49, v50, v51, v52, v53);
-  v59 = objc_msgSend_isInsertionPoint(v187, v54, v55, v56, v57, v58);
+  v59 = objc_msgSend_isInsertionPoint(selectionCopy, v54, v55, v56, v57, v58);
   if (v174 == 1)
   {
     v65 = 0;
@@ -4721,7 +4721,7 @@ LABEL_7:
 
   if (v65 == 1)
   {
-    v179 = objc_msgSend_leadingCharIndex(v187, v60, v61, v62, v63, v64);
+    v179 = objc_msgSend_leadingCharIndex(selectionCopy, v60, v61, v62, v63, v64);
   }
 
   else
@@ -4733,7 +4733,7 @@ LABEL_7:
   v193 = 0u;
   v190 = 0u;
   v191 = 0u;
-  obj = objc_msgSend_textboxes(v183, v60, 0, v62, v63, v64);
+  obj = objc_msgSend_textboxes(flowCopy, v60, 0, v62, v63, v64);
   v72 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v66, v67, v68, v69, v70, &v190, v194, 16);
   if (v72)
   {
@@ -4761,11 +4761,11 @@ LABEL_7:
           continue;
         }
 
-        if (v187)
+        if (selectionCopy)
         {
           if ((objc_msgSend_containsIndex_(v189, v79, v81, v82, v83, v84, v80) & 1) == 0)
           {
-            v108 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v103, v104, v105, v106, v107, v80, v184, 0);
+            v108 = objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v103, v104, v105, v106, v107, v80, paginationCopy, 0);
             v114 = v108;
             if (!v108)
             {
@@ -4773,7 +4773,7 @@ LABEL_7:
             }
 
             v115 = objc_msgSend_flowHints(v108, v109, v110, v111, v112, v113);
-            v121 = objc_msgSend_objectForKeyedSubscript_(v115, v116, v117, v118, v119, v120, v183);
+            v121 = objc_msgSend_objectForKeyedSubscript_(v115, v116, v117, v118, v119, v120, flowCopy);
             v127 = v121;
             if (!v121)
             {
@@ -4812,7 +4812,7 @@ LABEL_24:
               if (!v163)
               {
 LABEL_25:
-                v164 = objc_msgSend_superRange(v187, length, v158, v159, v160, v161);
+                v164 = objc_msgSend_superRange(selectionCopy, length, v158, v159, v160, v161);
                 if (v164 + v165 < v128)
                 {
 
@@ -4882,9 +4882,9 @@ LABEL_51:
   return v186;
 }
 
-- (id)p_pageInfosForFlow:(id)a3 withSelection:(id)a4
+- (id)p_pageInfosForFlow:(id)flow withSelection:(id)selection
 {
-  v9 = objc_msgSend_p_pageIndicesForFlow_withSelection_forcePagination_(self, a2, v4, v5, v6, v7, a3, a4, 1);
+  v9 = objc_msgSend_p_pageIndicesForFlow_withSelection_forcePagination_(self, a2, v4, v5, v6, v7, flow, selection, 1);
   v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13, v14);
   v23[0] = MEMORY[0x277D85DD0];
   v16.n128_u64[0] = 3221225472;
@@ -4974,15 +4974,15 @@ LABEL_51:
   }
 }
 
-- (void)p_paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4 clearOffscreenInfos:(BOOL)a5
+- (void)p_paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller clearOffscreenInfos:(BOOL)infos
 {
-  v149 = a5;
+  infosCopy = infos;
   v155 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  controllerCopy = controller;
   if (self->_paginationState)
   {
     v13 = objc_msgSend_documentRoot(self, v7, v9, v10, v11, v12);
-    isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v14, v15, v16, v17, v18, a3, v13);
+    isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v14, v15, v16, v17, v18, index, v13);
 
     if ((isAlternativePageIndex_documentRoot & 1) == 0)
     {
@@ -4997,7 +4997,7 @@ LABEL_51:
       }
 
       currentPageBeingLaidOut = self->_currentPageBeingLaidOut;
-      if (currentPageBeingLaidOut <= a3 && currentPageBeingLaidOut != 0x7FFFFFFFFFFFFFFFLL)
+      if (currentPageBeingLaidOut <= index && currentPageBeingLaidOut != 0x7FFFFFFFFFFFFFFFLL)
       {
         v50 = MEMORY[0x277D81150];
         v51 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, v29, "[TPPaginatedPageController p_paginateThroughPageIndex:forLayoutController:clearOffscreenInfos:]");
@@ -5010,7 +5010,7 @@ LABEL_51:
 
       if (currentPageBeingLaidOut == 0x7FFFFFFFFFFFFFFFLL)
       {
-        objc_msgSend_p_processWidowsAndInflationForLayoutController_(self, v25, v26, v27, v28, v29, v8);
+        objc_msgSend_p_processWidowsAndInflationForLayoutController_(self, v25, v26, v27, v28, v29, controllerCopy);
         if ((objc_msgSend_p_isPaginationComplete(self, v68, v69, v70, v71, v72) & 1) == 0)
         {
           self->_currentPageBeingLaidOut = objc_msgSend_documentPageIndex(self->_paginationState, v73, v74, v75, v76, v77);
@@ -5019,24 +5019,24 @@ LABEL_51:
 
           objc_msgSend_p_checkForBackUp(self, v90, v91, v92, v93, v94);
           v100 = 0;
-          while (objc_msgSend_documentPageIndex(self->_paginationState, v95, v96, v97, v98, v99) <= a3 && (objc_msgSend_p_isPaginationComplete(self, v101, v102, v103, v104, v105) & 1) == 0)
+          while (objc_msgSend_documentPageIndex(self->_paginationState, v95, v96, v97, v98, v99) <= index && (objc_msgSend_p_isPaginationComplete(self, v101, v102, v103, v104, v105) & 1) == 0)
           {
-            objc_msgSend_p_layOutNextPageForLayoutController_dirtyRange_(self, v101, v102, v103, v104, v105, v8, v89);
+            objc_msgSend_p_layOutNextPageForLayoutController_dirtyRange_(self, v101, v102, v103, v104, v105, controllerCopy, v89);
             self->_currentPageBeingLaidOut = objc_msgSend_documentPageIndex(self->_paginationState, v106, v107, v108, v109, v110);
             v100 = 1;
           }
 
           if (v100)
           {
-            if (v149)
+            if (infosCopy)
             {
               v111 = objc_msgSend_canvas(self->_offscreenSearchDelegate, v101, v102, v103, v104, v105);
               objc_msgSend_setInfosToDisplay_(v111, v112, v113, v114, v115, v116, 0);
             }
 
-            objc_msgSend_p_processWidowsAndInflationForLayoutController_(self, v101, v102, v103, v104, v105, v8);
+            objc_msgSend_p_processWidowsAndInflationForLayoutController_(self, v101, v102, v103, v104, v105, controllerCopy);
             objc_msgSend_p_didLayOut(self, v117, v118, v119, v120, v121);
-            v122 = v8;
+            v122 = controllerCopy;
             if (v122)
             {
               v128 = v122;
@@ -5084,10 +5084,10 @@ LABEL_51:
   }
 }
 
-- (void)p_layOutNextPageForLayoutController:(id)a3 dirtyRange:(id)a4
+- (void)p_layOutNextPageForLayoutController:(id)controller dirtyRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  rangeCopy = range;
   v8 = objc_autoreleasePoolPush();
   v14 = objc_msgSend_documentRoot(self, v9, v10, v11, v12, v13);
 
@@ -5162,7 +5162,7 @@ LABEL_51:
   v287[4] = self;
   v287[5] = &v295;
   v287[6] = &v288;
-  objc_msgSend_p_withPageLayoutAtIndex_preferredLayoutController_executeBlock_(self, v142, v141, v143, v144, v145, v140, v6, v287);
+  objc_msgSend_p_withPageLayoutAtIndex_preferredLayoutController_executeBlock_(self, v142, v141, v143, v144, v145, v140, controllerCopy, v287);
   if (*(v296 + 24) == 1)
   {
     v151 = v289[6];
@@ -5182,7 +5182,7 @@ LABEL_51:
     }
 
     v166 = TSWPParagraphEnumerator::paragraphTextRange(v285);
-    v172 = objc_msgSend_dirtyRangesIntersecting_(v7, v167, v168, v169, v170, v171, v166, v167);
+    v172 = objc_msgSend_dirtyRangesIntersecting_(rangeCopy, v167, v168, v169, v170, v171, v166, v167);
     if ((objc_msgSend_isEmpty(v172, v173, v174, v175, v176, v177) & 1) == 0)
     {
       *(v296 + 24) = 0;
@@ -5230,7 +5230,7 @@ LABEL_51:
     }
   }
 
-  objc_msgSend_p_syncFromNextPageWithDirtyRanges_pageTextRange_(self, v251, v252, v253, v254, v255, v7, v289 + 6);
+  objc_msgSend_p_syncFromNextPageWithDirtyRanges_pageTextRange_(self, v251, v252, v253, v254, v255, rangeCopy, v289 + 6);
 LABEL_24:
   objc_msgSend_p_removeFinishedPageGenerators(self, v251, v252, v253, v254, v255);
   if (!objc_msgSend_count(self->_pageGeneratorStack, v257, v258, v259, v260, v261))
@@ -5250,7 +5250,7 @@ LABEL_24:
 
     if (v279 == 1)
     {
-      objc_msgSend_p_syncFromNextPageWithDirtyRanges_pageTextRange_(self, v280, v281, v282, v283, v284, v7, v289 + 6);
+      objc_msgSend_p_syncFromNextPageWithDirtyRanges_pageTextRange_(self, v280, v281, v282, v283, v284, rangeCopy, v289 + 6);
     }
   }
 
@@ -5259,15 +5259,15 @@ LABEL_24:
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)p_layOutIntoPageLayout:(id)a3 outDidSync:(BOOL *)a4
+- (void)p_layOutIntoPageLayout:(id)layout outDidSync:(BOOL *)sync
 {
   v382 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  layoutCopy = layout;
   v374 = 0u;
   v375 = 0u;
   v376 = 0u;
   v377 = 0u;
-  v11 = objc_msgSend_childTextLayoutsForExteriorWrap(v6, v7, 0, v8, v9, v10);
+  v11 = objc_msgSend_childTextLayoutsForExteriorWrap(layoutCopy, v7, 0, v8, v9, v10);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, v13, v14, v15, v16, &v374, v381, 16);
   if (v18)
   {
@@ -5295,12 +5295,12 @@ LABEL_24:
   }
 
   v373 = 0x7FFFFFFFFFFFFFFFLL;
-  if (objc_msgSend_allowsBody(v6, v26, v27, v28, v29, v30))
+  if (objc_msgSend_allowsBody(layoutCopy, v26, v27, v28, v29, v30))
   {
-    objc_msgSend_p_layOutTextIntoPageLayout_didSync_initialFootnoteIndex_(self, v31, v32, v33, v34, v35, v6, a4, &v373);
-    objc_msgSend_layOutFlowsIfNeededOnPage_(self->_flowController, v36, v37, v38, v39, v40, v6);
+    objc_msgSend_p_layOutTextIntoPageLayout_didSync_initialFootnoteIndex_(self, v31, v32, v33, v34, v35, layoutCopy, sync, &v373);
+    objc_msgSend_layOutFlowsIfNeededOnPage_(self->_flowController, v36, v37, v38, v39, v40, layoutCopy);
     v46 = objc_msgSend_pageIndexPath(self->_paginationState, v41, v42, v43, v44, v45);
-    v52 = objc_msgSend_bodyLayout(v6, v47, v48, v49, v50, v51);
+    v52 = objc_msgSend_bodyLayout(layoutCopy, v47, v48, v49, v50, v51);
     objc_msgSend_p_updateTextHintAtPageIndexPath_withTarget_(self, v53, v54, v55, v56, v57, v46, v52);
 
     v63 = objc_msgSend_pageIndexPath(self->_paginationState, v58, v59, v60, v61, v62);
@@ -5311,7 +5311,7 @@ LABEL_24:
     goto LABEL_20;
   }
 
-  objc_msgSend_layOutFlowsIfNeededOnPage_(self->_flowController, v31, v32, v33, v34, v35, v6);
+  objc_msgSend_layOutFlowsIfNeededOnPage_(self->_flowController, v31, v32, v33, v34, v35, layoutCopy);
   v86 = objc_msgSend_pageIndexPath(self->_paginationState, v81, v82, v83, v84, v85);
   v69 = objc_msgSend_p_pageHintForPageIndexPath_(self, v87, v88, v89, v90, v91, v86);
 
@@ -5332,7 +5332,7 @@ LABEL_24:
   }
 
   v132 = objc_msgSend_pageIndexPath(self->_paginationState, v120, v121, v122, v123, v124);
-  objc_msgSend_p_updateNonTextHintAtPageIndexPath_pageLayout_(self, v133, v134, v135, v136, v137, v132, v6);
+  objc_msgSend_p_updateNonTextHintAtPageIndexPath_pageLayout_(self, v133, v134, v135, v136, v137, v132, layoutCopy);
 
   v143 = objc_msgSend_pageIndexPath(self->_paginationState, v138, v139, v140, v141, v142);
   if (objc_msgSend_pageIndex(v143, v144, v145, v146, v147, v148))
@@ -5361,7 +5361,7 @@ LABEL_24:
       if (objc_msgSend_pageKind(v344, v345, v346, v347, v348, v349) != 5)
       {
         v355 = objc_msgSend_range(v69, v350, v351, v352, v353, v354);
-        *a4 = &v360[v355] == objc_msgSend_range(v344, v360, v356, v357, v358, v359);
+        *sync = &v360[v355] == objc_msgSend_range(v344, v360, v356, v357, v358, v359);
       }
 
 LABEL_19:
@@ -5374,7 +5374,7 @@ LABEL_20:
   v372 = 0u;
   v369 = 0u;
   v370 = 0u;
-  v158 = objc_msgSend_childTextLayoutsForExteriorWrap(v6, v154, 0, v155, v156, v157);
+  v158 = objc_msgSend_childTextLayoutsForExteriorWrap(layoutCopy, v154, 0, v155, v156, v157);
   v165 = objc_msgSend_countByEnumeratingWithState_objects_count_(v158, v159, v160, v161, v162, v163, &v369, v380, 16);
   if (v165)
   {
@@ -5409,18 +5409,18 @@ LABEL_20:
     while (v165);
   }
 
-  if (objc_msgSend_allowsFootnotes(v6, v178, v179, v180, v181, v182))
+  if (objc_msgSend_allowsFootnotes(layoutCopy, v178, v179, v180, v181, v182))
   {
-    objc_msgSend_p_layOutFootnotesIntoPageLayout_(self, v183, v184, v185, v186, v187, v6);
+    objc_msgSend_p_layOutFootnotesIntoPageLayout_(self, v183, v184, v185, v186, v187, layoutCopy);
   }
 
-  else if (objc_msgSend_allowsBody(v6, v183, v184, v185, v186, v187))
+  else if (objc_msgSend_allowsBody(layoutCopy, v183, v184, v185, v186, v187))
   {
     v193 = objc_msgSend_pageIndexPath(self->_paginationState, v188, v189, v190, v191, v192);
     v199 = objc_msgSend_p_pageHintForPageIndexPath_(self, v194, v195, v196, v197, v198, v193);
 
     objc_msgSend_setFootnoteLayoutRange_(v199, v200, v201, v202, v203, v204, v373, 0);
-    v210 = objc_msgSend_footnoteContainerLayout(v6, v205, v206, v207, v208, v209);
+    v210 = objc_msgSend_footnoteContainerLayout(layoutCopy, v205, v206, v207, v208, v209);
     objc_msgSend_removeAllFootnoteLayouts(v210, v211, v212, v213, v214, v215);
   }
 
@@ -5444,7 +5444,7 @@ LABEL_20:
         }
 
         v236 = *(*(&v365 + 1) + 8 * k);
-        if (v236 != v6)
+        if (v236 != layoutCopy)
         {
           objc_msgSend_setNeedsInflation(v236, v228, v230, v231, v232, v233);
         }
@@ -5456,9 +5456,9 @@ LABEL_20:
     while (v229);
   }
 
-  if (objc_msgSend_allowsBody(v6, v237, v238, v239, v240, v241))
+  if (objc_msgSend_allowsBody(layoutCopy, v237, v238, v239, v240, v241))
   {
-    v247 = objc_msgSend_bodyLayout(v6, v242, v243, v244, v245, v246);
+    v247 = objc_msgSend_bodyLayout(layoutCopy, v242, v243, v244, v245, v246);
     v253 = objc_msgSend_needsInflation(v247, v248, v249, v250, v251, v252);
 
     if (v253)
@@ -5472,7 +5472,7 @@ LABEL_20:
     }
   }
 
-  self->_didLayOutPageIndex = objc_msgSend_pageIndex(v6, v242, v243, v244, v245, v246);
+  self->_didLayOutPageIndex = objc_msgSend_pageIndex(layoutCopy, v242, v243, v244, v245, v246);
   v361 = 0u;
   v362 = 0u;
   v363 = 0u;
@@ -5492,7 +5492,7 @@ LABEL_20:
         }
 
         v281 = TSUProtocolCast();
-        objc_msgSend_pageController_didLayOutPageLayout_(v281, v282, v283, v284, v285, v286, self, v6, &unk_288546998);
+        objc_msgSend_pageController_didLayOutPageLayout_(v281, v282, v283, v284, v285, v286, self, layoutCopy, &unk_288546998);
       }
 
       v278 = objc_msgSend_countByEnumeratingWithState_objects_count_(v272, v287, v288, v289, v290, v291, &v361, v378, 16);
@@ -5504,11 +5504,11 @@ LABEL_20:
   self->_didLayOutPageIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)p_layOutTextIntoPageLayout:(id)a3 didSync:(BOOL *)a4 initialFootnoteIndex:(unint64_t *)a5
+- (void)p_layOutTextIntoPageLayout:(id)layout didSync:(BOOL *)sync initialFootnoteIndex:(unint64_t *)index
 {
-  v7 = a3;
-  *a5 = objc_msgSend_footnoteIndex(self->_paginationState, v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_bodyLayout(v7, v13, v14, v15, v16, v17);
+  layoutCopy = layout;
+  *index = objc_msgSend_footnoteIndex(self->_paginationState, v8, v9, v10, v11, v12);
+  v18 = objc_msgSend_bodyLayout(layoutCopy, v13, v14, v15, v16, v17);
   v24 = objc_msgSend_documentRoot(self, v19, v20, v21, v22, v23);
   v341 = objc_msgSend_bodyStorage(v24, v25, v26, v27, v28, v29);
 
@@ -5527,7 +5527,7 @@ LABEL_20:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56, v57);
   }
 
-  v58 = objc_msgSend_pageIndex(v7, v35, v36, v37, v38, v39);
+  v58 = objc_msgSend_pageIndex(layoutCopy, v35, v36, v37, v38, v39);
   v340 = objc_msgSend_footnoteHeightMeasurer(v18, v59, v60, v61, v62, v63);
   if (!objc_msgSend_footnoteCount(v341, v64, v65, v66, v67, v68))
   {
@@ -5623,10 +5623,10 @@ LABEL_37:
 
   hasFacingPages = 1;
 LABEL_23:
-  objc_msgSend_setOverrideAllowFootnotes_(v7, v69, v70, v71, v72, v73, 0);
+  objc_msgSend_setOverrideAllowFootnotes_(layoutCopy, v69, v70, v71, v72, v73, 0);
   bodyLayoutManager = self->_bodyLayoutManager;
   v144 = objc_msgSend_bodyLayoutState(self->_paginationState, v139, v140, v141, v142, v143);
-  v150 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(bodyLayoutManager, v145, v146, v147, v148, v149, v18, v144, a4);
+  v150 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(bodyLayoutManager, v145, v146, v147, v148, v149, v18, v144, sync);
   objc_msgSend_setBodyLayoutState_(self->_paginationState, v151, v152, v153, v154, v155, v150);
   if (hasFacingPages && (v58 & 1) != 0 && objc_msgSend_hasFootnotes(v340, v156, v157, v158, v159, v160))
   {
@@ -5636,20 +5636,20 @@ LABEL_23:
     aBlock[3] = &unk_27A6A94C0;
     v337 = v18;
     v343 = v337;
-    v344 = self;
+    selfCopy = self;
     v161 = _Block_copy(aBlock);
     if ((v161[2])())
     {
       objc_msgSend_setFootnoteIndex_(self->_paginationState, v162, v163, v164, v165, v166, 0x7FFFFFFFFFFFFFFFLL);
       objc_msgSend_removeAllFootnoteReferenceStorages(v340, v167, v168, v169, v170, v171);
       objc_msgSend_resetFootnoteHeightMeasurer(v337, v172, v173, v174, v175, v176);
-      objc_msgSend_setOverrideAllowFootnotes_(v7, v177, v178, v179, v180, v181, 1);
+      objc_msgSend_setOverrideAllowFootnotes_(layoutCopy, v177, v178, v179, v180, v181, 1);
       objc_msgSend_p_destroyBodyLayoutState(self, v182, v183, v184, v185, v186);
       objc_msgSend_p_preparePaginationStateForNextPage(self, v187, v188, v189, v190, v191);
-      *a5 = objc_msgSend_footnoteIndex(self->_paginationState, v192, v193, v194, v195, v196);
+      *index = objc_msgSend_footnoteIndex(self->_paginationState, v192, v193, v194, v195, v196);
       v197 = self->_bodyLayoutManager;
       v203 = objc_msgSend_bodyLayoutState(self->_paginationState, v198, v199, v200, v201, v202);
-      v209 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(v197, v204, v205, v206, v207, v208, v337, v203, a4);
+      v209 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(v197, v204, v205, v206, v207, v208, v337, v203, sync);
       objc_msgSend_setBodyLayoutState_(self->_paginationState, v210, v211, v212, v213, v214, v209);
       if ((v161[2](v161) & 1) == 0)
       {
@@ -5669,13 +5669,13 @@ LABEL_23:
         objc_msgSend_setFootnoteIndex_(self->_paginationState, v238, v239, v240, v241, v242, 0x7FFFFFFFFFFFFFFFLL);
         objc_msgSend_removeAllFootnoteReferenceStorages(v340, v261, v262, v263, v264, v265);
         objc_msgSend_resetFootnoteHeightMeasurer(v337, v266, v267, v268, v269, v270);
-        objc_msgSend_setOverrideAllowFootnotes_(v7, v271, v272, v273, v274, v275, 0);
+        objc_msgSend_setOverrideAllowFootnotes_(layoutCopy, v271, v272, v273, v274, v275, 0);
         objc_msgSend_p_destroyBodyLayoutState(self, v276, v277, v278, v279, v280);
         objc_msgSend_p_preparePaginationStateForNextPage(self, v281, v282, v283, v284, v285);
-        *a5 = objc_msgSend_footnoteIndex(self->_paginationState, v286, v287, v288, v289, v290);
+        *index = objc_msgSend_footnoteIndex(self->_paginationState, v286, v287, v288, v289, v290);
         v291 = self->_bodyLayoutManager;
         v297 = objc_msgSend_bodyLayoutState(self->_paginationState, v292, v293, v294, v295, v296);
-        v303 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(v291, v298, v299, v300, v301, v302, v337, v297, a4);
+        v303 = objc_msgSend_layOutIntoTarget_withLayoutState_outSync_(v291, v298, v299, v300, v301, v302, v337, v297, sync);
         objc_msgSend_setBodyLayoutState_(self->_paginationState, v304, v305, v306, v307, v308, v303);
       }
     }
@@ -5684,9 +5684,9 @@ LABEL_23:
 LABEL_33:
 }
 
-- (void)p_layOutFootnotesIntoPageLayout:(id)a3
+- (void)p_layOutFootnotesIntoPageLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   ValidFootnoteIndex = objc_msgSend_p_lastValidFootnoteIndex(self, v5, v6, v7, v8, v9);
   if (objc_msgSend_footnoteIndex(self->_paginationState, v11, v12, v13, v14, v15) != ValidFootnoteIndex)
   {
@@ -5696,7 +5696,7 @@ LABEL_33:
   v21 = objc_msgSend_pageIndexPath(self->_paginationState, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_p_pageHintForPageIndexPath_(self, v22, v23, v24, v25, v26, v21);
 
-  v161 = v4;
+  v161 = layoutCopy;
   v34 = objc_msgSend_footnoteContainerLayout(v161, v28, v29, v30, v31, v32);
   if (!v34)
   {
@@ -5786,7 +5786,7 @@ LABEL_10:
   }
 }
 
-- (void)p_performPaginationResetAndMetricsReset:(BOOL)a3
+- (void)p_performPaginationResetAndMetricsReset:(BOOL)reset
 {
   objc_msgSend_p_setNeedsLayoutOnPageIndex_(self, a2, v3, v4, v5, v6, 0);
   objc_msgSend_removeAllSectionHints(self->_paginationState, v8, v9, v10, v11, v12);
@@ -5794,18 +5794,18 @@ LABEL_10:
   self->_completePageCount = 0;
 }
 
-- (void)p_removeDeletedFootnotesOnPageLayout:(id)a3
+- (void)p_removeDeletedFootnotesOnPageLayout:(id)layout
 {
   footnoteLayoutController = self->_footnoteLayoutController;
-  v13 = objc_msgSend_footnoteContainerLayout(a3, a2, v3, v4, v5, v6);
+  v13 = objc_msgSend_footnoteContainerLayout(layout, a2, v3, v4, v5, v6);
   objc_msgSend_removeDeletedFootnoteInContainer_(footnoteLayoutController, v8, v9, v10, v11, v12);
 }
 
-- (void)p_updateTextHintAtPageIndexPath:(id)a3 withTarget:(id)a4
+- (void)p_updateTextHintAtPageIndexPath:(id)path withTarget:(id)target
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  pathCopy = path;
+  targetCopy = target;
+  if (!targetCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPPaginatedPageController p_updateTextHintAtPageIndexPath:withTarget:]");
@@ -5815,7 +5815,7 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_p_pageHintForPageIndexPath_(self, v7, v9, v10, v11, v12, v6);
+  v31 = objc_msgSend_p_pageHintForPageIndexPath_(self, v7, v9, v10, v11, v12, pathCopy);
   if (objc_msgSend_pageKind(v31, v32, v33, v34, v35, v36) != 1)
   {
     v42 = MEMORY[0x277D81150];
@@ -5826,7 +5826,7 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v55, v56, v57, v58, v59);
   }
 
-  if (v8 && v31)
+  if (targetCopy && v31)
   {
     v60 = objc_opt_new();
     v270 = objc_opt_new();
@@ -5837,7 +5837,7 @@ LABEL_10:
     v275 = 0;
     bodyLayoutManager = self->_bodyLayoutManager;
     v72 = objc_msgSend_bodyLayoutState(self->_paginationState, v67, v68, v69, v70, v71);
-    objc_msgSend_deflateTarget_intoHints_childHints_anchoredDrawablePositions_startingPartitionedAttachments_topicNumberHints_layoutState_(bodyLayoutManager, v73, v74, v75, v76, v77, v8, v60, v271, &v276, &v275, &v274, v72);
+    objc_msgSend_deflateTarget_intoHints_childHints_anchoredDrawablePositions_startingPartitionedAttachments_topicNumberHints_layoutState_(bodyLayoutManager, v73, v74, v75, v76, v77, targetCopy, v60, v271, &v276, &v275, &v274, v72);
     if (!objc_msgSend_count(v60, v78, v79, v80, v81, v82))
     {
       v88 = MEMORY[0x277D81150];
@@ -5850,19 +5850,19 @@ LABEL_10:
 
     objc_msgSend_setHints_topicNumberHints_(v31, v83, v84, v85, v86, v87, v60, v274);
     flowController = self->_flowController;
-    v112 = objc_msgSend_pageLayout(v8, v107, v108, v109, v110, v111);
+    v112 = objc_msgSend_pageLayout(targetCopy, v107, v108, v109, v110, v111);
     objc_msgSend_deflatePage_intoHints_topicNumberHints_(flowController, v113, v114, v115, v116, v117, v112, v270, v269);
 
     objc_msgSend_setFlowHints_flowTopicNumberHints_(v31, v118, v119, v120, v121, v122, v270, v269);
     objc_msgSend_setChildHints_(v31, v123, v124, v125, v126, v127, v271);
     objc_msgSend_setAnchoredDrawablePositions_(v31, v128, v129, v130, v131, v132, v276);
     objc_msgSend_setStartingPartitionedAttachments_(v31, v133, v134, v135, v136, v137, v275);
-    v143 = objc_msgSend_info(v8, v138, v139, v140, v141, v142);
+    v143 = objc_msgSend_info(targetCopy, v138, v139, v140, v141, v142);
     v149 = objc_msgSend_bodyStorage(v143, v144, v145, v146, v147, v148);
     v155 = objc_msgSend_range(v31, v150, v151, v152, v153, v154);
     v161 = objc_msgSend_autoNumberFootnoteCountForRange_(v149, v156, v157, v158, v159, v160, v155, v156);
 
-    v167 = objc_msgSend_p_textPageHintPrecedingPageIndexPath_(self, v162, v163, v164, v165, v166, v6);
+    v167 = objc_msgSend_p_textPageHintPrecedingPageIndexPath_(self, v162, v163, v164, v165, v166, pathCopy);
     v173 = v167;
     if (v167)
     {
@@ -5875,7 +5875,7 @@ LABEL_10:
       objc_msgSend_setFootnoteAutoNumberRange_(v31, v168, v169, v170, v171, v172, 0, v161);
     }
 
-    v185 = objc_msgSend_pageLayout(v8, v180, v181, v182, v183, v184);
+    v185 = objc_msgSend_pageLayout(targetCopy, v180, v181, v182, v183, v184);
     v191 = objc_msgSend_overrideAllowFootnotes(v185, v186, v187, v188, v189, v190);
     objc_msgSend_setHasForcedFootnotes_(v31, v192, v193, v194, v195, v196, v191);
 
@@ -5901,7 +5901,7 @@ LABEL_10:
       v233 = objc_msgSend_footnoteAutoNumberRange(v31, v228, v229, v230, v231, v232);
       v235 = v234;
       v240 = objc_msgSend_sectionHints(self->_paginationState, v234, v236, v237, v238, v239);
-      sub_275FFD180(v272, v240, v6, 1);
+      sub_275FFD180(v272, v240, pathCopy, 1);
       v241 = &v235[v233];
 
       while (1)
@@ -5932,11 +5932,11 @@ LABEL_10:
   }
 }
 
-- (void)p_updateNonTextHintAtPageIndexPath:(id)a3 pageLayout:(id)a4
+- (void)p_updateNonTextHintAtPageIndexPath:(id)path pageLayout:(id)layout
 {
-  v6 = a3;
-  v169 = a4;
-  v12 = objc_msgSend_p_pageHintForPageIndexPath_(self, v7, v8, v9, v10, v11, v6);
+  pathCopy = path;
+  layoutCopy = layout;
+  v12 = objc_msgSend_p_pageHintForPageIndexPath_(self, v7, v8, v9, v10, v11, pathCopy);
   if (objc_msgSend_pageKind(v12, v13, v14, v15, v16, v17) == 1)
   {
     v23 = MEMORY[0x277D81150];
@@ -5947,7 +5947,7 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39, v40);
   }
 
-  v41 = objc_msgSend_p_pageHintPrecedingPageIndexPath_(self, v18, v19, v20, v21, v22, v6);
+  v41 = objc_msgSend_p_pageHintPrecedingPageIndexPath_(self, v18, v19, v20, v21, v22, pathCopy);
   v47 = v41;
   if (v41)
   {
@@ -6000,7 +6000,7 @@ LABEL_10:
 
   v136 = objc_opt_new();
   v137 = objc_opt_new();
-  objc_msgSend_deflatePage_intoHints_topicNumberHints_(self->_flowController, v138, v139, v140, v141, v142, v169, v136, v137);
+  objc_msgSend_deflatePage_intoHints_topicNumberHints_(self->_flowController, v138, v139, v140, v141, v142, layoutCopy, v136, v137);
   objc_msgSend_setFlowHints_flowTopicNumberHints_(v12, v143, v144, v145, v146, v147, v136, v137);
   objc_msgSend_setFootnoteAutoNumberRange_(v12, v148, v149, v150, v151, v152, v64, 0);
   objc_msgSend_setFootnoteLayoutRange_(v12, v153, v154, v155, v156, v157, v66, 0);
@@ -6221,16 +6221,16 @@ LABEL_23:
   objc_msgSend_tsu_push_(self->_pageGeneratorStack, v45, v46, v47, v48, v49, v50);
 }
 
-- (void)p_syncFromNextPageWithDirtyRanges:(id)a3 pageTextRange:(const _NSRange *)a4
+- (void)p_syncFromNextPageWithDirtyRanges:(id)ranges pageTextRange:(const _NSRange *)range
 {
   v616 = *MEMORY[0x277D85DE8];
-  v593 = a3;
-  v602 = self;
+  rangesCopy = ranges;
+  selfCopy = self;
   v11 = objc_msgSend_documentRoot(self, v6, v7, v8, v9, v10);
   v17 = objc_msgSend_settings(v11, v12, v13, v14, v15, v16);
   if (objc_msgSend_hasBody(v17, v18, v19, v20, v21, v22))
   {
-    v28 = objc_msgSend_pageIndex(v602->_paginationState, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_pageIndex(selfCopy->_paginationState, v23, v24, v25, v26, v27);
 
     if (!v28)
     {
@@ -6247,32 +6247,32 @@ LABEL_23:
   {
   }
 
-  v601 = objc_msgSend_dirtyRangesIntersecting_(v593, v29, v30, v31, v32, v33, 0, a4->length + a4->location);
-  v591 = objc_msgSend_mutableCopy(v593, v52, v53, v54, v55, v56);
+  v601 = objc_msgSend_dirtyRangesIntersecting_(rangesCopy, v29, v30, v31, v32, v33, 0, range->length + range->location);
+  v591 = objc_msgSend_mutableCopy(rangesCopy, v52, v53, v54, v55, v56);
   objc_msgSend_subtract_(v591, v57, v58, v59, v60, v61, v601);
   v67 = objc_msgSend_superRange(v591, v62, v63, v64, v65, v66);
   v596 = v68;
   v597 = v67;
-  v595 = objc_msgSend_sectionHint(v602->_paginationState, v68, v69, v70, v71, v72);
-  v592 = objc_msgSend_documentPageIndex(v602->_paginationState, v73, v74, v75, v76, v77);
+  v595 = objc_msgSend_sectionHint(selfCopy->_paginationState, v68, v69, v70, v71, v72);
+  v592 = objc_msgSend_documentPageIndex(selfCopy->_paginationState, v73, v74, v75, v76, v77);
   v594 = objc_msgSend_pageCount(v595, v78, v79, v80, v81, v82);
-  v598 = objc_msgSend_p_lastValidPageHint(v602, v83, v84, v85, v86, v87);
-  v93 = objc_msgSend_documentRoot(v602, v88, v89, v90, v91, v92);
+  v598 = objc_msgSend_p_lastValidPageHint(selfCopy, v83, v84, v85, v86, v87);
+  v93 = objc_msgSend_documentRoot(selfCopy, v88, v89, v90, v91, v92);
   v99 = objc_msgSend_bodyStorage(v93, v94, v95, v96, v97, v98);
-  v105 = objc_msgSend_sectionIndex(v602->_paginationState, v100, v101, v102, v103, v104);
+  v105 = objc_msgSend_sectionIndex(selfCopy->_paginationState, v100, v101, v102, v103, v104);
   v111 = objc_msgSend_sectionAtSectionIndex_effectiveRange_(v99, v106, v107, v108, v109, v110, v105, &v612);
 
   v112 = objc_opt_new();
-  LaidOutDocumentPageIndex = objc_msgSend_lastLaidOutDocumentPageIndex(v602->_paginationState, v113, v114, v115, v116, v117);
-  v603 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(v602, v119, v120, v121, v122, v123, LaidOutDocumentPageIndex, 0, 0);
-  v129 = objc_msgSend_documentRoot(v602, v124, v125, v126, v127, v128);
+  LaidOutDocumentPageIndex = objc_msgSend_lastLaidOutDocumentPageIndex(selfCopy->_paginationState, v113, v114, v115, v116, v117);
+  v603 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(selfCopy, v119, v120, v121, v122, v123, LaidOutDocumentPageIndex, 0, 0);
+  v129 = objc_msgSend_documentRoot(selfCopy, v124, v125, v126, v127, v128);
   v135 = objc_msgSend_flowInfoContainer(v129, v130, v131, v132, v133, v134);
   v141 = objc_msgSend_flowInfos(v135, v136, v137, v138, v139, v140);
   v599 = objc_msgSend_count(v141, v142, v143, v144, v145, v146);
 
   do
   {
-    v600 = objc_msgSend_p_pageHintForPageIndexPath_(v602, v147, v148, v149, v150, v151, v603);
+    v600 = objc_msgSend_p_pageHintForPageIndexPath_(selfCopy, v147, v148, v149, v150, v151, v603);
     v157 = objc_msgSend_flowHints(v600, v152, v153, v154, v155, v156);
     v610 = 0u;
     v611 = 0u;
@@ -6319,7 +6319,7 @@ LABEL_23:
       {
         v222 = objc_msgSend_sectionIndex(v603, v217, v218, v219, v220, v221);
         objc_msgSend_setSectionIndex_(v603, v223, v224, v225, v226, v227, v222 - 1);
-        v233 = objc_msgSend_sectionHints(v602->_paginationState, v228, v229, v230, v231, v232);
+        v233 = objc_msgSend_sectionHints(selfCopy->_paginationState, v228, v229, v230, v231, v232);
         v239 = objc_msgSend_sectionIndex(v603, v234, v235, v236, v237, v238);
         v245 = objc_msgSend_objectAtIndexedSubscript_(v233, v240, v241, v242, v243, v244, v239);
         v251 = objc_msgSend_pageCount(v245, v246, v247, v248, v249, v250);
@@ -6358,26 +6358,26 @@ LABEL_24:
   }
 
   while ((v257 & 1) != 0);
-  v258 = objc_msgSend_documentRoot(v602, v147, v148, v149, v150, v151);
+  v258 = objc_msgSend_documentRoot(selfCopy, v147, v148, v149, v150, v151);
   v264 = objc_msgSend_settings(v258, v259, v260, v261, v262, v263);
   hasBody = objc_msgSend_hasBody(v264, v265, v266, v267, v268, v269);
 
   if (hasBody)
   {
     v276 = 0;
-    while (objc_msgSend_pageIndex(v602->_paginationState, v271, v272, v273, v274, v275) < v594)
+    while (objc_msgSend_pageIndex(selfCopy->_paginationState, v271, v272, v273, v274, v275) < v594)
     {
-      v282 = objc_msgSend_bodyCharIndex(v602->_paginationState, v277, v278, v279, v280, v281);
+      v282 = objc_msgSend_bodyCharIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281);
       if (v282 >= v613 + v612)
       {
-        v283 = objc_msgSend_bodyCharIndex(v602->_paginationState, v277, v278, v279, v280, v281);
+        v283 = objc_msgSend_bodyCharIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281);
         if (v283 != v613 + v612)
         {
           break;
         }
 
-        v284 = objc_msgSend_bodyCharIndex(v602->_paginationState, v277, v278, v279, v280, v281);
-        v290 = objc_msgSend_documentRoot(v602, v285, v286, v287, v288, v289);
+        v284 = objc_msgSend_bodyCharIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281);
+        v290 = objc_msgSend_documentRoot(selfCopy, v285, v286, v287, v288, v289);
         v296 = objc_msgSend_bodyStorage(v290, v291, v292, v293, v294, v295);
         LODWORD(v284) = v284 == objc_msgSend_length(v296, v297, v298, v299, v300, v301);
 
@@ -6387,7 +6387,7 @@ LABEL_24:
         }
       }
 
-      v302 = objc_msgSend_pageIndex(v602->_paginationState, v277, v278, v279, v280, v281);
+      v302 = objc_msgSend_pageIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281);
       v309 = objc_msgSend_pageHintForPageIndex_(v595, v303, v304, v305, v306, v307, v302);
       if (!v309)
       {
@@ -6401,9 +6401,9 @@ LABEL_24:
 
       if (objc_msgSend_pageKind(v309, v308, v310, v311, v312, v313) == 3)
       {
-        v337 = objc_msgSend_documentRoot(v602, v332, v333, v334, v335, v336);
+        v337 = objc_msgSend_documentRoot(selfCopy, v332, v333, v334, v335, v336);
         v343 = objc_msgSend_floatingDrawables(v337, v338, v339, v340, v341, v342);
-        v349 = objc_msgSend_pageIndex(v602->_paginationState, v344, v345, v346, v347, v348);
+        v349 = objc_msgSend_pageIndex(selfCopy->_paginationState, v344, v345, v346, v347, v348);
         v355 = objc_msgSend_drawablesOnPageIndex_(v343, v350, v351, v352, v353, v354, v349);
         v361 = objc_msgSend_count(v355, v356, v357, v358, v359, v360) != 0;
       }
@@ -6415,7 +6415,7 @@ LABEL_24:
 
       if (objc_msgSend_pageKind(v309, v332, v333, v334, v335, v336) == 1)
       {
-        if (!(v361 | ((objc_msgSend_p_isBodyLayoutComplete(v602, v362, v363, v364, v365, v366) & 1) == 0)))
+        if (!(v361 | ((objc_msgSend_p_isBodyLayoutComplete(selfCopy, v362, v363, v364, v365, v366) & 1) == 0)))
         {
           goto LABEL_62;
         }
@@ -6442,7 +6442,7 @@ LABEL_24:
         goto LABEL_62;
       }
 
-      v374 = objc_msgSend_documentRoot(v602, 0, v370, v371, v372, v373);
+      v374 = objc_msgSend_documentRoot(selfCopy, 0, v370, v371, v372, v373);
       v380 = objc_msgSend_bodyStorage(v374, v375, v376, v377, v378, v379);
       v386 = objc_msgSend_syncsWithEndOfPageHint_bodyStorage_flowRanges_(v309, v381, v382, v383, v384, v385, v598, v380, v112);
 
@@ -6451,12 +6451,12 @@ LABEL_24:
         goto LABEL_62;
       }
 
-      objc_msgSend_advancePageIndex(v602->_paginationState, v387, v388, v389, v390, v391);
+      objc_msgSend_advancePageIndex(selfCopy->_paginationState, v387, v388, v389, v390, v391);
       v397 = objc_msgSend_range(v309, v392, v393, v394, v395, v396);
-      objc_msgSend_setBodyCharIndex_(v602->_paginationState, v398, v399, v400, v401, v402, &v398[v397]);
+      objc_msgSend_setBodyCharIndex_(selfCopy->_paginationState, v398, v399, v400, v401, v402, &v398[v397]);
       v408 = objc_msgSend_footnoteLayoutRange(v309, v403, v404, v405, v406, v407);
-      objc_msgSend_setFootnoteIndex_(v602->_paginationState, v409, v410, v411, v412, v413, &v409[v408]);
-      objc_msgSend_p_notifyObserversDidLayoutWhileSyncing_(v602, v414, v415, v416, v417, v418, 1);
+      objc_msgSend_setFootnoteIndex_(selfCopy->_paginationState, v409, v410, v411, v412, v413, &v409[v408]);
+      objc_msgSend_p_notifyObserversDidLayoutWhileSyncing_(selfCopy, v414, v415, v416, v417, v418, 1);
       v419 = v309;
 
       if (objc_msgSend_pageKind(v419, v420, v421, v422, v423, v424) == 1)
@@ -6472,18 +6472,18 @@ LABEL_24:
 
   else
   {
-    v309 = objc_msgSend_sectionHints(v602->_paginationState, v271, v272, v273, v274, v275);
+    v309 = objc_msgSend_sectionHints(selfCopy->_paginationState, v271, v272, v273, v274, v275);
     v431 = objc_msgSend_count(v309, v426, v427, v428, v429, v430);
     while (1)
     {
 
-      if (objc_msgSend_sectionIndex(v602->_paginationState, v432, v433, v434, v435, v436) >= v431 || objc_msgSend_pageIndex(v602->_paginationState, v277, v278, v279, v280, v281))
+      if (objc_msgSend_sectionIndex(selfCopy->_paginationState, v432, v433, v434, v435, v436) >= v431 || objc_msgSend_pageIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281))
       {
         v276 = 0;
         goto LABEL_63;
       }
 
-      v309 = objc_msgSend_sectionHint(v602->_paginationState, v277, v278, v279, v280, v281);
+      v309 = objc_msgSend_sectionHint(selfCopy->_paginationState, v277, v278, v279, v280, v281);
       if (!objc_msgSend_pageCount(v309, v437, v438, v439, v440, v441))
       {
         break;
@@ -6496,13 +6496,13 @@ LABEL_24:
         goto LABEL_61;
       }
 
-      objc_msgSend_advancePageIndex(v602->_paginationState, v465, v466, v467, v468, v469);
-      objc_msgSend_advanceSectionIndex(v602->_paginationState, v470, v471, v472, v473, v474);
+      objc_msgSend_advancePageIndex(selfCopy->_paginationState, v465, v466, v467, v468, v469);
+      objc_msgSend_advanceSectionIndex(selfCopy->_paginationState, v470, v471, v472, v473, v474);
       v480 = objc_msgSend_range(v447, v475, v476, v477, v478, v479);
-      objc_msgSend_setBodyCharIndex_(v602->_paginationState, v481, v482, v483, v484, v485, &v481[v480]);
+      objc_msgSend_setBodyCharIndex_(selfCopy->_paginationState, v481, v482, v483, v484, v485, &v481[v480]);
       v491 = objc_msgSend_footnoteLayoutRange(v447, v486, v487, v488, v489, v490);
-      objc_msgSend_setFootnoteIndex_(v602->_paginationState, v492, v493, v494, v495, v496, &v492[v491]);
-      objc_msgSend_p_notifyObserversDidLayoutWhileSyncing_(v602, v497, v498, v499, v500, v501, 1);
+      objc_msgSend_setFootnoteIndex_(selfCopy->_paginationState, v492, v493, v494, v495, v496, &v492[v491]);
+      objc_msgSend_p_notifyObserversDidLayoutWhileSyncing_(selfCopy, v497, v498, v499, v500, v501, 1);
 
       v598 = v447;
     }
@@ -6519,8 +6519,8 @@ LABEL_62:
   }
 
 LABEL_63:
-  v520 = objc_msgSend_documentPageIndex(v602->_paginationState, v277, v278, v279, v280, v281);
-  objc_msgSend_pageLayoutsInRange_(v602->_pageLayoutCache, v521, v522, v523, v524, v525, v592, v520 - v592);
+  v520 = objc_msgSend_documentPageIndex(selfCopy->_paginationState, v277, v278, v279, v280, v281);
+  objc_msgSend_pageLayoutsInRange_(selfCopy->_pageLayoutCache, v521, v522, v523, v524, v525, v592, v520 - v592);
   v606 = 0u;
   v607 = 0u;
   v604 = 0u;
@@ -6552,18 +6552,18 @@ LABEL_63:
     while (v533);
   }
 
-  if (objc_msgSend_documentPageIndex(v602->_paginationState, v552, v553, v554, v555, v556) > v592)
+  if (objc_msgSend_documentPageIndex(selfCopy->_paginationState, v552, v553, v554, v555, v556) > v592)
   {
-    objc_msgSend_p_destroyBodyLayoutState(v602, v557, v558, v559, v560, v561);
+    objc_msgSend_p_destroyBodyLayoutState(selfCopy, v557, v558, v559, v560, v561);
     if (v276)
     {
-      if (v602->_currentPageBeingLaidOut != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_documentPageIndex(v602->_paginationState, v562, v563, v564, v565, v566) == v602->_currentPageBeingLaidOut)
+      if (selfCopy->_currentPageBeingLaidOut != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_documentPageIndex(selfCopy->_paginationState, v562, v563, v564, v565, v566) == selfCopy->_currentPageBeingLaidOut)
       {
-        bodyLayoutManager = v602->_bodyLayoutManager;
+        bodyLayoutManager = selfCopy->_bodyLayoutManager;
         v573 = objc_msgSend_lastHint(v276, v567, v568, v569, v570, v571);
         v579 = objc_msgSend_lastChildHint(v276, v574, v575, v576, v577, v578);
         Target_childHint = objc_msgSend_layoutStateForLayoutAfterHint_firstTarget_childHint_(bodyLayoutManager, v580, v581, v582, v583, v584, v573, 0, v579);
-        objc_msgSend_setBodyLayoutState_(v602->_paginationState, v586, v587, v588, v589, v590, Target_childHint);
+        objc_msgSend_setBodyLayoutState_(selfCopy->_paginationState, v586, v587, v588, v589, v590, Target_childHint);
       }
     }
   }
@@ -6726,9 +6726,9 @@ LABEL_63:
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v2, v3, v4, v5, v6);
 }
 
-- (id)p_pageHintForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (id)p_pageHintForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
-  v12 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, a3, a4);
+  v12 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, index, pagination);
   if (v12)
   {
     v17 = objc_msgSend_sectionHints(self->_paginationState, v11, v13, v14, v15, v16);
@@ -6738,7 +6738,7 @@ LABEL_63:
     v35 = objc_msgSend_pageIndex(v12, v30, v31, v32, v33, v34);
     v41 = objc_msgSend_pageHintForPageIndex_(v29, v36, v37, v38, v39, v40, v35);
     v47 = v41;
-    if (!a5 && objc_msgSend_pageKind(v41, v42, v43, v44, v45, v46) == 5)
+    if (!point && objc_msgSend_pageKind(v41, v42, v43, v44, v45, v46) == 5)
     {
       v53 = MEMORY[0x277D81150];
       v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v48, v49, v50, v51, v52, "[TPPaginatedPageController p_pageHintForPageIndex:forcePagination:allowAfterPaginationPoint:]");
@@ -6757,9 +6757,9 @@ LABEL_63:
   return v47;
 }
 
-- (id)p_sectionHintForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (id)p_sectionHintForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
-  v11 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, a3, a4, a5);
+  v11 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v5, v6, v7, v8, index, pagination, point);
   if (v11)
   {
     v16 = objc_msgSend_sectionHints(self->_paginationState, v10, v12, v13, v14, v15);
@@ -6775,11 +6775,11 @@ LABEL_63:
   return v28;
 }
 
-- (id)p_pageHintForPageIndexPath:(id)a3
+- (id)p_pageHintForPageIndexPath:(id)path
 {
-  v4 = a3;
-  v10 = objc_msgSend_sectionIndex(v4, v5, v6, v7, v8, v9);
-  v161 = objc_msgSend_pageIndex(v4, v11, v12, v13, v14, v15);
+  pathCopy = path;
+  v10 = objc_msgSend_sectionIndex(pathCopy, v5, v6, v7, v8, v9);
+  v161 = objc_msgSend_pageIndex(pathCopy, v11, v12, v13, v14, v15);
   v21 = objc_msgSend_sectionHints(self->_paginationState, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_count(v21, v22, v23, v24, v25, v26);
 
@@ -6787,7 +6787,7 @@ LABEL_63:
   {
     v33 = MEMORY[0x277D81150];
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, v29, v30, v31, v32, "[TPPaginatedPageController p_pageHintForPageIndexPath:]");
-    v159 = v4;
+    v159 = pathCopy;
     v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, v36, v37, v38, v39, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
     v46 = objc_msgSend_sectionHints(self->_paginationState, v41, v42, v43, v44, v45);
     v52 = objc_msgSend_count(v46, v47, v48, v49, v50, v51);
@@ -6796,7 +6796,7 @@ LABEL_63:
     hasBody = objc_msgSend_hasBody(v64, v65, v66, v67, v68, v69);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v71, v72, v73, v74, v75, v34, v40, 5305, 0, "No section hint for this section index (%lu/%lu) hasBody: %d", v10, v52, hasBody);
 
-    v4 = v159;
+    pathCopy = v159;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v76, v77, v78, v79, v80);
   }
 
@@ -6817,7 +6817,7 @@ LABEL_63:
     {
       v110 = MEMORY[0x277D81150];
       v111 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v105, v106, v107, v108, v109, "[TPPaginatedPageController p_pageHintForPageIndexPath:]");
-      v160 = v4;
+      v160 = pathCopy;
       v117 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v112, v113, v114, v115, v116, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPaginatedPageController.mm");
       v123 = objc_msgSend_pageCount(v99, v118, v119, v120, v121, v122);
       v129 = objc_msgSend_documentRoot(self, v124, v125, v126, v127, v128);
@@ -6825,7 +6825,7 @@ LABEL_63:
       v141 = objc_msgSend_hasBody(v135, v136, v137, v138, v139, v140);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v110, v142, v143, v144, v145, v146, v111, v117, 5308, 0, "No page hint for this page index (%lu/%lu), section: %lu hasBody: %d", v161, v123, v10, v141);
 
-      v4 = v160;
+      pathCopy = v160;
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v147, v148, v149, v150, v151);
     }
 
@@ -6843,11 +6843,11 @@ LABEL_63:
   return v157;
 }
 
-- (id)p_pageHintPrecedingPageIndexPath:(id)a3
+- (id)p_pageHintPrecedingPageIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10 = objc_msgSend_sectionHints(self->_paginationState, v5, v6, v7, v8, v9);
-  sub_275FFD180(v18, v10, v4, -1);
+  sub_275FFD180(v18, v10, pathCopy, -1);
 
   v16 = sub_275FFD320(v18, v11, v12, v13, v14, v15);
   sub_275FFD2D0(v18);
@@ -6855,11 +6855,11 @@ LABEL_63:
   return v16;
 }
 
-- (id)p_textPageHintPrecedingPageIndexPath:(id)a3
+- (id)p_textPageHintPrecedingPageIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10 = objc_msgSend_sectionHints(self->_paginationState, v5, v6, v7, v8, v9);
-  sub_275FFD180(v28, v10, v4, -1);
+  sub_275FFD180(v28, v10, pathCopy, -1);
 
   while (1)
   {
@@ -6884,11 +6884,11 @@ LABEL_63:
   return v16;
 }
 
-- (id)p_textPageHintFollowingPageIndexPath:(id)a3
+- (id)p_textPageHintFollowingPageIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10 = objc_msgSend_sectionHints(self->_paginationState, v5, v6, v7, v8, v9);
-  sub_275FFD180(v28, v10, v4, 1);
+  sub_275FFD180(v28, v10, pathCopy, 1);
 
   while (1)
   {
@@ -6920,11 +6920,11 @@ LABEL_63:
   return objc_msgSend_p_pageHintForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v7, v9, v10, v11, v12, LaidOutDocumentPageIndex, 0, 0);
 }
 
-- (id)p_lastValidTextPageHint:(unint64_t *)a3
+- (id)p_lastValidTextPageHint:(unint64_t *)hint
 {
-  *a3 = objc_msgSend_documentPageIndex(self->_paginationState, a2, v3, v4, v5, v6);
+  *hint = objc_msgSend_documentPageIndex(self->_paginationState, a2, v3, v4, v5, v6);
 
-  return objc_msgSend_i_textPageHintPrecedingPageIndex_(self, v9, v10, v11, v12, v13, a3);
+  return objc_msgSend_i_textPageHintPrecedingPageIndex_(self, v9, v10, v11, v12, v13, hint);
 }
 
 - (unint64_t)p_lastValidTextPageIndex
@@ -6934,12 +6934,12 @@ LABEL_63:
   return objc_msgSend_p_textPageIndexPrecedingPageIndex_(self, v7, v9, v10, v11, v12, v8);
 }
 
-- (unint64_t)p_textPageIndexPrecedingPageIndex:(unint64_t)a3
+- (unint64_t)p_textPageIndexPrecedingPageIndex:(unint64_t)index
 {
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (index)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPaginatedPageController p_textPageIndexPrecedingPageIndex:]");
@@ -6950,7 +6950,7 @@ LABEL_63:
     }
 
     v28 = objc_msgSend_sectionHints(self->_paginationState, a2, v3, v4, v5, v6);
-    sub_275FFD28C(v51, v28, a3 - 1);
+    sub_275FFD28C(v51, v28, index - 1);
 
     while (1)
     {
@@ -6978,21 +6978,21 @@ LABEL_11:
   return v7;
 }
 
-- (void)performBlockForExport:(id)a3
+- (void)performBlockForExport:(id)export
 {
-  v28 = a3;
+  exportCopy = export;
   offscreenSearchDelegate = self->_offscreenSearchDelegate;
   MustIncludeAdornmentsCounter = objc_msgSend_textLayoutMustIncludeAdornmentsCounter(offscreenSearchDelegate, v5, v6, v7, v8, v9);
   objc_msgSend_setTextLayoutMustIncludeAdornmentsCounter_(offscreenSearchDelegate, v11, v12, v13, v14, v15, MustIncludeAdornmentsCounter + 1);
-  v28[2]();
+  exportCopy[2]();
   v16 = self->_offscreenSearchDelegate;
   v22 = objc_msgSend_textLayoutMustIncludeAdornmentsCounter(v16, v17, v18, v19, v20, v21);
   objc_msgSend_setTextLayoutMustIncludeAdornmentsCounter_(v16, v23, v24, v25, v26, v27, v22 - 1);
 }
 
-- (void)p_notifyObserversDidLayoutWhileSyncing:(BOOL)a3
+- (void)p_notifyObserversDidLayoutWhileSyncing:(BOOL)syncing
 {
-  v7 = a3;
+  syncingCopy = syncing;
   v36 = *MEMORY[0x277D85DE8];
   LaidOutDocumentPageIndex = objc_msgSend_lastLaidOutDocumentPageIndex(self->_paginationState, a2, v3, v4, v5, v6);
   LaidOutSectionIndex = objc_msgSend_lastLaidOutSectionIndex(self->_paginationState, v10, v11, v12, v13, v14);
@@ -7018,7 +7018,7 @@ LABEL_11:
         v25 = *(*(&v31 + 1) + 8 * v24);
         if (objc_opt_respondsToSelector())
         {
-          objc_msgSend_pageController_didLayOutPageAtIndex_sectionIndex_syncing_(v25, v26, v27, v28, v29, v30, self, LaidOutDocumentPageIndex, LaidOutSectionIndex, v7, v31);
+          objc_msgSend_pageController_didLayOutPageAtIndex_sectionIndex_syncing_(v25, v26, v27, v28, v29, v30, self, LaidOutDocumentPageIndex, LaidOutSectionIndex, syncingCopy, v31);
         }
 
         ++v24;
@@ -7101,12 +7101,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)p_invalidateThumbnailsFromSectionToEnd:(id)a3
+- (void)p_invalidateThumbnailsFromSectionToEnd:(id)end
 {
-  v27 = a3;
+  endCopy = end;
   v9 = objc_msgSend_documentRoot(self, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_bodyStorage(v9, v10, v11, v12, v13, v14);
-  v21 = objc_msgSend_sectionIndexForSection_(v15, v16, v17, v18, v19, v20, v27);
+  v21 = objc_msgSend_sectionIndexForSection_(v15, v16, v17, v18, v19, v20, endCopy);
 
   if (v21 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -7119,15 +7119,15 @@ LABEL_11:
   }
 }
 
-- (void)p_invalidateThumbnailsFromSectionIndexToEnd:(unint64_t)a3
+- (void)p_invalidateThumbnailsFromSectionIndexToEnd:(unint64_t)end
 {
   v9 = objc_msgSend_sectionHints(self->_paginationState, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_count(v9, v10, v11, v12, v13, v14);
 
-  if (v15 > a3)
+  if (v15 > end)
   {
     v21 = objc_msgSend_sectionHints(self->_paginationState, v16, v17, v18, v19, v20);
-    v41 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, v23, v24, v25, v26, a3);
+    v41 = objc_msgSend_objectAtIndexedSubscript_(v21, v22, v23, v24, v25, v26, end);
 
     v32 = objc_msgSend_documentPageRange(v41, v27, v28, v29, v30, v31);
     v38 = v32;
@@ -7153,12 +7153,12 @@ LABEL_11:
   }
 }
 
-- (void)p_invalidateThumbnailForPageIndex:(unint64_t)a3
+- (void)p_invalidateThumbnailForPageIndex:(unint64_t)index
 {
   v47 = *MEMORY[0x277D85DE8];
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
-  objc_msgSend_invalidateThumbnailForPageIndex_(v9, v10, v11, v12, v13, v14, a3);
-  v20 = objc_msgSend_thumbnailIdentifierForPageIndex_(v9, v15, v16, v17, v18, v19, a3);
+  objc_msgSend_invalidateThumbnailForPageIndex_(v9, v10, v11, v12, v13, v14, index);
+  v20 = objc_msgSend_thumbnailIdentifierForPageIndex_(v9, v15, v16, v17, v18, v19, index);
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -7192,9 +7192,9 @@ LABEL_11:
   }
 }
 
-- (id)i_pageHintForPageIndex:(unint64_t)a3
+- (id)i_pageHintForPageIndex:(unint64_t)index
 {
-  v9 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v3, v4, v5, v6, a3, 0, 0);
+  v9 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, a2, v3, v4, v5, v6, index, 0, 0);
   if (v9)
   {
     v14 = objc_msgSend_p_pageHintForPageIndexPath_(self, v8, v10, v11, v12, v13, v9);
@@ -7208,14 +7208,14 @@ LABEL_11:
   return v14;
 }
 
-- (id)i_pageIndexPathForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4 allowAfterPaginationPoint:(BOOL)a5
+- (id)i_pageIndexPathForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination allowAfterPaginationPoint:(BOOL)point
 {
-  if (a4)
+  if (pagination)
   {
-    objc_msgSend_p_paginateThroughPageIndex_forLayoutController_clearOffscreenInfos_(self, a2, v5, v6, v7, v8, a3, 0, 0);
+    objc_msgSend_p_paginateThroughPageIndex_forLayoutController_clearOffscreenInfos_(self, a2, v5, v6, v7, v8, index, 0, 0);
   }
 
-  if (a5 || objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, a2, v5, v6, v7, v8, a3))
+  if (point || objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, a2, v5, v6, v7, v8, index))
   {
     v12 = objc_msgSend_sectionHints(self->_paginationState, a2, v5, v6, v7, v8);
     v19 = objc_msgSend_count(v12, v13, v14, v15, v16, v17);
@@ -7227,7 +7227,7 @@ LABEL_11:
       {
         v26 = objc_msgSend_objectAtIndexedSubscript_(v12, v18, v20, v21, v22, v23, v24);
         v32 = objc_msgSend_pageCount(v26, v27, v28, v29, v30, v31) + v25;
-        if (v32 > a3)
+        if (v32 > index)
         {
           break;
         }
@@ -7241,7 +7241,7 @@ LABEL_11:
       }
 
       v34 = [TPPageIndexPath alloc];
-      v33 = objc_msgSend_initWithSectionIndex_pageIndex_(v34, v35, v36, v37, v38, v39, v24, a3 - v25);
+      v33 = objc_msgSend_initWithSectionIndex_pageIndex_(v34, v35, v36, v37, v38, v39, v24, index - v25);
     }
 
     else
@@ -7259,7 +7259,7 @@ LABEL_9:
   return v33;
 }
 
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount
 {
   if ((objc_msgSend_isPaginationCompleteThroughDocumentPageIndex_(self->_paginationState, a2, v6, v7, v8, v9) & 1) == 0)
   {
@@ -7271,7 +7271,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35, v36);
   }
 
-  if (objc_msgSend_lastLaidOutDocumentPageIndex(self->_paginationState, v15, v16, v17, v18, v19) != a3)
+  if (objc_msgSend_lastLaidOutDocumentPageIndex(self->_paginationState, v15, v16, v17, v18, v19) != index)
   {
     v42 = MEMORY[0x277D81150];
     v169 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, v38, v39, v40, v41, "[TPPaginatedPageController i_trimPageAtIndex:toCharIndex:removeFootnoteReferenceCount:removeAutoNumberFootnoteCount:]");
@@ -7281,7 +7281,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57, v58);
   }
 
-  v59 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v37, v38, v39, v40, v41, a3, 0, 0);
+  v59 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v37, v38, v39, v40, v41, index, 0, 0);
   v170 = v59;
   if (v59)
   {
@@ -7304,12 +7304,12 @@ LABEL_9:
     v118 = v112;
     if ((v106 - 1) >= 2)
     {
-      objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v112, v113, v114, v115, v116, v117, a4, 0, a5, a6);
+      objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v112, v113, v114, v115, v116, v117, charIndex, 0, count, footnoteCount);
     }
 
     else
     {
-      objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v112, v113, v114, v115, v116, v117, a4, 0, 0, a6);
+      objc_msgSend_trimToCharIndex_inTarget_removeFootnoteReferenceCount_removeAutoNumberFootnoteCount_(v112, v113, v114, v115, v116, v117, charIndex, 0, 0, footnoteCount);
     }
 
     objc_msgSend_footnoteLayoutRange(v65, v119, v120, v121, v122, v123);
@@ -7356,7 +7356,7 @@ LABEL_9:
   }
 }
 
-- (id)i_columnPriorToPageIndex:(unint64_t)a3
+- (id)i_columnPriorToPageIndex:(unint64_t)index
 {
   if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, a2, v3, v4, v5, v6) & 1) == 0)
   {
@@ -7368,7 +7368,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30, v31);
   }
 
-  v32 = objc_msgSend_p_textPageIndexPrecedingPageIndex_(self, v9, v10, v11, v12, v13, a3);
+  v32 = objc_msgSend_p_textPageIndexPrecedingPageIndex_(self, v9, v10, v11, v12, v13, index);
   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v38 = 0;
@@ -7388,7 +7388,7 @@ LABEL_9:
   return v38;
 }
 
-- (id)i_topicNumberHintsAfterPageIndex:(unint64_t)a3
+- (id)i_topicNumberHintsAfterPageIndex:(unint64_t)index
 {
   if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, a2, v3, v4, v5, v6) & 1) == 0)
   {
@@ -7400,7 +7400,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30, v31);
   }
 
-  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, a3, 0, 1);
+  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, index, 0, 1);
   if (v33)
   {
     v38 = objc_msgSend_p_textPageHintFollowingPageIndexPath_(self, v32, v34, v35, v36, v37, v33);
@@ -7421,7 +7421,7 @@ LABEL_9:
   return v44;
 }
 
-- (id)i_columnAfterPageIndex:(unint64_t)a3
+- (id)i_columnAfterPageIndex:(unint64_t)index
 {
   if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, a2, v3, v4, v5, v6) & 1) == 0)
   {
@@ -7433,7 +7433,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30, v31);
   }
 
-  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, a3, 0, 1);
+  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, index, 0, 1);
   if (v33)
   {
     v38 = objc_msgSend_p_textPageHintFollowingPageIndexPath_(self, v32, v34, v35, v36, v37, v33);
@@ -7454,7 +7454,7 @@ LABEL_9:
   return v44;
 }
 
-- (id)i_firstChildHintAfterPageIndex:(unint64_t)a3
+- (id)i_firstChildHintAfterPageIndex:(unint64_t)index
 {
   if ((objc_msgSend_isPaginationCompleteUpToDocumentPageIndex_(self->_paginationState, a2, v3, v4, v5, v6) & 1) == 0)
   {
@@ -7466,7 +7466,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30, v31);
   }
 
-  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, a3, 0, 1);
+  v33 = objc_msgSend_i_pageIndexPathForPageIndex_forcePagination_allowAfterPaginationPoint_(self, v9, v10, v11, v12, v13, index, 0, 1);
   if (v33)
   {
     v38 = objc_msgSend_p_textPageHintFollowingPageIndexPath_(self, v32, v34, v35, v36, v37, v33);
@@ -7487,46 +7487,46 @@ LABEL_9:
   return v44;
 }
 
-- (void)i_inflateColumnsInBodyLayout:(id)a3
+- (void)i_inflateColumnsInBodyLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2760293DC;
   v11[3] = &unk_27A6A8418;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = layoutCopy;
+  selfCopy = self;
+  v5 = layoutCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v6, v7, v8, v9, v10, v11);
 }
 
-- (void)i_inflateFootnotesInFootnoteContainer:(id)a3
+- (void)i_inflateFootnotesInFootnoteContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_276029F7C;
   v11[3] = &unk_27A6A8418;
   v11[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = containerCopy;
+  v5 = containerCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v6, v7, v8, v9, v10, v11);
 }
 
-- (void)i_inflateTextFlowsOnPage:(id)a3
+- (void)i_inflateTextFlowsOnPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_27602A1E8;
   v11[3] = &unk_27A6A8418;
   v11[4] = self;
-  v12 = v4;
-  v5 = v4;
+  v12 = pageCopy;
+  v5 = pageCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v6, v7, v8, v9, v10, v11);
 }
 
-- (id)i_textPageHintPrecedingPageIndex:(unint64_t *)a3
+- (id)i_textPageHintPrecedingPageIndex:(unint64_t *)index
 {
   v10 = 0;
   v11 = &v10;
@@ -7540,7 +7540,7 @@ LABEL_9:
   v9[2] = sub_27602A520;
   v9[3] = &unk_27A6A91F8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = index;
   v9[4] = self;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v9);
   v7 = v11[5];
@@ -7549,7 +7549,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)i_invalidatePageIndex:(unint64_t)a3
+- (void)i_invalidatePageIndex:(unint64_t)index
 {
   v7[0] = MEMORY[0x277D85DD0];
   v3.n128_u64[0] = 3221225472;
@@ -7557,30 +7557,30 @@ LABEL_9:
   v7[2] = sub_27602A72C;
   v7[3] = &unk_27A6A9588;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = index;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v7);
 }
 
-- (void)i_invalidateFlows:(id)a3 startingPage:(id)a4
+- (void)i_invalidateFlows:(id)flows startingPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
+  flowsCopy = flows;
+  pageCopy = page;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_27602A81C;
   v15[3] = &unk_27A6A95B0;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v16 = flowsCopy;
+  v17 = pageCopy;
+  v8 = pageCopy;
+  v9 = flowsCopy;
   objc_msgSend_accquireLockAndPerformAction_(self, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)i_registerPageLayout:(id)a3
+- (void)i_registerPageLayout:(id)layout
 {
-  v57 = a3;
-  if (!v57)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, v8, "[TPPaginatedPageController i_registerPageLayout:]");
@@ -7590,7 +7590,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25, v26);
   }
 
-  v27 = objc_msgSend_info(v57, v4, v5, v6, v7, v8);
+  v27 = objc_msgSend_info(layoutCopy, v4, v5, v6, v7, v8);
   v33 = objc_msgSend_pageController(v27, v28, v29, v30, v31, v32);
 
   if (v33 != self)
@@ -7603,16 +7603,16 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55, v56);
   }
 
-  if (v57)
+  if (layoutCopy)
   {
-    objc_msgSend_enqueueInsertion_(self->_pageLayoutCache, v34, v35, v36, v37, v38, v57);
+    objc_msgSend_enqueueInsertion_(self->_pageLayoutCache, v34, v35, v36, v37, v38, layoutCopy);
   }
 }
 
-- (void)i_unregisterPageLayout:(id)a3
+- (void)i_unregisterPageLayout:(id)layout
 {
-  v57 = a3;
-  if (!v57)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, v8, "[TPPaginatedPageController i_unregisterPageLayout:]");
@@ -7622,7 +7622,7 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25, v26);
   }
 
-  v27 = objc_msgSend_info(v57, v4, v5, v6, v7, v8);
+  v27 = objc_msgSend_info(layoutCopy, v4, v5, v6, v7, v8);
   v33 = objc_msgSend_pageController(v27, v28, v29, v30, v31, v32);
 
   if (v33 != self)
@@ -7635,13 +7635,13 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55, v56);
   }
 
-  if (v57)
+  if (layoutCopy)
   {
-    objc_msgSend_enqueueRemoval_(self->_pageLayoutCache, v34, v35, v36, v37, v38, v57);
+    objc_msgSend_enqueueRemoval_(self->_pageLayoutCache, v34, v35, v36, v37, v38, layoutCopy);
   }
 }
 
-- (void)i_setNeedsDynamicLayoutForLayoutController:(id)a3 onPageIndex:(unint64_t)a4
+- (void)i_setNeedsDynamicLayoutForLayoutController:(id)controller onPageIndex:(unint64_t)index
 {
   v8[0] = MEMORY[0x277D85DD0];
   v4.n128_u64[0] = 3221225472;
@@ -7649,7 +7649,7 @@ LABEL_9:
   v8[2] = sub_27602AC48;
   v8[3] = &unk_27A6A9588;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = index;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v4, v5, v6, v7, v8);
 }
 
@@ -7660,7 +7660,7 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)d_timePaginationResettingMetrics:(BOOL)a3
+- (void)d_timePaginationResettingMetrics:(BOOL)metrics
 {
   v7[0] = MEMORY[0x277D85DD0];
   v3.n128_u64[0] = 3221225472;
@@ -7668,7 +7668,7 @@ LABEL_9:
   v7[2] = sub_27602AFDC;
   v7[3] = &unk_27A6A94E8;
   v7[4] = self;
-  v8 = a3;
+  metricsCopy = metrics;
   objc_msgSend_accquireLockAndPerformAction_(self, a2, v3, v4, v5, v6, v7);
 }
 

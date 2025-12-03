@@ -1,48 +1,48 @@
 @interface EPSagaTransactionUpdateAppRemovability
-- (BOOL)_havePairedOrMigratingDevices:(id)a3 rollback:(BOOL)a4;
+- (BOOL)_havePairedOrMigratingDevices:(id)devices rollback:(BOOL)rollback;
 - (EPTransactionDelegate)delegate;
-- (void)_setAppRemovability:(unint64_t)a3;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)_setAppRemovability:(unint64_t)removability;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionUpdateAppRemovability
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100076770;
   v10[3] = &unk_1001757C0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = entryCopy;
+  v9 = entryCopy;
   [v8 grabRegistryWithReadBlock:v10];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007685C;
   v10[3] = &unk_1001757C0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = entryCopy;
+  v9 = entryCopy;
   [v8 grabRegistryWithReadBlock:v10];
 }
 
-- (BOOL)_havePairedOrMigratingDevices:(id)a3 rollback:(BOOL)a4
+- (BOOL)_havePairedOrMigratingDevices:(id)devices rollback:(BOOL)rollback
 {
-  v5 = a3;
+  devicesCopy = devices;
   v6 = +[EPNanoRegistryStatusCodeElection sharedInstance];
   if ([v6 statusCode] == 1)
   {
@@ -55,7 +55,7 @@
     v7 = [v8 statusCode] == 4;
   }
 
-  v9 = [v5 activeDeviceID];
+  activeDeviceID = [devicesCopy activeDeviceID];
   if (v7)
   {
     v10 = nr_daemon_log();
@@ -85,7 +85,7 @@ LABEL_32:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v5;
+    v14 = devicesCopy;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v15)
     {
@@ -102,12 +102,12 @@ LABEL_32:
 
           v19 = *(*(&v27 + 1) + 8 * i);
           v20 = [v14 objectForKeyedSubscript:{v19, v27}];
-          v21 = [v20 isPaired];
-          if (a4)
+          isPaired = [v20 isPaired];
+          if (rollback)
           {
-            if ((v21 & 1) != 0 || [v20 isArchived])
+            if ((isPaired & 1) != 0 || [v20 isArchived])
             {
-              v22 = [v19 isEqual:v9];
+              v22 = [v19 isEqual:activeDeviceID];
 
               if ((v22 & 1) == 0)
               {
@@ -122,7 +122,7 @@ LABEL_32:
 
           else
           {
-            if (v21)
+            if (isPaired)
             {
 
 LABEL_28:
@@ -130,9 +130,9 @@ LABEL_28:
               goto LABEL_29;
             }
 
-            v23 = [v20 isArchived];
+            isArchived = [v20 isArchived];
 
-            if (v23)
+            if (isArchived)
             {
               goto LABEL_28;
             }
@@ -174,13 +174,13 @@ LABEL_33:
   return v13;
 }
 
-- (void)_setAppRemovability:(unint64_t)a3
+- (void)_setAppRemovability:(unint64_t)removability
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100076D88;
   v3[3] = &unk_100178110;
-  v3[4] = a3;
+  v3[4] = removability;
   [&off_100187EE0 enumerateObjectsUsingBlock:v3];
 }
 

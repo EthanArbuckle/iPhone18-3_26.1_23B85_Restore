@@ -1,14 +1,14 @@
 @interface ConcernTextCell
-- (_TtC8VideosUI15ConcernTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8VideosUI15ConcernTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ConcernTextCell
 
-- (_TtC8VideosUI15ConcernTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8VideosUI15ConcernTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1E4205F14();
+    identifier = sub_1E4205F14();
     v6 = v5;
   }
 
@@ -17,7 +17,7 @@
     v6 = 0;
   }
 
-  return sub_1E390DCEC(a3, a4, v6);
+  return sub_1E390DCEC(style, identifier, v6);
 }
 
 @end

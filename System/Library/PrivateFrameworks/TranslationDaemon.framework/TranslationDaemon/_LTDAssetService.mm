@@ -1,40 +1,40 @@
 @interface _LTDAssetService
-+ (BOOL)_awaitDownloadForAsset:(id)a3;
-+ (BOOL)preflightCheckForLocalePair:(id)a3 withModelURLs:(id)a4;
-+ (Class)_serviceProviderForAssetType:(id)a3;
-+ (id)_assetsIdentifiersForPairNames:(id)a3 error:(id *)a4;
-+ (id)_errorForAssetProviderResolutionForAssetType:(id)a3;
++ (BOOL)_awaitDownloadForAsset:(id)asset;
++ (BOOL)preflightCheckForLocalePair:(id)pair withModelURLs:(id)ls;
++ (Class)_serviceProviderForAssetType:(id)type;
++ (id)_assetsIdentifiersForPairNames:(id)names error:(id *)error;
++ (id)_errorForAssetProviderResolutionForAssetType:(id)type;
 + (id)_libraryDirectory;
-+ (id)_symlinkAssetsForLocalePair:(id)a3 fromAssets:(id)a4;
-+ (id)_symlinkPairNamesForLocales:(id)a3;
-+ (id)_ttsAssetsForLocales:(id)a3;
++ (id)_symlinkAssetsForLocalePair:(id)pair fromAssets:(id)assets;
++ (id)_symlinkPairNamesForLocales:(id)locales;
++ (id)_ttsAssetsForLocales:(id)locales;
 + (id)assetDirectoryURL;
-+ (id)assetsForLocales:(id)a3 includeTTS:(BOOL)a4 error:(id *)a5;
-+ (id)catalogAssetsWithError:(id *)a3;
-+ (id)configAssetIfAvailableWithError:(id *)a3;
-+ (id)defaultCatalogTypeWithError:(id *)a3;
-+ (id)filterAssets:(id)a3 forLocales:(id)a4 error:(id *)a5;
-+ (id)filterConfigAssetFromAssets:(id)a3;
-+ (id)installedAssetsWithError:(id *)a3;
-+ (id)matchingASRAssetForLocale:(id)a3 error:(id *)a4;
-+ (id)matchingASRAssetInAssets:(id)a3 forLocale:(id)a4;
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5;
++ (id)assetsForLocales:(id)locales includeTTS:(BOOL)s error:(id *)error;
++ (id)catalogAssetsWithError:(id *)error;
++ (id)configAssetIfAvailableWithError:(id *)error;
++ (id)defaultCatalogTypeWithError:(id *)error;
++ (id)filterAssets:(id)assets forLocales:(id)locales error:(id *)error;
++ (id)filterConfigAssetFromAssets:(id)assets;
++ (id)installedAssetsWithError:(id *)error;
++ (id)matchingASRAssetForLocale:(id)locale error:(id *)error;
++ (id)matchingASRAssetInAssets:(id)assets forLocale:(id)locale;
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error;
 + (id)queue;
-+ (unint64_t)_assetProviderForAssetType:(id)a3;
-+ (void)_addSyntheticASREntriesToAssets:(id)a3;
-+ (void)_installConfigAsset:(id)a3 completion:(id)a4;
++ (unint64_t)_assetProviderForAssetType:(id)type;
++ (void)_addSyntheticASREntriesToAssets:(id)assets;
++ (void)_installConfigAsset:(id)asset completion:(id)completion;
 + (void)_libraryDirectory;
-+ (void)_refreshHotfixWithCompletion:(id)a3;
-+ (void)assetsForLocales:(id)a3 includeTTS:(BOOL)a4 completion:(id)a5;
-+ (void)bootstrapWithCompletion:(id)a3;
-+ (void)catalogAssetsWithCompletion:(id)a3;
-+ (void)configAssetWithCompletion:(id)a3;
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)downloadAssets:(id)a3 forLocales:(id)a4 options:(unint64_t)a5 progress:(id)a6 completion:(id)a7;
-+ (void)downloadCatalogForAssetType:(id)a3 completion:(id)a4;
-+ (void)installedAssetsWithCompletion:(id)a3;
-+ (void)purgeAsset:(id)a3 completion:(id)a4;
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5;
++ (void)_refreshHotfixWithCompletion:(id)completion;
++ (void)assetsForLocales:(id)locales includeTTS:(BOOL)s completion:(id)completion;
++ (void)bootstrapWithCompletion:(id)completion;
++ (void)catalogAssetsWithCompletion:(id)completion;
++ (void)configAssetWithCompletion:(id)completion;
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)downloadAssets:(id)assets forLocales:(id)locales options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)downloadCatalogForAssetType:(id)type completion:(id)completion;
++ (void)installedAssetsWithCompletion:(id)completion;
++ (void)purgeAsset:(id)asset completion:(id)completion;
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion;
 @end
 
 @implementation _LTDAssetService
@@ -51,13 +51,13 @@
   return v3;
 }
 
-+ (id)_errorForAssetProviderResolutionForAssetType:(id)a3
++ (id)_errorForAssetProviderResolutionForAssetType:(id)type
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset service resolution failure for %@", a3];
+  type = [MEMORY[0x277CCACA8] stringWithFormat:@"Asset service resolution failure for %@", type];
   v4 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
-  v10[0] = v3;
+  v10[0] = type;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [v4 errorWithDomain:@"LTTranslationDaemonErrorDomain" code:7 userInfo:v5];
 
@@ -66,25 +66,25 @@
   return v6;
 }
 
-+ (unint64_t)_assetProviderForAssetType:(id)a3
++ (unint64_t)_assetProviderForAssetType:(id)type
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple.MobileAsset.UAF.Translation.Assets"])
+  typeCopy = type;
+  if ([typeCopy hasPrefix:@"com.apple.MobileAsset.UAF.Translation.Assets"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"com.apple.MobileAsset.SpeechTranslationAssets"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.MobileAsset.SpeechEndpointAssets") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", &stru_284834138))
+  else if ([typeCopy hasPrefix:@"com.apple.MobileAsset.SpeechTranslationAssets"] & 1) != 0 || (objc_msgSend(typeCopy, "hasPrefix:", @"com.apple.MobileAsset.SpeechEndpointAssets") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", &stru_284834138))
   {
     v4 = 1;
   }
 
-  else if ([v3 hasPrefix:@"com.apple.speech.automaticspeechrecognition"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.MobileAsset.UAF.Speech.AutomaticSpeechRecognition") & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.MobileAsset.UAF.Siri.Understanding"))
+  else if ([typeCopy hasPrefix:@"com.apple.speech.automaticspeechrecognition"] & 1) != 0 || (objc_msgSend(typeCopy, "hasPrefix:", @"com.apple.MobileAsset.UAF.Speech.AutomaticSpeechRecognition") & 1) != 0 || (objc_msgSend(typeCopy, "hasPrefix:", @"com.apple.MobileAsset.UAF.Siri.Understanding"))
   {
     v4 = 3;
   }
 
-  else if ([v3 hasPrefix:@"com.apple.MobileAsset.Trial.Siri.SiriTextToSpeech"])
+  else if ([typeCopy hasPrefix:@"com.apple.MobileAsset.Trial.Siri.SiriTextToSpeech"])
   {
     v4 = 4;
   }
@@ -103,9 +103,9 @@
   return v4;
 }
 
-+ (Class)_serviceProviderForAssetType:(id)a3
++ (Class)_serviceProviderForAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (_assetProviderFixture)
   {
     v5 = _assetProviderFixture;
@@ -114,7 +114,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [a1 _assetProviderForAssetType:v4];
+  v6 = [self _assetProviderForAssetType:typeCopy];
   if (v6 > 2)
   {
     if (v6 == 3 || v6 == 4)
@@ -142,27 +142,27 @@ LABEL_14:
   return v8;
 }
 
-+ (void)downloadCatalogForAssetType:(id)a3 completion:(id)a4
++ (void)downloadCatalogForAssetType:(id)type completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 _serviceProviderForAssetType:v9];
+  typeCopy = type;
+  completionCopy = completion;
+  v7 = [self _serviceProviderForAssetType:typeCopy];
   if (v7)
   {
-    [v7 downloadCatalogForAssetType:v9 completion:v6];
+    [v7 downloadCatalogForAssetType:typeCopy completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v8 = [a1 _errorForAssetProviderResolutionForAssetType:v9];
-    v6[2](v6, 0, v8);
+    v8 = [self _errorForAssetProviderResolutionForAssetType:typeCopy];
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
-+ (void)_addSyntheticASREntriesToAssets:(id)a3
++ (void)_addSyntheticASREntriesToAssets:(id)assets
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v36 = 0;
   v24 = [_LTDAssetService queryAssetType:@"com.apple.speech.automaticspeechrecognition" filter:0 error:&v36];
   v4 = v36;
@@ -170,12 +170,12 @@ LABEL_14:
   {
 LABEL_5:
     v22 = v4;
-    v23 = v3;
+    v23 = assetsCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v3;
+    obj = assetsCopy;
     v8 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v8)
     {
@@ -193,20 +193,20 @@ LABEL_5:
           v12 = *(*(&v32 + 1) + 8 * i);
           if ([v12 assetType] == 2)
           {
-            v13 = [v12 identifier];
+            identifier = [v12 identifier];
             v30[0] = MEMORY[0x277D85DD0];
             v30[1] = 3221225472;
             v30[2] = __52___LTDAssetService__addSyntheticASREntriesToAssets___block_invoke;
             v30[3] = &unk_2789B5AA8;
-            v14 = v13;
+            v14 = identifier;
             v31 = v14;
             v15 = [v24 lt_firstObjectPassingTest:v30];
             v26 = 0u;
             v27 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v16 = [v15 components];
-            v17 = [v16 countByEnumeratingWithState:&v26 objects:v37 count:16];
+            components = [v15 components];
+            v17 = [components countByEnumeratingWithState:&v26 objects:v37 count:16];
             if (v17)
             {
               v18 = v17;
@@ -217,13 +217,13 @@ LABEL_5:
                 {
                   if (*v27 != v19)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(components);
                   }
 
                   [v12 addComponentAsset:*(*(&v26 + 1) + 8 * j)];
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v26 objects:v37 count:16];
+                v18 = [components countByEnumeratingWithState:&v26 objects:v37 count:16];
               }
 
               while (v18);
@@ -238,7 +238,7 @@ LABEL_5:
     }
 
     v4 = v22;
-    v3 = v23;
+    assetsCopy = v23;
     goto LABEL_24;
   }
 
@@ -265,11 +265,11 @@ LABEL_24:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)queryAssetType:(id)a3 filter:(unint64_t)a4 completion:(id)a5
++ (void)queryAssetType:(id)type filter:(unint64_t)filter completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _serviceProviderForAssetType:v8];
+  typeCopy = type;
+  completionCopy = completion;
+  v10 = [self _serviceProviderForAssetType:typeCopy];
   if (v10)
   {
     v11 = v10;
@@ -277,50 +277,50 @@ LABEL_24:
     v13[1] = 3221225472;
     v13[2] = __53___LTDAssetService_queryAssetType_filter_completion___block_invoke;
     v13[3] = &unk_2789B5AD0;
-    v15 = v9;
-    v16 = a1;
-    v14 = v8;
-    [v11 queryAssetType:v14 filter:a4 completion:v13];
+    v15 = completionCopy;
+    selfCopy = self;
+    v14 = typeCopy;
+    [v11 queryAssetType:v14 filter:filter completion:v13];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v12 = [a1 _errorForAssetProviderResolutionForAssetType:v8];
-    (*(v9 + 2))(v9, 0, v12);
+    v12 = [self _errorForAssetProviderResolutionForAssetType:typeCopy];
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  v29 = v8;
-  if ([v8 isInstalled])
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
+  v29 = assetCopy;
+  if ([assetCopy isInstalled])
   {
-    if (v9)
+    if (progressCopy)
     {
-      v9[2](v9, v8);
+      progressCopy[2](progressCopy, assetCopy);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v26 = v10;
-    if ([v8 isAvailable])
+    v26 = completionCopy;
+    if ([assetCopy isAvailable])
     {
-      v11 = [v8 progress];
-      [v11 setOfflineState:1];
+      progress = [assetCopy progress];
+      [progress setOfflineState:1];
 
-      if (v9)
+      if (progressCopy)
       {
-        v9[2](v9, v8);
+        progressCopy[2](progressCopy, assetCopy);
       }
     }
 
@@ -334,9 +334,9 @@ LABEL_24:
     v13 = _LTOSLogAssets();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 identifier];
+      identifier = [assetCopy identifier];
       *buf = 138543362;
-      v48 = v14;
+      v48 = identifier;
       _os_log_impl(&dword_232E53000, v13, OS_LOG_TYPE_DEFAULT, "Download of asset required: %{public}@", buf, 0xCu);
     }
 
@@ -344,8 +344,8 @@ LABEL_24:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v15 = [v8 components];
-    v16 = [v15 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    components = [assetCopy components];
+    v16 = [components countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v16)
     {
       v17 = *v41;
@@ -355,38 +355,38 @@ LABEL_24:
         {
           if (*v41 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(components);
           }
 
           v19 = *(*(&v40 + 1) + 8 * i);
           if ([v19 isInstalled])
           {
-            v20 = [v19 progress];
-            [v20 setOfflineState:2];
+            progress2 = [v19 progress];
+            [progress2 setOfflineState:2];
 
-            if (v9)
+            if (progressCopy)
             {
-              v9[2](v9, v29);
+              progressCopy[2](progressCopy, v29);
             }
           }
 
           else
           {
-            if (v9)
+            if (progressCopy)
             {
-              v9[2](v9, v29);
+              progressCopy[2](progressCopy, v29);
             }
 
             dispatch_group_enter(v12);
-            v21 = [v19 managedAssetType];
-            v22 = [a1 _serviceProviderForAssetType:v21];
+            managedAssetType = [v19 managedAssetType];
+            v22 = [self _serviceProviderForAssetType:managedAssetType];
 
             v23 = MEMORY[0x277D85DD0];
             v37[0] = MEMORY[0x277D85DD0];
             v37[1] = 3221225472;
             v37[2] = __62___LTDAssetService_downloadAsset_options_progress_completion___block_invoke;
             v37[3] = &unk_2789B5AF8;
-            v39 = v9;
+            v39 = progressCopy;
             v38 = v29;
             v34[0] = v23;
             v34[1] = 3221225472;
@@ -395,17 +395,17 @@ LABEL_24:
             v34[4] = v19;
             v36 = v44;
             v35 = v12;
-            [v22 downloadAsset:v19 options:a4 progress:v37 completion:v34];
+            [v22 downloadAsset:v19 options:options progress:v37 completion:v34];
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v16 = [components countByEnumeratingWithState:&v40 objects:v46 count:16];
       }
 
       while (v16);
     }
 
-    v24 = [a1 queue];
+    queue = [self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62___LTDAssetService_downloadAsset_options_progress_completion___block_invoke_299;
@@ -413,45 +413,45 @@ LABEL_24:
     v31 = v29;
     v33 = v44;
     v32 = v26;
-    dispatch_group_notify(v12, v24, block);
+    dispatch_group_notify(v12, queue, block);
 
     _Block_object_dispose(v44, 8);
-    v10 = v26;
+    completionCopy = v26;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_awaitDownloadForAsset:(id)a3
++ (BOOL)_awaitDownloadForAsset:(id)asset
 {
-  if (![a3 isTTSModel])
+  if (![asset isTTSModel])
   {
     return 1;
   }
 
-  return [a1 _awaitDownloadOfTTSAssets];
+  return [self _awaitDownloadOfTTSAssets];
 }
 
-+ (void)downloadAssets:(id)a3 forLocales:(id)a4 options:(unint64_t)a5 progress:(id)a6 completion:(id)a7
++ (void)downloadAssets:(id)assets forLocales:(id)locales options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
   v91 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v45 = a4;
-  v49 = a6;
-  v46 = a7;
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 componentsSeparatedByString:@"-"];
-  v50 = [v14 lastObject];
+  assetsCopy = assets;
+  localesCopy = locales;
+  progressCopy = progress;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [uUIDString componentsSeparatedByString:@"-"];
+  lastObject = [v14 lastObject];
 
   v15 = _LTOSLogAssets();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
     *buf = 138543618;
-    *&buf[4] = v50;
+    *&buf[4] = lastObject;
     *&buf[12] = 2048;
-    *&buf[14] = [v11 count];
+    *&buf[14] = [assetsCopy count];
     _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_DEFAULT, "Download %{public}@ start for %zd assets", buf, 0x16u);
   }
 
@@ -461,33 +461,33 @@ LABEL_24:
   v19 = v18;
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
-    v20 = v50;
-    v21 = [v50 UTF8String];
+    v20 = lastObject;
+    uTF8String = [lastObject UTF8String];
     *buf = 136315138;
-    *&buf[4] = v21;
+    *&buf[4] = uTF8String;
     _os_signpost_emit_with_name_impl(&dword_232E53000, v19, OS_SIGNPOST_INTERVAL_BEGIN, spid, "downloadAssets", "%s", buf, 0xCu);
   }
 
   group = dispatch_group_create();
-  v22 = [v11 lt_hasObjectPassingTest:&__block_literal_global_308];
+  v22 = [assetsCopy lt_hasObjectPassingTest:&__block_literal_global_308];
   if ((v22 & 1) == 0)
   {
     v23 = _LTOSLogAssets();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v50;
+      *&buf[4] = lastObject;
       _os_log_impl(&dword_232E53000, v23, OS_LOG_TYPE_DEFAULT, "Download %{public}@ no missing assets detected", buf, 0xCu);
     }
 
     dispatch_group_enter(group);
-    v24 = [a1 queue];
+    queue = [self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74___LTDAssetService_downloadAssets_forLocales_options_progress_completion___block_invoke_309;
     block[3] = &unk_2789B5B70;
     v78 = group;
-    dispatch_async(v24, block);
+    dispatch_async(queue, block);
   }
 
   v25 = 0;
@@ -499,53 +499,53 @@ LABEL_24:
   v90 = 0;
   while (1)
   {
-    v26 = v25 < [v11 count] ? v22 : 0;
+    v26 = v25 < [assetsCopy count] ? v22 : 0;
     if ((v26 & 1) == 0)
     {
       break;
     }
 
-    v27 = [v11 objectAtIndexedSubscript:v25];
+    v27 = [assetsCopy objectAtIndexedSubscript:v25];
     v28 = _LTOSLogAssets();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [v11 count];
-      v30 = [v27 identifier];
+      v29 = [assetsCopy count];
+      identifier = [v27 identifier];
       *v79 = 138544130;
-      v80 = v50;
+      v80 = lastObject;
       v81 = 2048;
       v82 = v25 + 1;
       v83 = 2048;
       v84 = v29;
       v85 = 2114;
-      v86 = v30;
+      v86 = identifier;
       _os_log_impl(&dword_232E53000, v28, OS_LOG_TYPE_INFO, "Download %{public}@ start item %zd / %zd: %{public}@", v79, 0x2Au);
     }
 
-    v31 = [a1 _awaitDownloadForAsset:v27];
+    v31 = [self _awaitDownloadForAsset:v27];
     v32 = v31;
     if (v31)
     {
       dispatch_group_enter(group);
     }
 
-    v33 = [a1 queue];
+    queue2 = [self queue];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __74___LTDAssetService_downloadAssets_forLocales_options_progress_completion___block_invoke_310;
     v66[3] = &unk_2789B5BC0;
     v76 = v32;
-    v73 = a5;
-    v74 = a1;
+    optionsCopy = options;
+    selfCopy = self;
     v67 = v27;
-    v71 = v49;
-    v68 = v50;
+    v71 = progressCopy;
+    v68 = lastObject;
     v75 = v25;
-    v69 = v11;
+    v69 = assetsCopy;
     v72 = buf;
     v70 = group;
     v34 = v27;
-    dispatch_async(v33, v66);
+    dispatch_async(queue2, v66);
 
     ++v25;
   }
@@ -554,19 +554,19 @@ LABEL_24:
   v58[1] = 3221225472;
   v58[2] = __74___LTDAssetService_downloadAssets_forLocales_options_progress_completion___block_invoke_311;
   v58[3] = &unk_2789B5BE8;
-  v64 = a1;
-  v35 = v45;
+  selfCopy2 = self;
+  v35 = localesCopy;
   v59 = v35;
-  v36 = v11;
+  v36 = assetsCopy;
   v60 = v36;
   v65 = v22 ^ 1;
-  v37 = v50;
+  v37 = lastObject;
   v61 = v37;
-  v38 = v46;
+  v38 = completionCopy;
   v62 = v38;
   v63 = buf;
   v39 = MEMORY[0x238398770](v58);
-  v40 = [a1 queue];
+  queue3 = [self queue];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __74___LTDAssetService_downloadAssets_forLocales_options_progress_completion___block_invoke_317;
@@ -574,20 +574,20 @@ LABEL_24:
   v53 = v37;
   v54 = v36;
   v56 = spid;
-  v57 = a1;
+  selfCopy3 = self;
   v55 = v39;
   v41 = v39;
   v42 = v36;
   v43 = v37;
-  dispatch_group_notify(group, v40, v52);
+  dispatch_group_notify(group, queue3, v52);
 
   _Block_object_dispose(buf, 8);
   v44 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_symlinkPairNamesForLocales:(id)a3
++ (id)_symlinkPairNamesForLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v5 = +[_LTDLanguageAssetService selectedLocales];
   v6 = [v5 count];
   if (v6)
@@ -598,12 +598,12 @@ LABEL_24:
     v11[3] = &unk_2789B5C38;
     v3 = &v12;
     v12 = v5;
-    v7 = [v4 lt_filterUsingBlock:v11];
+    v7 = [localesCopy lt_filterUsingBlock:v11];
   }
 
   else
   {
-    v7 = v4;
+    v7 = localesCopy;
   }
 
   v8 = [MEMORY[0x277CE1B38] pairNamesForLocales:v7];
@@ -616,18 +616,18 @@ LABEL_24:
   return v9;
 }
 
-+ (id)_symlinkAssetsForLocalePair:(id)a3 fromAssets:(id)a4
++ (id)_symlinkAssetsForLocalePair:(id)pair fromAssets:(id)assets
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sourceLocale];
-  v30[0] = v8;
-  v9 = [v6 targetLocale];
-  v30[1] = v9;
+  pairCopy = pair;
+  assetsCopy = assets;
+  sourceLocale = [pairCopy sourceLocale];
+  v30[0] = sourceLocale;
+  targetLocale = [pairCopy targetLocale];
+  v30[1] = targetLocale;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
   v28 = 0;
-  v11 = [a1 filterAssets:v7 forLocales:v10 error:&v28];
+  v11 = [self filterAssets:assetsCopy forLocales:v10 error:&v28];
   v12 = v28;
 
   if (v12)
@@ -661,8 +661,8 @@ LABEL_24:
       v17 = _LTOSLogAssets();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v23[5] assetName];
-        [(_LTDAssetService *)v18 _symlinkAssetsForLocalePair:buf fromAssets:v17];
+        assetName = [v23[5] assetName];
+        [(_LTDAssetService *)assetName _symlinkAssetsForLocalePair:buf fromAssets:v17];
       }
 
       v14 = 0;
@@ -681,15 +681,15 @@ LABEL_24:
   return v14;
 }
 
-+ (void)purgeAsset:(id)a3 completion:(id)a4
++ (void)purgeAsset:(id)asset completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
-  if (([v6 isAvailable] & 1) == 0)
+  assetCopy = asset;
+  completionCopy = completion;
+  if (([assetCopy isAvailable] & 1) == 0)
   {
-    v7 = [v6 progress];
-    [v7 setOfflineState:0];
+    progress = [assetCopy progress];
+    [progress setOfflineState:0];
   }
 
   v33[0] = 0;
@@ -703,9 +703,9 @@ LABEL_24:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = v6;
-  v9 = [v6 components];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  v20 = assetCopy;
+  components = [assetCopy components];
+  v10 = [components countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v10)
   {
     v11 = *v30;
@@ -715,21 +715,21 @@ LABEL_24:
       {
         if (*v30 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(components);
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 managedAssetType];
-        v15 = [a1 _serviceProviderForAssetType:v14];
+        managedAssetType = [v13 managedAssetType];
+        v15 = [self _serviceProviderForAssetType:managedAssetType];
 
         if (!v15)
         {
-          if (v21)
+          if (completionCopy)
           {
-            v17 = [v13 managedAssetType];
-            v18 = [a1 _errorForAssetProviderResolutionForAssetType:v17];
+            managedAssetType2 = [v13 managedAssetType];
+            v18 = [self _errorForAssetProviderResolutionForAssetType:managedAssetType2];
 
-            v21[2](v21, 0, v18);
+            completionCopy[2](completionCopy, 0, v18);
           }
 
           goto LABEL_14;
@@ -745,7 +745,7 @@ LABEL_24:
         [v15 purgeAsset:v13 completion:v26];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v10 = [components countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v10)
       {
         continue;
@@ -755,33 +755,33 @@ LABEL_24:
     }
   }
 
-  v16 = [a1 queue];
+  queue = [self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42___LTDAssetService_purgeAsset_completion___block_invoke_2;
   block[3] = &unk_2789B5CD0;
-  v24 = v21;
+  v24 = completionCopy;
   v25 = v33;
   v23 = v20;
-  dispatch_group_notify(v8, v16, block);
+  dispatch_group_notify(v8, queue, block);
 
-  v9 = v24;
+  components = v24;
 LABEL_14:
 
   _Block_object_dispose(v33, 8);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)bootstrapWithCompletion:(id)a3
++ (void)bootstrapWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44___LTDAssetService_bootstrapWithCompletion___block_invoke;
   v6[3] = &unk_2789B5CF8;
-  v7 = v4;
-  v5 = v4;
-  [a1 _refreshHotfixWithCompletion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [self _refreshHotfixWithCompletion:v6];
 }
 
 + (id)_libraryDirectory
@@ -803,9 +803,9 @@ LABEL_14:
       +[(_LTDAssetService *)v8];
     }
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v12 = 0;
-    v7 = [v9 URLForDirectory:5 inDomain:1 appropriateForURL:0 create:0 error:&v12];
+    v7 = [defaultManager URLForDirectory:5 inDomain:1 appropriateForURL:0 create:0 error:&v12];
     v5 = v12;
 
     if (v5)
@@ -827,7 +827,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __37___LTDAssetService_assetDirectoryURL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (assetDirectoryURL_onceToken != -1)
   {
     dispatch_once(&assetDirectoryURL_onceToken, block);
@@ -838,7 +838,7 @@ LABEL_14:
   return v2;
 }
 
-+ (id)defaultCatalogTypeWithError:(id *)a3
++ (id)defaultCatalogTypeWithError:(id *)error
 {
   v10 = 0;
   v4 = [_LTDConfigurationService assetConfigurationWithError:&v10];
@@ -849,37 +849,37 @@ LABEL_14:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService defaultCatalogTypeWithError:];
-      if (a3)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
 LABEL_4:
       v7 = v5;
-      v8 = 0;
-      *a3 = v5;
+      currentSpeechTranslationAssetType = 0;
+      *error = v5;
       goto LABEL_8;
     }
 
-    v8 = 0;
+    currentSpeechTranslationAssetType = 0;
   }
 
   else
   {
-    v8 = [v4 currentSpeechTranslationAssetType];
+    currentSpeechTranslationAssetType = [v4 currentSpeechTranslationAssetType];
   }
 
 LABEL_8:
 
-  return v8;
+  return currentSpeechTranslationAssetType;
 }
 
-+ (void)_refreshHotfixWithCompletion:(id)a3
++ (void)_refreshHotfixWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _LTOSLogAssets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -892,14 +892,14 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = __49___LTDAssetService__refreshHotfixWithCompletion___block_invoke;
   v7[3] = &unk_2789B5D20;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 refreshHotfix:v7];
 }
 
-+ (void)configAssetWithCompletion:(id)a3
++ (void)configAssetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -911,16 +911,16 @@ LABEL_8:
   v7[1] = 3221225472;
   v7[2] = __46___LTDAssetService_configAssetWithCompletion___block_invoke;
   v7[3] = &unk_2789B5D70;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [a1 catalogAssetsWithCompletion:v7];
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [self catalogAssetsWithCompletion:v7];
 }
 
-+ (id)configAssetIfAvailableWithError:(id *)a3
++ (id)configAssetIfAvailableWithError:(id *)error
 {
   v19 = 0;
-  v5 = [a1 catalogAssetsWithError:&v19];
+  v5 = [self catalogAssetsWithError:&v19];
   v6 = v19;
   if (!v6)
   {
@@ -937,24 +937,24 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      [a1 _installConfigAsset:v12 completion:0];
+      [self _installConfigAsset:v12 completion:0];
       v7 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:8 description:@"Not installed" userInfo:0];
       v16 = _LTOSLogAssets();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         +[_LTDAssetService configAssetIfAvailableWithError:];
-        if (a3)
+        if (error)
         {
           goto LABEL_14;
         }
       }
 
-      else if (a3)
+      else if (error)
       {
 LABEL_14:
         v17 = v7;
         v10 = 0;
-        *a3 = v7;
+        *error = v7;
         goto LABEL_21;
       }
 
@@ -968,13 +968,13 @@ LABEL_20:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       __46___LTDAssetService_configAssetWithCompletion___block_invoke_cold_2();
-      if (!a3)
+      if (!error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
 LABEL_11:
 
@@ -983,7 +983,7 @@ LABEL_11:
     }
 
     v15 = v13;
-    *a3 = v13;
+    *error = v13;
     goto LABEL_11;
   }
 
@@ -992,18 +992,18 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     +[_LTDAssetService configAssetIfAvailableWithError:];
-    if (a3)
+    if (error)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_4:
     v9 = v7;
     v10 = 0;
-    *a3 = v7;
+    *error = v7;
     goto LABEL_22;
   }
 
@@ -1013,17 +1013,17 @@ LABEL_22:
   return v10;
 }
 
-+ (void)_installConfigAsset:(id)a3 completion:(id)a4
++ (void)_installConfigAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isInstalled] & 1) != 0 || objc_msgSend(v6, "isDownloading"))
+  assetCopy = asset;
+  completionCopy = completion;
+  if (([assetCopy isInstalled] & 1) != 0 || objc_msgSend(assetCopy, "isDownloading"))
   {
     v8 = _LTOSLogAssets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       [_LTDAssetService _installConfigAsset:v8 completion:?];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
@@ -1031,10 +1031,10 @@ LABEL_22:
       goto LABEL_5;
     }
 
-    if (v7)
+    if (completionCopy)
     {
 LABEL_5:
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -1043,30 +1043,30 @@ LABEL_5:
     v9 = _LTOSLogAssets();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [_LTDAssetService _installConfigAsset:v9 completion:v6];
+      [_LTDAssetService _installConfigAsset:v9 completion:assetCopy];
     }
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51___LTDAssetService__installConfigAsset_completion___block_invoke;
     v10[3] = &unk_2789B5D98;
-    v12 = v7;
-    v11 = v6;
-    [a1 downloadAsset:v11 options:2 progress:0 completion:v10];
+    v12 = completionCopy;
+    v11 = assetCopy;
+    [self downloadAsset:v11 options:2 progress:0 completion:v10];
   }
 
 LABEL_9:
 }
 
-+ (void)catalogAssetsWithCompletion:(id)a3
++ (void)catalogAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9 = 0;
-  v5 = [a1 defaultCatalogTypeWithError:&v9];
+  v5 = [self defaultCatalogTypeWithError:&v9];
   v6 = v9;
   if (v6)
   {
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 
   else
@@ -1075,21 +1075,21 @@ LABEL_9:
     v7[1] = 3221225472;
     v7[2] = __48___LTDAssetService_catalogAssetsWithCompletion___block_invoke;
     v7[3] = &unk_2789B5DC0;
-    v8 = v4;
-    [a1 queryAssetType:v5 filter:1 completion:v7];
+    v8 = completionCopy;
+    [self queryAssetType:v5 filter:1 completion:v7];
   }
 }
 
-+ (id)catalogAssetsWithError:(id *)a3
++ (id)catalogAssetsWithError:(id *)error
 {
   v13 = 0;
-  v5 = [a1 defaultCatalogTypeWithError:&v13];
+  v5 = [self defaultCatalogTypeWithError:&v13];
   v6 = v13;
   if (v6)
   {
     v7 = v6;
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1098,11 +1098,11 @@ LABEL_9:
   }
 
   v12 = 0;
-  v8 = [a1 queryAssetType:v5 filter:1 error:&v12];
+  v8 = [self queryAssetType:v5 filter:1 error:&v12];
   v7 = v12;
   if (!v7 || (v9 = _LTOSLogAssets(), !os_log_type_enabled(v9, OS_LOG_TYPE_ERROR)))
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1111,11 +1111,11 @@ LABEL_9:
   }
 
   +[_LTDAssetService catalogAssetsWithError:];
-  if (a3)
+  if (error)
   {
 LABEL_7:
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_8:
@@ -1123,15 +1123,15 @@ LABEL_8:
   return v8;
 }
 
-+ (void)installedAssetsWithCompletion:(id)a3
++ (void)installedAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9 = 0;
-  v5 = [a1 defaultCatalogTypeWithError:&v9];
+  v5 = [self defaultCatalogTypeWithError:&v9];
   v6 = v9;
   if (v6)
   {
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 
   else
@@ -1140,21 +1140,21 @@ LABEL_8:
     v7[1] = 3221225472;
     v7[2] = __50___LTDAssetService_installedAssetsWithCompletion___block_invoke;
     v7[3] = &unk_2789B5DC0;
-    v8 = v4;
-    [a1 queryAssetType:v5 filter:2 completion:v7];
+    v8 = completionCopy;
+    [self queryAssetType:v5 filter:2 completion:v7];
   }
 }
 
-+ (id)installedAssetsWithError:(id *)a3
++ (id)installedAssetsWithError:(id *)error
 {
   v13 = 0;
-  v5 = [a1 defaultCatalogTypeWithError:&v13];
+  v5 = [self defaultCatalogTypeWithError:&v13];
   v6 = v13;
   if (v6)
   {
     v7 = v6;
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1163,11 +1163,11 @@ LABEL_8:
   }
 
   v12 = 0;
-  v8 = [a1 queryAssetType:v5 filter:2 error:&v12];
+  v8 = [self queryAssetType:v5 filter:2 error:&v12];
   v7 = v12;
   if (!v7 || (v9 = _LTOSLogAssets(), !os_log_type_enabled(v9, OS_LOG_TYPE_ERROR)))
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1176,11 +1176,11 @@ LABEL_8:
   }
 
   +[_LTDAssetService installedAssetsWithError:];
-  if (a3)
+  if (error)
   {
 LABEL_7:
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_8:
@@ -1188,11 +1188,11 @@ LABEL_8:
   return v8;
 }
 
-+ (id)queryAssetType:(id)a3 filter:(unint64_t)a4 error:(id *)a5
++ (id)queryAssetType:(id)type filter:(unint64_t)filter error:(id *)error
 {
-  v8 = a3;
+  typeCopy = type;
   v15 = 0;
-  v9 = [objc_msgSend(a1 _serviceProviderForAssetType:{v8), "queryAssetType:filter:error:", v8, a4, &v15}];
+  v9 = [objc_msgSend(self _serviceProviderForAssetType:{typeCopy), "queryAssetType:filter:error:", typeCopy, filter, &v15}];
   v10 = v15;
   if (v10)
   {
@@ -1200,18 +1200,18 @@ LABEL_8:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService queryAssetType:filter:error:];
-      if (a5)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_4:
       v12 = v10;
       v13 = 0;
-      *a5 = v10;
+      *error = v10;
       goto LABEL_10;
     }
 
@@ -1220,12 +1220,12 @@ LABEL_4:
 
   else
   {
-    if ([a1 _assetProviderForAssetType:v8] == 2)
+    if ([self _assetProviderForAssetType:typeCopy] == 2)
     {
-      [a1 _addSyntheticASREntriesToAssets:v9];
+      [self _addSyntheticASREntriesToAssets:v9];
     }
 
-    v13 = [a1 _assetsSortedByVersion:v9];
+    v13 = [self _assetsSortedByVersion:v9];
   }
 
 LABEL_10:
@@ -1233,27 +1233,27 @@ LABEL_10:
   return v13;
 }
 
-+ (id)filterConfigAssetFromAssets:(id)a3
++ (id)filterConfigAssetFromAssets:(id)assets
 {
-  v4 = [a3 lt_filterUsingBlock:&__block_literal_global_349];
+  v4 = [assets lt_filterUsingBlock:&__block_literal_global_349];
   if ([v4 count] > 1)
   {
-    v6 = [a1 _assetsSortedByVersion:v4];
-    v5 = [v6 firstObject];
+    v6 = [self _assetsSortedByVersion:v4];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)_assetsIdentifiersForPairNames:(id)a3 error:(id *)a4
++ (id)_assetsIdentifiersForPairNames:(id)names error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  namesCopy = names;
   v6 = [MEMORY[0x277CBEB58] set];
   v48 = 0;
   v35 = [_LTDConfigurationService offlineConfigurationWithError:&v48];
@@ -1265,12 +1265,12 @@ LABEL_10:
     v8 = v47;
     if (!v8)
     {
-      v32 = v5;
+      v32 = namesCopy;
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      obj = v5;
+      obj = namesCopy;
       v36 = [obj countByEnumeratingWithState:&v43 objects:v54 count:16];
       if (v36)
       {
@@ -1307,8 +1307,8 @@ LABEL_10:
                   }
 
                   v21 = *(*(&v39 + 1) + 8 * i);
-                  v22 = [v12 localeIdentifiers];
-                  v23 = [v22 containsObject:v21];
+                  localeIdentifiers = [v12 localeIdentifiers];
+                  v23 = [localeIdentifiers containsObject:v21];
 
                   if (v23)
                   {
@@ -1327,18 +1327,18 @@ LABEL_10:
             }
 
             v26 = [v35 offlinePairConfigurationWithIdentifier:v37];
-            v27 = [v26 pairAssetList];
+            pairAssetList = [v26 pairAssetList];
             v28 = _LTOSLogAssets();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543618;
-              v50 = v27;
+              v50 = pairAssetList;
               v51 = 2114;
               v52 = v37;
               _os_log_debug_impl(&dword_232E53000, v28, OS_LOG_TYPE_DEBUG, "Adding assets [%{public}@] for pair %{public}@", buf, 0x16u);
             }
 
-            [v6 addObjectsFromArray:v27];
+            [v6 addObjectsFromArray:pairAssetList];
 
             v15 = v38 + 1;
           }
@@ -1350,11 +1350,11 @@ LABEL_10:
         while (v36);
       }
 
-      v29 = [v6 allObjects];
-      v11 = [v29 sortedArrayUsingSelector:sel_compare_];
+      allObjects = [v6 allObjects];
+      v11 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
       v8 = 0;
-      v5 = v32;
+      namesCopy = v32;
       goto LABEL_32;
     }
 
@@ -1362,18 +1362,18 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService _assetsIdentifiersForPairNames:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_8:
       v14 = v8;
       v11 = 0;
-      *a4 = v8;
+      *error = v8;
 LABEL_32:
 
       goto LABEL_33;
@@ -1388,18 +1388,18 @@ LABEL_32:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     +[_LTDAssetService _assetsIdentifiersForPairNames:error:];
-    if (a4)
+    if (error)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_4:
     v10 = v8;
     v11 = 0;
-    *a4 = v8;
+    *error = v8;
     goto LABEL_33;
   }
 
@@ -1411,12 +1411,12 @@ LABEL_33:
   return v11;
 }
 
-+ (id)assetsForLocales:(id)a3 includeTTS:(BOOL)a4 error:(id *)a5
++ (id)assetsForLocales:(id)locales includeTTS:(BOOL)s error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  sCopy = s;
+  localesCopy = locales;
   v19 = 0;
-  v9 = [a1 catalogAssetsWithError:&v19];
+  v9 = [self catalogAssetsWithError:&v19];
   v10 = v19;
   if (v10)
   {
@@ -1425,18 +1425,18 @@ LABEL_33:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService assetsForLocales:includeTTS:error:];
-      if (a5)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_4:
       v13 = v11;
       v14 = 0;
-      *a5 = v11;
+      *error = v11;
       goto LABEL_10;
     }
 
@@ -1445,16 +1445,16 @@ LABEL_4:
 
   else
   {
-    if (v6)
+    if (sCopy)
     {
-      v15 = [a1 _ttsAssetsForLocales:v8];
+      v15 = [self _ttsAssetsForLocales:localesCopy];
       v16 = [v9 arrayByAddingObjectsFromArray:v15];
 
       v9 = v16;
     }
 
     v18 = 0;
-    v14 = [a1 filterAssets:v9 forLocales:v8 error:&v18];
+    v14 = [self filterAssets:v9 forLocales:localesCopy error:&v18];
     v11 = v18;
   }
 
@@ -1463,33 +1463,33 @@ LABEL_10:
   return v14;
 }
 
-+ (void)assetsForLocales:(id)a3 includeTTS:(BOOL)a4 completion:(id)a5
++ (void)assetsForLocales:(id)locales includeTTS:(BOOL)s completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  localesCopy = locales;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59___LTDAssetService_assetsForLocales_includeTTS_completion___block_invoke;
   v12[3] = &unk_2789B5E10;
-  v16 = a4;
-  v14 = v9;
-  v15 = a1;
-  v13 = v8;
-  v10 = v8;
-  v11 = v9;
-  [a1 catalogAssetsWithCompletion:v12];
+  sCopy = s;
+  v14 = completionCopy;
+  selfCopy = self;
+  v13 = localesCopy;
+  v10 = localesCopy;
+  v11 = completionCopy;
+  [self catalogAssetsWithCompletion:v12];
 }
 
-+ (id)_ttsAssetsForLocales:(id)a3
++ (id)_ttsAssetsForLocales:(id)locales
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  localesCopy = locales;
+  v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(localesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = localesCopy;
   v4 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
@@ -1505,8 +1505,8 @@ LABEL_10:
         }
 
         v8 = MEMORY[0x277CCACA8];
-        v9 = [*(*(&v17 + 1) + 8 * i) _ltLocaleIdentifier];
-        v10 = [v8 stringWithFormat:@"TTS-%@", v9];
+        _ltLocaleIdentifier = [*(*(&v17 + 1) + 8 * i) _ltLocaleIdentifier];
+        v10 = [v8 stringWithFormat:@"TTS-%@", _ltLocaleIdentifier];
 
         v11 = [[_LTDTTSAssetModel alloc] initWithAssetIdentifier:v10];
         v12 = [[_LTDAssetModel alloc] initWithProvider:v11];
@@ -1527,17 +1527,17 @@ LABEL_10:
   return v16;
 }
 
-+ (id)filterAssets:(id)a3 forLocales:(id)a4 error:(id *)a5
++ (id)filterAssets:(id)assets forLocales:(id)locales error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v44 = a4;
+  assetsCopy = assets;
+  localesCopy = locales;
   v9 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v10 = v8;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v11)
   {
@@ -1553,8 +1553,8 @@ LABEL_10:
         }
 
         v15 = *(*(&v53 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        identifier = [v15 identifier];
+        [v9 setObject:v15 forKeyedSubscript:identifier];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v53 objects:v60 count:16];
@@ -1563,10 +1563,10 @@ LABEL_10:
     while (v12);
   }
 
-  v17 = v44;
-  v18 = [MEMORY[0x277CE1B38] pairNamesForLocales:v44];
+  v17 = localesCopy;
+  v18 = [MEMORY[0x277CE1B38] pairNamesForLocales:localesCopy];
   v52 = 0;
-  v19 = [a1 _assetsIdentifiersForPairNames:v18 error:&v52];
+  v19 = [self _assetsIdentifiersForPairNames:v18 error:&v52];
   v20 = v52;
   v21 = _LTOSLogAssets();
   v22 = v21;
@@ -1575,21 +1575,21 @@ LABEL_10:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService filterAssets:forLocales:error:];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_12:
-      v24 = MEMORY[0x277CBEBF8];
+      allValues = MEMORY[0x277CBEBF8];
       goto LABEL_35;
     }
 
     v23 = v20;
-    *a5 = v20;
+    *error = v20;
     goto LABEL_12;
   }
 
@@ -1630,27 +1630,27 @@ LABEL_12:
         v33 = v32;
         if (v32)
         {
-          v34 = [v32 assetType];
-          if (v34 <= 0xB)
+          assetType = [v32 assetType];
+          if (assetType <= 0xB)
           {
-            if (((1 << v34) & 0xC1C) != 0)
+            if (((1 << assetType) & 0xC1C) != 0)
             {
               goto LABEL_23;
             }
 
-            if (((1 << v34) & 0x300) != 0)
+            if (((1 << assetType) & 0x300) != 0)
             {
               if ([v33 isANEModel])
               {
-                v35 = [v33 requiredCapabilityIdentifier];
-                if (v25 >= v35)
+                requiredCapabilityIdentifier = [v33 requiredCapabilityIdentifier];
+                if (v25 >= requiredCapabilityIdentifier)
                 {
-                  v36 = v35;
+                  v36 = requiredCapabilityIdentifier;
                   v37 = [v47 objectForKeyedSubscript:v31];
-                  v46 = [v37 requiredCapabilityIdentifier];
+                  requiredCapabilityIdentifier2 = [v37 requiredCapabilityIdentifier];
 
                   v25 = v45;
-                  if (v36 > v46)
+                  if (v36 > requiredCapabilityIdentifier2)
                   {
 LABEL_23:
                     [v47 setObject:v33 forKeyedSubscript:v31];
@@ -1682,27 +1682,27 @@ LABEL_23:
     while (v39);
   }
 
-  v24 = [v47 allValues];
+  allValues = [v47 allValues];
 
   v18 = v43;
-  v17 = v44;
+  v17 = localesCopy;
   v20 = 0;
   v19 = v42;
 LABEL_35:
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return allValues;
 }
 
-+ (id)matchingASRAssetForLocale:(id)a3 error:(id *)a4
++ (id)matchingASRAssetForLocale:(id)locale error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v16[0] = v6;
+  localeCopy = locale;
+  v16[0] = localeCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v15 = 0;
-  v8 = [a1 assetsForLocales:v7 includeTTS:1 error:&v15];
+  v8 = [self assetsForLocales:v7 includeTTS:1 error:&v15];
   v9 = v15;
 
   if (v9)
@@ -1711,18 +1711,18 @@ LABEL_35:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       +[_LTDAssetService matchingASRAssetForLocale:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_4:
       v11 = v9;
       v12 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -1731,7 +1731,7 @@ LABEL_4:
 
   else
   {
-    v12 = [a1 matchingASRAssetInAssets:v8 forLocale:v6];
+    v12 = [self matchingASRAssetInAssets:v8 forLocale:localeCopy];
   }
 
 LABEL_8:
@@ -1741,16 +1741,16 @@ LABEL_8:
   return v12;
 }
 
-+ (id)matchingASRAssetInAssets:(id)a3 forLocale:(id)a4
++ (id)matchingASRAssetInAssets:(id)assets forLocale:(id)locale
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  localeCopy = locale;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v8)
   {
@@ -1766,17 +1766,17 @@ LABEL_8:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if ([v12 isASRModel] && objc_msgSend(v12, "supportsLocale:", v6))
+        if ([v12 isASRModel] && objc_msgSend(v12, "supportsLocale:", localeCopy))
         {
           v14 = _LTOSLogAssets();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             v15 = v14;
-            v16 = [v6 localeIdentifier];
+            localeIdentifier = [localeCopy localeIdentifier];
             *buf = 138412546;
             v24 = v12;
             v25 = 2114;
-            v26 = v16;
+            v26 = localeIdentifier;
             _os_log_impl(&dword_232E53000, v15, OS_LOG_TYPE_DEFAULT, "Found matching ASR asset: %@ in assets for locale: %{public}@", buf, 0x16u);
           }
 
@@ -1803,16 +1803,16 @@ LABEL_14:
   return v13;
 }
 
-+ (BOOL)preflightCheckForLocalePair:(id)a3 withModelURLs:(id)a4
++ (BOOL)preflightCheckForLocalePair:(id)pair withModelURLs:(id)ls
 {
   v94 = *MEMORY[0x277D85DE8];
-  v71 = a3;
+  pairCopy = pair;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v86 objects:v93 count:16];
+  lsCopy = ls;
+  v6 = [lsCopy countByEnumeratingWithState:&v86 objects:v93 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1820,7 +1820,7 @@ LABEL_14:
     v8 = *v87;
     while (2)
     {
-      v9 = v5;
+      v9 = lsCopy;
       for (i = 0; i != v7; ++i)
       {
         if (*v87 != v8)
@@ -1829,9 +1829,9 @@ LABEL_14:
         }
 
         v11 = *(*(&v86 + 1) + 8 * i);
-        v12 = [v11 path];
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
-        v14 = [v13 isReadableFileAtPath:v12];
+        path = [v11 path];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v14 = [defaultManager isReadableFileAtPath:path];
 
         if ((v14 & 1) == 0)
         {
@@ -1842,14 +1842,14 @@ LABEL_14:
           }
 
           v17 = 0;
-          v5 = v9;
-          v18 = v9;
-          v19 = v71;
+          lsCopy = v9;
+          canonicalIdentifier = v9;
+          v19 = pairCopy;
           v20 = v72;
           goto LABEL_65;
         }
 
-        if ([v12 containsString:@"/AssetsV"])
+        if ([path containsString:@"/AssetsV"])
         {
           v15 = v11;
 
@@ -1857,7 +1857,7 @@ LABEL_14:
         }
       }
 
-      v5 = v9;
+      lsCopy = v9;
       v7 = [v9 countByEnumeratingWithState:&v86 objects:v93 count:16];
       if (v7)
       {
@@ -1873,18 +1873,18 @@ LABEL_14:
     v72 = 0;
   }
 
-  v19 = v71;
-  v18 = [v71 canonicalIdentifier];
+  v19 = pairCopy;
+  canonicalIdentifier = [pairCopy canonicalIdentifier];
   v20 = v72;
-  v21 = [v72 path];
-  v22 = [v21 hasSuffix:v18];
+  path2 = [v72 path];
+  v22 = [path2 hasSuffix:canonicalIdentifier];
 
   if (v22)
   {
     v23 = [v72 URLByAppendingPathComponent:@"mt-quasar-config.json"];
-    v24 = [MEMORY[0x277CCAA00] defaultManager];
-    v25 = [v23 path];
-    v26 = [v24 isReadableFileAtPath:v25];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    path3 = [v23 path];
+    v26 = [defaultManager2 isReadableFileAtPath:path3];
 
     if (v26)
     {
@@ -1916,8 +1916,8 @@ LABEL_14:
           v81 = 0u;
           v82 = 0u;
           v68 = v35;
-          v36 = [v35 allKeys];
-          v37 = [v36 countByEnumeratingWithState:&v81 objects:v92 count:16];
+          allKeys = [v35 allKeys];
+          v37 = [allKeys countByEnumeratingWithState:&v81 objects:v92 count:16];
           if (v37)
           {
             v38 = *v82;
@@ -1925,8 +1925,8 @@ LABEL_14:
             v62 = v28;
             v63 = v27;
             v58 = *v82;
-            v59 = v36;
-            v64 = v5;
+            v59 = allKeys;
+            v64 = lsCopy;
             do
             {
               v39 = 0;
@@ -1935,7 +1935,7 @@ LABEL_14:
               {
                 if (*v82 != v38)
                 {
-                  objc_enumerationMutation(v36);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v60 = v39;
@@ -1985,9 +1985,9 @@ LABEL_14:
                               }
 
                               v49 = [v72 URLByAppendingPathComponent:*(*(&v73 + 1) + 8 * k)];
-                              v50 = [MEMORY[0x277CCAA00] defaultManager];
-                              v51 = [v49 path];
-                              v52 = [v50 isReadableFileAtPath:v51];
+                              defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+                              path4 = [v49 path];
+                              v52 = [defaultManager3 isReadableFileAtPath:path4];
 
                               if ((v52 & 1) == 0)
                               {
@@ -2000,11 +2000,11 @@ LABEL_14:
                                 }
 
                                 v17 = 0;
-                                v19 = v71;
+                                v19 = pairCopy;
                                 v20 = v72;
-                                v5 = v64;
+                                lsCopy = v64;
                                 v29 = 0;
-                                v36 = v59;
+                                allKeys = v59;
                                 goto LABEL_62;
                               }
                             }
@@ -2019,17 +2019,17 @@ LABEL_14:
                           }
                         }
 
-                        v19 = v71;
+                        v19 = pairCopy;
                         v20 = v72;
                         v27 = v63;
-                        v5 = v64;
+                        lsCopy = v64;
                         j = v61;
                         v28 = v62;
                         v29 = 0;
                       }
                     }
 
-                    v36 = v59;
+                    allKeys = v59;
                     v66 = [obj countByEnumeratingWithState:&v77 objects:v91 count:16];
                   }
 
@@ -2041,7 +2041,7 @@ LABEL_14:
               }
 
               while (v60 + 1 != v57);
-              v37 = [v36 countByEnumeratingWithState:&v81 objects:v92 count:16];
+              v37 = [allKeys countByEnumeratingWithState:&v81 objects:v92 count:16];
               v38 = v58;
               v17 = 1;
             }

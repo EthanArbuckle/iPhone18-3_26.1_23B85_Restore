@@ -1,20 +1,20 @@
 @interface GQDWPListLabelGeometry
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 @end
 
 @implementation GQDWPListLabelGeometry
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_4290C(a3, qword_A35E8, "scale");
+  sub_4290C(reader, qword_A35E8, "scale");
   *&v5 = v5;
   self->mScale = *&v5;
-  sub_4290C(a3, qword_A35E8, "offset");
+  sub_4290C(reader, qword_A35E8, "offset");
   *&v6 = v6;
   self->mBaselineOffset = *&v6;
-  self->mScaleWithText = sub_42340(a3, qword_A35E8, "scale-with-text", 0);
+  self->mScaleWithText = sub_42340(reader, qword_A35E8, "scale-with-text", 0);
   self->mLabelAlignment = 0;
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "align", *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "align", *(qword_A35E8 + 16));
   if (AttributeNs)
   {
     v8 = AttributeNs;

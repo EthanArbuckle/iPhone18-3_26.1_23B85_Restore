@@ -2,10 +2,10 @@
 - (CLNotifierServiceAdapter)init;
 - (NSString)debugDescription;
 - (id).cxx_construct;
-- (int)notifierClientNumForCoparty:(id)a3;
-- (void)forget:(id)a3;
+- (int)notifierClientNumForCoparty:(id)coparty;
+- (void)forget:(id)forget;
 - (void)invalidate;
-- (void)setAdaptedNotifier:(CLNotifierBase *)a3;
+- (void)setAdaptedNotifier:(CLNotifierBase *)notifier;
 @end
 
 @implementation CLNotifierServiceAdapter
@@ -25,10 +25,10 @@
   return [(CLIntersiloService *)&v3 initWithInboundProtocol:&unk_1F0E786F8 outboundProtocol:&unk_1F0E81490];
 }
 
-- (void)setAdaptedNotifier:(CLNotifierBase *)a3
+- (void)setAdaptedNotifier:(CLNotifierBase *)notifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_universe(self, a2, a3);
+  v5 = objc_msgSend_universe(self, a2, notifier);
   v8 = objc_msgSend_silo(v5, v6, v7);
   objc_msgSend_assertInside(v8, v9, v10);
   if (self->_notifier)
@@ -91,11 +91,11 @@
     goto LABEL_27;
   }
 
-  if (a3)
+  if (notifier)
   {
     if (objc_msgSend_valid(self, v11, v12))
     {
-      self->_notifier = a3;
+      self->_notifier = notifier;
       goto LABEL_5;
     }
 
@@ -171,9 +171,9 @@ LABEL_5:
   self->_notifier = 0;
 }
 
-- (void)forget:(id)a3
+- (void)forget:(id)forget
 {
-  v5 = objc_msgSend_universe(self, a2, a3);
+  v5 = objc_msgSend_universe(self, a2, forget);
   v8 = objc_msgSend_silo(v5, v6, v7);
   objc_msgSend_assertInside(v8, v9, v10);
   p_clients = &self->_clients;
@@ -184,8 +184,8 @@ LABEL_5:
     do
     {
       v14 = *(left + 4);
-      v15 = v14 >= a3;
-      v16 = v14 < a3;
+      v15 = v14 >= forget;
+      v16 = v14 < forget;
       if (v15)
       {
         p_end_node = left;
@@ -195,7 +195,7 @@ LABEL_5:
     }
 
     while (left);
-    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= a3)
+    if (p_end_node != &self->_clients.__tree_.__end_node_ && p_end_node[4].__left_ <= forget)
     {
       (*(self->_notifier->var0 + 4))(self->_notifier, LODWORD(p_end_node[5].__left_));
       v17 = p_end_node[1].__left_;
@@ -237,10 +237,10 @@ LABEL_5:
   }
 }
 
-- (int)notifierClientNumForCoparty:(id)a3
+- (int)notifierClientNumForCoparty:(id)coparty
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_universe(self, a2, a3);
+  v5 = objc_msgSend_universe(self, a2, coparty);
   v8 = objc_msgSend_silo(v5, v6, v7);
   objc_msgSend_assertInside(v8, v9, v10);
   notifier = self->_notifier;
@@ -316,8 +316,8 @@ LABEL_5:
   do
   {
     v15 = *(left + 4);
-    v16 = v15 >= a3;
-    v17 = v15 < a3;
+    v16 = v15 >= coparty;
+    v17 = v15 < coparty;
     if (v16)
     {
       v14 = left;
@@ -327,7 +327,7 @@ LABEL_5:
   }
 
   while (left);
-  if (v14 != p_end_node && v14[4].__left_ <= a3)
+  if (v14 != p_end_node && v14[4].__left_ <= coparty)
   {
     v18 = v14[5].__left_;
   }
@@ -335,7 +335,7 @@ LABEL_5:
   else
   {
 LABEL_10:
-    v18 = (*(notifier->var0 + 3))(notifier, a3);
+    v18 = (*(notifier->var0 + 3))(notifier, coparty);
     v19 = p_end_node->__left_;
     if (!p_end_node->__left_)
     {
@@ -349,7 +349,7 @@ LABEL_16:
       {
         v20 = v19;
         v21 = v19[4];
-        if (v21 <= a3)
+        if (v21 <= coparty)
         {
           break;
         }
@@ -361,7 +361,7 @@ LABEL_16:
         }
       }
 
-      if (v21 >= a3)
+      if (v21 >= coparty)
       {
         break;
       }

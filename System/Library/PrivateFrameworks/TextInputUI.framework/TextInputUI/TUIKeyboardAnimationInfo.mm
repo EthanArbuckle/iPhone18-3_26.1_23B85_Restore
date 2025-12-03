@@ -2,7 +2,7 @@
 + (id)defaultInfo;
 + (id)infoForInteractiveTransition;
 - (id)description;
-- (void)setNotificationInfo:(id)a3;
+- (void)setNotificationInfo:(id)info;
 @end
 
 @implementation TUIKeyboardAnimationInfo
@@ -25,9 +25,9 @@
   v22 = objc_opt_class();
   [(TUIKeyboardAnimationInfo *)self duration];
   v4 = v3;
-  v5 = [(TUIKeyboardAnimationInfo *)self isLocalKeyboard];
+  isLocalKeyboard = [(TUIKeyboardAnimationInfo *)self isLocalKeyboard];
   v6 = @"from remote keyboard";
-  if (v5)
+  if (isLocalKeyboard)
   {
     v6 = @"from local keyboard";
   }
@@ -53,12 +53,12 @@
     v8 = @" not";
   }
 
-  v9 = [(TUIKeyboardAnimationInfo *)self animationType];
-  v10 = [(TUIKeyboardAnimationInfo *)self notificationInfo];
-  v11 = v10;
-  if (v10)
+  animationType = [(TUIKeyboardAnimationInfo *)self animationType];
+  notificationInfo = [(TUIKeyboardAnimationInfo *)self notificationInfo];
+  v11 = notificationInfo;
+  if (notificationInfo)
   {
-    v12 = v10;
+    v12 = notificationInfo;
   }
 
   else
@@ -66,11 +66,11 @@
     v12 = @"no notification info";
   }
 
-  v13 = [(TUIKeyboardAnimationInfo *)self notificationsDebugString];
-  v14 = v13;
-  if (v13)
+  notificationsDebugString = [(TUIKeyboardAnimationInfo *)self notificationsDebugString];
+  v14 = notificationsDebugString;
+  if (notificationsDebugString)
   {
-    v15 = v13;
+    v15 = notificationsDebugString;
   }
 
   else
@@ -78,11 +78,11 @@
     v15 = @"notificationsDebug: ";
   }
 
-  v16 = [(TUIKeyboardAnimationInfo *)self notificationsDebugString];
-  v17 = v16;
-  if (v16)
+  notificationsDebugString2 = [(TUIKeyboardAnimationInfo *)self notificationsDebugString];
+  v17 = notificationsDebugString2;
+  if (notificationsDebugString2)
   {
-    v18 = v16;
+    v18 = notificationsDebugString2;
   }
 
   else
@@ -90,18 +90,18 @@
     v18 = &stru_1F03BA8F8;
   }
 
-  v19 = [v23 stringWithFormat:@"<%@: %p, duration: %0.2f, %@, is%@ rotating, should%@ animate, type: %li, notificationInfo: %@%@%@>", v22, self, v4, v21, v7, v8, v9, v12, v15, v18];
+  v19 = [v23 stringWithFormat:@"<%@: %p, duration: %0.2f, %@, is%@ rotating, should%@ animate, type: %li, notificationInfo: %@%@%@>", v22, self, v4, v21, v7, v8, animationType, v12, v15, v18];
 
   return v19;
 }
 
-- (void)setNotificationInfo:(id)a3
+- (void)setNotificationInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DebugString"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKey:@"DebugString"];
   [(TUIKeyboardAnimationInfo *)self setNotificationsDebugString:v5];
 
-  v6 = [v4 mutableCopy];
+  v6 = [infoCopy mutableCopy];
   [(NSDictionary *)v6 removeObjectForKey:@"DebugString"];
   notificationInfo = self->_notificationInfo;
   self->_notificationInfo = v6;

@@ -4,19 +4,19 @@
 - (OpaqueCMClock)copyAudioClock;
 - (REProxyAudioClockManager)init;
 - (id).cxx_construct;
-- (void)_addClock:(OpaqueCMClock *)a3;
-- (void)_removeClock:(OpaqueCMClock *)a3;
-- (void)_routeChangeOrMediaServicesReset:(id)a3;
-- (void)_setAudioClock:(OpaqueCMClock *)a3;
+- (void)_addClock:(OpaqueCMClock *)clock;
+- (void)_removeClock:(OpaqueCMClock *)clock;
+- (void)_routeChangeOrMediaServicesReset:(id)reset;
+- (void)_setAudioClock:(OpaqueCMClock *)clock;
 - (void)_setUp;
 - (void)_tearDown;
-- (void)_updateClock:(OpaqueCMClock *)a3;
+- (void)_updateClock:(OpaqueCMClock *)clock;
 - (void)_updateClocks;
-- (void)_updateClocksWithRate:(double)a3 ownTime:(id *)a4 referenceTime:(id *)a5;
-- (void)addClock:(OpaqueCMClock *)a3;
+- (void)_updateClocksWithRate:(double)rate ownTime:(id *)time referenceTime:(id *)referenceTime;
+- (void)addClock:(OpaqueCMClock *)clock;
 - (void)dealloc;
-- (void)removeClock:(OpaqueCMClock *)a3;
-- (void)routeChangeOrMediaServicesReset:(id)a3;
+- (void)removeClock:(OpaqueCMClock *)clock;
+- (void)routeChangeOrMediaServicesReset:(id)reset;
 @end
 
 @implementation REProxyAudioClockManager
@@ -110,11 +110,11 @@ void __42__REProxyAudioClockManager_sharedInstance__block_invoke()
     objc_copyWeak(&v13, &location);
     dispatch_source_set_event_handler(v6, &v9);
     dispatch_resume(self->_timer);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:self selector:sel_routeChangeOrMediaServicesReset_ name:*MEMORY[0x1E698D5C0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_routeChangeOrMediaServicesReset_ name:*MEMORY[0x1E698D5C0] object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_routeChangeOrMediaServicesReset_ name:*MEMORY[0x1E698D6D0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_routeChangeOrMediaServicesReset_ name:*MEMORY[0x1E698D6D0] object:0];
 
     self->_initialized = 1;
     objc_destroyWeak(&v13);
@@ -190,11 +190,11 @@ void __34__REProxyAudioClockManager__setUp__block_invoke_9(uint64_t a1)
     v13 = &unk_1E8721D50;
     objc_copyWeak(&v14, location);
     dispatch_async(audioClockUpdateQueue, &v10);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x1E698D5C0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E698D5C0] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:*MEMORY[0x1E698D6D0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E698D6D0] object:0];
 
     self->_initialized = 0;
     objc_destroyWeak(&v14);
@@ -213,7 +213,7 @@ void __37__REProxyAudioClockManager__tearDown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_routeChangeOrMediaServicesReset:(id)a3
+- (void)_routeChangeOrMediaServicesReset:(id)reset
 {
   if (self->_initialized)
   {
@@ -223,16 +223,16 @@ void __37__REProxyAudioClockManager__tearDown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addClock:(OpaqueCMClock *)a3
+- (void)_addClock:(OpaqueCMClock *)clock
 {
   if (!self->_clocks.__table_.__size_)
   {
     [(REProxyAudioClockManager *)self _setUp];
   }
 
-  [(REProxyAudioClockManager *)self _updateClock:a3];
-  v5 = 0x9DDFEA08EB382D69 * ((8 * (a3 & 0x1FFFFFFF) + 8) ^ (a3 >> 32));
-  v6 = 0x9DDFEA08EB382D69 * ((a3 >> 32) ^ (v5 >> 47) ^ v5);
+  [(REProxyAudioClockManager *)self _updateClock:clock];
+  v5 = 0x9DDFEA08EB382D69 * ((8 * (clock & 0x1FFFFFFF) + 8) ^ (clock >> 32));
+  v6 = 0x9DDFEA08EB382D69 * ((clock >> 32) ^ (v5 >> 47) ^ v5);
   v7 = 0x9DDFEA08EB382D69 * (v6 ^ (v6 >> 47));
   size = self->_clocks.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -297,13 +297,13 @@ LABEL_19:
     }
   }
 
-  if (v12[2] != a3)
+  if (v12[2] != clock)
   {
     goto LABEL_19;
   }
 }
 
-- (void)_removeClock:(OpaqueCMClock *)a3
+- (void)_removeClock:(OpaqueCMClock *)clock
 {
   size = self->_clocks.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -311,8 +311,8 @@ LABEL_19:
     goto LABEL_47;
   }
 
-  v5 = 0x9DDFEA08EB382D69 * ((8 * (a3 & 0x1FFFFFFF) + 8) ^ (a3 >> 32));
-  v6 = 0x9DDFEA08EB382D69 * ((a3 >> 32) ^ (v5 >> 47) ^ v5);
+  v5 = 0x9DDFEA08EB382D69 * ((8 * (clock & 0x1FFFFFFF) + 8) ^ (clock >> 32));
+  v6 = 0x9DDFEA08EB382D69 * ((clock >> 32) ^ (v5 >> 47) ^ v5);
   v7 = 0x9DDFEA08EB382D69 * (v6 ^ (v6 >> 47));
   v8 = vcnt_s8(size);
   v8.i16[0] = vaddlv_u8(v8);
@@ -378,7 +378,7 @@ LABEL_17:
     }
   }
 
-  if (v12[2].__next_ != a3)
+  if (v12[2].__next_ != clock)
   {
     goto LABEL_17;
   }
@@ -498,7 +498,7 @@ LABEL_47:
   }
 }
 
-- (void)_updateClock:(OpaqueCMClock *)a3
+- (void)_updateClock:(OpaqueCMClock *)clock
 {
   DerivedStorage = FigDerivedClockGetDerivedStorage();
   if (DerivedStorage)
@@ -517,14 +517,14 @@ LABEL_47:
   }
 }
 
-- (void)_updateClocksWithRate:(double)a3 ownTime:(id *)a4 referenceTime:(id *)a5
+- (void)_updateClocksWithRate:(double)rate ownTime:(id *)time referenceTime:(id *)referenceTime
 {
-  self->_rateRelativeToHost = a3;
-  v5 = *&a4->var0;
-  self->_ownTimelineAnchor.epoch = a4->var3;
+  self->_rateRelativeToHost = rate;
+  v5 = *&time->var0;
+  self->_ownTimelineAnchor.epoch = time->var3;
   *&self->_ownTimelineAnchor.value = v5;
-  v6 = *&a5->var0;
-  self->_referenceTimelineAnchor.epoch = a5->var3;
+  v6 = *&referenceTime->var0;
+  self->_referenceTimelineAnchor.epoch = referenceTime->var3;
   *&self->_referenceTimelineAnchor.value = v6;
   for (i = self->_clocks.__table_.__first_node_.__next_; i; i = *i)
   {
@@ -535,10 +535,10 @@ LABEL_47:
 - (void)_updateClocks
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(REProxyAudioClockManager *)self _copyAudioClock];
-  if (v3)
+  _copyAudioClock = [(REProxyAudioClockManager *)self _copyAudioClock];
+  if (_copyAudioClock)
   {
-    v4 = v3;
+    v4 = _copyAudioClock;
     outRelativeRate = 0.0;
     HostTimeClock = CMClockGetHostTimeClock();
     RelativeRateAndAnchorTime = CMSyncGetRelativeRateAndAnchorTime(v4, HostTimeClock, &outRelativeRate, &outOfClockOrTimebaseAnchorTime, &outRelativeToClockOrTimebaseAnchorTime);
@@ -618,15 +618,15 @@ uint64_t __42__REProxyAudioClockManager_copyAudioClock__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_setAudioClock:(OpaqueCMClock *)a3
+- (void)_setAudioClock:(OpaqueCMClock *)clock
 {
-  if (a3)
+  if (clock)
   {
-    CFRetain(a3);
+    CFRetain(clock);
   }
 
   audioClock = self->_audioClock;
-  self->_audioClock = a3;
+  self->_audioClock = clock;
   if (audioClock)
   {
 
@@ -634,21 +634,21 @@ uint64_t __42__REProxyAudioClockManager_copyAudioClock__block_invoke(uint64_t a1
   }
 }
 
-- (void)routeChangeOrMediaServicesReset:(id)a3
+- (void)routeChangeOrMediaServicesReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__REProxyAudioClockManager_routeChangeOrMediaServicesReset___block_invoke;
   v7[3] = &unk_1E8721DC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resetCopy;
+  v6 = resetCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addClock:(OpaqueCMClock *)a3
+- (void)addClock:(OpaqueCMClock *)clock
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -656,11 +656,11 @@ uint64_t __42__REProxyAudioClockManager_copyAudioClock__block_invoke(uint64_t a1
   v4[2] = __37__REProxyAudioClockManager_addClock___block_invoke;
   v4[3] = &unk_1E871AD90;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = clock;
   dispatch_sync(queue, v4);
 }
 
-- (void)removeClock:(OpaqueCMClock *)a3
+- (void)removeClock:(OpaqueCMClock *)clock
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -668,7 +668,7 @@ uint64_t __42__REProxyAudioClockManager_copyAudioClock__block_invoke(uint64_t a1
   v4[2] = __40__REProxyAudioClockManager_removeClock___block_invoke;
   v4[3] = &unk_1E871AD90;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = clock;
   dispatch_sync(queue, v4);
 }
 

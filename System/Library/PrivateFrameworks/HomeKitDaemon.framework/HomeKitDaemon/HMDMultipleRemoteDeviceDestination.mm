@@ -1,9 +1,9 @@
 @interface HMDMultipleRemoteDeviceDestination
 - (HMDMultipleRemoteDeviceDestination)init;
-- (HMDMultipleRemoteDeviceDestination)initWithTarget:(id)a3 devices:(id)a4;
+- (HMDMultipleRemoteDeviceDestination)initWithTarget:(id)target devices:(id)devices;
 - (id)allRemoteDestinationStrings;
 - (id)remoteDestinationString;
-- (id)remoteDestinationStringForDevice:(id)a3;
+- (id)remoteDestinationStringForDevice:(id)device;
 @end
 
 @implementation HMDMultipleRemoteDeviceDestination
@@ -67,48 +67,48 @@ id __65__HMDMultipleRemoteDeviceDestination_allRemoteDestinationStrings__block_i
   return v5;
 }
 
-- (id)remoteDestinationStringForDevice:(id)a3
+- (id)remoteDestinationStringForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 remoteDestinationString];
-  v5 = v4;
-  if (v4 && ([v4 hasSuffix:@"inbox.appleid.apple.com"] & 1) == 0)
+  deviceCopy = device;
+  remoteDestinationString = [deviceCopy remoteDestinationString];
+  v5 = remoteDestinationString;
+  if (remoteDestinationString && ([remoteDestinationString hasSuffix:@"inbox.appleid.apple.com"] & 1) == 0)
   {
-    v11 = v5;
+    remoteDestinationString2 = v5;
   }
 
   else
   {
-    v6 = [v3 account];
-    v7 = [v6 isCurrentAccount];
+    account = [deviceCopy account];
+    isCurrentAccount = [account isCurrentAccount];
 
-    if (v7)
+    if (isCurrentAccount)
     {
-      v8 = [v3 localHandles];
-      v9 = [v8 firstObject];
+      localHandles = [deviceCopy localHandles];
+      firstObject = [localHandles firstObject];
 
-      if (v9)
+      if (firstObject)
       {
-        v10 = [v9 destination];
+        destination = [firstObject destination];
 
         goto LABEL_9;
       }
     }
 
-    v11 = [v3 remoteDestinationString];
+    remoteDestinationString2 = [deviceCopy remoteDestinationString];
   }
 
-  v10 = v11;
+  destination = remoteDestinationString2;
 LABEL_9:
 
-  return v10;
+  return destination;
 }
 
 - (id)remoteDestinationString
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
@@ -123,19 +123,19 @@ LABEL_9:
   return 0;
 }
 
-- (HMDMultipleRemoteDeviceDestination)initWithTarget:(id)a3 devices:(id)a4
+- (HMDMultipleRemoteDeviceDestination)initWithTarget:(id)target devices:(id)devices
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  targetCopy = target;
+  devicesCopy = devices;
+  if ([devicesCopy count])
   {
     v13.receiver = self;
     v13.super_class = HMDMultipleRemoteDeviceDestination;
-    v8 = [(HMFMessageDestination *)&v13 initWithTarget:v6];
+    v8 = [(HMFMessageDestination *)&v13 initWithTarget:targetCopy];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_devices, a4);
+      objc_storeStrong(&v8->_devices, devices);
     }
 
     return v9;

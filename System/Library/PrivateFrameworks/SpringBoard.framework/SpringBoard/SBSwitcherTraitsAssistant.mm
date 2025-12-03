@@ -1,28 +1,28 @@
 @interface SBSwitcherTraitsAssistant
 - (BOOL)_isContentContainerAspectRatioPortrait;
-- (BOOL)_updateGuidingSpecifiersIfNeededForParticipants:(id)a3 sceneHandleProviderBlock:(id)a4;
-- (SBSwitcherTraitsAssistant)initWithTraitsArbiter:(id)a3 switcherParticipant:(id)a4 delegate:(id)a5;
+- (BOOL)_updateGuidingSpecifiersIfNeededForParticipants:(id)participants sceneHandleProviderBlock:(id)block;
+- (SBSwitcherTraitsAssistant)initWithTraitsArbiter:(id)arbiter switcherParticipant:(id)participant delegate:(id)delegate;
 - (SBSwitcherTraitsAssistantDelegate)delegate;
 - (TRAArbiter)traitsArbiter;
 - (TRAParticipant)switcherParticipant;
 - (id)_guidingLandscapeOnlyLiveOverlay;
 - (id)_guidingPortraitOnlyLiveOverlay;
-- (id)_guidingSceneOrientationRequestParticipantWithMask:(unint64_t)a3;
+- (id)_guidingSceneOrientationRequestParticipantWithMask:(unint64_t)mask;
 - (id)_stateCaptureDescription;
-- (void)_addGuidingParticipantsIdentifiersToArray:(id)a3;
+- (void)_addGuidingParticipantsIdentifiersToArray:(id)array;
 - (void)_addGuidingSpecifierIfNeeded;
 - (void)_evaluateIfGuidingSpecifierIsSillNeeded;
-- (void)_handleOrientationLockRequest:(id)a3;
-- (void)_handleUpdateRequest:(id)a3;
-- (void)_setupGuidingRelationshipIfNeededForParticipant:(id)a3 withSceneHandle:(id)a4;
+- (void)_handleOrientationLockRequest:(id)request;
+- (void)_handleUpdateRequest:(id)request;
+- (void)_setupGuidingRelationshipIfNeededForParticipant:(id)participant withSceneHandle:(id)handle;
 - (void)_setupPolicySpecifierIfNeeded;
 - (void)_setupStateCapture;
-- (void)_updateAcquiredParticipantsPolicies:(id)a3;
-- (void)_updateArbitrationForElementsParticipants:(id)a3 sceneHandleProviderBlock:(id)a4 forceResolution:(BOOL)a5 reason:(id)a6;
-- (void)createTraitsParticipantsForLayoutElements:(id)a3 outParticipantsByElementIdentifier:(id *)a4 outDelegatesByParticipant:(id *)a5 outPrimaryDelegate:(id *)a6;
+- (void)_updateAcquiredParticipantsPolicies:(id)policies;
+- (void)_updateArbitrationForElementsParticipants:(id)participants sceneHandleProviderBlock:(id)block forceResolution:(BOOL)resolution reason:(id)reason;
+- (void)createTraitsParticipantsForLayoutElements:(id)elements outParticipantsByElementIdentifier:(id *)identifier outDelegatesByParticipant:(id *)participant outPrimaryDelegate:(id *)delegate;
 - (void)dealloc;
-- (void)updateAllParticipants:(id)a3 withPrimaryDelegate:(id)a4 nonPrimaryPolicy:(int64_t)a5 primaryPolicy:(int64_t)a6 ownPolicy:(int64_t)a7;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
+- (void)updateAllParticipants:(id)participants withPrimaryDelegate:(id)delegate nonPrimaryPolicy:(int64_t)policy primaryPolicy:(int64_t)primaryPolicy ownPolicy:(int64_t)ownPolicy;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
 @end
 
 @implementation SBSwitcherTraitsAssistant
@@ -63,8 +63,8 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v4 = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allValues];
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      allValues = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allValues];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         v6 = v5;
@@ -76,14 +76,14 @@
           {
             if (*v14 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v13 + 1) + 8 * v8++) invalidate];
           }
 
           while (v6 != v8);
-          v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v6);
@@ -111,48 +111,48 @@ void __57__SBSwitcherTraitsAssistant__addGuidingSpecifierIfNeeded__block_invoke(
   [WeakRetained _updateAcquiredParticipantsPolicies:v3];
 }
 
-- (SBSwitcherTraitsAssistant)initWithTraitsArbiter:(id)a3 switcherParticipant:(id)a4 delegate:(id)a5
+- (SBSwitcherTraitsAssistant)initWithTraitsArbiter:(id)arbiter switcherParticipant:(id)participant delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arbiterCopy = arbiter;
+  participantCopy = participant;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = SBSwitcherTraitsAssistant;
   v11 = [(SBSwitcherTraitsAssistant *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeWeak(&v12->_traitsArbiter, v8);
-    objc_storeWeak(&v12->_switcherParticipant, v9);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeWeak(&v12->_traitsArbiter, arbiterCopy);
+    objc_storeWeak(&v12->_switcherParticipant, participantCopy);
     v13 = [SBTraitsSwitcherPolicySpecifier alloc];
     v14 = MEMORY[0x277CCABB0];
-    [v9 currentZOrderLevel];
+    [participantCopy currentZOrderLevel];
     v15 = [v14 numberWithDouble:?];
-    v16 = [(SBTraitsSwitcherPolicySpecifier *)v13 initWithComponentOrder:v15 arbiter:v8];
+    v16 = [(SBTraitsSwitcherPolicySpecifier *)v13 initWithComponentOrder:v15 arbiter:arbiterCopy];
     switcherPolicySpecifier = v12->_switcherPolicySpecifier;
     v12->_switcherPolicySpecifier = v16;
 
     v18 = [SBTraitsSwitcherLiveOverlayPolicySpecifier alloc];
     v19 = MEMORY[0x277CCABB0];
-    [v9 currentZOrderLevel];
+    [participantCopy currentZOrderLevel];
     v20 = [v19 numberWithDouble:?];
-    v21 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)v18 initWithComponentOrder:v20 arbiter:v8];
+    v21 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)v18 initWithComponentOrder:v20 arbiter:arbiterCopy];
     liveOverlaysPolicySpecifier = v12->_liveOverlaysPolicySpecifier;
     v12->_liveOverlaysPolicySpecifier = v21;
 
-    v23 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     participantUniqueIDToAssociatedParticipantMap = v12->_participantUniqueIDToAssociatedParticipantMap;
-    v12->_participantUniqueIDToAssociatedParticipantMap = v23;
+    v12->_participantUniqueIDToAssociatedParticipantMap = dictionary;
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v12 selector:sel__handleUpdateRequest_ name:@"SBClassicPhoneSceneOrientationPreferenceChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__handleUpdateRequest_ name:@"SBClassicPhoneSceneOrientationPreferenceChanged" object:0];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v12 selector:sel__handleUpdateRequest_ name:@"SBSceneGeometryOrientationRequestedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel__handleUpdateRequest_ name:@"SBSceneGeometryOrientationRequestedNotification" object:0];
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v12 selector:sel__handleOrientationLockRequest_ name:@"SBSceneOrientationLockRequestedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v12 selector:sel__handleOrientationLockRequest_ name:@"SBSceneOrientationLockRequestedNotification" object:0];
 
     [(SBSwitcherTraitsAssistant *)v12 _setupStateCapture];
   }
@@ -162,8 +162,8 @@ void __57__SBSwitcherTraitsAssistant__addGuidingSpecifierIfNeeded__block_invoke(
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBTraitsPipelineBlockBasedPolicySpecifier *)self->_blockBasedPolicySpecifier invalidate];
   [(SBAbstractTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier invalidate];
@@ -177,8 +177,8 @@ void __57__SBSwitcherTraitsAssistant__addGuidingSpecifierIfNeeded__block_invoke(
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained stateCaptureTitlePreamble];
-  v6 = [v3 stringWithFormat:@"%@ - SBSwitcherTraitsAssistant", v5];
+  stateCaptureTitlePreamble = [WeakRetained stateCaptureTitlePreamble];
+  v6 = [v3 stringWithFormat:@"%@ - SBSwitcherTraitsAssistant", stateCaptureTitlePreamble];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85CD0];
@@ -242,26 +242,26 @@ id __47__SBSwitcherTraitsAssistant__setupStateCapture__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)createTraitsParticipantsForLayoutElements:(id)a3 outParticipantsByElementIdentifier:(id *)a4 outDelegatesByParticipant:(id *)a5 outPrimaryDelegate:(id *)a6
+- (void)createTraitsParticipantsForLayoutElements:(id)elements outParticipantsByElementIdentifier:(id *)identifier outDelegatesByParticipant:(id *)participant outPrimaryDelegate:(id *)delegate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v27 = a5;
-  v28 = a4;
-  *a4 = 0;
-  *a5 = 0;
-  v10 = [v9 count];
+  elementsCopy = elements;
+  participantCopy = participant;
+  identifierCopy = identifier;
+  *identifier = 0;
+  *participant = 0;
+  v10 = [elementsCopy count];
   if (v10)
   {
     v11 = v10;
-    v23 = v9;
-    *a4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v10];
-    *v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v11];
+    v23 = elementsCopy;
+    *identifier = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v10];
+    *participantCopy = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v11];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v9;
+    obj = elementsCopy;
     v12 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v12)
     {
@@ -276,9 +276,9 @@ id __47__SBSwitcherTraitsAssistant__setupStateCapture__block_invoke(uint64_t a1)
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
-          v15 = [v14 layoutRole];
+          layoutRole = [v14 layoutRole];
           WeakRetained = objc_loadWeakRetained(&self->_traitsArbiter);
-          v17 = [v14 uniqueIdentifier];
+          uniqueIdentifier = [v14 uniqueIdentifier];
           v18 = objc_loadWeakRetained(&self->_delegate);
           v19 = [v18 sceneHandleForLayoutElement:v14];
 
@@ -297,12 +297,12 @@ id __47__SBSwitcherTraitsAssistant__setupStateCapture__block_invoke(uint64_t a1)
           objc_copyWeak(&v31, &from);
           v29[4] = self;
           [(SBTraitsSceneParticipantDelegate *)v20 setActuateOrientationAlongsideBlock:v29];
-          [*v28 setObject:v21 forKey:v17];
-          [*v27 setObject:v20 forKey:v21];
-          if (v15 == 1)
+          [*identifierCopy setObject:v21 forKey:uniqueIdentifier];
+          [*participantCopy setObject:v20 forKey:v21];
+          if (layoutRole == 1)
           {
             v22 = v20;
-            *a6 = v20;
+            *delegate = v20;
           }
 
           objc_destroyWeak(&v31);
@@ -317,7 +317,7 @@ id __47__SBSwitcherTraitsAssistant__setupStateCapture__block_invoke(uint64_t a1)
       while (v12);
     }
 
-    v9 = v23;
+    elementsCopy = v23;
   }
 }
 
@@ -345,38 +345,38 @@ void __151__SBSwitcherTraitsAssistant_createTraitsParticipantsForLayoutElements_
   }
 }
 
-- (void)updateAllParticipants:(id)a3 withPrimaryDelegate:(id)a4 nonPrimaryPolicy:(int64_t)a5 primaryPolicy:(int64_t)a6 ownPolicy:(int64_t)a7
+- (void)updateAllParticipants:(id)participants withPrimaryDelegate:(id)delegate nonPrimaryPolicy:(int64_t)policy primaryPolicy:(int64_t)primaryPolicy ownPolicy:(int64_t)ownPolicy
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier primaryElementResolutionPolicy];
-  v15 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier primaryElementResolutionPolicy];
-  v16 = [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier resolutionPolicy];
-  v19 = v14 != a6 || v15 != a5 || v16 != a7;
-  v20 = [v13 participant];
-  v21 = [v20 uniqueIdentifier];
+  participantsCopy = participants;
+  delegateCopy = delegate;
+  primaryElementResolutionPolicy = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier primaryElementResolutionPolicy];
+  primaryElementResolutionPolicy2 = [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier primaryElementResolutionPolicy];
+  resolutionPolicy = [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier resolutionPolicy];
+  v19 = primaryElementResolutionPolicy != primaryPolicy || primaryElementResolutionPolicy2 != policy || resolutionPolicy != ownPolicy;
+  participant = [delegateCopy participant];
+  uniqueIdentifier = [participant uniqueIdentifier];
 
-  [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier setResolutionPolicy:a7];
-  [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier setPrimaryElementParticipantIdentifier:v21];
-  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setPrimaryElementResolutionPolicy:a6];
-  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setPrimaryElementParticipantIdentifier:v21];
-  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setNonPrimaryResolutionPolicy:a5];
-  v22 = [v12 allKeys];
+  [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier setResolutionPolicy:ownPolicy];
+  [(SBTraitsSwitcherPolicySpecifier *)self->_switcherPolicySpecifier setPrimaryElementParticipantIdentifier:uniqueIdentifier];
+  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setPrimaryElementResolutionPolicy:primaryPolicy];
+  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setPrimaryElementParticipantIdentifier:uniqueIdentifier];
+  [(SBTraitsSwitcherLiveOverlayPolicySpecifier *)self->_liveOverlaysPolicySpecifier setNonPrimaryResolutionPolicy:policy];
+  allKeys = [participantsCopy allKeys];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __112__SBSwitcherTraitsAssistant_updateAllParticipants_withPrimaryDelegate_nonPrimaryPolicy_primaryPolicy_ownPolicy___block_invoke;
   v36[3] = &unk_2783B0D78;
-  v23 = v12;
+  v23 = participantsCopy;
   v37 = v23;
-  [(SBSwitcherTraitsAssistant *)self _updateArbitrationForElementsParticipants:v22 sceneHandleProviderBlock:v36 forceResolution:v19 reason:@"Layout State update"];
+  [(SBSwitcherTraitsAssistant *)self _updateArbitrationForElementsParticipants:allKeys sceneHandleProviderBlock:v36 forceResolution:v19 reason:@"Layout State update"];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v24 = [v23 allValues];
-  v25 = [v24 countByEnumeratingWithState:&v32 objects:v42 count:16];
+  allValues = [v23 allValues];
+  v25 = [allValues countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v25)
   {
     v26 = v25;
@@ -388,14 +388,14 @@ void __151__SBSwitcherTraitsAssistant_createTraitsParticipantsForLayoutElements_
       {
         if (*v33 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v32 + 1) + 8 * v28++) updateOrientationLockGrantedIfNeeded:a7 == 5];
+        [*(*(&v32 + 1) + 8 * v28++) updateOrientationLockGrantedIfNeeded:ownPolicy == 5];
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v32 objects:v42 count:16];
+      v26 = [allValues countByEnumeratingWithState:&v32 objects:v42 count:16];
     }
 
     while (v26);
@@ -404,8 +404,8 @@ void __151__SBSwitcherTraitsAssistant_createTraitsParticipantsForLayoutElements_
   v29 = SBLogCommon();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = SBStringFromSwitcherOrientationPolicy(a7);
-    v31 = SBStringFromSwitcherLiveOverlayOrientationPolicy(a5);
+    v30 = SBStringFromSwitcherOrientationPolicy(ownPolicy);
+    v31 = SBStringFromSwitcherLiveOverlayOrientationPolicy(policy);
     *buf = 138412546;
     v39 = v30;
     v40 = 2112;
@@ -426,21 +426,21 @@ id __112__SBSwitcherTraitsAssistant_updateAllParticipants_withPrimaryDelegate_no
   return v7;
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_guidingLandscapeOnlyParticipant == v6)
+  participantCopy = participant;
+  updaterCopy = updater;
+  v8 = updaterCopy;
+  if (self->_guidingLandscapeOnlyParticipant == participantCopy)
   {
     v17 = &__block_literal_global_89;
 LABEL_16:
-    [v7 updateOrientationPreferencesWithBlock:v17];
+    [updaterCopy updateOrientationPreferencesWithBlock:v17];
     goto LABEL_17;
   }
 
-  if (self->_guidingPortraitOnlyParticipant == v6)
+  if (self->_guidingPortraitOnlyParticipant == participantCopy)
   {
     v17 = &__block_literal_global_47_0;
     goto LABEL_16;
@@ -450,8 +450,8 @@ LABEL_16:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -462,13 +462,13 @@ LABEL_16:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
         v15 = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap objectForKey:v14];
         v16 = v15;
-        if (v15 == v6)
+        if (v15 == participantCopy)
         {
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
@@ -481,7 +481,7 @@ LABEL_16:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -503,33 +503,33 @@ void __69__SBSwitcherTraitsAssistant_updatePreferencesForParticipant_updater___b
   [v3 setSupportedOrientations:{objc_msgSend(v2, "unsignedIntValue")}];
 }
 
-- (void)_setupGuidingRelationshipIfNeededForParticipant:(id)a3 withSceneHandle:(id)a4
+- (void)_setupGuidingRelationshipIfNeededForParticipant:(id)participant withSceneHandle:(id)handle
 {
-  v22 = a3;
-  v6 = a4;
-  if (!v6)
+  participantCopy = participant;
+  handleCopy = handle;
+  if (!handleCopy)
   {
     goto LABEL_28;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v6 application];
-  v9 = [WeakRetained windowManagementContext];
-  v10 = [v9 isChamoisOrFlexibleWindowing];
+  application = [handleCopy application];
+  windowManagementContext = [WeakRetained windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if ([v8 isMedusaCapable] & 1) != 0 || (objc_msgSend(v8, "isSetup"))
+  if ([application isMedusaCapable] & 1) != 0 || (objc_msgSend(application, "isSetup"))
   {
     goto LABEL_4;
   }
 
-  if ([v8 classicAppPhoneAppRunningOnPad])
+  if ([application classicAppPhoneAppRunningOnPad])
   {
-    v11 = [(SBSwitcherTraitsAssistant *)self _guidingPortraitOnlyLiveOverlay];
-    if ([v6 _classicAppPhoneOnPadSupportsOldStyleMixedOrientation] && objc_msgSend(v6, "_classicAppPhoneOnPadPrefersLandscape"))
+    _guidingPortraitOnlyLiveOverlay = [(SBSwitcherTraitsAssistant *)self _guidingPortraitOnlyLiveOverlay];
+    if ([handleCopy _classicAppPhoneOnPadSupportsOldStyleMixedOrientation] && objc_msgSend(handleCopy, "_classicAppPhoneOnPadPrefersLandscape"))
     {
-      v17 = [(SBSwitcherTraitsAssistant *)self _guidingLandscapeOnlyLiveOverlay];
+      _guidingLandscapeOnlyLiveOverlay = [(SBSwitcherTraitsAssistant *)self _guidingLandscapeOnlyLiveOverlay];
 
-      v11 = v17;
+      _guidingPortraitOnlyLiveOverlay = _guidingLandscapeOnlyLiveOverlay;
     }
 
     goto LABEL_5;
@@ -538,7 +538,7 @@ void __69__SBSwitcherTraitsAssistant_updatePreferencesForParticipant_updater___b
   if (![WeakRetained isOnExtendedDisplay])
   {
 LABEL_4:
-    v11 = 0;
+    _guidingPortraitOnlyLiveOverlay = 0;
   }
 
   else
@@ -552,35 +552,35 @@ LABEL_4:
     {
       [(SBSwitcherTraitsAssistant *)self _guidingLandscapeOnlyLiveOverlay];
     }
-    v11 = ;
+    _guidingPortraitOnlyLiveOverlay = ;
   }
 
 LABEL_5:
-  v12 = [v6 _supportedInterfaceOrientationsFromSceneOrientationRequestSetup];
-  if (v12)
+  _supportedInterfaceOrientationsFromSceneOrientationRequestSetup = [handleCopy _supportedInterfaceOrientationsFromSceneOrientationRequestSetup];
+  if (_supportedInterfaceOrientationsFromSceneOrientationRequestSetup)
   {
-    v13 = [(SBSwitcherTraitsAssistant *)self _guidingSceneOrientationRequestParticipantWithMask:v12];
+    v13 = [(SBSwitcherTraitsAssistant *)self _guidingSceneOrientationRequestParticipantWithMask:_supportedInterfaceOrientationsFromSceneOrientationRequestSetup];
 
-    v11 = v13;
+    _guidingPortraitOnlyLiveOverlay = v13;
   }
 
-  v14 = [v6 application];
-  if ([v14 isMedusaCapable])
+  application2 = [handleCopy application];
+  if ([application2 isMedusaCapable])
   {
   }
 
   else
   {
-    v15 = [v8 isSetup];
+    isSetup = [application isSetup];
 
-    if ((v15 & 1) == 0)
+    if ((isSetup & 1) == 0)
     {
-      if (v10)
+      if (isChamoisOrFlexibleWindowing)
       {
-        v16 = [v6 _interfaceOrientationFromUserResizing];
-        if (v16)
+        _interfaceOrientationFromUserResizing = [handleCopy _interfaceOrientationFromUserResizing];
+        if (_interfaceOrientationFromUserResizing)
         {
-          if ((v16 - 3) >= 2)
+          if ((_interfaceOrientationFromUserResizing - 3) >= 2)
           {
             [(SBSwitcherTraitsAssistant *)self _guidingPortraitOnlyLiveOverlay];
           }
@@ -591,29 +591,29 @@ LABEL_5:
           }
           v18 = ;
 
-          v11 = v18;
+          _guidingPortraitOnlyLiveOverlay = v18;
         }
       }
 
       else
       {
-        [v6 _setInterfaceOrientationFromUserResizing:{objc_msgSend(v22, "sbf_currentOrientation")}];
+        [handleCopy _setInterfaceOrientationFromUserResizing:{objc_msgSend(participantCopy, "sbf_currentOrientation")}];
       }
     }
   }
 
   participantUniqueIDToAssociatedParticipantMap = self->_participantUniqueIDToAssociatedParticipantMap;
-  if (v11)
+  if (_guidingPortraitOnlyLiveOverlay)
   {
-    v20 = [v11 uniqueIdentifier];
-    v21 = [v22 uniqueIdentifier];
-    [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap setObject:v20 forKey:v21];
+    uniqueIdentifier = [_guidingPortraitOnlyLiveOverlay uniqueIdentifier];
+    uniqueIdentifier2 = [participantCopy uniqueIdentifier];
+    [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap setObject:uniqueIdentifier forKey:uniqueIdentifier2];
   }
 
   else
   {
-    v20 = [v22 uniqueIdentifier];
-    [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap removeObjectForKey:v20];
+    uniqueIdentifier = [participantCopy uniqueIdentifier];
+    [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap removeObjectForKey:uniqueIdentifier];
   }
 
 LABEL_28:
@@ -660,7 +660,7 @@ LABEL_28:
   return guidingPortraitOnlyParticipant;
 }
 
-- (id)_guidingSceneOrientationRequestParticipantWithMask:(unint64_t)a3
+- (id)_guidingSceneOrientationRequestParticipantWithMask:(unint64_t)mask
 {
   guidingSceneOrientationRequestParticipantsMap = self->_guidingSceneOrientationRequestParticipantsMap;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -676,14 +676,14 @@ LABEL_28:
       v9 = self->_guidingSceneOrientationRequestParticipantsMap;
       if (!v9)
       {
-        v10 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v11 = self->_guidingSceneOrientationRequestParticipantsMap;
-        self->_guidingSceneOrientationRequestParticipantsMap = v10;
+        self->_guidingSceneOrientationRequestParticipantsMap = dictionary;
 
         v9 = self->_guidingSceneOrientationRequestParticipantsMap;
       }
 
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mask];
       [(NSMutableDictionary *)v9 setObject:v7 forKey:v12];
     }
   }
@@ -691,30 +691,30 @@ LABEL_28:
   return v7;
 }
 
-- (void)_addGuidingParticipantsIdentifiersToArray:(id)a3
+- (void)_addGuidingParticipantsIdentifiersToArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   guidingPortraitOnlyParticipant = self->_guidingPortraitOnlyParticipant;
   if (guidingPortraitOnlyParticipant)
   {
-    v6 = [(TRAParticipant *)guidingPortraitOnlyParticipant uniqueIdentifier];
-    [v4 addObject:v6];
+    uniqueIdentifier = [(TRAParticipant *)guidingPortraitOnlyParticipant uniqueIdentifier];
+    [arrayCopy addObject:uniqueIdentifier];
   }
 
   guidingLandscapeOnlyParticipant = self->_guidingLandscapeOnlyParticipant;
   if (guidingLandscapeOnlyParticipant)
   {
-    v8 = [(TRAParticipant *)guidingLandscapeOnlyParticipant uniqueIdentifier];
-    [v4 addObject:v8];
+    uniqueIdentifier2 = [(TRAParticipant *)guidingLandscapeOnlyParticipant uniqueIdentifier];
+    [arrayCopy addObject:uniqueIdentifier2];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allValues];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->_guidingSceneOrientationRequestParticipantsMap allValues];
+  v10 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -726,47 +726,47 @@ LABEL_28:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        v14 = [*(*(&v15 + 1) + 8 * v13) uniqueIdentifier];
-        [v4 addObject:v14];
+        uniqueIdentifier3 = [*(*(&v15 + 1) + 8 * v13) uniqueIdentifier];
+        [arrayCopy addObject:uniqueIdentifier3];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_handleUpdateRequest:(id)a3
+- (void)_handleUpdateRequest:(id)request
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained currentElementsParticipants];
+  currentElementsParticipants = [WeakRetained currentElementsParticipants];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SBSwitcherTraitsAssistant__handleUpdateRequest___block_invoke;
   v7[3] = &unk_2783B0D78;
   v8 = WeakRetained;
   v6 = WeakRetained;
-  [(SBSwitcherTraitsAssistant *)self _updateArbitrationForElementsParticipants:v5 sceneHandleProviderBlock:v7 forceResolution:1 reason:@"TraitsAssistantHandleUpdateRequest"];
+  [(SBSwitcherTraitsAssistant *)self _updateArbitrationForElementsParticipants:currentElementsParticipants sceneHandleProviderBlock:v7 forceResolution:1 reason:@"TraitsAssistantHandleUpdateRequest"];
 }
 
-- (void)_handleOrientationLockRequest:(id)a3
+- (void)_handleOrientationLockRequest:(id)request
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained evaluateAppRequestedOrientationLock];
 }
 
-- (void)_updateArbitrationForElementsParticipants:(id)a3 sceneHandleProviderBlock:(id)a4 forceResolution:(BOOL)a5 reason:(id)a6
+- (void)_updateArbitrationForElementsParticipants:(id)participants sceneHandleProviderBlock:(id)block forceResolution:(BOOL)resolution reason:(id)reason
 {
-  v10 = a3;
-  v11 = a6;
-  LOBYTE(a4) = [(SBSwitcherTraitsAssistant *)self _updateGuidingSpecifiersIfNeededForParticipants:v10 sceneHandleProviderBlock:a4];
+  participantsCopy = participants;
+  reasonCopy = reason;
+  LOBYTE(block) = [(SBSwitcherTraitsAssistant *)self _updateGuidingSpecifiersIfNeededForParticipants:participantsCopy sceneHandleProviderBlock:block];
   [(SBSwitcherTraitsAssistant *)self _addGuidingSpecifierIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_switcherParticipant);
   v13 = objc_loadWeakRetained(&self->_traitsArbiter);
@@ -775,15 +775,15 @@ LABEL_28:
   v19[1] = 3221225472;
   v19[2] = __119__SBSwitcherTraitsAssistant__updateArbitrationForElementsParticipants_sceneHandleProviderBlock_forceResolution_reason___block_invoke;
   v19[3] = &unk_2783B0E10;
-  v20 = v10;
+  v20 = participantsCopy;
   v21 = WeakRetained;
-  v22 = self;
-  v23 = v11;
-  v24 = a5;
-  v25 = a4;
-  v15 = v11;
+  selfCopy = self;
+  v23 = reasonCopy;
+  resolutionCopy = resolution;
+  blockCopy = block;
+  v15 = reasonCopy;
   v16 = WeakRetained;
-  v17 = v10;
+  v17 = participantsCopy;
   v18 = [v14 initWithBuilder:v19];
   [v13 setNeedsUpdateArbitrationWithContext:v18];
 
@@ -847,18 +847,18 @@ void __119__SBSwitcherTraitsAssistant__updateArbitrationForElementsParticipants_
   [v3 setForceOrientationResolution:v13 & 1];
 }
 
-- (BOOL)_updateGuidingSpecifiersIfNeededForParticipants:(id)a3 sceneHandleProviderBlock:(id)a4
+- (BOOL)_updateGuidingSpecifiersIfNeededForParticipants:(id)participants sceneHandleProviderBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  participantsCopy = participants;
+  blockCopy = block;
   v8 = [(NSMutableDictionary *)self->_participantUniqueIDToAssociatedParticipantMap count];
   [(NSMutableDictionary *)self->_participantUniqueIDToAssociatedParticipantMap removeAllObjects];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = participantsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -874,7 +874,7 @@ void __119__SBSwitcherTraitsAssistant__updateArbitrationForElementsParticipants_
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = v7[2](v7, v14);
+        v15 = blockCopy[2](blockCopy, v14);
         [(SBSwitcherTraitsAssistant *)self _setupGuidingRelationshipIfNeededForParticipant:v14 withSceneHandle:v15, v18];
       }
 
@@ -916,15 +916,15 @@ void __58__SBSwitcherTraitsAssistant__setupPolicySpecifierIfNeeded__block_invoke
   [WeakRetained _updateAcquiredParticipantsPolicies:v3];
 }
 
-- (void)_updateAcquiredParticipantsPolicies:(id)a3
+- (void)_updateAcquiredParticipantsPolicies:(id)policies
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  policiesCopy = policies;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [policiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -935,13 +935,13 @@ void __58__SBSwitcherTraitsAssistant__setupPolicySpecifierIfNeeded__block_invoke
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(policiesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         participantUniqueIDToAssociatedParticipantMap = self->_participantUniqueIDToAssociatedParticipantMap;
-        v11 = [v9 uniqueIdentifier];
-        v12 = [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap objectForKey:v11];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v12 = [(NSMutableDictionary *)participantUniqueIDToAssociatedParticipantMap objectForKey:uniqueIdentifier];
 
         if (v12)
         {
@@ -950,7 +950,7 @@ void __58__SBSwitcherTraitsAssistant__setupPolicySpecifierIfNeeded__block_invoke
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [policiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

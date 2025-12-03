@@ -1,13 +1,13 @@
 @interface DataArk
-- (DataArk)initWithPath:(id)a3;
-- (void)postNotification:(id)a3;
+- (DataArk)initWithPath:(id)path;
+- (void)postNotification:(id)notification;
 @end
 
 @implementation DataArk
 
-- (DataArk)initWithPath:(id)a3
+- (DataArk)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = DataArk;
   v5 = [(DataArk *)&v29 init];
@@ -16,7 +16,7 @@
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!pathCopy)
   {
     maLog("[DataArk initWithPath:]", 0, @"Invalid input.");
 LABEL_23:
@@ -29,12 +29,12 @@ LABEL_23:
   v31 = &off_1003FBC30;
   v7 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   v28 = 0;
-  v8 = [(NSFileManager *)v6 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:v7 error:&v28];
+  v8 = [(NSFileManager *)v6 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:v7 error:&v28];
   v9 = v28;
 
   if ((v8 & 1) == 0)
   {
-    maLog("[DataArk initWithPath:]", 0, @"Could not create path %@: %@", v4, v9);
+    maLog("[DataArk initWithPath:]", 0, @"Could not create path %@: %@", pathCopy, v9);
 LABEL_10:
     v15 = v9;
 LABEL_22:
@@ -42,7 +42,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v10 = [v4 stringByAppendingPathComponent:@"data_ark.plist"];
+  v10 = [pathCopy stringByAppendingPathComponent:@"data_ark.plist"];
   path = v5->_path;
   v5->_path = v10;
 
@@ -112,11 +112,11 @@ LABEL_24:
   return v26;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, v3, v3, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, notificationCopy, notificationCopy, 0, 1u);
 }
 
 @end

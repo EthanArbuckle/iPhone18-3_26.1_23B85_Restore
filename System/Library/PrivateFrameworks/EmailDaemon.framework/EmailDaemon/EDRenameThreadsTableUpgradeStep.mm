@@ -1,13 +1,13 @@
 @interface EDRenameThreadsTableUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDRenameThreadsTableUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = objc_alloc(MEMORY[0x1E699B958]);
   v5 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"message" nullable:0];
   v21[0] = v5;
@@ -32,12 +32,12 @@
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
 
   v15 = [v14 componentsJoinedByString:@"\n"];;
-  v16 = [v3 sqlDB];
+  sqlDB = [connectionCopy sqlDB];
   v17 = v15;
-  LODWORD(v16) = sqlite3_exec(v16, [v15 UTF8String], 0, 0, 0);
+  LODWORD(sqlDB) = sqlite3_exec(sqlDB, [v15 UTF8String], 0, 0, 0);
 
   v18 = *MEMORY[0x1E69E9840];
-  return v16;
+  return sqlDB;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface KNLiveVideoInfo
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4;
-+ (id)i_makeArchivedMoviePosterImageDataWithContext:(id)a3;
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver;
++ (id)i_makeArchivedMoviePosterImageDataWithContext:(id)context;
 - (BOOL)canAspectRatioLockBeChangedByUser;
-- (BOOL)containsProperty:(int)a3;
+- (BOOL)containsProperty:(int)property;
 - (CGPoint)normalizedOffset;
-- (KNLiveVideoInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
+- (KNLiveVideoInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
 - (KNLiveVideoSource)source;
-- (double)doubleValueForProperty:(int)a3;
+- (double)doubleValueForProperty:(int)property;
 - (id)animationFilters;
 - (id)defaultDescriptiveName;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info;
 - (id)typeName;
-- (int)intValueForProperty:(int)a3;
+- (int)intValueForProperty:(int)property;
 - (int64_t)backgroundKind;
 - (int64_t)effectiveBackgroundKind;
 - (int64_t)effectiveMaskKind;
-- (int64_t)effectiveMaskKindForGeometry:(id)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)acceptVisitor:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (int64_t)effectiveMaskKindForGeometry:(id)geometry;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)acceptVisitor:(id)visitor;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_updateSlideNodeLiveVideoSourceUsage;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setBackgroundFill:(id)a3;
-- (void)setBackgroundKind:(int64_t)a3;
-- (void)setI_archivedBackgroundKind:(int64_t)a3;
-- (void)setI_archivedMaskKind:(int64_t)a3;
-- (void)setI_sourceId:(id)a3;
-- (void)setIsPlaceholder:(BOOL)a3;
-- (void)setMaskCornerRadius:(double)a3;
-- (void)setNormalizedOffset:(CGPoint)a3;
-- (void)setScale:(double)a3;
-- (void)setSource:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBackgroundFill:(id)fill;
+- (void)setBackgroundKind:(int64_t)kind;
+- (void)setI_archivedBackgroundKind:(int64_t)kind;
+- (void)setI_archivedMaskKind:(int64_t)kind;
+- (void)setI_sourceId:(id)id;
+- (void)setIsPlaceholder:(BOOL)placeholder;
+- (void)setMaskCornerRadius:(double)radius;
+- (void)setNormalizedOffset:(CGPoint)offset;
+- (void)setScale:(double)scale;
+- (void)setSource:(id)source;
+- (void)setStyle:(id)style;
 @end
 
 @implementation KNLiveVideoInfo
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->_scale = a3;
+    self->_scale = scale;
   }
 }
 
@@ -58,12 +58,12 @@
   return result;
 }
 
-- (void)setNormalizedOffset:(CGPoint)a3
+- (void)setNormalizedOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   p_normalizedOffset = &self->_normalizedOffset;
-  if (self->_normalizedOffset.x != a3.x || self->_normalizedOffset.y != a3.y)
+  if (self->_normalizedOffset.x != offset.x || self->_normalizedOffset.y != offset.y)
   {
     objc_msgSend_willModify(self, a2, v3);
     p_normalizedOffset->x = x;
@@ -71,63 +71,63 @@
   }
 }
 
-- (void)setI_archivedMaskKind:(int64_t)a3
+- (void)setI_archivedMaskKind:(int64_t)kind
 {
-  if (self->_maskKind != a3)
+  if (self->_maskKind != kind)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_maskKind = a3;
+    objc_msgSend_willModify(self, a2, kind);
+    self->_maskKind = kind;
   }
 }
 
-- (void)setMaskCornerRadius:(double)a3
+- (void)setMaskCornerRadius:(double)radius
 {
-  if (self->_maskCornerRadius != a3)
+  if (self->_maskCornerRadius != radius)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->_maskCornerRadius = a3;
+    self->_maskCornerRadius = radius;
   }
 }
 
-- (void)setI_archivedBackgroundKind:(int64_t)a3
+- (void)setI_archivedBackgroundKind:(int64_t)kind
 {
-  if (self->_backgroundKind != a3)
+  if (self->_backgroundKind != kind)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_backgroundKind = a3;
+    objc_msgSend_willModify(self, a2, kind);
+    self->_backgroundKind = kind;
   }
 }
 
-- (void)setBackgroundFill:(id)a3
+- (void)setBackgroundFill:(id)fill
 {
-  v4 = a3;
-  if (self->_backgroundFill != v4)
+  fillCopy = fill;
+  if (self->_backgroundFill != fillCopy)
   {
-    v10 = v4;
+    v10 = fillCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_backgroundFill, v9);
-    v4 = v9;
+    fillCopy = v9;
   }
 }
 
-- (KNLiveVideoInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (KNLiveVideoInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  styleCopy = style;
   v18.receiver = self;
   v18.super_class = KNLiveVideoInfo;
-  v10 = [(KNLiveVideoInfo *)&v18 initWithContext:v8 geometry:a4];
+  v10 = [(KNLiveVideoInfo *)&v18 initWithContext:contextCopy geometry:geometry];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_style, a5);
+    objc_storeStrong(&v10->_style, style);
     v11->_scale = 1.0;
     v11->_maskKind = 0;
     v11->_backgroundKind = 0;
     v12 = objc_opt_class();
-    v14 = objc_msgSend_i_makeArchivedMoviePosterImageDataWithContext_(v12, v13, v8);
+    v14 = objc_msgSend_i_makeArchivedMoviePosterImageDataWithContext_(v12, v13, contextCopy);
     archivedMoviePosterImageData = v11->_archivedMoviePosterImageData;
     v11->_archivedMoviePosterImageData = v14;
 
@@ -157,21 +157,21 @@
   return v21;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v5 = objc_msgSend_objectUUID(a3, a2, a3);
+  v5 = objc_msgSend_objectUUID(source, a2, source);
   objc_msgSend_setI_sourceId_(self, v4, v5);
 }
 
-- (void)setI_sourceId:(id)a3
+- (void)setI_sourceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   sourceId = self->_sourceId;
-  if (v4 | sourceId)
+  if (idCopy | sourceId)
   {
-    v14 = v4;
-    isEqual = objc_msgSend_isEqual_(sourceId, v4, v4);
-    v4 = v14;
+    v14 = idCopy;
+    isEqual = objc_msgSend_isEqual_(sourceId, idCopy, idCopy);
+    idCopy = v14;
     if ((isEqual & 1) == 0)
     {
       objc_msgSend_willModify(self, v14, v7);
@@ -180,7 +180,7 @@
       self->_sourceId = v10;
 
       objc_msgSend_p_updateSlideNodeLiveVideoSourceUsage(self, v12, v13);
-      v4 = v14;
+      idCopy = v14;
     }
   }
 }
@@ -193,12 +193,12 @@
   return v6;
 }
 
-- (int64_t)effectiveMaskKindForGeometry:(id)a3
+- (int64_t)effectiveMaskKindForGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if (objc_msgSend_maskKind(self, v5, v6) == 1)
   {
-    objc_msgSend_size(v4, v7, v8);
+    objc_msgSend_size(geometryCopy, v7, v8);
     v11 = vabdd_f64(v9, v10) < 0.00999999978 || v9 == v10;
   }
 
@@ -218,9 +218,9 @@
   return objc_msgSend_i_backgroundKindForArchivedBackgroundKind_(v4, v5, v3);
 }
 
-- (void)setBackgroundKind:(int64_t)a3
+- (void)setBackgroundKind:(int64_t)kind
 {
-  objc_msgSend_setI_archivedBackgroundKind_(self, a2, a3 == 1);
+  objc_msgSend_setI_archivedBackgroundKind_(self, a2, kind == 1);
 
   objc_msgSend_p_updateSlideNodeLiveVideoSourceUsage(self, v4, v5);
 }
@@ -242,12 +242,12 @@
   }
 }
 
-- (void)setIsPlaceholder:(BOOL)a3
+- (void)setIsPlaceholder:(BOOL)placeholder
 {
-  if (self->_isPlaceholder != a3)
+  if (self->_isPlaceholder != placeholder)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_isPlaceholder = a3;
+    objc_msgSend_willModify(self, a2, placeholder);
+    self->_isPlaceholder = placeholder;
 
     objc_msgSend_p_updateSlideNodeLiveVideoSourceUsage(self, v5, v6);
   }
@@ -264,9 +264,9 @@
   }
 }
 
-+ (id)i_makeArchivedMoviePosterImageDataWithContext:(id)a3
++ (id)i_makeArchivedMoviePosterImageDataWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = TSDBitmapContextCreate();
   v7 = objc_msgSend_blackColor(MEMORY[0x277D81180], v5, v6);
   v10 = objc_msgSend_CGColor(v7, v8, v9);
@@ -280,7 +280,7 @@
   Image = CGBitmapContextCreateImage(v4);
   CGContextRelease(v4);
   v12 = CGImagePNGRepresentation();
-  v14 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v13, v12, @"blankMoviePosterImage.png", v3);
+  v14 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v13, v12, @"blankMoviePosterImage.png", contextCopy);
 
   CGImageRelease(Image);
 
@@ -291,13 +291,13 @@
 {
   v7.receiver = self;
   v7.super_class = KNLiveVideoInfo;
-  v3 = [(KNLiveVideoInfo *)&v7 canAspectRatioLockBeChangedByUser];
-  if (v3)
+  canAspectRatioLockBeChangedByUser = [(KNLiveVideoInfo *)&v7 canAspectRatioLockBeChangedByUser];
+  if (canAspectRatioLockBeChangedByUser)
   {
-    LOBYTE(v3) = objc_msgSend_effectiveMaskKind(self, v4, v5) != 1;
+    LOBYTE(canAspectRatioLockBeChangedByUser) = objc_msgSend_effectiveMaskKind(self, v4, v5) != 1;
   }
 
-  return v3;
+  return canAspectRatioLockBeChangedByUser;
 }
 
 - (id)defaultDescriptiveName
@@ -316,9 +316,9 @@
   return v4;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v12 = a3;
+  styleCopy = style;
   objc_opt_class();
   v4 = TSUCheckedDynamicCast();
   if (!v4)
@@ -337,9 +337,9 @@
   }
 }
 
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info
 {
-  v4 = objc_msgSend_fullPropertyMap(a3, a2, a3, *&a4);
+  v4 = objc_msgSend_fullPropertyMap(style, a2, style, *&info);
   v7 = objc_msgSend_copy(v4, v5, v6);
 
   objc_msgSend_validatePastedPropertyMap_(MEMORY[0x277D80340], v8, v7);
@@ -347,29 +347,29 @@
   return v7;
 }
 
-- (BOOL)containsProperty:(int)a3
+- (BOOL)containsProperty:(int)property
 {
   v4.receiver = self;
   v4.super_class = KNLiveVideoInfo;
-  return ((a3 - 4576) < 7) | [(KNLiveVideoInfo *)&v4 containsProperty:?];
+  return ((property - 4576) < 7) | [(KNLiveVideoInfo *)&v4 containsProperty:?];
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 4582:
-      v3 = objc_msgSend_backgroundFill(self, a2, *&a3);
+      v3 = objc_msgSend_backgroundFill(self, a2, *&property);
       break;
     case 4578:
       v4 = MEMORY[0x277CCAE60];
-      objc_msgSend_normalizedOffset(self, a2, *&a3);
+      objc_msgSend_normalizedOffset(self, a2, *&property);
       v10[0] = v5;
       v10[1] = v6;
       v3 = objc_msgSend_valueWithBytes_objCType_(v4, v7, v10, "{CGPoint=dd}");
       break;
     case 4576:
-      v3 = objc_msgSend_source(self, a2, *&a3);
+      v3 = objc_msgSend_source(self, a2, *&property);
       break;
     default:
       v9.receiver = self;
@@ -381,11 +381,11 @@
   return v3;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  if (a3 == 4581)
+  if (property == 4581)
   {
-    v3 = objc_msgSend_backgroundKind(self, a2, *&a3);
+    v3 = objc_msgSend_backgroundKind(self, a2, *&property);
     if (v3 < 0x80000000)
     {
       if (v3 > 0xFFFFFFFF7FFFFFFFLL)
@@ -402,7 +402,7 @@
 
   else
   {
-    if (a3 != 4579)
+    if (property != 4579)
     {
       v5.receiver = self;
       v5.super_class = KNLiveVideoInfo;
@@ -410,7 +410,7 @@
       return v3;
     }
 
-    v3 = objc_msgSend_maskKind(self, a2, *&a3);
+    v3 = objc_msgSend_maskKind(self, a2, *&property);
     if (v3 < 0x80000000)
     {
       if (v3 > 0xFFFFFFFF7FFFFFFFLL)
@@ -431,18 +431,18 @@ LABEL_15:
   return v3;
 }
 
-- (double)doubleValueForProperty:(int)a3
+- (double)doubleValueForProperty:(int)property
 {
-  if (a3 == 4580)
+  if (property == 4580)
   {
 
-    objc_msgSend_maskCornerRadius(self, a2, *&a3);
+    objc_msgSend_maskCornerRadius(self, a2, *&property);
   }
 
-  else if (a3 == 4577)
+  else if (property == 4577)
   {
 
-    objc_msgSend_scale(self, a2, *&a3);
+    objc_msgSend_scale(self, a2, *&property);
   }
 
   else
@@ -457,7 +457,7 @@ LABEL_15:
   return result;
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
   v4 = TSUProtocolCast();
   if (v4)
@@ -481,10 +481,10 @@ LABEL_15:
   return v7;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUCheckedDynamicCast();
 
@@ -498,7 +498,7 @@ LABEL_15:
 
   v16 = objc_msgSend_geometry(self, v14, v15);
   v19 = objc_msgSend_geometry(v8, v17, v18);
-  objc_msgSend_mixingTypeWithObject_context_(v16, v20, v19, v6);
+  objc_msgSend_mixingTypeWithObject_context_(v16, v20, v19, contextCopy);
   TSDMixingTypeBestFromMixingTypes();
 
   v21 = MEMORY[0x277CCABB0];
@@ -507,7 +507,7 @@ LABEL_15:
   v27 = MEMORY[0x277CCABB0];
   objc_msgSend_scale(v8, v28, v29);
   v32 = objc_msgSend_numberWithDouble_(v27, v30, v31);
-  objc_msgSend_mixingTypeWithObject_context_(v26, v33, v32, v6);
+  objc_msgSend_mixingTypeWithObject_context_(v26, v33, v32, contextCopy);
   TSDMixingTypeBestFromMixingTypes();
 
   v34 = MEMORY[0x277CCAE60];
@@ -520,7 +520,7 @@ LABEL_15:
   v163[0] = v44;
   v163[1] = v45;
   v47 = objc_msgSend_valueWithBytes_objCType_(v41, v46, v163, "{CGPoint=dd}");
-  objc_msgSend_mixingTypeWithObject_context_(v40, v48, v47, v6);
+  objc_msgSend_mixingTypeWithObject_context_(v40, v48, v47, contextCopy);
   v49 = TSDMixingTypeBestFromMixingTypes();
 
   if (v49 != 1)
@@ -711,67 +711,67 @@ LABEL_34:
   return v135;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 >= 1.0)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (fraction >= 1.0)
   {
-    self = v6;
+    self = objectCopy;
   }
 
-  v8 = self;
+  selfCopy = self;
 
   return self;
 }
 
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (objc_opt_class() == a3)
+  unarchiverCopy = unarchiver;
+  if (objc_opt_class() == class)
   {
-    v7 = v6;
+    v7 = unarchiverCopy;
     v8 = MEMORY[0x277D80558];
     google::protobuf::internal::AssignDescriptors();
     v10 = objc_msgSend_messageWithDescriptor_(v7, v9, *(*(v8 + 88) + 720));
 
     if (google::protobuf::internal::ExtensionSet::Has((v10 + 16)))
     {
-      a3 = a1;
+      class = self;
     }
   }
 
-  v11 = a3;
+  classCopy = class;
 
-  return a3;
+  return class;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   v4 = MEMORY[0x277D80558];
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v8, v5, *(*(v4 + 88) + 720));
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, *(*(v4 + 88) + 720));
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, v8);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   v4 = MEMORY[0x277D80558];
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v8, v5, sub_275D7C4DC, *(*(v4 + 88) + 720));
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275D7C4DC, *(*(v4 + 88) + 720));
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 8))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 8))
   {
-    v7 = *(a3 + 8);
+    v7 = *(archive + 8);
   }
 
   else
@@ -781,13 +781,13 @@ LABEL_34:
 
   v28.receiver = self;
   v28.super_class = KNLiveVideoInfo;
-  [(KNLiveVideoInfo *)&v28 loadFromArchive:v7 unarchiver:v6];
+  [(KNLiveVideoInfo *)&v28 loadFromArchive:v7 unarchiver:unarchiverCopy];
   Message = google::protobuf::internal::ExtensionSet::GetMessage();
   v10 = Message;
   v11 = *(Message + 16);
   if (v11)
   {
-    v12 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(v6, v9, *(Message + 24));
+    v12 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiverCopy, v9, *(Message + 24));
     sourceId = self->_sourceId;
     self->_sourceId = v12;
 
@@ -855,7 +855,7 @@ LABEL_14:
   }
 
 LABEL_25:
-  v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v9, *(v10 + 40), v6);
+  v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v9, *(v10 + 40), unarchiverCopy);
   backgroundFill = self->_backgroundFill;
   self->_backgroundFill = v24;
 
@@ -866,13 +866,13 @@ LABEL_15:
   }
 
 LABEL_16:
-  v17 = *(a3 + 15);
+  v17 = *(archive + 15);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = sub_275D7BCCC;
   v27[3] = &unk_27A6984E0;
   v27[4] = self;
-  v18 = v6;
+  v18 = unarchiverCopy;
   v20 = objc_opt_class();
   if (v17)
   {
@@ -884,9 +884,9 @@ LABEL_16:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v18, v19, MEMORY[0x277D80A18], v20, 0, v27);
   }
 
-  if ((*(a3 + 40) & 0x80) != 0)
+  if ((*(archive + 40) & 0x80) != 0)
   {
-    v22 = objc_msgSend_readDataReferenceMessage_(v18, v21, *(a3 + 13));
+    v22 = objc_msgSend_readDataReferenceMessage_(v18, v21, *(archive + 13));
     archivedMoviePosterImageData = self->_archivedMoviePosterImageData;
     self->_archivedMoviePosterImageData = v22;
   }
@@ -899,20 +899,20 @@ LABEL_16:
   objc_msgSend_addFinalizeHandler_(v18, v21, v26);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v84 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v75 = MEMORY[0x277D85DD0];
   v76 = 3221225472;
   v77 = sub_275D7C454;
   v78 = &unk_27A697C88;
-  v81 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v79 = v7;
-  v80 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, &v75);
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v9, 100, a3, v75, v76, v77, v78);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, &v75);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v9, 100, archive, v75, v76, v77, v78);
   sub_275E16A0C();
   v10 = google::protobuf::internal::ExtensionSet::MutableMessage();
   v12 = v10;
@@ -1020,7 +1020,7 @@ LABEL_16:
     *(v12 + 72) = v27;
     v82 = 0x700000064;
     v83 = 0;
-    objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(v7, v21, &v82, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(v7, v21, &v82, archive);
     v25 = *(v12 + 16);
   }
 
@@ -1044,47 +1044,47 @@ LABEL_16:
     objc_msgSend_saveToArchive_archiver_(backgroundFill, v21, v29, v7);
     v82 = 0x800000064;
     v83 = 0;
-    objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(v7, v31, &v82, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(v7, v31, &v82, archive);
     v25 = *(v12 + 16);
   }
 
   isPlaceholder = self->_isPlaceholder;
   *(v12 + 16) = v25 | 0x10;
   *(v12 + 56) = isPlaceholder;
-  *(a3 + 10) |= 0x20000000u;
-  *(a3 + 206) = 1;
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v21, 30, a3);
+  *(archive + 10) |= 0x20000000u;
+  *(archive + 206) = 1;
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v21, 30, archive);
   style = self->_style;
-  *(a3 + 10) |= 0x200u;
-  v35 = *(a3 + 15);
+  *(archive + 10) |= 0x200u;
+  v35 = *(archive + 15);
   if (!v35)
   {
-    v36 = *(a3 + 1);
+    v36 = *(archive + 1);
     if (v36)
     {
       v36 = *(v36 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v35 = MEMORY[0x277C8F050](v36);
-    *(a3 + 15) = v35;
+    *(archive + 15) = v35;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v33, style, v35);
   archivedMoviePosterImageData = self->_archivedMoviePosterImageData;
   if (archivedMoviePosterImageData)
   {
-    *(a3 + 10) |= 0x80u;
-    v39 = *(a3 + 13);
+    *(archive + 10) |= 0x80u;
+    v39 = *(archive + 13);
     if (!v39)
     {
-      v40 = *(a3 + 1);
+      v40 = *(archive + 1);
       if (v40)
       {
         v40 = *(v40 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v39 = MEMORY[0x277C8EFD0](v40);
-      *(a3 + 13) = v39;
+      *(archive + 13) = v39;
     }
 
     objc_msgSend_setDataReference_message_(v7, v37, archivedMoviePosterImageData, v39);

@@ -26,7 +26,7 @@
       v25 = 2114;
       v26 = v21;
       v27 = 2048;
-      v28 = a1;
+      selfCopy = self;
       v29 = 2114;
       v30 = @"NSError+BaseBoard.m";
       v31 = 1024;
@@ -72,37 +72,37 @@
 
 - (id)succinctDescription
 {
-  v1 = [a1 succinctDescriptionBuilder];
-  v2 = [v1 build];
+  succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v2;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  v2 = [BSDescriptionBuilder builderWithObject:a1];
-  v3 = [a1 domain];
-  v4 = [v2 appendObject:v3 withName:@"domain"];
+  v2 = [BSDescriptionBuilder builderWithObject:self];
+  domain = [self domain];
+  v4 = [v2 appendObject:domain withName:@"domain"];
 
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKey:@"BSErrorCodeDescription"];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKey:@"BSErrorCodeDescription"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld (\"%@\", objc_msgSend(a1, "code""), v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld (\"%@\", objc_msgSend(self, "code""), v6];
     v8 = [v2 appendObject:v7 withName:@"code"];
   }
 
   else
   {
-    v9 = [v2 appendInteger:objc_msgSend(a1 withName:{"code"), @"code"}];
+    v9 = [v2 appendInteger:objc_msgSend(self withName:{"code"), @"code"}];
   }
 
-  v10 = [a1 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E696A580]];
+  userInfo2 = [self userInfo];
+  v11 = [userInfo2 objectForKey:*MEMORY[0x1E696A580]];
 
-  v12 = [a1 userInfo];
-  v13 = [v12 objectForKey:*MEMORY[0x1E696A588]];
+  userInfo3 = [self userInfo];
+  v13 = [userInfo3 objectForKey:*MEMORY[0x1E696A588]];
 
   if (v11 && v13)
   {
@@ -142,10 +142,10 @@
 
 - (id)descriptionWithMultilinePrefix:()BaseBoard
 {
-  v1 = [a1 descriptionBuilderWithMultilinePrefix:?];
-  v2 = [v1 build];
+  v1 = [self descriptionBuilderWithMultilinePrefix:?];
+  build = [v1 build];
 
-  return v2;
+  return build;
 }
 
 - (id)descriptionBuilderWithMultilinePrefix:()BaseBoard
@@ -156,30 +156,30 @@
     dispatch_once(&qword_1ED44FF10, &__block_literal_global_24);
   }
 
-  v5 = [a1 userInfo];
-  v6 = [v5 allKeys];
-  v7 = [v6 mutableCopy];
+  userInfo = [self userInfo];
+  allKeys = [userInfo allKeys];
+  v7 = [allKeys mutableCopy];
 
   [v7 removeObjectsInArray:_MergedGlobals_23];
   [v7 sortUsingSelector:sel_compare_];
-  v8 = [a1 underlyingErrors];
-  v9 = [v8 bs_orderedSet];
+  underlyingErrors = [self underlyingErrors];
+  bs_orderedSet = [underlyingErrors bs_orderedSet];
 
-  v10 = [a1 succinctDescriptionBuilder];
-  if ([v7 count] || objc_msgSend(v9, "count"))
+  succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+  if ([v7 count] || objc_msgSend(bs_orderedSet, "count"))
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__NSError_BaseBoard__descriptionBuilderWithMultilinePrefix___block_invoke_2;
     v12[3] = &unk_1E72CB9A8;
     v13 = v7;
-    v14 = v5;
-    v15 = v10;
-    v16 = v9;
+    v14 = userInfo;
+    v15 = succinctDescriptionBuilder;
+    v16 = bs_orderedSet;
     [v15 appendBodySectionWithName:0 multilinePrefix:v4 block:v12];
   }
 
-  return v10;
+  return succinctDescriptionBuilder;
 }
 
 @end

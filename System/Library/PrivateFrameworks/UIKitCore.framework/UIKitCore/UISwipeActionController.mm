@@ -1,45 +1,45 @@
 @interface UISwipeActionController
-- ($A7B7FA971CD029BAA4A09478E9E1AEDA)configureForSwipeDirection:(SEL)a3 configuration:(unint64_t)a4 startingAtTouchLocation:(id)a5;
-- (BOOL)_isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:(id)a3;
+- ($A7B7FA971CD029BAA4A09478E9E1AEDA)configureForSwipeDirection:(SEL)direction configuration:(unint64_t)configuration startingAtTouchLocation:(id)location;
+- (BOOL)_isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:(id)ending;
 - (BOOL)_prefersRTL;
 - (BOOL)swipeEnabled;
-- (BOOL)swipeHandler:(id)a3 mayBeginSwipeAtLocation:(CGPoint)a4 withProposedDirection:(unint64_t)a5;
-- (BOOL)touchAtLocationShouldDismissSwipedItem:(CGPoint)a3 isTouchUp:(BOOL)a4;
-- (CGRect)swipeHandlerRestingFrame:(id)a3;
+- (BOOL)swipeHandler:(id)handler mayBeginSwipeAtLocation:(CGPoint)location withProposedDirection:(unint64_t)direction;
+- (BOOL)touchAtLocationShouldDismissSwipedItem:(CGPoint)item isTouchUp:(BOOL)up;
+- (CGRect)swipeHandlerRestingFrame:(id)frame;
 - (NSIndexPath)swipedIndexPath;
 - (NSSet)swipedIndexPaths;
 - (UIScrollView)containerView;
-- (UISwipeActionController)initWithSwipeActionHost:(id)a3 style:(unint64_t)a4;
+- (UISwipeActionController)initWithSwipeActionHost:(id)host style:(unint64_t)style;
 - (UISwipeActionHost)swipeActionHost;
 - (UISwipeActionHost_Internal)_internalSwipeActionHost;
 - (UISwipeOccurrence)currentSwipeOccurrence;
 - (UIView)swipedItemView;
-- (id)_existingSwipeOccurrenceForIndexPath:(id)a3;
-- (id)_swipeActionsConfigurationForSwipeDirection:(unint64_t)a3 indexPath:(id)a4;
-- (id)_swipedViewForItemAtIndexPath:(id)a3;
-- (unint64_t)_swipeDirectionForLeadingEdge:(BOOL)a3;
-- (void)_handleDeleteOfSwipeOccurrence:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (id)_existingSwipeOccurrenceForIndexPath:(id)path;
+- (id)_swipeActionsConfigurationForSwipeDirection:(unint64_t)direction indexPath:(id)path;
+- (id)_swipedViewForItemAtIndexPath:(id)path;
+- (unint64_t)_swipeDirectionForLeadingEdge:(BOOL)edge;
+- (void)_handleDeleteOfSwipeOccurrence:(id)occurrence;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)dealloc;
-- (void)deleteRowAtIndexPath:(id)a3;
-- (void)deleteSectionAtIndex:(unint64_t)a3;
-- (void)insertRowAtIndexPath:(id)a3;
-- (void)insertSectionAtIndex:(unint64_t)a3;
-- (void)moveRowAtIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)moveSectionAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)prepareForSwipeDirection:(unint64_t)a3 startingAtTouchLocation:(CGPoint)a4;
-- (void)rebaseUnambiguousSwipeOccurrencesWithBlock:(id)a3;
+- (void)deleteRowAtIndexPath:(id)path;
+- (void)deleteSectionAtIndex:(unint64_t)index;
+- (void)insertRowAtIndexPath:(id)path;
+- (void)insertSectionAtIndex:(unint64_t)index;
+- (void)moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)moveSectionAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)prepareForSwipeDirection:(unint64_t)direction startingAtTouchLocation:(CGPoint)location;
+- (void)rebaseUnambiguousSwipeOccurrencesWithBlock:(id)block;
 - (void)reconfigureActiveSwipeOccurrences;
 - (void)reloadData;
-- (void)resetSwipedItemAnimated:(BOOL)a3 completion:(id)a4;
-- (void)setSwipeEnabled:(BOOL)a3;
-- (void)swipeHandler:(id)a3 didConfirmSwipeWithInfo:(id *)a4;
-- (void)swipeHandler:(id)a3 didGenerateSwipeWithInfo:(id *)a4 isTracking:(BOOL)a5;
-- (void)swipeHandlerDidBeginSwipe:(id)a3;
-- (void)swipeItemAtIndexPath:(id)a3 configuration:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)swipeOccurrence:(id)a3 didChangeStateFrom:(int64_t)a4;
-- (void)swipeOccurrence:(id)a3 willFinishWithDeletion:(BOOL)a4;
-- (void)swipeOccurrenceDidFinish:(id)a3;
+- (void)resetSwipedItemAnimated:(BOOL)animated completion:(id)completion;
+- (void)setSwipeEnabled:(BOOL)enabled;
+- (void)swipeHandler:(id)handler didConfirmSwipeWithInfo:(id *)info;
+- (void)swipeHandler:(id)handler didGenerateSwipeWithInfo:(id *)info isTracking:(BOOL)tracking;
+- (void)swipeHandlerDidBeginSwipe:(id)swipe;
+- (void)swipeItemAtIndexPath:(id)path configuration:(id)configuration direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion;
+- (void)swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from;
+- (void)swipeOccurrence:(id)occurrence willFinishWithDeletion:(BOOL)deletion;
+- (void)swipeOccurrenceDidFinish:(id)finish;
 - (void)updateLayout;
 @end
 
@@ -147,8 +147,8 @@
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) indexPath];
-          [v3 addObject:v9];
+          indexPath = [*(*(&v11 + 1) + 8 * i) indexPath];
+          [v3 addObject:indexPath];
         }
 
         v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -173,17 +173,17 @@
   return WeakRetained;
 }
 
-- (UISwipeActionController)initWithSwipeActionHost:(id)a3 style:(unint64_t)a4
+- (UISwipeActionController)initWithSwipeActionHost:(id)host style:(unint64_t)style
 {
-  v6 = a3;
+  hostCopy = host;
   v16.receiver = self;
   v16.super_class = UISwipeActionController;
   v7 = [(UISwipeActionController *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    [(UISwipeActionController *)v7 setStyle:a4];
-    [(UISwipeActionController *)v8 setSwipeActionHost:v6];
+    [(UISwipeActionController *)v7 setStyle:style];
+    [(UISwipeActionController *)v8 setSwipeActionHost:hostCopy];
     v9 = [[_UISwipeHandler alloc] initWithSwipeController:v8];
     [(UISwipeActionController *)v8 setSwipeHandler:v9];
 
@@ -191,8 +191,8 @@
     swipeOccurrences = v8->_swipeOccurrences;
     v8->_swipeOccurrences = v10;
 
-    v12 = [(UISwipeActionController *)v8 swipeActionHost];
-    v13 = [v12 itemContainerViewForSwipeActionController:v8];
+    swipeActionHost = [(UISwipeActionController *)v8 swipeActionHost];
+    v13 = [swipeActionHost itemContainerViewForSwipeActionController:v8];
     [(UISwipeActionController *)v8 setContainerView:v13];
 
     WeakRetained = objc_loadWeakRetained(&v8->_containerView);
@@ -219,68 +219,68 @@
   return WeakRetained;
 }
 
-- (void)setSwipeEnabled:(BOOL)a3
+- (void)setSwipeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(UISwipeActionController *)self swipeHandler];
-  [v4 setActive:v3];
+  enabledCopy = enabled;
+  swipeHandler = [(UISwipeActionController *)self swipeHandler];
+  [swipeHandler setActive:enabledCopy];
 }
 
 - (BOOL)swipeEnabled
 {
-  v2 = [(UISwipeActionController *)self swipeHandler];
-  v3 = [v2 isActive];
+  swipeHandler = [(UISwipeActionController *)self swipeHandler];
+  isActive = [swipeHandler isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (id)_swipeActionsConfigurationForSwipeDirection:(unint64_t)a3 indexPath:(id)a4
+- (id)_swipeActionsConfigurationForSwipeDirection:(unint64_t)direction indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(UISwipeActionController *)self _prefersRTL];
-  v8 = a3 != 1;
-  v9 = [(UISwipeActionController *)self swipeActionHost];
-  v10 = v9;
-  if (v8 == v7)
+  pathCopy = path;
+  _prefersRTL = [(UISwipeActionController *)self _prefersRTL];
+  v8 = direction != 1;
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+  v10 = swipeActionHost;
+  if (v8 == _prefersRTL)
   {
-    [v9 swipeActionController:self trailingSwipeConfigurationForItemAtIndexPath:v6];
+    [swipeActionHost swipeActionController:self trailingSwipeConfigurationForItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    [v9 swipeActionController:self leadingSwipeConfigurationForItemAtIndexPath:v6];
+    [swipeActionHost swipeActionController:self leadingSwipeConfigurationForItemAtIndexPath:pathCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (void)swipeItemAtIndexPath:(id)a3 configuration:(id)a4 direction:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)swipeItemAtIndexPath:(id)path configuration:(id)configuration direction:(unint64_t)direction animated:(BOOL)animated completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!v13)
+  pathCopy = path;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (!configurationCopy)
   {
-    v13 = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:a5 indexPath:v12];
+    configurationCopy = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:direction indexPath:pathCopy];
   }
 
-  if (v12)
+  if (pathCopy)
   {
-    if (v13)
+    if (configurationCopy)
     {
-      v15 = [v13 actions];
-      if (v15)
+      actions = [configurationCopy actions];
+      if (actions)
       {
-        v16 = v15;
-        [v13 actions];
-        v17 = v43 = a5;
+        v16 = actions;
+        [configurationCopy actions];
+        v17 = v43 = direction;
         v18 = [v17 count];
 
         if (v18)
         {
-          v44 = v14;
+          v44 = completionCopy;
           v54 = 0u;
           v55 = 0u;
           v52 = 0u;
@@ -291,7 +291,7 @@
           {
             v21 = v20;
             v22 = *v53;
-            v42 = a6;
+            animatedCopy = animated;
             while (2)
             {
               for (i = 0; i != v21; ++i)
@@ -301,20 +301,20 @@
                   objc_enumerationMutation(v19);
                 }
 
-                v24 = [*(*(&v52 + 1) + 8 * i) indexPath];
-                v25 = v12;
+                indexPath = [*(*(&v52 + 1) + 8 * i) indexPath];
+                v25 = pathCopy;
                 v26 = v25;
-                if (v24 == v25)
+                if (indexPath == v25)
                 {
 
 LABEL_24:
-                  v14 = v44;
+                  completionCopy = v44;
                   goto LABEL_27;
                 }
 
-                if (v24)
+                if (indexPath)
                 {
-                  v27 = [v24 isEqual:v25];
+                  v27 = [indexPath isEqual:v25];
 
                   if (v27)
                   {
@@ -328,7 +328,7 @@ LABEL_24:
               }
 
               v21 = [(NSMutableSet *)v19 countByEnumeratingWithState:&v52 objects:v56 count:16];
-              a6 = v42;
+              animated = animatedCopy;
               if (v21)
               {
                 continue;
@@ -338,13 +338,13 @@ LABEL_24:
             }
           }
 
-          v19 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:v12];
+          v19 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:pathCopy];
           [(NSMutableSet *)v19 center];
           v29 = v28;
           v31 = v30;
           WeakRetained = objc_loadWeakRetained(&self->_containerView);
-          v33 = [(NSMutableSet *)v19 superview];
-          [WeakRetained convertPoint:v33 fromView:{v29, v31}];
+          superview = [(NSMutableSet *)v19 superview];
+          [WeakRetained convertPoint:superview fromView:{v29, v31}];
           v35 = v34;
           v37 = v36;
 
@@ -357,7 +357,7 @@ LABEL_24:
           v50 = 0u;
           v51 = 0u;
           swipeHandler = self->_swipeHandler;
-          v14 = v44;
+          completionCopy = v44;
           if (swipeHandler)
           {
             [(_UISwipeHandler *)swipeHandler currentSwipeConfig];
@@ -371,15 +371,15 @@ LABEL_24:
             v40 = 0;
           }
 
-          v41 = [(UISwipeActionController *)self currentSwipeOccurrence];
-          [v41 beginSwipeTracking:0];
+          currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+          [currentSwipeOccurrence beginSwipeTracking:0];
           v45[0] = v39;
           v45[1] = 0;
-          v46 = a6;
+          animatedCopy2 = animated;
           memset(v47, 0, sizeof(v47));
           v48 = v40;
           v49 = xmmword_18A682680;
-          [v41 updateOffsetWithSwipeInfo:v45 isTracking:0 completion:v44];
+          [currentSwipeOccurrence updateOffsetWithSwipeInfo:v45 isTracking:0 completion:v44];
 
 LABEL_27:
         }
@@ -388,11 +388,11 @@ LABEL_27:
   }
 }
 
-- (void)resetSwipedItemAnimated:(BOOL)a3 completion:(id)a4
+- (void)resetSwipedItemAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = self->_preparingSwipeOccurrence;
   if (v7)
   {
@@ -428,7 +428,7 @@ LABEL_27:
 
           else
           {
-            [(UISwipeOccurrence *)v13 resetAnimated:v4 completion:v6];
+            [(UISwipeOccurrence *)v13 resetAnimated:animatedCopy completion:completionCopy];
           }
         }
 
@@ -438,18 +438,18 @@ LABEL_27:
       while (v10);
     }
 
-    v14 = [(UISwipeActionController *)self swipeHandler];
-    [v14 resetSwipe];
+    swipeHandler = [(UISwipeActionController *)self swipeHandler];
+    [swipeHandler resetSwipe];
   }
 
   else
   {
-    v15 = [(UISwipeActionController *)self swipeHandler];
-    [v15 resetSwipe];
+    swipeHandler2 = [(UISwipeActionController *)self swipeHandler];
+    [swipeHandler2 resetSwipe];
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -478,8 +478,8 @@ LABEL_27:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 state];
-        if ([v9 active] && (objc_msgSend(v9, "_hasAmbiguousIndexPath") & 1) == 0 && v10 <= 1)
+        state = [v9 state];
+        if ([v9 active] && (objc_msgSend(v9, "_hasAmbiguousIndexPath") & 1) == 0 && state <= 1)
         {
           [v9 resetForReconfiguration];
           if ([v9 direction])
@@ -492,8 +492,8 @@ LABEL_27:
             v11 = 1;
           }
 
-          v12 = [v9 indexPath];
-          [(UISwipeActionController *)self swipeItemAtIndexPath:v12 configuration:0 direction:v11 animated:0 completion:0];
+          indexPath = [v9 indexPath];
+          [(UISwipeActionController *)self swipeItemAtIndexPath:indexPath configuration:0 direction:v11 animated:0 completion:0];
         }
       }
 
@@ -506,24 +506,24 @@ LABEL_27:
 
 - (NSIndexPath)swipedIndexPath
 {
-  v2 = [(UISwipeActionController *)self currentSwipeOccurrence];
-  v3 = [v2 indexPath];
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+  indexPath = [currentSwipeOccurrence indexPath];
 
-  return v3;
+  return indexPath;
 }
 
 - (UIView)swipedItemView
 {
-  v3 = [(UISwipeActionController *)self swipedIndexPath];
-  v4 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:v3];
+  swipedIndexPath = [(UISwipeActionController *)self swipedIndexPath];
+  v4 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:swipedIndexPath];
 
   return v4;
 }
 
-- (id)_existingSwipeOccurrenceForIndexPath:(id)a3
+- (id)_existingSwipeOccurrenceForIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -543,10 +543,10 @@ LABEL_27:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 indexPath];
-        v11 = v4;
+        indexPath = [v9 indexPath];
+        v11 = pathCopy;
         v12 = v11;
-        if (v10 == v11)
+        if (indexPath == v11)
         {
 
 LABEL_16:
@@ -554,9 +554,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v10)
+        if (pathCopy && indexPath)
         {
-          v13 = [v10 isEqual:v11];
+          v13 = [indexPath isEqual:v11];
 
           if (v13)
           {
@@ -584,30 +584,30 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)_isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:(id)a3
+- (BOOL)_isSwipeForIndexPathFirstOccurrenceBeginningOrLastOccurrenceEnding:(id)ending
 {
-  v4 = a3;
+  endingCopy = ending;
   if ([(NSMutableSet *)self->_swipeOccurrences count]== 1)
   {
-    v5 = [(NSMutableSet *)self->_swipeOccurrences anyObject];
-    v6 = [v5 indexPath];
-    v7 = v4;
+    anyObject = [(NSMutableSet *)self->_swipeOccurrences anyObject];
+    indexPath = [anyObject indexPath];
+    v7 = endingCopy;
     v8 = v7;
-    if (v6 == v7)
+    if (indexPath == v7)
     {
     }
 
     else
     {
-      if (!v7 || !v6)
+      if (!v7 || !indexPath)
       {
 
         v10 = 0;
-        v11 = v6;
+        currentSwipeOccurrence = indexPath;
         goto LABEL_11;
       }
 
-      v9 = [v6 isEqual:v7];
+      v9 = [indexPath isEqual:v7];
 
       if (!v9)
       {
@@ -618,8 +618,8 @@ LABEL_12:
       }
     }
 
-    v11 = [(UISwipeActionController *)self currentSwipeOccurrence];
-    v10 = v11 == 0;
+    currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+    v10 = currentSwipeOccurrence == 0;
 LABEL_11:
 
     goto LABEL_12;
@@ -631,13 +631,13 @@ LABEL_13:
   return v10;
 }
 
-- (id)_swipedViewForItemAtIndexPath:(id)a3
+- (id)_swipedViewForItemAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = a3;
-    v5 = [(UISwipeActionController *)self swipeActionHost];
-    v6 = [v5 swipeActionController:self viewForItemAtIndexPath:v4];
+    pathCopy = path;
+    swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+    v6 = [swipeActionHost swipeActionController:self viewForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -650,16 +650,16 @@ LABEL_13:
 
 - (BOOL)_prefersRTL
 {
-  v2 = self;
-  v3 = [(UISwipeActionController *)self swipeActionHost];
-  LOBYTE(v2) = [v3 layoutDirectionForSwipeActionController:v2] == 1;
+  selfCopy = self;
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+  LOBYTE(selfCopy) = [swipeActionHost layoutDirectionForSwipeActionController:selfCopy] == 1;
 
-  return v2;
+  return selfCopy;
 }
 
-- (unint64_t)_swipeDirectionForLeadingEdge:(BOOL)a3
+- (unint64_t)_swipeDirectionForLeadingEdge:(BOOL)edge
 {
-  if ([(UISwipeActionController *)self _prefersRTL]!= a3)
+  if ([(UISwipeActionController *)self _prefersRTL]!= edge)
   {
     return 2;
   }
@@ -670,14 +670,14 @@ LABEL_13:
   }
 }
 
-- (void)rebaseUnambiguousSwipeOccurrencesWithBlock:(id)a3
+- (void)rebaseUnambiguousSwipeOccurrencesWithBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"rebaseBlock != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"rebaseBlock != nil"}];
   }
 
   v6 = [(NSMutableSet *)self->_swipeOccurrences copy];
@@ -703,8 +703,8 @@ LABEL_13:
         v12 = *(*(&v16 + 1) + 8 * i);
         if (([v12 _hasAmbiguousIndexPath] & 1) == 0)
         {
-          v13 = [v12 indexPath];
-          v14 = v5[2](v5, v13);
+          indexPath = [v12 indexPath];
+          v14 = blockCopy[2](blockCopy, indexPath);
 
           if (v14)
           {
@@ -725,7 +725,7 @@ LABEL_13:
   }
 }
 
-- (void)deleteSectionAtIndex:(unint64_t)a3
+- (void)deleteSectionAtIndex:(unint64_t)index
 {
   swipeOccurrences = self->_swipeOccurrences;
   v4[0] = MEMORY[0x1E69E9820];
@@ -733,7 +733,7 @@ LABEL_13:
   v4[2] = __48__UISwipeActionController_deleteSectionAtIndex___block_invoke;
   v4[3] = &unk_1E71229E8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = index;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v4];
 }
 
@@ -770,17 +770,17 @@ void __48__UISwipeActionController_deleteSectionAtIndex___block_invoke(uint64_t 
   }
 }
 
-- (void)deleteRowAtIndexPath:(id)a3
+- (void)deleteRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   swipeOccurrences = self->_swipeOccurrences;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__UISwipeActionController_deleteRowAtIndexPath___block_invoke;
   v7[3] = &unk_1E7122A10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = pathCopy;
+  selfCopy = self;
+  v6 = pathCopy;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v7];
 }
 
@@ -827,14 +827,14 @@ void __48__UISwipeActionController_deleteRowAtIndexPath___block_invoke(uint64_t 
 LABEL_8:
 }
 
-- (void)insertSectionAtIndex:(unint64_t)a3
+- (void)insertSectionAtIndex:(unint64_t)index
 {
   swipeOccurrences = self->_swipeOccurrences;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__UISwipeActionController_insertSectionAtIndex___block_invoke;
   v4[3] = &__block_descriptor_40_e31_v24__0__UISwipeOccurrence_8_B16l;
-  v4[4] = a3;
+  v4[4] = index;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v4];
 }
 
@@ -859,16 +859,16 @@ void __48__UISwipeActionController_insertSectionAtIndex___block_invoke(uint64_t 
   }
 }
 
-- (void)insertRowAtIndexPath:(id)a3
+- (void)insertRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   swipeOccurrences = self->_swipeOccurrences;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__UISwipeActionController_insertRowAtIndexPath___block_invoke;
   v7[3] = &unk_1E7122A58;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathCopy;
+  v6 = pathCopy;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v7];
 }
 
@@ -902,15 +902,15 @@ void __48__UISwipeActionController_insertRowAtIndexPath___block_invoke(uint64_t 
 LABEL_6:
 }
 
-- (void)moveSectionAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveSectionAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   swipeOccurrences = self->_swipeOccurrences;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__UISwipeActionController_moveSectionAtIndex_toIndex___block_invoke;
   v5[3] = &__block_descriptor_48_e31_v24__0__UISwipeOccurrence_8_B16l;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = index;
+  v5[5] = toIndex;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v5];
 }
 
@@ -968,19 +968,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)moveRowAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   swipeOccurrences = self->_swipeOccurrences;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__UISwipeActionController_moveRowAtIndexPath_toIndexPath___block_invoke;
   v11[3] = &unk_1E7122A10;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = pathCopy;
+  v13 = indexPathCopy;
+  v9 = indexPathCopy;
+  v10 = pathCopy;
   [(NSMutableSet *)swipeOccurrences enumerateObjectsUsingBlock:v11];
 }
 
@@ -1049,22 +1049,22 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)_handleDeleteOfSwipeOccurrence:(id)a3
+- (void)_handleDeleteOfSwipeOccurrence:(id)occurrence
 {
-  v7 = a3;
-  [v7 _setHasAmbiguousIndexPath];
-  v3 = [v7 currentAction];
-  if (v3)
+  occurrenceCopy = occurrence;
+  [occurrenceCopy _setHasAmbiguousIndexPath];
+  currentAction = [occurrenceCopy currentAction];
+  if (currentAction)
   {
-    v4 = v3;
-    v5 = [v7 currentAction];
-    if ([v5 style] == 1)
+    v4 = currentAction;
+    currentAction2 = [occurrenceCopy currentAction];
+    if ([currentAction2 style] == 1)
     {
-      v6 = [v7 state];
+      state = [occurrenceCopy state];
 
-      if (v6 == 3)
+      if (state == 3)
       {
-        [v7 _transitionToState:4];
+        [occurrenceCopy _transitionToState:4];
         goto LABEL_7;
       }
     }
@@ -1074,23 +1074,23 @@ LABEL_12:
     }
   }
 
-  [v7 resetAnimated:0 completion:0];
+  [occurrenceCopy resetAnimated:0 completion:0];
 LABEL_7:
 }
 
-- (void)prepareForSwipeDirection:(unint64_t)a3 startingAtTouchLocation:(CGPoint)a4
+- (void)prepareForSwipeDirection:(unint64_t)direction startingAtTouchLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(UISwipeActionController *)self swipeActionHost];
-  v12 = [v8 swipeActionController:self indexPathForTouchLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+  v12 = [swipeActionHost swipeActionController:self indexPathForTouchLocation:{x, y}];
 
   v9 = v12;
-  if (a3 && v12)
+  if (direction && v12)
   {
     v10 = [(UISwipeActionController *)self _existingSwipeOccurrenceForIndexPath:v12];
     v11 = v10;
-    if (v10 && !_canReuseExistingSwipeOccurrenceForSwipeDirection(v10, a3))
+    if (v10 && !_canReuseExistingSwipeOccurrenceForSwipeDirection(v10, direction))
     {
       [v11 _forceTeardown];
     }
@@ -1099,17 +1099,17 @@ LABEL_7:
   }
 }
 
-- ($A7B7FA971CD029BAA4A09478E9E1AEDA)configureForSwipeDirection:(SEL)a3 configuration:(unint64_t)a4 startingAtTouchLocation:(id)a5
+- ($A7B7FA971CD029BAA4A09478E9E1AEDA)configureForSwipeDirection:(SEL)direction configuration:(unint64_t)configuration startingAtTouchLocation:(id)location
 {
   y = a6.y;
   x = a6.x;
-  v12 = a5;
+  locationCopy = location;
   *&retstr->var0 = 0u;
   *&retstr->var3 = 0u;
-  v13 = [(UISwipeActionController *)self swipeActionHost];
-  v14 = [v13 swipeActionController:self indexPathForTouchLocation:{x, y}];
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+  v14 = [swipeActionHost swipeActionController:self indexPathForTouchLocation:{x, y}];
 
-  if (!a4 || !v14)
+  if (!configuration || !v14)
   {
     goto LABEL_31;
   }
@@ -1118,14 +1118,14 @@ LABEL_7:
   if (v15)
   {
     v16 = v15;
-    if (!_canReuseExistingSwipeOccurrenceForSwipeDirection(v15, a4))
+    if (!_canReuseExistingSwipeOccurrenceForSwipeDirection(v15, configuration))
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a3 object:self file:@"UISwipeActionController.m" lineNumber:455 description:{@"There is an existing swipe occurrence for %@ and it can't be reused for swipe direction %ld, so it should have been cleaned up in prepareForSwipeDirection: %@", v14, a4, v16}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:direction object:self file:@"UISwipeActionController.m" lineNumber:455 description:{@"There is an existing swipe occurrence for %@ and it can't be reused for swipe direction %ld, so it should have been cleaned up in prepareForSwipeDirection: %@", v14, configuration, v16}];
     }
 
     [(UISwipeOccurrence *)v16 updateSwipedView];
-    if (v12)
+    if (locationCopy)
     {
       goto LABEL_13;
     }
@@ -1135,7 +1135,7 @@ LABEL_7:
 
   v16 = [[UISwipeOccurrence alloc] initWithController:self indexPath:v14 defaultStyle:[(UISwipeActionController *)self style]];
   [(NSMutableSet *)self->_swipeOccurrences addObject:v16];
-  if (!v12)
+  if (!locationCopy)
   {
 LABEL_9:
     incomingSwipeActionsConfiguration = self->_incomingSwipeActionsConfiguration;
@@ -1146,10 +1146,10 @@ LABEL_9:
 
     else
     {
-      v18 = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:a4 indexPath:v14];
+      v18 = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:configuration indexPath:v14];
     }
 
-    v12 = v18;
+    locationCopy = v18;
   }
 
 LABEL_13:
@@ -1182,7 +1182,7 @@ LABEL_13:
   objc_storeStrong(&self->_preparingSwipeOccurrence, v16);
   if (v16)
   {
-    [(UISwipeOccurrence *)v16 prepareWithSwipeDirection:a4 configuration:v12];
+    [(UISwipeOccurrence *)v16 prepareWithSwipeDirection:configuration configuration:locationCopy];
   }
 
   else
@@ -1224,23 +1224,23 @@ LABEL_13:
   *&self->_flags &= ~1u;
   if (retstr->var0 && [(UISwipeOccurrence *)v16 active]&& (flags & 1) == 0)
   {
-    v25 = [(UISwipeActionController *)self swipeActionHost];
+    swipeActionHost2 = [(UISwipeActionController *)self swipeActionHost];
     v26 = objc_opt_respondsToSelector();
 
     if (v26)
     {
-      v27 = [(UISwipeActionController *)self swipeActionHost];
-      [v27 swipeActionController:self willBeginSwipeForItemAtIndexPath:v14];
+      swipeActionHost3 = [(UISwipeActionController *)self swipeActionHost];
+      [swipeActionHost3 swipeActionController:self willBeginSwipeForItemAtIndexPath:v14];
     }
 
     [(UISwipeActionController *)self setCurrentSwipeOccurrence:v16];
-    v28 = [(UISwipeActionController *)self swipeActionHost];
+    swipeActionHost4 = [(UISwipeActionController *)self swipeActionHost];
     v29 = objc_opt_respondsToSelector();
 
     if (v29)
     {
-      v30 = [(UISwipeActionController *)self swipeActionHost];
-      [v30 swipeActionController:self didBeginSwipeForItemAtIndexPath:v14];
+      swipeActionHost5 = [(UISwipeActionController *)self swipeActionHost];
+      [swipeActionHost5 swipeActionController:self didBeginSwipeForItemAtIndexPath:v14];
     }
   }
 
@@ -1253,12 +1253,12 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)touchAtLocationShouldDismissSwipedItem:(CGPoint)a3 isTouchUp:(BOOL)a4
+- (BOOL)touchAtLocationShouldDismissSwipedItem:(CGPoint)item isTouchUp:(BOOL)up
 {
-  y = a3.y;
-  x = a3.x;
+  y = item.y;
+  x = item.x;
   v34 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (up)
   {
     v26 = 0u;
     v27 = 0u;
@@ -1309,8 +1309,8 @@ LABEL_23:
 
   else
   {
-    v13 = [(UISwipeActionController *)self swipeActionHost];
-    v7 = [v13 gestureRecognizerViewForSwipeActionController:self];
+    swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+    v7 = [swipeActionHost gestureRecognizerViewForSwipeActionController:self];
 
     v30 = 0u;
     v31 = 0u;
@@ -1331,8 +1331,8 @@ LABEL_23:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v28 + 1) + 8 * i) indexPath];
-          v20 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:v19];
+          indexPath = [*(*(&v28 + 1) + 8 * i) indexPath];
+          v20 = [(UISwipeActionController *)self _swipedViewForItemAtIndexPath:indexPath];
           if (v20)
           {
             [(NSMutableSet *)v7 convertPoint:v20 toView:x, y];
@@ -1367,71 +1367,71 @@ LABEL_25:
   return v12;
 }
 
-- (void)swipeOccurrence:(id)a3 willFinishWithDeletion:(BOOL)a4
+- (void)swipeOccurrence:(id)occurrence willFinishWithDeletion:(BOOL)deletion
 {
-  v10 = a3;
-  v5 = [(UISwipeActionController *)self swipeActionHost];
+  occurrenceCopy = occurrence;
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UISwipeActionController *)self swipeActionHost];
-    v8 = [v10 indexPath];
-    [v7 swipeActionController:self willEndSwipeForItemAtIndexPath:v8];
+    swipeActionHost2 = [(UISwipeActionController *)self swipeActionHost];
+    indexPath = [occurrenceCopy indexPath];
+    [swipeActionHost2 swipeActionController:self willEndSwipeForItemAtIndexPath:indexPath];
   }
 
-  v9 = [(UISwipeActionController *)self swipeHandler];
-  [v9 resetSwipe];
+  swipeHandler = [(UISwipeActionController *)self swipeHandler];
+  [swipeHandler resetSwipe];
 }
 
-- (void)swipeOccurrenceDidFinish:(id)a3
+- (void)swipeOccurrenceDidFinish:(id)finish
 {
-  v9 = a3;
-  v4 = [(UISwipeActionController *)self currentSwipeOccurrence];
+  finishCopy = finish;
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
 
-  if (v4 == v9)
+  if (currentSwipeOccurrence == finishCopy)
   {
     [(UISwipeActionController *)self setCurrentSwipeOccurrence:0];
   }
 
-  v5 = [(UISwipeActionController *)self swipeActionHost];
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UISwipeActionController *)self swipeActionHost];
-    v8 = [v9 indexPath];
-    [v7 swipeActionController:self didEndSwipeForItemAtIndexPath:v8];
+    swipeActionHost2 = [(UISwipeActionController *)self swipeActionHost];
+    indexPath = [finishCopy indexPath];
+    [swipeActionHost2 swipeActionController:self didEndSwipeForItemAtIndexPath:indexPath];
   }
 
-  [(NSMutableSet *)self->_swipeOccurrences removeObject:v9];
+  [(NSMutableSet *)self->_swipeOccurrences removeObject:finishCopy];
 }
 
-- (void)swipeOccurrence:(id)a3 didChangeStateFrom:(int64_t)a4
+- (void)swipeOccurrence:(id)occurrence didChangeStateFrom:(int64_t)from
 {
-  v9 = a3;
-  v6 = [(UISwipeActionController *)self _internalSwipeActionHost];
+  occurrenceCopy = occurrence;
+  _internalSwipeActionHost = [(UISwipeActionController *)self _internalSwipeActionHost];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UISwipeActionController *)self _internalSwipeActionHost];
-    [v8 swipeActionController:self swipeOccurrence:v9 didChangeStateFrom:a4 to:{objc_msgSend(v9, "state")}];
+    _internalSwipeActionHost2 = [(UISwipeActionController *)self _internalSwipeActionHost];
+    [_internalSwipeActionHost2 swipeActionController:self swipeOccurrence:occurrenceCopy didChangeStateFrom:from to:{objc_msgSend(occurrenceCopy, "state")}];
   }
 }
 
-- (BOOL)swipeHandler:(id)a3 mayBeginSwipeAtLocation:(CGPoint)a4 withProposedDirection:(unint64_t)a5
+- (BOOL)swipeHandler:(id)handler mayBeginSwipeAtLocation:(CGPoint)location withProposedDirection:(unint64_t)direction
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = [(UISwipeActionController *)self swipeActionHost];
-  v10 = [v9 swipeActionController:self indexPathForTouchLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  swipeActionHost = [(UISwipeActionController *)self swipeActionHost];
+  v10 = [swipeActionHost swipeActionController:self indexPathForTouchLocation:{x, y}];
 
   if (v10)
   {
-    v11 = [(UISwipeActionController *)self currentSwipeOccurrence];
-    v12 = v11;
-    if (v11 && ([v11 state] & 0xFFFFFFFFFFFFFFFELL) == 4 && (objc_msgSend(v12, "_hasAmbiguousIndexPath") & 1) != 0 || (-[UISwipeActionController swipeActionHost](self, "swipeActionHost"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0) && (-[UISwipeActionController swipeActionHost](self, "swipeActionHost"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "swipeActionController:mayBeginSwipeForItemAtIndexPath:", self, v10), v15, !v16))
+    currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+    v12 = currentSwipeOccurrence;
+    if (currentSwipeOccurrence && ([currentSwipeOccurrence state] & 0xFFFFFFFFFFFFFFFELL) == 4 && (objc_msgSend(v12, "_hasAmbiguousIndexPath") & 1) != 0 || (-[UISwipeActionController swipeActionHost](self, "swipeActionHost"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0) && (-[UISwipeActionController swipeActionHost](self, "swipeActionHost"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "swipeActionController:mayBeginSwipeForItemAtIndexPath:", self, v10), v15, !v16))
     {
       v21 = 0;
       goto LABEL_22;
@@ -1439,18 +1439,18 @@ LABEL_25:
 
     if (v12)
     {
-      v17 = [v12 indexPath];
+      indexPath = [v12 indexPath];
       v18 = v10;
       v19 = v18;
-      if (v17 == v18)
+      if (indexPath == v18)
       {
 
         goto LABEL_19;
       }
 
-      if (v17)
+      if (indexPath)
       {
-        v20 = [v17 isEqual:v18];
+        v20 = [indexPath isEqual:v18];
 
         if (v20)
         {
@@ -1466,8 +1466,8 @@ LABEL_22:
       }
     }
 
-    v22 = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:a5 indexPath:v10];
-    v17 = v22;
+    v22 = [(UISwipeActionController *)self _swipeActionsConfigurationForSwipeDirection:direction indexPath:v10];
+    indexPath = v22;
     if (!v22 || ([v22 actions], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "count"), v23, !v24))
     {
       [(UISwipeActionController *)self setIncomingSwipeActionsConfiguration:0];
@@ -1475,7 +1475,7 @@ LABEL_22:
       goto LABEL_21;
     }
 
-    [(UISwipeActionController *)self setIncomingSwipeActionsConfiguration:v17];
+    [(UISwipeActionController *)self setIncomingSwipeActionsConfiguration:indexPath];
 LABEL_19:
     v21 = 1;
 LABEL_21:
@@ -1489,59 +1489,59 @@ LABEL_23:
   return v21;
 }
 
-- (void)swipeHandlerDidBeginSwipe:(id)a3
+- (void)swipeHandlerDidBeginSwipe:(id)swipe
 {
-  v5 = [(UISwipeActionController *)self currentSwipeOccurrence];
-  v7 = v5;
-  if (!v5)
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+  v7 = currentSwipeOccurrence;
+  if (!currentSwipeOccurrence)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:611 description:@"No current swipe occurrence"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:611 description:@"No current swipe occurrence"];
 
-    v5 = 0;
+    currentSwipeOccurrence = 0;
   }
 
-  [v5 beginSwipeTracking:1];
+  [currentSwipeOccurrence beginSwipeTracking:1];
   [(UISwipeActionController *)self setIncomingSwipeActionsConfiguration:0];
 }
 
-- (void)swipeHandler:(id)a3 didGenerateSwipeWithInfo:(id *)a4 isTracking:(BOOL)a5
+- (void)swipeHandler:(id)handler didGenerateSwipeWithInfo:(id *)info isTracking:(BOOL)tracking
 {
-  v5 = a5;
-  v9 = [(UISwipeActionController *)self currentSwipeOccurrence];
-  if (!v9)
+  trackingCopy = tracking;
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+  if (!currentSwipeOccurrence)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:621 description:@"No current swipe occurrence"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:621 description:@"No current swipe occurrence"];
   }
 
-  v10 = *&a4->var2;
-  v12[0] = *&a4->var0;
+  v10 = *&info->var2;
+  v12[0] = *&info->var0;
   v12[1] = v10;
-  v12[2] = *&a4->var4;
-  [v9 updateOffsetWithSwipeInfo:v12 isTracking:v5 completion:0];
+  v12[2] = *&info->var4;
+  [currentSwipeOccurrence updateOffsetWithSwipeInfo:v12 isTracking:trackingCopy completion:0];
 }
 
-- (void)swipeHandler:(id)a3 didConfirmSwipeWithInfo:(id *)a4
+- (void)swipeHandler:(id)handler didConfirmSwipeWithInfo:(id *)info
 {
-  v7 = [(UISwipeActionController *)self currentSwipeOccurrence];
-  if (!v7)
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+  if (!currentSwipeOccurrence)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:629 description:@"No current swipe occurrence"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionController.m" lineNumber:629 description:@"No current swipe occurrence"];
   }
 
-  v8 = *&a4->var2;
-  v10[0] = *&a4->var0;
+  v8 = *&info->var2;
+  v10[0] = *&info->var0;
   v10[1] = v8;
-  v10[2] = *&a4->var4;
-  [v7 performPrimaryActionWithSwipeInfo:v10];
+  v10[2] = *&info->var4;
+  [currentSwipeOccurrence performPrimaryActionWithSwipeInfo:v10];
 }
 
-- (CGRect)swipeHandlerRestingFrame:(id)a3
+- (CGRect)swipeHandlerRestingFrame:(id)frame
 {
-  v3 = [(UISwipeActionController *)self currentSwipeOccurrence];
-  if (!v3)
+  currentSwipeOccurrence = [(UISwipeActionController *)self currentSwipeOccurrence];
+  if (!currentSwipeOccurrence)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1564,7 +1564,7 @@ LABEL_23:
     }
   }
 
-  [v3 swipedViewRestingFrame];
+  [currentSwipeOccurrence swipedViewRestingFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1581,7 +1581,7 @@ LABEL_23:
   return result;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_swipeOccurrences count])
@@ -1594,18 +1594,18 @@ LABEL_23:
     else
     {
       v5 = objc_loadWeakRetained(&self->_containerView);
-      v6 = [v5 isScrollAnimating];
+      isScrollAnimating = [v5 isScrollAnimating];
 
-      if (!v6)
+      if (!isScrollAnimating)
       {
         return;
       }
     }
 
-    v7 = [(UISwipeActionController *)self swipeHandler];
-    v8 = [v7 isInteracting];
+    swipeHandler = [(UISwipeActionController *)self swipeHandler];
+    isInteracting = [swipeHandler isInteracting];
 
-    if (v8)
+    if (isInteracting)
     {
 
       [(UISwipeActionController *)self updateLayout];

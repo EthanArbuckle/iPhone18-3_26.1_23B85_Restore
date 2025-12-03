@@ -1,13 +1,13 @@
 @interface SecureUIRecordingWatchdog
-- (void)recordingStarted:(BOOL)a3;
+- (void)recordingStarted:(BOOL)started;
 @end
 
 @implementation SecureUIRecordingWatchdog
 
-- (void)recordingStarted:(BOOL)a3
+- (void)recordingStarted:(BOOL)started
 {
 
-  SecureUIRecordingWatchdog.recordingStarted(_:)(a3);
+  SecureUIRecordingWatchdog.recordingStarted(_:)(started);
 }
 
 @end

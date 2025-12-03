@@ -1,19 +1,19 @@
 @interface FCPuzzleTypeSettingsEntry
 - (CKRecord)asCKRecord;
-- (FCPuzzleTypeSettingsEntry)initWithEntryID:(id)a3 puzzleTypeID:(id)a4 settingsData:(id)a5 lastSeenPuzzleIDs:(id)a6;
-- (id)initWithEntryID:(void *)a3 dictionaryRepresentation:;
+- (FCPuzzleTypeSettingsEntry)initWithEntryID:(id)d puzzleTypeID:(id)iD settingsData:(id)data lastSeenPuzzleIDs:(id)ds;
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:;
 @end
 
 @implementation FCPuzzleTypeSettingsEntry
 
-- (FCPuzzleTypeSettingsEntry)initWithEntryID:(id)a3 puzzleTypeID:(id)a4 settingsData:(id)a5 lastSeenPuzzleIDs:(id)a6
+- (FCPuzzleTypeSettingsEntry)initWithEntryID:(id)d puzzleTypeID:(id)iD settingsData:(id)data lastSeenPuzzleIDs:(id)ds
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
+  dsCopy = ds;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"puzzleTypeSettings entry must have an entryID"];
     *buf = 136315906;
@@ -26,13 +26,13 @@
     v36 = v26;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v11)
+    if (iDCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v11)
+  else if (iDCopy)
   {
     goto LABEL_6;
   }
@@ -58,21 +58,21 @@ LABEL_6:
   v15 = v14;
   if (v14)
   {
-    if (v10 && v11)
+    if (dCopy && iDCopy)
     {
-      v16 = [v10 copy];
+      v16 = [dCopy copy];
       identifier = v15->_identifier;
       v15->_identifier = v16;
 
-      v18 = [v11 copy];
+      v18 = [iDCopy copy];
       puzzleTypeID = v15->_puzzleTypeID;
       v15->_puzzleTypeID = v18;
 
-      v20 = [v12 copy];
+      v20 = [dataCopy copy];
       settingsData = v15->_settingsData;
       v15->_settingsData = v20;
 
-      v22 = [v13 copy];
+      v22 = [dsCopy copy];
       lastSeenPuzzleIDs = v15->_lastSeenPuzzleIDs;
       v15->_lastSeenPuzzleIDs = v22;
     }
@@ -96,18 +96,18 @@ LABEL_6:
   }
 
   v3 = objc_alloc(MEMORY[0x1E695BA70]);
-  v4 = [(FCPuzzleTypeSettingsEntry *)self identifier];
-  v5 = [v3 initWithRecordName:v4 zoneID:_MergedGlobals_151];
+  identifier = [(FCPuzzleTypeSettingsEntry *)self identifier];
+  v5 = [v3 initWithRecordName:identifier zoneID:_MergedGlobals_151];
 
   v6 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"PuzzleTypeSettings" recordID:v5];
-  v7 = [(FCPuzzleTypeSettingsEntry *)self puzzleTypeID];
-  [v6 setValue:v7 forKey:@"puzzleTypeID"];
+  puzzleTypeID = [(FCPuzzleTypeSettingsEntry *)self puzzleTypeID];
+  [v6 setValue:puzzleTypeID forKey:@"puzzleTypeID"];
 
-  v8 = [(FCPuzzleTypeSettingsEntry *)self settingsData];
-  [v6 setValue:v8 forKey:@"settingsData"];
+  settingsData = [(FCPuzzleTypeSettingsEntry *)self settingsData];
+  [v6 setValue:settingsData forKey:@"settingsData"];
 
-  v9 = [(FCPuzzleTypeSettingsEntry *)self lastSeenPuzzleIDs];
-  [v6 setValue:v9 forKey:@"lastSeenPuzzleIDs"];
+  lastSeenPuzzleIDs = [(FCPuzzleTypeSettingsEntry *)self lastSeenPuzzleIDs];
+  [v6 setValue:lastSeenPuzzleIDs forKey:@"lastSeenPuzzleIDs"];
 
   return v6;
 }
@@ -122,22 +122,22 @@ uint64_t __39__FCPuzzleTypeSettingsEntry_asCKRecord__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)initWithEntryID:(void *)a3 dictionaryRepresentation:
+- (id)initWithEntryID:(void *)d dictionaryRepresentation:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v5 = a3;
+    dCopy = d;
     v6 = a2;
-    v7 = [v5 objectForKeyedSubscript:@"puzzleTypeID"];
-    v8 = [v5 objectForKeyedSubscript:@"settingsData"];
-    v9 = [v5 objectForKeyedSubscript:@"lastSeenPuzzleIDs"];
+    v7 = [dCopy objectForKeyedSubscript:@"puzzleTypeID"];
+    v8 = [dCopy objectForKeyedSubscript:@"settingsData"];
+    v9 = [dCopy objectForKeyedSubscript:@"lastSeenPuzzleIDs"];
 
-    v10 = [v3 initWithEntryID:v6 puzzleTypeID:v7 settingsData:v8 lastSeenPuzzleIDs:v9];
-    v3 = v10;
+    v10 = [selfCopy initWithEntryID:v6 puzzleTypeID:v7 settingsData:v8 lastSeenPuzzleIDs:v9];
+    selfCopy = v10;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

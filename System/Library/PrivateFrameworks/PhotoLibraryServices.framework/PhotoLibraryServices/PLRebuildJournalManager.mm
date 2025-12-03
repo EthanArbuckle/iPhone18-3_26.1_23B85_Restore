@@ -1,56 +1,56 @@
 @interface PLRebuildJournalManager
-+ (BOOL)assetJournalExists:(id)a3 error:(id *)a4;
-+ (BOOL)existingJournalsCompatibleForRebuild:(id)a3 error:(id *)a4;
-+ (BOOL)isEnabledWithPathManager:(id)a3 error:(id *)a4;
-+ (id)baseURLFromPathManager:(id)a3;
++ (BOOL)assetJournalExists:(id)exists error:(id *)error;
++ (BOOL)existingJournalsCompatibleForRebuild:(id)rebuild error:(id *)error;
++ (BOOL)isEnabledWithPathManager:(id)manager error:(id *)error;
++ (id)baseURLFromPathManager:(id)manager;
 + (id)payloadClasses;
-- (BOOL)_coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5;
-- (BOOL)_performSnapshotForPayloadClassIDs:(id)a3 error:(id *)a4;
-- (BOOL)_performSnapshotIfNecessaryWithError:(id *)a3;
-- (BOOL)_recreateResourcesForAsset:(id)a3 withPayload:(id)a4 resources:(id)a5 recreateOptions:(unsigned __int8)a6 storeOptions:(id)a7 libraryID:(id)a8 isCPLEnabled:(BOOL)a9;
+- (BOOL)_coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error;
+- (BOOL)_performSnapshotForPayloadClassIDs:(id)ds error:(id *)error;
+- (BOOL)_performSnapshotIfNecessaryWithError:(id *)error;
+- (BOOL)_recreateResourcesForAsset:(id)asset withPayload:(id)payload resources:(id)resources recreateOptions:(unsigned __int8)options storeOptions:(id)storeOptions libraryID:(id)d isCPLEnabled:(BOOL)enabled;
 - (BOOL)_replayFromCurrentHistoryToken;
-- (BOOL)_snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4;
-- (BOOL)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5;
-- (BOOL)snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4;
-- (PLRebuildJournalManager)initWithLibraryServicesManager:(id)a3;
-- (id)_assetsToImportFromAssetJournalInManagedObjectContext:(id)a3 outOnDiskURLs:(id)a4;
+- (BOOL)_snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error;
+- (BOOL)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error;
+- (BOOL)snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error;
+- (PLRebuildJournalManager)initWithLibraryServicesManager:(id)manager;
+- (id)_assetsToImportFromAssetJournalInManagedObjectContext:(id)context outOnDiskURLs:(id)ls;
 - (id)_newTransientContext;
-- (id)assetsToImportFromAssetJournalInManagedObjectContext:(id)a3 outOnDiskURLs:(id)a4;
-- (void)_handleChangeHandlingNotificationWithTransaction:(id)a3;
-- (void)_recreateAssetsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4 progress:(id)a5;
-- (void)_recreateNonAssetsInManagedObjectContext:(id)a3 progress:(id)a4;
+- (id)assetsToImportFromAssetJournalInManagedObjectContext:(id)context outOnDiskURLs:(id)ls;
+- (void)_handleChangeHandlingNotificationWithTransaction:(id)transaction;
+- (void)_recreateAssetsInManagedObjectContext:(id)context options:(unsigned __int8)options progress:(id)progress;
+- (void)_recreateNonAssetsInManagedObjectContext:(id)context progress:(id)progress;
 - (void)_registerForChangeHandlingNotifications;
 - (void)_retrySnapshot;
-- (void)_snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:(id)a3;
+- (void)_snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:(id)ds;
 - (void)_start;
 - (void)_startAfterRebuild;
-- (void)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 completionHandler:(id)a5;
+- (void)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler;
 - (void)notifyRebuildComplete;
 - (void)notifyWillRebuild;
-- (void)recreateAllObjectsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4;
-- (void)recreateAssetsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4 progress:(id)a5;
-- (void)recreateNonAssetsInManagedObjectContext:(id)a3 progress:(id)a4;
-- (void)snapshotJournalsForPayloadClassIDs:(id)a3 withCompletionHandler:(id)a4;
+- (void)recreateAllObjectsInManagedObjectContext:(id)context options:(unsigned __int8)options;
+- (void)recreateAssetsInManagedObjectContext:(id)context options:(unsigned __int8)options progress:(id)progress;
+- (void)recreateNonAssetsInManagedObjectContext:(id)context progress:(id)progress;
+- (void)snapshotJournalsForPayloadClassIDs:(id)ds withCompletionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation PLRebuildJournalManager
 
-- (id)_assetsToImportFromAssetJournalInManagedObjectContext:(id)a3 outOnDiskURLs:(id)a4
+- (id)_assetsToImportFromAssetJournalInManagedObjectContext:(id)context outOnDiskURLs:(id)ls
 {
   v96 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  lsCopy = ls;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v11 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
 
-  LODWORD(WeakRetained) = [v11 isUBF];
+  LODWORD(WeakRetained) = [pathManager isUBF];
   v12 = objc_loadWeakRetained(&self->_lsm);
-  v13 = [v12 pathManager];
-  v14 = v13;
+  pathManager2 = [v12 pathManager];
+  v14 = pathManager2;
   if (WeakRetained)
   {
     v15 = 4;
@@ -61,7 +61,7 @@
     v15 = 1;
   }
 
-  v16 = [v13 photoDirectoryWithType:v15];
+  v16 = [pathManager2 photoDirectoryWithType:v15];
 
   v88 = 0;
   v17 = [MEMORY[0x1E69BF238] realPathForPath:v16 error:&v88];
@@ -69,28 +69,28 @@
   if (v17)
   {
     v19 = [PLJournal alloc];
-    v20 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-    v21 = [(PLJournal *)v19 initWithBaseURL:v20 payloadClass:objc_opt_class()];
+    baseURL = [(PLJournalManagerCore *)self->_journalManager baseURL];
+    v21 = [(PLJournal *)v19 initWithBaseURL:baseURL payloadClass:objc_opt_class()];
 
     v82[0] = MEMORY[0x1E69E9820];
     v82[1] = 3221225472;
     v82[2] = __95__PLRebuildJournalManager__assetsToImportFromAssetJournalInManagedObjectContext_outOnDiskURLs___block_invoke;
     v82[3] = &unk_1E7575970;
-    v83 = v11;
+    v83 = pathManager;
     v70 = v17;
     v84 = v17;
     v69 = v8;
     v85 = v69;
     v22 = v9;
     v86 = v22;
-    v87 = v7;
+    v87 = lsCopy;
     v81 = v18;
     v23 = [v21 enumeratePayloadsUsingBlock:v82 error:&v81];
     v67 = v81;
 
     v24 = PLMigrationGetLog();
     v25 = v24;
-    v68 = v11;
+    v68 = pathManager;
     if (!v23)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -122,7 +122,7 @@
 
     v17 = v70;
     v64 = v8;
-    v65 = v7;
+    v65 = lsCopy;
     v63 = v9;
     if ([v22 count])
     {
@@ -140,7 +140,7 @@
       [v29 setPredicate:v31];
 
       v80 = 0;
-      v32 = [v6 executeFetchRequest:v29 error:&v80];
+      v32 = [contextCopy executeFetchRequest:v29 error:&v80];
       v33 = v80;
       v34 = v33;
       if (v32)
@@ -165,8 +165,8 @@
                 objc_enumerationMutation(v35);
               }
 
-              v40 = [*(*(&v76 + 1) + 8 * i) uuid];
-              [v22 removeObject:v40];
+              uuid = [*(*(&v76 + 1) + 8 * i) uuid];
+              [v22 removeObject:uuid];
             }
 
             v37 = [v35 countByEnumeratingWithState:&v76 objects:v90 count:16];
@@ -176,12 +176,12 @@
         }
 
         v8 = v64;
-        v7 = v65;
+        lsCopy = v65;
         v34 = v62;
         v9 = v63;
       }
 
-      v11 = v68;
+      pathManager = v68;
       v17 = v70;
     }
 
@@ -190,7 +190,7 @@
       v18 = v67;
       v21 = v66;
 LABEL_43:
-      v59 = [v69 allValues];
+      allValues = [v69 allValues];
 
       goto LABEL_44;
     }
@@ -238,7 +238,7 @@ LABEL_43:
     if (v50)
     {
       v8 = v64;
-      v7 = v65;
+      lsCopy = v65;
       v9 = v63;
       v17 = v70;
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -258,7 +258,7 @@ LABEL_40:
     else
     {
       v8 = v64;
-      v7 = v65;
+      lsCopy = v65;
       v9 = v63;
       v17 = v70;
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_40:
 LABEL_42:
 
     v18 = v51;
-    v11 = v68;
+    pathManager = v68;
     goto LABEL_43;
   }
 
@@ -294,10 +294,10 @@ LABEL_42:
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to resolve originals path: %{public}@, error: %@", buf, 0x16u);
   }
 
-  v59 = MEMORY[0x1E695E0F0];
+  allValues = MEMORY[0x1E695E0F0];
 LABEL_44:
 
-  return v59;
+  return allValues;
 }
 
 void __95__PLRebuildJournalManager__assetsToImportFromAssetJournalInManagedObjectContext_outOnDiskURLs___block_invoke(uint64_t a1, void *a2)
@@ -405,10 +405,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)assetsToImportFromAssetJournalInManagedObjectContext:(id)a3 outOnDiskURLs:(id)a4
+- (id)assetsToImportFromAssetJournalInManagedObjectContext:(id)context outOnDiskURLs:(id)ls
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  lsCopy = ls;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -421,11 +421,11 @@ LABEL_21:
   v13[2] = __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObjectContext_outOnDiskURLs___block_invoke;
   v13[3] = &unk_1E75778C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = contextCopy;
+  v15 = lsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = lsCopy;
+  v10 = contextCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -452,11 +452,11 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
   }
 }
 
-- (void)_recreateNonAssetsInManagedObjectContext:(id)a3 progress:(id)a4
+- (void)_recreateNonAssetsInManagedObjectContext:(id)context progress:(id)progress
 {
   v261 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  progressCopy = progress;
   v249 = 0;
   v250 = &v249;
   v251 = 0x3032000000;
@@ -479,30 +479,30 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
   v241[1] = 3221225472;
   v241[2] = __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_progress___block_invoke_2;
   v241[3] = &unk_1E75756F0;
-  v9 = v5;
+  v9 = contextCopy;
   v242 = v9;
   v127 = _Block_copy(v241);
   v238[0] = MEMORY[0x1E69E9820];
   v238[1] = 3221225472;
   v238[2] = __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_progress___block_invoke_128;
   v238[3] = &unk_1E7575740;
-  v10 = v6;
+  v10 = progressCopy;
   v239 = v10;
   v129 = v8;
   v240 = v129;
   v126 = _Block_copy(v238);
-  v130 = [v9 hasChanges];
-  v143 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-  v142 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v141 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v138 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v140 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v139 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v137 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v136 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v134 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v135 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
-  v133 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
+  hasChanges = [v9 hasChanges];
+  baseURL = [(PLJournalManagerCore *)self->_journalManager baseURL];
+  v142 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v141 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v138 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v140 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v139 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v137 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v136 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v134 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v135 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
+  v133 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
   v131 = v10;
   v123 = [(PLJournal *)v136 countOfInsertEntriesWithError:0];
   v121 = [(PLJournal *)v142 countOfInsertEntriesWithError:0];
@@ -515,7 +515,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
   v17 = [(PLJournal *)v134 countOfInsertEntriesWithError:0];
   v18 = [(PLJournal *)v133 countOfInsertEntriesWithError:0];
   v19 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v121 + v123 + v11 + v12 + v13 + v14 + v15 + v16 + v17 + v18 parent:v131 pendingUnitCount:{objc_msgSend(v131, "totalUnitCount")}];
-  v124 = [v9 changeSource];
+  changeSource = [v9 changeSource];
   [v9 setChangeSource:2];
   v233[0] = MEMORY[0x1E69E9820];
   v233[1] = 3221225472;
@@ -525,7 +525,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
   v234 = v20;
   v132 = v9;
   v235 = v132;
-  v237 = v130;
+  v237 = hasChanges;
   v21 = v19;
   v236 = v21;
   v22 = (v250 + 5);
@@ -543,7 +543,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     v228 = v24;
     v25 = v132;
     v229 = v25;
-    v231 = v130;
+    v231 = hasChanges;
     v26 = v21;
     v230 = v26;
     v27 = (v250 + 5);
@@ -571,7 +571,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     v222 = v30;
     v31 = v25;
     v223 = v31;
-    v225 = v130;
+    v225 = hasChanges;
     v32 = v26;
     v224 = v32;
     v33 = (v250 + 5);
@@ -591,7 +591,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
       goto LABEL_83;
     }
 
-    v36 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v212[0] = MEMORY[0x1E69E9820];
@@ -608,7 +608,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     v219 = v119;
     v117 = v31;
     v216 = v117;
-    v40 = v36;
+    v40 = strongToStrongObjectsMapTable;
     v217 = v40;
     v113 = v32;
     v218 = v113;
@@ -660,8 +660,8 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
 
     v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v50 = [PLJournal alloc];
-    v51 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-    v116 = [(PLJournal *)v50 initWithBaseURL:v51 payloadClass:objc_opt_class()];
+    baseURL2 = [(PLJournalManagerCore *)self->_journalManager baseURL];
+    v116 = [(PLJournal *)v50 initWithBaseURL:baseURL2 payloadClass:objc_opt_class()];
 
     v205[0] = MEMORY[0x1E69E9820];
     v205[1] = 3221225472;
@@ -704,7 +704,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     v197 = v56;
     v57 = v53;
     v198 = v57;
-    v200 = v130;
+    v200 = hasChanges;
     v58 = v113;
     v199 = v58;
     v59 = (v250 + 5);
@@ -733,8 +733,8 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     v189 = v62;
     v63 = v57;
     v190 = v63;
-    v191 = self;
-    v194 = v130;
+    selfCopy = self;
+    v194 = hasChanges;
     v193 = v54;
     v64 = v58;
     v192 = v64;
@@ -819,7 +819,7 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
       }
     }
 
-    v118 = [[PLJournal alloc] initWithBaseURL:v143 payloadClass:objc_opt_class()];
+    v118 = [[PLJournal alloc] initWithBaseURL:baseURL payloadClass:objc_opt_class()];
     v169[0] = MEMORY[0x1E69E9820];
     v169[1] = 3221225472;
     v169[2] = __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_progress___block_invoke_168;
@@ -978,11 +978,11 @@ void __94__PLRebuildJournalManager_assetsToImportFromAssetJournalInManagedObject
     {
     }
 
-    v107 = [v112 photoLibrary];
-    v108 = [(PLGenericAlbum *)PLManagedFolder rootFolderInLibrary:v107];
+    photoLibrary = [v112 photoLibrary];
+    v108 = [(PLGenericAlbum *)PLManagedFolder rootFolderInLibrary:photoLibrary];
 
-    v109 = [v112 photoLibrary];
-    v110 = [(PLGenericAlbum *)PLManagedFolder projectAlbumRootFolderInLibrary:v109];
+    photoLibrary2 = [v112 photoLibrary];
+    v110 = [(PLGenericAlbum *)PLManagedFolder projectAlbumRootFolderInLibrary:photoLibrary2];
 
     v126[2](v126, v108, v122);
     v126[2](v126, v110, v125);
@@ -1052,13 +1052,13 @@ LABEL_66:
       v144[2] = __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_progress___block_invoke_193;
       v144[3] = &unk_1E7575948;
       v144[4] = self;
-      v145 = v143;
+      v145 = baseURL;
       v146 = &v245;
       v147 = &v249;
       [v120 enumerateKeysAndObjectsUsingBlock:v144];
     }
 
-    [v112 setChangeSource:v124];
+    [v112 setChangeSource:changeSource];
     goto LABEL_74;
   }
 
@@ -1792,12 +1792,12 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
   }
 }
 
-- (void)_recreateAssetsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4 progress:(id)a5
+- (void)_recreateAssetsInManagedObjectContext:(id)context options:(unsigned __int8)options progress:(id)progress
 {
-  v6 = a4;
+  optionsCopy = options;
   v137 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  progressCopy = progress;
   v123 = 0;
   v124 = &v123;
   v125 = 0x3032000000;
@@ -1808,27 +1808,27 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v6;
+    *&buf[4] = optionsCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Recreate options enabled: %d", buf, 8u);
   }
 
-  v74 = v6;
+  v74 = optionsCopy;
 
-  v11 = [v8 changeSource];
-  [v8 setChangeSource:2];
-  v73 = v11;
+  changeSource = [contextCopy changeSource];
+  [contextCopy setChangeSource:2];
+  v73 = changeSource;
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = [PLJournal alloc];
-  v14 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-  v15 = [(PLJournal *)v13 initWithBaseURL:v14 payloadClass:objc_opt_class()];
+  baseURL = [(PLJournalManagerCore *)self->_journalManager baseURL];
+  v15 = [(PLJournal *)v13 initWithBaseURL:baseURL payloadClass:objc_opt_class()];
 
   v119[0] = MEMORY[0x1E69E9820];
   v119[1] = 3221225472;
   v119[2] = __82__PLRebuildJournalManager__recreateAssetsInManagedObjectContext_options_progress___block_invoke;
   v119[3] = &unk_1E7575600;
-  v16 = v9;
+  v16 = progressCopy;
   v120 = v16;
-  v17 = v8;
+  v17 = contextCopy;
   v121 = v17;
   v76 = v12;
   v122 = v76;
@@ -1841,10 +1841,10 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
     v20 = PLMigrationGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(PLJournal *)v15 payloadClass];
+      payloadClass = [(PLJournal *)v15 payloadClass];
       v22 = v124[5];
       *buf = 138543618;
-      *&buf[4] = v21;
+      *&buf[4] = payloadClass;
       *&buf[12] = 2112;
       *&buf[14] = v22;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Enumeration failed for payload class: %{public}@, error: %@", buf, 0x16u);
@@ -1886,8 +1886,8 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
     v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v30 = [PLJournal alloc];
-    v31 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-    v75 = [(PLJournal *)v30 initWithBaseURL:v31 payloadClass:objc_opt_class()];
+    baseURL2 = [(PLJournalManagerCore *)self->_journalManager baseURL];
+    v75 = [(PLJournal *)v30 initWithBaseURL:baseURL2 payloadClass:objc_opt_class()];
 
     v112[0] = MEMORY[0x1E69E9820];
     v112[1] = 3221225472;
@@ -1910,10 +1910,10 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
       v35 = PLMigrationGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [(PLJournal *)v75 payloadClass];
+        payloadClass2 = [(PLJournal *)v75 payloadClass];
         v37 = v124[5];
         *buf = 138543618;
-        *&buf[4] = v36;
+        *&buf[4] = payloadClass2;
         *&buf[12] = 2112;
         *&buf[14] = v37;
         _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "Enumeration failed for payload class: %{public}@, error: %@", buf, 0x16u);
@@ -1986,7 +1986,7 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
       v44 = v33;
       v105 = &v123;
       v102 = v44;
-      v103 = self;
+      selfCopy = self;
       v45 = v32;
       v104 = v45;
       v106 = buf;
@@ -1994,15 +1994,15 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
       v71[2]();
       v68 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       WeakRetained = objc_loadWeakRetained(&self->_lsm);
-      v47 = [WeakRetained pathManager];
+      pathManager = [WeakRetained pathManager];
       v67 = PLLibraryIDFromPathManager();
 
       v48 = objc_alloc_init(PLResourceDataStoreOptions);
       [(PLResourceDataStoreOptions *)v48 setAssumeNoExistingResources:0];
       v66 = v48;
       v49 = [PLJournal alloc];
-      v50 = [(PLJournalManagerCore *)self->_journalManager baseURL];
-      v70 = [(PLJournal *)v49 initWithBaseURL:v50 payloadClass:objc_opt_class()];
+      baseURL3 = [(PLJournalManagerCore *)self->_journalManager baseURL];
+      v70 = [(PLJournal *)v49 initWithBaseURL:baseURL3 payloadClass:objc_opt_class()];
 
       v51 = [(PLJournal *)v70 countOfInsertEntriesWithError:0];
       v65 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v51 parent:v45 pendingUnitCount:{objc_msgSend(v45, "totalUnitCount")}];
@@ -2021,10 +2021,10 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
         *v97 = 0;
         v98 = v97;
         v99 = 0x2020000000;
-        v53 = [v44 photoLibrary];
-        v54 = [v53 isCloudPhotoLibraryEnabled];
+        photoLibrary = [v44 photoLibrary];
+        isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-        v100 = v54;
+        v100 = isCloudPhotoLibraryEnabled;
         v78[0] = MEMORY[0x1E69E9820];
         v78[1] = 3221225472;
         v78[2] = __82__PLRebuildJournalManager__recreateAssetsInManagedObjectContext_options_progress___block_invoke_113;
@@ -2040,7 +2040,7 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
         v56 = v68;
         v91 = v97;
         v83 = v56;
-        v84 = self;
+        selfCopy2 = self;
         v96 = v74;
         v85 = v66;
         v86 = v67;
@@ -2061,10 +2061,10 @@ void __77__PLRebuildJournalManager__recreateNonAssetsInManagedObjectContext_prog
           v61 = PLMigrationGetLog();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
           {
-            v62 = [(PLJournal *)v55 payloadClass];
+            payloadClass3 = [(PLJournal *)v55 payloadClass];
             v63 = v124[5];
             *v129 = 138543618;
-            v130 = v62;
+            v130 = payloadClass3;
             v131 = 2112;
             v132 = v63;
             _os_log_impl(&dword_19BF1F000, v61, OS_LOG_TYPE_ERROR, "Enumeration failed for payload class: %{public}@, error: %@", v129, 0x16u);
@@ -2422,25 +2422,25 @@ void __82__PLRebuildJournalManager__recreateAssetsInManagedObjectContext_options
   }
 }
 
-- (BOOL)_recreateResourcesForAsset:(id)a3 withPayload:(id)a4 resources:(id)a5 recreateOptions:(unsigned __int8)a6 storeOptions:(id)a7 libraryID:(id)a8 isCPLEnabled:(BOOL)a9
+- (BOOL)_recreateResourcesForAsset:(id)asset withPayload:(id)payload resources:(id)resources recreateOptions:(unsigned __int8)options storeOptions:(id)storeOptions libraryID:(id)d isCPLEnabled:(BOOL)enabled
 {
   v53 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v40 = a7;
-  v39 = a8;
+  assetCopy = asset;
+  payloadCopy = payload;
+  resourcesCopy = resources;
+  storeOptionsCopy = storeOptions;
+  dCopy = d;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v15;
+  obj = resourcesCopy;
   v16 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v16)
   {
     v17 = v16;
-    v35 = v14;
-    v38 = v13;
+    v35 = payloadCopy;
+    v38 = assetCopy;
     v18 = 0;
     v19 = 0;
     v37 = *v45;
@@ -2457,11 +2457,11 @@ void __82__PLRebuildJournalManager__recreateAssetsInManagedObjectContext_options
         }
 
         v23 = *(*(&v44 + 1) + 8 * v20);
-        v24 = [v23 validatedExternalResourceWithAsset:v38 isCPLEnabled:{a9, v35}];
-        v25 = [PLResourceDataStoreManager storeForExternalResource:v24 inLibraryWithID:v39];
+        v24 = [v23 validatedExternalResourceWithAsset:v38 isCPLEnabled:{enabled, v35}];
+        v25 = [PLResourceDataStoreManager storeForExternalResource:v24 inLibraryWithID:dCopy];
         v42 = v21;
         v43 = v22;
-        v26 = [v25 storeExternalResource:v24 forAsset:v38 options:v40 error:&v43 resultingResource:&v42];
+        v26 = [v25 storeExternalResource:v24 forAsset:v38 options:storeOptionsCopy error:&v43 resultingResource:&v42];
         v19 = v43;
 
         v18 = v42;
@@ -2491,8 +2491,8 @@ void __82__PLRebuildJournalManager__recreateAssetsInManagedObjectContext_options
 
     v27 = 1;
 LABEL_11:
-    v13 = v38;
-    v14 = v35;
+    assetCopy = v38;
+    payloadCopy = v35;
   }
 
   else
@@ -2502,12 +2502,12 @@ LABEL_11:
     v27 = 1;
   }
 
-  if (([v13 isPhotoIris] & 1) != 0 || objc_msgSend(v13, "isVideo"))
+  if (([assetCopy isPhotoIris] & 1) != 0 || objc_msgSend(assetCopy, "isVideo"))
   {
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
-    v29 = [v13 pathForLocalVideoKeyFrame];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    pathForLocalVideoKeyFrame = [assetCopy pathForLocalVideoKeyFrame];
     v41 = 0;
-    v30 = [v28 removeItemAtPath:v29 error:&v41];
+    v30 = [defaultManager removeItemAtPath:pathForLocalVideoKeyFrame error:&v41];
     v31 = v41;
 
     if ((v30 & 1) == 0 && (PLIsErrorFileNotFound() & 1) == 0)
@@ -2515,9 +2515,9 @@ LABEL_11:
       v32 = PLMigrationGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v14 payloadID];
+        payloadID = [payloadCopy payloadID];
         *buf = 138543618;
-        v49 = v33;
+        v49 = payloadID;
         v50 = 2112;
         v51 = v31;
         _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Rebuild: failed to remove unnecessary file for payload ID %{public}@ %@", buf, 0x16u);
@@ -2528,16 +2528,16 @@ LABEL_11:
   return v27;
 }
 
-- (void)recreateNonAssetsInManagedObjectContext:(id)a3 progress:(id)a4
+- (void)recreateNonAssetsInManagedObjectContext:(id)context progress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 photoLibrary];
-  v9 = [v8 libraryID];
+  contextCopy = context;
+  progressCopy = progress;
+  photoLibrary = [contextCopy photoLibrary];
+  libraryID = [photoLibrary libraryID];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v11 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v12 = PLLibraryIDFromPathManager();
-  v13 = [v9 isEqual:v12];
+  v13 = [libraryID isEqual:v12];
 
   if (v13)
   {
@@ -2547,16 +2547,16 @@ LABEL_11:
     block[2] = __76__PLRebuildJournalManager_recreateNonAssetsInManagedObjectContext_progress___block_invoke;
     block[3] = &unk_1E75761B8;
     block[4] = self;
-    v19 = v6;
-    v20 = v7;
-    v15 = v7;
-    v16 = v6;
+    v19 = contextCopy;
+    v20 = progressCopy;
+    v15 = progressCopy;
+    v16 = contextCopy;
     dispatch_sync(queue, block);
   }
 
   else
   {
-    [v6 photoLibrary];
+    [contextCopy photoLibrary];
     [objc_claimAutoreleasedReturnValue() libraryID];
     objc_claimAutoreleasedReturnValue();
     [objc_loadWeakRetained(&self->_lsm) pathManager];
@@ -2586,16 +2586,16 @@ void __76__PLRebuildJournalManager_recreateNonAssetsInManagedObjectContext_progr
   }
 }
 
-- (void)recreateAssetsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4 progress:(id)a5
+- (void)recreateAssetsInManagedObjectContext:(id)context options:(unsigned __int8)options progress:(id)progress
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 photoLibrary];
-  v11 = [v10 libraryID];
+  contextCopy = context;
+  progressCopy = progress;
+  photoLibrary = [contextCopy photoLibrary];
+  libraryID = [photoLibrary libraryID];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v13 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v14 = PLLibraryIDFromPathManager();
-  v15 = [v11 isEqual:v14];
+  v15 = [libraryID isEqual:v14];
 
   if (v15)
   {
@@ -2605,17 +2605,17 @@ void __76__PLRebuildJournalManager_recreateNonAssetsInManagedObjectContext_progr
     block[2] = __81__PLRebuildJournalManager_recreateAssetsInManagedObjectContext_options_progress___block_invoke;
     block[3] = &unk_1E7576310;
     block[4] = self;
-    v21 = v8;
-    v23 = a4;
-    v22 = v9;
-    v17 = v9;
-    v18 = v8;
+    v21 = contextCopy;
+    optionsCopy = options;
+    v22 = progressCopy;
+    v17 = progressCopy;
+    v18 = contextCopy;
     dispatch_sync(queue, block);
   }
 
   else
   {
-    [v8 photoLibrary];
+    [contextCopy photoLibrary];
     [objc_claimAutoreleasedReturnValue() libraryID];
     objc_claimAutoreleasedReturnValue();
     [objc_loadWeakRetained(&self->_lsm) pathManager];
@@ -2646,15 +2646,15 @@ void __81__PLRebuildJournalManager_recreateAssetsInManagedObjectContext_options_
   }
 }
 
-- (void)recreateAllObjectsInManagedObjectContext:(id)a3 options:(unsigned __int8)a4
+- (void)recreateAllObjectsInManagedObjectContext:(id)context options:(unsigned __int8)options
 {
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [v7 libraryID];
+  contextCopy = context;
+  photoLibrary = [contextCopy photoLibrary];
+  libraryID = [photoLibrary libraryID];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v10 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v11 = PLLibraryIDFromPathManager();
-  v12 = [v8 isEqual:v11];
+  v12 = [libraryID isEqual:v11];
 
   if (v12)
   {
@@ -2664,15 +2664,15 @@ void __81__PLRebuildJournalManager_recreateAssetsInManagedObjectContext_options_
     block[2] = __76__PLRebuildJournalManager_recreateAllObjectsInManagedObjectContext_options___block_invoke;
     block[3] = &unk_1E7576AC8;
     block[4] = self;
-    v17 = v6;
-    v18 = a4;
-    v14 = v6;
+    v17 = contextCopy;
+    optionsCopy = options;
+    v14 = contextCopy;
     dispatch_sync(queue, block);
   }
 
   else
   {
-    [v6 photoLibrary];
+    [contextCopy photoLibrary];
     [objc_claimAutoreleasedReturnValue() libraryID];
     objc_claimAutoreleasedReturnValue();
     [objc_loadWeakRetained(&self->_lsm) pathManager];
@@ -2736,8 +2736,8 @@ uint64_t __76__PLRebuildJournalManager_recreateAllObjectsInManagedObjectContext_
       v7 = 10.0;
       if (MEMORY[0x19EAEE230]())
       {
-        v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v9 = [v8 objectForKey:@"PLRebuildJournalManagerImmediateCoalesceThreshold"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        v9 = [standardUserDefaults objectForKey:@"PLRebuildJournalManagerImmediateCoalesceThreshold"];
 
         if (v9)
         {
@@ -2762,10 +2762,10 @@ uint64_t __76__PLRebuildJournalManager_recreateAllObjectsInManagedObjectContext_
         v18 = PLMigrationGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [(PLJournalManagerCore *)self->_journalManager name];
+          name = [(PLJournalManagerCore *)self->_journalManager name];
           v20 = v33[5];
           *buf = 138544130;
-          v39 = v19;
+          v39 = name;
           v40 = 2114;
           v41 = v5;
           v42 = 2048;
@@ -2787,10 +2787,10 @@ LABEL_18:
       v9 = PLMigrationGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(PLJournalManagerCore *)self->_journalManager name];
+        name2 = [(PLJournalManagerCore *)self->_journalManager name];
         v14 = v33[5];
         *buf = 138543618;
-        v39 = v13;
+        v39 = name2;
         v40 = 2112;
         v41 = v14;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: Error replaying history: %@", buf, 0x16u);
@@ -2802,10 +2802,10 @@ LABEL_18:
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PLJournalManagerCore *)self->_journalManager name];
+      name3 = [(PLJournalManagerCore *)self->_journalManager name];
       v12 = v33[5];
       *buf = 138543618;
-      v39 = v11;
+      v39 = name3;
       v40 = 2112;
       v41 = v12;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: History token not found in history, removing token and re-starting: %@", buf, 0x16u);
@@ -2845,18 +2845,18 @@ void __57__PLRebuildJournalManager__replayFromCurrentHistoryToken__block_invoke(
   v3 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:1];
   v4 = MEMORY[0x1E69BF238];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v6 = [WeakRetained pathManager];
-  v7 = [v6 libraryURL];
-  v8 = [v4 redactedDescriptionForFileURL:v7];
+  pathManager = [WeakRetained pathManager];
+  libraryURL = [pathManager libraryURL];
+  v8 = [v4 redactedDescriptionForFileURL:libraryURL];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(PLJournalManagerCore *)self->_journalManager name];
-  v11 = [v9 stringWithFormat:@"JournalManager[%@] transient context (%@)", v10, v8];
+  name = [(PLJournalManagerCore *)self->_journalManager name];
+  v11 = [v9 stringWithFormat:@"JournalManager[%@] transient context (%@)", name, v8];
   [v3 setName:v11];
 
   v12 = objc_loadWeakRetained(&self->_lsm);
-  v13 = [v12 persistentStoreCoordinator];
-  [v3 setPersistentStoreCoordinator:v13];
+  persistentStoreCoordinator = [v12 persistentStoreCoordinator];
+  [v3 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v3 setStalenessInterval:0.0];
   v17[0] = MEMORY[0x1E69E9820];
@@ -2865,7 +2865,7 @@ void __57__PLRebuildJournalManager__replayFromCurrentHistoryToken__block_invoke(
   v17[3] = &unk_1E7578848;
   v14 = v3;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   [v14 performBlockAndWait:v17];
   v15 = v14;
 
@@ -2886,16 +2886,16 @@ void __47__PLRebuildJournalManager__newTransientContext__block_invoke(uint64_t a
   [v7 setObject:v6 forKeyedSubscript:@"com.apple.photos.PLMigrationGraphCacheKey"];
 }
 
-- (BOOL)_coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5
+- (BOOL)_coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dsCopy = ds;
   if (self->_state == 2)
   {
     journalManager = self->_journalManager;
     v23 = 0;
-    *&v9 = a4;
-    v11 = [(PLJournalManager *)journalManager coalesceJournalsForPayloadClassIDs:v8 withChangeJournalOverThreshold:&v23 error:v9];
+    *&v9 = threshold;
+    v11 = [(PLJournalManager *)journalManager coalesceJournalsForPayloadClassIDs:dsCopy withChangeJournalOverThreshold:&v23 error:v9];
     v12 = v23;
     if (v11)
     {
@@ -2917,9 +2917,9 @@ void __47__PLRebuildJournalManager__newTransientContext__block_invoke(uint64_t a
     v19 = PLMigrationGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(PLJournalManagerCore *)self->_journalManager name];
+      name = [(PLJournalManagerCore *)self->_journalManager name];
       *buf = 138543618;
-      v25 = v20;
+      v25 = name;
       v26 = 2112;
       v27 = v14;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: %@", buf, 0x16u);
@@ -2928,11 +2928,11 @@ void __47__PLRebuildJournalManager__newTransientContext__block_invoke(uint64_t a
     v12 = v18;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v12;
     v13 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -2945,9 +2945,9 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 error:(id *)a5
+- (BOOL)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold error:(id *)error
 {
-  v8 = a3;
+  dsCopy = ds;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2966,17 +2966,17 @@ LABEL_10:
   block[3] = &unk_1E75755C8;
   v17 = &v26;
   block[4] = self;
-  v10 = v8;
-  v19 = a4;
+  v10 = dsCopy;
+  thresholdCopy = threshold;
   v16 = v10;
   v18 = &v20;
   dispatch_sync(queue, block);
   v11 = *(v27 + 24);
   v12 = v21[5];
-  if (a5 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = *(v27 + 24);
@@ -2998,10 +2998,10 @@ void __99__PLRebuildJournalManager_coalesceJournalsForPayloadClassIDs_withChange
   *(*(*(a1 + 48) + 8) + 24) = v6;
 }
 
-- (void)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 completionHandler:(id)a5
+- (void)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   queue = self->_queue;
   startupWaitGroup = self->_startupWaitGroup;
   v14[0] = MEMORY[0x1E69E9820];
@@ -3009,11 +3009,11 @@ void __99__PLRebuildJournalManager_coalesceJournalsForPayloadClassIDs_withChange
   v14[2] = __111__PLRebuildJournalManager_coalesceJournalsForPayloadClassIDs_withChangeJournalOverThreshold_completionHandler___block_invoke;
   v14[3] = &unk_1E75755A0;
   v14[4] = self;
-  v15 = v8;
-  v17 = a4;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = dsCopy;
+  thresholdCopy = threshold;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dsCopy;
   dispatch_group_notify(startupWaitGroup, queue, v14);
 }
 
@@ -3032,9 +3032,9 @@ uint64_t __111__PLRebuildJournalManager_coalesceJournalsForPayloadClassIDs_withC
   return result;
 }
 
-- (BOOL)_performSnapshotForPayloadClassIDs:(id)a3 error:(id *)a4
+- (BOOL)_performSnapshotForPayloadClassIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -3044,17 +3044,17 @@ uint64_t __111__PLRebuildJournalManager_coalesceJournalsForPayloadClassIDs_withC
   v10[1] = 3221225472;
   v10[2] = __68__PLRebuildJournalManager__performSnapshotForPayloadClassIDs_error___block_invoke;
   v10[3] = &unk_1E7576680;
-  v8 = v6;
+  v8 = dsCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
-  v14 = a4;
+  errorCopy = error;
   [v7 sync:v10 identifyingBlock:0 library:0];
 
-  LOBYTE(a4) = *(v16 + 24);
+  LOBYTE(error) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a4;
+  return error;
 }
 
 void __68__PLRebuildJournalManager__performSnapshotForPayloadClassIDs_error___block_invoke(uint64_t a1)
@@ -3078,7 +3078,7 @@ void __68__PLRebuildJournalManager__performSnapshotForPayloadClassIDs_error___bl
   *(*(*(a1 + 48) + 8) + 24) = v6;
 }
 
-- (BOOL)_performSnapshotIfNecessaryWithError:(id *)a3
+- (BOOL)_performSnapshotIfNecessaryWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -3091,12 +3091,12 @@ void __68__PLRebuildJournalManager__performSnapshotForPayloadClassIDs_error___bl
   v7[3] = &unk_1E7576208;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = error;
   [v5 sync:v7 identifyingBlock:0 library:0];
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(error) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return error;
 }
 
 void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_invoke(void *a1)
@@ -3107,14 +3107,14 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
   *(*(a1[5] + 8) + 24) = [v3 performSnapshotIfNecessaryAppend:1 withManagedObjectContext:v4 error:a1[6]];
 }
 
-- (BOOL)_snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4
+- (BOOL)_snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   if (self->_state == 2)
   {
     v19 = 0;
-    v7 = [(PLRebuildJournalManager *)self _performSnapshotForPayloadClassIDs:v6 error:&v19];
+    v7 = [(PLRebuildJournalManager *)self _performSnapshotForPayloadClassIDs:dsCopy error:&v19];
     v8 = v19;
   }
 
@@ -3131,9 +3131,9 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PLJournalManagerCore *)self->_journalManager name];
+      name = [(PLJournalManagerCore *)self->_journalManager name];
       *buf = 138543618;
-      v21 = v14;
+      v21 = name;
       v22 = 2112;
       v23 = v9;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "JournalManager[%{public}@]: %@", buf, 0x16u);
@@ -3145,18 +3145,18 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
   [(PLJournalManager *)self->_journalManager clearIgnoreHistoryDuringSnapshot];
   v15 = v8;
   v16 = v15;
-  if (!v7 && a4)
+  if (!v7 && error)
   {
     v17 = v15;
-    *a4 = v16;
+    *error = v16;
   }
 
   return v7;
 }
 
-- (void)_snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:(id)a3
+- (void)_snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:(id)ds
 {
-  if (![a3 count])
+  if (![ds count])
   {
     journalManager = self->_journalManager;
 
@@ -3164,9 +3164,9 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
   }
 }
 
-- (BOOL)snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4
+- (BOOL)snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -3177,7 +3177,7 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
   v20 = __Block_byref_object_copy__104308;
   v21 = __Block_byref_object_dispose__104309;
   v22 = 0;
-  [(PLRebuildJournalManager *)self _snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:v6];
+  [(PLRebuildJournalManager *)self _snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:dsCopy];
   dispatch_group_wait(self->_startupWaitGroup, 0xFFFFFFFFFFFFFFFFLL);
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
@@ -3186,16 +3186,16 @@ void __64__PLRebuildJournalManager__performSnapshotIfNecessaryWithError___block_
   v13[3] = &unk_1E7578898;
   v15 = &v23;
   v13[4] = self;
-  v8 = v6;
+  v8 = dsCopy;
   v14 = v8;
   v16 = &v17;
   dispatch_sync(queue, v13);
   v9 = *(v24 + 24);
   v10 = v18[5];
-  if (a4 && (v9 & 1) == 0)
+  if (error && (v9 & 1) == 0)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v11 = *(v24 + 24);
@@ -3216,11 +3216,11 @@ void __68__PLRebuildJournalManager_snapshotJournalsForPayloadClassIDs_error___bl
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (void)snapshotJournalsForPayloadClassIDs:(id)a3 withCompletionHandler:(id)a4
+- (void)snapshotJournalsForPayloadClassIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(PLRebuildJournalManager *)self _snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:v6];
+  dsCopy = ds;
+  handlerCopy = handler;
+  [(PLRebuildJournalManager *)self _snapshotJournalsIgnoreHistoreIfNecessaryForPayloadClassIDs:dsCopy];
   queue = self->_queue;
   startupWaitGroup = self->_startupWaitGroup;
   block[0] = MEMORY[0x1E69E9820];
@@ -3228,10 +3228,10 @@ void __68__PLRebuildJournalManager_snapshotJournalsForPayloadClassIDs_error___bl
   block[2] = __84__PLRebuildJournalManager_snapshotJournalsForPayloadClassIDs_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7576F38;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dsCopy;
   dispatch_group_notify(startupWaitGroup, queue, block);
 }
 
@@ -3249,17 +3249,17 @@ void __84__PLRebuildJournalManager_snapshotJournalsForPayloadClassIDs_withComple
   }
 }
 
-- (void)_handleChangeHandlingNotificationWithTransaction:(id)a3
+- (void)_handleChangeHandlingNotificationWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__PLRebuildJournalManager__handleChangeHandlingNotificationWithTransaction___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3327,9 +3327,9 @@ void __66__PLRebuildJournalManager__registerForChangeHandlingNotifications__bloc
       v7 = PLMigrationGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PLJournalManagerCore *)self->_journalManager name];
+        name = [(PLJournalManagerCore *)self->_journalManager name];
         *buf = 138543874;
-        v15 = v8;
+        v15 = name;
         v16 = 2048;
         v17 = 10;
         v18 = 2112;
@@ -3356,9 +3356,9 @@ void __66__PLRebuildJournalManager__registerForChangeHandlingNotifications__bloc
     v5 = PLMigrationGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PLJournalManagerCore *)self->_journalManager name];
+      name2 = [(PLJournalManagerCore *)self->_journalManager name];
       *buf = 138543362;
-      v15 = v6;
+      v15 = name2;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: started, replaying from history", buf, 0xCu);
     }
 
@@ -3381,17 +3381,17 @@ void __33__PLRebuildJournalManager__start__block_invoke(uint64_t a1)
   if (state == 3 || state == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_lsm);
-    v6 = [WeakRetained postRunningProgress];
-    v7 = [v6 isCancelled];
+    postRunningProgress = [WeakRetained postRunningProgress];
+    isCancelled = [postRunningProgress isCancelled];
 
-    if (v7)
+    if (isCancelled)
     {
       v8 = PLMigrationGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PLJournalManagerCore *)self->_journalManager name];
+        name = [(PLJournalManagerCore *)self->_journalManager name];
         *buf = 138543362;
-        v22 = v9;
+        v22 = name;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: postRunningProgress is cancelled. Not retrying _startAfterRebuild.", buf, 0xCu);
       }
     }
@@ -3399,20 +3399,20 @@ void __33__PLRebuildJournalManager__start__block_invoke(uint64_t a1)
     else
     {
       v10 = objc_loadWeakRetained(&self->_lsm);
-      v11 = [v10 databaseContext];
-      v8 = [v11 newShortLivedLibraryWithName:"-[PLRebuildJournalManager _startAfterRebuild]"];
+      databaseContext = [v10 databaseContext];
+      v8 = [databaseContext newShortLivedLibraryWithName:"-[PLRebuildJournalManager _startAfterRebuild]"];
 
-      v12 = [v8 globalValues];
-      LODWORD(v11) = [v12 isRebuildComplete];
+      globalValues = [v8 globalValues];
+      LODWORD(databaseContext) = [globalValues isRebuildComplete];
 
-      if (v11)
+      if (databaseContext)
       {
         v13 = PLMigrationGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(PLJournalManagerCore *)self->_journalManager name];
+          name2 = [(PLJournalManagerCore *)self->_journalManager name];
           *buf = 138543362;
-          v22 = v14;
+          v22 = name2;
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: starting after rebuild complete", buf, 0xCu);
         }
 
@@ -3425,9 +3425,9 @@ void __33__PLRebuildJournalManager__start__block_invoke(uint64_t a1)
         v15 = PLMigrationGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(PLJournalManagerCore *)self->_journalManager name];
+          name3 = [(PLJournalManagerCore *)self->_journalManager name];
           *buf = 138543618;
-          v22 = v16;
+          v22 = name3;
           v23 = 2048;
           v24 = 10;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "JournalManager[%{public}@]: rebuild not complete, retry start after %ld seconds", buf, 0x16u);
@@ -3533,10 +3533,10 @@ void __44__PLRebuildJournalManager_notifyWillRebuild__block_invoke(uint64_t a1)
 - (void)stop
 {
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v4 = [WeakRetained postRunningProgress];
-  v5 = [v4 isCancelled];
+  postRunningProgress = [WeakRetained postRunningProgress];
+  isCancelled = [postRunningProgress isCancelled];
 
-  if ((v5 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
     dispatch_group_wait(self->_startupWaitGroup, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -3612,19 +3612,19 @@ uint64_t __32__PLRebuildJournalManager_start__block_invoke(uint64_t a1)
   return [*(a1 + 40) stillAlive];
 }
 
-- (PLRebuildJournalManager)initWithLibraryServicesManager:(id)a3
+- (PLRebuildJournalManager)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = PLRebuildJournalManager;
   v6 = [(PLRebuildJournalManager *)&v21 init];
   if (v6)
   {
-    v7 = [PLJournalManager journalManagerWithClass:objc_opt_class() libraryServiceManager:v5];
+    v7 = [PLJournalManager journalManagerWithClass:objc_opt_class() libraryServiceManager:managerCopy];
     v8 = *(v6 + 2);
     *(v6 + 2) = v7;
 
-    objc_storeWeak(v6 + 1, v5);
+    objc_storeWeak(v6 + 1, managerCopy);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_BACKGROUND, 0);
     v11 = dispatch_queue_create("com.apple.assetsd.PLJournalManager.queue", v10);
@@ -3636,16 +3636,16 @@ uint64_t __32__PLRebuildJournalManager_start__block_invoke(uint64_t a1)
     *(v6 + 5) = v13;
 
     *(v6 + 24) = 0;
-    v15 = [v5 libraryBundle];
+    libraryBundle = [managerCopy libraryBundle];
 
-    if (!v15)
+    if (!libraryBundle)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v6 file:@"PLRebuildJournalManager.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"lsm.libraryBundle"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PLRebuildJournalManager.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"lsm.libraryBundle"}];
     }
 
-    v16 = [v5 libraryBundle];
-    v17 = [v16 makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:4.0];
+    libraryBundle2 = [managerCopy libraryBundle];
+    v17 = [libraryBundle2 makeChangeHandlingNotificationObserverWithLowPriorityThrottleInterval:4.0];
     v18 = *(v6 + 3);
     *(v6 + 3) = v17;
 
@@ -3655,11 +3655,11 @@ uint64_t __32__PLRebuildJournalManager_start__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (BOOL)existingJournalsCompatibleForRebuild:(id)a3 error:(id *)a4
++ (BOOL)existingJournalsCompatibleForRebuild:(id)rebuild error:(id *)error
 {
-  v6 = a3;
+  rebuildCopy = rebuild;
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [v6 photoDirectoryWithType:8];
+  v8 = [rebuildCopy photoDirectoryWithType:8];
   v9 = [v7 fileURLWithPath:v8];
 
   v22 = 0;
@@ -3672,7 +3672,7 @@ uint64_t __32__PLRebuildJournalManager_start__block_invoke(uint64_t a1)
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  v10 = [a1 payloadClasses];
+  payloadClasses = [self payloadClasses];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__PLRebuildJournalManager_existingJournalsCompatibleForRebuild_error___block_invoke;
@@ -3681,11 +3681,11 @@ uint64_t __32__PLRebuildJournalManager_start__block_invoke(uint64_t a1)
   v15 = v11;
   v16 = &v22;
   v17 = &v18;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [payloadClasses enumerateObjectsUsingBlock:v14];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v23[5];
+    *error = v23[5];
   }
 
   v12 = *(v19 + 24);
@@ -3742,37 +3742,37 @@ void __70__PLRebuildJournalManager_existingJournalsCompatibleForRebuild_error___
   }
 }
 
-+ (BOOL)assetJournalExists:(id)a3 error:(id *)a4
++ (BOOL)assetJournalExists:(id)exists error:(id *)error
 {
-  v5 = a3;
+  existsCopy = exists;
   v6 = [PLJournal alloc];
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [v5 photoDirectoryWithType:8];
+  v8 = [existsCopy photoDirectoryWithType:8];
 
   v9 = [v7 fileURLWithPath:v8];
   v10 = [(PLJournal *)v6 initWithBaseURL:v9 payloadClass:objc_opt_class()];
 
   v13 = 0uLL;
-  v11 = [(PLJournal *)v10 snapshotJournalFileSize:&v13 + 8 changeJournalFileSize:&v13 error:a4]&& v13 != 0;
+  v11 = [(PLJournal *)v10 snapshotJournalFileSize:&v13 + 8 changeJournalFileSize:&v13 error:error]&& v13 != 0;
 
   return v11;
 }
 
-+ (BOOL)isEnabledWithPathManager:(id)a3 error:(id *)a4
++ (BOOL)isEnabledWithPathManager:(id)manager error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PLRebuildJournalManager.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLRebuildJournalManager.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
-  if ([v7 isUBF])
+  if ([managerCopy isUBF])
   {
     v8 = MEMORY[0x1E69BF2A0];
-    v9 = [v7 libraryURL];
-    v10 = [v8 wellKnownPhotoLibraryIdentifierForURL:v9];
+    libraryURL = [managerCopy libraryURL];
+    v10 = [v8 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
     if (v10 != 3)
     {
@@ -3805,10 +3805,10 @@ void __70__PLRebuildJournalManager_existingJournalsCompatibleForRebuild_error___
 
   v18 = v17;
   v19 = v18;
-  if (a4)
+  if (error)
   {
     v20 = v18;
-    *a4 = v19;
+    *error = v19;
   }
 
   v21 = 0;
@@ -3840,12 +3840,12 @@ LABEL_11:
   return v2;
 }
 
-+ (id)baseURLFromPathManager:(id)a3
++ (id)baseURLFromPathManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
     v3 = MEMORY[0x1E695DFF8];
-    v4 = [a3 photoDirectoryWithType:8];
+    v4 = [manager photoDirectoryWithType:8];
     v5 = [v3 fileURLWithPath:v4 isDirectory:1];
   }
 

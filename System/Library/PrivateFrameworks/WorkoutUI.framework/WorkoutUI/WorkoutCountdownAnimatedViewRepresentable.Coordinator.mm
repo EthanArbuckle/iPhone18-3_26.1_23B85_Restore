@@ -7,7 +7,7 @@
 
 - (void)viewTap
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutCountdownAnimatedViewRepresentable.Coordinator.viewTap()();
 }
 

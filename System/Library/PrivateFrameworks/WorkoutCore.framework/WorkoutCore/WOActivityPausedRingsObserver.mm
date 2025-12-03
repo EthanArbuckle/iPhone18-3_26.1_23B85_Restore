@@ -1,9 +1,9 @@
 @interface WOActivityPausedRingsObserver
 - (BOOL)isPaused;
 - (WOActivityPausedRingsObserver)init;
-- (WOActivityPausedRingsObserver)initWithIsPaused:(BOOL)a3;
+- (WOActivityPausedRingsObserver)initWithIsPaused:(BOOL)paused;
 - (void)beginObserving;
-- (void)setIsPaused:(BOOL)a3;
+- (void)setIsPaused:(BOOL)paused;
 @end
 
 @implementation WOActivityPausedRingsObserver
@@ -26,7 +26,7 @@
   return [(WOActivityPausedRingsObserver *)&v12 init];
 }
 
-- (WOActivityPausedRingsObserver)initWithIsPaused:(BOOL)a3
+- (WOActivityPausedRingsObserver)initWithIsPaused:(BOOL)paused
 {
   v3 = [(WOActivityPausedRingsObserver *)self init];
   swift_getKeyPath();
@@ -42,24 +42,24 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
   ActivityPausedRingsObserver.isPaused.didset();
 }
 
 - (void)beginObserving
 {
-  v2 = self;
+  selfCopy = self;
   ActivityPausedRingsObserver.beginObserving()();
 }
 

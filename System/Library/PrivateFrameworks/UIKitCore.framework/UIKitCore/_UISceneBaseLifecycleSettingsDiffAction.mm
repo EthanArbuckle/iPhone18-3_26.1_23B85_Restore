@@ -1,18 +1,18 @@
 @interface _UISceneBaseLifecycleSettingsDiffAction
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UISceneBaseLifecycleSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
-  if ([v10 _hasLifecycle])
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
+  if ([sceneCopy _hasLifecycle])
   {
-    v13 = [v10 _effectiveSettings];
-    v14 = _UISceneLifecycleSettingsUpdateBlockWithSceneAndTransitionContext(v10, v11, v13, v12);
+    _effectiveSettings = [sceneCopy _effectiveSettings];
+    v14 = _UISceneLifecycleSettingsUpdateBlockWithSceneAndTransitionContext(sceneCopy, settingsCopy, _effectiveSettings, contextCopy);
 
     if (v14)
     {
@@ -21,9 +21,9 @@
       v15[2] = __153___UISceneBaseLifecycleSettingsDiffAction__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke;
       v15[3] = &unk_1E70FA0C8;
       v19 = v14;
-      v16 = v10;
-      v17 = v11;
-      v18 = v12;
+      v16 = sceneCopy;
+      v17 = settingsCopy;
+      v18 = contextCopy;
       _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v18, v15, 0);
     }
   }

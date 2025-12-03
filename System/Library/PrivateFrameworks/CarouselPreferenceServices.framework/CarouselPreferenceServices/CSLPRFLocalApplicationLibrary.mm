@@ -1,31 +1,31 @@
 @interface CSLPRFLocalApplicationLibrary
-- (BOOL)_isVisibleApplicationForRecord:(uint64_t)a1;
+- (BOOL)_isVisibleApplicationForRecord:(uint64_t)record;
 - (CSLPRFLocalApplicationLibrary)init;
 - (NSArray)allApplications;
 - (NSDictionary)allApplicationsDictionary;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (void)_applicationsUninstalledWithRecords:(uint64_t)a1;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (void)_applicationsUninstalledWithRecords:(uint64_t)records;
 - (void)_stopObserving;
-- (void)addObserver:(id)a3;
-- (void)allApplicationsWithCompletion:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)allApplicationsWithCompletion:(id)completion;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSLPRFLocalApplicationLibrary
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__CSLPRFLocalApplicationLibrary_applicationInstallsDidStart___block_invoke;
   v5[3] = &unk_2787444D8;
   v5[4] = self;
-  v4 = [a3 bs_mapNoNulls:v5];
+  v4 = [start bs_mapNoNulls:v5];
   if ([v4 count])
   {
     [(CSLPRFLocalApplicationLibrary *)self _applicationsUninstalledWithRecords:v4];
@@ -73,14 +73,14 @@ LABEL_8:
   return v10;
 }
 
-- (void)_applicationsUninstalledWithRecords:(uint64_t)a1
+- (void)_applicationsUninstalledWithRecords:(uint64_t)records
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (records)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    os_unfair_lock_lock((a1 + 24));
+    array = [MEMORY[0x277CBEB18] array];
+    os_unfair_lock_lock((records + 24));
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -102,12 +102,12 @@ LABEL_8:
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          v11 = [v10 bundleIdentifier];
-          v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v11 allowPlaceholder:1 error:0];
+          bundleIdentifier = [v10 bundleIdentifier];
+          v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
           v13 = v12;
-          if ((!v12 || [v12 isPlaceholder]) && -[CSLPRFLocalApplicationLibrary _isVisibleApplicationForRecord:](a1, v10))
+          if ((!v12 || [v12 isPlaceholder]) && -[CSLPRFLocalApplicationLibrary _isVisibleApplicationForRecord:](records, v10))
           {
-            v14 = [*(a1 + 16) objectForKey:v11];
+            v14 = [*(records + 16) objectForKey:bundleIdentifier];
 
             if (v14)
             {
@@ -115,14 +115,14 @@ LABEL_8:
               if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
               {
                 *buf = 134218242;
-                v26 = a1;
+                recordsCopy = records;
                 v27 = 2112;
-                v28 = v11;
+                v28 = bundleIdentifier;
                 _os_log_impl(&dword_22CE92000, v15, OS_LOG_TYPE_INFO, "%p uninstalled, will remove application:%@", buf, 0x16u);
               }
 
-              [*(a1 + 16) removeObjectForKey:v11];
-              [v4 addObject:v11];
+              [*(records + 16) removeObjectForKey:bundleIdentifier];
+              [array addObject:bundleIdentifier];
             }
           }
         }
@@ -133,16 +133,16 @@ LABEL_8:
       while (v7);
     }
 
-    os_unfair_lock_unlock((a1 + 24));
-    if ([v4 count])
+    os_unfair_lock_unlock((records + 24));
+    if ([array count])
     {
-      v16 = *(a1 + 8);
+      v16 = *(records + 8);
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __69__CSLPRFLocalApplicationLibrary__applicationsUninstalledWithRecords___block_invoke;
       v19[3] = &unk_278744DC0;
-      v19[4] = a1;
-      v20 = v4;
+      v19[4] = records;
+      v20 = array;
       [v16 notifyObserversWithBlock:v19];
     }
 
@@ -152,14 +152,14 @@ LABEL_8:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isVisibleApplicationForRecord:(uint64_t)a1
+- (BOOL)_isVisibleApplicationForRecord:(uint64_t)record
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && ([v3 appTags], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", @"hidden"), v5, (v6 & 1) == 0))
+  if (record && ([v3 appTags], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", @"hidden"), v5, (v6 & 1) == 0))
   {
-    v8 = [v4 typeForInstallMachinery];
-    v7 = ([v8 isEqualToString:*MEMORY[0x277CC1E30]] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277CC1E40]);
+    typeForInstallMachinery = [v4 typeForInstallMachinery];
+    v7 = ([typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E30]] & 1) != 0 || objc_msgSend(typeForInstallMachinery, "isEqualToString:", *MEMORY[0x277CC1E40]);
   }
 
   else
@@ -170,22 +170,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = [a3 bs_mapNoNulls:&__block_literal_global_8];
+  v4 = [uninstall bs_mapNoNulls:&__block_literal_global_8];
   [(CSLPRFLocalApplicationLibrary *)self _applicationsUninstalledWithRecords:v4];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = [a3 bs_mapNoNulls:&__block_literal_global_48];
+  v4 = [install bs_mapNoNulls:&__block_literal_global_48];
   v24 = v4;
   if (self)
   {
-    v25 = [MEMORY[0x277CBEB18] array];
-    v27 = [MEMORY[0x277CBEB18] array];
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     os_unfair_lock_lock(&self->_lock);
     v34 = 0u;
     v35 = 0u;
@@ -209,21 +209,21 @@ LABEL_8:
           v10 = *(*(&v32 + 1) + 8 * i);
           if ([(CSLPRFLocalApplicationLibrary *)self _isVisibleApplicationForRecord:v10])
           {
-            v11 = [v10 bundleIdentifier];
-            v12 = [(NSMutableDictionary *)self->_lock_cachedApplications objectForKey:v11];
+            bundleIdentifier = [v10 bundleIdentifier];
+            v12 = [(NSMutableDictionary *)self->_lock_cachedApplications objectForKey:bundleIdentifier];
 
-            v13 = [v10 applicationState];
-            v14 = [v13 isInstalled];
+            applicationState = [v10 applicationState];
+            isInstalled = [applicationState isInstalled];
 
-            if (v14)
+            if (isInstalled)
             {
               v15 = [CSLPRFApp appWithApplicationRecord:v10];
-              [(NSMutableDictionary *)self->_lock_cachedApplications setObject:v15 forKey:v11];
+              [(NSMutableDictionary *)self->_lock_cachedApplications setObject:v15 forKey:bundleIdentifier];
               v16 = cslprf_app_library_log();
               v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
               if (v12)
               {
-                v18 = v27;
+                v18 = array2;
                 if (v17)
                 {
                   *buf = 134218242;
@@ -231,13 +231,13 @@ LABEL_8:
                   *&buf[12] = 2112;
                   *&buf[14] = v15;
                   _os_log_impl(&dword_22CE92000, v16, OS_LOG_TYPE_INFO, "%p updated application:%@", buf, 0x16u);
-                  v18 = v27;
+                  v18 = array2;
                 }
               }
 
               else
               {
-                v18 = v25;
+                v18 = array;
                 if (v17)
                 {
                   *buf = 134218242;
@@ -245,7 +245,7 @@ LABEL_8:
                   *&buf[12] = 2112;
                   *&buf[14] = v15;
                   _os_log_impl(&dword_22CE92000, v16, OS_LOG_TYPE_INFO, "%p added application:%@", buf, 0x16u);
-                  v18 = v25;
+                  v18 = array;
                 }
               }
 
@@ -260,12 +260,12 @@ LABEL_8:
                 *buf = 134218242;
                 *&buf[4] = self;
                 *&buf[12] = 2112;
-                *&buf[14] = v11;
+                *&buf[14] = bundleIdentifier;
                 _os_log_impl(&dword_22CE92000, v19, OS_LOG_TYPE_INFO, "%p not installed, will remove application:%@", buf, 0x16u);
               }
 
-              [(NSMutableDictionary *)self->_lock_cachedApplications removeObjectForKey:v11];
-              [v26 addObject:v11];
+              [(NSMutableDictionary *)self->_lock_cachedApplications removeObjectForKey:bundleIdentifier];
+              [array3 addObject:bundleIdentifier];
             }
           }
         }
@@ -277,19 +277,19 @@ LABEL_8:
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    if ([v25 count])
+    if ([array count])
     {
       observationHelper = self->_observationHelper;
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __66__CSLPRFLocalApplicationLibrary_applicationsInstalledWithRecords___block_invoke;
       v37 = &unk_278744DC0;
-      v38 = self;
-      v39 = v25;
+      selfCopy = self;
+      v39 = array;
       [(CSLPRFObservationHelper *)observationHelper notifyObserversWithBlock:buf];
     }
 
-    if ([v27 count])
+    if ([array2 count])
     {
       v21 = self->_observationHelper;
       v30[0] = MEMORY[0x277D85DD0];
@@ -297,11 +297,11 @@ LABEL_8:
       v30[2] = __66__CSLPRFLocalApplicationLibrary_applicationsInstalledWithRecords___block_invoke_2;
       v30[3] = &unk_278744DC0;
       v30[4] = self;
-      v31 = v27;
+      v31 = array2;
       [(CSLPRFObservationHelper *)v21 notifyObserversWithBlock:v30];
     }
 
-    if ([v26 count])
+    if ([array3 count])
     {
       v22 = self->_observationHelper;
       v28[0] = MEMORY[0x277D85DD0];
@@ -309,7 +309,7 @@ LABEL_8:
       v28[2] = __66__CSLPRFLocalApplicationLibrary_applicationsInstalledWithRecords___block_invoke_3;
       v28[3] = &unk_278744DC0;
       v28[4] = self;
-      v29 = v26;
+      v29 = array3;
       [(CSLPRFObservationHelper *)v22 notifyObserversWithBlock:v28];
     }
 
@@ -319,9 +319,9 @@ LABEL_8:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(CSLPRFObservationHelper *)self->_observationHelper removeObserver:a3];
+  [(CSLPRFObservationHelper *)self->_observationHelper removeObserver:observer];
   if (![(CSLPRFObservationHelper *)self->_observationHelper observerCount])
   {
 
@@ -331,30 +331,30 @@ LABEL_8:
 
 - (void)_stopObserving
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    v2 = *(a1 + 28);
-    *(a1 + 28) = 0;
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_lock((self + 24));
+    v2 = *(self + 28);
+    *(self + 28) = 0;
+    os_unfair_lock_unlock((self + 24));
     if (v2 == 1)
     {
-      v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v3 removeObserver:a1];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace removeObserver:self];
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observationHelper = self->_observationHelper;
-  v5 = a3;
-  v6 = [(CSLPRFObservationHelper *)observationHelper observerCount];
-  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:v5];
-  v7 = [(CSLPRFLocalApplicationLibrary *)self allApplications];
-  [v5 applicationLibrary:self didAddApplications:v7];
+  observerCopy = observer;
+  observerCount = [(CSLPRFObservationHelper *)observationHelper observerCount];
+  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:observerCopy];
+  allApplications = [(CSLPRFLocalApplicationLibrary *)self allApplications];
+  [observerCopy applicationLibrary:self didAddApplications:allApplications];
 
-  if (!v6)
+  if (!observerCount)
   {
     os_unfair_lock_lock(&self->_lock);
     lock_observing = self->_lock_observing;
@@ -362,23 +362,23 @@ LABEL_8:
     os_unfair_lock_unlock(&self->_lock);
     if (!lock_observing)
     {
-      v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v9 addObserver:self];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace addObserver:self];
     }
   }
 }
 
-- (void)allApplicationsWithCompletion:(id)a3
+- (void)allApplicationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(CSLPRFLocalApplicationLibrary *)self allApplications];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  allApplications = [(CSLPRFLocalApplicationLibrary *)self allApplications];
+  (*(completion + 2))(completionCopy, allApplications);
 }
 
 - (NSDictionary)allApplicationsDictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __58__CSLPRFLocalApplicationLibrary_allApplicationsDictionary__block_invoke;
@@ -407,8 +407,8 @@ LABEL_8:
         }
 
         v11 = [CSLPRFApp appWithApplicationRecord:*(*(&v18 + 1) + 8 * i), v18];
-        v12 = [v11 bundleIdentifier];
-        [(NSMutableDictionary *)v3 setObject:v11 forKey:v12];
+        bundleIdentifier = [v11 bundleIdentifier];
+        [(NSMutableDictionary *)dictionary setObject:v11 forKey:bundleIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -419,8 +419,8 @@ LABEL_8:
 
   os_unfair_lock_lock(&self->_lock);
   lock_cachedApplications = self->_lock_cachedApplications;
-  self->_lock_cachedApplications = v3;
-  v14 = v3;
+  self->_lock_cachedApplications = dictionary;
+  v14 = dictionary;
 
   os_unfair_lock_unlock(&self->_lock);
   v15 = [(NSMutableDictionary *)v14 copy];
@@ -462,25 +462,25 @@ BOOL __58__CSLPRFLocalApplicationLibrary_allApplicationsDictionary__block_invoke
 
 - (NSArray)allApplications
 {
-  v2 = [(CSLPRFLocalApplicationLibrary *)self allApplicationsDictionary];
-  v3 = [v2 allValues];
+  allApplicationsDictionary = [(CSLPRFLocalApplicationLibrary *)self allApplicationsDictionary];
+  allValues = [allApplicationsDictionary allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = [(CSLPRFLocalApplicationLibrary *)self applicationWithBundleIdentifier:a3];
-  (*(a4 + 2))(v7, v8);
+  completionCopy = completion;
+  v8 = [(CSLPRFLocalApplicationLibrary *)self applicationWithBundleIdentifier:identifier];
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && [identifierCopy length])
   {
     v13 = 0;
     v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v5 allowPlaceholder:0 error:&v13];
@@ -491,7 +491,7 @@ BOOL __58__CSLPRFLocalApplicationLibrary_allApplicationsDictionary__block_invoke
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
         v17 = v5;
         v18 = 2112;
@@ -508,11 +508,11 @@ BOOL __58__CSLPRFLocalApplicationLibrary_allApplicationsDictionary__block_invoke
     else
     {
       v9 = [CSLPRFApp appWithApplicationRecord:v6];
-      v10 = [v9 bundleIdentifier];
-      if (v10)
+      bundleIdentifier = [v9 bundleIdentifier];
+      if (bundleIdentifier)
       {
         os_unfair_lock_lock(&self->_lock);
-        [(NSMutableDictionary *)self->_lock_cachedApplications setObject:v9 forKey:v10];
+        [(NSMutableDictionary *)self->_lock_cachedApplications setObject:v9 forKey:bundleIdentifier];
         os_unfair_lock_unlock(&self->_lock);
       }
     }
@@ -549,9 +549,9 @@ BOOL __58__CSLPRFLocalApplicationLibrary_allApplicationsDictionary__block_invoke
     observationHelper = v3->_observationHelper;
     v3->_observationHelper = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lock_cachedApplications = v3->_lock_cachedApplications;
-    v3->_lock_cachedApplications = v6;
+    v3->_lock_cachedApplications = dictionary;
   }
 
   return v3;

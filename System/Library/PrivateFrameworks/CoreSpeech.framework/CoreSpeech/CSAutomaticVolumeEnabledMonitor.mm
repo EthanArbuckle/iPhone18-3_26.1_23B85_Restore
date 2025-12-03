@@ -1,10 +1,10 @@
 @interface CSAutomaticVolumeEnabledMonitor
 + (id)sharedInstance;
 - (CSAutomaticVolumeEnabledMonitor)init;
-- (void)_didReceiveAutomaticVolumeToggled:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveAutomaticVolumeToggled:(BOOL)toggled;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CSAutomaticVolumeEnabledMonitor
@@ -15,10 +15,10 @@
   self->_queue = 0;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  objc_storeStrong(&self->_queue, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_queue, queue);
+  queueCopy = queue;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -28,21 +28,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)_didReceiveAutomaticVolumeToggled:(BOOL)a3
+- (void)_didReceiveAutomaticVolumeToggled:(BOOL)toggled
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000BA14C;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  toggledCopy = toggled;
   [(CSAutomaticVolumeEnabledMonitor *)self enumerateObservers:v3];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = v7;
+  pathCopy = path;
+  v8 = pathCopy;
   queue = self->_queue;
   if (queue)
   {
@@ -50,8 +50,8 @@
     v10[1] = 3221225472;
     v10[2] = sub_1000BA20C;
     v10[3] = &unk_100253C48;
-    v11 = v7;
-    v12 = self;
+    v11 = pathCopy;
+    selfCopy = self;
     dispatch_async(queue, v10);
   }
 }

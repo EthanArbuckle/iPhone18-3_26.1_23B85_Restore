@@ -1,17 +1,17 @@
 @interface SGRawDUEventProcessor
-- (id)getSchemaCreatorForEvent:(id)a3;
-- (id)getSchemaCreatorForEventString:(id)a3;
+- (id)getSchemaCreatorForEvent:(id)event;
+- (id)getSchemaCreatorForEventString:(id)string;
 @end
 
 @implementation SGRawDUEventProcessor
 
-- (id)getSchemaCreatorForEventString:(id)a3
+- (id)getSchemaCreatorForEventString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    if ([v3 isEqualToString:*MEMORY[0x277D06810]] & 1) != 0 || (objc_msgSend(v4, "lowercaseString"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsString:", @"appointment"), v5, (v6))
+    if ([stringCopy isEqualToString:*MEMORY[0x277D06810]] & 1) != 0 || (objc_msgSend(v4, "lowercaseString"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsString:", @"appointment"), v5, (v6))
     {
       v7 = off_278948878;
 LABEL_5:
@@ -57,15 +57,15 @@ LABEL_25:
       goto LABEL_5;
     }
 
-    v20 = [v4 lowercaseString];
-    if ([v20 isEqualToString:@"ticket"])
+    lowercaseString = [v4 lowercaseString];
+    if ([lowercaseString isEqualToString:@"ticket"])
     {
 
       goto LABEL_25;
     }
 
-    v21 = [v4 lowercaseString];
-    v22 = [v21 isEqualToString:@"movie"];
+    lowercaseString2 = [v4 lowercaseString];
+    v22 = [lowercaseString2 isEqualToString:@"movie"];
 
     if (v22)
     {
@@ -85,9 +85,9 @@ LABEL_30:
   return v9;
 }
 
-- (id)getSchemaCreatorForEvent:(id)a3
+- (id)getSchemaCreatorForEvent:(id)event
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D06608]];
+  v4 = [event objectForKeyedSubscript:*MEMORY[0x277D06608]];
   if (v4)
   {
     v5 = [(SGRawDUEventProcessor *)self getSchemaCreatorForEventString:v4];

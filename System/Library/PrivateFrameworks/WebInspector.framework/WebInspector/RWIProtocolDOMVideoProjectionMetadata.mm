@@ -1,12 +1,12 @@
 @interface RWIProtocolDOMVideoProjectionMetadata
-- (RWIProtocolDOMVideoProjectionMetadata)initWithKind:(int64_t)a3;
+- (RWIProtocolDOMVideoProjectionMetadata)initWithKind:(int64_t)kind;
 - (int64_t)kind;
-- (void)setKind:(int64_t)a3;
+- (void)setKind:(int64_t)kind;
 @end
 
 @implementation RWIProtocolDOMVideoProjectionMetadata
 
-- (RWIProtocolDOMVideoProjectionMetadata)initWithKind:(int64_t)a3
+- (RWIProtocolDOMVideoProjectionMetadata)initWithKind:(int64_t)kind
 {
   v8.receiver = self;
   v8.super_class = RWIProtocolDOMVideoProjectionMetadata;
@@ -14,14 +14,14 @@
   v5 = v4;
   if (v4)
   {
-    [(RWIProtocolDOMVideoProjectionMetadata *)v4 setKind:a3];
+    [(RWIProtocolDOMVideoProjectionMetadata *)v4 setKind:kind];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setKind:(int64_t)a3
+- (void)setKind:(int64_t)kind
 {
   Inspector::toProtocolString();
   if (v6)

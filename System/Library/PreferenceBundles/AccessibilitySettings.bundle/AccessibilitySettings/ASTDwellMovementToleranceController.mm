@@ -6,21 +6,21 @@
 
 - (id)specifiers
 {
-  v3 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
+  dwellMovementToleranceHelper = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
 
-  if (!v3)
+  if (!dwellMovementToleranceHelper)
   {
     v4 = [[ASTDwellMovementToleranceHelper alloc] initWithClientType:0];
     [(ASTDwellMovementToleranceController *)self setDwellMovementToleranceHelper:v4];
 
-    v5 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
-    [v5 setSettingsController:self];
+    dwellMovementToleranceHelper2 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
+    [dwellMovementToleranceHelper2 setSettingsController:self];
 
     v6 = +[AXSettings sharedInstance];
     [v6 assistiveTouchMouseDwellControlMovementToleranceRadius];
     v8 = v7;
-    v9 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
-    [v9 setDwellControlMovementToleranceRadius:v8];
+    dwellMovementToleranceHelper3 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
+    [dwellMovementToleranceHelper3 setDwellControlMovementToleranceRadius:v8];
   }
 
   v10 = OBJC_IVAR___PSListController__specifiers;
@@ -28,9 +28,9 @@
   if (!v11)
   {
     v12 = [objc_allocWithZone(NSMutableArray) init];
-    v13 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
-    v14 = [v13 dwellSpecifiers];
-    [v12 axSafelyAddObjectsFromArray:v14];
+    dwellMovementToleranceHelper4 = [(ASTDwellMovementToleranceController *)self dwellMovementToleranceHelper];
+    dwellSpecifiers = [dwellMovementToleranceHelper4 dwellSpecifiers];
+    [v12 axSafelyAddObjectsFromArray:dwellSpecifiers];
 
     v15 = [v12 copy];
     v16 = *&self->AXUISettingsBaseListController_opaque[v10];

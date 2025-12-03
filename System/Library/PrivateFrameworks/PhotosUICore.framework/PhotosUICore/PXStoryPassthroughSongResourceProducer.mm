@@ -1,31 +1,31 @@
 @interface PXStoryPassthroughSongResourceProducer
-- (PXStoryPassthroughSongResourceProducer)initWithSongResource:(id)a3;
-- (id)requestSongResourceWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (PXStoryPassthroughSongResourceProducer)initWithSongResource:(id)resource;
+- (id)requestSongResourceWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughSongResourceProducer
 
-- (id)requestSongResourceWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestSongResourceWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [PXStoryProducerResult alloc];
-  v8 = [(PXStoryPassthroughSongResourceProducer *)self songResource];
-  v9 = [(PXStoryProducerResult *)v7 initWithObject:v8];
-  (*(a4 + 2))(v6, v9);
+  songResource = [(PXStoryPassthroughSongResourceProducer *)self songResource];
+  v9 = [(PXStoryProducerResult *)v7 initWithObject:songResource];
+  (*(handler + 2))(handlerCopy, v9);
 
   return 0;
 }
 
-- (PXStoryPassthroughSongResourceProducer)initWithSongResource:(id)a3
+- (PXStoryPassthroughSongResourceProducer)initWithSongResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   v9.receiver = self;
   v9.super_class = PXStoryPassthroughSongResourceProducer;
   v6 = [(PXStoryPassthroughSongResourceProducer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_songResource, a3);
+    objc_storeStrong(&v6->_songResource, resource);
   }
 
   return v7;

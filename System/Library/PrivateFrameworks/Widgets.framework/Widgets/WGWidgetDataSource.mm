@@ -1,20 +1,20 @@
 @interface WGWidgetDataSource
 - (NSString)description;
-- (WGWidgetDataSource)initWithIdentifier:(id)a3;
-- (void)addWidgetObserver:(id)a3 completion:(id)a4;
+- (WGWidgetDataSource)initWithIdentifier:(id)identifier;
+- (void)addWidgetObserver:(id)observer completion:(id)completion;
 @end
 
 @implementation WGWidgetDataSource
 
-- (WGWidgetDataSource)initWithIdentifier:(id)a3
+- (WGWidgetDataSource)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = WGWidgetDataSource;
   v5 = [(WGWidgetDataSource *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     dataSourceIdentifier = v5->_dataSourceIdentifier;
     v5->_dataSourceIdentifier = v6;
 
@@ -26,20 +26,20 @@
   return v5;
 }
 
-- (void)addWidgetObserver:(id)a3 completion:(id)a4
+- (void)addWidgetObserver:(id)observer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   concreteDataSource = self->_concreteDataSource;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__WGWidgetDataSource_addWidgetObserver_completion___block_invoke;
   v11[3] = &unk_279ED18B8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = observerCopy;
   v12 = v10;
   [(_WGConcreteDataSource *)concreteDataSource addObserver:v10 completion:v11];
 
@@ -114,8 +114,8 @@ void __48__WGWidgetDataSource_removeDatumWithIdentifier___block_invoke(uint64_t 
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(WGWidgetDataSource *)self dataSourceIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p dataSourceIdentifier: %@>", v4, self, v5];;
+  dataSourceIdentifier = [(WGWidgetDataSource *)self dataSourceIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p dataSourceIdentifier: %@>", v4, self, dataSourceIdentifier];;
 
   return v6;
 }

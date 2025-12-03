@@ -29,7 +29,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -40,7 +40,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -51,7 +51,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -62,7 +62,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, NSClassFromString(&cfstr_Blastdoorlpara.isa), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -73,7 +73,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, NSClassFromString(&cfstr_Blastdoorlpara.isa), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -84,7 +84,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, NSClassFromString(&cfstr_Blastdoorlpima.isa), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -95,7 +95,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, NSClassFromString(&cfstr_Blastdoorlpima.isa), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -106,7 +106,7 @@
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, NSClassFromString(&cfstr_Blastdoorlpvid.isa), 0}];
-  v8 = [a1 _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self _bd_lp_strictlyDecodeObjectOfClasses:v7 forKey:v5];
 
   return v8;
 }
@@ -116,7 +116,7 @@
   v6 = MEMORY[0x277CBEB98];
   v7 = a4;
   v8 = [v6 setWithObjects:{a3, objc_opt_class(), 0}];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v7];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v7];
 
   v10 = 0;
   if (objc_opt_isKindOfClass())
@@ -133,7 +133,7 @@
   v6 = a3;
   v7 = a4;
   v8 = [v6 setByAddingObject:objc_opt_class()];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v7];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v7];
 
   v20 = 0u;
   v21 = 0u;
@@ -183,7 +183,7 @@ LABEL_11:
   v8 = MEMORY[0x277CBEB98];
   v9 = a4;
   v10 = [v8 setWithObjects:{a3, objc_opt_class(), 0}];
-  v11 = [a1 decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
+  v11 = [self decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
 
   v12 = 0;
   if (objc_opt_isKindOfClass())
@@ -200,7 +200,7 @@ LABEL_11:
   v8 = a3;
   v9 = a4;
   v10 = [v8 setByAddingObject:objc_opt_class()];
-  v11 = [a1 decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
+  v11 = [self decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
 
   v22 = 0u;
   v23 = 0u;
@@ -253,7 +253,7 @@ LABEL_11:
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{a3, v8, v9, objc_opt_class(), 0}];
-  v11 = [a1 decodeObjectOfClasses:v10 forKey:v6];
+  v11 = [self decodeObjectOfClasses:v10 forKey:v6];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
@@ -319,7 +319,7 @@ LABEL_13:
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
   v12 = [v11 setByAddingObjectsFromSet:v6];
-  v13 = [a1 decodeObjectOfClasses:v12 forKey:v7];
+  v13 = [self decodeObjectOfClasses:v12 forKey:v7];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 count])
@@ -430,7 +430,7 @@ LABEL_19:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{a3, a4, v10, v11, objc_opt_class(), 0}];
-  v13 = [a1 decodeObjectOfClasses:v12 forKey:v8];
+  v13 = [self decodeObjectOfClasses:v12 forKey:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -482,7 +482,7 @@ LABEL_19:
       [NSCoder(_BlastDoorLPExtras) _bd_lp_encodeObjectIfNotNil:forKey:];
     }
 
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -492,7 +492,7 @@ LABEL_19:
   v6 = a4;
   if ([v7 count])
   {
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -502,7 +502,7 @@ LABEL_19:
   v6 = a4;
   if (v7 && ([v7 isFileURL] & 1) == 0)
   {
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -512,50 +512,50 @@ LABEL_19:
   {
     v6 = a4;
     v7 = a3;
-    [a1 encodeBool:1 forKey:v6];
+    [self encodeBool:1 forKey:v6];
     [v7 r];
     v9 = v8;
     v10 = [v6 stringByAppendingString:@".red"];
-    [a1 encodeDouble:v10 forKey:v9];
+    [self encodeDouble:v10 forKey:v9];
 
     [v7 g];
     v12 = v11;
     v13 = [v6 stringByAppendingString:@".green"];
-    [a1 encodeDouble:v13 forKey:v12];
+    [self encodeDouble:v13 forKey:v12];
 
     [v7 b];
     v15 = v14;
     v16 = [v6 stringByAppendingString:@".blue"];
-    [a1 encodeDouble:v16 forKey:v15];
+    [self encodeDouble:v16 forKey:v15];
 
     [v7 a];
     v18 = v17;
 
     v19 = [v6 stringByAppendingString:@".alpha"];
 
-    [a1 encodeDouble:v19 forKey:v18];
+    [self encodeDouble:v19 forKey:v18];
   }
 }
 
 - (_BlastDoorLPPlatformColor)_bd_lp_strictlyDecodeColorForKey:()_BlastDoorLPExtras
 {
   v4 = a3;
-  if ([a1 decodeBoolForKey:v4])
+  if ([self decodeBoolForKey:v4])
   {
     v5 = [v4 stringByAppendingString:@".red"];
-    [a1 decodeDoubleForKey:v5];
+    [self decodeDoubleForKey:v5];
     v7 = v6;
 
     v8 = [v4 stringByAppendingString:@".green"];
-    [a1 decodeDoubleForKey:v8];
+    [self decodeDoubleForKey:v8];
     v10 = v9;
 
     v11 = [v4 stringByAppendingString:@".blue"];
-    [a1 decodeDoubleForKey:v11];
+    [self decodeDoubleForKey:v11];
     v13 = v12;
 
     v14 = [v4 stringByAppendingString:@".alpha"];
-    [a1 decodeDoubleForKey:v14];
+    [self decodeDoubleForKey:v14];
     v16 = v15;
 
     v17 = objc_alloc_init(_BlastDoorLPPlatformColor);

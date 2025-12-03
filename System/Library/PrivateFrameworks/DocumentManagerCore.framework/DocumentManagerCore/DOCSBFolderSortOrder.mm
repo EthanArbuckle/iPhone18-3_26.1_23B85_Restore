@@ -1,13 +1,13 @@
 @interface DOCSBFolderSortOrder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSortAscending;
 - (DOCSBFolderSortOrder)init;
-- (DOCSBFolderSortOrder)initWithSortOrderIdentifier:(id)a3;
+- (DOCSBFolderSortOrder)initWithSortOrderIdentifier:(id)identifier;
 @end
 
 @implementation DOCSBFolderSortOrder
 
-- (DOCSBFolderSortOrder)initWithSortOrderIdentifier:(id)a3
+- (DOCSBFolderSortOrder)initWithSortOrderIdentifier:(id)identifier
 {
   v4 = sub_24938A45C();
   v5 = (self + OBJC_IVAR___DOCSBFolderSortOrder_symbolName);
@@ -25,17 +25,17 @@
 
 - (BOOL)isSortAscending
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2493716D0();
 
   return v3 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24938A5FC();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DOCSBFolderSortOrder.isEqual(_:)(v8);

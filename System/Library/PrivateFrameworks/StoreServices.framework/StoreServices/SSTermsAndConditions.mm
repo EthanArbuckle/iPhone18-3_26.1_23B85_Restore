@@ -1,21 +1,21 @@
 @interface SSTermsAndConditions
-- (SSTermsAndConditions)initWithResponseData:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSTermsAndConditions)initWithResponseData:(id)data error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation SSTermsAndConditions
 
-- (SSTermsAndConditions)initWithResponseData:(id)a3 error:(id *)a4
+- (SSTermsAndConditions)initWithResponseData:(id)data error:(id *)error
 {
   v21 = 0;
-  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v21];
+  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v21];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_18:
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
@@ -27,7 +27,7 @@ LABEL_18:
     }
 
     v8 = 0;
-    *a4 = v17;
+    *error = v17;
     return v8;
   }
 
@@ -43,8 +43,8 @@ LABEL_18:
   v9 = [v6 objectForKey:@"errorNumber"];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 integerValue];
-    v12 = v10 == 5300 || v10 == 5601;
+    integerValue = [v9 integerValue];
+    v12 = integerValue == 5300 || integerValue == 5601;
     v8->_requiresAuthentication = v12;
   }
 
@@ -88,11 +88,11 @@ LABEL_25:
   [(SSTermsAndConditions *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_requiresAuthentication;
-  *(v5 + 16) = [(NSString *)self->_text copyWithZone:a3];
+  *(v5 + 16) = [(NSString *)self->_text copyWithZone:zone];
   *(v5 + 24) = self->_userAccepted;
   *(v5 + 32) = self->_versionID;
   return v5;

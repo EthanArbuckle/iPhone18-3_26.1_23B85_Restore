@@ -1,54 +1,54 @@
 @interface WebNavigationController
-- (_TtC5JSApp23WebNavigationController)initWithCoder:(id)a3;
-- (_TtC5JSApp23WebNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC5JSApp23WebNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5JSApp23WebNavigationController)initWithRootViewController:(id)a3;
+- (_TtC5JSApp23WebNavigationController)initWithCoder:(id)coder;
+- (_TtC5JSApp23WebNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC5JSApp23WebNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5JSApp23WebNavigationController)initWithRootViewController:(id)controller;
 @end
 
 @implementation WebNavigationController
 
-- (_TtC5JSApp23WebNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC5JSApp23WebNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(WebNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(WebNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC5JSApp23WebNavigationController)initWithRootViewController:(id)a3
+- (_TtC5JSApp23WebNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(WebNavigationController *)&v5 initWithRootViewController:a3];
+  return [(WebNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC5JSApp23WebNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5JSApp23WebNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_843AC();
-    v8 = a4;
-    a3 = sub_8437C();
+    bundleCopy = bundle;
+    name = sub_8437C();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(WebNavigationController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(WebNavigationController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC5JSApp23WebNavigationController)initWithCoder:(id)a3
+- (_TtC5JSApp23WebNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(WebNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(WebNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

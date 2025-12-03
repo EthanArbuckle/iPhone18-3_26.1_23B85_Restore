@@ -1,7 +1,7 @@
 @interface CUTWeakReference
-+ (id)weakRefWithObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CUTWeakReference)initWithObject:(id)a3;
++ (id)weakRefWithObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (CUTWeakReference)initWithObject:(id)object;
 - (id)object;
 @end
 
@@ -14,38 +14,38 @@
   return WeakRetained;
 }
 
-+ (id)weakRefWithObject:(id)a3
++ (id)weakRefWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-- (CUTWeakReference)initWithObject:(id)a3
+- (CUTWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = CUTWeakReference;
   v5 = [(CUTWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
-    v6->_objectAddress = v4;
+    objc_storeWeak(&v5->_object, objectCopy);
+    v6->_objectAddress = objectCopy;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectAddress];
-    v6 = v5 == [(CUTWeakReference *)self objectAddress];
+    objectAddress = [equalCopy objectAddress];
+    v6 = objectAddress == [(CUTWeakReference *)self objectAddress];
   }
 
   else

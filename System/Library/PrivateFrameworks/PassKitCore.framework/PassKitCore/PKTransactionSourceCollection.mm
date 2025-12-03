@@ -1,35 +1,35 @@
 @interface PKTransactionSourceCollection
-- (BOOL)isEqual:(id)a3;
-- (PKTransactionSourceCollection)initWithTransactionSource:(id)a3;
-- (PKTransactionSourceCollection)initWithTransactionSources:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKTransactionSourceCollection)initWithTransactionSource:(id)source;
+- (PKTransactionSourceCollection)initWithTransactionSources:(id)sources;
 - (id)account;
 - (id)paymentPass;
-- (id)transactionSourceForTransactionSourceIdentifier:(id)a3;
+- (id)transactionSourceForTransactionSourceIdentifier:(id)identifier;
 - (id)transactionSourceIdentifiers;
-- (id)transactionSourcesForType:(unint64_t)a3;
+- (id)transactionSourcesForType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation PKTransactionSourceCollection
 
-- (PKTransactionSourceCollection)initWithTransactionSources:(id)a3
+- (PKTransactionSourceCollection)initWithTransactionSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   v9.receiver = self;
   v9.super_class = PKTransactionSourceCollection;
   v6 = [(PKTransactionSourceCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transactionSources, a3);
+    objc_storeStrong(&v6->_transactionSources, sources);
   }
 
   return v7;
 }
 
-- (PKTransactionSourceCollection)initWithTransactionSource:(id)a3
+- (PKTransactionSourceCollection)initWithTransactionSource:(id)source
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:source];
   v5 = [(PKTransactionSourceCollection *)self initWithTransactionSources:v4];
 
   return v5;
@@ -58,8 +58,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) transactionSourceIdentifiers];
-        [v3 unionSet:v9];
+        transactionSourceIdentifiers = [*(*(&v12 + 1) + 8 * i) transactionSourceIdentifiers];
+        [v3 unionSet:transactionSourceIdentifiers];
       }
 
       v6 = [(NSSet *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -81,13 +81,13 @@
   v11 = 0u;
   v12 = 0u;
   v2 = self->_transactionSources;
-  v3 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  paymentPass2 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (paymentPass2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != paymentPass2; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -95,17 +95,17 @@
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 paymentPass];
+        paymentPass = [v6 paymentPass];
 
-        if (v7)
+        if (paymentPass)
         {
-          v3 = [v6 paymentPass];
+          paymentPass2 = [v6 paymentPass];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      paymentPass2 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (paymentPass2)
       {
         continue;
       }
@@ -116,7 +116,7 @@
 
 LABEL_11:
 
-  return v3;
+  return paymentPass2;
 }
 
 - (id)account
@@ -127,13 +127,13 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_transactionSources;
-  v3 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  account2 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (account2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != account2; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -141,17 +141,17 @@ LABEL_11:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 account];
+        account = [v6 account];
 
-        if (v7)
+        if (account)
         {
-          v3 = [v6 account];
+          account2 = [v6 account];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      account2 = [(NSSet *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (account2)
       {
         continue;
       }
@@ -162,14 +162,14 @@ LABEL_11:
 
 LABEL_11:
 
-  return v3;
+  return account2;
 }
 
-- (id)transactionSourceForTransactionSourceIdentifier:(id)a3
+- (id)transactionSourceForTransactionSourceIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -190,8 +190,8 @@ LABEL_11:
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 transactionSourceIdentifiers];
-          v11 = [v10 containsObject:v4];
+          transactionSourceIdentifiers = [v9 transactionSourceIdentifiers];
+          v11 = [transactionSourceIdentifiers containsObject:identifierCopy];
 
           if (v11)
           {
@@ -221,7 +221,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)transactionSourcesForType:(unint64_t)a3
+- (id)transactionSourcesForType:(unint64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -245,7 +245,7 @@ LABEL_12:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 type] == a3)
+        if ([v11 type] == type)
         {
           [v5 addObject:v11];
         }
@@ -262,14 +262,14 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     transactionSources = self->_transactionSources;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (transactionSources && v6)
     {
       v7 = [(NSSet *)transactionSources isEqual:?];
@@ -291,9 +291,9 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_transactionSources];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_transactionSources];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

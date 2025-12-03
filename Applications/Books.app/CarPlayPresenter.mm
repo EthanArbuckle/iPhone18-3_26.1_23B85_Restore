@@ -1,6 +1,6 @@
 @interface CarPlayPresenter
 - (_TtC5Books16CarPlayPresenter)init;
-- (void)nowPlayingTemplateUpNextButtonTapped:(id)a3;
+- (void)nowPlayingTemplateUpNextButtonTapped:(id)tapped;
 @end
 
 @implementation CarPlayPresenter
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)nowPlayingTemplateUpNextButtonTapped:(id)a3
+- (void)nowPlayingTemplateUpNextButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_100362EE4();
 }
 

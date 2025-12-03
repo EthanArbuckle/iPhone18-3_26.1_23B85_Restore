@@ -7,40 +7,40 @@
 - (void)populateNamesFromComponents:()PKAdditions
 {
   v16 = a3;
-  v4 = [v16 givenName];
+  givenName = [v16 givenName];
 
-  if (v4)
+  if (givenName)
   {
-    v5 = [v16 givenName];
-    [a1 setGivenName:v5];
+    givenName2 = [v16 givenName];
+    [self setGivenName:givenName2];
   }
 
-  v6 = [v16 familyName];
+  familyName = [v16 familyName];
 
-  if (v6)
+  if (familyName)
   {
-    v7 = [v16 familyName];
-    [a1 setFamilyName:v7];
+    familyName2 = [v16 familyName];
+    [self setFamilyName:familyName2];
   }
 
-  v8 = [v16 phoneticRepresentation];
-  v9 = [v8 givenName];
+  phoneticRepresentation = [v16 phoneticRepresentation];
+  givenName3 = [phoneticRepresentation givenName];
 
-  if (v9)
+  if (givenName3)
   {
-    v10 = [v16 phoneticRepresentation];
-    v11 = [v10 givenName];
-    [a1 setPhoneticGivenName:v11];
+    phoneticRepresentation2 = [v16 phoneticRepresentation];
+    givenName4 = [phoneticRepresentation2 givenName];
+    [self setPhoneticGivenName:givenName4];
   }
 
-  v12 = [v16 phoneticRepresentation];
-  v13 = [v12 familyName];
+  phoneticRepresentation3 = [v16 phoneticRepresentation];
+  familyName3 = [phoneticRepresentation3 familyName];
 
-  if (v13)
+  if (familyName3)
   {
-    v14 = [v16 phoneticRepresentation];
-    v15 = [v14 familyName];
-    [a1 setPhoneticFamilyName:v15];
+    phoneticRepresentation4 = [v16 phoneticRepresentation];
+    familyName4 = [phoneticRepresentation4 familyName];
+    [self setPhoneticFamilyName:familyName4];
   }
 }
 

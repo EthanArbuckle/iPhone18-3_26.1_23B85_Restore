@@ -1,25 +1,25 @@
 @interface PHAUserAnalyticsBiomeTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (BOOL)shouldRunWithPhotoLibrary:(id)library;
 - (NSString)name;
-- (PHAUserAnalyticsBiomeTask)initWithTaskType:(signed __int16)a3;
+- (PHAUserAnalyticsBiomeTask)initWithTaskType:(signed __int16)type;
 - (double)period;
-- (id)biomeUUIDsFrom:(id)a3 progressReporter:(id)a4;
-- (id)deletedAssetUUIDsFromBiomeFrom:(id)a3 biomeUUIDs:(id)a4;
-- (id)deletedMemoryUUIDsFromBiomeFrom:(id)a3 biomeUUIDs:(id)a4;
+- (id)biomeUUIDsFrom:(id)from progressReporter:(id)reporter;
+- (id)deletedAssetUUIDsFromBiomeFrom:(id)from biomeUUIDs:(id)ds;
+- (id)deletedMemoryUUIDsFromBiomeFrom:(id)from biomeUUIDs:(id)ds;
 - (id)taskClassDependencies;
-- (void)pruneBiomeEventsWithUUIDs:(id)a3;
-- (void)pruneDeletedRecordsFromBiomeFrom:(id)a3 progressReporter:(id)a4;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)pruneBiomeEventsWithUUIDs:(id)ds;
+- (void)pruneDeletedRecordsFromBiomeFrom:(id)from progressReporter:(id)reporter;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAUserAnalyticsBiomeTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAUserAnalyticsBiomeTask timeoutFatal:]", "PHAUserAnalyticsBiomeTask.m", 266, "NO");
   }
@@ -32,11 +32,11 @@
   }
 }
 
-- (BOOL)runWithPhotoLibrary:(id)a3 analytics:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithPhotoLibrary:(id)library analytics:(id)analytics progressReporter:(id)reporter error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  libraryCopy = library;
+  reporterCopy = reporter;
   v11 = self->_loggingConnection;
   v12 = os_signpost_id_generate(v11);
   info = 0;
@@ -50,7 +50,7 @@
   }
 
   v15 = mach_absolute_time();
-  v16 = v10;
+  v16 = reporterCopy;
   v17 = v16;
   v18 = v16;
   if (self->_taskType == 1)
@@ -58,12 +58,12 @@
     v18 = [v16 childProgressReporterForStep:0 outOf:3];
   }
 
-  [(PHAUserAnalyticsBiomeTask *)self pruneDeletedRecordsFromBiomeFrom:v9 progressReporter:v18];
+  [(PHAUserAnalyticsBiomeTask *)self pruneDeletedRecordsFromBiomeFrom:libraryCopy progressReporter:v18];
   if (self->_taskType == 1)
   {
     v19 = [v17 childProgressReporterForStep:2 outOf:3];
-    v20 = [[PHAPhotoStyle alloc] initWithphotoLibrary:v9];
-    v21 = [(PHAPhotoStyle *)v20 updateStyleStreamWithProgressReporter:v19 error:a6];
+    v20 = [[PHAPhotoStyle alloc] initWithphotoLibrary:libraryCopy];
+    v21 = [(PHAPhotoStyle *)v20 updateStyleStreamWithProgressReporter:v19 error:error];
   }
 
   else
@@ -94,38 +94,38 @@
   return v21;
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 workingContext];
-  v11 = [v10 photoLibrary];
-  v12 = [v9 analytics];
+  reporterCopy = reporter;
+  managerCopy = manager;
+  workingContext = [managerCopy workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  analytics = [managerCopy analytics];
 
-  LOBYTE(a5) = [(PHAUserAnalyticsBiomeTask *)self runWithPhotoLibrary:v11 analytics:v12 progressReporter:v8 error:a5];
-  return a5;
+  LOBYTE(error) = [(PHAUserAnalyticsBiomeTask *)self runWithPhotoLibrary:photoLibrary analytics:analytics progressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (id)deletedMemoryUUIDsFromBiomeFrom:(id)a3 biomeUUIDs:(id)a4
+- (id)deletedMemoryUUIDsFromBiomeFrom:(id)from biomeUUIDs:(id)ds
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  fromCopy = from;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [MEMORY[0x277CBEB58] setWithSet:v6];
-    v8 = [v5 librarySpecificFetchOptions];
+    v7 = [MEMORY[0x277CBEB58] setWithSet:dsCopy];
+    librarySpecificFetchOptions = [fromCopy librarySpecificFetchOptions];
     v18[0] = *MEMORY[0x277CD9C40];
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    [v8 setFetchPropertySets:v9];
+    [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-    [v8 setIncludeStoryMemories:1];
+    [librarySpecificFetchOptions setIncludeStoryMemories:1];
     v10 = [MEMORY[0x277CD98D8] localIdentifiersWithUUIDs:v7];
     if ([v10 count])
     {
       v11 = MEMORY[0x277CD97B8];
-      v12 = [v10 allObjects];
-      v13 = [v11 fetchAssetCollectionsWithType:4 localIdentifiers:v12 options:v8];
+      allObjects = [v10 allObjects];
+      v13 = [v11 fetchAssetCollectionsWithType:4 localIdentifiers:allObjects options:librarySpecificFetchOptions];
 
       if ([v13 count])
       {
@@ -133,8 +133,8 @@
         do
         {
           v15 = [v13 objectAtIndexedSubscript:v14];
-          v16 = [v15 uuid];
-          [v7 removeObject:v16];
+          uuid = [v15 uuid];
+          [v7 removeObject:uuid];
 
           ++v14;
         }
@@ -152,23 +152,23 @@
   return v7;
 }
 
-- (id)deletedAssetUUIDsFromBiomeFrom:(id)a3 biomeUUIDs:(id)a4
+- (id)deletedAssetUUIDsFromBiomeFrom:(id)from biomeUUIDs:(id)ds
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  fromCopy = from;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [MEMORY[0x277CBEB58] setWithSet:v6];
-    v8 = [v5 librarySpecificFetchOptions];
+    v7 = [MEMORY[0x277CBEB58] setWithSet:dsCopy];
+    librarySpecificFetchOptions = [fromCopy librarySpecificFetchOptions];
     v17[0] = *MEMORY[0x277CD9AA8];
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v8 setFetchPropertySets:v9];
+    [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-    [v8 setIncludeHiddenAssets:0];
+    [librarySpecificFetchOptions setIncludeHiddenAssets:0];
     v10 = MEMORY[0x277CD97A8];
-    v11 = [v6 allObjects];
-    v12 = [v10 fetchAssetsWithUUIDs:v11 options:v8];
+    allObjects = [dsCopy allObjects];
+    v12 = [v10 fetchAssetsWithUUIDs:allObjects options:librarySpecificFetchOptions];
 
     if ([v12 count])
     {
@@ -176,8 +176,8 @@
       do
       {
         v14 = [v12 objectAtIndexedSubscript:v13];
-        v15 = [v14 uuid];
-        [v7 removeObject:v15];
+        uuid = [v14 uuid];
+        [v7 removeObject:uuid];
 
         ++v13;
       }
@@ -194,24 +194,24 @@
   return v7;
 }
 
-- (id)biomeUUIDsFrom:(id)a3 progressReporter:(id)a4
+- (id)biomeUUIDsFrom:(id)from progressReporter:(id)reporter
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  fromCopy = from;
+  reporterCopy = reporter;
+  if ([fromCopy count])
   {
     v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v5;
+    v7 = fromCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
-      v18 = v5;
+      v18 = fromCopy;
       v10 = 0;
       v11 = *v23;
       do
@@ -224,9 +224,9 @@
             objc_enumerationMutation(v7);
           }
 
-          v14 = [*(*(&v22 + 1) + 8 * i) intValue];
+          intValue = [*(*(&v22 + 1) + 8 * i) intValue];
           v21 = v10;
-          v15 = [PHABiomeUtilities readUUIDsWithStream:v14 progressReporter:v6 error:&v21];
+          v15 = [PHABiomeUtilities readUUIDsWithStream:intValue progressReporter:reporterCopy error:&v21];
           v10 = v21;
 
           if (v15)
@@ -251,7 +251,7 @@
 
       while (v9);
 
-      v5 = v18;
+      fromCopy = v18;
     }
   }
 
@@ -263,11 +263,11 @@
   return v20;
 }
 
-- (void)pruneDeletedRecordsFromBiomeFrom:(id)a3 progressReporter:(id)a4
+- (void)pruneDeletedRecordsFromBiomeFrom:(id)from progressReporter:(id)reporter
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  reporterCopy = reporter;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -281,10 +281,10 @@
 
   if ([v11 count])
   {
-    v12 = [(PHAUserAnalyticsBiomeTask *)self biomeUUIDsFrom:v11 progressReporter:v7];
+    v12 = [(PHAUserAnalyticsBiomeTask *)self biomeUUIDsFrom:v11 progressReporter:reporterCopy];
     if ([v12 count])
     {
-      v13 = [(PHAUserAnalyticsBiomeTask *)self deletedAssetUUIDsFromBiomeFrom:v6 biomeUUIDs:v12];
+      v13 = [(PHAUserAnalyticsBiomeTask *)self deletedAssetUUIDsFromBiomeFrom:fromCopy biomeUUIDs:v12];
       v14 = [v13 count];
       if (v14)
       {
@@ -304,10 +304,10 @@
   v17 = +[PHABiomeUtilities availableMemoryBiomeStreams];
   if ([v17 count])
   {
-    v18 = [(PHAUserAnalyticsBiomeTask *)self biomeUUIDsFrom:v17 progressReporter:v7];
+    v18 = [(PHAUserAnalyticsBiomeTask *)self biomeUUIDsFrom:v17 progressReporter:reporterCopy];
     if ([v18 count])
     {
-      v19 = [(PHAUserAnalyticsBiomeTask *)self deletedMemoryUUIDsFromBiomeFrom:v6 biomeUUIDs:v18];
+      v19 = [(PHAUserAnalyticsBiomeTask *)self deletedMemoryUUIDsFromBiomeFrom:fromCopy biomeUUIDs:v18];
       v20 = [v19 count];
       if (v20)
       {
@@ -332,10 +332,10 @@
   }
 }
 
-- (void)pruneBiomeEventsWithUUIDs:(id)a3
+- (void)pruneBiomeEventsWithUUIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[PHABiomeUtilities availableAssetBiomeLibraryStream];
   v5 = +[PHABiomeUtilities availableMemoryBiomeLibraryStream];
   v6 = +[PHABiomeUtilities availableSessionBiomeLibraryStream];
@@ -362,14 +362,14 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 pruner];
+        pruner = [v13 pruner];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __55__PHAUserAnalyticsBiomeTask_pruneBiomeEventsWithUUIDs___block_invoke;
         v16[3] = &unk_2788B31E8;
         v16[4] = v13;
-        v17 = v3;
-        [v14 deleteWithPolicy:@"deleted-or-hidden-asset" eventsPassingTest:v16];
+        v17 = dsCopy;
+        [pruner deleteWithPolicy:@"deleted-or-hidden-asset" eventsPassingTest:v16];
       }
 
       v10 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -468,39 +468,39 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)shouldRunWithPhotoLibrary:(id)a3
+- (BOOL)shouldRunWithPhotoLibrary:(id)library
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 isSystemPhotoLibrary];
-  if ((v4 & 1) == 0)
+  isSystemPhotoLibrary = [library isSystemPhotoLibrary];
+  if ((isSystemPhotoLibrary & 1) == 0)
   {
     loggingConnection = self->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
     {
       v7 = loggingConnection;
-      v8 = [(PHAUserAnalyticsBiomeTask *)self name];
+      name = [(PHAUserAnalyticsBiomeTask *)self name];
       v9 = 138412290;
-      v10 = v8;
+      v10 = name;
       _os_log_debug_impl(&dword_22FA28000, v7, OS_LOG_TYPE_DEBUG, "Task is running on a non system photo library: not running %@ job", &v9, 0xCu);
     }
   }
 
-  return v4;
+  return isSystemPhotoLibrary;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_taskType == 1 && ![v4 isReady])
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (self->_taskType == 1 && ![managerCopy isReady])
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v5 photoLibrary];
-    v7 = [(PHAUserAnalyticsBiomeTask *)self shouldRunWithPhotoLibrary:v6];
+    photoLibrary = [v5 photoLibrary];
+    v7 = [(PHAUserAnalyticsBiomeTask *)self shouldRunWithPhotoLibrary:photoLibrary];
   }
 
   return v7;
@@ -545,7 +545,7 @@ LABEL_16:
   }
 }
 
-- (PHAUserAnalyticsBiomeTask)initWithTaskType:(signed __int16)a3
+- (PHAUserAnalyticsBiomeTask)initWithTaskType:(signed __int16)type
 {
   v9.receiver = self;
   v9.super_class = PHAUserAnalyticsBiomeTask;
@@ -553,7 +553,7 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v4->_taskType = a3;
+    v4->_taskType = type;
     v6 = os_log_create("com.apple.photoanalysisd", "UserAnalyticsBiomeTask");
     loggingConnection = v5->_loggingConnection;
     v5->_loggingConnection = v6;

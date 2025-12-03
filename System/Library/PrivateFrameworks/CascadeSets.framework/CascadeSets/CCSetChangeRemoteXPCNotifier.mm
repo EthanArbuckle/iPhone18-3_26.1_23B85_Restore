@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (CCSetChangeRemoteXPCNotifier)init;
 - (id)client;
-- (void)notifyChangeToSet:(id)a3;
-- (void)notifyChangeToSet:(id)a3 completion:(id)a4;
+- (void)notifyChangeToSet:(id)set;
+- (void)notifyChangeToSet:(id)set completion:(id)completion;
 @end
 
 @implementation CCSetChangeRemoteXPCNotifier
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __46__CCSetChangeRemoteXPCNotifier_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_0 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_0, block);
@@ -61,17 +61,17 @@ void __46__CCSetChangeRemoteXPCNotifier_sharedInstance__block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)notifyChangeToSet:(id)a3
+- (void)notifyChangeToSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CCSetChangeRemoteXPCNotifier_notifyChangeToSet___block_invoke;
   v7[3] = &unk_1E7C8B0D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -96,18 +96,18 @@ void __50__CCSetChangeRemoteXPCNotifier_notifyChangeToSet___block_invoke_2(uint6
   }
 }
 
-- (void)notifyChangeToSet:(id)a3 completion:(id)a4
+- (void)notifyChangeToSet:(id)set completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCSetChangeRemoteXPCNotifier *)self client];
+  setCopy = set;
+  completionCopy = completion;
+  client = [(CCSetChangeRemoteXPCNotifier *)self client];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__CCSetChangeRemoteXPCNotifier_notifyChangeToSet_completion___block_invoke;
   v10[3] = &unk_1E7C8B0F8;
-  v11 = v6;
-  v9 = v6;
-  [v8 serviceRequest:1 completion:v7 usingBlock:v10];
+  v11 = setCopy;
+  v9 = setCopy;
+  [client serviceRequest:1 completion:completionCopy usingBlock:v10];
 }
 
 void __50__CCSetChangeRemoteXPCNotifier_notifyChangeToSet___block_invoke_2_cold_1(uint64_t a1, unsigned __int16 a2, os_log_t log)

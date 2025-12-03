@@ -11,14 +11,14 @@
 - (NSDate)now;
 - (id)initFake;
 - (void)airplaneMode;
-- (void)setAirDropCapability:(BOOL)a3;
-- (void)setAirplaneMode:(BOOL)a3;
-- (void)setCoreRoutineCapability:(BOOL)a3;
-- (void)setGreenTeaDeviceCapability:(BOOL)a3;
-- (void)setInternalBuild:(BOOL)a3;
-- (void)setLockScreen:(BOOL)a3;
-- (void)setNow:(id)a3;
-- (void)setTelephonyCapability:(BOOL)a3;
+- (void)setAirDropCapability:(BOOL)capability;
+- (void)setAirplaneMode:(BOOL)mode;
+- (void)setCoreRoutineCapability:(BOOL)capability;
+- (void)setGreenTeaDeviceCapability:(BOOL)capability;
+- (void)setInternalBuild:(BOOL)build;
+- (void)setLockScreen:(BOOL)screen;
+- (void)setNow:(id)now;
+- (void)setTelephonyCapability:(BOOL)capability;
 @end
 
 @implementation ATXActionCriteriaWorldState
@@ -84,9 +84,9 @@
   return v3;
 }
 
-- (void)setNow:(id)a3
+- (void)setNow:(id)now
 {
-  v4 = [a3 copy];
+  v4 = [now copy];
   now = self->_now;
   self->_now = v4;
 
@@ -98,19 +98,19 @@
   v10 = *MEMORY[0x1E69E9840];
   if (!self->_fake && (*(&self->_flags + 1) & 2) == 0)
   {
-    v3 = [MEMORY[0x1E69C5AB0] currentModeSemanticType];
+    currentModeSemanticType = [MEMORY[0x1E69C5AB0] currentModeSemanticType];
     v4 = __atxlog_handle_default();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (currentModeSemanticType)
     {
       if (v5)
       {
         v8 = 134217984;
-        v9 = [v3 integerValue];
+        integerValue = [currentModeSemanticType integerValue];
         _os_log_impl(&dword_1BF549000, v4, OS_LOG_TYPE_DEFAULT, "Criteria: focus event type: %lu", &v8, 0xCu);
       }
 
-      if (![v3 integerValue])
+      if (![currentModeSemanticType integerValue])
       {
         *&self->_flags |= 1u;
         flags = 1;
@@ -166,9 +166,9 @@ LABEL_13:
   return MGBool;
 }
 
-- (void)setTelephonyCapability:(BOOL)a3
+- (void)setTelephonyCapability:(BOOL)capability
 {
-  if (a3)
+  if (capability)
   {
     v3 = 2;
   }
@@ -209,9 +209,9 @@ LABEL_13:
   return MGBool;
 }
 
-- (void)setAirDropCapability:(BOOL)a3
+- (void)setAirDropCapability:(BOOL)capability
 {
-  if (a3)
+  if (capability)
   {
     v3 = 4;
   }
@@ -283,9 +283,9 @@ LABEL_13:
   return v9;
 }
 
-- (void)setAirplaneMode:(BOOL)a3
+- (void)setAirplaneMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -326,9 +326,9 @@ LABEL_13:
   return MGBool;
 }
 
-- (void)setCoreRoutineCapability:(BOOL)a3
+- (void)setCoreRoutineCapability:(BOOL)capability
 {
-  if (a3)
+  if (capability)
   {
     v3 = 16;
   }
@@ -369,9 +369,9 @@ LABEL_13:
   return MGBool;
 }
 
-- (void)setGreenTeaDeviceCapability:(BOOL)a3
+- (void)setGreenTeaDeviceCapability:(BOOL)capability
 {
-  if (a3)
+  if (capability)
   {
     v3 = 32;
   }
@@ -412,9 +412,9 @@ LABEL_13:
   return MGBool;
 }
 
-- (void)setInternalBuild:(BOOL)a3
+- (void)setInternalBuild:(BOOL)build
 {
-  if (a3)
+  if (build)
   {
     v3 = 64;
   }
@@ -428,9 +428,9 @@ LABEL_13:
   *(&self->_flags + 1) |= 0x80u;
 }
 
-- (void)setLockScreen:(BOOL)a3
+- (void)setLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 0x80;
   }
@@ -446,9 +446,9 @@ LABEL_13:
 
 - (void)airplaneMode
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"SCPreferencesRef _SCPreferencesCreate(CFAllocatorRef, CFStringRef, CFStringRef)"}];
-  [v0 handleFailureInFunction:v1 file:@"ATXActionCriteria.m" lineNumber:30 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"ATXActionCriteria.m" lineNumber:30 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

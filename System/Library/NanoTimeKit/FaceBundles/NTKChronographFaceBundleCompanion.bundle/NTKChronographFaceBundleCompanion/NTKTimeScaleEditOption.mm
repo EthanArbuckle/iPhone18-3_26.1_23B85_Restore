@@ -1,35 +1,35 @@
 @interface NTKTimeScaleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKTimeScaleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1C658 + a3);
+    return *(&off_1C658 + value);
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKTimeScaleEditOption *)self timeScale];
-  if (v2 > 3)
+  timeScale = [(NTKTimeScaleEditOption *)self timeScale];
+  if (timeScale > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&off_1C678 + v2);
+    v3 = *(&off_1C678 + timeScale);
   }
 
   return [NTKChronographFaceBundle localizedStringForKey:v3 comment:@"timescale"];

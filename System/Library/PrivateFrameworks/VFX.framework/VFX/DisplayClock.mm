@@ -1,11 +1,11 @@
 @interface DisplayClock
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 @end
 
 @implementation DisplayClock
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   v4 = sub_1AFDFBD08();
   v5 = *(v4 - 8);
@@ -16,23 +16,23 @@
 
   if (v9)
   {
-    v10 = [v9 isPaused];
+    isPaused = [v9 isPaused];
     v11 = *self->displayLink;
   }
 
   else
   {
     v11 = 0;
-    v10 = 1;
+    isPaused = 1;
   }
 
-  self->_pausedOnBackgrounding[0] = v10;
+  self->_pausedOnBackgrounding[0] = isPaused;
   [v11 setPaused_];
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v4 = sub_1AFDFBD08();
   v5 = *(v4 - 8);

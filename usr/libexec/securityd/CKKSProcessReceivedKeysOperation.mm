@@ -1,29 +1,29 @@
 @interface CKKSProcessReceivedKeysOperation
-- (CKKSProcessReceivedKeysOperation)initWithDependencies:(id)a3 allowFullRefetchResult:(BOOL)a4 intendedState:(id)a5 errorState:(id)a6;
-- (id)checkExistingKeyHierarchy:(id)a3 zoneID:(id)a4 currentTrustStates:(id)a5 error:(id *)a6;
-- (id)processRemoteKeys:(id)a3 viewState:(id)a4 currentTrustStates:(id)a5 error:(id *)a6;
+- (CKKSProcessReceivedKeysOperation)initWithDependencies:(id)dependencies allowFullRefetchResult:(BOOL)result intendedState:(id)state errorState:(id)errorState;
+- (id)checkExistingKeyHierarchy:(id)hierarchy zoneID:(id)d currentTrustStates:(id)states error:(id *)error;
+- (id)processRemoteKeys:(id)keys viewState:(id)state currentTrustStates:(id)states error:(id *)error;
 - (void)main;
 @end
 
 @implementation CKKSProcessReceivedKeysOperation
 
-- (id)checkExistingKeyHierarchy:(id)a3 zoneID:(id)a4 currentTrustStates:(id)a5 error:(id *)a6
+- (id)checkExistingKeyHierarchy:(id)hierarchy zoneID:(id)d currentTrustStates:(id)states error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 error];
-  if (v13)
+  hierarchyCopy = hierarchy;
+  dCopy = d;
+  statesCopy = states;
+  error = [hierarchyCopy error];
+  if (error)
   {
-    v14 = v13;
-    v15 = [v10 error];
-    v16 = [v15 domain];
-    if ([v16 isEqual:@"securityd"])
+    v14 = error;
+    error2 = [hierarchyCopy error];
+    domain = [error2 domain];
+    if ([domain isEqual:@"securityd"])
     {
-      v17 = [v10 error];
-      v18 = [v17 code];
+      error3 = [hierarchyCopy error];
+      code = [error3 code];
 
-      if (v18 == -25300)
+      if (code == -25300)
       {
         goto LABEL_9;
       }
@@ -33,27 +33,27 @@
     {
     }
 
-    v19 = [v11 zoneName];
-    v20 = sub_100019104(@"ckkskey", v19);
+    zoneName = [dCopy zoneName];
+    v20 = sub_100019104(@"ckkskey", zoneName);
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v10 error];
+      error4 = [hierarchyCopy error];
       *buf = 138412290;
-      v117 = v21;
+      v117 = error4;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Error examining existing key hierarchy: %@", buf, 0xCu);
     }
   }
 
 LABEL_9:
-  v22 = [v10 currentTLKPointer];
-  if (v22 || ([v10 currentClassAPointer], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+  currentTLKPointer = [hierarchyCopy currentTLKPointer];
+  if (currentTLKPointer || ([hierarchyCopy currentClassAPointer], (currentTLKPointer = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_12:
-    v23 = [(CKKSProcessReceivedKeysOperation *)self deps];
+    deps = [(CKKSProcessReceivedKeysOperation *)self deps];
     v111 = 0;
-    v24 = [v23 considerSelfTrusted:v12 error:&v111];
+    v24 = [deps considerSelfTrusted:statesCopy error:&v111];
     v25 = v111;
 
     if ((v24 & 1) != 0 || !v25)
@@ -61,19 +61,19 @@ LABEL_12:
       if (v24)
       {
 LABEL_19:
-        v31 = [v10 tlk];
+        v31 = [hierarchyCopy tlk];
         if (v31)
         {
           v32 = v31;
-          v33 = [v10 classA];
-          if (v33)
+          classA = [hierarchyCopy classA];
+          if (classA)
           {
-            v34 = v33;
-            v35 = [v10 classC];
+            v34 = classA;
+            classC = [hierarchyCopy classC];
 
-            if (v35)
+            if (classC)
             {
-              v36 = [v10 tlk];
+              v36 = [hierarchyCopy tlk];
               v110 = 0;
               v37 = [v36 loadKeyMaterialFromKeychain:&v110];
               v38 = v110;
@@ -82,18 +82,18 @@ LABEL_19:
               {
                 if (v38)
                 {
-                  v39 = [(CKKSProcessReceivedKeysOperation *)self deps];
-                  v40 = [v39 lockStateTracker];
-                  v41 = [v40 isLockedError:v38];
+                  deps2 = [(CKKSProcessReceivedKeysOperation *)self deps];
+                  lockStateTracker = [deps2 lockStateTracker];
+                  v41 = [lockStateTracker isLockedError:v38];
 
                   if ((v41 & 1) == 0)
                   {
-                    v92 = [v11 zoneName];
-                    v93 = sub_100019104(@"ckkskey", v92);
+                    zoneName2 = [dCopy zoneName];
+                    v93 = sub_100019104(@"ckkskey", zoneName2);
 
                     if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
                     {
-                      v94 = [v10 tlk];
+                      v94 = [hierarchyCopy tlk];
                       *buf = 138412546;
                       v117 = v94;
                       v118 = 2112;
@@ -101,10 +101,10 @@ LABEL_19:
                       _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_ERROR, "Error loading TLK(%@): %@", buf, 0x16u);
                     }
 
-                    if (a6)
+                    if (error)
                     {
                       v95 = v38;
-                      *a6 = v38;
+                      *error = v38;
                     }
 
                     v67 = @"unhealthy";
@@ -113,12 +113,12 @@ LABEL_19:
                   }
                 }
 
-                v42 = [v11 zoneName];
-                v43 = sub_100019104(@"ckkskey", v42);
+                zoneName3 = [dCopy zoneName];
+                v43 = sub_100019104(@"ckkskey", zoneName3);
 
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                 {
-                  v44 = [v10 tlk];
+                  v44 = [hierarchyCopy tlk];
                   *buf = 138412546;
                   v117 = v44;
                   v118 = 2112;
@@ -127,38 +127,38 @@ LABEL_19:
                 }
               }
 
-              v45 = [v10 classA];
+              classA2 = [hierarchyCopy classA];
               v109 = 0;
-              v46 = [v45 loadKeyMaterialFromKeychain:&v109];
+              v46 = [classA2 loadKeyMaterialFromKeychain:&v109];
               v47 = v109;
 
               if ((v46 & 1) == 0)
               {
                 if (v47)
                 {
-                  v48 = [(CKKSProcessReceivedKeysOperation *)self deps];
-                  v49 = [v48 lockStateTracker];
-                  v50 = [v49 isLockedError:v47];
+                  deps3 = [(CKKSProcessReceivedKeysOperation *)self deps];
+                  lockStateTracker2 = [deps3 lockStateTracker];
+                  v50 = [lockStateTracker2 isLockedError:v47];
 
                   if ((v50 & 1) == 0)
                   {
-                    v97 = [v11 zoneName];
-                    v98 = sub_100019104(@"ckkskey", v97);
+                    zoneName4 = [dCopy zoneName];
+                    v98 = sub_100019104(@"ckkskey", zoneName4);
 
                     if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
                     {
-                      v99 = [v10 classA];
+                      classA3 = [hierarchyCopy classA];
                       *buf = 138412546;
-                      v117 = v99;
+                      v117 = classA3;
                       v118 = 2112;
                       v119 = v47;
                       _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_ERROR, "Error loading classA key(%@): %@", buf, 0x16u);
                     }
 
-                    if (a6)
+                    if (error)
                     {
                       v100 = v47;
-                      *a6 = v47;
+                      *error = v47;
                     }
 
                     v67 = @"unhealthy";
@@ -167,44 +167,44 @@ LABEL_19:
                   }
                 }
 
-                v51 = [v11 zoneName];
-                v52 = sub_100019104(@"ckkskey", v51);
+                zoneName5 = [dCopy zoneName];
+                v52 = sub_100019104(@"ckkskey", zoneName5);
 
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
                 {
-                  v53 = [v10 classA];
+                  classA4 = [hierarchyCopy classA];
                   *buf = 138412546;
-                  v117 = v53;
+                  v117 = classA4;
                   v118 = 2112;
                   v119 = v47;
                   _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "Soft error loading classA key(%@), maybe locked: %@", buf, 0x16u);
                 }
               }
 
-              v54 = [v10 classC];
+              classC2 = [hierarchyCopy classC];
               v108 = 0;
-              v55 = [v54 loadKeyMaterialFromKeychain:&v108];
+              v55 = [classC2 loadKeyMaterialFromKeychain:&v108];
               v56 = v108;
 
               if ((v55 & 1) == 0)
               {
-                v81 = [v11 zoneName];
-                v82 = sub_100019104(@"ckkskey", v81);
+                zoneName6 = [dCopy zoneName];
+                v82 = sub_100019104(@"ckkskey", zoneName6);
 
                 if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
                 {
-                  v83 = [v10 classC];
+                  classC3 = [hierarchyCopy classC];
                   *buf = 138412546;
-                  v117 = v83;
+                  v117 = classC3;
                   v118 = 2112;
                   v119 = v56;
                   _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_ERROR, "Error loading classC(%@): %@", buf, 0x16u);
                 }
 
-                if (a6)
+                if (error)
                 {
                   v84 = v56;
-                  *a6 = v56;
+                  *error = v56;
                 }
 
                 v67 = @"unhealthy";
@@ -215,19 +215,19 @@ LABEL_19:
               v105 = v56;
               v106 = v47;
               v107 = v38;
-              v57 = [v10 classA];
-              v58 = [v57 parentKeyUUID];
-              v59 = [v10 tlk];
-              v60 = [v59 uuid];
-              v61 = [v58 isEqualToString:v60];
+              classA5 = [hierarchyCopy classA];
+              parentKeyUUID = [classA5 parentKeyUUID];
+              v59 = [hierarchyCopy tlk];
+              uuid = [v59 uuid];
+              v61 = [parentKeyUUID isEqualToString:uuid];
 
               if (v61)
               {
-                v62 = [v10 classC];
-                v63 = [v62 parentKeyUUID];
-                v64 = [v10 tlk];
-                v65 = [v64 uuid];
-                v66 = [v63 isEqualToString:v65];
+                classC4 = [hierarchyCopy classC];
+                parentKeyUUID2 = [classC4 parentKeyUUID];
+                v64 = [hierarchyCopy tlk];
+                uuid2 = [v64 uuid];
+                v66 = [parentKeyUUID2 isEqualToString:uuid2];
 
                 if (v66)
                 {
@@ -249,8 +249,8 @@ LABEL_72:
                 v102 = [NSDictionary dictionaryWithObjects:&v113 forKeys:&v112 count:1];
                 v87 = [NSError errorWithDomain:@"CKKSServerExtensionErrorDomain" code:9 userInfo:v102];
 
-                v103 = [v11 zoneName];
-                v104 = sub_100019104(@"ckkskey", v103);
+                zoneName7 = [dCopy zoneName];
+                v104 = sub_100019104(@"ckkskey", zoneName7);
 
                 v56 = v105;
                 if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
@@ -262,7 +262,7 @@ LABEL_72:
 
                 v47 = v106;
                 v38 = v107;
-                if (!a6)
+                if (!error)
                 {
 LABEL_69:
                   v67 = @"unhealthy";
@@ -279,8 +279,8 @@ LABEL_69:
                 v86 = [NSDictionary dictionaryWithObjects:&v115 forKeys:&v114 count:1];
                 v87 = [NSError errorWithDomain:@"CKKSServerExtensionErrorDomain" code:9 userInfo:v86];
 
-                v88 = [v11 zoneName];
-                v89 = sub_100019104(@"ckkskey", v88);
+                zoneName8 = [dCopy zoneName];
+                v89 = sub_100019104(@"ckkskey", zoneName8);
 
                 if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
                 {
@@ -292,14 +292,14 @@ LABEL_69:
                 v47 = v106;
                 v38 = v107;
                 v56 = v105;
-                if (!a6)
+                if (!error)
                 {
                   goto LABEL_69;
                 }
               }
 
               v90 = v87;
-              *a6 = v87;
+              *error = v87;
               goto LABEL_69;
             }
           }
@@ -309,19 +309,19 @@ LABEL_69:
           }
         }
 
-        v76 = [v11 zoneName];
-        v77 = sub_100019104(@"ckkskey", v76);
+        zoneName9 = [dCopy zoneName];
+        v77 = sub_100019104(@"ckkskey", zoneName9);
 
         if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v117 = v10;
+          v117 = hierarchyCopy;
           _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_ERROR, "Error examining existing key hierarchy (missing at least one key): %@", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
-          *a6 = [v10 error];
+          *error = [hierarchyCopy error];
         }
 
         v67 = @"unhealthy";
@@ -335,14 +335,14 @@ LABEL_56:
 
     else
     {
-      v26 = [(CKKSProcessReceivedKeysOperation *)self deps];
-      v27 = [v26 lockStateTracker];
-      v28 = [v27 isLockedError:v25];
+      deps4 = [(CKKSProcessReceivedKeysOperation *)self deps];
+      lockStateTracker3 = [deps4 lockStateTracker];
+      v28 = [lockStateTracker3 isLockedError:v25];
 
       if (v28)
       {
-        v29 = [v11 zoneName];
-        v30 = sub_100019104(@"ckkskey", v29);
+        zoneName10 = [dCopy zoneName];
+        v30 = sub_100019104(@"ckkskey", zoneName10);
 
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
@@ -356,8 +356,8 @@ LABEL_56:
       }
     }
 
-    v69 = [v11 zoneName];
-    v70 = sub_100019104(@"ckkskey", v69);
+    zoneName11 = [dCopy zoneName];
+    v70 = sub_100019104(@"ckkskey", zoneName11);
 
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
@@ -366,18 +366,18 @@ LABEL_56:
       _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "Not proceeding due to trust system failure: %@", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       if (v25)
       {
         v71 = v25;
-        *a6 = v25;
+        *error = v25;
       }
 
       else
       {
         v78 = [NSError errorWithDomain:@"CKKSErrorDomain" code:52 description:@"No trust states available"];
-        *a6 = v78;
+        *error = v78;
       }
     }
 
@@ -385,20 +385,20 @@ LABEL_56:
     goto LABEL_55;
   }
 
-  v72 = [v10 currentClassCPointer];
+  currentClassCPointer = [hierarchyCopy currentClassCPointer];
 
-  if (v72)
+  if (currentClassCPointer)
   {
     goto LABEL_12;
   }
 
-  v73 = [v11 zoneName];
-  v74 = sub_100019104(@"ckkskey", v73);
+  zoneName12 = [dCopy zoneName];
+  v74 = sub_100019104(@"ckkskey", zoneName12);
 
   if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v117 = v10;
+    v117 = hierarchyCopy;
     _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_ERROR, "No existing key hierarchy (missing all CKPs): %@", buf, 0xCu);
   }
 
@@ -409,46 +409,46 @@ LABEL_57:
   return v67;
 }
 
-- (id)processRemoteKeys:(id)a3 viewState:(id)a4 currentTrustStates:(id)a5 error:(id *)a6
+- (id)processRemoteKeys:(id)keys viewState:(id)state currentTrustStates:(id)states error:(id *)error
 {
-  v186 = a3;
-  v8 = a4;
-  v183 = a5;
-  v9 = [v8 contextID];
-  v10 = [v8 zoneID];
-  v11 = [v10 zoneName];
-  v12 = sub_100019104(@"ckkskey", v11);
+  keysCopy = keys;
+  stateCopy = state;
+  statesCopy = states;
+  contextID = [stateCopy contextID];
+  zoneID = [stateCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v12 = sub_100019104(@"ckkskey", zoneName);
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v221 = v186;
+    v221 = keysCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "remote keys: %@", buf, 0xCu);
   }
 
-  v13 = [v8 zoneID];
+  zoneID2 = [stateCopy zoneID];
   v216 = 0;
-  v14 = [CKKSCurrentKeyPointer tryFromDatabase:@"tlk" contextID:v9 zoneID:v13 error:&v216];
+  v14 = [CKKSCurrentKeyPointer tryFromDatabase:@"tlk" contextID:contextID zoneID:zoneID2 error:&v216];
   v15 = v216;
 
-  v16 = [v8 zoneID];
+  zoneID3 = [stateCopy zoneID];
   v215 = v15;
-  v184 = [CKKSCurrentKeyPointer tryFromDatabase:@"classA" contextID:v9 zoneID:v16 error:&v215];
+  v184 = [CKKSCurrentKeyPointer tryFromDatabase:@"classA" contextID:contextID zoneID:zoneID3 error:&v215];
   v17 = v215;
 
-  v18 = [v8 zoneID];
+  zoneID4 = [stateCopy zoneID];
   v214 = v17;
-  v189 = [CKKSCurrentKeyPointer tryFromDatabase:@"classC" contextID:v9 zoneID:v18 error:&v214];
+  v189 = [CKKSCurrentKeyPointer tryFromDatabase:@"classC" contextID:contextID zoneID:zoneID4 error:&v214];
   v19 = v214;
 
-  v20 = [v14 currentKeyUUID];
-  v21 = v9;
-  if (v20)
+  currentKeyUUID = [v14 currentKeyUUID];
+  v21 = contextID;
+  if (currentKeyUUID)
   {
-    v22 = [v14 currentKeyUUID];
-    v23 = [v8 zoneID];
+    currentKeyUUID2 = [v14 currentKeyUUID];
+    zoneID5 = [stateCopy zoneID];
     v213 = v19;
-    v188 = [CKKSKey tryFromDatabaseAnyState:v22 contextID:v9 zoneID:v23 error:&v213];
+    v188 = [CKKSKey tryFromDatabaseAnyState:currentKeyUUID2 contextID:contextID zoneID:zoneID5 error:&v213];
     v24 = v213;
 
     v19 = v24;
@@ -462,13 +462,13 @@ LABEL_57:
   v25 = v14;
 
   v26 = v184;
-  v27 = [v184 currentKeyUUID];
-  if (v27)
+  currentKeyUUID3 = [v184 currentKeyUUID];
+  if (currentKeyUUID3)
   {
-    v28 = [v184 currentKeyUUID];
-    v29 = [v8 zoneID];
+    currentKeyUUID4 = [v184 currentKeyUUID];
+    zoneID6 = [stateCopy zoneID];
     v212 = v19;
-    v187 = [CKKSKey tryFromDatabaseAnyState:v28 contextID:v21 zoneID:v29 error:&v212];
+    v187 = [CKKSKey tryFromDatabaseAnyState:currentKeyUUID4 contextID:v21 zoneID:zoneID6 error:&v212];
     v30 = v212;
 
     v19 = v30;
@@ -480,13 +480,13 @@ LABEL_57:
   }
 
   v31 = v189;
-  v32 = [v189 currentKeyUUID];
-  if (v32)
+  currentKeyUUID5 = [v189 currentKeyUUID];
+  if (currentKeyUUID5)
   {
-    v33 = [v189 currentKeyUUID];
-    v34 = [v8 zoneID];
+    currentKeyUUID6 = [v189 currentKeyUUID];
+    zoneID7 = [stateCopy zoneID];
     v211 = v19;
-    v185 = [CKKSKey tryFromDatabaseAnyState:v33 contextID:v21 zoneID:v34 error:&v211];
+    v185 = [CKKSKey tryFromDatabaseAnyState:currentKeyUUID6 contextID:v21 zoneID:zoneID7 error:&v211];
     v35 = v211;
 
     v31 = v189;
@@ -513,30 +513,30 @@ LABEL_57:
     goto LABEL_51;
   }
 
-  v36 = [v25 currentKeyUUID];
-  if (!v36)
+  currentKeyUUID7 = [v25 currentKeyUUID];
+  if (!currentKeyUUID7)
   {
     goto LABEL_51;
   }
 
-  v37 = v36;
-  v38 = [v184 currentKeyUUID];
-  if (!v38)
+  v37 = currentKeyUUID7;
+  currentKeyUUID8 = [v184 currentKeyUUID];
+  if (!currentKeyUUID8)
   {
 
 LABEL_51:
-    v70 = [v8 zoneID];
-    v71 = [v70 zoneName];
-    v72 = sub_100019104(@"ckkskey", v71);
+    zoneID8 = [stateCopy zoneID];
+    zoneName2 = [zoneID8 zoneName];
+    v72 = sub_100019104(@"ckkskey", zoneName2);
 
     if (!os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
     {
 LABEL_54:
 
-      if (a6)
+      if (error)
       {
         v76 = v19;
-        *a6 = v19;
+        *error = v19;
       }
 
       v77 = @"unhealthy";
@@ -564,29 +564,29 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  v39 = v38;
-  v40 = [v31 currentKeyUUID];
+  v39 = currentKeyUUID8;
+  currentKeyUUID9 = [v31 currentKeyUUID];
 
-  if (!v40 || !v188 || !v187 || !v185)
+  if (!currentKeyUUID9 || !v188 || !v187 || !v185)
   {
     goto LABEL_51;
   }
 
-  v180 = v8;
+  v180 = stateCopy;
   v209 = 0u;
   v210 = 0u;
   v207 = 0u;
   v208 = 0u;
-  v41 = v186;
+  v41 = keysCopy;
   v42 = [v41 countByEnumeratingWithState:&v207 objects:v219 count:16];
   if (!v42)
   {
 
 LABEL_66:
-    v8 = v180;
-    v89 = [v180 zoneID];
-    v90 = [v89 zoneName];
-    v72 = sub_100019104(@"ckkskey", v90);
+    stateCopy = v180;
+    zoneID9 = [v180 zoneID];
+    zoneName3 = [zoneID9 zoneName];
+    v72 = sub_100019104(@"ckkskey", zoneName3);
 
     v31 = v189;
     if (!os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
@@ -616,22 +616,22 @@ LABEL_66:
       }
 
       v46 = *(*(&v207 + 1) + 8 * i);
-      v47 = [v46 uuid];
+      uuid = [v46 uuid];
       v48 = v25;
-      v49 = [v25 currentKeyUUID];
-      v50 = [v47 isEqualToString:v49];
+      currentKeyUUID10 = [v25 currentKeyUUID];
+      v50 = [uuid isEqualToString:currentKeyUUID10];
 
       if (v50)
       {
         if (![v46 wrapsSelf])
         {
-          v81 = [v46 parentKeyUUID];
-          v82 = [NSString stringWithFormat:@"current TLK doesn't wrap itself: %@ %@", v46, v81];
+          parentKeyUUID = [v46 parentKeyUUID];
+          v82 = [NSString stringWithFormat:@"current TLK doesn't wrap itself: %@ %@", v46, parentKeyUUID];
           v83 = [NSError errorWithDomain:@"CKKSErrorDomain" code:18 description:v82 underlying:v19];
 
-          v84 = [v180 zoneID];
-          v85 = [v84 zoneName];
-          v86 = sub_100019104(@"ckkskey", v85);
+          zoneID10 = [v180 zoneID];
+          zoneName4 = [zoneID10 zoneName];
+          v86 = sub_100019104(@"ckkskey", zoneName4);
 
           if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
           {
@@ -643,17 +643,17 @@ LABEL_66:
           v21 = v179;
           v25 = v48;
           v26 = v184;
-          if (a6)
+          if (error)
           {
             v87 = v83;
-            *a6 = v83;
+            *error = v83;
           }
 
           v77 = @"unhealthy";
           v88 = @"unhealthy";
 
           v60 = 0;
-          v8 = v180;
+          stateCopy = v180;
           v31 = v189;
           v79 = v190;
           goto LABEL_57;
@@ -686,9 +686,9 @@ LABEL_66:
   v31 = v189;
   if ((v52 & 1) == 0)
   {
-    v91 = [v180 zoneID];
-    v92 = [v91 zoneName];
-    v93 = sub_100019104(@"ckkskey", v92);
+    zoneID11 = [v180 zoneID];
+    zoneName5 = [zoneID11 zoneName];
+    v93 = sub_100019104(@"ckkskey", zoneName5);
 
     if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
     {
@@ -702,10 +702,10 @@ LABEL_66:
     v94 = [NSError errorWithDomain:@"CKKSErrorDomain" code:34 description:@"invalid TLK from CloudKit" underlying:v177];
     v95 = v94;
     v25 = v48;
-    if (a6)
+    if (error)
     {
       v96 = v94;
-      *a6 = v95;
+      *error = v95;
     }
 
     v77 = @"error";
@@ -713,25 +713,25 @@ LABEL_66:
 
     v60 = 0;
     v19 = v177;
-    v8 = v180;
+    stateCopy = v180;
     v79 = v190;
     goto LABEL_57;
   }
 
   v205 = 0;
-  v53 = [v190 tlkMaterialPresentOrRecoverableViaTLKShareForContextID:v179 forTrustStates:v183 error:&v205];
+  v53 = [v190 tlkMaterialPresentOrRecoverableViaTLKShareForContextID:v179 forTrustStates:statesCopy error:&v205];
   v54 = v205;
   v170 = v54;
   if ((v53 & 1) == 0)
   {
     v98 = v54;
-    v99 = [(CKKSProcessReceivedKeysOperation *)self deps];
-    v100 = [v99 lockStateTracker];
-    v101 = [v100 isLockedError:v98];
+    deps = [(CKKSProcessReceivedKeysOperation *)self deps];
+    lockStateTracker = [deps lockStateTracker];
+    v101 = [lockStateTracker isLockedError:v98];
 
-    v102 = [v180 zoneID];
-    v103 = [v102 zoneName];
-    v104 = sub_100019104(@"ckkskey", v103);
+    zoneID12 = [v180 zoneID];
+    zoneName6 = [zoneID12 zoneName];
+    v104 = sub_100019104(@"ckkskey", zoneName6);
 
     v105 = os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT);
     v106 = v98;
@@ -745,11 +745,11 @@ LABEL_66:
         _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "Received a TLK(%@), but keybag appears to be locked. Entering a waiting state.", buf, 0xCu);
       }
 
-      v8 = v180;
-      if (a6)
+      stateCopy = v180;
+      if (error)
       {
         v107 = v106;
-        *a6 = v106;
+        *error = v106;
       }
 
       v77 = @"waitforunlock";
@@ -768,18 +768,18 @@ LABEL_66:
         _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "Received a TLK(%@) which we don't have in the local keychain: %@", buf, 0x16u);
       }
 
-      v110 = [(CKKSProcessReceivedKeysOperation *)self deps];
+      deps2 = [(CKKSProcessReceivedKeysOperation *)self deps];
       v204 = 0;
-      v111 = [v110 considerSelfTrusted:v183 error:&v204];
+      v111 = [deps2 considerSelfTrusted:statesCopy error:&v204];
       v112 = v204;
 
       if (v111)
       {
         v25 = v48;
-        if (a6)
+        if (error)
         {
           v113 = v109;
-          *a6 = v109;
+          *error = v109;
         }
 
         v114 = &off_100344488;
@@ -787,9 +787,9 @@ LABEL_66:
 
       else
       {
-        v139 = [v180 zoneID];
-        v140 = [v139 zoneName];
-        v141 = sub_100019104(@"ckkskey", v140);
+        zoneID13 = [v180 zoneID];
+        zoneName7 = [zoneID13 zoneName];
+        v141 = sub_100019104(@"ckkskey", zoneName7);
 
         if (os_log_type_enabled(v141, OS_LOG_TYPE_DEFAULT))
         {
@@ -798,18 +798,18 @@ LABEL_66:
           _os_log_impl(&_mh_execute_header, v141, OS_LOG_TYPE_DEFAULT, "Not proceeding due to trust system failure: %@", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
           if (v112)
           {
             v142 = v112;
-            *a6 = v112;
+            *error = v112;
           }
 
           else
           {
             v168 = [NSError errorWithDomain:@"CKKSErrorDomain" code:52 description:@"No trust states available"];
-            *a6 = v168;
+            *error = v168;
           }
         }
 
@@ -817,7 +817,7 @@ LABEL_66:
         v25 = v48;
       }
 
-      v8 = v180;
+      stateCopy = v180;
       v77 = *v114;
     }
 
@@ -864,9 +864,9 @@ LABEL_66:
         v176 = v61;
 LABEL_115:
         v31 = v189;
-        v151 = [v180 zoneID];
-        v152 = [v151 zoneName];
-        v153 = sub_100019104(@"ckkskey", v152);
+        zoneID14 = [v180 zoneID];
+        zoneName8 = [zoneID14 zoneName];
+        v153 = sub_100019104(@"ckkskey", zoneName8);
 
         if (os_log_type_enabled(v153, OS_LOG_TYPE_ERROR))
         {
@@ -878,28 +878,28 @@ LABEL_115:
         }
 
         v25 = v48;
-        if (!a6)
+        if (!error)
         {
           v156 = &off_100344510;
-          v8 = v180;
+          stateCopy = v180;
           goto LABEL_144;
         }
 
         v154 = [NSString stringWithFormat:@"orphaned key(%@) in hierarchy", v60];
         v155 = v176;
-        *a6 = [NSError errorWithDomain:@"CKKSErrorDomain" code:33 description:v154 underlying:v176];
+        *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:33 description:v154 underlying:v176];
 
         v156 = &off_100344510;
-        v8 = v180;
+        stateCopy = v180;
 LABEL_145:
         v77 = *v156;
 
         goto LABEL_146;
       }
 
-      v62 = [v60 uuid];
-      v63 = [v190 uuid];
-      v64 = [v62 isEqual:v63];
+      uuid2 = [v60 uuid];
+      uuid3 = [v190 uuid];
+      v64 = [uuid2 isEqual:uuid3];
 
       if ((v64 & 1) == 0)
       {
@@ -916,9 +916,9 @@ LABEL_145:
         v176 = v66;
         if (v66 && (-[CKKSProcessReceivedKeysOperation deps](self, "deps"), v157 = objc_claimAutoreleasedReturnValue(), [v157 lockStateTracker], v158 = objc_claimAutoreleasedReturnValue(), v159 = objc_msgSend(v158, "isLockedError:", v176), v158, v157, v159))
         {
-          v160 = [v180 zoneID];
-          v161 = [v160 zoneName];
-          v162 = sub_100019104(@"ckkskey", v161);
+          zoneID15 = [v180 zoneID];
+          zoneName9 = [zoneID15 zoneName];
+          v162 = sub_100019104(@"ckkskey", zoneName9);
 
           if (os_log_type_enabled(v162, OS_LOG_TYPE_DEFAULT))
           {
@@ -927,11 +927,11 @@ LABEL_145:
             _os_log_impl(&_mh_execute_header, v162, OS_LOG_TYPE_DEFAULT, "Couldn't unwrap new key (%@), but keybag appears to be locked. Entering waitforunlock.", buf, 0xCu);
           }
 
-          if (a6)
+          if (error)
           {
             v155 = v176;
             v163 = v176;
-            *a6 = v176;
+            *error = v176;
             v156 = off_100344480;
             goto LABEL_130;
           }
@@ -940,7 +940,7 @@ LABEL_145:
 LABEL_143:
           v25 = v48;
           v21 = v179;
-          v8 = v180;
+          stateCopy = v180;
           v26 = v184;
           v31 = v189;
 LABEL_144:
@@ -949,9 +949,9 @@ LABEL_144:
 
         else
         {
-          v164 = [v180 zoneID];
-          v165 = [v164 zoneName];
-          v166 = sub_100019104(@"ckkskey", v165);
+          zoneID16 = [v180 zoneID];
+          zoneName10 = [zoneID16 zoneName];
+          v166 = sub_100019104(@"ckkskey", zoneName10);
 
           if (os_log_type_enabled(v166, OS_LOG_TYPE_ERROR))
           {
@@ -962,21 +962,21 @@ LABEL_144:
             _os_log_impl(&_mh_execute_header, v166, OS_LOG_TYPE_ERROR, "new key %@ claims to wrap to TLK, but we can't unwrap it: %@", buf, 0x16u);
           }
 
-          if (!a6)
+          if (!error)
           {
             v156 = &off_100344510;
             goto LABEL_143;
           }
 
           v155 = v176;
-          v167 = [NSString stringWithFormat:@"unwrappable key(%@) in hierarchy: %@", v60, v176];
-          *a6 = [NSError errorWithDomain:@"CKKSErrorDomain" code:33 description:v167 underlying:v177];
+          v176 = [NSString stringWithFormat:@"unwrappable key(%@) in hierarchy: %@", v60, v176];
+          *error = [NSError errorWithDomain:@"CKKSErrorDomain" code:33 description:v176 underlying:v177];
 
           v156 = &off_100344510;
 LABEL_130:
           v25 = v48;
           v21 = v179;
-          v8 = v180;
+          stateCopy = v180;
           v26 = v184;
           v31 = v189;
         }
@@ -984,9 +984,9 @@ LABEL_130:
         goto LABEL_145;
       }
 
-      v67 = [v180 zoneID];
-      v68 = [v67 zoneName];
-      v69 = sub_100019104(@"ckkskey", v68);
+      zoneID17 = [v180 zoneID];
+      zoneName11 = [zoneID17 zoneName];
+      v69 = sub_100019104(@"ckkskey", zoneName11);
 
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
@@ -1034,9 +1034,9 @@ LABEL_86:
 
       v120 = *(*(&v194 + 1) + 8 * v119);
       [v120 setState:@"local"];
-      v121 = [v120 uuid];
-      v122 = [v184 currentKeyUUID];
-      if ([v121 isEqualToString:v122])
+      uuid4 = [v120 uuid];
+      currentKeyUUID11 = [v184 currentKeyUUID];
+      if ([uuid4 isEqualToString:currentKeyUUID11])
       {
 
         goto LABEL_94;
@@ -1075,13 +1075,13 @@ LABEL_94:
       if (v128)
       {
         v143 = v120;
-        v144 = [(CKKSProcessReceivedKeysOperation *)self deps];
-        v145 = [v144 lockStateTracker];
-        v146 = [v145 isLockedError:v128];
+        deps3 = [(CKKSProcessReceivedKeysOperation *)self deps];
+        lockStateTracker2 = [deps3 lockStateTracker];
+        v146 = [lockStateTracker2 isLockedError:v128];
 
-        v147 = [v180 zoneID];
-        v148 = [v147 zoneName];
-        v149 = sub_100019104(@"ckkskey", v148);
+        zoneID18 = [v180 zoneID];
+        zoneName12 = [zoneID18 zoneName];
+        v149 = sub_100019104(@"ckkskey", zoneName12);
 
         v177 = v128;
         if (v146)
@@ -1114,15 +1114,15 @@ LABEL_94:
 
         v25 = v48;
         v31 = v189;
-        if (a6)
+        if (error)
         {
-          *a6 = v177;
+          *error = v177;
         }
 
         v77 = *v150;
 
         v60 = v169;
-        v8 = v180;
+        stateCopy = v180;
         goto LABEL_146;
       }
 
@@ -1150,24 +1150,24 @@ LABEL_94:
 LABEL_99:
   v177 = v116;
 
-  v130 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v131 = [v130 savedTLKNotifier];
+  deps4 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  savedTLKNotifier = [deps4 savedTLKNotifier];
 
-  v132 = [v180 zoneID];
-  v133 = [v132 zoneName];
-  v134 = sub_100019104(@"ckkstlk", v133);
+  zoneID19 = [v180 zoneID];
+  zoneName13 = [zoneID19 zoneName];
+  v134 = sub_100019104(@"ckkstlk", zoneName13);
 
   if (os_log_type_enabled(v134, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v221 = v131;
+    v221 = savedTLKNotifier;
     _os_log_impl(&_mh_execute_header, v134, OS_LOG_TYPE_DEFAULT, "triggering new TLK notification: %@", buf, 0xCu);
   }
 
-  [v131 trigger];
-  v135 = [v180 zoneID];
-  v136 = [v135 zoneName];
-  v137 = sub_100019104(@"ckkskey", v136);
+  [savedTLKNotifier trigger];
+  zoneID20 = [v180 zoneID];
+  zoneName14 = [zoneID20 zoneName];
+  v137 = sub_100019104(@"ckkskey", zoneName14);
 
   if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
   {
@@ -1181,7 +1181,7 @@ LABEL_99:
   v60 = v169;
   v25 = v48;
   v21 = v179;
-  v8 = v180;
+  stateCopy = v180;
   v26 = v184;
   v31 = v189;
 LABEL_146:
@@ -1195,25 +1195,25 @@ LABEL_57:
 
 - (void)main
 {
-  v2 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v49 = [v2 databaseProvider];
+  deps = [(CKKSProcessReceivedKeysOperation *)self deps];
+  databaseProvider = [deps databaseProvider];
 
-  v3 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v48 = [v3 currentTrustStates];
+  deps2 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  currentTrustStates = [deps2 currentTrustStates];
 
   v4 = [AAFAnalyticsEventSecurity alloc];
   v94 = kSecurityRTCFieldNumViews;
-  v5 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v6 = [v5 activeManagedViews];
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 count]);
+  deps3 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  activeManagedViews = [deps3 activeManagedViews];
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activeManagedViews count]);
   v95 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-  v9 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v10 = [v9 activeAccount];
-  v11 = [v10 altDSID];
-  v12 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v13 = [v12 sendMetric];
-  v50 = [v4 initWithCKKSMetrics:v8 altDSID:v11 eventName:kSecurityRTCEventNameProcessReceivedKeys testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:v13];
+  deps4 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  activeAccount = [deps4 activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps5 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  sendMetric = [deps5 sendMetric];
+  v50 = [v4 initWithCKKSMetrics:v8 altDSID:altDSID eventName:kSecurityRTCEventNameProcessReceivedKeys testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:sendMetric];
 
   v83 = 0;
   v84 = &v83;
@@ -1227,8 +1227,8 @@ LABEL_57:
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v14 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  obj = [v14 activeManagedViews];
+  deps6 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  obj = [deps6 activeManagedViews];
 
   v15 = [obj countByEnumeratingWithState:&v75 objects:v93 count:16];
   if (v15)
@@ -1276,17 +1276,17 @@ LABEL_57:
         v54 = v19;
         v57 = &v79;
         v58 = &v69;
-        v20 = v48;
+        v20 = currentTrustStates;
         v55 = v20;
         v59 = v67;
         v60 = &v61;
-        [v49 dispatchSyncWithSQLTransaction:v53];
+        [databaseProvider dispatchSyncWithSQLTransaction:v53];
         v21 = v70[5];
         if (!v21 || [v21 isEqualToString:@"ready"])
         {
-          v22 = [v18 zoneID];
-          v23 = [v22 zoneName];
-          v24 = sub_100019104(@"ckkskey", v23);
+          zoneID = [v18 zoneID];
+          zoneName = [zoneID zoneName];
+          v24 = sub_100019104(@"ckkskey", zoneName);
 
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
@@ -1295,17 +1295,17 @@ LABEL_57:
           }
 
           v25 = v62[5];
-          v26 = [v18 zoneID];
+          zoneID2 = [v18 zoneID];
           v52 = 0;
-          v27 = [(CKKSProcessReceivedKeysOperation *)self checkExistingKeyHierarchy:v25 zoneID:v26 currentTrustStates:v20 error:&v52];
+          v27 = [(CKKSProcessReceivedKeysOperation *)self checkExistingKeyHierarchy:v25 zoneID:zoneID2 currentTrustStates:v20 error:&v52];
           v28 = v52;
           v29 = v70[5];
           v70[5] = v27;
 
           [v19 populateUnderlyingErrorsStartingWithRootError:v28];
-          v30 = [v18 zoneID];
-          v31 = [v30 zoneName];
-          v32 = sub_100019104(@"ckkskey", v31);
+          zoneID3 = [v18 zoneID];
+          zoneName2 = [zoneID3 zoneName];
+          v32 = sub_100019104(@"ckkskey", zoneName2);
 
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
@@ -1334,14 +1334,14 @@ LABEL_57:
     while (v15);
   }
 
-  v34 = [(CKKSProcessReceivedKeysOperation *)self deps];
-  v35 = [v34 activeManagedViews];
-  if ([v35 count])
+  deps7 = [(CKKSProcessReceivedKeysOperation *)self deps];
+  activeManagedViews2 = [deps7 activeManagedViews];
+  if ([activeManagedViews2 count])
   {
     v36 = *(v80 + 6);
-    v37 = [(CKKSProcessReceivedKeysOperation *)self deps];
-    v38 = [v37 activeManagedViews];
-    v39 = [v38 count];
+    deps8 = [(CKKSProcessReceivedKeysOperation *)self deps];
+    activeManagedViews3 = [deps8 activeManagedViews];
+    v39 = [activeManagedViews3 count];
 
     v40 = v36 / v39;
   }
@@ -1361,28 +1361,28 @@ LABEL_57:
   [v50 addMetrics:v43];
 
   [v50 sendMetricWithResult:*(v84 + 24) error:0];
-  v44 = [(CKKSProcessReceivedKeysOperation *)self intendedState];
-  [(CKKSProcessReceivedKeysOperation *)self setNextState:v44];
+  intendedState = [(CKKSProcessReceivedKeysOperation *)self intendedState];
+  [(CKKSProcessReceivedKeysOperation *)self setNextState:intendedState];
 
   _Block_object_dispose(&v79, 8);
   _Block_object_dispose(&v83, 8);
 }
 
-- (CKKSProcessReceivedKeysOperation)initWithDependencies:(id)a3 allowFullRefetchResult:(BOOL)a4 intendedState:(id)a5 errorState:(id)a6
+- (CKKSProcessReceivedKeysOperation)initWithDependencies:(id)dependencies allowFullRefetchResult:(BOOL)result intendedState:(id)state errorState:(id)errorState
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v17.receiver = self;
   v17.super_class = CKKSProcessReceivedKeysOperation;
   v14 = [(CKKSResultOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_deps, a3);
-    v15->_allowFullRefetchResult = a4;
-    objc_storeStrong(&v15->_intendedState, a5);
-    objc_storeStrong(&v15->_nextState, a6);
+    objc_storeStrong(&v14->_deps, dependencies);
+    v15->_allowFullRefetchResult = result;
+    objc_storeStrong(&v15->_intendedState, state);
+    objc_storeStrong(&v15->_nextState, errorState);
   }
 
   return v15;

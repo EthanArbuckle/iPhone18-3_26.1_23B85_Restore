@@ -1,33 +1,33 @@
 @interface NPKProtoPassSyncStateItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addManifestEntry:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addManifestEntry:(id)entry;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassSyncStateItem
 
-- (void)addManifestEntry:(id)a3
+- (void)addManifestEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   manifestEntrys = self->_manifestEntrys;
-  v8 = v4;
+  v8 = entryCopy;
   if (!manifestEntrys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_manifestEntrys;
     self->_manifestEntrys = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     manifestEntrys = self->_manifestEntrys;
   }
 
-  [(NSMutableArray *)manifestEntrys addObject:v4];
+  [(NSMutableArray *)manifestEntrys addObject:entryCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassSyncStateItem;
   v4 = [(NPKProtoPassSyncStateItem *)&v8 description];
-  v5 = [(NPKProtoPassSyncStateItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassSyncStateItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passTypeIdentifier = self->_passTypeIdentifier;
   if (passTypeIdentifier)
   {
-    [v3 setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+    [dictionary setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
   }
 
   serialNumber = self->_serialNumber;
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -111,16 +111,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_passTypeIdentifier)
   {
     [NPKProtoPassSyncStateItem writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_serialNumber)
   {
@@ -175,43 +175,43 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setPassTypeIdentifier:self->_passTypeIdentifier];
-  [v8 setSerialNumber:self->_serialNumber];
+  toCopy = to;
+  [toCopy setPassTypeIdentifier:self->_passTypeIdentifier];
+  [toCopy setSerialNumber:self->_serialNumber];
   if (*&self->_has)
   {
-    *(v8 + 8) = self->_sequenceCounter;
-    *(v8 + 48) |= 1u;
+    *(toCopy + 8) = self->_sequenceCounter;
+    *(toCopy + 48) |= 1u;
   }
 
-  [v8 setManifestHash:self->_manifestHash];
+  [toCopy setManifestHash:self->_manifestHash];
   if ([(NPKProtoPassSyncStateItem *)self manifestEntrysCount])
   {
-    [v8 clearManifestEntrys];
-    v4 = [(NPKProtoPassSyncStateItem *)self manifestEntrysCount];
-    if (v4)
+    [toCopy clearManifestEntrys];
+    manifestEntrysCount = [(NPKProtoPassSyncStateItem *)self manifestEntrysCount];
+    if (manifestEntrysCount)
     {
-      v5 = v4;
+      v5 = manifestEntrysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoPassSyncStateItem *)self manifestEntryAtIndex:i];
-        [v8 addManifestEntry:v7];
+        [toCopy addManifestEntry:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -221,7 +221,7 @@
     *(v5 + 48) |= 1u;
   }
 
-  v10 = [(NSData *)self->_manifestHash copyWithZone:a3];
+  v10 = [(NSData *)self->_manifestHash copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -245,7 +245,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addManifestEntry:v17];
 
         ++v16;
@@ -262,16 +262,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
-  if (passTypeIdentifier | *(v4 + 3))
+  if (passTypeIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)passTypeIdentifier isEqual:?])
     {
@@ -280,7 +280,7 @@
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 5))
+  if (serialNumber | *(equalCopy + 5))
   {
     if (![(NSString *)serialNumber isEqual:?])
     {
@@ -288,16 +288,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_sequenceCounter != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_sequenceCounter != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -305,13 +305,13 @@ LABEL_15:
   }
 
   manifestHash = self->_manifestHash;
-  if (manifestHash | *(v4 + 2) && ![(NSData *)manifestHash isEqual:?])
+  if (manifestHash | *(equalCopy + 2) && ![(NSData *)manifestHash isEqual:?])
   {
     goto LABEL_15;
   }
 
   manifestEntrys = self->_manifestEntrys;
-  if (manifestEntrys | *(v4 + 1))
+  if (manifestEntrys | *(equalCopy + 1))
   {
     v10 = [(NSMutableArray *)manifestEntrys isEqual:?];
   }
@@ -344,27 +344,27 @@ LABEL_16:
   return v6 ^ [(NSMutableArray *)self->_manifestEntrys hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoPassSyncStateItem *)self setPassTypeIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NPKProtoPassSyncStateItem *)self setSerialNumber:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_sequenceCounter = *(v4 + 8);
+    self->_sequenceCounter = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoPassSyncStateItem *)self setManifestHash:?];
   }
@@ -373,7 +373,7 @@ LABEL_16:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,25 +1,25 @@
 @interface LADomainStateBiometry
-- (LADomainStateBiometry)initWithResult:(id)a3;
+- (LADomainStateBiometry)initWithResult:(id)result;
 - (id)description;
 @end
 
 @implementation LADomainStateBiometry
 
-- (LADomainStateBiometry)initWithResult:(id)a3
+- (LADomainStateBiometry)initWithResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v29.receiver = self;
   v29.super_class = LADomainStateBiometry;
   v5 = [(LADomainStateBiometry *)&v29 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AD0D0]];
-    v24 = v4;
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AD0E0]];
+    v8 = [resultCopy objectForKeyedSubscript:*MEMORY[0x1E69AD0D0]];
+    v24 = resultCopy;
+    v9 = [resultCopy objectForKeyedSubscript:*MEMORY[0x1E69AD0E0]];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -41,14 +41,14 @@
 
           v15 = *(*(&v25 + 1) + 8 * i);
           v16 = [v10 objectForKeyedSubscript:v15];
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
 
-          if (v17)
+          if (bOOLValue)
           {
             v5->_biometryType = [v15 integerValue];
             v18 = MEMORY[0x1E69AD258];
             v19 = [v9 objectForKeyedSubscript:v15];
-            v20 = [v18 saltHash:v19 withBundleID:v7];
+            v20 = [v18 saltHash:v19 withBundleID:bundleIdentifier];
 
             stateHash = v5->_stateHash;
             v5->_stateHash = v20;
@@ -61,7 +61,7 @@
       while (v12);
     }
 
-    v4 = v24;
+    resultCopy = v24;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -78,8 +78,8 @@
   v7 = [v5 stringWithFormat:@"biometryType: %@", v6];
   v16[0] = v7;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LADomainStateBiometry *)self stateHash];
-  v10 = [v8 stringWithFormat:@"stateHash: %@", v9];
+  stateHash = [(LADomainStateBiometry *)self stateHash];
+  v10 = [v8 stringWithFormat:@"stateHash: %@", stateHash];
   v16[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v12 = [v11 componentsJoinedByString:@" "];;

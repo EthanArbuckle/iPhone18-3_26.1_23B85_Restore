@@ -1,24 +1,24 @@
 @interface GCSystemGestureXPCProxyClientEndpoint
 - (GCSystemGestureXPCProxyClientEndpoint)init;
-- (GCSystemGestureXPCProxyClientEndpoint)initWithIdentifier:(id)a3;
-- (void)disableSystemGestureForInput:(id)a3;
-- (void)enableSystemGestureForInput:(id)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCSystemGestureXPCProxyClientEndpoint)initWithIdentifier:(id)identifier;
+- (void)disableSystemGestureForInput:(id)input;
+- (void)enableSystemGestureForInput:(id)input;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCSystemGestureXPCProxyClientEndpoint
 
-- (GCSystemGestureXPCProxyClientEndpoint)initWithIdentifier:(id)a3
+- (GCSystemGestureXPCProxyClientEndpoint)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = GCSystemGestureXPCProxyClientEndpoint;
   v5 = [(GCSystemGestureXPCProxyClientEndpoint *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copyWithZone:0];
+    v6 = [identifierCopy copyWithZone:0];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -33,10 +33,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -44,15 +44,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -109,23 +109,23 @@ void __61__GCSystemGestureXPCProxyClientEndpoint_invalidateConnection__block_inv
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCSystemGestureXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCSystemGestureXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
-- (void)disableSystemGestureForInput:(id)a3
+- (void)disableSystemGestureForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__GCSystemGestureXPCProxyClientEndpoint_disableSystemGestureForInput___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(SystemGesture XPC Proxy Client Endpoint) Disable system gesture for input name", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -139,16 +139,16 @@ uint64_t __70__GCSystemGestureXPCProxyClientEndpoint_disableSystemGestureForInpu
   return [*(*(a1 + 32) + 16) disableSystemGestureForInput:*(a1 + 40)];
 }
 
-- (void)enableSystemGestureForInput:(id)a3
+- (void)enableSystemGestureForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__GCSystemGestureXPCProxyClientEndpoint_enableSystemGestureForInput___block_invoke;
   v6[3] = &unk_1E8418C50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(SystemGesture XPC Proxy Client Endpoint) Enable system gesture for input name", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 

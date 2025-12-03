@@ -1,14 +1,14 @@
 @interface MFSoundController
-+ (id)lazyAlertWithType:(int64_t)a3 topic:(id)a4;
-+ (void)_playAlertWithType:(int64_t)a3 topic:(id)a4;
-+ (void)playNewMailSoundStyle:(unint64_t)a3 forAccount:(id)a4;
++ (id)lazyAlertWithType:(int64_t)type topic:(id)topic;
++ (void)_playAlertWithType:(int64_t)type topic:(id)topic;
++ (void)playNewMailSoundStyle:(unint64_t)style forAccount:(id)account;
 @end
 
 @implementation MFSoundController
 
-+ (id)lazyAlertWithType:(int64_t)a3 topic:(id)a4
++ (id)lazyAlertWithType:(int64_t)type topic:(id)topic
 {
-  v5 = a4;
+  topicCopy = topic;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -27,8 +27,8 @@
 
   v7 = v6;
   _Block_object_dispose(&v24, 8);
-  v8 = [[v6 alloc] initWithType:a3];
-  [v8 setTopic:v5];
+  v8 = [[v6 alloc] initWithType:type];
+  [v8 setTopic:topicCopy];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2050000000;
@@ -51,13 +51,13 @@
   v12 = MEMORY[0x1E699B7C8];
   if (v11)
   {
-    v13 = [MEMORY[0x1E699B978] globalAsyncScheduler];
+    globalAsyncScheduler = [MEMORY[0x1E699B978] globalAsyncScheduler];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __45__MFSoundController_lazyAlertWithType_topic___block_invoke;
     v17[3] = &unk_1E8070918;
     v18 = v11;
-    v14 = [v12 onScheduler:v13 lazyFutureWithBlock:v17];
+    v14 = [v12 onScheduler:globalAsyncScheduler lazyFutureWithBlock:v17];
 
     v15 = v18;
   }
@@ -107,11 +107,11 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
   [*(a1 + 32) finishWithResult:v7 error:v6];
 }
 
-+ (void)_playAlertWithType:(int64_t)a3 topic:(id)a4
++ (void)_playAlertWithType:(int64_t)type topic:(id)topic
 {
-  v6 = a4;
-  v7 = [a1 lazyAlertWithType:a3 topic:v6];
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
+  topicCopy = topic;
+  v7 = [self lazyAlertWithType:type topic:topicCopy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -120,7 +120,7 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
   v32[1] = 3221225472;
   v32[2] = __46__MFSoundController__playAlertWithType_topic___block_invoke;
   v32[3] = &unk_1E8070940;
-  v9 = v8;
+  v9 = mEMORY[0x1E69DC668];
   v33 = v9;
   v34 = &v35;
   v10 = [v9 beginBackgroundTaskWithExpirationHandler:v32];
@@ -134,7 +134,7 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
   v30 = v12;
   v31 = &v35;
   v13 = [v11 tokenWithInvocationBlock:v29];
-  v14 = [MEMORY[0x1E699B978] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __46__MFSoundController__playAlertWithType_topic___block_invoke_2;
@@ -143,7 +143,7 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
   v27 = v15;
   v16 = v13;
   v28 = v16;
-  v17 = [v14 afterDelay:v26 performBlock:30.0];
+  v17 = [mainThreadScheduler afterDelay:v26 performBlock:30.0];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2050000000;
@@ -162,16 +162,16 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
 
   v19 = v18;
   _Block_object_dispose(&v40, 8);
-  v20 = [v18 sharedInstance];
-  v21 = [v20 lostModeIsActive];
+  sharedInstance = [v18 sharedInstance];
+  lostModeIsActive = [sharedInstance lostModeIsActive];
 
-  if (v21)
+  if (lostModeIsActive)
   {
     v22 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MFSoundControllerErrorDomain" code:2 userInfo:0];
     v23 = MFLogGeneral();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [(MFSoundController *)v22 _playAlertWithType:a3 topic:v23];
+      [(MFSoundController *)v22 _playAlertWithType:type topic:v23];
     }
   }
 
@@ -182,7 +182,7 @@ void __45__MFSoundController_lazyAlertWithType_topic___block_invoke_2(uint64_t a
     v24[2] = __46__MFSoundController__playAlertWithType_topic___block_invoke_23;
     v24[3] = &unk_1E806C570;
     v25 = v16;
-    [v15 onScheduler:v14 always:v24];
+    [v15 onScheduler:mainThreadScheduler always:v24];
     v22 = v25;
   }
 
@@ -209,21 +209,21 @@ uint64_t __46__MFSoundController__playAlertWithType_topic___block_invoke_2(uint6
   return [v2 invoke];
 }
 
-+ (void)playNewMailSoundStyle:(unint64_t)a3 forAccount:(id)a4
++ (void)playNewMailSoundStyle:(unint64_t)style forAccount:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   v7 = 0;
-  v10 = v6;
-  if (a3 > 2)
+  v10 = accountCopy;
+  if (style > 2)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       v9 = MEMORY[0x1E69ADCE8];
     }
 
     else
     {
-      if (a3 != 3)
+      if (style != 3)
       {
         goto LABEL_12;
       }
@@ -234,13 +234,13 @@ uint64_t __46__MFSoundController__playAlertWithType_topic___block_invoke_2(uint6
 
   else
   {
-    v8 = v6;
-    if (a3 == 1)
+    v8 = accountCopy;
+    if (style == 1)
     {
       goto LABEL_10;
     }
 
-    if (a3 != 2)
+    if (style != 2)
     {
       goto LABEL_12;
     }
@@ -253,7 +253,7 @@ LABEL_10:
   v7 = v8;
   if (v7)
   {
-    [a1 _playAlertWithType:5 topic:v7];
+    [self _playAlertWithType:5 topic:v7];
   }
 
 LABEL_12:

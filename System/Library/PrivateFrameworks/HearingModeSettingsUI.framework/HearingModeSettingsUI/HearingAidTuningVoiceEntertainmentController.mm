@@ -1,19 +1,19 @@
 @interface HearingAidTuningVoiceEntertainmentController
-- (_TtC21HearingModeSettingsUI44HearingAidTuningVoiceEntertainmentController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21HearingModeSettingsUI44HearingAidTuningVoiceEntertainmentController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)hearingBoostEnabled;
 - (id)specifiers;
 - (id)swipeToGainEnabled;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setHearingBoostWithEnabled:(id)a3;
-- (void)setSwipeToGainEnabledWithEnabled:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setHearingBoostWithEnabled:(id)enabled;
+- (void)setSwipeToGainEnabledWithEnabled:(id)enabled;
 - (void)viewDidLoad;
 @end
 
 @implementation HearingAidTuningVoiceEntertainmentController
 
-- (_TtC21HearingModeSettingsUI44HearingAidTuningVoiceEntertainmentController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21HearingModeSettingsUI44HearingAidTuningVoiceEntertainmentController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2520046E0();
     v7 = v6;
@@ -25,19 +25,19 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return HearingAidTuningVoiceEntertainmentController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return HearingAidTuningVoiceEntertainmentController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_251FE028C();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_251FE0B64();
 
   if (v3)
@@ -55,7 +55,7 @@
 
 - (id)hearingBoostEnabled
 {
-  v2 = self;
+  selfCopy = self;
   result = sub_251FDFD60();
   if (result)
   {
@@ -67,9 +67,9 @@
 
     v8 = objc_allocWithZone(MEMORY[0x277CCABB0]);
     LODWORD(v9) = v7;
-    v10 = [v8 initWithFloat_];
+    initWithFloat_ = [v8 initWithFloat_];
 
-    return v10;
+    return initWithFloat_;
   }
 
   else
@@ -80,17 +80,17 @@
   return result;
 }
 
-- (void)setHearingBoostWithEnabled:(id)a3
+- (void)setHearingBoostWithEnabled:(id)enabled
 {
-  v4 = a3;
-  v8 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   v5 = sub_251FDFD60();
   if (v5)
   {
     v6 = v5;
     v7 = sub_252003E60();
 
-    [v4 floatValue];
+    [enabledCopy floatValue];
     sub_252003F40();
   }
 
@@ -102,7 +102,7 @@
 
 - (id)swipeToGainEnabled
 {
-  v2 = self;
+  selfCopy = self;
   result = sub_251FDFD60();
   if (result)
   {
@@ -124,17 +124,17 @@
   return result;
 }
 
-- (void)setSwipeToGainEnabledWithEnabled:(id)a3
+- (void)setSwipeToGainEnabledWithEnabled:(id)enabled
 {
-  v4 = a3;
-  v8 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   v5 = sub_251FDFD60();
   if (v5)
   {
     v6 = v5;
     v7 = sub_252003E60();
 
-    [v4 BOOLValue];
+    [enabledCopy BOOLValue];
     sub_252004050();
   }
 
@@ -144,7 +144,7 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_252003BA0();
   v7 = *(v6 - 8);
@@ -152,9 +152,9 @@
   MEMORY[0x28223BE20](v6, v9);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_252003B70();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_251FE3188(v12);
+  viewCopy = view;
+  selfCopy = self;
+  v14 = sub_251FE3188(viewCopy);
 
   (*(v7 + 8))(v11, v6);
 

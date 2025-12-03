@@ -2,7 +2,7 @@
 + (id)_sharedInstance;
 + (id)pairingID;
 + (id)pairingStorePath;
-+ (id)syncStateDBPathFor:(id)a3;
++ (id)syncStateDBPathFor:(id)for;
 @end
 
 @implementation ABSDatabaseFileManager
@@ -19,14 +19,14 @@
   return v3;
 }
 
-+ (id)syncStateDBPathFor:(id)a3
++ (id)syncStateDBPathFor:(id)for
 {
-  v3 = a3;
-  v4 = [objc_opt_class() pairingStorePath];
-  v5 = v4;
-  if (v4)
+  forCopy = for;
+  pairingStorePath = [objc_opt_class() pairingStorePath];
+  v5 = pairingStorePath;
+  if (pairingStorePath)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"AddressBook"];
+    v6 = [pairingStorePath stringByAppendingPathComponent:@"AddressBook"];
     v7 = +[NSFileManager defaultManager];
     v8 = [v7 fileExistsAtPath:v6];
 
@@ -36,7 +36,7 @@
       [v9 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v10 = [v6 stringByAppendingPathComponent:v3];
+    v10 = [v6 stringByAppendingPathComponent:forCopy];
   }
 
   else

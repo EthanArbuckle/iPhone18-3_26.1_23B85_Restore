@@ -2,8 +2,8 @@
 + (id)sharedLogger;
 - (BOOL)shouldLog;
 - (FMDEventLogger)init;
-- (void)logEvent:(id)a3;
-- (void)logEvent:(id)a3 toFacilitiesNamed:(id)a4;
+- (void)logEvent:(id)event;
+- (void)logEvent:(id)event toFacilitiesNamed:(id)named;
 - (void)reset;
 @end
 
@@ -53,15 +53,15 @@
 
 - (void)reset
 {
-  v3 = [(FMDEventLogger *)self facilitiesDictionary];
-  v2 = [v3 allValues];
-  [v2 enumerateObjectsUsingBlock:&stru_1002CF2B0];
+  facilitiesDictionary = [(FMDEventLogger *)self facilitiesDictionary];
+  allValues = [facilitiesDictionary allValues];
+  [allValues enumerateObjectsUsingBlock:&stru_1002CF2B0];
 }
 
-- (void)logEvent:(id)a3 toFacilitiesNamed:(id)a4
+- (void)logEvent:(id)event toFacilitiesNamed:(id)named
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  namedCopy = named;
   if ([(FMDEventLogger *)self shouldLog])
   {
     v8[0] = _NSConcreteStackBlock;
@@ -69,25 +69,25 @@
     v8[2] = sub_100167B10;
     v8[3] = &unk_1002CF2D8;
     v8[4] = self;
-    v9 = v6;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v9 = eventCopy;
+    [namedCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
-  v4 = a3;
-  v6 = [(FMDEventLogger *)self facilitiesDictionary];
-  v5 = [v6 allKeys];
-  [(FMDEventLogger *)self logEvent:v4 toFacilitiesNamed:v5];
+  eventCopy = event;
+  facilitiesDictionary = [(FMDEventLogger *)self facilitiesDictionary];
+  allKeys = [facilitiesDictionary allKeys];
+  [(FMDEventLogger *)self logEvent:eventCopy toFacilitiesNamed:allKeys];
 }
 
 - (BOOL)shouldLog
 {
   v2 = +[FMSystemInfo sharedInstance];
-  v3 = [v2 isInternalBuild];
+  isInternalBuild = [v2 isInternalBuild];
 
-  return v3;
+  return isInternalBuild;
 }
 
 @end

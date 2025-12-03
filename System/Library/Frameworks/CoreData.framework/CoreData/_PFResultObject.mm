@@ -1,15 +1,15 @@
 @interface _PFResultObject
-- (__CFString)stringFromPtr:(void *)a1;
+- (__CFString)stringFromPtr:(void *)ptr;
 - (__CFString)taggedStringFromPtr:(__CFString *)result withLength:(char *)__s;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
-- (id)valueAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectForKey:(id)key;
+- (id)valueAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation _PFResultObject
 
-- (id)valueAtIndex:(unint64_t)a3
+- (id)valueAtIndex:(unint64_t)index
 {
   v108 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -39,43 +39,43 @@
 
 LABEL_2:
   metadata = parent_buffer->_metadata;
-  v10 = [(NSKnownKeysDictionary *)metadata mapping];
-  if ([(NSKnownKeysMappingStrategy *)v10 length]<= a3)
+  mapping = [(NSKnownKeysDictionary *)metadata mapping];
+  if ([(NSKnownKeysMappingStrategy *)mapping length]<= index)
   {
     goto LABEL_36;
   }
 
   v11 = self + 1;
-  v12 = *(&self[1].super.super.isa + a3);
+  v12 = *(&self[1].super.super.isa + index);
   if (!v12)
   {
     goto LABEL_36;
   }
 
   v13 = 0;
-  if (a3)
+  if (index)
   {
     v14 = self + 1;
-    v15 = a3;
+    indexCopy = index;
     do
     {
       isa = v14->super.super.isa;
       v14 = (v14 + 8);
       v13 += isa;
-      --v15;
+      --indexCopy;
     }
 
-    while (v15);
+    while (indexCopy);
   }
 
-  v100 = [(NSKnownKeysMappingStrategy *)v10 length];
-  v17 = [(NSKnownKeysDictionary *)metadata valueAtIndex:a3];
-  if (a3 >= 6 && self->_sql_entity_id == 16001)
+  v100 = [(NSKnownKeysMappingStrategy *)mapping length];
+  propertyDescription = [(NSKnownKeysDictionary *)metadata valueAtIndex:index];
+  if (index >= 6 && self->_sql_entity_id == 16001)
   {
     if (self[1]._primary_key)
     {
       v18 = vaddvq_s64(vaddq_s64(*&self[1]._cd_rc, *&self[1].super.super.isa));
-      v19 = *((&v11->super.super.isa + 8 * [(NSKnownKeysMappingStrategy *)v10 length]+ v18 + 7) & 0xFFFFFFFFFFFFFFF8);
+      v19 = *((&v11->super.super.isa + 8 * [(NSKnownKeysMappingStrategy *)mapping length]+ v18 + 7) & 0xFFFFFFFFFFFFFFF8);
       v20 = self->_parent_buffer;
       v98 = v12;
       v99 = v5;
@@ -91,7 +91,7 @@ LABEL_2:
 
       v23 = [objc_msgSend(WeakRetained "model")];
       v24 = [_PFPersistentHistoryModel _retainedTombstonesForEntity:v23];
-      v25 = [objc_msgSend(objc_msgSend(v17 "name")];
+      v25 = [objc_msgSend(objc_msgSend(propertyDescription "name")];
       if (v25 < [v24 count])
       {
         v26 = [v24 objectAtIndexedSubscript:v25];
@@ -105,7 +105,7 @@ LABEL_2:
           v27 = 0;
         }
 
-        v17 = [v27 propertyDescription];
+        propertyDescription = [v27 propertyDescription];
       }
 
       v12 = v98;
@@ -121,15 +121,15 @@ LABEL_36:
 
 LABEL_18:
   v28 = ((&v11->super.super.isa + 8 * v100 + v13 + 7) & 0xFFFFFFFFFFFFFFF8);
-  v29 = [v17 _propertyType];
-  if (v29 > 4)
+  _propertyType = [propertyDescription _propertyType];
+  if (_propertyType > 4)
   {
-    if (v29 == 5)
+    if (_propertyType == 5)
     {
-      v41 = [v17 expressionResultType];
-      if (!v41)
+      expressionResultType = [propertyDescription expressionResultType];
+      if (!expressionResultType)
       {
-        [v17 expression];
+        [propertyDescription expression];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -140,15 +140,15 @@ LABEL_18:
       }
 
 LABEL_46:
-      if (v41 > 799)
+      if (expressionResultType > 799)
       {
-        if (v41 <= 1199)
+        if (expressionResultType <= 1199)
         {
-          if (v41 <= 999)
+          if (expressionResultType <= 999)
           {
-            if (v41 != 800)
+            if (expressionResultType != 800)
             {
-              if (v41 != 900)
+              if (expressionResultType != 900)
               {
                 goto LABEL_114;
               }
@@ -162,7 +162,7 @@ LABEL_147:
             goto LABEL_65;
           }
 
-          if (v41 != 1000 && v41 != 1100)
+          if (expressionResultType != 1000 && expressionResultType != 1100)
           {
 LABEL_114:
             v68 = objc_autoreleasePoolPush();
@@ -177,7 +177,7 @@ LABEL_114:
                 if (v71)
                 {
                   *buf = 134217984;
-                  *&buf[4] = v41;
+                  *&buf[4] = expressionResultType;
 LABEL_164:
                   _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: Unsupported type for buffer allocated dictionary: %lu\n", buf, 0xCu);
                 }
@@ -186,12 +186,12 @@ LABEL_164:
               else if (v71)
               {
                 *buf = 134217984;
-                *&buf[4] = v41;
+                *&buf[4] = expressionResultType;
                 goto LABEL_164;
               }
             }
 
-            _NSCoreDataLog_console(1, "Unsupported type for buffer allocated dictionary: %lu", v41);
+            _NSCoreDataLog_console(1, "Unsupported type for buffer allocated dictionary: %lu", expressionResultType);
             objc_autoreleasePoolPop(v68);
             goto LABEL_120;
           }
@@ -204,11 +204,11 @@ LABEL_77:
           }
 
           [v28 setParentObject:self];
-          if (v41 > 1799)
+          if (expressionResultType > 1799)
           {
-            if (v41 == 1800)
+            if (expressionResultType == 1800)
             {
-              v46 = [_PFRoutines retainedDecodeValue:v28 forTransformableAttribute:v17];
+              v46 = [_PFRoutines retainedDecodeValue:v28 forTransformableAttribute:propertyDescription];
               goto LABEL_147;
             }
 
@@ -224,12 +224,12 @@ LABEL_77:
               v66 = 0;
             }
 
-            v67 = [v17 decode:v28 withRegistry:objc_msgSend(objc_msgSend(v66 error:{"persistentStoreCoordinator"), "codableAdapterRegistry"), buf}];
+            v67 = [propertyDescription decode:v28 withRegistry:objc_msgSend(objc_msgSend(v66 error:{"persistentStoreCoordinator"), "codableAdapterRegistry"), buf}];
           }
 
           else
           {
-            if (v41 != 1000)
+            if (expressionResultType != 1000)
             {
               if ([v28 length] != 16)
               {
@@ -242,7 +242,7 @@ LABEL_120:
               goto LABEL_147;
             }
 
-            if (([v17 _isFileBackedFuture] & 1) == 0 && (!objc_msgSend(v17, "_storeBinaryDataExternally") || (*&resultSet->var7 & 2) != 0))
+            if (([propertyDescription _isFileBackedFuture] & 1) == 0 && (!objc_msgSend(propertyDescription, "_storeBinaryDataExternally") || (*&resultSet->var7 & 2) != 0))
             {
               v46 = v28;
               goto LABEL_147;
@@ -262,7 +262,7 @@ LABEL_120:
             if (*[v28 bytes] == 1)
             {
               v78 = [_PFExternalReferenceData alloc];
-              v79 = [v28 bytes];
+              bytes = [v28 bytes];
               v80 = [v28 length];
               if (v66)
               {
@@ -275,7 +275,7 @@ LABEL_120:
               }
 
               v82 = v78;
-              v83 = v79;
+              v83 = bytes;
               v84 = 0;
               v85 = 0;
             }
@@ -289,7 +289,7 @@ LABEL_120:
                 goto LABEL_168;
               }
 
-              v90 = [v28 bytes];
+              bytes2 = [v28 bytes];
               v91 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
               v92 = [objc_msgSend(v66 "externalDataReferencesDirectory")];
               if (v66)
@@ -315,7 +315,7 @@ LABEL_120:
               }
 
               v96 = [_PFExternalReferenceData alloc];
-              v97 = [v28 bytes];
+              bytes3 = [v28 bytes];
               v80 = [v28 length];
               if (v66)
               {
@@ -328,7 +328,7 @@ LABEL_120:
               }
 
               v82 = v96;
-              v83 = v97;
+              v83 = bytes3;
               v84 = v92;
               v85 = v95;
             }
@@ -342,14 +342,14 @@ LABEL_168:
           goto LABEL_152;
         }
 
-        if (v41 > 1999)
+        if (expressionResultType > 1999)
         {
-          if (v41 == 2000)
+          if (expressionResultType == 2000)
           {
             goto LABEL_21;
           }
 
-          if (v41 != 2200)
+          if (expressionResultType != 2200)
           {
             goto LABEL_114;
           }
@@ -357,9 +357,9 @@ LABEL_168:
           goto LABEL_77;
         }
 
-        if (v41 != 1200)
+        if (expressionResultType != 1200)
         {
-          if (v41 != 1800)
+          if (expressionResultType != 1800)
           {
             goto LABEL_114;
           }
@@ -384,16 +384,16 @@ LABEL_143:
         goto LABEL_147;
       }
 
-      if (v41 <= 399)
+      if (expressionResultType <= 399)
       {
-        if (v41 == 100 || v41 == 200)
+        if (expressionResultType == 100 || expressionResultType == 200)
         {
 LABEL_65:
           v47 = [MEMORY[0x1E696AD98] numberWithInt:*v28];
           goto LABEL_123;
         }
 
-        if (v41 != 300)
+        if (expressionResultType != 300)
         {
           goto LABEL_114;
         }
@@ -403,9 +403,9 @@ LABEL_65:
 
       else
       {
-        if (v41 <= 599)
+        if (expressionResultType <= 599)
         {
-          if (v41 == 400)
+          if (expressionResultType == 400)
           {
             if (v12 > 0x1F)
             {
@@ -422,7 +422,7 @@ LABEL_65:
             goto LABEL_143;
           }
 
-          if (v41 != 500)
+          if (expressionResultType != 500)
           {
             goto LABEL_114;
           }
@@ -432,12 +432,12 @@ LABEL_105:
           goto LABEL_123;
         }
 
-        if (v41 == 600)
+        if (expressionResultType == 600)
         {
           goto LABEL_105;
         }
 
-        if (v41 != 700)
+        if (expressionResultType != 700)
         {
           goto LABEL_114;
         }
@@ -458,7 +458,7 @@ LABEL_123:
       goto LABEL_151;
     }
 
-    if (v29 != 6)
+    if (_propertyType != 6)
     {
 LABEL_41:
       v42 = objc_autoreleasePoolPush();
@@ -473,7 +473,7 @@ LABEL_41:
           if (v45)
           {
             *buf = 138412290;
-            *&buf[4] = v17;
+            *&buf[4] = propertyDescription;
 LABEL_166:
             _os_log_error_impl(&dword_18565F000, v44, OS_LOG_TYPE_ERROR, "CoreData: error: Unsupported property type: %@\n", buf, 0xCu);
           }
@@ -482,29 +482,29 @@ LABEL_166:
         else if (v45)
         {
           *buf = 138412290;
-          *&buf[4] = v17;
+          *&buf[4] = propertyDescription;
           goto LABEL_166;
         }
       }
 
-      _NSCoreDataLog_console(1, "Unsupported property type: %@", v17);
+      _NSCoreDataLog_console(1, "Unsupported property type: %@", propertyDescription);
       objc_autoreleasePoolPop(v42);
 LABEL_113:
-      v41 = 0;
+      expressionResultType = 0;
       goto LABEL_114;
     }
 
 LABEL_40:
-    v41 = [v17 attributeType];
+    expressionResultType = [propertyDescription attributeType];
     goto LABEL_46;
   }
 
-  if (v29 == 2)
+  if (_propertyType == 2)
   {
     goto LABEL_40;
   }
 
-  if (v29 != 4)
+  if (_propertyType != 4)
   {
     goto LABEL_41;
   }
@@ -554,12 +554,12 @@ LABEL_122:
     goto LABEL_123;
   }
 
-  v49 = [v35 ancillarySQLModels];
+  ancillarySQLModels = [v35 ancillarySQLModels];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v50 = [v49 countByEnumeratingWithState:&v101 objects:buf count:16];
+  v50 = [ancillarySQLModels countByEnumeratingWithState:&v101 objects:buf count:16];
   if (!v50)
   {
     goto LABEL_97;
@@ -574,10 +574,10 @@ LABEL_122:
     {
       if (*v102 != v52)
       {
-        objc_enumerationMutation(v49);
+        objc_enumerationMutation(ancillarySQLModels);
       }
 
-      v54 = [v49 objectForKey:*(*(&v101 + 1) + 8 * v53)];
+      v54 = [ancillarySQLModels objectForKey:*(*(&v101 + 1) + 8 * v53)];
       if (v54)
       {
         if (v30 <= v54[15])
@@ -608,7 +608,7 @@ LABEL_93:
     }
 
     while (v51 != v53);
-    v57 = [v49 countByEnumeratingWithState:&v101 objects:buf count:16];
+    v57 = [ancillarySQLModels countByEnumeratingWithState:&v101 objects:buf count:16];
     v51 = v57;
   }
 
@@ -737,9 +737,9 @@ LABEL_11:
   return result;
 }
 
-- (__CFString)stringFromPtr:(void *)a1
+- (__CFString)stringFromPtr:(void *)ptr
 {
-  if (!a1)
+  if (!ptr)
   {
     return 0;
   }
@@ -753,20 +753,20 @@ LABEL_11:
       object_setClass(v2, v4);
     }
 
-    v2[1] = a1;
+    v2[1] = ptr;
     return v2;
   }
 
   v6 = +[_PFResultUniString bufferOffset];
   v7 = *(v2 + 4);
-  v2[1] = a1;
-  v8 = a1;
+  v2[1] = ptr;
+  ptrCopy = ptr;
   v9 = CFStringCreateWithBytesNoCopy(0, v2 + v6, v7, 0x8000100u, 0, +[_PFResultUniString cfDeallocator]);
 
   return v9;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   parent_buffer = self->_parent_buffer;
   if (parent_buffer)
@@ -779,22 +779,22 @@ LABEL_11:
     metadata = 0;
   }
 
-  v6 = [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)metadata mapping] indexForKey:a3];
+  v6 = [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)metadata mapping] indexForKey:key];
 
   return [(_PFResultObject *)self valueAtIndex:v6];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (self)
   {
-    v8 = self;
-    if (!a3->var0)
+    selfCopy = self;
+    if (!state->var0)
     {
-      a3->var2 = self;
+      state->var2 = self;
     }
 
-    a3->var1 = a4;
+    state->var1 = objects;
     v9 = *(self + 8);
     if (v9)
     {
@@ -806,28 +806,28 @@ LABEL_11:
       v10 = 0;
     }
 
-    v11 = [v10 mapping];
-    v12 = [v11 length];
-    v13 = [v11 keys];
+    mapping = [v10 mapping];
+    v12 = [mapping length];
+    keys = [mapping keys];
     self = 0;
-    var0 = a3->var0;
-    if (a5 && var0 < v12)
+    var0 = state->var0;
+    if (count && var0 < v12)
     {
       self = 0;
       do
       {
-        if (*(v8 + 40 + 8 * var0))
+        if (*(selfCopy + 40 + 8 * var0))
         {
-          a4[self++] = *(v13 + 8 * var0);
+          objects[self++] = *(keys + 8 * var0);
         }
 
         ++var0;
       }
 
-      while (var0 < v12 && self < a5);
+      while (var0 < v12 && self < count);
     }
 
-    a3->var0 = var0;
+    state->var0 = var0;
   }
 
   return self;
@@ -847,7 +847,7 @@ LABEL_11:
     metadata = 0;
   }
 
-  v6 = [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)metadata mapping] keys];
+  keys = [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)metadata mapping] keys];
   v7 = self->_parent_buffer;
   if (v7)
   {
@@ -859,7 +859,7 @@ LABEL_11:
     v8 = 0;
   }
 
-  v9 = [(_PFResultObjectKeyEnumerator *)v3 initWithArray:v6 forTarget:self withReferenceValues:&self[1] andRange:0, [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)v8 mapping] length]];
+  v9 = [(_PFResultObjectKeyEnumerator *)v3 initWithArray:keys forTarget:self withReferenceValues:&self[1] andRange:0, [(NSKnownKeysMappingStrategy *)[(NSKnownKeysDictionary *)v8 mapping] length]];
 
   return v9;
 }

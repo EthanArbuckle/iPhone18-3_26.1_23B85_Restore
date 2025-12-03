@@ -1,25 +1,25 @@
 @interface MRDAVReconnaissanceSession
-- (MRDAVReconnaissanceSession)initWithRouteUID:(id)a3;
-- (void)_concludeSearchWithRoute:(id)a3;
+- (MRDAVReconnaissanceSession)initWithRouteUID:(id)d;
+- (void)_concludeSearchWithRoute:(id)route;
 - (void)_endSearch;
-- (void)_routingDataSourcePickableRoutesDidChange:(id)a3;
-- (void)_timeoutTimerFired:(id)a3;
-- (void)beginSearchWithTimeout:(double)a3 completion:(id)a4;
+- (void)_routingDataSourcePickableRoutesDidChange:(id)change;
+- (void)_timeoutTimerFired:(id)fired;
+- (void)beginSearchWithTimeout:(double)timeout completion:(id)completion;
 - (void)cancelSearch;
 - (void)dealloc;
 @end
 
 @implementation MRDAVReconnaissanceSession
 
-- (MRDAVReconnaissanceSession)initWithRouteUID:(id)a3
+- (MRDAVReconnaissanceSession)initWithRouteUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MRDAVReconnaissanceSession;
   v5 = [(MRDAVReconnaissanceSession *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     routeUID = v5->_routeUID;
     v5->_routeUID = v6;
 
@@ -46,9 +46,9 @@
   [(MRDAVReconnaissanceSession *)&v4 dealloc];
 }
 
-- (void)beginSearchWithTimeout:(double)a3 completion:(id)a4
+- (void)beginSearchWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_searchInProgress)
   {
     [(MRDAVReconnaissanceSession *)self cancelSearch];
@@ -58,14 +58,14 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[ReconnaissanceSession] Beginning search with timeout %f", &v9, 0xCu);
   }
 
   self->_searchInProgress = 1;
-  self->_timeoutInterval = a3;
-  [(MRDAVReconnaissanceSession *)self setCallback:v6];
-  v8 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timeoutTimerFired:" selector:0 userInfo:0 repeats:a3];
+  self->_timeoutInterval = timeout;
+  [(MRDAVReconnaissanceSession *)self setCallback:completionCopy];
+  v8 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timeoutTimerFired:" selector:0 userInfo:0 repeats:timeout];
   [(MRDAVReconnaissanceSession *)self setTimeoutTimer:v8];
 
   [(MRDAVRoutingDataSource *)self->_routingDataSource setDiscoveryMode:3];
@@ -79,24 +79,24 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[ReconnaissanceSession] Cancelling search for session %{public}@", &v7, 0xCu);
     }
 
-    v4 = [(MRDAVReconnaissanceSession *)self callback];
+    callback = [(MRDAVReconnaissanceSession *)self callback];
 
-    if (v4)
+    if (callback)
     {
       Error = MRMediaRemoteCreateError();
-      v6 = [(MRDAVReconnaissanceSession *)self callback];
-      (v6)[2](v6, 0, Error);
+      callback2 = [(MRDAVReconnaissanceSession *)self callback];
+      (callback2)[2](callback2, 0, Error);
     }
 
     [(MRDAVReconnaissanceSession *)self _endSearch];
   }
 }
 
-- (void)_routingDataSourcePickableRoutesDidChange:(id)a3
+- (void)_routingDataSourcePickableRoutesDidChange:(id)change
 {
   if (self->_searchInProgress)
   {
@@ -155,7 +155,7 @@ LABEL_14:
   }
 }
 
-- (void)_timeoutTimerFired:(id)a3
+- (void)_timeoutTimerFired:(id)fired
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -166,35 +166,35 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[ReconnaissanceSession] Session timed out after %f seconds", &v9, 0xCu);
   }
 
-  v6 = [(MRDAVReconnaissanceSession *)self callback];
+  callback = [(MRDAVReconnaissanceSession *)self callback];
 
-  if (v6)
+  if (callback)
   {
     Error = MRMediaRemoteCreateError();
-    v8 = [(MRDAVReconnaissanceSession *)self callback];
-    (v8)[2](v8, 0, Error);
+    callback2 = [(MRDAVReconnaissanceSession *)self callback];
+    (callback2)[2](callback2, 0, Error);
   }
 
   [(MRDAVReconnaissanceSession *)self _endSearch];
 }
 
-- (void)_concludeSearchWithRoute:(id)a3
+- (void)_concludeSearchWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = routeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[ReconnaissanceSession] Found route matching query: %@", &v8, 0xCu);
   }
 
-  v6 = [(MRDAVReconnaissanceSession *)self callback];
+  callback = [(MRDAVReconnaissanceSession *)self callback];
 
-  if (v6)
+  if (callback)
   {
-    v7 = [(MRDAVReconnaissanceSession *)self callback];
-    (v7)[2](v7, v4, 0);
+    callback2 = [(MRDAVReconnaissanceSession *)self callback];
+    (callback2)[2](callback2, routeCopy, 0);
   }
 
   [(MRDAVReconnaissanceSession *)self _endSearch];
@@ -204,8 +204,8 @@ LABEL_14:
 {
   if (self->_searchInProgress)
   {
-    v3 = [(MRDAVReconnaissanceSession *)self timeoutTimer];
-    [v3 invalidate];
+    timeoutTimer = [(MRDAVReconnaissanceSession *)self timeoutTimer];
+    [timeoutTimer invalidate];
 
     [(MRDAVReconnaissanceSession *)self setTimeoutTimer:0];
     [(MRDAVRoutingDataSource *)self->_routingDataSource setDiscoveryMode:0];

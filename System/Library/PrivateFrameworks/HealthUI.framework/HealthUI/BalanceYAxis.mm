@@ -1,15 +1,15 @@
 @interface BalanceYAxis
-- (_TtC8HealthUI12BalanceYAxis)initWithConfiguration:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
+- (_TtC8HealthUI12BalanceYAxis)initWithConfiguration:(id)configuration;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation BalanceYAxis
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = self;
-  v6 = a3;
-  v7 = sub_1C3CFA794(a3);
+  selfCopy = self;
+  rangeCopy = range;
+  v7 = sub_1C3CFA794(range);
 
   if (v7)
   {
@@ -25,7 +25,7 @@
   return v8;
 }
 
-- (_TtC8HealthUI12BalanceYAxis)initWithConfiguration:(id)a3
+- (_TtC8HealthUI12BalanceYAxis)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

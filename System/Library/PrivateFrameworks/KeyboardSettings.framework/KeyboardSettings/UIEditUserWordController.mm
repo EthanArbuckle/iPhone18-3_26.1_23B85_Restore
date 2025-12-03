@@ -1,6 +1,6 @@
 @interface UIEditUserWordController
-- (UIEditUserWordController)initWithText:(id)a3;
-- (UIEditUserWordController)initWithText:(id)a3 andShortcut:(id)a4;
+- (UIEditUserWordController)initWithText:(id)text;
+- (UIEditUserWordController)initWithText:(id)text andShortcut:(id)shortcut;
 - (void)_dismiss;
 - (void)dealloc;
 - (void)viewDidLoad;
@@ -8,7 +8,7 @@
 
 @implementation UIEditUserWordController
 
-- (UIEditUserWordController)initWithText:(id)a3
+- (UIEditUserWordController)initWithText:(id)text
 {
   v6.receiver = self;
   v6.super_class = UIEditUserWordController;
@@ -16,13 +16,13 @@
   if (v4)
   {
     [(KSEditUserWordController *)v4 setDictionaryController:objc_alloc_init(KSUserWordsManager)];
-    [(KSEditUserWordController *)v4 setTarget:a3];
+    [(KSEditUserWordController *)v4 setTarget:text];
   }
 
   return v4;
 }
 
-- (UIEditUserWordController)initWithText:(id)a3 andShortcut:(id)a4
+- (UIEditUserWordController)initWithText:(id)text andShortcut:(id)shortcut
 {
   v8.receiver = self;
   v8.super_class = UIEditUserWordController;
@@ -30,8 +30,8 @@
   if (v6)
   {
     [(KSEditUserWordController *)v6 setDictionaryController:objc_alloc_init(KSUserWordsManager)];
-    [(KSEditUserWordController *)v6 setTarget:a3];
-    [(KSEditUserWordController *)v6 setShortcut:a4];
+    [(KSEditUserWordController *)v6 setTarget:text];
+    [(KSEditUserWordController *)v6 setShortcut:shortcut];
   }
 
   return v6;
@@ -76,9 +76,9 @@
 
   else
   {
-    v3 = [(UIEditUserWordController *)self parentViewController];
+    parentViewController = [(UIEditUserWordController *)self parentViewController];
 
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    [parentViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

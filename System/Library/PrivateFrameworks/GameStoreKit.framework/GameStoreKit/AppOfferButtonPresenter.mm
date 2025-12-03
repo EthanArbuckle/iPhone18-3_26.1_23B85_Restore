@@ -1,5 +1,5 @@
 @interface AppOfferButtonPresenter
-- (void)isEnabledDidChange:(id)a3;
+- (void)isEnabledDidChange:(id)change;
 - (void)offerButtonTapped;
 @end
 
@@ -11,7 +11,7 @@
   sub_24F0E4550();
 }
 
-- (void)isEnabledDidChange:(id)a3
+- (void)isEnabledDidChange:(id)change
 {
   v3 = sub_24F91EB58();
   v4 = *(v3 - 8);

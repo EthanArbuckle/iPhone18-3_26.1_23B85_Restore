@@ -8,34 +8,34 @@
 
 - (id)ls_cleanForPluginQuery
 {
-  v2 = [a1 length];
-  if (v2)
+  selfCopy = [self length];
+  if (selfCopy)
   {
-    v3 = [a1 characterAtIndex:0];
+    v3 = [self characterAtIndex:0];
     if (v3 == 61)
     {
-      v2 = [a1 substringFromIndex:1];
+      selfCopy = [self substringFromIndex:1];
     }
 
     else
     {
       v4 = v3;
-      v5 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-      LODWORD(v4) = [v5 characterIsMember:v4];
+      alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+      LODWORD(v4) = [alphanumericCharacterSet characterIsMember:v4];
 
       if (v4)
       {
-        v2 = a1;
+        selfCopy = self;
       }
 
       else
       {
-        v2 = 0;
+        selfCopy = 0;
       }
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)ls_matchesStringForPluginQuery:()LSPluginQueryAdditions
@@ -47,13 +47,13 @@
     if ([v4 hasPrefix:@"<>"])
     {
       v6 = [v4 substringFromIndex:2];
-      v7 = [(__CFString *)a1 compare:v6 options:64]== 0;
+      v7 = [(__CFString *)self compare:v6 options:64]== 0;
     }
 
     else if ([v4 hasPrefix:@"<="])
     {
       v6 = [v4 substringFromIndex:2];
-      v7 = [(__CFString *)a1 compare:v6 options:64]== 1;
+      v7 = [(__CFString *)self compare:v6 options:64]== 1;
     }
 
     else
@@ -63,25 +63,25 @@
         if ([v4 hasPrefix:@"="])
         {
           v6 = [v4 substringFromIndex:1];
-          v12 = [(__CFString *)a1 compare:v6 options:64]== 0;
+          v12 = [(__CFString *)self compare:v6 options:64]== 0;
         }
 
         else if ([v4 hasPrefix:@"<"])
         {
           v6 = [v4 substringFromIndex:1];
-          v12 = [(__CFString *)a1 compare:v6 options:64]== -1;
+          v12 = [(__CFString *)self compare:v6 options:64]== -1;
         }
 
         else
         {
           if (![v4 hasPrefix:@">"])
           {
-            v8 = [(__CFString *)a1 compare:v4 options:64]== 0;
+            v8 = [(__CFString *)self compare:v4 options:64]== 0;
             goto LABEL_20;
           }
 
           v6 = [v4 substringFromIndex:1];
-          v12 = [(__CFString *)a1 compare:v6 options:64]== 1;
+          v12 = [(__CFString *)self compare:v6 options:64]== 1;
         }
 
         v8 = v12;
@@ -89,7 +89,7 @@
       }
 
       v6 = [v4 substringFromIndex:2];
-      v7 = [(__CFString *)a1 compare:v6 options:64]== -1;
+      v7 = [(__CFString *)self compare:v6 options:64]== -1;
     }
 
     v8 = !v7;
@@ -100,7 +100,7 @@ LABEL_19:
 
   if ([v4 hasPrefix:@"?UT-CONFORMS:"])
   {
-    v5 = UTTypeConformsTo(a1, [v4 substringFromIndex:13]);
+    v5 = UTTypeConformsTo(self, [v4 substringFromIndex:13]);
 LABEL_8:
     v8 = v5 != 0;
     goto LABEL_20;
@@ -108,7 +108,7 @@ LABEL_8:
 
   if ([v4 hasPrefix:@"?UT-IS:"])
   {
-    v5 = UTTypeConformsTo([v4 substringFromIndex:7], a1);
+    v5 = UTTypeConformsTo([v4 substringFromIndex:7], self);
     goto LABEL_8;
   }
 
@@ -136,7 +136,7 @@ LABEL_20:
   v14 = 0;
   if (_NSIsNSString())
   {
-    v5 = [a1 ls_matchesStringForPluginQuery:v4];
+    v5 = [self ls_matchesStringForPluginQuery:v4];
     *(v12 + 24) = v5;
   }
 
@@ -147,7 +147,7 @@ LABEL_20:
     v8[2] = __61__NSString_LSPluginQueryAdditions__ls_matchesForPluginQuery___block_invoke;
     v8[3] = &unk_1E6A1D748;
     v10 = &v11;
-    v8[4] = a1;
+    v8[4] = self;
     v9 = v4;
     [v9 enumerateObjectsUsingBlock:v8];
   }

@@ -1,20 +1,20 @@
 @interface ASPeriodicUpdateManager
-- (ASPeriodicUpdateManager)initWithIsWatch:(BOOL)a3;
+- (ASPeriodicUpdateManager)initWithIsWatch:(BOOL)watch;
 - (ASPeriodicUpdateManagerSecureCloudDelegate)secureCloudDelegate;
-- (void)_queue_handleFetchError:(id)a3 activity:(id)a4;
-- (void)_queue_performUpdateForActivity:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)addProvider:(id)a3;
+- (void)_queue_handleFetchError:(id)error activity:(id)activity;
+- (void)_queue_performUpdateForActivity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)addProvider:(id)provider;
 - (void)beginPeriodicUpdates;
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4;
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status;
 - (void)endPeriodicUpdates;
-- (void)removeProvider:(id)a3;
-- (void)requestImmediateUpdateWithCloudKitGroup:(id)a3 completion:(id)a4;
+- (void)removeProvider:(id)provider;
+- (void)requestImmediateUpdateWithCloudKitGroup:(id)group completion:(id)completion;
 @end
 
 @implementation ASPeriodicUpdateManager
 
-- (ASPeriodicUpdateManager)initWithIsWatch:(BOOL)a3
+- (ASPeriodicUpdateManager)initWithIsWatch:(BOOL)watch
 {
   v12.receiver = self;
   v12.super_class = ASPeriodicUpdateManager;
@@ -29,60 +29,60 @@
     providerQueue = v4->_providerQueue;
     v4->_providerQueue = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     providers = v4->_providers;
-    v4->_providers = v9;
+    v4->_providers = weakObjectsHashTable;
 
     v4->_hasRegisteredForUpdates = 0;
-    v4->_isWatch = a3;
+    v4->_isWatch = watch;
   }
 
   return v4;
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   providerQueue = self->_providerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__ASPeriodicUpdateManager_addProvider___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(providerQueue, v7);
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   providerQueue = self->_providerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ASPeriodicUpdateManager_removeProvider___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(providerQueue, v7);
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 activityDataManager];
-  objc_storeWeak(&self->_activityDataManager, v5);
+  readyCopy = ready;
+  activityDataManager = [readyCopy activityDataManager];
+  objc_storeWeak(&self->_activityDataManager, activityDataManager);
 
-  v6 = [v4 cloudKitManager];
-  objc_storeWeak(&self->_cloudKitManager, v6);
+  cloudKitManager = [readyCopy cloudKitManager];
+  objc_storeWeak(&self->_cloudKitManager, cloudKitManager);
 
-  v7 = [v4 friendListManager];
-  objc_storeWeak(&self->_friendListManager, v7);
+  friendListManager = [readyCopy friendListManager];
+  objc_storeWeak(&self->_friendListManager, friendListManager);
 
-  v8 = [v4 relationshipManager];
+  relationshipManager = [readyCopy relationshipManager];
 
-  objc_storeWeak(&self->_relationshipManager, v8);
+  objc_storeWeak(&self->_relationshipManager, relationshipManager);
   WeakRetained = objc_loadWeakRetained(&self->_cloudKitManager);
   [WeakRetained addObserver:self];
 }
@@ -287,20 +287,20 @@ void __45__ASPeriodicUpdateManager_endPeriodicUpdates__block_invoke(uint64_t a1)
   }
 }
 
-- (void)requestImmediateUpdateWithCloudKitGroup:(id)a3 completion:(id)a4
+- (void)requestImmediateUpdateWithCloudKitGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_completion___block_invoke;
   block[3] = &unk_278C4BA30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -317,17 +317,17 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
   return [*(a1 + 32) _queue_performUpdateForActivity:0 cloudKitGroup:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_queue_performUpdateForActivity:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)_queue_performUpdateForActivity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup_completion___block_invoke;
   v86[3] = &unk_278C4C178;
-  v11 = v10;
+  v11 = completionCopy;
   v87 = v11;
   v12 = MEMORY[0x23EF0EB00](v86);
   ASLoggingInitialize();
@@ -343,9 +343,9 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
   [WeakRetained loadLocalActivityDataIfNeeded];
 
   v16 = objc_loadWeakRetained(&self->_cloudKitManager);
-  v17 = [v16 allObserversReady];
+  allObserversReady = [v16 allObserversReady];
 
-  if (v17)
+  if (allObserversReady)
   {
     if (self->_isPushInProgress || self->_isSecureCloudPushInProgress)
     {
@@ -364,17 +364,17 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
     else
     {
       v20 = objc_loadWeakRetained(&self->_friendListManager);
-      v21 = [v20 hasLegacyFriendsToShareWith];
+      hasLegacyFriendsToShareWith = [v20 hasLegacyFriendsToShareWith];
 
       if (ASSecureCloudEnabled())
       {
         v22 = objc_loadWeakRetained(&self->_friendListManager);
-        v41 = [v22 hasSecureCloudFriendsToShareWith];
+        hasSecureCloudFriendsToShareWith = [v22 hasSecureCloudFriendsToShareWith];
       }
 
       else
       {
-        v41 = 0;
+        hasSecureCloudFriendsToShareWith = 0;
       }
 
       v23 = dispatch_group_create();
@@ -408,12 +408,12 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
       v70[3] = __Block_byref_object_copy__4;
       v70[4] = __Block_byref_object_dispose__4;
       v71 = 0;
-      v24 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v25 = [v24 isStandalonePhoneFitnessMode];
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      isStandalonePhoneFitnessMode = [mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode];
 
-      if ((self->_isWatch | v25))
+      if ((self->_isWatch | isStandalonePhoneFitnessMode))
       {
-        if (v21)
+        if (hasLegacyFriendsToShareWith)
         {
           ASLoggingInitialize();
           v26 = *v13;
@@ -431,8 +431,8 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
           block[2] = __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup_completion___block_invoke_315;
           block[3] = &unk_278C4C2B8;
           block[4] = self;
-          v64 = v8;
-          v65 = v9;
+          v64 = activityCopy;
+          v65 = groupCopy;
           v67 = v84;
           v68 = buf;
           v66 = v23;
@@ -450,7 +450,7 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
           }
         }
 
-        if ((ASSecureCloudEnabled() & v41) == 1)
+        if ((ASSecureCloudEnabled() & hasSecureCloudFriendsToShareWith) == 1)
         {
           ASLoggingInitialize();
           v29 = *v13;
@@ -468,8 +468,8 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
           v57[2] = __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup_completion___block_invoke_319;
           v57[3] = &unk_278C4C2B8;
           v57[4] = self;
-          v58 = v9;
-          v59 = v8;
+          v58 = groupCopy;
+          v59 = activityCopy;
           v61 = v72;
           v62 = v70;
           v60 = v23;
@@ -489,7 +489,7 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
       }
 
       self->_hasQueuedPush = 0;
-      if ((self->_isWatch & ~v25 & 1) == 0 && ((v21 ^ 1) & 1) == 0)
+      if ((self->_isWatch & ~isStandalonePhoneFitnessMode & 1) == 0 && ((hasLegacyFriendsToShareWith ^ 1) & 1) == 0)
       {
         ASLoggingInitialize();
         v32 = *v13;
@@ -506,11 +506,11 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
         v54[2] = __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup_completion___block_invoke_322;
         v54[3] = &unk_278C4C308;
         v55 = v23;
-        v56 = self;
-        [v33 updateRelationshipsForCurrentFeatureSupportWithActivity:v8 cloudKitGroup:v9 completion:v54];
+        selfCopy = self;
+        [v33 updateRelationshipsForCurrentFeatureSupportWithActivity:activityCopy cloudKitGroup:groupCopy completion:v54];
       }
 
-      if ((v21 | v41))
+      if ((hasLegacyFriendsToShareWith | hasSecureCloudFriendsToShareWith))
       {
         ASLoggingInitialize();
         v34 = *v13;
@@ -539,7 +539,7 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
         v52 = v82;
         v53 = v74;
         v51 = v23;
-        [v36 fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:v35 priority:2 activity:v8 group:v9 completion:v50];
+        [v36 fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:v35 priority:2 activity:activityCopy group:groupCopy completion:v50];
       }
 
       serialQueue = self->_serialQueue;
@@ -549,11 +549,11 @@ uint64_t __78__ASPeriodicUpdateManager_requestImmediateUpdateWithCloudKitGroup_c
       v42[3] = &unk_278C4C380;
       v42[4] = self;
       v46 = v74;
-      v43 = v8;
+      v43 = activityCopy;
       v47 = buf;
       v48 = v84;
       v49 = v82;
-      v44 = v9;
+      v44 = groupCopy;
       v45 = v12;
       dispatch_group_notify(v23, serialQueue, v42);
       if (!self->_isWatch || ([MEMORY[0x277CCDD30] sharedBehavior], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "tinkerModeEnabled"), v38, v39))
@@ -1021,16 +1021,16 @@ void __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_handleFetchError:(id)a3 activity:(id)a4
+- (void)_queue_handleFetchError:(id)error activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  activityCopy = activity;
   dispatch_assert_queue_V2(self->_serialQueue);
   if (ASSecureCloudEnabled())
   {
     WeakRetained = objc_loadWeakRetained(&self->_secureCloudDelegate);
 
-    if (v6)
+    if (errorCopy)
     {
       if (WeakRetained)
       {
@@ -1042,8 +1042,8 @@ void __84__ASPeriodicUpdateManager__queue_performUpdateForActivity_cloudKitGroup
         v12[2] = __60__ASPeriodicUpdateManager__queue_handleFetchError_activity___block_invoke;
         v12[3] = &unk_278C4BB48;
         v12[4] = self;
-        v13 = v6;
-        v14 = v7;
+        v13 = errorCopy;
+        v14 = activityCopy;
         v15 = v9;
         v11 = v9;
         dispatch_async(providerQueue, v12);
@@ -1067,7 +1067,7 @@ void __60__ASPeriodicUpdateManager__queue_handleFetchError_activity___block_invo
   [WeakRetained periodicUpdateManager:v3 fetchDidFailWithError:v4 activity:v5 completion:v6];
 }
 
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status
 {
   v10 = *MEMORY[0x277D85DE8];
   ASLoggingInitialize();
@@ -1075,13 +1075,13 @@ void __60__ASPeriodicUpdateManager__queue_handleFetchError_activity___block_invo
   if (os_log_type_enabled(*MEMORY[0x277CE9000], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a4;
+    statusCopy = status;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "PeriodicUpdateManager account status did change to %ld", &v8, 0xCu);
   }
 
-  if ((a4 - 2) >= 3 && a4)
+  if ((status - 2) >= 3 && status)
   {
-    if (a4 == 1)
+    if (status == 1)
     {
       [(ASPeriodicUpdateManager *)self beginPeriodicUpdates];
     }

@@ -1,15 +1,15 @@
 @interface SXOEmbedVideoResponse
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3;
++ (id)jsonPropertyNameForObjCPropertyName:(id)name;
 - (CGSize)size;
 @end
 
 @implementation SXOEmbedVideoResponse
 
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3
++ (id)jsonPropertyNameForObjCPropertyName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if ([(__CFString *)v3 isEqualToString:@"HTML"])
+  nameCopy = name;
+  v4 = nameCopy;
+  if ([(__CFString *)nameCopy isEqualToString:@"HTML"])
   {
 
     v4 = @"html";

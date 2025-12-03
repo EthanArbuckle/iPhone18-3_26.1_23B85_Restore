@@ -1,7 +1,7 @@
 @interface PKProximitySetupLiaison
-- (PKProximitySetupLiaison)initWithStartTransferAuthorization:(id)a3 endTransferAuthorization:(id)a4 fetchMessageSession:(id)a5;
+- (PKProximitySetupLiaison)initWithStartTransferAuthorization:(id)authorization endTransferAuthorization:(id)transferAuthorization fetchMessageSession:(id)session;
 - (void)endTransferAuthorization;
-- (void)fetchMessageSessionWithCompletion:(id)a3;
+- (void)fetchMessageSessionWithCompletion:(id)completion;
 - (void)startTransferAuthorization;
 @end
 
@@ -15,25 +15,25 @@ void __87__PKProximitySetupLiaison_initWithStartTransferAuthorization_endTransfe
   (a2)[2](v4, 0, v5);
 }
 
-- (PKProximitySetupLiaison)initWithStartTransferAuthorization:(id)a3 endTransferAuthorization:(id)a4 fetchMessageSession:(id)a5
+- (PKProximitySetupLiaison)initWithStartTransferAuthorization:(id)authorization endTransferAuthorization:(id)transferAuthorization fetchMessageSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authorizationCopy = authorization;
+  transferAuthorizationCopy = transferAuthorization;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = PKProximitySetupLiaison;
   v11 = [(PKProximitySetupLiaison *)&v19 init];
   if (v11)
   {
-    v12 = _Block_copy(v8);
+    v12 = _Block_copy(authorizationCopy);
     startTransferAuthorization = v11->_startTransferAuthorization;
     v11->_startTransferAuthorization = v12;
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(transferAuthorizationCopy);
     endTransferAuthorization = v11->_endTransferAuthorization;
     v11->_endTransferAuthorization = v14;
 
-    v16 = _Block_copy(v10);
+    v16 = _Block_copy(sessionCopy);
     fetchMessageSession = v11->_fetchMessageSession;
     v11->_fetchMessageSession = v16;
   }
@@ -65,10 +65,10 @@ void __87__PKProximitySetupLiaison_initWithStartTransferAuthorization_endTransfe
   (*(self->_endTransferAuthorization + 2))();
 }
 
-- (void)fetchMessageSessionWithCompletion:(id)a3
+- (void)fetchMessageSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject(0x2AuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -84,7 +84,7 @@ void __87__PKProximitySetupLiaison_initWithStartTransferAuthorization_endTransfe
     v7[2] = __61__PKProximitySetupLiaison_fetchMessageSessionWithCompletion___block_invoke;
     v7[3] = &unk_1E79DA668;
     objc_copyWeak(&v9, buf);
-    v8 = v4;
+    v8 = completionCopy;
     fetchMessageSession[2](fetchMessageSession, v7);
 
     objc_destroyWeak(&v9);

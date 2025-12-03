@@ -1,17 +1,17 @@
 @interface CNFMLFindMyLocateSession
 - (CNFMLFindMyLocateSession)init;
-- (void)sendFriendshipOfferTo:(id)a3 end:(int64_t)a4 isFromGroup:(BOOL)a5 completion:(id)a6;
+- (void)sendFriendshipOfferTo:(id)to end:(int64_t)end isFromGroup:(BOOL)group completion:(id)completion;
 @end
 
 @implementation CNFMLFindMyLocateSession
 
-- (void)sendFriendshipOfferTo:(id)a3 end:(int64_t)a4 isFromGroup:(BOOL)a5 completion:(id)a6
+- (void)sendFriendshipOfferTo:(id)to end:(int64_t)end isFromGroup:(BOOL)group completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(CNFMLFindMyLocateSession *)self session];
-  [v12 sendFriendshipOfferTo:v11 end:a4 isFromGroup:v6 completion:v10];
+  groupCopy = group;
+  completionCopy = completion;
+  toCopy = to;
+  session = [(CNFMLFindMyLocateSession *)self session];
+  [session sendFriendshipOfferTo:toCopy end:end isFromGroup:groupCopy completion:completionCopy];
 }
 
 - (CNFMLFindMyLocateSession)init

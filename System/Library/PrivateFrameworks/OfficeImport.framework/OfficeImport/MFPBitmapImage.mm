@@ -1,23 +1,23 @@
 @interface MFPBitmapImage
 - (CGSize)pixelSize;
 - (CGSize)pointSize;
-- (MFPBitmapImage)initWithBitmapData:(id)a3;
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 unit:(int)a5 effect:(id)a6;
+- (MFPBitmapImage)initWithBitmapData:(id)data;
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect unit:(int)unit effect:(id)effect;
 @end
 
 @implementation MFPBitmapImage
 
-- (MFPBitmapImage)initWithBitmapData:(id)a3
+- (MFPBitmapImage)initWithBitmapData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = MFPBitmapImage;
   v6 = [(MFPBitmapImage *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mBitmapData, a3);
-    v8 = [[OITSUImage alloc] initWithData:v5];
+    objc_storeStrong(&v6->mBitmapData, data);
+    v8 = [[OITSUImage alloc] initWithData:dataCopy];
     mPhoneBitmapImage = v7->mPhoneBitmapImage;
     v7->mPhoneBitmapImage = v8;
 
@@ -31,17 +31,17 @@
   return v7;
 }
 
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 unit:(int)a5 effect:(id)a6
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect unit:(int)unit effect:(id)effect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  [MFPGraphics unitsPerInch:*&a5, a6];
+  height = fromRect.size.height;
+  width = fromRect.size.width;
+  y = fromRect.origin.y;
+  x = fromRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  [MFPGraphics unitsPerInch:*&unit, effect];
   if ((v15 / 72.0) == 0.0)
   {
     v20 = self->mPointSize.width / self->mPixelSize.width;

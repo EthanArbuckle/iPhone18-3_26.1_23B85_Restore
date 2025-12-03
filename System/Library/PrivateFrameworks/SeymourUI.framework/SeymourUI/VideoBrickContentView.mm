@@ -1,10 +1,10 @@
 @interface VideoBrickContentView
-- (_TtC9SeymourUI21VideoBrickContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI21VideoBrickContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VideoBrickContentView
 
-- (_TtC9SeymourUI21VideoBrickContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI21VideoBrickContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

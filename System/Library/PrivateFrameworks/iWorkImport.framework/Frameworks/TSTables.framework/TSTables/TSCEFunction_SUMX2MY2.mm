@@ -1,39 +1,39 @@
 @interface TSCEFunction_SUMX2MY2
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_SUMX2MY2
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v134[0] = 0;
-  v10 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v8, v9, a3, a4, 0, 1, v134);
+  v10 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v8, v9, context, spec, 0, 1, v134);
   v11 = v134[0];
   if (v11)
   {
     v16 = v11;
-    a4 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v11, v14, v15);
+    spec = objc_msgSend_raiseErrorOrConvert_(context, v12, v11, v14, v15);
     goto LABEL_39;
   }
 
   v118 = objc_msgSend_count(v10, v12, v13, v14, v15);
-  v17 = *(*a5 + 8);
+  v17 = *(*arguments + 8);
   v133 = 0;
-  v19 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v17, v18, a3, a4, 1, 1, &v133);
+  v19 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v17, v18, context, spec, 1, 1, &v133);
   v20 = v133;
   if (v20)
   {
     v16 = v20;
-    a4 = objc_msgSend_raiseErrorOrConvert_(a3, v21, v20, v23, v24);
+    spec = objc_msgSend_raiseErrorOrConvert_(context, v21, v20, v23, v24);
     goto LABEL_38;
   }
 
   if (v118 != objc_msgSend_count(v19, v21, v22, v23, v24))
   {
-    v29 = objc_msgSend_functionName(a4, v25, v26, v27, v28);
+    v29 = objc_msgSend_functionName(spec, v25, v26, v27, v28);
     v113 = objc_msgSend_differentNumberOfElementsErrorForFunctionName_(TSCEError, v88, v29, v89, v90);
-    a4 = objc_msgSend_raiseErrorOrConvert_(a3, v91, v113, v92, v93);
+    spec = objc_msgSend_raiseErrorOrConvert_(context, v91, v113, v92, v93);
     v16 = 0;
     goto LABEL_37;
   }
@@ -42,10 +42,10 @@
   v30 = [TSCENumberValue alloc];
   TSUDecimal::operator=();
   v113 = objc_msgSend_initWithDecimal_(v30, v31, v127, v32, v33);
-  v34 = a3;
-  v39 = v34;
-  v127[0] = v34;
-  v127[1] = a4;
+  contextCopy = context;
+  v39 = contextCopy;
+  v127[0] = contextCopy;
+  v127[1] = spec;
   v128 = 0;
   v129[0] = 0;
   *(v129 + 7) = 0;
@@ -58,7 +58,7 @@
     goto LABEL_34;
   }
 
-  v111 = a4;
+  specCopy = spec;
   v116 = v29;
   v117 = v19;
   v108 = v17;
@@ -66,7 +66,7 @@
   v16 = 0;
   v40 = 0;
   v41 = 1;
-  v114 = v34;
+  v114 = contextCopy;
   v115 = v10;
   do
   {
@@ -81,7 +81,7 @@
       {
         v59 = objc_msgSend_raiseErrorOrConvert_(v39, v54, v49, v56, v57);
 LABEL_13:
-        a4 = v59;
+        spec = v59;
         v60 = v41;
 LABEL_14:
         v61 = 0;
@@ -115,7 +115,7 @@ LABEL_18:
 
     if (v16)
     {
-      a4 = objc_msgSend_raiseErrorOrConvert_(v39, v73, v16, v74, v75);
+      spec = objc_msgSend_raiseErrorOrConvert_(v39, v73, v16, v74, v75);
 
       v60 = 0;
       goto LABEL_14;
@@ -131,17 +131,17 @@ LABEL_18:
 
     v122 = v80;
     v106 = v79;
-    v82 = objc_msgSend_subtract_functionSpec_outError_(v110, v81, v79, v111, &v122);
+    v82 = objc_msgSend_subtract_functionSpec_outError_(v110, v81, v79, specCopy, &v122);
     v83 = v122;
 
     v105 = v82;
     v121 = v83;
-    v68 = objc_msgSend_add_functionSpec_outError_(v116, v84, v82, v111, &v121);
+    v68 = objc_msgSend_add_functionSpec_outError_(v116, v84, v82, specCopy, &v121);
     v16 = v121;
 
     if (v16)
     {
-      a4 = objc_msgSend_raiseErrorOrConvert_(v39, v85, v16, v86, v87);
+      spec = objc_msgSend_raiseErrorOrConvert_(v39, v85, v16, v86, v87);
     }
 
     v61 = 0;
@@ -178,11 +178,11 @@ LABEL_19:
     v17 = v108;
     v8 = v109;
     v19 = v117;
-    a4 = v111;
+    spec = specCopy;
 LABEL_34:
-    v94 = objc_msgSend_functionName(a4, v35, v36, v37, v38);
+    v94 = objc_msgSend_functionName(spec, v35, v36, v37, v38);
     v97 = objc_msgSend_noSuitableArgumentsFoundErrorForFunctionName_requiredType_(TSCEError, v95, v94, 5, v96);
-    a4 = objc_msgSend_raiseErrorOrConvert_(v39, v98, v97, v99, v100);
+    spec = objc_msgSend_raiseErrorOrConvert_(v39, v98, v97, v99, v100);
   }
 
   else
@@ -202,7 +202,7 @@ LABEL_34:
     TSCEFormat::TSCEFormat(&v120, &v119);
     objc_msgSend_setFormat_(v116, v101, &v120, v102, v103);
     v29 = v116;
-    a4 = v29;
+    spec = v29;
   }
 
 LABEL_36:
@@ -212,7 +212,7 @@ LABEL_38:
 
 LABEL_39:
 
-  return a4;
+  return spec;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface SBMenuBarHeaderContainerView
-- (SBMenuBarHeaderContainerView)initWithMenuHeaderViews:(id)a3 contentHeight:(double)a4;
+- (SBMenuBarHeaderContainerView)initWithMenuHeaderViews:(id)views contentHeight:(double)height;
 - (double)contentWidth;
-- (void)appendOverflowMenuView:(id)a3 fittingMaximumContentWidth:(double)a4;
-- (void)prependMenuView:(id)a3;
+- (void)appendOverflowMenuView:(id)view fittingMaximumContentWidth:(double)width;
+- (void)prependMenuView:(id)view;
 @end
 
 @implementation SBMenuBarHeaderContainerView
 
-- (SBMenuBarHeaderContainerView)initWithMenuHeaderViews:(id)a3 contentHeight:(double)a4
+- (SBMenuBarHeaderContainerView)initWithMenuHeaderViews:(id)views contentHeight:(double)height
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewsCopy = views;
   v42.receiver = self;
   v42.super_class = SBMenuBarHeaderContainerView;
   v7 = [(SBMenuBarHeaderContainerView *)&v42 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v7)
   {
-    v37 = v6;
-    v8 = [v6 mutableCopy];
+    v37 = viewsCopy;
+    v8 = [viewsCopy mutableCopy];
     menuHeaderViews = v7->_menuHeaderViews;
     v7->_menuHeaderViews = v8;
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     trailingConstraints = v7->_trailingConstraints;
-    v7->_trailingConstraints = v10;
+    v7->_trailingConstraints = array;
 
-    v7->_contentHeight = a4;
+    v7->_contentHeight = height;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -54,9 +54,9 @@
       while (v14);
     }
 
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [(SBMenuBarHeaderContainerView *)v7 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:v7->_contentHeight];
+    array2 = [MEMORY[0x277CBEB18] array];
+    heightAnchor = [(SBMenuBarHeaderContainerView *)v7 heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:v7->_contentHeight];
     [v19 setActive:1];
 
     if ([(NSMutableArray *)v7->_menuHeaderViews count])
@@ -82,9 +82,9 @@
           if (v23)
           {
 LABEL_18:
-            v26 = [v21 leadingAnchor];
-            v27 = [(SBMenuBarHeaderContainerView *)v7 leadingAnchor];
-            v25 = [v26 constraintEqualToAnchor:v27];
+            leadingAnchor = [v21 leadingAnchor];
+            leadingAnchor2 = [(SBMenuBarHeaderContainerView *)v7 leadingAnchor];
+            v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
             goto LABEL_19;
           }
@@ -101,7 +101,7 @@ LABEL_18:
 
         v25 = 0;
 LABEL_19:
-        v28 = [v21 trailingAnchor];
+        trailingAnchor = [v21 trailingAnchor];
         if (v24)
         {
           [v24 leadingAnchor];
@@ -112,31 +112,31 @@ LABEL_19:
           [(SBMenuBarHeaderContainerView *)v7 trailingAnchor];
         }
         v29 = ;
-        v30 = [v28 constraintEqualToAnchor:v29];
+        v30 = [trailingAnchor constraintEqualToAnchor:v29];
 
-        v31 = [v21 centerYAnchor];
-        v32 = [(SBMenuBarHeaderContainerView *)v7 centerYAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32];
-        [v17 addObject:v33];
+        centerYAnchor = [v21 centerYAnchor];
+        centerYAnchor2 = [(SBMenuBarHeaderContainerView *)v7 centerYAnchor];
+        v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+        [array2 addObject:v33];
 
-        v34 = [v21 heightAnchor];
-        v35 = [v34 constraintEqualToConstant:v7->_contentHeight];
-        [v17 addObject:v35];
+        heightAnchor2 = [v21 heightAnchor];
+        v35 = [heightAnchor2 constraintEqualToConstant:v7->_contentHeight];
+        [array2 addObject:v35];
 
         if (v25)
         {
-          [v17 addObject:v25];
+          [array2 addObject:v25];
           objc_storeStrong(&v7->_leadingEdgeConstraint, v25);
         }
 
-        [v17 addObject:v30];
+        [array2 addObject:v30];
         [(NSMutableArray *)v7->_trailingConstraints addObject:v30];
       }
     }
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v17];
+    [MEMORY[0x277CCAAD0] activateConstraints:array2];
 
-    v6 = v37;
+    viewsCopy = v37;
   }
 
   return v7;
@@ -163,34 +163,34 @@ uint64_t __44__SBMenuBarHeaderContainerView_contentWidth__block_invoke(uint64_t 
   return [v4 numberWithDouble:v7 + v9];
 }
 
-- (void)prependMenuView:(id)a3
+- (void)prependMenuView:(id)view
 {
   v22[4] = *MEMORY[0x277D85DE8];
   menuHeaderViews = self->_menuHeaderViews;
-  v5 = a3;
-  v6 = [(NSMutableArray *)menuHeaderViews firstObject];
-  [(NSMutableArray *)self->_menuHeaderViews insertObject:v5 atIndex:0];
-  [(SBMenuBarHeaderContainerView *)self addSubview:v5];
+  viewCopy = view;
+  firstObject = [(NSMutableArray *)menuHeaderViews firstObject];
+  [(NSMutableArray *)self->_menuHeaderViews insertObject:viewCopy atIndex:0];
+  [(SBMenuBarHeaderContainerView *)self addSubview:viewCopy];
   [(NSLayoutConstraint *)self->_leadingEdgeConstraint setActive:0];
-  v7 = [v5 leadingAnchor];
-  v8 = [(SBMenuBarHeaderContainerView *)self leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(SBMenuBarHeaderContainerView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   leadingEdgeConstraint = self->_leadingEdgeConstraint;
   self->_leadingEdgeConstraint = v9;
 
-  v11 = [v5 trailingAnchor];
-  v12 = [v6 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [viewCopy trailingAnchor];
+  leadingAnchor3 = [firstObject leadingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
 
   [(NSMutableArray *)self->_trailingConstraints insertObject:v13 atIndex:0];
   v14 = MEMORY[0x277CCAAD0];
-  v15 = [v5 centerYAnchor];
-  v16 = [(SBMenuBarHeaderContainerView *)self centerYAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerYAnchor = [viewCopy centerYAnchor];
+  centerYAnchor2 = [(SBMenuBarHeaderContainerView *)self centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[0] = v17;
-  v18 = [v5 heightAnchor];
+  heightAnchor = [viewCopy heightAnchor];
 
-  v19 = [v18 constraintEqualToConstant:self->_contentHeight];
+  v19 = [heightAnchor constraintEqualToConstant:self->_contentHeight];
   v20 = self->_leadingEdgeConstraint;
   v22[1] = v19;
   v22[2] = v20;
@@ -199,26 +199,26 @@ uint64_t __44__SBMenuBarHeaderContainerView_contentWidth__block_invoke(uint64_t 
   [v14 activateConstraints:v21];
 }
 
-- (void)appendOverflowMenuView:(id)a3 fittingMaximumContentWidth:(double)a4
+- (void)appendOverflowMenuView:(id)view fittingMaximumContentWidth:(double)width
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   [(SBMenuBarHeaderContainerView *)self contentWidth];
   v8 = v7;
-  [v6 bounds];
+  [viewCopy bounds];
   v10 = v8 + v9;
-  v41 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  while (v10 > a4)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  while (v10 > width)
   {
     if (![(NSMutableArray *)self->_menuHeaderViews count])
     {
       break;
     }
 
-    v12 = [(NSMutableArray *)self->_menuHeaderViews lastObject];
+    lastObject = [(NSMutableArray *)self->_menuHeaderViews lastObject];
     v13 = objc_opt_class();
-    v14 = v12;
+    v14 = lastObject;
     if (v13)
     {
       if (objc_opt_isKindOfClass())
@@ -245,20 +245,20 @@ uint64_t __44__SBMenuBarHeaderContainerView_contentWidth__block_invoke(uint64_t 
     }
 
     [(NSMutableArray *)self->_menuHeaderViews removeLastObject];
-    v17 = [(NSMutableArray *)self->_trailingConstraints lastObject];
-    [v11 addObject:v17];
+    lastObject2 = [(NSMutableArray *)self->_trailingConstraints lastObject];
+    [array2 addObject:lastObject2];
 
     [(NSMutableArray *)self->_trailingConstraints removeLastObject];
     if ([v16 type] == 2)
     {
-      v18 = [v16 overflowMenus];
-      [v41 addObjectsFromArray:v18];
+      overflowMenus = [v16 overflowMenus];
+      [array addObjectsFromArray:overflowMenus];
     }
 
     else
     {
-      v18 = [v16 mainMenu];
-      [v41 insertObject:v18 atIndex:0];
+      overflowMenus = [v16 mainMenu];
+      [array insertObject:overflowMenus atIndex:0];
     }
 
     [v16 removeFromSuperview];
@@ -266,48 +266,48 @@ uint64_t __44__SBMenuBarHeaderContainerView_contentWidth__block_invoke(uint64_t 
     v10 = v10 - v19;
   }
 
-  v20 = [(NSMutableArray *)self->_menuHeaderViews lastObject];
-  [(NSMutableArray *)self->_menuHeaderViews addObject:v6];
-  [(SBMenuBarHeaderContainerView *)self addSubview:v6];
+  lastObject3 = [(NSMutableArray *)self->_menuHeaderViews lastObject];
+  [(NSMutableArray *)self->_menuHeaderViews addObject:viewCopy];
+  [(SBMenuBarHeaderContainerView *)self addSubview:viewCopy];
   if ([(NSMutableArray *)self->_trailingConstraints count])
   {
-    v21 = [(NSMutableArray *)self->_trailingConstraints lastObject];
-    [v11 addObject:v21];
+    lastObject4 = [(NSMutableArray *)self->_trailingConstraints lastObject];
+    [array2 addObject:lastObject4];
 
     [(NSMutableArray *)self->_trailingConstraints removeLastObject];
   }
 
   v22 = MEMORY[0x277CBEB18];
-  v23 = [v6 trailingAnchor];
-  v24 = [(SBMenuBarHeaderContainerView *)self trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(SBMenuBarHeaderContainerView *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26 = [v22 arrayWithObject:v25];
 
-  if (v20)
+  if (lastObject3)
   {
-    v27 = [v20 trailingAnchor];
-    v28 = [v6 leadingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    trailingAnchor3 = [lastObject3 trailingAnchor];
+    leadingAnchor = [viewCopy leadingAnchor];
+    v29 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor];
     [v26 addObject:v29];
   }
 
   [(NSMutableArray *)self->_trailingConstraints addObjectsFromArray:v26];
-  v40 = v20;
+  v40 = lastObject3;
   v30 = MEMORY[0x277CCAAD0];
-  v31 = [v6 centerYAnchor];
-  v32 = [(SBMenuBarHeaderContainerView *)self centerYAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  centerYAnchor = [viewCopy centerYAnchor];
+  centerYAnchor2 = [(SBMenuBarHeaderContainerView *)self centerYAnchor];
+  v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v42[0] = v33;
-  [v6 heightAnchor];
-  v34 = v38 = v6;
+  [viewCopy heightAnchor];
+  v34 = v38 = viewCopy;
   v35 = [v34 constraintEqualToConstant:self->_contentHeight];
   v42[1] = v35;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
   v37 = [v26 arrayByAddingObjectsFromArray:v36];
   [v30 activateConstraints:v37];
 
-  [MEMORY[0x277CCAAD0] deactivateConstraints:v11];
-  [v38 setOverflowMenus:v41];
+  [MEMORY[0x277CCAAD0] deactivateConstraints:array2];
+  [v38 setOverflowMenus:array];
 }
 
 - (void)appendOverflowMenuView:(uint64_t)a1 fittingMaximumContentWidth:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

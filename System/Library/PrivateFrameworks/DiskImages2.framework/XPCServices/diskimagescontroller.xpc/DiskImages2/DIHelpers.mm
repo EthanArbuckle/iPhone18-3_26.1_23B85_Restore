@@ -1,44 +1,44 @@
 @interface DIHelpers
-+ (BOOL)executeWithPath:(id)a3 arguments:(id)a4 error:(id *)a5;
-+ (id)copyDevicePathWithStatfs:(statfs *)a3;
-+ (id)stringWithImageFormat:(int64_t)a3;
-+ (unint64_t)numBlocksWithSizeStr:(id)a3 blockSize:(unsigned int)a4;
-+ (unsigned)getBlockSizeFromStr:(id)a3 error:(id *)a4;
++ (BOOL)executeWithPath:(id)path arguments:(id)arguments error:(id *)error;
++ (id)copyDevicePathWithStatfs:(statfs *)statfs;
++ (id)stringWithImageFormat:(int64_t)format;
++ (unint64_t)numBlocksWithSizeStr:(id)str blockSize:(unsigned int)size;
++ (unsigned)getBlockSizeFromStr:(id)str error:(id *)error;
 @end
 
 @implementation DIHelpers
 
-+ (id)stringWithImageFormat:(int64_t)a3
++ (id)stringWithImageFormat:(int64_t)format
 {
-  if ((a3 - 1) > 8)
+  if ((format - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1002290B0[a3 - 1];
+    return off_1002290B0[format - 1];
   }
 }
 
-+ (unint64_t)numBlocksWithSizeStr:(id)a3 blockSize:(unsigned int)a4
++ (unint64_t)numBlocksWithSizeStr:(id)str blockSize:(unsigned int)size
 {
-  v5 = a3;
+  strCopy = str;
   v17 = 0;
-  v6 = [v5 lowercaseString];
-  v7 = [v6 characterAtIndex:{objc_msgSend(v5, "length") - 1}];
+  lowercaseString = [strCopy lowercaseString];
+  v7 = [lowercaseString characterAtIndex:{objc_msgSend(strCopy, "length") - 1}];
 
   if (v7 <= 106)
   {
     if (v7 == 98)
     {
-      v8 = 1;
+      sizeCopy = 1;
       goto LABEL_12;
     }
 
     if (v7 == 103)
     {
-      v8 = 0x40000000;
+      sizeCopy = 0x40000000;
       goto LABEL_12;
     }
   }
@@ -48,17 +48,17 @@
     switch(v7)
     {
       case 'k':
-        v8 = 1024;
+        sizeCopy = 1024;
         goto LABEL_12;
       case 'm':
-        v8 = 0x100000;
+        sizeCopy = 0x100000;
         goto LABEL_12;
       case 't':
-        v8 = 0x10000000000;
+        sizeCopy = 0x10000000000;
 LABEL_12:
-        v9 = [v5 substringToIndex:{objc_msgSend(v5, "length") - 1}];
+        v9 = [strCopy substringToIndex:{objc_msgSend(strCopy, "length") - 1}];
 
-        v5 = v9;
+        strCopy = v9;
         goto LABEL_13;
     }
   }
@@ -72,15 +72,15 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v8 = a4;
+  sizeCopy = size;
 LABEL_13:
-  v10 = [v5 UTF8String];
-  v11 = strtod(v10, &v17);
-  v12 = (v17 - v10);
+  uTF8String = [strCopy UTF8String];
+  v11 = strtod(uTF8String, &v17);
+  v12 = (v17 - uTF8String);
   v13 = 0;
-  if (v12 == [v5 length] && v11 > 0.0)
+  if (v12 == [strCopy length] && v11 > 0.0)
   {
-    v13 = (vcvtpd_u64_f64(v11 * v8) + a4 - 1) / a4;
+    v13 = (vcvtpd_u64_f64(v11 * sizeCopy) + size - 1) / size;
   }
 
 LABEL_16:
@@ -88,21 +88,21 @@ LABEL_16:
   return v13;
 }
 
-+ (BOOL)executeWithPath:(id)a3 arguments:(id)a4 error:(id *)a5
++ (BOOL)executeWithPath:(id)path arguments:(id)arguments error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [NSURL fileURLWithPath:v7];
-  v10 = [NSTask launchedTaskWithExecutableURL:v9 arguments:v8 error:a5 terminationHandler:0];
+  pathCopy = path;
+  argumentsCopy = arguments;
+  v9 = [NSURL fileURLWithPath:pathCopy];
+  v10 = [NSTask launchedTaskWithExecutableURL:v9 arguments:argumentsCopy error:error terminationHandler:0];
 
   if (v10)
   {
     [v10 waitUntilExit];
     if ([v10 terminationStatus])
     {
-      v11 = [v7 lastPathComponent];
-      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ failed with error code %d", v11, [v10 terminationStatus]);
-      v13 = [DIError failWithEnumValue:154 verboseInfo:v12 error:a5];
+      lastPathComponent = [pathCopy lastPathComponent];
+      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ failed with error code %d", lastPathComponent, [v10 terminationStatus]);
+      v13 = [DIError failWithEnumValue:154 verboseInfo:v12 error:error];
     }
 
     else
@@ -119,9 +119,9 @@ LABEL_16:
   return v13;
 }
 
-+ (id)copyDevicePathWithStatfs:(statfs *)a3
++ (id)copyDevicePathWithStatfs:(statfs *)statfs
 {
-  if (!a3 || _FSGetLocationFromStatfs(a3, v7, 0x400uLL))
+  if (!statfs || _FSGetLocationFromStatfs(statfs, v7, 0x400uLL))
   {
     return 0;
   }
@@ -142,12 +142,12 @@ LABEL_16:
   return v3;
 }
 
-+ (unsigned)getBlockSizeFromStr:(id)a3 error:(id *)a4
++ (unsigned)getBlockSizeFromStr:(id)str error:(id *)error
 {
-  result = [DIHelpers numBlocksWithSizeStr:a3 blockSize:1];
+  result = [DIHelpers numBlocksWithSizeStr:str blockSize:1];
   if (result != 512 && result != 2048 && result != 4096)
   {
-    return [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid value for argument 'block-size'" error:a4];
+    return [DIError failWithPOSIXCode:22 verboseInfo:@"Invalid value for argument 'block-size'" error:error];
   }
 
   return result;

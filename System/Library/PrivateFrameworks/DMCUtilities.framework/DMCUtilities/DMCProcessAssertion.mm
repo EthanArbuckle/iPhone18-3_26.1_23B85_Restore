@@ -1,5 +1,5 @@
 @interface DMCProcessAssertion
-- (DMCProcessAssertion)initWithReason:(id)a3;
+- (DMCProcessAssertion)initWithReason:(id)reason;
 - (void)_createAssertion;
 - (void)_releaseAssertion;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation DMCProcessAssertion
 
-- (DMCProcessAssertion)initWithReason:(id)a3
+- (DMCProcessAssertion)initWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   v9.receiver = self;
   v9.super_class = DMCProcessAssertion;
   v6 = [(DMCProcessAssertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reason, a3);
+    objc_storeStrong(&v6->_reason, reason);
     [(DMCProcessAssertion *)v7 _createAssertion];
   }
 

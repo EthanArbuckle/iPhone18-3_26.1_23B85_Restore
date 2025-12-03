@@ -1,26 +1,26 @@
 @interface PKPassLiveRenderedArmedStateImageSet
-- (PKPassLiveRenderedArmedStateImageSet)initWithDisplayProfile:(id)a3 fileURL:(id)a4 screenScale:(double)a5 suffix:(id)a6;
+- (PKPassLiveRenderedArmedStateImageSet)initWithDisplayProfile:(id)profile fileURL:(id)l screenScale:(double)scale suffix:(id)suffix;
 @end
 
 @implementation PKPassLiveRenderedArmedStateImageSet
 
-- (PKPassLiveRenderedArmedStateImageSet)initWithDisplayProfile:(id)a3 fileURL:(id)a4 screenScale:(double)a5 suffix:(id)a6
+- (PKPassLiveRenderedArmedStateImageSet)initWithDisplayProfile:(id)profile fileURL:(id)l screenScale:(double)scale suffix:(id)suffix
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  profileCopy = profile;
+  lCopy = l;
+  suffixCopy = suffix;
   v22.receiver = self;
   v22.super_class = PKPassLiveRenderedArmedStateImageSet;
-  v13 = [(PKPassLiveRenderedImageSet *)&v22 initWithDisplayProfile:v10 fileURL:v11 screenScale:v12 suffix:a5];
+  v13 = [(PKPassLiveRenderedImageSet *)&v22 initWithDisplayProfile:profileCopy fileURL:lCopy screenScale:suffixCopy suffix:scale];
   if (v13)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = [MEMORY[0x1E696AAE8] bundleWithURL:v11];
-    v16 = [PKImage imageNamed:@"diffuseArmed" inBundle:v15 screenScale:v12 suffix:a5];
+    v15 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
+    v16 = [PKImage imageNamed:@"diffuseArmed" inBundle:v15 screenScale:suffixCopy suffix:scale];
     [(PKPassLiveRenderedImageSet *)v13 setDiffuseMaterialPropertyImage:v16];
-    v17 = [PKImage imageNamed:@"normalArmed" inBundle:v15 screenScale:v12 suffix:a5];
+    v17 = [PKImage imageNamed:@"normalArmed" inBundle:v15 screenScale:suffixCopy suffix:scale];
     [(PKPassLiveRenderedImageSet *)v13 setNormalMaterialPropertyImage:v17];
-    v18 = [PKImage imageNamed:@"metalnessArmed" inBundle:v15 screenScale:v12 suffix:a5];
+    v18 = [PKImage imageNamed:@"metalnessArmed" inBundle:v15 screenScale:suffixCopy suffix:scale];
     [(PKPassLiveRenderedImageSet *)v13 setMetalnessMaterialPropertyImage:v18];
 
     objc_autoreleasePoolPop(v14);

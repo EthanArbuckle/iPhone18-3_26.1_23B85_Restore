@@ -1,18 +1,18 @@
 @interface PLFileSystemAssetImporter
-- (BOOL)_setupAdjustmentsFromAdjustmentFileForAsset:(id)a3;
-- (BOOL)_setupPhotoAsset:(id)a3 withURL:(id)a4 unknownType:(BOOL)a5 isPlaceholder:(BOOL)a6 hasVideoComplementResource:(BOOL)a7;
-- (BOOL)_setupPhotoAssetAsPhotoIrisIfNeeded:(id)a3 hasVideoComplementResource:(BOOL)a4;
-- (BOOL)_setupVideoAsset:(id)a3 withURL:(id)a4;
-- (PLFileSystemAssetImporter)initWithPhotoLibrary:(id)a3 libraryServicesManager:(id)a4;
-- (id)_addAssetWithURL:(id)a3 existingOID:(id)a4 assetUUID:(id)a5 isPlaceholder:(BOOL)a6;
-- (id)_assetAdjustmentsIfExistsForAsset:(id)a3;
-- (id)addAssetWithURLs:(id)a3 assetPayload:(id)a4 forceInsert:(BOOL)a5 forceUpdate:(BOOL)a6 fixAddedDate:(BOOL)a7;
-- (id)assetURLisInDatabase:(id)a3 deferredPreviewURL:(id)a4;
-- (id)libraryBundlePathWithPhotoLibrary:(id)a3;
+- (BOOL)_setupAdjustmentsFromAdjustmentFileForAsset:(id)asset;
+- (BOOL)_setupPhotoAsset:(id)asset withURL:(id)l unknownType:(BOOL)type isPlaceholder:(BOOL)placeholder hasVideoComplementResource:(BOOL)resource;
+- (BOOL)_setupPhotoAssetAsPhotoIrisIfNeeded:(id)needed hasVideoComplementResource:(BOOL)resource;
+- (BOOL)_setupVideoAsset:(id)asset withURL:(id)l;
+- (PLFileSystemAssetImporter)initWithPhotoLibrary:(id)library libraryServicesManager:(id)manager;
+- (id)_addAssetWithURL:(id)l existingOID:(id)d assetUUID:(id)iD isPlaceholder:(BOOL)placeholder;
+- (id)_assetAdjustmentsIfExistsForAsset:(id)asset;
+- (id)addAssetWithURLs:(id)ls assetPayload:(id)payload forceInsert:(BOOL)insert forceUpdate:(BOOL)update fixAddedDate:(BOOL)date;
+- (id)assetURLisInDatabase:(id)database deferredPreviewURL:(id)l;
+- (id)libraryBundlePathWithPhotoLibrary:(id)library;
 - (unint64_t)nextThumbnailIndex;
-- (void)addAvailableThumbnailIndex:(unint64_t)a3;
+- (void)addAvailableThumbnailIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setModificationAndCreationDateOnAsset:(id)a3 withURL:(id)a4;
+- (void)setModificationAndCreationDateOnAsset:(id)asset withURL:(id)l;
 @end
 
 @implementation PLFileSystemAssetImporter
@@ -22,9 +22,9 @@
   thumbIndexes = self->_thumbIndexes;
   if (!thumbIndexes)
   {
-    v4 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v5 = self->_thumbIndexes;
-    self->_thumbIndexes = v4;
+    self->_thumbIndexes = indexSet;
 
     thumbIndexes = self->_thumbIndexes;
   }
@@ -50,8 +50,8 @@
   if ([(NSMutableIndexSet *)self->_thumbIndexes count])
   {
 LABEL_7:
-    v9 = [(NSMutableIndexSet *)self->_thumbIndexes firstIndex];
-    [(NSMutableIndexSet *)self->_thumbIndexes removeIndex:v9];
+    firstIndex = [(NSMutableIndexSet *)self->_thumbIndexes firstIndex];
+    [(NSMutableIndexSet *)self->_thumbIndexes removeIndex:firstIndex];
   }
 
   else
@@ -66,7 +66,7 @@ LABEL_7:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v9;
+  return firstIndex;
 }
 
 intptr_t __47__PLFileSystemAssetImporter_nextThumbnailIndex__block_invoke(uint64_t a1, uint64_t a2)
@@ -81,78 +81,78 @@ intptr_t __47__PLFileSystemAssetImporter_nextThumbnailIndex__block_invoke(uint64
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)addAvailableThumbnailIndex:(unint64_t)a3
+- (void)addAvailableThumbnailIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     thumbIndexes = self->_thumbIndexes;
     if (!thumbIndexes)
     {
-      v7 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       v8 = self->_thumbIndexes;
-      self->_thumbIndexes = v7;
+      self->_thumbIndexes = indexSet;
 
       thumbIndexes = self->_thumbIndexes;
     }
 
-    [(NSMutableIndexSet *)thumbIndexes addIndex:a3];
+    [(NSMutableIndexSet *)thumbIndexes addIndex:index];
   }
 }
 
-- (BOOL)_setupVideoAsset:(id)a3 withURL:(id)a4
+- (BOOL)_setupVideoAsset:(id)asset withURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 setVideoInfoFromFileAtURL:v7 mainFileMetadata:0 fullSizeRenderURL:0 overwriteOriginalProperties:1];
+  assetCopy = asset;
+  lCopy = l;
+  v8 = [assetCopy setVideoInfoFromFileAtURL:lCopy mainFileMetadata:0 fullSizeRenderURL:0 overwriteOriginalProperties:1];
   if (v8)
   {
-    v9 = [v6 migrateLegacyVideoAdjustments];
-    if (v9)
+    migrateLegacyVideoAdjustments = [assetCopy migrateLegacyVideoAdjustments];
+    if (migrateLegacyVideoAdjustments)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = [v6 setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:0];
+      v10 = [assetCopy setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:0];
     }
 
-    v11 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:v7];
+    v11 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:lCopy];
     v12 = [v11 dataForKey:*MEMORY[0x1E69BFDA8]];
     v13 = [v11 stringForKey:*MEMORY[0x1E69BFDB8]];
-    v14 = [MEMORY[0x1E69BF238] fileManager];
+    fileManager = [MEMORY[0x1E69BF238] fileManager];
     if (v12)
     {
       v15 = PLMigrationGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v6 uuid];
+        uuid = [assetCopy uuid];
         v22 = 138412290;
-        v23 = v16;
+        v23 = uuid;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "setupVideoAsset: Setting up adjustment from extended attributes for asset: %@", &v22, 0xCu);
       }
 
-      [PLImageWriter setAdjustmentsForNewVideo:v6 mainFileMetadata:0 withAdjustmentsDictionary:0 cameraAdjustments:v12 renderedContentPath:v13 renderedPosterFramePreviewPath:0 finalAssetSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+      [PLImageWriter setAdjustmentsForNewVideo:assetCopy mainFileMetadata:0 withAdjustmentsDictionary:0 cameraAdjustments:v12 renderedContentPath:v13 renderedPosterFramePreviewPath:0 finalAssetSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
       goto LABEL_21;
     }
 
     if (v10)
     {
-      v17 = [v6 pathForAdjustmentFile];
-      if (([v14 fileExistsAtPath:v17] & 1) == 0)
+      pathForAdjustmentFile = [assetCopy pathForAdjustmentFile];
+      if (([fileManager fileExistsAtPath:pathForAdjustmentFile] & 1) == 0)
       {
         v18 = PLMigrationGetLog();
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
-        if (v9)
+        if (migrateLegacyVideoAdjustments)
         {
           if (v19)
           {
-            v20 = [v6 pathForLegacySlalomRegionsArchive];
+            pathForLegacySlalomRegionsArchive = [assetCopy pathForLegacySlalomRegionsArchive];
             v22 = 138412546;
-            v23 = v20;
+            v23 = pathForLegacySlalomRegionsArchive;
             v24 = 2112;
-            v25 = v17;
+            v25 = pathForAdjustmentFile;
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "setupVideoAsset: failed to migrate %@ to %@", &v22, 0x16u);
           }
         }
@@ -160,32 +160,32 @@ intptr_t __47__PLFileSystemAssetImporter_nextThumbnailIndex__block_invoke(uint64
         else if (v19)
         {
           v22 = 138412290;
-          v23 = v17;
+          v23 = pathForAdjustmentFile;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "setupVideoAsset: failed to create default adjustments at %@", &v22, 0xCu);
         }
       }
     }
 
-    else if ([(PLFileSystemAssetImporter *)self _setupAdjustmentsFromAdjustmentFileForAsset:v6])
+    else if ([(PLFileSystemAssetImporter *)self _setupAdjustmentsFromAdjustmentFileForAsset:assetCopy])
     {
       goto LABEL_21;
     }
 
-    [v6 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+    [assetCopy generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
 LABEL_21:
   }
 
   return v8;
 }
 
-- (BOOL)_setupPhotoAsset:(id)a3 withURL:(id)a4 unknownType:(BOOL)a5 isPlaceholder:(BOOL)a6 hasVideoComplementResource:(BOOL)a7
+- (BOOL)_setupPhotoAsset:(id)asset withURL:(id)l unknownType:(BOOL)type isPlaceholder:(BOOL)placeholder hasVideoComplementResource:(BOOL)resource
 {
-  v7 = a7;
+  resourceCopy = resource;
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  assetCopy = asset;
+  lCopy = l;
   v13 = objc_autoreleasePoolPush();
-  if (a5)
+  if (type)
   {
     v14 = 0;
   }
@@ -193,24 +193,24 @@ LABEL_21:
   else
   {
     v15 = objc_alloc(MEMORY[0x1E69C0718]);
-    v16 = [v11 photoLibrary];
-    v17 = [v16 libraryBundle];
-    v18 = [v17 timeZoneLookup];
-    v14 = [v15 initWithImageURL:v12 contentType:0 options:12 timeZoneLookup:v18 cacheImageSource:1 cacheImageData:0];
+    photoLibrary = [assetCopy photoLibrary];
+    libraryBundle = [photoLibrary libraryBundle];
+    timeZoneLookup = [libraryBundle timeZoneLookup];
+    v14 = [v15 initWithImageURL:lCopy contentType:0 options:12 timeZoneLookup:timeZoneLookup cacheImageSource:1 cacheImageData:0];
 
-    if ([v11 setImageInfoFromImageMetadata:v14 overwriteOriginalProperties:1])
+    if ([assetCopy setImageInfoFromImageMetadata:v14 overwriteOriginalProperties:1])
     {
-      [(PLFileSystemAssetImporter *)self _setupPhotoAssetAsPhotoIrisIfNeeded:v11 hasVideoComplementResource:v7];
+      [(PLFileSystemAssetImporter *)self _setupPhotoAssetAsPhotoIrisIfNeeded:assetCopy hasVideoComplementResource:resourceCopy];
       if ([v14 cgImageMetadata])
       {
-        [v11 setFaceRegionsFromImageMetadata:{objc_msgSend(v14, "cgImageMetadata")}];
+        [assetCopy setFaceRegionsFromImageMetadata:{objc_msgSend(v14, "cgImageMetadata")}];
       }
     }
   }
 
-  if (!-[PLFileSystemAssetImporter _setupAdjustmentsFromAdjustmentFileForAsset:](self, "_setupAdjustmentsFromAdjustmentFileForAsset:", v11) || ([v11 additionalAttributes], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "unmanagedAdjustment"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
+  if (!-[PLFileSystemAssetImporter _setupAdjustmentsFromAdjustmentFileForAsset:](self, "_setupAdjustmentsFromAdjustmentFileForAsset:", assetCopy) || ([assetCopy additionalAttributes], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "unmanagedAdjustment"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, !v20))
   {
-    v21 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:v12];
+    v21 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:lCopy];
     v22 = [v21 dataForKey:*MEMORY[0x1E69BFDA8]];
     v23 = [v21 stringForKey:*MEMORY[0x1E69BFDB8]];
     v24 = v23;
@@ -225,49 +225,49 @@ LABEL_21:
       }
 
       LOBYTE(v27) = 1;
-      [PLImageWriter setAdjustmentsForNewPhoto:v11 mainFileMetadata:v14 cameraAdjustmentData:v22 adjustmentDataPath:0 filteredImagePath:v24 cameraMetadata:0 finalAssetSize:*MEMORY[0x1E695F060] isSubstandardRender:*(MEMORY[0x1E695F060] + 8), v27];
+      [PLImageWriter setAdjustmentsForNewPhoto:assetCopy mainFileMetadata:v14 cameraAdjustmentData:v22 adjustmentDataPath:0 filteredImagePath:v24 cameraMetadata:0 finalAssetSize:*MEMORY[0x1E695F060] isSubstandardRender:*(MEMORY[0x1E695F060] + 8), v27];
     }
 
     else
     {
 
       *buf = 0;
-      v21 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:v12];
+      v21 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:lCopy];
       [v21 getUInt16:buf forKey:*MEMORY[0x1E69BFD10]];
     }
   }
 
-  if (!a5)
+  if (!type)
   {
-    [v11 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
+    [assetCopy generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
   }
 
   objc_autoreleasePoolPop(v13);
   return 1;
 }
 
-- (BOOL)_setupAdjustmentsFromAdjustmentFileForAsset:(id)a3
+- (BOOL)_setupAdjustmentsFromAdjustmentFileForAsset:(id)asset
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLFileSystemAssetImporter *)self _assetAdjustmentsIfExistsForAsset:v4];
+  assetCopy = asset;
+  v5 = [(PLFileSystemAssetImporter *)self _assetAdjustmentsIfExistsForAsset:assetCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 adjustmentTimestamp];
+    adjustmentTimestamp = [v5 adjustmentTimestamp];
 
-    if (!v7)
+    if (!adjustmentTimestamp)
     {
-      v8 = [v4 dateCreated];
-      [v6 setAdjustmentTimestamp:v8];
+      dateCreated = [assetCopy dateCreated];
+      [v6 setAdjustmentTimestamp:dateCreated];
     }
 
-    v9 = [MEMORY[0x1E69BF238] fileManager];
+    fileManager = [MEMORY[0x1E69BF238] fileManager];
     v35 = 0;
-    v33 = v9;
-    if ([v4 isPhoto])
+    v33 = fileManager;
+    if ([assetCopy isPhoto])
     {
-      v10 = [v4 pathForBestAvailableFullsizeRenderImageFileOutIsSubstandard:&v35];
+      v10 = [assetCopy pathForBestAvailableFullsizeRenderImageFileOutIsSubstandard:&v35];
       if (v10)
       {
         v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0];
@@ -278,11 +278,11 @@ LABEL_21:
         v11 = 0;
       }
 
-      v15 = [v4 pathForPenultimateFullsizeRenderImageFile];
-      if (v15 && [v9 fileExistsAtPath:v15])
+      pathForPenultimateFullsizeRenderImageFile = [assetCopy pathForPenultimateFullsizeRenderImageFile];
+      if (pathForPenultimateFullsizeRenderImageFile && [fileManager fileExistsAtPath:pathForPenultimateFullsizeRenderImageFile])
       {
         v34 = 0;
-        v22 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v15 options:1 error:&v34];
+        v22 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathForPenultimateFullsizeRenderImageFile options:1 error:&v34];
         v23 = v34;
         if ([v22 length])
         {
@@ -295,7 +295,7 @@ LABEL_21:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v37 = v15;
+            v37 = pathForPenultimateFullsizeRenderImageFile;
             v38 = 2112;
             v39 = v23;
             _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "PLFileSystemAssetImporter: Unable to read data from file '%@'. %@", buf, 0x16u);
@@ -304,7 +304,7 @@ LABEL_21:
           v21 = 0;
         }
 
-        v9 = v33;
+        fileManager = v33;
       }
 
       else
@@ -312,15 +312,15 @@ LABEL_21:
         v21 = 0;
       }
 
-      if ([v4 isPhotoIris])
+      if ([assetCopy isPhotoIris])
       {
-        v25 = [v4 pathForFullsizeRenderVideoFile];
-        v26 = v9;
+        pathForFullsizeRenderVideoFile = [assetCopy pathForFullsizeRenderVideoFile];
+        v26 = fileManager;
         v27 = v26;
         buf[0] = 0;
-        if (v25 && [v26 fileExistsAtPath:v25 isDirectory:buf] && (buf[0] & 1) == 0)
+        if (pathForFullsizeRenderVideoFile && [v26 fileExistsAtPath:pathForFullsizeRenderVideoFile isDirectory:buf] && (buf[0] & 1) == 0)
         {
-          v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v25 isDirectory:0];
+          v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForFullsizeRenderVideoFile isDirectory:0];
         }
 
         else
@@ -328,13 +328,13 @@ LABEL_21:
           v20 = 0;
         }
 
-        v28 = [v4 pathForPenultimateFullsizeRenderVideoFile];
+        pathForPenultimateFullsizeRenderVideoFile = [assetCopy pathForPenultimateFullsizeRenderVideoFile];
         v29 = v27;
         v30 = v29;
         buf[0] = 0;
-        if (v28 && [v29 fileExistsAtPath:v28 isDirectory:buf] && (buf[0] & 1) == 0)
+        if (pathForPenultimateFullsizeRenderVideoFile && [v29 fileExistsAtPath:pathForPenultimateFullsizeRenderVideoFile isDirectory:buf] && (buf[0] & 1) == 0)
         {
-          v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v28 isDirectory:0];
+          v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForPenultimateFullsizeRenderVideoFile isDirectory:0];
         }
 
         else
@@ -342,8 +342,8 @@ LABEL_21:
           v19 = 0;
         }
 
-        [v4 setPlaybackStyle:3];
-        [v4 setPlaybackVariationAndLoopingStyleFromAdjustmentRenderTypes:{objc_msgSend(v6, "adjustmentRenderTypes")}];
+        [assetCopy setPlaybackStyle:3];
+        [assetCopy setPlaybackVariationAndLoopingStyleFromAdjustmentRenderTypes:{objc_msgSend(v6, "adjustmentRenderTypes")}];
       }
 
       else
@@ -357,7 +357,7 @@ LABEL_21:
 
     else
     {
-      if (![v4 isVideo])
+      if (![assetCopy isVideo])
       {
         v19 = 0;
         v20 = 0;
@@ -373,18 +373,18 @@ LABEL_41:
         [v31 setRenderedVideoComplementContentURL:v20];
         [v31 setPenultimateRenderedVideoComplementContentURL:v19];
         [v31 setShouldCheckForLegacyCameraAutoAdjustment:1];
-        [v4 setAdjustments:v6 options:v31];
+        [assetCopy setAdjustments:v6 options:v31];
 
         goto LABEL_42;
       }
 
-      v12 = [v4 pathForFullsizeRenderVideoFile];
-      v13 = v9;
+      pathForFullsizeRenderVideoFile2 = [assetCopy pathForFullsizeRenderVideoFile];
+      v13 = fileManager;
       v14 = v13;
       buf[0] = 0;
-      if (v12 && [v13 fileExistsAtPath:v12 isDirectory:buf] && (buf[0] & 1) == 0)
+      if (pathForFullsizeRenderVideoFile2 && [v13 fileExistsAtPath:pathForFullsizeRenderVideoFile2 isDirectory:buf] && (buf[0] & 1) == 0)
       {
-        v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
+        v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForFullsizeRenderVideoFile2 isDirectory:0];
       }
 
       else
@@ -392,13 +392,13 @@ LABEL_41:
         v11 = 0;
       }
 
-      v15 = [v4 pathForPenultimateFullsizeRenderVideoFile];
+      pathForPenultimateFullsizeRenderImageFile = [assetCopy pathForPenultimateFullsizeRenderVideoFile];
       v16 = v14;
       v17 = v16;
       buf[0] = 0;
-      if (v15 && [v16 fileExistsAtPath:v15 isDirectory:buf] && (buf[0] & 1) == 0)
+      if (pathForPenultimateFullsizeRenderImageFile && [v16 fileExistsAtPath:pathForPenultimateFullsizeRenderImageFile isDirectory:buf] && (buf[0] & 1) == 0)
       {
-        v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15 isDirectory:0];
+        v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForPenultimateFullsizeRenderImageFile isDirectory:0];
       }
 
       else
@@ -409,7 +409,7 @@ LABEL_41:
       v19 = 0;
       v20 = 0;
       v21 = 0;
-      v10 = v15;
+      v10 = pathForPenultimateFullsizeRenderImageFile;
     }
 
     goto LABEL_41;
@@ -420,14 +420,14 @@ LABEL_42:
   return v6 != 0;
 }
 
-- (id)_assetAdjustmentsIfExistsForAsset:(id)a3
+- (id)_assetAdjustmentsIfExistsForAsset:(id)asset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 pathForAdjustmentFile];
-  v5 = [MEMORY[0x1E69BF238] fileManager];
-  v6 = v4;
-  v7 = v5;
+  assetCopy = asset;
+  pathForAdjustmentFile = [assetCopy pathForAdjustmentFile];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  v6 = pathForAdjustmentFile;
+  v7 = fileManager;
   v8 = v7;
   buf[0] = 0;
   if (v6 && [v7 fileExistsAtPath:v6 isDirectory:buf] && (buf[0] & 1) == 0)
@@ -453,15 +453,15 @@ LABEL_42:
     v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0970]];
     if (!v12)
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      v14 = [v3 pathForAdjustmentDataFile];
-      v15 = [v13 fileExistsAtPath:v14];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      pathForAdjustmentDataFile = [assetCopy pathForAdjustmentDataFile];
+      v15 = [defaultManager fileExistsAtPath:pathForAdjustmentDataFile];
 
       if (v15)
       {
         v16 = MEMORY[0x1E695DEF0];
-        v17 = [v3 pathForAdjustmentDataFile];
-        v12 = [v16 dataWithContentsOfFile:v17 options:1 error:0];
+        pathForAdjustmentDataFile2 = [assetCopy pathForAdjustmentDataFile];
+        v12 = [v16 dataWithContentsOfFile:pathForAdjustmentDataFile2 options:1 error:0];
       }
 
       else
@@ -472,15 +472,15 @@ LABEL_42:
 
     v29 = v11;
     v30 = v9;
-    v31 = v3;
+    v31 = assetCopy;
     v19 = objc_alloc(MEMORY[0x1E69C0660]);
     v20 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0980]];
     v21 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0990]];
     v22 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0968]];
-    v23 = [v22 integerValue];
+    integerValue = [v22 integerValue];
     v24 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0978]];
     v25 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0998]];
-    v18 = [v19 initWithFormatIdentifier:v20 formatVersion:v21 data:v12 baseVersion:v23 editorBundleID:v24 renderTypes:{objc_msgSend(v25, "unsignedIntValue")}];
+    v18 = [v19 initWithFormatIdentifier:v20 formatVersion:v21 data:v12 baseVersion:integerValue editorBundleID:v24 renderTypes:{objc_msgSend(v25, "unsignedIntValue")}];
 
     v26 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C09A0]];
     if (v26)
@@ -489,7 +489,7 @@ LABEL_42:
     }
 
     v9 = v30;
-    v3 = v31;
+    assetCopy = v31;
     v11 = v29;
     if (!v18)
     {
@@ -514,22 +514,22 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)_setupPhotoAssetAsPhotoIrisIfNeeded:(id)a3 hasVideoComplementResource:(BOOL)a4
+- (BOOL)_setupPhotoAssetAsPhotoIrisIfNeeded:(id)needed hasVideoComplementResource:(BOOL)resource
 {
-  v4 = a4;
-  v7 = a3;
-  if (([v7 isPhoto] & 1) == 0)
+  resourceCopy = resource;
+  neededCopy = needed;
+  if (([neededCopy isPhoto] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLFileSystemAssetImporter.m" lineNumber:717 description:@"expect photo asset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFileSystemAssetImporter.m" lineNumber:717 description:@"expect photo asset"];
   }
 
-  if (([v7 isPhotoIris] & 1) == 0)
+  if (([neededCopy isPhotoIris] & 1) == 0)
   {
-    if ([v7 videoCpDurationValue])
+    if ([neededCopy videoCpDurationValue])
     {
-      [v7 setKindSubtype:2];
-      if ([v7 canPlayPhotoIris])
+      [neededCopy setKindSubtype:2];
+      if ([neededCopy canPlayPhotoIris])
       {
         v9 = 3;
       }
@@ -539,25 +539,25 @@ LABEL_16:
         v9 = 1;
       }
 
-      if ([v7 playbackStyle] != v9)
+      if ([neededCopy playbackStyle] != v9)
       {
-        [v7 setPlaybackStyle:v9];
+        [neededCopy setPlaybackStyle:v9];
       }
 
       goto LABEL_17;
     }
 
-    if (!v4)
+    if (!resourceCopy)
     {
 LABEL_17:
       v8 = 0;
       goto LABEL_18;
     }
 
-    v10 = [v7 pathForVideoComplementFile];
-    v11 = [v7 mainFileURL];
+    pathForVideoComplementFile = [neededCopy pathForVideoComplementFile];
+    mainFileURL = [neededCopy mainFileURL];
     v8 = 0;
-    if (!v11 || !v10)
+    if (!mainFileURL || !pathForVideoComplementFile)
     {
 LABEL_24:
 
@@ -565,11 +565,11 @@ LABEL_24:
     }
 
     v12 = objc_alloc(MEMORY[0x1E69C0918]);
-    v13 = [v11 path];
-    v14 = [v12 initWithPathToVideo:v10 pathToImage:v13];
+    path = [mainFileURL path];
+    v14 = [v12 initWithPathToVideo:pathForVideoComplementFile pathToImage:path];
 
-    v15 = [v14 pairingIdentifier];
-    v16 = v15;
+    pairingIdentifier = [v14 pairingIdentifier];
+    v16 = pairingIdentifier;
     v26 = 0uLL;
     v27 = 0;
     if (v14)
@@ -588,7 +588,7 @@ LABEL_24:
     {
       v24 = 0uLL;
       v25 = 0;
-      if (!v15)
+      if (!pairingIdentifier)
       {
         goto LABEL_21;
       }
@@ -596,12 +596,12 @@ LABEL_24:
 
     if (BYTE12(v24))
     {
-      v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
+      v18 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForVideoComplementFile];
       v22 = v24;
       v23 = v25;
       v20 = v26;
       v21 = v27;
-      v8 = [v7 becomePhotoIrisWithMediaGroupUUID:v16 mainFileMetadata:0 videoURL:v18 videoDuration:&v22 stillDisplayTime:&v20 options:0];
+      v8 = [neededCopy becomePhotoIrisWithMediaGroupUUID:v16 mainFileMetadata:0 videoURL:v18 videoDuration:&v22 stillDisplayTime:&v20 options:0];
 
       goto LABEL_23;
     }
@@ -619,24 +619,24 @@ LABEL_18:
   return v8;
 }
 
-- (void)setModificationAndCreationDateOnAsset:(id)a3 withURL:(id)a4
+- (void)setModificationAndCreationDateOnAsset:(id)asset withURL:(id)l
 {
-  v31 = a3;
-  v5 = a4;
-  v6 = [v31 modificationDate];
+  assetCopy = asset;
+  lCopy = l;
+  modificationDate = [assetCopy modificationDate];
 
-  v7 = [v31 dateCreated];
+  dateCreated = [assetCopy dateCreated];
 
-  v8 = [v31 additionalAttributes];
-  v9 = [v8 exifTimestampString];
+  additionalAttributes = [assetCopy additionalAttributes];
+  exifTimestampString = [additionalAttributes exifTimestampString];
 
-  v10 = [v31 additionalAttributes];
-  v11 = [v10 timeZoneName];
-  if (v11)
+  additionalAttributes2 = [assetCopy additionalAttributes];
+  timeZoneName = [additionalAttributes2 timeZoneName];
+  if (timeZoneName)
   {
-    v12 = [v31 additionalAttributes];
-    v13 = [v12 timeZoneOffset];
-    v14 = v13 == 0;
+    additionalAttributes3 = [assetCopy additionalAttributes];
+    timeZoneOffset = [additionalAttributes3 timeZoneOffset];
+    v14 = timeZoneOffset == 0;
   }
 
   else
@@ -644,17 +644,17 @@ LABEL_18:
     v14 = 1;
   }
 
-  if (!v6 || !v7 || !v9 || v14)
+  if (!modificationDate || !dateCreated || !exifTimestampString || v14)
   {
     v15 = objc_alloc(MEMORY[0x1E69C0718]);
-    v16 = [v31 photoLibrary];
-    v17 = [v16 libraryBundle];
-    v18 = [v17 timeZoneLookup];
-    v19 = [v15 initWithMediaURL:v5 timeZoneLookup:v18];
+    photoLibrary = [assetCopy photoLibrary];
+    libraryBundle = [photoLibrary libraryBundle];
+    timeZoneLookup = [libraryBundle timeZoneLookup];
+    v19 = [v15 initWithMediaURL:lCopy timeZoneLookup:timeZoneLookup];
 
-    if (v6)
+    if (modificationDate)
     {
-      if (v7)
+      if (dateCreated)
       {
         goto LABEL_10;
       }
@@ -662,14 +662,14 @@ LABEL_18:
 
     else
     {
-      v25 = [v19 fileSystemProperties];
-      v26 = [v25 objectForKeyedSubscript:*MEMORY[0x1E696A350]];
-      [v31 setModificationDate:v26];
+      fileSystemProperties = [v19 fileSystemProperties];
+      v26 = [fileSystemProperties objectForKeyedSubscript:*MEMORY[0x1E696A350]];
+      [assetCopy setModificationDate:v26];
 
-      if (v7)
+      if (dateCreated)
       {
 LABEL_10:
-        if (v9)
+        if (exifTimestampString)
         {
           goto LABEL_11;
         }
@@ -678,42 +678,42 @@ LABEL_10:
       }
     }
 
-    v27 = [v19 utcCreationDate];
-    [v31 setDateCreated:v27];
+    utcCreationDate = [v19 utcCreationDate];
+    [assetCopy setDateCreated:utcCreationDate];
 
-    LOWORD(v27) = [v19 creationDateSource];
-    v28 = [v31 additionalAttributes];
-    [v28 setDateCreatedSource:v27];
+    LOWORD(utcCreationDate) = [v19 creationDateSource];
+    additionalAttributes4 = [assetCopy additionalAttributes];
+    [additionalAttributes4 setDateCreatedSource:utcCreationDate];
 
-    if (v9)
+    if (exifTimestampString)
     {
 LABEL_11:
       if (!v14)
       {
 LABEL_13:
-        v24 = [v31 dateCreated];
-        [v24 timeIntervalSinceReferenceDate];
-        [v31 setSortToken:?];
+        dateCreated2 = [assetCopy dateCreated];
+        [dateCreated2 timeIntervalSinceReferenceDate];
+        [assetCopy setSortToken:?];
 
         goto LABEL_14;
       }
 
 LABEL_12:
-      v20 = [v19 timeZoneName];
-      v21 = [v31 additionalAttributes];
-      [v21 setTimeZoneName:v20];
+      timeZoneName2 = [v19 timeZoneName];
+      additionalAttributes5 = [assetCopy additionalAttributes];
+      [additionalAttributes5 setTimeZoneName:timeZoneName2];
 
-      v22 = [v19 timeZoneOffset];
-      v23 = [v31 additionalAttributes];
-      [v23 setTimeZoneOffset:v22];
+      timeZoneOffset2 = [v19 timeZoneOffset];
+      additionalAttributes6 = [assetCopy additionalAttributes];
+      [additionalAttributes6 setTimeZoneOffset:timeZoneOffset2];
 
       goto LABEL_13;
     }
 
 LABEL_19:
-    v29 = [v19 creationDateString];
-    v30 = [v31 additionalAttributes];
-    [v30 setExifTimestampString:v29];
+    creationDateString = [v19 creationDateString];
+    additionalAttributes7 = [assetCopy additionalAttributes];
+    [additionalAttributes7 setExifTimestampString:creationDateString];
 
     if (!v14)
     {
@@ -726,42 +726,42 @@ LABEL_19:
 LABEL_14:
 }
 
-- (id)addAssetWithURLs:(id)a3 assetPayload:(id)a4 forceInsert:(BOOL)a5 forceUpdate:(BOOL)a6 fixAddedDate:(BOOL)a7
+- (id)addAssetWithURLs:(id)ls assetPayload:(id)payload forceInsert:(BOOL)insert forceUpdate:(BOOL)update fixAddedDate:(BOOL)date
 {
-  v7 = a6;
-  v8 = a5;
+  updateCopy = update;
+  insertCopy = insert;
   v207 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  if (v8 && v7)
+  lsCopy = ls;
+  payloadCopy = payload;
+  if (insertCopy && updateCopy)
   {
     v130 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot call addAssetWithURLs with both forceInsert and forceUpdate" userInfo:0];
     objc_exception_throw(v130);
   }
 
-  v154 = v12;
-  v13 = [v12 payloadID];
-  v14 = [v13 payloadIDString];
+  v154 = payloadCopy;
+  payloadID = [payloadCopy payloadID];
+  payloadIDString = [payloadID payloadIDString];
 
-  if (v14)
+  if (payloadIDString)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = v7;
+    v15 = updateCopy;
   }
 
   v152 = v15;
-  if (v14)
+  if (payloadIDString)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v8;
+    v16 = insertCopy;
   }
 
   v189 = 0;
@@ -770,7 +770,7 @@ LABEL_14:
   v192 = __Block_byref_object_copy__25088;
   v193 = __Block_byref_object_dispose__25089;
   v194 = 0;
-  v17 = [PLPhotoLibrary masterURLFromSidecarURLs:v11];
+  v17 = [PLPhotoLibrary masterURLFromSidecarURLs:lsCopy];
   v188 = 0;
   v159 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:v17 exists:&v188 includeUnknownAttributes:0];
   v18 = objc_initWeak(&location, self);
@@ -788,16 +788,16 @@ LABEL_14:
   objc_destroyWeak(&v187);
   objc_destroyWeak(&location);
   v184 = 0;
-  v21 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-  LODWORD(v19) = [v21 isUBF];
+  pathManager = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+  LODWORD(v19) = [pathManager isUBF];
 
   v149 = v16 || v152;
   if (!v19)
   {
     v158 = [v159 UUIDStringForKey:*MEMORY[0x1E69BFE68]];
-    if (v14)
+    if (payloadIDString)
     {
-      v27 = v14;
+      v27 = payloadIDString;
 
       v158 = v27;
     }
@@ -806,38 +806,38 @@ LABEL_14:
     v147 = [PLImageWriter semanticEnhanceSceneIsValid:v184];
     if ([PLImageWriter isDeferredPhotoPreviewURL:v20])
     {
-      v28 = [v157 objectValue];
-      v29 = [v28 isDeferredPhotoProxy];
+      objectValue = [v157 objectValue];
+      isDeferredPhotoProxy = [objectValue isDeferredPhotoProxy];
 
-      if (v29)
+      if (isDeferredPhotoProxy)
       {
-        v30 = [v157 objectValue];
-        v31 = [v30 deferredPhotoProcessingIdentifier];
+        objectValue2 = [v157 objectValue];
+        deferredPhotoProcessingIdentifier = [objectValue2 deferredPhotoProcessingIdentifier];
       }
 
       else
       {
-        v31 = 0;
+        deferredPhotoProcessingIdentifier = 0;
       }
 
-      v156 = v31;
-      v145 = v31 != 0 || v147;
-      if (v31 != 0 || v147)
+      v156 = deferredPhotoProcessingIdentifier;
+      v145 = deferredPhotoProcessingIdentifier != 0 || v147;
+      if (deferredPhotoProcessingIdentifier != 0 || v147)
       {
-        v32 = [v20 pathExtension];
-        v155 = [PLImageWriter finalizedAssetURLForDeferredPhotoPreviewURL:v20 extension:v32];
+        pathExtension = [v20 pathExtension];
+        v155 = [PLImageWriter finalizedAssetURLForDeferredPhotoPreviewURL:v20 extension:pathExtension];
 
         v33 = PLMigrationGetLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v20 path];
-          v35 = [v155 path];
+          path = [v20 path];
+          path2 = [v155 path];
           location = 138412802;
-          *location_4 = v34;
+          *location_4 = path;
           *&location_4[8] = 2114;
           *&location_4[10] = v156;
           v197 = 2112;
-          v198 = v35;
+          v198 = path2;
           _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: Found deferred photo preview: %@ with identifier %{public}@ for base asset %@", &location, 0x20u);
         }
       }
@@ -847,16 +847,16 @@ LABEL_14:
         v36 = PLMigrationGetLog();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          v37 = [v20 path];
-          v38 = v37;
+          path3 = [v20 path];
+          v38 = path3;
           v39 = @"missing";
-          if (v29)
+          if (isDeferredPhotoProxy)
           {
             v39 = @"has";
           }
 
           location = 138412546;
-          *location_4 = v37;
+          *location_4 = path3;
           *&location_4[8] = 2112;
           *&location_4[10] = v39;
           _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "addAssetWithURLs: Found unsupported deferred photo preview: %@ %@ proxy flag, missing identifier. Adding as regular asset", &location, 0x16u);
@@ -865,9 +865,9 @@ LABEL_14:
         v33 = PLMigrationGetLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v40 = [v20 path];
+          path4 = [v20 path];
           location = 138412290;
-          *location_4 = v40;
+          *location_4 = path4;
           _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "addAssetWithURLs: Found unsupported deferred photo preview: %@ adding as regular asset", &location, 0xCu);
         }
 
@@ -890,24 +890,24 @@ LABEL_14:
       v43 = PLMigrationGetLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [v20 path];
+        path5 = [v20 path];
         location = 138543362;
-        *location_4 = v44;
+        *location_4 = path5;
         _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: spatial over capture cannot be imported without original asset resource: %{public}@, skipping", &location, 0xCu);
       }
 
       v149 = 0;
     }
 
-    v22 = [v20 pathExtension];
-    if ([PLPhotoLibrary isAdjustmentEnvelopeExtension:v22])
+    pathExtension2 = [v20 pathExtension];
+    if ([PLPhotoLibrary isAdjustmentEnvelopeExtension:pathExtension2])
     {
       v45 = PLMigrationGetLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [v20 path];
+        path6 = [v20 path];
         location = 138543362;
-        *location_4 = v46;
+        *location_4 = path6;
         _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: cannot import adjustment envelope as asset primary assetURL: %{public}@, skipping", &location, 0xCu);
       }
 
@@ -920,7 +920,7 @@ LABEL_14:
       goto LABEL_73;
     }
 
-    if (![PLPhotoLibrary isVideoFileExtension:v22])
+    if (![PLPhotoLibrary isVideoFileExtension:pathExtension2])
     {
       v179 = 31;
       [v159 getUInt16:&v179 forKey:*MEMORY[0x1E69BFE10]];
@@ -929,9 +929,9 @@ LABEL_14:
         v53 = PLMigrationGetLog();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          v54 = [v20 path];
+          path7 = [v20 path];
           location = 138543362;
-          *location_4 = v54;
+          *location_4 = path7;
           _os_log_impl(&dword_19BF1F000, v53, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: cannot import alternate image as asset primary assetURL: %{public}@, skipping", &location, 0xCu);
         }
 
@@ -941,21 +941,21 @@ LABEL_14:
       goto LABEL_73;
     }
 
-    v47 = [v154 mediaGroupUUID];
-    if (v47)
+    mediaGroupUUID = [v154 mediaGroupUUID];
+    if (mediaGroupUUID)
     {
       goto LABEL_71;
     }
 
-    v47 = [v159 stringForKey:*MEMORY[0x1E69BFDE0]];
-    if (v47)
+    mediaGroupUUID = [v159 stringForKey:*MEMORY[0x1E69BFDE0]];
+    if (mediaGroupUUID)
     {
       goto LABEL_71;
     }
 
     v48 = [MEMORY[0x1E6987E28] assetWithURL:v20];
     v49 = PFVideoComplementMetadataForVideoAVAssetPreloadingValues();
-    v141 = [v49 pairingIdentifier];
+    pairingIdentifier = [v49 pairingIdentifier];
     v143 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:v48 timeZoneLookup:0];
     v139 = v49;
     if (!v143)
@@ -968,7 +968,7 @@ LABEL_14:
       }
     }
 
-    if (v141)
+    if (pairingIdentifier)
     {
       if (v49)
       {
@@ -981,17 +981,17 @@ LABEL_14:
             v51 = PLMigrationGetLog();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
             {
-              v52 = [v20 path];
+              path8 = [v20 path];
               location = 138543362;
-              *location_4 = v52;
+              *location_4 = path8;
               _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_ERROR, "Found invalid still display time on video complement: %{public}@", &location, 0xCu);
             }
           }
 
-          v47 = v141;
+          mediaGroupUUID = pairingIdentifier;
 LABEL_70:
 
-          if (!v47)
+          if (!mediaGroupUUID)
           {
 LABEL_72:
 
@@ -1005,16 +1005,16 @@ LABEL_73:
           }
 
 LABEL_71:
-          if (![PLManagedAsset isOrphanedMediaGroupUUID:v47])
+          if (![PLManagedAsset isOrphanedMediaGroupUUID:mediaGroupUUID])
           {
             v86 = PLMigrationGetLog();
             if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
             {
-              v87 = [v20 path];
+              path9 = [v20 path];
               location = 138412546;
-              *location_4 = v47;
+              *location_4 = mediaGroupUUID;
               *&location_4[8] = 2114;
-              *&location_4[10] = v87;
+              *&location_4[10] = path9;
               _os_log_impl(&dword_19BF1F000, v86, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: video with identifier %{mediaGroupUUID}@ appears to be compliment resources of an iris asset: %{public}@, skipping", &location, 0x16u);
             }
 
@@ -1032,45 +1032,45 @@ LABEL_71:
         v183 = 0;
       }
 
-      v55 = [v143 playbackVariation];
-      v56 = [v55 unsignedIntegerValue] == 0;
+      playbackVariation = [v143 playbackVariation];
+      v56 = [playbackVariation unsignedIntegerValue] == 0;
 
       if (v56)
       {
         v57 = PLMigrationGetLog();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
         {
-          v58 = [v20 path];
+          path10 = [v20 path];
           location = 138543618;
-          *location_4 = v141;
+          *location_4 = pairingIdentifier;
           *&location_4[8] = 2114;
-          *&location_4[10] = v58;
+          *&location_4[10] = path10;
           _os_log_impl(&dword_19BF1F000, v57, OS_LOG_TYPE_DEFAULT, "Video with media group ID %{public}@ does not have playback variation, nor valid still & video duration %{public}@", &location, 0x16u);
         }
       }
     }
 
-    v47 = 0;
+    mediaGroupUUID = 0;
     goto LABEL_70;
   }
 
-  v22 = [MEMORY[0x1E69BF298] fileIdentifierForValidOriginalURL:v20];
-  v23 = [v22 uuid];
-  [v22 resourceType];
-  [v22 resourceVersion];
-  [v22 recipeId];
-  v158 = v23;
+  pathExtension2 = [MEMORY[0x1E69BF298] fileIdentifierForValidOriginalURL:v20];
+  uuid = [pathExtension2 uuid];
+  [pathExtension2 resourceType];
+  [pathExtension2 resourceVersion];
+  [pathExtension2 recipeId];
+  v158 = uuid;
   if (PLResourceTypeIsAllowedForUseInFilename())
   {
     v24 = PLMigrationGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v22 resourceType];
-      v26 = [v20 path];
+      resourceType = [pathExtension2 resourceType];
+      path11 = [v20 path];
       location = 67109378;
-      *location_4 = v25;
+      *location_4 = resourceType;
       *&location_4[4] = 2114;
-      *&location_4[6] = v26;
+      *&location_4[6] = path11;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: cannot import allowed resource with type %d as asset primary assetURL: %{public}@, skipping", &location, 0x12u);
     }
 
@@ -1079,17 +1079,17 @@ LABEL_71:
 LABEL_41:
 
 LABEL_92:
-    v77 = [v11 allObjects];
-    v78 = [v77 _pl_map:&__block_literal_global_25122];
+    allObjects = [lsCopy allObjects];
+    v78 = [allObjects _pl_map:&__block_literal_global_25122];
 
     if (v188)
     {
       v79 = PLMigrationGetLog();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [v20 path];
+        path12 = [v20 path];
         location = 138543618;
-        *location_4 = v80;
+        *location_4 = path12;
         *&location_4[8] = 2114;
         *&location_4[10] = v78;
         _os_log_impl(&dword_19BF1F000, v79, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: asset couldn't be added (invalid file resources): %{public}@, skipping files: %{public}@", &location, 0x16u);
@@ -1101,9 +1101,9 @@ LABEL_92:
       v79 = PLMigrationGetLog();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v81 = [v20 path];
+        path13 = [v20 path];
         location = 138543618;
-        *location_4 = v81;
+        *location_4 = path13;
         *&location_4[8] = 2114;
         *&location_4[10] = v78;
         _os_log_impl(&dword_19BF1F000, v79, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: file couldn't be opened (deleted or read failed): %{public}@, skipping files: %{public}@", &location, 0x16u);
@@ -1124,18 +1124,18 @@ LABEL_74:
   }
 
   v59 = MEMORY[0x1E69BF238];
-  v60 = [v20 path];
-  v61 = [v59 fileLengthForFilePath:v60] == 0;
+  path14 = [v20 path];
+  v61 = [v59 fileLengthForFilePath:path14] == 0;
 
   if (v61)
   {
-    v22 = PLMigrationGetLog();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
+    pathExtension2 = PLMigrationGetLog();
+    if (os_log_type_enabled(pathExtension2, OS_LOG_TYPE_FAULT))
     {
-      v85 = [v20 path];
+      path15 = [v20 path];
       location = 138543362;
-      *location_4 = v85;
-      _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_FAULT, "addAssetWithURLs: attempting to import zero size primary assetURL: %{public}@, skipping", &location, 0xCu);
+      *location_4 = path15;
+      _os_log_impl(&dword_19BF1F000, pathExtension2, OS_LOG_TYPE_FAULT, "addAssetWithURLs: attempting to import zero size primary assetURL: %{public}@, skipping", &location, 0xCu);
     }
 
     goto LABEL_41;
@@ -1151,9 +1151,9 @@ LABEL_74:
     v62 = PLMigrationGetLog();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
-      v63 = [v20 path];
+      path16 = [v20 path];
       location = 138543362;
-      *location_4 = v63;
+      *location_4 = path16;
       _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_ERROR, "addAssetWithURLs: ERROR - missing required extended attributes for file at URL: %{public}@", &location, 0xCu);
     }
   }
@@ -1171,9 +1171,9 @@ LABEL_74:
     v66 = PLMigrationGetLog();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
     {
-      v67 = [v20 path];
+      path17 = [v20 path];
       location = 138543618;
-      *location_4 = v67;
+      *location_4 = path17;
       *&location_4[8] = 2114;
       *&location_4[10] = v158;
       _os_log_impl(&dword_19BF1F000, v66, OS_LOG_TYPE_ERROR, "addAssetWithURLs: ERROR - previously tried this URL and failed: %{public}@ [%{public}@])", &location, 0x16u);
@@ -1182,15 +1182,15 @@ LABEL_74:
     v149 = 0;
   }
 
-  v142 = [v20 lastPathComponent];
-  v68 = [v20 URLByDeletingLastPathComponent];
-  v140 = [v68 path];
+  lastPathComponent = [v20 lastPathComponent];
+  uRLByDeletingLastPathComponent = [v20 URLByDeletingLastPathComponent];
+  path18 = [uRLByDeletingLastPathComponent path];
 
-  v69 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-  v144 = [PLManagedAsset pathForAdjustmentFileWithPathManager:v69 bundleScope:0 uuid:v158 directory:v140 filename:v142];
+  pathManager2 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+  v144 = [PLManagedAsset pathForAdjustmentFileWithPathManager:pathManager2 bundleScope:0 uuid:v158 directory:path18 filename:lastPathComponent];
 
-  v70 = [MEMORY[0x1E696AC08] defaultManager];
-  v71 = [v70 fileExistsAtPath:v144];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v71 = [defaultManager fileExistsAtPath:v144];
 
   if (v71)
   {
@@ -1198,20 +1198,20 @@ LABEL_74:
     v73 = v72;
     if (v72 && ([v72 objectForKeyedSubscript:*MEMORY[0x1E69BF370]], v74 = objc_claimAutoreleasedReturnValue(), v75 = v74 == 0, v74, v75))
     {
-      v88 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-      v89 = [PLManagedAsset pathForAdjustmentDataFileWithPathManager:v88 bundleScope:0 uuid:v158 directory:v140 filename:v142];
+      pathManager3 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+      v89 = [PLManagedAsset pathForAdjustmentDataFileWithPathManager:pathManager3 bundleScope:0 uuid:v158 directory:path18 filename:lastPathComponent];
 
-      v90 = [MEMORY[0x1E696AC08] defaultManager];
-      v91 = [v90 fileExistsAtPath:v89];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v91 = [defaultManager2 fileExistsAtPath:v89];
 
       if ((v91 & 1) == 0)
       {
         v92 = PLMigrationGetLog();
         if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
         {
-          v93 = [v20 path];
+          path19 = [v20 path];
           location = 138543618;
-          *location_4 = v93;
+          *location_4 = path19;
           *&location_4[8] = 2114;
           *&location_4[10] = v158;
           _os_log_impl(&dword_19BF1F000, v92, OS_LOG_TYPE_ERROR, "addAssetWithURLs: ERROR - missing adjustment data blob for adjusted asset: %{public}@ [%{public}@])", &location, 0x16u);
@@ -1253,10 +1253,10 @@ LABEL_74:
   if (((v76 | v16) & 1) == 0)
   {
     v97 = v94;
-    v98 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-    v99 = [v98 isUBF];
+    pathManager4 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+    isUBF = [pathManager4 isUBF];
 
-    if (v99)
+    if (isUBF)
     {
       if (v65)
       {
@@ -1278,9 +1278,9 @@ LABEL_147:
       v101 = PLMigrationGetLog();
       if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
       {
-        v103 = [v138 path];
+        path20 = [v138 path];
         location = 138543618;
-        *location_4 = v103;
+        *location_4 = path20;
         *&location_4[8] = 2114;
         *&location_4[10] = v97;
         _os_log_impl(&dword_19BF1F000, v101, OS_LOG_TYPE_DEBUG, "addAssetWithURLs: EXISTING ASSET (%{public}@ [%{public}@]) (UUID matches existing asset)", &location, 0x16u);
@@ -1307,15 +1307,15 @@ LABEL_147:
         {
           if ([(NSMutableSet *)self->_existingUUIDs containsObject:v97])
           {
-            v106 = [MEMORY[0x1E69BF320] UUIDString];
-            [MEMORY[0x1E69BF230] persistUUIDString:v106 forKey:*MEMORY[0x1E69BFE68] fileURL:v20];
+            uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+            [MEMORY[0x1E69BF230] persistUUIDString:uUIDString forKey:*MEMORY[0x1E69BFE68] fileURL:v20];
             v107 = PLMigrationGetLog();
-            v158 = v106;
+            v158 = uUIDString;
             if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
             {
-              v108 = [v138 path];
+              path21 = [v138 path];
               location = 138543874;
-              *location_4 = v108;
+              *location_4 = path21;
               *&location_4[8] = 2114;
               *&location_4[10] = v97;
               v197 = 2114;
@@ -1347,9 +1347,9 @@ LABEL_145:
           v104 = PLMigrationGetLog();
           if (os_log_type_enabled(v104, OS_LOG_TYPE_DEBUG))
           {
-            v105 = [v138 path];
+            path22 = [v138 path];
             location = 138543618;
-            *location_4 = v105;
+            *location_4 = path22;
             *&location_4[8] = 2114;
             *&location_4[10] = v97;
             _os_log_impl(&dword_19BF1F000, v104, OS_LOG_TYPE_DEBUG, "addAssetWithURLs: DUPLICATE PATH (%{public}@ [%{public}@]) (URL and UUID match database entry)", &location, 0x16u);
@@ -1361,9 +1361,9 @@ LABEL_145:
           v109 = PLMigrationGetLog();
           if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
           {
-            v110 = [v138 path];
+            path23 = [v138 path];
             location = 138543874;
-            *location_4 = v110;
+            *location_4 = path23;
             *&location_4[8] = 2114;
             *&location_4[10] = v97;
             v197 = 2114;
@@ -1398,17 +1398,17 @@ LABEL_148:
 
   +[PLDelayedFiledSystemDeletions waitForAllDelayedDeletionsToFinish];
   v112 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v113 = [v20 path];
-  v114 = [v112 fileExistsAtPath:v113];
+  path24 = [v20 path];
+  v114 = [v112 fileExistsAtPath:path24];
 
   if (!v114)
   {
     v128 = PLMigrationGetLog();
     if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
     {
-      v129 = [v20 path];
+      path25 = [v20 path];
       location = 138543362;
-      *location_4 = v129;
+      *location_4 = path25;
       _os_log_impl(&dword_19BF1F000, v128, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: delayed file deletion in-flight during import, previously found file no longer exists: %{public}@, skipping", &location, 0xCu);
     }
 
@@ -1423,12 +1423,12 @@ LABEL_148:
   v115 = PLMigrationGetLog();
   if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
   {
-    v116 = [v138 path];
+    path26 = [v138 path];
     photoLibraryStoreUUID = self->_photoLibraryStoreUUID;
     v150 = [(NSMutableSet *)self->_existingUUIDs containsObject:v97];
     v118 = [(PLFileSystemAssetImporter *)self assetURLisInDatabase:v138 deferredPreviewURL:v137];
     location = 138544898;
-    *location_4 = v116;
+    *location_4 = path26;
     *&location_4[8] = 2114;
     *&location_4[10] = v97;
     v197 = 2114;
@@ -1448,11 +1448,11 @@ LABEL_148:
   if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
   {
     v120 = v179;
-    v121 = [v20 path];
+    path27 = [v20 path];
     location = 67109378;
     *location_4 = v120 + 1;
     *&location_4[4] = 2114;
-    *&location_4[6] = v121;
+    *&location_4[6] = path27;
     _os_log_impl(&dword_19BF1F000, v119, OS_LOG_TYPE_DEFAULT, "addAssetWithURLs: PROGRESS - Setting progress flag %d for master URL: %{public}@", &location, 0x12u);
   }
 
@@ -1472,16 +1472,16 @@ LABEL_148:
   v165 = v135;
   v176 = v145;
   v166 = v20;
-  v167 = v14;
+  v167 = payloadIDString;
   v168 = v154;
-  v169 = v11;
+  v169 = lsCopy;
   v170 = v157;
   v146 = v156;
   v171 = v146;
   v177 = v147;
   v174 = v184;
   v172 = v159;
-  v178 = a7;
+  dateCopy = date;
   v122 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
   v160[0] = MEMORY[0x1E69E9820];
@@ -1497,12 +1497,12 @@ LABEL_148:
   {
     if (+[PLAvalanche shouldOnlyShowAvalanchePicks])
     {
-      v126 = [v190[5] avalancheUUID];
-      if (v126)
+      avalancheUUID = [v190[5] avalancheUUID];
+      if (avalancheUUID)
       {
-        v127 = [v190[5] avalanchePickTypeIsVisible];
+        avalanchePickTypeIsVisible = [v190[5] avalanchePickTypeIsVisible];
 
-        if ((v127 & 1) == 0)
+        if ((avalanchePickTypeIsVisible & 1) == 0)
         {
           [v190[5] setVisibilityState:2];
         }
@@ -2063,51 +2063,51 @@ id __96__PLFileSystemAssetImporter_addAssetWithURLs_assetPayload_forceInsert_for
   return v3;
 }
 
-- (id)assetURLisInDatabase:(id)a3 deferredPreviewURL:(id)a4
+- (id)assetURLisInDatabase:(id)database deferredPreviewURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  lCopy = l;
   if ([(NSMutableDictionary *)self->_existingUUIDsByUppercasePath count])
   {
     v8 = [(NSString *)self->_libraryBundlePath length];
-    v9 = [v6 path];
-    v10 = v9;
-    if (v7)
+    path = [databaseCopy path];
+    v10 = path;
+    if (lCopy)
     {
-      v11 = [v7 path];
+      path2 = [lCopy path];
     }
 
     else
     {
-      v11 = v9;
+      path2 = path;
     }
 
-    v13 = v11;
-    v14 = [v11 stringByResolvingSymlinksInPath];
+    v13 = path2;
+    stringByResolvingSymlinksInPath = [path2 stringByResolvingSymlinksInPath];
 
-    v15 = [v14 hasPrefix:self->_libraryBundlePath];
+    v15 = [stringByResolvingSymlinksInPath hasPrefix:self->_libraryBundlePath];
     v12 = 0;
     if ([v10 length] > v8 && v15)
     {
-      if (v7)
+      if (lCopy)
       {
-        v16 = [v10 lastPathComponent];
-        v17 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-        v18 = [v6 URLByDeletingLastPathComponent];
-        v19 = [v18 path];
-        v20 = [v17 assetAbbreviatedMetadataDirectoryForDirectory:v19 type:32 bundleScope:0];
+        lastPathComponent = [v10 lastPathComponent];
+        pathManager = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+        uRLByDeletingLastPathComponent = [databaseCopy URLByDeletingLastPathComponent];
+        path3 = [uRLByDeletingLastPathComponent path];
+        v20 = [pathManager assetAbbreviatedMetadataDirectoryForDirectory:path3 type:32 bundleScope:0];
 
-        v21 = [v20 stringByAppendingPathComponent:v16];
+        v21 = [v20 stringByAppendingPathComponent:lastPathComponent];
       }
 
       else
       {
-        v21 = [v14 substringFromIndex:v8 + 1];
+        v21 = [stringByResolvingSymlinksInPath substringFromIndex:v8 + 1];
       }
 
-      v22 = [v21 uppercaseString];
+      uppercaseString = [v21 uppercaseString];
 
-      v12 = [(NSMutableDictionary *)self->_existingUUIDsByUppercasePath objectForKey:v22];
+      v12 = [(NSMutableDictionary *)self->_existingUUIDsByUppercasePath objectForKey:uppercaseString];
     }
   }
 
@@ -2119,17 +2119,17 @@ id __96__PLFileSystemAssetImporter_addAssetWithURLs_assetPayload_forceInsert_for
   return v12;
 }
 
-- (id)_addAssetWithURL:(id)a3 existingOID:(id)a4 assetUUID:(id)a5 isPlaceholder:(BOOL)a6
+- (id)_addAssetWithURL:(id)l existingOID:(id)d assetUUID:(id)iD isPlaceholder:(BOOL)placeholder
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
   v13 = objc_autoreleasePoolPush();
   photoLibrary = self->_photoLibrary;
-  if (v11)
+  if (dCopy)
   {
-    v15 = [PLManagedAsset assetWithObjectID:v11 inLibrary:photoLibrary];
+    v15 = [PLManagedAsset assetWithObjectID:dCopy inLibrary:photoLibrary];
     if (v15)
     {
       v16 = v15;
@@ -2139,7 +2139,7 @@ id __96__PLFileSystemAssetImporter_addAssetWithURLs_assetPayload_forceInsert_for
 
   else
   {
-    v17 = [PLManagedAsset assetWithUUID:v12 inLibrary:photoLibrary];
+    v17 = [PLManagedAsset assetWithUUID:iDCopy inLibrary:photoLibrary];
     if (v17)
     {
       v16 = v17;
@@ -2151,11 +2151,11 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [v10 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v41 = v19;
+      v41 = path;
       v42 = 2114;
-      v43 = v12;
+      v43 = iDCopy;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "addAssetWithURLs: EXISTING ASSET (%{public}@ [%{public}@]) (UUID already inserted by asset creation request?)", buf, 0x16u);
 LABEL_20:
 
@@ -2163,8 +2163,8 @@ LABEL_20:
     }
   }
 
-  v20 = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
-  v16 = [(PLManagedObject *)PLManagedAsset insertInManagedObjectContext:v20];
+  managedObjectContext = [(PLPhotoLibrary *)self->_photoLibrary managedObjectContext];
+  v16 = [(PLManagedObject *)PLManagedAsset insertInManagedObjectContext:managedObjectContext];
 
   if (!v16)
   {
@@ -2175,35 +2175,35 @@ LABEL_22:
   }
 
 LABEL_8:
-  v21 = v12;
+  v21 = iDCopy;
   v22 = v13;
-  v23 = [v10 lastPathComponent];
-  [v16 setFilename:v23];
+  lastPathComponent = [lCopy lastPathComponent];
+  [v16 setFilename:lastPathComponent];
 
-  v24 = [v16 filename];
-  [v16 setOriginalFilename:v24];
+  filename = [v16 filename];
+  [v16 setOriginalFilename:filename];
 
-  v25 = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
-  v26 = [v10 URLByDeletingLastPathComponent];
-  v27 = [v26 path];
-  v28 = [v25 assetAbbreviatedMetadataDirectoryForDirectory:v27 type:32 bundleScope:0];
+  pathManager = [(PLPhotoLibrary *)self->_photoLibrary pathManager];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path2 = [uRLByDeletingLastPathComponent path];
+  v28 = [pathManager assetAbbreviatedMetadataDirectoryForDirectory:path2 type:32 bundleScope:0];
   [v16 setDirectory:v28];
 
   v13 = v22;
-  v12 = v21;
-  if (!a6)
+  iDCopy = v21;
+  if (!placeholder)
   {
     v39 = 0;
     v29 = *MEMORY[0x1E695DB50];
     v38 = 0;
-    v30 = [v10 getResourceValue:&v39 forKey:v29 error:&v38];
-    v19 = v39;
+    v30 = [lCopy getResourceValue:&v39 forKey:v29 error:&v38];
+    path = v39;
     v18 = v38;
     if (v30)
     {
-      if (v19)
+      if (path)
       {
-        [v16 setOriginalFilesize:{objc_msgSend(v19, "unsignedLongLongValue")}];
+        [v16 setOriginalFilesize:{objc_msgSend(path, "unsignedLongLongValue")}];
 
         goto LABEL_12;
       }
@@ -2227,9 +2227,9 @@ LABEL_19:
       }
     }
 
-    v36 = [v10 path];
+    path3 = [lCopy path];
     *buf = 138412546;
-    v41 = v36;
+    v41 = path3;
     v42 = 2112;
     v43 = v18;
     _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "Unable to get file size for %@: %@", buf, 0x16u);
@@ -2238,13 +2238,13 @@ LABEL_19:
   }
 
 LABEL_12:
-  v31 = [v10 pathExtension];
-  v32 = [PLManagedAsset isKnownFileExtension:v31];
+  pathExtension = [lCopy pathExtension];
+  v32 = [PLManagedAsset isKnownFileExtension:pathExtension];
 
   if (v32)
   {
-    v33 = [v10 pathExtension];
-    [v16 setUniformTypeIdentifierFromPathExtension:v33];
+    pathExtension2 = [lCopy pathExtension];
+    [v16 setUniformTypeIdentifierFromPathExtension:pathExtension2];
   }
 
   [v16 updateAssetKindFromUniformTypeIdentifier];
@@ -2268,16 +2268,16 @@ LABEL_23:
   [(PLFileSystemAssetImporter *)&v3 dealloc];
 }
 
-- (id)libraryBundlePathWithPhotoLibrary:(id)a3
+- (id)libraryBundlePathWithPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 pathManager];
-  v5 = [v4 isUBF];
+  libraryCopy = library;
+  pathManager = [libraryCopy pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v5)
+  if (isUBF)
   {
-    v6 = [v3 pathManager];
-    v7 = v6;
+    pathManager2 = [libraryCopy pathManager];
+    v7 = pathManager2;
     v8 = 4;
   }
 
@@ -2290,43 +2290,43 @@ LABEL_23:
       goto LABEL_7;
     }
 
-    v6 = [v3 pathManager];
-    v7 = v6;
+    pathManager2 = [libraryCopy pathManager];
+    v7 = pathManager2;
     v8 = 1;
   }
 
-  v9 = [v6 photoDirectoryWithType:v8];
+  v9 = [pathManager2 photoDirectoryWithType:v8];
 LABEL_7:
   v10 = v9;
 
   return v10;
 }
 
-- (PLFileSystemAssetImporter)initWithPhotoLibrary:(id)a3 libraryServicesManager:(id)a4
+- (PLFileSystemAssetImporter)initWithPhotoLibrary:(id)library libraryServicesManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = PLFileSystemAssetImporter;
   v10 = [(PLFileSystemAssetImporter *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibrary, a3);
-    if (!v9)
+    objc_storeStrong(&v10->_photoLibrary, library);
+    if (!managerCopy)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v11 file:@"PLFileSystemAssetImporter.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"PLFileSystemAssetImporter.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
     }
 
-    objc_storeWeak(&v11->_libraryServicesManager, v9);
-    v12 = [(PLFileSystemAssetImporter *)v11 libraryBundlePathWithPhotoLibrary:v8];
+    objc_storeWeak(&v11->_libraryServicesManager, managerCopy);
+    v12 = [(PLFileSystemAssetImporter *)v11 libraryBundlePathWithPhotoLibrary:libraryCopy];
     libraryBundlePath = v11->_libraryBundlePath;
     v11->_libraryBundlePath = v12;
 
-    v14 = [v8 managedObjectContextStoreUUID];
+    managedObjectContextStoreUUID = [libraryCopy managedObjectContextStoreUUID];
     photoLibraryStoreUUID = v11->_photoLibraryStoreUUID;
-    v11->_photoLibraryStoreUUID = v14;
+    v11->_photoLibraryStoreUUID = managedObjectContextStoreUUID;
 
     v11->_thumbnailBatchFetchSize = 50;
   }

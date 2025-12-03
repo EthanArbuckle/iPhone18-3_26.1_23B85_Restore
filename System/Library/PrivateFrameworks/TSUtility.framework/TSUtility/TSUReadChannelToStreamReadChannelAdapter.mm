@@ -1,19 +1,19 @@
 @interface TSUReadChannelToStreamReadChannelAdapter
-- (TSUReadChannelToStreamReadChannelAdapter)initWithReadChannel:(id)a3;
+- (TSUReadChannelToStreamReadChannelAdapter)initWithReadChannel:(id)channel;
 @end
 
 @implementation TSUReadChannelToStreamReadChannelAdapter
 
-- (TSUReadChannelToStreamReadChannelAdapter)initWithReadChannel:(id)a3
+- (TSUReadChannelToStreamReadChannelAdapter)initWithReadChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = TSUReadChannelToStreamReadChannelAdapter;
   v6 = [(TSUReadChannelToStreamReadChannelAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readChannel, a3);
+    objc_storeStrong(&v6->_readChannel, channel);
   }
 
   return v7;

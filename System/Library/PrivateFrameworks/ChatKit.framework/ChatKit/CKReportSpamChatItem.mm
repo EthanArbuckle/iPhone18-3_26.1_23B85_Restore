@@ -4,20 +4,20 @@
 - (BOOL)isBusinessChat;
 - (BOOL)isGroupChat;
 - (BOOL)showReportSMSSpam;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (NSAttributedString)internalPhishingWarning;
 - (NSAttributedString)transcriptButtonText;
 - (id)filterExtension;
 - (id)loadTranscriptText;
-- (id)transcriptTextForSpam:(BOOL)a3;
+- (id)transcriptTextForSpam:(BOOL)spam;
 @end
 
 @implementation CKReportSpamChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   sizingCell = self->_sizingCell;
   if (!sizingCell)
   {
@@ -40,7 +40,7 @@
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v3 transcriptEmphasizedFontAttributes];
 
   if ([(CKReportSpamChatItem *)self isGroupChat])
   {
@@ -60,21 +60,21 @@
 
   else
   {
-    v9 = [(CKReportSpamChatItem *)self filterExtension];
+    filterExtension = [(CKReportSpamChatItem *)self filterExtension];
 
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
-    if (v9)
+    if (filterExtension)
     {
       v10 = MEMORY[0x1E696AEC0];
       v11 = CKFrameworkBundle();
       v12 = [v11 localizedStringForKey:@"REPORT_SPAM_FILTER_EXTENSION" value:&stru_1F04268F8 table:@"ChatKit"];
-      v13 = [(CKReportSpamChatItem *)self filterExtension];
-      v14 = [v10 stringWithFormat:v12, v13];
+      filterExtension2 = [(CKReportSpamChatItem *)self filterExtension];
+      v14 = [v10 stringWithFormat:v12, filterExtension2];
 
-      v15 = [MEMORY[0x1E69DC668] sharedApplication];
-      v16 = [v15 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v16 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v17 = @"\u200F";
       }
@@ -86,7 +86,7 @@
 
       v7 = [(__CFString *)v17 stringByAppendingString:v14];
 
-      v18 = [v5 initWithString:v7 attributes:v4];
+      v18 = [v5 initWithString:v7 attributes:transcriptEmphasizedFontAttributes];
       goto LABEL_12;
     }
 
@@ -96,19 +96,19 @@
   }
 
   v19 = [v6 localizedStringForKey:v8 value:&stru_1F04268F8 table:@"ChatKit"];
-  v18 = [v5 initWithString:v19 attributes:v4];
+  v18 = [v5 initWithString:v19 attributes:transcriptEmphasizedFontAttributes];
 
 LABEL_12:
 
   return v18;
 }
 
-- (id)transcriptTextForSpam:(BOOL)a3
+- (id)transcriptTextForSpam:(BOOL)spam
 {
   if ([(CKReportSpamChatItem *)self isGroupChat])
   {
     v5 = CKFrameworkBundle();
-    if (!a3)
+    if (!spam)
     {
       v6 = @"REPORT_SPAM_GROUP_STATUS";
       goto LABEL_9;
@@ -117,11 +117,11 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v7 = [(CKReportSpamChatItem *)self isBusinessChat];
+  isBusinessChat = [(CKReportSpamChatItem *)self isBusinessChat];
   v5 = CKFrameworkBundle();
-  if (v7)
+  if (isBusinessChat)
   {
-    if (!a3)
+    if (!spam)
     {
       v6 = @"REPORT_SPAM_BUSINESS_STATUS";
       goto LABEL_9;
@@ -130,7 +130,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (spam)
   {
 LABEL_8:
     v6 = @"REPORTED_SPAM_STATUS";
@@ -150,7 +150,7 @@ LABEL_9:
   if (!transcriptButtonText)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 centerTranscriptButtonTextAttributes];
+    centerTranscriptButtonTextAttributes = [v4 centerTranscriptButtonTextAttributes];
 
     if ([(CKReportSpamChatItem *)self showReportSMSSpam])
     {
@@ -162,7 +162,7 @@ LABEL_9:
         v9 = @"REPORT_SPAM_SMS_BUTTON_TITLE_SINGULAR";
 LABEL_11:
         v12 = [v11 localizedStringForKey:v9 value:&stru_1F04268F8 table:@"ChatKit"];
-        v13 = [v7 initWithString:v12 attributes:v5];
+        v13 = [v7 initWithString:v12 attributes:centerTranscriptButtonTextAttributes];
         v14 = self->_transcriptButtonText;
         self->_transcriptButtonText = v13;
 
@@ -170,10 +170,10 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v6 = [(CKReportSpamChatItem *)self canUnsubscribe];
+      canUnsubscribe = [(CKReportSpamChatItem *)self canUnsubscribe];
       v7 = objc_alloc(MEMORY[0x1E696AAB0]);
       v8 = CKFrameworkBundle();
-      if (!v6)
+      if (!canUnsubscribe)
       {
         v9 = @"REPORT_SPAM_SMS_BUTTON_TITLE_ALL";
 LABEL_10:
@@ -184,10 +184,10 @@ LABEL_10:
 
     else
     {
-      v10 = [(CKReportSpamChatItem *)self canUnsubscribe];
+      canUnsubscribe2 = [(CKReportSpamChatItem *)self canUnsubscribe];
       v7 = objc_alloc(MEMORY[0x1E696AAB0]);
       v8 = CKFrameworkBundle();
-      if (!v10)
+      if (!canUnsubscribe2)
       {
         v9 = @"REPORT_SPAM_BUTTON_TITLE";
         goto LABEL_10;
@@ -206,68 +206,68 @@ LABEL_12:
 - (NSAttributedString)internalPhishingWarning
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 phishingWarningTextAttributes];
+  phishingWarningTextAttributes = [v2 phishingWarningTextAttributes];
 
   v4 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v5 = [v4 initWithString:*MEMORY[0x1E69A7DC8] attributes:v3];
+  v5 = [v4 initWithString:*MEMORY[0x1E69A7DC8] attributes:phishingWarningTextAttributes];
 
   return v5;
 }
 
 - (BOOL)isGroupChat
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isGroupMessage];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isGroupMessage = [iMChatItem isGroupMessage];
 
-  return v3;
+  return isGroupMessage;
 }
 
 - (BOOL)hasMultipleMessages
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 hasMultipleMessages];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  hasMultipleMessages = [iMChatItem hasMultipleMessages];
 
-  return v3;
+  return hasMultipleMessages;
 }
 
 - (BOOL)showReportSMSSpam
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 showReportSMSSpam];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  showReportSMSSpam = [iMChatItem showReportSMSSpam];
 
-  return v3;
+  return showReportSMSSpam;
 }
 
 - (BOOL)isBusinessChat
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isBusinessChat];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isBusinessChat = [iMChatItem isBusinessChat];
 
-  return v3;
+  return isBusinessChat;
 }
 
 - (BOOL)canUnsubscribe
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isReportJunkEverywhereEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isReportJunkEverywhereEnabled = [mEMORY[0x1E69A8070] isReportJunkEverywhereEnabled];
 
-  if (!v4)
+  if (!isReportJunkEverywhereEnabled)
   {
     return 0;
   }
 
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 canUnsubscribe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  canUnsubscribe = [iMChatItem canUnsubscribe];
 
-  return v6;
+  return canUnsubscribe;
 }
 
 - (id)filterExtension
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 filterExtension];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  filterExtension = [iMChatItem filterExtension];
 
-  return v3;
+  return filterExtension;
 }
 
 @end

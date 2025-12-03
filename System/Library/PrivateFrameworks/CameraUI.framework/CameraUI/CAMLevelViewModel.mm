@@ -1,61 +1,61 @@
 @interface CAMLevelViewModel
 - (UIOffset)currentIndicatorOffset;
-- (double)_hysteresisAlphaForDesiredAlpha:(double)result fromCurrentAlpha:(double)a4;
-- (int64_t)_hysteresisModeForDesiredMode:(int64_t)a3;
-- (void)_deviceAngleForGravity:(id)a3 captureOrientation:(int64_t)a4 relativeRoll:(double *)a5 relativePitch:(double *)a6;
-- (void)_setCurrentIndicatorAlpha:(double)a3;
-- (void)_setCurrentIndicatorMode:(int64_t)a3;
-- (void)_setCurrentIndicatorOffset:(UIOffset)a3;
-- (void)_setCurrentIndicatorRotationAngle:(double)a3;
-- (void)_setDesiredUpdateInterval:(double)a3;
-- (void)_updateFlatModeWithRoll:(float)a3 pitch:(float)a4 magnitude:(float)a5;
-- (void)_updateStraightModeWithMode:(int64_t)a3 roll:(double)a4 pitch:(double)a5;
-- (void)applyDeviceMotion:(id)a3 captureOrientation:(int64_t)a4;
+- (double)_hysteresisAlphaForDesiredAlpha:(double)result fromCurrentAlpha:(double)alpha;
+- (int64_t)_hysteresisModeForDesiredMode:(int64_t)mode;
+- (void)_deviceAngleForGravity:(id)gravity captureOrientation:(int64_t)orientation relativeRoll:(double *)roll relativePitch:(double *)pitch;
+- (void)_setCurrentIndicatorAlpha:(double)alpha;
+- (void)_setCurrentIndicatorMode:(int64_t)mode;
+- (void)_setCurrentIndicatorOffset:(UIOffset)offset;
+- (void)_setCurrentIndicatorRotationAngle:(double)angle;
+- (void)_setDesiredUpdateInterval:(double)interval;
+- (void)_updateFlatModeWithRoll:(float)roll pitch:(float)pitch magnitude:(float)magnitude;
+- (void)_updateStraightModeWithMode:(int64_t)mode roll:(double)roll pitch:(double)pitch;
+- (void)applyDeviceMotion:(id)motion captureOrientation:(int64_t)orientation;
 @end
 
 @implementation CAMLevelViewModel
 
-- (void)_deviceAngleForGravity:(id)a3 captureOrientation:(int64_t)a4 relativeRoll:(double *)a5 relativePitch:(double *)a6
+- (void)_deviceAngleForGravity:(id)gravity captureOrientation:(int64_t)orientation relativeRoll:(double *)roll relativePitch:(double *)pitch
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  if ((a4 - 1) > 1)
+  var2 = gravity.var2;
+  var1 = gravity.var1;
+  if ((orientation - 1) > 1)
   {
-    if ((a4 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       return;
     }
 
-    v9 = a3.var1 / a3.var0;
-    var1 = a3.var0;
+    v9 = gravity.var1 / gravity.var0;
+    var1 = gravity.var0;
   }
 
   else
   {
-    v9 = a3.var0 / a3.var1;
+    v9 = gravity.var0 / gravity.var1;
   }
 
-  *a5 = atan(v9);
+  *roll = atan(v9);
   v10 = var2 / var1;
-  *a6 = atanf(v10);
+  *pitch = atanf(v10);
 }
 
-- (void)applyDeviceMotion:(id)a3 captureOrientation:(int64_t)a4
+- (void)applyDeviceMotion:(id)motion captureOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [v6 attitude];
-  [v6 gravity];
+  motionCopy = motion;
+  attitude = [motionCopy attitude];
+  [motionCopy gravity];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [v7 pitch];
+  [attitude pitch];
   v15 = v14;
   v24 = 0.0;
   v25 = 0;
   v23 = 0.0;
-  [v7 cam_getDistanceFromFlat:&v25 relativeRoll:&v25 + 4];
-  [(CAMLevelViewModel *)self _deviceAngleForGravity:a4 captureOrientation:&v24 relativeRoll:&v23 relativePitch:v9, v11, v13];
+  [attitude cam_getDistanceFromFlat:&v25 relativeRoll:&v25 + 4];
+  [(CAMLevelViewModel *)self _deviceAngleForGravity:orientation captureOrientation:&v24 relativeRoll:&v23 relativePitch:v9, v11, v13];
   LODWORD(v16) = v25;
   if (*&v25 >= 0.25)
   {
@@ -66,9 +66,9 @@
       v18 = 1;
     }
 
-    if ((a4 - 3) < 0xFFFFFFFFFFFFFFFELL || v18)
+    if ((orientation - 3) < 0xFFFFFFFFFFFFFFFELL || v18)
     {
-      if ((a4 - 5) < 0xFFFFFFFFFFFFFFFELL)
+      if ((orientation - 5) < 0xFFFFFFFFFFFFFFFELL)
       {
         v18 = 1;
       }
@@ -126,24 +126,24 @@ void __36__CAMLevelViewModel__updateModeNone__block_invoke(uint64_t a1, void *a2
   [v2 _setCurrentIndicatorAlpha:0.0];
 }
 
-- (void)_updateFlatModeWithRoll:(float)a3 pitch:(float)a4 magnitude:(float)a5
+- (void)_updateFlatModeWithRoll:(float)roll pitch:(float)pitch magnitude:(float)magnitude
 {
-  v7 = [(CAMLevelViewModel *)self currentIndicatorMode];
+  currentIndicatorMode = [(CAMLevelViewModel *)self currentIndicatorMode];
   [(CAMLevelViewModel *)self currentIndicatorOffset];
   v10 = *MEMORY[0x1E69DE258];
   v11 = *(MEMORY[0x1E69DE258] + 8);
-  v15 = v7 == 1 && v9 == v11 && v8 == v10 && a5 < 0.025;
+  v15 = currentIndicatorMode == 1 && v9 == v11 && v8 == v10 && magnitude < 0.025;
   v16 = 1.0;
-  if (a5 >= 0.0175 && !v15)
+  if (magnitude >= 0.0175 && !v15)
   {
-    v17 = (a5 + -0.125) * -8.0 + 1.0;
+    v17 = (magnitude + -0.125) * -8.0 + 1.0;
     if (v17 > 1.0)
     {
       v17 = 1.0;
     }
 
     v16 = fmax(v17, 0.0);
-    v18 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     UIRoundToScreenScale();
     v10 = v19;
     UIRoundToScreenScale();
@@ -171,31 +171,31 @@ void __61__CAMLevelViewModel__updateFlatModeWithRoll_pitch_magnitude___block_inv
   [v3 _setCurrentIndicatorAlpha:a1[6]];
 }
 
-- (void)_updateStraightModeWithMode:(int64_t)a3 roll:(double)a4 pitch:(double)a5
+- (void)_updateStraightModeWithMode:(int64_t)mode roll:(double)roll pitch:(double)pitch
 {
-  v8 = fabs(a4);
-  v9 = [(CAMLevelViewModel *)self currentIndicatorMode];
+  v8 = fabs(roll);
+  currentIndicatorMode = [(CAMLevelViewModel *)self currentIndicatorMode];
   [(CAMLevelViewModel *)self currentIndicatorRotationAngle];
   v10 = v8 < 0.0150000006;
-  if (v11 != 0.0 || (v9 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if (v11 != 0.0 || (currentIndicatorMode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v10 = 0;
   }
 
-  v13 = 0.0;
+  rollCopy = 0.0;
   v14 = 1.0;
   if (v8 >= 0.0125000002 && !v10)
   {
     CEKProgressClamped();
     CEKInterpolateClamped();
     v14 = v15;
-    v13 = a4;
+    rollCopy = roll;
   }
 
   CEKProgressClamped();
   CEKInterpolateClamped();
   v17 = v16;
-  if (v13 != 0.0)
+  if (rollCopy != 0.0)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(CAMLevelViewModel *)self _setLastNonZeroAngleTime:?];
@@ -226,8 +226,8 @@ void __61__CAMLevelViewModel__updateFlatModeWithRoll_pitch_magnitude___block_inv
   v25[1] = 3221225472;
   v25[2] = __60__CAMLevelViewModel__updateStraightModeWithMode_roll_pitch___block_invoke;
   v25[3] = &__block_descriptor_56_e27_v16__0__CAMLevelViewModel_8l;
-  v25[4] = a3;
-  *&v25[5] = v13;
+  v25[4] = mode;
+  *&v25[5] = rollCopy;
   v25[6] = v24;
   [(CAMObservable *)self performChanges:v25];
 }
@@ -241,10 +241,10 @@ void __60__CAMLevelViewModel__updateStraightModeWithMode_roll_pitch___block_invo
   [v3 _setCurrentIndicatorAlpha:*(a1 + 48)];
 }
 
-- (double)_hysteresisAlphaForDesiredAlpha:(double)result fromCurrentAlpha:(double)a4
+- (double)_hysteresisAlphaForDesiredAlpha:(double)result fromCurrentAlpha:(double)alpha
 {
-  v4 = fmax(a4 + -0.0833333333, 0.0);
-  v5 = a4 + 0.0833333333;
+  v4 = fmax(alpha + -0.0833333333, 0.0);
+  v5 = alpha + 0.0833333333;
   if (v5 > 1.0)
   {
     v5 = 1.0;
@@ -263,23 +263,23 @@ void __60__CAMLevelViewModel__updateStraightModeWithMode_roll_pitch___block_invo
   return result;
 }
 
-- (int64_t)_hysteresisModeForDesiredMode:(int64_t)a3
+- (int64_t)_hysteresisModeForDesiredMode:(int64_t)mode
 {
-  v3 = a3;
-  if ([(CAMLevelViewModel *)self _desiredIndicatorMode]!= a3)
+  modeCopy = mode;
+  if ([(CAMLevelViewModel *)self _desiredIndicatorMode]!= mode)
   {
-    [(CAMLevelViewModel *)self _setDesiredIndicatorMode:v3];
+    [(CAMLevelViewModel *)self _setDesiredIndicatorMode:modeCopy];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(CAMLevelViewModel *)self _setDesiredModeBeganTime:?];
   }
 
-  v5 = [(CAMLevelViewModel *)self currentIndicatorMode];
-  v6 = v5;
-  if (v3 || !v5)
+  currentIndicatorMode = [(CAMLevelViewModel *)self currentIndicatorMode];
+  v6 = currentIndicatorMode;
+  if (modeCopy || !currentIndicatorMode)
   {
-    if (v3)
+    if (modeCopy)
     {
-      if (!v5)
+      if (!currentIndicatorMode)
       {
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
         v10 = v9;
@@ -307,50 +307,50 @@ void __60__CAMLevelViewModel__updateStraightModeWithMode_roll_pitch___block_invo
     }
   }
 
-  return v3;
+  return modeCopy;
 }
 
-- (void)_setCurrentIndicatorMode:(int64_t)a3
+- (void)_setCurrentIndicatorMode:(int64_t)mode
 {
-  if (self->_currentIndicatorMode != a3)
+  if (self->_currentIndicatorMode != mode)
   {
-    self->_currentIndicatorMode = a3;
+    self->_currentIndicatorMode = mode;
     [(CAMObservable *)self signalChange:1];
   }
 }
 
-- (void)_setCurrentIndicatorOffset:(UIOffset)a3
+- (void)_setCurrentIndicatorOffset:(UIOffset)offset
 {
-  if (a3.horizontal != self->_currentIndicatorOffset.horizontal || a3.vertical != self->_currentIndicatorOffset.vertical)
+  if (offset.horizontal != self->_currentIndicatorOffset.horizontal || offset.vertical != self->_currentIndicatorOffset.vertical)
   {
-    self->_currentIndicatorOffset = a3;
+    self->_currentIndicatorOffset = offset;
     [(CAMObservable *)self signalChange:2];
   }
 }
 
-- (void)_setCurrentIndicatorRotationAngle:(double)a3
+- (void)_setCurrentIndicatorRotationAngle:(double)angle
 {
-  if (self->_currentIndicatorRotationAngle != a3)
+  if (self->_currentIndicatorRotationAngle != angle)
   {
-    self->_currentIndicatorRotationAngle = a3;
+    self->_currentIndicatorRotationAngle = angle;
     [(CAMObservable *)self signalChange:16];
   }
 }
 
-- (void)_setCurrentIndicatorAlpha:(double)a3
+- (void)_setCurrentIndicatorAlpha:(double)alpha
 {
-  if (self->_currentIndicatorAlpha != a3)
+  if (self->_currentIndicatorAlpha != alpha)
   {
-    self->_currentIndicatorAlpha = a3;
+    self->_currentIndicatorAlpha = alpha;
     [(CAMObservable *)self signalChange:4];
   }
 }
 
-- (void)_setDesiredUpdateInterval:(double)a3
+- (void)_setDesiredUpdateInterval:(double)interval
 {
-  if (self->_desiredUpdateInterval != a3)
+  if (self->_desiredUpdateInterval != interval)
   {
-    self->_desiredUpdateInterval = a3;
+    self->_desiredUpdateInterval = interval;
     [(CAMObservable *)self signalChange:8];
   }
 }

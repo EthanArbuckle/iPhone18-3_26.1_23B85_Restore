@@ -1,6 +1,6 @@
 @interface PauseWorkoutIntentHandler
 - (_TtC12SeymourMedia25PauseWorkoutIntentHandler)init;
-- (void)handlePauseWorkout:(id)a3 completion:(id)a4;
+- (void)handlePauseWorkout:(id)workout completion:(id)completion;
 @end
 
 @implementation PauseWorkoutIntentHandler
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)handlePauseWorkout:(id)a3 completion:(id)a4
+- (void)handlePauseWorkout:(id)workout completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  workoutCopy = workout;
+  selfCopy = self;
   sub_20C522694(sub_20C4FE11C, v7);
 }
 

@@ -1,19 +1,19 @@
 @interface ATXScoredPrediction
-+ (id)predictionsFrom:(id)a3;
-- (ATXScoredPrediction)initWithCoder:(id)a3;
-- (ATXScoredPrediction)initWithPredictedItem:(id)a3 score:(float)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScoredPredictionItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)predictionsFrom:(id)from;
+- (ATXScoredPrediction)initWithCoder:(id)coder;
+- (ATXScoredPrediction)initWithPredictedItem:(id)item score:(float)score;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScoredPredictionItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXScoredPrediction
 
-- (ATXScoredPrediction)initWithPredictedItem:(id)a3 score:(float)a4
+- (ATXScoredPrediction)initWithPredictedItem:(id)item score:(float)score
 {
-  v8 = a3;
-  if (!v8)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [ATXScoredPrediction initWithPredictedItem:a2 score:self];
   }
@@ -24,23 +24,23 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_predictedItem, a3);
-    v10->_score = a4;
+    objc_storeStrong(&v9->_predictedItem, item);
+    v10->_score = score;
   }
 
   return v10;
 }
 
-+ (id)predictionsFrom:(id)a3
++ (id)predictionsFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  fromCopy = from;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fromCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = fromCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -55,8 +55,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) predictedItem];
-        [v4 addObject:v10];
+        predictedItem = [*(*(&v12 + 1) + 8 * i) predictedItem];
+        [v4 addObject:predictedItem];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -68,37 +68,37 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXScoredPrediction allocWithZone:a3];
+  v4 = [ATXScoredPrediction allocWithZone:zone];
   predictedItem = self->_predictedItem;
   *&v6 = self->_score;
 
   return [(ATXScoredPrediction *)v4 initWithPredictedItem:predictedItem score:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXScoredPrediction *)self isEqualToScoredPredictionItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXScoredPrediction *)self isEqualToScoredPredictionItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToScoredPredictionItem:(id)a3
+- (BOOL)isEqualToScoredPredictionItem:(id)item
 {
-  if (self->_score == *(a3 + 2))
+  if (self->_score == *(item + 2))
   {
-    return [self->_predictedItem isEqual:*(a3 + 2)];
+    return [self->_predictedItem isEqual:*(item + 2)];
   }
 
   else
@@ -107,14 +107,14 @@
   }
 }
 
-- (ATXScoredPrediction)initWithCoder:(id)a3
+- (ATXScoredPrediction)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"predictedItem"];
-  [v5 decodeFloatForKey:@"score"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"predictedItem"];
+  [coderCopy decodeFloatForKey:@"score"];
   v10 = v9;
 
   LODWORD(v11) = v10;
@@ -123,13 +123,13 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predictedItem = self->_predictedItem;
-  v6 = a3;
-  [v6 encodeObject:predictedItem forKey:@"predictedItem"];
+  coderCopy = coder;
+  [coderCopy encodeObject:predictedItem forKey:@"predictedItem"];
   *&v5 = self->_score;
-  [v6 encodeFloat:@"score" forKey:v5];
+  [coderCopy encodeFloat:@"score" forKey:v5];
 }
 
 - (void)initWithPredictedItem:(uint64_t)a1 score:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

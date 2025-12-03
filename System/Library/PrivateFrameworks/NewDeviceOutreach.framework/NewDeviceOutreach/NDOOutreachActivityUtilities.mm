@@ -1,14 +1,14 @@
 @interface NDOOutreachActivityUtilities
-- (void)performOutreachActivityForActivityID:(id)a3 withScheduler:(id)a4 andCompletion:(id)a5;
+- (void)performOutreachActivityForActivityID:(id)d withScheduler:(id)scheduler andCompletion:(id)completion;
 @end
 
 @implementation NDOOutreachActivityUtilities
 
-- (void)performOutreachActivityForActivityID:(id)a3 withScheduler:(id)a4 andCompletion:(id)a5
+- (void)performOutreachActivityForActivityID:(id)d withScheduler:(id)scheduler andCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  schedulerCopy = scheduler;
+  completionCopy = completion;
   [(NDOOutreachActivityUtilities *)self setOutreachInProgress:1];
   objc_initWeak(&location, self);
   v39[0] = _NSConcreteStackBlock;
@@ -16,22 +16,22 @@
   v39[2] = sub_1000197F0;
   v39[3] = &unk_10009AE88;
   objc_copyWeak(&v43, &location);
-  v11 = v9;
+  v11 = schedulerCopy;
   v40 = v11;
-  v12 = v8;
+  v12 = dCopy;
   v41 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v42 = v13;
   v14 = [NSTimer timerWithTimeInterval:1 repeats:v39 block:2000000000.0];
   [(NDOOutreachActivityUtilities *)self setOutReachTimer:v14];
 
   v15 = +[NSRunLoop mainRunLoop];
-  v16 = [(NDOOutreachActivityUtilities *)self outReachTimer];
-  [v15 addTimer:v16 forMode:NSDefaultRunLoopMode];
+  outReachTimer = [(NDOOutreachActivityUtilities *)self outReachTimer];
+  [v15 addTimer:outReachTimer forMode:NSDefaultRunLoopMode];
 
   v17 = +[NDODeviceProvider sharedProvider];
-  v18 = [v17 primaryFUPEligibleDevices];
-  v19 = [v18 allValues];
+  primaryFUPEligibleDevices = [v17 primaryFUPEligibleDevices];
+  allValues = [primaryFUPEligibleDevices allValues];
 
   v20 = _NDOLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -41,7 +41,7 @@
     *&buf[12] = 2114;
     *&buf[14] = v12;
     *&buf[22] = 2112;
-    v46 = v19;
+    v46 = allValues;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}s: -- Activity: %{public}@ -- devices: %@", buf, 0x20u);
   }
 
@@ -64,7 +64,7 @@
   v25 = v12;
   v37 = v25;
   v38 = buf;
-  [v19 enumerateObjectsUsingBlock:v34];
+  [allValues enumerateObjectsUsingBlock:v34];
   v26 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

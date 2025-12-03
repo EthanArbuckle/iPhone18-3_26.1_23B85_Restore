@@ -8,11 +8,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelCreditsArtist *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelCreditsArtist *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -25,14 +25,14 @@
 
 + (void)__MPModelPropertyCreditsArtistArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelCreditsArtist.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertyCreditsArtistArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelCreditsArtist.m" lineNumber:30 description:@"Translator was missing mapping for MPModelPropertyCreditsArtistArtwork"];
 }
 
 + (void)__MPModelRelationshipCreditsArtistRelatedArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelCreditsArtist.m" lineNumber:29 description:@"Translator was missing mapping for MPModelRelationshipCreditsArtistRelatedArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelCreditsArtist.m" lineNumber:29 description:@"Translator was missing mapping for MPModelRelationshipCreditsArtistRelatedArtist"];
 }
 
 @end

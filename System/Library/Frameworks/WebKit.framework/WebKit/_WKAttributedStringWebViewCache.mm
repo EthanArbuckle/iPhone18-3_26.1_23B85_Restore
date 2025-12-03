@@ -2,17 +2,17 @@
 + (RetainPtr<WKWebView>)retrieveOrCreateWebView;
 + (id)cache;
 + (id)configuration;
-+ (void)cacheWebView:(id)a3;
++ (void)cacheWebView:(id)view;
 + (void)clearConfiguration;
-+ (void)clearConfigurationAndRaiseExceptionIfNecessary:(id)a3;
-+ (void)invalidateGlobalConfigurationIfNeeded:(id)a3;
-+ (void)maybeConsumeBundlePaths:(id)a3;
-+ (void)maybeUpdateShouldAllowNetworkLoads:(id)a3;
-+ (void)maybeUpdateSourceApplicationBundleIdentifier:(id)a3;
++ (void)clearConfigurationAndRaiseExceptionIfNecessary:(id)necessary;
++ (void)invalidateGlobalConfigurationIfNeeded:(id)needed;
++ (void)maybeConsumeBundlePaths:(id)paths;
++ (void)maybeUpdateShouldAllowNetworkLoads:(id)loads;
++ (void)maybeUpdateSourceApplicationBundleIdentifier:(id)identifier;
 + (void)purgeAllWebViews;
 + (void)purgeSingleWebView;
 + (void)resetPurgeDelay;
-+ (void)validateEntry:(id)a3;
++ (void)validateEntry:(id)entry;
 @end
 
 @implementation _WKAttributedStringWebViewCache
@@ -81,10 +81,10 @@ LABEL_12:
         if (qword_1ED6423F0)
         {
           v9 = qword_1ED6423F0;
-          v10 = [[_WKWebsiteDataStoreConfiguration alloc] initNonPersistentConfiguration];
-          [v10 setSourceApplicationBundleIdentifier:v8];
-          v11 = [[WKWebsiteDataStore alloc] _initWithConfiguration:v10];
-          if (v10)
+          initNonPersistentConfiguration = [[_WKWebsiteDataStoreConfiguration alloc] initNonPersistentConfiguration];
+          [initNonPersistentConfiguration setSourceApplicationBundleIdentifier:v8];
+          v11 = [[WKWebsiteDataStore alloc] _initWithConfiguration:initNonPersistentConfiguration];
+          if (initNonPersistentConfiguration)
           {
           }
 
@@ -163,23 +163,23 @@ LABEL_11:
   }
 }
 
-+ (void)clearConfigurationAndRaiseExceptionIfNecessary:(id)a3
++ (void)clearConfigurationAndRaiseExceptionIfNecessary:(id)necessary
 {
-  if (a3)
+  if (necessary)
   {
     if ([readOnlyAccessPaths() count])
     {
       [readOnlyAccessPaths() removeAllObjects];
-      [a1 clearConfiguration];
+      [self clearConfiguration];
     }
 
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@", necessary}];
   }
 }
 
-+ (void)validateEntry:(id)a3
++ (void)validateEntry:(id)entry
 {
-  v4 = WTF::dynamic_objc_cast<NSURL>(a3);
+  v4 = WTF::dynamic_objc_cast<NSURL>(entry);
   if (v4)
   {
     if ([v4 isFileURL])
@@ -198,48 +198,48 @@ LABEL_11:
     v5 = @"The NSArray associated with _WKReadAccessFileURLsOption may only contain NSURL objects.";
   }
 
-  [a1 clearConfigurationAndRaiseExceptionIfNecessary:v5];
+  [self clearConfigurationAndRaiseExceptionIfNecessary:v5];
 }
 
-+ (void)maybeUpdateShouldAllowNetworkLoads:(id)a3
++ (void)maybeUpdateShouldAllowNetworkLoads:(id)loads
 {
-  if (!a3)
+  if (!loads)
   {
     if (shouldAllowNetworkLoads)
     {
       return;
     }
 
-    v6 = 1;
+    bOOLValue2 = 1;
     goto LABEL_11;
   }
 
-  v4 = a3;
+  loadsCopy = loads;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = 0;
+    loadsCopy = 0;
   }
 
-  if (!v4)
+  if (!loadsCopy)
   {
-    [a1 clearConfigurationAndRaiseExceptionIfNecessary:@"The value associated with _WKAllowNetworkLoadsOption must be an NSNumber."];
+    [self clearConfigurationAndRaiseExceptionIfNecessary:@"The value associated with _WKAllowNetworkLoadsOption must be an NSNumber."];
   }
 
-  v5 = [v4 BOOLValue];
-  if (shouldAllowNetworkLoads != v5)
+  bOOLValue = [loadsCopy BOOLValue];
+  if (shouldAllowNetworkLoads != bOOLValue)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue2 = [loadsCopy BOOLValue];
 LABEL_11:
-    shouldAllowNetworkLoads = v6;
+    shouldAllowNetworkLoads = bOOLValue2;
 
-    [a1 clearConfiguration];
+    [self clearConfiguration];
   }
 }
 
-+ (void)maybeUpdateSourceApplicationBundleIdentifier:(id)a3
++ (void)maybeUpdateSourceApplicationBundleIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     if ((byte_1ED6423BD & 1) == 0)
     {
@@ -258,16 +258,16 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v4 = 0;
+    identifierCopy = 0;
   }
 
-  if (!v4)
+  if (!identifierCopy)
   {
-    [a1 clearConfigurationAndRaiseExceptionIfNecessary:@"The value associated with _WKSourceApplicationBundleIdentifierOption must be an NSString."];
+    [self clearConfigurationAndRaiseExceptionIfNecessary:@"The value associated with _WKSourceApplicationBundleIdentifierOption must be an NSString."];
   }
 
   if (byte_1ED6423BD == 1)
@@ -282,11 +282,11 @@ LABEL_11:
     byte_1ED6423BD = 1;
   }
 
-  if (([v5 isEqualToString:v4] & 1) == 0)
+  if (([v5 isEqualToString:identifierCopy] & 1) == 0)
   {
     if (byte_1ED6423BD)
     {
-      if (!v4)
+      if (!identifierCopy)
       {
         goto LABEL_12;
       }
@@ -296,16 +296,16 @@ LABEL_11:
     {
       qword_1ED6423F0 = 0;
       byte_1ED6423BD = 1;
-      if (!v4)
+      if (!identifierCopy)
       {
 LABEL_12:
         v7 = qword_1ED6423F0;
-        qword_1ED6423F0 = v4;
+        qword_1ED6423F0 = identifierCopy;
         if (!v7)
         {
 LABEL_18:
 
-          [a1 clearConfiguration];
+          [self clearConfiguration];
           return;
         }
 
@@ -315,16 +315,16 @@ LABEL_17:
       }
     }
 
-    v6 = v4;
+    v6 = identifierCopy;
     goto LABEL_12;
   }
 }
 
-+ (void)maybeConsumeBundlePaths:(id)a3
++ (void)maybeConsumeBundlePaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!paths)
   {
     goto LABEL_7;
   }
@@ -332,7 +332,7 @@ LABEL_17:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = 0;
+    pathsCopy = 0;
 LABEL_7:
     v6 = @"The value associated with _WKReadAccessFileURLsOption must be an NSArray of NSURL objects.";
     v5 = 1;
@@ -340,7 +340,7 @@ LABEL_7:
   }
 
   v5 = 0;
-  if ([v3 count] <= 2)
+  if ([pathsCopy count] <= 2)
   {
     v6 = 0;
   }
@@ -351,12 +351,12 @@ LABEL_7:
   }
 
 LABEL_8:
-  [a1 clearConfigurationAndRaiseExceptionIfNecessary:v6];
+  [self clearConfigurationAndRaiseExceptionIfNecessary:v6];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -368,20 +368,20 @@ LABEL_8:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        [a1 validateEntry:*(*(&v12 + 1) + 8 * v10++)];
+        [self validateEntry:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  if (([v3 isEqualToArray:readOnlyAccessPaths()] & 1) == 0)
+  if (([pathsCopy isEqualToArray:readOnlyAccessPaths()] & 1) == 0)
   {
     OnlyAccessPaths = readOnlyAccessPaths();
     if (v5)
@@ -391,70 +391,70 @@ LABEL_8:
 
     else
     {
-      [OnlyAccessPaths setArray:v3];
+      [OnlyAccessPaths setArray:pathsCopy];
     }
 
-    [a1 clearConfiguration];
+    [self clearConfiguration];
   }
 }
 
-+ (void)invalidateGlobalConfigurationIfNeeded:(id)a3
++ (void)invalidateGlobalConfigurationIfNeeded:(id)needed
 {
-  v5 = [a3 objectForKeyedSubscript:@"_WKReadAccessFileURLsOption"];
+  v5 = [needed objectForKeyedSubscript:@"_WKReadAccessFileURLsOption"];
   if (v5)
   {
-    [a1 maybeConsumeBundlePaths:v5];
+    [self maybeConsumeBundlePaths:v5];
   }
 
-  [a1 maybeUpdateShouldAllowNetworkLoads:{objc_msgSend(a3, "objectForKeyedSubscript:", @"_WKAllowNetworkLoadsOption"}];
-  v6 = [a3 objectForKeyedSubscript:@"_WKSourceApplicationBundleIdentifierOption"];
+  [self maybeUpdateShouldAllowNetworkLoads:{objc_msgSend(needed, "objectForKeyedSubscript:", @"_WKAllowNetworkLoadsOption"}];
+  v6 = [needed objectForKeyedSubscript:@"_WKSourceApplicationBundleIdentifierOption"];
 
-  [a1 maybeUpdateSourceApplicationBundleIdentifier:v6];
+  [self maybeUpdateSourceApplicationBundleIdentifier:v6];
 }
 
 + (RetainPtr<WKWebView>)retrieveOrCreateWebView
 {
   v4 = v2;
-  [a1 resetPurgeDelay];
+  [self resetPurgeDelay];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58___WKAttributedStringWebViewCache_retrieveOrCreateWebView__block_invoke;
   block[3] = &unk_1E7631230;
-  block[4] = a1;
+  block[4] = self;
   if (+[_WKAttributedStringWebViewCache retrieveOrCreateWebView]::onceToken != -1)
   {
     dispatch_once(&+[_WKAttributedStringWebViewCache retrieveOrCreateWebView]::onceToken, block);
   }
 
-  v5 = [a1 cache];
-  if ([v5 count])
+  cache = [self cache];
+  if ([cache count])
   {
-    v6 = [v5 lastObject];
-    *v4 = v6;
-    if (v6)
+    lastObject = [cache lastObject];
+    *v4 = lastObject;
+    if (lastObject)
     {
-      v7 = v6;
+      v7 = lastObject;
     }
 
-    return [v5 removeLastObject];
+    return [cache removeLastObject];
   }
 
   else
   {
-    v8 = -[WKWebView initWithFrame:configuration:]([WKWebView alloc], "initWithFrame:configuration:", [a1 configuration], 0.0, 0.0, 800.0, 600.0);
+    v8 = -[WKWebView initWithFrame:configuration:]([WKWebView alloc], "initWithFrame:configuration:", [self configuration], 0.0, 0.0, 800.0, 600.0);
     *v4 = v8;
   }
 
   return v8;
 }
 
-+ (void)cacheWebView:(id)a3
++ (void)cacheWebView:(id)view
 {
-  v4 = [a1 cache];
-  if ([v4 count] <= 2)
+  cache = [self cache];
+  if ([cache count] <= 2)
   {
 
-    [v4 addObject:a3];
+    [cache addObject:view];
   }
 }
 
@@ -472,43 +472,43 @@ LABEL_8:
     byte_1ED6423BA = 1;
   }
 
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:v3 object:0];
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:v3 object:0];
   v4 = qword_1ED6423D8;
 
-  [a1 performSelector:v4 withObject:0 afterDelay:15.0];
+  [self performSelector:v4 withObject:0 afterDelay:15.0];
 }
 
 + (void)purgeSingleWebView
 {
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:a2 object:0];
-  v4 = [a1 cache];
-  if ([v4 count])
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:0];
+  cache = [self cache];
+  if ([cache count])
   {
-    [objc_msgSend(v4 "lastObject")];
-    [v4 removeLastObject];
-    if ([v4 count])
+    [objc_msgSend(cache "lastObject")];
+    [cache removeLastObject];
+    if ([cache count])
     {
 
-      [a1 performSelector:a2 withObject:0 afterDelay:15.0];
+      [self performSelector:a2 withObject:0 afterDelay:15.0];
     }
 
     else
     {
 
-      [a1 clearConfiguration];
+      [self clearConfiguration];
     }
   }
 }
 
 + (void)purgeAllWebViews
 {
-  v3 = [a1 cache];
-  if ([v3 count])
+  cache = [self cache];
+  if ([cache count])
   {
-    [v3 makeObjectsPerformSelector:sel__close];
-    [v3 removeAllObjects];
+    [cache makeObjectsPerformSelector:sel__close];
+    [cache removeAllObjects];
 
-    [a1 clearConfiguration];
+    [self clearConfiguration];
   }
 }
 

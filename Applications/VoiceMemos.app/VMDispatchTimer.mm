@@ -1,14 +1,14 @@
 @interface VMDispatchTimer
-- (id)init:(double)a3 leeway:(double)a4 queue:(id)a5 block:(id)a6;
+- (id)init:(double)init leeway:(double)leeway queue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation VMDispatchTimer
 
-- (id)init:(double)a3 leeway:(double)a4 queue:(id)a5 block:(id)a6
+- (id)init:(double)init leeway:(double)leeway queue:(id)queue block:(id)block
 {
-  v11 = a5;
-  v12 = a6;
+  queueCopy = queue;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = VMDispatchTimer;
   v13 = [(VMDispatchTimer *)&v20 init];
@@ -18,9 +18,9 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v13->_queue, a5);
-  v14->_interval = a3;
-  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v11);
+  objc_storeStrong(&v13->_queue, queue);
+  v14->_interval = init;
+  v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queueCopy);
   dispatchSource = v14->_dispatchSource;
   v14->_dispatchSource = v15;
 
@@ -28,8 +28,8 @@
   if (v17)
   {
     v18 = dispatch_walltime(0, 0);
-    dispatch_source_set_timer(v17, v18, (a3 * 1000000000.0), (a4 * 1000000000.0));
-    dispatch_source_set_event_handler(v14->_dispatchSource, v12);
+    dispatch_source_set_timer(v17, v18, (init * 1000000000.0), (leeway * 1000000000.0));
+    dispatch_source_set_event_handler(v14->_dispatchSource, blockCopy);
     dispatch_resume(v14->_dispatchSource);
 LABEL_4:
     v17 = v14;

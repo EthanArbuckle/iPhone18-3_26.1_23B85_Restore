@@ -1,9 +1,9 @@
 @interface DBDashboardLayoutEngine
-+ (UIEdgeInsets)insetsForViewArea:(CGRect)a3 statusBarEdge:(unint64_t)a4 environmentConfiguration:(id)a5;
-+ (double)dockShortAxisMarginForSafeAreaSize:(CGSize)a3 statusBarEdge:(unint64_t)a4;
++ (UIEdgeInsets)insetsForViewArea:(CGRect)area statusBarEdge:(unint64_t)edge environmentConfiguration:(id)configuration;
++ (double)dockShortAxisMarginForSafeAreaSize:(CGSize)size statusBarEdge:(unint64_t)edge;
 - (BOOL)hasEmbeddedSecondaryContentArea;
-- (CGRect)_secondaryDockFrameForRightHandDrive:(BOOL)a3 safeAreaFrame:(CGRect)a4;
-- (CGRect)areaOfInterestFrameForApplication:(id)a3;
+- (CGRect)_secondaryDockFrameForRightHandDrive:(BOOL)drive safeAreaFrame:(CGRect)frame;
+- (CGRect)areaOfInterestFrameForApplication:(id)application;
 - (CGRect)cameraWindowFrame;
 - (CGRect)climateWindowFrame;
 - (CGRect)cornerRadiusWindowFrame;
@@ -13,25 +13,25 @@
 - (CGRect)notificationWindowFrame;
 - (CGRect)primaryDockWindowFrame;
 - (CGRect)resizeAnimationWindowFrame;
-- (CGRect)sceneFrameForApplication:(id)a3;
+- (CGRect)sceneFrameForApplication:(id)application;
 - (CGRect)secondaryDockWindowFrame;
 - (CGRect)wallpaperHostSceneFrame;
 - (CGRect)wallpaperHostWindowFrame;
 - (CGRect)wallpaperWindowFrame;
-- (DBDashboardLayoutEngine)initWithEnvironmentConfiguration:(id)a3;
-- (UIEdgeInsets)_UISafeAreaInsetsWithSafeAreaFrame:(CGRect)a3 secondaryContentFrame:(CGRect)a4;
-- (UIEdgeInsets)_adjustedPrimaryDockMargins:(UIEdgeInsets)a3;
-- (UIEdgeInsets)_adjustedSecondaryDockMargins:(UIEdgeInsets)a3;
+- (DBDashboardLayoutEngine)initWithEnvironmentConfiguration:(id)configuration;
+- (UIEdgeInsets)_UISafeAreaInsetsWithSafeAreaFrame:(CGRect)frame secondaryContentFrame:(CGRect)contentFrame;
+- (UIEdgeInsets)_adjustedPrimaryDockMargins:(UIEdgeInsets)margins;
+- (UIEdgeInsets)_adjustedSecondaryDockMargins:(UIEdgeInsets)margins;
 - (UIEdgeInsets)_baseTodayViewInsets;
 - (UIEdgeInsets)_dualStatusBarInsets;
-- (UIEdgeInsets)_dualStatusBarTodayViewAdjustment:(UIEdgeInsets)a3;
-- (UIEdgeInsets)dockMarginsForVariant:(unint64_t)a3;
+- (UIEdgeInsets)_dualStatusBarTodayViewAdjustment:(UIEdgeInsets)adjustment;
+- (UIEdgeInsets)dockMarginsForVariant:(unint64_t)variant;
 - (UIEdgeInsets)folderViewAdditionalInsets;
 - (UIEdgeInsets)homeViewControllerInsets;
-- (UIEdgeInsets)homeViewControllerInsetsWithContentUnderDock:(BOOL)a3;
+- (UIEdgeInsets)homeViewControllerInsetsWithContentUnderDock:(BOOL)dock;
 - (UIEdgeInsets)primaryDockMargins;
 - (UIEdgeInsets)rootViewControllerContentInsets;
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3;
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application;
 - (UIEdgeInsets)secondaryDockMargins;
 - (UIEdgeInsets)statusBarInsets;
 - (UIEdgeInsets)todayViewAdditionalInsets;
@@ -51,12 +51,12 @@
 - (unint64_t)primaryDockVariant
 {
   v3 = objc_opt_class();
-  v4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v4 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v6 = v5;
   v8 = v7;
-  v9 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v10 = [v3 dockVariantForSafeAreaSize:objc_msgSend(v9 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v10 = [v3 dockVariantForSafeAreaSize:objc_msgSend(environmentConfiguration2 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
 
   return v10;
 }
@@ -64,12 +64,12 @@
 - (double)dockShortAxisLength
 {
   v3 = objc_opt_class();
-  v4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v4 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v6 = v5;
   v8 = v7;
-  v9 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v3 dockShortAxisLengthForSafeAreaSize:objc_msgSend(v9 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [v3 dockShortAxisLengthForSafeAreaSize:objc_msgSend(environmentConfiguration2 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
   v11 = v10;
 
   return v11;
@@ -77,9 +77,9 @@
 
 - (UIEdgeInsets)homeViewControllerInsets
 {
-  v3 = [(DBDashboardLayoutEngine *)self allowsHomeContentUnderDock];
+  allowsHomeContentUnderDock = [(DBDashboardLayoutEngine *)self allowsHomeContentUnderDock];
 
-  [(DBDashboardLayoutEngine *)self homeViewControllerInsetsWithContentUnderDock:v3];
+  [(DBDashboardLayoutEngine *)self homeViewControllerInsetsWithContentUnderDock:allowsHomeContentUnderDock];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -89,30 +89,30 @@
 
 - (BOOL)hasEmbeddedSecondaryContentArea
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 systemUILayout];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  systemUILayout = [environmentConfiguration systemUILayout];
 
-  if (!v4)
+  if (!systemUILayout)
   {
     return 0;
   }
 
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = [v5 systemUILayout];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  systemUILayout2 = [environmentConfiguration2 systemUILayout];
 
-  [v6 secondaryContentFrame];
+  [systemUILayout2 secondaryContentFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v15 currentSafeViewAreaFrame];
+  environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration3 currentSafeViewAreaFrame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  [v6 secondaryContentFrame];
+  [systemUILayout2 secondaryContentFrame];
   if (CGRectEqualToRect(v26, *MEMORY[0x277CBF3A0]))
   {
     v24 = 0;
@@ -149,50 +149,50 @@
 
 - (unint64_t)dockEdges
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 currentStatusBarEdge];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  currentStatusBarEdge = [environmentConfiguration currentStatusBarEdge];
 
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = [v5 isRightHandDrive];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  isRightHandDrive = [environmentConfiguration2 isRightHandDrive];
 
-  v7 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v8 = [v7 hasDualStatusBar];
+  environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration3 hasDualStatusBar];
 
   v9 = 2;
   v10 = 2;
-  if (!(v8 & 1 | ((v6 & 1) == 0)))
+  if (!(hasDualStatusBar & 1 | ((isRightHandDrive & 1) == 0)))
   {
     v10 = 0;
   }
 
-  if (v4 != 2)
+  if (currentStatusBarEdge != 2)
   {
     v10 = 0;
   }
 
-  if (v4)
+  if (currentStatusBarEdge)
   {
     v9 = v10;
   }
 
-  if (v4 == 3)
+  if (currentStatusBarEdge == 3)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v8 & (v4 == 1);
+    v11 = hasDualStatusBar & (currentStatusBarEdge == 1);
   }
 
-  v12 = (v4 == 3) & v8;
-  if (v4 == 1)
+  v12 = (currentStatusBarEdge == 3) & hasDualStatusBar;
+  if (currentStatusBarEdge == 1)
   {
     v12 = 1;
   }
 
   v13 = 8;
-  if (((v4 == 2) & (v6 | v8)) == 0)
+  if (((currentStatusBarEdge == 2) & (isRightHandDrive | hasDualStatusBar)) == 0)
   {
     v13 = 0;
   }
@@ -209,8 +209,8 @@
 
 - (CGRect)primaryDockWindowFrame
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v3 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -218,10 +218,10 @@
 
   [(DBDashboardLayoutEngine *)self dockShortAxisLength];
   v13 = v12;
-  v14 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v15 = [v14 currentStatusBarEdge];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  currentStatusBarEdge = [environmentConfiguration2 currentStatusBarEdge];
 
-  if (v15 == 1)
+  if (currentStatusBarEdge == 1)
   {
     v31.origin.x = v5;
     v31.origin.y = v7;
@@ -238,10 +238,10 @@
 
   else
   {
-    v19 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v20 = [v19 currentStatusBarEdge];
+    environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    currentStatusBarEdge2 = [environmentConfiguration3 currentStatusBarEdge];
 
-    if (v20 == 3)
+    if (currentStatusBarEdge2 == 3)
     {
       v33.origin.x = v5;
       v33.origin.y = v7;
@@ -254,14 +254,14 @@
 
     else
     {
-      v21 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-      v22 = [v21 isRightHandDrive];
+      environmentConfiguration4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+      isRightHandDrive = [environmentConfiguration4 isRightHandDrive];
 
       v23 = v5;
       v24 = v7;
       v25 = v9;
       v26 = v11;
-      if (v22)
+      if (isRightHandDrive)
       {
         v18 = CGRectGetWidth(*&v23) - v13;
         v34.origin.x = v5;
@@ -308,21 +308,21 @@
 
 - (CGRect)secondaryDockWindowFrame
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v3 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v13 = [v12 hasDualStatusBar];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration2 hasDualStatusBar];
 
-  v14 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v15 = v14;
-  if (v13)
+  environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v15 = environmentConfiguration3;
+  if (hasDualStatusBar)
   {
-    -[DBDashboardLayoutEngine _secondaryDockFrameForRightHandDrive:safeAreaFrame:](self, "_secondaryDockFrameForRightHandDrive:safeAreaFrame:", [v14 isRightHandDrive], v5, v7, v9, v11);
+    -[DBDashboardLayoutEngine _secondaryDockFrameForRightHandDrive:safeAreaFrame:](self, "_secondaryDockFrameForRightHandDrive:safeAreaFrame:", [environmentConfiguration3 isRightHandDrive], v5, v7, v9, v11);
     v17 = v16;
     v19 = v18;
     Width = v20;
@@ -331,9 +331,9 @@
 
   else
   {
-    v24 = [v14 hasTopStatusBar];
+    hasTopStatusBar = [environmentConfiguration3 hasTopStatusBar];
 
-    if (v24)
+    if (hasTopStatusBar)
     {
       v29.origin.x = v5;
       v29.origin.y = v7;
@@ -391,10 +391,10 @@
 
 - (UIEdgeInsets)statusBarInsets
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 hasDualStatusBar];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
-  if (v4)
+  if (hasDualStatusBar)
   {
     [(DBDashboardLayoutEngine *)self _dualStatusBarInsets];
     v6 = v5;
@@ -405,10 +405,10 @@
 
   else
   {
-    v13 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v14 = [v13 hasTopStatusBar];
+    environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    hasTopStatusBar = [environmentConfiguration2 hasTopStatusBar];
 
-    if (v14)
+    if (hasTopStatusBar)
     {
       v15 = DBLogForCategory(0);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -430,10 +430,10 @@
       v8 = *(MEMORY[0x277D768C8] + 8);
       v10 = *(MEMORY[0x277D768C8] + 16);
       v12 = *(MEMORY[0x277D768C8] + 24);
-      v17 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-      v18 = [v17 currentStatusBarEdge];
+      environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+      currentStatusBarEdge = [environmentConfiguration3 currentStatusBarEdge];
 
-      if (v18 == 1)
+      if (currentStatusBarEdge == 1)
       {
         [(DBDashboardLayoutEngine *)self dockShortAxisLength];
         v10 = v10 + v19;
@@ -441,10 +441,10 @@
 
       else
       {
-        v20 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-        v21 = [v20 currentStatusBarEdge];
+        environmentConfiguration4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+        currentStatusBarEdge2 = [environmentConfiguration4 currentStatusBarEdge];
 
-        if (v21 == 3)
+        if (currentStatusBarEdge2 == 3)
         {
           [(DBDashboardLayoutEngine *)self dockShortAxisLength];
           v6 = v6 + v22;
@@ -452,11 +452,11 @@
 
         else
         {
-          v23 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-          v24 = [v23 isRightHandDrive];
+          environmentConfiguration5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+          isRightHandDrive = [environmentConfiguration5 isRightHandDrive];
 
           [(DBDashboardLayoutEngine *)self dockShortAxisLength];
-          if (v24)
+          if (isRightHandDrive)
           {
             v12 = v12 + v25;
           }
@@ -481,18 +481,18 @@
   return result;
 }
 
-- (DBDashboardLayoutEngine)initWithEnvironmentConfiguration:(id)a3
+- (DBDashboardLayoutEngine)initWithEnvironmentConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = DBDashboardLayoutEngine;
   v6 = [(DBDashboardLayoutEngine *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environmentConfiguration, a3);
-    v8 = [v5 displayConfiguration];
-    [v8 bounds];
+    objc_storeStrong(&v6->_environmentConfiguration, configuration);
+    displayConfiguration = [configurationCopy displayConfiguration];
+    [displayConfiguration bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -521,8 +521,8 @@
 
 - (UIEdgeInsets)rootViewControllerContentInsets
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v3 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -574,28 +574,28 @@
   return result;
 }
 
-- (UIEdgeInsets)homeViewControllerInsetsWithContentUnderDock:(BOOL)a3
+- (UIEdgeInsets)homeViewControllerInsetsWithContentUnderDock:(BOOL)dock
 {
-  v3 = a3;
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = [v5 hasDualStatusBar];
+  dockCopy = dock;
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
-  if (v6)
+  if (hasDualStatusBar)
   {
     goto LABEL_2;
   }
 
   if (![(DBDashboardLayoutEngine *)self hasEmbeddedSecondaryContentArea])
   {
-    if (v3)
+    if (dockCopy)
     {
       goto LABEL_2;
     }
 
-    v35 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v36 = [v35 hasTopStatusBar];
+    environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    hasTopStatusBar = [environmentConfiguration2 hasTopStatusBar];
 
-    if (v36)
+    if (hasTopStatusBar)
     {
       v8 = 35.0;
       [(DBDashboardLayoutEngine *)self dockShortAxisLength];
@@ -606,12 +606,12 @@ LABEL_10:
       goto LABEL_24;
     }
 
-    v38 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v39 = [v38 currentStatusBarEdge];
+    environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    currentStatusBarEdge = [environmentConfiguration3 currentStatusBarEdge];
 
-    if (v39 > 1)
+    if (currentStatusBarEdge > 1)
     {
-      if (v39 == 3)
+      if (currentStatusBarEdge == 3)
       {
         [(DBDashboardLayoutEngine *)self dockShortAxisLength];
         v8 = v48;
@@ -620,15 +620,15 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      if (v39 != 2)
+      if (currentStatusBarEdge != 2)
       {
         goto LABEL_2;
       }
     }
 
-    else if (v39)
+    else if (currentStatusBarEdge)
     {
-      if (v39 == 1)
+      if (currentStatusBarEdge == 1)
       {
         [(DBDashboardLayoutEngine *)self dockShortAxisLength];
         v9 = v40;
@@ -647,12 +647,12 @@ LABEL_2:
       goto LABEL_24;
     }
 
-    v41 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v42 = [v41 isRightHandDrive];
+    environmentConfiguration4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    isRightHandDrive = [environmentConfiguration4 isRightHandDrive];
 
     [(DBDashboardLayoutEngine *)self dockShortAxisLength];
     v9 = 0.0;
-    if (v42)
+    if (isRightHandDrive)
     {
       v10 = v43;
     }
@@ -662,7 +662,7 @@ LABEL_2:
       v10 = 0.0;
     }
 
-    if (v42)
+    if (isRightHandDrive)
     {
       v7 = 0.0;
     }
@@ -675,16 +675,16 @@ LABEL_2:
     goto LABEL_23;
   }
 
-  v11 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v12 = [v11 systemUILayout];
+  environmentConfiguration5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  systemUILayout = [environmentConfiguration5 systemUILayout];
 
-  [v12 secondaryContentFrame];
+  [systemUILayout secondaryContentFrame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v21 currentSafeViewAreaFrame];
+  environmentConfiguration6 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration6 currentSafeViewAreaFrame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -695,10 +695,10 @@ LABEL_2:
   v7 = v31;
   v9 = v32;
   v10 = v33;
-  v34 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  LODWORD(v21) = [v34 hasTopStatusBar];
+  environmentConfiguration7 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  LODWORD(environmentConfiguration6) = [environmentConfiguration7 hasTopStatusBar];
 
-  if (v21)
+  if (environmentConfiguration6)
   {
     v8 = v8 + 35.0;
   }
@@ -715,15 +715,15 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)sceneFrameForApplication:(id)a3
+- (CGRect)sceneFrameForApplication:(id)application
 {
-  v4 = [a3 presentsFullScreen];
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = v5;
-  if (v4)
+  presentsFullScreen = [application presentsFullScreen];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v6 = environmentConfiguration;
+  if (presentsFullScreen)
   {
-    v7 = [v5 displayConfiguration];
-    [v7 bounds];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    [displayConfiguration bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -732,7 +732,7 @@ LABEL_24:
 
   else
   {
-    [v5 currentSafeViewAreaFrame];
+    [environmentConfiguration currentSafeViewAreaFrame];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -750,20 +750,20 @@ LABEL_24:
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application
 {
   if ([(DBDashboardLayoutEngine *)self hasEmbeddedSecondaryContentArea])
   {
-    v4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v5 = [v4 systemUILayout];
+    environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    systemUILayout = [environmentConfiguration systemUILayout];
 
-    [v5 secondaryContentFrame];
+    [systemUILayout secondaryContentFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    [v14 currentSafeViewAreaFrame];
+    environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    [environmentConfiguration2 currentSafeViewAreaFrame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -774,10 +774,10 @@ LABEL_24:
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    LODWORD(v14) = [v31 hasTopStatusBar];
+    environmentConfiguration3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    LODWORD(environmentConfiguration2) = [environmentConfiguration3 hasTopStatusBar];
 
-    if (v14)
+    if (environmentConfiguration2)
     {
       v24 = v24 + 35.0;
     }
@@ -803,15 +803,15 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)areaOfInterestFrameForApplication:(id)a3
+- (CGRect)areaOfInterestFrameForApplication:(id)application
 {
-  v4 = [a3 presentsFullScreen];
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = v5;
-  if (v4)
+  presentsFullScreen = [application presentsFullScreen];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v6 = environmentConfiguration;
+  if (presentsFullScreen)
   {
-    v7 = [v5 displayConfiguration];
-    [v7 bounds];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    [displayConfiguration bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -820,7 +820,7 @@ LABEL_24:
 
   else
   {
-    [v5 currentViewAreaFrame];
+    [environmentConfiguration currentViewAreaFrame];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -840,11 +840,11 @@ LABEL_24:
 
 - (double)dualStatusBarTotalHorizontalWidth
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 hasDualStatusBar];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
   result = 0.0;
-  if (v4)
+  if (hasDualStatusBar)
   {
     [(DBDashboardLayoutEngine *)self dockShortAxisLength];
     return v6 + v6;
@@ -855,19 +855,19 @@ LABEL_24:
 
 - (CGRect)climateWindowFrame
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 hasPhysicalControlBars];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasPhysicalControlBars = [environmentConfiguration hasPhysicalControlBars];
 
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = v5;
-  if (v4)
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v6 = environmentConfiguration2;
+  if (hasPhysicalControlBars)
   {
-    [v5 currentViewAreaFrame];
+    [environmentConfiguration2 currentViewAreaFrame];
   }
 
   else
   {
-    [v5 currentSafeViewAreaFrame];
+    [environmentConfiguration2 currentSafeViewAreaFrame];
   }
 
   v11 = v7;
@@ -888,8 +888,8 @@ LABEL_24:
 
 - (CGRect)cameraWindowFrame
 {
-  v2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v2 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -908,8 +908,8 @@ LABEL_24:
 
 - (CGRect)cornerRadiusWindowFrame
 {
-  v2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v2 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -926,15 +926,15 @@ LABEL_24:
   return result;
 }
 
-+ (double)dockShortAxisMarginForSafeAreaSize:(CGSize)a3 statusBarEdge:(unint64_t)a4
++ (double)dockShortAxisMarginForSafeAreaSize:(CGSize)size statusBarEdge:(unint64_t)edge
 {
-  v5 = [a1 dockVariantForSafeAreaSize:a3.width statusBarEdge:a3.height];
+  v5 = [self dockVariantForSafeAreaSize:size.width statusBarEdge:size.height];
   result = 0.0;
   if (v5)
   {
-    if (a4 > 1)
+    if (edge > 1)
     {
-      if (a4 == 3)
+      if (edge == 3)
       {
 LABEL_11:
         result = 4.0;
@@ -946,15 +946,15 @@ LABEL_11:
         return result;
       }
 
-      if (a4 != 2)
+      if (edge != 2)
       {
         return result;
       }
     }
 
-    else if (a4)
+    else if (edge)
     {
-      if (a4 != 1)
+      if (edge != 1)
       {
         return result;
       }
@@ -974,22 +974,22 @@ LABEL_11:
   return result;
 }
 
-+ (UIEdgeInsets)insetsForViewArea:(CGRect)a3 statusBarEdge:(unint64_t)a4 environmentConfiguration:(id)a5
++ (UIEdgeInsets)insetsForViewArea:(CGRect)area statusBarEdge:(unint64_t)edge environmentConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a5;
-  [a1 dockShortAxisLengthForSafeAreaSize:a4 statusBarEdge:{width, height}];
+  height = area.size.height;
+  width = area.size.width;
+  configurationCopy = configuration;
+  [self dockShortAxisLengthForSafeAreaSize:edge statusBarEdge:{width, height}];
   v11 = v10;
   v12 = 0.0;
-  if ([v9 hasDualStatusBar])
+  if ([configurationCopy hasDualStatusBar])
   {
     v13 = v11;
     v14 = v11;
     v15 = 0.0;
   }
 
-  else if ([v9 hasTopStatusBar])
+  else if ([configurationCopy hasTopStatusBar])
   {
     v15 = 35.0;
     v13 = 0.0;
@@ -1003,17 +1003,17 @@ LABEL_11:
     v14 = *(MEMORY[0x277D768C8] + 8);
     v12 = *(MEMORY[0x277D768C8] + 16);
     v13 = *(MEMORY[0x277D768C8] + 24);
-    if (a4 == 3)
+    if (edge == 3)
     {
       v15 = v11 + v15;
     }
 
-    else if (a4 == 1)
+    else if (edge == 1)
     {
       v12 = v11 + v12;
     }
 
-    else if ([v9 isRightHandDrive])
+    else if ([configurationCopy isRightHandDrive])
     {
       v13 = v11 + v13;
     }
@@ -1038,12 +1038,12 @@ LABEL_11:
 - (double)dockShortAxisMargin
 {
   v3 = objc_opt_class();
-  v4 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v4 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v6 = v5;
   v8 = v7;
-  v9 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v3 dockShortAxisMarginForSafeAreaSize:objc_msgSend(v9 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [v3 dockShortAxisMarginForSafeAreaSize:objc_msgSend(environmentConfiguration2 statusBarEdge:{"currentStatusBarEdge"), v6, v8}];
   v11 = v10;
 
   return v11;
@@ -1051,26 +1051,26 @@ LABEL_11:
 
 - (unint64_t)secondaryDockVariant
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 hasDualStatusBar];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
-  if (!v4)
+  if (!hasDualStatusBar)
   {
     return 0;
   }
 
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = [v5 systemUILayout];
-  v7 = [v6 dualStatusBarSecondaryMaterial];
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  systemUILayout = [environmentConfiguration2 systemUILayout];
+  dualStatusBarSecondaryMaterial = [systemUILayout dualStatusBarSecondaryMaterial];
 
-  return v7;
+  return dualStatusBarSecondaryMaterial;
 }
 
 - (double)dockLongAxisMargin
 {
-  v2 = [(DBDashboardLayoutEngine *)self primaryDockVariant];
+  primaryDockVariant = [(DBDashboardLayoutEngine *)self primaryDockVariant];
   result = 4.0;
-  if (v2 != 1)
+  if (primaryDockVariant != 1)
   {
     return 0.0;
   }
@@ -1078,17 +1078,17 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)dockMarginsForVariant:(unint64_t)a3
+- (UIEdgeInsets)dockMarginsForVariant:(unint64_t)variant
 {
-  if (a3)
+  if (variant)
   {
-    v4 = [(DBDashboardLayoutEngine *)self dockEdges];
-    v5 = v4;
-    if ((v4 & 0xA) != 0)
+    dockEdges = [(DBDashboardLayoutEngine *)self dockEdges];
+    v5 = dockEdges;
+    if ((dockEdges & 0xA) != 0)
     {
       v6 = 0.0;
       v7 = 0.0;
-      if ((v4 & 2) != 0)
+      if ((dockEdges & 2) != 0)
       {
         [(DBDashboardLayoutEngine *)self dockShortAxisMargin];
         v7 = v8;
@@ -1147,8 +1147,8 @@ LABEL_13:
 
 - (CGRect)dockHostSceneFrame
 {
-  v2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v2 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1167,8 +1167,8 @@ LABEL_13:
 
 - (CGRect)notificationWindowFrame
 {
-  v2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  [v2 currentSafeViewAreaFrame];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1187,19 +1187,19 @@ LABEL_13:
 
 - (CGRect)wallpaperHostSceneFrame
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 currentViewAreaSupportsUIOutsideSafeArea];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  currentViewAreaSupportsUIOutsideSafeArea = [environmentConfiguration currentViewAreaSupportsUIOutsideSafeArea];
 
-  v5 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v6 = v5;
-  if (v4)
+  environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  v6 = environmentConfiguration2;
+  if (currentViewAreaSupportsUIOutsideSafeArea)
   {
-    [v5 currentViewAreaFrame];
+    [environmentConfiguration2 currentViewAreaFrame];
   }
 
   else
   {
-    [v5 currentSafeViewAreaFrame];
+    [environmentConfiguration2 currentSafeViewAreaFrame];
   }
 
   v11 = v7;
@@ -1259,16 +1259,16 @@ LABEL_13:
 {
   if ([(DBDashboardLayoutEngine *)self allowsHomeContentUnderDock])
   {
-    v3 = [(DBDashboardLayoutEngine *)self dockEdges];
+    dockEdges = [(DBDashboardLayoutEngine *)self dockEdges];
     v4 = 0.0;
     v5 = 0.0;
-    if ((v3 & 2) != 0)
+    if ((dockEdges & 2) != 0)
     {
       [(DBDashboardLayoutEngine *)self dockShortAxisLength];
       v5 = v6;
     }
 
-    if ((v3 & 8) != 0)
+    if ((dockEdges & 8) != 0)
     {
       [(DBDashboardLayoutEngine *)self dockShortAxisLength];
       v8 = v9;
@@ -1301,10 +1301,10 @@ LABEL_13:
 
 - (UIEdgeInsets)_dualStatusBarInsets
 {
-  v3 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v4 = [v3 isRightHandDrive];
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  isRightHandDrive = [environmentConfiguration isRightHandDrive];
 
-  if (v4)
+  if (isRightHandDrive)
   {
     [(DBDashboardLayoutEngine *)self secondaryDockShortAxisLength];
     v6 = v5;
@@ -1329,29 +1329,29 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)_adjustedPrimaryDockMargins:(UIEdgeInsets)a3
+- (UIEdgeInsets)_adjustedPrimaryDockMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v9 = [v8 hasDualStatusBar];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
-  if (v9)
+  if (hasDualStatusBar)
   {
-    v10 = [(DBDashboardLayoutEngine *)self primaryDockVariant];
+    primaryDockVariant = [(DBDashboardLayoutEngine *)self primaryDockVariant];
     v11 = &kDBTranslucentStatusBarDockMargin;
-    if (v10 != 1)
+    if (primaryDockVariant != 1)
     {
       v11 = &kDBTransparentStatusBarDockMargin;
     }
 
     v12 = *v11;
-    v13 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v14 = [v13 isRightHandDrive];
+    environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    isRightHandDrive = [environmentConfiguration2 isRightHandDrive];
 
-    if (v14)
+    if (isRightHandDrive)
     {
       left = left - v12;
     }
@@ -1373,23 +1373,23 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)_adjustedSecondaryDockMargins:(UIEdgeInsets)a3
+- (UIEdgeInsets)_adjustedSecondaryDockMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  if ([v8 hasDualStatusBar])
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  if ([environmentConfiguration hasDualStatusBar])
   {
-    v9 = [(DBDashboardLayoutEngine *)self secondaryDockVariant];
+    secondaryDockVariant = [(DBDashboardLayoutEngine *)self secondaryDockVariant];
 
-    if (v9 == 1)
+    if (secondaryDockVariant == 1)
     {
-      v10 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-      v11 = [v10 isRightHandDrive];
+      environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+      isRightHandDrive = [environmentConfiguration2 isRightHandDrive];
 
-      if (v11)
+      if (isRightHandDrive)
       {
         right = right - 4.0;
       }
@@ -1429,16 +1429,16 @@ LABEL_13:
 
 - (UIEdgeInsets)_baseTodayViewInsets
 {
-  v3 = [(DBDashboardLayoutEngine *)self dockEdges];
+  dockEdges = [(DBDashboardLayoutEngine *)self dockEdges];
   v4 = 0.0;
   v5 = 0.0;
-  if ((v3 & 2) != 0)
+  if ((dockEdges & 2) != 0)
   {
     [(DBDashboardLayoutEngine *)self dockShortAxisLength];
     v5 = v6;
   }
 
-  if ((v3 & 8) != 0)
+  if ((dockEdges & 8) != 0)
   {
     [(DBDashboardLayoutEngine *)self dockShortAxisLength];
     v4 = v7;
@@ -1455,25 +1455,25 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)_dualStatusBarTodayViewAdjustment:(UIEdgeInsets)a3
+- (UIEdgeInsets)_dualStatusBarTodayViewAdjustment:(UIEdgeInsets)adjustment
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-  v9 = [v8 hasDualStatusBar];
+  right = adjustment.right;
+  bottom = adjustment.bottom;
+  left = adjustment.left;
+  top = adjustment.top;
+  environmentConfiguration = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+  hasDualStatusBar = [environmentConfiguration hasDualStatusBar];
 
-  if (v9)
+  if (hasDualStatusBar)
   {
-    v10 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
-    v11 = [v10 isRightHandDrive];
+    environmentConfiguration2 = [(DBDashboardLayoutEngine *)self environmentConfiguration];
+    isRightHandDrive = [environmentConfiguration2 isRightHandDrive];
 
     [(DBDashboardLayoutEngine *)self primaryDockMargins];
     v13 = v12;
     v15 = v14;
     [(DBDashboardLayoutEngine *)self secondaryDockMargins];
-    if (v11)
+    if (isRightHandDrive)
     {
       v18 = v16;
     }
@@ -1483,7 +1483,7 @@ LABEL_13:
       v18 = v13;
     }
 
-    if (v11)
+    if (isRightHandDrive)
     {
       v19 = v15;
     }
@@ -1508,20 +1508,20 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_secondaryDockFrameForRightHandDrive:(BOOL)a3 safeAreaFrame:(CGRect)a4
+- (CGRect)_secondaryDockFrameForRightHandDrive:(BOOL)drive safeAreaFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  driveCopy = drive;
   [(DBDashboardLayoutEngine *)self secondaryDockShortAxisLength];
   v10 = v9;
   v11 = x;
   v12 = y;
   v13 = width;
   v14 = height;
-  if (v8)
+  if (driveCopy)
   {
     v15 = CGRectGetHeight(*&v11);
     v16 = 0.0;
@@ -1547,17 +1547,17 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)_UISafeAreaInsetsWithSafeAreaFrame:(CGRect)a3 secondaryContentFrame:(CGRect)a4
+- (UIEdgeInsets)_UISafeAreaInsetsWithSafeAreaFrame:(CGRect)frame secondaryContentFrame:(CGRect)contentFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectContainsRect(a3, a4))
+  height = contentFrame.size.height;
+  width = contentFrame.size.width;
+  y = contentFrame.origin.y;
+  x = contentFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  if (CGRectContainsRect(frame, contentFrame))
   {
     v32.origin.x = x;
     v32.origin.y = y;

@@ -1,20 +1,20 @@
 @interface NSSQLSimpleWhereIntermediate
-- (NSSQLSimpleWhereIntermediate)initWithPredicate:(id)a3 inScope:(id)a4;
-- (__CFString)_generateSQLContainmentStringInContext:(uint64_t)a1;
-- (__CFString)_sqlTokenForPredicateOperator:(unint64_t)a1 inContext:(void *)a2;
-- (id)_generateSQLBeginsWithStringInContext:(uint64_t)a1;
-- (id)_generateSQLBoundByStringInContext:(uint64_t)a1;
-- (id)_generateSQLForConst:(void *)a3 inToMany:(void *)a4 inContext:;
-- (id)_generateSQLType2InContext:(uint64_t)a1;
-- (id)_generateSQLType3InContext:(uint64_t)a1;
-- (id)generateSQLStringInContext:(id)a3;
-- (uint64_t)_upperBoundSearchStringForString:(__CFString *)a1 context:(void *)a2;
-- (void)_generateSQLBetweenStringInContext:(uint64_t)a1;
-- (void)_generateSQLForConst:(__CFString *)a3 inManyToMany:(uint64_t)a4 expression:(void *)a5 inContext:;
-- (void)_generateSQLForConst:(uint64_t)a1 inAttribute:(uint64_t)a2 expression:(uint64_t)a3 inContext:(uint64_t)a4;
-- (void)_generateSQLForMatchingOperator:(void *)a3 inContext:;
-- (void)_generateSQLForString:(void *)a3 expressionPath:(int)a4 wildStart:(int)a5 wildEnd:(uint64_t)a6 allowToMany:(void *)a7 inContext:;
-- (void)_generateSQLSubstringWildStart:(int)a3 wildEnd:(void *)a4 inContext:;
+- (NSSQLSimpleWhereIntermediate)initWithPredicate:(id)predicate inScope:(id)scope;
+- (__CFString)_generateSQLContainmentStringInContext:(uint64_t)context;
+- (__CFString)_sqlTokenForPredicateOperator:(unint64_t)operator inContext:(void *)context;
+- (id)_generateSQLBeginsWithStringInContext:(uint64_t)context;
+- (id)_generateSQLBoundByStringInContext:(uint64_t)context;
+- (id)_generateSQLForConst:(void *)const inToMany:(void *)many inContext:;
+- (id)_generateSQLType2InContext:(uint64_t)context;
+- (id)_generateSQLType3InContext:(uint64_t)context;
+- (id)generateSQLStringInContext:(id)context;
+- (uint64_t)_upperBoundSearchStringForString:(__CFString *)string context:(void *)context;
+- (void)_generateSQLBetweenStringInContext:(uint64_t)context;
+- (void)_generateSQLForConst:(__CFString *)const inManyToMany:(uint64_t)many expression:(void *)expression inContext:;
+- (void)_generateSQLForConst:(uint64_t)const inAttribute:(uint64_t)attribute expression:(uint64_t)expression inContext:(uint64_t)context;
+- (void)_generateSQLForMatchingOperator:(void *)operator inContext:;
+- (void)_generateSQLForString:(void *)string expressionPath:(int)path wildStart:(int)start wildEnd:(uint64_t)end allowToMany:(void *)many inContext:;
+- (void)_generateSQLSubstringWildStart:(int)start wildEnd:(void *)end inContext:;
 - (void)dealloc;
 @end
 
@@ -29,15 +29,15 @@
   [(NSSQLSimpleWhereIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLSimpleWhereIntermediate)initWithPredicate:(id)a3 inScope:(id)a4
+- (NSSQLSimpleWhereIntermediate)initWithPredicate:(id)predicate inScope:(id)scope
 {
   v11.receiver = self;
   v11.super_class = NSSQLSimpleWhereIntermediate;
-  v5 = [(NSSQLWhereIntermediate *)&v11 initWithPredicate:a3 inScope:a4];
+  v5 = [(NSSQLWhereIntermediate *)&v11 initWithPredicate:predicate inScope:scope];
   if (v5)
   {
-    v5->_effectiveLeftExpression = [a3 leftExpression];
-    v5->_effectiveRightExpression = [a3 rightExpression];
+    v5->_effectiveLeftExpression = [predicate leftExpression];
+    v5->_effectiveRightExpression = [predicate rightExpression];
     if ([(NSExpression *)v5->_effectiveLeftExpression expressionType]== NSFunctionExpressionType && [[(NSExpression *)v5->_effectiveLeftExpression operand] expressionType]== NSConstantValueExpressionType && (sel_valueForKey_ == [(NSExpression *)v5->_effectiveLeftExpression selector]|| sel_valueForKeyPath_ == [(NSExpression *)v5->_effectiveLeftExpression selector]))
     {
       v6 = [(NSExpression *)v5->_effectiveLeftExpression expressionValueWithObject:0 context:0];
@@ -58,36 +58,36 @@
   return v5;
 }
 
-- (__CFString)_sqlTokenForPredicateOperator:(unint64_t)a1 inContext:(void *)a2
+- (__CFString)_sqlTokenForPredicateOperator:(unint64_t)operator inContext:(void *)context
 {
-  if (![a2 objectForKey:@"NSUnderlyingException"])
+  if (![context objectForKey:@"NSUnderlyingException"])
   {
-    if (a1 < 6)
+    if (operator < 6)
     {
-      return off_1E6EC4398[a1];
+      return off_1E6EC4398[operator];
     }
 
-    [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unknown predicate operator type parameter", 0), @"NSUnderlyingException"}];
+    [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unknown predicate operator type parameter", 0), @"NSUnderlyingException"}];
   }
 
   return 0;
 }
 
-- (id)_generateSQLType3InContext:(uint64_t)a1
+- (id)_generateSQLType3InContext:(uint64_t)context
 {
-  v4 = *(a1 + 32);
-  v5 = *(a1 + 40);
-  v6 = [*(a1 + 16) comparisonPredicateModifier];
-  v7 = [*(a1 + 16) options];
-  v8 = [*(a1 + 16) predicateOperatorType];
-  if (!*(a1 + 24))
+  v4 = *(context + 32);
+  v5 = *(context + 40);
+  comparisonPredicateModifier = [*(context + 16) comparisonPredicateModifier];
+  options = [*(context + 16) options];
+  predicateOperatorType = [*(context + 16) predicateOperatorType];
+  if (!*(context + 24))
   {
-    *(a1 + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *(context + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
   if ([v4 expressionType] == 3 && (v10 = objc_msgSend(v5, "expressionType"), v9 = v4, !v10) || objc_msgSend(v5, "expressionType", v9) == 3 && (v11 = objc_msgSend(v4, "expressionType"), v9 = v5, !v11))
   {
-    [*(a1 + 24) addObject:v9];
+    [*(context + 24) addObject:v9];
     v12 = 1;
   }
 
@@ -96,14 +96,14 @@
     v12 = 0;
   }
 
-  v13 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v4 allowToMany:v6 == 2 inContext:a2];
+  v13 = [(NSSQLIntermediate *)context _generateSQLForExpression:v4 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
   if (!v13)
   {
     return 0;
   }
 
   v14 = v13;
-  v15 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v5 allowToMany:v6 == 2 inContext:a2];
+  v15 = [(NSSQLIntermediate *)context _generateSQLForExpression:v5 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
   if (!v15)
   {
 
@@ -111,25 +111,25 @@
   }
 
   v16 = v15;
-  if ((v7 & 4) != 0)
+  if ((options & 4) != 0)
   {
-    v21 = [*(a1 + 16) predicateOperator];
+    predicateOperator = [*(context + 16) predicateOperator];
     v20 = v14;
     [v20 appendString:@" "];
-    [v20 appendString:{objc_msgSend(v21, "symbol")}];
+    [v20 appendString:{objc_msgSend(predicateOperator, "symbol")}];
     [v20 appendString:@" "];
     [v20 appendString:v16];
   }
 
   else
   {
-    v17 = (v7 << 63 >> 63) & 0x101;
-    if ((v7 & 2) != 0)
+    v17 = (options << 63 >> 63) & 0x101;
+    if ((options & 2) != 0)
     {
-      v17 = (v7 << 63 >> 63) & 1 | 0x180;
+      v17 = (options << 63 >> 63) & 1 | 0x180;
     }
 
-    if ((v7 & 8) != 0)
+    if ((options & 8) != 0)
     {
       v18 = v17 | 0x120;
     }
@@ -139,7 +139,7 @@
       v18 = v17;
     }
 
-    if (v8 >= 6)
+    if (predicateOperatorType >= 6)
     {
       NSLog(@"You really shouldn't be here");
       v19 = 7;
@@ -147,34 +147,34 @@
 
     else
     {
-      v19 = dword_18592E7C8[v8];
+      v19 = dword_18592E7C8[predicateOperatorType];
     }
 
     v20 = objc_msgSend(@"NSCoreDataStringCompare("), "mutableCopy";
     [v20 appendString:v14];
     [v20 appendString:{@", "}];
     [v20 appendString:v16];
-    [v20 appendFormat:@", %d, %lu, %d"], v19, v18, (v7 >> 3) & 1);
+    [v20 appendFormat:@", %d, %lu, %d"], v19, v18, (options >> 3) & 1);
   }
 
   if (v12)
   {
-    [*(a1 + 24) removeLastObject];
+    [*(context + 24) removeLastObject];
   }
 
   return v20;
 }
 
-- (id)_generateSQLType2InContext:(uint64_t)a1
+- (id)_generateSQLType2InContext:(uint64_t)context
 {
-  if (!a1)
+  if (!context)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 16) predicateOperatorType];
-  v5 = *(a1 + 32);
-  if (v4 == 5)
+  predicateOperatorType = [*(context + 16) predicateOperatorType];
+  v5 = *(context + 32);
+  if (predicateOperatorType == 5)
   {
     v6 = @"IS NOT NULL";
   }
@@ -184,8 +184,8 @@
     v6 = @"IS NULL";
   }
 
-  v7 = *(a1 + 40);
-  v8 = [*(a1 + 16) comparisonPredicateModifier];
+  v7 = *(context + 40);
+  comparisonPredicateModifier = [*(context + 16) comparisonPredicateModifier];
   if ([v5 expressionType])
   {
     v9 = 0;
@@ -193,10 +193,10 @@
 
   else
   {
-    v10 = [v5 constantValue];
-    if (v10)
+    constantValue = [v5 constantValue];
+    if (constantValue)
     {
-      v9 = [MEMORY[0x1E695DFB0] null] == v10;
+      v9 = [MEMORY[0x1E695DFB0] null] == constantValue;
     }
 
     else
@@ -212,8 +212,8 @@
 
   else
   {
-    v12 = [v7 constantValue];
-    if (!v12)
+    constantValue2 = [v7 constantValue];
+    if (!constantValue2)
     {
       if (v9)
       {
@@ -228,7 +228,7 @@
       goto LABEL_33;
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null] == v12;
+    v11 = [MEMORY[0x1E695DFB0] null] == constantValue2;
   }
 
   v13 = v9 || v11;
@@ -245,11 +245,11 @@
   if (v13)
   {
 LABEL_33:
-    v23 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v14 allowToMany:v8 == 2 inContext:a2];
+    v23 = [(NSSQLIntermediate *)context _generateSQLForExpression:v14 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
     if (v23)
     {
       v24 = v23;
-      [(NSSQLIntermediate *)a1 promoteJoinsInKeypathsForExpression:v14];
+      [(NSSQLIntermediate *)context promoteJoinsInKeypathsForExpression:v14];
       v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v24];
       [v21 appendString:@" "];
       [v21 appendString:v6];
@@ -260,28 +260,28 @@ LABEL_33:
     return 0;
   }
 
-  if (![*(a1 + 16) options])
+  if (![*(context + 16) options])
   {
-    if (!*(a1 + 24))
+    if (!*(context + 24))
     {
-      *(a1 + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
+      *(context + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
     if ([v5 expressionType] == 3 && (v17 = objc_msgSend(v7, "expressionType"), v16 = v5, !v17) || objc_msgSend(v7, "expressionType", v16) == 3 && (v18 = objc_msgSend(v5, "expressionType"), v16 = v7, !v18))
     {
-      [*(a1 + 24) addObject:v16];
-      v19 = v8 == 2;
-      v25 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v5 allowToMany:v19 inContext:a2];
+      [*(context + 24) addObject:v16];
+      v19 = comparisonPredicateModifier == 2;
+      v25 = [(NSSQLIntermediate *)context _generateSQLForExpression:v5 allowToMany:v19 inContext:a2];
       if (v25)
       {
         v21 = v25;
         v22 = 1;
 LABEL_37:
-        v26 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v7 allowToMany:v19 inContext:a2];
+        v26 = [(NSSQLIntermediate *)context _generateSQLForExpression:v7 allowToMany:v19 inContext:a2];
         if (v26)
         {
           v27 = v26;
-          v28 = -[NSSQLSimpleWhereIntermediate _sqlTokenForPredicateOperator:inContext:]([*(a1 + 16) predicateOperatorType], a2);
+          v28 = -[NSSQLSimpleWhereIntermediate _sqlTokenForPredicateOperator:inContext:]([*(context + 16) predicateOperatorType], a2);
           if (v28)
           {
             v29 = v28;
@@ -292,17 +292,17 @@ LABEL_37:
 
             if (v22)
             {
-              [*(a1 + 24) removeLastObject];
+              [*(context + 24) removeLastObject];
             }
 
             return v21;
           }
 
-          [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unable to generate SQL for predicate (%@) (problem with operator)", *(a1 + 16)), 0), @"NSUnderlyingException"}];
+          [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unable to generate SQL for predicate (%@) (problem with operator)", *(context + 16)), 0), @"NSUnderlyingException"}];
 
           if (v22)
           {
-            [*(a1 + 24) removeLastObject];
+            [*(context + 24) removeLastObject];
           }
 
           return 0;
@@ -310,14 +310,14 @@ LABEL_37:
 
         if (v22)
         {
-          [*(a1 + 24) removeLastObject];
+          [*(context + 24) removeLastObject];
         }
 
         if (![a2 objectForKey:@"LastKeyPathWasTransientProperty"] && !objc_msgSend(a2, "objectForKey:", @"NSUnderlyingException"))
         {
           v30 = MEMORY[0x1E695DF30];
           v31 = *MEMORY[0x1E695D940];
-          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate SQL for predicate (%@) (problem on RHS)", *(a1 + 16)];
+          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate SQL for predicate (%@) (problem on RHS)", *(context + 16)];
 LABEL_52:
           [a2 setObject:objc_msgSend(v30 forKey:{"exceptionWithName:reason:userInfo:", v31, v32, 0), @"NSUnderlyingException"}];
         }
@@ -325,13 +325,13 @@ LABEL_52:
         return 0;
       }
 
-      [*(a1 + 24) removeLastObject];
+      [*(context + 24) removeLastObject];
     }
 
     else
     {
-      v19 = v8 == 2;
-      v20 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v5 allowToMany:v19 inContext:a2];
+      v19 = comparisonPredicateModifier == 2;
+      v20 = [(NSSQLIntermediate *)context _generateSQLForExpression:v5 allowToMany:v19 inContext:a2];
       if (v20)
       {
         v21 = v20;
@@ -347,42 +347,42 @@ LABEL_52:
 
     v30 = MEMORY[0x1E695DF30];
     v31 = *MEMORY[0x1E695D940];
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate SQL for predicate (%@) (problem on LHS)", *(a1 + 16)];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate SQL for predicate (%@) (problem on LHS)", *(context + 16)];
     goto LABEL_52;
   }
 
-  return [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLType3InContext:a2];
+  return [(NSSQLSimpleWhereIntermediate *)context _generateSQLType3InContext:a2];
 }
 
-- (void)_generateSQLForMatchingOperator:(void *)a3 inContext:
+- (void)_generateSQLForMatchingOperator:(void *)operator inContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = *(a1 + 32);
-  v7 = *(a1 + 40);
-  if (([objc_opt_class() isSimpleKeypath:v6] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v6))
+  v6 = *(self + 32);
+  v7 = *(self + 40);
+  if (([objc_opt_class() isSimpleKeypath:v6] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, v6))
   {
     goto LABEL_12;
   }
 
   if (![v7 expressionType])
   {
-    v14 = [v7 constantValue];
-    if (([v14 isNSString] & 1) != 0 || !v14)
+    constantValue = [v7 constantValue];
+    if (([constantValue isNSString] & 1) != 0 || !constantValue)
     {
-      v16 = [objc_msgSend(*(a1 + 16) "predicateOperator")];
-      v17 = [a1 _generateSQLForKeyPathExpression:v6 allowToMany:objc_msgSend(*(a1 + 16) inContext:{"comparisonPredicateModifier") == 2, a3}];
+      v16 = [objc_msgSend(*(self + 16) "predicateOperator")];
+      v17 = [self _generateSQLForKeyPathExpression:v6 allowToMany:objc_msgSend(*(self + 16) inContext:{"comparisonPredicateModifier") == 2, operator}];
       if (v17)
       {
         v18 = v17;
         v11 = [a2 mutableCopy];
         [v11 appendString:v18];
 
-        v19 = [[NSSQLConstantValueIntermediate alloc] initWithConstantValue:v14 ofType:5 inScope:a1 context:a3];
-        v20 = [(NSSQLConstantValueIntermediate *)v19 generateSQLStringInContext:a3];
+        v19 = [[NSSQLConstantValueIntermediate alloc] initWithConstantValue:constantValue ofType:5 inScope:self context:operator];
+        v20 = [(NSSQLConstantValueIntermediate *)v19 generateSQLStringInContext:operator];
         [v11 appendString:{@", "}];
         [v11 appendString:v20];
         [v11 appendString:{@", "}];
@@ -397,15 +397,15 @@ LABEL_52:
     goto LABEL_12;
   }
 
-  if (([objc_opt_class() isSimpleKeypath:v7] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v7))
+  if (([objc_opt_class() isSimpleKeypath:v7] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, v7))
   {
 LABEL_12:
-    [a3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generation for predicate (%@)", *(a1 + 16)), 0), @"NSUnderlyingException"}];
+    [operator setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generation for predicate (%@)", *(self + 16)), 0), @"NSUnderlyingException"}];
     return 0;
   }
 
-  v8 = [objc_msgSend(*(a1 + 16) "predicateOperator")];
-  v9 = [a1 _generateSQLForKeyPathExpression:v6 allowToMany:objc_msgSend(*(a1 + 16) inContext:{"comparisonPredicateModifier") == 2, a3}];
+  v8 = [objc_msgSend(*(self + 16) "predicateOperator")];
+  v9 = [self _generateSQLForKeyPathExpression:v6 allowToMany:objc_msgSend(*(self + 16) inContext:{"comparisonPredicateModifier") == 2, operator}];
   if (!v9)
   {
     return 0;
@@ -415,7 +415,7 @@ LABEL_12:
   v11 = [a2 mutableCopy];
   [v11 appendString:v10];
 
-  v12 = [a1 _generateSQLForKeyPathExpression:v7 allowToMany:0 inContext:a3];
+  v12 = [self _generateSQLForKeyPathExpression:v7 allowToMany:0 inContext:operator];
   if (!v12)
   {
 
@@ -431,14 +431,14 @@ LABEL_12:
   return v11;
 }
 
-- (void)_generateSQLForString:(void *)a3 expressionPath:(int)a4 wildStart:(int)a5 wildEnd:(uint64_t)a6 allowToMany:(void *)a7 inContext:
+- (void)_generateSQLForString:(void *)string expressionPath:(int)path wildStart:(int)start wildEnd:(uint64_t)end allowToMany:(void *)many inContext:
 {
-  v14 = [objc_msgSend(a1[2] "predicateOperator")];
+  v14 = [objc_msgSend(self[2] "predicateOperator")];
   v15 = v14;
   if ((v14 & 4) != 0)
   {
     v17 = 2;
-    if (!a5)
+    if (!start)
     {
       goto LABEL_12;
     }
@@ -462,24 +462,24 @@ LABEL_12:
       v17 = v16;
     }
 
-    if (!a5)
+    if (!start)
     {
       goto LABEL_12;
     }
   }
 
-  if ((a4 & 1) == 0)
+  if ((path & 1) == 0)
   {
     v17 |= 8uLL;
     goto LABEL_15;
   }
 
 LABEL_12:
-  if (!a4 || (a5 & 1) != 0)
+  if (!path || (start & 1) != 0)
   {
-    if ((a4 & 1) == 0 && (a5 & 1) == 0)
+    if ((path & 1) == 0 && (start & 1) == 0)
     {
-      [a7 setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generatio for predicate (%@)", a1[2]), 0), @"NSUnderlyingException"}];
+      [many setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generatio for predicate (%@)", self[2]), 0), @"NSUnderlyingException"}];
       return 0;
     }
   }
@@ -491,9 +491,9 @@ LABEL_12:
 
 LABEL_15:
   v18 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @" NSCoreDataStringSearch(");
-  if ([a3 expressionType] == 2)
+  if ([string expressionType] == 2)
   {
-    v19 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:a3 allowToMany:a6 inContext:a7];
+    v19 = [(NSSQLIntermediate *)self _generateSQLForExpression:string allowToMany:end inContext:many];
     if (!v19)
     {
 LABEL_17:
@@ -504,7 +504,7 @@ LABEL_17:
 
   else
   {
-    v19 = [a1 _generateSQLForKeyPathExpression:a3 allowToMany:a6 inContext:a7];
+    v19 = [self _generateSQLForKeyPathExpression:string allowToMany:end inContext:many];
     if (!v19)
     {
       goto LABEL_17;
@@ -515,8 +515,8 @@ LABEL_17:
   [v18 appendString:v19];
 
   [v18 appendString:{@", "}];
-  v21 = [[NSSQLConstantValueIntermediate alloc] initWithConstantValue:a2 ofType:5 inScope:a1 context:a7];
-  v22 = [(NSSQLConstantValueIntermediate *)v21 generateSQLStringInContext:a7];
+  v21 = [[NSSQLConstantValueIntermediate alloc] initWithConstantValue:a2 ofType:5 inScope:self context:many];
+  v22 = [(NSSQLConstantValueIntermediate *)v21 generateSQLStringInContext:many];
   [v18 appendString:v22];
 
   [v18 appendString:{@", "}];
@@ -524,34 +524,34 @@ LABEL_17:
   return v18;
 }
 
-- (void)_generateSQLSubstringWildStart:(int)a3 wildEnd:(void *)a4 inContext:
+- (void)_generateSQLSubstringWildStart:(int)start wildEnd:(void *)end inContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = *(a1 + 32);
-  v9 = *(a1 + 40);
-  if (([objc_opt_class() isSimpleKeypath:v8] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v8) || objc_msgSend(v9, "expressionType") || (v10 = objc_msgSend(v9, "constantValue"), !objc_msgSend(v10, "isNSString")))
+  v8 = *(self + 32);
+  v9 = *(self + 40);
+  if (([objc_opt_class() isSimpleKeypath:v8] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, v8) || objc_msgSend(v9, "expressionType") || (v10 = objc_msgSend(v9, "constantValue"), !objc_msgSend(v10, "isNSString")))
   {
-    [a4 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unimplemented SQL generation for predicate (%@).", *(a1 + 16)), 0), @"NSUnderlyingException"}];
+    [end setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unimplemented SQL generation for predicate (%@).", *(self + 16)), 0), @"NSUnderlyingException"}];
     return 0;
   }
 
-  v11 = [*(a1 + 16) comparisonPredicateModifier] == 2;
+  v11 = [*(self + 16) comparisonPredicateModifier] == 2;
 
-  return [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLForString:v10 expressionPath:v8 wildStart:a2 wildEnd:a3 allowToMany:v11 inContext:a4];
+  return [(NSSQLSimpleWhereIntermediate *)self _generateSQLForString:v10 expressionPath:v8 wildStart:a2 wildEnd:start allowToMany:v11 inContext:end];
 }
 
-- (uint64_t)_upperBoundSearchStringForString:(__CFString *)a1 context:(void *)a2
+- (uint64_t)_upperBoundSearchStringForString:(__CFString *)string context:(void *)context
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(string);
   result = 0;
-  if (a1 && Length <= 0x3FFFFFFF)
+  if (string && Length <= 0x3FFFFFFF)
   {
-    if (CFStringGetCharactersPtr(a1))
+    if (CFStringGetCharactersPtr(string))
     {
       v6 = CFStringEncodingUnicodeToBytes();
       if (v6)
@@ -565,7 +565,7 @@ LABEL_17:
         v8 = MEMORY[0x1E695DF30];
         v9 = *MEMORY[0x1E695D940];
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Malformed string (%@)", v7];
-        [a2 setValue:objc_msgSend(v8 forKey:{"exceptionWithName:reason:userInfo:", v9, v10, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", a1, @"Bad string", @"NSUnderlyingException"}];
+        [context setValue:objc_msgSend(v8 forKey:{"exceptionWithName:reason:userInfo:", v9, v10, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", string, @"Bad string", @"NSUnderlyingException"}];
 LABEL_17:
         result = 0;
         goto LABEL_18;
@@ -583,7 +583,7 @@ LABEL_17:
 
       v22.location = 0;
       v22.length = Length;
-      CFStringGetCharacters(a1, v22, v12);
+      CFStringGetCharacters(string, v22, v12);
       v13 = CFStringEncodingUnicodeToBytes();
       if (v13)
       {
@@ -605,7 +605,7 @@ LABEL_17:
         v15 = MEMORY[0x1E695DF30];
         v16 = *MEMORY[0x1E695D940];
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Malformed string 2 (%@)", v14];
-        [a2 setValue:objc_msgSend(v15 forKey:{"exceptionWithName:reason:userInfo:", v16, v17, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", a1, @"Bad string", @"NSUnderlyingException"}];
+        [context setValue:objc_msgSend(v15 forKey:{"exceptionWithName:reason:userInfo:", v16, v17, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", string, @"Bad string", @"NSUnderlyingException"}];
         goto LABEL_17;
       }
 
@@ -622,10 +622,10 @@ LABEL_17:
 
     else
     {
-      v19 = [(__CFString *)a1 substringToIndex:Length - 1];
+      v19 = [(__CFString *)string substringToIndex:Length - 1];
     }
 
-    v20 = [(__CFString *)a1 characterAtIndex:Length - 1];
+    v20 = [(__CFString *)string characterAtIndex:Length - 1];
     result = 0;
     if (v20 != 55295 && v20 != 57343 && v20 != 0xFFFF)
     {
@@ -638,27 +638,27 @@ LABEL_18:
   return result;
 }
 
-- (id)_generateSQLBeginsWithStringInContext:(uint64_t)a1
+- (id)_generateSQLBeginsWithStringInContext:(uint64_t)context
 {
-  if (!a1)
+  if (!context)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 16) predicateOperator];
-  if ([*(a1 + 40) expressionType] || (objc_msgSend(v4, "options") & 4) == 0 || (v5 = objc_msgSend(*(a1 + 40), "constantValue"), !-[__CFString isNSString](v5, "isNSString")) || (v6 = -[NSSQLSimpleWhereIntermediate _upperBoundSearchStringForString:context:](v5, a2)) == 0)
+  predicateOperator = [*(context + 16) predicateOperator];
+  if ([*(context + 40) expressionType] || (objc_msgSend(predicateOperator, "options") & 4) == 0 || (v5 = objc_msgSend(*(context + 40), "constantValue"), !-[__CFString isNSString](v5, "isNSString")) || (v6 = -[NSSQLSimpleWhereIntermediate _upperBoundSearchStringForString:context:](v5, a2)) == 0)
   {
     v9 = 0;
     goto LABEL_11;
   }
 
   v7 = v6;
-  v8 = -[NSSQLSimpleWhereIntermediate initWithPredicate:inScope:]([NSSQLSimpleWhereIntermediate alloc], "initWithPredicate:inScope:", [MEMORY[0x1E696AB18] predicateWithLeftExpression:*(a1 + 32) rightExpression:*(a1 + 40) modifier:objc_msgSend(*(a1 + 16) type:"comparisonPredicateModifier") options:{3, 0}], a1);
+  v8 = -[NSSQLSimpleWhereIntermediate initWithPredicate:inScope:]([NSSQLSimpleWhereIntermediate alloc], "initWithPredicate:inScope:", [MEMORY[0x1E696AB18] predicateWithLeftExpression:*(context + 32) rightExpression:*(context + 40) modifier:objc_msgSend(*(context + 16) type:"comparisonPredicateModifier") options:{3, 0}], context);
   v9 = [(NSSQLSimpleWhereIntermediate *)v8 generateSQLStringInContext:a2];
 
   if (v9)
   {
-    v10 = -[NSSQLIntermediate _generateSQLForExpression:allowToMany:inContext:](a1, [MEMORY[0x1E696ABC8] expressionForConstantValue:v7], 0, a2);
+    v10 = -[NSSQLIntermediate _generateSQLForExpression:allowToMany:inContext:](context, [MEMORY[0x1E696ABC8] expressionForConstantValue:v7], 0, a2);
     if (!v10)
     {
       v13 = v9;
@@ -689,28 +689,28 @@ LABEL_11:
     return v9;
   }
 
-  return [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLSubstringWildStart:1 wildEnd:a2 inContext:?];
+  return [(NSSQLSimpleWhereIntermediate *)context _generateSQLSubstringWildStart:1 wildEnd:a2 inContext:?];
 }
 
-- (void)_generateSQLForConst:(__CFString *)a3 inManyToMany:(uint64_t)a4 expression:(void *)a5 inContext:
+- (void)_generateSQLForConst:(__CFString *)const inManyToMany:(uint64_t)many expression:(void *)expression inContext:
 {
-  if ([a1 isUpdateScoped])
+  if ([self isUpdateScoped])
   {
-    [a5 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (not allowed in updates): %@", a4), 0), @"NSUnderlyingException"}];
+    [expression setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported join (not allowed in updates): %@", many), 0), @"NSUnderlyingException"}];
     return 0;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{-[__CFString name](a3, "name"), 0}];
-  v11 = +[NSSQLJoinIntermediate createJoinIntermediatesForKeypath:startEntity:startAlias:forScope:inStatementIntermediate:inContext:](NSSQLJoinIntermediate, v10, -[__CFString entity](a3, "entity"), [a1 governingAlias], a1, objc_msgSend(a1, "fetchIntermediateForKeypathExpression:", a4), a5);
+  v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{-[__CFString name](const, "name"), 0}];
+  v11 = +[NSSQLJoinIntermediate createJoinIntermediatesForKeypath:startEntity:startAlias:forScope:inStatementIntermediate:inContext:](NSSQLJoinIntermediate, v10, -[__CFString entity](const, "entity"), [self governingAlias], self, objc_msgSend(self, "fetchIntermediateForKeypathExpression:", many), expression);
 
-  if ([a5 objectForKey:@"NSUnderlyingException"])
+  if ([expression objectForKey:@"NSUnderlyingException"])
   {
 
     return 0;
   }
 
-  v14 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:a2 inScope:a1];
-  v15 = [(NSSQLForeignKeyIntermediate *)v14 generateSQLStringInContext:a5];
+  v14 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:a2 inScope:self];
+  v15 = [(NSSQLForeignKeyIntermediate *)v14 generateSQLStringInContext:expression];
   if (v11)
   {
     v16 = v11[5];
@@ -723,18 +723,18 @@ LABEL_11:
 
   v12 = [v16 mutableCopy];
   [v12 appendString:@"."];
-  [v12 appendString:-[NSSQLManyToMany inverseColumnName](a3)];
+  [v12 appendString:-[NSSQLManyToMany inverseColumnName](const)];
   [v12 appendString:@" = "];
   [v12 appendString:v15];
 
   return v12;
 }
 
-- (id)_generateSQLForConst:(void *)a3 inToMany:(void *)a4 inContext:
+- (id)_generateSQLForConst:(void *)const inToMany:(void *)many inContext:
 {
-  if ([a1 isUpdateScoped])
+  if ([self isUpdateScoped])
   {
-    [a4 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported clause (not allowed in updates): %@.", a1[4]), 0), @"NSUnderlyingException"}];
+    [many setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported clause (not allowed in updates): %@.", self[4]), 0), @"NSUnderlyingException"}];
     return 0;
   }
 
@@ -742,21 +742,21 @@ LABEL_11:
   {
     v9 = [NSSQLKeypathExpressionIntermediate alloc];
     v10 = MEMORY[0x1E696ABC8];
-    v11 = [a3 entity];
-    if (v11)
+    entity = [const entity];
+    if (entity)
     {
-      v11 = v11[16];
+      entity = entity[16];
     }
 
-    v12 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:](v9, "initWithExpression:allowToMany:inScope:", [v10 expressionForKeyPath:{objc_msgSend(v11, "name")}], 0, a1);
-    v8 = [(NSSQLKeypathExpressionIntermediate *)v12 generateSQLStringInContext:a4];
+    v12 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:](v9, "initWithExpression:allowToMany:inScope:", [v10 expressionForKeyPath:{objc_msgSend(entity, "name")}], 0, self);
+    v8 = [(NSSQLKeypathExpressionIntermediate *)v12 generateSQLStringInContext:many];
 
     if (v8)
     {
       objc_msgSend(v8, "appendString:", @" IN (SELECT ");
-      if (a3)
+      if (const)
       {
-        v13 = a3[7];
+        v13 = const[7];
       }
 
       else
@@ -764,14 +764,14 @@ LABEL_11:
         v13 = 0;
       }
 
-      v14 = [a3 destinationEntity];
+      destinationEntity = [const destinationEntity];
       [v8 appendString:{objc_msgSend(objc_msgSend(v13, "foreignKey"), "columnName")}];
       [v8 appendString:@" FROM "];
       [v8 appendString:{objc_msgSend(objc_msgSend(v13, "entity"), "tableName")}];
       [v8 appendString:@" WHERE "];
-      if (v14)
+      if (destinationEntity)
       {
-        v15 = *(v14 + 128);
+        v15 = *(destinationEntity + 128);
       }
 
       else
@@ -780,8 +780,8 @@ LABEL_11:
       }
 
       [v8 appendString:{objc_msgSend(v15, "columnName")}];
-      v16 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:a2 inScope:a1];
-      v17 = [(NSSQLForeignKeyIntermediate *)v16 generateSQLStringInContext:a4];
+      v16 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:a2 inScope:self];
+      v17 = [(NSSQLForeignKeyIntermediate *)v16 generateSQLStringInContext:many];
       [v8 appendString:@" = "];
       [v8 appendString:v17];
       [v8 appendString:@" "]);
@@ -791,17 +791,17 @@ LABEL_11:
   return v8;
 }
 
-- (void)_generateSQLForConst:(uint64_t)a1 inAttribute:(uint64_t)a2 expression:(uint64_t)a3 inContext:(uint64_t)a4
+- (void)_generateSQLForConst:(uint64_t)const inAttribute:(uint64_t)attribute expression:(uint64_t)expression inContext:(uint64_t)context
 {
-  v7 = [(NSSQLExpressionIntermediate *)[NSSQLKeypathExpressionIntermediate alloc] initWithExpression:a3 allowToMany:0 inScope:a1];
-  v8 = [(NSSQLKeypathExpressionIntermediate *)v7 generateSQLStringInContext:a4];
+  v7 = [(NSSQLExpressionIntermediate *)[NSSQLKeypathExpressionIntermediate alloc] initWithExpression:expression allowToMany:0 inScope:const];
+  v8 = [(NSSQLKeypathExpressionIntermediate *)v7 generateSQLStringInContext:context];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [objc_msgSend(*(a1 + 16) "predicateOperator")];
+  v9 = [objc_msgSend(*(const + 16) "predicateOperator")];
   v10 = v9;
   v11 = (v9 << 63 >> 63) & 0x101;
   if ((v9 & 2) != 0)
@@ -827,8 +827,8 @@ LABEL_11:
   v13 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @" NSCoreDataStringSearch(");
   [v13 appendString:v8];
 
-  v14 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:a2 inScope:a1];
-  v15 = [(NSSQLForeignKeyIntermediate *)v14 generateSQLStringInContext:a4];
+  v14 = [[NSSQLForeignKeyIntermediate alloc] initWithConstantValue:attribute inScope:const];
+  v15 = [(NSSQLForeignKeyIntermediate *)v14 generateSQLStringInContext:context];
   [v13 appendString:{@", "}];
   [v13 appendString:v15];
   [v13 appendString:{@", "}];
@@ -837,25 +837,25 @@ LABEL_11:
   return v13;
 }
 
-- (__CFString)_generateSQLContainmentStringInContext:(uint64_t)a1
+- (__CFString)_generateSQLContainmentStringInContext:(uint64_t)context
 {
   v86 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!context)
   {
     goto LABEL_29;
   }
 
-  v4 = [*(a1 + 16) predicateOperatorType];
-  v5 = [*(a1 + 16) comparisonPredicateModifier];
-  v6 = *(a1 + 32);
-  v7 = *(a1 + 40);
-  if (!*(a1 + 24))
+  predicateOperatorType = [*(context + 16) predicateOperatorType];
+  comparisonPredicateModifier = [*(context + 16) comparisonPredicateModifier];
+  v6 = *(context + 32);
+  v7 = *(context + 40);
+  if (!*(context + 24))
   {
-    *(a1 + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *(context + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v8 = v4 == 99;
-  if (v4 == 99)
+  v8 = predicateOperatorType == 99;
+  if (predicateOperatorType == 99)
   {
     v9 = v6;
   }
@@ -875,16 +875,16 @@ LABEL_11:
     v10 = v6;
   }
 
-  v11 = [v10 expressionType];
-  v12 = [v9 expressionType];
-  if (v12 == 2)
+  expressionType = [v10 expressionType];
+  expressionType2 = [v9 expressionType];
+  if (expressionType2 == 2)
   {
-    v13 = [v9 variable];
-    v14 = [objc_msgSend(a2 objectForKey:{@"substitutionVariables", "objectForKey:", v13}];
+    variable = [v9 variable];
+    v14 = [objc_msgSend(a2 objectForKey:{@"substitutionVariables", "objectForKey:", variable}];
     if (v14)
     {
       v15 = v14;
-      v16 = [v14 expressionType];
+      expressionType3 = [v14 expressionType];
       v78 = [a2 objectForKey:@"duringPrefetching"] != 0;
       v9 = v15;
     }
@@ -892,40 +892,40 @@ LABEL_11:
     else
     {
       v78 = 0;
-      v13 = 0;
-      v16 = 2;
+      variable = 0;
+      expressionType3 = 2;
     }
   }
 
   else
   {
-    v16 = v12;
+    expressionType3 = expressionType2;
     v78 = 0;
-    v13 = 0;
+    variable = 0;
   }
 
-  if (v11 >= 5 && ([objc_opt_class() isSimpleKeypath:v10] & 1) == 0 && (-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v10) & 1) == 0 && (-[NSSQLIntermediate isSimpleNoIndexFunction:](a1, v10) & 1) == 0)
+  if (expressionType >= 5 && ([objc_opt_class() isSimpleKeypath:v10] & 1) == 0 && (-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](context, v10) & 1) == 0 && (-[NSSQLIntermediate isSimpleNoIndexFunction:](context, v10) & 1) == 0)
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (bad LHS)", *(a1 + 16)];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (bad LHS)", *(context + 16)];
     goto LABEL_28;
   }
 
-  v17 = v16 > 0x32 || ((1 << v16) & 0x400000000600DLL) == 0;
-  if (v17 && ([objc_opt_class() isSimpleKeypath:v10] & 1) == 0 && (-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v9) & 1) == 0 && !-[NSSQLIntermediate _functionExpressionIsSubqueryFollowedByKeypath:](a1, v9))
+  v17 = expressionType3 > 0x32 || ((1 << expressionType3) & 0x400000000600DLL) == 0;
+  if (v17 && ([objc_opt_class() isSimpleKeypath:v10] & 1) == 0 && (-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](context, v9) & 1) == 0 && !-[NSSQLIntermediate _functionExpressionIsSubqueryFollowedByKeypath:](context, v9))
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (bad RHS)", *(a1 + 16)];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (bad RHS)", *(context + 16)];
     goto LABEL_28;
   }
 
-  if ((v11 == 3 || [(NSSQLIntermediate *)a1 isVariableBasedKeypathScopedBySubquery:v10]) && (v16 == 3 || [(NSSQLIntermediate *)a1 isVariableBasedKeypathScopedBySubquery:v9]))
+  if ((expressionType == 3 || [(NSSQLIntermediate *)context isVariableBasedKeypathScopedBySubquery:v10]) && (expressionType3 == 3 || [(NSSQLIntermediate *)context isVariableBasedKeypathScopedBySubquery:v9]))
   {
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D940];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (LHS and RHS both keypaths)", *(a1 + 16)];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unimplemented SQL generation for predicate : (%@) (LHS and RHS both keypaths)", *(context + 16)];
 LABEL_28:
     [a2 setObject:objc_msgSend(v18 forKey:{"exceptionWithName:reason:userInfo:", v19, v20, 0), @"NSUnderlyingException"}];
 LABEL_29:
@@ -934,22 +934,22 @@ LABEL_29:
   }
 
   v22 = &OBJC_IVAR____NSPersistentHistoryTransaction__author;
-  [*(a1 + 24) addObject:v10];
-  if (v16 > 13)
+  [*(context + 24) addObject:v10];
+  if (expressionType3 > 13)
   {
-    if (v16 == 50)
+    if (expressionType3 == 50)
     {
       goto LABEL_46;
     }
 
-    if (v16 == 14)
+    if (expressionType3 == 14)
     {
-      v23 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v10 allowToMany:v5 == 2 inContext:a2];
+      v23 = [(NSSQLIntermediate *)context _generateSQLForExpression:v10 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
       v21 = v23;
       if (v23)
       {
         [(__CFString *)v23 appendString:@" IN "];
-        v24 = -[NSSQLIntermediate _generateSQLForExpressionCollection:allowToMany:inContext:](a1, [v9 constantValue], 0, a2);
+        v24 = -[NSSQLIntermediate _generateSQLForExpressionCollection:allowToMany:inContext:](context, [v9 constantValue], 0, a2);
         if (v24)
         {
 LABEL_49:
@@ -968,15 +968,15 @@ LABEL_97:
     }
 
 LABEL_45:
-    if ([(NSSQLIntermediate *)a1 _functionExpressionIsSubqueryFollowedByKeypath:v9])
+    if ([(NSSQLIntermediate *)context _functionExpressionIsSubqueryFollowedByKeypath:v9])
     {
 LABEL_46:
-      v26 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v10 allowToMany:v5 == 2 inContext:a2];
+      v26 = [(NSSQLIntermediate *)context _generateSQLForExpression:v10 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
       v21 = v26;
       if (v26)
       {
         [(__CFString *)v26 appendString:@" IN "];
-        v27 = a1;
+        contextCopy3 = context;
         v28 = v9;
         v29 = 1;
         goto LABEL_48;
@@ -987,16 +987,16 @@ LABEL_118:
       goto LABEL_119;
     }
 
-    if ((([objc_opt_class() isSimpleKeypath:v10] & 1) != 0 || -[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v10)) && !objc_msgSend(*(a1 + 8), "keypathExpressionIsSafeLHSForIn:", v10))
+    if ((([objc_opt_class() isSimpleKeypath:v10] & 1) != 0 || -[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](context, v10)) && !objc_msgSend(*(context + 8), "keypathExpressionIsSafeLHSForIn:", v10))
     {
       goto LABEL_39;
     }
 
-    if (v11 || v16 == 2)
+    if (expressionType || expressionType3 == 2)
     {
-      if (v11 || v16 != 2)
+      if (expressionType || expressionType3 != 2)
       {
-        v50 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v9 allowToMany:1 inContext:a2];
+        v50 = [(NSSQLIntermediate *)context _generateSQLForExpression:v9 allowToMany:1 inContext:a2];
         v21 = v50;
         if (!v50)
         {
@@ -1004,22 +1004,22 @@ LABEL_118:
         }
 
         [(__CFString *)v50 appendString:@" = "];
-        v27 = a1;
+        contextCopy3 = context;
         v28 = v10;
-        v29 = v5 == 2;
+        v29 = comparisonPredicateModifier == 2;
       }
 
       else
       {
-        v49 = [v10 constantValue];
-        if ([v49 isNSString])
+        constantValue = [v10 constantValue];
+        if ([constantValue isNSString])
         {
           LODWORD(v25) = 1;
-          v21 = [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLForString:v49 expressionPath:v9 wildStart:1 wildEnd:1 allowToMany:1 inContext:a2];
+          v21 = [(NSSQLSimpleWhereIntermediate *)context _generateSQLForString:constantValue expressionPath:v9 wildStart:1 wildEnd:1 allowToMany:1 inContext:a2];
           goto LABEL_119;
         }
 
-        v58 = [a1 _generateSQLForVariableExpression:v9 allowToMany:0 inContext:a2];
+        v58 = [context _generateSQLForVariableExpression:v9 allowToMany:0 inContext:a2];
         v21 = v58;
         if (!v58)
         {
@@ -1027,13 +1027,13 @@ LABEL_118:
         }
 
         [(__CFString *)v58 appendString:@" = "];
-        v27 = a1;
+        contextCopy3 = context;
         v28 = v10;
         v29 = 0;
       }
 
 LABEL_48:
-      v24 = [(NSSQLIntermediate *)v27 _generateSQLForExpression:v28 allowToMany:v29 inContext:a2];
+      v24 = [(NSSQLIntermediate *)contextCopy3 _generateSQLForExpression:v28 allowToMany:v29 inContext:a2];
       if (v24)
       {
         goto LABEL_49;
@@ -1046,22 +1046,22 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    [*(a1 + 24) addObject:v9];
-    if (v16 == 3)
+    [*(context + 24) addObject:v9];
+    if (expressionType3 == 3)
     {
-      v33 = [v9 keyPath];
+      keyPath = [v9 keyPath];
     }
 
     else
     {
-      v33 = [objc_msgSend(objc_msgSend(v9 "arguments")];
+      keyPath = [objc_msgSend(objc_msgSend(v9 "arguments")];
     }
 
-    v51 = v33;
-    v52 = [v10 constantValue];
+    v51 = keyPath;
+    constantValue2 = [v10 constantValue];
     if ([v51 rangeOfString:@"."] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v53 = [a1 governingEntityForKeypathExpression:v9];
+      v53 = [context governingEntityForKeypathExpression:v9];
       if (v53)
       {
         v21 = [*(v53 + 40) objectForKey:v51];
@@ -1080,17 +1080,17 @@ LABEL_39:
       v55 = v54;
       if ([v54 count])
       {
-        v56 = [v55 lastObject];
-        if (v56)
+        lastObject = [v55 lastObject];
+        if (lastObject)
         {
-          v21 = [*(v56 + 40) objectForKey:v51];
+          v21 = [*(lastObject + 40) objectForKey:v51];
           [v55 removeLastObject];
           if (v21)
           {
 LABEL_112:
             if (LOBYTE(v21->length) == 9)
             {
-              v57 = [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLForConst:v52 inManyToMany:v21 expression:v9 inContext:a2];
+              v57 = [(NSSQLSimpleWhereIntermediate *)context _generateSQLForConst:constantValue2 inManyToMany:v21 expression:v9 inContext:a2];
 LABEL_155:
               v21 = v57;
               goto LABEL_156;
@@ -1100,7 +1100,7 @@ LABEL_155:
             {
               if (LOBYTE(v21->length) == 1)
               {
-                v57 = [NSSQLSimpleWhereIntermediate _generateSQLForConst:a1 inAttribute:v52 expression:v9 inContext:a2];
+                v57 = [NSSQLSimpleWhereIntermediate _generateSQLForConst:context inAttribute:constantValue2 expression:v9 inContext:a2];
                 goto LABEL_155;
               }
 
@@ -1108,7 +1108,7 @@ LABEL_155:
             }
 
 LABEL_154:
-            v57 = [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLForConst:v52 inToMany:v21 inContext:a2];
+            v57 = [(NSSQLSimpleWhereIntermediate *)context _generateSQLForConst:constantValue2 inToMany:v21 inContext:a2];
             goto LABEL_155;
           }
         }
@@ -1128,21 +1128,21 @@ LABEL_154:
 
     else
     {
-      if ([v52 isNSString])
+      if ([constantValue2 isNSString])
       {
         LODWORD(v25) = 1;
-        v21 = [(NSSQLSimpleWhereIntermediate *)a1 _generateSQLForString:v52 expressionPath:v9 wildStart:1 wildEnd:1 allowToMany:1 inContext:a2];
+        v21 = [(NSSQLSimpleWhereIntermediate *)context _generateSQLForString:constantValue2 expressionPath:v9 wildStart:1 wildEnd:1 allowToMany:1 inContext:a2];
 LABEL_158:
-        [*(a1 + 24) removeLastObject];
+        [*(context + 24) removeLastObject];
         goto LABEL_119;
       }
 
-      v63 = [a1 _generateSQLForKeyPathExpression:v9 allowToMany:1 inContext:a2];
+      v63 = [context _generateSQLForKeyPathExpression:v9 allowToMany:1 inContext:a2];
       v21 = v63;
       if (v63)
       {
         [(__CFString *)v63 appendString:@" = "];
-        v64 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v10 allowToMany:0 inContext:a2];
+        v64 = [(NSSQLIntermediate *)context _generateSQLForExpression:v10 allowToMany:0 inContext:a2];
         if (v64)
         {
           v65 = v64;
@@ -1164,9 +1164,9 @@ LABEL_150:
     goto LABEL_158;
   }
 
-  if (v16)
+  if (expressionType3)
   {
-    if (v16 == 13)
+    if (expressionType3 == 13)
     {
       goto LABEL_46;
     }
@@ -1174,7 +1174,7 @@ LABEL_150:
     goto LABEL_45;
   }
 
-  v31 = [(NSSQLIntermediate *)a1 _generateSQLForExpression:v10 allowToMany:v5 == 2 inContext:a2];
+  v31 = [(NSSQLIntermediate *)context _generateSQLForExpression:v10 allowToMany:comparisonPredicateModifier == 2 inContext:a2];
   v21 = v31;
   if (!v31)
   {
@@ -1184,30 +1184,30 @@ LABEL_150:
   [(__CFString *)v31 appendString:@" IN "];
   if ([v10 expressionType] == 1)
   {
-    v32 = [objc_msgSend(objc_msgSend(a1 "fetchIntermediate")];
+    destinationEntity = [objc_msgSend(objc_msgSend(context "fetchIntermediate")];
   }
 
-  else if ([objc_opt_class() isSimpleKeypath:v10] && (v34 = objc_msgSend(v10, "predicateFormat"), v32 = objc_msgSend(objc_msgSend(a1, "governingEntityForKeypathExpression:", v10), "entityDescription"), v35 = objc_msgSend(v34, "componentsSeparatedByString:", @"."), (v36 = objc_msgSend(v35, "count")) != 0))
+  else if ([objc_opt_class() isSimpleKeypath:v10] && (v34 = objc_msgSend(v10, "predicateFormat"), destinationEntity = objc_msgSend(objc_msgSend(context, "governingEntityForKeypathExpression:", v10), "entityDescription"), v35 = objc_msgSend(v34, "componentsSeparatedByString:", @"."), (v36 = objc_msgSend(v35, "count")) != 0))
   {
     v37 = 0;
     obj = (v36 - 1);
     while (1)
     {
       v38 = [v35 objectAtIndex:v37];
-      v39 = v32 ? [objc_msgSend(v32 "propertiesByName")] : 0;
-      v40 = [v39 _propertyType];
-      v32 = 0;
+      v39 = destinationEntity ? [objc_msgSend(destinationEntity "propertiesByName")] : 0;
+      _propertyType = [v39 _propertyType];
+      destinationEntity = 0;
       if (!v39)
       {
         break;
       }
 
-      if (v40 != 4)
+      if (_propertyType != 4)
       {
         break;
       }
 
-      v32 = [v39 destinationEntity];
+      destinationEntity = [v39 destinationEntity];
       if (obj == v37)
       {
         break;
@@ -1219,12 +1219,12 @@ LABEL_150:
 
   else
   {
-    v32 = 0;
+    destinationEntity = 0;
   }
 
   v41 = v78;
   v42 = !v78;
-  if (v32)
+  if (destinationEntity)
   {
     v42 = 1;
   }
@@ -1232,32 +1232,32 @@ LABEL_150:
   if (v42)
   {
 LABEL_81:
-    if (v32)
+    if (destinationEntity)
     {
-      v46 = [v9 constantValue];
+      constantValue3 = [v9 constantValue];
       v22 = &OBJC_IVAR____NSPersistentHistoryTransaction__author;
-      if ([objc_msgSend(a2 objectForKey:{@"nestingLevel", "intValue"}] <= 0 && ((objc_msgSend(v46, "isNSArray") & 1) != 0 || (objc_msgSend(v46, "isNSSet") & 1) != 0 || objc_msgSend(v46, "isNSOrderedSet")))
+      if ([objc_msgSend(a2 objectForKey:{@"nestingLevel", "intValue"}] <= 0 && ((objc_msgSend(constantValue3, "isNSArray") & 1) != 0 || (objc_msgSend(constantValue3, "isNSSet") & 1) != 0 || objc_msgSend(constantValue3, "isNSOrderedSet")))
       {
-        v47 = [v46 count];
-        if (v13 || v47 >= 0x64)
+        v47 = [constantValue3 count];
+        if (variable || v47 >= 0x64)
         {
-          [_PFRoutines anyObjectFromCollection:v46];
+          [_PFRoutines anyObjectFromCollection:constantValue3];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v46 = [_PFRoutines newArrayOfObjectIDsFromCollection:v46];
+            constantValue3 = [_PFRoutines newArrayOfObjectIDsFromCollection:constantValue3];
           }
 
           v81 = 0u;
           v82 = 0u;
           v79 = 0u;
           v80 = 0u;
-          v66 = [v46 countByEnumeratingWithState:&v79 objects:v85 count:16];
+          v66 = [constantValue3 countByEnumeratingWithState:&v79 objects:v85 count:16];
           if (v66)
           {
             v67 = v66;
             v68 = *v80;
-            obja = v46;
+            obja = constantValue3;
             while (2)
             {
               for (i = 0; i != v67; ++i)
@@ -1276,7 +1276,7 @@ LABEL_81:
                 }
               }
 
-              v46 = obja;
+              constantValue3 = obja;
               v67 = [obja countByEnumeratingWithState:&v79 objects:v85 count:16];
               if (v67)
               {
@@ -1295,13 +1295,13 @@ LABEL_81:
           }
 
           v72 = [v71 count];
-          v73 = [[NSSQLBindIntarray alloc] initWithValue:v46];
+          v73 = [[NSSQLBindIntarray alloc] initWithValue:constantValue3];
           -[NSSQLBindIntarray setTableName:](v73, "setTableName:", -[NSSQLAliasGenerator generateTempTableName]([a2 objectForKey:@"aliasGenerator"]));
           v74 = [v71 count];
           [v71 addObject:v73];
           [(NSSQLBindIntarray *)v73 setIndex:v74];
 
-          if (v13)
+          if (variable)
           {
             v75 = [a2 objectForKey:@"bindIntarraysSubstitutionOrder"];
             if (!v75)
@@ -1310,8 +1310,8 @@ LABEL_81:
               [a2 setObject:v75 forKey:@"bindIntarraysSubstitutionOrder"];
             }
 
-            [v75 addObject:v13];
-            [v75 addObject:v32];
+            [v75 addObject:variable];
+            [v75 addObject:destinationEntity];
             [v75 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v72)}];
           }
 
@@ -1337,9 +1337,9 @@ LABEL_89:
     goto LABEL_89;
   }
 
-  v43 = [v10 predicateFormat];
-  v44 = [a1 governingEntityForKeypathExpression:v10];
-  v45 = [objc_msgSend(v43 componentsSeparatedByString:{@".", "firstObject"}];
+  predicateFormat = [v10 predicateFormat];
+  v44 = [context governingEntityForKeypathExpression:v10];
+  v45 = [objc_msgSend(predicateFormat componentsSeparatedByString:{@".", "firstObject"}];
   v22 = &OBJC_IVAR____NSPersistentHistoryTransaction__author;
   if (v44)
   {
@@ -1348,7 +1348,7 @@ LABEL_89:
 
   if ([v44 propertyType] == 7 && !objc_msgSend(v44, "propertyDescription"))
   {
-    v32 = [objc_msgSend(v44 "destinationEntity")];
+    destinationEntity = [objc_msgSend(v44 "destinationEntity")];
     goto LABEL_81;
   }
 
@@ -1367,7 +1367,7 @@ LABEL_90:
 
   if ((v48 & 1) == 0)
   {
-    v25 = -[NSSQLIntermediate _generateSQLForConstantCollection:reboundFrom:inContext:](a1, [v9 constantValue], v13, a2);
+    v25 = -[NSSQLIntermediate _generateSQLForConstantCollection:reboundFrom:inContext:](context, [v9 constantValue], variable, a2);
   }
 
   if (v25)
@@ -1380,14 +1380,14 @@ LABEL_90:
 LABEL_40:
   v21 = 0;
 LABEL_119:
-  [*(a1 + v22[199]) removeLastObject];
+  [*(context + v22[199]) removeLastObject];
   if (!v25 || !v21)
   {
     v59 = [a2 valueForKey:@"NSUnderlyingException"];
     v83 = @"NSUnderlyingException";
     v84 = v59;
     v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-    [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unimplemented SQL generation for predicate : (%@)", *(a1 + 16)), v60), @"NSUnderlyingException"}];
+    [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"unimplemented SQL generation for predicate : (%@)", *(context + 16)), v60), @"NSUnderlyingException"}];
   }
 
 LABEL_122:
@@ -1395,49 +1395,49 @@ LABEL_122:
   return v21;
 }
 
-- (void)_generateSQLBetweenStringInContext:(uint64_t)a1
+- (void)_generateSQLBetweenStringInContext:(uint64_t)context
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!context)
   {
     goto LABEL_47;
   }
 
-  v3 = *(a1 + 32);
-  v4 = *(a1 + 40);
-  v5 = [v3 expressionType];
-  v6 = *(a1 + 24);
+  v3 = *(context + 32);
+  v4 = *(context + 40);
+  expressionType = [v3 expressionType];
+  v6 = *(context + 24);
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(a1 + 24) = v6;
+    *(context + 24) = v6;
   }
 
   [v6 addObject:v3];
-  if (v5)
+  if (expressionType)
   {
-    if (([objc_opt_class() isSimpleKeypath:v3] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v3))
+    if (([objc_opt_class() isSimpleKeypath:v3] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](context, v3))
     {
-      if (v5 != 4 || sel_indexed_by_ != [*(a1 + 32) selector])
+      if (expressionType != 4 || sel_indexed_by_ != [*(context + 32) selector])
       {
-        [*(a1 + 24) removeLastObject];
+        [*(context + 24) removeLastObject];
         v26 = 0;
         goto LABEL_45;
       }
 
-      v41 = [objc_msgSend(*(a1 + 32) "arguments")];
-      v56[0] = [objc_msgSend(*(a1 + 32) "arguments")];
+      v41 = [objc_msgSend(*(context + 32) "arguments")];
+      v56[0] = [objc_msgSend(*(context + 32) "arguments")];
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
-      v55 = *(a1 + 40);
-      v43 = -[NSSQLRTreeIndexQueryIntermediate initForIndexNamed:onEntity:properties:ranges:inScope:]([NSSQLRTreeIndexQueryIntermediate alloc], "initForIndexNamed:onEntity:properties:ranges:inScope:", v41, [*(a1 + 8) governingEntity], v42, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v55, 1), *(a1 + 8));
+      v55 = *(context + 40);
+      v43 = -[NSSQLRTreeIndexQueryIntermediate initForIndexNamed:onEntity:properties:ranges:inScope:]([NSSQLRTreeIndexQueryIntermediate alloc], "initForIndexNamed:onEntity:properties:ranges:inScope:", v41, [*(context + 8) governingEntity], v42, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v55, 1), *(context + 8));
       v26 = [v43 generateSQLStringInContext:a2];
 
-      v38 = *(a1 + 24);
+      v38 = *(context + 24);
       goto LABEL_53;
     }
 
     v7 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"(");
-    v8 = [a1 _generateSQLForKeyPathExpression:v3 allowToMany:0 inContext:a2];
+    v8 = [context _generateSQLForKeyPathExpression:v3 allowToMany:0 inContext:a2];
     if (!v8)
     {
 LABEL_32:
@@ -1452,21 +1452,21 @@ LABEL_32:
   else
   {
     v10 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"(");
-    [*(a1 + 24) addObject:a1];
-    v11 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [v3 constantValue], a1, a2);
+    [*(context + 24) addObject:context];
+    v11 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [v3 constantValue], context, a2);
     v12 = [(NSSQLConstantValueIntermediate *)v11 generateSQLStringInContext:a2];
     [v10 appendString:v12];
 
     v7 = v10;
-    [*(a1 + 24) removeLastObject];
+    [*(context + 24) removeLastObject];
   }
 
   [v7 appendString:@" BETWEEN "];
-  v13 = [v4 expressionType];
-  if (!v13)
+  expressionType2 = [v4 expressionType];
+  if (!expressionType2)
   {
-    v29 = [v4 constantValue];
-    if ([v29 count] != 2)
+    constantValue = [v4 constantValue];
+    if ([constantValue count] != 2)
     {
       goto LABEL_44;
     }
@@ -1475,14 +1475,14 @@ LABEL_32:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v30 = [v29 countByEnumeratingWithState:&v45 objects:v53 count:16];
+    v30 = [constantValue countByEnumeratingWithState:&v45 objects:v53 count:16];
     if (!v30)
     {
       goto LABEL_44;
     }
 
     v31 = v30;
-    v32 = a1;
+    contextCopy = context;
     v33 = *v46;
     v34 = 1;
     do
@@ -1491,10 +1491,10 @@ LABEL_32:
       {
         if (*v46 != v33)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(constantValue);
         }
 
-        v36 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [*(*(&v45 + 1) + 8 * i) constantValue], v32, a2);
+        v36 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [*(*(&v45 + 1) + 8 * i) constantValue], contextCopy, a2);
         v37 = [(NSSQLConstantValueIntermediate *)v36 generateSQLStringInContext:a2];
         [v7 appendString:v37];
 
@@ -1506,27 +1506,27 @@ LABEL_32:
         v34 = 0;
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v45 objects:v53 count:16];
+      v31 = [constantValue countByEnumeratingWithState:&v45 objects:v53 count:16];
       v34 = 0;
     }
 
     while (v31);
     v26 = v7;
     [v7 appendString:@""]);
-    v38 = *(v32 + 24);
+    v38 = *(contextCopy + 24);
 LABEL_53:
     [v38 removeLastObject];
     goto LABEL_48;
   }
 
-  if (v13 != 14 || (v14 = [v4 constantValue], objc_msgSend(v14, "count") != 2) || (v51 = 0u, v52 = 0u, v49 = 0u, v50 = 0u, (v15 = objc_msgSend(v14, "countByEnumeratingWithState:objects:count:", &v49, v54, 16)) == 0))
+  if (expressionType2 != 14 || (v14 = [v4 constantValue], objc_msgSend(v14, "count") != 2) || (v51 = 0u, v52 = 0u, v49 = 0u, v50 = 0u, (v15 = objc_msgSend(v14, "countByEnumeratingWithState:objects:count:", &v49, v54, 16)) == 0))
   {
 LABEL_44:
     [v7 appendString:@""]);
-    [*(a1 + 24) removeLastObject];
+    [*(context + 24) removeLastObject];
     v26 = v7;
 LABEL_45:
-    v27 = a1;
+    contextCopy3 = context;
     goto LABEL_46;
   }
 
@@ -1546,13 +1546,13 @@ LABEL_45:
       v21 = *(*(&v49 + 1) + 8 * j);
       if ([v21 expressionType])
       {
-        if (([objc_opt_class() isSimpleKeypath:v21] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](a1, v21))
+        if (([objc_opt_class() isSimpleKeypath:v21] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](context, v21))
         {
           v17 = -12;
           continue;
         }
 
-        v22 = [a1 _generateSQLForKeyPathExpression:v21 allowToMany:0 inContext:a2];
+        v22 = [context _generateSQLForKeyPathExpression:v21 allowToMany:0 inContext:a2];
         if (!v22)
         {
           goto LABEL_32;
@@ -1564,7 +1564,7 @@ LABEL_45:
 
       else
       {
-        v23 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [v21 constantValue], a1, a2);
+        v23 = -[NSSQLConstantValueIntermediate initWithConstantValue:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:inScope:context:", [v21 constantValue], context, a2);
         v24 = [(NSSQLConstantValueIntermediate *)v23 generateSQLStringInContext:a2];
         [v7 appendString:v24];
       }
@@ -1588,17 +1588,17 @@ LABEL_45:
   while (v16);
   v25 = v17 > 0;
   v26 = v7;
-  v27 = a1;
+  contextCopy3 = context;
   v28 = v25 | v18;
   [v26 appendString:@""]);
-  [*(v27 + 24) removeLastObject];
+  [*(contextCopy3 + 24) removeLastObject];
   if (v28)
   {
     goto LABEL_48;
   }
 
 LABEL_46:
-  [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generation for predicate : (%@)", *(v27 + 16)), 0), @"NSUnderlyingException"}];
+  [a2 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unimplemented SQL generation for predicate : (%@)", *(contextCopy3 + 16)), 0), @"NSUnderlyingException"}];
 
 LABEL_47:
   v26 = 0;
@@ -1607,14 +1607,14 @@ LABEL_48:
   return v26;
 }
 
-- (id)_generateSQLBoundByStringInContext:(uint64_t)a1
+- (id)_generateSQLBoundByStringInContext:(uint64_t)context
 {
-  if (!a1)
+  if (!context)
   {
     return 0;
   }
 
-  if ([*(a1 + 32) expressionType] != 3)
+  if ([*(context + 32) expressionType] != 3)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -1622,7 +1622,7 @@ LABEL_48:
     goto LABEL_27;
   }
 
-  v4 = [objc_msgSend(*(a1 + 32) "keyPath")];
+  v4 = [objc_msgSend(*(context + 32) "keyPath")];
   if (!v4 || (v5 = v4, ![v4 count]))
   {
     v19 = MEMORY[0x1E695DF30];
@@ -1631,9 +1631,9 @@ LABEL_48:
     goto LABEL_27;
   }
 
-  v6 = [a1 governingEntityForKeypathExpression:*(a1 + 32)];
+  v6 = [context governingEntityForKeypathExpression:*(context + 32)];
   v7 = [v5 count];
-  v8 = [v6 entityDescription];
+  entityDescription = [v6 entityDescription];
   if (!v7)
   {
     v19 = MEMORY[0x1E695DF30];
@@ -1647,7 +1647,7 @@ LABEL_28:
     return 0;
   }
 
-  v9 = v8;
+  destinationEntity = entityDescription;
   v34 = a2;
   v10 = 0;
   v11 = 0;
@@ -1655,7 +1655,7 @@ LABEL_28:
   do
   {
     v12 = [v5 objectAtIndex:v11];
-    if (!v9 || (v13 = [objc_msgSend(v9 "propertiesByName")]) == 0)
+    if (!destinationEntity || (v13 = [objc_msgSend(destinationEntity "propertiesByName")]) == 0)
     {
       v28 = MEMORY[0x1E695DF30];
       v29 = *MEMORY[0x1E695D940];
@@ -1664,7 +1664,7 @@ LABEL_28:
     }
 
     v14 = v13;
-    v15 = [v13 _propertyType];
+    _propertyType = [v13 _propertyType];
     if ([v14 _isAttribute])
     {
       if (v35 == v11)
@@ -1713,7 +1713,7 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    if (v15 != 4)
+    if (_propertyType != 4)
     {
       v25 = MEMORY[0x1E695DF30];
       v26 = *MEMORY[0x1E695D940];
@@ -1721,13 +1721,13 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    v9 = [v14 destinationEntity];
+    destinationEntity = [v14 destinationEntity];
 LABEL_20:
     ++v11;
   }
 
   while (v7 != v11);
-  v16 = -[NSSQLBoundedByIntermediate initWithWorkingEntity:target:bounds:scope:]([NSSQLBoundedByIntermediate alloc], "initWithWorkingEntity:target:bounds:scope:", [objc_msgSend(objc_msgSend(v34 objectForKey:{@"persistentStore", "model"), "entityNamed:", objc_msgSend(v9, "name")}], v14, *(a1 + 40), a1);
+  v16 = -[NSSQLBoundedByIntermediate initWithWorkingEntity:target:bounds:scope:]([NSSQLBoundedByIntermediate alloc], "initWithWorkingEntity:target:bounds:scope:", [objc_msgSend(objc_msgSend(v34 objectForKey:{@"persistentStore", "model"), "entityNamed:", objc_msgSend(destinationEntity, "name")}], v14, *(context + 40), context);
   v17 = [(NSSQLBoundedByIntermediate *)v16 generateSQLStringInContext:v34];
 
   if (!v17)
@@ -1737,7 +1737,7 @@ LABEL_20:
 
   if (v7 == 1)
   {
-    v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@.Z_PK IN ", objc_msgSend(a1, "governingAliasForKeypathExpression:", *(a1 + 32))];
+    v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@.Z_PK IN ", objc_msgSend(context, "governingAliasForKeypathExpression:", *(context + 32))];
     if (!v18)
     {
       goto LABEL_44;
@@ -1749,7 +1749,7 @@ LABEL_43:
   }
 
   v31 = [objc_msgSend(objc_msgSend(v5 subarrayWithRange:{0, v35), "componentsJoinedByString:", @".", "stringByAppendingFormat:", @".%@", objc_msgSend(v10, "firstObject")}];
-  v32 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:]([NSSQLKeypathExpressionIntermediate alloc], "initWithExpression:allowToMany:inScope:", [MEMORY[0x1E696ABC8] expressionForKeyPath:v31], 1, a1);
+  v32 = -[NSSQLExpressionIntermediate initWithExpression:allowToMany:inScope:]([NSSQLKeypathExpressionIntermediate alloc], "initWithExpression:allowToMany:inScope:", [MEMORY[0x1E696ABC8] expressionForKeyPath:v31], 1, context);
   v33 = v32;
   if (v32)
   {
@@ -1769,21 +1769,21 @@ LABEL_44:
   return v18;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }
 
-  v5 = [(NSPredicate *)self->super._predicate predicateOperatorType];
+  predicateOperatorType = [(NSPredicate *)self->super._predicate predicateOperatorType];
   if ([(NSPredicate *)self->super._predicate comparisonPredicateModifier]!= 1)
   {
     effectiveLeftExpression = self->_effectiveLeftExpression;
     if ([(NSExpression *)effectiveLeftExpression expressionType]== NSConstantValueExpressionType)
     {
-      v16 = [(NSExpression *)effectiveLeftExpression constantValue];
-      if (!v16 || [MEMORY[0x1E695DFB0] null] == v16)
+      constantValue = [(NSExpression *)effectiveLeftExpression constantValue];
+      if (!constantValue || [MEMORY[0x1E695DFB0] null] == constantValue)
       {
         v6 = MEMORY[0x1E695DF30];
         v7 = *MEMORY[0x1E695D940];
@@ -1792,20 +1792,20 @@ LABEL_44:
       }
     }
 
-    if (v5 > 6)
+    if (predicateOperatorType > 6)
     {
-      if (v5 <= 9)
+      if (predicateOperatorType <= 9)
       {
-        if (v5 != 7)
+        if (predicateOperatorType != 7)
         {
-          if (v5 == 8)
+          if (predicateOperatorType == 8)
           {
-            v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBeginsWithStringInContext:a3];
+            v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBeginsWithStringInContext:context];
           }
 
           else
           {
-            v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLSubstringWildStart:0 wildEnd:a3 inContext:?];
+            v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLSubstringWildStart:0 wildEnd:context inContext:?];
           }
 
           goto LABEL_42;
@@ -1813,39 +1813,39 @@ LABEL_44:
 
         v18 = CFSTR(" NSCoreDataLike(");
 LABEL_40:
-        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLForMatchingOperator:v18 inContext:a3];
+        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLForMatchingOperator:v18 inContext:context];
         goto LABEL_42;
       }
 
-      if (v5 > 99)
+      if (predicateOperatorType > 99)
       {
-        if (v5 == 100)
+        if (predicateOperatorType == 100)
         {
-          v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBetweenStringInContext:a3];
+          v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBetweenStringInContext:context];
           goto LABEL_42;
         }
 
-        if (v5 == 2000)
+        if (predicateOperatorType == 2000)
         {
-          v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBoundByStringInContext:a3];
+          v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLBoundByStringInContext:context];
           goto LABEL_42;
         }
       }
 
-      else if (v5 == 10 || v5 == 99)
+      else if (predicateOperatorType == 10 || predicateOperatorType == 99)
       {
-        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLContainmentStringInContext:a3];
+        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLContainmentStringInContext:context];
         goto LABEL_42;
       }
     }
 
     else
     {
-      if (v5 < 4)
+      if (predicateOperatorType < 4)
       {
         v12 = self->_effectiveLeftExpression;
         effectiveRightExpression = self->_effectiveRightExpression;
-        v14 = [(NSPredicate *)self->super._predicate comparisonPredicateModifier];
+        comparisonPredicateModifier = [(NSPredicate *)self->super._predicate comparisonPredicateModifier];
         if (-[NSExpression expressionType](v12, "expressionType") == NSConstantValueExpressionType && ((v17 = -[NSExpression constantValue](v12, "constantValue")) == 0 || [MEMORY[0x1E695DFB0] null] == v17) || -[NSExpression expressionType](effectiveRightExpression, "expressionType") == NSConstantValueExpressionType && ((v19 = -[NSExpression constantValue](effectiveRightExpression, "constantValue")) == 0 || objc_msgSend(MEMORY[0x1E695DFB0], "null") == v19))
         {
           v20 = MEMORY[0x1E695DF30];
@@ -1853,7 +1853,7 @@ LABEL_40:
           v22 = @"illegal comparison with NULL";
           v23 = 0;
 LABEL_45:
-          [a3 setObject:objc_msgSend(v20 forKey:{"exceptionWithName:reason:userInfo:", v21, v22, v23), @"NSUnderlyingException"}];
+          [context setObject:objc_msgSend(v20 forKey:{"exceptionWithName:reason:userInfo:", v21, v22, v23), @"NSUnderlyingException"}];
           goto LABEL_46;
         }
 
@@ -1875,15 +1875,15 @@ LABEL_45:
             v32 = 0;
           }
 
-          v33 = [(NSSQLIntermediate *)self _generateSQLForExpression:v12 allowToMany:v14 == 2 inContext:a3];
+          v33 = [(NSSQLIntermediate *)self _generateSQLForExpression:v12 allowToMany:comparisonPredicateModifier == 2 inContext:context];
           if (v33)
           {
             v9 = v33;
-            v34 = [(NSSQLIntermediate *)self _generateSQLForExpression:v14 == 2 allowToMany:a3 inContext:?];
+            v34 = [(NSSQLIntermediate *)self _generateSQLForExpression:comparisonPredicateModifier == 2 allowToMany:context inContext:?];
             if (v34)
             {
               v35 = v34;
-              v36 = [NSSQLSimpleWhereIntermediate _sqlTokenForPredicateOperator:a3 inContext:?];
+              v36 = [NSSQLSimpleWhereIntermediate _sqlTokenForPredicateOperator:context inContext:?];
               if (v36)
               {
                 v37 = v36;
@@ -1909,7 +1909,7 @@ LABEL_45:
           goto LABEL_46;
         }
 
-        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLType3InContext:a3];
+        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLType3InContext:context];
 LABEL_42:
         v9 = v15;
         if (v15)
@@ -1917,38 +1917,38 @@ LABEL_42:
 LABEL_51:
 
           self->_comparisonPredicateScopedItem = 0;
-          [a3 setValue:0 forKey:@"entitySpecificationKeypath"];
-          [a3 setValue:0 forKey:@"entitySpecificationKeypathContainsToMany"];
-          [a3 setValue:0 forKey:@"generatePairs"];
+          [context setValue:0 forKey:@"entitySpecificationKeypath"];
+          [context setValue:0 forKey:@"entitySpecificationKeypathContainsToMany"];
+          [context setValue:0 forKey:@"generatePairs"];
           return v9;
         }
 
 LABEL_46:
-        if ([a3 objectForKey:@"LastKeyPathWasTransientProperty"])
+        if ([context objectForKey:@"LastKeyPathWasTransientProperty"])
         {
-          [a3 removeObjectForKey:@"NSUnderlyingException"];
-          [a3 removeObjectForKey:@"LastKeyPathWasTransientProperty"];
+          [context removeObjectForKey:@"NSUnderlyingException"];
+          [context removeObjectForKey:@"LastKeyPathWasTransientProperty"];
         }
 
-        else if (![a3 objectForKey:@"NSUnderlyingException"])
+        else if (![context objectForKey:@"NSUnderlyingException"])
         {
           v26 = MEMORY[0x1E695DF30];
           v27 = *MEMORY[0x1E695D940];
           v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate where clause for predicate (%@) (unknown problem)", self->super._predicate];
-          [a3 setObject:objc_msgSend(v26 forKey:{"exceptionWithName:reason:userInfo:", v27, v28, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", self->super._predicate, @"predicate", @"NSUnderlyingException"}];
+          [context setObject:objc_msgSend(v26 forKey:{"exceptionWithName:reason:userInfo:", v27, v28, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", self->super._predicate, @"predicate", @"NSUnderlyingException"}];
         }
 
         v9 = 0;
         goto LABEL_51;
       }
 
-      if ((v5 - 4) < 2)
+      if ((predicateOperatorType - 4) < 2)
       {
-        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLType2InContext:a3];
+        v15 = [(NSSQLSimpleWhereIntermediate *)self _generateSQLType2InContext:context];
         goto LABEL_42;
       }
 
-      if (v5 == 6)
+      if (predicateOperatorType == 6)
       {
         v18 = CFSTR(" NSCoreDataMatches(");
         goto LABEL_40;
@@ -1968,7 +1968,7 @@ LABEL_46:
   v7 = *MEMORY[0x1E695D940];
   v8 = @"ALL modifier is not implemented";
 LABEL_4:
-  [a3 setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, 0), @"NSUnderlyingException"}];
+  [context setObject:objc_msgSend(v6 forKey:{"exceptionWithName:reason:userInfo:", v7, v8, 0), @"NSUnderlyingException"}];
   return 0;
 }
 

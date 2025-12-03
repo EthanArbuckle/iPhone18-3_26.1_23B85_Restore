@@ -1,32 +1,32 @@
 @interface CRLMultipleItemImporter
 - (CRLMediaCompatibilityAlertPresenter)alertPresenter;
 - (CRLMultipleItemImporter)init;
-- (CRLMultipleItemImporter)initWithDataWrappers:(id)a3 boardItemFactory:(id)a4 importAnimatedGIFsAsImages:(BOOL)a5;
-- (CRLMultipleItemImporter)initWithURLs:(id)a3 boardItemFactory:(id)a4 importAnimatedGIFsAsImages:(BOOL)a5;
+- (CRLMultipleItemImporter)initWithDataWrappers:(id)wrappers boardItemFactory:(id)factory importAnimatedGIFsAsImages:(BOOL)images;
+- (CRLMultipleItemImporter)initWithURLs:(id)ls boardItemFactory:(id)factory importAnimatedGIFsAsImages:(BOOL)images;
 - (NSString)localizedErrorDescription;
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6;
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3;
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block;
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement;
 - (void)cancel;
-- (void)importBoardItemsWithCompletionHandler:(id)a3;
-- (void)p_importerDidRequestMediaCompatibilityRequirement:(id)a3;
+- (void)importBoardItemsWithCompletionHandler:(id)handler;
+- (void)p_importerDidRequestMediaCompatibilityRequirement:(id)requirement;
 @end
 
 @implementation CRLMultipleItemImporter
 
-- (CRLMultipleItemImporter)initWithURLs:(id)a3 boardItemFactory:(id)a4 importAnimatedGIFsAsImages:(BOOL)a5
+- (CRLMultipleItemImporter)initWithURLs:(id)ls boardItemFactory:(id)factory importAnimatedGIFsAsImages:(BOOL)images
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  imagesCopy = images;
+  lsCopy = ls;
+  factoryCopy = factory;
   v35.receiver = self;
   v35.super_class = CRLMultipleItemImporter;
   v10 = [(CRLMultipleItemImporter *)&v35 init];
   v11 = v10;
   if (v10)
   {
-    sub_10053978C(&v10->super.isa, v9);
-    v28 = v8;
-    v12 = [v8 copy];
+    sub_10053978C(&v10->super.isa, factoryCopy);
+    v28 = lsCopy;
+    v12 = [lsCopy copy];
     URLs = v11->_URLs;
     v11->_URLs = v12;
 
@@ -52,12 +52,12 @@
           }
 
           v18 = *(*(&v31 + 1) + 8 * v17);
-          if (!v5 || ([*(*(&v31 + 1) + 8 * v17) crl_fileTypeIdentifierHandlingFileCoordinationPromises], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "identifier"), v20 = objc_claimAutoreleasedReturnValue(), v21 = +[CRLBoardItemImporter isSupportedAnimatedImageFileType:](CRLBoardItemImporter, "isSupportedAnimatedImageFileType:", v20), v20, v19, v22 = off_10182F880, (v21 & 1) == 0))
+          if (!imagesCopy || ([*(*(&v31 + 1) + 8 * v17) crl_fileTypeIdentifierHandlingFileCoordinationPromises], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "identifier"), v20 = objc_claimAutoreleasedReturnValue(), v21 = +[CRLBoardItemImporter isSupportedAnimatedImageFileType:](CRLBoardItemImporter, "isSupportedAnimatedImageFileType:", v20), v20, v19, v22 = off_10182F880, (v21 & 1) == 0))
           {
             v22 = off_10182F748;
           }
 
-          v23 = [objc_alloc(*v22) initWithURL:v18 boardItemFactory:v9];
+          v23 = [objc_alloc(*v22) initWithURL:v18 boardItemFactory:factoryCopy];
           v24 = v23;
           if (v23)
           {
@@ -80,35 +80,35 @@
     importerHelper = v11->_importerHelper;
     v11->_importerHelper = v25;
 
-    v8 = v28;
+    lsCopy = v28;
   }
 
   return v11;
 }
 
-- (CRLMultipleItemImporter)initWithDataWrappers:(id)a3 boardItemFactory:(id)a4 importAnimatedGIFsAsImages:(BOOL)a5
+- (CRLMultipleItemImporter)initWithDataWrappers:(id)wrappers boardItemFactory:(id)factory importAnimatedGIFsAsImages:(BOOL)images
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  imagesCopy = images;
+  wrappersCopy = wrappers;
+  factoryCopy = factory;
   v34.receiver = self;
   v34.super_class = CRLMultipleItemImporter;
   v10 = [(CRLMultipleItemImporter *)&v34 init];
   v11 = v10;
   if (v10)
   {
-    v28 = v9;
-    sub_10053978C(&v10->super.isa, v9);
+    v28 = factoryCopy;
+    sub_10053978C(&v10->super.isa, factoryCopy);
     URLs = v11->_URLs;
     v11->_URLs = &__NSArray0__struct;
 
-    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(wrappersCopy, "count")}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = v8;
-    v14 = v8;
+    v29 = wrappersCopy;
+    v14 = wrappersCopy;
     v15 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v15)
     {
@@ -125,7 +125,7 @@
           }
 
           v19 = *(*(&v30 + 1) + 8 * v18);
-          if (!v5 || ([*(*(&v30 + 1) + 8 * v18) type], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), v20, LOBYTE(v20) = +[CRLBoardItemImporter isSupportedAnimatedImageFileType:](CRLBoardItemImporter, "isSupportedAnimatedImageFileType:", v21), v21, v22 = off_10182F880, (v20 & 1) == 0))
+          if (!imagesCopy || ([*(*(&v30 + 1) + 8 * v18) type], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "identifier"), v21 = objc_claimAutoreleasedReturnValue(), v20, LOBYTE(v20) = +[CRLBoardItemImporter isSupportedAnimatedImageFileType:](CRLBoardItemImporter, "isSupportedAnimatedImageFileType:", v21), v21, v22 = off_10182F880, (v20 & 1) == 0))
           {
             v22 = off_10182F748;
           }
@@ -153,8 +153,8 @@
     importerHelper = v11->_importerHelper;
     v11->_importerHelper = v25;
 
-    v9 = v28;
-    v8 = v29;
+    factoryCopy = v28;
+    wrappersCopy = v29;
   }
 
   return v11;
@@ -210,16 +210,16 @@
   objc_exception_throw(v10);
 }
 
-- (void)importBoardItemsWithCompletionHandler:(id)a3
+- (void)importBoardItemsWithCompletionHandler:(id)handler
 {
-  v13 = a3;
+  handlerCopy = handler;
   v4 = dispatch_group_create();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(CRLMultipleImporterHelper *)self->_importerHelper importers];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  importers = [(CRLMultipleImporterHelper *)self->_importerHelper importers];
+  v6 = [importers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -231,7 +231,7 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(importers);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
@@ -247,7 +247,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [importers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -259,8 +259,8 @@
   block[2] = sub_10053A0FC;
   block[3] = &unk_10183FC10;
   block[4] = self;
-  v15 = v13;
-  v12 = v13;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_group_notify(v4, importQueue, block);
 }
 
@@ -277,8 +277,8 @@
 
 - (NSString)localizedErrorDescription
 {
-  v2 = [(CRLMultipleItemImporter *)self errors];
-  v3 = [v2 count];
+  errors = [(CRLMultipleItemImporter *)self errors];
+  v3 = [errors count];
 
   if (v3)
   {
@@ -293,50 +293,50 @@
   return v3;
 }
 
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  importerCopy = importer;
+  blockCopy = block;
   importQueue = self->_importQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10053A72C;
   block[3] = &unk_10186B038;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = importerCopy;
+  reasonsCopy = reasons;
+  typeCopy = type;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = importerCopy;
   dispatch_async(importQueue, block);
 }
 
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement
 {
-  v4 = a3;
+  requirementCopy = requirement;
   importQueue = self->_importQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10053A80C;
   v7[3] = &unk_10183AE28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requirementCopy;
+  v6 = requirementCopy;
   dispatch_async(importQueue, v7);
 }
 
-- (void)p_importerDidRequestMediaCompatibilityRequirement:(id)a3
+- (void)p_importerDidRequestMediaCompatibilityRequirement:(id)requirement
 {
-  [(CRLMultipleImporterHelper *)self->_importerHelper mediaCompatibilityCheckHasBeenHandledForImporter:a3];
+  [(CRLMultipleImporterHelper *)self->_importerHelper mediaCompatibilityCheckHasBeenHandledForImporter:requirement];
   if ([(CRLMultipleImporterHelper *)self->_importerHelper allImportersHaveGivenCompatibilityResponse]&& [(CRLMultipleImporterHelper *)self->_importerHelper numberOfImportersRequiringCompatibilityConversion])
   {
-    v4 = [(CRLMultipleItemImporter *)self alertPresenter];
+    alertPresenter = [(CRLMultipleItemImporter *)self alertPresenter];
     importerHelper = self->_importerHelper;
-    if (v4)
+    if (alertPresenter)
     {
-      v6 = [(CRLMultipleImporterHelper *)importerHelper mediaTypeForConversion];
-      if (!v6)
+      mediaTypeForConversion = [(CRLMultipleImporterHelper *)importerHelper mediaTypeForConversion];
+      if (!mediaTypeForConversion)
       {
         v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -365,17 +365,17 @@
         v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLMultipleItemImporter.m"];
         [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:322 isFatal:0 description:"No media types were specified! Falling back to Mixed to have understandable strings."];
 
-        v6 = 3;
+        mediaTypeForConversion = 3;
       }
 
-      v12 = [(CRLMultipleImporterHelper *)self->_importerHelper reasonsForMediaConversion];
+      reasonsForMediaConversion = [(CRLMultipleImporterHelper *)self->_importerHelper reasonsForMediaConversion];
       v13 = [(CRLMultipleImporterHelper *)self->_importerHelper numberOfImportersRequiringCompatibilityConversion]== 1;
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10053AAAC;
       v14[3] = &unk_10186B0C8;
       v14[4] = self;
-      [v4 presentMediaCompatibilityAlertWithReasons:v12 forMediaType:v6 forSingleMediaObject:v13 completionHandler:v14];
+      [alertPresenter presentMediaCompatibilityAlertWithReasons:reasonsForMediaConversion forMediaType:mediaTypeForConversion forSingleMediaObject:v13 completionHandler:v14];
     }
 
     else

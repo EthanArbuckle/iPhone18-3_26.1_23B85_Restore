@@ -2,28 +2,28 @@
 + (id)prodContainerHelper;
 + (id)sandboxContainerHelper;
 + (id)taskingDeviceMetadata;
-- (DRSTaskingCloudKitHelper)initWithContainer:(id)a3;
-- (id)_operationWithFunctionName:(id)a3;
-- (id)_taskingConfigMetadataForTeamID:(id)a3 uuidString:(id)a4;
-- (void)_recordPBMessage:(id)a3 forFunction:(id)a4;
-- (void)_submitOperationWithName:(id)a3 requestObject:(id)a4 completionBlock:(id)a5;
-- (void)reportTaskingConfigCompletion:(id)a3 uuidString:(id)a4 completionType:(id)a5 completionDescription:(id)a6 activeDuration:(double)a7 transaction:(id)a8 completionHandler:(id)a9;
-- (void)reportTaskingConfigReceipt:(id)a3 uuidString:(id)a4 receiptResult:(id)a5 transaction:(id)a6 completionHandler:(id)a7;
-- (void)reportTaskingSystemMessageReceipt:(id)a3 messageType:(id)a4 channelType:(id)a5 channelEnvironment:(id)a6 dateBroadcast:(id)a7 dateReceived:(id)a8 transaction:(id)a9 completionHandler:(id)a10;
+- (DRSTaskingCloudKitHelper)initWithContainer:(id)container;
+- (id)_operationWithFunctionName:(id)name;
+- (id)_taskingConfigMetadataForTeamID:(id)d uuidString:(id)string;
+- (void)_recordPBMessage:(id)message forFunction:(id)function;
+- (void)_submitOperationWithName:(id)name requestObject:(id)object completionBlock:(id)block;
+- (void)reportTaskingConfigCompletion:(id)completion uuidString:(id)string completionType:(id)type completionDescription:(id)description activeDuration:(double)duration transaction:(id)transaction completionHandler:(id)handler;
+- (void)reportTaskingConfigReceipt:(id)receipt uuidString:(id)string receiptResult:(id)result transaction:(id)transaction completionHandler:(id)handler;
+- (void)reportTaskingSystemMessageReceipt:(id)receipt messageType:(id)type channelType:(id)channelType channelEnvironment:(id)environment dateBroadcast:(id)broadcast dateReceived:(id)received transaction:(id)transaction completionHandler:(id)self0;
 @end
 
 @implementation DRSTaskingCloudKitHelper
 
-- (DRSTaskingCloudKitHelper)initWithContainer:(id)a3
+- (DRSTaskingCloudKitHelper)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = DRSTaskingCloudKitHelper;
   v6 = [(DRSTaskingCloudKitHelper *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__targetContainer, a3);
+    objc_storeStrong(&v6->__targetContainer, container);
     v8 = dispatch_queue_create("TaskingCloudKitHelper work queue", 0);
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
@@ -74,37 +74,37 @@ void __47__DRSTaskingCloudKitHelper_prodContainerHelper__block_invoke()
   prodContainerHelper_helper_0 = v1;
 }
 
-- (id)_operationWithFunctionName:(id)a3
+- (id)_operationWithFunctionName:(id)name
 {
   v4 = MEMORY[0x277CBC1F8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 alloc];
-  v7 = [v6 initWithServiceName:kDRSCloudKitDecisionServerName functionName:v5 responseClass:objc_opt_class()];
+  v7 = [v6 initWithServiceName:kDRSCloudKitDecisionServerName functionName:nameCopy responseClass:objc_opt_class()];
 
-  v8 = [(DRSTaskingCloudKitHelper *)self _targetContainer];
-  DRSConfigureOperation(v7, v8, 0);
+  _targetContainer = [(DRSTaskingCloudKitHelper *)self _targetContainer];
+  DRSConfigureOperation(v7, _targetContainer, 0);
 
   return v7;
 }
 
-- (void)_submitOperationWithName:(id)a3 requestObject:(id)a4 completionBlock:(id)a5
+- (void)_submitOperationWithName:(id)name requestObject:(id)object completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DRSTaskingCloudKitHelper *)self workQueue];
+  nameCopy = name;
+  objectCopy = object;
+  blockCopy = block;
+  workQueue = [(DRSTaskingCloudKitHelper *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__DRSTaskingCloudKitHelper__submitOperationWithName_requestObject_completionBlock___block_invoke;
   v15[3] = &unk_27899FF60;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = nameCopy;
+  v17 = objectCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = objectCopy;
+  v14 = nameCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __83__DRSTaskingCloudKitHelper__submitOperationWithName_requestObject_completionBlock___block_invoke(uint64_t a1)
@@ -152,14 +152,14 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
   [taskingDeviceMetadata_taskingDeviceMetadata setBuild:v3];
 }
 
-- (void)_recordPBMessage:(id)a3 forFunction:(id)a4
+- (void)_recordPBMessage:(id)message forFunction:(id)function
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  functionCopy = function;
   v6 = MEMORY[0x277CCAAA0];
-  v7 = [a3 dictionaryRepresentation];
+  dictionaryRepresentation = [message dictionaryRepresentation];
   v13 = 0;
-  v8 = [v6 dataWithJSONObject:v7 options:1 error:&v13];
+  v8 = [v6 dataWithJSONObject:dictionaryRepresentation options:1 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -180,7 +180,7 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
     if (os_signpost_enabled(v11))
     {
       *buf = 138543618;
-      v15 = v5;
+      v15 = functionCopy;
       v16 = 2114;
       v17 = v10;
       _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ProtoBuffMessage", "%{public}@:\n%{public}@", buf, 0x16u);
@@ -190,22 +190,22 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportTaskingSystemMessageReceipt:(id)a3 messageType:(id)a4 channelType:(id)a5 channelEnvironment:(id)a6 dateBroadcast:(id)a7 dateReceived:(id)a8 transaction:(id)a9 completionHandler:(id)a10
+- (void)reportTaskingSystemMessageReceipt:(id)receipt messageType:(id)type channelType:(id)channelType channelEnvironment:(id)environment dateBroadcast:(id)broadcast dateReceived:(id)received transaction:(id)transaction completionHandler:(id)self0
 {
   v54 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v39 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v35 = a9;
-  v36 = a10;
-  v38 = v19;
-  if (v20)
+  receiptCopy = receipt;
+  typeCopy = type;
+  channelTypeCopy = channelType;
+  environmentCopy = environment;
+  broadcastCopy = broadcast;
+  receivedCopy = received;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v38 = broadcastCopy;
+  if (receivedCopy)
   {
     v21 = MEMORY[0x277CCABB0];
-    [v20 timeIntervalSinceDate:v19];
+    [receivedCopy timeIntervalSinceDate:broadcastCopy];
     v22 = [v21 numberWithDouble:?];
   }
 
@@ -214,10 +214,10 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
     v22 = &unk_2847FF840;
   }
 
-  v37 = v20;
-  if (v16)
+  v37 = receivedCopy;
+  if (receiptCopy)
   {
-    v23 = v16;
+    v23 = receiptCopy;
   }
 
   else
@@ -225,9 +225,9 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
     v23 = @"Unknown";
   }
 
-  if (v17)
+  if (typeCopy)
   {
-    v24 = v17;
+    v24 = typeCopy;
   }
 
   else
@@ -247,9 +247,9 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
     v46 = 2114;
     v47 = v24;
     v48 = 2114;
-    v49 = v39;
+    v49 = channelTypeCopy;
     v50 = 2114;
-    v51 = v18;
+    v51 = environmentCopy;
     v52 = 2114;
     v53 = v22;
     _os_signpost_emit_with_name_impl(&dword_232906000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v26, "TaskingSystemMessageReceipt", "\tUUID: %{public}@\n\tmessageType: %{public}@\n\tchannelType: %{public}@\n\tchannelEnvironment: %{public}@\n\tlatency: %{public}@", buf, 0x34u);
@@ -257,12 +257,12 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
 
   v29 = objc_alloc_init(DRSProtoTaskingSystemMessageReceipt);
   [objc_opt_class() taskingDeviceMetadata];
-  v31 = v30 = v18;
+  v31 = v30 = environmentCopy;
   [(DRSProtoTaskingSystemMessageReceipt *)v29 setTaskingDeviceMetadata:v31];
 
   [(DRSProtoTaskingSystemMessageReceipt *)v29 setUuid:v23];
   [(DRSProtoTaskingSystemMessageReceipt *)v29 setMessageType:v24];
-  [(DRSProtoTaskingSystemMessageReceipt *)v29 setChannelType:v39];
+  [(DRSProtoTaskingSystemMessageReceipt *)v29 setChannelType:channelTypeCopy];
   [(DRSProtoTaskingSystemMessageReceipt *)v29 setChannelEnvironment:v30];
   [v22 floatValue];
   [(DRSProtoTaskingSystemMessageReceipt *)v29 setReceiptDelay:?];
@@ -271,11 +271,11 @@ void __49__DRSTaskingCloudKitHelper_taskingDeviceMetadata__block_invoke()
   v40[1] = 3221225472;
   v40[2] = __162__DRSTaskingCloudKitHelper_reportTaskingSystemMessageReceipt_messageType_channelType_channelEnvironment_dateBroadcast_dateReceived_transaction_completionHandler___block_invoke;
   v40[3] = &unk_27899FF88;
-  v42 = v36;
+  v42 = handlerCopy;
   v43 = v26;
-  v41 = v35;
-  v32 = v35;
-  v33 = v36;
+  v41 = transactionCopy;
+  v32 = transactionCopy;
+  v33 = handlerCopy;
   [(DRSTaskingCloudKitHelper *)self _submitOperationWithName:@"reportTaskingSystemMessageReceipt" requestObject:v29 completionBlock:v40];
 
   v34 = *MEMORY[0x277D85DE8];
@@ -317,28 +317,28 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_taskingConfigMetadataForTeamID:(id)a3 uuidString:(id)a4
+- (id)_taskingConfigMetadataForTeamID:(id)d uuidString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
+  stringCopy = string;
+  dCopy = d;
   v7 = objc_alloc_init(DRSProtoTaskingConfigMetadata);
-  v8 = [objc_opt_class() taskingDeviceMetadata];
-  [(DRSProtoTaskingConfigMetadata *)v7 setTaskingDeviceMetadata:v8];
+  taskingDeviceMetadata = [objc_opt_class() taskingDeviceMetadata];
+  [(DRSProtoTaskingConfigMetadata *)v7 setTaskingDeviceMetadata:taskingDeviceMetadata];
 
-  [(DRSProtoTaskingConfigMetadata *)v7 setTeamId:v6];
-  [(DRSProtoTaskingConfigMetadata *)v7 setUuid:v5];
+  [(DRSProtoTaskingConfigMetadata *)v7 setTeamId:dCopy];
+  [(DRSProtoTaskingConfigMetadata *)v7 setUuid:stringCopy];
 
   return v7;
 }
 
-- (void)reportTaskingConfigReceipt:(id)a3 uuidString:(id)a4 receiptResult:(id)a5 transaction:(id)a6 completionHandler:(id)a7
+- (void)reportTaskingConfigReceipt:(id)receipt uuidString:(id)string receiptResult:(id)result transaction:(id)transaction completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  receiptCopy = receipt;
+  stringCopy = string;
+  resultCopy = result;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v17 = DPLogHandle_TaskingDSTelemetry();
   v18 = os_signpost_id_generate(v17);
 
@@ -347,29 +347,29 @@ LABEL_8:
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     *buf = 138543874;
-    v31 = v13;
+    v31 = stringCopy;
     v32 = 2114;
-    v33 = v12;
+    v33 = receiptCopy;
     v34 = 2114;
-    v35 = v14;
+    v35 = resultCopy;
     _os_signpost_emit_with_name_impl(&dword_232906000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "TaskingConfigReceipt", "\tUUID: %{public}@\n\tteamID: %{public}@\n\treceiptResult: %{public}@\n", buf, 0x20u);
   }
 
   v21 = objc_alloc_init(DRSProtoTaskingConfigReceipt);
-  v22 = [(DRSTaskingCloudKitHelper *)self _taskingConfigMetadataForTeamID:v12 uuidString:v13];
+  v22 = [(DRSTaskingCloudKitHelper *)self _taskingConfigMetadataForTeamID:receiptCopy uuidString:stringCopy];
   [(DRSProtoTaskingConfigReceipt *)v21 setTaskingConfigMetadata:v22];
 
-  [(DRSProtoTaskingConfigReceipt *)v21 setReceiptResult:v14];
+  [(DRSProtoTaskingConfigReceipt *)v21 setReceiptResult:resultCopy];
   [(DRSTaskingCloudKitHelper *)self _recordPBMessage:v21 forFunction:@"reportTaskingConfigReceipt"];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __110__DRSTaskingCloudKitHelper_reportTaskingConfigReceipt_uuidString_receiptResult_transaction_completionHandler___block_invoke;
   v26[3] = &unk_27899FF88;
-  v28 = v16;
+  v28 = handlerCopy;
   v29 = v18;
-  v27 = v15;
-  v23 = v15;
-  v24 = v16;
+  v27 = transactionCopy;
+  v23 = transactionCopy;
+  v24 = handlerCopy;
   [(DRSTaskingCloudKitHelper *)self _submitOperationWithName:@"reportTaskingConfigReceipt" requestObject:v21 completionBlock:v26];
 
   v25 = *MEMORY[0x277D85DE8];
@@ -411,15 +411,15 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportTaskingConfigCompletion:(id)a3 uuidString:(id)a4 completionType:(id)a5 completionDescription:(id)a6 activeDuration:(double)a7 transaction:(id)a8 completionHandler:(id)a9
+- (void)reportTaskingConfigCompletion:(id)completion uuidString:(id)string completionType:(id)type completionDescription:(id)description activeDuration:(double)duration transaction:(id)transaction completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
+  completionCopy = completion;
+  stringCopy = string;
+  typeCopy = type;
+  descriptionCopy = description;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v22 = DPLogHandle_TaskingDSTelemetry();
   v23 = os_signpost_id_generate(v22);
 
@@ -428,36 +428,36 @@ LABEL_8:
   if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
   {
     *buf = 138544386;
-    v37 = v17;
+    v37 = stringCopy;
     v38 = 2114;
-    v39 = v16;
+    v39 = completionCopy;
     v40 = 2114;
-    v41 = v18;
+    v41 = typeCopy;
     v42 = 2114;
-    v43 = v19;
+    v43 = descriptionCopy;
     v44 = 2050;
-    v45 = a7;
+    durationCopy = duration;
     _os_signpost_emit_with_name_impl(&dword_232906000, v25, OS_SIGNPOST_EVENT, v23, "TaskingConfigCompletion", "\tUUID: %{public}@\n\tteamID: %{public}@\n\tcompletionType: %{public}@\n\tcompletionDescription: %{public}@\n\tactiveDuration: %{public}f\n", buf, 0x34u);
   }
 
   v26 = objc_alloc_init(DRSProtoTaskingConfigCompletion);
-  v27 = [(DRSTaskingCloudKitHelper *)self _taskingConfigMetadataForTeamID:v16 uuidString:v17];
+  v27 = [(DRSTaskingCloudKitHelper *)self _taskingConfigMetadataForTeamID:completionCopy uuidString:stringCopy];
   [(DRSProtoTaskingConfigCompletion *)v26 setTaskingConfigMetadata:v27];
 
-  [(DRSProtoTaskingConfigCompletion *)v26 setCompletionType:v18];
-  [(DRSProtoTaskingConfigCompletion *)v26 setCompletionDescription:v19];
-  *&v28 = a7;
+  [(DRSProtoTaskingConfigCompletion *)v26 setCompletionType:typeCopy];
+  [(DRSProtoTaskingConfigCompletion *)v26 setCompletionDescription:descriptionCopy];
+  *&v28 = duration;
   [(DRSProtoTaskingConfigCompletion *)v26 setActiveDuration:v28];
   [(DRSTaskingCloudKitHelper *)self _recordPBMessage:v26 forFunction:@"reportTaskingConfigCompletion"];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __151__DRSTaskingCloudKitHelper_reportTaskingConfigCompletion_uuidString_completionType_completionDescription_activeDuration_transaction_completionHandler___block_invoke;
   v32[3] = &unk_27899FF88;
-  v34 = v21;
+  v34 = handlerCopy;
   v35 = v23;
-  v33 = v20;
-  v29 = v20;
-  v30 = v21;
+  v33 = transactionCopy;
+  v29 = transactionCopy;
+  v30 = handlerCopy;
   [(DRSTaskingCloudKitHelper *)self _submitOperationWithName:@"reportTaskingConfigCompletion" requestObject:v26 completionBlock:v32];
 
   v31 = *MEMORY[0x277D85DE8];

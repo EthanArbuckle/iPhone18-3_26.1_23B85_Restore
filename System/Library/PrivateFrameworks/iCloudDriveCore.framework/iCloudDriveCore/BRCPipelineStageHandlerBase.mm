@@ -1,21 +1,21 @@
 @interface BRCPipelineStageHandlerBase
 - (BRCPipelineStageHandlerBase)init;
 - (id)_asJobCostVendor;
-- (id)_groupIdentifierForJob:(id)a3;
+- (id)_groupIdentifierForJob:(id)job;
 - (id)description;
 - (void)_cancelActiveBatchIfNecessary;
-- (void)_completedJob:(id)a3 withRecoveryStage:(unint64_t)a4 error:(id)a5;
+- (void)_completedJob:(id)job withRecoveryStage:(unint64_t)stage error:(id)error;
 - (void)_initializeSourceAndQueues;
 - (void)_pauseScheduling;
 - (void)_resumeScheduling;
-- (void)addJob:(id)a3;
-- (void)cancelJob:(id)a3;
+- (void)addJob:(id)job;
+- (void)cancelJob:(id)job;
 - (void)dealloc;
 - (void)disableScheduling;
-- (void)dumpToContext:(id)a3;
+- (void)dumpToContext:(id)context;
 - (void)enableScheduling;
 - (void)schedule;
-- (void)setupWithInternalPipelineJobCompletionHandler:(id)a3;
+- (void)setupWithInternalPipelineJobCompletionHandler:(id)handler;
 @end
 
 @implementation BRCPipelineStageHandlerBase
@@ -59,15 +59,15 @@
 {
   if ([(BRCPipelineStageHandlerBase *)self conformsToProtocol:&unk_28380EB78])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_cancelActiveBatchIfNecessary
@@ -82,10 +82,10 @@
       [BRCPipelineStageHandlerBase _cancelActiveBatchIfNecessary];
     }
 
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSProgress *)v5->_activelyExecutingProgress cancel];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSProgress *)selfCopy->_activelyExecutingProgress cancel];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -95,7 +95,7 @@
       return;
     }
 
-    v5 = brc_bread_crumbs();
+    selfCopy = brc_bread_crumbs();
     v6 = brc_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -104,26 +104,26 @@
   }
 }
 
-- (void)_completedJob:(id)a3 withRecoveryStage:(unint64_t)a4 error:(id)a5
+- (void)_completedJob:(id)job withRecoveryStage:(unint64_t)stage error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  jobCopy = job;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_schedulingQueue);
-  if (!v8)
+  if (!errorCopy)
   {
-    if ([(NSMutableSet *)self->_cancelledActivelyExecutingJobs containsObject:v7])
+    if ([(NSMutableSet *)self->_cancelledActivelyExecutingJobs containsObject:jobCopy])
     {
-      v8 = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
+      errorCopy = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
     }
 
     else
     {
-      v8 = 0;
+      errorCopy = 0;
     }
   }
 
-  [(NSMutableSet *)self->_activelyExecutingJobs removeObject:v7];
-  [(NSMutableSet *)self->_cancelledActivelyExecutingJobs removeObject:v7];
+  [(NSMutableSet *)self->_activelyExecutingJobs removeObject:jobCopy];
+  [(NSMutableSet *)self->_cancelledActivelyExecutingJobs removeObject:jobCopy];
   if ([(NSMutableSet *)self->_activelyExecutingJobs count])
   {
     [(BRCPipelineStageHandlerBase *)self _cancelActiveBatchIfNecessary];
@@ -138,14 +138,14 @@
       [BRCPipelineStageHandlerBase _completedJob:withRecoveryStage:error:];
     }
 
-    v11 = self;
-    objc_sync_enter(v11);
-    activelyExecutingProgress = v11->_activelyExecutingProgress;
-    v11->_activelyExecutingProgress = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    activelyExecutingProgress = selfCopy->_activelyExecutingProgress;
+    selfCopy->_activelyExecutingProgress = 0;
 
-    objc_sync_exit(v11);
-    [(BRCPipelineStageHandlerBase *)v11 _resumeScheduling];
-    dispatch_source_merge_data(v11->_schedulingSource, 1uLL);
+    objc_sync_exit(selfCopy);
+    [(BRCPipelineStageHandlerBase *)selfCopy _resumeScheduling];
+    dispatch_source_merge_data(selfCopy->_schedulingSource, 1uLL);
   }
 }
 
@@ -168,15 +168,15 @@
     v18[1] = v18;
     v18[2] = 0x2020000000;
     v18[3] = 0;
-    v5 = [(BRCPipelineStageHandlerBase *)self _asJobCostVendor];
+    _asJobCostVendor = [(BRCPipelineStageHandlerBase *)self _asJobCostVendor];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v6 = [v5 softCostLimit];
+      softCostLimit = [_asJobCostVendor softCostLimit];
     }
 
     else
     {
-      v6 = -1;
+      softCostLimit = -1;
     }
 
     enqueuedJobs = self->_enqueuedJobs;
@@ -186,22 +186,22 @@
     v14[3] = &unk_278507980;
     v14[4] = self;
     v16 = v18;
-    v17 = v6;
-    v8 = v5;
+    v17 = softCostLimit;
+    v8 = _asJobCostVendor;
     v15 = v8;
     [(BRCPipelineJobQueue *)enqueuedJobs dequeueHighestQualityOfServiceJobsWithHandler:v14];
     if ([(NSMutableSet *)self->_activelyExecutingJobs count])
     {
       [(BRCPipelineStageHandlerBase *)self _pauseScheduling];
-      v9 = [(NSMutableSet *)self->_activelyExecutingJobs allObjects];
+      allObjects = [(NSMutableSet *)self->_activelyExecutingJobs allObjects];
       handlerQueue = self->_handlerQueue;
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __39__BRCPipelineStageHandlerBase_schedule__block_invoke_2;
       v12[3] = &unk_2784FF478;
       v12[4] = self;
-      v13 = v9;
-      v11 = v9;
+      v13 = allObjects;
+      v11 = allObjects;
       dispatch_async(handlerQueue, v12);
     }
 
@@ -262,12 +262,12 @@ void __39__BRCPipelineStageHandlerBase_schedule__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_groupIdentifierForJob:(id)a3
+- (id)_groupIdentifierForJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(BRCPipelineStageHandlerBase *)self groupByIdentifierForJob:v4];
+    v5 = [(BRCPipelineStageHandlerBase *)self groupByIdentifierForJob:jobCopy];
   }
 
   else
@@ -278,17 +278,17 @@ void __39__BRCPipelineStageHandlerBase_schedule__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)addJob:(id)a3
+- (void)addJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   schedulingQueue = self->_schedulingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__BRCPipelineStageHandlerBase_InternalPipeline__addJob___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = jobCopy;
+  selfCopy = self;
+  v6 = jobCopy;
   dispatch_sync(schedulingQueue, v7);
 }
 
@@ -316,17 +316,17 @@ void __56__BRCPipelineStageHandlerBase_InternalPipeline__addJob___block_invoke(u
   dispatch_source_merge_data(*(*(a1 + 40) + 40), 1uLL);
 }
 
-- (void)cancelJob:(id)a3
+- (void)cancelJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   schedulingQueue = self->_schedulingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__BRCPipelineStageHandlerBase_InternalPipeline__cancelJob___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = jobCopy;
+  selfCopy = self;
+  v6 = jobCopy;
   dispatch_sync(schedulingQueue, v7);
 }
 
@@ -434,23 +434,23 @@ uint64_t __65__BRCPipelineStageHandlerBase_InternalPipeline__enableScheduling__b
   v4 = MEMORY[0x277CCACA8];
   v5 = v3;
   v6 = objc_opt_class();
-  v7 = [(BRCPipelineStageHandlerBase *)self name];
-  v8 = [v4 stringWithFormat:@"<%@:%p%@ [%@]>", v6, self, v5, v7];
+  name = [(BRCPipelineStageHandlerBase *)self name];
+  v8 = [v4 stringWithFormat:@"<%@:%p%@ [%@]>", v6, self, v5, name];
 
   return v8;
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   schedulingQueue = self->_schedulingQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__BRCPipelineStageHandlerBase_InternalPipeline__dumpToContext___block_invoke;
   v7[3] = &unk_2784FF478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_sync(schedulingQueue, v7);
 }
 
@@ -504,21 +504,21 @@ uint64_t __63__BRCPipelineStageHandlerBase_InternalPipeline__dumpToContext___blo
 
 - (void)_initializeSourceAndQueues
 {
-  v3 = [(BRCPipelineStageHandlerBase *)self name];
-  v4 = [v3 stringByAppendingString:@".handler-queue"];
-  v5 = [v4 UTF8String];
+  name = [(BRCPipelineStageHandlerBase *)self name];
+  v4 = [name stringByAppendingString:@".handler-queue"];
+  uTF8String = [v4 UTF8String];
   v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(v6, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = dispatch_queue_create(v5, v7);
+  v8 = dispatch_queue_create(uTF8String, v7);
 
   handlerQueue = self->_handlerQueue;
   self->_handlerQueue = v8;
 
-  v10 = [v3 stringByAppendingString:@".scheduler-queue"];
-  v11 = [v10 UTF8String];
+  v10 = [name stringByAppendingString:@".scheduler-queue"];
+  uTF8String2 = [v10 UTF8String];
   v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(v12, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v14 = dispatch_queue_create(v11, v13);
+  v14 = dispatch_queue_create(uTF8String2, v13);
 
   schedulingQueue = self->_schedulingQueue;
   self->_schedulingQueue = v14;
@@ -560,9 +560,9 @@ void __75__BRCPipelineStageHandlerBase_InternalPipeline___initializeSourceAndQue
   [WeakRetained schedule];
 }
 
-- (void)setupWithInternalPipelineJobCompletionHandler:(id)a3
+- (void)setupWithInternalPipelineJobCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(BRCPipelineStageHandlerBase *)self _initializeSourceAndQueues];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -570,7 +570,7 @@ void __75__BRCPipelineStageHandlerBase_InternalPipeline___initializeSourceAndQue
   v6[2] = __95__BRCPipelineStageHandlerBase_InternalPipeline__setupWithInternalPipelineJobCompletionHandler___block_invoke;
   v6[3] = &unk_2785079A8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(BRCPipelineStageHandlerBase *)self setPerJobCompletionHandler:v6];
 

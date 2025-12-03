@@ -1,108 +1,108 @@
 @interface XBApplicationSnapshotManifestImpl
-+ (id)_snapshotPredicateForRequest:(id)a3;
-+ (id)acquireManifestForContainerIdentity:(id)a3 store:(id)a4 creatingIfNecessary:(BOOL)a5;
-+ (int64_t)_outputFormatForSnapshot:(id)a3;
-+ (void)_configureSnapshot:(id)a3 withCompatibilityInfo:(id)a4 forLaunchRequest:(id)a5;
-+ (void)_workloop_noteManifestInvalidated:(id)a3;
++ (id)_snapshotPredicateForRequest:(id)request;
++ (id)acquireManifestForContainerIdentity:(id)identity store:(id)store creatingIfNecessary:(BOOL)necessary;
++ (int64_t)_outputFormatForSnapshot:(id)snapshot;
++ (void)_configureSnapshot:(id)snapshot withCompatibilityInfo:(id)info forLaunchRequest:(id)request;
++ (void)_workloop_noteManifestInvalidated:(id)invalidated;
 + (void)initialize;
-+ (void)relinquishManifest:(id)a3;
++ (void)relinquishManifest:(id)manifest;
 - (BOOL)_access_snapshotsConsideredUnpurgableByAPFS;
-- (BOOL)_access_validateWithContainerIdentity:(id)a3;
-- (BOOL)_imageAccessQueue_saveData:(id)a3 forSnapshot:(id)a4;
-- (BOOL)_validateWithContainerIdentity:(id)a3;
+- (BOOL)_access_validateWithContainerIdentity:(id)identity;
+- (BOOL)_imageAccessQueue_saveData:(id)data forSnapshot:(id)snapshot;
+- (BOOL)_validateWithContainerIdentity:(id)identity;
 - (BOOL)snapshotsConsideredUnpurgableByAPFS;
 - (XBApplicationSnapshotManifestImpl)init;
-- (XBApplicationSnapshotManifestImpl)initWithCoder:(id)a3;
+- (XBApplicationSnapshotManifestImpl)initWithCoder:(id)coder;
 - (id)_access_allSnapshotGroups;
-- (id)_access_snapshotGroupForID:(id)a3 creatingIfNeeded:(BOOL)a4;
-- (id)_access_snapshotsForGroupIDs:(id)a3;
-- (id)_access_snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4;
-- (id)_access_snapshotsMatchingPredicate:(id)a3;
+- (id)_access_snapshotGroupForID:(id)d creatingIfNeeded:(BOOL)needed;
+- (id)_access_snapshotsForGroupIDs:(id)ds;
+- (id)_access_snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate;
+- (id)_access_snapshotsMatchingPredicate:(id)predicate;
 - (id)_allSnapshotGroups;
-- (id)_createSnapshotWithGroupID:(id)a3 generationContext:(id)a4;
-- (id)_descriptionForStateCaptureWithMultilinePrefix:(id)a3;
-- (id)_generatableSnapshotForGroupID:(id)a3 generationContext:(id)a4;
-- (id)_initWithContainerIdentity:(id)a3;
+- (id)_createSnapshotWithGroupID:(id)d generationContext:(id)context;
+- (id)_descriptionForStateCaptureWithMultilinePrefix:(id)prefix;
+- (id)_generatableSnapshotForGroupID:(id)d generationContext:(id)context;
+- (id)_initWithContainerIdentity:(id)identity;
 - (id)bundleIdentifier;
 - (id)containerPath;
-- (id)createSnapshotWithGroupID:(id)a3;
-- (id)createVariantForSnapshot:(id)a3 withIdentifier:(id)a4;
+- (id)createSnapshotWithGroupID:(id)d;
+- (id)createVariantForSnapshot:(id)snapshot withIdentifier:(id)identifier;
 - (id)defaultGroupIdentifier;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)snapshotsForGroupID:(id)a3;
-- (id)snapshotsForGroupID:(id)a3 fetchRequest:(id)a4;
-- (id)snapshotsForGroupID:(id)a3 matchingPredicate:(id)a4;
-- (id)snapshotsForGroupIDs:(id)a3;
-- (id)snapshotsForGroupIDs:(id)a3 fetchRequest:(id)a4;
-- (id)snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)snapshotsForGroupID:(id)d;
+- (id)snapshotsForGroupID:(id)d fetchRequest:(id)request;
+- (id)snapshotsForGroupID:(id)d matchingPredicate:(id)predicate;
+- (id)snapshotsForGroupIDs:(id)ds;
+- (id)snapshotsForGroupIDs:(id)ds fetchRequest:(id)request;
+- (id)snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_access_accessSnapshotsWithBlock:(id)a3 completion:(id)a4;
-- (void)_access_addSnapshotToGroup:(id)a3;
-- (void)_access_deletePaths:(id)a3;
-- (void)_access_deleteSnapshots:(id)a3;
-- (void)_access_doArchiveWithCompletions:(id)a3;
-- (void)_access_gatherPaths:(id)a3 forSnapshot:(id)a4;
+- (void)_access_accessSnapshotsWithBlock:(id)block completion:(id)completion;
+- (void)_access_addSnapshotToGroup:(id)group;
+- (void)_access_deletePaths:(id)paths;
+- (void)_access_deleteSnapshots:(id)snapshots;
+- (void)_access_doArchiveWithCompletions:(id)completions;
+- (void)_access_gatherPaths:(id)paths forSnapshot:(id)snapshot;
 - (void)_access_purgeSnapshotsWithProtectedContent;
-- (void)_access_updateSnapshotsAPFSPurgability:(BOOL)a3;
+- (void)_access_updateSnapshotsAPFSPurgability:(BOOL)purgability;
 - (void)_access_workloop_reapExpiredAndInvalidSnapshots;
-- (void)_addSnapshotToGroup:(id)a3;
+- (void)_addSnapshotToGroup:(id)group;
 - (void)_commonInit;
-- (void)_didGenerateImage:(BOOL)a3 imageGenerationSignal:(id)a4 logIdentifier:(id)a5 imageGeneratedHandler:(id)a6 qos:(unsigned int)a7;
-- (void)_didGenerateImageData:(id)a3 forSnapshot:(id)a4 imageWasGenerated:(BOOL)a5 imageDataGenerationSignal:(id)a6 logIdentifier:(id)a7 didSaveHandler:(id)a8 qos:(unsigned int)a9 writeToFileIfSupported:(BOOL)a10;
+- (void)_didGenerateImage:(BOOL)image imageGenerationSignal:(id)signal logIdentifier:(id)identifier imageGeneratedHandler:(id)handler qos:(unsigned int)qos;
+- (void)_didGenerateImageData:(id)data forSnapshot:(id)snapshot imageWasGenerated:(BOOL)generated imageDataGenerationSignal:(id)signal logIdentifier:(id)identifier didSaveHandler:(id)handler qos:(unsigned int)qos writeToFileIfSupported:(BOOL)self0;
 - (void)_handleMemoryPressure;
 - (void)_noteDirtied;
 - (void)_reapExpiredAndInvalidSnapshots;
-- (void)_scheduleArchivingIfNecessaryWithDelay:(double)a3 completion:(id)a4;
-- (void)_setContainerIdentity:(id)a3;
-- (void)_synchronizeDataStoreWithCompletion:(id)a3;
+- (void)_scheduleArchivingIfNecessaryWithDelay:(double)delay completion:(id)completion;
+- (void)_setContainerIdentity:(id)identity;
+- (void)_synchronizeDataStoreWithCompletion:(id)completion;
 - (void)_workloop_checkClientCount;
 - (void)_workloop_decrementClientCount;
 - (void)_workloop_incrementClientCount;
 - (void)_workloop_reallyCheckClientCount;
 - (void)archive;
-- (void)beginSnapshotAccessTransaction:(id)a3 completion:(id)a4;
+- (void)beginSnapshotAccessTransaction:(id)transaction completion:(id)completion;
 - (void)beginTrackingImageDeletions;
 - (void)dealloc;
 - (void)deleteAllSnapshots;
-- (void)deleteSnapshot:(id)a3;
-- (void)deleteSnapshots:(id)a3;
-- (void)deleteSnapshotsForGroupID:(id)a3;
-- (void)deleteSnapshotsForGroupID:(id)a3 matchingPredicate:(id)a4;
-- (void)deleteSnapshotsForGroupID:(id)a3 predicateBuilder:(id)a4;
-- (void)deleteSnapshotsMatchingPredicate:(id)a3;
-- (void)deleteSnapshotsUsingPredicateBuilder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)deleteSnapshot:(id)snapshot;
+- (void)deleteSnapshots:(id)snapshots;
+- (void)deleteSnapshotsForGroupID:(id)d;
+- (void)deleteSnapshotsForGroupID:(id)d matchingPredicate:(id)predicate;
+- (void)deleteSnapshotsForGroupID:(id)d predicateBuilder:(id)builder;
+- (void)deleteSnapshotsMatchingPredicate:(id)predicate;
+- (void)deleteSnapshotsUsingPredicateBuilder:(id)builder;
+- (void)encodeWithCoder:(id)coder;
 - (void)endTrackingImageDeletions;
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5 imageGeneratedHandler:(id)a6 imageDataSavedHandler:(id)a7;
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider options:(unint64_t)options imageGeneratedHandler:(id)handler imageDataSavedHandler:(id)savedHandler;
 - (void)purgeSnapshotsWithProtectedContent;
-- (void)saveSnapshot:(id)a3 atPath:(id)a4 withContext:(id)a5;
-- (void)updateSnapshotsAPFSPurgability:(BOOL)a3;
+- (void)saveSnapshot:(id)snapshot atPath:(id)path withContext:(id)context;
+- (void)updateSnapshotsAPFSPurgability:(BOOL)purgability;
 @end
 
 @implementation XBApplicationSnapshotManifestImpl
 
 - (id)defaultGroupIdentifier
 {
-  v2 = [(XBApplicationSnapshotManifestImpl *)self identity];
-  v3 = [v2 defaultGroupIdentifier];
+  identity = [(XBApplicationSnapshotManifestImpl *)self identity];
+  defaultGroupIdentifier = [identity defaultGroupIdentifier];
 
-  return v3;
+  return defaultGroupIdentifier;
 }
 
 - (void)_commonInit
 {
-  v2 = [MEMORY[0x277CCA890] currentHandler];
-  [v2 handleFailureInMethod:a1 object:0 file:@"XBApplicationSnapshotManifest.m" lineNumber:584 description:{@"Invalid parameter not satisfying: %@", @"self"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:0 file:@"XBApplicationSnapshotManifest.m" lineNumber:584 description:{@"Invalid parameter not satisfying: %@", @"self"}];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)_noteDirtied
@@ -167,7 +167,7 @@
         *buf = 138543618;
         v13 = logIdentifier;
         v14 = 2048;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_26B5EF000, v3, OS_LOG_TYPE_INFO, "%{public}@ Manifest (%p) has no remaining clients or work. Invalidating!", buf, 0x16u);
       }
 
@@ -190,17 +190,17 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
-  v3 = [v2 bundleIdentifier];
+  containerIdentity = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
+  bundleIdentifier = [containerIdentity bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"bundleID" skipIfNil:1];
+  bundleIdentifier = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
+  v5 = [v3 appendObject:bundleIdentifier withName:@"bundleID" skipIfNil:1];
 
   return v3;
 }
@@ -230,8 +230,8 @@ void __63__XBApplicationSnapshotManifestImpl__workloop_checkClientCount__block_i
 {
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(XBApplicationSnapshotManifestImpl *)self _access_allSnapshotGroups];
-  v4 = [v3 copy];
+  _access_allSnapshotGroups = [(XBApplicationSnapshotManifestImpl *)self _access_allSnapshotGroups];
+  v4 = [_access_allSnapshotGroups copy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 
@@ -330,7 +330,7 @@ void __79__XBApplicationSnapshotManifestImpl__access_purgeSnapshotsWithProtected
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __memoryPressureStatus = 1;
     v2 = dispatch_source_create(MEMORY[0x277D85D18], 0, 7uLL, __ManifestSerialWorkQueue);
@@ -362,14 +362,14 @@ uintptr_t __47__XBApplicationSnapshotManifestImpl_initialize__block_invoke()
   return result;
 }
 
-+ (id)acquireManifestForContainerIdentity:(id)a3 store:(id)a4 creatingIfNecessary:(BOOL)a5
++ (id)acquireManifestForContainerIdentity:(id)identity store:(id)store creatingIfNecessary:(BOOL)necessary
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identityCopy = identity;
+  storeCopy = store;
+  v9 = storeCopy;
+  if (identityCopy)
   {
-    if (v8)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -397,12 +397,12 @@ LABEL_3:
   v15[1] = 3221225472;
   v15[2] = __99__XBApplicationSnapshotManifestImpl_acquireManifestForContainerIdentity_store_creatingIfNecessary___block_invoke;
   v15[3] = &unk_279CF9848;
-  v16 = v7;
+  v16 = identityCopy;
   v17 = v9;
-  v19 = a5;
+  necessaryCopy = necessary;
   v18 = &v20;
   v11 = v9;
-  v12 = v7;
+  v12 = identityCopy;
   dispatch_sync(v10, v15);
   v13 = v21[5];
 
@@ -564,25 +564,25 @@ id __99__XBApplicationSnapshotManifestImpl_acquireManifestForContainerIdentity_s
   return [*(a1 + 32) appendObject:*(a1 + 48) withName:@"new"];
 }
 
-+ (void)relinquishManifest:(id)a3
++ (void)relinquishManifest:(id)manifest
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  manifestCopy = manifest;
+  v6 = manifestCopy;
+  if (manifestCopy)
   {
-    v7 = [v5 identity];
-    v8 = v7;
-    if (v7)
+    identity = [manifestCopy identity];
+    v8 = identity;
+    if (identity)
     {
       v9 = __ManifestSerialWorkQueue;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke;
       v10[3] = &unk_279CF9870;
-      v11 = v7;
+      v11 = identity;
       v12 = v6;
       v13 = a2;
-      v14 = a1;
+      selfCopy = self;
       dispatch_async(v9, v10);
     }
   }
@@ -601,39 +601,39 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   [v2 _workloop_decrementClientCount];
 }
 
-+ (void)_workloop_noteManifestInvalidated:(id)a3
++ (void)_workloop_noteManifestInvalidated:(id)invalidated
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(__ManifestWorkloop);
-  v6 = [v5 identity];
-  if (v6)
+  identity = [invalidatedCopy identity];
+  if (identity)
   {
-    v7 = [__ManifestsByIdentity objectForKey:v6];
-    if (v7 != v5)
+    v7 = [__ManifestsByIdentity objectForKey:identity];
+    if (v7 != invalidatedCopy)
     {
-      [(XBApplicationSnapshotManifestImpl *)a2 _workloop_noteManifestInvalidated:a1, v5, v7];
+      [(XBApplicationSnapshotManifestImpl *)a2 _workloop_noteManifestInvalidated:self, invalidatedCopy, v7];
     }
 
     v8 = XBLogFileManifest();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 succinctDescription];
+      succinctDescription = [invalidatedCopy succinctDescription];
       v10 = 138543362;
-      v11 = v9;
+      v11 = succinctDescription;
       _os_log_impl(&dword_26B5EF000, v8, OS_LOG_TYPE_INFO, "Removing manifest: %{public}@", &v10, 0xCu);
     }
 
-    [__ManifestsByIdentity removeObjectForKey:v6];
+    [__ManifestsByIdentity removeObjectForKey:identity];
   }
 }
 
-- (void)_setContainerIdentity:(id)a3
+- (void)_setContainerIdentity:(id)identity
 {
-  v12 = a3;
+  identityCopy = identity;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v12 copy];
+    v4 = [identityCopy copy];
     containerIdentity = self->_containerIdentity;
     self->_containerIdentity = v4;
 
@@ -641,8 +641,8 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
     baseLogIdentifier = self->_baseLogIdentifier;
     if (v6)
     {
-      v8 = [(XBSnapshotContainerIdentity *)v6 bundleIdentifier];
-      v9 = [(NSString *)baseLogIdentifier stringByAppendingFormat:@" [%@]", v8];
+      bundleIdentifier = [(XBSnapshotContainerIdentity *)v6 bundleIdentifier];
+      v9 = [(NSString *)baseLogIdentifier stringByAppendingFormat:@" [%@]", bundleIdentifier];
       logIdentifier = self->_logIdentifier;
       self->_logIdentifier = v9;
     }
@@ -650,7 +650,7 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
     else
     {
       v11 = baseLogIdentifier;
-      v8 = self->_logIdentifier;
+      bundleIdentifier = self->_logIdentifier;
       self->_logIdentifier = v11;
     }
   }
@@ -660,15 +660,15 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
 
 - (XBApplicationSnapshotManifestImpl)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:594 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:594 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
 
   return self;
 }
 
-- (id)_initWithContainerIdentity:(id)a3
+- (id)_initWithContainerIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v8.receiver = self;
   v8.super_class = XBApplicationSnapshotManifestImpl;
   v5 = [(XBApplicationSnapshotManifestImpl *)&v8 init];
@@ -676,7 +676,7 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   if (v5)
   {
     [(XBApplicationSnapshotManifestImpl *)v5 _commonInit];
-    [(XBApplicationSnapshotManifestImpl *)v6 _setContainerIdentity:v4];
+    [(XBApplicationSnapshotManifestImpl *)v6 _setContainerIdentity:identityCopy];
   }
 
   return v6;
@@ -685,10 +685,10 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
 - (void)dealloc
 {
   OUTLINED_FUNCTION_0();
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v2 = objc_opt_class();
-  v3 = [*(v1 + 24) bundleIdentifier];
-  [v4 handleFailureInMethod:v0 object:v1 file:@"XBApplicationSnapshotManifest.m" lineNumber:611 description:{@"<%@:%p bundleIdentifier=%@> failed to fire all synchronize completions before dealloc", v2, v1, v3}];
+  bundleIdentifier = [*(v1 + 24) bundleIdentifier];
+  [currentHandler handleFailureInMethod:v0 object:v1 file:@"XBApplicationSnapshotManifest.m" lineNumber:611 description:{@"<%@:%p bundleIdentifier=%@> failed to fire all synchronize completions before dealloc", v2, v1, bundleIdentifier}];
 }
 
 - (void)beginTrackingImageDeletions
@@ -715,19 +715,19 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
   v5 = __trackersByIdentity;
-  v6 = [(XBApplicationSnapshotManifestImpl *)self identity];
-  v7 = [v5 objectForKey:v6];
+  identity = [(XBApplicationSnapshotManifestImpl *)self identity];
+  v7 = [v5 objectForKey:identity];
 
-  v8 = [v7 stream];
-  if (v8)
+  stream = [v7 stream];
+  if (stream)
   {
-    v9 = v8;
-    FSEventStreamStop(v8);
+    v9 = stream;
+    FSEventStreamStop(stream);
     FSEventStreamInvalidate(v9);
     FSEventStreamRelease(v9);
     v10 = __trackersByIdentity;
-    v11 = [(XBApplicationSnapshotManifestImpl *)self identity];
-    [v10 removeObjectForKey:v11];
+    identity2 = [(XBApplicationSnapshotManifestImpl *)self identity];
+    [v10 removeObjectForKey:identity2];
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
@@ -735,60 +735,60 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
 
 - (id)containerPath
 {
-  v2 = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
-  v3 = [v2 snapshotContainerPath];
+  containerIdentity = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
+  snapshotContainerPath = [containerIdentity snapshotContainerPath];
 
-  return v3;
+  return snapshotContainerPath;
 }
 
-- (id)snapshotsForGroupID:(id)a3
+- (id)snapshotsForGroupID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  dCopy = d;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  v7 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v6, v9, v10];
+  v7 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v6, dCopy, v10];
 
   return v7;
 }
 
-- (id)snapshotsForGroupID:(id)a3 matchingPredicate:(id)a4
+- (id)snapshotsForGroupID:(id)d matchingPredicate:(id)predicate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  dCopy = d;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  predicateCopy = predicate;
+  dCopy2 = d;
+  v9 = [v6 arrayWithObjects:&dCopy count:1];
 
-  v10 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v9 matchingPredicate:v7, v12, v13];
+  v10 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v9 matchingPredicate:predicateCopy, dCopy, v13];
 
   return v10;
 }
 
-- (id)snapshotsForGroupID:(id)a3 fetchRequest:(id)a4
+- (id)snapshotsForGroupID:(id)d fetchRequest:(id)request
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  dCopy = d;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  requestCopy = request;
+  dCopy2 = d;
+  v9 = [v6 arrayWithObjects:&dCopy count:1];
 
-  v10 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v9 fetchRequest:v7, v12, v13];
+  v10 = [(XBApplicationSnapshotManifestImpl *)self snapshotsForGroupIDs:v9 fetchRequest:requestCopy, dCopy, v13];
 
   return v10;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3
+- (id)snapshotsForGroupIDs:(id)ds
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v4];
+  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:dsCopy];
   os_unfair_lock_unlock(&self->_accessLock);
   v6 = XBLogFetchRequests();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -797,7 +797,7 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
     v9 = 138412802;
     v10 = logIdentifier;
     v11 = 2112;
-    v12 = v4;
+    v12 = dsCopy;
     v13 = 2112;
     v14 = v5;
     _os_log_debug_impl(&dword_26B5EF000, v6, OS_LOG_TYPE_DEBUG, "[%@] snapshotsForGroupIDs given groupIDs: %@; returning snapshots:\n\t%@", &v9, 0x20u);
@@ -806,14 +806,14 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   return v5;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4
+- (id)snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  predicateCopy = predicate;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v8 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v6 matchingPredicate:v7];
+  v8 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:dsCopy matchingPredicate:predicateCopy];
   os_unfair_lock_unlock(&self->_accessLock);
   v9 = XBLogFetchRequests();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -822,9 +822,9 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
     v12 = 138413058;
     v13 = logIdentifier;
     v14 = 2112;
-    v15 = v6;
+    v15 = dsCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = predicateCopy;
     v18 = 2112;
     v19 = v8;
     _os_log_debug_impl(&dword_26B5EF000, v9, OS_LOG_TYPE_DEBUG, "[%@] snapshotsForGroupIDs:matchingPredicate: given groupIDs: %@; predicate: %@; returning matchingSnapshots:\n%@", &v12, 0x2Au);
@@ -833,12 +833,12 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   return v8;
 }
 
-- (id)snapshotsForGroupIDs:(id)a3 fetchRequest:(id)a4
+- (id)snapshotsForGroupIDs:(id)ds fetchRequest:(id)request
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 predicate];
+  dsCopy = ds;
+  requestCopy = request;
+  predicate = [requestCopy predicate];
   v9 = XBLogFetchRequests();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -846,17 +846,17 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
     *buf = 138412802;
     v48 = logIdentifier;
     v49 = 2112;
-    v50 = v6;
+    v50 = dsCopy;
     v51 = 2112;
-    v52 = v7;
+    v52 = requestCopy;
     _os_log_debug_impl(&dword_26B5EF000, v9, OS_LOG_TYPE_DEBUG, "[%@] BEGIN snapshotsForGroupIDs:fetchRequest: groupIDs: %@; fetchRequest: %@", buf, 0x20u);
   }
 
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  if (v8)
+  if (predicate)
   {
-    v10 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v6 matchingPredicate:v8];
+    v10 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:dsCopy matchingPredicate:predicate];
     v43 = [v10 mutableCopy];
 
     v11 = XBLogFetchRequests();
@@ -867,7 +867,7 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
       *buf = 138412802;
       v48 = v12;
       v49 = 2112;
-      v50 = v8;
+      v50 = predicate;
       v51 = 2112;
       v52 = v13;
       _os_log_debug_impl(&dword_26B5EF000, v11, OS_LOG_TYPE_DEBUG, "[%@] snapshotsForGroupIDs:fetchRequest: fetchRequest has predicate %@; retrieved matchingSnapshots:\n\t%@", buf, 0x20u);
@@ -876,7 +876,7 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
 
   else
   {
-    v14 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v6];
+    v14 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:dsCopy];
     v43 = [v14 mutableCopy];
 
     v11 = XBLogFetchRequests();
@@ -887,20 +887,20 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
-  v15 = [v7 fallbackGenerationContext];
-  v16 = v15;
+  fallbackGenerationContext = [requestCopy fallbackGenerationContext];
+  v16 = fallbackGenerationContext;
   v17 = v43;
-  if (v15)
+  if (fallbackGenerationContext)
   {
-    v41 = v8;
-    v42 = v6;
-    v18 = [v15 launchRequest];
-    v19 = [v18 urlSchemeName];
-    v20 = [v16 applicationCompatibilityInfo];
-    v21 = v20;
-    if (v19 && v20 && ([v20 launchInterfaceExistsForScheme:v19] & 1) == 0)
+    v41 = predicate;
+    v42 = dsCopy;
+    launchRequest = [fallbackGenerationContext launchRequest];
+    urlSchemeName = [launchRequest urlSchemeName];
+    applicationCompatibilityInfo = [v16 applicationCompatibilityInfo];
+    v21 = applicationCompatibilityInfo;
+    if (urlSchemeName && applicationCompatibilityInfo && ([applicationCompatibilityInfo launchInterfaceExistsForScheme:urlSchemeName] & 1) == 0)
     {
-      v22 = [v18 copy];
+      v22 = [launchRequest copy];
 
       [v22 setUrlSchemeName:0];
       v23 = XBLogFetchRequests();
@@ -909,24 +909,24 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
         [XBApplicationSnapshotManifestImpl snapshotsForGroupIDs:fetchRequest:];
       }
 
-      v18 = v22;
+      launchRequest = v22;
     }
 
-    v24 = [XBApplicationSnapshotManifestImpl _snapshotPredicateForRequest:v18];
+    v24 = [XBApplicationSnapshotManifestImpl _snapshotPredicateForRequest:launchRequest];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __71__XBApplicationSnapshotManifestImpl_snapshotsForGroupIDs_fetchRequest___block_invoke_238;
     v44[3] = &unk_279CF98B8;
     v25 = v24;
     v45 = v25;
-    v46 = self;
+    selfCopy = self;
     v26 = [v43 indexesOfObjectsPassingTest:v44];
     if (![v26 count])
     {
       v39 = v21;
-      v27 = [v16 launchRequest];
-      v28 = [v27 groupID];
-      v29 = [(XBApplicationSnapshotManifestImpl *)self _generatableSnapshotForGroupID:v28 generationContext:v16];
+      launchRequest2 = [v16 launchRequest];
+      groupID = [launchRequest2 groupID];
+      v29 = [(XBApplicationSnapshotManifestImpl *)self _generatableSnapshotForGroupID:groupID generationContext:v16];
 
       v17 = v43;
       v40 = v29;
@@ -935,31 +935,31 @@ void __56__XBApplicationSnapshotManifestImpl_relinquishManifest___block_invoke(u
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         v37 = self->_logIdentifier;
-        v38 = [v29 logIdentifier];
+        logIdentifier = [v29 logIdentifier];
         *buf = 138412802;
         v48 = v37;
         v17 = v43;
         v49 = 2112;
         v50 = v25;
         v51 = 2112;
-        v52 = v38;
+        v52 = logIdentifier;
         _os_log_debug_impl(&dword_26B5EF000, v30, OS_LOG_TYPE_DEBUG, "[%@] snapshotsForGroupIDs:fetchRequest: fetchRequest has fallbackPredicate %@, no snapshot matched, so generated and added fallbackSnapshot:\n\t%@", buf, 0x20u);
       }
 
       v21 = v39;
     }
 
-    v8 = v41;
-    v6 = v42;
+    predicate = v41;
+    dsCopy = v42;
   }
 
-  v31 = [v7 sortDescriptors];
-  v32 = [v31 count];
+  sortDescriptors = [requestCopy sortDescriptors];
+  v32 = [sortDescriptors count];
 
   if (v32)
   {
-    v33 = [v7 NSSortDescriptors];
-    [v17 sortUsingDescriptors:v33];
+    nSSortDescriptors = [requestCopy NSSortDescriptors];
+    [v17 sortUsingDescriptors:nSSortDescriptors];
 
     v34 = XBLogFetchRequests();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1004,25 +1004,25 @@ uint64_t __71__XBApplicationSnapshotManifestImpl_snapshotsForGroupIDs_fetchReque
   return v8;
 }
 
-- (id)createSnapshotWithGroupID:(id)a3
+- (id)createSnapshotWithGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [XBApplicationSnapshot alloc];
   containerIdentity = self->_containerIdentity;
-  v7 = [(XBSnapshotManifestIdentity *)self->_identity store];
-  v8 = [(XBApplicationSnapshot *)v5 _initWithContainerIdentity:containerIdentity store:v7 groupID:v4 generationContext:0];
+  store = [(XBSnapshotManifestIdentity *)self->_identity store];
+  v8 = [(XBApplicationSnapshot *)v5 _initWithContainerIdentity:containerIdentity store:store groupID:dCopy generationContext:0];
 
   return v8;
 }
 
-- (id)createVariantForSnapshot:(id)a3 withIdentifier:(id)a4
+- (id)createVariantForSnapshot:(id)snapshot withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  snapshotCopy = snapshot;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (snapshotCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -1041,24 +1041,24 @@ uint64_t __71__XBApplicationSnapshotManifestImpl_snapshotsForGroupIDs_fetchReque
 LABEL_3:
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v9 = [v6 _createVariantWithIdentifier:v8];
+  v9 = [snapshotCopy _createVariantWithIdentifier:v8];
   os_unfair_lock_unlock(&self->_accessLock);
 
   return v9;
 }
 
-- (void)_didGenerateImage:(BOOL)a3 imageGenerationSignal:(id)a4 logIdentifier:(id)a5 imageGeneratedHandler:(id)a6 qos:(unsigned int)a7
+- (void)_didGenerateImage:(BOOL)image imageGenerationSignal:(id)signal logIdentifier:(id)identifier imageGeneratedHandler:(id)handler qos:(unsigned int)qos
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  signalCopy = signal;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = XBLogCapture();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     [XBApplicationSnapshotManifestImpl _didGenerateImage:imageGenerationSignal:logIdentifier:imageGeneratedHandler:qos:];
   }
 
-  if ([v10 hasBeenSignalled])
+  if ([signalCopy hasBeenSignalled])
   {
     v14 = XBLogCapture();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1069,7 +1069,7 @@ LABEL_3:
 
   else
   {
-    [v10 signal];
+    [signalCopy signal];
     os_unfair_lock_assert_not_owner(&self->_accessLock);
     os_unfair_lock_lock(&self->_accessLock);
     v15 = XBLogCapture();
@@ -1078,10 +1078,10 @@ LABEL_3:
       [XBApplicationSnapshotManifestImpl _didGenerateImage:imageGenerationSignal:logIdentifier:imageGeneratedHandler:qos:];
     }
 
-    if (v12)
+    if (handlerCopy)
     {
       v16 = __ManifestCallOutQueue;
-      v18 = v12;
+      v18 = handlerCopy;
       v17 = BSDispatchBlockCreateWithQualityOfService();
       dispatch_async(v16, v17);
     }
@@ -1090,32 +1090,32 @@ LABEL_3:
   }
 }
 
-- (void)_didGenerateImageData:(id)a3 forSnapshot:(id)a4 imageWasGenerated:(BOOL)a5 imageDataGenerationSignal:(id)a6 logIdentifier:(id)a7 didSaveHandler:(id)a8 qos:(unsigned int)a9 writeToFileIfSupported:(BOOL)a10
+- (void)_didGenerateImageData:(id)data forSnapshot:(id)snapshot imageWasGenerated:(BOOL)generated imageDataGenerationSignal:(id)signal logIdentifier:(id)identifier didSaveHandler:(id)handler qos:(unsigned int)qos writeToFileIfSupported:(BOOL)self0
 {
-  v26 = a5;
+  generatedCopy = generated;
   v45 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v27 = a8;
-  v19 = [v16 logIdentifier];
+  dataCopy = data;
+  snapshotCopy = snapshot;
+  signalCopy = signal;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  logIdentifier = [snapshotCopy logIdentifier];
   v20 = XBLogCapture();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     [XBApplicationSnapshotManifestImpl _didGenerateImageData:forSnapshot:imageWasGenerated:imageDataGenerationSignal:logIdentifier:didSaveHandler:qos:writeToFileIfSupported:];
   }
 
-  if (([v17 hasBeenSignalled] & 1) == 0)
+  if (([signalCopy hasBeenSignalled] & 1) == 0)
   {
-    [v17 signal];
+    [signalCopy signal];
     os_unfair_lock_assert_not_owner(&self->_accessLock);
     os_unfair_lock_lock(&self->_accessLock);
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = 0;
-    if (v15 && ([v16 _isInvalidated] & 1) == 0)
+    if (dataCopy && ([snapshotCopy _isInvalidated] & 1) == 0)
     {
       v23 = __ManifestImageAccessQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -1124,29 +1124,29 @@ LABEL_3:
       block[3] = &unk_279CF9908;
       v36 = &v37;
       block[4] = self;
-      v32 = v15;
-      v33 = v16;
-      v34 = v18;
-      v35 = v19;
+      v32 = dataCopy;
+      v33 = snapshotCopy;
+      v34 = identifierCopy;
+      v35 = logIdentifier;
       dispatch_sync(v23, block);
     }
 
     else
     {
-      if ([v16 _isInvalidated])
+      if ([snapshotCopy _isInvalidated])
       {
         v22 = XBLogFileManifest();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
-          v42 = v18;
+          v42 = identifierCopy;
           v43 = 2114;
-          v44 = v19;
+          v44 = logIdentifier;
           _os_log_impl(&dword_26B5EF000, v22, OS_LOG_TYPE_INFO, "%{public}@ Snapshot was invalidated between imageGenerationHandler and imageDataGenerationHandler. Skipping saving. %{public}@", buf, 0x16u);
         }
       }
 
-      if (!v15)
+      if (!dataCopy)
       {
         goto LABEL_18;
       }
@@ -1157,9 +1157,9 @@ LABEL_3:
       [(XBApplicationSnapshotManifestImpl *)self _noteDirtied];
 LABEL_20:
       v24 = __ManifestCallOutQueue;
-      v30 = v27;
-      v28 = v18;
-      v29 = v16;
+      v30 = handlerCopy;
+      v28 = identifierCopy;
+      v29 = snapshotCopy;
       v25 = BSDispatchBlockCreateWithQualityOfService();
       dispatch_async(v24, v25);
 
@@ -1169,7 +1169,7 @@ LABEL_20:
     }
 
 LABEL_18:
-    if (v26)
+    if (generatedCopy)
     {
       [(XBApplicationSnapshotManifestImpl *)self _reapExpiredAndInvalidSnapshots];
     }
@@ -1252,22 +1252,22 @@ uint64_t __171__XBApplicationSnapshotManifestImpl__didGenerateImageData_forSnaps
   return result;
 }
 
-- (void)generateImageForSnapshot:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5 imageGeneratedHandler:(id)a6 imageDataSavedHandler:(id)a7
+- (void)generateImageForSnapshot:(id)snapshot dataProvider:(id)provider options:(unint64_t)options imageGeneratedHandler:(id)handler imageDataSavedHandler:(id)savedHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  snapshotCopy = snapshot;
+  providerCopy = provider;
+  handlerCopy = handler;
+  savedHandlerCopy = savedHandler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v17 = _os_activity_create(&dword_26B5EF000, "XBCapture", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   os_activity_scope_enter(v17, &state);
 
-  v18 = [v13 groupID];
+  groupID = [snapshotCopy groupID];
 
-  if (v18)
+  if (groupID)
   {
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -1275,32 +1275,32 @@ uint64_t __171__XBApplicationSnapshotManifestImpl__didGenerateImageData_forSnaps
 
   else
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1027 description:{@"Invalid parameter not satisfying: %@", @"[snapshot groupID]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1027 description:{@"Invalid parameter not satisfying: %@", @"[snapshot groupID]"}];
 
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v41 = [MEMORY[0x277CCA890] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1028 description:{@"Invalid parameter not satisfying: %@", @"dataProvider"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1028 description:{@"Invalid parameter not satisfying: %@", @"dataProvider"}];
 
 LABEL_3:
-  v19 = [v14 context];
+  context = [providerCopy context];
 
-  if (!v19)
+  if (!context)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1029 description:{@"Invalid parameter not satisfying: %@", @"[dataProvider context]"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"XBApplicationSnapshotManifest.m" lineNumber:1029 description:{@"Invalid parameter not satisfying: %@", @"[dataProvider context]"}];
   }
 
-  v20 = [v14 context];
-  [v20 scale];
+  context2 = [providerCopy context];
+  [context2 scale];
   v22 = v21;
-  v50 = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
-  if ((a5 & 2) != 0)
+  bundleIdentifier = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
+  if ((options & 2) != 0)
   {
     v23 = 2;
   }
@@ -1310,14 +1310,14 @@ LABEL_3:
     v23 = 1;
   }
 
-  [v13 setImageScale:v22];
-  [v13 setImageOpaque:{objc_msgSend(v20, "isOpaque")}];
-  [v13 beginImageAccess];
+  [snapshotCopy setImageScale:v22];
+  [snapshotCopy setImageOpaque:{objc_msgSend(context2, "isOpaque")}];
+  [snapshotCopy beginImageAccess];
   v24 = objc_alloc_init(MEMORY[0x277CF0B80]);
-  v46 = v20;
+  v46 = context2;
   v47 = v23;
-  v48 = v16;
-  v25 = a5;
+  v48 = savedHandlerCopy;
+  optionsCopy = options;
   v26 = objc_alloc_init(MEMORY[0x277CF0B80]);
   v27 = self->_logIdentifier;
   v28 = BSPthreadCurrentEffectiveQualityOfService();
@@ -1330,7 +1330,7 @@ LABEL_3:
   v62 = v43;
   v29 = v27;
   v63 = v29;
-  v44 = v15;
+  v44 = handlerCopy;
   v64 = v44;
   v65 = v28;
   v51 = MEMORY[0x26D67C6A0](v61);
@@ -1338,9 +1338,9 @@ LABEL_3:
   v54[1] = 3221225472;
   v54[2] = __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataProvider_options_imageGeneratedHandler_imageDataSavedHandler___block_invoke_2;
   v54[3] = &unk_279CF9980;
-  v45 = self;
+  selfCopy = self;
   v54[4] = self;
-  v30 = v13;
+  v30 = snapshotCopy;
   v55 = v30;
   v31 = v26;
   v56 = v31;
@@ -1349,13 +1349,13 @@ LABEL_3:
   v49 = v48;
   v58 = v49;
   v59 = v28;
-  v60 = v25 & 1;
+  v60 = optionsCopy & 1;
   v33 = MEMORY[0x26D67C6A0](v54);
   v34 = [XBApplicationSnapshotImageGenerator alloc];
   v35 = +[XBApplicationSnapshotGenerationScheduler sharedInstance];
-  v36 = [(XBApplicationSnapshotImageGenerator *)v34 initWithScheduler:v35 snapshot:v30 dataProvider:v14 imageDataRequest:((v25 << 63) >> 63) & v47 loggingPrefix:v50 imageGenerationHandler:v51 imageDataGenerationHandler:v33];
+  v36 = [(XBApplicationSnapshotImageGenerator *)v34 initWithScheduler:v35 snapshot:v30 dataProvider:providerCopy imageDataRequest:((optionsCopy << 63) >> 63) & v47 loggingPrefix:bundleIdentifier imageGenerationHandler:v51 imageDataGenerationHandler:v33];
 
-  if ((v25 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
     [(XBApplicationSnapshotImageGenerator *)v36 scheduleGeneration];
   }
@@ -1370,7 +1370,7 @@ LABEL_3:
   v53 = v39;
   [v30 setImageGeneratingByProvider:v38 withBlockingImageGenerator:v52];
 
-  [(XBApplicationSnapshotManifestImpl *)v45 _addSnapshotToGroup:v30];
+  [(XBApplicationSnapshotManifestImpl *)selfCopy _addSnapshotToGroup:v30];
   os_activity_scope_leave(&state);
 }
 
@@ -1381,67 +1381,67 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   return [*(a1 + 32) _didGenerateImageData:a2 forSnapshot:*(a1 + 40) imageWasGenerated:a3 imageDataGenerationSignal:*(a1 + 48) logIdentifier:*(a1 + 56) didSaveHandler:*(a1 + 64) qos:v4 writeToFileIfSupported:?];
 }
 
-- (void)saveSnapshot:(id)a3 atPath:(id)a4 withContext:(id)a5
+- (void)saveSnapshot:(id)snapshot atPath:(id)path withContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  snapshotCopy = snapshot;
+  pathCopy = path;
+  contextCopy = context;
+  if (!contextCopy)
   {
     [XBApplicationSnapshotManifestImpl saveSnapshot:atPath:withContext:];
   }
 
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(XBApplicationSnapshotManifestImpl *)self _access_addSnapshotToGroup:v8];
-  [v8 _configureWithPath:v9];
-  [v10 scale];
-  [v8 setImageScale:?];
-  [v8 setImageOpaque:{objc_msgSend(v10, "isOpaque")}];
+  [(XBApplicationSnapshotManifestImpl *)self _access_addSnapshotToGroup:snapshotCopy];
+  [snapshotCopy _configureWithPath:pathCopy];
+  [contextCopy scale];
+  [snapshotCopy setImageScale:?];
+  [snapshotCopy setImageOpaque:{objc_msgSend(contextCopy, "isOpaque")}];
   [(XBApplicationSnapshotManifestImpl *)self _noteDirtied];
   v11 = XBLogFileManifest();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     logIdentifier = self->_logIdentifier;
-    v13 = [v8 succinctDescription];
+    succinctDescription = [snapshotCopy succinctDescription];
     v14 = 138543618;
     v15 = logIdentifier;
     v16 = 2114;
-    v17 = v13;
+    v17 = succinctDescription;
     _os_log_impl(&dword_26B5EF000, v11, OS_LOG_TYPE_INFO, "%{public}@ Saved snapshot: %{public}@", &v14, 0x16u);
   }
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)deleteSnapshot:(id)a3
+- (void)deleteSnapshot:(id)snapshot
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (snapshot)
   {
-    v7 = a3;
+    snapshotCopy = snapshot;
     v4 = MEMORY[0x277CBEA60];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    snapshotCopy2 = snapshot;
+    v6 = [v4 arrayWithObjects:&snapshotCopy count:1];
 
-    [(XBApplicationSnapshotManifestImpl *)self deleteSnapshots:v6, v7, v8];
+    [(XBApplicationSnapshotManifestImpl *)self deleteSnapshots:v6, snapshotCopy, v8];
   }
 }
 
-- (void)deleteSnapshots:(id)a3
+- (void)deleteSnapshots:(id)snapshots
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snapshotsCopy = snapshots;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  if ([v4 count])
+  if ([snapshotsCopy count])
   {
     v5 = XBLogFileManifest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       logIdentifier = self->_logIdentifier;
-      v7 = [v4 arrayByApplyingSelector:sel_succinctDescription];
+      v7 = [snapshotsCopy arrayByApplyingSelector:sel_succinctDescription];
       v8 = 138543618;
       v9 = logIdentifier;
       v10 = 2114;
@@ -1450,17 +1450,17 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
     }
   }
 
-  [(XBApplicationSnapshotManifestImpl *)self _access_deleteSnapshots:v4];
+  [(XBApplicationSnapshotManifestImpl *)self _access_deleteSnapshots:snapshotsCopy];
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)deleteSnapshotsMatchingPredicate:(id)a3
+- (void)deleteSnapshotsMatchingPredicate:(id)predicate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsMatchingPredicate:v4];
+  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsMatchingPredicate:predicateCopy];
   if ([v5 count])
   {
     v6 = XBLogFileManifest();
@@ -1473,7 +1473,7 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
       v11 = 2114;
       v12 = v8;
       v13 = 2112;
-      v14 = v4;
+      v14 = predicateCopy;
       _os_log_impl(&dword_26B5EF000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Deleting snapshots: %{public}@ matching predicate: %@", &v9, 0x20u);
     }
   }
@@ -1482,41 +1482,41 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)deleteSnapshotsUsingPredicateBuilder:(id)a3
+- (void)deleteSnapshotsUsingPredicateBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v4 = +[XBApplicationSnapshotPredicate predicate];
-  if (v5)
+  if (builderCopy)
   {
-    v5[2](v5, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
   [(XBApplicationSnapshotManifestImpl *)self deleteSnapshotsMatchingPredicate:v4];
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3 predicateBuilder:(id)a4
+- (void)deleteSnapshotsForGroupID:(id)d predicateBuilder:(id)builder
 {
-  v8 = a3;
-  v6 = a4;
+  dCopy = d;
+  builderCopy = builder;
   v7 = +[XBApplicationSnapshotPredicate predicate];
-  if (v6)
+  if (builderCopy)
   {
-    v6[2](v6, v7);
+    builderCopy[2](builderCopy, v7);
   }
 
-  [(XBApplicationSnapshotManifestImpl *)self deleteSnapshotsForGroupID:v8 matchingPredicate:v7];
+  [(XBApplicationSnapshotManifestImpl *)self deleteSnapshotsForGroupID:dCopy matchingPredicate:v7];
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3 matchingPredicate:(id)a4
+- (void)deleteSnapshotsForGroupID:(id)d matchingPredicate:(id)predicate
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  predicateCopy = predicate;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v19[0] = v6;
+  v19[0] = dCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v9 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v8 matchingPredicate:v7];
+  v9 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v8 matchingPredicate:predicateCopy];
 
   if ([v9 count])
   {
@@ -1530,7 +1530,7 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
       v15 = 2114;
       v16 = v12;
       v17 = 2112;
-      v18 = v7;
+      v18 = predicateCopy;
       _os_log_impl(&dword_26B5EF000, v10, OS_LOG_TYPE_INFO, "%{public}@ Deleting snapshots: %{public}@ matching predicate: %@", &v13, 0x20u);
     }
   }
@@ -1539,13 +1539,13 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)deleteSnapshotsForGroupID:(id)a3
+- (void)deleteSnapshotsForGroupID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:v4 creatingIfNeeded:0];
+  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:dCopy creatingIfNeeded:0];
   if (v5)
   {
     v6 = XBLogFileManifest();
@@ -1555,15 +1555,15 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
       *buf = 138543618;
       v12 = logIdentifier;
       v13 = 2114;
-      v14 = v4;
+      v14 = dCopy;
       _os_log_impl(&dword_26B5EF000, v6, OS_LOG_TYPE_INFO, "%{public}@ Deleting all snapshots for group: %{public}@.", buf, 0x16u);
     }
 
     [v5 _invalidate];
-    [(NSMutableDictionary *)self->_snapshotGroupsByID removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_snapshotGroupsByID removeObjectForKey:dCopy];
     [(XBApplicationSnapshotManifestImpl *)self _noteDirtied];
-    v8 = [v5 containerPath];
-    v10 = v8;
+    containerPath = [v5 containerPath];
+    v10 = containerPath;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
     [(XBApplicationSnapshotManifestImpl *)self _access_deletePaths:v9];
   }
@@ -1571,12 +1571,12 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)updateSnapshotsAPFSPurgability:(BOOL)a3
+- (void)updateSnapshotsAPFSPurgability:(BOOL)purgability
 {
-  v3 = a3;
+  purgabilityCopy = purgability;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(XBApplicationSnapshotManifestImpl *)self _access_updateSnapshotsAPFSPurgability:v3];
+  [(XBApplicationSnapshotManifestImpl *)self _access_updateSnapshotsAPFSPurgability:purgabilityCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -1585,9 +1585,9 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
 {
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsConsideredUnpurgableByAPFS];
+  _access_snapshotsConsideredUnpurgableByAPFS = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsConsideredUnpurgableByAPFS];
   os_unfair_lock_unlock(&self->_accessLock);
-  return v3;
+  return _access_snapshotsConsideredUnpurgableByAPFS;
 }
 
 - (void)deleteAllSnapshots
@@ -1598,29 +1598,29 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   v3 = XBLogFileManifest();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
+    bundleIdentifier = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
     *buf = 138543362;
-    v9 = v4;
+    v9 = bundleIdentifier;
     _os_log_impl(&dword_26B5EF000, v3, OS_LOG_TYPE_INFO, "%{public}@ Deleting all snapshots.", buf, 0xCu);
   }
 
   [(XBApplicationSnapshotManifestImpl *)self _noteDirtied];
   [(NSMutableDictionary *)self->_snapshotGroupsByID enumerateKeysAndObjectsUsingBlock:&__block_literal_global_274];
   [(NSMutableDictionary *)self->_snapshotGroupsByID removeAllObjects];
-  v5 = [(XBApplicationSnapshotManifestImpl *)self containerPath];
-  v7 = v5;
+  containerPath = [(XBApplicationSnapshotManifestImpl *)self containerPath];
+  v7 = containerPath;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v7 count:1];
   [(XBApplicationSnapshotManifestImpl *)self _access_deletePaths:v6];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)beginSnapshotAccessTransaction:(id)a3 completion:(id)a4
+- (void)beginSnapshotAccessTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (transaction)
   {
-    (*(a3 + 2))(a3);
+    (*(transaction + 2))(transaction);
   }
 
   v7 = +[XBApplicationSnapshotGenerationScheduler sharedInstance];
@@ -1629,8 +1629,8 @@ uint64_t __127__XBApplicationSnapshotManifestImpl_generateImageForSnapshot_dataP
   v9[2] = __79__XBApplicationSnapshotManifestImpl_beginSnapshotAccessTransaction_completion___block_invoke;
   v9[3] = &unk_279CF9A18;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 performImageGenerationAsync:v9];
 }
 
@@ -1683,107 +1683,107 @@ uint64_t __79__XBApplicationSnapshotManifestImpl_beginSnapshotAccessTransaction_
   return result;
 }
 
-+ (id)_snapshotPredicateForRequest:(id)a3
++ (id)_snapshotPredicateForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[XBApplicationSnapshotPredicate predicate];
-  v5 = [v3 launchInterfaceIdentifier];
-  if (v5)
+  launchInterfaceIdentifier = [requestCopy launchInterfaceIdentifier];
+  if (launchInterfaceIdentifier)
   {
-    [v4 setLaunchInterfaceIdentifier:v5];
+    [v4 setLaunchInterfaceIdentifier:launchInterfaceIdentifier];
   }
 
-  v6 = [v3 urlSchemeName];
-  [v4 setScheme:v6];
+  urlSchemeName = [requestCopy urlSchemeName];
+  [v4 setScheme:urlSchemeName];
 
   [v4 setContentTypeMask:2];
-  [v3 referenceSize];
+  [requestCopy referenceSize];
   [v4 setReferenceSize:?];
-  [v4 setInterfaceOrientationMask:{XBInterfaceOrientationMaskForInterfaceOrientationPair(objc_msgSend(v3, "interfaceOrientation"))}];
-  [v4 setStatusBarStateMask:{XBStatusBarStateMaskForStatusBarState(objc_msgSend(v3, "statusBarState"))}];
-  [v4 setUserInterfaceStyle:{objc_msgSend(v3, "userInterfaceStyle")}];
-  v7 = [v3 customSafeAreaInsets];
-  [v4 setCustomSafeAreaInsets:v7];
+  [v4 setInterfaceOrientationMask:{XBInterfaceOrientationMaskForInterfaceOrientationPair(objc_msgSend(requestCopy, "interfaceOrientation"))}];
+  [v4 setStatusBarStateMask:{XBStatusBarStateMaskForStatusBarState(objc_msgSend(requestCopy, "statusBarState"))}];
+  [v4 setUserInterfaceStyle:{objc_msgSend(requestCopy, "userInterfaceStyle")}];
+  customSafeAreaInsets = [requestCopy customSafeAreaInsets];
+  [v4 setCustomSafeAreaInsets:customSafeAreaInsets];
 
   return v4;
 }
 
-+ (void)_configureSnapshot:(id)a3 withCompatibilityInfo:(id)a4 forLaunchRequest:(id)a5
++ (void)_configureSnapshot:(id)snapshot withCompatibilityInfo:(id)info forLaunchRequest:(id)request
 {
-  v25 = a3;
-  v7 = a5;
-  v8 = a4;
-  v9 = [v7 launchInterfaceIdentifier];
-  [v25 setLaunchInterfaceIdentifier:v9];
-  v10 = [v8 defaultLaunchInterface];
+  snapshotCopy = snapshot;
+  requestCopy = request;
+  infoCopy = info;
+  launchInterfaceIdentifier = [requestCopy launchInterfaceIdentifier];
+  [snapshotCopy setLaunchInterfaceIdentifier:launchInterfaceIdentifier];
+  defaultLaunchInterface = [infoCopy defaultLaunchInterface];
 
-  v11 = [v10 identifier];
-  v12 = [v11 isEqualToString:v9];
+  identifier = [defaultLaunchInterface identifier];
+  v12 = [identifier isEqualToString:launchInterfaceIdentifier];
 
   if ((v12 & 1) == 0)
   {
-    [v25 setName:v9];
+    [snapshotCopy setName:launchInterfaceIdentifier];
   }
 
-  v13 = [v7 urlSchemeName];
-  [v25 setScheme:v13];
+  urlSchemeName = [requestCopy urlSchemeName];
+  [snapshotCopy setScheme:urlSchemeName];
 
-  [v25 setContentType:1];
-  v14 = [v7 displayConfiguration];
-  [v7 referenceSize];
+  [snapshotCopy setContentType:1];
+  displayConfiguration = [requestCopy displayConfiguration];
+  [requestCopy referenceSize];
   v16 = v15;
   v18 = v17;
-  [v14 bounds];
+  [displayConfiguration bounds];
   v21 = v18 == v20 && v16 == v19;
-  [v25 setFullScreen:v21];
-  [v7 referenceSize];
-  [v25 setReferenceSize:?];
-  [v14 scale];
-  [v25 setImageScale:?];
-  [v25 setInterfaceOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
-  v22 = [v7 statusBarState];
+  [snapshotCopy setFullScreen:v21];
+  [requestCopy referenceSize];
+  [snapshotCopy setReferenceSize:?];
+  [displayConfiguration scale];
+  [snapshotCopy setImageScale:?];
+  [snapshotCopy setInterfaceOrientation:{objc_msgSend(requestCopy, "interfaceOrientation")}];
+  statusBarState = [requestCopy statusBarState];
   v23 = objc_alloc_init(XBMutableStatusBarSettings);
-  [(XBMutableStatusBarSettings *)v23 setHidden:v22 == 0];
-  [(XBMutableStatusBarSettings *)v23 setBackgroundActivityEnabled:v22 == 2];
-  [v25 setStatusBarSettings:v23];
-  [v25 setUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
-  v24 = [v7 customSafeAreaInsets];
+  [(XBMutableStatusBarSettings *)v23 setHidden:statusBarState == 0];
+  [(XBMutableStatusBarSettings *)v23 setBackgroundActivityEnabled:statusBarState == 2];
+  [snapshotCopy setStatusBarSettings:v23];
+  [snapshotCopy setUserInterfaceStyle:{objc_msgSend(requestCopy, "userInterfaceStyle")}];
+  customSafeAreaInsets = [requestCopy customSafeAreaInsets];
 
-  [v25 setCustomSafeAreaInsets:v24];
+  [snapshotCopy setCustomSafeAreaInsets:customSafeAreaInsets];
 }
 
-- (id)_generatableSnapshotForGroupID:(id)a3 generationContext:(id)a4
+- (id)_generatableSnapshotForGroupID:(id)d generationContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  contextCopy = context;
+  if (!contextCopy)
   {
     [XBApplicationSnapshotManifestImpl _generatableSnapshotForGroupID:generationContext:];
   }
 
-  v8 = [(XBApplicationSnapshotManifestImpl *)self _createSnapshotWithGroupID:v6 generationContext:v7];
+  v8 = [(XBApplicationSnapshotManifestImpl *)self _createSnapshotWithGroupID:dCopy generationContext:contextCopy];
   [(XBApplicationSnapshotManifestImpl *)self _addSnapshotToGroup:v8];
   v9 = XBLogFileManifest();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     logIdentifier = self->_logIdentifier;
-    v11 = [v8 logIdentifier];
+    logIdentifier = [v8 logIdentifier];
     v17 = 138543874;
     v18 = logIdentifier;
     v19 = 2112;
-    v20 = v6;
+    v20 = dCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = logIdentifier;
     _os_log_impl(&dword_26B5EF000, v9, OS_LOG_TYPE_INFO, "%{public}@ groupID: [%@] Creating temporary snapshot %@ with generation context.", &v17, 0x20u);
   }
 
-  v12 = [v7 launchRequest];
-  v13 = [v7 applicationCompatibilityInfo];
-  v14 = [v13 launchInterfaceIdentifierForRequest:v12];
-  [v12 setLaunchInterfaceIdentifier:v14];
+  launchRequest = [contextCopy launchRequest];
+  applicationCompatibilityInfo = [contextCopy applicationCompatibilityInfo];
+  v14 = [applicationCompatibilityInfo launchInterfaceIdentifierForRequest:launchRequest];
+  [launchRequest setLaunchInterfaceIdentifier:v14];
 
-  [XBApplicationSnapshotManifestImpl _configureSnapshot:v8 withCompatibilityInfo:v13 forLaunchRequest:v12];
+  [XBApplicationSnapshotManifestImpl _configureSnapshot:v8 withCompatibilityInfo:applicationCompatibilityInfo forLaunchRequest:launchRequest];
   v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:2.0];
   [v8 setExpirationDate:v15];
 
@@ -1792,60 +1792,60 @@ uint64_t __79__XBApplicationSnapshotManifestImpl_beginSnapshotAccessTransaction_
   return v8;
 }
 
-- (id)_createSnapshotWithGroupID:(id)a3 generationContext:(id)a4
+- (id)_createSnapshotWithGroupID:(id)d generationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  dCopy = d;
   v8 = [XBApplicationSnapshot alloc];
   containerIdentity = self->_containerIdentity;
-  v10 = [(XBSnapshotManifestIdentity *)self->_identity store];
-  v11 = [(XBApplicationSnapshot *)v8 _initWithContainerIdentity:containerIdentity store:v10 groupID:v7 generationContext:v6];
+  store = [(XBSnapshotManifestIdentity *)self->_identity store];
+  v11 = [(XBApplicationSnapshot *)v8 _initWithContainerIdentity:containerIdentity store:store groupID:dCopy generationContext:contextCopy];
 
   return v11;
 }
 
-- (void)_addSnapshotToGroup:(id)a3
+- (void)_addSnapshotToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(XBApplicationSnapshotManifestImpl *)self _access_addSnapshotToGroup:v4];
+  [(XBApplicationSnapshotManifestImpl *)self _access_addSnapshotToGroup:groupCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_access_addSnapshotToGroup:(id)a3
+- (void)_access_addSnapshotToGroup:(id)group
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  groupCopy = group;
+  v8 = groupCopy;
+  if (!groupCopy)
   {
     [XBApplicationSnapshotManifestImpl _access_addSnapshotToGroup:];
-    v4 = 0;
+    groupCopy = 0;
   }
 
-  v5 = [v4 groupID];
+  groupID = [groupCopy groupID];
 
-  if (!v5)
+  if (!groupID)
   {
     [XBApplicationSnapshotManifestImpl _access_addSnapshotToGroup:];
   }
 
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v6 = [v8 groupID];
-  v7 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:v6 creatingIfNeeded:1];
+  groupID2 = [v8 groupID];
+  v7 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:groupID2 creatingIfNeeded:1];
 
   [v7 addSnapshot:v8];
 }
 
-- (void)_synchronizeDataStoreWithCompletion:(id)a3
+- (void)_synchronizeDataStoreWithCompletion:(id)completion
 {
-  if (!a3)
+  if (!completion)
   {
-    a3 = &__block_literal_global_281;
+    completion = &__block_literal_global_281;
   }
 
-  [(XBApplicationSnapshotManifestImpl *)self _scheduleArchivingIfNecessaryWithCompletion:a3];
+  [(XBApplicationSnapshotManifestImpl *)self _scheduleArchivingIfNecessaryWithCompletion:completion];
 }
 
 - (void)archive
@@ -1861,18 +1861,18 @@ uint64_t __79__XBApplicationSnapshotManifestImpl_beginSnapshotAccessTransaction_
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)_scheduleArchivingIfNecessaryWithDelay:(double)a3 completion:(id)a4
+- (void)_scheduleArchivingIfNecessaryWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = __ManifestArchiveSchedulingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__XBApplicationSnapshotManifestImpl__scheduleArchivingIfNecessaryWithDelay_completion___block_invoke;
   block[3] = &unk_279CF9A68;
-  v11 = a3;
+  delayCopy = delay;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_sync(v7, block);
 }
 
@@ -1986,18 +1986,18 @@ void __87__XBApplicationSnapshotManifestImpl__scheduleArchivingIfNecessaryWithDe
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_access_doArchiveWithCompletions:(id)a3
+- (void)_access_doArchiveWithCompletions:(id)completions
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionsCopy = completions;
   os_unfair_lock_assert_owner(&self->_accessLock);
   [(XBApplicationSnapshotManifestImpl *)self _access_workloop_reapExpiredAndInvalidSnapshots];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(NSMutableDictionary *)self->_snapshotGroupsByID allValues];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  allValues = [(NSMutableDictionary *)self->_snapshotGroupsByID allValues];
+  v6 = [allValues countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2009,11 +2009,11 @@ void __87__XBApplicationSnapshotManifestImpl__scheduleArchivingIfNecessaryWithDe
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * v9) snapshots];
-        v11 = [v10 count];
+        snapshots = [*(*(&v28 + 1) + 8 * v9) snapshots];
+        v11 = [snapshots count];
 
         if (v11)
         {
@@ -2025,7 +2025,7 @@ void __87__XBApplicationSnapshotManifestImpl__scheduleArchivingIfNecessaryWithDe
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v7)
       {
         continue;
@@ -2038,8 +2038,8 @@ void __87__XBApplicationSnapshotManifestImpl__scheduleArchivingIfNecessaryWithDe
   v12 = 0;
 LABEL_11:
 
-  v13 = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
-  v14 = [(XBSnapshotManifestIdentity *)self->_identity store];
+  bundleIdentifier = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
+  store = [(XBSnapshotManifestIdentity *)self->_identity store];
   v15 = XBLogFileManifest();
   v16 = v15;
   if (v12)
@@ -2050,7 +2050,7 @@ LABEL_11:
       *buf = 138543618;
       v33 = logIdentifier;
       v34 = 2048;
-      v35 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26B5EF000, v16, OS_LOG_TYPE_INFO, "%{public}@ Archiving manifest (%p).", buf, 0x16u);
     }
 
@@ -2066,7 +2066,7 @@ LABEL_11:
       }
     }
 
-    [v14 persistManifestData:v18 forBundleIdentifier:v13];
+    [store persistManifestData:v18 forBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -2079,19 +2079,19 @@ LABEL_11:
       _os_log_impl(&dword_26B5EF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ We don't have any snapshots, so we're clearing our manifest data.", buf, 0xCu);
     }
 
-    [v14 clearManifestDataForBundleIdentifier:v13];
+    [store clearManifestDataForBundleIdentifier:bundleIdentifier];
   }
 
-  if ([v4 count])
+  if ([completionsCopy count])
   {
     v22 = dispatch_get_global_queue(21, 0);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __70__XBApplicationSnapshotManifestImpl__access_doArchiveWithCompletions___block_invoke;
     v23[3] = &unk_279CF9108;
-    v24 = v14;
-    v25 = v13;
-    v26 = v4;
+    v24 = store;
+    v25 = bundleIdentifier;
+    v26 = completionsCopy;
     dispatch_async(v22, v23);
   }
 }
@@ -2143,43 +2143,43 @@ void __70__XBApplicationSnapshotManifestImpl__access_doArchiveWithCompletions___
   }
 }
 
-- (BOOL)_validateWithContainerIdentity:(id)a3
+- (BOOL)_validateWithContainerIdentity:(id)identity
 {
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [XBApplicationSnapshotManifestImpl _validateWithContainerIdentity:];
   }
 
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_validateWithContainerIdentity:v4];
+  v5 = [(XBApplicationSnapshotManifestImpl *)self _access_validateWithContainerIdentity:identityCopy];
   os_unfair_lock_unlock(&self->_accessLock);
 
   return v5;
 }
 
-- (BOOL)_access_validateWithContainerIdentity:(id)a3
+- (BOOL)_access_validateWithContainerIdentity:(id)identity
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [XBApplicationSnapshotManifestImpl _access_validateWithContainerIdentity:];
   }
 
   os_unfair_lock_assert_owner(&self->_accessLock);
-  [(XBApplicationSnapshotManifestImpl *)self _setContainerIdentity:v4];
+  [(XBApplicationSnapshotManifestImpl *)self _setContainerIdentity:identityCopy];
   v5 = [(NSMutableDictionary *)self->_snapshotGroupsByID copy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __75__XBApplicationSnapshotManifestImpl__access_validateWithContainerIdentity___block_invoke;
   v21[3] = &unk_279CF9A90;
-  v6 = v4;
+  v6 = identityCopy;
   v22 = v6;
-  v23 = self;
+  selfCopy = self;
   [v5 enumerateKeysAndObjectsUsingBlock:v21];
-  v7 = [v6 snapshotContainerPath];
+  snapshotContainerPath = [v6 snapshotContainerPath];
   if ([(NSMutableDictionary *)self->_snapshotGroupsByID count])
   {
     v8 = 1;
@@ -2187,7 +2187,7 @@ void __70__XBApplicationSnapshotManifestImpl__access_doArchiveWithCompletions___
 
   else
   {
-    v8 = v7 == 0;
+    v8 = snapshotContainerPath == 0;
   }
 
   if (!v8)
@@ -2195,17 +2195,17 @@ void __70__XBApplicationSnapshotManifestImpl__access_doArchiveWithCompletions___
     v9 = XBLogFileManifest();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
+      bundleIdentifier = [(XBApplicationSnapshotManifestImpl *)self bundleIdentifier];
       *buf = 138543618;
-      v25 = v10;
+      v25 = bundleIdentifier;
       v26 = 2112;
-      v27 = v7;
+      v27 = snapshotContainerPath;
       _os_log_impl(&dword_26B5EF000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Manifest is empty; purging everything at %@", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v20 = 0;
-    v12 = [v11 removeItemAtPath:v7 error:&v20];
+    v12 = [defaultManager removeItemAtPath:snapshotContainerPath error:&v20];
     v13 = v20;
 
     if (v12)
@@ -2213,12 +2213,12 @@ void __70__XBApplicationSnapshotManifestImpl__access_doArchiveWithCompletions___
       goto LABEL_17;
     }
 
-    v14 = [v13 domain];
-    if ([v14 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [v13 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
-      v15 = [v13 code];
+      code = [v13 code];
 
-      if (v15 == 4)
+      if (code == 4)
       {
 LABEL_17:
 
@@ -2237,7 +2237,7 @@ LABEL_17:
       *buf = 138543874;
       v25 = logIdentifier;
       v26 = 2114;
-      v27 = v7;
+      v27 = snapshotContainerPath;
       v28 = 2114;
       v29 = v13;
       _os_log_error_impl(&dword_26B5EF000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Error removing snapshotContainer for purge at %{public}@: %{public}@", buf, 0x20u);
@@ -2320,10 +2320,10 @@ void __84__XBApplicationSnapshotManifestImpl__access_workloop_reapExpiredAndInva
   os_unfair_lock_unlock(*v1 + 25);
 }
 
-- (void)_access_accessSnapshotsWithBlock:(id)a3 completion:(id)a4
+- (void)_access_accessSnapshotsWithBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&dword_26B5EF000, "XBCapture", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2347,10 +2347,10 @@ void __84__XBApplicationSnapshotManifestImpl__access_workloop_reapExpiredAndInva
   block[2] = __81__XBApplicationSnapshotManifestImpl__access_accessSnapshotsWithBlock_completion___block_invoke;
   block[3] = &unk_279CF9AE0;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = blockCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = blockCopy;
   dispatch_async(v12, block);
 
   os_activity_scope_leave(&state);
@@ -2398,12 +2398,12 @@ void __81__XBApplicationSnapshotManifestImpl__access_accessSnapshotsWithBlock_co
   os_unfair_lock_unlock(v5);
 }
 
-- (void)_access_deletePaths:(id)a3
+- (void)_access_deletePaths:(id)paths
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  if ([v4 count])
+  if ([pathsCopy count])
   {
     v5 = XBLogFileManifest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2412,7 +2412,7 @@ void __81__XBApplicationSnapshotManifestImpl__access_accessSnapshotsWithBlock_co
       *buf = 138543618;
       v12 = logIdentifier;
       v13 = 2112;
-      v14 = v4;
+      v14 = pathsCopy;
       _os_log_impl(&dword_26B5EF000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Deleting paths: %@", buf, 0x16u);
     }
   }
@@ -2421,9 +2421,9 @@ void __81__XBApplicationSnapshotManifestImpl__access_accessSnapshotsWithBlock_co
   v8[1] = 3221225472;
   v8[2] = __57__XBApplicationSnapshotManifestImpl__access_deletePaths___block_invoke;
   v8[3] = &unk_279CF9B30;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = pathsCopy;
+  selfCopy = self;
+  v7 = pathsCopy;
   [(XBApplicationSnapshotManifestImpl *)self _access_accessSnapshotsWithBlock:v8 completion:0];
 }
 
@@ -2485,17 +2485,17 @@ void __57__XBApplicationSnapshotManifestImpl__access_deletePaths___block_invoke_
 LABEL_9:
 }
 
-- (void)_access_deleteSnapshots:(id)a3
+- (void)_access_deleteSnapshots:(id)snapshots
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snapshotsCopy = snapshots;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = snapshotsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v7)
   {
@@ -2528,27 +2528,27 @@ LABEL_9:
           {
             v17 = v11;
             v18 = v6;
-            v19 = v5;
+            v19 = array;
             logIdentifier = self->_logIdentifier;
-            v21 = [v14 logIdentifier];
+            logIdentifier = [v14 logIdentifier];
             *buf = v24;
             v32 = logIdentifier;
-            v5 = v19;
+            array = v19;
             v6 = v18;
             v11 = v17;
             v9 = v25;
             v33 = 2114;
-            v34 = v21;
+            v34 = logIdentifier;
             v35 = 2114;
             v36 = v10;
             _os_log_impl(&dword_26B5EF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Deleting snapshot %{public}@ for reason: %{public}@", buf, 0x20u);
           }
 
-          [(XBApplicationSnapshotManifestImpl *)self _access_gatherPaths:v5 forSnapshot:v14];
+          [(XBApplicationSnapshotManifestImpl *)self _access_gatherPaths:array forSnapshot:v14];
         }
 
-        v22 = [v14 groupID];
-        v23 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:v22 creatingIfNeeded:0];
+        groupID = [v14 groupID];
+        v23 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotGroupForID:groupID creatingIfNeeded:0];
 
         if ([v23 removeSnapshot:v14])
         {
@@ -2573,7 +2573,7 @@ LABEL_9:
     v10 = 0;
   }
 
-  [(XBApplicationSnapshotManifestImpl *)self _access_deletePaths:v5];
+  [(XBApplicationSnapshotManifestImpl *)self _access_deletePaths:array];
 }
 
 void __79__XBApplicationSnapshotManifestImpl__access_purgeSnapshotsWithProtectedContent__block_invoke_2(uint64_t a1)
@@ -2584,7 +2584,7 @@ void __79__XBApplicationSnapshotManifestImpl__access_purgeSnapshotsWithProtected
   [v4 manifest:v2 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:v3];
 }
 
-- (void)_access_updateSnapshotsAPFSPurgability:(BOOL)a3
+- (void)_access_updateSnapshotsAPFSPurgability:(BOOL)purgability
 {
   os_unfair_lock_assert_owner(&self->_accessLock);
   snapshotGroupsByID = self->_snapshotGroupsByID;
@@ -2592,7 +2592,7 @@ void __79__XBApplicationSnapshotManifestImpl__access_purgeSnapshotsWithProtected
   v6[1] = 3221225472;
   v6[2] = __76__XBApplicationSnapshotManifestImpl__access_updateSnapshotsAPFSPurgability___block_invoke;
   v6[3] = &unk_279CF9B80;
-  v7 = a3;
+  purgabilityCopy = purgability;
   v6[4] = self;
   [(NSMutableDictionary *)snapshotGroupsByID enumerateKeysAndObjectsUsingBlock:v6];
 }
@@ -2682,8 +2682,8 @@ void __76__XBApplicationSnapshotManifestImpl__access_updateSnapshotsAPFSPurgabil
 {
   v20[1] = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v3 = [(XBApplicationSnapshotManifestImpl *)self defaultGroupIdentifier];
-  v20[0] = v3;
+  defaultGroupIdentifier = [(XBApplicationSnapshotManifestImpl *)self defaultGroupIdentifier];
+  v20[0] = defaultGroupIdentifier;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v5 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v4];
 
@@ -2708,13 +2708,13 @@ void __76__XBApplicationSnapshotManifestImpl__access_updateSnapshotsAPFSPurgabil
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 fileLocation] != 3)
         {
-          v11 = [v10 path];
-          v12 = [v11 fileSystemRepresentation];
+          path = [v10 path];
+          fileSystemRepresentation = [path fileSystemRepresentation];
 
-          if (v12)
+          if (fileSystemRepresentation)
           {
             v14 = 0;
-            if (!fsctl(v12, 0x40084A47uLL, &v14, 0) && (v14 & 0xC00) == 0)
+            if (!fsctl(fileSystemRepresentation, 0x40084A47uLL, &v14, 0) && (v14 & 0xC00) == 0)
             {
               LOBYTE(v7) = 1;
               goto LABEL_14;
@@ -2738,27 +2738,27 @@ LABEL_14:
   return v7;
 }
 
-- (void)_access_gatherPaths:(id)a3 forSnapshot:(id)a4
+- (void)_access_gatherPaths:(id)paths forSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  snapshotCopy = snapshot;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v8 = [v7 path];
+  path = [snapshotCopy path];
 
-  if (v8)
+  if (path)
   {
-    v9 = [v7 path];
-    [v6 addObject:v9];
+    path2 = [snapshotCopy path];
+    [pathsCopy addObject:path2];
   }
 
-  v10 = [v7 variants];
+  variants = [snapshotCopy variants];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot___block_invoke;
   v12[3] = &unk_279CF9BA8;
-  v13 = v6;
-  v11 = v6;
-  [v10 enumerateObjectsUsingBlock:v12];
+  v13 = pathsCopy;
+  v11 = pathsCopy;
+  [variants enumerateObjectsUsingBlock:v12];
 }
 
 uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot___block_invoke(uint64_t a1, void *a2)
@@ -2772,17 +2772,17 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_access_snapshotsForGroupIDs:(id)a3
+- (id)_access_snapshotsForGroupIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2798,9 +2798,9 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
         }
 
         v11 = [(NSMutableDictionary *)self->_snapshotGroupsByID objectForKey:*(*(&v15 + 1) + 8 * i), v15];
-        v12 = [v11 snapshots];
-        v13 = [v12 allObjects];
-        [v5 addObjectsFromArray:v13];
+        snapshots = [v11 snapshots];
+        allObjects = [snapshots allObjects];
+        [array addObjectsFromArray:allObjects];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -2809,22 +2809,22 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_access_snapshotsForGroupIDs:(id)a3 matchingPredicate:(id)a4
+- (id)_access_snapshotsForGroupIDs:(id)ds matchingPredicate:(id)predicate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v23 = self;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
@@ -2844,10 +2844,10 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v14 = [(NSMutableDictionary *)v23->_snapshotGroupsByID objectForKey:v13];
-        v15 = [v14 snapshots];
+        v14 = [(NSMutableDictionary *)selfCopy->_snapshotGroupsByID objectForKey:v13];
+        snapshots = [v14 snapshots];
 
-        v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v16 = [snapshots countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v16)
         {
           v17 = v16;
@@ -2858,17 +2858,17 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
             {
               if (*v25 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(snapshots);
               }
 
               v20 = *(*(&v24 + 1) + 8 * j);
-              if ([v7 evaluateWithObject:v20])
+              if ([predicateCopy evaluateWithObject:v20])
               {
-                [v8 addObject:v20];
+                [array addObject:v20];
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v17 = [snapshots countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v17);
@@ -2881,55 +2881,55 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
     while (v10);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_access_snapshotsMatchingPredicate:(id)a3
+- (id)_access_snapshotsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v5 = [(NSMutableDictionary *)self->_snapshotGroupsByID allKeys];
-  v6 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:v5 matchingPredicate:v4];
+  allKeys = [(NSMutableDictionary *)self->_snapshotGroupsByID allKeys];
+  v6 = [(XBApplicationSnapshotManifestImpl *)self _access_snapshotsForGroupIDs:allKeys matchingPredicate:predicateCopy];
 
   return v6;
 }
 
-- (id)_access_snapshotGroupForID:(id)a3 creatingIfNeeded:(BOOL)a4
+- (id)_access_snapshotGroupForID:(id)d creatingIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_accessLock);
-  v7 = [(NSMutableDictionary *)self->_snapshotGroupsByID objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_snapshotGroupsByID objectForKey:dCopy];
   v8 = v7;
-  if (v6)
+  if (dCopy)
   {
-    if (!v7 && v4)
+    if (!v7 && neededCopy)
     {
       v10 = [XBApplicationSnapshotGroup alloc];
-      v11 = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
-      v8 = [(XBApplicationSnapshotGroup *)v10 _initWithIdentifier:v6 containerIdentity:v11];
+      containerIdentity = [(XBApplicationSnapshotManifestImpl *)self containerIdentity];
+      v8 = [(XBApplicationSnapshotGroup *)v10 _initWithIdentifier:dCopy containerIdentity:containerIdentity];
 
-      [(NSMutableDictionary *)self->_snapshotGroupsByID setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)self->_snapshotGroupsByID setObject:v8 forKey:dCopy];
     }
   }
 
   return v8;
 }
 
-- (BOOL)_imageAccessQueue_saveData:(id)a3 forSnapshot:(id)a4
+- (BOOL)_imageAccessQueue_saveData:(id)data forSnapshot:(id)snapshot
 {
   v48[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  snapshotCopy = snapshot;
   BSDispatchQueueAssert();
-  if (!v6)
+  if (!dataCopy)
   {
     [XBApplicationSnapshotManifestImpl _imageAccessQueue_saveData:forSnapshot:];
   }
 
-  if ([v6 length])
+  if ([dataCopy length])
   {
-    if (v7)
+    if (snapshotCopy)
     {
       goto LABEL_5;
     }
@@ -2938,7 +2938,7 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
   else
   {
     [XBApplicationSnapshotManifestImpl _imageAccessQueue_saveData:forSnapshot:];
-    if (v7)
+    if (snapshotCopy)
     {
       goto LABEL_5;
     }
@@ -2946,14 +2946,14 @@ uint64_t __69__XBApplicationSnapshotManifestImpl__access_gatherPaths_forSnapshot
 
   [XBApplicationSnapshotManifestImpl _imageAccessQueue_saveData:forSnapshot:];
 LABEL_5:
-  v8 = [v7 _configureDefaultPathWithinGroupForFormat:objc_msgSend(objc_opt_class(), "_outputFormatForSnapshot:", v7)];
+  v8 = [snapshotCopy _configureDefaultPathWithinGroupForFormat:objc_msgSend(objc_opt_class(), "_outputFormatForSnapshot:", snapshotCopy)];
   if (!v8)
   {
     [XBApplicationSnapshotManifestImpl _imageAccessQueue_saveData:forSnapshot:];
   }
 
-  v9 = [v8 stringByDeletingLastPathComponent];
-  if (!XBEnsureDirectoryExistsAtPath(v9))
+  stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
+  if (!XBEnsureDirectoryExistsAtPath(stringByDeletingLastPathComponent))
   {
     v10 = XBLogFileManifest();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2975,7 +2975,7 @@ LABEL_5:
   }
 
   v12 = v11;
-  v13 = XBApplicationSnapshotContentTypeMaskForContentType([v7 contentType]) & 6;
+  v13 = XBApplicationSnapshotContentTypeMaskForContentType([snapshotCopy contentType]) & 6;
   v14 = 2;
   if (v13)
   {
@@ -2993,12 +2993,12 @@ LABEL_5:
     goto LABEL_57;
   }
 
-  v15 = [v7 fileFormat];
-  v16 = [v6 bytes];
-  v17 = [v6 length];
-  if (v15 != 1)
+  fileFormat = [snapshotCopy fileFormat];
+  bytes = [dataCopy bytes];
+  v17 = [dataCopy length];
+  if (fileFormat != 1)
   {
-    v24 = write(v12, v16, v17);
+    v24 = write(v12, bytes, v17);
     goto LABEL_47;
   }
 
@@ -3009,7 +3009,7 @@ LABEL_5:
     if (v8)
     {
 LABEL_18:
-      if (v16)
+      if (bytes)
       {
         goto LABEL_19;
       }
@@ -3031,7 +3031,7 @@ LABEL_69:
   }
 
   [XBApplicationSnapshotManifestImpl _imageAccessQueue_saveData:forSnapshot:];
-  if (!v16)
+  if (!bytes)
   {
     goto LABEL_69;
   }
@@ -3158,7 +3158,7 @@ LABEL_44:
     _os_log_impl(&dword_26B5EF000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Compressed write for %@ failed; falling back to uncompressed write", v41, 0x16u);
   }
 
-  v24 = write(v12, [v6 bytes], objc_msgSend(v6, "length"));
+  v24 = write(v12, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   v13 = v28;
 LABEL_47:
   if (v24 == -1)
@@ -3251,9 +3251,9 @@ _BYTE *__69__XBApplicationSnapshotManifestImpl__workloop_reallyCheckClientCount_
   return result;
 }
 
-+ (int64_t)_outputFormatForSnapshot:(id)a3
++ (int64_t)_outputFormatForSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   if (_outputFormatForSnapshot__onceToken != -1)
   {
     +[XBApplicationSnapshotManifestImpl _outputFormatForSnapshot:];
@@ -3264,15 +3264,15 @@ _BYTE *__69__XBApplicationSnapshotManifestImpl__workloop_reallyCheckClientCount_
   {
     if (_outputFormatForSnapshot__supportsASTC)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 || [v3 contentType])
+      if (userInterfaceIdiom || [snapshotCopy contentType])
       {
         v4 = 1;
       }
 
-      else if ([v3 isImageOpaque])
+      else if ([snapshotCopy isImageOpaque])
       {
         v4 = 3;
       }
@@ -3300,20 +3300,20 @@ uint64_t __62__XBApplicationSnapshotManifestImpl__outputFormatForSnapshot___bloc
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:3 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:3 forKey:@"version"];
   if ([(NSMutableDictionary *)self->_snapshotGroupsByID count])
   {
-    [v4 encodeObject:self->_snapshotGroupsByID forKey:@"snapshots"];
+    [coderCopy encodeObject:self->_snapshotGroupsByID forKey:@"snapshots"];
   }
 }
 
-- (XBApplicationSnapshotManifestImpl)initWithCoder:(id)a3
+- (XBApplicationSnapshotManifestImpl)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = XBApplicationSnapshotManifestImpl;
   v5 = [(XBApplicationSnapshotManifestImpl *)&v20 init];
@@ -3321,7 +3321,7 @@ uint64_t __62__XBApplicationSnapshotManifestImpl__outputFormatForSnapshot___bloc
   if (v5)
   {
     [(XBApplicationSnapshotManifestImpl *)v5 _commonInit];
-    v7 = [v4 decodeIntegerForKey:@"version"];
+    v7 = [coderCopy decodeIntegerForKey:@"version"];
     if (v7 < 3)
     {
       v16 = v7;
@@ -3349,9 +3349,9 @@ uint64_t __62__XBApplicationSnapshotManifestImpl__outputFormatForSnapshot___bloc
       v10 = objc_opt_class();
       v11 = objc_opt_class();
       v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-      v13 = [v4 decodeObjectOfClasses:v12 forKey:@"snapshots"];
-      v14 = [v4 error];
-      if (v14)
+      v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"snapshots"];
+      error = [coderCopy error];
+      if (error)
       {
         v15 = XBLogFileManifest();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3375,36 +3375,36 @@ uint64_t __62__XBApplicationSnapshotManifestImpl__outputFormatForSnapshot___bloc
   return v6;
 }
 
-- (id)_descriptionForStateCaptureWithMultilinePrefix:(id)a3
+- (id)_descriptionForStateCaptureWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__XBApplicationSnapshotManifestImpl__descriptionForStateCaptureWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279CF9530;
   v9[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
   v11 = &v12;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   if (*(v13 + 24) == 1)
   {
-    v7 = [v6 build];
+    build = [v6 build];
   }
 
   else
   {
-    v7 = 0;
+    build = 0;
   }
 
   _Block_object_dispose(&v12, 8);
 
-  return v7;
+  return build;
 }
 
 void __84__XBApplicationSnapshotManifestImpl__descriptionForStateCaptureWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -3437,27 +3437,27 @@ void __84__XBApplicationSnapshotManifestImpl__descriptionForStateCaptureWithMult
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBApplicationSnapshotManifestImpl *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBApplicationSnapshotManifestImpl *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
-  v6 = [v5 appendUnsignedInteger:self->_clientCount withName:@"clientCount"];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(XBApplicationSnapshotManifestImpl *)self succinctDescriptionBuilder];
+  v6 = [succinctDescriptionBuilder appendUnsignedInteger:self->_clientCount withName:@"clientCount"];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__XBApplicationSnapshotManifestImpl_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_279CF9508;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

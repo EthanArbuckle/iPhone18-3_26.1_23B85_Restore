@@ -1,41 +1,41 @@
 @interface _BCUCoverEffectsSeriesStack
-- (CGPoint)_positionForImageAtIndex:(int64_t)a3 imageSetCount:(int64_t)a4 coverWidth:(double)a5 coverAreaWidth:(double)a6 isRTL:(BOOL)a7;
-- (_BCUCoverEffectsSeriesStack)initWithIdentifier:(id)a3 renderer:(id)a4;
-- (double)_coverScaleForIndex:(unint64_t)a3;
-- (id)_stackLayerForDiagonalstyleWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8;
-- (id)_stackLayerForHorizontalstyleWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8 isRTL:(BOOL)a9;
-- (id)_stackLayerWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8;
-- (id)newOperationWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 waitForCPUSynchronization:(BOOL)a7 completion:(id)a8;
+- (CGPoint)_positionForImageAtIndex:(int64_t)index imageSetCount:(int64_t)count coverWidth:(double)width coverAreaWidth:(double)areaWidth isRTL:(BOOL)l;
+- (_BCUCoverEffectsSeriesStack)initWithIdentifier:(id)identifier renderer:(id)renderer;
+- (double)_coverScaleForIndex:(unint64_t)index;
+- (id)_stackLayerForDiagonalstyleWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path;
+- (id)_stackLayerForHorizontalstyleWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path isRTL:(BOOL)l;
+- (id)_stackLayerWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path;
+- (id)newOperationWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale waitForCPUSynchronization:(BOOL)synchronization completion:(id)completion;
 @end
 
 @implementation _BCUCoverEffectsSeriesStack
 
-- (_BCUCoverEffectsSeriesStack)initWithIdentifier:(id)a3 renderer:(id)a4
+- (_BCUCoverEffectsSeriesStack)initWithIdentifier:(id)identifier renderer:(id)renderer
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  rendererCopy = renderer;
   v12.receiver = self;
   v12.super_class = _BCUCoverEffectsSeriesStack;
   v9 = [(_BCUCoverEffectsSeriesStack *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_renderer, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_renderer, renderer);
   }
 
   return v10;
 }
 
-- (id)newOperationWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 waitForCPUSynchronization:(BOOL)a7 completion:(id)a8
+- (id)newOperationWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale waitForCPUSynchronization:(BOOL)synchronization completion:(id)completion
 {
-  v9 = a7;
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  if (objc_msgSend_count(v15, v18, v19))
+  synchronizationCopy = synchronization;
+  height = size.height;
+  width = size.width;
+  imagesCopy = images;
+  filtersCopy = filters;
+  completionCopy = completion;
+  if (objc_msgSend_count(imagesCopy, v18, v19))
   {
     v40[0] = 0;
     v40[1] = v40;
@@ -53,22 +53,22 @@
     v31[2] = sub_241C81DF0;
     v31[3] = &unk_278D14168;
     v31[4] = self;
-    v32 = v15;
+    v32 = imagesCopy;
     v36 = width;
     v37 = height;
-    v38 = a6;
-    v33 = v16;
+    scaleCopy = scale;
+    v33 = filtersCopy;
     v34 = v40;
     v35 = v39;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = sub_241C81E1C;
     v27[3] = &unk_278D14190;
-    v28 = v17;
+    v28 = completionCopy;
     v29 = v40;
     v30 = v39;
     LODWORD(v23) = 1056964608;
-    v25 = objc_msgSend_newOperationWithPriority_waitForCPUSynchronization_logKey_renderLayer_completion_(v22, v24, v9, 0, v31, v27, v23);
+    v25 = objc_msgSend_newOperationWithPriority_waitForCPUSynchronization_logKey_renderLayer_completion_(v22, v24, synchronizationCopy, 0, v31, v27, v23);
 
     _Block_object_dispose(v39, 8);
     _Block_object_dispose(v40, 8);
@@ -76,54 +76,54 @@
 
   else
   {
-    (*(v17 + 2))(v17, 0, 0, 0, 0.0, 0.0, 0.0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0.0, 0.0, 0.0, 0.0);
     v25 = 0;
   }
 
   return v25;
 }
 
-- (double)_coverScaleForIndex:(unint64_t)a3
+- (double)_coverScaleForIndex:(unint64_t)index
 {
   result = 1.0;
-  if (a3 - 1 <= 3)
+  if (index - 1 <= 3)
   {
-    return dbl_241C86DA0[a3 - 1];
+    return dbl_241C86DA0[index - 1];
   }
 
   return result;
 }
 
-- (CGPoint)_positionForImageAtIndex:(int64_t)a3 imageSetCount:(int64_t)a4 coverWidth:(double)a5 coverAreaWidth:(double)a6 isRTL:(BOOL)a7
+- (CGPoint)_positionForImageAtIndex:(int64_t)index imageSetCount:(int64_t)count coverWidth:(double)width coverAreaWidth:(double)areaWidth isRTL:(BOOL)l
 {
-  if (a3)
+  if (index)
   {
-    if (a4 - 1 == a3)
+    if (count - 1 == index)
     {
-      v7 = a6 * 0.0;
-      v8 = a6 - a5;
+      v7 = areaWidth * 0.0;
+      v8 = areaWidth - width;
     }
 
-    else if (a3 == 3)
+    else if (index == 3)
     {
-      v7 = a6 * 0.04;
-      v8 = -(a5 - a6 * 0.96);
+      v7 = areaWidth * 0.04;
+      v8 = -(width - areaWidth * 0.96);
     }
 
     else
     {
-      if (a3 == 2)
+      if (index == 2)
       {
-        v10 = -a5;
-        if (a4 == 4)
+        v10 = -width;
+        if (count == 4)
         {
-          v7 = a6 * 0.09;
+          v7 = areaWidth * 0.09;
           v11 = 0.91;
         }
 
         else
         {
-          v7 = a6 * 0.12;
+          v7 = areaWidth * 0.12;
           v11 = 0.88;
         }
       }
@@ -131,35 +131,35 @@
       else
       {
         v7 = 0.0;
-        if (a3 != 1)
+        if (index != 1)
         {
           goto LABEL_22;
         }
 
-        v10 = -a5;
-        if (a4 == 4)
+        v10 = -width;
+        if (count == 4)
         {
-          v7 = a6 * 0.24;
+          v7 = areaWidth * 0.24;
           v11 = 0.76;
         }
 
-        else if (a4 == 3)
+        else if (count == 3)
         {
-          v7 = a6 * 0.17;
+          v7 = areaWidth * 0.17;
           v11 = 0.83;
         }
 
         else
         {
-          v7 = a6 * 0.25;
+          v7 = areaWidth * 0.25;
           v11 = 0.75;
         }
       }
 
-      v8 = v10 + a6 * v11;
+      v8 = v10 + areaWidth * v11;
     }
 
-    if (!a7)
+    if (!l)
     {
       v7 = v8;
     }
@@ -167,8 +167,8 @@
 
   else
   {
-    v9 = a6 - a5;
-    if (a7)
+    v9 = areaWidth - width;
+    if (l)
     {
       v7 = v9;
     }
@@ -187,17 +187,17 @@ LABEL_22:
   return result;
 }
 
-- (id)_stackLayerForHorizontalstyleWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8 isRTL:(BOOL)a9
+- (id)_stackLayerForHorizontalstyleWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path isRTL:(BOOL)l
 {
-  v9 = a9;
-  width = a5.width;
-  height = a5.height;
+  lCopy = l;
+  width = size.width;
+  height = size.height;
   v151[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
+  imagesCopy = images;
+  filtersCopy = filters;
   v17 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v15, v16);
   v19 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v18, MEMORY[0x277CBEBF8]);
-  v22 = objc_msgSend_count(v13, v20, v21);
+  v22 = objc_msgSend_count(imagesCopy, v20, v21);
   if (v22 >= 5)
   {
     v25 = 5;
@@ -217,21 +217,21 @@ LABEL_22:
     v30 = *(MEMORY[0x277CBF348] + 8);
     do
     {
-      v31 = objc_msgSend_objectAtIndexedSubscript_(v13, v23, v26);
+      v31 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v23, v26);
 
-      v33 = objc_msgSend_objectAtIndexedSubscript_(v14, v32, v26);
+      v33 = objc_msgSend_objectAtIndexedSubscript_(filtersCopy, v32, v26);
       objc_msgSend__coverScaleForIndex_(self, v34, v26);
       v37 = v27;
       v38 = v28;
       if (v31)
       {
-        v38 = sub_241C80F64(v31, width * 0.536 * v36, height * v36, a6);
+        v38 = sub_241C80F64(v31, width * 0.536 * v36, height * v36, scale);
         v37 = v39;
       }
 
-      v40 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v33, v35, v31, v38, v37, a6);
+      v40 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v33, v35, v31, v38, v37, scale);
       objc_msgSend_setAnchorPoint_(v40, v41, v42, v29, v30);
-      objc_msgSend__positionForImageAtIndex_imageSetCount_coverWidth_coverAreaWidth_isRTL_(self, v43, v26, v25, v9, v38, width);
+      objc_msgSend__positionForImageAtIndex_imageSetCount_coverWidth_coverAreaWidth_isRTL_(self, v43, v26, v25, lCopy, v38, width);
       objc_msgSend_setPosition_(v40, v44, v45);
       objc_msgSend_addObject_(v19, v46, v40);
 
@@ -298,7 +298,7 @@ LABEL_22:
     while (v50 > 0);
   }
 
-  v143 = v14;
+  v143 = filtersCopy;
   objc_msgSend_setBounds_(v17, v48, v49, 0.0, 0.0, width, height);
   v154.origin.x = sub_241C82684(v17);
   x = v154.origin.x;
@@ -374,34 +374,34 @@ LABEL_22:
     CGPathAddRect(v116, 0, v161);
   }
 
-  if (a7)
+  if (insets)
   {
-    a7->top = v96;
-    a7->left = v108;
-    a7->bottom = v104;
-    a7->right = v100;
+    insets->top = v96;
+    insets->left = v108;
+    insets->bottom = v104;
+    insets->right = v100;
   }
 
-  if (a8)
+  if (path)
   {
-    *a8 = CGPathRetain(v116);
+    *path = CGPathRetain(v116);
   }
 
   CGPathRelease(v116);
-  objc_msgSend_setRasterizationScale_(v107, v137, v138, a6);
+  objc_msgSend_setRasterizationScale_(v107, v137, v138, scale);
 
   return v107;
 }
 
-- (id)_stackLayerForDiagonalstyleWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8
+- (id)_stackLayerForDiagonalstyleWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v139[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
+  imagesCopy = images;
+  filtersCopy = filters;
   v17 = objc_msgSend_layer(MEMORY[0x277CD9ED0], v15, v16);
-  if (objc_msgSend_count(v13, v18, v19) <= 1)
+  if (objc_msgSend_count(imagesCopy, v18, v19) <= 1)
   {
     v22 = 1.0;
   }
@@ -411,40 +411,40 @@ LABEL_22:
     v22 = 0.85;
   }
 
-  Object = objc_msgSend_firstObject(v13, v20, v21);
-  if (objc_msgSend_count(v13, v24, v25) < 2)
+  Object = objc_msgSend_firstObject(imagesCopy, v20, v21);
+  if (objc_msgSend_count(imagesCopy, v24, v25) < 2)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = objc_msgSend_objectAtIndexedSubscript_(v13, v26, 1);
+    v28 = objc_msgSend_objectAtIndexedSubscript_(imagesCopy, v26, 1);
   }
 
-  v29 = objc_msgSend_firstObject(v14, v26, v27);
-  if (objc_msgSend_count(v14, v30, v31) < 2)
+  v29 = objc_msgSend_firstObject(filtersCopy, v26, v27);
+  if (objc_msgSend_count(filtersCopy, v30, v31) < 2)
   {
     v131 = 0;
   }
 
   else
   {
-    v131 = objc_msgSend_objectAtIndexedSubscript_(v14, v32, 1);
+    v131 = objc_msgSend_objectAtIndexedSubscript_(filtersCopy, v32, 1);
   }
 
-  v130 = v14;
-  v129 = a6;
-  v128 = a8;
+  v130 = filtersCopy;
+  scaleCopy = scale;
+  pathCopy = path;
   v126 = v29;
   if (Object)
   {
-    v35 = sub_241C80F64(Object, width, height, a6);
+    v35 = sub_241C80F64(Object, width, height, scale);
     v37 = v36;
     v132 = height;
     if (v28)
     {
-      v38 = sub_241C80F64(v28, width, height, a6);
+      v38 = sub_241C80F64(v28, width, height, scale);
       v40 = v39;
     }
 
@@ -454,10 +454,10 @@ LABEL_22:
       v40 = *(MEMORY[0x277CBF3A8] + 8);
     }
 
-    v43 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v29, v34, Object, v35, v37, a6);
+    v43 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v29, v34, Object, v35, v37, scale);
     if (!v28)
     {
-      v44 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v46, Object, 0, v35, v37, a6);
+      v44 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v46, Object, 0, v35, v37, scale);
       v48 = 0;
       v50 = 0;
       v45 = 0;
@@ -519,11 +519,11 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v44 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v46, Object, 1, v35, v37, a6);
-    v45 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v47, Object, 2, v35, v37, a6);
+    v44 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v46, Object, 1, v35, v37, scale);
+    v45 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v29, v47, Object, 2, v35, v37, scale);
 LABEL_18:
-    v48 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v131, v41, v28, v38, v40, a6);
-    v50 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v131, v49, v28, 0, v38, v40, a6);
+    v48 = objc_msgSend_coverLayerWithImage_size_contentsScale_(v131, v41, v28, v38, v40, scale);
+    v50 = objc_msgSend_shadowLayerWithImage_size_contentsScale_kind_(v131, v49, v28, 0, v38, v40, scale);
     if (v50)
     {
       objc_msgSend_addSublayer_(v17, v32, v50);
@@ -543,7 +543,7 @@ LABEL_18:
   if (v28)
   {
     v132 = height;
-    v38 = sub_241C80F64(v28, width, height, a6);
+    v38 = sub_241C80F64(v28, width, height, scale);
     v40 = v42;
     v43 = 0;
     v44 = 0;
@@ -654,37 +654,37 @@ LABEL_40:
   }
 
 LABEL_41:
-  if (a7)
+  if (insets)
   {
-    a7->top = v89;
-    a7->left = v88;
-    a7->bottom = v97;
-    a7->right = v93;
+    insets->top = v89;
+    insets->left = v88;
+    insets->bottom = v97;
+    insets->right = v93;
   }
 
-  if (v128)
+  if (pathCopy)
   {
-    *v128 = CGPathRetain(Mutable);
+    *pathCopy = CGPathRetain(Mutable);
   }
 
   CGPathRelease(Mutable);
-  objc_msgSend_setRasterizationScale_(v100, v117, v118, v129);
+  objc_msgSend_setRasterizationScale_(v100, v117, v118, scaleCopy);
 
   return v100;
 }
 
-- (id)_stackLayerWithImages:(id)a3 filters:(id)a4 size:(CGSize)a5 contentsScale:(double)a6 insets:(UIEdgeInsets *)a7 path:(const CGPath *)a8
+- (id)_stackLayerWithImages:(id)images filters:(id)filters size:(CGSize)size contentsScale:(double)scale insets:(UIEdgeInsets *)insets path:(const CGPath *)path
 {
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v16 = a4;
+  height = size.height;
+  width = size.width;
+  imagesCopy = images;
+  filtersCopy = filters;
   v19 = objc_msgSend_identifier(self, v17, v18);
   isEqualToString = objc_msgSend_isEqualToString_(v19, v20, @"BCUCoverEffectsIdentifierSeriesStackHorizontal");
 
   if (isEqualToString)
   {
-    objc_msgSend__stackLayerForHorizontalstyleWithImages_filters_size_contentsScale_insets_path_isRTL_(self, v22, v15, v16, a7, a8, 0, width, height, a6);
+    objc_msgSend__stackLayerForHorizontalstyleWithImages_filters_size_contentsScale_insets_path_isRTL_(self, v22, imagesCopy, filtersCopy, insets, path, 0, width, height, scale);
     v28 = LABEL_5:;
     goto LABEL_7;
   }
@@ -694,11 +694,11 @@ LABEL_41:
 
   if (v26)
   {
-    objc_msgSend__stackLayerForHorizontalstyleWithImages_filters_size_contentsScale_insets_path_isRTL_(self, v27, v15, v16, a7, a8, 1, width, height, a6);
+    objc_msgSend__stackLayerForHorizontalstyleWithImages_filters_size_contentsScale_insets_path_isRTL_(self, v27, imagesCopy, filtersCopy, insets, path, 1, width, height, scale);
     goto LABEL_5;
   }
 
-  v28 = objc_msgSend__stackLayerForDiagonalstyleWithImages_filters_size_contentsScale_insets_path_(self, v27, v15, v16, a7, a8, width, height, a6);
+  v28 = objc_msgSend__stackLayerForDiagonalstyleWithImages_filters_size_contentsScale_insets_path_(self, v27, imagesCopy, filtersCopy, insets, path, width, height, scale);
 LABEL_7:
   v29 = v28;
 

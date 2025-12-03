@@ -1,10 +1,10 @@
 @interface RCShuttleBar
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
 - (RCControlsActionDelegate)actionDelegate;
-- (RCShuttleBar)initWithShuttleBarStyle:(int64_t)a3;
-- (id)_imageForState:(int64_t)a3 inStyle:(int64_t)a4;
-- (id)_pauseImageForStyle:(int64_t)a3;
-- (id)_playImageForStyle:(int64_t)a3;
+- (RCShuttleBar)initWithShuttleBarStyle:(int64_t)style;
+- (id)_imageForState:(int64_t)state inStyle:(int64_t)style;
+- (id)_pauseImageForStyle:(int64_t)style;
+- (id)_playImageForStyle:(int64_t)style;
 - (void)_commonInit;
 - (void)_handleDelete;
 - (void)_handleEditRecording;
@@ -23,19 +23,19 @@
 - (void)_updateForPresentedControlsOptions;
 - (void)_updateGlassBackgroundStyling;
 - (void)cancelScrubbing;
-- (void)detailSlider:(id)a3 didChangeTimeValue:(float)a4;
-- (void)detailSliderTrackingDidBegin:(id)a3;
-- (void)detailSliderTrackingDidCancel:(id)a3;
-- (void)detailSliderTrackingDidEnd:(id)a3;
+- (void)detailSlider:(id)slider didChangeTimeValue:(float)value;
+- (void)detailSliderTrackingDidBegin:(id)begin;
+- (void)detailSliderTrackingDidCancel:(id)cancel;
+- (void)detailSliderTrackingDidEnd:(id)end;
 - (void)layoutSubviews;
 - (void)restyle;
-- (void)setControlsAnimationColor:(id)a3;
-- (void)setControlsColor:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDuration:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setRecentlyDeleted:(BOOL)a3;
-- (void)setSecondaryControlsColor:(id)a3;
+- (void)setControlsAnimationColor:(id)color;
+- (void)setControlsColor:(id)color;
+- (void)setCurrentTime:(double)time;
+- (void)setDuration:(double)duration;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setRecentlyDeleted:(BOOL)deleted;
+- (void)setSecondaryControlsColor:(id)color;
 - (void)updateWidthOnSizeChange;
 @end
 
@@ -73,8 +73,8 @@
 
   v14 = self->_jumpBackwardButton;
   v15 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v16 = [v15 libraryGoBackwardImage];
-  [(RCTouchInsetsButton *)v14 setImage:v16 forState:0];
+  libraryGoBackwardImage = [v15 libraryGoBackwardImage];
+  [(RCTouchInsetsButton *)v14 setImage:libraryGoBackwardImage forState:0];
 
   v17 = +[RCTouchInsetsButton touchInsetsButton];
   jumpForwardButton = self->_jumpForwardButton;
@@ -92,8 +92,8 @@
 
   v23 = self->_jumpForwardButton;
   v24 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v25 = [v24 libraryGoForwardImage];
-  [(RCTouchInsetsButton *)v23 setImage:v25 forState:0];
+  libraryGoForwardImage = [v24 libraryGoForwardImage];
+  [(RCTouchInsetsButton *)v23 setImage:libraryGoForwardImage forState:0];
 
   if ([(RCShuttleBar *)self style])
   {
@@ -115,8 +115,8 @@
   [(RCTouchInsetsButton *)self->_playPauseButton setAccessibilityLabel:v30];
 
   v31 = self->_playPauseButton;
-  v32 = [(RCTouchInsetsButton *)v31 accessibilityTraits];
-  [(RCTouchInsetsButton *)v31 setAccessibilityTraits:UIAccessibilityTraitStartsMediaSession | v32];
+  accessibilityTraits = [(RCTouchInsetsButton *)v31 accessibilityTraits];
+  [(RCTouchInsetsButton *)v31 setAccessibilityTraits:UIAccessibilityTraitStartsMediaSession | accessibilityTraits];
   v33 = [NUIContainerBoxView alloc];
   v90 = self->_playPauseButton;
   v34 = [NSArray arrayWithObjects:&v90 count:1];
@@ -163,13 +163,13 @@
   {
     [v3 shuttleBarCenterClusterSpacing];
     v50 = v49;
-    v51 = [(RCShuttleBar *)self centerClusterStackView];
-    [v51 setSpacing:v50];
+    centerClusterStackView = [(RCShuttleBar *)self centerClusterStackView];
+    [centerClusterStackView setSpacing:v50];
 
     [v3 shuttleBarCenterClusterHorizontalEdgeInsets];
     v53 = v52;
-    v54 = [(RCShuttleBar *)self centerClusterStackView];
-    [v54 setCustomAlignmentRectInsets:{0.0, v53, 0.0, v53}];
+    centerClusterStackView2 = [(RCShuttleBar *)self centerClusterStackView];
+    [centerClusterStackView2 setCustomAlignmentRectInsets:{0.0, v53, 0.0, v53}];
   }
 
   v79 = v3;
@@ -184,9 +184,9 @@
   v56 = [NSArray arrayWithObjects:&v87 count:1];
   if (![(RCShuttleBar *)self style])
   {
-    v57 = [(RCShuttleBar *)self recentlyDeleted];
+    recentlyDeleted = [(RCShuttleBar *)self recentlyDeleted];
     v58 = &OBJC_IVAR___RCShuttleBar__editRecordingButton;
-    if (v57)
+    if (recentlyDeleted)
     {
       v58 = &OBJC_IVAR___RCShuttleBar__recoverButton;
     }
@@ -213,33 +213,33 @@
   v83 = v77;
   [(RCShuttleBar *)self performBatchUpdates:v80];
   [(RCShuttleBar *)self _syncToStyleAndPlayControlState];
-  v63 = [(RCShuttleBar *)self style];
-  v64 = [(RCShuttleBar *)self timelineSlider];
-  v65 = v64;
-  if (v63)
+  style = [(RCShuttleBar *)self style];
+  timelineSlider = [(RCShuttleBar *)self timelineSlider];
+  v65 = timelineSlider;
+  if (style)
   {
-    v84[0] = v64;
-    v66 = [(RCShuttleBar *)self jumpBackwardButton];
-    v84[1] = v66;
-    v67 = [(RCShuttleBar *)self playPauseButton];
-    v84[2] = v67;
-    v68 = [(RCShuttleBar *)self jumpForwardButton];
-    v84[3] = v68;
-    v69 = [NSArray arrayWithObjects:v84 count:4];
-    [(RCShuttleBar *)self setAccessibilityElements:v69];
+    v84[0] = timelineSlider;
+    jumpBackwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+    v84[1] = jumpBackwardButton;
+    playPauseButton = [(RCShuttleBar *)self playPauseButton];
+    v84[2] = playPauseButton;
+    jumpForwardButton = [(RCShuttleBar *)self jumpForwardButton];
+    v84[3] = jumpForwardButton;
+    playPauseButton2 = [NSArray arrayWithObjects:v84 count:4];
+    [(RCShuttleBar *)self setAccessibilityElements:playPauseButton2];
   }
 
   else
   {
-    v85[0] = v64;
-    v66 = [(RCShuttleBar *)self recoverButton];
-    v85[1] = v66;
-    v67 = [(RCShuttleBar *)self editRecordingButton];
-    v85[2] = v67;
-    v68 = [(RCShuttleBar *)self jumpBackwardButton];
-    v85[3] = v68;
-    v69 = [(RCShuttleBar *)self playPauseButton];
-    v85[4] = v69;
+    v85[0] = timelineSlider;
+    jumpBackwardButton = [(RCShuttleBar *)self recoverButton];
+    v85[1] = jumpBackwardButton;
+    playPauseButton = [(RCShuttleBar *)self editRecordingButton];
+    v85[2] = playPauseButton;
+    jumpForwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+    v85[3] = jumpForwardButton;
+    playPauseButton2 = [(RCShuttleBar *)self playPauseButton];
+    v85[4] = playPauseButton2;
     [(RCShuttleBar *)self jumpForwardButton];
     v70 = v76 = v62;
     v85[5] = v70;
@@ -262,41 +262,41 @@
 
 - (void)_setupEditRecordingButton
 {
-  v13 = [(RCShuttleBar *)self editRecordingButton];
-  if (!v13)
+  editRecordingButton = [(RCShuttleBar *)self editRecordingButton];
+  if (!editRecordingButton)
   {
-    v13 = +[RCTouchInsetsButton touchInsetsButton];
+    editRecordingButton = +[RCTouchInsetsButton touchInsetsButton];
     v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v4 = [v3 shuttleBarImageSymbolConfiguration];
-    v5 = [v3 editButtonImage];
-    v6 = [v5 imageWithConfiguration:v4];
+    shuttleBarImageSymbolConfiguration = [v3 shuttleBarImageSymbolConfiguration];
+    editButtonImage = [v3 editButtonImage];
+    v6 = [editButtonImage imageWithConfiguration:shuttleBarImageSymbolConfiguration];
 
-    [v13 setImage:v6 forState:0];
+    [editRecordingButton setImage:v6 forState:0];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"AX_EDIT_RECORDING" value:&stru_100295BB8 table:0];
 
-    [v13 setAccessibilityLabel:v8];
-    [v13 setLargeContentTitle:v8];
-    [v13 setAccessibilityIdentifier:@"ShuttleBar/EditRecordingButton"];
-    [v13 intrinsicContentSize];
+    [editRecordingButton setAccessibilityLabel:v8];
+    [editRecordingButton setLargeContentTitle:v8];
+    [editRecordingButton setAccessibilityIdentifier:@"ShuttleBar/EditRecordingButton"];
+    [editRecordingButton intrinsicContentSize];
     v10 = v9;
     v12 = v11;
-    [v13 setMinimumLayoutSize:?];
-    [v13 setMaximumLayoutSize:{v10, v12}];
-    [(RCShuttleBar *)self setEditRecordingButton:v13];
+    [editRecordingButton setMinimumLayoutSize:?];
+    [editRecordingButton setMaximumLayoutSize:{v10, v12}];
+    [(RCShuttleBar *)self setEditRecordingButton:editRecordingButton];
   }
 
   [(RCShuttleBar *)self setClipsToBounds:0];
-  [v13 addTarget:self action:"_handleEditRecording" forControlEvents:64];
+  [editRecordingButton addTarget:self action:"_handleEditRecording" forControlEvents:64];
 }
 
 - (void)_setupRecoverButton
 {
-  v13 = [(RCShuttleBar *)self recoverButton];
+  recoverButton = [(RCShuttleBar *)self recoverButton];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  if (!v13)
+  if (!recoverButton)
   {
-    v13 = +[RCTouchInsetsButton touchInsetsButton];
+    recoverButton = +[RCTouchInsetsButton touchInsetsButton];
     [(RCShuttleBar *)self setRecoverButton:?];
   }
 
@@ -304,49 +304,49 @@
   [v3 centerClusterControlSizeRecentlyDeleted];
   v5 = v4;
   v7 = v6;
-  [v13 setMinimumLayoutSize:?];
-  [v13 setMaximumLayoutSize:{v5, v7}];
+  [recoverButton setMinimumLayoutSize:?];
+  [recoverButton setMaximumLayoutSize:{v5, v7}];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"RECOVER" value:&stru_100295BB8 table:0];
-  [v13 setTitle:v9 forState:0];
+  [recoverButton setTitle:v9 forState:0];
 
-  [v13 addTarget:self action:"_handleUndelete" forControlEvents:64];
+  [recoverButton addTarget:self action:"_handleUndelete" forControlEvents:64];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"RECOVER" value:&stru_100295BB8 table:0];
-  [v13 setAccessibilityLabel:v11];
+  [recoverButton setAccessibilityLabel:v11];
 
-  [v13 setAccessibilityIdentifier:@"ShuttleBar/RecoverButton"];
-  [v13 setContentHorizontalAlignment:4];
-  v12 = [v13 accessibilityLabel];
-  [v13 setLargeContentTitle:v12];
+  [recoverButton setAccessibilityIdentifier:@"ShuttleBar/RecoverButton"];
+  [recoverButton setContentHorizontalAlignment:4];
+  accessibilityLabel = [recoverButton accessibilityLabel];
+  [recoverButton setLargeContentTitle:accessibilityLabel];
 }
 
 - (void)_setupDeleteButton
 {
-  v20 = [(RCShuttleBar *)self deleteButton];
+  deleteButton = [(RCShuttleBar *)self deleteButton];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  if (!v20)
+  if (!deleteButton)
   {
-    v20 = +[RCTouchInsetsButton touchInsetsButton];
-    [v20 setContentHorizontalAlignment:5];
-    [(RCShuttleBar *)self setDeleteButton:v20];
+    deleteButton = +[RCTouchInsetsButton touchInsetsButton];
+    [deleteButton setContentHorizontalAlignment:5];
+    [(RCShuttleBar *)self setDeleteButton:deleteButton];
   }
 
   [(RCShuttleBar *)self setClipsToBounds:0];
   if ([(RCShuttleBar *)self recentlyDeleted])
   {
-    [v20 setImage:0 forState:0];
+    [deleteButton setImage:0 forState:0];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"DELETE" value:&stru_100295BB8 table:0];
-    [v20 setTitle:v5 forState:0];
+    [deleteButton setTitle:v5 forState:0];
 
-    [v20 removeTarget:self action:"_handleDelete" forControlEvents:64];
-    [v20 addTarget:self action:"_handleErase" forControlEvents:64];
+    [deleteButton removeTarget:self action:"_handleDelete" forControlEvents:64];
+    [deleteButton addTarget:self action:"_handleErase" forControlEvents:64];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"AX_DELETE" value:&stru_100295BB8 table:0];
-    [v20 setAccessibilityLabel:v7];
+    [deleteButton setAccessibilityLabel:v7];
 
-    [v20 setAccessibilityIdentifier:@"ShuttleBar/EraseButton"];
+    [deleteButton setAccessibilityIdentifier:@"ShuttleBar/EraseButton"];
     [v3 centerClusterControlSizeRecentlyDeleted];
     v9 = v8;
     v11 = v10;
@@ -354,27 +354,27 @@
 
   else
   {
-    v12 = [v3 trashImage];
-    v13 = [v3 shuttleBarImageSymbolConfiguration];
-    v14 = [v12 imageWithConfiguration:v13];
-    [v20 setImage:v14 forState:0];
-    [v20 setTitle:0 forState:0];
-    [v20 removeTarget:self action:"_handleUndelete" forControlEvents:64];
-    [v20 addTarget:self action:"_handleDelete" forControlEvents:64];
+    trashImage = [v3 trashImage];
+    shuttleBarImageSymbolConfiguration = [v3 shuttleBarImageSymbolConfiguration];
+    v14 = [trashImage imageWithConfiguration:shuttleBarImageSymbolConfiguration];
+    [deleteButton setImage:v14 forState:0];
+    [deleteButton setTitle:0 forState:0];
+    [deleteButton removeTarget:self action:"_handleUndelete" forControlEvents:64];
+    [deleteButton addTarget:self action:"_handleDelete" forControlEvents:64];
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"AX_DELETE" value:&stru_100295BB8 table:0];
-    [v20 setAccessibilityLabel:v16];
+    [deleteButton setAccessibilityLabel:v16];
 
-    [v20 setAccessibilityIdentifier:@"ShuttleBar/DeleteButton"];
-    [v20 intrinsicContentSize];
+    [deleteButton setAccessibilityIdentifier:@"ShuttleBar/DeleteButton"];
+    [deleteButton intrinsicContentSize];
     v9 = v17;
     v11 = v18;
   }
 
-  [v20 setMinimumLayoutSize:{v9, v11}];
-  [v20 setMaximumLayoutSize:{v9, v11}];
-  v19 = [v20 accessibilityLabel];
-  [v20 setLargeContentTitle:v19];
+  [deleteButton setMinimumLayoutSize:{v9, v11}];
+  [deleteButton setMaximumLayoutSize:{v9, v11}];
+  accessibilityLabel = [deleteButton accessibilityLabel];
+  [deleteButton setLargeContentTitle:accessibilityLabel];
 }
 
 - (void)_syncForStyleChanges
@@ -386,19 +386,19 @@
 
 - (void)_updateForPresentedControlsOptions
 {
-  v3 = [(RCShuttleBar *)self presentedControlsOptions];
+  presentedControlsOptions = [(RCShuttleBar *)self presentedControlsOptions];
   v4 = [(RCShuttleBar *)self rowAtIndex:0];
-  [v4 setHidden:(v3 & 1) == 0];
+  [v4 setHidden:(presentedControlsOptions & 1) == 0];
 
-  v5 = (v3 & 2) == 0;
-  v6 = [(RCShuttleBar *)self deleteButton];
-  [v6 setHidden:v5];
+  v5 = (presentedControlsOptions & 2) == 0;
+  deleteButton = [(RCShuttleBar *)self deleteButton];
+  [deleteButton setHidden:v5];
 
-  v7 = [(RCShuttleBar *)self editRecordingButton];
-  [v7 setHidden:v5];
+  editRecordingButton = [(RCShuttleBar *)self editRecordingButton];
+  [editRecordingButton setHidden:v5];
 
-  v8 = [(RCShuttleBar *)self recoverButton];
-  [v8 setHidden:v5];
+  recoverButton = [(RCShuttleBar *)self recoverButton];
+  [recoverButton setHidden:v5];
 }
 
 - (void)_syncCenterClusterSpacing
@@ -417,19 +417,19 @@
     v6 = 2;
   }
 
-  v7 = [(RCShuttleBar *)self centerClusterStackView];
-  [v7 setDistribution:v6];
+  centerClusterStackView = [(RCShuttleBar *)self centerClusterStackView];
+  [centerClusterStackView setDistribution:v6];
 }
 
 - (void)_syncToStyleAndPlayControlState
 {
-  v43 = [(RCShuttleBar *)self playPauseButton];
-  v3 = [(RCShuttleBar *)self style];
-  v4 = [(RCShuttleBar *)self playControlState];
-  v5 = v4;
-  if (v4)
+  playPauseButton = [(RCShuttleBar *)self playPauseButton];
+  style = [(RCShuttleBar *)self style];
+  playControlState = [(RCShuttleBar *)self playControlState];
+  v5 = playControlState;
+  if (playControlState)
   {
-    if (v4 != 1)
+    if (playControlState != 1)
     {
       goto LABEL_6;
     }
@@ -444,25 +444,25 @@
     v7 = @"AX_PLAY";
   }
 
-  [v43 setHidden:0];
-  v8 = [(RCShuttleBar *)self _imageForState:v5 inStyle:v3];
-  [v43 setImage:v8 forState:0];
+  [playPauseButton setHidden:0];
+  v8 = [(RCShuttleBar *)self _imageForState:v5 inStyle:style];
+  [playPauseButton setImage:v8 forState:0];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:v7 value:&stru_100295BB8 table:0];
-  [v43 setAccessibilityLabel:v10];
+  [playPauseButton setAccessibilityLabel:v10];
 
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:v6 value:&stru_100295BB8 table:0];
-  [v43 setLargeContentTitle:v12];
+  [playPauseButton setLargeContentTitle:v12];
 
 LABEL_6:
-  v13 = [(RCShuttleBar *)self style];
+  style2 = [(RCShuttleBar *)self style];
   v14 = +[RCRecorderStyleProvider sharedStyleProvider];
   v15 = v14;
-  if (v13 == 1)
+  if (style2 == 1)
   {
-    v16 = [v14 cardGoForwardImage];
-    v17 = [v15 cardGoBackwardImage];
+    cardGoForwardImage = [v14 cardGoForwardImage];
+    cardGoBackwardImage = [v15 cardGoBackwardImage];
   }
 
   else
@@ -477,53 +477,53 @@ LABEL_6:
       v21 = v22;
     }
 
-    v23 = [(RCShuttleBar *)self centerClusterStackView];
-    [v23 setSpacing:0.0];
+    centerClusterStackView = [(RCShuttleBar *)self centerClusterStackView];
+    [centerClusterStackView setSpacing:0.0];
 
     [v15 shuttleBarAdditionalSliderSpacingLibrary];
     v25 = -v24;
-    v26 = [(RCShuttleBar *)self timelineSlider];
-    [v26 setCustomAlignmentRectInsets:{v25, 0.0, 0.0, 0.0}];
+    timelineSlider = [(RCShuttleBar *)self timelineSlider];
+    [timelineSlider setCustomAlignmentRectInsets:{v25, 0.0, 0.0, 0.0}];
 
     [(NUIContainerStackView *)self->_centerClusterStackView setMinimumLayoutSize:v21, v19];
     [(NUIContainerStackView *)self->_centerClusterStackView setMaximumLayoutSize:v21, v19];
-    v16 = [v15 libraryGoForwardImage];
-    v17 = [v15 libraryGoBackwardImage];
+    cardGoForwardImage = [v15 libraryGoForwardImage];
+    cardGoBackwardImage = [v15 libraryGoBackwardImage];
   }
 
-  v27 = v17;
-  v28 = [(RCShuttleBar *)self jumpForwardButton];
-  [v28 setImage:v16 forState:0];
+  v27 = cardGoBackwardImage;
+  jumpForwardButton = [(RCShuttleBar *)self jumpForwardButton];
+  [jumpForwardButton setImage:cardGoForwardImage forState:0];
 
-  v29 = [(RCShuttleBar *)self jumpBackwardButton];
-  [v29 setImage:v27 forState:0];
+  jumpBackwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+  [jumpBackwardButton setImage:v27 forState:0];
 
   if ([v15 transportButtonsAnimateWithCircle])
   {
-    v30 = v13 == 1;
-    v31 = [(RCShuttleBar *)self playPauseButton];
-    [v31 setShouldAnimateOnTap:v30];
+    v30 = style2 == 1;
+    playPauseButton2 = [(RCShuttleBar *)self playPauseButton];
+    [playPauseButton2 setShouldAnimateOnTap:v30];
 
     [v15 transportButtonAnimationPlayCircleRadius];
     v33 = v32;
-    v34 = [(RCShuttleBar *)self playPauseButton];
-    [v34 setAnimationCircleRadius:v33];
+    playPauseButton3 = [(RCShuttleBar *)self playPauseButton];
+    [playPauseButton3 setAnimationCircleRadius:v33];
 
-    v35 = [(RCShuttleBar *)self jumpForwardButton];
-    [v35 setShouldAnimateOnTap:v30];
+    jumpForwardButton2 = [(RCShuttleBar *)self jumpForwardButton];
+    [jumpForwardButton2 setShouldAnimateOnTap:v30];
 
     [v15 transportButtonAnimationJumpCircleRadius];
     v37 = v36;
-    v38 = [(RCShuttleBar *)self jumpForwardButton];
-    [v38 setAnimationCircleRadius:v37];
+    jumpForwardButton3 = [(RCShuttleBar *)self jumpForwardButton];
+    [jumpForwardButton3 setAnimationCircleRadius:v37];
 
-    v39 = [(RCShuttleBar *)self jumpBackwardButton];
-    [v39 setShouldAnimateOnTap:v30];
+    jumpBackwardButton2 = [(RCShuttleBar *)self jumpBackwardButton];
+    [jumpBackwardButton2 setShouldAnimateOnTap:v30];
 
     [v15 transportButtonAnimationJumpCircleRadius];
     v41 = v40;
-    v42 = [(RCShuttleBar *)self jumpBackwardButton];
-    [v42 setAnimationCircleRadius:v41];
+    jumpBackwardButton3 = [(RCShuttleBar *)self jumpBackwardButton];
+    [jumpBackwardButton3 setAnimationCircleRadius:v41];
   }
 }
 
@@ -535,12 +535,12 @@ LABEL_6:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [(RCShuttleBar *)self jumpBackwardButton];
-    v18[0] = v3;
-    v4 = [(RCShuttleBar *)self jumpForwardButton];
-    v18[1] = v4;
-    v5 = [(RCShuttleBar *)self playPauseButton];
-    v18[2] = v5;
+    jumpBackwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+    v18[0] = jumpBackwardButton;
+    jumpForwardButton = [(RCShuttleBar *)self jumpForwardButton];
+    v18[1] = jumpForwardButton;
+    playPauseButton = [(RCShuttleBar *)self playPauseButton];
+    v18[2] = playPauseButton;
     v6 = [NSArray arrayWithObjects:v18 count:3];
 
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -572,8 +572,8 @@ LABEL_6:
   secondaryControlsColor = self->_secondaryControlsColor;
   if (secondaryControlsColor)
   {
-    v13 = [(RCShuttleBar *)self deleteButton];
-    [v13 setTintColor:secondaryControlsColor];
+    deleteButton = [(RCShuttleBar *)self deleteButton];
+    [deleteButton setTintColor:secondaryControlsColor];
   }
 }
 
@@ -584,12 +584,12 @@ LABEL_6:
     v6 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v6 shuttleBarCenterClusterSpacing];
     v4 = v3;
-    v5 = [(RCShuttleBar *)self centerClusterStackView];
-    [v5 setSpacing:v4];
+    centerClusterStackView = [(RCShuttleBar *)self centerClusterStackView];
+    [centerClusterStackView setSpacing:v4];
   }
 }
 
-- (RCShuttleBar)initWithShuttleBarStyle:(int64_t)a3
+- (RCShuttleBar)initWithShuttleBarStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = RCShuttleBar;
@@ -597,7 +597,7 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     [(RCShuttleBar *)v4 _commonInit];
     [(RCShuttleBar *)v5 _syncForStyleChanges];
     [(RCShuttleBar *)v5 setDelegate:v5];
@@ -612,9 +612,9 @@ LABEL_6:
   v8.super_class = RCShuttleBar;
   [(RCShuttleBar *)&v8 layoutSubviews];
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 shuttleBarHasBackground];
+  shuttleBarHasBackground = [v3 shuttleBarHasBackground];
   [(RCShuttleBar *)self bounds];
-  if (v4)
+  if (shuttleBarHasBackground)
   {
     v6 = v5 * 0.5;
     [(RCShuttleBar *)self _cornerRadius];
@@ -627,17 +627,17 @@ LABEL_6:
 
 - (void)cancelScrubbing
 {
-  v2 = [(RCShuttleBar *)self timelineSlider];
-  [v2 cancelTracking];
+  timelineSlider = [(RCShuttleBar *)self timelineSlider];
+  [timelineSlider cancelTracking];
 }
 
-- (id)_imageForState:(int64_t)a3 inStyle:(int64_t)a4
+- (id)_imageForState:(int64_t)state inStyle:(int64_t)style
 {
-  if (a3)
+  if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v4 = [(RCShuttleBar *)self _pauseImageForStyle:a4];
+      v4 = [(RCShuttleBar *)self _pauseImageForStyle:style];
     }
 
     else
@@ -648,27 +648,27 @@ LABEL_6:
 
   else
   {
-    v4 = [(RCShuttleBar *)self _playImageForStyle:a4];
+    v4 = [(RCShuttleBar *)self _playImageForStyle:style];
   }
 
   return v4;
 }
 
-- (id)_playImageForStyle:(int64_t)a3
+- (id)_playImageForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v4 = [v3 cardPlayImage];
+    cardPlayImage = [v3 cardPlayImage];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!style)
   {
     v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v4 = [v3 libraryPlayImage];
+    cardPlayImage = [v3 libraryPlayImage];
 LABEL_5:
-    v5 = v4;
+    v5 = cardPlayImage;
 
     goto LABEL_7;
   }
@@ -679,21 +679,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)_pauseImageForStyle:(int64_t)a3
+- (id)_pauseImageForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v4 = [v3 cardPauseImage];
+    cardPauseImage = [v3 cardPauseImage];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!style)
   {
     v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v4 = [v3 libraryPauseImage];
+    cardPauseImage = [v3 libraryPauseImage];
 LABEL_5:
-    v5 = v4;
+    v5 = cardPauseImage;
 
     goto LABEL_7;
   }
@@ -704,65 +704,65 @@ LABEL_7:
   return v5;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   [(RCShuttleBar *)self setUserInteractionEnabled:?];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10003E77C;
   v5[3] = &unk_10028A988;
   v5[4] = self;
-  v6 = a3;
+  enabledCopy = enabled;
   [UIView animateWithDuration:v5 animations:0.2];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  self->_duration = a3;
-  v4 = [(RCShuttleBar *)self timelineSlider];
-  [v4 setDuration:a3];
+  self->_duration = duration;
+  timelineSlider = [(RCShuttleBar *)self timelineSlider];
+  [timelineSlider setDuration:duration];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  v4 = self->_currentTime != self->_duration && a3 != 0.0;
-  self->_currentTime = a3;
-  v6 = [(RCShuttleBar *)self timelineSlider];
-  *&v5 = a3;
-  [v6 setSliderPositionForTime:v4 animated:v5];
+  v4 = self->_currentTime != self->_duration && time != 0.0;
+  self->_currentTime = time;
+  timelineSlider = [(RCShuttleBar *)self timelineSlider];
+  *&v5 = time;
+  [timelineSlider setSliderPositionForTime:v4 animated:v5];
 }
 
-- (void)setControlsColor:(id)a3
+- (void)setControlsColor:(id)color
 {
-  objc_storeStrong(&self->_controlsColor, a3);
+  objc_storeStrong(&self->_controlsColor, color);
 
   [(RCShuttleBar *)self _updateButtonColors];
 }
 
-- (void)setSecondaryControlsColor:(id)a3
+- (void)setSecondaryControlsColor:(id)color
 {
-  objc_storeStrong(&self->_secondaryControlsColor, a3);
+  objc_storeStrong(&self->_secondaryControlsColor, color);
 
   [(RCShuttleBar *)self _updateButtonColors];
 }
 
-- (void)setControlsAnimationColor:(id)a3
+- (void)setControlsAnimationColor:(id)color
 {
-  objc_storeStrong(&self->_controlsAnimationColor, a3);
+  objc_storeStrong(&self->_controlsAnimationColor, color);
 
   [(RCShuttleBar *)self _updateButtonColors];
 }
 
-- (void)setRecentlyDeleted:(BOOL)a3
+- (void)setRecentlyDeleted:(BOOL)deleted
 {
-  if (self->_recentlyDeleted != a3)
+  if (self->_recentlyDeleted != deleted)
   {
-    v3 = a3;
-    self->_recentlyDeleted = a3;
+    deletedCopy = deleted;
+    self->_recentlyDeleted = deleted;
     if ([(RCShuttleBar *)self numberOfRows]== 2 && [(RCShuttleBar *)self numberOfColumns]== 3)
     {
-      if (v3)
+      if (deletedCopy)
       {
         [(RCShuttleBar *)self _setupRecoverButton];
         [(RCShuttleBar *)self recoverButton];
@@ -786,11 +786,11 @@ LABEL_7:
       }
     }
 
-    v6 = [(RCShuttleBar *)self jumpBackwardButton];
-    [v6 setHidden:v3];
+    jumpBackwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+    [jumpBackwardButton setHidden:deletedCopy];
 
-    v7 = [(RCShuttleBar *)self jumpForwardButton];
-    [v7 setHidden:v3];
+    jumpForwardButton = [(RCShuttleBar *)self jumpForwardButton];
+    [jumpForwardButton setHidden:deletedCopy];
 
     [(RCShuttleBar *)self _setupDeleteButton];
     [(RCShuttleBar *)self _updateButtonColors];
@@ -815,78 +815,78 @@ LABEL_7:
 
 - (void)_handleJumpBackward
 {
-  v3 = [(RCShuttleBar *)self actionDelegate];
-  [v3 performControlsAction:12 position:self source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [actionDelegate performControlsAction:12 position:self source:0.0];
 
-  LODWORD(v3) = UIAccessibilityLayoutChangedNotification;
-  v4 = [(RCShuttleBar *)self jumpBackwardButton];
-  UIAccessibilityPostNotification(v3, v4);
+  LODWORD(actionDelegate) = UIAccessibilityLayoutChangedNotification;
+  jumpBackwardButton = [(RCShuttleBar *)self jumpBackwardButton];
+  UIAccessibilityPostNotification(actionDelegate, jumpBackwardButton);
 }
 
 - (void)_handleJumpForward
 {
-  v3 = [(RCShuttleBar *)self actionDelegate];
-  [v3 performControlsAction:11 position:self source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [actionDelegate performControlsAction:11 position:self source:0.0];
 
-  LODWORD(v3) = UIAccessibilityLayoutChangedNotification;
-  v4 = [(RCShuttleBar *)self jumpForwardButton];
-  UIAccessibilityPostNotification(v3, v4);
+  LODWORD(actionDelegate) = UIAccessibilityLayoutChangedNotification;
+  jumpForwardButton = [(RCShuttleBar *)self jumpForwardButton];
+  UIAccessibilityPostNotification(actionDelegate, jumpForwardButton);
 }
 
 - (void)_handlePlayPause
 {
-  v3 = [(RCShuttleBar *)self playControlState];
-  if (v3 == 1)
+  playControlState = [(RCShuttleBar *)self playControlState];
+  if (playControlState == 1)
   {
-    v4 = [(RCShuttleBar *)self actionDelegate];
-    [v4 performControlsAction:1 position:self source:0.0];
+    actionDelegate = [(RCShuttleBar *)self actionDelegate];
+    [actionDelegate performControlsAction:1 position:self source:0.0];
   }
 
   else
   {
-    if (v3)
+    if (playControlState)
     {
       goto LABEL_6;
     }
 
-    v4 = [(RCShuttleBar *)self actionDelegate];
-    v5 = [(RCShuttleBar *)self timelineSlider];
-    [v5 currentPosition];
-    [v4 performControlsAction:0 position:self source:?];
+    actionDelegate = [(RCShuttleBar *)self actionDelegate];
+    timelineSlider = [(RCShuttleBar *)self timelineSlider];
+    [timelineSlider currentPosition];
+    [actionDelegate performControlsAction:0 position:self source:?];
   }
 
 LABEL_6:
   v6 = UIAccessibilityLayoutChangedNotification;
-  v7 = [(RCShuttleBar *)self playPauseButton];
-  UIAccessibilityPostNotification(v6, v7);
+  playPauseButton = [(RCShuttleBar *)self playPauseButton];
+  UIAccessibilityPostNotification(v6, playPauseButton);
 }
 
 - (void)_handleEditRecording
 {
-  v4 = [(RCShuttleBar *)self actionDelegate];
-  v3 = [(RCShuttleBar *)self editRecordingButton];
-  [v4 performControlsAction:22 position:v3 source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  editRecordingButton = [(RCShuttleBar *)self editRecordingButton];
+  [actionDelegate performControlsAction:22 position:editRecordingButton source:0.0];
 }
 
 - (void)_handleErase
 {
-  v4 = [(RCShuttleBar *)self actionDelegate];
-  v3 = [(RCShuttleBar *)self deleteButton];
-  [v4 performControlsAction:16 position:v3 source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  deleteButton = [(RCShuttleBar *)self deleteButton];
+  [actionDelegate performControlsAction:16 position:deleteButton source:0.0];
 }
 
 - (void)_handleDelete
 {
-  v4 = [(RCShuttleBar *)self actionDelegate];
-  v3 = [(RCShuttleBar *)self deleteButton];
-  [v4 performControlsAction:15 position:v3 source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  deleteButton = [(RCShuttleBar *)self deleteButton];
+  [actionDelegate performControlsAction:15 position:deleteButton source:0.0];
 }
 
 - (void)_handleUndelete
 {
-  v4 = [(RCShuttleBar *)self actionDelegate];
-  v3 = [(RCShuttleBar *)self deleteButton];
-  [v4 performControlsAction:19 position:v3 source:0.0];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  deleteButton = [(RCShuttleBar *)self deleteButton];
+  [actionDelegate performControlsAction:19 position:deleteButton source:0.0];
 }
 
 - (void)restyle
@@ -896,55 +896,55 @@ LABEL_6:
   [(RCShuttleBar *)self _updateGlassBackgroundStyling];
 }
 
-- (void)detailSliderTrackingDidBegin:(id)a3
+- (void)detailSliderTrackingDidBegin:(id)begin
 {
-  v4 = a3;
-  v7 = [(RCShuttleBar *)self actionDelegate];
-  [v4 currentPosition];
+  beginCopy = begin;
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [beginCopy currentPosition];
   v6 = v5;
 
-  [v7 performControlsAction:8 position:0 source:v6];
+  [actionDelegate performControlsAction:8 position:0 source:v6];
 }
 
-- (void)detailSliderTrackingDidEnd:(id)a3
+- (void)detailSliderTrackingDidEnd:(id)end
 {
-  v4 = a3;
-  v7 = [(RCShuttleBar *)self actionDelegate];
-  [v4 currentPosition];
+  endCopy = end;
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [endCopy currentPosition];
   v6 = v5;
 
-  [v7 performControlsAction:10 position:0 source:v6];
+  [actionDelegate performControlsAction:10 position:0 source:v6];
 }
 
-- (void)detailSliderTrackingDidCancel:(id)a3
+- (void)detailSliderTrackingDidCancel:(id)cancel
 {
-  v4 = a3;
-  v7 = [(RCShuttleBar *)self actionDelegate];
-  [v4 currentPosition];
+  cancelCopy = cancel;
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [cancelCopy currentPosition];
   v6 = v5;
 
-  [v7 performControlsAction:10 position:0 source:v6];
+  [actionDelegate performControlsAction:10 position:0 source:v6];
 }
 
-- (void)detailSlider:(id)a3 didChangeTimeValue:(float)a4
+- (void)detailSlider:(id)slider didChangeTimeValue:(float)value
 {
-  v5 = [(RCShuttleBar *)self actionDelegate];
-  [v5 performControlsAction:9 position:0 source:a4];
+  actionDelegate = [(RCShuttleBar *)self actionDelegate];
+  [actionDelegate performControlsAction:9 position:0 source:value];
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  if ([a4 isEqual:self->_centerClusterStackView])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  if ([subview isEqual:self->_centerClusterStackView])
   {
     width = floor(width);
-    [v11 frame];
+    [viewCopy frame];
     MidX = CGRectGetMidX(v18);
-    [v11 frame];
+    [viewCopy frame];
     x = MidX - v13 + width * -0.5;
   }
 

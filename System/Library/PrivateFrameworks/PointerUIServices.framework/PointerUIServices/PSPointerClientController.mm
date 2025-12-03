@@ -3,28 +3,28 @@
 - (PSPointerClientControllerDelegate)delegate;
 - (id)_accessQueue_acquireServiceKeepAliveAssertion;
 - (id)_connectionQueue_launchingConnection;
-- (id)acquireOverridingHoverRegionAssertionForDisplay:(id)a3;
+- (id)acquireOverridingHoverRegionAssertionForDisplay:(id)display;
 - (id)acquireServiceKeepAliveAssertion;
-- (id)persistentlyHidePointerAssertionForReason:(unint64_t)a3;
-- (id)persistentlyShowPointerAssertionForReason:(unint64_t)a3;
-- (id)setSystemPointerInteractionContextID:(unsigned int)a3 displayUUID:(id)a4;
+- (id)persistentlyHidePointerAssertionForReason:(unint64_t)reason;
+- (id)persistentlyShowPointerAssertionForReason:(unint64_t)reason;
+- (id)setSystemPointerInteractionContextID:(unsigned int)d displayUUID:(id)iD;
 - (void)_connectionQueue_handleLaunchingConnectionInterruption;
 - (void)_connectionQueue_handleNonLaunchingConnectionActivation;
 - (void)_connectionQueue_handleNonLaunchingConnectionInterruption;
-- (void)_createContentMatchMoveSourcesForDisplay:(id)a3 count:(unint64_t)a4 completion:(id)a5;
-- (void)_createPointerPortalSourceCollectionForDisplay:(id)a3 completion:(id)a4;
-- (void)_main_notifyDelegateOfInvalidatedRemoteSourcesSpecificallyThesePortalSourceCollections:(id)a3 matchMoveSources:(id)a4;
-- (void)adjustedDecelerationTargetPointerPosition:(id)a3 velocity:(id)a4 inContextID:(id)a5 cursorRegionLookupRadius:(id)a6 cursorRegionLookupResolution:(id)a7 lookupConeAngle:(id)a8 completion:(id)a9;
-- (void)autohidePointerForReason:(unint64_t)a3;
-- (void)clientInteractionStateDidChange:(id)a3;
-- (void)createContentMatchMoveSourcesForDisplayUUID:(id)a3 count:(unint64_t)a4 completion:(id)a5;
-- (void)createPointerPortalSourceCollectionForDisplayUUID:(id)a3 completion:(id)a4;
+- (void)_createContentMatchMoveSourcesForDisplay:(id)display count:(unint64_t)count completion:(id)completion;
+- (void)_createPointerPortalSourceCollectionForDisplay:(id)display completion:(id)completion;
+- (void)_main_notifyDelegateOfInvalidatedRemoteSourcesSpecificallyThesePortalSourceCollections:(id)collections matchMoveSources:(id)sources;
+- (void)adjustedDecelerationTargetPointerPosition:(id)position velocity:(id)velocity inContextID:(id)d cursorRegionLookupRadius:(id)radius cursorRegionLookupResolution:(id)resolution lookupConeAngle:(id)angle completion:(id)completion;
+- (void)autohidePointerForReason:(unint64_t)reason;
+- (void)clientInteractionStateDidChange:(id)change;
+- (void)createContentMatchMoveSourcesForDisplayUUID:(id)d count:(unint64_t)count completion:(id)completion;
+- (void)createPointerPortalSourceCollectionForDisplayUUID:(id)d completion:(id)completion;
 - (void)invalidate;
-- (void)invalidateContentMatchMoveSources:(id)a3 completion:(id)a4;
-- (void)invalidatePointerPortalSourceCollection:(id)a3 completion:(id)a4;
-- (void)invalidatedPortalSourceCollections:(id)a3 matchMoveSources:(id)a4;
-- (void)pointerVisibilityStateDidChange:(id)a3;
-- (void)setActiveHoverRegion:(id)a3 transitionCompletion:(id)a4;
+- (void)invalidateContentMatchMoveSources:(id)sources completion:(id)completion;
+- (void)invalidatePointerPortalSourceCollection:(id)collection completion:(id)completion;
+- (void)invalidatedPortalSourceCollections:(id)collections matchMoveSources:(id)sources;
+- (void)pointerVisibilityStateDidChange:(id)change;
+- (void)setActiveHoverRegion:(id)region transitionCompletion:(id)completion;
 - (void)sharedInit;
 @end
 
@@ -45,13 +45,13 @@
   accessQueue_validMatchMoveSources = self->_accessQueue_validMatchMoveSources;
   self->_accessQueue_validMatchMoveSources = v5;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   systemPointerInteractionContextIDs = self->_systemPointerInteractionContextIDs;
-  self->_systemPointerInteractionContextIDs = v7;
+  self->_systemPointerInteractionContextIDs = dictionary;
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   hoverRegionOverridingAssertions = self->_hoverRegionOverridingAssertions;
-  self->_hoverRegionOverridingAssertions = v9;
+  self->_hoverRegionOverridingAssertions = dictionary2;
 
   Serial = BSDispatchQueueCreateSerial();
   accessQueue = self->_accessQueue;
@@ -346,28 +346,28 @@ void __39__PSPointerClientController_invalidate__block_invoke(void *a1)
   *(v4 + 24) = 0;
 }
 
-- (void)createPointerPortalSourceCollectionForDisplayUUID:(id)a3 completion:(id)a4
+- (void)createPointerPortalSourceCollectionForDisplayUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [PSDisplay displayWithHardwareIdentifier:a3];
-  [(PSPointerClientController *)self _createPointerPortalSourceCollectionForDisplay:v7 completion:v6];
+  completionCopy = completion;
+  v7 = [PSDisplay displayWithHardwareIdentifier:d];
+  [(PSPointerClientController *)self _createPointerPortalSourceCollectionForDisplay:v7 completion:completionCopy];
 }
 
-- (void)invalidatePointerPortalSourceCollection:(id)a3 completion:(id)a4
+- (void)invalidatePointerPortalSourceCollection:(id)collection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__PSPointerClientController_invalidatePointerPortalSourceCollection_completion___block_invoke;
   v12[3] = &unk_27839D9C8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = collectionCopy;
+  v14 = completionCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = collectionCopy;
   dispatch_async(connectionQueue, v12);
 }
 
@@ -460,28 +460,28 @@ LABEL_5:
   }
 }
 
-- (void)createContentMatchMoveSourcesForDisplayUUID:(id)a3 count:(unint64_t)a4 completion:(id)a5
+- (void)createContentMatchMoveSourcesForDisplayUUID:(id)d count:(unint64_t)count completion:(id)completion
 {
-  v8 = a5;
-  v9 = [PSDisplay displayWithHardwareIdentifier:a3];
-  [(PSPointerClientController *)self _createContentMatchMoveSourcesForDisplay:v9 count:a4 completion:v8];
+  completionCopy = completion;
+  v9 = [PSDisplay displayWithHardwareIdentifier:d];
+  [(PSPointerClientController *)self _createContentMatchMoveSourcesForDisplay:v9 count:count completion:completionCopy];
 }
 
-- (void)invalidateContentMatchMoveSources:(id)a3 completion:(id)a4
+- (void)invalidateContentMatchMoveSources:(id)sources completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  sourcesCopy = sources;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__PSPointerClientController_invalidateContentMatchMoveSources_completion___block_invoke;
   v12[3] = &unk_27839D9C8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = sourcesCopy;
+  v14 = completionCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = sourcesCopy;
   dispatch_async(connectionQueue, v12);
 }
 
@@ -603,21 +603,21 @@ void __74__PSPointerClientController_invalidateContentMatchMoveSources_completio
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActiveHoverRegion:(id)a3 transitionCompletion:(id)a4
+- (void)setActiveHoverRegion:(id)region transitionCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  regionCopy = region;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__PSPointerClientController_setActiveHoverRegion_transitionCompletion___block_invoke;
   v12[3] = &unk_27839D9C8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = regionCopy;
+  v14 = completionCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = regionCopy;
   dispatch_async(connectionQueue, v12);
 }
 
@@ -741,7 +741,7 @@ uint64_t __61__PSPointerClientController_acquireServiceKeepAliveAssertion__block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)autohidePointerForReason:(unint64_t)a3
+- (void)autohidePointerForReason:(unint64_t)reason
 {
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -749,7 +749,7 @@ uint64_t __61__PSPointerClientController_acquireServiceKeepAliveAssertion__block
   block[2] = __54__PSPointerClientController_autohidePointerForReason___block_invoke;
   block[3] = &unk_27839DA68;
   block[4] = self;
-  block[5] = a3;
+  block[5] = reason;
   block[6] = a2;
   dispatch_async(connectionQueue, block);
 }
@@ -774,9 +774,9 @@ void __54__PSPointerClientController_autohidePointerForReason___block_invoke(uin
   }
 }
 
-- (id)persistentlyHidePointerAssertionForReason:(unint64_t)a3
+- (id)persistentlyHidePointerAssertionForReason:(unint64_t)reason
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+  reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", reason];
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277CF0CE8]);
   v11[0] = MEMORY[0x277D85DD0];
@@ -784,15 +784,15 @@ void __54__PSPointerClientController_autohidePointerForReason___block_invoke(uin
   v11[2] = __71__PSPointerClientController_persistentlyHidePointerAssertionForReason___block_invoke;
   v11[3] = &unk_27839DAB8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v7 = [v6 initWithIdentifier:@"PSPointerHideAssertion" forReason:v5 invalidationBlock:v11];
+  v12[1] = reason;
+  v7 = [v6 initWithIdentifier:@"PSPointerHideAssertion" forReason:reason invalidationBlock:v11];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__PSPointerClientController_persistentlyHidePointerAssertionForReason___block_invoke_4;
   block[3] = &unk_27839DA90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = reason;
   dispatch_sync(accessQueue, block);
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -894,9 +894,9 @@ void __71__PSPointerClientController_persistentlyHidePointerAssertionForReason__
   }
 }
 
-- (id)persistentlyShowPointerAssertionForReason:(unint64_t)a3
+- (id)persistentlyShowPointerAssertionForReason:(unint64_t)reason
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+  reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", reason];
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277CF0CE8]);
   v11[0] = MEMORY[0x277D85DD0];
@@ -904,15 +904,15 @@ void __71__PSPointerClientController_persistentlyHidePointerAssertionForReason__
   v11[2] = __71__PSPointerClientController_persistentlyShowPointerAssertionForReason___block_invoke;
   v11[3] = &unk_27839DAB8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v7 = [v6 initWithIdentifier:@"PSPointerShowAssertion" forReason:v5 invalidationBlock:v11];
+  v12[1] = reason;
+  v7 = [v6 initWithIdentifier:@"PSPointerShowAssertion" forReason:reason invalidationBlock:v11];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__PSPointerClientController_persistentlyShowPointerAssertionForReason___block_invoke_4;
   block[3] = &unk_27839DA90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = reason;
   dispatch_sync(accessQueue, block);
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -1014,9 +1014,9 @@ void __71__PSPointerClientController_persistentlyShowPointerAssertionForReason__
   }
 }
 
-- (id)setSystemPointerInteractionContextID:(unsigned int)a3 displayUUID:(id)a4
+- (id)setSystemPointerInteractionContextID:(unsigned int)d displayUUID:(id)iD
 {
-  v6 = a4;
+  iDCopy = iD;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1028,11 +1028,11 @@ void __71__PSPointerClientController_persistentlyShowPointerAssertionForReason__
   v11[1] = 3221225472;
   v11[2] = __78__PSPointerClientController_setSystemPointerInteractionContextID_displayUUID___block_invoke;
   v11[3] = &unk_27839DB30;
-  v12 = v6;
-  v13 = self;
-  v15 = a3;
+  v12 = iDCopy;
+  selfCopy = self;
+  dCopy = d;
   v14 = &v16;
-  v8 = v6;
+  v8 = iDCopy;
   dispatch_sync(accessQueue, v11);
   v9 = v17[5];
 
@@ -1140,9 +1140,9 @@ void __78__PSPointerClientController_setSystemPointerInteractionContextID_displa
   }
 }
 
-- (id)acquireOverridingHoverRegionAssertionForDisplay:(id)a3
+- (id)acquireOverridingHoverRegionAssertionForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1154,10 +1154,10 @@ void __78__PSPointerClientController_setSystemPointerInteractionContextID_displa
   block[1] = 3221225472;
   block[2] = __77__PSPointerClientController_acquireOverridingHoverRegionAssertionForDisplay___block_invoke;
   block[3] = &unk_27839DB58;
-  v10 = v4;
-  v11 = self;
+  v10 = displayCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = displayCopy;
   dispatch_sync(accessQueue, block);
   v7 = v14[5];
 
@@ -1254,14 +1254,14 @@ void __77__PSPointerClientController_acquireOverridingHoverRegionAssertionForDis
   }
 }
 
-- (void)clientInteractionStateDidChange:(id)a3
+- (void)clientInteractionStateDidChange:(id)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 integerValue];
+  integerValue = [change integerValue];
   v5 = PSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = PSPointerClientInteractionStateToString(v4);
+    v6 = PSPointerClientInteractionStateToString(integerValue);
     *buf = 138543362;
     v11 = v6;
     _os_log_impl(&dword_21ED3B000, v5, OS_LOG_TYPE_DEFAULT, "clientInteractionStateDidChange: %{public}@", buf, 0xCu);
@@ -1273,7 +1273,7 @@ void __77__PSPointerClientController_acquireOverridingHoverRegionAssertionForDis
   v9[2] = __61__PSPointerClientController_clientInteractionStateDidChange___block_invoke;
   v9[3] = &unk_27839DA90;
   v9[4] = self;
-  v9[5] = v4;
+  v9[5] = integerValue;
   dispatch_sync(accessQueue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1317,16 +1317,16 @@ uint64_t __61__PSPointerClientController_clientInteractionStateDidChange___block
   return MEMORY[0x2821F97C8]();
 }
 
-- (void)pointerVisibilityStateDidChange:(id)a3
+- (void)pointerVisibilityStateDidChange:(id)change
 {
-  v4 = [a3 integerValue];
+  integerValue = [change integerValue];
   accessQueue = self->_accessQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__PSPointerClientController_pointerVisibilityStateDidChange___block_invoke;
   v6[3] = &unk_27839DA90;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = integerValue;
   dispatch_sync(accessQueue, v6);
 }
 
@@ -1367,31 +1367,31 @@ void __61__PSPointerClientController_pointerVisibilityStateDidChange___block_inv
   }
 }
 
-- (void)adjustedDecelerationTargetPointerPosition:(id)a3 velocity:(id)a4 inContextID:(id)a5 cursorRegionLookupRadius:(id)a6 cursorRegionLookupResolution:(id)a7 lookupConeAngle:(id)a8 completion:(id)a9
+- (void)adjustedDecelerationTargetPointerPosition:(id)position velocity:(id)velocity inContextID:(id)d cursorRegionLookupRadius:(id)radius cursorRegionLookupResolution:(id)resolution lookupConeAngle:(id)angle completion:(id)completion
 {
-  v16 = a9;
-  if (v16)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v17 = a8;
-    v18 = a7;
-    v19 = a6;
-    v20 = a5;
-    v21 = a4;
-    [a3 bs_CGPointValue];
+    angleCopy = angle;
+    resolutionCopy = resolution;
+    radiusCopy = radius;
+    dCopy = d;
+    velocityCopy = velocity;
+    [position bs_CGPointValue];
     v23 = v22;
     v25 = v24;
-    [v21 bs_CGPointValue];
+    [velocityCopy bs_CGPointValue];
     v27 = v26;
     v29 = v28;
 
-    v30 = [v20 unsignedIntValue];
-    [v19 doubleValue];
+    unsignedIntValue = [dCopy unsignedIntValue];
+    [radiusCopy doubleValue];
     v32 = v31;
 
-    [v18 doubleValue];
+    [resolutionCopy doubleValue];
     v34 = v33;
 
-    [v17 doubleValue];
+    [angleCopy doubleValue];
     v36 = v35;
 
     v37[0] = MEMORY[0x277D85DD0];
@@ -1403,11 +1403,11 @@ void __61__PSPointerClientController_pointerVisibilityStateDidChange___block_inv
     v40 = v25;
     v41 = v27;
     v42 = v29;
-    v46 = v30;
+    v46 = unsignedIntValue;
     v43 = v32;
     v44 = v34;
     v45 = v36;
-    v38 = v16;
+    v38 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v37);
   }
 }
@@ -1454,18 +1454,18 @@ void __173__PSPointerClientController_adjustedDecelerationTargetPointerPosition_
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)invalidatedPortalSourceCollections:(id)a3 matchMoveSources:(id)a4
+- (void)invalidatedPortalSourceCollections:(id)collections matchMoveSources:(id)sources
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  collectionsCopy = collections;
+  sourcesCopy = sources;
   v8 = PSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v23 = [v6 count];
+    v23 = [collectionsCopy count];
     v24 = 2048;
-    v25 = [v7 count];
+    v25 = [sourcesCopy count];
     _os_log_impl(&dword_21ED3B000, v8, OS_LOG_TYPE_DEFAULT, "server invalidated %lu portalSourceCollections + %lu matchMoveSources", buf, 0x16u);
   }
 
@@ -1474,10 +1474,10 @@ void __173__PSPointerClientController_adjustedDecelerationTargetPointerPosition_
   block[1] = 3221225472;
   block[2] = __81__PSPointerClientController_invalidatedPortalSourceCollections_matchMoveSources___block_invoke;
   block[3] = &unk_27839DB08;
-  v10 = v6;
+  v10 = collectionsCopy;
   v19 = v10;
-  v20 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = sourcesCopy;
   v21 = v11;
   dispatch_sync(accessQueue, block);
   v15[0] = MEMORY[0x277D85DD0];
@@ -1560,21 +1560,21 @@ void __81__PSPointerClientController_invalidatedPortalSourceCollections_matchMov
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createPointerPortalSourceCollectionForDisplay:(id)a3 completion:(id)a4
+- (void)_createPointerPortalSourceCollectionForDisplay:(id)display completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  displayCopy = display;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __87__PSPointerClientController__createPointerPortalSourceCollectionForDisplay_completion___block_invoke;
   v12[3] = &unk_27839D9C8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = displayCopy;
+  v14 = completionCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = displayCopy;
   dispatch_async(connectionQueue, v12);
 }
 
@@ -1694,22 +1694,22 @@ void __87__PSPointerClientController__createPointerPortalSourceCollectionForDisp
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)_createContentMatchMoveSourcesForDisplay:(id)a3 count:(unint64_t)a4 completion:(id)a5
+- (void)_createContentMatchMoveSourcesForDisplay:(id)display count:(unint64_t)count completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  displayCopy = display;
+  completionCopy = completion;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__PSPointerClientController__createContentMatchMoveSourcesForDisplay_count_completion___block_invoke;
   block[3] = &unk_27839DC70;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a4;
+  v15 = displayCopy;
+  v16 = completionCopy;
+  countCopy = count;
   v18 = a2;
-  v12 = v10;
-  v13 = v9;
+  v12 = completionCopy;
+  v13 = displayCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -1985,15 +1985,15 @@ void __74__PSPointerClientController__accessQueue_acquireServiceKeepAliveAsserti
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
   if ([v25[5] count])
   {
-    v6 = [(BSServiceConnection *)self->_nonLaunchingConnection remoteTarget];
-    [v6 setPointerPersistentlyHiddenForReasons:v25[5]];
+    remoteTarget = [(BSServiceConnection *)self->_nonLaunchingConnection remoteTarget];
+    [remoteTarget setPointerPersistentlyHiddenForReasons:v25[5]];
   }
 
   if ([(NSCountedSet *)self->_persistentPointerShowReasons count])
   {
-    v7 = [(NSCountedSet *)self->_persistentPointerShowReasons allObjects];
-    v8 = [(BSServiceConnection *)self->_nonLaunchingConnection remoteTarget];
-    [v8 setPointerPersistentlyVisibleForReasons:v7];
+    allObjects = [(NSCountedSet *)self->_persistentPointerShowReasons allObjects];
+    remoteTarget2 = [(BSServiceConnection *)self->_nonLaunchingConnection remoteTarget];
+    [remoteTarget2 setPointerPersistentlyVisibleForReasons:allObjects];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -2122,7 +2122,7 @@ uint64_t __86__PSPointerClientController__connectionQueue_handleNonLaunchingConn
   dispatch_sync(accessQueue, v8);
   if (*(v10 + 24) == 1)
   {
-    v4 = [(PSPointerClientController *)self _connectionQueue_launchingConnection];
+    _connectionQueue_launchingConnection = [(PSPointerClientController *)self _connectionQueue_launchingConnection];
     if (!self->_hasActivatedLaunchingConnection)
     {
       self->_hasActivatedLaunchingConnection = 1;
@@ -2130,15 +2130,15 @@ uint64_t __86__PSPointerClientController__connectionQueue_handleNonLaunchingConn
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v14 = v4;
+        v14 = _connectionQueue_launchingConnection;
         _os_log_impl(&dword_21ED3B000, v5, OS_LOG_TYPE_INFO, "Activating Launching Connection: %{public}@", buf, 0xCu);
       }
 
-      [v4 activate];
+      [_connectionQueue_launchingConnection activate];
     }
 
-    v6 = [v4 remoteTarget];
-    [v6 setWantsServiceKeepAlive:MEMORY[0x277CBEC38]];
+    remoteTarget = [_connectionQueue_launchingConnection remoteTarget];
+    [remoteTarget setWantsServiceKeepAlive:MEMORY[0x277CBEC38]];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -2276,16 +2276,16 @@ void __65__PSPointerClientController__connectionQueue_launchingConnection__block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_main_notifyDelegateOfInvalidatedRemoteSourcesSpecificallyThesePortalSourceCollections:(id)a3 matchMoveSources:(id)a4
+- (void)_main_notifyDelegateOfInvalidatedRemoteSourcesSpecificallyThesePortalSourceCollections:(id)collections matchMoveSources:(id)sources
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  collectionsCopy = collections;
+  sourcesCopy = sources;
   BSDispatchQueueAssertMain();
-  v8 = [(PSPointerClientController *)self delegate];
+  delegate = [(PSPointerClientController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 pointerClientController:self didInvalidatePortalSourceCollections:v6 matchMoveSources:v7];
+    [delegate pointerClientController:self didInvalidatePortalSourceCollections:collectionsCopy matchMoveSources:sourcesCopy];
   }
 
   else
@@ -2323,8 +2323,8 @@ void __65__PSPointerClientController__connectionQueue_launchingConnection__block
       _os_log_impl(&dword_21ED3B000, v10, OS_LOG_TYPE_DEFAULT, "delegate doesn't support individual source invalidation, invalidating %lu additional portalSourceCollections + %lu additional matchMoveSources", buf, 0x16u);
     }
 
-    v13 = [v25[5] allObjects];
-    [(PSPointerClientController *)self invalidateContentMatchMoveSources:v13 completion:0];
+    allObjects = [v25[5] allObjects];
+    [(PSPointerClientController *)self invalidateContentMatchMoveSources:allObjects completion:0];
 
     v21 = 0u;
     v22 = 0u;
@@ -2357,7 +2357,7 @@ void __65__PSPointerClientController__connectionQueue_launchingConnection__block
 
     if (objc_opt_respondsToSelector())
     {
-      [v8 pointerClientControllerDidInvalidateRemoteSources:self];
+      [delegate pointerClientControllerDidInvalidateRemoteSources:self];
     }
 
     _Block_object_dispose(&v24, 8);

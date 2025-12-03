@@ -1,21 +1,21 @@
 @interface SRAuthorizationPromptPresentationController
 + (id)sharedInstance;
 + (void)initialize;
-- (BOOL)presentAnyViewController:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5;
-- (id)navigationControllerFromRoot:(id)a3;
+- (BOOL)presentAnyViewController:(id)controller reason:(int64_t)reason completionHandler:(id)handler;
+- (id)navigationControllerFromRoot:(id)root;
 - (id)presentationAnchor;
-- (id)presentingViewControllerFromRoot:(id)a3;
+- (id)presentingViewControllerFromRoot:(id)root;
 - (void)authorizationRequestDidDisappear;
 - (void)authorizationRequestWillDisappear;
-- (void)authorizationUIReadyForDisplayModally:(BOOL)a3;
-- (void)completePromptWithError:(id)a3;
+- (void)authorizationUIReadyForDisplayModally:(BOOL)modally;
+- (void)completePromptWithError:(id)error;
 - (void)dealloc;
-- (void)presentAppsAndStudiesPromptViewController:(id)a3 completionHandler:(id)a4;
-- (void)presentFirstRunOnboardingViewController:(id)a3 completionHandler:(id)a4;
-- (void)presentMigrationPromptViewController:(id)a3 withDesiredServices:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)presentPromptViewController:(id)a3 withDesiredServices:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)presentResearchDataViewController:(id)a3 completionHandler:(id)a4;
-- (void)presentStudyAuthorizationPromptViewController:(id)a3 bundlePath:(id)a4 completionHandler:(id)a5;
+- (void)presentAppsAndStudiesPromptViewController:(id)controller completionHandler:(id)handler;
+- (void)presentFirstRunOnboardingViewController:(id)controller completionHandler:(id)handler;
+- (void)presentMigrationPromptViewController:(id)controller withDesiredServices:(id)services bundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)presentPromptViewController:(id)controller withDesiredServices:(id)services bundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)presentResearchDataViewController:(id)controller completionHandler:(id)handler;
+- (void)presentStudyAuthorizationPromptViewController:(id)controller bundlePath:(id)path completionHandler:(id)handler;
 - (void)viewControllerCleanUp;
 @end
 
@@ -23,7 +23,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAuthorizationPromptPresentationController = os_log_create("com.apple.SensorKit", "AuthorizationPromptPresentationController");
   }
@@ -57,96 +57,96 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
   [(SRAuthorizationPromptPresentationController *)&v3 dealloc];
 }
 
-- (BOOL)presentAnyViewController:(id)a3 reason:(int64_t)a4 completionHandler:(id)a5
+- (BOOL)presentAnyViewController:(id)controller reason:(int64_t)reason completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = [(SRAuthorizationPromptPresentationController *)self isPresenting];
-  if (v9)
+  isPresenting = [(SRAuthorizationPromptPresentationController *)self isPresenting];
+  if (isPresenting)
   {
     v10 = SRLogAuthorizationPromptPresentationController;
     if (os_log_type_enabled(SRLogAuthorizationPromptPresentationController, OS_LOG_TYPE_ERROR))
     {
       v13 = 134218240;
-      v14 = a4;
+      reasonCopy = reason;
       v15 = 2048;
-      v16 = [(SRAuthorizationPromptPresentationController *)self reason];
+      reason = [(SRAuthorizationPromptPresentationController *)self reason];
       _os_log_error_impl(&dword_265602000, v10, OS_LOG_TYPE_ERROR, "Rejecting prompt request %ld due to ongoing prompt %ld", &v13, 0x16u);
     }
 
-    (*(a5 + 2))(a5, [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CDC650] code:8195 userInfo:0]);
+    (*(handler + 2))(handler, [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CDC650] code:8195 userInfo:0]);
   }
 
   else
   {
     [(SRAuthorizationPromptPresentationController *)self setPresenting:1];
-    [(SRAuthorizationPromptPresentationController *)self setReason:a4];
+    [(SRAuthorizationPromptPresentationController *)self setReason:reason];
     [(SRAuthorizationPromptPresentationController *)self setError:0];
-    [(SRAuthorizationPromptPresentationController *)self setCompletionHandler:a5];
-    [(SRAuthorizationPromptPresentationController *)self setViewController:a3];
+    [(SRAuthorizationPromptPresentationController *)self setCompletionHandler:handler];
+    [(SRAuthorizationPromptPresentationController *)self setViewController:controller];
     [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] setDelegate:self];
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return !v9;
+  return !isPresenting;
 }
 
-- (void)presentPromptViewController:(id)a3 withDesiredServices:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6
+- (void)presentPromptViewController:(id)controller withDesiredServices:(id)services bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:1 completionHandler:a6])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:1 completionHandler:handler])
   {
-    v9 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v9 requestAuthorizationForBundle:a5 services:a4];
+    [(SRRemoteAuthorizationPromptViewController *)viewController requestAuthorizationForBundle:identifier services:services];
   }
 }
 
-- (void)presentMigrationPromptViewController:(id)a3 withDesiredServices:(id)a4 bundleIdentifier:(id)a5 completionHandler:(id)a6
+- (void)presentMigrationPromptViewController:(id)controller withDesiredServices:(id)services bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:7 completionHandler:a6])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:7 completionHandler:handler])
   {
-    v9 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v9 requestAuthorizationMigrationForBundle:a5 services:a4];
+    [(SRRemoteAuthorizationPromptViewController *)viewController requestAuthorizationMigrationForBundle:identifier services:services];
   }
 }
 
-- (void)presentAppsAndStudiesPromptViewController:(id)a3 completionHandler:(id)a4
+- (void)presentAppsAndStudiesPromptViewController:(id)controller completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:3 completionHandler:a4])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:3 completionHandler:handler])
   {
-    v5 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v5 showAppsAndStudies];
+    [(SRRemoteAuthorizationPromptViewController *)viewController showAppsAndStudies];
   }
 }
 
-- (void)presentStudyAuthorizationPromptViewController:(id)a3 bundlePath:(id)a4 completionHandler:(id)a5
+- (void)presentStudyAuthorizationPromptViewController:(id)controller bundlePath:(id)path completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:4 completionHandler:a5])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:4 completionHandler:handler])
   {
-    v7 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v7 showStudyAuthorizationForBundlePath:a4];
+    [(SRRemoteAuthorizationPromptViewController *)viewController showStudyAuthorizationForBundlePath:path];
   }
 }
 
-- (void)presentResearchDataViewController:(id)a3 completionHandler:(id)a4
+- (void)presentResearchDataViewController:(id)controller completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:5 completionHandler:a4])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:5 completionHandler:handler])
   {
-    v5 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v5 showResearchData];
+    [(SRRemoteAuthorizationPromptViewController *)viewController showResearchData];
   }
 }
 
-- (void)presentFirstRunOnboardingViewController:(id)a3 completionHandler:(id)a4
+- (void)presentFirstRunOnboardingViewController:(id)controller completionHandler:(id)handler
 {
-  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:a3 reason:6 completionHandler:a4])
+  if ([(SRAuthorizationPromptPresentationController *)self presentAnyViewController:controller reason:6 completionHandler:handler])
   {
-    v5 = [(SRAuthorizationPromptPresentationController *)self viewController];
+    viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
 
-    [(SRRemoteAuthorizationPromptViewController *)v5 showFirstRunOnboarding];
+    [(SRRemoteAuthorizationPromptViewController *)viewController showFirstRunOnboarding];
   }
 }
 
@@ -157,9 +157,9 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
   return [v2 rootViewController];
 }
 
-- (void)authorizationUIReadyForDisplayModally:(BOOL)a3
+- (void)authorizationUIReadyForDisplayModally:(BOOL)modally
 {
-  v3 = a3;
+  modallyCopy = modally;
   v5 = SRLogAuthorizationPromptPresentationController;
   if (os_log_type_enabled(SRLogAuthorizationPromptPresentationController, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,16 +167,16 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
     _os_log_impl(&dword_265602000, v5, OS_LOG_TYPE_DEFAULT, "Putting up prompt UI", v8, 2u);
   }
 
-  v6 = [(SRAuthorizationPromptPresentationController *)self presentationAnchor];
-  if (v3)
+  presentationAnchor = [(SRAuthorizationPromptPresentationController *)self presentationAnchor];
+  if (modallyCopy)
   {
     [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] setModalPresentationStyle:2];
-    [-[SRAuthorizationPromptPresentationController presentingViewControllerFromRoot:](self presentingViewControllerFromRoot:{v6), "presentViewController:animated:completion:", -[SRAuthorizationPromptPresentationController viewController](self, "viewController"), 1, 0}];
+    [-[SRAuthorizationPromptPresentationController presentingViewControllerFromRoot:](self presentingViewControllerFromRoot:{presentationAnchor), "presentViewController:animated:completion:", -[SRAuthorizationPromptPresentationController viewController](self, "viewController"), 1, 0}];
   }
 
   else
   {
-    v7 = [(SRAuthorizationPromptPresentationController *)self navigationControllerFromRoot:v6];
+    v7 = [(SRAuthorizationPromptPresentationController *)self navigationControllerFromRoot:presentationAnchor];
     [v7 pushViewController:-[SRAuthorizationPromptPresentationController viewController](self animated:{"viewController"), 1}];
     -[SRAuthorizationPromptPresentationController setHostNavigationBarHidden:](self, "setHostNavigationBarHidden:", [v7 isNavigationBarHidden]);
     [v7 setNavigationBarHidden:1];
@@ -214,8 +214,8 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
     _os_log_impl(&dword_265602000, v3, OS_LOG_TYPE_DEFAULT, "Prompt UI torn down", buf, 2u);
   }
 
-  v4 = [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] isMovingFromParentViewController];
-  if (![(SRAuthorizationPromptPresentationController *)self isViewControllerPresentedModally]&& (v4 & 1) == 0)
+  isMovingFromParentViewController = [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] isMovingFromParentViewController];
+  if (![(SRAuthorizationPromptPresentationController *)self isViewControllerPresentedModally]&& (isMovingFromParentViewController & 1) == 0)
   {
     v5 = SRLogAuthorizationPromptPresentationController;
     if (os_log_type_enabled(SRLogAuthorizationPromptPresentationController, OS_LOG_TYPE_DEFAULT))
@@ -224,11 +224,11 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
       _os_log_impl(&dword_265602000, v5, OS_LOG_TYPE_DEFAULT, "Prompt ViewController is not moving from parent view controller, popping from the navigation controller if necessary", v7, 2u);
     }
 
-    v6 = [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] parentViewController];
+    parentViewController = [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] parentViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 popViewControllerAnimated:0];
+      [parentViewController popViewControllerAnimated:0];
     }
   }
 
@@ -247,48 +247,48 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
   [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] invalidate];
   [(SRRemoteAuthorizationPromptViewController *)[(SRAuthorizationPromptPresentationController *)self viewController] setDelegate:0];
   [(SRAuthorizationPromptPresentationController *)self setViewController:0];
-  v4 = [(SRAuthorizationPromptPresentationController *)self completionHandler];
+  completionHandler = [(SRAuthorizationPromptPresentationController *)self completionHandler];
   [(SRAuthorizationPromptPresentationController *)self setPresenting:0];
   [(SRAuthorizationPromptPresentationController *)self setReason:0];
-  v4[2](v4, [(SRAuthorizationPromptPresentationController *)self error]);
+  completionHandler[2](completionHandler, [(SRAuthorizationPromptPresentationController *)self error]);
 
   [(SRAuthorizationPromptPresentationController *)self setError:0];
 }
 
-- (void)completePromptWithError:(id)a3
+- (void)completePromptWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  [(SRAuthorizationPromptPresentationController *)self setError:a3];
+  [(SRAuthorizationPromptPresentationController *)self setError:error];
   v4 = [(SRAuthorizationPromptPresentationController *)self navigationControllerFromRoot:[(SRAuthorizationPromptPresentationController *)self presentationAnchor]];
-  v5 = [(SRAuthorizationPromptPresentationController *)self viewController];
+  viewController = [(SRAuthorizationPromptPresentationController *)self viewController];
   if ([(SRAuthorizationPromptPresentationController *)self isViewControllerPresentedModally])
   {
     v6 = SRLogAuthorizationPromptPresentationController;
     if (os_log_type_enabled(SRLogAuthorizationPromptPresentationController, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134349312;
-      v12 = v5;
+      v12 = viewController;
       v13 = 2050;
-      v14 = [(SRRemoteAuthorizationPromptViewController *)v5 presentingViewController];
+      presentingViewController = [(SRRemoteAuthorizationPromptViewController *)viewController presentingViewController];
       _os_log_impl(&dword_265602000, v6, OS_LOG_TYPE_DEFAULT, "Dismissing ViewController %{public}p from presenting ViewController %{public}p", &v11, 0x16u);
     }
 
-    [-[SRRemoteAuthorizationPromptViewController presentingViewController](v5 "presentingViewController")];
+    [-[SRRemoteAuthorizationPromptViewController presentingViewController](viewController "presentingViewController")];
   }
 
   else
   {
-    v7 = [v4 topViewController];
+    topViewController = [v4 topViewController];
     v8 = SRLogAuthorizationPromptPresentationController;
     v9 = os_log_type_enabled(SRLogAuthorizationPromptPresentationController, OS_LOG_TYPE_DEFAULT);
-    if (v7 == v5)
+    if (topViewController == viewController)
     {
       if (v9)
       {
         v11 = 134349312;
-        v12 = v5;
+        v12 = viewController;
         v13 = 2050;
-        v14 = v4;
+        presentingViewController = v4;
         _os_log_impl(&dword_265602000, v8, OS_LOG_TYPE_DEFAULT, "Popping ViewController %{public}p from NavigationController %{public}p", &v11, 0x16u);
       }
 
@@ -300,7 +300,7 @@ SRAuthorizationPromptPresentationController *__61__SRAuthorizationPromptPresenta
       if (v9)
       {
         v11 = 134349056;
-        v12 = v5;
+        v12 = viewController;
         _os_log_impl(&dword_265602000, v8, OS_LOG_TYPE_DEFAULT, "ViewController %{public}p is neither modal or in a NavigationController, just cleaning up", &v11, 0xCu);
       }
 
@@ -321,37 +321,37 @@ void __71__SRAuthorizationPromptPresentationController_completePromptWithError__
   }
 }
 
-- (id)navigationControllerFromRoot:(id)a3
+- (id)navigationControllerFromRoot:(id)root
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [a3 selectedViewController];
+    root = [root selectedViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return root;
   }
 
-  if (![a3 navigationController])
+  if (![root navigationController])
   {
     return 0;
   }
 
-  return [a3 navigationController];
+  return [root navigationController];
 }
 
-- (id)presentingViewControllerFromRoot:(id)a3
+- (id)presentingViewControllerFromRoot:(id)root
 {
-  v3 = a3;
-  for (i = a3; [i presentedViewController]; v3 = i)
+  rootCopy = root;
+  for (i = root; [i presentedViewController]; rootCopy = i)
   {
-    i = [v3 presentedViewController];
+    i = [rootCopy presentedViewController];
   }
 
-  return v3;
+  return rootCopy;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface __RKEntityCollisionTrigger
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityCollisionTrigger
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   __RKEntityCollisionTrigger.copy(with:)(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

@@ -1,17 +1,17 @@
 @interface InteractionSeparatorLineCell
-- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 @end
 
 @implementation InteractionSeparatorLineCell
 
-- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC19HealthMedicationsUI28InteractionSeparatorLineCell_item;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -19,13 +19,13 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI28InteractionSeparatorLineCell____lazy_storage___separatorView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for InteractionSeparatorLineCell();
-  v8 = [(InteractionSeparatorLineCell *)&v10 initWithFrame:x, y, width, height];
+  height = [(InteractionSeparatorLineCell *)&v10 initWithFrame:x, y, width, height];
   sub_228201CB0();
 
-  return v8;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI28InteractionSeparatorLineCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC19HealthMedicationsUI28InteractionSeparatorLineCell_item;
   *v4 = 0u;
@@ -34,8 +34,8 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI28InteractionSeparatorLineCell____lazy_storage___separatorView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for InteractionSeparatorLineCell();
-  v5 = a3;
-  v6 = [(InteractionSeparatorLineCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(InteractionSeparatorLineCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,5 +1,5 @@
 @interface WFLinkNotesPinNotesAction
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 - (id)overrideLabelsByParameter;
 - (id)parameterSummary;
 @end
@@ -11,15 +11,15 @@
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = WFLinkNotesPinNotesAction;
-  v2 = [(WFLinkFavoriteEntityAction *)&v9 overrideLabelsByParameter];
+  overrideLabelsByParameter = [(WFLinkFavoriteEntityAction *)&v9 overrideLabelsByParameter];
   v10 = @"operation";
   v3 = WFLocalizedStringResourceWithKey(@"Operation (operation)", @"Operation");
   v11[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  if (v2)
+  if (overrideLabelsByParameter)
   {
-    v5 = [v2 if_dictionaryByAddingEntriesFromDictionary:v4];
+    v5 = [overrideLabelsByParameter if_dictionaryByAddingEntriesFromDictionary:v4];
   }
 
   else
@@ -54,11 +54,11 @@
   return v10;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"WFLinkNotesPinNotesAction - Action Name", @"Pin Notes");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

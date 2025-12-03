@@ -1,21 +1,21 @@
 @interface PUIPosterSceneSnapshotter
 + (id)fileIOQueue;
 - (PUIPosterSceneSnapshotter)init;
-- (PUIPosterSceneSnapshotter)initWithExtensionInstance:(id)a3 snapshotInfo:(id)a4;
+- (PUIPosterSceneSnapshotter)initWithExtensionInstance:(id)instance snapshotInfo:(id)info;
 - (PUIPosterSceneSnapshotterDelegate)delegate;
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (void)_activateTimeoutTimer;
-- (void)_mainQueue_captureSnapshotWithScene:(id)a3;
-- (void)_mainQueue_finishWithError:(id)a3 result:(id)a4;
+- (void)_mainQueue_captureSnapshotWithScene:(id)scene;
+- (void)_mainQueue_finishWithError:(id)error result:(id)result;
 - (void)_mainQueue_setupScene;
-- (void)_teardownSceneSynchronously:(BOOL)a3 sceneWasDeactivated:(BOOL)a4;
+- (void)_teardownSceneSynchronously:(BOOL)synchronously sceneWasDeactivated:(BOOL)deactivated;
 - (void)dealloc;
-- (void)fireSceneDeactivationErrorForTesting:(id)a3;
+- (void)fireSceneDeactivationErrorForTesting:(id)testing;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4;
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error;
 - (void)start;
 @end
 
@@ -53,11 +53,11 @@ void __40__PUIPosterSceneSnapshotter_fileIOQueue__block_invoke()
   [(PUIPosterSceneSnapshotter *)&v4 dealloc];
 }
 
-- (PUIPosterSceneSnapshotter)initWithExtensionInstance:(id)a3 snapshotInfo:(id)a4
+- (PUIPosterSceneSnapshotter)initWithExtensionInstance:(id)instance snapshotInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  instanceCopy = instance;
+  infoCopy = info;
+  v10 = instanceCopy;
   NSClassFromString(&cfstr_Pfposterextens.isa);
   if (!v10)
   {
@@ -69,16 +69,16 @@ void __40__PUIPosterSceneSnapshotter_fileIOQueue__block_invoke()
     [PUIPosterSceneSnapshotter initWithExtensionInstance:a2 snapshotInfo:?];
   }
 
-  if (!v9)
+  if (!infoCopy)
   {
     [PUIPosterSceneSnapshotter initWithExtensionInstance:a2 snapshotInfo:?];
   }
 
-  v11 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-  v12 = [v11 valueForEntitlement:@"com.apple.runningboard.posterkit.host"];
-  v13 = [v12 BOOLValue];
+  tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+  v12 = [tokenForCurrentProcess valueForEntitlement:@"com.apple.runningboard.posterkit.host"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v24.receiver = self;
     v24.super_class = PUIPosterSceneSnapshotter;
@@ -86,8 +86,8 @@ void __40__PUIPosterSceneSnapshotter_fileIOQueue__block_invoke()
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_extensionInstance, a3);
-      objc_storeStrong(&v15->_snapshotInfo, a4);
+      objc_storeStrong(&v14->_extensionInstance, instance);
+      objc_storeStrong(&v15->_snapshotInfo, info);
       v16 = [objc_alloc(MEMORY[0x1E698E610]) initWithFlag:0];
       invalidationFlag = v15->_invalidationFlag;
       v15->_invalidationFlag = v16;
@@ -137,30 +137,30 @@ void __40__PUIPosterSceneSnapshotter_fileIOQueue__block_invoke()
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientHandle];
-  v9 = [v8 processHandle];
-  v10 = [v9 pid];
+  deactivateCopy = deactivate;
+  errorCopy = error;
+  clientHandle = [deactivateCopy clientHandle];
+  processHandle = [clientHandle processHandle];
+  v10 = [processHandle pid];
 
   v11 = PUILogSnapshotter();
   v12 = v11;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+      logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
       v14 = 138544130;
-      v15 = v13;
+      v15 = logIdentifier;
       v16 = 1026;
       v17 = v10;
       v18 = 2112;
-      v19 = v6;
+      v19 = deactivateCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = errorCopy;
       _os_log_error_impl(&dword_1A8C85000, v12, OS_LOG_TYPE_ERROR, "(%{public}@, pid: %{public}d) sceneWillDeactivate:'%@' withError:'%@'", &v14, 0x26u);
 LABEL_6:
     }
@@ -168,62 +168,62 @@ LABEL_6:
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
     v14 = 138544130;
-    v15 = v13;
+    v15 = logIdentifier;
     v16 = 1026;
     v17 = v10;
     v18 = 2112;
-    v19 = v6;
+    v19 = deactivateCopy;
     v20 = 2112;
     v21 = 0;
     _os_log_impl(&dword_1A8C85000, v12, OS_LOG_TYPE_DEFAULT, "(%{public}@, pid: %{public}d) sceneWillDeactivate:'%@' withError:'%@'", &v14, 0x26u);
     goto LABEL_6;
   }
 
-  [(PUIPosterSceneSnapshotter *)self _mainQueue_finishWithError:v7 result:0];
+  [(PUIPosterSceneSnapshotter *)self _mainQueue_finishWithError:errorCopy result:0];
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = PUILogSnapshotter();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
     v7 = 138543618;
-    v8 = v6;
+    v8 = logIdentifier;
     v9 = 2112;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_1A8C85000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) sceneContentStateDidChange:'%@'", &v7, 0x16u);
   }
 
-  [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:v4];
+  [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:changeCopy];
 }
 
-- (void)scene:(id)a3 didUpdateClientSettingsWithDiff:(id)a4 oldClientSettings:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings transitionContext:(id)context
 {
-  v8 = a3;
-  if ([a4 pui_extendedRenderSessionDidChange])
+  sceneCopy = scene;
+  if ([diff pui_extendedRenderSessionDidChange])
   {
-    [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:v8];
+    [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:sceneCopy];
   }
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v33 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  actionsCopy = actions;
   v7 = PUILogSnapshotter();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
     *buf = 138543618;
-    v30 = v8;
+    v30 = logIdentifier;
     v31 = 2114;
-    v32 = v6;
+    v32 = actionsCopy;
     _os_log_impl(&dword_1A8C85000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Received actions: %{public}@", buf, 0x16u);
   }
 
@@ -231,7 +231,7 @@ LABEL_6:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -253,21 +253,21 @@ LABEL_6:
         v17 = objc_opt_self();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v16 isValid];
+          isValid = [v16 isValid];
 
-          if (v18)
+          if (isValid)
           {
             v19 = PUILogSnapshotter();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+              logIdentifier2 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
               *buf = v22;
-              v30 = v20;
+              v30 = logIdentifier2;
               _os_log_impl(&dword_1A8C85000, v19, OS_LOG_TYPE_DEFAULT, "(%{public}@) Complication rendering complete", buf, 0xCu);
             }
 
             self->_mainQueue_complicationRenderingCompleted = 1;
-            [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:v23];
+            [(PUIPosterSceneSnapshotter *)self _mainQueue_captureSnapshotWithScene:sceneCopy];
             if (!v13)
             {
               v13 = objc_opt_new();
@@ -296,26 +296,26 @@ LABEL_6:
   return v13;
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
   v4 = [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
   [(PUIPosterSceneSnapshotter *)self _mainQueue_finishWithError:v4 result:0];
 }
 
-- (void)_mainQueue_captureSnapshotWithScene:(id)a3
+- (void)_mainQueue_captureSnapshotWithScene:(id)scene
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneCopy = scene;
   BSDispatchQueueAssertMain();
-  v5 = [objc_opt_class() fileIOQueue];
-  v6 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+  fileIOQueue = [objc_opt_class() fileIOQueue];
+  logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v7 = PUILogSnapshotter();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v6;
+      *(buf + 4) = logIdentifier;
       _os_log_impl(&dword_1A8C85000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Aborting capture, Invalidated", buf, 0xCu);
     }
 
@@ -324,29 +324,29 @@ LABEL_17:
     goto LABEL_31;
   }
 
-  if ([v4 contentState] != 2)
+  if ([sceneCopy contentState] != 2)
   {
     v7 = PUILogSnapshotter();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v6;
+      *(buf + 4) = logIdentifier;
       _os_log_impl(&dword_1A8C85000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Deferring capture, Scene content state not ready", buf, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  v8 = [v4 clientSettings];
-  v9 = [v8 pui_inExtendedRenderSession];
+  clientSettings = [sceneCopy clientSettings];
+  pui_inExtendedRenderSession = [clientSettings pui_inExtendedRenderSession];
 
-  if (v9)
+  if (pui_inExtendedRenderSession)
   {
     v7 = PUILogSnapshotter();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v6;
+      *(buf + 4) = logIdentifier;
       _os_log_impl(&dword_1A8C85000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Deferring capture, scene is in extended render session", buf, 0xCu);
     }
 
@@ -359,7 +359,7 @@ LABEL_17:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v6;
+      *(buf + 4) = logIdentifier;
       _os_log_impl(&dword_1A8C85000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Deferring capture, complication rendering not completed", buf, 0xCu);
     }
 
@@ -370,7 +370,7 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf[0]) = 138543362;
-    *(buf + 4) = v6;
+    *(buf + 4) = logIdentifier;
     _os_log_impl(&dword_1A8C85000, v10, OS_LOG_TYPE_DEFAULT, "(%{public}@) Snapshot is capturing", buf, 0xCu);
   }
 
@@ -378,14 +378,14 @@ LABEL_17:
   objc_initWeak(&location, self);
   if ([(BSAtomicFlag *)self->_isSnapshottingFlag setFlag:1])
   {
-    v12 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
+    request = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
     v13 = MEMORY[0x1E698E620];
-    v14 = [v4 clientHandle];
-    v15 = [v14 processHandle];
-    v16 = v15;
-    if (v15)
+    clientHandle = [sceneCopy clientHandle];
+    processHandle = [clientHandle processHandle];
+    v16 = processHandle;
+    if (processHandle)
     {
-      [v15 auditToken];
+      [processHandle auditToken];
     }
 
     else
@@ -395,11 +395,11 @@ LABEL_17:
 
     v29 = [v13 tokenFromAuditToken:buf];
 
-    v27 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo destinationProvider];
-    if (v27)
+    destinationProvider = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo destinationProvider];
+    if (destinationProvider)
     {
-      v18 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo path];
-      v19 = [v27 snapshotDestinationFutureForPath:v18 clientAuditToken:v29];
+      path = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo path];
+      v19 = [destinationProvider snapshotDestinationFutureForPath:path clientAuditToken:v29];
     }
 
     else
@@ -411,32 +411,32 @@ LABEL_17:
       v41[3] = &unk_1E7856118;
       v42 = v29;
       v19 = [v20 futureWithBlock:v41];
-      v18 = v42;
+      path = v42;
     }
 
-    v21 = [v12 snapshotDescriptor];
-    v22 = [MEMORY[0x1E69C5268] mainThreadScheduler];
-    v28 = [MEMORY[0x1E69C5268] schedulerWithDispatchQueue:v5];
+    snapshotDescriptor = [request snapshotDescriptor];
+    mainThreadScheduler = [MEMORY[0x1E69C5268] mainThreadScheduler];
+    v28 = [MEMORY[0x1E69C5268] schedulerWithDispatchQueue:fileIOQueue];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block_invoke_2;
     v38[3] = &unk_1E7856140;
-    v39 = v4;
-    v23 = v21;
+    v39 = sceneCopy;
+    v23 = snapshotDescriptor;
     v40 = v23;
-    v24 = [v19 flatMap:v38 continuationScheduler:v22];
+    v24 = [v19 flatMap:v38 continuationScheduler:mainThreadScheduler];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block_invoke_3;
     v32[3] = &unk_1E7856168;
     objc_copyWeak(v37, &location);
-    v33 = v6;
-    v17 = v12;
+    v33 = logIdentifier;
+    v17 = request;
     v34 = v17;
     v25 = v19;
     v35 = v25;
     v37[1] = *&mainQueue_startTime;
-    v26 = v22;
+    v26 = mainThreadScheduler;
     v36 = v26;
     [v24 addSuccessBlock:v32 scheduler:v28];
     v30[0] = MEMORY[0x1E69E9820];
@@ -456,7 +456,7 @@ LABEL_17:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0]) = 138543362;
-      *(buf + 4) = v6;
+      *(buf + 4) = logIdentifier;
       _os_log_impl(&dword_1A8C85000, v17, OS_LOG_TYPE_DEFAULT, "(%{public}@) Ignoring capture, ~already~ capturing snapshots", buf, 0xCu);
     }
   }
@@ -512,10 +512,10 @@ void __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block
   }
 }
 
-- (void)_teardownSceneSynchronously:(BOOL)a3 sceneWasDeactivated:(BOOL)a4
+- (void)_teardownSceneSynchronously:(BOOL)synchronously sceneWasDeactivated:(BOOL)deactivated
 {
-  v4 = a4;
-  v5 = a3;
+  deactivatedCopy = deactivated;
+  synchronouslyCopy = synchronously;
   v30 = *MEMORY[0x1E69E9840];
   v7 = self->_mainQueue_scene;
   mainQueue_scene = self->_mainQueue_scene;
@@ -523,12 +523,12 @@ void __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block
 
   if (v7)
   {
-    v9 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
-    v10 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    request = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
     snapshotInfo = self->_snapshotInfo;
     self->_snapshotInfo = 0;
 
-    if (v5)
+    if (synchronouslyCopy)
     {
       location[1] = MEMORY[0x1E69E9820];
       location[2] = 3221225472;
@@ -537,7 +537,7 @@ void __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block
       v25 = v7;
       BSDispatchMain();
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained sceneSnapshotterDidInvalidateScene:self didWaitForSceneInvalidation:0 forRequest:v10];
+      [WeakRetained sceneSnapshotterDidInvalidateScene:self didWaitForSceneInvalidation:0 forRequest:request];
     }
 
     else
@@ -548,16 +548,16 @@ void __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block
       v19[2] = __77__PUIPosterSceneSnapshotter__teardownSceneSynchronously_sceneWasDeactivated___block_invoke_2;
       v19[3] = &unk_1E78561B8;
       objc_copyWeak(&v23, location);
-      v13 = v9;
+      v13 = logIdentifier;
       v20 = v13;
-      v21 = self;
-      v22 = v10;
+      selfCopy = self;
+      v22 = request;
       v14 = MEMORY[0x1AC5769F0](v19);
       v15 = PUILogSnapshotter();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = @"after scene invalidation completion";
-        if (v4)
+        if (deactivatedCopy)
         {
           v16 = @"immediately";
         }
@@ -569,7 +569,7 @@ void __65__PUIPosterSceneSnapshotter__mainQueue_captureSnapshotWithScene___block
         _os_log_impl(&dword_1A8C85000, v15, OS_LOG_TYPE_DEFAULT, "(%{public}@) Signaling scene invalidation %{public}@", buf, 0x16u);
       }
 
-      if (v4)
+      if (deactivatedCopy)
       {
         v14[2](v14);
       }
@@ -629,7 +629,7 @@ void __77__PUIPosterSceneSnapshotter__teardownSceneSynchronously_sceneWasDeactiv
 
 - (void)_mainQueue_setupScene
 {
-  v1 = [a1 logIdentifier];
+  logIdentifier = [self logIdentifier];
   OUTLINED_FUNCTION_3_0();
   OUTLINED_FUNCTION_4_0(&dword_1A8C85000, v2, v3, "(%{public}@) Aborting snapshot, Invalidated", v4, v5, v6, v7, v8);
 }
@@ -677,16 +677,16 @@ void __50__PUIPosterSceneSnapshotter__mainQueue_setupScene__block_invoke_2(uint6
 
 - (void)_activateTimeoutTimer
 {
-  v3 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
-  [v3 timeoutInterval];
+  request = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo request];
+  [request timeoutInterval];
   v5 = v4;
 
   if (v5 > 0.0)
   {
     objc_initWeak(&location, self);
     v6 = objc_alloc(MEMORY[0x1E698E660]);
-    v7 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
-    v8 = [@"Timeout timer for " stringByAppendingString:v7];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    v8 = [@"Timeout timer for " stringByAppendingString:logIdentifier];
     v9 = [v6 initWithIdentifier:v8];
     timeoutTimer = self->_timeoutTimer;
     self->_timeoutTimer = v9;
@@ -729,16 +729,16 @@ void __50__PUIPosterSceneSnapshotter__activateTimeoutTimer__block_invoke(uint64_
   }
 }
 
-- (void)_mainQueue_finishWithError:(id)a3 result:(id)a4
+- (void)_mainQueue_finishWithError:(id)error result:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  resultCopy = result;
   BSDispatchQueueAssertMain();
-  v8 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
-  v9 = [(FBScene *)self->_mainQueue_scene clientHandle];
-  v10 = [v9 processHandle];
-  v11 = [v10 pid];
+  logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+  clientHandle = [(FBScene *)self->_mainQueue_scene clientHandle];
+  processHandle = [clientHandle processHandle];
+  v11 = [processHandle pid];
 
   if ([(BSAtomicFlag *)self->_isCompleteFlag setFlag:1])
   {
@@ -753,19 +753,19 @@ void __50__PUIPosterSceneSnapshotter__activateTimeoutTimer__block_invoke(uint64_
 
     v13 = PUILogSnapshotter();
     v14 = v13;
-    if (v6)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v15 = self->_mainQueue_endTime - self->_mainQueue_startTime;
         v19 = 138544386;
-        v20 = v8;
+        v20 = logIdentifier;
         v21 = 1026;
         v22 = v11;
         v23 = 2114;
-        v24 = v6;
+        v24 = errorCopy;
         v25 = 2112;
-        v26 = v7;
+        v26 = resultCopy;
         v27 = 2048;
         v28 = v15;
         _os_log_error_impl(&dword_1A8C85000, v14, OS_LOG_TYPE_ERROR, "(%{public}@, pid: %{public}d) _mainQueue_finishWithError:'%{public}@' result:'%@'; runtime: %f", &v19, 0x30u);
@@ -776,27 +776,27 @@ void __50__PUIPosterSceneSnapshotter__activateTimeoutTimer__block_invoke(uint64_
     {
       v17 = self->_mainQueue_endTime - self->_mainQueue_startTime;
       v19 = 138544386;
-      v20 = v8;
+      v20 = logIdentifier;
       v21 = 1026;
       v22 = v11;
       v23 = 2114;
       v24 = 0;
       v25 = 2112;
-      v26 = v7;
+      v26 = resultCopy;
       v27 = 2048;
       v28 = v17;
       _os_log_impl(&dword_1A8C85000, v14, OS_LOG_TYPE_DEFAULT, "(%{public}@, pid: %{public}d) _mainQueue_finishWithError:'%{public}@' result:'%@'; runtime: %f", &v19, 0x30u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained sceneSnapshotterDidFinish:self result:v7 error:v6];
+    [WeakRetained sceneSnapshotterDidFinish:self result:resultCopy error:errorCopy];
 
-    [(PUIPosterSceneSnapshotter *)self _teardownSceneSynchronously:0 sceneWasDeactivated:v6 != 0];
+    [(PUIPosterSceneSnapshotter *)self _teardownSceneSynchronously:0 sceneWasDeactivated:errorCopy != 0];
     v16 = PUILogSnapshotter();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543618;
-      v20 = v8;
+      v20 = logIdentifier;
       v21 = 1026;
       v22 = v11;
       _os_log_impl(&dword_1A8C85000, v16, OS_LOG_TYPE_DEFAULT, "(%{public}@, pid: %{public}d) scene torn down", &v19, 0x12u);
@@ -819,12 +819,12 @@ void __50__PUIPosterSceneSnapshotter__activateTimeoutTimer__block_invoke(uint64_
   v3 = PUILogSnapshotter();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
-    v5 = [(BSAtomicFlag *)self->_isCompleteFlag getFlag];
+    logIdentifier = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+    getFlag = [(BSAtomicFlag *)self->_isCompleteFlag getFlag];
     *buf = 138543618;
-    v10 = v4;
+    v10 = logIdentifier;
     v11 = 1026;
-    v12 = v5;
+    v12 = getFlag;
     _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "(%{public}@) calling PUIPosterSceneSnapshotter invalidate. isComplete: %{public}d", buf, 0x12u);
   }
 
@@ -833,9 +833,9 @@ void __50__PUIPosterSceneSnapshotter__activateTimeoutTimer__block_invoke(uint64_
     v6 = PUILogSnapshotter();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
+      logIdentifier2 = [(PUIPosterSceneSnapshotterInfo *)self->_snapshotInfo logIdentifier];
       *buf = 138543362;
-      v10 = v7;
+      v10 = logIdentifier2;
       _os_log_impl(&dword_1A8C85000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@) PUIPosterSceneSnapshotter invalidated", buf, 0xCu);
     }
 
@@ -855,9 +855,9 @@ void __39__PUIPosterSceneSnapshotter_invalidate__block_invoke(uint64_t a1)
   [v1 _mainQueue_finishWithError:v2 result:0];
 }
 
-- (void)fireSceneDeactivationErrorForTesting:(id)a3
+- (void)fireSceneDeactivationErrorForTesting:(id)testing
 {
-  v5 = a3;
+  testingCopy = testing;
   if ((MEMORY[0x1AC5764B0]("[PUIPosterSceneSnapshotter fireSceneDeactivationErrorForTesting:]") & 1) == 0)
   {
     [PUIPosterSceneSnapshotter fireSceneDeactivationErrorForTesting:a2];
@@ -868,8 +868,8 @@ void __39__PUIPosterSceneSnapshotter_invalidate__block_invoke(uint64_t a1)
   v7[2] = __66__PUIPosterSceneSnapshotter_fireSceneDeactivationErrorForTesting___block_invoke;
   v7[3] = &unk_1E78548A0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = testingCopy;
+  v6 = testingCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

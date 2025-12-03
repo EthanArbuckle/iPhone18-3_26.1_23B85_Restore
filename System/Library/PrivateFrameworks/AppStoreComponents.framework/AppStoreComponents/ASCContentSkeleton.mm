@@ -1,42 +1,42 @@
 @interface ASCContentSkeleton
-+ (id)absoluteSkeleton:(double)a3;
-+ (id)fractionalSkeleton:(double)a3;
-- (ASCContentSkeleton)initWithType:(int64_t)a3 rawValue:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)skeletonRectForBounds:(CGRect)a3 forLineNumber:(unint64_t)a4 usingSkeletonContext:(id)a5;
-- (double)skeletonHeightFromContext:(id)a3;
-- (double)widthThatFits:(CGSize)a3;
++ (id)absoluteSkeleton:(double)skeleton;
++ (id)fractionalSkeleton:(double)skeleton;
+- (ASCContentSkeleton)initWithType:(int64_t)type rawValue:(double)value;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)skeletonRectForBounds:(CGRect)bounds forLineNumber:(unint64_t)number usingSkeletonContext:(id)context;
+- (double)skeletonHeightFromContext:(id)context;
+- (double)widthThatFits:(CGSize)fits;
 - (id)description;
-- (int64_t)effectiveSkeletonAlignmentFromContext:(id)a3;
+- (int64_t)effectiveSkeletonAlignmentFromContext:(id)context;
 - (unint64_t)hash;
-- (void)drawSkeletonInRect:(CGRect)a3 usingSkeletonContext:(id)a4;
+- (void)drawSkeletonInRect:(CGRect)rect usingSkeletonContext:(id)context;
 @end
 
 @implementation ASCContentSkeleton
 
-+ (id)absoluteSkeleton:(double)a3
++ (id)absoluteSkeleton:(double)skeleton
 {
-  v3 = [[a1 alloc] initWithType:0 rawValue:a3];
+  v3 = [[self alloc] initWithType:0 rawValue:skeleton];
 
   return v3;
 }
 
-+ (id)fractionalSkeleton:(double)a3
++ (id)fractionalSkeleton:(double)skeleton
 {
-  v3 = [[a1 alloc] initWithType:1 rawValue:a3];
+  v3 = [[self alloc] initWithType:1 rawValue:skeleton];
 
   return v3;
 }
 
-- (ASCContentSkeleton)initWithType:(int64_t)a3 rawValue:(double)a4
+- (ASCContentSkeleton)initWithType:(int64_t)type rawValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = ASCContentSkeleton;
   result = [(ASCContentSkeleton *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_rawValue = a4;
+    result->_type = type;
+    result->_rawValue = value;
   }
 
   return result;
@@ -48,16 +48,16 @@
   [(ASCHasher *)v3 combineInteger:[(ASCContentSkeleton *)self type]];
   [(ASCContentSkeleton *)self rawValue];
   [(ASCHasher *)v3 combineDouble:?];
-  v4 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v4;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -97,10 +97,10 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCContentSkeleton *)self type];
-  if (v4)
+  type = [(ASCContentSkeleton *)self type];
+  if (type)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -116,15 +116,15 @@
   [(ASCContentSkeleton *)self rawValue];
   [(ASCDescriber *)v3 addDouble:v5 withName:?];
 LABEL_6:
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
-- (double)widthThatFits:(CGSize)a3
+- (double)widthThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(ASCContentSkeleton *)self type:a3.width];
+  width = fits.width;
+  v5 = [(ASCContentSkeleton *)self type:fits.width];
   if (v5 == 1)
   {
     [(ASCContentSkeleton *)self rawValue];
@@ -143,22 +143,22 @@ LABEL_6:
   return result;
 }
 
-- (double)skeletonHeightFromContext:(id)a3
+- (double)skeletonHeightFromContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 font];
-  [v4 lineHeight];
+  contextCopy = context;
+  font = [contextCopy font];
+  [font lineHeight];
   v6 = v5;
-  v7 = [v3 skeletonNumberOfLines];
+  skeletonNumberOfLines = [contextCopy skeletonNumberOfLines];
 
-  if (v7 <= 1)
+  if (skeletonNumberOfLines <= 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v7;
+    v8 = skeletonNumberOfLines;
   }
 
   v9 = v6 * v8;
@@ -166,44 +166,44 @@ LABEL_6:
   return v9;
 }
 
-- (int64_t)effectiveSkeletonAlignmentFromContext:(id)a3
+- (int64_t)effectiveSkeletonAlignmentFromContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 textAlignment];
-  if (v4 == 4)
+  contextCopy = context;
+  textAlignment = [contextCopy textAlignment];
+  if (textAlignment == 4)
   {
-    v5 = 2 * ([v3 effectiveUserInterfaceLayoutDirection] != 0);
+    v5 = 2 * ([contextCopy effectiveUserInterfaceLayoutDirection] != 0);
   }
 
-  else if (v4 == 2)
+  else if (textAlignment == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v4 == 1;
+    v5 = textAlignment == 1;
   }
 
   return v5;
 }
 
-- (CGRect)skeletonRectForBounds:(CGRect)a3 forLineNumber:(unint64_t)a4 usingSkeletonContext:(id)a5
+- (CGRect)skeletonRectForBounds:(CGRect)bounds forLineNumber:(unint64_t)number usingSkeletonContext:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  contextCopy = context;
   MinX = *MEMORY[0x277CBF3A0];
   v12 = *(MEMORY[0x277CBF3A0] + 8);
   [(ASCContentSkeleton *)self widthThatFits:width, height];
   v15 = v14;
-  v16 = [v11 font];
-  [v16 capHeight];
+  font = [contextCopy font];
+  [font capHeight];
   v18 = ceil(v17);
 
-  v19 = [(ASCContentSkeleton *)self effectiveSkeletonAlignmentFromContext:v11];
+  v19 = [(ASCContentSkeleton *)self effectiveSkeletonAlignmentFromContext:contextCopy];
   switch(v19)
   {
     case 2:
@@ -244,16 +244,16 @@ LABEL_6:
   v42.size.width = width;
   v42.size.height = height;
   MinY = CGRectGetMinY(v42);
-  v21 = a4;
-  v22 = [v11 font];
-  [v22 lineHeight];
-  v24 = floor(MinY + v21 * v23);
+  numberCopy = number;
+  font2 = [contextCopy font];
+  [font2 lineHeight];
+  v24 = floor(MinY + numberCopy * v23);
 
-  v25 = [v11 font];
-  [v25 ascender];
+  font3 = [contextCopy font];
+  [font3 ascender];
   v27 = v26;
-  v28 = [v11 font];
-  [v28 capHeight];
+  font4 = [contextCopy font];
+  [font4 capHeight];
   v30 = ceil(v27 - v29);
 
   v31 = MinX;
@@ -267,30 +267,30 @@ LABEL_6:
   return result;
 }
 
-- (void)drawSkeletonInRect:(CGRect)a3 usingSkeletonContext:(id)a4
+- (void)drawSkeletonInRect:(CGRect)rect usingSkeletonContext:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contextCopy = context;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v9 = [v21 skeletonNumberOfLines];
+  skeletonNumberOfLines = [contextCopy skeletonNumberOfLines];
   v10 = 0;
-  if (v9 <= 1)
+  if (skeletonNumberOfLines <= 1)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v9;
+    v11 = skeletonNumberOfLines;
   }
 
   do
   {
-    [(ASCContentSkeleton *)self skeletonRectForBounds:v10 forLineNumber:v21 usingSkeletonContext:x, y, width, height, *&height];
+    [(ASCContentSkeleton *)self skeletonRectForBounds:v10 forLineNumber:contextCopy usingSkeletonContext:x, y, width, height, *&height];
     v12 = v23.origin.x;
     v13 = v23.origin.y;
     v14 = v23.size.width;
@@ -307,8 +307,8 @@ LABEL_6:
     }
 
     v18 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v12 cornerRadius:{v13, v14, v15, v17 * 0.5}];
-    v19 = [v21 skeletonColor];
-    [v19 set];
+    skeletonColor = [contextCopy skeletonColor];
+    [skeletonColor set];
 
     [v18 fill];
     ++v10;

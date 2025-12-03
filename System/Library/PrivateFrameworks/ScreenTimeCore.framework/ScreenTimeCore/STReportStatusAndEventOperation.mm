@@ -1,20 +1,20 @@
 @interface STReportStatusAndEventOperation
-- (STReportStatusAndEventOperation)initWithEvents:(id)a3;
-- (STReportStatusAndEventOperation)initWithStatus:(id)a3;
+- (STReportStatusAndEventOperation)initWithEvents:(id)events;
+- (STReportStatusAndEventOperation)initWithStatus:(id)status;
 - (void)main;
 @end
 
 @implementation STReportStatusAndEventOperation
 
-- (STReportStatusAndEventOperation)initWithStatus:(id)a3
+- (STReportStatusAndEventOperation)initWithStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = STReportStatusAndEventOperation;
   v5 = [(STOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [statusCopy copy];
     statusDict = v5->_statusDict;
     v5->_statusDict = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (STReportStatusAndEventOperation)initWithEvents:(id)a3
+- (STReportStatusAndEventOperation)initWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = STReportStatusAndEventOperation;
   v5 = [(STOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [eventsCopy copy];
     eventsDict = v5->_eventsDict;
     v5->_eventsDict = v6;
   }
@@ -40,13 +40,13 @@
 
 - (void)main
 {
-  v3 = [(STReportStatusAndEventOperation *)self statusDict];
-  v4 = [v3 count];
+  statusDict = [(STReportStatusAndEventOperation *)self statusDict];
+  v4 = [statusDict count];
 
   if (v4)
   {
-    v5 = [(STReportStatusAndEventOperation *)self statusDict];
-    v6 = [v5 objectForKeyedSubscript:DMFDeclarationStatusMessagesKey];
+    statusDict2 = [(STReportStatusAndEventOperation *)self statusDict];
+    v6 = [statusDict2 objectForKeyedSubscript:DMFDeclarationStatusMessagesKey];
 
     v15 = 0;
     v7 = &v15;
@@ -55,8 +55,8 @@
 
   else
   {
-    v9 = [(STReportStatusAndEventOperation *)self eventsDict];
-    v6 = [v9 objectForKeyedSubscript:DMFDeclarationStatusMessagesKey];
+    eventsDict = [(STReportStatusAndEventOperation *)self eventsDict];
+    v6 = [eventsDict objectForKeyedSubscript:DMFDeclarationStatusMessagesKey];
 
     v14 = 0;
     v7 = &v14;
@@ -68,11 +68,11 @@
 
   if (v10)
   {
-    v12 = [(STReportStatusAndEventOperation *)self payloadHandler];
-    v13 = v12;
-    if (v12)
+    payloadHandler = [(STReportStatusAndEventOperation *)self payloadHandler];
+    v13 = payloadHandler;
+    if (payloadHandler)
     {
-      (*(v12 + 16))(v12, v10);
+      (*(payloadHandler + 16))(payloadHandler, v10);
     }
 
     [(STReportStatusAndEventOperation *)self endOperationWithResultObject:0];

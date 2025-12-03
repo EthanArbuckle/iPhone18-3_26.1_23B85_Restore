@@ -1,12 +1,12 @@
 @interface BKSHIDEventDeferringPredicate
 - (BKSHIDEventDeferringPredicate)init;
-- (BKSHIDEventDeferringPredicate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithEnvironment:(id)a3 display:(id)a4 token:(id)a5;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventDeferringPredicate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithEnvironment:(id)environment display:(id)display token:(id)token;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringPredicate
@@ -18,16 +18,16 @@
   return v3 ^ v4 ^ [(BKSHIDEventDeferringToken *)self->_token hash]^ 0x1A737;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__BKSHIDEventDeferringPredicate_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -38,10 +38,10 @@ id __62__BKSHIDEventDeferringPredicate_appendDescriptionToFormatter___block_invo
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 24) withName:0 skipIfNil:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -49,10 +49,10 @@ id __62__BKSHIDEventDeferringPredicate_appendDescriptionToFormatter___block_invo
   else
   {
     v5 = objc_opt_class();
-    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (environment = self->_environment, v8 = v4->_environment, BSEqualObjects()) && (display = self->_display, v10 = v4->_display, BSEqualObjects()))
+    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (environment = self->_environment, v8 = equalCopy->_environment, BSEqualObjects()) && (display = self->_display, v10 = equalCopy->_display, BSEqualObjects()))
     {
       token = self->_token;
-      v12 = v4->_token;
+      v12 = equalCopy->_token;
       v13 = BSEqualObjects();
     }
 
@@ -65,10 +65,10 @@ id __62__BKSHIDEventDeferringPredicate_appendDescriptionToFormatter___block_invo
   return v13;
 }
 
-- (BKSHIDEventDeferringPredicate)initWithCoder:(id)a3
+- (BKSHIDEventDeferringPredicate)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -82,15 +82,15 @@ id __62__BKSHIDEventDeferringPredicate_appendDescriptionToFormatter___block_invo
       v24 = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v11 = [v7 errorWithDomain:v8 code:4866 userInfo:v10];
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
 
 LABEL_7:
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
   if (!v12)
   {
     v16 = MEMORY[0x1E696ABC0];
@@ -100,36 +100,36 @@ LABEL_7:
     v26[0] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v20 = [v16 errorWithDomain:v17 code:4866 userInfo:v19];
-    [v4 failWithError:v20];
+    [coderCopy failWithError:v20];
 
     v9 = 0;
     goto LABEL_7;
   }
 
   v9 = v12;
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   self = [(BKSHIDEventDeferringPredicate *)self _initWithEnvironment:v9 display:v13 token:v14];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_8:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   environment = self->_environment;
-  v5 = a3;
-  [v5 encodeObject:environment forKey:@"environment"];
-  [v5 encodeObject:self->_display forKey:@"display"];
-  [v5 encodeObject:self->_token forKey:@"token"];
+  coderCopy = coder;
+  [coderCopy encodeObject:environment forKey:@"environment"];
+  [coderCopy encodeObject:self->_display forKey:@"display"];
+  [coderCopy encodeObject:self->_token forKey:@"token"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSMutableHIDEventDeferringPredicate allocWithZone:a3];
+  v4 = [BKSMutableHIDEventDeferringPredicate allocWithZone:zone];
   environment = self->_environment;
   display = self->_display;
   token = self->_token;
@@ -137,13 +137,13 @@ LABEL_8:
   return [(BKSHIDEventDeferringPredicate *)v4 _initWithEnvironment:environment display:display token:token];
 }
 
-- (id)_initWithEnvironment:(id)a3 display:(id)a4 token:(id)a5
+- (id)_initWithEnvironment:(id)environment display:(id)display token:(id)token
 {
   v78 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  environmentCopy = environment;
+  displayCopy = display;
+  tokenCopy = token;
+  v12 = environmentCopy;
   if (!v12)
   {
     v27 = MEMORY[0x1E696AEC0];
@@ -161,7 +161,7 @@ LABEL_8:
       v68 = 2114;
       v69 = v33;
       v70 = 2048;
-      v71 = self;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BKSHIDEventDeferringPredicate.m";
       v74 = 1024;
@@ -182,13 +182,13 @@ LABEL_8:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v34 = MEMORY[0x1E696AEC0];
-    v35 = [v13 classForCoder];
-    if (!v35)
+    classForCoder = [v13 classForCoder];
+    if (!classForCoder)
     {
-      v35 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v36 = NSStringFromClass(v35);
+    v36 = NSStringFromClass(classForCoder);
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
     v39 = [v34 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"environment", v36, v38];
@@ -203,7 +203,7 @@ LABEL_8:
       v68 = 2114;
       v69 = v42;
       v70 = 2048;
-      v71 = self;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BKSHIDEventDeferringPredicate.m";
       v74 = 1024;
@@ -219,20 +219,20 @@ LABEL_8:
     JUMPOUT(0x18638491CLL);
   }
 
-  v14 = v10;
+  v14 = displayCopy;
   if (v14)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v43 = MEMORY[0x1E696AEC0];
-      v44 = [v14 classForCoder];
-      if (!v44)
+      classForCoder2 = [v14 classForCoder];
+      if (!classForCoder2)
       {
-        v44 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v45 = NSStringFromClass(v44);
+      v45 = NSStringFromClass(classForCoder2);
       v46 = objc_opt_class();
       v47 = NSStringFromClass(v46);
       v48 = [v43 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v45, v47];
@@ -247,7 +247,7 @@ LABEL_8:
         v68 = 2114;
         v69 = v51;
         v70 = 2048;
-        v71 = self;
+        selfCopy5 = self;
         v72 = 2114;
         v73 = @"BKSHIDEventDeferringPredicate.m";
         v74 = 1024;
@@ -264,20 +264,20 @@ LABEL_8:
     }
   }
 
-  v15 = v11;
+  v15 = tokenCopy;
   if (v15)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v52 = MEMORY[0x1E696AEC0];
-      v53 = [v15 classForCoder];
-      if (!v53)
+      classForCoder3 = [v15 classForCoder];
+      if (!classForCoder3)
       {
-        v53 = objc_opt_class();
+        classForCoder3 = objc_opt_class();
       }
 
-      v54 = NSStringFromClass(v53);
+      v54 = NSStringFromClass(classForCoder3);
       v55 = objc_opt_class();
       v56 = NSStringFromClass(v55);
       v57 = [v52 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"token", v54, v56];
@@ -292,7 +292,7 @@ LABEL_8:
         v68 = 2114;
         v69 = v60;
         v70 = 2048;
-        v71 = self;
+        selfCopy5 = self;
         v72 = 2114;
         v73 = @"BKSHIDEventDeferringPredicate.m";
         v74 = 1024;
@@ -326,7 +326,7 @@ LABEL_8:
         v68 = 2114;
         v69 = v64;
         v70 = 2048;
-        v71 = self;
+        selfCopy5 = self;
         v72 = 2114;
         v73 = @"BKSHIDEventDeferringPredicate.m";
         v74 = 1024;
@@ -378,7 +378,7 @@ LABEL_8:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringPredicate.m";
     v17 = 1024;

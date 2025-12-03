@@ -1,10 +1,10 @@
 @interface ICQQuotaInfoResponse
 - (BOOL)hasPurchasedMoreStorage;
-- (ICQQuotaInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (ICQQuotaInfoResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (NSString)availableStorageText;
 - (NSString)totalStorageText;
-- (id)_sizeStringFromBytes:(id)a3;
-- (id)storageFooter:(BOOL)a3;
+- (id)_sizeStringFromBytes:(id)bytes;
+- (id)storageFooter:(BOOL)footer;
 - (unint64_t)availableStorage;
 - (unint64_t)totalStorage;
 - (unint64_t)usedStorage;
@@ -12,12 +12,12 @@
 
 @implementation ICQQuotaInfoResponse
 
-- (ICQQuotaInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (ICQQuotaInfoResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v55 = *MEMORY[0x277D85DE8];
   v53.receiver = self;
   v53.super_class = ICQQuotaInfoResponse;
-  v4 = [(AAResponse *)&v53 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v53 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {
@@ -142,16 +142,16 @@
                   v37 = v28;
                   v38 = v23;
                   v39 = v29;
-                  v40 = [v34 unsignedLongLongValue];
-                  v41 = [v33 integerValue];
-                  v42 = v40;
+                  unsignedLongLongValue = [v34 unsignedLongLongValue];
+                  integerValue = [v33 integerValue];
+                  v42 = unsignedLongLongValue;
                   v29 = v39;
                   v23 = v38;
                   v28 = v37;
                   v27 = v36;
                   v26 = v35;
                   v25 = v48;
-                  [v47 setStorageInUse:v42 forMediaKind:v41];
+                  [v47 setStorageInUse:v42 forMediaKind:integerValue];
                 }
               }
             }
@@ -181,15 +181,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSString)totalStorageText
@@ -221,23 +221,23 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)availableStorage
 {
   v2 = [(NSDictionary *)self->_quotaInfoDict objectForKey:@"total_available"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (NSString)availableStorageText
@@ -263,7 +263,7 @@
   return v10;
 }
 
-- (id)storageFooter:(BOOL)a3
+- (id)storageFooter:(BOOL)footer
 {
   if (!self->_basicAccount)
   {
@@ -290,7 +290,7 @@
     goto LABEL_7;
   }
 
-  if (a3)
+  if (footer)
   {
     p_otherToolbarItems = &self->_otherToolbarItems;
     otherToolbarItems = self->_otherToolbarItems;
@@ -384,12 +384,12 @@ LABEL_11:
   return v3;
 }
 
-- (id)_sizeStringFromBytes:(id)a3
+- (id)_sizeStringFromBytes:(id)bytes
 {
   v3 = MEMORY[0x277CCA8E8];
-  v4 = [a3 longLongValue];
+  longLongValue = [bytes longLongValue];
 
-  return [v3 stringFromByteCount:v4 countStyle:3];
+  return [v3 stringFromByteCount:longLongValue countStyle:3];
 }
 
 @end

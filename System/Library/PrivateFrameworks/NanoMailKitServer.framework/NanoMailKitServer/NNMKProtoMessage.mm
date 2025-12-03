@@ -1,26 +1,26 @@
 @interface NNMKProtoMessage
-+ (id)protoMessageFromMessage:(id)a3 organizedByThread:(BOOL)a4 sanitizeMessageId:(BOOL)a5 supportsStandaloneMode:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoMessageFromMessage:(id)message organizedByThread:(BOOL)thread sanitizeMessageId:(BOOL)id supportsStandaloneMode:(BOOL)mode;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBcc:(id)a3;
-- (void)addCc:(id)a3;
-- (void)addTo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsThreadSpecific:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasStatusVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBcc:(id)bcc;
+- (void)addCc:(id)cc;
+- (void)addTo:(id)to;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsThreadSpecific:(BOOL)specific;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasStatusVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMessage
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -33,63 +33,63 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   tos = self->_tos;
-  v8 = v4;
+  v8 = toCopy;
   if (!tos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_tos;
     self->_tos = v6;
 
-    v4 = v8;
+    toCopy = v8;
     tos = self->_tos;
   }
 
-  [(NSMutableArray *)tos addObject:v4];
+  [(NSMutableArray *)tos addObject:toCopy];
 }
 
-- (void)addCc:(id)a3
+- (void)addCc:(id)cc
 {
-  v4 = a3;
+  ccCopy = cc;
   ccs = self->_ccs;
-  v8 = v4;
+  v8 = ccCopy;
   if (!ccs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ccs;
     self->_ccs = v6;
 
-    v4 = v8;
+    ccCopy = v8;
     ccs = self->_ccs;
   }
 
-  [(NSMutableArray *)ccs addObject:v4];
+  [(NSMutableArray *)ccs addObject:ccCopy];
 }
 
-- (void)addBcc:(id)a3
+- (void)addBcc:(id)bcc
 {
-  v4 = a3;
+  bccCopy = bcc;
   bccs = self->_bccs;
-  v8 = v4;
+  v8 = bccCopy;
   if (!bccs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bccs;
     self->_bccs = v6;
 
-    v4 = v8;
+    bccCopy = v8;
     bccs = self->_bccs;
   }
 
-  [(NSMutableArray *)bccs addObject:v4];
+  [(NSMutableArray *)bccs addObject:bccCopy];
 }
 
-- (void)setHasIsThreadSpecific:(BOOL)a3
+- (void)setHasIsThreadSpecific:(BOOL)specific
 {
-  if (a3)
+  if (specific)
   {
     v3 = 8;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasStatusVersion:(BOOL)a3
+- (void)setHasStatusVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -123,20 +123,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMessage;
   v4 = [(NNMKProtoMessage *)&v8 description];
-  v5 = [(NNMKProtoMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   messageId = self->_messageId;
   if (messageId)
   {
-    [v3 setObject:messageId forKey:@"messageId"];
+    [dictionary setObject:messageId forKey:@"messageId"];
   }
 
   accountId = self->_accountId;
@@ -253,10 +253,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_messageId)
   {
     PBDataWriterWriteStringField();
@@ -433,38 +433,38 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v19 = v4;
+  toCopy = to;
+  v19 = toCopy;
   if (self->_messageId)
   {
-    [v4 setMessageId:?];
-    v4 = v19;
+    [toCopy setMessageId:?];
+    toCopy = v19;
   }
 
   if (self->_accountId)
   {
     [v19 setAccountId:?];
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_conversationId)
   {
     [v19 setConversationId:?];
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_subject)
   {
     [v19 setSubject:?];
-    v4 = v19;
+    toCopy = v19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 30) = self->_status;
-    *(v4 + 148) |= 2u;
+    *(toCopy + 30) = self->_status;
+    *(toCopy + 148) |= 2u;
   }
 
   if (self->_from)
@@ -475,10 +475,10 @@
   if ([(NNMKProtoMessage *)self tosCount])
   {
     [v19 clearTos];
-    v5 = [(NNMKProtoMessage *)self tosCount];
-    if (v5)
+    tosCount = [(NNMKProtoMessage *)self tosCount];
+    if (tosCount)
     {
-      v6 = v5;
+      v6 = tosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoMessage *)self toAtIndex:i];
@@ -490,10 +490,10 @@
   if ([(NNMKProtoMessage *)self ccsCount])
   {
     [v19 clearCcs];
-    v9 = [(NNMKProtoMessage *)self ccsCount];
-    if (v9)
+    ccsCount = [(NNMKProtoMessage *)self ccsCount];
+    if (ccsCount)
     {
-      v10 = v9;
+      v10 = ccsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NNMKProtoMessage *)self ccAtIndex:j];
@@ -520,10 +520,10 @@
   if ([(NNMKProtoMessage *)self bccsCount])
   {
     [v19 clearBccs];
-    v13 = [(NNMKProtoMessage *)self bccsCount];
-    if (v13)
+    bccsCount = [(NNMKProtoMessage *)self bccsCount];
+    if (bccsCount)
     {
-      v14 = v13;
+      v14 = bccsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(NNMKProtoMessage *)self bccAtIndex:k];
@@ -577,23 +577,23 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_messageId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_messageId copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_accountId copyWithZone:a3];
+  v8 = [(NSString *)self->_accountId copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_conversationId copyWithZone:a3];
+  v10 = [(NSString *)self->_conversationId copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_subject copyWithZone:a3];
+  v12 = [(NSString *)self->_subject copyWithZone:zone];
   v13 = *(v5 + 128);
   *(v5 + 128) = v12;
 
@@ -603,7 +603,7 @@
     *(v5 + 148) |= 2u;
   }
 
-  v14 = [(NSString *)self->_from copyWithZone:a3];
+  v14 = [(NSString *)self->_from copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -626,7 +626,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v59 + 1) + 8 * i) copyWithZone:a3];
+        v21 = [*(*(&v59 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTo:v21];
       }
 
@@ -655,7 +655,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v55 + 1) + 8 * j) copyWithZone:a3];
+        v27 = [*(*(&v55 + 1) + 8 * j) copyWithZone:zone];
         [v5 addCc:v27];
       }
 
@@ -665,15 +665,15 @@
     while (v24);
   }
 
-  v28 = [(NSData *)self->_dateSent copyWithZone:a3];
+  v28 = [(NSData *)self->_dateSent copyWithZone:zone];
   v29 = *(v5 + 48);
   *(v5 + 48) = v28;
 
-  v30 = [(NSData *)self->_dateReceived copyWithZone:a3];
+  v30 = [(NSData *)self->_dateReceived copyWithZone:zone];
   v31 = *(v5 + 40);
   *(v5 + 40) = v30;
 
-  v32 = [(NSString *)self->_messageIdHeader copyWithZone:a3];
+  v32 = [(NSString *)self->_messageIdHeader copyWithZone:zone];
   v33 = *(v5 + 88);
   *(v5 + 88) = v32;
 
@@ -696,7 +696,7 @@
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v51 + 1) + 8 * k) copyWithZone:{a3, v51}];
+        v39 = [*(*(&v51 + 1) + 8 * k) copyWithZone:{zone, v51}];
         [v5 addBcc:v39];
       }
 
@@ -706,15 +706,15 @@
     while (v36);
   }
 
-  v40 = [(NSString *)self->_remoteId copyWithZone:a3];
+  v40 = [(NSString *)self->_remoteId copyWithZone:zone];
   v41 = *(v5 + 112);
   *(v5 + 112) = v40;
 
-  v42 = [(NSString *)self->_notificationMessageId copyWithZone:a3];
+  v42 = [(NSString *)self->_notificationMessageId copyWithZone:zone];
   v43 = *(v5 + 96);
   *(v5 + 96) = v42;
 
-  v44 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v44 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v45 = *(v5 + 72);
   *(v5 + 72) = v44;
 
@@ -732,7 +732,7 @@
     *(v5 + 148) |= 1u;
   }
 
-  v47 = [(NSString *)self->_publisherBulletinId copyWithZone:a3, v51];
+  v47 = [(NSString *)self->_publisherBulletinId copyWithZone:zone, v51];
   v48 = *(v5 + 104);
   *(v5 + 104) = v47;
 
@@ -746,16 +746,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   messageId = self->_messageId;
-  if (messageId | *(v4 + 10))
+  if (messageId | *(equalCopy + 10))
   {
     if (![(NSString *)messageId isEqual:?])
     {
@@ -764,7 +764,7 @@
   }
 
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1))
+  if (accountId | *(equalCopy + 1))
   {
     if (![(NSString *)accountId isEqual:?])
     {
@@ -773,7 +773,7 @@
   }
 
   conversationId = self->_conversationId;
-  if (conversationId | *(v4 + 4))
+  if (conversationId | *(equalCopy + 4))
   {
     if (![(NSString *)conversationId isEqual:?])
     {
@@ -782,7 +782,7 @@
   }
 
   subject = self->_subject;
-  if (subject | *(v4 + 16))
+  if (subject | *(equalCopy + 16))
   {
     if (![(NSString *)subject isEqual:?])
     {
@@ -790,28 +790,28 @@
     }
   }
 
-  v9 = *(v4 + 148);
+  v9 = *(equalCopy + 148);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 148) & 2) == 0 || self->_status != *(v4 + 30))
+    if ((*(equalCopy + 148) & 2) == 0 || self->_status != *(equalCopy + 30))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 148) & 2) != 0)
+  else if ((*(equalCopy + 148) & 2) != 0)
   {
     goto LABEL_54;
   }
 
   from = self->_from;
-  if (from | *(v4 + 7) && ![(NSString *)from isEqual:?])
+  if (from | *(equalCopy + 7) && ![(NSString *)from isEqual:?])
   {
     goto LABEL_54;
   }
 
   tos = self->_tos;
-  if (tos | *(v4 + 17))
+  if (tos | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)tos isEqual:?])
     {
@@ -820,7 +820,7 @@
   }
 
   ccs = self->_ccs;
-  if (ccs | *(v4 + 3))
+  if (ccs | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)ccs isEqual:?])
     {
@@ -829,7 +829,7 @@
   }
 
   dateSent = self->_dateSent;
-  if (dateSent | *(v4 + 6))
+  if (dateSent | *(equalCopy + 6))
   {
     if (![(NSData *)dateSent isEqual:?])
     {
@@ -838,7 +838,7 @@
   }
 
   dateReceived = self->_dateReceived;
-  if (dateReceived | *(v4 + 5))
+  if (dateReceived | *(equalCopy + 5))
   {
     if (![(NSData *)dateReceived isEqual:?])
     {
@@ -847,7 +847,7 @@
   }
 
   messageIdHeader = self->_messageIdHeader;
-  if (messageIdHeader | *(v4 + 11))
+  if (messageIdHeader | *(equalCopy + 11))
   {
     if (![(NSString *)messageIdHeader isEqual:?])
     {
@@ -856,7 +856,7 @@
   }
 
   bccs = self->_bccs;
-  if (bccs | *(v4 + 2))
+  if (bccs | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)bccs isEqual:?])
     {
@@ -865,7 +865,7 @@
   }
 
   remoteId = self->_remoteId;
-  if (remoteId | *(v4 + 14))
+  if (remoteId | *(equalCopy + 14))
   {
     if (![(NSString *)remoteId isEqual:?])
     {
@@ -874,7 +874,7 @@
   }
 
   notificationMessageId = self->_notificationMessageId;
-  if (notificationMessageId | *(v4 + 12))
+  if (notificationMessageId | *(equalCopy + 12))
   {
     if (![(NSString *)notificationMessageId isEqual:?])
     {
@@ -883,7 +883,7 @@
   }
 
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 9))
+  if (mailboxId | *(equalCopy + 9))
   {
     if (![(NSString *)mailboxId isEqual:?])
     {
@@ -892,49 +892,49 @@
   }
 
   has = self->_has;
-  v21 = *(v4 + 148);
+  v21 = *(equalCopy + 148);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 148) & 8) == 0)
+    if ((*(equalCopy + 148) & 8) == 0)
     {
       goto LABEL_54;
     }
 
-    v22 = *(v4 + 144);
+    v22 = *(equalCopy + 144);
     if (self->_isThreadSpecific)
     {
-      if ((*(v4 + 144) & 1) == 0)
+      if ((*(equalCopy + 144) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 144))
+    else if (*(equalCopy + 144))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 148) & 8) != 0)
+  else if ((*(equalCopy + 148) & 8) != 0)
   {
     goto LABEL_54;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 148) & 1) == 0 || self->_isSpecialMailboxSpecific != *(v4 + 16))
+    if ((*(equalCopy + 148) & 1) == 0 || self->_isSpecialMailboxSpecific != *(equalCopy + 16))
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 148))
+  else if (*(equalCopy + 148))
   {
     goto LABEL_54;
   }
 
   publisherBulletinId = self->_publisherBulletinId;
-  if (publisherBulletinId | *(v4 + 13))
+  if (publisherBulletinId | *(equalCopy + 13))
   {
     if ([(NSString *)publisherBulletinId isEqual:?])
     {
@@ -948,10 +948,10 @@ LABEL_54:
   }
 
 LABEL_49:
-  v24 = (*(v4 + 148) & 4) == 0;
+  v24 = (*(equalCopy + 148) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 148) & 4) == 0 || self->_statusVersion != *(v4 + 31))
+    if ((*(equalCopy + 148) & 4) == 0 || self->_statusVersion != *(equalCopy + 31))
     {
       goto LABEL_54;
     }
@@ -1026,37 +1026,37 @@ LABEL_9:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(NNMKProtoMessage *)self setMessageId:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoMessage *)self setAccountId:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoMessage *)self setConversationId:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(NNMKProtoMessage *)self setSubject:?];
   }
 
-  if ((*(v4 + 148) & 2) != 0)
+  if ((*(fromCopy + 148) & 2) != 0)
   {
-    self->_status = *(v4 + 30);
+    self->_status = *(fromCopy + 30);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NNMKProtoMessage *)self setFrom:?];
   }
@@ -1065,7 +1065,7 @@ LABEL_9:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = *(v4 + 17);
+  v5 = *(fromCopy + 17);
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
@@ -1093,7 +1093,7 @@ LABEL_9:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v11)
   {
@@ -1117,17 +1117,17 @@ LABEL_9:
     while (v12);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NNMKProtoMessage *)self setDateSent:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NNMKProtoMessage *)self setDateReceived:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(NNMKProtoMessage *)self setMessageIdHeader:?];
   }
@@ -1136,7 +1136,7 @@ LABEL_9:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v16)
   {
@@ -1160,99 +1160,99 @@ LABEL_9:
     while (v17);
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(NNMKProtoMessage *)self setRemoteId:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(NNMKProtoMessage *)self setNotificationMessageId:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NNMKProtoMessage *)self setMailboxId:?];
   }
 
-  v20 = *(v4 + 148);
+  v20 = *(fromCopy + 148);
   if ((v20 & 8) != 0)
   {
-    self->_isThreadSpecific = *(v4 + 144);
+    self->_isThreadSpecific = *(fromCopy + 144);
     *&self->_has |= 8u;
-    v20 = *(v4 + 148);
+    v20 = *(fromCopy + 148);
   }
 
   if (v20)
   {
-    self->_isSpecialMailboxSpecific = *(v4 + 16);
+    self->_isSpecialMailboxSpecific = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(NNMKProtoMessage *)self setPublisherBulletinId:?];
   }
 
-  if ((*(v4 + 148) & 4) != 0)
+  if ((*(fromCopy + 148) & 4) != 0)
   {
-    self->_statusVersion = *(v4 + 31);
+    self->_statusVersion = *(fromCopy + 31);
     *&self->_has |= 4u;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)protoMessageFromMessage:(id)a3 organizedByThread:(BOOL)a4 sanitizeMessageId:(BOOL)a5 supportsStandaloneMode:(BOOL)a6
++ (id)protoMessageFromMessage:(id)message organizedByThread:(BOOL)thread sanitizeMessageId:(BOOL)id supportsStandaloneMode:(BOOL)mode
 {
-  v7 = a5;
+  idCopy = id;
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  messageCopy = message;
   v10 = objc_alloc_init(NNMKProtoMessage);
-  v11 = [v9 messageId];
-  v12 = v11;
-  if (v7)
+  messageId = [messageCopy messageId];
+  v12 = messageId;
+  if (idCopy)
   {
-    v13 = [v11 nnmk_sanitizedFileNameString];
-    [(NNMKProtoMessage *)v10 setMessageId:v13];
+    nnmk_sanitizedFileNameString = [messageId nnmk_sanitizedFileNameString];
+    [(NNMKProtoMessage *)v10 setMessageId:nnmk_sanitizedFileNameString];
   }
 
   else
   {
-    [(NNMKProtoMessage *)v10 setMessageId:v11];
+    [(NNMKProtoMessage *)v10 setMessageId:messageId];
   }
 
-  v14 = [v9 accountId];
-  [(NNMKProtoMessage *)v10 setAccountId:v14];
+  accountId = [messageCopy accountId];
+  [(NNMKProtoMessage *)v10 setAccountId:accountId];
 
-  if (a4)
+  if (thread)
   {
-    v15 = [v9 conversationId];
-    [(NNMKProtoMessage *)v10 setConversationId:v15];
+    conversationId = [messageCopy conversationId];
+    [(NNMKProtoMessage *)v10 setConversationId:conversationId];
   }
 
   else
   {
     v16 = MEMORY[0x277CCACA8];
-    v15 = [v9 conversationId];
-    v17 = [v9 messageId];
-    v18 = [v16 stringWithFormat:@"%@|%@", v15, v17];
+    conversationId = [messageCopy conversationId];
+    messageId2 = [messageCopy messageId];
+    v18 = [v16 stringWithFormat:@"%@|%@", conversationId, messageId2];
     [(NNMKProtoMessage *)v10 setConversationId:v18];
   }
 
-  v19 = [v9 subject];
-  [(NNMKProtoMessage *)v10 setSubject:v19];
+  subject = [messageCopy subject];
+  [(NNMKProtoMessage *)v10 setSubject:subject];
 
-  -[NNMKProtoMessage setStatus:](v10, "setStatus:", [v9 status]);
-  -[NNMKProtoMessage setStatusVersion:](v10, "setStatusVersion:", [v9 statusVersion]);
-  v20 = [v9 from];
-  [(NNMKProtoMessage *)v10 setFrom:v20];
+  -[NNMKProtoMessage setStatus:](v10, "setStatus:", [messageCopy status]);
+  -[NNMKProtoMessage setStatusVersion:](v10, "setStatusVersion:", [messageCopy statusVersion]);
+  from = [messageCopy from];
+  [(NNMKProtoMessage *)v10 setFrom:from];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v21 = [v9 to];
+  v21 = [messageCopy to];
   v22 = [v21 countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v22)
   {
@@ -1280,7 +1280,7 @@ LABEL_9:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v26 = [v9 cc];
+  v26 = [messageCopy cc];
   v27 = [v26 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v27)
   {
@@ -1308,7 +1308,7 @@ LABEL_9:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v31 = [v9 bcc];
+  v31 = [messageCopy bcc];
   v32 = [v31 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v32)
   {
@@ -1333,36 +1333,36 @@ LABEL_9:
   }
 
   v36 = MEMORY[0x277CCAAB0];
-  v37 = [v9 dateSent];
-  v38 = [v36 archivedDataWithRootObject:v37 requiringSecureCoding:1 error:0];
+  dateSent = [messageCopy dateSent];
+  v38 = [v36 archivedDataWithRootObject:dateSent requiringSecureCoding:1 error:0];
   [(NNMKProtoMessage *)v10 setDateSent:v38];
 
   v39 = MEMORY[0x277CCAAB0];
-  v40 = [v9 dateReceived];
-  v41 = [v39 archivedDataWithRootObject:v40 requiringSecureCoding:1 error:0];
+  dateReceived = [messageCopy dateReceived];
+  v41 = [v39 archivedDataWithRootObject:dateReceived requiringSecureCoding:1 error:0];
   [(NNMKProtoMessage *)v10 setDateReceived:v41];
 
-  v42 = [v9 messageIdHeader];
-  [(NNMKProtoMessage *)v10 setMessageIdHeader:v42];
+  messageIdHeader = [messageCopy messageIdHeader];
+  [(NNMKProtoMessage *)v10 setMessageIdHeader:messageIdHeader];
 
-  v43 = [v9 mailboxId];
-  [(NNMKProtoMessage *)v10 setMailboxId:v43];
+  mailboxId = [messageCopy mailboxId];
+  [(NNMKProtoMessage *)v10 setMailboxId:mailboxId];
 
-  -[NNMKProtoMessage setIsThreadSpecific:](v10, "setIsThreadSpecific:", [v9 isThreadSpecific]);
-  -[NNMKProtoMessage setIsSpecialMailboxSpecific:](v10, "setIsSpecialMailboxSpecific:", [v9 isSpecialMailboxSpecific]);
-  if (a6)
+  -[NNMKProtoMessage setIsThreadSpecific:](v10, "setIsThreadSpecific:", [messageCopy isThreadSpecific]);
+  -[NNMKProtoMessage setIsSpecialMailboxSpecific:](v10, "setIsSpecialMailboxSpecific:", [messageCopy isSpecialMailboxSpecific]);
+  if (mode)
   {
-    v44 = [v9 notificationMessageId];
-    [(NNMKProtoMessage *)v10 setNotificationMessageId:v44];
+    notificationMessageId = [messageCopy notificationMessageId];
+    [(NNMKProtoMessage *)v10 setNotificationMessageId:notificationMessageId];
 
-    v45 = [v9 publisherBulletinId];
-    [(NNMKProtoMessage *)v10 setPublisherBulletinId:v45];
+    publisherBulletinId = [messageCopy publisherBulletinId];
+    [(NNMKProtoMessage *)v10 setPublisherBulletinId:publisherBulletinId];
   }
 
   else
   {
-    v45 = [v9 publisherBulletinId];
-    [(NNMKProtoMessage *)v10 setNotificationMessageId:v45];
+    publisherBulletinId = [messageCopy publisherBulletinId];
+    [(NNMKProtoMessage *)v10 setNotificationMessageId:publisherBulletinId];
   }
 
   v46 = *MEMORY[0x277D85DE8];

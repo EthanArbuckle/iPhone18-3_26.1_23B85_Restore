@@ -2,15 +2,15 @@
 + (id)sharedService;
 - (BOOL)_hasConnections;
 - (SLDRemoteRenderingService)init;
-- (id)_remoteContentForViewIdentifier:(id)a3 layerContextID:(unint64_t)a4 connection:(id)a5;
-- (id)_viewIDForStyle:(id)a3 tag:(id)a4;
+- (id)_remoteContentForViewIdentifier:(id)identifier layerContextID:(unint64_t)d connection:(id)connection;
+- (id)_viewIDForStyle:(id)style tag:(id)tag;
 - (void)_allConnectionsDisconnected;
-- (void)_connection:(id)a3 doesNotNeedViewWithIdentifier:(id)a4;
-- (void)_connection:(id)a3 onlyNeedsViewWithIdentifier:(id)a4;
-- (void)_connectionTouchedView:(id)a3;
-- (void)_destroyViewWithID:(id)a3;
-- (void)lostConnection:(id)a3;
-- (void)receivedConnection:(id)a3;
+- (void)_connection:(id)_connection doesNotNeedViewWithIdentifier:(id)identifier;
+- (void)_connection:(id)_connection onlyNeedsViewWithIdentifier:(id)identifier;
+- (void)_connectionTouchedView:(id)view;
+- (void)_destroyViewWithID:(id)d;
+- (void)lostConnection:(id)connection;
+- (void)receivedConnection:(id)connection;
 @end
 
 @implementation SLDRemoteRenderingService
@@ -22,21 +22,21 @@
   v2 = [(SLDRemoteRenderingService *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     connectionViewIDs = v2->_connectionViewIDs;
-    v2->_connectionViewIDs = v3;
+    v2->_connectionViewIDs = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     viewIDConnections = v2->_viewIDConnections;
-    v2->_viewIDConnections = v5;
+    v2->_viewIDConnections = strongToStrongObjectsMapTable2;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     viewIdentifierMap = v2->_viewIdentifierMap;
-    v2->_viewIdentifierMap = v7;
+    v2->_viewIdentifierMap = strongToStrongObjectsMapTable3;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     viewLRUCache = v2->_viewLRUCache;
-    v2->_viewLRUCache = v9;
+    v2->_viewLRUCache = array;
   }
 
   return v2;
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __42__SLDRemoteRenderingService_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken_7 != -1)
   {
     dispatch_once(&sharedService_onceToken_7, block);
@@ -69,20 +69,20 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)receivedConnection:(id)a3
+- (void)receivedConnection:(id)connection
 {
-  v4 = a3;
-  v6 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v6 setObject:v5 forKey:v4];
+  connectionCopy = connection;
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  array = [MEMORY[0x277CBEB18] array];
+  [connectionViewIDs setObject:array forKey:connectionCopy];
 }
 
-- (void)lostConnection:(id)a3
+- (void)lostConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  v6 = [v5 objectForKey:v4];
+  connectionCopy = connection;
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  v6 = [connectionViewIDs objectForKey:connectionCopy];
   v7 = [v6 copy];
 
   v17 = 0u;
@@ -105,7 +105,7 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
           objc_enumerationMutation(v8);
         }
 
-        [(SLDRemoteRenderingService *)self _connection:v4 doesNotNeedViewWithIdentifier:*(*(&v15 + 1) + 8 * v12++), v15];
+        [(SLDRemoteRenderingService *)self _connection:connectionCopy doesNotNeedViewWithIdentifier:*(*(&v15 + 1) + 8 * v12++), v15];
       }
 
       while (v10 != v12);
@@ -115,8 +115,8 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     while (v10);
   }
 
-  v13 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  [v13 removeObjectForKey:v4];
+  connectionViewIDs2 = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  [connectionViewIDs2 removeObjectForKey:connectionCopy];
 
   if (![(SLDRemoteRenderingService *)self _hasConnections])
   {
@@ -128,8 +128,8 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
 
 - (BOOL)_hasConnections
 {
-  v2 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  v3 = [v2 count] != 0;
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  v3 = [connectionViewIDs count] != 0;
 
   return v3;
 }
@@ -141,58 +141,58 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_231772000, v3, OS_LOG_TYPE_INFO, "[%@] All connections have disconnected. Clearing tracking objects and niling out slot machines.", &v6, 0xCu);
   }
 
-  v4 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  [v4 removeAllObjects];
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  [connectionViewIDs removeAllObjects];
 
   [(NSMapTable *)self->_viewIDConnections removeAllObjects];
   [(NSMapTable *)self->_viewIdentifierMap removeAllObjects];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connection:(id)a3 doesNotNeedViewWithIdentifier:(id)a4
+- (void)_connection:(id)_connection doesNotNeedViewWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _connectionCopy = _connection;
+  identifierCopy = identifier;
   v8 = SLDaemonLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = _connectionCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = identifierCopy;
     _os_log_impl(&dword_231772000, v8, OS_LOG_TYPE_DEFAULT, "[%@] Connection [%@] does not need viewID with identifier: %@", &v14, 0x20u);
   }
 
-  v9 = [(SLDRemoteRenderingService *)self viewIDConnections];
-  v10 = [v9 objectForKey:v7];
+  viewIDConnections = [(SLDRemoteRenderingService *)self viewIDConnections];
+  v10 = [viewIDConnections objectForKey:identifierCopy];
 
-  v11 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  v12 = [v11 objectForKey:v6];
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  v12 = [connectionViewIDs objectForKey:_connectionCopy];
 
-  [v10 removeObject:v6];
-  [v12 removeObject:v7];
+  [v10 removeObject:_connectionCopy];
+  [v12 removeObject:identifierCopy];
   if (!v10 || ![v10 count])
   {
-    [(SLDRemoteRenderingService *)self _destroyViewWithID:v7];
+    [(SLDRemoteRenderingService *)self _destroyViewWithID:identifierCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connection:(id)a3 onlyNeedsViewWithIdentifier:(id)a4
+- (void)_connection:(id)_connection onlyNeedsViewWithIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-  v9 = [v8 objectForKey:v6];
+  _connectionCopy = _connection;
+  identifierCopy = identifier;
+  connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+  v9 = [connectionViewIDs objectForKey:_connectionCopy];
   v10 = [v9 copy];
 
   if ([v10 count])
@@ -201,11 +201,11 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v6;
+      v27 = _connectionCopy;
       v28 = 2112;
-      v29 = v7;
+      v29 = identifierCopy;
       _os_log_impl(&dword_231772000, v11, OS_LOG_TYPE_DEFAULT, "[%@] Connection [%@] only needs view with ID: %@", buf, 0x20u);
     }
 
@@ -229,9 +229,9 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
           }
 
           v17 = *(*(&v19 + 1) + 8 * i);
-          if (([v17 isEqual:{v7, v19}] & 1) == 0)
+          if (([v17 isEqual:{identifierCopy, v19}] & 1) == 0)
           {
-            [(SLDRemoteRenderingService *)self _connection:v6 doesNotNeedViewWithIdentifier:v17];
+            [(SLDRemoteRenderingService *)self _connection:_connectionCopy doesNotNeedViewWithIdentifier:v17];
           }
         }
 
@@ -245,15 +245,15 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionTouchedView:(id)a3
+- (void)_connectionTouchedView:(id)view
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SLDRemoteRenderingService *)self viewLRUCache];
-  [v5 removeObject:v4];
+  viewCopy = view;
+  viewLRUCache = [(SLDRemoteRenderingService *)self viewLRUCache];
+  [viewLRUCache removeObject:viewCopy];
 
-  v6 = [(SLDRemoteRenderingService *)self viewLRUCache];
-  [v6 addObject:v4];
+  viewLRUCache2 = [(SLDRemoteRenderingService *)self viewLRUCache];
+  [viewLRUCache2 addObject:viewCopy];
 
   v7 = SLDaemonLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -261,8 +261,8 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     [(SLDRemoteRenderingService *)self _connectionTouchedView:v7];
   }
 
-  v8 = [(SLDRemoteRenderingService *)self viewLRUCache];
-  v9 = [v8 count];
+  viewLRUCache3 = [(SLDRemoteRenderingService *)self viewLRUCache];
+  v9 = [viewLRUCache3 count];
 
   if (v9 >= 0x21)
   {
@@ -273,18 +273,18 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     }
   }
 
-  v11 = [(SLDRemoteRenderingService *)self viewLRUCache];
-  v12 = [v11 count];
+  viewLRUCache4 = [(SLDRemoteRenderingService *)self viewLRUCache];
+  v12 = [viewLRUCache4 count];
 
   if (v12 >= 0x21)
   {
     do
     {
-      v13 = [(SLDRemoteRenderingService *)self viewLRUCache];
-      v14 = [v13 firstObject];
+      viewLRUCache5 = [(SLDRemoteRenderingService *)self viewLRUCache];
+      firstObject = [viewLRUCache5 firstObject];
 
-      v15 = [(SLDRemoteRenderingService *)self viewIDConnections];
-      v16 = [v15 objectForKey:v14];
+      viewIDConnections = [(SLDRemoteRenderingService *)self viewIDConnections];
+      v16 = [viewIDConnections objectForKey:firstObject];
       v17 = [v16 copy];
 
       v30 = 0u;
@@ -307,7 +307,7 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
               objc_enumerationMutation(v18);
             }
 
-            [(SLDRemoteRenderingService *)self _connection:*(*(&v28 + 1) + 8 * v22++) doesNotNeedViewWithIdentifier:v14];
+            [(SLDRemoteRenderingService *)self _connection:*(*(&v28 + 1) + 8 * v22++) doesNotNeedViewWithIdentifier:firstObject];
           }
 
           while (v20 != v22);
@@ -317,11 +317,11 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
         while (v20);
       }
 
-      v23 = [(SLDRemoteRenderingService *)self viewLRUCache];
-      [v23 removeObject:v14];
+      viewLRUCache6 = [(SLDRemoteRenderingService *)self viewLRUCache];
+      [viewLRUCache6 removeObject:firstObject];
 
-      v24 = [(SLDRemoteRenderingService *)self viewLRUCache];
-      v25 = [v24 count];
+      viewLRUCache7 = [(SLDRemoteRenderingService *)self viewLRUCache];
+      v25 = [viewLRUCache7 count];
     }
 
     while (v25 > 0x20);
@@ -339,63 +339,63 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_destroyViewWithID:(id)a3
+- (void)_destroyViewWithID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = SLDaemonLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v4;
+    v26 = dCopy;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "[%@] Releasing view no longer needed by any connection: %@", &v23, 0x16u);
   }
 
-  v6 = [(SLDRemoteRenderingService *)self slotMachineForViewIdentifier:v4];
-  v7 = [v4 style];
-  v8 = [v4 tag];
-  [v6 removeContentForStyle:v7 tag:v8];
+  v6 = [(SLDRemoteRenderingService *)self slotMachineForViewIdentifier:dCopy];
+  style = [dCopy style];
+  v8 = [dCopy tag];
+  [v6 removeContentForStyle:style tag:v8];
 
-  v9 = [(SLDRemoteRenderingService *)self viewIDConnections];
-  [v9 removeObjectForKey:v4];
+  viewIDConnections = [(SLDRemoteRenderingService *)self viewIDConnections];
+  [viewIDConnections removeObjectForKey:dCopy];
 
-  v10 = [(SLDRemoteRenderingService *)self viewLRUCache];
-  [v10 removeObject:v4];
+  viewLRUCache = [(SLDRemoteRenderingService *)self viewLRUCache];
+  [viewLRUCache removeObject:dCopy];
 
   viewIdentifierMap = self->_viewIdentifierMap;
-  v12 = [v4 style];
-  v13 = [(NSMapTable *)viewIdentifierMap objectForKey:v12];
-  v14 = [v4 tag];
+  style2 = [dCopy style];
+  v13 = [(NSMapTable *)viewIdentifierMap objectForKey:style2];
+  v14 = [dCopy tag];
   v15 = [v13 objectForKey:v14];
 
   if (v15)
   {
     v16 = self->_viewIdentifierMap;
-    v17 = [v4 style];
-    v18 = [(NSMapTable *)v16 objectForKey:v17];
+    style3 = [dCopy style];
+    v18 = [(NSMapTable *)v16 objectForKey:style3];
 
-    v19 = [v4 tag];
+    v19 = [dCopy tag];
     [v18 removeObjectForKey:v19];
 
     if (![v18 count])
     {
       v20 = self->_viewIdentifierMap;
-      v21 = [v4 style];
-      [(NSMapTable *)v20 removeObjectForKey:v21];
+      style4 = [dCopy style];
+      [(NSMapTable *)v20 removeObjectForKey:style4];
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_remoteContentForViewIdentifier:(id)a3 layerContextID:(unint64_t)a4 connection:(id)a5
+- (id)_remoteContentForViewIdentifier:(id)identifier layerContextID:(unint64_t)d connection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SLDRemoteRenderingService *)self slotMachineForViewIdentifier:v8];
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  v10 = [(SLDRemoteRenderingService *)self slotMachineForViewIdentifier:identifierCopy];
   v11 = SLGeneralTelemetryLogHandle();
   v12 = os_signpost_id_generate(v11);
 
@@ -407,9 +407,9 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     _os_signpost_emit_with_name_impl(&dword_231772000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "SlotMachineRetrieveRemoteContent", "", &v27, 2u);
   }
 
-  v15 = [v8 style];
-  v16 = [v8 tag];
-  v17 = [v10 remoteContentForLayerContextWithId:a4 style:v15 tag:v16];
+  style = [identifierCopy style];
+  v16 = [identifierCopy tag];
+  v17 = [v10 remoteContentForLayerContextWithId:d style:style tag:v16];
 
   v18 = SLGeneralTelemetryLogHandle();
   v19 = v18;
@@ -421,27 +421,27 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
 
   if (v17)
   {
-    v20 = [(SLDRemoteRenderingService *)self connectionViewIDs];
-    v21 = [v20 objectForKey:v9];
+    connectionViewIDs = [(SLDRemoteRenderingService *)self connectionViewIDs];
+    v21 = [connectionViewIDs objectForKey:connectionCopy];
 
-    if (([v21 containsObject:v8]& 1) == 0)
+    if (([v21 containsObject:identifierCopy]& 1) == 0)
     {
-      [v21 addObject:v8];
+      [v21 addObject:identifierCopy];
     }
 
-    v22 = [(SLDRemoteRenderingService *)self viewIDConnections];
-    v23 = [v22 objectForKey:v8];
+    viewIDConnections = [(SLDRemoteRenderingService *)self viewIDConnections];
+    array = [viewIDConnections objectForKey:identifierCopy];
 
-    if (!v23)
+    if (!array)
     {
-      v23 = [MEMORY[0x277CBEB18] array];
-      v24 = [(SLDRemoteRenderingService *)self viewIDConnections];
-      [v24 setObject:v23 forKey:v8];
+      array = [MEMORY[0x277CBEB18] array];
+      viewIDConnections2 = [(SLDRemoteRenderingService *)self viewIDConnections];
+      [viewIDConnections2 setObject:array forKey:identifierCopy];
     }
 
-    if (([v23 containsObject:v9] & 1) == 0)
+    if (([array containsObject:connectionCopy] & 1) == 0)
     {
-      [v23 addObject:v9];
+      [array addObject:connectionCopy];
     }
   }
 
@@ -451,11 +451,11 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v27 = 138412802;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
       v30 = v10;
       v31 = 2112;
-      v32 = v8;
+      v32 = identifierCopy;
       _os_log_error_impl(&dword_231772000, v21, OS_LOG_TYPE_ERROR, "[%@] Slot machine [%@] did not return any rendered content for viewID: %@", &v27, 0x20u);
     }
   }
@@ -465,28 +465,28 @@ uint64_t __42__SLDRemoteRenderingService_sharedService__block_invoke(uint64_t a1
   return v17;
 }
 
-- (id)_viewIDForStyle:(id)a3 tag:(id)a4
+- (id)_viewIDForStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDRemoteRenderingService *)self viewIdentifierMap];
-  v9 = [v8 objectForKey:v6];
-  v10 = [v9 objectForKey:v7];
+  styleCopy = style;
+  tagCopy = tag;
+  viewIdentifierMap = [(SLDRemoteRenderingService *)self viewIdentifierMap];
+  v9 = [viewIdentifierMap objectForKey:styleCopy];
+  v10 = [v9 objectForKey:tagCopy];
 
   if (!v10)
   {
-    v11 = [(SLDRemoteRenderingService *)self viewIdentifierMap];
-    v12 = [v11 objectForKey:v6];
+    viewIdentifierMap2 = [(SLDRemoteRenderingService *)self viewIdentifierMap];
+    strongToStrongObjectsMapTable = [viewIdentifierMap2 objectForKey:styleCopy];
 
-    if (!v12)
+    if (!strongToStrongObjectsMapTable)
     {
-      v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-      v13 = [(SLDRemoteRenderingService *)self viewIdentifierMap];
-      [v13 setObject:v12 forKey:v6];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      viewIdentifierMap3 = [(SLDRemoteRenderingService *)self viewIdentifierMap];
+      [viewIdentifierMap3 setObject:strongToStrongObjectsMapTable forKey:styleCopy];
     }
 
-    v10 = [SLDRemoteViewIdentifier identifierForStyle:v6 tag:v7];
-    [v12 setObject:v10 forKey:v7];
+    v10 = [SLDRemoteViewIdentifier identifierForStyle:styleCopy tag:tagCopy];
+    [strongToStrongObjectsMapTable setObject:v10 forKey:tagCopy];
   }
 
   return v10;

@@ -1,25 +1,25 @@
 @interface TSUProgressContextProgress
-- (TSUProgressContextProgress)initWithProgressContext:(id)a3;
+- (TSUProgressContextProgress)initWithProgressContext:(id)context;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (id)initForSubclass;
-- (void)p_progressDidChange:(id)a3;
+- (void)p_progressDidChange:(id)change;
 - (void)p_updateProgressContextObserver;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation TSUProgressContextProgress
 
-- (TSUProgressContextProgress)initWithProgressContext:(id)a3
+- (TSUProgressContextProgress)initWithProgressContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TSUProgressContextProgress;
-  v6 = [(TSUProgress *)&v11 initForSubclass];
-  v7 = v6;
-  if (v6)
+  initForSubclass = [(TSUProgress *)&v11 initForSubclass];
+  v7 = initForSubclass;
+  if (initForSubclass)
   {
-    objc_storeStrong(v6 + 5, a3);
+    objc_storeStrong(initForSubclass + 5, context);
     v8 = dispatch_queue_create("com.apple.tangier.TSUProgressContextProgress", 0);
     progressContextObserverQueue = v7->_progressContextObserverQueue;
     v7->_progressContextObserverQueue = v8;
@@ -56,21 +56,21 @@
   return result;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = TSUProgressContextProgress;
-  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   [(TSUProgressContextProgress *)self p_updateProgressContextObserver];
 
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v4.receiver = self;
   v4.super_class = TSUProgressContextProgress;
-  [(TSUProgress *)&v4 removeProgressObserver:a3];
+  [(TSUProgress *)&v4 removeProgressObserver:observer];
   [(TSUProgressContextProgress *)self p_updateProgressContextObserver];
 }
 
@@ -85,10 +85,10 @@
   dispatch_async(progressContextObserverQueue, block);
 }
 
-- (void)p_progressDidChange:(id)a3
+- (void)p_progressDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"TSUProgressMessage"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"TSUProgressMessage"];
 
   if (v5)
   {

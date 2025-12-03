@@ -1,38 +1,38 @@
 @interface PKPeerPaymentRecurringPaymentEducationViewController
-- (PKPeerPaymentRecurringPaymentEducationViewController)initWithContext:(int64_t)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5;
-- (void)_requestOpenURL:(id)a3;
+- (PKPeerPaymentRecurringPaymentEducationViewController)initWithContext:(int64_t)context transactionSourceCollection:(id)collection familyCollection:(id)familyCollection;
+- (void)_requestOpenURL:(id)l;
 - (void)_urlTapped;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentEducationViewController
 
-- (PKPeerPaymentRecurringPaymentEducationViewController)initWithContext:(int64_t)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5
+- (PKPeerPaymentRecurringPaymentEducationViewController)initWithContext:(int64_t)context transactionSourceCollection:(id)collection familyCollection:(id)familyCollection
 {
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
   v23.receiver = self;
   v23.super_class = PKPeerPaymentRecurringPaymentEducationViewController;
-  v11 = [(PKExplanationViewController *)&v23 initWithContext:a3];
+  v11 = [(PKExplanationViewController *)&v23 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_transactionSourceCollection, a4);
-    objc_storeStrong(&v12->_familyCollection, a5);
-    v13 = [MEMORY[0x1E69B9020] sharedService];
-    v14 = [v13 targetDevice];
-    v15 = [v14 account];
+    objc_storeStrong(&v11->_transactionSourceCollection, collection);
+    objc_storeStrong(&v12->_familyCollection, familyCollection);
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    targetDevice = [mEMORY[0x1E69B9020] targetDevice];
+    account = [targetDevice account];
     account = v12->_account;
-    v12->_account = v15;
+    v12->_account = account;
 
-    v17 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v18 = [(PKPeerPaymentAccount *)v12->_account associatedPassUniqueID];
-    v19 = [v17 passWithUniqueID:v18];
-    v20 = [v19 paymentPass];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)v12->_account associatedPassUniqueID];
+    v19 = [mEMORY[0x1E69B8A58] passWithUniqueID:associatedPassUniqueID];
+    paymentPass = [v19 paymentPass];
     paymentPass = v12->_paymentPass;
-    v12->_paymentPass = v20;
+    v12->_paymentPass = paymentPass;
   }
 
   return v12;
@@ -44,16 +44,16 @@
   v23.super_class = PKPeerPaymentRecurringPaymentEducationViewController;
   [(PKExplanationViewController *)&v23 viewDidLoad];
   [(PKPeerPaymentRecurringPaymentEducationViewController *)self setModalInPresentation:1];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
   v4 = MEMORY[0x1E69DCAB8];
   v5 = PKPassKitUIBundle();
   v6 = [v4 imageNamed:@"Hero_Apple_Cash_Recurring" inBundle:v5 withConfiguration:0];
 
-  [v3 setImage:v6];
+  [explanationView setImage:v6];
   v7 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecurringPayme_7.isa);
-  [v3 setTitleText:v7];
+  [explanationView setTitleText:v7];
 
   v8 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecurringPayme_8.isa);
   v9 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecurringPayme_9.isa);
@@ -61,9 +61,9 @@
   {
     [(PKExplanationViewController *)self setShowCancelButton:0];
     [(PKExplanationViewController *)self setShowCloseButton:1];
-    [v3 setBodyText:v8];
-    [v3 setBodyButtonText:v9];
-    [v3 setBodyButtonUsesLearnMoreStyle:1];
+    [explanationView setBodyText:v8];
+    [explanationView setBodyButtonText:v9];
+    [explanationView setBodyButtonUsesLearnMoreStyle:1];
   }
 
   else
@@ -82,24 +82,24 @@
     [v10 addObject:v13];
     v14 = objc_alloc_init(PKMultiHyperlinkView);
     [(PKMultiHyperlinkView *)v14 setText:v11];
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(PKMultiHyperlinkView *)v14 setTextColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(PKMultiHyperlinkView *)v14 setTextColor:labelColor];
 
     [(PKMultiHyperlinkView *)v14 setTextAlignment:1];
     v16 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
     [(PKMultiHyperlinkView *)v14 setTextFont:v16];
 
     [(PKMultiHyperlinkView *)v14 setSources:v10];
-    [v3 setBodyView:v14];
+    [explanationView setBodyView:v14];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  v17 = [v3 dockView];
-  v18 = [v17 primaryButton];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v19 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecurringPayme_11.isa);
-  [v18 setTitle:v19 forState:0];
+  [primaryButton setTitle:v19 forState:0];
 }
 
 void __67__PKPeerPaymentRecurringPaymentEducationViewController_viewDidLoad__block_invoke(uint64_t a1)
@@ -113,11 +113,11 @@ void __67__PKPeerPaymentRecurringPaymentEducationViewController_viewDidLoad__blo
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PKPeerPaymentRecurringPaymentEducationViewController;
-  [(PKPeerPaymentRecurringPaymentEducationViewController *)&v3 viewDidAppear:a3];
+  [(PKPeerPaymentRecurringPaymentEducationViewController *)&v3 viewDidAppear:appear];
   PKPeerPaymentRecurringPaymentSetHasShownEducationMessage();
 }
 
@@ -125,18 +125,18 @@ void __67__PKPeerPaymentRecurringPaymentEducationViewController_viewDidLoad__blo
 {
   if ([(PKPeerPaymentAccount *)self->_account termsAcceptanceRequired])
   {
-    v4 = [MEMORY[0x1E69B9020] sharedService];
-    v3 = [v4 targetDevice];
-    [v3 updateAccountWithCompletion:&__block_literal_global_205];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    targetDevice = [mEMORY[0x1E69B9020] targetDevice];
+    [targetDevice updateAccountWithCompletion:&__block_literal_global_205];
   }
 
   else
   {
-    v4 = [(PKPaymentPass *)self->_paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BC128]];
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:?];
-    if (v3)
+    mEMORY[0x1E69B9020] = [(PKPaymentPass *)self->_paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BC128]];
+    targetDevice = [MEMORY[0x1E695DFF8] URLWithString:?];
+    if (targetDevice)
     {
-      [(PKPeerPaymentRecurringPaymentEducationViewController *)self _requestOpenURL:v3];
+      [(PKPeerPaymentRecurringPaymentEducationViewController *)self _requestOpenURL:targetDevice];
     }
   }
 }
@@ -173,18 +173,18 @@ void __66__PKPeerPaymentRecurringPaymentEducationViewController__urlTapped__bloc
   }
 }
 
-- (void)_requestOpenURL:(id)a3
+- (void)_requestOpenURL:(id)l
 {
   v4 = MEMORY[0x1E697A838];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v7 = [[v4 alloc] initWithURL:lCopy];
 
   [v7 setModalPresentationStyle:2];
-  v6 = [(PKPeerPaymentRecurringPaymentEducationViewController *)self navigationController];
-  [v6 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(PKPeerPaymentRecurringPaymentEducationViewController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v12 = 0;
   v13 = 0;
@@ -211,8 +211,8 @@ void __66__PKPeerPaymentRecurringPaymentEducationViewController__urlTapped__bloc
     v8[3] = &unk_1E8010970;
     v8[4] = self;
     v6 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v13 displayableError:v5 addCardActionHandler:v8];
-    v7 = [(PKPeerPaymentRecurringPaymentEducationViewController *)self navigationController];
-    [v7 presentViewController:v6 animated:1 completion:0];
+    navigationController = [(PKPeerPaymentRecurringPaymentEducationViewController *)self navigationController];
+    [navigationController presentViewController:v6 animated:1 completion:0];
   }
 }
 

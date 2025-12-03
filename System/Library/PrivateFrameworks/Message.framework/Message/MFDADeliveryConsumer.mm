@@ -1,44 +1,44 @@
 @interface MFDADeliveryConsumer
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
-- (void)messageDidSendWithContext:(id)a3 sentBytesCount:(unint64_t)a4 receivedBytesCount:(unint64_t)a5;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
+- (void)messageDidSendWithContext:(id)context sentBytesCount:(unint64_t)count receivedBytesCount:(unint64_t)bytesCount;
 @end
 
 @implementation MFDADeliveryConsumer
 
-- (void)messageDidSendWithContext:(id)a3 sentBytesCount:(unint64_t)a4 receivedBytesCount:(unint64_t)a5
+- (void)messageDidSendWithContext:(id)context sentBytesCount:(unint64_t)count receivedBytesCount:(unint64_t)bytesCount
 {
   self->_status = 0;
-  self->_bytesRead = a5;
-  self->_bytesWritten = a4;
+  self->_bytesRead = bytesCount;
+  self->_bytesWritten = count;
   [(MFDAMailAccountConsumer *)self setDone:1];
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
-  v16 = a3;
-  v6 = a5;
+  failedCopy = failed;
+  errorCopy = error;
   self->_status = 1;
-  v15 = v6;
-  MFWalkUpDAErrorChain(&v15, &v16);
+  v15 = errorCopy;
+  MFWalkUpDAErrorChain(&v15, &failedCopy);
   v7 = v15;
 
-  if (v16 > 32)
+  if (failedCopy > 32)
   {
-    if (v16 == 33)
+    if (failedCopy == 33)
     {
       v8 = 1050;
       goto LABEL_23;
     }
 
     v8 = 1055;
-    if (v16 == 63 || v16 == 79)
+    if (failedCopy == 63 || failedCopy == 79)
     {
       goto LABEL_23;
     }
 
 LABEL_11:
-    v10 = [v7 domain];
-    v11 = [v10 isEqualToString:@"ASHTTPConnectionErrorDomain"];
+    domain = [v7 domain];
+    v11 = [domain isEqualToString:@"ASHTTPConnectionErrorDomain"];
 
     if (v11)
     {
@@ -56,8 +56,8 @@ LABEL_11:
 
     else
     {
-      v13 = [v7 domain];
-      v14 = [v13 isEqualToString:*MEMORY[0x1E696A978]];
+      domain2 = [v7 domain];
+      v14 = [domain2 isEqualToString:*MEMORY[0x1E696A978]];
 
       if (!v14)
       {
@@ -85,7 +85,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((v16 - 5) < 2)
+  if ((failedCopy - 5) < 2)
   {
     self->_status = 7;
     v8 = 1053;
@@ -94,7 +94,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v16 != -1)
+  if (failedCopy != -1)
   {
     goto LABEL_11;
   }

@@ -1,13 +1,13 @@
 @interface TodayCardActionOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension26TodayCardActionOverlayView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension26TodayCardActionOverlayView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TodayCardActionOverlayView
 
-- (_TtC22SubscribePageExtension26TodayCardActionOverlayView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension26TodayCardActionOverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26TodayCardActionOverlayView_accessoryView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26TodayCardActionOverlayView_isExpanded) = 0;
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100079958(width);
   v7 = v6;
 
@@ -33,15 +33,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100079C50();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100079FEC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100079FEC(change);
 }
 
 @end

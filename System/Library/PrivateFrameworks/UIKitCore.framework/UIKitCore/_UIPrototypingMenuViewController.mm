@@ -1,13 +1,13 @@
 @interface _UIPrototypingMenuViewController
 - (NSArray)allSettings;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_reloadSettings:(id)a3;
-- (void)_resetSettings:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_reloadSettings:(id)settings;
+- (void)_resetSettings:(id)settings;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _UIPrototypingMenuViewController
@@ -20,8 +20,8 @@
   [(UITableView *)v5 setDataSource:self];
   [(UIScrollView *)v5 setContentInsetAdjustmentBehavior:3];
   [(_UIPrototypingMenuViewController *)self setTableView:v5];
-  v4 = [(_UIPrototypingMenuViewController *)self tableView];
-  [(UIViewController *)self setView:v4];
+  tableView = [(_UIPrototypingMenuViewController *)self tableView];
+  [(UIViewController *)self setView:tableView];
 }
 
 - (void)viewDidLoad
@@ -30,11 +30,11 @@
   v10.receiver = self;
   v10.super_class = _UIPrototypingMenuViewController;
   [(UIViewController *)&v10 viewDidLoad];
-  v3 = [(_UIPrototypingMenuViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kNumberSettingCell"];
+  tableView = [(_UIPrototypingMenuViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kNumberSettingCell"];
 
-  v4 = [(_UIPrototypingMenuViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"kBoolSettingCell"];
+  tableView2 = [(_UIPrototypingMenuViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"kBoolSettingCell"];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:13 target:self action:sel__reloadSettings_];
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:16 target:self action:sel__resetSettings_];
@@ -44,20 +44,20 @@
   v11[0] = v6;
   v11[1] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  v9 = [(UIViewController *)self navigationItem];
-  [v9 setRightBarButtonItems:v8];
+  navigationItem = [(UIViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v8];
 }
 
-- (void)_reloadSettings:(id)a3
+- (void)_reloadSettings:(id)settings
 {
   allSettings = self->_allSettings;
   self->_allSettings = 0;
 
-  v5 = [(_UIPrototypingMenuViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(_UIPrototypingMenuViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_resetSettings:(id)a3
+- (void)_resetSettings:(id)settings
 {
   v4 = [UIAlertController alertControllerWithTitle:@"Delete Settings" message:@"Warning: This will delete all persisted prototyping settings and their values from this app's domain." preferredStyle:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -77,26 +77,26 @@
   [(UIViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = _UIPrototypingMenuViewController;
-  [(UIViewController *)&v7 viewWillAppear:a3];
+  [(UIViewController *)&v7 viewWillAppear:appear];
   v4 = +[_UIPrototypingSettingsManager sharedManager];
   [v4 synchronizeStoredSettings];
 
   allSettings = self->_allSettings;
   self->_allSettings = 0;
 
-  v6 = [(_UIPrototypingMenuViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(_UIPrototypingMenuViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _UIPrototypingMenuViewController;
-  [(UIViewController *)&v4 viewDidDisappear:a3];
+  [(UIViewController *)&v4 viewDidDisappear:disappear];
   v3 = +[_UIPrototypingSettingsManager sharedManager];
   [v3 synchronizeStoredSettings];
 }
@@ -107,9 +107,9 @@
   if (!allSettings)
   {
     v4 = +[_UIPrototypingSettingsManager sharedManager];
-    v5 = [v4 allSettings];
+    allSettings = [v4 allSettings];
     v6 = self->_allSettings;
-    self->_allSettings = v5;
+    self->_allSettings = allSettings;
 
     allSettings = self->_allSettings;
   }
@@ -117,75 +117,75 @@
   return allSettings;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(_UIPrototypingMenuViewController *)self allSettings:a3];
+  v5 = [(_UIPrototypingMenuViewController *)self allSettings:view];
   v6 = [v5 count];
 
-  v7 = [(_UIPrototypingMenuViewController *)self noContentView];
-  v8 = v7;
+  noContentView = [(_UIPrototypingMenuViewController *)self noContentView];
+  view3 = noContentView;
   if (v6)
   {
-    [v7 removeFromSuperview];
+    [noContentView removeFromSuperview];
   }
 
   else
   {
 
-    if (v8)
+    if (view3)
     {
-      v9 = [(UIViewController *)self view];
-      [v9 bounds];
+      view = [(UIViewController *)self view];
+      [view bounds];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(_UIPrototypingMenuViewController *)self noContentView];
-      [v18 setFrame:{v11, v13, v15, v17}];
+      noContentView2 = [(_UIPrototypingMenuViewController *)self noContentView];
+      [noContentView2 setFrame:{v11, v13, v15, v17}];
     }
 
     else
     {
       v19 = [_UIContentUnavailableView alloc];
-      v20 = [(UIViewController *)self view];
-      [v20 bounds];
+      view2 = [(UIViewController *)self view];
+      [view2 bounds];
       v21 = [(_UIContentUnavailableView *)v19 initWithFrame:@"No Settings" title:0 style:?];
       [(_UIPrototypingMenuViewController *)self setNoContentView:v21];
 
-      v9 = [(_UIPrototypingMenuViewController *)self noContentView];
-      [v9 setAutoresizingMask:18];
+      view = [(_UIPrototypingMenuViewController *)self noContentView];
+      [view setAutoresizingMask:18];
     }
 
-    v8 = [(UIViewController *)self view];
-    v22 = [(_UIPrototypingMenuViewController *)self noContentView];
-    [v8 addSubview:v22];
+    view3 = [(UIViewController *)self view];
+    noContentView3 = [(_UIPrototypingMenuViewController *)self noContentView];
+    [view3 addSubview:noContentView3];
   }
 
-  v23 = [(_UIPrototypingMenuViewController *)self allSettings];
-  v24 = [v23 count];
+  allSettings = [(_UIPrototypingMenuViewController *)self allSettings];
+  v24 = [allSettings count];
 
   return v24;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIPrototypingMenuViewController *)self allSettings];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  allSettings = [(_UIPrototypingMenuViewController *)self allSettings];
+  v9 = [allSettings objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v9 type];
-  if (v10 > 2)
+  type = [v9 type];
+  if (type > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = off_1E7127D28[v10];
+    v11 = off_1E7127D28[type];
   }
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11 forIndexPath:pathCopy];
 
   [v12 setPrototypingSetting:v9];
 

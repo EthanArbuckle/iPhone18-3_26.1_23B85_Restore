@@ -1,13 +1,13 @@
 @interface MicrophoneTestInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation MicrophoneTestInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
   v4 = sub_100014CEC();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(self) = sub_100009F38(v4);
 
   return self & 1;

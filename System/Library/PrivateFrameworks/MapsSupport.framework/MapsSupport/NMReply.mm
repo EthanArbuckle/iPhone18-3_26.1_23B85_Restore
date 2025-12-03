@@ -1,62 +1,62 @@
 @interface NMReply
 - (BOOL)decompressArguments;
-- (BOOL)isEqual:(id)a3;
-- (id)argumentForTag:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)argumentForTag:(int)tag;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArgument:(id)a3;
-- (void)addCompressedArgument:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequestReceivedTimestamp:(BOOL)a3;
-- (void)setHasResponseTime:(BOOL)a3;
-- (void)setHasSentTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addArgument:(id)argument;
+- (void)addCompressedArgument:(id)argument;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequestReceivedTimestamp:(BOOL)timestamp;
+- (void)setHasResponseTime:(BOOL)time;
+- (void)setHasSentTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMReply
 
-- (void)addArgument:(id)a3
+- (void)addArgument:(id)argument
 {
-  v4 = a3;
+  argumentCopy = argument;
   arguments = self->_arguments;
-  v8 = v4;
+  v8 = argumentCopy;
   if (!arguments)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_arguments;
     self->_arguments = v6;
 
-    v4 = v8;
+    argumentCopy = v8;
     arguments = self->_arguments;
   }
 
-  [(NSMutableArray *)arguments addObject:v4];
+  [(NSMutableArray *)arguments addObject:argumentCopy];
 }
 
-- (void)addCompressedArgument:(id)a3
+- (void)addCompressedArgument:(id)argument
 {
-  v4 = a3;
+  argumentCopy = argument;
   compressedArguments = self->_compressedArguments;
-  v8 = v4;
+  v8 = argumentCopy;
   if (!compressedArguments)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_compressedArguments;
     self->_compressedArguments = v6;
 
-    v4 = v8;
+    argumentCopy = v8;
     compressedArguments = self->_compressedArguments;
   }
 
-  [(NSMutableArray *)compressedArguments addObject:v4];
+  [(NSMutableArray *)compressedArguments addObject:argumentCopy];
 }
 
-- (void)setHasResponseTime:(BOOL)a3
+- (void)setHasResponseTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequestReceivedTimestamp:(BOOL)a3
+- (void)setHasRequestReceivedTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSentTimestamp:(BOOL)a3
+- (void)setHasSentTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -104,8 +104,8 @@
   v7.receiver = self;
   v7.super_class = NMReply;
   v3 = [(NMReply *)&v7 description];
-  v4 = [(NMReply *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMReply *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -135,8 +135,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -170,8 +170,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -244,9 +244,9 @@ LABEL_26:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -360,49 +360,49 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(NMReply *)self argumentsCount])
   {
-    [v13 clearArguments];
-    v4 = [(NMReply *)self argumentsCount];
-    if (v4)
+    [toCopy clearArguments];
+    argumentsCount = [(NMReply *)self argumentsCount];
+    if (argumentsCount)
     {
-      v5 = v4;
+      v5 = argumentsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NMReply *)self argumentAtIndex:i];
-        [v13 addArgument:v7];
+        [toCopy addArgument:v7];
       }
     }
   }
 
   if ([(NMReply *)self compressedArgumentsCount])
   {
-    [v13 clearCompressedArguments];
-    v8 = [(NMReply *)self compressedArgumentsCount];
-    if (v8)
+    [toCopy clearCompressedArguments];
+    compressedArgumentsCount = [(NMReply *)self compressedArgumentsCount];
+    if (compressedArgumentsCount)
     {
-      v9 = v8;
+      v9 = compressedArgumentsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NMReply *)self compressedArgumentAtIndex:j];
-        [v13 addCompressedArgument:v11];
+        [toCopy addCompressedArgument:v11];
       }
     }
   }
 
   if (self->_senderUUID)
   {
-    [v13 setSenderUUID:?];
+    [toCopy setSenderUUID:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v13 + 3) = *&self->_responseTime;
-    *(v13 + 64) |= 4u;
+    *(toCopy + 3) = *&self->_responseTime;
+    *(toCopy + 64) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -421,8 +421,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v13 + 1) = *&self->_enqueuedTimeInterval;
-  *(v13 + 64) |= 1u;
+  *(toCopy + 1) = *&self->_enqueuedTimeInterval;
+  *(toCopy + 64) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -436,21 +436,21 @@ LABEL_14:
   }
 
 LABEL_21:
-  *(v13 + 2) = *&self->_requestReceivedTimestamp;
-  *(v13 + 64) |= 2u;
+  *(toCopy + 2) = *&self->_requestReceivedTimestamp;
+  *(toCopy + 64) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_15:
-    *(v13 + 4) = *&self->_sentTimestamp;
-    *(v13 + 64) |= 8u;
+    *(toCopy + 4) = *&self->_sentTimestamp;
+    *(toCopy + 64) |= 8u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -470,7 +470,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v5 addArgument:v11];
       }
 
@@ -499,7 +499,7 @@ LABEL_16:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v22 + 1) + 8 * j) copyWithZone:{a3, v22}];
+        v17 = [*(*(&v22 + 1) + 8 * j) copyWithZone:{zone, v22}];
         [v5 addCompressedArgument:v17];
       }
 
@@ -509,7 +509,7 @@ LABEL_16:
     while (v14);
   }
 
-  v18 = [(NSString *)self->_senderUUID copyWithZone:a3];
+  v18 = [(NSString *)self->_senderUUID copyWithZone:zone];
   v19 = *(v5 + 7);
   *(v5 + 7) = v18;
 
@@ -563,16 +563,16 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   arguments = self->_arguments;
-  if (arguments | *(v4 + 5))
+  if (arguments | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)arguments isEqual:?])
     {
@@ -581,7 +581,7 @@ LABEL_19:
   }
 
   compressedArguments = self->_compressedArguments;
-  if (compressedArguments | *(v4 + 6))
+  if (compressedArguments | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)compressedArguments isEqual:?])
     {
@@ -590,7 +590,7 @@ LABEL_19:
   }
 
   senderUUID = self->_senderUUID;
-  if (senderUUID | *(v4 + 7))
+  if (senderUUID | *(equalCopy + 7))
   {
     if (![(NSString *)senderUUID isEqual:?])
     {
@@ -600,13 +600,13 @@ LABEL_19:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_responseTime != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_responseTime != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
 LABEL_27:
     v8 = 0;
@@ -615,34 +615,34 @@ LABEL_27:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_enqueuedTimeInterval != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_enqueuedTimeInterval != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_requestReceivedTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_requestReceivedTimestamp != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_27;
   }
 
-  v8 = (*(v4 + 64) & 8) == 0;
+  v8 = (*(equalCopy + 64) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_sentTimestamp != *(v4 + 4))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_sentTimestamp != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
@@ -798,14 +798,14 @@ LABEL_28:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v16 ^ v20;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -833,7 +833,7 @@ LABEL_28:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -857,17 +857,17 @@ LABEL_28:
     while (v12);
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NMReply *)self setSenderUUID:?];
   }
 
-  v15 = *(v4 + 64);
+  v15 = *(fromCopy + 64);
   if ((v15 & 4) != 0)
   {
-    self->_responseTime = *(v4 + 3);
+    self->_responseTime = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v15 = *(v4 + 64);
+    v15 = *(fromCopy + 64);
     if ((v15 & 1) == 0)
     {
 LABEL_19:
@@ -877,9 +877,9 @@ LABEL_19:
       }
 
 LABEL_25:
-      self->_requestReceivedTimestamp = *(v4 + 2);
+      self->_requestReceivedTimestamp = *(fromCopy + 2);
       *&self->_has |= 2u;
-      if ((*(v4 + 64) & 8) == 0)
+      if ((*(fromCopy + 64) & 8) == 0)
       {
         goto LABEL_22;
       }
@@ -888,14 +888,14 @@ LABEL_25:
     }
   }
 
-  else if ((*(v4 + 64) & 1) == 0)
+  else if ((*(fromCopy + 64) & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  self->_enqueuedTimeInterval = *(v4 + 1);
+  self->_enqueuedTimeInterval = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v15 = *(v4 + 64);
+  v15 = *(fromCopy + 64);
   if ((v15 & 2) != 0)
   {
     goto LABEL_25;
@@ -905,21 +905,21 @@ LABEL_20:
   if ((v15 & 8) != 0)
   {
 LABEL_21:
-    self->_sentTimestamp = *(v4 + 4);
+    self->_sentTimestamp = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_22:
 }
 
-- (id)argumentForTag:(int)a3
+- (id)argumentForTag:(int)tag
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NMReply *)self arguments];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  arguments = [(NMReply *)self arguments];
+  v5 = [arguments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -930,18 +930,18 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arguments);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 tag] == a3)
+        if ([v9 tag] == tag)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [arguments countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -963,8 +963,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NMReply *)self compressedArguments];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  compressedArguments = [(NMReply *)self compressedArguments];
+  v4 = [compressedArguments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -976,24 +976,24 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(compressedArguments);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) _nm_uncompressedArgument];
-        if (!v8)
+        _nm_uncompressedArgument = [*(*(&v11 + 1) + 8 * v7) _nm_uncompressedArgument];
+        if (!_nm_uncompressedArgument)
         {
 
           return 0;
         }
 
-        v9 = v8;
-        [(NMReply *)self addArgument:v8];
+        v9 = _nm_uncompressedArgument;
+        [(NMReply *)self addArgument:_nm_uncompressedArgument];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [compressedArguments countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

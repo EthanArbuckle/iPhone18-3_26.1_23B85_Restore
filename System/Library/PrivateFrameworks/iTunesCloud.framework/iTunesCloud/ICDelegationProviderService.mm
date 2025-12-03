@@ -1,25 +1,25 @@
 @interface ICDelegationProviderService
 + (ICDelegationProviderService)sharedService;
-+ (id)systemServiceWithRequestContext:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)systemServiceWithRequestContext:(id)context;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
 - (id)_xpcConnection;
-- (void)_addConnection:(id)a3;
-- (void)_netServiceDelegationAccountUUIDsDidChangeNotification:(id)a3;
-- (void)_registerNotificationsForDelegationNetService:(id)a3;
-- (void)_removeConnection:(id)a3;
-- (void)_unregisterNotificationsForDelegationNetService:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_netServiceDelegationAccountUUIDsDidChangeNotification:(id)notification;
+- (void)_registerNotificationsForDelegationNetService:(id)service;
+- (void)_removeConnection:(id)connection;
+- (void)_unregisterNotificationsForDelegationNetService:(id)service;
 - (void)_updateAssertionTimeouts;
 - (void)_updateBrowsingStatus;
 - (void)_updateDelegationForDiscoveredServices;
 - (void)_updateSupportedDelegationAccountUUIDs;
-- (void)addAssertion:(id)a3;
+- (void)addAssertion:(id)assertion;
 - (void)dealloc;
-- (void)delegationProviderServiceAddAssertion:(id)a3;
-- (void)delegationProviderServiceRemoveAssertion:(id)a3;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)removeAssertion:(id)a3;
+- (void)delegationProviderServiceAddAssertion:(id)assertion;
+- (void)delegationProviderServiceRemoveAssertion:(id)assertion;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)removeAssertion:(id)assertion;
 - (void)startSystemXPCService;
 @end
 
@@ -471,7 +471,7 @@ void __69__ICDelegationProviderService__updateSupportedDelegationAccountUUIDs__b
       supportedDelegationAccountUUIDToUserIdentity = self->_supportedDelegationAccountUUIDToUserIdentity;
       discoveredServices = self->_discoveredServices;
       *buf = 138543874;
-      v66 = self;
+      selfCopy2 = self;
       v67 = 2114;
       v68 = supportedDelegationAccountUUIDToUserIdentity;
       v69 = 2114;
@@ -500,23 +500,23 @@ void __69__ICDelegationProviderService__updateSupportedDelegationAccountUUIDs__b
           }
 
           v8 = *(*(&v61 + 1) + 8 * i);
-          v9 = [(ICDelegationProviderService *)v8 delegationAccountUUIDs];
+          delegationAccountUUIDs = [(ICDelegationProviderService *)v8 delegationAccountUUIDs];
           v10 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v66 = v8;
+            selfCopy2 = v8;
             v67 = 2114;
-            v68 = v9;
+            v68 = delegationAccountUUIDs;
             _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "   |_ Processing service %{public}@ - delegationAccountUUIDs=%{public}@", buf, 0x16u);
           }
 
-          if ([(NSMutableSet *)v9 count])
+          if ([(NSMutableSet *)delegationAccountUUIDs count])
           {
             v47 = i;
             v48 = v8;
-            v11 = [(NSMutableSet *)v9 mutableCopy];
-            v12 = [(NSMutableDictionary *)self->_supportedDelegationAccountUUIDToUserIdentity allKeys];
+            v11 = [(NSMutableSet *)delegationAccountUUIDs mutableCopy];
+            allKeys = [(NSMutableDictionary *)self->_supportedDelegationAccountUUIDToUserIdentity allKeys];
             v57 = 0u;
             v58 = 0u;
             v59 = 0u;
@@ -537,7 +537,7 @@ void __69__ICDelegationProviderService__updateSupportedDelegationAccountUUIDs__b
                   }
 
                   v18 = *(*(&v57 + 1) + 8 * j);
-                  if (([v12 containsObject:v18] & 1) == 0)
+                  if (([allKeys containsObject:v18] & 1) == 0)
                   {
                     [v11 removeObject:v18];
                   }
@@ -553,7 +553,7 @@ void __69__ICDelegationProviderService__updateSupportedDelegationAccountUUIDs__b
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v66 = v48;
+              selfCopy2 = v48;
               v67 = 2114;
               v68 = v11;
               _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_DEFAULT, "      Processing service %{public}@ - eligibleDelegationAccountUUIDs=%{public}@", buf, 0x16u);
@@ -566,7 +566,7 @@ void __69__ICDelegationProviderService__updateSupportedDelegationAccountUUIDs__b
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
-                v66 = v48;
+                selfCopy2 = v48;
                 v67 = 2114;
                 v68 = v20;
                 _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_DEFAULT, "      Processing service %{public}@ - activeSessions=%{public}@", buf, 0x16u);
@@ -591,10 +591,10 @@ LABEL_28:
                     objc_enumerationMutation(v22);
                   }
 
-                  v27 = [*(*(&v53 + 1) + 8 * v26) delegationAccountUUIDs];
-                  [v11 removeObjectsInArray:v27];
+                  delegationAccountUUIDs2 = [*(*(&v53 + 1) + 8 * v26) delegationAccountUUIDs];
+                  [v11 removeObjectsInArray:delegationAccountUUIDs2];
 
-                  if (![(NSMutableSet *)v9 count])
+                  if (![(NSMutableSet *)delegationAccountUUIDs count])
                   {
                     break;
                   }
@@ -617,17 +617,17 @@ LABEL_28:
               v28 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [(NSMutableSet *)v9 count];
+                v29 = [(NSMutableSet *)delegationAccountUUIDs count];
                 *buf = 138543874;
-                v66 = v48;
+                selfCopy2 = v48;
                 v67 = 2048;
                 v68 = v29;
                 v69 = 2114;
-                v70 = v9;
+                v70 = delegationAccountUUIDs;
                 _os_log_impl(&dword_1B4491000, v28, OS_LOG_TYPE_DEFAULT, "      Processing service %{public}@ - %lu new delegated accounts - delegationAccountUUIDs=%{public}@", buf, 0x20u);
               }
 
-              if ([(NSMutableSet *)v9 count])
+              if ([(NSMutableSet *)delegationAccountUUIDs count])
               {
                 v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
                 v49 = 0u;
@@ -663,17 +663,17 @@ LABEL_28:
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = v42;
-                  v66 = self;
+                  selfCopy2 = self;
                   v67 = 2114;
                   v68 = v30;
                   v69 = 2114;
-                  v70 = v9;
+                  v70 = delegationAccountUUIDs;
                   v71 = 2114;
                   v72 = v48;
                   _os_log_impl(&dword_1B4491000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@: Creating delegation provider session [new delegated account] - userIdentity=%{public}@ - delegationAccountUUIDs=%{public}@ -  netService=%{public}@", buf, 0x2Au);
                 }
 
-                v38 = [[ICDelegationProviderServiceSession alloc] initWithUserIdentities:v30 userIdentityStore:self->_identityStore requestContext:self->_requestContext netService:v48 delegationAccountUUIDs:v9];
+                v38 = [[ICDelegationProviderServiceSession alloc] initWithUserIdentities:v30 userIdentityStore:self->_identityStore requestContext:self->_requestContext netService:v48 delegationAccountUUIDs:delegationAccountUUIDs];
                 [(ICDelegationProviderServiceSession *)v38 setDelegate:self];
                 v22 = v44;
                 if (!v44)
@@ -682,9 +682,9 @@ LABEL_28:
                   activeServiceSessions = self->_activeServiceSessions;
                   if (!activeServiceSessions)
                   {
-                    v40 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+                    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
                     v41 = self->_activeServiceSessions;
-                    self->_activeServiceSessions = v40;
+                    self->_activeServiceSessions = strongToStrongObjectsMapTable;
 
                     activeServiceSessions = self->_activeServiceSessions;
                   }
@@ -718,7 +718,7 @@ LABEL_28:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating browsing status", buf, 0xCu);
     }
 
@@ -733,7 +733,7 @@ LABEL_28:
       v11[2] = __52__ICDelegationProviderService__updateBrowsingStatus__block_invoke_31;
       v11[3] = &unk_1E7BFA078;
       v12 = v9;
-      v13 = self;
+      selfCopy2 = self;
       v7 = v9;
       dispatch_async(netServiceBrowserQueue, v11);
       v8 = v12;
@@ -840,7 +840,7 @@ void __52__ICDelegationProviderService__updateBrowsingStatus__block_invoke_31(ui
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = self;
+  selfCopy = self;
   v5 = self->_assertions;
   v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
@@ -859,11 +859,11 @@ void __52__ICDelegationProviderService__updateBrowsingStatus__block_invoke_31(ui
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 expirationDate];
-        v14 = v13;
-        if (v13)
+        expirationDate = [v12 expirationDate];
+        v14 = expirationDate;
+        if (expirationDate)
         {
-          [v13 timeIntervalSinceNow];
+          [expirationDate timeIntervalSinceNow];
           if (v15 <= 0.00000011920929)
           {
             if (!v9)
@@ -897,7 +897,7 @@ void __52__ICDelegationProviderService__updateBrowsingStatus__block_invoke_31(ui
 
   if ([v9 count])
   {
-    [(NSMutableSet *)v26->_assertions minusSet:v9];
+    [(NSMutableSet *)selfCopy->_assertions minusSet:v9];
   }
 
   if (v8)
@@ -906,21 +906,21 @@ void __52__ICDelegationProviderService__updateBrowsingStatus__block_invoke_31(ui
     v19 = v18;
     v20 = dispatch_get_global_queue(0, 0);
     v21 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v20);
-    v22 = v26->_assertionTimeoutSource;
-    v26->_assertionTimeoutSource = v21;
+    v22 = selfCopy->_assertionTimeoutSource;
+    selfCopy->_assertionTimeoutSource = v21;
 
-    v23 = v26->_assertionTimeoutSource;
+    v23 = selfCopy->_assertionTimeoutSource;
     v24 = dispatch_time(0, (v19 * 1000000000.0));
     dispatch_source_set_timer(v23, v24, 0xFFFFFFFFFFFFFFFFLL, (v19 * 0.01 * 1000000000.0));
-    objc_initWeak(&location, v26);
-    v25 = v26->_assertionTimeoutSource;
+    objc_initWeak(&location, selfCopy);
+    v25 = selfCopy->_assertionTimeoutSource;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __55__ICDelegationProviderService__updateAssertionTimeouts__block_invoke;
     handler[3] = &unk_1E7BFA328;
     objc_copyWeak(&v28, &location);
     dispatch_source_set_event_handler(v25, handler);
-    dispatch_resume(v26->_assertionTimeoutSource);
+    dispatch_resume(selfCopy->_assertionTimeoutSource);
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
   }
@@ -956,12 +956,12 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
   }
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSMutableSet *)self->_connections removeObject:v4];
-  v5 = [(NSMapTable *)self->_connectionToAssertions objectForKey:v4];
+  connectionCopy = connection;
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
+  v5 = [(NSMapTable *)self->_connectionToAssertions objectForKey:connectionCopy];
   v6 = v5;
   if (v5)
   {
@@ -984,9 +984,9 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 expirationDate];
+          expirationDate = [v11 expirationDate];
 
-          if (!v12)
+          if (!expirationDate)
           {
             [(NSMutableSet *)self->_assertions removeObject:v11];
           }
@@ -998,7 +998,7 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
       while (v8);
     }
 
-    [(NSMapTable *)self->_connectionToAssertions removeObjectForKey:v4];
+    [(NSMapTable *)self->_connectionToAssertions removeObjectForKey:connectionCopy];
   }
 
   if (![(NSMutableSet *)self->_connections count])
@@ -1010,51 +1010,51 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
   [(ICDelegationProviderService *)self _updateBrowsingStatus];
 }
 
-- (void)_unregisterNotificationsForDelegationNetService:(id)a3
+- (void)_unregisterNotificationsForDelegationNetService:(id)service
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:@"ICDelegationProviderNetServiceDelegationAccountUUIDsDidChangeNotification" object:v5];
+  serviceCopy = service;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICDelegationProviderNetServiceDelegationAccountUUIDsDidChangeNotification" object:serviceCopy];
 }
 
-- (void)_registerNotificationsForDelegationNetService:(id)a3
+- (void)_registerNotificationsForDelegationNetService:(id)service
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__netServiceDelegationAccountUUIDsDidChangeNotification_ name:@"ICDelegationProviderNetServiceDelegationAccountUUIDsDidChangeNotification" object:v5];
+  serviceCopy = service;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__netServiceDelegationAccountUUIDsDidChangeNotification_ name:@"ICDelegationProviderNetServiceDelegationAccountUUIDsDidChangeNotification" object:serviceCopy];
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   connections = self->_connections;
-  v8 = v4;
+  v8 = connectionCopy;
   if (!connections)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
     v7 = self->_connections;
     self->_connections = v6;
 
-    v4 = v8;
+    connectionCopy = v8;
     connections = self->_connections;
   }
 
-  [(NSMutableSet *)connections addObject:v4];
+  [(NSMutableSet *)connections addObject:connectionCopy];
 }
 
-- (void)_netServiceDelegationAccountUUIDsDidChangeNotification:(id)a3
+- (void)_netServiceDelegationAccountUUIDsDidChangeNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = notificationCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Delegation account UUIDs did change for with notification: %{public}@", buf, 0x16u);
   }
 
@@ -1067,24 +1067,24 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
   dispatch_barrier_async(accessQueue, block);
 }
 
-- (void)delegationProviderServiceRemoveAssertion:(id)a3
+- (void)delegationProviderServiceRemoveAssertion:(id)assertion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v5 = [MEMORY[0x1E696B0B8] currentConnection];
-    if (v5)
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    if (currentConnection)
     {
       v6 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = v5;
+        v14 = currentConnection;
         v15 = 2114;
-        v16 = v4;
+        v16 = assertionCopy;
         _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection %{public}@ did remove assertion: %{public}@", buf, 0x20u);
       }
 
@@ -1094,8 +1094,8 @@ uint64_t __55__ICDelegationProviderService__updateAssertionTimeouts__block_invok
       block[2] = __72__ICDelegationProviderService_delegationProviderServiceRemoveAssertion___block_invoke;
       block[3] = &unk_1E7BFA178;
       block[4] = self;
-      v9 = v5;
-      v10 = v4;
+      v9 = currentConnection;
+      v10 = assertionCopy;
       dispatch_barrier_async(accessQueue, block);
     }
   }
@@ -1123,24 +1123,24 @@ void __72__ICDelegationProviderService_delegationProviderServiceRemoveAssertion_
   }
 }
 
-- (void)delegationProviderServiceAddAssertion:(id)a3
+- (void)delegationProviderServiceAddAssertion:(id)assertion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
-    v5 = [MEMORY[0x1E696B0B8] currentConnection];
-    if (v5)
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    if (currentConnection)
     {
       v6 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = v5;
+        v14 = currentConnection;
         v15 = 2114;
-        v16 = v4;
+        v16 = assertionCopy;
         _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection %{public}@ did add assertion: %{public}@", buf, 0x20u);
       }
 
@@ -1150,8 +1150,8 @@ void __72__ICDelegationProviderService_delegationProviderServiceRemoveAssertion_
       block[2] = __69__ICDelegationProviderService_delegationProviderServiceAddAssertion___block_invoke;
       block[3] = &unk_1E7BFA178;
       block[4] = self;
-      v9 = v5;
-      v10 = v4;
+      v9 = currentConnection;
+      v10 = assertionCopy;
       dispatch_barrier_async(accessQueue, block);
     }
   }
@@ -1199,27 +1199,27 @@ void __69__ICDelegationProviderService_delegationProviderServiceAddAssertion___b
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.itunescloud.delegation-provider"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.itunescloud.delegation-provider"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     accessQueue = self->_accessQueue;
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __66__ICDelegationProviderService_listener_shouldAcceptNewConnection___block_invoke;
     v14 = &unk_1E7BFA078;
-    v15 = self;
-    v9 = v5;
+    selfCopy = self;
+    v9 = connectionCopy;
     v16 = v9;
     dispatch_barrier_sync(accessQueue, &v11);
     [v9 resume];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 void __66__ICDelegationProviderService_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -1300,19 +1300,19 @@ void __66__ICDelegationProviderService_listener_shouldAcceptNewConnection___bloc
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = serviceCopy;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing service %{public}@", buf, 0x16u);
     }
 
@@ -1322,7 +1322,7 @@ void __66__ICDelegationProviderService_listener_shouldAcceptNewConnection___bloc
     v9[2] = __77__ICDelegationProviderService_netServiceBrowser_didRemoveService_moreComing___block_invoke;
     v9[3] = &unk_1E7BFA078;
     v9[4] = self;
-    v10 = v6;
+    v10 = serviceCopy;
     dispatch_barrier_async(accessQueue, v9);
   }
 }
@@ -1430,23 +1430,23 @@ LABEL_9:
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v6;
+      v16 = serviceCopy;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Found service %{public}@", buf, 0x16u);
     }
 
-    v8 = [[ICDelegationProviderNetService alloc] initWithNetService:v6];
+    v8 = [[ICDelegationProviderNetService alloc] initWithNetService:serviceCopy];
     accessQueue = self->_accessQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1484,15 +1484,15 @@ uint64_t __75__ICDelegationProviderService_netServiceBrowser_didFindService_more
   v10 = *MEMORY[0x1E69E9840];
   if (!self->_isSystemService)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICDelegationProviderService.m" lineNumber:140 description:@"Cannot start XPC service for non-system service."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICDelegationProviderService.m" lineNumber:140 description:@"Cannot start XPC service for non-system service."];
   }
 
   v3 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting XPC service.", buf, 0xCu);
   }
 
@@ -1524,17 +1524,17 @@ uint64_t __52__ICDelegationProviderService_startSystemXPCService__block_invoke(u
   return result;
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ICDelegationProviderService_removeAssertion___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assertionCopy;
+  v6 = assertionCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -1560,17 +1560,17 @@ uint64_t __47__ICDelegationProviderService_removeAssertion___block_invoke(uint64
   }
 }
 
-- (void)addAssertion:(id)a3
+- (void)addAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ICDelegationProviderService_addAssertion___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assertionCopy;
+  v6 = assertionCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -1640,8 +1640,8 @@ uint64_t __44__ICDelegationProviderService_addAssertion___block_invoke(uint64_t 
     while (v5);
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
   [(NSXPCListener *)self->_listener setDelegate:0];
   assertionTimeoutSource = self->_assertionTimeoutSource;
   if (assertionTimeoutSource)
@@ -1669,19 +1669,19 @@ uint64_t __44__ICDelegationProviderService_addAssertion___block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)systemServiceWithRequestContext:(id)a3
++ (id)systemServiceWithRequestContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _init];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  _init = [[self alloc] _init];
+  v6 = _init;
+  if (_init)
   {
-    *(v5 + 73) = 1;
+    *(_init + 73) = 1;
     v7 = dispatch_queue_create("com.apple.iTunesCloud.ICDelegationProviderService.netServiceBrowserQueue", 0);
     v8 = v6[12];
     v6[12] = v7;
 
-    v9 = [v4 copy];
+    v9 = [contextCopy copy];
     v10 = v6[16];
     v6[16] = v9;
 
@@ -1698,8 +1698,8 @@ uint64_t __44__ICDelegationProviderService_addAssertion___block_invoke(uint64_t 
     v6[8] = v14;
     v16 = v14;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v6 selector:sel__userIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:v16];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__userIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:v16];
     v18 = +[ICSecurityInfo sharedSecurityInfo];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;

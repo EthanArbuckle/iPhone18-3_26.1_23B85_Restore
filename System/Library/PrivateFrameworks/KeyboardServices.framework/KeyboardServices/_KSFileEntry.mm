@@ -1,42 +1,42 @@
 @interface _KSFileEntry
-+ (id)entryWithSerialisedDataAtURL:(id)a3;
-- (_KSFileEntry)initWithCoder:(id)a3;
-- (_KSFileEntry)initWithName:(id)a3;
++ (id)entryWithSerialisedDataAtURL:(id)l;
+- (_KSFileEntry)initWithCoder:(id)coder;
+- (_KSFileEntry)initWithName:(id)name;
 - (id)description;
 - (id)serialiseToTemporaryFile;
-- (id)temporaryFileNameForType:(id)a3;
-- (unint64_t)addBlobToFile:(id)a3;
+- (id)temporaryFileNameForType:(id)type;
+- (unint64_t)addBlobToFile:(id)file;
 - (void)consistencyCheck;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadAttributesFromURL:(id)a3;
-- (void)saveAttributesToURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadAttributesFromURL:(id)l;
+- (void)saveAttributesToURL:(id)l;
 @end
 
 @implementation _KSFileEntry
 
-+ (id)entryWithSerialisedDataAtURL:(id)a3
++ (id)entryWithSerialisedDataAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:1 error:0];
+  lCopy = l;
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:0];
   v5 = [v4 length];
   v6 = MEMORY[0x277CBE658];
   if (v5 <= 0xF)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Input file '%@' smaller than minimum header size (size %lu, minimum %lu)", v3, objc_msgSend(v4, "length"), 16}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Input file '%@' smaller than minimum header size (size %lu, minimum %lu)", lCopy, objc_msgSend(v4, "length"), 16}];
   }
 
-  v7 = [v4 bytes];
-  v8 = *v7;
+  bytes = [v4 bytes];
+  v8 = *bytes;
   if (v8)
   {
-    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' incorrect version (contains %i, expected %i)", v3, v8, 0}];
+    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' incorrect version (contains %i, expected %i)", lCopy, v8, 0}];
   }
 
-  v9 = *(v7 + 1);
+  v9 = *(bytes + 1);
   if (v9 + 16 > [v4 length])
   {
-    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' too short to contain serialised directory (size %lu, expected %lu)", v3, objc_msgSend(v4, "length"), v9 + 16}];
+    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' too short to contain serialised directory (size %lu, expected %lu)", lCopy, objc_msgSend(v4, "length"), v9 + 16}];
   }
 
   v10 = [v4 subdataWithRange:{16, v9}];
@@ -54,14 +54,14 @@
 
   if (!v11)
   {
-    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' didn't deserialise directory", v3}];
+    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' didn't deserialise directory", lCopy}];
   }
 
-  v14 = *(v7 + 1);
+  v14 = *(bytes + 1);
   v15 = [v4 length];
   if (v15 > [v4 length])
   {
-    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' missing padding (size %lu, expected %lu)", v3, objc_msgSend(v4, "length"), v15}];
+    [MEMORY[0x277CBEAD8] raise:*v6 format:{@"Input file '%@' missing padding (size %lu, expected %lu)", lCopy, objc_msgSend(v4, "length"), v15}];
   }
 
   v16 = [v4 subdataWithRange:{((v14 + 7) & 0xFFFFFFFFFFFFFFF8) + 16, v15 - (((v14 + 7) & 0xFFFFFFFFFFFFFFF8) + 16)}];
@@ -90,12 +90,12 @@
   else
   {
     v5 = v4;
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __40___KSFileEntry_serialiseToTemporaryFile__block_invoke;
     v25[3] = &unk_2797F7080;
-    v7 = v6;
+    v7 = array;
     v26 = v7;
     [(_KSFileEntry *)self performOnEverything:v25];
     v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
@@ -126,9 +126,9 @@
 
           v14 = *(*(&v20 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          v16 = [v14 contents];
-          write(v5, [v16 bytes], objc_msgSend(v16, "length"));
-          WritePadding(v5, [v16 length]);
+          contents = [v14 contents];
+          write(v5, [contents bytes], objc_msgSend(contents, "length"));
+          WritePadding(v5, [contents length]);
 
           objc_autoreleasePoolPop(v15);
         }
@@ -148,12 +148,12 @@
   return v17;
 }
 
-- (id)temporaryFileNameForType:(id)a3
+- (id)temporaryFileNameForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [_KSUserWordsSynchroniser generateKeyWithSize:10];
-  v6 = [_KSUserWordsSynchroniser generateRecordNameForFilename:v4 withKey:v5];
-  v7 = [v4 stringByAppendingFormat:@".%@", v6];
+  v6 = [_KSUserWordsSynchroniser generateRecordNameForFilename:typeCopy withKey:v5];
+  v7 = [typeCopy stringByAppendingFormat:@".%@", v6];
 
   v8 = MEMORY[0x277CBEBC0];
   v9 = NSTemporaryDirectory();
@@ -167,38 +167,38 @@
   return v11;
 }
 
-- (_KSFileEntry)initWithName:(id)a3
+- (_KSFileEntry)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = _KSFileEntry;
   v6 = [(_KSFileEntry *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_name, name);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     extendedAttributes = v7->_extendedAttributes;
-    v7->_extendedAttributes = v8;
+    v7->_extendedAttributes = dictionary;
   }
 
   return v7;
 }
 
-- (_KSFileEntry)initWithCoder:(id)a3
+- (_KSFileEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _KSFileEntry;
   v5 = [(_KSFileEntry *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"eattr"];
+    v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"eattr"];
     v10 = [v9 mutableCopy];
     extendedAttributes = v5->_extendedAttributes;
     v5->_extendedAttributes = v10;
@@ -246,18 +246,18 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_extendedAttributes forKey:@"eattr"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_extendedAttributes forKey:@"eattr"];
 }
 
-- (unint64_t)addBlobToFile:(id)a3
+- (unint64_t)addBlobToFile:(id)file
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -292,36 +292,36 @@
     v8 = 0;
   }
 
-  [(NSMutableArray *)self->_fileArray addObject:v4];
+  [(NSMutableArray *)self->_fileArray addObject:fileCopy];
   v11 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (void)loadAttributesFromURL:(id)a3
+- (void)loadAttributesFromURL:(id)l
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 fileSystemRepresentation];
-  v31 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = listxattr(v4, 0, 0, 0);
+  lCopy = l;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = listxattr(fileSystemRepresentation, 0, 0, 0);
   if (v5 == -1)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE658];
     v8 = *__error();
     v9 = __error();
-    [v6 raise:v7 format:{@"Unable to find size of extended attributes for '%@': %i: %s", v3, v8, strerror(*v9)}];
+    [v6 raise:v7 format:{@"Unable to find size of extended attributes for '%@': %i: %s", lCopy, v8, strerror(*v9)}];
   }
 
   v10 = malloc_type_malloc(v5, 0x82AB5E60uLL);
   if (!v10)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to allocate memory for extended attributes for '%@' (%zi bytes)", v3, v5}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to allocate memory for extended attributes for '%@' (%zi bytes)", lCopy, v5}];
   }
 
-  v11 = listxattr(v4, v10, v5, 0);
+  v11 = listxattr(fileSystemRepresentation, v10, v5, 0);
   v12 = v11;
-  v30 = v3;
+  v30 = lCopy;
   if (v11)
   {
     if (v11 == -1)
@@ -331,7 +331,7 @@
       v14 = *MEMORY[0x277CBE658];
       v15 = *__error();
       v16 = __error();
-      [v13 raise:v14 format:{@"Unable to load extended attributes for '%@': %i: %s", v3, v15, strerror(*v16)}];
+      [v13 raise:v14 format:{@"Unable to load extended attributes for '%@': %i: %s", lCopy, v15, strerror(*v16)}];
     }
 
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v10 length:v12 encoding:4];
@@ -361,11 +361,11 @@
         v23 = *(*(&v32 + 1) + 8 * i);
         if (([v23 isEqualToString:&stru_286796E30] & 1) == 0)
         {
-          v24 = getxattr(v4, [v23 UTF8String], 0, 0, 0, 0);
+          v24 = getxattr(fileSystemRepresentation, [v23 UTF8String], 0, 0, 0, 0);
           v25 = malloc_type_malloc(v24, 0x7A1B2542uLL);
-          getxattr(v4, [v23 UTF8String], v25, v24, 0, 0);
+          getxattr(fileSystemRepresentation, [v23 UTF8String], v25, v24, 0, 0);
           v26 = [MEMORY[0x277CBEA90] dataWithBytes:v25 length:v24];
-          [(NSMutableDictionary *)v31 setValue:v26 forKey:v23];
+          [(NSMutableDictionary *)dictionary setValue:v26 forKey:v23];
 
           free(v25);
         }
@@ -378,16 +378,16 @@
   }
 
   extendedAttributes = self->_extendedAttributes;
-  self->_extendedAttributes = v31;
+  self->_extendedAttributes = dictionary;
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveAttributesToURL:(id)a3
+- (void)saveAttributesToURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a3 fileSystemRepresentation];
+  lCopy = l;
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -409,7 +409,7 @@
 
         v12 = *(*(&v15 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_extendedAttributes objectForKey:v12, v15];
-        setxattr(v6, [v12 UTF8String], objc_msgSend(v13, "bytes"), objc_msgSend(v13, "length"), 0, 0);
+        setxattr(fileSystemRepresentation, [v12 UTF8String], objc_msgSend(v13, "bytes"), objc_msgSend(v13, "length"), 0, 0);
       }
 
       v9 = [(NSMutableDictionary *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];

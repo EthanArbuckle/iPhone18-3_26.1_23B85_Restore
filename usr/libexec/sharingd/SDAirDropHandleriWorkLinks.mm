@@ -1,7 +1,7 @@
 @interface SDAirDropHandleriWorkLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandleriWorkLinks)initWithTransfer:(id)a3;
-- (id)bundleProxyForiWorkURL:(id)a3;
+- (SDAirDropHandleriWorkLinks)initWithTransfer:(id)transfer;
+- (id)bundleProxyForiWorkURL:(id)l;
 - (id)documentName;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -10,17 +10,17 @@
 
 @implementation SDAirDropHandleriWorkLinks
 
-- (SDAirDropHandleriWorkLinks)initWithTransfer:(id)a3
+- (SDAirDropHandleriWorkLinks)initWithTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v10.receiver = self;
   v10.super_class = SDAirDropHandleriWorkLinks;
-  v5 = [(SDAirDropHandler *)&v10 initWithTransfer:v4];
+  v5 = [(SDAirDropHandler *)&v10 initWithTransfer:transferCopy];
   if (v5)
   {
-    v6 = [v4 completedURLs];
-    v7 = [v6 firstObject];
-    v8 = [(SDAirDropHandleriWorkLinks *)v5 bundleProxyForiWorkURL:v7];
+    completedURLs = [transferCopy completedURLs];
+    firstObject = [completedURLs firstObject];
+    v8 = [(SDAirDropHandleriWorkLinks *)v5 bundleProxyForiWorkURL:firstObject];
     [(SDAirDropHandler *)v5 setBundleProxy:v8];
   }
 
@@ -37,8 +37,8 @@
   }
 
   v3 = [SDAirDropHandlerWebLinks alloc];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [(SDAirDropHandlerWebLinks *)v3 initWithTransfer:v4];
+  transfer = [(SDAirDropHandler *)self transfer];
+  v5 = [(SDAirDropHandlerWebLinks *)v3 initWithTransfer:transfer];
   webLinksHandler = self->_webLinksHandler;
   self->_webLinksHandler = v5;
 
@@ -52,10 +52,10 @@ LABEL_3:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(SDAirDropHandler *)self transfer];
-  v8 = [v7 completedURLs];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer2 completedURLs];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v9 = [completedURLs countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -66,7 +66,7 @@ LABEL_3:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(completedURLs);
         }
 
         if (![*(*(&v15 + 1) + 8 * i) isiWorkURL])
@@ -76,7 +76,7 @@ LABEL_3:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v10 = [completedURLs countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -99,27 +99,27 @@ LABEL_13:
   return [(SDAirDropHandlerGenericLinks *)&v3 transferTypes]| 0x10000000;
 }
 
-- (id)bundleProxyForiWorkURL:(id)a3
+- (id)bundleProxyForiWorkURL:(id)l
 {
-  v4 = a3;
-  if ([v4 isiWorkURL])
+  lCopy = l;
+  if ([lCopy isiWorkURL])
   {
-    v5 = [v4 iWorkApplicationName];
-    v6 = [v5 capitalizedString];
+    iWorkApplicationName = [lCopy iWorkApplicationName];
+    capitalizedString = [iWorkApplicationName capitalizedString];
 
-    if ([v6 isEqual:@"Pages"])
+    if ([capitalizedString isEqual:@"Pages"])
     {
       v7 = @"com.apple.Pages";
     }
 
-    else if ([v6 isEqual:@"Numbers"])
+    else if ([capitalizedString isEqual:@"Numbers"])
     {
       v7 = @"com.apple.Numbers";
     }
 
     else
     {
-      if (![v6 isEqual:@"Keynote"])
+      if (![capitalizedString isEqual:@"Keynote"])
       {
         v8 = 0;
         goto LABEL_10;
@@ -130,19 +130,19 @@ LABEL_13:
 
     v8 = [LSApplicationProxy applicationProxyForIdentifier:v7];
 LABEL_10:
-    v9 = [v8 appState];
-    v10 = [v9 isInstalled];
+    appState = [v8 appState];
+    isInstalled = [appState isInstalled];
 
-    if (v10)
+    if (isInstalled)
     {
-      v11 = [v8 localizedName];
+      localizedName = [v8 localizedName];
       appName = self->_appName;
-      self->_appName = v11;
+      self->_appName = localizedName;
     }
 
     else
     {
-      objc_storeStrong(&self->_appName, v6);
+      objc_storeStrong(&self->_appName, capitalizedString);
       appName = v8;
       v8 = 0;
     }
@@ -158,32 +158,32 @@ LABEL_14:
 
 - (id)documentName
 {
-  v2 = [(SDAirDropHandler *)self transfer];
-  v3 = [v2 completedURLs];
-  v4 = [v3 firstObject];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
+  firstObject = [completedURLs firstObject];
 
-  v5 = [v4 iWorkDocumentName];
+  iWorkDocumentName = [firstObject iWorkDocumentName];
 
-  return v5;
+  return iWorkDocumentName;
 }
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v5 = [(SDAirDropHandleriWorkLinks *)self documentName];
-  v6 = v5;
-  if (v4 == 1 && v5)
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  documentName = [(SDAirDropHandleriWorkLinks *)self documentName];
+  v6 = documentName;
+  if (totalSharedItemsCount == 1 && documentName)
   {
     v7 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_100910190];
     v8 = SFLocalizedStringForKey();
-    v9 = [NSString localizedStringWithFormat:v8, v3, self->_appName, v6];
+    v9 = [NSString localizedStringWithFormat:v8, senderName, self->_appName, v6];
   }
 
   else
   {
     v15 = @"IWORK_LINK";
-    v10 = [NSNumber numberWithUnsignedInteger:v4];
+    v10 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v16 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v17 = v11;
@@ -191,7 +191,7 @@ LABEL_14:
     v7 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v12];
 
     v13 = SFLocalizedStringForKey();
-    v9 = [NSString localizedStringWithFormat:v13, v3, v4, self->_appName];
+    v9 = [NSString localizedStringWithFormat:v13, senderName, totalSharedItemsCount, self->_appName];
   }
 
   return v9;
@@ -203,8 +203,8 @@ LABEL_14:
   if (webLinksHandler)
   {
     [(SDAirDropHandlerGenericLinks *)webLinksHandler updatePossibleActions];
-    v4 = [(SDAirDropHandler *)self completionHandler];
-    [(SDAirDropHandler *)self->_webLinksHandler setCompletionHandler:v4];
+    completionHandler = [(SDAirDropHandler *)self completionHandler];
+    [(SDAirDropHandler *)self->_webLinksHandler setCompletionHandler:completionHandler];
   }
 
   else

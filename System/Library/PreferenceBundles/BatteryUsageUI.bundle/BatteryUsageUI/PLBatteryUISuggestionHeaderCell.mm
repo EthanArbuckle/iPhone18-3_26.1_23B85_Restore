@@ -1,27 +1,27 @@
 @interface PLBatteryUISuggestionHeaderCell
-- (PLBatteryUISuggestionHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PLBatteryUISuggestionHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (PLBatteryUISuggestionHeaderCellDelegate)delegate;
-- (void)buttonAction:(id)a3;
+- (void)buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateButton;
 - (void)updateConstraints;
 @end
 
 @implementation PLBatteryUISuggestionHeaderCell
 
-- (PLBatteryUISuggestionHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PLBatteryUISuggestionHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v48.receiver = self;
   v48.super_class = PLBatteryUISuggestionHeaderCell;
-  v9 = [(PLBatteryUISuggestionHeaderCell *)&v48 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PLBatteryUISuggestionHeaderCell *)&v48 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
     v10 = +[UIColor clearColor];
     [(PLBatteryUISuggestionHeaderCell *)v9 setBackgroundColor:v10];
 
-    v11 = [(PLBatteryUISuggestionHeaderCell *)v9 contentView];
+    contentView = [(PLBatteryUISuggestionHeaderCell *)v9 contentView];
     v12 = [UILabel alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -29,83 +29,83 @@
     v16 = [v12 initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(PLBatteryUISuggestionHeaderCell *)v9 setHeaderTitleLabel:v16];
 
-    v17 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v17 setAccessibilityIdentifier:@"SuggestionHeader"];
+    headerTitleLabel = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel setAccessibilityIdentifier:@"SuggestionHeader"];
 
     v18 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v19 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v19 setFont:v18];
+    headerTitleLabel2 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel2 setFont:v18];
 
-    v20 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    headerTitleLabel3 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v21 = +[UIColor _secondaryLabelColor];
-    v22 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v22 setTextColor:v21];
+    headerTitleLabel4 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel4 setTextColor:v21];
 
     v23 = +[PLBatteryUIUtilities localizedLeftTextAlignment];
-    v24 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v24 setTextAlignment:v23];
+    headerTitleLabel5 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel5 setTextAlignment:v23];
 
     v25 = +[UIColor clearColor];
-    v26 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v26 setBackgroundColor:v25];
+    headerTitleLabel6 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel6 setBackgroundColor:v25];
 
-    v27 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v27 setNumberOfLines:0];
+    headerTitleLabel7 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel7 setNumberOfLines:0];
 
-    v28 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v28 setLineBreakMode:0];
+    headerTitleLabel8 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [headerTitleLabel8 setLineBreakMode:0];
 
-    v29 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
-    [v11 addSubview:v29];
+    headerTitleLabel9 = [(PLBatteryUISuggestionHeaderCell *)v9 headerTitleLabel];
+    [contentView addSubview:headerTitleLabel9];
 
     v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(PLBatteryUISuggestionHeaderCell *)v9 setHeaderShowAllButton:v30];
 
-    v31 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v31 setAccessibilityIdentifier:@"ShowAllButton"];
+    headerShowAllButton = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton setAccessibilityIdentifier:@"ShowAllButton"];
 
-    v32 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    headerShowAllButton2 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v33 = +[UIColor systemBlueColor];
-    v34 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v34 setTextColor:v33];
+    headerShowAllButton3 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton3 setTextColor:v33];
 
-    v35 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v35 setEnabled:1];
+    headerShowAllButton4 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton4 setEnabled:1];
 
-    v36 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v36 setHidden:0];
+    headerShowAllButton5 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton5 setHidden:0];
 
     v37 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v38 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v38 setFont:v37];
+    headerShowAllButton6 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton6 setFont:v37];
 
-    v39 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v39 setNumberOfLines:0];
+    headerShowAllButton7 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton7 setNumberOfLines:0];
 
     v40 = +[PLBatteryUIUtilities localizedRightTextAlignment];
-    v41 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v41 setTextAlignment:v40];
+    headerShowAllButton8 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton8 setTextAlignment:v40];
 
-    v42 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v42 setLineBreakMode:0];
+    headerShowAllButton9 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton9 setLineBreakMode:0];
 
-    v43 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v11 addSubview:v43];
+    headerShowAllButton10 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [contentView addSubview:headerShowAllButton10];
 
     [(PLBatteryUISuggestionHeaderCell *)v9 setSeparatorInset:0.0, 0.0, 0.0, 0.0];
-    v44 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v44 setUserInteractionEnabled:1];
+    headerShowAllButton11 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton11 setUserInteractionEnabled:1];
 
     v45 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:"buttonAction:"];
     [v45 setNumberOfTapsRequired:1];
-    v46 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
-    [v46 addGestureRecognizer:v45];
+    headerShowAllButton12 = [(PLBatteryUISuggestionHeaderCell *)v9 headerShowAllButton];
+    [headerShowAllButton12 addGestureRecognizer:v45];
 
-    [(PLBatteryUISuggestionHeaderCell *)v9 refreshCellContentsWithSpecifier:v8];
+    [(PLBatteryUISuggestionHeaderCell *)v9 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   return v9;
@@ -113,18 +113,18 @@
 
 - (void)updateConstraints
 {
-  v3 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
-  v4 = [v3 text];
-  v5 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
-  v6 = [v5 font];
-  [PLBatteryUIUtilities getOneLineWidthOfText:v4 withFont:v6];
+  headerTitleLabel = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
+  text = [headerTitleLabel text];
+  headerTitleLabel2 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
+  font = [headerTitleLabel2 font];
+  [PLBatteryUIUtilities getOneLineWidthOfText:text withFont:font];
   v8 = v7;
 
-  v9 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  v10 = [v9 text];
-  v11 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  v12 = [v11 font];
-  [PLBatteryUIUtilities getOneLineWidthOfText:v10 withFont:v12];
+  headerShowAllButton = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  text2 = [headerShowAllButton text];
+  headerShowAllButton2 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  font2 = [headerShowAllButton2 font];
+  [PLBatteryUIUtilities getOneLineWidthOfText:text2 withFont:font2];
   v14 = v13;
 
   [(PLBatteryUISuggestionHeaderCell *)self frame];
@@ -138,17 +138,17 @@
     v16 = 1.0;
   }
 
-  v17 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
-  v18 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  v19 = [NSLayoutConstraint constraintWithItem:v17 attribute:7 relatedBy:0 toItem:v18 attribute:7 multiplier:v16 constant:0.0];
+  headerTitleLabel3 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
+  headerShowAllButton3 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  v19 = [NSLayoutConstraint constraintWithItem:headerTitleLabel3 attribute:7 relatedBy:0 toItem:headerShowAllButton3 attribute:7 multiplier:v16 constant:0.0];
 
-  v20 = [(PLBatteryUISuggestionHeaderCell *)self widthConstraint];
+  widthConstraint = [(PLBatteryUISuggestionHeaderCell *)self widthConstraint];
 
-  if (v20)
+  if (widthConstraint)
   {
-    v21 = [(PLBatteryUISuggestionHeaderCell *)self contentView];
-    v22 = [(PLBatteryUISuggestionHeaderCell *)self widthConstraint];
-    [v21 removeConstraint:v22];
+    contentView = [(PLBatteryUISuggestionHeaderCell *)self contentView];
+    widthConstraint2 = [(PLBatteryUISuggestionHeaderCell *)self widthConstraint];
+    [contentView removeConstraint:widthConstraint2];
 
     [(PLBatteryUISuggestionHeaderCell *)self setWidthConstraint:v19];
     v35 = v19;
@@ -163,11 +163,11 @@
   else
   {
     v24 = +[NSMutableArray array];
-    v25 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
-    [v25 sizeToFit];
+    headerTitleLabel4 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
+    [headerTitleLabel4 sizeToFit];
 
-    v26 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-    [v26 sizeToFit];
+    headerShowAllButton4 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+    [headerShowAllButton4 sizeToFit];
 
     v27 = _NSDictionaryOfVariableBindings(@"_headerTitleLabel, _headerShowAllButton", self->_headerTitleLabel, self->_headerShowAllButton, 0);
     v28 = _NSDictionaryOfVariableBindings(@"labelMargin, bottomMargin", &off_173598, &off_1735B0, 0);
@@ -188,26 +188,26 @@
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = PLBatteryUISuggestionHeaderCell;
-  v4 = a3;
-  [(PLBatteryUISuggestionHeaderCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"PLBatteryUISuggestionShowAll", v11.receiver, v11.super_class}];
+  specifierCopy = specifier;
+  [(PLBatteryUISuggestionHeaderCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"PLBatteryUISuggestionShowAll", v11.receiver, v11.super_class}];
   -[PLBatteryUISuggestionHeaderCell setShowAll:](self, "setShowAll:", [v5 BOOLValue]);
 
-  v6 = [v4 propertyForKey:@"PLBatteryUISuggestionTitle"];
+  v6 = [specifierCopy propertyForKey:@"PLBatteryUISuggestionTitle"];
   [(PLBatteryUISuggestionHeaderCell *)self setSuggestionTitle:v6];
 
-  v7 = [(PLBatteryUISuggestionHeaderCell *)self suggestionTitle];
-  v8 = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
-  [v8 setText:v7];
+  suggestionTitle = [(PLBatteryUISuggestionHeaderCell *)self suggestionTitle];
+  headerTitleLabel = [(PLBatteryUISuggestionHeaderCell *)self headerTitleLabel];
+  [headerTitleLabel setText:suggestionTitle];
 
-  v9 = [v4 propertyForKey:@"PLBatteryUISuggestionHeaderCellDelegateWrapperKey"];
+  v9 = [specifierCopy propertyForKey:@"PLBatteryUISuggestionHeaderCellDelegateWrapperKey"];
 
-  v10 = [v9 buiViewController];
-  [(PLBatteryUISuggestionHeaderCell *)self setDelegate:v10];
+  buiViewController = [v9 buiViewController];
+  [(PLBatteryUISuggestionHeaderCell *)self setDelegate:buiViewController];
 
   [(PLBatteryUISuggestionHeaderCell *)self updateButton];
   [(PLBatteryUISuggestionHeaderCell *)self setNeedsUpdateConstraints];
@@ -225,13 +225,13 @@
 
 - (void)updateButton
 {
-  v3 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  [v3 setHidden:0];
+  headerShowAllButton = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  [headerShowAllButton setHidden:0];
 
-  LODWORD(v3) = [(PLBatteryUISuggestionHeaderCell *)self showAll];
-  v4 = [(PLBatteryUISuggestionHeaderCell *)self specifier];
-  v5 = v4;
-  if (v3)
+  LODWORD(headerShowAllButton) = [(PLBatteryUISuggestionHeaderCell *)self showAll];
+  specifier = [(PLBatteryUISuggestionHeaderCell *)self specifier];
+  v5 = specifier;
+  if (headerShowAllButton)
   {
     v6 = @"PLBatteryUISuggestionShowLessText";
   }
@@ -241,20 +241,20 @@
     v6 = @"PLBatteryUISuggestionShowAllText";
   }
 
-  v12 = [v4 propertyForKey:v6];
+  v12 = [specifier propertyForKey:v6];
 
-  v7 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  [v7 setText:v12];
+  headerShowAllButton2 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  [headerShowAllButton2 setText:v12];
 
-  v8 = [(PLBatteryUISuggestionHeaderCell *)self specifier];
-  v9 = [v8 propertyForKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
-  v10 = [v9 intValue];
+  specifier2 = [(PLBatteryUISuggestionHeaderCell *)self specifier];
+  v9 = [specifier2 propertyForKey:@"PLBatteryUISuggestionInsightTotalCountKey"];
+  intValue = [v9 intValue];
 
-  v11 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
-  [v11 setHidden:v10 < 3];
+  headerShowAllButton3 = [(PLBatteryUISuggestionHeaderCell *)self headerShowAllButton];
+  [headerShowAllButton3 setHidden:intValue < 3];
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
   v4 = +[BatteryUIResourceClass get_log_handle_bui_graph];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -263,12 +263,12 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Suggestion Header Button triggered", v7, 2u);
   }
 
-  v5 = [(PLBatteryUISuggestionHeaderCell *)self delegate];
+  delegate = [(PLBatteryUISuggestionHeaderCell *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(PLBatteryUISuggestionHeaderCell *)self delegate];
-    [v6 didTapShowAllButton];
+    delegate2 = [(PLBatteryUISuggestionHeaderCell *)self delegate];
+    [delegate2 didTapShowAllButton];
   }
 }
 

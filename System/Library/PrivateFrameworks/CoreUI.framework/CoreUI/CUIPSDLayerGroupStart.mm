@@ -1,10 +1,10 @@
 @interface CUIPSDLayerGroupStart
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation CUIPSDLayerGroupStart
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v5 = +[NSAssertionHandler currentHandler];
 

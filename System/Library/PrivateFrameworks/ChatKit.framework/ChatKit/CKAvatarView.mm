@@ -1,10 +1,10 @@
 @interface CKAvatarView
 - (CKAvatarView)init;
-- (CKAvatarView)initWithFrame:(CGRect)a3;
+- (CKAvatarView)initWithFrame:(CGRect)frame;
 - (NSString)_ck_contextToken;
 - (NSString)preferredHandle;
 - (UIViewController)presentingViewController;
-- (void)_ck_setContextToken:(id)a3;
+- (void)_ck_setContextToken:(id)token;
 - (void)layoutSubviews;
 @end
 
@@ -39,12 +39,12 @@ void __20__CKAvatarView_init__block_invoke()
   [(CNAvatarView *)&v2 layoutSubviews];
 }
 
-- (CKAvatarView)initWithFrame:(CGRect)a3
+- (CKAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(CKAvatarView *)self init];
   [(CKAvatarView *)v7 setFrame:x, y, width, height];
   return v7;
@@ -54,23 +54,23 @@ void __20__CKAvatarView_init__block_invoke()
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CNAvatarView *)self contextToken];
+    contextToken = [(CNAvatarView *)self contextToken];
   }
 
   else
   {
-    v3 = 0;
+    contextToken = 0;
   }
 
-  return v3;
+  return contextToken;
 }
 
-- (void)_ck_setContextToken:(id)a3
+- (void)_ck_setContextToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (objc_opt_respondsToSelector())
   {
-    [(CNAvatarView *)self setContextToken:v4];
+    [(CNAvatarView *)self setContextToken:tokenCopy];
   }
 }
 

@@ -1,21 +1,21 @@
 @interface PrintBandService
-- (PrintBandService)initWithXPCConnection:(id)a3;
+- (PrintBandService)initWithXPCConnection:(id)connection;
 - (void)dealloc;
-- (void)znProcessBand:(id)a3 withBandDescription:(id *)a4 reply:(id)a5;
+- (void)znProcessBand:(id)band withBandDescription:(id *)description reply:(id)reply;
 @end
 
 @implementation PrintBandService
 
-- (PrintBandService)initWithXPCConnection:(id)a3
+- (PrintBandService)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = PrintBandService;
   v6 = [(PrintBandService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    objc_storeStrong(&v6->_xpcConnection, connection);
   }
 
   return v7;
@@ -39,17 +39,17 @@
   [(PrintBandService *)&v3 dealloc];
 }
 
-- (void)znProcessBand:(id)a3 withBandDescription:(id *)a4 reply:(id)a5
+- (void)znProcessBand:(id)band withBandDescription:(id *)description reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = *&a4->var8;
-  v11 = *&a4->var4;
-  *&self->bandCombo.bandDescription.pageWidth_pixels = *&a4->var0;
+  bandCopy = band;
+  replyCopy = reply;
+  v10 = *&description->var8;
+  v11 = *&description->var4;
+  *&self->bandCombo.bandDescription.pageWidth_pixels = *&description->var0;
   *&self->bandCombo.bandDescription.bitsPerColor = v11;
   *&self->bandCombo.bandDescription.extendedColorspace = v10;
-  self->bandCombo.raster = [v8 bytes];
-  if (!a4->var7)
+  self->bandCombo.raster = [bandCopy bytes];
+  if (!description->var7)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -75,7 +75,7 @@
 
     if (!v12)
     {
-      if (a4->var6 + a4->var7 >= a4->var1)
+      if (description->var6 + description->var7 >= description->var1)
       {
         v12 = znTerminateBanding(self->znProcessData);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -93,9 +93,9 @@
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    var6 = a4->var6;
-    var7 = a4->var7;
-    var1 = a4->var1;
+    var6 = description->var6;
+    var7 = description->var7;
+    var1 = description->var1;
     bandIsOkay = self->bandCombo.bandIsOkay;
     v18 = 136316418;
     v19 = "[PrintBandService znProcessBand:withBandDescription:reply:]";
@@ -127,7 +127,7 @@
     v13 = 0xFFFFFFFFLL;
   }
 
-  v9[2](v9, v13);
+  replyCopy[2](replyCopy, v13);
 }
 
 @end

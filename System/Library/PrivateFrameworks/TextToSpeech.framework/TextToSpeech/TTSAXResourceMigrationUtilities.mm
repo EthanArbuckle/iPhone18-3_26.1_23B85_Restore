@@ -1,6 +1,6 @@
 @interface TTSAXResourceMigrationUtilities
 + (id)sharedInstance;
-- (id)updatedIdentifierForLegacyIdentifier:(id)a3 withLanguageCode:(id)a4;
+- (id)updatedIdentifierForLegacyIdentifier:(id)identifier withLanguageCode:(id)code;
 @end
 
 @implementation TTSAXResourceMigrationUtilities
@@ -17,36 +17,36 @@
   return v3;
 }
 
-- (id)updatedIdentifierForLegacyIdentifier:(id)a3 withLanguageCode:(id)a4
+- (id)updatedIdentifierForLegacyIdentifier:(id)identifier withLanguageCode:(id)code
 {
   v139 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v9 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  codeCopy = code;
+  if (identifierCopy)
   {
-    if (objc_msgSend_isEqualToString_(v5, v6, @"com.apple.speech.voice.Alex", v7, v8))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v6, @"com.apple.speech.voice.Alex", v7, v8))
     {
       v14 = @"com.apple.speech.synthesis.voice.Alex";
       goto LABEL_37;
     }
 
-    v16 = objc_msgSend_lowercaseString(v5, v10, v11, v12, v13);
+    v16 = objc_msgSend_lowercaseString(identifierCopy, v10, v11, v12, v13);
     v20 = objc_msgSend_containsObject_(&unk_1F1D0F858, v17, v16, v18, v19);
 
     if (v20)
     {
-      v14 = v5;
+      v14 = identifierCopy;
       goto LABEL_37;
     }
 
     v25 = objc_msgSend_sharedInstance(TTSRegexCache, v21, v22, v23, v24);
     v28 = objc_msgSend_regexForString_atStart_(v25, v26, @"com\\.apple\\.ttsbundle\\.(?<name>[^.]*)\\-(?<quality>premium|compact|Premium|Compact)$", 1, v27);
 
-    v33 = objc_msgSend_length(v5, v29, v30, v31, v32);
-    v35 = objc_msgSend_firstMatchInString_options_range_(v28, v34, v5, 2, 0, v33);
+    v33 = objc_msgSend_length(identifierCopy, v29, v30, v31, v32);
+    v35 = objc_msgSend_firstMatchInString_options_range_(v28, v34, identifierCopy, 2, 0, v33);
     if (!objc_msgSend_numberOfRanges(v35, v36, v37, v38, v39))
     {
-      v14 = v5;
+      v14 = identifierCopy;
 LABEL_36:
 
       goto LABEL_37;
@@ -56,8 +56,8 @@ LABEL_36:
     v45 = v44;
     v48 = objc_msgSend_rangeWithName_(v35, v44, @"quality", v46, v47);
     v50 = v49;
-    v52 = objc_msgSend_substringWithRange_(v5, v49, v43, v45, v51);
-    v55 = objc_msgSend_substringWithRange_(v5, v53, v48, v50, v54);
+    v52 = objc_msgSend_substringWithRange_(identifierCopy, v49, v43, v45, v51);
+    v55 = objc_msgSend_substringWithRange_(identifierCopy, v53, v48, v50, v54);
     v60 = objc_msgSend_lowercaseString(v55, v56, v57, v58, v59);
 
     if (objc_msgSend_containsString_(v52, v61, @"-", v62, v63))
@@ -70,10 +70,10 @@ LABEL_36:
     }
 
     isEqualToString = objc_msgSend_isEqualToString_(v60, v64, @"compact", v65, v66);
-    if (v9 && isEqualToString)
+    if (codeCopy && isEqualToString)
     {
       v83 = objc_msgSend_sharedInstance(TTSLocaleUtilities, v79, v80, v81, v82);
-      v14 = objc_msgSend_defaultVoiceIdentifierForGeneralLanguageCode_(v83, v84, v9, v85, v86);
+      v14 = objc_msgSend_defaultVoiceIdentifierForGeneralLanguageCode_(v83, v84, codeCopy, v85, v86);
 
       if (v14)
       {
@@ -83,7 +83,7 @@ LABEL_35:
       }
     }
 
-    else if (!v9)
+    else if (!codeCopy)
     {
       v92 = objc_msgSend_sharedInstance(TTSAXResourceManager, v79, v80, v81, v82);
       v91 = objc_msgSend_languageCodeForResourceName_withType_(v92, v93, v52, 4, v94);
@@ -91,7 +91,7 @@ LABEL_35:
       goto LABEL_20;
     }
 
-    v91 = v9;
+    v91 = codeCopy;
 LABEL_20:
     v95 = _BuiltInVoiceNameForLanguage(v91, v87, v88, v89, v90);
     v135 = v60;
@@ -160,7 +160,7 @@ LABEL_20:
   v15 = AXTTSLogResourceMigration();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    sub_1A9577C14(v9, v15);
+    sub_1A9577C14(codeCopy, v15);
   }
 
   v14 = 0;

@@ -1,7 +1,7 @@
 @interface SiriTTSPhonemeRequest
 - (SiriTTSSynthesisVoice)voice;
-- (void)encodeWithCoder:(id)a3;
-- (void)setVoice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setVoice:(id)voice;
 @end
 
 @implementation SiriTTSPhonemeRequest
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = self;
+  voiceCopy = voice;
+  selfCopy = self;
   sub_1B1B11608();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1B118E8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1B118E8(coderCopy);
 }
 
 @end

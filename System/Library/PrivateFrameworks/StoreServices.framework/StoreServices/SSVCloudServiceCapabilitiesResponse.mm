@@ -1,25 +1,25 @@
 @interface SSVCloudServiceCapabilitiesResponse
 - (NSString)debugDescription;
 - (NSString)description;
-- (SSVCloudServiceCapabilitiesResponse)initWithXPCEncoding:(id)a3;
-- (id)_descriptionWithSubscriptionStatusDescriptorBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVCloudServiceCapabilitiesResponse)initWithXPCEncoding:(id)encoding;
+- (id)_descriptionWithSubscriptionStatusDescriptorBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVCloudServiceCapabilitiesResponse
 
-- (id)_descriptionWithSubscriptionStatusDescriptorBlock:(id)a3
+- (id)_descriptionWithSubscriptionStatusDescriptorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 initWithFormat:@"<%@: %p", v7, self];
 
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_supportsMusicCatalogPlayback)
@@ -94,9 +94,9 @@ void __55__SSVCloudServiceCapabilitiesResponse_debugDescription__block_invoke(ui
   [v3 appendFormat:@"; subscriptionStatus = %@", v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(SSVSubscriptionStatus *)self->_subscriptionStatus copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;
@@ -107,11 +107,11 @@ void __55__SSVCloudServiceCapabilitiesResponse_debugDescription__block_invoke(ui
   return v4;
 }
 
-- (SSVCloudServiceCapabilitiesResponse)initWithXPCEncoding:(id)a3
+- (SSVCloudServiceCapabilitiesResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v12.receiver = self;
     v12.super_class = SSVCloudServiceCapabilitiesResponse;

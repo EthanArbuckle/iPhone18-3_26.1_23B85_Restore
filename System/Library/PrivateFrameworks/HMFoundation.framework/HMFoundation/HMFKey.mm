@@ -1,12 +1,12 @@
 @interface HMFKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToData:(id)data;
 - (HMFKey)init;
-- (HMFKey)initWithCoder:(id)a3;
-- (HMFKey)initWithType:(id)a3 size:(unint64_t)a4 data:(id)a5;
+- (HMFKey)initWithCoder:(id)coder;
+- (HMFKey)initWithType:(id)type size:(unint64_t)size data:(id)data;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFKey
@@ -24,11 +24,11 @@
   objc_exception_throw(v7);
 }
 
-- (HMFKey)initWithType:(id)a3 size:(unint64_t)a4 data:(id)a5
+- (HMFKey)initWithType:(id)type size:(unint64_t)size data:(id)data
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || (v10 = v9, ![v8 length]))
+  typeCopy = type;
+  dataCopy = data;
+  if (!typeCopy || (v10 = dataCopy, ![typeCopy length]))
   {
     _HMFPreconditionFailure(@"type && [type length] > 0");
   }
@@ -43,7 +43,7 @@
   v11 = [(HMFKey *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [typeCopy copy];
     type = v11->_type;
     v11->_type = v12;
 
@@ -51,12 +51,12 @@
     data = v11->_data;
     v11->_data = v14;
 
-    if (!a4)
+    if (!size)
     {
-      a4 = 8 * [v10 length];
+      size = 8 * [v10 length];
     }
 
-    v11->_size = a4;
+    v11->_size = size;
   }
 
   return v11;
@@ -64,16 +64,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMFKey *)self data];
-  v3 = [v2 hash];
+  data = [(HMFKey *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -95,13 +95,13 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMFKey *)v6 type];
-      v9 = [(HMFKey *)self type];
-      if ([v8 isEqualToString:v9] && (v10 = -[HMFKey size](v7, "size"), v10 == -[HMFKey size](self, "size")))
+      type = [(HMFKey *)v6 type];
+      type2 = [(HMFKey *)self type];
+      if ([type isEqualToString:type2] && (v10 = -[HMFKey size](v7, "size"), v10 == -[HMFKey size](self, "size")))
       {
-        v11 = [(HMFKey *)v7 data];
-        v12 = [(HMFKey *)self data];
-        v13 = [v11 isEqual:v12];
+        data = [(HMFKey *)v7 data];
+        data2 = [(HMFKey *)self data];
+        v13 = [data isEqual:data2];
       }
 
       else
@@ -119,11 +119,11 @@
   return v13;
 }
 
-- (BOOL)isEqualToData:(id)a3
+- (BOOL)isEqualToData:(id)data
 {
-  v4 = a3;
-  v5 = [(HMFKey *)self data];
-  v6 = HMFEqualObjects(v5, v4);
+  dataCopy = data;
+  data = [(HMFKey *)self data];
+  v6 = HMFEqualObjects(data, dataCopy);
 
   return v6;
 }
@@ -131,21 +131,21 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFKey *)self type];
+  shortDescription = [objc_opt_class() shortDescription];
+  type = [(HMFKey *)self type];
   v6 = [(HMFKey *)self size];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v6];
-  v8 = [v3 stringWithFormat:@"%@ type: %@ length: %@", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"%@ type: %@ length: %@", shortDescription, type, v7];
 
   return v8;
 }
 
-- (HMFKey)initWithCoder:(id)a3
+- (HMFKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"HMF.kt"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"HMF.kt"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.kt"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.kt"];
   }
 
   else
@@ -153,9 +153,9 @@
     v5 = @"Unknown";
   }
 
-  if ([v4 containsValueForKey:@"HMF.ks"])
+  if ([coderCopy containsValueForKey:@"HMF.ks"])
   {
-    v6 = [v4 decodeIntegerForKey:@"HMF.ks"];
+    v6 = [coderCopy decodeIntegerForKey:@"HMF.ks"];
   }
 
   else
@@ -163,21 +163,21 @@
     v6 = 0;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HAP.data"];
   v8 = [(HMFKey *)self initWithType:v5 size:v6 data:v7];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFKey *)self type];
-  [v4 encodeObject:v5 forKey:@"HMF.kt"];
+  coderCopy = coder;
+  type = [(HMFKey *)self type];
+  [coderCopy encodeObject:type forKey:@"HMF.kt"];
 
-  [v4 encodeInteger:-[HMFKey size](self forKey:{"size"), @"HMF.ks"}];
-  v6 = [(HMFKey *)self data];
-  [v4 encodeObject:v6 forKey:@"HAP.data"];
+  [coderCopy encodeInteger:-[HMFKey size](self forKey:{"size"), @"HMF.ks"}];
+  data = [(HMFKey *)self data];
+  [coderCopy encodeObject:data forKey:@"HAP.data"];
 }
 
 @end

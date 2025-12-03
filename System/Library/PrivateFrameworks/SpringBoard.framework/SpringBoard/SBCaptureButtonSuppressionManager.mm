@@ -8,7 +8,7 @@
 - (void)_subscribeToViewObstructedUpdates;
 - (void)_unsubscribeFromViewObstructedUpdates;
 - (void)dealloc;
-- (void)setSuppressionState:(int64_t)a3;
+- (void)setSuppressionState:(int64_t)state;
 @end
 
 @implementation SBCaptureButtonSuppressionManager
@@ -36,18 +36,18 @@
   [(SBCaptureButtonSuppressionManager *)&v3 dealloc];
 }
 
-- (void)setSuppressionState:(int64_t)a3
+- (void)setSuppressionState:(int64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_suppressionState != a3)
+  if (self->_suppressionState != state)
   {
-    self->_suppressionState = a3;
+    self->_suppressionState = state;
     v5 = SBLogCameraCaptureSuppression();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = NSStringFromSBCaptureButtonSuppressionState(a3);
+      v6 = NSStringFromSBCaptureButtonSuppressionState(state);
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
       v10 = v6;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) suppression state is now: %{public}@", &v7, 0x16u);
@@ -83,27 +83,27 @@
 
 - (SBCaptureButtonLowLatencyPose)lowLatencyPose
 {
-  v2 = [(CMSuppressionManager *)self->_suppressionManager staticPoseBlocking];
-  v3 = [v2 isStatic];
-  [v2 timeInStaticState];
+  staticPoseBlocking = [(CMSuppressionManager *)self->_suppressionManager staticPoseBlocking];
+  isStatic = [staticPoseBlocking isStatic];
+  [staticPoseBlocking timeInStaticState];
   v5 = v4;
-  if ((v3 & 1) == 0)
+  if ((isStatic & 1) == 0)
   {
-    [v2 timeInMovingState];
+    [staticPoseBlocking timeInMovingState];
     v5 = v5 + v6;
   }
 
-  if ([v2 isStatic])
+  if ([staticPoseBlocking isStatic])
   {
-    [v2 timeInStaticState];
+    [staticPoseBlocking timeInStaticState];
     v8 = v7;
-    [v2 timeInMovingState];
+    [staticPoseBlocking timeInMovingState];
     v10 = v8 + v9;
   }
 
   else
   {
-    [v2 timeInMovingState];
+    [staticPoseBlocking timeInMovingState];
     v10 = v11;
   }
 
@@ -165,14 +165,14 @@
       }
 
       v7 = self->_suppressionManager;
-      v8 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __70__SBCaptureButtonSuppressionManager__subscribeToViewObstructedUpdates__block_invoke;
       v10[3] = &unk_2783BD280;
       v10[4] = self;
       v10[5] = a2;
-      [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:v8 withOptions:24 withHandler:v10];
+      [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:mainQueue withOptions:24 withHandler:v10];
     }
   }
 

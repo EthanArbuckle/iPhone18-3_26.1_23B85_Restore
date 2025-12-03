@@ -1,26 +1,26 @@
 @interface NLXSchemaCDMSystemReportedFailure
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMSystemReportedFailure)initWithDictionary:(id)a3;
-- (NLXSchemaCDMSystemReportedFailure)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMSystemReportedFailure)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMSystemReportedFailure)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMSystemReportedFailure
 
-- (NLXSchemaCDMSystemReportedFailure)initWithDictionary:(id)a3
+- (NLXSchemaCDMSystemReportedFailure)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = NLXSchemaCDMSystemReportedFailure;
   v5 = [(NLXSchemaCDMSystemReportedFailure *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(NLXSchemaCDMSystemReportedFailure *)v5 setTaskId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"reason"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NLXSchemaCDMSystemReportedFailure *)v5 setReason:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"task"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"task"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMSystemReportedFailure)initWithJSON:(id)a3
+- (NLXSchemaCDMSystemReportedFailure)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMSystemReportedFailure *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMSystemReportedFailure *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMSystemReportedFailure *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_reason)
   {
-    v4 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    reason = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+    dictionaryRepresentation = [reason dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"reason"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"reason"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"reason"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"reason"];
     }
   }
 
   if (self->_task)
   {
-    v7 = [(NLXSchemaCDMSystemReportedFailure *)self task];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    task = [(NLXSchemaCDMSystemReportedFailure *)self task];
+    dictionaryRepresentation2 = [task dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"task"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"task"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"task"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"task"];
     }
   }
 
   if (self->_taskId)
   {
-    v10 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    taskId = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+    dictionaryRepresentation3 = [taskId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"taskId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"taskId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"taskId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"taskId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(USOSchemaUSOGraph *)self->_task hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
-  v6 = [v4 taskId];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+  taskId2 = [equalCopy taskId];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
-  if (v7)
+  taskId3 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+  if (taskId3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
-    v10 = [v4 taskId];
-    v11 = [v9 isEqual:v10];
+    v8 = taskId3;
+    taskId4 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+    taskId5 = [equalCopy taskId];
+    v11 = [taskId4 isEqual:taskId5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
-  v6 = [v4 reason];
-  if ((v5 != 0) == (v6 == 0))
+  taskId = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+  taskId2 = [equalCopy reason];
+  if ((taskId != 0) == (taskId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
-  if (v12)
+  reason = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+  if (reason)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
-    v15 = [v4 reason];
-    v16 = [v14 isEqual:v15];
+    v13 = reason;
+    reason2 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+    reason3 = [equalCopy reason];
+    v16 = [reason2 isEqual:reason3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMSystemReportedFailure *)self task];
-  v6 = [v4 task];
-  if ((v5 != 0) != (v6 == 0))
+  taskId = [(NLXSchemaCDMSystemReportedFailure *)self task];
+  taskId2 = [equalCopy task];
+  if ((taskId != 0) != (taskId2 == 0))
   {
-    v17 = [(NLXSchemaCDMSystemReportedFailure *)self task];
-    if (!v17)
+    task = [(NLXSchemaCDMSystemReportedFailure *)self task];
+    if (!task)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(NLXSchemaCDMSystemReportedFailure *)self task];
-    v20 = [v4 task];
-    v21 = [v19 isEqual:v20];
+    v18 = task;
+    task2 = [(NLXSchemaCDMSystemReportedFailure *)self task];
+    task3 = [equalCopy task];
+    v21 = [task2 isEqual:task3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+  toCopy = to;
+  taskId = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
 
-  if (v4)
+  if (taskId)
   {
-    v5 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+    taskId2 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+  reason = [(NLXSchemaCDMSystemReportedFailure *)self reason];
 
-  if (v6)
+  if (reason)
   {
-    v7 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+    reason2 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaCDMSystemReportedFailure *)self task];
+  task = [(NLXSchemaCDMSystemReportedFailure *)self task];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (task)
   {
-    v10 = [(NLXSchemaCDMSystemReportedFailure *)self task];
+    task2 = [(NLXSchemaCDMSystemReportedFailure *)self task];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = NLXSchemaCDMSystemReportedFailure;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  taskId = [(NLXSchemaCDMSystemReportedFailure *)self taskId];
+  v7 = [taskId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMSystemReportedFailure *)self deleteTaskId];
   }
 
-  v9 = [(NLXSchemaCDMSystemReportedFailure *)self reason];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  reason = [(NLXSchemaCDMSystemReportedFailure *)self reason];
+  v10 = [reason applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMSystemReportedFailure *)self deleteReason];
   }
 
-  v12 = [(NLXSchemaCDMSystemReportedFailure *)self task];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  task = [(NLXSchemaCDMSystemReportedFailure *)self task];
+  v13 = [task applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMSystemReportedFailure *)self deleteTask];
   }

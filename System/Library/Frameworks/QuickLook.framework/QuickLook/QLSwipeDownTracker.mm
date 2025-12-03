@@ -1,21 +1,21 @@
 @interface QLSwipeDownTracker
 - (CGAffineTransform)trackedTransform;
 - (CGPoint)anchorPoint;
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6;
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location;
 @end
 
 @implementation QLSwipeDownTracker
 
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location
 {
-  self->_initialBounds = a4;
+  self->_initialBounds = bounds;
   v8.receiver = self;
   v8.super_class = QLSwipeDownTracker;
-  v6 = *&a5->c;
-  v7[0] = *&a5->a;
+  v6 = *&transform->c;
+  v7[0] = *&transform->a;
   v7[1] = v6;
-  v7[2] = *&a5->tx;
-  [(QLPHSwipeDownTracker *)&v8 startTrackingCenter:v7 bounds:a3.x transform:a3.y withInitialGestureLocation:?];
+  v7[2] = *&transform->tx;
+  [(QLPHSwipeDownTracker *)&v8 startTrackingCenter:v7 bounds:center.x transform:center.y withInitialGestureLocation:?];
 }
 
 - (CGPoint)anchorPoint

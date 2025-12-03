@@ -1,7 +1,7 @@
 @interface CHFriendInboxIncomingTableViewCell
 - (BOOL)_isVerticalCell;
-- (CHFriendInboxIncomingTableViewCell)initWithFrame:(CGRect)a3;
-- (CHFriendInboxIncomingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHFriendInboxIncomingTableViewCell)initWithFrame:(CGRect)frame;
+- (CHFriendInboxIncomingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CHFriendInboxIncomingTableViewCellDelegate)delegate;
 - (id)_commonConstraints;
 - (id)_horizontalConstraints;
@@ -9,9 +9,9 @@
 - (void)_acceptPressed;
 - (void)_addLayoutConstraints;
 - (void)_declinePressed;
-- (void)_setTintColor:(id)a3 forButton:(id)a4;
+- (void)_setTintColor:(id)color forButton:(id)button;
 - (void)_setupCell;
-- (void)setFriend:(id)a3;
+- (void)setFriend:(id)friend;
 @end
 
 @implementation CHFriendInboxIncomingTableViewCell
@@ -27,8 +27,8 @@
   self->_insetContentView = v4;
 
   [(UIView *)self->_insetContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
-  [v6 addSubview:self->_insetContentView];
+  contentView = [(CHFriendInboxIncomingTableViewCell *)self contentView];
+  [contentView addSubview:self->_insetContentView];
 
   v7 = objc_alloc_init(UIImageView);
   avatarImageView = self->_avatarImageView;
@@ -81,11 +81,11 @@
   [(UIView *)v25 addSubview:v26];
 }
 
-- (CHFriendInboxIncomingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHFriendInboxIncomingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CHFriendInboxIncomingTableViewCell;
-  v4 = [(CHFriendInboxIncomingTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHFriendInboxIncomingTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -95,11 +95,11 @@
   return v5;
 }
 
-- (CHFriendInboxIncomingTableViewCell)initWithFrame:(CGRect)a3
+- (CHFriendInboxIncomingTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHFriendInboxIncomingTableViewCell;
-  v3 = [(CHFriendInboxIncomingTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendInboxIncomingTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -111,24 +111,24 @@
 
 - (void)_declinePressed
 {
-  v3 = [(CHFriendInboxIncomingTableViewCell *)self delegate];
-  [v3 incomingTableViewCellDidTapIgnore:self];
+  delegate = [(CHFriendInboxIncomingTableViewCell *)self delegate];
+  [delegate incomingTableViewCellDidTapIgnore:self];
 }
 
 - (void)_acceptPressed
 {
-  v3 = [(CHFriendInboxIncomingTableViewCell *)self delegate];
-  [v3 incomingTableViewCellDidTapAccept:self];
+  delegate = [(CHFriendInboxIncomingTableViewCell *)self delegate];
+  [delegate incomingTableViewCellDidTapAccept:self];
 }
 
-- (void)setFriend:(id)a3
+- (void)setFriend:(id)friend
 {
-  objc_storeStrong(&self->_friend, a3);
-  v5 = a3;
-  v6 = [(ASFriend *)self->_friend fullName];
-  [(UILabel *)self->_friendName setText:v6];
+  objc_storeStrong(&self->_friend, friend);
+  friendCopy = friend;
+  fullName = [(ASFriend *)self->_friend fullName];
+  [(UILabel *)self->_friendName setText:fullName];
 
-  v7 = [CHActivitySharingAvatarProvider fetchAvatarImageForFriend:v5 diameter:30.0];
+  v7 = [CHActivitySharingAvatarProvider fetchAvatarImageForFriend:friendCopy diameter:30.0];
   [(UIImageView *)self->_avatarImageView setImage:v7];
 
   [(CHFriendInboxIncomingTableViewCell *)self _addLayoutConstraints];
@@ -173,8 +173,8 @@
     [(CHFriendInboxIncomingTableViewCell *)self _horizontalConstraints];
   }
   v6 = ;
-  v3 = [(CHFriendInboxIncomingTableViewCell *)self _commonConstraints];
-  v4 = [v3 arrayByAddingObjectsFromArray:v6];
+  _commonConstraints = [(CHFriendInboxIncomingTableViewCell *)self _commonConstraints];
+  v4 = [_commonConstraints arrayByAddingObjectsFromArray:v6];
   activeConstraints = self->_activeConstraints;
   self->_activeConstraints = v4;
 
@@ -186,43 +186,43 @@
   v3 = sub_10013A92C();
   v5 = v4;
   v7 = v6;
-  v37 = [(UIView *)self->_insetContentView topAnchor];
-  v38 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
-  v36 = [v38 topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:v3];
+  topAnchor = [(UIView *)self->_insetContentView topAnchor];
+  contentView = [(CHFriendInboxIncomingTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v3];
   v39[0] = v35;
-  v33 = [(UIView *)self->_insetContentView leadingAnchor];
-  v34 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32 constant:v5];
+  leadingAnchor = [(UIView *)self->_insetContentView leadingAnchor];
+  contentView2 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v5];
   v39[1] = v31;
-  v29 = [(UIView *)self->_insetContentView bottomAnchor];
-  v30 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
-  v28 = [v30 bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 constant:v7];
+  bottomAnchor = [(UIView *)self->_insetContentView bottomAnchor];
+  contentView3 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v7];
   v39[2] = v27;
-  v25 = [(UIView *)self->_insetContentView trailingAnchor];
-  v26 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
-  v24 = [v26 trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:v7];
+  trailingAnchor = [(UIView *)self->_insetContentView trailingAnchor];
+  contentView4 = [(CHFriendInboxIncomingTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v7];
   v39[3] = v23;
-  v22 = [(UIImageView *)self->_avatarImageView widthAnchor];
-  v21 = [v22 constraintEqualToConstant:30.0];
+  widthAnchor = [(UIImageView *)self->_avatarImageView widthAnchor];
+  v21 = [widthAnchor constraintEqualToConstant:30.0];
   v39[4] = v21;
-  v20 = [(UIImageView *)self->_avatarImageView heightAnchor];
-  v8 = [v20 constraintEqualToConstant:30.0];
+  heightAnchor = [(UIImageView *)self->_avatarImageView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:30.0];
   v39[5] = v8;
-  v9 = [(UIImageView *)self->_avatarImageView leadingAnchor];
-  v10 = [(UIView *)self->_insetContentView leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:3.0];
+  leadingAnchor3 = [(UIImageView *)self->_avatarImageView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_insetContentView leadingAnchor];
+  v11 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:3.0];
   v39[6] = v11;
-  v12 = [(UILabel *)self->_friendName leadingAnchor];
-  v13 = [(UIImageView *)self->_avatarImageView trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:20.0];
+  leadingAnchor5 = [(UILabel *)self->_friendName leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_avatarImageView trailingAnchor];
+  v14 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:20.0];
   v39[7] = v14;
-  v15 = [(UILabel *)self->_friendName topAnchor];
-  v16 = [(UIView *)self->_insetContentView topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:5.0];
+  topAnchor3 = [(UILabel *)self->_friendName topAnchor];
+  topAnchor4 = [(UIView *)self->_insetContentView topAnchor];
+  v17 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:5.0];
   v39[8] = v17;
   v19 = [NSArray arrayWithObjects:v39 count:9];
 
@@ -231,41 +231,41 @@
 
 - (id)_verticalConstraints
 {
-  v31 = [(UIImageView *)self->_avatarImageView topAnchor];
-  v30 = [(UIView *)self->_insetContentView topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:20.0];
+  topAnchor = [(UIImageView *)self->_avatarImageView topAnchor];
+  topAnchor2 = [(UIView *)self->_insetContentView topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v32[0] = v29;
-  v28 = [(UIImageView *)self->_avatarImageView bottomAnchor];
-  v27 = [(UIView *)self->_insetContentView bottomAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27 constant:-20.0];
+  bottomAnchor = [(UIImageView *)self->_avatarImageView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_insetContentView bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
   v32[1] = v26;
-  v25 = [(UIButton *)self->_declineButton topAnchor];
-  v24 = [(UILabel *)self->_friendName bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor3 = [(UIButton *)self->_declineButton topAnchor];
+  bottomAnchor3 = [(UILabel *)self->_friendName bottomAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v32[2] = v23;
-  v22 = [(UIButton *)self->_declineButton leadingAnchor];
-  v21 = [(UILabel *)self->_friendName leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [(UIButton *)self->_declineButton leadingAnchor];
+  leadingAnchor2 = [(UILabel *)self->_friendName leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[3] = v20;
-  v19 = [(UIButton *)self->_acceptButton topAnchor];
-  v18 = [(UIButton *)self->_declineButton topAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  topAnchor4 = [(UIButton *)self->_acceptButton topAnchor];
+  topAnchor5 = [(UIButton *)self->_declineButton topAnchor];
+  v17 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v32[4] = v17;
-  v16 = [(UIButton *)self->_acceptButton leadingAnchor];
-  v15 = [(UIButton *)self->_declineButton trailingAnchor];
-  v3 = [v16 constraintEqualToAnchor:v15 constant:-5.0];
+  leadingAnchor3 = [(UIButton *)self->_acceptButton leadingAnchor];
+  trailingAnchor = [(UIButton *)self->_declineButton trailingAnchor];
+  v3 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:-5.0];
   v32[5] = v3;
-  v4 = [(UIButton *)self->_acceptButton trailingAnchor];
-  v5 = [(UIView *)self->_insetContentView trailingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:-5.0];
+  trailingAnchor2 = [(UIButton *)self->_acceptButton trailingAnchor];
+  trailingAnchor3 = [(UIView *)self->_insetContentView trailingAnchor];
+  v6 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-5.0];
   v32[6] = v6;
-  v7 = [(UIButton *)self->_acceptButton bottomAnchor];
-  v8 = [(UIButton *)self->_declineButton bottomAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  bottomAnchor4 = [(UIButton *)self->_acceptButton bottomAnchor];
+  bottomAnchor5 = [(UIButton *)self->_declineButton bottomAnchor];
+  v9 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v32[7] = v9;
-  v10 = [(UIButton *)self->_acceptButton widthAnchor];
-  v11 = [(UIButton *)self->_declineButton widthAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  widthAnchor = [(UIButton *)self->_acceptButton widthAnchor];
+  widthAnchor2 = [(UIButton *)self->_declineButton widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v32[8] = v12;
   v14 = [NSArray arrayWithObjects:v32 count:9];
 
@@ -274,47 +274,47 @@
 
 - (id)_horizontalConstraints
 {
-  v25 = [(UIImageView *)self->_avatarImageView topAnchor];
-  v24 = [(UIView *)self->_insetContentView topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:5.0];
+  topAnchor = [(UIImageView *)self->_avatarImageView topAnchor];
+  topAnchor2 = [(UIView *)self->_insetContentView topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v26[0] = v23;
-  v22 = [(UIImageView *)self->_avatarImageView leadingAnchor];
-  v21 = [(UIView *)self->_insetContentView leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:5.0];
+  leadingAnchor = [(UIImageView *)self->_avatarImageView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_insetContentView leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v26[1] = v20;
-  v19 = [(UIImageView *)self->_avatarImageView bottomAnchor];
-  v18 = [(UIImageView *)self->_avatarImageView bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIImageView *)self->_avatarImageView bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_avatarImageView bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[2] = v17;
-  v16 = [(UIButton *)self->_declineButton centerYAnchor];
-  v15 = [(UILabel *)self->_friendName centerYAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  centerYAnchor = [(UIButton *)self->_declineButton centerYAnchor];
+  centerYAnchor2 = [(UILabel *)self->_friendName centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v26[3] = v14;
-  v3 = [(UIButton *)self->_acceptButton leadingAnchor];
-  v4 = [(UIButton *)self->_declineButton trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:24.0];
+  leadingAnchor3 = [(UIButton *)self->_acceptButton leadingAnchor];
+  trailingAnchor = [(UIButton *)self->_declineButton trailingAnchor];
+  v5 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:24.0];
   v26[4] = v5;
-  v6 = [(UIButton *)self->_acceptButton trailingAnchor];
-  v7 = [(UIView *)self->_insetContentView trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:-5.0];
+  trailingAnchor2 = [(UIButton *)self->_acceptButton trailingAnchor];
+  trailingAnchor3 = [(UIView *)self->_insetContentView trailingAnchor];
+  v8 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-5.0];
   v26[5] = v8;
-  v9 = [(UIButton *)self->_acceptButton centerYAnchor];
-  v10 = [(UILabel *)self->_friendName centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  centerYAnchor3 = [(UIButton *)self->_acceptButton centerYAnchor];
+  centerYAnchor4 = [(UILabel *)self->_friendName centerYAnchor];
+  v11 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v26[6] = v11;
   v12 = [NSArray arrayWithObjects:v26 count:7];
 
   return v12;
 }
 
-- (void)_setTintColor:(id)a3 forButton:(id)a4
+- (void)_setTintColor:(id)color forButton:(id)button
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 setTitleColor:v6 forState:0];
-  v7 = [v6 colorWithAlphaComponent:0.3];
+  buttonCopy = button;
+  colorCopy = color;
+  [buttonCopy setTitleColor:colorCopy forState:0];
+  v7 = [colorCopy colorWithAlphaComponent:0.3];
 
-  [v5 setTitleColor:v7 forState:1];
+  [buttonCopy setTitleColor:v7 forState:1];
 }
 
 - (CHFriendInboxIncomingTableViewCellDelegate)delegate

@@ -1,16 +1,16 @@
 @interface ICThumbnailGeneratorNote
-- (ICThumbnailGeneratorNote)initWithManagedObjectContext:(id)a3;
-- (id)generateThumbnailImageWithNote:(id)a3 configuration:(id)a4;
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4;
+- (ICThumbnailGeneratorNote)initWithManagedObjectContext:(id)context;
+- (id)generateThumbnailImageWithNote:(id)note configuration:(id)configuration;
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation ICThumbnailGeneratorNote
 
-- (ICThumbnailGeneratorNote)initWithManagedObjectContext:(id)a3
+- (ICThumbnailGeneratorNote)initWithManagedObjectContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = ICThumbnailGeneratorNote;
-  v3 = [(ICThumbnailGenerator *)&v9 initWithManagedObjectContext:a3];
+  v3 = [(ICThumbnailGenerator *)&v9 initWithManagedObjectContext:context];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICThumbnailGenerator *)self managedObjectContext];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  managedObjectContext = [(ICThumbnailGenerator *)self managedObjectContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__ICThumbnailGeneratorNote_generateThumbnailWithConfiguration_completion___block_invoke;
   v11[3] = &unk_1E846BA48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlock:v11];
+  v12 = configurationCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = configurationCopy;
+  [managedObjectContext performBlock:v11];
 }
 
 void __74__ICThumbnailGeneratorNote_generateThumbnailWithConfiguration_completion___block_invoke(id *a1)
@@ -71,13 +71,13 @@ void __74__ICThumbnailGeneratorNote_generateThumbnailWithConfiguration_completio
   (*(a1[6] + 16))();
 }
 
-- (id)generateThumbnailImageWithNote:(id)a3 configuration:(id)a4
+- (id)generateThumbnailImageWithNote:(id)note configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 textStorage];
+  noteCopy = note;
+  configurationCopy = configuration;
+  textStorage = [noteCopy textStorage];
 
-  if (v8)
+  if (textStorage)
   {
     v20 = 0;
     v21 = &v20;
@@ -89,9 +89,9 @@ void __74__ICThumbnailGeneratorNote_generateThumbnailWithConfiguration_completio
     v15[1] = 3221225472;
     v15[2] = __73__ICThumbnailGeneratorNote_generateThumbnailImageWithNote_configuration___block_invoke;
     v15[3] = &unk_1E846A2B0;
-    v16 = v7;
-    v17 = self;
-    v18 = v6;
+    v16 = configurationCopy;
+    selfCopy = self;
+    v18 = noteCopy;
     v19 = &v20;
     [v16 performAsCurrentAppearance:v15];
     v9 = v21[5];
@@ -102,12 +102,12 @@ void __74__ICThumbnailGeneratorNote_generateThumbnailWithConfiguration_completio
   else
   {
     v10 = MEMORY[0x1E69B77F0];
-    v11 = [(ICThumbnailGenerator *)self managedObjectContext];
-    v12 = [v10 newEmptyNoteInContext:v11];
+    managedObjectContext = [(ICThumbnailGenerator *)self managedObjectContext];
+    v12 = [v10 newEmptyNoteInContext:managedObjectContext];
 
-    v9 = [(ICThumbnailGeneratorNote *)self generateThumbnailImageWithNote:v12 configuration:v7];
-    v13 = [(ICThumbnailGenerator *)self managedObjectContext];
-    [v13 deleteObject:v12];
+    v9 = [(ICThumbnailGeneratorNote *)self generateThumbnailImageWithNote:v12 configuration:configurationCopy];
+    managedObjectContext2 = [(ICThumbnailGenerator *)self managedObjectContext];
+    [managedObjectContext2 deleteObject:v12];
   }
 
   return v9;

@@ -1,11 +1,11 @@
 @interface SiriUserSegmentsPlugin
 - (_TtC22SiriUserSegmentsPlugin22SiriUserSegmentsPlugin)init;
-- (id)performTask:(id)a3 error:(id *)a4;
+- (id)performTask:(id)task error:(id *)error;
 @end
 
 @implementation SiriUserSegmentsPlugin
 
-- (id)performTask:(id)a3 error:(id *)a4
+- (id)performTask:(id)task error:(id *)error
 {
   v6 = sub_100001628();
   v7 = *(v6 - 8);
@@ -13,8 +13,8 @@
   __chkstk_darwin();
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100001618();
-  v11 = a3;
-  v12 = self;
+  taskCopy = task;
+  selfCopy = self;
   sub_100001608();
   (*(v7 + 8))(v10, v6);
   sub_1000013FC(&_swiftEmptyArrayStorage);

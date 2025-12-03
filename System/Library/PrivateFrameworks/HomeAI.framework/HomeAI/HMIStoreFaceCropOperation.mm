@@ -1,22 +1,22 @@
 @interface HMIStoreFaceCropOperation
-- (HMIStoreFaceCropOperation)initWithDataSource:(id)a3 faceCrop:(id)a4;
+- (HMIStoreFaceCropOperation)initWithDataSource:(id)source faceCrop:(id)crop;
 - (void)main;
 @end
 
 @implementation HMIStoreFaceCropOperation
 
-- (HMIStoreFaceCropOperation)initWithDataSource:(id)a3 faceCrop:(id)a4
+- (HMIStoreFaceCropOperation)initWithDataSource:(id)source faceCrop:(id)crop
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  cropCopy = crop;
   v12.receiver = self;
   v12.super_class = HMIStoreFaceCropOperation;
   v9 = [(HMFOperation *)&v12 initWithTimeout:10.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_faceCrop, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_faceCrop, crop);
   }
 
   return v10;
@@ -25,16 +25,16 @@
 - (void)main
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIStoreFaceCropOperation *)self dataSource];
+  dataSource = [(HMIStoreFaceCropOperation *)self dataSource];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HMIStoreFaceCropOperation *)self faceCrop];
-  v6 = [v4 setWithObject:v5];
+  faceCrop = [(HMIStoreFaceCropOperation *)self faceCrop];
+  v6 = [v4 setWithObject:faceCrop];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__HMIStoreFaceCropOperation_main__block_invoke;
   v7[3] = &unk_2787528E0;
   objc_copyWeak(&v8, &location);
-  [v3 addFaceCrops:v6 completion:v7];
+  [dataSource addFaceCrops:v6 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

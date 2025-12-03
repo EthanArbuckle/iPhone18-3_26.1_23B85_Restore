@@ -1,15 +1,15 @@
 @interface ChannelActivityUpdatePayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUpdateType:(id)a3;
+- (int)StringAsUpdateType:(id)type;
 - (int)updateType;
 - (unint64_t)hash;
-- (void)addParticipantPayload:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipantPayload:(id)payload;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelActivityUpdatePayload
@@ -27,38 +27,38 @@
   }
 }
 
-- (int)StringAsUpdateType:(id)a3
+- (int)StringAsUpdateType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PARTICIPANT_ADDED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PARTICIPANT_ADDED"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"PARTICIPANT_REMOVED"];
+    v4 = [typeCopy isEqualToString:@"PARTICIPANT_REMOVED"];
   }
 
   return v4;
 }
 
-- (void)addParticipantPayload:(id)a3
+- (void)addParticipantPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   participantPayloads = self->_participantPayloads;
-  v8 = v4;
+  v8 = payloadCopy;
   if (!participantPayloads)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_participantPayloads;
     self->_participantPayloads = v6;
 
-    v4 = v8;
+    payloadCopy = v8;
     participantPayloads = self->_participantPayloads;
   }
 
-  [(NSMutableArray *)participantPayloads addObject:v4];
+  [(NSMutableArray *)participantPayloads addObject:payloadCopy];
 }
 
 - (id)description
@@ -67,8 +67,8 @@
   v8.receiver = self;
   v8.super_class = ChannelActivityUpdatePayload;
   v4 = [(ChannelActivityUpdatePayload *)&v8 description];
-  v5 = [(ChannelActivityUpdatePayload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelActivityUpdatePayload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -76,7 +76,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     updateType = self->_updateType;
@@ -98,7 +98,7 @@
       v5 = @"PARTICIPANT_ADDED";
     }
 
-    [v3 setObject:v5 forKey:@"update_type"];
+    [dictionary setObject:v5 forKey:@"update_type"];
   }
 
   if ([(NSMutableArray *)self->_participantPayloads count])
@@ -123,8 +123,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -133,24 +133,24 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"participant_payload"];
+    [dictionary setObject:v6 forKey:@"participant_payload"];
   }
 
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     updateType = self->_updateType;
@@ -197,23 +197,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_updateType;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_updateType;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(ChannelActivityUpdatePayload *)self participantPayloadsCount])
   {
     [v9 clearParticipantPayloads];
-    v5 = [(ChannelActivityUpdatePayload *)self participantPayloadsCount];
-    if (v5)
+    participantPayloadsCount = [(ChannelActivityUpdatePayload *)self participantPayloadsCount];
+    if (participantPayloadsCount)
     {
-      v6 = v5;
+      v6 = participantPayloadsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ChannelActivityUpdatePayload *)self participantPayloadAtIndex:i];
@@ -228,10 +228,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -259,7 +259,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{a3, v17}];
+        v12 = [*(*(&v17 + 1) + 8 * v11) copyWithZone:{zone, v17}];
         [v6 addParticipantPayload:v12];
 
         ++v11;
@@ -272,7 +272,7 @@
     while (v9);
   }
 
-  v13 = [(NSData *)self->_padding copyWithZone:a3];
+  v13 = [(NSData *)self->_padding copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
@@ -280,24 +280,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_updateType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_updateType != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -305,13 +305,13 @@ LABEL_11:
   }
 
   participantPayloads = self->_participantPayloads;
-  if (participantPayloads | *(v4 + 2) && ![(NSMutableArray *)participantPayloads isEqual:?])
+  if (participantPayloads | *(equalCopy + 2) && ![(NSMutableArray *)participantPayloads isEqual:?])
   {
     goto LABEL_11;
   }
 
   padding = self->_padding;
-  if (padding | *(v4 + 1))
+  if (padding | *(equalCopy + 1))
   {
     v8 = [(NSData *)padding isEqual:?];
   }
@@ -342,14 +342,14 @@ LABEL_12:
   return v4 ^ [(NSData *)self->_padding hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_updateType = *(v4 + 6);
+    self->_updateType = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -357,7 +357,7 @@ LABEL_12:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

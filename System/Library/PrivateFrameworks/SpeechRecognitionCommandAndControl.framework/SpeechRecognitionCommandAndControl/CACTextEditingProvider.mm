@@ -1,39 +1,39 @@
 @interface CACTextEditingProvider
 - (BOOL)isNextPreviousResolverSpokenCommandEmojiBased;
 - (BOOL)shouldInsertInterWordSpaces;
-- (CACTextEditingProvider)initWithSpokenCommand:(id)a3 axElement:(id)a4;
-- (CGRect)rectForRange:(_NSRange)a3;
-- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)a3;
-- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)a3;
-- (id)emojisMatchingTextInStrings:(id)a3;
+- (CACTextEditingProvider)initWithSpokenCommand:(id)command axElement:(id)element;
+- (CGRect)rectForRange:(_NSRange)range;
+- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)element;
+- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)element;
+- (id)emojisMatchingTextInStrings:(id)strings;
 - (id)localeForTextOperations;
-- (id)markerRangeForLineAtTextMarker:(id)a3;
+- (id)markerRangeForLineAtTextMarker:(id)marker;
 - (id)textMarkerRangeFromPreviousTextInsertion;
 - (int)searchGranularity;
-- (int)statusOfEmojisFoundInString:(id)a3;
-- (void)handleCorrectionRequestWithStrings:(id)a3;
-- (void)handleErrorIdentifier:(id)a3 withObjects:(id)a4;
-- (void)handleSearchResultsWithRecognizedCommandParameters:(id)a3 variantOverrides:(id)a4;
-- (void)handleTextDisambiguationWithPhraseMatchResults:(id)a3 actionBlock:(id)a4;
-- (void)insertAttributedString:(id)a3;
-- (void)insertString:(id)a3;
-- (void)registerInsertedStringCategoryIdentifer:(id)a3;
+- (int)statusOfEmojisFoundInString:(id)string;
+- (void)handleCorrectionRequestWithStrings:(id)strings;
+- (void)handleErrorIdentifier:(id)identifier withObjects:(id)objects;
+- (void)handleSearchResultsWithRecognizedCommandParameters:(id)parameters variantOverrides:(id)overrides;
+- (void)handleTextDisambiguationWithPhraseMatchResults:(id)results actionBlock:(id)block;
+- (void)insertAttributedString:(id)string;
+- (void)insertString:(id)string;
+- (void)registerInsertedStringCategoryIdentifer:(id)identifer;
 @end
 
 @implementation CACTextEditingProvider
 
-- (CACTextEditingProvider)initWithSpokenCommand:(id)a3 axElement:(id)a4
+- (CACTextEditingProvider)initWithSpokenCommand:(id)command axElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = CACTextEditingProvider;
   v9 = [(CACTextEditingProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_spokenCommand, a3);
-    objc_storeStrong(&v10->_axElement, a4);
+    objc_storeStrong(&v9->_spokenCommand, command);
+    objc_storeStrong(&v10->_axElement, element);
     v11 = objc_opt_new();
     textEditingEngine = v10->_textEditingEngine;
     v10->_textEditingEngine = v11;
@@ -45,9 +45,9 @@
   return v10;
 }
 
-- (CGRect)rectForRange:(_NSRange)a3
+- (CGRect)rectForRange:(_NSRange)range
 {
-  [(AXElement *)self->_axElement rectForRange:a3.location, a3.length];
+  [(AXElement *)self->_axElement rectForRange:range.location, range.length];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (id)markerRangeForLineAtTextMarker:(id)a3
+- (id)markerRangeForLineAtTextMarker:(id)marker
 {
-  v4 = -[AXElement lineRangeForPosition:](self->_axElement, "lineRangeForPosition:", [a3 index]);
+  v4 = -[AXElement lineRangeForPosition:](self->_axElement, "lineRangeForPosition:", [marker index]);
 
   return [CACTextMarkerRange markerRangeWithNSRange:v4, v3];
 }
@@ -80,21 +80,21 @@
 - (BOOL)isNextPreviousResolverSpokenCommandEmojiBased
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 isNextPreviousResolverSpokenCommandEmojiBased];
+  isNextPreviousResolverSpokenCommandEmojiBased = [v2 isNextPreviousResolverSpokenCommandEmojiBased];
 
-  return v3;
+  return isNextPreviousResolverSpokenCommandEmojiBased;
 }
 
-- (id)emojisMatchingTextInStrings:(id)a3
+- (id)emojisMatchingTextInStrings:(id)strings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  stringsCopy = strings;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = stringsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -115,7 +115,7 @@
 
         if ([v12 count])
         {
-          [v4 addObjectsFromArray:v12];
+          [array addObjectsFromArray:v12];
         }
       }
 
@@ -125,14 +125,14 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (int)statusOfEmojisFoundInString:(id)a3
+- (int)statusOfEmojisFoundInString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CACEmojiManager sharedManager];
-  v5 = [v4 countOfEmojisInString:v3];
+  v5 = [v4 countOfEmojisInString:stringCopy];
 
   return v5 > 0;
 }
@@ -140,30 +140,30 @@
 - (BOOL)shouldInsertInterWordSpaces
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 dictationRecognizerMode];
+  dictationRecognizerMode = [v2 dictationRecognizerMode];
 
-  if ((v3 - 4) > 0xFFFFFFFD)
+  if ((dictationRecognizerMode - 4) > 0xFFFFFFFD)
   {
     return 0;
   }
 
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 doesCurrentLanguageSupportInterWordSpaces];
+  doesCurrentLanguageSupportInterWordSpaces = [v4 doesCurrentLanguageSupportInterWordSpaces];
 
-  return v5;
+  return doesCurrentLanguageSupportInterWordSpaces;
 }
 
-- (void)handleTextDisambiguationWithPhraseMatchResults:(id)a3 actionBlock:(id)a4
+- (void)handleTextDisambiguationWithPhraseMatchResults:(id)results actionBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  blockCopy = block;
   v8 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v6;
+  v9 = resultsCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -179,8 +179,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v32 + 1) + 8 * v13) markerRange];
-        [v8 addObject:v14];
+        markerRange = [*(*(&v32 + 1) + 8 * v13) markerRange];
+        [v8 addObject:markerRange];
 
         ++v13;
       }
@@ -200,7 +200,7 @@
   v30[1] = 3221225472;
   v30[2] = __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults_actionBlock___block_invoke;
   v30[3] = &unk_279CEC098;
-  v18 = v7;
+  v18 = blockCopy;
   v30[4] = self;
   v31 = v18;
   [(CACDisambiguationHandler *)v17 setChosenLabeledElementHandler:v30];
@@ -257,28 +257,28 @@ void __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults
   [v0 speakVoiceOverDescriptionForActiveOverlayIfNeeded];
 }
 
-- (void)handleSearchResultsWithRecognizedCommandParameters:(id)a3 variantOverrides:(id)a4
+- (void)handleSearchResultsWithRecognizedCommandParameters:(id)parameters variantOverrides:(id)overrides
 {
-  if (a3)
+  if (parameters)
   {
-    v4 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:a3 variantOverrides:a4];
+    v4 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:parameters variantOverrides:overrides];
     [CACSpokenCommand displayRecognizedMessageUsingAttributedString:v4];
   }
 }
 
-- (void)handleErrorIdentifier:(id)a3 withObjects:(id)a4
+- (void)handleErrorIdentifier:(id)identifier withObjects:(id)objects
 {
-  v11 = a4;
-  if ([a3 isEqualToString:@"ErrorMessage.TextNotFound"])
+  objectsCopy = objects;
+  if ([identifier isEqualToString:@"ErrorMessage.TextNotFound"])
   {
-    v5 = [v11 firstObject];
+    firstObject = [objectsCopy firstObject];
 
-    if (v5)
+    if (firstObject)
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = [CACLocaleUtilities localizedUIStringForKey:@"ErrorMessage.TextNotFound"];
-      v8 = [v11 firstObject];
-      v9 = [v6 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v8];
+      firstObject2 = [objectsCopy firstObject];
+      v9 = [v6 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, firstObject2];
 
       v10 = +[CACDisplayManager sharedManager];
       [v10 displayMessageString:v9 type:1];
@@ -286,95 +286,95 @@ void __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults
   }
 }
 
-- (void)handleCorrectionRequestWithStrings:(id)a3
+- (void)handleCorrectionRequestWithStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [(CACTextEditingProvider *)self selectionTextMarkerRange];
-  v6 = [(CACTextEditingProvider *)self stringForTextMarkerRange:v5];
+  stringsCopy = strings;
+  selectionTextMarkerRange = [(CACTextEditingProvider *)self selectionTextMarkerRange];
+  v6 = [(CACTextEditingProvider *)self stringForTextMarkerRange:selectionTextMarkerRange];
   v7 = [v6 length];
 
   if (!v7)
   {
-    v8 = [(CACTextEditingProvider *)self textEditingEngine];
-    [v8 selectCurrentWord];
+    textEditingEngine = [(CACTextEditingProvider *)self textEditingEngine];
+    [textEditingEngine selectCurrentWord];
   }
 
   v9 = +[CACDisplayManager sharedManager];
-  [v9 showCorrectionsForElement:self->_axElement nBestStrings:v4];
+  [v9 showCorrectionsForElement:self->_axElement nBestStrings:stringsCopy];
 }
 
 - (id)localeForTextOperations
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 activeLocale];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  activeLocale = [mEMORY[0x277D79890] activeLocale];
 
-  return v3;
+  return activeLocale;
 }
 
-- (void)insertString:(id)a3
+- (void)insertString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  [v4 insertDictatedString:v3];
+  [v4 insertDictatedString:stringCopy];
 }
 
-- (void)insertAttributedString:(id)a3
+- (void)insertAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  [v4 insertDictatedAttributedString:v3];
+  [v4 insertDictatedAttributedString:stringCopy];
 }
 
-- (void)registerInsertedStringCategoryIdentifer:(id)a3
+- (void)registerInsertedStringCategoryIdentifer:(id)identifer
 {
-  v3 = a3;
+  identiferCopy = identifer;
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v5 stagedTextInsertionSpecifier];
-  [v4 setInsertedCategoryID:v3];
+  stagedTextInsertionSpecifier = [v5 stagedTextInsertionSpecifier];
+  [stagedTextInsertionSpecifier setInsertedCategoryID:identiferCopy];
 }
 
-- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)a3
+- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 previousTextInsertionSpecifier];
+  previousTextInsertionSpecifier = [v4 previousTextInsertionSpecifier];
 
-  v6 = [v5 axElement];
-  v7 = [v3 isEqual:v6];
+  axElement = [previousTextInsertionSpecifier axElement];
+  v7 = [elementCopy isEqual:axElement];
 
   if (v7)
   {
-    v8 = [v5 insertedRange];
+    insertedRange = [previousTextInsertionSpecifier insertedRange];
     v10 = v9;
   }
 
   else
   {
     v10 = 0;
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    insertedRange = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = v8;
+  v11 = insertedRange;
   v12 = v10;
   result.length = v12;
   result.location = v11;
   return result;
 }
 
-- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)a3
+- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)element
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementCopy = element;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 previousTextInsertionSpecifier];
+  previousTextInsertionSpecifier = [v4 previousTextInsertionSpecifier];
 
-  v6 = [v5 insertedCategoryID];
-  v7 = [v5 axElement];
-  v8 = [v3 isEqual:v7];
+  insertedCategoryID = [previousTextInsertionSpecifier insertedCategoryID];
+  axElement = [previousTextInsertionSpecifier axElement];
+  v8 = [elementCopy isEqual:axElement];
 
   if (v8)
   {
-    v9 = v6 == 0;
+    v9 = insertedCategoryID == 0;
   }
 
   else
@@ -393,14 +393,14 @@ void __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v5 recognizedParams];
-    v12 = [v11 objectForKey:kCACCommandParameterTextSequence];
+    recognizedParams = [previousTextInsertionSpecifier recognizedParams];
+    v12 = [recognizedParams objectForKey:kCACCommandParameterTextSequence];
 
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
     v10 = v13;
     if (v13)
     {
-      v20 = v3;
+      v20 = elementCopy;
       v14 = *v22;
       while (2)
       {
@@ -414,7 +414,7 @@ void __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults
 
           v16 = *(*(&v21 + 1) + 8 * v15);
           v17 = [v16 objectForKey:kCACCommandParameterBuiltInIdentifier];
-          v18 = [v17 isEqualToString:v6];
+          v18 = [v17 isEqualToString:insertedCategoryID];
 
           if (v18)
           {
@@ -436,7 +436,7 @@ void __85__CACTextEditingProvider_handleTextDisambiguationWithPhraseMatchResults
       }
 
 LABEL_17:
-      v3 = v20;
+      elementCopy = v20;
     }
   }
 

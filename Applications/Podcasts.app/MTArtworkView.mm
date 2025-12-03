@@ -1,27 +1,27 @@
 @interface MTArtworkView
-+ (double)cornerRadiusForSize:(CGSize)a3;
-- (BOOL)applyCachedImageForPodcast:(id)a3 withSize:(CGSize)a4;
++ (double)cornerRadiusForSize:(CGSize)size;
+- (BOOL)applyCachedImageForPodcast:(id)podcast withSize:(CGSize)size;
 - (BOOL)isPlaceholder;
-- (MTArtworkView)initWithFrame:(CGRect)a3;
+- (MTArtworkView)initWithFrame:(CGRect)frame;
 - (NSString)artworkKey;
 - (void)_artworkSizeDidChange;
 - (void)_reloadArtwork;
-- (void)applyImageForPodcast:(id)a3 withSize:(CGSize)a4;
-- (void)applyPlaceholderWithSize:(CGSize)a3;
+- (void)applyImageForPodcast:(id)podcast withSize:(CGSize)size;
+- (void)applyPlaceholderWithSize:(CGSize)size;
 - (void)dealloc;
-- (void)setArtworkKey:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setArtworkKey:(id)key;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation MTArtworkView
 
-- (MTArtworkView)initWithFrame:(CGRect)a3
+- (MTArtworkView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = MTArtworkView;
-  v3 = [(MTArtworkView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTArtworkView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,16 +39,16 @@
     [v8 scale];
     v10 = v9;
 
-    v11 = [(MTArtworkView *)v4 layer];
-    [v11 setBorderWidth:1.0 / v10];
+    layer = [(MTArtworkView *)v4 layer];
+    [layer setBorderWidth:1.0 / v10];
 
     v12 = +[UIColor artworkBorderColor];
-    v13 = [v12 CGColor];
-    v14 = [(MTArtworkView *)v4 layer];
-    [v14 setBorderColor:v13];
+    cGColor = [v12 CGColor];
+    layer2 = [(MTArtworkView *)v4 layer];
+    [layer2 setBorderColor:cGColor];
 
-    v15 = [(MTArtworkView *)v4 layer];
-    [v15 setCornerCurve:kCACornerCurveContinuous];
+    layer3 = [(MTArtworkView *)v4 layer];
+    [layer3 setCornerCurve:kCACornerCurveContinuous];
 
     [(MTArtworkView *)v4 setClipsToBounds:1];
   }
@@ -66,9 +66,9 @@
   [(MTArtworkView *)&v4 dealloc];
 }
 
-+ (double)cornerRadiusForSize:(CGSize)a3
++ (double)cornerRadiusForSize:(CGSize)size
 {
-  v3 = floor(a3.width);
+  v3 = floor(size.width);
   result = 0.0;
   if (v3 >= 10.0)
   {
@@ -90,20 +90,20 @@
   return result;
 }
 
-- (void)setArtworkKey:(id)a3
+- (void)setArtworkKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   artworkKey = self->_artworkKey;
-  if (artworkKey != v5)
+  if (artworkKey != keyCopy)
   {
-    v8 = v5;
-    v7 = [(NSString *)artworkKey isEqualToString:v5];
-    v5 = v8;
+    v8 = keyCopy;
+    v7 = [(NSString *)artworkKey isEqualToString:keyCopy];
+    keyCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_artworkKey, a3);
+      objc_storeStrong(&self->_artworkKey, key);
       [(MTArtworkView *)self _reloadArtwork];
-      v5 = v8;
+      keyCopy = v8;
     }
   }
 }
@@ -123,17 +123,17 @@
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(MTArtworkView *)self artworkKey];
-  v3 = [v2 isEqualToString:kMTLibraryDefaultImageKey];
+  artworkKey = [(MTArtworkView *)self artworkKey];
+  v3 = [artworkKey isEqualToString:kMTLibraryDefaultImageKey];
 
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   v3 = 0.400000006;
-  if (a3)
+  if (enabled)
   {
     v3 = 1.0;
   }
@@ -141,12 +141,12 @@
   [(MTArtworkView *)self setAlpha:v3];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MTArtworkView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -160,12 +160,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MTArtworkView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -186,8 +186,8 @@
   [(MTArtworkView *)self bounds];
   [v3 cornerRadiusForSize:{v4, v5}];
   v7 = v6;
-  v8 = [(MTArtworkView *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(MTArtworkView *)self layer];
+  [layer setCornerRadius:v7];
 }
 
 - (void)_reloadArtwork
@@ -212,10 +212,10 @@
   }
 }
 
-- (void)applyPlaceholderWithSize:(CGSize)a3
+- (void)applyPlaceholderWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_initWeak(&location, self);
   imageProvider = self->_imageProvider;
   v7[0] = _NSConcreteStackBlock;
@@ -228,9 +228,9 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)applyCachedImageForPodcast:(id)a3 withSize:(CGSize)a4
+- (BOOL)applyCachedImageForPodcast:(id)podcast withSize:(CGSize)size
 {
-  v5 = [(PUIObjCArtworkProvider *)self->_imageProvider legacyUICachedArtworkForPodcastUuid:a3 withSize:a4.width, a4.height];
+  v5 = [(PUIObjCArtworkProvider *)self->_imageProvider legacyUICachedArtworkForPodcastUuid:podcast withSize:size.width, size.height];
   if (v5)
   {
     [(MTArtworkView *)self setImage:v5];
@@ -239,11 +239,11 @@
   return v5 != 0;
 }
 
-- (void)applyImageForPodcast:(id)a3 withSize:(CGSize)a4
+- (void)applyImageForPodcast:(id)podcast withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  podcastCopy = podcast;
   objc_initWeak(&location, self);
   imageProvider = self->_imageProvider;
   v9[0] = _NSConcreteStackBlock;
@@ -251,7 +251,7 @@
   v9[2] = sub_1000ECEA0;
   v9[3] = &unk_1004DC048;
   objc_copyWeak(&v10, &location);
-  [(PUIObjCArtworkProvider *)imageProvider keyedArtworkForShow:v7 size:v9 completionHandler:width, height];
+  [(PUIObjCArtworkProvider *)imageProvider keyedArtworkForShow:podcastCopy size:v9 completionHandler:width, height];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }

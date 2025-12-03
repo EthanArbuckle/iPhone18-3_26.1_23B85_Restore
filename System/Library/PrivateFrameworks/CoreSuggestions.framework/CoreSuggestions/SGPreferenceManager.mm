@@ -1,7 +1,7 @@
 @interface SGPreferenceManager
 + (id)defaultManager;
 - (SGPreferenceManager)init;
-- (int)registerBlock:(id)a3;
+- (int)registerBlock:(id)block;
 - (void)_resumeNotificationQueue;
 - (void)_suspendNotificationQueue;
 @end
@@ -39,21 +39,21 @@
   dispatch_barrier_sync(settingsUpdateQueue, block);
 }
 
-- (int)registerBlock:(id)a3
+- (int)registerBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   out_token = 0;
-  v5 = [@"com.apple.suggestions.settingsChanged" UTF8String];
+  uTF8String = [@"com.apple.suggestions.settingsChanged" UTF8String];
   settingsUpdateQueue = self->_settingsUpdateQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __37__SGPreferenceManager_registerBlock___block_invoke;
   handler[3] = &unk_1E7EFCEA0;
   handler[4] = self;
-  v15 = v4;
-  v7 = v4;
-  v8 = notify_register_dispatch(v5, &out_token, settingsUpdateQueue, handler);
+  v15 = blockCopy;
+  v7 = blockCopy;
+  v8 = notify_register_dispatch(uTF8String, &out_token, settingsUpdateQueue, handler);
   if (v8)
   {
     v9 = v8;
@@ -147,8 +147,8 @@ uint64_t __37__SGPreferenceManager_registerBlock___block_invoke(uint64_t a1)
     v17[20] = MEMORY[0x1E695E118];
     v17[21] = &unk_1F3874340;
     v16[22] = @"CloudKitPersistedState";
-    v8 = [MEMORY[0x1E695DEF0] data];
-    v17[22] = v8;
+    data = [MEMORY[0x1E695DEF0] data];
+    v17[22] = data;
     v17[23] = @"babar-siri-intl-intelligence-babar-prod.usspk05.app.apple.com";
     v16[23] = @"SuggestionsParsecFlightCachingAPIBaseURL";
     v16[24] = @"UseManateeSaltForHistory";

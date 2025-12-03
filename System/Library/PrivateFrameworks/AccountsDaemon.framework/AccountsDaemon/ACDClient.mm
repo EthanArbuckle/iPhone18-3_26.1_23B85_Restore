@@ -1,8 +1,8 @@
 @interface ACDClient
-+ (ACDClient)clientWithBundleID:(id)a3;
-+ (id)_bundleForNonPlugInPID:(int)a3;
-- (ACDClient)initWithConnection:(id)a3;
-- (BOOL)hasEntitlement:(id)a3;
++ (ACDClient)clientWithBundleID:(id)d;
++ (id)_bundleForNonPlugInPID:(int)d;
+- (ACDClient)initWithConnection:(id)connection;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (NSNumber)pid;
 - (NSString)adamOrDisplayID;
 - (NSString)bundleID;
@@ -11,7 +11,7 @@
 - (__CFBundle)bundle;
 - (id)description;
 - (void)dealloc;
-- (void)setBundleID:(id)a3;
+- (void)setBundleID:(id)d;
 @end
 
 @implementation ACDClient
@@ -95,31 +95,31 @@ id __17__ACDClient_name__block_invoke(uint64_t a1)
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ACDClient *)self name];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  name = [(ACDClient *)self name];
+  v4 = [v2 stringWithFormat:@"%@", name];
 
   return v4;
 }
 
-+ (ACDClient)clientWithBundleID:(id)a3
++ (ACDClient)clientWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setBundleID:v3];
+  [v4 setBundleID:dCopy];
 
   return v4;
 }
 
-- (ACDClient)initWithConnection:(id)a3
+- (ACDClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ACDClient;
   v6 = [(ACDClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_clientPropertyLock._os_unfair_lock_opaque = 0;
   }
 
@@ -159,10 +159,10 @@ id __16__ACDClient_pid__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)_bundleForNonPlugInPID:(int)a3
++ (id)_bundleForNonPlugInPID:(int)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = proc_pidpath(a3, buffer, 0x1000u);
+  v3 = proc_pidpath(d, buffer, 0x1000u);
   v4 = MEMORY[0x277CBEBC0];
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:v3 encoding:4];
   v6 = [v4 fileURLWithPath:v5];
@@ -183,16 +183,16 @@ id __16__ACDClient_pid__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v8 = __25__ACDClient_setBundleID___block_invoke;
   v9 = &unk_27848BFF0;
-  v5 = v4;
+  v5 = dCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v7;
   os_unfair_lock_lock(&self->_clientPropertyLock);
   v8(v6);
@@ -343,20 +343,20 @@ id __19__ACDClient_bundle__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __28__ACDClient_hasEntitlement___block_invoke;
   v12 = &unk_27848CDC0;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = entitlementCopy;
+  v5 = entitlementCopy;
   v6 = ac_unfair_lock_perform_with_result_1(&self->_clientPropertyLock, &v9);
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 id __28__ACDClient_hasEntitlement___block_invoke(uint64_t a1)

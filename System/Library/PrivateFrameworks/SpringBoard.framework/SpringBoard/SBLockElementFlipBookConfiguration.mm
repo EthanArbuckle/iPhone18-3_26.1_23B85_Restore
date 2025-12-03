@@ -1,7 +1,7 @@
 @interface SBLockElementFlipBookConfiguration
 - (SBLockElementFlipBookConfiguration)init;
-- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)a3;
-- (void)configureLayoutMode:(int64_t)a3 withDescriptions:(id)a4;
+- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)mode;
+- (void)configureLayoutMode:(int64_t)mode withDescriptions:(id)descriptions;
 @end
 
 @implementation SBLockElementFlipBookConfiguration
@@ -21,19 +21,19 @@
   return v2;
 }
 
-- (void)configureLayoutMode:(int64_t)a3 withDescriptions:(id)a4
+- (void)configureLayoutMode:(int64_t)mode withDescriptions:(id)descriptions
 {
   descriptions = self->_descriptions;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(NSMutableDictionary *)descriptions setObject:v7 forKey:v8];
+  descriptionsCopy = descriptions;
+  v8 = [v6 numberWithInteger:mode];
+  [(NSMutableDictionary *)descriptions setObject:descriptionsCopy forKey:v8];
 }
 
-- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)a3
+- (id)componentFlipBookDescriptionsForLayoutMode:(int64_t)mode
 {
   descriptions = self->_descriptions;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v5 = [(NSMutableDictionary *)descriptions objectForKey:v4];
 
   return v5;

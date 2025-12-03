@@ -1,22 +1,22 @@
 @interface BBBulletinRemoveUpdate
-- (BBBulletinRemoveUpdate)initWithBulletin:(id)a3 feeds:(unint64_t)a4 shouldSync:(BOOL)a5;
-- (BBBulletinRemoveUpdate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BBBulletinRemoveUpdate)initWithBulletin:(id)bulletin feeds:(unint64_t)feeds shouldSync:(BOOL)sync;
+- (BBBulletinRemoveUpdate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBBulletinRemoveUpdate
 
-- (BBBulletinRemoveUpdate)initWithBulletin:(id)a3 feeds:(unint64_t)a4 shouldSync:(BOOL)a5
+- (BBBulletinRemoveUpdate)initWithBulletin:(id)bulletin feeds:(unint64_t)feeds shouldSync:(BOOL)sync
 {
   v7.receiver = self;
   v7.super_class = BBBulletinRemoveUpdate;
-  result = [(BBBulletinUpdate *)&v7 initWithBulletin:a3 feeds:a4];
+  result = [(BBBulletinUpdate *)&v7 initWithBulletin:bulletin feeds:feeds];
   if (result)
   {
-    result->_shouldSync = a5;
+    result->_shouldSync = sync;
   }
 
   return result;
@@ -30,10 +30,10 @@
   return v3 ^ [(BBBulletinRemoveUpdate *)self shouldSync];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -43,13 +43,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9.receiver = self;
       v9.super_class = BBBulletinRemoveUpdate;
       if ([(BBBulletinUpdate *)&v9 isEqual:v5])
       {
-        v6 = [(BBBulletinRemoveUpdate *)self shouldSync];
-        v7 = v6 ^ [(BBBulletinRemoveUpdate *)v5 shouldSync]^ 1;
+        shouldSync = [(BBBulletinRemoveUpdate *)self shouldSync];
+        v7 = shouldSync ^ [(BBBulletinRemoveUpdate *)v5 shouldSync]^ 1;
       }
 
       else
@@ -71,29 +71,29 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[BBBulletinRemoveUpdate shouldSync](self withName:{"shouldSync"), @"Should Sync"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BBBulletinRemoveUpdate;
-  v4 = a3;
-  [(BBBulletinUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[BBBulletinRemoveUpdate shouldSync](self forKey:{"shouldSync", v5.receiver, v5.super_class), @"shouldSync"}];
+  coderCopy = coder;
+  [(BBBulletinUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[BBBulletinRemoveUpdate shouldSync](self forKey:{"shouldSync", v5.receiver, v5.super_class), @"shouldSync"}];
 }
 
-- (BBBulletinRemoveUpdate)initWithCoder:(id)a3
+- (BBBulletinRemoveUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BBBulletinRemoveUpdate;
-  v5 = [(BBBulletinUpdate *)&v7 initWithCoder:v4];
+  v5 = [(BBBulletinUpdate *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shouldSync = [v4 decodeBoolForKey:@"shouldSync"];
+    v5->_shouldSync = [coderCopy decodeBoolForKey:@"shouldSync"];
   }
 
   return v5;

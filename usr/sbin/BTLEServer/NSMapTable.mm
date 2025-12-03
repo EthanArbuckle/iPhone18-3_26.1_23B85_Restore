@@ -1,19 +1,19 @@
 @interface NSMapTable
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 @end
 
 @implementation NSMapTable
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = self;
-  v6 = [(NSMapTable *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [(NSMapTable *)selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -24,12 +24,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
-      v11 = [(NSMapTable *)v5 objectForKey:v10, v12];
-      v4[2](v4, v10, v11, &v16);
+      v11 = [(NSMapTable *)selfCopy objectForKey:v10, v12];
+      blockCopy[2](blockCopy, v10, v11, &v16);
 
       if (v16)
       {
@@ -38,7 +38,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSMapTable *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [(NSMapTable *)selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;

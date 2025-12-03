@@ -1,11 +1,11 @@
 @interface NavTrayEndCell
 - (NavTrayButtonStylingDelegate)buttonStylingDelegate;
-- (NavTrayEndCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NavTrayEndCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateButtonStyling;
-- (void)setButtonStylingDelegate:(id)a3;
-- (void)setHasWalkingETAInfo:(BOOL)a3;
-- (void)setMetrics:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setButtonStylingDelegate:(id)delegate;
+- (void)setHasWalkingETAInfo:(BOOL)info;
+- (void)setMetrics:(id)metrics;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAlternateWalkingRouteDuration;
 @end
 
@@ -18,17 +18,17 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NavTrayEndCell;
-  v4 = a3;
-  [(NavTrayEndCell *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavTrayEndCell *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(NavTrayEndCell *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(NavTrayEndCell *)self _updateButtonStyling];
@@ -58,14 +58,14 @@
   }
 }
 
-- (void)setHasWalkingETAInfo:(BOOL)a3
+- (void)setHasWalkingETAInfo:(BOOL)info
 {
-  if (self->_hasWalkingETAInfo != a3)
+  if (self->_hasWalkingETAInfo != info)
   {
     v11 = v3;
-    self->_hasWalkingETAInfo = a3;
+    self->_hasWalkingETAInfo = info;
     buttonStackView = self->_buttonStackView;
-    if (a3)
+    if (info)
     {
       [(AxisAdjustingStackView *)buttonStackView insertArrangedTruncatableSubview:self->_walkingRouteButton atIndex:0];
     }
@@ -82,9 +82,9 @@
   }
 }
 
-- (void)setButtonStylingDelegate:(id)a3
+- (void)setButtonStylingDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_buttonStylingDelegate);
 
   v5 = obj;
@@ -96,18 +96,18 @@
   }
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  objc_storeStrong(&self->_metrics, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_metrics, metrics);
+  metricsCopy = metrics;
   [NSLayoutConstraint deactivateConstraints:self->_buttonHeightConstraints];
-  v6 = [(Truncatable *)self->_endRouteButton heightAnchor];
+  heightAnchor = [(Truncatable *)self->_endRouteButton heightAnchor];
   [(NavTrayMetrics *)self->_metrics endButtonHeight];
-  v7 = [v6 constraintEqualToConstant:?];
+  v7 = [heightAnchor constraintEqualToConstant:?];
   v12[0] = v7;
-  v8 = [(NavTrayButton *)self->_walkingRouteButton heightAnchor];
+  heightAnchor2 = [(NavTrayButton *)self->_walkingRouteButton heightAnchor];
   [(NavTrayMetrics *)self->_metrics endButtonHeight];
-  v9 = [v8 constraintEqualToConstant:?];
+  v9 = [heightAnchor2 constraintEqualToConstant:?];
   v12[1] = v9;
   v10 = [NSArray arrayWithObjects:v12 count:2];
   buttonHeightConstraints = self->_buttonHeightConstraints;
@@ -121,12 +121,12 @@
   [(NavTrayEndCell *)self _updateButtonStyling];
 }
 
-- (NavTrayEndCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NavTrayEndCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v45.receiver = self;
   v45.super_class = NavTrayEndCell;
-  v39 = a4;
-  v5 = [(NavTrayEndCell *)&v45 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(NavTrayEndCell *)&v45 initWithStyle:style reuseIdentifier:?];
   if (v5)
   {
     v6 = objc_opt_class();
@@ -147,8 +147,8 @@
     [(AxisAdjustingStackView *)v5->_buttonStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(AxisAdjustingStackView *)v5->_buttonStackView setDistribution:1];
     [(AxisAdjustingStackView *)v5->_buttonStackView setAlignment:0];
-    v12 = [(NavTrayEndCell *)v5 contentView];
-    [v12 addSubview:v5->_buttonStackView];
+    contentView = [(NavTrayEndCell *)v5 contentView];
+    [contentView addSubview:v5->_buttonStackView];
 
     objc_initWeak(&location, v5);
     v13 = [_TtC4Maps13NavTrayButton alloc];
@@ -180,25 +180,25 @@
     [(NavTrayButton *)v5->_walkingRouteButton setAccessibilityIdentifier:@"WalkingRouteButton"];
     LODWORD(v20) = 1148846080;
     [(NavTrayButton *)v5->_walkingRouteButton setContentCompressionResistancePriority:1 forAxis:v20];
-    v37 = [(AxisAdjustingStackView *)v5->_buttonStackView topAnchor];
-    v38 = [(NavTrayEndCell *)v5 contentView];
-    v36 = [v38 topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    topAnchor = [(AxisAdjustingStackView *)v5->_buttonStackView topAnchor];
+    contentView2 = [(NavTrayEndCell *)v5 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v46[0] = v35;
-    v33 = [(AxisAdjustingStackView *)v5->_buttonStackView bottomAnchor];
-    v34 = [(NavTrayEndCell *)v5 contentView];
-    v32 = [v34 bottomAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    bottomAnchor = [(AxisAdjustingStackView *)v5->_buttonStackView bottomAnchor];
+    contentView3 = [(NavTrayEndCell *)v5 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v46[1] = v31;
-    v21 = [(AxisAdjustingStackView *)v5->_buttonStackView leadingAnchor];
-    v22 = [(NavTrayEndCell *)v5 contentView];
-    v23 = [v22 leadingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    leadingAnchor = [(AxisAdjustingStackView *)v5->_buttonStackView leadingAnchor];
+    contentView4 = [(NavTrayEndCell *)v5 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v46[2] = v24;
-    v25 = [(AxisAdjustingStackView *)v5->_buttonStackView trailingAnchor];
-    v26 = [(NavTrayEndCell *)v5 contentView];
-    v27 = [v26 trailingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    trailingAnchor = [(AxisAdjustingStackView *)v5->_buttonStackView trailingAnchor];
+    contentView5 = [(NavTrayEndCell *)v5 contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v46[3] = v28;
     v29 = [NSArray arrayWithObjects:v46 count:4];
     [NSLayoutConstraint activateConstraints:v29];

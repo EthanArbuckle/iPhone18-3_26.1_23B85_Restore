@@ -1,273 +1,273 @@
 @interface PersonalizedItemSignalPack
-- (BOOL)hasValueForFeatureType:(int64_t)a3;
+- (BOOL)hasValueForFeatureType:(int64_t)type;
 - (PersonalizedItemSignalPack)init;
-- (PersonalizedItemSignalPack)initWithItem:(id)a3 suggestionEntry:(id)a4;
-- (double)valueForFeatureType:(int64_t)a3;
-- (void)setBooleanValue:(BOOL)a3 forFeatureType:(int64_t)a4;
-- (void)setScalarValue:(double)a3 forFeatureType:(int64_t)a4;
+- (PersonalizedItemSignalPack)initWithItem:(id)item suggestionEntry:(id)entry;
+- (double)valueForFeatureType:(int64_t)type;
+- (void)setBooleanValue:(BOOL)value forFeatureType:(int64_t)type;
+- (void)setScalarValue:(double)value forFeatureType:(int64_t)type;
 @end
 
 @implementation PersonalizedItemSignalPack
 
-- (double)valueForFeatureType:(int64_t)a3
+- (double)valueForFeatureType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0.0;
   }
 
-  v4 = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  signalScalarValuesByFeatureType = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
+  v5 = [NSNumber numberWithInteger:type];
+  v6 = [signalScalarValuesByFeatureType objectForKeyedSubscript:v5];
   [v6 doubleValue];
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)hasValueForFeatureType:(int64_t)a3
+- (BOOL)hasValueForFeatureType:(int64_t)type
 {
-  v3 = a3;
-  if (a3)
+  typeCopy = type;
+  if (type)
   {
-    v4 = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
-    v5 = [NSNumber numberWithInteger:v3];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    LOBYTE(v3) = v6 != 0;
+    signalScalarValuesByFeatureType = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
+    v5 = [NSNumber numberWithInteger:typeCopy];
+    v6 = [signalScalarValuesByFeatureType objectForKeyedSubscript:v5];
+    LOBYTE(typeCopy) = v6 != 0;
   }
 
-  return v3;
+  return typeCopy;
 }
 
-- (void)setBooleanValue:(BOOL)a3 forFeatureType:(int64_t)a4
+- (void)setBooleanValue:(BOOL)value forFeatureType:(int64_t)type
 {
   v4 = 0.0;
-  if (a3)
+  if (value)
   {
     v4 = 1.0;
   }
 
-  [(PersonalizedItemSignalPack *)self setScalarValue:a4 forFeatureType:v4];
+  [(PersonalizedItemSignalPack *)self setScalarValue:type forFeatureType:v4];
 }
 
-- (void)setScalarValue:(double)a3 forFeatureType:(int64_t)a4
+- (void)setScalarValue:(double)value forFeatureType:(int64_t)type
 {
-  if (a4)
+  if (type)
   {
-    v8 = [NSNumber numberWithDouble:a3];
-    v6 = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
-    v7 = [NSNumber numberWithInteger:a4];
-    [v6 setObject:v8 forKeyedSubscript:v7];
+    v8 = [NSNumber numberWithDouble:value];
+    signalScalarValuesByFeatureType = [(PersonalizedItemSignalPack *)self signalScalarValuesByFeatureType];
+    v7 = [NSNumber numberWithInteger:type];
+    [signalScalarValuesByFeatureType setObject:v8 forKeyedSubscript:v7];
   }
 }
 
-- (PersonalizedItemSignalPack)initWithItem:(id)a3 suggestionEntry:(id)a4
+- (PersonalizedItemSignalPack)initWithItem:(id)item suggestionEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  entryCopy = entry;
   v8 = [(PersonalizedItemSignalPack *)self init];
 
   if (v8)
   {
-    -[PersonalizedItemSignalPack setItemSuggestionTypeSource:](v8, "setItemSuggestionTypeSource:", [v7 suggestionType]);
-    -[PersonalizedItemSignalPack setItemServerEntryTypeSource:](v8, "setItemServerEntryTypeSource:", [v7 serverEntryType]);
-    if ([v7 hasShownToUser])
+    -[PersonalizedItemSignalPack setItemSuggestionTypeSource:](v8, "setItemSuggestionTypeSource:", [entryCopy suggestionType]);
+    -[PersonalizedItemSignalPack setItemServerEntryTypeSource:](v8, "setItemServerEntryTypeSource:", [entryCopy serverEntryType]);
+    if ([entryCopy hasShownToUser])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 shownToUser], 1);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy shownToUser], 1);
     }
 
-    if ([v7 hasFractionOfMatch])
+    if ([entryCopy hasFractionOfMatch])
     {
-      [v7 fractionOfMatch];
+      [entryCopy fractionOfMatch];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:2 forFeatureType:?];
     }
 
-    if ([v7 hasDistanceToSuggestion])
+    if ([entryCopy hasDistanceToSuggestion])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 3, [v7 distanceToSuggestion]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 3, [entryCopy distanceToSuggestion]);
     }
 
-    if ([v7 hasContactRelevanceScore])
+    if ([entryCopy hasContactRelevanceScore])
     {
-      [v7 contactRelevanceScore];
+      [entryCopy contactRelevanceScore];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:4 forFeatureType:?];
     }
 
-    if ([v7 hasMatchedUsingName])
+    if ([entryCopy hasMatchedUsingName])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 matchedUsingName], 5);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy matchedUsingName], 5);
     }
 
-    if ([v7 hasMatchedUsingOrganization])
+    if ([entryCopy hasMatchedUsingOrganization])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 matchedUsingOrganization], 6);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy matchedUsingOrganization], 6);
     }
 
-    if ([v7 hasMatchedUsingAddress])
+    if ([entryCopy hasMatchedUsingAddress])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 matchedUsingAddress], 7);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy matchedUsingAddress], 7);
     }
 
-    if ([v7 hasMatchedUsingLabel])
+    if ([entryCopy hasMatchedUsingLabel])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 matchedUsingLabel], 8);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy matchedUsingLabel], 8);
     }
 
-    if ([v7 hasMatchedUsingEventName])
+    if ([entryCopy hasMatchedUsingEventName])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 matchedUsingEventName], 9);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy matchedUsingEventName], 9);
     }
 
-    if ([v7 hasPeopleSuggesterRank])
+    if ([entryCopy hasPeopleSuggesterRank])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 10, [v7 peopleSuggesterRank]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 10, [entryCopy peopleSuggesterRank]);
     }
 
-    if ([v7 hasAge])
+    if ([entryCopy hasAge])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 11, [v7 age]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 11, [entryCopy age]);
     }
 
-    if ([v7 hasIsFavorite])
+    if ([entryCopy hasIsFavorite])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isFavorite], 12);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isFavorite], 12);
     }
 
-    if ([v7 hasPoiOpenState])
+    if ([entryCopy hasPoiOpenState])
     {
-      v9 = [v7 poiOpenState];
-      if (v9 <= 4 && ((0x1Bu >> v9) & 1) != 0)
+      poiOpenState = [entryCopy poiOpenState];
+      if (poiOpenState <= 4 && ((0x1Bu >> poiOpenState) & 1) != 0)
       {
-        [(PersonalizedItemSignalPack *)v8 setBooleanValue:1 forFeatureType:qword_101213240[v9]];
+        [(PersonalizedItemSignalPack *)v8 setBooleanValue:1 forFeatureType:qword_101213240[poiOpenState]];
       }
     }
 
-    if ([v7 hasMapsSuggestionsContactRevelanceScore])
+    if ([entryCopy hasMapsSuggestionsContactRevelanceScore])
     {
-      [v7 mapsSuggestionsContactRevelanceScore];
+      [entryCopy mapsSuggestionsContactRevelanceScore];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:17 forFeatureType:?];
     }
 
-    if ([v7 hasMapsSuggestionsPoiRevelanceScore])
+    if ([entryCopy hasMapsSuggestionsPoiRevelanceScore])
     {
-      [v7 mapsSuggestionsPoiRevelanceScore];
+      [entryCopy mapsSuggestionsPoiRevelanceScore];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:18 forFeatureType:?];
     }
 
-    if ([v7 hasMapsSuggestionsIsTouristScore])
+    if ([entryCopy hasMapsSuggestionsIsTouristScore])
     {
-      [v7 mapsSuggestionsIsTouristScore];
+      [entryCopy mapsSuggestionsIsTouristScore];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:19 forFeatureType:?];
     }
 
-    if ([v7 hasTimeSinceLastInteractedSeconds])
+    if ([entryCopy hasTimeSinceLastInteractedSeconds])
     {
-      [v7 timeSinceLastInteractedSeconds];
+      [entryCopy timeSinceLastInteractedSeconds];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:20 forFeatureType:?];
     }
 
-    if ([v7 hasDistanceToSuggestionFromViewportCenter])
+    if ([entryCopy hasDistanceToSuggestionFromViewportCenter])
     {
-      [v7 distanceToSuggestionFromViewportCenter];
+      [entryCopy distanceToSuggestionFromViewportCenter];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:21 forFeatureType:?];
     }
 
-    if ([v7 hasIsContainedInViewport])
+    if ([entryCopy hasIsContainedInViewport])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContainedInViewport], 22);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContainedInViewport], 22);
     }
 
-    if ([v7 hasTimeSinceMapViewportChangedSeconds])
+    if ([entryCopy hasTimeSinceMapViewportChangedSeconds])
     {
-      [v7 timeSinceMapViewportChangedSeconds];
+      [entryCopy timeSinceMapViewportChangedSeconds];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:23 forFeatureType:?];
     }
 
-    if ([v7 hasIsContactWithHomeLocation])
+    if ([entryCopy hasIsContactWithHomeLocation])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContactWithHomeLocation], 24);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContactWithHomeLocation], 24);
     }
 
-    if ([v7 hasIsContactWithWorkLocation])
+    if ([entryCopy hasIsContactWithWorkLocation])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContactWithWorkLocation], 25);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContactWithWorkLocation], 25);
     }
 
-    if ([v7 hasIsContactWithSchoolLocation])
+    if ([entryCopy hasIsContactWithSchoolLocation])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContactWithSchoolLocation], 26);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContactWithSchoolLocation], 26);
     }
 
-    if ([v7 hasIsContactWithOtherLocation])
+    if ([entryCopy hasIsContactWithOtherLocation])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContactWithOtherLocation], 27);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContactWithOtherLocation], 27);
     }
 
-    if ([v7 hasIsContactWithLiveLocation])
+    if ([entryCopy hasIsContactWithLiveLocation])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 isContactWithLiveLocation], 28);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy isContactWithLiveLocation], 28);
     }
 
-    if ([v7 hasPrefixLastTokenMatchCover])
+    if ([entryCopy hasPrefixLastTokenMatchCover])
     {
-      [v7 prefixLastTokenMatchCover];
+      [entryCopy prefixLastTokenMatchCover];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:30 forFeatureType:v10];
     }
 
-    if ([v7 hasPrefixMatchCover])
+    if ([entryCopy hasPrefixMatchCover])
     {
-      [v7 prefixMatchCover];
+      [entryCopy prefixMatchCover];
       [(PersonalizedItemSignalPack *)v8 setScalarValue:31 forFeatureType:v11];
     }
 
-    if ([v7 hasPrefixMatchPosition])
+    if ([entryCopy hasPrefixMatchPosition])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 32, [v7 prefixMatchPosition]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 32, [entryCopy prefixMatchPosition]);
     }
 
-    if ([v7 hasPrefixMatchWordBoundary])
+    if ([entryCopy hasPrefixMatchWordBoundary])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 33, [v7 prefixMatchWordBoundary]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 33, [entryCopy prefixMatchWordBoundary]);
     }
 
-    if ([v7 hasPrefixTokenMatchLengthFirstQueryToken])
+    if ([entryCopy hasPrefixTokenMatchLengthFirstQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 34, [v7 prefixTokenMatchLengthFirstQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 34, [entryCopy prefixTokenMatchLengthFirstQueryToken]);
     }
 
-    if ([v7 hasPrefixTokenMatchPositionFirstQueryToken])
+    if ([entryCopy hasPrefixTokenMatchPositionFirstQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 35, [v7 prefixTokenMatchPositionFirstQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 35, [entryCopy prefixTokenMatchPositionFirstQueryToken]);
     }
 
-    if ([v7 hasPrefixTokenIsNumberFirstQueryToken])
+    if ([entryCopy hasPrefixTokenIsNumberFirstQueryToken])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 prefixTokenIsNumberFirstQueryToken], 36);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy prefixTokenIsNumberFirstQueryToken], 36);
     }
 
-    if ([v7 hasPrefixTokenMatchLocationFirstQueryToken])
+    if ([entryCopy hasPrefixTokenMatchLocationFirstQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 37, [v7 prefixTokenMatchLocationFirstQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 37, [entryCopy prefixTokenMatchLocationFirstQueryToken]);
     }
 
-    if ([v7 hasPrefixTokenMatchLengthSecondQueryToken])
+    if ([entryCopy hasPrefixTokenMatchLengthSecondQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 38, [v7 prefixTokenMatchLengthSecondQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 38, [entryCopy prefixTokenMatchLengthSecondQueryToken]);
     }
 
-    if ([v7 hasPrefixTokenMatchPositionSecondQueryToken])
+    if ([entryCopy hasPrefixTokenMatchPositionSecondQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 39, [v7 prefixTokenMatchPositionSecondQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 39, [entryCopy prefixTokenMatchPositionSecondQueryToken]);
     }
 
-    if ([v7 hasPrefixTokenIsNumberSecondQueryToken])
+    if ([entryCopy hasPrefixTokenIsNumberSecondQueryToken])
     {
-      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [v7 hasPrefixTokenIsNumberSecondQueryToken], 40);
+      -[PersonalizedItemSignalPack setBooleanValue:forFeatureType:](v8, "setBooleanValue:forFeatureType:", [entryCopy hasPrefixTokenIsNumberSecondQueryToken], 40);
     }
 
-    if ([v7 hasPrefixTokenMatchLocationSecondQueryToken])
+    if ([entryCopy hasPrefixTokenMatchLocationSecondQueryToken])
     {
-      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 41, [v7 prefixTokenMatchLocationSecondQueryToken]);
+      -[PersonalizedItemSignalPack setScalarValue:forFeatureType:](v8, "setScalarValue:forFeatureType:", 41, [entryCopy prefixTokenMatchLocationSecondQueryToken]);
     }
   }
 

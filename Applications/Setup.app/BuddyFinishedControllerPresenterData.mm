@@ -2,7 +2,7 @@
 - (BuddyFinishedController)controller;
 - (UINavigationController)navigationController;
 - (_TtC5Setup36BuddyFinishedControllerPresenterData)init;
-- (_TtC5Setup36BuddyFinishedControllerPresenterData)initWithController:(id)a3 navigationController:(id)a4 readyHandler:(id)a5 getStartedHandler:(id)a6;
+- (_TtC5Setup36BuddyFinishedControllerPresenterData)initWithController:(id)controller navigationController:(id)navigationController readyHandler:(id)handler getStartedHandler:(id)startedHandler;
 - (id)getStartedHandler;
 - (void)triggerPresentationHandler;
 @end
@@ -37,24 +37,24 @@
   return v3;
 }
 
-- (_TtC5Setup36BuddyFinishedControllerPresenterData)initWithController:(id)a3 navigationController:(id)a4 readyHandler:(id)a5 getStartedHandler:(id)a6
+- (_TtC5Setup36BuddyFinishedControllerPresenterData)initWithController:(id)controller navigationController:(id)navigationController readyHandler:(id)handler getStartedHandler:(id)startedHandler
 {
-  v9 = _Block_copy(a5);
-  v10 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
+  v10 = _Block_copy(startedHandler);
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = sub_100021788(a3, a4, sub_10002215C, v11, sub_1000221E4, v12);
+  controllerCopy = controller;
+  navigationControllerCopy = navigationController;
+  v15 = sub_100021788(controller, navigationController, sub_10002215C, v11, sub_1000221E4, v12);
 
   return v15;
 }
 
 - (void)triggerPresentationHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001CBB0();
 }
 

@@ -1,10 +1,10 @@
 @interface VKCustomTileOverlayProviderData
-- (VKCustomTileOverlayProviderData)initWithProviderID:(unsigned int)a3 tileSize:(unsigned int)a4 minimumZ:(unsigned int)a5 maximumZ:(unsigned int)a6 textureDimension:(unsigned __int16)a7;
+- (VKCustomTileOverlayProviderData)initWithProviderID:(unsigned int)d tileSize:(unsigned int)size minimumZ:(unsigned int)z maximumZ:(unsigned int)maximumZ textureDimension:(unsigned __int16)dimension;
 - (VKCustomTileOverlayProviderDelegate)delegate;
-- (void)setAlpha:(double)a3;
-- (void)setDesiredDisplayRate:(unint64_t)a3;
-- (void)setForceContinuousLayout:(BOOL)a3;
-- (void)setForceNativeDisplayRate:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setDesiredDisplayRate:(unint64_t)rate;
+- (void)setForceContinuousLayout:(BOOL)layout;
+- (void)setForceNativeDisplayRate:(BOOL)rate;
 @end
 
 @implementation VKCustomTileOverlayProviderData
@@ -16,37 +16,37 @@
   return WeakRetained;
 }
 
-- (void)setForceContinuousLayout:(BOOL)a3
+- (void)setForceContinuousLayout:(BOOL)layout
 {
-  self->_forceContinuousLayout = a3;
+  self->_forceContinuousLayout = layout;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained customTileOverlayDidChangeDisplayRate:self];
 }
 
-- (void)setForceNativeDisplayRate:(BOOL)a3
+- (void)setForceNativeDisplayRate:(BOOL)rate
 {
-  self->_forceNativeDisplayRate = a3;
+  self->_forceNativeDisplayRate = rate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained customTileOverlayDidChangeDisplayRate:self];
 }
 
-- (void)setDesiredDisplayRate:(unint64_t)a3
+- (void)setDesiredDisplayRate:(unint64_t)rate
 {
-  self->_desiredDisplayRate = a3;
+  self->_desiredDisplayRate = rate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained customTileOverlayDidChangeDisplayRate:self];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  self->_alpha = a3;
+  self->_alpha = alpha;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained customTileOverlayDidChangeAlpha:self];
 }
 
-- (VKCustomTileOverlayProviderData)initWithProviderID:(unsigned int)a3 tileSize:(unsigned int)a4 minimumZ:(unsigned int)a5 maximumZ:(unsigned int)a6 textureDimension:(unsigned __int16)a7
+- (VKCustomTileOverlayProviderData)initWithProviderID:(unsigned int)d tileSize:(unsigned int)size minimumZ:(unsigned int)z maximumZ:(unsigned int)maximumZ textureDimension:(unsigned __int16)dimension
 {
-  v7 = a7;
+  dimensionCopy = dimension;
   v17.receiver = self;
   v17.super_class = VKCustomTileOverlayProviderData;
   v12 = [(VKCustomTileOverlayProviderData *)&v17 init];
@@ -55,15 +55,15 @@
   {
     *&v12->_forceNativeDisplayRate = 0;
     v12->_usesTileScale = 0;
-    v12->_providerID = a3;
-    v12->_tileSize = a4;
-    v12->_minimumZ = a5;
-    v12->_maximumZ = a6;
+    v12->_providerID = d;
+    v12->_tileSize = size;
+    v12->_minimumZ = z;
+    v12->_maximumZ = maximumZ;
     v12->_desiredDisplayRate = 0;
     v12->_alpha = 1.0;
-    if (v7 < 0x200)
+    if (dimensionCopy < 0x200)
     {
-      if (v7 < 0x100)
+      if (dimensionCopy < 0x100)
       {
         v14 = 128;
       }

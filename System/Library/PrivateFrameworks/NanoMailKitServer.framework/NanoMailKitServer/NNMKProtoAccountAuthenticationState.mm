@@ -1,12 +1,12 @@
 @interface NNMKProtoAccountAuthenticationState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoAccountAuthenticationState
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoAccountAuthenticationState;
   v4 = [(NNMKProtoAccountAuthenticationState *)&v8 description];
-  v5 = [(NNMKProtoAccountAuthenticationState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoAccountAuthenticationState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   accountId = self->_accountId;
   if (accountId)
   {
-    [v3 setObject:accountId forKey:@"accountId"];
+    [dictionary setObject:accountId forKey:@"accountId"];
   }
 
   if (*&self->_has)
@@ -66,93 +66,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_accountId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     standaloneState = self->_standaloneState;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_subsectionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_emailAddressToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_pccEmailAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_accountId)
   {
-    [v4 setAccountId:?];
-    v4 = v5;
+    [toCopy setAccountId:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_standaloneState;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 10) = self->_standaloneState;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subsectionId)
   {
     [v5 setSubsectionId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_emailAddressToken)
   {
     [v5 setEmailAddressToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_pccEmailAddress)
   {
     [v5 setPccEmailAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountId copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -162,35 +162,35 @@
     *(v5 + 56) |= 1u;
   }
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_subsectionId copyWithZone:a3];
+  v10 = [(NSString *)self->_subsectionId copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_emailAddressToken copyWithZone:a3];
+  v12 = [(NSString *)self->_emailAddressToken copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_pccEmailAddress copyWithZone:a3];
+  v14 = [(NSString *)self->_pccEmailAddress copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1))
+  if (accountId | *(equalCopy + 1))
   {
     if (![(NSString *)accountId isEqual:?])
     {
@@ -198,16 +198,16 @@
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_standaloneState != *(v4 + 10))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_standaloneState != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -215,13 +215,13 @@ LABEL_17:
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 2) && ![(NSString *)displayName isEqual:?])
+  if (displayName | *(equalCopy + 2) && ![(NSString *)displayName isEqual:?])
   {
     goto LABEL_17;
   }
 
   subsectionId = self->_subsectionId;
-  if (subsectionId | *(v4 + 6))
+  if (subsectionId | *(equalCopy + 6))
   {
     if (![(NSString *)subsectionId isEqual:?])
     {
@@ -230,7 +230,7 @@ LABEL_17:
   }
 
   emailAddressToken = self->_emailAddressToken;
-  if (emailAddressToken | *(v4 + 3))
+  if (emailAddressToken | *(equalCopy + 3))
   {
     if (![(NSString *)emailAddressToken isEqual:?])
     {
@@ -239,7 +239,7 @@ LABEL_17:
   }
 
   pccEmailAddress = self->_pccEmailAddress;
-  if (pccEmailAddress | *(v4 + 4))
+  if (pccEmailAddress | *(equalCopy + 4))
   {
     v11 = [(NSString *)pccEmailAddress isEqual:?];
   }
@@ -274,44 +274,44 @@ LABEL_18:
   return v7 ^ v8 ^ [(NSString *)self->_pccEmailAddress hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoAccountAuthenticationState *)self setAccountId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[14])
+  if (fromCopy[14])
   {
-    self->_standaloneState = v4[10];
+    self->_standaloneState = fromCopy[10];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoAccountAuthenticationState *)self setDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NNMKProtoAccountAuthenticationState *)self setSubsectionId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoAccountAuthenticationState *)self setEmailAddressToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NNMKProtoAccountAuthenticationState *)self setPccEmailAddress:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

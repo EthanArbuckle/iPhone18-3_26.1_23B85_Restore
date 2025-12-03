@@ -1,66 +1,66 @@
 @interface SVXAceViewHandler
-- (SVXAceViewHandler)initWithModule:(id)a3 instrumentationUtils:(id)a4 modeProvider:(id)a5 speechSynthesizer:(id)a6 synthesisResultConverter:(id)a7;
-- (SVXAceViewHandler)initWithModule:(id)a3 instrumentationUtils:(id)a4 modeProvider:(id)a5 speechSynthesizer:(id)a6 synthesisResultConverter:(id)a7 speakableTextExtractor:(id)a8 afUtilitiesWrapper:(id)a9;
-- (void)handleAceView:(id)a3 isExpository:(BOOL)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXAceViewHandler)initWithModule:(id)module instrumentationUtils:(id)utils modeProvider:(id)provider speechSynthesizer:(id)synthesizer synthesisResultConverter:(id)converter;
+- (SVXAceViewHandler)initWithModule:(id)module instrumentationUtils:(id)utils modeProvider:(id)provider speechSynthesizer:(id)synthesizer synthesisResultConverter:(id)converter speakableTextExtractor:(id)extractor afUtilitiesWrapper:(id)wrapper;
+- (void)handleAceView:(id)view isExpository:(BOOL)expository taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXAceViewHandler
 
-- (void)handleAceView:(id)a3 isExpository:(BOOL)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleAceView:(id)view isExpository:(BOOL)expository taskTracker:(id)tracker completion:(id)completion
 {
-  v57 = a4;
+  expositoryCopy = expository;
   v80 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v58 = a6;
+  viewCopy = view;
+  trackerCopy = tracker;
+  completionCopy = completion;
   v11 = mach_absolute_time();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v13 = MEMORY[0x277CEF098];
   if (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v14 = [v9 dialogIdentifier];
+    dialogIdentifier = [viewCopy dialogIdentifier];
   }
 
   else
   {
-    v48 = [v9 dialog];
+    dialog = [viewCopy dialog];
 
-    if (v48)
+    if (dialog)
     {
       v49 = *v13;
       if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEBUG))
       {
         v51 = v49;
-        v52 = [v9 dialog];
-        v53 = [v52 dialogIdentifier];
+        dialog2 = [viewCopy dialog];
+        dialogIdentifier2 = [dialog2 dialogIdentifier];
         *buf = 136315394;
         v77 = "[SVXAceViewHandler handleAceView:isExpository:taskTracker:completion:]";
         v78 = 2112;
-        v79 = v53;
+        v79 = dialogIdentifier2;
         _os_log_debug_impl(&dword_2695B9000, v51, OS_LOG_TYPE_DEBUG, "%s AceView has an SADialog...using the identifier for that: %@", buf, 0x16u);
       }
 
-      v50 = [v9 dialog];
-      v14 = [v50 dialogIdentifier];
+      dialog3 = [viewCopy dialog];
+      dialogIdentifier = [dialog3 dialogIdentifier];
     }
 
     else
     {
-      v14 = 0;
+      dialogIdentifier = 0;
     }
   }
 
   if ([(SVXAFUtilitiesWrapper *)self->_afUtilitiesWrapper af_IsInternalInstall])
   {
     v74[0] = @"dialogPhase";
-    v15 = [v10 context];
-    v16 = [v15 dialogPhase];
-    v17 = v16;
+    context = [trackerCopy context];
+    dialogPhase = [context dialogPhase];
+    v17 = dialogPhase;
     v18 = &stru_287A1C130;
-    if (v16)
+    if (dialogPhase)
     {
-      v19 = v16;
+      v19 = dialogPhase;
     }
 
     else
@@ -70,9 +70,9 @@
 
     v74[1] = @"dialogIdentifier";
     v75[0] = v19;
-    if (v14)
+    if (dialogIdentifier)
     {
-      v18 = v14;
+      v18 = dialogIdentifier;
     }
 
     v75[1] = v18;
@@ -85,13 +85,13 @@
   else
   {
     v72 = @"dialogPhase";
-    v15 = [v10 context];
-    v24 = [v15 dialogPhase];
-    v17 = v24;
+    context = [trackerCopy context];
+    dialogPhase2 = [context dialogPhase];
+    v17 = dialogPhase2;
     v25 = &stru_287A1C130;
-    if (v24)
+    if (dialogPhase2)
     {
-      v25 = v24;
+      v25 = dialogPhase2;
     }
 
     v73 = v25;
@@ -103,21 +103,21 @@
 
   v56 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:v23];
 
-  v26 = [v10 context];
+  context2 = [trackerCopy context];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __71__SVXAceViewHandler_handleAceView_isExpository_taskTracker_completion___block_invoke;
   v67[3] = &unk_279C67D50;
   v71 = v11;
-  v27 = v14;
+  v27 = dialogIdentifier;
   v68 = v27;
-  v28 = v9;
+  v28 = viewCopy;
   v69 = v28;
-  v70 = self;
-  v29 = [v26 mutatedCopyWithMutator:v67];
+  selfCopy = self;
+  v29 = [context2 mutatedCopyWithMutator:v67];
 
   v55 = v29;
-  v54 = [v10 beginChildWithContext:v29];
+  v54 = [trackerCopy beginChildWithContext:v29];
   v30 = [(SVXAceViewSpeakableTextExtractor *)self->_speakableTextExtractor extractWithAceView:v28];
   v31 = v13;
   v32 = *v13;
@@ -131,9 +131,9 @@
   }
 
   instrumentationUtils = self->_instrumentationUtils;
-  v34 = [v10 instrumentationContext];
-  v35 = [v10 dialogPhase];
-  [(SVXInstrumentationUtilities *)instrumentationUtils emitUUFRSaidWithModeSupport:v34 dialogIdentifier:v27 dialogPhase:v35 speakableText:v30 currentMode:[(MDModeProviding *)self->_modeProvider currentMode]];
+  instrumentationContext = [trackerCopy instrumentationContext];
+  dialogPhase3 = [trackerCopy dialogPhase];
+  [(SVXInstrumentationUtilities *)instrumentationUtils emitUUFRSaidWithModeSupport:instrumentationContext dialogIdentifier:v27 dialogPhase:dialogPhase3 speakableText:v30 currentMode:[(MDModeProviding *)self->_modeProvider currentMode]];
 
   if ([v28 disableDeviceRacing])
   {
@@ -146,7 +146,7 @@
     }
   }
 
-  v37 = [v28 canUseServerTTS];
+  canUseServerTTS = [v28 canUseServerTTS];
   if ([v28 disableDeviceRacing])
   {
     v38 = 2;
@@ -158,7 +158,7 @@
   }
 
   v39 = [SVXSpeechSynthesisRequest alloc];
-  if (v57)
+  if (expositoryCopy)
   {
     v40 = 1;
   }
@@ -168,8 +168,8 @@
     v40 = 2;
   }
 
-  v41 = [v28 speakableContextInfo];
-  v42 = [(SVXSpeechSynthesisRequest *)v39 initWithPriority:v40 options:v38 | v37 speakableText:v30 speakableContext:v41 localizationKey:0 presynthesizedAudio:0 streamID:0];
+  speakableContextInfo = [v28 speakableContextInfo];
+  v42 = [(SVXSpeechSynthesisRequest *)v39 initWithPriority:v40 options:v38 | canUseServerTTS speakableText:v30 speakableContext:speakableContextInfo localizationKey:0 presynthesizedAudio:0 streamID:0];
 
   speechSynthesizer = self->_speechSynthesizer;
   v64[0] = MEMORY[0x277D85DD0];
@@ -184,9 +184,9 @@
   v59[3] = &unk_279C67D78;
   v60 = v65;
   v61 = v66;
-  v62 = self;
-  v63 = v58;
-  v44 = v58;
+  selfCopy2 = self;
+  v63 = completionCopy;
+  v44 = completionCopy;
   v45 = v66;
   v46 = v65;
   [(SVXSpeechSynthesizer *)speechSynthesizer enqueueRequest:v46 languageCode:0 voiceName:0 gender:0 audioSessionID:0 preparation:v64 finalization:v59 taskTracker:v54 analyticsContext:v56];
@@ -288,43 +288,43 @@ void __71__SVXAceViewHandler_handleAceView_isExpository_taskTracker_completion__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXAceViewHandler)initWithModule:(id)a3 instrumentationUtils:(id)a4 modeProvider:(id)a5 speechSynthesizer:(id)a6 synthesisResultConverter:(id)a7 speakableTextExtractor:(id)a8 afUtilitiesWrapper:(id)a9
+- (SVXAceViewHandler)initWithModule:(id)module instrumentationUtils:(id)utils modeProvider:(id)provider speechSynthesizer:(id)synthesizer synthesisResultConverter:(id)converter speakableTextExtractor:(id)extractor afUtilitiesWrapper:(id)wrapper
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  moduleCopy = module;
+  utilsCopy = utils;
+  providerCopy = provider;
+  synthesizerCopy = synthesizer;
+  converterCopy = converter;
+  extractorCopy = extractor;
+  wrapperCopy = wrapper;
   v26.receiver = self;
   v26.super_class = SVXAceViewHandler;
   v18 = [(SVXAceViewHandler *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_speakableTextExtractor, a8);
-    objc_storeStrong(&v19->_module, a3);
-    objc_storeStrong(&v19->_instrumentationUtils, a4);
-    objc_storeStrong(&v19->_modeProvider, a5);
-    objc_storeStrong(&v19->_synthesisResultConverter, a7);
-    objc_storeStrong(&v19->_speechSynthesizer, a6);
-    objc_storeStrong(&v19->_afUtilitiesWrapper, a9);
+    objc_storeStrong(&v18->_speakableTextExtractor, extractor);
+    objc_storeStrong(&v19->_module, module);
+    objc_storeStrong(&v19->_instrumentationUtils, utils);
+    objc_storeStrong(&v19->_modeProvider, provider);
+    objc_storeStrong(&v19->_synthesisResultConverter, converter);
+    objc_storeStrong(&v19->_speechSynthesizer, synthesizer);
+    objc_storeStrong(&v19->_afUtilitiesWrapper, wrapper);
   }
 
   return v19;
 }
 
-- (SVXAceViewHandler)initWithModule:(id)a3 instrumentationUtils:(id)a4 modeProvider:(id)a5 speechSynthesizer:(id)a6 synthesisResultConverter:(id)a7
+- (SVXAceViewHandler)initWithModule:(id)module instrumentationUtils:(id)utils modeProvider:(id)provider speechSynthesizer:(id)synthesizer synthesisResultConverter:(id)converter
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  converterCopy = converter;
+  synthesizerCopy = synthesizer;
+  providerCopy = provider;
+  utilsCopy = utils;
+  moduleCopy = module;
   v17 = objc_alloc_init(SVXAceViewSpeakableTextExtractor);
   v18 = objc_alloc_init(SVXAFUtilitiesWrapper);
-  v19 = [(SVXAceViewHandler *)self initWithModule:v16 instrumentationUtils:v15 modeProvider:v14 speechSynthesizer:v13 synthesisResultConverter:v12 speakableTextExtractor:v17 afUtilitiesWrapper:v18];
+  v19 = [(SVXAceViewHandler *)self initWithModule:moduleCopy instrumentationUtils:utilsCopy modeProvider:providerCopy speechSynthesizer:synthesizerCopy synthesisResultConverter:converterCopy speakableTextExtractor:v17 afUtilitiesWrapper:v18];
 
   return v19;
 }

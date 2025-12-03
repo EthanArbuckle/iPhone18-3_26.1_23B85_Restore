@@ -1,94 +1,94 @@
 @interface CRLWPColumn
-+ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)a3 withColumns:(id)a4;
-+ (CGPoint)connectionLinePointForChangeRange:(_NSRange)a3 withColumns:(id)a4 layoutTarget:(id)a5;
-+ (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4;
-+ (CGPoint)pinPoint:(CGPoint)a3 toBottomOfLineFragmentInColumns:(id)a4;
-+ (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4 inLayoutTarget:(id)a5;
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4 includeRuby:(BOOL)a5 includePaginatedAttachments:(BOOL)a6;
-+ (CGRect)caretRectForInsertionPoint:(id)a3 withColumns:(id)a4;
-+ (CGRect)columnRectForRange:(_NSRange)a3 withColumns:(id)a4;
-+ (CGRect)frameBoundsOfColumns:(id)a3;
-+ (CGRect)labelRectForCharIndex:(unint64_t)a3 withColumns:(id)a4;
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4;
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4 useParagraphModeRects:(BOOL)a5;
-+ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)a3 toEndPoint:(CGPoint)a4 inLayoutTarget:(id)a5 onSingleLineFragment:(BOOL)a6;
-+ (_NSRange)rangeOfColumns:(id)a3;
-+ (id)closestColumnInColumnsArray:(id)a3 forPoint:(CGPoint)a4 ignoreEmptyColumns:(BOOL)a5 ignoreDrawableOnlyColumns:(BOOL)a6;
-+ (id)columnForCharIndex:(unint64_t)a3 allowEndOfColumn:(BOOL)a4 withColumns:(id)a5;
-+ (id)commentKnobBaseOriginForHighlightAtTextRange:(_NSRange)a3 withColumns:(id)a4 positionForRTL:(BOOL)a5;
-+ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)a3;
-+ (id)pathForHighlightWithRange:(_NSRange)a3 columnArray:(id)a4 pathStyle:(int)a5;
-+ (id)selectionRectsforColumns:(id)a3 forSelection:(id)a4;
-+ (id)smartFieldWithAttributeKind:(unint64_t)a3 inColumnArray:(id)a4 atPoint:(CGPoint)a5;
-+ (unint64_t)charIndexForPoint:(CGPoint)a3 inColumnsArray:(id)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 pastCenterGoesToNextChar:(BOOL)a7 constrainToAscentAndDescent:(BOOL)a8 ignoreEmptyColumns:(BOOL)a9 isAtEndOfLine:(BOOL *)a10 leadingEdge:(BOOL *)a11;
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 inLayoutTarget:(id)a4;
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(unint64_t)a5 inLayoutTarget:(id)a6;
-+ (unint64_t)charIndexFromPoint:(CGPoint)a3 allowPastBreak:(BOOL)a4 allowNotFound:(BOOL)a5 pastCenterGoesToNextChar:(BOOL)a6 constrainToAscentAndDescent:(BOOL)a7 isAtEndOfLine:(BOOL *)a8 leadingEdge:(BOOL *)a9 ignoreEmptyColumns:(BOOL)a10 inLayoutTarget:(id)a11;
-+ (void)calculateSelectionPinRectsForSelection:(id)a3 inColumns:(id)a4 outSelectionPinRect:(CGRect *)a5 outSelectionTailPinRect:(CGRect *)a6;
-+ (void)populateHeadAndTailCharIndicesInSelection:(id)a3 forColumns:(id)a4;
-- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)a3 allowEndOfLine:(unint64_t)a4;
++ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)index withColumns:(id)columns;
++ (CGPoint)connectionLinePointForChangeRange:(_NSRange)range withColumns:(id)columns layoutTarget:(id)target;
++ (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect;
++ (CGPoint)pinPoint:(CGPoint)point toBottomOfLineFragmentInColumns:(id)columns;
++ (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment inLayoutTarget:(id)target;
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
++ (CGRect)caretRectForInsertionPoint:(id)point withColumns:(id)columns;
++ (CGRect)columnRectForRange:(_NSRange)range withColumns:(id)columns;
++ (CGRect)frameBoundsOfColumns:(id)columns;
++ (CGRect)labelRectForCharIndex:(unint64_t)index withColumns:(id)columns;
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns;
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns useParagraphModeRects:(BOOL)rects;
++ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)point toEndPoint:(CGPoint)endPoint inLayoutTarget:(id)target onSingleLineFragment:(BOOL)fragment;
++ (_NSRange)rangeOfColumns:(id)columns;
++ (id)closestColumnInColumnsArray:(id)array forPoint:(CGPoint)point ignoreEmptyColumns:(BOOL)columns ignoreDrawableOnlyColumns:(BOOL)onlyColumns;
++ (id)columnForCharIndex:(unint64_t)index allowEndOfColumn:(BOOL)column withColumns:(id)columns;
++ (id)commentKnobBaseOriginForHighlightAtTextRange:(_NSRange)range withColumns:(id)columns positionForRTL:(BOOL)l;
++ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)columns;
++ (id)pathForHighlightWithRange:(_NSRange)range columnArray:(id)array pathStyle:(int)style;
++ (id)selectionRectsforColumns:(id)columns forSelection:(id)selection;
++ (id)smartFieldWithAttributeKind:(unint64_t)kind inColumnArray:(id)array atPoint:(CGPoint)point;
++ (unint64_t)charIndexForPoint:(CGPoint)point inColumnsArray:(id)array allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char constrainToAscentAndDescent:(BOOL)descent ignoreEmptyColumns:(BOOL)columns isAtEndOfLine:(BOOL *)self0 leadingEdge:(BOOL *)self1;
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning inLayoutTarget:(id)target;
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(unint64_t)type inLayoutTarget:(id)target;
++ (unint64_t)charIndexFromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char constrainToAscentAndDescent:(BOOL)descent isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge ignoreEmptyColumns:(BOOL)self0 inLayoutTarget:(id)self1;
++ (void)calculateSelectionPinRectsForSelection:(id)selection inColumns:(id)columns outSelectionPinRect:(CGRect *)rect outSelectionTailPinRect:(CGRect *)pinRect;
++ (void)populateHeadAndTailCharIndicesInSelection:(id)selection forColumns:(id)columns;
+- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)index allowEndOfLine:(unint64_t)line;
 - (BOOL)lastLineIsEmptyAndHasListLabel;
-- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)a3;
+- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)index;
 - (BOOL)requiresGlyphVectorsForHeightMeasurement;
 - (CGAffineTransform)transformFromWP;
-- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)a3;
-- (CGRect)caretRectForSelection:(id)a3;
-- (CGRect)columnRectForRange:(_NSRange)a3;
-- (CGRect)erasableBounds:(unint64_t)a3;
-- (CGRect)erasableRectForSelectionRange:(_NSRange)a3;
-- (CGRect)firstRectForSelection:(id)a3 includeSpaceAfter:(BOOL)a4 includeSpaceBefore:(BOOL)a5 includeLeading:(BOOL)a6;
+- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)index;
+- (CGRect)caretRectForSelection:(id)selection;
+- (CGRect)columnRectForRange:(_NSRange)range;
+- (CGRect)erasableBounds:(unint64_t)bounds;
+- (CGRect)erasableRectForSelectionRange:(_NSRange)range;
+- (CGRect)firstRectForSelection:(id)selection includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading;
 - (CGRect)frameBounds;
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4;
-- (CGRect)rawGlyphRectOfRange:(_NSRange)a3;
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range;
+- (CGRect)rawGlyphRectOfRange:(_NSRange)range;
 - (CGRect)typographicBounds;
 - (CGSize)maxSize;
-- (CRLWPColumn)initWithStorage:(id)a3 frameBounds:(CGRect)a4;
-- (CRLWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)a3;
+- (CRLWPColumn)initWithStorage:(id)storage frameBounds:(CGRect)bounds;
+- (CRLWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)index;
 - (CRLWPStyleProvider)styleProvider;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
-- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)a3;
-- (const)lineFragmentClosestToPoint:(CGPoint)a3 knobTag:(unint64_t)a4;
-- (const)lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(unint64_t)a5;
-- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4;
-- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)a3;
-- (double)horizontalOffsetForCharIndex:(unint64_t)a3 lineFragmentIndex:(unint64_t)a4 bumpPastHyphen:(BOOL)a5 allowPastLineBounds:(BOOL)a6;
+- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)index;
+- (const)lineFragmentClosestToPoint:(CGPoint)point knobTag:(unint64_t)tag;
+- (const)lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(unint64_t)type;
+- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos;
+- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)range;
+- (double)horizontalOffsetForCharIndex:(unint64_t)index lineFragmentIndex:(unint64_t)fragmentIndex bumpPastHyphen:(BOOL)hyphen allowPastLineBounds:(BOOL)bounds;
 - (double)minimumHeightForLayoutOnPage;
 - (double)textBlockBottom;
 - (double)textHeight;
 - (id).cxx_construct;
-- (id)drawableIntersectionRectsForSelection:(id)a3 inTarget:(id)a4;
-- (id)initForTestingWithStorage:(id)a3 frameBounds:(CGRect)a4;
-- (id)lineSelectionsForSelection:(id)a3;
-- (id)naturalRectsForSelection:(id)a3 ranges:(id *)a4;
-- (id)pMutableRectsForSelectionRange:(_NSRange)a3 selectionType:(unint64_t)a4 includeSpaceAfter:(BOOL)a5 includeSpaceBefore:(BOOL)a6 includeLeading:(BOOL)a7 forParagraphMode:(BOOL)a8 includeRuby:(BOOL)a9 includePaginatedAttachments:(BOOL)a10 inranges:(id)a11 outranges:(id *)a12;
-- (id)pTransformReturnRects:(id)a3;
-- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)a3;
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4;
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4 includePaginatedAttachments:(BOOL)a5;
-- (id)rectsForSelectionRange:(_NSRange)a3 selectionType:(unint64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7;
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(unint64_t)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4;
-- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)a3 isTail:(BOOL)a4;
-- (unint64_t)charIndexFromPoint:(CGPoint)a3 allowPastBreak:(BOOL)a4 pastCenterGoesToNextChar:(BOOL)a5 allowNotFound:(BOOL)a6 constrainToAscentAndDescent:(BOOL)a7 isAtEndOfLine:(BOOL *)a8 outFragment:(const CRLWPLineFragment *)a9 leadingEdge:(BOOL *)a10;
-- (unint64_t)charIndexFromWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 allowNotFound:(BOOL)a5 constrainToAscentAndDescent:(BOOL)a6 outFragment:(const CRLWPLineFragment *)a7 leadingEdge:(BOOL *)a8;
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3;
-- (unint64_t)lineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4;
-- (unint64_t)pRemapCharIndex:(unint64_t)a3 outIsAfterBreak:(BOOL *)a4 outWithTextSource:(id *)a5;
-- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 outFragment:(const CRLWPLineFragment *)a5 leadingEdge:(BOOL *)a6;
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)a3;
+- (id)drawableIntersectionRectsForSelection:(id)selection inTarget:(id)target;
+- (id)initForTestingWithStorage:(id)storage frameBounds:(CGRect)bounds;
+- (id)lineSelectionsForSelection:(id)selection;
+- (id)naturalRectsForSelection:(id)selection ranges:(id *)ranges;
+- (id)pMutableRectsForSelectionRange:(_NSRange)range selectionType:(unint64_t)type includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)self0 inranges:(id)self1 outranges:(id *)self2;
+- (id)pTransformReturnRects:(id)rects;
+- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)index;
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges;
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges includePaginatedAttachments:(BOOL)attachments;
+- (id)rectsForSelectionRange:(_NSRange)range selectionType:(unint64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(unint64_t)type;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind;
+- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)point isTail:(BOOL)tail;
+- (unint64_t)charIndexFromPoint:(CGPoint)point allowPastBreak:(BOOL)break pastCenterGoesToNextChar:(BOOL)char allowNotFound:(BOOL)found constrainToAscentAndDescent:(BOOL)descent isAtEndOfLine:(BOOL *)line outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)self0;
+- (unint64_t)charIndexFromWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char allowNotFound:(BOOL)found constrainToAscentAndDescent:(BOOL)descent outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)edge;
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index;
+- (unint64_t)lineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol;
+- (unint64_t)pRemapCharIndex:(unint64_t)index outIsAfterBreak:(BOOL *)break outWithTextSource:(id *)source;
+- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)edge;
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)enumerateParagraphAdornmentsUsingBlock:(id)a3;
-- (void)makeEmpty:(unint64_t)a3 anchoredRange:(_NSRange)a4 layoutResultFlags:(unint64_t)a5;
-- (void)offsetLineFragmentsBy:(CGSize)a3;
-- (void)pInfoForCharIndex:(unint64_t)a3 isAtStart:(BOOL *)a4 isAtEnd:(BOOL *)a5;
-- (void)renderWithRenderer:(id)a3 currentSelection:(id)a4 limitSelection:(id)a5 listRange:(_NSRange)a6 rubyGlyphRange:(_NSRange)a7 isCanvasInteractive:(BOOL)a8 isInDrawingMode:(BOOL)a9 spellChecker:(id)a10 suppressedMisspellingRange:(_NSRange)a11 blackAndWhite:(BOOL)a12 dictationInterpretations:(id)a13 autocorrections:(id)a14 markedRange:(_NSRange)a15 markedText:(id)a16 renderMode:(unint64_t)a17 pageCount:(unint64_t)a18 suppressInvisibles:(BOOL)a19 currentCanvasSelection:(id)a20;
-- (void)setAnchoredRange:(_NSRange)a3;
-- (void)setLineFragmentArray:(const void *)a3;
-- (void)setRange:(_NSRange)a3;
-- (void)setTransformFromWP:(CGAffineTransform *)a3;
+- (void)enumerateParagraphAdornmentsUsingBlock:(id)block;
+- (void)makeEmpty:(unint64_t)empty anchoredRange:(_NSRange)range layoutResultFlags:(unint64_t)flags;
+- (void)offsetLineFragmentsBy:(CGSize)by;
+- (void)pInfoForCharIndex:(unint64_t)index isAtStart:(BOOL *)start isAtEnd:(BOOL *)end;
+- (void)renderWithRenderer:(id)renderer currentSelection:(id)selection limitSelection:(id)limitSelection listRange:(_NSRange)range rubyGlyphRange:(_NSRange)glyphRange isCanvasInteractive:(BOOL)interactive isInDrawingMode:(BOOL)mode spellChecker:(id)self0 suppressedMisspellingRange:(_NSRange)self1 blackAndWhite:(BOOL)self2 dictationInterpretations:(id)self3 autocorrections:(id)self4 markedRange:(_NSRange)self5 markedText:(id)self6 renderMode:(unint64_t)self7 pageCount:(unint64_t)self8 suppressInvisibles:(BOOL)self9 currentCanvasSelection:(id)canvasSelection;
+- (void)setAnchoredRange:(_NSRange)range;
+- (void)setLineFragmentArray:(const void *)array;
+- (void)setRange:(_NSRange)range;
+- (void)setTransformFromWP:(CGAffineTransform *)p;
 @end
 
 @implementation CRLWPColumn
@@ -108,17 +108,17 @@
   return ptr;
 }
 
-+ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)a3
++ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)columns
 {
-  v3 = a3;
+  columnsCopy = columns;
   v4 = objc_alloc_init(NSMutableArray);
-  if ([v3 count])
+  if ([columnsCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = columnsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -133,8 +133,8 @@
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 range];
-          [v9 columnRectForRange:{v10, v11}];
+          range = [v9 range];
+          [v9 columnRectForRange:{range, v11}];
           v12 = [NSValue valueWithCGRect:?];
           [v4 addObject:v12];
         }
@@ -151,9 +151,9 @@
   return v13;
 }
 
-+ (CGRect)frameBoundsOfColumns:(id)a3
++ (CGRect)frameBoundsOfColumns:(id)columns
 {
-  v3 = a3;
+  columnsCopy = columns;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -162,7 +162,7 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v3;
+  v8 = columnsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -212,10 +212,10 @@
   return result;
 }
 
-+ (CGRect)caretRectForInsertionPoint:(id)a3 withColumns:(id)a4
++ (CGRect)caretRectForInsertionPoint:(id)point withColumns:(id)columns
 {
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  columnsCopy = columns;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -224,7 +224,7 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v11 = v6;
+  v11 = columnsCopy;
   v12 = [v11 countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v12)
   {
@@ -239,7 +239,7 @@
         }
 
         v15 = *(*(&v52 + 1) + 8 * i);
-        [v15 caretRectForSelection:v5];
+        [v15 caretRectForSelection:pointCopy];
         x = v16;
         y = v17;
         width = v18;
@@ -282,8 +282,8 @@ LABEL_14:
   v57.size.height = height;
   if (!CGRectEqualToRect(v57, v64))
   {
-    v20 = [v5 caretAffinity];
-    v21 = +[CRLWPColumn columnForCharIndex:allowEndOfColumn:withColumns:](CRLWPColumn, "columnForCharIndex:allowEndOfColumn:withColumns:", [v5 start], v20 == 1, v11);
+    caretAffinity = [pointCopy caretAffinity];
+    v21 = +[CRLWPColumn columnForCharIndex:allowEndOfColumn:withColumns:](CRLWPColumn, "columnForCharIndex:allowEndOfColumn:withColumns:", [pointCopy start], caretAffinity == 1, v11);
     if (v21)
     {
       v51 = 0;
@@ -307,7 +307,7 @@ LABEL_14:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      [v21 lineMetricsAtCharIndex:objc_msgSend(v5 allowEndOfLine:{"start"), v20 == 1}];
+      [v21 lineMetricsAtCharIndex:objc_msgSend(pointCopy allowEndOfLine:{"start"), caretAffinity == 1}];
       v58.origin = 0u;
       v58.size = 0u;
       if (!CGRectIsNull(v58))
@@ -347,9 +347,9 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns
 {
-  [a1 rectForSelection:a3 withColumns:a4 useParagraphModeRects:1];
+  [self rectForSelection:selection withColumns:columns useParagraphModeRects:1];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -357,28 +357,28 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4 useParagraphModeRects:(BOOL)a5
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns useParagraphModeRects:(BOOL)rects
 {
-  v6 = a3;
-  v59 = a4;
+  selectionCopy = selection;
+  columnsCopy = columns;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  if ([v6 isValid])
+  if ([selectionCopy isValid])
   {
-    v11 = [v59 firstObject];
+    firstObject = [columnsCopy firstObject];
 
-    if (v11)
+    if (firstObject)
     {
-      v12 = [v59 firstObject];
-      v13 = [v12 storage];
+      firstObject2 = [columnsCopy firstObject];
+      storage = [firstObject2 storage];
 
-      if (v13)
+      if (storage)
       {
-        v58 = v13;
-        v14 = [v6 insertionChar];
-        if (v14 > [v13 length])
+        v58 = storage;
+        insertionChar = [selectionCopy insertionChar];
+        if (insertionChar > [storage length])
         {
           +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -409,24 +409,24 @@ LABEL_14:
           [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:333 isFatal:0 description:"selection is past the end of storage"];
         }
 
-        if ([v6 isInsertionPoint])
+        if ([selectionCopy isInsertionPoint])
         {
-          v18 = [v6 insertionChar];
-          if (v18 <= [v13 length])
+          insertionChar2 = [selectionCopy insertionChar];
+          if (insertionChar2 <= [storage length])
           {
-            v20 = [v13 wordAtCharIndex:objc_msgSend(v6 includePreviousWord:{"range"), 1}];
+            v20 = [storage wordAtCharIndex:objc_msgSend(selectionCopy includePreviousWord:{"range"), 1}];
             if (v20 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v21 = v19;
-              v22 = +[CRLWPColumn columnForCharIndex:allowEndOfColumn:withColumns:](CRLWPColumn, "columnForCharIndex:allowEndOfColumn:withColumns:", [v6 range], objc_msgSend(v6, "isAtEndOfLine"), v59);
+              v22 = +[CRLWPColumn columnForCharIndex:allowEndOfColumn:withColumns:](CRLWPColumn, "columnForCharIndex:allowEndOfColumn:withColumns:", [selectionCopy range], objc_msgSend(selectionCopy, "isAtEndOfLine"), columnsCopy);
               if (v22)
               {
-                v23 = [v22 lineIndexForCharIndex:objc_msgSend(v6 eol:{"range"), objc_msgSend(v6, "isAtEndOfLine")}];
-                if (v23 == [v22 lineIndexForCharIndex:v20 eol:0] && v23 == objc_msgSend(v22, "lineIndexForCharIndex:eol:", &v20[v21], objc_msgSend(v6, "isAtEndOfLine")))
+                v23 = [v22 lineIndexForCharIndex:objc_msgSend(selectionCopy eol:{"range"), objc_msgSend(selectionCopy, "isAtEndOfLine")}];
+                if (v23 == [v22 lineIndexForCharIndex:v20 eol:0] && v23 == objc_msgSend(v22, "lineIndexForCharIndex:eol:", &v20[v21], objc_msgSend(selectionCopy, "isAtEndOfLine")))
                 {
-                  v24 = [v6 copyWithNewRange:{v20, v21}];
+                  v24 = [selectionCopy copyWithNewRange:{v20, v21}];
 
-                  v6 = v24;
+                  selectionCopy = v24;
                 }
               }
             }
@@ -437,7 +437,7 @@ LABEL_14:
         v67 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v25 = v59;
+        v25 = columnsCopy;
         v26 = [v25 countByEnumeratingWithState:&v64 objects:v69 count:16];
         if (v26)
         {
@@ -452,9 +452,9 @@ LABEL_14:
               }
 
               v29 = *(*(&v64 + 1) + 8 * i);
-              if ([v6 isInsertionPoint])
+              if ([selectionCopy isInsertionPoint])
               {
-                [v29 caretRectForSelection:v6];
+                [v29 caretRectForSelection:selectionCopy];
                 x = v30;
                 y = v31;
                 width = v32;
@@ -477,21 +477,21 @@ LABEL_14:
 
               else
               {
-                v34 = [v29 range];
+                range = [v29 range];
                 v36 = v35;
-                v37 = [v29 lineCount];
-                if (v37 && (*([v29 lineFragmentAtIndex:v37 - 1] + 3) & 0x101) == 1)
+                lineCount = [v29 lineCount];
+                if (lineCount && (*([v29 lineFragmentAtIndex:lineCount - 1] + 3) & 0x101) == 1)
                 {
                   ++v36;
                 }
 
-                v70.location = [v6 range];
-                v71.location = v34;
+                v70.location = [selectionCopy range];
+                v71.location = range;
                 v71.length = v36;
                 if (NSIntersectionRange(v70, v71).length)
                 {
-                  v38 = [v6 range];
-                  v40 = [v29 rectsForSelectionRange:v38 selectionType:v39 forParagraphMode:objc_msgSend(v6 includeRuby:"type") includePaginatedAttachments:{0, 0, 0}];
+                  range2 = [selectionCopy range];
+                  v40 = [v29 rectsForSelectionRange:range2 selectionType:v39 forParagraphMode:objc_msgSend(selectionCopy includeRuby:"type") includePaginatedAttachments:{0, 0, 0}];
                   [v29 frameBounds];
                   v62 = 0u;
                   v63 = 0u;
@@ -558,7 +558,7 @@ LABEL_14:
 
 LABEL_51:
 
-        v13 = v58;
+        storage = v58;
       }
     }
   }
@@ -574,18 +574,18 @@ LABEL_51:
   return result;
 }
 
-+ (void)calculateSelectionPinRectsForSelection:(id)a3 inColumns:(id)a4 outSelectionPinRect:(CGRect *)a5 outSelectionTailPinRect:(CGRect *)a6
++ (void)calculateSelectionPinRectsForSelection:(id)selection inColumns:(id)columns outSelectionPinRect:(CGRect *)rect outSelectionTailPinRect:(CGRect *)pinRect
 {
-  v9 = a3;
-  v153 = a4;
-  v160 = v9;
-  v10 = [v9 type];
-  v161 = [v9 range];
+  selectionCopy = selection;
+  columnsCopy = columns;
+  v160 = selectionCopy;
+  type = [selectionCopy type];
+  range = [selectionCopy range];
   v155 = v11;
-  v12 = [v153 firstObject];
-  v163 = [v12 textIsVertical];
+  firstObject = [columnsCopy firstObject];
+  textIsVertical = [firstObject textIsVertical];
 
-  if (!a5)
+  if (!rect)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -621,7 +621,7 @@ LABEL_168:
     abort();
   }
 
-  if (!a6)
+  if (!pinRect)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -656,35 +656,35 @@ LABEL_168:
     goto LABEL_168;
   }
 
-  if (v10 == 7)
+  if (type == 7)
   {
-    v13 = [v9 headCharIndex];
-    v14 = [v9 tailCharIndex];
-    if (v14 >= v13)
+    headCharIndex = [selectionCopy headCharIndex];
+    tailCharIndex = [selectionCopy tailCharIndex];
+    if (tailCharIndex >= headCharIndex)
     {
-      v15 = v13;
+      v15 = headCharIndex;
     }
 
     else
     {
-      v15 = v14;
+      v15 = tailCharIndex;
     }
 
-    v16 = [v160 headCharIndex];
-    v17 = [v160 tailCharIndex];
-    if (v16 <= v17)
+    headCharIndex2 = [v160 headCharIndex];
+    tailCharIndex2 = [v160 tailCharIndex];
+    if (headCharIndex2 <= tailCharIndex2)
     {
-      v18 = v17;
+      v18 = tailCharIndex2;
     }
 
     else
     {
-      v18 = v16;
+      v18 = headCharIndex2;
     }
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = v161;
+      v19 = range;
     }
 
     else
@@ -694,7 +694,7 @@ LABEL_168:
 
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = &v161[v155];
+      v20 = &range[v155];
     }
 
     else
@@ -717,26 +717,26 @@ LABEL_168:
       v20 = v19;
     }
 
-    v161 = v20;
+    range = v20;
     v155 = v21 - v20;
   }
 
   size = CGRectNull.size;
-  a5->origin = CGRectNull.origin;
-  a5->size = size;
+  rect->origin = CGRectNull.origin;
+  rect->size = size;
   v23 = CGRectNull.size;
-  a6->origin = CGRectNull.origin;
-  a6->size = v23;
+  pinRect->origin = CGRectNull.origin;
+  pinRect->size = v23;
   v182 = 0u;
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
-  obj = v153;
+  obj = columnsCopy;
   v24 = [obj countByEnumeratingWithState:&v182 objects:v189 count:16];
   if (v24)
   {
     v156 = *v183;
-    v164 = &v161[v155];
+    v164 = &range[v155];
     do
     {
       v25 = 0;
@@ -754,22 +754,22 @@ LABEL_168:
         v176 = v27;
         v173 = v30;
         v174 = v29;
-        v31 = [v160 headCharIndex];
-        v32 = v161;
-        if (v31 != 0x7FFFFFFFFFFFFFFFLL)
+        headCharIndex3 = [v160 headCharIndex];
+        headCharIndex4 = range;
+        if (headCharIndex3 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v32 = [v160 headCharIndex];
+          headCharIndex4 = [v160 headCharIndex];
         }
 
-        v33 = [v26 lineFragmentForCharIndex:v32 knobTag:11 selectionType:v10];
-        v34 = [v160 tailCharIndex];
-        v35 = &v161[v155];
-        if (v34 != 0x7FFFFFFFFFFFFFFFLL)
+        v33 = [v26 lineFragmentForCharIndex:headCharIndex4 knobTag:11 selectionType:type];
+        tailCharIndex3 = [v160 tailCharIndex];
+        tailCharIndex4 = &range[v155];
+        if (tailCharIndex3 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v35 = [v160 tailCharIndex];
+          tailCharIndex4 = [v160 tailCharIndex];
         }
 
-        v36 = [v26 lineFragmentForCharIndex:v35 knobTag:10 selectionType:v10];
+        v36 = [v26 lineFragmentForCharIndex:tailCharIndex4 knobTag:10 selectionType:type];
         v37 = v36;
         p_y = &CGRectNull.origin.y;
         p_size = &CGRectNull.size;
@@ -813,23 +813,23 @@ LABEL_36:
         v168 = v45->origin.x;
         v165 = *p_height;
         v166 = p_size->width;
-        if (v10 == 7 && [v160 validVisualRanges])
+        if (type == 7 && [v160 validVisualRanges])
         {
-          v159 = [v160 visualRangesArray];
+          visualRangesArray = [v160 visualRangesArray];
         }
 
         else
         {
-          v46 = [NSValue valueWithRange:v161, v155];
-          v188 = v46;
-          v159 = [NSArray arrayWithObjects:&v188 count:1];
+          v155 = [NSValue valueWithRange:range, v155];
+          v188 = v155;
+          visualRangesArray = [NSArray arrayWithObjects:&v188 count:1];
         }
 
         v180 = 0u;
         v181 = 0u;
         v178 = 0u;
         v179 = 0u;
-        v47 = [v26 rectsForSelectionRanges:v159 selectionType:v10];
+        v47 = [v26 rectsForSelectionRanges:visualRangesArray selectionType:type];
         v48 = [v47 countByEnumeratingWithState:&v178 objects:v187 count:16];
         v158 = v25;
         if (v48)
@@ -873,7 +873,7 @@ LABEL_36:
               v56 = v193.origin.y;
               v57 = v193.size.width;
               rect2 = v193.size.height;
-              if (v10 == 7)
+              if (type == 7)
               {
                 if (v33)
                 {
@@ -912,19 +912,19 @@ LABEL_36:
                       v62 = CGRectGetMaxY(v198);
                       if (MaxY <= v62 || vabdd_f64(MaxY, v62) < 0.01)
                       {
-                        v63 = a5->origin.x;
-                        v64 = a5->origin.y;
-                        v65 = a5->size.width;
-                        v66 = a5->size.height;
+                        v63 = rect->origin.x;
+                        v64 = rect->origin.y;
+                        v65 = rect->size.width;
+                        v66 = rect->size.height;
                         if ((v33[25] & 0x10) != 0)
                         {
-                          if (CGRectIsEmpty(*&v63) || (MaxX = CGRectGetMaxX(*a5), v205.origin.x = v51, v205.origin.y = y, v205.size.width = v53, v205.size.height = height, MaxX < CGRectGetMaxX(v205)))
+                          if (CGRectIsEmpty(*&v63) || (MaxX = CGRectGetMaxX(*rect), v205.origin.x = v51, v205.origin.y = y, v205.size.width = v53, v205.size.height = height, MaxX < CGRectGetMaxX(v205)))
                           {
                             v85 = v51;
                             v86 = y;
                             v87 = v53;
                             v88 = height;
-                            if (v163)
+                            if (textIsVertical)
                             {
                               MinX = CGRectGetMinX(*&v85);
                               v206.origin.x = v51;
@@ -958,10 +958,10 @@ LABEL_36:
 
                             v69 = v162;
 LABEL_89:
-                            a5->origin.x = MinX;
-                            a5->origin.y = v69;
-                            a5->size.width = v70;
-                            a5->size.height = v71;
+                            rect->origin.x = MinX;
+                            rect->origin.y = v69;
+                            rect->size.width = v70;
+                            rect->size.height = v71;
                           }
                         }
 
@@ -977,7 +977,7 @@ LABEL_89:
                             goto LABEL_89;
                           }
 
-                          v72 = CGRectGetMinX(*a5);
+                          v72 = CGRectGetMinX(*rect);
                           v199.origin.x = v51;
                           v199.origin.y = y;
                           v199.size.width = v53;
@@ -1034,40 +1034,40 @@ LABEL_89:
                       v93 = CGRectGetMaxY(v214);
                       if (v92 <= v93 || vabdd_f64(v92, v93) < 0.01)
                       {
-                        v94 = a6->origin.x;
-                        v95 = a6->origin.y;
-                        v96 = a6->size.width;
-                        v97 = a6->size.height;
+                        v94 = pinRect->origin.x;
+                        v95 = pinRect->origin.y;
+                        v96 = pinRect->size.width;
+                        v97 = pinRect->size.height;
                         if ((*(v37 + 25) & 0x10) != 0)
                         {
-                          if (CGRectIsEmpty(*&v94) || (v106 = CGRectGetMinX(*a6), v218.origin.x = v51, v218.origin.y = y, v218.size.width = v53, v218.size.height = height, v106 > CGRectGetMinX(v218)))
+                          if (CGRectIsEmpty(*&v94) || (v106 = CGRectGetMinX(*pinRect), v218.origin.x = v51, v218.origin.y = y, v218.size.width = v53, v218.size.height = height, v106 > CGRectGetMinX(v218)))
                           {
-                            a6->origin.x = v51;
-                            a6->origin.y = y;
-                            a6->size.width = v53;
-                            a6->size.height = height;
-                            if (!v163)
+                            pinRect->origin.x = v51;
+                            pinRect->origin.y = y;
+                            pinRect->size.width = v53;
+                            pinRect->size.height = height;
+                            if (!textIsVertical)
                             {
                               v111 = v51 + -1.0;
 LABEL_132:
-                              a6->origin.x = v111;
+                              pinRect->origin.x = v111;
                               continue;
                             }
 
                             v107 = y + -1.0;
 LABEL_135:
-                            a6->origin.y = v107;
+                            pinRect->origin.y = v107;
                             continue;
                           }
                         }
 
-                        else if (CGRectIsEmpty(*&v94) || (v98 = CGRectGetMaxX(*a6), v215.origin.x = v51, v215.origin.y = y, v215.size.width = v53, v215.size.height = height, v98 < CGRectGetMaxX(v215)))
+                        else if (CGRectIsEmpty(*&v94) || (v98 = CGRectGetMaxX(*pinRect), v215.origin.x = v51, v215.origin.y = y, v215.size.width = v53, v215.size.height = height, v98 < CGRectGetMaxX(v215)))
                         {
                           v99 = v51;
                           v100 = y;
                           v101 = v53;
                           v102 = height;
-                          if (v163)
+                          if (textIsVertical)
                           {
                             v103 = CGRectGetMinX(*&v99);
                             v216.origin.x = v51;
@@ -1080,10 +1080,10 @@ LABEL_135:
                             v217.size.width = v53;
                             v217.size.height = height;
                             v105 = CGRectGetWidth(v217);
-                            a6->origin.x = v103;
-                            a6->origin.y = v104 + -1.0;
-                            a6->size.width = v105;
-                            a6->size.height = 1.0;
+                            pinRect->origin.x = v103;
+                            pinRect->origin.y = v104 + -1.0;
+                            pinRect->size.width = v105;
+                            pinRect->size.height = 1.0;
                           }
 
                           else
@@ -1099,10 +1099,10 @@ LABEL_135:
                             v220.size.width = v53;
                             v220.size.height = height;
                             v110 = CGRectGetHeight(v220);
-                            a6->origin.x = v108 + -1.0;
-                            a6->origin.y = v109;
-                            a6->size.width = 1.0;
-                            a6->size.height = v110;
+                            pinRect->origin.x = v108 + -1.0;
+                            pinRect->origin.y = v109;
+                            pinRect->size.width = 1.0;
+                            pinRect->size.height = v110;
                           }
                         }
                       }
@@ -1113,7 +1113,7 @@ LABEL_135:
                 continue;
               }
 
-              if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+              if ((type & 0xFFFFFFFFFFFFFFFBLL) != 0)
               {
                 continue;
               }
@@ -1155,13 +1155,13 @@ LABEL_135:
                     v78 = CGRectGetMaxY(v204);
                     if (v77 <= v78 || vabdd_f64(v77, v78) < 0.01)
                     {
-                      a5->origin.x = v51;
-                      a5->origin.y = y;
-                      a5->size.width = v53;
-                      a5->size.height = height;
-                      v79 = sub_100211E30(v33, v161, 1);
+                      rect->origin.x = v51;
+                      rect->origin.y = y;
+                      rect->size.width = v53;
+                      rect->size.height = height;
+                      v79 = sub_100211E30(v33, range, 1);
                       v80 = v79;
-                      if (v163)
+                      if (textIsVertical)
                       {
                         if (v26)
                         {
@@ -1178,22 +1178,22 @@ LABEL_135:
                           b = 0.0;
                         }
 
-                        a5->origin.y = ty + v83 + b * v80;
+                        rect->origin.y = ty + v83 + b * v80;
                       }
 
                       else
                       {
-                        a5->origin.x = v79;
+                        rect->origin.x = v79;
                       }
                     }
                   }
                 }
               }
 
-              v112 = [v26 range];
-              if (v164 < v112 || v164 - v112 >= v113)
+              range2 = [v26 range];
+              if (v164 < range2 || v164 - range2 >= v113)
               {
-                if (!v37 || v164 != &v112[v113])
+                if (!v37 || v164 != &range2[v113])
                 {
                   continue;
                 }
@@ -1240,11 +1240,11 @@ LABEL_135:
                   {
                     v118 = sub_100211E30(v37, v164, 0);
                     v119 = v118;
-                    a6->origin.x = v51;
-                    a6->origin.y = y;
-                    a6->size.width = v53;
-                    a6->size.height = height;
-                    if (!v163)
+                    pinRect->origin.x = v51;
+                    pinRect->origin.y = y;
+                    pinRect->size.width = v53;
+                    pinRect->size.height = height;
+                    if (!textIsVertical)
                     {
                       v111 = v118 + -1.0;
                       goto LABEL_132;
@@ -1288,22 +1288,22 @@ LABEL_135:
     while (v24);
   }
 
-  v123 = a5->origin.x;
-  v124 = a5->origin.y;
-  v125 = a5->size.width;
-  v126 = a5->size.height;
-  if (v163)
+  v123 = rect->origin.x;
+  v124 = rect->origin.y;
+  v125 = rect->size.width;
+  v126 = rect->size.height;
+  if (textIsVertical)
   {
     if (!CGRectIsNull(*&v123))
     {
-      a5->size.height = 1.0;
+      rect->size.height = 1.0;
     }
 
-    v226.origin.x = a6->origin.x;
-    v226.origin.y = a6->origin.y;
-    v226.size.width = a6->size.width;
-    v128 = a6->size.height;
-    v127 = &a6->size.height;
+    v226.origin.x = pinRect->origin.x;
+    v226.origin.y = pinRect->origin.y;
+    v226.size.width = pinRect->size.width;
+    v128 = pinRect->size.height;
+    v127 = &pinRect->size.height;
     v226.size.height = v128;
     if (!CGRectIsNull(v226))
     {
@@ -1316,11 +1316,11 @@ LABEL_144:
   {
     if (!CGRectIsNull(*&v123))
     {
-      a5->size.width = 1.0;
+      rect->size.width = 1.0;
     }
 
-    v227 = *a6;
-    v127 = &a6->size;
+    v227 = *pinRect;
+    v127 = &pinRect->size;
     if (!CGRectIsNull(v227))
     {
       goto LABEL_144;
@@ -1328,17 +1328,17 @@ LABEL_144:
   }
 }
 
-+ (id)selectionRectsforColumns:(id)a3 forSelection:(id)a4
++ (id)selectionRectsforColumns:(id)columns forSelection:(id)selection
 {
-  v32 = a3;
-  v36 = a4;
+  columnsCopy = columns;
+  selectionCopy = selection;
   v5 = objc_opt_new();
-  v6 = [v36 type];
+  type = [selectionCopy type];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v32;
+  obj = columnsCopy;
   v7 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v7)
   {
@@ -1354,29 +1354,29 @@ LABEL_144:
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
-        [v9 boundsIncludingDropCapRectsForSelectionType:v6];
+        [v9 boundsIncludingDropCapRectsForSelectionType:type];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        if (v6 == 7 && [v36 validVisualRanges])
+        if (type == 7 && [selectionCopy validVisualRanges])
         {
-          v18 = [v36 visualRangesArray];
+          visualRangesArray = [selectionCopy visualRangesArray];
         }
 
         else
         {
-          v19 = [v36 range];
-          v21 = [NSValue valueWithRange:v19, v20];
+          range = [selectionCopy range];
+          v21 = [NSValue valueWithRange:range, v20];
           v46 = v21;
-          v18 = [NSArray arrayWithObjects:&v46 count:1];
+          visualRangesArray = [NSArray arrayWithObjects:&v46 count:1];
         }
 
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v22 = [v9 rectsForSelectionRanges:v18 selectionType:v6];
+        v22 = [v9 rectsForSelectionRanges:visualRangesArray selectionType:type];
         v23 = [v22 countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v23)
         {
@@ -1402,8 +1402,8 @@ LABEL_144:
               height = v50.size.height;
               if (!CGRectIsNull(v50))
               {
-                v30 = [NSValue valueWithCGRect:x, y, width, height];
-                [v5 addObject:v30];
+                height = [NSValue valueWithCGRect:x, y, width, height];
+                [v5 addObject:height];
               }
             }
 
@@ -1423,20 +1423,20 @@ LABEL_144:
   return v5;
 }
 
-+ (void)populateHeadAndTailCharIndicesInSelection:(id)a3 forColumns:(id)a4
++ (void)populateHeadAndTailCharIndicesInSelection:(id)selection forColumns:(id)columns
 {
-  v5 = a3;
-  v53 = a4;
-  v57 = [v5 type];
-  if ([v5 type] == 7 && (objc_msgSend(v5, "headCharIndex") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "tailCharIndex") == 0x7FFFFFFFFFFFFFFFLL))
+  selectionCopy = selection;
+  columnsCopy = columns;
+  type = [selectionCopy type];
+  if ([selectionCopy type] == 7 && (objc_msgSend(selectionCopy, "headCharIndex") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(selectionCopy, "tailCharIndex") == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v59 = [v5 range];
+    range = [selectionCopy range];
     v54 = v6;
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obj = v53;
+    obj = columnsCopy;
     v7 = [obj countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v7)
     {
@@ -1453,8 +1453,8 @@ LABEL_144:
           }
 
           v9 = *(*(&v71 + 1) + 8 * v8);
-          v10 = [v9 lineFragmentForCharIndex:v59 knobTag:11 selectionType:7];
-          v11 = [v9 lineFragmentForCharIndex:&v59[v54 - 1] knobTag:10 selectionType:v57];
+          v10 = [v9 lineFragmentForCharIndex:range knobTag:11 selectionType:7];
+          v11 = [v9 lineFragmentForCharIndex:&range[v54 - 1] knobTag:10 selectionType:type];
           v12 = v11;
           p_y = &CGRectNull.origin.y;
           v14 = (v10 + 40);
@@ -1500,22 +1500,22 @@ LABEL_144:
           }
 
           v23 = *v22;
-          if ([v5 validVisualRanges])
+          if ([selectionCopy validVisualRanges])
           {
-            v60 = [v5 visualRangesArray];
+            visualRangesArray = [selectionCopy visualRangesArray];
           }
 
           else
           {
-            v24 = [NSValue valueWithRange:v59, v54];
+            v24 = [NSValue valueWithRange:range, v54];
             v76 = v24;
-            v60 = [NSArray arrayWithObjects:&v76 count:1];
+            visualRangesArray = [NSArray arrayWithObjects:&v76 count:1];
           }
 
-          v25 = [v5 superRange];
+          superRange = [selectionCopy superRange];
           BYTE2(v52) = 0;
           LOWORD(v52) = 0;
-          v27 = [v9 pMutableRectsForSelectionRange:v25 selectionType:v26 includeSpaceAfter:7 includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v52 includePaginatedAttachments:v60 inranges:0 outranges:?];
+          v27 = [v9 pMutableRectsForSelectionRange:superRange selectionType:v26 includeSpaceAfter:7 includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v52 includePaginatedAttachments:visualRangesArray inranges:0 outranges:?];
           v69 = 0u;
           v70 = 0u;
           v67 = 0u;
@@ -1540,10 +1540,10 @@ LABEL_144:
                 y = v79.origin.y;
                 v34 = v79.size.width;
                 height = v79.size.height;
-                v36 = [v5 headCharIndex];
+                headCharIndex = [selectionCopy headCharIndex];
                 if (v10)
                 {
-                  if (v36 == 0x7FFFFFFFFFFFFFFFLL)
+                  if (headCharIndex == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     v80.origin.x = v32;
                     v80.origin.y = y;
@@ -1582,16 +1582,16 @@ LABEL_144:
                           MinX = CGRectGetMinX(*&v39);
                         }
 
-                        [v5 setHeadCharIndex:{sub_100213314(v10, 0, 0, &v66, 0, MinX)}];
+                        [selectionCopy setHeadCharIndex:{sub_100213314(v10, 0, 0, &v66, 0, MinX)}];
                       }
                     }
                   }
                 }
 
-                v44 = [v5 tailCharIndex];
+                tailCharIndex = [selectionCopy tailCharIndex];
                 if (v12)
                 {
-                  if (v44 == 0x7FFFFFFFFFFFFFFFLL)
+                  if (tailCharIndex == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     v84.origin.x = v32;
                     v84.origin.y = y;
@@ -1630,7 +1630,7 @@ LABEL_144:
                           v51 = CGRectGetMaxX(*&v47) + -1.0;
                         }
 
-                        [v5 setTailCharIndex:{sub_100213314(v12, 0, 0, &v66, 0, v51)}];
+                        [selectionCopy setTailCharIndex:{sub_100213314(v12, 0, 0, &v66, 0, v51)}];
                       }
                     }
                   }
@@ -1655,16 +1655,16 @@ LABEL_144:
   }
 }
 
-+ (id)commentKnobBaseOriginForHighlightAtTextRange:(_NSRange)a3 withColumns:(id)a4 positionForRTL:(BOOL)a5
++ (id)commentKnobBaseOriginForHighlightAtTextRange:(_NSRange)range withColumns:(id)columns positionForRTL:(BOOL)l
 {
-  v5 = a5;
-  location = a3.location;
+  lCopy = l;
+  location = range.location;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  columnsCopy = columns;
+  v8 = [columnsCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v8)
   {
     v9 = *v37;
@@ -1674,7 +1674,7 @@ LABEL_144:
       {
         if (*v37 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(columnsCopy);
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
@@ -1686,7 +1686,7 @@ LABEL_144:
           v12 = [v11 lineFragmentForCharIndex:location knobTag:11 selectionType:0];
           if (v12)
           {
-            if (v5)
+            if (lCopy)
             {
               v14 = [v11 textIsVertical] ^ 1;
             }
@@ -1698,10 +1698,10 @@ LABEL_144:
 
             v15 = v12[15];
             v16 = v12[17];
-            v17 = [v11 textIsVertical];
+            textIsVertical = [v11 textIsVertical];
             v18 = v12[4];
             [v11 frameBounds];
-            if (v17)
+            if (textIsVertical)
             {
               v21 = v18;
             }
@@ -1748,7 +1748,7 @@ LABEL_144:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v8 = [columnsCopy countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v8)
       {
         continue;
@@ -1764,18 +1764,18 @@ LABEL_24:
   return v13;
 }
 
-+ (CGPoint)connectionLinePointForChangeRange:(_NSRange)a3 withColumns:(id)a4 layoutTarget:(id)a5
++ (CGPoint)connectionLinePointForChangeRange:(_NSRange)range withColumns:(id)columns layoutTarget:(id)target
 {
-  location = a3.location;
-  v7 = a4;
-  v29 = v7;
-  if (a5)
+  location = range.location;
+  columnsCopy = columns;
+  v29 = columnsCopy;
+  if (target)
   {
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = v7;
+    v8 = columnsCopy;
     v9 = [v8 countByEnumeratingWithState:&v31 objects:v45 count:16];
     if (v9)
     {
@@ -1799,8 +1799,8 @@ LABEL_24:
             v30 = 0;
             v13 = [v12 pRemapCharIndex:location outIsAfterBreak:0 outWithTextSource:&v30];
             v14 = v30;
-            v15 = [v12 range];
-            if (v13 == &v15[v16])
+            range = [v12 range];
+            if (v13 == &range[v16])
             {
               v17 = 0;
             }
@@ -1905,19 +1905,19 @@ LABEL_24:
   return result;
 }
 
-+ (id)closestColumnInColumnsArray:(id)a3 forPoint:(CGPoint)a4 ignoreEmptyColumns:(BOOL)a5 ignoreDrawableOnlyColumns:(BOOL)a6
++ (id)closestColumnInColumnsArray:(id)array forPoint:(CGPoint)point ignoreEmptyColumns:(BOOL)columns ignoreDrawableOnlyColumns:(BOOL)onlyColumns
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
+  onlyColumnsCopy = onlyColumns;
+  columnsCopy = columns;
+  y = point.y;
+  x = point.x;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = a3;
+  arrayCopy = array;
   v11 = 0;
-  v12 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v12 = [arrayCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v12)
   {
     v13 = *v33;
@@ -1928,7 +1928,7 @@ LABEL_24:
       {
         if (*v33 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
@@ -1937,7 +1937,7 @@ LABEL_24:
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        if ((!v7 || [v16 lineCount]) && (!v6 || objc_msgSend(v16, "lineCount") != 1 || (*(objc_msgSend(v16, "lineFragmentAtIndex:", 0) + 24) & 0x40) == 0))
+        if ((!columnsCopy || [v16 lineCount]) && (!onlyColumnsCopy || objc_msgSend(v16, "lineCount") != 1 || (*(objc_msgSend(v16, "lineFragmentAtIndex:", 0) + 24) & 0x40) == 0))
         {
           v39.origin.x = v18;
           v39.origin.y = v20;
@@ -1966,7 +1966,7 @@ LABEL_24:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v12 = [arrayCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v12)
       {
         continue;
@@ -1981,22 +1981,22 @@ LABEL_18:
   return v11;
 }
 
-+ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)a3 toEndPoint:(CGPoint)a4 inLayoutTarget:(id)a5 onSingleLineFragment:(BOOL)a6
++ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)point toEndPoint:(CGPoint)endPoint inLayoutTarget:(id)target onSingleLineFragment:(BOOL)fragment
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v10 = [a5 columns];
+  fragmentCopy = fragment;
+  y = endPoint.y;
+  x = endPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  columns = [target columns];
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v11 = [v10 firstObject];
-  v12 = v11;
-  if (v11)
+  firstObject = [columns firstObject];
+  v12 = firstObject;
+  if (firstObject)
   {
-    [v11 transformToWP];
+    [firstObject transformToWP];
   }
 
   else
@@ -2009,11 +2009,11 @@ LABEL_18:
   v13 = v28;
   v14 = v29;
   v15 = v30;
-  v16 = [a1 closestColumnInColumnsArray:v10 forPoint:1 ignoreEmptyColumns:0 ignoreDrawableOnlyColumns:{sub_100120ABC(v8, v7, x, y, 0.5)}];
+  v16 = [self closestColumnInColumnsArray:columns forPoint:1 ignoreEmptyColumns:0 ignoreDrawableOnlyColumns:{sub_100120ABC(v8, v7, x, y, 0.5)}];
   v27 = 0;
   v17 = [v16 p_charIndexWithTextClosestToWPPoint:1 pastCenterGoesToNextChar:&v27 outFragment:0 leadingEdge:{*&v15 + v7 * *&v14 + *&v13 * v8, *(&v15 + 1) + v7 * *(&v14 + 1) + *(&v13 + 1) * v8}];
   v18 = *&v15 + y * *&v14 + *&v13 * x;
-  if (v6 && v16 && v27)
+  if (fragmentCopy && v16 && v27)
   {
     v19 = sub_100213314(v27, 1, 0, 0, 1, v18);
   }
@@ -2052,61 +2052,61 @@ LABEL_18:
   return result;
 }
 
-+ (unint64_t)charIndexForPoint:(CGPoint)a3 inColumnsArray:(id)a4 allowPastBreak:(BOOL)a5 allowNotFound:(BOOL)a6 pastCenterGoesToNextChar:(BOOL)a7 constrainToAscentAndDescent:(BOOL)a8 ignoreEmptyColumns:(BOOL)a9 isAtEndOfLine:(BOOL *)a10 leadingEdge:(BOOL *)a11
++ (unint64_t)charIndexForPoint:(CGPoint)point inColumnsArray:(id)array allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char constrainToAscentAndDescent:(BOOL)descent ignoreEmptyColumns:(BOOL)columns isAtEndOfLine:(BOOL *)self0 leadingEdge:(BOOL *)self1
 {
-  v11 = a8;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  y = a3.y;
-  x = a3.x;
-  v17 = [a1 closestColumnInColumnsArray:a4 forPoint:a9 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:?];
+  descentCopy = descent;
+  charCopy = char;
+  foundCopy = found;
+  breakCopy = break;
+  y = point.y;
+  x = point.x;
+  v17 = [self closestColumnInColumnsArray:array forPoint:columns ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:?];
   v18 = v17;
-  if (v13 && ([v17 frameBounds], v21.x = x, v21.y = y, !CGRectContainsPoint(v22, v21)))
+  if (foundCopy && ([v17 frameBounds], v21.x = x, v21.y = y, !CGRectContainsPoint(v22, v21)))
   {
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v19 = [v18 charIndexFromPoint:v14 allowPastBreak:v12 pastCenterGoesToNextChar:v13 allowNotFound:v11 constrainToAscentAndDescent:a10 isAtEndOfLine:a11 leadingEdge:{x, y}];
+    v19 = [v18 charIndexFromPoint:breakCopy allowPastBreak:charCopy pastCenterGoesToNextChar:foundCopy allowNotFound:descentCopy constrainToAscentAndDescent:line isAtEndOfLine:edge leadingEdge:{x, y}];
   }
 
   return v19;
 }
 
-+ (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4
++ (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect
 {
-  v4 = sub_1001203B8(a3.x, a3.y, a4.origin.x, a4.origin.y, a4.size.width + -1.0, a4.size.height + -1.0);
+  v4 = sub_1001203B8(point.x, point.y, rect.origin.x, rect.origin.y, rect.size.width + -1.0, rect.size.height + -1.0);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4 inLayoutTarget:(id)a5
++ (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment inLayoutTarget:(id)target
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = [v9 geometry];
-  [v10 size];
+  fragmentCopy = fragment;
+  y = bounds.y;
+  x = bounds.x;
+  targetCopy = target;
+  geometry = [targetCopy geometry];
+  [geometry size];
   v11 = sub_10011ECB4();
-  [a1 p_pinPoint:x toRect:{y, v11, v12, v13, v14}];
+  [self p_pinPoint:x toRect:{y, v11, v12, v13, v14}];
   v45 = v16;
   v46 = v15;
 
   v17.f64[0] = v46;
   v17.f64[1] = v45;
   v44 = v17;
-  if (v5)
+  if (fragmentCopy)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v18 = [v9 columns];
-    v19 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+    columns = [targetCopy columns];
+    v19 = [columns countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v19)
     {
       v20 = *v51;
@@ -2116,7 +2116,7 @@ LABEL_18:
         {
           if (*v51 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(columns);
           }
 
           v22 = *(*(&v50 + 1) + 8 * i);
@@ -2125,10 +2125,10 @@ LABEL_18:
           v56.x = v46;
           if (CGRectContainsPoint(v57, v56))
           {
-            v23 = [v22 lineCount];
-            if (v23)
+            lineCount = [v22 lineCount];
+            if (lineCount)
             {
-              [v22 boundsOfLineFragmentAtIndex:v23 - 1];
+              [v22 boundsOfLineFragmentAtIndex:lineCount - 1];
               v25 = v24;
               v27 = v26;
               v29 = v28;
@@ -2184,7 +2184,7 @@ LABEL_18:
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        v19 = [columns countByEnumeratingWithState:&v50 objects:v54 count:16];
         if (v19)
         {
           continue;
@@ -2204,37 +2204,37 @@ LABEL_20:
   return result;
 }
 
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 inLayoutTarget:(id)a4
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning inLayoutTarget:(id)target
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [a1 pinToNaturalBounds:1 andLastLineFragment:v7 inLayoutTarget:{x, y}];
-  v8 = [a1 charIndexFromPoint:1 allowPastBreak:0 constrainToAscentAndDescent:0 isAtEndOfLine:v7 inLayoutTarget:?];
+  y = pinning.y;
+  x = pinning.x;
+  targetCopy = target;
+  [self pinToNaturalBounds:1 andLastLineFragment:targetCopy inLayoutTarget:{x, y}];
+  v8 = [self charIndexFromPoint:1 allowPastBreak:0 constrainToAscentAndDescent:0 isAtEndOfLine:targetCopy inLayoutTarget:?];
 
   return v8;
 }
 
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(unint64_t)a5 inLayoutTarget:(id)a6
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(unint64_t)type inLayoutTarget:(id)target
 {
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
-  [a1 pinToNaturalBounds:1 andLastLineFragment:v11 inLayoutTarget:{x, y}];
+  tailCopy = tail;
+  y = pinning.y;
+  x = pinning.x;
+  targetCopy = target;
+  [self pinToNaturalBounds:1 andLastLineFragment:targetCopy inLayoutTarget:{x, y}];
   v13 = v12;
   v15 = v14;
-  v16 = [v11 columns];
-  v17 = [CRLWPColumn closestColumnInColumnsArray:v16 forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:v13, v15];
+  columns = [targetCopy columns];
+  v17 = [CRLWPColumn closestColumnInColumnsArray:columns forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:v13, v15];
 
   if (v17)
   {
-    v18 = [v17 charIndexForSelectionFromPoint:v7 isTail:{x, y}];
+    v18 = [v17 charIndexForSelectionFromPoint:tailCopy isTail:{x, y}];
     v19 = v18;
-    if (a5 != 7 && v7 && v18 != 0x7FFFFFFFFFFFFFFFLL)
+    if (type != 7 && tailCopy && v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [v11 storage];
-      v19 = [v20 nextCharacterIndex:v19];
+      storage = [targetCopy storage];
+      v19 = [storage nextCharacterIndex:v19];
     }
   }
 
@@ -2246,17 +2246,17 @@ LABEL_20:
   return v19;
 }
 
-+ (unint64_t)charIndexFromPoint:(CGPoint)a3 allowPastBreak:(BOOL)a4 allowNotFound:(BOOL)a5 pastCenterGoesToNextChar:(BOOL)a6 constrainToAscentAndDescent:(BOOL)a7 isAtEndOfLine:(BOOL *)a8 leadingEdge:(BOOL *)a9 ignoreEmptyColumns:(BOOL)a10 inLayoutTarget:(id)a11
++ (unint64_t)charIndexFromPoint:(CGPoint)point allowPastBreak:(BOOL)break allowNotFound:(BOOL)found pastCenterGoesToNextChar:(BOOL)char constrainToAscentAndDescent:(BOOL)descent isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge ignoreEmptyColumns:(BOOL)self0 inLayoutTarget:(id)self1
 {
-  v29 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  y = a3.y;
-  x = a3.x;
-  v18 = a11;
-  v19 = v18;
-  if (!v14 && ([v18 layoutIsValid] & 1) == 0)
+  descentCopy = descent;
+  charCopy = char;
+  foundCopy = found;
+  breakCopy = break;
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  v19 = targetCopy;
+  if (!foundCopy && ([targetCopy layoutIsValid] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2289,46 +2289,46 @@ LABEL_20:
 
   if ([v19 layoutIsValid])
   {
-    v23 = [v19 columns];
-    if ([v23 count] || v14 || (objc_msgSend(v19, "geometry"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "frame"), v30.x = x, v30.y = y, v25 = CGRectContainsPoint(v31, v30), v24, !v25))
+    columns = [v19 columns];
+    if ([columns count] || foundCopy || (objc_msgSend(v19, "geometry"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "frame"), v30.x = x, v30.y = y, v25 = CGRectContainsPoint(v31, v30), v24, !v25))
     {
-      v27 = [CRLWPColumn charIndexForPoint:v23 inColumnsArray:v15 allowPastBreak:v14 allowNotFound:v13 pastCenterGoesToNextChar:v29 constrainToAscentAndDescent:a10 ignoreEmptyColumns:x isAtEndOfLine:y leadingEdge:a8, a9];
+      edge = [CRLWPColumn charIndexForPoint:columns inColumnsArray:breakCopy allowPastBreak:foundCopy allowNotFound:charCopy pastCenterGoesToNextChar:descentCopy constrainToAscentAndDescent:columns ignoreEmptyColumns:x isAtEndOfLine:y leadingEdge:line, edge];
     }
 
     else
     {
-      v26 = [v19 storage];
-      v27 = [v26 length];
+      storage = [v19 storage];
+      edge = [storage length];
 
-      if (a8)
+      if (line)
       {
-        *a8 = 0;
+        *line = 0;
       }
 
-      if (a9)
+      if (edge)
       {
-        *a9 = 1;
+        *edge = 1;
       }
     }
   }
 
   else
   {
-    v27 = 0x7FFFFFFFFFFFFFFFLL;
+    edge = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v27;
+  return edge;
 }
 
-+ (id)smartFieldWithAttributeKind:(unint64_t)a3 inColumnArray:(id)a4 atPoint:(CGPoint)a5
++ (id)smartFieldWithAttributeKind:(unint64_t)kind inColumnArray:(id)array atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = [CRLWPColumn closestColumnInColumnsArray:a4 forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:?];
+  y = point.y;
+  x = point.x;
+  v8 = [CRLWPColumn closestColumnInColumnsArray:array forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:?];
   v9 = v8;
   if (v8 && ([v8 frameBounds], v14.x = x, v14.y = y, CGRectContainsPoint(v15, v14)) && (v10 = objc_msgSend(v9, "charIndexFromPoint:allowPastBreak:pastCenterGoesToNextChar:allowNotFound:isAtEndOfLine:leadingEdge:", 0, 0, 1, 0, 0, x, y), v10 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v11 = [v9 smartFieldAtCharIndex:v10 attributeKind:a3];
+    v11 = [v9 smartFieldAtCharIndex:v10 attributeKind:kind];
   }
 
   else
@@ -2339,15 +2339,15 @@ LABEL_20:
   return v11;
 }
 
-+ (id)pathForHighlightWithRange:(_NSRange)a3 columnArray:(id)a4 pathStyle:(int)a5
++ (id)pathForHighlightWithRange:(_NSRange)range columnArray:(id)array pathStyle:(int)style
 {
-  v17 = a4;
+  arrayCopy = array;
   v6 = +[CRLBezierPath bezierPath];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v17;
+  obj = arrayCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -2366,7 +2366,7 @@ LABEL_20:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v10 = [v9 rectsForSelectionRange:a3.location selectionType:a3.length forParagraphMode:0 includeRuby:0 includePaginatedAttachments:{a5 == 1, 0}];
+        v10 = [v9 rectsForSelectionRange:range.location selectionType:range.length forParagraphMode:0 includeRuby:0 includePaginatedAttachments:{style == 1, 0}];
         v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v11)
         {
@@ -2382,7 +2382,7 @@ LABEL_20:
 
               v14 = *(*(&v21 + 1) + 8 * j);
               [v14 CGRectValue];
-              if (a5 == 2)
+              if (style == 2)
               {
                 [v14 CGRectValue];
                 v33 = CGRectInset(v32, -3.0, -3.0);
@@ -2412,24 +2412,24 @@ LABEL_20:
   return v6;
 }
 
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4 includeRuby:(BOOL)a5 includePaginatedAttachments:(BOOL)a6
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  v34 = a6;
-  v6 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  attachmentsCopy = attachments;
+  rubyCopy = ruby;
+  selectionCopy = selection;
+  arrayCopy = array;
+  v10 = arrayCopy;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  if (v8)
+  if (selectionCopy)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v9;
+    obj = arrayCopy;
     v15 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v15)
     {
@@ -2449,8 +2449,8 @@ LABEL_20:
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v19 = [v8 range];
-          v21 = [v18 rectsForSelectionRange:v19 selectionType:v20 forParagraphMode:objc_msgSend(v8 includeRuby:"type") includePaginatedAttachments:{0, v6, v34}];
+          range = [selectionCopy range];
+          v21 = [v18 rectsForSelectionRange:range selectionType:v20 forParagraphMode:objc_msgSend(selectionCopy includeRuby:"type") includePaginatedAttachments:{0, rubyCopy, attachmentsCopy}];
           v22 = [v21 countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v22)
           {
@@ -2511,21 +2511,21 @@ LABEL_20:
   return result;
 }
 
-+ (id)columnForCharIndex:(unint64_t)a3 allowEndOfColumn:(BOOL)a4 withColumns:(id)a5
++ (id)columnForCharIndex:(unint64_t)index allowEndOfColumn:(BOOL)column withColumns:(id)columns
 {
-  v5 = a4;
-  v7 = a5;
-  v26 = [v7 firstObject];
-  v8 = [v26 storage];
+  columnCopy = column;
+  columnsCopy = columns;
+  firstObject = [columnsCopy firstObject];
+  storage = [firstObject storage];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v7;
+  obj = columnsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v9)
   {
-    v10 = v5;
+    v10 = columnCopy;
     v11 = *v29;
     while (2)
     {
@@ -2538,8 +2538,8 @@ LABEL_20:
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        v14 = [v13 storage];
-        v15 = v8 == v14;
+        storage2 = [v13 storage];
+        v15 = storage == storage2;
 
         if (!v15)
         {
@@ -2584,8 +2584,8 @@ LABEL_20:
           [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:1068 isFatal:0 description:"unexpected column storage"];
         }
 
-        v21 = [v13 range];
-        if (v21 + v22 + v10 > a3)
+        range = [v13 range];
+        if (range + v22 + v10 > index)
         {
           v24 = v13;
           goto LABEL_21;
@@ -2611,61 +2611,61 @@ LABEL_21:
   return v24;
 }
 
-+ (_NSRange)rangeOfColumns:(id)a3
++ (_NSRange)rangeOfColumns:(id)columns
 {
-  v3 = a3;
-  v4 = 0x7FFFFFFFFFFFFFFFLL;
+  columnsCopy = columns;
+  range = 0x7FFFFFFFFFFFFFFFLL;
   v5 = 0;
-  if ([v3 count])
+  if ([columnsCopy count])
   {
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v4 = [v6 range];
+    v6 = [columnsCopy objectAtIndexedSubscript:0];
+    range = [v6 range];
     v5 = v7;
   }
 
-  if ([v3 count] >= 2)
+  if ([columnsCopy count] >= 2)
   {
-    v8 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 1}];
-    v9 = [v8 range];
-    if (v4 <= &v9[v10])
+    v8 = [columnsCopy objectAtIndexedSubscript:{objc_msgSend(columnsCopy, "count") - 1}];
+    range2 = [v8 range];
+    if (range <= &range2[v10])
     {
-      v11 = &v9[v10];
+      v11 = &range2[v10];
     }
 
     else
     {
-      v11 = v4;
+      v11 = range;
     }
 
-    if (v4 >= &v9[v10])
+    if (range >= &range2[v10])
     {
-      v4 = &v9[v10];
+      range = &range2[v10];
     }
 
-    v5 = &v11[-v4];
+    v5 = &v11[-range];
   }
 
-  v12 = v4;
+  v12 = range;
   v13 = v5;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (CRLWPColumn)initWithStorage:(id)a3 frameBounds:(CGRect)a4
+- (CRLWPColumn)initWithStorage:(id)storage frameBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = CRLWPColumn;
   v11 = [(CRLWPColumn *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_storage, a3);
+    objc_storeStrong(&v11->_storage, storage);
     v12->_frameBounds.origin.x = x;
     v12->_frameBounds.origin.y = y;
     v12->_frameBounds.size.width = width;
@@ -2683,21 +2683,21 @@ LABEL_21:
   return 0;
 }
 
-- (id)initForTestingWithStorage:(id)a3 frameBounds:(CGRect)a4
+- (id)initForTestingWithStorage:(id)storage frameBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(CRLWPColumn *)self initWithStorage:v9 frameBounds:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  storageCopy = storage;
+  height = [(CRLWPColumn *)self initWithStorage:storageCopy frameBounds:x, y, width, height];
   v11 = *&CGAffineTransformIdentity.c;
   v13[0] = *&CGAffineTransformIdentity.a;
   v13[1] = v11;
   v13[2] = *&CGAffineTransformIdentity.tx;
-  [(CRLWPColumn *)v10 setTransformFromWP:v13];
+  [(CRLWPColumn *)height setTransformFromWP:v13];
 
-  return v10;
+  return height;
 }
 
 - (void)dealloc
@@ -2717,18 +2717,18 @@ LABEL_21:
 
 - (_NSRange)range
 {
-  v3 = [(CRLWPColumn *)self startCharIndex];
-  v4 = [(CRLWPColumn *)self characterCount];
-  v5 = v3;
-  result.length = v4;
+  startCharIndex = [(CRLWPColumn *)self startCharIndex];
+  characterCount = [(CRLWPColumn *)self characterCount];
+  v5 = startCharIndex;
+  result.length = characterCount;
   result.location = v5;
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  length = a3.length;
-  [(CRLWPColumn *)self setStartCharIndex:a3.location];
+  length = range.length;
+  [(CRLWPColumn *)self setStartCharIndex:range.location];
 
   [(CRLWPColumn *)self setCharacterCount:length];
 }
@@ -2742,11 +2742,11 @@ LABEL_21:
   return result;
 }
 
-- (void)setAnchoredRange:(_NSRange)a3
+- (void)setAnchoredRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length >= 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  if (range.length >= 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2832,13 +2832,13 @@ LABEL_21:
   return contentBottom - v10;
 }
 
-- (CGRect)erasableBounds:(unint64_t)a3
+- (CGRect)erasableBounds:(unint64_t)bounds
 {
   x = self->_frameBounds.origin.x;
   y = self->_frameBounds.origin.y;
   width = self->_frameBounds.size.width;
   height = self->_frameBounds.size.height;
-  v36.origin.x = sub_1000F51AC(self->_lineFragmentArray.__ptr_, a3).n64_f64[0];
+  v36.origin.x = sub_1000F51AC(self->_lineFragmentArray.__ptr_, bounds).n64_f64[0];
   v36.origin.y = v8;
   v36.size.width = v9;
   v36.size.height = v10;
@@ -2934,12 +2934,12 @@ LABEL_21:
 
 - (BOOL)requiresGlyphVectorsForHeightMeasurement
 {
-  v2 = [(CRLWPColumn *)self lineFragmentArray];
-  v3 = sub_1000F4FD8(*v2);
+  lineFragmentArray = [(CRLWPColumn *)self lineFragmentArray];
+  v3 = sub_1000F4FD8(*lineFragmentArray);
   if (v3)
   {
     v4 = v3;
-    v5 = sub_1000F4FE8(*v2, 0);
+    v5 = sub_1000F4FE8(*lineFragmentArray, 0);
     if (sub_100210CD0(v5))
     {
       LOBYTE(v3) = 1;
@@ -2956,7 +2956,7 @@ LABEL_21:
           break;
         }
 
-        v8 = sub_1000F4FE8(*v2, v6);
+        v8 = sub_1000F4FE8(*lineFragmentArray, v6);
         v9 = sub_100210CD0(v8);
         v6 = v7 + 1;
       }
@@ -2983,16 +2983,16 @@ LABEL_21:
   return CGRectApplyAffineTransform(v7, &v6);
 }
 
-+ (CGPoint)pinPoint:(CGPoint)a3 toBottomOfLineFragmentInColumns:(id)a4
++ (CGPoint)pinPoint:(CGPoint)point toBottomOfLineFragmentInColumns:(id)columns
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v4 = a4;
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  columnsCopy = columns;
+  v5 = [columnsCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
   v6.f64[0] = x;
   v6.f64[1] = y;
   v31 = v6;
@@ -3005,7 +3005,7 @@ LABEL_21:
       {
         if (*v38 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columnsCopy);
         }
 
         v9 = *(*(&v37 + 1) + 8 * i);
@@ -3014,10 +3014,10 @@ LABEL_21:
         v43.y = y;
         if (CGRectContainsPoint(v44, v43))
         {
-          v10 = [v9 lineCount];
-          if (v10)
+          lineCount = [v9 lineCount];
+          if (lineCount)
           {
-            [v9 boundsOfLineFragmentAtIndex:v10 - 1];
+            [v9 boundsOfLineFragmentAtIndex:lineCount - 1];
             v12 = v11;
             v14 = v13;
             v16 = v15;
@@ -3073,7 +3073,7 @@ LABEL_21:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v5 = [columnsCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v5)
       {
         continue;
@@ -3092,10 +3092,10 @@ LABEL_19:
   return result;
 }
 
-- (void)setLineFragmentArray:(const void *)a3
+- (void)setLineFragmentArray:(const void *)array
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
+  v4 = *array;
+  v3 = *(array + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -3110,35 +3110,35 @@ LABEL_19:
   }
 }
 
-- (void)offsetLineFragmentsBy:(CGSize)a3
+- (void)offsetLineFragmentsBy:(CGSize)by
 {
-  if (a3.width != 0.0 || a3.height != 0.0)
+  if (by.width != 0.0 || by.height != 0.0)
   {
-    v4 = *&a3.height;
-    sub_1000F522C(self->_lineFragmentArray.__ptr_, a3.width, *&a3.height);
+    v4 = *&by.height;
+    sub_1000F522C(self->_lineFragmentArray.__ptr_, by.width, *&by.height);
     *&self->_contentBottom = vaddq_f64(vdupq_lane_s64(v4, 0), *&self->_contentBottom);
   }
 }
 
-- (void)makeEmpty:(unint64_t)a3 anchoredRange:(_NSRange)a4 layoutResultFlags:(unint64_t)a5
+- (void)makeEmpty:(unint64_t)empty anchoredRange:(_NSRange)range layoutResultFlags:(unint64_t)flags
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(CRLWPColumn *)self setStartCharIndex:?];
   [(CRLWPColumn *)self setCharacterCount:0];
   [(CRLWPColumn *)self setAnchoredRange:location, length];
   self->_contentBottom = 0.0;
   self->_erasableContentBottom = 0.0;
-  self->_layoutResultFlags = a5;
-  [(CRLWPColumn *)self setNextWidowPullsDownFromCharIndex:a3];
+  self->_layoutResultFlags = flags;
+  [(CRLWPColumn *)self setNextWidowPullsDownFromCharIndex:empty];
   sub_1000F515C(self->_lineFragmentArray.__ptr_);
 
   [(CRLWPColumn *)self clearAdornments];
 }
 
-- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)a3
+- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)index
 {
-  v4 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a3);
+  v4 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, index);
   v5 = v4[5];
   v6 = v4[6];
   v7 = v4[7];
@@ -3151,22 +3151,22 @@ LABEL_19:
   return CGRectApplyAffineTransform(v10, &v9);
 }
 
-- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)a3
+- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, index);
 
   return sub_10020BCFC(v3);
 }
 
-- (CGRect)rawGlyphRectOfRange:(_NSRange)a3
+- (CGRect)rawGlyphRectOfRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v10 = [(CRLWPColumn *)self lineIndexForCharIndex:a3.location eol:0];
+  v10 = [(CRLWPColumn *)self lineIndexForCharIndex:range.location eol:0];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = [(CRLWPColumn *)self lineFragmentAtIndex:v10];
@@ -3204,7 +3204,7 @@ LABEL_19:
   return result;
 }
 
-- (CRLWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)a3
+- (CRLWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)index
 {
   *retstr = *byte_101463CD0;
   result = [(CRLWPColumn *)self lineIndexForCharIndex:a4 eol:0];
@@ -3218,9 +3218,9 @@ LABEL_19:
   return result;
 }
 
-- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)a3
+- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, index);
   if (*(v3 + 24) < 0)
   {
     v4 = &xmmword_101464828;
@@ -3238,9 +3238,9 @@ LABEL_19:
   return result;
 }
 
-- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)a3
+- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, index);
   if (!v3)
   {
     return 0;
@@ -3255,11 +3255,11 @@ LABEL_19:
   return sub_1002163D4(v4);
 }
 
-- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)a3 allowEndOfLine:(unint64_t)a4
+- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)index allowEndOfLine:(unint64_t)line
 {
   v5 = a5;
   memcpy(retstr, &unk_101465F68, sizeof($D12B6492C59FD4124ECBBA05678185BF));
-  result = [(CRLWPColumn *)self lineIndexForCharIndex:a4 eol:v5];
+  result = [(CRLWPColumn *)self lineIndexForCharIndex:line eol:v5];
   if (result != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = [(CRLWPColumn *)self lineFragmentAtIndex:result];
@@ -3339,7 +3339,7 @@ LABEL_19:
     *&retstr->var2.spaceBefore = v29;
     if (sub_10020BC74(v11))
     {
-      v30 = sub_100212408(v11, a4, &v35);
+      v30 = sub_100212408(v11, line, &v35);
       retstr->var3 = CTFontGetXHeight(v30);
     }
 
@@ -3349,21 +3349,21 @@ LABEL_19:
   return result;
 }
 
-- (double)horizontalOffsetForCharIndex:(unint64_t)a3 lineFragmentIndex:(unint64_t)a4 bumpPastHyphen:(BOOL)a5 allowPastLineBounds:(BOOL)a6
+- (double)horizontalOffsetForCharIndex:(unint64_t)index lineFragmentIndex:(unint64_t)fragmentIndex bumpPastHyphen:(BOOL)hyphen allowPastLineBounds:(BOOL)bounds
 {
-  v7 = a5;
-  v9 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a4);
+  hyphenCopy = hyphen;
+  v9 = sub_1000F4FE8(self->_lineFragmentArray.__ptr_, fragmentIndex);
 
-  return sub_10020CC28(v9, a3, v7, a6, 0);
+  return sub_10020CC28(v9, index, hyphenCopy, bounds, 0);
 }
 
-- (const)lineFragmentClosestToPoint:(CGPoint)a3 knobTag:(unint64_t)a4
+- (const)lineFragmentClosestToPoint:(CGPoint)point knobTag:(unint64_t)tag
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLWPColumn *)self transformToWP];
-  v8 = [(CRLWPColumn *)self lineFragmentArray];
-  v9 = sub_1000F4FD8(*v8);
+  lineFragmentArray = [(CRLWPColumn *)self lineFragmentArray];
+  v9 = sub_1000F4FD8(*lineFragmentArray);
   if (!v9)
   {
     return 0;
@@ -3376,8 +3376,8 @@ LABEL_19:
   v14 = INFINITY;
   do
   {
-    v15 = sub_1000F4FE8(*v8, v12);
-    sub_100345F44(a4, v15[5], v15[6], v15[7], v15[8]);
+    v15 = sub_1000F4FE8(*lineFragmentArray, v12);
+    sub_100345F44(tag, v15[5], v15[6], v15[7], v15[8]);
     v17 = vabdd_f64(v13, v16);
     if (v17 < v14)
     {
@@ -3392,33 +3392,33 @@ LABEL_19:
   return v11;
 }
 
-- (const)lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(unint64_t)a5
+- (const)lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(unint64_t)type
 {
   v50 = 0;
-  v7 = [(CRLWPColumn *)self range];
-  if (a3 >= v7 && a3 - v7 < v8 || (v9 = [(CRLWPColumn *)self range], &v9[v10] == a3))
+  range = [(CRLWPColumn *)self range];
+  if (index >= range && index - range < v8 || (v9 = [(CRLWPColumn *)self range], &v9[v10] == index))
   {
     v49 = 0;
-    v11 = [(CRLWPColumn *)self pRemapCharIndex:a3 outIsAfterBreak:&v50 outWithTextSource:&v49];
+    v11 = [(CRLWPColumn *)self pRemapCharIndex:index outIsAfterBreak:&v50 outWithTextSource:&v49];
     v12 = v49;
     buf[0] = 0;
     v48 = 0;
     [(CRLWPColumn *)self pInfoForCharIndex:v11 isAtStart:&v48 isAtEnd:buf];
-    v13 = [(CRLWPColumn *)self lineFragmentArray];
-    v14 = sub_1000F4FD8(*v13);
+    lineFragmentArray = [(CRLWPColumn *)self lineFragmentArray];
+    v14 = sub_1000F4FD8(*lineFragmentArray);
     if (v14)
     {
       v15 = 0;
       v45 = v12;
       do
       {
-        v16 = sub_1000F4FE8(*v13, v15);
+        v16 = sub_1000F4FE8(*lineFragmentArray, v15);
         v17 = v16;
         v18 = *(v16 + 24);
         if ((v18 & 0x40) == 0)
         {
           v19 = v11;
-          v20 = (v18 & 0x1000) != 0 && a5 == 7;
+          v20 = (v18 & 0x1000) != 0 && type == 7;
           v21 = !v20;
           v22 = v18 < 0;
           v23 = &xmmword_101464828;
@@ -3435,7 +3435,7 @@ LABEL_19:
           if (!v28 || (v29 = 0, buf[0] == 1) && v19 == v26)
           {
             v29 = 1;
-            if (a4 == 11 && v19 == v26)
+            if (tag == 11 && v19 == v26)
             {
               v30 = *(v17 + 24);
               if (v30)
@@ -3450,16 +3450,16 @@ LABEL_19:
             }
           }
 
-          if (a5 == 7)
+          if (type == 7)
           {
             v26 = sub_100211708(v17);
             v27 = sub_10021173C(v17);
-            v31 = (a4 == 11) ^ v21 ^ 1;
+            v31 = (tag == 11) ^ v21 ^ 1;
           }
 
           else
           {
-            v31 = a4 == 11;
+            v31 = tag == 11;
           }
 
           v32 = v19 == v27;
@@ -3510,10 +3510,10 @@ LABEL_19:
 
   else
   {
-    v36 = [(CRLWPColumn *)self storage];
-    v37 = [v36 length];
+    storage = [(CRLWPColumn *)self storage];
+    v37 = [storage length];
 
-    if (v37 >= a3)
+    if (v37 >= index)
     {
       return 0;
     }
@@ -3527,7 +3527,7 @@ LABEL_19:
     v39 = off_1019EDA68;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v44 = [(CRLWPColumn *)self storage];
+      storage2 = [(CRLWPColumn *)self storage];
       *buf = 67110402;
       v52 = v38;
       v53 = 2082;
@@ -3537,9 +3537,9 @@ LABEL_19:
       v57 = 1024;
       v58 = 1670;
       v59 = 2048;
-      v60 = a3;
+      indexCopy = index;
       v61 = 2048;
-      v62 = [v44 length];
+      v62 = [storage2 length];
       _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d charIndex %lu beyond storage length: %lu", buf, 0x36u);
     }
 
@@ -3558,8 +3558,8 @@ LABEL_19:
 
     v12 = [NSString stringWithUTF8String:"[CRLWPColumn lineFragmentForCharIndex:knobTag:selectionType:]"];
     v41 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/CRLWPColumn.mm"];
-    v42 = [(CRLWPColumn *)self storage];
-    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v12, v41, 1670, 0, "charIndex %lu beyond storage length: %lu", a3, [v42 length]);
+    storage3 = [(CRLWPColumn *)self storage];
+    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v12, v41, 1670, 0, "charIndex %lu beyond storage length: %lu", index, [storage3 length]);
   }
 
   v17 = 0;
@@ -3568,28 +3568,28 @@ LABEL_57:
   return v17;
 }
 
-- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4
+- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos
 {
-  v5 = a3;
-  v22 = *(sub_1000F4FE8(self->_lineFragmentArray.__ptr_, a3) + 40);
+  asCopy = as;
+  v22 = *(sub_1000F4FE8(self->_lineFragmentArray.__ptr_, as) + 40);
   MinY = CGRectGetMinY(v22);
   do
   {
-    v8 = v5;
-    if (!v5)
+    v8 = asCopy;
+    if (!asCopy)
     {
       break;
     }
 
-    --v5;
+    --asCopy;
     v23 = *(sub_1000F4FE8(self->_lineFragmentArray.__ptr_, v8 - 1) + 40);
   }
 
   while (CGRectGetMinY(v23) >= MinY);
-  v9 = [(CRLWPColumn *)self lineCount];
-  if (v8 < v9)
+  lineCount = [(CRLWPColumn *)self lineCount];
+  if (v8 < lineCount)
   {
-    v10 = v9;
+    v10 = lineCount;
     v11 = INFINITY;
     v12 = v8;
     do
@@ -3612,12 +3612,12 @@ LABEL_57:
       v25.origin.y = v15;
       v25.size.width = v16;
       v25.size.height = v17;
-      v18 = vabdd_f64(a4, CGRectGetMinX(v25));
+      v18 = vabdd_f64(pos, CGRectGetMinX(v25));
       v26.origin.x = v14;
       v26.origin.y = v15;
       v26.size.width = v16;
       v26.size.height = v17;
-      v19 = vabdd_f64(a4, CGRectGetMaxX(v26));
+      v19 = vabdd_f64(pos, CGRectGetMaxX(v26));
       if (v19 >= v18)
       {
         v19 = v18;
@@ -3638,26 +3638,26 @@ LABEL_57:
   return [(CRLWPColumn *)self lineFragmentAtIndex:v8];
 }
 
-- (void)pInfoForCharIndex:(unint64_t)a3 isAtStart:(BOOL *)a4 isAtEnd:(BOOL *)a5
+- (void)pInfoForCharIndex:(unint64_t)index isAtStart:(BOOL *)start isAtEnd:(BOOL *)end
 {
   v8 = [(CRLWPStorage *)self->_storage length];
-  *a4 = a3 == 0;
-  *a5 = v8 == a3;
+  *start = index == 0;
+  *end = v8 == index;
 }
 
-- (unint64_t)pRemapCharIndex:(unint64_t)a3 outIsAfterBreak:(BOOL *)a4 outWithTextSource:(id *)a5
+- (unint64_t)pRemapCharIndex:(unint64_t)index outIsAfterBreak:(BOOL *)break outWithTextSource:(id *)source
 {
   v9 = self->_storage;
-  v10 = [(CRLWPStorage *)v9 charIndexMappedFromStorage:a3];
-  v11 = a3;
+  v10 = [(CRLWPStorage *)v9 charIndexMappedFromStorage:index];
+  indexCopy = index;
   if (v10)
   {
-    v11 = sub_10027EB4C(a3, v9);
+    indexCopy = sub_10027EB4C(index, v9);
   }
 
-  if (a4)
+  if (break)
   {
-    if (v11 == a3)
+    if (indexCopy == index)
     {
       v12 = 0;
     }
@@ -3678,37 +3678,37 @@ LABEL_57:
       }
     }
 
-    *a4 = v12;
+    *break = v12;
   }
 
-  if (a5)
+  if (source)
   {
     v16 = v9;
-    *a5 = v9;
+    *source = v9;
   }
 
-  v17 = [(CRLWPStorage *)v9 charIndexRemappedFromStorage:a3];
+  v17 = [(CRLWPStorage *)v9 charIndexRemappedFromStorage:index];
 
   return v17;
 }
 
-- (unint64_t)lineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4
+- (unint64_t)lineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol
 {
-  v4 = a4;
+  eolCopy = eol;
   v24 = 0;
   v23 = 0;
-  v6 = [(CRLWPColumn *)self pRemapCharIndex:a3 outIsAfterBreak:&v24 outWithTextSource:&v23];
+  v6 = [(CRLWPColumn *)self pRemapCharIndex:index outIsAfterBreak:&v24 outWithTextSource:&v23];
   v7 = v23;
   v22 = 0;
   [(CRLWPColumn *)self pInfoForCharIndex:v6 isAtStart:&v22 isAtEnd:&v22 + 1];
-  v8 = [(CRLWPColumn *)self lineFragmentArray];
-  v9 = sub_1000F4FD8(*v8);
+  lineFragmentArray = [(CRLWPColumn *)self lineFragmentArray];
+  v9 = sub_1000F4FD8(*lineFragmentArray);
   if (v9)
   {
     v10 = 0;
     while (1)
     {
-      v11 = sub_1000F4FE8(*v8, v10);
+      v11 = sub_1000F4FE8(*lineFragmentArray, v10);
       v12 = v11;
       v13 = *(v11 + 3) < 0 ? &xmmword_101464828 : v11;
       v15 = *v13;
@@ -3718,7 +3718,7 @@ LABEL_57:
       v18 = v6 < v15 || v6 - v15 >= v14;
       v19 = !v18;
       v20 = v6 == v16 ? HIBYTE(v22) : 0;
-      if (v6 == v15 + v14 && ((v4 | HIBYTE(v22)) & 1) != 0)
+      if (v6 == v15 + v14 && ((eolCopy | HIBYTE(v22)) & 1) != 0)
       {
         v17 = ((*(v12 + 3) & 0x100000100) == 0) & ~v24;
       }
@@ -3744,10 +3744,10 @@ LABEL_21:
   return v10;
 }
 
-- (CGRect)caretRectForSelection:(id)a3
+- (CGRect)caretRectForSelection:(id)selection
 {
-  v4 = a3;
-  if (!v4)
+  selectionCopy = selection;
+  if (!selectionCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3782,32 +3782,32 @@ LABEL_21:
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v12 = [v4 range];
-  v13 = [v4 caretAffinity];
-  v14 = [(CRLWPColumn *)self range];
+  range = [selectionCopy range];
+  caretAffinity = [selectionCopy caretAffinity];
+  range2 = [(CRLWPColumn *)self range];
   v16 = v15;
-  v17 = [(CRLWPStorage *)self->_storage range];
-  if (v12 <= &v17[v18])
+  range3 = [(CRLWPStorage *)self->_storage range];
+  if (range <= &range3[v18])
   {
     v83 = 0;
     v82 = 0;
-    v19 = [(CRLWPColumn *)self pRemapCharIndex:v12 outIsAfterBreak:&v83 outWithTextSource:&v82];
+    v19 = [(CRLWPColumn *)self pRemapCharIndex:range outIsAfterBreak:&v83 outWithTextSource:&v82];
     v71 = v82;
     v81 = 0;
     [(CRLWPColumn *)self pInfoForCharIndex:v19 isAtStart:&v81 isAtEnd:&v81 + 1];
-    if (v19 == &v14[v16])
+    if (v19 == &range2[v16])
     {
       v21 = 1;
     }
 
     else
     {
-      v21 = v13;
+      v21 = caretAffinity;
     }
 
-    if (v19 == v12)
+    if (v19 == range)
     {
-      v22 = v13;
+      v22 = caretAffinity;
     }
 
     else
@@ -3815,12 +3815,12 @@ LABEL_21:
       v22 = v21;
     }
 
-    if ((v19 < v14 || v19 - v14 >= v16 || v19 <= v14 && (v81 & 1) == 0 && v22 == 1 && (v83 & 1) == 0) && (v19 != &v14[v16] || ((v83 & 1) != 0 || v22 != 1) && HIBYTE(v81) != 1))
+    if ((v19 < range2 || v19 - range2 >= v16 || v19 <= range2 && (v81 & 1) == 0 && v22 == 1 && (v83 & 1) == 0) && (v19 != &range2[v16] || ((v83 & 1) != 0 || v22 != 1) && HIBYTE(v81) != 1))
     {
       goto LABEL_102;
     }
 
-    v23 = [(CRLWPColumn *)self lineIndexForCharIndex:v12 eol:v22 == 1];
+    v23 = [(CRLWPColumn *)self lineIndexForCharIndex:range eol:v22 == 1];
     if (v23 >= [(CRLWPColumn *)self lineCount])
     {
       goto LABEL_102;
@@ -3897,7 +3897,7 @@ LABEL_21:
 
     v80 = 0;
     v30 = v83 ^ 1;
-    if (v19 <= v17)
+    if (v19 <= range3)
     {
       v30 = 0;
     }
@@ -3952,13 +3952,13 @@ LABEL_102:
       v43 = 0.0;
     }
 
-    v44 = [v71 charIndexRemappedFromStorage:{objc_msgSend(v4, "insertionChar")}];
-    v45 = [v4 leadingEdge];
-    v46 = -[CRLWPColumn lineIndexForCharIndex:eol:](self, "lineIndexForCharIndex:eol:", [v4 insertionChar], v22 == 1);
+    v44 = [v71 charIndexRemappedFromStorage:{objc_msgSend(selectionCopy, "insertionChar")}];
+    leadingEdge = [selectionCopy leadingEdge];
+    v46 = -[CRLWPColumn lineIndexForCharIndex:eol:](self, "lineIndexForCharIndex:eol:", [selectionCopy insertionChar], v22 == 1);
     if (v46 == v23 || v46 >= [(CRLWPColumn *)self lineCount])
     {
       v47 = 0;
-      if (v45)
+      if (leadingEdge)
       {
         goto LABEL_65;
       }
@@ -3967,13 +3967,13 @@ LABEL_102:
     else
     {
       v47 = *([(CRLWPColumn *)self lineFragmentAtIndex:v46]+ 28) & 1;
-      if (v45)
+      if (leadingEdge)
       {
         goto LABEL_65;
       }
     }
 
-    v48 = [v4 isAtEndOfLine];
+    isAtEndOfLine = [selectionCopy isAtEndOfLine];
     if (v44 >= v19)
     {
       v49 = 1;
@@ -3981,19 +3981,19 @@ LABEL_102:
 
     else
     {
-      v49 = v48;
+      v49 = isAtEndOfLine;
     }
 
     if ((v49 & 1) == 0)
     {
       if (!((v19 == *v24) | v47 & 1))
       {
-        v45 = 0;
+        leadingEdge = 0;
         goto LABEL_69;
       }
 
 LABEL_68:
-      v45 = 1;
+      leadingEdge = 1;
       v44 = v19;
       goto LABEL_69;
     }
@@ -4014,7 +4014,7 @@ LABEL_69:
       v54 = &v44[-v52] < v51 && v44 >= v52;
       if (v54 || v44 == &v51[v52])
       {
-        sub_1002127A8(v24, v44, v45, [v4 isVisual], 0);
+        sub_1002127A8(v24, v44, leadingEdge, [selectionCopy isVisual], 0);
         x = v58;
         v59 = v24[4];
         v84[0] = 0.0;
@@ -4129,10 +4129,10 @@ LABEL_103:
   return result;
 }
 
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4265,7 +4265,7 @@ LABEL_103:
           }
 
           v42 = v41;
-          if (a4)
+          if (label)
           {
             v43 = sub_10020BCF4(*v16);
             if (v43)
@@ -4284,13 +4284,13 @@ LABEL_103:
                 v50 = v49;
                 v52 = v51;
                 v53 = sub_10020BCF4(*v16);
-                v54 = [v53 textLine];
-                if (v54)
+                textLine = [v53 textLine];
+                if (textLine)
                 {
                   v76 = height;
                   v78 = width;
                   v55 = sub_10020F064();
-                  ImageBounds = CTLineGetImageBounds(v54, v55);
+                  ImageBounds = CTLineGetImageBounds(textLine, v55);
                   v56 = ImageBounds.origin.x;
                   v57 = ImageBounds.origin.y;
                   v58 = ImageBounds.size.width;
@@ -4324,10 +4324,10 @@ LABEL_103:
                   width = v78;
                 }
 
-                v63 = [v53 shadow];
-                if ([v63 isEnabled])
+                shadow = [v53 shadow];
+                if ([shadow isEnabled])
                 {
-                  [v63 shadowBoundsForRect:{v46, v48, v50, v52}];
+                  [shadow shadowBoundsForRect:{v46, v48, v50, v52}];
                   v46 = v64;
                   v48 = v65;
                   v50 = v66;
@@ -4388,10 +4388,10 @@ LABEL_103:
   return result;
 }
 
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  range2 = a3.length;
-  location = a3.location;
+  range2 = range.length;
+  location = range.location;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -4495,7 +4495,7 @@ LABEL_103:
   return v29;
 }
 
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
@@ -4512,8 +4512,8 @@ LABEL_103:
       v15 = v12;
       v13 = *v12;
       v14 = v15[1];
-      v17 = a3 >= v13;
-      v16 = a3 - v13;
+      v17 = index >= v13;
+      v16 = index - v13;
       v17 = !v17 || v16 >= v14;
       if (!v17)
       {
@@ -4527,7 +4527,7 @@ LABEL_103:
       }
     }
 
-    v18 = sub_1002107B0(*v9, a3, a4.location, a4.length);
+    v18 = sub_1002107B0(*v9, index, range.location, range.length);
     x = v18;
     y = v19;
     width = v20;
@@ -4559,7 +4559,7 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v5 = *ptr;
@@ -4572,8 +4572,8 @@ LABEL_14:
       v10 = v7;
       v8 = *v7;
       v9 = v10[1];
-      v12 = a3 >= v8;
-      v11 = a3 - v8;
+      v12 = index >= v8;
+      v11 = index - v8;
       v12 = !v12 || v11 >= v9;
       if (!v12)
       {
@@ -4591,7 +4591,7 @@ LABEL_14:
     v15 = *(sub_10020BCB0(*v5) + 8);
     while (v14 != v15)
     {
-      if (*(v14 + 24) == a3)
+      if (*(v14 + 24) == index)
       {
         v16 = sub_10026ECB4(v14);
 
@@ -4605,11 +4605,11 @@ LABEL_14:
   return 0;
 }
 
-+ (CGRect)columnRectForRange:(_NSRange)a3 withColumns:(id)a4
++ (CGRect)columnRectForRange:(_NSRange)range withColumns:(id)columns
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
+  length = range.length;
+  location = range.location;
+  columnsCopy = columns;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4618,7 +4618,7 @@ LABEL_14:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v6;
+  v11 = columnsCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -4673,9 +4673,9 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)labelRectForCharIndex:(unint64_t)a3 withColumns:(id)a4
++ (CGRect)labelRectForCharIndex:(unint64_t)index withColumns:(id)columns
 {
-  v5 = a4;
+  columnsCopy = columns;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4684,7 +4684,7 @@ LABEL_14:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v5;
+  v10 = columnsCopy;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v59 count:16];
   if (v11)
   {
@@ -4699,11 +4699,11 @@ LABEL_14:
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [v14 range];
-        v17 = a3 - v15 < v16 && a3 >= v15;
-        if (a3 == v15 || v17)
+        range = [v14 range];
+        v17 = index - range < v16 && index >= range;
+        if (index == range || v17)
         {
-          v19 = [v14 lineIndexForCharIndex:a3 eol:0];
+          v19 = [v14 lineIndexForCharIndex:index eol:0];
           if (v19 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v20 = [v14 lineFragmentAtIndex:v19];
@@ -4719,7 +4719,7 @@ LABEL_14:
                 v21 = v20;
               }
 
-              if (*v21 == a3)
+              if (*v21 == index)
               {
                 v58 = 0;
                 v56 = 0u;
@@ -4744,7 +4744,7 @@ LABEL_14:
                 v39 = 0u;
                 if (v14)
                 {
-                  [v14 lineMetricsAtCharIndex:a3 allowEndOfLine:0];
+                  [v14 lineMetricsAtCharIndex:index allowEndOfLine:0];
                   v22 = *(&v47 + 1);
                   v23 = *&v47;
                   v24 = *(&v48 + 1);
@@ -4832,10 +4832,10 @@ LABEL_36:
   return result;
 }
 
-- (CGRect)columnRectForRange:(_NSRange)a3
+- (CGRect)columnRectForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4941,14 +4941,14 @@ LABEL_36:
   return CGRectApplyAffineTransform(v14, &v11);
 }
 
-- (id)lineSelectionsForSelection:(id)a3
+- (id)lineSelectionsForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = [NSMutableArray arrayWithCapacity:1];
-  v6 = [(CRLWPColumn *)self range];
+  range = [(CRLWPColumn *)self range];
   v8 = v7;
-  v28.location = [(CRLWPSelection *)v4 range];
-  v29.location = v6;
+  v28.location = [(CRLWPSelection *)selectionCopy range];
+  v29.location = range;
   v29.length = v8;
   v9 = NSIntersectionRange(v28, v29);
   if (v9.length)
@@ -4997,7 +4997,7 @@ LABEL_36:
 
           else
           {
-            v22 = v4;
+            v22 = selectionCopy;
           }
         }
 
@@ -5017,7 +5017,7 @@ LABEL_36:
         }
 
         v11 += 2;
-        v4 = v22;
+        selectionCopy = v22;
         if (v11 == v12)
         {
           goto LABEL_27;
@@ -5026,22 +5026,22 @@ LABEL_36:
     }
   }
 
-  v22 = v4;
+  v22 = selectionCopy;
 LABEL_27:
 
   return v5;
 }
 
-+ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)a3 withColumns:(id)a4
++ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)index withColumns:(id)columns
 {
-  v4 = a3;
-  v5 = [CRLWPColumn columnForCharIndex:a3 allowEndOfColumn:1 withColumns:a4];
-  LOBYTE(v4) = [v5 p_isFirstPartitionForCharIndex:v4];
+  indexCopy = index;
+  v5 = [CRLWPColumn columnForCharIndex:index allowEndOfColumn:1 withColumns:columns];
+  LOBYTE(indexCopy) = [v5 p_isFirstPartitionForCharIndex:indexCopy];
 
-  return v4;
+  return indexCopy;
 }
 
-- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)a3
+- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)index
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v4 = *ptr;
@@ -5065,9 +5065,9 @@ LABEL_27:
       v10 = v6;
       v8 = *v6;
       v9 = *(v10 + 1);
-      v11 = a3 - v8 < v9 && a3 >= v8;
+      v11 = index - v8 < v9 && index >= v8;
       v12 = v8 + v9;
-      if (v11 || v12 == a3)
+      if (v11 || v12 == index)
       {
         break;
       }
@@ -5083,26 +5083,26 @@ LABEL_27:
   return 1;
 }
 
-- (CGRect)firstRectForSelection:(id)a3 includeSpaceAfter:(BOOL)a4 includeSpaceBefore:(BOOL)a5 includeLeading:(BOOL)a6
+- (CGRect)firstRectForSelection:(id)selection includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  leadingCopy = leading;
+  beforeCopy = before;
+  afterCopy = after;
+  selectionCopy = selection;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v15 = [v10 range];
+  range = [selectionCopy range];
   BYTE2(v28) = 0;
   LOWORD(v28) = 0;
-  v17 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", v15, v16, [v10 type], v8, v7, v6, v28, 0, 0);
+  v17 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", range, v16, [selectionCopy type], afterCopy, beforeCopy, leadingCopy, v28, 0, 0);
   v18 = [(CRLWPColumn *)self pTransformReturnRects:v17];
 
   if ([v18 count])
   {
-    v19 = [v18 firstObject];
-    [v19 CGRectValue];
+    firstObject = [v18 firstObject];
+    [firstObject CGRectValue];
     x = v20;
     y = v21;
     width = v22;
@@ -5120,10 +5120,10 @@ LABEL_27:
   return result;
 }
 
-- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)a3
+- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result = [(CRLWPColumn *)self lineCount];
   if (result)
   {
@@ -5145,19 +5145,19 @@ LABEL_27:
   return result;
 }
 
-- (id)pMutableRectsForSelectionRange:(_NSRange)a3 selectionType:(unint64_t)a4 includeSpaceAfter:(BOOL)a5 includeSpaceBefore:(BOOL)a6 includeLeading:(BOOL)a7 forParagraphMode:(BOOL)a8 includeRuby:(BOOL)a9 includePaginatedAttachments:(BOOL)a10 inranges:(id)a11 outranges:(id *)a12
+- (id)pMutableRectsForSelectionRange:(_NSRange)range selectionType:(unint64_t)type includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)self0 inranges:(id)self1 outranges:(id *)self2
 {
-  v141 = a6;
-  v142 = a5;
-  range1 = a3.length;
-  location = a3.location;
-  v14 = a11;
-  v130 = self;
+  beforeCopy = before;
+  afterCopy = after;
+  range1 = range.length;
+  location = range.location;
+  inrangesCopy = inranges;
+  selfCopy = self;
   v15 = [(CRLWPStorage *)self->_storage length];
-  if (a12)
+  if (outranges)
   {
     v16 = [NSMutableArray arrayWithCapacity:1];
-    *a12 = v16;
+    *outranges = v16;
     v138 = v16;
   }
 
@@ -5166,14 +5166,14 @@ LABEL_27:
     v138 = 0;
   }
 
-  if (v15 < location + range1 || (v17 = [(CRLWPColumn *)v130 range], v15 < v17 + v18))
+  if (v15 < location + range1 || (v17 = [(CRLWPColumn *)selfCopy range], v15 < v17 + v18))
   {
     v137 = +[NSMutableArray array];
     goto LABEL_7;
   }
 
   v137 = [NSMutableArray arrayWithCapacity:1];
-  v163.location = [(CRLWPColumn *)v130 range];
+  v163.location = [(CRLWPColumn *)selfCopy range];
   v163.length = v20;
   v161.location = location;
   v161.length = range1;
@@ -5181,21 +5181,21 @@ LABEL_27:
   length = v22.length;
   if (v22.length)
   {
-    if (v14)
+    if (inrangesCopy)
     {
-      if (a4 == 7)
+      if (type == 7)
       {
-        a4 = 0;
+        type = 0;
       }
     }
 
     else
     {
-      v24 = [NSValue valueWithRange:location, range1];
-      v14 = [NSArray arrayWithObject:v24];
+      range1 = [NSValue valueWithRange:location, range1];
+      inrangesCopy = [NSArray arrayWithObject:range1];
     }
 
-    ptr = v130->_lineFragmentArray.__ptr_;
+    ptr = selfCopy->_lineFragmentArray.__ptr_;
     v26 = *ptr;
     v131 = *(ptr + 1);
     if (*ptr != v131)
@@ -5206,7 +5206,7 @@ LABEL_27:
       v135 = -1.0;
       v129 = 0.0;
       v126 = 0.0;
-      v124 = v14;
+      v124 = inrangesCopy;
       while (1)
       {
         while (1)
@@ -5253,7 +5253,7 @@ LABEL_27:
 
         if (v33.length == 1)
         {
-          v34 = [(CRLWPStorage *)v130->_storage characterAtIndex:v33.location];
+          v34 = [(CRLWPStorage *)selfCopy->_storage characterAtIndex:v33.location];
           v35 = v34;
           v36 = sub_10027E2F0(v34);
           if (v35 == 8232)
@@ -5275,12 +5275,12 @@ LABEL_27:
         v133 = v29;
         v134 = v27;
         v132 = v30;
-        if (a8)
+        if (mode)
         {
           v38 = *v26;
         }
 
-        else if (!a10 || (v38 = *v26, (((*v26)[3] & 1) == 0) | v37 & 1))
+        else if (!attachments || (v38 = *v26, (((*v26)[3] & 1) == 0) | v37 & 1))
         {
           if (v138)
           {
@@ -5299,7 +5299,7 @@ LABEL_27:
           v144 = 0u;
           v145 = 0u;
           v146 = 0u;
-          v42 = v14;
+          v42 = inrangesCopy;
           v43 = [v42 countByEnumeratingWithState:&v143 objects:v159 count:16];
           if (v43)
           {
@@ -5318,14 +5318,14 @@ LABEL_27:
                 v47 = NSIntersectionRange(v33, v165);
                 if (v47.length)
                 {
-                  if (a4 != 7 || (location >= v47.location ? (v48 = location - v47.location >= v47.length) : (v48 = 1), v48 && (v139 >= v47.location ? (v49 = v139 - v47.location >= v47.length) : (v49 = 1), v49)))
+                  if (type != 7 || (location >= v47.location ? (v48 = location - v47.location >= v47.length) : (v48 = 1), v48 && (v139 >= v47.location ? (v49 = v139 - v47.location >= v47.length) : (v49 = 1), v49)))
                   {
-                    sub_10020BF7C(*v26, v47.location, v47.length, v142, v141, a9, v41, buf);
+                    sub_10020BF7C(*v26, v47.location, v47.length, afterCopy, beforeCopy, ruby, v41, buf);
                   }
 
                   else
                   {
-                    sub_10020E9F4(*v26, v47.location, v47.length, location, v139, v142, v141, a9, buf, v41);
+                    sub_10020E9F4(*v26, v47.location, v47.length, location, v139, afterCopy, beforeCopy, ruby, buf, v41);
                   }
 
                   v50 = *buf;
@@ -5343,7 +5343,7 @@ LABEL_27:
             while (v43);
           }
 
-          v14 = v124;
+          inrangesCopy = v124;
           v125 = [v137 count];
           if (v138)
           {
@@ -5411,7 +5411,7 @@ LABEL_27:
               v62 = v58[1];
               v64 = v58[2];
               v63 = v58[3];
-              if (a7)
+              if (leading)
               {
                 v65 = *(*v26 + 4);
                 v66 = *(*v26 + 17);
@@ -5450,7 +5450,7 @@ LABEL_27:
             while (v58 != v59);
           }
 
-          if (a4 == 2)
+          if (type == 2)
           {
             x = sub_100210E0C(*v26);
             y = v77;
@@ -5526,7 +5526,7 @@ LABEL_95:
         {
 LABEL_104:
           v21 = v129;
-          if (v129 > 0.0 && v142)
+          if (v129 > 0.0 && afterCopy)
           {
             v99 = v135 + v126 + v129;
             while (v27 < [v137 count])
@@ -5545,8 +5545,8 @@ LABEL_104:
               v109 = CGRectGetMaxY(v169);
               if (v99 == v109 || vabdd_f64(v99, v109) < 0.00999999978)
               {
-                v110 = [NSValue valueWithCGRect:v102, v104, v106, v108 - v129];
-                [v137 setObject:v110 atIndexedSubscript:v27];
+                v129 = [NSValue valueWithCGRect:v102, v104, v106, v108 - v129];
+                [v137 setObject:v129 atIndexedSubscript:v27];
               }
 
               ++v27;
@@ -5559,13 +5559,13 @@ LABEL_104:
     }
   }
 
-  v111 = [(CRLWPColumn *)v130 pColumnEndingPartitionedLineFragmentInSelectionRange:location, range1, v21];
+  v111 = [(CRLWPColumn *)selfCopy pColumnEndingPartitionedLineFragmentInSelectionRange:location, range1, v21];
   v112 = v111;
   if (v111)
   {
     v113 = v111[6];
     v114 = v111[8];
-    if (a8)
+    if (mode)
     {
       v115 = v111[5];
       v116 = v111[7];
@@ -5574,14 +5574,14 @@ LABEL_104:
     else
     {
       v117 = v111[13];
-      if (!v142)
+      if (!afterCopy)
       {
         v114 = v111[17] + v117 + v111[18] + v111[15];
       }
 
       v118 = v113 + v117;
       v119 = v114 - v117;
-      if (!v141)
+      if (!beforeCopy)
       {
         v113 = v118;
         v114 = v119;
@@ -5592,8 +5592,8 @@ LABEL_104:
       v116 = sub_10020CC28(v112, v120 + 1, 1, 1, 0) - v115;
     }
 
-    v121 = [NSValue valueWithCGRect:v115, v113, v116, v114];
-    [v137 addObject:v121];
+    v114 = [NSValue valueWithCGRect:v115, v113, v116, v114];
+    [v137 addObject:v114];
 
     if (v138)
     {
@@ -5617,17 +5617,17 @@ LABEL_7:
   return v137;
 }
 
-- (id)pTransformReturnRects:(id)a3
+- (id)pTransformReturnRects:(id)rects
 {
-  v4 = a3;
+  rectsCopy = rects;
   if ([(CRLWPColumn *)self textIsVertical])
   {
-    v5 = [v4 count];
+    v5 = [rectsCopy count];
     if (v5)
     {
       for (i = 0; i != v5; ++i)
       {
-        v7 = [v4 objectAtIndexedSubscript:i];
+        v7 = [rectsCopy objectAtIndexedSubscript:i];
         [v7 CGRectValue];
         v9 = v8;
         v11 = v10;
@@ -5641,15 +5641,15 @@ LABEL_7:
         v20.size.height = v15;
         v21 = CGRectApplyAffineTransform(v20, &v18);
         v16 = [NSValue valueWithCGRect:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
-        [v4 setObject:v16 atIndexedSubscript:i];
+        [rectsCopy setObject:v16 atIndexedSubscript:i];
       }
     }
   }
 
-  return v4;
+  return rectsCopy;
 }
 
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(unint64_t)a4
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(unint64_t)type
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   v7 = 0;
@@ -5657,8 +5657,8 @@ LABEL_7:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  rangesCopy = ranges;
+  v9 = [rangesCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = *v23;
@@ -5668,7 +5668,7 @@ LABEL_7:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(rangesCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
@@ -5692,7 +5692,7 @@ LABEL_7:
         v7 = length;
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [rangesCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -5700,57 +5700,57 @@ LABEL_7:
 
   BYTE2(v21) = 0;
   LOWORD(v21) = 0;
-  v18 = [(CRLWPColumn *)self pMutableRectsForSelectionRange:v6 selectionType:v7 includeSpaceAfter:a4 includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v21 includePaginatedAttachments:v8 inranges:0 outranges:?];
+  v18 = [(CRLWPColumn *)self pMutableRectsForSelectionRange:v6 selectionType:v7 includeSpaceAfter:type includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v21 includePaginatedAttachments:rangesCopy inranges:0 outranges:?];
   v19 = [(CRLWPColumn *)self pTransformReturnRects:v18];
 
   return v19;
 }
 
-- (id)rectsForSelectionRange:(_NSRange)a3 selectionType:(unint64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7
+- (id)rectsForSelectionRange:(_NSRange)range selectionType:(unint64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  BYTE2(v11) = a7;
-  BYTE1(v11) = a6;
-  LOBYTE(v11) = a5;
-  v8 = [(CRLWPColumn *)self pMutableRectsForSelectionRange:a3.location selectionType:a3.length includeSpaceAfter:a4 includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v11 includePaginatedAttachments:0 inranges:0 outranges:?];
+  BYTE2(v11) = attachments;
+  BYTE1(v11) = ruby;
+  LOBYTE(v11) = mode;
+  v8 = [(CRLWPColumn *)self pMutableRectsForSelectionRange:range.location selectionType:range.length includeSpaceAfter:type includeSpaceBefore:1 includeLeading:1 forParagraphMode:0 includeRuby:v11 includePaginatedAttachments:0 inranges:0 outranges:?];
   v9 = [(CRLWPColumn *)self pTransformReturnRects:v8];
 
   return v9;
 }
 
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges
 {
-  v4 = [(CRLWPColumn *)self rectsForSelection:a3 ranges:a4 includePaginatedAttachments:0];
+  v4 = [(CRLWPColumn *)self rectsForSelection:selection ranges:ranges includePaginatedAttachments:0];
 
   return v4;
 }
 
-- (id)naturalRectsForSelection:(id)a3 ranges:(id *)a4
+- (id)naturalRectsForSelection:(id)selection ranges:(id *)ranges
 {
-  v6 = a3;
-  v7 = [v6 range];
+  selectionCopy = selection;
+  range = [selectionCopy range];
   BYTE2(v11) = 0;
   LOWORD(v11) = 0;
-  v9 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", v7, v8, [v6 type], 1, 1, 0, v11, 0, a4);
+  v9 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", range, v8, [selectionCopy type], 1, 1, 0, v11, 0, ranges);
 
   return v9;
 }
 
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4 includePaginatedAttachments:(BOOL)a5
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges includePaginatedAttachments:(BOOL)attachments
 {
-  v8 = a3;
-  v9 = [v8 range];
-  BYTE2(v14) = a5;
+  selectionCopy = selection;
+  range = [selectionCopy range];
+  BYTE2(v14) = attachments;
   LOWORD(v14) = 0;
-  v11 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", v9, v10, [v8 type], 1, 1, 0, v14, 0, a4);
+  v11 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", range, v10, [selectionCopy type], 1, 1, 0, v14, 0, ranges);
   v12 = [(CRLWPColumn *)self pTransformReturnRects:v11];
 
   return v12;
 }
 
-- (CGRect)erasableRectForSelectionRange:(_NSRange)a3
+- (CGRect)erasableRectForSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -5803,14 +5803,14 @@ LABEL_7:
   return CGRectApplyAffineTransform(v20, &v16);
 }
 
-- (id)drawableIntersectionRectsForSelection:(id)a3 inTarget:(id)a4
+- (id)drawableIntersectionRectsForSelection:(id)selection inTarget:(id)target
 {
-  v80 = a3;
-  v81 = a4;
-  v6 = [v80 range];
+  selectionCopy = selection;
+  targetCopy = target;
+  range = [selectionCopy range];
   BYTE2(v75) = 0;
   LOWORD(v75) = 0;
-  v8 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", v6, v7, [v80 type], 1, 1, 0, v75, 0, 0);
+  v8 = -[CRLWPColumn pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:](self, "pMutableRectsForSelectionRange:selectionType:includeSpaceAfter:includeSpaceBefore:includeLeading:forParagraphMode:includeRuby:includePaginatedAttachments:inranges:outranges:", range, v7, [selectionCopy type], 1, 1, 0, v75, 0, 0);
   v9 = [v8 count];
   if (v9)
   {
@@ -5825,7 +5825,7 @@ LABEL_7:
       width = v16;
       height = v18;
 
-      if (v10 || [v80 start] < self->_startCharIndex)
+      if (v10 || [selectionCopy start] < self->_startCharIndex)
       {
         v91.origin.x = x;
         v91.origin.y = rect;
@@ -5885,7 +5885,7 @@ LABEL_7:
         }
       }
 
-      if (v10 != v9 - 1 || (startCharIndex = self->_startCharIndex, characterCount = self->_characterCount, characterCount + startCharIndex <= [v80 end]))
+      if (v10 != v9 - 1 || (startCharIndex = self->_startCharIndex, characterCount = self->_characterCount, characterCount + startCharIndex <= [selectionCopy end]))
       {
         MaxX = CGRectGetMaxX(self->_frameBounds);
         v96.origin.x = x;
@@ -5911,15 +5911,15 @@ LABEL_7:
 
   if ([v8 count] >= 2)
   {
-    v37 = [v8 firstObject];
-    [v37 CGRectValue];
+    firstObject = [v8 firstObject];
+    [firstObject CGRectValue];
     v39 = v38;
     v41 = v40;
     v43 = v42;
     v45 = v44;
 
-    v46 = [v8 lastObject];
-    [v46 CGRectValue];
+    lastObject = [v8 lastObject];
+    [lastObject CGRectValue];
     recta = v47;
     v78 = v49;
     v79 = v48;
@@ -5983,7 +5983,7 @@ LABEL_7:
       v100.size.width = v66;
       v100.size.height = v68;
       v101 = CGRectApplyAffineTransform(v100, &v85);
-      [v81 rectInRoot:{v101.origin.x, v101.origin.y, v101.size.width, v101.size.height}];
+      [targetCopy rectInRoot:{v101.origin.x, v101.origin.y, v101.size.width, v101.size.height}];
       v84[0] = v69;
       v84[1] = v70;
       v84[2] = v71;
@@ -5996,23 +5996,23 @@ LABEL_7:
   return v8;
 }
 
-- (unint64_t)charIndexFromPoint:(CGPoint)a3 allowPastBreak:(BOOL)a4 pastCenterGoesToNextChar:(BOOL)a5 allowNotFound:(BOOL)a6 constrainToAscentAndDescent:(BOOL)a7 isAtEndOfLine:(BOOL *)a8 outFragment:(const CRLWPLineFragment *)a9 leadingEdge:(BOOL *)a10
+- (unint64_t)charIndexFromPoint:(CGPoint)point allowPastBreak:(BOOL)break pastCenterGoesToNextChar:(BOOL)char allowNotFound:(BOOL)found constrainToAscentAndDescent:(BOOL)descent isAtEndOfLine:(BOOL *)line outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)self0
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  y = a3.y;
-  x = a3.x;
+  descentCopy = descent;
+  foundCopy = found;
+  charCopy = char;
+  y = point.y;
+  x = point.x;
   v45 = 1;
   [(CRLWPColumn *)self transformToWP];
   v17 = vaddq_f64(*&buf[32], vmlaq_n_f64(vmulq_n_f64(*&buf[16], y), *buf, x));
   v44 = 0;
-  if (a8)
+  if (line)
   {
-    *a8 = 0;
+    *line = 0;
   }
 
-  v18 = [(CRLWPColumn *)self charIndexFromWPPoint:v14 pastCenterGoesToNextChar:v13 allowNotFound:v12 constrainToAscentAndDescent:&v44 outFragment:&v45 leadingEdge:*&v17];
+  v18 = [(CRLWPColumn *)self charIndexFromWPPoint:charCopy pastCenterGoesToNextChar:foundCopy allowNotFound:descentCopy constrainToAscentAndDescent:&v44 outFragment:&v45 leadingEdge:*&v17];
   if (v44 && v18 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (*(v44 + 3) < 0)
@@ -6053,11 +6053,11 @@ LABEL_7:
           v34 = v33;
         }
 
-        if (v34 != 1 || a4)
+        if (v34 != 1 || break)
         {
-          if (a8)
+          if (line)
           {
-            *a8 = 1;
+            *line = 1;
           }
         }
 
@@ -6115,15 +6115,15 @@ LABEL_7:
       }
     }
 
-    if (a9)
+    if (fragment)
     {
-      *a9 = v44;
+      *fragment = v44;
     }
   }
 
-  if (a10)
+  if (edge)
   {
-    *a10 = v45;
+    *edge = v45;
     return v18;
   }
 
@@ -6133,7 +6133,7 @@ LABEL_7:
     {
       v35 = sub_1002117DC(v44, v18);
       v36 = v44;
-      if (!a4)
+      if (!break)
       {
         v37 = (*(v44 + 25) & 0x10) != 0 ? sub_10021173C(v44) : sub_100211708(v44);
         v39 = v37;
@@ -6167,11 +6167,11 @@ LABEL_47:
   return v18;
 }
 
-- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)a3 isTail:(BOOL)a4
+- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)point isTail:(BOOL)tail
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  tailCopy = tail;
+  y = point.y;
+  x = point.x;
   [(CRLWPColumn *)self transformToWP];
   v46 = v53;
   v47 = v54;
@@ -6180,7 +6180,7 @@ LABEL_47:
   if (v51.f64[1] < CGRectGetMinY(self->_frameBounds))
   {
     result = 0x7FFFFFFFFFFFFFFFLL;
-    if (!v4)
+    if (!tailCopy)
     {
       result = self->_startCharIndex;
       if (result == 0x7FFFFFFFFFFFFFFFLL)
@@ -6337,7 +6337,7 @@ LABEL_47:
       v12 = v26;
     }
 
-    if (v4)
+    if (tailCopy)
     {
       v12 = [(CRLWPStorage *)self->_storage previousCharacterIndex:v12];
     }
@@ -6375,7 +6375,7 @@ LABEL_60:
   v34 = *(v13 + 40);
   v33 = *(v13 + 48);
   v35 = sub_1001200A8(v51.f64[0], v51.f64[1], v34, v33, v32, v31);
-  v36 = sub_100212F08(v13, !v4, 0, v51.f64[0]);
+  v36 = sub_100212F08(v13, !tailCopy, 0, v51.f64[0]);
   v37 = v36;
   if (v35 != 0.0)
   {
@@ -6391,7 +6391,7 @@ LABEL_60:
       v39 = v36;
     }
 
-    if (!v38 || !v4)
+    if (!v38 || !tailCopy)
     {
       v12 = 0x7FFFFFFFFFFFFFFFLL;
       v37 = v39;
@@ -6444,22 +6444,22 @@ LABEL_64:
   return result;
 }
 
-- (unint64_t)charIndexFromWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 allowNotFound:(BOOL)a5 constrainToAscentAndDescent:(BOOL)a6 outFragment:(const CRLWPLineFragment *)a7 leadingEdge:(BOOL *)a8
+- (unint64_t)charIndexFromWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char allowNotFound:(BOOL)found constrainToAscentAndDescent:(BOOL)descent outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)edge
 {
-  v8 = a8;
-  v10 = a4;
-  y = a3.y;
-  x = a3.x;
-  if (a6)
+  edgeCopy = edge;
+  charCopy = char;
+  y = point.y;
+  x = point.x;
+  if (descent)
   {
 
-    return [(CRLWPColumn *)self p_charIndexWithTextClosestToWPPoint:a4 pastCenterGoesToNextChar:a7 outFragment:a8 leadingEdge:?];
+    return [(CRLWPColumn *)self p_charIndexWithTextClosestToWPPoint:char pastCenterGoesToNextChar:fragment outFragment:edge leadingEdge:?];
   }
 
   else
   {
-    v15 = a5;
-    if (a3.y >= CGRectGetMinY(self->_frameBounds))
+    foundCopy = found;
+    if (point.y >= CGRectGetMinY(self->_frameBounds))
     {
       ptr = self->_lineFragmentArray.__ptr_;
       v19 = *ptr;
@@ -6481,7 +6481,7 @@ LABEL_64:
             v53.size.height = v24;
             MinY = CGRectGetMinY(v53);
             v26 = MinY;
-            if (v15 && y < MinY)
+            if (foundCopy && y < MinY)
             {
               goto LABEL_24;
             }
@@ -6493,7 +6493,7 @@ LABEL_64:
             if (y <= CGRectGetMaxY(v54))
             {
               v30 = *(self->_lineFragmentArray.__ptr_ + 1);
-              v48 = v8;
+              v48 = edgeCopy;
               startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
               if (*(v17 + 28))
               {
@@ -6554,7 +6554,7 @@ LABEL_64:
                     if (CGRectContainsPoint(v61, v52))
                     {
                       v49 = 1;
-                      v38 = sub_100213314(v31, v10, 1, &v49, 1, x);
+                      v38 = sub_100213314(v31, charCopy, 1, &v49, 1, x);
                       if (v48)
                       {
                         *v48 = v49;
@@ -6596,10 +6596,10 @@ LABEL_64:
 
 LABEL_68:
                   startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
-                  v8 = v48;
-                  if (!v15 && v31)
+                  edgeCopy = v48;
+                  if (!foundCopy && v31)
                   {
-                    startCharIndex = sub_100213314(v31, v10, 0, v48, 1, x);
+                    startCharIndex = sub_100213314(v31, charCopy, 0, v48, 1, x);
                     v17 = v31;
                   }
                 }
@@ -6624,7 +6624,7 @@ LABEL_68:
                   v51.y = y;
                   if (CGRectContainsPoint(v56, v51))
                   {
-                    v38 = sub_100213314(v33, v10, 1, v8, 1, x);
+                    v38 = sub_100213314(v33, charCopy, 1, edgeCopy, 1, x);
                     if (v38 != 0x7FFFFFFFFFFFFFFFLL)
                     {
                       break;
@@ -6661,7 +6661,7 @@ LABEL_68:
                 v17 = v33;
 LABEL_73:
                 startCharIndex = v38;
-                v8 = v48;
+                edgeCopy = v48;
               }
 
               goto LABEL_25;
@@ -6676,7 +6676,7 @@ LABEL_73:
               v55.size.height = v24;
               if (x > CGRectGetMaxX(v55))
               {
-                startCharIndex = sub_100213314(v17, v10, v15, v8, 1, x);
+                startCharIndex = sub_100213314(v17, charCopy, foundCopy, edgeCopy, 1, x);
                 goto LABEL_25;
               }
             }
@@ -6692,7 +6692,7 @@ LABEL_73:
       }
     }
 
-    else if (!v15)
+    else if (!foundCopy)
     {
       startCharIndex = self->_startCharIndex;
       if (sub_1000F4FD8(self->_lineFragmentArray.__ptr_))
@@ -6712,12 +6712,12 @@ LABEL_73:
 LABEL_24:
     startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_25:
-    if (a7)
+    if (fragment)
     {
-      *a7 = v17;
+      *fragment = v17;
     }
 
-    if (!v15 && startCharIndex == 0x7FFFFFFFFFFFFFFFLL)
+    if (!foundCopy && startCharIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       p_startCharIndex = &self->_startCharIndex;
       p_characterCount = &self->_characterCount;
@@ -6728,9 +6728,9 @@ LABEL_25:
       }
 
       startCharIndex = *p_characterCount + *p_startCharIndex;
-      if (v8)
+      if (edgeCopy)
       {
-        *v8 = 1;
+        *edgeCopy = 1;
       }
     }
 
@@ -6738,7 +6738,7 @@ LABEL_25:
   }
 }
 
-- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 outFragment:(const CRLWPLineFragment *)a5 leadingEdge:(BOOL *)a6
+- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char outFragment:(const CRLWPLineFragment *)fragment leadingEdge:(BOOL *)edge
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v8 = *ptr;
@@ -6747,7 +6747,7 @@ LABEL_25:
   if (*ptr == v9)
   {
     v18 = 0;
-    if (!a5)
+    if (!fragment)
     {
       return v10;
     }
@@ -6755,9 +6755,9 @@ LABEL_25:
 
   else
   {
-    v12 = a4;
-    y = a3.y;
-    x = a3.x;
+    charCopy = char;
+    y = point.y;
+    x = point.x;
     v16 = 0;
     v17 = INFINITY;
     do
@@ -6778,11 +6778,11 @@ LABEL_25:
         v27.y = y;
         if (CGRectContainsPoint(v28, v27))
         {
-          v24 = sub_100213314(v18, v12, 1, a6, 1, x);
+          v24 = sub_100213314(v18, charCopy, 1, edge, 1, x);
           if (v24 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v10 = v24;
-            if (a5)
+            if (fragment)
             {
               goto LABEL_15;
             }
@@ -6805,9 +6805,9 @@ LABEL_25:
     while (v8 != v9);
     if (v16)
     {
-      v10 = sub_100213314(v16, v12, 0, a6, 1, x);
+      v10 = sub_100213314(v16, charCopy, 0, edge, 1, x);
       v18 = v16;
-      if (a5)
+      if (fragment)
       {
         goto LABEL_15;
       }
@@ -6816,33 +6816,33 @@ LABEL_25:
     }
 
     v10 = 0x7FFFFFFFFFFFFFFFLL;
-    if (!a5)
+    if (!fragment)
     {
       return v10;
     }
   }
 
 LABEL_15:
-  *a5 = v18;
+  *fragment = v18;
   return v10;
 }
 
-- (void)renderWithRenderer:(id)a3 currentSelection:(id)a4 limitSelection:(id)a5 listRange:(_NSRange)a6 rubyGlyphRange:(_NSRange)a7 isCanvasInteractive:(BOOL)a8 isInDrawingMode:(BOOL)a9 spellChecker:(id)a10 suppressedMisspellingRange:(_NSRange)a11 blackAndWhite:(BOOL)a12 dictationInterpretations:(id)a13 autocorrections:(id)a14 markedRange:(_NSRange)a15 markedText:(id)a16 renderMode:(unint64_t)a17 pageCount:(unint64_t)a18 suppressInvisibles:(BOOL)a19 currentCanvasSelection:(id)a20
+- (void)renderWithRenderer:(id)renderer currentSelection:(id)selection limitSelection:(id)limitSelection listRange:(_NSRange)range rubyGlyphRange:(_NSRange)glyphRange isCanvasInteractive:(BOOL)interactive isInDrawingMode:(BOOL)mode spellChecker:(id)self0 suppressedMisspellingRange:(_NSRange)self1 blackAndWhite:(BOOL)self2 dictationInterpretations:(id)self3 autocorrections:(id)self4 markedRange:(_NSRange)self5 markedText:(id)self6 renderMode:(unint64_t)self7 pageCount:(unint64_t)self8 suppressInvisibles:(BOOL)self9 currentCanvasSelection:(id)canvasSelection
 {
-  length = a6.length;
-  v20 = a6.location;
-  v24 = a3;
-  v99 = a4;
-  obj = a5;
-  v25 = a5;
-  v103 = a10;
-  v96 = a13;
-  v97 = a14;
-  v98 = a16;
-  v94 = a20;
-  v100 = v25;
-  v101 = sub_10050FEFC([v24 context]);
-  [v101 beginTextColumn:self limitSelection:v25];
+  length = range.length;
+  v20 = range.location;
+  rendererCopy = renderer;
+  selectionCopy = selection;
+  obj = limitSelection;
+  limitSelectionCopy = limitSelection;
+  checkerCopy = checker;
+  interpretationsCopy = interpretations;
+  autocorrectionsCopy = autocorrections;
+  textCopy = text;
+  canvasSelectionCopy = canvasSelection;
+  v100 = limitSelectionCopy;
+  v101 = sub_10050FEFC([rendererCopy context]);
+  [v101 beginTextColumn:self limitSelection:limitSelectionCopy];
   v129 = 0;
   v131 = 0;
   location = 0;
@@ -6862,51 +6862,51 @@ LABEL_15:
   v110[3] = v28;
   v110[4] = v29;
   v112[1] = self->_scaleTextPercent;
-  objc_storeStrong(&v111, a4);
+  objc_storeStrong(&v111, selection);
   objc_storeStrong(v112, obj);
   v125[1] = v20;
   v125[2] = length;
-  v126 = a7;
+  glyphRangeCopy = glyphRange;
   v117 = 0;
   v30 = +[CRLColor clearColor];
   v113 = CGColorRetain([v30 CGColor]);
 
-  if (v103)
+  if (checkerCopy)
   {
-    v31 = [v103 misspelledRanges];
+    misspelledRanges = [checkerCopy misspelledRanges];
     v32 = v121;
-    v121 = v31;
+    v121 = misspelledRanges;
 
-    v33 = [v103 ungrammaticRanges];
+    ungrammaticRanges = [checkerCopy ungrammaticRanges];
     v34 = v122;
-    v122 = v33;
+    v122 = ungrammaticRanges;
   }
 
-  v123 = a11;
-  v114 = a12;
-  objc_storeStrong(&v124, a13);
-  objc_storeStrong(v125, a14);
-  v128 = a15;
-  objc_storeStrong(&v129, a16);
-  v127 = a18;
-  v35 = [(CRLWPStorage *)self->_storage parentInfo];
+  misspellingRangeCopy = misspellingRange;
+  whiteCopy = white;
+  objc_storeStrong(&v124, interpretations);
+  objc_storeStrong(v125, autocorrections);
+  markedRangeCopy = markedRange;
+  objc_storeStrong(&v129, text);
+  countCopy = count;
+  parentInfo = [(CRLWPStorage *)self->_storage parentInfo];
   if (objc_opt_respondsToSelector())
   {
-    v36 = [(CRLWPStorage *)self->_storage parentInfo];
-    v118 = [v36 shouldHideEmptyBullets];
+    parentInfo2 = [(CRLWPStorage *)self->_storage parentInfo];
+    shouldHideEmptyBullets = [parentInfo2 shouldHideEmptyBullets];
   }
 
   else
   {
-    v118 = 0;
+    shouldHideEmptyBullets = 0;
   }
 
-  v115 = a8;
-  v116 = a9;
+  interactiveCopy = interactive;
+  modeCopy = mode;
   v119 = 0;
-  objc_storeStrong(&v131, a20);
+  objc_storeStrong(&v131, canvasSelection);
   bzero(v105, 0xA0uLL);
-  if (!v25 && (a7.location != 0x7FFFFFFFFFFFFFFFLL || a7.length))
+  if (!limitSelectionCopy && (glyphRange.location != 0x7FFFFFFFFFFFFFFFLL || glyphRange.length))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -6937,8 +6937,8 @@ LABEL_15:
     [CRLAssertionHandler handleFailureInFunction:v38 file:v39 lineNumber:3510 isFatal:0 description:"ruby glyph range is meaningless without limitSelection"];
   }
 
-  [v24 willRenderFragmentsWithDrawingState:&location];
-  [v24 getClipBoundingBox];
+  [rendererCopy willRenderFragmentsWithDrawingState:&location];
+  [rendererCopy getClipBoundingBox];
   v41 = v40;
   v43 = v42;
   v45 = v44;
@@ -6963,19 +6963,19 @@ LABEL_15:
   y = v134.origin.y;
   width = v134.size.width;
   height = v134.size.height;
-  if (v118 == 1 && [v99 isInsertionPoint])
+  if (shouldHideEmptyBullets == 1 && [selectionCopy isInsertionPoint])
   {
-    v60 = [v99 start];
+    start = [selectionCopy start];
   }
 
   else
   {
-    v60 = 0x7FFFFFFFFFFFFFFFLL;
+    start = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if ((a17 & 2) != 0)
+  if ((renderMode & 2) != 0)
   {
-    [v24 drawAdornmentRects:self->_paragraphAdornments forColumn:self foreground:0 drawingState:&location];
+    [rendererCopy drawAdornmentRects:self->_paragraphAdornments forColumn:self foreground:0 drawingState:&location];
     v120 = 0;
     ptr = self->_lineFragmentArray.__ptr_;
     v62 = *ptr;
@@ -6999,7 +6999,7 @@ LABEL_15:
         v67 = *v66;
         if (v20 > v67 || (v65 < 0 ? (v68 = &xmmword_101464828) : (v68 = *v62), &length[v20] < *(v68 + 1) + v67))
         {
-          [v24 drawFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
+          [rendererCopy drawFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
           v64 = v120;
         }
 
@@ -7011,34 +7011,34 @@ LABEL_15:
     }
   }
 
-  if (a17)
+  if (renderMode)
   {
-    v69 = [v96 rangeCount];
-    v70 = [v97 rangeCount];
+    rangeCount = [interpretationsCopy rangeCount];
+    rangeCount2 = [autocorrectionsCopy rangeCount];
     v71 = 4098;
-    if ((a17 & 4) == 0)
+    if ((renderMode & 4) == 0)
     {
       v71 = 2;
     }
 
-    v72 = v71 & 0xFFFFFFFFFFFFDFFFLL | (((a17 >> 3) & 1) << 13);
+    v72 = v71 & 0xFFFFFFFFFFFFDFFFLL | (((renderMode >> 3) & 1) << 13);
     v73 = v72 | 0x18;
-    if (!v103)
+    if (!checkerCopy)
     {
       v73 = v72;
     }
 
-    if (v69)
+    if (rangeCount)
     {
       v73 |= 0x200uLL;
     }
 
-    if (v70)
+    if (rangeCount2)
     {
       v73 |= 0x800uLL;
     }
 
-    if (v98)
+    if (textCopy)
     {
       v74 = v73 | 0x400;
     }
@@ -7072,10 +7072,10 @@ LABEL_15:
         v81 = (v79 + *(v80 + 1));
         if (v20 > v79 || &length[v20] < v81)
         {
-          v74 = v74 & 0xFFFFFFFFFFFFFEFFLL | ((v79 == v60) << 8);
+          v74 = v74 & 0xFFFFFFFFFFFFFEFFLL | ((v79 == start) << 8);
           if (!v112[0] || [v112[0] intersectsRange:v79])
           {
-            [v24 drawFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
+            [rendererCopy drawFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
           }
         }
 
@@ -7095,15 +7095,15 @@ LABEL_15:
       size = CGRectZero.size;
       *&v104.a = CGRectZero.origin;
       *&v104.c = size;
-      if (v130 == 1 && [v24 shouldClipFragment:0 drawingState:&location lineDrawFlags:v74 updateRect:&v104 outClipRect:{x, y, width, height}])
+      if (v130 == 1 && [rendererCopy shouldClipFragment:0 drawingState:&location lineDrawFlags:v74 updateRect:&v104 outClipRect:{x, y, width, height}])
       {
-        CGContextSaveGState([v24 context]);
-        v84 = [v24 context];
+        CGContextSaveGState([rendererCopy context]);
+        context = [rendererCopy context];
         v136.origin.x = v104.a;
         v136.origin.y = v104.b;
         v136.size.width = v104.c;
         v136.size.height = v104.d;
-        CGContextClipToRect(v84, v136);
+        CGContextClipToRect(context, v136);
         v85 = 1;
       }
 
@@ -7112,11 +7112,11 @@ LABEL_15:
         v85 = 0;
       }
 
-      [v24 drawCharacterFillAdornmentRects:self->_paragraphAdornments forColumn:self excludeRange:v20 drawingState:{length, &location}];
-      [v24 drawCharacterStrokeAdornmentRects:self->_paragraphAdornments forColumn:self excludeRange:v20 drawingState:{length, &location}];
+      [rendererCopy drawCharacterFillAdornmentRects:self->_paragraphAdornments forColumn:self excludeRange:v20 drawingState:{length, &location}];
+      [rendererCopy drawCharacterStrokeAdornmentRects:self->_paragraphAdornments forColumn:self excludeRange:v20 drawingState:{length, &location}];
       if (v85)
       {
-        CGContextRestoreGState([v24 context]);
+        CGContextRestoreGState([rendererCopy context]);
       }
     }
 
@@ -7143,10 +7143,10 @@ LABEL_15:
         v92 = (v90 + *(v91 + 1));
         if (v20 > v90 || &length[v20] < v92)
         {
-          v74 = v74 & 0xFFFFFFFFFFFFFEFFLL | ((v90 == v60) << 8);
+          v74 = v74 & 0xFFFFFFFFFFFFFEFFLL | ((v90 == start) << 8);
           if (!v112[0] || [v112[0] intersectsRange:v90])
           {
-            [v24 drawAdornmentsForFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
+            [rendererCopy drawAdornmentsForFragment:x updateRect:y drawingState:width runState:height lineDrawFlags:?];
           }
         }
 
@@ -7157,10 +7157,10 @@ LABEL_15:
       while (v87 != v88);
     }
 
-    [v24 drawAdornmentRects:self->_paragraphAdornments forColumn:self foreground:1 drawingState:&location];
+    [rendererCopy drawAdornmentRects:self->_paragraphAdornments forColumn:self foreground:1 drawingState:&location];
   }
 
-  [v24 didRenderFragments];
+  [rendererCopy didRenderFragments];
   if (cf)
   {
     CFRelease(cf);
@@ -7184,32 +7184,32 @@ LABEL_15:
   [v101 endTextColumn:self];
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind
 {
-  v6 = [(CRLWPColumn *)self storage];
-  v7 = [v6 smartFieldAtCharIndex:a3 attributeKind:a4 effectiveRange:0];
+  storage = [(CRLWPColumn *)self storage];
+  v7 = [storage smartFieldAtCharIndex:index attributeKind:kind effectiveRange:0];
 
   return v7;
 }
 
-- (void)enumerateParagraphAdornmentsUsingBlock:(id)a3
+- (void)enumerateParagraphAdornmentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   paragraphAdornments = self->_paragraphAdornments;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002DFD78;
   v7[3] = &unk_101853158;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)paragraphAdornments enumerateObjectsUsingBlock:v7];
 }
 
-- (void)setTransformFromWP:(CGAffineTransform *)a3
+- (void)setTransformFromWP:(CGAffineTransform *)p
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transformFromWP.c = *&a3->c;
+  v3 = *&p->a;
+  v4 = *&p->tx;
+  *&self->_transformFromWP.c = *&p->c;
   *&self->_transformFromWP.tx = v4;
   *&self->_transformFromWP.a = v3;
 }

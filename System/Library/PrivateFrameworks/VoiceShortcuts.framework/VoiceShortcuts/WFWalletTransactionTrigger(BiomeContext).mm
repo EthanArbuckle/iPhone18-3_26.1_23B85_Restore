@@ -13,8 +13,8 @@
 - (uint64_t)isPassIdentifierValid:()BiomeContext
 {
   v4 = a3;
-  v5 = [a1 selectedPassUniqueIDs];
-  v6 = [v5 containsObject:v4];
+  selectedPassUniqueIDs = [self selectedPassUniqueIDs];
+  v6 = [selectedPassUniqueIDs containsObject:v4];
 
   return v6;
 }
@@ -25,8 +25,8 @@
   v7 = a3;
   v34 = a4;
   v8 = a5;
-  v9 = [v7 eventBody];
-  if (v9)
+  eventBody = [v7 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -35,8 +35,8 @@
     }
   }
 
-  v10 = [v7 eventBody];
-  if (v10)
+  eventBody2 = [v7 eventBody];
+  if (eventBody2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -50,33 +50,33 @@
       }
 
       v12 = objc_alloc(MEMORY[0x277CF1720]);
-      v13 = [v10 passUniqueID];
-      v14 = [v10 passLocalizedDescription];
-      v15 = [v10 transactionType];
-      v16 = [v10 transactionID];
-      v17 = [v10 merchantType];
-      v18 = [v10 poiCategory];
-      v9 = [v12 initWithPassUniqueID:v13 passLocalizedDescription:v14 transactionType:v15 transactionID:v16 merchantType:v17 poiCategory:v18];
+      passUniqueID = [eventBody2 passUniqueID];
+      passLocalizedDescription = [eventBody2 passLocalizedDescription];
+      transactionType = [eventBody2 transactionType];
+      transactionID = [eventBody2 transactionID];
+      merchantType = [eventBody2 merchantType];
+      poiCategory = [eventBody2 poiCategory];
+      eventBody = [v12 initWithPassUniqueID:passUniqueID passLocalizedDescription:passLocalizedDescription transactionType:transactionType transactionID:transactionID merchantType:merchantType poiCategory:poiCategory];
 
 LABEL_8:
       v19 = getWFTriggersLogObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 passUniqueID];
-        v21 = [v9 transactionType];
+        passUniqueID2 = [eventBody passUniqueID];
+        transactionType2 = [eventBody transactionType];
         *buf = 136315906;
         *&buf[4] = "[WFWalletTransactionTrigger(BiomeContext) shouldFireInResponseToEvent:triggerIdentifier:completion:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = eventBody;
         *&buf[22] = 2112;
-        v48 = v20;
+        v48 = passUniqueID2;
         v49 = 2048;
-        v50 = v21;
+        v50 = transactionType2;
         _os_log_impl(&dword_23103C000, v19, OS_LOG_TYPE_DEFAULT, "%s Received wallet transaction event %@ for trigger. pass unique id: %@; transactionType: %lu", buf, 0x2Au);
       }
 
-      v22 = [v9 passUniqueID];
-      v23 = [a1 isPassIdentifierValid:v22];
+      passUniqueID3 = [eventBody passUniqueID];
+      v23 = [self isPassIdentifierValid:passUniqueID3];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -86,10 +86,10 @@ LABEL_8:
       v44 = &v43;
       v45 = 0x2020000000;
       v46 = 1;
-      if ([v9 transactionType] == 1)
+      if ([eventBody transactionType] == 1)
       {
-        v24 = [a1 selectedMerchantTypes];
-        v25 = [v24 count];
+        selectedMerchantTypes = [self selectedMerchantTypes];
+        v25 = [selectedMerchantTypes count];
         v26 = WFAllWalletTransactionMerchantTypes();
         if (v25 >= [v26 count])
         {
@@ -98,8 +98,8 @@ LABEL_8:
 
         else
         {
-          v27 = [a1 selectedMerchantTypes];
-          v28 = [v27 count] != 0;
+          selectedMerchantTypes2 = [self selectedMerchantTypes];
+          v28 = [selectedMerchantTypes2 count] != 0;
         }
       }
 
@@ -108,10 +108,10 @@ LABEL_8:
         v28 = 0;
       }
 
-      if ([v9 transactionType] == 1)
+      if ([eventBody transactionType] == 1)
       {
-        v30 = [a1 selectedMerchants];
-        v31 = [v30 count] != 0;
+        selectedMerchants = [self selectedMerchants];
+        v31 = [selectedMerchants count] != 0;
 
         if (v28)
         {
@@ -153,10 +153,10 @@ LABEL_27:
       v41 = v28;
       v37 = v8;
       v38 = buf;
-      v36[4] = a1;
+      v36[4] = self;
       v42 = v31;
       v39 = &v43;
-      [a1 eventInfoForEvent:v7 completion:v36];
+      [self eventInfoForEvent:v7 completion:v36];
 
 LABEL_30:
       _Block_object_dispose(&v43, 8);
@@ -183,13 +183,13 @@ LABEL_31:
 - (void)transactionIdentifierWithEvent:()BiomeContext
 {
   v3 = a3;
-  v4 = [v3 eventBody];
-  if (v4)
+  eventBody = [v3 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = eventBody;
     }
 
     else
@@ -208,22 +208,22 @@ LABEL_31:
   v7 = MEMORY[0x277CCABB0];
   [v3 timestamp];
   v8 = [v7 numberWithDouble:?];
-  v9 = [v8 stringValue];
+  stringValue = [v8 stringValue];
 
   if (v6)
   {
-    v10 = [v6 transactionID];
+    transactionID = [v6 transactionID];
   }
 
   else
   {
-    v11 = [v3 eventBody];
-    if (v11)
+    eventBody2 = [v3 eventBody];
+    if (eventBody2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = eventBody2;
       }
 
       else
@@ -239,17 +239,17 @@ LABEL_31:
 
     v13 = v12;
 
-    v10 = [v13 transactionID];
+    transactionID = [v13 transactionID];
   }
 
-  if (v10)
+  if (transactionID)
   {
-    v14 = v10;
+    v14 = transactionID;
   }
 
   else
   {
-    v14 = v9;
+    v14 = stringValue;
   }
 
   v15 = v14;
@@ -263,13 +263,13 @@ LABEL_31:
   if ([objc_opt_class() registerContextSyncClient])
   {
     v4 = BiomeLibrary();
-    v5 = [v4 ContextSync];
-    v6 = [v5 WalletTransaction];
-    v7 = [v6 DSLPublisher];
+    contextSync = [v4 ContextSync];
+    walletTransaction = [contextSync WalletTransaction];
+    dSLPublisher = [walletTransaction DSLPublisher];
 
-    if (v7)
+    if (dSLPublisher)
     {
-      v8 = [v7 subscribeOn:v3];
+      v8 = [dSLPublisher subscribeOn:v3];
     }
 
     else
@@ -290,11 +290,11 @@ LABEL_31:
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 Wallet];
-  v6 = [v5 Transaction];
+  wallet = [v4 Wallet];
+  transaction = [wallet Transaction];
 
-  v7 = [v6 DSLPublisher];
-  v8 = [v7 subscribeOn:v3];
+  dSLPublisher = [transaction DSLPublisher];
+  v8 = [dSLPublisher subscribeOn:v3];
 
   return v8;
 }
@@ -303,13 +303,13 @@ LABEL_31:
 {
   v20 = *MEMORY[0x277D85DE8];
   v0 = BiomeLibrary();
-  v1 = [v0 Wallet];
-  v2 = [v1 Transaction];
+  wallet = [v0 Wallet];
+  transaction = [wallet Transaction];
 
-  v3 = [v2 DSLPublisher];
+  dSLPublisher = [transaction DSLPublisher];
   v4 = [objc_alloc(MEMORY[0x277CFC748]) initWithClientName:@"com.apple.shortcuts"];
   v15 = 0;
-  v5 = [v4 unregisterForUpdates:v3 withIdentifier:@"com.apple.shortcuts" forDeviceTypes:4 withError:&v15];
+  v5 = [v4 unregisterForUpdates:dSLPublisher withIdentifier:@"com.apple.shortcuts" forDeviceTypes:4 withError:&v15];
   v6 = v15;
   v7 = getWFTriggersLogObject();
   v8 = v7;
@@ -349,13 +349,13 @@ LABEL_6:
 {
   v20 = *MEMORY[0x277D85DE8];
   v0 = BiomeLibrary();
-  v1 = [v0 Wallet];
-  v2 = [v1 Transaction];
+  wallet = [v0 Wallet];
+  transaction = [wallet Transaction];
 
-  v3 = [v2 DSLPublisher];
+  dSLPublisher = [transaction DSLPublisher];
   v4 = [objc_alloc(MEMORY[0x277CFC748]) initWithClientName:@"com.apple.shortcuts"];
   v15 = 0;
-  v5 = [v4 registerForUpdates:v3 withIdentifier:@"com.apple.shortcuts" shouldWake:1 forDeviceTypes:4 withError:&v15];
+  v5 = [v4 registerForUpdates:dSLPublisher withIdentifier:@"com.apple.shortcuts" shouldWake:1 forDeviceTypes:4 withError:&v15];
   v6 = v15;
   v7 = getWFTriggersLogObject();
   v8 = v7;

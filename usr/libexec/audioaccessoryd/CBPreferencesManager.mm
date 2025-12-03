@@ -1,35 +1,35 @@
 @interface CBPreferencesManager
-+ (BOOL)isDeviceClass:(id)a3;
++ (BOOL)isDeviceClass:(id)class;
 + (id)deviceName;
-+ (id)readUserPreference:(id)a3;
-+ (void)removeuserPreference:(id)a3 sync:(BOOL)a4;
-+ (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5;
++ (id)readUserPreference:(id)preference;
++ (void)removeuserPreference:(id)preference sync:(BOOL)sync;
++ (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync;
 @end
 
 @implementation CBPreferencesManager
 
-+ (id)readUserPreference:(id)a3
++ (id)readUserPreference:(id)preference
 {
-  v3 = CFPreferencesCopyValue(a3, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(preference, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-+ (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5
++ (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  syncCopy = sync;
+  preferenceCopy = preference;
+  valueCopy = value;
   v9 = qword_100300AE8;
   if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = preferenceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[setSystemPreference] prefName %@\n", &v11, 0xCu);
   }
 
-  CFPreferencesSetValue(v7, v8, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (v5 && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  CFPreferencesSetValue(preferenceCopy, valueCopy, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (syncCopy && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v10 = qword_100300AE8;
     if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEFAULT))
@@ -40,20 +40,20 @@
   }
 }
 
-+ (void)removeuserPreference:(id)a3 sync:(BOOL)a4
++ (void)removeuserPreference:(id)preference sync:(BOOL)sync
 {
-  v4 = a4;
-  v5 = a3;
+  syncCopy = sync;
+  preferenceCopy = preference;
   v6 = qword_100300AE8;
   if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = preferenceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[removeuserPreference] prefName %@\n", &v8, 0xCu);
   }
 
-  CFPreferencesSetValue(v5, 0, @"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (v4 && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  CFPreferencesSetValue(preferenceCopy, 0, @"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (syncCopy && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v7 = qword_100300AE8;
     if (os_log_type_enabled(qword_100300AE8, OS_LOG_TYPE_DEFAULT))
@@ -71,14 +71,14 @@
   return v2;
 }
 
-+ (BOOL)isDeviceClass:(id)a3
++ (BOOL)isDeviceClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = MGGetStringAnswer();
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 isEqualToString:v3];
+    v6 = [v4 isEqualToString:classCopy];
     CFRelease(v5);
   }
 

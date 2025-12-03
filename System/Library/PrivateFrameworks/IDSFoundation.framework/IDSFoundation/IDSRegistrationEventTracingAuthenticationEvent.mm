@@ -1,13 +1,13 @@
 @interface IDSRegistrationEventTracingAuthenticationEvent
 - (IDSRegistrationEventTracingAuthenticationEvent)init;
-- (IDSRegistrationEventTracingAuthenticationEvent)initWithAuthenticationType:(id)a3;
+- (IDSRegistrationEventTracingAuthenticationEvent)initWithAuthenticationType:(id)type;
 @end
 
 @implementation IDSRegistrationEventTracingAuthenticationEvent
 
-- (IDSRegistrationEventTracingAuthenticationEvent)initWithAuthenticationType:(id)a3
+- (IDSRegistrationEventTracingAuthenticationEvent)initWithAuthenticationType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v4 = sub_1A7E22290();
   }

@@ -1,8 +1,8 @@
 @interface SuggestionsItemSource
-+ (int64_t)itemSourceSubtypeForSuggestionsEntryType:(int64_t)a3;
++ (int64_t)itemSourceSubtypeForSuggestionsEntryType:(int64_t)type;
 - (SuggestionsItemSource)init;
 - (id)allItems;
-- (void)setSuggestions:(id)a3;
+- (void)setSuggestions:(id)suggestions;
 @end
 
 @implementation SuggestionsItemSource
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  suggestionsCopy = suggestions;
+  v5 = [suggestionsCopy copy];
   suggestions = self->_suggestions;
   self->_suggestions = v5;
 
-  v20 = v4;
-  v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  v20 = suggestionsCopy;
+  v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [suggestionsCopy count]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -58,25 +58,25 @@
         v13 = *(*(&v24 + 1) + 8 * i);
         if ([v13 type] != 5 && objc_msgSend(v13, "type") != 24 && (!+[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") || objc_msgSend(v13, "type") != 18 && objc_msgSend(v13, "type") != 1 && objc_msgSend(v13, "type") != 2 && objc_msgSend(v13, "type") != 19))
         {
-          v14 = [(PersonalizedItemSource *)self sourceType];
-          v15 = [(PersonalizedItemSource *)self sourceSubtype];
-          if (v14)
+          sourceType = [(PersonalizedItemSource *)self sourceType];
+          sourceSubtype = [(PersonalizedItemSource *)self sourceSubtype];
+          if (sourceType)
           {
-            v16 = v15;
+            v16 = sourceSubtype;
           }
 
           else
           {
-            v14 = 9;
+            sourceType = 9;
             v16 = 0;
           }
 
-          if (v14 == 9 && !v16)
+          if (sourceType == 9 && !v16)
           {
             v16 = +[SuggestionsItemSource itemSourceSubtypeForSuggestionsEntryType:](SuggestionsItemSource, "itemSourceSubtypeForSuggestionsEntryType:", [v13 type]);
           }
 
-          v17 = [[SuggestionsItem alloc] initWithSuggestion:v13 order:v10 sourceType:v14 sourceSubtype:v16 hasPriorityOverride:0 priorityOverride:0];
+          v17 = [[SuggestionsItem alloc] initWithSuggestion:v13 order:v10 sourceType:sourceType sourceSubtype:v16 hasPriorityOverride:0 priorityOverride:0];
           if (v17)
           {
             [v21 addObject:v17];
@@ -125,16 +125,16 @@
   return v3;
 }
 
-+ (int64_t)itemSourceSubtypeForSuggestionsEntryType:(int64_t)a3
++ (int64_t)itemSourceSubtypeForSuggestionsEntryType:(int64_t)type
 {
-  if (a3 > 0x19)
+  if (type > 0x19)
   {
     return 14;
   }
 
   else
   {
-    return qword_101213008[a3];
+    return qword_101213008[type];
   }
 }
 

@@ -24,7 +24,7 @@
   v3[2] = __38__NSError_MMCSKit__MMCSRetryAfterDate__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MMCSApplyBlock:v3];
+  [self _MMCSApplyBlock:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -42,7 +42,7 @@
   v3[2] = __36__NSError_MMCSKit__MMCSIsFatalError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MMCSApplyBlock:v3];
+  [self _MMCSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -59,7 +59,7 @@
   v3[2] = __44__NSError_MMCSKit__MMCSIsAuthorizationError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MMCSApplyBlock:v3];
+  [self _MMCSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -76,7 +76,7 @@
   v3[2] = __48__NSError_MMCSKit__MMCSIsNetworkConditionsError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MMCSApplyBlock:v3];
+  [self _MMCSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -93,7 +93,7 @@
   v3[2] = __37__NSError_MMCSKit__MMCSIsCancelError__block_invoke;
   v3[3] = &unk_278E919A8;
   v3[4] = &v4;
-  [a1 _MMCSApplyBlock:v3];
+  [self _MMCSApplyBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -103,10 +103,10 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = a1;
-  if (v5)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v6 = v5;
+    v6 = selfCopy;
     v7 = 0;
     v8 = *MEMORY[0x277D25478];
     v9 = *MEMORY[0x277CCA7E8];
@@ -119,8 +119,8 @@
         goto LABEL_22;
       }
 
-      v10 = [v6 userInfo];
-      v11 = [v10 objectForKey:v8];
+      userInfo = [v6 userInfo];
+      v11 = [userInfo objectForKey:v8];
 
       if ([v11 count])
       {
@@ -167,8 +167,8 @@
         v8 = v23;
       }
 
-      v18 = [v6 userInfo];
-      v19 = [v18 objectForKey:v9];
+      userInfo2 = [v6 userInfo];
+      v19 = [userInfo2 objectForKey:v9];
 
       v20 = v7 + 1;
       if (!v19)
@@ -199,17 +199,17 @@ LABEL_22:
 
 - (uint64_t)MMCSErrorType
 {
-  if ([a1 MMCSIsNetworkConditionsError])
+  if ([self MMCSIsNetworkConditionsError])
   {
     return 0;
   }
 
-  if ([a1 MMCSIsAuthorizationError])
+  if ([self MMCSIsAuthorizationError])
   {
     return 1;
   }
 
-  if ([a1 MMCSIsFatalError])
+  if ([self MMCSIsFatalError])
   {
     return 2;
   }

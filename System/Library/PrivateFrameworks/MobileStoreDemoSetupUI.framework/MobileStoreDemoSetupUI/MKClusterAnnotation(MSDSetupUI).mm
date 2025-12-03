@@ -12,8 +12,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v1 = [a1 memberAnnotations];
-  v2 = [v1 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  memberAnnotations = [self memberAnnotations];
+  v2 = [memberAnnotations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v2)
   {
     v3 = v2;
@@ -25,7 +25,7 @@
       {
         if (*v20 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(memberAnnotations);
         }
 
         v7 = *(*(&v19 + 1) + 8 * i);
@@ -35,23 +35,23 @@
           goto LABEL_16;
         }
 
-        v8 = [v7 storeInfo];
-        v9 = [v8 storeLocation];
+        storeInfo = [v7 storeInfo];
+        storeLocation = [storeInfo storeLocation];
 
-        if (!v9)
+        if (!storeLocation)
         {
           goto LABEL_15;
         }
 
         if (!v4)
         {
-          v4 = v9;
+          v4 = storeLocation;
         }
 
         [v4 coordinate];
         v11 = v10;
-        [v9 coordinate];
-        if (v11 != v12 || ([v4 coordinate], v14 = v13, objc_msgSend(v9, "coordinate"), v14 != v15))
+        [storeLocation coordinate];
+        if (v11 != v12 || ([v4 coordinate], v14 = v13, objc_msgSend(storeLocation, "coordinate"), v14 != v15))
         {
 LABEL_15:
 
@@ -61,7 +61,7 @@ LABEL_16:
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v3 = [memberAnnotations countByEnumeratingWithState:&v19 objects:v23 count:16];
       v16 = 1;
       if (v3)
       {
@@ -86,8 +86,8 @@ LABEL_18:
 
 - (BOOL)isInCloseProximity
 {
-  v2 = [a1 memberAnnotations];
-  v3 = [v2 count];
+  memberAnnotations = [self memberAnnotations];
+  v3 = [memberAnnotations count];
 
   if (v3 >= 2)
   {
@@ -96,33 +96,33 @@ LABEL_18:
     v6 = v3 - 1;
     for (i = 1; ; ++i)
     {
-      v8 = [a1 memberAnnotations];
-      v9 = [v8 objectAtIndex:v5];
+      memberAnnotations2 = [self memberAnnotations];
+      v9 = [memberAnnotations2 objectAtIndex:v5];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v19 = v4;
         v20 = v9;
-        v10 = [v9 storeInfo];
-        v11 = [v10 storeLocation];
+        storeInfo = [v9 storeInfo];
+        storeLocation = [storeInfo storeLocation];
 
-        if (v11)
+        if (storeLocation)
         {
           for (j = i; v3 > j; ++j)
           {
-            v13 = [a1 memberAnnotations];
-            v14 = [v13 objectAtIndex:j];
+            memberAnnotations3 = [self memberAnnotations];
+            v14 = [memberAnnotations3 objectAtIndex:j];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = [v14 storeInfo];
-              v16 = [v15 storeLocation];
+              storeInfo2 = [v14 storeInfo];
+              storeLocation2 = [storeInfo2 storeLocation];
 
-              if (v16)
+              if (storeLocation2)
               {
-                [v11 distanceFromLocation:v16];
+                [storeLocation distanceFromLocation:storeLocation2];
                 if (v17 > 3220.0)
                 {
 

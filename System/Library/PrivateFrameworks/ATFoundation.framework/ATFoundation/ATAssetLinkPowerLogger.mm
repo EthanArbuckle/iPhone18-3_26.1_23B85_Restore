@@ -1,12 +1,12 @@
 @interface ATAssetLinkPowerLogger
 + (id)sharedInstance;
 - (ATAssetLinkPowerLogger)init;
-- (id)_aggregatesForKey:(id)a3 createIfNotExistsWithTimestamp:(id)a4;
+- (id)_aggregatesForKey:(id)key createIfNotExistsWithTimestamp:(id)timestamp;
 - (void)_flushMessagesToPowerlog;
-- (void)_incrementCountForAggregates:(id)a3 key:(id)a4;
+- (void)_incrementCountForAggregates:(id)aggregates key:(id)key;
 - (void)_scheduleFlushTimer;
-- (void)logAssetLinkOfType:(int64_t)a3 didBeginDownloadingAsset:(id)a4;
-- (void)logAssetLinkOfType:(int64_t)a3 didFinishAsset:(id)a4 withError:(id)a5;
+- (void)logAssetLinkOfType:(int64_t)type didBeginDownloadingAsset:(id)asset;
+- (void)logAssetLinkOfType:(int64_t)type didFinishAsset:(id)asset withError:(id)error;
 @end
 
 @implementation ATAssetLinkPowerLogger
@@ -14,25 +14,25 @@
 - (void)_flushMessagesToPowerlog
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ATAssetLinkPowerLogger *)self aggregation];
-  v4 = [v3 allValues];
+  aggregation = [(ATAssetLinkPowerLogger *)self aggregation];
+  allValues = [aggregation allValues];
 
-  if ([v4 count])
+  if ([allValues count])
   {
     v9 = @"messages";
-    v10[0] = v4;
+    v10[0] = allValues;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     PLLogRegisteredEvent();
-    v5 = [(ATAssetLinkPowerLogger *)self aggregation];
-    [v5 removeAllObjects];
+    aggregation2 = [(ATAssetLinkPowerLogger *)self aggregation];
+    [aggregation2 removeAllObjects];
   }
 
-  v6 = [(ATAssetLinkPowerLogger *)self flushTimer];
+  flushTimer = [(ATAssetLinkPowerLogger *)self flushTimer];
 
-  if (v6)
+  if (flushTimer)
   {
-    v7 = [(ATAssetLinkPowerLogger *)self flushTimer];
-    dispatch_source_cancel(v7);
+    flushTimer2 = [(ATAssetLinkPowerLogger *)self flushTimer];
+    dispatch_source_cancel(flushTimer2);
 
     [(ATAssetLinkPowerLogger *)self setFlushTimer:0];
   }
@@ -40,37 +40,37 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_incrementCountForAggregates:(id)a3 key:(id)a4
+- (void)_incrementCountForAggregates:(id)aggregates key:(id)key
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  aggregatesCopy = aggregates;
+  v9 = [aggregatesCopy objectForKeyedSubscript:keyCopy];
   v8 = [v5 numberWithUnsignedInteger:{objc_msgSend(v9, "unsignedIntegerValue") + 1}];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  [aggregatesCopy setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (id)_aggregatesForKey:(id)a3 createIfNotExistsWithTimestamp:(id)a4
+- (id)_aggregatesForKey:(id)key createIfNotExistsWithTimestamp:(id)timestamp
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATAssetLinkPowerLogger *)self aggregation];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  timestampCopy = timestamp;
+  aggregation = [(ATAssetLinkPowerLogger *)self aggregation];
+  v9 = [aggregation objectForKeyedSubscript:keyCopy];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v9 setObject:v7 forKeyedSubscript:@"timestamp"];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "linkType")}];
+    [v9 setObject:timestampCopy forKeyedSubscript:@"timestamp"];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(keyCopy, "linkType")}];
     [v9 setObject:v10 forKeyedSubscript:@"linkType"];
 
-    v11 = [v6 dataclass];
-    [v9 setObject:v11 forKeyedSubscript:@"dataclass"];
+    dataclass = [keyCopy dataclass];
+    [v9 setObject:dataclass forKeyedSubscript:@"dataclass"];
 
-    v12 = [v6 assetType];
-    if (v12)
+    assetType = [keyCopy assetType];
+    if (assetType)
     {
-      [v6 assetType];
+      [keyCopy assetType];
     }
 
     else
@@ -80,8 +80,8 @@
     v13 = ;
     [v9 setObject:v13 forKeyedSubscript:@"assetType"];
 
-    v14 = [(ATAssetLinkPowerLogger *)self aggregation];
-    [v14 setObject:v9 forKeyedSubscript:v6];
+    aggregation2 = [(ATAssetLinkPowerLogger *)self aggregation];
+    [aggregation2 setObject:v9 forKeyedSubscript:keyCopy];
   }
 
   return v9;
@@ -89,74 +89,74 @@
 
 - (void)_scheduleFlushTimer
 {
-  v3 = [(ATAssetLinkPowerLogger *)self flushTimer];
+  flushTimer = [(ATAssetLinkPowerLogger *)self flushTimer];
 
-  if (!v3)
+  if (!flushTimer)
   {
-    v4 = [(ATAssetLinkPowerLogger *)self loggerQueue];
-    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+    loggerQueue = [(ATAssetLinkPowerLogger *)self loggerQueue];
+    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, loggerQueue);
     [(ATAssetLinkPowerLogger *)self setFlushTimer:v5];
 
-    v6 = [(ATAssetLinkPowerLogger *)self flushTimer];
+    flushTimer2 = [(ATAssetLinkPowerLogger *)self flushTimer];
     v7 = dispatch_walltime(0, 1800000000000);
-    dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x29E8D60800uLL);
+    dispatch_source_set_timer(flushTimer2, v7, 0xFFFFFFFFFFFFFFFFLL, 0x29E8D60800uLL);
 
-    v8 = [(ATAssetLinkPowerLogger *)self flushTimer];
+    flushTimer3 = [(ATAssetLinkPowerLogger *)self flushTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __45__ATAssetLinkPowerLogger__scheduleFlushTimer__block_invoke;
     handler[3] = &unk_2784E94D0;
     handler[4] = self;
-    dispatch_source_set_event_handler(v8, handler);
+    dispatch_source_set_event_handler(flushTimer3, handler);
 
-    v9 = [(ATAssetLinkPowerLogger *)self flushTimer];
-    dispatch_resume(v9);
+    flushTimer4 = [(ATAssetLinkPowerLogger *)self flushTimer];
+    dispatch_resume(flushTimer4);
   }
 }
 
-- (void)logAssetLinkOfType:(int64_t)a3 didFinishAsset:(id)a4 withError:(id)a5
+- (void)logAssetLinkOfType:(int64_t)type didFinishAsset:(id)asset withError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v7 dataclass];
-  v11 = [v7 assetType];
-  v12 = [v7 totalBytes];
-  if (v8)
+  assetCopy = asset;
+  errorCopy = error;
+  date = [MEMORY[0x277CBEAA8] date];
+  dataclass = [assetCopy dataclass];
+  assetType = [assetCopy assetType];
+  totalBytes = [assetCopy totalBytes];
+  if (errorCopy)
   {
-    v12 -= [v7 bytesRemaining];
+    totalBytes -= [assetCopy bytesRemaining];
   }
 
-  v13 = [MEMORY[0x277D7FA90] sharedMonitor];
-  v14 = [v13 isCharging];
-  v15 = [v13 networkType];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  isCharging = [mEMORY[0x277D7FA90] isCharging];
+  networkType = [mEMORY[0x277D7FA90] networkType];
   v16 = @"Unknown";
-  v27 = v13;
-  v26 = v14;
-  v17 = v11;
-  if (v15 > 99)
+  v27 = mEMORY[0x277D7FA90];
+  v26 = isCharging;
+  v17 = assetType;
+  if (networkType > 99)
   {
-    if (v15 > 1000)
+    if (networkType > 1000)
     {
-      if (v15 == 1001)
+      if (networkType == 1001)
       {
-        v18 = v9;
-        v19 = v10;
-        v20 = a3;
+        v18 = date;
+        v19 = dataclass;
+        typeCopy4 = type;
         v16 = @"Bridged WiFi";
       }
 
       else
       {
-        v19 = v10;
-        v18 = v9;
-        v20 = a3;
-        if (v15 == 2000)
+        v19 = dataclass;
+        v18 = date;
+        typeCopy4 = type;
+        if (networkType == 2000)
         {
           v16 = @"Wired Ethernet";
         }
 
-        else if (v15 == 3000)
+        else if (networkType == 3000)
         {
           v16 = @"Other";
         }
@@ -165,10 +165,10 @@
 
     else
     {
-      v18 = v9;
-      v19 = v10;
-      v20 = a3;
-      switch(v15)
+      v18 = date;
+      v19 = dataclass;
+      typeCopy4 = type;
+      switch(networkType)
       {
         case 100:
           goto LABEL_5;
@@ -184,35 +184,35 @@
 
   else
   {
-    v18 = v9;
-    v19 = v10;
-    v20 = a3;
-    if ((v15 - 1) < 8)
+    v18 = date;
+    v19 = dataclass;
+    typeCopy4 = type;
+    if ((networkType - 1) < 8)
     {
 LABEL_5:
       v16 = @"Cellular";
     }
   }
 
-  v21 = [(ATAssetLinkPowerLogger *)self loggerQueue];
+  loggerQueue = [(ATAssetLinkPowerLogger *)self loggerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didFinishAsset_withError___block_invoke;
   block[3] = &unk_2784E93C0;
   v30 = v19;
   v31 = v17;
-  v32 = self;
+  selfCopy = self;
   v33 = v18;
-  v36 = v20;
-  v37 = v12;
+  v36 = typeCopy4;
+  v37 = totalBytes;
   v38 = v26;
-  v34 = v8;
+  v34 = errorCopy;
   v35 = v16;
-  v22 = v8;
+  v22 = errorCopy;
   v23 = v18;
   v24 = v17;
   v25 = v19;
-  dispatch_async(v21, block);
+  dispatch_async(loggerQueue, block);
 }
 
 void __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didFinishAsset_withError___block_invoke(uint64_t a1)
@@ -254,36 +254,36 @@ void __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didFinishAsset_withError___
   [*(a1 + 48) _scheduleFlushTimer];
 }
 
-- (void)logAssetLinkOfType:(int64_t)a3 didBeginDownloadingAsset:(id)a4
+- (void)logAssetLinkOfType:(int64_t)type didBeginDownloadingAsset:(id)asset
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = [v6 date];
-  v9 = [v7 dataclass];
-  v10 = [v7 assetType];
-  v11 = [v7 totalBytes];
-  v12 = [v7 canUseCellularData];
-  v13 = [v7 isForeground];
-  v14 = [v7 deviceWasChargingWhenEnqueued];
+  assetCopy = asset;
+  date = [v6 date];
+  dataclass = [assetCopy dataclass];
+  assetType = [assetCopy assetType];
+  totalBytes = [assetCopy totalBytes];
+  canUseCellularData = [assetCopy canUseCellularData];
+  isForeground = [assetCopy isForeground];
+  deviceWasChargingWhenEnqueued = [assetCopy deviceWasChargingWhenEnqueued];
 
-  v15 = [(ATAssetLinkPowerLogger *)self loggerQueue];
+  loggerQueue = [(ATAssetLinkPowerLogger *)self loggerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didBeginDownloadingAsset___block_invoke;
   block[3] = &unk_2784E9398;
-  v20 = v9;
-  v21 = v10;
-  v22 = self;
-  v23 = v8;
-  v24 = a3;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  dispatch_async(v15, block);
+  v20 = dataclass;
+  v21 = assetType;
+  selfCopy = self;
+  v23 = date;
+  typeCopy = type;
+  v25 = totalBytes;
+  v26 = canUseCellularData;
+  v27 = isForeground;
+  v28 = deviceWasChargingWhenEnqueued;
+  v16 = date;
+  v17 = assetType;
+  v18 = dataclass;
+  dispatch_async(loggerQueue, block);
 }
 
 void __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didBeginDownloadingAsset___block_invoke(uint64_t a1)
@@ -345,7 +345,7 @@ void __70__ATAssetLinkPowerLogger_logAssetLinkOfType_didBeginDownloadingAsset___
   block[1] = 3221225472;
   block[2] = __40__ATAssetLinkPowerLogger_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1749 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1749, block);

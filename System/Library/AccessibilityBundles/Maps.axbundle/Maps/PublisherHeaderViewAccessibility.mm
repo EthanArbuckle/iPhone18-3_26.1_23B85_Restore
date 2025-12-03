@@ -1,15 +1,15 @@
 @interface PublisherHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PublisherHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PublisherHeaderView" hasInstanceMethod:@"publisherLogoImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PublisherHeaderView" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PublisherHeaderView" hasInstanceMethod:@"publisherLogoImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PublisherHeaderView" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

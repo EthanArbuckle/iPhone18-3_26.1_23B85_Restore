@@ -1,22 +1,22 @@
 @interface ADCallObserver
 - (ADCallObserver)init;
 - (unint64_t)currentCallState;
-- (void)_callStateChanged:(id)a3;
-- (void)_handleCallStateDidChangeTo:(unint64_t)a3 isDropInCallDidChange:(BOOL)a4;
-- (void)_handleOnSpeakerDidChangeTo:(BOOL)a3;
+- (void)_callStateChanged:(id)changed;
+- (void)_handleCallStateDidChangeTo:(unint64_t)to isDropInCallDidChange:(BOOL)change;
+- (void)_handleOnSpeakerDidChangeTo:(BOOL)to;
 - (void)_registerForDropInCallbacks;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
-- (void)routesChangedForRouteController:(id)a3;
-- (void)startObservingCallStateWithDelegate:(id)a3;
-- (void)stopObservingCallStateWithCompletion:(id)a3;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
+- (void)routesChangedForRouteController:(id)controller;
+- (void)startObservingCallStateWithDelegate:(id)delegate;
+- (void)stopObservingCallStateWithCompletion:(id)completion;
 @end
 
 @implementation ADCallObserver
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v5 = a3;
-  if (self->_csdConnectionObserver == v5)
+  observerCopy = observer;
+  if (self->_csdConnectionObserver == observerCopy)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -30,12 +30,12 @@
   }
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = [a3 pickedRoute];
-  v5 = [v4 isSpeaker];
+  pickedRoute = [controller pickedRoute];
+  isSpeaker = [pickedRoute isSpeaker];
 
-  if (self->_onSpeaker != v5)
+  if (self->_onSpeaker != isSpeaker)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -43,28 +43,28 @@
       v7 = 136315394;
       v8 = "[ADCallObserver routesChangedForRouteController:]";
       v9 = 1024;
-      v10 = v5;
+      v10 = isSpeaker;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s onSpeaker: %d", &v7, 0x12u);
     }
 
-    [(ADCallObserver *)self _handleOnSpeakerDidChangeTo:v5];
+    [(ADCallObserver *)self _handleOnSpeakerDidChangeTo:isSpeaker];
   }
 }
 
-- (void)_handleOnSpeakerDidChangeTo:(BOOL)a3
+- (void)_handleOnSpeakerDidChangeTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315394;
     v10 = "[ADCallObserver _handleOnSpeakerDidChangeTo:]";
     v11 = 1024;
-    v12 = v3;
+    v12 = toCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %d", &v9, 0x12u);
   }
 
-  if (self->_onSpeaker != v3)
+  if (self->_onSpeaker != toCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
@@ -72,10 +72,10 @@
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 callObserver:self onSpeakerDidChange:v3];
+      [v8 callObserver:self onSpeakerDidChange:toCopy];
     }
 
-    self->_onSpeaker = v3;
+    self->_onSpeaker = toCopy;
   }
 }
 
@@ -98,9 +98,9 @@
   return v3;
 }
 
-- (void)_handleCallStateDidChangeTo:(unint64_t)a3 isDropInCallDidChange:(BOOL)a4
+- (void)_handleCallStateDidChangeTo:(unint64_t)to isDropInCallDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v7 = AFCallStateGetNames();
   v8 = [v7 componentsJoinedByString:@"|"];
 
@@ -119,7 +119,7 @@
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s #callstate _handleCallStateDidChangeTo: %@ from: %@", &v27, 0x20u);
   }
 
-  if (self->_currentCallState != a3)
+  if (self->_currentCallState != to)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v13 = objc_opt_respondsToSelector();
@@ -127,17 +127,17 @@
     if (v13)
     {
       v14 = objc_loadWeakRetained(&self->_delegate);
-      [v14 callObserver:self callStateDidChangeFrom:self->_currentCallState to:a3 isDropInCallDidChangeTo:v4];
+      [v14 callObserver:self callStateDidChangeFrom:self->_currentCallState to:to isDropInCallDidChangeTo:changeCopy];
     }
 
-    self->_isDropInCall = v4;
+    self->_isDropInCall = changeCopy;
     v15 = objc_loadWeakRetained(&self->_delegate);
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
       v17 = objc_loadWeakRetained(&self->_delegate);
-      [v17 callObserver:self callStateDidChangeFrom:self->_currentCallState to:a3];
+      [v17 callObserver:self callStateDidChangeFrom:self->_currentCallState to:to];
     }
 
     v18 = objc_loadWeakRetained(&self->_delegate);
@@ -152,7 +152,7 @@
         v21 = 3;
       }
 
-      v22 = (v21 & a3) != 0;
+      v22 = (v21 & to) != 0;
       v23 = objc_loadWeakRetained(&self->_delegate);
       [v23 adCallStateChangedCallInProcess:v22];
     }
@@ -163,16 +163,16 @@
     if (v25)
     {
       v26 = objc_loadWeakRetained(&self->_delegate);
-      [v26 adCallStateChangedCallIncoming:(a3 >> 2) & 1];
+      [v26 adCallStateChangedCallIncoming:(to >> 2) & 1];
     }
 
-    self->_currentCallState = a3;
+    self->_currentCallState = to;
   }
 }
 
-- (void)stopObservingCallStateWithCompletion:(id)a3
+- (void)stopObservingCallStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -198,9 +198,9 @@
   csdConnectionObserver = self->_csdConnectionObserver;
   self->_csdConnectionObserver = 0;
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -224,9 +224,9 @@
   [(TUConversationProviderManager *)conversationProviderManager registerForCallbacksForProvider:@"com.apple.private.alloy.dropin.communication" completionHandler:v6];
 }
 
-- (void)startObservingCallStateWithDelegate:(id)a3
+- (void)startObservingCallStateWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = AFHasCellularTelephony();
   if (AFCanProxyTelephony())
   {
@@ -244,7 +244,7 @@
   if (v5)
   {
 LABEL_5:
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     if (!self->_isObserving)
     {
       self->_isObserving = 1;
@@ -271,17 +271,17 @@ LABEL_5:
 LABEL_9:
 }
 
-- (void)_callStateChanged:(id)a3
+- (void)_callStateChanged:(id)changed
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [a3 name];
+    name = [changed name];
     *buf = 136315394;
     v11 = "[ADCallObserver _callStateChanged:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s #callstate _callStateChanged notification name=%@", buf, 0x16u);
   }
 

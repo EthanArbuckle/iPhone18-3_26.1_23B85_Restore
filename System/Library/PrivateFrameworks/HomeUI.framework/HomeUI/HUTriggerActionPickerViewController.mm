@@ -1,19 +1,19 @@
 @interface HUTriggerActionPickerViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUTriggerActionPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5;
-- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUTriggerActionPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate;
+- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate;
 - (HUTriggerEditorDelegate)delegate;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)cancelWithSender:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)nextWithSender:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)cancelWithSender:(id)sender;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)nextWithSender:(id)sender;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUTriggerActionPickerViewController
@@ -25,44 +25,44 @@
   return v2;
 }
 
-- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)a3 mode:(unint64_t)a4 delegate:(id)a5
+- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)builder mode:(unint64_t)mode delegate:(id)delegate
 {
   v9 = objc_allocWithZone(HUTriggerActionFlow);
-  v10 = a3;
+  builderCopy = builder;
   swift_unknownObjectRetain();
-  v11 = [v9 initWithEditorMode_];
-  v12 = [(HUTriggerActionPickerViewController *)self initWithTriggerBuilder:v10 flow:v11 delegate:a5];
+  initWithEditorMode_ = [v9 initWithEditorMode_];
+  v12 = [(HUTriggerActionPickerViewController *)self initWithTriggerBuilder:builderCopy flow:initWithEditorMode_ delegate:delegate];
 
   swift_unknownObjectRelease();
   return v12;
 }
 
-- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5
+- (HUTriggerActionPickerViewController)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  builderCopy = builder;
+  flowCopy = flow;
   swift_unknownObjectRetain();
-  return TriggerActionPickerViewController.init(triggerBuilder:flow:delegate:)(v7, v8, a5);
+  return TriggerActionPickerViewController.init(triggerBuilder:flow:delegate:)(builderCopy, flowCopy, delegate);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF35A74();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TriggerActionPickerViewController();
   v4 = v7.receiver;
-  [(HUItemCollectionViewController *)&v7 viewDidAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(HUItemCollectionViewController *)&v7 viewDidAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    if (([v5 isBeingDismissed] & 1) == 0)
+    v6 = navigationController;
+    if (([navigationController isBeingDismissed] & 1) == 0)
     {
       sub_20CF364F4();
     }
@@ -71,63 +71,63 @@
   sub_20CF366D4();
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
-  sub_20CF35CE8(v10);
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CF35CE8(itemCopy);
 
   (*(v7 + 8))(v9, v6);
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20CF36008(v4);
+  moduleCopy = module;
+  selfCopy = self;
+  v6 = sub_20CF36008(moduleCopy);
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_20D563868();
   v13 = type metadata accessor for TriggerActionPickerViewController();
-  v14.receiver = v11;
+  v14.receiver = selfCopy;
   v14.super_class = v13;
-  [(HUItemCollectionViewController *)&v14 collectionView:v10 didSelectItemAtIndexPath:v12];
+  [(HUItemCollectionViewController *)&v14 collectionView:viewCopy didSelectItemAtIndexPath:v12];
 
   sub_20CF366D4();
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)cancelWithSender:(id)a3
+- (void)cancelWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
-  [*(&v4->super.super.super.super.super.super.isa + OBJC_IVAR___HUTriggerActionPickerViewController_delegate) triggerEditor:v4 didFinishWithTriggerBuilder:0];
+  [*(&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR___HUTriggerActionPickerViewController_delegate) triggerEditor:selfCopy didFinishWithTriggerBuilder:0];
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (void)nextWithSender:(id)a3
+- (void)nextWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   sub_20CF36A50();
@@ -135,17 +135,17 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for TriggerActionPickerViewController();
-  v4 = a3;
+  updateCopy = update;
   v5 = v6.receiver;
-  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:v4];
+  [(HUItemCollectionViewController *)&v6 itemManagerDidUpdate:updateCopy];
   sub_20CF366D4();
 }
 
-- (id)listContentConfigurationForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)listContentConfigurationForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
@@ -156,25 +156,25 @@
   sub_20D563878();
   if (v10 == sub_20D567838() && v12 == v13)
   {
-    v18 = a3;
-    v19 = self;
+    kindCopy = kind;
+    selfCopy = self;
   }
 
   else
   {
     v15 = sub_20D568BF8();
-    v16 = a3;
-    v17 = self;
+    kindCopy2 = kind;
+    selfCopy2 = self;
 
     if ((v15 & 1) == 0)
     {
       v21 = sub_20D563868();
       v22 = type metadata accessor for TriggerActionPickerViewController();
-      v24.receiver = v17;
+      v24.receiver = selfCopy2;
       v24.super_class = v22;
-      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:v16 atIndexPath:v21];
+      v20 = [(HUItemCollectionViewController *)&v24 listContentConfigurationForSupplementaryElementOfKind:kindCopy2 atIndexPath:v21];
 
-      self = v16;
+      self = kindCopy2;
       goto LABEL_12;
     }
   }
@@ -192,27 +192,27 @@ LABEL_12:
   return v20;
 }
 
-- (HUTriggerActionPickerViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUTriggerActionPickerViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)homeWorkflowEditorViewController:(id)a3 didFinishWithHomeWorkflow:(id)a4 includesSecureAccessory:(BOOL)a5
+- (void)homeWorkflowEditorViewController:(id)controller didFinishWithHomeWorkflow:(id)workflow includesSecureAccessory:(BOOL)accessory
 {
   v6 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUTriggerActionPickerViewController_triggerBuilder);
-  v7 = a4;
-  v9 = self;
-  v8 = [v6 triggerActionSets];
-  [v8 setHomeWorkflow_];
+  workflowCopy = workflow;
+  selfCopy = self;
+  triggerActionSets = [v6 triggerActionSets];
+  [triggerActionSets setHomeWorkflow_];
 
   sub_20CF36FE4();
 }

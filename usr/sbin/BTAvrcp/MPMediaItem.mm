@@ -1,9 +1,9 @@
 @interface MPMediaItem
 + (id)propertiesForUid;
-- (id)replyAttributesForIDs:(id)a3;
-- (id)replyItemWithAttributeIDs:(id)a3;
+- (id)replyAttributesForIDs:(id)ds;
+- (id)replyItemWithAttributeIDs:(id)ds;
 - (id)uid;
-- (void)setReplyAttributeForID:(unint64_t)a3 inReplyAttributes:(id)a4;
+- (void)setReplyAttributeForID:(unint64_t)d inReplyAttributes:(id)attributes;
 @end
 
 @implementation MPMediaItem
@@ -71,9 +71,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)replyItemWithAttributeIDs:(id)a3
+- (id)replyItemWithAttributeIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v14[0] = &__kCFBooleanFalse;
   v13[0] = @"kIsFolder";
   v13[1] = @"kUid";
@@ -91,10 +91,10 @@ LABEL_9:
   v14[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
 
-  if (v4)
+  if (dsCopy)
   {
     v10 = [v9 mutableCopy];
-    v11 = [(MPMediaItem *)self replyAttributesForIDs:v4];
+    v11 = [(MPMediaItem *)self replyAttributesForIDs:dsCopy];
     [v10 setValue:v11 forKey:@"kAttributes"];
 
     v9 = v10;
@@ -103,9 +103,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)replyAttributesForIDs:(id)a3
+- (id)replyAttributesForIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   +[NSMutableDictionary dictionary];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -113,7 +113,7 @@ LABEL_9:
   v9[3] = &unk_100018AC8;
   v5 = v9[4] = self;
   v10 = v5;
-  [v4 enumerateAttributeIDs:v9];
+  [dsCopy enumerateAttributeIDs:v9];
 
   v6 = v10;
   v7 = v5;
@@ -121,16 +121,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)setReplyAttributeForID:(unint64_t)a3 inReplyAttributes:(id)a4
+- (void)setReplyAttributeForID:(unint64_t)d inReplyAttributes:(id)attributes
 {
-  v15 = a4;
-  if (a3 <= 4)
+  attributesCopy = attributes;
+  if (d <= 4)
   {
-    if (a3 <= 2)
+    if (d <= 2)
     {
-      if (a3 != 1)
+      if (d != 1)
       {
-        if (a3 != 2)
+        if (d != 2)
         {
           goto LABEL_32;
         }
@@ -155,7 +155,7 @@ LABEL_9:
       goto LABEL_31;
     }
 
-    if (a3 == 3)
+    if (d == 3)
     {
       v6 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyAlbumTitle];
       if (v6)
@@ -174,16 +174,16 @@ LABEL_9:
       goto LABEL_31;
     }
 
-    v9 = [v6 stringValue];
+    stringValue = [v6 stringValue];
     v10 = @"kTrackNumber";
     goto LABEL_29;
   }
 
-  if (a3 > 6)
+  if (d > 6)
   {
-    if (a3 != 7)
+    if (d != 7)
     {
-      if (a3 != 8)
+      if (d != 8)
       {
         goto LABEL_32;
       }
@@ -194,9 +194,9 @@ LABEL_9:
         goto LABEL_31;
       }
 
-      v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 unsignedIntegerValue] % 0x989680);
-      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%tu", [v9 unsignedIntegerValue]);
-      [v15 setValue:v11 forKey:@"kImageHandle"];
+      stringValue = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 unsignedIntegerValue] % 0x989680);
+      v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%tu", [stringValue unsignedIntegerValue]);
+      [attributesCopy setValue:v11 forKey:@"kImageHandle"];
 
 LABEL_30:
       goto LABEL_31;
@@ -210,14 +210,14 @@ LABEL_30:
     }
 
     [v13 doubleValue];
-    v9 = [NSString stringWithFormat:@"%lu", (v14 * 1000.0)];
+    stringValue = [NSString stringWithFormat:@"%lu", (v14 * 1000.0)];
     v10 = @"kPlayingTime";
 LABEL_29:
-    [v15 setValue:v9 forKey:v10];
+    [attributesCopy setValue:stringValue forKey:v10];
     goto LABEL_30;
   }
 
-  if (a3 == 5)
+  if (d == 5)
   {
     v12 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyAlbumTrackCount];
     v6 = v12;
@@ -226,7 +226,7 @@ LABEL_29:
       goto LABEL_31;
     }
 
-    v9 = [v6 stringValue];
+    stringValue = [v6 stringValue];
     v10 = @"kTrackCount";
     goto LABEL_29;
   }
@@ -236,7 +236,7 @@ LABEL_29:
   {
     v7 = @"kGenre";
 LABEL_26:
-    [v15 setValue:v6 forKey:v7];
+    [attributesCopy setValue:v6 forKey:v7];
   }
 
 LABEL_31:

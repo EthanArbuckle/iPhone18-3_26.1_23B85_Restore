@@ -1,8 +1,8 @@
 @interface MTLRenderPassColorAttachmentDescriptorArrayInternal
-- (id)_descriptorAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)_descriptorAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MTLRenderPassColorAttachmentDescriptorArrayInternal
@@ -22,75 +22,75 @@
   [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)&v5 dealloc];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 >= 8)
+  if (subscript >= 8)
   {
-    [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)a3 objectAtIndexedSubscript:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)subscript objectAtIndexedSubscript:a2, subscript, v3, v4, v5, v6, v7];
   }
 
   color_descriptors = self->_color_descriptors;
-  result = color_descriptors[a3];
+  result = color_descriptors[subscript];
   if (!result)
   {
     result = objc_alloc_init(MTLRenderPassColorAttachmentDescriptorInternal);
     v12 = 0;
-    atomic_compare_exchange_strong(&color_descriptors[a3], &v12, result);
+    atomic_compare_exchange_strong(&color_descriptors[subscript], &v12, result);
     if (v12)
     {
 
-      return color_descriptors[a3];
+      return color_descriptors[subscript];
     }
 
     else
     {
-      color_descriptors[a3] = result;
+      color_descriptors[subscript] = result;
     }
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a3)
+  if (object)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((isKindOfClass & 1) == 0)
     {
-      [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)isKindOfClass setObject:a2 atIndexedSubscript:a3, a4, v4, v5, v6, v7, v13];
+      [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)isKindOfClass setObject:a2 atIndexedSubscript:object, subscript, v4, v5, v6, v7, v13];
     }
   }
 
-  if (a4 >= 8)
+  if (subscript >= 8)
   {
-    [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)a4 setObject:a2 atIndexedSubscript:a3, a4, v4, v5, v6, v7];
+    [(MTLRenderPassColorAttachmentDescriptorArrayInternal *)subscript setObject:a2 atIndexedSubscript:object, subscript, v4, v5, v6, v7];
   }
 
   color_descriptors = self->_color_descriptors;
-  if (color_descriptors[a4] != a3)
+  if (color_descriptors[subscript] != object)
   {
-    v14 = color_descriptors[a4];
-    color_descriptors[a4] = [a3 copy];
+    v14 = color_descriptors[subscript];
+    color_descriptors[subscript] = [object copy];
   }
 }
 
-- (id)_descriptorAtIndex:(unint64_t)a3
+- (id)_descriptorAtIndex:(unint64_t)index
 {
-  if (a3 <= 7)
+  if (index <= 7)
   {
-    v3 = &self->_color_descriptors[a3];
+    v3 = &self->_color_descriptors[index];
     return *v3;
   }
 
-  if (a3 == 9)
+  if (index == 9)
   {
     v4 = 80;
     goto LABEL_7;
   }
 
-  if (a3 == 8)
+  if (index == 8)
   {
     v4 = 72;
 LABEL_7:

@@ -12,8 +12,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 childTransactions];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childTransactions = [self childTransactions];
+  v4 = [childTransactions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,17 +24,17 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childTransactions);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) coordinatingAnimationControllers];
-        if (v8)
+        coordinatingAnimationControllers = [*(*(&v10 + 1) + 8 * i) coordinatingAnimationControllers];
+        if (coordinatingAnimationControllers)
         {
-          [v2 unionSet:v8];
+          [v2 unionSet:coordinatingAnimationControllers];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [childTransactions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

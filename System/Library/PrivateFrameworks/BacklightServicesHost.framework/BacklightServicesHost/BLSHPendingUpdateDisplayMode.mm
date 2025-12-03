@@ -1,8 +1,8 @@
 @interface BLSHPendingUpdateDisplayMode
-+ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)a3 toTargetDisplayMode:(int64_t)a4;
-+ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)a3 toTargetDisplayMode:(int64_t)a4 withConfiguration:(id)a5;
++ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)mode toTargetDisplayMode:(int64_t)displayMode;
++ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)mode toTargetDisplayMode:(int64_t)displayMode withConfiguration:(id)configuration;
 - (BLSHPendingUpdateDisplayMode)inProgressOperation;
-- (BLSHPendingUpdateDisplayMode)initWithCurrentDisplayMode:(int64_t)a3 targetDisplayMode:(int64_t)a4;
+- (BLSHPendingUpdateDisplayMode)initWithCurrentDisplayMode:(int64_t)mode targetDisplayMode:(int64_t)displayMode;
 - (BOOL)isStartedButIncomplete;
 - (NSString)description;
 @end
@@ -17,68 +17,68 @@
   v6 = NSStringFromBLSBacklightDisplayMode(self->_targetDisplayMode);
   [v3 appendString:v6 withName:@"target"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-+ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)a3 toTargetDisplayMode:(int64_t)a4 withConfiguration:(id)a5
++ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)mode toTargetDisplayMode:(int64_t)displayMode withConfiguration:(id)configuration
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  configurationCopy = configuration;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __111__BLSHPendingUpdateDisplayMode_operationForUpdateFromCurrentDisplayMode_toTargetDisplayMode_withConfiguration___block_invoke;
   v32[3] = &__block_descriptor_40_e38_B16__0__BLSHPendingUpdateDisplayMode_8l;
-  v32[4] = a4;
+  v32[4] = displayMode;
   v8 = MEMORY[0x223D70730](v32);
-  v9 = [v7 pendingOperation];
-  v10 = (v8)[2](v8, v9);
+  pendingOperation = [configurationCopy pendingOperation];
+  v10 = (v8)[2](v8, pendingOperation);
 
   if (v10)
   {
     v11 = bls_backlight_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:v7 toTargetDisplayMode:? withConfiguration:?];
+      [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:configurationCopy toTargetDisplayMode:? withConfiguration:?];
     }
 
-    v12 = [v7 pendingOperation];
+    pendingOperation2 = [configurationCopy pendingOperation];
 LABEL_9:
-    v16 = v12;
+    v16 = pendingOperation2;
     goto LABEL_40;
   }
 
-  v13 = [v7 abandonedInProgressOperation];
-  v14 = (v8)[2](v8, v13);
+  abandonedInProgressOperation = [configurationCopy abandonedInProgressOperation];
+  v14 = (v8)[2](v8, abandonedInProgressOperation);
 
   if (v14)
   {
     v15 = bls_backlight_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:v7 toTargetDisplayMode:? withConfiguration:?];
+      [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:configurationCopy toTargetDisplayMode:? withConfiguration:?];
     }
 
-    v12 = [v7 abandonedInProgressOperation];
+    pendingOperation2 = [configurationCopy abandonedInProgressOperation];
     goto LABEL_9;
   }
 
-  v17 = IsDisplayModeTransitionToAlwaysOn(a3, a4);
-  v18 = IsDisplayModeTransitionToActiveOn(a3, a4);
-  v19 = [v7 pendingOperation];
-  v20 = [v19 inProgressOperation];
+  v17 = IsDisplayModeTransitionToAlwaysOn(mode, displayMode);
+  v18 = IsDisplayModeTransitionToActiveOn(mode, displayMode);
+  pendingOperation3 = [configurationCopy pendingOperation];
+  inProgressOperation = [pendingOperation3 inProgressOperation];
 
-  if (v20)
+  if (inProgressOperation)
   {
-    [v7 setIsNullOperationAllowed:0];
+    [configurationCopy setIsNullOperationAllowed:0];
     v21 = bls_backlight_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v30 = NSStringFromBLSBacklightDisplayMode(a4);
-      v31 = NSStringFromBLSBacklightDisplayMode(a3);
+      v30 = NSStringFromBLSBacklightDisplayMode(displayMode);
+      v31 = NSStringFromBLSBacklightDisplayMode(mode);
       *buf = 138543874;
-      v34 = v20;
+      v34 = inProgressOperation;
       v35 = 2114;
       v36 = v30;
       v37 = 2114;
@@ -86,20 +86,20 @@ LABEL_9:
       _os_log_debug_impl(&dword_21FD11000, v21, OS_LOG_TYPE_DEBUG, "TSM: pendingIsStartedButIncomplete: %{public}@ targetDisplayMode:%{public}@ currentDisplayMode:%{public}@", buf, 0x20u);
     }
 
-    v22 = [v20 currentDisplayMode];
-    if (v17 && IsDisplayModeTransitionToAlwaysOn(v22, [v20 targetDisplayMode]) || v18 && IsDisplayModeTransitionToActiveOn(v22, objc_msgSend(v20, "targetDisplayMode")))
+    currentDisplayMode = [inProgressOperation currentDisplayMode];
+    if (v17 && IsDisplayModeTransitionToAlwaysOn(currentDisplayMode, [inProgressOperation targetDisplayMode]) || v18 && IsDisplayModeTransitionToActiveOn(currentDisplayMode, objc_msgSend(inProgressOperation, "targetDisplayMode")))
     {
-      a3 = v22;
+      mode = currentDisplayMode;
     }
   }
 
-  if (![v7 isNullOperationAllowed] || a3 != a4)
+  if (![configurationCopy isNullOperationAllowed] || mode != displayMode)
   {
-    if (IsActiveOnBrightnessForBLSBacklightDisplayMode(a4) && IsAlwaysOnBrightnessForBLSBacklightDisplayMode(a3))
+    if (IsActiveOnBrightnessForBLSBacklightDisplayMode(displayMode) && IsAlwaysOnBrightnessForBLSBacklightDisplayMode(mode))
     {
       v23 = [[BLSHPendingDirectRampDisplayMode alloc] initWithRampBeginDisplayMode:3 targetDisplayMode:4];
       v24 = v23;
-      if (a3 == 3)
+      if (mode == 3)
       {
         v16 = v23;
 LABEL_38:
@@ -107,43 +107,43 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      p_super = [(BLSHPendingUpdateDisplayMode *)[BLSHPendingTwoPhaseUpdateDisplayMode alloc] initWithCurrentDisplayMode:a3 targetDisplayMode:3];
+      p_super = [(BLSHPendingUpdateDisplayMode *)[BLSHPendingTwoPhaseUpdateDisplayMode alloc] initWithCurrentDisplayMode:mode targetDisplayMode:3];
       v16 = p_super;
     }
 
     else
     {
-      if (IsActiveOnBrightnessForBLSBacklightDisplayMode(a3) && IsAlwaysOnBrightnessForBLSBacklightDisplayMode(a4))
+      if (IsActiveOnBrightnessForBLSBacklightDisplayMode(mode) && IsAlwaysOnBrightnessForBLSBacklightDisplayMode(displayMode))
       {
         v16 = [[BLSHPendingDirectRampDisplayMode alloc] initWithRampBeginDisplayMode:4 targetDisplayMode:3];
-        if (a4 == 3)
+        if (displayMode == 3)
         {
           goto LABEL_39;
         }
 
         v25 = [BLSHPendingTwoPhaseUpdateDisplayMode alloc];
-        v26 = 3;
+        modeCopy = 3;
       }
 
       else
       {
-        if (![v7 isAnimatedTransition] || a4 != 6 && a3 != 6)
+        if (![configurationCopy isAnimatedTransition] || displayMode != 6 && mode != 6)
         {
-          v16 = [[BLSHPendingUpdateDisplayMode alloc] initWithCurrentDisplayMode:a3 targetDisplayMode:a4];
+          v16 = [[BLSHPendingUpdateDisplayMode alloc] initWithCurrentDisplayMode:mode targetDisplayMode:displayMode];
           goto LABEL_39;
         }
 
-        v16 = [[BLSHPendingDirectRampDisplayMode alloc] initWithRampBeginDisplayMode:a3 targetDisplayMode:a4];
-        if (a4 == 3)
+        v16 = [[BLSHPendingDirectRampDisplayMode alloc] initWithRampBeginDisplayMode:mode targetDisplayMode:displayMode];
+        if (displayMode == 3)
         {
           goto LABEL_39;
         }
 
         v25 = [BLSHPendingTwoPhaseUpdateDisplayMode alloc];
-        v26 = a3;
+        modeCopy = mode;
       }
 
-      v24 = [(BLSHPendingUpdateDisplayMode *)v25 initWithCurrentDisplayMode:v26 targetDisplayMode:a4];
+      v24 = [(BLSHPendingUpdateDisplayMode *)v25 initWithCurrentDisplayMode:modeCopy targetDisplayMode:displayMode];
       p_super = &v16->super;
     }
 
@@ -179,24 +179,24 @@ BOOL __111__BLSHPendingUpdateDisplayMode_operationForUpdateFromCurrentDisplayMod
   return v5;
 }
 
-+ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)a3 toTargetDisplayMode:(int64_t)a4
++ (id)operationForUpdateFromCurrentDisplayMode:(int64_t)mode toTargetDisplayMode:(int64_t)displayMode
 {
   v6 = objc_opt_new();
   [v6 setIsNullOperationAllowed:0];
-  v7 = [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:a3 toTargetDisplayMode:a4 withConfiguration:v6];
+  v7 = [BLSHPendingUpdateDisplayMode operationForUpdateFromCurrentDisplayMode:mode toTargetDisplayMode:displayMode withConfiguration:v6];
 
   return v7;
 }
 
-- (BLSHPendingUpdateDisplayMode)initWithCurrentDisplayMode:(int64_t)a3 targetDisplayMode:(int64_t)a4
+- (BLSHPendingUpdateDisplayMode)initWithCurrentDisplayMode:(int64_t)mode targetDisplayMode:(int64_t)displayMode
 {
   v7.receiver = self;
   v7.super_class = BLSHPendingUpdateDisplayMode;
   result = [(BLSHPendingUpdateDisplayMode *)&v7 init];
   if (result)
   {
-    result->_currentDisplayMode = a3;
-    result->_targetDisplayMode = a4;
+    result->_currentDisplayMode = mode;
+    result->_targetDisplayMode = displayMode;
   }
 
   return result;
@@ -206,21 +206,21 @@ BOOL __111__BLSHPendingUpdateDisplayMode_operationForUpdateFromCurrentDisplayMod
 {
   if ([(BLSHPendingUpdateDisplayMode *)self isStarted]&& ![(BLSHPendingUpdateDisplayMode *)self isCompleted])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isStartedButIncomplete
 {
-  v2 = [(BLSHPendingUpdateDisplayMode *)self inProgressOperation];
-  v3 = v2 != 0;
+  inProgressOperation = [(BLSHPendingUpdateDisplayMode *)self inProgressOperation];
+  v3 = inProgressOperation != 0;
 
   return v3;
 }

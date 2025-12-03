@@ -1,24 +1,24 @@
 @interface OnboardingViewController
-- (_TtC5TeaUI24OnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC5TeaUI24OnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation OnboardingViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  OnboardingViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  OnboardingViewController.viewWillAppear(_:)(appear);
 }
 
-- (_TtC5TeaUI24OnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI24OnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   OnboardingViewController.init(nibName:bundle:)();
 }
 

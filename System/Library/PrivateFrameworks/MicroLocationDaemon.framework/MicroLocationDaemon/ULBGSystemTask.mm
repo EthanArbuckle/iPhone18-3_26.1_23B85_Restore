@@ -1,12 +1,12 @@
 @interface ULBGSystemTask
-- (ULBGSystemTask)initWithUnderlyingTask:(id)a3;
+- (ULBGSystemTask)initWithUnderlyingTask:(id)task;
 @end
 
 @implementation ULBGSystemTask
 
-- (ULBGSystemTask)initWithUnderlyingTask:(id)a3
+- (ULBGSystemTask)initWithUnderlyingTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v10.receiver = self;
   v10.super_class = ULBGSystemTask;
   v5 = [(ULBGSystemTask *)&v10 init];
@@ -18,7 +18,7 @@
     v7[2] = __41__ULBGSystemTask_initWithUnderlyingTask___block_invoke;
     v7[3] = &unk_2798D4080;
     objc_copyWeak(&v8, &location);
-    [v4 setExpirationHandler:v7];
+    [taskCopy setExpirationHandler:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }

@@ -1,26 +1,26 @@
 @interface ActionPreviewActivity
 - (_TtC7NewsUI221ActionPreviewActivity)init;
-- (id)previewViewControllerForAction:(id)a3;
-- (void)commitViewController:(id)a3 action:(id)a4;
+- (id)previewViewControllerForAction:(id)action;
+- (void)commitViewController:(id)controller action:(id)action;
 @end
 
 @implementation ActionPreviewActivity
 
-- (id)previewViewControllerForAction:(id)a3
+- (id)previewViewControllerForAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_2193AAE88();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (void)commitViewController:(id)a3 action:(id)a4
+- (void)commitViewController:(id)controller action:(id)action
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_2193AB554();
 
   swift_unknownObjectRelease();

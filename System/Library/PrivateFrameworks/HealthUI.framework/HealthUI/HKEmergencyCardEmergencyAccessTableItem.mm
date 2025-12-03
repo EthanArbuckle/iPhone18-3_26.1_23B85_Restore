@@ -1,17 +1,17 @@
 @interface HKEmergencyCardEmergencyAccessTableItem
 - (UIEdgeInsets)separatorInset;
-- (id)initInEditMode:(BOOL)a3 shouldShowLocked:(BOOL)a4 shouldShareInfo:(BOOL)a5;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode shouldShowLocked:(BOOL)locked shouldShareInfo:(BOOL)info;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)titleForHeader;
-- (void)setIsSecondaryProfile:(BOOL)a3;
+- (void)setIsSecondaryProfile:(BOOL)profile;
 @end
 
 @implementation HKEmergencyCardEmergencyAccessTableItem
 
-- (id)initInEditMode:(BOOL)a3 shouldShowLocked:(BOOL)a4 shouldShareInfo:(BOOL)a5
+- (id)initInEditMode:(BOOL)mode shouldShowLocked:(BOOL)locked shouldShareInfo:(BOOL)info
 {
-  v5 = a5;
-  v7 = a3;
+  infoCopy = info;
+  modeCopy = mode;
   v27[2] = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = HKEmergencyCardEmergencyAccessTableItem;
@@ -22,16 +22,16 @@
     return v9;
   }
 
-  v8[112] = a4;
-  v8[113] = v5;
+  v8[112] = locked;
+  v8[113] = infoCopy;
   if (v8[112] == 1)
   {
-    v10 = [[HKEmergencyCardEnabledTableItem alloc] initInEditMode:v7];
+    v10 = [[HKEmergencyCardEnabledTableItem alloc] initInEditMode:modeCopy];
     v11 = v9[11];
     v9[11] = v10;
 
     [v9[11] setIsSecondaryProfile:{objc_msgSend(v9, "isSecondaryProfile")}];
-    v12 = [[HKEmergencyCardFooterTableItem alloc] initInEditMode:v7];
+    v12 = [[HKEmergencyCardFooterTableItem alloc] initInEditMode:modeCopy];
     v13 = v9[12];
     v9[12] = v12;
 
@@ -41,21 +41,21 @@
     }
   }
 
-  else if (!v5)
+  else if (!infoCopy)
   {
     goto LABEL_10;
   }
 
-  v14 = [MEMORY[0x1E696C608] sharedBehavior];
-  if ([v14 supportsEED])
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  if ([mEMORY[0x1E696C608] supportsEED])
   {
 
 LABEL_9:
-    v17 = [[HKEmergencyCardShareInfoTableItem alloc] initInEditMode:v7];
+    v17 = [[HKEmergencyCardShareInfoTableItem alloc] initInEditMode:modeCopy];
     v18 = v9[10];
     v9[10] = v17;
 
-    v19 = [[HKEmergencyCardFooterTableItem alloc] initInEditMode:v7];
+    v19 = [[HKEmergencyCardFooterTableItem alloc] initInEditMode:modeCopy];
     v20 = v9[13];
     v9[13] = v19;
 
@@ -63,10 +63,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = [v9 data];
-  v16 = [v15 shareDuringEmergency];
+  data = [v9 data];
+  shareDuringEmergency = [data shareDuringEmergency];
 
-  if (v16)
+  if (shareDuringEmergency)
   {
     goto LABEL_9;
   }
@@ -94,11 +94,11 @@ LABEL_10:
   return v9;
 }
 
-- (void)setIsSecondaryProfile:(BOOL)a3
+- (void)setIsSecondaryProfile:(BOOL)profile
 {
   v4.receiver = self;
   v4.super_class = HKEmergencyCardEmergencyAccessTableItem;
-  [(HKEmergencyCardTableItem *)&v4 setIsSecondaryProfile:a3];
+  [(HKEmergencyCardTableItem *)&v4 setIsSecondaryProfile:profile];
   [(HKEmergencyCardTableItem *)self->_enabledTableItem setIsSecondaryProfile:[(HKEmergencyCardTableItem *)self isSecondaryProfile]];
   [(HKEmergencyCardTableItem *)self->_shareInfoTableItem setIsSecondaryProfile:[(HKEmergencyCardTableItem *)self isSecondaryProfile]];
 }
@@ -116,45 +116,45 @@ LABEL_10:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0;
-  if (a4 <= 1)
+  if (index <= 1)
   {
-    if (a4)
+    if (index)
     {
-      if (a4 == 1)
+      if (index == 1)
       {
-        v7 = [(HKEmergencyCardFooterTableItem *)self->_enabledFooterItem tableView:v6 cellForRowAtIndex:1];
-        v8 = [(HKEmergencyCardEnabledTableItem *)self->_enabledTableItem footerTextViewString];
-        [v7 setFooterText:v8];
+        v7 = [(HKEmergencyCardFooterTableItem *)self->_enabledFooterItem tableView:viewCopy cellForRowAtIndex:1];
+        footerTextViewString = [(HKEmergencyCardEnabledTableItem *)self->_enabledTableItem footerTextViewString];
+        [v7 setFooterText:footerTextViewString];
       }
 
       goto LABEL_11;
     }
 
     enabledTableItem = self->_enabledTableItem;
-    v11 = v6;
+    v11 = viewCopy;
     v12 = 0;
 LABEL_10:
     v7 = [enabledTableItem tableView:v11 cellForRowAtIndex:v12];
     goto LABEL_11;
   }
 
-  if (a4 == 2)
+  if (index == 2)
   {
     enabledTableItem = self->_shareInfoTableItem;
-    v11 = v6;
+    v11 = viewCopy;
     v12 = 2;
     goto LABEL_10;
   }
 
-  if (a4 == 3)
+  if (index == 3)
   {
-    v7 = [(HKEmergencyCardFooterTableItem *)self->_shareInfoFooterItem tableView:v6 cellForRowAtIndex:3];
-    v9 = [(HKEmergencyCardShareInfoTableItem *)self->_shareInfoTableItem footerTextViewString];
-    [v7 setFooterText:v9];
+    v7 = [(HKEmergencyCardFooterTableItem *)self->_shareInfoFooterItem tableView:viewCopy cellForRowAtIndex:3];
+    footerTextViewString2 = [(HKEmergencyCardShareInfoTableItem *)self->_shareInfoTableItem footerTextViewString];
+    [v7 setFooterText:footerTextViewString2];
 
     [v7 setTextViewDelegate:self->_shareInfoTableItem];
   }

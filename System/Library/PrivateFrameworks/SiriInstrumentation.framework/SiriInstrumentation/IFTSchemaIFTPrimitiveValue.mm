@@ -1,5 +1,5 @@
 @interface IFTSchemaIFTPrimitiveValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTApp)app;
 - (IFTSchemaIFTCurrencyAmount)currencyAmount;
 - (IFTSchemaIFTDateComponents)primitiveDateComponents;
@@ -8,12 +8,12 @@
 - (IFTSchemaIFTPaymentMethod)paymentMethod;
 - (IFTSchemaIFTPerson)person;
 - (IFTSchemaIFTPlacemark)placemark;
-- (IFTSchemaIFTPrimitiveValue)initWithDictionary:(id)a3;
-- (IFTSchemaIFTPrimitiveValue)initWithJSON:(id)a3;
+- (IFTSchemaIFTPrimitiveValue)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTPrimitiveValue)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (NSString)primitiveDecimal;
 - (double)primitiveDouble;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (int64_t)primitiveInt;
@@ -31,54 +31,54 @@
 - (void)deletePrimitiveDouble;
 - (void)deletePrimitiveInt;
 - (void)deletePrimitiveNull;
-- (void)setApp:(id)a3;
-- (void)setCurrencyAmount:(id)a3;
-- (void)setFile:(id)a3;
-- (void)setMeasurement:(id)a3;
-- (void)setPaymentMethod:(id)a3;
-- (void)setPerson:(id)a3;
-- (void)setPlacemark:(id)a3;
-- (void)setPrimitiveBool:(BOOL)a3;
-- (void)setPrimitiveDateComponents:(id)a3;
-- (void)setPrimitiveDecimal:(id)a3;
-- (void)setPrimitiveDouble:(double)a3;
-- (void)setPrimitiveInt:(int64_t)a3;
-- (void)setPrimitiveNull:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setApp:(id)app;
+- (void)setCurrencyAmount:(id)amount;
+- (void)setFile:(id)file;
+- (void)setMeasurement:(id)measurement;
+- (void)setPaymentMethod:(id)method;
+- (void)setPerson:(id)person;
+- (void)setPlacemark:(id)placemark;
+- (void)setPrimitiveBool:(BOOL)bool;
+- (void)setPrimitiveDateComponents:(id)components;
+- (void)setPrimitiveDecimal:(id)decimal;
+- (void)setPrimitiveDouble:(double)double;
+- (void)setPrimitiveInt:(int64_t)int;
+- (void)setPrimitiveNull:(BOOL)null;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTPrimitiveValue
 
-- (IFTSchemaIFTPrimitiveValue)initWithDictionary:(id)a3
+- (IFTSchemaIFTPrimitiveValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = IFTSchemaIFTPrimitiveValue;
   v5 = [(IFTSchemaIFTPrimitiveValue *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"primitiveNull"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"primitiveNull"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPrimitiveValue setPrimitiveNull:](v5, "setPrimitiveNull:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"primitiveBool"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"primitiveBool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPrimitiveValue setPrimitiveBool:](v5, "setPrimitiveBool:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"primitiveInt"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"primitiveInt"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTPrimitiveValue setPrimitiveInt:](v5, "setPrimitiveInt:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"primitiveDouble"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"primitiveDouble"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       [(IFTSchemaIFTPrimitiveValue *)v5 setPrimitiveDouble:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"primitiveDecimal"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"primitiveDecimal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
     }
 
     v33 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"primitiveDateComponents"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"primitiveDateComponents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       [(IFTSchemaIFTPrimitiveValue *)v5 setPrimitiveDateComponents:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"measurement"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"measurement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
     }
 
     v36 = v6;
-    v16 = [v4 objectForKeyedSubscript:{@"currencyAmount", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"currencyAmount", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,7 +121,7 @@
     }
 
     v35 = v7;
-    v18 = [v4 objectForKeyedSubscript:@"paymentMethod"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"paymentMethod"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
 
     v32 = v12;
     v34 = v8;
-    v20 = [v4 objectForKeyedSubscript:@"placemark"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"placemark"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
     }
 
     v22 = v9;
-    v23 = [v4 objectForKeyedSubscript:@"person"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"person"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
       [(IFTSchemaIFTPrimitiveValue *)v5 setPerson:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"file"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"file"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,7 +156,7 @@
       [(IFTSchemaIFTPrimitiveValue *)v5 setFile:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"app"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"app"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,30 +170,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTPrimitiveValue)initWithJSON:(id)a3
+- (IFTSchemaIFTPrimitiveValue)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTPrimitiveValue *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTPrimitiveValue *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTPrimitiveValue *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -206,146 +206,146 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_app)
   {
     v4 = [(IFTSchemaIFTPrimitiveValue *)self app];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dictionaryRepresentation = [v4 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"app"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"app"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"app"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"app"];
     }
   }
 
   if (self->_currencyAmount)
   {
-    v7 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    currencyAmount = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+    dictionaryRepresentation2 = [currencyAmount dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"currencyAmount"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"currencyAmount"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"currencyAmount"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"currencyAmount"];
     }
   }
 
   if (self->_file)
   {
-    v10 = [(IFTSchemaIFTPrimitiveValue *)self file];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    file = [(IFTSchemaIFTPrimitiveValue *)self file];
+    dictionaryRepresentation3 = [file dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"file"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"file"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"file"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"file"];
     }
   }
 
   if (self->_measurement)
   {
-    v13 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    measurement = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+    dictionaryRepresentation4 = [measurement dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"measurement"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"measurement"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"measurement"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"measurement"];
     }
   }
 
   if (self->_paymentMethod)
   {
-    v16 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    paymentMethod = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+    dictionaryRepresentation5 = [paymentMethod dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"paymentMethod"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"paymentMethod"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"paymentMethod"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"paymentMethod"];
     }
   }
 
   if (self->_person)
   {
-    v19 = [(IFTSchemaIFTPrimitiveValue *)self person];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    person = [(IFTSchemaIFTPrimitiveValue *)self person];
+    dictionaryRepresentation6 = [person dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"person"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"person"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"person"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"person"];
     }
   }
 
   if (self->_placemark)
   {
-    v22 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    placemark = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+    dictionaryRepresentation7 = [placemark dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"placemark"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"placemark"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"placemark"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"placemark"];
     }
   }
 
   if (self->_whichOneof_Primitivevalue == 2)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPrimitiveValue primitiveBool](self, "primitiveBool")}];
-    [v3 setObject:v25 forKeyedSubscript:@"primitiveBool"];
+    [dictionary setObject:v25 forKeyedSubscript:@"primitiveBool"];
   }
 
   if (self->_primitiveDateComponents)
   {
-    v26 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    primitiveDateComponents = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+    dictionaryRepresentation8 = [primitiveDateComponents dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"primitiveDateComponents"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"primitiveDateComponents"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"primitiveDateComponents"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"primitiveDateComponents"];
     }
   }
 
   if (self->_primitiveDecimal)
   {
-    v29 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"primitiveDecimal"];
+    primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
+    v30 = [primitiveDecimal copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"primitiveDecimal"];
   }
 
   whichOneof_Primitivevalue = self->_whichOneof_Primitivevalue;
@@ -354,7 +354,7 @@
     v32 = MEMORY[0x1E696AD98];
     [(IFTSchemaIFTPrimitiveValue *)self primitiveDouble];
     v33 = [v32 numberWithDouble:?];
-    [v3 setObject:v33 forKeyedSubscript:@"primitiveDouble"];
+    [dictionary setObject:v33 forKeyedSubscript:@"primitiveDouble"];
 
     whichOneof_Primitivevalue = self->_whichOneof_Primitivevalue;
   }
@@ -362,7 +362,7 @@
   if (whichOneof_Primitivevalue == 3)
   {
     v34 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTPrimitiveValue primitiveInt](self, "primitiveInt")}];
-    [v3 setObject:v34 forKeyedSubscript:@"primitiveInt"];
+    [dictionary setObject:v34 forKeyedSubscript:@"primitiveInt"];
 
     whichOneof_Primitivevalue = self->_whichOneof_Primitivevalue;
   }
@@ -370,12 +370,12 @@
   if (whichOneof_Primitivevalue == 1)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTPrimitiveValue primitiveNull](self, "primitiveNull")}];
-    [v3 setObject:v35 forKeyedSubscript:@"primitiveNull"];
+    [dictionary setObject:v35 forKeyedSubscript:@"primitiveNull"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -445,59 +445,59 @@ LABEL_12:
   return v16 ^ v18 ^ [(IFTSchemaIFTApp *)self->_app hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   whichOneof_Primitivevalue = self->_whichOneof_Primitivevalue;
-  if (whichOneof_Primitivevalue != [v4 whichOneof_Primitivevalue])
+  if (whichOneof_Primitivevalue != [equalCopy whichOneof_Primitivevalue])
   {
     goto LABEL_52;
   }
 
   primitiveNull = self->_primitiveNull;
-  if (primitiveNull != [v4 primitiveNull])
+  if (primitiveNull != [equalCopy primitiveNull])
   {
     goto LABEL_52;
   }
 
   primitiveBool = self->_primitiveBool;
-  if (primitiveBool != [v4 primitiveBool])
+  if (primitiveBool != [equalCopy primitiveBool])
   {
     goto LABEL_52;
   }
 
   primitiveInt = self->_primitiveInt;
-  if (primitiveInt != [v4 primitiveInt])
+  if (primitiveInt != [equalCopy primitiveInt])
   {
     goto LABEL_52;
   }
 
   primitiveDouble = self->_primitiveDouble;
-  [v4 primitiveDouble];
+  [equalCopy primitiveDouble];
   if (primitiveDouble != v10)
   {
     goto LABEL_52;
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
-  v12 = [v4 primitiveDecimal];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
+  primitiveDecimal2 = [equalCopy primitiveDecimal];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v13 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
-  if (v13)
+  primitiveDecimal3 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
+  if (primitiveDecimal3)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
-    v16 = [v4 primitiveDecimal];
-    v17 = [v15 isEqual:v16];
+    v14 = primitiveDecimal3;
+    primitiveDecimal4 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
+    primitiveDecimal5 = [equalCopy primitiveDecimal];
+    v17 = [primitiveDecimal4 isEqual:primitiveDecimal5];
 
     if (!v17)
     {
@@ -509,20 +509,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
-  v12 = [v4 primitiveDateComponents];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+  primitiveDecimal2 = [equalCopy primitiveDateComponents];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v18 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
-  if (v18)
+  primitiveDateComponents = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+  if (primitiveDateComponents)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
-    v21 = [v4 primitiveDateComponents];
-    v22 = [v20 isEqual:v21];
+    v19 = primitiveDateComponents;
+    primitiveDateComponents2 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+    primitiveDateComponents3 = [equalCopy primitiveDateComponents];
+    v22 = [primitiveDateComponents2 isEqual:primitiveDateComponents3];
 
     if (!v22)
     {
@@ -534,20 +534,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
-  v12 = [v4 measurement];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+  primitiveDecimal2 = [equalCopy measurement];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v23 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
-  if (v23)
+  measurement = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+  if (measurement)
   {
-    v24 = v23;
-    v25 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
-    v26 = [v4 measurement];
-    v27 = [v25 isEqual:v26];
+    v24 = measurement;
+    measurement2 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+    measurement3 = [equalCopy measurement];
+    v27 = [measurement2 isEqual:measurement3];
 
     if (!v27)
     {
@@ -559,20 +559,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
-  v12 = [v4 currencyAmount];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+  primitiveDecimal2 = [equalCopy currencyAmount];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v28 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
-  if (v28)
+  currencyAmount = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+  if (currencyAmount)
   {
-    v29 = v28;
-    v30 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
-    v31 = [v4 currencyAmount];
-    v32 = [v30 isEqual:v31];
+    v29 = currencyAmount;
+    currencyAmount2 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+    currencyAmount3 = [equalCopy currencyAmount];
+    v32 = [currencyAmount2 isEqual:currencyAmount3];
 
     if (!v32)
     {
@@ -584,20 +584,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
-  v12 = [v4 paymentMethod];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+  primitiveDecimal2 = [equalCopy paymentMethod];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v33 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
-  if (v33)
+  paymentMethod = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+  if (paymentMethod)
   {
-    v34 = v33;
-    v35 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
-    v36 = [v4 paymentMethod];
-    v37 = [v35 isEqual:v36];
+    v34 = paymentMethod;
+    paymentMethod2 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+    paymentMethod3 = [equalCopy paymentMethod];
+    v37 = [paymentMethod2 isEqual:paymentMethod3];
 
     if (!v37)
     {
@@ -609,20 +609,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
-  v12 = [v4 placemark];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+  primitiveDecimal2 = [equalCopy placemark];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v38 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
-  if (v38)
+  placemark = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+  if (placemark)
   {
-    v39 = v38;
-    v40 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
-    v41 = [v4 placemark];
-    v42 = [v40 isEqual:v41];
+    v39 = placemark;
+    placemark2 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+    placemark3 = [equalCopy placemark];
+    v42 = [placemark2 isEqual:placemark3];
 
     if (!v42)
     {
@@ -634,20 +634,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self person];
-  v12 = [v4 person];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self person];
+  primitiveDecimal2 = [equalCopy person];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v43 = [(IFTSchemaIFTPrimitiveValue *)self person];
-  if (v43)
+  person = [(IFTSchemaIFTPrimitiveValue *)self person];
+  if (person)
   {
-    v44 = v43;
-    v45 = [(IFTSchemaIFTPrimitiveValue *)self person];
-    v46 = [v4 person];
-    v47 = [v45 isEqual:v46];
+    v44 = person;
+    person2 = [(IFTSchemaIFTPrimitiveValue *)self person];
+    person3 = [equalCopy person];
+    v47 = [person2 isEqual:person3];
 
     if (!v47)
     {
@@ -659,20 +659,20 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self file];
-  v12 = [v4 file];
-  if ((v11 != 0) == (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self file];
+  primitiveDecimal2 = [equalCopy file];
+  if ((primitiveDecimal != 0) == (primitiveDecimal2 == 0))
   {
     goto LABEL_51;
   }
 
-  v48 = [(IFTSchemaIFTPrimitiveValue *)self file];
-  if (v48)
+  file = [(IFTSchemaIFTPrimitiveValue *)self file];
+  if (file)
   {
-    v49 = v48;
-    v50 = [(IFTSchemaIFTPrimitiveValue *)self file];
-    v51 = [v4 file];
-    v52 = [v50 isEqual:v51];
+    v49 = file;
+    file2 = [(IFTSchemaIFTPrimitiveValue *)self file];
+    file3 = [equalCopy file];
+    v52 = [file2 isEqual:file3];
 
     if (!v52)
     {
@@ -684,9 +684,9 @@ LABEL_12:
   {
   }
 
-  v11 = [(IFTSchemaIFTPrimitiveValue *)self app];
-  v12 = [v4 app];
-  if ((v11 != 0) != (v12 == 0))
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self app];
+  primitiveDecimal2 = [equalCopy app];
+  if ((primitiveDecimal != 0) != (primitiveDecimal2 == 0))
   {
     v53 = [(IFTSchemaIFTPrimitiveValue *)self app];
     if (!v53)
@@ -699,7 +699,7 @@ LABEL_55:
 
     v54 = v53;
     v55 = [(IFTSchemaIFTPrimitiveValue *)self app];
-    v56 = [v4 app];
+    v56 = [equalCopy app];
     v57 = [v55 isEqual:v56];
 
     if (v57)
@@ -720,9 +720,9 @@ LABEL_53:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
+  toCopy = to;
   whichOneof_Primitivevalue = self->_whichOneof_Primitivevalue;
   if (whichOneof_Primitivevalue == 1)
   {
@@ -747,78 +747,78 @@ LABEL_53:
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
+  primitiveDecimal = [(IFTSchemaIFTPrimitiveValue *)self primitiveDecimal];
 
-  if (v5)
+  if (primitiveDecimal)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+  primitiveDateComponents = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
 
-  if (v6)
+  if (primitiveDateComponents)
   {
-    v7 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+    primitiveDateComponents2 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+  measurement = [(IFTSchemaIFTPrimitiveValue *)self measurement];
 
-  if (v8)
+  if (measurement)
   {
-    v9 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+    measurement2 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+  currencyAmount = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
 
-  if (v10)
+  if (currencyAmount)
   {
-    v11 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+    currencyAmount2 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+  paymentMethod = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
 
-  if (v12)
+  if (paymentMethod)
   {
-    v13 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+    paymentMethod2 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+  placemark = [(IFTSchemaIFTPrimitiveValue *)self placemark];
 
-  if (v14)
+  if (placemark)
   {
-    v15 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+    placemark2 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(IFTSchemaIFTPrimitiveValue *)self person];
+  person = [(IFTSchemaIFTPrimitiveValue *)self person];
 
-  if (v16)
+  if (person)
   {
-    v17 = [(IFTSchemaIFTPrimitiveValue *)self person];
+    person2 = [(IFTSchemaIFTPrimitiveValue *)self person];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(IFTSchemaIFTPrimitiveValue *)self file];
+  file = [(IFTSchemaIFTPrimitiveValue *)self file];
 
-  if (v18)
+  if (file)
   {
-    v19 = [(IFTSchemaIFTPrimitiveValue *)self file];
+    file2 = [(IFTSchemaIFTPrimitiveValue *)self file];
     PBDataWriterWriteSubmessage();
   }
 
   v20 = [(IFTSchemaIFTPrimitiveValue *)self app];
 
-  v21 = v23;
+  v21 = toCopy;
   if (v20)
   {
     v22 = [(IFTSchemaIFTPrimitiveValue *)self app];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -847,9 +847,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setApp:(id)a3
+- (void)setApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -879,14 +879,14 @@ LABEL_53:
   self->_file = 0;
 
   v13 = 17;
-  if (!v4)
+  if (!appCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   app = self->_app;
-  self->_app = v4;
+  self->_app = appCopy;
 }
 
 - (void)deleteFile
@@ -914,9 +914,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setFile:(id)a3
+- (void)setFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -945,9 +945,9 @@ LABEL_53:
   app = self->_app;
   self->_app = 0;
 
-  self->_whichOneof_Primitivevalue = 16 * (v4 != 0);
+  self->_whichOneof_Primitivevalue = 16 * (fileCopy != 0);
   file = self->_file;
-  self->_file = v4;
+  self->_file = fileCopy;
 }
 
 - (void)deletePerson
@@ -975,9 +975,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setPerson:(id)a3
+- (void)setPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1007,14 +1007,14 @@ LABEL_53:
   self->_app = 0;
 
   v13 = 15;
-  if (!v4)
+  if (!personCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   person = self->_person;
-  self->_person = v4;
+  self->_person = personCopy;
 }
 
 - (void)deletePlacemark
@@ -1042,9 +1042,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setPlacemark:(id)a3
+- (void)setPlacemark:(id)placemark
 {
-  v4 = a3;
+  placemarkCopy = placemark;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1074,14 +1074,14 @@ LABEL_53:
   self->_app = 0;
 
   v13 = 14;
-  if (!v4)
+  if (!placemarkCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   placemark = self->_placemark;
-  self->_placemark = v4;
+  self->_placemark = placemarkCopy;
 }
 
 - (void)deletePaymentMethod
@@ -1109,9 +1109,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setPaymentMethod:(id)a3
+- (void)setPaymentMethod:(id)method
 {
-  v4 = a3;
+  methodCopy = method;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1141,14 +1141,14 @@ LABEL_53:
   self->_app = 0;
 
   v13 = 13;
-  if (!v4)
+  if (!methodCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   paymentMethod = self->_paymentMethod;
-  self->_paymentMethod = v4;
+  self->_paymentMethod = methodCopy;
 }
 
 - (void)deleteCurrencyAmount
@@ -1176,9 +1176,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setCurrencyAmount:(id)a3
+- (void)setCurrencyAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1208,14 +1208,14 @@ LABEL_53:
   self->_app = 0;
 
   v13 = 12;
-  if (!v4)
+  if (!amountCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   currencyAmount = self->_currencyAmount;
-  self->_currencyAmount = v4;
+  self->_currencyAmount = amountCopy;
 }
 
 - (void)deleteMeasurement
@@ -1243,9 +1243,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setMeasurement:(id)a3
+- (void)setMeasurement:(id)measurement
 {
-  v4 = a3;
+  measurementCopy = measurement;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1275,14 +1275,14 @@ LABEL_53:
   self->_app = 0;
 
   v13 = 11;
-  if (!v4)
+  if (!measurementCopy)
   {
     v13 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v13;
   measurement = self->_measurement;
-  self->_measurement = v4;
+  self->_measurement = measurementCopy;
 }
 
 - (void)deletePrimitiveDateComponents
@@ -1310,9 +1310,9 @@ LABEL_53:
   return v3;
 }
 
-- (void)setPrimitiveDateComponents:(id)a3
+- (void)setPrimitiveDateComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1341,9 +1341,9 @@ LABEL_53:
   app = self->_app;
   self->_app = 0;
 
-  self->_whichOneof_Primitivevalue = 8 * (v4 != 0);
+  self->_whichOneof_Primitivevalue = 8 * (componentsCopy != 0);
   primitiveDateComponents = self->_primitiveDateComponents;
-  self->_primitiveDateComponents = v4;
+  self->_primitiveDateComponents = componentsCopy;
 }
 
 - (void)deletePrimitiveDecimal
@@ -1371,7 +1371,7 @@ LABEL_53:
   return v3;
 }
 
-- (void)setPrimitiveDecimal:(id)a3
+- (void)setPrimitiveDecimal:(id)decimal
 {
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
@@ -1379,7 +1379,7 @@ LABEL_53:
   self->_primitiveDouble = 0.0;
   primitiveDateComponents = self->_primitiveDateComponents;
   self->_primitiveDateComponents = 0;
-  v15 = a3;
+  decimalCopy = decimal;
 
   measurement = self->_measurement;
   self->_measurement = 0;
@@ -1403,13 +1403,13 @@ LABEL_53:
   self->_app = 0;
 
   v12 = 5;
-  if (!v15)
+  if (!decimalCopy)
   {
     v12 = 0;
   }
 
   self->_whichOneof_Primitivevalue = v12;
-  v13 = [v15 copy];
+  v13 = [decimalCopy copy];
   primitiveDecimal = self->_primitiveDecimal;
   self->_primitiveDecimal = v13;
 }
@@ -1434,7 +1434,7 @@ LABEL_53:
   return result;
 }
 
-- (void)setPrimitiveDouble:(double)a3
+- (void)setPrimitiveDouble:(double)double
 {
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
@@ -1467,7 +1467,7 @@ LABEL_53:
   self->_app = 0;
 
   self->_whichOneof_Primitivevalue = 4;
-  self->_primitiveDouble = a3;
+  self->_primitiveDouble = double;
 }
 
 - (void)deletePrimitiveInt
@@ -1492,7 +1492,7 @@ LABEL_53:
   }
 }
 
-- (void)setPrimitiveInt:(int64_t)a3
+- (void)setPrimitiveInt:(int64_t)int
 {
   self->_primitiveNull = 0;
   self->_primitiveBool = 0;
@@ -1525,7 +1525,7 @@ LABEL_53:
   self->_app = 0;
 
   self->_whichOneof_Primitivevalue = 3;
-  self->_primitiveInt = a3;
+  self->_primitiveInt = int;
 }
 
 - (void)deletePrimitiveBool
@@ -1537,7 +1537,7 @@ LABEL_53:
   }
 }
 
-- (void)setPrimitiveBool:(BOOL)a3
+- (void)setPrimitiveBool:(BOOL)bool
 {
   self->_primitiveNull = 0;
   self->_primitiveInt = 0;
@@ -1570,7 +1570,7 @@ LABEL_53:
   self->_app = 0;
 
   self->_whichOneof_Primitivevalue = 2;
-  self->_primitiveBool = a3;
+  self->_primitiveBool = bool;
 }
 
 - (void)deletePrimitiveNull
@@ -1582,7 +1582,7 @@ LABEL_53:
   }
 }
 
-- (void)setPrimitiveNull:(BOOL)a3
+- (void)setPrimitiveNull:(BOOL)null
 {
   self->_primitiveBool = 0;
   self->_primitiveInt = 0;
@@ -1615,83 +1615,83 @@ LABEL_53:
   self->_app = 0;
 
   self->_whichOneof_Primitivevalue = 1;
-  self->_primitiveNull = a3;
+  self->_primitiveNull = null;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v31.receiver = self;
   v31.super_class = IFTSchemaIFTPrimitiveValue;
-  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:policyCopy];
+  primitiveDateComponents = [(IFTSchemaIFTPrimitiveValue *)self primitiveDateComponents];
+  v7 = [primitiveDateComponents applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deletePrimitiveDateComponents];
   }
 
-  v9 = [(IFTSchemaIFTPrimitiveValue *)self measurement];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  measurement = [(IFTSchemaIFTPrimitiveValue *)self measurement];
+  v10 = [measurement applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deleteMeasurement];
   }
 
-  v12 = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  currencyAmount = [(IFTSchemaIFTPrimitiveValue *)self currencyAmount];
+  v13 = [currencyAmount applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deleteCurrencyAmount];
   }
 
-  v15 = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  paymentMethod = [(IFTSchemaIFTPrimitiveValue *)self paymentMethod];
+  v16 = [paymentMethod applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deletePaymentMethod];
   }
 
-  v18 = [(IFTSchemaIFTPrimitiveValue *)self placemark];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  placemark = [(IFTSchemaIFTPrimitiveValue *)self placemark];
+  v19 = [placemark applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deletePlacemark];
   }
 
-  v21 = [(IFTSchemaIFTPrimitiveValue *)self person];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  person = [(IFTSchemaIFTPrimitiveValue *)self person];
+  v22 = [person applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deletePerson];
   }
 
-  v24 = [(IFTSchemaIFTPrimitiveValue *)self file];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  file = [(IFTSchemaIFTPrimitiveValue *)self file];
+  v25 = [file applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deleteFile];
   }
 
   v27 = [(IFTSchemaIFTPrimitiveValue *)self app];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  v28 = [v27 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(IFTSchemaIFTPrimitiveValue *)self deleteApp];
   }

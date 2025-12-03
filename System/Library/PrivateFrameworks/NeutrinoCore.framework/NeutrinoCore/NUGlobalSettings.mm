@@ -99,113 +99,113 @@
 + (int64_t)storagePoolPurgeableLimit;
 + (unint64_t)videoCompositorDebugMode;
 + (void)reset;
-+ (void)setAllAssetsCanUseHDRPipeline:(BOOL)a3;
-+ (void)setAlwaysRequireHardwareVideoEncoder:(BOOL)a3;
-+ (void)setBufferStorageFactoryUsePool:(BOOL)a3;
-+ (void)setCacheNodeCacheSizeLimit:(int64_t)a3;
-+ (void)setCacheNodeDirectoryURL:(id)a3;
-+ (void)setCacheNodeFilePermissions:(int64_t)a3;
-+ (void)setCacheNodeImageCompression:(double)a3;
-+ (void)setDebugDumpStyleEngineInputs:(BOOL)a3;
-+ (void)setDebugRenderBlue:(id)a3;
-+ (void)setDebugRenderPurple:(id)a3;
-+ (void)setDebugRenderYellow:(id)a3;
-+ (void)setDebugSoftMemoryLimit:(int64_t)a3;
-+ (void)setDeviceDefaultSampleMode:(int64_t)a3;
-+ (void)setDevicePrintRenderer:(BOOL)a3;
-+ (void)setDisableAuxiliaryImageCacheFromSource:(BOOL)a3;
-+ (void)setDisableIOSurfacePortaitExport:(BOOL)a3;
-+ (void)setDisableMeteorGainMapGeneration:(BOOL)a3;
-+ (void)setDisablePacked10BitPixelFormats:(BOOL)a3;
-+ (void)setDisplayDisableColorMatching:(BOOL)a3;
-+ (void)setDisplayDisableDeepColor:(BOOL)a3;
-+ (void)setDisplayForceDeepColor:(BOOL)a3;
-+ (void)setEnableFlexRange:(BOOL)a3;
-+ (void)setEnableHDRSupport:(BOOL)a3;
-+ (void)setEnableSpatialMediaEditing:(BOOL)a3;
-+ (void)setEnforceMinimumBitRateForCinematicVideos:(BOOL)a3;
-+ (void)setEnforceMinimumBitRateForExportedVideos:(BOOL)a3;
-+ (void)setForceMeteorGainMapGeneration:(BOOL)a3;
-+ (void)setForceMeteorPlusLinear:(BOOL)a3;
-+ (void)setForceMeteorPlusPlus:(BOOL)a3;
-+ (void)setForceSoftwareVideoEncoder:(BOOL)a3;
-+ (void)setImageLayerDebug:(BOOL)a3;
-+ (void)setImageRenderJobUseSurfaceRenderer:(BOOL)a3;
-+ (void)setImageRenderJobUseTextureRenderer:(BOOL)a3;
-+ (void)setImageSourceDisableCacheImmediately:(BOOL)a3;
-+ (void)setImageSourceDisableRAW:(BOOL)a3;
-+ (void)setImageTileBorder:(int64_t)a3;
-+ (void)setImageTileSize:(int64_t)a3;
-+ (void)setInpaintDumpsInputImages:(BOOL)a3;
-+ (void)setInpaintMaximumArea:(double)a3;
-+ (void)setInpaintMinimumArea:(double)a3;
-+ (void)setInpaintSegmentationInputTensorsDumpPath:(id)a3;
-+ (void)setInpaintSegmentationMaxInputSize:(int64_t)a3;
-+ (void)setInpaintSegmentationUsesConnectedComponents:(BOOL)a3;
-+ (void)setInpaintSegmentationUsesNonUniformScaling:(BOOL)a3;
-+ (void)setLogPeakRenderCIUsuage:(BOOL)a3;
-+ (void)setMaxGainMapHeadroom:(double)a3;
-+ (void)setMaxPixelCountForCacheImmediately:(int64_t)a3;
-+ (void)setMediaViewDisableLivePhoto:(BOOL)a3;
-+ (void)setMediaViewRenderCoalescingInterval:(double)a3;
-+ (void)setMeteorGainMapExposureCompensationMode:(id)a3;
-+ (void)setOverrideCleanupHardwareCheck:(BOOL)a3;
-+ (void)setOverrideDisplayHeadroom:(double)a3;
-+ (void)setOverrideSemanticStylesHardwareCheck:(BOOL)a3;
-+ (void)setPipelineSourceURL:(id)a3;
-+ (void)setPlatformHasWideColor:(BOOL)a3;
-+ (void)setPreserveSubjectsWhenInpainting:(BOOL)a3;
-+ (void)setRenderEDRAsPQ:(BOOL)a3;
-+ (void)setRenderJobDebug:(BOOL)a3;
-+ (void)setRenderJobDebugCapture5PercentOfJobs:(BOOL)a3;
-+ (void)setRenderJobDebugCaptureCanceledJobs:(BOOL)a3;
-+ (void)setRenderJobDebugCaptureNodeCache:(BOOL)a3;
-+ (void)setRenderJobDebugCaptureNodeGraphs:(BOOL)a3;
-+ (void)setRenderJobDebugCaptureOnlyPerfStats:(BOOL)a3;
-+ (void)setRenderJobDebugCapturePerfStatHistory:(BOOL)a3;
-+ (void)setRenderJobDisableResultCache:(BOOL)a3;
-+ (void)setRenderMeteorPlusAsHDR:(BOOL)a3;
-+ (void)setRenderResourceEvictionDelay:(double)a3;
-+ (void)setRenderTransparencyOpaque:(BOOL)a3;
-+ (void)setRenderTransparencyOverBlack:(BOOL)a3;
-+ (void)setRenderVideoLive:(BOOL)a3;
-+ (void)setRendererClampToAlpha:(BOOL)a3;
-+ (void)setRendererContextDefaultMemoryTarget:(int64_t)a3;
-+ (void)setRendererContextLargeMemoryTarget:(int64_t)a3;
-+ (void)setRendererContextLowMemoryTarget:(int64_t)a3;
-+ (void)setRendererUseHalfFloat:(BOOL)a3;
-+ (void)setRendererUseP3Linear:(BOOL)a3;
-+ (void)setResampleInSourceColorSpace:(BOOL)a3;
-+ (void)setRunNeutrinoSynchronously:(BOOL)a3;
-+ (void)setSemanticStyleAllowResidualsMismatch:(BOOL)a3;
-+ (void)setSemanticStyleDisableDeltaMap:(BOOL)a3;
-+ (void)setSemanticStyleDisableResiduals:(BOOL)a3;
-+ (void)setSemanticStyleForceResiduals:(BOOL)a3;
-+ (void)setSemanticStyleForceSyntheticNoise:(BOOL)a3;
-+ (void)setSemanticStyleInterpolationHalfWindowTime:(double)a3;
-+ (void)setSemanticStyleUseDynamicConfig:(BOOL)a3;
-+ (void)setSemanticStyleUseFasterSystemOrder:(BOOL)a3;
-+ (void)setShouldEnableStylesForProRaw:(BOOL)a3;
-+ (void)setStoragePoolMigrationDelay:(double)a3;
-+ (void)setStoragePoolNonPurgeableLimit:(int64_t)a3;
-+ (void)setStoragePoolPurgeableLimit:(int64_t)a3;
-+ (void)setSurfaceStorageFactoryUsePool:(BOOL)a3;
-+ (void)setTempDir:(id)a3;
-+ (void)setThresholdDisplayHeadroom:(double)a3;
-+ (void)setUpCacheNodeDirectoryWithComponent:(id)a3;
-+ (void)setVideoCompositorDebugMode:(unint64_t)a3;
-+ (void)setViewDebugEnabled:(BOOL)a3;
-+ (void)setVisionSessionEvictionDelay:(double)a3;
-- (BOOL)BOOLSettingForKey:(id)a3 defaultValue:(id)a4;
++ (void)setAllAssetsCanUseHDRPipeline:(BOOL)pipeline;
++ (void)setAlwaysRequireHardwareVideoEncoder:(BOOL)encoder;
++ (void)setBufferStorageFactoryUsePool:(BOOL)pool;
++ (void)setCacheNodeCacheSizeLimit:(int64_t)limit;
++ (void)setCacheNodeDirectoryURL:(id)l;
++ (void)setCacheNodeFilePermissions:(int64_t)permissions;
++ (void)setCacheNodeImageCompression:(double)compression;
++ (void)setDebugDumpStyleEngineInputs:(BOOL)inputs;
++ (void)setDebugRenderBlue:(id)blue;
++ (void)setDebugRenderPurple:(id)purple;
++ (void)setDebugRenderYellow:(id)yellow;
++ (void)setDebugSoftMemoryLimit:(int64_t)limit;
++ (void)setDeviceDefaultSampleMode:(int64_t)mode;
++ (void)setDevicePrintRenderer:(BOOL)renderer;
++ (void)setDisableAuxiliaryImageCacheFromSource:(BOOL)source;
++ (void)setDisableIOSurfacePortaitExport:(BOOL)export;
++ (void)setDisableMeteorGainMapGeneration:(BOOL)generation;
++ (void)setDisablePacked10BitPixelFormats:(BOOL)formats;
++ (void)setDisplayDisableColorMatching:(BOOL)matching;
++ (void)setDisplayDisableDeepColor:(BOOL)color;
++ (void)setDisplayForceDeepColor:(BOOL)color;
++ (void)setEnableFlexRange:(BOOL)range;
++ (void)setEnableHDRSupport:(BOOL)support;
++ (void)setEnableSpatialMediaEditing:(BOOL)editing;
++ (void)setEnforceMinimumBitRateForCinematicVideos:(BOOL)videos;
++ (void)setEnforceMinimumBitRateForExportedVideos:(BOOL)videos;
++ (void)setForceMeteorGainMapGeneration:(BOOL)generation;
++ (void)setForceMeteorPlusLinear:(BOOL)linear;
++ (void)setForceMeteorPlusPlus:(BOOL)plus;
++ (void)setForceSoftwareVideoEncoder:(BOOL)encoder;
++ (void)setImageLayerDebug:(BOOL)debug;
++ (void)setImageRenderJobUseSurfaceRenderer:(BOOL)renderer;
++ (void)setImageRenderJobUseTextureRenderer:(BOOL)renderer;
++ (void)setImageSourceDisableCacheImmediately:(BOOL)immediately;
++ (void)setImageSourceDisableRAW:(BOOL)w;
++ (void)setImageTileBorder:(int64_t)border;
++ (void)setImageTileSize:(int64_t)size;
++ (void)setInpaintDumpsInputImages:(BOOL)images;
++ (void)setInpaintMaximumArea:(double)area;
++ (void)setInpaintMinimumArea:(double)area;
++ (void)setInpaintSegmentationInputTensorsDumpPath:(id)path;
++ (void)setInpaintSegmentationMaxInputSize:(int64_t)size;
++ (void)setInpaintSegmentationUsesConnectedComponents:(BOOL)components;
++ (void)setInpaintSegmentationUsesNonUniformScaling:(BOOL)scaling;
++ (void)setLogPeakRenderCIUsuage:(BOOL)usuage;
++ (void)setMaxGainMapHeadroom:(double)headroom;
++ (void)setMaxPixelCountForCacheImmediately:(int64_t)immediately;
++ (void)setMediaViewDisableLivePhoto:(BOOL)photo;
++ (void)setMediaViewRenderCoalescingInterval:(double)interval;
++ (void)setMeteorGainMapExposureCompensationMode:(id)mode;
++ (void)setOverrideCleanupHardwareCheck:(BOOL)check;
++ (void)setOverrideDisplayHeadroom:(double)headroom;
++ (void)setOverrideSemanticStylesHardwareCheck:(BOOL)check;
++ (void)setPipelineSourceURL:(id)l;
++ (void)setPlatformHasWideColor:(BOOL)color;
++ (void)setPreserveSubjectsWhenInpainting:(BOOL)inpainting;
++ (void)setRenderEDRAsPQ:(BOOL)q;
++ (void)setRenderJobDebug:(BOOL)debug;
++ (void)setRenderJobDebugCapture5PercentOfJobs:(BOOL)jobs;
++ (void)setRenderJobDebugCaptureCanceledJobs:(BOOL)jobs;
++ (void)setRenderJobDebugCaptureNodeCache:(BOOL)cache;
++ (void)setRenderJobDebugCaptureNodeGraphs:(BOOL)graphs;
++ (void)setRenderJobDebugCaptureOnlyPerfStats:(BOOL)stats;
++ (void)setRenderJobDebugCapturePerfStatHistory:(BOOL)history;
++ (void)setRenderJobDisableResultCache:(BOOL)cache;
++ (void)setRenderMeteorPlusAsHDR:(BOOL)r;
++ (void)setRenderResourceEvictionDelay:(double)delay;
++ (void)setRenderTransparencyOpaque:(BOOL)opaque;
++ (void)setRenderTransparencyOverBlack:(BOOL)black;
++ (void)setRenderVideoLive:(BOOL)live;
++ (void)setRendererClampToAlpha:(BOOL)alpha;
++ (void)setRendererContextDefaultMemoryTarget:(int64_t)target;
++ (void)setRendererContextLargeMemoryTarget:(int64_t)target;
++ (void)setRendererContextLowMemoryTarget:(int64_t)target;
++ (void)setRendererUseHalfFloat:(BOOL)float;
++ (void)setRendererUseP3Linear:(BOOL)linear;
++ (void)setResampleInSourceColorSpace:(BOOL)space;
++ (void)setRunNeutrinoSynchronously:(BOOL)synchronously;
++ (void)setSemanticStyleAllowResidualsMismatch:(BOOL)mismatch;
++ (void)setSemanticStyleDisableDeltaMap:(BOOL)map;
++ (void)setSemanticStyleDisableResiduals:(BOOL)residuals;
++ (void)setSemanticStyleForceResiduals:(BOOL)residuals;
++ (void)setSemanticStyleForceSyntheticNoise:(BOOL)noise;
++ (void)setSemanticStyleInterpolationHalfWindowTime:(double)time;
++ (void)setSemanticStyleUseDynamicConfig:(BOOL)config;
++ (void)setSemanticStyleUseFasterSystemOrder:(BOOL)order;
++ (void)setShouldEnableStylesForProRaw:(BOOL)raw;
++ (void)setStoragePoolMigrationDelay:(double)delay;
++ (void)setStoragePoolNonPurgeableLimit:(int64_t)limit;
++ (void)setStoragePoolPurgeableLimit:(int64_t)limit;
++ (void)setSurfaceStorageFactoryUsePool:(BOOL)pool;
++ (void)setTempDir:(id)dir;
++ (void)setThresholdDisplayHeadroom:(double)headroom;
++ (void)setUpCacheNodeDirectoryWithComponent:(id)component;
++ (void)setVideoCompositorDebugMode:(unint64_t)mode;
++ (void)setViewDebugEnabled:(BOOL)enabled;
++ (void)setVisionSessionEvictionDelay:(double)delay;
+- (BOOL)BOOLSettingForKey:(id)key defaultValue:(id)value;
 - (NUGlobalSettings)init;
-- (double)doubleSettingForKey:(id)a3 defaultValue:(id)a4;
-- (id)_settingForKey:(id)a3 defaultValue:(id)a4;
-- (id)settingForKey:(id)a3 defaultValue:(id)a4;
-- (id)stringSettingForKey:(id)a3 defaultValue:(id)a4;
-- (id)urlSettingForKey:(id)a3 defaultValue:(id)a4;
-- (int64_t)integerSettingForKey:(id)a3 defaultValue:(id)a4;
+- (double)doubleSettingForKey:(id)key defaultValue:(id)value;
+- (id)_settingForKey:(id)key defaultValue:(id)value;
+- (id)settingForKey:(id)key defaultValue:(id)value;
+- (id)stringSettingForKey:(id)key defaultValue:(id)value;
+- (id)urlSettingForKey:(id)key defaultValue:(id)value;
+- (int64_t)integerSettingForKey:(id)key defaultValue:(id)value;
 - (void)reset;
-- (void)setSetting:(id)a3 forKey:(id)a4;
+- (void)setSetting:(id)setting forKey:(id)key;
 @end
 
 @implementation NUGlobalSettings
@@ -245,18 +245,18 @@ uint64_t __34__NUGlobalSettings_globalSettings__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)urlSettingForKey:(id)a3 defaultValue:(id)a4
+- (id)urlSettingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__NUGlobalSettings_urlSettingForKey_defaultValue___block_invoke;
   v12[3] = &unk_1E8109348;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = keyCopy;
+  v14 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   v10 = [(NUGlobalSettings *)self settingForKey:v9 defaultValue:v12];
 
   return v10;
@@ -279,18 +279,18 @@ id __50__NUGlobalSettings_urlSettingForKey_defaultValue___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)stringSettingForKey:(id)a3 defaultValue:(id)a4
+- (id)stringSettingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__NUGlobalSettings_stringSettingForKey_defaultValue___block_invoke;
   v12[3] = &unk_1E8109320;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = keyCopy;
+  v14 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   v10 = [(NUGlobalSettings *)self settingForKey:v9 defaultValue:v12];
 
   return v10;
@@ -315,18 +315,18 @@ id __53__NUGlobalSettings_stringSettingForKey_defaultValue___block_invoke(uint64
   return v5;
 }
 
-- (double)doubleSettingForKey:(id)a3 defaultValue:(id)a4
+- (double)doubleSettingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __53__NUGlobalSettings_doubleSettingForKey_defaultValue___block_invoke;
   v17 = &unk_1E81092F8;
-  v18 = v6;
-  v19 = v7;
-  v8 = v7;
-  v9 = v6;
+  v18 = keyCopy;
+  v19 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   v10 = [(NUGlobalSettings *)self settingForKey:v9 defaultValue:&v14];
   [v10 doubleValue];
   v12 = v11;
@@ -356,22 +356,22 @@ uint64_t __53__NUGlobalSettings_doubleSettingForKey_defaultValue___block_invoke(
   return [v1 numberWithDouble:v7];
 }
 
-- (int64_t)integerSettingForKey:(id)a3 defaultValue:(id)a4
+- (int64_t)integerSettingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __54__NUGlobalSettings_integerSettingForKey_defaultValue___block_invoke;
   v16 = &unk_1E81092F8;
-  v17 = v6;
-  v18 = v7;
-  v8 = v7;
-  v9 = v6;
+  v17 = keyCopy;
+  v18 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   v10 = [(NUGlobalSettings *)self settingForKey:v9 defaultValue:&v13];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  return v11;
+  return integerValue;
 }
 
 uint64_t __54__NUGlobalSettings_integerSettingForKey_defaultValue___block_invoke(uint64_t a1)
@@ -396,22 +396,22 @@ uint64_t __54__NUGlobalSettings_integerSettingForKey_defaultValue___block_invoke
   return [v1 numberWithInteger:v7];
 }
 
-- (BOOL)BOOLSettingForKey:(id)a3 defaultValue:(id)a4
+- (BOOL)BOOLSettingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __51__NUGlobalSettings_BOOLSettingForKey_defaultValue___block_invoke;
   v16 = &unk_1E81092F8;
-  v17 = v6;
-  v18 = v7;
-  v8 = v7;
-  v9 = v6;
+  v17 = keyCopy;
+  v18 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   v10 = [(NUGlobalSettings *)self settingForKey:v9 defaultValue:&v13];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
 uint64_t __51__NUGlobalSettings_BOOLSettingForKey_defaultValue___block_invoke(uint64_t a1)
@@ -436,41 +436,41 @@ uint64_t __51__NUGlobalSettings_BOOLSettingForKey_defaultValue___block_invoke(ui
   return [v1 numberWithBool:v7];
 }
 
-- (void)setSetting:(id)a3 forKey:(id)a4
+- (void)setSetting:(id)setting forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__NUGlobalSettings_setSetting_forKey___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = settingCopy;
+  v9 = settingCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)_settingForKey:(id)a3 defaultValue:(id)a4
+- (id)_settingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_settings objectForKeyedSubscript:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(NSMutableDictionary *)self->_settings objectForKeyedSubscript:keyCopy];
   if (!v8)
   {
-    v8 = v7[2](v7);
-    [(NSMutableDictionary *)self->_settings setObject:v8 forKeyedSubscript:v6];
+    v8 = valueCopy[2](valueCopy);
+    [(NSMutableDictionary *)self->_settings setObject:v8 forKeyedSubscript:keyCopy];
   }
 
   return v8;
 }
 
-- (id)settingForKey:(id)a3 defaultValue:(id)a4
+- (id)settingForKey:(id)key defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -483,11 +483,11 @@ uint64_t __51__NUGlobalSettings_BOOLSettingForKey_defaultValue___block_invoke(ui
   v13[2] = __47__NUGlobalSettings_settingForKey_defaultValue___block_invoke;
   v13[3] = &unk_1E810A120;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = keyCopy;
+  v15 = valueCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = valueCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, v13);
   v11 = v18[5];
 
@@ -514,81 +514,81 @@ uint64_t __47__NUGlobalSettings_settingForKey_defaultValue___block_invoke(uint64
   dispatch_sync(queue, block);
 }
 
-+ (void)setDebugSoftMemoryLimit:(int64_t)a3
++ (void)setDebugSoftMemoryLimit:(int64_t)limit
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_DEBUG_SOFT_MEMORY_LIMIT"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:limit];
+  [globalSettings setSetting:v4 forKey:@"NU_DEBUG_SOFT_MEMORY_LIMIT"];
 }
 
 + (int64_t)debugSoftMemoryLimit
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_DEBUG_SOFT_MEMORY_LIMIT" defaultValue:&__block_literal_global_517];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_DEBUG_SOFT_MEMORY_LIMIT" defaultValue:&__block_literal_global_517];
 
   return v3;
 }
 
-+ (void)setVisionSessionEvictionDelay:(double)a3
++ (void)setVisionSessionEvictionDelay:(double)delay
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_VISION_SESSION_EVICTION_DELAY"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+  [globalSettings setSetting:v4 forKey:@"NU_VISION_SESSION_EVICTION_DELAY"];
 }
 
 + (double)visionSessionEvictionDelay
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_VISION_SESSION_EVICTION_DELAY" defaultValue:&__block_literal_global_512];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_VISION_SESSION_EVICTION_DELAY" defaultValue:&__block_literal_global_512];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setRenderResourceEvictionDelay:(double)a3
++ (void)setRenderResourceEvictionDelay:(double)delay
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_RESOURCE_EVICTION_DELAY"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_RESOURCE_EVICTION_DELAY"];
 }
 
 + (double)renderResourceEvictionDelay
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_RENDER_RESOURCE_EVICTION_DELAY" defaultValue:&__block_literal_global_507];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_RENDER_RESOURCE_EVICTION_DELAY" defaultValue:&__block_literal_global_507];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setSemanticStyleUseFasterSystemOrder:(BOOL)a3
++ (void)setSemanticStyleUseFasterSystemOrder:(BOOL)order
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_USE_FASTER_SYSTEM_ORDER"];
+  orderCopy = order;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:orderCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_USE_FASTER_SYSTEM_ORDER"];
 }
 
 + (BOOL)semanticStyleUseFasterSystemOrder
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_USE_FASTER_SYSTEM_ORDER" defaultValue:&__block_literal_global_502];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_USE_FASTER_SYSTEM_ORDER" defaultValue:&__block_literal_global_502];
 
   return v3;
 }
 
-+ (void)setSemanticStyleUseDynamicConfig:(BOOL)a3
++ (void)setSemanticStyleUseDynamicConfig:(BOOL)config
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_USE_DYNAMIC_CONFIG"];
+  configCopy = config;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:configCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_USE_DYNAMIC_CONFIG"];
 }
 
 + (BOOL)semanticStyleUseDynamicConfig
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_USE_DYNAMIC_CONFIG" defaultValue:&__block_literal_global_493];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_USE_DYNAMIC_CONFIG" defaultValue:&__block_literal_global_493];
 
   return v3;
 }
@@ -602,224 +602,224 @@ uint64_t __49__NUGlobalSettings_semanticStyleUseDynamicConfig__block_invoke()
   return v2;
 }
 
-+ (void)setDebugDumpStyleEngineInputs:(BOOL)a3
++ (void)setDebugDumpStyleEngineInputs:(BOOL)inputs
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DEBUG_DUMP_STYLE_ENGINE_INPUTS"];
+  inputsCopy = inputs;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:inputsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DEBUG_DUMP_STYLE_ENGINE_INPUTS"];
 }
 
 + (BOOL)debugDumpStyleEngineInputs
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DEBUG_DUMP_STYLE_ENGINE_INPUTS" defaultValue:&__block_literal_global_488];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DEBUG_DUMP_STYLE_ENGINE_INPUTS" defaultValue:&__block_literal_global_488];
 
   return v3;
 }
 
-+ (void)setSemanticStyleForceSyntheticNoise:(BOOL)a3
++ (void)setSemanticStyleForceSyntheticNoise:(BOOL)noise
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_FORCE_SYNTHETIC_NOISE"];
+  noiseCopy = noise;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:noiseCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_FORCE_SYNTHETIC_NOISE"];
 }
 
 + (BOOL)semanticStyleForceSyntheticNoise
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_FORCE_SYNTHETIC_NOISE" defaultValue:&__block_literal_global_483];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_FORCE_SYNTHETIC_NOISE" defaultValue:&__block_literal_global_483];
 
   return v3;
 }
 
-+ (void)setSemanticStyleAllowResidualsMismatch:(BOOL)a3
++ (void)setSemanticStyleAllowResidualsMismatch:(BOOL)mismatch
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_ALLOW_RESIDUALS_MISMATCH"];
+  mismatchCopy = mismatch;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:mismatchCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_ALLOW_RESIDUALS_MISMATCH"];
 }
 
 + (BOOL)semanticStyleAllowResidualsMismatch
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_ALLOW_RESIDUALS_MISMATCH" defaultValue:&__block_literal_global_478];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_ALLOW_RESIDUALS_MISMATCH" defaultValue:&__block_literal_global_478];
 
   return v3;
 }
 
-+ (void)setSemanticStyleForceResiduals:(BOOL)a3
++ (void)setSemanticStyleForceResiduals:(BOOL)residuals
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_FORCE_RESIDUALS"];
+  residualsCopy = residuals;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:residualsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_FORCE_RESIDUALS"];
 }
 
 + (BOOL)semanticStyleForceResiduals
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_FORCE_RESIDUALS" defaultValue:&__block_literal_global_473];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_FORCE_RESIDUALS" defaultValue:&__block_literal_global_473];
 
   return v3;
 }
 
-+ (void)setSemanticStyleDisableResiduals:(BOOL)a3
++ (void)setSemanticStyleDisableResiduals:(BOOL)residuals
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_DISABLE_RESIDUALS"];
+  residualsCopy = residuals;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:residualsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_DISABLE_RESIDUALS"];
 }
 
 + (BOOL)semanticStyleDisableResiduals
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_DISABLE_RESIDUALS" defaultValue:&__block_literal_global_468];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_DISABLE_RESIDUALS" defaultValue:&__block_literal_global_468];
 
   return v3;
 }
 
-+ (void)setSemanticStyleDisableDeltaMap:(BOOL)a3
++ (void)setSemanticStyleDisableDeltaMap:(BOOL)map
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_DISABLE_DELTA_MAP"];
+  mapCopy = map;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:mapCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_DISABLE_DELTA_MAP"];
 }
 
 + (BOOL)semanticStyleDisableDeltaMap
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_DISABLE_DELTA_MAP" defaultValue:&__block_literal_global_463];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_DISABLE_DELTA_MAP" defaultValue:&__block_literal_global_463];
 
   return v3;
 }
 
-+ (void)setOverrideSemanticStylesHardwareCheck:(BOOL)a3
++ (void)setOverrideSemanticStylesHardwareCheck:(BOOL)check
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_OVERRIDE_HARDWARE"];
+  checkCopy = check;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:checkCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_OVERRIDE_HARDWARE"];
 }
 
 + (BOOL)overrideSemanticStylesHardwareCheck
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_OVERRIDE_HARDWARE" defaultValue:&__block_literal_global_458];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_OVERRIDE_HARDWARE" defaultValue:&__block_literal_global_458];
 
   return v3;
 }
 
-+ (void)setSemanticStyleInterpolationHalfWindowTime:(double)a3
++ (void)setSemanticStyleInterpolationHalfWindowTime:(double)time
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_TEMPORAL_WINDOW_SIZE"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_TEMPORAL_WINDOW_SIZE"];
 }
 
 + (double)semanticStyleInterpolationHalfWindowTime
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_STYLES_TEMPORAL_WINDOW_SIZE" defaultValue:&__block_literal_global_453];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_STYLES_TEMPORAL_WINDOW_SIZE" defaultValue:&__block_literal_global_453];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setShouldEnableStylesForProRaw:(BOOL)a3
++ (void)setShouldEnableStylesForProRaw:(BOOL)raw
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_STYLES_SHOULD_ENABLE_ON_PRORAW"];
+  rawCopy = raw;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rawCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_STYLES_SHOULD_ENABLE_ON_PRORAW"];
 }
 
 + (BOOL)shouldEnableStylesForProRaw
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_STYLES_SHOULD_ENABLE_ON_PRORAW" defaultValue:&__block_literal_global_448];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_STYLES_SHOULD_ENABLE_ON_PRORAW" defaultValue:&__block_literal_global_448];
 
   return v3;
 }
 
-+ (void)setInpaintSegmentationMaxInputSize:(int64_t)a3
++ (void)setInpaintSegmentationMaxInputSize:(int64_t)size
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_SEGMENTATION_MAX_INPUT_SIZE"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_SEGMENTATION_MAX_INPUT_SIZE"];
 }
 
 + (int64_t)inpaintSegmentationMaxInputSize
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_INPAINT_SEGMENTATION_MAX_INPUT_SIZE" defaultValue:&__block_literal_global_443];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_INPAINT_SEGMENTATION_MAX_INPUT_SIZE" defaultValue:&__block_literal_global_443];
 
   return v3;
 }
 
-+ (void)setInpaintMaximumArea:(double)a3
++ (void)setInpaintMaximumArea:(double)area
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_MAX_AREA"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:area];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_MAX_AREA"];
 }
 
 + (double)inpaintMaximumArea
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_INPAINT_MAX_AREA" defaultValue:&__block_literal_global_438];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_INPAINT_MAX_AREA" defaultValue:&__block_literal_global_438];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setInpaintMinimumArea:(double)a3
++ (void)setInpaintMinimumArea:(double)area
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_MIN_AREA"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:area];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_MIN_AREA"];
 }
 
 + (double)inpaintMinimumArea
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_INPAINT_MIN_AREA" defaultValue:&__block_literal_global_433];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_INPAINT_MIN_AREA" defaultValue:&__block_literal_global_433];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setInpaintDumpsInputImages:(BOOL)a3
++ (void)setInpaintDumpsInputImages:(BOOL)images
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_DUMPS_INPUT_IMAGES"];
+  imagesCopy = images;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:imagesCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_DUMPS_INPUT_IMAGES"];
 }
 
 + (BOOL)inpaintDumpsInputImages
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_INPAINT_DUMPS_INPUT_IMAGES" defaultValue:&__block_literal_global_428];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_INPAINT_DUMPS_INPUT_IMAGES" defaultValue:&__block_literal_global_428];
 
   return v3;
 }
 
-+ (void)setInpaintSegmentationInputTensorsDumpPath:(id)a3
++ (void)setInpaintSegmentationInputTensorsDumpPath:(id)path
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_SEGMENT_INPUT_TENSOR_DUMP_PATH"];
+  pathCopy = path;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:pathCopy forKey:@"NU_INPAINT_SEGMENT_INPUT_TENSOR_DUMP_PATH"];
 }
 
 + (NSString)inpaintSegmentationInputTensorsDumpPath
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 settingForKey:@"NU_INPAINT_SEGMENT_INPUT_TENSOR_DUMP_PATH" defaultValue:&__block_literal_global_423];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings settingForKey:@"NU_INPAINT_SEGMENT_INPUT_TENSOR_DUMP_PATH" defaultValue:&__block_literal_global_423];
 
   return v3;
 }
@@ -832,18 +832,18 @@ id __59__NUGlobalSettings_inpaintSegmentationInputTensorsDumpPath__block_invoke(
   return v1;
 }
 
-+ (void)setInpaintSegmentationUsesNonUniformScaling:(BOOL)a3
++ (void)setInpaintSegmentationUsesNonUniformScaling:(BOOL)scaling
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_SEGMENT_NONUNIFORM_SCALING"];
+  scalingCopy = scaling;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:scalingCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_SEGMENT_NONUNIFORM_SCALING"];
 }
 
 + (BOOL)inpaintSegmentationUsesNonUniformScaling
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_INPAINT_SEGMENT_NONUNIFORM_SCALING" defaultValue:&__block_literal_global_417_804];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_INPAINT_SEGMENT_NONUNIFORM_SCALING" defaultValue:&__block_literal_global_417_804];
 
   return v3;
 }
@@ -866,18 +866,18 @@ uint64_t __60__NUGlobalSettings_inpaintSegmentationUsesNonUniformScaling__block_
   return v2;
 }
 
-+ (void)setInpaintSegmentationUsesConnectedComponents:(BOOL)a3
++ (void)setInpaintSegmentationUsesConnectedComponents:(BOOL)components
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_SEGMENT_CONNECTED_COMPONENTS"];
+  componentsCopy = components;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:componentsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_SEGMENT_CONNECTED_COMPONENTS"];
 }
 
 + (BOOL)inpaintSegmentationUsesConnectedComponents
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_INPAINT_SEGMENT_CONNECTED_COMPONENTS" defaultValue:&__block_literal_global_412];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_INPAINT_SEGMENT_CONNECTED_COMPONENTS" defaultValue:&__block_literal_global_412];
 
   return v3;
 }
@@ -900,96 +900,96 @@ uint64_t __62__NUGlobalSettings_inpaintSegmentationUsesConnectedComponents__bloc
   return v2;
 }
 
-+ (void)setPreserveSubjectsWhenInpainting:(BOOL)a3
++ (void)setPreserveSubjectsWhenInpainting:(BOOL)inpainting
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_INPAINT_PRESERVES_SUBJECTS"];
+  inpaintingCopy = inpainting;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:inpaintingCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_INPAINT_PRESERVES_SUBJECTS"];
 }
 
 + (BOOL)preserveSubjectsWhenInpainting
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_INPAINT_PRESERVES_SUBJECTS" defaultValue:&__block_literal_global_407];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_INPAINT_PRESERVES_SUBJECTS" defaultValue:&__block_literal_global_407];
 
   return v3;
 }
 
-+ (void)setOverrideCleanupHardwareCheck:(BOOL)a3
++ (void)setOverrideCleanupHardwareCheck:(BOOL)check
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_CLEANUP_OVERRIDE_HARDWARE"];
+  checkCopy = check;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:checkCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_CLEANUP_OVERRIDE_HARDWARE"];
 }
 
 + (BOOL)overrideCleanupHardwareCheck
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_CLEANUP_OVERRIDE_HARDWARE" defaultValue:&__block_literal_global_402];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_CLEANUP_OVERRIDE_HARDWARE" defaultValue:&__block_literal_global_402];
 
   return v3;
 }
 
-+ (void)setMaxPixelCountForCacheImmediately:(int64_t)a3
++ (void)setMaxPixelCountForCacheImmediately:(int64_t)immediately
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_MAX_PIXEL_COUNT_FOR_CACHE_IMMEDIATELY"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:immediately];
+  [globalSettings setSetting:v4 forKey:@"NU_MAX_PIXEL_COUNT_FOR_CACHE_IMMEDIATELY"];
 }
 
 + (int64_t)maxPixelCountForCacheImmediately
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_MAX_PIXEL_COUNT_FOR_CACHE_IMMEDIATELY" defaultValue:&__block_literal_global_397];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_MAX_PIXEL_COUNT_FOR_CACHE_IMMEDIATELY" defaultValue:&__block_literal_global_397];
 
   return v3;
 }
 
-+ (void)setEnableSpatialMediaEditing:(BOOL)a3
++ (void)setEnableSpatialMediaEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ENABLE_SPATIAL_MEDIA_EDITING"];
+  editingCopy = editing;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:editingCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ENABLE_SPATIAL_MEDIA_EDITING"];
 }
 
 + (BOOL)enableSpatialMediaEditing
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ENABLE_SPATIAL_MEDIA_EDITING" defaultValue:&__block_literal_global_392];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ENABLE_SPATIAL_MEDIA_EDITING" defaultValue:&__block_literal_global_392];
 
   return v3;
 }
 
-+ (void)setMediaViewDisableLivePhoto:(BOOL)a3
++ (void)setMediaViewDisableLivePhoto:(BOOL)photo
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_MEDIAVIEW_DISABLE_LIVE_PHOTO"];
+  photoCopy = photo;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:photoCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_MEDIAVIEW_DISABLE_LIVE_PHOTO"];
 }
 
 + (BOOL)mediaViewDisableLivePhoto
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_MEDIAVIEW_DISABLE_LIVE_PHOTO" defaultValue:&__block_literal_global_387];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_MEDIAVIEW_DISABLE_LIVE_PHOTO" defaultValue:&__block_literal_global_387];
 
   return v3;
 }
 
-+ (void)setMediaViewRenderCoalescingInterval:(double)a3
++ (void)setMediaViewRenderCoalescingInterval:(double)interval
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:1.0 / a3];
-  [v5 setSetting:v4 forKey:@"NU_MEDIAVIEW_COALESCED_UPDATES_PER_SECOND"];
+  globalSettings = [self globalSettings];
+  interval = [MEMORY[0x1E696AD98] numberWithDouble:1.0 / interval];
+  [globalSettings setSetting:interval forKey:@"NU_MEDIAVIEW_COALESCED_UPDATES_PER_SECOND"];
 }
 
 + (double)mediaViewRenderCoalescingInterval
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_MEDIAVIEW_COALESCED_UPDATES_PER_SECOND" defaultValue:&__block_literal_global_382_808];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_MEDIAVIEW_COALESCED_UPDATES_PER_SECOND" defaultValue:&__block_literal_global_382_808];
   v4 = v3;
 
   return 1.0 / v4;
@@ -1014,34 +1014,34 @@ double __53__NUGlobalSettings_mediaViewRenderCoalescingInterval__block_invoke()
   return v3;
 }
 
-+ (void)setDisableAuxiliaryImageCacheFromSource:(BOOL)a3
++ (void)setDisableAuxiliaryImageCacheFromSource:(BOOL)source
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISABLE_AUXILIARY_IMAGE_CACHE_FROM_SOURCE"];
+  sourceCopy = source;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:sourceCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISABLE_AUXILIARY_IMAGE_CACHE_FROM_SOURCE"];
 }
 
 + (BOOL)disableAuxiliaryImageCacheFromSource
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISABLE_AUXILIARY_IMAGE_CACHE_FROM_SOURCE" defaultValue:&__block_literal_global_377];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISABLE_AUXILIARY_IMAGE_CACHE_FROM_SOURCE" defaultValue:&__block_literal_global_377];
 
   return v3;
 }
 
-+ (void)setEnforceMinimumBitRateForCinematicVideos:(BOOL)a3
++ (void)setEnforceMinimumBitRateForCinematicVideos:(BOOL)videos
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ENFORCE_MIN_BITRATE_FOR_CINEMATIC_VIDEO"];
+  videosCopy = videos;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:videosCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ENFORCE_MIN_BITRATE_FOR_CINEMATIC_VIDEO"];
 }
 
 + (BOOL)enforceMinimumBitRateForCinematicVideos
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ENFORCE_MIN_BITRATE_FOR_CINEMATIC_VIDEO" defaultValue:&__block_literal_global_372];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ENFORCE_MIN_BITRATE_FOR_CINEMATIC_VIDEO" defaultValue:&__block_literal_global_372];
 
   return v3;
 }
@@ -1062,18 +1062,18 @@ uint64_t __59__NUGlobalSettings_enforceMinimumBitRateForCinematicVideos__block_i
   return v3;
 }
 
-+ (void)setEnforceMinimumBitRateForExportedVideos:(BOOL)a3
++ (void)setEnforceMinimumBitRateForExportedVideos:(BOOL)videos
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ENFORCE_MIN_BITRATE_FOR_VIDEO"];
+  videosCopy = videos;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:videosCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ENFORCE_MIN_BITRATE_FOR_VIDEO"];
 }
 
 + (BOOL)enforceMinimumBitRateForExportedVideos
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ENFORCE_MIN_BITRATE_FOR_VIDEO" defaultValue:&__block_literal_global_367];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ENFORCE_MIN_BITRATE_FOR_VIDEO" defaultValue:&__block_literal_global_367];
 
   return v3;
 }
@@ -1086,126 +1086,126 @@ uint64_t __58__NUGlobalSettings_enforceMinimumBitRateForExportedVideos__block_in
   return v1;
 }
 
-+ (void)setMeteorGainMapExposureCompensationMode:(id)a3
++ (void)setMeteorGainMapExposureCompensationMode:(id)mode
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_METEOR_GAIN_MAP_EXPOSURE_COMPENSATION_MODE"];
+  modeCopy = mode;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:modeCopy forKey:@"NU_METEOR_GAIN_MAP_EXPOSURE_COMPENSATION_MODE"];
 }
 
 + (NSString)meteorGainMapExposureCompensationMode
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 stringSettingForKey:@"NU_METEOR_GAIN_MAP_EXPOSURE_COMPENSATION_MODE" defaultValue:&__block_literal_global_362];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"NU_METEOR_GAIN_MAP_EXPOSURE_COMPENSATION_MODE" defaultValue:&__block_literal_global_362];
 
   return v3;
 }
 
-+ (void)setForceMeteorGainMapGeneration:(BOOL)a3
++ (void)setForceMeteorGainMapGeneration:(BOOL)generation
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_FORCE_METEOR_GAIN_MAP_GENERATION"];
+  generationCopy = generation;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:generationCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_FORCE_METEOR_GAIN_MAP_GENERATION"];
 }
 
 + (BOOL)forceMeteorGainMapGeneration
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_FORCE_METEOR_GAIN_MAP_GENERATION" defaultValue:&__block_literal_global_357];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_FORCE_METEOR_GAIN_MAP_GENERATION" defaultValue:&__block_literal_global_357];
 
   return v3;
 }
 
-+ (void)setDisableMeteorGainMapGeneration:(BOOL)a3
++ (void)setDisableMeteorGainMapGeneration:(BOOL)generation
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISABLE_METEOR_GAIN_MAP_GENERATION"];
+  generationCopy = generation;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:generationCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISABLE_METEOR_GAIN_MAP_GENERATION"];
 }
 
 + (BOOL)disableMeteorGainMapGeneration
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISABLE_METEOR_GAIN_MAP_GENERATION" defaultValue:&__block_literal_global_352];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISABLE_METEOR_GAIN_MAP_GENERATION" defaultValue:&__block_literal_global_352];
 
   return v3;
 }
 
-+ (void)setDebugRenderYellow:(id)a3
++ (void)setDebugRenderYellow:(id)yellow
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_DEBUG_RENDER_YELLOW"];
+  yellowCopy = yellow;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:yellowCopy forKey:@"NU_DEBUG_RENDER_YELLOW"];
 }
 
 + (NSString)debugRenderYellow
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 stringSettingForKey:@"NU_DEBUG_RENDER_YELLOW" defaultValue:&__block_literal_global_347];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"NU_DEBUG_RENDER_YELLOW" defaultValue:&__block_literal_global_347];
 
   return v3;
 }
 
-+ (void)setDebugRenderPurple:(id)a3
++ (void)setDebugRenderPurple:(id)purple
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_DEBUG_RENDER_PURPLE"];
+  purpleCopy = purple;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:purpleCopy forKey:@"NU_DEBUG_RENDER_PURPLE"];
 }
 
 + (NSString)debugRenderPurple
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 stringSettingForKey:@"NU_DEBUG_RENDER_PURPLE" defaultValue:&__block_literal_global_342];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"NU_DEBUG_RENDER_PURPLE" defaultValue:&__block_literal_global_342];
 
   return v3;
 }
 
-+ (void)setDebugRenderBlue:(id)a3
++ (void)setDebugRenderBlue:(id)blue
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_DEBUG_RENDER_BLUE"];
+  blueCopy = blue;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:blueCopy forKey:@"NU_DEBUG_RENDER_BLUE"];
 }
 
 + (NSString)debugRenderBlue
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 stringSettingForKey:@"NU_DEBUG_RENDER_BLUE" defaultValue:&__block_literal_global_337];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"NU_DEBUG_RENDER_BLUE" defaultValue:&__block_literal_global_337];
 
   return v3;
 }
 
-+ (void)setAlwaysRequireHardwareVideoEncoder:(BOOL)a3
++ (void)setAlwaysRequireHardwareVideoEncoder:(BOOL)encoder
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ALWAYS_REQUIRE_HARDWARE_VIDEO_ENCODER"];
+  encoderCopy = encoder;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:encoderCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ALWAYS_REQUIRE_HARDWARE_VIDEO_ENCODER"];
 }
 
 + (BOOL)alwaysRequireHardwareVideoEncoder
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ALWAYS_REQUIRE_HARDWARE_VIDEO_ENCODER" defaultValue:&__block_literal_global_332];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ALWAYS_REQUIRE_HARDWARE_VIDEO_ENCODER" defaultValue:&__block_literal_global_332];
 
   return v3;
 }
 
-+ (void)setForceSoftwareVideoEncoder:(BOOL)a3
++ (void)setForceSoftwareVideoEncoder:(BOOL)encoder
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_FORCE_SOFTWARE_VIDEO_ENCODER"];
+  encoderCopy = encoder;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:encoderCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_FORCE_SOFTWARE_VIDEO_ENCODER"];
 }
 
 + (BOOL)forceSoftwareVideoEncoder
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_FORCE_SOFTWARE_VIDEO_ENCODER" defaultValue:&__block_literal_global_327];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_FORCE_SOFTWARE_VIDEO_ENCODER" defaultValue:&__block_literal_global_327];
 
   return v3;
 }
@@ -1218,32 +1218,32 @@ uint64_t __45__NUGlobalSettings_forceSoftwareVideoEncoder__block_invoke()
   return v1;
 }
 
-+ (void)setVideoCompositorDebugMode:(unint64_t)a3
++ (void)setVideoCompositorDebugMode:(unint64_t)mode
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_VIDEO_COMPOSITOR_DEBUG_MODE"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
+  [globalSettings setSetting:v4 forKey:@"NU_VIDEO_COMPOSITOR_DEBUG_MODE"];
 }
 
 + (unint64_t)videoCompositorDebugMode
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_VIDEO_COMPOSITOR_DEBUG_MODE" defaultValue:&__block_literal_global_322];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_VIDEO_COMPOSITOR_DEBUG_MODE" defaultValue:&__block_literal_global_322];
 
   return v3;
 }
 
-+ (void)setThresholdDisplayHeadroom:(double)a3
++ (void)setThresholdDisplayHeadroom:(double)headroom
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_THRESHOLD_DISPLAY_HEADROOM"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:headroom];
+  [globalSettings setSetting:v4 forKey:@"NU_THRESHOLD_DISPLAY_HEADROOM"];
 }
 
 + (double)thresholdDisplayHeadroom
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_THRESHOLD_DISPLAY_HEADROOM" defaultValue:&__block_literal_global_317];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_THRESHOLD_DISPLAY_HEADROOM" defaultValue:&__block_literal_global_317];
   v4 = v3;
 
   return v4;
@@ -1268,17 +1268,17 @@ double __44__NUGlobalSettings_thresholdDisplayHeadroom__block_invoke()
   return v3;
 }
 
-+ (void)setOverrideDisplayHeadroom:(double)a3
++ (void)setOverrideDisplayHeadroom:(double)headroom
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_OVERRIDE_DISPLAY_HEADROOM"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:headroom];
+  [globalSettings setSetting:v4 forKey:@"NU_OVERRIDE_DISPLAY_HEADROOM"];
 }
 
 + (double)overrideDisplayHeadroom
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_OVERRIDE_DISPLAY_HEADROOM" defaultValue:&__block_literal_global_312];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_OVERRIDE_DISPLAY_HEADROOM" defaultValue:&__block_literal_global_312];
   v4 = v3;
 
   return v4;
@@ -1293,18 +1293,18 @@ double __43__NUGlobalSettings_overrideDisplayHeadroom__block_invoke()
   return v2;
 }
 
-+ (void)setDisablePacked10BitPixelFormats:(BOOL)a3
++ (void)setDisablePacked10BitPixelFormats:(BOOL)formats
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISABLE_PACKED_10BIT_PIXEL_FORMATS"];
+  formatsCopy = formats;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:formatsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISABLE_PACKED_10BIT_PIXEL_FORMATS"];
 }
 
 + (BOOL)disablePacked10BitPixelFormats
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISABLE_PACKED_10BIT_PIXEL_FORMATS" defaultValue:&__block_literal_global_307];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISABLE_PACKED_10BIT_PIXEL_FORMATS" defaultValue:&__block_literal_global_307];
 
   return v3;
 }
@@ -1317,18 +1317,18 @@ uint64_t __50__NUGlobalSettings_disablePacked10BitPixelFormats__block_invoke()
   return v1;
 }
 
-+ (void)setForceMeteorPlusLinear:(BOOL)a3
++ (void)setForceMeteorPlusLinear:(BOOL)linear
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_FORCE_METEOR_PLUS_LINEAR"];
+  linearCopy = linear;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:linearCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_FORCE_METEOR_PLUS_LINEAR"];
 }
 
 + (BOOL)forceMeteorPlusLinear
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_FORCE_METEOR_PLUS_LINEAR" defaultValue:&__block_literal_global_302];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_FORCE_METEOR_PLUS_LINEAR" defaultValue:&__block_literal_global_302];
 
   return v3;
 }
@@ -1341,18 +1341,18 @@ uint64_t __41__NUGlobalSettings_forceMeteorPlusLinear__block_invoke()
   return v1;
 }
 
-+ (void)setForceMeteorPlusPlus:(BOOL)a3
++ (void)setForceMeteorPlusPlus:(BOOL)plus
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_FORCE_METEOR_PLUS_PLUS"];
+  plusCopy = plus;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:plusCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_FORCE_METEOR_PLUS_PLUS"];
 }
 
 + (BOOL)forceMeteorPlusPlus
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_FORCE_METEOR_PLUS_PLUS" defaultValue:&__block_literal_global_297];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_FORCE_METEOR_PLUS_PLUS" defaultValue:&__block_literal_global_297];
 
   return v3;
 }
@@ -1365,18 +1365,18 @@ uint64_t __39__NUGlobalSettings_forceMeteorPlusPlus__block_invoke()
   return v1;
 }
 
-+ (void)setRenderEDRAsPQ:(BOOL)a3
++ (void)setRenderEDRAsPQ:(BOOL)q
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_EDR_AS_PQ"];
+  qCopy = q;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:qCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_EDR_AS_PQ"];
 }
 
 + (BOOL)renderEDRAsPQ
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_EDR_AS_PQ" defaultValue:&__block_literal_global_292];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_EDR_AS_PQ" defaultValue:&__block_literal_global_292];
 
   return v3;
 }
@@ -1389,18 +1389,18 @@ uint64_t __33__NUGlobalSettings_renderEDRAsPQ__block_invoke()
   return v1;
 }
 
-+ (void)setRenderMeteorPlusAsHDR:(BOOL)a3
++ (void)setRenderMeteorPlusAsHDR:(BOOL)r
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_METEOR_PLUS_AS_HDR"];
+  rCopy = r;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_METEOR_PLUS_AS_HDR"];
 }
 
 + (BOOL)renderMeteorPlusAsHDR
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_METEOR_PLUS_AS_HDR" defaultValue:&__block_literal_global_287];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_METEOR_PLUS_AS_HDR" defaultValue:&__block_literal_global_287];
 
   return v3;
 }
@@ -1423,18 +1423,18 @@ uint64_t __41__NUGlobalSettings_renderMeteorPlusAsHDR__block_invoke()
   return v2;
 }
 
-+ (void)setEnableFlexRange:(BOOL)a3
++ (void)setEnableFlexRange:(BOOL)range
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ENABLE_FLEX_RANGE"];
+  rangeCopy = range;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rangeCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ENABLE_FLEX_RANGE"];
 }
 
 + (BOOL)enableFlexRange
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ENABLE_FLEX_RANGE" defaultValue:&__block_literal_global_282];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ENABLE_FLEX_RANGE" defaultValue:&__block_literal_global_282];
 
   return v3;
 }
@@ -1457,17 +1457,17 @@ uint64_t __35__NUGlobalSettings_enableFlexRange__block_invoke()
   return v2;
 }
 
-+ (void)setMaxGainMapHeadroom:(double)a3
++ (void)setMaxGainMapHeadroom:(double)headroom
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_MAX_GAINMAP_HEADROOM"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:headroom];
+  [globalSettings setSetting:v4 forKey:@"NU_MAX_GAINMAP_HEADROOM"];
 }
 
 + (double)maxGainMapHeadroom
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_MAX_GAINMAP_HEADROOM" defaultValue:&__block_literal_global_277];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_MAX_GAINMAP_HEADROOM" defaultValue:&__block_literal_global_277];
   v4 = v3;
 
   return v4;
@@ -1475,25 +1475,25 @@ uint64_t __35__NUGlobalSettings_enableFlexRange__block_invoke()
 
 + (double)HLGOpticalScale
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_HLG_OPTICAL_SCALE" defaultValue:&__block_literal_global_272];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_HLG_OPTICAL_SCALE" defaultValue:&__block_literal_global_272];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setAllAssetsCanUseHDRPipeline:(BOOL)a3
++ (void)setAllAssetsCanUseHDRPipeline:(BOOL)pipeline
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ALL_ASSETS_CAN_USE_HDR_PIPELINE"];
+  pipelineCopy = pipeline;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:pipelineCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ALL_ASSETS_CAN_USE_HDR_PIPELINE"];
 }
 
 + (BOOL)allAssetsCanUseHDRPipeline
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ALL_ASSETS_CAN_USE_HDR_PIPELINE" defaultValue:&__block_literal_global_267];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ALL_ASSETS_CAN_USE_HDR_PIPELINE" defaultValue:&__block_literal_global_267];
 
   return v3;
 }
@@ -1506,18 +1506,18 @@ uint64_t __46__NUGlobalSettings_allAssetsCanUseHDRPipeline__block_invoke()
   return v1;
 }
 
-+ (void)setEnableHDRSupport:(BOOL)a3
++ (void)setEnableHDRSupport:(BOOL)support
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_ENABLE_HDR_SUPPORT"];
+  supportCopy = support;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:supportCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_ENABLE_HDR_SUPPORT"];
 }
 
 + (BOOL)enableHDRSupport
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_ENABLE_HDR_SUPPORT" defaultValue:&__block_literal_global_262];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_ENABLE_HDR_SUPPORT" defaultValue:&__block_literal_global_262];
 
   return v3;
 }
@@ -1540,18 +1540,18 @@ uint64_t __36__NUGlobalSettings_enableHDRSupport__block_invoke()
   return v2;
 }
 
-+ (void)setDisableIOSurfacePortaitExport:(BOOL)a3
++ (void)setDisableIOSurfacePortaitExport:(BOOL)export
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISABLE_IOSURFACE_PORTRAIT_EXPORT"];
+  exportCopy = export;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:exportCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISABLE_IOSURFACE_PORTRAIT_EXPORT"];
 }
 
 + (BOOL)disableIOSurfacePortaitExport
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISABLE_IOSURFACE_PORTRAIT_EXPORT" defaultValue:&__block_literal_global_257];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISABLE_IOSURFACE_PORTRAIT_EXPORT" defaultValue:&__block_literal_global_257];
 
   return v3;
 }
@@ -1564,18 +1564,18 @@ uint64_t __49__NUGlobalSettings_disableIOSurfacePortaitExport__block_invoke()
   return v1;
 }
 
-+ (void)setRunNeutrinoSynchronously:(BOOL)a3
++ (void)setRunNeutrinoSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RUN_SYNCHRONOUSLY"];
+  synchronouslyCopy = synchronously;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:synchronouslyCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RUN_SYNCHRONOUSLY"];
 }
 
 + (BOOL)runNeutrinoSynchronously
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RUN_SYNCHRONOUSLY" defaultValue:&__block_literal_global_252];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RUN_SYNCHRONOUSLY" defaultValue:&__block_literal_global_252];
 
   return v3;
 }
@@ -1588,95 +1588,95 @@ uint64_t __44__NUGlobalSettings_runNeutrinoSynchronously__block_invoke()
   return v1;
 }
 
-+ (void)setLogPeakRenderCIUsuage:(BOOL)a3
++ (void)setLogPeakRenderCIUsuage:(BOOL)usuage
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_SHOW_PEAK_RENDER_MEMORY"];
+  usuageCopy = usuage;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:usuageCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_SHOW_PEAK_RENDER_MEMORY"];
 }
 
 + (BOOL)logPeakRenderCIUsuage
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_SHOW_PEAK_RENDER_MEMORY" defaultValue:&__block_literal_global_247];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_SHOW_PEAK_RENDER_MEMORY" defaultValue:&__block_literal_global_247];
 
   return v3;
 }
 
-+ (void)setUpCacheNodeDirectoryWithComponent:(id)a3
++ (void)setUpCacheNodeDirectoryWithComponent:(id)component
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 temporaryDirectory];
-  v7 = [v6 URLByAppendingPathComponent:v4];
+  componentCopy = component;
+  defaultManager = [v3 defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v7 = [temporaryDirectory URLByAppendingPathComponent:componentCopy];
 
   [NUGlobalSettings setCacheNodeDirectoryURL:v7];
   [NUGlobalSettings setCacheNodeFilePermissions:511];
   +[NUCacheNode clearCacheDirectory];
 }
 
-+ (void)setRenderTransparencyOpaque:(BOOL)a3
++ (void)setRenderTransparencyOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_TRANSPARENCY_OPAQUE"];
+  opaqueCopy = opaque;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:opaqueCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_TRANSPARENCY_OPAQUE"];
 }
 
 + (BOOL)renderTransparencyOpaque
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_TRANSPARENCY_OPAQUE" defaultValue:&__block_literal_global_241];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_TRANSPARENCY_OPAQUE" defaultValue:&__block_literal_global_241];
 
   return v3;
 }
 
-+ (void)setRenderTransparencyOverBlack:(BOOL)a3
++ (void)setRenderTransparencyOverBlack:(BOOL)black
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_TRANSPARENCY_OVER_BLACK"];
+  blackCopy = black;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:blackCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_TRANSPARENCY_OVER_BLACK"];
 }
 
 + (BOOL)renderTransparencyOverBlack
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_TRANSPARENCY_OVER_BLACK" defaultValue:&__block_literal_global_236];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_TRANSPARENCY_OVER_BLACK" defaultValue:&__block_literal_global_236];
 
   return v3;
 }
 
-+ (void)setDisplayDisableColorMatching:(BOOL)a3
++ (void)setDisplayDisableColorMatching:(BOOL)matching
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISPLAY_DISABLE_COLOR_MATCHING"];
+  matchingCopy = matching;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:matchingCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISPLAY_DISABLE_COLOR_MATCHING"];
 }
 
 + (BOOL)displayDisableColorMatching
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISPLAY_DISABLE_COLOR_MATCHING" defaultValue:&__block_literal_global_231];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISPLAY_DISABLE_COLOR_MATCHING" defaultValue:&__block_literal_global_231];
 
   return v3;
 }
 
-+ (void)setDisplayForceDeepColor:(BOOL)a3
++ (void)setDisplayForceDeepColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISPLAY_FORCE_DEEP_COLOR"];
+  colorCopy = color;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:colorCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISPLAY_FORCE_DEEP_COLOR"];
 }
 
 + (BOOL)displayForceDeepColor
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISPLAY_FORCE_DEEP_COLOR" defaultValue:&__block_literal_global_226];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISPLAY_FORCE_DEEP_COLOR" defaultValue:&__block_literal_global_226];
 
   return v3;
 }
@@ -1689,81 +1689,81 @@ uint64_t __41__NUGlobalSettings_displayForceDeepColor__block_invoke()
   return v1;
 }
 
-+ (void)setDisplayDisableDeepColor:(BOOL)a3
++ (void)setDisplayDisableDeepColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DISPLAY_DISABLE_DEEP_COLOR"];
+  colorCopy = color;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:colorCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DISPLAY_DISABLE_DEEP_COLOR"];
 }
 
 + (BOOL)displayDisableDeepColor
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DISPLAY_DISABLE_DEEP_COLOR" defaultValue:&__block_literal_global_221];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DISPLAY_DISABLE_DEEP_COLOR" defaultValue:&__block_literal_global_221];
 
   return v3;
 }
 
-+ (void)setImageLayerDebug:(BOOL)a3
++ (void)setImageLayerDebug:(BOOL)debug
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_LAYER_DEBUG"];
+  debugCopy = debug;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:debugCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_LAYER_DEBUG"];
 }
 
 + (BOOL)imageLayerDebug
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_IMAGE_LAYER_DEBUG" defaultValue:&__block_literal_global_216];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_IMAGE_LAYER_DEBUG" defaultValue:&__block_literal_global_216];
 
   return v3;
 }
 
-+ (void)setPipelineSourceURL:(id)a3
++ (void)setPipelineSourceURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_PIPELINE_SOURCE_URL"];
+  lCopy = l;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:lCopy forKey:@"NU_PIPELINE_SOURCE_URL"];
 }
 
 + (NSURL)pipelineSourceURL
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 urlSettingForKey:@"NU_PIPELINE_SOURCE_URL" defaultValue:&__block_literal_global_211];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings urlSettingForKey:@"NU_PIPELINE_SOURCE_URL" defaultValue:&__block_literal_global_211];
 
   return v3;
 }
 
-+ (void)setPlatformHasWideColor:(BOOL)a3
++ (void)setPlatformHasWideColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_PLATFORM_HAS_WIDE_COLOR"];
+  colorCopy = color;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:colorCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_PLATFORM_HAS_WIDE_COLOR"];
 }
 
 + (BOOL)platformHasWideColor
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_PLATFORM_HAS_WIDE_COLOR" defaultValue:&__block_literal_global_203];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_PLATFORM_HAS_WIDE_COLOR" defaultValue:&__block_literal_global_203];
 
   return v3;
 }
 
-+ (void)setRenderVideoLive:(BOOL)a3
++ (void)setRenderVideoLive:(BOOL)live
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_PLATFORM_RENDER_VIDEO_LIVE"];
+  liveCopy = live;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:liveCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_PLATFORM_RENDER_VIDEO_LIVE"];
 }
 
 + (BOOL)renderVideoLive
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_PLATFORM_RENDER_VIDEO_LIVE" defaultValue:&__block_literal_global_198];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_PLATFORM_RENDER_VIDEO_LIVE" defaultValue:&__block_literal_global_198];
 
   return v3;
 }
@@ -1776,17 +1776,17 @@ uint64_t __35__NUGlobalSettings_renderVideoLive__block_invoke()
   return v1;
 }
 
-+ (void)setCacheNodeDirectoryURL:(id)a3
++ (void)setCacheNodeDirectoryURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_CACHE_NODE_DIRECTORY"];
+  lCopy = l;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:lCopy forKey:@"NU_CACHE_NODE_DIRECTORY"];
 }
 
 + (NSURL)cacheNodeDirectoryURL
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 urlSettingForKey:@"NU_CACHE_NODE_DIRECTORY" defaultValue:&__block_literal_global_189];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings urlSettingForKey:@"NU_CACHE_NODE_DIRECTORY" defaultValue:&__block_literal_global_189];
 
   return v3;
 }
@@ -1812,179 +1812,179 @@ id __41__NUGlobalSettings_cacheNodeDirectoryURL__block_invoke()
   return v4;
 }
 
-+ (void)setViewDebugEnabled:(BOOL)a3
++ (void)setViewDebugEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_VIEW_DEBUG_ENABLED"];
+  enabledCopy = enabled;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_VIEW_DEBUG_ENABLED"];
 }
 
 + (BOOL)isViewDebugEnabled
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_VIEW_DEBUG_ENABLED" defaultValue:&__block_literal_global_184_839];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_VIEW_DEBUG_ENABLED" defaultValue:&__block_literal_global_184_839];
 
   return v3;
 }
 
-+ (void)setCacheNodeImageCompression:(double)a3
++ (void)setCacheNodeImageCompression:(double)compression
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_CACHE_NODE_IMAGE_COMPRESSION"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:compression];
+  [globalSettings setSetting:v4 forKey:@"NU_CACHE_NODE_IMAGE_COMPRESSION"];
 }
 
 + (double)cacheNodeImageCompression
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_CACHE_NODE_IMAGE_COMPRESSION" defaultValue:&__block_literal_global_179];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_CACHE_NODE_IMAGE_COMPRESSION" defaultValue:&__block_literal_global_179];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setCacheNodeFilePermissions:(int64_t)a3
++ (void)setCacheNodeFilePermissions:(int64_t)permissions
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_CACHE_NODE_FILE_PERMISSIONS"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:permissions];
+  [globalSettings setSetting:v4 forKey:@"NU_CACHE_NODE_FILE_PERMISSIONS"];
 }
 
 + (int64_t)cacheNodeFilePermissions
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_CACHE_NODE_FILE_PERMISSIONS" defaultValue:&__block_literal_global_174];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_CACHE_NODE_FILE_PERMISSIONS" defaultValue:&__block_literal_global_174];
 
   return v3;
 }
 
-+ (void)setCacheNodeCacheSizeLimit:(int64_t)a3
++ (void)setCacheNodeCacheSizeLimit:(int64_t)limit
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_CACHE_NODE_CACHE_SIZE_LIMIT"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:limit];
+  [globalSettings setSetting:v4 forKey:@"NU_CACHE_NODE_CACHE_SIZE_LIMIT"];
 }
 
 + (int64_t)cacheNodeCacheSizeLimit
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_CACHE_NODE_CACHE_SIZE_LIMIT" defaultValue:&__block_literal_global_169];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_CACHE_NODE_CACHE_SIZE_LIMIT" defaultValue:&__block_literal_global_169];
 
   return v3;
 }
 
-+ (void)setImageSourceDisableCacheImmediately:(BOOL)a3
++ (void)setImageSourceDisableCacheImmediately:(BOOL)immediately
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_SOURCE_DISABLE_CACHE_IMMEDIATELY"];
+  immediatelyCopy = immediately;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:immediatelyCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_SOURCE_DISABLE_CACHE_IMMEDIATELY"];
 }
 
 + (BOOL)imageSourceDisableCacheImmediately
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_IMAGE_SOURCE_DISABLE_CACHE_IMMEDIATELY" defaultValue:&__block_literal_global_164];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_IMAGE_SOURCE_DISABLE_CACHE_IMMEDIATELY" defaultValue:&__block_literal_global_164];
 
   return v3;
 }
 
-+ (void)setImageSourceDisableRAW:(BOOL)a3
++ (void)setImageSourceDisableRAW:(BOOL)w
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_SOURCE_DISABLE_RAW"];
+  wCopy = w;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:wCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_SOURCE_DISABLE_RAW"];
 }
 
 + (BOOL)imageSourceDisableRAW
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_IMAGE_SOURCE_DISABLE_RAW" defaultValue:&__block_literal_global_159];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_IMAGE_SOURCE_DISABLE_RAW" defaultValue:&__block_literal_global_159];
 
   return v3;
 }
 
-+ (void)setImageTileBorder:(int64_t)a3
++ (void)setImageTileBorder:(int64_t)border
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_TILE_BORDER"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:border];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_TILE_BORDER"];
 }
 
 + (int64_t)imageTileBorder
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_IMAGE_TILE_BORDER" defaultValue:&__block_literal_global_154];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_IMAGE_TILE_BORDER" defaultValue:&__block_literal_global_154];
 
   return v3;
 }
 
-+ (void)setImageTileSize:(int64_t)a3
++ (void)setImageTileSize:(int64_t)size
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_TILE_SIZE"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_TILE_SIZE"];
 }
 
 + (int64_t)imageTileSize
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_IMAGE_TILE_SIZE" defaultValue:&__block_literal_global_149];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_IMAGE_TILE_SIZE" defaultValue:&__block_literal_global_149];
 
   return v3;
 }
 
-+ (void)setRendererContextLowMemoryTarget:(int64_t)a3
++ (void)setRendererContextLowMemoryTarget:(int64_t)target
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_LOW_MEMORY_TARGET"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:target];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_LOW_MEMORY_TARGET"];
 }
 
 + (int64_t)rendererContextLowMemoryTarget
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_RENDERER_CONTEXT_LOW_MEMORY_TARGET" defaultValue:&__block_literal_global_144];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_RENDERER_CONTEXT_LOW_MEMORY_TARGET" defaultValue:&__block_literal_global_144];
 
   return v3;
 }
 
-+ (void)setRendererContextLargeMemoryTarget:(int64_t)a3
++ (void)setRendererContextLargeMemoryTarget:(int64_t)target
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_LARGE_MEMORY_TARGET"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:target];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_LARGE_MEMORY_TARGET"];
 }
 
 + (int64_t)rendererContextLargeMemoryTarget
 {
-  v3 = [a1 rendererContextDefaultMemoryTarget];
-  v4 = [a1 globalSettings];
+  rendererContextDefaultMemoryTarget = [self rendererContextDefaultMemoryTarget];
+  globalSettings = [self globalSettings];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__NUGlobalSettings_rendererContextLargeMemoryTarget__block_invoke;
   v7[3] = &__block_descriptor_40_e5_q8__0l;
-  v7[4] = v3;
-  v5 = [v4 integerSettingForKey:@"NU_RENDERER_CONTEXT_LARGE_MEMORY_TARGET" defaultValue:v7];
+  v7[4] = rendererContextDefaultMemoryTarget;
+  v5 = [globalSettings integerSettingForKey:@"NU_RENDERER_CONTEXT_LARGE_MEMORY_TARGET" defaultValue:v7];
 
   return v5;
 }
 
-+ (void)setRendererContextDefaultMemoryTarget:(int64_t)a3
++ (void)setRendererContextDefaultMemoryTarget:(int64_t)target
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_DEFAULT_MEMORY_TARGET"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:target];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_CONTEXT_DEFAULT_MEMORY_TARGET"];
 }
 
 + (int64_t)rendererContextDefaultMemoryTarget
 {
   v3 = +[NUPlatform currentPlatform];
-  v4 = [v3 supportsSemanticStyleRendering];
+  supportsSemanticStyleRendering = [v3 supportsSemanticStyleRendering];
 
-  if (v4)
+  if (supportsSemanticStyleRendering)
   {
     v5 = 384;
   }
@@ -1994,218 +1994,218 @@ id __41__NUGlobalSettings_cacheNodeDirectoryURL__block_invoke()
     v5 = 256;
   }
 
-  v6 = [a1 globalSettings];
+  globalSettings = [self globalSettings];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__NUGlobalSettings_rendererContextDefaultMemoryTarget__block_invoke;
   v9[3] = &__block_descriptor_40_e5_q8__0l;
   v9[4] = v5;
-  v7 = [v6 integerSettingForKey:@"NU_RENDERER_CONTEXT_DEFAULT_MEMORY_TARGET" defaultValue:v9];
+  v7 = [globalSettings integerSettingForKey:@"NU_RENDERER_CONTEXT_DEFAULT_MEMORY_TARGET" defaultValue:v9];
 
   return v7;
 }
 
-+ (void)setRendererUseP3Linear:(BOOL)a3
++ (void)setRendererUseP3Linear:(BOOL)linear
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_USE_P3_LINEAR"];
+  linearCopy = linear;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:linearCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_USE_P3_LINEAR"];
 }
 
 + (BOOL)rendererUseP3Linear
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDERER_USE_P3_LINEAR" defaultValue:&__block_literal_global_132];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDERER_USE_P3_LINEAR" defaultValue:&__block_literal_global_132];
 
   return v3;
 }
 
-+ (void)setRendererClampToAlpha:(BOOL)a3
++ (void)setRendererClampToAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_CLAMP_TO_ALPHA"];
+  alphaCopy = alpha;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:alphaCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_CLAMP_TO_ALPHA"];
 }
 
 + (BOOL)rendererClampToAlpha
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDERER_CLAMP_TO_ALPHA" defaultValue:&__block_literal_global_127];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDERER_CLAMP_TO_ALPHA" defaultValue:&__block_literal_global_127];
 
   return v3;
 }
 
-+ (void)setRendererUseHalfFloat:(BOOL)a3
++ (void)setRendererUseHalfFloat:(BOOL)float
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDERER_USE_HALF_FLOAT"];
+  floatCopy = float;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:floatCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDERER_USE_HALF_FLOAT"];
 }
 
 + (BOOL)rendererUseHalfFloat
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDERER_USE_HALF_FLOAT" defaultValue:&__block_literal_global_121];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDERER_USE_HALF_FLOAT" defaultValue:&__block_literal_global_121];
 
   return v3;
 }
 
-+ (void)setImageRenderJobUseTextureRenderer:(BOOL)a3
++ (void)setImageRenderJobUseTextureRenderer:(BOOL)renderer
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_RENDER_JOB_USE_TEXTURE_RENDERER"];
+  rendererCopy = renderer;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rendererCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_RENDER_JOB_USE_TEXTURE_RENDERER"];
 }
 
 + (BOOL)imageRenderJobUseTextureRenderer
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_IMAGE_RENDER_JOB_USE_TEXTURE_RENDERER" defaultValue:&__block_literal_global_116];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_IMAGE_RENDER_JOB_USE_TEXTURE_RENDERER" defaultValue:&__block_literal_global_116];
 
   return v3;
 }
 
-+ (void)setImageRenderJobUseSurfaceRenderer:(BOOL)a3
++ (void)setImageRenderJobUseSurfaceRenderer:(BOOL)renderer
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_IMAGE_RENDER_JOB_USE_SURFACE_RENDERER"];
+  rendererCopy = renderer;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rendererCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_IMAGE_RENDER_JOB_USE_SURFACE_RENDERER"];
 }
 
 + (BOOL)imageRenderJobUseSurfaceRenderer
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_IMAGE_RENDER_JOB_USE_SURFACE_RENDERER" defaultValue:&__block_literal_global_111];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_IMAGE_RENDER_JOB_USE_SURFACE_RENDERER" defaultValue:&__block_literal_global_111];
 
   return v3;
 }
 
-+ (void)setBufferStorageFactoryUsePool:(BOOL)a3
++ (void)setBufferStorageFactoryUsePool:(BOOL)pool
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_BUFFER_STORAGE_FACTORY_USE_POOL"];
+  poolCopy = pool;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:poolCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_BUFFER_STORAGE_FACTORY_USE_POOL"];
 }
 
 + (BOOL)bufferStorageFactoryUsePool
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_BUFFER_STORAGE_FACTORY_USE_POOL" defaultValue:&__block_literal_global_106];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_BUFFER_STORAGE_FACTORY_USE_POOL" defaultValue:&__block_literal_global_106];
 
   return v3;
 }
 
-+ (void)setSurfaceStorageFactoryUsePool:(BOOL)a3
++ (void)setSurfaceStorageFactoryUsePool:(BOOL)pool
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_SURFACE_STORAGE_FACTORY_USE_POOL"];
+  poolCopy = pool;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:poolCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_SURFACE_STORAGE_FACTORY_USE_POOL"];
 }
 
 + (BOOL)surfaceStorageFactoryUsePool
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_SURFACE_STORAGE_FACTORY_USE_POOL" defaultValue:&__block_literal_global_101];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_SURFACE_STORAGE_FACTORY_USE_POOL" defaultValue:&__block_literal_global_101];
 
   return v3;
 }
 
-+ (void)setStoragePoolMigrationDelay:(double)a3
++ (void)setStoragePoolMigrationDelay:(double)delay
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setSetting:v4 forKey:@"NU_STORAGE_POOL_MIGRATION_DELAY"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+  [globalSettings setSetting:v4 forKey:@"NU_STORAGE_POOL_MIGRATION_DELAY"];
 }
 
 + (double)storagePoolMigrationDelay
 {
-  v2 = [a1 globalSettings];
-  [v2 doubleSettingForKey:@"NU_STORAGE_POOL_MIGRATION_DELAY" defaultValue:&__block_literal_global_96];
+  globalSettings = [self globalSettings];
+  [globalSettings doubleSettingForKey:@"NU_STORAGE_POOL_MIGRATION_DELAY" defaultValue:&__block_literal_global_96];
   v4 = v3;
 
   return v4;
 }
 
-+ (void)setStoragePoolPurgeableLimit:(int64_t)a3
++ (void)setStoragePoolPurgeableLimit:(int64_t)limit
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_STORAGE_POOL_PURGEABLE_LIMIT"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:limit];
+  [globalSettings setSetting:v4 forKey:@"NU_STORAGE_POOL_PURGEABLE_LIMIT"];
 }
 
 + (int64_t)storagePoolPurgeableLimit
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_STORAGE_POOL_PURGEABLE_LIMIT" defaultValue:&__block_literal_global_90];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_STORAGE_POOL_PURGEABLE_LIMIT" defaultValue:&__block_literal_global_90];
 
   return v3;
 }
 
-+ (void)setStoragePoolNonPurgeableLimit:(int64_t)a3
++ (void)setStoragePoolNonPurgeableLimit:(int64_t)limit
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_STORAGE_POOL_NONPURGEABLE_LIMIT"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:limit];
+  [globalSettings setSetting:v4 forKey:@"NU_STORAGE_POOL_NONPURGEABLE_LIMIT"];
 }
 
 + (int64_t)storagePoolNonPurgeableLimit
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_STORAGE_POOL_NONPURGEABLE_LIMIT" defaultValue:&__block_literal_global_85];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_STORAGE_POOL_NONPURGEABLE_LIMIT" defaultValue:&__block_literal_global_85];
 
   return v3;
 }
 
-+ (void)setResampleInSourceColorSpace:(BOOL)a3
++ (void)setResampleInSourceColorSpace:(BOOL)space
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RESAMPLE_IN_SOURCE_COLOR_SPACE"];
+  spaceCopy = space;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:spaceCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RESAMPLE_IN_SOURCE_COLOR_SPACE"];
 }
 
 + (BOOL)resampleInSourceColorSpace
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RESAMPLE_IN_SOURCE_COLOR_SPACE" defaultValue:&__block_literal_global_80];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RESAMPLE_IN_SOURCE_COLOR_SPACE" defaultValue:&__block_literal_global_80];
 
   return v3;
 }
 
-+ (void)setDeviceDefaultSampleMode:(int64_t)a3
++ (void)setDeviceDefaultSampleMode:(int64_t)mode
 {
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setSetting:v4 forKey:@"NU_DEVICE_DEFAULT_SAMPLE_MODE"];
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [globalSettings setSetting:v4 forKey:@"NU_DEVICE_DEFAULT_SAMPLE_MODE"];
 }
 
 + (int64_t)deviceDefaultSampleMode
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 integerSettingForKey:@"NU_DEVICE_DEFAULT_SAMPLE_MODE" defaultValue:&__block_literal_global_75];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings integerSettingForKey:@"NU_DEVICE_DEFAULT_SAMPLE_MODE" defaultValue:&__block_literal_global_75];
 
   return v3;
 }
 
-+ (void)setDevicePrintRenderer:(BOOL)a3
++ (void)setDevicePrintRenderer:(BOOL)renderer
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_DEVICE_PRINT_RENDERER"];
+  rendererCopy = renderer;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:rendererCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_DEVICE_PRINT_RENDERER"];
 }
 
 + (BOOL)devicePrintRenderer
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DEVICE_PRINT_RENDERER" defaultValue:&__block_literal_global_68];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DEVICE_PRINT_RENDERER" defaultValue:&__block_literal_global_68];
 
   return v3;
 }
@@ -2220,23 +2220,23 @@ uint64_t __39__NUGlobalSettings_devicePrintRenderer__block_invoke()
 
 + (BOOL)deviceDisableMetal
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_DEVICE_DISABLE_METAL" defaultValue:&__block_literal_global_63];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_DEVICE_DISABLE_METAL" defaultValue:&__block_literal_global_63];
 
   return v3;
 }
 
-+ (void)setTempDir:(id)a3
++ (void)setTempDir:(id)dir
 {
-  v4 = a3;
-  v5 = [a1 globalSettings];
-  [v5 setSetting:v4 forKey:@"NU_TEMP_DIR"];
+  dirCopy = dir;
+  globalSettings = [self globalSettings];
+  [globalSettings setSetting:dirCopy forKey:@"NU_TEMP_DIR"];
 }
 
 + (NSString)tempDir
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 stringSettingForKey:@"NU_TEMP_DIR" defaultValue:&__block_literal_global_51];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"NU_TEMP_DIR" defaultValue:&__block_literal_global_51];
 
   return v3;
 }
@@ -2250,138 +2250,138 @@ id __27__NUGlobalSettings_tempDir__block_invoke()
   return v2;
 }
 
-+ (void)setRenderJobDebugCapture5PercentOfJobs:(BOOL)a3
++ (void)setRenderJobDebugCapture5PercentOfJobs:(BOOL)jobs
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_5_PERCENT_OF_JOBS"];
+  jobsCopy = jobs;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:jobsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_5_PERCENT_OF_JOBS"];
 }
 
 + (BOOL)renderJobDebugCapture5PercentOfJobs
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_5_PERCENT_OF_JOBS" defaultValue:&__block_literal_global_46];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_5_PERCENT_OF_JOBS" defaultValue:&__block_literal_global_46];
 
   return v3;
 }
 
-+ (void)setRenderJobDebugCaptureOnlyPerfStats:(BOOL)a3
++ (void)setRenderJobDebugCaptureOnlyPerfStats:(BOOL)stats
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_ONLY_PERF_STATS"];
+  statsCopy = stats;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:statsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_ONLY_PERF_STATS"];
 }
 
 + (BOOL)renderJobDebugCaptureOnlyPerfStats
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_ONLY_PERF_STATS" defaultValue:&__block_literal_global_41];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_ONLY_PERF_STATS" defaultValue:&__block_literal_global_41];
 
   return v3;
 }
 
-+ (void)setRenderJobDebugCapturePerfStatHistory:(BOOL)a3
++ (void)setRenderJobDebugCapturePerfStatHistory:(BOOL)history
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_PERF_STAT_HISTORY"];
+  historyCopy = history;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:historyCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_PERF_STAT_HISTORY"];
 }
 
 + (BOOL)renderJobDebugCapturePerfStatHistory
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_PERF_STAT_HISTORY" defaultValue:&__block_literal_global_36];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_PERF_STAT_HISTORY" defaultValue:&__block_literal_global_36];
 
   return v3;
 }
 
-+ (void)setRenderJobDebugCaptureNodeCache:(BOOL)a3
++ (void)setRenderJobDebugCaptureNodeCache:(BOOL)cache
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_CACHE"];
+  cacheCopy = cache;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:cacheCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_CACHE"];
 }
 
 + (BOOL)renderJobDebugCaptureNodeCache
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_CACHE" defaultValue:&__block_literal_global_31];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_CACHE" defaultValue:&__block_literal_global_31];
 
   return v3;
 }
 
-+ (void)setRenderJobDebugCaptureNodeGraphs:(BOOL)a3
++ (void)setRenderJobDebugCaptureNodeGraphs:(BOOL)graphs
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_GRAPHS"];
+  graphsCopy = graphs;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:graphsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_GRAPHS"];
 }
 
 + (BOOL)renderJobDebugCaptureNodeGraphs
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_GRAPHS" defaultValue:&__block_literal_global_26];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_NODE_GRAPHS" defaultValue:&__block_literal_global_26];
 
   return v3;
 }
 
-+ (void)setRenderJobDebugCaptureCanceledJobs:(BOOL)a3
++ (void)setRenderJobDebugCaptureCanceledJobs:(BOOL)jobs
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_CANCELED_JOBS"];
+  jobsCopy = jobs;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:jobsCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_CANCELED_JOBS"];
 }
 
 + (BOOL)renderJobDebugCaptureCanceledJobs
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_CANCELED_JOBS" defaultValue:&__block_literal_global_21];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG_CAPTURE_CANCELED_JOBS" defaultValue:&__block_literal_global_21];
 
   return v3;
 }
 
-+ (void)setRenderJobDisableResultCache:(BOOL)a3
++ (void)setRenderJobDisableResultCache:(BOOL)cache
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DISABLE_RESULT_CACHE"];
+  cacheCopy = cache;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:cacheCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DISABLE_RESULT_CACHE"];
 }
 
 + (BOOL)renderJobDisableResultCache
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DISABLE_RESULT_CACHE" defaultValue:&__block_literal_global_16_918];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DISABLE_RESULT_CACHE" defaultValue:&__block_literal_global_16_918];
 
   return v3;
 }
 
-+ (void)setRenderJobDebug:(BOOL)a3
++ (void)setRenderJobDebug:(BOOL)debug
 {
-  v3 = a3;
-  v5 = [a1 globalSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG"];
+  debugCopy = debug;
+  globalSettings = [self globalSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:debugCopy];
+  [globalSettings setSetting:v4 forKey:@"NU_RENDER_JOB_DEBUG"];
 }
 
 + (BOOL)renderJobDebug
 {
-  v2 = [a1 globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG" defaultValue:&__block_literal_global_11];
+  globalSettings = [self globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"NU_RENDER_JOB_DEBUG" defaultValue:&__block_literal_global_11];
 
   return v3;
 }
 
 + (void)reset
 {
-  v2 = [a1 globalSettings];
-  [v2 reset];
+  globalSettings = [self globalSettings];
+  [globalSettings reset];
 }
 
 @end

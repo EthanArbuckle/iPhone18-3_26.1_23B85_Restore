@@ -1,8 +1,8 @@
 @interface BKScrubberCalloutView
-- (BKScrubberCalloutView)initWithFrame:(CGRect)a3 style:(unint64_t)a4;
+- (BKScrubberCalloutView)initWithFrame:(CGRect)frame style:(unint64_t)style;
 - (CGSize)contentSize;
-- (CGSize)contentSizeForThumbnailAspectRatio:(double)a3 spread:(BOOL)a4;
-- (CGSize)thumbnailSizeForAspectRatio:(double)a3 showSpreads:(BOOL)a4;
+- (CGSize)contentSizeForThumbnailAspectRatio:(double)ratio spread:(BOOL)spread;
+- (CGSize)thumbnailSizeForAspectRatio:(double)ratio showSpreads:(BOOL)spreads;
 - (UILabel)leftPageLabel;
 - (UILabel)rightPageLabel;
 - (UILabel)subtitle;
@@ -14,29 +14,29 @@
 - (id)stringForRightPageLabel;
 - (unint64_t)_effectiveStyle;
 - (void)_stylize;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)addToViewController:(id)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)addToViewController:(id)controller;
 - (void)dealloc;
 - (void)layoutContent;
 - (void)layoutSubviews;
-- (void)setIsShowing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLeftPageText:(id)a3 shortenString:(id)a4;
-- (void)setPageView:(id)a3;
-- (void)setRightPageText:(id)a3 shortenString:(id)a4;
-- (void)setUsesMonospacedDigitFontForSubtitle:(BOOL)a3;
+- (void)setIsShowing:(BOOL)showing animated:(BOOL)animated;
+- (void)setLeftPageText:(id)text shortenString:(id)string;
+- (void)setPageView:(id)view;
+- (void)setRightPageText:(id)text shortenString:(id)string;
+- (void)setUsesMonospacedDigitFontForSubtitle:(BOOL)subtitle;
 @end
 
 @implementation BKScrubberCalloutView
 
-- (BKScrubberCalloutView)initWithFrame:(CGRect)a3 style:(unint64_t)a4
+- (BKScrubberCalloutView)initWithFrame:(CGRect)frame style:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = BKScrubberCalloutView;
-  v5 = [(BKScrubberCalloutView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(BKScrubberCalloutView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     v5->_shouldDisplayPageInfo = 1;
     [(BKScrubberCalloutView *)v5 _stylize];
     [(BKScrubberCalloutView *)v6 setAlpha:0.0];
@@ -66,21 +66,21 @@
   [(BKScrubberCalloutView *)&v7 dealloc];
 }
 
-- (void)addToViewController:(id)a3
+- (void)addToViewController:(id)controller
 {
-  v4 = [a3 view];
-  [v4 addSubview:self];
+  view = [controller view];
+  [view addSubview:self];
 }
 
-- (void)setIsShowing:(BOOL)a3 animated:(BOOL)a4
+- (void)setIsShowing:(BOOL)showing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = a3;
+  animatedCopy = animated;
+  showingCopy = showing;
+  showingCopy2 = showing;
   [(BKScrubberCalloutView *)self alpha];
-  if (v8 != v7)
+  if (v8 != showingCopy2)
   {
-    if (v5)
+    if (showingCopy)
     {
 
       [(BKScrubberCalloutView *)self setAlpha:1.0];
@@ -98,7 +98,7 @@
         v12[4] = self;
         v10 = objc_retainBlock(v12);
         v11 = v10;
-        if (v4)
+        if (animatedCopy)
         {
           [UIView animateWithDuration:4 delay:v10 options:0 animations:0.2 completion:0.3];
         }
@@ -140,9 +140,9 @@
     [(UILabel *)self->_title setFont:v8];
 
     [(UILabel *)self->_title setTextAlignment:1];
-    v9 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     title = self->_title;
-    if (v9)
+    if (shouldDisplayPageInfo)
     {
       [(UIView *)self->_contentView addSubview:title];
       title = self->_title;
@@ -171,19 +171,19 @@
   subtitle = self->_subtitle;
   if (!subtitle)
   {
-    v4 = [(BKScrubberCalloutView *)self createPageLabel];
+    createPageLabel = [(BKScrubberCalloutView *)self createPageLabel];
     v5 = self->_subtitle;
-    self->_subtitle = v4;
+    self->_subtitle = createPageLabel;
 
-    v6 = [(BKScrubberCalloutView *)self _subtitleFont];
-    [(UILabel *)self->_subtitle setFont:v6];
+    _subtitleFont = [(BKScrubberCalloutView *)self _subtitleFont];
+    [(UILabel *)self->_subtitle setFont:_subtitleFont];
 
     v7 = +[UIColor whiteColor];
     [(UILabel *)self->_subtitle setTextColor:v7];
 
-    v8 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     subtitle = self->_subtitle;
-    if (v8)
+    if (shouldDisplayPageInfo)
     {
       [(UIView *)self->_contentView addSubview:subtitle];
       subtitle = self->_subtitle;
@@ -198,18 +198,18 @@
   leftPageLabel = self->_leftPageLabel;
   if (!leftPageLabel)
   {
-    v4 = [(BKScrubberCalloutView *)self createPageLabel];
+    createPageLabel = [(BKScrubberCalloutView *)self createPageLabel];
     v5 = self->_leftPageLabel;
-    self->_leftPageLabel = v4;
+    self->_leftPageLabel = createPageLabel;
 
     [(UILabel *)self->_leftPageLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_leftPageLabel setAdjustsFontForContentSizeCategory:1];
-    v6 = [(BKScrubberCalloutView *)self _pageLabelFont];
-    [(UILabel *)self->_leftPageLabel setFont:v6];
+    _pageLabelFont = [(BKScrubberCalloutView *)self _pageLabelFont];
+    [(UILabel *)self->_leftPageLabel setFont:_pageLabelFont];
 
-    v7 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     leftPageLabel = self->_leftPageLabel;
-    if (v7)
+    if (shouldDisplayPageInfo)
     {
       [(UIView *)self->_contentView addSubview:leftPageLabel];
       leftPageLabel = self->_leftPageLabel;
@@ -224,18 +224,18 @@
   rightPageLabel = self->_rightPageLabel;
   if (!rightPageLabel)
   {
-    v4 = [(BKScrubberCalloutView *)self createPageLabel];
+    createPageLabel = [(BKScrubberCalloutView *)self createPageLabel];
     v5 = self->_rightPageLabel;
-    self->_rightPageLabel = v4;
+    self->_rightPageLabel = createPageLabel;
 
-    v6 = [(BKScrubberCalloutView *)self _pageLabelFont];
-    [(UILabel *)self->_rightPageLabel setFont:v6];
+    _pageLabelFont = [(BKScrubberCalloutView *)self _pageLabelFont];
+    [(UILabel *)self->_rightPageLabel setFont:_pageLabelFont];
 
     [(UILabel *)self->_rightPageLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_rightPageLabel setAdjustsFontForContentSizeCategory:1];
-    v7 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     rightPageLabel = self->_rightPageLabel;
-    if (v7)
+    if (shouldDisplayPageInfo)
     {
       [(UIView *)self->_contentView addSubview:rightPageLabel];
       rightPageLabel = self->_rightPageLabel;
@@ -245,17 +245,17 @@
   return rightPageLabel;
 }
 
-- (void)setPageView:(id)a3
+- (void)setPageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   pageView = self->_pageView;
-  if (pageView != v5)
+  if (pageView != viewCopy)
   {
     [(UIView *)pageView removeFromSuperview];
     v7 = self->_pageView;
     self->_pageView = 0;
 
-    objc_storeStrong(&self->_pageView, a3);
+    objc_storeStrong(&self->_pageView, view);
     if (self->_pageView)
     {
       [(UIView *)self->_contentView addSubview:?];
@@ -267,20 +267,20 @@
   _objc_release_x1(pageView);
 }
 
-- (CGSize)contentSizeForThumbnailAspectRatio:(double)a3 spread:(BOOL)a4
+- (CGSize)contentSizeForThumbnailAspectRatio:(double)ratio spread:(BOOL)spread
 {
-  if (!a4)
+  if (!spread)
   {
-    if (a3 >= 1.0)
+    if (ratio >= 1.0)
     {
-      if (a3 == 1.0)
+      if (ratio == 1.0)
       {
         v7 = 146.0;
         v6 = 146.0;
         goto LABEL_16;
       }
 
-      if (a3 > 1.56)
+      if (ratio > 1.56)
       {
         v6 = 194.0;
         goto LABEL_13;
@@ -291,7 +291,7 @@
 
     else
     {
-      if (a3 > 0.64)
+      if (ratio > 0.64)
       {
         v6 = 124.0;
         goto LABEL_13;
@@ -300,17 +300,17 @@
       v7 = 194.0;
     }
 
-    v6 = a3 * v7;
+    v6 = ratio * v7;
     goto LABEL_16;
   }
 
-  v5 = a3 + a3;
+  v5 = ratio + ratio;
   if (v5 > 1.56451613)
   {
-    a3 = v5 * 0.5;
+    ratio = v5 * 0.5;
     v6 = 97.0;
 LABEL_13:
-    v7 = v6 / a3;
+    v7 = v6 / ratio;
     goto LABEL_16;
   }
 
@@ -330,9 +330,9 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)thumbnailSizeForAspectRatio:(double)a3 showSpreads:(BOOL)a4
+- (CGSize)thumbnailSizeForAspectRatio:(double)ratio showSpreads:(BOOL)spreads
 {
-  [(BKScrubberCalloutView *)self contentSizeForThumbnailAspectRatio:a4 spread:a3];
+  [(BKScrubberCalloutView *)self contentSizeForThumbnailAspectRatio:spreads spread:ratio];
   v6 = ceil(v4 + -10.0);
   v7 = ceil(v5 + -10.0);
   result.height = v7;
@@ -362,18 +362,18 @@ LABEL_16:
     [(UIView *)pageView sizeThatFits:v20, v21];
     v23 = v22;
     v25 = v24;
-    v26 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     v27 = fmax(v17, v23);
-    if (!v26)
+    if (!shouldDisplayPageInfo)
     {
       v27 = v23;
     }
 
     v28 = v25 + 10.0;
     v29 = v27 + 10.0;
-    v30 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
+    shouldDisplayPageInfo2 = [(BKScrubberCalloutView *)self shouldDisplayPageInfo];
     v31 = fmax(v18, 27.0) + v28;
-    if (v30)
+    if (shouldDisplayPageInfo2)
     {
       v32 = v31;
     }
@@ -417,8 +417,8 @@ LABEL_16:
   [(UIVisualEffectView *)blurView setFrame:v4, v6, v8, v10];
   +[CATransaction begin];
   [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
-  v17 = [(BKScrubberCalloutView *)self layer];
-  [v17 bounds];
+  layer = [(BKScrubberCalloutView *)self layer];
+  [layer bounds];
   [(CALayer *)self->_shadowLayer setFrame:?];
 
   [(CALayer *)self->_shadowLayer bounds];
@@ -430,12 +430,12 @@ LABEL_16:
   v27 = [UIBezierPath bezierPathWithRoundedRect:v19 cornerRadius:v21, v23, v25, v26];
   -[CALayer setShadowPath:](self->_shadowLayer, "setShadowPath:", [v27 CGPath]);
 
-  v28 = [(BKScrubberCalloutView *)self layer];
-  [v28 bounds];
+  layer2 = [(BKScrubberCalloutView *)self layer];
+  [layer2 bounds];
   [(CALayer *)self->_outerBorderLayer setFrame:?];
 
-  v29 = [(BKScrubberCalloutView *)self layer];
-  [v29 bounds];
+  layer3 = [(BKScrubberCalloutView *)self layer];
+  [layer3 bounds];
   v62 = CGRectInset(v61, 0.5, 0.5);
   [(CALayer *)self->_innerBorderLayer setFrame:v62.origin.x, v62.origin.y, v62.size.width, v62.size.height];
 
@@ -451,17 +451,17 @@ LABEL_16:
       v30 = 6.0;
     }
 
-    v31 = [(BKScrubberCalloutView *)self blurView];
-    [v31 _setContinuousCornerRadius:v30];
+    blurView = [(BKScrubberCalloutView *)self blurView];
+    [blurView _setContinuousCornerRadius:v30];
 
-    v32 = [(BKScrubberCalloutView *)self shadowLayer];
-    [v32 setCornerRadius:v30];
+    shadowLayer = [(BKScrubberCalloutView *)self shadowLayer];
+    [shadowLayer setCornerRadius:v30];
 
-    v33 = [(BKScrubberCalloutView *)self outerBorderLayer];
-    [v33 setCornerRadius:v30];
+    outerBorderLayer = [(BKScrubberCalloutView *)self outerBorderLayer];
+    [outerBorderLayer setCornerRadius:v30];
 
-    v34 = [(BKScrubberCalloutView *)self innerBorderLayer];
-    [v34 setCornerRadius:v30 + -1.0];
+    innerBorderLayer = [(BKScrubberCalloutView *)self innerBorderLayer];
+    [innerBorderLayer setCornerRadius:v30 + -1.0];
   }
 
   +[CATransaction commit];
@@ -508,32 +508,32 @@ LABEL_16:
     }
 
     [(UILabel *)self->_rightPageLabel setFrame:v47, MaxY, v49, v10 - MaxY];
-    v51 = [(BKScrubberCalloutView *)self stringForRightPageLabel];
-    [(UILabel *)self->_rightPageLabel setText:v51];
+    stringForRightPageLabel = [(BKScrubberCalloutView *)self stringForRightPageLabel];
+    [(UILabel *)self->_rightPageLabel setText:stringForRightPageLabel];
 
-    v52 = [(BKScrubberCalloutView *)self stringForLeftPageLabel];
-    [(UILabel *)self->_leftPageLabel setText:v52];
+    stringForLeftPageLabel = [(BKScrubberCalloutView *)self stringForLeftPageLabel];
+    [(UILabel *)self->_leftPageLabel setText:stringForLeftPageLabel];
 
     [(UIView *)self->_pageView setClipsToBounds:1];
-    v53 = [(BKScrubberCalloutView *)self _useWideRadiusRoundedCorners];
+    _useWideRadiusRoundedCorners = [(BKScrubberCalloutView *)self _useWideRadiusRoundedCorners];
     v54 = self->_pageView;
-    if (v53)
+    if (_useWideRadiusRoundedCorners)
     {
       [(UIView *)v54 _setContinuousCornerRadius:10.0];
-      v55 = [(UIView *)self->_pageView layer];
-      [v55 setBorderWidth:1.0];
+      layer4 = [(UIView *)self->_pageView layer];
+      [layer4 setBorderWidth:1.0];
 
-      v56 = +[UIColor bc_booksQuaternaryLabelColor];
-      v57 = [v56 CGColor];
-      v58 = [(UIView *)self->_pageView layer];
-      [v58 setBorderColor:v57];
+      layer6 = +[UIColor bc_booksQuaternaryLabelColor];
+      cGColor = [layer6 CGColor];
+      layer5 = [(UIView *)self->_pageView layer];
+      [layer5 setBorderColor:cGColor];
     }
 
     else
     {
       [(UIView *)v54 _setContinuousCornerRadius:0.0];
-      v56 = [(UIView *)self->_pageView layer];
-      [v56 setBorderWidth:0.0];
+      layer6 = [(UIView *)self->_pageView layer];
+      [layer6 setBorderWidth:0.0];
     }
 
     v59 = self->_pageView;
@@ -573,27 +573,27 @@ LABEL_16:
   }
 }
 
-- (void)setLeftPageText:(id)a3 shortenString:(id)a4
+- (void)setLeftPageText:(id)text shortenString:(id)string
 {
-  v6 = a4;
-  [(BKScrubberCalloutView *)self setLeftPageString:a3];
-  [(BKScrubberCalloutView *)self setLeftPageShortenString:v6];
+  stringCopy = string;
+  [(BKScrubberCalloutView *)self setLeftPageString:text];
+  [(BKScrubberCalloutView *)self setLeftPageShortenString:stringCopy];
 
-  v7 = [(BKScrubberCalloutView *)self leftPageString];
-  if ([v7 length])
+  leftPageString = [(BKScrubberCalloutView *)self leftPageString];
+  if ([leftPageString length])
   {
 
 LABEL_4:
-    v12 = [(BKScrubberCalloutView *)self stringForLeftPageLabel];
-    v10 = [(BKScrubberCalloutView *)self leftPageLabel];
-    [v10 setText:v12];
+    stringForLeftPageLabel = [(BKScrubberCalloutView *)self stringForLeftPageLabel];
+    leftPageLabel = [(BKScrubberCalloutView *)self leftPageLabel];
+    [leftPageLabel setText:stringForLeftPageLabel];
 
-    leftPageLabel = v12;
+    leftPageLabel = stringForLeftPageLabel;
     goto LABEL_5;
   }
 
-  v8 = [(BKScrubberCalloutView *)self leftPageShortenString];
-  v9 = [v8 length];
+  leftPageShortenString = [(BKScrubberCalloutView *)self leftPageShortenString];
+  v9 = [leftPageShortenString length];
 
   if (v9)
   {
@@ -606,27 +606,27 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)setRightPageText:(id)a3 shortenString:(id)a4
+- (void)setRightPageText:(id)text shortenString:(id)string
 {
-  v6 = a4;
-  [(BKScrubberCalloutView *)self setRightPageString:a3];
-  [(BKScrubberCalloutView *)self setRightPageShortenString:v6];
+  stringCopy = string;
+  [(BKScrubberCalloutView *)self setRightPageString:text];
+  [(BKScrubberCalloutView *)self setRightPageShortenString:stringCopy];
 
-  v7 = [(BKScrubberCalloutView *)self rightPageString];
-  if ([v7 length])
+  rightPageString = [(BKScrubberCalloutView *)self rightPageString];
+  if ([rightPageString length])
   {
 
 LABEL_4:
-    v12 = [(BKScrubberCalloutView *)self stringForRightPageLabel];
-    v10 = [(BKScrubberCalloutView *)self rightPageLabel];
-    [v10 setText:v12];
+    stringForRightPageLabel = [(BKScrubberCalloutView *)self stringForRightPageLabel];
+    rightPageLabel = [(BKScrubberCalloutView *)self rightPageLabel];
+    [rightPageLabel setText:stringForRightPageLabel];
 
-    rightPageLabel = v12;
+    rightPageLabel = stringForRightPageLabel;
     goto LABEL_5;
   }
 
-  v8 = [(BKScrubberCalloutView *)self rightPageShortenString];
-  v9 = [v8 length];
+  rightPageShortenString = [(BKScrubberCalloutView *)self rightPageShortenString];
+  v9 = [rightPageShortenString length];
 
   if (v9)
   {
@@ -643,26 +643,26 @@ LABEL_5:
 {
   if (self->_leftPageLabel)
   {
-    v3 = [(BKScrubberCalloutView *)self leftPageString];
+    leftPageString = [(BKScrubberCalloutView *)self leftPageString];
     v15 = NSFontAttributeName;
-    v4 = [(UILabel *)self->_leftPageLabel font];
-    v16 = v4;
+    font = [(UILabel *)self->_leftPageLabel font];
+    v16 = font;
     v5 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    [v3 sizeWithAttributes:v5];
+    [leftPageString sizeWithAttributes:v5];
     v7 = v6;
 
     [(UILabel *)self->_leftPageLabel bounds];
     if (v7 >= v8 && ([(BKScrubberCalloutView *)self leftPageShortenString], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
     {
-      v10 = [(BKScrubberCalloutView *)self leftPageShortenString];
+      leftPageShortenString = [(BKScrubberCalloutView *)self leftPageShortenString];
     }
 
     else
     {
-      v10 = [(BKScrubberCalloutView *)self leftPageString];
+      leftPageShortenString = [(BKScrubberCalloutView *)self leftPageString];
     }
 
-    v11 = v10;
+    v11 = leftPageShortenString;
   }
 
   else
@@ -689,26 +689,26 @@ LABEL_5:
 {
   if (self->_rightPageLabel)
   {
-    v3 = [(BKScrubberCalloutView *)self rightPageString];
+    rightPageString = [(BKScrubberCalloutView *)self rightPageString];
     v15 = NSFontAttributeName;
-    v4 = [(UILabel *)self->_rightPageLabel font];
-    v16 = v4;
+    font = [(UILabel *)self->_rightPageLabel font];
+    v16 = font;
     v5 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    [v3 sizeWithAttributes:v5];
+    [rightPageString sizeWithAttributes:v5];
     v7 = v6;
 
     [(UILabel *)self->_rightPageLabel bounds];
     if (v7 >= v8 && ([(BKScrubberCalloutView *)self rightPageShortenString], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
     {
-      v10 = [(BKScrubberCalloutView *)self rightPageShortenString];
+      rightPageShortenString = [(BKScrubberCalloutView *)self rightPageShortenString];
     }
 
     else
     {
-      v10 = [(BKScrubberCalloutView *)self rightPageString];
+      rightPageShortenString = [(BKScrubberCalloutView *)self rightPageString];
     }
 
-    v11 = v10;
+    v11 = rightPageShortenString;
   }
 
   else
@@ -765,48 +765,48 @@ LABEL_5:
   return v4;
 }
 
-- (void)setUsesMonospacedDigitFontForSubtitle:(BOOL)a3
+- (void)setUsesMonospacedDigitFontForSubtitle:(BOOL)subtitle
 {
-  if (self->_usesMonospacedDigitFontForSubtitle != a3)
+  if (self->_usesMonospacedDigitFontForSubtitle != subtitle)
   {
-    self->_usesMonospacedDigitFontForSubtitle = a3;
+    self->_usesMonospacedDigitFontForSubtitle = subtitle;
     if (self->_subtitle)
     {
-      v4 = [(BKScrubberCalloutView *)self _subtitleFont];
-      [(UILabel *)self->_subtitle setFont:v4];
+      _subtitleFont = [(BKScrubberCalloutView *)self _subtitleFont];
+      [(UILabel *)self->_subtitle setFont:_subtitleFont];
     }
 
     if (self->_leftPageLabel)
     {
-      v5 = [(BKScrubberCalloutView *)self _pageLabelFont];
-      [(UILabel *)self->_leftPageLabel setFont:v5];
+      _pageLabelFont = [(BKScrubberCalloutView *)self _pageLabelFont];
+      [(UILabel *)self->_leftPageLabel setFont:_pageLabelFont];
     }
 
     if (self->_rightPageLabel)
     {
-      v6 = [(BKScrubberCalloutView *)self _pageLabelFont];
-      [(UILabel *)self->_rightPageLabel setFont:v6];
+      _pageLabelFont2 = [(BKScrubberCalloutView *)self _pageLabelFont];
+      [(UILabel *)self->_rightPageLabel setFont:_pageLabelFont2];
     }
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(BKScrubberCalloutView *)self outerBorderColor:a3];
-  v6 = [v5 CGColor];
-  v7 = [(BKScrubberCalloutView *)self outerBorderLayer];
-  [v7 setBorderColor:v6];
+  v5 = [(BKScrubberCalloutView *)self outerBorderColor:change];
+  cGColor = [v5 CGColor];
+  outerBorderLayer = [(BKScrubberCalloutView *)self outerBorderLayer];
+  [outerBorderLayer setBorderColor:cGColor];
 
-  v8 = [(BKScrubberCalloutView *)self innerBorderColor];
-  v9 = [v8 CGColor];
-  v10 = [(BKScrubberCalloutView *)self innerBorderLayer];
-  [v10 setBorderColor:v9];
+  innerBorderColor = [(BKScrubberCalloutView *)self innerBorderColor];
+  cGColor2 = [innerBorderColor CGColor];
+  innerBorderLayer = [(BKScrubberCalloutView *)self innerBorderLayer];
+  [innerBorderLayer setBorderColor:cGColor2];
 
-  v14 = [(BKScrubberCalloutView *)self shadowColor];
-  v11 = v14;
-  v12 = [v14 CGColor];
-  v13 = [(BKScrubberCalloutView *)self shadowLayer];
-  [v13 setShadowColor:v12];
+  shadowColor = [(BKScrubberCalloutView *)self shadowColor];
+  v11 = shadowColor;
+  cGColor3 = [shadowColor CGColor];
+  shadowLayer = [(BKScrubberCalloutView *)self shadowLayer];
+  [shadowLayer setShadowColor:cGColor3];
 }
 
 - (unint64_t)_effectiveStyle
@@ -837,13 +837,13 @@ LABEL_5:
     [(UIView *)self->_contentView bounds];
     [(UIVisualEffectView *)self->_blurView setFrame:?];
     [(UIVisualEffectView *)self->_blurView setAlpha:1.0];
-    v6 = [(UIVisualEffectView *)self->_blurView layer];
-    [v6 setMasksToBounds:1];
+    layer = [(UIVisualEffectView *)self->_blurView layer];
+    [layer setMasksToBounds:1];
 
     [(UIVisualEffectView *)self->_blurView setClipsToBounds:1];
-    v7 = [(UIVisualEffectView *)self->_blurView contentView];
+    contentView = [(UIVisualEffectView *)self->_blurView contentView];
     contentView = self->_contentView;
-    self->_contentView = v7;
+    self->_contentView = contentView;
 
     [(BKScrubberCalloutView *)self addSubview:self->_blurView];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
@@ -862,36 +862,36 @@ LABEL_5:
     [v15 setMasksToBounds:0];
     LODWORD(v16) = 1.0;
     [v15 setShadowOpacity:v16];
-    v17 = [(BKScrubberCalloutView *)self shadowColor];
-    [v15 setShadowColor:{objc_msgSend(v17, "CGColor")}];
+    shadowColor = [(BKScrubberCalloutView *)self shadowColor];
+    [v15 setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
     [v15 setShadowOffset:{0.0, 4.0}];
     [v15 setShadowRadius:16.0];
     [v15 setCornerCurve:kCACornerCurveContinuous];
-    v18 = [(BKScrubberCalloutView *)self layer];
-    v19 = [(UIVisualEffectView *)self->_blurView layer];
-    [v18 insertSublayer:v15 below:v19];
+    layer2 = [(BKScrubberCalloutView *)self layer];
+    layer3 = [(UIVisualEffectView *)self->_blurView layer];
+    [layer2 insertSublayer:v15 below:layer3];
 
     [(BKScrubberCalloutView *)self setShadowLayer:v15];
     v20 = +[CALayer layer];
     [v20 setBorderWidth:0.5];
-    v21 = [(BKScrubberCalloutView *)self outerBorderColor];
-    [v20 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+    outerBorderColor = [(BKScrubberCalloutView *)self outerBorderColor];
+    [v20 setBorderColor:{objc_msgSend(outerBorderColor, "CGColor")}];
 
     [v20 setCornerCurve:kCACornerCurveContinuous];
-    v22 = [(BKScrubberCalloutView *)self layer];
-    v23 = [(UIVisualEffectView *)self->_blurView layer];
-    [v22 insertSublayer:v20 above:v23];
+    layer4 = [(BKScrubberCalloutView *)self layer];
+    layer5 = [(UIVisualEffectView *)self->_blurView layer];
+    [layer4 insertSublayer:v20 above:layer5];
 
     [(BKScrubberCalloutView *)self setOuterBorderLayer:v20];
     v24 = +[CALayer layer];
     [v24 setBorderWidth:1.0];
-    v25 = [(BKScrubberCalloutView *)self innerBorderColor];
-    [v24 setBorderColor:{objc_msgSend(v25, "CGColor")}];
+    innerBorderColor = [(BKScrubberCalloutView *)self innerBorderColor];
+    [v24 setBorderColor:{objc_msgSend(innerBorderColor, "CGColor")}];
 
     [v24 setCornerCurve:kCACornerCurveContinuous];
-    v26 = [(BKScrubberCalloutView *)self layer];
-    [v26 insertSublayer:v24 below:v20];
+    layer6 = [(BKScrubberCalloutView *)self layer];
+    [layer6 insertSublayer:v24 below:v20];
 
     [(BKScrubberCalloutView *)self setInnerBorderLayer:v24];
   }

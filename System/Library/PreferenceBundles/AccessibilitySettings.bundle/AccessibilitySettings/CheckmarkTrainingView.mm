@@ -6,9 +6,9 @@
 - (void)_removeSpinner;
 - (void)_setUpSymbolView;
 - (void)_updateViewWithSpinner;
-- (void)_updateViewWithSymbolNamed:(id)a3;
+- (void)_updateViewWithSymbolNamed:(id)named;
 - (void)layoutSubviews;
-- (void)setCheckmarkState:(int64_t)a3;
+- (void)setCheckmarkState:(int64_t)state;
 @end
 
 @implementation CheckmarkTrainingView
@@ -47,32 +47,32 @@
   return result;
 }
 
-- (void)setCheckmarkState:(int64_t)a3
+- (void)setCheckmarkState:(int64_t)state
 {
-  self->_checkmarkState = a3;
-  if (a3 <= 2)
+  self->_checkmarkState = state;
+  if (state <= 2)
   {
-    switch(a3)
+    switch(state)
     {
       case 0:
         v11 = +[UIColor tertiarySystemFillColor];
-        v12 = [(CheckmarkTrainingView *)self symbolView];
-        [v12 setTintColor:v11];
+        symbolView = [(CheckmarkTrainingView *)self symbolView];
+        [symbolView setTintColor:v11];
 
         v10 = @"circle.fill";
         goto LABEL_22;
       case 1:
         v16 = +[UIColor systemBlueColor];
         v17 = [v16 colorWithAlphaComponent:0.6];
-        v18 = [(CheckmarkTrainingView *)self symbolView];
-        [v18 setTintColor:v17];
+        symbolView2 = [(CheckmarkTrainingView *)self symbolView];
+        [symbolView2 setTintColor:v17];
 
         v10 = @"waveform.circle.fill";
         goto LABEL_22;
       case 2:
         v6 = +[UIColor systemGreenColor];
-        v7 = [(CheckmarkTrainingView *)self symbolView];
-        [v7 setTintColor:v6];
+        symbolView3 = [(CheckmarkTrainingView *)self symbolView];
+        [symbolView3 setTintColor:v6];
 LABEL_19:
 
         v10 = @"checkmark.circle.fill";
@@ -82,41 +82,41 @@ LABEL_19:
 
   else
   {
-    if (a3 <= 4)
+    if (state <= 4)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         v4 = +[UIColor clearColor];
-        v5 = [(CheckmarkTrainingView *)self symbolView];
-        [v5 setTintColor:v4];
+        symbolView4 = [(CheckmarkTrainingView *)self symbolView];
+        [symbolView4 setTintColor:v4];
 
         [(CheckmarkTrainingView *)self _updateViewWithSpinner];
         return;
       }
 
       v6 = +[UIColor systemBlueColor];
-      v7 = [v6 colorWithAlphaComponent:0.6];
-      v13 = [(CheckmarkTrainingView *)self symbolView];
-      [v13 setTintColor:v7];
+      symbolView3 = [v6 colorWithAlphaComponent:0.6];
+      symbolView5 = [(CheckmarkTrainingView *)self symbolView];
+      [symbolView5 setTintColor:symbolView3];
 
       goto LABEL_19;
     }
 
-    if (a3 == 5)
+    if (state == 5)
     {
       v14 = +[UIColor systemOrangeColor];
-      v15 = [(CheckmarkTrainingView *)self symbolView];
-      [v15 setTintColor:v14];
+      symbolView6 = [(CheckmarkTrainingView *)self symbolView];
+      [symbolView6 setTintColor:v14];
 
       v10 = @"questionmark.circle.fill";
       goto LABEL_22;
     }
 
-    if (a3 == 6)
+    if (state == 6)
     {
       v8 = +[UIColor systemRedColor];
-      v9 = [(CheckmarkTrainingView *)self symbolView];
-      [v9 setTintColor:v8];
+      symbolView7 = [(CheckmarkTrainingView *)self symbolView];
+      [symbolView7 setTintColor:v8];
 
       v10 = @"exclamationmark.circle.fill";
 LABEL_22:
@@ -135,77 +135,77 @@ LABEL_22:
   v3 = [[UIActivityIndicatorView alloc] initWithFrame:{0.0, 0.0, 35.0, 35.0}];
   [(CheckmarkTrainingView *)self setSpinner:v3];
 
-  v4 = [(CheckmarkTrainingView *)self spinner];
-  [(CheckmarkTrainingView *)self addSubview:v4];
+  spinner = [(CheckmarkTrainingView *)self spinner];
+  [(CheckmarkTrainingView *)self addSubview:spinner];
 
-  v5 = [(CheckmarkTrainingView *)self spinner];
-  [v5 startAnimating];
+  spinner2 = [(CheckmarkTrainingView *)self spinner];
+  [spinner2 startAnimating];
 }
 
 - (void)_removeSpinner
 {
-  v3 = [(CheckmarkTrainingView *)self spinner];
+  spinner = [(CheckmarkTrainingView *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(CheckmarkTrainingView *)self spinner];
-    [v4 stopAnimating];
+    spinner2 = [(CheckmarkTrainingView *)self spinner];
+    [spinner2 stopAnimating];
 
-    v5 = [(CheckmarkTrainingView *)self spinner];
-    [v5 removeFromSuperview];
+    spinner3 = [(CheckmarkTrainingView *)self spinner];
+    [spinner3 removeFromSuperview];
   }
 }
 
-- (void)_updateViewWithSymbolNamed:(id)a3
+- (void)_updateViewWithSymbolNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   [(CheckmarkTrainingView *)self _removeSpinner];
-  v5 = [UIImage systemImageNamed:v4];
+  v5 = [UIImage systemImageNamed:namedCopy];
 
   v6 = [UIImageSymbolConfiguration configurationWithPointSize:35.0];
   v9 = [v5 imageWithConfiguration:v6];
 
-  v7 = [(CheckmarkTrainingView *)self symbolView];
-  [v7 setImage:v9];
+  symbolView = [(CheckmarkTrainingView *)self symbolView];
+  [symbolView setImage:v9];
 
-  v8 = [(CheckmarkTrainingView *)self symbolView];
-  [v8 setNeedsDisplay];
+  symbolView2 = [(CheckmarkTrainingView *)self symbolView];
+  [symbolView2 setNeedsDisplay];
 }
 
 - (void)_setUpSymbolView
 {
-  v3 = [(CheckmarkTrainingView *)self symbolView];
-  [v3 setContentMode:2];
+  symbolView = [(CheckmarkTrainingView *)self symbolView];
+  [symbolView setContentMode:2];
 
-  v4 = [(CheckmarkTrainingView *)self symbolView];
-  [(CheckmarkTrainingView *)self addSubview:v4];
+  symbolView2 = [(CheckmarkTrainingView *)self symbolView];
+  [(CheckmarkTrainingView *)self addSubview:symbolView2];
 }
 
 - (void)_constrainSymbolView
 {
-  v3 = [(CheckmarkTrainingView *)self symbolView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  symbolView = [(CheckmarkTrainingView *)self symbolView];
+  [symbolView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CheckmarkTrainingView *)self symbolView];
-  v5 = [v4 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:35.0];
+  symbolView2 = [(CheckmarkTrainingView *)self symbolView];
+  widthAnchor = [symbolView2 widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:35.0];
   [v6 setActive:1];
 
-  v7 = [(CheckmarkTrainingView *)self symbolView];
-  v8 = [v7 heightAnchor];
-  v9 = [v8 constraintEqualToConstant:35.0];
+  symbolView3 = [(CheckmarkTrainingView *)self symbolView];
+  heightAnchor = [symbolView3 heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:35.0];
   [v9 setActive:1];
 
-  v10 = [(CheckmarkTrainingView *)self symbolView];
-  v11 = [v10 centerXAnchor];
-  v12 = [(CheckmarkTrainingView *)self centerXAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  symbolView4 = [(CheckmarkTrainingView *)self symbolView];
+  centerXAnchor = [symbolView4 centerXAnchor];
+  centerXAnchor2 = [(CheckmarkTrainingView *)self centerXAnchor];
+  v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v13 setActive:1];
 
-  v17 = [(CheckmarkTrainingView *)self symbolView];
-  v14 = [v17 centerYAnchor];
-  v15 = [(CheckmarkTrainingView *)self centerYAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  symbolView5 = [(CheckmarkTrainingView *)self symbolView];
+  centerYAnchor = [symbolView5 centerYAnchor];
+  centerYAnchor2 = [(CheckmarkTrainingView *)self centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v16 setActive:1];
 }
 

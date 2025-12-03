@@ -16,335 +16,335 @@
 - (double)lockscreenMinimumWallpaperScale;
 - (double)lockscreenParallaxFactor;
 - (double)lockscreenZoomFactor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)liveWallpaperPlaybackState;
-- (void)setHomescreenAverageColor:(id)a3;
-- (void)setHomescreenContentStatic:(BOOL)a3;
-- (void)setHomescreenContrast:(double)a3;
-- (void)setHomescreenLegibilitySettings:(id)a3;
-- (void)setHomescreenMinimumWallpaperScale:(double)a3;
-- (void)setHomescreenParallaxEnabled:(BOOL)a3;
-- (void)setHomescreenParallaxFactor:(double)a3;
-- (void)setHomescreenZoomFactor:(double)a3;
-- (void)setLiveWallpaperPlaybackState:(int64_t)a3;
-- (void)setLockscreenAverageColor:(id)a3;
-- (void)setLockscreenContentLiveWallpaper:(BOOL)a3;
-- (void)setLockscreenContentStatic:(BOOL)a3;
-- (void)setLockscreenContrast:(double)a3;
-- (void)setLockscreenLegibilitySettings:(id)a3;
-- (void)setLockscreenMinimumWallpaperScale:(double)a3;
-- (void)setLockscreenParallaxEnabled:(BOOL)a3;
-- (void)setLockscreenParallaxFactor:(double)a3;
-- (void)setLockscreenZoomFactor:(double)a3;
+- (void)setHomescreenAverageColor:(id)color;
+- (void)setHomescreenContentStatic:(BOOL)static;
+- (void)setHomescreenContrast:(double)contrast;
+- (void)setHomescreenLegibilitySettings:(id)settings;
+- (void)setHomescreenMinimumWallpaperScale:(double)scale;
+- (void)setHomescreenParallaxEnabled:(BOOL)enabled;
+- (void)setHomescreenParallaxFactor:(double)factor;
+- (void)setHomescreenZoomFactor:(double)factor;
+- (void)setLiveWallpaperPlaybackState:(int64_t)state;
+- (void)setLockscreenAverageColor:(id)color;
+- (void)setLockscreenContentLiveWallpaper:(BOOL)wallpaper;
+- (void)setLockscreenContentStatic:(BOOL)static;
+- (void)setLockscreenContrast:(double)contrast;
+- (void)setLockscreenLegibilitySettings:(id)settings;
+- (void)setLockscreenMinimumWallpaperScale:(double)scale;
+- (void)setLockscreenParallaxEnabled:(BOOL)enabled;
+- (void)setLockscreenParallaxFactor:(double)factor;
+- (void)setLockscreenZoomFactor:(double)factor;
 @end
 
 @implementation PBUIMutableWallpaperWindowSceneClientSettings
 
 - (double)homescreenMinimumWallpaperScale
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217227];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217227];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setHomescreenMinimumWallpaperScale:(double)a3
+- (void)setHomescreenMinimumWallpaperScale:(double)scale
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217227];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
+  [otherSettings setObject:v4 forSetting:1207217227];
 }
 
 - (double)lockscreenMinimumWallpaperScale
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217228];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217228];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setLockscreenMinimumWallpaperScale:(double)a3
+- (void)setLockscreenMinimumWallpaperScale:(double)scale
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217228];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
+  [otherSettings setObject:v4 forSetting:1207217228];
 }
 
 - (_UILegibilitySettings)homescreenLegibilitySettings
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217229];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217229];
 
   return v3;
 }
 
-- (void)setHomescreenLegibilitySettings:(id)a3
+- (void)setHomescreenLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:1207217229];
+  settingsCopy = settings;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:settingsCopy forSetting:1207217229];
 }
 
 - (_UILegibilitySettings)lockscreenLegibilitySettings
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217230];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217230];
 
   return v3;
 }
 
-- (void)setLockscreenLegibilitySettings:(id)a3
+- (void)setLockscreenLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:1207217230];
+  settingsCopy = settings;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:settingsCopy forSetting:1207217230];
 }
 
 - (UIColor)homescreenAverageColor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217231];
-  v4 = [v3 UIColor];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217231];
+  uIColor = [v3 UIColor];
 
-  return v4;
+  return uIColor;
 }
 
-- (void)setHomescreenAverageColor:(id)a3
+- (void)setHomescreenAverageColor:(id)color
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 BSColor];
+  colorCopy = color;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  bSColor = [colorCopy BSColor];
 
-  [v6 setObject:v5 forSetting:1207217231];
+  [otherSettings setObject:bSColor forSetting:1207217231];
 }
 
 - (UIColor)lockscreenAverageColor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217232];
-  v4 = [v3 UIColor];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217232];
+  uIColor = [v3 UIColor];
 
-  return v4;
+  return uIColor;
 }
 
-- (void)setLockscreenAverageColor:(id)a3
+- (void)setLockscreenAverageColor:(id)color
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 BSColor];
+  colorCopy = color;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  bSColor = [colorCopy BSColor];
 
-  [v6 setObject:v5 forSetting:1207217232];
+  [otherSettings setObject:bSColor forSetting:1207217232];
 }
 
 - (double)homescreenContrast
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217233];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217233];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setHomescreenContrast:(double)a3
+- (void)setHomescreenContrast:(double)contrast
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217233];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:contrast];
+  [otherSettings setObject:v4 forSetting:1207217233];
 }
 
 - (double)lockscreenContrast
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217234];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217234];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setLockscreenContrast:(double)a3
+- (void)setLockscreenContrast:(double)contrast
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217234];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:contrast];
+  [otherSettings setObject:v4 forSetting:1207217234];
 }
 
 - (double)homescreenParallaxFactor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217235];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217235];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setHomescreenParallaxFactor:(double)a3
+- (void)setHomescreenParallaxFactor:(double)factor
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217235];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [otherSettings setObject:v4 forSetting:1207217235];
 }
 
 - (double)lockscreenParallaxFactor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217236];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217236];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setLockscreenParallaxFactor:(double)a3
+- (void)setLockscreenParallaxFactor:(double)factor
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217236];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [otherSettings setObject:v4 forSetting:1207217236];
 }
 
 - (BOOL)homescreenParallaxEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1207217237];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1207217237];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setHomescreenParallaxEnabled:(BOOL)a3
+- (void)setHomescreenParallaxEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagIfYes() forSetting:1207217237];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagIfYes() forSetting:1207217237];
 }
 
 - (BOOL)lockscreenParallaxEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1207217238];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1207217238];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setLockscreenParallaxEnabled:(BOOL)a3
+- (void)setLockscreenParallaxEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagIfYes() forSetting:1207217238];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagIfYes() forSetting:1207217238];
 }
 
 - (double)homescreenZoomFactor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217239];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217239];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setHomescreenZoomFactor:(double)a3
+- (void)setHomescreenZoomFactor:(double)factor
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217239];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [otherSettings setObject:v4 forSetting:1207217239];
 }
 
 - (double)lockscreenZoomFactor
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217240];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217240];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setLockscreenZoomFactor:(double)a3
+- (void)setLockscreenZoomFactor:(double)factor
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1207217240];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  [otherSettings setObject:v4 forSetting:1207217240];
 }
 
 - (BOOL)isHomescreenContentStatic
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1207217241];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1207217241];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setHomescreenContentStatic:(BOOL)a3
+- (void)setHomescreenContentStatic:(BOOL)static
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagIfYes() forSetting:1207217241];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagIfYes() forSetting:1207217241];
 }
 
 - (BOOL)isLockscreenContentStatic
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1207217242];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1207217242];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setLockscreenContentStatic:(BOOL)a3
+- (void)setLockscreenContentStatic:(BOOL)static
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagIfYes() forSetting:1207217242];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagIfYes() forSetting:1207217242];
 }
 
 - (BOOL)isLockscreenContentLiveWallpaper
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  [v2 flagForSetting:1207217243];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings flagForSetting:1207217243];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
 }
 
-- (void)setLockscreenContentLiveWallpaper:(BOOL)a3
+- (void)setLockscreenContentLiveWallpaper:(BOOL)wallpaper
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagIfYes() forSetting:1207217243];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagIfYes() forSetting:1207217243];
 }
 
 - (int64_t)liveWallpaperPlaybackState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1207217244];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1207217244];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setLiveWallpaperPlaybackState:(int64_t)a3
+- (void)setLiveWallpaperPlaybackState:(int64_t)state
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:1207217244];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+  [otherSettings setObject:v4 forSetting:1207217244];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PBUIWallpaperWindowSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  v5 = PBUIWallpaperWindowSceneClientSettingKeyDescription(a3);
+  v5 = PBUIWallpaperWindowSceneClientSettingKeyDescription(setting);
   v6 = v5;
   if (v5)
   {
@@ -355,7 +355,7 @@
   {
     v10.receiver = self;
     v10.super_class = PBUIMutableWallpaperWindowSceneClientSettings;
-    v7 = [(FBSSettings *)&v10 keyDescriptionForSetting:a3];
+    v7 = [(FBSSettings *)&v10 keyDescriptionForSetting:setting];
   }
 
   v8 = v7;
@@ -363,10 +363,10 @@
   return v8;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = PBUIWallpaperWindowSceneClientSettingValueDescription(a5, v8);
+  objectCopy = object;
+  v9 = PBUIWallpaperWindowSceneClientSettingValueDescription(setting, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -377,7 +377,7 @@
   {
     v14.receiver = self;
     v14.super_class = PBUIMutableWallpaperWindowSceneClientSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

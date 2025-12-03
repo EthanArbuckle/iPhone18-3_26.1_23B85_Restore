@@ -1,26 +1,26 @@
 @interface AVCustomRoutingController
 - (AVCustomRoutingController)init;
-- (id)_routeForDADevice:(id)a3;
-- (void)_addAuthorizedRoute:(id)a3;
-- (void)_informClientOfEventReason:(int64_t)a3 forRoute:(id)a4;
-- (void)_removeAuthorizedRoute:(id)a3;
+- (id)_routeForDADevice:(id)device;
+- (void)_addAuthorizedRoute:(id)route;
+- (void)_informClientOfEventReason:(int64_t)reason forRoute:(id)route;
+- (void)_removeAuthorizedRoute:(id)route;
 - (void)_resumeSessionUpdates;
-- (void)_setAuthorizedRoutes:(id)a3;
-- (void)_setPendingEvents:(id)a3;
+- (void)_setAuthorizedRoutes:(id)routes;
+- (void)_setPendingEvents:(id)events;
 - (void)_startSession;
 - (void)_stopSession;
-- (void)_storeRecordForEvent:(id)a3;
+- (void)_storeRecordForEvent:(id)event;
 - (void)_suspendSessionUpdates;
-- (void)_updateSessionForEvent:(id)a3;
+- (void)_updateSessionForEvent:(id)event;
 - (void)_updateSessionFromEventRecords;
-- (void)_updateSessionStateToMatchRoute:(id)a3;
+- (void)_updateSessionStateToMatchRoute:(id)route;
 - (void)_updateSessionToReflectCurrentlyActiveRoutes;
 - (void)dealloc;
-- (void)handleCustomActionItemSelected:(id)a3;
+- (void)handleCustomActionItemSelected:(id)selected;
 - (void)invalidateAuthorizationForRoute:(AVCustomDeviceRoute *)route;
 - (void)setCustomActionItems:(NSArray *)customActionItems;
 - (void)setKnownRouteIPs:(NSArray *)knownRouteIPs;
-- (void)setSession:(id)a3;
+- (void)setSession:(id)session;
 @end
 
 @implementation AVCustomRoutingController
@@ -69,7 +69,7 @@
   {
 
     self->_knownRouteIPs = knownRouteIPs;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -109,7 +109,7 @@
 
           _Block_object_dispose(&v19, 8);
           v11 = [[v10 alloc] initWithAddress:objc_msgSend(v9 mask:{"address"), objc_msgSend(v9, "mask")}];
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         v6 = [(NSArray *)obj countByEnumeratingWithState:&v14 objects:v25 count:16];
@@ -118,7 +118,7 @@
       while (v6);
     }
 
-    [getDADaemonSessionClass() setPartialIPsForAppBundleID:-[DADaemonSession bundleID](-[AVCustomRoutingController session](self partialIPs:"session") error:{"bundleID"), v5, 0}];
+    [getDADaemonSessionClass() setPartialIPsForAppBundleID:-[DADaemonSession bundleID](-[AVCustomRoutingController session](self partialIPs:"session") error:{"bundleID"), array, 0}];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -131,10 +131,10 @@
   {
 
     self->_customActionItems = customActionItems;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E69E9840];
 
-    [v5 postNotificationName:@"AVCustomRoutingControllerCustomActionItemsDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"AVCustomRoutingControllerCustomActionItemsDidChangeNotification" object:self];
   }
 
   else
@@ -151,14 +151,14 @@
   }
 }
 
-- (void)handleCustomActionItemSelected:(id)a3
+- (void)handleCustomActionItemSelected:(id)selected
 {
   [(AVCustomRoutingController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AVCustomRoutingController *)self delegate];
+    delegate = [(AVCustomRoutingController *)self delegate];
 
-    [v5 customRoutingController:self didSelectItem:a3];
+    [delegate customRoutingController:self didSelectItem:selected];
   }
 }
 
@@ -192,12 +192,12 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   [(DADaemonSession *)self->_session invalidate];
 
-  self->_session = a3;
-  if (a3)
+  self->_session = session;
+  if (session)
   {
 
     [(AVCustomRoutingController *)self _startSession];
@@ -603,10 +603,10 @@ LABEL_45:
   self->_session = 0;
 }
 
-- (void)_addAuthorizedRoute:(id)a3
+- (void)_addAuthorizedRoute:(id)route
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] containsObject:a3])
+  if ([(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] containsObject:route])
   {
     v5 = _AVRoutingLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -614,7 +614,7 @@ LABEL_45:
       v9 = 136315394;
       v10 = "[AVCustomRoutingController _addAuthorizedRoute:]";
       v11 = 2112;
-      v12 = a3;
+      routeCopy = route;
       _os_log_impl(&dword_1AB586000, v5, OS_LOG_TYPE_DEFAULT, "%s AVVSRC.authorizedRoutes already contains route: %@. Ignoring.", &v9, 0x16u);
     }
 
@@ -623,25 +623,25 @@ LABEL_45:
 
   else
   {
-    v7 = [(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] arrayByAddingObject:a3];
+    v7 = [(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] arrayByAddingObject:route];
     v8 = *MEMORY[0x1E69E9840];
 
     [(AVCustomRoutingController *)self _setAuthorizedRoutes:v7];
   }
 }
 
-- (void)_removeAuthorizedRoute:(id)a3
+- (void)_removeAuthorizedRoute:(id)route
 {
   v5 = [MEMORY[0x1E695DF70] arrayWithArray:{-[AVCustomRoutingController authorizedRoutes](self, "authorizedRoutes")}];
-  [v5 removeObject:a3];
+  [v5 removeObject:route];
 
   [(AVCustomRoutingController *)self _setAuthorizedRoutes:v5];
 }
 
-- (void)_setAuthorizedRoutes:(id)a3
+- (void)_setAuthorizedRoutes:(id)routes
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (![(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] isEqualToArray:a3])
+  if (![(NSArray *)[(AVCustomRoutingController *)self authorizedRoutes] isEqualToArray:routes])
   {
     v5 = _AVRoutingLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -649,17 +649,17 @@ LABEL_45:
       v9 = 136315394;
       v10 = "[AVCustomRoutingController _setAuthorizedRoutes:]";
       v11 = 2112;
-      v12 = a3;
+      routesCopy = routes;
       _os_log_impl(&dword_1AB586000, v5, OS_LOG_TYPE_DEFAULT, "%s AVVSRC.authorizedRoutes = %@", &v9, 0x16u);
     }
 
-    v6 = a3;
-    if (!v6)
+    routesCopy2 = routes;
+    if (!routesCopy2)
     {
-      v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
+      routesCopy2 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     }
 
-    self->_authorizedRoutes = v6;
+    self->_authorizedRoutes = routesCopy2;
     v7 = _AVRoutingLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -674,7 +674,7 @@ LABEL_45:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setPendingEvents:(id)a3
+- (void)_setPendingEvents:(id)events
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = _AVRoutingLog();
@@ -683,26 +683,26 @@ LABEL_45:
     v8 = 136315394;
     v9 = "[AVCustomRoutingController _setPendingEvents:]";
     v10 = 2112;
-    v11 = a3;
+    eventsCopy = events;
     _os_log_impl(&dword_1AB586000, v5, OS_LOG_TYPE_DEFAULT, "%s AVVSRC.pendingEvents = %@", &v8, 0x16u);
   }
 
-  v6 = a3;
-  if (!v6)
+  eventsCopy2 = events;
+  if (!eventsCopy2)
   {
-    v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
+    eventsCopy2 = objc_alloc_init(MEMORY[0x1E695DEC8]);
   }
 
-  self->_pendingEvents = v6;
+  self->_pendingEvents = eventsCopy2;
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_informClientOfEventReason:(int64_t)a3 forRoute:(id)a4
+- (void)_informClientOfEventReason:(int64_t)reason forRoute:(id)route
 {
   v17 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(AVCustomRoutingEvent);
-  [(AVCustomRoutingEvent *)v7 setRoute:a4];
-  [(AVCustomRoutingEvent *)v7 setReason:a3];
+  [(AVCustomRoutingEvent *)v7 setRoute:route];
+  [(AVCustomRoutingEvent *)v7 setReason:reason];
   [(AVCustomRoutingController *)self _setPendingEvents:[(NSArray *)[(AVCustomRoutingController *)self pendingEvents] arrayByAddingObject:v7]];
   v8 = _AVRoutingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -715,14 +715,14 @@ LABEL_45:
   }
 
   objc_initWeak(buf, self);
-  v9 = [(AVCustomRoutingController *)self delegate];
+  delegate = [(AVCustomRoutingController *)self delegate];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__AVCustomRoutingController__informClientOfEventReason_forRoute___block_invoke;
   v11[3] = &unk_1E794E688;
   objc_copyWeak(&v12, buf);
   v11[4] = v7;
-  [v9 customRoutingController:self handleEvent:v7 completionHandler:v11];
+  [delegate customRoutingController:self handleEvent:v7 completionHandler:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
   v10 = *MEMORY[0x1E69E9840];
@@ -765,29 +765,29 @@ void __65__AVCustomRoutingController__informClientOfEventReason_forRoute___block
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSessionForEvent:(id)a3
+- (void)_updateSessionForEvent:(id)event
 {
   v47 = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v5 = [a3 reason];
-  v6 = [a3 route];
-  v7 = [a3 succeeded];
-  v8 = v5 == 0;
-  v9 = v5 == 1;
-  v10 = v5 == 2;
+  reason = [event reason];
+  route = [event route];
+  succeeded = [event succeeded];
+  v8 = reason == 0;
+  v9 = reason == 1;
+  v10 = reason == 2;
   v11 = _AVRoutingLog();
-  v27 = v9 & v7;
-  v12 = v9 & (v7 ^ 1);
-  v28 = v10 & v7;
-  v13 = v10 & (v7 ^ 1);
+  v27 = v9 & succeeded;
+  v12 = v9 & (succeeded ^ 1);
+  v28 = v10 & succeeded;
+  v13 = v10 & (succeeded ^ 1);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316674;
     v36 = "[AVCustomRoutingController _updateSessionForEvent:]";
     v37 = 1024;
-    *v38 = v8 & v7;
+    *v38 = v8 & succeeded;
     *&v38[4] = 1024;
-    *&v38[6] = v8 & (v7 ^ 1);
+    *&v38[6] = v8 & (succeeded ^ 1);
     v39 = 1024;
     v40 = v27;
     v41 = 1024;
@@ -800,12 +800,12 @@ void __65__AVCustomRoutingController__informClientOfEventReason_forRoute___block
   }
 
   v14 = [MEMORY[0x1E695DF70] arrayWithArray:{-[AVCustomRoutingController pendingEvents](self, "pendingEvents")}];
-  [v14 removeObject:a3];
+  [v14 removeObject:event];
   [(AVCustomRoutingController *)self _setPendingEvents:v14];
   v15 = v28;
-  if (!v5)
+  if (!reason)
   {
-    v15 = v7;
+    v15 = succeeded;
   }
 
   if (v15 == 1)
@@ -813,63 +813,63 @@ void __65__AVCustomRoutingController__informClientOfEventReason_forRoute___block
     v16 = _AVRoutingLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 device];
+      device = [route device];
       *buf = 136315394;
       v36 = "[AVCustomRoutingController _updateSessionForEvent:]";
       v37 = 2112;
-      *v38 = v17;
+      *v38 = device;
     }
 
-    v18 = [(AVCustomRoutingController *)self session];
-    v19 = [v6 device];
+    session = [(AVCustomRoutingController *)self session];
+    device2 = [route device];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __52__AVCustomRoutingController__updateSessionForEvent___block_invoke;
     v31[3] = &unk_1E794E6B0;
     v20 = &v32;
     objc_copyWeak(&v32, &location);
-    v31[4] = v6;
+    v31[4] = route;
     v33 = v28;
-    [(DADaemonSession *)v18 setState:20 device:v19 completionHandler:v31];
+    [(DADaemonSession *)session setState:20 device:device2 completionHandler:v31];
 LABEL_16:
     objc_destroyWeak(v20);
     goto LABEL_17;
   }
 
-  if (v5)
+  if (reason)
   {
     v21 = v13;
   }
 
   else
   {
-    v21 = v7 ^ 1;
+    v21 = succeeded ^ 1;
   }
 
   if ((v21 | v12 | v27))
   {
-    [(AVCustomRoutingController *)self _removeAuthorizedRoute:v6];
-    [(AVCustomRoutingController *)self _setActive:0 forRoute:v6];
+    [(AVCustomRoutingController *)self _removeAuthorizedRoute:route];
+    [(AVCustomRoutingController *)self _setActive:0 forRoute:route];
     v22 = _AVRoutingLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v6 device];
+      device3 = [route device];
       *buf = 136315394;
       v36 = "[AVCustomRoutingController _updateSessionForEvent:]";
       v37 = 2112;
-      *v38 = v23;
+      *v38 = device3;
     }
 
-    v24 = [(AVCustomRoutingController *)self session];
-    v25 = [v6 device];
+    session2 = [(AVCustomRoutingController *)self session];
+    device4 = [route device];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __52__AVCustomRoutingController__updateSessionForEvent___block_invoke_19;
     v29[3] = &unk_1E794E6D8;
     v20 = &v30;
     objc_copyWeak(&v30, &location);
-    v29[4] = v6;
-    [(DADaemonSession *)v24 setState:0 device:v25 completionHandler:v29];
+    v29[4] = route;
+    [(DADaemonSession *)session2 setState:0 device:device4 completionHandler:v29];
     goto LABEL_16;
   }
 
@@ -965,15 +965,15 @@ LABEL_7:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_routeForDADevice:(id)a3
+- (id)_routeForDADevice:(id)device
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(AVCustomRoutingController *)self authorizedRoutes];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  authorizedRoutes = [(AVCustomRoutingController *)self authorizedRoutes];
+  v5 = [(NSArray *)authorizedRoutes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -984,7 +984,7 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(authorizedRoutes);
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
@@ -995,7 +995,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [(NSArray *)authorizedRoutes countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1016,12 +1016,12 @@ LABEL_9:
   return v9;
 }
 
-- (void)_updateSessionStateToMatchRoute:(id)a3
+- (void)_updateSessionStateToMatchRoute:(id)route
 {
   v17 = *MEMORY[0x1E69E9840];
   if (![(AVCustomRoutingController *)self isSessionSuspended])
   {
-    if ([a3 isActive])
+    if ([route isActive])
     {
       v5 = 20;
     }
@@ -1039,19 +1039,19 @@ LABEL_9:
       v13 = 2112;
       v14 = soft_DADeviceStateToString(v5);
       v15 = 2112;
-      v16 = a3;
+      routeCopy = route;
       _os_log_impl(&dword_1AB586000, v6, OS_LOG_TYPE_DEFAULT, "%s Setting DA state: %@ for route: %@.", buf, 0x20u);
     }
 
-    v7 = [(AVCustomRoutingController *)self session];
-    v8 = [a3 device];
+    session = [(AVCustomRoutingController *)self session];
+    device = [route device];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__AVCustomRoutingController__updateSessionStateToMatchRoute___block_invoke;
     v10[3] = &unk_1E794E700;
-    v10[4] = a3;
+    v10[4] = route;
     v10[5] = v5;
-    [(DADaemonSession *)v7 setState:v5 device:v8 completionHandler:v10];
+    [(DADaemonSession *)session setState:v5 device:device completionHandler:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1202,7 +1202,7 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_storeRecordForEvent:(id)a3
+- (void)_storeRecordForEvent:(id)event
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = _AVRoutingLog();
@@ -1211,11 +1211,11 @@ LABEL_6:
     v8 = 136315394;
     v9 = "[AVCustomRoutingController _storeRecordForEvent:]";
     v10 = 2112;
-    v11 = a3;
+    eventCopy = event;
     _os_log_impl(&dword_1AB586000, v5, OS_LOG_TYPE_DEFAULT, "%s Storing event record: %@", &v8, 0x16u);
   }
 
-  v6 = [(NSArray *)self->_routeEventRecords arrayByAddingObject:a3];
+  v6 = [(NSArray *)self->_routeEventRecords arrayByAddingObject:event];
 
   self->_routeEventRecords = v6;
   v7 = *MEMORY[0x1E69E9840];
@@ -1228,8 +1228,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(AVCustomRoutingController *)self authorizedRoutes];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  authorizedRoutes = [(AVCustomRoutingController *)self authorizedRoutes];
+  v4 = [(NSArray *)authorizedRoutes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1241,14 +1241,14 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(authorizedRoutes);
         }
 
         [(AVCustomRoutingController *)self _updateSessionStateToMatchRoute:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [(NSArray *)authorizedRoutes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

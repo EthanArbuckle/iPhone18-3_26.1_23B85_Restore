@@ -1,22 +1,22 @@
 @interface TSCEReferenceBackedGrid
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (TSCEFormat)formatAtIndex:(SEL)a3 accessContext:(unint64_t)a4;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (TSCEFormat)formatAtIndex:(SEL)index accessContext:(unint64_t)context;
 - (TSKUIDStruct)tableUID;
-- (char)deepType:(id)a3 outError:(id *)a4;
-- (id)apparentReference:(id)a3;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asReference:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6;
-- (id)asValueGrid:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepResolveInPlace:(id)a3;
-- (id)initWitRefValue:(id)a3 rangeContext:(unsigned __int8)a4;
-- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6;
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)valueAtIndex:(unint64_t)a3 accessContext:(TSCEGridAccessContext *)a4;
+- (char)deepType:(id)type outError:(id *)error;
+- (id)apparentReference:(id)reference;
+- (id)asDate:(id)date functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asReference:(id)reference functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error;
+- (id)asValueGrid:(id)grid;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepResolveInPlace:(id)place;
+- (id)initWitRefValue:(id)value rangeContext:(unsigned __int8)context;
+- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context;
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)valueAtIndex:(unint64_t)index accessContext:(TSCEGridAccessContext *)context;
 - (unint64_t)count;
 - (unsigned)height;
 - (unsigned)width;
@@ -24,26 +24,26 @@
 
 @implementation TSCEReferenceBackedGrid
 
-- (id)initWitRefValue:(id)a3 rangeContext:(unsigned __int8)a4
+- (id)initWitRefValue:(id)value rangeContext:(unsigned __int8)context
 {
-  v4 = a4;
-  v6 = a3;
+  contextCopy = context;
+  valueCopy = value;
   v39.receiver = self;
   v39.super_class = TSCEReferenceBackedGrid;
   v11 = [(TSCEAbstractGrid *)&v39 init];
   if (v11)
   {
-    v12 = objc_msgSend_evalRef(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_evalRef(valueCopy, v7, v8, v9, v10);
     v17 = objc_msgSend_tableResolver(v12, v13, v14, v15, v16);
     v22 = objc_msgSend_copy(v12, v18, v19, v20, v21);
     v23 = *(v11 + 1);
     *(v11 + 1) = v22;
 
-    v11[104] = objc_msgSend_isOutputOfAFunction(v6, v24, v25, v26, v27);
+    v11[104] = objc_msgSend_isOutputOfAFunction(valueCopy, v24, v25, v26, v27);
     if (v17)
     {
       v32 = objc_msgSend_tractRef(v12, v28, v29, v30, v31);
-      TSCETableResolverWrapper::apparentTractRefForTractRef(v17, v32, v4, v33, &v36);
+      TSCETableResolverWrapper::apparentTractRefForTractRef(v17, v32, contextCopy, v33, &v36);
       TSUIndexSet::operator=();
       TSUIndexSet::operator=();
       v34 = *v38;
@@ -57,7 +57,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSCEReferenceBackedGrid);
   v9 = objc_msgSend_copy(self->_evalRef, v5, v6, v7, v8);
@@ -73,9 +73,9 @@
   return v4;
 }
 
-- (id)apparentReference:(id)a3
+- (id)apparentReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   *&v25 = -1;
   *&v5.f64[0] = 0x8000000080000000;
   *&v5.f64[1] = 0x8000000080000000;
@@ -92,7 +92,7 @@
   v11 = objc_msgSend_tableResolver(self->_evalRef, v7, v8, v9, v10);
   v14 = objc_msgSend_initWithTableResolver_tractRefCore_(v6, v12, v11, &v25, v13);
   v15 = [TSCEReferenceValue alloc];
-  v20 = objc_msgSend_containingCell(v4, v16, v17, v18, v19);
+  v20 = objc_msgSend_containingCell(referenceCopy, v16, v17, v18, v19);
   v24 = 0;
   isOutputOfAFunction = objc_msgSend_initWithEvalRef_hostCell_preserveFlags_permitsAccessInsideMergeRegions_isOutputOfAFunction_(v15, v21, v14, v20, &v24, self->_permitsAccessInsideMergeRegions, 0);
 
@@ -102,12 +102,12 @@
   return isOutputOfAFunction;
 }
 
-- (char)deepType:(id)a3 outError:(id *)a4
+- (char)deepType:(id)type outError:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   if (objc_msgSend_count(self, v7, v8, v9, v10) == 1)
   {
-    v11 = v6;
+    v11 = typeCopy;
     v19[0] = v11;
     v19[1] = 0;
     v20 = 0;
@@ -117,7 +117,7 @@
     v23 = 0;
     v24 = 0;
     v14 = objc_msgSend_valueAtIndex_accessContext_(self, v12, 0, v19, v13);
-    v17 = objc_msgSend_deepType_outError_(v14, v15, v11, a4, v16);
+    v17 = objc_msgSend_deepType_outError_(v14, v15, v11, error, v16);
   }
 
   else
@@ -128,14 +128,14 @@
   return v17;
 }
 
-- (id)asValueGrid:(id)a3
+- (id)asValueGrid:(id)grid
 {
-  v24 = a3;
+  gridCopy = grid;
   v4 = objc_opt_new();
   v27 = 0;
   v28 = objc_msgSend_dimensions(self, v5, v6, v7, v8);
   v13 = 0;
-  v26 = *objc_msgSend_containingCell(v24, v9, v10, v11, v12);
+  v26 = *objc_msgSend_containingCell(gridCopy, v9, v10, v11, v12);
   do
   {
     v16 = objc_msgSend_makeCellReferenceForOffset_apparentTractRef_(self->_evalRef, v14, &v27, &self->_apparentTractRef, v15);
@@ -163,9 +163,9 @@
   return v4;
 }
 
-- (id)deepResolveInPlace:(id)a3
+- (id)deepResolveInPlace:(id)place
 {
-  v4 = a3;
+  placeCopy = place;
   v5 = objc_opt_new();
   v10 = 0;
   v36 = 0;
@@ -177,10 +177,10 @@
     if (v13)
     {
       v14 = [TSCEReferenceValue alloc];
-      v19 = objc_msgSend_containingCell(v4, v15, v16, v17, v18);
+      v19 = objc_msgSend_containingCell(placeCopy, v15, v16, v17, v18);
       v35 = 0;
       isOutputOfAFunction = objc_msgSend_initWithEvalRef_hostCell_preserveFlags_permitsAccessInsideMergeRegions_isOutputOfAFunction_(v14, v20, v13, v19, &v35, 1, 0);
-      v24 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(isOutputOfAFunction, v22, v4, 1, v23);
+      v24 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(isOutputOfAFunction, v22, placeCopy, 1, v23);
       objc_msgSend_setValue_atCoord_(v5, v25, v24, &v36, v26);
     }
 
@@ -195,20 +195,20 @@
   }
 
   while ((v27 & 0xFFFFFFFF00000000) != 0x7FFFFFFF00000000);
-  objc_msgSend_deepResolveInPlace_(v5, v11, v4, v28, v12);
+  objc_msgSend_deepResolveInPlace_(v5, v11, placeCopy, v28, v12);
   v29 = [TSCEDenseGrid alloc];
   v33 = objc_msgSend_initWithValueGrid_(v29, v30, v5, v31, v32);
 
   return v33;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
+  v7 = *&index;
+  numberCopy = number;
   if (objc_msgSend_count(self, v11, v12, v13, v14) == 1)
   {
-    v15 = v10;
+    v15 = numberCopy;
     v23[0] = v15;
     v23[1] = 0;
     v24 = 0;
@@ -218,26 +218,26 @@
     v27 = 0;
     v28 = 0;
     v18 = objc_msgSend_valueAtIndex_accessContext_(self, v16, 0, v23, v17);
-    v20 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v19, v15, a4, v7, a6);
+    v20 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v19, v15, spec, v7, error);
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = TSCEReferenceBackedGrid;
-    v20 = [(TSCEAbstractGrid *)&v22 asNumber:v10 functionSpec:a4 argIndex:v7 outError:a6];
+    v20 = [(TSCEAbstractGrid *)&v22 asNumber:numberCopy functionSpec:spec argIndex:v7 outError:error];
   }
 
   return v20;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
+  v7 = *&index;
+  dateCopy = date;
   if (objc_msgSend_count(self, v11, v12, v13, v14) == 1)
   {
-    v15 = v10;
+    v15 = dateCopy;
     v23[0] = v15;
     v23[1] = 0;
     v24 = 0;
@@ -247,26 +247,26 @@
     v27 = 0;
     v28 = 0;
     v18 = objc_msgSend_valueAtIndex_accessContext_(self, v16, 0, v23, v17);
-    v20 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v18, v19, v15, a4, v7, a6);
+    v20 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v18, v19, v15, spec, v7, error);
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = TSCEReferenceBackedGrid;
-    v20 = [(TSCEAbstractGrid *)&v22 asDate:v10 functionSpec:a4 argIndex:v7 outError:a6];
+    v20 = [(TSCEAbstractGrid *)&v22 asDate:dateCopy functionSpec:spec argIndex:v7 outError:error];
   }
 
   return v20;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
+  v7 = *&index;
+  booleanCopy = boolean;
   if (objc_msgSend_count(self, v11, v12, v13, v14) == 1)
   {
-    v15 = v10;
+    v15 = booleanCopy;
     v23[0] = v15;
     v23[1] = 0;
     v24 = 0;
@@ -276,23 +276,23 @@
     v27 = 0;
     v28 = 0;
     v18 = objc_msgSend_valueAtIndex_accessContext_(self, v16, 0, v23, v17);
-    v20 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v18, v19, v15, a4, v7, a6);
+    v20 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v18, v19, v15, spec, v7, error);
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = TSCEReferenceBackedGrid;
-    v20 = [(TSCEAbstractGrid *)&v22 asBoolean:v10 functionSpec:a4 argIndex:v7 outError:a6];
+    v20 = [(TSCEAbstractGrid *)&v22 asBoolean:booleanCopy functionSpec:spec argIndex:v7 outError:error];
   }
 
   return v20;
 }
 
-- (id)asReference:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asReference:(id)reference functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v11 = a3;
-  if (!a6)
+  referenceCopy = reference;
+  if (!error)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSCEReferenceBackedGrid asReference:functionSpec:argIndex:outError:]", v9, v10);
@@ -310,13 +310,13 @@
   return isOutputOfAFunction;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
+  v7 = *&index;
+  stringCopy = string;
   if (objc_msgSend_count(self, v11, v12, v13, v14) == 1)
   {
-    v15 = v10;
+    v15 = stringCopy;
     v23[0] = v15;
     v23[1] = 0;
     v24 = 0;
@@ -326,26 +326,26 @@
     v27 = 0;
     v28 = 0;
     v18 = objc_msgSend_valueAtIndex_accessContext_(self, v16, 0, v23, v17);
-    v20 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v18, v19, v15, a4, v7, a6);
+    v20 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v18, v19, v15, spec, v7, error);
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = TSCEReferenceBackedGrid;
-    v20 = [(TSCEAbstractGrid *)&v22 asString:v10 functionSpec:a4 argIndex:v7 outError:a6];
+    v20 = [(TSCEAbstractGrid *)&v22 asString:stringCopy functionSpec:spec argIndex:v7 outError:error];
   }
 
   return v20;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  v10 = a3;
+  v7 = *&index;
+  stringCopy = string;
   if (objc_msgSend_count(self, v11, v12, v13, v14) == 1)
   {
-    v15 = v10;
+    v15 = stringCopy;
     v23[0] = v15;
     v23[1] = 0;
     v24 = 0;
@@ -355,14 +355,14 @@
     v27 = 0;
     v28 = 0;
     v18 = objc_msgSend_valueAtIndex_accessContext_(self, v16, 0, v23, v17);
-    v20 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v18, v19, v15, a4, v7, a6);
+    v20 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v18, v19, v15, spec, v7, error);
   }
 
   else
   {
     v22.receiver = self;
     v22.super_class = TSCEReferenceBackedGrid;
-    v20 = [(TSCEAbstractGrid *)&v22 asRawString:v10 functionSpec:a4 argIndex:v7 outError:a6];
+    v20 = [(TSCEAbstractGrid *)&v22 asRawString:stringCopy functionSpec:spec argIndex:v7 outError:error];
   }
 
   return v20;
@@ -407,14 +407,14 @@
   return objc_msgSend_height(self, v8, v9, v10, v11) * v7;
 }
 
-- (id)valueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)valueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context
 {
-  v7 = objc_msgSend_makeCellReferenceForOffset_apparentTractRef_(self->_evalRef, a2, a3, &self->_apparentTractRef, v4);
+  v7 = objc_msgSend_makeCellReferenceForOffset_apparentTractRef_(self->_evalRef, a2, coord, &self->_apparentTractRef, v4);
   v11 = v7;
-  if (a4->var7)
+  if (context->var7)
   {
-    a4->var9 = objc_msgSend_getHidingActionForRows_(v7, v8, 0, v9, v10);
-    a4->var10 = objc_msgSend_getHidingActionForRows_(v11, v12, 1, v13, v14);
+    context->var9 = objc_msgSend_getHidingActionForRows_(v7, v8, 0, v9, v10);
+    context->var10 = objc_msgSend_getHidingActionForRows_(v11, v12, 1, v13, v14);
   }
 
   v15 = [TSCEReferenceValue alloc];
@@ -433,14 +433,14 @@
   }
 
   v23 = v39;
-  a4->var11.range = v38;
-  a4->var11._tableUID = v23;
-  v24 = TSCEGridAccessContext::argSpec(a4, v17, v18, v19, v20);
+  context->var11.range = v38;
+  context->var11._tableUID = v23;
+  v24 = TSCEGridAccessContext::argSpec(context, v17, v18, v19, v20);
   if (v24)
   {
     v29 = objc_msgSend_argumentAccessor(v24, v25, v26, v27, v28);
     v37 = isOutputOfAFunction;
-    v30 = (*(*v29 + 16))(v29, &v37, a4, 0);
+    v30 = (*(*v29 + 16))(v29, &v37, context, 0);
     v31 = v37;
 
     if (v30)
@@ -460,14 +460,14 @@ LABEL_11:
   return v35;
 }
 
-- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)resolvedValueAtGridCoord:(const TSCEGridCoord *)coord accessContext:(TSCEGridAccessContext *)context
 {
-  v7 = objc_msgSend_makeCellReferenceForOffset_apparentTractRef_(self->_evalRef, a2, a3, &self->_apparentTractRef, v4);
+  v7 = objc_msgSend_makeCellReferenceForOffset_apparentTractRef_(self->_evalRef, a2, coord, &self->_apparentTractRef, v4);
   v12 = v7;
-  if (a4->var7)
+  if (context->var7)
   {
-    a4->var9 = objc_msgSend_getHidingActionForRows_(v7, v8, 0, v10, v11);
-    a4->var10 = objc_msgSend_getHidingActionForRows_(v12, v13, 1, v14, v15);
+    context->var9 = objc_msgSend_getHidingActionForRows_(v7, v8, 0, v10, v11);
+    context->var10 = objc_msgSend_getHidingActionForRows_(v12, v13, 1, v14, v15);
   }
 
   evalRef = self->_evalRef;
@@ -482,12 +482,12 @@ LABEL_11:
   }
 
   v17 = *&v41[16];
-  a4->var11.range = *v41;
-  a4->var11._tableUID = v17;
+  context->var11.range = *v41;
+  context->var11._tableUID = v17;
   if (v12)
   {
-    var0 = a4->var0;
-    if (objc_msgSend_inArrayMode(a4->var0, v8, v9, v10, v11))
+    var0 = context->var0;
+    if (objc_msgSend_inArrayMode(context->var0, v8, v9, v10, v11))
     {
       objc_msgSend_valueForEvalContext_readOptions_(v12, v19, var0, 5, v20);
     }
@@ -517,12 +517,12 @@ LABEL_11:
     v21 = 0;
   }
 
-  v25 = TSCEGridAccessContext::argSpec(a4, v8, v9, v10, v11);
+  v25 = TSCEGridAccessContext::argSpec(context, v8, v9, v10, v11);
   if (v25)
   {
     v30 = objc_msgSend_argumentAccessor(v25, v26, v27, v28, v29);
     v38 = v21;
-    v31 = (*(*v30 + 16))(v30, &v38, a4, 0);
+    v31 = (*(*v30 + 16))(v30, &v38, context, 0);
     v32 = v38;
 
     if (v31)
@@ -542,14 +542,14 @@ LABEL_18:
   return v36;
 }
 
-- (id)valueAtIndex:(unint64_t)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)valueAtIndex:(unint64_t)index accessContext:(TSCEGridAccessContext *)context
 {
   if (sub_2210EE8F8(&self->_apparentTractRef._columns))
   {
     v11 = objc_msgSend_width(self, v7, v8, v9, v10);
-    v20[0] = a3 % v11;
-    v20[1] = a3 / v11;
-    v14 = objc_msgSend_valueAtGridCoord_accessContext_(self, v12, v20, a4, v13);
+    v20[0] = index % v11;
+    v20[1] = index / v11;
+    v14 = objc_msgSend_valueAtGridCoord_accessContext_(self, v12, v20, context, v13);
   }
 
   else
@@ -561,10 +561,10 @@ LABEL_18:
   return v14;
 }
 
-- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6
+- (id)subGridValueAtGridCoord:(const TSCEGridCoord *)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context
 {
-  v7 = *&a5;
-  v11 = objc_msgSend_rangeCoord(self->_evalRef, a2, a3, *&a4, *&a5);
+  v7 = *&height;
+  v11 = objc_msgSend_rangeCoord(self->_evalRef, a2, coord, *&width, *&height);
   v16 = v11;
   v17 = v11 & 0xFFFF00000000;
   v18 = v12 & 0xFFFF00000000;
@@ -572,10 +572,10 @@ LABEL_18:
   {
     if (v11 != 0x7FFFFFFFLL && v17 == 0x7FFF00000000 && v18 == 0x7FFF00000000)
     {
-      v23 = v12 != 0x7FFFFFFF && a3->column == 0;
-      if (v23 && objc_msgSend_width(self, v12, v13, v14, v15) == a4)
+      v23 = v12 != 0x7FFFFFFF && coord->column == 0;
+      if (v23 && objc_msgSend_width(self, v12, v13, v14, v15) == width)
       {
-        v24 = (a3->row + v16);
+        v24 = (coord->row + v16);
         v25 = v24 | 0x7FFF00000000;
         v26 = (v7 + v24 - 1) | 0x7FFF00000000;
         goto LABEL_38;
@@ -585,11 +585,11 @@ LABEL_18:
 
   else
   {
-    v27 = v12 == 0x7FFFFFFF && a3->row == 0;
+    v27 = v12 == 0x7FFFFFFF && coord->row == 0;
     if (v27 && objc_msgSend_height(self, v12, v13, v14, v15) == v7)
     {
-      v26 = ((a4 + LOWORD(a3->column) + WORD2(v16) - 1) << 32) | 0x7FFFFFFF;
-      v25 = ((WORD2(v16) + LOWORD(a3->column)) << 32) | 0x7FFFFFFF;
+      v26 = ((width + LOWORD(coord->column) + WORD2(v16) - 1) << 32) | 0x7FFFFFFF;
+      v25 = ((WORD2(v16) + LOWORD(coord->column)) << 32) | 0x7FFFFFFF;
       goto LABEL_38;
     }
   }
@@ -615,7 +615,7 @@ LABEL_18:
   }
 
   v55 = (Index | v28);
-  v56 = (a4 | (v7 << 32));
+  v56 = (width | (v7 << 32));
   TSUCellRect::offsetBy();
   v30 = v55;
   v31 = v56;
@@ -623,7 +623,7 @@ LABEL_18:
   v26 = v32;
 LABEL_38:
   v33 = [TSCEReferenceValue alloc];
-  v34 = a6->var0;
+  v34 = context->var0;
   v55 = v25;
   v56 = v26;
   v57 = objc_msgSend_tableUID(self, v35, v36, v37, v38);
@@ -631,15 +631,15 @@ LABEL_38:
   v54 = 0;
   v40 = objc_msgSend_initWithContext_rangeRef_preserveFlags_(v33, v39, v34, &v55, &v54);
 
-  v45 = TSCEGridAccessContext::argSpec(a6, v41, v42, v43, v44);
-  if (v45 && ((v50 = objc_msgSend_argumentType(v45, v46, v47, v48, v49), v50 == 1) || v50 == 6 || v50 == 255) || a4 != 1 || v7 != 1)
+  v45 = TSCEGridAccessContext::argSpec(context, v41, v42, v43, v44);
+  if (v45 && ((v50 = objc_msgSend_argumentType(v45, v46, v47, v48, v49), v50 == 1) || v50 == 6 || v50 == 255) || width != 1 || v7 != 1)
   {
     v51 = v40;
   }
 
   else
   {
-    v51 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v40, v46, a6->var0, 1, v49);
+    v51 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v40, v46, context->var0, 1, v49);
   }
 
   v52 = v51;
@@ -647,16 +647,16 @@ LABEL_38:
   return v52;
 }
 
-- (TSCEFormat)formatAtIndex:(SEL)a3 accessContext:(unint64_t)a4
+- (TSCEFormat)formatAtIndex:(SEL)index accessContext:(unint64_t)context
 {
-  v6 = a4;
-  result = objc_msgSend_tableResolver(self->_evalRef, a3, a4, a5, v5);
+  contextCopy = context;
+  result = objc_msgSend_tableResolver(self->_evalRef, index, context, a5, v5);
   if (result)
   {
     v14 = result;
     v15 = objc_msgSend_width(self, v10, v11, v12, v13);
     v22 = 0;
-    v21 = TSCECellTractRefCore::coordAtColumnOffset(&self->_apparentTractRef, (v6 % v15), v6 / v15, v16, v17);
+    v21 = TSCECellTractRefCore::coordAtColumnOffset(&self->_apparentTractRef, (contextCopy % v15), contextCopy / v15, v16, v17);
     v20 = TSCETableResolverWrapper::formatAtBaseCellCoord(v14, &v21, &v22, v18, v19);
     return TSCEFormat::TSCEFormat(retstr, v20, v22);
   }

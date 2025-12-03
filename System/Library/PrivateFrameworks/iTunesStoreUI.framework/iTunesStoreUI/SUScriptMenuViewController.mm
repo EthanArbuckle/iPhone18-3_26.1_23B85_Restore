@@ -1,20 +1,20 @@
 @interface SUScriptMenuViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSNumber)selectedIndex;
 - (NSString)title;
 - (WebScriptObject)action;
 - (id)_viewController;
-- (id)itemWithTitle:(id)a3 userInfo:(id)a4;
+- (id)itemWithTitle:(id)title userInfo:(id)info;
 - (id)items;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setItems:(id)a3;
-- (void)setSelectedIndex:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAction:(id)action;
+- (void)setItems:(id)items;
+- (void)setSelectedIndex:(id)index;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUScriptMenuViewController
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (id)itemWithTitle:(id)a3 userInfo:(id)a4
+- (id)itemWithTitle:(id)title userInfo:(id)info
 {
   v6 = objc_alloc_init(SUScriptMenuItem);
-  [(SUScriptMenuItem *)v6 setTitle:a3];
-  [(SUScriptMenuItem *)v6 setUserInfo:a4];
+  [(SUScriptMenuItem *)v6 setTitle:title];
+  [(SUScriptMenuItem *)v6 setUserInfo:info];
 
   return v6;
 }
@@ -58,15 +58,15 @@
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -91,15 +91,15 @@ id __36__SUScriptMenuViewController_action__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -131,10 +131,10 @@ uint64_t __43__SUScriptMenuViewController_selectedIndex__block_invoke(uint64_t a
   return result;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !action) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -164,21 +164,21 @@ uint64_t __40__SUScriptMenuViewController_setAction___block_invoke(uint64_t a1)
   return [v3 setAction:v4];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v3 = a3;
-  if (a3)
+  itemsCopy = items;
+  if (items)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
-      v3 = 0;
+      itemsCopy = 0;
       goto LABEL_11;
     }
 
-    v3 = [v3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
-    if (!v3)
+    itemsCopy = [itemsCopy copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    if (!itemsCopy)
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
       goto LABEL_11;
@@ -197,9 +197,9 @@ uint64_t __40__SUScriptMenuViewController_setAction___block_invoke(uint64_t a1)
     [(SUScriptObject *)self checkOutScriptObjects:?];
   }
 
-  if (v3)
+  if (itemsCopy)
   {
-    [(SUScriptObject *)self checkInScriptObjects:v3];
+    [(SUScriptObject *)self checkInScriptObjects:itemsCopy];
   }
 
   WebThreadRunOnMainThread();
@@ -222,10 +222,10 @@ uint64_t __39__SUScriptMenuViewController_setItems___block_invoke_2(uint64_t a1)
   return [v2 setMenuItems:v3];
 }
 
-- (void)setSelectedIndex:(id)a3
+- (void)setSelectedIndex:(id)index
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !index) || (isKindOfClass & 1) != 0 || (objc_opt_respondsToSelector())
   {
     WebThreadRunOnMainThread();
   }
@@ -255,10 +255,10 @@ uint64_t __47__SUScriptMenuViewController_setSelectedIndex___block_invoke(uint64
   return [v2 setSelectedIndex:v4];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -292,15 +292,15 @@ uint64_t __39__SUScriptMenuViewController_setTitle___block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -314,11 +314,11 @@ id __35__SUScriptMenuViewController_title__block_invoke(uint64_t a1)
 
 - (id)_viewController
 {
-  v2 = [(SUScriptViewController *)self nativeViewController];
+  nativeViewController = [(SUScriptViewController *)self nativeViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return nativeViewController;
   }
 
   else
@@ -327,27 +327,27 @@ id __35__SUScriptMenuViewController_title__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_29 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMenuViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_23, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_23, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMenuViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -357,14 +357,14 @@ id __35__SUScriptMenuViewController_title__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptMenuViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_29, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_29, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_23 = sel_itemWithTitle_userInfo_;
     unk_1EBF3AD30 = @"createItem";

@@ -1,14 +1,14 @@
 @interface MobileTimerAssistantSnippetFactory
-- (id)viewControllerForSnippet:(id)a3;
+- (id)viewControllerForSnippet:(id)snippet;
 @end
 
 @implementation MobileTimerAssistantSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3
+- (id)viewControllerForSnippet:(id)snippet
 {
-  v3 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
-  v4 = v3;
+  v4 = snippetCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

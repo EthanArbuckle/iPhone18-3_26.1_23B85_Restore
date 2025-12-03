@@ -1,17 +1,17 @@
 @interface CNContactShareActionHelper
-+ (BOOL)contact:(id)a3 hasPrivateProperties:(id)a4;
-+ (BOOL)contactHasShareableAddressingGrammarValue:(id)a3;
-+ (BOOL)contactsHavePrivateProperties:(id)a3;
-+ (BOOL)contactsHaveShareableAddressingGrammarValue:(id)a3;
++ (BOOL)contact:(id)contact hasPrivateProperties:(id)properties;
++ (BOOL)contactHasShareableAddressingGrammarValue:(id)value;
++ (BOOL)contactsHavePrivateProperties:(id)properties;
++ (BOOL)contactsHaveShareableAddressingGrammarValue:(id)value;
 @end
 
 @implementation CNContactShareActionHelper
 
-+ (BOOL)contactHasShareableAddressingGrammarValue:(id)a3
++ (BOOL)contactHasShareableAddressingGrammarValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v4 = [v3 valueForKey:*MEMORY[0x1E695C1C0]];
+  v4 = [valueCopy valueForKey:*MEMORY[0x1E695C1C0]];
 
   if (objc_opt_isKindOfClass())
   {
@@ -51,26 +51,26 @@ uint64_t __72__CNContactShareActionHelper_contactHasShareableAddressingGrammarVa
   return v6 ^ 1u;
 }
 
-+ (BOOL)contactsHaveShareableAddressingGrammarValue:(id)a3
++ (BOOL)contactsHaveShareableAddressingGrammarValue:(id)value
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__CNContactShareActionHelper_contactsHaveShareableAddressingGrammarValue___block_invoke;
   v4[3] = &__block_descriptor_40_e19_B16__0__CNContact_8l;
-  v4[4] = a1;
-  return [a3 _cn_any:v4];
+  v4[4] = self;
+  return [value _cn_any:v4];
 }
 
-+ (BOOL)contact:(id)a3 hasPrivateProperties:(id)a4
++ (BOOL)contact:(id)contact hasPrivateProperties:(id)properties
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contactCopy = contact;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,21 +84,21 @@ uint64_t __72__CNContactShareActionHelper_contactHasShareableAddressingGrammarVa
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(propertiesCopy);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [MEMORY[0x1E695CD00] contactPropertiesByKey];
-        v13 = [v12 objectForKey:v11];
+        contactPropertiesByKey = [MEMORY[0x1E695CD00] contactPropertiesByKey];
+        v13 = [contactPropertiesByKey objectForKey:v11];
 
-        v14 = [v5 valueForKey:v11];
+        v14 = [contactCopy valueForKey:v11];
         if (v14)
         {
           if ([v13 isSingleValue])
           {
-            v15 = [v13 nilValue];
+            nilValue = [v13 nilValue];
 
-            if (v14 != v15)
+            if (v14 != nilValue)
             {
               v16 = v14;
 LABEL_21:
@@ -126,7 +126,7 @@ LABEL_21:
 
             if ([v11 isEqualToString:v26])
             {
-              v19 = [a1 contactHasShareableAddressingGrammarValue:v5];
+              v19 = [self contactHasShareableAddressingGrammarValue:contactCopy];
 
               v14 = v16;
               if (v19)
@@ -148,7 +148,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [propertiesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         continue;
@@ -164,18 +164,18 @@ LABEL_22:
   return v21;
 }
 
-+ (BOOL)contactsHavePrivateProperties:(id)a3
++ (BOOL)contactsHavePrivateProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [CNContactCardFieldPicker privateCardPropertiesForContacts:v4];
+  propertiesCopy = properties;
+  v5 = [CNContactCardFieldPicker privateCardPropertiesForContacts:propertiesCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__CNContactShareActionHelper_contactsHavePrivateProperties___block_invoke;
   v9[3] = &unk_1E74E3C80;
   v10 = v5;
-  v11 = a1;
+  selfCopy = self;
   v6 = v5;
-  v7 = [v4 _cn_any:v9];
+  v7 = [propertiesCopy _cn_any:v9];
 
   return v7;
 }

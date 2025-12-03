@@ -1,6 +1,6 @@
 @interface PreferencesPasscodeFieldWrapper
 - (PreferencesPasscodeFieldWrapper)init;
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4;
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode;
 @end
 
 @implementation PreferencesPasscodeFieldWrapper
@@ -40,15 +40,15 @@
   return v2;
 }
 
-- (void)passcodeField:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeField:(id)field enteredPasscode:(id)passcode
 {
-  v7 = a4;
-  v5 = [(PreferencesPasscodeFieldWrapper *)self handler];
+  passcodeCopy = passcode;
+  handler = [(PreferencesPasscodeFieldWrapper *)self handler];
 
-  if (v5)
+  if (handler)
   {
-    v6 = [(PreferencesPasscodeFieldWrapper *)self handler];
-    (v6)[2](v6, v7);
+    handler2 = [(PreferencesPasscodeFieldWrapper *)self handler];
+    (handler2)[2](handler2, passcodeCopy);
   }
 }
 

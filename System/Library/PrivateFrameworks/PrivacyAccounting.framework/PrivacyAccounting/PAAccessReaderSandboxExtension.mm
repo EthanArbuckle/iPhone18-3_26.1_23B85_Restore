@@ -1,50 +1,50 @@
 @interface PAAccessReaderSandboxExtension
-- (PAAccessReaderSandboxExtension)initWithHandle:(int64_t)a3 forRootDirectory:(id)a4;
-- (PAAccessReaderSandboxExtension)initWithToken:(id)a3 forPath:(id)a4 error:(id *)a5;
+- (PAAccessReaderSandboxExtension)initWithHandle:(int64_t)handle forRootDirectory:(id)directory;
+- (PAAccessReaderSandboxExtension)initWithToken:(id)token forPath:(id)path error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PAAccessReaderSandboxExtension
 
-- (PAAccessReaderSandboxExtension)initWithToken:(id)a3 forPath:(id)a4 error:(id *)a5
+- (PAAccessReaderSandboxExtension)initWithToken:(id)token forPath:(id)path error:(id *)error
 {
-  v8 = a4;
-  [a3 bytes];
+  pathCopy = path;
+  [token bytes];
   v9 = sandbox_extension_consume();
   if (v9 == -1)
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"PAErrorDomain" code:7 userInfo:0];
-      *a5 = v10 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    self = [(PAAccessReaderSandboxExtension *)self initWithHandle:v9 forRootDirectory:v8];
-    v10 = self;
+    self = [(PAAccessReaderSandboxExtension *)self initWithHandle:v9 forRootDirectory:pathCopy];
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PAAccessReaderSandboxExtension)initWithHandle:(int64_t)a3 forRootDirectory:(id)a4
+- (PAAccessReaderSandboxExtension)initWithHandle:(int64_t)handle forRootDirectory:(id)directory
 {
-  v7 = a4;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = PAAccessReaderSandboxExtension;
   v8 = [(PAAccessReaderSandboxExtension *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_handle = a3;
-    objc_storeStrong(&v8->_path, a4);
+    v8->_handle = handle;
+    objc_storeStrong(&v8->_path, directory);
   }
 
   return v9;

@@ -1,24 +1,24 @@
 @interface FedStatsUtils
-+ (BOOL)checkDeviceOSVersionFilter:(id)a3;
-+ (BOOL)checkDeviceOSVersionFilter:(id)a3 systemVersion:(id)a4;
-+ (BOOL)checkDeviceRegionCodeRestrictionForAllowedRegions:(id)a3 deniedRegions:(id)a4;
++ (BOOL)checkDeviceOSVersionFilter:(id)filter;
++ (BOOL)checkDeviceOSVersionFilter:(id)filter systemVersion:(id)version;
++ (BOOL)checkDeviceRegionCodeRestrictionForAllowedRegions:(id)regions deniedRegions:(id)deniedRegions;
 + (BOOL)isNaturalLanguageAvailable;
-+ (id)SHA1AsBitString:(id)a3;
-+ (id)bitStringToInt:(id)a3;
++ (id)SHA1AsBitString:(id)string;
++ (id)bitStringToInt:(id)int;
 + (id)getDeviceRegion;
-+ (id)intToBitString:(unint64_t)a3 withLength:(unint64_t)a4;
-+ (id)normL2:(id)a3;
-+ (id)subsampleBooleanValue:(id)a3 samplingRateTrue:(id)a4 samplingRateFalse:(id)a5 error:(id *)a6;
-+ (id)tokenizeSentence:(id)a3 removePunctuation:(BOOL)a4 tokenizePerson:(BOOL)a5 tokenizeLocation:(BOOL)a6 tokenizeNumber:(BOOL)a7 action:(int64_t)a8;
-+ (id)transformUseCaseID:(id)a3;
++ (id)intToBitString:(unint64_t)string withLength:(unint64_t)length;
++ (id)normL2:(id)l2;
++ (id)subsampleBooleanValue:(id)value samplingRateTrue:(id)true samplingRateFalse:(id)false error:(id *)error;
++ (id)tokenizeSentence:(id)sentence removePunctuation:(BOOL)punctuation tokenizePerson:(BOOL)person tokenizeLocation:(BOOL)location tokenizeNumber:(BOOL)number action:(int64_t)action;
++ (id)transformUseCaseID:(id)d;
 @end
 
 @implementation FedStatsUtils
 
-+ (id)bitStringToInt:(id)a3
++ (id)bitStringToInt:(id)int
 {
-  v3 = a3;
-  if ([v3 length] > 0x3F)
+  intCopy = int;
+  if ([intCopy length] > 0x3F)
   {
 LABEL_2:
     v4 = 0;
@@ -26,12 +26,12 @@ LABEL_2:
   }
 
   v5 = 0;
-  if ([v3 length])
+  if ([intCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 substringWithRange:{v6, 1}];
+      v7 = [intCopy substringWithRange:{v6, 1}];
       v8 = [&unk_285E12EC0 indexOfObject:v7];
 
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -42,7 +42,7 @@ LABEL_2:
       v5 = v8 + 2 * v5;
     }
 
-    while (++v6 < [v3 length]);
+    while (++v6 < [intCopy length]);
   }
 
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
@@ -51,37 +51,37 @@ LABEL_8:
   return v4;
 }
 
-+ (id)intToBitString:(unint64_t)a3 withLength:(unint64_t)a4
++ (id)intToBitString:(unint64_t)string withLength:(unint64_t)length
 {
-  v6 = [MEMORY[0x277CCAB68] string];
-  if (a4)
+  string = [MEMORY[0x277CCAB68] string];
+  if (length)
   {
     v7 = 0;
     do
     {
-      v8 = [&unk_285E12ED8 objectAtIndex:((1 << v7) & a3) != 0];
-      [v6 insertString:v8 atIndex:0];
+      v8 = [&unk_285E12ED8 objectAtIndex:((1 << v7) & string) != 0];
+      [string insertString:v8 atIndex:0];
 
       ++v7;
     }
 
-    while (a4 != v7);
+    while (length != v7);
   }
 
-  return v6;
+  return string;
 }
 
-+ (id)SHA1AsBitString:(id)a3
++ (id)SHA1AsBitString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  v7 = strlen(v6);
-  CC_SHA1(v6, v7, md);
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  v7 = strlen(uTF8String);
+  CC_SHA1(uTF8String, v7, md);
   v8 = [MEMORY[0x277CCAB68] stringWithCapacity:160];
   for (i = 0; i != 20; ++i)
   {
-    v10 = [a1 intToBitString:md[i] withLength:8];
+    v10 = [self intToBitString:md[i] withLength:8];
     [v8 appendFormat:@"%@", v10];
   }
 
@@ -98,33 +98,33 @@ LABEL_8:
   return v3;
 }
 
-+ (id)tokenizeSentence:(id)a3 removePunctuation:(BOOL)a4 tokenizePerson:(BOOL)a5 tokenizeLocation:(BOOL)a6 tokenizeNumber:(BOOL)a7 action:(int64_t)a8
++ (id)tokenizeSentence:(id)sentence removePunctuation:(BOOL)punctuation tokenizePerson:(BOOL)person tokenizeLocation:(BOOL)location tokenizeNumber:(BOOL)number action:(int64_t)action
 {
-  v12 = a4;
+  punctuationCopy = punctuation;
   v34[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  sentenceCopy = sentence;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![v14 length])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![sentenceCopy length])
   {
     v24 = 0;
     goto LABEL_13;
   }
 
-  if (([a1 isNaturalLanguageAvailable] & 1) == 0)
+  if (([self isNaturalLanguageAvailable] & 1) == 0)
   {
-    v24 = v14;
+    v24 = sentenceCopy;
     goto LABEL_13;
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = objc_alloc(MEMORY[0x277CD89D8]);
   v17 = *MEMORY[0x277CD8970];
   v34[0] = *MEMORY[0x277CD8970];
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   v19 = [v16 initWithTagSchemes:v18];
 
-  [v19 setString:v14];
-  if (v12)
+  [v19 setString:sentenceCopy];
+  if (punctuationCopy)
   {
     v20 = 62;
   }
@@ -134,21 +134,21 @@ LABEL_8:
     v20 = 52;
   }
 
-  v21 = [v14 length];
+  v21 = [sentenceCopy length];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __106__FedStatsUtils_tokenizeSentence_removePunctuation_tokenizePerson_tokenizeLocation_tokenizeNumber_action___block_invoke;
   v28[3] = &unk_278FF6268;
-  v31 = a5;
-  v22 = v15;
+  personCopy = person;
+  v22 = array;
   v29 = v22;
-  v32 = a6;
-  v33 = a7;
-  v30 = v14;
+  locationCopy = location;
+  numberCopy = number;
+  v30 = sentenceCopy;
   [v19 enumerateTagsInRange:0 unit:v21 scheme:0 options:v17 usingBlock:{v20, v28}];
   if ([v22 count])
   {
-    switch(a8)
+    switch(action)
     {
       case 2:
         v27 = [v22 sortedArrayUsingSelector:sel_compare_];
@@ -238,14 +238,14 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
   getDeviceRegion_deviceRegionCode = v0;
 }
 
-+ (BOOL)checkDeviceRegionCodeRestrictionForAllowedRegions:(id)a3 deniedRegions:(id)a4
++ (BOOL)checkDeviceRegionCodeRestrictionForAllowedRegions:(id)regions deniedRegions:(id)deniedRegions
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  regionsCopy = regions;
+  deniedRegionsCopy = deniedRegions;
+  v7 = deniedRegionsCopy;
+  if (regionsCopy | deniedRegionsCopy)
   {
-    if (v5 && v6)
+    if (regionsCopy && deniedRegionsCopy)
     {
       v8 = 0;
     }
@@ -263,9 +263,9 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
 
         v11 = [v7 containsObject:v9];
         v8 = v11 ^ 1;
-        if (v5 && (v11 & 1) == 0)
+        if (regionsCopy && (v11 & 1) == 0)
         {
-          v8 = [v5 containsObject:v9];
+          v8 = [regionsCopy containsObject:v9];
         }
       }
 
@@ -284,16 +284,16 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
   return v8;
 }
 
-+ (BOOL)checkDeviceOSVersionFilter:(id)a3
++ (BOOL)checkDeviceOSVersionFilter:(id)filter
 {
   v4 = MEMORY[0x277CCAC38];
-  v5 = a3;
-  v6 = [v4 processInfo];
-  v7 = v6;
+  filterCopy = filter;
+  processInfo = [v4 processInfo];
+  v7 = processInfo;
   v8 = MEMORY[0x277CCACA8];
-  if (v6)
+  if (processInfo)
   {
-    [v6 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
     v9 = v17;
     [v7 operatingSystemVersion];
     v10 = v15;
@@ -312,26 +312,26 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
   }
 
   v11 = [v8 stringWithFormat:@"%li.%li", v9, v10, v14, v15, v16, v17, v18, v19];
-  v12 = [a1 checkDeviceOSVersionFilter:v5 systemVersion:v11];
+  v12 = [self checkDeviceOSVersionFilter:filterCopy systemVersion:v11];
 
   return v12;
 }
 
-+ (BOOL)checkDeviceOSVersionFilter:(id)a3 systemVersion:(id)a4
++ (BOOL)checkDeviceOSVersionFilter:(id)filter systemVersion:(id)version
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"iOSMinVersion"];
-  v8 = [v6 objectForKey:@"iOSMaxVersion"];
+  versionCopy = version;
+  filterCopy = filter;
+  v7 = [filterCopy objectForKey:@"iOSMinVersion"];
+  v8 = [filterCopy objectForKey:@"iOSMaxVersion"];
 
-  if (v7 && [v5 compare:v7 options:64] == -1)
+  if (v7 && [versionCopy compare:v7 options:64] == -1)
   {
     v9 = 0;
   }
 
   else if (v8)
   {
-    v9 = [v5 compare:v8 options:64] != 1;
+    v9 = [versionCopy compare:v8 options:64] != 1;
   }
 
   else
@@ -342,9 +342,9 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
   return v9;
 }
 
-+ (id)transformUseCaseID:(id)a3
++ (id)transformUseCaseID:(id)d
 {
-  v3 = [&unk_285E12E20 objectForKey:a3];
+  v3 = [&unk_285E12E20 objectForKey:d];
   v4 = v3;
   if (v3)
   {
@@ -361,30 +361,30 @@ void __32__FedStatsUtils_getDeviceRegion__block_invoke()
   return v5;
 }
 
-+ (id)subsampleBooleanValue:(id)a3 samplingRateTrue:(id)a4 samplingRateFalse:(id)a5 error:(id *)a6
++ (id)subsampleBooleanValue:(id)value samplingRateTrue:(id)true samplingRateFalse:(id)false error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  trueCopy = true;
+  falseCopy = false;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
     [FedStatsError errorWithCode:900 description:v21];
-    *a6 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_22;
   }
 
-  v12 = [v9 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -392,10 +392,10 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v10 doubleValue];
+  [trueCopy doubleValue];
   if (v13 < 0.0 || (v14 = v13, v13 > 1.0))
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -406,7 +406,7 @@ LABEL_20:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -414,7 +414,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v11 doubleValue];
+  [falseCopy doubleValue];
   if (v15 >= 0.0)
   {
     v16 = v15;
@@ -424,7 +424,7 @@ LABEL_20:
       [(FedStatsUtilsUniformUnitIntervalDistribution *)v17 sample];
       v19 = v18;
 
-      if (v12)
+      if (bOOLValue)
       {
         v20 = v19 > v14;
       }
@@ -440,7 +440,7 @@ LABEL_20:
     }
   }
 
-  if (a6)
+  if (error)
   {
     goto LABEL_20;
   }
@@ -452,15 +452,15 @@ LABEL_22:
   return v22;
 }
 
-+ (id)normL2:(id)a3
++ (id)normL2:(id)l2
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  l2Copy = l2;
+  v4 = [l2Copy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -472,7 +472,7 @@ LABEL_22:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(l2Copy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -488,7 +488,7 @@ LABEL_22:
         v7 = v7 + (v10 * v10);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [l2Copy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;

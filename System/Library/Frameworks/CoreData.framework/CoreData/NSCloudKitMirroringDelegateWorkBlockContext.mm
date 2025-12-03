@@ -1,5 +1,5 @@
 @interface NSCloudKitMirroringDelegateWorkBlockContext
-- (NSCloudKitMirroringDelegateWorkBlockContext)initWithTransactionLabel:(id)a3 powerAssertionLabel:(id)a4;
+- (NSCloudKitMirroringDelegateWorkBlockContext)initWithTransactionLabel:(id)label powerAssertionLabel:(id)assertionLabel;
 - (void)dealloc;
 @end
 
@@ -15,17 +15,17 @@
   [(NSCloudKitMirroringDelegateWorkBlockContext *)&v3 dealloc];
 }
 
-- (NSCloudKitMirroringDelegateWorkBlockContext)initWithTransactionLabel:(id)a3 powerAssertionLabel:(id)a4
+- (NSCloudKitMirroringDelegateWorkBlockContext)initWithTransactionLabel:(id)label powerAssertionLabel:(id)assertionLabel
 {
   v9.receiver = self;
   v9.super_class = NSCloudKitMirroringDelegateWorkBlockContext;
   v6 = [(NSCloudKitMirroringDelegateWorkBlockContext *)&v9 init];
   if (v6)
   {
-    v6->_transactionLabel = a3;
-    v7 = a4;
-    v6->_powerAssertionLabel = v7;
-    v6->_runtimeVoucher = [_PFClassicBackgroundRuntimeVoucher _beginPowerAssertionNamed:v7];
+    v6->_transactionLabel = label;
+    assertionLabelCopy = assertionLabel;
+    v6->_powerAssertionLabel = assertionLabelCopy;
+    v6->_runtimeVoucher = [_PFClassicBackgroundRuntimeVoucher _beginPowerAssertionNamed:assertionLabelCopy];
   }
 
   return v6;

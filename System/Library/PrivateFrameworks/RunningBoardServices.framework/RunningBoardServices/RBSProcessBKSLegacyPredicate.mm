@@ -1,8 +1,8 @@
 @interface RBSProcessBKSLegacyPredicate
 + (id)legacyPredicate;
-+ (id)legacyPredicateMatchingBundleIdentifier:(id)a3;
-+ (id)legacyPredicateMatchingProcessIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)legacyPredicateMatchingBundleIdentifier:(id)identifier;
++ (id)legacyPredicateMatchingProcessIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation RBSProcessBKSLegacyPredicate
@@ -36,13 +36,13 @@ void __47__RBSProcessBKSLegacyPredicate_legacyPredicate__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)legacyPredicateMatchingBundleIdentifier:(id)a3
++ (id)legacyPredicateMatchingBundleIdentifier:(id)identifier
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RBSProcessBKSLegacyPredicate legacyPredicate];
   v10[0] = v4;
-  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v3];
+  v5 = [RBSProcessPredicate predicateMatchingBundleIdentifier:identifierCopy];
 
   v10[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
@@ -54,13 +54,13 @@ void __47__RBSProcessBKSLegacyPredicate_legacyPredicate__block_invoke()
   return v7;
 }
 
-+ (id)legacyPredicateMatchingProcessIdentifier:(id)a3
++ (id)legacyPredicateMatchingProcessIdentifier:(id)identifier
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RBSProcessBKSLegacyPredicate legacyPredicate];
   v10[0] = v4;
-  v5 = [RBSProcessPredicate predicateMatchingIdentifier:v3];
+  v5 = [RBSProcessPredicate predicateMatchingIdentifier:identifierCopy];
 
   v10[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
@@ -72,14 +72,14 @@ void __47__RBSProcessBKSLegacyPredicate_legacyPredicate__block_invoke()
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
 

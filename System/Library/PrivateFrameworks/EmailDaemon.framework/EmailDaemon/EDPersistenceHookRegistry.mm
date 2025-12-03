@@ -1,18 +1,18 @@
 @interface EDPersistenceHookRegistry
 + (OS_os_log)log;
 + (id)_proxiedProtocols;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (EDPersistenceHookRegistry)init;
-- (id)_copyRespondersForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)_copyRespondersForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_initializeMethodSignatures;
-- (void)_messageRespondersWithInvocation:(id)a3;
-- (void)_registerHookResponder:(id)a3 protocol:(id)a4;
-- (void)_registerHookResponder:(id)a3 withMethodDescription:(objc_method_description)a4;
-- (void)_registerSelector:(SEL)a3 types:(const char *)a4;
+- (void)_messageRespondersWithInvocation:(id)invocation;
+- (void)_registerHookResponder:(id)responder protocol:(id)protocol;
+- (void)_registerHookResponder:(id)responder withMethodDescription:(objc_method_description)description;
+- (void)_registerSelector:(SEL)selector types:(const char *)types;
 - (void)dealloc;
 - (void)unregisterAllHookResponders;
-- (void)unregisterHookResponder:(id)a3;
+- (void)unregisterHookResponder:(id)responder;
 @end
 
 @implementation EDPersistenceHookRegistry
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __32__EDPersistenceHookRegistry_log__block_invoke;
   block[3] = &unk_1E8255D68;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_77 != -1)
   {
     dispatch_once(&log_onceToken_77, block);
@@ -200,27 +200,27 @@ os_log_t __32__EDPersistenceHookRegistry_log__block_invoke(uint64_t a1)
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerSelector:(SEL)a3 types:(const char *)a4
+- (void)_registerSelector:(SEL)selector types:(const char *)types
 {
-  if (!a4)
+  if (!types)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v7 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:a4];
-  v8 = [v7 numberOfArguments];
-  if (v8 == 2)
+  v7 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:types];
+  numberOfArguments = [v7 numberOfArguments];
+  if (numberOfArguments == 2)
   {
     v9 = objc_opt_class();
     v10 = __HookResponderCallOut0__;
 LABEL_5:
-    class_addMethod(v9, a3, v10, a4);
+    class_addMethod(v9, selector, v10, types);
   }
 
   else
   {
-    v11 = v8;
-    if ((v8 - 3) <= 3)
+    v11 = numberOfArguments;
+    if ((numberOfArguments - 3) <= 3)
     {
       v12 = 2;
       while (1)
@@ -269,28 +269,28 @@ LABEL_5:
 
   methodSignaturesBySelector = self->_methodSignaturesBySelector;
 
-  CFDictionarySetValue(methodSignaturesBySelector, a3, v7);
+  CFDictionarySetValue(methodSignaturesBySelector, selector, v7);
 }
 
-- (void)_registerHookResponder:(id)a3 withMethodDescription:(objc_method_description)a4
+- (void)_registerHookResponder:(id)responder withMethodDescription:(objc_method_description)description
 {
-  name = a4.name;
-  Value = CFDictionaryGetValue(self->_hookRespondersBySelector, a4.name);
+  name = description.name;
+  Value = CFDictionaryGetValue(self->_hookRespondersBySelector, description.name);
   if (!Value)
   {
     Value = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     CFDictionarySetValue(self->_hookRespondersBySelector, name, Value);
   }
 
-  [Value addObject:a3];
+  [Value addObject:responder];
 }
 
-- (void)_registerHookResponder:(id)a3 protocol:(id)a4
+- (void)_registerHookResponder:(id)responder protocol:(id)protocol
 {
   outCount = -1431655766;
-  v8 = protocol_copyMethodDescriptionList(a4, 1, 1, &outCount);
+  v8 = protocol_copyMethodDescriptionList(protocol, 1, 1, &outCount);
   v16 = -1431655766;
-  v9 = protocol_copyMethodDescriptionList(a4, 0, 1, &v16);
+  v9 = protocol_copyMethodDescriptionList(protocol, 0, 1, &v16);
   os_unfair_lock_lock(&self->_lock);
   if (outCount)
   {
@@ -304,7 +304,7 @@ LABEL_5:
         [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
       }
 
-      [(EDPersistenceHookRegistry *)self _registerHookResponder:a3 withMethodDescription:v11->name, v11->types];
+      [(EDPersistenceHookRegistry *)self _registerHookResponder:responder withMethodDescription:v11->name, v11->types];
       ++v10;
       ++v11;
     }
@@ -321,7 +321,7 @@ LABEL_5:
       v15 = v14->name;
       if (objc_opt_respondsToSelector())
       {
-        [(EDPersistenceHookRegistry *)self _registerHookResponder:a3 withMethodDescription:v14->name, v14->types];
+        [(EDPersistenceHookRegistry *)self _registerHookResponder:responder withMethodDescription:v14->name, v14->types];
       }
 
       ++v13;
@@ -343,13 +343,13 @@ LABEL_5:
   }
 }
 
-- (void)unregisterHookResponder:(id)a3
+- (void)unregisterHookResponder:(id)responder
 {
-  if (a3)
+  if (responder)
   {
     v5 = objc_autoreleasePoolPush();
     os_unfair_lock_lock(&self->_lock);
-    context = a3;
+    context = responder;
     CFDictionaryApplyFunction(self->_hookRespondersBySelector, _unregistrationWalker, &context);
     os_unfair_lock_unlock(&self->_lock);
     objc_autoreleasePoolPop(v5);
@@ -364,42 +364,42 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = EDPersistenceHookRegistry;
-  return [(EDPersistenceHookRegistry *)&v6 respondsToSelector:?]|| CFDictionaryGetValue(self->_methodSignaturesBySelector, a3) != 0;
+  return [(EDPersistenceHookRegistry *)&v6 respondsToSelector:?]|| CFDictionaryGetValue(self->_methodSignaturesBySelector, selector) != 0;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  result = CFDictionaryGetValue(self->_methodSignaturesBySelector, a3);
+  result = CFDictionaryGetValue(self->_methodSignaturesBySelector, selector);
   if (!result)
   {
     v6.receiver = self;
     v6.super_class = EDPersistenceHookRegistry;
-    return [(EDPersistenceHookRegistry *)&v6 methodSignatureForSelector:a3];
+    return [(EDPersistenceHookRegistry *)&v6 methodSignatureForSelector:selector];
   }
 
   return result;
 }
 
-- (id)_copyRespondersForSelector:(SEL)a3
+- (id)_copyRespondersForSelector:(SEL)selector
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [CFDictionaryGetValue(self->_hookRespondersBySelector a3)];
+  v5 = [CFDictionaryGetValue(self->_hookRespondersBySelector selector)];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (void)_messageRespondersWithInvocation:(id)a3
+- (void)_messageRespondersWithInvocation:(id)invocation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = -[EDPersistenceHookRegistry _copyRespondersForSelector:](self, "_copyRespondersForSelector:", [a3 selector]);
+  v4 = -[EDPersistenceHookRegistry _copyRespondersForSelector:](self, "_copyRespondersForSelector:", [invocation selector]);
   v5 = +[EDPersistenceHookRegistry log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(EDPersistenceHookRegistry *)a3 _messageRespondersWithInvocation:v4, v5];
+    [(EDPersistenceHookRegistry *)invocation _messageRespondersWithInvocation:v4, v5];
   }
 
   v15 = 0u;
@@ -423,7 +423,7 @@ LABEL_5:
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        [a3 invokeWithTarget:v10];
+        [invocation invokeWithTarget:v10];
         objc_autoreleasePoolPop(v11);
         ++v9;
       }

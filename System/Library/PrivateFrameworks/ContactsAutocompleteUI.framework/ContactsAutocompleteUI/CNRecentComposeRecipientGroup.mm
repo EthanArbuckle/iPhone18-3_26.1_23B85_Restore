@@ -1,21 +1,21 @@
 @interface CNRecentComposeRecipientGroup
-- (CNRecentComposeRecipientGroup)initWithChildren:(id)a3 displayString:(id)a4 recentContact:(id)a5;
+- (CNRecentComposeRecipientGroup)initWithChildren:(id)children displayString:(id)string recentContact:(id)contact;
 - (id)label;
 - (id)placeholderName;
 @end
 
 @implementation CNRecentComposeRecipientGroup
 
-- (CNRecentComposeRecipientGroup)initWithChildren:(id)a3 displayString:(id)a4 recentContact:(id)a5
+- (CNRecentComposeRecipientGroup)initWithChildren:(id)children displayString:(id)string recentContact:(id)contact
 {
-  v9 = a5;
+  contactCopy = contact;
   v14.receiver = self;
   v14.super_class = CNRecentComposeRecipientGroup;
-  v10 = [(CNComposeRecipientGroup *)&v14 initWithChildren:a3 displayString:a4];
+  v10 = [(CNComposeRecipientGroup *)&v14 initWithChildren:children displayString:string];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_recentContact, a5);
+    objc_storeStrong(&v10->_recentContact, contact);
     v12 = v11;
   }
 

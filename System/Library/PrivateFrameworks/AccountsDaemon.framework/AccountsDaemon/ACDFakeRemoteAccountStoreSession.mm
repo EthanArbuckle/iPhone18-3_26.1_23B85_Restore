@@ -1,22 +1,22 @@
 @interface ACDFakeRemoteAccountStoreSession
-- (ACDFakeRemoteAccountStoreSession)initWithFakeProxy:(id)a3;
+- (ACDFakeRemoteAccountStoreSession)initWithFakeProxy:(id)proxy;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 @end
 
 @implementation ACDFakeRemoteAccountStoreSession
 
-- (ACDFakeRemoteAccountStoreSession)initWithFakeProxy:(id)a3
+- (ACDFakeRemoteAccountStoreSession)initWithFakeProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = ACDFakeRemoteAccountStoreSession;
   v5 = [(ACRemoteAccountStoreSession *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_proxy, v4);
+    objc_storeWeak(&v5->_proxy, proxyCopy);
   }
 
   return v6;
@@ -29,14 +29,14 @@
   return WeakRetained;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
 
   return WeakRetained;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
 

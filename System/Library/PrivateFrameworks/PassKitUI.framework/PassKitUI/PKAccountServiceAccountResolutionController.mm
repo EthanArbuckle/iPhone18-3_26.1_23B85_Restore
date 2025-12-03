@@ -1,49 +1,49 @@
 @interface PKAccountServiceAccountResolutionController
 - (PKAccountBillPaymentObserver)billPaymentObserver;
-- (PKAccountServiceAccountResolutionController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSourceCollection:(id)a5;
+- (PKAccountServiceAccountResolutionController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSourceCollection:(id)sourceCollection;
 - (PKAccountServiceAccountResolutionControllerDelegate)delegate;
 - (UIViewController)presentingViewController;
-- (id)_alertControllerForBusinessChatContext:(id)a3;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (id)_alertControllerForBusinessChatContext:(id)context;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 - (void)_callIssuer;
-- (void)_handleAccountServiceAccountDidChangeNotification:(id)a3;
-- (void)_openBusinessChatWithContext:(id)a3;
+- (void)_handleAccountServiceAccountDidChangeNotification:(id)notification;
+- (void)_openBusinessChatWithContext:(id)context;
 - (void)_openPaymentPlansInDefaultBrowser;
-- (void)_presentAccountServiceAction:(unint64_t)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_presentViewController:(id)a3;
-- (void)_startPaymentPlansWebSessionWithAuthenticationToken:(id)a3 completion:(id)a4;
-- (void)_viewAvailablePaymentPlansWithCompletion:(id)a3;
-- (void)presentFlowForAccountResolution:(unint64_t)a3 configuration:(id)a4 completion:(id)a5;
+- (void)_presentAccountServiceAction:(unint64_t)action configuration:(id)configuration completion:(id)completion;
+- (void)_presentViewController:(id)controller;
+- (void)_startPaymentPlansWebSessionWithAuthenticationToken:(id)token completion:(id)completion;
+- (void)_viewAvailablePaymentPlansWithCompletion:(id)completion;
+- (void)presentFlowForAccountResolution:(unint64_t)resolution configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation PKAccountServiceAccountResolutionController
 
-- (PKAccountServiceAccountResolutionController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSourceCollection:(id)a5
+- (PKAccountServiceAccountResolutionController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSourceCollection:(id)sourceCollection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  collectionCopy = collection;
+  sourceCollectionCopy = sourceCollection;
   v16.receiver = self;
   v16.super_class = PKAccountServiceAccountResolutionController;
   v12 = [(PKAccountServiceAccountResolutionController *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_accountUserCollection, a4);
-    objc_storeStrong(&v13->_transactionSourceCollection, a5);
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel__handleAccountServiceAccountDidChangeNotification_ name:*MEMORY[0x1E69B9E60] object:0];
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_accountUserCollection, collection);
+    objc_storeStrong(&v13->_transactionSourceCollection, sourceCollection);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__handleAccountServiceAccountDidChangeNotification_ name:*MEMORY[0x1E69B9E60] object:0];
   }
 
   return v13;
 }
 
-- (void)presentFlowForAccountResolution:(unint64_t)a3 configuration:(id)a4 completion:(id)a5
+- (void)presentFlowForAccountResolution:(unint64_t)resolution configuration:(id)configuration completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (!self->_isInPreflight)
   {
     objc_initWeak(buf, self);
@@ -52,14 +52,14 @@
     v15 = __104__PKAccountServiceAccountResolutionController_presentFlowForAccountResolution_configuration_completion___block_invoke;
     v16 = &unk_1E80110B8;
     objc_copyWeak(&v18, buf);
-    v9 = v9;
-    v17 = v9;
+    completionCopy = completionCopy;
+    v17 = completionCopy;
     v11 = _Block_copy(&v13);
     v12 = v11;
     self->_isInPreflight = 1;
-    if (a3 - 1 >= 4)
+    if (resolution - 1 >= 4)
     {
-      if (v9)
+      if (completionCopy)
       {
         (*(v11 + 2))(v11, 0);
       }
@@ -67,9 +67,9 @@
 
     else
     {
-      [(PKAccountServiceAccountResolutionController *)self _presentAccountServiceAction:a3 configuration:v8 completion:v11, v13, v14, v15, v16];
+      [(PKAccountServiceAccountResolutionController *)self _presentAccountServiceAction:resolution configuration:configurationCopy completion:v11, v13, v14, v15, v16];
 
-      v9 = 0;
+      completionCopy = 0;
     }
 
     objc_destroyWeak(&v18);
@@ -81,13 +81,13 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v20 = a3;
+    resolutionCopy = resolution;
     _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Failed to present flow for resolution %lu as its already in preflight", buf, 0xCu);
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
 LABEL_11:
   }
 }
@@ -109,31 +109,31 @@ void __104__PKAccountServiceAccountResolutionController_presentFlowForAccountRes
   }
 }
 
-- (void)_presentAccountServiceAction:(unint64_t)a3 configuration:(id)a4 completion:(id)a5
+- (void)_presentAccountServiceAction:(unint64_t)action configuration:(id)configuration completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__PKAccountServiceAccountResolutionController__presentAccountServiceAction_configuration_completion___block_invoke;
   aBlock[3] = &unk_1E8011270;
   objc_copyWeak(v26, &location);
-  v26[1] = a3;
+  v26[1] = action;
   v10 = _Block_copy(aBlock);
   v11 = 0;
-  if (a3 > 2)
+  if (action > 2)
   {
-    if (a3 == 3)
+    if (action == 3)
     {
-      v12 = [v8 businessChatContext];
-      if (v12)
+      businessChatContext = [configurationCopy businessChatContext];
+      if (businessChatContext)
       {
-        [(PKAccountServiceAccountResolutionController *)self _openBusinessChatWithContext:v12];
+        [(PKAccountServiceAccountResolutionController *)self _openBusinessChatWithContext:businessChatContext];
         v11 = 1;
-        if (v9)
+        if (completionCopy)
         {
-          v9[2](v9, 1);
+          completionCopy[2](completionCopy, 1);
         }
 
         goto LABEL_19;
@@ -142,31 +142,31 @@ void __104__PKAccountServiceAccountResolutionController_presentFlowForAccountRes
       goto LABEL_16;
     }
 
-    if (a3 == 4)
+    if (action == 4)
     {
-      [(PKAccountServiceAccountResolutionController *)self _viewAvailablePaymentPlansWithCompletion:v9];
+      [(PKAccountServiceAccountResolutionController *)self _viewAvailablePaymentPlansWithCompletion:completionCopy];
       goto LABEL_23;
     }
   }
 
   else
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       account = self->_account;
       v24 = 0;
       v16 = [PKAccountBillPaymentViewController canPayBillForAccount:account displayableError:&v24];
-      v12 = v24;
+      businessChatContext = v24;
       if (!v16)
       {
-        v13 = [PKAccountBillPaymentViewController alertControllerForDisplayableError:v12];
-        v10[2](v10, v13, 0);
+        anyObject = [PKAccountBillPaymentViewController alertControllerForDisplayableError:businessChatContext];
+        v10[2](v10, anyObject, 0);
         v11 = 0;
         goto LABEL_18;
       }
 
       v17 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourcesForType:0];
-      v13 = [v17 anyObject];
+      anyObject = [v17 anyObject];
 
       v19 = self->_account;
       accountUserCollection = self->_accountUserCollection;
@@ -176,8 +176,8 @@ void __104__PKAccountServiceAccountResolutionController_presentFlowForAccountRes
       v20[3] = &unk_1E8011298;
       objc_copyWeak(&v23, &location);
       v21 = v10;
-      v22 = v9;
-      [PKAccountBillPaymentViewController billPaymentViewControllerForAccount:v19 accountUserCollection:accountUserCollection transactionSource:v13 configuration:v8 withCompletion:v20];
+      v22 = completionCopy;
+      [PKAccountBillPaymentViewController billPaymentViewControllerForAccount:v19 accountUserCollection:accountUserCollection transactionSource:anyObject configuration:configurationCopy withCompletion:v20];
 
       objc_destroyWeak(&v23);
 LABEL_12:
@@ -187,16 +187,16 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if (a3 == 2)
+    if (action == 2)
     {
-      v12 = [v8 businessChatContext];
-      if (v12)
+      businessChatContext = [configurationCopy businessChatContext];
+      if (businessChatContext)
       {
-        v13 = [(PKAccountServiceAccountResolutionController *)self _alertControllerForBusinessChatContext:v12];
-        v14 = (v10[2])(v10, v13, 0);
-        if (v9)
+        anyObject = [(PKAccountServiceAccountResolutionController *)self _alertControllerForBusinessChatContext:businessChatContext];
+        v14 = (v10[2])(v10, anyObject, 0);
+        if (completionCopy)
         {
-          v9[2](v9, v14);
+          completionCopy[2](completionCopy, v14);
         }
 
         goto LABEL_12;
@@ -208,9 +208,9 @@ LABEL_19:
     }
   }
 
-  if (v9 && (v11 & 1) == 0)
+  if (completionCopy && (v11 & 1) == 0)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_23:
@@ -270,15 +270,15 @@ void __101__PKAccountServiceAccountResolutionController__presentAccountServiceAc
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_presentingViewController);
-    [v5 presentViewController:v7 animated:1 completion:0];
+    [v5 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
@@ -287,12 +287,12 @@ void __101__PKAccountServiceAccountResolutionController__presentAccountServiceAc
     v5 = v6;
     if (v6)
     {
-      [v6 accountServiceAccountResolutionController:self requestsPresentViewController:v7 animated:1];
+      [v6 accountServiceAccountResolutionController:self requestsPresentViewController:controllerCopy animated:1];
     }
   }
 }
 
-- (void)_handleAccountServiceAccountDidChangeNotification:(id)a3
+- (void)_handleAccountServiceAccountDidChangeNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -302,9 +302,9 @@ void __101__PKAccountServiceAccountResolutionController__presentAccountServiceAc
   v4 = _Block_copy(aBlock);
   if (self->_account)
   {
-    v5 = [MEMORY[0x1E69B8400] sharedInstance];
-    v6 = [(PKAccount *)self->_account accountIdentifier];
-    [v5 accountWithIdentifier:v6 completion:v4];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifier completion:v4];
   }
 }
 
@@ -331,14 +331,14 @@ void __97__PKAccountServiceAccountResolutionController__handleAccountServiceAcco
   }
 }
 
-- (id)_alertControllerForBusinessChatContext:(id)a3
+- (id)_alertControllerForBusinessChatContext:(id)context
 {
-  v20 = a3;
-  v4 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v5 = [v4 localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
-  v6 = [v4 businessChatIdentifier];
-  v7 = [v4 organizationName];
-  v8 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, v7);
+  contextCopy = context;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v5 = [paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
+  businessChatIdentifier = [paymentPass businessChatIdentifier];
+  organizationName = [paymentPass organizationName];
+  v8 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, organizationName);
   v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v8 message:0 preferredStyle:0];
   if (v5)
   {
@@ -353,7 +353,7 @@ void __97__PKAccountServiceAccountResolutionController__handleAccountServiceAcco
     [v9 addAction:v12];
   }
 
-  if (v6 && +[PKBusinessChatController deviceSupportsBusinessChat])
+  if (businessChatIdentifier && +[PKBusinessChatController deviceSupportsBusinessChat])
   {
     v13 = MEMORY[0x1E69DC648];
     v14 = PKLocalizedPaymentString(&cfstr_Message.isa);
@@ -362,7 +362,7 @@ void __97__PKAccountServiceAccountResolutionController__handleAccountServiceAcco
     v21[2] = __86__PKAccountServiceAccountResolutionController__alertControllerForBusinessChatContext___block_invoke_2;
     v21[3] = &unk_1E8011310;
     v21[4] = self;
-    v22 = v20;
+    v22 = contextCopy;
     v15 = [v13 actionWithTitle:v14 style:0 handler:v21];
     [v9 addAction:v15];
   }
@@ -377,15 +377,15 @@ void __97__PKAccountServiceAccountResolutionController__handleAccountServiceAcco
 
 - (void)_callIssuer
 {
-  v4 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v2 = [v4 localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v2 = [paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
   v3 = PKTelephoneURLFromPhoneNumber();
   PKOpenURL();
 }
 
-- (void)_openBusinessChatWithContext:(id)a3
+- (void)_openBusinessChatWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (+[PKBusinessChatController deviceSupportsBusinessChat])
   {
     if (!self->_businessChatController)
@@ -402,7 +402,7 @@ void __97__PKAccountServiceAccountResolutionController__handleAccountServiceAcco
     v8[2] = __76__PKAccountServiceAccountResolutionController__openBusinessChatWithContext___block_invoke;
     v8[3] = &unk_1E8011338;
     objc_copyWeak(&v9, &location);
-    [(PKBusinessChatController *)v7 openBusinessChatWithContext:v4 completion:v8];
+    [(PKBusinessChatController *)v7 openBusinessChatWithContext:contextCopy completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -446,25 +446,25 @@ void __76__PKAccountServiceAccountResolutionController__openBusinessChatWithCont
   PKOpenURL();
 }
 
-- (void)_viewAvailablePaymentPlansWithCompletion:(id)a3
+- (void)_viewAvailablePaymentPlansWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E69B8470]);
-  v6 = [(PKAccount *)self->_account accountIdentifier];
-  [v5 setAccountIdentifier:v6];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v5 setAccountIdentifier:accountIdentifier];
 
-  v7 = [(PKAccount *)self->_account accountBaseURL];
-  [v5 setBaseURL:v7];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v5 setBaseURL:accountBaseURL];
 
-  v8 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__PKAccountServiceAccountResolutionController__viewAvailablePaymentPlansWithCompletion___block_invoke;
   v10[3] = &unk_1E8011360;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 authenticationTokenWithRequest:v5 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [mEMORY[0x1E69B8EF8] authenticationTokenWithRequest:v5 completion:v10];
 }
 
 void __88__PKAccountServiceAccountResolutionController__viewAvailablePaymentPlansWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -483,18 +483,18 @@ void __88__PKAccountServiceAccountResolutionController__viewAvailablePaymentPlan
   [*(a1 + 32) _startPaymentPlansWebSessionWithAuthenticationToken:v3 completion:*(a1 + 40)];
 }
 
-- (void)_startPaymentPlansWebSessionWithAuthenticationToken:(id)a3 completion:(id)a4
+- (void)_startPaymentPlansWebSessionWithAuthenticationToken:(id)token completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = PKCreditWebPortalOverrideURL();
-  v9 = [v8 absoluteString];
-  v10 = v9;
+  absoluteString = [v8 absoluteString];
+  v10 = absoluteString;
   v11 = @"https://card.apple.com";
-  if (v9)
+  if (absoluteString)
   {
-    v11 = v9;
+    v11 = absoluteString;
   }
 
   v12 = v11;
@@ -510,15 +510,15 @@ void __88__PKAccountServiceAccountResolutionController__viewAvailablePaymentPlan
     v23[1] = 3221225472;
     v23[2] = __110__PKAccountServiceAccountResolutionController__startPaymentPlansWebSessionWithAuthenticationToken_completion___block_invoke;
     v23[3] = &unk_1E8011388;
-    v17 = v7;
+    v17 = completionCopy;
     v24 = v17;
     v18 = [v16 initWithURL:v14 callback:v15 completionHandler:v23];
     [v18 setPrefersEphemeralWebBrowserSession:1];
     [v18 setPresentationContextProvider:self];
-    if ([v6 length])
+    if ([tokenCopy length])
     {
       v25 = @"x-apple-authentication";
-      v26 = v6;
+      v26 = tokenCopy;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       [v18 setAdditionalHeaderFields:v19];
     }
@@ -564,9 +564,9 @@ void __88__PKAccountServiceAccountResolutionController__viewAvailablePaymentPlan
     }
 
     [(PKAccountServiceAccountResolutionController *)self _openPaymentPlansInDefaultBrowser];
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -594,13 +594,13 @@ void __110__PKAccountServiceAccountResolutionController__startPaymentPlansWebSes
   }
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-  v4 = [WeakRetained view];
-  v5 = [v4 window];
+  view = [WeakRetained view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
 - (PKAccountServiceAccountResolutionControllerDelegate)delegate

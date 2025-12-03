@@ -1,8 +1,8 @@
 @interface _MNLPRPlateCharacter
-- (id)_validReplacements:(uint64_t)a1;
+- (id)_validReplacements:(uint64_t)replacements;
 - (id)description;
 - (id)valueMappings;
-- (uint64_t)isOfType:(void *)a3 alphabetics:(void *)a4 numerics:;
+- (uint64_t)isOfType:(void *)type alphabetics:(void *)alphabetics numerics:;
 - (uint64_t)validReplacementCount:(uint64_t)result;
 @end
 
@@ -51,15 +51,15 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v24 + 1) + 8 * i) intValue];
-          if ((v16 - 1) >= 3)
+          intValue = [*(*(&v24 + 1) + 8 * i) intValue];
+          if ((intValue - 1) >= 3)
           {
-            v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+            v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue];
           }
 
           else
           {
-            v17 = off_1E842B088[(v16 - 1)];
+            v17 = off_1E842B088[(intValue - 1)];
           }
 
           [v10 addObject:v17];
@@ -78,8 +78,8 @@
 
   if ([(NSMutableOrderedSet *)self->_valueMappings count])
   {
-    v19 = [(NSMutableOrderedSet *)self->_valueMappings array];
-    v20 = [v19 componentsJoinedByString:{@", "}];
+    array = [(NSMutableOrderedSet *)self->_valueMappings array];
+    v20 = [array componentsJoinedByString:{@", "}];
     [v9 appendFormat:@" mappings: [%@]", v20];
   }
 
@@ -91,13 +91,13 @@
 
 - (id)valueMappings
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] array];
+    self = [self[1] array];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)validReplacementCount:(uint64_t)result
@@ -113,16 +113,16 @@
   return result;
 }
 
-- (id)_validReplacements:(uint64_t)a1
+- (id)_validReplacements:(uint64_t)replacements
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!replacements)
   {
     goto LABEL_41;
   }
 
-  v4 = (a1 + 16);
-  v3 = *(a1 + 16);
+  v4 = (replacements + 16);
+  v3 = *(replacements + 16);
   if (v3)
   {
     v5 = v3;
@@ -131,40 +131,40 @@ LABEL_4:
     goto LABEL_42;
   }
 
-  if (*(a1 + 24) == 1)
+  if (*(replacements + 24) == 1)
   {
-    if (![*(a1 + 8) count])
+    if (![*(replacements + 8) count])
     {
-      v57[0] = *(a1 + 32);
+      v57[0] = *(replacements + 32);
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
       goto LABEL_4;
     }
 
-    v8 = [*(a1 + 8) array];
+    array = [*(replacements + 8) array];
     goto LABEL_17;
   }
 
-  v9 = [*(a1 + 40) count];
-  v10 = *(a1 + 40);
+  v9 = [*(replacements + 40) count];
+  v10 = *(replacements + 40);
   if (v9 != 1)
   {
     if ([v10 count] < 2)
     {
-      _mnLPRWrappedError(a2, -104, 0, @"For character %@", v18, v19, v20, v21, *(a1 + 32));
+      _mnLPRWrappedError(a2, -104, 0, @"For character %@", v18, v19, v20, v21, *(replacements + 32));
       [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"NoRulesApplyToCharacter"];
-      v8 = 0;
+      array = 0;
       goto LABEL_17;
     }
 
-    v22 = [*(a1 + 40) objectForKeyedSubscript:&unk_1F4EE2320];
+    v22 = [*(replacements + 40) objectForKeyedSubscript:&unk_1F4EE2320];
 
-    v23 = [*(a1 + 40) objectForKeyedSubscript:&unk_1F4EE2338];
+    v23 = [*(replacements + 40) objectForKeyedSubscript:&unk_1F4EE2338];
 
-    v24 = [*(a1 + 40) objectForKeyedSubscript:&unk_1F4EE2350];
+    v24 = [*(replacements + 40) objectForKeyedSubscript:&unk_1F4EE2350];
 
     if (v23 && v24)
     {
-      _mnLPRWrappedError(a2, -102, 0, @"Invalid fill for character %@", v25, v26, v27, v28, *(a1 + 32));
+      _mnLPRWrappedError(a2, -102, 0, @"Invalid fill for character %@", v25, v26, v27, v28, *(replacements + 32));
       v29 = MEMORY[0x1E69A1598];
       v30 = @"InvalidFillRules";
     }
@@ -191,14 +191,14 @@ LABEL_4:
         v37 = v36;
       }
 
-      v38 = *(a1 + 40);
+      v38 = *(replacements + 40);
       if (v23 || v24 || v22)
       {
         v43 = [MEMORY[0x1E696AD98] numberWithInt:v37];
-        v12 = [v38 objectForKeyedSubscript:v43];
+        firstObject2 = [v38 objectForKeyedSubscript:v43];
 
-        v13 = [v12 mnlpr_componentsSeparatedByGlyph];
-        if (v13)
+        mnlpr_componentsSeparatedByGlyph = [firstObject2 mnlpr_componentsSeparatedByGlyph];
+        if (mnlpr_componentsSeparatedByGlyph)
         {
           goto LABEL_10;
         }
@@ -210,22 +210,22 @@ LABEL_24:
         goto LABEL_41;
       }
 
-      v39 = [*(a1 + 40) allKeys];
-      v40 = [v39 firstObject];
-      v41 = [v40 intValue];
+      allKeys = [*(replacements + 40) allKeys];
+      firstObject = [allKeys firstObject];
+      intValue = [firstObject intValue];
 
-      if ((v41 - 1) >= 3)
+      if ((intValue - 1) >= 3)
       {
-        v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v41];
+        v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue];
       }
 
       else
       {
-        v42 = off_1E842B088[(v41 - 1)];
+        v42 = off_1E842B088[(intValue - 1)];
       }
 
-      v48 = *(a1 + 40);
-      v49 = [MEMORY[0x1E696AD98] numberWithInt:v41];
+      v48 = *(replacements + 40);
+      v49 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
       v56 = [v48 objectForKeyedSubscript:v49];
       _mnLPRWrappedError(a2, -103, 0, @"Unknown fill %@ %@", v50, v51, v52, v53, v42);
 
@@ -237,21 +237,21 @@ LABEL_24:
     goto LABEL_41;
   }
 
-  v11 = [v10 allValues];
-  v12 = [v11 firstObject];
+  allValues = [v10 allValues];
+  firstObject2 = [allValues firstObject];
 
-  v13 = [v12 mnlpr_componentsSeparatedByGlyph];
-  if (!v13)
+  mnlpr_componentsSeparatedByGlyph = [firstObject2 mnlpr_componentsSeparatedByGlyph];
+  if (!mnlpr_componentsSeparatedByGlyph)
   {
-    _mnLPRWrappedError(a2, -101, 0, @"Unsplittable fill %@", v14, v15, v16, v17, v12);
+    _mnLPRWrappedError(a2, -101, 0, @"Unsplittable fill %@", v14, v15, v16, v17, firstObject2);
     goto LABEL_24;
   }
 
 LABEL_10:
-  v8 = v13;
+  array = mnlpr_componentsSeparatedByGlyph;
 
 LABEL_17:
-  if (![v8 count])
+  if (![array count])
   {
 LABEL_21:
     v6 = *v4;
@@ -259,14 +259,14 @@ LABEL_21:
     goto LABEL_42;
   }
 
-  if (([v8 containsObject:*(a1 + 32)] & 1) != 0 || objc_msgSend(v8, "count") >= 0xA)
+  if (([array containsObject:*(replacements + 32)] & 1) != 0 || objc_msgSend(array, "count") >= 0xA)
   {
-    objc_storeStrong(v4, v8);
+    objc_storeStrong(v4, array);
     goto LABEL_21;
   }
 
-  v31 = *(a1 + 32);
-  [v8 count];
+  v31 = *(replacements + 32);
+  [array count];
   _mnLPRWrappedError(a2, -107, 0, @"Self missing in fill for character %@ with only %d valid replacements", v32, v33, v34, v35, v31);
   [MEMORY[0x1E69A1598] captureUserAction:2191 target:0 value:@"MappingDoesNotIncludeSelf"];
 
@@ -278,44 +278,44 @@ LABEL_42:
   return v6;
 }
 
-- (uint64_t)isOfType:(void *)a3 alphabetics:(void *)a4 numerics:
+- (uint64_t)isOfType:(void *)type alphabetics:(void *)alphabetics numerics:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  typeCopy = type;
+  alphabeticsCopy = alphabetics;
+  if (self)
   {
     if (a2 == 1)
     {
-      a1 = 1;
+      self = 1;
     }
 
     else
     {
       if (a2 == 2)
       {
-        v9 = *(a1 + 32);
-        v10 = v7;
+        v9 = *(self + 32);
+        v10 = typeCopy;
       }
 
       else
       {
         if (a2 != 3)
         {
-          a1 = 0;
+          self = 0;
           goto LABEL_10;
         }
 
-        v9 = *(a1 + 32);
-        v10 = v8;
+        v9 = *(self + 32);
+        v10 = alphabeticsCopy;
       }
 
-      a1 = [v9 rangeOfCharacterFromSet:v10] == 0;
+      self = [v9 rangeOfCharacterFromSet:v10] == 0;
     }
   }
 
 LABEL_10:
 
-  return a1;
+  return self;
 }
 
 @end

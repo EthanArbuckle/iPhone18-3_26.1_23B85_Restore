@@ -1,32 +1,32 @@
 @interface FCKeyValueStoreSavePolicy
-+ (id)appBackgroundPolicyWithActivityMonitor:(id)a3 backgroundTaskable:(id)a4;
-+ (id)throttlePolicyWithDelay:(double)a3;
-- (void)scheduleSaveOnQueue:(id)a3 handler:(id)a4;
++ (id)appBackgroundPolicyWithActivityMonitor:(id)monitor backgroundTaskable:(id)taskable;
++ (id)throttlePolicyWithDelay:(double)delay;
+- (void)scheduleSaveOnQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation FCKeyValueStoreSavePolicy
 
-+ (id)throttlePolicyWithDelay:(double)a3
++ (id)throttlePolicyWithDelay:(double)delay
 {
-  v3 = [[FCKeyValueStoreSavePolicyThrottle alloc] initWithDelay:a3];
+  v3 = [[FCKeyValueStoreSavePolicyThrottle alloc] initWithDelay:delay];
 
   return v3;
 }
 
-+ (id)appBackgroundPolicyWithActivityMonitor:(id)a3 backgroundTaskable:(id)a4
++ (id)appBackgroundPolicyWithActivityMonitor:(id)monitor backgroundTaskable:(id)taskable
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FCKeyValueStoreSavePolicyAppBackground alloc] initWithActivityMonitor:v6 backgroundTaskable:v5];
+  taskableCopy = taskable;
+  monitorCopy = monitor;
+  v7 = [[FCKeyValueStoreSavePolicyAppBackground alloc] initWithActivityMonitor:monitorCopy backgroundTaskable:taskableCopy];
 
   return v7;
 }
 
-- (void)scheduleSaveOnQueue:(id)a3 handler:(id)a4
+- (void)scheduleSaveOnQueue:(id)queue handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];

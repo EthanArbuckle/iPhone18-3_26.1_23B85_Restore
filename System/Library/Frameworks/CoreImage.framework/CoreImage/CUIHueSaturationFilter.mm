@@ -1,6 +1,6 @@
 @interface CUIHueSaturationFilter
 + (id)customAttributes;
-- (CGColor)_newColorByProcessingColor:(CGColor *)a3;
+- (CGColor)_newColorByProcessingColor:(CGColor *)color;
 - (HSV)tintColorToHSV;
 - (float)angleWidthDegrees;
 - (float)centerAngleDegrees;
@@ -110,7 +110,7 @@
   return result;
 }
 
-- (CGColor)_newColorByProcessingColor:(CGColor *)a3
+- (CGColor)_newColorByProcessingColor:(CGColor *)color
 {
   v49 = *MEMORY[0x1E69E9840];
   [(CUIHueSaturationFilter *)self centerAngleDegrees];
@@ -121,9 +121,9 @@
   v10 = v9;
   v45 = v12;
   v46 = v11;
-  ColorSpace = CGColorGetColorSpace(a3);
-  v14 = CGColorGetComponents(a3);
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
+  ColorSpace = CGColorGetColorSpace(color);
+  v14 = CGColorGetComponents(color);
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
   if (NumberOfComponents > 1)
   {
     if (NumberOfComponents == 2)

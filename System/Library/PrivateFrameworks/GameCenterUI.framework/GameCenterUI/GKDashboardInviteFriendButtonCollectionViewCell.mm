@@ -1,13 +1,13 @@
 @interface GKDashboardInviteFriendButtonCollectionViewCell
-+ (CGSize)sizeWithFitting:(CGSize)a3 in:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)sizeWithFitting:(CGSize)fitting in:(id)in;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)updateTextColorWith:(id)a3;
+- (void)updateTextColorWith:(id)with;
 @end
 
 @implementation GKDashboardInviteFriendButtonCollectionViewCell
 
-+ (CGSize)sizeWithFitting:(CGSize)a3 in:(id)a4
++ (CGSize)sizeWithFitting:(CGSize)fitting in:(id)in
 {
   static GKDashboardInviteFriendButtonCollectionViewCell.size(fitting:in:)();
   v5 = 200.0;
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E221614();
   v5 = v4;
   v7 = v6;
@@ -32,15 +32,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2216C8();
 }
 
-- (void)updateTextColorWith:(id)a3
+- (void)updateTextColorWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E221918(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_24E221918(withCopy);
 }
 
 @end

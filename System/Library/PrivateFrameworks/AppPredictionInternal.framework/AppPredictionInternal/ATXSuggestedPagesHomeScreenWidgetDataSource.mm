@@ -1,13 +1,13 @@
 @interface ATXSuggestedPagesHomeScreenWidgetDataSource
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesHomeScreenWidgetDataSource
 
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  environmentCopy = environment;
   v5 = objc_alloc_init(MEMORY[0x277CEB568]);
   v6 = [v5 loadHomeScreenPageConfigurationsIncludingHidden:0 error:0];
   if ([v6 count])
@@ -40,8 +40,8 @@
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v40 = [v8 stacks];
-          v42 = [v40 countByEnumeratingWithState:&v50 objects:v59 count:16];
+          stacks = [v8 stacks];
+          v42 = [stacks countByEnumeratingWithState:&v50 objects:v59 count:16];
           if (v42)
           {
             v41 = *v51;
@@ -52,7 +52,7 @@
               {
                 if (*v51 != v41)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(stacks);
                 }
 
                 v43 = v9;
@@ -61,8 +61,8 @@
                 v47 = 0u;
                 v48 = 0u;
                 v49 = 0u;
-                v45 = [v10 widgets];
-                v11 = [v45 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                widgets = [v10 widgets];
+                v11 = [widgets countByEnumeratingWithState:&v46 objects:v58 count:16];
                 if (v11)
                 {
                   v12 = v11;
@@ -73,45 +73,45 @@
                     {
                       if (*v47 != v13)
                       {
-                        objc_enumerationMutation(v45);
+                        objc_enumerationMutation(widgets);
                       }
 
                       v15 = *(*(&v46 + 1) + 8 * i);
-                      v16 = [v15 appBundleId];
-                      v17 = [v16 length];
+                      appBundleId = [v15 appBundleId];
+                      v17 = [appBundleId length];
 
                       if (v17)
                       {
-                        v18 = [v15 appBundleId];
-                        v19 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:v18];
-                        v20 = [v4 suggestedApps];
-                        v21 = [v20 containsObject:v19];
+                        appBundleId2 = [v15 appBundleId];
+                        v19 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:appBundleId2];
+                        suggestedApps = [environmentCopy suggestedApps];
+                        v21 = [suggestedApps containsObject:v19];
 
                         if (v21)
                         {
-                          v22 = [v4 appLaunchCounts];
-                          v23 = [v22 objectForKeyedSubscript:v18];
-                          v24 = v4;
-                          v25 = [v23 rawLaunchCount];
+                          appLaunchCounts = [environmentCopy appLaunchCounts];
+                          v23 = [appLaunchCounts objectForKeyedSubscript:appBundleId2];
+                          v24 = environmentCopy;
+                          rawLaunchCount = [v23 rawLaunchCount];
 
-                          v26 = v25 >= 0xA;
-                          v4 = v24;
+                          v26 = rawLaunchCount >= 0xA;
+                          environmentCopy = v24;
                           if (v26)
                           {
                             v27 = objc_alloc_init(MEMORY[0x277CEB5B0]);
-                            v28 = [v15 intent];
-                            [v27 setIntent:v28];
+                            intent = [v15 intent];
+                            [v27 setIntent:intent];
 
                             [v27 setSize:{objc_msgSend(v15, "size")}];
-                            v29 = [v15 widgetKind];
-                            [v27 setWidgetKind:v29];
+                            widgetKind = [v15 widgetKind];
+                            [v27 setWidgetKind:widgetKind];
 
-                            v30 = [v15 extensionBundleId];
-                            [v27 setExtensionBundleId:v30];
+                            extensionBundleId = [v15 extensionBundleId];
+                            [v27 setExtensionBundleId:extensionBundleId];
 
-                            v4 = v24;
-                            v31 = [v15 appBundleId];
-                            [v27 setAppBundleId:v31];
+                            environmentCopy = v24;
+                            appBundleId3 = [v15 appBundleId];
+                            [v27 setAppBundleId:appBundleId3];
 
                             [v27 setScore:0.25];
                             [v27 setPredictionSource:@"Home Screen"];
@@ -121,7 +121,7 @@
                       }
                     }
 
-                    v12 = [v45 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                    v12 = [widgets countByEnumeratingWithState:&v46 objects:v58 count:16];
                   }
 
                   while (v12);
@@ -131,7 +131,7 @@
               }
 
               while (v43 + 1 != v42);
-              v42 = [v40 countByEnumeratingWithState:&v50 objects:v59 count:16];
+              v42 = [stacks countByEnumeratingWithState:&v50 objects:v59 count:16];
             }
 
             while (v42);

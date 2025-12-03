@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheDeleteRecordOperation
-- (HMDBackingStoreCacheDeleteRecordOperation)initWithGroup:(id)a3 recordNames:(id)a4 resultBlock:(id)a5;
+- (HMDBackingStoreCacheDeleteRecordOperation)initWithGroup:(id)group recordNames:(id)names resultBlock:(id)block;
 - (id)mainReturningError;
 @end
 
@@ -8,11 +8,11 @@
 - (id)mainReturningError
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackingStoreOperation *)self store];
-  v4 = [v3 local];
-  v5 = [v4 _begin];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  _begin = [local _begin];
 
-  if (v5)
+  if (_begin)
   {
     goto LABEL_13;
   }
@@ -21,8 +21,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(HMDBackingStoreCacheDeleteRecordOperation *)self recordNames];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  recordNames = [(HMDBackingStoreCacheDeleteRecordOperation *)self recordNames];
+  v7 = [recordNames countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -33,23 +33,23 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordNames);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [(HMDBackingStoreOperation *)self store];
-        v13 = [v12 local];
-        v14 = [(HMDBackingStoreCacheDeleteRecordOperation *)self group];
-        v5 = [v13 _deleteRecordWithGroupID:objc_msgSend(v14 recordName:{"groupID"), v11}];
+        store2 = [(HMDBackingStoreOperation *)self store];
+        local2 = [store2 local];
+        group = [(HMDBackingStoreCacheDeleteRecordOperation *)self group];
+        _begin = [local2 _deleteRecordWithGroupID:objc_msgSend(group recordName:{"groupID"), v11}];
 
-        if (v5)
+        if (_begin)
         {
 
           goto LABEL_13;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [recordNames countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -59,37 +59,37 @@
     }
   }
 
-  v15 = [(HMDBackingStoreOperation *)self store];
-  v16 = [v15 local];
-  v5 = [v16 _commit];
+  store3 = [(HMDBackingStoreOperation *)self store];
+  local3 = [store3 local];
+  _begin = [local3 _commit];
 
-  if (v5)
+  if (_begin)
   {
 LABEL_13:
-    v17 = [(HMDBackingStoreOperation *)self store];
-    v18 = [v17 local];
-    [v18 _rollback];
+    store4 = [(HMDBackingStoreOperation *)self store];
+    local4 = [store4 local];
+    [local4 _rollback];
   }
 
-  v19 = v5;
+  v19 = _begin;
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (HMDBackingStoreCacheDeleteRecordOperation)initWithGroup:(id)a3 recordNames:(id)a4 resultBlock:(id)a5
+- (HMDBackingStoreCacheDeleteRecordOperation)initWithGroup:(id)group recordNames:(id)names resultBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
+  groupCopy = group;
+  namesCopy = names;
   v15.receiver = self;
   v15.super_class = HMDBackingStoreCacheDeleteRecordOperation;
-  v11 = [(HMDBackingStoreOperation *)&v15 initWithResultBlock:a5];
+  v11 = [(HMDBackingStoreOperation *)&v15 initWithResultBlock:block];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_group, a3);
-    objc_storeStrong(&v12->_recordNames, a4);
+    objc_storeStrong(&v11->_group, group);
+    objc_storeStrong(&v12->_recordNames, names);
     v13 = v12;
   }
 

@@ -1,18 +1,18 @@
 @interface HMFProcessInfo
 + (HMFProcessInfo)processInfo;
 + (id)logCategory;
-+ (id)processInfoForXPCConnection:(id)a3;
-+ (void)bundleIdentifierAndTeamIdentifierFromApplicationIdentifier:(id)a3 bundleIdentifier:(id *)a4 teamIdentifier:(id *)a5;
-- (BOOL)getAuditToken:(id *)a3;
++ (id)processInfoForXPCConnection:(id)connection;
++ (void)bundleIdentifierAndTeamIdentifierFromApplicationIdentifier:(id)identifier bundleIdentifier:(id *)bundleIdentifier teamIdentifier:(id *)teamIdentifier;
+- (BOOL)getAuditToken:(id *)token;
 - (BOOL)isCodeSigned;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlatformBinary;
 - (HMFProcessInfo)init;
-- (HMFProcessInfo)initWithAuditToken:(id *)a3;
-- (HMFProcessInfo)initWithXPCConnection:(id)a3;
+- (HMFProcessInfo)initWithAuditToken:(id *)token;
+- (HMFProcessInfo)initWithXPCConnection:(id)connection;
 - (NSBundle)mainBundle;
 - (id)attributeDescriptions;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 @end
 
 @implementation HMFProcessInfo
@@ -47,11 +47,11 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   {
     v4 = v3;
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      v8 = HMFGetLogIdentifier(v6);
+      v8 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543618;
       *&buf[4] = v8;
       *&buf[12] = 1024;
@@ -67,8 +67,8 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   {
     *buf = *task_info_out;
     *&buf[16] = v14;
-    v6 = [(HMFProcessInfo *)self initWithAuditToken:buf];
-    v9 = v6;
+    selfCopy = [(HMFProcessInfo *)self initWithAuditToken:buf];
+    v9 = selfCopy;
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -82,12 +82,12 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMFProcessInfo identifier](self, "identifier")}];
   v5 = [(HMFAttributeDescription *)v3 initWithName:@"Identifier" value:v4];
   v6 = [HMFAttributeDescription alloc];
-  v7 = [(HMFProcessInfo *)self name];
-  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Name" value:v7];
+  name = [(HMFProcessInfo *)self name];
+  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Name" value:name];
   v15[1] = v8;
   v9 = [HMFAttributeDescription alloc];
-  v10 = [(HMFProcessInfo *)self applicationIdentifier];
-  v11 = [(HMFAttributeDescription *)v9 initWithName:@"Application Identifier" value:v10];
+  applicationIdentifier = [(HMFProcessInfo *)self applicationIdentifier];
+  v11 = [(HMFAttributeDescription *)v9 initWithName:@"Application Identifier" value:applicationIdentifier];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -96,19 +96,19 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   return v12;
 }
 
-+ (id)processInfoForXPCConnection:(id)a3
++ (id)processInfoForXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithXPCConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithXPCConnection:connectionCopy];
 
   return v5;
 }
 
-- (HMFProcessInfo)initWithXPCConnection:(id)a3
+- (HMFProcessInfo)initWithXPCConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
-    [a3 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -119,7 +119,7 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   return [(HMFProcessInfo *)self initWithAuditToken:v5];
 }
 
-- (HMFProcessInfo)initWithAuditToken:(id *)a3
+- (HMFProcessInfo)initWithAuditToken:(id *)token
 {
   v3 = MEMORY[0x28223BE20](self, a2);
   v5 = v4;
@@ -148,8 +148,8 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
     v12 = *(v6 + 3);
     *(v6 + 3) = v11;
 
-    v13 = [v6 executableURL];
-    if (v13)
+    executableURL = [v6 executableURL];
+    if (executableURL)
     {
       v14 = _CFBundleCopyBundleURLForExecutableURL();
     }
@@ -206,10 +206,10 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -219,7 +219,7 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -230,8 +230,8 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMFProcessInfo *)self identifier];
-      v8 = v7 == [(HMFProcessInfo *)v6 identifier];
+      identifier = [(HMFProcessInfo *)self identifier];
+      v8 = identifier == [(HMFProcessInfo *)v6 identifier];
     }
 
     else
@@ -245,10 +245,10 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
 
 - (NSBundle)mainBundle
 {
-  v2 = [(HMFProcessInfo *)self mainBundleURL];
-  if (v2)
+  mainBundleURL = [(HMFProcessInfo *)self mainBundleURL];
+  if (mainBundleURL)
   {
-    v3 = [MEMORY[0x277CCA8D8] bundleWithURL:v2];
+    v3 = [MEMORY[0x277CCA8D8] bundleWithURL:mainBundleURL];
   }
 
   else
@@ -259,29 +259,29 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
   return v3;
 }
 
-- (BOOL)getAuditToken:(id *)a3
+- (BOOL)getAuditToken:(id *)token
 {
-  if (a3)
+  if (token)
   {
     v3 = *&self->_auditToken.val[4];
-    *a3->var0 = *self->_auditToken.val;
-    *&a3->var0[4] = v3;
+    *token->var0 = *self->_auditToken.val;
+    *&token->var0[4] = v3;
   }
 
   return 1;
 }
 
-+ (void)bundleIdentifierAndTeamIdentifierFromApplicationIdentifier:(id)a3 bundleIdentifier:(id *)a4 teamIdentifier:(id *)a5
++ (void)bundleIdentifierAndTeamIdentifierFromApplicationIdentifier:(id)identifier bundleIdentifier:(id *)bundleIdentifier teamIdentifier:(id *)teamIdentifier
 {
-  v15 = a3;
-  objc_storeStrong(a4, a3);
-  if ([v15 length] >= 0xB && objc_msgSend(v15, "characterAtIndex:", 10) == 46)
+  identifierCopy = identifier;
+  objc_storeStrong(bundleIdentifier, identifier);
+  if ([identifierCopy length] >= 0xB && objc_msgSend(identifierCopy, "characterAtIndex:", 10) == 46)
   {
-    v8 = [v15 substringWithRange:{0, 10}];
+    v8 = [identifierCopy substringWithRange:{0, 10}];
     v9 = 0;
     do
     {
-      v10 = [v15 characterAtIndex:v9];
+      v10 = [identifierCopy characterAtIndex:v9];
       v12 = (v10 - 65) < 0x1A || (v10 - 48) < 0xA;
       if (v9 > 8)
       {
@@ -294,10 +294,10 @@ uint64_t __29__HMFProcessInfo_processInfo__block_invoke()
     while (v12);
     if (v12)
     {
-      objc_storeStrong(a5, v8);
-      v13 = [v15 substringWithRange:{11, objc_msgSend(v15, "length") - 11}];
-      v14 = *a4;
-      *a4 = v13;
+      objc_storeStrong(teamIdentifier, v8);
+      v13 = [identifierCopy substringWithRange:{11, objc_msgSend(identifierCopy, "length") - 11}];
+      v14 = *bundleIdentifier;
+      *bundleIdentifier = v13;
     }
   }
 }
@@ -351,9 +351,9 @@ uint64_t __29__HMFProcessInfo_logCategory__block_invoke()
   }
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   identifier = self->_identifier;
   v6 = getpid();
   v7 = *MEMORY[0x277CBECE8];
@@ -373,7 +373,7 @@ uint64_t __29__HMFProcessInfo_logCategory__block_invoke()
   v10 = v8;
   if (v8)
   {
-    v11 = SecTaskCopyValueForEntitlement(v8, v4, 0);
+    v11 = SecTaskCopyValueForEntitlement(v8, entitlementCopy, 0);
     CFRelease(v10);
   }
 

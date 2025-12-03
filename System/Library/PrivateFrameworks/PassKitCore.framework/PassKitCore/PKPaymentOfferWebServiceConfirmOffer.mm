@@ -1,14 +1,14 @@
 @interface PKPaymentOfferWebServiceConfirmOffer
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentOfferWebServiceConfirmOffer
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v6 = PKLogFacilityTypeGetObject(7uLL);
@@ -97,7 +97,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v6 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -145,12 +145,12 @@ LABEL_28:
   rewardsRedemptionIntent = self->_rewardsRedemptionIntent;
   if (rewardsRedemptionIntent)
   {
-    v15 = [(PKPaymentOfferRewardsRedemptionIntent *)rewardsRedemptionIntent dictionaryRepresentation];
-    [v11 setObject:v15 forKeyedSubscript:@"rewardsRedemptionIntent"];
+    dictionaryRepresentation = [(PKPaymentOfferRewardsRedemptionIntent *)rewardsRedemptionIntent dictionaryRepresentation];
+    [v11 setObject:dictionaryRepresentation forKeyedSubscript:@"rewardsRedemptionIntent"];
   }
 
-  v16 = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails dictionaryRepresentation];
-  [v11 setObject:v16 forKeyedSubscript:@"transactionDetails"];
+  dictionaryRepresentation2 = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails dictionaryRepresentation];
+  [v11 setObject:dictionaryRepresentation2 forKeyedSubscript:@"transactionDetails"];
 
   v17 = self->_eventType - 1;
   if (v17 > 2)
@@ -202,12 +202,12 @@ LABEL_28:
 
   if ([(PKSelectedPaymentOffer *)self->_selectedOffer type]== 1)
   {
-    v34 = [(PKSelectedPaymentOffer *)self->_selectedOffer selectedInstallmentOffer];
-    v35 = [v34 dictionaryRepresentation];
+    selectedInstallmentOffer = [(PKSelectedPaymentOffer *)self->_selectedOffer selectedInstallmentOffer];
+    dictionaryRepresentation3 = [selectedInstallmentOffer dictionaryRepresentation];
 
-    if (v35)
+    if (dictionaryRepresentation3)
     {
-      [v11 setObject:v35 forKeyedSubscript:@"selectedOfferDetails"];
+      [v11 setObject:dictionaryRepresentation3 forKeyedSubscript:@"selectedOfferDetails"];
     }
   }
 

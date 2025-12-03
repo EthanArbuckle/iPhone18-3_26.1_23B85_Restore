@@ -1,34 +1,34 @@
 @interface CAMExpandingControlSystemImageMenuItem
-+ (id)menuItemWithState:(id)a3 systemImageName:(id)a4 symbolConfiguration:(id)a5 subtitle:(id)a6 selectedSubtitle:(id)a7 configuration:(id)a8;
-- (BOOL)isEqualToItem:(id)a3;
++ (id)menuItemWithState:(id)state systemImageName:(id)name symbolConfiguration:(id)configuration subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)a8;
+- (BOOL)isEqualToItem:(id)item;
 - (UIImage)titleImage;
-- (id)_imageWithConfiguration:(id)a3;
+- (id)_imageWithConfiguration:(id)configuration;
 @end
 
 @implementation CAMExpandingControlSystemImageMenuItem
 
-+ (id)menuItemWithState:(id)a3 systemImageName:(id)a4 symbolConfiguration:(id)a5 subtitle:(id)a6 selectedSubtitle:(id)a7 configuration:(id)a8
++ (id)menuItemWithState:(id)state systemImageName:(id)name symbolConfiguration:(id)configuration subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)a8
 {
-  v14 = a4;
-  v15 = a5;
-  v21.receiver = a1;
+  nameCopy = name;
+  configurationCopy = configuration;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS___CAMExpandingControlSystemImageMenuItem;
-  v16 = objc_msgSendSuper2(&v21, sel__menuItemWithState_subtitle_selectedSubtitle_configuration_, a3, a6, a7, a8);
+  v16 = objc_msgSendSuper2(&v21, sel__menuItemWithState_subtitle_selectedSubtitle_configuration_, state, subtitle, selectedSubtitle, a8);
   v17 = v16[5];
-  v16[5] = v14;
-  v18 = v14;
+  v16[5] = nameCopy;
+  v18 = nameCopy;
 
   v19 = v16[6];
-  v16[6] = v15;
+  v16[6] = configurationCopy;
 
   return v16;
 }
 
 - (UIImage)titleImage
 {
-  v3 = [(CAMExpandingControlSystemImageMenuItem *)self _titleImage];
+  _titleImage = [(CAMExpandingControlSystemImageMenuItem *)self _titleImage];
 
-  if (!v3)
+  if (!_titleImage)
   {
     v4 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:14.0];
     v5 = [(CAMExpandingControlSystemImageMenuItem *)self _imageWithConfiguration:v4];
@@ -39,44 +39,44 @@
   return [(CAMExpandingControlSystemImageMenuItem *)self _titleImage];
 }
 
-- (id)_imageWithConfiguration:(id)a3
+- (id)_imageWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
+  configurationCopy = configuration;
+  _symbolConfiguration = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
 
-  if (v5)
+  if (_symbolConfiguration)
   {
-    v6 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
-    v7 = [v6 configurationByApplyingConfiguration:v4];
+    _symbolConfiguration2 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
+    v7 = [_symbolConfiguration2 configurationByApplyingConfiguration:configurationCopy];
   }
 
   else
   {
-    v7 = v4;
+    v7 = configurationCopy;
   }
 
   v8 = MEMORY[0x1E69DCAB8];
-  v9 = [(CAMExpandingControlSystemImageMenuItem *)self _systemImageName];
-  v10 = [v8 systemImageNamed:v9 withConfiguration:v7];
+  _systemImageName = [(CAMExpandingControlSystemImageMenuItem *)self _systemImageName];
+  v10 = [v8 systemImageNamed:_systemImageName withConfiguration:v7];
 
   return v10;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = CAMExpandingControlSystemImageMenuItem;
-  if ([(CAMExpandingControlMenuItem *)&v16 isEqualToItem:v6])
+  if ([(CAMExpandingControlMenuItem *)&v16 isEqualToItem:itemCopy])
   {
-    v7 = [(CAMExpandingControlSystemImageMenuItem *)self _systemImageName];
-    v8 = [v6 _systemImageName];
-    if (v7 == v8 || (-[CAMExpandingControlSystemImageMenuItem _systemImageName](self, "_systemImageName"), v3 = objc_claimAutoreleasedReturnValue(), [v6 _systemImageName], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    _systemImageName = [(CAMExpandingControlSystemImageMenuItem *)self _systemImageName];
+    _systemImageName2 = [itemCopy _systemImageName];
+    if (_systemImageName == _systemImageName2 || (-[CAMExpandingControlSystemImageMenuItem _systemImageName](self, "_systemImageName"), v3 = objc_claimAutoreleasedReturnValue(), [itemCopy _systemImageName], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
     {
-      v10 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
-      v11 = [v6 _symbolConfiguration];
-      v12 = v11;
-      if (v10 == v11)
+      _symbolConfiguration = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
+      _symbolConfiguration2 = [itemCopy _symbolConfiguration];
+      v12 = _symbolConfiguration2;
+      if (_symbolConfiguration == _symbolConfiguration2)
       {
 
         v9 = 1;
@@ -84,12 +84,12 @@
 
       else
       {
-        v13 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
-        v14 = [v6 _symbolConfiguration];
-        v9 = [v13 isEqualToConfiguration:v14];
+        _symbolConfiguration3 = [(CAMExpandingControlSystemImageMenuItem *)self _symbolConfiguration];
+        _symbolConfiguration4 = [itemCopy _symbolConfiguration];
+        v9 = [_symbolConfiguration3 isEqualToConfiguration:_symbolConfiguration4];
       }
 
-      if (v7 == v8)
+      if (_systemImageName == _systemImageName2)
       {
         goto LABEL_11;
       }

@@ -1,40 +1,40 @@
 @interface HDKeyValueDomain
-+ (id)_wristTemperatureIdentifierDomainWithProfile:(id)a3;
-+ (id)healthAppUserDefaultsDomainWithProfile:(id)a3;
-- (BOOL)removeValuesForKeys:(id)a3 error:(id *)a4;
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setData:(id)a3 forKey:(id)a4 syncIdentity:(int64_t)a5 error:(id *)a6;
-- (BOOL)setDate:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setNumber:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setQuantity:(id)a3 unit:(id)a4 forKey:(id)a5 error:(id *)a6;
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setValueForAllKeys:(id)a3 error:(id *)a4;
-- (BOOL)setValuesWithDictionary:(id)a3 error:(id *)a4;
-- (HDKeyValueDomain)initWithCategory:(int64_t)a3 domainName:(id)a4 profile:(id)a5;
++ (id)_wristTemperatureIdentifierDomainWithProfile:(id)profile;
++ (id)healthAppUserDefaultsDomainWithProfile:(id)profile;
+- (BOOL)removeValuesForKeys:(id)keys error:(id *)error;
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error;
+- (BOOL)setData:(id)data forKey:(id)key syncIdentity:(int64_t)identity error:(id *)error;
+- (BOOL)setDate:(id)date forKey:(id)key error:(id *)error;
+- (BOOL)setNumber:(id)number forKey:(id)key error:(id *)error;
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key error:(id *)error;
+- (BOOL)setQuantity:(id)quantity unit:(id)unit forKey:(id)key error:(id *)error;
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error;
+- (BOOL)setValueForAllKeys:(id)keys error:(id *)error;
+- (BOOL)setValuesWithDictionary:(id)dictionary error:(id *)error;
+- (HDKeyValueDomain)initWithCategory:(int64_t)category domainName:(id)name profile:(id)profile;
 - (id)_wristTemperatureResolvedSourceIdentifiersBySourceIdentifier;
 - (id)_wristTemperatureSerialNumbersBySourceIdentifier;
-- (id)allValuesWithError:(id *)a3;
-- (id)dataForKey:(id)a3 error:(id *)a4;
-- (id)dateForKey:(id)a3 error:(id *)a4;
-- (id)modificationDatesForKeys:(id)a3 error:(id *)a4;
-- (id)numberForKey:(id)a3 error:(id *)a4;
-- (id)propertyListValueForKey:(id)a3 error:(id *)a4;
-- (id)quantityForKey:(id)a3 unit:(id)a4 error:(id *)a5;
-- (id)stringForKey:(id)a3 error:(id *)a4;
-- (id)valuesForKeys:(id)a3 error:(id *)a4;
+- (id)allValuesWithError:(id *)error;
+- (id)dataForKey:(id)key error:(id *)error;
+- (id)dateForKey:(id)key error:(id *)error;
+- (id)modificationDatesForKeys:(id)keys error:(id *)error;
+- (id)numberForKey:(id)key error:(id *)error;
+- (id)propertyListValueForKey:(id)key error:(id *)error;
+- (id)quantityForKey:(id)key unit:(id)unit error:(id *)error;
+- (id)stringForKey:(id)key error:(id *)error;
+- (id)valuesForKeys:(id)keys error:(id *)error;
 - (unint64_t)_unitTest_countOfObservers;
 - (void)notifyObservers;
-- (void)startObservation:(id)a3;
-- (void)stopObservation:(id)a3;
+- (void)startObservation:(id)observation;
+- (void)stopObservation:(id)observation;
 @end
 
 @implementation HDKeyValueDomain
 
-+ (id)_wristTemperatureIdentifierDomainWithProfile:(id)a3
++ (id)_wristTemperatureIdentifierDomainWithProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [[HDKeyValueDomain alloc] initWithCategory:105 domainName:@"wrist-temperature-identifiers" profile:v3];
+  profileCopy = profile;
+  v4 = [[HDKeyValueDomain alloc] initWithCategory:105 domainName:@"wrist-temperature-identifiers" profile:profileCopy];
 
   return v4;
 }
@@ -42,10 +42,10 @@
 - (id)_wristTemperatureSerialNumbersBySourceIdentifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleInternalInstall];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if (v4)
+  if (isAppleInternalInstall)
   {
     v12 = 0;
     v5 = [(HDKeyValueDomain *)self allValuesWithError:&v12];
@@ -80,18 +80,18 @@
 
 - (id)_wristTemperatureResolvedSourceIdentifiersBySourceIdentifier
 {
-  v2 = [(HDKeyValueDomain *)self _wristTemperatureSerialNumbersBySourceIdentifier];
-  v3 = [v2 hk_sortedKeys];
-  v4 = [v2 allValues];
+  _wristTemperatureSerialNumbersBySourceIdentifier = [(HDKeyValueDomain *)self _wristTemperatureSerialNumbersBySourceIdentifier];
+  hk_sortedKeys = [_wristTemperatureSerialNumbersBySourceIdentifier hk_sortedKeys];
+  allValues = [_wristTemperatureSerialNumbersBySourceIdentifier allValues];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __109__HDKeyValueDomain_WristTemperatureIdentifiers___wristTemperatureResolvedSourceIdentifiersBySourceIdentifier__block_invoke;
   v13[3] = &unk_2786158A0;
-  v14 = v3;
-  v15 = v2;
-  v5 = v2;
-  v6 = v3;
-  v7 = [v4 hk_mapToDictionary:v13];
+  v14 = hk_sortedKeys;
+  v15 = _wristTemperatureSerialNumbersBySourceIdentifier;
+  v5 = _wristTemperatureSerialNumbersBySourceIdentifier;
+  v6 = hk_sortedKeys;
+  v7 = [allValues hk_mapToDictionary:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -137,23 +137,23 @@ void __109__HDKeyValueDomain_WristTemperatureIdentifiers___wristTemperatureResol
   (a4)[2](v8, v9, v10);
 }
 
-- (HDKeyValueDomain)initWithCategory:(int64_t)a3 domainName:(id)a4 profile:(id)a5
+- (HDKeyValueDomain)initWithCategory:(int64_t)category domainName:(id)name profile:(id)profile
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = HDKeyValueDomain;
   v10 = [(HDKeyValueDomain *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    v10->_category = a3;
-    v12 = [v8 copy];
+    v10->_category = category;
+    v12 = [nameCopy copy];
     domainName = v11->_domainName;
     v11->_domainName = v12;
 
-    objc_storeWeak(&v11->_profile, v9);
-    v11->_entityClass = [HDKeyValueEntity _entityClassForKeyValueCategory:a3];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v11->_entityClass = [HDKeyValueEntity _entityClassForKeyValueCategory:category];
     v14 = objc_alloc(MEMORY[0x277CCD738]);
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
@@ -165,73 +165,73 @@ void __109__HDKeyValueDomain_WristTemperatureIdentifiers___wristTemperatureResol
   return v11;
 }
 
-- (id)dataForKey:(id)a3 error:(id *)a4
+- (id)dataForKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass dataForKey:v9 domain:domainName category:category profile:WeakRetained entity:0 error:a4];
+  v11 = [(objc_class *)entityClass dataForKey:keyCopy domain:domainName category:category profile:WeakRetained entity:0 error:error];
 
   return v11;
 }
 
-- (id)dateForKey:(id)a3 error:(id *)a4
+- (id)dateForKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass dateForKey:v9 domain:domainName category:category profile:WeakRetained entity:0 error:a4];
+  v11 = [(objc_class *)entityClass dateForKey:keyCopy domain:domainName category:category profile:WeakRetained entity:0 error:error];
 
   return v11;
 }
 
-- (id)quantityForKey:(id)a3 unit:(id)a4 error:(id *)a5
+- (id)quantityForKey:(id)key unit:(id)unit error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v11 = a4;
-  v12 = a3;
+  unitCopy = unit;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [(objc_class *)entityClass quantityForKey:v12 unit:v11 domain:domainName category:category profile:WeakRetained entity:0 error:a5];
+  v14 = [(objc_class *)entityClass quantityForKey:keyCopy unit:unitCopy domain:domainName category:category profile:WeakRetained entity:0 error:error];
 
   return v14;
 }
 
-- (id)numberForKey:(id)a3 error:(id *)a4
+- (id)numberForKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass numberForKey:v9 domain:domainName category:category profile:WeakRetained entity:0 error:a4];
+  v11 = [(objc_class *)entityClass numberForKey:keyCopy domain:domainName category:category profile:WeakRetained entity:0 error:error];
 
   return v11;
 }
 
-- (id)stringForKey:(id)a3 error:(id *)a4
+- (id)stringForKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass stringForKey:v9 domain:domainName category:category profile:WeakRetained entity:0 error:a4];
+  v11 = [(objc_class *)entityClass stringForKey:keyCopy domain:domainName category:category profile:WeakRetained entity:0 error:error];
 
   return v11;
 }
 
-- (id)propertyListValueForKey:(id)a3 error:(id *)a4
+- (id)propertyListValueForKey:(id)key error:(id *)error
 {
-  v5 = [(HDKeyValueDomain *)self dataForKey:a3 error:?];
+  v5 = [(HDKeyValueDomain *)self dataForKey:key error:?];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:0 error:a4];
+    v6 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:0 error:error];
   }
 
   else
@@ -242,135 +242,135 @@ void __109__HDKeyValueDomain_WristTemperatureIdentifiers___wristTemperatureResol
   return v6;
 }
 
-- (id)valuesForKeys:(id)a3 error:(id *)a4
+- (id)valuesForKeys:(id)keys error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keysCopy = keys;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass valuesForKeys:v9 domain:domainName category:category profile:WeakRetained error:a4];
+  v11 = [(objc_class *)entityClass valuesForKeys:keysCopy domain:domainName category:category profile:WeakRetained error:error];
 
   return v11;
 }
 
-- (id)allValuesWithError:(id *)a3
+- (id)allValuesWithError:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [(objc_class *)entityClass allValuesForDomain:domainName category:category profile:WeakRetained error:a3];
+  v8 = [(objc_class *)entityClass allValuesForDomain:domainName category:category profile:WeakRetained error:error];
 
   return v8;
 }
 
-- (id)modificationDatesForKeys:(id)a3 error:(id *)a4
+- (id)modificationDatesForKeys:(id)keys error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keysCopy = keys;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [(objc_class *)entityClass modificationDatesForKeys:v9 domain:domainName category:category profile:WeakRetained error:a4];
+  v11 = [(objc_class *)entityClass modificationDatesForKeys:keysCopy domain:domainName category:category profile:WeakRetained error:error];
 
   return v11;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setData:(id)data forKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [(objc_class *)entityClass setData:v12 forKey:v11 domain:domainName category:category profile:WeakRetained error:a5];
+  LOBYTE(error) = [(objc_class *)entityClass setData:dataCopy forKey:keyCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4 syncIdentity:(int64_t)a5 error:(id *)a6
+- (BOOL)setData:(id)data forKey:(id)key syncIdentity:(int64_t)identity error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v13 = a4;
-  v14 = a3;
+  keyCopy = key;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a6) = [(objc_class *)entityClass setData:v14 forKey:v13 domain:domainName category:category syncIdentity:a5 profile:WeakRetained error:a6];
+  LOBYTE(error) = [(objc_class *)entityClass setData:dataCopy forKey:keyCopy domain:domainName category:category syncIdentity:identity profile:WeakRetained error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)setDate:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setDate:(id)date forKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [(objc_class *)entityClass setDate:v12 forKey:v11 domain:domainName category:category profile:WeakRetained error:a5];
+  LOBYTE(error) = [(objc_class *)entityClass setDate:dateCopy forKey:keyCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setQuantity:(id)a3 unit:(id)a4 forKey:(id)a5 error:(id *)a6
+- (BOOL)setQuantity:(id)quantity unit:(id)unit forKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  keyCopy = key;
+  unitCopy = unit;
+  quantityCopy = quantity;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a6) = [(objc_class *)entityClass setQuantity:v15 unit:v14 forKey:v13 domain:domainName category:category profile:WeakRetained error:a6];
+  LOBYTE(error) = [(objc_class *)entityClass setQuantity:quantityCopy unit:unitCopy forKey:keyCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)setNumber:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setNumber:(id)number forKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  numberCopy = number;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [(objc_class *)entityClass setNumber:v12 forKey:v11 domain:domainName category:category profile:WeakRetained error:a5];
+  LOBYTE(error) = [(objc_class *)entityClass setNumber:numberCopy forKey:keyCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a5) = [(objc_class *)entityClass setString:v12 forKey:v11 domain:domainName category:category profile:WeakRetained error:a5];
+  LOBYTE(error) = [(objc_class *)entityClass setString:stringCopy forKey:keyCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  valueCopy = value;
+  keyCopy = key;
+  if (!valueCopy)
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:a5];
+  v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:valueCopy format:200 options:0 error:error];
   if (v10)
   {
 LABEL_5:
-    v11 = [(HDKeyValueDomain *)self setData:v10 forKey:v9 error:a5];
+    v11 = [(HDKeyValueDomain *)self setData:v10 forKey:keyCopy error:error];
 
     goto LABEL_6;
   }
@@ -381,43 +381,43 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)setValuesWithDictionary:(id)dictionary error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  dictionaryCopy = dictionary;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a4) = [(objc_class *)entityClass setValuesWithDictionary:v9 domain:domainName category:category profile:WeakRetained error:a4];
+  LOBYTE(error) = [(objc_class *)entityClass setValuesWithDictionary:dictionaryCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)setValueForAllKeys:(id)a3 error:(id *)a4
+- (BOOL)setValueForAllKeys:(id)keys error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = a3;
+  keysCopy = keys;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a4) = [(objc_class *)entityClass setValueForAllKeys:v9 domain:domainName category:category profile:WeakRetained error:a4];
+  LOBYTE(error) = [(objc_class *)entityClass setValueForAllKeys:keysCopy domain:domainName category:category profile:WeakRetained error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeValuesForKeys:(id)a3 error:(id *)a4
+- (BOOL)removeValuesForKeys:(id)keys error:(id *)error
 {
   entityClass = self->_entityClass;
   category = self->_category;
   domainName = self->_domainName;
-  v9 = [a3 allObjects];
+  allObjects = [keys allObjects];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LOBYTE(a4) = [(objc_class *)entityClass removeValuesForDomain:domainName category:category keys:v9 profile:WeakRetained error:a4];
+  LOBYTE(error) = [(objc_class *)entityClass removeValuesForDomain:domainName category:category keys:allObjects profile:WeakRetained error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)startObservation:(id)a3
+- (void)startObservation:(id)observation
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -425,7 +425,7 @@ LABEL_6:
   v4[2] = __37__HDKeyValueDomain_startObservation___block_invoke;
   v4[3] = &unk_278613968;
   v4[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:0 runIfFirstObserver:v4];
+  [(HKObserverSet *)observers registerObserver:observation queue:0 runIfFirstObserver:v4];
 }
 
 void __37__HDKeyValueDomain_startObservation___block_invoke(uint64_t a1)
@@ -435,7 +435,7 @@ void __37__HDKeyValueDomain_startObservation___block_invoke(uint64_t a1)
   [v2 startObservationForDomain:*(a1 + 32)];
 }
 
-- (void)stopObservation:(id)a3
+- (void)stopObservation:(id)observation
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -443,7 +443,7 @@ void __37__HDKeyValueDomain_startObservation___block_invoke(uint64_t a1)
   v4[2] = __36__HDKeyValueDomain_stopObservation___block_invoke;
   v4[3] = &unk_278613968;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observation runIfLastObserver:v4];
 }
 
 void __36__HDKeyValueDomain_stopObservation___block_invoke(uint64_t a1)
@@ -466,17 +466,17 @@ void __36__HDKeyValueDomain_stopObservation___block_invoke(uint64_t a1)
 
 - (unint64_t)_unitTest_countOfObservers
 {
-  v2 = [(HKObserverSet *)self->_observers allObservers];
-  v3 = [v2 count];
+  allObservers = [(HKObserverSet *)self->_observers allObservers];
+  v3 = [allObservers count];
 
   return v3;
 }
 
-+ (id)healthAppUserDefaultsDomainWithProfile:(id)a3
++ (id)healthAppUserDefaultsDomainWithProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = [HDKeyValueDomain alloc];
-  v5 = [(HDKeyValueDomain *)v4 initWithCategory:102 domainName:*MEMORY[0x277CCE3A8] profile:v3];
+  v5 = [(HDKeyValueDomain *)v4 initWithCategory:102 domainName:*MEMORY[0x277CCE3A8] profile:profileCopy];
 
   return v5;
 }

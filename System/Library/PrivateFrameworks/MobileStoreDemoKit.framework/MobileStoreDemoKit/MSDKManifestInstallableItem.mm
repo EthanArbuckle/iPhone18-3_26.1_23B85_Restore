@@ -1,47 +1,47 @@
 @interface MSDKManifestInstallableItem
 - (BOOL)isSystemApp;
-- (MSDKManifestInstallableItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5;
+- (MSDKManifestInstallableItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component;
 - (id)description;
 @end
 
 @implementation MSDKManifestInstallableItem
 
-- (MSDKManifestInstallableItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5
+- (MSDKManifestInstallableItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = MSDKManifestInstallableItem;
-  v11 = [(MSDKManifestItem *)&v42 initWithIdentifier:v9 andDictionary:v10 forComponent:a5];
+  v11 = [(MSDKManifestItem *)&v42 initWithIdentifier:identifierCopy andDictionary:dictionaryCopy forComponent:component];
   v12 = v11;
   if (!v11)
   {
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v11->_identifier, a3);
-  v13 = [v10 objectForKey:@"AppType" ofType:objc_opt_class()];
+  objc_storeStrong(&v11->_identifier, identifier);
+  v13 = [dictionaryCopy objectForKey:@"AppType" ofType:objc_opt_class()];
   appType = v12->_appType;
   v12->_appType = v13;
 
   if (!v12->_appType)
   {
-    [MSDKManifestInstallableItem initWithIdentifier:v9 andDictionary:&v43 forComponent:?];
+    [MSDKManifestInstallableItem initWithIdentifier:identifierCopy andDictionary:&v43 forComponent:?];
 LABEL_20:
     v16 = v43;
     goto LABEL_29;
   }
 
-  v15 = [v10 objectForKey:@"IsContainerized" ofType:objc_opt_class()];
+  v15 = [dictionaryCopy objectForKey:@"IsContainerized" ofType:objc_opt_class()];
   if (!v15)
   {
-    [MSDKManifestInstallableItem initWithIdentifier:v9 andDictionary:&v43 forComponent:?];
+    [MSDKManifestInstallableItem initWithIdentifier:identifierCopy andDictionary:&v43 forComponent:?];
     goto LABEL_20;
   }
 
   v16 = v15;
   v12->_isContainerized = [v15 BOOLValue];
-  v17 = [v10 objectForKey:@"OSVersion" ofType:objc_opt_class()];
+  v17 = [dictionaryCopy objectForKey:@"OSVersion" ofType:objc_opt_class()];
   osVersion = v12->_osVersion;
   v12->_osVersion = v17;
 
@@ -51,7 +51,7 @@ LABEL_20:
     goto LABEL_29;
   }
 
-  v19 = [v10 objectForKey:@"PlatformType" ofType:objc_opt_class()];
+  v19 = [dictionaryCopy objectForKey:@"PlatformType" ofType:objc_opt_class()];
   platformType = v12->_platformType;
   v12->_platformType = v19;
 
@@ -63,37 +63,37 @@ LABEL_20:
 
   if (![(MSDKManifestInstallableItem *)v12 isSystemApp])
   {
-    v27 = [v10 objectForKey:@"Identifier" ofType:objc_opt_class()];
+    v27 = [dictionaryCopy objectForKey:@"Identifier" ofType:objc_opt_class()];
     uniqueID = v12->_uniqueID;
     v12->_uniqueID = v27;
 
     if (v12->_uniqueID)
     {
-      v29 = [v10 objectForKey:@"CFBundleShortVersionString" ofType:objc_opt_class()];
+      v29 = [dictionaryCopy objectForKey:@"CFBundleShortVersionString" ofType:objc_opt_class()];
       bundleShortVersionString = v12->_bundleShortVersionString;
       v12->_bundleShortVersionString = v29;
 
       if (v12->_bundleShortVersionString)
       {
-        v31 = [v10 objectForKey:@"RealSize" ofType:objc_opt_class()];
+        v31 = [dictionaryCopy objectForKey:@"RealSize" ofType:objc_opt_class()];
         realSize = v12->_realSize;
         v12->_realSize = v31;
 
         if (v12->_realSize)
         {
-          v33 = [v10 objectForKey:@"Size" ofType:objc_opt_class()];
+          v33 = [dictionaryCopy objectForKey:@"Size" ofType:objc_opt_class()];
           size = v12->_size;
           v12->_size = v33;
 
           if (v12->_size)
           {
-            v35 = [v10 objectForKey:@"AppPrivacyPermissions" ofType:objc_opt_class()];
+            v35 = [dictionaryCopy objectForKey:@"AppPrivacyPermissions" ofType:objc_opt_class()];
             privacyPermissions = v12->_privacyPermissions;
             v12->_privacyPermissions = v35;
 
             if (v12->_privacyPermissions)
             {
-              v37 = [v10 objectForKey:@"Hash" ofType:objc_opt_class()];
+              v37 = [dictionaryCopy objectForKey:@"Hash" ofType:objc_opt_class()];
               fileHash = v12->_fileHash;
               v12->_fileHash = v37;
 
@@ -170,8 +170,8 @@ LABEL_17:
 
 - (BOOL)isSystemApp
 {
-  v2 = [(MSDKManifestItem *)self component];
-  v3 = [v2 isOfType:0];
+  component = [(MSDKManifestItem *)self component];
+  v3 = [component isOfType:0];
 
   return v3;
 }

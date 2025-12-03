@@ -1,7 +1,7 @@
 @interface AVAssetReaderSampleReferenceOutput
 + (AVAssetReaderSampleReferenceOutput)assetReaderSampleReferenceOutputWithTrack:(AVAssetTrack *)track;
 - (AVAssetReaderSampleReferenceOutput)initWithTrack:(AVAssetTrack *)track;
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3;
+- (BOOL)_enableTrackExtractionReturningError:(id *)error;
 - (BOOL)_trimsSampleDurations;
 - (id)_asset;
 - (id)description;
@@ -74,36 +74,36 @@
 
 - (id)mediaType
 {
-  v2 = [(AVAssetReaderSampleReferenceOutput *)self track];
+  track = [(AVAssetReaderSampleReferenceOutput *)self track];
 
-  return [(AVAssetTrack *)v2 mediaType];
+  return [(AVAssetTrack *)track mediaType];
 }
 
 - (id)_asset
 {
-  v2 = [(AVAssetReaderSampleReferenceOutput *)self track];
+  track = [(AVAssetReaderSampleReferenceOutput *)self track];
 
-  return [(AVAssetTrack *)v2 asset];
+  return [(AVAssetTrack *)track asset];
 }
 
 - (BOOL)_trimsSampleDurations
 {
-  v2 = [(AVAssetReaderSampleReferenceOutput *)self mediaType];
+  mediaType = [(AVAssetReaderSampleReferenceOutput *)self mediaType];
 
-  return [v2 isEqual:@"soun"];
+  return [mediaType isEqual:@"soun"];
 }
 
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3
+- (BOOL)_enableTrackExtractionReturningError:(id *)error
 {
   v12 = -1;
-  v5 = [(AVAssetReaderOutput *)self _figAssetReader];
-  v6 = [(AVAssetTrack *)[(AVAssetReaderSampleReferenceOutput *)self track] trackID];
-  v7 = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
+  _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
+  trackID = [(AVAssetTrack *)[(AVAssetReaderSampleReferenceOutput *)self track] trackID];
+  _figAssetReaderExtractionOptions = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (!v8)
   {
     v9 = 4294954514;
-    if (a3)
+    if (error)
     {
       goto LABEL_4;
     }
@@ -111,15 +111,15 @@
     return 0;
   }
 
-  v9 = v8(v5, v6, v7, &v12);
+  v9 = v8(_figAssetReader, trackID, _figAssetReaderExtractionOptions, &v12);
   if (v9)
   {
-    if (a3)
+    if (error)
     {
 LABEL_4:
       v10 = [AVAssetReader _errorForOSStatus:v9];
       result = 0;
-      *a3 = v10;
+      *error = v10;
       return result;
     }
 

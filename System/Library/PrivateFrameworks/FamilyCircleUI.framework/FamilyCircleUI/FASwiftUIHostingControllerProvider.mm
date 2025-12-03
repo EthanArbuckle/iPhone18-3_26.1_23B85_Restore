@@ -1,42 +1,42 @@
 @interface FASwiftUIHostingControllerProvider
-+ (id)familyMemberAccountChangePasswordControllerWithMainAccount:(id)a3 memberToShow:(id)a4 familyCircle:(id)a5;
-+ (id)getCheckListControllerWithSpecifiers:(id)a3;
++ (id)familyMemberAccountChangePasswordControllerWithMainAccount:(id)account memberToShow:(id)show familyCircle:(id)circle;
++ (id)getCheckListControllerWithSpecifiers:(id)specifiers;
 + (id)getFamilyChecklistHeaderView;
-+ (id)getFamilySettingsViewControllerWithViewModel:(id)a3 locationModel:(id)a4 pictureStore:(id)a5 appleAccount:(id)a6 accountManager:(id)a7 delegate:(id)a8 appleCardFamilySettingsViewModel:(id)a9 hostingViewController:(id)a10;
-+ (id)getLoadingControllerWithCancelAction:(id)a3;
-+ (id)getLocationViewControllerWithViewModel:(id)a3 pictureStore:(id)a4 hackfromObjC:(BOOL)a5;
-+ (id)getSettingsViewControllerWithResourceDictionary:(id)a3;
++ (id)getFamilySettingsViewControllerWithViewModel:(id)model locationModel:(id)locationModel pictureStore:(id)store appleAccount:(id)account accountManager:(id)manager delegate:(id)delegate appleCardFamilySettingsViewModel:(id)viewModel hostingViewController:(id)self0;
++ (id)getLoadingControllerWithCancelAction:(id)action;
++ (id)getLocationViewControllerWithViewModel:(id)model pictureStore:(id)store hackfromObjC:(BOOL)c;
++ (id)getSettingsViewControllerWithResourceDictionary:(id)dictionary;
 - (_TtC14FamilyCircleUI34FASwiftUIHostingControllerProvider)init;
 @end
 
 @implementation FASwiftUIHostingControllerProvider
 
-+ (id)getFamilySettingsViewControllerWithViewModel:(id)a3 locationModel:(id)a4 pictureStore:(id)a5 appleAccount:(id)a6 accountManager:(id)a7 delegate:(id)a8 appleCardFamilySettingsViewModel:(id)a9 hostingViewController:(id)a10
++ (id)getFamilySettingsViewControllerWithViewModel:(id)model locationModel:(id)locationModel pictureStore:(id)store appleAccount:(id)account accountManager:(id)manager delegate:(id)delegate appleCardFamilySettingsViewModel:(id)viewModel hostingViewController:(id)self0
 {
   swift_getObjectType();
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  modelCopy = model;
+  locationModelCopy = locationModel;
+  storeCopy = store;
+  accountCopy = account;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v21 = a9;
-  v22 = a10;
-  v23 = sub_21BDF37A0(v16, v17, v18, v20, a8, v21, v22);
+  viewModelCopy = viewModel;
+  controllerCopy = controller;
+  v23 = sub_21BDF37A0(modelCopy, locationModelCopy, storeCopy, managerCopy, delegate, viewModelCopy, controllerCopy);
 
   swift_unknownObjectRelease();
 
   return v23;
 }
 
-+ (id)getLocationViewControllerWithViewModel:(id)a3 pictureStore:(id)a4 hackfromObjC:(BOOL)a5
++ (id)getLocationViewControllerWithViewModel:(id)model pictureStore:(id)store hackfromObjC:(BOOL)c
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v10 = v8;
-  sub_21BDFD940(v9, v10, v5, v15);
+  cCopy = c;
+  modelCopy = model;
+  storeCopy = store;
+  v9 = modelCopy;
+  v10 = storeCopy;
+  sub_21BDFD940(v9, v10, cCopy, v15);
   v11 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CDBDBA0, &qword_21BE4F610));
   sub_21BC12ED0(v15, &v14);
   v12 = sub_21BDF2F58(v15, 0, 0);
@@ -46,12 +46,12 @@
   return v12;
 }
 
-+ (id)familyMemberAccountChangePasswordControllerWithMainAccount:(id)a3 memberToShow:(id)a4 familyCircle:(id)a5
++ (id)familyMemberAccountChangePasswordControllerWithMainAccount:(id)account memberToShow:(id)show familyCircle:(id)circle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = _s14FamilyCircleUI34FASwiftUIHostingControllerProviderC033familyMemberAccountChangePasswordF004mainJ012memberToShow0hB0So06UIViewF0CSo08FAFamilyI0C_AKSo0rB0CtFZ_0(v7, v8, v9);
+  accountCopy = account;
+  showCopy = show;
+  circleCopy = circle;
+  v10 = _s14FamilyCircleUI34FASwiftUIHostingControllerProviderC033familyMemberAccountChangePasswordF004mainJ012memberToShow0hB0So06UIViewF0CSo08FAFamilyI0C_AKSo0rB0CtFZ_0(accountCopy, showCopy, circleCopy);
 
   return v10;
 }
@@ -67,7 +67,7 @@
   return v3;
 }
 
-+ (id)getCheckListControllerWithSpecifiers:(id)a3
++ (id)getCheckListControllerWithSpecifiers:(id)specifiers
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CDBC370, &qword_21BE4A2F0);
   v3 = sub_21BE28C3C();
@@ -77,9 +77,9 @@
   return v5;
 }
 
-+ (id)getLoadingControllerWithCancelAction:(id)a3
++ (id)getLoadingControllerWithCancelAction:(id)action
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(action);
   if (v3)
   {
     *(swift_allocObject() + 16) = v3;
@@ -91,7 +91,7 @@
   return v5;
 }
 
-+ (id)getSettingsViewControllerWithResourceDictionary:(id)a3
++ (id)getSettingsViewControllerWithResourceDictionary:(id)dictionary
 {
   v3 = _s14FamilyCircleUI34FASwiftUIHostingControllerProviderC015getSettingsViewF018resourceDictionarySo06UIViewF0CSDys11AnyHashableVypG_tFZ_0();
 

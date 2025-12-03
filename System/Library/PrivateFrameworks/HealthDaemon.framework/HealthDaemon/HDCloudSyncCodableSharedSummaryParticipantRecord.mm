@@ -1,45 +1,45 @@
 @interface HDCloudSyncCodableSharedSummaryParticipantRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAllContactIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEntryAcceptanceDate:(BOOL)a3;
-- (void)setHasEntryInvitationDate:(BOOL)a3;
-- (void)setHasEntryModificationDate:(BOOL)a3;
-- (void)setHasNotificationStatus:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUserWheelchairMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllContactIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEntryAcceptanceDate:(BOOL)date;
+- (void)setHasEntryInvitationDate:(BOOL)date;
+- (void)setHasEntryModificationDate:(BOOL)date;
+- (void)setHasNotificationStatus:(BOOL)status;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUserWheelchairMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableSharedSummaryParticipantRecord
 
-- (void)addAllContactIdentifiers:(id)a3
+- (void)addAllContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   allContactIdentifiers = self->_allContactIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!allContactIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_allContactIdentifiers;
     self->_allContactIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     allContactIdentifiers = self->_allContactIdentifiers;
   }
 
-  [(NSMutableArray *)allContactIdentifiers addObject:v4];
+  [(NSMutableArray *)allContactIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 32;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasNotificationStatus:(BOOL)a3
+- (void)setHasNotificationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEntryModificationDate:(BOOL)a3
+- (void)setHasEntryModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEntryInvitationDate:(BOOL)a3
+- (void)setHasEntryInvitationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEntryAcceptanceDate:(BOOL)a3
+- (void)setHasEntryAcceptanceDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUserWheelchairMode:(BOOL)a3
+- (void)setHasUserWheelchairMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x80;
   }
@@ -148,20 +148,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableSharedSummaryParticipantRecord;
   v4 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)&v8 description];
-  v5 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   contactIdentifier = self->_contactIdentifier;
@@ -326,10 +326,10 @@ LABEL_25:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
@@ -506,65 +506,65 @@ LABEL_30:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    [v10 setUuid:?];
+    [toCopy setUuid:?];
   }
 
   if (self->_contactIdentifier)
   {
-    [v10 setContactIdentifier:?];
+    [toCopy setContactIdentifier:?];
   }
 
   if (self->_authorizationRecordIdentifier)
   {
-    [v10 setAuthorizationRecordIdentifier:?];
+    [toCopy setAuthorizationRecordIdentifier:?];
   }
 
   if (self->_cloudKitIdentifier)
   {
-    [v10 setCloudKitIdentifier:?];
+    [toCopy setCloudKitIdentifier:?];
   }
 
   if (self->_invitationUUID)
   {
-    [v10 setInvitationUUID:?];
+    [toCopy setInvitationUUID:?];
   }
 
   if (self->_firstName)
   {
-    [v10 setFirstName:?];
+    [toCopy setFirstName:?];
   }
 
   if (self->_lastName)
   {
-    [v10 setLastName:?];
+    [toCopy setLastName:?];
   }
 
   if ([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self allContactIdentifiersCount])
   {
-    [v10 clearAllContactIdentifiers];
-    v4 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self allContactIdentifiersCount];
-    if (v4)
+    [toCopy clearAllContactIdentifiers];
+    allContactIdentifiersCount = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self allContactIdentifiersCount];
+    if (allContactIdentifiersCount)
     {
-      v5 = v4;
+      v5 = allContactIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self allContactIdentifiersAtIndex:i];
-        [v10 addAllContactIdentifiers:v7];
+        [toCopy addAllContactIdentifiers:v7];
       }
     }
   }
 
   has = self->_has;
-  v9 = v10;
+  v9 = toCopy;
   if ((has & 0x40) != 0)
   {
-    *(v10 + 7) = self->_type;
-    *(v10 + 152) |= 0x40u;
+    *(toCopy + 7) = self->_type;
+    *(toCopy + 152) |= 0x40u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -583,8 +583,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *(v10 + 1) = self->_direction;
-  *(v10 + 152) |= 1u;
+  *(toCopy + 1) = self->_direction;
+  *(toCopy + 152) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_22:
   }
 
 LABEL_38:
-  *(v10 + 6) = self->_status;
-  *(v10 + 152) |= 0x20u;
+  *(toCopy + 6) = self->_status;
+  *(toCopy + 152) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_23:
   }
 
 LABEL_39:
-  *(v10 + 5) = self->_notificationStatus;
-  *(v10 + 152) |= 0x10u;
+  *(toCopy + 5) = self->_notificationStatus;
+  *(toCopy + 152) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_24:
   }
 
 LABEL_40:
-  *(v10 + 4) = *&self->_entryModificationDate;
-  *(v10 + 152) |= 8u;
+  *(toCopy + 4) = *&self->_entryModificationDate;
+  *(toCopy + 152) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -643,26 +643,26 @@ LABEL_25:
   }
 
 LABEL_41:
-  *(v10 + 3) = *&self->_entryInvitationDate;
-  *(v10 + 152) |= 4u;
+  *(toCopy + 3) = *&self->_entryInvitationDate;
+  *(toCopy + 152) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_26:
-    *(v10 + 2) = *&self->_entryAcceptanceDate;
-    *(v10 + 152) |= 2u;
+    *(toCopy + 2) = *&self->_entryAcceptanceDate;
+    *(toCopy + 152) |= 2u;
   }
 
 LABEL_27:
   if (self->_ownerParticipant)
   {
-    [v10 setOwnerParticipant:?];
-    v9 = v10;
+    [toCopy setOwnerParticipant:?];
+    v9 = toCopy;
   }
 
   if (self->_setupMetadata)
   {
-    [v10 setSetupMetadata:?];
-    v9 = v10;
+    [toCopy setSetupMetadata:?];
+    v9 = toCopy;
   }
 
   if ((*&self->_has & 0x80000000) != 0)
@@ -672,35 +672,35 @@ LABEL_27:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 144);
   *(v5 + 144) = v6;
 
-  v8 = [(NSString *)self->_contactIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_contactIdentifier copyWithZone:zone];
   v9 = *(v5 + 96);
   *(v5 + 96) = v8;
 
-  v10 = [(NSString *)self->_authorizationRecordIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_authorizationRecordIdentifier copyWithZone:zone];
   v11 = *(v5 + 80);
   *(v5 + 80) = v10;
 
-  v12 = [(NSString *)self->_cloudKitIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_cloudKitIdentifier copyWithZone:zone];
   v13 = *(v5 + 88);
   *(v5 + 88) = v12;
 
-  v14 = [(NSString *)self->_invitationUUID copyWithZone:a3];
+  v14 = [(NSString *)self->_invitationUUID copyWithZone:zone];
   v15 = *(v5 + 112);
   *(v5 + 112) = v14;
 
-  v16 = [(NSString *)self->_firstName copyWithZone:a3];
+  v16 = [(NSString *)self->_firstName copyWithZone:zone];
   v17 = *(v5 + 104);
   *(v5 + 104) = v16;
 
-  v18 = [(NSString *)self->_lastName copyWithZone:a3];
+  v18 = [(NSString *)self->_lastName copyWithZone:zone];
   v19 = *(v5 + 120);
   *(v5 + 120) = v18;
 
@@ -723,7 +723,7 @@ LABEL_27:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{a3, v33}];
+        v25 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{zone, v33}];
         [v5 addAllContactIdentifiers:v25];
       }
 
@@ -826,11 +826,11 @@ LABEL_15:
   }
 
 LABEL_16:
-  v27 = [(NSData *)self->_ownerParticipant copyWithZone:a3, v33];
+  v27 = [(NSData *)self->_ownerParticipant copyWithZone:zone, v33];
   v28 = *(v5 + 128);
   *(v5 + 128) = v27;
 
-  v29 = [(NSData *)self->_setupMetadata copyWithZone:a3];
+  v29 = [(NSData *)self->_setupMetadata copyWithZone:zone];
   v30 = *(v5 + 136);
   *(v5 + 136) = v29;
 
@@ -844,16 +844,16 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 18))
+  if (uuid | *(equalCopy + 18))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -862,7 +862,7 @@ LABEL_16:
   }
 
   contactIdentifier = self->_contactIdentifier;
-  if (contactIdentifier | *(v4 + 12))
+  if (contactIdentifier | *(equalCopy + 12))
   {
     if (![(NSString *)contactIdentifier isEqual:?])
     {
@@ -871,7 +871,7 @@ LABEL_16:
   }
 
   authorizationRecordIdentifier = self->_authorizationRecordIdentifier;
-  if (authorizationRecordIdentifier | *(v4 + 10))
+  if (authorizationRecordIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)authorizationRecordIdentifier isEqual:?])
     {
@@ -880,7 +880,7 @@ LABEL_16:
   }
 
   cloudKitIdentifier = self->_cloudKitIdentifier;
-  if (cloudKitIdentifier | *(v4 + 11))
+  if (cloudKitIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)cloudKitIdentifier isEqual:?])
     {
@@ -889,7 +889,7 @@ LABEL_16:
   }
 
   invitationUUID = self->_invitationUUID;
-  if (invitationUUID | *(v4 + 14))
+  if (invitationUUID | *(equalCopy + 14))
   {
     if (![(NSString *)invitationUUID isEqual:?])
     {
@@ -898,7 +898,7 @@ LABEL_16:
   }
 
   firstName = self->_firstName;
-  if (firstName | *(v4 + 13))
+  if (firstName | *(equalCopy + 13))
   {
     if (![(NSString *)firstName isEqual:?])
     {
@@ -907,7 +907,7 @@ LABEL_16:
   }
 
   lastName = self->_lastName;
-  if (lastName | *(v4 + 15))
+  if (lastName | *(equalCopy + 15))
   {
     if (![(NSString *)lastName isEqual:?])
     {
@@ -916,7 +916,7 @@ LABEL_16:
   }
 
   allContactIdentifiers = self->_allContactIdentifiers;
-  if (allContactIdentifiers | *(v4 + 9))
+  if (allContactIdentifiers | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)allContactIdentifiers isEqual:?])
     {
@@ -924,16 +924,16 @@ LABEL_16:
     }
   }
 
-  v13 = v4[152];
+  v13 = equalCopy[152];
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[152] & 0x40) == 0 || self->_type != *(v4 + 7))
+    if ((equalCopy[152] & 0x40) == 0 || self->_type != *(equalCopy + 7))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 0x40) != 0)
+  else if ((equalCopy[152] & 0x40) != 0)
   {
 LABEL_62:
     v17 = 0;
@@ -942,90 +942,90 @@ LABEL_62:
 
   if (*&self->_has)
   {
-    if ((v4[152] & 1) == 0 || self->_direction != *(v4 + 1))
+    if ((equalCopy[152] & 1) == 0 || self->_direction != *(equalCopy + 1))
     {
       goto LABEL_62;
     }
   }
 
-  else if (v4[152])
+  else if (equalCopy[152])
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[152] & 0x20) == 0 || self->_status != *(v4 + 6))
+    if ((equalCopy[152] & 0x20) == 0 || self->_status != *(equalCopy + 6))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 0x20) != 0)
+  else if ((equalCopy[152] & 0x20) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[152] & 0x10) == 0 || self->_notificationStatus != *(v4 + 5))
+    if ((equalCopy[152] & 0x10) == 0 || self->_notificationStatus != *(equalCopy + 5))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 0x10) != 0)
+  else if ((equalCopy[152] & 0x10) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[152] & 8) == 0 || self->_entryModificationDate != *(v4 + 4))
+    if ((equalCopy[152] & 8) == 0 || self->_entryModificationDate != *(equalCopy + 4))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 8) != 0)
+  else if ((equalCopy[152] & 8) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[152] & 4) == 0 || self->_entryInvitationDate != *(v4 + 3))
+    if ((equalCopy[152] & 4) == 0 || self->_entryInvitationDate != *(equalCopy + 3))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 4) != 0)
+  else if ((equalCopy[152] & 4) != 0)
   {
     goto LABEL_62;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[152] & 2) == 0 || self->_entryAcceptanceDate != *(v4 + 2))
+    if ((equalCopy[152] & 2) == 0 || self->_entryAcceptanceDate != *(equalCopy + 2))
     {
       goto LABEL_62;
     }
   }
 
-  else if ((v4[152] & 2) != 0)
+  else if ((equalCopy[152] & 2) != 0)
   {
     goto LABEL_62;
   }
 
   ownerParticipant = self->_ownerParticipant;
-  if (ownerParticipant | *(v4 + 16) && ![(NSData *)ownerParticipant isEqual:?])
+  if (ownerParticipant | *(equalCopy + 16) && ![(NSData *)ownerParticipant isEqual:?])
   {
     goto LABEL_62;
   }
 
   setupMetadata = self->_setupMetadata;
-  if (setupMetadata | *(v4 + 17))
+  if (setupMetadata | *(equalCopy + 17))
   {
     if (![(NSData *)setupMetadata isEqual:?])
     {
@@ -1033,10 +1033,10 @@ LABEL_62:
     }
   }
 
-  v16 = v4[152];
+  v16 = equalCopy[152];
   if ((*&self->_has & 0x80000000) != 0)
   {
-    if ((v16 & 0x80000000) == 0 || self->_userWheelchairMode != *(v4 + 8))
+    if ((v16 & 0x80000000) == 0 || self->_userWheelchairMode != *(equalCopy + 8))
     {
       goto LABEL_62;
     }
@@ -1235,41 +1235,41 @@ LABEL_15:
   return v31 ^ v32 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v5 ^ v6 ^ v7 ^ v11 ^ v12 ^ v16 ^ v20 ^ v21 ^ v22;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 18))
+  fromCopy = from;
+  if (*(fromCopy + 18))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setUuid:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setContactIdentifier:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setAuthorizationRecordIdentifier:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setCloudKitIdentifier:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setInvitationUUID:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setFirstName:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setLastName:?];
   }
@@ -1278,7 +1278,7 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 9);
+  v5 = *(fromCopy + 9);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1302,12 +1302,12 @@ LABEL_15:
     while (v7);
   }
 
-  v10 = v4[152];
+  v10 = fromCopy[152];
   if ((v10 & 0x40) != 0)
   {
-    self->_type = *(v4 + 7);
+    self->_type = *(fromCopy + 7);
     *&self->_has |= 0x40u;
-    v10 = v4[152];
+    v10 = fromCopy[152];
     if ((v10 & 1) == 0)
     {
 LABEL_24:
@@ -1320,14 +1320,14 @@ LABEL_24:
     }
   }
 
-  else if ((v4[152] & 1) == 0)
+  else if ((fromCopy[152] & 1) == 0)
   {
     goto LABEL_24;
   }
 
-  self->_direction = *(v4 + 1);
+  self->_direction = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v10 = v4[152];
+  v10 = fromCopy[152];
   if ((v10 & 0x20) == 0)
   {
 LABEL_25:
@@ -1340,9 +1340,9 @@ LABEL_25:
   }
 
 LABEL_39:
-  self->_status = *(v4 + 6);
+  self->_status = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v10 = v4[152];
+  v10 = fromCopy[152];
   if ((v10 & 0x10) == 0)
   {
 LABEL_26:
@@ -1355,9 +1355,9 @@ LABEL_26:
   }
 
 LABEL_40:
-  self->_notificationStatus = *(v4 + 5);
+  self->_notificationStatus = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v10 = v4[152];
+  v10 = fromCopy[152];
   if ((v10 & 8) == 0)
   {
 LABEL_27:
@@ -1370,9 +1370,9 @@ LABEL_27:
   }
 
 LABEL_41:
-  self->_entryModificationDate = *(v4 + 4);
+  self->_entryModificationDate = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v10 = v4[152];
+  v10 = fromCopy[152];
   if ((v10 & 4) == 0)
   {
 LABEL_28:
@@ -1385,29 +1385,29 @@ LABEL_28:
   }
 
 LABEL_42:
-  self->_entryInvitationDate = *(v4 + 3);
+  self->_entryInvitationDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((v4[152] & 2) != 0)
+  if ((fromCopy[152] & 2) != 0)
   {
 LABEL_29:
-    self->_entryAcceptanceDate = *(v4 + 2);
+    self->_entryAcceptanceDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_30:
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setOwnerParticipant:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self setSetupMetadata:?];
   }
 
-  if (v4[152] < 0)
+  if (fromCopy[152] < 0)
   {
-    self->_userWheelchairMode = *(v4 + 8);
+    self->_userWheelchairMode = *(fromCopy + 8);
     *&self->_has |= 0x80u;
   }
 

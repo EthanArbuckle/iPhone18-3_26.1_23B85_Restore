@@ -1,6 +1,6 @@
 @interface PXStoryVisionSaliencyArea
 - (CGRect)sourceRegionOfInterest;
-- (PXStoryVisionSaliencyArea)initWithContentsRect:(CGRect)a3 confidence:(float)a4 type:(int64_t)a5 sourceRegionOfInterest:(CGRect)a6;
+- (PXStoryVisionSaliencyArea)initWithContentsRect:(CGRect)rect confidence:(float)confidence type:(int64_t)type sourceRegionOfInterest:(CGRect)interest;
 @end
 
 @implementation PXStoryVisionSaliencyArea
@@ -18,15 +18,15 @@
   return result;
 }
 
-- (PXStoryVisionSaliencyArea)initWithContentsRect:(CGRect)a3 confidence:(float)a4 type:(int64_t)a5 sourceRegionOfInterest:(CGRect)a6
+- (PXStoryVisionSaliencyArea)initWithContentsRect:(CGRect)rect confidence:(float)confidence type:(int64_t)type sourceRegionOfInterest:(CGRect)interest
 {
   v8.receiver = self;
   v8.super_class = PXStoryVisionSaliencyArea;
-  result = [(PXStoryConcreteSaliencyArea *)&v8 initWithContentsRect:a3.origin.x confidence:a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PXStoryConcreteSaliencyArea *)&v8 initWithContentsRect:rect.origin.x confidence:rect.origin.y, rect.size.width, rect.size.height];
   if (result)
   {
-    result->_type = a5;
-    result->_sourceRegionOfInterest = a6;
+    result->_type = type;
+    result->_sourceRegionOfInterest = interest;
   }
 
   return result;

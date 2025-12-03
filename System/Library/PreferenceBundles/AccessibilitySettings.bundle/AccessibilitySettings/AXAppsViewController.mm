@@ -1,16 +1,16 @@
 @interface AXAppsViewController
 - (id)_generateAppSpecifiers;
-- (id)_generateSpecifierForAppID:(id)a3 name:(id)a4;
+- (id)_generateSpecifierForAppID:(id)d name:(id)name;
 - (id)makeSpecifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_generateApps;
 - (void)_launchAppsController;
-- (void)addAppSpecifier:(id)a3;
+- (void)addAppSpecifier:(id)specifier;
 - (void)applicationDidResume;
-- (void)removeDataForSpecifier:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)showHiddenAppsWithCompletion:(id)a3;
+- (void)removeDataForSpecifier:(id)specifier;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)showHiddenAppsWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -36,24 +36,24 @@
   [(AXAppsViewController *)self reloadSpecifiers];
 }
 
-- (void)addAppSpecifier:(id)a3
+- (void)addAppSpecifier:(id)specifier
 {
-  v4 = a3;
-  v9 = [v4 propertyForKey:@"BundleIdentifier"];
+  specifierCopy = specifier;
+  v9 = [specifierCopy propertyForKey:@"BundleIdentifier"];
   apps = self->_apps;
-  v6 = [v4 name];
+  name = [specifierCopy name];
 
-  [(NSMutableDictionary *)apps setObject:v6 forKey:v9];
+  [(NSMutableDictionary *)apps setObject:name forKey:v9];
   v7 = +[NSUserDefaults standardUserDefaults];
-  v8 = [(NSMutableDictionary *)self->_apps allKeys];
-  [v7 setObject:v8 forKey:@"AXSettingsPerAppIDsArray"];
+  allKeys = [(NSMutableDictionary *)self->_apps allKeys];
+  [v7 setObject:allKeys forKey:@"AXSettingsPerAppIDsArray"];
 
   [(AXAppsViewController *)self reloadSpecifiers];
 }
 
-- (void)showHiddenAppsWithCompletion:(id)a3
+- (void)showHiddenAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -72,15 +72,15 @@
 
   v6 = v5;
   _Block_object_dispose(&v12, 8);
-  v7 = [v5 sharedGuard];
+  sharedGuard = [v5 sharedGuard];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __53__AXAppsViewController_showHiddenAppsWithCompletion___block_invoke;
   v9[3] = &unk_256C48;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 authenticateUnconditionallyWithCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [sharedGuard authenticateUnconditionallyWithCompletion:v9];
 }
 
 void __53__AXAppsViewController_showHiddenAppsWithCompletion___block_invoke(uint64_t a1, char a2)
@@ -147,37 +147,37 @@ uint64_t __53__AXAppsViewController_showHiddenAppsWithCompletion___block_invoke_
   [v10 setButtonAction:"_launchAppsController"];
   [v10 setIdentifier:@"AX_ADD_BUTTON_IDENTIFIER"];
   [v3 addObject:v10];
-  v11 = [(AXAppsViewController *)self _generateAppSpecifiers];
-  [v3 addObjectsFromArray:v11];
+  _generateAppSpecifiers = [(AXAppsViewController *)self _generateAppSpecifiers];
+  [v3 addObjectsFromArray:_generateAppSpecifiers];
 
   return v3;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7 = AXLogSettings();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = v5;
+    v12 = editingCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Per-App Settings Controller: setEditing %d", buf, 8u);
   }
 
   v10.receiver = self;
   v10.super_class = AXAppsViewController;
-  [(AXAppsViewController *)&v10 setEditing:v5 animated:v4];
+  [(AXAppsViewController *)&v10 setEditing:editingCopy animated:animatedCopy];
   v8 = [(AXAppsViewController *)self specifierForID:@"AX_ADD_BUTTON_IDENTIFIER"];
-  v9 = [NSNumber numberWithInt:v5 ^ 1];
+  v9 = [NSNumber numberWithInt:editingCopy ^ 1];
   [v8 setProperty:v9 forKey:PSEnabledKey];
 
   [(AXAppsViewController *)self reloadSpecifier:v8 animated:1];
 }
 
-- (void)removeDataForSpecifier:(id)a3
+- (void)removeDataForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"BundleIdentifier"];
+  v4 = [specifier propertyForKey:@"BundleIdentifier"];
   v5 = AXLogSettings();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,8 +200,8 @@ uint64_t __53__AXAppsViewController_showHiddenAppsWithCompletion___block_invoke_
   _AXSSetPreferredContentSizeCategoryNameApp();
   _AXSSetPrefersHorizontalTextLayoutApp();
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [(NSMutableDictionary *)self->_apps allKeys];
-  [v6 setObject:v7 forKey:@"AXSettingsPerAppIDsArray"];
+  allKeys = [(NSMutableDictionary *)self->_apps allKeys];
+  [v6 setObject:allKeys forKey:@"AXSettingsPerAppIDsArray"];
 
   v8 = +[AXSettings sharedInstance];
   [v8 aggregatePerAppSettingsStatistics];
@@ -266,23 +266,23 @@ int64_t __46__AXAppsViewController__generateAppSpecifiers__block_invoke(id a1, i
   return v7;
 }
 
-- (id)_generateSpecifierForAppID:(id)a3 name:(id)a4
+- (id)_generateSpecifierForAppID:(id)d name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  dCopy = d;
+  nameCopy = name;
+  v8 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-  [v8 setProperty:v6 forKey:@"BundleIdentifier"];
-  [v8 setProperty:v6 forKey:PSIDKey];
-  if (AXFlipsIconRightToLeftForAppID(v6))
+  [v8 setProperty:dCopy forKey:@"BundleIdentifier"];
+  [v8 setProperty:dCopy forKey:PSIDKey];
+  if (AXFlipsIconRightToLeftForAppID(dCopy))
   {
-    v9 = AXImageIconForAppID(v6);
+    v9 = AXImageIconForAppID(dCopy);
     [v8 setProperty:v9 forKey:PSIconImageKey];
 
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:AX_SpringBoardBundleName])
+  if ([dCopy isEqualToString:AX_SpringBoardBundleName])
   {
     [v8 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
     if (AXDeviceIsPad())
@@ -300,7 +300,7 @@ int64_t __46__AXAppsViewController__generateAppSpecifiers__block_invoke(id a1, i
 
   else
   {
-    if ([v6 isEqualToString:AX_LiveTranscriptionBundleName])
+    if ([dCopy isEqualToString:AX_LiveTranscriptionBundleName])
     {
       v12 = AXSettingsBundle();
       v13 = [UIImage imageNamed:@"LiveCaptions" inBundle:v12];
@@ -309,7 +309,7 @@ int64_t __46__AXAppsViewController__generateAppSpecifiers__block_invoke(id a1, i
       goto LABEL_12;
     }
 
-    [v8 setProperty:v6 forKey:PSLazyIconAppID];
+    [v8 setProperty:dCopy forKey:PSLazyIconAppID];
     v11 = PSLazyIconLoading;
     v10 = &__kCFBooleanTrue;
   }
@@ -389,22 +389,22 @@ LABEL_12:
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(AXAppsViewController *)self specifierAtIndexPath:a4];
+  v4 = [(AXAppsViewController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"BundleIdentifier"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = AXAppsViewController;
-  v6 = a4;
-  v7 = [(AXAppsViewController *)&v18 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AXAppsViewController *)self specifierForIndexPath:v6, v18.receiver, v18.super_class];
+  pathCopy = path;
+  v7 = [(AXAppsViewController *)&v18 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AXAppsViewController *)self specifierForIndexPath:pathCopy, v18.receiver, v18.super_class];
 
   v9 = [v8 propertyForKey:PSIconImageKey];
   if (v9)
@@ -415,12 +415,12 @@ LABEL_12:
     [v12 continuousCornerRadius];
     v14 = v13;
 
-    v15 = [v11 iconImageView];
-    [v15 _setContinuousCornerRadius:v14];
+    iconImageView = [v11 iconImageView];
+    [iconImageView _setContinuousCornerRadius:v14];
 
-    v16 = [v11 iconImageView];
+    iconImageView2 = [v11 iconImageView];
 
-    [v16 setClipsToBounds:1];
+    [iconImageView2 setClipsToBounds:1];
   }
 
   return v7;

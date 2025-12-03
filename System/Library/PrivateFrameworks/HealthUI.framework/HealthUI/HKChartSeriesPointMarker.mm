@@ -1,21 +1,21 @@
 @interface HKChartSeriesPointMarker
-+ (id)chartPointWithColor:(id)a3 radius:(double)a4 style:(int64_t)a5;
-+ (id)chartPointWithLineSeriesPresentationStyle:(id)a3;
++ (id)chartPointWithColor:(id)color radius:(double)radius style:(int64_t)style;
++ (id)chartPointWithLineSeriesPresentationStyle:(id)style;
 @end
 
 @implementation HKChartSeriesPointMarker
 
-+ (id)chartPointWithColor:(id)a3 radius:(double)a4 style:(int64_t)a5
++ (id)chartPointWithColor:(id)color radius:(double)radius style:(int64_t)style
 {
-  v7 = a3;
-  if (a5 == 2)
+  colorCopy = color;
+  if (style == 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = a4 + a4;
+    v9 = radius + radius;
     v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{v9, v9}];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -23,10 +23,10 @@
     v12[3] = &unk_1E81B6AD0;
     v15 = 0;
     v16 = 0;
-    v14 = a5;
+    styleCopy = style;
     v17 = v9;
     v18 = v9;
-    v13 = v7;
+    v13 = colorCopy;
     v8 = [v10 imageWithActions:v12];
   }
 
@@ -60,15 +60,15 @@ void __61__HKChartSeriesPointMarker_chartPointWithColor_radius_style___block_inv
   }
 }
 
-+ (id)chartPointWithLineSeriesPresentationStyle:(id)a3
++ (id)chartPointWithLineSeriesPresentationStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 pointColor];
-  [v3 radius];
+  styleCopy = style;
+  pointColor = [styleCopy pointColor];
+  [styleCopy radius];
   v6 = v5;
-  v7 = [v3 pointMarkerStyle];
+  pointMarkerStyle = [styleCopy pointMarkerStyle];
 
-  v8 = [HKChartSeriesPointMarker chartPointWithColor:v4 radius:v7 style:v6];
+  v8 = [HKChartSeriesPointMarker chartPointWithColor:pointColor radius:pointMarkerStyle style:v6];
 
   return v8;
 }

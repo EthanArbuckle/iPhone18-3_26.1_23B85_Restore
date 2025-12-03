@@ -12,20 +12,20 @@
 - (UITableViewCell)resetWarningsCell;
 - (UITableViewCell)touchIDCell;
 - (UITableViewCell)usernameCell;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (id)userImage;
 - (id)versionFooter;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)configureUserCell;
 - (void)dealloc;
-- (void)didResetWarnings:(id)a3;
-- (void)didSwitchCellularAccess:(id)a3;
-- (void)didTapSignOut:(id)a3;
-- (void)didToggleTouchID:(id)a3;
+- (void)didResetWarnings:(id)warnings;
+- (void)didSwitchCellularAccess:(id)access;
+- (void)didTapSignOut:(id)out;
+- (void)didToggleTouchID:(id)d;
 - (void)resetWarnings;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation iFBAPreferencesViewController
@@ -36,82 +36,82 @@
   v55.super_class = iFBAPreferencesViewController;
   [(iFBAPreferencesViewController *)&v55 viewDidLoad];
   v3 = +[UIColor labelColor];
-  v4 = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
-  [v4 setTextColor:v3];
+  useTouchIDSwitchCellLabel = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
+  [useTouchIDSwitchCellLabel setTextColor:v3];
 
   v5 = +[UIColor labelColor];
-  v6 = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
-  [v6 setTextColor:v5];
+  requireTouchIDCellLabel = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
+  [requireTouchIDCellLabel setTextColor:v5];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(iFBAPreferencesViewController *)self touchIDTimeoutLabel];
-  [v8 setTextColor:v7];
+  touchIDTimeoutLabel = [(iFBAPreferencesViewController *)self touchIDTimeoutLabel];
+  [touchIDTimeoutLabel setTextColor:v7];
 
   v9 = +[UIColor labelColor];
-  v10 = [(iFBAPreferencesViewController *)self allowCellUploadsLabel];
-  [v10 setTextColor:v9];
+  allowCellUploadsLabel = [(iFBAPreferencesViewController *)self allowCellUploadsLabel];
+  [allowCellUploadsLabel setTextColor:v9];
 
   v11 = +[UIColor labelColor];
-  v12 = [(iFBAPreferencesViewController *)self myBetaDevicesLabel];
-  [v12 setTextColor:v11];
+  myBetaDevicesLabel = [(iFBAPreferencesViewController *)self myBetaDevicesLabel];
+  [myBetaDevicesLabel setTextColor:v11];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   [(iFBAPreferencesViewController *)self setDevicesId:v14];
 
-  v15 = [(iFBAPreferencesViewController *)self tableView];
-  [v15 setEstimatedSectionHeaderHeight:0.0];
+  tableView = [(iFBAPreferencesViewController *)self tableView];
+  [tableView setEstimatedSectionHeaderHeight:0.0];
 
-  v16 = [(iFBAPreferencesViewController *)self tableView];
-  [v16 setEstimatedSectionFooterHeight:0.0];
+  tableView2 = [(iFBAPreferencesViewController *)self tableView];
+  [tableView2 setEstimatedSectionFooterHeight:0.0];
 
-  v17 = [(iFBAPreferencesViewController *)self tableView];
-  [v17 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(iFBAPreferencesViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v18 = [(iFBAPreferencesViewController *)self tableView];
-  [v18 setEstimatedRowHeight:44.0];
+  tableView4 = [(iFBAPreferencesViewController *)self tableView];
+  [tableView4 setEstimatedRowHeight:44.0];
 
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"TOUCH_ID_PREFERENCE" value:&stru_1000E2210 table:0];
-  v21 = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
-  [v21 setText:v20];
+  useTouchIDSwitchCellLabel2 = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
+  [useTouchIDSwitchCellLabel2 setText:v20];
 
   v22 = +[NSBundle mainBundle];
   v23 = [v22 localizedStringForKey:@"TOUCH_ID_REQUIRE" value:&stru_1000E2210 table:0];
-  v24 = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
-  [v24 setText:v23];
+  requireTouchIDCellLabel2 = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
+  [requireTouchIDCellLabel2 setText:v23];
 
   if (+[iFBKUtils deviceSupportsFaceID])
   {
     v25 = +[NSBundle mainBundle];
     v26 = [v25 localizedStringForKey:@"FACE_ID_PREFERENCE" value:&stru_1000E2210 table:0];
-    v27 = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
-    [v27 setText:v26];
+    useTouchIDSwitchCellLabel3 = [(iFBAPreferencesViewController *)self useTouchIDSwitchCellLabel];
+    [useTouchIDSwitchCellLabel3 setText:v26];
 
     v28 = +[NSBundle mainBundle];
     v29 = [v28 localizedStringForKey:@"FACE_ID_REQUIRE" value:&stru_1000E2210 table:0];
-    v30 = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
-    [v30 setText:v29];
+    requireTouchIDCellLabel3 = [(iFBAPreferencesViewController *)self requireTouchIDCellLabel];
+    [requireTouchIDCellLabel3 setText:v29];
   }
 
   v31 = +[NSBundle mainBundle];
   v32 = [v31 localizedStringForKey:@"PREFERENCES" value:&stru_1000E2210 table:0];
-  v33 = [(iFBAPreferencesViewController *)self navigationItem];
-  [v33 setTitle:v32];
+  navigationItem = [(iFBAPreferencesViewController *)self navigationItem];
+  [navigationItem setTitle:v32];
 
   v34 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"didTapDone:"];
-  v35 = [(iFBAPreferencesViewController *)self navigationItem];
-  [v35 setRightBarButtonItem:v34];
+  navigationItem2 = [(iFBAPreferencesViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v34];
 
   v36 = +[NSNotificationCenter defaultCenter];
-  v37 = [(iFBAPreferencesViewController *)self tableView];
-  [v36 addObserver:v37 selector:"reloadData" name:UIContentSizeCategoryDidChangeNotification object:0];
+  tableView5 = [(iFBAPreferencesViewController *)self tableView];
+  [v36 addObserver:tableView5 selector:"reloadData" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-  v38 = [(iFBAPreferencesViewController *)self tableView];
-  [v38 setDelegate:self];
+  tableView6 = [(iFBAPreferencesViewController *)self tableView];
+  [tableView6 setDelegate:self];
 
-  v39 = [(iFBAPreferencesViewController *)self tableView];
-  [v39 setDataSource:self];
+  tableView7 = [(iFBAPreferencesViewController *)self tableView];
+  [tableView7 setDataSource:self];
 
   if ([(iFBAPreferencesViewController *)self isWarningsOn])
   {
@@ -123,16 +123,16 @@
     +[UIColor secondaryLabelColor];
   }
   v40 = ;
-  v41 = [(iFBAPreferencesViewController *)self resetWarningsCell];
-  v42 = [v41 textLabel];
-  [v42 setTextColor:v40];
+  resetWarningsCell = [(iFBAPreferencesViewController *)self resetWarningsCell];
+  textLabel = [resetWarningsCell textLabel];
+  [textLabel setTextColor:v40];
 
-  v43 = [(iFBAPreferencesViewController *)self resetWarningsCell];
-  [v43 setSelectionStyle:0];
+  resetWarningsCell2 = [(iFBAPreferencesViewController *)self resetWarningsCell];
+  [resetWarningsCell2 setSelectionStyle:0];
 
-  v44 = [(iFBAPreferencesViewController *)self resetWarningsCell];
-  v45 = [v44 accessibilityTraits];
-  [v44 setAccessibilityTraits:UIAccessibilityTraitButton | v45];
+  resetWarningsCell3 = [(iFBAPreferencesViewController *)self resetWarningsCell];
+  accessibilityTraits = [resetWarningsCell3 accessibilityTraits];
+  [resetWarningsCell3 setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
 
   v46 = objc_opt_new();
   v54 = 0;
@@ -147,89 +147,89 @@
   [(iFBAPreferencesViewController *)self setHideTouchID:?];
   if (v48 && [v48 code] == -7)
   {
-    v49 = [(iFBAPreferencesViewController *)self touchIDSwitch];
-    [v49 setOn:0];
+    touchIDSwitch = [(iFBAPreferencesViewController *)self touchIDSwitch];
+    [touchIDSwitch setOn:0];
   }
 
   else
   {
-    v49 = +[NSUserDefaults standardUserDefaults];
-    v50 = [v49 BOOLForKey:@"UseTouchIDLogin"];
-    v51 = [(iFBAPreferencesViewController *)self touchIDSwitch];
-    [v51 setOn:v50];
+    touchIDSwitch = +[NSUserDefaults standardUserDefaults];
+    v50 = [touchIDSwitch BOOLForKey:@"UseTouchIDLogin"];
+    touchIDSwitch2 = [(iFBAPreferencesViewController *)self touchIDSwitch];
+    [touchIDSwitch2 setOn:v50];
   }
 
   [(iFBAPreferencesViewController *)self configureUserCell];
   v52 = +[UIColor tintColor];
-  v53 = [(iFBAPreferencesViewController *)self resetWarningsLabel];
-  [v53 setTextColor:v52];
+  resetWarningsLabel = [(iFBAPreferencesViewController *)self resetWarningsLabel];
+  [resetWarningsLabel setTextColor:v52];
 }
 
 - (void)configureUserCell
 {
   v18 = +[UIListContentConfiguration subtitleCellConfiguration];
   v3 = +[FBKData sharedInstance];
-  v4 = [v3 currentUser];
+  currentUser = [v3 currentUser];
 
-  v5 = [v4 fullName];
-  [v18 setText:v5];
+  fullName = [currentUser fullName];
+  [v18 setText:fullName];
 
   v6 = +[UIColor labelColor];
-  v7 = [v18 textProperties];
-  [v7 setColor:v6];
+  textProperties = [v18 textProperties];
+  [textProperties setColor:v6];
 
-  v8 = [v4 username];
-  [v18 setSecondaryText:v8];
+  username = [currentUser username];
+  [v18 setSecondaryText:username];
 
   v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v10 = [v18 secondaryTextProperties];
-  [v10 setFont:v9];
+  secondaryTextProperties = [v18 secondaryTextProperties];
+  [secondaryTextProperties setFont:v9];
 
   v11 = +[UIColor secondaryLabelColor];
-  v12 = [v18 secondaryTextProperties];
-  [v12 setColor:v11];
+  secondaryTextProperties2 = [v18 secondaryTextProperties];
+  [secondaryTextProperties2 setColor:v11];
 
   [v18 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-  v13 = [(iFBAPreferencesViewController *)self userImage];
-  [v18 setImage:v13];
+  userImage = [(iFBAPreferencesViewController *)self userImage];
+  [v18 setImage:userImage];
 
-  v14 = [v18 imageProperties];
-  [v14 setCornerRadius:22.0];
+  imageProperties = [v18 imageProperties];
+  [imageProperties setCornerRadius:22.0];
 
-  v15 = [v18 imageProperties];
-  [v15 setMaximumSize:{44.0, 44.0}];
+  imageProperties2 = [v18 imageProperties];
+  [imageProperties2 setMaximumSize:{44.0, 44.0}];
 
-  v16 = [(iFBAPreferencesViewController *)self usernameCell];
-  [v16 setUserInteractionEnabled:0];
+  usernameCell = [(iFBAPreferencesViewController *)self usernameCell];
+  [usernameCell setUserInteractionEnabled:0];
 
-  v17 = [(iFBAPreferencesViewController *)self usernameCell];
-  [v17 setContentConfiguration:v18];
+  usernameCell2 = [(iFBAPreferencesViewController *)self usernameCell];
+  [usernameCell2 setContentConfiguration:v18];
 }
 
 - (id)userImage
 {
   v2 = +[FBKData sharedInstance];
-  v3 = [v2 currentUser];
+  currentUser = [v2 currentUser];
 
-  v4 = [v3 username];
-  v5 = [_TtC18Feedback_Assistant15FBAAvatarHelper contactImageForEmailAddress:v4];
+  username = [currentUser username];
+  v5 = [_TtC18Feedback_Assistant15FBAAvatarHelper contactImageForEmailAddress:username];
 
   if (!v5)
   {
-    v6 = [v3 givenName];
-    v7 = [v3 familyName];
-    v5 = [_TtC18Feedback_Assistant15FBAAvatarHelper monogramAvatarImageForPreferredName:v6 familyName:v7];
+    givenName = [currentUser givenName];
+    familyName = [currentUser familyName];
+    v5 = [_TtC18Feedback_Assistant15FBAAvatarHelper monogramAvatarImageForPreferredName:givenName familyName:familyName];
   }
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v10.receiver = self;
   v10.super_class = iFBAPreferencesViewController;
-  v6 = [(iFBAPreferencesViewController *)&v10 tableView:a3 numberOfRowsInSection:?];
-  if (a4 == 2)
+  v6 = [(iFBAPreferencesViewController *)&v10 tableView:view numberOfRowsInSection:?];
+  if (section == 2)
   {
     if ([(iFBAPreferencesViewController *)self hideTouchID])
     {
@@ -238,10 +238,10 @@
 
     else
     {
-      v7 = [(iFBAPreferencesViewController *)self touchIDSwitch];
-      v8 = [v7 isOn];
+      touchIDSwitch = [(iFBAPreferencesViewController *)self touchIDSwitch];
+      isOn = [touchIDSwitch isOn];
 
-      return v6 - (v8 ^ 1);
+      return v6 - (isOn ^ 1);
     }
   }
 
@@ -258,31 +258,31 @@
   [(iFBAPreferencesViewController *)&v4 dealloc];
 }
 
-- (void)didTapSignOut:(id)a3
+- (void)didTapSignOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v6 = +[FBKData sharedInstance];
-  v5 = [v6 loginManager];
-  [v5 logOut];
+  loginManager = [v6 loginManager];
+  [loginManager logOut];
 
   +[FBKFileManager deleteAllDraftDirectories];
-  [(iFBAPreferencesViewController *)self didTapDone:v4];
+  [(iFBAPreferencesViewController *)self didTapDone:outCopy];
 }
 
-- (void)didSwitchCellularAccess:(id)a3
+- (void)didSwitchCellularAccess:(id)access
 {
-  v3 = a3;
+  accessCopy = access;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v3 isOn];
+  isOn = [accessCopy isOn];
 
-  [v4 setBool:v5 forKey:FBKAllowCellularFileUploads];
+  [v4 setBool:isOn forKey:FBKAllowCellularFileUploads];
   v6 = +[NSUserDefaults standardUserDefaults];
   [v6 synchronize];
 }
 
-- (void)didResetWarnings:(id)a3
+- (void)didResetWarnings:(id)warnings
 {
-  v4 = a3;
+  warningsCopy = warnings;
   if ([(iFBAPreferencesViewController *)self isWarningsOn])
   {
     v5 = +[NSBundle mainBundle];
@@ -306,16 +306,16 @@
     v15 = [UIAlertAction actionWithTitle:v14 style:0 handler:0];
     [v9 addAction:v15];
 
-    v16 = [v9 popoverPresentationController];
-    [v16 setSourceItem:v4];
+    popoverPresentationController = [v9 popoverPresentationController];
+    [popoverPresentationController setSourceItem:warningsCopy];
 
     [(iFBAPreferencesViewController *)self presentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)didToggleTouchID:(id)a3
+- (void)didToggleTouchID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   v26 = 0;
   v6 = [v5 canEvaluatePolicy:1 error:&v26];
@@ -324,16 +324,16 @@
   if ((v6 & 1) != 0 || [v7 code] != -7)
   {
     v20 = +[NSUserDefaults standardUserDefaults];
-    [v20 setBool:objc_msgSend(v4 forKey:{"isOn"), @"UseTouchIDLogin"}];
+    [v20 setBool:objc_msgSend(dCopy forKey:{"isOn"), @"UseTouchIDLogin"}];
 
-    v9 = [(iFBAPreferencesViewController *)self tableView];
-    [v9 reloadData];
+    tableView = [(iFBAPreferencesViewController *)self tableView];
+    [tableView reloadData];
   }
 
   else
   {
     v8 = +[NSBundle mainBundle];
-    v9 = [v8 localizedStringForKey:@"TOUCH_ID_NOT_ENROLLED" value:&stru_1000E2210 table:0];
+    tableView = [v8 localizedStringForKey:@"TOUCH_ID_NOT_ENROLLED" value:&stru_1000E2210 table:0];
 
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"TOUCH_ID_NOT_ENROLLED_MESSAGE" value:&stru_1000E2210 table:0];
@@ -346,18 +346,18 @@
       v14 = +[NSBundle mainBundle];
       v15 = [v14 localizedStringForKey:@"FACE_ID_NOT_ENROLLED_MESSAGE" value:&stru_1000E2210 table:0];
 
-      v9 = v13;
+      tableView = v13;
       v11 = v15;
     }
 
-    v16 = [UIAlertController alertControllerWithTitle:v9 message:v11 preferredStyle:1];
+    v16 = [UIAlertController alertControllerWithTitle:tableView message:v11 preferredStyle:1];
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"OK" value:&stru_1000E2210 table:0];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_10002A480;
     v24 = &unk_1000DE458;
-    v25 = v4;
+    v25 = dCopy;
     v19 = [UIAlertAction actionWithTitle:v18 style:0 handler:&v21];
     [v16 addAction:{v19, v21, v22, v23, v24}];
 
@@ -365,65 +365,65 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 cellForRowAtIndexPath:v6];
-  v8 = [v7 reuseIdentifier];
-  v9 = [v8 isEqualToString:@"FBAResetWarningsCell"];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  reuseIdentifier = [v7 reuseIdentifier];
+  v9 = [reuseIdentifier isEqualToString:@"FBAResetWarningsCell"];
 
   if (v9)
   {
     [(iFBAPreferencesViewController *)self didResetWarnings:v7];
-    [v19 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
-  v10 = [v7 reuseIdentifier];
-  v11 = [(iFBAPreferencesViewController *)self devicesId];
-  v12 = [v10 isEqualToString:v11];
+  reuseIdentifier2 = [v7 reuseIdentifier];
+  devicesId = [(iFBAPreferencesViewController *)self devicesId];
+  v12 = [reuseIdentifier2 isEqualToString:devicesId];
 
   if (v12)
   {
-    v13 = [(iFBAPreferencesViewController *)self storyboard];
-    v14 = [(iFBAPreferencesViewController *)self devicesId];
-    v15 = [v13 instantiateViewControllerWithIdentifier:v14];
+    storyboard = [(iFBAPreferencesViewController *)self storyboard];
+    devicesId2 = [(iFBAPreferencesViewController *)self devicesId];
+    v15 = [storyboard instantiateViewControllerWithIdentifier:devicesId2];
 
     [v15 setContext:1];
-    v16 = [(iFBAPreferencesViewController *)self navigationController];
-    [v16 pushViewController:v15 animated:1];
+    navigationController = [(iFBAPreferencesViewController *)self navigationController];
+    [navigationController pushViewController:v15 animated:1];
   }
 
-  v17 = [v7 reuseIdentifier];
-  v18 = [v17 isEqualToString:@"SignoutCell"];
+  reuseIdentifier3 = [v7 reuseIdentifier];
+  v18 = [reuseIdentifier3 isEqualToString:@"SignoutCell"];
 
   if (v18)
   {
-    [v19 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     [(iFBAPreferencesViewController *)self didTapSignOut:v7];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 4)
+  viewCopy = view;
+  if (section == 4)
   {
-    v8 = [(iFBAPreferencesViewController *)self versionFooter];
+    versionFooter = [(iFBAPreferencesViewController *)self versionFooter];
   }
 
-  else if (a4 == 1)
+  else if (section == 1)
   {
     v7 = +[NSBundle mainBundle];
-    v8 = [v7 localizedStringForKey:@"CELLULAR_DATA_INFO_FOOTER" value:@"When enabled table:{supported devices will use cellular data to upload files.", 0}];
+    versionFooter = [v7 localizedStringForKey:@"CELLULAR_DATA_INFO_FOOTER" value:@"When enabled table:{supported devices will use cellular data to upload files.", 0}];
   }
 
   else
   {
-    v8 = 0;
+    versionFooter = 0;
   }
 
-  return v8;
+  return versionFooter;
 }
 
 - (id)versionFooter
@@ -459,20 +459,20 @@
   return v8;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002A8D8;
   v9[3] = &unk_1000DE8F0;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:&stru_1000DF4C8];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:&stru_1000DF4C8];
   v8.receiver = self;
   v8.super_class = iFBAPreferencesViewController;
-  [(iFBAPreferencesViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(iFBAPreferencesViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (BOOL)isWarningsOn
@@ -537,9 +537,9 @@
   [v16 synchronize];
 
   v19 = +[UIColor labelColor];
-  v17 = [(iFBAPreferencesViewController *)self resetWarningsCell];
-  v18 = [v17 textLabel];
-  [v18 setTextColor:v19];
+  resetWarningsCell = [(iFBAPreferencesViewController *)self resetWarningsCell];
+  textLabel = [resetWarningsCell textLabel];
+  [textLabel setTextColor:v19];
 }
 
 - (UISwitch)allowCellUploads

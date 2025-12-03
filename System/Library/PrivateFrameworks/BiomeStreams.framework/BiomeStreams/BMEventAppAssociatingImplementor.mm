@@ -1,12 +1,12 @@
 @interface BMEventAppAssociatingImplementor
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4;
+- (BOOL)isValidWithContext:(id)context error:(id *)error;
 @end
 
 @implementation BMEventAppAssociatingImplementor
 
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4
+- (BOOL)isValidWithContext:(id)context error:(id *)error
 {
-  v4 = [(BMEventAppAssociatingImplementor *)self bundleID:a3];
+  v4 = [(BMEventAppAssociatingImplementor *)self bundleID:context];
   v5 = v4 != 0;
 
   return v5;

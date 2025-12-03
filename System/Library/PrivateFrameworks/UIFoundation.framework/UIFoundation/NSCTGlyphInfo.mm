@@ -1,19 +1,19 @@
 @interface NSCTGlyphInfo
-- (BOOL)isEqual:(id)a3;
-- (unsigned)_glyphForFont:(id)a3 baseString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (unsigned)_glyphForFont:(id)font baseString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCTGlyphInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -21,15 +21,15 @@
   return _CFNonObjCEqual() != 0;
 }
 
-- (unsigned)_glyphForFont:(id)a3 baseString:(id)a4
+- (unsigned)_glyphForFont:(id)font baseString:(id)string
 {
-  if ([a4 isEqualToString:{-[NSCTGlyphInfo _baseString](self, "_baseString")}])
+  if ([string isEqualToString:{-[NSCTGlyphInfo _baseString](self, "_baseString")}])
   {
-    v6 = [(NSCTGlyphInfo *)self characterCollection];
-    if (v6)
+    characterCollection = [(NSCTGlyphInfo *)self characterCollection];
+    if (characterCollection)
     {
-      v7 = v6;
-      v8 = CTFontCopyGraphicsFont(a3, 0);
+      v7 = characterCollection;
+      v8 = CTFontCopyGraphicsFont(font, 0);
       if (v8)
       {
         v9 = v8;
@@ -53,22 +53,22 @@ LABEL_19:
       Font = _CTGlyphInfoGetFont();
       if (Font)
       {
-        v12 = Font;
+        fontCopy = Font;
       }
 
       else
       {
-        v12 = a3;
+        fontCopy = font;
       }
 
-      v13 = CTFontCopyPostScriptName(v12);
+      v13 = CTFontCopyPostScriptName(fontCopy);
       if (v13)
       {
         v9 = v13;
-        if ([objc_msgSend(a3 "fontName")])
+        if ([objc_msgSend(font "fontName")])
         {
-          v14 = CTFontCopyFontDescriptor(v12);
-          if ([objc_msgSend(a3 "fontDescriptor")])
+          v14 = CTFontCopyFontDescriptor(fontCopy);
+          if ([objc_msgSend(font "fontDescriptor")])
           {
             CharacterIdentifier = MEMORY[0x193AD41A0](self);
             if (!CharacterIdentifier)
@@ -94,13 +94,13 @@ LABEL_19:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSCTGlyphInfo *)self characterCollection];
-  v6 = [(NSCTGlyphInfo *)self _baseString];
-  if (v5)
+  characterCollection = [(NSCTGlyphInfo *)self characterCollection];
+  _baseString = [(NSCTGlyphInfo *)self _baseString];
+  if (characterCollection)
   {
-    v7 = [NSGlyphInfo glyphInfoWithCharacterIdentifier:[(NSCTGlyphInfo *)self characterIdentifier] collection:v5 baseString:v6];
+    v7 = [NSGlyphInfo glyphInfoWithCharacterIdentifier:[(NSCTGlyphInfo *)self characterIdentifier] collection:characterCollection baseString:_baseString];
   }
 
   else
@@ -111,15 +111,15 @@ LABEL_19:
     CFRelease(v9);
     if (v10)
     {
-      v11 = [(NSCTGlyphInfo *)self glyphName];
-      if (v11)
+      glyphName = [(NSCTGlyphInfo *)self glyphName];
+      if (glyphName)
       {
-        v7 = [NSGlyphInfo glyphInfoWithGlyphName:v11 forFont:v10 baseString:v6];
+        v7 = [NSGlyphInfo glyphInfoWithGlyphName:glyphName forFont:v10 baseString:_baseString];
       }
 
       else
       {
-        v7 = [NSGlyphInfo glyphInfoWithGlyph:MEMORY[0x193AD41A0](self) forFont:v10 baseString:v6];
+        v7 = [NSGlyphInfo glyphInfoWithGlyph:MEMORY[0x193AD41A0](self) forFont:v10 baseString:_baseString];
       }
     }
 
@@ -129,7 +129,7 @@ LABEL_19:
     }
   }
 
-  [(NSGlyphInfo *)v7 encodeWithCoder:a3];
+  [(NSGlyphInfo *)v7 encodeWithCoder:coder];
 }
 
 @end

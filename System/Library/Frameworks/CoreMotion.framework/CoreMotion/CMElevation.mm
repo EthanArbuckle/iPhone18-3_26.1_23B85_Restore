@@ -2,7 +2,7 @@
 + (BOOL)isElevationAvailable;
 - (CMElevation)init;
 - (void)dealloc;
-- (void)startElevationUpdatesWithHandler:(id)a3;
+- (void)startElevationUpdatesWithHandler:(id)handler;
 - (void)stopElevationUpdates;
 @end
 
@@ -44,9 +44,9 @@
   return sub_19B43B6EC();
 }
 
-- (void)startElevationUpdatesWithHandler:(id)a3
+- (void)startElevationUpdatesWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMAltimeter.mm", 1238, @"Invalid parameter not satisfying: %@", @"handler");
@@ -57,7 +57,7 @@
   v8[2] = sub_19B776438;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 

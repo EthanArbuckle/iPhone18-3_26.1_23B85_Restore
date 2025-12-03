@@ -1,15 +1,15 @@
 @interface SPMatcher
-+ (id)transcriptionForString:(id)a3 withLanguage:(id)a4;
-- (SPMatcher)initWithSearchString:(id)a3 andLocale:(id)a4 andOptions:(unint64_t)a5;
++ (id)transcriptionForString:(id)string withLanguage:(id)language;
+- (SPMatcher)initWithSearchString:(id)string andLocale:(id)locale andOptions:(unint64_t)options;
 - (void)dealloc;
 @end
 
 @implementation SPMatcher
 
-- (SPMatcher)initWithSearchString:(id)a3 andLocale:(id)a4 andOptions:(unint64_t)a5
+- (SPMatcher)initWithSearchString:(id)string andLocale:(id)locale andOptions:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = SPMatcher;
   v9 = [(SPMatcher *)&v11 init];
@@ -30,14 +30,14 @@
   [(SPMatcher *)&v4 dealloc];
 }
 
-+ (id)transcriptionForString:(id)a3 withLanguage:(id)a4
++ (id)transcriptionForString:(id)string withLanguage:(id)language
 {
   v12 = *MEMORY[0x1E69E9840];
   bzero(v11, 0x400uLL);
-  v6 = a3;
-  v7 = a4;
-  [a3 UTF8String];
-  [v7 UTF8String];
+  stringCopy = string;
+  languageCopy = language;
+  [string UTF8String];
+  [languageCopy UTF8String];
 
   if (resolve_transcriptions_for_locale())
   {

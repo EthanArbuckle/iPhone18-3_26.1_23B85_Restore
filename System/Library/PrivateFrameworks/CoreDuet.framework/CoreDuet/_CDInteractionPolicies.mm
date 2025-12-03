@@ -1,12 +1,12 @@
 @interface _CDInteractionPolicies
 + (id)interactionPolicies;
-+ (id)limitArray:(id)a3 toMaxCount:(unint64_t)a4;
-+ (id)modifyDate:(id)a3 usingPolicy:(id)a4;
++ (id)limitArray:(id)array toMaxCount:(unint64_t)count;
++ (id)modifyDate:(id)date usingPolicy:(id)policy;
 - (_CDInteractionPolicies)init;
-- (id)dateOfOldestAllowedInteractionForMechanism:(int64_t)a3;
+- (id)dateOfOldestAllowedInteractionForMechanism:(int64_t)mechanism;
 - (id)description;
-- (id)filterAndModifyInteractionsWithPolicies:(id)a3 enforceDataLimits:(BOOL)a4 enforcePrivacy:(BOOL)a5;
-- (id)policyForMechanism:(int64_t)a3;
+- (id)filterAndModifyInteractionsWithPolicies:(id)policies enforceDataLimits:(BOOL)limits enforcePrivacy:(BOOL)privacy;
+- (id)policyForMechanism:(int64_t)mechanism;
 - (id)whitelistedFirstPartyBundleIds;
 - (void)readConfigurationPlist;
 - (void)setupDefaultHardcodedPolicies;
@@ -16,7 +16,7 @@
 
 + (id)interactionPolicies
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -49,10 +49,10 @@
   return v2;
 }
 
-- (id)policyForMechanism:(int64_t)a3
+- (id)policyForMechanism:(int64_t)mechanism
 {
   specialPoliciesForMechanisms = self->_specialPoliciesForMechanisms;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
   v6 = [(NSDictionary *)specialPoliciesForMechanisms objectForKeyedSubscript:v5];
 
   if (!v6)
@@ -63,14 +63,14 @@
   return v6;
 }
 
-- (id)dateOfOldestAllowedInteractionForMechanism:(int64_t)a3
+- (id)dateOfOldestAllowedInteractionForMechanism:(int64_t)mechanism
 {
-  v3 = [(_CDInteractionPolicies *)self policyForMechanism:a3];
-  v4 = [v3 lifespanInSeconds];
+  v3 = [(_CDInteractionPolicies *)self policyForMechanism:mechanism];
+  lifespanInSeconds = [v3 lifespanInSeconds];
 
   v5 = MEMORY[0x1E695DF00];
-  v6 = -v4;
-  if (v4 > 0xDD7C00)
+  v6 = -lifespanInSeconds;
+  if (lifespanInSeconds > 0xDD7C00)
   {
     v6 = -14515200.0;
   }
@@ -78,25 +78,25 @@
   return [v5 dateWithTimeIntervalSinceNow:v6];
 }
 
-+ (id)modifyDate:(id)a3 usingPolicy:(id)a4
++ (id)modifyDate:(id)date usingPolicy:(id)policy
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dateCopy = date;
+  policyCopy = policy;
+  v7 = policyCopy;
+  if (dateCopy)
   {
-    if ([v6 timeResolutionInSeconds])
+    if ([policyCopy timeResolutionInSeconds])
     {
-      [v5 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v9 = v8;
-      v10 = [v7 timeResolutionInSeconds];
-      v11 = [v7 timeResolutionInSeconds];
-      v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:floor(v9 / v11) * v10];
+      timeResolutionInSeconds = [v7 timeResolutionInSeconds];
+      timeResolutionInSeconds2 = [v7 timeResolutionInSeconds];
+      v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:floor(v9 / timeResolutionInSeconds2) * timeResolutionInSeconds];
     }
 
     else
     {
-      v12 = v5;
+      v12 = dateCopy;
     }
 
     v13 = v12;
@@ -110,13 +110,13 @@
   return v13;
 }
 
-+ (id)limitArray:(id)a3 toMaxCount:(unint64_t)a4
++ (id)limitArray:(id)array toMaxCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count] > a4)
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (arrayCopy && [arrayCopy count] > count)
   {
-    v7 = [v6 subarrayWithRange:{0, a4}];
+    v7 = [v6 subarrayWithRange:{0, count}];
   }
 
   else
@@ -129,24 +129,24 @@
   return v8;
 }
 
-- (id)filterAndModifyInteractionsWithPolicies:(id)a3 enforceDataLimits:(BOOL)a4 enforcePrivacy:(BOOL)a5
+- (id)filterAndModifyInteractionsWithPolicies:(id)policies enforceDataLimits:(BOOL)limits enforcePrivacy:(BOOL)privacy
 {
-  v5 = a5;
-  v6 = a4;
+  privacyCopy = privacy;
+  limitsCopy = limits;
   v97 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  policiesCopy = policies;
   v9 = +[_CDSiriLearningSettings sharedInstance];
-  v10 = [v9 allLearningDisabledBundleIDs];
+  allLearningDisabledBundleIDs = [v9 allLearningDisabledBundleIDs];
 
-  if ([v10 count])
+  if ([allLearningDisabledBundleIDs count])
   {
     v11 = MEMORY[0x1E696AE18];
-    v12 = [v10 _pas_mappedArrayWithTransform:&__block_literal_global_61];
-    v13 = [v11 predicateWithFormat:@"SELF.bundleId IN %@ OR SELF.targetBundleId IN %@", v10, v12];
+    v12 = [allLearningDisabledBundleIDs _pas_mappedArrayWithTransform:&__block_literal_global_61];
+    v13 = [v11 predicateWithFormat:@"SELF.bundleId IN %@ OR SELF.targetBundleId IN %@", allLearningDisabledBundleIDs, v12];
 
     if (+[_CDDeviceInfo isRunningOnInternalBuild])
     {
-      v14 = [v8 filteredArrayUsingPredicate:v13];
+      v14 = [policiesCopy filteredArrayUsingPredicate:v13];
       if ([v14 count])
       {
         v15 = +[_CDLogging interactionChannel];
@@ -155,31 +155,31 @@
           *buf = 134218242;
           v91 = [v14 count];
           v92 = 2114;
-          v93 = v10;
+          v93 = allLearningDisabledBundleIDs;
           _os_log_impl(&dword_191750000, v15, OS_LOG_TYPE_DEFAULT, "Filtered %tu interactions for bundles with Siri Learning disabled (%{public}@)", buf, 0x16u);
         }
       }
     }
 
     v16 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v13];
-    v17 = [v8 filteredArrayUsingPredicate:v16];
+    v17 = [policiesCopy filteredArrayUsingPredicate:v16];
 
-    v8 = v17;
+    policiesCopy = v17;
   }
 
-  v18 = [v8 count];
-  if ((v6 || v5) && v18)
+  v18 = [policiesCopy count];
+  if ((limitsCopy || privacyCopy) && v18)
   {
-    v75 = v10;
-    v78 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v75 = allLearningDisabledBundleIDs;
+    v78 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(policiesCopy, "count")}];
     v19 = [(_CDInteractionPolicies *)self policyForMechanism:1];
     v85 = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForMechanism:1];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v76 = v8;
-    obj = v8;
+    v76 = policiesCopy;
+    obj = policiesCopy;
     v84 = [obj countByEnumeratingWithState:&v86 objects:v96 count:16];
     if (!v84)
     {
@@ -188,8 +188,8 @@
 
     v83 = *v87;
     v79 = 1;
-    v80 = v6;
-    v81 = v5;
+    v80 = limitsCopy;
+    v81 = privacyCopy;
     while (1)
     {
       v20 = 0;
@@ -206,53 +206,53 @@
         {
           v22 = v19;
           v23 = v21;
-          v24 = [v23 mechanism];
-          v25 = [(_CDInteractionPolicies *)self whitelistedFirstPartyBundleIds];
-          v26 = [v23 bundleId];
-          v27 = [v25 containsObject:v26];
+          mechanism = [v23 mechanism];
+          whitelistedFirstPartyBundleIds = [(_CDInteractionPolicies *)self whitelistedFirstPartyBundleIds];
+          bundleId = [v23 bundleId];
+          v27 = [whitelistedFirstPartyBundleIds containsObject:bundleId];
 
           if (v27)
           {
             specialPoliciesForBundleIds = self->_specialPoliciesForBundleIds;
-            v29 = [v23 bundleId];
-            v19 = [(NSDictionary *)specialPoliciesForBundleIds objectForKeyedSubscript:v29];
+            bundleId2 = [v23 bundleId];
+            v19 = [(NSDictionary *)specialPoliciesForBundleIds objectForKeyedSubscript:bundleId2];
 
-            v30 = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds];
+            dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds];
             goto LABEL_28;
           }
 
-          v31 = [v23 targetBundleId];
-          if (!v31)
+          targetBundleId = [v23 targetBundleId];
+          if (!targetBundleId)
           {
             goto LABEL_22;
           }
 
-          v32 = v31;
-          v33 = [(_CDInteractionPolicies *)self whitelistedFirstPartyBundleIds];
-          v34 = [v23 targetBundleId];
-          v35 = [v33 containsObject:v34];
+          v32 = targetBundleId;
+          whitelistedFirstPartyBundleIds2 = [(_CDInteractionPolicies *)self whitelistedFirstPartyBundleIds];
+          targetBundleId2 = [v23 targetBundleId];
+          v35 = [whitelistedFirstPartyBundleIds2 containsObject:targetBundleId2];
 
           if (v35)
           {
             v36 = self->_specialPoliciesForBundleIds;
-            v37 = [v23 targetBundleId];
-            v19 = [(NSDictionary *)v36 objectForKeyedSubscript:v37];
+            targetBundleId3 = [v23 targetBundleId];
+            v19 = [(NSDictionary *)v36 objectForKeyedSubscript:targetBundleId3];
 
-            v30 = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds];
+            dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds];
 LABEL_27:
-            v6 = v80;
-            v5 = v81;
+            limitsCopy = v80;
+            privacyCopy = v81;
 LABEL_28:
 
-            v85 = v30;
-            if (v5)
+            v85 = dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds;
+            if (privacyCopy)
             {
               goto LABEL_29;
             }
 
 LABEL_24:
             v38 = 0;
-            if (!v6)
+            if (!limitsCopy)
             {
 LABEL_35:
               v44 = 0;
@@ -263,17 +263,17 @@ LABEL_35:
           else
           {
 LABEL_22:
-            if (v24 != v79)
+            if (mechanism != v79)
             {
-              v19 = [(_CDInteractionPolicies *)self policyForMechanism:v24];
+              v19 = [(_CDInteractionPolicies *)self policyForMechanism:mechanism];
 
-              v30 = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForMechanism:v24];
-              v79 = v24;
+              dateOfOldestAllowedInteractionForWhitelistedFirstPartyBundleIds = [(_CDInteractionPolicies *)self dateOfOldestAllowedInteractionForMechanism:mechanism];
+              v79 = mechanism;
               goto LABEL_27;
             }
 
-            v6 = v80;
-            v5 = v81;
+            limitsCopy = v80;
+            privacyCopy = v81;
             v19 = v22;
             if (!v81)
             {
@@ -281,13 +281,13 @@ LABEL_22:
             }
 
 LABEL_29:
-            v39 = [v23 startDate];
-            v40 = [v85 earlierDate:v39];
+            startDate = [v23 startDate];
+            v40 = [v85 earlierDate:startDate];
 
             if (v40 == v85)
             {
               v38 = 0;
-              if (!v6)
+              if (!limitsCopy)
               {
                 goto LABEL_35;
               }
@@ -298,9 +298,9 @@ LABEL_29:
               v41 = +[_CDLogging interactionChannel];
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
               {
-                v71 = [v23 startDate];
+                startDate2 = [v23 startDate];
                 *buf = 138412802;
-                v91 = v71;
+                v91 = startDate2;
                 v92 = 2112;
                 v93 = v85;
                 v94 = 2112;
@@ -309,70 +309,70 @@ LABEL_29:
               }
 
               v38 = 1;
-              if (!v6)
+              if (!limitsCopy)
               {
                 goto LABEL_35;
               }
             }
           }
 
-          v42 = [v19 rateLimiter];
-          v43 = [v42 debited];
+          rateLimiter = [v19 rateLimiter];
+          debited = [rateLimiter debited];
 
-          v44 = v43 ^ 1;
+          v44 = debited ^ 1;
 LABEL_36:
           if (((v38 | v44) & 1) == 0)
           {
-            if (v5)
+            if (privacyCopy)
             {
               v45 = objc_opt_class();
-              v46 = [v23 startDate];
-              v47 = [v45 modifyDate:v46 usingPolicy:v19];
+              startDate3 = [v23 startDate];
+              v47 = [v45 modifyDate:startDate3 usingPolicy:v19];
               [v23 setStartDate:v47];
 
               v48 = objc_opt_class();
-              v49 = [v23 endDate];
-              v50 = [v48 modifyDate:v49 usingPolicy:v19];
+              endDate = [v23 endDate];
+              v50 = [v48 modifyDate:endDate usingPolicy:v19];
               [v23 setEndDate:v50];
             }
 
-            if (v6)
+            if (limitsCopy)
             {
               v51 = objc_opt_class();
-              v52 = [v23 recipients];
-              v53 = [v51 limitArray:v52 toMaxCount:{objc_msgSend(v19, "maxNumberOfRecipients")}];
+              recipients = [v23 recipients];
+              v53 = [v51 limitArray:recipients toMaxCount:{objc_msgSend(v19, "maxNumberOfRecipients")}];
               [v23 setRecipients:v53];
 
               v54 = objc_opt_class();
-              v55 = [v23 keywords];
-              v56 = [v54 limitArray:v55 toMaxCount:{objc_msgSend(v19, "maxNumberOfKeywords")}];
+              keywords = [v23 keywords];
+              v56 = [v54 limitArray:keywords toMaxCount:{objc_msgSend(v19, "maxNumberOfKeywords")}];
               [v23 setKeywords:v56];
 
               v57 = objc_opt_class();
-              v58 = [v23 attachments];
-              v59 = [v57 limitArray:v58 toMaxCount:{objc_msgSend(v19, "maxNumberOfAttachments")}];
+              attachments = [v23 attachments];
+              v59 = [v57 limitArray:attachments toMaxCount:{objc_msgSend(v19, "maxNumberOfAttachments")}];
               [v23 setAttachments:v59];
             }
 
             if ([v23 mechanism] == 13)
             {
-              v60 = [v23 targetBundleId];
-              v61 = [v60 isEqualToString:@"com.apple.UIKit.activity.Mail"];
+              targetBundleId4 = [v23 targetBundleId];
+              v61 = [targetBundleId4 isEqualToString:@"com.apple.UIKit.activity.Mail"];
 
               if (v61)
               {
                 v77 = v19;
-                v62 = [v23 recipients];
-                v63 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v62, "count")}];
-                if ([v62 count])
+                recipients2 = [v23 recipients];
+                v63 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recipients2, "count")}];
+                if ([recipients2 count])
                 {
                   v64 = 0;
                   do
                   {
-                    v65 = [v62 objectAtIndexedSubscript:v64];
-                    v66 = [v65 personId];
+                    v65 = [recipients2 objectAtIndexedSubscript:v64];
+                    personId = [v65 personId];
 
-                    if (v66)
+                    if (personId)
                     {
                       [v65 setPersonId:0];
                     }
@@ -382,11 +382,11 @@ LABEL_36:
                       [v65 identifier];
                       v68 = v67 = self;
                       v69 = [_CDContactResolver resolveContactIfPossibleFromContactIdentifierString:v68];
-                      v70 = [v69 identifier];
+                      identifier = [v69 identifier];
 
                       self = v67;
-                      [v65 setPersonId:v70];
-                      if (v70)
+                      [v65 setPersonId:identifier];
+                      if (identifier)
                       {
                         [v65 setPersonIdType:3];
                       }
@@ -397,13 +397,13 @@ LABEL_36:
                     ++v64;
                   }
 
-                  while ([v62 count] > v64);
+                  while ([recipients2 count] > v64);
                 }
 
                 [v23 setRecipients:v63];
 
-                v6 = v80;
-                v5 = v81;
+                limitsCopy = v80;
+                privacyCopy = v81;
                 v19 = v77;
               }
             }
@@ -422,14 +422,14 @@ LABEL_36:
 LABEL_55:
 
         v72 = [v78 copy];
-        v10 = v75;
-        v8 = v76;
+        allLearningDisabledBundleIDs = v75;
+        policiesCopy = v76;
         goto LABEL_57;
       }
     }
   }
 
-  v72 = v8;
+  v72 = policiesCopy;
 LABEL_57:
 
   v73 = *MEMORY[0x1E69E9840];
@@ -580,7 +580,7 @@ LABEL_57:
   v2 = +[_CDPaths policiesConfigPath];
   v4 = 138412290;
   v5 = v2;
-  _os_log_error_impl(&dword_191750000, a1, OS_LOG_TYPE_ERROR, "Failed to read %@", &v4, 0xCu);
+  _os_log_error_impl(&dword_191750000, self, OS_LOG_TYPE_ERROR, "Failed to read %@", &v4, 0xCu);
 
   v3 = *MEMORY[0x1E69E9840];
 }

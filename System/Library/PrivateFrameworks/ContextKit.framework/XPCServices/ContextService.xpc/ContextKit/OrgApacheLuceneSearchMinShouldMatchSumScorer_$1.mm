@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneSearchMinShouldMatchSumScorer_$1
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneSearchMinShouldMatchSumScorer_$1
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || (v5 = [a3 cost], !a4))
+  if (!id || (v5 = [id cost], !withId))
   {
     JreThrowNullPointerException();
   }
 
-  return v5 > [a4 cost];
+  return v5 > [withId cost];
 }
 
 @end

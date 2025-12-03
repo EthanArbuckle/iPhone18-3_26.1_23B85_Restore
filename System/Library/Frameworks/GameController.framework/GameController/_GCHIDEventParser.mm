@@ -1,7 +1,7 @@
 @interface _GCHIDEventParser
 - (_GCHIDEventParser)init;
-- (_GCHIDEventParser)initWithCoder:(id)a3;
-- (void)parse:(__IOHIDEvent *)a3 into:(id)a4;
+- (_GCHIDEventParser)initWithCoder:(id)coder;
+- (void)parse:(__IOHIDEvent *)parse into:(id)into;
 @end
 
 @implementation _GCHIDEventParser
@@ -18,16 +18,16 @@
   return v2;
 }
 
-- (_GCHIDEventParser)initWithCoder:(id)a3
+- (_GCHIDEventParser)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = _GCHIDEventParser;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(_GCHIDEventParser *)&v11 init];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v11.receiver, v11.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"childEventParsers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"childEventParsers"];
 
   childEventParsers = v4->_childEventParsers;
   v4->_childEventParsers = v8;
@@ -35,17 +35,17 @@
   return v4;
 }
 
-- (void)parse:(__IOHIDEvent *)a3 into:(id)a4
+- (void)parse:(__IOHIDEvent *)parse into:(id)into
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  intoCopy = into;
   v6 = IOHIDEventGetChildren();
-  v7 = [(_GCHIDEventParser *)self childEventParsers];
+  childEventParsers = [(_GCHIDEventParser *)self childEventParsers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [childEventParsers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -57,7 +57,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childEventParsers);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
@@ -67,7 +67,7 @@
           do
           {
             v14 = [v6 objectAtIndexedSubscript:v13];
-            [v12 parse:v14 into:v5];
+            [v12 parse:v14 into:intoCopy];
 
             ++v13;
           }
@@ -79,7 +79,7 @@
       }
 
       while (v11 != v9);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [childEventParsers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);

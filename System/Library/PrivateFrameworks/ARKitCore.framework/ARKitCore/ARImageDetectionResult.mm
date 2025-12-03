@@ -1,24 +1,24 @@
 @interface ARImageDetectionResult
-- (BOOL)isEqual:(id)a3;
-- (__n128)setVisionTransform:(__n128)a3;
-- (__n128)setWorldTrackingCameraTransformAtDetection:(__n128)a3;
-- (double)setTransform:(__n128)a3;
+- (BOOL)isEqual:(id)equal;
+- (__n128)setVisionTransform:(__n128)transform;
+- (__n128)setWorldTrackingCameraTransformAtDetection:(__n128)detection;
+- (double)setTransform:(__n128)transform;
 - (double)transform;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARImageDetectionResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ARImageDetectionResult *)self referenceImage];
-    v7 = [v5 referenceImage];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    referenceImage = [(ARImageDetectionResult *)self referenceImage];
+    referenceImage2 = [v5 referenceImage];
+    if ([referenceImage isEqual:referenceImage2])
     {
       [v5 visionTransform];
       v21 = v9;
@@ -55,10 +55,10 @@ LABEL_11:
 {
   *v2.i64 = ARRenderingToVisionCoordinateTransform();
   v6 = 0;
-  v7 = a1[4];
-  v8 = a1[5];
-  v9 = a1[6];
-  v20 = a1[3];
+  v7 = self[4];
+  v8 = self[5];
+  v9 = self[6];
+  v20 = self[3];
   v21 = v7;
   v22 = v8;
   v23 = v9;
@@ -97,12 +97,12 @@ LABEL_11:
   return *v24.i64;
 }
 
-- (double)setTransform:(__n128)a3
+- (double)setTransform:(__n128)transform
 {
   *v6.i64 = ARVisionToRenderingCoordinateTransform();
   v10 = 0;
   v28 = a2;
-  v29 = a3;
+  transformCopy = transform;
   v30 = a4;
   v31 = a5;
   v32 = 0u;
@@ -123,7 +123,7 @@ LABEL_11:
   v11.n128_f64[0] = ARRenderingToVisionCoordinateTransform();
   v12 = 0;
   v28 = v11;
-  v29 = v13;
+  transformCopy = v13;
   v30 = v14;
   v31 = v15;
   v32 = 0u;
@@ -141,24 +141,24 @@ LABEL_11:
   v17 = v33;
   v18 = v34;
   v19 = v35;
-  a1[3] = v32;
-  a1[4] = v17;
-  a1[5] = v18;
-  a1[6] = v19;
+  self[3] = v32;
+  self[4] = v17;
+  self[5] = v18;
+  self[6] = v19;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(ARImageDetectionResult *)self visionTransform];
   *(v4 + 48) = v5;
   *(v4 + 64) = v6;
   *(v4 + 80) = v7;
   *(v4 + 96) = v8;
-  v9 = [(ARImageDetectionResult *)self referenceImage];
+  referenceImage = [(ARImageDetectionResult *)self referenceImage];
   v10 = *(v4 + 16);
-  *(v4 + 16) = v9;
+  *(v4 + 16) = referenceImage;
 
   [(ARImageDetectionResult *)self worldTrackingCameraTransformAtDetection];
   *(v4 + 112) = v11;
@@ -171,19 +171,19 @@ LABEL_11:
   return v4;
 }
 
-- (__n128)setVisionTransform:(__n128)a3
+- (__n128)setVisionTransform:(__n128)transform
 {
   result[3] = a2;
-  result[4] = a3;
+  result[4] = transform;
   result[5] = a4;
   result[6] = a5;
   return result;
 }
 
-- (__n128)setWorldTrackingCameraTransformAtDetection:(__n128)a3
+- (__n128)setWorldTrackingCameraTransformAtDetection:(__n128)detection
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = detection;
   result[9] = a4;
   result[10] = a5;
   return result;

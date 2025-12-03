@@ -3,8 +3,8 @@
 - (BOOL)showDeleteButton;
 - (BOOL)validateAccount;
 - (id)acAccountTypeString;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
-- (id)accountPropertyWithSpecifier:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
+- (id)accountPropertyWithSpecifier:(id)specifier;
 - (id)accountSpecifiers;
 - (id)localizedAccountSetupTitleString;
 - (id)localizedConfirmSaveUnvalidatedAccountMessageString;
@@ -12,50 +12,50 @@
 - (id)newDefaultAccount;
 - (id)settingsPlistName;
 - (int64_t)defaultDADataclassesToEnable;
-- (void)_updateDescriptionFromServer:(id)a3;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
+- (void)_updateDescriptionFromServer:(id)server;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
 @end
 
 @implementation DAVSettingsAccountsUIController
 
 - (BOOL)showDeleteButton
 {
-  v2 = [(DAVSettingsAccountsUIController *)self account];
-  v3 = [v2 backingAccountInfo];
-  v4 = [v3 managingOwnerIdentifier];
-  v5 = v4 == 0;
+  account = [(DAVSettingsAccountsUIController *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  managingOwnerIdentifier = [backingAccountInfo managingOwnerIdentifier];
+  v5 = managingOwnerIdentifier == 0;
 
   return v5;
 }
 
 - (id)newDefaultAccount
 {
-  v3 = [(DAVSettingsAccountsUIController *)self accountStore];
-  v4 = [(DAVSettingsAccountsUIController *)self acAccountTypeString];
-  v5 = [v3 accountTypeWithAccountTypeIdentifier:v4];
+  accountStore = [(DAVSettingsAccountsUIController *)self accountStore];
+  acAccountTypeString = [(DAVSettingsAccountsUIController *)self acAccountTypeString];
+  v5 = [accountStore accountTypeWithAccountTypeIdentifier:acAccountTypeString];
 
   v6 = [[ACAccount alloc] initWithAccountType:v5];
-  v7 = [v5 supportedDataclasses];
-  v8 = [v7 mutableCopy];
+  supportedDataclasses = [v5 supportedDataclasses];
+  v8 = [supportedDataclasses mutableCopy];
 
   [v6 setProvisionedDataclasses:v8];
   v9 = [DAAccount daAccountSubclassWithBackingAccountInfo:v6];
   [v9 setUseSSL:1];
-  v10 = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
-  [v9 setEnabled:(v10 >> 1) & 1 forDADataclass:2];
-  [v9 setEnabled:(v10 >> 3) & 1 forDADataclass:8];
-  [v9 setEnabled:(v10 >> 2) & 1 forDADataclass:4];
-  [v9 setEnabled:(v10 >> 4) & 1 forDADataclass:16];
+  defaultDADataclassesToEnable = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
+  [v9 setEnabled:(defaultDADataclassesToEnable >> 1) & 1 forDADataclass:2];
+  [v9 setEnabled:(defaultDADataclassesToEnable >> 3) & 1 forDADataclass:8];
+  [v9 setEnabled:(defaultDADataclassesToEnable >> 2) & 1 forDADataclass:4];
+  [v9 setEnabled:(defaultDADataclassesToEnable >> 4) & 1 forDADataclass:16];
 
   return v9;
 }
 
 - (id)accountSpecifiers
 {
-  v3 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-  v4 = [(DAVSettingsAccountsUIController *)self loadSpecifiersFromPlistName:v3 target:self];
+  settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+  v4 = [(DAVSettingsAccountsUIController *)self loadSpecifiersFromPlistName:settingsPlistName target:self];
   v5 = [NSMutableArray arrayWithArray:v4];
 
   if (([(DAVSettingsAccountsUIController *)self isSettingUpNewAccount]& 1) == 0)
@@ -67,8 +67,8 @@
     v8 = [v7 localizedStringForKey:@"ADVANCED_SETTINGS" value:&stru_8298 table:@"Localizable"];
     v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-    v10 = [(DAVSettingsAccountsUIController *)self account];
-    [v9 setProperty:v10 forKey:@"DAVAdvancedControllerAccountKey"];
+    account = [(DAVSettingsAccountsUIController *)self account];
+    [v9 setProperty:account forKey:@"DAVAdvancedControllerAccountKey"];
 
     [v5 addObject:v9];
     v11 = +[DADiagnosticsPSController linkSpecifier];
@@ -83,16 +83,16 @@
     if ([(DAVSettingsAccountsUIController *)self accountIsManaged])
     {
       v49 = v9;
-      v13 = [(DAVSettingsAccountsUIController *)self account];
-      v14 = [v13 backingAccountInfo];
-      v15 = [v14 mcBackingProfile];
+      account2 = [(DAVSettingsAccountsUIController *)self account];
+      backingAccountInfo = [account2 backingAccountInfo];
+      mcBackingProfile = [backingAccountInfo mcBackingProfile];
 
-      if (v15)
+      if (mcBackingProfile)
       {
         v16 = [NSBundle bundleForClass:objc_opt_class()];
         v17 = [v16 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_8298 table:@"Localizable"];
-        v18 = [v15 friendlyName];
-        v19 = [NSString stringWithFormat:v17, v18];
+        friendlyName = [mcBackingProfile friendlyName];
+        v19 = [NSString stringWithFormat:v17, friendlyName];
 
         v20 = [(DAVSettingsAccountsUIController *)self lastGroupSpecifierInSpecifiers:v5];
         if (!v20)
@@ -110,10 +110,10 @@
         [v20 setProperty:v19 forKey:PSFooterTextGroupKey];
       }
 
-      v47 = v15;
+      v47 = mcBackingProfile;
       v48 = v11;
-      v23 = [v11 identifier];
-      v24 = [NSSet setWithObjects:@"PASSWORD", @"DESCRIPTION", @"ENABLED", v23, 0];
+      identifier = [v11 identifier];
+      v24 = [NSSet setWithObjects:@"PASSWORD", @"DESCRIPTION", @"ENABLED", identifier, 0];
 
       v52 = 0u;
       v53 = 0u;
@@ -136,8 +136,8 @@
             }
 
             v31 = *(*(&v50 + 1) + 8 * i);
-            v32 = [v31 identifier];
-            if (([v24 containsObject:v32] & 1) == 0)
+            identifier2 = [v31 identifier];
+            if (([v24 containsObject:identifier2] & 1) == 0)
             {
               [v31 setProperty:&__kCFBooleanFalse forKey:v29];
             }
@@ -155,9 +155,9 @@
 
     else if ([(DAVSettingsAccountsUIController *)self showDeleteButton])
     {
-      v33 = [(DAVSettingsAccountsUIController *)self account];
-      v34 = [v33 accountDescription];
-      [(DAVSettingsAccountsUIController *)self setTitle:v34];
+      account3 = [(DAVSettingsAccountsUIController *)self account];
+      accountDescription = [account3 accountDescription];
+      [(DAVSettingsAccountsUIController *)self setTitle:accountDescription];
 
       v35 = +[PSSpecifier emptyGroupSpecifier];
       [v5 addObject:v35];
@@ -196,8 +196,8 @@ LABEL_29:
       v43 = [v42 localizedStringForKey:@"ADVANCED_SETTINGS" value:&stru_8298 table:@"Localizable"];
       v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-      v45 = [(DAVSettingsAccountsUIController *)self account];
-      [v44 setProperty:v45 forKey:@"DAVAdvancedControllerAccountKey"];
+      account4 = [(DAVSettingsAccountsUIController *)self account];
+      [v44 setProperty:account4 forKey:@"DAVAdvancedControllerAccountKey"];
 
       [v5 addObject:v44];
     }
@@ -208,44 +208,44 @@ LABEL_29:
 
 - (BOOL)validateAccount
 {
-  v3 = [*&self->DASettingsAccountsUIController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*&self->DASettingsAccountsUIController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"VERIFYING" value:&stru_8298 table:@"Localizable"];
   [(DAVSettingsAccountsUIController *)self startValidationWithPrompt:v5];
 
-  v6 = [(DAVSettingsAccountsUIController *)self account];
-  [v6 saveModifiedPropertiesOnBackingAccount];
+  account = [(DAVSettingsAccountsUIController *)self account];
+  [account saveModifiedPropertiesOnBackingAccount];
 
-  v7 = [(DAVSettingsAccountsUIController *)self account];
-  v8 = [(DAVSettingsAccountsUIController *)self accountStore];
-  [v7 checkValidityOnAccountStore:v8 withConsumer:self inQueue:&_dispatch_main_q];
+  account2 = [(DAVSettingsAccountsUIController *)self account];
+  accountStore = [(DAVSettingsAccountsUIController *)self accountStore];
+  [account2 checkValidityOnAccountStore:accountStore withConsumer:self inQueue:&_dispatch_main_q];
 
   return 1;
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v6)
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
+  if (!validCopy)
   {
     v17 = DALoggingwithCategory();
     v18 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v17, v18))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_0, v17, v18, "validation failed with error %@", &buf, 0xCu);
     }
 
-    v19 = [(DAVSettingsAccountsUIController *)self account];
-    if ([v19 useSSL])
+    account = [(DAVSettingsAccountsUIController *)self account];
+    if ([account useSSL])
     {
-      v20 = [v9 domain];
-      if (([v20 isEqualToString:DAAccountValidationDomain] & 1) == 0)
+      domain = [errorCopy domain];
+      if (([domain isEqualToString:DAAccountValidationDomain] & 1) == 0)
       {
 
 LABEL_15:
@@ -266,7 +266,7 @@ LABEL_20:
         goto LABEL_17;
       }
 
-      v21 = [v9 code] == &stru_20.flags + 2;
+      v21 = [errorCopy code] == &stru_20.flags + 2;
 
       if (!v21)
       {
@@ -281,8 +281,8 @@ LABEL_20:
     v24 = [NSBundle bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"ACCOUNT_VERIFICATION_FAILED_FORMAT" value:&stru_8298 table:@"Localizable"];
     v26 = [NSBundle bundleForClass:objc_opt_class()];
-    v27 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-    v28 = [v26 localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_8298 table:v27];
+    settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+    v28 = [v26 localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_8298 table:settingsPlistName];
     v23 = [NSString stringWithFormat:v25, v28];
 
     v29 = 1;
@@ -291,19 +291,19 @@ LABEL_20:
 
   if ([(DAVSettingsAccountsUIController *)self accountNeedsAdd])
   {
-    v10 = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
-    [v8 setEnabled:(v10 >> 1) & 1 forDADataclass:2];
-    [v8 setEnabled:(v10 >> 3) & 1 forDADataclass:8];
-    [v8 setEnabled:(v10 >> 2) & 1 forDADataclass:4];
-    [v8 setEnabled:(v10 >> 4) & 1 forDADataclass:16];
+    defaultDADataclassesToEnable = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
+    [accountCopy setEnabled:(defaultDADataclassesToEnable >> 1) & 1 forDADataclass:2];
+    [accountCopy setEnabled:(defaultDADataclassesToEnable >> 3) & 1 forDADataclass:8];
+    [accountCopy setEnabled:(defaultDADataclassesToEnable >> 2) & 1 forDADataclass:4];
+    [accountCopy setEnabled:(defaultDADataclassesToEnable >> 4) & 1 forDADataclass:16];
     v11 = dispatch_semaphore_create(0);
     *&buf = 0;
     *(&buf + 1) = &buf;
     v35 = 0x2020000000;
     v36 = 1;
-    v12 = [(DAVSettingsAccountsUIController *)self accountStore];
-    v13 = [(DAVSettingsAccountsUIController *)self account];
-    v14 = [v13 backingAccountInfo];
+    accountStore = [(DAVSettingsAccountsUIController *)self accountStore];
+    account2 = [(DAVSettingsAccountsUIController *)self account];
+    backingAccountInfo = [account2 backingAccountInfo];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1E40;
@@ -311,7 +311,7 @@ LABEL_20:
     p_buf = &buf;
     v15 = v11;
     v32 = v15;
-    [v12 canSaveAccount:v14 withCompletionHandler:v31];
+    [accountStore canSaveAccount:backingAccountInfo withCompletionHandler:v31];
 
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
     v16 = *(*(&buf + 1) + 24);
@@ -337,7 +337,7 @@ LABEL_20:
 
 LABEL_17:
     [(DAVSettingsAccountsUIController *)self reloadSpecifiers];
-    v22 = !v6;
+    v22 = !validCopy;
     goto LABEL_21;
   }
 
@@ -349,7 +349,7 @@ LABEL_21:
   [(DAVSettingsAccountsUIController *)self setAttemptedInitialValidation:v22];
   v30.receiver = self;
   v30.super_class = DAVSettingsAccountsUIController;
-  [(DAVSettingsAccountsUIController *)&v30 account:v8 isValid:v22 & v6 validationError:v9];
+  [(DAVSettingsAccountsUIController *)&v30 account:accountCopy isValid:v22 & validCopy validationError:errorCopy];
 }
 
 - (BOOL)haveEnoughValues
@@ -369,17 +369,17 @@ LABEL_3:
         v8 = [*&self->DASettingsAccountsUIController_opaque[v3] objectAtIndexedSubscript:v7];
         if (v7 == [(DAVSettingsAccountsUIController *)self indexOfCurrentlyEditingCell])
         {
-          v9 = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
+          currentlyEditingCell = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             base_props = v6[53].base_props;
-            v11 = [v8 identifier];
-            if ([(__objc2_prop_list *)base_props containsObject:v11])
+            identifier = [v8 identifier];
+            if ([(__objc2_prop_list *)base_props containsObject:identifier])
             {
-              v12 = [v9 textField];
-              v13 = [v12 text];
-              v14 = [v13 length];
+              textField = [currentlyEditingCell textField];
+              text = [textField text];
+              v14 = [text length];
 
               v6 = &DAVSettingsAccountsUIController__metaData;
               goto LABEL_16;
@@ -394,28 +394,28 @@ LABEL_17:
 
         else
         {
-          v9 = [v8 identifier];
-          if ([v9 isEqualToString:@"USERNAME"])
+          currentlyEditingCell = [v8 identifier];
+          if ([currentlyEditingCell isEqualToString:@"USERNAME"])
           {
-            v11 = [(DAVSettingsAccountsUIController *)self account];
-            v15 = [v11 usernameWithoutDomain];
+            identifier = [(DAVSettingsAccountsUIController *)self account];
+            usernameWithoutDomain = [identifier usernameWithoutDomain];
             goto LABEL_15;
           }
 
-          if ([v9 isEqualToString:@"PASSWORD"])
+          if ([currentlyEditingCell isEqualToString:@"PASSWORD"])
           {
-            v11 = [(DAVSettingsAccountsUIController *)self account];
-            v15 = [v11 passwordWithExpected:0];
+            identifier = [(DAVSettingsAccountsUIController *)self account];
+            usernameWithoutDomain = [identifier passwordWithExpected:0];
             goto LABEL_15;
           }
 
-          if ([v9 isEqualToString:@"HOST"])
+          if ([currentlyEditingCell isEqualToString:@"HOST"])
           {
-            v11 = [(DAVSettingsAccountsUIController *)self account];
-            v15 = [v11 host];
+            identifier = [(DAVSettingsAccountsUIController *)self account];
+            usernameWithoutDomain = [identifier host];
 LABEL_15:
-            v12 = v15;
-            v14 = [v15 length];
+            textField = usernameWithoutDomain;
+            v14 = [usernameWithoutDomain length];
 LABEL_16:
             v16 = v14 != 0;
 
@@ -450,19 +450,19 @@ LABEL_19:
   return 0;
 }
 
-- (void)_updateDescriptionFromServer:(id)a3
+- (void)_updateDescriptionFromServer:(id)server
 {
-  v26 = a3;
-  v4 = [(DAVSettingsAccountsUIController *)self account];
-  v5 = [v4 accountDescription];
-  if (v5)
+  serverCopy = server;
+  account = [(DAVSettingsAccountsUIController *)self account];
+  accountDescription = [account accountDescription];
+  if (accountDescription)
   {
-    v6 = v5;
-    v7 = [(DAVSettingsAccountsUIController *)self account];
-    v8 = [v7 accountDescription];
-    v9 = [(DAVSettingsAccountsUIController *)self account];
-    v10 = [v9 host];
-    v11 = [v8 isEqualToString:v10];
+    v6 = accountDescription;
+    account2 = [(DAVSettingsAccountsUIController *)self account];
+    accountDescription2 = [account2 accountDescription];
+    account3 = [(DAVSettingsAccountsUIController *)self account];
+    host = [account3 host];
+    v11 = [accountDescription2 isEqualToString:host];
 
     if (!v11)
     {
@@ -475,18 +475,18 @@ LABEL_19:
   }
 
   v12 = DAAccountDescriptionFromHostname();
-  v13 = [(DAVSettingsAccountsUIController *)self accountStore];
-  v14 = [v13 hasAccountWithDescription:v12];
+  accountStore = [(DAVSettingsAccountsUIController *)self accountStore];
+  v14 = [accountStore hasAccountWithDescription:v12];
 
   if (v14)
   {
-    v15 = v26;
+    v15 = serverCopy;
 
     v12 = v15;
   }
 
-  v16 = [(DAVSettingsAccountsUIController *)self account];
-  [v16 setAccountDescription:v12];
+  account4 = [(DAVSettingsAccountsUIController *)self account];
+  [account4 setAccountDescription:v12];
 
   v17 = OBJC_IVAR___PSListController__specifiers;
   v18 = [*&self->DASettingsAccountsUIController_opaque[OBJC_IVAR___PSListController__specifiers] count];
@@ -497,9 +497,9 @@ LABEL_19:
     while (1)
     {
       v21 = [*&self->DASettingsAccountsUIController_opaque[v17] objectAtIndexedSubscript:v20];
-      v22 = [v21 identifier];
+      identifier = [v21 identifier];
 
-      if ([v22 isEqualToString:@"DESCRIPTION"])
+      if ([identifier isEqualToString:@"DESCRIPTION"])
       {
         break;
       }
@@ -510,11 +510,11 @@ LABEL_19:
       }
     }
 
-    v23 = [(DAVSettingsAccountsUIController *)self table];
+    table = [(DAVSettingsAccountsUIController *)self table];
     v24 = [(DAVSettingsAccountsUIController *)self indexPathForIndex:v20];
-    v25 = [v23 cellForRowAtIndexPath:v24];
+    v25 = [table cellForRowAtIndexPath:v24];
 
-    [v25 setValue:v26];
+    [v25 setValue:serverCopy];
   }
 
 LABEL_13:
@@ -522,51 +522,51 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-  v10 = [v6 isEqualToString:v9];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v9 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+  v10 = [propertyCopy isEqualToString:v9];
 
-  if (![v8 isEqualToString:@"HOST"] || (v10 & 1) != 0)
+  if (![identifier isEqualToString:@"HOST"] || (v10 & 1) != 0)
   {
-    if (v10 & 1 | (([v8 isEqualToString:@"USERNAME"] & 1) == 0))
+    if (v10 & 1 | (([identifier isEqualToString:@"USERNAME"] & 1) == 0))
     {
-      if (v10 & 1 | (([v8 isEqualToString:@"DESCRIPTION"] & 1) == 0))
+      if (v10 & 1 | (([identifier isEqualToString:@"DESCRIPTION"] & 1) == 0))
       {
         v20.receiver = self;
         v20.super_class = DAVSettingsAccountsUIController;
-        [(DAVSettingsAccountsUIController *)&v20 setAccountProperty:v6 withSpecifier:v7];
+        [(DAVSettingsAccountsUIController *)&v20 setAccountProperty:propertyCopy withSpecifier:specifierCopy];
         goto LABEL_16;
       }
 
-      if (![v6 length])
+      if (![propertyCopy length])
       {
         v17 = [NSBundle bundleForClass:objc_opt_class()];
-        v18 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-        v19 = [v17 localizedStringForKey:@"DESCRIPTION_PLACEHOLDER" value:&stru_8298 table:v18];
+        settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+        v19 = [v17 localizedStringForKey:@"DESCRIPTION_PLACEHOLDER" value:&stru_8298 table:settingsPlistName];
 
-        v6 = v19;
+        propertyCopy = v19;
       }
 
-      v13 = [(DAVSettingsAccountsUIController *)self account];
-      [v13 setAccountDescription:v6];
+      account = [(DAVSettingsAccountsUIController *)self account];
+      [account setAccountDescription:propertyCopy];
     }
 
     else
     {
-      v13 = [v6 da_stringByAddingPercentEscapesForUsername];
-      v14 = [(DAVSettingsAccountsUIController *)self account];
-      [v14 setUsername:v13];
+      account = [propertyCopy da_stringByAddingPercentEscapesForUsername];
+      account2 = [(DAVSettingsAccountsUIController *)self account];
+      [account2 setUsername:account];
 
       if (!self->_isReloadingProperties)
       {
         self->_isReloadingProperties = 1;
-        v15 = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
-        v16 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-        [v15 setValue:v16];
+        currentlyEditingCell = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
+        v16 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+        [currentlyEditingCell setValue:v16];
 
         [(DAVSettingsAccountsUIController *)self reloadSpecifierID:@"DESCRIPTION"];
         self->_isReloadingProperties = 0;
@@ -579,14 +579,14 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  [(DAVSettingsAccountsUIController *)self setHostString:v6];
-  [(DAVSettingsAccountsUIController *)self _updateDescriptionFromServer:v6];
+  [(DAVSettingsAccountsUIController *)self setHostString:propertyCopy];
+  [(DAVSettingsAccountsUIController *)self _updateDescriptionFromServer:propertyCopy];
   if (!self->_isReloadingProperties)
   {
     self->_isReloadingProperties = 1;
-    v11 = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
-    v12 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-    [v11 setValue:v12];
+    currentlyEditingCell2 = [(DAVSettingsAccountsUIController *)self currentlyEditingCell];
+    v12 = [(DAVSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+    [currentlyEditingCell2 setValue:v12];
 
     [(DAVSettingsAccountsUIController *)self reloadSpecifierID:@"DESCRIPTION"];
     self->_isReloadingProperties = 0;
@@ -598,78 +598,78 @@ LABEL_16:
   [(DAVSettingsAccountsUIController *)self setNeedsSave:1];
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"USERNAME"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"USERNAME"])
   {
-    v6 = [(DAVSettingsAccountsUIController *)self account];
-    v7 = [v6 username];
+    account = [(DAVSettingsAccountsUIController *)self account];
+    username = [account username];
 
-    v8 = [v7 da_stringByRemovingPercentEscapesForUsername];
+    da_stringByRemovingPercentEscapesForUsername = [username da_stringByRemovingPercentEscapesForUsername];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = DAVSettingsAccountsUIController;
-    v8 = [(DAVSettingsAccountsUIController *)&v10 accountPropertyWithSpecifier:v4];
+    da_stringByRemovingPercentEscapesForUsername = [(DAVSettingsAccountsUIController *)&v10 accountPropertyWithSpecifier:specifierCopy];
   }
 
-  return v8;
+  return da_stringByRemovingPercentEscapesForUsername;
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [v7 identifier];
-  if ([v9 isEqualToString:@"ENABLED"])
+  propertyCopy = property;
+  specifierCopy = specifier;
+  bOOLValue = [propertyCopy BOOLValue];
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"ENABLED"])
   {
-    v10 = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
-    v11 = [(DAVSettingsAccountsUIController *)self account];
-    [v11 setEnabled:v8 & ((v10 & 2) != 0) forDADataclass:2];
+    defaultDADataclassesToEnable = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
+    account = [(DAVSettingsAccountsUIController *)self account];
+    [account setEnabled:bOOLValue & ((defaultDADataclassesToEnable & 2) != 0) forDADataclass:2];
 
-    v12 = [(DAVSettingsAccountsUIController *)self account];
-    [v12 setEnabled:v8 & ((v10 & 8) != 0) forDADataclass:8];
+    account2 = [(DAVSettingsAccountsUIController *)self account];
+    [account2 setEnabled:bOOLValue & ((defaultDADataclassesToEnable & 8) != 0) forDADataclass:8];
 
-    v13 = [(DAVSettingsAccountsUIController *)self account];
-    [v13 setEnabled:v8 & ((v10 & 4) != 0) forDADataclass:4];
+    account3 = [(DAVSettingsAccountsUIController *)self account];
+    [account3 setEnabled:bOOLValue & ((defaultDADataclassesToEnable & 4) != 0) forDADataclass:4];
 
-    v14 = [(DAVSettingsAccountsUIController *)self account];
-    [v14 setEnabled:v8 & ((v10 & 0x10) != 0) forDADataclass:16];
+    account4 = [(DAVSettingsAccountsUIController *)self account];
+    [account4 setEnabled:bOOLValue & ((defaultDADataclassesToEnable & 0x10) != 0) forDADataclass:16];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = DAVSettingsAccountsUIController;
-    [(DAVSettingsAccountsUIController *)&v15 setAccountBooleanProperty:v6 withSpecifier:v7];
+    [(DAVSettingsAccountsUIController *)&v15 setAccountBooleanProperty:propertyCopy withSpecifier:specifierCopy];
   }
 
   [(DAVSettingsAccountsUIController *)self setNeedsSave:1];
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (![v5 isEqualToString:@"ENABLED"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if (![identifier isEqualToString:@"ENABLED"])
   {
     v16.receiver = self;
     v16.super_class = DAVSettingsAccountsUIController;
-    v9 = [(DAVSettingsAccountsUIController *)&v16 accountBooleanPropertyWithSpecifier:v4];
+    v9 = [(DAVSettingsAccountsUIController *)&v16 accountBooleanPropertyWithSpecifier:specifierCopy];
     goto LABEL_12;
   }
 
-  v6 = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
-  v7 = v6;
-  if ((v6 & 2) != 0)
+  defaultDADataclassesToEnable = [(DAVSettingsAccountsUIController *)self defaultDADataclassesToEnable];
+  v7 = defaultDADataclassesToEnable;
+  if ((defaultDADataclassesToEnable & 2) != 0)
   {
-    v10 = [(DAVSettingsAccountsUIController *)self account];
-    v8 = [v10 enabledForDADataclass:2];
+    account = [(DAVSettingsAccountsUIController *)self account];
+    v8 = [account enabledForDADataclass:2];
 
     if ((v7 & 8) == 0)
     {
@@ -680,18 +680,18 @@ LABEL_16:
   }
 
   v8 = 0;
-  if ((v6 & 8) != 0)
+  if ((defaultDADataclassesToEnable & 8) != 0)
   {
 LABEL_7:
-    v11 = [(DAVSettingsAccountsUIController *)self account];
-    v8 = (v8 | [v11 enabledForDADataclass:8]);
+    account2 = [(DAVSettingsAccountsUIController *)self account];
+    v8 = (v8 | [account2 enabledForDADataclass:8]);
   }
 
 LABEL_8:
   if ((v7 & 4) != 0)
   {
-    v15 = [(DAVSettingsAccountsUIController *)self account];
-    v8 = (v8 | [v15 enabledForDADataclass:4]);
+    account3 = [(DAVSettingsAccountsUIController *)self account];
+    v8 = (v8 | [account3 enabledForDADataclass:4]);
 
     if ((v7 & 0x10) == 0)
     {
@@ -704,8 +704,8 @@ LABEL_8:
   if ((v7 & 0x10) != 0)
   {
 LABEL_10:
-    v12 = [(DAVSettingsAccountsUIController *)self account];
-    v8 = (v8 | [v12 enabledForDADataclass:16]);
+    account4 = [(DAVSettingsAccountsUIController *)self account];
+    v8 = (v8 | [account4 enabledForDADataclass:16]);
   }
 
 LABEL_11:
@@ -719,8 +719,8 @@ LABEL_12:
 - (id)localizedValidationFailureTitleString
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-  v5 = [v3 localizedStringForKey:@"DAV_ACCOUNT" value:&stru_8298 table:v4];
+  settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+  v5 = [v3 localizedStringForKey:@"DAV_ACCOUNT" value:&stru_8298 table:settingsPlistName];
 
   return v5;
 }
@@ -728,8 +728,8 @@ LABEL_12:
 - (id)localizedConfirmSaveUnvalidatedAccountMessageString
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-  v5 = [v3 localizedStringForKey:@"CONFIRM_SAVE_ACCOUNT_ANYWAYS_MESSAGE" value:&stru_8298 table:v4];
+  settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+  v5 = [v3 localizedStringForKey:@"CONFIRM_SAVE_ACCOUNT_ANYWAYS_MESSAGE" value:&stru_8298 table:settingsPlistName];
 
   return v5;
 }
@@ -737,8 +737,8 @@ LABEL_12:
 - (id)localizedAccountSetupTitleString
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(DAVSettingsAccountsUIController *)self settingsPlistName];
-  v5 = [v3 localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_8298 table:v4];
+  settingsPlistName = [(DAVSettingsAccountsUIController *)self settingsPlistName];
+  v5 = [v3 localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_8298 table:settingsPlistName];
 
   return v5;
 }

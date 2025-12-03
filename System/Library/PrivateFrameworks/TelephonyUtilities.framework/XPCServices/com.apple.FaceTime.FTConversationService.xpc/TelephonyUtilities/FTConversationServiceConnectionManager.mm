@@ -1,27 +1,27 @@
 @interface FTConversationServiceConnectionManager
-- (FTConversationServiceConnectionManager)initWithDataSource:(id)a3;
-- (void)addConnection:(id)a3;
-- (void)addConversationLinkDescriptors:(id)a3 reply:(id)a4;
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 reply:(id)a4;
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 reply:(id)a4;
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 reply:(id)a6;
-- (void)integerForKey:(id)a3 reply:(id)a4;
-- (void)removeConnection:(id)a3;
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 reply:(id)a5;
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 reply:(id)a4;
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 reply:(id)a5;
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6;
-- (void)setString:(id)a3 forKey:(id)a4 reply:(id)a5;
-- (void)stringForKey:(id)a3 reply:(id)a4;
+- (FTConversationServiceConnectionManager)initWithDataSource:(id)source;
+- (void)addConnection:(id)connection;
+- (void)addConversationLinkDescriptors:(id)descriptors reply:(id)reply;
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors reply:(id)reply;
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate reply:(id)reply;
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset reply:(id)reply;
+- (void)integerForKey:(id)key reply:(id)reply;
+- (void)removeConnection:(id)connection;
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason reply:(id)reply;
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate reply:(id)reply;
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setInteger:(int64_t)integer forKey:(id)key reply:(id)reply;
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply;
+- (void)setString:(id)string forKey:(id)key reply:(id)reply;
+- (void)stringForKey:(id)key reply:(id)reply;
 @end
 
 @implementation FTConversationServiceConnectionManager
 
-- (FTConversationServiceConnectionManager)initWithDataSource:(id)a3
+- (FTConversationServiceConnectionManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = FTConversationServiceConnectionManager;
   v6 = [(FTConversationServiceConnectionManager *)&v11 init];
@@ -33,54 +33,54 @@
     connections = v7->_connections;
     v7->_connections = v8;
 
-    objc_storeStrong(&v7->_dataSource, a3);
+    objc_storeStrong(&v7->_dataSource, source);
   }
 
   return v7;
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_accessorLock);
-  [v7 setDelegate:self];
-  v4 = [(FTConversationServiceConnectionManager *)self connections];
-  [v4 addObject:v7];
+  [connectionCopy setDelegate:self];
+  connections = [(FTConversationServiceConnectionManager *)self connections];
+  [connections addObject:connectionCopy];
 
-  v5 = [(FTConversationServiceConnectionManager *)self dataSource];
-  v6 = [v7 queue];
-  [v5 addDelegate:v7 queue:v6];
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
+  queue = [connectionCopy queue];
+  [dataSource addDelegate:connectionCopy queue:queue];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_accessorLock);
-  v4 = [v7 delegate];
+  delegate = [connectionCopy delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
-    [v7 setDelegate:0];
+    [connectionCopy setDelegate:0];
   }
 
-  v5 = [(FTConversationServiceConnectionManager *)self connections];
-  [v5 removeObject:v7];
+  connections = [(FTConversationServiceConnectionManager *)self connections];
+  [connections removeObject:connectionCopy];
 
-  v6 = [(FTConversationServiceConnectionManager *)self dataSource];
-  [v6 removeDelegate:v7];
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
+  [dataSource removeDelegate:connectionCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)addConversationLinkDescriptors:(id)a3 reply:(id)a4
+- (void)addConversationLinkDescriptors:(id)descriptors reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  descriptorsCopy = descriptors;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 addConversationLinkDescriptors:v7 error:&v13];
+  v9 = [dataSource addConversationLinkDescriptors:descriptorsCopy error:&v13];
 
   v10 = v13;
   if ((v9 & 1) == 0 && v10)
@@ -92,17 +92,17 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 reply:(id)a4
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  descriptorsCopy = descriptors;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 addOrUpdateConversationLinkDescriptors:v7 error:&v13];
+  v9 = [dataSource addOrUpdateConversationLinkDescriptors:descriptorsCopy error:&v13];
 
   v10 = v13;
   if ((v9 & 1) == 0 && v10)
@@ -114,17 +114,17 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 reply:(id)a4
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 conversationLinkDescriptorCountWithPredicate:v7 error:&v13];
+  v9 = [dataSource conversationLinkDescriptorCountWithPredicate:predicateCopy error:&v13];
 
   v10 = v13;
   if (!v9 && v10)
@@ -136,17 +136,17 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 reply:(id)a6
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset reply:(id)reply
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v17 = 0;
-  v13 = [v12 conversationLinkDescriptorsWithPredicate:v11 limit:a4 offset:a5 error:&v17];
+  v13 = [dataSource conversationLinkDescriptorsWithPredicate:predicateCopy limit:limit offset:offset error:&v17];
 
   v14 = v17;
   if (!v13 && v14)
@@ -158,17 +158,17 @@
     }
   }
 
-  v16 = [v14 conversationServiceDataSourceError];
-  v10[2](v10, v13, v16);
+  conversationServiceDataSourceError = [v14 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v13, conversationServiceDataSourceError);
 }
 
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 reply:(id)a5
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v15 = 0;
-  v11 = [v10 removeConversationLinkDescriptorsWithPredicate:v9 deleteReason:a4 error:&v15];
+  v11 = [dataSource removeConversationLinkDescriptorsWithPredicate:predicateCopy deleteReason:reason error:&v15];
 
   v12 = v15;
   if (!v11 && v12)
@@ -180,17 +180,17 @@
     }
   }
 
-  v14 = [v12 conversationServiceDataSourceError];
-  v8[2](v8, v11, v14);
+  conversationServiceDataSourceError = [v12 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v11, conversationServiceDataSourceError);
 }
 
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 reply:(id)a4
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 removeLinkDescriptorsFromDataSourceWithPredicate:v7 error:&v13];
+  v9 = [dataSource removeLinkDescriptorsFromDataSourceWithPredicate:predicateCopy error:&v13];
 
   v10 = v13;
   if (!v9 && v10)
@@ -202,18 +202,18 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  dateCopy = date;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v18 = 0;
-  v14 = [v13 setExpirationDate:v12 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 error:&v18];
+  v14 = [dataSource setExpirationDate:dateCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy error:&v18];
 
   v15 = v18;
   if (!v14 && v15)
@@ -225,18 +225,18 @@
     }
   }
 
-  v17 = [v15 conversationServiceDataSourceError];
-  v10[2](v10, v14, v17);
+  conversationServiceDataSourceError = [v15 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v14, conversationServiceDataSourceError);
 }
 
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  handlesCopy = handles;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v18 = 0;
-  v14 = [v13 setInvitedHandles:v12 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 error:&v18];
+  v14 = [dataSource setInvitedHandles:handlesCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy error:&v18];
 
   v15 = v18;
   if (!v14 && v15)
@@ -248,18 +248,18 @@
     }
   }
 
-  v17 = [v15 conversationServiceDataSourceError];
-  v10[2](v10, v14, v17);
+  conversationServiceDataSourceError = [v15 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v14, conversationServiceDataSourceError);
 }
 
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 reply:(id)a6
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  nameCopy = name;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v18 = 0;
-  v14 = [v13 setName:v12 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 error:&v18];
+  v14 = [dataSource setName:nameCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy error:&v18];
 
   v15 = v18;
   if (!v14 && v15)
@@ -271,17 +271,17 @@
     }
   }
 
-  v17 = [v15 conversationServiceDataSourceError];
-  v10[2](v10, v14, v17);
+  conversationServiceDataSourceError = [v15 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v14, conversationServiceDataSourceError);
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 reply:(id)a5
+- (void)setInteger:(int64_t)integer forKey:(id)key reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  keyCopy = key;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v15 = 0;
-  v11 = [v10 setInteger:a3 forKey:v9 error:&v15];
+  v11 = [dataSource setInteger:integer forKey:keyCopy error:&v15];
 
   v12 = v15;
   if ((v11 & 1) == 0 && v12)
@@ -293,17 +293,17 @@
     }
   }
 
-  v14 = [v12 conversationServiceDataSourceError];
-  v8[2](v8, v11, v14);
+  conversationServiceDataSourceError = [v12 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v11, conversationServiceDataSourceError);
 }
 
-- (void)integerForKey:(id)a3 reply:(id)a4
+- (void)integerForKey:(id)key reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  keyCopy = key;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 integerForKey:v7 error:&v13];
+  v9 = [dataSource integerForKey:keyCopy error:&v13];
 
   v10 = v13;
   if (!v9 && v10)
@@ -315,18 +315,18 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
-- (void)setString:(id)a3 forKey:(id)a4 reply:(id)a5
+- (void)setString:(id)string forKey:(id)key reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  keyCopy = key;
+  stringCopy = string;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v16 = 0;
-  v12 = [v11 setString:v10 forKey:v9 error:&v16];
+  v12 = [dataSource setString:stringCopy forKey:keyCopy error:&v16];
 
   v13 = v16;
   if ((v12 & 1) == 0 && v13)
@@ -338,17 +338,17 @@
     }
   }
 
-  v15 = [v13 conversationServiceDataSourceError];
-  v8[2](v8, v12, v15);
+  conversationServiceDataSourceError = [v13 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v12, conversationServiceDataSourceError);
 }
 
-- (void)stringForKey:(id)a3 reply:(id)a4
+- (void)stringForKey:(id)key reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FTConversationServiceConnectionManager *)self dataSource];
+  replyCopy = reply;
+  keyCopy = key;
+  dataSource = [(FTConversationServiceConnectionManager *)self dataSource];
   v13 = 0;
-  v9 = [v8 stringForKey:v7 error:&v13];
+  v9 = [dataSource stringForKey:keyCopy error:&v13];
 
   v10 = v13;
   if (!v9 && v10)
@@ -360,8 +360,8 @@
     }
   }
 
-  v12 = [v10 conversationServiceDataSourceError];
-  v6[2](v6, v9, v12);
+  conversationServiceDataSourceError = [v10 conversationServiceDataSourceError];
+  replyCopy[2](replyCopy, v9, conversationServiceDataSourceError);
 }
 
 @end

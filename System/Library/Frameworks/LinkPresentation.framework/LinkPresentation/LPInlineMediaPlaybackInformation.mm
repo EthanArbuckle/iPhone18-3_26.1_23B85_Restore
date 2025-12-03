@@ -1,36 +1,36 @@
 @interface LPInlineMediaPlaybackInformation
-+ (id)_inlineiTunesMediaPlaybackInformationWithType:(unint64_t)a3 storeIdentifier:(id)a4 storefrontIdentifier:(id)a5 offers:(id)a6 previewURL:(id)a7 lyricExcerpt:(id)a8 startTime:(double)a9;
-+ (id)albumPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5;
-+ (id)audioBookPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 previewURL:(id)a5 persistentIdentifier:(id)a6;
-+ (id)audioFilePlaybackInformationWithAudio:(id)a3;
-+ (id)playlistPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4;
-+ (id)podcastEpisodePlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5 startTime:(double)a6;
-+ (id)podcastPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5;
-+ (id)radioPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4;
-+ (id)songPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5 previewURL:(id)a6 lyricExcerpt:(id)a7;
++ (id)_inlineiTunesMediaPlaybackInformationWithType:(unint64_t)type storeIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers previewURL:(id)l lyricExcerpt:(id)excerpt startTime:(double)time;
++ (id)albumPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers;
++ (id)audioBookPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier previewURL:(id)l persistentIdentifier:(id)persistentIdentifier;
++ (id)audioFilePlaybackInformationWithAudio:(id)audio;
++ (id)playlistPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier;
++ (id)podcastEpisodePlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers startTime:(double)time;
++ (id)podcastPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers;
++ (id)radioPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier;
++ (id)songPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers previewURL:(id)l lyricExcerpt:(id)excerpt;
 - (BOOL)isAvailableForAnonymousDownload;
 - (unint64_t)availability;
 @end
 
 @implementation LPInlineMediaPlaybackInformation
 
-+ (id)_inlineiTunesMediaPlaybackInformationWithType:(unint64_t)a3 storeIdentifier:(id)a4 storefrontIdentifier:(id)a5 offers:(id)a6 previewURL:(id)a7 lyricExcerpt:(id)a8 startTime:(double)a9
++ (id)_inlineiTunesMediaPlaybackInformationWithType:(unint64_t)type storeIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers previewURL:(id)l lyricExcerpt:(id)excerpt startTime:(double)time
 {
-  v16 = a4;
-  v22 = a5;
-  v21 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v16 | v17)
+  identifierCopy = identifier;
+  storefrontIdentifierCopy = storefrontIdentifier;
+  offersCopy = offers;
+  lCopy = l;
+  excerptCopy = excerpt;
+  if (identifierCopy | lCopy)
   {
     v19 = objc_alloc_init(LPInlineMediaPlaybackInformation);
-    v19->_type = a3;
-    objc_storeStrong(&v19->_storeIdentifier, a4);
-    objc_storeStrong(&v19->_storefrontIdentifier, a5);
-    objc_storeStrong(&v19->_offers, a6);
-    objc_storeStrong(&v19->_previewURL, a7);
-    objc_storeStrong(&v19->_lyricExcerpt, a8);
-    v19->_startTime = a9;
+    v19->_type = type;
+    objc_storeStrong(&v19->_storeIdentifier, identifier);
+    objc_storeStrong(&v19->_storefrontIdentifier, storefrontIdentifier);
+    objc_storeStrong(&v19->_offers, offers);
+    objc_storeStrong(&v19->_previewURL, l);
+    objc_storeStrong(&v19->_lyricExcerpt, excerpt);
+    v19->_startTime = time;
   }
 
   else
@@ -41,62 +41,62 @@
   return v19;
 }
 
-+ (id)songPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5 previewURL:(id)a6 lyricExcerpt:(id)a7
++ (id)songPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers previewURL:(id)l lyricExcerpt:(id)excerpt
 {
-  v7 = [a1 _inlineiTunesMediaPlaybackInformationWithType:0 storeIdentifier:a3 storefrontIdentifier:a4 offers:a5 previewURL:a6 lyricExcerpt:a7 startTime:0.0];
+  v7 = [self _inlineiTunesMediaPlaybackInformationWithType:0 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:offers previewURL:l lyricExcerpt:excerpt startTime:0.0];
 
   return v7;
 }
 
-+ (id)albumPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5
++ (id)albumPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers
 {
-  v5 = [a1 _inlineiTunesMediaPlaybackInformationWithType:1 storeIdentifier:a3 storefrontIdentifier:a4 offers:a5 previewURL:0 lyricExcerpt:0 startTime:0.0];
+  v5 = [self _inlineiTunesMediaPlaybackInformationWithType:1 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:offers previewURL:0 lyricExcerpt:0 startTime:0.0];
 
   return v5;
 }
 
-+ (id)radioPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4
++ (id)radioPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier
 {
-  v4 = [a1 _inlineiTunesMediaPlaybackInformationWithType:2 storeIdentifier:a3 storefrontIdentifier:a4 offers:0 previewURL:0 lyricExcerpt:0 startTime:0.0];
+  v4 = [self _inlineiTunesMediaPlaybackInformationWithType:2 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:0 previewURL:0 lyricExcerpt:0 startTime:0.0];
 
   return v4;
 }
 
-+ (id)podcastPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5
++ (id)podcastPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers
 {
-  v5 = [a1 _inlineiTunesMediaPlaybackInformationWithType:3 storeIdentifier:a3 storefrontIdentifier:a4 offers:a5 previewURL:0 lyricExcerpt:0 startTime:0.0];
+  v5 = [self _inlineiTunesMediaPlaybackInformationWithType:3 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:offers previewURL:0 lyricExcerpt:0 startTime:0.0];
 
   return v5;
 }
 
-+ (id)podcastEpisodePlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 offers:(id)a5 startTime:(double)a6
++ (id)podcastEpisodePlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier offers:(id)offers startTime:(double)time
 {
-  v6 = [a1 _inlineiTunesMediaPlaybackInformationWithType:4 storeIdentifier:a3 storefrontIdentifier:a4 offers:a5 previewURL:0 lyricExcerpt:0 startTime:a6];
+  v6 = [self _inlineiTunesMediaPlaybackInformationWithType:4 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:offers previewURL:0 lyricExcerpt:0 startTime:time];
 
   return v6;
 }
 
-+ (id)playlistPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4
++ (id)playlistPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier
 {
-  v4 = [a1 _inlineiTunesMediaPlaybackInformationWithType:5 storeIdentifier:a3 storefrontIdentifier:a4 offers:0 previewURL:0 lyricExcerpt:0 startTime:0.0];
+  v4 = [self _inlineiTunesMediaPlaybackInformationWithType:5 storeIdentifier:identifier storefrontIdentifier:storefrontIdentifier offers:0 previewURL:0 lyricExcerpt:0 startTime:0.0];
 
   return v4;
 }
 
-+ (id)audioBookPlaybackInformationWithStoreIdentifier:(id)a3 storefrontIdentifier:(id)a4 previewURL:(id)a5 persistentIdentifier:(id)a6
++ (id)audioBookPlaybackInformationWithStoreIdentifier:(id)identifier storefrontIdentifier:(id)storefrontIdentifier previewURL:(id)l persistentIdentifier:(id)persistentIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12 | v13)
+  identifierCopy = identifier;
+  storefrontIdentifierCopy = storefrontIdentifier;
+  lCopy = l;
+  persistentIdentifierCopy = persistentIdentifier;
+  if (lCopy | persistentIdentifierCopy)
   {
     v14 = objc_alloc_init(LPInlineMediaPlaybackInformation);
     v14->_type = 6;
-    objc_storeStrong(&v14->_storeIdentifier, a3);
-    objc_storeStrong(&v14->_storefrontIdentifier, a4);
-    objc_storeStrong(&v14->_previewURL, a5);
-    objc_storeStrong(&v14->_persistentIdentifier, a6);
+    objc_storeStrong(&v14->_storeIdentifier, identifier);
+    objc_storeStrong(&v14->_storefrontIdentifier, storefrontIdentifier);
+    objc_storeStrong(&v14->_previewURL, l);
+    objc_storeStrong(&v14->_persistentIdentifier, persistentIdentifier);
   }
 
   else
@@ -107,13 +107,13 @@
   return v14;
 }
 
-+ (id)audioFilePlaybackInformationWithAudio:(id)a3
++ (id)audioFilePlaybackInformationWithAudio:(id)audio
 {
-  v3 = a3;
+  audioCopy = audio;
   v4 = objc_alloc_init(LPInlineMediaPlaybackInformation);
   v4->_type = 7;
   audio = v4->_audio;
-  v4->_audio = v3;
+  v4->_audio = audioCopy;
 
   return v4;
 }

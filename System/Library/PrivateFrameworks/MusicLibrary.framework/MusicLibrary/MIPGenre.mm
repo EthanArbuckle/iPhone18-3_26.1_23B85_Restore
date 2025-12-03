@@ -1,36 +1,36 @@
 @interface MIPGenre
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStoreId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStoreId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPGenre
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[4] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[4] & 2) != 0)
   {
-    self->_storeId = v4[2];
+    self->_storeId = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(MIPGenre *)self setName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_persistentId = v4[1];
+    self->_persistentId = fromCopy[1];
     *&self->_has |= 1u;
   }
 }
@@ -61,31 +61,31 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_storeId != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_storeId != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   name = self->_name;
-  if (name | *(v4 + 3))
+  if (name | *(equalCopy + 3))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -95,13 +95,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v6 = *(v4 + 32);
+    v6 = *(equalCopy + 32);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_persistentId != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_persistentId != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -114,9 +114,9 @@ LABEL_15:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -124,7 +124,7 @@ LABEL_15:
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -137,74 +137,74 @@ LABEL_15:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_storeId;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_storeId;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_name)
   {
-    v5 = v4;
-    [v4 setName:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_persistentId;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_persistentId;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storeId];
-    [v3 setObject:v4 forKey:@"storeId"];
+    [dictionary setObject:v4 forKey:@"storeId"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentId];
-    [v3 setObject:v6 forKey:@"persistentId"];
+    [dictionary setObject:v6 forKey:@"persistentId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -213,15 +213,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = MIPGenre;
   v4 = [(MIPGenre *)&v8 description];
-  v5 = [(MIPGenre *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPGenre *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasStoreId:(BOOL)a3
+- (void)setHasStoreId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }

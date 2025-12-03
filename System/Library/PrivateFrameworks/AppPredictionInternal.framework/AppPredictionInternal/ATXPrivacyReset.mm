@@ -56,8 +56,8 @@ void __33__ATXPrivacyReset_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_resetPrivacyWarningsNotificationToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_resetPrivacyWarningsNotificationToken];
 
   v4.receiver = self;
   v4.super_class = ATXPrivacyReset;
@@ -66,17 +66,17 @@ void __33__ATXPrivacyReset_sharedInstance__block_invoke()
 
 - (id)_placeholderPath
 {
-  v2 = [MEMORY[0x277CEBCB0] appPredictionDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"ATXPrivacyResetTriggered"];
+  appPredictionDirectory = [MEMORY[0x277CEBCB0] appPredictionDirectory];
+  v3 = [appPredictionDirectory stringByAppendingPathComponent:@"ATXPrivacyResetTriggered"];
 
   return v3;
 }
 
 - (BOOL)_placeholderExists
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(ATXPrivacyReset *)self _placeholderPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _placeholderPath = [(ATXPrivacyReset *)self _placeholderPath];
+  v5 = [defaultManager fileExistsAtPath:_placeholderPath];
 
   return v5;
 }
@@ -87,13 +87,13 @@ void __33__ATXPrivacyReset_sharedInstance__block_invoke()
   {
     v8[7] = v2;
     v8[8] = v3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__ATXPrivacyReset__registerForResetPrivacyWarningsNotification__block_invoke;
     v8[3] = &unk_278599D40;
     v8[4] = self;
-    v6 = [v5 addObserverForName:@"com.apple.Preferences.ResetPrivacyWarningsNotification" object:0 queue:0 usingBlock:v8];
+    v6 = [defaultCenter addObserverForName:@"com.apple.Preferences.ResetPrivacyWarningsNotification" object:0 queue:0 usingBlock:v8];
     resetPrivacyWarningsNotificationToken = self->_resetPrivacyWarningsNotificationToken;
     self->_resetPrivacyWarningsNotificationToken = v6;
   }
@@ -129,9 +129,9 @@ void __50__ATXPrivacyReset__handlePrivacyResetNotification__block_invoke(uint64_
 
 - (void)_writeDeletionPlaceholder
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(ATXPrivacyReset *)self _placeholderPath];
-  [v4 createFileAtPath:v3 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _placeholderPath = [(ATXPrivacyReset *)self _placeholderPath];
+  [defaultManager createFileAtPath:_placeholderPath contents:0 attributes:0];
 }
 
 - (void)_removeAllBlendingUICaches

@@ -1,12 +1,12 @@
 @interface RUISetupAssistantStyle
 - (RUISetupAssistantStyle)init;
 - (id)_backgroundColor;
-- (id)barBackgroundImageForUserInterfaceStyle:(int64_t)a3;
-- (void)_applyToFooter:(id)a3 view:(id)a4;
-- (void)_applyToTitleLabel:(id)a3;
-- (void)applyToLabel:(id)a3;
-- (void)applyToNavigationBar:(id)a3;
-- (void)applyToObjectModel:(id)a3;
+- (id)barBackgroundImageForUserInterfaceStyle:(int64_t)style;
+- (void)_applyToFooter:(id)footer view:(id)view;
+- (void)_applyToTitleLabel:(id)label;
+- (void)applyToLabel:(id)label;
+- (void)applyToNavigationBar:(id)bar;
+- (void)applyToObjectModel:(id)model;
 @end
 
 @implementation RUISetupAssistantStyle
@@ -18,16 +18,16 @@
   v2 = [(RUIStyle *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] _labelColor];
-    [(RUIStyle *)v2 setHeaderLabelTextColor:v3];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [(RUIStyle *)v2 setHeaderLabelTextColor:_labelColor];
 
     [(RUIStyle *)v2 setHeaderLabelAlignment:1];
-    v4 = [MEMORY[0x277D75348] _labelColor];
-    [(RUIStyle *)v2 setSubHeaderLabelTextColor:v4];
+    _labelColor2 = [MEMORY[0x277D75348] _labelColor];
+    [(RUIStyle *)v2 setSubHeaderLabelTextColor:_labelColor2];
 
     [(RUIStyle *)v2 setSubHeaderLabelAlignment:1];
-    v5 = [MEMORY[0x277D75348] _labelColor];
-    [(RUIStyle *)v2 setDetailHeaderLabelTextColor:v5];
+    _labelColor3 = [MEMORY[0x277D75348] _labelColor];
+    [(RUIStyle *)v2 setDetailHeaderLabelTextColor:_labelColor3];
 
     [(RUIStyle *)v2 setFooterLabelAlignment:1];
     v6 = objc_alloc_init(RUISetupAssitantLayout);
@@ -40,13 +40,13 @@
   return v2;
 }
 
-- (id)barBackgroundImageForUserInterfaceStyle:(int64_t)a3
+- (id)barBackgroundImageForUserInterfaceStyle:(int64_t)style
 {
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   v7.width = 1.0;
   v7.height = 1.0;
   UIGraphicsBeginImageContext(v7);
-  [v3 set];
+  [systemBackgroundColor set];
   v8.origin.x = 0.0;
   v8.origin.y = 0.0;
   v8.size.width = 1.0;
@@ -58,38 +58,38 @@
   return v4;
 }
 
-- (void)_applyToTitleLabel:(id)a3
+- (void)_applyToTitleLabel:(id)label
 {
-  v3 = a3;
-  v4 = [getBFFStyleClass() sharedStyle];
-  [v4 applyThemeToTitleLabel:v3];
+  labelCopy = label;
+  sharedStyle = [getBFFStyleClass() sharedStyle];
+  [sharedStyle applyThemeToTitleLabel:labelCopy];
 }
 
-- (void)applyToLabel:(id)a3
+- (void)applyToLabel:(id)label
 {
-  v3 = a3;
-  v4 = [getBFFStyleClass() sharedStyle];
-  [v4 applyThemeToLabel:v3];
+  labelCopy = label;
+  sharedStyle = [getBFFStyleClass() sharedStyle];
+  [sharedStyle applyThemeToLabel:labelCopy];
 }
 
 - (id)_backgroundColor
 {
-  v2 = [getBFFStyleClass() sharedStyle];
-  v3 = [v2 backgroundColor];
+  sharedStyle = [getBFFStyleClass() sharedStyle];
+  backgroundColor = [sharedStyle backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)_applyToFooter:(id)a3 view:(id)a4
+- (void)_applyToFooter:(id)footer view:(id)view
 {
-  v7 = a4;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v7 linkButton];
-    v5 = [v4 titleLabel];
+    linkButton = [viewCopy linkButton];
+    titleLabel = [linkButton titleLabel];
     v6 = UISystemFontForSize();
-    [v5 setFont:v6];
+    [titleLabel setFont:v6];
   }
 }
 
@@ -109,16 +109,16 @@ id __57__RUISetupAssistantStyle_insetGroupedCellBackgroundColor__block_invoke(ui
   return v2;
 }
 
-- (void)applyToObjectModel:(id)a3
+- (void)applyToObjectModel:(id)model
 {
   v113 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v109.receiver = self;
   v109.super_class = RUISetupAssistantStyle;
-  [(RUIStyle *)&v109 applyToObjectModel:v4];
-  [v4 setNextButtonStyle:2];
-  v83 = v4;
-  [v4 allPages];
+  [(RUIStyle *)&v109 applyToObjectModel:modelCopy];
+  [modelCopy setNextButtonStyle:2];
+  v83 = modelCopy;
+  [modelCopy allPages];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -146,23 +146,23 @@ id __57__RUISetupAssistantStyle_insetGroupedCellBackgroundColor__block_invoke(ui
         [v9 loadViewIfNeeded];
         if ([v9 hasWebView])
         {
-          v10 = [v9 webViewOM];
-          v11 = [v10 webView];
+          webViewOM = [v9 webViewOM];
+          webView = [webViewOM webView];
 
-          v12 = [v11 scrollView];
-          [v12 setDecelerationRate:v84];
+          scrollView = [webView scrollView];
+          [scrollView setDecelerationRate:v84];
 
-          [v11 evaluateJavaScript:@"document.body.style.webkitUserSelect='none';" completionHandler:0];
+          [webView evaluateJavaScript:@"document.body.style.webkitUserSelect='none';" completionHandler:0];
         }
 
-        v13 = [v9 attributes];
-        v14 = [v13 objectForKeyedSubscript:@"horizontalMargin"];
+        attributes = [v9 attributes];
+        v14 = [attributes objectForKeyedSubscript:@"horizontalMargin"];
 
         if (v14)
         {
-          v15 = [v9 attributes];
-          v16 = [v15 objectForKeyedSubscript:@"horizontalMargin"];
-          [v16 floatValue];
+          attributes2 = [v9 attributes];
+          view2 = [attributes2 objectForKeyedSubscript:@"horizontalMargin"];
+          [view2 floatValue];
           v18 = v17;
 LABEL_10:
           [v9 setCustomMargin:v18];
@@ -171,27 +171,27 @@ LABEL_11:
           goto LABEL_12;
         }
 
-        v15 = [v9 view];
-        v49 = [v15 superview];
-        if (!v49)
+        attributes2 = [v9 view];
+        superview = [attributes2 superview];
+        if (!superview)
         {
           goto LABEL_11;
         }
 
-        v50 = v49;
-        v51 = [v9 hasTableView];
+        v50 = superview;
+        hasTableView = [v9 hasTableView];
 
-        if ((v51 & 1) == 0)
+        if ((hasTableView & 1) == 0)
         {
-          v52 = [v9 view];
-          v53 = [v52 traitCollection];
-          v54 = [v53 horizontalSizeClass];
+          view = [v9 view];
+          traitCollection = [view traitCollection];
+          horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-          if (v54 == 1)
+          if (horizontalSizeClass == 1)
           {
-            v15 = [getBFFStyleClass() sharedStyle];
-            v16 = [v9 view];
-            [v15 horizontalMarginForView:v16];
+            attributes2 = [getBFFStyleClass() sharedStyle];
+            view2 = [v9 view];
+            [attributes2 horizontalMarginForView:view2];
             goto LABEL_10;
           }
 
@@ -199,39 +199,39 @@ LABEL_11:
         }
 
 LABEL_12:
-        v19 = [v9 titleLabel];
-        [(RUISetupAssistantStyle *)self _applyToTitleLabel:v19];
+        titleLabel = [v9 titleLabel];
+        [(RUISetupAssistantStyle *)self _applyToTitleLabel:titleLabel];
 
-        v20 = [(RUISetupAssistantStyle *)self _backgroundColor];
+        _backgroundColor = [(RUISetupAssistantStyle *)self _backgroundColor];
 
-        if (v20)
+        if (_backgroundColor)
         {
-          v21 = [(RUISetupAssistantStyle *)self _backgroundColor];
-          v22 = [v9 view];
-          [v22 setBackgroundColor:v21];
+          _backgroundColor2 = [(RUISetupAssistantStyle *)self _backgroundColor];
+          view3 = [v9 view];
+          [view3 setBackgroundColor:_backgroundColor2];
         }
 
         if ([v9 hasTableView])
         {
           v89 = v9;
           v90 = v8;
-          v23 = [v9 tableViewOM];
-          v24 = [v23 tableView];
-          v25 = [MEMORY[0x277D75348] clearColor];
-          [v24 setBackgroundColor:v25];
+          tableViewOM = [v9 tableViewOM];
+          tableView = [tableViewOM tableView];
+          clearColor = [MEMORY[0x277D75348] clearColor];
+          [tableView setBackgroundColor:clearColor];
 
-          [v24 setBackgroundView:0];
+          [tableView setBackgroundView:0];
           v26 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
-          [v24 setSeparatorBottomShadowColor:v26];
+          [tableView setSeparatorBottomShadowColor:v26];
 
-          v88 = v23;
-          v27 = [v23 sections];
+          v88 = tableViewOM;
+          sections = [tableViewOM sections];
           v101 = 0u;
           v102 = 0u;
           v103 = 0u;
           v104 = 0u;
-          v91 = v27;
-          v93 = [v27 countByEnumeratingWithState:&v101 objects:v111 count:16];
+          v91 = sections;
+          v93 = [sections countByEnumeratingWithState:&v101 objects:v111 count:16];
           if (v93)
           {
             v92 = *v102;
@@ -240,7 +240,7 @@ LABEL_12:
               v28 = 0;
               do
               {
-                v29 = self;
+                selfCopy = self;
                 if (*v102 != v92)
                 {
                   objc_enumerationMutation(v91);
@@ -248,12 +248,12 @@ LABEL_12:
 
                 v94 = *(*(&v101 + 1) + 8 * v28);
                 v95 = v28;
-                v30 = [v94 rows];
+                rows = [v94 rows];
                 v97 = 0u;
                 v98 = 0u;
                 v99 = 0u;
                 v100 = 0u;
-                v31 = [v30 countByEnumeratingWithState:&v97 objects:v110 count:16];
+                v31 = [rows countByEnumeratingWithState:&v97 objects:v110 count:16];
                 if (v31)
                 {
                   v32 = v31;
@@ -264,48 +264,48 @@ LABEL_12:
                     {
                       if (*v98 != v33)
                       {
-                        objc_enumerationMutation(v30);
+                        objc_enumerationMutation(rows);
                       }
 
                       v35 = *(*(&v97 + 1) + 8 * i);
-                      v36 = [v35 tableCell];
-                      if ([v24 style] == 2)
+                      tableCell = [v35 tableCell];
+                      if ([tableView style] == 2)
                       {
-                        v37 = [v36 backgroundColor];
-                        if (v37)
+                        backgroundColor = [tableCell backgroundColor];
+                        if (backgroundColor)
                         {
-                          [v36 setBackgroundColor:v37];
+                          [tableCell setBackgroundColor:backgroundColor];
                         }
 
                         else
                         {
-                          v38 = [(RUISetupAssistantStyle *)v29 insetGroupedCellBackgroundColor];
-                          [v36 setBackgroundColor:v38];
+                          insetGroupedCellBackgroundColor = [(RUISetupAssistantStyle *)selfCopy insetGroupedCellBackgroundColor];
+                          [tableCell setBackgroundColor:insetGroupedCellBackgroundColor];
                         }
                       }
 
-                      v39 = [v35 attributes];
-                      v40 = [v39 objectForKey:@"class"];
+                      attributes3 = [v35 attributes];
+                      v40 = [attributes3 objectForKey:@"class"];
                       v41 = [v40 isEqualToString:@"label"];
 
                       if (v41)
                       {
-                        v42 = [v36 ruiTextLabel];
-                        [v42 setAdjustsFontSizeToFitWidth:1];
-                        [v42 setMinimumScaleFactor:0.70588237];
+                        ruiTextLabel = [tableCell ruiTextLabel];
+                        [ruiTextLabel setAdjustsFontSizeToFitWidth:1];
+                        [ruiTextLabel setMinimumScaleFactor:0.70588237];
                       }
                     }
 
-                    v32 = [v30 countByEnumeratingWithState:&v97 objects:v110 count:16];
+                    v32 = [rows countByEnumeratingWithState:&v97 objects:v110 count:16];
                   }
 
                   while (v32);
                 }
 
-                v43 = [v94 footer];
-                v44 = [v94 footerView];
-                self = v29;
-                [(RUISetupAssistantStyle *)v29 _applyToFooter:v43 view:v44];
+                footer = [v94 footer];
+                footerView = [v94 footerView];
+                self = selfCopy;
+                [(RUISetupAssistantStyle *)selfCopy _applyToFooter:footer view:footerView];
 
                 v28 = v95 + 1;
               }
@@ -321,71 +321,71 @@ LABEL_12:
           v6 = v86;
           v9 = v89;
           v8 = v90;
-          v45 = v88;
+          passcodeViewOM = v88;
           goto LABEL_45;
         }
 
         if ([v9 hasPasscodeView])
         {
-          v45 = [v9 passcodeViewOM];
-          v46 = [v45 passcodeView];
-          v47 = [(RUISetupAssistantStyle *)self _backgroundColor];
-          [v46 setBackgroundColor:v47];
+          passcodeViewOM = [v9 passcodeViewOM];
+          passcodeView = [passcodeViewOM passcodeView];
+          _backgroundColor3 = [(RUISetupAssistantStyle *)self _backgroundColor];
+          [passcodeView setBackgroundColor:_backgroundColor3];
 
-          v24 = [v45 footer];
-          v48 = [v45 footerView];
-          [(RUISetupAssistantStyle *)self _applyToFooter:v24 view:v48];
+          tableView = [passcodeViewOM footer];
+          footerView2 = [passcodeViewOM footerView];
+          [(RUISetupAssistantStyle *)self _applyToFooter:tableView view:footerView2];
 
 LABEL_45:
           goto LABEL_46;
         }
 
-        v55 = [(RUISetupAssistantStyle *)self _backgroundColor];
+        _backgroundColor4 = [(RUISetupAssistantStyle *)self _backgroundColor];
 
-        if (v55)
+        if (_backgroundColor4)
         {
-          v45 = [v9 containerView];
-          v24 = [(RUISetupAssistantStyle *)self _backgroundColor];
-          [v45 setBackgroundColor:v24];
+          passcodeViewOM = [v9 containerView];
+          tableView = [(RUISetupAssistantStyle *)self _backgroundColor];
+          [passcodeViewOM setBackgroundColor:tableView];
           goto LABEL_45;
         }
 
 LABEL_46:
-        v56 = [v9 toolbar];
-        if (v56)
+        toolbar = [v9 toolbar];
+        if (toolbar)
         {
           if (!+[RUIPlatform isSolariumEnabled])
           {
-            [v56 setTranslucent:1];
-            [v56 _setHidesShadow:1];
-            v57 = [v9 traitCollection];
-            v58 = -[RUISetupAssistantStyle barBackgroundImageForUserInterfaceStyle:](self, "barBackgroundImageForUserInterfaceStyle:", [v57 userInterfaceStyle]);
-            [v56 setBackgroundImage:v58 forToolbarPosition:0 barMetrics:0];
+            [toolbar setTranslucent:1];
+            [toolbar _setHidesShadow:1];
+            traitCollection2 = [v9 traitCollection];
+            v58 = -[RUISetupAssistantStyle barBackgroundImageForUserInterfaceStyle:](self, "barBackgroundImageForUserInterfaceStyle:", [traitCollection2 userInterfaceStyle]);
+            [toolbar setBackgroundImage:v58 forToolbarPosition:0 barMetrics:0];
 
-            v59 = [MEMORY[0x277D759A0] mainScreen];
-            v60 = [v59 traitCollection];
-            v61 = [v60 userInterfaceStyle];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            traitCollection3 = [mainScreen traitCollection];
+            userInterfaceStyle = [traitCollection3 userInterfaceStyle];
 
-            if (v61 == 2)
+            if (userInterfaceStyle == 2)
             {
-              v62 = [MEMORY[0x277D75348] lightGrayColor];
-              [v56 setBackgroundColor:v62];
+              lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+              [toolbar setBackgroundColor:lightGrayColor];
             }
           }
         }
 
-        v63 = [v9 view];
-        [v63 setEdgesPreservingSuperviewLayoutMargins:15];
+        view4 = [v9 view];
+        [view4 setEdgesPreservingSuperviewLayoutMargins:15];
 
-        v64 = [v9 view];
-        [v64 directionalLayoutMargins];
+        view5 = [v9 view];
+        [view5 directionalLayoutMargins];
         v66 = v65;
         v68 = v67;
         v96 = v69;
         v71 = v70;
 
-        v72 = [(RUISetupAssistantStyle *)self setupAssistantLayout];
-        [v72 directionalLayoutMarginsForViewController:v9];
+        setupAssistantLayout = [(RUISetupAssistantStyle *)self setupAssistantLayout];
+        [setupAssistantLayout directionalLayoutMarginsForViewController:v9];
         v74 = v73;
         v76 = v75;
         v78 = v77;
@@ -393,8 +393,8 @@ LABEL_46:
 
         if (v68 != v76 || v66 != v74 || v71 != v80 || v96 != v78)
         {
-          v81 = [v9 view];
-          [v81 setDirectionalLayoutMargins:{v74, v76, v78, v80}];
+          view6 = [v9 view];
+          [view6 setDirectionalLayoutMargins:{v74, v76, v78, v80}];
         }
 
         ++v8;
@@ -409,21 +409,21 @@ LABEL_46:
   }
 }
 
-- (void)applyToNavigationBar:(id)a3
+- (void)applyToNavigationBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v8.receiver = self;
   v8.super_class = RUISetupAssistantStyle;
-  [(RUIStyle *)&v8 applyToNavigationBar:v4];
+  [(RUIStyle *)&v8 applyToNavigationBar:barCopy];
   if (!+[RUIPlatform isSolariumEnabled])
   {
-    [v4 _setHidesShadow:1];
+    [barCopy _setHidesShadow:1];
     v5 = objc_opt_new();
-    [v4 setBackgroundImage:v5 forBarMetrics:0];
+    [barCopy setBackgroundImage:v5 forBarMetrics:0];
 
     v6 = [MEMORY[0x277D75210] effectWithStyle:4];
     v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v6];
-    [v4 _setBackgroundView:v7];
+    [barCopy _setBackgroundView:v7];
   }
 }
 

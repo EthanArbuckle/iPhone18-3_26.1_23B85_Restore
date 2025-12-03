@@ -2,16 +2,16 @@
 - (id)multiplayerService;
 - (id)utilityService;
 - (void)completeGameRecording;
-- (void)completeMatchRecording:(id)a3 matchType:(id)a4;
-- (void)emitMultiplayerMessage:(id)a3;
-- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)a3 descriptionAddition:(id)a4 handler:(id)a5;
-- (void)getMultiPlayerGroups:(id)a3;
-- (void)initiateRelayRequest:(id)a3 completionHandler:(id)a4;
+- (void)completeMatchRecording:(id)recording matchType:(id)type;
+- (void)emitMultiplayerMessage:(id)message;
+- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)identifier descriptionAddition:(id)addition handler:(id)handler;
+- (void)getMultiPlayerGroups:(id)groups;
+- (void)initiateRelayRequest:(id)request completionHandler:(id)handler;
 - (void)removeInviteSession;
-- (void)revokePseudonym:(id)a3 completionHandler:(id)a4;
-- (void)sendInvitationUpdate:(id)a3 handler:(id)a4;
-- (void)sendReconnectInvitation:(id)a3 toPlayer:(id)a4 connectionData:(id)a5 sessionToken:(id)a6 pushToken:(id)a7 handler:(id)a8;
-- (void)updateRelayRequest:(id)a3 completionHandler:(id)a4;
+- (void)revokePseudonym:(id)pseudonym completionHandler:(id)handler;
+- (void)sendInvitationUpdate:(id)update handler:(id)handler;
+- (void)sendReconnectInvitation:(id)invitation toPlayer:(id)player connectionData:(id)data sessionToken:(id)token pushToken:(id)pushToken handler:(id)handler;
+- (void)updateRelayRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation GKMultiplayerDaemonProxyHelper
@@ -19,104 +19,104 @@
 - (id)multiplayerService
 {
   v2 = +[GKDaemonProxy proxyForLocalPlayer];
-  v3 = [v2 multiplayerService];
+  multiplayerService = [v2 multiplayerService];
 
-  return v3;
+  return multiplayerService;
 }
 
 - (id)utilityService
 {
   v2 = +[GKDaemonProxy proxyForLocalPlayer];
-  v3 = [v2 utilityService];
+  utilityService = [v2 utilityService];
 
-  return v3;
+  return utilityService;
 }
 
-- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)a3 descriptionAddition:(id)a4 handler:(id)a5
+- (void)fileMultiplayerTTRWithCallBackIdentifier:(id)identifier descriptionAddition:(id)addition handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v11 fileMultiplayerTTRWithCallBackIdentifier:v10 descriptionAddition:v9 handler:v8];
+  handlerCopy = handler;
+  additionCopy = addition;
+  identifierCopy = identifier;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService fileMultiplayerTTRWithCallBackIdentifier:identifierCopy descriptionAddition:additionCopy handler:handlerCopy];
 }
 
-- (void)getMultiPlayerGroups:(id)a3
+- (void)getMultiPlayerGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v5 getMultiPlayerGroups:v4];
+  groupsCopy = groups;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService getMultiPlayerGroups:groupsCopy];
 }
 
-- (void)initiateRelayRequest:(id)a3 completionHandler:(id)a4
+- (void)initiateRelayRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v8 initiateRelayRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService initiateRelayRequest:requestCopy handler:handlerCopy];
 }
 
 - (void)removeInviteSession
 {
-  v2 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v2 removeInviteSession];
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService removeInviteSession];
 }
 
-- (void)revokePseudonym:(id)a3 completionHandler:(id)a4
+- (void)revokePseudonym:(id)pseudonym completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v8 revokePseudonym:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  pseudonymCopy = pseudonym;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService revokePseudonym:pseudonymCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)sendInvitationUpdate:(id)a3 handler:(id)a4
+- (void)sendInvitationUpdate:(id)update handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v8 sendInvitationUpdate:v7 handler:v6];
+  handlerCopy = handler;
+  updateCopy = update;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService sendInvitationUpdate:updateCopy handler:handlerCopy];
 }
 
-- (void)sendReconnectInvitation:(id)a3 toPlayer:(id)a4 connectionData:(id)a5 sessionToken:(id)a6 pushToken:(id)a7 handler:(id)a8
+- (void)sendReconnectInvitation:(id)invitation toPlayer:(id)player connectionData:(id)data sessionToken:(id)token pushToken:(id)pushToken handler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v20 sendReconnectInvitation:v19 toPlayer:v18 connectionData:v17 sessionToken:v16 pushToken:v15 handler:v14];
+  handlerCopy = handler;
+  pushTokenCopy = pushToken;
+  tokenCopy = token;
+  dataCopy = data;
+  playerCopy = player;
+  invitationCopy = invitation;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService sendReconnectInvitation:invitationCopy toPlayer:playerCopy connectionData:dataCopy sessionToken:tokenCopy pushToken:pushTokenCopy handler:handlerCopy];
 }
 
-- (void)updateRelayRequest:(id)a3 completionHandler:(id)a4
+- (void)updateRelayRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
-  [v8 updateRelayRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  multiplayerService = [(GKMultiplayerDaemonProxyHelper *)self multiplayerService];
+  [multiplayerService updateRelayRequest:requestCopy handler:handlerCopy];
 }
 
 - (void)completeGameRecording
 {
-  v2 = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
-  [v2 completeGameRecording];
+  utilityService = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
+  [utilityService completeGameRecording];
 }
 
-- (void)completeMatchRecording:(id)a3 matchType:(id)a4
+- (void)completeMatchRecording:(id)recording matchType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
-  [v8 completeMatchRecording:v7 matchType:v6];
+  typeCopy = type;
+  recordingCopy = recording;
+  utilityService = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
+  [utilityService completeMatchRecording:recordingCopy matchType:typeCopy];
 }
 
-- (void)emitMultiplayerMessage:(id)a3
+- (void)emitMultiplayerMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
-  [v5 emitMultiplayerMessage:v4];
+  messageCopy = message;
+  utilityService = [(GKMultiplayerDaemonProxyHelper *)self utilityService];
+  [utilityService emitMultiplayerMessage:messageCopy];
 }
 
 @end

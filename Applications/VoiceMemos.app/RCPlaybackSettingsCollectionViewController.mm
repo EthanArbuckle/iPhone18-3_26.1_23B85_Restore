@@ -4,16 +4,16 @@
 - (RCPlaybackSettingsDelegate)settingsDelegate;
 - (id)_createCollectionViewLayout;
 - (id)_createDiffableDataSource;
-- (id)_enhanceRecordingToggleCellAtIndexPath:(id)a3;
-- (id)_layerMixSliderCellAtIndexPath:(id)a3;
-- (id)_playbackSpeedSliderCellAtIndexPath:(id)a3;
-- (id)_removeSilenceToggleCellAtIndexPath:(id)a3;
-- (id)_speechIsolatorSliderAtIndexPath:(id)a3;
-- (id)_speechIsolatorToggleAtIndexPath:(id)a3;
+- (id)_enhanceRecordingToggleCellAtIndexPath:(id)path;
+- (id)_layerMixSliderCellAtIndexPath:(id)path;
+- (id)_playbackSpeedSliderCellAtIndexPath:(id)path;
+- (id)_removeSilenceToggleCellAtIndexPath:(id)path;
+- (id)_speechIsolatorSliderAtIndexPath:(id)path;
+- (id)_speechIsolatorToggleAtIndexPath:(id)path;
 - (void)_updateContent;
-- (void)didToggleSwitch:(id)a3 toState:(BOOL)a4;
-- (void)didUpdateSlider:(id)a3 toValue:(double)a4;
-- (void)setPlaybackSettings:(id)a3;
+- (void)didToggleSwitch:(id)switch toState:(BOOL)state;
+- (void)didUpdateSlider:(id)slider toValue:(double)value;
+- (void)setPlaybackSettings:(id)settings;
 - (void)viewDidLoad;
 @end
 
@@ -21,10 +21,10 @@
 
 - (RCPlaybackSettingsCollectionViewController)init
 {
-  v3 = [(RCPlaybackSettingsCollectionViewController *)self _createCollectionViewLayout];
+  _createCollectionViewLayout = [(RCPlaybackSettingsCollectionViewController *)self _createCollectionViewLayout];
   v6.receiver = self;
   v6.super_class = RCPlaybackSettingsCollectionViewController;
-  v4 = [(RCPlaybackSettingsCollectionViewController *)&v6 initWithCollectionViewLayout:v3];
+  v4 = [(RCPlaybackSettingsCollectionViewController *)&v6 initWithCollectionViewLayout:_createCollectionViewLayout];
 
   return v4;
 }
@@ -34,44 +34,44 @@
   v22.receiver = self;
   v22.super_class = RCPlaybackSettingsCollectionViewController;
   [(RCPlaybackSettingsCollectionViewController *)&v22 viewDidLoad];
-  v3 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
-  [v3 setAllowsSelection:0];
-  v4 = [(RCPlaybackSettingsCollectionViewController *)self _createDiffableDataSource];
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  [collectionView setAllowsSelection:0];
+  _createDiffableDataSource = [(RCPlaybackSettingsCollectionViewController *)self _createDiffableDataSource];
   diffableDataSource = self->_diffableDataSource;
-  self->_diffableDataSource = v4;
+  self->_diffableDataSource = _createDiffableDataSource;
 
-  [v3 setDataSource:self->_diffableDataSource];
+  [collectionView setDataSource:self->_diffableDataSource];
   v6 = objc_opt_class();
   v7 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper playbackSpeedSectionHeaderCellIdentifier];
-  [v3 registerClass:v6 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v7];
+  [collectionView registerClass:v6 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v7];
 
   v8 = objc_opt_class();
   v9 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper layerMixSectionHeaderCellIdentifier];
-  [v3 registerClass:v8 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v9];
+  [collectionView registerClass:v8 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v9];
 
   v10 = objc_opt_class();
   v11 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper playbackSpeedSliderCellIdentifier];
-  [v3 registerClass:v10 forCellWithReuseIdentifier:v11];
+  [collectionView registerClass:v10 forCellWithReuseIdentifier:v11];
 
   v12 = objc_opt_class();
   v13 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper enhanceCellIdentifier];
-  [v3 registerClass:v12 forCellWithReuseIdentifier:v13];
+  [collectionView registerClass:v12 forCellWithReuseIdentifier:v13];
 
   v14 = objc_opt_class();
   v15 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper removeSilenceCellIdentifier];
-  [v3 registerClass:v14 forCellWithReuseIdentifier:v15];
+  [collectionView registerClass:v14 forCellWithReuseIdentifier:v15];
 
   v16 = objc_opt_class();
   v17 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper layerMixCellIdentifier];
-  [v3 registerClass:v16 forCellWithReuseIdentifier:v17];
+  [collectionView registerClass:v16 forCellWithReuseIdentifier:v17];
 
   v18 = objc_opt_class();
   v19 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorToggleCellIdentifier];
-  [v3 registerClass:v18 forCellWithReuseIdentifier:v19];
+  [collectionView registerClass:v18 forCellWithReuseIdentifier:v19];
 
   v20 = objc_opt_class();
   v21 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorSliderCellIdentifier];
-  [v3 registerClass:v20 forCellWithReuseIdentifier:v21];
+  [collectionView registerClass:v20 forCellWithReuseIdentifier:v21];
 
   [(RCPlaybackSettingsCollectionViewController *)self _updateContent];
 }
@@ -79,8 +79,8 @@
 - (void)_updateContent
 {
   v3 = [_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper buildDiffableDataSourceSnapshotWithSpatialAudioRecording:[(RCPlaybackSettings *)self->_playbackSettings isSpatialRecording] multitrackRecording:self->_showLayerMixSlider speechIsolatorEnabled:[(RCPlaybackSettings *)self->_playbackSettings speechIsolatorEnabled]];
-  v4 = [v3 itemIdentifiers];
-  [v3 reconfigureItemsWithIdentifiers:v4];
+  itemIdentifiers = [v3 itemIdentifiers];
+  [v3 reconfigureItemsWithIdentifiers:itemIdentifiers];
 
   objc_initWeak(&location, self);
   diffableDataSource = self->_diffableDataSource;
@@ -94,11 +94,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setPlaybackSettings:(id)a3
+- (void)setPlaybackSettings:(id)settings
 {
-  v5 = a3;
-  objc_storeStrong(&self->_playbackSettings, a3);
-  self->_showLayerMixSlider = [v5 hasMultipleTracks];
+  settingsCopy = settings;
+  objc_storeStrong(&self->_playbackSettings, settings);
+  self->_showLayerMixSlider = [settingsCopy hasMultipleTracks];
   if ([(RCPlaybackSettingsCollectionViewController *)self isViewLoaded])
   {
     [(RCPlaybackSettingsCollectionViewController *)self _updateContent];
@@ -109,13 +109,13 @@
 {
   objc_initWeak(&location, self);
   v3 = [UICollectionViewDiffableDataSource alloc];
-  v4 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000423D0;
   v10[3] = &unk_10028AA28;
   objc_copyWeak(&v11, &location);
-  v5 = [v3 initWithCollectionView:v4 cellProvider:v10];
+  v5 = [v3 initWithCollectionView:collectionView cellProvider:v10];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -131,15 +131,15 @@
   return v6;
 }
 
-- (id)_playbackSpeedSliderCellAtIndexPath:(id)a3
+- (id)_playbackSpeedSliderCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper playbackSpeedSliderCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
-  v8 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v8 playbackSpeed];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [playbackSettings playbackSpeed];
   [v7 setSliderValue:v9];
 
   [v7 setCellActionsDelegate:self];
@@ -147,55 +147,55 @@
   return v7;
 }
 
-- (id)_removeSilenceToggleCellAtIndexPath:(id)a3
+- (id)_removeSilenceToggleCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper removeSilenceCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SKIP_SILENCE_SETTING" value:&stru_100295BB8 table:0];
   [v7 setTitle:v9];
 
   [v7 setAccessibilityIdentifier:@"PlaybackOptions/SkipSilenceSwitch"];
-  v10 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v7 setSwitchState:{objc_msgSend(v10, "silenceRemoved")}];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [v7 setSwitchState:{objc_msgSend(playbackSettings, "silenceRemoved")}];
 
   [v7 setCellActionsDelegate:self];
 
   return v7;
 }
 
-- (id)_enhanceRecordingToggleCellAtIndexPath:(id)a3
+- (id)_enhanceRecordingToggleCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper enhanceCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"ENHANCE_RECORDING_SETTING" value:&stru_100295BB8 table:0];
   [v7 setTitle:v9];
 
   [v7 setAccessibilityIdentifier:@"PlaybackOptions/EnhanceRecordingSwitch"];
-  v10 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v7 setSwitchState:{objc_msgSend(v10, "enhanced")}];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [v7 setSwitchState:{objc_msgSend(playbackSettings, "enhanced")}];
 
   [v7 setCellActionsDelegate:self];
 
   return v7;
 }
 
-- (id)_layerMixSliderCellAtIndexPath:(id)a3
+- (id)_layerMixSliderCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper layerMixCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
-  v8 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v8 layerMix];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [playbackSettings layerMix];
   [v7 setSliderValue:v9];
 
   [v7 setCellActionsDelegate:self];
@@ -203,35 +203,35 @@
   return v7;
 }
 
-- (id)_speechIsolatorToggleAtIndexPath:(id)a3
+- (id)_speechIsolatorToggleAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorToggleCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"STUDIO_VOICE_TOGGLE_SETTING" value:&stru_100295BB8 table:0];
   [v7 setTitle:v9];
 
   [v7 setAccessibilityIdentifier:@"PlaybackOptions/StudioVoiceSwitch"];
-  v10 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v7 setSwitchState:{objc_msgSend(v10, "speechIsolatorEnabled")}];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [v7 setSwitchState:{objc_msgSend(playbackSettings, "speechIsolatorEnabled")}];
 
   [v7 setCellActionsDelegate:self];
 
   return v7;
 }
 
-- (id)_speechIsolatorSliderAtIndexPath:(id)a3
+- (id)_speechIsolatorSliderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
   v6 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorSliderCellIdentifier];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
-  v8 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-  [v8 speechIsolatorValue];
+  playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+  [playbackSettings speechIsolatorValue];
   [v7 setSliderValue:v9];
 
   [v7 setCellActionsDelegate:self];
@@ -255,21 +255,21 @@
   return v3;
 }
 
-- (void)didToggleSwitch:(id)a3 toState:(BOOL)a4
+- (void)didToggleSwitch:(id)switch toState:(BOOL)state
 {
-  v4 = a4;
-  v22 = a3;
+  stateCopy = state;
+  switchCopy = switch;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v22;
+  v7 = switchCopy;
   if (isKindOfClass)
   {
-    v8 = v22;
-    v9 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
-    v10 = [v9 indexPathForCell:v8];
+    v8 = switchCopy;
+    collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+    v10 = [collectionView indexPathForCell:v8];
 
-    v11 = [(RCPlaybackSettingsCollectionViewController *)self diffableDataSource];
-    v12 = [v11 itemIdentifierForIndexPath:v10];
+    diffableDataSource = [(RCPlaybackSettingsCollectionViewController *)self diffableDataSource];
+    v12 = [diffableDataSource itemIdentifierForIndexPath:v10];
 
     v13 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper enhanceCellIdentifier];
     v14 = [v12 isEqual:v13];
@@ -280,19 +280,19 @@
     v17 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorToggleCellIdentifier];
     v18 = [v12 isEqual:v17];
 
-    v19 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-    v20 = [v19 uuid];
+    playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+    uuid = [playbackSettings uuid];
 
     if (v14)
     {
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      [v21 setEnhanced:v4 forUUID:v20];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      [settingsDelegate setEnhanced:stateCopy forUUID:uuid];
     }
 
     else if (v16)
     {
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      [v21 setRemoveSilence:v4 forUUID:v20];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      [settingsDelegate setRemoveSilence:stateCopy forUUID:uuid];
     }
 
     else
@@ -301,12 +301,12 @@
       {
 LABEL_9:
 
-        v7 = v22;
+        v7 = switchCopy;
         goto LABEL_10;
       }
 
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      [v21 setSpeechIsolatorEnabled:v4 forUUID:v20];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      [settingsDelegate setSpeechIsolatorEnabled:stateCopy forUUID:uuid];
     }
 
     goto LABEL_9;
@@ -315,20 +315,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)didUpdateSlider:(id)a3 toValue:(double)a4
+- (void)didUpdateSlider:(id)slider toValue:(double)value
 {
-  v23 = a3;
+  sliderCopy = slider;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v23;
+  v7 = sliderCopy;
   if (isKindOfClass)
   {
-    v8 = v23;
-    v9 = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
-    v10 = [v9 indexPathForCell:v8];
+    v8 = sliderCopy;
+    collectionView = [(RCPlaybackSettingsCollectionViewController *)self collectionView];
+    v10 = [collectionView indexPathForCell:v8];
 
-    v11 = [(RCPlaybackSettingsCollectionViewController *)self diffableDataSource];
-    v12 = [v11 itemIdentifierForIndexPath:v10];
+    diffableDataSource = [(RCPlaybackSettingsCollectionViewController *)self diffableDataSource];
+    v12 = [diffableDataSource itemIdentifierForIndexPath:v10];
 
     v13 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper playbackSpeedSliderCellIdentifier];
     v14 = [v12 isEqual:v13];
@@ -339,19 +339,19 @@ LABEL_10:
     v17 = +[_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper speechIsolatorSliderCellIdentifier];
     v18 = [v12 isEqual:v17];
 
-    v19 = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
-    v20 = [v19 uuid];
+    playbackSettings = [(RCPlaybackSettingsCollectionViewController *)self playbackSettings];
+    uuid = [playbackSettings uuid];
 
     if (v14)
     {
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      [v21 setPlaybackSpeed:v20 forUUID:a4];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      [settingsDelegate setPlaybackSpeed:uuid forUUID:value];
     }
 
     else if (v16)
     {
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      [v21 setLayerMix:v20 forUUID:a4];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      [settingsDelegate setLayerMix:uuid forUUID:value];
     }
 
     else
@@ -360,13 +360,13 @@ LABEL_10:
       {
 LABEL_9:
 
-        v7 = v23;
+        v7 = sliderCopy;
         goto LABEL_10;
       }
 
-      v21 = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
-      *&v22 = a4;
-      [v21 setSpeechIsolatorValue:v20 forUUID:v22];
+      settingsDelegate = [(RCPlaybackSettingsCollectionViewController *)self settingsDelegate];
+      *&v22 = value;
+      [settingsDelegate setSpeechIsolatorValue:uuid forUUID:v22];
     }
 
     goto LABEL_9;

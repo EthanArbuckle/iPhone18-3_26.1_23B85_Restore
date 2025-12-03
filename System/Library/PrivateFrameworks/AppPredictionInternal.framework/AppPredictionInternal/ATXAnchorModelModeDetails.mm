@@ -1,22 +1,22 @@
 @interface ATXAnchorModelModeDetails
-- (ATXAnchorModelModeDetails)initWithModeUUID:(id)a3 isStart:(BOOL)a4;
+- (ATXAnchorModelModeDetails)initWithModeUUID:(id)d isStart:(BOOL)start;
 @end
 
 @implementation ATXAnchorModelModeDetails
 
-- (ATXAnchorModelModeDetails)initWithModeUUID:(id)a3 isStart:(BOOL)a4
+- (ATXAnchorModelModeDetails)initWithModeUUID:(id)d isStart:(BOOL)start
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ATXAnchorModelModeDetails;
   v7 = [(ATXAnchorModelModeDetails *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     modeUUID = v7->_modeUUID;
     v7->_modeUUID = v8;
 
-    v7->_isStart = a4;
+    v7->_isStart = start;
   }
 
   return v7;

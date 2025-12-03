@@ -1,11 +1,11 @@
 @interface CNFRegDisabledController
-- (id)getAccountNameForSpecifier:(id)a3;
+- (id)getAccountNameForSpecifier:(id)specifier;
 - (id)specifierList;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_activateSpinner;
 - (void)_deactivateSpinner;
 - (void)_setupAccountHandlersForDisabledOperation;
-- (void)turnOnTapped:(id)a3;
+- (void)turnOnTapped:(id)tapped;
 @end
 
 @implementation CNFRegDisabledController
@@ -52,32 +52,32 @@
       }
 
       v12 = *(*(&v30 + 1) + 8 * i);
-      v13 = [v12 identifier];
-      v14 = [v13 isEqual:@"FACETIME_DISABLED_SPINNER_ID"];
+      identifier = [v12 identifier];
+      v14 = [identifier isEqual:@"FACETIME_DISABLED_SPINNER_ID"];
 
       if (v14)
       {
         v15 = v12;
-        v16 = self->_spinner;
+        identifier3 = self->_spinner;
         self->_spinner = v15;
       }
 
       else
       {
-        v17 = [v12 identifier];
-        v18 = [v17 isEqual:@"FACETIME_DISABLED_TURN_ON_ID"];
+        identifier2 = [v12 identifier];
+        v18 = [identifier2 isEqual:@"FACETIME_DISABLED_TURN_ON_ID"];
 
         if (v18)
         {
           v19 = v12;
-          v16 = *(&self->super.super.super.super.super.super.super.isa + v4);
+          identifier3 = *(&self->super.super.super.super.super.super.super.isa + v4);
           *(&self->super.super.super.super.super.super.super.isa + v4) = v19;
         }
 
         else
         {
-          v16 = [v12 identifier];
-          if ([v16 isEqualToString:@"FACETIME_ACCOUNT_ID"])
+          identifier3 = [v12 identifier];
+          if ([identifier3 isEqualToString:@"FACETIME_ACCOUNT_ID"])
           {
             v20 = _os_feature_enabled_impl();
 
@@ -89,13 +89,13 @@
             v21 = CommunicationsSetupUIBundle();
             CNFRegStringTableName();
             v23 = v22 = v4;
-            v16 = [v21 localizedStringForKey:@"FACETIME_SETTINGS_ACCOUNT_LABEL_APPLEACCOUNT" value:&stru_2856D3978 table:v23];
+            identifier3 = [v21 localizedStringForKey:@"FACETIME_SETTINGS_ACCOUNT_LABEL_APPLEACCOUNT" value:&stru_2856D3978 table:v23];
 
             v4 = v22;
             v7 = v29;
 
-            [v12 setProperty:v16 forKey:v28];
-            [v12 setName:v16];
+            [v12 setProperty:identifier3 forKey:v28];
+            [v12 setName:identifier3];
           }
         }
       }
@@ -121,11 +121,11 @@ LABEL_20:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CNFRegDisabledController;
-  v4 = [(CNFRegDisabledController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(CNFRegDisabledController *)&v6 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -155,26 +155,26 @@ LABEL_20:
   }
 }
 
-- (void)turnOnTapped:(id)a3
+- (void)turnOnTapped:(id)tapped
 {
   [(CNFRegDisabledController *)self _setupAccountHandlersForDisabledOperation];
   [(CNFRegDisabledController *)self _activateSpinner];
-  v4 = [(CNFRegListController *)self regController];
-  [v4 activateAccounts];
+  regController = [(CNFRegListController *)self regController];
+  [regController activateAccounts];
 }
 
 - (void)_setupAccountHandlersForDisabledOperation
 {
-  v3 = [(CNFRegListController *)self regController];
-  [v3 removeAllHandlers];
-  objc_initWeak(&location, v3);
+  regController = [(CNFRegListController *)self regController];
+  [regController removeAllHandlers];
+  objc_initWeak(&location, regController);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__CNFRegDisabledController__setupAccountHandlersForDisabledOperation__block_invoke;
   v4[3] = &unk_278DE8B38;
   objc_copyWeak(&v5, &location);
   v4[4] = self;
-  [v3 setAccountRegistrationBlock:v4];
+  [regController setAccountRegistrationBlock:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
@@ -245,10 +245,10 @@ void __69__CNFRegDisabledController__setupAccountHandlersForDisabledOperation__b
   }
 }
 
-- (id)getAccountNameForSpecifier:(id)a3
+- (id)getAccountNameForSpecifier:(id)specifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v4 = _os_feature_enabled_impl();
   v5 = CommunicationsSetupUIBundle();
   v6 = CNFRegStringTableName();
@@ -265,12 +265,12 @@ void __69__CNFRegDisabledController__setupAccountHandlersForDisabledOperation__b
   v8 = [v5 localizedStringForKey:v7 value:&stru_2856D3978 table:v6];
 
   memset(v13, 0, sizeof(v13));
-  v9 = [v3 appleIDAccounts];
-  if ([v9 countByEnumeratingWithState:v13 objects:v14 count:16])
+  appleIDAccounts = [regController appleIDAccounts];
+  if ([appleIDAccounts countByEnumeratingWithState:v13 objects:v14 count:16])
   {
-    v10 = [**(&v13[0] + 1) loginDisplayString];
+    loginDisplayString = [**(&v13[0] + 1) loginDisplayString];
 
-    v8 = v10;
+    v8 = loginDisplayString;
   }
 
   v11 = *MEMORY[0x277D85DE8];

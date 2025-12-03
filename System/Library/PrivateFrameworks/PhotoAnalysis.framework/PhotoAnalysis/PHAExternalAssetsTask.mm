@@ -1,16 +1,16 @@
 @interface PHAExternalAssetsTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (PHAExternalAssetsTask)init;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAExternalAssetsTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAExternalAssetsTask timeoutFatal:]", "PHAExternalAssetsTask.m", 80, "NO");
   }
@@ -22,47 +22,47 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v7 = MEMORY[0x277D3B6B0];
-  v8 = a4;
-  v9 = a3;
+  reporterCopy = reporter;
+  managerCopy = manager;
   v10 = [v7 alloc];
-  v11 = [v9 workingContextForExternalRelevance];
+  workingContextForExternalRelevance = [managerCopy workingContextForExternalRelevance];
 
-  v12 = [v10 initWithWorkingContext:v11];
-  LOBYTE(a5) = [v12 processExternalAssetRelevanceInferenceWithError:a5 progressReporter:v8];
+  v12 = [v10 initWithWorkingContext:workingContextForExternalRelevance];
+  LOBYTE(error) = [v12 processExternalAssetRelevanceInferenceWithError:error progressReporter:reporterCopy];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 isSystemPhotoLibrary];
+  managerCopy = manager;
+  photoLibrary = [managerCopy photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if (v5)
+  if (isSystemPhotoLibrary)
   {
-    v6 = [v3 isReady];
+    isReady = [managerCopy isReady];
   }
 
   else
   {
-    v7 = [v3 workingContext];
+    workingContext = [managerCopy workingContext];
 
-    v3 = [v7 loggingConnection];
+    managerCopy = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(managerCopy, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_22FA28000, v3, OS_LOG_TYPE_DEFAULT, "Task is running on a non system photo library, not running external asset processing job", v9, 2u);
+      _os_log_impl(&dword_22FA28000, managerCopy, OS_LOG_TYPE_DEFAULT, "Task is running on a non system photo library, not running external asset processing job", v9, 2u);
     }
 
-    v6 = 0;
+    isReady = 0;
   }
 
-  return v6;
+  return isReady;
 }
 
 - (id)taskClassDependencies

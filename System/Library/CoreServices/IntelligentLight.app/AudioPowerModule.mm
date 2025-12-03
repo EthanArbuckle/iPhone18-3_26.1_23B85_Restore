@@ -1,18 +1,18 @@
 @interface AudioPowerModule
 - (_TtC16IntelligentLight16AudioPowerModule)init;
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5;
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower;
 @end
 
 @implementation AudioPowerModule
 
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
-    v9 = self;
-    sub_1000050AC(a4);
+    selfCopy = self;
+    sub_1000050AC(power);
   }
 }
 

@@ -1,22 +1,22 @@
 @interface CFXRenderer
-+ (__CVBuffer)createBufferWith:(id)a3 size:(CGSize)a4;
++ (__CVBuffer)createBufferWith:(id)with size:(CGSize)size;
 + (void)initialize;
 - (BOOL)livePlayerIsSaturated;
-- (CFXRenderer)initWithDelegate:(id)a3 captureMode:(int64_t)a4;
+- (CFXRenderer)initWithDelegate:(id)delegate captureMode:(int64_t)mode;
 - (CFXRendererDelegate)delegate;
-- (id)CFX_JTEffectsFromCFXEffectComposition:(id)a3 forRenderTime:(id *)a4;
-- (id)CFX_PVFrameSetFromCFXFrame:(id)a3;
+- (id)CFX_JTEffectsFromCFXEffectComposition:(id)composition forRenderTime:(id *)time;
+- (id)CFX_PVFrameSetFromCFXFrame:(id)frame;
 - (id)CFX_getPreviewColorSpace;
-- (id)buildRenderRequest:(id)a3 time:(id *)a4;
+- (id)buildRenderRequest:(id)request time:(id *)time;
 - (id)createJFXAnimojiEffectRenderer;
 - (void)dealloc;
 - (void)flush;
 - (void)pause;
-- (void)renderFrame:(id)a3 effectComposition:(id)a4;
-- (void)renderRequestComplete:(id)a3 results:(id)a4 completedOutOfOrder:(BOOL)a5;
+- (void)renderFrame:(id)frame effectComposition:(id)composition;
+- (void)renderRequestComplete:(id)complete results:(id)results completedOutOfOrder:(BOOL)order;
 - (void)resetMetadataValidation;
 - (void)resume;
-- (void)setTrackingLossDelegate:(id)a3;
+- (void)setTrackingLossDelegate:(id)delegate;
 - (void)shutdown;
 - (void)willDropCameraFrame;
 @end
@@ -37,11 +37,11 @@ void __25__CFXRenderer_initialize__block_invoke()
   [v0 addSuiteNamed:@"com.apple.avfoundation"];
 }
 
-+ (__CVBuffer)createBufferWith:(id)a3 size:(CGSize)a4
++ (__CVBuffer)createBufferWith:(id)with size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  withCopy = with;
   v7 = objc_opt_new();
   [v7 setObject:&unk_28556D548 forKeyedSubscript:*MEMORY[0x277CC4E30]];
   [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CC4E08]];
@@ -60,7 +60,7 @@ void __25__CFXRenderer_initialize__block_invoke()
   v33 = 0.0;
   v30 = 0.0;
   v31 = 0.0;
-  [v6 getRed:&v33 green:&v32 blue:&v31 alpha:&v30];
+  [withCopy getRed:&v33 green:&v32 blue:&v31 alpha:&v30];
   if (v11 > 0.0)
   {
     v12.f64[0] = v30;
@@ -82,38 +82,38 @@ void __25__CFXRenderer_initialize__block_invoke()
   }
 
   CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
-  v18 = [MEMORY[0x277D415E0] extendedSRGBColorSpace];
+  extendedSRGBColorSpace = [MEMORY[0x277D415E0] extendedSRGBColorSpace];
   v19 = pixelBufferOut;
   v20 = *MEMORY[0x277CC4C00];
-  v21 = [v18 nclcTriplet];
-  CVBufferSetAttachment(v19, v20, [v21 colorPrimary], kCVAttachmentMode_ShouldPropagate);
+  nclcTriplet = [extendedSRGBColorSpace nclcTriplet];
+  CVBufferSetAttachment(v19, v20, [nclcTriplet colorPrimary], kCVAttachmentMode_ShouldPropagate);
 
   v22 = pixelBufferOut;
   v23 = *MEMORY[0x277CC4CC0];
-  v24 = [v18 nclcTriplet];
-  CVBufferSetAttachment(v22, v23, [v24 transferFunction], kCVAttachmentMode_ShouldPropagate);
+  nclcTriplet2 = [extendedSRGBColorSpace nclcTriplet];
+  CVBufferSetAttachment(v22, v23, [nclcTriplet2 transferFunction], kCVAttachmentMode_ShouldPropagate);
 
   v25 = pixelBufferOut;
   v26 = *MEMORY[0x277CC4D10];
-  v27 = [v18 nclcTriplet];
-  CVBufferSetAttachment(v25, v26, [v27 ycbcrMatrix], kCVAttachmentMode_ShouldPropagate);
+  nclcTriplet3 = [extendedSRGBColorSpace nclcTriplet];
+  CVBufferSetAttachment(v25, v26, [nclcTriplet3 ycbcrMatrix], kCVAttachmentMode_ShouldPropagate);
 
   v28 = pixelBufferOut;
   return v28;
 }
 
-- (CFXRenderer)initWithDelegate:(id)a3 captureMode:(int64_t)a4
+- (CFXRenderer)initWithDelegate:(id)delegate captureMode:(int64_t)mode
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = CFXRenderer;
   v7 = [(CFXRenderer *)&v39 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_captureMode = a4;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_captureMode = mode;
     v9 = [[JTFrameRateCalculator alloc] initWithWindowSize:1.0];
     fpsCalc = v8->_fpsCalc;
     v8->_fpsCalc = v9;
@@ -126,18 +126,18 @@ void __25__CFXRenderer_initialize__block_invoke()
       v11 = v38;
       v8->_rgbOnlyMemoji = JFXRGBOnlyMemoji(v11);
       v8->_isAnimojiOnlyMode = v8->_captureMode == 3;
-      v12 = [(CFXRenderer *)v8 createJFXAnimojiEffectRenderer];
+      createJFXAnimojiEffectRenderer = [(CFXRenderer *)v8 createJFXAnimojiEffectRenderer];
       animojiRenderer = v8->_animojiRenderer;
-      v8->_animojiRenderer = v12;
+      v8->_animojiRenderer = createJFXAnimojiEffectRenderer;
     }
 
-    v14 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     animojiBackgroundColor = v8->_animojiBackgroundColor;
-    v8->_animojiBackgroundColor = v14;
+    v8->_animojiBackgroundColor = clearColor;
 
-    v16 = [(CFXRenderer *)v8 CFX_getPreviewColorSpace];
+    cFX_getPreviewColorSpace = [(CFXRenderer *)v8 CFX_getPreviewColorSpace];
     v40 = *MEMORY[0x277D41AC0];
-    v41[0] = v16;
+    v41[0] = cFX_getPreviewColorSpace;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v18 = [objc_alloc(MEMORY[0x277D41660]) initWithOptions:v17 delegate:v8];
     livePlayer = v8->_livePlayer;
@@ -147,7 +147,7 @@ void __25__CFXRenderer_initialize__block_invoke()
     v21 = NSStringFromClass(v20);
     [(PVLivePlayer *)v8->_livePlayer setName:v21];
 
-    if (isStreamingMode(a4))
+    if (isStreamingMode(mode))
     {
       v22 = objc_alloc_init(MEMORY[0x277D41688]);
       v23 = CreatePVLPThrottlingControlParameters();
@@ -177,12 +177,12 @@ void __25__CFXRenderer_initialize__block_invoke()
     v8->_cameraSource = v30;
 
     v32 = v8->_livePlayer;
-    v33 = [(CFXRenderer *)v8 cameraSource];
-    [(PVLivePlayer *)v32 setSource:v33 inputID:0];
+    cameraSource = [(CFXRenderer *)v8 cameraSource];
+    [(PVLivePlayer *)v32 setSource:cameraSource inputID:0];
 
     v34 = objc_alloc(MEMORY[0x277D41670]);
-    v35 = [(CFXRenderer *)v8 cameraSource];
-    v36 = [v34 initWithPlayerCameraSource:v35];
+    cameraSource2 = [(CFXRenderer *)v8 cameraSource];
+    v36 = [v34 initWithPlayerCameraSource:cameraSource2];
 
     [(PVLivePlayer *)v8->_livePlayer setRenderLink:v36];
     [(PVLivePlayer *)v8->_livePlayer start];
@@ -211,57 +211,57 @@ void __25__CFXRenderer_initialize__block_invoke()
   [(CFXRenderer *)&v4 dealloc];
 }
 
-- (void)setTrackingLossDelegate:(id)a3
+- (void)setTrackingLossDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CFXRenderer *)self animojiRenderer];
-  [v5 setTrackingLossDelegate:v4];
+  delegateCopy = delegate;
+  animojiRenderer = [(CFXRenderer *)self animojiRenderer];
+  [animojiRenderer setTrackingLossDelegate:delegateCopy];
 }
 
 - (void)resetMetadataValidation
 {
-  v2 = [(CFXRenderer *)self metadataValidator];
-  [v2 reset];
+  metadataValidator = [(CFXRenderer *)self metadataValidator];
+  [metadataValidator reset];
 }
 
 - (void)pause
 {
-  v2 = [(CFXRenderer *)self livePlayer];
-  [v2 stop];
+  livePlayer = [(CFXRenderer *)self livePlayer];
+  [livePlayer stop];
 }
 
 - (void)resume
 {
-  v2 = [(CFXRenderer *)self livePlayer];
-  [v2 start];
+  livePlayer = [(CFXRenderer *)self livePlayer];
+  [livePlayer start];
 }
 
 - (void)shutdown
 {
-  v2 = [(CFXRenderer *)self livePlayer];
-  [v2 shutdown];
+  livePlayer = [(CFXRenderer *)self livePlayer];
+  [livePlayer shutdown];
 }
 
 - (void)flush
 {
-  v2 = [(CFXRenderer *)self livePlayer];
-  [v2 flush];
+  livePlayer = [(CFXRenderer *)self livePlayer];
+  [livePlayer flush];
 }
 
 - (BOOL)livePlayerIsSaturated
 {
-  v2 = [(CFXRenderer *)self livePlayer];
-  v3 = [v2 status] == 2;
+  livePlayer = [(CFXRenderer *)self livePlayer];
+  v3 = [livePlayer status] == 2;
 
   return v3;
 }
 
-- (void)renderFrame:(id)a3 effectComposition:(id)a4
+- (void)renderFrame:(id)frame effectComposition:(id)composition
 {
   v68[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CFXRenderer *)self CFX_PVFrameSetFromCFXFrame:v6];
+  frameCopy = frame;
+  compositionCopy = composition;
+  v8 = [(CFXRenderer *)self CFX_PVFrameSetFromCFXFrame:frameCopy];
   if (v8)
   {
     v9 = v8;
@@ -294,8 +294,8 @@ void __25__CFXRenderer_initialize__block_invoke()
 
     v15 = *v12;
 
-    [v15 setMetadataObject:v7 forKey:@"kEffectCompositionMetadataKey"];
-    v16 = [v7 jtEffectsForType:7];
+    [v15 setMetadataObject:compositionCopy forKey:@"kEffectCompositionMetadataKey"];
+    v16 = [compositionCopy jtEffectsForType:7];
     v17 = +[JFXPickerCameraSource sharedInstance];
     if ([v17 isPickerPreviewing])
     {
@@ -305,42 +305,42 @@ void __25__CFXRenderer_initialize__block_invoke()
       {
 LABEL_12:
         v20 = JFXIsCTMCroppedCameraMode([(CFXRenderer *)self cameraMode]);
-        if ([v7 isEmpty] && !v20)
+        if ([compositionCopy isEmpty] && !v20)
         {
-          v21 = [v15 colorImageBuffer];
-          v22 = [v21 cvPixelBuffer];
+          colorImageBuffer = [v15 colorImageBuffer];
+          cvPixelBuffer = [colorImageBuffer cvPixelBuffer];
           v63 = 0uLL;
           v64 = 0;
-          if (v6)
+          if (frameCopy)
           {
-            [v6 timestamp];
+            [frameCopy timestamp];
           }
 
           v23 = [CFXFrame alloc];
           *buf = v63;
           v62 = v64;
-          v24 = [(CFXFrame *)v23 initWithPixelBuffer:v22 timestamp:buf];
-          v25 = [(CFXRenderer *)self delegate];
+          v24 = [(CFXFrame *)v23 initWithPixelBuffer:cvPixelBuffer timestamp:buf];
+          delegate = [(CFXRenderer *)self delegate];
           *buf = v63;
           v62 = v64;
-          [v25 renderer:self didPrepareToRenderFrameAtPresentationTime:buf];
+          [delegate renderer:self didPrepareToRenderFrameAtPresentationTime:buf];
 
-          v26 = [(CFXRenderer *)self delegate];
-          [v26 renderer:self didRenderFrame:v24];
+          delegate2 = [(CFXRenderer *)self delegate];
+          [delegate2 renderer:self didRenderFrame:v24];
 
           goto LABEL_36;
         }
 
         if ([(CFXRenderer *)self captureMode]!= 3)
         {
-          v52 = [(CFXRenderer *)self fpsCalc];
-          [v52 log:&__block_literal_global_42];
+          fpsCalc = [(CFXRenderer *)self fpsCalc];
+          [fpsCalc log:&__block_literal_global_42];
 
-          v53 = [(CFXRenderer *)self fpsCalc];
-          [v53 tickFrameReceived];
+          fpsCalc2 = [(CFXRenderer *)self fpsCalc];
+          [fpsCalc2 tickFrameReceived];
 
-          v54 = [(CFXRenderer *)self cameraSource];
-          [v54 cameraFrameSetRecieved:v15];
+          cameraSource = [(CFXRenderer *)self cameraSource];
+          [cameraSource cameraFrameSetRecieved:v15];
 
 LABEL_36:
           goto LABEL_37;
@@ -348,32 +348,32 @@ LABEL_36:
 
         v63 = 0uLL;
         v64 = 0;
-        if (v6)
+        if (frameCopy)
         {
-          [v6 timestamp];
+          [frameCopy timestamp];
         }
 
         if ([v16 count])
         {
-          v27 = [v16 firstObject];
+          firstObject = [v16 firstObject];
 
-          if (v27)
+          if (firstObject)
           {
             v28 = [v15 metadataObjectForKey:v10];
-            v58 = [v28 interfaceOrientation];
-            v29 = [v28 captureVideoOrientation];
-            v30 = [v15 metadataDict];
-            v31 = [v30 objectForKey:@"PVFrameSetMetadataOriginalBufferSizeKey"];
+            interfaceOrientation = [v28 interfaceOrientation];
+            captureVideoOrientation = [v28 captureVideoOrientation];
+            metadataDict = [v15 metadataDict];
+            v31 = [metadataDict objectForKey:@"PVFrameSetMetadataOriginalBufferSizeKey"];
             [v31 CGSizeValue];
             v33 = v32;
             v35 = v34;
 
-            v36 = [v15 metadataDict];
-            v37 = [v36 objectForKey:@"PVFrameSetMetadataARMetadataKey"];
+            metadataDict2 = [v15 metadataDict];
+            v37 = [metadataDict2 objectForKey:@"PVFrameSetMetadataARMetadataKey"];
 
             if (v37)
             {
-              v38 = ((v58 - 3) < 2) ^ ((v29 - 5) < 0xFFFFFFFFFFFFFFFELL);
+              v38 = ((interfaceOrientation - 3) < 2) ^ ((captureVideoOrientation - 5) < 0xFFFFFFFFFFFFFFFELL);
               if (v38)
               {
                 v39 = v33;
@@ -403,39 +403,39 @@ LABEL_36:
               v68[1] = v56;
               v67[2] = @"JFXAnimojiRendererMetadata_AVCaptureVideoOrientation";
               v57 = v28;
-              v55 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
+              v55 = [MEMORY[0x277CCABB0] numberWithInteger:captureVideoOrientation];
               v68[2] = v55;
               v67[3] = @"JFXAnimojiRendererMetadata_UIInterfaceOrientation";
-              v41 = [MEMORY[0x277CCABB0] numberWithInteger:v58];
+              v41 = [MEMORY[0x277CCABB0] numberWithInteger:interfaceOrientation];
               v68[3] = v41;
               v67[4] = @"JFXAnimojiRendererMetadata_Effect";
-              v42 = [v16 firstObject];
-              v68[4] = v42;
+              firstObject2 = [v16 firstObject];
+              v68[4] = firstObject2;
               v67[5] = @"JFXAnimojiRendererMetadata_BackgroundColor";
               [(CFXRenderer *)self animojiBackgroundColor];
               v43 = v59 = v37;
               v68[5] = v43;
               v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:v67 count:6];
 
-              v45 = [(CFXRenderer *)self animojiRenderer];
+              animojiRenderer = [(CFXRenderer *)self animojiRenderer];
               *buf = v63;
               v62 = v64;
-              v46 = [v45 renderWithTime:buf metadata:v44];
+              v46 = [animojiRenderer renderWithTime:buf metadata:v44];
 
               if (v46)
               {
-                v47 = [(CFXRenderer *)self delegate];
+                delegate3 = [(CFXRenderer *)self delegate];
                 *buf = v63;
                 v62 = v64;
-                [v47 renderer:self didPrepareToRenderFrameAtPresentationTime:buf];
+                [delegate3 renderer:self didPrepareToRenderFrameAtPresentationTime:buf];
 
                 v48 = [CFXFrame alloc];
-                v49 = [v46 cvPixelBuffer];
+                cvPixelBuffer2 = [v46 cvPixelBuffer];
                 *buf = v63;
                 v62 = v64;
-                v50 = [(CFXFrame *)v48 initWithPixelBuffer:v49 timestamp:buf];
-                v51 = [(CFXRenderer *)self delegate];
-                [v51 renderer:self didRenderFrame:v50];
+                v50 = [(CFXFrame *)v48 initWithPixelBuffer:cvPixelBuffer2 timestamp:buf];
+                delegate4 = [(CFXRenderer *)self delegate];
+                [delegate4 renderer:self didRenderFrame:v50];
 
 LABEL_35:
                 goto LABEL_36;
@@ -459,8 +459,8 @@ LABEL_35:
       }
 
       v17 = +[JFXPickerCameraSource sharedInstance];
-      v19 = [v17 pickerSource];
-      [v19 cameraFrameSetRecieved:v15];
+      pickerSource = [v17 pickerSource];
+      [pickerSource cameraFrameSetRecieved:v15];
     }
 
     goto LABEL_12;
@@ -471,13 +471,13 @@ LABEL_37:
 
 - (void)willDropCameraFrame
 {
-  v2 = [(CFXRenderer *)self cameraSource];
-  [v2 cameraFrameSetDropped];
+  cameraSource = [(CFXRenderer *)self cameraSource];
+  [cameraSource cameraFrameSetDropped];
 }
 
-- (id)buildRenderRequest:(id)a3 time:(id *)a4
+- (id)buildRenderRequest:(id)request time:(id *)time
 {
-  v6 = [a3 objectForKeyedSubscript:&unk_28556D5D8];
+  v6 = [request objectForKeyedSubscript:&unk_28556D5D8];
   v7 = v6;
   if (v6)
   {
@@ -486,8 +486,8 @@ LABEL_37:
     *&time[16] = v46;
     CMTimeGetSeconds(time);
     kdebug_trace();
-    v8 = [(CFXRenderer *)self fpsCalc];
-    [v8 tickReceived];
+    fpsCalc = [(CFXRenderer *)self fpsCalc];
+    [fpsCalc tickReceived];
 
     v9 = +[CFXMediaSettings sharedInstance];
     [v9 renderSize];
@@ -501,50 +501,50 @@ LABEL_37:
 
     v19 = [v7 metadataObjectForKey:@"kEffectCompositionMetadataKey"];
     v20 = [JFXCapturePreviewProperties alloc];
-    v21 = [(CFXRenderer *)self cameraMode];
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
-    v22 = [(JFXCapturePreviewProperties *)v20 initWithCameraFrameSet:v7 renderCameraMode:v21 renderTime:time renderOutputSize:v11 frameSize:v13, v16, v18];
+    cameraMode = [(CFXRenderer *)self cameraMode];
+    *time = *&time->var0;
+    *&time[16] = time->var3;
+    v22 = [(JFXCapturePreviewProperties *)v20 initWithCameraFrameSet:v7 renderCameraMode:cameraMode renderTime:time renderOutputSize:v11 frameSize:v13, v16, v18];
     v23 = [JFXCapturePreviewRequestBuilder alloc];
-    v24 = [(PVLivePlayer *)self->_livePlayer outputColorSpace];
+    outputColorSpace = [(PVLivePlayer *)self->_livePlayer outputColorSpace];
     v42 = v22;
-    v25 = [(JFXCapturePreviewRequestBuilder *)v23 initWithPreviewProperties:v22 outputColorSpace:v24];
+    v25 = [(JFXCapturePreviewRequestBuilder *)v23 initWithPreviewProperties:v22 outputColorSpace:outputColorSpace];
 
-    *time = *&a4->var0;
-    *&time[16] = a4->var3;
+    *time = *&time->var0;
+    *&time[16] = time->var3;
     v26 = [(CFXRenderer *)self CFX_JTEffectsFromCFXEffectComposition:v19 forRenderTime:time];
-    v27 = [(CFXRenderer *)self animojiRenderer];
-    v28 = [(CFXRenderer *)self metadataValidator];
+    animojiRenderer = [(CFXRenderer *)self animojiRenderer];
+    metadataValidator = [(CFXRenderer *)self metadataValidator];
     v29 = +[JFXPickerCameraSource sharedInstance];
-    v30 = [v29 isPickerPreviewing];
+    isPickerPreviewing = [v29 isPickerPreviewing];
     v31 = *(MEMORY[0x277CBF2C0] + 16);
     *time = *MEMORY[0x277CBF2C0];
     *&time[16] = v31;
     v44 = *(MEMORY[0x277CBF2C0] + 32);
-    v32 = [(JFXCapturePreviewRequestBuilder *)v25 createPVRenderRequestUsingAnimojiRenderer:v27 metadataValidator:v28 additionalTransform:time effectStack:v26 animojiTapPoint:v30 animojiUsesInterfaceOrientation:1 requestHandler:0];
+    v32 = [(JFXCapturePreviewRequestBuilder *)v25 createPVRenderRequestUsingAnimojiRenderer:animojiRenderer metadataValidator:metadataValidator additionalTransform:time effectStack:v26 animojiTapPoint:isPickerPreviewing animojiUsesInterfaceOrientation:1 requestHandler:0];
 
-    v33 = [(CFXRenderer *)self animojiRenderer];
+    animojiRenderer2 = [(CFXRenderer *)self animojiRenderer];
 
-    if (v33)
+    if (animojiRenderer2)
     {
       v34 = [CFXEffectType effectTypeWithIdentifier:@"Animoji"];
       if ([v19 hasEffectOfType:v34])
       {
-        v35 = [v7 metadataDict];
-        v36 = [v35 objectForKey:@"PVFrameSetMetadataARMetadataKey"];
+        metadataDict = [v7 metadataDict];
+        v36 = [metadataDict objectForKey:@"PVFrameSetMetadataARMetadataKey"];
 
-        v37 = [(CFXRenderer *)self animojiRenderer];
-        v38 = [v37 trackingLossDelegate];
+        animojiRenderer3 = [(CFXRenderer *)self animojiRenderer];
+        trackingLossDelegate = [animojiRenderer3 trackingLossDelegate];
 
-        v39 = [v36 arFrame];
-        if (v39)
+        arFrame = [v36 arFrame];
+        if (arFrame)
         {
         }
 
-        else if ([v38 shouldShowAnimojiFaceReticle])
+        else if ([trackingLossDelegate shouldShowAnimojiFaceReticle])
         {
-          [v38 setupAnimojiFaceReticleForTrackingLoss];
-          [v38 showAnimojiFaceReticleForTrackingLoss];
+          [trackingLossDelegate setupAnimojiFaceReticleForTrackingLoss];
+          [trackingLossDelegate showAnimojiFaceReticleForTrackingLoss];
         }
       }
     }
@@ -561,10 +561,10 @@ LABEL_37:
     kdebug_trace();
     memset(time, 0, 24);
     [v7 presentationTimeStamp];
-    v40 = [(CFXRenderer *)self delegate];
+    delegate = [(CFXRenderer *)self delegate];
     v45 = *time;
     v46 = *&time[16];
-    [v40 renderer:self didPrepareToRenderFrameAtPresentationTime:&v45];
+    [delegate renderer:self didPrepareToRenderFrameAtPresentationTime:&v45];
   }
 
   else
@@ -575,15 +575,15 @@ LABEL_37:
   return v32;
 }
 
-- (void)renderRequestComplete:(id)a3 results:(id)a4 completedOutOfOrder:(BOOL)a5
+- (void)renderRequestComplete:(id)complete results:(id)results completedOutOfOrder:(BOOL)order
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 userContext];
-  v11 = v10;
-  if (v10)
+  completeCopy = complete;
+  resultsCopy = results;
+  userContext = [completeCopy userContext];
+  v11 = userContext;
+  if (userContext)
   {
-    [v10 presentationTimeStamp];
+    [userContext presentationTimeStamp];
   }
 
   else
@@ -594,10 +594,10 @@ LABEL_37:
   time = v29;
   CMTimeGetSeconds(&time);
   kdebug_trace();
-  if (a5 || ![v9 count])
+  if (order || ![resultsCopy count])
   {
-    v12 = [(CFXRenderer *)self fpsCalc];
-    [v12 tickDropped];
+    fpsCalc = [(CFXRenderer *)self fpsCalc];
+    [fpsCalc tickDropped];
     goto LABEL_26;
   }
 
@@ -614,7 +614,7 @@ LABEL_37:
   time = v29;
   CMTimeGetSeconds(&time);
   kdebug_trace();
-  v12 = [v11 metadataObjectForKey:@"kEffectCompositionMetadataKey"];
+  fpsCalc = [v11 metadataObjectForKey:@"kEffectCompositionMetadataKey"];
   [v11 setMetadataObject:0 forKey:@"kEffectCompositionMetadataKey"];
   v13 = +[JFXPickerCameraSource sharedInstance];
   if (![v13 isPickerPreviewing])
@@ -622,15 +622,15 @@ LABEL_37:
     goto LABEL_18;
   }
 
-  v14 = [v12 jtEffectsForType:7];
+  v14 = [fpsCalc jtEffectsForType:7];
   v15 = [v14 count];
 
   if (v15)
   {
-    if ([v9 count] >= 2)
+    if ([resultsCopy count] >= 2)
     {
-      v16 = [v9 objectAtIndexedSubscript:1];
-      v17 = [v16 cvPixelBuffer];
+      v16 = [resultsCopy objectAtIndexedSubscript:1];
+      cvPixelBuffer = [v16 cvPixelBuffer];
       v18 = [CFXFrame alloc];
       if (v11)
       {
@@ -642,23 +642,23 @@ LABEL_37:
         memset(&time, 0, sizeof(time));
       }
 
-      v19 = [(CFXFrame *)v18 initWithPixelBuffer:v17 timestamp:&time];
+      v19 = [(CFXFrame *)v18 initWithPixelBuffer:cvPixelBuffer timestamp:&time];
       v20 = [(CFXRenderer *)self CFX_PVFrameSetFromCFXFrame:v19];
 
       v11 = v20;
     }
 
     v13 = +[JFXPickerCameraSource sharedInstance];
-    v21 = [v13 pickerSource];
-    [v21 cameraFrameSetRecieved:v11];
+    pickerSource = [v13 pickerSource];
+    [pickerSource cameraFrameSetRecieved:v11];
 
 LABEL_18:
   }
 
-  v22 = [v9 objectAtIndexedSubscript:0];
-  v23 = [v22 cvPixelBuffer];
-  v24 = [v11 colorImageBuffer];
-  CVBufferPropagateAttachments([v24 cvPixelBuffer], v23);
+  v22 = [resultsCopy objectAtIndexedSubscript:0];
+  cvPixelBuffer2 = [v22 cvPixelBuffer];
+  colorImageBuffer = [v11 colorImageBuffer];
+  CVBufferPropagateAttachments([colorImageBuffer cvPixelBuffer], cvPixelBuffer2);
 
   v25 = [CFXFrame alloc];
   if (v11)
@@ -671,10 +671,10 @@ LABEL_18:
     memset(&time, 0, sizeof(time));
   }
 
-  v26 = [(CFXFrame *)v25 initWithPixelBuffer:v23 timestamp:&time];
-  if (v8)
+  v26 = [(CFXFrame *)v25 initWithPixelBuffer:cvPixelBuffer2 timestamp:&time];
+  if (completeCopy)
   {
-    [v8 time];
+    [completeCopy time];
   }
 
   else
@@ -684,42 +684,42 @@ LABEL_18:
 
   time = v28;
   [(CFXFrame *)v26 setRequestTime:&time, *&v28.value, v28.epoch];
-  v27 = [(CFXRenderer *)self delegate];
-  [v27 renderer:self didRenderFrame:v26];
+  delegate = [(CFXRenderer *)self delegate];
+  [delegate renderer:self didRenderFrame:v26];
 
 LABEL_26:
 }
 
-- (id)CFX_PVFrameSetFromCFXFrame:(id)a3
+- (id)CFX_PVFrameSetFromCFXFrame:(id)frame
 {
-  v3 = a3;
-  v4 = [v3 pvFrameSet];
-  if (!v4)
+  frameCopy = frame;
+  pvFrameSet = [frameCopy pvFrameSet];
+  if (!pvFrameSet)
   {
-    v5 = [v3 pixelBuffer];
-    if (v5)
+    pixelBuffer = [frameCopy pixelBuffer];
+    if (pixelBuffer)
     {
-      v6 = v5;
+      capturedImage = pixelBuffer;
     }
 
     else
     {
-      v7 = [v3 arFrame];
-      v6 = [v7 capturedImage];
+      arFrame = [frameCopy arFrame];
+      capturedImage = [arFrame capturedImage];
 
-      if (!v6)
+      if (!capturedImage)
       {
-        v4 = 0;
+        pvFrameSet = 0;
         goto LABEL_8;
       }
     }
 
-    v8 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:v6];
+    v8 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:capturedImage];
     v16 = 0uLL;
     v17 = 0;
-    if (v3)
+    if (frameCopy)
     {
-      [v3 timestamp];
+      [frameCopy timestamp];
     }
 
     memset(&v15, 0, sizeof(v15));
@@ -730,26 +730,26 @@ LABEL_26:
     v14 = v17;
     v12 = v15;
     v10 = [MEMORY[0x277D415D8] sampleBufferWithPVImageBuffer:v8 timestamp:&v13 frameDuration:&v12];
-    v4 = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v10 metadata:0];
+    pvFrameSet = [objc_alloc(MEMORY[0x277D41608]) initWithColorBuffer:v10 metadata:0];
   }
 
 LABEL_8:
 
-  return v4;
+  return pvFrameSet;
 }
 
-- (id)CFX_JTEffectsFromCFXEffectComposition:(id)a3 forRenderTime:(id *)a4
+- (id)CFX_JTEffectsFromCFXEffectComposition:(id)composition forRenderTime:(id *)time
 {
-  v5 = [a3 effects];
-  v6 = [MEMORY[0x277CBEB18] array];
+  effects = [composition effects];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__CFXRenderer_CFX_JTEffectsFromCFXEffectComposition_forRenderTime___block_invoke;
   v9[3] = &unk_278D7C978;
-  v11 = *a4;
-  v7 = v6;
+  v11 = *time;
+  v7 = array;
   v10 = v7;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [effects enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -800,17 +800,17 @@ void __67__CFXRenderer_CFX_JTEffectsFromCFXEffectComposition_forRenderTime___blo
 
 - (id)CFX_getPreviewColorSpace
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 jfx_displayColorSpace];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  jfx_displayColorSpace = [currentDevice jfx_displayColorSpace];
 
   v4 = MEMORY[0x277D415E0];
   v5 = +[JFXVideoCameraController sharedInstance];
   v6 = [v4 jfx_getColorSpaceFromCaptureColorSpace:{objc_msgSend(v5, "cameraColorSpace")}];
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 jfx_recommendedDisplayColorSpaceForColorSpace:v6];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  v8 = [currentDevice2 jfx_recommendedDisplayColorSpaceForColorSpace:v6];
 
-  v9 = [MEMORY[0x277D415E0] jfx_compareAndChooseLesserColorSpace:v3 right:v8];
+  v9 = [MEMORY[0x277D415E0] jfx_compareAndChooseLesserColorSpace:jfx_displayColorSpace right:v8];
 
   return v9;
 }

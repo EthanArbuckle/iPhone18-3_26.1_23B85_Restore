@@ -1,57 +1,57 @@
 @interface TVRCKeyboardState
-+ (id)keyboardStateFromDevice:(id)a3;
-- (TVRCKeyboardState)initWithCoder:(id)a3;
-- (TVRCKeyboardState)initWithDevice:(id)a3;
++ (id)keyboardStateFromDevice:(id)device;
+- (TVRCKeyboardState)initWithCoder:(id)coder;
+- (TVRCKeyboardState)initWithDevice:(id)device;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCKeyboardState
 
-+ (id)keyboardStateFromDevice:(id)a3
++ (id)keyboardStateFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[TVRCKeyboardState alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[TVRCKeyboardState alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (TVRCKeyboardState)initWithDevice:(id)a3
+- (TVRCKeyboardState)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = TVRCKeyboardState;
   v5 = [(TVRCKeyboardState *)&v12 init];
   if (v5)
   {
-    v6 = [v4 keyboardController];
-    v5->_isEditing = [v6 isEditing];
-    v7 = [v6 text];
+    keyboardController = [deviceCopy keyboardController];
+    v5->_isEditing = [keyboardController isEditing];
+    text = [keyboardController text];
     text = v5->_text;
-    v5->_text = v7;
+    v5->_text = text;
 
-    v9 = [v6 attributes];
+    attributes = [keyboardController attributes];
     attributes = v5->_attributes;
-    v5->_attributes = v9;
+    v5->_attributes = attributes;
   }
 
   return v5;
 }
 
-- (TVRCKeyboardState)initWithCoder:(id)a3
+- (TVRCKeyboardState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TVRCKeyboardState;
   v5 = [(TVRCKeyboardState *)&v11 init];
   if (v5)
   {
-    v5->_isEditing = [v4 decodeBoolForKey:@"isEditing"];
-    v6 = [v4 decodeObjectForKey:@"text"];
+    v5->_isEditing = [coderCopy decodeBoolForKey:@"isEditing"];
+    v6 = [coderCopy decodeObjectForKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v8;
   }
@@ -59,13 +59,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isEditing = self->_isEditing;
-  v5 = a3;
-  [v5 encodeBool:isEditing forKey:@"isEditing"];
-  [v5 encodeObject:self->_text forKey:@"text"];
-  [v5 encodeObject:self->_attributes forKey:@"attributes"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isEditing forKey:@"isEditing"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeObject:self->_attributes forKey:@"attributes"];
 }
 
 - (id)description

@@ -1,40 +1,40 @@
 @interface _CNUIUserActionDialRequestItem
-- (BOOL)isEqual:(id)a3;
-- (_CNUIUserActionDialRequestItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 dialRequest:(id)a6 group:(int64_t)a7 options:(unint64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (_CNUIUserActionDialRequestItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier dialRequest:(id)request group:(int64_t)group options:(unint64_t)options;
 - (id)description;
-- (id)performActionWithContext:(id)a3;
+- (id)performActionWithContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation _CNUIUserActionDialRequestItem
 
-- (_CNUIUserActionDialRequestItem)initWithType:(id)a3 contactProperty:(id)a4 bundleIdentifier:(id)a5 dialRequest:(id)a6 group:(int64_t)a7 options:(unint64_t)a8
+- (_CNUIUserActionDialRequestItem)initWithType:(id)type contactProperty:(id)property bundleIdentifier:(id)identifier dialRequest:(id)request group:(int64_t)group options:(unint64_t)options
 {
-  v15 = a6;
+  requestCopy = request;
   v20.receiver = self;
   v20.super_class = _CNUIUserActionDialRequestItem;
-  v16 = [(CNUIUserActionItem *)&v20 initWithType:a3 contactProperty:a4 bundleIdentifier:a5 group:a7 options:a8];
+  v16 = [(CNUIUserActionItem *)&v20 initWithType:type contactProperty:property bundleIdentifier:identifier group:group options:options];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_dialRequest, a6);
+    objc_storeStrong(&v16->_dialRequest, request);
     v18 = v17;
   }
 
   return v17;
 }
 
-- (id)performActionWithContext:(id)a3
+- (id)performActionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(_CNUIUserActionDialRequestItem *)v5 dialRequest];
-  v7 = [v6 provider];
-  if ([v7 isTelephonyProvider])
+  contextCopy = context;
+  selfCopy = self;
+  dialRequest = [(_CNUIUserActionDialRequestItem *)selfCopy dialRequest];
+  provider = [dialRequest provider];
+  if ([provider isTelephonyProvider])
   {
     v8 = *MEMORY[0x1E6996568];
-    v9 = [v4 channelIdentifier];
-    LOBYTE(v8) = (*(v8 + 16))(v8, v9);
+    channelIdentifier = [contextCopy channelIdentifier];
+    LOBYTE(v8) = (*(v8 + 16))(v8, channelIdentifier);
 
     if (v8)
     {
@@ -42,32 +42,32 @@
     }
 
     v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [v4 channelIdentifier];
-    v11 = [v10 initWithUUIDString:v7];
-    [v6 setLocalSenderIdentityAccountUUID:v11];
+    provider = [contextCopy channelIdentifier];
+    v11 = [v10 initWithUUIDString:provider];
+    [dialRequest setLocalSenderIdentityAccountUUID:v11];
   }
 
 LABEL_5:
-  if ([(CNUIUserActionItem *)v5 shouldCurateIfPerformed])
+  if ([(CNUIUserActionItem *)selfCopy shouldCurateIfPerformed])
   {
-    v12 = [v4 actionCurator];
-    v13 = [v12 curateUserAction:v5];
+    actionCurator = [contextCopy actionCurator];
+    v13 = [actionCurator curateUserAction:selfCopy];
 
-    v5 = v13;
+    selfCopy = v13;
   }
 
-  v14 = [v4 dialRequestOpener];
-  v15 = [MEMORY[0x1E6996818] globalAsyncScheduler];
-  v16 = [v14 openDialRequest:v6 withScheduler:v15];
+  dialRequestOpener = [contextCopy dialRequestOpener];
+  globalAsyncScheduler = [MEMORY[0x1E6996818] globalAsyncScheduler];
+  v16 = [dialRequestOpener openDialRequest:dialRequest withScheduler:globalAsyncScheduler];
 
-  if (v5)
+  if (selfCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __59___CNUIUserActionDialRequestItem_performActionWithContext___block_invoke;
     v18[3] = &unk_1E76E83B8;
-    v19 = v4;
-    v20 = v5;
+    v19 = contextCopy;
+    v20 = selfCopy;
     [v16 addSuccessBlock:v18];
   }
 
@@ -77,31 +77,31 @@ LABEL_5:
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUIUserActionItem *)self type];
-  v5 = [v3 appendObject:v4 withName:@"type"];
+  type = [(CNUIUserActionItem *)self type];
+  v5 = [v3 appendObject:type withName:@"type"];
 
-  v6 = [(CNUIUserActionItem *)self label];
-  v7 = [v3 appendObject:v6 withName:@"label"];
+  label = [(CNUIUserActionItem *)self label];
+  v7 = [v3 appendObject:label withName:@"label"];
 
-  v8 = [(CNUIUserActionItem *)self targetHandle];
-  v9 = [v3 appendObject:v8 withName:@"targetHandle"];
+  targetHandle = [(CNUIUserActionItem *)self targetHandle];
+  v9 = [v3 appendObject:targetHandle withName:@"targetHandle"];
 
-  v10 = [(CNUIUserActionItem *)self bundleIdentifier];
-  v11 = [v3 appendObject:v10 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(CNUIUserActionItem *)self bundleIdentifier];
+  v11 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v12 = [(_CNUIUserActionDialRequestItem *)self dialRequest];
-  v13 = [v3 appendObject:v12 withName:@"dialRequest"];
+  dialRequest = [(_CNUIUserActionDialRequestItem *)self dialRequest];
+  v13 = [v3 appendObject:dialRequest withName:@"dialRequest"];
 
   v14 = [v3 appendName:@"group" integerValue:{-[CNUIUserActionItem group](self, "group")}];
   v15 = [v3 appendName:@"options" unsignedInteger:{-[CNUIUserActionItem options](self, "options")}];
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v21 = MEMORY[0x1E69966F0];
   v5 = objc_opt_class();
   v36[0] = MEMORY[0x1E69E9820];
@@ -109,7 +109,7 @@ LABEL_5:
   v36[2] = __42___CNUIUserActionDialRequestItem_isEqual___block_invoke;
   v36[3] = &unk_1E76E7A88;
   v36[4] = self;
-  v37 = v4;
+  v37 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __42___CNUIUserActionDialRequestItem_isEqual___block_invoke_2;

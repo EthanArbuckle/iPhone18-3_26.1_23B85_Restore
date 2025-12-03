@@ -1,11 +1,11 @@
 @interface IMTranscoderImageQualityEstimator
 + (MLModel)imageQualityEstimatorModel;
-+ (double)_entropyForTranscodedImage:(CGImageSource *)a3;
-+ (double)getEntropyForImage:(CGImage *)a3;
-+ (id)getInputImageFeatures:(CGImageSource *)a3;
-+ (id)oneHotEncodeTargetMaxDimFeature:(id)a3 suggestedMaxLength:(int)a4;
-+ (id)standardizeModelInputFeatures:(id)a3;
-+ (void)setImageQualityEstimatorModel:(id)a3;
++ (double)_entropyForTranscodedImage:(CGImageSource *)image;
++ (double)getEntropyForImage:(CGImage *)image;
++ (id)getInputImageFeatures:(CGImageSource *)features;
++ (id)oneHotEncodeTargetMaxDimFeature:(id)feature suggestedMaxLength:(int)length;
++ (id)standardizeModelInputFeatures:(id)features;
++ (void)setImageQualityEstimatorModel:(id)model;
 @end
 
 @implementation IMTranscoderImageQualityEstimator
@@ -22,10 +22,10 @@
   return v6;
 }
 
-+ (void)setImageQualityEstimatorModel:(id)a3
++ (void)setImageQualityEstimatorModel:(id)model
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelCopy = model;
   v4 = MEMORY[0x277CCA8D8];
   v5 = objc_opt_class();
   v11 = objc_msgSend_bundleForClass_(v4, v6, v5, v7, v8, v9, v10);
@@ -73,11 +73,11 @@ LABEL_11:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)standardizeModelInputFeatures:(id)a3
++ (id)standardizeModelInputFeatures:(id)features
 {
   v91 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  objc_msgSend_allKeys(v3, v4, v5, v6, v7, v8, v9);
+  featuresCopy = features;
+  objc_msgSend_allKeys(featuresCopy, v4, v5, v6, v7, v8, v9);
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
@@ -122,7 +122,7 @@ LABEL_11:
         objc_msgSend_doubleValue(v48, v49, v50, v51, v52, v53, v54);
         v56 = v55;
 
-        v62 = objc_msgSend_objectForKey_(v3, v57, v22, v58, v59, v60, v61);
+        v62 = objc_msgSend_objectForKey_(featuresCopy, v57, v22, v58, v59, v60, v61);
         objc_msgSend_doubleValue(v62, v63, v64, v65, v66, v67, v68);
         v70 = v69;
 
@@ -144,7 +144,7 @@ LABEL_11:
         else
         {
           v77 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v71, v72, v73, v74, v75, v76, (v70 - v42) / v56);
-          objc_msgSend_setObject_forKey_(v3, v78, v77, v22, v79, v80, v81);
+          objc_msgSend_setObject_forKey_(featuresCopy, v78, v77, v22, v79, v80, v81);
         }
 
 LABEL_12:
@@ -161,15 +161,15 @@ LABEL_12:
 
   v83 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return featuresCopy;
 }
 
-+ (id)oneHotEncodeTargetMaxDimFeature:(id)a3 suggestedMaxLength:(int)a4
++ (id)oneHotEncodeTargetMaxDimFeature:(id)feature suggestedMaxLength:(int)length
 {
-  v10 = a3;
-  if (a4 <= 1599)
+  featureCopy = feature;
+  if (length <= 1599)
   {
-    switch(a4)
+    switch(length)
     {
       case 800:
         v11 = @"Target Max Dimension_800";
@@ -185,16 +185,16 @@ LABEL_12:
     }
   }
 
-  else if (a4 > 2999)
+  else if (length > 2999)
   {
-    if (a4 == 4032)
+    if (length == 4032)
     {
       v11 = @"Target Max Dimension_4032";
     }
 
     else
     {
-      if (a4 != 3000)
+      if (length != 3000)
       {
         goto LABEL_18;
       }
@@ -203,14 +203,14 @@ LABEL_12:
     }
   }
 
-  else if (a4 == 1600)
+  else if (length == 1600)
   {
     v11 = @"Target Max Dimension_1600";
   }
 
   else
   {
-    if (a4 != 2048)
+    if (length != 2048)
     {
       goto LABEL_18;
     }
@@ -219,28 +219,28 @@ LABEL_12:
   }
 
   v12 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v5, 1, v6, v7, v8, v9);
-  objc_msgSend_setObject_forKey_(v10, v13, v12, v11, v14, v15, v16);
+  objc_msgSend_setObject_forKey_(featureCopy, v13, v12, v11, v14, v15, v16);
 
 LABEL_18:
 
-  return v10;
+  return featureCopy;
 }
 
-+ (double)getEntropyForImage:(CGImage *)a3
++ (double)getEntropyForImage:(CGImage *)image
 {
   v36 = *MEMORY[0x277D85DE8];
   memset(&src, 0, sizeof(src));
   v30 = 0;
-  LOBYTE(v24) = CGImageGetBitsPerComponent(a3);
+  LOBYTE(v24) = CGImageGetBitsPerComponent(image);
   v24 = v24;
-  LOBYTE(v25) = CGImageGetBitsPerPixel(a3);
+  LOBYTE(v25) = CGImageGetBitsPerPixel(image);
   v25 = v25;
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
   v26 = CGColorSpaceRetain(ColorSpace);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
+  BitmapInfo = CGImageGetBitmapInfo(image);
   v29 = 0;
   v28 = 0;
-  if (MEMORY[0x259C1B860](&src, &v24, 0, a3, 0))
+  if (MEMORY[0x259C1B860](&src, &v24, 0, image, 0))
   {
     free(src.data);
     v5 = -1.0;
@@ -323,7 +323,7 @@ LABEL_18:
   return v5;
 }
 
-+ (double)_entropyForTranscodedImage:(CGImageSource *)a3
++ (double)_entropyForTranscodedImage:(CGImageSource *)image
 {
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CBEAC0];
@@ -334,13 +334,13 @@ LABEL_18:
   v16 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v11, 1024, v12, v13, v14, v15);
   v22 = objc_msgSend_dictionaryWithObjectsAndKeys_(v6, v17, v7, v18, v19, v20, v21, v8, v7, v9, v7, v10, v16, *MEMORY[0x277CD3660], 0);
 
-  ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a3, 0, v22);
+  ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(image, 0, v22);
   v24 = objc_alloc_init(MEMORY[0x277CBEB28]);
   if (v24)
   {
     v25 = v24;
     v26 = CGImageDestinationCreateWithData(v24, @"public.heic", 1uLL, 0);
-    v27 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+    v27 = CGImageSourceCopyPropertiesAtIndex(image, 0, 0);
     v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v34 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v29, 1, v30, v31, v32, v33);
     objc_msgSend_setObject_forKey_(v28, v35, v34, *MEMORY[0x277CD2D60], v36, v37, v38);
@@ -358,7 +358,7 @@ LABEL_18:
     CGImageDestinationFinalize(v26);
     v67 = CGImageSourceCreateWithData(v25, 0);
     ImageAtIndex = CGImageSourceCreateImageAtIndex(v67, 0, 0);
-    objc_msgSend_getEntropyForImage_(a1, v69, ImageAtIndex, v70, v71, v72, v73);
+    objc_msgSend_getEntropyForImage_(self, v69, ImageAtIndex, v70, v71, v72, v73);
     v75 = v74;
     CGImageRelease(ThumbnailAtIndex);
     CGImageRelease(ImageAtIndex);
@@ -378,10 +378,10 @@ LABEL_18:
   return v75;
 }
 
-+ (id)getInputImageFeatures:(CGImageSource *)a3
++ (id)getInputImageFeatures:(CGImageSource *)features
 {
   v225 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!features)
   {
     if (IMOSLoggingEnabled())
     {
@@ -400,7 +400,7 @@ LABEL_16:
     goto LABEL_30;
   }
 
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(features, 0, 0);
   if (!ImageAtIndex)
   {
     if (IMOSLoggingEnabled())
@@ -421,9 +421,9 @@ LABEL_15:
   }
 
   v6 = ImageAtIndex;
-  v7 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
-  v8 = CGImageSourceCopyProperties(a3, 0);
-  v9 = CGImageSourceCopyProperties(a3, 0);
+  v7 = CGImageSourceCopyPropertiesAtIndex(features, 0, 0);
+  v8 = CGImageSourceCopyProperties(features, 0);
+  v9 = CGImageSourceCopyProperties(features, 0);
   v15 = objc_msgSend_objectForKeyedSubscript_(v9, v10, @"FileSize", v11, v12, v13, v14);
   v22 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v16, v17, v18, v19, v20, v21);
   v28 = objc_msgSend_objectForKeyedSubscript_(v7, v23, @"PixelWidth", v24, v25, v26, v27);
@@ -451,12 +451,12 @@ LABEL_15:
 
   if (v71 >= 1024.0)
   {
-    objc_msgSend__entropyForTranscodedImage_(a1, v65, a3, v66, v67, v68, v69);
+    objc_msgSend__entropyForTranscodedImage_(self, v65, features, v66, v67, v68, v69);
   }
 
   else
   {
-    objc_msgSend_getEntropyForImage_(a1, v65, v6, v66, v67, v68, v69);
+    objc_msgSend_getEntropyForImage_(self, v65, v6, v66, v67, v68, v69);
   }
 
   v75 = v72;

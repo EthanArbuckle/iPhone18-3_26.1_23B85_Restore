@@ -1,6 +1,6 @@
 @interface MFAANetwork
 + (id)sharedInstance;
-- (BOOL)_verifyFairPlaySignatureSync:(id)a3 forData:(id)a4 timedOut:(BOOL *)a5 error:(id *)a6;
+- (BOOL)_verifyFairPlaySignatureSync:(id)sync forData:(id)data timedOut:(BOOL *)out error:(id *)error;
 - (BOOL)bypassFairPlaySAPSignatureVerification;
 - (BOOL)disableFairPlaySAP;
 - (BOOL)forceFairPlaySAPFailure;
@@ -14,32 +14,32 @@
 - (NSDictionary)pairingTable;
 - (NSNumber)certStatusCacheVersion;
 - (NSNumber)pairingTableVersion;
-- (id)_fairPlaySignatureForDataSync:(id)a3 timedOut:(BOOL *)a4 error:(id *)a5;
-- (id)_generateTokenAuthURLRequestForEndpoint:(id)a3 sessionID:(id)a4 signature:(id)a5 requestUUID:(id)a6;
+- (id)_fairPlaySignatureForDataSync:(id)sync timedOut:(BOOL *)out error:(id *)error;
+- (id)_generateTokenAuthURLRequestForEndpoint:(id)endpoint sessionID:(id)d signature:(id)signature requestUUID:(id)iD;
 - (id)_init;
 - (id)_openFairPlaySAPSession;
 - (id)_selectedAPIServer;
 - (id)_selectedFairPlaySAPServer;
 - (unint64_t)pairingTokenExpirationS;
-- (void)_addPairingWithToken:(id)a3 withReply:(id)a4;
-- (void)_confirmActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5;
-- (void)_getCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6;
+- (void)_addPairingWithToken:(id)token withReply:(id)reply;
+- (void)_confirmActivationForToken:(id)token withUUID:(id)d withReply:(id)reply;
+- (void)_getCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply;
 - (void)_init;
-- (void)_removePairingWithToken:(id)a3 withReply:(id)a4;
-- (void)_requestActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5;
-- (void)_requestMetadataForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 requestedLocale:(id)a6 requestInfo:(id)a7 withReply:(id)a8;
-- (void)_requestMetadataForToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 withReply:(id)a7;
+- (void)_removePairingWithToken:(id)token withReply:(id)reply;
+- (void)_requestActivationForToken:(id)token withUUID:(id)d withReply:(id)reply;
+- (void)_requestMetadataForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply;
+- (void)_requestMetadataForToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply;
 - (void)_selectedFairPlaySAPServer;
-- (void)_setCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 certStatus:(int)a6;
-- (void)_validateCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6;
-- (void)_verifyPairingWithToken:(id)a3 withReply:(id)a4;
+- (void)_setCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid certStatus:(int)status;
+- (void)_validateCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply;
+- (void)_verifyPairingWithToken:(id)token withReply:(id)reply;
 - (void)dealloc;
-- (void)session:(id)a3 requestCertificateWithCompletionHandler:(id)a4;
-- (void)session:(id)a3 requestHandshakeWithServer:(id)a4 completionHandler:(id)a5;
-- (void)setCertStatusCache:(id)a3;
-- (void)setCertStatusCacheVersion:(id)a3;
-- (void)setPairingTable:(id)a3;
-- (void)setPairingTableVersion:(id)a3;
+- (void)session:(id)session requestCertificateWithCompletionHandler:(id)handler;
+- (void)session:(id)session requestHandshakeWithServer:(id)server completionHandler:(id)handler;
+- (void)setCertStatusCache:(id)cache;
+- (void)setCertStatusCacheVersion:(id)version;
+- (void)setPairingTable:(id)table;
+- (void)setPairingTableVersion:(id)version;
 @end
 
 @implementation MFAANetwork
@@ -177,8 +177,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Invalidating NSURLSession...", buf, 2u);
   }
 
-  v6 = [(MFAANetwork *)self urlSession];
-  [v6 invalidateAndCancel];
+  urlSession = [(MFAANetwork *)self urlSession];
+  [urlSession invalidateAndCancel];
 
   v7.receiver = self;
   v7.super_class = MFAANetwork;
@@ -187,130 +187,130 @@
 
 - (BOOL)forceNetworkFailure
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"ForceNetworkFailure"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"ForceNetworkFailure"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)forceTokenActivationFailure
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"ForceTokenActivationFailure"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"ForceTokenActivationFailure"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)forceTokenConfirmationFailure
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"ForceTokenConfirmationFailure"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"ForceTokenConfirmationFailure"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)spoofTokenActivation
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"SpoofTokenActivation"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"SpoofTokenActivation"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)spoofPPIDMetadata
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"SpoofPPIDMetadata"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"SpoofPPIDMetadata"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)disableFairPlaySAP
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"DisableFairPlaySAP"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"DisableFairPlaySAP"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)forceFairPlaySAPFailure
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"ForceFairPlaySAPFailure"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"ForceFairPlaySAPFailure"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (BOOL)bypassFairPlaySAPSignatureVerification
 {
-  v3 = [(MFAANetwork *)self userDefaults];
-  if ([v3 BOOLForKey:@"BypassFairPlaySAPSignatureVerification"])
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"BypassFairPlaySAPSignatureVerification"])
   {
-    v4 = [(MFAANetwork *)self isInternalBuild];
+    isInternalBuild = [(MFAANetwork *)self isInternalBuild];
   }
 
   else
   {
-    v4 = 0;
+    isInternalBuild = 0;
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
 - (unint64_t)pairingTokenExpirationS
@@ -318,8 +318,8 @@
   v3 = 2592000;
   if ([(MFAANetwork *)self isInternalBuild])
   {
-    v4 = [(MFAANetwork *)self userDefaults];
-    v5 = [v4 integerForKey:@"PairingTokenExpirationS"];
+    userDefaults = [(MFAANetwork *)self userDefaults];
+    v5 = [userDefaults integerForKey:@"PairingTokenExpirationS"];
 
     if (v5)
     {
@@ -355,16 +355,16 @@
 
 - (NSDictionary)certStatusCache
 {
-  v2 = [(MFAANetwork *)self userDefaults];
-  v3 = [v2 dictionaryForKey:@"CertStatusCache"];
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  v3 = [userDefaults dictionaryForKey:@"CertStatusCache"];
 
   return v3;
 }
 
 - (NSNumber)certStatusCacheVersion
 {
-  v2 = [(MFAANetwork *)self userDefaults];
-  v3 = [v2 objectForKey:@"CertStatusCacheVersion"];
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"CertStatusCacheVersion"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -381,16 +381,16 @@
 
 - (NSDictionary)pairingTable
 {
-  v2 = [(MFAANetwork *)self userDefaults];
-  v3 = [v2 dictionaryForKey:@"PairingTable"];
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  v3 = [userDefaults dictionaryForKey:@"PairingTable"];
 
   return v3;
 }
 
 - (NSNumber)pairingTableVersion
 {
-  v2 = [(MFAANetwork *)self userDefaults];
-  v3 = [v2 objectForKey:@"PairingTableVersion"];
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"PairingTableVersion"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -405,32 +405,32 @@
   return v4;
 }
 
-- (void)setCertStatusCache:(id)a3
+- (void)setCertStatusCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(MFAANetwork *)self userDefaults];
-  [v5 setObject:v4 forKey:@"CertStatusCache"];
+  cacheCopy = cache;
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  [userDefaults setObject:cacheCopy forKey:@"CertStatusCache"];
 }
 
-- (void)setCertStatusCacheVersion:(id)a3
+- (void)setCertStatusCacheVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MFAANetwork *)self userDefaults];
-  [v5 setObject:v4 forKey:@"CertStatusCacheVersion"];
+  versionCopy = version;
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  [userDefaults setObject:versionCopy forKey:@"CertStatusCacheVersion"];
 }
 
-- (void)setPairingTable:(id)a3
+- (void)setPairingTable:(id)table
 {
-  v4 = a3;
-  v5 = [(MFAANetwork *)self userDefaults];
-  [v5 setObject:v4 forKey:@"PairingTable"];
+  tableCopy = table;
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  [userDefaults setObject:tableCopy forKey:@"PairingTable"];
 }
 
-- (void)setPairingTableVersion:(id)a3
+- (void)setPairingTableVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MFAANetwork *)self userDefaults];
-  [v5 setObject:v4 forKey:@"PairingTableVersion"];
+  versionCopy = version;
+  userDefaults = [(MFAANetwork *)self userDefaults];
+  [userDefaults setObject:versionCopy forKey:@"PairingTableVersion"];
 }
 
 - (id)_selectedFairPlaySAPServer
@@ -447,8 +447,8 @@
     v12[2] = @"https://iphonesysut.corp.apple.com";
     v12[3] = @"https://iphonesysmaint.corp.apple.com";
     v4 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4];
-    v5 = [(MFAANetwork *)self userDefaults];
-    v6 = [v5 stringForKey:@"FairPlaySAPServer"];
+    userDefaults = [(MFAANetwork *)self userDefaults];
+    v6 = [userDefaults stringForKey:@"FairPlaySAPServer"];
 
     if (v6)
     {
@@ -504,8 +504,8 @@
     v16[2] = @"https://aquila-ut.corp.apple.com";
     v16[3] = @"https://aquila-maint.corp.apple.com";
     v15[4] = @"custom";
-    v4 = [(MFAANetwork *)self userDefaults];
-    v5 = [v4 stringForKey:@"CustomServer"];
+    userDefaults = [(MFAANetwork *)self userDefaults];
+    v5 = [userDefaults stringForKey:@"CustomServer"];
     v6 = v5;
     v7 = &stru_100086C60;
     if (v5)
@@ -516,8 +516,8 @@
     v16[4] = v7;
     v8 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:5];
 
-    v9 = [(MFAANetwork *)self userDefaults];
-    v10 = [v9 stringForKey:@"Server"];
+    userDefaults2 = [(MFAANetwork *)self userDefaults];
+    v10 = [userDefaults2 stringForKey:@"Server"];
 
     if (v10)
     {
@@ -567,10 +567,10 @@
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v3 = [(MFAANetwork *)self fairPlaySAPSession];
-  v4 = [v3 state];
+  fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
+  state = [fairPlaySAPSession state];
 
-  if (!v4)
+  if (!state)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -595,7 +595,7 @@
     }
 
     v7 = dispatch_semaphore_create(0);
-    v8 = [(MFAANetwork *)self fairPlaySAPSession];
+    fairPlaySAPSession2 = [(MFAANetwork *)self fairPlaySAPSession];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __38__MFAANetwork__openFairPlaySAPSession__block_invoke;
@@ -603,7 +603,7 @@
     v14 = &v16;
     v9 = v7;
     v13 = v9;
-    [v8 openWithCompletionHandler:v12];
+    [fairPlaySAPSession2 openWithCompletionHandler:v12];
 
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -686,33 +686,33 @@ void __38__MFAANetwork__openFairPlaySAPSession__block_invoke(uint64_t a1, void *
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_fairPlaySignatureForDataSync:(id)a3 timedOut:(BOOL *)a4 error:(id *)a5
+- (id)_fairPlaySignatureForDataSync:(id)sync timedOut:(BOOL *)out error:(id *)error
 {
-  v8 = a3;
+  syncCopy = sync;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy_;
   v34 = __Block_byref_object_dispose_;
   v35 = 0;
-  if (a4)
+  if (out)
   {
-    *a4 = 0;
+    *out = 0;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v9 = [(MFAANetwork *)self _openFairPlaySAPSession];
-  v10 = v9;
-  if (v9)
+  _openFairPlaySAPSession = [(MFAANetwork *)self _openFairPlaySAPSession];
+  v10 = _openFairPlaySAPSession;
+  if (_openFairPlaySAPSession)
   {
-    if (a5)
+    if (error)
     {
-      v11 = v9;
-      *a5 = v10;
+      v11 = _openFairPlaySAPSession;
+      *error = v10;
     }
   }
 
@@ -725,7 +725,7 @@ void __38__MFAANetwork__openFairPlaySAPSession__block_invoke(uint64_t a1, void *
     v27 = __Block_byref_object_copy_;
     v28 = __Block_byref_object_dispose_;
     v29 = 0;
-    v13 = [(MFAANetwork *)self fairPlaySAPSession];
+    fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = __60__MFAANetwork__fairPlaySignatureForDataSync_timedOut_error___block_invoke;
@@ -734,7 +734,7 @@ void __38__MFAANetwork__openFairPlaySAPSession__block_invoke(uint64_t a1, void *
     v23 = &v24;
     v14 = v12;
     v21 = v14;
-    [v13 signatureForData:v8 completionHandler:v20];
+    [fairPlaySAPSession signatureForData:syncCopy completionHandler:v20];
 
     v15 = dispatch_time(0, 10000000000);
     if (dispatch_semaphore_wait(v14, v15))
@@ -760,15 +760,15 @@ void __38__MFAANetwork__openFairPlaySAPSession__block_invoke(uint64_t a1, void *
         [MFAANetwork _fairPlaySignatureForDataSync:timedOut:error:];
       }
 
-      if (a4)
+      if (out)
       {
-        *a4 = 1;
+        *out = 1;
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v25[5];
+      *error = v25[5];
     }
 
     _Block_object_dispose(&v24, 8);
@@ -798,22 +798,22 @@ void __60__MFAANetwork__fairPlaySignatureForDataSync_timedOut_error___block_invo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_verifyFairPlaySignatureSync:(id)a3 forData:(id)a4 timedOut:(BOOL *)a5 error:(id *)a6
+- (BOOL)_verifyFairPlaySignatureSync:(id)sync forData:(id)data timedOut:(BOOL *)out error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  syncCopy = sync;
+  dataCopy = data;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  if (a5)
+  if (out)
   {
-    *a5 = 0;
+    *out = 0;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v12 = dispatch_semaphore_create(0);
@@ -823,7 +823,7 @@ void __60__MFAANetwork__fairPlaySignatureForDataSync_timedOut_error___block_invo
   v27 = __Block_byref_object_copy_;
   v28 = __Block_byref_object_dispose_;
   v29 = 0;
-  v13 = [(MFAANetwork *)self fairPlaySAPSession];
+  fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___block_invoke;
@@ -832,7 +832,7 @@ void __60__MFAANetwork__fairPlaySignatureForDataSync_timedOut_error___block_invo
   v23 = &v24;
   v14 = v12;
   v21 = v14;
-  [v13 verifySignature:v10 forData:v11 completionHandler:v20];
+  [fairPlaySAPSession verifySignature:syncCopy forData:dataCopy completionHandler:v20];
 
   v15 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v14, v15))
@@ -858,15 +858,15 @@ void __60__MFAANetwork__fairPlaySignatureForDataSync_timedOut_error___block_invo
       [MFAANetwork _verifyFairPlaySignatureSync:forData:timedOut:error:];
     }
 
-    if (a5)
+    if (out)
     {
-      *a5 = 1;
+      *out = 1;
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v25[5];
+    *error = v25[5];
   }
 
   v18 = *(v31 + 24);
@@ -885,30 +885,30 @@ void __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_generateTokenAuthURLRequestForEndpoint:(id)a3 sessionID:(id)a4 signature:(id)a5 requestUUID:(id)a6
+- (id)_generateTokenAuthURLRequestForEndpoint:(id)endpoint sessionID:(id)d signature:(id)signature requestUUID:(id)iD
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(MFAANetwork *)self _selectedAPIServer];
-  v15 = [NSString stringWithFormat:@"%@/%@", v14, v13];
+  dCopy = d;
+  signatureCopy = signature;
+  iDCopy = iD;
+  endpointCopy = endpoint;
+  _selectedAPIServer = [(MFAANetwork *)self _selectedAPIServer];
+  endpointCopy = [NSString stringWithFormat:@"%@/%@", _selectedAPIServer, endpointCopy];
 
-  v16 = [NSURL URLWithString:v15];
+  v16 = [NSURL URLWithString:endpointCopy];
 
   v17 = [NSMutableURLRequest requestWithURL:v16 cachePolicy:0 timeoutInterval:60.0];
   [v17 setHTTPMethod:@"POST"];
   [v17 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v17 setValue:@"application/json" forHTTPHeaderField:@"Accept"];
   [v17 setValue:@"1.0" forHTTPHeaderField:@"protocol-version"];
-  if (v10)
+  if (dCopy)
   {
-    [v17 setValue:v10 forHTTPHeaderField:@"session-identifier"];
+    [v17 setValue:dCopy forHTTPHeaderField:@"session-identifier"];
   }
 
-  if (v12)
+  if (iDCopy)
   {
-    [v17 setValue:v12 forHTTPHeaderField:@"X-Request-ID"];
+    [v17 setValue:iDCopy forHTTPHeaderField:@"X-Request-ID"];
   }
 
   if ([(MFAANetwork *)self disableFairPlaySAP])
@@ -916,27 +916,27 @@ void __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___blo
     [v17 setValue:@"true" forHTTPHeaderField:@"X-Mescal-Skipped"];
     v18 = [@"1234" dataUsingEncoding:4];
 
-    v11 = v18;
+    signatureCopy = v18;
   }
 
-  if (v11)
+  if (signatureCopy)
   {
-    v19 = [v11 base64EncodedStringWithOptions:0];
+    v19 = [signatureCopy base64EncodedStringWithOptions:0];
     [v17 setValue:v19 forHTTPHeaderField:@"signature"];
   }
 
   return v17;
 }
 
-- (void)_requestMetadataForToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 withReply:(id)a7
+- (void)_requestMetadataForToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply
 {
-  v11 = a3;
-  v101 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  tokenCopy = token;
+  dCopy = d;
+  localeCopy = locale;
+  infoCopy = info;
+  replyCopy = reply;
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
+  uUIDString = [v15 UUIDString];
 
   if (gLogObjects && gNumLogObjects >= 3)
   {
@@ -956,35 +956,35 @@ void __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___blo
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v11 length];
-    v20 = [v12 localeIdentifier];
-    [v12 languageCodeAndCountryCode];
-    v21 = v14;
-    v22 = v13;
-    v24 = v23 = v12;
+    v19 = [tokenCopy length];
+    localeIdentifier = [localeCopy localeIdentifier];
+    [localeCopy languageCodeAndCountryCode];
+    v21 = replyCopy;
+    v22 = infoCopy;
+    v24 = v23 = localeCopy;
     *buf = 138479107;
-    v112 = v11;
+    v112 = tokenCopy;
     v113 = 2048;
     v114 = v19;
     v115 = 2112;
-    v116 = v101;
+    v116 = dCopy;
     v117 = 2112;
-    v118 = v20;
+    v118 = localeIdentifier;
     v119 = 2112;
     v120 = v24;
     v121 = 2112;
-    v122 = v16;
+    v122 = uUIDString;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Requesting PPID metadata for token: %{private}@ (token.length: %lu, uuid: %@, requestedLocale: %@ [%@], requestUUID: %@)", buf, 0x3Eu);
 
-    v12 = v23;
-    v13 = v22;
-    v14 = v21;
+    localeCopy = v23;
+    infoCopy = v22;
+    replyCopy = v21;
   }
 
   v25 = +[NSXPCConnection currentConnection];
   if (([v25 hasCategory:@"token-auth" forEntitlement:@"com.apple.MFAAuthentication"] & 1) == 0)
   {
-    v27 = v12;
+    v27 = localeCopy;
     v28 = [NSError MFAA_errorWithDomain:@"MFAATokenManagerErrorDomain" code:-2];
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -1010,9 +1010,9 @@ void __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___blo
     goto LABEL_33;
   }
 
-  if (!v11 || !v101 || !v12)
+  if (!tokenCopy || !dCopy || !localeCopy)
   {
-    v27 = v12;
+    v27 = localeCopy;
     v28 = [NSError MFAA_errorWithDomain:@"MFAATokenManagerErrorDomain" code:-3 description:@"token, uuid, or requestedLocale = nil."];
     if (gLogObjects && gNumLogObjects >= 3)
     {
@@ -1037,8 +1037,8 @@ void __67__MFAANetwork__verifyFairPlaySignatureSync_forData_timedOut_error___blo
 
 LABEL_33:
 
-    (*(v14 + 2))(v14, 0, 0, 0, v28);
-    v12 = v27;
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v28);
+    localeCopy = v27;
     goto LABEL_34;
   }
 
@@ -1060,7 +1060,7 @@ LABEL_33:
       v33 = &_os_log_default;
     }
 
-    v34 = v12;
+    v34 = localeCopy;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -1089,15 +1089,15 @@ LABEL_33:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    (*(v14 + 2))(v14, 0, 0, 0, v28);
-    v12 = v34;
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v28);
+    localeCopy = v34;
     goto LABEL_34;
   }
 
   if (![(MFAANetwork *)self spoofPPIDMetadata])
   {
-    v97 = v12;
-    v28 = _splitASN1Tokens(v11);
+    v97 = localeCopy;
+    v28 = _splitASN1Tokens(tokenCopy);
     if (gLogObjects && gNumLogObjects >= 3)
     {
       v37 = *(gLogObjects + 16);
@@ -1167,8 +1167,8 @@ LABEL_33:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v14 + 2))(v14, 0, 0, 0, v49);
-      v12 = v97;
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v49);
+      localeCopy = v97;
       goto LABEL_151;
     }
 
@@ -1189,7 +1189,7 @@ LABEL_33:
       v51 = &_os_log_default;
     }
 
-    v95 = v13;
+    v95 = infoCopy;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
     {
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -1198,14 +1198,14 @@ LABEL_33:
     v109[0] = @"tokens";
     v109[1] = @"uuid";
     v110[0] = v47;
-    v110[1] = v101;
+    v110[1] = dCopy;
     v109[2] = @"locale";
-    v52 = [v97 languageCodeAndCountryCode];
-    v110[2] = v52;
+    languageCodeAndCountryCode = [v97 languageCodeAndCountryCode];
+    v110[2] = languageCodeAndCountryCode;
     v53 = [NSDictionary dictionaryWithObjects:v110 forKeys:v109 count:3];
     v54 = [NSMutableDictionary dictionaryWithDictionary:v53];
 
-    v13 = v95;
+    infoCopy = v95;
     if (v95)
     {
       [v54 setObject:v95 forKey:@"request_info"];
@@ -1229,7 +1229,7 @@ LABEL_33:
       v56 = &_os_log_default;
     }
 
-    v57 = v16;
+    v57 = uUIDString;
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
     {
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -1245,13 +1245,13 @@ LABEL_33:
 
       v61 = [NSError MFAA_errorWithDomain:@"MFAATokenManagerErrorDomain" code:-4];
       v67 = logObjectForModule(2);
-      v12 = v97;
+      localeCopy = v97;
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v14 + 2))(v14, 0, 0, 0, v61);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v61);
       v49 = v94;
       v65 = v96;
       goto LABEL_150;
@@ -1265,7 +1265,7 @@ LABEL_33:
     v93 = v58;
     if (v58)
     {
-      v16 = v57;
+      uUIDString = v57;
       v61 = v93;
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
@@ -1280,10 +1280,10 @@ LABEL_33:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v14 + 2))(v14, 0, 0, 0, v62);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v62);
       v64 = v62;
       v65 = v96;
-      v12 = v97;
+      localeCopy = v97;
       goto LABEL_149;
     }
 
@@ -1293,7 +1293,7 @@ LABEL_33:
     }
 
     v69 = logObjectForModule(2);
-    v16 = v57;
+    uUIDString = v57;
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
     {
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -1320,26 +1320,26 @@ LABEL_133:
       v71 = logObjectForModule(2);
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
-        v72 = [(MFAANetwork *)self _selectedAPIServer];
+        _selectedAPIServer = [(MFAANetwork *)self _selectedAPIServer];
         *buf = 138412290;
-        v112 = v72;
+        v112 = _selectedAPIServer;
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "self._selectedAPIServer: %@", buf, 0xCu);
       }
 
       if (v92)
       {
-        v73 = [(MFAANetwork *)self fairPlaySAPSession];
-        v74 = [v73 UUID];
-        v75 = [v74 UUIDString];
-        v76 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:v75 signature:v92 requestUUID:v16];
+        fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
+        uUID = [fairPlaySAPSession UUID];
+        uUIDString2 = [uUID UUIDString];
+        v76 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:uUIDString2 signature:v92 requestUUID:uUIDString];
       }
 
       else
       {
-        v76 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:0 signature:0 requestUUID:v16];
+        v76 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:0 signature:0 requestUUID:uUIDString];
       }
 
-      v12 = v97;
+      localeCopy = v97;
       v77 = logObjectForModule(2);
       if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
       {
@@ -1370,17 +1370,17 @@ LABEL_133:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      v82 = [(MFAANetwork *)self urlSession];
+      urlSession = [(MFAANetwork *)self urlSession];
       v102[0] = _NSConcreteStackBlock;
       v102[1] = 3221225472;
       v102[2] = __87__MFAANetwork__requestMetadataForToken_withUUID_requestedLocale_requestInfo_withReply___block_invoke_207;
       v102[3] = &unk_100080788;
       v102[4] = self;
-      v103 = v14;
-      v83 = [v82 uploadTaskWithRequest:v76 fromData:v98 completionHandler:v102];
+      v103 = replyCopy;
+      v83 = [urlSession uploadTaskWithRequest:v76 fromData:v98 completionHandler:v102];
 
       [v83 resume];
-      v13 = v95;
+      infoCopy = v95;
       v65 = v96;
       v64 = v92;
       v61 = 0;
@@ -1393,7 +1393,7 @@ LABEL_133:
     v84 = [(MFAANetwork *)self _fairPlaySignatureForDataSync:v98 timedOut:buf error:&v104];
     v85 = v104;
     v86 = v85;
-    v12 = v97;
+    localeCopy = v97;
     v92 = v84;
     if (buf[0] == 1)
     {
@@ -1456,7 +1456,7 @@ LABEL_133:
       }
     }
 
-    (*(v14 + 2))(v14, 0, 0, 0, v100);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v100);
     v64 = v92;
     v61 = 0;
 LABEL_149:
@@ -1518,8 +1518,8 @@ LABEL_151:
   block[1] = 3221225472;
   block[2] = __87__MFAANetwork__requestMetadataForToken_withUUID_requestedLocale_requestInfo_withReply___block_invoke;
   block[3] = &unk_100080760;
-  v108 = v14;
-  v107 = v12;
+  v108 = replyCopy;
+  v107 = localeCopy;
   dispatch_after(v44, v45, block);
 
   v28 = v108;
@@ -2045,13 +2045,13 @@ LABEL_162:
 LABEL_148:
 }
 
-- (void)_requestActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5
+- (void)_requestActivationForToken:(id)token withUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  dCopy = d;
+  replyCopy = reply;
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
   if (gLogObjects)
   {
@@ -2082,18 +2082,18 @@ LABEL_148:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478595;
-    v93 = v8;
+    v93 = tokenCopy;
     v94 = 2048;
-    v95 = [v8 length];
+    v95 = [tokenCopy length];
     v96 = 2112;
-    v97 = v9;
+    v97 = dCopy;
     v98 = 2112;
-    v99 = v12;
+    v99 = uUIDString;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Requesting activation for token: %{private}@ (token.length: %lu, uuid: %@, requestUUID: %@)", buf, 0x2Au);
   }
 
   v16 = +[NSXPCConnection currentConnection];
-  v82 = v12;
+  v82 = uUIDString;
   if (([v16 hasCategory:@"token-auth" forEntitlement:@"com.apple.MFAAuthentication"] & 1) == 0)
   {
     v18 = [NSError MFAA_errorWithDomain:@"MFAATokenManagerErrorDomain" code:-2];
@@ -2121,7 +2121,7 @@ LABEL_148:
     goto LABEL_68;
   }
 
-  if (v8 && v9)
+  if (tokenCopy && dCopy)
   {
     if ([(MFAANetwork *)self forceNetworkFailure])
     {
@@ -2274,15 +2274,15 @@ LABEL_148:
       block[1] = 3221225472;
       block[2] = __61__MFAANetwork__requestActivationForToken_withUUID_withReply___block_invoke;
       block[3] = &unk_100080760;
-      v89 = v10;
-      v88 = v8;
+      v89 = replyCopy;
+      v88 = tokenCopy;
       dispatch_after(v36, v37, block);
 
       v18 = v89;
       goto LABEL_69;
     }
 
-    v18 = _splitASN1Tokens(v8);
+    v18 = _splitASN1Tokens(tokenCopy);
     if (gLogObjects && gNumLogObjects >= 3)
     {
       v29 = *(gLogObjects + 16);
@@ -2338,7 +2338,7 @@ LABEL_148:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, 0, v48);
+      (*(replyCopy + 2))(replyCopy, 0, v48);
       goto LABEL_150;
     }
 
@@ -2353,7 +2353,7 @@ LABEL_148:
     v90[1] = @"uuid";
     v81 = v39;
     v91[0] = v39;
-    v91[1] = v9;
+    v91[1] = dCopy;
     v41 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:2];
     v42 = logObjectForModule(2);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -2378,7 +2378,7 @@ LABEL_148:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, 0, v50);
+      (*(replyCopy + 2))(replyCopy, 0, v50);
       goto LABEL_149;
     }
 
@@ -2403,7 +2403,7 @@ LABEL_148:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, 0, v46);
+      (*(replyCopy + 2))(replyCopy, 0, v46);
       v48 = v81;
       v49 = v46;
       v50 = v79;
@@ -2443,9 +2443,9 @@ LABEL_131:
       v77 = v41;
       if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
       {
-        v57 = [(MFAANetwork *)self _selectedAPIServer];
+        _selectedAPIServer = [(MFAANetwork *)self _selectedAPIServer];
         *buf = 138412290;
-        v93 = v57;
+        v93 = _selectedAPIServer;
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "self._selectedAPIServer: %@", buf, 0xCu);
 
         v41 = v77;
@@ -2453,10 +2453,10 @@ LABEL_131:
 
       if (v78)
       {
-        v58 = [(MFAANetwork *)self fairPlaySAPSession];
-        v59 = [v58 UUID];
-        v60 = [v59 UUIDString];
-        v61 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/activateAccessory" sessionID:v60 signature:v78 requestUUID:v82];
+        fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
+        uUID = [fairPlaySAPSession UUID];
+        uUIDString2 = [uUID UUIDString];
+        v61 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/activateAccessory" sessionID:uUIDString2 signature:v78 requestUUID:v82];
 
         v41 = v77;
       }
@@ -2496,14 +2496,14 @@ LABEL_131:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      v67 = [(MFAANetwork *)self urlSession];
+      urlSession = [(MFAANetwork *)self urlSession];
       v83[0] = _NSConcreteStackBlock;
       v83[1] = 3221225472;
       v83[2] = __61__MFAANetwork__requestActivationForToken_withUUID_withReply___block_invoke_217;
       v83[3] = &unk_100080788;
       v83[4] = self;
-      v84 = v10;
-      v68 = [v67 uploadTaskWithRequest:v61 fromData:v80 completionHandler:v83];
+      v84 = replyCopy;
+      v68 = [urlSession uploadTaskWithRequest:v61 fromData:v80 completionHandler:v83];
 
       [v68 resume];
       v48 = v81;
@@ -2573,7 +2573,7 @@ LABEL_131:
       {
 LABEL_167:
 
-        (*(v10 + 2))(v10, 0, v75);
+        (*(replyCopy + 2))(replyCopy, 0, v75);
 LABEL_147:
         v49 = v78;
 LABEL_148:
@@ -2615,7 +2615,7 @@ LABEL_67:
   [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
 LABEL_68:
 
-  (*(v10 + 2))(v10, 0, v18);
+  (*(replyCopy + 2))(replyCopy, 0, v18);
 LABEL_69:
   v28 = v82;
 LABEL_70:
@@ -3171,13 +3171,13 @@ LABEL_104:
 LABEL_98:
 }
 
-- (void)_confirmActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5
+- (void)_confirmActivationForToken:(id)token withUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  dCopy = d;
+  replyCopy = reply;
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
   if (gLogObjects)
   {
@@ -3208,18 +3208,18 @@ LABEL_98:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478595;
-    v93 = v8;
+    v93 = tokenCopy;
     v94 = 2048;
-    v95 = [v8 length];
+    v95 = [tokenCopy length];
     v96 = 2112;
-    v97 = v9;
+    v97 = dCopy;
     v98 = 2112;
-    v99 = v12;
+    v99 = uUIDString;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Confirming activation for token: %{private}@ (token.length: %lu, uuid: %@, requestUUID: %@)", buf, 0x2Au);
   }
 
   v16 = +[NSXPCConnection currentConnection];
-  v83 = v12;
+  v83 = uUIDString;
   if (([v16 hasCategory:@"token-auth" forEntitlement:@"com.apple.MFAAuthentication"] & 1) == 0)
   {
     v18 = [NSError MFAA_errorWithDomain:@"MFAATokenManagerErrorDomain" code:-2];
@@ -3247,7 +3247,7 @@ LABEL_98:
     goto LABEL_68;
   }
 
-  if (v8 && v9)
+  if (tokenCopy && dCopy)
   {
     if ([(MFAANetwork *)self forceNetworkFailure])
     {
@@ -3400,14 +3400,14 @@ LABEL_98:
       block[1] = 3221225472;
       block[2] = __61__MFAANetwork__confirmActivationForToken_withUUID_withReply___block_invoke;
       block[3] = &unk_1000807B0;
-      v89 = v10;
+      v89 = replyCopy;
       dispatch_after(v36, v37, block);
 
       v18 = v89;
       goto LABEL_69;
     }
 
-    v18 = _splitASN1Tokens(v8);
+    v18 = _splitASN1Tokens(tokenCopy);
     if (gLogObjects && gNumLogObjects >= 3)
     {
       v29 = *(gLogObjects + 16);
@@ -3463,7 +3463,7 @@ LABEL_98:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, v49);
+      (*(replyCopy + 2))(replyCopy, v49);
       goto LABEL_150;
     }
 
@@ -3478,7 +3478,7 @@ LABEL_98:
     v90[1] = @"uuid";
     v82 = v39;
     v91[0] = v39;
-    v91[1] = v9;
+    v91[1] = dCopy;
     v41 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:2];
     v42 = logObjectForModule(2);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -3503,7 +3503,7 @@ LABEL_98:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, v51);
+      (*(replyCopy + 2))(replyCopy, v51);
       goto LABEL_149;
     }
 
@@ -3528,7 +3528,7 @@ LABEL_98:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v10 + 2))(v10, v46);
+      (*(replyCopy + 2))(replyCopy, v46);
       v48 = v46;
       v50 = v81;
       v49 = v82;
@@ -3569,18 +3569,18 @@ LABEL_131:
       v77 = v41;
       if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
       {
-        v58 = [(MFAANetwork *)self _selectedAPIServer];
+        _selectedAPIServer = [(MFAANetwork *)self _selectedAPIServer];
         *buf = 138412290;
-        v93 = v58;
+        v93 = _selectedAPIServer;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "self._selectedAPIServer: %@", buf, 0xCu);
       }
 
       if (v79)
       {
-        v59 = [(MFAANetwork *)self fairPlaySAPSession];
-        v60 = [v59 UUID];
-        v61 = [v60 UUIDString];
-        v62 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/ackAccessory" sessionID:v61 signature:v79 requestUUID:v83];
+        fairPlaySAPSession = [(MFAANetwork *)self fairPlaySAPSession];
+        uUID = [fairPlaySAPSession UUID];
+        uUIDString2 = [uUID UUIDString];
+        v62 = [(MFAANetwork *)self _generateTokenAuthURLRequestForEndpoint:@"deviceservices/ackAccessory" sessionID:uUIDString2 signature:v79 requestUUID:v83];
       }
 
       else
@@ -3618,14 +3618,14 @@ LABEL_131:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      v68 = [(MFAANetwork *)self urlSession];
+      urlSession = [(MFAANetwork *)self urlSession];
       v84[0] = _NSConcreteStackBlock;
       v84[1] = 3221225472;
       v84[2] = __61__MFAANetwork__confirmActivationForToken_withUUID_withReply___block_invoke_220;
       v84[3] = &unk_1000807D8;
-      v85 = v10;
+      v85 = replyCopy;
       v50 = v81;
-      v69 = [v68 uploadTaskWithRequest:v62 fromData:v81 completionHandler:v84];
+      v69 = [urlSession uploadTaskWithRequest:v62 fromData:v81 completionHandler:v84];
 
       [v69 resume];
       v49 = v82;
@@ -3696,7 +3696,7 @@ LABEL_131:
       {
 LABEL_167:
 
-        (*(v10 + 2))(v10, v76);
+        (*(replyCopy + 2))(replyCopy, v76);
         v50 = v81;
 LABEL_147:
         v48 = v79;
@@ -3739,7 +3739,7 @@ LABEL_67:
   [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
 LABEL_68:
 
-  (*(v10 + 2))(v10, v18);
+  (*(replyCopy + 2))(replyCopy, v18);
 LABEL_69:
   v28 = v83;
 LABEL_70:
@@ -3960,16 +3960,16 @@ LABEL_64:
 LABEL_65:
 }
 
-- (void)_requestMetadataForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 requestedLocale:(id)a6 requestInfo:(id)a7 withReply:(id)a8
+- (void)_requestMetadataForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v93 = a6;
-  v92 = a7;
-  v17 = a8;
+  serialCopy = serial;
+  seqCopy = seq;
+  ppidCopy = ppid;
+  localeCopy = locale;
+  infoCopy = info;
+  replyCopy = reply;
   v18 = +[NSUUID UUID];
-  v19 = [v18 UUIDString];
+  uUIDString = [v18 UUIDString];
 
   if (gLogObjects && gNumLogObjects >= 2)
   {
@@ -3989,33 +3989,33 @@ LABEL_65:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v90 = [v14 length];
-    v22 = self;
-    v23 = v19;
-    v24 = v16;
-    v25 = v15;
-    v26 = [v15 length];
-    v27 = [v93 localeIdentifier];
-    v28 = [v93 languageCodeAndCountryCode];
+    v90 = [serialCopy length];
+    selfCopy = self;
+    v23 = uUIDString;
+    v24 = ppidCopy;
+    v25 = seqCopy;
+    v26 = [seqCopy length];
+    localeIdentifier = [localeCopy localeIdentifier];
+    languageCodeAndCountryCode = [localeCopy languageCodeAndCountryCode];
     *buf = 138479363;
-    v106 = v14;
+    v106 = serialCopy;
     v107 = 2048;
     v108 = v90;
     v109 = 2048;
     v110 = v26;
-    v15 = v25;
-    v16 = v24;
+    seqCopy = v25;
+    ppidCopy = v24;
     v29 = v23;
-    self = v22;
+    self = selfCopy;
     v111 = 2113;
     v112 = v24;
     v113 = 2112;
-    v114 = v27;
-    v30 = v27;
+    v114 = localeIdentifier;
+    v30 = localeIdentifier;
     v115 = 2112;
-    v116 = v28;
+    v116 = languageCodeAndCountryCode;
     v117 = 2112;
-    v19 = v29;
+    uUIDString = v29;
     v118 = v29;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Requesting PPID metadata for certificate serial: %{private}@ (certSerial.length: %lu, issuerSeq.length: %lu, ppid: %{private}@, requestedLocale: %@ [%@], requestUUID: %@)", buf, 0x48u);
   }
@@ -4048,7 +4048,7 @@ LABEL_65:
     goto LABEL_51;
   }
 
-  if (!v14 || !v15 || !v16 || !v93)
+  if (!serialCopy || !seqCopy || !ppidCopy || !localeCopy)
   {
     v33 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3 description:@"certSerial, certIssuerSeq, ppid or requestedLocale = nil."];
     if (gLogObjects && gNumLogObjects >= 2)
@@ -4076,7 +4076,7 @@ LABEL_50:
     [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
 LABEL_51:
 
-    (*(v17 + 2))(v17, 0, 0, 0, v33);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v33);
     goto LABEL_52;
   }
 
@@ -4131,31 +4131,31 @@ LABEL_51:
 
   if (![(MFAANetwork *)self spoofPPIDMetadata])
   {
-    v86 = self;
+    selfCopy2 = self;
     v103[0] = @"cert_serial";
-    v89 = v14;
-    v40 = [v14 base64EncodedStringWithOptions:0];
+    v89 = serialCopy;
+    v40 = [serialCopy base64EncodedStringWithOptions:0];
     v104[0] = v40;
     v103[1] = @"issuer_dn";
-    v88 = v15;
-    v41 = [v15 base64EncodedStringWithOptions:0];
+    v88 = seqCopy;
+    v41 = [seqCopy base64EncodedStringWithOptions:0];
     v104[1] = v41;
-    v104[2] = v16;
-    v91 = v16;
+    v104[2] = ppidCopy;
+    v91 = ppidCopy;
     v103[2] = @"ppid";
     v103[3] = @"locale";
-    v42 = [v93 languageCodeAndCountryCode];
-    v104[3] = v42;
+    languageCodeAndCountryCode2 = [localeCopy languageCodeAndCountryCode];
+    v104[3] = languageCodeAndCountryCode2;
     v43 = [NSDictionary dictionaryWithObjects:v104 forKeys:v103 count:4];
     v33 = [NSMutableDictionary dictionaryWithDictionary:v43];
 
-    if (v92)
+    if (infoCopy)
     {
-      [v33 setObject:v92 forKey:@"request_info"];
+      [v33 setObject:infoCopy forKey:@"request_info"];
     }
 
-    v14 = v89;
-    v16 = v91;
+    serialCopy = v89;
+    ppidCopy = v91;
     if (gLogObjects && gNumLogObjects >= 2)
     {
       v44 = *(gLogObjects + 8);
@@ -4217,13 +4217,13 @@ LABEL_51:
         v62 = &_os_log_default;
       }
 
-      v15 = v88;
+      seqCopy = v88;
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v17 + 2))(v17, 0, 0, 0, v60);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v60);
       goto LABEL_129;
     }
 
@@ -4232,7 +4232,7 @@ LABEL_51:
     v48 = v98;
     v49 = logObjectForModule(1);
     v50 = v49;
-    v15 = v88;
+    seqCopy = v88;
     if (v48)
     {
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -4249,7 +4249,7 @@ LABEL_51:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      (*(v17 + 2))(v17, 0, 0, 0, v52);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v52);
       goto LABEL_78;
     }
 
@@ -4264,7 +4264,7 @@ LABEL_51:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if ([(MFAANetwork *)v86 disableFairPlaySAP])
+    if ([(MFAANetwork *)selfCopy2 disableFairPlaySAP])
     {
       v64 = logObjectForModule(1);
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -4277,7 +4277,7 @@ LABEL_51:
       goto LABEL_112;
     }
 
-    if ([(MFAANetwork *)v86 forceFairPlaySAPFailure])
+    if ([(MFAANetwork *)selfCopy2 forceFairPlaySAPFailure])
     {
       v52 = [@"1234" dataUsingEncoding:4];
 LABEL_112:
@@ -4285,9 +4285,9 @@ LABEL_112:
       v84 = v52;
       if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
       {
-        v66 = [(MFAANetwork *)v86 _selectedAPIServer];
+        _selectedAPIServer = [(MFAANetwork *)selfCopy2 _selectedAPIServer];
         *buf = 138412290;
-        v106 = v66;
+        v106 = _selectedAPIServer;
         _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "self._selectedAPIServer: %@", buf, 0xCu);
 
         v52 = v84;
@@ -4295,18 +4295,18 @@ LABEL_112:
 
       if (v52)
       {
-        v67 = [(MFAANetwork *)v86 fairPlaySAPSession];
-        v68 = [v67 UUID];
-        v69 = [v68 UUIDString];
-        v70 = [(MFAANetwork *)v86 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:v69 signature:v84 requestUUID:v19];
+        fairPlaySAPSession = [(MFAANetwork *)selfCopy2 fairPlaySAPSession];
+        uUID = [fairPlaySAPSession UUID];
+        uUIDString2 = [uUID UUIDString];
+        v70 = [(MFAANetwork *)selfCopy2 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:uUIDString2 signature:v84 requestUUID:uUIDString];
 
-        v16 = v91;
+        ppidCopy = v91;
         v71 = v70;
       }
 
       else
       {
-        v71 = [(MFAANetwork *)v86 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:0 signature:0 requestUUID:v19];
+        v71 = [(MFAANetwork *)selfCopy2 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/queryProductPlan" sessionID:0 signature:0 requestUUID:uUIDString];
       }
 
       v72 = logObjectForModule(1);
@@ -4339,19 +4339,19 @@ LABEL_112:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      v77 = [(MFAANetwork *)v86 urlSession];
+      urlSession = [(MFAANetwork *)selfCopy2 urlSession];
       v94[0] = _NSConcreteStackBlock;
       v94[1] = 3221225472;
       v94[2] = __98__MFAANetwork__requestMetadataForCertSerial_issuerSeq_ppid_requestedLocale_requestInfo_withReply___block_invoke_234;
       v94[3] = &unk_100080828;
-      v96 = v17;
-      v94[4] = v86;
-      v95 = v16;
+      v96 = replyCopy;
+      v94[4] = selfCopy2;
+      v95 = ppidCopy;
       v54 = v85;
-      v78 = [v77 uploadTaskWithRequest:v71 fromData:v85 completionHandler:v94];
+      v78 = [urlSession uploadTaskWithRequest:v71 fromData:v85 completionHandler:v94];
 
       [v78 resume];
-      v16 = v91;
+      ppidCopy = v91;
 
       v51 = 0;
       v52 = v84;
@@ -4360,7 +4360,7 @@ LABEL_112:
 
     buf[0] = 0;
     v97 = 0;
-    v52 = [(MFAANetwork *)v86 _fairPlaySignatureForDataSync:v85 timedOut:buf error:&v97];
+    v52 = [(MFAANetwork *)selfCopy2 _fairPlaySignatureForDataSync:v85 timedOut:buf error:&v97];
     v79 = v97;
     if (buf[0] == 1)
     {
@@ -4401,8 +4401,8 @@ LABEL_112:
       {
 LABEL_141:
 
-        (*(v17 + 2))(v17, 0, 0, 0, v81);
-        v14 = v89;
+        (*(replyCopy + 2))(replyCopy, 0, 0, 0, v81);
+        serialCopy = v89;
 LABEL_78:
         v54 = v85;
 LABEL_128:
@@ -4469,9 +4469,9 @@ LABEL_129:
   block[1] = 3221225472;
   block[2] = __98__MFAANetwork__requestMetadataForCertSerial_issuerSeq_ppid_requestedLocale_requestInfo_withReply___block_invoke;
   block[3] = &unk_100080800;
-  v102 = v17;
-  v100 = v16;
-  v101 = v93;
+  v102 = replyCopy;
+  v100 = ppidCopy;
+  v101 = localeCopy;
   dispatch_after(v56, v57, block);
 
   v33 = v102;
@@ -5010,14 +5010,14 @@ LABEL_166:
 LABEL_152:
 }
 
-- (void)_validateCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6
+- (void)_validateCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  serialCopy = serial;
+  seqCopy = seq;
+  ppidCopy = ppid;
+  replyCopy = reply;
   v13 = +[NSUUID UUID];
-  v14 = [v13 UUIDString];
+  uUIDString = [v13 UUIDString];
 
   if (gLogObjects && gNumLogObjects >= 2)
   {
@@ -5038,25 +5038,25 @@ LABEL_152:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478851;
-    v103 = v9;
+    v103 = serialCopy;
     v104 = 2048;
-    v105 = [v9 length];
+    v105 = [serialCopy length];
     v106 = 2048;
-    v107 = [v10 length];
+    v107 = [seqCopy length];
     v108 = 2113;
-    v109 = v11;
+    v109 = ppidCopy;
     v110 = 2112;
-    v111 = v14;
+    v111 = uUIDString;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Validating certificate serial: %{private}@ (certSerial.length: %lu, issuerSeq.length: %lu, ppid: %{private}@, requestUUID: %@)", buf, 0x34u);
   }
 
   v17 = +[NSXPCConnection currentConnection];
-  v89 = v9;
+  v89 = serialCopy;
   if (([v17 hasCategory:@"certificate-auth" forEntitlement:@"com.apple.MFAAuthentication"] & 1) == 0)
   {
-    v19 = v11;
+    v19 = ppidCopy;
     v20 = v17;
-    v21 = v12;
+    v21 = replyCopy;
     v22 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-2];
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -5084,11 +5084,11 @@ LABEL_152:
     goto LABEL_35;
   }
 
-  if (!v9 || !v10 || !v11)
+  if (!serialCopy || !seqCopy || !ppidCopy)
   {
-    v19 = v11;
+    v19 = ppidCopy;
     v20 = v17;
-    v26 = v12;
+    v26 = replyCopy;
     v22 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3 description:@"certSerial, certIssuerSeq, ppid or requestedLocale = nil."];
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -5118,21 +5118,21 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v86 = v12;
+  v86 = replyCopy;
   if (![(MFAANetwork *)self forceNetworkFailure])
   {
-    v84 = v14;
+    v84 = uUIDString;
     v100 = @"certificates";
     v97[0] = @"cert_serial";
-    v29 = [v9 base64EncodedStringWithOptions:0];
+    v29 = [serialCopy base64EncodedStringWithOptions:0];
     v98[0] = v29;
     v97[1] = @"issuer_dn";
-    v83 = v10;
-    v30 = [v10 base64EncodedStringWithOptions:0];
+    v83 = seqCopy;
+    v30 = [seqCopy base64EncodedStringWithOptions:0];
     v97[2] = @"ppid";
     v98[1] = v30;
-    v98[2] = v11;
-    v82 = v11;
+    v98[2] = ppidCopy;
+    v82 = ppidCopy;
     v31 = [NSDictionary dictionaryWithObjects:v98 forKeys:v97 count:3];
     v99 = v31;
     v32 = [NSArray arrayWithObjects:&v99 count:1];
@@ -5156,8 +5156,8 @@ LABEL_35:
       v38 = &_os_log_default;
     }
 
-    v14 = v84;
-    v10 = v83;
+    uUIDString = v84;
+    seqCopy = v83;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -5205,7 +5205,7 @@ LABEL_35:
         v48 = &_os_log_default;
       }
 
-      v14 = v84;
+      uUIDString = v84;
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -5253,7 +5253,7 @@ LABEL_35:
         v50 = &_os_log_default;
       }
 
-      v10 = v83;
+      seqCopy = v83;
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -5276,7 +5276,7 @@ LABEL_35:
         v53 = &_os_log_default;
       }
 
-      v14 = v84;
+      uUIDString = v84;
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -5332,7 +5332,7 @@ LABEL_35:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    v58 = self;
+    selfCopy2 = self;
     if ([(MFAANetwork *)self disableFairPlaySAP])
     {
       v59 = logObjectForModule(1);
@@ -5343,7 +5343,7 @@ LABEL_35:
       }
 
       v60 = 0;
-      v58 = self;
+      selfCopy2 = self;
       goto LABEL_121;
     }
 
@@ -5354,9 +5354,9 @@ LABEL_121:
       v61 = logObjectForModule(1);
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
-        v62 = [(MFAANetwork *)v58 _selectedAPIServer];
+        _selectedAPIServer = [(MFAANetwork *)selfCopy2 _selectedAPIServer];
         *buf = 138412290;
-        v103 = v62;
+        v103 = _selectedAPIServer;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "self._selectedAPIServer: %@", buf, 0xCu);
 
         v19 = v82;
@@ -5365,17 +5365,17 @@ LABEL_121:
       v85 = v60;
       if (v60)
       {
-        v63 = [(MFAANetwork *)v58 fairPlaySAPSession];
-        v64 = [v63 UUID];
-        v65 = [v64 UUIDString];
-        v66 = [(MFAANetwork *)v58 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/validateCertificate" sessionID:v65 signature:v60 requestUUID:v14];
+        fairPlaySAPSession = [(MFAANetwork *)selfCopy2 fairPlaySAPSession];
+        uUID = [fairPlaySAPSession UUID];
+        uUIDString2 = [uUID UUIDString];
+        v66 = [(MFAANetwork *)selfCopy2 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/validateCertificate" sessionID:uUIDString2 signature:v60 requestUUID:uUIDString];
 
         v19 = v82;
       }
 
       else
       {
-        v66 = [(MFAANetwork *)v58 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/validateCertificate" sessionID:0 signature:0 requestUUID:v14];
+        v66 = [(MFAANetwork *)selfCopy2 _generateTokenAuthURLRequestForEndpoint:@"deviceservices/validateCertificate" sessionID:0 signature:0 requestUUID:uUIDString];
       }
 
       v43 = 0;
@@ -5409,7 +5409,7 @@ LABEL_121:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      v72 = [(MFAANetwork *)self urlSession];
+      urlSession = [(MFAANetwork *)self urlSession];
       v90[0] = _NSConcreteStackBlock;
       v90[1] = 3221225472;
       v90[2] = __60__MFAANetwork__validateCertSerial_issuerSeq_ppid_withReply___block_invoke;
@@ -5420,9 +5420,9 @@ LABEL_121:
       v91 = v89;
       v92 = v83;
       v93 = v19;
-      v73 = [v72 uploadTaskWithRequest:v66 fromData:v81 completionHandler:v90];
+      v73 = [urlSession uploadTaskWithRequest:v66 fromData:v81 completionHandler:v90];
 
-      v10 = v83;
+      seqCopy = v83;
       [v73 resume];
 
       v19 = v82;
@@ -5482,8 +5482,8 @@ LABEL_150:
         v22 = v34;
 
         (v25)[2](v25, 0, v77);
-        v10 = v83;
-        v14 = v84;
+        seqCopy = v83;
+        uUIDString = v84;
 LABEL_137:
 
 LABEL_138:
@@ -5511,7 +5511,7 @@ LABEL_138:
     v36 = &_os_log_default;
   }
 
-  v19 = v11;
+  v19 = ppidCopy;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -6248,12 +6248,12 @@ LABEL_66:
 LABEL_189:
 }
 
-- (void)_getCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6
+- (void)_getCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serialCopy = serial;
+  seqCopy = seq;
+  ppidCopy = ppid;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 2;
@@ -6283,13 +6283,13 @@ LABEL_189:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478595;
-    *&buf[4] = v10;
+    *&buf[4] = serialCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v10 length];
+    *&buf[14] = [serialCopy length];
     *&buf[22] = 2048;
-    v35 = [v11 length];
+    v35 = [seqCopy length];
     v36 = 2113;
-    v37 = v12;
+    v37 = ppidCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Getting cached status for cert serial: %{private}@ (certSerial.length: %lu, issuerSeq.length: %lu, ppid: %{private}@)", buf, 0x2Au);
   }
 
@@ -6318,15 +6318,15 @@ LABEL_189:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if (v13)
+    if (replyCopy)
     {
-      v13[2](v13, 0, v23);
+      replyCopy[2](replyCopy, 0, v23);
     }
 
     goto LABEL_39;
   }
 
-  if (!v10 || !v11 || !v12)
+  if (!serialCopy || !seqCopy || !ppidCopy)
   {
     v23 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3 description:@"certSerial, certIssuerSeq, or ppid = nil."];
     if (gLogObjects && gNumLogObjects >= 2)
@@ -6350,10 +6350,10 @@ LABEL_189:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if (v13)
+    if (replyCopy)
     {
       v28 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-      v13[2](v13, 0, v28);
+      replyCopy[2](replyCopy, 0, v28);
     }
 
 LABEL_39:
@@ -6365,9 +6365,9 @@ LABEL_39:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LODWORD(v35) = 0;
-  v18 = [v11 base64EncodedStringWithOptions:0];
-  v19 = [v10 base64EncodedStringWithOptions:0];
-  v20 = [(MFAANetwork *)self userDefaultsQueue];
+  v18 = [seqCopy base64EncodedStringWithOptions:0];
+  v19 = [serialCopy base64EncodedStringWithOptions:0];
+  userDefaultsQueue = [(MFAANetwork *)self userDefaultsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __70__MFAANetwork__getCachedStatusForCertSerial_issuerSeq_ppid_withReply___block_invoke;
@@ -6378,12 +6378,12 @@ LABEL_39:
   v22 = v19;
   v31 = v22;
   v33 = buf;
-  v32 = v10;
-  dispatch_sync(v20, block);
+  v32 = serialCopy;
+  dispatch_sync(userDefaultsQueue, block);
 
-  if (v13)
+  if (replyCopy)
   {
-    v13[2](v13, *(*&buf[8] + 24), 0);
+    replyCopy[2](replyCopy, *(*&buf[8] + 24), 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -6573,36 +6573,36 @@ void __70__MFAANetwork__getCachedStatusForCertSerial_issuerSeq_ppid_withReply___
   }
 }
 
-- (void)_setCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 certStatus:(int)a6
+- (void)_setCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid certStatus:(int)status
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  serialCopy = serial;
+  seqCopy = seq;
+  ppidCopy = ppid;
+  v13 = ppidCopy;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy_;
   v32 = __Block_byref_object_dispose_;
   v33 = 0;
-  if (v10 && v11 && v12)
+  if (serialCopy && seqCopy && ppidCopy)
   {
-    v14 = [v11 base64EncodedStringWithOptions:0];
-    v15 = [v10 base64EncodedStringWithOptions:0];
-    v16 = [(MFAANetwork *)self userDefaultsQueue];
+    v14 = [seqCopy base64EncodedStringWithOptions:0];
+    v15 = [serialCopy base64EncodedStringWithOptions:0];
+    userDefaultsQueue = [(MFAANetwork *)self userDefaultsQueue];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = __71__MFAANetwork__setCachedStatusForCertSerial_issuerSeq_ppid_certStatus___block_invoke;
     v22[3] = &unk_1000808A0;
     v22[4] = self;
-    v27 = a6;
-    v23 = v10;
+    statusCopy = status;
+    v23 = serialCopy;
     v24 = v14;
     v25 = v15;
     v26 = &v28;
     v17 = v15;
     v18 = v14;
-    dispatch_sync(v16, v22);
+    dispatch_sync(userDefaultsQueue, v22);
   }
 
   else
@@ -6883,10 +6883,10 @@ LABEL_57:
   }
 }
 
-- (void)_addPairingWithToken:(id)a3 withReply:(id)a4
+- (void)_addPairingWithToken:(id)token withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -6916,18 +6916,18 @@ LABEL_57:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    *&buf[4] = v6;
+    *&buf[4] = tokenCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v6 length];
+    *&buf[14] = [tokenCopy length];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding pairing with token: %{private}@ (pairingToken.length: %lu)", buf, 0x16u);
   }
 
   v11 = +[NSXPCConnection currentConnection];
   if ([v11 hasCategory:@"pairing" forEntitlement:@"com.apple.MFAAuthentication"])
   {
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (tokenCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v6 base64EncodedStringWithOptions:0];
+      v12 = [tokenCopy base64EncodedStringWithOptions:0];
       if (gLogObjects && gNumLogObjects >= 4)
       {
         v13 = *(gLogObjects + 24);
@@ -6959,7 +6959,7 @@ LABEL_57:
         v31 = __Block_byref_object_copy_;
         v32 = __Block_byref_object_dispose_;
         v33 = 0;
-        v20 = [(MFAANetwork *)self userDefaultsQueue];
+        userDefaultsQueue = [(MFAANetwork *)self userDefaultsQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __46__MFAANetwork__addPairingWithToken_withReply___block_invoke;
@@ -6968,7 +6968,7 @@ LABEL_57:
         v12 = v12;
         v28 = v12;
         v29 = buf;
-        dispatch_sync(v20, block);
+        dispatch_sync(userDefaultsQueue, block);
 
         if (*(*&buf[8] + 40))
         {
@@ -6994,9 +6994,9 @@ LABEL_57:
           }
         }
 
-        if (v7)
+        if (replyCopy)
         {
-          v7[2](v7, *(*&buf[8] + 40));
+          replyCopy[2](replyCopy, *(*&buf[8] + 40));
         }
 
         _Block_object_dispose(buf, 8);
@@ -7026,10 +7026,10 @@ LABEL_57:
           [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
         }
 
-        if (v7)
+        if (replyCopy)
         {
           v26 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-4];
-          (v7)[2](v7, v26);
+          (replyCopy)[2](replyCopy, v26);
         }
       }
     }
@@ -7058,10 +7058,10 @@ LABEL_57:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      if (v7)
+      if (replyCopy)
       {
         v18 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-        (v7)[2](v7, v18);
+        (replyCopy)[2](replyCopy, v18);
       }
     }
   }
@@ -7090,9 +7090,9 @@ LABEL_57:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if (v7)
+    if (replyCopy)
     {
-      (v7)[2](v7, v12);
+      (replyCopy)[2](replyCopy, v12);
     }
   }
 }
@@ -7262,10 +7262,10 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
   }
 }
 
-- (void)_removePairingWithToken:(id)a3 withReply:(id)a4
+- (void)_removePairingWithToken:(id)token withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -7295,18 +7295,18 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    *&buf[4] = v6;
+    *&buf[4] = tokenCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v6 length];
+    *&buf[14] = [tokenCopy length];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing pairing with token: %{private}@ (pairingToken.length: %lu)", buf, 0x16u);
   }
 
   v11 = +[NSXPCConnection currentConnection];
   if ([v11 hasCategory:@"pairing" forEntitlement:@"com.apple.MFAAuthentication"])
   {
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (tokenCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v6 base64EncodedStringWithOptions:0];
+      v12 = [tokenCopy base64EncodedStringWithOptions:0];
       if (gLogObjects && gNumLogObjects >= 4)
       {
         v13 = *(gLogObjects + 24);
@@ -7338,17 +7338,17 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
         v32 = __Block_byref_object_copy_;
         v33 = __Block_byref_object_dispose_;
         v34 = 0;
-        v20 = [(MFAANetwork *)self userDefaultsQueue];
+        userDefaultsQueue = [(MFAANetwork *)self userDefaultsQueue];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = __49__MFAANetwork__removePairingWithToken_withReply___block_invoke;
         v27[3] = &unk_1000808F0;
         v27[4] = self;
-        v28 = v6;
+        v28 = tokenCopy;
         v12 = v12;
         v29 = v12;
         v30 = buf;
-        dispatch_sync(v20, v27);
+        dispatch_sync(userDefaultsQueue, v27);
 
         if (*(*&buf[8] + 40))
         {
@@ -7374,9 +7374,9 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
           }
         }
 
-        if (v7)
+        if (replyCopy)
         {
-          v7[2](v7, *(*&buf[8] + 40));
+          replyCopy[2](replyCopy, *(*&buf[8] + 40));
         }
 
         _Block_object_dispose(buf, 8);
@@ -7406,10 +7406,10 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
           [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
         }
 
-        if (v7)
+        if (replyCopy)
         {
           v26 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-4];
-          (v7)[2](v7, v26);
+          (replyCopy)[2](replyCopy, v26);
         }
       }
     }
@@ -7438,10 +7438,10 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      if (v7)
+      if (replyCopy)
       {
         v18 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-        (v7)[2](v7, v18);
+        (replyCopy)[2](replyCopy, v18);
       }
     }
   }
@@ -7470,9 +7470,9 @@ void __46__MFAANetwork__addPairingWithToken_withReply___block_invoke(uint64_t a1
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if (v7)
+    if (replyCopy)
     {
-      (v7)[2](v7, v12);
+      (replyCopy)[2](replyCopy, v12);
     }
   }
 }
@@ -7646,10 +7646,10 @@ LABEL_53:
   }
 }
 
-- (void)_verifyPairingWithToken:(id)a3 withReply:(id)a4
+- (void)_verifyPairingWithToken:(id)token withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -7679,18 +7679,18 @@ LABEL_53:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    *&buf[4] = v6;
+    *&buf[4] = tokenCopy;
     *&buf[12] = 2048;
-    *&buf[14] = [v6 length];
+    *&buf[14] = [tokenCopy length];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Verifying pairing status with token: %{private}@ (pairingToken.length: %lu)", buf, 0x16u);
   }
 
   v11 = +[NSXPCConnection currentConnection];
   if ([v11 hasCategory:@"pairing" forEntitlement:@"com.apple.MFAAuthentication"])
   {
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (tokenCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v6 base64EncodedStringWithOptions:0];
+      v12 = [tokenCopy base64EncodedStringWithOptions:0];
       if (gLogObjects && gNumLogObjects >= 4)
       {
         v13 = *(gLogObjects + 24);
@@ -7724,7 +7724,7 @@ LABEL_53:
         v35 = &v34;
         v36 = 0x2020000000;
         v37 = 0;
-        v20 = [(MFAANetwork *)self userDefaultsQueue];
+        userDefaultsQueue = [(MFAANetwork *)self userDefaultsQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __49__MFAANetwork__verifyPairingWithToken_withReply___block_invoke;
@@ -7732,11 +7732,11 @@ LABEL_53:
         block[4] = self;
         v12 = v12;
         v30 = v12;
-        v27 = v6;
+        v27 = tokenCopy;
         v31 = v27;
         v32 = buf;
         v33 = &v34;
-        dispatch_sync(v20, block);
+        dispatch_sync(userDefaultsQueue, block);
 
         if (*(v35 + 24) == 1)
         {
@@ -7765,9 +7765,9 @@ LABEL_53:
           [(MFAANetwork *)self _removePairingWithToken:v27 withReply:0];
         }
 
-        if (v7)
+        if (replyCopy)
         {
-          (*(v7 + 2))(v7, *(*&buf[8] + 24), 0);
+          (*(replyCopy + 2))(replyCopy, *(*&buf[8] + 24), 0);
         }
 
         _Block_object_dispose(&v34, 8);
@@ -7798,10 +7798,10 @@ LABEL_53:
           [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
         }
 
-        if (v7)
+        if (replyCopy)
         {
           v25 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-4];
-          (*(v7 + 2))(v7, 0, v25);
+          (*(replyCopy + 2))(replyCopy, 0, v25);
         }
       }
     }
@@ -7830,10 +7830,10 @@ LABEL_53:
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
       }
 
-      if (v7)
+      if (replyCopy)
       {
         v18 = [NSError MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-        (*(v7 + 2))(v7, 0, v18);
+        (*(replyCopy + 2))(replyCopy, 0, v18);
       }
     }
   }
@@ -7862,9 +7862,9 @@ LABEL_53:
       [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
     }
 
-    if (v7)
+    if (replyCopy)
     {
-      (*(v7 + 2))(v7, 0, v12);
+      (*(replyCopy + 2))(replyCopy, 0, v12);
     }
   }
 }
@@ -8174,10 +8174,10 @@ void __49__MFAANetwork__verifyPairingWithToken_withReply___block_invoke(uint64_t
   }
 }
 
-- (void)session:(id)a3 requestCertificateWithCompletionHandler:(id)a4
+- (void)session:(id)session requestCertificateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -8210,7 +8210,7 @@ void __49__MFAANetwork__verifyPairingWithToken_withReply___block_invoke(uint64_t
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Requesting certificate for FairPlay SAP session...", buf, 2u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v10 = [NSString stringWithFormat:@"%@/%@", @"https://static.ips.apple.com", @"deviceservices/setup.crt"];
     v11 = [NSURL URLWithString:v10];
@@ -8263,7 +8263,7 @@ void __49__MFAANetwork__verifyPairingWithToken_withReply___block_invoke(uint64_t
     v19[1] = 3221225472;
     v19[2] = __63__MFAANetwork_session_requestCertificateWithCompletionHandler___block_invoke;
     v19[3] = &unk_1000807D8;
-    v20 = v6;
+    v20 = handlerCopy;
     v18 = [v17 dataTaskWithRequest:v12 completionHandler:v19];
 
     [v18 resume];
@@ -8421,11 +8421,11 @@ void __63__MFAANetwork_session_requestCertificateWithCompletionHandler___block_i
 LABEL_54:
 }
 
-- (void)session:(id)a3 requestHandshakeWithServer:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session requestHandshakeWithServer:(id)server completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  serverCopy = server;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 1;
@@ -8458,7 +8458,7 @@ LABEL_54:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Requesting handshake for FairPlay SAP session...", buf, 2u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     if (gLogObjects)
     {
@@ -8471,7 +8471,7 @@ LABEL_54:
     }
 
     v15 = !v14;
-    if (v9)
+    if (serverCopy)
     {
       if (v15)
       {
@@ -8491,15 +8491,15 @@ LABEL_54:
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v19 = [(MFAANetwork *)self _selectedFairPlaySAPServer];
+        _selectedFairPlaySAPServer = [(MFAANetwork *)self _selectedFairPlaySAPServer];
         *buf = 138412290;
-        v62 = v19;
+        v62 = _selectedFairPlaySAPServer;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "self._selectedFairPlaySAPServer: %@", buf, 0xCu);
       }
 
-      v54 = self;
-      v20 = [(MFAANetwork *)self _selectedFairPlaySAPServer];
-      v21 = [NSString stringWithFormat:@"%@/%@", v20, @"deviceservices/sapSession"];
+      selfCopy = self;
+      _selectedFairPlaySAPServer2 = [(MFAANetwork *)self _selectedFairPlaySAPServer];
+      v21 = [NSString stringWithFormat:@"%@/%@", _selectedFairPlaySAPServer2, @"deviceservices/sapSession"];
       v22 = [NSURL URLWithString:v21];
 
       v55 = v22;
@@ -8551,13 +8551,13 @@ LABEL_54:
       }
 
       v59[0] = @"session-request";
-      v28 = [v9 base64EncodedStringWithOptions:0];
+      v28 = [serverCopy base64EncodedStringWithOptions:0];
       v59[1] = @"session-identifier";
       v60[0] = v28;
-      v29 = v8;
-      v30 = [v8 UUID];
-      v31 = [v30 UUIDString];
-      v60[1] = v31;
+      v29 = sessionCopy;
+      uUID = [sessionCopy UUID];
+      uUIDString = [uUID UUIDString];
+      v60[1] = uUIDString;
       v32 = [NSDictionary dictionaryWithObjects:v60 forKeys:v59 count:2];
 
       if (gLogObjects && gNumLogObjects >= 1)
@@ -8576,7 +8576,7 @@ LABEL_54:
         v34 = &_os_log_default;
       }
 
-      v8 = v29;
+      sessionCopy = v29;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         [MFAANetwork _requestMetadataForToken:withUUID:requestedLocale:requestInfo:withReply:];
@@ -8619,7 +8619,7 @@ LABEL_54:
             v45 = &_os_log_default;
           }
 
-          v8 = v29;
+          sessionCopy = v29;
           v46 = v53;
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
@@ -8627,7 +8627,7 @@ LABEL_54:
           }
 
           v47 = [NSError errorWithDomain:@"FairPlaySAPSessionErrorDomain" code:-4 userInfo:0];
-          v10[2](v10, 0, v47);
+          handlerCopy[2](handlerCopy, 0, v47);
         }
 
         else
@@ -8682,13 +8682,13 @@ LABEL_54:
           v56[1] = 3221225472;
           v56[2] = __68__MFAANetwork_session_requestHandshakeWithServer_completionHandler___block_invoke;
           v56[3] = &unk_100080788;
-          v56[4] = v54;
-          v57 = v10;
+          v56[4] = selfCopy;
+          v57 = handlerCopy;
           v52 = [v51 uploadTaskWithRequest:v23 fromData:v53 completionHandler:v56];
 
           [v52 resume];
           v47 = v57;
-          v8 = v29;
+          sessionCopy = v29;
         }
       }
 
@@ -8718,7 +8718,7 @@ LABEL_54:
         }
 
         v36 = [NSError errorWithDomain:@"FairPlaySAPSessionErrorDomain" code:-4 userInfo:0];
-        v10[2](v10, 0, v36);
+        handlerCopy[2](handlerCopy, 0, v36);
       }
     }
 
@@ -8746,7 +8746,7 @@ LABEL_54:
       }
 
       v40 = [NSError errorWithDomain:@"FairPlaySAPSessionErrorDomain" code:-3 userInfo:0];
-      v10[2](v10, 0, v40);
+      handlerCopy[2](handlerCopy, 0, v40);
     }
   }
 }
@@ -9035,7 +9035,7 @@ LABEL_73:
   block[1] = 3221225472;
   block[2] = __29__MFAANetwork_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -9055,7 +9055,7 @@ uint64_t __29__MFAANetwork_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)_init
 {
-  v1 = [*a1 description];
+  v1 = [*self description];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

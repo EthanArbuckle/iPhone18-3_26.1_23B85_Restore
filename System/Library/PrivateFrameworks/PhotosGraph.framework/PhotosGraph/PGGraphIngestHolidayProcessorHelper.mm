@@ -1,29 +1,29 @@
 @interface PGGraphIngestHolidayProcessorHelper
-+ (id)keyboardLanguageCodesForInfoNode:(id)a3 holidayService:(id)a4;
-- (BOOL)isCelebratingForEventRule:(id)a3 momentNode:(id)a4 momentLocalDate:(id)a5 withGraph:(id)a6 loggingConnection:(id)a7 localeCountryCode:(id)a8 keyboardLanguageCodes:(id)a9;
-- (BOOL)momentTraitsMatchesHolidayTraits:(id)a3 momentNode:(id)a4 loggingConnection:(id)a5;
++ (id)keyboardLanguageCodesForInfoNode:(id)node holidayService:(id)service;
+- (BOOL)isCelebratingForEventRule:(id)rule momentNode:(id)node momentLocalDate:(id)date withGraph:(id)graph loggingConnection:(id)connection localeCountryCode:(id)code keyboardLanguageCodes:(id)codes;
+- (BOOL)momentTraitsMatchesHolidayTraits:(id)traits momentNode:(id)node loggingConnection:(id)connection;
 - (PGGraphIngestHolidayProcessorHelper)init;
-- (double)_calculateSceneScores:(id)a3;
-- (double)_dateScoreForEventRule:(id)a3 localeCode:(id)a4 holidayDate:(id)a5 momentDate:(id)a6;
-- (double)dateScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6 momentDate:(id)a7;
-- (double)locationScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6;
-- (double)sceneScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6 momentNode:(id)a7;
-- (id)holidayCalendarEventRuleTraitsForMomentNode:(id)a3;
-- (id)momentsCelebratingRule:(id)a3 localDates:(id)a4 userCountryCode:(id)a5 keyboardLanguageCodes:(id)a6 graph:(id)a7 loggingConnection:(id)a8;
-- (unint64_t)_eventRuleLocationTraitForMomentNode:(id)a3 graph:(id)a4;
-- (unint64_t)_eventRulePeopleTraitForPersonNodes:(id)a3 graph:(id)a4;
-- (void)prepareIfNeededWithGraph:(id)a3;
+- (double)_calculateSceneScores:(id)scores;
+- (double)_dateScoreForEventRule:(id)rule localeCode:(id)code holidayDate:(id)date momentDate:(id)momentDate;
+- (double)dateScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes momentDate:(id)date;
+- (double)locationScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes;
+- (double)sceneScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes momentNode:(id)node;
+- (id)holidayCalendarEventRuleTraitsForMomentNode:(id)node;
+- (id)momentsCelebratingRule:(id)rule localDates:(id)dates userCountryCode:(id)code keyboardLanguageCodes:(id)codes graph:(id)graph loggingConnection:(id)connection;
+- (unint64_t)_eventRuleLocationTraitForMomentNode:(id)node graph:(id)graph;
+- (unint64_t)_eventRulePeopleTraitForPersonNodes:(id)nodes graph:(id)graph;
+- (void)prepareIfNeededWithGraph:(id)graph;
 @end
 
 @implementation PGGraphIngestHolidayProcessorHelper
 
-- (unint64_t)_eventRuleLocationTraitForMomentNode:(id)a3 graph:(id)a4
+- (unint64_t)_eventRuleLocationTraitForMomentNode:(id)node graph:(id)graph
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasAddressNodes])
+  nodeCopy = node;
+  graphCopy = graph;
+  if ([nodeCopy hasAddressNodes])
   {
-    v7 = [v6 supersetCityNodes];
+    supersetCityNodes = [graphCopy supersetCityNodes];
     v32 = 0;
     v33 = &v32;
     v34 = 0x2020000000;
@@ -32,21 +32,21 @@
     v29 = &v28;
     v30 = 0x2020000000;
     v31 = 0;
-    v8 = [v5 bestAddressNode];
-    v9 = [v8 location];
-    v10 = [v5 collection];
-    v11 = [v10 cityNodes];
+    bestAddressNode = [nodeCopy bestAddressNode];
+    location = [bestAddressNode location];
+    collection = [nodeCopy collection];
+    cityNodes = [collection cityNodes];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __82__PGGraphIngestHolidayProcessorHelper__eventRuleLocationTraitForMomentNode_graph___block_invoke;
     v23 = &unk_278882268;
     v26 = &v32;
-    v12 = v7;
+    v12 = supersetCityNodes;
     v24 = v12;
-    v13 = v9;
+    v13 = location;
     v25 = v13;
     v27 = &v28;
-    [v11 enumerateNodesUsingBlock:&v20];
+    [cityNodes enumerateNodesUsingBlock:&v20];
 
     if (v33[3])
     {
@@ -60,12 +60,12 @@
 
     else
     {
-      v15 = [v6 supersetCountryNodes];
-      v16 = [v5 collection];
-      v17 = [v16 addressNodes];
-      v18 = [v17 countryNodes];
+      supersetCountryNodes = [graphCopy supersetCountryNodes];
+      collection2 = [nodeCopy collection];
+      addressNodes = [collection2 addressNodes];
+      countryNodes = [addressNodes countryNodes];
 
-      if ([v18 intersectsCollection:v15])
+      if ([countryNodes intersectsCollection:supersetCountryNodes])
       {
         v14 = 20;
       }
@@ -130,43 +130,43 @@ void __82__PGGraphIngestHolidayProcessorHelper__eventRuleLocationTraitForMomentN
   }
 }
 
-- (unint64_t)_eventRulePeopleTraitForPersonNodes:(id)a3 graph:(id)a4
+- (unint64_t)_eventRulePeopleTraitForPersonNodes:(id)nodes graph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  [(PGGraphIngestHolidayProcessorHelper *)self prepareIfNeededWithGraph:v7];
-  v8 = [v6 intersectsCollection:self->_partnerPersonNodes];
-  if ([v6 intersectsCollection:self->_familyPersonNodes])
+  nodesCopy = nodes;
+  graphCopy = graph;
+  [(PGGraphIngestHolidayProcessorHelper *)self prepareIfNeededWithGraph:graphCopy];
+  v8 = [nodesCopy intersectsCollection:self->_partnerPersonNodes];
+  if ([nodesCopy intersectsCollection:self->_familyPersonNodes])
   {
     v8 |= 2uLL;
   }
 
-  if ([v6 intersectsCollection:self->_friendPersonNodes])
+  if ([nodesCopy intersectsCollection:self->_friendPersonNodes])
   {
     v8 |= 4uLL;
   }
 
-  if (![(MAElementCollection *)self->_nonAcquaintancePersonNodes containsCollection:v6])
+  if (![(MAElementCollection *)self->_nonAcquaintancePersonNodes containsCollection:nodesCopy])
   {
     v8 |= 0x10uLL;
   }
 
-  if ([v6 intersectsCollection:self->_coworkerPersonNodes])
+  if ([nodesCopy intersectsCollection:self->_coworkerPersonNodes])
   {
     v8 |= 8uLL;
   }
 
-  if ([v6 intersectsCollection:self->_motherPersonNodes])
+  if ([nodesCopy intersectsCollection:self->_motherPersonNodes])
   {
     v8 |= 0x20uLL;
   }
 
-  if ([v6 intersectsCollection:self->_fatherPersonNodes])
+  if ([nodesCopy intersectsCollection:self->_fatherPersonNodes])
   {
     v8 |= 0x40uLL;
   }
 
-  if ([v6 intersectsCollection:self->_childPersonNodes])
+  if ([nodesCopy intersectsCollection:self->_childPersonNodes])
   {
     v23 = 0;
     v24 = &v23;
@@ -176,18 +176,18 @@ void __82__PGGraphIngestHolidayProcessorHelper__eventRuleLocationTraitForMomentN
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v9 = [v6 elementIdentifiers];
-    v10 = [(MAElementCollection *)self->_partnerPersonNodes elementIdentifiers];
+    elementIdentifiers = [nodesCopy elementIdentifiers];
+    elementIdentifiers2 = [(MAElementCollection *)self->_partnerPersonNodes elementIdentifiers];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNodes_graph___block_invoke;
     v14[3] = &unk_2788898C8;
-    v11 = v9;
+    v11 = elementIdentifiers;
     v15 = v11;
-    v16 = self;
+    selfCopy = self;
     v17 = &v23;
     v18 = &v19;
-    [v10 enumerateIdentifiersWithBlock:v14];
+    [elementIdentifiers2 enumerateIdentifiersWithBlock:v14];
 
     meBiologicalSex = self->_meBiologicalSex;
     if (meBiologicalSex == 1 || *(v24 + 24) == 1)
@@ -221,38 +221,38 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   }
 }
 
-- (id)holidayCalendarEventRuleTraitsForMomentNode:(id)a3
+- (id)holidayCalendarEventRuleTraitsForMomentNode:(id)node
 {
   v4 = MEMORY[0x277D276D0];
-  v5 = a3;
+  nodeCopy = node;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 collection];
-  v8 = [v7 personNodes];
+  collection = [nodeCopy collection];
+  personNodes = [collection personNodes];
 
-  v9 = [v5 graph];
-  [v6 setPeopleTrait:{-[PGGraphIngestHolidayProcessorHelper _eventRulePeopleTraitForPersonNodes:graph:](self, "_eventRulePeopleTraitForPersonNodes:graph:", v8, v9)}];
+  graph = [nodeCopy graph];
+  [v6 setPeopleTrait:{-[PGGraphIngestHolidayProcessorHelper _eventRulePeopleTraitForPersonNodes:graph:](self, "_eventRulePeopleTraitForPersonNodes:graph:", personNodes, graph)}];
 
-  [v6 setContainsMePerson:{objc_msgSend(v8, "containsMeNode")}];
-  v10 = [v5 collection];
+  [v6 setContainsMePerson:{objc_msgSend(personNodes, "containsMeNode")}];
+  collection2 = [nodeCopy collection];
 
-  v11 = [v10 personNodes];
-  [v6 setNumberOfPeople:{objc_msgSend(v11, "count")}];
+  personNodes2 = [collection2 personNodes];
+  [v6 setNumberOfPeople:{objc_msgSend(personNodes2, "count")}];
 
   return v6;
 }
 
-- (BOOL)momentTraitsMatchesHolidayTraits:(id)a3 momentNode:(id)a4 loggingConnection:(id)a5
+- (BOOL)momentTraitsMatchesHolidayTraits:(id)traits momentNode:(id)node loggingConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PGGraphIngestHolidayProcessorHelper *)self holidayCalendarEventRuleTraitsForMomentNode:v9];
-  v12 = [v8 evaluateOnlyTraits:v11 evaluateLocationTraits:0];
-  v13 = v10;
+  traitsCopy = traits;
+  nodeCopy = node;
+  connectionCopy = connection;
+  v11 = [(PGGraphIngestHolidayProcessorHelper *)self holidayCalendarEventRuleTraitsForMomentNode:nodeCopy];
+  v12 = [traitsCopy evaluateOnlyTraits:v11 evaluateLocationTraits:0];
+  v13 = connectionCopy;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v9 uuid];
+    uuid = [nodeCopy uuid];
     if (v12)
     {
       v17 = @"YES";
@@ -263,18 +263,18 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       v17 = @"NO";
     }
 
-    v18 = [v8 name];
-    v19 = [v8 requiredTraits];
+    name = [traitsCopy name];
+    requiredTraits = [traitsCopy requiredTraits];
     v20 = 138413314;
-    v21 = v16;
+    v21 = uuid;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v18;
+    v25 = name;
     v26 = 2112;
     v27 = v11;
     v28 = 2112;
-    v29 = v19;
+    v29 = requiredTraits;
     _os_log_debug_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_DEBUG, "[HolidayProcessor] Moment (UUID: %@) traits match? (%@) event rule traits for holiday %@\n %@\n %@", &v20, 0x34u);
   }
 
@@ -282,23 +282,23 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return v12;
 }
 
-- (double)_dateScoreForEventRule:(id)a3 localeCode:(id)a4 holidayDate:(id)a5 momentDate:(id)a6
+- (double)_dateScoreForEventRule:(id)rule localeCode:(id)code holidayDate:(id)date momentDate:(id)momentDate
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [a3 requiredTraits];
-  v11 = [v10 allowApproximateDateCalculation];
+  momentDateCopy = momentDate;
+  dateCopy = date;
+  requiredTraits = [rule requiredTraits];
+  allowApproximateDateCalculation = [requiredTraits allowApproximateDateCalculation];
 
-  if (v11)
+  if (allowApproximateDateCalculation)
   {
-    v12 = [MEMORY[0x277D27690] numberOfDaysBetweenDate:v9 andDate:v8];
+    v12 = [MEMORY[0x277D27690] numberOfDaysBetweenDate:dateCopy andDate:momentDateCopy];
 
     return v12 / -3.0 + 1.0;
   }
 
   else
   {
-    v14 = [v9 compare:v8];
+    v14 = [dateCopy compare:momentDateCopy];
 
     result = 0.0;
     if (!v14)
@@ -310,24 +310,24 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return result;
 }
 
-- (double)dateScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6 momentDate:(id)a7
+- (double)dateScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes momentDate:(id)date
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x277CBEB58] setWithArray:a5];
+  ruleCopy = rule;
+  codeCopy = code;
+  languageCodesCopy = languageCodes;
+  dateCopy = date;
+  v16 = [MEMORY[0x277CBEB58] setWithArray:codes];
   v17 = v16;
-  if (v13)
+  if (codeCopy)
   {
-    [v16 addObject:v13];
+    [v16 addObject:codeCopy];
   }
 
   if ([v17 count])
   {
-    v43 = v13;
-    v44 = v14;
+    v43 = codeCopy;
+    v44 = languageCodesCopy;
     v41 = [v17 count];
     v42 = v17;
     v50 = 0u;
@@ -351,28 +351,28 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
           }
 
           v23 = *(*(&v50 + 1) + 8 * i);
-          v24 = [v12 localDateByEvaluatingRuleForDate:v15 countryCode:{v23, v41}];
+          v24 = [ruleCopy localDateByEvaluatingRuleForDate:dateCopy countryCode:{v23, v41}];
           if (v24)
           {
-            [(PGGraphIngestHolidayProcessorHelper *)self _dateScoreForEventRule:v12 localeCode:v23 holidayDate:v24 momentDate:v15];
+            [(PGGraphIngestHolidayProcessorHelper *)self _dateScoreForEventRule:ruleCopy localeCode:v23 holidayDate:v24 momentDate:dateCopy];
             v21 = v21 + v25;
           }
 
           else
           {
             v26 = +[PGLogging sharedLogging];
-            v27 = [v26 loggingConnection];
+            loggingConnection = [v26 loggingConnection];
 
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
-              v28 = [v12 name];
+              name = [ruleCopy name];
               *buf = 138412802;
-              v56 = v28;
+              v56 = name;
               v57 = 2112;
               v58 = v23;
               v59 = 2112;
-              v60 = v15;
-              _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "Holiday %@ has no default data rule or dateRuleOverride for countryCode %@, date %@", buf, 0x20u);
+              v60 = dateCopy;
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Holiday %@ has no default data rule or dateRuleOverride for countryCode %@, date %@", buf, 0x20u);
             }
           }
         }
@@ -410,10 +410,10 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
           }
 
           v36 = *(*(&v46 + 1) + 8 * j);
-          v37 = [v12 localDateByEvaluatingRuleForDate:v15 languageCode:{v36, v41}];
+          v37 = [ruleCopy localDateByEvaluatingRuleForDate:dateCopy languageCode:{v36, v41}];
           if (v37)
           {
-            [(PGGraphIngestHolidayProcessorHelper *)self _dateScoreForEventRule:v12 localeCode:v36 holidayDate:v37 momentDate:v15];
+            [(PGGraphIngestHolidayProcessorHelper *)self _dateScoreForEventRule:ruleCopy localeCode:v36 holidayDate:v37 momentDate:dateCopy];
             if (v38 != 0.0)
             {
               v30 = v30 + 1.0;
@@ -429,8 +429,8 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
     }
 
     v29 = v21 / v30;
-    v13 = v43;
-    v14 = v44;
+    codeCopy = v43;
+    languageCodesCopy = v44;
     v17 = v42;
   }
 
@@ -443,15 +443,15 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return v29;
 }
 
-- (double)_calculateSceneScores:(id)a3
+- (double)_calculateSceneScores:(id)scores
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scoresCopy = scores;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [scoresCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -463,7 +463,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(scoresCopy);
         }
 
         [(PGHolidayClassifier *)self->_holidayClassifier scoreForHolidayDetectedScenes:*(*(&v13 + 1) + 8 * i)];
@@ -473,7 +473,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [scoresCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -488,31 +488,31 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return v8;
 }
 
-- (double)sceneScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6 momentNode:(id)a7
+- (double)sceneScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes momentNode:(id)node
 {
   v78 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v57 = a6;
-  v14 = a7;
-  if (![v11 skipSceneCriteriaIfInteresting] || (v15 = 1.0, (objc_msgSend(v14, "isInterestingForMemories") & 1) == 0))
+  ruleCopy = rule;
+  codeCopy = code;
+  codesCopy = codes;
+  languageCodesCopy = languageCodes;
+  nodeCopy = node;
+  if (![ruleCopy skipSceneCriteriaIfInteresting] || (v15 = 1.0, (objc_msgSend(nodeCopy, "isInterestingForMemories") & 1) == 0))
   {
-    v59 = v14;
-    v16 = [v14 collection];
-    v17 = [v16 sceneNodes];
+    v59 = nodeCopy;
+    collection = [nodeCopy collection];
+    sceneNodes = [collection sceneNodes];
 
-    v54 = v17;
-    v18 = [v17 sceneNames];
-    v55 = v13;
-    v19 = [MEMORY[0x277CBEB58] setWithArray:v13];
+    v54 = sceneNodes;
+    sceneNames = [sceneNodes sceneNames];
+    v55 = codesCopy;
+    v19 = [MEMORY[0x277CBEB58] setWithArray:codesCopy];
     v20 = v19;
-    if (v12)
+    if (codeCopy)
     {
-      [v19 addObject:v12];
+      [v19 addObject:codeCopy];
     }
 
-    v56 = v12;
+    v56 = codeCopy;
     v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v66 = 0u;
     v67 = 0u;
@@ -520,7 +520,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
     v69 = 0u;
     obj = v20;
     v22 = [obj countByEnumeratingWithState:&v66 objects:v77 count:16];
-    v23 = self;
+    selfCopy3 = self;
     if (v22)
     {
       v24 = v22;
@@ -534,27 +534,27 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
             objc_enumerationMutation(obj);
           }
 
-          v27 = [v11 scoreForCountryCode:*(*(&v66 + 1) + 8 * i) sceneNames:v18];
-          [(PGHolidayClassifier *)v23->_holidayClassifier scoreForHolidayDetectedScenes:v27];
+          v27 = [ruleCopy scoreForCountryCode:*(*(&v66 + 1) + 8 * i) sceneNames:sceneNames];
+          [(PGHolidayClassifier *)selfCopy3->_holidayClassifier scoreForHolidayDetectedScenes:v27];
           if (v28 > 0.0)
           {
             v29 = v28;
             v30 = +[PGLogging sharedLogging];
-            v31 = [v30 loggingConnection];
+            loggingConnection = [v30 loggingConnection];
 
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
             {
-              v32 = [v59 uuid];
-              v33 = [v11 name];
+              uuid = [v59 uuid];
+              name = [ruleCopy name];
               *buf = 138412802;
-              v72 = v32;
+              v72 = uuid;
               v73 = 2112;
-              v74 = v33;
+              v74 = name;
               v75 = 2048;
               v76 = v29;
-              _os_log_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_INFO, "[HolidayProcessor] MomentUUID: %@, Holiday: %@, calculatedSceneScoreForCountryCode: %f", buf, 0x20u);
+              _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[HolidayProcessor] MomentUUID: %@, Holiday: %@, calculatedSceneScoreForCountryCode: %f", buf, 0x20u);
 
-              v23 = self;
+              selfCopy3 = self;
             }
           }
 
@@ -571,7 +571,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v34 = v57;
+    v34 = languageCodesCopy;
     v35 = [v34 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v35)
     {
@@ -588,40 +588,40 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
             objc_enumerationMutation(v34);
           }
 
-          v39 = [v11 scoreForLanguageCode:*(*(&v62 + 1) + 8 * v38) sceneNames:v18];
-          [(PGHolidayClassifier *)v23->_holidayClassifier scoreForHolidayDetectedScenes:v39];
+          v39 = [ruleCopy scoreForLanguageCode:*(*(&v62 + 1) + 8 * v38) sceneNames:sceneNames];
+          [(PGHolidayClassifier *)selfCopy3->_holidayClassifier scoreForHolidayDetectedScenes:v39];
           if (v40 > 0.0)
           {
             v41 = v40;
             v42 = +[PGLogging sharedLogging];
-            v43 = [v42 loggingConnection];
+            loggingConnection2 = [v42 loggingConnection];
 
-            if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
             {
-              v44 = [v59 uuid];
-              [v11 name];
+              uuid2 = [v59 uuid];
+              [ruleCopy name];
               v45 = v37;
               v46 = v21;
-              v47 = v11;
-              v48 = v18;
+              v47 = ruleCopy;
+              v48 = sceneNames;
               v50 = v49 = v34;
               *buf = 138412802;
-              v72 = v44;
+              v72 = uuid2;
               v73 = 2112;
               v74 = v50;
               v75 = 2048;
               v76 = v41;
-              _os_log_impl(&dword_22F0FC000, v43, OS_LOG_TYPE_INFO, "[HolidayProcessor] MomentUUID: %@, Holiday: %@, calculatedSceneScoreForLanguageCode: %f", buf, 0x20u);
+              _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[HolidayProcessor] MomentUUID: %@, Holiday: %@, calculatedSceneScoreForLanguageCode: %f", buf, 0x20u);
 
               v34 = v49;
-              v18 = v48;
-              v11 = v47;
+              sceneNames = v48;
+              ruleCopy = v47;
               v21 = v46;
               v37 = v45;
               v36 = v58;
             }
 
-            v23 = self;
+            selfCopy3 = self;
           }
 
           [v21 addObject:v39];
@@ -636,31 +636,31 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       while (v36);
     }
 
-    [(PGGraphIngestHolidayProcessorHelper *)v23 _calculateSceneScores:v21];
+    [(PGGraphIngestHolidayProcessorHelper *)selfCopy3 _calculateSceneScores:v21];
     v15 = v51;
 
-    v13 = v55;
-    v12 = v56;
-    v14 = v59;
+    codesCopy = v55;
+    codeCopy = v56;
+    nodeCopy = v59;
   }
 
   v52 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (double)locationScoreForEventRule:(id)a3 localeCountryCode:(id)a4 momentCountryCodes:(id)a5 keyboardLanguageCodes:(id)a6
+- (double)locationScoreForEventRule:(id)rule localeCountryCode:(id)code momentCountryCodes:(id)codes keyboardLanguageCodes:(id)languageCodes
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  [v10 locationScoreForCountryCode:a4];
+  ruleCopy = rule;
+  codesCopy = codes;
+  languageCodesCopy = languageCodes;
+  [ruleCopy locationScoreForCountryCode:code];
   v14 = v13;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v15 = v11;
+  v15 = codesCopy;
   v16 = [v15 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v16)
   {
@@ -676,7 +676,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
           objc_enumerationMutation(v15);
         }
 
-        [v10 locationScoreForCountryCode:*(*(&v39 + 1) + 8 * i)];
+        [ruleCopy locationScoreForCountryCode:*(*(&v39 + 1) + 8 * i)];
         v19 = v19 + v21;
       }
 
@@ -702,7 +702,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
     v14 = v22 * v25 + v24 * v14;
     v37 = 0u;
     v38 = 0u;
-    v26 = v12;
+    v26 = languageCodesCopy;
     v27 = [v26 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v27)
     {
@@ -718,7 +718,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
             objc_enumerationMutation(v26);
           }
 
-          [v10 languageScoreForLanguageCode:{*(*(&v35 + 1) + 8 * j), v35}];
+          [ruleCopy languageScoreForLanguageCode:{*(*(&v35 + 1) + 8 * j), v35}];
           v30 = v30 + v32;
         }
 
@@ -742,61 +742,61 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return v14;
 }
 
-- (BOOL)isCelebratingForEventRule:(id)a3 momentNode:(id)a4 momentLocalDate:(id)a5 withGraph:(id)a6 loggingConnection:(id)a7 localeCountryCode:(id)a8 keyboardLanguageCodes:(id)a9
+- (BOOL)isCelebratingForEventRule:(id)rule momentNode:(id)node momentLocalDate:(id)date withGraph:(id)graph loggingConnection:(id)connection localeCountryCode:(id)code keyboardLanguageCodes:(id)codes
 {
   v57 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if ([v14 isCelebration])
+  ruleCopy = rule;
+  nodeCopy = node;
+  dateCopy = date;
+  connectionCopy = connection;
+  codeCopy = code;
+  codesCopy = codes;
+  if ([ruleCopy isCelebration])
   {
-    v40 = v17;
-    v20 = [v15 collection];
-    v21 = [v20 addressNodes];
-    v22 = [v21 countryNodes];
-    v23 = [v22 names];
+    v40 = connectionCopy;
+    collection = [nodeCopy collection];
+    addressNodes = [collection addressNodes];
+    countryNodes = [addressNodes countryNodes];
+    names = [countryNodes names];
 
-    v24 = v23;
-    [(PGGraphIngestHolidayProcessorHelper *)self dateScoreForEventRule:v14 localeCountryCode:v18 momentCountryCodes:v23 keyboardLanguageCodes:v19 momentDate:v16];
+    v24 = names;
+    [(PGGraphIngestHolidayProcessorHelper *)self dateScoreForEventRule:ruleCopy localeCountryCode:codeCopy momentCountryCodes:names keyboardLanguageCodes:codesCopy momentDate:dateCopy];
     if (v25 == 0.0)
     {
       LOBYTE(v26) = 0;
-      v17 = v40;
+      connectionCopy = v40;
     }
 
     else
     {
       v27 = v25;
-      v17 = v40;
-      if ([(PGGraphIngestHolidayProcessorHelper *)self momentTraitsMatchesHolidayTraits:v14 momentNode:v15 loggingConnection:v40])
+      connectionCopy = v40;
+      if ([(PGGraphIngestHolidayProcessorHelper *)self momentTraitsMatchesHolidayTraits:ruleCopy momentNode:nodeCopy loggingConnection:v40])
       {
-        [(PGGraphIngestHolidayProcessorHelper *)self sceneScoreForEventRule:v14 localeCountryCode:v18 momentCountryCodes:v24 keyboardLanguageCodes:v19 momentNode:v15];
+        [(PGGraphIngestHolidayProcessorHelper *)self sceneScoreForEventRule:ruleCopy localeCountryCode:codeCopy momentCountryCodes:v24 keyboardLanguageCodes:codesCopy momentNode:nodeCopy];
         v29 = v28;
-        [(PGGraphIngestHolidayProcessorHelper *)self locationScoreForEventRule:v14 localeCountryCode:v18 momentCountryCodes:v24 keyboardLanguageCodes:v19];
+        [(PGGraphIngestHolidayProcessorHelper *)self locationScoreForEventRule:ruleCopy localeCountryCode:codeCopy momentCountryCodes:v24 keyboardLanguageCodes:codesCopy];
         v31 = v30;
         v26 = [(PGHolidayClassifier *)self->_holidayClassifier isCelebratingForDateScore:v27 sceneScore:v29 locationScore:v30];
         v32 = v40;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v35 = [v15 uuid];
-          v36 = [v14 name];
+          uuid = [nodeCopy uuid];
+          name = [ruleCopy name];
           v37 = v24;
-          v38 = v36;
+          v38 = name;
           *buf = 138414082;
           v39 = "NO";
-          v42 = v35;
+          v42 = uuid;
           if (v26)
           {
             v39 = "YES";
           }
 
           v43 = 2112;
-          v44 = v36;
+          v44 = name;
           v45 = 2112;
-          v46 = v18;
+          v46 = codeCopy;
           v47 = 2112;
           v48 = v37;
           v49 = 2048;
@@ -810,7 +810,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
           _os_log_debug_impl(&dword_22F0FC000, v32, OS_LOG_TYPE_DEBUG, "[HolidayProcessor] MomentUUID: %@, holiday name: %@\nuserCountryCode: %@, momentCountryCode: %@\ndateScore: %f, sceneScore: %f, locationScore: %f, isCelebrating: %s", buf, 0x52u);
 
           v24 = v37;
-          v17 = v40;
+          connectionCopy = v40;
         }
       }
 
@@ -830,25 +830,25 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
   return v26;
 }
 
-- (id)momentsCelebratingRule:(id)a3 localDates:(id)a4 userCountryCode:(id)a5 keyboardLanguageCodes:(id)a6 graph:(id)a7 loggingConnection:(id)a8
+- (id)momentsCelebratingRule:(id)rule localDates:(id)dates userCountryCode:(id)code keyboardLanguageCodes:(id)codes graph:(id)graph loggingConnection:(id)connection
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v14 isCelebration])
+  ruleCopy = rule;
+  datesCopy = dates;
+  codeCopy = code;
+  codesCopy = codes;
+  graphCopy = graph;
+  connectionCopy = connection;
+  if ([ruleCopy isCelebration])
   {
-    v20 = [v14 explicitlySupportedCountryCodes];
-    v21 = [v20 containsObject:v16];
+    explicitlySupportedCountryCodes = [ruleCopy explicitlySupportedCountryCodes];
+    v21 = [explicitlySupportedCountryCodes containsObject:codeCopy];
 
-    v22 = [PGGraphDateNodeCollection dateNodesForLocalDates:v15 inGraph:v18];
+    v22 = [PGGraphDateNodeCollection dateNodesForLocalDates:datesCopy inGraph:graphCopy];
     if ([v22 count])
     {
       v41 = objc_alloc_init(PGHolidayDetectionCache);
       v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v43 = v17;
+      v43 = codesCopy;
       v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
@@ -858,20 +858,20 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       v24 = v23;
       v59 = v24;
       [v22 enumerateNodesUsingBlock:v58];
-      v35 = self;
+      selfCopy = self;
       v25 = MEMORY[0x277D22BF8];
       v26 = +[PGGraphDateNode momentOfDate];
       v36 = [v25 adjacencyWithSources:v22 relation:v26 targetsClass:objc_opt_class()];
 
       v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v28 = [v36 targets];
+      targets = [v36 targets];
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __135__PGGraphIngestHolidayProcessorHelper_momentsCelebratingRule_localDates_userCountryCode_keyboardLanguageCodes_graph_loggingConnection___block_invoke_2;
       v56[3] = &unk_278889290;
       v29 = v27;
       v57 = v29;
-      [v28 enumerateNodesUsingBlock:v56];
+      [targets enumerateNodesUsingBlock:v56];
 
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -879,12 +879,12 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       v44[3] = &unk_278882218;
       v45 = v24;
       v46 = v29;
-      v47 = v35;
-      v48 = v14;
-      v49 = v18;
-      v50 = v19;
-      v51 = v16;
-      v52 = v17;
+      v47 = selfCopy;
+      v48 = ruleCopy;
+      v49 = graphCopy;
+      v50 = connectionCopy;
+      v51 = codeCopy;
+      v52 = codesCopy;
       v55 = v37;
       v30 = v41;
       v53 = v30;
@@ -895,7 +895,7 @@ void __81__PGGraphIngestHolidayProcessorHelper__eventRulePeopleTraitForPersonNod
       [v36 enumerateTargetsBySourceWithBlock:v44];
       v31 = v54;
       v32 = v30;
-      v17 = v43;
+      codesCopy = v43;
       v33 = v32;
     }
 
@@ -1001,7 +1001,7 @@ void __135__PGGraphIngestHolidayProcessorHelper_momentsCelebratingRule_localDate
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareIfNeededWithGraph:(id)a3
+- (void)prepareIfNeededWithGraph:(id)graph
 {
   if (!self->_meNodeAsCollection)
   {
@@ -1009,37 +1009,37 @@ void __135__PGGraphIngestHolidayProcessorHelper_momentsCelebratingRule_localDate
     v35[6] = v5;
     v35[13] = v3;
     v35[14] = v4;
-    v8 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:a3];
+    v8 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
     meNodeAsCollection = self->_meNodeAsCollection;
     self->_meNodeAsCollection = v8;
 
-    v10 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection partnerPersonNodes];
+    partnerPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection partnerPersonNodes];
     partnerPersonNodes = self->_partnerPersonNodes;
-    self->_partnerPersonNodes = v10;
+    self->_partnerPersonNodes = partnerPersonNodes;
 
-    v12 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection familyPersonNodes];
+    familyPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection familyPersonNodes];
     familyPersonNodes = self->_familyPersonNodes;
-    self->_familyPersonNodes = v12;
+    self->_familyPersonNodes = familyPersonNodes;
 
-    v14 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection childPersonNodes];
+    childPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection childPersonNodes];
     childPersonNodes = self->_childPersonNodes;
-    self->_childPersonNodes = v14;
+    self->_childPersonNodes = childPersonNodes;
 
-    v16 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection fatherPersonNodes];
+    fatherPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection fatherPersonNodes];
     fatherPersonNodes = self->_fatherPersonNodes;
-    self->_fatherPersonNodes = v16;
+    self->_fatherPersonNodes = fatherPersonNodes;
 
-    v18 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection motherPersonNodes];
+    motherPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection motherPersonNodes];
     motherPersonNodes = self->_motherPersonNodes;
-    self->_motherPersonNodes = v18;
+    self->_motherPersonNodes = motherPersonNodes;
 
-    v20 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection friendPersonNodes];
+    friendPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection friendPersonNodes];
     friendPersonNodes = self->_friendPersonNodes;
-    self->_friendPersonNodes = v20;
+    self->_friendPersonNodes = friendPersonNodes;
 
-    v22 = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection coworkerPersonNodes];
+    coworkerPersonNodes = [(PGGraphPersonNodeCollection *)self->_meNodeAsCollection coworkerPersonNodes];
     coworkerPersonNodes = self->_coworkerPersonNodes;
-    self->_coworkerPersonNodes = v22;
+    self->_coworkerPersonNodes = coworkerPersonNodes;
 
     v24 = [(MAElementCollection *)self->_meNodeAsCollection collectionByFormingUnionWith:self->_familyPersonNodes];
     v25 = [v24 collectionByFormingUnionWith:self->_partnerPersonNodes];
@@ -1099,21 +1099,21 @@ void __64__PGGraphIngestHolidayProcessorHelper_prepareIfNeededWithGraph___block_
   return v2;
 }
 
-+ (id)keyboardLanguageCodesForInfoNode:(id)a3 holidayService:(id)a4
++ (id)keyboardLanguageCodesForInfoNode:(id)node holidayService:(id)service
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nodeCopy = node;
   v6 = MEMORY[0x277CBEB98];
-  v7 = [a4 supportedLanguageCodes];
-  v8 = [v6 setWithArray:v7];
+  supportedLanguageCodes = [service supportedLanguageCodes];
+  v8 = [v6 setWithArray:supportedLanguageCodes];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v10 = [v5 languageIdentifiers];
+  languageIdentifiers = [nodeCopy languageIdentifiers];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v11 = [languageIdentifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1124,7 +1124,7 @@ void __64__PGGraphIngestHolidayProcessorHelper_prepareIfNeededWithGraph___block_
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(languageIdentifiers);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
@@ -1138,18 +1138,18 @@ void __64__PGGraphIngestHolidayProcessorHelper_prepareIfNeededWithGraph___block_
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [languageIdentifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
   }
 
   [v9 intersectSet:v8];
-  v17 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return allObjects;
 }
 
 @end

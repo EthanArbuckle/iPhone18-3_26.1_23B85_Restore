@@ -1,22 +1,22 @@
 @interface ASCExpandableLabel
-- (ASCExpandableLabel)initWithFrame:(CGRect)a3;
+- (ASCExpandableLabel)initWithFrame:(CGRect)frame;
 - (BOOL)accessibilityActivate;
 - (BOOL)isTruncated;
 - (BOOL)shouldHideMoreButton;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setBackgroundColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setText:(id)text;
 @end
 
 @implementation ASCExpandableLabel
 
-- (ASCExpandableLabel)initWithFrame:(CGRect)a3
+- (ASCExpandableLabel)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = ASCExpandableLabel;
-  v3 = [(ASCSkeletonLabel *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCSkeletonLabel *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [ASCExpandableLabelTruncationButton alloc];
@@ -36,10 +36,10 @@
   v38.receiver = self;
   v38.super_class = ASCExpandableLabel;
   [(ASCExpandableLabel *)&v38 layoutSubviews];
-  v3 = [(ASCExpandableLabel *)self shouldHideMoreButton];
-  v4 = [(ASCExpandableLabel *)self moreButton];
-  v5 = v4;
-  if (v3)
+  shouldHideMoreButton = [(ASCExpandableLabel *)self shouldHideMoreButton];
+  moreButton = [(ASCExpandableLabel *)self moreButton];
+  v5 = moreButton;
+  if (shouldHideMoreButton)
   {
     v6 = 1;
   }
@@ -59,8 +59,8 @@
     v18 = v17;
     [(ASCExpandableLabel *)self bounds];
     v20 = v18 + v19 - v12;
-    v21 = [(ASCExpandableLabel *)self languageAwareString];
-    v22 = [v21 writingDirectionOfLine:-[ASCExpandableLabel numberOfLines](self maximumLinesShown:"numberOfLines") - 1 withWidth:-[ASCExpandableLabel numberOfLines](self lineBreakMode:"numberOfLines") cacheLayoutInfo:{-[ASCExpandableLabel lineBreakMode](self, "lineBreakMode"), 1, v10}];
+    languageAwareString = [(ASCExpandableLabel *)self languageAwareString];
+    v22 = [languageAwareString writingDirectionOfLine:-[ASCExpandableLabel numberOfLines](self maximumLinesShown:"numberOfLines") - 1 withWidth:-[ASCExpandableLabel numberOfLines](self lineBreakMode:"numberOfLines") cacheLayoutInfo:{-[ASCExpandableLabel lineBreakMode](self, "lineBreakMode"), 1, v10}];
 
     [(ASCExpandableLabel *)self bounds];
     [__ASCLayoutProxy rectWithLayoutDirectionForRect:v22 layoutDirection:v16 relativeTo:v20, v10, v12, v23, v24, v25, v26];
@@ -68,72 +68,72 @@
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [(ASCExpandableLabel *)self moreButton];
-    [v35 setFrame:{v28, v30, v32, v34}];
+    moreButton2 = [(ASCExpandableLabel *)self moreButton];
+    [moreButton2 setFrame:{v28, v30, v32, v34}];
 
     v36 = v22 == 1;
-    v37 = [(ASCExpandableLabel *)self moreButton];
-    [v37 setIsRTL:v36];
+    moreButton3 = [(ASCExpandableLabel *)self moreButton];
+    [moreButton3 setIsRTL:v36];
 
-    v4 = [(ASCExpandableLabel *)self moreButton];
-    v5 = v4;
+    moreButton = [(ASCExpandableLabel *)self moreButton];
+    v5 = moreButton;
     v6 = 0;
   }
 
-  [v4 setHidden:v6];
+  [moreButton setHidden:v6];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v7.receiver = self;
   v7.super_class = ASCExpandableLabel;
-  v4 = a3;
-  [(ASCExpandableLabel *)&v7 setText:v4];
+  textCopy = text;
+  [(ASCExpandableLabel *)&v7 setText:textCopy];
   v5 = objc_alloc(MEMORY[0x277D22A88]);
-  v6 = [v5 initWithString:v4 attributes:0 baseParagraphStyle:0 keepStatisticsOnLanguageComponents:{0, v7.receiver, v7.super_class}];
+  v6 = [v5 initWithString:textCopy attributes:0 baseParagraphStyle:0 keepStatisticsOnLanguageComponents:{0, v7.receiver, v7.super_class}];
 
   [(ASCExpandableLabel *)self setLanguageAwareString:v6];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v7.receiver = self;
   v7.super_class = ASCExpandableLabel;
-  v4 = a3;
-  [(ASCExpandableLabel *)&v7 setAttributedText:v4];
+  textCopy = text;
+  [(ASCExpandableLabel *)&v7 setAttributedText:textCopy];
   v5 = objc_alloc(MEMORY[0x277D22A88]);
-  v6 = [v5 initWithAttributedString:v4 baseParagraphStyle:0 keepStatisticsOnLanguageComponents:{0, v7.receiver, v7.super_class}];
+  v6 = [v5 initWithAttributedString:textCopy baseParagraphStyle:0 keepStatisticsOnLanguageComponents:{0, v7.receiver, v7.super_class}];
 
   [(ASCExpandableLabel *)self setLanguageAwareString:v6];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v6.receiver = self;
   v6.super_class = ASCExpandableLabel;
-  v4 = a3;
-  [(ASCExpandableLabel *)&v6 setFont:v4];
+  fontCopy = font;
+  [(ASCExpandableLabel *)&v6 setFont:fontCopy];
   v5 = [(ASCExpandableLabel *)self moreButton:v6.receiver];
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = ASCExpandableLabel;
-  v4 = a3;
-  [(ASCExpandableLabel *)&v6 setBackgroundColor:v4];
+  colorCopy = color;
+  [(ASCExpandableLabel *)&v6 setBackgroundColor:colorCopy];
   v5 = [(ASCExpandableLabel *)self moreButton:v6.receiver];
-  [v5 setGradientColor:v4];
+  [v5 setGradientColor:colorCopy];
 }
 
 - (BOOL)shouldHideMoreButton
 {
-  v3 = [(ASCExpandableLabel *)self text];
-  if ([v3 length])
+  text = [(ASCExpandableLabel *)self text];
+  if ([text length])
   {
-    v4 = [(ASCExpandableLabel *)self attributedText];
-    if ([v4 length])
+    attributedText = [(ASCExpandableLabel *)self attributedText];
+    if ([attributedText length])
     {
       v5 = ![(ASCExpandableLabel *)self isTruncated];
     }
@@ -167,8 +167,8 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(ASCExpandableLabel *)self moreButton];
-  [v2 sendActionsForControlEvents:64];
+  moreButton = [(ASCExpandableLabel *)self moreButton];
+  [moreButton sendActionsForControlEvents:64];
 
   return 1;
 }

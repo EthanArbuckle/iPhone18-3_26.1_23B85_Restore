@@ -3,23 +3,23 @@
 + (NSDictionary)accNavParameterKeysIndexed;
 + (NSDictionary)accNavParametersIndexed;
 - (CPLaneGuidance)init;
-- (CPLaneGuidance)initWithCoder:(id)a3;
-- (CPLaneGuidance)laneGuidanceWithComponent:(id)a3;
+- (CPLaneGuidance)initWithCoder:(id)coder;
+- (CPLaneGuidance)laneGuidanceWithComponent:(id)component;
 - (NSString)description;
-- (void)setLanes:(id)a3;
+- (void)setLanes:(id)lanes;
 @end
 
 @implementation CPLaneGuidance
 
-- (CPLaneGuidance)laneGuidanceWithComponent:(id)a3
+- (CPLaneGuidance)laneGuidanceWithComponent:(id)component
 {
   v4 = MEMORY[0x277CE82D8];
-  v5 = a3;
+  componentCopy = component;
   v6 = [v4 alloc];
-  v7 = [v5 component];
-  v8 = [v6 initWithLaneGuidance:self component:v7];
+  component = [componentCopy component];
+  v8 = [v6 initWithLaneGuidance:self component:component];
 
-  v9 = [objc_alloc(MEMORY[0x277CF8A90]) initWithComponent:v5 accNavInfo:v8];
+  v9 = [objc_alloc(MEMORY[0x277CF8A90]) initWithComponent:componentCopy accNavInfo:v8];
 
   return v9;
 }
@@ -37,13 +37,13 @@
   return v2;
 }
 
-- (CPLaneGuidance)initWithCoder:(id)a3
+- (CPLaneGuidance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPLaneGuidance *)self init];
   if (v5)
   {
-    [CPAccNavUpdate decodeUpdate:v5 withCoder:v4];
+    [CPAccNavUpdate decodeUpdate:v5 withCoder:coderCopy];
   }
 
   return v5;
@@ -61,14 +61,14 @@
   return v6;
 }
 
-- (void)setLanes:(id)a3
+- (void)setLanes:(id)lanes
 {
-  v14 = a3;
-  v4 = [v14 copy];
+  lanesCopy = lanes;
+  v4 = [lanesCopy copy];
   lanes = self->_lanes;
   self->_lanes = v4;
 
-  if ([v14 count])
+  if ([lanesCopy count])
   {
     v6 = 0;
     v7 = 0;
@@ -89,7 +89,7 @@
       v6 = ++v7;
     }
 
-    while ([v14 count] > v7);
+    while ([lanesCopy count] > v7);
   }
 }
 
@@ -150,7 +150,7 @@ void __50__CPLaneGuidance_CPAccNavUpdate__accNavParameters__block_invoke()
   block[1] = 3221225472;
   block[2] = __57__CPLaneGuidance_CPAccNavUpdate__accNavParametersIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParametersIndexed_onceToken_3 != -1)
   {
     dispatch_once(&accNavParametersIndexed_onceToken_3, block);
@@ -176,7 +176,7 @@ uint64_t __57__CPLaneGuidance_CPAccNavUpdate__accNavParametersIndexed__block_inv
   block[1] = 3221225472;
   block[2] = __60__CPLaneGuidance_CPAccNavUpdate__accNavParameterKeysIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParameterKeysIndexed_onceToken_3 != -1)
   {
     dispatch_once(&accNavParameterKeysIndexed_onceToken_3, block);

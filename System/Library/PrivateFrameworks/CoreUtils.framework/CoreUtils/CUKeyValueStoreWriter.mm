@@ -1,7 +1,7 @@
 @interface CUKeyValueStoreWriter
-- (BOOL)addKey:(id)a3 value:(id)a4 error:(id *)a5;
-- (BOOL)finishAndReturnError:(id *)a3;
-- (BOOL)startAtPath:(id)a3 error:(id *)a4;
+- (BOOL)addKey:(id)key value:(id)value error:(id *)error;
+- (BOOL)finishAndReturnError:(id *)error;
+- (BOOL)startAtPath:(id)path error:(id *)error;
 - (CUKeyValueStoreWriter)init;
 - (void)cancel;
 - (void)dealloc;
@@ -9,19 +9,19 @@
 
 @implementation CUKeyValueStoreWriter
 
-- (BOOL)addKey:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)addKey:(id)key value:(id)value error:(id *)error
 {
   v83 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v15 = a4;
+  keyCopy = key;
+  valueCopy = value;
   if (self->_cdbStarted)
   {
     v78 = 0;
     v77 = 0;
-    v16 = [v8 encodedBytesAndReturnLength:&v78 error:&v77];
+    bytes = [keyCopy encodedBytesAndReturnLength:&v78 error:&v77];
     v17 = v77;
     v24 = v17;
-    if (v16)
+    if (bytes)
     {
       v25 = 0;
       v26 = v78;
@@ -30,13 +30,13 @@
 
     if (v17)
     {
-      if (a5)
+      if (error)
       {
 LABEL_11:
         v28 = v24;
         v25 = 0;
         v27 = 0;
-        *a5 = v24;
+        *error = v24;
         goto LABEL_50;
       }
     }
@@ -44,21 +44,21 @@ LABEL_11:
     else
     {
       v76 = 0;
-      v25 = [v8 encodedDataAndReturnError:&v76];
+      v25 = [keyCopy encodedDataAndReturnError:&v76];
       v39 = v76;
       v24 = v39;
       if (v25)
       {
-        v16 = [v25 bytes];
+        bytes = [v25 bytes];
         v26 = [v25 length];
         v78 = v26;
 LABEL_4:
         if (HIDWORD(v26))
         {
-          if (a5)
+          if (error)
           {
             NSErrorWithOSStatusF(4294960591, "Key too big %zu vs %u", v18, v19, v20, v21, v22, v23, v26);
-            *a5 = v27 = 0;
+            *error = v27 = 0;
 LABEL_50:
 
             goto LABEL_51;
@@ -71,10 +71,10 @@ LABEL_35:
 
         v75 = 0;
         v74 = v24;
-        v29 = [v15 encodedBytesAndReturnLength:&v75 error:&v74];
+        bytes2 = [valueCopy encodedBytesAndReturnLength:&v75 error:&v74];
         v30 = v74;
 
-        if (v29)
+        if (bytes2)
         {
           v37 = 0;
           v38 = v75;
@@ -90,10 +90,10 @@ LABEL_15:
             addend = buffer_putalign(&self->_cdb.b, &__src, 8uLL);
             if (addend != -1)
             {
-              addend = buffer_putalign(&self->_cdb.b, v16, v47);
+              addend = buffer_putalign(&self->_cdb.b, bytes, v47);
               if (addend != -1)
               {
-                addend = buffer_putalign(&self->_cdb.b, v29, v38);
+                addend = buffer_putalign(&self->_cdb.b, bytes2, v38);
                 if (addend != -1)
                 {
                   if (v47)
@@ -102,7 +102,7 @@ LABEL_15:
                     v56 = v47;
                     do
                     {
-                      v57 = *v16++;
+                      v57 = *bytes++;
                       v55 = (33 * v55) ^ v57;
                       --v56;
                     }
@@ -128,7 +128,7 @@ LABEL_15:
 
             v27 = addend == 0;
             v37 = v72;
-            if (!a5 || !addend)
+            if (!error || !addend)
             {
               goto LABEL_49;
             }
@@ -137,11 +137,11 @@ LABEL_15:
             goto LABEL_48;
           }
 
-          if (a5)
+          if (error)
           {
             NSErrorWithOSStatusF(4294960591, "Value too big %zu vs %u", v31, v32, v33, v34, v35, v36, v38);
 LABEL_48:
-            *a5 = v27 = 0;
+            *error = v27 = 0;
             goto LABEL_49;
           }
 
@@ -150,13 +150,13 @@ LABEL_48:
 
         if (v30)
         {
-          if (a5)
+          if (error)
           {
 LABEL_22:
             v46 = v30;
             v37 = 0;
             v27 = 0;
-            *a5 = v30;
+            *error = v30;
 LABEL_49:
 
             v24 = v30;
@@ -167,18 +167,18 @@ LABEL_49:
         else
         {
           v73 = 0;
-          v37 = [v15 encodedDataAndReturnError:&v73];
+          v37 = [valueCopy encodedDataAndReturnError:&v73];
           v62 = v73;
           v30 = v62;
           if (v37)
           {
-            v29 = [v37 bytes];
+            bytes2 = [v37 bytes];
             v38 = [v37 length];
             v75 = v38;
             goto LABEL_15;
           }
 
-          if (a5)
+          if (error)
           {
             if (v62)
             {
@@ -186,7 +186,7 @@ LABEL_49:
             }
 
             v69 = NSErrorWithOSStatusF(4294960534, "Encode value failed", v63, v64, v65, v66, v67, v68, v71);
-            *a5 = v69;
+            *error = v69;
           }
         }
 
@@ -196,7 +196,7 @@ LABEL_42:
         goto LABEL_49;
       }
 
-      if (a5)
+      if (error)
       {
         if (v39)
         {
@@ -204,7 +204,7 @@ LABEL_42:
         }
 
         v61 = NSErrorWithOSStatusF(4294960534, "Encode key failed", v40, v41, v42, v43, v44, v45, v71);
-        *a5 = v61;
+        *error = v61;
       }
     }
 
@@ -212,10 +212,10 @@ LABEL_42:
     goto LABEL_35;
   }
 
-  if (a5)
+  if (error)
   {
     NSErrorWithOSStatusF(4294960551, "Not started", v9, v10, v11, v12, v13, v14, v71);
-    *a5 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -277,7 +277,7 @@ LABEL_51:
   }
 }
 
-- (BOOL)finishAndReturnError:(id *)a3
+- (BOOL)finishAndReturnError:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
   v5 = &self->_cdb.start[254];
@@ -468,10 +468,10 @@ LABEL_40:
 
   if (v14)
   {
-    v41 = [(NSString *)self->_finalPath UTF8String];
-    if (v41 && (v44 = *(v5 + 100), v43 = (v5 + 25), v44))
+    uTF8String = [(NSString *)self->_finalPath UTF8String];
+    if (uTF8String && (v44 = *(v5 + 100), v43 = (v5 + 25), v44))
     {
-      rename(v43, v41, v42);
+      rename(v43, uTF8String, v42);
       if (!v45)
       {
         goto LABEL_51;
@@ -505,7 +505,7 @@ LABEL_51:
 
 LABEL_54:
   [(CUKeyValueStoreWriter *)self cancel];
-  if (a3 && v46)
+  if (error && v46)
   {
     if (*__error())
     {
@@ -517,31 +517,31 @@ LABEL_54:
       v53 = 4294960596;
     }
 
-    *a3 = NSErrorWithOSStatusF(v53, "Finish failed: %#m", v47, v48, v49, v50, v51, v52, v46);
+    *error = NSErrorWithOSStatusF(v53, "Finish failed: %#m", v47, v48, v49, v50, v51, v52, v46);
   }
 
   return v46 == 0;
 }
 
-- (BOOL)startAtPath:(id)a3 error:(id *)a4
+- (BOOL)startAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 copy];
+  pathCopy = path;
+  v7 = [pathCopy copy];
   finalPath = self->_finalPath;
   self->_finalPath = v7;
 
-  v9 = [v6 stringByAppendingString:@".XXXXXX"];
+  v9 = [pathCopy stringByAppendingString:@".XXXXXX"];
 
   if (([v9 getCString:self->_tempPath maxLength:1024 encoding:4] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v20 = "No file path";
       v21 = 4294960592;
 LABEL_22:
       NSErrorWithOSStatusF(v21, v20, v10, v11, v12, v13, v14, v15, tempPath);
 LABEL_23:
-      *a4 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_24;
     }
 
@@ -553,7 +553,7 @@ LABEL_17:
   v16 = mkstemp(self->_tempPath);
   if (v16 < 0)
   {
-    if (a4)
+    if (error)
     {
       if (*__error())
       {
@@ -592,7 +592,7 @@ LABEL_17:
   if (lseek(v17, 2048, 0) == -1)
   {
     [(CUKeyValueStoreWriter *)self cancel];
-    if (a4)
+    if (error)
     {
       if (*__error())
       {

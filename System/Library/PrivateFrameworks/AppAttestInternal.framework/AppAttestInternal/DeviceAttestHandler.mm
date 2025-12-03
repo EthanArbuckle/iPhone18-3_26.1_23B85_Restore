@@ -1,18 +1,18 @@
 @interface DeviceAttestHandler
 - (BOOL)isSupported;
 - (_TtC17AppAttestInternal19DeviceAttestHandler)init;
-- (_TtC17AppAttestInternal19DeviceAttestHandler)initWith:(id *)a3;
-- (void)attestKeyWith:(__SecKey *)a3 options:(id)a4 completion:(id)a5;
+- (_TtC17AppAttestInternal19DeviceAttestHandler)initWith:(id *)with;
+- (void)attestKeyWith:(__SecKey *)with options:(id)options completion:(id)completion;
 @end
 
 @implementation DeviceAttestHandler
 
-- (_TtC17AppAttestInternal19DeviceAttestHandler)initWith:(id *)a3
+- (_TtC17AppAttestInternal19DeviceAttestHandler)initWith:(id *)with
 {
   ObjectType = swift_getObjectType();
-  v13 = *a3->var0;
-  v6 = *&a3->var0[4];
-  v7 = *&a3->var0[6];
+  v13 = *with->var0;
+  v6 = *&with->var0[4];
+  v7 = *&with->var0[6];
   *(&self->super.isa + OBJC_IVAR____TtC17AppAttestInternal19DeviceAttestHandler____lazy_storage___eligibilityManager) = 0;
   *(&self->super.isa + OBJC_IVAR____TtC17AppAttestInternal19DeviceAttestHandler____lazy_storage___identityManager) = 0;
   *(&self->super.isa + OBJC_IVAR____TtC17AppAttestInternal19DeviceAttestHandler____lazy_storage___attestationManager) = 0;
@@ -31,20 +31,20 @@
 
 - (BOOL)isSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DeviceAttestHandler.isSupported()();
 
   return v3;
 }
 
-- (void)attestKeyWith:(__SecKey *)a3 options:(id)a4 completion:(id)a5
+- (void)attestKeyWith:(__SecKey *)with options:(id)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_2261DC6C0(v9, v10, v11, v8);
+  withCopy = with;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_2261DC6C0(withCopy, optionsCopy, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

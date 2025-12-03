@@ -1,5 +1,5 @@
 @interface QLZoomTransitionDriver
-+ (void)cropView:(id)a3 toAvoidNavigationOffset:(double)a4 presenting:(BOOL)a5 animationDuration:(double)a6;
++ (void)cropView:(id)view toAvoidNavigationOffset:(double)offset presenting:(BOOL)presenting animationDuration:(double)duration;
 - (void)_performZoomTransition;
 - (void)tearDown;
 @end
@@ -34,8 +34,8 @@
     v4 = 1.0;
   }
 
-  v5 = [(QLTransitionDriver *)self transitionContainer];
-  [v5 bounds];
+  transitionContainer = [(QLTransitionDriver *)self transitionContainer];
+  [transitionContainer bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -51,9 +51,9 @@
   v19 = MEMORY[0x277CBF2C0];
   if (v15 == v20 && v17 == v18)
   {
-    v21 = [(QLTransitionDriver *)self sourceView];
+    sourceView = [(QLTransitionDriver *)self sourceView];
     uncroppedView = self->_uncroppedView;
-    self->_uncroppedView = v21;
+    self->_uncroppedView = sourceView;
 
     if ([(QLTransitionDriver *)self isSourceViewTransformed])
     {
@@ -69,9 +69,9 @@
 
     else
     {
-      v87 = [(QLTransitionDriver *)self sourceView];
+      sourceView2 = [(QLTransitionDriver *)self sourceView];
       v88 = self->_uncroppedView;
-      self->_uncroppedView = v87;
+      self->_uncroppedView = sourceView2;
 
       [(QLTransitionDriver *)self sourceViewFrame];
       [(UIView *)self->_uncroppedView setFrame:?];
@@ -88,34 +88,34 @@
 
     if ([(QLTransitionDriver *)self isSourceViewTransformed])
     {
-      v26 = [(QLTransitionDriver *)self sourceView];
+      sourceView3 = [(QLTransitionDriver *)self sourceView];
       v27 = v19[1];
       *&v218.a = *v19;
       *&v218.c = v27;
       *&v218.tx = v19[2];
-      [v26 setTransform:&v218];
+      [sourceView3 setTransform:&v218];
 
       [(QLTransitionDriver *)self sourceViewCenter];
       v29 = v28;
       v31 = v30;
-      v32 = [(QLTransitionDriver *)self sourceView];
-      [v32 setCenter:{v29, v31}];
+      sourceView4 = [(QLTransitionDriver *)self sourceView];
+      [sourceView4 setCenter:{v29, v31}];
 
       [(QLTransitionDriver *)self sourceViewBounds];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v41 = [(QLTransitionDriver *)self sourceView];
-      [v41 setBounds:{v34, v36, v38, v40}];
+      sourceView5 = [(QLTransitionDriver *)self sourceView];
+      [sourceView5 setBounds:{v34, v36, v38, v40}];
 
-      v42 = [(QLTransitionDriver *)self sourceView];
-      [v42 frame];
+      sourceView6 = [(QLTransitionDriver *)self sourceView];
+      [sourceView6 frame];
       v44 = v43;
       [(QLTransitionDriver *)self uncroppedFrame];
       v46 = v44 + v45;
-      v47 = [(QLTransitionDriver *)self sourceView];
-      [v47 frame];
+      sourceView7 = [(QLTransitionDriver *)self sourceView];
+      [sourceView7 frame];
       v49 = v48;
       [(QLTransitionDriver *)self uncroppedFrame];
       v51 = v49 + v50;
@@ -129,12 +129,12 @@
       [(QLTransitionDriver *)self sourceViewBounds];
       v57 = v56;
       v59 = v58;
-      v60 = [(QLTransitionDriver *)self sourceView];
-      [v60 setFrame:{v53, v55, v57, v59}];
+      sourceView8 = [(QLTransitionDriver *)self sourceView];
+      [sourceView8 setFrame:{v53, v55, v57, v59}];
 
       v61 = self->_uncroppedView;
-      v62 = [(QLTransitionDriver *)self sourceView];
-      [(UIView *)v61 addSubview:v62];
+      sourceView9 = [(QLTransitionDriver *)self sourceView];
+      [(UIView *)v61 addSubview:sourceView9];
 
       [(QLTransitionDriver *)self sourceViewCenter];
       [(UIView *)self->_uncroppedView setCenter:?];
@@ -147,8 +147,8 @@
     else
     {
       v64 = self->_uncroppedView;
-      v65 = [(QLTransitionDriver *)self sourceView];
-      [(UIView *)v64 addSubview:v65];
+      sourceView10 = [(QLTransitionDriver *)self sourceView];
+      [(UIView *)v64 addSubview:sourceView10];
 
       [(QLTransitionDriver *)self sourceViewFrame];
       v67 = v66;
@@ -167,8 +167,8 @@
       [(QLTransitionDriver *)self sourceViewFrame];
       v79 = v78;
       v81 = v80;
-      v82 = [(QLTransitionDriver *)self sourceView];
-      [v82 setFrame:{v75, v77, v79, v81}];
+      sourceView11 = [(QLTransitionDriver *)self sourceView];
+      [sourceView11 setFrame:{v75, v77, v79, v81}];
     }
 
     [(UIView *)self->_uncroppedView frame];
@@ -178,14 +178,14 @@
   v191 = v83;
   v195 = v86;
   v196 = v85;
-  v89 = [(QLTransitionDriver *)self transitionContainer];
-  [v89 addSubview:self->_uncroppedView];
+  transitionContainer2 = [(QLTransitionDriver *)self transitionContainer];
+  [transitionContainer2 addSubview:self->_uncroppedView];
 
-  v90 = [(QLTransitionDriver *)self transitionPreviewItem];
-  if (v90)
+  transitionPreviewItem = [(QLTransitionDriver *)self transitionPreviewItem];
+  if (transitionPreviewItem)
   {
-    v91 = [(QLTransitionDriver *)self transitionPreviewItem];
-    [v91 previewSizeForItemViewControllerSize:{v11, v13}];
+    transitionPreviewItem2 = [(QLTransitionDriver *)self transitionPreviewItem];
+    [transitionPreviewItem2 previewSizeForItemViewControllerSize:{v11, v13}];
     v93 = v92;
     v95 = v94;
   }
@@ -220,22 +220,22 @@
     v101 = v93;
   }
 
-  v102 = [(QLTransitionDriver *)self transitionPreviewItem];
-  v103 = [v102 useFullPDFTransition];
+  transitionPreviewItem3 = [(QLTransitionDriver *)self transitionPreviewItem];
+  useFullPDFTransition = [transitionPreviewItem3 useFullPDFTransition];
 
   v194 = v4;
-  if (v103)
+  if (useFullPDFTransition)
   {
     v104 = (v101 + -24.0) / v196;
   }
 
   else
   {
-    v105 = [(QLTransitionDriver *)self transitionContainer];
-    [v105 frame];
+    transitionContainer3 = [(QLTransitionDriver *)self transitionContainer];
+    [transitionContainer3 frame];
     v107 = v106;
-    v108 = [(QLTransitionDriver *)self transitionContainer];
-    [v108 frame];
+    transitionContainer4 = [(QLTransitionDriver *)self transitionContainer];
+    [transitionContainer4 frame];
     v110 = v107 / v109;
 
     if (v196 / v195 > v110)
@@ -249,12 +249,12 @@
     }
   }
 
-  v111 = [(QLTransitionDriver *)self gestureTracker];
-  v112 = v111;
+  gestureTracker = [(QLTransitionDriver *)self gestureTracker];
+  v112 = gestureTracker;
   v182 = v11;
-  if (v111)
+  if (gestureTracker)
   {
-    [v111 trackedBounds];
+    [gestureTracker trackedBounds];
     v185 = v113;
     v115 = v114;
     v117 = v116;
@@ -267,9 +267,9 @@
     v127 = v126;
     memset(&v218, 0, sizeof(v218));
     [v112 trackedTransform];
-    v128 = [(QLTransitionDriver *)self sourceView];
-    v129 = [v128 layer];
-    [v129 anchorPoint];
+    sourceView12 = [(QLTransitionDriver *)self sourceView];
+    layer = [sourceView12 layer];
+    [layer anchorPoint];
     v131 = v130;
     v215 = v218;
     v132.f64[1] = v218.ty;
@@ -324,14 +324,14 @@
 
   CGAffineTransformScale(&v215, &t2, 1.0 / v104, 1.0 / v104);
   memset(&t2, 0, sizeof(t2));
-  v140 = [(QLTransitionDriver *)self gestureTracker];
-  if (v140)
+  gestureTracker2 = [(QLTransitionDriver *)self gestureTracker];
+  if (gestureTracker2)
   {
-    v141 = [(QLTransitionDriver *)self gestureTracker];
-    v142 = v141;
-    if (v141)
+    gestureTracker3 = [(QLTransitionDriver *)self gestureTracker];
+    v142 = gestureTracker3;
+    if (gestureTracker3)
     {
-      [v141 trackedTransform];
+      [gestureTracker3 trackedTransform];
     }
 
     else
@@ -347,12 +347,12 @@
     *&t2.tx = v183;
   }
 
-  v143 = [(QLTransitionDriver *)self transitionPreviewItem];
-  v144 = [v143 useFullPDFTransition];
+  transitionPreviewItem4 = [(QLTransitionDriver *)self transitionPreviewItem];
+  useFullPDFTransition2 = [transitionPreviewItem4 useFullPDFTransition];
 
   v145 = 0.0;
   v146 = 0.0;
-  if (v144)
+  if (useFullPDFTransition2)
   {
     [(QLTransitionDriver *)self hostNavigationOffset];
     v148 = v147 + 16.0;
@@ -495,25 +495,25 @@
   [(UIView *)self->_uncroppedView setTransform:&t1];
   [(UIView *)self->_uncroppedView setAlpha:v193];
   [(UIView *)self->_uncroppedView setCenter:v150, v152];
-  v161 = [(QLTransitionDriver *)self destinationView];
+  destinationView = [(QLTransitionDriver *)self destinationView];
   t1 = v223;
-  [v161 setTransform:&t1];
+  [destinationView setTransform:&t1];
 
-  v162 = [(QLTransitionDriver *)self destinationView];
-  [v162 setAlpha:v194];
+  destinationView2 = [(QLTransitionDriver *)self destinationView];
+  [destinationView2 setAlpha:v194];
 
-  v163 = [(QLTransitionDriver *)self destinationView];
-  [v163 setCenter:{v136, MidY}];
+  destinationView3 = [(QLTransitionDriver *)self destinationView];
+  [destinationView3 setCenter:{v136, MidY}];
 
   [(QLTransitionDriver *)self duration];
   v165 = v164;
   v166 = MEMORY[0x277D75D18];
-  v167 = [(QLTransitionDriver *)self presenting];
+  presenting = [(QLTransitionDriver *)self presenting];
   v212[0] = MEMORY[0x277D85DD0];
   v212[1] = 3221225472;
   v212[2] = __48__QLZoomTransitionDriver__performZoomTransition__block_invoke;
   v212[3] = &unk_278B57318;
-  if (v167)
+  if (presenting)
   {
     v168 = 0x10000;
   }
@@ -527,12 +527,12 @@
   *&v212[5] = 1.0 - v193;
   [v166 animateWithDuration:v168 delay:v212 options:0 animations:v165 * 0.5 completion:0.0];
   v169 = MEMORY[0x277D75D18];
-  v170 = [(QLTransitionDriver *)self presenting];
+  presenting2 = [(QLTransitionDriver *)self presenting];
   v211[0] = MEMORY[0x277D85DD0];
   v211[1] = 3221225472;
   v211[2] = __48__QLZoomTransitionDriver__performZoomTransition__block_invoke_2;
   v211[3] = &unk_278B57318;
-  if (v170)
+  if (presenting2)
   {
     v171 = 0x20000;
   }
@@ -545,13 +545,13 @@
   v211[4] = self;
   *&v211[5] = 1.0 - v194;
   [v169 animateWithDuration:v171 delay:v211 options:0 animations:v165 * 0.5 completion:0.0];
-  v172 = [(QLTransitionDriver *)self transitionContainer];
-  v173 = [v172 layer];
-  -[QLTransitionDriver setTransitionContainerMasksToBounds:](self, "setTransitionContainerMasksToBounds:", [v173 masksToBounds]);
+  transitionContainer5 = [(QLTransitionDriver *)self transitionContainer];
+  layer2 = [transitionContainer5 layer];
+  -[QLTransitionDriver setTransitionContainerMasksToBounds:](self, "setTransitionContainerMasksToBounds:", [layer2 masksToBounds]);
 
-  v174 = [(QLTransitionDriver *)self transitionContainer];
-  v175 = [v174 layer];
-  [v175 setMasksToBounds:1];
+  transitionContainer6 = [(QLTransitionDriver *)self transitionContainer];
+  layer3 = [transitionContainer6 layer];
+  [layer3 setMasksToBounds:1];
 
   if ([(QLTransitionDriver *)self presenting])
   {
@@ -573,11 +573,11 @@
 
   else
   {
-    v176 = [(QLTransitionDriver *)self gestureTracker];
-    if (v176)
+    gestureTracker4 = [(QLTransitionDriver *)self gestureTracker];
+    if (gestureTracker4)
     {
-      v177 = [(QLTransitionDriver *)self gestureTracker];
-      [v177 finalAnimationSpringDamping];
+      gestureTracker5 = [(QLTransitionDriver *)self gestureTracker];
+      [gestureTracker5 finalAnimationSpringDamping];
       v179 = v178;
     }
 
@@ -651,48 +651,48 @@ uint64_t __48__QLZoomTransitionDriver__performZoomTransition__block_invoke_6(uin
 - (void)tearDown
 {
   [(UIView *)self->_uncroppedView removeFromSuperview];
-  v3 = [(QLTransitionDriver *)self transitionContainerMasksToBounds];
-  v4 = [(QLTransitionDriver *)self transitionContainer];
-  v5 = [v4 layer];
-  [v5 setMasksToBounds:v3];
+  transitionContainerMasksToBounds = [(QLTransitionDriver *)self transitionContainerMasksToBounds];
+  transitionContainer = [(QLTransitionDriver *)self transitionContainer];
+  layer = [transitionContainer layer];
+  [layer setMasksToBounds:transitionContainerMasksToBounds];
 
   [(QLTransitionDriver *)self transitionContainerOriginalFrame];
   v7 = v6;
   [(QLTransitionDriver *)self transitionContainerOriginalFrame];
   v9 = v8;
-  v10 = [(QLTransitionDriver *)self transitionContainer];
-  [v10 setBounds:{0.0, 0.0, v7, v9}];
+  transitionContainer2 = [(QLTransitionDriver *)self transitionContainer];
+  [transitionContainer2 setBounds:{0.0, 0.0, v7, v9}];
 
   [(QLTransitionDriver *)self transitionContainerOriginalFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(QLTransitionDriver *)self transitionContainer];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  transitionContainer3 = [(QLTransitionDriver *)self transitionContainer];
+  [transitionContainer3 setFrame:{v12, v14, v16, v18}];
 }
 
-+ (void)cropView:(id)a3 toAvoidNavigationOffset:(double)a4 presenting:(BOOL)a5 animationDuration:(double)a6
++ (void)cropView:(id)view toAvoidNavigationOffset:(double)offset presenting:(BOOL)presenting animationDuration:(double)duration
 {
-  v6 = a5;
-  v8 = a3;
-  [v8 frame];
+  presentingCopy = presenting;
+  viewCopy = view;
+  [viewCopy frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 bounds];
+  [viewCopy bounds];
   v18 = v17;
-  [v8 bounds];
-  v20 = v19 + a4;
-  [v8 bounds];
+  [viewCopy bounds];
+  v20 = v19 + offset;
+  [viewCopy bounds];
   v22 = v21;
-  [v8 bounds];
+  [viewCopy bounds];
   v24 = v23;
-  if (v6)
+  if (presentingCopy)
   {
-    [v8 setBounds:{v18, v20, v22, v23}];
-    [v8 setFrame:{v18, v20, v22, v24}];
+    [viewCopy setBounds:{v18, v20, v22, v23}];
+    [viewCopy setFrame:{v18, v20, v22, v24}];
   }
 
   v25 = MEMORY[0x277D75D18];
@@ -700,8 +700,8 @@ uint64_t __48__QLZoomTransitionDriver__performZoomTransition__block_invoke_6(uin
   v28[1] = 3221225472;
   v28[2] = __88__QLZoomTransitionDriver_cropView_toAvoidNavigationOffset_presenting_animationDuration___block_invoke;
   v28[3] = &unk_278B58610;
-  v38 = v6;
-  v29 = v8;
+  v38 = presentingCopy;
+  v29 = viewCopy;
   v30 = v18;
   v31 = v20;
   v32 = v22;
@@ -710,8 +710,8 @@ uint64_t __48__QLZoomTransitionDriver__performZoomTransition__block_invoke_6(uin
   v35 = v12;
   v36 = v14;
   v37 = v16;
-  v26 = v8;
-  [v25 animateWithDuration:v28 animations:a6];
+  v26 = viewCopy;
+  [v25 animateWithDuration:v28 animations:duration];
 }
 
 uint64_t __88__QLZoomTransitionDriver_cropView_toAvoidNavigationOffset_presenting_animationDuration___block_invoke(uint64_t a1)

@@ -1,26 +1,26 @@
 @interface _UILabelLightReactiveLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation _UILabelLightReactiveLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(_UILabelLightReactiveLayer *)self superlayer];
-  v12 = [v5 superlayer];
+  superlayer = [(_UILabelLightReactiveLayer *)self superlayer];
+  v5Superlayer = [superlayer superlayer];
 
-  v6 = [v12 delegate];
+  delegate = [v5Superlayer delegate];
   [(_UILabelLightReactiveLayer *)self frame];
   v8 = v7;
   v10 = v9;
-  [v6 _setDrawingLightReactiveLayer:1];
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, -v8, -v10);
-  v11 = [v6 layer];
-  [v11 drawInContext:a3];
+  [delegate _setDrawingLightReactiveLayer:1];
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, -v8, -v10);
+  layer = [delegate layer];
+  [layer drawInContext:context];
 
-  CGContextRestoreGState(a3);
-  [v6 _setDrawingLightReactiveLayer:0];
+  CGContextRestoreGState(context);
+  [delegate _setDrawingLightReactiveLayer:0];
 }
 
 @end

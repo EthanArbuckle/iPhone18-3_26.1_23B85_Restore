@@ -2,38 +2,38 @@
 + (void)load;
 - (CAFProminenceInfo)prominenceInfoValue;
 - (id)formattedValue;
-- (void)setProminenceInfoValue:(id)a3;
+- (void)setProminenceInfoValue:(id)value;
 @end
 
 @implementation CAFProminenceInfoCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFProminenceInfoCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFProminenceInfo)prominenceInfoValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFProminenceInfo prominenceInfoWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFProminenceInfo prominenceInfoWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setProminenceInfoValue:(id)a3
+- (void)setProminenceInfoValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFProminenceInfoCharacteristic *)self prominenceInfoValue];
-  v3 = [v2 formattedValue];
+  prominenceInfoValue = [(CAFProminenceInfoCharacteristic *)self prominenceInfoValue];
+  formattedValue = [prominenceInfoValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 @end

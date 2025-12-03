@@ -1,35 +1,35 @@
 @interface SBCoverSheetSpotlightViewController
-- (BOOL)handleEvent:(id)a3;
-- (SBCoverSheetSpotlightViewController)initWithSpotlightViewController:(id)a3;
+- (BOOL)handleEvent:(id)event;
+- (SBCoverSheetSpotlightViewController)initWithSpotlightViewController:(id)controller;
 - (SBCoverSheetSpotlightViewControllerDelegate)delegate;
-- (double)_scaleGivenTranslation:(double)a3;
+- (double)_scaleGivenTranslation:(double)translation;
 - (id)_newDisplayLayoutElement;
-- (void)_updatePresentationProgress:(double)a3 withOffset:(double)a4 velocity:(double)a5 presentationState:(int64_t)a6;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
+- (void)_updatePresentationProgress:(double)progress withOffset:(double)offset velocity:(double)velocity presentationState:(int64_t)state;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
 - (void)dismissForHomeButton;
-- (void)handleBottomEdgeGestureChanged:(id)a3;
-- (void)handleBottomEdgeGestureEnded:(id)a3;
-- (void)setTargetDisplayConfiguration:(id)a3;
-- (void)updateComponentTransitionWithOffset:(double)a3 presentationState:(int64_t)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleBottomEdgeGestureChanged:(id)changed;
+- (void)handleBottomEdgeGestureEnded:(id)ended;
+- (void)setTargetDisplayConfiguration:(id)configuration;
+- (void)updateComponentTransitionWithOffset:(double)offset presentationState:(int64_t)state;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBCoverSheetSpotlightViewController
 
-- (SBCoverSheetSpotlightViewController)initWithSpotlightViewController:(id)a3
+- (SBCoverSheetSpotlightViewController)initWithSpotlightViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBCoverSheetSpotlightViewController;
   v6 = [(SBCoverSheetSpotlightViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spotlightViewController, a3);
+    objc_storeStrong(&v6->_spotlightViewController, controller);
   }
 
   return v7;
@@ -63,43 +63,43 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   v4[2](v4);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBCoverSheetSpotlightViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSCoverSheetViewControllerBase *)self setDisplayLayoutElementActive:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBCoverSheetSpotlightViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained coverSheetSpotlightViewControllerShouldDismiss:self animated:0];
 }
 
-- (void)setTargetDisplayConfiguration:(id)a3
+- (void)setTargetDisplayConfiguration:(id)configuration
 {
   spotlightViewController = self->_spotlightViewController;
-  v4 = a3;
-  v5 = [(SBSpotlightPresentableViewController *)spotlightViewController spotlightMultiplexingViewController];
-  [v5 setTargetDisplayConfiguration:v4];
+  configurationCopy = configuration;
+  spotlightMultiplexingViewController = [(SBSpotlightPresentableViewController *)spotlightViewController spotlightMultiplexingViewController];
+  [spotlightMultiplexingViewController setTargetDisplayConfiguration:configurationCopy];
 }
 
-- (void)_updatePresentationProgress:(double)a3 withOffset:(double)a4 velocity:(double)a5 presentationState:(int64_t)a6
+- (void)_updatePresentationProgress:(double)progress withOffset:(double)offset velocity:(double)velocity presentationState:(int64_t)state
 {
   [(SBSpotlightPresentableViewController *)self->_spotlightViewController setTopOffset:self->_topOffset];
   [(SBSpotlightPresentableViewController *)self->_spotlightViewController setMaxPresentationOffset:self->_maxPresentationOffset];
-  [(SBSpotlightPresentableViewController *)self->_spotlightViewController updatePresentationProgress:a6 withOffset:a3 velocity:a4 presentationState:a5];
+  [(SBSpotlightPresentableViewController *)self->_spotlightViewController updatePresentationProgress:state withOffset:progress velocity:offset presentationState:velocity];
 
-  [(SBCoverSheetSpotlightViewController *)self updateComponentTransitionWithOffset:a6 presentationState:a4];
+  [(SBCoverSheetSpotlightViewController *)self updateComponentTransitionWithOffset:state presentationState:offset];
 }
 
-- (void)updateComponentTransitionWithOffset:(double)a3 presentationState:(int64_t)a4
+- (void)updateComponentTransitionWithOffset:(double)offset presentationState:(int64_t)state
 {
-  v7 = [(SBCoverSheetSpotlightViewController *)self delegate];
+  delegate = [(SBCoverSheetSpotlightViewController *)self delegate];
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -108,7 +108,7 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   v34 = 0u;
   v32 = 0u;
   CSComponentTransitionInputsMake();
-  if (a4 == 1 && a3 == 0.0)
+  if (state == 1 && offset == 0.0)
   {
     proudLockComponent = self->_proudLockComponent;
     self->_proudLockComponent = 0;
@@ -122,7 +122,7 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
     wallpaperFloatingLayerComponent = self->_wallpaperFloatingLayerComponent;
     self->_wallpaperFloatingLayerComponent = 0;
 
-    [v7 coverSheetSpotlightViewControllerRemoveContentView:self];
+    [delegate coverSheetSpotlightViewControllerRemoveContentView:self];
   }
 
   else
@@ -135,7 +135,7 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
     v32 = v29;
     v33 = v30;
     v34 = v31;
-    [v7 coverSheetSpotlightViewControllerAddContentView:self];
+    [delegate coverSheetSpotlightViewControllerAddContentView:self];
     v12 = objc_opt_new();
     v13 = [v12 priority:40];
     v14 = [v13 transitionModifiers:8];
@@ -169,93 +169,93 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   [(CSCoverSheetViewControllerBase *)self rebuildAppearance];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = SBCoverSheetSpotlightViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v8, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v8, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
-    v5 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    if ([v4 type] == 25)
+    if ([eventCopy type] == 25)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained coverSheetSpotlightViewControllerShouldDismiss:self animated:0];
     }
 
-    v5 = 0;
+    isConsumable = 0;
   }
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v4.receiver = self;
   v4.super_class = SBCoverSheetSpotlightViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v4 aggregateBehavior:v3];
-  [v3 setIdleTimerDuration:{13, v4.receiver, v4.super_class}];
-  [v3 setIdleTimerMode:1];
-  [v3 setNotificationBehavior:2];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v4 aggregateBehavior:behaviorCopy];
+  [behaviorCopy setIdleTimerDuration:{13, v4.receiver, v4.super_class}];
+  [behaviorCopy setIdleTimerMode:1];
+  [behaviorCopy setNotificationBehavior:2];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v25.receiver = self;
   v25.super_class = SBCoverSheetSpotlightViewController;
-  [(CSCoverSheetViewControllerBase *)&v25 aggregateAppearance:v4];
-  v5 = [MEMORY[0x277D02BC8] controlCenterGrabber];
-  v6 = [v5 priority:40];
+  [(CSCoverSheetViewControllerBase *)&v25 aggregateAppearance:appearanceCopy];
+  controlCenterGrabber = [MEMORY[0x277D02BC8] controlCenterGrabber];
+  v6 = [controlCenterGrabber priority:40];
   v7 = [v6 hidden:1];
-  [v4 addComponent:v7];
+  [appearanceCopy addComponent:v7];
 
-  v8 = [MEMORY[0x277D02BC8] footerCallToActionLabel];
-  v9 = [v8 priority:40];
-  v10 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-  v11 = [v9 identifier:v10];
+  footerCallToActionLabel = [MEMORY[0x277D02BC8] footerCallToActionLabel];
+  v9 = [footerCallToActionLabel priority:40];
+  coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+  v11 = [v9 identifier:coverSheetIdentifier];
   v12 = [v11 hidden:1];
-  [v4 addComponent:v12];
+  [appearanceCopy addComponent:v12];
 
-  v13 = [MEMORY[0x277D02BC8] homeAffordance];
-  v14 = [v13 priority:40];
-  v15 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-  v16 = [v14 identifier:v15];
+  homeAffordance = [MEMORY[0x277D02BC8] homeAffordance];
+  v14 = [homeAffordance priority:40];
+  coverSheetIdentifier2 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+  v16 = [v14 identifier:coverSheetIdentifier2];
   v17 = [v16 hidden:1];
-  [v4 addComponent:v17];
+  [appearanceCopy addComponent:v17];
 
-  v18 = [MEMORY[0x277D02BC8] whitePoint];
-  v19 = [v18 priority:40];
-  v20 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-  v21 = [v19 identifier:v20];
+  whitePoint = [MEMORY[0x277D02BC8] whitePoint];
+  v19 = [whitePoint priority:40];
+  coverSheetIdentifier3 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+  v21 = [v19 identifier:coverSheetIdentifier3];
   v22 = [v21 hidden:1];
-  [v4 addComponent:v22];
+  [appearanceCopy addComponent:v22];
 
   proudLockComponent = self->_proudLockComponent;
   if (proudLockComponent)
   {
     v24 = [(CSProudLockComponent *)proudLockComponent shouldResideInALowerSubview:1];
-    [v4 addComponent:v24];
+    [appearanceCopy addComponent:v24];
   }
 
   if (self->_dateViewComponent)
   {
-    [v4 addComponent:?];
+    [appearanceCopy addComponent:?];
   }
 
   if (self->_contentComponent)
   {
-    [v4 addComponent:?];
+    [appearanceCopy addComponent:?];
   }
 
   if (self->_wallpaperFloatingLayerComponent)
   {
-    [v4 addComponent:?];
+    [appearanceCopy addComponent:?];
   }
 }
 
@@ -268,28 +268,28 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   return v3;
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v4 = [(SBCoverSheetSpotlightViewController *)self view];
-    [v4 bounds];
-    [v6 setFrame:?];
+    view = [(SBCoverSheetSpotlightViewController *)self view];
+    [view bounds];
+    [viewCopy setFrame:?];
 
-    [v6 setAutoresizingMask:18];
-    v5 = [(SBSpotlightPresentableViewController *)self->_spotlightViewController scalingContentView];
-    [v5 addSubview:v6];
+    [viewCopy setAutoresizingMask:18];
+    scalingContentView = [(SBSpotlightPresentableViewController *)self->_spotlightViewController scalingContentView];
+    [scalingContentView addSubview:viewCopy];
 
-    [v6 setAutoHides:0];
+    [viewCopy setAutoHides:0];
   }
 }
 
-- (void)handleBottomEdgeGestureChanged:(id)a3
+- (void)handleBottomEdgeGestureChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(SBCoverSheetSpotlightViewController *)self view];
-  [v4 translationInView:v5];
+  changedCopy = changed;
+  view = [(SBCoverSheetSpotlightViewController *)self view];
+  [changedCopy translationInView:view];
   v7 = v6;
 
   [(SBCoverSheetSpotlightViewController *)self _scaleGivenTranslation:v7];
@@ -297,16 +297,16 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   [(SBCoverSheetSpotlightViewController *)self _updateSpotlightScale:1 interactive:?];
 }
 
-- (void)handleBottomEdgeGestureEnded:(id)a3
+- (void)handleBottomEdgeGestureEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   [(SBCoverSheetSpotlightViewController *)self _updateSpotlightScale:0 interactive:1.0];
-  v5 = [(SBCoverSheetSpotlightViewController *)self view];
-  [v4 velocityInView:v5];
+  view = [(SBCoverSheetSpotlightViewController *)self view];
+  [endedCopy velocityInView:view];
   v7 = v6;
 
-  v8 = [(SBCoverSheetSpotlightViewController *)self view];
-  [v4 translationInView:v8];
+  view2 = [(SBCoverSheetSpotlightViewController *)self view];
+  [endedCopy translationInView:view2];
   v10 = v9;
 
   [(SBCoverSheetSpotlightViewController *)self _scaleGivenTranslation:v10 + v7 / 1000.0 * *MEMORY[0x277D76EC0] / (1.0 - *MEMORY[0x277D76EC0])];
@@ -323,11 +323,11 @@ void __50__SBCoverSheetSpotlightViewController_viewDidLoad__block_invoke(uint64_
   [WeakRetained coverSheetSpotlightViewControllerShouldDismiss:self animated:1];
 }
 
-- (double)_scaleGivenTranslation:(double)a3
+- (double)_scaleGivenTranslation:(double)translation
 {
-  v4 = [(SBCoverSheetSpotlightViewController *)self view];
-  [v4 bounds];
-  v6 = a3 / (v5 * 0.5) + 1.0;
+  view = [(SBCoverSheetSpotlightViewController *)self view];
+  [view bounds];
+  v6 = translation / (v5 * 0.5) + 1.0;
 
   BSUIConstrainValueWithRubberBand();
   if (v6 >= 1.0)

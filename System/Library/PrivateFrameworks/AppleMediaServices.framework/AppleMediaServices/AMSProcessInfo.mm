@@ -1,34 +1,34 @@
 @interface AMSProcessInfo
 + (AMSProcessInfo)currentProcess;
-+ (BOOL)BOOLForEntitlement:(id)a3;
-+ (BOOL)BOOLForMachLookupAccess:(id)a3;
-+ (BOOL)hasValue:(id)a3 inArrayForEntitlement:(id)a4;
++ (BOOL)BOOLForEntitlement:(id)entitlement;
++ (BOOL)BOOLForMachLookupAccess:(id)access;
++ (BOOL)hasValue:(id)value inArrayForEntitlement:(id)entitlement;
 + (NSString)defaultMediaTypeForCurrentProcess;
-+ (id)_bundleForIdentifier:(id)a3 record:(id)a4;
-+ (id)_bundleRecordForIdentifier:(id)a3;
-+ (id)_cachedProcessInfoForIdentifier:(id)a3;
++ (id)_bundleForIdentifier:(id)identifier record:(id)record;
++ (id)_bundleRecordForIdentifier:(id)identifier;
++ (id)_cachedProcessInfoForIdentifier:(id)identifier;
 + (id)_currentProcessBundleIdentifier;
-+ (id)arrayForEntitlement:(id)a3;
-+ (id)stringForEntitlement:(id)a3;
-+ (id)valueForEntitlement:(id)a3;
-+ (void)_accessProcessInfoCache:(id)a3;
-+ (void)_cacheProcessInfo:(id)a3;
-+ (void)copyPropertiesFrom:(id)a3 to:(id)a4;
-+ (void)setDefaultMediaTypeForCurrentProcess:(id)a3;
++ (id)arrayForEntitlement:(id)entitlement;
++ (id)stringForEntitlement:(id)entitlement;
++ (id)valueForEntitlement:(id)entitlement;
++ (void)_accessProcessInfoCache:(id)cache;
++ (void)_cacheProcessInfo:(id)info;
++ (void)copyPropertiesFrom:(id)from to:(id)to;
++ (void)setDefaultMediaTypeForCurrentProcess:(id)process;
 - (AMSProcessInfo)init;
-- (AMSProcessInfo)initWithBundleIdentifier:(id)a3;
-- (AMSProcessInfo)initWithCoder:(id)a3;
+- (AMSProcessInfo)initWithBundleIdentifier:(id)identifier;
+- (AMSProcessInfo)initWithCoder:(id)coder;
 - (BOOL)isAMSAccountsDaemon;
 - (BOOL)isAccountsDaemon;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)partnerHeader;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)generateConfigurationFromBagContract:(id)a3;
-- (void)_setComputedPropertiesForBundleIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setPartnerHeader:(id)a3;
+- (id)generateConfigurationFromBagContract:(id)contract;
+- (void)_setComputedPropertiesForBundleIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setPartnerHeader:(id)header;
 @end
 
 @implementation AMSProcessInfo
@@ -39,10 +39,10 @@
   if (+[AMSUnitTests isRunningUnitTests])
   {
     v3 = [AMSProcessInfo alloc];
-    v4 = [a1 _currentProcessBundleIdentifier];
-    v5 = [(AMSProcessInfo *)v3 initWithBundleIdentifier:v4];
+    _currentProcessBundleIdentifier = [self _currentProcessBundleIdentifier];
+    v5 = [(AMSProcessInfo *)v3 initWithBundleIdentifier:_currentProcessBundleIdentifier];
 
-    v6 = [(AMSProcessInfo *)v5 accountMediaType];
+    accountMediaType = [(AMSProcessInfo *)v5 accountMediaType];
   }
 
   else
@@ -52,37 +52,37 @@
     if (!qword_1ED6E3058)
     {
       v8 = +[AMSProcessInfo currentProcess];
-      v9 = [v8 accountMediaType];
-      v10 = [v9 copy];
+      accountMediaType2 = [v8 accountMediaType];
+      v10 = [accountMediaType2 copy];
       v11 = qword_1ED6E3058;
       qword_1ED6E3058 = v10;
 
       v7 = qword_1ED6E3058;
     }
 
-    v6 = [v7 copy];
+    accountMediaType = [v7 copy];
     os_unfair_lock_unlock(&_MergedGlobals_143);
   }
 
-  return v6;
+  return accountMediaType;
 }
 
 + (AMSProcessInfo)currentProcess
 {
   v2 = +[AMSProcessInfo _currentProcessBundleIdentifier];
   v3 = [[AMSProcessInfo alloc] initWithBundleIdentifier:v2];
-  v4 = [(AMSProcessInfo *)v3 executableName];
-  v5 = [v4 length];
+  executableName = [(AMSProcessInfo *)v3 executableName];
+  v5 = [executableName length];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    v7 = [v6 processName];
-    [(AMSProcessInfo *)v3 setExecutableName:v7];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    [(AMSProcessInfo *)v3 setExecutableName:processName];
 
     v8 = MEMORY[0x1E696AD98];
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    v10 = [v8 numberWithInt:{objc_msgSend(v9, "processIdentifier")}];
+    processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+    v10 = [v8 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
     [(AMSProcessInfo *)v3 setProcessIdentifier:v10];
   }
 
@@ -193,16 +193,16 @@ void __49__AMSProcessInfo__currentProcessBundleIdentifier__block_invoke()
 
 - (BOOL)isAccountsDaemon
 {
-  v2 = [(AMSProcessInfo *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.accountsd"];
+  bundleIdentifier = [(AMSProcessInfo *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.accountsd"];
 
   return v3;
 }
 
 - (BOOL)isAMSAccountsDaemon
 {
-  v2 = [(AMSProcessInfo *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.amsaccountsd"];
+  bundleIdentifier = [(AMSProcessInfo *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.amsaccountsd"];
 
   return v3;
 }
@@ -236,15 +236,15 @@ uint64_t __31__AMSProcessInfo_partnerHeader__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AMSProcessInfo)initWithBundleIdentifier:(id)a3
+- (AMSProcessInfo)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(AMSProcessInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
-    v8 = [AMSProcessInfo _cachedProcessInfoForIdentifier:v5];
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
+    v8 = [AMSProcessInfo _cachedProcessInfoForIdentifier:identifierCopy];
     if (v8)
     {
       [AMSProcessInfo copyPropertiesFrom:v8 to:v7];
@@ -252,7 +252,7 @@ uint64_t __31__AMSProcessInfo_partnerHeader__block_invoke(uint64_t a1)
 
     else
     {
-      [(AMSProcessInfo *)v7 _setComputedPropertiesForBundleIdentifier:v5];
+      [(AMSProcessInfo *)v7 _setComputedPropertiesForBundleIdentifier:identifierCopy];
       v9 = [(AMSProcessInfo *)v7 copy];
       [AMSProcessInfo _cacheProcessInfo:v9];
     }
@@ -261,9 +261,9 @@ uint64_t __31__AMSProcessInfo_partnerHeader__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setPartnerHeader:(id)a3
+- (void)setPartnerHeader:(id)header
 {
-  v4 = a3;
+  headerCopy = header;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -274,26 +274,26 @@ uint64_t __31__AMSProcessInfo_partnerHeader__block_invoke(uint64_t a1)
   block[2] = __35__AMSProcessInfo_setPartnerHeader___block_invoke;
   block[3] = &unk_1E73BABE0;
   block[4] = self;
-  v6 = v4;
+  v6 = headerCopy;
   v12 = v6;
   v13 = &v14;
   dispatch_sync(internalQueue, block);
   if (*(v15 + 24) == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E695DF20]);
-    v8 = v6;
+    null = v6;
     if (!v6)
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v9 = [v7 initWithObjectsAndKeys:{v8, @"ISClientValueParameter", 0}];
+    v9 = [v7 initWithObjectsAndKeys:{null, @"ISClientValueParameter", 0}];
     if (!v6)
     {
     }
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"ISClientPartnerHeaderChangedNotification" object:self userInfo:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ISClientPartnerHeaderChangedNotification" object:self userInfo:v9];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -314,11 +314,11 @@ void __35__AMSProcessInfo_setPartnerHeader___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)arrayForEntitlement:(id)a3
++ (id)arrayForEntitlement:(id)entitlement
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a1 valueForEntitlement:v5];
+  entitlementCopy = entitlement;
+  v6 = [self valueForEntitlement:entitlementCopy];
   v7 = v6;
   if (!v6)
   {
@@ -328,8 +328,8 @@ void __35__AMSProcessInfo_setPartnerHeader___block_invoke(uint64_t a1)
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_21;
     }
@@ -350,13 +350,13 @@ void __35__AMSProcessInfo_setPartnerHeader___block_invoke(uint64_t a1)
       [v13 stringWithFormat:@"%@: %@ ", v14, v15];
     }
     v16 = ;
-    v19 = AMSHashIfNeeded(v5);
+    v19 = AMSHashIfNeeded(entitlementCopy);
     *buf = 138543618;
     v25 = v16;
     v26 = 2114;
     v27 = v19;
     v20 = "%{public}@Did not find entitlement named %{public}@";
-    v21 = v11;
+    v21 = oSLogObject;
     v22 = OS_LOG_TYPE_DEBUG;
     goto LABEL_18;
   }
@@ -376,8 +376,8 @@ void __35__AMSProcessInfo_setPartnerHeader___block_invoke(uint64_t a1)
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v12 = AMSLogKey();
     v17 = MEMORY[0x1E696AEC0];
@@ -395,13 +395,13 @@ void __35__AMSProcessInfo_setPartnerHeader___block_invoke(uint64_t a1)
       [v17 stringWithFormat:@"%@: %@ ", v18, v15];
     }
     v16 = ;
-    v19 = AMSHashIfNeeded(v5);
+    v19 = AMSHashIfNeeded(entitlementCopy);
     *buf = 138543618;
     v25 = v16;
     v26 = 2114;
     v27 = v19;
     v20 = "%{public}@Entitlement fetch failed. Value is not an array. entitlementName = %{public}@";
-    v21 = v11;
+    v21 = oSLogObject;
     v22 = OS_LOG_TYPE_ERROR;
 LABEL_18:
     _os_log_impl(&dword_192869000, v21, v22, v20, buf, 0x16u);
@@ -420,11 +420,11 @@ LABEL_22:
   return v9;
 }
 
-+ (BOOL)BOOLForEntitlement:(id)a3
++ (BOOL)BOOLForEntitlement:(id)entitlement
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a1 valueForEntitlement:v5];
+  entitlementCopy = entitlement;
+  v6 = [self valueForEntitlement:entitlementCopy];
   v7 = v6;
   if (v6)
   {
@@ -444,8 +444,8 @@ LABEL_22:
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v16 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v18 = AMSLogKey();
         v19 = MEMORY[0x1E696AEC0];
@@ -463,12 +463,12 @@ LABEL_22:
           [v19 stringWithFormat:@"%@: %@ ", v20, v21];
         }
         v22 = ;
-        v25 = AMSHashIfNeeded(v5);
+        v25 = AMSHashIfNeeded(entitlementCopy);
         *buf = 138543618;
         v28 = v22;
         v29 = 2114;
         v30 = v25;
-        _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@Entitlement fetch failed. Value is not a BOOLean. entitlementName = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Entitlement fetch failed. Value is not a BOOLean. entitlementName = %{public}@", buf, 0x16u);
         if (v18)
         {
 
@@ -479,7 +479,7 @@ LABEL_22:
       v9 = 0;
     }
 
-    v24 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
@@ -490,8 +490,8 @@ LABEL_22:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v11 = AMSLogKey();
       v12 = MEMORY[0x1E696AEC0];
@@ -509,12 +509,12 @@ LABEL_22:
         [v12 stringWithFormat:@"%@: %@ ", v13, v14];
       }
       v15 = ;
-      v23 = AMSHashIfNeeded(v5);
+      v23 = AMSHashIfNeeded(entitlementCopy);
       *buf = 138543618;
       v28 = v15;
       v29 = 2114;
       v30 = v23;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Did not find entitlement named %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Did not find entitlement named %{public}@", buf, 0x16u);
       if (v11)
       {
 
@@ -522,39 +522,39 @@ LABEL_22:
       }
     }
 
-    v24 = 0;
+    bOOLValue = 0;
   }
 
-  return v24;
+  return bOOLValue;
 }
 
-+ (BOOL)BOOLForMachLookupAccess:(id)a3
++ (BOOL)BOOLForMachLookupAccess:(id)access
 {
-  if (!a3)
+  if (!access)
   {
     return 0;
   }
 
-  v3 = a3;
+  accessCopy = access;
   getpid();
-  [v3 UTF8String];
+  [accessCopy UTF8String];
 
   return sandbox_check() == 0;
 }
 
-+ (BOOL)hasValue:(id)a3 inArrayForEntitlement:(id)a4
++ (BOOL)hasValue:(id)value inArrayForEntitlement:(id)entitlement
 {
-  v6 = a3;
-  v7 = [a1 arrayForEntitlement:a4];
-  LOBYTE(a1) = [v7 containsObject:v6];
+  valueCopy = value;
+  v7 = [self arrayForEntitlement:entitlement];
+  LOBYTE(self) = [v7 containsObject:valueCopy];
 
-  return a1;
+  return self;
 }
 
-+ (void)setDefaultMediaTypeForCurrentProcess:(id)a3
++ (void)setDefaultMediaTypeForCurrentProcess:(id)process
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_assert_not_owner(&_MergedGlobals_143);
   v5 = +[AMSLogConfig sharedAccountsConfig];
   if (!v5)
@@ -562,29 +562,29 @@ LABEL_22:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = a1;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting the default media type for the process. defaultMediaType = %{public}@", &v9, 0x16u);
+    v12 = processCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting the default media type for the process. defaultMediaType = %{public}@", &v9, 0x16u);
   }
 
   os_unfair_lock_lock_with_options();
-  v7 = [v4 copy];
+  v7 = [processCopy copy];
   v8 = qword_1ED6E3058;
   qword_1ED6E3058 = v7;
 
   os_unfair_lock_unlock(&_MergedGlobals_143);
 }
 
-+ (id)stringForEntitlement:(id)a3
++ (id)stringForEntitlement:(id)entitlement
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a1 valueForEntitlement:v5];
+  entitlementCopy = entitlement;
+  v6 = [self valueForEntitlement:entitlementCopy];
   v7 = v6;
   if (!v6)
   {
@@ -594,8 +594,8 @@ LABEL_22:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_21;
     }
@@ -616,13 +616,13 @@ LABEL_22:
       [v13 stringWithFormat:@"%@: %@ ", v14, v15];
     }
     v16 = ;
-    v19 = AMSHashIfNeeded(v5);
+    v19 = AMSHashIfNeeded(entitlementCopy);
     *buf = 138543618;
     v25 = v16;
     v26 = 2114;
     v27 = v19;
     v20 = "%{public}@Did not find entitlement named %{public}@";
-    v21 = v11;
+    v21 = oSLogObject;
     v22 = OS_LOG_TYPE_DEBUG;
     goto LABEL_18;
   }
@@ -642,8 +642,8 @@ LABEL_22:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v12 = AMSLogKey();
     v17 = MEMORY[0x1E696AEC0];
@@ -661,13 +661,13 @@ LABEL_22:
       [v17 stringWithFormat:@"%@: %@ ", v18, v15];
     }
     v16 = ;
-    v19 = AMSHashIfNeeded(v5);
+    v19 = AMSHashIfNeeded(entitlementCopy);
     *buf = 138543618;
     v25 = v16;
     v26 = 2114;
     v27 = v19;
     v20 = "%{public}@Entitlement fetch failed. Value is not a string. entitlementName = %{public}@";
-    v21 = v11;
+    v21 = oSLogObject;
     v22 = OS_LOG_TYPE_ERROR;
 LABEL_18:
     _os_log_impl(&dword_192869000, v21, v22, v20, buf, 0x16u);
@@ -686,15 +686,15 @@ LABEL_22:
   return v9;
 }
 
-+ (id)valueForEntitlement:(id)a3
++ (id)valueForEntitlement:(id)entitlement
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (v5 = SecTaskCreateFromSelf(0)) != 0)
+  entitlementCopy = entitlement;
+  if (entitlementCopy && (v5 = SecTaskCreateFromSelf(0)) != 0)
   {
     v6 = v5;
     error = 0;
-    v7 = SecTaskCopyValueForEntitlement(v5, v4, &error);
+    v7 = SecTaskCopyValueForEntitlement(v5, entitlementCopy, &error);
     if (error)
     {
       v8 = +[AMSLogConfig sharedConfig];
@@ -703,15 +703,15 @@ LABEL_22:
         v8 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v8 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 = AMSLogableError(error);
         *buf = 138543618;
-        v14 = a1;
+        selfCopy = self;
         v15 = 2114;
         v16 = v10;
-        _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Entitlement fetch failed with error: %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Entitlement fetch failed with error: %{public}@", buf, 0x16u);
       }
 
       CFRelease(error);
@@ -728,55 +728,55 @@ LABEL_22:
   return v7;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_bundleIdentifier, a3);
-  v5 = a3;
-  [(AMSProcessInfo *)self _setComputedPropertiesForBundleIdentifier:v5];
+  objc_storeStrong(&self->_bundleIdentifier, identifier);
+  identifierCopy = identifier;
+  [(AMSProcessInfo *)self _setComputedPropertiesForBundleIdentifier:identifierCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSProcessInfo *)self executableName];
-  v5 = [(AMSProcessInfo *)self bundleIdentifier];
-  v6 = [(AMSProcessInfo *)self clientVersion];
-  v7 = [(AMSProcessInfo *)self accountMediaType];
-  v8 = [(AMSProcessInfo *)self proxyAppBundleID];
-  v9 = [(AMSProcessInfo *)self treatmentNamespace];
-  v10 = [(AMSProcessInfo *)self userAgentSuffix];
-  v11 = [v3 stringWithFormat:@"<AMSProcessInfo: %p name = %@ | bundleIdentifier = %@ | clientVersion = %@ | mediaType = %@ | proxyAppBundleID = %@ | treatmentNamespace = %@ | userAgentSuffix = %@>", self, v4, v5, v6, v7, v8, v9, v10];
+  executableName = [(AMSProcessInfo *)self executableName];
+  bundleIdentifier = [(AMSProcessInfo *)self bundleIdentifier];
+  clientVersion = [(AMSProcessInfo *)self clientVersion];
+  accountMediaType = [(AMSProcessInfo *)self accountMediaType];
+  proxyAppBundleID = [(AMSProcessInfo *)self proxyAppBundleID];
+  treatmentNamespace = [(AMSProcessInfo *)self treatmentNamespace];
+  userAgentSuffix = [(AMSProcessInfo *)self userAgentSuffix];
+  v11 = [v3 stringWithFormat:@"<AMSProcessInfo: %p name = %@ | bundleIdentifier = %@ | clientVersion = %@ | mediaType = %@ | proxyAppBundleID = %@ | treatmentNamespace = %@ | userAgentSuffix = %@>", self, executableName, bundleIdentifier, clientVersion, accountMediaType, proxyAppBundleID, treatmentNamespace, userAgentSuffix];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = 0;
     v11 = 0;
-    v12 = v5;
+    userAgentSuffix = equalCopy;
     goto LABEL_9;
   }
 
-  v6 = v5;
+  v6 = equalCopy;
 
   if (!v6)
   {
     goto LABEL_68;
   }
 
-  v7 = [(AMSProcessInfo *)self accountMediaType];
-  if (v7 || ([v6 accountMediaType], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  accountMediaType = [(AMSProcessInfo *)self accountMediaType];
+  if (accountMediaType || ([v6 accountMediaType], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = [(AMSProcessInfo *)self accountMediaType];
-    v9 = [v6 accountMediaType];
-    v10 = [v8 isEqual:v9];
+    accountMediaType2 = [(AMSProcessInfo *)self accountMediaType];
+    accountMediaType3 = [v6 accountMediaType];
+    v10 = [accountMediaType2 isEqual:accountMediaType3];
 
-    if (v7)
+    if (accountMediaType)
     {
 
       if (!v10)
@@ -795,14 +795,14 @@ LABEL_22:
     }
   }
 
-  v13 = [(AMSProcessInfo *)self auditTokenData];
-  if (v13 || ([v6 auditTokenData], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  auditTokenData = [(AMSProcessInfo *)self auditTokenData];
+  if (auditTokenData || ([v6 auditTokenData], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v14 = [(AMSProcessInfo *)self auditTokenData];
-    v15 = [v6 auditTokenData];
-    v16 = [v14 isEqual:v15];
+    auditTokenData2 = [(AMSProcessInfo *)self auditTokenData];
+    auditTokenData3 = [v6 auditTokenData];
+    v16 = [auditTokenData2 isEqual:auditTokenData3];
 
-    if (v13)
+    if (auditTokenData)
     {
 
       if (!v16)
@@ -821,14 +821,14 @@ LABEL_22:
     }
   }
 
-  v17 = [(AMSProcessInfo *)self bundleIdentifier];
-  if (v17 || ([v6 bundleIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  bundleIdentifier = [(AMSProcessInfo *)self bundleIdentifier];
+  if (bundleIdentifier || ([v6 bundleIdentifier], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(AMSProcessInfo *)self bundleIdentifier];
-    v19 = [v6 bundleIdentifier];
-    v20 = [v18 isEqual:v19];
+    bundleIdentifier2 = [(AMSProcessInfo *)self bundleIdentifier];
+    bundleIdentifier3 = [v6 bundleIdentifier];
+    v20 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
-    if (v17)
+    if (bundleIdentifier)
     {
 
       if (!v20)
@@ -847,14 +847,14 @@ LABEL_22:
     }
   }
 
-  v21 = [(AMSProcessInfo *)self bundleURL];
-  if (v21 || ([v6 bundleURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  bundleURL = [(AMSProcessInfo *)self bundleURL];
+  if (bundleURL || ([v6 bundleURL], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v22 = [(AMSProcessInfo *)self bundleURL];
-    v23 = [v6 bundleURL];
-    v24 = [v22 isEqual:v23];
+    bundleURL2 = [(AMSProcessInfo *)self bundleURL];
+    bundleURL3 = [v6 bundleURL];
+    v24 = [bundleURL2 isEqual:bundleURL3];
 
-    if (v21)
+    if (bundleURL)
     {
 
       if (!v24)
@@ -873,14 +873,14 @@ LABEL_22:
     }
   }
 
-  v25 = [(AMSProcessInfo *)self clientVersion];
-  if (v25 || ([v6 clientVersion], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  clientVersion = [(AMSProcessInfo *)self clientVersion];
+  if (clientVersion || ([v6 clientVersion], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v26 = [(AMSProcessInfo *)self clientVersion];
-    v27 = [v6 clientVersion];
-    v28 = [v26 isEqual:v27];
+    clientVersion2 = [(AMSProcessInfo *)self clientVersion];
+    clientVersion3 = [v6 clientVersion];
+    v28 = [clientVersion2 isEqual:clientVersion3];
 
-    if (v25)
+    if (clientVersion)
     {
 
       if (!v28)
@@ -899,14 +899,14 @@ LABEL_22:
     }
   }
 
-  v29 = [(AMSProcessInfo *)self executableName];
-  if (v29 || ([v6 executableName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  executableName = [(AMSProcessInfo *)self executableName];
+  if (executableName || ([v6 executableName], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v30 = [(AMSProcessInfo *)self executableName];
-    v31 = [v6 executableName];
-    v32 = [v30 isEqual:v31];
+    executableName2 = [(AMSProcessInfo *)self executableName];
+    executableName3 = [v6 executableName];
+    v32 = [executableName2 isEqual:executableName3];
 
-    if (v29)
+    if (executableName)
     {
 
       if (!v32)
@@ -925,14 +925,14 @@ LABEL_22:
     }
   }
 
-  v33 = [(AMSProcessInfo *)self localizedName];
-  if (v33 || ([v6 localizedName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  localizedName = [(AMSProcessInfo *)self localizedName];
+  if (localizedName || ([v6 localizedName], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v34 = [(AMSProcessInfo *)self localizedName];
-    v35 = [v6 localizedName];
-    v36 = [v34 isEqual:v35];
+    localizedName2 = [(AMSProcessInfo *)self localizedName];
+    localizedName3 = [v6 localizedName];
+    v36 = [localizedName2 isEqual:localizedName3];
 
-    if (v33)
+    if (localizedName)
     {
 
       if (!v36)
@@ -951,14 +951,14 @@ LABEL_22:
     }
   }
 
-  v37 = [(AMSProcessInfo *)self partnerHeader];
-  if (v37 || ([v6 partnerHeader], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  partnerHeader = [(AMSProcessInfo *)self partnerHeader];
+  if (partnerHeader || ([v6 partnerHeader], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v38 = [(AMSProcessInfo *)self partnerHeader];
-    v39 = [v6 partnerHeader];
-    v40 = [v38 isEqual:v39];
+    partnerHeader2 = [(AMSProcessInfo *)self partnerHeader];
+    partnerHeader3 = [v6 partnerHeader];
+    v40 = [partnerHeader2 isEqual:partnerHeader3];
 
-    if (v37)
+    if (partnerHeader)
     {
 
       if (!v40)
@@ -977,14 +977,14 @@ LABEL_22:
     }
   }
 
-  v41 = [(AMSProcessInfo *)self proxyAppBundleID];
-  if (v41 || ([v6 proxyAppBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  proxyAppBundleID = [(AMSProcessInfo *)self proxyAppBundleID];
+  if (proxyAppBundleID || ([v6 proxyAppBundleID], (treatmentNamespace2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v42 = [(AMSProcessInfo *)self proxyAppBundleID];
-    v43 = [v6 proxyAppBundleID];
-    v44 = [v42 isEqual:v43];
+    proxyAppBundleID2 = [(AMSProcessInfo *)self proxyAppBundleID];
+    proxyAppBundleID3 = [v6 proxyAppBundleID];
+    v44 = [proxyAppBundleID2 isEqual:proxyAppBundleID3];
 
-    if (v41)
+    if (proxyAppBundleID)
     {
 
       if (!v44)
@@ -1003,21 +1003,21 @@ LABEL_22:
     }
   }
 
-  v45 = [(AMSProcessInfo *)self treatmentNamespace];
-  if (!v45)
+  treatmentNamespace = [(AMSProcessInfo *)self treatmentNamespace];
+  if (!treatmentNamespace)
   {
-    v3 = [v6 treatmentNamespace];
-    if (!v3)
+    treatmentNamespace2 = [v6 treatmentNamespace];
+    if (!treatmentNamespace2)
     {
       goto LABEL_63;
     }
   }
 
-  v46 = [(AMSProcessInfo *)self treatmentNamespace];
-  v47 = [v6 treatmentNamespace];
-  v48 = [v46 isEqual:v47];
+  treatmentNamespace3 = [(AMSProcessInfo *)self treatmentNamespace];
+  treatmentNamespace4 = [v6 treatmentNamespace];
+  v48 = [treatmentNamespace3 isEqual:treatmentNamespace4];
 
-  if (v45)
+  if (treatmentNamespace)
   {
 
     if (v48)
@@ -1036,11 +1036,11 @@ LABEL_68:
   }
 
 LABEL_63:
-  v12 = [(AMSProcessInfo *)self userAgentSuffix];
-  if (!v12)
+  userAgentSuffix = [(AMSProcessInfo *)self userAgentSuffix];
+  if (!userAgentSuffix)
   {
-    v3 = [v6 userAgentSuffix];
-    if (!v3)
+    treatmentNamespace2 = [v6 userAgentSuffix];
+    if (!treatmentNamespace2)
     {
       v11 = 1;
 LABEL_71:
@@ -1049,11 +1049,11 @@ LABEL_71:
     }
   }
 
-  v49 = [(AMSProcessInfo *)self userAgentSuffix];
-  v50 = [v6 userAgentSuffix];
-  v11 = [v49 isEqual:v50];
+  userAgentSuffix2 = [(AMSProcessInfo *)self userAgentSuffix];
+  userAgentSuffix3 = [v6 userAgentSuffix];
+  v11 = [userAgentSuffix2 isEqual:userAgentSuffix3];
 
-  if (!v12)
+  if (!userAgentSuffix)
   {
     goto LABEL_71;
   }
@@ -1064,159 +1064,159 @@ LABEL_69:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AMSProcessInfo);
   [AMSProcessInfo copyPropertiesFrom:self to:v4];
   return v4;
 }
 
-+ (void)copyPropertiesFrom:(id)a3 to:(id)a4
++ (void)copyPropertiesFrom:(id)from to:(id)to
 {
-  v5 = *(a3 + 3);
-  v6 = a4;
-  v7 = a3;
+  v5 = *(from + 3);
+  toCopy = to;
+  fromCopy = from;
   v8 = [v5 copy];
-  v9 = v6[3];
-  v6[3] = v8;
+  v9 = toCopy[3];
+  toCopy[3] = v8;
 
-  v10 = [v7[4] copy];
-  v11 = v6[4];
-  v6[4] = v10;
+  v10 = [fromCopy[4] copy];
+  v11 = toCopy[4];
+  toCopy[4] = v10;
 
-  v12 = [v7[5] copy];
-  v13 = v6[5];
-  v6[5] = v12;
+  v12 = [fromCopy[5] copy];
+  v13 = toCopy[5];
+  toCopy[5] = v12;
 
-  v14 = [v7[6] copy];
-  v15 = v6[6];
-  v6[6] = v14;
+  v14 = [fromCopy[6] copy];
+  v15 = toCopy[6];
+  toCopy[6] = v14;
 
-  v16 = [v7[7] copy];
-  v17 = v6[7];
-  v6[7] = v16;
+  v16 = [fromCopy[7] copy];
+  v17 = toCopy[7];
+  toCopy[7] = v16;
 
-  v18 = [v7[8] copy];
-  v19 = v6[8];
-  v6[8] = v18;
+  v18 = [fromCopy[8] copy];
+  v19 = toCopy[8];
+  toCopy[8] = v18;
 
-  v20 = [v7[9] copy];
-  v21 = v6[9];
-  v6[9] = v20;
+  v20 = [fromCopy[9] copy];
+  v21 = toCopy[9];
+  toCopy[9] = v20;
 
-  v22 = [v7[2] copy];
-  v23 = v6[2];
-  v6[2] = v22;
+  v22 = [fromCopy[2] copy];
+  v23 = toCopy[2];
+  toCopy[2] = v22;
 
-  v24 = [v7[14] copy];
-  v25 = v6[14];
-  v6[14] = v24;
+  v24 = [fromCopy[14] copy];
+  v25 = toCopy[14];
+  toCopy[14] = v24;
 
-  v26 = [v7[10] copy];
-  v27 = v6[10];
-  v6[10] = v26;
+  v26 = [fromCopy[10] copy];
+  v27 = toCopy[10];
+  toCopy[10] = v26;
 
-  v28 = [v7[11] copy];
-  v29 = v6[11];
-  v6[11] = v28;
+  v28 = [fromCopy[11] copy];
+  v29 = toCopy[11];
+  toCopy[11] = v28;
 
-  v30 = v7[12];
+  v30 = fromCopy[12];
   v31 = [v30 copy];
-  v32 = v6[12];
-  v6[12] = v31;
+  v32 = toCopy[12];
+  toCopy[12] = v31;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSProcessInfo *)self accountMediaType];
-  [v4 encodeObject:v5 forKey:@"mediaType"];
+  coderCopy = coder;
+  accountMediaType = [(AMSProcessInfo *)self accountMediaType];
+  [coderCopy encodeObject:accountMediaType forKey:@"mediaType"];
 
-  v6 = [(AMSProcessInfo *)self auditTokenData];
-  [v4 encodeObject:v6 forKey:@"auditTokenData"];
+  auditTokenData = [(AMSProcessInfo *)self auditTokenData];
+  [coderCopy encodeObject:auditTokenData forKey:@"auditTokenData"];
 
-  v7 = [(AMSProcessInfo *)self bundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"bundleID"];
+  bundleIdentifier = [(AMSProcessInfo *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleID"];
 
-  v8 = [(AMSProcessInfo *)self bundleURL];
-  [v4 encodeObject:v8 forKey:@"bundleURL"];
+  bundleURL = [(AMSProcessInfo *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 
-  v9 = [(AMSProcessInfo *)self clientVersion];
-  [v4 encodeObject:v9 forKey:@"clientVersion"];
+  clientVersion = [(AMSProcessInfo *)self clientVersion];
+  [coderCopy encodeObject:clientVersion forKey:@"clientVersion"];
 
-  v10 = [(AMSProcessInfo *)self executableName];
-  [v4 encodeObject:v10 forKey:@"executableName"];
+  executableName = [(AMSProcessInfo *)self executableName];
+  [coderCopy encodeObject:executableName forKey:@"executableName"];
 
-  v11 = [(AMSProcessInfo *)self localizedName];
-  [v4 encodeObject:v11 forKey:@"localizedName"];
+  localizedName = [(AMSProcessInfo *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
-  v12 = [(AMSProcessInfo *)self partnerHeader];
-  [v4 encodeObject:v12 forKey:@"partnerHeader"];
+  partnerHeader = [(AMSProcessInfo *)self partnerHeader];
+  [coderCopy encodeObject:partnerHeader forKey:@"partnerHeader"];
 
-  v13 = [(AMSProcessInfo *)self processIdentifier];
-  [v4 encodeObject:v13 forKey:@"processIdentifier"];
+  processIdentifier = [(AMSProcessInfo *)self processIdentifier];
+  [coderCopy encodeObject:processIdentifier forKey:@"processIdentifier"];
 
-  v14 = [(AMSProcessInfo *)self proxyAppBundleID];
-  [v4 encodeObject:v14 forKey:@"proxyAppBundleID"];
+  proxyAppBundleID = [(AMSProcessInfo *)self proxyAppBundleID];
+  [coderCopy encodeObject:proxyAppBundleID forKey:@"proxyAppBundleID"];
 
-  v15 = [(AMSProcessInfo *)self treatmentNamespace];
-  [v4 encodeObject:v15 forKey:@"treatmentNamespace"];
+  treatmentNamespace = [(AMSProcessInfo *)self treatmentNamespace];
+  [coderCopy encodeObject:treatmentNamespace forKey:@"treatmentNamespace"];
 
-  v16 = [(AMSProcessInfo *)self userAgentSuffix];
-  [v4 encodeObject:v16 forKey:@"userAgentSuffix"];
+  userAgentSuffix = [(AMSProcessInfo *)self userAgentSuffix];
+  [coderCopy encodeObject:userAgentSuffix forKey:@"userAgentSuffix"];
 }
 
-- (AMSProcessInfo)initWithCoder:(id)a3
+- (AMSProcessInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AMSProcessInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
     accountMediaType = v5->_accountMediaType;
     v5->_accountMediaType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auditTokenData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auditTokenData"];
     auditTokenData = v5->_auditTokenData;
     v5->_auditTokenData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
     bundleURL = v5->_bundleURL;
     v5->_bundleURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
     clientVersion = v5->_clientVersion;
     v5->_clientVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"executableName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"executableName"];
     executableName = v5->_executableName;
     v5->_executableName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     localizedName = v5->_localizedName;
     v5->_localizedName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerHeader"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerHeader"];
     partnerHeader = v5->_partnerHeader;
     v5->_partnerHeader = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processIdentifier"];
     processIdentifier = v5->_processIdentifier;
     v5->_processIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyAppBundleID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyAppBundleID"];
     proxyAppBundleID = v5->_proxyAppBundleID;
     v5->_proxyAppBundleID = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"treatmentNamespace"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"treatmentNamespace"];
     treatmentNamespace = v5->_treatmentNamespace;
     v5->_treatmentNamespace = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userAgentSuffix"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userAgentSuffix"];
     userAgentSuffix = v5->_userAgentSuffix;
     v5->_userAgentSuffix = v28;
   }
@@ -1224,25 +1224,25 @@ LABEL_69:
   return v5;
 }
 
-+ (id)_bundleForIdentifier:(id)a3 record:(id)a4
++ (id)_bundleForIdentifier:(id)identifier record:(id)record
 {
-  v6 = a4;
-  if (a3)
+  recordCopy = record;
+  if (identifier)
   {
-    v7 = a3;
-    v8 = [a1 _currentProcessBundleIdentifier];
-    v9 = [v8 isEqualToString:v7];
+    identifierCopy = identifier;
+    _currentProcessBundleIdentifier = [self _currentProcessBundleIdentifier];
+    v9 = [_currentProcessBundleIdentifier isEqualToString:identifierCopy];
 
     if (!v9)
     {
       goto LABEL_7;
     }
 
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    if (v10)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    if (mainBundle)
     {
 LABEL_14:
-      a3 = v10;
+      identifier = mainBundle;
 
       goto LABEL_15;
     }
@@ -1252,8 +1252,8 @@ LABEL_14:
     {
       v13 = v12;
       v14 = MEMORY[0x1E696AAE8];
-      v15 = [(__CFURL *)v12 path];
-      v10 = [v14 bundleWithPath:v15];
+      path = [(__CFURL *)v12 path];
+      mainBundle = [v14 bundleWithPath:path];
 
       CFRelease(v13);
     }
@@ -1261,20 +1261,20 @@ LABEL_14:
     else
     {
 LABEL_7:
-      v10 = 0;
+      mainBundle = 0;
     }
 
-    if (v6 && !v10)
+    if (recordCopy && !mainBundle)
     {
-      v16 = [v6 URL];
+      v16 = [recordCopy URL];
       if (v16)
       {
-        v10 = [MEMORY[0x1E696AAE8] bundleWithURL:v16];
+        mainBundle = [MEMORY[0x1E696AAE8] bundleWithURL:v16];
       }
 
       else
       {
-        v10 = 0;
+        mainBundle = 0;
       }
     }
 
@@ -1283,24 +1283,24 @@ LABEL_7:
 
 LABEL_15:
 
-  return a3;
+  return identifier;
 }
 
-+ (id)_bundleRecordForIdentifier:(id)a3
++ (id)_bundleRecordForIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[AMSProcessInfo _currentProcessBundleIdentifier];
   v6 = v5;
-  if (v4)
+  if (identifierCopy)
   {
     if (!v5)
     {
 LABEL_8:
       v17 = 0;
-      v7 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v4 allowPlaceholder:1 error:&v17];
+      bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v17];
       v8 = v17;
-      if (v7)
+      if (bundleRecordForCurrentProcess)
       {
         goto LABEL_21;
       }
@@ -1311,22 +1311,22 @@ LABEL_8:
 
   else
   {
-    v4 = v5;
-    if (!v4)
+    identifierCopy = v5;
+    if (!identifierCopy)
     {
       v8 = 0;
       goto LABEL_11;
     }
   }
 
-  if (![v4 isEqualToString:v6])
+  if (![identifierCopy isEqualToString:v6])
   {
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
   v8 = 0;
-  if (v7)
+  if (bundleRecordForCurrentProcess)
   {
     goto LABEL_21;
   }
@@ -1338,8 +1338,8 @@ LABEL_11:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v11 = AMSLogKey();
     v12 = MEMORY[0x1E696AEC0];
@@ -1347,46 +1347,46 @@ LABEL_11:
     v14 = v13;
     if (v11)
     {
-      a1 = AMSLogKey();
-      [v12 stringWithFormat:@"%@: [%@] ", v14, a1];
+      self = AMSLogKey();
+      [v12 stringWithFormat:@"%@: [%@] ", v14, self];
     }
 
     else
     {
       [v12 stringWithFormat:@"%@: ", v13];
     }
-    v15 = ;
+    selfCopy = ;
     *buf = 138543618;
-    v19 = v15;
+    v19 = selfCopy;
     v20 = 2114;
     v21 = v8;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@Failed to fetch bundle record, error: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Failed to fetch bundle record, error: %{public}@", buf, 0x16u);
     if (v11)
     {
 
-      v15 = a1;
+      selfCopy = self;
     }
   }
 
-  v7 = 0;
+  bundleRecordForCurrentProcess = 0;
 LABEL_21:
 
-  return v7;
+  return bundleRecordForCurrentProcess;
 }
 
-+ (void)_cacheProcessInfo:(id)a3
++ (void)_cacheProcessInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
+  infoCopy = info;
+  bundleIdentifier = [infoCopy bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __36__AMSProcessInfo__cacheProcessInfo___block_invoke;
     v6[3] = &unk_1E73BAC08;
-    v7 = v4;
-    [a1 _accessProcessInfoCache:v6];
+    v7 = infoCopy;
+    [self _accessProcessInfoCache:v6];
   }
 }
 
@@ -1398,12 +1398,12 @@ void __36__AMSProcessInfo__cacheProcessInfo___block_invoke(uint64_t a1, void *a2
   [v3 setObject:v2 forKey:v4];
 }
 
-+ (id)_cachedProcessInfoForIdentifier:(id)a3
++ (id)_cachedProcessInfoForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[AMSUnitTests isRunningUnitTests];
   v6 = 0;
-  if (v4 && !v5)
+  if (identifierCopy && !v5)
   {
     v11 = 0;
     v12 = &v11;
@@ -1416,8 +1416,8 @@ void __36__AMSProcessInfo__cacheProcessInfo___block_invoke(uint64_t a1, void *a2
     v8[2] = __50__AMSProcessInfo__cachedProcessInfoForIdentifier___block_invoke;
     v8[3] = &unk_1E73BAC30;
     v10 = &v11;
-    v9 = v4;
-    [a1 _accessProcessInfoCache:v8];
+    v9 = identifierCopy;
+    [self _accessProcessInfoCache:v8];
     v6 = v12[5];
 
     _Block_object_dispose(&v11, 8);
@@ -1433,9 +1433,9 @@ uint64_t __50__AMSProcessInfo__cachedProcessInfoForIdentifier___block_invoke(uin
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)_accessProcessInfoCache:(id)a3
++ (void)_accessProcessInfoCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if (qword_1ED6E3060 != -1)
   {
     dispatch_once(&qword_1ED6E3060, &__block_literal_global_112);
@@ -1453,9 +1453,9 @@ uint64_t __50__AMSProcessInfo__cachedProcessInfoForIdentifier___block_invoke(uin
   v9[2] = __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_3;
   v9[3] = &unk_1E73B43F0;
   v10 = v4;
-  v11 = v3;
+  v11 = cacheCopy;
   v6 = v4;
-  v7 = v3;
+  v7 = cacheCopy;
   v8 = v5;
   dispatch_sync(v8, v9);
 }
@@ -1475,11 +1475,11 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
   qword_1ED6E3078 = v0;
 }
 
-- (void)_setComputedPropertiesForBundleIdentifier:(id)a3
+- (void)_setComputedPropertiesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = [AMSProcessInfo _bundleRecordForIdentifier:v4];
+  v6 = [AMSProcessInfo _bundleRecordForIdentifier:identifierCopy];
   v59[0] = 0;
   v59[1] = v59;
   v59[2] = 0x3032000000;
@@ -1491,7 +1491,7 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
   aBlock[2] = __60__AMSProcessInfo__setComputedPropertiesForBundleIdentifier___block_invoke;
   aBlock[3] = &unk_1E73BAC58;
   v58 = v59;
-  v7 = v4;
+  v7 = identifierCopy;
   v56 = v7;
   v8 = v6;
   v57 = v8;
@@ -1511,22 +1511,22 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
   v51 = v7;
   if (v13)
   {
-    v15 = v13;
+    bundleURL = v13;
   }
 
   else
   {
     v16 = v11[2](v11);
-    v15 = [v16 bundleURL];
+    bundleURL = [v16 bundleURL];
   }
 
-  v17 = [v10 executableURL];
-  v18 = [v17 lastPathComponent];
-  v19 = [v18 stringByDeletingPathExtension];
-  v20 = v19;
-  if (v19)
+  executableURL = [v10 executableURL];
+  lastPathComponent = [executableURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v20 = stringByDeletingPathExtension;
+  if (stringByDeletingPathExtension)
   {
-    v21 = v19;
+    v21 = stringByDeletingPathExtension;
   }
 
   else
@@ -1537,11 +1537,11 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
 
   v23 = v21;
 
-  v24 = [v10 localizedName];
-  v25 = v24;
-  if (v24)
+  localizedName = [v10 localizedName];
+  v25 = localizedName;
+  if (localizedName)
   {
-    v26 = v24;
+    v26 = localizedName;
   }
 
   else
@@ -1575,7 +1575,7 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
 
   else
   {
-    bundleURL = v15;
+    bundleURL = bundleURL;
   }
 
   objc_storeStrong(&self->_bundleURL, bundleURL);
@@ -1605,15 +1605,15 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
   if (processIdentifier)
   {
     v39 = processIdentifier;
-    v40 = self->_processIdentifier;
+    processInfo = self->_processIdentifier;
     self->_processIdentifier = v39;
   }
 
   else
   {
     v41 = MEMORY[0x1E696AD98];
-    v40 = [MEMORY[0x1E696AE30] processInfo];
-    v42 = [v41 numberWithInt:{objc_msgSend(v40, "processIdentifier")}];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v42 = [v41 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
     v43 = self->_processIdentifier;
     self->_processIdentifier = v42;
   }
@@ -1633,16 +1633,16 @@ void __42__AMSProcessInfo__accessProcessInfoCache___block_invoke_2()
   accountMediaType = self->_accountMediaType;
   if (accountMediaType)
   {
-    v48 = accountMediaType;
+    accountMediaType = accountMediaType;
   }
 
   else
   {
-    v48 = [(AMSMappedBundleInfo *)self->_mappedBundleInfo accountMediaType];
+    accountMediaType = [(AMSMappedBundleInfo *)self->_mappedBundleInfo accountMediaType];
   }
 
   v49 = self->_accountMediaType;
-  self->_accountMediaType = v48;
+  self->_accountMediaType = accountMediaType;
 }
 
 id __60__AMSProcessInfo__setComputedPropertiesForBundleIdentifier___block_invoke(void *a1)
@@ -1684,11 +1684,11 @@ id __60__AMSProcessInfo__setComputedPropertiesForBundleIdentifier___block_invoke
   return v7;
 }
 
-- (id)generateConfigurationFromBagContract:(id)a3
+- (id)generateConfigurationFromBagContract:(id)contract
 {
   v4 = MEMORY[0x1E695AC80];
-  v5 = a3;
-  v6 = [[AMSContractBagShim alloc] initWithBagContract:v5];
+  contractCopy = contract;
+  v6 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   v7 = [v4 ams_configurationWithProcessInfo:self bag:v6];
 

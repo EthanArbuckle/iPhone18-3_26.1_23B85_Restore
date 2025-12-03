@@ -1,7 +1,7 @@
 @interface PLSimpleAlbumList
 - (BOOL)isEmpty;
-- (PLSimpleAlbumList)initWithAssetContainer:(id)a3;
-- (PLSimpleAlbumList)initWithAssetContainers:(id)a3;
+- (PLSimpleAlbumList)initWithAssetContainer:(id)container;
+- (PLSimpleAlbumList)initWithAssetContainers:(id)containers;
 - (id)photoLibrary;
 @end
 
@@ -14,8 +14,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PLSimpleAlbumList *)self containers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  containers = [(PLSimpleAlbumList *)self containers];
+  v3 = [containers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -27,19 +27,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(containers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 photoLibrary];
+          photoLibrary = [v8 photoLibrary];
 
-          v5 = v9;
+          v5 = photoLibrary;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [containers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -60,8 +60,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PLSimpleAlbumList *)self containers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  containers = [(PLSimpleAlbumList *)self containers];
+  v3 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -72,7 +72,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(containers);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) isEmpty])
@@ -82,7 +82,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -98,24 +98,24 @@ LABEL_11:
   return v7;
 }
 
-- (PLSimpleAlbumList)initWithAssetContainers:(id)a3
+- (PLSimpleAlbumList)initWithAssetContainers:(id)containers
 {
-  v5 = a3;
+  containersCopy = containers;
   v9.receiver = self;
   v9.super_class = PLSimpleAlbumList;
   v6 = [(PLSimpleAlbumList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containers, a3);
+    objc_storeStrong(&v6->_containers, containers);
   }
 
   return v7;
 }
 
-- (PLSimpleAlbumList)initWithAssetContainer:(id)a3
+- (PLSimpleAlbumList)initWithAssetContainer:(id)container
 {
-  v4 = [MEMORY[0x1E695DFB8] orderedSetWithObject:a3];
+  v4 = [MEMORY[0x1E695DFB8] orderedSetWithObject:container];
   v5 = [(PLSimpleAlbumList *)self initWithAssetContainers:v4];
 
   return v5;

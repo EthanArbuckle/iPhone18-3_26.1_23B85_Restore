@@ -9,10 +9,10 @@
 - (void)_updateContentIfNeeded;
 - (void)_updateIfNeeded;
 - (void)layoutSubviews;
-- (void)performChanges:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setFeature:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)performChanges:(id)changes;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setFeature:(id)feature;
+- (void)setSelected:(BOOL)selected;
 - (void)updateContent;
 @end
 
@@ -55,16 +55,16 @@
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:192 description:@"neither inside perform changes nor updates"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:192 description:@"neither inside perform changes nor updates"];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, self);
+  (*(changes + 2))(changes, self);
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
@@ -73,33 +73,33 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(PXProtoFeatureView *)self _invalidateContent];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(PXProtoFeatureView *)self _invalidateContent];
   }
 }
 
-- (void)setFeature:(id)a3
+- (void)setFeature:(id)feature
 {
-  v5 = a3;
-  if (self->_feature != v5)
+  featureCopy = feature;
+  if (self->_feature != featureCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_feature, a3);
+    v6 = featureCopy;
+    objc_storeStrong(&self->_feature, feature);
     [(PXProtoFeatureView *)self _invalidateContent];
-    v5 = v6;
+    featureCopy = v6;
   }
 }
 
@@ -164,8 +164,8 @@
 {
   if ([(PXProtoFeatureView *)self wantsContentView])
   {
-    v16 = [(PXProtoFeatureView *)self contentView];
-    if (!v16)
+    contentView = [(PXProtoFeatureView *)self contentView];
+    if (!contentView)
     {
       v3 = objc_alloc(MEMORY[0x1E69DD250]);
       [(PXProtoFeatureView *)self _contentViewFrame];
@@ -173,7 +173,7 @@
       contentView = self->_contentView;
       self->_contentView = v4;
 
-      v16 = v4;
+      contentView = v4;
       [(PXProtoFeatureView *)self addSubview:self->_contentView];
       v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v7 = [MEMORY[0x1E69DCAB8] px_imageNamed:@"PXProtoFeatureRemove"];
@@ -185,27 +185,27 @@
       [(PXProtoFeatureView *)self addSubview:self->__removeIconView];
     }
 
-    v10 = [(PXProtoFeatureView *)self preferredBackgroundColor];
-    [(PXProtoFeatureView *)self setBackgroundColor:v10];
+    preferredBackgroundColor = [(PXProtoFeatureView *)self preferredBackgroundColor];
+    [(PXProtoFeatureView *)self setBackgroundColor:preferredBackgroundColor];
 
-    v11 = [(PXProtoFeatureView *)self layer];
-    [v11 setCornerRadius:8.0];
+    layer = [(PXProtoFeatureView *)self layer];
+    [layer setCornerRadius:8.0];
 
-    v12 = [(PXProtoFeatureView *)self isDisabled];
+    isDisabled = [(PXProtoFeatureView *)self isDisabled];
     v13 = 1.0;
-    if (v12)
+    if (isDisabled)
     {
       v13 = 0.25;
     }
 
     [(PXProtoFeatureView *)self setAlpha:v13];
-    v14 = [(UIView *)v16 layer];
-    [v14 setCornerRadius:4.0];
+    layer2 = [(UIView *)contentView layer];
+    [layer2 setCornerRadius:4.0];
 
-    [(UIView *)v16 setClipsToBounds:1];
-    LODWORD(v14) = [(PXProtoFeatureView *)self isSelected];
-    v15 = [(PXProtoFeatureView *)self _removeIconView];
-    [v15 setHidden:v14 ^ 1];
+    [(UIView *)contentView setClipsToBounds:1];
+    LODWORD(layer2) = [(PXProtoFeatureView *)self isSelected];
+    _removeIconView = [(PXProtoFeatureView *)self _removeIconView];
+    [_removeIconView setHidden:layer2 ^ 1];
   }
 }
 
@@ -213,22 +213,22 @@
 {
   if ([(PXProtoFeatureView *)self isDisabled])
   {
-    v3 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.200000003];
+    tintColor = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.200000003];
 LABEL_12:
-    v7 = v3;
+    featureSelectedTintColor = tintColor;
     goto LABEL_15;
   }
 
-  v4 = [(PXProtoFeatureView *)self isSelected];
-  v5 = [(PXProtoFeatureView *)self feature];
-  if (v4)
+  isSelected = [(PXProtoFeatureView *)self isSelected];
+  feature = [(PXProtoFeatureView *)self feature];
+  if (isSelected)
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(PXProtoFeatureView *)self feature];
-      v7 = [v6 featureSelectedTintColor];
+      feature2 = [(PXProtoFeatureView *)self feature];
+      featureSelectedTintColor = [feature2 featureSelectedTintColor];
 
-      if (v7)
+      if (featureSelectedTintColor)
       {
         goto LABEL_15;
       }
@@ -238,16 +238,16 @@ LABEL_12:
     {
     }
 
-    v3 = [(PXProtoFeatureView *)self tintColor];
+    tintColor = [(PXProtoFeatureView *)self tintColor];
     goto LABEL_12;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PXProtoFeatureView *)self feature];
-    v7 = [v8 featureTintColor];
+    feature3 = [(PXProtoFeatureView *)self feature];
+    featureSelectedTintColor = [feature3 featureTintColor];
 
-    if (v7)
+    if (featureSelectedTintColor)
     {
       goto LABEL_15;
     }
@@ -257,12 +257,12 @@ LABEL_12:
   {
   }
 
-  v9 = [(PXProtoFeatureView *)self tintColor];
-  v7 = [v9 colorWithAlphaComponent:0.200000003];
+  tintColor2 = [(PXProtoFeatureView *)self tintColor];
+  featureSelectedTintColor = [tintColor2 colorWithAlphaComponent:0.200000003];
 
 LABEL_15:
 
-  return v7;
+  return featureSelectedTintColor;
 }
 
 void __37__PXProtoFeatureView_prepareForReuse__block_invoke(uint64_t a1, void *a2)
@@ -297,16 +297,16 @@ void __37__PXProtoFeatureView_prepareForReuse__block_invoke(uint64_t a1, void *a
     v25.size.width = v8;
     v25.size.height = v10;
     MidY = CGRectGetMidY(v25);
-    v14 = [(PXProtoFeatureView *)self contentView];
-    [v14 frame];
+    contentView = [(PXProtoFeatureView *)self contentView];
+    [contentView frame];
     v16 = v15;
     v18 = v17;
 
-    v19 = [(PXProtoFeatureView *)self contentView];
-    [v19 setFrame:{v4, v6, v8, v10}];
+    contentView2 = [(PXProtoFeatureView *)self contentView];
+    [contentView2 setFrame:{v4, v6, v8, v10}];
 
-    v20 = [(PXProtoFeatureView *)self _removeIconView];
-    [v20 setCenter:{v12, MidY}];
+    _removeIconView = [(PXProtoFeatureView *)self _removeIconView];
+    [_removeIconView setCenter:{v12, MidY}];
 
     if (v8 != v16 || v10 != v18)
     {
@@ -325,10 +325,10 @@ void __37__PXProtoFeatureView_prepareForReuse__block_invoke(uint64_t a1, void *a
 
 - (CGSize)regularContentSize
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:53 description:{@"Method %s is a responsibility of subclass %@", "-[PXProtoFeatureView regularContentSize]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:53 description:{@"Method %s is a responsibility of subclass %@", "-[PXProtoFeatureView regularContentSize]", v6}];
 
   abort();
 }
@@ -337,10 +337,10 @@ void __37__PXProtoFeatureView_prepareForReuse__block_invoke(uint64_t a1, void *a
 {
   if (![(PXProtoFeatureView *)self wantsContentView])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:43 description:{@"Method %s is a responsibility of subclass %@", "-[PXProtoFeatureView intrinsicContentSize]", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXProtoFeatureView.m" lineNumber:43 description:{@"Method %s is a responsibility of subclass %@", "-[PXProtoFeatureView intrinsicContentSize]", v17}];
 
     abort();
   }

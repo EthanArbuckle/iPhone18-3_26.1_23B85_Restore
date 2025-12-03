@@ -6,15 +6,15 @@
 
 - (uint64_t)_webBookmarks_isHTTPFamilyURL
 {
-  v1 = [a1 absoluteString];
-  if ([v1 _webBookmarks_hasCaseInsensitivePrefix:@"http:"])
+  absoluteString = [self absoluteString];
+  if ([absoluteString _webBookmarks_hasCaseInsensitivePrefix:@"http:"])
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 _webBookmarks_hasCaseInsensitivePrefix:@"https:"];
+    v2 = [absoluteString _webBookmarks_hasCaseInsensitivePrefix:@"https:"];
   }
 
   return v2;

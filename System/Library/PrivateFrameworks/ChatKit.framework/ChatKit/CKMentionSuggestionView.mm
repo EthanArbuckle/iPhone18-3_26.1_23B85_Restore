@@ -1,27 +1,27 @@
 @interface CKMentionSuggestionView
 - (CGSize)intrinsicContentSize;
-- (CKMentionSuggestionView)initWithFrame:(CGRect)a3;
+- (CKMentionSuggestionView)initWithFrame:(CGRect)frame;
 - (CKMentionSuggestionViewDataSource)dataSource;
 - (CKMentionSuggestionViewDelegate)delegate;
 - (id)suggestionsLayout;
-- (id)suggestionsLayoutSectionForEnvironment:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)suggestionsLayoutSectionForEnvironment:(id)environment;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)reloadData;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation CKMentionSuggestionView
 
-- (id)suggestionsLayoutSectionForEnvironment:(id)a3
+- (id)suggestionsLayoutSectionForEnvironment:(id)environment
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = 1.0;
   if (!CKIsRunningInMacCatalyst())
   {
-    v6 = [v4 traitCollection];
-    [v6 displayScale];
+    traitCollection = [environmentCopy traitCollection];
+    [traitCollection displayScale];
     v5 = 1.0 / v7;
   }
 
@@ -36,15 +36,15 @@
   v42 = v9;
   v46 = [v11 supplementaryItemWithLayoutSize:v9 elementKind:v12 containerAnchor:v10];
 
-  v13 = [v4 container];
-  [v13 contentSize];
+  container = [environmentCopy container];
+  [container contentSize];
   v15 = v14;
 
-  v45 = v4;
+  v45 = environmentCopy;
   if ([(CKMentionSuggestionView *)self hasCompletedInitialLayoutPass])
   {
-    v16 = [(CKMentionSuggestionView *)self dataSource];
-    v17 = [v16 numberOfSuggestionsInSuggestionView:self forSection:0];
+    dataSource = [(CKMentionSuggestionView *)self dataSource];
+    v17 = [dataSource numberOfSuggestionsInSuggestionView:self forSection:0];
 
     if (v17)
     {
@@ -53,8 +53,8 @@
       do
       {
         v20 = [MEMORY[0x1E696AC88] indexPathForItem:v18 inSection:0];
-        v21 = [(CKMentionSuggestionView *)self collectionView];
-        v22 = [v21 cellForItemAtIndexPath:v20];
+        collectionView = [(CKMentionSuggestionView *)self collectionView];
+        v22 = [collectionView cellForItemAtIndexPath:v20];
 
         if (v22)
         {
@@ -150,18 +150,18 @@ id __44__CKMentionSuggestionView_suggestionsLayout__block_invoke(uint64_t a1, ui
   return v3;
 }
 
-- (CKMentionSuggestionView)initWithFrame:(CGRect)a3
+- (CKMentionSuggestionView)initWithFrame:(CGRect)frame
 {
   v40[4] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = CKMentionSuggestionView;
-  v3 = [(CKMentionSuggestionView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMentionSuggestionView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKMentionSuggestionView *)v3 suggestionsLayout];
+    suggestionsLayout = [(CKMentionSuggestionView *)v3 suggestionsLayout];
     suggestionViewLayout = v4->_suggestionViewLayout;
-    v4->_suggestionViewLayout = v5;
+    v4->_suggestionViewLayout = suggestionsLayout;
 
     v7 = [objc_alloc(MEMORY[0x1E69DC7F0]) initWithFrame:v4->_suggestionViewLayout collectionViewLayout:{0.0, 0.0, 64.0, 64.0}];
     v8 = objc_opt_class();
@@ -175,8 +175,8 @@ id __44__CKMentionSuggestionView_suggestionsLayout__block_invoke(uint64_t a1, ui
 
     [v7 setClipsToBounds:1];
     [v7 setOpaque:0];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v7 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v7 setBackgroundColor:clearColor];
 
     [v7 setAllowsSelection:1];
     [v7 setShowsVerticalScrollIndicator:0];
@@ -191,34 +191,34 @@ id __44__CKMentionSuggestionView_suggestionsLayout__block_invoke(uint64_t a1, ui
     objc_storeStrong(&v4->_collectionView, v7);
     [(CKMentionSuggestionView *)v4 addSubview:v7];
     v28 = MEMORY[0x1E696ACD8];
-    v33 = [v7 topAnchor];
-    v32 = [(CKMentionSuggestionView *)v4 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [(CKMentionSuggestionView *)v4 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[0] = v31;
-    v30 = [v7 bottomAnchor];
-    v29 = [(CKMentionSuggestionView *)v4 bottomAnchor];
-    v15 = [v30 constraintEqualToAnchor:v29];
+    bottomAnchor = [v7 bottomAnchor];
+    bottomAnchor2 = [(CKMentionSuggestionView *)v4 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v40[1] = v15;
-    v16 = [v7 leadingAnchor];
-    v17 = [(CKMentionSuggestionView *)v4 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [(CKMentionSuggestionView *)v4 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[2] = v18;
-    v19 = [v7 trailingAnchor];
-    v20 = [(CKMentionSuggestionView *)v4 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [v7 trailingAnchor];
+    trailingAnchor2 = [(CKMentionSuggestionView *)v4 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
     [v28 activateConstraints:v22];
 
     objc_initWeak(&location, v4);
     v23 = objc_alloc(MEMORY[0x1E69DC820]);
-    v24 = [(CKMentionSuggestionView *)v4 collectionView];
+    collectionView = [(CKMentionSuggestionView *)v4 collectionView];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __41__CKMentionSuggestionView_initWithFrame___block_invoke;
     v36[3] = &unk_1E72F11A0;
     objc_copyWeak(&v37, &location);
-    v25 = [v23 initWithCollectionView:v24 cellProvider:v36];
+    v25 = [v23 initWithCollectionView:collectionView cellProvider:v36];
     [(CKMentionSuggestionView *)v4 setDiffableDataSource:v25];
 
     v34[0] = MEMORY[0x1E69E9820];
@@ -226,8 +226,8 @@ id __44__CKMentionSuggestionView_suggestionsLayout__block_invoke(uint64_t a1, ui
     v34[2] = __41__CKMentionSuggestionView_initWithFrame___block_invoke_2;
     v34[3] = &unk_1E72F11C8;
     objc_copyWeak(&v35, &location);
-    v26 = [(CKMentionSuggestionView *)v4 diffableDataSource];
-    [v26 setSupplementaryViewProvider:v34];
+    diffableDataSource = [(CKMentionSuggestionView *)v4 diffableDataSource];
+    [diffableDataSource setSupplementaryViewProvider:v34];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&v37);
@@ -288,12 +288,12 @@ id __41__CKMentionSuggestionView_initWithFrame___block_invoke_2(uint64_t a1, voi
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CKMentionSuggestionView *)self suggestionViewLayout];
-  [v3 invalidateLayout];
+  suggestionViewLayout = [(CKMentionSuggestionView *)self suggestionViewLayout];
+  [suggestionViewLayout invalidateLayout];
 
   [(CKMentionSuggestionView *)self layoutIfNeeded];
-  v4 = [(CKMentionSuggestionView *)self suggestionViewLayout];
-  [v4 collectionViewContentSize];
+  suggestionViewLayout2 = [(CKMentionSuggestionView *)self suggestionViewLayout];
+  [suggestionViewLayout2 collectionViewContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -304,9 +304,9 @@ id __41__CKMentionSuggestionView_initWithFrame___block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(CKMentionSuggestionView *)self reloadData];
 }
@@ -320,22 +320,22 @@ id __41__CKMentionSuggestionView_initWithFrame___block_invoke_2(uint64_t a1, voi
   [v3 appendSectionsWithIdentifiers:v4];
 
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(CKMentionSuggestionView *)self dataSource];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "numberOfSuggestionsInSuggestionView:forSection:", self, 0)}];
+  dataSource = [(CKMentionSuggestionView *)self dataSource];
+  v7 = [v5 initWithCapacity:{objc_msgSend(dataSource, "numberOfSuggestionsInSuggestionView:forSection:", self, 0)}];
 
-  v8 = [(CKMentionSuggestionView *)self dataSource];
-  v9 = [v8 numberOfSuggestionsInSuggestionView:self forSection:0];
+  dataSource2 = [(CKMentionSuggestionView *)self dataSource];
+  v9 = [dataSource2 numberOfSuggestionsInSuggestionView:self forSection:0];
 
   if (v9)
   {
     v10 = 0;
     do
     {
-      v11 = [(CKMentionSuggestionView *)self dataSource];
-      v12 = [v11 suggestionView:self entityAtIndex:v10];
+      dataSource3 = [(CKMentionSuggestionView *)self dataSource];
+      v12 = [dataSource3 suggestionView:self entityAtIndex:v10];
 
-      v13 = [v12 defaultIMHandle];
-      v14 = [v13 ID];
+      defaultIMHandle = [v12 defaultIMHandle];
+      v14 = [defaultIMHandle ID];
 
       if ([v14 length])
       {
@@ -343,28 +343,28 @@ id __41__CKMentionSuggestionView_initWithFrame___block_invoke_2(uint64_t a1, voi
       }
 
       ++v10;
-      v15 = [(CKMentionSuggestionView *)self dataSource];
-      v16 = [v15 numberOfSuggestionsInSuggestionView:self forSection:0];
+      dataSource4 = [(CKMentionSuggestionView *)self dataSource];
+      v16 = [dataSource4 numberOfSuggestionsInSuggestionView:self forSection:0];
     }
 
     while (v10 < v16);
   }
 
   [v3 appendItemsWithIdentifiers:v7];
-  v17 = [(CKMentionSuggestionView *)self diffableDataSource];
-  [v17 applySnapshot:v3 animatingDifferences:0];
+  diffableDataSource = [(CKMentionSuggestionView *)self diffableDataSource];
+  [diffableDataSource applySnapshot:v3 animatingDifferences:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKMentionSuggestionView *)self dataSource];
-  v7 = [v5 item];
+  pathCopy = path;
+  dataSource = [(CKMentionSuggestionView *)self dataSource];
+  item = [pathCopy item];
 
-  v9 = [v6 suggestionView:self entityAtIndex:v7];
+  v9 = [dataSource suggestionView:self entityAtIndex:item];
 
-  v8 = [(CKMentionSuggestionView *)self delegate];
-  [v8 suggestionView:self didSelectEntity:v9];
+  delegate = [(CKMentionSuggestionView *)self delegate];
+  [delegate suggestionView:self didSelectEntity:v9];
 }
 
 - (CKMentionSuggestionViewDelegate)delegate

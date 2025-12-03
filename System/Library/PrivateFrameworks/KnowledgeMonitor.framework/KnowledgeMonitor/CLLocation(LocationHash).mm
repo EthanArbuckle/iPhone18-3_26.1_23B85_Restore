@@ -7,7 +7,7 @@
 
 - (uint64_t)cd_locationHashWithLevel:()LocationHash
 {
-  [a1 coordinate];
+  [self coordinate];
   latitude = v14.latitude;
   longitude = v14.longitude;
   if (!CLLocationCoordinate2DIsValid(v14))
@@ -60,9 +60,9 @@
 
 - (unint64_t)cd_privacyPreservingLocationHashWithLevel:()LocationHash
 {
-  v2 = [a1 cd_locationHashWithLevel:?];
+  v2 = [self cd_locationHashWithLevel:?];
 
-  return [(CLLocation *)a1 preservePrivacyForGeoHash:v2];
+  return [(CLLocation *)self preservePrivacyForGeoHash:v2];
 }
 
 @end

@@ -1,59 +1,59 @@
 @interface HDHealthServiceManager
-- (BOOL)healthUpdatesEnabledFromDevice:(id)a3 error:(id *)a4;
-- (BOOL)setHealthUpdatesEnabled:(BOOL)a3 fromDevice:(id)a4 error:(id *)a5;
-- (HDHealthServiceManager)initWithProfile:(id)a3 centralManager:(id)a4 queue:(id)a5;
-- (id)_healthServiceForPeriperalID:(id)a3 serviceType:(int64_t)a4;
-- (id)allServicesWithError:(id *)a3;
-- (id)retrieveOOBData:(id *)a3;
-- (id)reviewSavedHealthServiceSessionsWithError:(id *)a3;
-- (unint64_t)connectHealthService:(id)a3 connectionOptions:(unint64_t)a4 sessionHandler:(id)a5 dataHandler:(id)a6 mfaSuccessHandler:(id)a7 autoPairData:(id)a8 error:(id *)a9;
-- (unint64_t)connectHealthService:(id)a3 sessionHandler:(id)a4 dataHandler:(id)a5 characteristicsHandler:(id)a6 error:(id *)a7;
-- (unint64_t)connectHealthService:(id)a3 sessionHandler:(id)a4 dataHandler:(id)a5 error:(id *)a6;
-- (unint64_t)discoverHealthServicesWithType:(int64_t)a3 timeout:(unint64_t)a4 alwaysNotify:(BOOL)a5 handler:(id)a6 error:(id *)a7;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 willRestoreState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)characteristicReceived:(id)a3 device:(id)a4;
+- (BOOL)healthUpdatesEnabledFromDevice:(id)device error:(id *)error;
+- (BOOL)setHealthUpdatesEnabled:(BOOL)enabled fromDevice:(id)device error:(id *)error;
+- (HDHealthServiceManager)initWithProfile:(id)profile centralManager:(id)manager queue:(id)queue;
+- (id)_healthServiceForPeriperalID:(id)d serviceType:(int64_t)type;
+- (id)allServicesWithError:(id *)error;
+- (id)retrieveOOBData:(id *)data;
+- (id)reviewSavedHealthServiceSessionsWithError:(id *)error;
+- (unint64_t)connectHealthService:(id)service connectionOptions:(unint64_t)options sessionHandler:(id)handler dataHandler:(id)dataHandler mfaSuccessHandler:(id)successHandler autoPairData:(id)data error:(id *)error;
+- (unint64_t)connectHealthService:(id)service sessionHandler:(id)handler dataHandler:(id)dataHandler characteristicsHandler:(id)characteristicsHandler error:(id *)error;
+- (unint64_t)connectHealthService:(id)service sessionHandler:(id)handler dataHandler:(id)dataHandler error:(id *)error;
+- (unint64_t)discoverHealthServicesWithType:(int64_t)type timeout:(unint64_t)timeout alwaysNotify:(BOOL)notify handler:(id)handler error:(id *)error;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager willRestoreState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)characteristicReceived:(id)received device:(id)device;
 - (void)dealloc;
-- (void)disconnectHealthService:(unint64_t)a3;
-- (void)discoveredCharacteristics:(id)a3 forDevice:(id)a4 service:(id)a5;
-- (void)discoveredServices:(id)a3 forPeripheral:(id)a4;
-- (void)enablePrivateModeForSessionWithIdentifier:(id)a3;
-- (void)getProperty:(id)a3 forSession:(unint64_t)a4 withHandler:(id)a5;
-- (void)getSupportedPropertyNamesWithHandler:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)performOperation:(id)a3 onSession:(unint64_t)a4 withParameters:(id)a5 completion:(id)a6;
+- (void)disconnectHealthService:(unint64_t)service;
+- (void)discoveredCharacteristics:(id)characteristics forDevice:(id)device service:(id)service;
+- (void)discoveredServices:(id)services forPeripheral:(id)peripheral;
+- (void)enablePrivateModeForSessionWithIdentifier:(id)identifier;
+- (void)getProperty:(id)property forSession:(unint64_t)session withHandler:(id)handler;
+- (void)getSupportedPropertyNamesWithHandler:(id)handler;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)performOperation:(id)operation onSession:(unint64_t)session withParameters:(id)parameters completion:(id)completion;
 - (void)releasePrivateMode;
 - (void)resetOOBState;
-- (void)sendBluetoothStatusUpdatesForServer:(id)a3 updateHandler:(id)a4 completion:(id)a5;
-- (void)servicesInvalidatedForDevice:(id)a3 withError:(id)a4;
-- (void)stopDiscoveryWithIdentifier:(unint64_t)a3;
-- (void)unpairHealthServiceIfNecessary:(id)a3;
+- (void)sendBluetoothStatusUpdatesForServer:(id)server updateHandler:(id)handler completion:(id)completion;
+- (void)servicesInvalidatedForDevice:(id)device withError:(id)error;
+- (void)stopDiscoveryWithIdentifier:(unint64_t)identifier;
+- (void)unpairHealthServiceIfNecessary:(id)necessary;
 @end
 
 @implementation HDHealthServiceManager
 
-- (HDHealthServiceManager)initWithProfile:(id)a3 centralManager:(id)a4 queue:(id)a5
+- (HDHealthServiceManager)initWithProfile:(id)profile centralManager:(id)manager queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  managerCopy = manager;
+  queueCopy = queue;
   v32.receiver = self;
   v32.super_class = HDHealthServiceManager;
   v11 = [(HDHealthServiceManager *)&v32 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    if (v10)
+    objc_storeWeak(&v11->_profile, profileCopy);
+    if (queueCopy)
     {
-      v13 = v10;
+      v13 = queueCopy;
     }
 
     else
@@ -64,9 +64,9 @@
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v15 = [v8 dataCollectionManager];
+    dataCollectionManager = [profileCopy dataCollectionManager];
     dataCollectionManager = v12->_dataCollectionManager;
-    v12->_dataCollectionManager = v15;
+    v12->_dataCollectionManager = dataCollectionManager;
 
     v17 = +[NSMutableDictionary dictionary];
     connectedPeripheralsByPeripheralUUID = v12->_connectedPeripheralsByPeripheralUUID;
@@ -84,9 +84,9 @@
     allServicesUUID = v12->_allServicesUUID;
     v12->_allServicesUUID = v23;
 
-    if (v9)
+    if (managerCopy)
     {
-      v25 = v9;
+      v25 = managerCopy;
     }
 
     else
@@ -135,7 +135,7 @@
   [(HDHealthServiceManager *)&v4 dealloc];
 }
 
-- (id)reviewSavedHealthServiceSessionsWithError:(id *)a3
+- (id)reviewSavedHealthServiceSessionsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -165,10 +165,10 @@
     v8 = v7;
     if (v7)
     {
-      if (a3)
+      if (error)
       {
         v9 = v7;
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -188,9 +188,9 @@
   return v10;
 }
 
-- (BOOL)healthUpdatesEnabledFromDevice:(id)a3 error:(id *)a4
+- (BOOL)healthUpdatesEnabledFromDevice:(id)device error:(id *)error
 {
-  v7 = a3;
+  deviceCopy = device;
   _HKInitializeLogging();
   v8 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -198,11 +198,11 @@
     v9 = v8;
     v10 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v39 = self;
+    selfCopy3 = self;
     v40 = 2114;
     v41 = v10;
     v42 = 2114;
-    v43 = v7;
+    v43 = deviceCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: deviceIdentifier: %{public}@", buf, 0x20u);
   }
 
@@ -222,9 +222,9 @@
   v23[2] = sub_1C524;
   v23[3] = &unk_5D5A0;
   v26 = &v28;
-  v12 = v7;
+  v12 = deviceCopy;
   v24 = v12;
-  v25 = self;
+  selfCopy2 = self;
   v27 = &v32;
   dispatch_sync(queue, v23);
   if ((v29[3] & 1) == 0)
@@ -233,10 +233,10 @@
     v14 = v13;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v15 = v13;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -260,7 +260,7 @@
 
     v20 = v33[5];
     *buf = 138544386;
-    v39 = self;
+    selfCopy3 = self;
     v40 = 2114;
     v41 = v17;
     v42 = 2114;
@@ -279,10 +279,10 @@
   return v21 & 1;
 }
 
-- (BOOL)setHealthUpdatesEnabled:(BOOL)a3 fromDevice:(id)a4 error:(id *)a5
+- (BOOL)setHealthUpdatesEnabled:(BOOL)enabled fromDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  deviceCopy = device;
   _HKInitializeLogging();
   v10 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -290,11 +290,11 @@
     v11 = v10;
     v12 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v44 = self;
+    selfCopy3 = self;
     v45 = 2114;
     v46 = v12;
     v47 = 2114;
-    v48 = v9;
+    v48 = deviceCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: deviceIdentifier: %{public}@", buf, 0x20u);
   }
 
@@ -314,17 +314,17 @@
   block[2] = sub_1CA0C;
   block[3] = &unk_5D5C8;
   v30 = &v33;
-  v32 = v6;
-  v14 = v9;
+  v32 = enabledCopy;
+  v14 = deviceCopy;
   v28 = v14;
-  v29 = self;
+  selfCopy2 = self;
   v31 = &v37;
   dispatch_sync(queue, block);
-  if (v6)
+  if (enabledCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [WeakRetained serviceConnectionManager];
-    [v16 reconnectToServices];
+    serviceConnectionManager = [WeakRetained serviceConnectionManager];
+    [serviceConnectionManager reconnectToServices];
   }
 
   else
@@ -338,10 +338,10 @@
     v18 = v17;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v19 = v17;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -365,7 +365,7 @@
 
     v24 = v38[5];
     *buf = 138544386;
-    v44 = self;
+    selfCopy3 = self;
     v45 = 2114;
     v46 = v21;
     v47 = 2114;
@@ -384,11 +384,11 @@
   return v25 & 1;
 }
 
-- (void)sendBluetoothStatusUpdatesForServer:(id)a3 updateHandler:(id)a4 completion:(id)a5
+- (void)sendBluetoothStatusUpdatesForServer:(id)server updateHandler:(id)handler completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serverCopy = server;
+  handlerCopy = handler;
+  completionCopy = completion;
   _HKInitializeLogging();
   v12 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -396,25 +396,25 @@
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v14;
     v25 = 2114;
-    v26 = v9;
+    v26 = serverCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: serverKey: %{public}@", buf, 0x20u);
   }
 
-  if (v9)
+  if (serverCopy)
   {
     queue = self->_queue;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1CD8C;
     v17[3] = &unk_5D5F0;
-    v19 = v10;
+    v19 = handlerCopy;
     v17[4] = self;
-    v18 = v9;
-    v20 = v11;
+    v18 = serverCopy;
+    v20 = completionCopy;
     dispatch_async(queue, v17);
 
     v16 = v19;
@@ -423,20 +423,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v11)
+  if (completionCopy)
   {
     v16 = [NSError hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"nil serverKey"];
-    (*(v11 + 2))(v11, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (unint64_t)discoverHealthServicesWithType:(int64_t)a3 timeout:(unint64_t)a4 alwaysNotify:(BOOL)a5 handler:(id)a6 error:(id *)a7
+- (unint64_t)discoverHealthServicesWithType:(int64_t)type timeout:(unint64_t)timeout alwaysNotify:(BOOL)notify handler:(id)handler error:(id *)error
 {
-  v8 = a5;
-  v13 = a6;
+  notifyCopy = notify;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v14 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -444,19 +444,19 @@ LABEL_8:
     v15 = v14;
     v16 = NSStringFromSelector(a2);
     *buf = 138544386;
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2114;
     v44 = v16;
     v45 = 2048;
-    v46 = a3;
+    typeCopy3 = type;
     v47 = 2048;
-    v48 = a4;
+    timeoutCopy3 = timeout;
     v49 = 1024;
-    v50 = v8;
+    v50 = notifyCopy;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: type: %ld, timeout: %lu, alwaysNotify: %{BOOL}d", buf, 0x30u);
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
@@ -464,17 +464,17 @@ LABEL_8:
       sub_3825C();
     }
 
-    [NSError hk_assignError:a7 code:303 description:@"An internal device discovery error has occurred."];
+    [NSError hk_assignError:error code:303 description:@"An internal device discovery error has occurred."];
     goto LABEL_15;
   }
 
   v17 = self->_allServicesUUID;
-  if (a3 != -2)
+  if (type != -2)
   {
-    v18 = [HDServiceClassForProfile(a3) serviceUUID];
+    serviceUUID = [HDServiceClassForProfile(type) serviceUUID];
 
-    v17 = v18;
-    if (!v18)
+    v17 = serviceUUID;
+    if (!serviceUUID)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
@@ -482,7 +482,7 @@ LABEL_8:
         sub_381EC();
       }
 
-      [NSError hk_assignError:a7 code:305 format:@"The data type %d is not supported for health devices.", a3];
+      [NSError hk_assignError:error code:305 format:@"The data type %d is not supported for health devices.", type];
 LABEL_15:
       v26 = 0;
       goto LABEL_16;
@@ -499,13 +499,13 @@ LABEL_15:
   v30[2] = sub_35A44;
   v30[3] = &unk_5D618;
   v30[4] = self;
-  v32 = v13;
+  v32 = handlerCopy;
   v20 = v17;
-  v36 = v8;
+  v36 = notifyCopy;
   v31 = v20;
   v33 = &v37;
-  v34 = a3;
-  v35 = a4;
+  typeCopy2 = type;
+  timeoutCopy2 = timeout;
   [(NSLock *)discoveryLock hk_withLock:v30];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -523,15 +523,15 @@ LABEL_15:
     v24 = NSStringFromSelector(a2);
     v25 = v38[3];
     *buf = 138544642;
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2114;
     v44 = v24;
     v45 = 2048;
-    v46 = a3;
+    typeCopy3 = type;
     v47 = 2048;
-    v48 = a4;
+    timeoutCopy3 = timeout;
     v49 = 1024;
-    v50 = v8;
+    v50 = notifyCopy;
     v51 = 2048;
     v52 = v25;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: type: %ld, timeout: %lu, alwaysNotify: %{BOOL}d -> discoveryIdentifier: %lu", buf, 0x3Au);
@@ -544,7 +544,7 @@ LABEL_16:
   return v26;
 }
 
-- (void)stopDiscoveryWithIdentifier:(unint64_t)a3
+- (void)stopDiscoveryWithIdentifier:(unint64_t)identifier
 {
   _HKInitializeLogging();
   v6 = HKLogServices;
@@ -557,7 +557,7 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v8;
     *&buf[22] = 2048;
-    v21 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: discoveryIdentifier: %lu", buf, 0x20u);
   }
 
@@ -568,7 +568,7 @@ LABEL_16:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v21 = sub_1DEDC;
+  identifierCopy = sub_1DEDC;
   v22 = sub_1DF08;
   v23 = 0;
   discoveryLock = self->_discoveryLock;
@@ -579,7 +579,7 @@ LABEL_16:
   v15[4] = self;
   v15[5] = buf;
   v15[6] = &v16;
-  v15[7] = a3;
+  v15[7] = identifier;
   [(NSLock *)discoveryLock hk_withLock:v15];
   _HKInitializeLogging();
   v10 = HKLogServices;
@@ -592,7 +592,7 @@ LABEL_16:
   v11 = *(*&buf[8] + 40);
   if (v11)
   {
-    (*(v11 + 16))(v11, a3, 0, 1, 0);
+    (*(v11 + 16))(v11, identifier, 0, 1, 0);
   }
 
   if (*(v17 + 24) == 1)
@@ -611,10 +611,10 @@ LABEL_16:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)discoveredServices:(id)a3 forPeripheral:(id)a4
+- (void)discoveredServices:(id)services forPeripheral:(id)peripheral
 {
-  v7 = a3;
-  v31 = a4;
+  servicesCopy = services;
+  peripheralCopy = peripheral;
   _HKInitializeLogging();
   v8 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -622,13 +622,13 @@ LABEL_16:
     v9 = v8;
     v10 = NSStringFromSelector(a2);
     *buf = 138544130;
-    v44 = self;
+    selfCopy = self;
     v45 = 2114;
     v46 = v10;
     v47 = 2114;
-    v48 = v31;
+    v48 = peripheralCopy;
     v49 = 2114;
-    v50 = v7;
+    v50 = servicesCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: peripheral: %{public}@, services: %{public}@", buf, 0x2Au);
   }
 
@@ -640,8 +640,8 @@ LABEL_16:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v28 = v7;
-    obj = v7;
+    v28 = servicesCopy;
+    obj = servicesCopy;
     v32 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v32)
     {
@@ -656,9 +656,9 @@ LABEL_16:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v37 + 1) + 8 * v13) UUID];
-          v15 = self;
-          v16 = sub_35D98(self, v14, v31, 0, 0);
+          uUID = [*(*(&v37 + 1) + 8 * v13) UUID];
+          selfCopy2 = self;
+          v16 = sub_35D98(self, uUID, peripheralCopy, 0, 0);
 
           v35 = 0u;
           v36 = 0u;
@@ -710,7 +710,7 @@ LABEL_16:
           }
 
           v13 = v13 + 1;
-          self = v15;
+          self = selfCopy2;
           v12 = v17;
         }
 
@@ -721,15 +721,15 @@ LABEL_16:
       while (v32);
     }
 
-    v7 = v28;
+    servicesCopy = v28;
   }
 }
 
-- (void)discoveredCharacteristics:(id)a3 forDevice:(id)a4 service:(id)a5
+- (void)discoveredCharacteristics:(id)characteristics forDevice:(id)device service:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  characteristicsCopy = characteristics;
+  deviceCopy = device;
+  serviceCopy = service;
   _HKInitializeLogging();
   v12 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -737,15 +737,15 @@ LABEL_16:
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544386;
-    v35 = self;
+    selfCopy = self;
     v36 = 2114;
     v37 = v14;
     v38 = 2114;
-    v39 = v10;
+    v39 = deviceCopy;
     v40 = 2114;
-    v41 = v11;
+    v41 = serviceCopy;
     v42 = 2114;
-    v43 = v9;
+    v43 = characteristicsCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: peripheralId: %{public}@, serviceId: %{public}@, characteristics: %{public}@", buf, 0x34u);
   }
 
@@ -756,7 +756,7 @@ LABEL_16:
   v30[2] = sub_1E950;
   v30[3] = &unk_5C788;
   v30[4] = self;
-  v17 = v10;
+  v17 = deviceCopy;
   v31 = v17;
   v18 = v15;
   v32 = v18;
@@ -782,7 +782,7 @@ LABEL_16:
 
         v24 = *(*(&v26 + 1) + 8 * i);
         v25 = [v19 objectForKeyedSubscript:{v24, v26}];
-        (v25)[2](v25, [v24 integerValue], v9, v11, 0);
+        (v25)[2](v25, [v24 integerValue], characteristicsCopy, serviceCopy, 0);
       }
 
       v21 = [v19 countByEnumeratingWithState:&v26 objects:v33 count:16];
@@ -792,12 +792,12 @@ LABEL_16:
   }
 }
 
-- (unint64_t)connectHealthService:(id)a3 sessionHandler:(id)a4 dataHandler:(id)a5 characteristicsHandler:(id)a6 error:(id *)a7
+- (unint64_t)connectHealthService:(id)service sessionHandler:(id)handler dataHandler:(id)dataHandler characteristicsHandler:(id)characteristicsHandler error:(id *)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  serviceCopy = service;
+  characteristicsHandlerCopy = characteristicsHandler;
+  dataHandlerCopy = dataHandler;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v17 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -805,23 +805,23 @@ LABEL_16:
     v18 = v17;
     v19 = NSStringFromSelector(a2);
     v25 = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = v19;
     v29 = 2114;
-    v30 = v13;
+    v30 = serviceCopy;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: hkService: %{public}@", &v25, 0x20u);
   }
 
   v20 = [_HDHealthServiceConnectionInfo alloc];
-  v21 = [v13 identifier];
-  v22 = sub_36008(&v20->super.isa, v16, v15, v14, 0, 0, &dword_4, v21, 30.0);
+  identifier = [serviceCopy identifier];
+  v22 = sub_36008(&v20->super.isa, handlerCopy, dataHandlerCopy, characteristicsHandlerCopy, 0, 0, &dword_4, identifier, 30.0);
 
-  v23 = sub_3616C(self, v13, v22, a7);
+  v23 = sub_3616C(self, serviceCopy, v22, error);
   return v23;
 }
 
-- (void)disconnectHealthService:(unint64_t)a3
+- (void)disconnectHealthService:(unint64_t)service
 {
   _HKInitializeLogging();
   v6 = HKLogServices;
@@ -830,20 +830,20 @@ LABEL_16:
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v8;
     v13 = 2048;
-    v14 = a3;
+    serviceCopy = service;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: sessionIdentifier: %lu", &v9, 0x20u);
   }
 
-  sub_1F550(self, a3, 0);
+  sub_1F550(self, service, 0);
 }
 
-- (void)unpairHealthServiceIfNecessary:(id)a3
+- (void)unpairHealthServiceIfNecessary:(id)necessary
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   _HKInitializeLogging();
   v6 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -851,23 +851,23 @@ LABEL_16:
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2114;
     v31 = v8;
     v32 = 2114;
-    v33 = v5;
+    v33 = necessaryCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: healthService: %{public}@", buf, 0x20u);
   }
 
-  if (v5)
+  if (necessaryCopy)
   {
-    v9 = [v5 peripheral];
-    if (v9)
+    peripheral = [necessaryCopy peripheral];
+    if (peripheral)
     {
-      v10 = v9;
+      firstObject = peripheral;
 LABEL_9:
-      v18 = [(CBCentralManager *)self->_central sharedPairingAgent];
-      v19 = [v18 isPeerPaired:v10];
+      sharedPairingAgent = [(CBCentralManager *)self->_central sharedPairingAgent];
+      v19 = [sharedPairingAgent isPeerPaired:firstObject];
 
       _HKInitializeLogging();
       v20 = HKLogServices;
@@ -877,19 +877,19 @@ LABEL_9:
         if (v21)
         {
           *buf = 138412290;
-          v29 = v10;
+          selfCopy2 = firstObject;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Unpairing peer %@", buf, 0xCu);
         }
 
         v22 = self->_central;
-        v23 = [(CBCentralManager *)v22 sharedPairingAgent];
-        [v23 unpairPeer:v10];
+        sharedPairingAgent2 = [(CBCentralManager *)v22 sharedPairingAgent];
+        [sharedPairingAgent2 unpairPeer:firstObject];
       }
 
       else if (v21)
       {
         *buf = 138412290;
-        v29 = v10;
+        selfCopy2 = firstObject;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Peripheral %@ isn't paired. Unpairing isn't necessary.", buf, 0xCu);
       }
 
@@ -901,22 +901,22 @@ LABEL_9:
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v5 identifier];
+      identifier = [necessaryCopy identifier];
       *buf = 138543618;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v13;
+      v31 = identifier;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: retrievePeripheralsWithIdentifier: %{public}@", buf, 0x16u);
     }
 
     central = self->_central;
-    v15 = [v5 identifier];
-    v27 = v15;
+    identifier2 = [necessaryCopy identifier];
+    v27 = identifier2;
     v16 = [NSArray arrayWithObjects:&v27 count:1];
     v17 = [(CBCentralManager *)central retrievePeripheralsWithIdentifiers:v16];
-    v10 = [v17 firstObject];
+    firstObject = [v17 firstObject];
 
-    if (v10)
+    if (firstObject)
     {
       goto LABEL_9;
     }
@@ -926,9 +926,9 @@ LABEL_9:
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v5 identifier];
+      identifier3 = [necessaryCopy identifier];
       *buf = 138412290;
-      v29 = v26;
+      selfCopy2 = identifier3;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "No peripheral found for identifier %@. Unpairing isn't necessary.", buf, 0xCu);
     }
   }
@@ -936,10 +936,10 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)servicesInvalidatedForDevice:(id)a3 withError:(id)a4
+- (void)servicesInvalidatedForDevice:(id)device withError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   _HKInitializeLogging();
   v9 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -947,36 +947,36 @@ LABEL_16:
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     v12 = 138544130;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v11;
     v16 = 2114;
-    v17 = v7;
+    v17 = deviceCopy;
     v18 = 2114;
-    v19 = v8;
+    v19 = errorCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: deviceIdentifier: %{public}@, error: %{public}@", &v12, 0x2Au);
   }
 }
 
-- (id)allServicesWithError:(id *)a3
+- (id)allServicesWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [HDServiceEntity allServicesWithProfile:WeakRetained error:a3];
+  v5 = [HDServiceEntity allServicesWithProfile:WeakRetained error:error];
 
   return v5;
 }
 
-- (void)enablePrivateModeForSessionWithIdentifier:(id)a3
+- (void)enablePrivateModeForSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_20A48;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -992,9 +992,9 @@ LABEL_16:
   dispatch_async(queue, v3);
 }
 
-- (id)_healthServiceForPeriperalID:(id)a3 serviceType:(int64_t)a4
+- (id)_healthServiceForPeriperalID:(id)d serviceType:(int64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1008,40 +1008,40 @@ LABEL_16:
   v11[3] = &unk_5C7B0;
   v13 = &v14;
   v11[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v12 = v8;
   [(NSLock *)connectionLock hk_withLock:v11];
-  v9 = [v15[5] healthServiceForType:a4];
+  v9 = [v15[5] healthServiceForType:type];
 
   _Block_object_dispose(&v14, 8);
 
   return v9;
 }
 
-- (void)characteristicReceived:(id)a3 device:(id)a4
+- (void)characteristicReceived:(id)received device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  deviceCopy = device;
   v8 = +[NSMutableDictionary dictionary];
   connectionLock = self->_connectionLock;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_217EC;
   v24[3] = &unk_5C8A0;
-  v10 = v7;
+  v10 = deviceCopy;
   v25 = v10;
-  v26 = self;
+  selfCopy = self;
   v11 = v8;
   v27 = v11;
-  v12 = v6;
+  v12 = receivedCopy;
   v28 = v12;
   [(NSLock *)connectionLock hk_withLock:v24];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [v11 allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
+  allKeys = [v11 allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1052,7 +1052,7 @@ LABEL_16:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
@@ -1060,27 +1060,27 @@ LABEL_16:
         (v19)[2](v19, [v18 integerValue], v12, v10, 0);
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v20 objects:v29 count:16];
     }
 
     while (v15);
   }
 }
 
-- (void)getSupportedPropertyNamesWithHandler:(id)a3
+- (void)getSupportedPropertyNamesWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
+    handlerCopy = handler;
     v5 = HDHealthPeripheralAllPropertyNames();
-    (*(a3 + 2))(v4, v5, 0);
+    (*(handler + 2))(handlerCopy, v5, 0);
   }
 }
 
-- (void)getProperty:(id)a3 forSession:(unint64_t)a4 withHandler:(id)a5
+- (void)getProperty:(id)property forSession:(unint64_t)session withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  propertyCopy = property;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1093,29 +1093,29 @@ LABEL_16:
   v13[2] = sub_21DA4;
   v13[3] = &unk_5C7D8;
   v13[5] = &v14;
-  v13[6] = a4;
+  v13[6] = session;
   v13[4] = self;
   [(NSLock *)connectionLock hk_withLock:v13];
   v11 = v15[5];
   if (v11)
   {
-    [v11 getProperty:v8 withHandler:v9];
+    [v11 getProperty:propertyCopy withHandler:handlerCopy];
   }
 
   else
   {
     v12 = [NSError hk_error:304 description:@"Session not found"];
-    v9[2](v9, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)performOperation:(id)a3 onSession:(unint64_t)a4 withParameters:(id)a5 completion:(id)a6
+- (void)performOperation:(id)operation onSession:(unint64_t)session withParameters:(id)parameters completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  operationCopy = operation;
+  parametersCopy = parameters;
+  completionCopy = completion;
   _HKInitializeLogging();
   v14 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1127,11 +1127,11 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v16;
     *&buf[22] = 2114;
-    v25 = v11;
+    v25 = operationCopy;
     *v26 = 2048;
-    *&v26[2] = a4;
+    *&v26[2] = session;
     *&v26[10] = 2114;
-    *&v26[12] = v12;
+    *&v26[12] = parametersCopy;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: op: %{public}@, sessionId: %lu, params: %{public}@", buf, 0x34u);
   }
 
@@ -1147,7 +1147,7 @@ LABEL_16:
   v23[2] = sub_22128;
   v23[3] = &unk_5C7D8;
   v23[5] = buf;
-  v23[6] = a4;
+  v23[6] = session;
   v23[4] = self;
   [(NSLock *)connectionLock hk_withLock:v23];
   v18 = *(*&buf[8] + 40);
@@ -1157,25 +1157,25 @@ LABEL_16:
     v21[1] = 3221225472;
     v21[2] = sub_221C4;
     v21[3] = &unk_5D768;
-    v22 = v13;
-    [v18 performOperation:v11 withParameters:v12 completion:v21];
+    v22 = completionCopy;
+    [v18 performOperation:operationCopy withParameters:parametersCopy completion:v21];
     v19 = v22;
   }
 
   else
   {
-    v20 = [NSNumber numberWithUnsignedInteger:a4];
+    v20 = [NSNumber numberWithUnsignedInteger:session];
     v19 = [NSError hk_error:304 format:@"Cannot find peripheral for session %@", v20];
 
-    (*(v13 + 2))(v13, v11, 0, v19);
+    (*(completionCopy + 2))(completionCopy, operationCopy, 0, v19);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   _HKInitializeLogging();
   v6 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1183,16 +1183,16 @@ LABEL_16:
     v7 = v6;
     v8 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v8;
     v23 = 2114;
-    v24 = v5;
+    v24 = stateCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: %{public}@", buf, 0x20u);
   }
 
   v18 = 0;
-  v9 = sub_1CE98(HDHealthServiceManager, v5, &v18);
+  v9 = sub_1CE98(HDHealthServiceManager, stateCopy, &v18);
   v10 = v18;
   _HKInitializeLogging();
   v11 = HKLogServices;
@@ -1207,7 +1207,7 @@ LABEL_16:
     if (v12)
     {
       *buf = 138543362;
-      v20 = v10;
+      selfCopy = v10;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "BTLE became unavailable: %{public}@", buf, 0xCu);
     }
 
@@ -1226,10 +1226,10 @@ LABEL_16:
   dispatch_async(queue, v15);
 }
 
-- (void)centralManager:(id)a3 willRestoreState:(id)a4
+- (void)centralManager:(id)manager willRestoreState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  stateCopy = state;
   _HKInitializeLogging();
   v9 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_INFO))
@@ -1237,21 +1237,21 @@ LABEL_16:
     v10 = v9;
     v11 = NSStringFromSelector(a2);
     v12 = 138544130;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v11;
     v16 = 2114;
-    v17 = v7;
+    v17 = managerCopy;
     v18 = 2114;
-    v19 = v8;
+    v19 = stateCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "%{public}@: %{public}@: %{public}@: state: %{public}@", &v12, 0x2Au);
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   _HKInitializeLogging();
   v9 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1263,9 +1263,9 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v11;
     *&buf[22] = 2114;
-    v21 = v7;
+    v21 = managerCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = peripheralCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: %{public}@: peripheral: %{public}@", buf, 0x2Au);
   }
 
@@ -1279,9 +1279,9 @@ LABEL_16:
   v16[2] = sub_22AA0;
   v16[3] = &unk_5D7B8;
   v16[4] = self;
-  v13 = v8;
+  v13 = peripheralCopy;
   v17 = v13;
-  v14 = v7;
+  v14 = managerCopy;
   v18 = v14;
   v19 = buf;
   [(NSLock *)connectionLock hk_withLock:v16];
@@ -1294,11 +1294,11 @@ LABEL_16:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   _HKInitializeLogging();
   v12 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1306,20 +1306,20 @@ LABEL_16:
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544386;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
     v33 = v14;
     v34 = 2114;
-    v35 = v9;
+    v35 = managerCopy;
     v36 = 2114;
-    v37 = v10;
+    v37 = peripheralCopy;
     v38 = 2114;
-    v39 = v11;
+    v39 = errorCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: %{public}@: peripheral: %{public}@, error: %{public}@", buf, 0x34u);
   }
 
-  v15 = [v10 identifier];
-  v16 = sub_201B0(self, v15);
+  identifier = [peripheralCopy identifier];
+  v16 = sub_201B0(self, identifier);
 
   v27 = 0u;
   v28 = 0u;
@@ -1352,7 +1352,7 @@ LABEL_16:
           v23 = 0;
         }
 
-        sub_1F550(self, v23, v11);
+        sub_1F550(self, v23, errorCopy);
         v21 = v21 + 1;
       }
 
@@ -1365,11 +1365,11 @@ LABEL_16:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   _HKInitializeLogging();
   v12 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1377,20 +1377,20 @@ LABEL_16:
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544386;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
     v33 = v14;
     v34 = 2114;
-    v35 = v9;
+    v35 = managerCopy;
     v36 = 2114;
-    v37 = v10;
+    v37 = peripheralCopy;
     v38 = 2114;
-    v39 = v11;
+    v39 = errorCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) %{public}@: %{public}@: peripheral: %{public}@, error: %{public}@", buf, 0x34u);
   }
 
-  v15 = [v10 identifier];
-  v16 = sub_201B0(self, v15);
+  identifier = [peripheralCopy identifier];
+  v16 = sub_201B0(self, identifier);
 
   v27 = 0u;
   v28 = 0u;
@@ -1423,7 +1423,7 @@ LABEL_16:
           v23 = 0;
         }
 
-        sub_1F550(self, v23, v11);
+        sub_1F550(self, v23, errorCopy);
         v21 = v21 + 1;
       }
 
@@ -1436,15 +1436,15 @@ LABEL_16:
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v30 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
-  v31 = v12;
-  v15 = [v12 objectForKeyedSubscript:CBAdvertisementDataServiceDataKey];
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
+  v14 = [dataCopy objectForKeyedSubscript:CBAdvertisementDataServiceUUIDsKey];
+  v31 = dataCopy;
+  v15 = [dataCopy objectForKeyedSubscript:CBAdvertisementDataServiceDataKey];
   _HKInitializeLogging();
   v16 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1453,21 +1453,21 @@ LABEL_16:
     v18 = NSStringFromSelector(a2);
     v19 = [v14 componentsJoinedByString:{@", "}];
     *buf = 138544642;
-    v38 = self;
+    selfCopy = self;
     v39 = 2114;
     v40 = v18;
     v41 = 2114;
-    v42 = v30;
+    v42 = managerCopy;
     v43 = 2114;
-    v44 = v11;
+    v44 = peripheralCopy;
     v45 = 2114;
-    v46 = v13;
+    v46 = iCopy;
     v47 = 2114;
     v48 = v19;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: %{public}@: peripheral: %{public}@ (RSSI: %{public}@) with services %{public}@", buf, 0x3Eu);
   }
 
-  v29 = v13;
+  v29 = iCopy;
   v20 = sub_1E58C(self, self->_allServicesUUID);
   v32 = 0u;
   v33 = 0u;
@@ -1490,9 +1490,9 @@ LABEL_16:
 
         v26 = *(*(&v32 + 1) + 8 * i);
         v27 = [v15 objectForKeyedSubscript:v26];
-        v28 = sub_37AEC(self, v11, v26, v27, v31);
+        v28 = sub_37AEC(self, peripheralCopy, v26, v27, v31);
 
-        sub_235D4(self, v20, v11, v28, 1);
+        sub_235D4(self, v20, peripheralCopy, v28, 1);
       }
 
       v23 = [v21 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -1502,10 +1502,10 @@ LABEL_16:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v7 = a3;
-  v8 = a4;
+  agentCopy = agent;
+  pairingCopy = pairing;
   HKSessionTrackerAriadneTrigger();
   _HKInitializeLogging();
   v9 = HKLogServices;
@@ -1518,9 +1518,9 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v11;
     *&buf[22] = 2114;
-    v22 = v7;
+    v22 = agentCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = pairingCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: agent: %{public}@, peer: %{public}@", buf, 0x2Au);
   }
 
@@ -1528,13 +1528,13 @@ LABEL_16:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v22) = 0;
-  v12 = [v8 identifier];
+  identifier = [pairingCopy identifier];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_38120;
   v18[3] = &unk_5D840;
   v18[4] = buf;
-  sub_37514(self, v12, v18);
+  sub_37514(self, identifier, v18);
 
   if (*(*&buf[8] + 24))
   {
@@ -1542,7 +1542,7 @@ LABEL_16:
     v13 = HKLogServices;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      [v8 identifier];
+      [pairingCopy identifier];
       objc_claimAutoreleasedReturnValue();
       sub_38C0C();
     }
@@ -1558,8 +1558,8 @@ LABEL_16:
     }
 
     v15 = central;
-    v16 = [v15 sharedPairingAgent];
-    [v16 setDelegate:0];
+    sharedPairingAgent = [v15 sharedPairingAgent];
+    [sharedPairingAgent setDelegate:0];
   }
 
   else
@@ -1568,9 +1568,9 @@ LABEL_16:
     v15 = HKLogServices;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 identifier];
+      identifier2 = [pairingCopy identifier];
       *v19 = 138412290;
-      v20 = v17;
+      v20 = identifier2;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Ignoring peerDidCompletePairing for %@", v19, 0xCu);
     }
   }
@@ -1578,11 +1578,11 @@ LABEL_16:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   HKSessionTrackerAriadneTrigger();
   _HKInitializeLogging();
   v12 = HKLogServices;
@@ -1595,11 +1595,11 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v14;
     *&buf[22] = 2114;
-    v42 = v9;
+    v42 = agentCopy;
     v43 = 2114;
-    v44 = v10;
+    v44 = pairingCopy;
     v45 = 2114;
-    v46 = v11;
+    v46 = errorCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: agent: %{public}@, peer: %{public}@, error: %{public}@", buf, 0x34u);
   }
 
@@ -1607,13 +1607,13 @@ LABEL_16:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v42) = 0;
-  v15 = [v10 identifier];
+  identifier = [pairingCopy identifier];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_38140;
   v35[3] = &unk_5D840;
   v35[4] = buf;
-  sub_37514(self, v15, v35);
+  sub_37514(self, identifier, v35);
 
   if (*(*&buf[8] + 24))
   {
@@ -1621,8 +1621,8 @@ LABEL_16:
     v16 = HKLogServices;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 identifier];
-      sub_38C50(v17, v11, v37, v16);
+      identifier2 = [pairingCopy identifier];
+      sub_38C50(identifier2, errorCopy, v37, v16);
     }
 
     if (self)
@@ -1636,11 +1636,11 @@ LABEL_16:
     }
 
     v19 = central;
-    v20 = [(CBCentralManager *)v19 sharedPairingAgent];
-    [v20 setDelegate:0];
+    sharedPairingAgent = [(CBCentralManager *)v19 sharedPairingAgent];
+    [sharedPairingAgent setDelegate:0];
 
-    v21 = [v10 identifier];
-    v22 = sub_201B0(self, v21);
+    identifier3 = [pairingCopy identifier];
+    v22 = sub_201B0(self, identifier3);
 
     v33 = 0u;
     v34 = 0u;
@@ -1673,7 +1673,7 @@ LABEL_16:
             v28 = 0;
           }
 
-          v28[2](v28, v27, 8, 0, v11);
+          v28[2](v28, v27, 8, 0, errorCopy);
           [(HDHealthServiceManager *)self disconnectHealthService:v27, v31];
 
           v26 = v26 + 1;
@@ -1694,11 +1694,11 @@ LABEL_16:
     v23 = HKLogServices;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v10 identifier];
+      identifier4 = [pairingCopy identifier];
       *v37 = 138412546;
-      v38 = v30;
+      v38 = identifier4;
       v39 = 2114;
-      v40 = v11;
+      v40 = errorCopy;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Ignoring peerDidFailToCompletePairing for %@ %{public}@", v37, 0x16u);
     }
   }
@@ -1706,10 +1706,10 @@ LABEL_16:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v7 = a3;
-  v8 = a4;
+  agentCopy = agent;
+  unpairCopy = unpair;
   _HKInitializeLogging();
   v9 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1721,9 +1721,9 @@ LABEL_16:
     *&buf[12] = 2114;
     *&buf[14] = v11;
     *&buf[22] = 2114;
-    v27 = v7;
+    v27 = agentCopy;
     v28 = 2114;
-    v29 = v8;
+    v29 = unpairCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: agent: %{public}@, peer: %{public}@", buf, 0x2Au);
   }
 
@@ -1731,13 +1731,13 @@ LABEL_16:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v27) = 0;
-  v12 = [v8 identifier];
+  identifier = [unpairCopy identifier];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_3815C;
   v21[3] = &unk_5D840;
   v21[4] = buf;
-  sub_37514(self, v12, v21);
+  sub_37514(self, identifier, v21);
 
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
@@ -1745,9 +1745,9 @@ LABEL_16:
     v19 = HKLogServices;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v8 identifier];
+      identifier2 = [unpairCopy identifier];
       *v24 = 138412290;
-      v25 = v20;
+      v25 = identifier2;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Ignoring peerDidUnpairCallback for %@", v24, 0xCu);
     }
 
@@ -1758,7 +1758,7 @@ LABEL_16:
   v13 = HKLogServices;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    [v8 identifier];
+    [unpairCopy identifier];
     objc_claimAutoreleasedReturnValue();
     sub_38CB8();
   }
@@ -1774,8 +1774,8 @@ LABEL_16:
   }
 
   v15 = central;
-  v16 = [(CBCentralManager *)v15 sharedPairingAgent];
-  [v16 setDelegate:0];
+  sharedPairingAgent = [(CBCentralManager *)v15 sharedPairingAgent];
+  [sharedPairingAgent setDelegate:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1785,7 +1785,7 @@ LABEL_16:
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
     {
       *v22 = 138412290;
-      v23 = v8;
+      v23 = unpairCopy;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Canceling peripheral connection for peripheral %@", v22, 0xCu);
     }
 
@@ -1800,17 +1800,17 @@ LABEL_16:
     }
 
     v19 = v18;
-    [v19 cancelPeripheralConnection:v8];
+    [v19 cancelPeripheralConnection:unpairCopy];
 LABEL_16:
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
+  agentCopy = agent;
+  pairingCopy = pairing;
   _HKInitializeLogging();
   v12 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -1818,18 +1818,18 @@ LABEL_16:
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138544130;
-    v39 = self;
+    selfCopy = self;
     v40 = 2114;
-    v41 = v14;
+    typeCopy = v14;
     v42 = 2114;
-    *v43 = v10;
+    *v43 = agentCopy;
     *&v43[8] = 2114;
-    *&v43[10] = v11;
+    *&v43[10] = pairingCopy;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: agent: %{public}@, peer: %{public}@", buf, 0x2Au);
   }
 
-  v15 = [v11 identifier];
-  v16 = sub_201B0(self, v15);
+  identifier = [pairingCopy identifier];
+  v16 = sub_201B0(self, identifier);
 
   v33 = 0u;
   v34 = 0u;
@@ -1856,7 +1856,7 @@ LABEL_16:
         {
           v26 = *(v22 + 72);
 
-          if (a5 != 5)
+          if (type != 5)
           {
             _HKInitializeLogging();
             if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
@@ -1873,19 +1873,19 @@ LABEL_16:
           if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
           {
             v29 = v28;
-            v30 = [v11 identifier];
+            identifier2 = [pairingCopy identifier];
             *buf = 138544130;
-            v39 = v30;
+            selfCopy = identifier2;
             v40 = 2048;
-            v41 = a5;
+            typeCopy = type;
             v42 = 1024;
-            *v43 = a5 == 5;
+            *v43 = type == 5;
             *&v43[4] = 2114;
             *&v43[6] = v27;
             _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Responding to pairing for peer: %{public}@, with type: %ld, accept: %{BOOL}d, data: %{public}@", buf, 0x26u);
           }
 
-          [v10 respondToPairingRequest:v11 type:a5 accept:a5 == 5 data:v27];
+          [agentCopy respondToPairingRequest:pairingCopy type:type accept:type == 5 data:v27];
 
           goto LABEL_21;
         }
@@ -1909,17 +1909,17 @@ LABEL_16:
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
   {
     v24 = v23;
-    v25 = [v11 identifier];
+    identifier3 = [pairingCopy identifier];
     *buf = 138412290;
-    v39 = v25;
+    selfCopy = identifier3;
     _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "Allowing pairing: %@", buf, 0xCu);
   }
 
-  [v10 respondToPairingRequest:v11 type:a5 accept:1 data:{0, v31}];
+  [agentCopy respondToPairingRequest:pairingCopy type:type accept:1 data:{0, v31}];
 LABEL_21:
 }
 
-- (id)retrieveOOBData:(id *)a3
+- (id)retrieveOOBData:(id *)data
 {
   if (self)
   {
@@ -1931,7 +1931,7 @@ LABEL_21:
     central = 0;
   }
 
-  if (sub_1CE98(HDHealthServiceManager, central, a3) == 2)
+  if (sub_1CE98(HDHealthServiceManager, central, data) == 2)
   {
     if (self)
     {
@@ -1943,7 +1943,7 @@ LABEL_21:
       v6 = 0;
     }
 
-    v7 = [(CBCentralManager *)v6 advertisingAddress];
+    advertisingAddress = [(CBCentralManager *)v6 advertisingAddress];
     if (self)
     {
       v8 = self->_central;
@@ -1954,19 +1954,19 @@ LABEL_21:
       v8 = 0;
     }
 
-    v9 = [(CBCentralManager *)v8 sharedPairingAgent];
-    [v9 setDelegate:self];
-    v10 = [v9 retrieveOOBDataForPeer:0];
-    v11 = [[HDHealthServiceOOBInfo alloc] initWithOOBData:v10 btAddress:v7];
+    sharedPairingAgent = [(CBCentralManager *)v8 sharedPairingAgent];
+    [sharedPairingAgent setDelegate:self];
+    v10 = [sharedPairingAgent retrieveOOBDataForPeer:0];
+    v11 = [[HDHealthServiceOOBInfo alloc] initWithOOBData:v10 btAddress:advertisingAddress];
     if (!v11)
     {
       v12 = [NSError hk_error:202 description:@"OOB Data could not be read"];
       if (v12)
       {
-        if (a3)
+        if (data)
         {
           v13 = v12;
-          *a3 = v12;
+          *data = v12;
         }
 
         else
@@ -1992,15 +1992,15 @@ LABEL_21:
     self = self->_central;
   }
 
-  v2 = [(HDHealthServiceManager *)self sharedPairingAgent];
-  [v2 setDelegate:0];
+  sharedPairingAgent = [(HDHealthServiceManager *)self sharedPairingAgent];
+  [sharedPairingAgent setDelegate:0];
 }
 
-- (unint64_t)connectHealthService:(id)a3 sessionHandler:(id)a4 dataHandler:(id)a5 error:(id *)a6
+- (unint64_t)connectHealthService:(id)service sessionHandler:(id)handler dataHandler:(id)dataHandler error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a4;
+  serviceCopy = service;
+  dataHandlerCopy = dataHandler;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v14 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -2008,25 +2008,25 @@ LABEL_21:
     v15 = v14;
     v16 = NSStringFromSelector(a2);
     sub_24A3C();
-    v24 = v11;
+    v24 = serviceCopy;
     sub_24B2C(&dword_0, v15, v17, "%{public}@: %{public}@: hkService: %{public}@", v23);
   }
 
   v18 = [_HDHealthServiceConnectionInfo alloc];
-  v19 = [v11 identifier];
-  v20 = sub_36008(&v18->super.isa, v13, v12, &stru_5D7F8, 0, 0, &dword_4, v19, 30.0);
+  identifier = [serviceCopy identifier];
+  v20 = sub_36008(&v18->super.isa, handlerCopy, dataHandlerCopy, &stru_5D7F8, 0, 0, &dword_4, identifier, 30.0);
 
-  v21 = sub_3616C(self, v11, v20, a6);
+  v21 = sub_3616C(self, serviceCopy, v20, error);
   return v21;
 }
 
-- (unint64_t)connectHealthService:(id)a3 connectionOptions:(unint64_t)a4 sessionHandler:(id)a5 dataHandler:(id)a6 mfaSuccessHandler:(id)a7 autoPairData:(id)a8 error:(id *)a9
+- (unint64_t)connectHealthService:(id)service connectionOptions:(unint64_t)options sessionHandler:(id)handler dataHandler:(id)dataHandler mfaSuccessHandler:(id)successHandler autoPairData:(id)data error:(id *)error
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
+  serviceCopy = service;
+  dataCopy = data;
+  successHandlerCopy = successHandler;
+  dataHandlerCopy = dataHandler;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v21 = HKLogServices;
   if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEFAULT))
@@ -2034,17 +2034,17 @@ LABEL_21:
     v22 = v21;
     v23 = NSStringFromSelector(a2);
     sub_24A3C();
-    v31 = v16;
+    v31 = serviceCopy;
     v32 = 2048;
-    v33 = a4;
+    optionsCopy = options;
     sub_24C28(&dword_0, v22, v24, "%{public}@: %{public}@: hkService: %{public}@, connectionOptions: %lu", v30);
   }
 
   v25 = [_HDHealthServiceConnectionInfo alloc];
-  v26 = [v16 identifier];
-  v27 = sub_36008(&v25->super.isa, v20, v19, &stru_5D818, v18, v17, a4, v26, 30.0);
+  identifier = [serviceCopy identifier];
+  v27 = sub_36008(&v25->super.isa, handlerCopy, dataHandlerCopy, &stru_5D818, successHandlerCopy, dataCopy, options, identifier, 30.0);
 
-  v28 = sub_3616C(self, v16, v27, a9);
+  v28 = sub_3616C(self, serviceCopy, v27, error);
   return v28;
 }
 

@@ -1,5 +1,5 @@
 @interface PLContainerChangeNotification
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4;
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet;
 - (BOOL)hasMoves;
 - (NSArray)changedObjects;
 - (NSArray)deletedObjects;
@@ -11,30 +11,30 @@
 - (NSString)_contentRelationshipName;
 - (NSString)_diffDescription;
 - (PLContainerChangeNotification)init;
-- (id)_initWithObject:(id)a3 snapshot:(id)a4 changedObjects:(id)a5;
+- (id)_initWithObject:(id)object snapshot:(id)snapshot changedObjects:(id)objects;
 - (id)name;
-- (unint64_t)snapshotIndexForContainedObject:(id)a3;
+- (unint64_t)snapshotIndexForContainedObject:(id)object;
 - (void)_calculateDiffs;
 - (void)_calculateDiffsIfNecessary;
 - (void)dealloc;
-- (void)enumerateMovesWithBlock:(id)a3;
+- (void)enumerateMovesWithBlock:(id)block;
 @end
 
 @implementation PLContainerChangeNotification
 
-- (unint64_t)snapshotIndexForContainedObject:(id)a3
+- (unint64_t)snapshotIndexForContainedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self->_snapshot)
   {
-    v5 = [(PLContainerChangeNotification *)self _contentRelationshipName];
-    if (v5 && [(PLObjectSnapshot *)self->_snapshot hasSnapshotValueForProperty:v5])
+    _contentRelationshipName = [(PLContainerChangeNotification *)self _contentRelationshipName];
+    if (_contentRelationshipName && [(PLObjectSnapshot *)self->_snapshot hasSnapshotValueForProperty:_contentRelationshipName])
     {
-      v6 = [(PLObjectSnapshot *)self->_snapshot snapshotValueForProperty:v5];
+      v6 = [(PLObjectSnapshot *)self->_snapshot snapshotValueForProperty:_contentRelationshipName];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 indexOfObject:v4];
+        v8 = [v6 indexOfObject:objectCopy];
       }
 
       else
@@ -67,16 +67,16 @@
   v5 = v9;
   if (v3)
   {
-    v6 = [(PLContainerChangeNotification *)self changedIndexes];
-    v7 = [v5 objectsAtIndexes:v6];
+    changedIndexes = [(PLContainerChangeNotification *)self changedIndexes];
+    array = [v5 objectsAtIndexes:changedIndexes];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v7;
+  return array;
 }
 
 - (NSArray)insertedObjects
@@ -89,16 +89,16 @@
   v5 = v9;
   if (v3)
   {
-    v6 = [(PLContainerChangeNotification *)self insertedIndexes];
-    v7 = [v5 objectsAtIndexes:v6];
+    insertedIndexes = [(PLContainerChangeNotification *)self insertedIndexes];
+    array = [v5 objectsAtIndexes:insertedIndexes];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v7;
+  return array;
 }
 
 - (NSArray)deletedObjects
@@ -111,16 +111,16 @@
   v5 = v9;
   if (v3)
   {
-    v6 = [(PLContainerChangeNotification *)self deletedIndexes];
-    v7 = [v4 objectsAtIndexes:v6];
+    deletedIndexes = [(PLContainerChangeNotification *)self deletedIndexes];
+    array = [v4 objectsAtIndexes:deletedIndexes];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v7;
+  return array;
 }
 
 - (NSIndexSet)changedIndexesRelativeToSnapshot
@@ -133,13 +133,13 @@
   v4 = v20;
   v5 = v19;
   v6 = v5;
-  v7 = 0;
+  indexSet = 0;
   if (v3)
   {
     v8 = [v5 objectsAtIndexes:self->_changedIndexes];
     if (v8)
     {
-      v7 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
@@ -159,7 +159,7 @@
               objc_enumerationMutation(v9);
             }
 
-            [v7 addIndex:{objc_msgSend(v4, "indexOfObject:", *(*(&v15 + 1) + 8 * i), v15)}];
+            [indexSet addIndex:{objc_msgSend(v4, "indexOfObject:", *(*(&v15 + 1) + 8 * i), v15)}];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -171,11 +171,11 @@
 
     else
     {
-      v7 = 0;
+      indexSet = 0;
     }
   }
 
-  return v7;
+  return indexSet;
 }
 
 - (NSIndexSet)changedIndexes
@@ -197,9 +197,9 @@
   return movedIndexes;
 }
 
-- (void)enumerateMovesWithBlock:(id)a3
+- (void)enumerateMovesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PLContainerChangeNotification *)self _calculateDiffsIfNecessary];
   movedIndexes = self->_movedIndexes;
   if (movedIndexes)
@@ -221,7 +221,7 @@
     v6[3] = &unk_1E756D488;
     v6[4] = self;
     v8 = v9;
-    v7 = v4;
+    v7 = blockCopy;
     [(NSIndexSet *)movedIndexes enumerateIndexesUsingBlock:v6];
 
     _Block_object_dispose(v9, 8);
@@ -258,8 +258,8 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
 
 - (id)name
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLContainerChangeNotification.m" lineNumber:67 description:@"Abstract class"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLContainerChangeNotification.m" lineNumber:67 description:@"Abstract class"];
 
   return 0;
 }
@@ -314,14 +314,14 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
     changedIndexes = self->_changedIndexes;
     self->_changedIndexes = 0;
 
-    v11 = [(PLContainerChangeNotification *)self _changedObjects];
+    _changedObjects = [(PLContainerChangeNotification *)self _changedObjects];
     v32 = 0;
     v33 = 0;
     v30 = 0;
     v31 = 0;
     v28 = v5;
     v29 = v4;
-    diffOrderedSets(v4, v5, v11, &v33, &v32, &v31, &self->_movedFromIndexes, &v30);
+    diffOrderedSets(v4, v5, _changedObjects, &v33, &v32, &v31, &self->_movedFromIndexes, &v30);
     v12 = v33;
     v27 = v33;
     v13 = v32;
@@ -343,25 +343,25 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
     objc_storeStrong(&self->_changedIndexes, v15);
     if (!self->_deletedIndexes)
     {
-      v17 = [MEMORY[0x1E696AC90] indexSet];
+      indexSet = [MEMORY[0x1E696AC90] indexSet];
       v18 = self->_deletedIndexes;
-      self->_deletedIndexes = v17;
+      self->_deletedIndexes = indexSet;
     }
 
     v5 = v28;
     v4 = v29;
     if (!self->_insertedIndexes)
     {
-      v19 = [MEMORY[0x1E696AC90] indexSet];
+      indexSet2 = [MEMORY[0x1E696AC90] indexSet];
       v20 = self->_insertedIndexes;
-      self->_insertedIndexes = v19;
+      self->_insertedIndexes = indexSet2;
     }
 
     if (!self->_changedIndexes)
     {
-      v21 = [MEMORY[0x1E696AC90] indexSet];
+      indexSet3 = [MEMORY[0x1E696AC90] indexSet];
       v22 = self->_changedIndexes;
-      self->_changedIndexes = v21;
+      self->_changedIndexes = indexSet3;
     }
 
     v23 = [v29 count];
@@ -378,15 +378,15 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
   }
 }
 
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet
 {
-  v7 = [(PLContainerChangeNotification *)self _contentRelationshipName];
-  v8 = [(PLObjectSnapshot *)self->_snapshot hasSnapshotValueForProperty:v7];
+  _contentRelationshipName = [(PLContainerChangeNotification *)self _contentRelationshipName];
+  v8 = [(PLObjectSnapshot *)self->_snapshot hasSnapshotValueForProperty:_contentRelationshipName];
   if (v8)
   {
-    *a3 = [(PLObjectSnapshot *)self->_snapshot snapshotValueForProperty:v7];
-    v9 = [(PLContainerChangeNotification *)self _managedObject];
-    *a4 = [v9 valueForKey:v7];
+    *set = [(PLObjectSnapshot *)self->_snapshot snapshotValueForProperty:_contentRelationshipName];
+    _managedObject = [(PLContainerChangeNotification *)self _managedObject];
+    *newSet = [_managedObject valueForKey:_contentRelationshipName];
   }
 
   return v8;
@@ -396,36 +396,36 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
 {
   [(PLContainerChangeNotification *)self _calculateDiffsIfNecessary];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if ([(PLContainerChangeNotification *)self shouldReload])
   {
-    v5 = [(PLContainerChangeNotification *)self _contentRelationshipName];
-    [v4 appendFormat:@", %@ need reload", v5];
+    _contentRelationshipName = [(PLContainerChangeNotification *)self _contentRelationshipName];
+    [string appendFormat:@", %@ need reload", _contentRelationshipName];
   }
 
   else
   {
-    v6 = [(PLContainerChangeNotification *)self deletedIndexes];
+    deletedIndexes = [(PLContainerChangeNotification *)self deletedIndexes];
 
-    if (v6)
+    if (deletedIndexes)
     {
-      v7 = [(PLContainerChangeNotification *)self deletedIndexes];
-      v8 = [v7 pl_shortDescription];
-      [v4 appendFormat:@", deleted: {%@}", v8];
+      deletedIndexes2 = [(PLContainerChangeNotification *)self deletedIndexes];
+      pl_shortDescription = [deletedIndexes2 pl_shortDescription];
+      [string appendFormat:@", deleted: {%@}", pl_shortDescription];
     }
 
-    v9 = [(PLContainerChangeNotification *)self insertedIndexes];
+    insertedIndexes = [(PLContainerChangeNotification *)self insertedIndexes];
 
-    if (v9)
+    if (insertedIndexes)
     {
-      v10 = [(PLContainerChangeNotification *)self insertedIndexes];
-      v11 = [v10 pl_shortDescription];
-      [v4 appendFormat:@", inserted: {%@}", v11];
+      insertedIndexes2 = [(PLContainerChangeNotification *)self insertedIndexes];
+      pl_shortDescription2 = [insertedIndexes2 pl_shortDescription];
+      [string appendFormat:@", inserted: {%@}", pl_shortDescription2];
     }
 
     if (self->_movedIndexes)
     {
-      [v4 appendString:{@", moved: {"}];
+      [string appendString:{@", moved: {"}];
       v21[0] = 0;
       v21[1] = v21;
       v21[2] = 0x2020000000;
@@ -437,7 +437,7 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
       v18[3] = &unk_1E7571F88;
       v18[4] = self;
       v20 = v21;
-      v13 = v4;
+      v13 = string;
       v19 = v13;
       [(NSIndexSet *)movedIndexes enumerateIndexesUsingBlock:v18];
       [v13 appendString:@"}"];
@@ -445,24 +445,24 @@ uint64_t __57__PLContainerChangeNotification_enumerateMovesWithBlock___block_inv
       _Block_object_dispose(v21, 8);
     }
 
-    v14 = [(PLContainerChangeNotification *)self changedIndexes];
+    changedIndexes = [(PLContainerChangeNotification *)self changedIndexes];
 
-    if (v14)
+    if (changedIndexes)
     {
-      v15 = [(PLContainerChangeNotification *)self changedIndexes];
-      v16 = [v15 pl_shortDescription];
-      [v4 appendFormat:@", changed: {%@}", v16];
+      changedIndexes2 = [(PLContainerChangeNotification *)self changedIndexes];
+      pl_shortDescription3 = [changedIndexes2 pl_shortDescription];
+      [string appendFormat:@", changed: {%@}", pl_shortDescription3];
     }
 
     if (self->_countDidChange)
     {
-      [v4 appendString:{@", count changed"}];
+      [string appendString:{@", count changed"}];
     }
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v4;
+  return string;
 }
 
 uint64_t __59__PLContainerChangeNotification_Internal___diffDescription__block_invoke(uint64_t a1, uint64_t a2)
@@ -476,24 +476,24 @@ uint64_t __59__PLContainerChangeNotification_Internal___diffDescription__block_i
 
 - (NSString)_contentRelationshipName
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLContainerChangeNotification.m" lineNumber:260 description:@"Abstract class"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLContainerChangeNotification.m" lineNumber:260 description:@"Abstract class"];
 
   return 0;
 }
 
-- (id)_initWithObject:(id)a3 snapshot:(id)a4 changedObjects:(id)a5
+- (id)_initWithObject:(id)object snapshot:(id)snapshot changedObjects:(id)objects
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PLContainerChangeNotification *)self _init];
-  v13 = v12;
-  if (v12)
+  objectCopy = object;
+  snapshotCopy = snapshot;
+  objectsCopy = objects;
+  _init = [(PLContainerChangeNotification *)self _init];
+  v13 = _init;
+  if (_init)
   {
-    objc_storeStrong(v12 + 1, a3);
-    objc_storeStrong(v13 + 2, a4);
-    objc_storeStrong(v13 + 3, a5);
+    objc_storeStrong(_init + 1, object);
+    objc_storeStrong(v13 + 2, snapshot);
+    objc_storeStrong(v13 + 3, objects);
   }
 
   return v13;

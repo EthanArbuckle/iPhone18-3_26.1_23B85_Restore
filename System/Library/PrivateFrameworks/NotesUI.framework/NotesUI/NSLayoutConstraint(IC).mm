@@ -9,7 +9,7 @@
 
 + (id)ic_constraintWithItem:()IC attribute:relatedBy:toItem:attribute:multiplier:constant:priority:
 {
-  v5 = [a1 constraintWithItem:? attribute:? relatedBy:? toItem:? attribute:? multiplier:? constant:?];
+  v5 = [self constraintWithItem:? attribute:? relatedBy:? toItem:? attribute:? multiplier:? constant:?];
   *&v6 = a4;
   [v5 setPriority:v6];
 
@@ -20,7 +20,7 @@
 {
   v7 = MEMORY[0x1E696AD98];
   v8 = a5;
-  v9 = [v7 numberWithDouble:a1];
+  v9 = [v7 numberWithDouble:self];
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
   v11 = _NSDictionaryOfVariableBindings(&cfstr_MinwidthMaxwid.isa, v9, v10, 0);
   v12 = _NSDictionaryOfVariableBindings(&cfstr_View_0.isa, v8, 0);
@@ -34,7 +34,7 @@
 {
   v5 = MEMORY[0x1E696AD98];
   v6 = a4;
-  v7 = [v5 numberWithDouble:a1];
+  v7 = [v5 numberWithDouble:self];
   v8 = _NSDictionaryOfVariableBindings(&cfstr_Minwidth.isa, v7, 0);
   v9 = _NSDictionaryOfVariableBindings(&cfstr_View_0.isa, v6, 0);
 

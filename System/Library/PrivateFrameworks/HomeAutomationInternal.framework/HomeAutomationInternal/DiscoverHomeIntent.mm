@@ -1,8 +1,8 @@
 @interface DiscoverHomeIntent
 - (DiscoverHomeIntent)init;
-- (DiscoverHomeIntent)initWithCoder:(id)a3;
-- (DiscoverHomeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (DiscoverHomeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (DiscoverHomeIntent)initWithCoder:(id)coder;
+- (DiscoverHomeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (DiscoverHomeIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation DiscoverHomeIntent
@@ -14,12 +14,12 @@
   return [(DiscoverHomeIntent *)&v3 init];
 }
 
-- (DiscoverHomeIntent)initWithCoder:(id)a3
+- (DiscoverHomeIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DiscoverHomeIntent();
-  v4 = a3;
-  v5 = [(DiscoverHomeIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DiscoverHomeIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -28,48 +28,48 @@
   return v5;
 }
 
-- (DiscoverHomeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (DiscoverHomeIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     sub_252E36F34();
-    v6 = a4;
+    storeCopy = store;
     v7 = sub_252E36F04();
   }
 
   else
   {
-    v8 = a4;
+    storeCopy2 = store;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for DiscoverHomeIntent();
-  v9 = [(DiscoverHomeIntent *)&v11 initWithIdentifier:v7 backingStore:a4];
+  v9 = [(DiscoverHomeIntent *)&v11 initWithIdentifier:v7 backingStore:store];
 
   return v9;
 }
 
-- (DiscoverHomeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (DiscoverHomeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  if (a5)
+  if (name)
   {
     sub_252E36E44();
-    v8 = a3;
-    v9 = a4;
+    domainCopy = domain;
+    verbCopy = verb;
     v10 = sub_252E36E24();
   }
 
   else
   {
-    v11 = a3;
-    v12 = a4;
+    domainCopy2 = domain;
+    verbCopy2 = verb;
     v10 = 0;
   }
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for DiscoverHomeIntent();
-  v13 = [(DiscoverHomeIntent *)&v15 initWithDomain:a3 verb:a4 parametersByName:v10];
+  v13 = [(DiscoverHomeIntent *)&v15 initWithDomain:domain verb:verb parametersByName:v10];
 
   return v13;
 }

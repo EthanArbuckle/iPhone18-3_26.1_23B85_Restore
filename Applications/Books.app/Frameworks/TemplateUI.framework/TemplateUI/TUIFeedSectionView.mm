@@ -1,10 +1,10 @@
 @interface TUIFeedSectionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (TUIHoverController)hoverController;
 - (void)_updateClippingState;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setRenderModel:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setRenderModel:(id)model;
 @end
 
 @implementation TUIFeedSectionView
@@ -25,26 +25,26 @@
   return hoverController;
 }
 
-- (void)setRenderModel:(id)a3
+- (void)setRenderModel:(id)model
 {
-  v5 = a3;
-  if (self->_renderModel != v5)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
-    objc_storeStrong(&self->_renderModel, a3);
-    v6 = [(TUIRenderModelSection *)self->_renderModel hoverRegions];
-    v7 = [v6 count];
+    objc_storeStrong(&self->_renderModel, model);
+    hoverRegions = [(TUIRenderModelSection *)self->_renderModel hoverRegions];
+    v7 = [hoverRegions count];
 
     if (v7)
     {
       v15 = 0uLL;
       v16 = 0;
-      if (v5)
+      if (modelCopy)
       {
-        [(TUIRenderModelSection *)v5 config];
+        [(TUIRenderModelSection *)modelCopy config];
       }
 
-      v8 = [(TUIFeedSectionView *)self hoverController];
-      v9 = [v8 hoverInteraction];
+      hoverController = [(TUIFeedSectionView *)self hoverController];
+      hoverInteraction = [hoverController hoverInteraction];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_3757C;
@@ -52,7 +52,7 @@
       v12[4] = self;
       v13 = v15;
       v14 = v16;
-      [v9 rebuildAllRegionsWithBlock:v12];
+      [hoverInteraction rebuildAllRegionsWithBlock:v12];
     }
 
     else
@@ -68,19 +68,19 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = TUIFeedSectionView;
-  [(TUIFeedSectionView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIFeedSectionView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TUIFeedSectionView *)self _updateClippingState];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = TUIFeedSectionView;
-  [(TUIFeedSectionView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TUIFeedSectionView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(TUIFeedSectionView *)self _updateClippingState];
 }
 
@@ -92,17 +92,17 @@
   [(TUIFeedSectionView *)self setClipsToBounds:IsEmpty];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v16.receiver = self;
   v16.super_class = TUIFeedSectionView;
-  v20 = [(TUIFeedSectionView *)&v16 pointInside:v7 withEvent:x, y];
+  v20 = [(TUIFeedSectionView *)&v16 pointInside:eventCopy withEvent:x, y];
   if (v18[3])
   {
     v8 = 1;
@@ -110,7 +110,7 @@
 
   else
   {
-    v9 = [(TUIFeedSectionView *)self subviews];
+    subviews = [(TUIFeedSectionView *)self subviews];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_37928;
@@ -118,9 +118,9 @@
     v11[4] = self;
     v14 = x;
     v15 = y;
-    v12 = v7;
+    v12 = eventCopy;
     v13 = &v17;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [subviews enumerateObjectsUsingBlock:v11];
 
     v8 = *(v18 + 24);
   }

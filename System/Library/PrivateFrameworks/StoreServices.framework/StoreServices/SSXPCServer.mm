@@ -1,11 +1,11 @@
 @interface SSXPCServer
 + (id)mainServer;
-- (SSXPCServer)initWithServiceName:(id)a3 entitlement:(id)a4 queue:(id)a5;
-- (void)_dispatchMessage:(id)a3 connection:(id)a4;
-- (void)_recordCoreAnalyticsEventForClient:(id)a3 andSelector:(id)a4;
-- (void)addObserver:(id)a3 selector:(SEL)a4 forMessage:(int64_t)a5;
+- (SSXPCServer)initWithServiceName:(id)name entitlement:(id)entitlement queue:(id)queue;
+- (void)_dispatchMessage:(id)message connection:(id)connection;
+- (void)_recordCoreAnalyticsEventForClient:(id)client andSelector:(id)selector;
+- (void)addObserver:(id)observer selector:(SEL)selector forMessage:(int64_t)message;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 selector:(SEL)a4 forMessage:(int64_t)a5;
+- (void)removeObserver:(id)observer selector:(SEL)selector forMessage:(int64_t)message;
 - (void)start;
 @end
 
@@ -50,9 +50,9 @@ uint64_t __20__SSXPCServer_start__block_invoke_2(uint64_t result, uint64_t a2)
   return result;
 }
 
-- (SSXPCServer)initWithServiceName:(id)a3 entitlement:(id)a4 queue:(id)a5
+- (SSXPCServer)initWithServiceName:(id)name entitlement:(id)entitlement queue:(id)queue
 {
-  if (a3)
+  if (name)
   {
     v10.receiver = self;
     v10.super_class = SSXPCServer;
@@ -60,14 +60,14 @@ uint64_t __20__SSXPCServer_start__block_invoke_2(uint64_t result, uint64_t a2)
     if (v8)
     {
       v8->_dispatchQueue = dispatch_queue_create("com.apple.StoreServices.SSXPCServer", 0);
-      v8->_entitlementName = [a4 copy];
+      v8->_entitlementName = [entitlement copy];
       v8->_observers = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v8->_serviceName = [a3 copy];
+      v8->_serviceName = [name copy];
       v8->_xpcRequestsCache = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      if (a5)
+      if (queue)
       {
-        v8->_observerQueue = a5;
-        dispatch_retain(a5);
+        v8->_observerQueue = queue;
+        dispatch_retain(queue);
       }
     }
   }
@@ -113,7 +113,7 @@ uint64_t __20__SSXPCServer_start__block_invoke_2(uint64_t result, uint64_t a2)
   block[1] = 3221225472;
   block[2] = __25__SSXPCServer_mainServer__block_invoke;
   block[3] = &unk_1E84AC408;
-  block[4] = a1;
+  block[4] = self;
   if (mainServer_sOnce != -1)
   {
     dispatch_once(&mainServer_sOnce, block);
@@ -130,7 +130,7 @@ uint64_t __25__SSXPCServer_mainServer__block_invoke()
   return result;
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 forMessage:(int64_t)a5
+- (void)addObserver:(id)observer selector:(SEL)selector forMessage:(int64_t)message
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -138,9 +138,9 @@ uint64_t __25__SSXPCServer_mainServer__block_invoke()
   v6[2] = __47__SSXPCServer_addObserver_selector_forMessage___block_invoke;
   v6[3] = &unk_1E84B0D28;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a5;
-  v6[7] = a4;
+  v6[5] = observer;
+  v6[6] = message;
+  v6[7] = selector;
   dispatch_sync(dispatchQueue, v6);
 }
 
@@ -161,7 +161,7 @@ void __47__SSXPCServer_addObserver_selector_forMessage___block_invoke(void *a1)
   [v2 addObject:v4];
 }
 
-- (void)removeObserver:(id)a3 selector:(SEL)a4 forMessage:(int64_t)a5
+- (void)removeObserver:(id)observer selector:(SEL)selector forMessage:(int64_t)message
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -169,9 +169,9 @@ void __47__SSXPCServer_addObserver_selector_forMessage___block_invoke(void *a1)
   v6[2] = __50__SSXPCServer_removeObserver_selector_forMessage___block_invoke;
   v6[3] = &unk_1E84B0D28;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a5;
-  v6[7] = a4;
+  v6[5] = observer;
+  v6[6] = message;
+  v6[7] = selector;
   dispatch_sync(dispatchQueue, v6);
 }
 
@@ -220,7 +220,7 @@ void __50__SSXPCServer_removeObserver_selector_forMessage___block_invoke(void *a
   _Block_object_dispose(v6, 8);
 }
 
-- (void)_dispatchMessage:(id)a3 connection:(id)a4
+- (void)_dispatchMessage:(id)message connection:(id)connection
 {
   v85 = *MEMORY[0x1E69E9840];
   memset(v82, 0, sizeof(v82));
@@ -238,15 +238,15 @@ void __50__SSXPCServer_removeObserver_selector_forMessage___block_invoke(void *a
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -280,15 +280,15 @@ void __50__SSXPCServer_removeObserver_selector_forMessage___block_invoke(void *a
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog2 = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog2 | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog2;
       }
 
       if (os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -323,11 +323,11 @@ void __50__SSXPCServer_removeObserver_selector_forMessage___block_invoke(void *a
 
 LABEL_25:
     [(SSXPCServer *)self _recordCoreAnalyticsEventForClient:v66 andSelector:@"beforeFirstUnlockClient", v61];
-    xpc_connection_cancel(a4);
+    xpc_connection_cancel(connection);
   }
 
   entitlementName = self->_entitlementName;
-  if (entitlementName && !SSXPCConnectionHasEntitlement(a4, entitlementName))
+  if (entitlementName && !SSXPCConnectionHasEntitlement(connection, entitlementName))
   {
     v46 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v46)
@@ -335,15 +335,15 @@ LABEL_25:
       v46 = +[SSLogConfig sharedConfig];
     }
 
-    v47 = [v46 shouldLog];
+    shouldLog3 = [v46 shouldLog];
     if ([v46 shouldLogToDisk])
     {
-      v48 = v47 | 2;
+      v48 = shouldLog3 | 2;
     }
 
     else
     {
-      v48 = v47;
+      v48 = shouldLog3;
     }
 
     if (os_log_type_enabled([v46 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -394,7 +394,7 @@ LABEL_25:
     block[3] = &unk_1E84B0D50;
     block[5] = self;
     block[6] = v82;
-    block[4] = a3;
+    block[4] = message;
     dispatch_sync(dispatchQueue, block);
     v70 = 0u;
     v71 = 0u;
@@ -422,22 +422,22 @@ LABEL_25:
             v29 = +[SSLogConfig sharedConfig];
           }
 
-          v30 = [v29 shouldLog];
-          v31 = [v29 shouldLogToDisk];
-          v32 = [v29 OSLogObject];
-          if (v31)
+          shouldLog4 = [v29 shouldLog];
+          shouldLogToDisk = [v29 shouldLogToDisk];
+          oSLogObject = [v29 OSLogObject];
+          if (shouldLogToDisk)
           {
-            v30 |= 2u;
+            shouldLog4 |= 2u;
           }
 
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = v30;
+            v33 = shouldLog4;
           }
 
           else
           {
-            v33 = v30 & 2;
+            v33 = shouldLog4 & 2;
           }
 
           if (v33)
@@ -486,7 +486,7 @@ void __43__SSXPCServer__dispatchMessage_connection___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 40) = [objc_msgSend(*(*(a1 + 40) + 40) objectForKey:{v2), "copy"}];
 }
 
-- (void)_recordCoreAnalyticsEventForClient:(id)a3 andSelector:(id)a4
+- (void)_recordCoreAnalyticsEventForClient:(id)client andSelector:(id)selector
 {
   if (+[SSDevice deviceIsInternalBuild])
   {
@@ -495,8 +495,8 @@ void __43__SSXPCServer__dispatchMessage_connection___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __62__SSXPCServer__recordCoreAnalyticsEventForClient_andSelector___block_invoke;
     block[3] = &unk_1E84AD640;
-    block[4] = a3;
-    block[5] = a4;
+    block[4] = client;
+    block[5] = selector;
     block[6] = self;
     dispatch_sync(dispatchQueue, block);
   }

@@ -6,12 +6,12 @@
 
 - (double)firstBaselineFromTop
 {
-  v2 = self;
-  v3 = [(UIImageView *)v2 image];
-  if (v3)
+  selfCopy = self;
+  image = [(UIImageView *)selfCopy image];
+  if (image)
   {
-    v4 = v3;
-    [(UIImage *)v3 size];
+    v4 = image;
+    [(UIImage *)image size];
     v6 = v5;
   }
 

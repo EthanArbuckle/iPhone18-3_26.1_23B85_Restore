@@ -31,29 +31,29 @@
   v60 = *MEMORY[0x277D3F540];
   v5 = v60;
   v55[0] = @"clientID";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_IntegerFormat];
-  v56[0] = v46;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v56[0] = commonTypeDict_IntegerFormat;
   v55[1] = @"bundleID";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_StringFormat_withBundleID];
-  v56[1] = v44;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v56[1] = commonTypeDict_StringFormat_withBundleID;
   v55[2] = @"queryID";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_StringFormat];
-  v56[2] = v42;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v56[2] = commonTypeDict_StringFormat;
   v55[3] = @"queryType";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_StringFormat];
-  v56[3] = v40;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v56[3] = commonTypeDict_StringFormat2;
   v55[4] = @"totalDuration";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_RealFormat];
-  v56[4] = v38;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v56[4] = commonTypeDict_RealFormat;
   v55[5] = @"isBackgroundQuery";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_BoolFormat];
-  v56[5] = v36;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v56[5] = commonTypeDict_BoolFormat;
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:6];
   v61[1] = v35;
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:&v59 count:2];
@@ -66,49 +66,49 @@
   v53[1] = v5;
   v54[0] = v33;
   v49[0] = @"options";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v50[0] = v31;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v50[0] = commonTypeDict_IntegerFormat2;
   v49[1] = @"reason";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v50[1] = v29;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v50[1] = commonTypeDict_IntegerFormat3;
   v49[2] = @"operation";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v50[2] = v27;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v50[2] = commonTypeDict_IntegerFormat4;
   v49[3] = @"zone-count";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v50[3] = v25;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v50[3] = commonTypeDict_IntegerFormat5;
   v49[4] = @"rebase-reason";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v50[4] = v23;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v50[4] = commonTypeDict_IntegerFormat6;
   v49[5] = @"deadline";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v50[5] = v21;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v50[5] = commonTypeDict_IntegerFormat7;
   v49[6] = @"epoch-change";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v50[6] = v19;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v50[6] = commonTypeDict_IntegerFormat8;
   v49[7] = @"status";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v18 commonTypeDict_IntegerFormat];
-  v50[7] = v6;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v50[7] = commonTypeDict_IntegerFormat9;
   v49[8] = @"result";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_BoolFormat];
-  v50[8] = v8;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]15 commonTypeDict_BoolFormat];
+  v50[8] = commonTypeDict_BoolFormat2;
   v49[9] = @"upload";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_BoolFormat];
-  v50[9] = v10;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]16 commonTypeDict_BoolFormat];
+  v50[9] = commonTypeDict_BoolFormat3;
   v49[10] = @"download";
-  v11 = [MEMORY[0x277D3F198] sharedInstance];
-  v12 = [v11 commonTypeDict_BoolFormat];
-  v50[10] = v12;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]17 commonTypeDict_BoolFormat];
+  v50[10] = commonTypeDict_BoolFormat4;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:11];
   v54[1] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
@@ -134,13 +134,13 @@
       LOBYTE(v3) = 0;
     }
 
-    v4 = [MEMORY[0x277D3F208] internalBuild];
-    if (v4)
+    internalBuild = [MEMORY[0x277D3F208] internalBuild];
+    if (internalBuild)
     {
-      LOBYTE(v4) = [MEMORY[0x277D3F208] isWatch];
+      LOBYTE(internalBuild) = [MEMORY[0x277D3F208] isWatch];
     }
 
-    if ((v3 | v4))
+    if ((v3 | internalBuild))
     {
       if ([MEMORY[0x277D3F258] isHealthDataSubmissionAllowed])
       {

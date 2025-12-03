@@ -1,27 +1,27 @@
 @interface HUHomeHubMigrationFailedViewController
 - (BOOL)_shouldShowResetAppleHomeButton;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubMigrationFailedViewController)initWithDetailText:(id)a3 failedState:(unint64_t)a4 homeName:(id)a5;
-- (void)_cancelAction:(id)a3;
+- (HUHomeHubMigrationFailedViewController)initWithDetailText:(id)text failedState:(unint64_t)state homeName:(id)name;
+- (void)_cancelAction:(id)action;
 - (void)_displayResetConfirmationAlert;
 - (void)_resetAppleHome;
-- (void)_resetAppleHomeAction:(id)a3;
-- (void)_tryAgainAction:(id)a3;
+- (void)_resetAppleHomeAction:(id)action;
+- (void)_tryAgainAction:(id)action;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubMigrationFailedViewController
 
-- (HUHomeHubMigrationFailedViewController)initWithDetailText:(id)a3 failedState:(unint64_t)a4 homeName:(id)a5
+- (HUHomeHubMigrationFailedViewController)initWithDetailText:(id)text failedState:(unint64_t)state homeName:(id)name
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v23 = a5;
+  textCopy = text;
+  nameCopy = name;
   v9 = MEMORY[0x277D755D0];
-  v10 = [MEMORY[0x277D75348] hf_keyColor];
-  v11 = [v9 configurationWithHierarchicalColor:v10];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v11 = [v9 configurationWithHierarchicalColor:hf_keyColor];
 
   v12 = [MEMORY[0x277D755D0] configurationWithPointSize:100.0];
   v13 = [v12 configurationByApplyingConfiguration:v11];
@@ -29,7 +29,7 @@
   v15 = [v14 imageWithConfiguration:v13];
 
   v16 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationFailedTitle", @"HUSoftwareUpdateMigrationFailedTitle", 1);
-  if (a4 == 2)
+  if (state == 2)
   {
     v17 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationFailedTitle_ResetAppleHome", @"HUSoftwareUpdateMigrationFailedTitle_ResetAppleHome", 1);
 
@@ -38,31 +38,31 @@
 
   v24.receiver = self;
   v24.super_class = HUHomeHubMigrationFailedViewController;
-  v18 = [(HUImageOBWelcomeController *)&v24 initWithTitle:v16 detailText:v8 icon:0 contentImage:v15];
+  v18 = [(HUImageOBWelcomeController *)&v24 initWithTitle:v16 detailText:textCopy icon:0 contentImage:v15];
   v19 = v18;
   if (v18)
   {
-    v18->_failedState = a4;
-    objc_storeStrong(&v18->_homeName, a5);
+    v18->_failedState = state;
+    objc_storeStrong(&v18->_homeName, name);
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4 > 2)
+      if (state > 2)
       {
         v21 = @"Unknown";
       }
 
       else
       {
-        v21 = off_277DC1A70[a4];
+        v21 = off_277DC1A70[state];
       }
 
       *buf = 134218498;
-      v26 = a4;
+      stateCopy = state;
       v27 = 2114;
       v28 = v21;
       v29 = 2112;
-      v30 = v23;
+      v30 = nameCopy;
       _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:initWithDetailText:failedState:homeName:] failedState: %lu (%{public}@) | homeName: %@", buf, 0x20u);
     }
   }
@@ -79,26 +79,26 @@
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:viewDidLoad]", buf, 2u);
   }
 
-  v4 = [(HUHomeHubMigrationFailedViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_2824930F8];
+  headerView = [(HUHomeHubMigrationFailedViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824930F8];
 
   v33.receiver = self;
   v33.super_class = HUHomeHubMigrationFailedViewController;
   [(HUImageOBWelcomeController *)&v33 viewDidLoad];
-  v6 = [(OBBaseWelcomeController *)self navigationItem];
-  [v6 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
-  v7 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubMigrationFailedViewController *)self setPrimaryButton:v7];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubMigrationFailedViewController *)self setPrimaryButton:boldButton];
 
-  v8 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  primaryButton = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [primaryButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HUHomeHubMigrationFailedViewController *)self failedState];
-  v10 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  v11 = v9 == 2;
-  if (v9 == 2)
+  failedState = [(HUHomeHubMigrationFailedViewController *)self failedState];
+  primaryButton2 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  v11 = failedState == 2;
+  if (failedState == 2)
   {
     v12 = @"HUSoftwareUpdateMigrationFailedTitle_ResetAppleHome";
   }
@@ -108,7 +108,7 @@
     v12 = @"HUTryAgainTitle";
   }
 
-  if (v9 == 2)
+  if (failedState == 2)
   {
     v13 = @"Home.OnboardingView.HomeHubMigration.Failed.ResetAppleHome.PrimaryButton";
   }
@@ -129,28 +129,28 @@
   }
 
   v15 = _HULocalizedStringWithDefaultValue(v12, v12, 1);
-  [v10 setTitle:v15 forState:0];
+  [primaryButton2 setTitle:v15 forState:0];
 
-  v16 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v16 setAccessibilityIdentifier:v13];
+  primaryButton3 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [primaryButton3 setAccessibilityIdentifier:v13];
 
-  v17 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v17 addTarget:self action:*v14 forControlEvents:64];
+  primaryButton4 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [primaryButton4 addTarget:self action:*v14 forControlEvents:64];
 
-  v18 = [(HUHomeHubMigrationFailedViewController *)self buttonTray];
-  v19 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v18 addButton:v19];
+  buttonTray = [(HUHomeHubMigrationFailedViewController *)self buttonTray];
+  primaryButton5 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [buttonTray addButton:primaryButton5];
 
-  v20 = [(HUHomeHubMigrationFailedViewController *)self _shouldShowResetAppleHomeButton];
-  v21 = [MEMORY[0x277D37650] linkButton];
-  [(HUHomeHubMigrationFailedViewController *)self setSupplementaryButton:v21];
+  _shouldShowResetAppleHomeButton = [(HUHomeHubMigrationFailedViewController *)self _shouldShowResetAppleHomeButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [(HUHomeHubMigrationFailedViewController *)self setSupplementaryButton:linkButton];
 
-  v22 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  supplementaryButton = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  [supplementaryButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  v24 = !v20;
-  if (v20)
+  supplementaryButton2 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  v24 = !_shouldShowResetAppleHomeButton;
+  if (_shouldShowResetAppleHomeButton)
   {
     v25 = @"HUResetAppleHomeButtonTitle";
   }
@@ -160,7 +160,7 @@
     v25 = @"HUCancelTitle";
   }
 
-  if (v20)
+  if (_shouldShowResetAppleHomeButton)
   {
     v26 = @"Home.OnboardingView.HomeHubMigration.Failed.ResetAppleHomeButton";
   }
@@ -181,24 +181,24 @@
   }
 
   v28 = _HULocalizedStringWithDefaultValue(v25, v25, 1);
-  [v23 setTitle:v28 forState:0];
+  [supplementaryButton2 setTitle:v28 forState:0];
 
-  v29 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  [v29 setAccessibilityIdentifier:v26];
+  supplementaryButton3 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  [supplementaryButton3 setAccessibilityIdentifier:v26];
 
-  v30 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  [v30 addTarget:self action:*v27 forControlEvents:64];
+  supplementaryButton4 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  [supplementaryButton4 addTarget:self action:*v27 forControlEvents:64];
 
-  v31 = [(HUHomeHubMigrationFailedViewController *)self buttonTray];
-  v32 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  [v31 addButton:v32];
+  buttonTray2 = [(HUHomeHubMigrationFailedViewController *)self buttonTray];
+  supplementaryButton5 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  [buttonTray2 addButton:supplementaryButton5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubMigrationFailedViewController;
-  [(HUHomeHubMigrationFailedViewController *)&v5 viewWillAppear:a3];
+  [(HUHomeHubMigrationFailedViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,11 +207,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubMigrationFailedViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -220,7 +220,7 @@
   }
 }
 
-- (void)_tryAgainAction:(id)a3
+- (void)_tryAgainAction:(id)action
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -230,14 +230,14 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:_tryAgainAction] user tapped try again button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubMigrationFailedViewController *)self delegate];
+  delegate = [(HUHomeHubMigrationFailedViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491D90;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
-- (void)_cancelAction:(id)a3
+- (void)_cancelAction:(id)action
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -247,14 +247,14 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:_cancelAction] user tapped cancel button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubMigrationFailedViewController *)self delegate];
+  delegate = [(HUHomeHubMigrationFailedViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491DA8;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
-- (void)_resetAppleHomeAction:(id)a3
+- (void)_resetAppleHomeAction:(id)action
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -264,11 +264,11 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:_resetAppleHomeAction] user tapped reset Apple Home button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubMigrationFailedViewController *)self delegate];
+  delegate = [(HUHomeHubMigrationFailedViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491DC0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)_displayResetConfirmationAlert
@@ -339,36 +339,36 @@ void __72__HUHomeHubMigrationFailedViewController__displayResetConfirmationAlert
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUHomeHubMigrationFailedViewController *)self failedState];
-    v5 = [(HUHomeHubMigrationFailedViewController *)self failedState];
-    if (v5 > 2)
+    failedState = [(HUHomeHubMigrationFailedViewController *)self failedState];
+    failedState2 = [(HUHomeHubMigrationFailedViewController *)self failedState];
+    if (failedState2 > 2)
     {
       v6 = @"Unknown";
     }
 
     else
     {
-      v6 = off_277DC1A70[v5];
+      v6 = off_277DC1A70[failedState2];
     }
 
     *buf = 134218242;
-    v15 = v4;
+    v15 = failedState;
     v16 = 2114;
     v17 = v6;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:_resetAppleHome] failedState : %lu (%{public}@)", buf, 0x16u);
   }
 
-  v7 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v7 setEnabled:0];
+  primaryButton = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [primaryButton setEnabled:0];
 
-  v8 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
-  [v8 showsBusyIndicator];
+  primaryButton2 = [(HUHomeHubMigrationFailedViewController *)self primaryButton];
+  [primaryButton2 showsBusyIndicator];
 
-  v9 = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
-  [v9 setEnabled:0];
+  supplementaryButton = [(HUHomeHubMigrationFailedViewController *)self supplementaryButton];
+  [supplementaryButton setEnabled:0];
 
-  v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v11 = [v10 homeManager];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
 
   objc_initWeak(buf, self);
   v12[0] = MEMORY[0x277D85DD0];
@@ -376,7 +376,7 @@ void __72__HUHomeHubMigrationFailedViewController__displayResetConfirmationAlert
   v12[2] = __57__HUHomeHubMigrationFailedViewController__resetAppleHome__block_invoke;
   v12[3] = &unk_277DB94D0;
   objc_copyWeak(&v13, buf);
-  [v11 eraseHomeDataAndDeleteMetadata:1 completionHandler:v12];
+  [homeManager eraseHomeDataAndDeleteMetadata:1 completionHandler:v12];
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
 }
@@ -407,32 +407,32 @@ void __57__HUHomeHubMigrationFailedViewController__resetAppleHome__block_invoke(
 - (BOOL)_shouldShowResetAppleHomeButton
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HUHomeHubMigrationFailedViewController *)self failedState];
+  failedState = [(HUHomeHubMigrationFailedViewController *)self failedState];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUHomeHubMigrationFailedViewController *)self failedState];
-    v6 = [(HUHomeHubMigrationFailedViewController *)self failedState];
-    if (v6 > 2)
+    failedState2 = [(HUHomeHubMigrationFailedViewController *)self failedState];
+    failedState3 = [(HUHomeHubMigrationFailedViewController *)self failedState];
+    if (failedState3 > 2)
     {
       v7 = @"Unknown";
     }
 
     else
     {
-      v7 = off_277DC1A70[v6];
+      v7 = off_277DC1A70[failedState3];
     }
 
     v9[0] = 67109634;
-    v9[1] = v3 == 1;
+    v9[1] = failedState == 1;
     v10 = 2048;
-    v11 = v5;
+    v11 = failedState2;
     v12 = 2114;
     v13 = v7;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationFailedViewController:_shouldShowResetAppleHomeButton] %{BOOL}d | failedState : %lu (%{public}@)", v9, 0x1Cu);
   }
 
-  return v3 == 1;
+  return failedState == 1;
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

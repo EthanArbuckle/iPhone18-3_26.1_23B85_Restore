@@ -1,22 +1,22 @@
 @interface FRFont
-+ (BOOL)_shouldUnregisterFontWithFileURL:(id)a3;
-+ (BOOL)_unregisterFontAtFileURL:(id)a3 error:(id *)a4;
-+ (BOOL)registerFontWithURL:(id)a3 error:(id *)a4;
-+ (id)_postScriptNameForFontAtFileURL:(id)a3;
++ (BOOL)_shouldUnregisterFontWithFileURL:(id)l;
++ (BOOL)_unregisterFontAtFileURL:(id)l error:(id *)error;
++ (BOOL)registerFontWithURL:(id)l error:(id *)error;
++ (id)_postScriptNameForFontAtFileURL:(id)l;
 + (id)_referenceCountedSet;
 + (id)_registrationQueue;
-+ (unint64_t)_referenceCountForFontWithFileURL:(id)a3;
-+ (void)_decreaseReferenceCountForFontWithFileURL:(id)a3;
-+ (void)_increaseReferenceCountForFontWithFileURL:(id)a3;
-+ (void)unregisterFontWithURL:(id)a3;
++ (unint64_t)_referenceCountForFontWithFileURL:(id)l;
++ (void)_decreaseReferenceCountForFontWithFileURL:(id)l;
++ (void)_increaseReferenceCountForFontWithFileURL:(id)l;
++ (void)unregisterFontWithURL:(id)l;
 @end
 
 @implementation FRFont
 
-+ (BOOL)registerFontWithURL:(id)a3 error:(id *)a4
++ (BOOL)registerFontWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072BD0();
   }
@@ -31,18 +31,18 @@
   v17[3] = sub_100009C18;
   v17[4] = sub_100009F60;
   v18 = 0;
-  v7 = [a1 _registrationQueue];
+  _registrationQueue = [self _registrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100057188;
   block[3] = &unk_1000C5AE8;
-  v12 = v6;
+  v12 = lCopy;
   v13 = v17;
   v14 = &v19;
-  v15 = a1;
-  v16 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  selfCopy = self;
+  errorCopy = error;
+  v8 = lCopy;
+  dispatch_sync(_registrationQueue, block);
 
   v9 = *(v20 + 24);
   _Block_object_dispose(v17, 8);
@@ -51,29 +51,29 @@
   return v9;
 }
 
-+ (void)unregisterFontWithURL:(id)a3
++ (void)unregisterFontWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072C98();
   }
 
-  v5 = [a1 _registrationQueue];
+  _registrationQueue = [self _registrationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000575B8;
   v7[3] = &unk_1000C5A18;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
+  dispatch_sync(_registrationQueue, v7);
 }
 
-+ (void)_increaseReferenceCountForFontWithFileURL:(id)a3
++ (void)_increaseReferenceCountForFontWithFileURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072D5C();
   }
@@ -82,18 +82,18 @@
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Increasing reference count for font at URL %{public}@", &v7, 0xCu);
   }
 
-  v6 = [a1 _referenceCountedSet];
-  [v6 addObject:v4];
+  _referenceCountedSet = [self _referenceCountedSet];
+  [_referenceCountedSet addObject:lCopy];
 }
 
-+ (void)_decreaseReferenceCountForFontWithFileURL:(id)a3
++ (void)_decreaseReferenceCountForFontWithFileURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100072E20();
   }
@@ -102,16 +102,16 @@
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Decreasing reference count for font at URL %{public}@", buf, 0xCu);
   }
 
-  v6 = [a1 _referenceCountedSet];
-  [v6 removeObject:v4];
-  if ([a1 _shouldUnregisterFontWithFileURL:v4])
+  _referenceCountedSet = [self _referenceCountedSet];
+  [_referenceCountedSet removeObject:lCopy];
+  if ([self _shouldUnregisterFontWithFileURL:lCopy])
   {
     v10 = 0;
-    v7 = [a1 _unregisterFontAtFileURL:v4 error:&v10];
+    v7 = [self _unregisterFontAtFileURL:lCopy error:&v10];
     v8 = v10;
     if ((v7 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -126,42 +126,42 @@
   }
 }
 
-+ (unint64_t)_referenceCountForFontWithFileURL:(id)a3
++ (unint64_t)_referenceCountForFontWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 _referenceCountedSet];
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  _referenceCountedSet = [self _referenceCountedSet];
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073044();
   }
 
-  v6 = [v5 countForObject:v4];
+  v6 = [_referenceCountedSet countForObject:lCopy];
 
   return v6;
 }
 
-+ (BOOL)_shouldUnregisterFontWithFileURL:(id)a3
++ (BOOL)_shouldUnregisterFontWithFileURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073108();
   }
 
-  v5 = [a1 _referenceCountForFontWithFileURL:v4] == 0;
+  v5 = [self _referenceCountForFontWithFileURL:lCopy] == 0;
 
   return v5;
 }
 
-+ (BOOL)_unregisterFontAtFileURL:(id)a3 error:(id *)a4
++ (BOOL)_unregisterFontAtFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000731CC();
   }
 
-  if (*a4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (*error && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073290();
   }
@@ -171,18 +171,18 @@
   if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v5;
+    v18 = lCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attempting to unregister font at URL %{public}@", buf, 0xCu);
   }
 
-  v7 = CTFontManagerUnregisterFontsForURL(v5, kCTFontManagerScopeProcess, &error);
+  v7 = CTFontManagerUnregisterFontsForURL(lCopy, kCTFontManagerScopeProcess, &error);
   if (v7)
   {
     v8 = FRArticleLog;
     if (os_log_type_enabled(FRArticleLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v5;
+      v18 = lCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Font unregistration succeeded for font at URL %{public}@", buf, 0xCu);
     }
 
@@ -208,7 +208,7 @@
       v14 = v11;
       v15 = [NSNumber numberWithLong:Code];
       *buf = 138543874;
-      v18 = v5;
+      v18 = lCopy;
       v19 = 2114;
       v20 = v9;
       v21 = 2114;
@@ -223,20 +223,20 @@
   }
 
   v12 = v9;
-  *a4 = v9;
+  *error = v9;
 
   return v7;
 }
 
-+ (id)_postScriptNameForFontAtFileURL:(id)a3
++ (id)_postScriptNameForFontAtFileURL:(id)l
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073354();
   }
 
-  FontDescriptorsFromURL = CTFontManagerCreateFontDescriptorsFromURL(v3);
+  FontDescriptorsFromURL = CTFontManagerCreateFontDescriptorsFromURL(lCopy);
   if (CFArrayGetCount(FontDescriptorsFromURL) != 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073418();

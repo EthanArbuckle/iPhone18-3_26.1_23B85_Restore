@@ -1,16 +1,16 @@
 @interface AWDNanoPhoneIncomingCallConnected
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsHosted:(BOOL)a3;
-- (void)setHasIsVideo:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsHosted:(BOOL)hosted;
+- (void)setHasIsVideo:(BOOL)video;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNanoPhoneIncomingCallConnected
@@ -23,9 +23,9 @@
   [(AWDNanoPhoneIncomingCallConnected *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsVideo:(BOOL)a3
+- (void)setHasIsVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsHosted:(BOOL)a3
+- (void)setHasIsHosted:(BOOL)hosted
 {
-  if (a3)
+  if (hosted)
   {
     v3 = 4;
   }
@@ -77,41 +77,41 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectingMs), @"connectingMs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectingMs), @"connectingMs"}];
   }
 
   callProviderIdentifier = self->_callProviderIdentifier;
   if (callProviderIdentifier)
   {
-    [v3 setObject:callProviderIdentifier forKey:@"callProviderIdentifier"];
+    [dictionary setObject:callProviderIdentifier forKey:@"callProviderIdentifier"];
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isVideo), @"isVideo"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isVideo), @"isVideo"}];
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isHosted), @"isHosted"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isHosted), @"isHosted"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -148,45 +148,45 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 36) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_connectingMs;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_connectingMs;
+    *(to + 36) |= 1u;
   }
 
   if (self->_callProviderIdentifier)
   {
-    [a3 setCallProviderIdentifier:?];
+    [to setCallProviderIdentifier:?];
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(a3 + 33) = self->_isVideo;
-    *(a3 + 36) |= 8u;
+    *(to + 33) = self->_isVideo;
+    *(to + 36) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    *(a3 + 32) = self->_isHosted;
-    *(a3 + 36) |= 4u;
+    *(to + 32) = self->_isHosted;
+    *(to + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -202,7 +202,7 @@
     *(v5 + 36) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_callProviderIdentifier copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_callProviderIdentifier copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 8) != 0)
   {
@@ -220,41 +220,41 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 36);
+    v7 = *(equal + 36);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 36) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_23;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_23;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_connectingMs != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_connectingMs != *(equal + 1))
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
       goto LABEL_23;
     }
 
     callProviderIdentifier = self->_callProviderIdentifier;
-    if (callProviderIdentifier | *(a3 + 3))
+    if (callProviderIdentifier | *(equal + 3))
     {
       v5 = [(NSString *)callProviderIdentifier isEqual:?];
       if (!v5)
@@ -267,48 +267,48 @@
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0)
+      if ((*(equal + 36) & 8) == 0)
       {
         goto LABEL_23;
       }
 
-      v9 = *(a3 + 33);
+      v9 = *(equal + 33);
       if (self->_isVideo)
       {
-        if ((*(a3 + 33) & 1) == 0)
+        if ((*(equal + 33) & 1) == 0)
         {
           goto LABEL_23;
         }
       }
 
-      else if (*(a3 + 33))
+      else if (*(equal + 33))
       {
         goto LABEL_23;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_23;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 4) == 0;
     if ((has & 4) == 0)
     {
       return v5;
     }
 
-    if ((*(a3 + 36) & 4) != 0)
+    if ((*(equal + 36) & 4) != 0)
     {
       if (self->_isHosted)
       {
-        if (*(a3 + 32))
+        if (*(equal + 32))
         {
           goto LABEL_31;
         }
       }
 
-      else if (!*(a3 + 32))
+      else if (!*(equal + 32))
       {
 LABEL_31:
         LOBYTE(v5) = 1;
@@ -372,38 +372,38 @@ LABEL_8:
   return v4 ^ v3 ^ v6 ^ v7 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if (v5)
   {
-    self->_connectingMs = *(a3 + 1);
+    self->_connectingMs = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDNanoPhoneIncomingCallConnected *)self setCallProviderIdentifier:?];
   }
 
-  v6 = *(a3 + 36);
+  v6 = *(from + 36);
   if ((v6 & 8) != 0)
   {
-    self->_isVideo = *(a3 + 33);
+    self->_isVideo = *(from + 33);
     *&self->_has |= 8u;
-    v6 = *(a3 + 36);
+    v6 = *(from + 36);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_isHosted = *(a3 + 32);
+    self->_isHosted = *(from + 32);
     *&self->_has |= 4u;
   }
 }

@@ -1,14 +1,14 @@
 @interface RTSCShadersV1
-- (RTSCShadersV1)initWithContext:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (RTSCShadersV1)initWithContext:(id)context;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation RTSCShadersV1
 
-- (RTSCShadersV1)initWithContext:(id)a3
+- (RTSCShadersV1)initWithContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_context, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_context, context);
   v6 = [(FigMetalContext *)self->_context computePipelineStateFor:@"RTSC::Render" constants:0];
   v7 = self->_kernels[0];
   self->_kernels[0] = v6;
@@ -33,23 +33,23 @@
 
   if (self->_kernels[2])
   {
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_6:
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 <= 3)
+  if (subscript <= 3)
   {
-    v4 = self->_kernels[a3];
+    v4 = self->_kernels[subscript];
   }
 
   else

@@ -1,16 +1,16 @@
 @interface _UITextInteractionAssistantGestureState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _UITextInteractionAssistantGestureState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     hasExternalInteractions = self->_hasExternalInteractions;
     if (hasExternalInteractions == [v5 hasExternalInteractions] && (viewIsEditable = self->_viewIsEditable, viewIsEditable == objc_msgSend(v5, "viewIsEditable")) && (viewCanBecomeEditable = self->_viewCanBecomeEditable, viewCanBecomeEditable == objc_msgSend(v5, "viewCanBecomeEditable")) && (mode = self->_mode, mode == objc_msgSend(v5, "mode")))
     {

@@ -1,36 +1,36 @@
 @interface NavdTTLCache
 - (NavdTTLCache)init;
-- (NavdTTLCache)initWithCacheOperationQueue:(id)a3 localProxy:(id)a4;
-- (id)findEntryForKey:(id)a3;
-- (void)_resolvedMapItem:(id)a3 error:(id)a4 forPendingCacheEntry:(id)a5 uuid:(id)a6 osTransaction:(id)a7 clientInfo:(id)a8;
-- (void)_resolvedMapItem:(id)a3 toOnlyPerformLocalUpdatesForPlannedDestination:(id)a4 client:(id)a5 osTransaction:(id)a6;
-- (void)_resolvedMapItem:(id)a3 toPostUINotification:(unint64_t)a4 forDestination:(id)a5 client:(id)a6 osTransaction:(id)a7;
-- (void)_resolvedMapItem:(id)a3 toRefreshPlannedDestination:(id)a4 client:(id)a5 osTransaction:(id)a6;
-- (void)_resolvedMapItem:(id)a3 toStopMonitoringPlannedDestination:(id)a4 clientInfo:(id)a5 uuid:(id)a6 osTransaction:(id)a7;
-- (void)_resolvedOriginWaypoint:(id)a3 originWaypointError:(id)a4 destinationWaypoint:(id)a5 destinationWaypointError:(id)a6 forKey:(id)a7 pendingCacheEntry:(id)a8 osTransaction:(id)a9 clientInfo:(id)a10;
-- (void)callHandlers:(id)a3 withHypothesis:(id)a4;
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 client:(id)a5 osTransaction:(id)a6;
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4 osTransaction:(id)a5;
-- (void)removeEntry:(id)a3 withKey:(id)a4 value:(id)a5;
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4 osTransaction:(id)a5;
-- (void)shouldPostDarwinNotificationForNextUpdate:(BOOL)a3;
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 osTransaction:(id)a6 handler:(id)a7;
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 osTransaction:(id)a6;
+- (NavdTTLCache)initWithCacheOperationQueue:(id)queue localProxy:(id)proxy;
+- (id)findEntryForKey:(id)key;
+- (void)_resolvedMapItem:(id)item error:(id)error forPendingCacheEntry:(id)entry uuid:(id)uuid osTransaction:(id)transaction clientInfo:(id)info;
+- (void)_resolvedMapItem:(id)item toOnlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)_resolvedMapItem:(id)item toPostUINotification:(unint64_t)notification forDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)_resolvedMapItem:(id)item toRefreshPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)_resolvedMapItem:(id)item toStopMonitoringPlannedDestination:(id)destination clientInfo:(id)info uuid:(id)uuid osTransaction:(id)transaction;
+- (void)_resolvedOriginWaypoint:(id)waypoint originWaypointError:(id)error destinationWaypoint:(id)destinationWaypoint destinationWaypointError:(id)waypointError forKey:(id)key pendingCacheEntry:(id)entry osTransaction:(id)transaction clientInfo:(id)self0;
+- (void)callHandlers:(id)handlers withHypothesis:(id)hypothesis;
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)removeEntry:(id)entry withKey:(id)key value:(id)value;
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction;
+- (void)shouldPostDarwinNotificationForNextUpdate:(BOOL)update;
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid osTransaction:(id)transaction handler:(id)handler;
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid osTransaction:(id)transaction;
 @end
 
 @implementation NavdTTLCache
 
-- (NavdTTLCache)initWithCacheOperationQueue:(id)a3 localProxy:(id)a4
+- (NavdTTLCache)initWithCacheOperationQueue:(id)queue localProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  proxyCopy = proxy;
   v24.receiver = self;
   v24.super_class = NavdTTLCache;
   v9 = [(NavdTTLCache *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cacheOperationQueue, a3);
+    objc_storeStrong(&v9->_cacheOperationQueue, queue);
     v11 = objc_alloc_init(GEORouteHypothesisCache);
     cache = v10->_cache;
     v10->_cache = v11;
@@ -43,7 +43,7 @@
     entries = v10->_entries;
     v10->_entries = v15;
 
-    objc_storeWeak(&v10->_localProxy, v8);
+    objc_storeWeak(&v10->_localProxy, proxyCopy);
     v10->_shouldPostDarwinNotificationForNextUpdate = 0;
     v17 = v10->_cache;
     v22[0] = _NSConcreteStackBlock;
@@ -68,9 +68,9 @@
   return 0;
 }
 
-- (id)findEntryForKey:(id)a3
+- (id)findEntryForKey:(id)key
 {
-  v4 = [(GEORouteHypothesisCache *)self->_cache loadValueForKey:a3];
+  v4 = [(GEORouteHypothesisCache *)self->_cache loadValueForKey:key];
   if (v4)
   {
     v17 = 0u;
@@ -93,8 +93,8 @@
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 rowId];
-          if (v11 == [v4 rowId])
+          rowId = [v10 rowId];
+          if (rowId == [v4 rowId])
           {
             v13 = v10;
             goto LABEL_14;
@@ -114,9 +114,9 @@
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(&v5->super.super, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 rowId];
+      rowId2 = [v4 rowId];
       *buf = 134217984;
-      v20 = v12;
+      v20 = rowId2;
       _os_log_impl(&_mh_execute_header, &v5->super.super, OS_LOG_TYPE_ERROR, "Found a value (with rowId %lld) but didn't find an entry for it!", buf, 0xCu);
     }
 
@@ -132,14 +132,14 @@ LABEL_14:
   return v13;
 }
 
-- (void)shouldPostDarwinNotificationForNextUpdate:(BOOL)a3
+- (void)shouldPostDarwinNotificationForNextUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = @"no";
-    if (v3)
+    if (updateCopy)
     {
       v6 = @"yes";
     }
@@ -149,97 +149,97 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "_shouldPostDarwinNotificationForNextUpdate set to: %{private}@", &v7, 0xCu);
   }
 
-  self->_shouldPostDarwinNotificationForNextUpdate = v3;
+  self->_shouldPostDarwinNotificationForNextUpdate = updateCopy;
 }
 
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 osTransaction:(id)a6 handler:(id)a7
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid osTransaction:(id)transaction handler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a3;
-  v17 = [[NavdPendingTTLCacheEntry alloc] initWithDestination:v16 forClient:v12 uuid:v13 handler:v15 cacheOperationQueue:self->_cacheOperationQueue navdCache:self];
+  clientCopy = client;
+  uuidCopy = uuid;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  destinationCopy = destination;
+  v17 = [[NavdPendingTTLCacheEntry alloc] initWithDestination:destinationCopy forClient:clientCopy uuid:uuidCopy handler:handlerCopy cacheOperationQueue:self->_cacheOperationQueue navdCache:self];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000062C8;
   v21[3] = &unk_100064E90;
   v21[4] = self;
-  v22 = v13;
-  v23 = v14;
-  v24 = v12;
-  v18 = v12;
-  v19 = v14;
-  v20 = v13;
+  v22 = uuidCopy;
+  v23 = transactionCopy;
+  v24 = clientCopy;
+  v18 = clientCopy;
+  v19 = transactionCopy;
+  v20 = uuidCopy;
   [(NavdPendingTTLCacheEntry *)v17 resolveMapItem:v21];
 }
 
-- (void)_resolvedMapItem:(id)a3 error:(id)a4 forPendingCacheEntry:(id)a5 uuid:(id)a6 osTransaction:(id)a7 clientInfo:(id)a8
+- (void)_resolvedMapItem:(id)item error:(id)error forPendingCacheEntry:(id)entry uuid:(id)uuid osTransaction:(id)transaction clientInfo:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  itemCopy = item;
+  errorCopy = error;
+  entryCopy = entry;
+  uuidCopy = uuid;
+  transactionCopy = transaction;
+  infoCopy = info;
+  if (!itemCopy)
   {
     v21 = objc_alloc_init(GEORouteHypothesis);
-    [v21 _setError:v15];
-    v22 = [v16 clientInfoStates];
-    [(NavdTTLCache *)self callHandlers:v22 withHypothesis:v21];
+    [v21 _setError:errorCopy];
+    clientInfoStates = [entryCopy clientInfoStates];
+    [(NavdTTLCache *)self callHandlers:clientInfoStates withHypothesis:v21];
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  if (![(NSMutableSet *)self->_pendingStopUUIDs containsObject:v17])
+  if (![(NSMutableSet *)self->_pendingStopUUIDs containsObject:uuidCopy])
   {
-    v23 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v14];
-    [v16 setDestinationLocation:v23];
+    v23 = [GEOMapItemStorage mapItemStorageForGEOMapItem:itemCopy];
+    [entryCopy setDestinationLocation:v23];
 
     v24 = [GEORouteHypothesisKey alloc];
-    v25 = [v16 request];
-    v21 = [v24 initWithRouteHypothesisRequest:v25];
+    request = [entryCopy request];
+    v21 = [v24 initWithRouteHypothesisRequest:request];
 
     v26 = [(NavdTTLCache *)self findEntryForKey:v21];
-    v22 = v26;
+    clientInfoStates = v26;
     if (v26)
     {
-      [v26 subsumePendingEntry:v16];
-      v40 = -[NavdTTLCache loadEntryForRowId:](self, "loadEntryForRowId:", [v22 rowId]);
+      [v26 subsumePendingEntry:entryCopy];
+      v40 = -[NavdTTLCache loadEntryForRowId:](self, "loadEntryForRowId:", [clientInfoStates rowId]);
       v39 = [v40 objectAtIndexedSubscript:1];
-      v27 = [v39 currentHypothesis];
-      v28 = v27;
-      if (v27)
+      currentHypothesis = [v39 currentHypothesis];
+      v28 = currentHypothesis;
+      if (currentHypothesis)
       {
-        v37 = v27;
+        v37 = currentHypothesis;
         v38 = v21;
         v29 = +[NavdLocationLeecher sharedLeecher];
-        v30 = [v29 lastLeechedLocation];
+        lastLeechedLocation = [v29 lastLeechedLocation];
 
-        if (v30)
+        if (lastLeechedLocation)
         {
-          [v30 course];
-          v31 = [GEOLocation locationWithCLLocation:v30 course:?];
-          v32 = [v39 monitor];
+          [lastLeechedLocation course];
+          v31 = [GEOLocation locationWithCLLocation:lastLeechedLocation course:?];
+          monitor = [v39 monitor];
           v46[0] = _NSConcreteStackBlock;
           v46[1] = 3221225472;
           v46[2] = sub_10000674C;
           v46[3] = &unk_100064EB8;
           v46[4] = self;
-          v47 = v16;
-          [v32 updateLocation:v31 allowServer:0 familiarRouteProvider:0 hypothesisHandler:v46];
+          v47 = entryCopy;
+          [monitor updateLocation:v31 allowServer:0 familiarRouteProvider:0 hypothesisHandler:v46];
 
           v28 = v37;
         }
 
         else
         {
-          v35 = [v16 clientInfoStates];
+          clientInfoStates2 = [entryCopy clientInfoStates];
           v28 = v37;
-          [(NavdTTLCache *)self callHandlers:v35 withHypothesis:v37];
+          [(NavdTTLCache *)self callHandlers:clientInfoStates2 withHypothesis:v37];
         }
 
         v21 = v38;
@@ -254,21 +254,21 @@ LABEL_17:
       v34 = v33;
       if (v33)
       {
-        [v33 subsumePendingCacheEntry:v16];
+        [v33 subsumePendingCacheEntry:entryCopy];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_pendingEntriesByKey setObject:v16 forKeyedSubscript:v21];
+        [(NSMutableDictionary *)self->_pendingEntriesByKey setObject:entryCopy forKeyedSubscript:v21];
         v41[0] = _NSConcreteStackBlock;
         v41[1] = 3221225472;
         v41[2] = sub_1000067BC;
         v41[3] = &unk_100064EE0;
         v41[4] = self;
         v42 = v21;
-        v43 = v16;
-        v44 = v18;
-        v45 = v19;
+        v43 = entryCopy;
+        v44 = transactionCopy;
+        v45 = infoCopy;
         v34 = 0;
         [v43 findWaypointsForKey:v42 handler:v41];
       }
@@ -281,30 +281,30 @@ LABEL_17:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138477827;
-    v49 = v17;
+    v49 = uuidCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Resolved map item but found pending stop for uuid %{private}@, stopping.", buf, 0xCu);
   }
 
-  [(NSMutableSet *)self->_pendingStopUUIDs removeObject:v17];
+  [(NSMutableSet *)self->_pendingStopUUIDs removeObject:uuidCopy];
 LABEL_18:
 }
 
-- (void)_resolvedOriginWaypoint:(id)a3 originWaypointError:(id)a4 destinationWaypoint:(id)a5 destinationWaypointError:(id)a6 forKey:(id)a7 pendingCacheEntry:(id)a8 osTransaction:(id)a9 clientInfo:(id)a10
+- (void)_resolvedOriginWaypoint:(id)waypoint originWaypointError:(id)error destinationWaypoint:(id)destinationWaypoint destinationWaypointError:(id)waypointError forKey:(id)key pendingCacheEntry:(id)entry osTransaction:(id)transaction clientInfo:(id)self0
 {
-  v76 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (!(v16 | v18))
+  waypointCopy = waypoint;
+  errorCopy = error;
+  destinationWaypointCopy = destinationWaypoint;
+  waypointErrorCopy = waypointError;
+  keyCopy = key;
+  entryCopy = entry;
+  transactionCopy = transaction;
+  infoCopy = info;
+  if (!(errorCopy | waypointErrorCopy))
   {
-    v75 = v17;
+    v75 = destinationWaypointCopy;
     if ([(NSMutableSet *)self->_pendingStopUUIDs count])
     {
-      [v20 removePendingStops:self->_pendingStopUUIDs];
+      [entryCopy removePendingStops:self->_pendingStopUUIDs];
       v30 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
@@ -317,8 +317,8 @@ LABEL_18:
       [(NSMutableSet *)self->_pendingStopUUIDs removeAllObjects];
     }
 
-    v32 = [v20 clientInfoStates];
-    v33 = [v32 count];
+    clientInfoStates = [entryCopy clientInfoStates];
+    v33 = [clientInfoStates count];
 
     if (!v33)
     {
@@ -332,50 +332,50 @@ LABEL_18:
       goto LABEL_26;
     }
 
-    v70 = v21;
-    v71 = v18;
-    v72 = self;
-    v73 = v16;
-    v34 = [v19 request];
-    v35 = [v34 transportType];
-    v36 = [v19 request];
-    [v36 arrivalDate];
+    v70 = transactionCopy;
+    v71 = waypointErrorCopy;
+    selfCopy = self;
+    v73 = errorCopy;
+    request = [keyCopy request];
+    transportType = [request transportType];
+    request2 = [keyCopy request];
+    [request2 arrivalDate];
     v37 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v38 = [GEORouteHypothesisMonitor routeAttributesForTransportType:v35 withArrivalDate:v37];
+    v38 = [GEORouteHypothesisMonitor routeAttributesForTransportType:transportType withArrivalDate:v37];
 
     v39 = [MNRouteAttributes alloc];
-    v74 = v22;
-    v77[0] = v76;
-    v77[1] = v17;
-    v40 = v20;
+    v74 = infoCopy;
+    v77[0] = waypointCopy;
+    v77[1] = destinationWaypointCopy;
+    v40 = entryCopy;
     v41 = [NSArray arrayWithObjects:v77 count:2];
     v69 = v38;
     v42 = [v39 initWithAttributes:v38 waypoints:v41];
 
     v66 = [GEORouteHypothesisValue alloc];
-    v43 = [v19 request];
-    [v43 arrivalDate];
+    request3 = [keyCopy request];
+    [request3 arrivalDate];
     v44 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v67 = v19;
-    v45 = v19;
+    v67 = keyCopy;
+    v45 = keyCopy;
     v46 = v40;
-    v47 = [v45 request];
-    [v47 expirationDate];
+    request4 = [v45 request];
+    [request4 expirationDate];
     v48 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-    v49 = [v46 traceName];
+    traceName = [v46 traceName];
     v50 = +[GEOMapService sharedService];
-    v51 = [v50 navd_defaultTraitsForNavd];
+    navd_defaultTraitsForNavd = [v50 navd_defaultTraitsForNavd];
     v68 = v42;
-    v52 = [v66 initWithSource:v76 toDestination:v75 arrivalDate:v44 expirationDate:v48 traceName:v49 traits:v51 routeAttributes:v42 clientInfo:v74];
+    v52 = [v66 initWithSource:waypointCopy toDestination:v75 arrivalDate:v44 expirationDate:v48 traceName:traceName traits:navd_defaultTraitsForNavd routeAttributes:v42 clientInfo:v74];
 
     [v52 setValueRefreshTimeStamp:CFAbsoluteTimeGetCurrent()];
     if ([v52 canBePersistedToDisk])
     {
-      v20 = v46;
-      self = v72;
-      v19 = v67;
-      [(GEORouteHypothesisCache *)v72->_cache saveValue:v52 forKey:v67];
-      v21 = v70;
+      entryCopy = v46;
+      self = selfCopy;
+      keyCopy = v67;
+      [(GEORouteHypothesisCache *)selfCopy->_cache saveValue:v52 forKey:v67];
+      transactionCopy = v70;
       if ([v52 rowId] == -1)
       {
         v55 = objc_alloc_init(GEORouteHypothesis);
@@ -384,47 +384,47 @@ LABEL_18:
         WeakRetained = [v63 initWithDomain:v64 code:-1501 userInfo:0];
 
         [(NavdTTLCacheEntry *)v55 _setError:WeakRetained];
-        v65 = [v20 clientInfoStates];
-        [(NavdTTLCache *)v72 callHandlers:v65 withHypothesis:v55];
+        clientInfoStates2 = [entryCopy clientInfoStates];
+        [(NavdTTLCache *)selfCopy callHandlers:clientInfoStates2 withHypothesis:v55];
       }
 
       else
       {
         v53 = [NavdTTLCacheEntry alloc];
-        v54 = [v52 rowId];
+        rowId = [v52 rowId];
         [v52 valueRefreshTimeStamp];
-        v55 = [(NavdTTLCacheEntry *)v53 initWithRowId:v54 refreshTimestamp:0 state:v72->_cacheOperationQueue cacheOperationQueue:v72 cache:?];
-        v56 = [v20 traceName];
-        [(NavdTTLCacheEntry *)v55 setTraceName:v56];
+        v55 = [(NavdTTLCacheEntry *)v53 initWithRowId:rowId refreshTimestamp:0 state:selfCopy->_cacheOperationQueue cacheOperationQueue:selfCopy cache:?];
+        traceName2 = [entryCopy traceName];
+        [(NavdTTLCacheEntry *)v55 setTraceName:traceName2];
 
-        [(NavdTTLCacheEntry *)v55 subsumePendingEntry:v20];
-        [(NSMutableArray *)v72->_entries addObject:v55];
-        WeakRetained = objc_loadWeakRetained(&v72->_localProxy);
+        [(NavdTTLCacheEntry *)v55 subsumePendingEntry:entryCopy];
+        [(NSMutableArray *)selfCopy->_entries addObject:v55];
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_localProxy);
         [WeakRetained _refreshCacheEntriesIfNeededOrForced:0 osTransaction:v70];
       }
 
-      v22 = v74;
+      infoCopy = v74;
       v27 = v69;
     }
 
     else
     {
-      v58 = [v46 clientInfoStates];
-      v59 = [v58 count];
+      clientInfoStates3 = [v46 clientInfoStates];
+      v59 = [clientInfoStates3 count];
 
-      self = v72;
-      v20 = v46;
-      v19 = v67;
+      self = selfCopy;
+      entryCopy = v46;
+      keyCopy = v67;
       v27 = v69;
-      v21 = v70;
-      v22 = v74;
+      transactionCopy = v70;
+      infoCopy = v74;
       if (!v59)
       {
 LABEL_25:
 
-        v16 = v73;
-        v17 = v75;
-        v18 = v71;
+        errorCopy = v73;
+        destinationWaypointCopy = v75;
+        waypointErrorCopy = v71;
 LABEL_26:
 
         goto LABEL_27;
@@ -436,8 +436,8 @@ LABEL_26:
       WeakRetained = [v60 initWithDomain:v61 code:-1501 userInfo:0];
 
       [(NavdTTLCacheEntry *)v55 _setError:WeakRetained];
-      v62 = [v20 clientInfoStates];
-      [(NavdTTLCache *)v72 callHandlers:v62 withHypothesis:v55];
+      clientInfoStates4 = [entryCopy clientInfoStates];
+      [(NavdTTLCache *)selfCopy callHandlers:clientInfoStates4 withHypothesis:v55];
     }
 
     goto LABEL_25;
@@ -447,59 +447,59 @@ LABEL_26:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     *buf = 138544130;
-    v79 = v76;
+    v79 = waypointCopy;
     v80 = 2114;
-    v81 = v16;
+    v81 = errorCopy;
     v82 = 2114;
-    v83 = v17;
+    v83 = destinationWaypointCopy;
     v84 = 2114;
-    v85 = v18;
+    v85 = waypointErrorCopy;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to get a waypoints. OriginWaypoint: %{public}@, OriginWaypointError: %{public}@, DestinationWaypoint: %{public}@, Destination Waypoint Error: %{public}@", buf, 0x2Au);
   }
 
-  v24 = [v20 clientInfoStates];
-  v25 = [v24 count];
+  clientInfoStates5 = [entryCopy clientInfoStates];
+  v25 = [clientInfoStates5 count];
 
   if (v25)
   {
     v26 = objc_alloc_init(GEORouteHypothesis);
     v27 = v26;
-    if (v16)
+    if (errorCopy)
     {
-      v28 = v16;
+      v28 = errorCopy;
     }
 
     else
     {
-      v28 = v18;
+      v28 = waypointErrorCopy;
     }
 
     [v26 _setError:v28];
-    v29 = [v20 clientInfoStates];
-    [(NavdTTLCache *)self callHandlers:v29 withHypothesis:v27];
+    clientInfoStates6 = [entryCopy clientInfoStates];
+    [(NavdTTLCache *)self callHandlers:clientInfoStates6 withHypothesis:v27];
 
     goto LABEL_26;
   }
 
 LABEL_27:
-  [(NSMutableDictionary *)self->_pendingEntriesByKey removeObjectForKey:v19];
+  [(NSMutableDictionary *)self->_pendingEntriesByKey removeObjectForKey:keyCopy];
 }
 
-- (void)_resolvedMapItem:(id)a3 toRefreshPlannedDestination:(id)a4 client:(id)a5 osTransaction:(id)a6
+- (void)_resolvedMapItem:(id)item toRefreshPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v9 = a6;
-  if (a3)
+  transactionCopy = transaction;
+  if (item)
   {
-    v10 = a4;
-    v11 = a3;
+    destinationCopy = destination;
+    itemCopy = item;
     v12 = objc_alloc_init(GEORouteHypothesisRequest);
-    [v12 setTransportType:{objc_msgSend(v10, "transportType")}];
-    v13 = [v10 arrivalDate];
+    [v12 setTransportType:{objc_msgSend(destinationCopy, "transportType")}];
+    arrivalDate = [destinationCopy arrivalDate];
 
-    [v13 timeIntervalSinceReferenceDate];
+    [arrivalDate timeIntervalSinceReferenceDate];
     [v12 setArrivalDate:?];
 
-    v14 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v11];
+    v14 = [GEOMapItemStorage mapItemStorageForGEOMapItem:itemCopy];
 
     [v12 setDestinationLocation:v14];
     v15 = [[GEORouteHypothesisKey alloc] initWithRouteHypothesisRequest:v12];
@@ -507,7 +507,7 @@ LABEL_27:
     if (v16)
     {
       WeakRetained = objc_loadWeakRetained(&self->_localProxy);
-      [WeakRetained _refreshCacheEntriesIfNeededOrForced:0 osTransaction:v9];
+      [WeakRetained _refreshCacheEntriesIfNeededOrForced:0 osTransaction:transactionCopy];
     }
 
     else
@@ -523,42 +523,42 @@ LABEL_27:
   }
 }
 
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4 osTransaction:(id)a5
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
+  transactionCopy = transaction;
   v11 = +[GEOMapService sharedService];
-  v12 = [v8 handle];
+  handle = [destinationCopy handle];
   v13 = +[GEOMapService sharedService];
-  v14 = [v13 navd_defaultTraitsForNavd];
+  navd_defaultTraitsForNavd = [v13 navd_defaultTraitsForNavd];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000071EC;
   v18[3] = &unk_100064F30;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  [v11 resolveMapItemFromHandle:v12 withTraits:v14 useCache:1 coordinateOnlyRefinement:1 completionHandler:v18];
+  v19 = destinationCopy;
+  v20 = clientCopy;
+  v21 = transactionCopy;
+  v15 = transactionCopy;
+  v16 = clientCopy;
+  v17 = destinationCopy;
+  [v11 resolveMapItemFromHandle:handle withTraits:navd_defaultTraitsForNavd useCache:1 coordinateOnlyRefinement:1 completionHandler:v18];
 }
 
-- (void)_resolvedMapItem:(id)a3 toOnlyPerformLocalUpdatesForPlannedDestination:(id)a4 client:(id)a5 osTransaction:(id)a6
+- (void)_resolvedMapItem:(id)item toOnlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v19 = a5;
-  v9 = a4;
-  v10 = a3;
+  clientCopy = client;
+  destinationCopy = destination;
+  itemCopy = item;
   v11 = objc_alloc_init(GEORouteHypothesisRequest);
-  [v11 setTransportType:{objc_msgSend(v9, "transportType")}];
-  v12 = [v9 arrivalDate];
+  [v11 setTransportType:{objc_msgSend(destinationCopy, "transportType")}];
+  arrivalDate = [destinationCopy arrivalDate];
 
-  [v12 timeIntervalSinceReferenceDate];
+  [arrivalDate timeIntervalSinceReferenceDate];
   [v11 setArrivalDate:?];
 
-  v13 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v10];
+  v13 = [GEOMapItemStorage mapItemStorageForGEOMapItem:itemCopy];
 
   [v11 setDestinationLocation:v13];
   v14 = [[GEORouteHypothesisKey alloc] initWithRouteHypothesisRequest:v11];
@@ -566,7 +566,7 @@ LABEL_27:
   v16 = v15;
   if (v15)
   {
-    [v15 setLocalUpdatesOnlyForClientInfo:v19];
+    [v15 setLocalUpdatesOnlyForClientInfo:clientCopy];
   }
 
   else
@@ -575,60 +575,60 @@ LABEL_27:
     v18 = v17;
     if (v17)
     {
-      [v17 setLocalUpdatesOnlyForClientInfo:v19];
+      [v17 setLocalUpdatesOnlyForClientInfo:clientCopy];
     }
   }
 }
 
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4 osTransaction:(id)a5
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
+  transactionCopy = transaction;
   v11 = +[GEOMapService sharedService];
-  v12 = [v8 handle];
+  handle = [destinationCopy handle];
   v13 = +[GEOMapService sharedService];
-  v14 = [v13 navd_defaultTraitsForNavd];
+  navd_defaultTraitsForNavd = [v13 navd_defaultTraitsForNavd];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000075B0;
   v18[3] = &unk_100064F30;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  [v11 resolveMapItemFromHandle:v12 withTraits:v14 useCache:1 coordinateOnlyRefinement:1 completionHandler:v18];
+  v19 = destinationCopy;
+  v20 = clientCopy;
+  v21 = transactionCopy;
+  v15 = transactionCopy;
+  v16 = clientCopy;
+  v17 = destinationCopy;
+  [v11 resolveMapItemFromHandle:handle withTraits:navd_defaultTraitsForNavd useCache:1 coordinateOnlyRefinement:1 completionHandler:v18];
 }
 
-- (void)_resolvedMapItem:(id)a3 toStopMonitoringPlannedDestination:(id)a4 clientInfo:(id)a5 uuid:(id)a6 osTransaction:(id)a7
+- (void)_resolvedMapItem:(id)item toStopMonitoringPlannedDestination:(id)destination clientInfo:(id)info uuid:(id)uuid osTransaction:(id)transaction
 {
-  v12 = a3;
-  v13 = a4;
-  v33 = a5;
-  v14 = a6;
-  v32 = a7;
+  itemCopy = item;
+  destinationCopy = destination;
+  infoCopy = info;
+  uuidCopy = uuid;
+  transactionCopy = transaction;
   v15 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138478083;
-    *&buf[4] = v13;
+    *&buf[4] = destinationCopy;
     v37 = 2113;
-    v38 = v14;
+    v38 = uuidCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Resolved Map Item to Stop Monitoring Destination %{private}@ with uuid %{private}@", buf, 0x16u);
   }
 
-  if (v12)
+  if (itemCopy)
   {
     v16 = objc_alloc_init(GEORouteHypothesisRequest);
-    [v16 setTransportType:{objc_msgSend(v13, "transportType", v32)}];
-    v17 = [v13 arrivalDate];
-    [v17 timeIntervalSinceReferenceDate];
+    [v16 setTransportType:{objc_msgSend(destinationCopy, "transportType", transactionCopy)}];
+    arrivalDate = [destinationCopy arrivalDate];
+    [arrivalDate timeIntervalSinceReferenceDate];
     [v16 setArrivalDate:?];
 
-    v18 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v12];
+    v18 = [GEOMapItemStorage mapItemStorageForGEOMapItem:itemCopy];
     [v16 setDestinationLocation:v18];
 
     v19 = [[GEORouteHypothesisKey alloc] initWithRouteHypothesisRequest:v16];
@@ -636,7 +636,7 @@ LABEL_27:
     v21 = v20;
     if (v20)
     {
-      v22 = [v20 hasHandlerForClientInfo:v33];
+      v22 = [v20 hasHandlerForClientInfo:infoCopy];
       v23 = GEOFindOrCreateLog();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
       if (v22)
@@ -647,9 +647,9 @@ LABEL_27:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Entry found, removing handler", buf, 2u);
         }
 
-        if (v33)
+        if (infoCopy)
         {
-          [v21 removeHandlerForClientInfo:v33];
+          [v21 removeHandlerForClientInfo:infoCopy];
         }
 
         v25 = [(GEORouteHypothesisCache *)self->_cache loadValueForKey:v19];
@@ -673,9 +673,9 @@ LABEL_22:
       {
 LABEL_20:
 
-        if (v14)
+        if (uuidCopy)
         {
-          [(NSMutableSet *)self->_pendingStopUUIDs addObject:v14];
+          [(NSMutableSet *)self->_pendingStopUUIDs addObject:uuidCopy];
           *buf = 0;
           v28 = +[GEONavdDefaults sharedInstance];
           [v28 pendingStopTimeToLive];
@@ -698,7 +698,7 @@ LABEL_20:
       }
 
       *buf = 138477827;
-      *&buf[4] = v14;
+      *&buf[4] = uuidCopy;
       v27 = "Found cache entry but our handle wasn't on it so adding uuid %{private}@ to list of pending stops.";
     }
 
@@ -711,7 +711,7 @@ LABEL_20:
       }
 
       *buf = 138477827;
-      *&buf[4] = v14;
+      *&buf[4] = uuidCopy;
       v27 = "No cache entry found, adding uuid %{private}@ to list of pending stops.";
     }
 
@@ -722,105 +722,105 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 osTransaction:(id)a6
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid osTransaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationCopy = destination;
+  clientCopy = client;
+  uuidCopy = uuid;
+  transactionCopy = transaction;
   v14 = +[GEOMapService sharedService];
-  v15 = [v10 handle];
+  handle = [destinationCopy handle];
   v16 = +[GEOMapService sharedService];
-  v17 = [v16 navd_defaultTraitsForNavd];
+  navd_defaultTraitsForNavd = [v16 navd_defaultTraitsForNavd];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100007E44;
   v22[3] = &unk_100064FD0;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
-  v26 = v13;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
-  [v14 resolveMapItemFromHandle:v15 withTraits:v17 useCache:1 coordinateOnlyRefinement:1 completionHandler:v22];
+  v23 = destinationCopy;
+  v24 = clientCopy;
+  v25 = uuidCopy;
+  v26 = transactionCopy;
+  v18 = transactionCopy;
+  v19 = uuidCopy;
+  v20 = clientCopy;
+  v21 = destinationCopy;
+  [v14 resolveMapItemFromHandle:handle withTraits:navd_defaultTraitsForNavd useCache:1 coordinateOnlyRefinement:1 completionHandler:v22];
 }
 
-- (void)_resolvedMapItem:(id)a3 toPostUINotification:(unint64_t)a4 forDestination:(id)a5 client:(id)a6 osTransaction:(id)a7
+- (void)_resolvedMapItem:(id)item toPostUINotification:(unint64_t)notification forDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a5;
+  itemCopy = item;
+  destinationCopy = destination;
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138477827;
-    v19 = v11;
+    v19 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Resolved Map Item to Post UI Notification For Destination %{private}@", &v18, 0xCu);
   }
 
-  if (v10)
+  if (itemCopy)
   {
     v13 = objc_alloc_init(GEORouteHypothesisRequest);
-    [v13 setTransportType:{objc_msgSend(v11, "transportType")}];
-    v14 = [v11 arrivalDate];
-    [v14 timeIntervalSinceReferenceDate];
+    [v13 setTransportType:{objc_msgSend(destinationCopy, "transportType")}];
+    arrivalDate = [destinationCopy arrivalDate];
+    [arrivalDate timeIntervalSinceReferenceDate];
     [v13 setArrivalDate:?];
 
-    v15 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v10];
+    v15 = [GEOMapItemStorage mapItemStorageForGEOMapItem:itemCopy];
     [v13 setDestinationLocation:v15];
 
     v16 = [[GEORouteHypothesisKey alloc] initWithRouteHypothesisRequest:v13];
     v17 = [(NavdTTLCache *)self findEntryForKey:v16];
-    [v17 clientDisplayedUINotification:a4];
+    [v17 clientDisplayedUINotification:notification];
   }
 }
 
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 client:(id)a5 osTransaction:(id)a6
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination client:(id)client osTransaction:(id)transaction
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  destinationCopy = destination;
+  clientCopy = client;
+  transactionCopy = transaction;
   v13 = objc_alloc_init(GEORouteHypothesisRequest);
-  [v13 setTransportType:{objc_msgSend(v10, "transportType")}];
-  v14 = [v10 arrivalDate];
-  [v14 timeIntervalSinceReferenceDate];
+  [v13 setTransportType:{objc_msgSend(destinationCopy, "transportType")}];
+  arrivalDate = [destinationCopy arrivalDate];
+  [arrivalDate timeIntervalSinceReferenceDate];
   [v13 setArrivalDate:?];
 
   v15 = +[GEOMapService sharedService];
-  v16 = [v10 handle];
+  handle = [destinationCopy handle];
   v17 = +[GEOMapService sharedService];
-  v18 = [v17 navd_defaultTraitsForNavd];
+  navd_defaultTraitsForNavd = [v17 navd_defaultTraitsForNavd];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000082C8;
   v22[3] = &unk_100065020;
-  v25 = v12;
-  v26 = a3;
+  v25 = transactionCopy;
+  notificationCopy = notification;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
-  [v15 resolveMapItemFromHandle:v16 withTraits:v18 useCache:1 coordinateOnlyRefinement:1 completionHandler:v22];
+  v23 = destinationCopy;
+  v24 = clientCopy;
+  v19 = transactionCopy;
+  v20 = clientCopy;
+  v21 = destinationCopy;
+  [v15 resolveMapItemFromHandle:handle withTraits:navd_defaultTraitsForNavd useCache:1 coordinateOnlyRefinement:1 completionHandler:v22];
 }
 
-- (void)removeEntry:(id)a3 withKey:(id)a4 value:(id)a5
+- (void)removeEntry:(id)entry withKey:(id)key value:(id)value
 {
   cache = self->_cache;
-  v9 = a3;
-  [(GEORouteHypothesisCache *)cache removeKey:a4 value:a5];
-  [(NSMutableArray *)self->_entries removeObject:v9];
+  entryCopy = entry;
+  [(GEORouteHypothesisCache *)cache removeKey:key value:value];
+  [(NSMutableArray *)self->_entries removeObject:entryCopy];
 }
 
-- (void)callHandlers:(id)a3 withHypothesis:(id)a4
+- (void)callHandlers:(id)handlers withHypothesis:(id)hypothesis
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 error];
-  if (v8)
+  handlersCopy = handlers;
+  hypothesisCopy = hypothesis;
+  error = [hypothesisCopy error];
+  if (error)
   {
   }
 
@@ -841,9 +841,9 @@ LABEL_23:
   v11[1] = 3221225472;
   v11[2] = sub_10000858C;
   v11[3] = &unk_100065048;
-  v12 = v7;
-  v10 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = hypothesisCopy;
+  v10 = hypothesisCopy;
+  [handlersCopy enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 @end

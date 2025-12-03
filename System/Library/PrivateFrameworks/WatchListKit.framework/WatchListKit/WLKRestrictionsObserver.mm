@@ -3,7 +3,7 @@
 - (WLKRestrictionsObserver)init;
 - (void)_evaluateRestrictionsChange;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation WLKRestrictionsObserver
@@ -47,8 +47,8 @@ uint64_t __41__WLKRestrictionsObserver_sharedObserver__block_invoke()
     v2->_debounceQueue = v7;
 
     [(WLKDebouncingQueue *)v2->_debounceQueue setDelay:500000];
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
-    [v9 registerObserver:v2];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v2];
   }
 
   return v2;
@@ -56,18 +56,18 @@ uint64_t __41__WLKRestrictionsObserver_sharedObserver__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = WLKRestrictionsObserver;
   [(WLKRestrictionsObserver *)&v4 dealloc];
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   objc_initWeak(&location, self);
   debounceQueue = self->_debounceQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -115,7 +115,7 @@ void __94__WLKRestrictionsObserver_profileConnectionDidReceiveRestrictionChanged
   {
     if (!v9 || !v10)
     {
-      v14 = v9;
+      defaultCenter = v9;
 LABEL_15:
 
 LABEL_16:
@@ -133,8 +133,8 @@ LABEL_16:
         _os_log_impl(&dword_272A0F000, v17, OS_LOG_TYPE_DEFAULT, "WLKRestrictionsObserver - new: %@-%@; posting notification", &v21, 0x16u);
       }
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [(NSNumber *)v14 postNotificationName:@"WLKRestrictionsDidChangeNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [(NSNumber *)defaultCenter postNotificationName:@"WLKRestrictionsDidChangeNotification" object:self userInfo:0];
       goto LABEL_20;
     }
 
@@ -147,14 +147,14 @@ LABEL_16:
   }
 
   v13 = self->_movieRanking;
-  v14 = v4;
+  defaultCenter = v4;
   v15 = v13;
   v11 = v15;
-  if (v14 != v15)
+  if (defaultCenter != v15)
   {
-    if (v14 && v15)
+    if (defaultCenter && v15)
     {
-      v16 = [(NSNumber *)v14 isEqual:v15];
+      v16 = [(NSNumber *)defaultCenter isEqual:v15];
 
       if (v16)
       {

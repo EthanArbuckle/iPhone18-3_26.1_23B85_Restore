@@ -1,17 +1,17 @@
 @interface CKDPRecordMoveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)semanticsAsString:(int)a3;
-- (int)StringAsSemantics:(id)a3;
+- (id)semanticsAsString:(int)string;
+- (int)StringAsSemantics:(id)semantics;
 - (int)semantics;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMerge:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMerge:(BOOL)merge;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordMoveRequest
@@ -41,33 +41,33 @@
   }
 }
 
-- (id)semanticsAsString:(int)a3
+- (id)semanticsAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"failIfExists";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"failIfEtagMismatch";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsSemantics:(id)a3
+- (int)StringAsSemantics:(id)semantics
 {
-  v3 = a3;
+  semanticsCopy = semantics;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"failIfExists") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(semanticsCopy, v4, @"failIfExists") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"failIfEtagMismatch"))
+    if (objc_msgSend_isEqualToString_(semanticsCopy, v5, @"failIfEtagMismatch"))
     {
       v6 = 2;
     }
@@ -81,9 +81,9 @@
   return v6;
 }
 
-- (void)setHasMerge:(BOOL)a3
+- (void)setHasMerge:(BOOL)merge
 {
-  if (a3)
+  if (merge)
   {
     v3 = 2;
   }
@@ -180,9 +180,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     semantics = self->_semantics;
@@ -226,62 +226,62 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v11[14] = self->_semantics;
-    *(v11 + 64) |= 1u;
+    toCopy[14] = self->_semantics;
+    *(toCopy + 64) |= 1u;
   }
 
   originId = self->_originId;
   if (originId)
   {
-    objc_msgSend_setOriginId_(v11, v4, originId);
+    objc_msgSend_setOriginId_(toCopy, v4, originId);
   }
 
   originEtag = self->_originEtag;
   if (originEtag)
   {
-    objc_msgSend_setOriginEtag_(v11, v4, originEtag);
+    objc_msgSend_setOriginEtag_(toCopy, v4, originEtag);
   }
 
   destinationEtag = self->_destinationEtag;
   if (destinationEtag)
   {
-    objc_msgSend_setDestinationEtag_(v11, v4, destinationEtag);
+    objc_msgSend_setDestinationEtag_(toCopy, v4, destinationEtag);
   }
 
   destinationZoneProtectionInfoTag = self->_destinationZoneProtectionInfoTag;
   if (destinationZoneProtectionInfoTag)
   {
-    objc_msgSend_setDestinationZoneProtectionInfoTag_(v11, v4, destinationZoneProtectionInfoTag);
+    objc_msgSend_setDestinationZoneProtectionInfoTag_(toCopy, v4, destinationZoneProtectionInfoTag);
   }
 
   destinationRecordProtectionInfoTag = self->_destinationRecordProtectionInfoTag;
   if (destinationRecordProtectionInfoTag)
   {
-    objc_msgSend_setDestinationRecordProtectionInfoTag_(v11, v4, destinationRecordProtectionInfoTag);
+    objc_msgSend_setDestinationRecordProtectionInfoTag_(toCopy, v4, destinationRecordProtectionInfoTag);
   }
 
   destinationRecord = self->_destinationRecord;
   if (destinationRecord)
   {
-    objc_msgSend_setDestinationRecord_(v11, v4, destinationRecord);
+    objc_msgSend_setDestinationRecord_(toCopy, v4, destinationRecord);
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v11 + 60) = self->_merge;
-    *(v11 + 64) |= 2u;
+    *(toCopy + 60) = self->_merge;
+    *(toCopy + 64) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -290,27 +290,27 @@
     *(v10 + 64) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_originId, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_originId, v11, zone);
   v14 = *(v12 + 48);
   *(v12 + 48) = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_originEtag, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_originEtag, v15, zone);
   v17 = *(v12 + 40);
   *(v12 + 40) = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_destinationEtag, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_destinationEtag, v18, zone);
   v20 = *(v12 + 8);
   *(v12 + 8) = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_destinationZoneProtectionInfoTag, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_destinationZoneProtectionInfoTag, v21, zone);
   v23 = *(v12 + 32);
   *(v12 + 32) = v22;
 
-  v25 = objc_msgSend_copyWithZone_(self->_destinationRecordProtectionInfoTag, v24, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_destinationRecordProtectionInfoTag, v24, zone);
   v26 = *(v12 + 24);
   *(v12 + 24) = v25;
 
-  v28 = objc_msgSend_copyWithZone_(self->_destinationRecord, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_destinationRecord, v27, zone);
   v29 = *(v12 + 16);
   *(v12 + 16) = v28;
 
@@ -323,38 +323,38 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_21;
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((v4[8] & 1) == 0 || self->_semantics != *(v4 + 14))
+    if ((equalCopy[8] & 1) == 0 || self->_semantics != *(equalCopy + 14))
     {
       goto LABEL_21;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
     goto LABEL_21;
   }
 
   originId = self->_originId;
-  v10 = v4[6];
+  v10 = equalCopy[6];
   if (originId | v10 && !objc_msgSend_isEqual_(originId, v7, v10))
   {
     goto LABEL_21;
   }
 
   originEtag = self->_originEtag;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (originEtag | v12)
   {
     if (!objc_msgSend_isEqual_(originEtag, v7, v12))
@@ -364,7 +364,7 @@
   }
 
   destinationEtag = self->_destinationEtag;
-  v14 = v4[1];
+  v14 = equalCopy[1];
   if (destinationEtag | v14)
   {
     if (!objc_msgSend_isEqual_(destinationEtag, v7, v14))
@@ -374,7 +374,7 @@
   }
 
   destinationZoneProtectionInfoTag = self->_destinationZoneProtectionInfoTag;
-  v16 = v4[4];
+  v16 = equalCopy[4];
   if (destinationZoneProtectionInfoTag | v16)
   {
     if (!objc_msgSend_isEqual_(destinationZoneProtectionInfoTag, v7, v16))
@@ -384,7 +384,7 @@
   }
 
   destinationRecordProtectionInfoTag = self->_destinationRecordProtectionInfoTag;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (destinationRecordProtectionInfoTag | v18)
   {
     if (!objc_msgSend_isEqual_(destinationRecordProtectionInfoTag, v7, v18))
@@ -394,7 +394,7 @@
   }
 
   destinationRecord = self->_destinationRecord;
-  v20 = v4[2];
+  v20 = equalCopy[2];
   if (destinationRecord | v20)
   {
     if (!objc_msgSend_isEqual_(destinationRecord, v7, v20))
@@ -403,10 +403,10 @@
     }
   }
 
-  v21 = (v4[8] & 2) == 0;
+  v21 = (equalCopy[8] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[8] & 2) == 0)
+    if ((equalCopy[8] & 2) == 0)
     {
 LABEL_21:
       v21 = 0;
@@ -415,13 +415,13 @@ LABEL_21:
 
     if (self->_merge)
     {
-      if ((*(v4 + 60) & 1) == 0)
+      if ((*(equalCopy + 60) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 60))
+    else if (*(equalCopy + 60))
     {
       goto LABEL_21;
     }
@@ -465,13 +465,13 @@ LABEL_22:
   return v5 ^ v4 ^ v8 ^ v11 ^ v14 ^ v17 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[16])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[16])
   {
-    self->_semantics = v4[14];
+    self->_semantics = fromCopy[14];
     *&self->_has |= 1u;
   }
 

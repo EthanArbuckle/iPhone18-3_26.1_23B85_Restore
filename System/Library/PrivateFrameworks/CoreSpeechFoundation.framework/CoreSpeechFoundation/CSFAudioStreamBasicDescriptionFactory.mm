@@ -5,7 +5,7 @@
 + (AudioStreamBasicDescription)lpcmInt16ASBD;
 + (AudioStreamBasicDescription)lpcmInt16NarrowBandASBD;
 + (AudioStreamBasicDescription)lpcmInterleavedASBD;
-+ (AudioStreamBasicDescription)lpcmInterleavedASBDWithSampleRate:(SEL)a3 numberOfChannels:(float)a4;
++ (AudioStreamBasicDescription)lpcmInterleavedASBDWithSampleRate:(SEL)rate numberOfChannels:(float)channels;
 + (AudioStreamBasicDescription)lpcmInterleavedWithRemoteVADASBD;
 + (AudioStreamBasicDescription)lpcmMonoInterleavedASBD;
 + (AudioStreamBasicDescription)lpcmMonoInterleavedWithRemoteVADASBD;
@@ -13,7 +13,7 @@
 + (AudioStreamBasicDescription)lpcmMonoNonInterleavedWithRemoteVADASBD;
 + (AudioStreamBasicDescription)lpcmNarrowBandASBD;
 + (AudioStreamBasicDescription)lpcmNonInterleavedASBD;
-+ (AudioStreamBasicDescription)lpcmNonInterleavedASBDWithSampleRate:(SEL)a3 numberOfChannels:(float)a4;
++ (AudioStreamBasicDescription)lpcmNonInterleavedASBDWithSampleRate:(SEL)rate numberOfChannels:(float)channels;
 + (AudioStreamBasicDescription)lpcmNonInterleavedWithRemoteVADASBD;
 + (AudioStreamBasicDescription)opusASBD;
 + (AudioStreamBasicDescription)opusNarrowBandASBD;
@@ -99,14 +99,14 @@
   return result;
 }
 
-+ (AudioStreamBasicDescription)lpcmNonInterleavedASBDWithSampleRate:(SEL)a3 numberOfChannels:(float)a4
++ (AudioStreamBasicDescription)lpcmNonInterleavedASBDWithSampleRate:(SEL)rate numberOfChannels:(float)channels
 {
   v8 = +[CSConfig inputRecordingBytesPerPacket];
   v9 = +[CSConfig inputRecordingFramesPerPacket];
   v10 = +[CSConfig inputRecordingBytesPerFrame];
   v11 = +[CSConfig inputRecordingSampleBitDepth];
   result = +[CSConfig inputRecordingIsFloat];
-  retstr->mSampleRate = a4;
+  retstr->mSampleRate = channels;
   if (result)
   {
     v13 = 41;
@@ -162,7 +162,7 @@
   return [CSFAudioStreamBasicDescriptionFactory lpcmNonInterleavedASBDWithSampleRate:v5 numberOfChannels:v6];
 }
 
-+ (AudioStreamBasicDescription)lpcmInterleavedASBDWithSampleRate:(SEL)a3 numberOfChannels:(float)a4
++ (AudioStreamBasicDescription)lpcmInterleavedASBDWithSampleRate:(SEL)rate numberOfChannels:(float)channels
 {
   v8 = +[CSConfig inputRecordingBytesPerPacket];
   v9 = +[CSConfig inputRecordingFramesPerPacket];
@@ -179,7 +179,7 @@
     v13 = 12;
   }
 
-  retstr->mSampleRate = a4;
+  retstr->mSampleRate = channels;
   retstr->mFormatID = 1819304813;
   retstr->mFormatFlags = v13;
   retstr->mBytesPerPacket = v8 * a5;

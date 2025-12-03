@@ -1,24 +1,24 @@
 @interface DKGLUtilities
 + (id)createPlatformGLContext;
 + (id)createSharedGLContext;
-+ (id)pathForResource:(id)a3 ofType:(id)a4;
-+ (id)snapshotImageOfFrameBufferWithID:(unsigned int)a3 bufferSize:(CGSize)a4 displayScale:(double)a5;
-+ (unsigned)compileShader:(id)a3 ofType:(id)a4;
++ (id)pathForResource:(id)resource ofType:(id)type;
++ (id)snapshotImageOfFrameBufferWithID:(unsigned int)d bufferSize:(CGSize)size displayScale:(double)scale;
++ (unsigned)compileShader:(id)shader ofType:(id)type;
 + (void)_postGLInactiveNotification;
-+ (void)createFBO:(unsigned int *)a3 depthRB:(unsigned int *)a4 texture:(unsigned int *)a5 width:(int)a6 height:(int)a7 format:(unsigned int)a8;
-+ (void)createRepeatableTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5;
-+ (void)createSharedRepeatableTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5;
-+ (void)createTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5;
-+ (void)createVBO:(unsigned int *)a3 size:(int64_t)a4 data:(void *)a5 usage:(unsigned int)a6;
-+ (void)deleteFBO:(unsigned int *)a3 depthRB:(unsigned int *)a4 texture:(unsigned int *)a5;
-+ (void)deleteTexture:(unsigned int *)a3;
-+ (void)deleteVBO:(unsigned int *)a3;
-+ (void)drawQuadAtX:(float)a3 Y:(float)a4 width:(float)a5 height:(float)a6;
++ (void)createFBO:(unsigned int *)o depthRB:(unsigned int *)b texture:(unsigned int *)texture width:(int)width height:(int)height format:(unsigned int)format;
++ (void)createRepeatableTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type;
++ (void)createSharedRepeatableTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type;
++ (void)createTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type;
++ (void)createVBO:(unsigned int *)o size:(int64_t)size data:(void *)data usage:(unsigned int)usage;
++ (void)deleteFBO:(unsigned int *)o depthRB:(unsigned int *)b texture:(unsigned int *)texture;
++ (void)deleteTexture:(unsigned int *)texture;
++ (void)deleteVBO:(unsigned int *)o;
++ (void)drawQuadAtX:(float)x Y:(float)y width:(float)width height:(float)height;
 + (void)initialize;
 + (void)setCurrentClearColor;
-+ (void)setProjectionMatrixForWidth:(float)a3 height:(float)a4 flipped:(BOOL)a5 matrix:(id *)a6;
++ (void)setProjectionMatrixForWidth:(float)width height:(float)height flipped:(BOOL)flipped matrix:(id *)matrix;
 + (void)teardownSharedGLContext;
-+ (void)translateMatrix:(id *)a3 byX:(float)a4 Y:(float)a5 result:(id *)a6;
++ (void)translateMatrix:(id *)matrix byX:(float)x Y:(float)y result:(id *)result;
 @end
 
 @implementation DKGLUtilities
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __27__DKGLUtilities_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_once != -1)
   {
     dispatch_once(&initialize_once, block);
@@ -59,32 +59,32 @@ void __27__DKGLUtilities_initialize__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)pathForResource:(id)a3 ofType:(id)a4
++ (id)pathForResource:(id)resource ofType:(id)type
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  resourceCopy = resource;
   v8 = [v5 bundleForClass:objc_opt_class()];
-  v9 = [v8 pathForResource:v7 ofType:v6];
+  v9 = [v8 pathForResource:resourceCopy ofType:typeCopy];
 
   return v9;
 }
 
-+ (unsigned)compileShader:(id)a3 ofType:(id)a4
++ (unsigned)compileShader:(id)shader ofType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [DKGLUtilities pathForResource:v5 ofType:v6];
+  shaderCopy = shader;
+  typeCopy = type;
+  v7 = [DKGLUtilities pathForResource:shaderCopy ofType:typeCopy];
   v8 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v7 encoding:4 error:0];
   if (!v8)
   {
-    NSLog(&cfstr_ErrorLoadingSh.isa, v5, v6);
+    NSLog(&cfstr_ErrorLoadingSh.isa, shaderCopy, typeCopy);
     goto LABEL_9;
   }
 
   v9 = v8;
-  if ([v6 isEqualToString:@"vert"])
+  if ([typeCopy isEqualToString:@"vert"])
   {
     v10 = 35633;
   }
@@ -113,28 +113,28 @@ LABEL_9:
   return Shader;
 }
 
-+ (void)createFBO:(unsigned int *)a3 depthRB:(unsigned int *)a4 texture:(unsigned int *)a5 width:(int)a6 height:(int)a7 format:(unsigned int)a8
++ (void)createFBO:(unsigned int *)o depthRB:(unsigned int *)b texture:(unsigned int *)texture width:(int)width height:(int)height format:(unsigned int)format
 {
-  if (a3 && a5)
+  if (o && texture)
   {
-    glGenTextures(1, a5);
-    glBindTexture(0xDE1u, *a5);
-    glTexImage2D(0xDE1u, 0, 6408, a6, a7, 0, 0x1908u, 0x1401u, 0);
+    glGenTextures(1, texture);
+    glBindTexture(0xDE1u, *texture);
+    glTexImage2D(0xDE1u, 0, 6408, width, height, 0, 0x1908u, 0x1401u, 0);
     glTexParameteri(0xDE1u, 0x2801u, 9728);
     glTexParameteri(0xDE1u, 0x2800u, 9728);
     glTexParameteri(0xDE1u, 0x2802u, 33071);
     glTexParameteri(0xDE1u, 0x2803u, 33071);
-    glGenFramebuffers(1, a3);
-    glBindFramebuffer(0x8D40u, *a3);
-    glFramebufferTexture2D(0x8D40u, 0x8CE0u, 0xDE1u, *a5, 0);
+    glGenFramebuffers(1, o);
+    glBindFramebuffer(0x8D40u, *o);
+    glFramebufferTexture2D(0x8D40u, 0x8CE0u, 0xDE1u, *texture, 0);
   }
 
-  if (a4)
+  if (b)
   {
-    glGenRenderbuffers(1, a4);
-    glBindRenderbuffer(0x8D41u, *a4);
-    glRenderbufferStorage(0x8D41u, 0x81A6u, a6, a7);
-    glFramebufferRenderbuffer(0x8D40u, 0x8D00u, 0x8D41u, *a4);
+    glGenRenderbuffers(1, b);
+    glBindRenderbuffer(0x8D41u, *b);
+    glRenderbufferStorage(0x8D41u, 0x81A6u, width, height);
+    glFramebufferRenderbuffer(0x8D40u, 0x8D00u, 0x8D41u, *b);
   }
 
   glDisable(0xB71u);
@@ -144,59 +144,59 @@ LABEL_9:
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glClear(0x4000u);
 
-  glViewport(0, 0, a6, a7);
+  glViewport(0, 0, width, height);
 }
 
-+ (void)deleteFBO:(unsigned int *)a3 depthRB:(unsigned int *)a4 texture:(unsigned int *)a5
++ (void)deleteFBO:(unsigned int *)o depthRB:(unsigned int *)b texture:(unsigned int *)texture
 {
-  if (a3)
+  if (o)
   {
-    glDeleteFramebuffers(1, a3);
-    *a3 = 0;
+    glDeleteFramebuffers(1, o);
+    *o = 0;
   }
 
-  if (a4)
+  if (b)
   {
-    glDeleteRenderbuffers(1, a4);
-    *a4 = 0;
+    glDeleteRenderbuffers(1, b);
+    *b = 0;
   }
 
-  if (a5)
+  if (texture)
   {
-    glDeleteTextures(1, a5);
-    *a5 = 0;
+    glDeleteTextures(1, texture);
+    *texture = 0;
   }
 }
 
-+ (void)createVBO:(unsigned int *)a3 size:(int64_t)a4 data:(void *)a5 usage:(unsigned int)a6
++ (void)createVBO:(unsigned int *)o size:(int64_t)size data:(void *)data usage:(unsigned int)usage
 {
-  glGenBuffers(1, a3);
-  glBindBuffer(0x8892u, *a3);
+  glGenBuffers(1, o);
+  glBindBuffer(0x8892u, *o);
 
-  glBufferData(0x8892u, a4, a5, a6);
+  glBufferData(0x8892u, size, data, usage);
 }
 
-+ (void)deleteVBO:(unsigned int *)a3
++ (void)deleteVBO:(unsigned int *)o
 {
-  if (a3)
+  if (o)
   {
     glDeleteVertexArraysOES();
-    *a3 = 0;
+    *o = 0;
   }
 }
 
-+ (void)createTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5
++ (void)createTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type
 {
   pixels[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  typeCopy = type;
   Error = glGetError();
   if (Error)
   {
     printf("glError: %04x caught at %s:%u\n", Error, "/Library/Caches/com.apple.xbs/Sources/DrawingKit/DrawingKit/Source/Shared/GLUtilities/DKGLUtilities.m", 175);
   }
 
-  v10 = [DKGLUtilities pathForResource:v7 ofType:v8];
+  v10 = [DKGLUtilities pathForResource:nameCopy ofType:typeCopy];
   v16 = 0;
   v11 = [MEMORY[0x277CCAEF0] textureWithContentsOfFile:v10 options:0 error:&v16];
   v12 = v16;
@@ -213,37 +213,37 @@ LABEL_9:
 
   if (v14)
   {
-    if (a3)
+    if (texture)
     {
-      *a3 = [v11 name];
+      *texture = [v11 name];
     }
   }
 
   else
   {
-    v15 = [v12 localizedDescription];
-    NSLog(&cfstr_SFailedToLoadT.isa, "+[DKGLUtilities createTexture:withImageName:ofType:]", v15);
+    localizedDescription = [v12 localizedDescription];
+    NSLog(&cfstr_SFailedToLoadT.isa, "+[DKGLUtilities createTexture:withImageName:ofType:]", localizedDescription);
 
-    if (a3)
+    if (texture)
     {
       pixels[0] = -1;
       pixels[1] = -1;
-      glGenTextures(1, a3);
-      glBindTexture(0xDE1u, *a3);
+      glGenTextures(1, texture);
+      glBindTexture(0xDE1u, *texture);
       glTexImage2D(0xDE1u, 0, 6408, 2, 2, 0, 0x1908u, 0x1401u, pixels);
     }
   }
 }
 
-+ (void)createRepeatableTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5
++ (void)createRepeatableTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type
 {
-  v7 = a5;
-  v8 = a4;
-  [objc_opt_class() createTexture:a3 withImageName:v8 ofType:v7];
+  typeCopy = type;
+  nameCopy = name;
+  [objc_opt_class() createTexture:texture withImageName:nameCopy ofType:typeCopy];
 
-  if (a3)
+  if (texture)
   {
-    glBindTexture(0xDE1u, *a3);
+    glBindTexture(0xDE1u, *texture);
     glTexParameteri(0xDE1u, 0x2800u, 9729);
     glTexParameteri(0xDE1u, 0x2801u, 9729);
     glTexParameteri(0xDE1u, 0x2802u, 10497);
@@ -252,27 +252,27 @@ LABEL_9:
   }
 }
 
-+ (void)deleteTexture:(unsigned int *)a3
++ (void)deleteTexture:(unsigned int *)texture
 {
-  if (a3)
+  if (texture)
   {
-    glDeleteTextures(1, a3);
-    *a3 = 0;
+    glDeleteTextures(1, texture);
+    *texture = 0;
   }
 }
 
-+ (void)drawQuadAtX:(float)a3 Y:(float)a4 width:(float)a5 height:(float)a6
++ (void)drawQuadAtX:(float)x Y:(float)y width:(float)width height:(float)height
 {
   v18 = *MEMORY[0x277D85DE8];
   buffers[1] = 0;
-  *data = a3;
-  *&data[1] = a4;
-  v9 = a3 + a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a4 + a6;
-  v15 = a3 + a5;
-  v16 = a4 + a6;
+  *data = x;
+  *&data[1] = y;
+  v9 = x + width;
+  yCopy = y;
+  xCopy = x;
+  v13 = y + height;
+  v15 = x + width;
+  v16 = y + height;
   v8 = xmmword_249D9D8D0;
   v11 = xmmword_249D9D8E0;
   v14 = xmmword_249D9D8F0;
@@ -292,11 +292,11 @@ LABEL_9:
   glDeleteVertexArraysOES();
 }
 
-+ (void)setProjectionMatrixForWidth:(float)a3 height:(float)a4 flipped:(BOOL)a5 matrix:(id *)a6
++ (void)setProjectionMatrixForWidth:(float)width height:(float)height flipped:(BOOL)flipped matrix:(id *)matrix
 {
   v6 = 0;
   v7.i32[0] = -1.0;
-  if (a5)
+  if (flipped)
   {
     v8 = 1.0;
   }
@@ -325,23 +325,23 @@ LABEL_9:
   v9 = v14;
   v10 = v15;
   v11 = v16;
-  *a6 = v13;
-  *(a6 + 1) = v9;
-  *(a6 + 2) = v10;
-  *(a6 + 3) = v11;
+  *matrix = v13;
+  *(matrix + 1) = v9;
+  *(matrix + 2) = v10;
+  *(matrix + 3) = v11;
 }
 
-+ (void)translateMatrix:(id *)a3 byX:(float)a4 Y:(float)a5 result:(id *)a6
++ (void)translateMatrix:(id *)matrix byX:(float)x Y:(float)y result:(id *)result
 {
   v6 = 0;
   v8 = 0;
   v9 = 1.0;
-  v10 = *a3;
-  v11 = *(a3 + 1);
-  v12 = *(a3 + 2);
-  v13 = *(a3 + 3);
+  v10 = *matrix;
+  v11 = *(matrix + 1);
+  v12 = *(matrix + 2);
+  v13 = *(matrix + 3);
   v17[2] = xmmword_249D9D910;
-  v17[3] = *&a4;
+  v17[3] = *&x;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -356,24 +356,24 @@ LABEL_9:
   v14 = v19;
   v15 = v20;
   v16 = v21;
-  *a6 = v18;
-  *(a6 + 1) = v14;
-  *(a6 + 2) = v15;
-  *(a6 + 3) = v16;
+  *result = v18;
+  *(result + 1) = v14;
+  *(result + 2) = v15;
+  *(result + 3) = v16;
 }
 
-+ (id)snapshotImageOfFrameBufferWithID:(unsigned int)a3 bufferSize:(CGSize)a4 displayScale:(double)a5
++ (id)snapshotImageOfFrameBufferWithID:(unsigned int)d bufferSize:(CGSize)size displayScale:(double)scale
 {
-  if (a3)
+  if (d)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     params = 0;
     glGetIntegerv(0x8CA6u, &params);
     glPushGroupMarkerEXT(0, "Take Snapshot");
-    glBindFramebuffer(0x8D40u, a3);
-    v9 = (width * a5);
-    v10 = (height * a5);
+    glBindFramebuffer(0x8D40u, d);
+    v9 = (width * scale);
+    v10 = (height * scale);
     param = 0;
     v11 = malloc_type_malloc(4 * v9 * v10, 0x100004077774924uLL);
     if (v11)
@@ -381,7 +381,7 @@ LABEL_9:
       v12 = v11;
       glGetIntegerv(0xD05u, &param);
       glPixelStorei(0xD05u, 1);
-      glReadPixels(0, 0, (width * a5), (height * a5), 0x1908u, 0x1401u, v12);
+      glReadPixels(0, 0, (width * scale), (height * scale), 0x1908u, 0x1401u, v12);
       glPixelStorei(0xD05u, param);
       v13 = CFDataCreate(*MEMORY[0x277CBECE8], v12, 4 * v9 * v10);
       if (v13)
@@ -392,10 +392,10 @@ LABEL_9:
         {
           v16 = v15;
           DeviceRGB = CGColorSpaceCreateDeviceRGB();
-          v18 = CGImageCreate((width * a5), (height * a5), 8uLL, 0x20uLL, 4 * v9, DeviceRGB, 3u, v16, 0, 0, kCGRenderingIntentDefault);
+          v18 = CGImageCreate((width * scale), (height * scale), 8uLL, 0x20uLL, 4 * v9, DeviceRGB, 3u, v16, 0, 0, kCGRenderingIntentDefault);
           if (v18)
           {
-            v19 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v18 scale:0 orientation:a5];
+            v19 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:v18 scale:0 orientation:scale];
           }
 
           else
@@ -450,32 +450,32 @@ LABEL_9:
 
 + (id)createSharedGLContext
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sSharegroupContext)
   {
     v3 = objc_alloc(MEMORY[0x277CD9388]);
-    v4 = [sSharegroupContext sharegroup];
-    v5 = [v3 initWithAPI:2 sharegroup:v4];
+    sharegroup = [sSharegroupContext sharegroup];
+    v5 = [v3 initWithAPI:2 sharegroup:sharegroup];
   }
 
   else
   {
     v5 = [objc_alloc(MEMORY[0x277CD9388]) initWithAPI:2];
     objc_storeStrong(&sSharegroupContext, v5);
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = sTextureCache;
-    sTextureCache = v6;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    sharegroup = sTextureCache;
+    sTextureCache = dictionary;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 + (void)teardownSharedGLContext
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = sSharegroupContext;
   sSharegroupContext = 0;
@@ -486,42 +486,42 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-+ (void)createSharedRepeatableTexture:(unsigned int *)a3 withImageName:(id)a4 ofType:(id)a5
++ (void)createSharedRepeatableTexture:(unsigned int *)texture withImageName:(id)name ofType:(id)type
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = a1;
-  objc_sync_enter(v9);
+  nameCopy = name;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sTextureCache && ([MEMORY[0x277CD9388] currentContext], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "sharegroup"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(sSharegroupContext, "sharegroup"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v11 == v12))
   {
-    v13 = [sTextureCache objectForKeyedSubscript:v16];
+    v13 = [sTextureCache objectForKeyedSubscript:nameCopy];
     v14 = v13;
     if (v13)
     {
-      *a3 = [v13 unsignedIntegerValue];
+      *texture = [v13 unsignedIntegerValue];
     }
 
     else
     {
-      [v9 createRepeatableTexture:a3 withImageName:v16 ofType:v8];
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*a3];
-      [sTextureCache setObject:v15 forKeyedSubscript:v16];
+      [selfCopy createRepeatableTexture:texture withImageName:nameCopy ofType:typeCopy];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*texture];
+      [sTextureCache setObject:v15 forKeyedSubscript:nameCopy];
     }
   }
 
   else
   {
-    *a3 = 0;
+    *texture = 0;
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
 + (void)_postGLInactiveNotification
 {
-  if ([a1 gpuAvailable])
+  if ([self gpuAvailable])
   {
-    [a1 teardownSharedGLContext];
+    [self teardownSharedGLContext];
   }
 
   atomic_store(0, DKSafeToUseOpenGL);

@@ -1,23 +1,23 @@
 @interface CKDArchiveRecordsOperation
-- (CKDArchiveRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDArchiveRecordsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleRecordArchived:(id)a3 responseCode:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleRecordArchived:(id)archived responseCode:(id)code;
 - (void)main;
 @end
 
 @implementation CKDArchiveRecordsOperation
 
-- (CKDArchiveRecordsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDArchiveRecordsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDArchiveRecordsOperation;
-  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordIDs(v6, v7, v8);
+    v10 = objc_msgSend_recordIDs(infoCopy, v7, v8);
     recordIDs = v9->_recordIDs;
     v9->_recordIDs = v10;
   }
@@ -32,21 +32,21 @@
   return v2;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setRecordArchivedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDArchiveRecordsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
-- (void)_handleRecordArchived:(id)a3 responseCode:(id)a4
+- (void)_handleRecordArchived:(id)archived responseCode:(id)code
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_code(v7, v8, v9);
+  archivedCopy = archived;
+  codeCopy = code;
+  v10 = objc_msgSend_code(codeCopy, v8, v9);
   v11 = *MEMORY[0x277CBC878];
   v12 = *MEMORY[0x277CBC880];
   if (v10 == 1)
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v47 = v6;
+      v47 = archivedCopy;
       _os_log_impl(&dword_22506F000, v13, OS_LOG_TYPE_INFO, "Record with ID %@ was successfully archived", buf, 0xCu);
     }
 
@@ -78,10 +78,10 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v21 = objc_msgSend_error(v7, v19, v20);
+      v21 = objc_msgSend_error(codeCopy, v19, v20);
       v24 = objc_msgSend_errorDescription(v21, v22, v23);
       *buf = 138412546;
-      v47 = v6;
+      v47 = archivedCopy;
       v48 = 2114;
       v49 = v24;
       _os_log_impl(&dword_22506F000, v18, OS_LOG_TYPE_INFO, "Error archiving record with ID %@: %{public}@", buf, 0x16u);
@@ -89,12 +89,12 @@
 
     v25 = MEMORY[0x277CBC560];
     v26 = *MEMORY[0x277CBC120];
-    v27 = sub_2253962A4(v7);
+    v27 = sub_2253962A4(codeCopy);
     v30 = objc_msgSend_request(self, v28, v29);
-    v31 = sub_225395734(v30, v7);
-    v34 = objc_msgSend_error(v7, v32, v33);
+    v31 = sub_225395734(v30, codeCopy);
+    v34 = objc_msgSend_error(codeCopy, v32, v33);
     v37 = objc_msgSend_errorDescription(v34, v35, v36);
-    v16 = objc_msgSend_errorWithDomain_code_userInfo_format_(v25, v38, v26, v27, v31, @"Error archiving record with ID %@: %@", v6, v37);
+    v16 = objc_msgSend_errorWithDomain_code_userInfo_format_(v25, v38, v26, v27, v31, @"Error archiving record with ID %@: %@", archivedCopy, v37);
   }
 
   v39 = objc_msgSend_callbackQueue(self, v14, v15);
@@ -103,10 +103,10 @@
   block[2] = sub_2251D5FF0;
   block[3] = &unk_278546990;
   block[4] = self;
-  v44 = v6;
+  v44 = archivedCopy;
   v45 = v16;
   v40 = v16;
-  v41 = v6;
+  v41 = archivedCopy;
   dispatch_async(v39, block);
 
   v42 = *MEMORY[0x277D85DE8];

@@ -2,19 +2,19 @@
 - (BOOL)_isDeviceSatellitePaired;
 - (BOOL)_needsRemindersSpecifiers;
 - (BRKSettingsViewController)init;
-- (id)_getRemindersEnabled:(id)a3;
-- (id)_getTimerEnabled:(id)a3;
+- (id)_getRemindersEnabled:(id)enabled;
+- (id)_getTimerEnabled:(id)enabled;
 - (id)_newRemindersSpecifiers;
 - (id)_newSpecifiers;
 - (id)_newTimerSpecifiers;
 - (id)applicationGroupSpecifiers;
 - (void)_dismissPresentedViewController;
 - (void)_handleRemindersFooterHyperlinkTapped;
-- (void)_openURLString:(id)a3;
+- (void)_openURLString:(id)string;
 - (void)_presentMeContactCard;
 - (void)_presentNewContactCard;
-- (void)_setRemindersEnabled:(id)a3 withSpecifier:(id)a4;
-- (void)_setTimerEnabled:(id)a3 withSpecifier:(id)a4;
+- (void)_setRemindersEnabled:(id)enabled withSpecifier:(id)specifier;
+- (void)_setTimerEnabled:(id)enabled withSpecifier:(id)specifier;
 - (void)_showDataCollectionOptInIfNeeded;
 - (void)_updateRemindersSpecifiers;
 @end
@@ -32,9 +32,9 @@
     v4 = +[NRPairedDeviceRegistry sharedInstance];
     v5 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     device = v3->_device;
-    v3->_device = v7;
+    v3->_device = firstObject;
 
     v9 = [BRKSettings settingsForDevice:v3->_device];
     brookSettings = v3->_brookSettings;
@@ -67,9 +67,9 @@
 
 - (id)applicationGroupSpecifiers
 {
-  v2 = [(BRKSettingsViewController *)self _newSpecifiers];
+  _newSpecifiers = [(BRKSettingsViewController *)self _newSpecifiers];
 
-  return v2;
+  return _newSpecifiers;
 }
 
 - (id)_newSpecifiers
@@ -79,14 +79,14 @@
   {
     if (![(BRKSettingsViewController *)self settingsMode])
     {
-      v4 = [(BRKSettingsViewController *)self _newTimerSpecifiers];
-      [v3 addObjectsFromArray:v4];
+      _newTimerSpecifiers = [(BRKSettingsViewController *)self _newTimerSpecifiers];
+      [v3 addObjectsFromArray:_newTimerSpecifiers];
     }
 
     if ([(BRKSettingsViewController *)self _needsRemindersSpecifiers])
     {
-      v5 = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
-      [v3 addObjectsFromArray:v5];
+      _newRemindersSpecifiers = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
+      [v3 addObjectsFromArray:_newRemindersSpecifiers];
     }
   }
 
@@ -116,17 +116,17 @@
 - (id)_newRemindersSpecifiers
 {
   v3 = [PSSpecifier groupSpecifierWithID:@"HANDWASHING_REMINDERS_GROUP_ID"];
-  v4 = [(BRKRemindersSettingsHelper *)self->_helper remindersFooterTextAndLinkString];
-  v5 = [v4 firstObject];
-  if ([v4 count] == &dword_0 + 2)
+  remindersFooterTextAndLinkString = [(BRKRemindersSettingsHelper *)self->_helper remindersFooterTextAndLinkString];
+  firstObject = [remindersFooterTextAndLinkString firstObject];
+  if ([remindersFooterTextAndLinkString count] == &dword_0 + 2)
   {
-    v6 = [v4 lastObject];
+    lastObject = [remindersFooterTextAndLinkString lastObject];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     [v3 setProperty:v8 forKey:PSFooterCellClassGroupKey];
 
-    [v3 setProperty:v5 forKey:PSFooterHyperlinkViewTitleKey];
-    v18.location = [v5 localizedStandardRangeOfString:v6];
+    [v3 setProperty:firstObject forKey:PSFooterHyperlinkViewTitleKey];
+    v18.location = [firstObject localizedStandardRangeOfString:lastObject];
     v9 = NSStringFromRange(v18);
     [v3 setProperty:v9 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -139,7 +139,7 @@
 
   else
   {
-    [v3 setProperty:v5 forKey:PSFooterTextGroupKey];
+    [v3 setProperty:firstObject forKey:PSFooterTextGroupKey];
   }
 
   v12 = +[BRKSettings remindersSettingTitle];
@@ -159,17 +159,17 @@
 
 - (BOOL)_needsRemindersSpecifiers
 {
-  LODWORD(v3) = [(BRKSettings *)self->_brookSettings isEnabled];
-  if (v3)
+  LODWORD(alertingMode) = [(BRKSettings *)self->_brookSettings isEnabled];
+  if (alertingMode)
   {
-    v3 = [(BRKSettingsViewController *)self alertingMode];
-    if (v3)
+    alertingMode = [(BRKSettingsViewController *)self alertingMode];
+    if (alertingMode)
     {
-      LOBYTE(v3) = ![(BRKSettingsViewController *)self _isDeviceSatellitePaired];
+      LOBYTE(alertingMode) = ![(BRKSettingsViewController *)self _isDeviceSatellitePaired];
     }
   }
 
-  return v3;
+  return alertingMode;
 }
 
 - (void)_updateRemindersSpecifiers
@@ -181,14 +181,14 @@
 
   v3 = [(BRKSettingsViewController *)self specifierForID:@"HANDWASHING_REMINDERS_GROUP_ID"];
   v4 = [(BRKSettingsViewController *)self specifierForID:@"HANDWASHING_REMINDERS_ID"];
-  v5 = [(BRKSettingsViewController *)self _needsRemindersSpecifiers];
-  if (v5 && v3)
+  _needsRemindersSpecifiers = [(BRKSettingsViewController *)self _needsRemindersSpecifiers];
+  if (_needsRemindersSpecifiers && v3)
   {
     v16[0] = v3;
     v16[1] = v4;
     v6 = [NSArray arrayWithObjects:v16 count:2];
-    v7 = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
-    [(BRKSettingsViewController *)self replaceContiguousSpecifiers:v6 withSpecifiers:v7 animated:0];
+    _newRemindersSpecifiers = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
+    [(BRKSettingsViewController *)self replaceContiguousSpecifiers:v6 withSpecifiers:_newRemindersSpecifiers animated:0];
 
 LABEL_19:
     goto LABEL_20;
@@ -196,7 +196,7 @@ LABEL_19:
 
   if (v3)
   {
-    v8 = v5;
+    v8 = _needsRemindersSpecifiers;
   }
 
   else
@@ -220,31 +220,31 @@ LABEL_19:
 
   else
   {
-    v9 = v5;
+    v9 = _needsRemindersSpecifiers;
   }
 
   if (v9 == 1)
   {
-    v10 = [(BRKSettingsViewController *)self settingsMode];
+    settingsMode = [(BRKSettingsViewController *)self settingsMode];
     v11 = @"NOTIFICATION_COALESCING_GROUP_ID";
-    if (!v10)
+    if (!settingsMode)
     {
       v11 = @"HANDWASHING_TIMER_ID";
     }
 
     v12 = v11;
-    v13 = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
+    _newRemindersSpecifiers2 = [(BRKSettingsViewController *)self _newRemindersSpecifiers];
     v14 = [(BRKSettingsViewController *)self specifierForID:v12];
 
-    [(BRKSettingsViewController *)self insertContiguousSpecifiers:v13 afterSpecifier:v14 animated:1];
+    [(BRKSettingsViewController *)self insertContiguousSpecifiers:_newRemindersSpecifiers2 afterSpecifier:v14 animated:1];
   }
 
 LABEL_20:
 }
 
-- (void)_setTimerEnabled:(id)a3 withSpecifier:(id)a4
+- (void)_setTimerEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  -[BRKSettings setEnabled:](self->_brookSettings, "setEnabled:", [a3 BOOLValue]);
+  -[BRKSettings setEnabled:](self->_brookSettings, "setEnabled:", [enabled BOOLValue]);
   [(BRKSettingsViewController *)self _updateRemindersSpecifiers];
   if (([(BRKSettings *)self->_brookSettings isOnboardingComplete]& 1) == 0)
   {
@@ -261,16 +261,16 @@ LABEL_20:
   [(BRKSettingsViewController *)self _showDataCollectionOptInIfNeeded];
 }
 
-- (id)_getTimerEnabled:(id)a3
+- (id)_getTimerEnabled:(id)enabled
 {
-  v3 = [(BRKSettings *)self->_brookSettings isEnabled];
+  isEnabled = [(BRKSettings *)self->_brookSettings isEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isEnabled];
 }
 
-- (void)_setRemindersEnabled:(id)a3 withSpecifier:(id)a4
+- (void)_setRemindersEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  -[BRKSettings setRemindersEnabled:](self->_brookSettings, "setRemindersEnabled:", [a3 BOOLValue]);
+  -[BRKSettings setRemindersEnabled:](self->_brookSettings, "setRemindersEnabled:", [enabled BOOLValue]);
   if ([(BRKSettings *)self->_brookSettings areRemindersEnabled])
   {
     helper = self->_helper;
@@ -279,24 +279,24 @@ LABEL_20:
   }
 }
 
-- (id)_getRemindersEnabled:(id)a3
+- (id)_getRemindersEnabled:(id)enabled
 {
   if ([(BRKSettings *)self->_brookSettings areRemindersEnabled])
   {
     [(BRKRemindersSettingsHelper *)self->_helper requestLocationAuthorizationIfNeeded];
   }
 
-  v4 = [(BRKSettings *)self->_brookSettings areRemindersEnabled];
+  areRemindersEnabled = [(BRKSettings *)self->_brookSettings areRemindersEnabled];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:areRemindersEnabled];
 }
 
 - (BOOL)_isDeviceSatellitePaired
 {
   v2 = [(NRDevice *)self->_device valueForProperty:NRDevicePropertyIsAltAccount];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_handleRemindersFooterHyperlinkTapped
@@ -335,16 +335,16 @@ LABEL_20:
   }
 }
 
-- (void)_openURLString:(id)a3
+- (void)_openURLString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1CD0;
   block[3] = &unk_8218;
-  v7 = v3;
-  v5 = v3;
+  v7 = stringCopy;
+  v5 = stringCopy;
   dispatch_async(v4, block);
 }
 
@@ -361,12 +361,12 @@ LABEL_20:
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissPresentedViewController"];
     v8 = [CNContactViewController viewControllerForContact:v6];
     [v8 setAllowsEditing:1];
-    v9 = [v8 navigationItem];
-    [v9 setRightBarButtonItem:v7];
+    navigationItem = [v8 navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
 
     v10 = [[UINavigationController alloc] initWithRootViewController:v8];
-    v11 = [(BRKSettingsViewController *)self rootController];
-    [v11 presentViewController:v10 animated:1 completion:0];
+    rootController = [(BRKSettingsViewController *)self rootController];
+    [rootController presentViewController:v10 animated:1 completion:0];
   }
 
   else
@@ -384,16 +384,16 @@ LABEL_20:
   v5 = [CNContactViewController viewControllerForNewContact:0];
   [v5 setDelegate:self];
   v3 = [[UINavigationController alloc] initWithRootViewController:v5];
-  v4 = [(BRKSettingsViewController *)self rootController];
-  [v4 presentViewController:v3 animated:1 completion:0];
+  rootController = [(BRKSettingsViewController *)self rootController];
+  [rootController presentViewController:v3 animated:1 completion:0];
 }
 
 - (void)_dismissPresentedViewController
 {
   [(BRKRemindersSettingsHelper *)self->_helper update];
-  v4 = [(BRKSettingsViewController *)self rootController];
-  v3 = [v4 presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  rootController = [(BRKSettingsViewController *)self rootController];
+  presentedViewController = [rootController presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

@@ -11,50 +11,50 @@
 
 - (uint64_t)intAtIndex:()FHArrayAdditions
 {
-  v1 = [a1 objectAtIndex:?];
-  v2 = [v1 intValue];
+  v1 = [self objectAtIndex:?];
+  intValue = [v1 intValue];
 
-  return v2;
+  return intValue;
 }
 
 - (uint64_t)signedIntegerAtIndex:()FHArrayAdditions
 {
-  v1 = [a1 objectAtIndex:?];
-  v2 = [v1 integerValue];
+  v1 = [self objectAtIndex:?];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (id)stringAtIndex:()FHArrayAdditions
 {
-  v1 = [a1 objectAtIndex:?];
+  v1 = [self objectAtIndex:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    stringValue = v1;
   }
 
   else
   {
-    v2 = [v1 stringValue];
+    stringValue = [v1 stringValue];
   }
 
-  v3 = v2;
+  v3 = stringValue;
 
   return v3;
 }
 
 - (uint64_t)unsignedIntAtIndex:()FHArrayAdditions
 {
-  v1 = [a1 objectAtIndex:?];
-  v2 = [v1 unsignedIntValue];
+  v1 = [self objectAtIndex:?];
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (id)decimalNumberAtIndex:()FHArrayAdditions
 {
-  v1 = [a1 objectAtIndex:?];
+  v1 = [self objectAtIndex:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -88,8 +88,8 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [MEMORY[0x277CCA980] notANumber];
-    if ([v4 isEqualToNumber:v5])
+    notANumber = [MEMORY[0x277CCA980] notANumber];
+    if ([v4 isEqualToNumber:notANumber])
     {
       v6 = 0;
     }
@@ -119,12 +119,12 @@ LABEL_15:
   {
     if (a4 == 1)
     {
-      [a1 reverseObjectEnumerator];
+      [self reverseObjectEnumerator];
     }
 
     else
     {
-      [a1 objectEnumerator];
+      [self objectEnumerator];
     }
 
     v16 = 0u;

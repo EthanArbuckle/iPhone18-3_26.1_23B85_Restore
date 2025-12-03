@@ -1,38 +1,38 @@
 @interface NTKUpNextDataSourceEntry
-- (NTKUpNextDataSourceEntry)initWithDataSourceIdentifiers:(id)a3 localizedName:(id)a4 isDonation:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NTKUpNextDataSourceEntry)initWithDataSourceIdentifiers:(id)identifiers localizedName:(id)name isDonation:(BOOL)donation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NTKUpNextDataSourceEntry
 
-- (NTKUpNextDataSourceEntry)initWithDataSourceIdentifiers:(id)a3 localizedName:(id)a4 isDonation:(BOOL)a5
+- (NTKUpNextDataSourceEntry)initWithDataSourceIdentifiers:(id)identifiers localizedName:(id)name isDonation:(BOOL)donation
 {
-  v9 = a3;
-  v10 = a4;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NTKUpNextDataSourceEntry;
   v11 = [(NTKUpNextDataSourceEntry *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifiers, a3);
-    objc_storeStrong(&v12->_localizedName, a4);
-    v12->_isDonation = a5;
+    objc_storeStrong(&v11->_identifiers, identifiers);
+    objc_storeStrong(&v12->_localizedName, name);
+    v12->_isDonation = donation;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(NTKUpNextDataSourceEntry);
   if (v5)
   {
-    v6 = [(NSSet *)self->_identifiers copyWithZone:a3];
+    v6 = [(NSSet *)self->_identifiers copyWithZone:zone];
     [(NTKUpNextDataSourceEntry *)v5 setIdentifiers:v6];
 
-    v7 = [(NSString *)self->_localizedName copyWithZone:a3];
+    v7 = [(NSString *)self->_localizedName copyWithZone:zone];
     [(NTKUpNextDataSourceEntry *)v5 setLocalizedName:v7];
 
     [(NTKUpNextDataSourceEntry *)v5 setIsDonation:self->_isDonation];

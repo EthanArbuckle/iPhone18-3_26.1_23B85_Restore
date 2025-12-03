@@ -5,21 +5,21 @@
 - (NSString)localizedName;
 - (NSURL)bundleURL;
 - (NSURL)dataContainerURL;
-- (PKBundleProxy)initWithLSBundleProxy:(id)a3;
+- (PKBundleProxy)initWithLSBundleProxy:(id)proxy;
 @end
 
 @implementation PKBundleProxy
 
-- (PKBundleProxy)initWithLSBundleProxy:(id)a3
+- (PKBundleProxy)initWithLSBundleProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v9.receiver = self;
   v9.super_class = PKBundleProxy;
   v6 = [(PKBundleProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lsObject, a3);
+    objc_storeStrong(&v6->_lsObject, proxy);
   }
 
   return v7;
@@ -27,50 +27,50 @@
 
 - (NSURL)bundleURL
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 bundleURL];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  bundleURL = [lsObject bundleURL];
 
-  return v3;
+  return bundleURL;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 bundleIdentifier];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  bundleIdentifier = [lsObject bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 localizedName];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  localizedName = [lsObject localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSDictionary)entitlements
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 entitlements];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  entitlements = [lsObject entitlements];
 
-  return v3;
+  return entitlements;
 }
 
 - (NSURL)dataContainerURL
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 dataContainerURL];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  dataContainerURL = [lsObject dataContainerURL];
 
-  return v3;
+  return dataContainerURL;
 }
 
 - (NSString)bundleVersion
 {
-  v2 = [(PKBundleProxy *)self lsObject];
-  v3 = [v2 bundleVersion];
+  lsObject = [(PKBundleProxy *)self lsObject];
+  bundleVersion = [lsObject bundleVersion];
 
-  return v3;
+  return bundleVersion;
 }
 
 @end

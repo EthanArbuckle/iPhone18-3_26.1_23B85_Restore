@@ -5,22 +5,22 @@
 - (BYDeviceProvider)deviceProvider;
 - (BYRunState)runState;
 - (BuddyFeatureFlags)featureFlags;
-- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)continueTapped;
 - (void)modeChanged;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)revertTapped;
-- (void)setAnalyticsEventAppearance:(id)a3;
-- (void)setAppearanceModeProvider:(id)a3;
-- (void)setDisplayZoomExecutor:(id)a3;
-- (void)setFlowItemDispositionProvider:(id)a3;
+- (void)setAnalyticsEventAppearance:(id)appearance;
+- (void)setAppearanceModeProvider:(id)provider;
+- (void)setDisplayZoomExecutor:(id)executor;
+- (void)setFlowItemDispositionProvider:(id)provider;
 - (void)showAccessibilitySettings;
 - (void)updateContentViewForScrollViewLayoutChange;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BuddyAppearanceController
@@ -39,32 +39,32 @@
   return v2;
 }
 
-- (void)setAppearanceModeProvider:(id)a3
+- (void)setAppearanceModeProvider:(id)provider
 {
   v4 = *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_appearanceModeProvider];
-  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_appearanceModeProvider] = a3;
-  v3 = a3;
+  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_appearanceModeProvider] = provider;
+  providerCopy = provider;
 }
 
-- (void)setDisplayZoomExecutor:(id)a3
+- (void)setDisplayZoomExecutor:(id)executor
 {
   v4 = *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_displayZoomExecutor];
-  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_displayZoomExecutor] = a3;
-  v3 = a3;
+  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_displayZoomExecutor] = executor;
+  executorCopy = executor;
 }
 
-- (void)setFlowItemDispositionProvider:(id)a3
+- (void)setFlowItemDispositionProvider:(id)provider
 {
   v4 = *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_flowItemDispositionProvider];
-  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_flowItemDispositionProvider] = a3;
-  v3 = a3;
+  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_flowItemDispositionProvider] = provider;
+  providerCopy = provider;
 }
 
-- (void)setAnalyticsEventAppearance:(id)a3
+- (void)setAnalyticsEventAppearance:(id)appearance
 {
   v4 = *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_analyticsEventAppearance];
-  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_analyticsEventAppearance] = a3;
-  v3 = a3;
+  *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_analyticsEventAppearance] = appearance;
+  appearanceCopy = appearance;
 }
 
 - (BYDeviceProvider)deviceProvider
@@ -76,36 +76,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005490C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100055E30(a3);
+  selfCopy = self;
+  sub_100055E30(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for BuddyAppearanceController();
   v4 = v5.receiver;
-  [(BuddyAppearanceController *)&v5 viewDidAppear:v3];
+  [(BuddyAppearanceController *)&v5 viewDidAppear:appearCopy];
   if ([v4 isMovingToParentViewController])
   {
     sub_100056084();
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for BuddyAppearanceController();
   v4 = v5.receiver;
-  [(BuddyAppearanceController *)&v5 viewWillDisappear:v3];
+  [(BuddyAppearanceController *)&v5 viewWillDisappear:disappearCopy];
   if (![v4 isMovingFromParentViewController])
   {
     goto LABEL_4;
@@ -126,18 +126,18 @@ LABEL_4:
 
 - (void)modeChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100057674();
 }
 
 - (void)updateContentViewForScrollViewLayoutChange
 {
-  v4 = self;
-  v2 = [(BuddyAppearanceController *)v4 view];
-  if (v2)
+  selfCopy = self;
+  view = [(BuddyAppearanceController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 layoutIfNeeded];
+    v3 = view;
+    [view layoutIfNeeded];
 
     sub_100057498();
   }
@@ -153,19 +153,19 @@ LABEL_4:
   v3 = *&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_revertButton];
   if (!v3)
   {
-    v6 = self;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  v4 = self;
+  selfCopy2 = self;
   if (([v3 isHidden] & 1) == 0)
   {
 LABEL_5:
     v8.receiver = self;
     v8.super_class = type metadata accessor for BuddyAppearanceController();
-    v5 = [(BuddyAppearanceController *)&v8 scrollViewContentIsUnderTray];
+    scrollViewContentIsUnderTray = [(BuddyAppearanceController *)&v8 scrollViewContentIsUnderTray];
 
-    return v5;
+    return scrollViewContentIsUnderTray;
   }
 
   return 0;
@@ -173,7 +173,7 @@ LABEL_5:
 
 - (void)continueTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100057884();
 }
 
@@ -181,7 +181,7 @@ LABEL_5:
 {
   if (*&self->OBSetupAssistantAppearanceController_opaque[OBJC_IVAR____TtC5Setup25BuddyAppearanceController_viewModel])
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_100012AC8();
   }
@@ -195,12 +195,12 @@ LABEL_5:
 - (void)showAccessibilitySettings
 {
   v3 = objc_opt_self();
-  v6 = self;
-  v4 = [v3 accessibilityViewController];
-  if (v4)
+  selfCopy = self;
+  accessibilityViewController = [v3 accessibilityViewController];
+  if (accessibilityViewController)
   {
-    v5 = v4;
-    [(BuddyAppearanceController *)v6 presentViewController:v4 animated:1 completion:0];
+    v5 = accessibilityViewController;
+    [(BuddyAppearanceController *)selfCopy presentViewController:accessibilityViewController animated:1 completion:0];
   }
 }
 
@@ -214,30 +214,30 @@ LABEL_5:
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100058110();
 
   return v3 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1000590E0(v5, v4);
+  selfCopy = self;
+  sub_1000590E0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup25BuddyAppearanceController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

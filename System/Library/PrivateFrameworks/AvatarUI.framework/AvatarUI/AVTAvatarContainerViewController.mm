@@ -1,15 +1,15 @@
 @interface AVTAvatarContainerViewController
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation AVTAvatarContainerViewController
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
-    v4 = [(AVTAvatarContainerViewController *)self presentedViewController];
-    [v4 dismissViewControllerAnimated:0 completion:0];
+    presentedViewController = [(AVTAvatarContainerViewController *)self presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:0 completion:0];
   }
 }
 

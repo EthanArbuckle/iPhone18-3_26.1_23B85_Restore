@@ -1,7 +1,7 @@
 @interface CMSafetyAnomaly
 + (BOOL)areStatsAvailable;
 - (int)getState;
-- (void)notifyEvent:(id)a3;
+- (void)notifyEvent:(id)event;
 @end
 
 @implementation CMSafetyAnomaly
@@ -51,11 +51,11 @@
   operator new();
 }
 
-- (void)notifyEvent:(id)a3
+- (void)notifyEvent:(id)event
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"CMSafetyAnomalyPropertiesKey";
-  v5[0] = a3;
+  v5[0] = event;
   v3 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], a2, v5, &v4, 1);
   sub_19B5D12C8();
 }

@@ -1,8 +1,8 @@
 @interface SUIAppIntentsAnnotator
 + (id)presentationHelperKey;
 + (id)queryHelperKey;
-+ (void)annotateSearchField:(id)a3;
-+ (void)registerDependency:(id)a3 forKey:(id)a4;
++ (void)annotateSearchField:(id)field;
++ (void)registerDependency:(id)dependency forKey:(id)key;
 - (SUIAppIntentsAnnotator)init;
 @end
 
@@ -15,7 +15,7 @@
   return v2;
 }
 
-+ (void)registerDependency:(id)a3 forKey:(id)a4
++ (void)registerDependency:(id)dependency forKey:(id)key
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_280426FA0, &qword_26B9B02E0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
@@ -33,7 +33,7 @@
   v13[3] = v14;
   v13[4] = v8;
   v13[5] = v10;
-  v13[6] = a3;
+  v13[6] = dependency;
   sub_26B90762C(0, 0, v7, &unk_26B9B05E8, v13);
 
   swift_unknownObjectRelease();
@@ -46,13 +46,13 @@
   return v2;
 }
 
-+ (void)annotateSearchField:(id)a3
++ (void)annotateSearchField:(id)field
 {
   v4 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_2804261B8, &qword_26B9B05D0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v6 = &v11 - v5;
   v7 = objc_opt_self();
-  v12 = a3;
+  fieldCopy = field;
   if ([v7 isAppIntentsSupportEnabled])
   {
     v13 = sub_26B8EAED8();
@@ -66,7 +66,7 @@
 
   else
   {
-    v10 = v12;
+    v10 = fieldCopy;
   }
 }
 

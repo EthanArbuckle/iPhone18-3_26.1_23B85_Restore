@@ -1,35 +1,35 @@
 @interface _INPBCreateNoteIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateNoteIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateNoteIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateNoteIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateNoteIntent *)self content];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"content"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  content = [(_INPBCreateNoteIntent *)self content];
+  dictionaryRepresentation = [content dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"content"];
 
-  v6 = [(_INPBCreateNoteIntent *)self groupName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBCreateNoteIntent *)self groupName];
+  dictionaryRepresentation2 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"groupName"];
 
-  v8 = [(_INPBCreateNoteIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBCreateNoteIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
-  v10 = [(_INPBCreateNoteIntent *)self title];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"title"];
+  title = [(_INPBCreateNoteIntent *)self title];
+  dictionaryRepresentation4 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"title"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -40,28 +40,28 @@
   return v4 ^ v5 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBCreateNoteIntent *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBCreateNoteIntent *)self content];
+  content2 = [equalCopy content];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBCreateNoteIntent *)self content];
-  if (v7)
+  content3 = [(_INPBCreateNoteIntent *)self content];
+  if (content3)
   {
-    v8 = v7;
-    v9 = [(_INPBCreateNoteIntent *)self content];
-    v10 = [v4 content];
-    v11 = [v9 isEqual:v10];
+    v8 = content3;
+    content4 = [(_INPBCreateNoteIntent *)self content];
+    content5 = [equalCopy content];
+    v11 = [content4 isEqual:content5];
 
     if (!v11)
     {
@@ -73,20 +73,20 @@
   {
   }
 
-  v5 = [(_INPBCreateNoteIntent *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBCreateNoteIntent *)self groupName];
+  content2 = [equalCopy groupName];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBCreateNoteIntent *)self groupName];
-  if (v12)
+  groupName = [(_INPBCreateNoteIntent *)self groupName];
+  if (groupName)
   {
-    v13 = v12;
-    v14 = [(_INPBCreateNoteIntent *)self groupName];
-    v15 = [v4 groupName];
-    v16 = [v14 isEqual:v15];
+    v13 = groupName;
+    groupName2 = [(_INPBCreateNoteIntent *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v16 = [groupName2 isEqual:groupName3];
 
     if (!v16)
     {
@@ -98,20 +98,20 @@
   {
   }
 
-  v5 = [(_INPBCreateNoteIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  content = [(_INPBCreateNoteIntent *)self intentMetadata];
+  content2 = [equalCopy intentMetadata];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBCreateNoteIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBCreateNoteIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBCreateNoteIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBCreateNoteIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -123,12 +123,12 @@
   {
   }
 
-  v5 = [(_INPBCreateNoteIntent *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  content = [(_INPBCreateNoteIntent *)self title];
+  content2 = [equalCopy title];
+  if ((content != 0) != (content2 == 0))
   {
-    v22 = [(_INPBCreateNoteIntent *)self title];
-    if (!v22)
+    title = [(_INPBCreateNoteIntent *)self title];
+    if (!title)
     {
 
 LABEL_25:
@@ -136,10 +136,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBCreateNoteIntent *)self title];
-    v25 = [v4 title];
-    v26 = [v24 isEqual:v25];
+    v23 = title;
+    title2 = [(_INPBCreateNoteIntent *)self title];
+    title3 = [equalCopy title];
+    v26 = [title2 isEqual:title3];
 
     if (v26)
     {
@@ -159,84 +159,84 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateNoteIntent allocWithZone:](_INPBCreateNoteIntent init];
-  v6 = [(_INPBNoteContent *)self->_content copyWithZone:a3];
+  v6 = [(_INPBNoteContent *)self->_content copyWithZone:zone];
   [(_INPBCreateNoteIntent *)v5 setContent:v6];
 
-  v7 = [(_INPBDataString *)self->_groupName copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_groupName copyWithZone:zone];
   [(_INPBCreateNoteIntent *)v5 setGroupName:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBCreateNoteIntent *)v5 setIntentMetadata:v8];
 
-  v9 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBCreateNoteIntent *)v5 setTitle:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateNoteIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateNoteIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateNoteIntent)initWithCoder:(id)a3
+- (_INPBCreateNoteIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateNoteIntent *)self initWithData:v6];
+    self = [(_INPBCreateNoteIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBCreateNoteIntent *)self content];
+  toCopy = to;
+  content = [(_INPBCreateNoteIntent *)self content];
 
-  if (v4)
+  if (content)
   {
-    v5 = [(_INPBCreateNoteIntent *)self content];
+    content2 = [(_INPBCreateNoteIntent *)self content];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBCreateNoteIntent *)self groupName];
+  groupName = [(_INPBCreateNoteIntent *)self groupName];
 
-  if (v6)
+  if (groupName)
   {
-    v7 = [(_INPBCreateNoteIntent *)self groupName];
+    groupName2 = [(_INPBCreateNoteIntent *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBCreateNoteIntent *)self intentMetadata];
+  intentMetadata = [(_INPBCreateNoteIntent *)self intentMetadata];
 
-  if (v8)
+  if (intentMetadata)
   {
-    v9 = [(_INPBCreateNoteIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBCreateNoteIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBCreateNoteIntent *)self title];
+  title = [(_INPBCreateNoteIntent *)self title];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (title)
   {
-    v12 = [(_INPBCreateNoteIntent *)self title];
+    title2 = [(_INPBCreateNoteIntent *)self title];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 

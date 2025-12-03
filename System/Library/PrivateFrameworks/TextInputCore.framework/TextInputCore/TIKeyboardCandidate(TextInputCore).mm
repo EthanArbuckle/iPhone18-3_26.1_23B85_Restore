@@ -6,21 +6,21 @@
 
 - (void)core_updateWithSupplementalItemPrefix:()TextInputCore
 {
-  v5 = [a1 supplementalItemPrefix];
-  [a1 setSupplementalItemPrefix:a3];
-  if (v5)
+  supplementalItemPrefix = [self supplementalItemPrefix];
+  [self setSupplementalItemPrefix:a3];
+  if (supplementalItemPrefix)
   {
-    v6 = [a1 input];
-    v7 = [v6 substringFromIndex:1];
-    [a1 setInput:v7];
+    input = [self input];
+    v7 = [input substringFromIndex:1];
+    [self setInput:v7];
   }
 
   if (a3)
   {
     v8 = MEMORY[0x277CCACA8];
-    v10 = [a1 input];
-    v9 = [v8 stringWithFormat:@"%C%@", a3, v10];
-    [a1 setInput:v9];
+    input2 = [self input];
+    v9 = [v8 stringWithFormat:@"%C%@", a3, input2];
+    [self setInput:v9];
   }
 }
 

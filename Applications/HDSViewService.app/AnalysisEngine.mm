@@ -1,20 +1,20 @@
 @interface AnalysisEngine
-- (AnalysisEngine)initWithRecognizer:(id)a3;
-- (BOOL)hasRecognizedDeviceInRecentPast:(id *)a3;
-- (id)initForType:(unint64_t)a3;
+- (AnalysisEngine)initWithRecognizer:(id)recognizer;
+- (BOOL)hasRecognizedDeviceInRecentPast:(id *)past;
+- (id)initForType:(unint64_t)type;
 - (void)clearHistory;
 - (void)dealloc;
-- (void)ingestVideoFrame:(opaqueCMSampleBuffer *)a3;
+- (void)ingestVideoFrame:(opaqueCMSampleBuffer *)frame;
 - (void)preheat;
-- (void)processVideoFrame:(__CVBuffer *)a3;
+- (void)processVideoFrame:(__CVBuffer *)frame;
 - (void)reset;
 @end
 
 @implementation AnalysisEngine
 
-- (id)initForType:(unint64_t)a3
+- (id)initForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     +[Recognizer recognizer_B520];
   }
@@ -29,9 +29,9 @@
   return v5;
 }
 
-- (AnalysisEngine)initWithRecognizer:(id)a3
+- (AnalysisEngine)initWithRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   v18.receiver = self;
   v18.super_class = AnalysisEngine;
   v6 = [(AnalysisEngine *)&v18 init];
@@ -41,7 +41,7 @@
     v6->_crop_fraction = 0.7;
     v6->_useRecognizer = 1;
     objc_storeStrong(&v6->_dispatchQueue, &_dispatch_main_q);
-    objc_storeStrong(&v7->_recognizer, a3);
+    objc_storeStrong(&v7->_recognizer, recognizer);
     CMTimeMakeWithSeconds(&v17, 0.0, 3000000);
     v7->_recognizerInterval = v17;
     CMTimeMakeWithSeconds(&v17, 1.0, 3000000);
@@ -104,15 +104,15 @@
   [(AnalysisEngine *)&v2 dealloc];
 }
 
-- (void)ingestVideoFrame:(opaqueCMSampleBuffer *)a3
+- (void)ingestVideoFrame:(opaqueCMSampleBuffer *)frame
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_processingFrame)
   {
     self->_processingFrame = 1;
-    CMSampleBufferGetPresentationTimeStamp(&v9, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v9, frame);
     self->_currentFrameTime = v9;
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(frame);
     v6 = CVPixelBufferRetain(ImageBuffer);
     processingQueue = self->_processingQueue;
     block[0] = _NSConcreteStackBlock;
@@ -136,9 +136,9 @@
   dispatch_async(processingQueue, block);
 }
 
-- (void)processVideoFrame:(__CVBuffer *)a3
+- (void)processVideoFrame:(__CVBuffer *)frame
 {
-  if (!a3)
+  if (!frame)
   {
     goto LABEL_15;
   }
@@ -175,7 +175,7 @@
 
   v6 = self->_recognizer;
   time1 = self->_currentFrameTime;
-  [(Recognizer *)v6 processImage:a3 withTimestamp:&time1];
+  [(Recognizer *)v6 processImage:frame withTimestamp:&time1];
   v7 = self->_recognizer;
   if (v7)
   {
@@ -197,14 +197,14 @@
 LABEL_13:
   if ((CMTimeCompare(&time1, &rhs) & 0x80000000) == 0)
   {
-    v9 = [(AnalysisEngine *)self recognizingCompletionHandlerBlock];
+    recognizingCompletionHandlerBlock = [(AnalysisEngine *)self recognizingCompletionHandlerBlock];
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100004E44;
     block[3] = &unk_1000EDB70;
     block[4] = self;
-    block[5] = v9;
+    block[5] = recognizingCompletionHandlerBlock;
     dispatch_async(dispatchQueue, block);
 
     return;
@@ -220,7 +220,7 @@ LABEL_15:
   dispatch_async(v11, v12);
 }
 
-- (BOOL)hasRecognizedDeviceInRecentPast:(id *)a3
+- (BOOL)hasRecognizedDeviceInRecentPast:(id *)past
 {
   if (!self->_useRecognizer)
   {
@@ -231,7 +231,7 @@ LABEL_15:
   v12 = v4;
   memset(&v10, 0, sizeof(v10));
   lhs = self->_currentFrameTime;
-  v8 = *a3;
+  v8 = *past;
   CMTimeSubtract(&v10, &lhs, &v8);
   recognizer = self->_recognizer;
   if (recognizer)

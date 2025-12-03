@@ -1,21 +1,21 @@
 @interface CBControllerInfo
-- (BOOL)isEqual:(id)a3;
-- (CBControllerInfo)initWithCoder:(id)a3;
-- (CBControllerInfo)initWithDictionary:(id)a3 error:(id *)a4;
-- (CBControllerInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (CBControllerInfo)initWithCoder:(id)coder;
+- (CBControllerInfo)initWithDictionary:(id)dictionary error:(id *)error;
+- (CBControllerInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBControllerInfo
 
-- (CBControllerInfo)initWithCoder:(id)a3
+- (CBControllerInfo)initWithCoder:(id)coder
 {
   v12[8] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -27,34 +27,34 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:8];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"ctrI"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ctrI"];
 
   v9 = [(CBControllerInfo *)self initWithDictionary:v8 error:0];
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (CBControllerInfo)initWithDictionary:(id)a3 error:(id *)a4
+- (CBControllerInfo)initWithDictionary:(id)dictionary error:(id *)error
 {
   v12 = _CFXPCCreateXPCObjectFromCFObject();
   if (v12)
   {
-    self = [(CBControllerInfo *)self initWithXPCObject:v12 error:a4];
-    v13 = self;
+    self = [(CBControllerInfo *)self initWithXPCObject:v12 error:error];
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "CBControllerInfo convert XPC dict failed", v6, v7, v8, v9, v10, v11, v15);
-    *a4 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -78,33 +78,33 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CBControllerInfo *)self dictionaryRepresentation];
-  if (v4)
+  coderCopy = coder;
+  dictionaryRepresentation = [(CBControllerInfo *)self dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v5 encodeObject:v4 forKey:@"ctrI"];
+    [coderCopy encodeObject:dictionaryRepresentation forKey:@"ctrI"];
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   audioLinkQualityArray = self->_audioLinkQualityArray;
   CUXPCEncodeNSArrayOfObjects();
   bluetoothState = self->_bluetoothState;
   if (bluetoothState)
   {
-    xpc_dictionary_set_int64(v4, "pwrS", bluetoothState);
+    xpc_dictionary_set_int64(objectCopy, "pwrS", bluetoothState);
   }
 
   chipsetID = self->_chipsetID;
-  v8 = v4;
-  v9 = [(NSString *)chipsetID UTF8String];
-  if (v9)
+  v8 = objectCopy;
+  uTF8String = [(NSString *)chipsetID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v8, "chip", v9);
+    xpc_dictionary_set_string(v8, "chip", uTF8String);
   }
 
   if (self->_cloudSyncStatus)
@@ -134,10 +134,10 @@
     v12 = fastLEConnectionInfoData;
     v13 = v8;
     v14 = fastLEConnectionInfoData;
-    v15 = [(NSData *)v14 bytes];
-    if (v15)
+    bytes = [(NSData *)v14 bytes];
+    if (bytes)
     {
-      v16 = v15;
+      v16 = bytes;
     }
 
     else
@@ -152,18 +152,18 @@
 
   firmwareName = self->_firmwareName;
   v19 = v8;
-  v20 = [(NSString *)firmwareName UTF8String];
-  if (v20)
+  uTF8String2 = [(NSString *)firmwareName UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v19, "frmN", v20);
+    xpc_dictionary_set_string(v19, "frmN", uTF8String2);
   }
 
   firmwareVersion = self->_firmwareVersion;
   xdict = v19;
-  v22 = [(NSString *)firmwareVersion UTF8String];
-  if (v22)
+  uTF8String3 = [(NSString *)firmwareVersion UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(xdict, "frmV", v22);
+    xpc_dictionary_set_string(xdict, "frmV", uTF8String3);
   }
 
   hardwareAddressData = self->_hardwareAddressData;
@@ -172,10 +172,10 @@
     v24 = hardwareAddressData;
     v25 = xdict;
     v26 = hardwareAddressData;
-    v27 = [(NSData *)v26 bytes];
-    if (v27)
+    bytes2 = [(NSData *)v26 bytes];
+    if (bytes2)
     {
-      v28 = v27;
+      v28 = bytes2;
     }
 
     else
@@ -240,10 +240,10 @@
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v145 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0x14u)
+  if (level <= 0x14u)
   {
     v141 = 0u;
     v142 = 0u;
@@ -253,7 +253,7 @@
     v5 = [(NSArray *)v4 countByEnumeratingWithState:&v139 objects:v144 count:16];
     if (v5)
     {
-      v6 = v5;
+      v108 = v5;
       v7 = 0;
       v8 = *v140;
       do
@@ -270,7 +270,7 @@
           v11 = *(*(&v139 + 1) + 8 * v9);
           v12 = CUDescriptionWithLevel();
           v138 = v10;
-          v13 = [v11 deviceName];
+          deviceName = [v11 deviceName];
           [v12 UTF8String];
           v108 = CUPrintText();
           NSAppendPrintF();
@@ -280,11 +280,11 @@
           v10 = v7;
         }
 
-        while (v6 != v9);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v139 objects:v144 count:16, v13, v108];
+        while (v108 != v9);
+        v108 = [(NSArray *)v4 countByEnumeratingWithState:&v139 objects:v144 count:16, deviceName, v108];
       }
 
-      while (v6);
+      while (v108);
     }
 
     else
@@ -351,9 +351,9 @@
         goto LABEL_45;
       }
 
-      v48 = [(NSArray *)v15 isEqual:v46, v103];
+      v103 = [(NSArray *)v15 isEqual:v46, v103];
 
-      if ((v48 & 1) == 0)
+      if ((v103 & 1) == 0)
       {
         if (!v15)
         {
@@ -457,7 +457,7 @@ LABEL_45:
     goto LABEL_50;
   }
 
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v14 = 0;
     v15 = self->_audioLinkQualityArray;
@@ -499,7 +499,7 @@ LABEL_11:
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v120 objects:v143 count:16];
   if (v20)
   {
-    v21 = v20;
+    v109 = v20;
     v22 = *v121;
     v23 = "";
     do
@@ -516,14 +516,14 @@ LABEL_11:
       NSAppendPrintF_safe();
       v25 = v18;
 
-      if (v21 < 2)
+      if (v109 < 2)
       {
         v18 = v25;
       }
 
       else
       {
-        for (i = 1; i != v21; ++i)
+        for (i = 1; i != v109; ++i)
         {
           if (*v121 != v22)
           {
@@ -541,11 +541,11 @@ LABEL_11:
         }
       }
 
-      v21 = [(NSArray *)v19 countByEnumeratingWithState:&v120 objects:v143 count:16, v100, v109];
+      v109 = [(NSArray *)v19 countByEnumeratingWithState:&v120 objects:v143 count:16, v100, v109];
       v23 = ", ";
     }
 
-    while (v21);
+    while (v109);
   }
 
   v118 = v18;
@@ -629,9 +629,9 @@ LABEL_26:
   {
     if ((p_isa != 0) != (v67 == 0))
     {
-      v69 = [(NSString *)p_isa isEqual:v67, v101];
+      v101 = [(NSString *)p_isa isEqual:v67, v101];
 
-      if (v69)
+      if (v101)
       {
         if (!v68)
         {
@@ -768,9 +768,9 @@ LABEL_100:
   return v96;
 }
 
-- (CBControllerInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBControllerInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v13 = OUTLINED_FUNCTION_18();
   if (!v13)
   {
@@ -986,17 +986,17 @@ LABEL_47:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     audioLinkQualityArray = self->_audioLinkQualityArray;
-    v7 = [v5 audioLinkQualityArray];
+    audioLinkQualityArray = [v5 audioLinkQualityArray];
     v8 = audioLinkQualityArray;
-    v9 = v7;
+    v9 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1005,7 +1005,7 @@ LABEL_47:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v11 == (v7 == 0))
+      if (v11 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1029,9 +1029,9 @@ LABEL_52:
     }
 
     chipsetID = self->_chipsetID;
-    v7 = [v5 chipsetID];
+    audioLinkQualityArray = [v5 chipsetID];
     v8 = chipsetID;
-    v15 = v7;
+    v15 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1040,7 +1040,7 @@ LABEL_52:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v16 == (v7 == 0))
+      if (v16 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1078,9 +1078,9 @@ LABEL_52:
     }
 
     fastLEConnectionInfoData = self->_fastLEConnectionInfoData;
-    v7 = [v5 fastLEConnectionInfoData];
+    audioLinkQualityArray = [v5 fastLEConnectionInfoData];
     v8 = fastLEConnectionInfoData;
-    v23 = v7;
+    v23 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1089,7 +1089,7 @@ LABEL_52:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v24 == (v7 == 0))
+      if (v24 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1103,9 +1103,9 @@ LABEL_52:
     }
 
     firmwareName = self->_firmwareName;
-    v7 = [v5 firmwareName];
+    audioLinkQualityArray = [v5 firmwareName];
     v8 = firmwareName;
-    v27 = v7;
+    v27 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1114,7 +1114,7 @@ LABEL_52:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v28 == (v7 == 0))
+      if (v28 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1128,9 +1128,9 @@ LABEL_52:
     }
 
     firmwareVersion = self->_firmwareVersion;
-    v7 = [v5 firmwareVersion];
+    audioLinkQualityArray = [v5 firmwareVersion];
     v8 = firmwareVersion;
-    v31 = v7;
+    v31 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1139,7 +1139,7 @@ LABEL_52:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v32 == (v7 == 0))
+      if (v32 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1153,9 +1153,9 @@ LABEL_52:
     }
 
     hardwareAddressData = self->_hardwareAddressData;
-    v7 = [v5 hardwareAddressData];
+    audioLinkQualityArray = [v5 hardwareAddressData];
     v8 = hardwareAddressData;
-    v35 = v7;
+    v35 = audioLinkQualityArray;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1164,7 +1164,7 @@ LABEL_52:
     else
     {
       OUTLINED_FUNCTION_9_0();
-      if (v36 == (v7 == 0))
+      if (v36 == (audioLinkQualityArray == 0))
       {
         goto LABEL_50;
       }
@@ -1226,9 +1226,9 @@ LABEL_52:
     }
 
     lastChipsetInitError = self->_lastChipsetInitError;
-    v48 = [v5 lastChipsetInitError];
+    lastChipsetInitError = [v5 lastChipsetInitError];
     v8 = lastChipsetInitError;
-    v49 = v48;
+    v49 = lastChipsetInitError;
     OUTLINED_FUNCTION_10_0();
     if (v10)
     {
@@ -1237,7 +1237,7 @@ LABEL_52:
     }
 
     OUTLINED_FUNCTION_9_0();
-    if (v50 != (v7 == 0))
+    if (v50 != (audioLinkQualityArray == 0))
     {
       v38 = OUTLINED_FUNCTION_13();
 LABEL_51:

@@ -1,8 +1,8 @@
 @interface MapsAppTestRouteChrome
 - (BOOL)runTest;
 - (MapsAppTestRouteChromeDelegate)chromeDelegate;
-- (void)_setupDirectionsPlan:(id)a3;
-- (void)cleanup:(BOOL)a3;
+- (void)_setupDirectionsPlan:(id)plan;
+- (void)cleanup:(BOOL)cleanup;
 @end
 
 @implementation MapsAppTestRouteChrome
@@ -14,9 +14,9 @@
   return WeakRetained;
 }
 
-- (void)_setupDirectionsPlan:(id)a3
+- (void)_setupDirectionsPlan:(id)plan
 {
-  v4 = a3;
+  planCopy = plan;
   objc_initWeak(&location, self);
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
@@ -25,7 +25,7 @@
   objc_copyWeak(&v10, &location);
   [PPTNotificationCenter addOnceObserverForName:@"MapsRoutePlanningShowingRoutesNotification" object:0 usingBlock:&v6];
   v5 = [(MapsAppTest *)self testCoordinator:v6];
-  [v5 setPPTTestDirectionsPlan:v4];
+  [v5 setPPTTestDirectionsPlan:planCopy];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -33,12 +33,12 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
   [(MapsAppTest *)self setupForVKTest];
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_directionsPlan];
+  options = [(MapsAppTest *)self options];
+  _mapstest_directionsPlan = [options _mapstest_directionsPlan];
 
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -46,7 +46,7 @@
   v8[2] = sub_10058952C;
   v8[3] = &unk_101661340;
   objc_copyWeak(&v10, &location);
-  v6 = v5;
+  v6 = _mapstest_directionsPlan;
   v9 = v6;
   [(MapsAppTest *)self addFullyDrawnCallback:v8];
 
@@ -56,13 +56,13 @@
   return 1;
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(MapsAppTest *)self popToRootTrayWithCompletion:0];
   v5.receiver = self;
   v5.super_class = MapsAppTestRouteChrome;
-  [(MapsAppTest *)&v5 cleanup:v3];
+  [(MapsAppTest *)&v5 cleanup:cleanupCopy];
 }
 
 @end

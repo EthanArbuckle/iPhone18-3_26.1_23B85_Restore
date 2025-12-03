@@ -1,13 +1,13 @@
 @interface PSGProactiveTrigger
-+ (id)getGivenNameQualifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTrigger:(id)a3;
-- (PSGProactiveTrigger)initWithCoder:(id)a3;
-- (PSGProactiveTrigger)initWithSourceType:(unint64_t)a3 category:(id)a4 attributes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)getGivenNameQualifier:(id)qualifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTrigger:(id)trigger;
+- (PSGProactiveTrigger)initWithCoder:(id)coder;
+- (PSGProactiveTrigger)initWithSourceType:(unint64_t)type category:(id)category attributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGProactiveTrigger
@@ -49,28 +49,28 @@ void __34__PSGProactiveTrigger_description__block_invoke(uint64_t a1, void *a2, 
   return [(NSDictionary *)self->_triggerAttributes hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGProactiveTrigger *)self isEqualToTrigger:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGProactiveTrigger *)self isEqualToTrigger:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTrigger:(id)a3
+- (BOOL)isEqualToTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_triggerSourceType != v4[1])
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (!triggerCopy || self->_triggerSourceType != triggerCopy[1])
   {
     goto LABEL_5;
   }
@@ -109,7 +109,7 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
@@ -117,11 +117,11 @@ LABEL_11:
   if (v5)
   {
     *(v5 + 8) = self->_triggerSourceType;
-    v7 = [(NSString *)self->_triggerCategory copyWithZone:a3];
+    v7 = [(NSString *)self->_triggerCategory copyWithZone:zone];
     v8 = v6[2];
     v6[2] = v7;
 
-    v9 = [(NSDictionary *)self->_triggerAttributes copyWithZone:a3];
+    v9 = [(NSDictionary *)self->_triggerAttributes copyWithZone:zone];
     v10 = v6[3];
     v6[3] = v9;
   }
@@ -129,20 +129,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   triggerSourceType = self->_triggerSourceType;
-  v5 = a3;
-  [v5 encodeInt64:triggerSourceType forKey:@"tst"];
-  [v5 encodeObject:self->_triggerCategory forKey:@"cat"];
-  [v5 encodeObject:self->_triggerAttributes forKey:@"tas"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:triggerSourceType forKey:@"tst"];
+  [coderCopy encodeObject:self->_triggerCategory forKey:@"cat"];
+  [coderCopy encodeObject:self->_triggerAttributes forKey:@"tas"];
 }
 
-- (PSGProactiveTrigger)initWithCoder:(id)a3
+- (PSGProactiveTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"cat"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"cat"];
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
   v9 = objc_opt_class();
@@ -150,39 +150,39 @@ LABEL_11:
   v11 = objc_opt_class();
   v12 = [v8 initWithObjects:{v5, v9, v10, v11, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v7);
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"tas"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"tas"];
 
-  v14 = 0;
+  selfCopy = 0;
   if (v6 && v13)
   {
-    self = -[PSGProactiveTrigger initWithSourceType:category:attributes:](self, "initWithSourceType:category:attributes:", [v4 decodeInt64ForKey:@"tst"], v6, v13);
-    v14 = self;
+    self = -[PSGProactiveTrigger initWithSourceType:category:attributes:](self, "initWithSourceType:category:attributes:", [coderCopy decodeInt64ForKey:@"tst"], v6, v13);
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (PSGProactiveTrigger)initWithSourceType:(unint64_t)a3 category:(id)a4 attributes:(id)a5
+- (PSGProactiveTrigger)initWithSourceType:(unint64_t)type category:(id)category attributes:(id)attributes
 {
-  v9 = a4;
-  v10 = a5;
+  categoryCopy = category;
+  attributesCopy = attributes;
   v14.receiver = self;
   v14.super_class = PSGProactiveTrigger;
   v11 = [(PSGProactiveTrigger *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_triggerSourceType = a3;
-    objc_storeStrong(&v11->_triggerCategory, a4);
-    objc_storeStrong(&v12->_triggerAttributes, a5);
+    v11->_triggerSourceType = type;
+    objc_storeStrong(&v11->_triggerCategory, category);
+    objc_storeStrong(&v12->_triggerAttributes, attributes);
   }
 
   return v12;
 }
 
-+ (id)getGivenNameQualifier:(id)a3
++ (id)getGivenNameQualifier:(id)qualifier
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277D22FF8]];
+  v3 = [qualifier objectForKeyedSubscript:*MEMORY[0x277D22FF8]];
   v4 = v3;
   if (v3)
   {

@@ -1,18 +1,18 @@
 @interface APNSURLSessionDemultiplexerManager
-- (APNSURLSessionDemultiplexerManager)initWithProxySessionConfigProvider:(id)a3;
-- (id)_getSessionDemultiplexerForId:(id)a3 maximumRequestCount:(int64_t)a4;
-- (id)sessionDemultiplexerForAdByIdentifier:(id)a3 maximumRequestCount:(int64_t)a4;
-- (int64_t)pretapRequestCountForIdentifier:(id)a3;
+- (APNSURLSessionDemultiplexerManager)initWithProxySessionConfigProvider:(id)provider;
+- (id)_getSessionDemultiplexerForId:(id)id maximumRequestCount:(int64_t)count;
+- (id)sessionDemultiplexerForAdByIdentifier:(id)identifier maximumRequestCount:(int64_t)count;
+- (int64_t)pretapRequestCountForIdentifier:(id)identifier;
 - (void)_unregisterOldSessionIfRequired;
-- (void)_unregisterSessionDemultiplexerWithIdentifier:(id)a3;
-- (void)unregisterSessionDemultiplexerWithIdentifier:(id)a3;
+- (void)_unregisterSessionDemultiplexerWithIdentifier:(id)identifier;
+- (void)unregisterSessionDemultiplexerWithIdentifier:(id)identifier;
 @end
 
 @implementation APNSURLSessionDemultiplexerManager
 
-- (APNSURLSessionDemultiplexerManager)initWithProxySessionConfigProvider:(id)a3
+- (APNSURLSessionDemultiplexerManager)initWithProxySessionConfigProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = APNSURLSessionDemultiplexerManager;
   v6 = [(APNSURLSessionDemultiplexerManager *)&v20 init];
@@ -32,20 +32,20 @@
 
     objc_msgSend_setMaxConcurrentOperationCount_(v6->_sessionSharedDelegateQueue, v13, 1, v14, v15);
     objc_msgSend_setName_(v6->_sessionSharedDelegateQueue, v16, @"com.apple.ap.pc.proxy.session-shared-delegate", v17, v18);
-    objc_storeStrong(&v6->_sessionConfigProvider, a3);
+    objc_storeStrong(&v6->_sessionConfigProvider, provider);
   }
 
   return v6;
 }
 
-- (id)sessionDemultiplexerForAdByIdentifier:(id)a3 maximumRequestCount:(int64_t)a4
+- (id)sessionDemultiplexerForAdByIdentifier:(id)identifier maximumRequestCount:(int64_t)count
 {
-  if (a3)
+  if (identifier)
   {
-    v6 = a3;
+    identifierCopy = identifier;
     v11 = objc_msgSend_lock(self, v7, v8, v9, v10);
     objc_msgSend_lock(v11, v12, v13, v14, v15);
-    v18 = objc_msgSend__getSessionDemultiplexerForId_maximumRequestCount_(self, v16, v6, a4, v17);
+    v18 = objc_msgSend__getSessionDemultiplexerForId_maximumRequestCount_(self, v16, identifierCopy, count, v17);
 
     objc_msgSend_unlock(v11, v19, v20, v21, v22);
   }
@@ -58,12 +58,12 @@
   return v18;
 }
 
-- (id)_getSessionDemultiplexerForId:(id)a3 maximumRequestCount:(int64_t)a4
+- (id)_getSessionDemultiplexerForId:(id)id maximumRequestCount:(int64_t)count
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   v11 = objc_msgSend_sessionDemultiplexerForIdentifier(self, v7, v8, v9, v10);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v11, v12, v6, v13, v14);
+  v15 = objc_msgSend_objectForKeyedSubscript_(v11, v12, idCopy, v13, v14);
 
   if (v15)
   {
@@ -77,7 +77,7 @@
 
     v27 = [APNSURLSessionDemultiplexer alloc];
     v32 = objc_msgSend_sessionSharedDelegateQueue(self, v28, v29, v30, v31);
-    v34 = objc_msgSend_initWithConfiguration_forIdentifier_withMaximumRequestCount_delegateQueue_(v27, v33, v26, v6, a4, v32);
+    v34 = objc_msgSend_initWithConfiguration_forIdentifier_withMaximumRequestCount_delegateQueue_(v27, v33, v26, idCopy, count, v32);
 
     v39 = objc_msgSend_sessionDemultiplexerForIdentifier(self, v35, v36, v37, v38);
     v44 = objc_msgSend_count(v39, v40, v41, v42, v43);
@@ -129,12 +129,12 @@
   }
 }
 
-- (void)_unregisterSessionDemultiplexerWithIdentifier:(id)a3
+- (void)_unregisterSessionDemultiplexerWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = objc_msgSend_sessionDemultiplexerForIdentifier(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(v9, v10, identifierCopy, v11, v12);
 
   if (v13)
   {
@@ -143,7 +143,7 @@
     v19[2] = sub_260F114C0;
     v19[3] = &unk_279AC8B80;
     v19[4] = self;
-    v20 = v4;
+    v20 = identifierCopy;
     objc_msgSend_invalidateAndCancelSessionWithCompletionHandler_(v13, v14, v19, v15, v16);
   }
 
@@ -153,7 +153,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v22 = v4;
+      v22 = identifierCopy;
       _os_log_impl(&dword_260F10000, v17, OS_LOG_TYPE_INFO, "Demultiplexer session '%{public}@' was not found in a list of active sessions. Can't invalidate session.", buf, 0xCu);
     }
   }
@@ -161,31 +161,31 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterSessionDemultiplexerWithIdentifier:(id)a3
+- (void)unregisterSessionDemultiplexerWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v20 = objc_msgSend_lock(self, v5, v6, v7, v8);
     objc_msgSend_lock(v20, v9, v10, v11, v12);
-    objc_msgSend__unregisterSessionDemultiplexerWithIdentifier_(self, v13, v4, v14, v15);
+    objc_msgSend__unregisterSessionDemultiplexerWithIdentifier_(self, v13, identifierCopy, v14, v15);
 
     objc_msgSend_unlock(v20, v16, v17, v18, v19);
   }
 }
 
-- (int64_t)pretapRequestCountForIdentifier:(id)a3
+- (int64_t)pretapRequestCountForIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = objc_msgSend_lock(self, v5, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12, v13);
   v18 = objc_msgSend_sessionDemultiplexerForIdentifier(self, v14, v15, v16, v17);
-  v22 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v4, v20, v21);
+  v22 = objc_msgSend_objectForKeyedSubscript_(v18, v19, identifierCopy, v20, v21);
 
   objc_msgSend_unlock(v9, v23, v24, v25, v26);
   if (v22)

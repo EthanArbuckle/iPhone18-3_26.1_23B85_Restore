@@ -2,15 +2,15 @@
 - (DUDebugInfoObjC)responseDebugInfo;
 - (DUStructuredEntityResponseObjC)init;
 - (NSArray)structuredEntities;
-- (void)setResponseDebugInfo:(id)a3;
-- (void)setStructuredEntities:(id)a3;
+- (void)setResponseDebugInfo:(id)info;
+- (void)setStructuredEntities:(id)entities;
 @end
 
 @implementation DUStructuredEntityResponseObjC
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, info, v3, v4);
   objc_msgSend_setResponseDebugInfo_(self->_underlying, v6, v9, v7, v8);
 }
 
@@ -22,16 +22,16 @@
   return v9;
 }
 
-- (void)setStructuredEntities:(id)a3
+- (void)setStructuredEntities:(id)entities
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = entitiesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v23, v27, 16);
   if (v8)
   {

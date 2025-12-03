@@ -2,22 +2,22 @@
 + (EDMessageCategorizationResult)noneMessageCategorizationResult;
 + (OS_os_log)signpostLog;
 + (id)log;
-+ (id)queryForMessagesToCategorizeForVersion:(int64_t)a3;
-- (BOOL)_categorizeMessages:(id)a3 senderAttributes:(id)a4 signpostID:(unint64_t)a5 results:(id)a6 reason:(int64_t)a7;
-- (BOOL)_categorizeMessages:(id)a3 signpostID:(unint64_t)a4 results:(id *)a5 reason:(int64_t)a6;
++ (id)queryForMessagesToCategorizeForVersion:(int64_t)version;
+- (BOOL)_categorizeMessages:(id)messages senderAttributes:(id)attributes signpostID:(unint64_t)d results:(id)results reason:(int64_t)reason;
+- (BOOL)_categorizeMessages:(id)messages signpostID:(unint64_t)d results:(id *)results reason:(int64_t)reason;
 - (BOOL)_shouldGenerateSummaries;
-- (EDMessageCategorizer)initWithCategoryPersistence:(id)a3 vipManager:(id)a4 contactStore:(id)a5 analyticsLogger:(id)a6 senderPersistence:(id)a7 hookRegistry:(id)a8;
-- (id)_makeCategorizationResultFromPrediction:(id)a3;
-- (id)_makeCategorizationResultMetadataFromPrediction:(id)a3;
-- (id)_messagesToCategorizeFromMessages:(id)a3;
-- (id)_stableEmailAddressForMessage:(id)a3;
-- (id)categorizeMessages:(id)a3 reason:(int64_t)a4;
-- (unint64_t)_categoryTypeForString:(id)a3 subType:(unint64_t *)a4;
+- (EDMessageCategorizer)initWithCategoryPersistence:(id)persistence vipManager:(id)manager contactStore:(id)store analyticsLogger:(id)logger senderPersistence:(id)senderPersistence hookRegistry:(id)registry;
+- (id)_makeCategorizationResultFromPrediction:(id)prediction;
+- (id)_makeCategorizationResultMetadataFromPrediction:(id)prediction;
+- (id)_messagesToCategorizeFromMessages:(id)messages;
+- (id)_stableEmailAddressForMessage:(id)message;
+- (id)categorizeMessages:(id)messages reason:(int64_t)reason;
+- (unint64_t)_categoryTypeForString:(id)string subType:(unint64_t *)type;
 - (unint64_t)signpostID;
-- (void)getModelVersionWithCompletion:(id)a3;
-- (void)persistenceDidAddNewMessages:(id)a3;
-- (void)persistenceDidReconcileJournaledMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceWillAddNewMessages:(id)a3;
+- (void)getModelVersionWithCompletion:(id)completion;
+- (void)persistenceDidAddNewMessages:(id)messages;
+- (void)persistenceDidReconcileJournaledMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceWillAddNewMessages:(id)messages;
 @end
 
 @implementation EDMessageCategorizer
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __27__EDMessageCategorizer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_58 != -1)
   {
     dispatch_once(&log_onceToken_58, block);
@@ -53,7 +53,7 @@ void __27__EDMessageCategorizer_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__EDMessageCategorizer_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_2 != -1)
   {
     dispatch_once(&signpostLog_onceToken_2, block);
@@ -74,8 +74,8 @@ void __35__EDMessageCategorizer_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -101,14 +101,14 @@ void __55__EDMessageCategorizer_noneMessageCategorizationResult__block_invoke()
   noneMessageCategorizationResult_sInstance = v1;
 }
 
-- (EDMessageCategorizer)initWithCategoryPersistence:(id)a3 vipManager:(id)a4 contactStore:(id)a5 analyticsLogger:(id)a6 senderPersistence:(id)a7 hookRegistry:(id)a8
+- (EDMessageCategorizer)initWithCategoryPersistence:(id)persistence vipManager:(id)manager contactStore:(id)store analyticsLogger:(id)logger senderPersistence:(id)senderPersistence hookRegistry:(id)registry
 {
-  v44 = a3;
-  v43 = a4;
-  v15 = a5;
-  v42 = a6;
-  v16 = a7;
-  v17 = a8;
+  persistenceCopy = persistence;
+  managerCopy = manager;
+  storeCopy = store;
+  loggerCopy = logger;
+  senderPersistenceCopy = senderPersistence;
+  registryCopy = registry;
   v47.receiver = self;
   v47.super_class = EDMessageCategorizer;
   v18 = [(EDMessageCategorizer *)&v47 init];
@@ -136,32 +136,32 @@ void __55__EDMessageCategorizer_noneMessageCategorizationResult__block_invoke()
     secretAgentController = v18->_secretAgentController;
     v18->_secretAgentController = v21;
 
-    objc_storeStrong(&v18->_persistence, a3);
+    objc_storeStrong(&v18->_persistence, persistence);
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_attr_make_with_qos_class(v23, QOS_CLASS_UTILITY, 0);
     v25 = dispatch_queue_create("com.apple.email.EDMessageCategorizer", v24);
     processingQueue = v18->_processingQueue;
     v18->_processingQueue = v25;
 
-    v27 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:{1, v42, v43, v44}];
+    v27 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:{1, loggerCopy, managerCopy, persistenceCopy}];
     categorizationState = v18->_categorizationState;
     v18->_categorizationState = v27;
 
-    objc_storeStrong(&v18->_vipManager, a4);
+    objc_storeStrong(&v18->_vipManager, manager);
     if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && EMIsGreymatterSupported())
     {
-      v29 = [objc_alloc(MEMORY[0x1E699AC40]) initWithStore:v15 options:2];
+      v29 = [objc_alloc(MEMORY[0x1E699AC40]) initWithStore:storeCopy options:2];
       contactStore = v18->_contactStore;
       v18->_contactStore = v29;
     }
 
-    objc_storeStrong(&v18->_analyticsLogger, a6);
-    objc_storeStrong(&v18->_senderPersistence, a7);
+    objc_storeStrong(&v18->_analyticsLogger, logger);
+    objc_storeStrong(&v18->_senderPersistence, senderPersistence);
     v31 = objc_alloc_init(MEMORY[0x1E699B230]);
     verifier = v18->_verifier;
     v18->_verifier = v31;
 
-    [v17 registerMessageChangeHookResponder:v18];
+    [registryCopy registerMessageChangeHookResponder:v18];
     objc_initWeak(location, v18);
     v33 = v18->_processingQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -208,16 +208,16 @@ void __123__EDMessageCategorizer_initWithCategoryPersistence_vipManager_contactS
     return 0;
   }
 
-  v3 = [(EDMessageCategorizer *)self automaticallySummarizeMessages];
-  v4 = [v3 isEnabled];
+  automaticallySummarizeMessages = [(EDMessageCategorizer *)self automaticallySummarizeMessages];
+  isEnabled = [automaticallySummarizeMessages isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (void)persistenceWillAddNewMessages:(id)a3
+- (void)persistenceWillAddNewMessages:(id)messages
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   if ((_os_feature_enabled_impl() & 1) != 0 || [(EDMessageCategorizer *)self _shouldGenerateSummaries])
   {
     v5 = +[EDMessageCategorizer signpostLog];
@@ -228,7 +228,7 @@ void __123__EDMessageCategorizer_initWithCategoryPersistence_vipManager_contactS
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
       *buf = 134349056;
-      v31 = [v4 count];
+      v31 = [messagesCopy count];
       _os_signpost_emit_with_name_impl(&dword_1C61EF000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "EDMessageCategorization", "Begin message categorization (count=%{public,signpost.telemetry:number1}lu) enableTelemetry=YES ", buf, 0xCu);
     }
 
@@ -237,7 +237,7 @@ void __123__EDMessageCategorizer_initWithCategoryPersistence_vipManager_contactS
     aBlock[2] = __54__EDMessageCategorizer_persistenceWillAddNewMessages___block_invoke;
     aBlock[3] = &unk_1E8253848;
     v29 = v6;
-    v9 = v4;
+    v9 = messagesCopy;
     v28 = v9;
     v10 = _Block_copy(aBlock);
     v11 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:168];
@@ -268,14 +268,14 @@ void __123__EDMessageCategorizer_initWithCategoryPersistence_vipManager_contactS
     if ([v18 count])
     {
       [v18 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_119];
-      v19 = [(EDMessageCategorizer *)self messagesWithCategorization];
+      messagesWithCategorization = [(EDMessageCategorizer *)self messagesWithCategorization];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __54__EDMessageCategorizer_persistenceWillAddNewMessages___block_invoke_2;
       v22[3] = &unk_1E82538C0;
       v20 = v18;
       v23 = v20;
-      [v19 performWhileLocked:v22];
+      [messagesWithCategorization performWhileLocked:v22];
 
       v10[2](v10, [v20 count]);
     }
@@ -323,24 +323,24 @@ void __54__EDMessageCategorizer_persistenceWillAddNewMessages___block_invoke_2(u
   [v4 addObjectsFromArray:v3];
 }
 
-- (void)persistenceDidAddNewMessages:(id)a3
+- (void)persistenceDidAddNewMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(EDMessageCategorizer *)self messagesWithCategorization];
+  messagesWithCategorization = [(EDMessageCategorizer *)self messagesWithCategorization];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__EDMessageCategorizer_persistenceDidAddNewMessages___block_invoke;
   v10[3] = &unk_1E8253910;
-  v7 = v4;
+  v7 = messagesCopy;
   v11 = v7;
   v8 = v5;
   v12 = v8;
-  v13 = self;
-  [v6 performWhileLocked:v10];
+  selfCopy = self;
+  [messagesWithCategorization performWhileLocked:v10];
 
-  v9 = [(EDMessageCategorizer *)self analyticsLogger];
-  [v9 logReceiveEventForMessagesWithResult:v8];
+  analyticsLogger = [(EDMessageCategorizer *)self analyticsLogger];
+  [analyticsLogger logReceiveEventForMessagesWithResult:v8];
 }
 
 void __53__EDMessageCategorizer_persistenceDidAddNewMessages___block_invoke(uint64_t a1, void *a2)
@@ -389,15 +389,15 @@ void __53__EDMessageCategorizer_persistenceDidAddNewMessages___block_invoke_2(id
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidReconcileJournaledMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidReconcileJournaledMessages:(id)messages generationWindow:(id)window
 {
-  v8 = a3;
+  messagesCopy = messages;
   if (_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && (EMIsGreymatterAvailable())
   {
-    v5 = [v8 ef_filter:&__block_literal_global_126];
+    v5 = [messagesCopy ef_filter:&__block_literal_global_126];
     v6 = [(EDMessageCategorizer *)self categorizeMessages:v5 reason:4];
-    v7 = [(EDMessageCategorizer *)self persistence];
-    [v7 persistCategorizationResultMap:v6 userInitiated:0];
+    persistence = [(EDMessageCategorizer *)self persistence];
+    [persistence persistCategorizationResultMap:v6 userInitiated:0];
   }
 }
 
@@ -409,10 +409,10 @@ BOOL __82__EDMessageCategorizer_persistenceDidReconcileJournaledMessages_generat
   return v3;
 }
 
-- (id)categorizeMessages:(id)a3 reason:(int64_t)a4
+- (id)categorizeMessages:(id)messages reason:(int64_t)reason
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messagesCopy = messages;
   v7 = +[EDMessageCategorizer signpostLog];
   v8 = os_signpost_id_make_with_pointer(v7, [MEMORY[0x1E696AFB0] UUID]);
 
@@ -421,7 +421,7 @@ BOOL __82__EDMessageCategorizer_persistenceDidReconcileJournaledMessages_generat
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 134349056;
-    v33 = [v6 count];
+    v33 = [messagesCopy count];
     _os_signpost_emit_with_name_impl(&dword_1C61EF000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "EDMessageCategorization", "Begin message categorization (count=%{public,signpost.telemetry:number1}lu) enableTelemetry=YES ", buf, 0xCu);
   }
 
@@ -430,11 +430,11 @@ BOOL __82__EDMessageCategorizer_persistenceDidReconcileJournaledMessages_generat
   aBlock[2] = __50__EDMessageCategorizer_categorizeMessages_reason___block_invoke;
   aBlock[3] = &unk_1E8253848;
   v31 = v8;
-  v11 = v6;
+  v11 = messagesCopy;
   v30 = v11;
   v12 = _Block_copy(aBlock);
   v28 = 0;
-  v13 = [(EDMessageCategorizer *)self _categorizeMessages:v11 signpostID:v8 results:&v28 reason:a4];
+  v13 = [(EDMessageCategorizer *)self _categorizeMessages:v11 signpostID:v8 results:&v28 reason:reason];
   v14 = v28;
   v15 = v14;
   if (v13 && [v14 count])
@@ -455,8 +455,8 @@ BOOL __82__EDMessageCategorizer_persistenceDidReconcileJournaledMessages_generat
       _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "Biome donation of categorization results map: %{public}@", buf, 0xCu);
     }
 
-    v19 = [(EDMessageCategorizer *)self analyticsLogger];
-    [v19 logReceiveEventForMessagesWithResult:v17];
+    analyticsLogger = [(EDMessageCategorizer *)self analyticsLogger];
+    [analyticsLogger logReceiveEventForMessagesWithResult:v17];
 
     v12[2](v12, [v15 count]);
     v20 = v15;
@@ -505,10 +505,10 @@ void __50__EDMessageCategorizer_categorizeMessages_reason___block_invoke_127(uin
   }
 }
 
-- (BOOL)_categorizeMessages:(id)a3 signpostID:(unint64_t)a4 results:(id *)a5 reason:(int64_t)a6
+- (BOOL)_categorizeMessages:(id)messages signpostID:(unint64_t)d results:(id *)results reason:(int64_t)reason
 {
   v66 = *MEMORY[0x1E69E9840];
-  v42 = [(EDMessageCategorizer *)self _messagesToCategorizeFromMessages:a3];
+  v42 = [(EDMessageCategorizer *)self _messagesToCategorizeFromMessages:messages];
   if ([v42 count])
   {
     v45 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -517,7 +517,7 @@ void __50__EDMessageCategorizer_categorizeMessages_reason___block_invoke_127(uin
     v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v44 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v50 = [(EDMessageCategorizer *)self senderPersistence];
+    senderPersistence = [(EDMessageCategorizer *)self senderPersistence];
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -541,33 +541,33 @@ void __50__EDMessageCategorizer_categorizeMessages_reason___block_invoke_127(uin
         }
 
         v10 = *(*(&v56 + 1) + 8 * i);
-        v11 = [v10 senders];
-        v12 = [v11 firstObject];
-        v13 = [v12 emailAddressValue];
-        v14 = [v13 simpleAddress];
-        v15 = v14;
-        if (v14)
+        senders = [v10 senders];
+        firstObject = [senders firstObject];
+        emailAddressValue = [firstObject emailAddressValue];
+        simpleAddress = [emailAddressValue simpleAddress];
+        v15 = simpleAddress;
+        if (simpleAddress)
         {
-          v16 = v14;
+          stringValue = simpleAddress;
         }
 
         else
         {
-          v16 = [v12 stringValue];
+          stringValue = [firstObject stringValue];
         }
 
-        v17 = v16;
+        v17 = stringValue;
 
-        v18 = [v17 lowercaseString];
+        lowercaseString = [v17 lowercaseString];
 
-        v19 = [v50 userHasSentToSenderAddress:v18];
+        v19 = [senderPersistence userHasSentToSenderAddress:lowercaseString];
         if (v19)
         {
           if (v19 == 1)
           {
-            if ((*(v8 + 16))(v8, v18))
+            if ((*(v8 + 16))(v8, lowercaseString))
             {
-              [v43 addObject:v18];
+              [v43 addObject:lowercaseString];
               v20 = v47;
             }
 
@@ -592,14 +592,14 @@ void __50__EDMessageCategorizer_categorizeMessages_reason___block_invoke_127(uin
               goto LABEL_21;
             }
 
-            [v45 addObject:v18];
+            [v45 addObject:lowercaseString];
             v20 = v48;
           }
         }
 
         else
         {
-          [v44 addObject:v18];
+          [v44 addObject:lowercaseString];
           v20 = v46;
         }
 
@@ -622,7 +622,7 @@ LABEL_23:
         if ([v48 count])
         {
           v24 = v22[2](v22, v45, 1);
-          v25 = [(EDMessageCategorizer *)self _categorizeMessages:v48 senderAttributes:v24 signpostID:a4 results:v23 reason:a6];
+          v25 = [(EDMessageCategorizer *)self _categorizeMessages:v48 senderAttributes:v24 signpostID:d results:v23 reason:reason];
 
           if (!v25)
           {
@@ -630,7 +630,7 @@ LABEL_23:
           }
         }
 
-        if ([v47 count] && (v22[2](v22, v43, 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = -[EDMessageCategorizer _categorizeMessages:senderAttributes:signpostID:results:reason:](self, "_categorizeMessages:senderAttributes:signpostID:results:reason:", v47, v26, a4, v23, a6), v26, !v27))
+        if ([v47 count] && (v22[2](v22, v43, 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = -[EDMessageCategorizer _categorizeMessages:senderAttributes:signpostID:results:reason:](self, "_categorizeMessages:senderAttributes:signpostID:results:reason:", v47, v26, d, v23, reason), v26, !v27))
         {
 LABEL_37:
           v32 = 0;
@@ -640,11 +640,11 @@ LABEL_37:
         {
           v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
           v29 = v22[2](v22, v44, 1);
-          if ([(EDMessageCategorizer *)self _categorizeMessages:v46 senderAttributes:v29 signpostID:a4 results:v28 reason:a6])
+          if ([(EDMessageCategorizer *)self _categorizeMessages:v46 senderAttributes:v29 signpostID:d results:v28 reason:reason])
           {
             v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
             v31 = [v29 ef_mapValues:&__block_literal_global_136];
-            v32 = [(EDMessageCategorizer *)self _categorizeMessages:v46 senderAttributes:v31 signpostID:a4 results:v30 reason:a6];
+            v32 = [(EDMessageCategorizer *)self _categorizeMessages:v46 senderAttributes:v31 signpostID:d results:v30 reason:reason];
             if (v32)
             {
               *&buf = 0;
@@ -683,7 +683,7 @@ LABEL_37:
           v32 = 1;
         }
 
-        if (a5)
+        if (results)
         {
           if (v32)
           {
@@ -695,7 +695,7 @@ LABEL_37:
             v35 = 0;
           }
 
-          *a5 = v35;
+          *results = v35;
         }
 
         goto LABEL_47;
@@ -703,9 +703,9 @@ LABEL_37:
     }
   }
 
-  if (a5)
+  if (results)
   {
-    *a5 = 0;
+    *results = 0;
   }
 
   LOBYTE(v32) = 1;
@@ -794,10 +794,10 @@ void __70__EDMessageCategorizer__categorizeMessages_signpostID_results_reason___
   }
 }
 
-+ (id)queryForMessagesToCategorizeForVersion:(int64_t)a3
++ (id)queryForMessagesToCategorizeForVersion:(int64_t)version
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = [EDMessageListItemPredicates predicateForCategorizationVersionLessThanVersion:a3];
+  v3 = [EDMessageListItemPredicates predicateForCategorizationVersionLessThanVersion:version];
   v4 = +[EDMessageListItemPredicates predicateForNilModelVersion];
   v5 = MEMORY[0x1E696AB28];
   v21[0] = v4;
@@ -824,15 +824,15 @@ void __70__EDMessageCategorizer__categorizeMessages_signpostID_results_reason___
   return v16;
 }
 
-- (id)_messagesToCategorizeFromMessages:(id)a3
+- (id)_messagesToCategorizeFromMessages:(id)messages
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 ef_filter:&__block_literal_global_145];
+  messagesCopy = messages;
+  v4 = [messagesCopy ef_filter:&__block_literal_global_145];
   v5 = [v4 count];
-  if (v5 < [v3 count])
+  if (v5 < [messagesCopy count])
   {
-    v6 = [v3 count];
+    v6 = [messagesCopy count];
     v7 = [v4 count];
     v8 = +[EDMessageCategorizer log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -876,30 +876,30 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
   return v3;
 }
 
-- (BOOL)_categorizeMessages:(id)a3 senderAttributes:(id)a4 signpostID:(unint64_t)a5 results:(id)a6 reason:(int64_t)a7
+- (BOOL)_categorizeMessages:(id)messages senderAttributes:(id)attributes signpostID:(unint64_t)d results:(id)results reason:(int64_t)reason
 {
   v107 = *MEMORY[0x1E69E9840];
-  v67 = a3;
-  v71 = a4;
-  v69 = a6;
+  messagesCopy = messages;
+  attributesCopy = attributes;
+  resultsCopy = results;
   v72 = objc_opt_new();
-  v66 = a7;
-  [EDCategoryPowerLog logStartCategorizationWithReason:a7];
+  reasonCopy = reason;
+  [EDCategoryPowerLog logStartCategorizationWithReason:reason];
   v10 = +[EDMessageCategorizer signpostLog];
   v11 = v10;
-  v65 = a5 - 1;
-  if (a5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+  v65 = d - 1;
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 134349056;
-    *&buf[4] = [v67 count];
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v11, OS_SIGNPOST_INTERVAL_BEGIN, a5, "EDMessageCategorizationMessageCategorizer", "Begin categorizer call (count=%{public,signpost.telemetry:number1}lu) enableTelemetry=YES ", buf, 0xCu);
+    *&buf[4] = [messagesCopy count];
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v11, OS_SIGNPOST_INTERVAL_BEGIN, d, "EDMessageCategorizationMessageCategorizer", "Begin categorizer call (count=%{public,signpost.telemetry:number1}lu) enableTelemetry=YES ", buf, 0xCu);
   }
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v67;
+  obj = messagesCopy;
   v12 = [obj countByEnumeratingWithState:&v91 objects:v106 count:16];
   if (v12)
   {
@@ -917,35 +917,35 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
 
         v14 = *(*(&v91 + 1) + 8 * v13);
         context = objc_autoreleasePoolPush();
-        v15 = [v14 from];
-        v16 = [v15 firstObject];
-        v17 = [v16 emailAddressValue];
+        from = [v14 from];
+        firstObject = [from firstObject];
+        emailAddressValue = [firstObject emailAddressValue];
 
-        if (v17)
+        if (emailAddressValue)
         {
-          v18 = [v14 senders];
-          v19 = [v18 firstObject];
-          v20 = [v19 emailAddressValue];
+          senders = [v14 senders];
+          firstObject2 = [senders firstObject];
+          emailAddressValue2 = [firstObject2 emailAddressValue];
 
-          v21 = [v20 simpleAddress];
-          v22 = [v21 lowercaseString];
+          simpleAddress = [emailAddressValue2 simpleAddress];
+          lowercaseString = [simpleAddress lowercaseString];
 
-          v23 = [v71 objectForKeyedSubscript:v22];
+          v23 = [attributesCopy objectForKeyedSubscript:lowercaseString];
           v24 = v23;
           v80 = v23;
           if (v23)
           {
-            v79 = [v23 isContact];
-            v78 = [v24 isVIP];
-            v76 = [v24 isPrimarySender];
-            v25 = [v14 headers];
-            v26 = [v25 allHeaderKeys];
-            v77 = [v26 containsObject:@"list-unsubscribe"];
+            isContact = [v23 isContact];
+            isVIP = [v24 isVIP];
+            isPrimarySender = [v24 isPrimarySender];
+            headers = [v14 headers];
+            allHeaderKeys = [headers allHeaderKeys];
+            v77 = [allHeaderKeys containsObject:@"list-unsubscribe"];
 
             v27 = +[EDMessageCategorizer log];
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              if (v78)
+              if (isVIP)
               {
                 v51 = "true";
               }
@@ -956,8 +956,8 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
               }
 
               *buf = 138413314;
-              *&buf[4] = v17;
-              if (v79)
+              *&buf[4] = emailAddressValue;
+              if (isContact)
               {
                 v52 = "true";
               }
@@ -979,7 +979,7 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
               }
 
               *&buf[14] = v51;
-              if (v76)
+              if (isPrimarySender)
               {
                 v54 = "true";
               }
@@ -1017,11 +1017,11 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
             v29 = v28;
             _Block_object_dispose(&v95, 8);
             v30 = objc_alloc_init(v28);
-            v31 = [v17 displayName];
-            v32 = v31;
-            if (v31)
+            displayName = [emailAddressValue displayName];
+            v32 = displayName;
+            if (displayName)
             {
-              v33 = v31;
+              v33 = displayName;
             }
 
             else
@@ -1031,53 +1031,53 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
 
             [v30 setSenderName:{v33, v65}];
 
-            v34 = v17;
-            v35 = [v34 emailAddressValue];
-            v36 = [v35 simpleAddress];
-            v37 = v36;
-            if (v36)
+            v34 = emailAddressValue;
+            emailAddressValue3 = [v34 emailAddressValue];
+            simpleAddress2 = [emailAddressValue3 simpleAddress];
+            v37 = simpleAddress2;
+            if (simpleAddress2)
             {
-              v38 = v36;
+              stringValue = simpleAddress2;
             }
 
             else
             {
-              v38 = [v34 stringValue];
+              stringValue = [v34 stringValue];
             }
 
-            v42 = v38;
+            v42 = stringValue;
 
             [v30 setSenderEmail:v42];
-            v43 = [v14 subject];
-            v44 = [v43 subjectString];
-            [v30 setEmailSubject:v44];
+            subject = [v14 subject];
+            subjectString = [subject subjectString];
+            [v30 setEmailSubject:subjectString];
 
             [v30 setIsUnsubscribeHeaderPresent:v77];
-            [v30 setIsSenderVIP:v78];
-            [v30 setIsSenderInAddressBook:v79];
+            [v30 setIsSenderVIP:isVIP];
+            [v30 setIsSenderInAddressBook:isContact];
             [v30 setIsSenderRecentContact:0];
-            [v30 setIsSenderPrimary:v76];
+            [v30 setIsSenderPrimary:isPrimarySender];
             v45 = [(EDMessageCategorizer *)self _stableEmailAddressForMessage:v14];
             [v30 setReceiverEmail:v45];
 
-            v46 = [v14 account];
-            v47 = [v46 systemAccount];
-            v48 = [v47 accountPropertyForKey:@"kMCCCategoryIsNonPersonalAccountKey"];
+            account = [v14 account];
+            systemAccount = [account systemAccount];
+            v48 = [systemAccount accountPropertyForKey:@"kMCCCategoryIsNonPersonalAccountKey"];
             [v30 setIsNonPersonalAccount:{objc_msgSend(v48, "BOOLValue")}];
 
             v49 = +[EDMessageCategorizer log];
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
             {
-              v55 = [v30 receiverEmail];
-              v56 = [v30 isNonPersonalAccount];
+              receiverEmail = [v30 receiverEmail];
+              isNonPersonalAccount = [v30 isNonPersonalAccount];
               *buf = 138412546;
               v57 = "false";
-              if (v56)
+              if (isNonPersonalAccount)
               {
                 v57 = "true";
               }
 
-              *&buf[4] = v55;
+              *&buf[4] = receiverEmail;
               *&buf[12] = 2080;
               *&buf[14] = v57;
               _os_log_debug_impl(&dword_1C61EF000, v49, OS_LOG_TYPE_DEBUG, "Recipient %{mask:mailaddr}@ isNotPersonal: %s", buf, 0x16u);
@@ -1090,12 +1090,12 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
             v82[3] = &unk_1E8253A30;
             v83 = v72;
             v84 = v14;
-            v85 = self;
+            selfCopy = self;
             v86 = v34;
-            v87 = v78;
-            v88 = v79;
+            v87 = isVIP;
+            v88 = isContact;
             v89 = v77;
-            v90 = v76;
+            v90 = isPrimarySender;
             [(MCCSecretAgentController *)secretAgentController predictCommerceEmailWithContext:v30 completion:v82];
           }
 
@@ -1105,7 +1105,7 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543362;
-              *&buf[4] = v17;
+              *&buf[4] = emailAddressValue;
               _os_log_error_impl(&dword_1C61EF000, v41, OS_LOG_TYPE_ERROR, "BlackPearl requires senderAttributes. Treating as category none for address %{public}@", buf, 0xCu);
             }
 
@@ -1123,9 +1123,9 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
           }
 
           v40 = [EDMessageCategorizationResult alloc];
-          v20 = [objc_alloc(MEMORY[0x1E699AC48]) initWithType:3 subtype:2 isHighImpact:0 state:1];
-          v22 = [(EDMessageCategorizationResult *)v40 initWithCategory:v20 metadata:0];
-          [v69 setObject:v22 forKeyedSubscript:v14];
+          emailAddressValue2 = [objc_alloc(MEMORY[0x1E699AC48]) initWithType:3 subtype:2 isHighImpact:0 state:1];
+          lowercaseString = [(EDMessageCategorizationResult *)v40 initWithCategory:emailAddressValue2 metadata:0];
+          [resultsCopy setObject:lowercaseString forKeyedSubscript:v14];
         }
 
         objc_autoreleasePoolPop(context);
@@ -1139,7 +1139,7 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
     while (v12);
   }
 
-  +[EDCategoryPowerLog logStopCategorizationWithReason:count:](EDCategoryPowerLog, "logStopCategorizationWithReason:count:", v66, [v72 count]);
+  +[EDCategoryPowerLog logStopCategorizationWithReason:count:](EDCategoryPowerLog, "logStopCategorizationWithReason:count:", reasonCopy, [v72 count]);
   v58 = +[EDMessageCategorizer signpostLog];
   v59 = v58;
   if (v65 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v58))
@@ -1150,10 +1150,10 @@ uint64_t __58__EDMessageCategorizer__messagesToCategorizeFromMessages___block_in
     *&buf[4] = v60;
     *&buf[12] = 2050;
     *&buf[14] = v61;
-    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v59, OS_SIGNPOST_INTERVAL_END, a5, "EDMessageCategorizationMessageCategorizer", "Finish categorizer call (count=%{public,signpost.telemetry:number1}lu, result=%{public,signpost.telemetry:number2}lu) enableTelemetry=YES ", buf, 0x16u);
+    _os_signpost_emit_with_name_impl(&dword_1C61EF000, v59, OS_SIGNPOST_INTERVAL_END, d, "EDMessageCategorizationMessageCategorizer", "Finish categorizer call (count=%{public,signpost.telemetry:number1}lu, result=%{public,signpost.telemetry:number2}lu) enableTelemetry=YES ", buf, 0x16u);
   }
 
-  [v69 addEntriesFromDictionary:v72];
+  [resultsCopy addEntriesFromDictionary:v72];
   v62 = [v72 count] != 0;
 
   v63 = *MEMORY[0x1E69E9840];
@@ -1184,56 +1184,56 @@ void __87__EDMessageCategorizer__categorizeMessages_senderAttributes_signpostID_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stableEmailAddressForMessage:(id)a3
+- (id)_stableEmailAddressForMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 account];
+  messageCopy = message;
+  account = [messageCopy account];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 account];
-    v7 = [v6 firstEmailAddress];
+    account2 = [messageCopy account];
+    firstEmailAddress = [account2 firstEmailAddress];
   }
 
   else
   {
-    v8 = [v3 account];
+    account3 = [messageCopy account];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v6 = [v3 account];
-      v7 = [v6 canonicalEmailAddress];
+      account2 = [messageCopy account];
+      firstEmailAddress = [account2 canonicalEmailAddress];
     }
 
     else
     {
-      v10 = [v3 account];
-      v6 = [v10 emailAddressStrings];
+      account4 = [messageCopy account];
+      account2 = [account4 emailAddressStrings];
 
-      if ([v6 count] >= 2)
+      if ([account2 count] >= 2)
       {
-        v11 = [v6 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
-        v12 = [v11 firstObject];
+        v11 = [account2 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+        firstObject = [v11 firstObject];
 
         goto LABEL_9;
       }
 
-      v7 = [v6 firstObject];
+      firstEmailAddress = [account2 firstObject];
     }
   }
 
-  v12 = v7;
+  firstObject = firstEmailAddress;
 LABEL_9:
 
-  return v12;
+  return firstObject;
 }
 
-- (id)_makeCategorizationResultFromPrediction:(id)a3
+- (id)_makeCategorizationResultFromPrediction:(id)prediction
 {
-  v4 = a3;
-  v5 = [(EDMessageCategorizer *)self _makeCategorizationResultMetadataFromPrediction:v4];
+  predictionCopy = prediction;
+  v5 = [(EDMessageCategorizer *)self _makeCategorizationResultMetadataFromPrediction:predictionCopy];
   v22 = 0;
   v28 = 0;
   v29 = &v28;
@@ -1256,16 +1256,16 @@ LABEL_9:
   _Block_object_dispose(&v28, 8);
   if (!v6)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionSubCategoryKey(void)"];
-    [v20 handleFailureInFunction:v21 file:@"EDMessageCategorizer.m" lineNumber:49 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v21 file:@"EDMessageCategorizer.m" lineNumber:49 description:{@"%s", dlerror()}];
 LABEL_12:
 
     __break(1u);
     return result;
   }
 
-  v8 = [v4 objectForKey:*v6];
+  v8 = [predictionCopy objectForKey:*v6];
   v9 = [(EDMessageCategorizer *)self _categoryTypeForString:v8 subType:&v22];
 
   v28 = 0;
@@ -1290,26 +1290,26 @@ LABEL_12:
   _Block_object_dispose(&v28, 8);
   if (!v10)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionTimeSensitiveKey(void)"];
-    [v20 handleFailureInFunction:v21 file:@"EDMessageCategorizer.m" lineNumber:51 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v21 file:@"EDMessageCategorizer.m" lineNumber:51 description:{@"%s", dlerror()}];
     goto LABEL_12;
   }
 
-  v13 = [v4 objectForKey:*v10];
-  v14 = [v13 BOOLValue];
+  v13 = [predictionCopy objectForKey:*v10];
+  bOOLValue = [v13 BOOLValue];
 
   v15 = [EDMessageCategorizationResult alloc];
   v16 = objc_alloc(MEMORY[0x1E699AC48]);
-  v17 = [v16 initWithType:v9 subtype:v22 isHighImpact:v14 state:1];
+  v17 = [v16 initWithType:v9 subtype:v22 isHighImpact:bOOLValue state:1];
   v18 = [(EDMessageCategorizationResult *)v15 initWithCategory:v17 metadata:v5];
 
   return v18;
 }
 
-- (id)_makeCategorizationResultMetadataFromPrediction:(id)a3
+- (id)_makeCategorizationResultMetadataFromPrediction:(id)prediction
 {
-  v3 = a3;
+  predictionCopy = prediction;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1326,22 +1326,22 @@ LABEL_12:
   _Block_object_dispose(&v74, 8);
   if (!v4)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionScoreKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:47 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:47 description:{@"%s", dlerror()}];
 LABEL_59:
 
     __break(1u);
 LABEL_60:
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPRolloutFactorPackIdKey(void)"];
-    [v57 handleFailureInFunction:v58 file:@"EDMessageCategorizer.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v58 file:@"EDMessageCategorizer.m" lineNumber:40 description:{@"%s", dlerror()}];
 
     __break(1u);
     return result;
   }
 
-  v6 = [v3 objectForKey:*v4];
+  v6 = [predictionCopy objectForKey:*v4];
   [v6 doubleValue];
   v8 = v7;
 
@@ -1361,13 +1361,13 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v9)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionSenderScoreKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:48 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:48 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
-  v11 = [v3 objectForKey:*v9];
+  v11 = [predictionCopy objectForKey:*v9];
   [v11 doubleValue];
   v13 = v12;
 
@@ -1387,13 +1387,13 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v14)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionTSScoreKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:50 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:50 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
-  v16 = [v3 objectForKey:*v14];
+  v16 = [predictionCopy objectForKey:*v14];
   [v16 doubleValue];
   v18 = v17;
 
@@ -1414,14 +1414,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v20)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionReasonCodesKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:46 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:46 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v22 = *v20;
-  v23 = [v3 objectForKey:v22];
+  v23 = [predictionCopy objectForKey:v22];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1438,14 +1438,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v24)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPModelVersionKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:38 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v26 = *v24;
-  v27 = [v3 objectForKey:v26];
+  v27 = [predictionCopy objectForKey:v26];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1462,15 +1462,15 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v28)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPSenderModelVersionKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:42 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:42 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v73 = v26;
   v30 = *v28;
-  v31 = [v3 objectForKey:v30];
+  v31 = [predictionCopy objectForKey:v30];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1487,16 +1487,16 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v32)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPTSModelVersionKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:43 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v71 = v22;
   v34 = v23;
   v35 = *v32;
-  v72 = [v3 objectForKey:v35];
+  v72 = [predictionCopy objectForKey:v35];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1513,14 +1513,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v36)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPFinalRuleModelVersionKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:52 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:52 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v70 = *v36;
-  v69 = [v3 objectForKey:?];
+  v69 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1537,14 +1537,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v38)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPExperimentIdKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:37 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:37 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v68 = *v38;
-  v67 = [v3 objectForKey:?];
+  v67 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1561,14 +1561,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v40)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPExperimentDeploymentIdKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:36 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v65 = *v40;
-  v42 = [v3 objectForKey:?];
+  v42 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1585,14 +1585,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v43)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPTreatmentIdKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:44 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:44 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v64 = *v43;
-  v66 = [v3 objectForKey:?];
+  v66 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1609,16 +1609,16 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v45)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPRolloutIdKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:41 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:41 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v62 = v35;
   v63 = v31;
   v61 = *v45;
-  v47 = [v3 objectForKey:?];
+  v47 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1635,14 +1635,14 @@ LABEL_60:
   _Block_object_dispose(&v74, 8);
   if (!v48)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkDecisionBPRolloutDeploymentIdKey(void)"];
-    [v55 handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v56 file:@"EDMessageCategorizer.m" lineNumber:39 description:{@"%s", dlerror()}];
     goto LABEL_59;
   }
 
   v60 = *v48;
-  v50 = [v3 objectForKey:?];
+  v50 = [predictionCopy objectForKey:?];
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1662,35 +1662,35 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v53 = [v3 objectForKey:*v51];
+  v53 = [predictionCopy objectForKey:*v51];
   v59 = [(EDMessageCategorizationResultMetadata *)v19 initWithScore:v34 senderScore:v27 tsScore:v63 reasonCodes:v72 modelVersion:v69 senderModelVersion:v67 tsModelVersion:v8 finalRuleVersion:v13 experimentID:v18 experimentDeploymentID:v42 experimentTreatmentID:v66 rolloutID:v47 rolloutDeploymentID:v50 rolloutFactorPackID:v53];
 
   return v59;
 }
 
-- (unint64_t)_categoryTypeForString:(id)a3 subType:(unint64_t *)a4
+- (unint64_t)_categoryTypeForString:(id)string subType:(unint64_t *)type
 {
-  v5 = a3;
-  if ([v5 caseInsensitiveCompare:@"personal"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"personal"])
   {
-    if ([v5 caseInsensitiveCompare:@"promotions"])
+    if ([stringCopy caseInsensitiveCompare:@"promotions"])
     {
-      if ([v5 caseInsensitiveCompare:@"social"])
+      if ([stringCopy caseInsensitiveCompare:@"social"])
       {
-        if ([v5 caseInsensitiveCompare:@"transactions"])
+        if ([stringCopy caseInsensitiveCompare:@"transactions"])
         {
-          if ([v5 caseInsensitiveCompare:@"news"])
+          if ([stringCopy caseInsensitiveCompare:@"news"])
           {
-            if ([v5 caseInsensitiveCompare:@"unsupported_language"])
+            if ([stringCopy caseInsensitiveCompare:@"unsupported_language"])
             {
-              if ([v5 caseInsensitiveCompare:@"nop_sa"])
+              if ([stringCopy caseInsensitiveCompare:@"nop_sa"])
               {
-                if ([v5 caseInsensitiveCompare:@"others"])
+                if ([stringCopy caseInsensitiveCompare:@"others"])
                 {
                   v6 = +[EDMessageCategorizer log];
                   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
                   {
-                    [EDMessageCategorizer _categoryTypeForString:v5 subType:v6];
+                    [EDMessageCategorizer _categoryTypeForString:stringCopy subType:v6];
                   }
 
                   v7 = 0;
@@ -1752,22 +1752,22 @@ LABEL_60:
     v7 = 1;
   }
 
-  *a4 = v7;
+  *type = v7;
 
   return v8;
 }
 
-- (void)getModelVersionWithCompletion:(id)a3
+- (void)getModelVersionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(EDMessageCategorizer *)self secretAgentController];
+  completionCopy = completion;
+  secretAgentController = [(EDMessageCategorizer *)self secretAgentController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__EDMessageCategorizer_getModelVersionWithCompletion___block_invoke;
   v7[3] = &unk_1E8253A58;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 getBlackPearlVersionWithCompletion:v7];
+  [secretAgentController getBlackPearlVersionWithCompletion:v7];
 }
 
 void __54__EDMessageCategorizer_getModelVersionWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

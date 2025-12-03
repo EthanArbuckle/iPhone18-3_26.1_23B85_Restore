@@ -1,17 +1,17 @@
 @interface CRKConcreteKeychain
 + (CRKConcreteKeychain)defaultKeychain;
-- (CRKConcreteKeychain)initWithBaseQueryAttributes:(id)a3;
+- (CRKConcreteKeychain)initWithBaseQueryAttributes:(id)attributes;
 - (NSString)description;
-- (id)addCertificate:(id)a3 toAccessGroup:(id)a4;
-- (id)addIdentity:(id)a3 toAccessGroup:(id)a4;
-- (id)addItem:(void *)a3 toAccessGroup:(id)a4;
-- (id)addPrivateKey:(id)a3 toAccessGroup:(id)a4;
-- (id)makeItemWithPersistentID:(id)a3 itemClass:(id)a4 creationBlock:(id)a5;
+- (id)addCertificate:(id)certificate toAccessGroup:(id)group;
+- (id)addIdentity:(id)identity toAccessGroup:(id)group;
+- (id)addItem:(void *)item toAccessGroup:(id)group;
+- (id)addPrivateKey:(id)key toAccessGroup:(id)group;
+- (id)makeItemWithPersistentID:(id)d itemClass:(id)class creationBlock:(id)block;
 - (id)makePasswordFacade;
-- (id)passwordForService:(id)a3;
-- (void)copyItemWithPersistentID:(id)a3 itemClass:(id)a4;
-- (void)removeItemWithPersistentID:(id)a3;
-- (void)setPassword:(id)a3 forService:(id)a4 accessGroup:(id)a5;
+- (id)passwordForService:(id)service;
+- (void)copyItemWithPersistentID:(id)d itemClass:(id)class;
+- (void)removeItemWithPersistentID:(id)d;
+- (void)setPassword:(id)password forService:(id)service accessGroup:(id)group;
 @end
 
 @implementation CRKConcreteKeychain
@@ -22,20 +22,20 @@
   v6 = *MEMORY[0x277CDC5D0];
   v7[0] = *MEMORY[0x277CBED28];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [[a1 alloc] initWithBaseQueryAttributes:v3];
+  v4 = [[self alloc] initWithBaseQueryAttributes:v3];
 
   return v4;
 }
 
-- (CRKConcreteKeychain)initWithBaseQueryAttributes:(id)a3
+- (CRKConcreteKeychain)initWithBaseQueryAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = CRKConcreteKeychain;
   v5 = [(CRKConcreteKeychain *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributesCopy copy];
     baseQueryAttributes = v5->_baseQueryAttributes;
     v5->_baseQueryAttributes = v6;
   }
@@ -43,40 +43,40 @@
   return v5;
 }
 
-- (id)addCertificate:(id)a3 toAccessGroup:(id)a4
+- (id)addCertificate:(id)certificate toAccessGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [a3 underlyingCertificate], v8);
+  certificateCopy = certificate;
+  groupCopy = group;
+  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [certificate underlyingCertificate], groupCopy);
 
   return v9;
 }
 
-- (id)addIdentity:(id)a3 toAccessGroup:(id)a4
+- (id)addIdentity:(id)identity toAccessGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [a3 underlyingIdentity], v8);
+  identityCopy = identity;
+  groupCopy = group;
+  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [identity underlyingIdentity], groupCopy);
 
   return v9;
 }
 
-- (id)addPrivateKey:(id)a3 toAccessGroup:(id)a4
+- (id)addPrivateKey:(id)key toAccessGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [a3 underlyingPrivateKey], v8);
+  keyCopy = key;
+  groupCopy = group;
+  v9 = -[CRKConcreteKeychain addItem:toAccessGroup:](self, "addItem:toAccessGroup:", [key underlyingPrivateKey], groupCopy);
 
   return v9;
 }
 
-- (void)setPassword:(id)a3 forService:(id)a4 accessGroup:(id)a5
+- (void)setPassword:(id)password forService:(id)service accessGroup:(id)group
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CRKConcreteKeychain *)self makePasswordFacade];
-  [v11 setPassword:v10 forService:v9 accessGroup:v8];
+  groupCopy = group;
+  serviceCopy = service;
+  passwordCopy = password;
+  makePasswordFacade = [(CRKConcreteKeychain *)self makePasswordFacade];
+  [makePasswordFacade setPassword:passwordCopy forService:serviceCopy accessGroup:groupCopy];
 }
 
 CRKConcreteCertificate *__51__CRKConcreteKeychain_certificateWithPersistentID___block_invoke(uint64_t a1, uint64_t a2)
@@ -100,24 +100,24 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
   return v2;
 }
 
-- (id)passwordForService:(id)a3
+- (id)passwordForService:(id)service
 {
-  v4 = a3;
-  v5 = [(CRKConcreteKeychain *)self makePasswordFacade];
-  v6 = [v5 passwordForService:v4];
+  serviceCopy = service;
+  makePasswordFacade = [(CRKConcreteKeychain *)self makePasswordFacade];
+  v6 = [makePasswordFacade passwordForService:serviceCopy];
 
   return v6;
 }
 
-- (void)removeItemWithPersistentID:(id)a3
+- (void)removeItemWithPersistentID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRKConcreteKeychain *)self baseQueryAttributes];
-  v6 = [v5 mutableCopy];
+  dCopy = d;
+  baseQueryAttributes = [(CRKConcreteKeychain *)self baseQueryAttributes];
+  v6 = [baseQueryAttributes mutableCopy];
 
   v11 = *MEMORY[0x277CDC5F0];
-  v12[0] = v4;
+  v12[0] = dCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [v6 addEntriesFromDictionary:v7];
 
@@ -128,7 +128,7 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
     v10 = _CRKLogGeneral_1();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(CRKConcreteKeychain *)v4 removeItemWithPersistentID:v9];
+      [(CRKConcreteKeychain *)dCopy removeItemWithPersistentID:v9];
     }
   }
 }
@@ -136,28 +136,28 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
 - (id)makePasswordFacade
 {
   v3 = [CRKKeychainPasswordFacade alloc];
-  v4 = [(CRKConcreteKeychain *)self baseQueryAttributes];
-  v5 = [(CRKKeychainPasswordFacade *)v3 initWithBaseQueryAttributes:v4];
+  baseQueryAttributes = [(CRKConcreteKeychain *)self baseQueryAttributes];
+  v5 = [(CRKKeychainPasswordFacade *)v3 initWithBaseQueryAttributes:baseQueryAttributes];
 
   return v5;
 }
 
-- (void)copyItemWithPersistentID:(id)a3 itemClass:(id)a4
+- (void)copyItemWithPersistentID:(id)d itemClass:(id)class
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRKConcreteKeychain *)self baseQueryAttributes];
-  v9 = [v8 mutableCopy];
+  dCopy = d;
+  classCopy = class;
+  baseQueryAttributes = [(CRKConcreteKeychain *)self baseQueryAttributes];
+  v9 = [baseQueryAttributes mutableCopy];
 
   v10 = *MEMORY[0x277CDC568];
   v19[0] = *MEMORY[0x277CDC5F0];
   v19[1] = v10;
   v11 = *MEMORY[0x277CBED28];
-  v20[0] = v6;
+  v20[0] = dCopy;
   v20[1] = v11;
   v19[2] = *MEMORY[0x277CDC228];
-  v20[2] = v7;
+  v20[2] = classCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
   [v9 addEntriesFromDictionary:v12];
 
@@ -169,7 +169,7 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
     v15 = _CRKLogGeneral_1();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [CRKConcreteKeychain copyItemWithPersistentID:v6 itemClass:v14];
+      [CRKConcreteKeychain copyItemWithPersistentID:dCopy itemClass:v14];
     }
 
     v16 = 0;
@@ -183,14 +183,14 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
   return v16;
 }
 
-- (id)makeItemWithPersistentID:(id)a3 itemClass:(id)a4 creationBlock:(id)a5
+- (id)makeItemWithPersistentID:(id)d itemClass:(id)class creationBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(CRKConcreteKeychain *)self copyItemWithPersistentID:a3 itemClass:a4];
+  blockCopy = block;
+  v9 = [(CRKConcreteKeychain *)self copyItemWithPersistentID:d itemClass:class];
   if (v9)
   {
     v10 = v9;
-    v11 = v8[2](v8, v9);
+    v11 = blockCopy[2](blockCopy, v9);
     CFRelease(v10);
   }
 
@@ -202,25 +202,25 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
   return v11;
 }
 
-- (id)addItem:(void *)a3 toAccessGroup:(id)a4
+- (id)addItem:(void *)item toAccessGroup:(id)group
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CRKConcreteKeychain *)self baseQueryAttributes];
-  v8 = [v7 mutableCopy];
+  groupCopy = group;
+  baseQueryAttributes = [(CRKConcreteKeychain *)self baseQueryAttributes];
+  v8 = [baseQueryAttributes mutableCopy];
 
   v9 = *MEMORY[0x277CDC560];
   v26[0] = *MEMORY[0x277CDC5F8];
   v26[1] = v9;
   v10 = *MEMORY[0x277CBED28];
-  v27[0] = a3;
+  v27[0] = item;
   v27[1] = v10;
   v26[2] = *MEMORY[0x277CDBED8];
   v27[2] = *MEMORY[0x277CDBEF0];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
   [v8 addEntriesFromDictionary:v11];
 
-  [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x277CDBEC8]];
+  [v8 setObject:groupCopy forKeyedSubscript:*MEMORY[0x277CDBEC8]];
   result = 0;
   v12 = SecItemAdd(v8, &result);
   v13 = result;
@@ -250,9 +250,9 @@ CRKConcretePrivateKey *__50__CRKConcreteKeychain_privateKeyWithPersistentID___bl
   {
     v18 = [MEMORY[0x277CCABB0] numberWithInt:v14];
     *buf = 138543874;
-    v21 = a3;
+    itemCopy = item;
     v22 = 2114;
-    v23 = v6;
+    v23 = groupCopy;
     v24 = 2114;
     v25 = v18;
     _os_log_error_impl(&dword_243550000, v16, OS_LOG_TYPE_ERROR, "Could not add item %{public}@ to group %{public}@: %{public}@", buf, 0x20u);
@@ -267,8 +267,8 @@ LABEL_8:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKConcreteKeychain *)self baseQueryAttributes];
-  v6 = [v3 stringWithFormat:@"<%@: %p { baseQueryAtrributes = %@ }>", v4, self, v5];
+  baseQueryAttributes = [(CRKConcreteKeychain *)self baseQueryAttributes];
+  v6 = [v3 stringWithFormat:@"<%@: %p { baseQueryAtrributes = %@ }>", v4, self, baseQueryAttributes];
 
   return v6;
 }

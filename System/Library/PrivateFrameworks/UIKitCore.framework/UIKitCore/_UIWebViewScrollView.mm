@@ -1,23 +1,23 @@
 @interface _UIWebViewScrollView
-- (_UIWebViewScrollView)initWithFrame:(CGRect)a3;
-- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)a3;
-- (void)_setWebView:(id)a3;
-- (void)_weaklySetBouncesHorizontally:(BOOL)a3;
+- (_UIWebViewScrollView)initWithFrame:(CGRect)frame;
+- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)internal;
+- (void)_setWebView:(id)view;
+- (void)_weaklySetBouncesHorizontally:(BOOL)horizontally;
 - (void)dealloc;
-- (void)setBounces:(BOOL)a3;
-- (void)setBouncesHorizontally:(BOOL)a3;
-- (void)setBouncesVertically:(BOOL)a3;
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3;
-- (void)setDelegate:(id)a3;
+- (void)setBounces:(BOOL)bounces;
+- (void)setBouncesHorizontally:(BOOL)horizontally;
+- (void)setBouncesVertically:(BOOL)vertically;
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIWebViewScrollView
 
-- (_UIWebViewScrollView)initWithFrame:(CGRect)a3
+- (_UIWebViewScrollView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIWebViewScrollView;
-  v3 = [(UIWebScrollView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWebScrollView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_forwarder = objc_alloc_init(_UIWebViewScrollViewDelegateForwarder);
@@ -35,43 +35,43 @@
   [(UIScrollView *)&v3 dealloc];
 }
 
-- (void)_weaklySetBouncesHorizontally:(BOOL)a3
+- (void)_weaklySetBouncesHorizontally:(BOOL)horizontally
 {
   if (!self->_bouncesSetExplicitly)
   {
     v3.receiver = self;
     v3.super_class = _UIWebViewScrollView;
-    [(UIScrollView *)&v3 setBouncesHorizontally:a3];
+    [(UIScrollView *)&v3 setBouncesHorizontally:horizontally];
   }
 }
 
-- (void)setBounces:(BOOL)a3
+- (void)setBounces:(BOOL)bounces
 {
   v4.receiver = self;
   v4.super_class = _UIWebViewScrollView;
-  [(UIScrollView *)&v4 setBounces:a3];
+  [(UIScrollView *)&v4 setBounces:bounces];
   self->_bouncesSetExplicitly = 1;
 }
 
-- (void)setBouncesVertically:(BOOL)a3
+- (void)setBouncesVertically:(BOOL)vertically
 {
   v4.receiver = self;
   v4.super_class = _UIWebViewScrollView;
-  [(UIScrollView *)&v4 setBouncesVertically:a3];
+  [(UIScrollView *)&v4 setBouncesVertically:vertically];
   self->_bouncesSetExplicitly = 1;
 }
 
-- (void)setBouncesHorizontally:(BOOL)a3
+- (void)setBouncesHorizontally:(BOOL)horizontally
 {
   v4.receiver = self;
   v4.super_class = _UIWebViewScrollView;
-  [(UIScrollView *)&v4 setBouncesHorizontally:a3];
+  [(UIScrollView *)&v4 setBouncesHorizontally:horizontally];
   self->_bouncesSetExplicitly = 1;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  [(_UIWebViewScrollViewDelegateForwarder *)self->_forwarder setDelegate:a3];
+  [(_UIWebViewScrollViewDelegateForwarder *)self->_forwarder setDelegate:delegate];
   v6.receiver = self;
   v6.super_class = _UIWebViewScrollView;
   [(UIScrollView *)&v6 setDelegate:0];
@@ -81,9 +81,9 @@
   [(UIScrollView *)&v5 setDelegate:forwarder];
 }
 
-- (void)_setWebView:(id)a3
+- (void)_setWebView:(id)view
 {
-  [(_UIWebViewScrollViewDelegateForwarder *)self->_forwarder setWebView:a3];
+  [(_UIWebViewScrollViewDelegateForwarder *)self->_forwarder setWebView:view];
   v6.receiver = self;
   v6.super_class = _UIWebViewScrollView;
   [(UIScrollView *)&v6 setDelegate:0];
@@ -93,19 +93,19 @@
   [(UIScrollView *)&v5 setDelegate:forwarder];
 }
 
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior
 {
   self->_contentInsetAdjustmentBehaviorWasExternallyOverridden = 1;
   v3.receiver = self;
   v3.super_class = _UIWebViewScrollView;
-  [(UIScrollView *)&v3 setContentInsetAdjustmentBehavior:a3];
+  [(UIScrollView *)&v3 setContentInsetAdjustmentBehavior:behavior];
 }
 
-- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)a3
+- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)internal
 {
   v3.receiver = self;
   v3.super_class = _UIWebViewScrollView;
-  [(UIScrollView *)&v3 setContentInsetAdjustmentBehavior:a3];
+  [(UIScrollView *)&v3 setContentInsetAdjustmentBehavior:internal];
 }
 
 @end

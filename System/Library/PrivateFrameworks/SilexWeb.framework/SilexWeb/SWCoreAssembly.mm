@@ -1,18 +1,18 @@
 @interface SWCoreAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SWCoreAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F5259DE0 factory:&__block_literal_global_6];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F5259DE0 factory:&__block_literal_global_6];
 
-  v7 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v6 = [v7 registerProtocol:&unk_1F5259BE8 factory:&__block_literal_global_62];
+  v6 = [publicContainer2 registerProtocol:&unk_1F5259BE8 factory:&__block_literal_global_62];
 }
 
 SWLogger *__33__SWCoreAssembly_loadInRegistry___block_invoke()

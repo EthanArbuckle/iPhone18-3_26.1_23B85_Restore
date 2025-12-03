@@ -1,42 +1,42 @@
 @interface CSCoverSheetView
-- ($453422EBA70013024ECC637D52E1FF2D)_completedTransitionContextForPreviousTransitionContext:(SEL)a3 newTransitionContext:(id *)a4;
+- ($453422EBA70013024ECC637D52E1FF2D)_completedTransitionContextForPreviousTransitionContext:(SEL)context newTransitionContext:(id *)transitionContext;
 - ($453422EBA70013024ECC637D52E1FF2D)_currentTransitionContext;
 - ($453422EBA70013024ECC637D52E1FF2D)transitionContext;
 - (BOOL)_maglevActive;
-- (BOOL)coverSheetScrollView:(id)a3 gestureRecognizerShouldBegin:(id)a4;
-- (BOOL)coverSheetScrollView:(id)a3 shouldSetContentOffset:(CGPoint)a4 animated:(BOOL)a5;
+- (BOOL)coverSheetScrollView:(id)view gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)coverSheetScrollView:(id)view shouldSetContentOffset:(CGPoint)offset animated:(BOOL)animated;
 - (BOOL)isTransitioning;
-- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)a3 withAnimationSettings:(id)a4 withCompletion:(id)a5;
-- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5;
+- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)animated withAnimationSettings:(id)settings withCompletion:(id)completion;
+- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)animated withCompletion:(id)completion;
+- (BOOL)scrollToPageAtIndex:(unint64_t)index animated:(BOOL)animated withCompletion:(id)completion;
 - (CGAffineTransform)_portraitEnforcingTransform;
-- (CGAffineTransform)_transformScaling:(SEL)a3 byScale:(id)a4 aboutPointInSelf:(double)a5;
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9;
+- (CGAffineTransform)_transformScaling:(SEL)scaling byScale:(id)scale aboutPointInSelf:(double)self;
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
 - (CGPoint)contentViewOffset;
 - (CGPoint)dateViewOffset;
 - (CGPoint)foregroundViewPositionOffset;
 - (CGPoint)proudLockIconViewOffset;
 - (CGPoint)quickActionsViewOffset;
 - (CGPoint)wallpaperFloatingLayerContainerViewOffset;
-- (CGRect)_dateViewFrameForPageAlignment:(int64_t)a3 pageRelativeScrollOffset:(double)a4 outAlignmentPercent:(double *)a5;
+- (CGRect)_dateViewFrameForPageAlignment:(int64_t)alignment pageRelativeScrollOffset:(double)offset outAlignmentPercent:(double *)percent;
 - (CGRect)_wallpaperOrientationEnforcingBounds;
-- (CGRect)dateViewPresentationExtentForPageRelativeScrollOffset:(double)a3;
+- (CGRect)dateViewPresentationExtentForPageRelativeScrollOffset:(double)offset;
 - (CGRect)effectiveContainerBounds;
-- (CSCoverSheetView)initWithFrame:(CGRect)a3;
+- (CSCoverSheetView)initWithFrame:(CGRect)frame;
 - (CSCoverSheetViewDelegate)delegate;
 - (CSLayoutStrategy)layoutStrategy;
 - (NSString)coverSheetIdentifier;
 - (UIView)referenceViewForBelowPresentationContext;
 - (id)_effectiveContentsContainerView;
-- (id)_filterForDimming:(BOOL)a3;
-- (id)_filterNumbersForDimming:(BOOL)a3;
+- (id)_filterForDimming:(BOOL)dimming;
+- (id)_filterNumbersForDimming:(BOOL)dimming;
 - (id)_lockScreenDefaults;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (unint64_t)_indexOfMainPage;
 - (void)_addAuthIndicator;
 - (void)_addBackgroundContainerView;
 - (void)_addBackgroundView;
-- (void)_addContentViewWithContentView:(id)a3;
+- (void)_addContentViewWithContentView:(id)view;
 - (void)_addContentsContainerView;
 - (void)_addDateTimeContainer;
 - (void)_addHigherSlideableContentView;
@@ -49,8 +49,8 @@
 - (void)_addStatusBarLegibilityView;
 - (void)_addTintingView;
 - (void)_addWallpaperFloatingLayerContainerView;
-- (void)_animateLayer:(id)a3 toValues:(id)a4 forKeyPath:(id)a5 duration:(double)a6 dispatchGroup:(id)a7;
-- (void)_animateToDimming:(BOOL)a3 withDuration:(double)a4 dispatchGroup:(id)a5;
+- (void)_animateLayer:(id)layer toValues:(id)values forKeyPath:(id)path duration:(double)duration dispatchGroup:(id)group;
+- (void)_animateToDimming:(BOOL)dimming withDuration:(double)duration dispatchGroup:(id)group;
 - (void)_createProudLockContainerWrapperIfNecessary;
 - (void)_evaluateBackgroundContentViewMatchMove;
 - (void)_layoutAuthIndicator;
@@ -78,103 +78,103 @@
 - (void)_layoutTintingView;
 - (void)_layoutWallpaperEffectView;
 - (void)_layoutWallpaperFloatingLayerContainerView;
-- (void)_makeView:(id)a3 untouchable:(BOOL)a4;
+- (void)_makeView:(id)view untouchable:(BOOL)untouchable;
 - (void)_orderSubviews;
-- (void)_prepareBlursForView:(id)a3 withHardEdges:(BOOL)a4;
+- (void)_prepareBlursForView:(id)view withHardEdges:(BOOL)edges;
 - (void)_removeContentView;
-- (void)_setBackgroundContentViewMatchMoveActive:(BOOL)a3;
-- (void)_setDateView:(id)a3 forTesting:(BOOL)a4;
-- (void)_setupAllGesturesOnScrollView:(BOOL)a3;
-- (void)_setupBackgroundContentGestureOnScrollView:(BOOL)a3;
-- (void)_setupComplicationGestureOnScrollView:(BOOL)a3;
-- (void)_setupDateViewGestureOnScrollView:(BOOL)a3;
-- (void)_setupQuickNoteGestureOnScrollView:(BOOL)a3;
-- (void)_setupWallpaperGestureOnScrollView:(BOOL)a3;
+- (void)_setBackgroundContentViewMatchMoveActive:(BOOL)active;
+- (void)_setDateView:(id)view forTesting:(BOOL)testing;
+- (void)_setupAllGesturesOnScrollView:(BOOL)view;
+- (void)_setupBackgroundContentGestureOnScrollView:(BOOL)view;
+- (void)_setupComplicationGestureOnScrollView:(BOOL)view;
+- (void)_setupDateViewGestureOnScrollView:(BOOL)view;
+- (void)_setupQuickNoteGestureOnScrollView:(BOOL)view;
+- (void)_setupWallpaperGestureOnScrollView:(BOOL)view;
 - (void)_updateBackgroundContainerPinningAnimation;
-- (void)_updateBlurForView:(id)a3 toRadius:(double)a4;
+- (void)_updateBlurForView:(id)view toRadius:(double)radius;
 - (void)_updateDateFont;
 - (void)_updateLegibility;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)cancelTransition;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndScrolling:(id)a3;
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginScrolling:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBackgroundContentGestureRecognizer:(id)a3;
-- (void)setBackgroundContentPresentationLevel:(unint64_t)a3;
-- (void)setBackgroundContentView:(id)a3;
-- (void)setBackgroundContentViewAlpha:(double)a3;
-- (void)setBackgroundContentViewDimmed:(BOOL)a3;
-- (void)setBackgroundGlassView:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setBedtimeGreetingViewBackgroundView:(id)a3;
-- (void)setBottomPage:(id)a3;
-- (void)setCameraCoveredView:(id)a3;
-- (void)setClipping:(BOOL)a3 corners:(unint64_t)a4 radius:(double)a5;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setComplicationContainerView:(id)a3;
-- (void)setComplicationContainerViewScale:(double)a3;
-- (void)setComplicationGestureRecognizer:(id)a3;
-- (void)setContentViewOffset:(CGPoint)a3;
-- (void)setContentViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setContentViewScale:(double)a3;
-- (void)setControlCenterGrabberBlurRadius:(double)a3;
-- (void)setControlCenterGrabberScale:(double)a3;
-- (void)setCoverSheetPresentationProgress:(double)a3 forPresentationValue:(BOOL)a4;
-- (void)setDateTimePresentationLevel:(unint64_t)a3;
-- (void)setDateViewGestureRecognizer:(id)a3;
-- (void)setDateViewIsVibrant:(BOOL)a3;
-- (void)setDateViewOffset:(CGPoint)a3;
-- (void)setDateViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setDateViewScale:(double)a3;
-- (void)setDateViewStretch:(BOOL)a3;
-- (void)setFakeStatusBar:(id)a3;
-- (void)setFakeStatusBarBlurRadius:(double)a3;
-- (void)setFakeStatusBarLevel:(unint64_t)a3;
-- (void)setFakeStatusBarScale:(double)a3;
-- (void)setFixedFooterView:(id)a3;
-- (void)setForceDateViewCentered:(BOOL)a3;
-- (void)setForegroundViewPositionOffset:(CGPoint)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setModalPresentationLevel:(unint64_t)a3;
-- (void)setModalPresentationView:(id)a3;
-- (void)setModalPresentationViewOffset:(double)a3;
-- (void)setPageViews:(id)a3;
-- (void)setPoseidonContainerView:(id)a3;
-- (void)setProudLockContainerView:(id)a3;
-- (void)setProudLockIconBlurRadius:(double)a3;
-- (void)setProudLockIconViewOffset:(CGPoint)a3;
-- (void)setProudLockIconViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setProudLockIconViewScale:(double)a3;
-- (void)setProudLockPrefersLowerPresentationLevel:(BOOL)a3;
-- (void)setQuickActionsView:(id)a3;
-- (void)setQuickActionsViewBlurRadius:(double)a3;
-- (void)setQuickActionsViewOffset:(CGPoint)a3;
-- (void)setQuickActionsViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setQuickActionsViewScale:(double)a3;
-- (void)setQuickNoteGestureRecognizer:(id)a3;
-- (void)setReduceTransparencyBackingColor:(id)a3;
-- (void)setRegionsDebugView:(id)a3;
-- (void)setSearchGesture:(id)a3;
-- (void)setSidebarComplicationContainerView:(id)a3;
-- (void)setStatusBarBackgroundView:(id)a3;
-- (void)setSuppressesBackgroundContentMatchMove:(BOOL)a3 forReason:(id)a4;
-- (void)setTeachableMomentsContainerView:(id)a3;
-- (void)setWakeEffectView:(id)a3;
-- (void)setWallpaperEffectView:(id)a3;
-- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)a3;
-- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setWallpaperFloatingLayerContainerViewScale:(double)a3;
-- (void)setWallpaperFloatingLayerPresentationLevel:(unint64_t)a3;
-- (void)setWallpaperGestureRecognizer:(id)a3;
-- (void)setWallpaperPresentationLevel:(unint64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)updateContainerOrientationForBackgroundViews:(int64_t)a3;
-- (void)updateUIForAuthenticated:(BOOL)a3;
+- (void)scrollViewDidEndScrolling:(id)scrolling;
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginScrolling:(id)scrolling;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBackgroundContentGestureRecognizer:(id)recognizer;
+- (void)setBackgroundContentPresentationLevel:(unint64_t)level;
+- (void)setBackgroundContentView:(id)view;
+- (void)setBackgroundContentViewAlpha:(double)alpha;
+- (void)setBackgroundContentViewDimmed:(BOOL)dimmed;
+- (void)setBackgroundGlassView:(id)view;
+- (void)setBackgroundView:(id)view;
+- (void)setBedtimeGreetingViewBackgroundView:(id)view;
+- (void)setBottomPage:(id)page;
+- (void)setCameraCoveredView:(id)view;
+- (void)setClipping:(BOOL)clipping corners:(unint64_t)corners radius:(double)radius;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setComplicationContainerView:(id)view;
+- (void)setComplicationContainerViewScale:(double)scale;
+- (void)setComplicationGestureRecognizer:(id)recognizer;
+- (void)setContentViewOffset:(CGPoint)offset;
+- (void)setContentViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setContentViewScale:(double)scale;
+- (void)setControlCenterGrabberBlurRadius:(double)radius;
+- (void)setControlCenterGrabberScale:(double)scale;
+- (void)setCoverSheetPresentationProgress:(double)progress forPresentationValue:(BOOL)value;
+- (void)setDateTimePresentationLevel:(unint64_t)level;
+- (void)setDateViewGestureRecognizer:(id)recognizer;
+- (void)setDateViewIsVibrant:(BOOL)vibrant;
+- (void)setDateViewOffset:(CGPoint)offset;
+- (void)setDateViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setDateViewScale:(double)scale;
+- (void)setDateViewStretch:(BOOL)stretch;
+- (void)setFakeStatusBar:(id)bar;
+- (void)setFakeStatusBarBlurRadius:(double)radius;
+- (void)setFakeStatusBarLevel:(unint64_t)level;
+- (void)setFakeStatusBarScale:(double)scale;
+- (void)setFixedFooterView:(id)view;
+- (void)setForceDateViewCentered:(BOOL)centered;
+- (void)setForegroundViewPositionOffset:(CGPoint)offset;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setModalPresentationLevel:(unint64_t)level;
+- (void)setModalPresentationView:(id)view;
+- (void)setModalPresentationViewOffset:(double)offset;
+- (void)setPageViews:(id)views;
+- (void)setPoseidonContainerView:(id)view;
+- (void)setProudLockContainerView:(id)view;
+- (void)setProudLockIconBlurRadius:(double)radius;
+- (void)setProudLockIconViewOffset:(CGPoint)offset;
+- (void)setProudLockIconViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setProudLockIconViewScale:(double)scale;
+- (void)setProudLockPrefersLowerPresentationLevel:(BOOL)level;
+- (void)setQuickActionsView:(id)view;
+- (void)setQuickActionsViewBlurRadius:(double)radius;
+- (void)setQuickActionsViewOffset:(CGPoint)offset;
+- (void)setQuickActionsViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setQuickActionsViewScale:(double)scale;
+- (void)setQuickNoteGestureRecognizer:(id)recognizer;
+- (void)setReduceTransparencyBackingColor:(id)color;
+- (void)setRegionsDebugView:(id)view;
+- (void)setSearchGesture:(id)gesture;
+- (void)setSidebarComplicationContainerView:(id)view;
+- (void)setStatusBarBackgroundView:(id)view;
+- (void)setSuppressesBackgroundContentMatchMove:(BOOL)move forReason:(id)reason;
+- (void)setTeachableMomentsContainerView:(id)view;
+- (void)setWakeEffectView:(id)view;
+- (void)setWallpaperEffectView:(id)view;
+- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)offset;
+- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)offset scale:(double)scale;
+- (void)setWallpaperFloatingLayerContainerViewScale:(double)scale;
+- (void)setWallpaperFloatingLayerPresentationLevel:(unint64_t)level;
+- (void)setWallpaperGestureRecognizer:(id)recognizer;
+- (void)setWallpaperPresentationLevel:(unint64_t)level;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)updateContainerOrientationForBackgroundViews:(int64_t)views;
+- (void)updateUIForAuthenticated:(BOOL)authenticated;
 - (void)viewControllerDidDisappear;
 - (void)viewControllerWillAppear;
 @end
@@ -277,13 +277,13 @@
     [(UIView *)self->_slideableContentView insertSubview:self->_backgroundGlassView aboveSubview:self->_wallpaperFloatingLayerContainerView];
   }
 
-  v4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v4 sendSubviewToBack:self->_statusBarLegibilityView];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView sendSubviewToBack:self->_statusBarLegibilityView];
 
   if (self->_modalPresentationLevel == 1)
   {
-    v5 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v5 sendSubviewToBack:self->_modalPresentationView];
+    _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView2 sendSubviewToBack:self->_modalPresentationView];
   }
 
   if (self->_wallpaperFloatingLayerPresentationLevel != 1)
@@ -292,66 +292,66 @@
     goto LABEL_45;
   }
 
-  v6 = [(CSNotificationLegibilityDimView *)self->_wallpaperFloatingLayerContainerView superview];
-  v7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  superview = [(CSNotificationLegibilityDimView *)self->_wallpaperFloatingLayerContainerView superview];
+  _effectiveContentsContainerView3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-  v8 = v6 != v7;
-  if (v6 == v7)
+  v8 = superview != _effectiveContentsContainerView3;
+  if (superview == _effectiveContentsContainerView3)
   {
     notificationLegibilityLocalizedDimView = self->_notificationLegibilityLocalizedDimView;
     if (notificationLegibilityLocalizedDimView)
     {
-      v18 = [(CSNotificationLegibilityDimView *)notificationLegibilityLocalizedDimView superview];
-      v19 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      superview2 = [(CSNotificationLegibilityDimView *)notificationLegibilityLocalizedDimView superview];
+      _effectiveContentsContainerView4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-      if (v18 != v19)
+      if (superview2 != _effectiveContentsContainerView4)
       {
-        v20 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-        [v20 addSubview:self->_notificationLegibilityLocalizedDimView];
+        _effectiveContentsContainerView5 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+        [_effectiveContentsContainerView5 addSubview:self->_notificationLegibilityLocalizedDimView];
       }
 
-      v21 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v21 sendSubviewToBack:self->_notificationLegibilityLocalizedDimView];
+      _effectiveContentsContainerView6 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView6 sendSubviewToBack:self->_notificationLegibilityLocalizedDimView];
     }
 
     notificationLegibilityDynamicDimView = self->_notificationLegibilityDynamicDimView;
     if (notificationLegibilityDynamicDimView)
     {
-      v23 = [(CSNotificationLegibilityDimView *)notificationLegibilityDynamicDimView superview];
-      v24 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      superview3 = [(CSNotificationLegibilityDimView *)notificationLegibilityDynamicDimView superview];
+      _effectiveContentsContainerView7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-      if (v23 != v24)
+      if (superview3 != _effectiveContentsContainerView7)
       {
-        v25 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-        [v25 addSubview:self->_notificationLegibilityDynamicDimView];
+        _effectiveContentsContainerView8 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+        [_effectiveContentsContainerView8 addSubview:self->_notificationLegibilityDynamicDimView];
       }
 
-      v26 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v26 sendSubviewToBack:self->_notificationLegibilityDynamicDimView];
+      _effectiveContentsContainerView9 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView9 sendSubviewToBack:self->_notificationLegibilityDynamicDimView];
     }
 
-    v27 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v27 sendSubviewToBack:self->_wallpaperFloatingLayerContainerView];
+    _effectiveContentsContainerView10 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView10 sendSubviewToBack:self->_wallpaperFloatingLayerContainerView];
 
-    v28 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    v29 = [(UIView *)self->_dateTimeClippingView superview];
-    [v28 sendSubviewToBack:v29];
+    _effectiveContentsContainerView11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview4 = [(UIView *)self->_dateTimeClippingView superview];
+    [_effectiveContentsContainerView11 sendSubviewToBack:superview4];
 
     notificationLegibilityFullBaseLayerDimView = self->_notificationLegibilityFullBaseLayerDimView;
     if (notificationLegibilityFullBaseLayerDimView)
     {
-      v31 = [(CSNotificationLegibilityDimView *)notificationLegibilityFullBaseLayerDimView superview];
-      v32 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      superview5 = [(CSNotificationLegibilityDimView *)notificationLegibilityFullBaseLayerDimView superview];
+      _effectiveContentsContainerView12 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
       v3 = &OBJC_IVAR___CSCombinedListViewController__cachedAdjunctHeight;
-      if (v31 != v32)
+      if (superview5 != _effectiveContentsContainerView12)
       {
-        v33 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-        [v33 addSubview:self->_notificationLegibilityFullBaseLayerDimView];
+        _effectiveContentsContainerView13 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+        [_effectiveContentsContainerView13 addSubview:self->_notificationLegibilityFullBaseLayerDimView];
       }
 
-      v14 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v14 sendSubviewToBack:self->_notificationLegibilityFullBaseLayerDimView];
+      _effectiveContentsContainerView14 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView14 sendSubviewToBack:self->_notificationLegibilityFullBaseLayerDimView];
       goto LABEL_41;
     }
 
@@ -360,29 +360,29 @@
 
   else
   {
-    v9 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    _effectiveContentsContainerView15 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
     wallpaperFloatingLayerContainerView = self->_wallpaperFloatingLayerContainerView;
-    v11 = [(UIView *)self->_dateTimeClippingView superview];
-    [v9 insertSubview:wallpaperFloatingLayerContainerView aboveSubview:v11];
+    superview6 = [(UIView *)self->_dateTimeClippingView superview];
+    [_effectiveContentsContainerView15 insertSubview:wallpaperFloatingLayerContainerView aboveSubview:superview6];
 
     if (self->_notificationLegibilityLocalizedDimView)
     {
-      v12 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v12 insertSubview:self->_notificationLegibilityLocalizedDimView aboveSubview:self->_wallpaperFloatingLayerContainerView];
+      _effectiveContentsContainerView16 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView16 insertSubview:self->_notificationLegibilityLocalizedDimView aboveSubview:self->_wallpaperFloatingLayerContainerView];
     }
 
     if (self->_notificationLegibilityDynamicDimView)
     {
-      v13 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v13 insertSubview:self->_notificationLegibilityDynamicDimView aboveSubview:self->_wallpaperFloatingLayerContainerView];
+      _effectiveContentsContainerView17 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView17 insertSubview:self->_notificationLegibilityDynamicDimView aboveSubview:self->_wallpaperFloatingLayerContainerView];
     }
 
     if (self->_notificationLegibilityFullBaseLayerDimView)
     {
-      v14 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      _effectiveContentsContainerView14 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
       v15 = self->_notificationLegibilityFullBaseLayerDimView;
-      v16 = [(UIView *)self->_dateTimeClippingView superview];
-      [v14 insertSubview:v15 belowSubview:v16];
+      superview7 = [(UIView *)self->_dateTimeClippingView superview];
+      [_effectiveContentsContainerView14 insertSubview:v15 belowSubview:superview7];
 
       v3 = &OBJC_IVAR___CSCombinedListViewController__cachedAdjunctHeight;
 LABEL_41:
@@ -397,30 +397,30 @@ LABEL_41:
 LABEL_45:
   if (self->_backgroundContentPresentationLevel == 1)
   {
-    v34 = [(CSBackgroundContentView *)self->_backgroundContentView superview];
-    v35 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview8 = [(CSBackgroundContentView *)self->_backgroundContentView superview];
+    _effectiveContentsContainerView18 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-    v36 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    v37 = v36;
+    _effectiveContentsContainerView19 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    v37 = _effectiveContentsContainerView19;
     backgroundContentView = self->_backgroundContentView;
-    if (v34 == v35)
+    if (superview8 == _effectiveContentsContainerView18)
     {
-      [v36 sendSubviewToBack:backgroundContentView];
+      [_effectiveContentsContainerView19 sendSubviewToBack:backgroundContentView];
     }
 
     else
     {
-      [v36 insertSubview:backgroundContentView atIndex:0];
+      [_effectiveContentsContainerView19 insertSubview:backgroundContentView atIndex:0];
       v8 = 1;
     }
   }
 
   if (self->_wallpaperPresentationLevel == 1)
   {
-    v39 = [(CSWallpaperView *)self->_wallpaperEffectView superview];
+    superview9 = [(CSWallpaperView *)self->_wallpaperEffectView superview];
 
     wallpaperEffectView = self->_wallpaperEffectView;
-    if (v39 != self)
+    if (superview9 != self)
     {
       [(CSCoverSheetView *)self insertSubview:wallpaperEffectView atIndex:0];
       backgroundContainerView = self->_backgroundContainerView;
@@ -438,96 +438,96 @@ LABEL_45:
     return;
   }
 
-  v42 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v42 bringSubviewToFront:self->_quickActionsView];
+  _effectiveContentsContainerView20 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView20 bringSubviewToFront:self->_quickActionsView];
 
-  v43 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v43 bringSubviewToFront:self->_tintingView];
+  _effectiveContentsContainerView21 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView21 bringSubviewToFront:self->_tintingView];
 
   if (!self->_modalPresentationLevel)
   {
-    v44 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v44 bringSubviewToFront:self->_modalPresentationView];
+    _effectiveContentsContainerView22 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView22 bringSubviewToFront:self->_modalPresentationView];
   }
 
   if (self->_fakeStatusBar && self->_fakeStatusBarLevel == 1)
   {
-    v66 = [(CSCoverSheetView *)self referenceViewForBelowPresentationContext];
-    v45 = [v66 superview];
-    [v45 insertSubview:self->_higherSlideableContentView aboveSubview:v66];
-    [v45 insertSubview:self->_fakeStatusBarWrapperView belowSubview:self->_higherSlideableContentView];
+    referenceViewForBelowPresentationContext = [(CSCoverSheetView *)self referenceViewForBelowPresentationContext];
+    superview10 = [referenceViewForBelowPresentationContext superview];
+    [superview10 insertSubview:self->_higherSlideableContentView aboveSubview:referenceViewForBelowPresentationContext];
+    [superview10 insertSubview:self->_fakeStatusBarWrapperView belowSubview:self->_higherSlideableContentView];
     statusBarBackgroundView = self->_statusBarBackgroundView;
     fakeStatusBarWrapperView = self->_fakeStatusBarWrapperView;
-    v48 = v45;
+    _effectiveContentsContainerView30 = superview10;
 LABEL_72:
-    [v48 insertSubview:statusBarBackgroundView belowSubview:fakeStatusBarWrapperView];
+    [_effectiveContentsContainerView30 insertSubview:statusBarBackgroundView belowSubview:fakeStatusBarWrapperView];
 
     goto LABEL_76;
   }
 
-  v49 = [(UIView *)self->_statusBarBackgroundView superview];
-  v50 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  superview11 = [(UIView *)self->_statusBarBackgroundView superview];
+  _effectiveContentsContainerView23 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-  v51 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  v52 = v51;
+  _effectiveContentsContainerView24 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  v52 = _effectiveContentsContainerView24;
   v53 = self->_statusBarBackgroundView;
-  if (v49 == v50)
+  if (superview11 == _effectiveContentsContainerView23)
   {
-    [v51 bringSubviewToFront:v53];
+    [_effectiveContentsContainerView24 bringSubviewToFront:v53];
   }
 
   else
   {
-    [v51 addSubview:v53];
+    [_effectiveContentsContainerView24 addSubview:v53];
   }
 
-  v54 = [(UIView *)self->_higherSlideableContentView superview];
-  v55 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  superview12 = [(UIView *)self->_higherSlideableContentView superview];
+  _effectiveContentsContainerView25 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-  v56 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  v57 = v56;
+  _effectiveContentsContainerView26 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  v57 = _effectiveContentsContainerView26;
   higherSlideableContentView = self->_higherSlideableContentView;
-  if (v54 == v55)
+  if (superview12 == _effectiveContentsContainerView25)
   {
-    [v56 bringSubviewToFront:higherSlideableContentView];
+    [_effectiveContentsContainerView26 bringSubviewToFront:higherSlideableContentView];
   }
 
   else
   {
-    [v56 addSubview:higherSlideableContentView];
+    [_effectiveContentsContainerView26 addSubview:higherSlideableContentView];
   }
 
   if (!self->_fakeStatusBar || self->_fakeStatusBarLevel != 1)
   {
-    v62 = [(CSPropertyAnimatingTouchPassThroughView *)self->_fakeStatusBarWrapperView superview];
-    v63 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview13 = [(CSPropertyAnimatingTouchPassThroughView *)self->_fakeStatusBarWrapperView superview];
+    _effectiveContentsContainerView27 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-    v64 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    _effectiveContentsContainerView28 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
     v65 = self->_fakeStatusBarWrapperView;
-    v66 = v64;
-    if (v62 == v63)
+    referenceViewForBelowPresentationContext = _effectiveContentsContainerView28;
+    if (superview13 == _effectiveContentsContainerView27)
     {
-      [v64 bringSubviewToFront:v65];
+      [_effectiveContentsContainerView28 bringSubviewToFront:v65];
     }
 
     else
     {
-      [v64 addSubview:v65];
+      [_effectiveContentsContainerView28 addSubview:v65];
     }
 
     goto LABEL_76;
   }
 
-  v66 = [(CSCoverSheetView *)self subviews];
-  v59 = [v66 indexOfObject:self->_fakeStatusBarWrapperView];
+  referenceViewForBelowPresentationContext = [(CSCoverSheetView *)self subviews];
+  v59 = [referenceViewForBelowPresentationContext indexOfObject:self->_fakeStatusBarWrapperView];
   v60 = v3[118];
-  if (v59 != [v66 indexOfObject:*(&self->super.super.super.isa + v60)] - 1)
+  if (v59 != [referenceViewForBelowPresentationContext indexOfObject:*(&self->super.super.super.isa + v60)] - 1)
   {
-    v61 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v61 insertSubview:self->_fakeStatusBarWrapperView belowSubview:*(&self->super.super.super.isa + v60)];
+    _effectiveContentsContainerView29 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView29 insertSubview:self->_fakeStatusBarWrapperView belowSubview:*(&self->super.super.super.isa + v60)];
 
-    v48 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    v45 = v48;
+    _effectiveContentsContainerView30 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview10 = _effectiveContentsContainerView30;
     statusBarBackgroundView = self->_statusBarBackgroundView;
     fakeStatusBarWrapperView = self->_fakeStatusBarWrapperView;
     goto LABEL_72;
@@ -554,16 +554,16 @@ LABEL_76:
 
 - (BOOL)isTransitioning
 {
-  v2 = [(CSCoverSheetView *)self scrollView];
-  v3 = [v2 isScrolling];
+  scrollView = [(CSCoverSheetView *)self scrollView];
+  isScrolling = [scrollView isScrolling];
 
-  return v3;
+  return isScrolling;
 }
 
 - (CGRect)effectiveContainerBounds
 {
-  v2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v2 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -591,10 +591,10 @@ LABEL_76:
 
 - (unint64_t)_indexOfMainPage
 {
-  v3 = [(CSCoverSheetView *)self scrollView];
-  v4 = [v3 pageViews];
-  v5 = [(CSCoverSheetView *)self mainPageView];
-  v6 = [v4 indexOfObject:v5];
+  scrollView = [(CSCoverSheetView *)self scrollView];
+  pageViews = [scrollView pageViews];
+  mainPageView = [(CSCoverSheetView *)self mainPageView];
+  v6 = [pageViews indexOfObject:mainPageView];
 
   return v6;
 }
@@ -622,20 +622,20 @@ LABEL_76:
     *&v21.tx = v16;
     [(CSPropertyAnimatingTouchPassThroughView *)fakeStatusBarWrapperView setTransform:&v21];
     v8 = self->_fakeStatusBarWrapperView;
-    v9 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v9 bounds];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView bounds];
     [(CSPropertyAnimatingTouchPassThroughView *)v8 setBounds:?];
 
     v10 = self->_fakeStatusBarWrapperView;
-    v11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v11 bounds];
+    _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView2 bounds];
     BSRectGetCenter();
     [(CSPropertyAnimatingTouchPassThroughView *)v10 setCenter:?];
 
-    v12 = [(CSPropertyAnimatingTouchPassThroughView *)self->_fakeStatusBarWrapperView superview];
-    v13 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview = [(CSPropertyAnimatingTouchPassThroughView *)self->_fakeStatusBarWrapperView superview];
+    _effectiveContentsContainerView3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-    if (v12 == v13)
+    if (superview == _effectiveContentsContainerView3)
     {
       memset(&v21, 0, sizeof(v21));
       if (BSPointEqualToPoint())
@@ -701,8 +701,8 @@ LABEL_76:
     v6 = v5;
     v8 = v7;
     v10 = v9 * 0.5;
-    v11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView setFrame:{v4, v6, v8, v10}];
   }
 }
 
@@ -710,8 +710,8 @@ LABEL_76:
 {
   if (CSFeatureEnabled(11))
   {
-    v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v3 bounds];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -737,26 +737,26 @@ LABEL_76:
 - (void)_layoutFullScreenViews
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v12 center];
+  _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView2 center];
   v37 = v14;
   v39 = v13;
 
   backgroundContainerView = self->_backgroundContainerView;
-  v16 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v16 frame];
+  _effectiveContentsContainerView3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView3 frame];
   [(BSUIOrientationTransformWrapperView *)backgroundContainerView setFrame:?];
 
   [(CSFixedFooterView *)self->_fixedFooterView setFrame:v5, v7, v9, v11];
-  v17 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v17 bounds];
+  _effectiveContentsContainerView4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView4 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -808,9 +808,9 @@ LABEL_76:
     [(CSCoverSheetView *)self _overlayClippingFrame];
     [(UIView *)self->_dateTimeClippingView setFrame:?];
     dateTimeClippingView = self->_dateTimeClippingView;
-    v4 = [(CSCoverSheetView *)self clipsToBounds];
+    clipsToBounds = [(CSCoverSheetView *)self clipsToBounds];
 
-    [(UIView *)dateTimeClippingView setClipsToBounds:v4];
+    [(UIView *)dateTimeClippingView setClipsToBounds:clipsToBounds];
   }
 }
 
@@ -850,8 +850,8 @@ LABEL_76:
   [(SBFLockScreenDateView *)v15 setFrame:v5, v7, v9, v11];
   v20 = self->_dateView;
   dateViewScale = self->_dateViewScale;
-  v22 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v22 center];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView center];
   [(CSCoverSheetView *)self _transformScaling:v20 byScale:dateViewScale aboutPointInSelf:v23, v24];
   [(SBFLockScreenDateView *)v20 setTransform:v29];
 
@@ -914,8 +914,8 @@ LABEL_76:
     [(UIView *)v8 setCenter:?];
     v9 = self->_complicationContainerView;
     complicationContainerViewScale = self->_complicationContainerViewScale;
-    v11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v11 center];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView center];
     [(CSCoverSheetView *)self _transformScaling:v9 byScale:complicationContainerViewScale aboutPointInSelf:v12, v13];
     [(UIView *)v9 setTransform:&v14];
   }
@@ -923,17 +923,17 @@ LABEL_76:
 
 - (void)_layoutBottomPage
 {
-  v3 = [(CSCoverSheetView *)self bottomPage];
-  if (v3)
+  bottomPage = [(CSCoverSheetView *)self bottomPage];
+  if (bottomPage)
   {
-    v6 = v3;
+    v6 = bottomPage;
     [(CSCoverSheetView *)self frame];
     Height = CGRectGetHeight(v8);
     [(CSCoverSheetView *)self frame];
     Width = CGRectGetWidth(v9);
     [(CSCoverSheetView *)self frame];
     [v6 setFrame:{0.0, Height, Width, CGRectGetHeight(v10)}];
-    v3 = v6;
+    bottomPage = v6;
   }
 }
 
@@ -941,15 +941,15 @@ LABEL_76:
 {
   if (self->_tintingView)
   {
-    v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    v4 = [(CSCoverSheetView *)self mainPageView];
-    [v4 bounds];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    mainPageView = [(CSCoverSheetView *)self mainPageView];
+    [mainPageView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(CSCoverSheetView *)self mainPageView];
-    [v3 convertRect:v13 fromView:{v6, v8, v10, v12}];
+    mainPageView2 = [(CSCoverSheetView *)self mainPageView];
+    [_effectiveContentsContainerView convertRect:mainPageView2 fromView:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -967,8 +967,8 @@ LABEL_76:
   {
     if ([(CSCoverSheetView *)self _maglevActive])
     {
-      v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v3 bounds];
+      _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView bounds];
       v5 = v4;
       v7 = v6;
       v9 = v8;
@@ -996,8 +996,8 @@ LABEL_76:
     else
     {
       v16 = self->_wallpaperEffectView;
-      v17 = [(CSCoverSheetView *)self scrollView];
-      [v17 size];
+      scrollView = [(CSCoverSheetView *)self scrollView];
+      [scrollView size];
       BSRectWithSize();
       [(CSWallpaperView *)v16 setFrame:?];
     }
@@ -1094,9 +1094,9 @@ LABEL_76:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  v12 = [(UIView *)self->_higherSlideableContentView superview];
-  [v11 convertRect:v12 toView:{v4, v6, v8, v10}];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  superview = [(UIView *)self->_higherSlideableContentView superview];
+  [_effectiveContentsContainerView convertRect:superview toView:{v4, v6, v8, v10}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1109,38 +1109,38 @@ LABEL_76:
 
 - (void)_layoutTeachableMomentsContainerView
 {
-  v3 = [(CSCoverSheetView *)self teachableMomentsContainerView];
-  if (v3)
+  teachableMomentsContainerView = [(CSCoverSheetView *)self teachableMomentsContainerView];
+  if (teachableMomentsContainerView)
   {
-    v4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v4 bounds];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    [v3 setBounds:{v6, v8, v10, v12}];
+    [teachableMomentsContainerView setBounds:{v6, v8, v10, v12}];
     BSRectGetCenter();
-    [v3 setCenter:?];
+    [teachableMomentsContainerView setCenter:?];
     memset(&v15, 0, sizeof(v15));
     CGAffineTransformMakeScale(&v15, self->_controlCenterGrabberScale, self->_controlCenterGrabberScale);
-    v13 = [v3 controlCenterGrabberContainerView];
+    controlCenterGrabberContainerView = [teachableMomentsContainerView controlCenterGrabberContainerView];
     v14 = v15;
-    [v13 setTransform:&v14];
+    [controlCenterGrabberContainerView setTransform:&v14];
   }
 }
 
 - (void)_layoutQuickActionsView
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CSCoverSheetView *)self _indexOfMainPage];
+  _indexOfMainPage = [(CSCoverSheetView *)self _indexOfMainPage];
   [(SBFPagedScrollView *)self->_scrollView unclippedPageRelativeScrollOffset];
-  v12 = v10 - v11;
+  v12 = _indexOfMainPage - v11;
   [(CSCoverSheetView *)self bounds];
   Width = CGRectGetWidth(v25);
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -1187,8 +1187,8 @@ LABEL_76:
 
 - (void)_layoutStatusBarLegibilityView
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1201,8 +1201,8 @@ LABEL_76:
 
 - (void)_layoutBackgroundContentView
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1231,8 +1231,8 @@ LABEL_76:
 
 - (void)_layoutWallpaperFloatingLayerContainerView
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1344,10 +1344,10 @@ LABEL_76:
 
 - (BOOL)_maglevActive
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
@@ -1366,17 +1366,17 @@ LABEL_76:
 
 - (void)cancelTransition
 {
-  v3 = [(CSCoverSheetView *)self scrollView];
-  v4 = [v3 isScrolling];
+  scrollView = [(CSCoverSheetView *)self scrollView];
+  isScrolling = [scrollView isScrolling];
 
-  if (v4)
+  if (isScrolling)
   {
-    v5 = [(CSCoverSheetView *)self scrollView];
-    v6 = [(CSCoverSheetView *)self scrollView];
-    v7 = v6;
-    if (v6)
+    scrollView2 = [(CSCoverSheetView *)self scrollView];
+    scrollView3 = [(CSCoverSheetView *)self scrollView];
+    v7 = scrollView3;
+    if (scrollView3)
     {
-      [v6 currentScrollContext];
+      [scrollView3 currentScrollContext];
       v8 = *(&v11 + 1);
       v9 = v12;
     }
@@ -1390,7 +1390,7 @@ LABEL_76:
       v8 = 0.0;
     }
 
-    [v5 setContentOffset:{v8, v9, v10, v11, *&v12}];
+    [scrollView2 setContentOffset:{v8, v9, v10, v11, *&v12}];
   }
 }
 
@@ -1404,11 +1404,11 @@ LABEL_76:
   self->_hasSubviewModifyingView = 0;
 }
 
-- (CSCoverSheetView)initWithFrame:(CGRect)a3
+- (CSCoverSheetView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CSCoverSheetView;
-  v3 = [(CSCoverSheetView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSCoverSheetView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1419,9 +1419,9 @@ LABEL_76:
     v4->_dateViewPageAlignment = 0x7FFFFFFFFFFFFFFFLL;
     v4->_targetPageIndexForDraggingEnded = 0x7FFFFFFFFFFFFFFFLL;
     v6 = +[CSLockScreenDomain rootSettings];
-    v7 = [v6 lookSettings];
+    lookSettings = [v6 lookSettings];
     lookSettings = v4->_lookSettings;
-    v4->_lookSettings = v7;
+    v4->_lookSettings = lookSettings;
 
     [(PTSettings *)v4->_lookSettings addKeyObserver:v4];
     [(CSCoverSheetView *)v4 setClipsToBounds:1];
@@ -1448,15 +1448,15 @@ LABEL_76:
   return v4;
 }
 
-- (void)setFakeStatusBar:(id)a3
+- (void)setFakeStatusBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   fakeStatusBar = self->_fakeStatusBar;
-  if (fakeStatusBar != v5)
+  if (fakeStatusBar != barCopy)
   {
-    v12 = v5;
+    v12 = barCopy;
     [(UIView *)fakeStatusBar removeFromSuperview];
-    objc_storeStrong(&self->_fakeStatusBar, a3);
+    objc_storeStrong(&self->_fakeStatusBar, bar);
     fakeStatusBarWrapperView = self->_fakeStatusBarWrapperView;
     if (!fakeStatusBarWrapperView)
     {
@@ -1465,8 +1465,8 @@ LABEL_76:
       v10 = self->_fakeStatusBarWrapperView;
       self->_fakeStatusBarWrapperView = v9;
 
-      v11 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v11 addSubview:self->_fakeStatusBarWrapperView];
+      _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView addSubview:self->_fakeStatusBarWrapperView];
 
       [(CSCoverSheetView *)self _prepareBlursForView:self->_fakeStatusBarWrapperView withHardEdges:0];
       fakeStatusBarWrapperView = self->_fakeStatusBarWrapperView;
@@ -1474,26 +1474,26 @@ LABEL_76:
 
     [(CSPropertyAnimatingTouchPassThroughView *)fakeStatusBarWrapperView addSubview:self->_fakeStatusBar];
     fakeStatusBar = [(CSCoverSheetView *)self _layoutFakeStatusBar];
-    v5 = v12;
+    barCopy = v12;
   }
 
-  MEMORY[0x2821F96F8](fakeStatusBar, v5);
+  MEMORY[0x2821F96F8](fakeStatusBar, barCopy);
 }
 
-- (void)setFakeStatusBarLevel:(unint64_t)a3
+- (void)setFakeStatusBarLevel:(unint64_t)level
 {
-  if (self->_fakeStatusBarLevel != a3)
+  if (self->_fakeStatusBarLevel != level)
   {
-    self->_fakeStatusBarLevel = a3;
+    self->_fakeStatusBarLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setFakeStatusBarBlurRadius:(double)a3
+- (void)setFakeStatusBarBlurRadius:(double)radius
 {
-  if (self->_fakeStatusBarBlurRadius != a3)
+  if (self->_fakeStatusBarBlurRadius != radius)
   {
-    self->_fakeStatusBarBlurRadius = a3;
+    self->_fakeStatusBarBlurRadius = radius;
     if (self->_fakeStatusBarWrapperView)
     {
       [CSCoverSheetView _updateBlurForView:"_updateBlurForView:toRadius:" toRadius:?];
@@ -1501,24 +1501,24 @@ LABEL_76:
   }
 }
 
-- (void)setFakeStatusBarScale:(double)a3
+- (void)setFakeStatusBarScale:(double)scale
 {
-  if (self->_fakeStatusBarScale != a3)
+  if (self->_fakeStatusBarScale != scale)
   {
-    self->_fakeStatusBarScale = a3;
+    self->_fakeStatusBarScale = scale;
     [(CSCoverSheetView *)self _layoutFakeStatusBar];
   }
 }
 
-- (void)setStatusBarBackgroundView:(id)a3
+- (void)setStatusBarBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   statusBarBackgroundView = self->_statusBarBackgroundView;
-  v8 = v5;
-  if (statusBarBackgroundView != v5)
+  v8 = viewCopy;
+  if (statusBarBackgroundView != viewCopy)
   {
     [(UIView *)statusBarBackgroundView removeFromSuperview];
-    objc_storeStrong(&self->_statusBarBackgroundView, a3);
+    objc_storeStrong(&self->_statusBarBackgroundView, view);
     v7 = self->_statusBarBackgroundView;
     if (v7)
     {
@@ -1528,180 +1528,180 @@ LABEL_76:
   }
 }
 
-- (void)setControlCenterGrabberScale:(double)a3
+- (void)setControlCenterGrabberScale:(double)scale
 {
-  if (self->_controlCenterGrabberScale != a3)
+  if (self->_controlCenterGrabberScale != scale)
   {
-    self->_controlCenterGrabberScale = a3;
+    self->_controlCenterGrabberScale = scale;
     [(CSCoverSheetView *)self _layoutTeachableMomentsContainerView];
   }
 }
 
-- (void)setControlCenterGrabberBlurRadius:(double)a3
+- (void)setControlCenterGrabberBlurRadius:(double)radius
 {
-  if (self->_controlCenterGrabberBlurRadius != a3)
+  if (self->_controlCenterGrabberBlurRadius != radius)
   {
-    self->_controlCenterGrabberBlurRadius = a3;
-    v4 = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
+    self->_controlCenterGrabberBlurRadius = radius;
+    controlCenterGrabberContainerView = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
 
-    if (v4)
+    if (controlCenterGrabberContainerView)
     {
-      v5 = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
-      [(CSCoverSheetView *)self _updateBlurForView:v5 toRadius:self->_controlCenterGrabberBlurRadius];
+      controlCenterGrabberContainerView2 = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
+      [(CSCoverSheetView *)self _updateBlurForView:controlCenterGrabberContainerView2 toRadius:self->_controlCenterGrabberBlurRadius];
     }
   }
 }
 
-- (void)setWallpaperGestureRecognizer:(id)a3
+- (void)setWallpaperGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_wallpaperGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_wallpaperGestureRecognizer != recognizerCopy)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     [(CSCoverSheetView *)self _setupWallpaperGestureOnScrollView:0];
-    objc_storeStrong(&self->_wallpaperGestureRecognizer, a3);
-    v6 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    v7 = v6 == [(CSCoverSheetView *)self _indexOfMainPage];
-    v5 = v8;
+    objc_storeStrong(&self->_wallpaperGestureRecognizer, recognizer);
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    v7 = currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage];
+    recognizerCopy = v8;
     if (v7)
     {
       [(CSCoverSheetView *)self _setupWallpaperGestureOnScrollView:1];
-      v5 = v8;
+      recognizerCopy = v8;
     }
   }
 }
 
-- (void)setBackgroundContentGestureRecognizer:(id)a3
+- (void)setBackgroundContentGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_backgroundContentGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_backgroundContentGestureRecognizer != recognizerCopy)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     [(CSCoverSheetView *)self _setupBackgroundContentGestureOnScrollView:0];
-    objc_storeStrong(&self->_backgroundContentGestureRecognizer, a3);
-    v6 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    v7 = v6 == [(CSCoverSheetView *)self _indexOfMainPage];
-    v5 = v8;
+    objc_storeStrong(&self->_backgroundContentGestureRecognizer, recognizer);
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    v7 = currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage];
+    recognizerCopy = v8;
     if (v7)
     {
       [(CSCoverSheetView *)self _setupBackgroundContentGestureOnScrollView:1];
-      v5 = v8;
+      recognizerCopy = v8;
     }
   }
 }
 
-- (void)setQuickNoteGestureRecognizer:(id)a3
+- (void)setQuickNoteGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_quickNoteGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_quickNoteGestureRecognizer != recognizerCopy)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     [(CSCoverSheetView *)self _setupQuickNoteGestureOnScrollView:0];
-    objc_storeStrong(&self->_quickNoteGestureRecognizer, a3);
-    v6 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    v7 = v6 == [(CSCoverSheetView *)self _indexOfMainPage];
-    v5 = v8;
+    objc_storeStrong(&self->_quickNoteGestureRecognizer, recognizer);
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    v7 = currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage];
+    recognizerCopy = v8;
     if (v7)
     {
       [(CSCoverSheetView *)self _setupQuickNoteGestureOnScrollView:1];
-      v5 = v8;
+      recognizerCopy = v8;
     }
   }
 }
 
-- (void)setSearchGesture:(id)a3
+- (void)setSearchGesture:(id)gesture
 {
-  v5 = a3;
+  gestureCopy = gesture;
   searchGesture = self->_searchGesture;
-  if (searchGesture != v5)
+  if (searchGesture != gestureCopy)
   {
-    v7 = v5;
+    v7 = gestureCopy;
     [(SBSearchGesture *)searchGesture setTargetView:0];
-    objc_storeStrong(&self->_searchGesture, a3);
+    objc_storeStrong(&self->_searchGesture, gesture);
     searchGesture = [(SBSearchGesture *)v7 setTargetView:self->_scrollView];
-    v5 = v7;
+    gestureCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](searchGesture, v5);
+  MEMORY[0x2821F96F8](searchGesture, gestureCopy);
 }
 
-- (void)setDateViewOffset:(CGPoint)a3
+- (void)setDateViewOffset:(CGPoint)offset
 {
-  if (self->_dateViewOffset.x != a3.x || self->_dateViewOffset.y != a3.y)
+  if (self->_dateViewOffset.x != offset.x || self->_dateViewOffset.y != offset.y)
   {
-    self->_dateViewOffset = a3;
+    self->_dateViewOffset = offset;
     [(CSCoverSheetView *)self _layoutDateView];
   }
 }
 
-- (void)setDateViewScale:(double)a3
+- (void)setDateViewScale:(double)scale
 {
-  if (self->_dateViewScale != a3)
+  if (self->_dateViewScale != scale)
   {
-    self->_dateViewScale = a3;
+    self->_dateViewScale = scale;
     [(CSCoverSheetView *)self _layoutDateView];
   }
 }
 
-- (void)setDateViewStretch:(BOOL)a3
+- (void)setDateViewStretch:(BOOL)stretch
 {
-  if (self->_dateViewStretch != a3)
+  if (self->_dateViewStretch != stretch)
   {
-    self->_dateViewStretch = a3;
+    self->_dateViewStretch = stretch;
     [(CSCoverSheetView *)self _layoutDateView];
   }
 }
 
-- (void)setContentViewOffset:(CGPoint)a3
+- (void)setContentViewOffset:(CGPoint)offset
 {
-  if (self->_contentViewOffset.x != a3.x || self->_contentViewOffset.y != a3.y)
+  if (self->_contentViewOffset.x != offset.x || self->_contentViewOffset.y != offset.y)
   {
-    self->_contentViewOffset = a3;
+    self->_contentViewOffset = offset;
     [(CSCoverSheetView *)self _layoutContentView];
   }
 }
 
-- (void)setContentViewScale:(double)a3
+- (void)setContentViewScale:(double)scale
 {
-  if (self->_contentViewScale != a3)
+  if (self->_contentViewScale != scale)
   {
-    self->_contentViewScale = a3;
+    self->_contentViewScale = scale;
     [(CSCoverSheetView *)self _layoutContentView];
   }
 }
 
-- (void)setProudLockIconViewOffset:(CGPoint)a3
+- (void)setProudLockIconViewOffset:(CGPoint)offset
 {
-  if (self->_proudLockIconViewOffset.x != a3.x || self->_proudLockIconViewOffset.y != a3.y)
+  if (self->_proudLockIconViewOffset.x != offset.x || self->_proudLockIconViewOffset.y != offset.y)
   {
-    self->_proudLockIconViewOffset = a3;
+    self->_proudLockIconViewOffset = offset;
     [(CSCoverSheetView *)self _layoutProudLockView];
   }
 }
 
-- (void)setProudLockIconViewScale:(double)a3
+- (void)setProudLockIconViewScale:(double)scale
 {
-  if (self->_proudLockIconViewScale != a3)
+  if (self->_proudLockIconViewScale != scale)
   {
-    self->_proudLockIconViewScale = a3;
+    self->_proudLockIconViewScale = scale;
     [(CSCoverSheetView *)self _layoutProudLockView];
   }
 }
 
-- (void)setProudLockPrefersLowerPresentationLevel:(BOOL)a3
+- (void)setProudLockPrefersLowerPresentationLevel:(BOOL)level
 {
-  if (self->_proudLockPrefersLowerPresentationLevel != a3)
+  if (self->_proudLockPrefersLowerPresentationLevel != level)
   {
-    self->_proudLockPrefersLowerPresentationLevel = a3;
+    self->_proudLockPrefersLowerPresentationLevel = level;
     [(CSCoverSheetView *)self _layoutProudLockView];
   }
 }
 
-- (void)setProudLockIconBlurRadius:(double)a3
+- (void)setProudLockIconBlurRadius:(double)radius
 {
-  if (self->_proudLockIconBlurRadius != a3)
+  if (self->_proudLockIconBlurRadius != radius)
   {
-    self->_proudLockIconBlurRadius = a3;
+    self->_proudLockIconBlurRadius = radius;
     if (self->_proudLockContainerWrapperView)
     {
       [CSCoverSheetView _updateBlurForView:"_updateBlurForView:toRadius:" toRadius:?];
@@ -1709,27 +1709,27 @@ LABEL_76:
   }
 }
 
-- (void)setForceDateViewCentered:(BOOL)a3
+- (void)setForceDateViewCentered:(BOOL)centered
 {
-  if (self->_forceDateViewCentered != a3)
+  if (self->_forceDateViewCentered != centered)
   {
-    self->_forceDateViewCentered = a3;
+    self->_forceDateViewCentered = centered;
     [(CSCoverSheetView *)self _layoutDateView];
   }
 }
 
-- (void)setDateViewIsVibrant:(BOOL)a3
+- (void)setDateViewIsVibrant:(BOOL)vibrant
 {
-  if (self->_dateViewIsVibrant != a3)
+  if (self->_dateViewIsVibrant != vibrant)
   {
     v7 = v3;
     v8 = v4;
-    self->_dateViewIsVibrant = a3;
+    self->_dateViewIsVibrant = vibrant;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __41__CSCoverSheetView_setDateViewIsVibrant___block_invoke;
     v5[3] = &unk_27838BC70;
-    v6 = a3;
+    vibrantCopy = vibrant;
     v5[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v5];
   }
@@ -1783,75 +1783,75 @@ LABEL_8:
   return [v13 _layoutDateView];
 }
 
-- (void)setDateViewGestureRecognizer:(id)a3
+- (void)setDateViewGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_dateViewGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_dateViewGestureRecognizer != recognizerCopy)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     [(CSCoverSheetView *)self _setupDateViewGestureOnScrollView:0];
-    objc_storeStrong(&self->_dateViewGestureRecognizer, a3);
-    v6 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    v7 = v6 == [(CSCoverSheetView *)self _indexOfMainPage];
-    v5 = v8;
+    objc_storeStrong(&self->_dateViewGestureRecognizer, recognizer);
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    v7 = currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage];
+    recognizerCopy = v8;
     if (v7)
     {
       [(CSCoverSheetView *)self _setupDateViewGestureOnScrollView:1];
-      v5 = v8;
+      recognizerCopy = v8;
     }
   }
 }
 
-- (void)setComplicationGestureRecognizer:(id)a3
+- (void)setComplicationGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if (self->_complicationGestureRecognizer != v5)
+  recognizerCopy = recognizer;
+  if (self->_complicationGestureRecognizer != recognizerCopy)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     [(CSCoverSheetView *)self _setupComplicationGestureOnScrollView:0];
-    objc_storeStrong(&self->_complicationGestureRecognizer, a3);
-    v6 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    v7 = v6 == [(CSCoverSheetView *)self _indexOfMainPage];
-    v5 = v8;
+    objc_storeStrong(&self->_complicationGestureRecognizer, recognizer);
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    v7 = currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage];
+    recognizerCopy = v8;
     if (v7)
     {
       [(CSCoverSheetView *)self _setupComplicationGestureOnScrollView:1];
-      v5 = v8;
+      recognizerCopy = v8;
     }
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(CSCoverSheetView *)self _updateLegibility];
   }
 }
 
-- (void)setModalPresentationView:(id)a3
+- (void)setModalPresentationView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   modalPresentationView = self->_modalPresentationView;
-  if (modalPresentationView != v5)
+  if (modalPresentationView != viewCopy)
   {
-    v16 = v5;
+    v16 = viewCopy;
     [(UIView *)modalPresentationView removeFromSuperview];
     v7 = CSFeatureEnabled(12);
     if (v7)
     {
-      v8 = [(UIView *)self->_modalPresentationView layer];
-      [v8 removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+      layer = [(UIView *)self->_modalPresentationView layer];
+      [layer removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
     }
 
-    objc_storeStrong(&self->_modalPresentationView, a3);
+    objc_storeStrong(&self->_modalPresentationView, view);
     v9 = self->_modalPresentationView;
     if (v9)
     {
-      v10 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v10 bounds];
+      _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView bounds];
       [(UIView *)v9 setFrame:?];
 
       [(CSCoverSheetView *)self addSubview:self->_modalPresentationView];
@@ -1859,117 +1859,117 @@ LABEL_8:
 
     if (v7)
     {
-      v11 = [(CSCoverSheetView *)self window];
+      window = [(CSCoverSheetView *)self window];
 
-      if (v11)
+      if (window)
       {
         v12 = MEMORY[0x277D65DE0];
-        v13 = [(CSCoverSheetView *)self window];
-        v14 = [v12 matchMoveAnimationForPinningToView:v13];
+        window2 = [(CSCoverSheetView *)self window];
+        v14 = [v12 matchMoveAnimationForPinningToView:window2];
 
         [v14 setAppliesX:1];
         [v14 setAppliesY:1];
-        v15 = [(UIView *)self->_modalPresentationView layer];
-        [v15 addAnimation:v14 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+        layer2 = [(UIView *)self->_modalPresentationView layer];
+        [layer2 addAnimation:v14 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
       }
     }
 
     modalPresentationView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v16;
+    viewCopy = v16;
   }
 
-  MEMORY[0x2821F96F8](modalPresentationView, v5);
+  MEMORY[0x2821F96F8](modalPresentationView, viewCopy);
 }
 
-- (void)setModalPresentationViewOffset:(double)a3
+- (void)setModalPresentationViewOffset:(double)offset
 {
   if (CSFeatureEnabled(12))
   {
-    if (self->_modalPresentationViewOffset != a3)
+    if (self->_modalPresentationViewOffset != offset)
     {
-      self->_modalPresentationViewOffset = a3;
+      self->_modalPresentationViewOffset = offset;
       BSDispatchMain();
     }
   }
 }
 
-- (void)setModalPresentationLevel:(unint64_t)a3
+- (void)setModalPresentationLevel:(unint64_t)level
 {
-  if (self->_modalPresentationLevel != a3)
+  if (self->_modalPresentationLevel != level)
   {
-    self->_modalPresentationLevel = a3;
+    self->_modalPresentationLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setWallpaperPresentationLevel:(unint64_t)a3
+- (void)setWallpaperPresentationLevel:(unint64_t)level
 {
-  if (self->_wallpaperPresentationLevel != a3)
+  if (self->_wallpaperPresentationLevel != level)
   {
-    self->_wallpaperPresentationLevel = a3;
+    self->_wallpaperPresentationLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setWallpaperFloatingLayerPresentationLevel:(unint64_t)a3
+- (void)setWallpaperFloatingLayerPresentationLevel:(unint64_t)level
 {
-  if (self->_wallpaperFloatingLayerPresentationLevel != a3)
+  if (self->_wallpaperFloatingLayerPresentationLevel != level)
   {
-    self->_wallpaperFloatingLayerPresentationLevel = a3;
+    self->_wallpaperFloatingLayerPresentationLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setDateTimePresentationLevel:(unint64_t)a3
+- (void)setDateTimePresentationLevel:(unint64_t)level
 {
-  if (self->_dateTimePresentationLevel != a3)
+  if (self->_dateTimePresentationLevel != level)
   {
-    self->_dateTimePresentationLevel = a3;
+    self->_dateTimePresentationLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setBackgroundContentPresentationLevel:(unint64_t)a3
+- (void)setBackgroundContentPresentationLevel:(unint64_t)level
 {
-  if (self->_backgroundContentPresentationLevel != a3)
+  if (self->_backgroundContentPresentationLevel != level)
   {
-    self->_backgroundContentPresentationLevel = a3;
+    self->_backgroundContentPresentationLevel = level;
     [(CSCoverSheetView *)self _orderSubviews];
   }
 }
 
-- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)a3
+- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)offset
 {
-  if (self->_wallpaperFloatingLayerContainerViewOffset.x != a3.x || self->_wallpaperFloatingLayerContainerViewOffset.y != a3.y)
+  if (self->_wallpaperFloatingLayerContainerViewOffset.x != offset.x || self->_wallpaperFloatingLayerContainerViewOffset.y != offset.y)
   {
-    self->_wallpaperFloatingLayerContainerViewOffset = a3;
+    self->_wallpaperFloatingLayerContainerViewOffset = offset;
     [(CSCoverSheetView *)self _layoutWallpaperFloatingLayerContainerView];
   }
 }
 
-- (void)setWallpaperFloatingLayerContainerViewScale:(double)a3
+- (void)setWallpaperFloatingLayerContainerViewScale:(double)scale
 {
-  if (self->_wallpaperFloatingLayerContainerViewScale != a3)
+  if (self->_wallpaperFloatingLayerContainerViewScale != scale)
   {
-    self->_wallpaperFloatingLayerContainerViewScale = a3;
+    self->_wallpaperFloatingLayerContainerViewScale = scale;
     [(CSCoverSheetView *)self _layoutWallpaperFloatingLayerContainerView];
   }
 }
 
-- (void)setBackgroundContentViewAlpha:(double)a3
+- (void)setBackgroundContentViewAlpha:(double)alpha
 {
-  if (self->_backgroundContentViewAlpha != a3)
+  if (self->_backgroundContentViewAlpha != alpha)
   {
-    self->_backgroundContentViewAlpha = a3;
+    self->_backgroundContentViewAlpha = alpha;
     [(CSBackgroundContentView *)self->_backgroundContentView setAlpha:?];
   }
 }
 
-- (void)setBackgroundContentViewDimmed:(BOOL)a3
+- (void)setBackgroundContentViewDimmed:(BOOL)dimmed
 {
-  if (self->_backgroundContentViewDimmed != a3)
+  if (self->_backgroundContentViewDimmed != dimmed)
   {
-    self->_backgroundContentViewDimmed = a3;
+    self->_backgroundContentViewDimmed = dimmed;
     v5 = dispatch_group_create();
     [(CSCoverSheetView *)self _animateToDimming:self->_backgroundContentViewDimmed withDuration:v5 dispatchGroup:0.15];
     v6[0] = MEMORY[0x277D85DD0];
@@ -1977,7 +1977,7 @@ LABEL_8:
     v6[2] = __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke;
     v6[3] = &unk_27838BC70;
     v6[4] = self;
-    v7 = a3;
+    dimmedCopy = dimmed;
     dispatch_group_notify(v5, MEMORY[0x277D85CD0], v6);
   }
 }
@@ -1996,28 +1996,28 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 }
 
-- (void)_animateToDimming:(BOOL)a3 withDuration:(double)a4 dispatchGroup:(id)a5
+- (void)_animateToDimming:(BOOL)dimming withDuration:(double)duration dispatchGroup:(id)group
 {
-  v6 = a3;
+  dimmingCopy = dimming;
   v13[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(CSBackgroundContentView *)self->_backgroundContentView layer];
-  if (v9)
+  groupCopy = group;
+  layer = [(CSBackgroundContentView *)self->_backgroundContentView layer];
+  if (layer)
   {
-    v10 = [(CSCoverSheetView *)self _filterNumbersForDimming:v6];
-    [(CSCoverSheetView *)self _animateLayer:v9 toValues:v10 forKeyPath:@"filters.curves.inputRedValues" duration:v8 dispatchGroup:a4];
-    [(CSCoverSheetView *)self _animateLayer:v9 toValues:v10 forKeyPath:@"filters.curves.inputGreenValues" duration:v8 dispatchGroup:a4];
-    [(CSCoverSheetView *)self _animateLayer:v9 toValues:v10 forKeyPath:@"filters.curves.inputBlueValues" duration:v8 dispatchGroup:a4];
-    v11 = [(CSCoverSheetView *)self _filterForDimming:v6];
+    v10 = [(CSCoverSheetView *)self _filterNumbersForDimming:dimmingCopy];
+    [(CSCoverSheetView *)self _animateLayer:layer toValues:v10 forKeyPath:@"filters.curves.inputRedValues" duration:groupCopy dispatchGroup:duration];
+    [(CSCoverSheetView *)self _animateLayer:layer toValues:v10 forKeyPath:@"filters.curves.inputGreenValues" duration:groupCopy dispatchGroup:duration];
+    [(CSCoverSheetView *)self _animateLayer:layer toValues:v10 forKeyPath:@"filters.curves.inputBlueValues" duration:groupCopy dispatchGroup:duration];
+    v11 = [(CSCoverSheetView *)self _filterForDimming:dimmingCopy];
     v13[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v9 setFilters:v12];
+    [layer setFilters:v12];
   }
 }
 
-- (id)_filterNumbersForDimming:(BOOL)a3
+- (id)_filterNumbersForDimming:(BOOL)dimming
 {
-  if (a3)
+  if (dimming)
   {
     return &unk_28307A088;
   }
@@ -2028,9 +2028,9 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 }
 
-- (id)_filterForDimming:(BOOL)a3
+- (id)_filterForDimming:(BOOL)dimming
 {
-  v3 = [(CSCoverSheetView *)self _filterNumbersForDimming:a3];
+  v3 = [(CSCoverSheetView *)self _filterNumbersForDimming:dimming];
   v4 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2E8]];
   [v4 setValue:v3 forKey:*MEMORY[0x277CDA500]];
   [v4 setValue:v3 forKey:*MEMORY[0x277CDA498]];
@@ -2039,42 +2039,42 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   return v4;
 }
 
-- (void)_animateLayer:(id)a3 toValues:(id)a4 forKeyPath:(id)a5 duration:(double)a6 dispatchGroup:(id)a7
+- (void)_animateLayer:(id)layer toValues:(id)values forKeyPath:(id)path duration:(double)duration dispatchGroup:(id)group
 {
-  v19 = a5;
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v14 presentationLayer];
-  v16 = [v15 valueForKeyPath:v19];
+  pathCopy = path;
+  groupCopy = group;
+  valuesCopy = values;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  v16 = [presentationLayer valueForKeyPath:pathCopy];
 
   if (!v16)
   {
     v16 = [(CSCoverSheetView *)self _filterNumbersForDimming:0];
   }
 
-  if (v12)
+  if (groupCopy)
   {
-    dispatch_group_enter(v12);
+    dispatch_group_enter(groupCopy);
   }
 
-  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:v19];
-  [v17 setDuration:a6];
+  v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
+  [v17 setDuration:duration];
   v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v17 setTimingFunction:v18];
 
   [v17 setFromValue:v16];
-  [v17 setToValue:v13];
+  [v17 setToValue:valuesCopy];
 
-  [v17 setValue:v12 forKey:@"CSCoverSheetDimmingDispatchGroup"];
+  [v17 setValue:groupCopy forKey:@"CSCoverSheetDimmingDispatchGroup"];
   [v17 setDelegate:self];
-  [v14 removeAnimationForKey:v19];
-  [v14 addAnimation:v17 forKey:v19];
+  [layerCopy removeAnimationForKey:pathCopy];
+  [layerCopy addAnimation:v17 forKey:pathCopy];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [a3 valueForKey:{@"CSCoverSheetDimmingDispatchGroup", a4}];
+  v4 = [stop valueForKey:{@"CSCoverSheetDimmingDispatchGroup", finished}];
   if (v4)
   {
     v5 = v4;
@@ -2083,136 +2083,136 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 }
 
-- (void)setBottomPage:(id)a3
+- (void)setBottomPage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   bottomPage = self->_bottomPage;
-  if (bottomPage != v5)
+  if (bottomPage != pageCopy)
   {
-    v7 = v5;
+    v7 = pageCopy;
     [(UIView *)bottomPage removeFromSuperview];
-    objc_storeStrong(&self->_bottomPage, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_bottomPage, page);
+    pageCopy = v7;
     if (v7)
     {
       [(UIView *)self->_slideableContentView addSubview:v7];
       bottomPage = [(CSCoverSheetView *)self _layoutBottomPage];
-      v5 = v7;
+      pageCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](bottomPage, v5);
+  MEMORY[0x2821F96F8](bottomPage, pageCopy);
 }
 
-- (void)setTeachableMomentsContainerView:(id)a3
+- (void)setTeachableMomentsContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   teachableMomentsContainerView = self->_teachableMomentsContainerView;
-  if (teachableMomentsContainerView != v5)
+  if (teachableMomentsContainerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSTeachableMomentsContainerView *)teachableMomentsContainerView removeFromSuperview];
-    objc_storeStrong(&self->_teachableMomentsContainerView, a3);
+    objc_storeStrong(&self->_teachableMomentsContainerView, view);
     [(UIView *)self->_higherSlideableContentView addSubview:self->_teachableMomentsContainerView];
-    v7 = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
-    [(CSCoverSheetView *)self _prepareBlursForView:v7 withHardEdges:0];
+    controlCenterGrabberContainerView = [(CSTeachableMomentsContainerView *)self->_teachableMomentsContainerView controlCenterGrabberContainerView];
+    [(CSCoverSheetView *)self _prepareBlursForView:controlCenterGrabberContainerView withHardEdges:0];
 
     teachableMomentsContainerView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](teachableMomentsContainerView, v5);
+  MEMORY[0x2821F96F8](teachableMomentsContainerView, viewCopy);
 }
 
-- (void)setSidebarComplicationContainerView:(id)a3
+- (void)setSidebarComplicationContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   sidebarComplicationContainerView = self->_sidebarComplicationContainerView;
-  if (sidebarComplicationContainerView != v5)
+  if (sidebarComplicationContainerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)sidebarComplicationContainerView removeFromSuperview];
-    objc_storeStrong(&self->_sidebarComplicationContainerView, a3);
+    objc_storeStrong(&self->_sidebarComplicationContainerView, view);
     [(UIView *)self->_slideableContentView addSubview:self->_sidebarComplicationContainerView];
     sidebarComplicationContainerView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](sidebarComplicationContainerView, v5);
+  MEMORY[0x2821F96F8](sidebarComplicationContainerView, viewCopy);
 }
 
-- (void)setComplicationContainerView:(id)a3
+- (void)setComplicationContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   complicationContainerView = self->_complicationContainerView;
-  if (complicationContainerView != v5)
+  if (complicationContainerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)complicationContainerView removeFromSuperview];
-    objc_storeStrong(&self->_complicationContainerView, a3);
+    objc_storeStrong(&self->_complicationContainerView, view);
     [(UIView *)self->_slideableContentView addSubview:self->_complicationContainerView];
     complicationContainerView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](complicationContainerView, v5);
+  MEMORY[0x2821F96F8](complicationContainerView, viewCopy);
 }
 
-- (void)setFixedFooterView:(id)a3
+- (void)setFixedFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   fixedFooterView = self->_fixedFooterView;
-  if (fixedFooterView != v5)
+  if (fixedFooterView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(CSFixedFooterView *)fixedFooterView removeFromSuperview];
-    objc_storeStrong(&self->_fixedFooterView, a3);
+    objc_storeStrong(&self->_fixedFooterView, view);
     v7 = self->_fixedFooterView;
-    v8 = [(CSCoverSheetView *)self scrollView];
-    [(CSFixedFooterView *)v7 setTrackingScrollViewForPageControl:v8];
+    scrollView = [(CSCoverSheetView *)self scrollView];
+    [(CSFixedFooterView *)v7 setTrackingScrollViewForPageControl:scrollView];
 
     [(UIView *)self->_slideableContentView insertSubview:self->_fixedFooterView atIndex:0];
     fixedFooterView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](fixedFooterView, v5);
+  MEMORY[0x2821F96F8](fixedFooterView, viewCopy);
 }
 
-- (void)setProudLockContainerView:(id)a3
+- (void)setProudLockContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   proudLockContainerView = self->_proudLockContainerView;
-  if (proudLockContainerView != v5)
+  if (proudLockContainerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)proudLockContainerView removeFromSuperview];
-    objc_storeStrong(&self->_proudLockContainerView, a3);
+    objc_storeStrong(&self->_proudLockContainerView, view);
     [(CSCoverSheetView *)self _createProudLockContainerWrapperIfNecessary];
     [(CSPropertyAnimatingTouchPassThroughView *)self->_proudLockContainerWrapperView addSubview:self->_proudLockContainerView];
     proudLockContainerView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](proudLockContainerView, v5);
+  MEMORY[0x2821F96F8](proudLockContainerView, viewCopy);
 }
 
-- (void)setCameraCoveredView:(id)a3
+- (void)setCameraCoveredView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   cameraCoveredView = self->_cameraCoveredView;
-  if (cameraCoveredView != v5)
+  if (cameraCoveredView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)cameraCoveredView removeFromSuperview];
-    objc_storeStrong(&self->_cameraCoveredView, a3);
+    objc_storeStrong(&self->_cameraCoveredView, view);
     [(CSCoverSheetView *)self _createProudLockContainerWrapperIfNecessary];
     [(CSPropertyAnimatingTouchPassThroughView *)self->_proudLockContainerWrapperView addSubview:self->_cameraCoveredView];
     cameraCoveredView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](cameraCoveredView, v5);
+  MEMORY[0x2821F96F8](cameraCoveredView, viewCopy);
 }
 
 - (void)_createProudLockContainerWrapperIfNecessary
@@ -2230,32 +2230,32 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 }
 
-- (void)setPoseidonContainerView:(id)a3
+- (void)setPoseidonContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   poseidonContainerView = self->_poseidonContainerView;
-  if (poseidonContainerView != v5)
+  if (poseidonContainerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)poseidonContainerView removeFromSuperview];
-    objc_storeStrong(&self->_poseidonContainerView, a3);
+    objc_storeStrong(&self->_poseidonContainerView, view);
     [(UIView *)self->_higherSlideableContentView addSubview:self->_poseidonContainerView];
     poseidonContainerView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](poseidonContainerView, v5);
+  MEMORY[0x2821F96F8](poseidonContainerView, viewCopy);
 }
 
-- (void)setWallpaperEffectView:(id)a3
+- (void)setWallpaperEffectView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   wallpaperEffectView = self->_wallpaperEffectView;
-  if (wallpaperEffectView != v5)
+  if (wallpaperEffectView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(CSWallpaperView *)wallpaperEffectView removeFromSuperview];
-    objc_storeStrong(&self->_wallpaperEffectView, a3);
+    objc_storeStrong(&self->_wallpaperEffectView, view);
     if (self->_wallpaperEffectView)
     {
       [(UIView *)self->_slideableContentView addSubview:?];
@@ -2263,21 +2263,21 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
     }
 
     wallpaperEffectView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](wallpaperEffectView, v5);
+  MEMORY[0x2821F96F8](wallpaperEffectView, viewCopy);
 }
 
-- (void)setBackgroundContentView:(id)a3
+- (void)setBackgroundContentView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   v5 = CSFeatureEnabled(12);
-  if (self->_backgroundContentView != v7)
+  if (self->_backgroundContentView != viewCopy)
   {
     [(CSCoverSheetView *)self _setBackgroundContentViewMatchMoveActive:0];
     [(CSBackgroundContentView *)self->_backgroundContentView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundContentView, a3);
+    objc_storeStrong(&self->_backgroundContentView, view);
     backgroundContentView = self->_backgroundContentView;
     if (backgroundContentView)
     {
@@ -2290,21 +2290,21 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 }
 
-- (void)_setBackgroundContentViewMatchMoveActive:(BOOL)a3
+- (void)_setBackgroundContentViewMatchMoveActive:(BOOL)active
 {
-  if (self->_isBackgroundContentViewMatchMoveActive != a3)
+  if (self->_isBackgroundContentViewMatchMoveActive != active)
   {
-    self->_isBackgroundContentViewMatchMoveActive = a3;
+    self->_isBackgroundContentViewMatchMoveActive = active;
     [(CSCoverSheetView *)self _evaluateBackgroundContentViewMatchMove];
   }
 }
 
 - (void)_evaluateBackgroundContentViewMatchMove
 {
-  v3 = [(CSCoverSheetView *)self window];
-  if (v3)
+  window = [(CSCoverSheetView *)self window];
+  if (window)
   {
-    v9 = v3;
+    v9 = window;
     isBackgroundContentViewMatchMoveActive = self->_isBackgroundContentViewMatchMoveActive;
     if ([(NSMutableSet *)self->_backgroundContentViewMatchMoveDisabledReasons count])
     {
@@ -2316,8 +2316,8 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
       v5 = isBackgroundContentViewMatchMoveActive;
     }
 
-    v6 = [(CSBackgroundContentView *)self->_backgroundContentView layer];
-    v7 = [v6 animationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+    layer = [(CSBackgroundContentView *)self->_backgroundContentView layer];
+    v7 = [layer animationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
 
     if (((v5 ^ (v7 == 0)) & 1) == 0)
     {
@@ -2326,28 +2326,28 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
         v8 = [MEMORY[0x277D65DE0] matchMoveAnimationForPinningToView:v9];
         [v8 setAppliesX:1];
         [v8 setAppliesY:1];
-        [v6 addAnimation:v8 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+        [layer addAnimation:v8 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
       }
 
       else
       {
-        [v6 removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+        [layer removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
       }
     }
 
-    v3 = v9;
+    window = v9;
   }
 }
 
-- (void)setWakeEffectView:(id)a3
+- (void)setWakeEffectView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   wakeEffectView = self->_wakeEffectView;
-  if (wakeEffectView != v5)
+  if (wakeEffectView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)wakeEffectView removeFromSuperview];
-    objc_storeStrong(&self->_wakeEffectView, a3);
+    objc_storeStrong(&self->_wakeEffectView, view);
     if (self->_wakeEffectView)
     {
       [(UIView *)self->_slideableContentView addSubview:?];
@@ -2355,110 +2355,110 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
     }
 
     wakeEffectView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](wakeEffectView, v5);
+  MEMORY[0x2821F96F8](wakeEffectView, viewCopy);
 }
 
-- (void)setPageViews:(id)a3
+- (void)setPageViews:(id)views
 {
-  [(SBFPagedScrollView *)self->_scrollView setPageViews:a3];
+  [(SBFPagedScrollView *)self->_scrollView setPageViews:views];
   fixedFooterView = self->_fixedFooterView;
 
   [(CSFixedFooterView *)fixedFooterView updatePageControl];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  v9 = v5;
-  if (backgroundView != v5)
+  v9 = viewCopy;
+  if (backgroundView != viewCopy)
   {
     if (backgroundView)
     {
       [(SBUIBackgroundView *)backgroundView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(SBUIBackgroundView *)self->_backgroundView setUserInteractionEnabled:0];
     [(SBUIBackgroundView *)self->_backgroundView setReduceTransparencyBackingColor:self->_reduceTransparencyBackingColor];
     backgroundView = self->_backgroundView;
   }
 
-  v7 = [(SBUIBackgroundView *)backgroundView superview];
+  superview = [(SBUIBackgroundView *)backgroundView superview];
   backgroundContainerView = self->_backgroundContainerView;
 
-  if (v7 != backgroundContainerView)
+  if (superview != backgroundContainerView)
   {
     [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView addContentView:self->_backgroundView];
     [(CSCoverSheetView *)self setNeedsLayout];
   }
 }
 
-- (void)updateContainerOrientationForBackgroundViews:(int64_t)a3
+- (void)updateContainerOrientationForBackgroundViews:(int64_t)views
 {
-  [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView setContainerOrientation:a3];
+  [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView setContainerOrientation:views];
   backgroundContainerView = self->_backgroundContainerView;
 
   [(BSUIOrientationTransformWrapperView *)backgroundContainerView layoutIfNeeded];
 }
 
-- (void)setBedtimeGreetingViewBackgroundView:(id)a3
+- (void)setBedtimeGreetingViewBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bedtimeGreetingViewBackgroundView = self->_bedtimeGreetingViewBackgroundView;
-  if (bedtimeGreetingViewBackgroundView != v5)
+  if (bedtimeGreetingViewBackgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (bedtimeGreetingViewBackgroundView)
     {
       [(SBUIBackgroundView *)bedtimeGreetingViewBackgroundView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_bedtimeGreetingViewBackgroundView, a3);
+    objc_storeStrong(&self->_bedtimeGreetingViewBackgroundView, view);
     [(SBUIBackgroundView *)self->_bedtimeGreetingViewBackgroundView setUserInteractionEnabled:0];
     [(SBUIBackgroundView *)self->_bedtimeGreetingViewBackgroundView setReduceTransparencyBackingColor:self->_reduceTransparencyBackingColor];
     bedtimeGreetingViewBackgroundView = [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView addContentView:self->_bedtimeGreetingViewBackgroundView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](bedtimeGreetingViewBackgroundView, v5);
+  MEMORY[0x2821F96F8](bedtimeGreetingViewBackgroundView, viewCopy);
 }
 
-- (void)setReduceTransparencyBackingColor:(id)a3
+- (void)setReduceTransparencyBackingColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (colorCopy)
   {
-    v7 = v5;
-    v5 = [(UIColor *)self->_reduceTransparencyBackingColor isEqual:v5];
+    v7 = colorCopy;
+    colorCopy = [(UIColor *)self->_reduceTransparencyBackingColor isEqual:colorCopy];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_reduceTransparencyBackingColor, a3);
+      objc_storeStrong(&self->_reduceTransparencyBackingColor, color);
       [(SBUIBackgroundView *)self->_bedtimeGreetingViewBackgroundView setReduceTransparencyBackingColor:self->_reduceTransparencyBackingColor];
-      v5 = [(SBUIBackgroundView *)self->_backgroundView setReduceTransparencyBackingColor:self->_reduceTransparencyBackingColor];
+      colorCopy = [(SBUIBackgroundView *)self->_backgroundView setReduceTransparencyBackingColor:self->_reduceTransparencyBackingColor];
       v6 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](colorCopy, v6);
 }
 
-- (void)setQuickActionsView:(id)a3
+- (void)setQuickActionsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   quickActionsView = self->_quickActionsView;
-  v10 = v5;
-  if (quickActionsView == v5)
+  v10 = viewCopy;
+  if (quickActionsView == viewCopy)
   {
-    v7 = [(CSQuickActionsView *)v5 superview];
-    v8 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    superview = [(CSQuickActionsView *)viewCopy superview];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
 
-    if (v7 == v8)
+    if (superview == _effectiveContentsContainerView)
     {
       goto LABEL_5;
     }
@@ -2467,37 +2467,37 @@ void __51__CSCoverSheetView_setBackgroundContentViewDimmed___block_invoke(uint64
   }
 
   [(CSQuickActionsView *)quickActionsView removeFromSuperview];
-  objc_storeStrong(&self->_quickActionsView, a3);
-  v9 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v9 addSubview:self->_quickActionsView];
+  objc_storeStrong(&self->_quickActionsView, view);
+  _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView2 addSubview:self->_quickActionsView];
 
   [(CSCoverSheetView *)self _prepareBlursForView:self->_quickActionsView withHardEdges:0];
 LABEL_5:
 }
 
-- (void)setQuickActionsViewOffset:(CGPoint)a3
+- (void)setQuickActionsViewOffset:(CGPoint)offset
 {
-  if (self->_quickActionsViewOffset.x != a3.x || self->_quickActionsViewOffset.y != a3.y)
+  if (self->_quickActionsViewOffset.x != offset.x || self->_quickActionsViewOffset.y != offset.y)
   {
-    self->_quickActionsViewOffset = a3;
+    self->_quickActionsViewOffset = offset;
     [(CSCoverSheetView *)self _layoutQuickActionsView];
   }
 }
 
-- (void)setQuickActionsViewScale:(double)a3
+- (void)setQuickActionsViewScale:(double)scale
 {
-  if (self->_quickActionsViewScale != a3)
+  if (self->_quickActionsViewScale != scale)
   {
-    self->_quickActionsViewScale = a3;
+    self->_quickActionsViewScale = scale;
     [(CSCoverSheetView *)self _layoutQuickActionsView];
   }
 }
 
-- (void)setQuickActionsViewBlurRadius:(double)a3
+- (void)setQuickActionsViewBlurRadius:(double)radius
 {
-  if (self->_quickActionsViewBlurRadius != a3)
+  if (self->_quickActionsViewBlurRadius != radius)
   {
-    self->_quickActionsViewBlurRadius = a3;
+    self->_quickActionsViewBlurRadius = radius;
     if (self->_quickActionsView)
     {
       [CSCoverSheetView _updateBlurForView:"_updateBlurForView:toRadius:" toRadius:?];
@@ -2505,13 +2505,13 @@ LABEL_5:
   }
 }
 
-- (void)setQuickActionsViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setQuickActionsViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_quickActionsViewOffset.x != a3.x || self->_quickActionsViewOffset.y != a3.y)
+  if (self->_quickActionsViewOffset.x != offset.x || self->_quickActionsViewOffset.y != offset.y)
   {
-    self->_quickActionsViewOffset = a3;
+    self->_quickActionsViewOffset = offset;
     p_quickActionsViewScale = &self->_quickActionsViewScale;
-    if (self->_quickActionsViewScale == a4)
+    if (self->_quickActionsViewScale == scale)
     {
 LABEL_6:
       [(CSCoverSheetView *)self _layoutQuickActionsView];
@@ -2519,24 +2519,24 @@ LABEL_6:
     }
 
 LABEL_8:
-    *p_quickActionsViewScale = a4;
+    *p_quickActionsViewScale = scale;
     goto LABEL_6;
   }
 
   p_quickActionsViewScale = &self->_quickActionsViewScale;
-  if (self->_quickActionsViewScale != a4)
+  if (self->_quickActionsViewScale != scale)
   {
     goto LABEL_8;
   }
 }
 
-- (void)setDateViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setDateViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_dateViewOffset.x != a3.x || self->_dateViewOffset.y != a3.y)
+  if (self->_dateViewOffset.x != offset.x || self->_dateViewOffset.y != offset.y)
   {
-    self->_dateViewOffset = a3;
+    self->_dateViewOffset = offset;
     p_dateViewScale = &self->_dateViewScale;
-    if (self->_dateViewScale == a4)
+    if (self->_dateViewScale == scale)
     {
 LABEL_6:
       [(CSCoverSheetView *)self _layoutDateView];
@@ -2544,24 +2544,24 @@ LABEL_6:
     }
 
 LABEL_8:
-    *p_dateViewScale = a4;
+    *p_dateViewScale = scale;
     goto LABEL_6;
   }
 
   p_dateViewScale = &self->_dateViewScale;
-  if (self->_dateViewScale != a4)
+  if (self->_dateViewScale != scale)
   {
     goto LABEL_8;
   }
 }
 
-- (void)setContentViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setContentViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_contentViewOffset.x != a3.x || self->_contentViewOffset.y != a3.y)
+  if (self->_contentViewOffset.x != offset.x || self->_contentViewOffset.y != offset.y)
   {
-    self->_contentViewOffset = a3;
+    self->_contentViewOffset = offset;
     p_contentViewScale = &self->_contentViewScale;
-    if (self->_contentViewScale == a4)
+    if (self->_contentViewScale == scale)
     {
 LABEL_6:
       [(CSCoverSheetView *)self _layoutContentView];
@@ -2569,24 +2569,24 @@ LABEL_6:
     }
 
 LABEL_8:
-    *p_contentViewScale = a4;
+    *p_contentViewScale = scale;
     goto LABEL_6;
   }
 
   p_contentViewScale = &self->_contentViewScale;
-  if (self->_contentViewScale != a4)
+  if (self->_contentViewScale != scale)
   {
     goto LABEL_8;
   }
 }
 
-- (void)setProudLockIconViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setProudLockIconViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_proudLockIconViewOffset.x != a3.x || self->_proudLockIconViewOffset.y != a3.y)
+  if (self->_proudLockIconViewOffset.x != offset.x || self->_proudLockIconViewOffset.y != offset.y)
   {
-    self->_proudLockIconViewOffset = a3;
+    self->_proudLockIconViewOffset = offset;
     p_proudLockIconViewScale = &self->_proudLockIconViewScale;
-    if (self->_proudLockIconViewScale == a4)
+    if (self->_proudLockIconViewScale == scale)
     {
 LABEL_6:
       [(CSCoverSheetView *)self _layoutProudLockView];
@@ -2594,24 +2594,24 @@ LABEL_6:
     }
 
 LABEL_8:
-    *p_proudLockIconViewScale = a4;
+    *p_proudLockIconViewScale = scale;
     goto LABEL_6;
   }
 
   p_proudLockIconViewScale = &self->_proudLockIconViewScale;
-  if (self->_proudLockIconViewScale != a4)
+  if (self->_proudLockIconViewScale != scale)
   {
     goto LABEL_8;
   }
 }
 
-- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)a3 scale:(double)a4
+- (void)setWallpaperFloatingLayerContainerViewOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_wallpaperFloatingLayerContainerViewOffset.x != a3.x || self->_wallpaperFloatingLayerContainerViewOffset.y != a3.y)
+  if (self->_wallpaperFloatingLayerContainerViewOffset.x != offset.x || self->_wallpaperFloatingLayerContainerViewOffset.y != offset.y)
   {
-    self->_wallpaperFloatingLayerContainerViewOffset = a3;
+    self->_wallpaperFloatingLayerContainerViewOffset = offset;
     p_wallpaperFloatingLayerContainerViewScale = &self->_wallpaperFloatingLayerContainerViewScale;
-    if (self->_wallpaperFloatingLayerContainerViewScale == a4)
+    if (self->_wallpaperFloatingLayerContainerViewScale == scale)
     {
 LABEL_6:
       [(CSCoverSheetView *)self _layoutWallpaperFloatingLayerContainerView];
@@ -2619,27 +2619,27 @@ LABEL_6:
     }
 
 LABEL_8:
-    *p_wallpaperFloatingLayerContainerViewScale = a4;
+    *p_wallpaperFloatingLayerContainerViewScale = scale;
     goto LABEL_6;
   }
 
   p_wallpaperFloatingLayerContainerViewScale = &self->_wallpaperFloatingLayerContainerViewScale;
-  if (self->_wallpaperFloatingLayerContainerViewScale != a4)
+  if (self->_wallpaperFloatingLayerContainerViewScale != scale)
   {
     goto LABEL_8;
   }
 }
 
-- (void)setSuppressesBackgroundContentMatchMove:(BOOL)a3 forReason:(id)a4
+- (void)setSuppressesBackgroundContentMatchMove:(BOOL)move forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  moveCopy = move;
+  reasonCopy = reason;
+  v7 = reasonCopy;
+  if (reasonCopy)
   {
     backgroundContentViewMatchMoveDisabledReasons = self->_backgroundContentViewMatchMoveDisabledReasons;
     v11 = v7;
-    if (v4)
+    if (moveCopy)
     {
       if (!backgroundContentViewMatchMoveDisabledReasons)
       {
@@ -2659,115 +2659,115 @@ LABEL_8:
       [(NSMutableSet *)backgroundContentViewMatchMoveDisabledReasons removeObject:v7];
     }
 
-    v6 = [(CSCoverSheetView *)self _evaluateBackgroundContentViewMatchMove];
+    reasonCopy = [(CSCoverSheetView *)self _evaluateBackgroundContentViewMatchMove];
     v7 = v11;
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](reasonCopy, v7);
 }
 
-- (void)setCoverSheetPresentationProgress:(double)a3 forPresentationValue:(BOOL)a4
+- (void)setCoverSheetPresentationProgress:(double)progress forPresentationValue:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
-    self->_coverSheetPresentationProgressPresentationValue = a3;
+    self->_coverSheetPresentationProgressPresentationValue = progress;
     [(CSCoverSheetView *)self _layoutBackgroundContentViewForPresentationValueChange];
   }
 
   else
   {
-    self->_coverSheetPresentationProgressModelValue = a3;
+    self->_coverSheetPresentationProgressModelValue = progress;
     [(CSCoverSheetView *)self _layoutBackgroundContentView];
   }
 }
 
-- (void)setClipping:(BOOL)a3 corners:(unint64_t)a4 radius:(double)a5
+- (void)setClipping:(BOOL)clipping corners:(unint64_t)corners radius:(double)radius
 {
-  v7 = a3;
+  clippingCopy = clipping;
   if (_UISolariumEnabled())
   {
-    [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView setClipsToBounds:v7];
-    [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView _setContinuousCornerRadius:a5];
-    v9 = [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView layer];
-    [v9 setMaskedCorners:a4];
+    [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView setClipsToBounds:clippingCopy];
+    [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView _setContinuousCornerRadius:radius];
+    layer = [(UIView *)self->_notificationLegibiltyAboveDateTimeContainerView layer];
+    [layer setMaskedCorners:corners];
 
-    [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView setClipsToBounds:v7];
-    [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView _setContinuousCornerRadius:a5];
-    v10 = [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView layer];
-    [v10 setMaskedCorners:a4];
+    [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView setClipsToBounds:clippingCopy];
+    [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView _setContinuousCornerRadius:radius];
+    layer2 = [(UIView *)self->_notificationLegibiltyBelowDateTimeContainerView layer];
+    [layer2 setMaskedCorners:corners];
   }
 }
 
-- (void)setComplicationContainerViewScale:(double)a3
+- (void)setComplicationContainerViewScale:(double)scale
 {
-  if (self->_complicationContainerViewScale != a3)
+  if (self->_complicationContainerViewScale != scale)
   {
-    self->_complicationContainerViewScale = a3;
+    self->_complicationContainerViewScale = scale;
     [(CSCoverSheetView *)self _layoutComplicationContainerView];
   }
 }
 
-- (void)setBackgroundGlassView:(id)a3
+- (void)setBackgroundGlassView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   backgroundGlassView = CSFeatureEnabled(11);
-  v6 = v7;
+  v6 = viewCopy;
   if (backgroundGlassView)
   {
     backgroundGlassView = self->_backgroundGlassView;
-    if (backgroundGlassView != v7)
+    if (backgroundGlassView != viewCopy)
     {
       [backgroundGlassView removeFromSuperview];
-      objc_storeStrong(&self->_backgroundGlassView, a3);
+      objc_storeStrong(&self->_backgroundGlassView, view);
       [(UIView *)self->_slideableContentView addSubview:self->_backgroundGlassView];
       [(CSCoverSheetView *)self _orderSubviews];
       backgroundGlassView = [(CSCoverSheetView *)self setNeedsLayout];
-      v6 = v7;
+      v6 = viewCopy;
     }
   }
 
   MEMORY[0x2821F96F8](backgroundGlassView, v6);
 }
 
-- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)a3 withCompletion:(id)a4
+- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CSCoverSheetView *)self scrollView];
-  LOBYTE(v4) = [v7 scrollToPageAtIndex:-[CSCoverSheetView _indexOfMainPage](self animated:"_indexOfMainPage") withCompletion:{v4, v6}];
+  animatedCopy = animated;
+  completionCopy = completion;
+  scrollView = [(CSCoverSheetView *)self scrollView];
+  LOBYTE(animatedCopy) = [scrollView scrollToPageAtIndex:-[CSCoverSheetView _indexOfMainPage](self animated:"_indexOfMainPage") withCompletion:{animatedCopy, completionCopy}];
 
-  return v4;
+  return animatedCopy;
 }
 
-- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)a3 withAnimationSettings:(id)a4 withCompletion:(id)a5
+- (BOOL)resetScrollViewToMainPageAnimated:(BOOL)animated withAnimationSettings:(id)settings withCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSCoverSheetView *)self scrollView];
-  LOBYTE(self) = [v9 scrollToPageAtIndex:-[CSCoverSheetView _indexOfMainPage](self withAnimationSettings:"_indexOfMainPage") withCompletion:{v8, v7}];
+  completionCopy = completion;
+  settingsCopy = settings;
+  scrollView = [(CSCoverSheetView *)self scrollView];
+  LOBYTE(self) = [scrollView scrollToPageAtIndex:-[CSCoverSheetView _indexOfMainPage](self withAnimationSettings:"_indexOfMainPage") withCompletion:{settingsCopy, completionCopy}];
 
   return self;
 }
 
-- (BOOL)scrollToPageAtIndex:(unint64_t)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (BOOL)scrollToPageAtIndex:(unint64_t)index animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9 = self->_scrollView;
-  v10 = [(SBFPagedScrollView *)v9 gestureEnabled];
+  gestureEnabled = [(SBFPagedScrollView *)v9 gestureEnabled];
   [(SBFPagedScrollView *)v9 setGestureEnabled:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___block_invoke;
   v14[3] = &unk_27838BD30;
-  v17 = v10;
+  v17 = gestureEnabled;
   v15 = v9;
-  v16 = v8;
-  v11 = v8;
+  v16 = completionCopy;
+  v11 = completionCopy;
   v12 = v9;
-  LOBYTE(v5) = [(SBFPagedScrollView *)v12 scrollToPageAtIndex:a3 animated:v5 withCompletion:v14];
+  LOBYTE(animatedCopy) = [(SBFPagedScrollView *)v12 scrollToPageAtIndex:index animated:animatedCopy withCompletion:v14];
 
-  return v5;
+  return animatedCopy;
 }
 
 uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___block_invoke(uint64_t a1)
@@ -2784,9 +2784,9 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   return result;
 }
 
-- (void)updateUIForAuthenticated:(BOOL)a3
+- (void)updateUIForAuthenticated:(BOOL)authenticated
 {
-  if (a3)
+  if (authenticated)
   {
     v4 = 0.0;
     v5 = 1.0;
@@ -2802,13 +2802,13 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   [(UIView *)self->_authIndicator setBackgroundColor:v6];
 }
 
-- (void)setForegroundViewPositionOffset:(CGPoint)a3
+- (void)setForegroundViewPositionOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  if (self->_foregroundViewPositionOffset.x != a3.x || self->_foregroundViewPositionOffset.y != a3.y)
+  y = offset.y;
+  x = offset.x;
+  if (self->_foregroundViewPositionOffset.x != offset.x || self->_foregroundViewPositionOffset.y != offset.y)
   {
-    self->_foregroundViewPositionOffset = a3;
+    self->_foregroundViewPositionOffset = offset;
     if (BSFloatIsZero())
     {
       [(CSCoverSheetView *)self _removeContentView];
@@ -2855,8 +2855,8 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
 - (void)viewControllerWillAppear
 {
   self->_viewControllerAppearingOrAppeared = 1;
-  v3 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-  if (v3 == [(CSCoverSheetView *)self _indexOfMainPage])
+  currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+  if (currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage])
   {
     [(CSCoverSheetView *)self _setupAllGesturesOnScrollView:1];
     searchGesture = self->_searchGesture;
@@ -2866,10 +2866,10 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   }
 }
 
-- (CGRect)dateViewPresentationExtentForPageRelativeScrollOffset:(double)a3
+- (CGRect)dateViewPresentationExtentForPageRelativeScrollOffset:(double)offset
 {
   v8 = 0.0;
-  [(CSCoverSheetView *)self _dateViewFrameForPageAlignment:0 pageRelativeScrollOffset:&v8 outAlignmentPercent:a3];
+  [(CSCoverSheetView *)self _dateViewFrameForPageAlignment:0 pageRelativeScrollOffset:&v8 outAlignmentPercent:offset];
   v5 = v4;
   v7 = v6;
   [(SBFLockScreenDateView *)self->_dateView presentationExtentForAlignmentPercent:v8];
@@ -2891,21 +2891,21 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   return cachedLockScreenDefaults;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = CSCoverSheetView;
-  [(CSCoverSheetView *)&v4 didAddSubview:a3];
+  [(CSCoverSheetView *)&v4 didAddSubview:subview];
   [(CSCoverSheetView *)self _orderSubviews];
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   v5.receiver = self;
   v5.super_class = CSCoverSheetView;
   [(CSCoverSheetView *)&v5 setClipsToBounds:?];
-  [(UIView *)self->_dateTimeClippingView setClipsToBounds:v3];
+  [(UIView *)self->_dateTimeClippingView setClipsToBounds:boundsCopy];
 }
 
 - (void)didMoveToWindow
@@ -2916,11 +2916,11 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   [(CSCoverSheetView *)self _updateBackgroundContainerPinningAnimation];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CSCoverSheetView;
-  v5 = [(CSCoverSheetView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CSCoverSheetView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -2935,21 +2935,21 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   return v7;
 }
 
-- (CGPoint)_scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9
+- (CGPoint)_scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
-  y = a7.y;
-  x = a7.x;
-  v13 = a6.y;
-  v14 = a6.x;
-  v15 = a5.y;
-  v16 = a5.x;
-  v17 = a4.y;
-  v18 = a4.x;
-  v20 = a3;
+  y = inView.y;
+  x = inView.x;
+  v13 = point.y;
+  v14 = point.x;
+  v15 = translation.y;
+  v16 = translation.x;
+  v17 = offset.y;
+  v18 = offset.x;
+  viewCopy = view;
   initialPageIndex = self->_initialPageIndex;
   if (initialPageIndex == [(CSCoverSheetView *)self _indexOfMainPage]&& self->_shouldModifyPageScrolling)
   {
-    [(CSScrollModifier *)self->_scrollModifier scrollView:v20 adjustedOffsetForOffset:a8 translation:a9 startPoint:v18 locationInView:v17 horizontalVelocity:v16 verticalVelocity:v15, v14, v13, x, y];
+    [(CSScrollModifier *)self->_scrollModifier scrollView:viewCopy adjustedOffsetForOffset:velocity translation:verticalVelocity startPoint:v18 locationInView:v17 horizontalVelocity:v16 verticalVelocity:v15, v14, v13, x, y];
     v18 = v22;
     v17 = v23;
   }
@@ -2961,14 +2961,14 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = a3;
-  v4 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-  self->_initialPageIndex = v4;
-  if (v4 == [(CSCoverSheetView *)self _indexOfMainPage]&& self->_shouldModifyPageScrolling)
+  draggingCopy = dragging;
+  currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+  self->_initialPageIndex = currentPageIndex;
+  if (currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage]&& self->_shouldModifyPageScrolling)
   {
-    [(CSScrollModifier *)self->_scrollModifier scrollViewWillBeginDragging:v5];
+    [(CSScrollModifier *)self->_scrollModifier scrollViewWillBeginDragging:draggingCopy];
   }
 
   if ([(UIGestureRecognizer *)self->_wallpaperGestureRecognizer isEnabled])
@@ -2978,26 +2978,26 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   }
 }
 
-- (void)scrollViewWillBeginScrolling:(id)a3
+- (void)scrollViewWillBeginScrolling:(id)scrolling
 {
-  v4 = a3;
+  scrollingCopy = scrolling;
   kdebug_trace();
-  v5 = [(CSCoverSheetView *)self delegate];
-  self->_shouldModifyPageScrolling = [v5 shouldModifyPageScrolling];
+  delegate = [(CSCoverSheetView *)self delegate];
+  self->_shouldModifyPageScrolling = [delegate shouldModifyPageScrolling];
 
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
   {
-    [v4 contentSize];
+    [scrollingCopy contentSize];
     v7 = v6;
-    [v4 frame];
+    [scrollingCopy frame];
     v9 = v7 - v8;
-    [v4 contentOffset];
+    [scrollingCopy contentOffset];
     v11 = v9 - v10;
   }
 
   else
   {
-    [v4 contentOffset];
+    [scrollingCopy contentOffset];
   }
 
   self->_scrollViewStartingXOffset = v11;
@@ -3010,10 +3010,10 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   [WeakRetained setRestrictsTouchesForRemoteView:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  [(CSFixedFooterView *)self->_fixedFooterView updatePageControl:a3];
+  [(CSFixedFooterView *)self->_fixedFooterView updatePageControl:scroll];
   p_transitionContext = &self->_transitionContext;
   value = self->_transitionContext.interval.start.value;
   v7 = self->_transitionContext.value;
@@ -3079,24 +3079,24 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   [(CSCoverSheetView *)self _layoutHigherSlideableContentView];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  draggingCopy = dragging;
   initialPageIndex = self->_initialPageIndex;
   if (initialPageIndex == [(CSCoverSheetView *)self _indexOfMainPage]&& self->_shouldModifyPageScrolling)
   {
-    [(CSScrollModifier *)self->_scrollModifier scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
-    v11 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    [(CSScrollModifier *)self->_scrollModifier scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
     v12 = self->_initialPageIndex;
-    v13 = [(SBFPagedScrollView *)self->_scrollView pageViews];
-    v14 = [v13 count] - 1;
+    pageViews = [(SBFPagedScrollView *)self->_scrollView pageViews];
+    v14 = [pageViews count] - 1;
 
-    if (v14 >= v11 + 1)
+    if (v14 >= currentPageIndex + 1)
     {
-      v15 = v11 + 1;
+      v15 = currentPageIndex + 1;
     }
 
     else
@@ -3107,24 +3107,24 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
     v16 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
     if ([(CSScrollModifier *)self->_scrollModifier scrollFromRightToLeft]!= v16)
     {
-      v11 = v15;
+      currentPageIndex = v15;
     }
 
     if (![(CSScrollModifier *)self->_scrollModifier recognized])
     {
-      v11 = v12;
+      currentPageIndex = v12;
     }
 
-    v17 = [(CSCoverSheetView *)self scrollView];
-    [v17 contentOffsetForPageAtIndex:v11];
-    a5->x = v18;
+    scrollView = [(CSCoverSheetView *)self scrollView];
+    [scrollView contentOffsetForPageAtIndex:currentPageIndex];
+    offset->x = v18;
   }
 
   if (self->_targetPageIndexForDraggingEnded != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v19 = [(CSCoverSheetView *)self scrollView];
-    [v19 contentOffsetForPageAtIndex:self->_targetPageIndexForDraggingEnded];
-    a5->x = v20;
+    scrollView2 = [(CSCoverSheetView *)self scrollView];
+    [scrollView2 contentOffsetForPageAtIndex:self->_targetPageIndexForDraggingEnded];
+    offset->x = v20;
 
     v21 = SBLogDashBoard();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -3137,7 +3137,7 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   }
 }
 
-- (void)scrollViewDidEndScrolling:(id)a3
+- (void)scrollViewDidEndScrolling:(id)scrolling
 {
   kdebug_trace();
   [(CSFixedFooterView *)self->_fixedFooterView updatePageControl];
@@ -3162,18 +3162,18 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   [(CSCoverSheetView *)self _setupAllGesturesOnScrollView:0];
   if (self->_viewControllerAppearingOrAppeared)
   {
-    v8 = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
-    if (v8 == [(CSCoverSheetView *)self _indexOfMainPage])
+    currentPageIndex = [(SBFPagedScrollView *)self->_scrollView currentPageIndex];
+    if (currentPageIndex == [(CSCoverSheetView *)self _indexOfMainPage])
     {
       [(CSCoverSheetView *)self _setupAllGesturesOnScrollView:1];
     }
   }
 }
 
-- (BOOL)coverSheetScrollView:(id)a3 shouldSetContentOffset:(CGPoint)a4 animated:(BOOL)a5
+- (BOOL)coverSheetScrollView:(id)view shouldSetContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  x = a4.x;
-  v8 = [(CSCoverSheetView *)self scrollView:a3];
+  x = offset.x;
+  v8 = [(CSCoverSheetView *)self scrollView:view];
   [v8 contentOffsetForPageAtIndex:{-[CSCoverSheetView _indexOfMainPage](self, "_indexOfMainPage")}];
   v10 = v9;
 
@@ -3181,11 +3181,11 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   v12 = (x >= v10) ^ ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1);
   if ((v11 & 1) != 0 || (v12 & 1) != 0 || ![(CSCoverSheetView *)self ignoresOverscrollOnMainPage])
   {
-    v14 = [(CSCoverSheetView *)self scrollView];
-    v15 = [v14 panGestureRecognizer];
-    v16 = [v15 state];
+    scrollView = [(CSCoverSheetView *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    state = [panGestureRecognizer state];
 
-    v13 = v11 | a5 | ((v16 - 3) < 0xFFFFFFFFFFFFFFFELL) | ![(CSCoverSheetView *)self cameraSwipeBlocked]| v12 ^ 1;
+    v13 = v11 | animated | ((state - 3) < 0xFFFFFFFFFFFFFFFELL) | ![(CSCoverSheetView *)self cameraSwipeBlocked]| v12 ^ 1;
   }
 
   else
@@ -3196,36 +3196,36 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   return v13 & 1;
 }
 
-- (BOOL)coverSheetScrollView:(id)a3 gestureRecognizerShouldBegin:(id)a4
+- (BOOL)coverSheetScrollView:(id)view gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = a4;
-  [v5 locationInView:self];
+  beginCopy = begin;
+  [beginCopy locationInView:self];
   v7 = v6;
   v9 = v8;
-  v10 = [(CSCoverSheetView *)self delegate];
-  v11 = [v5 view];
+  delegate = [(CSCoverSheetView *)self delegate];
+  view = [beginCopy view];
 
-  LOBYTE(v5) = [v10 isTouchLocation:v11 inRestrictedRectForGestureView:{v7, v9}];
-  return v5 ^ 1;
+  LOBYTE(beginCopy) = [delegate isTouchLocation:view inRestrictedRectForGestureView:{v7, v9}];
+  return beginCopy ^ 1;
 }
 
-- (void)_setDateView:(id)a3 forTesting:(BOOL)a4
+- (void)_setDateView:(id)view forTesting:(BOOL)testing
 {
-  v7 = a3;
+  viewCopy = view;
   dateView = self->_dateView;
-  if (dateView != v7)
+  if (dateView != viewCopy)
   {
-    v11 = v7;
+    v11 = viewCopy;
     [(SBFLockScreenDateView *)dateView removeFromSuperview];
-    objc_storeStrong(&self->_dateView, a3);
+    objc_storeStrong(&self->_dateView, view);
     [(CSCoverSheetView *)self _updateDateFont];
-    if (!a4)
+    if (!testing)
     {
       dateEffectView = self->_dateEffectView;
       if (dateEffectView)
       {
-        v10 = [(UIVisualEffectView *)dateEffectView contentView];
-        [v10 addSubview:v11];
+        contentView = [(UIVisualEffectView *)dateEffectView contentView];
+        [contentView addSubview:v11];
       }
 
       else
@@ -3237,10 +3237,10 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
     [(CSCoverSheetView *)self _dateViewFrameForPageAlignment:1 pageRelativeScrollOffset:0 outAlignmentPercent:0.0];
     [(SBFLockScreenDateView *)self->_dateView setRestingFrame:?];
     dateView = [(CSCoverSheetView *)self _layoutDateView];
-    v7 = v11;
+    viewCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](dateView, v7);
+  MEMORY[0x2821F96F8](dateView, viewCopy);
 }
 
 - (void)_updateDateFont
@@ -3248,60 +3248,60 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   if ([(CSLookSettings *)self->_lookSettings useSettingsDateTime]&& [(CSLookSettings *)self->_lookSettings customizesDateTime])
   {
     dateView = self->_dateView;
-    v4 = [(CSLookSettings *)self->_lookSettings customTimeFont];
-    [(SBFLockScreenDateView *)dateView setCustomTimeFont:v4];
+    customTimeFont = [(CSLookSettings *)self->_lookSettings customTimeFont];
+    [(SBFLockScreenDateView *)dateView setCustomTimeFont:customTimeFont];
 
     v5 = self->_dateView;
-    v6 = [(CSLookSettings *)self->_lookSettings subtitleAboveTime];
+    subtitleAboveTime = [(CSLookSettings *)self->_lookSettings subtitleAboveTime];
     v7 = v5;
   }
 
   else
   {
     v8 = self->_dateView;
-    v9 = [MEMORY[0x277D65EB0] timeFont];
-    [(SBFLockScreenDateView *)v8 setCustomTimeFont:v9];
+    timeFont = [MEMORY[0x277D65EB0] timeFont];
+    [(SBFLockScreenDateView *)v8 setCustomTimeFont:timeFont];
 
     v7 = self->_dateView;
-    v6 = 0;
+    subtitleAboveTime = 0;
   }
 
-  [(SBFLockScreenDateView *)v7 setSubtitleOnTop:v6];
+  [(SBFLockScreenDateView *)v7 setSubtitleOnTop:subtitleAboveTime];
 }
 
-- (void)setRegionsDebugView:(id)a3
+- (void)setRegionsDebugView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   regionsDebugView = self->_regionsDebugView;
-  if (regionsDebugView != v5)
+  if (regionsDebugView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(CSRegionsDebugView *)regionsDebugView removeFromSuperview];
-    objc_storeStrong(&self->_regionsDebugView, a3);
-    v7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_regionsDebugView, view);
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView addSubview:v8];
 
     regionsDebugView = [(CSCoverSheetView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](regionsDebugView, v5);
+  MEMORY[0x2821F96F8](regionsDebugView, viewCopy);
 }
 
-- (CGAffineTransform)_transformScaling:(SEL)a3 byScale:(id)a4 aboutPointInSelf:(double)a5
+- (CGAffineTransform)_transformScaling:(SEL)scaling byScale:(id)scale aboutPointInSelf:(double)self
 {
-  v7 = a4;
-  v8 = [v7 superview];
-  [v7 center];
+  scaleCopy = scale;
+  superview = [scaleCopy superview];
+  [scaleCopy center];
   v10 = v9;
   v12 = v11;
 
-  [v8 convertPoint:self toView:{v10, v12}];
+  [superview convertPoint:self toView:{v10, v12}];
 
   return SBFTransformForScalingAboutPointInSuperview();
 }
 
-- (CGRect)_dateViewFrameForPageAlignment:(int64_t)a3 pageRelativeScrollOffset:(double)a4 outAlignmentPercent:(double *)a5
+- (CGRect)_dateViewFrameForPageAlignment:(int64_t)alignment pageRelativeScrollOffset:(double)offset outAlignmentPercent:(double *)percent
 {
   y = self->_dateViewOffset.y;
   v10 = -y;
@@ -3310,7 +3310,7 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
     v10 = y * -0.4;
   }
 
-  v11 = [(CSCoverSheetView *)self _indexOfMainPage];
+  _indexOfMainPage = [(CSCoverSheetView *)self _indexOfMainPage];
   dateViewPageAlignment = self->_dateViewPageAlignment;
   WeakRetained = objc_loadWeakRetained(&self->_layoutStrategy);
   v14 = WeakRetained;
@@ -3319,23 +3319,23 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   {
     if (dateViewPageAlignment == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = a4 - v11;
+      alignmentCopy = offset - _indexOfMainPage;
     }
 
     else
     {
-      v16 = a3;
+      alignmentCopy = alignment;
     }
 
-    v17 = [WeakRetained persistentLayout];
-    [v17 timeLabelOffsetForScrollPercent:v16];
+    persistentLayout = [WeakRetained persistentLayout];
+    [persistentLayout timeLabelOffsetForScrollPercent:alignmentCopy];
     v15 = v18;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v19 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v19 bounds];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -3359,9 +3359,9 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   v46.size.width = v25;
   v46.size.height = v27;
   CGRectOffset(v46, 0.0, v33);
-  if (a5)
+  if (percent)
   {
-    *a5 = v15;
+    *percent = v15;
   }
 
   SBFMainScreenScale();
@@ -3386,11 +3386,11 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
 {
   [(SBFPagedScrollView *)self->_scrollView unclippedPageRelativeScrollOffset];
   v4 = v3;
-  v5 = [(CSCoverSheetView *)self _indexOfMainPage];
+  _indexOfMainPage = [(CSCoverSheetView *)self _indexOfMainPage];
   v6 = 0.0;
   if (self->_statusBarBackgroundPageAlignment != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
+    v7 = _indexOfMainPage;
     [(CSCoverSheetView *)self bounds];
     v6 = CGRectGetWidth(v24) * (v7 - v4 + self->_statusBarBackgroundPageAlignment);
   }
@@ -3409,8 +3409,8 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   v10 = v9;
   [(UIView *)self->_statusBarBackgroundView intrinsicContentSize];
   v12 = v11;
-  v13 = [(UIView *)self->_statusBarBackgroundView superview];
-  [(CSCoverSheetView *)self convertRect:v13 toView:v8, 0.0, v10, v12];
+  superview = [(UIView *)self->_statusBarBackgroundView superview];
+  [(CSCoverSheetView *)self convertRect:superview toView:v8, 0.0, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -3423,8 +3423,8 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
 
 - (void)_layoutContentView
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3483,8 +3483,8 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
 
 - (CGRect)_wallpaperOrientationEnforcingBounds
 {
-  v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v3 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3527,10 +3527,10 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
   result = [(CSCoverSheetView *)self _forcingPortraitForWallpaperContent];
   if (result)
   {
-    v6 = [(CSCoverSheetView *)self window];
-    v7 = [v6 interfaceOrientation];
+    window = [(CSCoverSheetView *)self window];
+    interfaceOrientation = [window interfaceOrientation];
 
-    switch(v7)
+    switch(interfaceOrientation)
     {
       case 1:
         v8 = 0.0;
@@ -3543,7 +3543,7 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
         break;
       default:
         v8 = 3.14159265;
-        if (v7 != 2)
+        if (interfaceOrientation != 2)
         {
           v8 = 0.0;
         }
@@ -3556,22 +3556,22 @@ uint64_t __64__CSCoverSheetView_scrollToPageAtIndex_animated_withCompletion___bl
     t1 = v23;
     memset(&v22, 0, sizeof(v22));
     UIIntegralTransform();
-    v12 = [(CSCoverSheetView *)self window];
-    v13 = [v12 isRotating];
+    window2 = [(CSCoverSheetView *)self window];
+    isRotating = [window2 isRotating];
 
-    if (v13)
+    if (isRotating)
     {
-      v14 = [(CSCoverSheetView *)self window];
-      v15 = [v14 _fromWindowOrientation];
+      window3 = [(CSCoverSheetView *)self window];
+      _fromWindowOrientation = [window3 _fromWindowOrientation];
 
-      v16 = [(CSCoverSheetView *)self window];
-      v17 = [v16 _toWindowOrientation];
+      window4 = [(CSCoverSheetView *)self window];
+      _toWindowOrientation = [window4 _toWindowOrientation];
 
-      if ((v15 - 3) < 2)
+      if ((_fromWindowOrientation - 3) < 2)
       {
         v18 = -3;
 LABEL_16:
-        if (v15 != v17 && (v17 + v18) <= 1)
+        if (_fromWindowOrientation != _toWindowOrientation && (_toWindowOrientation + v18) <= 1)
         {
           v20.tx = 0.0;
           v20.ty = 0.0;
@@ -3584,7 +3584,7 @@ LABEL_16:
         goto LABEL_19;
       }
 
-      if ((v15 - 1) <= 1)
+      if ((_fromWindowOrientation - 1) <= 1)
       {
         v18 = -1;
         goto LABEL_16;
@@ -3613,8 +3613,8 @@ LABEL_20:
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(CSCoverSheetView *)self wallpaperFloatingLayerContainerView];
-    [v3 frame];
+    wallpaperFloatingLayerContainerView = [(CSCoverSheetView *)self wallpaperFloatingLayerContainerView];
+    [wallpaperFloatingLayerContainerView frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -3631,8 +3631,8 @@ LABEL_20:
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v3 frame];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -3649,8 +3649,8 @@ LABEL_20:
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v3 frame];
+    _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -3699,14 +3699,14 @@ LABEL_20:
   if (CSFeatureEnabled(12))
   {
     v3 = [CSCoverSheetContentsContainerView alloc];
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v5 = [(CSCoverSheetContentsContainerView *)v3 initWithFrame:?];
     contentsContainerView = self->_contentsContainerView;
     self->_contentsContainerView = v5;
 
-    v7 = [(CSCoverSheetContentsContainerView *)self->_contentsContainerView layer];
-    [v7 setHitTestsAsOpaque:1];
+    layer = [(CSCoverSheetContentsContainerView *)self->_contentsContainerView layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(CSCoverSheetContentsContainerView *)self->_contentsContainerView setCoverSheetView:self];
     v8 = self->_contentsContainerView;
@@ -3722,17 +3722,17 @@ LABEL_20:
     backgroundContainerView = self->_backgroundContainerView;
     if (backgroundContainerView)
     {
-      v4 = [(BSUIOrientationTransformWrapperView *)backgroundContainerView layer];
-      [v4 removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+      layer = [(BSUIOrientationTransformWrapperView *)backgroundContainerView layer];
+      [layer removeAnimationForKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
 
-      v7 = [(CSCoverSheetView *)self window];
-      if (v7)
+      window = [(CSCoverSheetView *)self window];
+      if (window)
       {
-        v5 = [MEMORY[0x277D65DE0] matchMoveAnimationForPinningToView:v7];
+        v5 = [MEMORY[0x277D65DE0] matchMoveAnimationForPinningToView:window];
         [v5 setAppliesX:1];
         [v5 setAppliesY:1];
-        v6 = [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView layer];
-        [v6 addAnimation:v5 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
+        layer2 = [(BSUIOrientationTransformWrapperView *)self->_backgroundContainerView layer];
+        [layer2 addAnimation:v5 forKey:@"CSCoverSheetViewBackgroundContentViewMatchMoveAnimation"];
       }
 
       [(CSCoverSheetView *)self setNeedsLayout];
@@ -3774,43 +3774,43 @@ LABEL_20:
 - (void)_addSlideableContentView
 {
   v3 = objc_alloc(MEMORY[0x277D65F80]);
-  v4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v4 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = [v3 initWithFrame:?];
   slideableContentView = self->_slideableContentView;
   self->_slideableContentView = v5;
 
   [(UIView *)self->_slideableContentView setAutoresizingMask:18];
-  v7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v7 addSubview:self->_slideableContentView];
+  _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView2 addSubview:self->_slideableContentView];
 }
 
 - (void)_addHigherSlideableContentView
 {
   v3 = objc_alloc(MEMORY[0x277D65F80]);
-  v4 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v4 bounds];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView bounds];
   v5 = [v3 initWithFrame:?];
   higherSlideableContentView = self->_higherSlideableContentView;
   self->_higherSlideableContentView = v5;
 
   [(UIView *)self->_higherSlideableContentView setAutoresizingMask:18];
-  v7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v7 addSubview:self->_higherSlideableContentView];
+  _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView2 addSubview:self->_higherSlideableContentView];
 }
 
-- (void)_addContentViewWithContentView:(id)a3
+- (void)_addContentViewWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_hasSubviewModifyingView)
   {
-    v10 = v4;
+    v10 = viewCopy;
     self->_hasSubviewModifyingView = 1;
     if (!self->_contentView)
     {
       v5 = objc_alloc(MEMORY[0x277D65F80]);
-      v6 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-      [v6 bounds];
+      _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+      [_effectiveContentsContainerView bounds];
       v7 = [v5 initWithFrame:?];
       contentView = self->_contentView;
       self->_contentView = v7;
@@ -3818,11 +3818,11 @@ LABEL_20:
       [(UIView *)self->_contentView setAutoresizingMask:18];
     }
 
-    v9 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-    [v9 addSubview:self->_contentView];
+    _effectiveContentsContainerView2 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+    [_effectiveContentsContainerView2 addSubview:self->_contentView];
 
     [(UIView *)self->_contentView addSubview:v10];
-    v4 = v10;
+    viewCopy = v10;
   }
 }
 
@@ -3832,8 +3832,8 @@ LABEL_20:
   [(CSCoverSheetView *)self bounds];
   v5 = [(SBFPagedScrollView *)v3 initWithFrame:?];
   [(BSUIScrollView *)v5 setDelegate:self];
-  v4 = [(CSScrollView *)v5 panGestureRecognizer];
-  [v4 setName:@"CoverSheetPagedPanGestureRecognizer"];
+  panGestureRecognizer = [(CSScrollView *)v5 panGestureRecognizer];
+  [panGestureRecognizer setName:@"CoverSheetPagedPanGestureRecognizer"];
 
   [(CSScrollView *)v5 setAutoresizingMask:18];
   [(CSScrollView *)v5 setContentInsetAdjustmentBehavior:2];
@@ -3940,22 +3940,22 @@ LABEL_20:
   }
 }
 
-- (void)_makeView:(id)a3 untouchable:(BOOL)a4
+- (void)_makeView:(id)view untouchable:(BOOL)untouchable
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 setUserInteractionEnabled:!v4];
-  v6 = [v5 layer];
+  untouchableCopy = untouchable;
+  viewCopy = view;
+  [viewCopy setUserInteractionEnabled:!untouchableCopy];
+  layer = [viewCopy layer];
 
-  [v6 setAllowsHitTesting:!v4];
+  [layer setAllowsHitTesting:!untouchableCopy];
 }
 
 - (void)_addAuthIndicator
 {
-  v3 = [(CSCoverSheetView *)self _lockScreenDefaults];
-  v4 = [v3 showAuthenticationEngineeringUI];
+  _lockScreenDefaults = [(CSCoverSheetView *)self _lockScreenDefaults];
+  showAuthenticationEngineeringUI = [_lockScreenDefaults showAuthenticationEngineeringUI];
 
-  if (v4)
+  if (showAuthenticationEngineeringUI)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
     authIndicator = self->_authIndicator;
@@ -3976,12 +3976,12 @@ LABEL_20:
   self->_tintingView = v3;
 
   v5 = self->_tintingView;
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v5 setBackgroundColor:blackColor];
 
   [(UIView *)self->_tintingView setHidden:1];
-  v7 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v7 addSubview:self->_tintingView];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView addSubview:self->_tintingView];
 }
 
 - (void)_addStatusBarLegibilityView
@@ -3990,18 +3990,18 @@ LABEL_20:
   statusBarLegibilityView = self->_statusBarLegibilityView;
   self->_statusBarLegibilityView = v3;
 
-  v5 = [(CSCoverSheetView *)self _effectiveContentsContainerView];
-  [v5 addSubview:self->_statusBarLegibilityView];
+  _effectiveContentsContainerView = [(CSCoverSheetView *)self _effectiveContentsContainerView];
+  [_effectiveContentsContainerView addSubview:self->_statusBarLegibilityView];
 }
 
-- ($453422EBA70013024ECC637D52E1FF2D)_completedTransitionContextForPreviousTransitionContext:(SEL)a3 newTransitionContext:(id *)a4
+- ($453422EBA70013024ECC637D52E1FF2D)_completedTransitionContextForPreviousTransitionContext:(SEL)context newTransitionContext:(id *)transitionContext
 {
-  v5 = *&a4->var1.var1.var1;
-  *&retstr->var1.var0.var1 = *&a4->var1.var0.var1;
+  v5 = *&transitionContext->var1.var1.var1;
+  *&retstr->var1.var0.var1 = *&transitionContext->var1.var0.var1;
   *&retstr->var1.var1.var1 = v5;
-  *&retstr->var0 = *&a4->var0;
+  *&retstr->var0 = *&transitionContext->var0;
   retstr->var1.var1 = a5->var1.var0;
-  retstr->var0 = a4->var1.var1.var0;
+  retstr->var0 = transitionContext->var1.var1.var0;
   return self;
 }
 
@@ -4014,25 +4014,25 @@ LABEL_20:
   [(SBFStatusBarLegibilityView *)statusBarLegibilityView setLegibilitySettings:legibilitySettings];
 }
 
-- (void)_setupAllGesturesOnScrollView:(BOOL)a3
+- (void)_setupAllGesturesOnScrollView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(CSCoverSheetView *)self _setupWallpaperGestureOnScrollView:?];
-  [(CSCoverSheetView *)self _setupBackgroundContentGestureOnScrollView:v3];
-  [(CSCoverSheetView *)self _setupQuickNoteGestureOnScrollView:v3];
-  [(CSCoverSheetView *)self _setupDateViewGestureOnScrollView:v3];
+  [(CSCoverSheetView *)self _setupBackgroundContentGestureOnScrollView:viewCopy];
+  [(CSCoverSheetView *)self _setupQuickNoteGestureOnScrollView:viewCopy];
+  [(CSCoverSheetView *)self _setupDateViewGestureOnScrollView:viewCopy];
 
-  [(CSCoverSheetView *)self _setupComplicationGestureOnScrollView:v3];
+  [(CSCoverSheetView *)self _setupComplicationGestureOnScrollView:viewCopy];
 }
 
-- (void)_setupWallpaperGestureOnScrollView:(BOOL)a3
+- (void)_setupWallpaperGestureOnScrollView:(BOOL)view
 {
   if (self->_wallpaperGestureRecognizer)
   {
-    v3 = a3;
+    viewCopy = view;
     v5 = SBLogDashBoard();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (viewCopy)
     {
       if (v6)
       {
@@ -4056,14 +4056,14 @@ LABEL_20:
   }
 }
 
-- (void)_setupBackgroundContentGestureOnScrollView:(BOOL)a3
+- (void)_setupBackgroundContentGestureOnScrollView:(BOOL)view
 {
   if (self->_backgroundContentGestureRecognizer)
   {
-    v3 = a3;
+    viewCopy = view;
     v5 = SBLogDashBoard();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (viewCopy)
     {
       if (v6)
       {
@@ -4087,14 +4087,14 @@ LABEL_20:
   }
 }
 
-- (void)_setupQuickNoteGestureOnScrollView:(BOOL)a3
+- (void)_setupQuickNoteGestureOnScrollView:(BOOL)view
 {
   if (self->_quickNoteGestureRecognizer)
   {
-    v3 = a3;
+    viewCopy = view;
     v5 = SBLogDashBoard();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (viewCopy)
     {
       if (v6)
       {
@@ -4118,14 +4118,14 @@ LABEL_20:
   }
 }
 
-- (void)_setupDateViewGestureOnScrollView:(BOOL)a3
+- (void)_setupDateViewGestureOnScrollView:(BOOL)view
 {
   if (self->_dateViewGestureRecognizer)
   {
-    v3 = a3;
+    viewCopy = view;
     v5 = SBLogDashBoard();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (viewCopy)
     {
       if (v6)
       {
@@ -4149,14 +4149,14 @@ LABEL_20:
   }
 }
 
-- (void)_setupComplicationGestureOnScrollView:(BOOL)a3
+- (void)_setupComplicationGestureOnScrollView:(BOOL)view
 {
   if (self->_complicationGestureRecognizer)
   {
-    v3 = a3;
+    viewCopy = view;
     v5 = SBLogDashBoard();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (viewCopy)
     {
       if (v6)
       {
@@ -4180,31 +4180,31 @@ LABEL_20:
   }
 }
 
-- (void)_prepareBlursForView:(id)a3 withHardEdges:(BOOL)a4
+- (void)_prepareBlursForView:(id)view withHardEdges:(BOOL)edges
 {
-  v4 = a4;
+  edgesCopy = edges;
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (viewCopy)
   {
-    v7 = [v5 layer];
-    v8 = [v7 valueForKeyPath:@"filters.coverSheetBlurContents"];
+    layer = [viewCopy layer];
+    v8 = [layer valueForKeyPath:@"filters.coverSheetBlurContents"];
     if (!v8)
     {
       v9 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
       v10 = v9;
-      if (v4)
+      if (edgesCopy)
       {
         [v9 setValue:MEMORY[0x277CBEC38] forKey:@"inputHardEdges"];
       }
 
       [v10 setName:@"coverSheetBlurContents"];
-      v11 = [v7 filters];
+      filters = [layer filters];
 
-      if (v11)
+      if (filters)
       {
-        v12 = [v7 mutableArrayValueForKeyPath:@"filters"];
+        v12 = [layer mutableArrayValueForKeyPath:@"filters"];
         [v12 addObject:v10];
       }
 
@@ -4212,12 +4212,12 @@ LABEL_20:
       {
         v18[0] = v10;
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-        [v7 setFilters:v12];
+        [layer setFilters:v12];
       }
     }
 
-    v13 = [v6 animatedLayerProperties];
-    v14 = [v13 mutableCopy];
+    animatedLayerProperties = [v6 animatedLayerProperties];
+    v14 = [animatedLayerProperties mutableCopy];
     v15 = v14;
     if (v14)
     {
@@ -4236,16 +4236,16 @@ LABEL_20:
   }
 }
 
-- (void)_updateBlurForView:(id)a3 toRadius:(double)a4
+- (void)_updateBlurForView:(id)view toRadius:(double)radius
 {
-  v6 = [a3 layer];
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  [v6 setValue:v5 forKeyPath:@"filters.coverSheetBlurContents.inputRadius"];
+  layer = [view layer];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+  [layer setValue:v5 forKeyPath:@"filters.coverSheetBlurContents.inputRadius"];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_lookSettings == a3)
+  if (self->_lookSettings == settings)
   {
     [(CSCoverSheetView *)self _updateDateFont];
 

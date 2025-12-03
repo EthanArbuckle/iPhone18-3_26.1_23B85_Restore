@@ -1,6 +1,6 @@
 @interface VUIMediaItemEntityTypesFetchResponseChanges
 - (VUIMediaItemEntityTypesFetchResponseChanges)init;
-- (VUIMediaItemEntityTypesFetchResponseChanges)initWithMediaItemEntityTypesChangeSet:(id)a3 localMediaItemsAvailableDidChange:(BOOL)a4;
+- (VUIMediaItemEntityTypesFetchResponseChanges)initWithMediaItemEntityTypesChangeSet:(id)set localMediaItemsAvailableDidChange:(BOOL)change;
 - (id)description;
 @end
 
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (VUIMediaItemEntityTypesFetchResponseChanges)initWithMediaItemEntityTypesChangeSet:(id)a3 localMediaItemsAvailableDidChange:(BOOL)a4
+- (VUIMediaItemEntityTypesFetchResponseChanges)initWithMediaItemEntityTypesChangeSet:(id)set localMediaItemsAvailableDidChange:(BOOL)change
 {
-  v7 = a3;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = VUIMediaItemEntityTypesFetchResponseChanges;
   v8 = [(VUIMediaItemEntityTypesFetchResponseChanges *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaItemEntityTypesChangeSet, a3);
-    v9->_localMediaItemsAvailableDidChange = a4;
+    objc_storeStrong(&v8->_mediaItemEntityTypesChangeSet, set);
+    v9->_localMediaItemsAvailableDidChange = change;
   }
 
   return v9;
@@ -41,8 +41,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaItemEntityTypesFetchResponseChanges *)self mediaItemEntityTypesChangeSet];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaItemEntityTypesChangeSet", v6];
+  mediaItemEntityTypesChangeSet = [(VUIMediaItemEntityTypesFetchResponseChanges *)self mediaItemEntityTypesChangeSet];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"mediaItemEntityTypesChangeSet", mediaItemEntityTypesChangeSet];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

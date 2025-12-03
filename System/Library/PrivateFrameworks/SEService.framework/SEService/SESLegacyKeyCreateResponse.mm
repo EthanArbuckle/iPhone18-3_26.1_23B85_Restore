@@ -1,25 +1,25 @@
 @interface SESLegacyKeyCreateResponse
-+ (id)withPublicKeyData:(id)a3 CASDSignature:(id)a4 keySlot:(id)a5 legacyKeyAttestation:(id)a6;
-- (SESLegacyKeyCreateResponse)initWithCoder:(id)a3;
++ (id)withPublicKeyData:(id)data CASDSignature:(id)signature keySlot:(id)slot legacyKeyAttestation:(id)attestation;
+- (SESLegacyKeyCreateResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SESLegacyKeyCreateResponse
 
-+ (id)withPublicKeyData:(id)a3 CASDSignature:(id)a4 keySlot:(id)a5 legacyKeyAttestation:(id)a6
++ (id)withPublicKeyData:(id)data CASDSignature:(id)signature keySlot:(id)slot legacyKeyAttestation:(id)attestation
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  attestationCopy = attestation;
+  slotCopy = slot;
+  signatureCopy = signature;
+  dataCopy = data;
   v13 = objc_opt_new();
-  [v13 setLegacyKeyAttestation:v9];
+  [v13 setLegacyKeyAttestation:attestationCopy];
 
-  [v13 setPublicKeyData:v12];
-  [v13 setCASDSignature:v11];
+  [v13 setPublicKeyData:dataCopy];
+  [v13 setCASDSignature:signatureCopy];
 
-  [v13 setKeySlot:v10];
+  [v13 setKeySlot:slotCopy];
 
   return v13;
 }
@@ -27,60 +27,60 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SESLegacyKeyCreateResponse *)self legacyKeyAttestation];
-  v5 = [v4 asHexString];
-  v6 = [(SESLegacyKeyCreateResponse *)self publicKeyData];
-  v7 = [v6 asHexString];
-  v8 = [(SESLegacyKeyCreateResponse *)self CASDSignature];
-  v9 = [v8 asHexString];
-  v10 = [(SESLegacyKeyCreateResponse *)self keySlot];
-  v11 = [v3 stringWithFormat:@"{\n\tlegacyKeyAttestation : %@, \n\tpublicKeyData : %@, \n\tCASDSignature : %@, \n\tkeySlot : %d\n}", v5, v7, v9, objc_msgSend(v10, "unsignedShortValue")];
+  legacyKeyAttestation = [(SESLegacyKeyCreateResponse *)self legacyKeyAttestation];
+  asHexString = [legacyKeyAttestation asHexString];
+  publicKeyData = [(SESLegacyKeyCreateResponse *)self publicKeyData];
+  asHexString2 = [publicKeyData asHexString];
+  cASDSignature = [(SESLegacyKeyCreateResponse *)self CASDSignature];
+  asHexString3 = [cASDSignature asHexString];
+  keySlot = [(SESLegacyKeyCreateResponse *)self keySlot];
+  v11 = [v3 stringWithFormat:@"{\n\tlegacyKeyAttestation : %@, \n\tpublicKeyData : %@, \n\tCASDSignature : %@, \n\tkeySlot : %d\n}", asHexString, asHexString2, asHexString3, objc_msgSend(keySlot, "unsignedShortValue")];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SESLegacyKeyCreateResponse *)self legacyKeyAttestation];
-  [v4 encodeObject:v5 forKey:@"legacyKeyAttestation"];
+  coderCopy = coder;
+  legacyKeyAttestation = [(SESLegacyKeyCreateResponse *)self legacyKeyAttestation];
+  [coderCopy encodeObject:legacyKeyAttestation forKey:@"legacyKeyAttestation"];
 
-  v6 = [(SESLegacyKeyCreateResponse *)self publicKeyData];
-  [v4 encodeObject:v6 forKey:@"publicKeyData"];
+  publicKeyData = [(SESLegacyKeyCreateResponse *)self publicKeyData];
+  [coderCopy encodeObject:publicKeyData forKey:@"publicKeyData"];
 
-  v7 = [(SESLegacyKeyCreateResponse *)self CASDSignature];
-  [v4 encodeObject:v7 forKey:@"CASDSignature"];
+  cASDSignature = [(SESLegacyKeyCreateResponse *)self CASDSignature];
+  [coderCopy encodeObject:cASDSignature forKey:@"CASDSignature"];
 
-  v8 = [(SESLegacyKeyCreateResponse *)self keySlot];
-  [v4 encodeObject:v8 forKey:@"keySlot"];
+  keySlot = [(SESLegacyKeyCreateResponse *)self keySlot];
+  [coderCopy encodeObject:keySlot forKey:@"keySlot"];
 }
 
-- (SESLegacyKeyCreateResponse)initWithCoder:(id)a3
+- (SESLegacyKeyCreateResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SESLegacyKeyCreateResponse;
   v5 = [(SESLegacyKeyCreateResponse *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SESLegacyKeyCreateResponse *)v5 legacyKeyAttestation];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legacyKeyAttestation"];
+    legacyKeyAttestation = [(SESLegacyKeyCreateResponse *)v5 legacyKeyAttestation];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legacyKeyAttestation"];
     legacyKeyAttestation = v6->_legacyKeyAttestation;
     v6->_legacyKeyAttestation = v8;
 
-    v10 = [(SESLegacyKeyCreateResponse *)v6 publicKeyData];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyData"];
+    publicKeyData = [(SESLegacyKeyCreateResponse *)v6 publicKeyData];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyData"];
     publicKeyData = v6->_publicKeyData;
     v6->_publicKeyData = v11;
 
-    v13 = [(SESLegacyKeyCreateResponse *)v6 CASDSignature];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CASDSignature"];
+    cASDSignature = [(SESLegacyKeyCreateResponse *)v6 CASDSignature];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CASDSignature"];
     CASDSignature = v6->_CASDSignature;
     v6->_CASDSignature = v14;
 
-    v16 = [(SESLegacyKeyCreateResponse *)v6 keySlot];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keySlot"];
+    keySlot = [(SESLegacyKeyCreateResponse *)v6 keySlot];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keySlot"];
     keySlot = v6->_keySlot;
     v6->_keySlot = v17;
   }

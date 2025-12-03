@@ -1,44 +1,44 @@
 @interface VUIActionLocationPrompt
 - (UIResponder)targetResponder;
-- (VUIActionLocationPrompt)initWithContextData:(id)a3 appContext:(id)a4;
-- (void)_locationAuthorizationStatusDidChange:(id)a3;
-- (void)_performLocationChecksWithTargetResponder:(id)a3 shouldPromptLocationAlert:(BOOL)a4 shouldRequestUserLocation:(BOOL)a5 isLocationAuthorized:(BOOL)a6 authorizationStatusDidChangeNotificationName:(id)a7 completionHandler:(id)a8;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (VUIActionLocationPrompt)initWithContextData:(id)data appContext:(id)context;
+- (void)_locationAuthorizationStatusDidChange:(id)change;
+- (void)_performLocationChecksWithTargetResponder:(id)responder shouldPromptLocationAlert:(BOOL)alert shouldRequestUserLocation:(BOOL)location isLocationAuthorized:(BOOL)authorized authorizationStatusDidChangeNotificationName:(id)name completionHandler:(id)handler;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionLocationPrompt
 
-- (VUIActionLocationPrompt)initWithContextData:(id)a3 appContext:(id)a4
+- (VUIActionLocationPrompt)initWithContextData:(id)data appContext:(id)context
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = VUIActionLocationPrompt;
   v7 = [(VUIActionLocationPrompt *)&v30 init];
   if (v7)
   {
-    v7->_geoLocationEnforced = [v6 vui_BOOLForKey:@"geoLocationEnforced" defaultValue:0];
-    v8 = [MEMORY[0x1E69DF6F0] isMac];
+    v7->_geoLocationEnforced = [dataCopy vui_BOOLForKey:@"geoLocationEnforced" defaultValue:0];
+    isMac = [MEMORY[0x1E69DF6F0] isMac];
     v9 = 0;
-    if ((v8 & 1) == 0)
+    if ((isMac & 1) == 0)
     {
-      v9 = [v6 vui_BOOLForKey:@"forcesSystemPrompt" defaultValue:1];
+      v9 = [dataCopy vui_BOOLForKey:@"forcesSystemPrompt" defaultValue:1];
     }
 
     v7->_forcesSystemPrompt = v9;
-    v10 = [v6 vui_stringForKey:@"settingsPromptTitle"];
+    v10 = [dataCopy vui_stringForKey:@"settingsPromptTitle"];
     settingsPromptTitle = v7->_settingsPromptTitle;
     v7->_settingsPromptTitle = v10;
 
-    v12 = [v6 vui_stringForKey:@"settingsPromptMessage"];
+    v12 = [dataCopy vui_stringForKey:@"settingsPromptMessage"];
     settingsPromptMessage = v7->_settingsPromptMessage;
     v7->_settingsPromptMessage = v12;
 
-    v14 = [v6 vui_stringForKey:@"settingsPromptButtonTitle"];
+    v14 = [dataCopy vui_stringForKey:@"settingsPromptButtonTitle"];
     settingsPromptButtonTitle = v7->_settingsPromptButtonTitle;
     v7->_settingsPromptButtonTitle = v14;
 
-    v16 = [v6 vui_stringForKey:@"settingsPromptCancelTitle"];
+    v16 = [dataCopy vui_stringForKey:@"settingsPromptCancelTitle"];
     v17 = v16;
     if (!v16)
     {
@@ -51,7 +51,7 @@
     {
     }
 
-    v18 = [v6 vui_stringForKey:@"settingsPromptUrl"];
+    v18 = [dataCopy vui_stringForKey:@"settingsPromptUrl"];
     v19 = [MEMORY[0x1E695DFF8] URLWithString:v18];
     settingsURL = v7->_settingsURL;
     v7->_settingsURL = v19;
@@ -64,7 +64,7 @@
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
     v23 = [v21 dictionaryWithDictionary:v22];
 
-    v24 = [v6 vui_dictionaryForKey:@"metrics"];
+    v24 = [dataCopy vui_dictionaryForKey:@"metrics"];
     v25 = v24;
     if (v24)
     {
@@ -82,33 +82,33 @@
   return v7;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v8 = +[_TtC8VideosUI27VUILocationServiceProxyObjC authorizationStatus];
-    v9 = [(VUIActionLocationPrompt *)self geoLocationEnforced];
-    v10 = v8 == 1 && v9;
+    geoLocationEnforced = [(VUIActionLocationPrompt *)self geoLocationEnforced];
+    v10 = v8 == 1 && geoLocationEnforced;
     v11 = +[_TtC8VideosUI43VUILocationServiceProxyObjCNotificationName locationAuthorizationDidChange];
-    [(VUIActionLocationPrompt *)self _performLocationChecksWithTargetResponder:v6 shouldPromptLocationAlert:v10 shouldRequestUserLocation:v8 == 2 isLocationAuthorized:v8 == 0 authorizationStatusDidChangeNotificationName:v11 completionHandler:v7];
+    [(VUIActionLocationPrompt *)self _performLocationChecksWithTargetResponder:responderCopy shouldPromptLocationAlert:v10 shouldRequestUserLocation:v8 == 2 isLocationAuthorized:v8 == 0 authorizationStatusDidChangeNotificationName:v11 completionHandler:handlerCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69E1540] defaultLocationManager];
+    defaultLocationManager = [MEMORY[0x1E69E1540] defaultLocationManager];
     objc_initWeak(&location, self);
     v13 = MEMORY[0x1E69E1540];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__VUIActionLocationPrompt_performWithTargetResponder_completionHandler___block_invoke;
     v15[3] = &unk_1E8732988;
-    v14 = v12;
+    v14 = defaultLocationManager;
     v16 = v14;
     objc_copyWeak(&v19, &location);
-    v17 = v6;
-    v18 = v7;
+    v17 = responderCopy;
+    v18 = handlerCopy;
     [v13 locationServicesEnabled:v15];
 
     objc_destroyWeak(&v19);
@@ -190,71 +190,71 @@ LABEL_15:
   [WeakRetained _performLocationChecksWithTargetResponder:*(a1 + 32) shouldPromptLocationAlert:v5 shouldRequestUserLocation:v7 isLocationAuthorized:a2 == 1 authorizationStatusDidChangeNotificationName:*MEMORY[0x1E69E16C8] completionHandler:*(a1 + 40)];
 }
 
-- (void)_performLocationChecksWithTargetResponder:(id)a3 shouldPromptLocationAlert:(BOOL)a4 shouldRequestUserLocation:(BOOL)a5 isLocationAuthorized:(BOOL)a6 authorizationStatusDidChangeNotificationName:(id)a7 completionHandler:(id)a8
+- (void)_performLocationChecksWithTargetResponder:(id)responder shouldPromptLocationAlert:(BOOL)alert shouldRequestUserLocation:(BOOL)location isLocationAuthorized:(BOOL)authorized authorizationStatusDidChangeNotificationName:(id)name completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  authorizedCopy = authorized;
+  locationCopy = location;
+  alertCopy = alert;
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  responderCopy = responder;
+  nameCopy = name;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&_pendingInstance);
   if (WeakRetained)
   {
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 removeObserver:WeakRetained];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:WeakRetained];
 
     [WeakRetained setTargetResponder:0];
     [WeakRetained setCompletionHandler:0];
   }
 
-  if (v12)
+  if (alertCopy)
   {
-    v19 = [(VUIActionLocationPrompt *)self settingsURL];
-    if (v19)
+    settingsURL = [(VUIActionLocationPrompt *)self settingsURL];
+    if (settingsURL)
     {
-      v20 = v19;
-      v21 = [(VUIActionLocationPrompt *)self settingsPromptTitle];
-      if (v21)
+      v20 = settingsURL;
+      settingsPromptTitle = [(VUIActionLocationPrompt *)self settingsPromptTitle];
+      if (settingsPromptTitle)
       {
-        v22 = v21;
-        v23 = [(VUIActionLocationPrompt *)self settingsPromptMessage];
-        if (v23)
+        v22 = settingsPromptTitle;
+        settingsPromptMessage = [(VUIActionLocationPrompt *)self settingsPromptMessage];
+        if (settingsPromptMessage)
         {
-          v24 = v23;
-          v25 = [(VUIActionLocationPrompt *)self settingsPromptButtonTitle];
+          v24 = settingsPromptMessage;
+          settingsPromptButtonTitle = [(VUIActionLocationPrompt *)self settingsPromptButtonTitle];
 
-          if (v25)
+          if (settingsPromptButtonTitle)
           {
-            v26 = [(VUIActionLocationPrompt *)self settingsPromptTitle];
-            v27 = [(VUIActionLocationPrompt *)self settingsPromptMessage];
-            v28 = [VUIAlertController vui_alertControllerWithTitle:v26 message:v27 preferredStyle:1];
+            settingsPromptTitle2 = [(VUIActionLocationPrompt *)self settingsPromptTitle];
+            settingsPromptMessage2 = [(VUIActionLocationPrompt *)self settingsPromptMessage];
+            v28 = [VUIAlertController vui_alertControllerWithTitle:settingsPromptTitle2 message:settingsPromptMessage2 preferredStyle:1];
 
-            v29 = [(VUIActionLocationPrompt *)self settingsPromptButtonTitle];
+            settingsPromptButtonTitle2 = [(VUIActionLocationPrompt *)self settingsPromptButtonTitle];
             v44[0] = MEMORY[0x1E69E9820];
             v44[1] = 3221225472;
             v44[2] = __205__VUIActionLocationPrompt__performLocationChecksWithTargetResponder_shouldPromptLocationAlert_shouldRequestUserLocation_isLocationAuthorized_authorizationStatusDidChangeNotificationName_completionHandler___block_invoke;
             v44[3] = &unk_1E87329B0;
             v44[4] = self;
-            v30 = [VUIAlertAction vui_actionWithTitle:v29 style:0 handler:v44];
+            v30 = [VUIAlertAction vui_actionWithTitle:settingsPromptButtonTitle2 style:0 handler:v44];
 
-            v31 = [(VUIActionLocationPrompt *)self settingsPromptCancelTitle];
-            v32 = [VUIAlertAction vui_actionWithTitle:v31 style:1 handler:0];
+            settingsPromptCancelTitle = [(VUIActionLocationPrompt *)self settingsPromptCancelTitle];
+            v32 = [VUIAlertAction vui_actionWithTitle:settingsPromptCancelTitle style:1 handler:0];
 
             [v28 vui_addAction:v30];
             [v28 vui_addAction:v32];
             v33 = +[VUIInterfaceFactory sharedInstance];
-            v34 = [v33 controllerPresenter];
+            controllerPresenter = [v33 controllerPresenter];
 
-            [v28 vui_presentAlertFromPresentingController:v34 animated:1 completion:0];
+            [v28 vui_presentAlertFromPresentingController:controllerPresenter animated:1 completion:0];
             v35 = +[VUIMetricsController sharedInstance];
-            v36 = [(VUIActionLocationPrompt *)self dialogMetrics];
-            [v35 recordDialog:v36];
+            dialogMetrics = [(VUIActionLocationPrompt *)self dialogMetrics];
+            [v35 recordDialog:dialogMetrics];
 
-            if (v16)
+            if (handlerCopy)
             {
-              v16[2](v16, 0);
+              handlerCopy[2](handlerCopy, 0);
             }
 
             goto LABEL_22;
@@ -266,21 +266,21 @@ LABEL_15:
     }
 
 LABEL_25:
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     goto LABEL_27;
   }
 
-  if (v11)
+  if (locationCopy)
   {
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:self selector:sel__locationAuthorizationStatusDidChange_ name:v15 object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__locationAuthorizationStatusDidChange_ name:nameCopy object:0];
 
-    [(VUIActionLocationPrompt *)self setTargetResponder:v14];
-    [(VUIActionLocationPrompt *)self setCompletionHandler:v16];
+    [(VUIActionLocationPrompt *)self setTargetResponder:responderCopy];
+    [(VUIActionLocationPrompt *)self setCompletionHandler:handlerCopy];
     objc_storeWeak(&_pendingInstance, self);
     if (_os_feature_enabled_impl())
     {
@@ -298,9 +298,9 @@ LABEL_25:
           _os_log_impl(&dword_1E323F000, v39, OS_LOG_TYPE_INFO, "VUIActionLocationPrompt:: failed to request user authorization to use location: %@", buf, 0xCu);
         }
 
-        if (v16)
+        if (handlerCopy)
         {
-          v16[2](v16, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_22;
@@ -309,22 +309,22 @@ LABEL_25:
 
     else
     {
-      v41 = [MEMORY[0x1E69E1540] defaultLocationManager];
-      [v41 requestAuthorizationWithForcedPrompt:{-[VUIActionLocationPrompt geoLocationEnforced](self, "geoLocationEnforced")}];
+      defaultLocationManager = [MEMORY[0x1E69E1540] defaultLocationManager];
+      [defaultLocationManager requestAuthorizationWithForcedPrompt:{-[VUIActionLocationPrompt geoLocationEnforced](self, "geoLocationEnforced")}];
     }
 
     v28 = +[VUIMetricsController sharedInstance];
-    v42 = [(VUIActionLocationPrompt *)self dialogMetrics];
-    [v28 recordDialog:v42];
+    dialogMetrics2 = [(VUIActionLocationPrompt *)self dialogMetrics];
+    [v28 recordDialog:dialogMetrics2];
 
 LABEL_22:
     goto LABEL_27;
   }
 
-  if (v16)
+  if (handlerCopy)
   {
-    v40 = [(VUIAction *)self documentOptions];
-    [(VUIAction *)self _finalizeWithSuccess:v10 targetResponder:v14 documentOptions:v40 completion:v16];
+    documentOptions = [(VUIAction *)self documentOptions];
+    [(VUIAction *)self _finalizeWithSuccess:authorizedCopy targetResponder:responderCopy documentOptions:documentOptions completion:handlerCopy];
   }
 
 LABEL_27:
@@ -337,11 +337,11 @@ void __205__VUIActionLocationPrompt__performLocationChecksWithTargetResponder_sh
   [v3 openSensitiveURL:v2 withOptions:0];
 }
 
-- (void)_locationAuthorizationStatusDidChange:(id)a3
+- (void)_locationAuthorizationStatusDidChange:(id)change
 {
-  v13 = a3;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  changeCopy = change;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_completionHandler)
   {
@@ -352,17 +352,17 @@ void __205__VUIActionLocationPrompt__performLocationChecksWithTargetResponder_sh
 
     else
     {
-      v6 = [v13 userInfo];
-      v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69E16D8]];
-      v8 = [v7 intValue];
+      userInfo = [changeCopy userInfo];
+      v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69E16D8]];
+      intValue = [v7 intValue];
 
-      v5 = v8 == 1;
+      v5 = intValue == 1;
     }
 
     v9 = v5;
-    v10 = [(VUIActionLocationPrompt *)self targetResponder];
-    v11 = [(VUIAction *)self documentOptions];
-    [(VUIAction *)self _finalizeWithSuccess:v9 targetResponder:v10 documentOptions:v11 completion:self->_completionHandler];
+    targetResponder = [(VUIActionLocationPrompt *)self targetResponder];
+    documentOptions = [(VUIAction *)self documentOptions];
+    [(VUIAction *)self _finalizeWithSuccess:v9 targetResponder:targetResponder documentOptions:documentOptions completion:self->_completionHandler];
 
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;

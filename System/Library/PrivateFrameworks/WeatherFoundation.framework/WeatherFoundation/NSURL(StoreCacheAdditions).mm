@@ -19,13 +19,13 @@
 
 - (uint64_t)wf_isInMemoryAddress
 {
-  if (wf__inMemoryAddress == a1)
+  if (wf__inMemoryAddress == self)
   {
     return 1;
   }
 
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"memory"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"memory"];
 
   return v2;
 }

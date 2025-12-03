@@ -1,13 +1,13 @@
 @interface MFMailDebugGroupedSenderGroupingController
-+ (id)debugViewControllerWithHandler:(id)a3;
++ (id)debugViewControllerWithHandler:(id)handler;
 @end
 
 @implementation MFMailDebugGroupedSenderGroupingController
 
-+ (id)debugViewControllerWithHandler:(id)a3
++ (id)debugViewControllerWithHandler:(id)handler
 {
   swift_getObjCClassMetadata();
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   swift_getObjCClassMetadata();

@@ -2,7 +2,7 @@
 - (CLLocationCoordinate2D)coordinate;
 - (GEOEnhancedPlacement)enhancedPlacement;
 - (GEOLabelGeometry)labelGeometry;
-- (NavigationCustomFeatureItem)initWithMapItem:(id)a3;
+- (NavigationCustomFeatureItem)initWithMapItem:(id)item;
 - (PersonalizedItemPrioritizedStringAdornment)subtitle;
 - (PersonalizedItemPrioritizedStringAdornment)title;
 - (PersonalizedItemSource)source;
@@ -19,8 +19,8 @@
 
 - (PersonalizedItemPrioritizedStringAdornment)subtitle
 {
-  v2 = [(NavigationCustomFeatureItem *)self mapItem];
-  v3 = [v2 _maps_detourTextForIdiom:0];
+  mapItem = [(NavigationCustomFeatureItem *)self mapItem];
+  v3 = [mapItem _maps_detourTextForIdiom:0];
 
   v4 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v3 priority:1];
 
@@ -29,33 +29,33 @@
 
 - (PersonalizedItemPrioritizedStringAdornment)title
 {
-  v2 = [(NavigationCustomFeatureItem *)self mapItem];
-  v3 = [v2 name];
-  v4 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v3 priority:1];
+  mapItem = [(NavigationCustomFeatureItem *)self mapItem];
+  name = [mapItem name];
+  v4 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:name priority:1];
 
   return v4;
 }
 
 - (GEOLabelGeometry)labelGeometry
 {
-  v2 = [(NavigationCustomFeatureItem *)self mapItem];
-  v3 = [v2 _labelGeometry];
+  mapItem = [(NavigationCustomFeatureItem *)self mapItem];
+  _labelGeometry = [mapItem _labelGeometry];
 
-  return v3;
+  return _labelGeometry;
 }
 
 - (GEOEnhancedPlacement)enhancedPlacement
 {
-  v2 = [(NavigationCustomFeatureItem *)self mapItem];
-  v3 = [v2 _enhancedPlacement];
+  mapItem = [(NavigationCustomFeatureItem *)self mapItem];
+  _enhancedPlacement = [mapItem _enhancedPlacement];
 
-  return v3;
+  return _enhancedPlacement;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(NavigationCustomFeatureItem *)self mapItem];
-  [v2 _coordinate];
+  mapItem = [(NavigationCustomFeatureItem *)self mapItem];
+  [mapItem _coordinate];
   v4 = v3;
   v6 = v5;
 
@@ -66,30 +66,30 @@
   return result;
 }
 
-- (NavigationCustomFeatureItem)initWithMapItem:(id)a3
+- (NavigationCustomFeatureItem)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v24.receiver = self;
   v24.super_class = NavigationCustomFeatureItem;
   v6 = [(NavigationCustomFeatureItem *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
-    v8 = [[SearchResult alloc] initWithMapItem:v5];
+    objc_storeStrong(&v6->_mapItem, item);
+    v8 = [[SearchResult alloc] initWithMapItem:itemCopy];
     searchResult = v7->_searchResult;
     v7->_searchResult = v8;
 
     v10 = [PersonalizedMapItemKey alloc];
-    v11 = [(NavigationCustomFeatureItem *)v7 mapItem];
-    v12 = [(PersonalizedMapItemKey *)v10 initWithMapItem:v11];
+    mapItem = [(NavigationCustomFeatureItem *)v7 mapItem];
+    v12 = [(PersonalizedMapItemKey *)v10 initWithMapItem:mapItem];
     v13 = [NSSet setWithObject:v12];
     keys = v7->_keys;
     v7->_keys = v13;
 
-    v15 = [(NavigationCustomFeatureItem *)v7 mapItem];
-    v16 = [v15 _styleAttributes];
-    v17 = [v16 copy];
+    mapItem2 = [(NavigationCustomFeatureItem *)v7 mapItem];
+    _styleAttributes = [mapItem2 _styleAttributes];
+    v17 = [_styleAttributes copy];
     v18 = v17;
     if (v17)
     {

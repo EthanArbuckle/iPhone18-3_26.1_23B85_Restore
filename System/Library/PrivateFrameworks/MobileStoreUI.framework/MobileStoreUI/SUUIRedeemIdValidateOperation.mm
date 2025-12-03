@@ -1,24 +1,24 @@
 @interface SUUIRedeemIdValidateOperation
-- (SUUIRedeemIdValidateOperation)initWithDictionary:(id)a3;
+- (SUUIRedeemIdValidateOperation)initWithDictionary:(id)dictionary;
 - (id)_subOperation;
-- (void)_handleFailure:(id)a3 serverDialogDictionary:(id)a4;
-- (void)_logResultsForSuccess:(BOOL)a3 failureReason:(id)a4 failureMessage:(id)a5 error:(id)a6;
+- (void)_handleFailure:(id)failure serverDialogDictionary:(id)dictionary;
+- (void)_logResultsForSuccess:(BOOL)success failureReason:(id)reason failureMessage:(id)message error:(id)error;
 - (void)main;
-- (void)operation:(id)a3 selectedButton:(id)a4;
+- (void)operation:(id)operation selectedButton:(id)button;
 @end
 
 @implementation SUUIRedeemIdValidateOperation
 
-- (SUUIRedeemIdValidateOperation)initWithDictionary:(id)a3
+- (SUUIRedeemIdValidateOperation)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SUUIRedeemIdValidateOperation;
   v6 = [(SUUIRedeemIdValidateOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
@@ -26,9 +26,9 @@
 
 - (void)main
 {
-  v3 = [(SUUIRedeemIdValidateOperation *)self _subOperation];
+  _subOperation = [(SUUIRedeemIdValidateOperation *)self _subOperation];
   v16 = 0;
-  v4 = [(SUUIRedeemIdValidateOperation *)self runSubOperation:v3 returningError:&v16];
+  v4 = [(SUUIRedeemIdValidateOperation *)self runSubOperation:_subOperation returningError:&v16];
   v5 = v16;
   if (!v4)
   {
@@ -38,10 +38,10 @@
     goto LABEL_14;
   }
 
-  v6 = [v3 dataProvider];
-  v7 = [v6 output];
+  dataProvider = [_subOperation dataProvider];
+  output = [dataProvider output];
 
-  v8 = [v7 objectForKeyedSubscript:@"validNationalId"];
+  v8 = [output objectForKeyedSubscript:@"validNationalId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,7 +53,7 @@
       goto LABEL_12;
     }
 
-    v12 = [v7 objectForKeyedSubscript:@"dialog"];
+    v12 = [output objectForKeyedSubscript:@"dialog"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,25 +104,25 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)_handleFailure:(id)a3 serverDialogDictionary:(id)a4
+- (void)_handleFailure:(id)failure serverDialogDictionary:(id)dictionary
 {
-  v8 = a4;
-  if (v8)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v6 = [objc_alloc(MEMORY[0x277D7FCE8]) initWithDialogDictionary:v8];
+    v6 = [objc_alloc(MEMORY[0x277D7FCE8]) initWithDialogDictionary:dictionaryCopy];
     v7 = [MEMORY[0x277D7FCF0] operationWithDialog:v6];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D7FCF0] operationWithError:a3];
+    v7 = [MEMORY[0x277D7FCF0] operationWithError:failure];
   }
 
   [v7 setDelegate:self];
   [(SUUIRedeemIdValidateOperation *)self runSubOperation:v7 returningError:0];
 }
 
-- (void)operation:(id)a3 selectedButton:(id)a4
+- (void)operation:(id)operation selectedButton:(id)button
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -144,43 +144,43 @@ LABEL_18:
   [v4 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v4 setHTTPMethod:@"POST"];
   v6 = MEMORY[0x277CCAAA0];
-  v7 = [(SUUIRedeemIdValidateOperation *)self dictionary];
-  v8 = [v6 dataWithJSONObject:v7 options:0 error:0];
+  dictionary = [(SUUIRedeemIdValidateOperation *)self dictionary];
+  v8 = [v6 dataWithJSONObject:dictionary options:0 error:0];
 
   [v4 setHTTPBody:v8];
   [v3 setRequestProperties:v4];
-  v9 = [MEMORY[0x277D7FD38] provider];
-  [v3 setDataProvider:v9];
+  provider = [MEMORY[0x277D7FD38] provider];
+  [v3 setDataProvider:provider];
 
   return v3;
 }
 
-- (void)_logResultsForSuccess:(BOOL)a3 failureReason:(id)a4 failureMessage:(id)a5 error:(id)a6
+- (void)_logResultsForSuccess:(BOOL)success failureReason:(id)reason failureMessage:(id)message error:(id)error
 {
-  v8 = a3;
+  successCopy = success;
   v16[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  reasonCopy = reason;
+  messageCopy = message;
+  errorCopy = error;
   v15 = @"validNationalId";
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:successCopy];
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v14 = [v13 mutableCopy];
 
-  if (v10)
+  if (messageCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"dialog"];
+    [v14 setObject:messageCopy forKeyedSubscript:@"dialog"];
   }
 
-  if (v9)
+  if (reasonCopy)
   {
-    [v14 setObject:v9 forKeyedSubscript:@"failure reason"];
+    [v14 setObject:reasonCopy forKeyedSubscript:@"failure reason"];
   }
 
-  if (v11)
+  if (errorCopy)
   {
-    [v14 setObject:v11 forKeyedSubscript:@"error"];
+    [v14 setObject:errorCopy forKeyedSubscript:@"error"];
   }
 
   SSDebugLog();

@@ -1,22 +1,22 @@
 @interface HKSPAnalyticsSleepScheduleChangeInfo
-- (HKSPAnalyticsSleepScheduleChangeInfo)initWithApplication:(unint64_t)a3 activePairedWatchProductType:(id)a4 isSleepTrackingEnabled:(BOOL)a5;
+- (HKSPAnalyticsSleepScheduleChangeInfo)initWithApplication:(unint64_t)application activePairedWatchProductType:(id)type isSleepTrackingEnabled:(BOOL)enabled;
 - (id)applicationPayloadValue;
 @end
 
 @implementation HKSPAnalyticsSleepScheduleChangeInfo
 
-- (HKSPAnalyticsSleepScheduleChangeInfo)initWithApplication:(unint64_t)a3 activePairedWatchProductType:(id)a4 isSleepTrackingEnabled:(BOOL)a5
+- (HKSPAnalyticsSleepScheduleChangeInfo)initWithApplication:(unint64_t)application activePairedWatchProductType:(id)type isSleepTrackingEnabled:(BOOL)enabled
 {
-  v9 = a4;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = HKSPAnalyticsSleepScheduleChangeInfo;
   v10 = [(HKSPAnalyticsSleepScheduleChangeInfo *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_application = a3;
-    objc_storeStrong(&v10->_activePairedWatchProductType, a4);
-    v11->_isSleepTrackingEnabled = a5;
+    v10->_application = application;
+    objc_storeStrong(&v10->_activePairedWatchProductType, type);
+    v11->_isSleepTrackingEnabled = enabled;
     v12 = v11;
   }
 
@@ -25,15 +25,15 @@
 
 - (id)applicationPayloadValue
 {
-  v2 = [(HKSPAnalyticsSleepScheduleChangeInfo *)self application];
-  if (v2 - 1 > 3)
+  application = [(HKSPAnalyticsSleepScheduleChangeInfo *)self application];
+  if (application - 1 > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279C740D8[v2 - 1];
+    return off_279C740D8[application - 1];
   }
 }
 

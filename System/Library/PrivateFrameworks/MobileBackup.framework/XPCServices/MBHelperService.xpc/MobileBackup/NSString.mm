@@ -1,6 +1,6 @@
 @interface NSString
-+ (id)mb_stringWithFileSystemRepresentation:(const char *)a3;
-- (BOOL)mb_pathComponentExistsInSet:(id)a3;
++ (id)mb_stringWithFileSystemRepresentation:(const char *)representation;
+- (BOOL)mb_pathComponentExistsInSet:(id)set;
 - (BOOL)mb_pathHasSQLiteJournalSuffix;
 - (id)mb_backupIDByAddingCKPrefix;
 - (id)mb_backupIDByRemovingCKPrefix;
@@ -10,10 +10,10 @@
 
 @implementation NSString
 
-+ (id)mb_stringWithFileSystemRepresentation:(const char *)a3
++ (id)mb_stringWithFileSystemRepresentation:(const char *)representation
 {
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 stringWithFileSystemRepresentation:a3 length:strlen(a3)];
+  v5 = [v4 stringWithFileSystemRepresentation:representation length:strlen(representation)];
 
   return v5;
 }
@@ -22,29 +22,29 @@
 {
   if ([(NSString *)self hasSuffix:@"/"])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(NSString *)self stringByAppendingString:@"/"];
+    selfCopy = [(NSString *)self stringByAppendingString:@"/"];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)mb_pathComponentExistsInSet:(id)a3
+- (BOOL)mb_pathComponentExistsInSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 containsObject:v5])
+  setCopy = set;
+  selfCopy = self;
+  if ([setCopy containsObject:selfCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = v5;
+    v7 = selfCopy;
     while (1)
     {
       v8 = [(NSString *)v7 length];
@@ -54,16 +54,16 @@
         break;
       }
 
-      v5 = [(NSString *)v7 stringByDeletingLastPathComponent];
+      selfCopy = [(NSString *)v7 stringByDeletingLastPathComponent];
 
-      v7 = v5;
-      if ([v4 containsObject:v5])
+      v7 = selfCopy;
+      if ([setCopy containsObject:selfCopy])
       {
         goto LABEL_8;
       }
     }
 
-    v5 = v7;
+    selfCopy = v7;
   }
 
 LABEL_8:
@@ -124,45 +124,45 @@ LABEL_11:
 
   if (byte_10002A128 == 1)
   {
-    v3 = [NSString stringWithFormat:@"%@_CH", self];
+    selfCopy = [NSString stringWithFormat:@"%@_CH", self];
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)mb_backupIDByAddingCKPrefix
 {
   if ([(NSString *)self hasPrefix:@"D:"])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [NSString stringWithFormat:@"%@%@", @"D:", self];
+    selfCopy = [NSString stringWithFormat:@"%@%@", @"D:", self];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)mb_backupIDByRemovingCKPrefix
 {
   if ([(NSString *)self hasPrefix:@"D:"])
   {
-    v3 = -[NSString substringFromIndex:](self, "substringFromIndex:", [@"D:" length]);
+    selfCopy = -[NSString substringFromIndex:](self, "substringFromIndex:", [@"D:" length]);
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

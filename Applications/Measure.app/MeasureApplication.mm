@@ -2,7 +2,7 @@
 + (MeasureApplication)sharedApplication;
 - (MeasureApplication)init;
 - (int64_t)statusBarOrientation;
-- (void)performWhileOverriddingStatusBarOrientation:(int64_t)a3 block:(id)a4;
+- (void)performWhileOverriddingStatusBarOrientation:(int64_t)orientation block:(id)block;
 @end
 
 @implementation MeasureApplication
@@ -23,25 +23,25 @@
 
 + (MeasureApplication)sharedApplication
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MeasureApplication;
   v2 = objc_msgSendSuper2(&v4, "sharedApplication");
 
   return v2;
 }
 
-- (void)performWhileOverriddingStatusBarOrientation:(int64_t)a3 block:(id)a4
+- (void)performWhileOverriddingStatusBarOrientation:(int64_t)orientation block:(id)block
 {
-  v6 = a4;
-  v7 = [(MeasureApplication *)self isOverriddingStatusBarOrientation];
-  v8 = [(MeasureApplication *)self statusBarOrientation];
+  blockCopy = block;
+  isOverriddingStatusBarOrientation = [(MeasureApplication *)self isOverriddingStatusBarOrientation];
+  statusBarOrientation = [(MeasureApplication *)self statusBarOrientation];
   [(MeasureApplication *)self setOverriddingStatusBarOrientation:1];
-  [(MeasureApplication *)self setOverriddenStatusBarOrientation:a3];
-  v6[2](v6);
+  [(MeasureApplication *)self setOverriddenStatusBarOrientation:orientation];
+  blockCopy[2](blockCopy);
 
-  [(MeasureApplication *)self setOverriddingStatusBarOrientation:v7];
+  [(MeasureApplication *)self setOverriddingStatusBarOrientation:isOverriddingStatusBarOrientation];
 
-  [(MeasureApplication *)self setOverriddenStatusBarOrientation:v8];
+  [(MeasureApplication *)self setOverriddenStatusBarOrientation:statusBarOrientation];
 }
 
 - (int64_t)statusBarOrientation

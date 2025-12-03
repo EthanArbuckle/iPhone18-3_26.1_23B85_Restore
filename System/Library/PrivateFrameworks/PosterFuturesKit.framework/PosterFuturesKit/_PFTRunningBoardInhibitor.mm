@@ -1,7 +1,7 @@
 @interface _PFTRunningBoardInhibitor
 + (id)os_log;
 + (id)runningBoardTarget;
-- (_PFTRunningBoardInhibitor)initWithExplanation:(id)a3;
+- (_PFTRunningBoardInhibitor)initWithExplanation:(id)explanation;
 - (id)description;
 - (void)start;
 - (void)stop;
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (_PFTRunningBoardInhibitor)initWithExplanation:(id)a3
+- (_PFTRunningBoardInhibitor)initWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v10.receiver = self;
   v10.super_class = _PFTRunningBoardInhibitor;
   v5 = [(_PFTRunningBoardInhibitor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [explanationCopy copy];
     explanation = v5->_explanation;
     v5->_explanation = v6;
 
@@ -44,16 +44,16 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_explanation withName:@"explanation"];
   v5 = [v3 appendObject:self->_assertion withName:@"assertion"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)start
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25ED8F000, a2, OS_LOG_TYPE_ERROR, "Failed to take runningboard assertion, error: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -63,8 +63,8 @@
   v4.receiver = self;
   v4.super_class = _PFTRunningBoardInhibitor;
   [(PFTInhibitor *)&v4 stop];
-  v3 = [(_PFTRunningBoardInhibitor *)self assertion];
-  [v3 invalidate];
+  assertion = [(_PFTRunningBoardInhibitor *)self assertion];
+  [assertion invalidate];
 
   [(_PFTRunningBoardInhibitor *)self setAssertion:0];
 }

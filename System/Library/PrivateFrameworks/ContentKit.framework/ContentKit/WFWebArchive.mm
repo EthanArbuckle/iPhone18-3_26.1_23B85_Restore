@@ -1,38 +1,38 @@
 @interface WFWebArchive
 - (NSData)data;
-- (WFWebArchive)initWithCoder:(id)a3;
-- (WFWebArchive)initWithData:(id)a3;
-- (WFWebArchive)initWithMainResource:(id)a3 subresources:(id)a4 subframeArchives:(id)a5;
-- (WFWebArchive)initWithSerializedRepresentation:(id)a3;
+- (WFWebArchive)initWithCoder:(id)coder;
+- (WFWebArchive)initWithData:(id)data;
+- (WFWebArchive)initWithMainResource:(id)resource subresources:(id)subresources subframeArchives:(id)archives;
+- (WFWebArchive)initWithSerializedRepresentation:(id)representation;
 - (id)containedImageFiles;
 - (id)serializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWebArchive
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mainResource = self->_mainResource;
-  v5 = a3;
-  [v5 encodeObject:mainResource forKey:@"WebMainResource"];
-  [v5 encodeObject:self->_subresources forKey:@"WebSubresources"];
-  [v5 encodeObject:self->_subframeArchives forKey:@"WebSubframeArchives"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mainResource forKey:@"WebMainResource"];
+  [coderCopy encodeObject:self->_subresources forKey:@"WebSubresources"];
+  [coderCopy encodeObject:self->_subframeArchives forKey:@"WebSubframeArchives"];
 }
 
-- (WFWebArchive)initWithCoder:(id)a3
+- (WFWebArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebMainResource"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebMainResource"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"WebSubresources"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"WebSubresources"];
 
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"WebSubframeArchives"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WebSubframeArchives"];
 
   v14 = [(WFWebArchive *)self initWithMainResource:v5 subresources:v9 subframeArchives:v13];
   return v14;
@@ -44,8 +44,8 @@
   mainResource = self->_mainResource;
   if (mainResource)
   {
-    v5 = [(WFWebResource *)mainResource serializedRepresentation];
-    [v3 setObject:v5 forKey:@"WebMainResource"];
+    serializedRepresentation = [(WFWebResource *)mainResource serializedRepresentation];
+    [v3 setObject:serializedRepresentation forKey:@"WebMainResource"];
   }
 
   if ([(NSArray *)self->_subresources count])
@@ -63,18 +63,18 @@
   return v3;
 }
 
-- (WFWebArchive)initWithSerializedRepresentation:(id)a3
+- (WFWebArchive)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(WFWebArchive *)self init];
-  if (v5 && (v6 = [WFWebResource alloc], [v4 objectForKey:@"WebMainResource"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[WFWebResource initWithSerializedRepresentation:](v6, "initWithSerializedRepresentation:", v7), mainResource = v5->_mainResource, v5->_mainResource = v8, mainResource, v7, v5->_mainResource))
+  if (v5 && (v6 = [WFWebResource alloc], [representationCopy objectForKey:@"WebMainResource"], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[WFWebResource initWithSerializedRepresentation:](v6, "initWithSerializedRepresentation:", v7), mainResource = v5->_mainResource, v5->_mainResource = v8, mainResource, v7, v5->_mainResource))
   {
-    v10 = [v4 objectForKey:@"WebSubresources"];
+    v10 = [representationCopy objectForKey:@"WebSubresources"];
     v11 = [v10 if_map:&__block_literal_global_5550];
     subresources = v5->_subresources;
     v5->_subresources = v11;
 
-    v13 = [v4 objectForKey:@"WebSubframeArchives"];
+    v13 = [representationCopy objectForKey:@"WebSubframeArchives"];
     v14 = [v13 if_map:&__block_literal_global_10_5551];
     subframeArchives = v5->_subframeArchives;
     v5->_subframeArchives = v14;
@@ -108,40 +108,40 @@ WFWebResource *__49__WFWebArchive_initWithSerializedRepresentation___block_invok
 
 - (NSData)data
 {
-  v2 = [(WFWebArchive *)self serializedRepresentation];
-  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:v2 format:200 options:0 error:0];
+  serializedRepresentation = [(WFWebArchive *)self serializedRepresentation];
+  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:serializedRepresentation format:200 options:0 error:0];
 
   return v3;
 }
 
-- (WFWebArchive)initWithData:(id)a3
+- (WFWebArchive)initWithData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [(WFWebArchive *)self initWithSerializedRepresentation:v4];
 
   return v5;
 }
 
-- (WFWebArchive)initWithMainResource:(id)a3 subresources:(id)a4 subframeArchives:(id)a5
+- (WFWebArchive)initWithMainResource:(id)resource subresources:(id)subresources subframeArchives:(id)archives
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && (v12 = [(WFWebArchive *)self init], (self = v12) != 0))
+  resourceCopy = resource;
+  subresourcesCopy = subresources;
+  archivesCopy = archives;
+  if (resourceCopy && (v12 = [(WFWebArchive *)self init], (self = v12) != 0))
   {
-    objc_storeStrong(&v12->_mainResource, a3);
-    objc_storeStrong(&self->_subresources, a4);
-    objc_storeStrong(&self->_subframeArchives, a5);
+    objc_storeStrong(&v12->_mainResource, resource);
+    objc_storeStrong(&self->_subresources, subresources);
+    objc_storeStrong(&self->_subframeArchives, archives);
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)containedImageFiles
@@ -152,8 +152,8 @@ WFWebResource *__49__WFWebArchive_initWithSerializedRepresentation___block_invok
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(WFWebArchive *)self subresources];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  subresources = [(WFWebArchive *)self subresources];
+  v5 = [subresources countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -164,17 +164,17 @@ WFWebResource *__49__WFWebArchive_initWithSerializedRepresentation___block_invok
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subresources);
         }
 
-        v9 = [*(*(&v21 + 1) + 8 * i) containedImageFile];
-        if (v9)
+        containedImageFile = [*(*(&v21 + 1) + 8 * i) containedImageFile];
+        if (containedImageFile)
         {
-          [v3 addObject:v9];
+          [v3 addObject:containedImageFile];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [subresources countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -184,8 +184,8 @@ WFWebResource *__49__WFWebArchive_initWithSerializedRepresentation___block_invok
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(WFWebArchive *)self subframeArchives];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  subframeArchives = [(WFWebArchive *)self subframeArchives];
+  v11 = [subframeArchives countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -196,14 +196,14 @@ WFWebResource *__49__WFWebArchive_initWithSerializedRepresentation___block_invok
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subframeArchives);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * j) containedImageFiles];
-        [v3 addObjectsFromArray:v15];
+        containedImageFiles = [*(*(&v17 + 1) + 8 * j) containedImageFiles];
+        [v3 addObjectsFromArray:containedImageFiles];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v12 = [subframeArchives countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v12);

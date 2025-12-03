@@ -1,16 +1,16 @@
 @interface PageControl.Coordinator
 - (_TtCV15CarPlaySettings11PageControl11Coordinator)init;
-- (void)valueChanged:(id)a3;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation PageControl.Coordinator
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 currentPage];
-  (*((swift_isaMask & v6->super.isa) + 0x60))(v5);
+  changedCopy = changed;
+  selfCopy = self;
+  currentPage = [changedCopy currentPage];
+  (*((swift_isaMask & selfCopy->super.isa) + 0x60))(currentPage);
 }
 
 - (_TtCV15CarPlaySettings11PageControl11Coordinator)init

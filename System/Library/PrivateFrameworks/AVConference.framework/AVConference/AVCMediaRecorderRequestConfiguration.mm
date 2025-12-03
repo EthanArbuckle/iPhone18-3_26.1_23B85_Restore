@@ -2,7 +2,7 @@
 - (AVCMediaRecorderRequestConfiguration)init;
 - (id)description;
 - (void)dealloc;
-- (void)setMovieFragmentInterval:(id *)a3;
+- (void)setMovieFragmentInterval:(id *)interval;
 @end
 
 @implementation AVCMediaRecorderRequestConfiguration
@@ -80,7 +80,7 @@
       v10 = 1024;
       v11 = 61;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCMediaRecorderRequestConfiguration-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -90,10 +90,10 @@
   [(AVCMediaRecorderRequestConfiguration *)&v5 dealloc];
 }
 
-- (void)setMovieFragmentInterval:(id *)a3
+- (void)setMovieFragmentInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_movieFragmentInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_movieFragmentInterval.epoch = interval->var3;
   *&self->_movieFragmentInterval.value = v3;
 }
 

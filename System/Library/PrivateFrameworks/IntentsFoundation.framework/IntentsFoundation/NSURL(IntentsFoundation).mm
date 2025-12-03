@@ -14,8 +14,8 @@
   v9 = 0;
   v4 = MEMORY[0x277CCAA00];
   v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:a1 error:0];
+  defaultManager = [v4 defaultManager];
+  v7 = [defaultManager getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:self error:0];
 
   if (v9)
   {

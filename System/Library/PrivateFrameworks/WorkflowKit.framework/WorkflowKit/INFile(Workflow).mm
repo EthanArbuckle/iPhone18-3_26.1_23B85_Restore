@@ -20,18 +20,18 @@
 {
   v34 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69E0AF8];
-  v3 = [a1 typeIdentifier];
-  v4 = [v2 typeWithString:v3];
+  typeIdentifier = [self typeIdentifier];
+  v4 = [v2 typeWithString:typeIdentifier];
 
-  v5 = [a1 fileURL];
+  fileURL = [self fileURL];
 
-  if (v5)
+  if (fileURL)
   {
-    if ([a1 _hasAssociatedAuditToken])
+    if ([self _hasAssociatedAuditToken])
     {
-      v6 = [a1 fileURL];
-      [a1 _associatedAuditToken];
-      v7 = [v6 wf_sandboxAllowsReadingFileWithAuditToken:buf];
+      fileURL2 = [self fileURL];
+      [self _associatedAuditToken];
+      v7 = [fileURL2 wf_sandboxAllowsReadingFileWithAuditToken:buf];
 
       if (!v7)
       {
@@ -40,7 +40,7 @@
       }
     }
 
-    if ([a1 removedOnCompletion])
+    if ([self removedOnCompletion])
     {
       v8 = 9;
     }
@@ -51,31 +51,31 @@
     }
 
     v9 = MEMORY[0x1E6996E20];
-    v10 = [a1 fileURL];
-    v11 = [a1 filename];
-    v12 = [v9 fileWithURL:v10 options:v8 ofType:v4 proposedFilename:v11];
+    fileURL3 = [self fileURL];
+    filename = [self filename];
+    v12 = [v9 fileWithURL:fileURL3 options:v8 ofType:v4 proposedFilename:filename];
   }
 
   else
   {
     v13 = MEMORY[0x1E6996E20];
-    v14 = [a1 data];
-    v15 = [a1 filename];
-    v12 = [v13 fileWithData:v14 ofType:v4 proposedFilename:v15];
+    data = [self data];
+    filename2 = [self filename];
+    v12 = [v13 fileWithData:data ofType:v4 proposedFilename:filename2];
   }
 
-  v16 = a1;
-  v17 = [v16 _itemProviderRequestMetadata];
-  v18 = [v17 metadata];
+  selfCopy = self;
+  _itemProviderRequestMetadata = [selfCopy _itemProviderRequestMetadata];
+  metadata = [_itemProviderRequestMetadata metadata];
 
-  if (v18)
+  if (metadata)
   {
     v19 = MEMORY[0x1E696ACD0];
     v20 = objc_opt_class();
-    v21 = [v16 _itemProviderRequestMetadata];
-    v22 = [v21 metadata];
+    _itemProviderRequestMetadata2 = [selfCopy _itemProviderRequestMetadata];
+    metadata2 = [_itemProviderRequestMetadata2 metadata];
     v29 = 0;
-    v23 = [v19 unarchivedObjectOfClass:v20 fromData:v22 error:&v29];
+    v23 = [v19 unarchivedObjectOfClass:v20 fromData:metadata2 error:&v29];
     v24 = v29;
 
     if (v23)
@@ -116,34 +116,34 @@ LABEL_18:
   v8 = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"INFile+Workflow.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"INFile+Workflow.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     v6 = 0;
   }
 
-  (*(v6 + 2))(v6, a1);
+  (*(v6 + 2))(v6, self);
 }
 
 - (id)wf_contentItemWithCodableAttribute:()Workflow
 {
   v1 = MEMORY[0x1E6996D58];
-  v2 = [a1 wf_fileRepresentation];
-  v3 = [v1 itemWithFile:v2];
+  wf_fileRepresentation = [self wf_fileRepresentation];
+  v3 = [v1 itemWithFile:wf_fileRepresentation];
 
   return v3;
 }
 
 - (id)wf_initWithBookmarkData:()Workflow filename:typeIdentifier:removedOnCompletion:
 {
-  v6 = [a1 _initWithBookmarkData:a3 filename:a4 typeIdentifier:a5 removedOnCompletion:a6];
+  v6 = [self _initWithBookmarkData:a3 filename:a4 typeIdentifier:a5 removedOnCompletion:a6];
 
   return v6;
 }
 
 - (id)wf_initWithData:()Workflow filename:fileURL:typeIdentifier:removedOnCompletion:
 {
-  v7 = [a1 _initWithData:a3 filename:a4 fileURL:a5 typeIdentifier:a6 removedOnCompletion:a7];
+  v7 = [self _initWithData:a3 filename:a4 fileURL:a5 typeIdentifier:a6 removedOnCompletion:a7];
 
   return v7;
 }
@@ -153,10 +153,10 @@ LABEL_18:
   v23 = *MEMORY[0x1E69E9840];
   v5 = a3;
   v6 = a4;
-  v7 = [v5 preferredFileType];
-  if ([v7 conformsToTypes:v6])
+  preferredFileType = [v5 preferredFileType];
+  if ([preferredFileType conformsToTypes:v6])
   {
-    v8 = v7;
+    v8 = preferredFileType;
   }
 
   else
@@ -165,8 +165,8 @@ LABEL_18:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v5 supportedTypes];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    supportedTypes = [v5 supportedTypes];
+    v10 = [supportedTypes countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -177,7 +177,7 @@ LABEL_18:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(supportedTypes);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -209,7 +209,7 @@ LABEL_18:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [supportedTypes countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           continue;
@@ -253,17 +253,17 @@ LABEL_18:
   }
 
   v16 = MEMORY[0x1E6996CF0];
-  v17 = [v14 array];
+  array = [v14 array];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __66__INFile_Workflow__coerceContentItems_toSupportedUTIs_completion___block_invoke_200;
   v25[3] = &unk_1E837E410;
   v27 = v9;
-  v28 = a1;
+  selfCopy = self;
   v26 = v11;
   v18 = v11;
   v19 = v9;
-  v20 = [v16 requestForCoercingToContentClasses:v17 completionHandler:v25];
+  v20 = [v16 requestForCoercingToContentClasses:array completionHandler:v25];
 
   v21 = MEMORY[0x1E6996CE8];
   v29 = *MEMORY[0x1E6997008];
@@ -288,7 +288,7 @@ LABEL_18:
 
   else
   {
-    [a1 coerceContentItems:v12 toSupportedUTIs:v13 completion:v11];
+    [self coerceContentItems:v12 toSupportedUTIs:v13 completion:v11];
   }
 }
 
@@ -302,14 +302,14 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v14 parameterStates];
-    v17 = [v16 firstObject];
+    parameterStates = [v14 parameterStates];
+    firstObject = [parameterStates firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = v16;
+      v19 = parameterStates;
     }
 
     else
@@ -341,7 +341,7 @@ LABEL_18:
   v25 = v15;
   v20 = v19;
   v21 = v15;
-  [a1 coerceContentItemsIfAppropriate:v12 toSupportedUTIs:v13 withParameterStates:v20 dynamicOptions:a6 completion:v23];
+  [self coerceContentItemsIfAppropriate:v12 toSupportedUTIs:v13 withParameterStates:v20 dynamicOptions:a6 completion:v23];
 
   v22 = *MEMORY[0x1E69E9840];
 }
@@ -383,7 +383,7 @@ LABEL_18:
     v30 = v22;
     v18 = v21;
     v14 = v45;
-    [a1 getINFileRepresentationsFromContent:v29 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:v30 completion:v23];
+    [self getINFileRepresentationsFromContent:v29 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:v30 completion:v23];
 
     goto LABEL_11;
   }
@@ -391,7 +391,7 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = [v14 firstObject];
+    firstObject = [v14 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -401,7 +401,7 @@ LABEL_18:
       v34 = [v14 if_map:&__block_literal_global_66813];
       v35 = [v33 collectionWithItems:v34];
 
-      [a1 getINFileRepresentationsFromContent:v35 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:a7 completion:v19];
+      [self getINFileRepresentationsFromContent:v35 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:a7 completion:v19];
 LABEL_10:
       v27 = 1;
       goto LABEL_11;
@@ -411,7 +411,7 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 getINFileRepresentationsFromContent:v14 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:a7 completion:v19];
+    [self getINFileRepresentationsFromContent:v14 byCoercingToSupportedUTIs:v16 withParameterState:v15 dynamicOptions:a7 completion:v19];
     goto LABEL_10;
   }
 
@@ -504,16 +504,16 @@ LABEL_11:
   v9 = a5;
   v10 = a4;
   v11 = [v8 alloc];
-  v12 = v9;
+  filename = v9;
   if (!v9)
   {
-    v12 = [v7 filename];
+    filename = [v7 filename];
   }
 
-  v13 = [v7 wfType];
-  v14 = [v13 string];
+  wfType = [v7 wfType];
+  string = [wfType string];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "deletesFileOnDeallocation")}];
-  v16 = [v11 wf_initWithBookmarkData:v10 filename:v12 typeIdentifier:v14 removedOnCompletion:v15];
+  v16 = [v11 wf_initWithBookmarkData:v10 filename:filename typeIdentifier:string removedOnCompletion:v15];
 
   if (!v9)
   {
@@ -537,40 +537,40 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    filename = v6;
   }
 
   else
   {
-    v8 = [v5 filename];
+    filename = [v5 filename];
   }
 
-  v9 = v8;
-  v10 = [v5 initialRepresentationType];
+  v9 = filename;
+  initialRepresentationType = [v5 initialRepresentationType];
   v11 = objc_alloc(MEMORY[0x1E696E840]);
-  if (v10)
+  if (initialRepresentationType)
   {
-    v12 = [v5 fileURL];
-    v13 = [v5 wfType];
-    v14 = [v13 string];
+    fileURL = [v5 fileURL];
+    wfType = [v5 wfType];
+    string = [wfType string];
     v15 = v11;
     v16 = 0;
     v17 = v9;
-    v18 = v12;
+    v18 = fileURL;
   }
 
   else
   {
-    v12 = [v5 data];
-    v13 = [v5 wfType];
-    v14 = [v13 string];
+    fileURL = [v5 data];
+    wfType = [v5 wfType];
+    string = [wfType string];
     v15 = v11;
-    v16 = v12;
+    v16 = fileURL;
     v17 = v9;
     v18 = 0;
   }
 
-  v19 = [v15 wf_initWithData:v16 filename:v17 fileURL:v18 typeIdentifier:v14 removedOnCompletion:0];
+  v19 = [v15 wf_initWithData:v16 filename:v17 fileURL:v18 typeIdentifier:string removedOnCompletion:0];
 
   v20 = WFINItemProviderRequestMetadataWithFileRepresentation(v5);
   [v19 _setItemProviderRequestMetadata:v20];

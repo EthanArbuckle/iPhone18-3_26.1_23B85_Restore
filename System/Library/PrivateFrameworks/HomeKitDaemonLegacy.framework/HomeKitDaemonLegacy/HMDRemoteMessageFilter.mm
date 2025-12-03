@@ -1,31 +1,31 @@
 @interface HMDRemoteMessageFilter
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 dispatcher:(id)a5 error:(id *)a6;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies dispatcher:(id)dispatcher error:(id *)error;
 @end
 
 @implementation HMDRemoteMessageFilter
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 dispatcher:(id)a5 error:(id *)a6
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies dispatcher:(id)dispatcher error:(id *)error
 {
   v138 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && [v10 isRemote])
+  messageCopy = message;
+  policiesCopy = policies;
+  dispatcherCopy = dispatcher;
+  if (messageCopy && [messageCopy isRemote])
   {
-    v13 = [a1 requiredPolicyOfClass:objc_opt_class() fromPolicies:v11 error:0];
+    v13 = [self requiredPolicyOfClass:objc_opt_class() fromPolicies:policiesCopy error:0];
     if (!v13)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = a1;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v10 identifier];
+        identifier = [messageCopy identifier];
         *buf = 138543618;
         v133 = v21;
         v134 = 2114;
-        v135 = v22;
+        v135 = identifier;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Missing remote policy for message %{public}@", buf, 0x16u);
       }
 
@@ -34,9 +34,9 @@
       goto LABEL_114;
     }
 
-    v14 = [v10 remoteRestriction];
-    v121 = a6;
-    v122 = v12;
+    remoteRestriction = [messageCopy remoteRestriction];
+    errorCopy = error;
+    v122 = dispatcherCopy;
     if ([v13 transportRestriction] == -1)
     {
       v16 = 0;
@@ -45,30 +45,30 @@
 
     else
     {
-      v15 = (v14 - 1) < 0xFFFFFFFFFFFFFFFELL;
-      if ((v14 - 1) >= 0xFFFFFFFFFFFFFFFELL)
+      v15 = (remoteRestriction - 1) < 0xFFFFFFFFFFFFFFFELL;
+      if ((remoteRestriction - 1) >= 0xFFFFFFFFFFFFFFFELL)
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = a1;
+        selfCopy2 = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           v26 = HMFGetLogIdentifier();
-          v27 = [v10 transport];
-          [v10 identifier];
+          transport = [messageCopy transport];
+          [messageCopy identifier];
           v28 = v124 = v23;
           *buf = 138543874;
           v133 = v26;
           v134 = 2112;
-          v135 = v27;
+          v135 = transport;
           v136 = 2114;
           v137 = v28;
           _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@Invalid transport: %@ for message: %{public}@", buf, 0x20u);
 
           v23 = v124;
-          v12 = v122;
+          dispatcherCopy = v122;
 
-          a6 = v121;
+          error = errorCopy;
         }
 
         objc_autoreleasePoolPop(v23);
@@ -81,30 +81,30 @@
         v16 = 0;
       }
 
-      if (([v13 transportRestriction] & v14) == 0)
+      if (([v13 transportRestriction] & remoteRestriction) == 0)
       {
         v117 = v16;
         v29 = objc_autoreleasePoolPush();
-        v30 = a1;
+        selfCopy3 = self;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
           v32 = HMFGetLogIdentifier();
-          v33 = [v10 transport];
-          [v10 identifier];
+          transport2 = [messageCopy transport];
+          [messageCopy identifier];
           v34 = v125 = v29;
           *buf = 138543874;
           v133 = v32;
           v134 = 2112;
-          v135 = v33;
+          v135 = transport2;
           v136 = 2114;
           v137 = v34;
           _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@Invalid transport: %@ for message: %{public}@", buf, 0x20u);
 
           v29 = v125;
-          a6 = v121;
+          error = errorCopy;
 
-          v12 = v122;
+          dispatcherCopy = v122;
         }
 
         objc_autoreleasePoolPop(v29);
@@ -118,39 +118,39 @@
       }
     }
 
-    v123 = [v11 hmf_objectPassingTest:&__block_literal_global_69821];
-    if (v14 == 4)
+    v123 = [policiesCopy hmf_objectPassingTest:&__block_literal_global_69821];
+    if (remoteRestriction == 4)
     {
       +[HMDAppleAccountManager sharedManager];
     }
 
     else
     {
-      [v10 remoteSourceDevice];
+      [messageCopy remoteSourceDevice];
     }
     v35 = ;
-    v126 = [v35 account];
+    account = [v35 account];
 
     if ([v13 requiresSecureMessage])
     {
-      if (([v10 isSecureRemote] & 1) == 0)
+      if (([messageCopy isSecureRemote] & 1) == 0)
       {
         v37 = v16;
         v46 = objc_autoreleasePoolPush();
-        v47 = a1;
+        selfCopy4 = self;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
           v49 = HMFGetLogIdentifier();
-          v50 = [v10 identifier];
+          identifier2 = [messageCopy identifier];
           *buf = 138543618;
           v133 = v49;
           v134 = 2114;
-          v135 = v50;
+          v135 = identifier2;
           _os_log_impl(&dword_2531F8000, v48, OS_LOG_TYPE_ERROR, "%{public}@Message %{public}@ is required to be secure", buf, 0x16u);
 
-          a6 = v121;
-          v12 = v122;
+          error = errorCopy;
+          dispatcherCopy = v122;
         }
 
         objc_autoreleasePoolPop(v46);
@@ -171,25 +171,25 @@ LABEL_40:
 
       if (([v13 allowsAnonymousMessage] & 1) == 0)
       {
-        v36 = [v126 isCurrentAccount];
-        if (v14 != 4 && (v36 & 1) == 0 && !v123)
+        isCurrentAccount = [account isCurrentAccount];
+        if (remoteRestriction != 4 && (isCurrentAccount & 1) == 0 && !v123)
         {
           v37 = v16;
           v38 = objc_autoreleasePoolPush();
-          v39 = a1;
+          selfCopy5 = self;
           v40 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
             v41 = HMFGetLogIdentifier();
-            v42 = [v10 identifier];
+            identifier3 = [messageCopy identifier];
             *buf = 138543618;
             v133 = v41;
             v134 = 2114;
-            v135 = v42;
+            v135 = identifier3;
             _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_ERROR, "%{public}@Unable to authenticate message %{public}@, not our account and no user message policy", buf, 0x16u);
 
-            a6 = v121;
-            v12 = v122;
+            error = errorCopy;
+            dispatcherCopy = v122;
           }
 
           objc_autoreleasePoolPop(v38);
@@ -214,32 +214,32 @@ LABEL_41:
       goto LABEL_55;
     }
 
-    if (v126)
+    if (account)
     {
-      if ([v126 isCurrentAccount])
+      if ([account isCurrentAccount])
       {
         goto LABEL_55;
       }
 
       v118 = v16;
       v51 = objc_autoreleasePoolPush();
-      v52 = a1;
+      selfCopy6 = self;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
         v54 = HMFGetLogIdentifier();
-        v55 = [v10 identifier];
-        v56 = [v126 shortDescription];
+        identifier4 = [messageCopy identifier];
+        shortDescription = [account shortDescription];
         *buf = 138543874;
         v133 = v54;
         v134 = 2114;
-        v135 = v55;
+        v135 = identifier4;
         v136 = 2112;
-        v137 = v56;
+        v137 = shortDescription;
         _os_log_impl(&dword_2531F8000, v53, OS_LOG_TYPE_ERROR, "%{public}@Message %{public}@ is required to be from the current account: %@", buf, 0x20u);
 
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
       }
 
       objc_autoreleasePoolPop(v51);
@@ -258,20 +258,20 @@ LABEL_53:
     {
       v60 = v16;
       v61 = objc_autoreleasePoolPush();
-      v62 = a1;
+      selfCopy7 = self;
       v63 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
         v64 = HMFGetLogIdentifier();
-        v65 = [v10 identifier];
+        identifier5 = [messageCopy identifier];
         *buf = 138543618;
         v133 = v64;
         v134 = 2114;
-        v135 = v65;
+        v135 = identifier5;
         _os_log_impl(&dword_2531F8000, v63, OS_LOG_TYPE_ERROR, "%{public}@Unable to determine the account of the message %{public}@", buf, 0x16u);
 
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
       }
 
       objc_autoreleasePoolPop(v61);
@@ -291,7 +291,7 @@ LABEL_55:
     if (![v13 roles])
     {
 LABEL_105:
-      if (a6)
+      if (error)
       {
         if (v15)
         {
@@ -303,7 +303,7 @@ LABEL_105:
           v110 = v16;
         }
 
-        *a6 = v110;
+        *error = v110;
       }
 
       if (v15)
@@ -320,7 +320,7 @@ LABEL_114:
       goto LABEL_115;
     }
 
-    v66 = [v10 remoteSourceDevice];
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
     v119 = v16;
     v120 = v15;
     if (([v13 roles] & 1) == 0)
@@ -329,42 +329,42 @@ LABEL_114:
       goto LABEL_68;
     }
 
-    if (v66)
+    if (remoteSourceDevice)
     {
       v68 = +[HMDCompanionManager sharedManager];
-      v69 = [v68 companion];
-      v70 = [v66 isRelatedToDevice:v69];
+      companion = [v68 companion];
+      v70 = [remoteSourceDevice isRelatedToDevice:companion];
 
       if (!v70)
       {
         v67 = 0;
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
         goto LABEL_68;
       }
 
       v71 = objc_autoreleasePoolPush();
-      v72 = a1;
+      selfCopy8 = self;
       v73 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
       {
         v74 = HMFGetLogIdentifier();
-        v75 = [v10 identifier];
+        identifier6 = [messageCopy identifier];
         *buf = 138543618;
         v133 = v74;
         v134 = 2114;
-        v135 = v75;
+        v135 = identifier6;
         v67 = 1;
         _os_log_impl(&dword_2531F8000, v73, OS_LOG_TYPE_INFO, "%{public}@Message %{public}@ is from companion", buf, 0x16u);
 
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
       }
 
       else
       {
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
         v67 = 1;
       }
     }
@@ -372,20 +372,20 @@ LABEL_114:
     else
     {
       v71 = objc_autoreleasePoolPush();
-      v76 = a1;
+      selfCopy9 = self;
       v73 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
       {
         v77 = HMFGetLogIdentifier();
-        v78 = [v10 identifier];
+        identifier7 = [messageCopy identifier];
         *buf = 138543618;
         v133 = v77;
         v134 = 2114;
-        v135 = v78;
+        v135 = identifier7;
         _os_log_impl(&dword_2531F8000, v73, OS_LOG_TYPE_DEBUG, "%{public}@Unable to determine the sender of message %{public}@", buf, 0x16u);
 
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
       }
 
       v67 = 0;
@@ -398,16 +398,16 @@ LABEL_68:
     if (([v13 roles] & 2) != 0)
     {
       v115 = v67;
-      if (v66)
+      if (remoteSourceDevice)
       {
         v129 = 0u;
         v130 = 0u;
         v127 = 0u;
         v128 = 0u;
         v79 = +[HMDWatchManager sharedManager];
-        v80 = [v79 watches];
+        watches = [v79 watches];
 
-        v81 = [v80 countByEnumeratingWithState:&v127 objects:v131 count:16];
+        v81 = [watches countByEnumeratingWithState:&v127 objects:v131 count:16];
         if (v81)
         {
           v82 = v81;
@@ -418,23 +418,23 @@ LABEL_68:
             {
               if (*v128 != v83)
               {
-                objc_enumerationMutation(v80);
+                objc_enumerationMutation(watches);
               }
 
-              if ([v66 isRelatedToDevice:*(*(&v127 + 1) + 8 * i)])
+              if ([remoteSourceDevice isRelatedToDevice:*(*(&v127 + 1) + 8 * i)])
               {
                 v85 = objc_autoreleasePoolPush();
-                v86 = a1;
+                selfCopy10 = self;
                 v87 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
                 {
                   HMFGetLogIdentifier();
                   v88 = contexta = v85;
-                  v89 = [v10 identifier];
+                  identifier8 = [messageCopy identifier];
                   *buf = 138543618;
                   v133 = v88;
                   v134 = 2114;
-                  v135 = v89;
+                  v135 = identifier8;
                   _os_log_impl(&dword_2531F8000, v87, OS_LOG_TYPE_INFO, "%{public}@Message %{public}@ is from watch", buf, 0x16u);
 
                   v85 = contexta;
@@ -443,12 +443,12 @@ LABEL_68:
                 objc_autoreleasePoolPop(v85);
                 v16 = v119;
                 v67 = v115 + 1;
-                a6 = v121;
+                error = errorCopy;
                 goto LABEL_83;
               }
             }
 
-            v82 = [v80 countByEnumeratingWithState:&v127 objects:v131 count:16];
+            v82 = [watches countByEnumeratingWithState:&v127 objects:v131 count:16];
             if (v82)
             {
               continue;
@@ -457,32 +457,32 @@ LABEL_68:
             break;
           }
 
-          a6 = v121;
+          error = errorCopy;
         }
 
         v67 = v115;
 LABEL_83:
 
-        v12 = v122;
+        dispatcherCopy = v122;
       }
 
       else
       {
         v90 = objc_autoreleasePoolPush();
-        v91 = a1;
+        selfCopy11 = self;
         v92 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
         {
           v93 = HMFGetLogIdentifier();
-          v94 = [v10 identifier];
+          identifier9 = [messageCopy identifier];
           *buf = 138543618;
           v133 = v93;
           v134 = 2114;
-          v135 = v94;
+          v135 = identifier9;
           _os_log_impl(&dword_2531F8000, v92, OS_LOG_TYPE_DEBUG, "%{public}@Unable to determine the sender of message %{public}@", buf, 0x16u);
 
-          a6 = v121;
-          v12 = v122;
+          error = errorCopy;
+          dispatcherCopy = v122;
         }
 
         objc_autoreleasePoolPop(v90);
@@ -495,27 +495,27 @@ LABEL_83:
 
     if (([v13 roles] & 4) != 0)
     {
-      v95 = [v123 home];
-      v96 = v95;
-      if (v95)
+      home = [v123 home];
+      v96 = home;
+      if (home)
       {
-        if ([v95 isCurrentDeviceAvailableResident])
+        if ([home isCurrentDeviceAvailableResident])
         {
           v97 = objc_autoreleasePoolPush();
-          v98 = a1;
+          selfCopy12 = self;
           v99 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
           {
             v100 = HMFGetLogIdentifier();
-            v101 = [v10 identifier];
+            identifier10 = [messageCopy identifier];
             *buf = 138543618;
             v133 = v100;
             v134 = 2114;
-            v135 = v101;
+            v135 = identifier10;
             _os_log_impl(&dword_2531F8000, v99, OS_LOG_TYPE_DEBUG, "%{public}@Message %{public}@ is targeting resident", buf, 0x16u);
 
-            a6 = v121;
-            v12 = v122;
+            error = errorCopy;
+            dispatcherCopy = v122;
           }
 
           objc_autoreleasePoolPop(v97);
@@ -531,7 +531,7 @@ LABEL_104:
       {
         v116 = v67;
         context = objc_autoreleasePoolPush();
-        v102 = a1;
+        selfCopy13 = self;
         v103 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v103, OS_LOG_TYPE_DEBUG))
         {
@@ -540,7 +540,7 @@ LABEL_104:
           v133 = v104;
           _os_log_impl(&dword_2531F8000, v103, OS_LOG_TYPE_DEBUG, "%{public}@Unable to determine the home of the handler", buf, 0xCu);
 
-          v12 = v122;
+          dispatcherCopy = v122;
         }
 
         objc_autoreleasePoolPop(context);
@@ -554,20 +554,20 @@ LABEL_104:
     if (!v67)
     {
       v105 = objc_autoreleasePoolPush();
-      v106 = a1;
+      selfCopy14 = self;
       v107 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
       {
         v108 = HMFGetLogIdentifier();
-        v109 = [v10 identifier];
+        identifier11 = [messageCopy identifier];
         *buf = 138543618;
         v133 = v108;
         v134 = 2114;
-        v135 = v109;
+        v135 = identifier11;
         _os_log_impl(&dword_2531F8000, v107, OS_LOG_TYPE_ERROR, "%{public}@Failed to satisfy the role(s) for message %{public}@", buf, 0x16u);
 
-        a6 = v121;
-        v12 = v122;
+        error = errorCopy;
+        dispatcherCopy = v122;
       }
 
       objc_autoreleasePoolPop(v105);

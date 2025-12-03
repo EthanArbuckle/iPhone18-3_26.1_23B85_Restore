@@ -1,6 +1,6 @@
 @interface FMDRequestWatchUnregister
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestWatchUnregister)initWithDeviceUDID:(id)a3 unregisterToken:(id)a4;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestWatchUnregister)initWithDeviceUDID:(id)d unregisterToken:(id)token;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
@@ -8,18 +8,18 @@
 
 @implementation FMDRequestWatchUnregister
 
-- (FMDRequestWatchUnregister)initWithDeviceUDID:(id)a3 unregisterToken:(id)a4
+- (FMDRequestWatchUnregister)initWithDeviceUDID:(id)d unregisterToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = FMDRequestWatchUnregister;
   v8 = [(FMDRequest *)&v11 initWithAccount:0];
   v9 = v8;
   if (v8)
   {
-    [(FMDRequestWatchUnregister *)v8 setUdid:v6];
-    [(FMDRequestWatchUnregister *)v9 setToken:v7];
+    [(FMDRequestWatchUnregister *)v8 setUdid:dCopy];
+    [(FMDRequestWatchUnregister *)v9 setToken:tokenCopy];
   }
 
   return v9;
@@ -29,11 +29,11 @@
 {
   v6.receiver = self;
   v6.super_class = FMDRequestWatchUnregister;
-  v3 = [(FMDRequest *)&v6 requestHeaders];
-  v4 = [(FMDRequestWatchUnregister *)self token];
-  [v3 fm_safelyMapKey:@"X-Apple-Migration-Unregister-Token" toObject:v4];
+  requestHeaders = [(FMDRequest *)&v6 requestHeaders];
+  token = [(FMDRequestWatchUnregister *)self token];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-Migration-Unregister-Token" toObject:token];
 
-  return v3;
+  return requestHeaders;
 }
 
 - (id)requestUrl
@@ -48,22 +48,22 @@
 {
   v6.receiver = self;
   v6.super_class = FMDRequestWatchUnregister;
-  v3 = [(FMDRequest *)&v6 requestBody];
-  v4 = [(FMDRequestWatchUnregister *)self udid];
-  [v3 fm_safelyMapKey:@"udid" toObject:v4];
+  requestBody = [(FMDRequest *)&v6 requestBody];
+  udid = [(FMDRequestWatchUnregister *)self udid];
+  [requestBody fm_safelyMapKey:@"udid" toObject:udid];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 udid];
-    v6 = [(FMDRequestWatchUnregister *)self udid];
-    v7 = [v5 isEqualToString:v6];
+    udid = [replaceCopy udid];
+    udid2 = [(FMDRequestWatchUnregister *)self udid];
+    v7 = [udid isEqualToString:udid2];
   }
 
   else

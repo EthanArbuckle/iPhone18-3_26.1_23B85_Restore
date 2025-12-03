@@ -1,14 +1,14 @@
 @interface NFRemoteAdminSession
-- (BOOL)_openSessionWithTimeout:(unint64_t)a3;
+- (BOOL)_openSessionWithTimeout:(unint64_t)timeout;
 - (BOOL)performRequest;
 - (NFRemoteAdminSession)init;
 - (unint64_t)run;
-- (unsigned)_deactiveAllAppletsOnSE:(id)a3;
-- (void)_postProcessNotification:(id)a3 executionStatus:(BOOL)a4 regionIdentifier:(id)a5;
-- (void)_preprocessNotification:(id)a3 withTaskID:(id)a4;
-- (void)abort:(int64_t)a3;
-- (void)processAppletChanged:(id)a3 regionIdentifier:(id)a4;
-- (void)processAppletsDeleted:(id)a3 regionIdentifier:(id)a4;
+- (unsigned)_deactiveAllAppletsOnSE:(id)e;
+- (void)_postProcessNotification:(id)notification executionStatus:(BOOL)status regionIdentifier:(id)identifier;
+- (void)_preprocessNotification:(id)notification withTaskID:(id)d;
+- (void)abort:(int64_t)abort;
+- (void)processAppletChanged:(id)changed regionIdentifier:(id)identifier;
+- (void)processAppletsDeleted:(id)deleted regionIdentifier:(id)identifier;
 @end
 
 @implementation NFRemoteAdminSession
@@ -30,18 +30,18 @@
   return v2;
 }
 
-- (void)abort:(int64_t)a3
+- (void)abort:(int64_t)abort
 {
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v7 = Logger;
-    Class = object_getClass(v5);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v5);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
     v10 = 45;
     if (isMetaClass)
@@ -49,14 +49,14 @@
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i Aborting (%u)...", v10, ClassName, Name, 88, a3);
+    v7(6, "%c[%{public}s %{public}s]:%i Aborting (%u)...", v10, ClassName, Name, 88, abort);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v11 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = object_getClass(v5);
+    v12 = object_getClass(selfCopy);
     if (class_isMetaClass(v12))
     {
       v13 = 43;
@@ -70,26 +70,26 @@
     *buf = 67110146;
     v17 = v13;
     v18 = 2082;
-    v19 = object_getClassName(v5);
+    v19 = object_getClassName(selfCopy);
     v20 = 2082;
     v21 = sel_getName(a2);
     v22 = 1024;
     v23 = 88;
     v24 = 1024;
-    v25 = a3;
+    abortCopy = abort;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Aborting (%u)...", buf, 0x28u);
   }
 
-  v5->_abort = a3;
-  [(NFRemoteAdminConnection *)v5->_connection disconnect];
-  objc_sync_exit(v5);
+  selfCopy->_abort = abort;
+  [(NFRemoteAdminConnection *)selfCopy->_connection disconnect];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_preprocessNotification:(id)a3 withTaskID:(id)a4
+- (void)_preprocessNotification:(id)notification withTaskID:(id)d
 {
-  v275 = a3;
-  v276 = a4;
-  v274 = [v275 NF_arrayForKey:@"mfdListPreExecution"];
+  notificationCopy = notification;
+  dCopy = d;
+  v274 = [notificationCopy NF_arrayForKey:@"mfdListPreExecution"];
   if ([(__CFString *)v274 count])
   {
     v5 = objc_opt_new();
@@ -291,7 +291,7 @@
     }
   }
 
-  v43 = [v275 NF_arrayForKey:@"PTDeleteKeyIdsPreExecution"];
+  v43 = [notificationCopy NF_arrayForKey:@"PTDeleteKeyIdsPreExecution"];
   if ([(__CFString *)v43 count]&& byte_10005BAB0 == 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -512,7 +512,7 @@
     while (v55);
   }
 
-  v87 = [v275 NF_arrayForKey:@"PTTerminateKeyIdsPreExecution"];
+  v87 = [notificationCopy NF_arrayForKey:@"PTTerminateKeyIdsPreExecution"];
   if ([(__CFString *)v87 count]&& byte_10005BAB0 == 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -906,7 +906,7 @@
     while (v100);
   }
 
-  v173 = [v275 NF_arrayForKey:@"FiDOKeyRevokeList"];
+  v173 = [notificationCopy NF_arrayForKey:@"FiDOKeyRevokeList"];
   if ([(__CFString *)v173 count]&& byte_10005BAB0 == 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1200,7 +1200,7 @@
     while (v284);
   }
 
-  v237 = [v275 NF_numberForKey:@"spManagedStart"];
+  v237 = [notificationCopy NF_numberForKey:@"spManagedStart"];
   if (v237)
   {
     if (byte_10005BAB0 == 1)
@@ -1252,25 +1252,25 @@
       }
     }
 
-    v249 = [v237 BOOLValue];
-    self->_spManagedScript = v249;
-    if (v249)
+    bOOLValue = [v237 BOOLValue];
+    self->_spManagedScript = bOOLValue;
+    if (bOOLValue)
     {
       self->_notifySPInstallScriptStart = 1;
     }
   }
 }
 
-- (void)_postProcessNotification:(id)a3 executionStatus:(BOOL)a4 regionIdentifier:(id)a5
+- (void)_postProcessNotification:(id)notification executionStatus:(BOOL)status regionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 NF_stringForKey:@"type"];
+  statusCopy = status;
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  v10 = [notificationCopy NF_stringForKey:@"type"];
   v11 = v10;
   if (v10)
   {
-    if ([v10 isEqualToString:@"restrictedModeExited"] && v6)
+    if ([v10 isEqualToString:@"restrictedModeExited"] && statusCopy)
     {
       [(NFSecureElementManagerSession *)self->_seSession didExitRestrictedMode:self->_targetSEID];
       [(NSMutableDictionary *)self->_endMetric setObject:&__kCFBooleanTrue forKeyedSubscript:@"restrictedModeExit"];
@@ -1379,7 +1379,7 @@
 
     else if ([v11 isEqualToString:@"appletChanged"])
     {
-      v18 = [v8 NF_stringForKey:@"aid"];
+      v18 = [notificationCopy NF_stringForKey:@"aid"];
       if ([v18 length])
       {
         v43 = [NSData NF_dataWithHexString:v18];
@@ -1388,15 +1388,15 @@
           [(NSMutableDictionary *)self->_endMetric setObject:v43 forKeyedSubscript:@"aid"];
         }
 
-        if (v6)
+        if (statusCopy)
         {
-          [(NFRemoteAdminSession *)self processAppletChanged:v18 regionIdentifier:v9];
+          [(NFRemoteAdminSession *)self processAppletChanged:v18 regionIdentifier:identifierCopy];
         }
       }
 
-      v79 = v9;
-      v80 = v8;
-      v44 = [v8 NF_arrayForKey:@"aids"];
+      v79 = identifierCopy;
+      v80 = notificationCopy;
+      v44 = [notificationCopy NF_arrayForKey:@"aids"];
       v45 = objc_opt_new();
       v83 = 0u;
       v84 = 0u;
@@ -1441,7 +1441,7 @@
 
               dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
               v68 = NFSharedLogGetLogger();
-              v8 = v80;
+              notificationCopy = v80;
               if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
               {
                 v69 = object_getClass(self);
@@ -1468,7 +1468,7 @@
                 _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i target AID is not NSString!", buf, 0x22u);
               }
 
-              v9 = v79;
+              identifierCopy = v79;
               goto LABEL_68;
             }
 
@@ -1485,16 +1485,16 @@
         }
       }
 
-      v9 = v79;
-      if ([v45 count] && v6)
+      identifierCopy = v79;
+      if ([v45 count] && statusCopy)
       {
         [(NFRemoteAdminSession *)self processAppletsDeleted:v45 regionIdentifier:v79];
       }
 
-      v8 = v80;
+      notificationCopy = v80;
     }
 
-    v18 = [v8 NF_numberForKey:@"mfdAllPostExecution"];
+    v18 = [notificationCopy NF_numberForKey:@"mfdAllPostExecution"];
     if ([v18 BOOLValue])
     {
       if (byte_10005BAB0 == 1)
@@ -1600,17 +1600,17 @@
 LABEL_68:
 }
 
-- (void)processAppletChanged:(id)a3 regionIdentifier:(id)a4
+- (void)processAppletChanged:(id)changed regionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   v9 = sub_100033310();
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v11 = Logger;
-    v30 = v8;
+    v30 = identifierCopy;
     Class = object_getClass(self);
     if (class_isMetaClass(Class))
     {
@@ -1637,11 +1637,11 @@ LABEL_68:
     }
 
     v19 = serverState;
-    v20 = [(NFRemoteAdminState *)v19 serverIdentifier];
-    v11(6, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", v13, ClassName, Name, 292, v7, v20);
+    serverIdentifier = [(NFRemoteAdminState *)v19 serverIdentifier];
+    v11(6, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", v13, ClassName, Name, 292, changedCopy, serverIdentifier);
 
     v9 = v17;
-    v8 = v30;
+    identifierCopy = v30;
     a2 = v15;
   }
 
@@ -1673,7 +1673,7 @@ LABEL_68:
     }
 
     v27 = v26;
-    v28 = [(NFRemoteAdminState *)v27 serverIdentifier];
+    serverIdentifier2 = [(NFRemoteAdminState *)v27 serverIdentifier];
     *buf = 67110402;
     v32 = v23;
     v33 = 2082;
@@ -1683,13 +1683,13 @@ LABEL_68:
     v37 = 1024;
     v38 = 292;
     v39 = 2114;
-    v40 = v7;
+    v40 = changedCopy;
     v41 = 2114;
-    v42 = v28;
+    v42 = serverIdentifier2;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", buf, 0x36u);
   }
 
-  sub_1000369D4(v9, v8, v7);
+  sub_1000369D4(v9, identifierCopy, changedCopy);
   if (self)
   {
     delegate = self->_delegate;
@@ -1700,19 +1700,19 @@ LABEL_68:
     delegate = 0;
   }
 
-  [(NFRemoteAdminSessionDelegate *)delegate handleAppletStateChange:v7];
+  [(NFRemoteAdminSessionDelegate *)delegate handleAppletStateChange:changedCopy];
 }
 
-- (void)processAppletsDeleted:(id)a3 regionIdentifier:(id)a4
+- (void)processAppletsDeleted:(id)deleted regionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v33 = a4;
+  deletedCopy = deleted;
+  identifierCopy = identifier;
   v32 = sub_100033310();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = deletedCopy;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v51 count:16];
   if (v7)
   {
@@ -1758,8 +1758,8 @@ LABEL_68:
           }
 
           v18 = serverState;
-          v19 = [(NFRemoteAdminState *)v18 serverIdentifier];
-          v12(6, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", v14, ClassName, Name, 304, v10, v19);
+          serverIdentifier = [(NFRemoteAdminState *)v18 serverIdentifier];
+          v12(6, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", v14, ClassName, Name, 304, v10, serverIdentifier);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1790,7 +1790,7 @@ LABEL_68:
           }
 
           v26 = v25;
-          v27 = [(NFRemoteAdminState *)v26 serverIdentifier];
+          serverIdentifier2 = [(NFRemoteAdminState *)v26 serverIdentifier];
           *buf = 67110402;
           v40 = v22;
           v41 = 2082;
@@ -1802,11 +1802,11 @@ LABEL_68:
           v47 = 2114;
           v48 = v10;
           v49 = 2114;
-          v50 = v27;
+          v50 = serverIdentifier2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i updating aid %{public}@ with topic %{public}@", buf, 0x36u);
         }
 
-        sub_1000369D4(v32, v33, v10);
+        sub_1000369D4(v32, identifierCopy, v10);
         v9 = v9 + 1;
       }
 
@@ -1845,8 +1845,8 @@ LABEL_68:
   }
 
   v5 = serverState;
-  v6 = [(NFRemoteAdminState *)v5 serverIdentifier];
-  v7 = sub_100037C1C(v3, v6, self->_seSession);
+  serverIdentifier = [(NFRemoteAdminState *)v5 serverIdentifier];
+  v7 = sub_100037C1C(v3, serverIdentifier, self->_seSession);
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1898,8 +1898,8 @@ LABEL_68:
     v18 = objc_opt_new();
     connection = self->_connection;
     v20 = self->_serverState;
-    v21 = [(NFRemoteAdminState *)v20 httpHeaderInfo];
-    v22 = [(NFRemoteAdminConnection *)connection performRequest:@"get_pending_commands" body:v7 header:v21 response:v17 responseHeader:v18 httpStatus:0 duration:0 sessionError:0];
+    httpHeaderInfo = [(NFRemoteAdminState *)v20 httpHeaderInfo];
+    v22 = [(NFRemoteAdminConnection *)connection performRequest:@"get_pending_commands" body:v7 header:httpHeaderInfo response:v17 responseHeader:v18 httpStatus:0 duration:0 sessionError:0];
 
     if ((v22 | 8) == 0x19 || ([(NFRemoteAdminState *)self->_serverState setHttpHeaderInfo:v18], v22 == 18))
     {
@@ -2008,7 +2008,7 @@ LABEL_68:
           _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Request sent success", buf, 0x22u);
         }
 
-        v299 = self;
+        selfCopy = self;
         [(NFRemoteAdminState *)self->_serverState setUnsentScriptResponse:0];
         v295 = v7;
         [v7 objectForKeyedSubscript:@"SEStateInformation"];
@@ -2046,9 +2046,9 @@ LABEL_68:
                     if (v70)
                     {
                       v71 = v70;
-                      v72 = object_getClass(v299);
+                      v72 = object_getClass(selfCopy);
                       v73 = class_isMetaClass(v72);
-                      v74 = object_getClassName(v299);
+                      v74 = object_getClassName(selfCopy);
                       v273 = sel_getName(a2);
                       v75 = 45;
                       if (v73)
@@ -2065,7 +2065,7 @@ LABEL_68:
                     v76 = NFSharedLogGetLogger();
                     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
                     {
-                      v77 = object_getClass(v299);
+                      v77 = object_getClass(selfCopy);
                       if (class_isMetaClass(v77))
                       {
                         v78 = 43;
@@ -2076,7 +2076,7 @@ LABEL_68:
                         v78 = 45;
                       }
 
-                      v79 = object_getClassName(v299);
+                      v79 = object_getClassName(selfCopy);
                       v80 = sel_getName(a2);
                       *buf = 67109890;
                       v312 = v78;
@@ -2105,9 +2105,9 @@ LABEL_68:
                     if (v82)
                     {
                       v83 = v82;
-                      v84 = object_getClass(v299);
+                      v84 = object_getClass(selfCopy);
                       v85 = class_isMetaClass(v84);
-                      v86 = object_getClassName(v299);
+                      v86 = object_getClassName(selfCopy);
                       v274 = sel_getName(a2);
                       v87 = 45;
                       if (v85)
@@ -2122,7 +2122,7 @@ LABEL_68:
                     v88 = NFSharedLogGetLogger();
                     if (os_log_type_enabled(v88, OS_LOG_TYPE_DEFAULT))
                     {
-                      v89 = object_getClass(v299);
+                      v89 = object_getClass(selfCopy);
                       if (class_isMetaClass(v89))
                       {
                         v90 = 43;
@@ -2133,7 +2133,7 @@ LABEL_68:
                         v90 = 45;
                       }
 
-                      v91 = object_getClassName(v299);
+                      v91 = object_getClassName(selfCopy);
                       v92 = sel_getName(a2);
                       *buf = 67109890;
                       v312 = v90;
@@ -2161,7 +2161,7 @@ LABEL_68:
         v7 = v295;
         v93 = [v295 objectForKeyedSubscript:@"jsblCounterChanged"];
 
-        v94 = v299;
+        v94 = selfCopy;
         if (v93)
         {
           if (byte_10005BAB0 == 1)
@@ -2171,9 +2171,9 @@ LABEL_68:
             if (v95)
             {
               v96 = v95;
-              v97 = object_getClass(v299);
+              v97 = object_getClass(selfCopy);
               v98 = class_isMetaClass(v97);
-              v99 = object_getClassName(v299);
+              v99 = object_getClassName(selfCopy);
               v275 = sel_getName(a2);
               v100 = 45;
               if (v98)
@@ -2188,7 +2188,7 @@ LABEL_68:
             v101 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
             {
-              v102 = object_getClass(v299);
+              v102 = object_getClass(selfCopy);
               if (class_isMetaClass(v102))
               {
                 v103 = 43;
@@ -2199,7 +2199,7 @@ LABEL_68:
                 v103 = 45;
               }
 
-              v104 = object_getClassName(v299);
+              v104 = object_getClassName(selfCopy);
               v105 = sel_getName(a2);
               *buf = 67109890;
               v312 = v103;
@@ -2219,9 +2219,9 @@ LABEL_68:
         sub_10003707C(v3, 0);
         sub_1000377D4(v3);
         v18 = v297;
-        if (v299)
+        if (selfCopy)
         {
-          [(NFRemoteAdminState *)v299->_serverState save];
+          [(NFRemoteAdminState *)selfCopy->_serverState save];
           v106 = v17;
           v107 = v295;
           v108 = v3;
@@ -2230,29 +2230,29 @@ LABEL_68:
             v289 = v108;
             v291 = [v106 NF_dictionaryForKey:@"kNotification"];
             v109 = [v106 objectForKeyedSubscript:@"kStartNewSession"];
-            v292 = [v109 BOOLValue];
+            bOOLValue = [v109 BOOLValue];
 
             v294 = [v106 NF_stringForKey:@"kTaskId"];
             sela = [v106 NF_stringForKey:@"targetSEID"];
             v110 = [v106 objectForKeyedSubscript:@"kVersion"];
-            v111 = [v110 integerValue];
+            integerValue = [v110 integerValue];
 
             v112 = [v107 objectForKeyedSubscript:@"kVersion"];
-            v113 = [v112 integerValue];
+            integerValue2 = [v112 integerValue];
 
-            if (v111 != v113)
+            if (integerValue != integerValue2)
             {
               dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
               v114 = NFLogGetLogger();
               if (v114)
               {
                 v115 = v114;
-                v116 = object_getClass(v299);
+                v116 = object_getClass(selfCopy);
                 v117 = class_isMetaClass(v116);
-                v118 = object_getClassName(v299);
+                v118 = object_getClassName(selfCopy);
                 v119 = sel_getName("_processServerResponse:originalRequest:storage:");
-                v120 = [NSNumber numberWithInteger:v113];
-                v121 = [NSNumber numberWithInteger:v111];
+                v120 = [NSNumber numberWithInteger:integerValue2];
+                v121 = [NSNumber numberWithInteger:integerValue];
                 v276 = v119;
                 v18 = v297;
                 v122 = 45;
@@ -2271,7 +2271,7 @@ LABEL_68:
               v123 = NFSharedLogGetLogger();
               if (os_log_type_enabled(v123, OS_LOG_TYPE_ERROR))
               {
-                v124 = object_getClass(v299);
+                v124 = object_getClass(selfCopy);
                 if (class_isMetaClass(v124))
                 {
                   v125 = 43;
@@ -2282,10 +2282,10 @@ LABEL_68:
                   v125 = 45;
                 }
 
-                v126 = object_getClassName(v299);
+                v126 = object_getClassName(selfCopy);
                 v127 = sel_getName("_processServerResponse:originalRequest:storage:");
-                v128 = [NSNumber numberWithInteger:v113];
-                v129 = [NSNumber numberWithInteger:v111];
+                v128 = [NSNumber numberWithInteger:integerValue2];
+                v129 = [NSNumber numberWithInteger:integerValue];
                 *buf = 67110402;
                 v312 = v125;
                 v18 = v297;
@@ -2302,7 +2302,7 @@ LABEL_68:
                 _os_log_impl(&_mh_execute_header, v123, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Protocol version mismatch, expected=%{public}@, rcv=%{public}@", buf, 0x36u);
               }
 
-              v94 = v299;
+              v94 = selfCopy;
             }
 
             v130 = sela;
@@ -2316,7 +2316,7 @@ LABEL_68:
 
             v132 = v291;
             selb = v130;
-            if ((v130 != 0) | v292 & 1)
+            if ((v130 != 0) | bOOLValue & 1)
             {
               objc_storeStrong(&v94->_targetSEID, v130);
               if (v291 && v294)
@@ -2376,7 +2376,7 @@ LABEL_68:
                 }
               }
 
-              if (v292)
+              if (bOOLValue)
               {
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                 v190 = NFLogGetLogger();
@@ -2496,12 +2496,12 @@ LABEL_68:
                   else
                   {
                     v300 = [NFRemoteAdminRedirectState alloc];
-                    v247 = [(NFRemoteAdminConnection *)v94->_connection urlString];
-                    v248 = [(NFRemoteAdminState *)v94->_serverState serverIdentifier];
-                    v202 = [(NFRemoteAdminRedirectState *)v300 initWithDictionary:v106 sourceURL:v247 originator:v248];
+                    urlString = [(NFRemoteAdminConnection *)v94->_connection urlString];
+                    serverIdentifier2 = [(NFRemoteAdminState *)v94->_serverState serverIdentifier];
+                    v202 = [(NFRemoteAdminRedirectState *)v300 initWithDictionary:v106 sourceURL:urlString originator:serverIdentifier2];
 
-                    v249 = [(NFRemoteAdminState *)v94->_serverState httpHeaderInfo];
-                    [(NFRemoteAdminState *)v202 setHttpHeaderInfo:v249];
+                    httpHeaderInfo2 = [(NFRemoteAdminState *)v94->_serverState httpHeaderInfo];
+                    [(NFRemoteAdminState *)v202 setHttpHeaderInfo:httpHeaderInfo2];
 
                     sub_1000388F0(v289, v202);
                   }
@@ -2514,8 +2514,8 @@ LABEL_68:
                 else
                 {
                   v214 = [NFSecureElement embeddedSecureElementWithError:0];
-                  v215 = [v214 serialNumber];
-                  v216 = [v215 caseInsensitiveCompare:v94->_targetSEID];
+                  serialNumber = [v214 serialNumber];
+                  v216 = [serialNumber caseInsensitiveCompare:v94->_targetSEID];
 
                   if (!v216)
                   {
@@ -2545,7 +2545,7 @@ LABEL_68:
                   }
 
                   v287 = v219;
-                  targetSEID = v299->_targetSEID;
+                  targetSEID = selfCopy->_targetSEID;
                   if (targetSEID)
                   {
                     [v222 setObject:targetSEID forKeyedSubscript:@"targetSEID"];
@@ -2558,19 +2558,19 @@ LABEL_68:
                   v226 = [NSNumber numberWithBool:1];
                   [v222 setObject:v226 forKeyedSubscript:@"incompletedExecution"];
 
-                  [(NFRemoteAdminState *)v299->_serverState setUnsentScriptResponse:v222];
+                  [(NFRemoteAdminState *)selfCopy->_serverState setUnsentScriptResponse:v222];
                   v288 = v218;
                   v227 = [v218 NF_stringForKey:@"type"];
                   [v221 setToSystemOS:{objc_msgSend(v227, "isEqualToString:", @"restrictedModeExited"}];
-                  seSession = v299->_seSession;
+                  seSession = selfCopy->_seSession;
                   v309 = 0;
                   v290 = [(NFSecureElementManagerSession *)seSession runScript:v217 parameters:v221 outputResults:&v309];
                   v229 = v309;
-                  [(NFRemoteAdminState *)v299->_serverState setUnsentScriptResponse:v229];
-                  [(NFRemoteAdminState *)v299->_serverState save];
-                  v230 = [v221 outFinalSWStatus];
-                  v231 = [NSNumber numberWithUnsignedInteger:v230];
-                  [(NSMutableDictionary *)v299->_endMetric setObject:v231 forKeyedSubscript:@"status"];
+                  [(NFRemoteAdminState *)selfCopy->_serverState setUnsentScriptResponse:v229];
+                  [(NFRemoteAdminState *)selfCopy->_serverState save];
+                  outFinalSWStatus = [v221 outFinalSWStatus];
+                  v231 = [NSNumber numberWithUnsignedInteger:outFinalSWStatus];
+                  [(NSMutableDictionary *)selfCopy->_endMetric setObject:v231 forKeyedSubscript:@"status"];
 
                   v7 = v295;
                   if (byte_10005BAB0 == 1)
@@ -2581,9 +2581,9 @@ LABEL_68:
                     if (v232)
                     {
                       v233 = v232;
-                      v234 = object_getClass(v299);
+                      v234 = object_getClass(selfCopy);
                       v235 = class_isMetaClass(v234);
-                      v236 = object_getClassName(v299);
+                      v236 = object_getClassName(selfCopy);
                       v283 = sel_getName("_executeScript:");
                       v237 = 45;
                       if (v235)
@@ -2593,14 +2593,14 @@ LABEL_68:
 
                       v267 = v236;
                       v7 = v295;
-                      v233(6, "%c[%{public}s %{public}s]:%i [TSM] Execution result=%ld, lastAPDUStatus=0x%lx", v237, v267, v283, 467, v290, v230);
+                      v233(6, "%c[%{public}s %{public}s]:%i [TSM] Execution result=%ld, lastAPDUStatus=0x%lx", v237, v267, v283, 467, v290, outFinalSWStatus);
                     }
 
                     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                     v238 = NFSharedLogGetLogger();
                     if (os_log_type_enabled(v238, OS_LOG_TYPE_DEFAULT))
                     {
-                      v239 = object_getClass(v299);
+                      v239 = object_getClass(selfCopy);
                       if (class_isMetaClass(v239))
                       {
                         v240 = 43;
@@ -2611,7 +2611,7 @@ LABEL_68:
                         v240 = 45;
                       }
 
-                      v241 = object_getClassName(v299);
+                      v241 = object_getClassName(selfCopy);
                       v242 = sel_getName("_executeScript:");
                       *buf = 67110402;
                       v312 = v240;
@@ -2625,7 +2625,7 @@ LABEL_68:
                       v319 = 2048;
                       v320 = v290;
                       v321 = 2048;
-                      *v322 = v230;
+                      *v322 = outFinalSWStatus;
                       _os_log_impl(&_mh_execute_header, v238, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i [TSM] Execution result=%ld, lastAPDUStatus=0x%lx", buf, 0x36u);
                     }
 
@@ -2641,22 +2641,22 @@ LABEL_68:
 
                     else
                     {
-                      v243 = v230 == 36864;
+                      v243 = outFinalSWStatus == 36864;
                     }
 
                     v244 = v243;
-                    v245 = [(NFRemoteAdminState *)v299->_serverState serverIdentifier];
-                    [(NFRemoteAdminSession *)v299 _postProcessNotification:v291 executionStatus:v244 regionIdentifier:v245];
+                    serverIdentifier3 = [(NFRemoteAdminState *)selfCopy->_serverState serverIdentifier];
+                    [(NFRemoteAdminSession *)selfCopy _postProcessNotification:v291 executionStatus:v244 regionIdentifier:serverIdentifier3];
                   }
 
-                  v246 = [(NFRemoteAdminState *)v299->_serverState unsentScriptResponse];
+                  unsentScriptResponse = [(NFRemoteAdminState *)selfCopy->_serverState unsentScriptResponse];
 
                   v18 = v297;
                   v3 = v298;
                   v17 = v296;
-                  if (v246)
+                  if (unsentScriptResponse)
                   {
-                    [(NFSecureElementManagerSession *)v299->_seSession refreshSecureElement:v299->_targetSEID];
+                    [(NFSecureElementManagerSession *)selfCopy->_seSession refreshSecureElement:selfCopy->_targetSEID];
                     v35 = 1;
                   }
 
@@ -2667,9 +2667,9 @@ LABEL_68:
                     if (v250)
                     {
                       v251 = v250;
-                      v252 = object_getClass(v299);
+                      v252 = object_getClass(selfCopy);
                       v253 = class_isMetaClass(v252);
-                      v254 = object_getClassName(v299);
+                      v254 = object_getClassName(selfCopy);
                       v284 = sel_getName("_processServerResponse:originalRequest:storage:");
                       v255 = 45;
                       if (v253)
@@ -2684,7 +2684,7 @@ LABEL_68:
                     v256 = NFSharedLogGetLogger();
                     if (os_log_type_enabled(v256, OS_LOG_TYPE_ERROR))
                     {
-                      v257 = object_getClass(v299);
+                      v257 = object_getClass(selfCopy);
                       if (class_isMetaClass(v257))
                       {
                         v258 = 43;
@@ -2695,7 +2695,7 @@ LABEL_68:
                         v258 = 45;
                       }
 
-                      v259 = object_getClassName(v299);
+                      v259 = object_getClassName(selfCopy);
                       v260 = sel_getName("_processServerResponse:originalRequest:storage:");
                       *buf = 67109890;
                       v312 = v258;
@@ -2709,7 +2709,7 @@ LABEL_68:
                     }
 
                     v35 = 0;
-                    v299->_returnCode = 4;
+                    selfCopy->_returnCode = 4;
                   }
 
                   v132 = v291;
@@ -2782,9 +2782,9 @@ LABEL_68:
             if (v157)
             {
               v158 = v157;
-              v159 = object_getClass(v299);
+              v159 = object_getClass(selfCopy);
               v160 = class_isMetaClass(v159);
-              v161 = object_getClassName(v299);
+              v161 = object_getClassName(selfCopy);
               v278 = sel_getName("_processServerResponse:originalRequest:storage:");
               v162 = 45;
               if (v160)
@@ -2799,7 +2799,7 @@ LABEL_68:
             v163 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v163, OS_LOG_TYPE_DEFAULT))
             {
-              v164 = object_getClass(v299);
+              v164 = object_getClass(selfCopy);
               if (class_isMetaClass(v164))
               {
                 v165 = 43;
@@ -2810,7 +2810,7 @@ LABEL_68:
                 v165 = 45;
               }
 
-              v166 = object_getClassName(v299);
+              v166 = object_getClassName(selfCopy);
               v167 = sel_getName("_processServerResponse:originalRequest:storage:");
               *buf = 67109890;
               v312 = v165;
@@ -2824,7 +2824,7 @@ LABEL_68:
             }
 
             v35 = 0;
-            v299->_returnCode = 0;
+            selfCopy->_returnCode = 0;
           }
         }
 
@@ -3085,7 +3085,7 @@ LABEL_38:
   return v35;
 }
 
-- (BOOL)_openSessionWithTimeout:(unint64_t)a3
+- (BOOL)_openSessionWithTimeout:(unint64_t)timeout
 {
   if (self->_allocateSESession)
   {
@@ -3116,13 +3116,13 @@ LABEL_38:
     v36 = v9;
     v10 = [v8 startSecureElementManagerSessionWithPriority:v35];
 
-    v11 = 60 * a3;
-    if (60 * a3 <= 1)
+    v11 = 60 * timeout;
+    if (60 * timeout <= 1)
     {
       v11 = 1;
     }
 
-    if (a3 == -1)
+    if (timeout == -1)
     {
       v12 = -1;
     }
@@ -3237,11 +3237,11 @@ LABEL_38:
   return self->_seSession != 0;
 }
 
-- (unsigned)_deactiveAllAppletsOnSE:(id)a3
+- (unsigned)_deactiveAllAppletsOnSE:(id)e
 {
-  v5 = a3;
+  eCopy = e;
   v6 = objc_opt_new();
-  [v6 setSeid:v5];
+  [v6 setSeid:eCopy];
 
   [v6 setDeactivateAllApps:1];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3253,14 +3253,14 @@ LABEL_38:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v13 = [v6 seid];
+    seid = [v6 seid];
     v14 = 45;
     if (isMetaClass)
     {
       v14 = 43;
     }
 
-    v8(6, "%c[%{public}s %{public}s]:%i Deactivating all applets on SEID:%{public}@", v14, ClassName, Name, 646, v13);
+    v8(6, "%c[%{public}s %{public}s]:%i Deactivating all applets on SEID:%{public}@", v14, ClassName, Name, 646, seid);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3280,7 +3280,7 @@ LABEL_38:
 
     v18 = object_getClassName(self);
     v19 = sel_getName(a2);
-    v20 = [v6 seid];
+    seid2 = [v6 seid];
     *buf = 67110146;
     v25 = v17;
     v26 = 2082;
@@ -3290,7 +3290,7 @@ LABEL_38:
     v30 = 1024;
     v31 = 646;
     v32 = 2114;
-    v33 = v20;
+    v33 = seid2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Deactivating all applets on SEID:%{public}@", buf, 0x2Cu);
   }
 
@@ -3308,11 +3308,11 @@ LABEL_38:
     return 5;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_abort)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_abort)
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     return 1;
   }
@@ -3327,9 +3327,9 @@ LABEL_38:
     if (Logger)
     {
       v17 = Logger;
-      Class = object_getClass(v4);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v4);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v20 = 45;
       if (isMetaClass)
@@ -3344,7 +3344,7 @@ LABEL_38:
     v15 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v21 = object_getClass(v4);
+      v21 = object_getClass(selfCopy);
       if (class_isMetaClass(v21))
       {
         v22 = 43;
@@ -3355,7 +3355,7 @@ LABEL_38:
         v22 = 45;
       }
 
-      v23 = object_getClassName(v4);
+      v23 = object_getClassName(selfCopy);
       v24 = sel_getName(a2);
       *buf = 67110146;
       v84 = v22;
@@ -3374,19 +3374,19 @@ LABEL_38:
     goto LABEL_41;
   }
 
-  v8 = [v6 serialNumber];
-  objc_storeStrong(&v4->_targetSEID, v8);
+  serialNumber = [v6 serialNumber];
+  objc_storeStrong(&selfCopy->_targetSEID, serialNumber);
 
-  if (!v4->_targetSEID)
+  if (!selfCopy->_targetSEID)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v25 = NFLogGetLogger();
     if (v25)
     {
       v26 = v25;
-      v27 = object_getClass(v4);
+      v27 = object_getClass(selfCopy);
       v28 = class_isMetaClass(v27);
-      v29 = object_getClassName(v4);
+      v29 = object_getClassName(selfCopy);
       v78 = sel_getName(a2);
       v30 = 45;
       if (v28)
@@ -3404,7 +3404,7 @@ LABEL_38:
       goto LABEL_40;
     }
 
-    v31 = object_getClass(v4);
+    v31 = object_getClass(selfCopy);
     if (class_isMetaClass(v31))
     {
       v32 = 43;
@@ -3415,7 +3415,7 @@ LABEL_38:
       v32 = 45;
     }
 
-    v33 = object_getClassName(v4);
+    v33 = object_getClassName(selfCopy);
     v34 = sel_getName(a2);
     *buf = 67109890;
     v84 = v32;
@@ -3433,13 +3433,13 @@ LABEL_39:
 
   v5 = [NFRemoteAdminConnectionHTTP alloc];
   v9 = [(NSURL *)self->_serverURL URLByAppendingPathComponent:@"v2"];
-  v10 = v4->_targetSEID;
+  v10 = selfCopy->_targetSEID;
   v11 = [NFSecureElement embeddedSecureElementWithError:0];
   v12 = [v5 initWithURL:v9 SEID:v10 showProprietaryHeaders:1 disableEVTrustValidation:{objc_msgSend(v11, "isProductionSigned") ^ 1}];
-  connection = v4->_connection;
-  v4->_connection = v12;
+  connection = selfCopy->_connection;
+  selfCopy->_connection = v12;
 
-  v14 = v4->_connection;
+  v14 = selfCopy->_connection;
   if (!v14)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3447,9 +3447,9 @@ LABEL_39:
     if (v36)
     {
       v37 = v36;
-      v38 = object_getClass(v4);
+      v38 = object_getClass(selfCopy);
       v39 = class_isMetaClass(v38);
-      v40 = object_getClassName(v4);
+      v40 = object_getClassName(selfCopy);
       v79 = sel_getName(a2);
       v41 = 45;
       if (v39)
@@ -3467,7 +3467,7 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v42 = object_getClass(v4);
+    v42 = object_getClass(selfCopy);
     if (class_isMetaClass(v42))
     {
       v43 = 43;
@@ -3478,7 +3478,7 @@ LABEL_39:
       v43 = 45;
     }
 
-    v44 = object_getClassName(v4);
+    v44 = object_getClassName(selfCopy);
     v45 = sel_getName(a2);
     *buf = 67109890;
     v84 = v43;
@@ -3494,8 +3494,8 @@ LABEL_39:
 
   if ([(NFRemoteAdminConnection *)v14 connect])
   {
-    v15 = v4->_connection;
-    v4->_connection = 0;
+    v15 = selfCopy->_connection;
+    selfCopy->_connection = 0;
 LABEL_40:
     v5 = 4;
 LABEL_41:
@@ -3507,22 +3507,22 @@ LABEL_41:
   v46 = 1;
 LABEL_42:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v46)
   {
-    if ([(NFRemoteAdminSession *)v4 _openSessionWithTimeout:-1]&& v4->_seSession)
+    if ([(NFRemoteAdminSession *)selfCopy _openSessionWithTimeout:-1]&& selfCopy->_seSession)
     {
-      *&v4->_spManagedScript = 0;
+      *&selfCopy->_spManagedScript = 0;
       v47 = 201;
       while (1)
       {
         v48 = objc_autoreleasePoolPush();
-        if (v4->_abort)
+        if (selfCopy->_abort)
         {
           break;
         }
 
-        if (![(NFRemoteAdminSession *)v4 performRequest])
+        if (![(NFRemoteAdminSession *)selfCopy performRequest])
         {
           goto LABEL_70;
         }
@@ -3539,9 +3539,9 @@ LABEL_42:
       if (v60)
       {
         v61 = v60;
-        v62 = object_getClass(v4);
+        v62 = object_getClass(selfCopy);
         v63 = class_isMetaClass(v62);
-        v64 = object_getClassName(v4);
+        v64 = object_getClassName(selfCopy);
         v81 = sel_getName(a2);
         v65 = 45;
         if (v63)
@@ -3556,7 +3556,7 @@ LABEL_42:
       v66 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
       {
-        v67 = object_getClass(v4);
+        v67 = object_getClass(selfCopy);
         if (class_isMetaClass(v67))
         {
           v68 = 43;
@@ -3567,7 +3567,7 @@ LABEL_42:
           v68 = 45;
         }
 
-        v69 = object_getClassName(v4);
+        v69 = object_getClassName(selfCopy);
         v70 = sel_getName(a2);
         *buf = 67109890;
         v84 = v68;
@@ -3580,17 +3580,17 @@ LABEL_42:
         _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Aborted: system shutting down", buf, 0x22u);
       }
 
-      v4->_returnCode = 1;
+      selfCopy->_returnCode = 1;
 LABEL_70:
       objc_autoreleasePoolPop(v48);
 LABEL_71:
-      if (v4->_allocateSESession)
+      if (selfCopy->_allocateSESession)
       {
-        [(NFSecureElementManagerSession *)v4->_seSession endSessionWithCompletion:&stru_100054FE0];
+        [(NFSecureElementManagerSession *)selfCopy->_seSession endSessionWithCompletion:&stru_100054FE0];
       }
 
-      [(NFRemoteAdminConnection *)v4->_connection disconnect];
-      if (v4->_notifySPInstallScriptStart)
+      [(NFRemoteAdminConnection *)selfCopy->_connection disconnect];
+      if (selfCopy->_notifySPInstallScriptStart)
       {
         v71 = sub_100016628();
         v72 = v71;
@@ -3608,7 +3608,7 @@ LABEL_71:
         [v74 sendXpcNotificationEventWithDictionary:&off_1000575E8];
       }
 
-      return v4->_returnCode;
+      return selfCopy->_returnCode;
     }
 
     else
@@ -3618,9 +3618,9 @@ LABEL_71:
       if (v49)
       {
         v50 = v49;
-        v51 = object_getClass(v4);
+        v51 = object_getClass(selfCopy);
         v52 = class_isMetaClass(v51);
-        v53 = object_getClassName(v4);
+        v53 = object_getClassName(selfCopy);
         v80 = sel_getName(a2);
         v54 = 45;
         if (v52)
@@ -3635,7 +3635,7 @@ LABEL_71:
       v55 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v56 = object_getClass(v4);
+        v56 = object_getClass(selfCopy);
         if (class_isMetaClass(v56))
         {
           v57 = 43;
@@ -3646,7 +3646,7 @@ LABEL_71:
           v57 = 45;
         }
 
-        v58 = object_getClassName(v4);
+        v58 = object_getClassName(selfCopy);
         v59 = sel_getName(a2);
         *buf = 67109890;
         v84 = v57;
@@ -3659,7 +3659,7 @@ LABEL_71:
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open SE session", buf, 0x22u);
       }
 
-      [(NFRemoteAdminConnection *)v4->_connection disconnect];
+      [(NFRemoteAdminConnection *)selfCopy->_connection disconnect];
       return 4;
     }
   }

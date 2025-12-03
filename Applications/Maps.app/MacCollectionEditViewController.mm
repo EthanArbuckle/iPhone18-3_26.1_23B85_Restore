@@ -1,13 +1,13 @@
 @interface MacCollectionEditViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (MacCollectionEditViewController)initWithCollection:(id)a3 delegate:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (MacCollectionEditViewController)initWithCollection:(id)collection delegate:(id)delegate;
 - (MacCollectionEditViewControllerDelegate)delegate;
-- (id)_buttonWithTitle:(id)a3 imageNamed:(id)a4;
+- (id)_buttonWithTitle:(id)title imageNamed:(id)named;
 - (id)_spacerImage;
 - (void)_changePhoto;
 - (void)_delete;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
   return WeakRetained;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained macCollectionEditViewControllerDismiss:self];
@@ -28,14 +28,14 @@
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   UInteger = GEOConfigGetUInteger();
   v13 = [v11 length];
@@ -43,7 +43,7 @@
   {
     v14 = [v11 substringWithRange:{0, UInteger}];
 
-    [v8 setText:v14];
+    [fieldCopy setText:v14];
     v11 = v14;
   }
 
@@ -70,13 +70,13 @@
   return v3;
 }
 
-- (id)_buttonWithTitle:(id)a3 imageNamed:(id)a4
+- (id)_buttonWithTitle:(id)title imageNamed:(id)named
 {
-  v6 = a4;
-  v7 = a3;
+  namedCopy = named;
+  titleCopy = title;
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   v9 = +[UIButtonConfiguration tintedButtonConfiguration];
-  [v9 setTitle:v7];
+  [v9 setTitle:titleCopy];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -85,15 +85,15 @@
   v26 = v8;
   v24 = v8;
   [v9 setTitleTextAttributesTransformer:v25];
-  v10 = [(MacCollectionEditViewController *)self _spacerImage];
-  [v9 setImage:v10];
+  _spacerImage = [(MacCollectionEditViewController *)self _spacerImage];
+  [v9 setImage:_spacerImage];
 
   [v9 setImagePadding:0.0];
   [v9 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
   v11 = [UIButton buttonWithType:0];
   [v11 setConfiguration:v9];
   v12 = [UIImageView alloc];
-  v13 = [UIImage systemImageNamed:v6];
+  v13 = [UIImage systemImageNamed:namedCopy];
 
   v14 = [v12 initWithImage:v13];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -101,13 +101,13 @@
   [v14 setPreferredSymbolConfiguration:v15];
 
   [v11 addSubview:v14];
-  v16 = [v14 centerXAnchor];
-  v17 = [v11 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:9.0];
+  centerXAnchor = [v14 centerXAnchor];
+  leadingAnchor = [v11 leadingAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:9.0];
   v27[0] = v18;
-  v19 = [v14 centerYAnchor];
-  v20 = [v11 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerYAnchor = [v14 centerYAnchor];
+  centerYAnchor2 = [v11 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v27[1] = v21;
   v22 = [NSArray arrayWithObjects:v27 count:2];
   [NSLayoutConstraint activateConstraints:v22];
@@ -115,11 +115,11 @@
   return v11;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MacCollectionEditViewController;
-  [(MacCollectionEditViewController *)&v4 viewDidAppear:a3];
+  [(MacCollectionEditViewController *)&v4 viewDidAppear:appear];
   [(UITextField *)self->_textField becomeFirstResponder];
 }
 
@@ -128,11 +128,11 @@
   v45.receiver = self;
   v45.super_class = MacCollectionEditViewController;
   [(MacCollectionEditViewController *)&v45 viewDidLoad];
-  v3 = [(MacCollectionEditViewController *)self view];
-  [v3 setLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
+  view = [(MacCollectionEditViewController *)self view];
+  [view setLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
 
-  v4 = [(MacCollectionEditViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"MacCollectionEditView"];
+  view2 = [(MacCollectionEditViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"MacCollectionEditView"];
 
   v5 = [UITextField alloc];
   y = CGRectZero.origin.y;
@@ -144,8 +144,8 @@
 
   [(UITextField *)self->_textField setBorderStyle:3];
   [(UITextField *)self->_textField setControlSize:2];
-  v11 = [(CollectionHandler *)self->_collection title];
-  [(UITextField *)self->_textField setText:v11];
+  title = [(CollectionHandler *)self->_collection title];
+  [(UITextField *)self->_textField setText:title];
 
   v12 = +[UIFont system20Bold];
   [(UITextField *)self->_textField setFont:v12];
@@ -153,19 +153,19 @@
   [(UITextField *)self->_textField setDelegate:self];
   [(UITextField *)self->_textField setEnabled:[(CollectionHandler *)self->_collection canEditTitle]];
   [(UITextField *)self->_textField setAccessibilityIdentifier:@"MacCollectionEditTextField"];
-  v13 = [(MacCollectionEditViewController *)self view];
-  [v13 addSubview:self->_textField];
+  view3 = [(MacCollectionEditViewController *)self view];
+  [view3 addSubview:self->_textField];
 
-  v14 = [[CollectionImageView alloc] initWithFrame:0 makeCornersRounded:CGRectZero.origin.x, y, width, height];
+  height = [[CollectionImageView alloc] initWithFrame:0 makeCornersRounded:CGRectZero.origin.x, y, width, height];
   imageView = self->_imageView;
-  self->_imageView = v14;
+  self->_imageView = height;
 
   [(CollectionImageView *)self->_imageView _setContinuousCornerRadius:17.0];
   [(CollectionImageView *)self->_imageView setClipsToBounds:1];
   [(CollectionImageView *)self->_imageView setCollectionInfo:self->_collection];
   [(CollectionImageView *)self->_imageView setAccessibilityIdentifier:@"MacCollectionEditImage"];
-  v16 = [(MacCollectionEditViewController *)self view];
-  [v16 addSubview:self->_imageView];
+  view4 = [(MacCollectionEditViewController *)self view];
+  [view4 addSubview:self->_imageView];
 
   if ([(CollectionHandler *)self->_collection canEditImage])
   {
@@ -177,8 +177,8 @@
 
     [(UIButton *)self->_changePhotoButton addTarget:self action:"_changePhoto" forControlEvents:64];
     [(UIButton *)self->_changePhotoButton setAccessibilityIdentifier:@"MacCollectionEditChangePhotoButton"];
-    v21 = [(MacCollectionEditViewController *)self view];
-    [v21 addSubview:self->_changePhotoButton];
+    view5 = [(MacCollectionEditViewController *)self view];
+    [view5 addSubview:self->_changePhotoButton];
   }
 
   if ([(CollectionHandler *)self->_collection canDelete])
@@ -191,21 +191,21 @@
 
     [(UIButton *)self->_deleteButton addTarget:self action:"_delete" forControlEvents:64];
     [(UIButton *)self->_deleteButton setAccessibilityIdentifier:@"MacCollectionEditDeleteButton"];
-    v26 = [(MacCollectionEditViewController *)self view];
-    [v26 addSubview:self->_deleteButton];
+    view6 = [(MacCollectionEditViewController *)self view];
+    [view6 addSubview:self->_deleteButton];
   }
 
   v27 = [MUSizeLayout alloc];
-  v28 = [(MacCollectionEditViewController *)self view];
+  view7 = [(MacCollectionEditViewController *)self view];
   +[MUSizeLayout useIntrinsicContentSize];
   LODWORD(v29) = 1144750080;
-  v31 = [v27 initWithItem:v28 size:282.0 priority:{v30, v29}];
+  v31 = [v27 initWithItem:view7 size:282.0 priority:{v30, v29}];
 
   v32 = [[MUSizeLayout alloc] initWithItem:self->_imageView size:{60.0, 60.0}];
   v33 = [MUStackLayout alloc];
-  v34 = [(MacCollectionEditViewController *)self view];
-  v35 = [v34 layoutMarginsGuide];
-  v36 = [v33 initWithContainer:v35 axis:1];
+  view8 = [(MacCollectionEditViewController *)self view];
+  layoutMarginsGuide = [view8 layoutMarginsGuide];
+  v36 = [v33 initWithContainer:layoutMarginsGuide axis:1];
 
   [v36 setDistribution:2];
   LODWORD(v37) = 1112276992;
@@ -235,26 +235,26 @@
   v39 = [NSArray arrayWithObjects:v46 count:3];
   [NSLayoutConstraint _mapsui_activateLayouts:v39];
 
-  v40 = [(MacCollectionEditViewController *)self view];
-  [v40 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  view9 = [(MacCollectionEditViewController *)self view];
+  [view9 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v42 = v41;
   v44 = v43;
 
   [(MacCollectionEditViewController *)self setPreferredContentSize:v42, v44];
 }
 
-- (MacCollectionEditViewController)initWithCollection:(id)a3 delegate:(id)a4
+- (MacCollectionEditViewController)initWithCollection:(id)collection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = MacCollectionEditViewController;
   v9 = [(MacCollectionEditViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_collection, collection);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

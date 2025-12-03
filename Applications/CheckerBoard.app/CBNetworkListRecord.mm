@@ -1,23 +1,23 @@
 @interface CBNetworkListRecord
 - (BOOL)iOSHotspot;
-- (BOOL)isEquivalentRecord:(id)a3;
+- (BOOL)isEquivalentRecord:(id)record;
 - (BOOL)isSecure;
-- (CBNetworkListRecord)initWithBootIntentSSID:(id)a3 passwordProtected:(BOOL)a4;
-- (CBNetworkListRecord)initWithScanResult:(id)a3;
+- (CBNetworkListRecord)initWithBootIntentSSID:(id)d passwordProtected:(BOOL)protected;
+- (CBNetworkListRecord)initWithScanResult:(id)result;
 - (float)scaledRSSI;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)ssid;
 - (int64_t)rssi;
 @end
 
 @implementation CBNetworkListRecord
 
-- (CBNetworkListRecord)initWithScanResult:(id)a3
+- (CBNetworkListRecord)initWithScanResult:(id)result
 {
   v5 = qword_100092370++;
   self->_identifier = v5;
-  objc_storeStrong(&self->_scanResult, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_scanResult, result);
+  resultCopy = result;
   self->_isBootIntentRecord = 0;
   bootIntentSSID = self->_bootIntentSSID;
   self->_bootIntentSSID = &stru_10007EAB0;
@@ -26,9 +26,9 @@
   return self;
 }
 
-- (CBNetworkListRecord)initWithBootIntentSSID:(id)a3 passwordProtected:(BOOL)a4
+- (CBNetworkListRecord)initWithBootIntentSSID:(id)d passwordProtected:(BOOL)protected
 {
-  v6 = a3;
+  dCopy = d;
   v7 = qword_100092370++;
   scanResult = self->_scanResult;
   self->_identifier = v7;
@@ -36,17 +36,17 @@
 
   self->_isBootIntentRecord = 1;
   bootIntentSSID = self->_bootIntentSSID;
-  self->_bootIntentSSID = v6;
+  self->_bootIntentSSID = dCopy;
 
-  self->_isBootIntentPasswordProtected = a4;
+  self->_isBootIntentPasswordProtected = protected;
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CBNetworkListRecord alloc];
-  v5 = [(CBNetworkListRecord *)self scanResult];
-  v6 = [v5 copy];
+  scanResult = [(CBNetworkListRecord *)self scanResult];
+  v6 = [scanResult copy];
   v7 = [(CBNetworkListRecord *)v4 initWithScanResult:v6];
 
   return v7;
@@ -59,17 +59,17 @@
     return 0;
   }
 
-  v4 = [(CBNetworkListRecord *)self scanResult];
-  v5 = [v4 isPersonalHotspot];
+  scanResult = [(CBNetworkListRecord *)self scanResult];
+  isPersonalHotspot = [scanResult isPersonalHotspot];
 
-  return v5;
+  return isPersonalHotspot;
 }
 
-- (BOOL)isEquivalentRecord:(id)a3
+- (BOOL)isEquivalentRecord:(id)record
 {
-  v4 = [a3 ssid];
-  v5 = [(CBNetworkListRecord *)self ssid];
-  v6 = [v4 isEqualToString:v5];
+  ssid = [record ssid];
+  ssid2 = [(CBNetworkListRecord *)self ssid];
+  v6 = [ssid isEqualToString:ssid2];
 
   return v6;
 }
@@ -84,10 +84,10 @@
 
   else
   {
-    v3 = [(CBNetworkListRecord *)self scanResult];
-    v4 = [v3 requiresPassword];
+    scanResult = [(CBNetworkListRecord *)self scanResult];
+    requiresPassword = [scanResult requiresPassword];
 
-    return v4;
+    return requiresPassword;
   }
 }
 
@@ -98,10 +98,10 @@
     return 0;
   }
 
-  v4 = [(CBNetworkListRecord *)self scanResult];
-  v5 = [v4 RSSI];
+  scanResult = [(CBNetworkListRecord *)self scanResult];
+  rSSI = [scanResult RSSI];
 
-  return v5;
+  return rSSI;
 }
 
 - (float)scaledRSSI
@@ -111,8 +111,8 @@
     return 0.0;
   }
 
-  v4 = [(CBNetworkListRecord *)self scanResult];
-  [v4 RSSI];
+  scanResult = [(CBNetworkListRecord *)self scanResult];
+  [scanResult RSSI];
   WFScaleRSSI();
   v6 = v5;
 
@@ -123,16 +123,16 @@
 {
   if ([(CBNetworkListRecord *)self isBootIntentRecord])
   {
-    v3 = [(CBNetworkListRecord *)self bootIntentSSID];
+    bootIntentSSID = [(CBNetworkListRecord *)self bootIntentSSID];
   }
 
   else
   {
-    v4 = [(CBNetworkListRecord *)self scanResult];
-    v3 = [v4 networkName];
+    scanResult = [(CBNetworkListRecord *)self scanResult];
+    bootIntentSSID = [scanResult networkName];
   }
 
-  return v3;
+  return bootIntentSSID;
 }
 
 @end

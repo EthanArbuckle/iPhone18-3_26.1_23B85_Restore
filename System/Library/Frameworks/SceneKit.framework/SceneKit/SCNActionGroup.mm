@@ -1,13 +1,13 @@
 @interface SCNActionGroup
-+ (id)groupWithActions:(id)a3;
++ (id)groupWithActions:(id)actions;
 - (BOOL)finished;
 - (BOOL)isCustom;
 - (SCNActionGroup)init;
-- (SCNActionGroup)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionGroup)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionGroup
@@ -24,7 +24,7 @@
   return 0;
 }
 
-- (SCNActionGroup)initWithCoder:(id)a3
+- (SCNActionGroup)initWithCoder:(id)coder
 {
   v5 = *MEMORY[0x277D85DE8];
   v4.receiver = self;
@@ -44,12 +44,12 @@
   [(SCNAction *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionGroup;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_actions forKey:@"_actions"];
+  [coder encodeObject:self->_actions forKey:@"_actions"];
 }
 
 - (BOOL)isCustom
@@ -99,19 +99,19 @@
   return v3;
 }
 
-+ (id)groupWithActions:(id)a3
++ (id)groupWithActions:(id)actions
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  if (a3 && [a3 count])
+  if (actions && [actions count])
   {
     v4 = objc_alloc_init(SCNActionGroup);
     objc_opt_class();
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v6 = [actions countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -121,29 +121,29 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(actions);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            [v5 addObject:{+[SCNActionSequence sequenceWithActions:](SCNActionSequence, "sequenceWithActions:", v9)}];
+            [array addObject:{+[SCNActionSequence sequenceWithActions:](SCNActionSequence, "sequenceWithActions:", v9)}];
           }
 
           else
           {
             v10 = [v9 copy];
-            [v5 addObject:v10];
+            [array addObject:v10];
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v6 = [actions countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v6);
     }
 
-    v11 = [v5 copy];
+    v11 = [array copy];
     v4->_actions = v11;
     memset(v14, 0, sizeof(v14));
     if ([(NSArray *)v11 countByEnumeratingWithState:v14 objects:v19 count:16])
@@ -170,7 +170,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCNActionGroup groupWithActions:self->_actions];
   [(SCNAction *)v4 setTimingMode:[(SCNAction *)self timingMode]];

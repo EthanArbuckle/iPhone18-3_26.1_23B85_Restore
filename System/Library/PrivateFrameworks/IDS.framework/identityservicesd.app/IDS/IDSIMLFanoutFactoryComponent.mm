@@ -1,32 +1,32 @@
 @interface IDSIMLFanoutFactoryComponent
-- (id)createFanoutFromMessage:(id)a3 forService:(id)a4 fromIdentity:(id)a5 withMaxSize:(unint64_t)a6 chunkNumber:(int64_t)a7 firstMessage:(id)a8;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)createFanoutFromMessage:(id)message forService:(id)service fromIdentity:(id)identity withMaxSize:(unint64_t)size chunkNumber:(int64_t)number firstMessage:(id)firstMessage;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSIMLFanoutFactoryComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   v4 = objc_alloc_init(NSMutableArray);
   v82 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 guid];
-  v6 = [v3 prioritizedTokenList];
-  v7 = [v6 prioritizedTokens];
+  guid = [inputCopy guid];
+  prioritizedTokenList = [inputCopy prioritizedTokenList];
+  prioritizedTokens = [prioritizedTokenList prioritizedTokens];
 
-  v74 = v7;
-  v83 = v3;
-  v73 = v5;
+  v74 = prioritizedTokens;
+  v83 = inputCopy;
+  v73 = guid;
   v76 = v4;
-  if ([v7 count])
+  if ([prioritizedTokens count])
   {
     v8 = +[IDSFoundationLog delivery];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v111 = v5;
+      v111 = guid;
       v112 = 2112;
-      v113 = v7;
+      v113 = prioritizedTokens;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "GUID %@ Prioritizing tokens %@", buf, 0x16u);
     }
 
@@ -36,8 +36,8 @@
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v11 = [v3 aggregatableMessages];
-    v12 = [v11 countByEnumeratingWithState:&v101 objects:v109 count:16];
+    aggregatableMessages = [inputCopy aggregatableMessages];
+    v12 = [aggregatableMessages countByEnumeratingWithState:&v101 objects:v109 count:16];
     if (v12)
     {
       v13 = v12;
@@ -48,13 +48,13 @@
         {
           if (*v102 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(aggregatableMessages);
           }
 
           v16 = *(*(&v101 + 1) + 8 * i);
-          v17 = [v16 targetToken];
-          v18 = [v17 rawToken];
-          v19 = [v74 containsObject:v18];
+          targetToken = [v16 targetToken];
+          rawToken = [targetToken rawToken];
+          v19 = [v74 containsObject:rawToken];
 
           if (v19)
           {
@@ -69,27 +69,27 @@
           [v20 addObject:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v101 objects:v109 count:16];
+        v13 = [aggregatableMessages countByEnumeratingWithState:&v101 objects:v109 count:16];
       }
 
       while (v13);
     }
 
-    v21 = [v10 arrayByAddingObjectsFromArray:v9];
+    aggregatableMessages2 = [v10 arrayByAddingObjectsFromArray:v9];
 
-    v3 = v83;
+    inputCopy = v83;
   }
 
   else
   {
-    v21 = [v3 aggregatableMessages];
+    aggregatableMessages2 = [inputCopy aggregatableMessages];
   }
 
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  obj = v21;
+  obj = aggregatableMessages2;
   v22 = [obj countByEnumeratingWithState:&v97 objects:v108 count:16];
   if (v22)
   {
@@ -106,24 +106,24 @@
         }
 
         v26 = *(*(&v97 + 1) + 8 * j);
-        v27 = [v26 command];
-        v28 = v27;
-        if (v27)
+        command = [v26 command];
+        v28 = command;
+        if (command)
         {
-          v29 = v27;
+          v29 = command;
         }
 
         else
         {
-          v30 = [v3 messageToSend];
-          v31 = [v30 additionalDictionary];
-          v29 = [v31 objectForKey:@"c"];
+          messageToSend = [inputCopy messageToSend];
+          additionalDictionary = [messageToSend additionalDictionary];
+          v29 = [additionalDictionary objectForKey:@"c"];
 
-          v3 = v83;
+          inputCopy = v83;
         }
 
         v32 = [v82 objectForKey:v29];
-        if (([v3 forceOnePerFanout] & 1) != 0 || (objc_msgSend(v32, "hasSpaceForAggregatableMessage:", v26) & 1) == 0)
+        if (([inputCopy forceOnePerFanout] & 1) != 0 || (objc_msgSend(v32, "hasSpaceForAggregatableMessage:", v26) & 1) == 0)
         {
           if (v32)
           {
@@ -131,12 +131,12 @@
             [v76 addObject:v33];
           }
 
-          v34 = [v3 messageToSend];
-          v35 = [v3 service];
-          v36 = [v83 fromIdentity];
-          v37 = -[IDSIMLFanoutFactoryComponent createFanoutFromMessage:forService:fromIdentity:withMaxSize:chunkNumber:firstMessage:](self, "createFanoutFromMessage:forService:fromIdentity:withMaxSize:chunkNumber:firstMessage:", v34, v35, v36, [v83 maxSize], v24, v26);
+          messageToSend2 = [inputCopy messageToSend];
+          service = [inputCopy service];
+          fromIdentity = [v83 fromIdentity];
+          v37 = -[IDSIMLFanoutFactoryComponent createFanoutFromMessage:forService:fromIdentity:withMaxSize:chunkNumber:firstMessage:](self, "createFanoutFromMessage:forService:fromIdentity:withMaxSize:chunkNumber:firstMessage:", messageToSend2, service, fromIdentity, [v83 maxSize], v24, v26);
 
-          v3 = v83;
+          inputCopy = v83;
           ++v24;
           if (v29)
           {
@@ -152,8 +152,8 @@
           v32 = v37;
         }
 
-        v39 = [v3 encryptedTopLevelPayload];
-        [v32 setGroupPayload:v39];
+        encryptedTopLevelPayload = [inputCopy encryptedTopLevelPayload];
+        [v32 setGroupPayload:encryptedTopLevelPayload];
 
         [v32 addAggregatableMessage:v26];
       }
@@ -164,8 +164,8 @@
     while (v23);
   }
 
-  v40 = [v82 allValues];
-  [v76 addObjectsFromArray:v40];
+  allValues = [v82 allValues];
+  [v76 addObjectsFromArray:allValues];
 
   v41 = +[IDSFoundationLog delivery];
   v42 = v73;
@@ -203,8 +203,8 @@
         v90 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v47 = [v45 individualPeerMessages];
-        v48 = [v47 countByEnumeratingWithState:&v89 objects:v106 count:16];
+        individualPeerMessages = [v45 individualPeerMessages];
+        v48 = [individualPeerMessages countByEnumeratingWithState:&v89 objects:v106 count:16];
         if (!v48)
         {
 
@@ -216,8 +216,8 @@ LABEL_56:
           v85 = 0u;
           v86 = 0u;
           v58 = v45;
-          v59 = [v45 individualPeerMessages];
-          v60 = [v59 countByEnumeratingWithState:&v85 objects:v105 count:16];
+          individualPeerMessages2 = [v45 individualPeerMessages];
+          v60 = [individualPeerMessages2 countByEnumeratingWithState:&v85 objects:v105 count:16];
           if (v60)
           {
             v61 = v60;
@@ -228,13 +228,13 @@ LABEL_56:
               {
                 if (*v86 != v62)
                 {
-                  objc_enumerationMutation(v59);
+                  objc_enumerationMutation(individualPeerMessages2);
                 }
 
                 [*(*(&v85 + 1) + 8 * m) setWantsCertifiedDelivery:0];
               }
 
-              v61 = [v59 countByEnumeratingWithState:&v85 objects:v105 count:16];
+              v61 = [individualPeerMessages2 countByEnumeratingWithState:&v85 objects:v105 count:16];
             }
 
             while (v61);
@@ -248,38 +248,38 @@ LABEL_56:
         v79 = v45;
         v81 = k;
         v50 = *v90;
-        v51 = 1;
+        wantsCertifiedDelivery = 1;
         do
         {
           for (n = 0; n != v49; n = n + 1)
           {
             if (*v90 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(individualPeerMessages);
             }
 
             v53 = *(*(&v89 + 1) + 8 * n);
-            v54 = [v53 targetPeerID];
-            v55 = [v53 targetToken];
-            v56 = [v54 URIByAddingPushToken:v55];
+            targetPeerID = [v53 targetPeerID];
+            targetToken2 = [v53 targetToken];
+            v56 = [targetPeerID URIByAddingPushToken:targetToken2];
 
             if (v56)
             {
               [v46 addObject:v56];
             }
 
-            if (v51)
+            if (wantsCertifiedDelivery)
             {
-              v51 = [v53 wantsCertifiedDelivery];
+              wantsCertifiedDelivery = [v53 wantsCertifiedDelivery];
             }
 
             else
             {
-              v51 = 0;
+              wantsCertifiedDelivery = 0;
             }
           }
 
-          v49 = [v47 countByEnumeratingWithState:&v89 objects:v106 count:16];
+          v49 = [individualPeerMessages countByEnumeratingWithState:&v89 objects:v106 count:16];
         }
 
         while (v49);
@@ -288,31 +288,31 @@ LABEL_56:
         v57 = &IDSRegistrationControlErrorDomain_ptr;
         v45 = v79;
         k = v81;
-        if (v51)
+        if (wantsCertifiedDelivery)
         {
           goto LABEL_56;
         }
 
 LABEL_64:
-        v64 = [v57[240] delivery];
-        if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
+        delivery = [v57[240] delivery];
+        if (os_log_type_enabled(delivery, OS_LOG_TYPE_DEFAULT))
         {
-          v65 = [v45 chunkNumber];
+          chunkNumber = [v45 chunkNumber];
           *buf = 138412546;
           v111 = v42;
           v112 = 2112;
-          v113 = v65;
-          _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "GUID %@ finished constructing fanout %@", buf, 0x16u);
+          v113 = chunkNumber;
+          _os_log_impl(&_mh_execute_header, delivery, OS_LOG_TYPE_DEFAULT, "GUID %@ finished constructing fanout %@", buf, 0x16u);
         }
 
-        v66 = [v45 chunkNumber];
-        v67 = [NSString stringWithFormat:@"GUID %@ Fanout %@ (%@) contains:\n%@", v42, v66, v45, v46];
+        chunkNumber2 = [v45 chunkNumber];
+        v67 = [NSString stringWithFormat:@"GUID %@ Fanout %@ (%@) contains:\n%@", v42, chunkNumber2, v45, v46];
 
         v84 = v67;
         v68 = v67;
         cut_dispatch_log_queue();
 
-        v3 = v83;
+        inputCopy = v83;
       }
 
       v77 = [v71 countByEnumeratingWithState:&v93 objects:v107 count:16];
@@ -321,25 +321,25 @@ LABEL_64:
     while (v77);
   }
 
-  [v3 setAggregateMessages:v71];
-  v69 = [CUTUnsafePromise fulfilledPromiseWithValue:v3];
+  [inputCopy setAggregateMessages:v71];
+  v69 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
 
   return v69;
 }
 
-- (id)createFanoutFromMessage:(id)a3 forService:(id)a4 fromIdentity:(id)a5 withMaxSize:(unint64_t)a6 chunkNumber:(int64_t)a7 firstMessage:(id)a8
+- (id)createFanoutFromMessage:(id)message forService:(id)service fromIdentity:(id)identity withMaxSize:(unint64_t)size chunkNumber:(int64_t)number firstMessage:(id)firstMessage
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = [[IDSPeerAggregateMessage alloc] initWithPeerMessage:v13 service:v16 fromIdentity:v15 maxSize:a6];
+  messageCopy = message;
+  firstMessageCopy = firstMessage;
+  identityCopy = identity;
+  serviceCopy = service;
+  v17 = [[IDSPeerAggregateMessage alloc] initWithPeerMessage:messageCopy service:serviceCopy fromIdentity:identityCopy maxSize:size];
 
-  v18 = [NSNumber numberWithInteger:a7];
+  v18 = [NSNumber numberWithInteger:number];
   [(IDSPeerAggregateMessage *)v17 setChunkNumber:v18];
 
-  v19 = [(IDSPeerAggregateMessage *)v17 additionalDictionary];
-  v20 = [v19 mutableCopy];
+  additionalDictionary = [(IDSPeerAggregateMessage *)v17 additionalDictionary];
+  v20 = [additionalDictionary mutableCopy];
   v21 = v20;
   if (v20)
   {
@@ -353,20 +353,20 @@ LABEL_64:
 
   v23 = v22;
 
-  v24 = [v13 messageBody];
-  v25 = [v24 objectForKey:IDSCommandKey];
+  messageBody = [messageCopy messageBody];
+  v25 = [messageBody objectForKey:IDSCommandKey];
 
-  v26 = [v14 command];
+  command = [firstMessageCopy command];
 
-  if (v26)
+  if (command)
   {
-    v27 = [v14 command];
-    [v23 setObject:v27 forKey:@"c"];
+    command2 = [firstMessageCopy command];
+    [v23 setObject:command2 forKey:@"c"];
 
     if (v25)
     {
-      v28 = [v13 additionalDictionary];
-      v29 = [v28 objectForKey:@"c"];
+      additionalDictionary2 = [messageCopy additionalDictionary];
+      v29 = [additionalDictionary2 objectForKey:@"c"];
       [v23 setObject:v29 forKey:@"oC"];
     }
   }

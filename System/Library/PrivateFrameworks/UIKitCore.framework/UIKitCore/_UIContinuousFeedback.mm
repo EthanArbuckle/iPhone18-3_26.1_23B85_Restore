@@ -1,21 +1,21 @@
 @interface _UIContinuousFeedback
-+ (id)continuousFeedbackForType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)continuousFeedbackForType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (_UIContinuousFeedback)init;
-- (_UIContinuousFeedback)initWithDictionaryRepresentation:(id)a3;
+- (_UIContinuousFeedback)initWithDictionaryRepresentation:(id)representation;
 - (id)_debugDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectiveEventType;
-- (void)_playedAtTime:(double)a3 engine:(id)a4;
+- (void)_playedAtTime:(double)time engine:(id)engine;
 @end
 
 @implementation _UIContinuousFeedback
 
-+ (id)continuousFeedbackForType:(int64_t)a3
++ (id)continuousFeedbackForType:(int64_t)type
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setType:a3];
+  [v4 setType:type];
 
   return v4;
 }
@@ -29,38 +29,38 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIContinuousFeedback;
-  result = [(_UIFeedback *)&v5 copyWithZone:a3];
+  result = [(_UIFeedback *)&v5 copyWithZone:zone];
   *(result + 17) = self->_type;
   *(result + 16) = *&self->_duration;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIContinuousFeedback;
-  v5 = [(_UIFeedback *)&v7 isEqual:v4]&& self->_type == *(v4 + 17) && self->_duration == v4[16];
+  v5 = [(_UIFeedback *)&v7 isEqual:equalCopy]&& self->_type == *(equalCopy + 17) && self->_duration == equalCopy[16];
 
   return v5;
 }
 
-- (_UIContinuousFeedback)initWithDictionaryRepresentation:(id)a3
+- (_UIContinuousFeedback)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = _UIContinuousFeedback;
-  v5 = [(_UIFeedback *)&v11 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v11 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"feedbackType"];
+    v6 = [representationCopy objectForKeyedSubscript:@"feedbackType"];
     v5->_type = [v6 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"duration"];
+    v7 = [representationCopy objectForKeyedSubscript:@"duration"];
     [v7 doubleValue];
     v5->_duration = v8;
 
@@ -75,8 +75,8 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIContinuousFeedback;
-  v3 = [(_UIFeedback *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v10[0] = @"feedbackType";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_type];
@@ -103,11 +103,11 @@
   }
 }
 
-- (void)_playedAtTime:(double)a3 engine:(id)a4
+- (void)_playedAtTime:(double)time engine:(id)engine
 {
   v9.receiver = self;
   v9.super_class = _UIContinuousFeedback;
-  [(_UIFeedback *)&v9 _playedAtTime:a4 engine:a3];
+  [(_UIFeedback *)&v9 _playedAtTime:engine engine:time];
   if (self->_duration != INFINITY)
   {
     [(_UIFeedback *)self _effectiveDelay];
@@ -125,9 +125,9 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"feedbackType";
-  v3 = [(_UIContinuousFeedback *)self type];
+  type = [(_UIContinuousFeedback *)self type];
   v4 = @"Unknown";
-  if (v3 == 1)
+  if (type == 1)
   {
     v4 = @"Sine";
   }

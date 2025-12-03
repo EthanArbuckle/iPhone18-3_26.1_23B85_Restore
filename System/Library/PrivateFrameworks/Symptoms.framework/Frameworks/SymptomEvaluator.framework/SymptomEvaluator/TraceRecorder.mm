@@ -1,39 +1,39 @@
 @interface TraceRecorder
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (id)_jsonForAWDReport:(id)a3;
-- (id)_jsonForName:(id)a3 objectString:(id)a4;
-- (id)_jsonForObject:(id)a3;
-- (id)_parseFormat:(char *)a3 args:(char *)a4;
-- (int)configureInstance:(id)a3;
+- (id)_jsonForAWDReport:(id)report;
+- (id)_jsonForName:(id)name objectString:(id)string;
+- (id)_jsonForObject:(id)object;
+- (id)_parseFormat:(char *)format args:(char *)args;
+- (int)configureInstance:(id)instance;
 - (void)assessStartStop;
-- (void)setTimerCallbackWithDelay:(double)a3 queue:(id)a4 reference:(id)a5;
-- (void)setTraceFileRootName:(id)a3;
+- (void)setTimerCallbackWithDelay:(double)delay queue:(id)queue reference:(id)reference;
+- (void)setTraceFileRootName:(id)name;
 - (void)startRecording;
 - (void)stopRecording;
 @end
 
 @implementation TraceRecorder
 
-- (id)_jsonForName:(id)a3 objectString:(id)a4
+- (id)_jsonForName:(id)name objectString:(id)string
 {
-  v5 = 0;
-  if (a3 && a4)
+  string = 0;
+  if (name && string)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"{\n            objectname:        %@, \n            object:\n    %@\n        }", a3, a4];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"{\n            objectname:        %@, \n            object:\n    %@\n        }", name, string];
     v4 = vars8;
   }
 
-  return v5;
+  return string;
 }
 
-- (id)_jsonForAWDReport:(id)a3
+- (id)_jsonForAWDReport:(id)report
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  reportCopy = report;
+  v5 = reportCopy;
+  if (reportCopy)
   {
-    v6 = [v4 description];
+    v6 = [reportCopy description];
     v7 = [v6 stringByReplacingOccurrencesOfString:@" withString:@"\];
     v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 
@@ -52,14 +52,14 @@
   return v12;
 }
 
-- (id)_jsonForObject:(id)a3
+- (id)_jsonForObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v11 = MEMORY[0x277CCAAA0];
-    v12 = [MEMORY[0x277CBEAC0] dictionary];
-    v13 = [v11 dataWithJSONObject:v12 options:1 error:0];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    v13 = [v11 dataWithJSONObject:dictionary options:1 error:0];
 
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v13 encoding:4];
     v15 = objc_opt_class();
@@ -75,10 +75,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = [v4 dictionaryForm];
-      if (v5)
+      dictionaryForm = [objectCopy dictionaryForm];
+      if (dictionaryForm)
       {
-        v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:0];
+        v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryForm options:1 error:0];
         if (v6)
         {
           v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
@@ -100,7 +100,7 @@ LABEL_15:
 
     else
     {
-      v5 = 0;
+      dictionaryForm = 0;
     }
 
     v6 = 0;
@@ -110,12 +110,12 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v4;
+    v18 = objectCopy;
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v21 = [v18 UUIDString];
+    uUIDString = [v18 UUIDString];
 
-    v22 = [(TraceRecorder *)self _jsonForName:v20 objectString:v21];
+    v22 = [(TraceRecorder *)self _jsonForName:v20 objectString:uUIDString];
 
     v17 = v22;
 LABEL_17:
@@ -126,7 +126,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [(TraceRecorder *)self _jsonForAWDReport:v4];
+    v23 = [(TraceRecorder *)self _jsonForAWDReport:objectCopy];
   }
 
   else
@@ -135,7 +135,7 @@ LABEL_17:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v35 = 0;
-      v25 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:1 error:&v35];
+      v25 = [MEMORY[0x277CCAAA0] dataWithJSONObject:objectCopy options:1 error:&v35];
       v26 = v35;
       v27 = v26;
       if (!v25 || v26)
@@ -143,7 +143,7 @@ LABEL_17:
         v33 = objc_opt_class();
         v29 = NSStringFromClass(v33);
         v32 = @"UNKNOWN_ENCODING";
-        v30 = self;
+        selfCopy2 = self;
         v31 = v29;
       }
 
@@ -152,18 +152,18 @@ LABEL_17:
         v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v25 encoding:4];
         v28 = objc_opt_class();
         v29 = NSStringFromClass(v28);
-        v30 = self;
+        selfCopy2 = self;
         v31 = v29;
         v32 = v27;
       }
 
-      v34 = [(TraceRecorder *)v30 _jsonForName:v31 objectString:v32];
+      v34 = [(TraceRecorder *)selfCopy2 _jsonForName:v31 objectString:v32];
 
       v17 = v34;
       goto LABEL_17;
     }
 
-    v23 = -[TraceRecorder _jsonForNumber:](self, "_jsonForNumber:", [v4 longLongValue]);
+    v23 = -[TraceRecorder _jsonForNumber:](self, "_jsonForNumber:", [objectCopy longLongValue]);
   }
 
   v17 = v23;
@@ -172,7 +172,7 @@ LABEL_18:
   return v17;
 }
 
-- (id)_parseFormat:(char *)a3 args:(char *)a4
+- (id)_parseFormat:(char *)format args:(char *)args
 {
   v5 = 0;
   v6 = 1;
@@ -187,16 +187,16 @@ LABEL_18:
     while (1)
     {
 LABEL_2:
-      a3 += 2;
+      format += 2;
       do
       {
-        v13 = *(a3 - 2);
-        if (!*(a3 - 2))
+        v13 = *(format - 2);
+        if (!*(format - 2))
         {
           goto LABEL_59;
         }
 
-        ++a3;
+        ++format;
       }
 
       while (v13 != 37);
@@ -206,8 +206,8 @@ LABEL_2:
       }
 
       [v5 appendFormat:@", \n        param%d:         ", v6];
-      v14 = a3 - 1;
-      v15 = *(a3 - 2);
+      formatCopy = format - 1;
+      v15 = *(format - 2);
       switch(v15)
       {
         case 'h':
@@ -216,15 +216,15 @@ LABEL_2:
           goto LABEL_14;
         case 'l':
           v17 = 0;
-          v15 = *(a3 - 1);
+          v15 = *(format - 1);
           v16 = 1;
           if (v15 == 108)
           {
             v18 = 4;
-            v14 = a3;
+            formatCopy = format;
 LABEL_15:
-            a3 = &a3[v18 - 3];
-            v15 = *v14;
+            format = &format[v18 - 3];
+            v15 = *formatCopy;
             v19 = v16;
             v16 = 0;
             break;
@@ -242,7 +242,7 @@ LABEL_14:
           v17 = 0;
           v19 = 0;
           v16 = 0;
-          --a3;
+          --format;
           break;
       }
 
@@ -256,16 +256,16 @@ LABEL_14:
       {
         if (v15 == 112)
         {
-          v25 = a4;
-          a4 += 8;
-          [v5 appendFormat:@"%p", *v25];
+          argsCopy = args;
+          args += 8;
+          [v5 appendFormat:@"%p", *argsCopy];
         }
 
         else if (v15 == 115)
         {
-          v22 = a4;
-          a4 += 8;
-          v23 = *v22;
+          argsCopy2 = args;
+          args += 8;
+          v23 = *argsCopy2;
           if (!v23)
           {
             v23 = "";
@@ -279,10 +279,10 @@ LABEL_14:
       {
         if (v15 == 116)
         {
-          v42 = a4;
-          a4 += 8;
-          v43 = *v42;
-          dateStringMillisecondsFromReferenceInterval(*v42);
+          argsCopy3 = args;
+          args += 8;
+          v43 = *argsCopy3;
+          dateStringMillisecondsFromReferenceInterval(*argsCopy3);
           v44 = v12;
           v45 = v11;
           v46 = v10;
@@ -313,30 +313,30 @@ LABEL_14:
 LABEL_31:
         if (v19)
         {
-          v21 = a4;
-          a4 += 8;
-          [v5 appendFormat:v7, *v21];
+          argsCopy4 = args;
+          args += 8;
+          [v5 appendFormat:v7, *argsCopy4];
         }
 
         else if (v16)
         {
-          v27 = a4;
-          a4 += 8;
-          [v5 appendFormat:v8, *v27];
+          argsCopy5 = args;
+          args += 8;
+          [v5 appendFormat:v8, *argsCopy5];
         }
 
         else if (v17)
         {
-          v39 = a4;
-          a4 += 8;
-          [v5 appendFormat:@"%zx", *v39];
+          argsCopy6 = args;
+          args += 8;
+          [v5 appendFormat:@"%zx", *argsCopy6];
         }
 
         else
         {
-          v41 = a4;
-          a4 += 8;
-          [v5 appendFormat:v9, *v41];
+          argsCopy7 = args;
+          args += 8;
+          [v5 appendFormat:v9, *argsCopy7];
         }
       }
     }
@@ -345,9 +345,9 @@ LABEL_31:
     {
       if (v15 == 99)
       {
-        v37 = a4;
-        a4 += 8;
-        [v5 appendFormat:@"%c", *v37];
+        argsCopy8 = args;
+        args += 8;
+        [v5 appendFormat:@"%c", *argsCopy8];
         goto LABEL_2;
       }
 
@@ -355,9 +355,9 @@ LABEL_31:
       {
         if (v15 == 102)
         {
-          v20 = a4;
-          a4 += 8;
-          [v5 appendFormat:@"%f", *v20];
+          argsCopy9 = args;
+          args += 8;
+          [v5 appendFormat:@"%f", *argsCopy9];
         }
 
         goto LABEL_2;
@@ -366,30 +366,30 @@ LABEL_31:
 LABEL_38:
       if (v19)
       {
-        v24 = a4;
-        a4 += 8;
-        [v5 appendFormat:v10, *v24];
+        argsCopy10 = args;
+        args += 8;
+        [v5 appendFormat:v10, *argsCopy10];
       }
 
       else if (v16)
       {
-        v26 = a4;
-        a4 += 8;
-        [v5 appendFormat:v11, *v26];
+        argsCopy11 = args;
+        args += 8;
+        [v5 appendFormat:v11, *argsCopy11];
       }
 
       else if (v17)
       {
-        v38 = a4;
-        a4 += 8;
-        [v5 appendFormat:v12, *v38];
+        argsCopy12 = args;
+        args += 8;
+        [v5 appendFormat:v12, *argsCopy12];
       }
 
       else
       {
-        v40 = a4;
-        a4 += 8;
-        [v5 appendFormat:@"%d", *v40];
+        argsCopy13 = args;
+        args += 8;
+        [v5 appendFormat:@"%d", *argsCopy13];
       }
 
       goto LABEL_2;
@@ -400,9 +400,9 @@ LABEL_38:
       break;
     }
 
-    v28 = a4;
-    a4 += 8;
-    v52 = *v28;
+    argsCopy14 = args;
+    args += 8;
+    v52 = *argsCopy14;
     +[TraceRecorder sharedInstance];
     v29 = v12;
     v30 = v11;
@@ -571,36 +571,36 @@ LABEL_6:
   }
 }
 
-- (void)setTraceFileRootName:(id)a3
+- (void)setTraceFileRootName:(id)name
 {
-  objc_storeStrong(&self->_traceFileRootName, a3);
+  objc_storeStrong(&self->_traceFileRootName, name);
 
   [(TraceRecorder *)self assessStartStop];
 }
 
-- (void)setTimerCallbackWithDelay:(double)a3 queue:(id)a4 reference:(id)a5
+- (void)setTimerCallbackWithDelay:(double)delay queue:(id)queue reference:(id)reference
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  referenceCopy = reference;
   v9 = apparentTimeLogHandle;
   if (os_log_type_enabled(apparentTimeLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v16 = a3;
+    delayCopy = delay;
     v17 = 2112;
-    v18 = v8;
+    v18 = referenceCopy;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "TraceRecorder setTimerCallbackWithDelay %.3f for reference %@", buf, 0x16u);
   }
 
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__TraceRecorder_setTimerCallbackWithDelay_queue_reference___block_invoke;
   block[3] = &unk_27898A0C8;
-  v14 = v8;
-  v11 = v8;
-  dispatch_after(v10, v7, block);
+  v14 = referenceCopy;
+  v11 = referenceCopy;
+  dispatch_after(v10, queueCopy, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -625,9 +625,9 @@ void __59__TraceRecorder_setTimerCallbackWithDelay_queue_reference___block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   shared_prefs_store = get_shared_prefs_store();
   v10[0] = 0;
   v10[1] = v10;
@@ -773,11 +773,11 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[TraceRecorder sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
@@ -788,7 +788,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __31__TraceRecorder_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_6 != -1)
   {
     dispatch_once(&sharedInstance_pred_6, block);

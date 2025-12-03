@@ -7,8 +7,8 @@
 
 - (void)tvrui_adjustTopMostChildScrollViewContentInset:()TVRUIAdditions
 {
-  v10 = [a1 view];
-  [a1 tvrui_adjustChildScrollViewContentInset:v10 recursingFromView:{a2, a3, a4, a5}];
+  view = [self view];
+  [self tvrui_adjustChildScrollViewContentInset:view recursingFromView:{a2, a3, a4, a5}];
 }
 
 - (uint64_t)tvrui_adjustChildScrollViewContentInset:()TVRUIAdditions recursingFromView:
@@ -35,8 +35,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v15 = [v12 subviews];
-    v16 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    subviews = [v12 subviews];
+    v16 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -48,10 +48,10 @@
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(subviews);
           }
 
-          if ([a1 tvrui_adjustChildScrollViewContentInset:*(*(&v21 + 1) + 8 * v19) recursingFromView:{a2, a3, a4, a5}])
+          if ([self tvrui_adjustChildScrollViewContentInset:*(*(&v21 + 1) + 8 * v19) recursingFromView:{a2, a3, a4, a5}])
           {
             v14 = 1;
             goto LABEL_13;
@@ -61,7 +61,7 @@
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v17 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v17)
         {
           continue;

@@ -1,15 +1,15 @@
 @interface CASDFGeneratorRequest
 + (id)request;
-+ (id)requestForEffect:(id)a3;
-+ (id)requestForEffects:(id)a3;
++ (id)requestForEffect:(id)effect;
++ (id)requestForEffects:(id)effects;
 - (CASDFGeneratorRequest)init;
 - (void)_resetConfiguration;
-- (void)_unionConfigurationForEffect:(id)a3;
+- (void)_unionConfigurationForEffect:(id)effect;
 @end
 
 @implementation CASDFGeneratorRequest
 
-- (void)_unionConfigurationForEffect:(id)a3
+- (void)_unionConfigurationForEffect:(id)effect
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -44,7 +44,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a3 radius];
+      [effect radius];
       v14 = v13 * 3.0;
       v15 = vdupq_lane_s64(COERCE__INT64(v13 * 3.0), 0);
       v16 = vbslq_s8(vcgtq_f64(*&self->_padding, v15), *&self->_padding, v15);
@@ -69,17 +69,17 @@ LABEL_26:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 keyHeight];
+        [effect keyHeight];
         v27 = v26;
-        [a3 keyHeightOffset];
+        [effect keyHeightOffset];
         v29 = v28 + v27;
-        [a3 fillHeight];
+        [effect fillHeight];
         v31 = v30;
-        [a3 fillHeightOffset];
+        [effect fillHeightOffset];
         v33 = v32 + v31;
-        [a3 keyHeightScale];
+        [effect keyHeightScale];
         v35 = v34 * v29;
-        [a3 fillHeightScale];
+        [effect fillHeightScale];
         v22 = v36 * v33;
         if (v35 > v22)
         {
@@ -96,7 +96,7 @@ LABEL_26:
       }
     }
 
-    [a3 height];
+    [effect height];
 LABEL_23:
     self->_includeGradient = 1;
     maximumDistance = self->_maximumDistance;
@@ -117,7 +117,7 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v9 = [objc_msgSend(a3 "distances")];
+  v9 = [objc_msgSend(effect "distances")];
   zeroValueDistance = self->_zeroValueDistance;
   if (v9 < 2)
   {
@@ -126,10 +126,10 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  [objc_msgSend(objc_msgSend(a3 "distances")];
+  [objc_msgSend(objc_msgSend(effect "distances")];
   if (zeroValueDistance >= v11)
   {
-    [objc_msgSend(objc_msgSend(a3 "distances")];
+    [objc_msgSend(objc_msgSend(effect "distances")];
   }
 
   else
@@ -139,10 +139,10 @@ LABEL_23:
 
   self->_zeroValueDistance = v12;
   v23 = self->_oneValueDistance;
-  [objc_msgSend(objc_msgSend(a3 "distances")];
+  [objc_msgSend(objc_msgSend(effect "distances")];
   if (v23 <= v24)
   {
-    [objc_msgSend(objc_msgSend(a3 "distances")];
+    [objc_msgSend(objc_msgSend(effect "distances")];
   }
 
   else
@@ -179,16 +179,16 @@ LABEL_23:
   return result;
 }
 
-+ (id)requestForEffects:(id)a3
++ (id)requestForEffects:(id)effects
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a1 request];
-  [v4 _resetConfiguration];
+  request = [self request];
+  [request _resetConfiguration];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [effects countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,33 +200,33 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(effects);
         }
 
-        [v4 _unionConfigurationForEffect:*(*(&v11 + 1) + 8 * v8++)];
+        [request _unionConfigurationForEffect:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [effects countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return request;
 }
 
-+ (id)requestForEffect:(id)a3
++ (id)requestForEffect:(id)effect
 {
-  v4 = [a1 request];
-  [v4 _resetConfiguration];
-  [v4 _unionConfigurationForEffect:a3];
-  return v4;
+  request = [self request];
+  [request _resetConfiguration];
+  [request _unionConfigurationForEffect:effect];
+  return request;
 }
 
 + (id)request
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

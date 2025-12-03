@@ -2,36 +2,36 @@
 - (NSString)volumeAudioCategory;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (void)didMoveToWindow;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation VolumeSlider
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B5DFEB0();
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
-  v4 = self;
+  selfCopy = self;
   sub_20B5E010C();
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_20B5E0DF8();
 }
 
 - (NSString)volumeAudioCategory
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12VolumeSlider_volumeController);
-  v3 = self;
-  v4 = [v2 dataSource];
+  selfCopy = self;
+  dataSource = [v2 dataSource];
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
   if (v5)
@@ -62,11 +62,11 @@
 
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
-  v2 = self;
-  v3 = [(VolumeSlider *)v2 window];
-  v4 = [v3 windowScene];
+  selfCopy = self;
+  window = [(VolumeSlider *)selfCopy window];
+  windowScene = [window windowScene];
 
-  return v4;
+  return windowScene;
 }
 
 @end

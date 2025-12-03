@@ -1,21 +1,21 @@
 @interface APDBTriggerRow
-- (APDBTriggerRow)initWithExperimentId:(id)a3 treatmentId:(id)a4 table:(id)a5;
+- (APDBTriggerRow)initWithExperimentId:(id)id treatmentId:(id)treatmentId table:(id)table;
 @end
 
 @implementation APDBTriggerRow
 
-- (APDBTriggerRow)initWithExperimentId:(id)a3 treatmentId:(id)a4 table:(id)a5
+- (APDBTriggerRow)initWithExperimentId:(id)id treatmentId:(id)treatmentId table:(id)table
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
   v13.receiver = self;
   v13.super_class = APDBTriggerRow;
-  v10 = [(APDBTriggerRow *)&v13 initAsNewObjectWithTable:a5];
+  v10 = [(APDBTriggerRow *)&v13 initAsNewObjectWithTable:table];
   v11 = v10;
   if (v10)
   {
-    [(APDBTriggerRow *)v10 setValue:v8 forColumnName:@"experimentId"];
-    [(APDBTriggerRow *)v11 setValue:v9 forColumnName:@"treatmentId"];
+    [(APDBTriggerRow *)v10 setValue:idCopy forColumnName:@"experimentId"];
+    [(APDBTriggerRow *)v11 setValue:treatmentIdCopy forColumnName:@"treatmentId"];
   }
 
   return v11;

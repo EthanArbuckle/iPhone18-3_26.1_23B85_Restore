@@ -1,17 +1,17 @@
 @interface SBHIconModel
 + (Class)applicationIconClass;
 + (SBHIconModelApplicationDataSource)defaultApplicationDataSource;
-- (BOOL)addIconToDesignatedLocation:(id)a3 options:(unint64_t)a4 listGridCellInfoOptions:(unint64_t)a5;
-- (BOOL)containsIcon:(id)a3;
-- (BOOL)deleteIconStateWithOptions:(unint64_t)a3;
-- (BOOL)iconStateUnarchiver:(id)a3 listsAllowRotatedLayoutForFolderClass:(Class)a4;
-- (BOOL)iconStateUnarchiver:(id)a3 shouldLeaveGapForMissingIconWithIdentifier:(id)a4;
-- (BOOL)isIconVisible:(id)a3;
-- (BOOL)isTrackingIcon:(id)a3;
+- (BOOL)addIconToDesignatedLocation:(id)location options:(unint64_t)options listGridCellInfoOptions:(unint64_t)infoOptions;
+- (BOOL)containsIcon:(id)icon;
+- (BOOL)deleteIconStateWithOptions:(unint64_t)options;
+- (BOOL)iconStateUnarchiver:(id)unarchiver listsAllowRotatedLayoutForFolderClass:(Class)class;
+- (BOOL)iconStateUnarchiver:(id)unarchiver shouldLeaveGapForMissingIconWithIdentifier:(id)identifier;
+- (BOOL)isIconVisible:(id)visible;
+- (BOOL)isTrackingIcon:(id)icon;
 - (BOOL)saveIconStateIfNeeded;
-- (BOOL)shouldAvoidPlacingIconOnFirstPage:(id)a3;
-- (BOOL)shouldSkipAddingIcon:(id)a3 toRootFolder:(id)a4;
-- (Class)iconClassForApplicationWithBundleIdentifier:(id)a3;
+- (BOOL)shouldAvoidPlacingIconOnFirstPage:(id)page;
+- (BOOL)shouldSkipAddingIcon:(id)icon toRootFolder:(id)folder;
+- (Class)iconClassForApplicationWithBundleIdentifier:(id)identifier;
 - (NSDictionary)defaultIconState;
 - (NSDictionary)desiredIconState;
 - (NSDictionary)iconState;
@@ -24,103 +24,103 @@
 - (NSString)listRotatedLayoutClusterGridSizeClass;
 - (NSString)localizedDefaultFolderName;
 - (NSString)unlocalizedDefaultFolderName;
-- (SBHIconGridSize)iconStateUnarchiver:(id)a3 listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)a4;
-- (SBHIconGridSize)listGridSizeForFolderClass:(Class)a3;
+- (SBHIconGridSize)iconStateUnarchiver:(id)unarchiver listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)class;
+- (SBHIconGridSize)listGridSizeForFolderClass:(Class)class;
 - (SBHIconGridSizeClassDomain)gridSizeClassDomain;
 - (SBHIconGridSizeClassSizeMap)gridSizeClassSizes;
 - (SBHIconModel)init;
-- (SBHIconModel)initWithStore:(id)a3 applicationDataSource:(id)a4;
-- (SBHIconModel)initWithStore:(id)a3 iconRepository:(id)a4;
+- (SBHIconModel)initWithStore:(id)store applicationDataSource:(id)source;
+- (SBHIconModel)initWithStore:(id)store iconRepository:(id)repository;
 - (SBHIconModelApplicationDataSource)applicationDataSource;
 - (SBHIconModelDelegate)delegate;
 - (SBIconModelStore)store;
 - (SBIconModelStore)todayListsStore;
-- (id)addAdditionalIconMatchingIcon:(id)a3;
-- (id)addApplication:(id)a3;
-- (id)addApplicationPlaceholder:(id)a3;
-- (id)addBookmarkIconForWebClip:(id)a3;
-- (id)allowedGridSizeClassesForDockForIconStateUnarchiver:(id)a3;
-- (id)allowedGridSizeClassesForTodayListForIconStateUnarchiver:(id)a3;
-- (id)applicationIconsForBundleIdentifier:(id)a3;
-- (id)archiver:(id)a3 representationForIcon:(id)a4;
-- (id)archiver:(id)a3 representationForIconDataSource:(id)a4;
-- (id)bookmarkIconForWebClipIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)desiredIndexPathForIconWithIdentifier:(id)a3;
-- (id)disableIconStateAutosaveForReason:(id)a3;
-- (id)gridSizeClassSizesForIconStateUnarchiver:(id)a3;
+- (id)addAdditionalIconMatchingIcon:(id)icon;
+- (id)addApplication:(id)application;
+- (id)addApplicationPlaceholder:(id)placeholder;
+- (id)addBookmarkIconForWebClip:(id)clip;
+- (id)allowedGridSizeClassesForDockForIconStateUnarchiver:(id)unarchiver;
+- (id)allowedGridSizeClassesForTodayListForIconStateUnarchiver:(id)unarchiver;
+- (id)applicationIconsForBundleIdentifier:(id)identifier;
+- (id)archiver:(id)archiver representationForIcon:(id)icon;
+- (id)archiver:(id)archiver representationForIconDataSource:(id)source;
+- (id)bookmarkIconForWebClipIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)desiredIndexPathForIconWithIdentifier:(id)identifier;
+- (id)disableIconStateAutosaveForReason:(id)reason;
+- (id)gridSizeClassSizesForIconStateUnarchiver:(id)unarchiver;
 - (id)iconModelMetadata;
-- (id)iconStateUnarchiver:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4;
-- (id)iconStateUnarchiver:(id)a3 didUnarchiveFileStackIcon:(id)a4;
-- (id)iconStateUnarchiver:(id)a3 didUnarchiveWidgetIcon:(id)a4;
-- (id)iconStateUnarchiver:(id)a3 supportedGridSizeClassesForWidgetWithKind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6;
-- (id)iconsOfClass:(Class)a3;
-- (id)listRotatedLayoutClusterGridSizeClassForIconStateUnarchiver:(id)a3;
-- (id)localizedFolderNameForDefaultDisplayName:(id)a3;
-- (id)makeFolderWithDisplayName:(id)a3;
-- (id)makeFolderWithDisplayName:(id)a3 uniqueIdentifier:(id)a4;
-- (id)modernizeRootArchive:(id)a3;
-- (id)removeApplication:(id)a3;
-- (id)removeApplication:(id)a3 pruneEmptyIcons:(BOOL)a4;
-- (id)removeApplicationPlaceholder:(id)a3;
-- (id)removeApplicationWithBundleIdentifier:(id)a3;
-- (id)removeApplicationWithBundleIdentifier:(id)a3 pruneEmptyIcons:(BOOL)a4;
+- (id)iconStateUnarchiver:(id)unarchiver allowedGridSizeClassesForFolderClass:(Class)class;
+- (id)iconStateUnarchiver:(id)unarchiver didUnarchiveFileStackIcon:(id)icon;
+- (id)iconStateUnarchiver:(id)unarchiver didUnarchiveWidgetIcon:(id)icon;
+- (id)iconStateUnarchiver:(id)unarchiver supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
+- (id)iconsOfClass:(Class)class;
+- (id)listRotatedLayoutClusterGridSizeClassForIconStateUnarchiver:(id)unarchiver;
+- (id)localizedFolderNameForDefaultDisplayName:(id)name;
+- (id)makeFolderWithDisplayName:(id)name;
+- (id)makeFolderWithDisplayName:(id)name uniqueIdentifier:(id)identifier;
+- (id)modernizeRootArchive:(id)archive;
+- (id)removeApplication:(id)application;
+- (id)removeApplication:(id)application pruneEmptyIcons:(BOOL)icons;
+- (id)removeApplicationPlaceholder:(id)placeholder;
+- (id)removeApplicationWithBundleIdentifier:(id)identifier;
+- (id)removeApplicationWithBundleIdentifier:(id)identifier pruneEmptyIcons:(BOOL)icons;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)supportedGridSizeClassesForWidgetWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5;
-- (id)widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:(id)a3 kind:(id)a4 sizeClass:(int64_t)a5;
-- (id)widgetIconsContainingWidgetsMatchingUniqueIdentifier:(id)a3;
-- (int64_t)iconStateUnarchiver:(id)a3 listsFixedIconLocationBehaviorForFolderClass:(Class)a4;
-- (int64_t)maxIconCountForDockUtilitiesForIconStateUnarchiver:(id)a3;
+- (id)supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
+- (id)widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:(id)identifier kind:(id)kind sizeClass:(int64_t)class;
+- (id)widgetIconsContainingWidgetsMatchingUniqueIdentifier:(id)identifier;
+- (int64_t)iconStateUnarchiver:(id)unarchiver listsFixedIconLocationBehaviorForFolderClass:(Class)class;
+- (int64_t)maxIconCountForDockUtilitiesForIconStateUnarchiver:(id)unarchiver;
 - (int64_t)maxListCountForFolders;
-- (void)addIcon:(id)a3;
-- (void)addIconsOfClass:(Class)a3 toSet:(id)a4;
+- (void)addIcon:(id)icon;
+- (void)addIconsOfClass:(Class)class toSet:(id)set;
 - (void)checkModelConsistency;
-- (void)checkModelConsistencyWithListGridCellInfoOptions:(unint64_t)a3;
+- (void)checkModelConsistencyWithListGridCellInfoOptions:(unint64_t)options;
 - (void)clearDesiredIconStateIfPossible;
-- (void)clearDesiredIconStateWithOptions:(unint64_t)a3;
-- (void)enumerateApplicationIconsForBundleIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)enumerateLeafIconsUsingBlock:(id)a3;
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5;
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5;
-- (void)folder:(id)a3 willAddIcon:(id)a4;
-- (void)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
-- (void)iconRepository:(id)a3 didAddIcon:(id)a4;
-- (void)iconRepository:(id)a3 didAddPlaceholderToApplicationIcon:(id)a4;
-- (void)iconRepository:(id)a3 didChangeVisibilityForIconsToVisible:(id)a4 hidden:(id)a5;
-- (void)iconRepository:(id)a3 didRemovePlaceholderFromApplicationIcon:(id)a4;
-- (void)iconRepository:(id)a3 willRemoveIcon:(id)a4;
-- (void)iconWantsUninstall:(id)a3;
-- (void)importDesiredIconState:(id)a3;
-- (void)importIconState:(id)a3;
+- (void)clearDesiredIconStateWithOptions:(unint64_t)options;
+- (void)enumerateApplicationIconsForBundleIdentifier:(id)identifier usingBlock:(id)block;
+- (void)enumerateLeafIconsUsingBlock:(id)block;
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons;
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon;
+- (void)folder:(id)folder willAddIcon:(id)icon;
+- (void)icon:(id)icon launchFromLocation:(id)location context:(id)context;
+- (void)iconRepository:(id)repository didAddIcon:(id)icon;
+- (void)iconRepository:(id)repository didAddPlaceholderToApplicationIcon:(id)icon;
+- (void)iconRepository:(id)repository didChangeVisibilityForIconsToVisible:(id)visible hidden:(id)hidden;
+- (void)iconRepository:(id)repository didRemovePlaceholderFromApplicationIcon:(id)icon;
+- (void)iconRepository:(id)repository willRemoveIcon:(id)icon;
+- (void)iconWantsUninstall:(id)uninstall;
+- (void)importDesiredIconState:(id)state;
+- (void)importIconState:(id)state;
 - (void)installedWebClipsDidChange;
 - (void)layout;
 - (void)layoutIfNeeded;
 - (void)localeChanged;
 - (void)markIconStateClean;
 - (void)markIconStateDirty;
-- (void)noteApplicationIconImageChanged:(id)a3;
+- (void)noteApplicationIconImageChanged:(id)changed;
 - (void)removeAllIcons;
-- (void)removeApplicationIconsForBundleIdentifier:(id)a3;
-- (void)removeIcon:(id)a3;
-- (void)removeIconForIdentifier:(id)a3;
-- (void)removeIcons:(id)a3;
+- (void)removeApplicationIconsForBundleIdentifier:(id)identifier;
+- (void)removeIcon:(id)icon;
+- (void)removeIconForIdentifier:(id)identifier;
+- (void)removeIcons:(id)icons;
 - (void)saveDesiredIconState;
-- (void)setAutomaticallyAddsWebClips:(BOOL)a3;
-- (void)setDesiredIconRelativePath:(id)a3 forIconWithIdentifier:(id)a4;
-- (void)setDesiredIconState:(id)a3;
-- (void)setDesiredIconStateFlattened:(id)a3;
-- (void)setRemovedIcons:(id)a3;
-- (void)setRootFolderAllowedGridSizeClasses:(id)a3;
-- (void)setStore:(id)a3;
-- (void)setTodayListsStore:(id)a3;
-- (void)setVisibilityOfIconsWithVisibleTags:(id)a3 hiddenTags:(id)a4;
+- (void)setAutomaticallyAddsWebClips:(BOOL)clips;
+- (void)setDesiredIconRelativePath:(id)path forIconWithIdentifier:(id)identifier;
+- (void)setDesiredIconState:(id)state;
+- (void)setDesiredIconStateFlattened:(id)flattened;
+- (void)setRemovedIcons:(id)icons;
+- (void)setRootFolderAllowedGridSizeClasses:(id)classes;
+- (void)setStore:(id)store;
+- (void)setTodayListsStore:(id)store;
+- (void)setVisibilityOfIconsWithVisibleTags:(id)tags hiddenTags:(id)hiddenTags;
 @end
 
 @implementation SBHIconModel
 
-- (BOOL)isIconVisible:(id)a3
+- (BOOL)isIconVisible:(id)visible
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
@@ -130,42 +130,42 @@
   }
 
   v6 = v5;
-  v7 = a3;
-  v8 = self;
-  v9 = [(SBHIconModel *)v8 iconRepository];
-  LOBYTE(v6) = [(SBHIconRepository *)v9 isIconVisible:v6];
+  visibleCopy = visible;
+  selfCopy = self;
+  iconRepository = [(SBHIconModel *)selfCopy iconRepository];
+  LOBYTE(v6) = [(SBHIconRepository *)iconRepository isIconVisible:v6];
 
   return v6;
 }
 
-- (SBHIconModel)initWithStore:(id)a3 applicationDataSource:(id)a4
+- (SBHIconModel)initWithStore:(id)store applicationDataSource:(id)source
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_1BEB43330(a3, a4);
+  return sub_1BEB43330(store, source);
 }
 
-- (SBHIconModel)initWithStore:(id)a3 iconRepository:(id)a4
+- (SBHIconModel)initWithStore:(id)store iconRepository:(id)repository
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = sub_1BEB437E8(a3, a4);
+  repositoryCopy = repository;
+  v7 = sub_1BEB437E8(store, repository);
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (void)iconRepository:(id)a3 didAddIcon:(id)a4
+- (void)iconRepository:(id)repository didAddIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BEB44840(v7);
+  repositoryCopy = repository;
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEB44840(iconCopy);
 }
 
 - (SBHIconGridSizeClassDomain)gridSizeClassDomain
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEB46C1C();
 
   return v3;
@@ -180,15 +180,15 @@
 
 - (void)markIconStateDirty
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEB544A0();
 }
 
-- (id)widgetIconsContainingWidgetsMatchingUniqueIdentifier:(id)a3
+- (id)widgetIconsContainingWidgetsMatchingUniqueIdentifier:(id)identifier
 {
   v4 = sub_1BEE4708C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1BEB5973C(v4, v6);
 
   sub_1BEB20D28(0, &qword_1EBDBFF30);
@@ -214,7 +214,7 @@
 
 - (SBHIconModelApplicationDataSource)applicationDataSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE0BB8C();
 
   return v3;
@@ -227,92 +227,92 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (Class)iconClassForApplicationWithBundleIdentifier:(id)a3
+- (Class)iconClassForApplicationWithBundleIdentifier:(id)identifier
 {
   v4 = sub_1BEE4708C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1BEE0BCCC(v4, v6);
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)addApplication:(id)a3
+- (id)addApplication:(id)application
 {
-  v3 = [(SBHIconModel *)self addWithApplication:a3 force:0];
+  v3 = [(SBHIconModel *)self addWithApplication:application force:0];
 
   return v3;
 }
 
-- (id)addAdditionalIconMatchingIcon:(id)a3
+- (id)addAdditionalIconMatchingIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1BEE0C19C(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  v6 = sub_1BEE0C19C(iconCopy);
 
   return v6;
 }
 
-- (id)removeApplication:(id)a3
+- (id)removeApplication:(id)application
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = [a3 bundleIdentifier];
-  if (!v6)
+  selfCopy = self;
+  bundleIdentifier = [application bundleIdentifier];
+  if (!bundleIdentifier)
   {
     sub_1BEE4708C();
-    v6 = sub_1BEE4705C();
+    bundleIdentifier = sub_1BEE4705C();
   }
 
-  v7 = [(SBHIconModel *)v5 removeApplicationWithBundleIdentifier:v6];
+  v7 = [(SBHIconModel *)selfCopy removeApplicationWithBundleIdentifier:bundleIdentifier];
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)removeApplication:(id)a3 pruneEmptyIcons:(BOOL)a4
+- (id)removeApplication:(id)application pruneEmptyIcons:(BOOL)icons
 {
-  v4 = a4;
+  iconsCopy = icons;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = [a3 bundleIdentifier];
-  if (!v8)
+  selfCopy = self;
+  bundleIdentifier = [application bundleIdentifier];
+  if (!bundleIdentifier)
   {
     sub_1BEE4708C();
-    v8 = sub_1BEE4705C();
+    bundleIdentifier = sub_1BEE4705C();
   }
 
-  v9 = [(SBHIconModel *)v7 removeApplicationWithBundleIdentifier:v8 pruneEmptyIcons:v4];
+  v9 = [(SBHIconModel *)selfCopy removeApplicationWithBundleIdentifier:bundleIdentifier pruneEmptyIcons:iconsCopy];
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (id)removeApplicationWithBundleIdentifier:(id)a3
+- (id)removeApplicationWithBundleIdentifier:(id)identifier
 {
-  v3 = [(SBHIconModel *)self removeApplicationWithBundleIdentifier:a3 pruneEmptyIcons:0];
+  v3 = [(SBHIconModel *)self removeApplicationWithBundleIdentifier:identifier pruneEmptyIcons:0];
 
   return v3;
 }
 
-- (id)removeApplicationWithBundleIdentifier:(id)a3 pruneEmptyIcons:(BOOL)a4
+- (id)removeApplicationWithBundleIdentifier:(id)identifier pruneEmptyIcons:(BOOL)icons
 {
   v6 = sub_1BEE4708C();
   v8 = v7;
-  v9 = self;
-  sub_1BEE0C878(v6, v8, a4);
+  selfCopy = self;
+  sub_1BEE0C878(v6, v8, icons);
   v11 = v10;
 
   return v11;
 }
 
-- (id)applicationIconsForBundleIdentifier:(id)a3
+- (id)applicationIconsForBundleIdentifier:(id)identifier
 {
   v4 = sub_1BEE4708C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1BEE4705C();
-  v9 = [(SBHIconModel *)v7 applicationIconForBundleIdentifier:v8];
+  v9 = [(SBHIconModel *)selfCopy applicationIconForBundleIdentifier:v8];
 
   if (v9)
   {
@@ -330,22 +330,22 @@
   return v12;
 }
 
-- (void)enumerateApplicationIconsForBundleIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumerateApplicationIconsForBundleIdentifier:(id)identifier usingBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = sub_1BEE4708C();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1BEE1FDEC(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1BEE1FDEC(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)removeApplicationIconsForBundleIdentifier:(id)a3
+- (void)removeApplicationIconsForBundleIdentifier:(id)identifier
 {
-  v7 = self;
-  v4 = [(SBHIconModel *)v7 applicationIconsForBundleIdentifier:a3];
+  selfCopy = self;
+  v4 = [(SBHIconModel *)selfCopy applicationIconsForBundleIdentifier:identifier];
   sub_1BEB20D28(0, &unk_1EBDBFFD0);
   v5 = sub_1BEE471AC();
 
@@ -354,7 +354,7 @@
   sub_1BEB20D28(0, &qword_1EBDBFEA0);
   v6 = sub_1BEE4719C();
 
-  [(SBHIconModel *)v7 removeIcons:v6];
+  [(SBHIconModel *)selfCopy removeIcons:v6];
 }
 
 - (NSSet)widgetIcons
@@ -369,14 +369,14 @@
   return v3;
 }
 
-- (id)widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:(id)a3 kind:(id)a4 sizeClass:(int64_t)a5
+- (id)widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:(id)identifier kind:(id)kind sizeClass:(int64_t)class
 {
   v8 = sub_1BEE4708C();
   v10 = v9;
-  if (a4)
+  if (kind)
   {
     v11 = sub_1BEE4708C();
-    a4 = v12;
+    kind = v12;
   }
 
   else
@@ -384,8 +384,8 @@
     v11 = 0;
   }
 
-  v13 = self;
-  sub_1BEE0CF34(v8, v10, v11, a4, a5);
+  selfCopy = self;
+  sub_1BEE0CF34(v8, v10, v11, kind, class);
 
   sub_1BEB20D28(0, &qword_1EBDBFF30);
   v14 = sub_1BEE4719C();
@@ -393,9 +393,9 @@
   return v14;
 }
 
-- (id)bookmarkIconForWebClipIdentifier:(id)a3
+- (id)bookmarkIconForWebClipIdentifier:(id)identifier
 {
-  v3 = [(SBHIconModel *)self leafIconForIdentifier:a3];
+  v3 = [(SBHIconModel *)self leafIconForIdentifier:identifier];
   if (v3)
   {
     v4 = v3;
@@ -411,36 +411,36 @@
   return v3;
 }
 
-- (id)addBookmarkIconForWebClip:(id)a3
+- (id)addBookmarkIconForWebClip:(id)clip
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1BEE0D7F8(v4);
+  clipCopy = clip;
+  selfCopy = self;
+  v6 = sub_1BEE0D7F8(clipCopy);
 
   return v6;
 }
 
-- (void)setAutomaticallyAddsWebClips:(BOOL)a3
+- (void)setAutomaticallyAddsWebClips:(BOOL)clips
 {
-  v4 = self;
-  sub_1BEE0D9B8(a3);
+  selfCopy = self;
+  sub_1BEE0D9B8(clips);
 }
 
-- (void)addIcon:(id)a3
+- (void)addIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE0DCA4(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEE0DCA4(iconCopy);
 }
 
-- (void)removeIcon:(id)a3
+- (void)removeIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE0E878(v4, 1, 1);
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEE0E878(iconCopy, 1, 1);
 }
 
-- (void)removeIcons:(id)a3
+- (void)removeIcons:(id)icons
 {
   sub_1BEB20D28(0, &qword_1EBDBFEA0);
   v4 = sub_1BEE471AC();
@@ -469,7 +469,7 @@
     return;
   }
 
-  v7 = self;
+  selfCopy = self;
   for (i = 0; i != v6; ++i)
   {
     if ((v5 & 0xC000000000000001) != 0)
@@ -483,84 +483,84 @@
     }
 
     v10 = v9;
-    [(SBHIconModel *)v7 removeIcon:v9];
+    [(SBHIconModel *)selfCopy removeIcon:v9];
   }
 
 LABEL_10:
 }
 
-- (void)removeIconForIdentifier:(id)a3
+- (void)removeIconForIdentifier:(id)identifier
 {
-  v6 = self;
-  v4 = [(SBHIconModel *)v6 leafIconForIdentifier:a3];
+  selfCopy = self;
+  v4 = [(SBHIconModel *)selfCopy leafIconForIdentifier:identifier];
   if (v4)
   {
     v5 = v4;
-    [(SBHIconModel *)v6 removeIcon:v4];
+    [(SBHIconModel *)selfCopy removeIcon:v4];
   }
 }
 
 - (void)removeAllIcons
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE0F33C();
 }
 
-- (BOOL)containsIcon:(id)a3
+- (BOOL)containsIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1BEE0F470(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  LOBYTE(self) = sub_1BEE0F470(iconCopy);
 
   return self & 1;
 }
 
 - (NSSet)visibleLeafIcons
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 leafIcons];
+  selfCopy = self;
+  leafIcons = [(SBHIconModel *)selfCopy leafIcons];
   sub_1BEB20D28(0, &qword_1EBDBFFE0);
   sub_1BEB2A7E0(&qword_1EBDBFF70, &qword_1EBDBFFE0);
   v4 = sub_1BEE4726C();
 
-  sub_1BEE20630(v4, v2);
+  sub_1BEE20630(v4, selfCopy);
   v5 = sub_1BEE4724C();
 
   return v5;
 }
 
-- (void)enumerateLeafIconsUsingBlock:(id)a3
+- (void)enumerateLeafIconsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1BEE2083C(v5, v4);
+  selfCopy = self;
+  sub_1BEE2083C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (BOOL)isTrackingIcon:(id)a3
+- (BOOL)isTrackingIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1BEE0FD30(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  LOBYTE(self) = sub_1BEE0FD30(iconCopy);
 
   return self & 1;
 }
 
-- (void)addIconsOfClass:(Class)a3 toSet:(id)a4
+- (void)addIconsOfClass:(Class)class toSet:(id)set
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v7 = a4;
-  v8 = self;
-  sub_1BEE10160(ObjCClassMetadata, v7);
+  setCopy = set;
+  selfCopy = self;
+  sub_1BEE10160(ObjCClassMetadata, setCopy);
 }
 
-- (id)iconsOfClass:(Class)a3
+- (id)iconsOfClass:(Class)class
 {
   swift_getObjCClassMetadata();
-  v4 = self;
-  v5 = [(SBHIconModel *)v4 leafIcons];
+  selfCopy = self;
+  leafIcons = [(SBHIconModel *)selfCopy leafIcons];
   sub_1BEB20D28(0, &qword_1EBDBFFE0);
   sub_1BEB2A7E0(&qword_1EBDBFF70, &qword_1EBDBFFE0);
   v6 = sub_1BEE4726C();
@@ -573,8 +573,8 @@ LABEL_10:
 
 - (NSSet)leafIconIdentifiers
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 leafIcons];
+  selfCopy = self;
+  leafIcons = [(SBHIconModel *)selfCopy leafIcons];
   sub_1BEB20D28(0, &qword_1EBDBFFE0);
   sub_1BEB2A7E0(&qword_1EBDBFF70, &qword_1EBDBFFE0);
   v4 = sub_1BEE4726C();
@@ -591,8 +591,8 @@ LABEL_10:
 
 - (NSSet)currentLeafIdentifiers
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 leafIconIdentifiers];
+  selfCopy = self;
+  leafIconIdentifiers = [(SBHIconModel *)selfCopy leafIconIdentifiers];
   sub_1BEE4726C();
 
   v4 = sub_1BEE4724C();
@@ -600,15 +600,15 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)addIconToDesignatedLocation:(id)a3 options:(unint64_t)a4 listGridCellInfoOptions:(unint64_t)a5
+- (BOOL)addIconToDesignatedLocation:(id)location options:(unint64_t)options listGridCellInfoOptions:(unint64_t)infoOptions
 {
-  v8 = a3;
-  v9 = self;
-  v10 = [(SBHIconModel *)v9 rootFolder];
-  if (v10)
+  locationCopy = location;
+  selfCopy = self;
+  rootFolder = [(SBHIconModel *)selfCopy rootFolder];
+  if (rootFolder)
   {
-    v11 = v10;
-    v12 = sub_1BEE10740(v8, v10, a4, a5);
+    v11 = rootFolder;
+    v12 = sub_1BEE10740(locationCopy, rootFolder, options, infoOptions);
   }
 
   else
@@ -619,12 +619,12 @@ LABEL_10:
   return v12 & 1;
 }
 
-- (BOOL)shouldSkipAddingIcon:(id)a3 toRootFolder:(id)a4
+- (BOOL)shouldSkipAddingIcon:(id)icon toRootFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1BEE21E68(v6);
+  iconCopy = icon;
+  folderCopy = folder;
+  selfCopy = self;
+  v9 = sub_1BEE21E68(iconCopy);
 
   return v9 & 1;
 }
@@ -645,9 +645,9 @@ LABEL_10:
   return v2;
 }
 
-- (void)setDesiredIconStateFlattened:(id)a3
+- (void)setDesiredIconStateFlattened:(id)flattened
 {
-  if (a3)
+  if (flattened)
   {
     v4 = sub_1BEE4726C();
   }
@@ -660,22 +660,22 @@ LABEL_10:
   *(self + OBJC_IVAR___SBHIconModel_desiredIconStateFlattened) = v4;
 }
 
-- (void)setDesiredIconState:(id)a3
+- (void)setDesiredIconState:(id)state
 {
   *(self + OBJC_IVAR___SBHIconModel__desiredIconState) = sub_1BEE4701C();
-  v4 = self;
+  selfCopy = self;
 
-  [(SBHIconModel *)v4 setDesiredIconStateFlattened:0];
+  [(SBHIconModel *)selfCopy setDesiredIconStateFlattened:0];
 }
 
-- (id)desiredIndexPathForIconWithIdentifier:(id)a3
+- (id)desiredIndexPathForIconWithIdentifier:(id)identifier
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBDC7A28);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v17 - v5;
   v7 = sub_1BEE4708C();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   sub_1BEE13820(v7, v9, v6);
 
   v11 = sub_1BEE469DC();
@@ -692,30 +692,30 @@ LABEL_10:
   return v14;
 }
 
-- (void)clearDesiredIconStateWithOptions:(unint64_t)a3
+- (void)clearDesiredIconStateWithOptions:(unint64_t)options
 {
-  v4 = self;
-  sub_1BEE13DAC(a3);
+  selfCopy = self;
+  sub_1BEE13DAC(options);
 }
 
 - (void)clearDesiredIconStateIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE14184();
 }
 
-- (void)setDesiredIconRelativePath:(id)a3 forIconWithIdentifier:(id)a4
+- (void)setDesiredIconRelativePath:(id)path forIconWithIdentifier:(id)identifier
 {
   v6 = sub_1BEE4708C();
   v8 = v7;
   v9 = OBJC_IVAR___SBHIconModel_additionalDesiredIconRelativePaths;
   swift_beginAccess();
-  v10 = a3;
-  v11 = self;
+  pathCopy = path;
+  selfCopy = self;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   v13 = *(self + v9);
   *(self + v9) = 0x8000000000000000;
-  sub_1BEE31F30(v10, v6, v8, isUniquelyReferenced_nonNull_native);
+  sub_1BEE31F30(pathCopy, v6, v8, isUniquelyReferenced_nonNull_native);
 
   *(self + v9) = v13;
   swift_endAccess();
@@ -723,18 +723,18 @@ LABEL_10:
 
 - (NSDictionary)defaultIconState
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = v3;
-    if (([(SBHIconModelDelegate *)v3 respondsToSelector:sel_defaultIconStateForIconModel_]& 1) != 0)
+    v4 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_defaultIconStateForIconModel_]& 1) != 0)
     {
-      v5 = [(SBHIconModelDelegate *)v4 defaultIconStateForIconModel:v2];
+      v5 = [(SBHIconModelDelegate *)v4 defaultIconStateForIconModel:selfCopy];
       swift_unknownObjectRelease();
       sub_1BEE4701C();
 
-      v2 = v5;
+      selfCopy = v5;
       goto LABEL_6;
     }
 
@@ -749,17 +749,17 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)shouldAvoidPlacingIconOnFirstPage:(id)a3
+- (BOOL)shouldAvoidPlacingIconOnFirstPage:(id)page
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(SBHIconModel *)v5 delegate];
-  if (v6)
+  pageCopy = page;
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v7 = v6;
-    if (([(SBHIconModelDelegate *)v6 respondsToSelector:sel_iconModel_shouldAvoidPlacingIconOnFirstPage_]& 1) != 0)
+    v7 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_shouldAvoidPlacingIconOnFirstPage_]& 1) != 0)
     {
-      v8 = [(SBHIconModelDelegate *)v7 iconModel:v5 shouldAvoidPlacingIconOnFirstPage:v4];
+      v8 = [(SBHIconModelDelegate *)v7 iconModel:selfCopy shouldAvoidPlacingIconOnFirstPage:pageCopy];
     }
 
     else
@@ -778,7 +778,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)modernizeRootArchive:(id)a3
+- (id)modernizeRootArchive:(id)archive
 {
   sub_1BEE4701C();
   v3 = sub_1BEE4700C();
@@ -786,17 +786,17 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)deleteIconStateWithOptions:(unint64_t)a3
+- (BOOL)deleteIconStateWithOptions:(unint64_t)options
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1BEE15CF8(a3);
+  selfCopy = self;
+  LOBYTE(options) = sub_1BEE15CF8(options);
 
-  return a3 & 1;
+  return options & 1;
 }
 
 - (void)saveDesiredIconState
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE16078();
 }
 
@@ -810,36 +810,36 @@ LABEL_6:
 
 - (BOOL)saveIconStateIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE16A34();
 
   return v3 & 1;
 }
 
-- (void)importIconState:(id)a3
+- (void)importIconState:(id)state
 {
   sub_1BEE4701C();
-  v4 = self;
+  selfCopy = self;
   sub_1BEE16D10();
 }
 
-- (void)importDesiredIconState:(id)a3
+- (void)importDesiredIconState:(id)state
 {
   sub_1BEE4701C();
-  v7 = self;
+  selfCopy = self;
   v4 = sub_1BEE4700C();
 
-  v5 = [(SBHIconModel *)v7 modernizeRootArchive:v4];
+  v5 = [(SBHIconModel *)selfCopy modernizeRootArchive:v4];
 
   v6 = sub_1BEE4701C();
-  *(v7 + OBJC_IVAR___SBHIconModel__desiredIconState) = v6;
+  *(selfCopy + OBJC_IVAR___SBHIconModel__desiredIconState) = v6;
 
-  [(SBHIconModel *)v7 saveDesiredIconState];
+  [(SBHIconModel *)selfCopy saveDesiredIconState];
 }
 
 - (NSDictionary)iconState
 {
-  v2 = self;
+  selfCopy = self;
   if (!sub_1BEE14D78())
   {
     sub_1BEB449C8(MEMORY[0x1E69E7CC0]);
@@ -855,21 +855,21 @@ LABEL_6:
   if (*(self + OBJC_IVAR___SBHIconModel_isIconStateReallyDirty) == 1)
   {
     *(self + OBJC_IVAR___SBHIconModel_isIconStateReallyDirty) = 0;
-    v5 = self;
-    v3 = [(SBHIconModel *)v5 rootFolder];
-    if (v3)
+    selfCopy = self;
+    rootFolder = [(SBHIconModel *)selfCopy rootFolder];
+    if (rootFolder)
     {
-      v4 = v3;
-      [(SBFolder *)v3 markIconStateClean];
+      v4 = rootFolder;
+      [(SBFolder *)rootFolder markIconStateClean];
     }
   }
 }
 
-- (id)disableIconStateAutosaveForReason:(id)a3
+- (id)disableIconStateAutosaveForReason:(id)reason
 {
   v4 = sub_1BEE4708C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1BEE1719C(v4, v6);
 
   return v8;
@@ -877,32 +877,32 @@ LABEL_6:
 
 - (void)checkModelConsistency
 {
-  v4 = self;
-  v2 = [(SBHIconModel *)v4 rootFolder];
-  if (v2)
+  selfCopy = self;
+  rootFolder = [(SBHIconModel *)selfCopy rootFolder];
+  if (rootFolder)
   {
-    v3 = v2;
-    sub_1BEE1770C(v2, 0);
+    v3 = rootFolder;
+    sub_1BEE1770C(rootFolder, 0);
   }
 }
 
-- (void)checkModelConsistencyWithListGridCellInfoOptions:(unint64_t)a3
+- (void)checkModelConsistencyWithListGridCellInfoOptions:(unint64_t)options
 {
-  v6 = self;
-  v4 = [(SBHIconModel *)v6 rootFolder];
-  if (v4)
+  selfCopy = self;
+  rootFolder = [(SBHIconModel *)selfCopy rootFolder];
+  if (rootFolder)
   {
-    v5 = v4;
-    sub_1BEE1770C(v4, a3);
+    v5 = rootFolder;
+    sub_1BEE1770C(rootFolder, options);
   }
 }
 
-- (void)setVisibilityOfIconsWithVisibleTags:(id)a3 hiddenTags:(id)a4
+- (void)setVisibilityOfIconsWithVisibleTags:(id)tags hiddenTags:(id)hiddenTags
 {
-  if (a3)
+  if (tags)
   {
     sub_1BEE4726C();
-    if (!a4)
+    if (!hiddenTags)
     {
       goto LABEL_4;
     }
@@ -910,14 +910,14 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  if (a4)
+  if (hiddenTags)
   {
 LABEL_3:
     sub_1BEE4726C();
   }
 
 LABEL_4:
-  v6 = self;
+  selfCopy = self;
   sub_1BEE17EB4();
 }
 
@@ -928,15 +928,15 @@ LABEL_4:
   return v2;
 }
 
-- (void)setStore:(id)a3
+- (void)setStore:(id)store
 {
   v5 = OBJC_IVAR___SBHIconModel_store;
   v6 = *(self + OBJC_IVAR___SBHIconModel_store);
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1BEE18520(a3);
-  *(self + v5) = a3;
+  selfCopy = self;
+  sub_1BEE18520(store);
+  *(self + v5) = store;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
   sub_1BEE18584(v6);
@@ -951,12 +951,12 @@ LABEL_4:
   return v2;
 }
 
-- (void)setTodayListsStore:(id)a3
+- (void)setTodayListsStore:(id)store
 {
   v4 = *(self + OBJC_IVAR___SBHIconModel_todayListsStore);
-  *(self + OBJC_IVAR___SBHIconModel_todayListsStore) = a3;
+  *(self + OBJC_IVAR___SBHIconModel_todayListsStore) = store;
   swift_unknownObjectRetain_n();
-  v5 = self;
+  selfCopy = self;
   sub_1BEE186AC(v4);
   swift_unknownObjectRelease();
 
@@ -965,39 +965,39 @@ LABEL_4:
 
 - (void)layout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE187BC();
 }
 
 - (void)layoutIfNeeded
 {
-  v3 = self;
-  v2 = [(SBHIconModel *)v3 rootFolder];
-  if (v2)
+  selfCopy = self;
+  rootFolder = [(SBHIconModel *)selfCopy rootFolder];
+  if (rootFolder)
   {
   }
 
   else
   {
-    [(SBHIconModel *)v3 layout];
+    [(SBHIconModel *)selfCopy layout];
   }
 }
 
-- (id)makeFolderWithDisplayName:(id)a3
+- (id)makeFolderWithDisplayName:(id)name
 {
-  v3 = [(SBHIconModel *)self makeFolderWithDisplayName:a3 uniqueIdentifier:0];
+  v3 = [(SBHIconModel *)self makeFolderWithDisplayName:name uniqueIdentifier:0];
 
   return v3;
 }
 
-- (id)makeFolderWithDisplayName:(id)a3 uniqueIdentifier:(id)a4
+- (id)makeFolderWithDisplayName:(id)name uniqueIdentifier:(id)identifier
 {
   v6 = sub_1BEE4708C();
   v8 = v7;
-  if (a4)
+  if (identifier)
   {
     v9 = sub_1BEE4708C();
-    a4 = v10;
+    identifier = v10;
   }
 
   else
@@ -1005,22 +1005,22 @@ LABEL_4:
     v9 = 0;
   }
 
-  v11 = self;
-  v12 = sub_1BEE193C0(v6, v8, v9, a4);
+  selfCopy = self;
+  v12 = sub_1BEE193C0(v6, v8, v9, identifier);
 
   return v12;
 }
 
-- (id)localizedFolderNameForDefaultDisplayName:(id)a3
+- (id)localizedFolderNameForDefaultDisplayName:(id)name
 {
   sub_1BEE4708C();
-  v4 = self;
-  v5 = [(SBHIconModel *)v4 delegate];
-  if (v5)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v6 = v5;
+    v6 = delegate;
     v7 = sub_1BEE4705C();
-    v8 = [(SBHIconModelDelegate *)v6 iconModel:v4 localizedFolderNameForDefaultDisplayName:v7];
+    v8 = [(SBHIconModelDelegate *)v6 iconModel:selfCopy localizedFolderNameForDefaultDisplayName:v7];
 
     swift_unknownObjectRelease();
     sub_1BEE4708C();
@@ -1037,15 +1037,15 @@ LABEL_4:
 
 - (NSString)localizedDefaultFolderName
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 unlocalizedDefaultFolderName];
-  if (!v3)
+  selfCopy = self;
+  unlocalizedDefaultFolderName = [(SBHIconModel *)selfCopy unlocalizedDefaultFolderName];
+  if (!unlocalizedDefaultFolderName)
   {
     sub_1BEE4708C();
-    v3 = sub_1BEE4705C();
+    unlocalizedDefaultFolderName = sub_1BEE4705C();
   }
 
-  v4 = [(SBHIconModel *)v2 localizedFolderNameForDefaultDisplayName:v3];
+  v4 = [(SBHIconModel *)selfCopy localizedFolderNameForDefaultDisplayName:unlocalizedDefaultFolderName];
 
   if (!v4)
   {
@@ -1063,51 +1063,51 @@ LABEL_4:
   return v2;
 }
 
-- (void)setRootFolderAllowedGridSizeClasses:(id)a3
+- (void)setRootFolderAllowedGridSizeClasses:(id)classes
 {
-  v4 = a3;
-  v5 = self;
-  [v4 copyWithZone_];
+  classesCopy = classes;
+  selfCopy = self;
+  [classesCopy copyWithZone_];
   sub_1BEE4741C();
 
   swift_unknownObjectRelease();
   sub_1BEB20D28(0, &unk_1EBDBFED0);
   swift_dynamicCast();
-  v6 = *(v5 + OBJC_IVAR___SBHIconModel_rootFolderAllowedGridSizeClasses);
-  *(v5 + OBJC_IVAR___SBHIconModel_rootFolderAllowedGridSizeClasses) = v7;
+  v6 = *(selfCopy + OBJC_IVAR___SBHIconModel_rootFolderAllowedGridSizeClasses);
+  *(selfCopy + OBJC_IVAR___SBHIconModel_rootFolderAllowedGridSizeClasses) = v7;
 }
 
 - (void)localeChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE19970();
 }
 
-- (id)addApplicationPlaceholder:(id)a3
+- (id)addApplicationPlaceholder:(id)placeholder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BEE19CEC(a3);
+  selfCopy = self;
+  sub_1BEE19CEC(placeholder);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)removeApplicationPlaceholder:(id)a3
+- (id)removeApplicationPlaceholder:(id)placeholder
 {
-  v3 = [(SBHIconModel *)self removeApplicationPlaceholder:a3 pruneEmptyIcons:0];
+  v3 = [(SBHIconModel *)self removeApplicationPlaceholder:placeholder pruneEmptyIcons:0];
 
   return v3;
 }
 
 - (int64_t)maxListCountForFolders
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = [(SBHIconModelDelegate *)v3 maxListCountForFoldersForIconModel:v2];
+    v4 = [(SBHIconModelDelegate *)delegate maxListCountForFoldersForIconModel:selfCopy];
     swift_unknownObjectRelease();
   }
 
@@ -1119,13 +1119,13 @@ LABEL_4:
   return v4;
 }
 
-- (SBHIconGridSize)listGridSizeForFolderClass:(Class)a3
+- (SBHIconGridSize)listGridSizeForFolderClass:(Class)class
 {
-  v4 = self;
-  v5 = [(SBHIconModel *)v4 delegate];
-  if (v5)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v6 = [(SBHIconModelDelegate *)v5 iconModel:v4 listGridSizeForFolderClass:a3];
+    v6 = [(SBHIconModelDelegate *)delegate iconModel:selfCopy listGridSizeForFolderClass:class];
     swift_unknownObjectRelease();
   }
 
@@ -1139,11 +1139,11 @@ LABEL_4:
 
 - (SBHIconGridSizeClassSizeMap)gridSizeClassSizes
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = [(SBHIconModelDelegate *)v3 gridSizeClassSizesForIconModel:v2];
+    v4 = [(SBHIconModelDelegate *)delegate gridSizeClassSizesForIconModel:selfCopy];
 
     swift_unknownObjectRelease();
   }
@@ -1158,14 +1158,14 @@ LABEL_4:
 
 - (NSString)listRotatedLayoutClusterGridSizeClass
 {
-  v2 = self;
-  v3 = [(SBHIconModel *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = v3;
-    if (([(SBHIconModelDelegate *)v3 respondsToSelector:sel_listRotatedLayoutClusterGridSizeClassForIconModel_]& 1) != 0)
+    v4 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_listRotatedLayoutClusterGridSizeClassForIconModel_]& 1) != 0)
     {
-      v5 = [(SBHIconModelDelegate *)v4 listRotatedLayoutClusterGridSizeClassForIconModel:v2];
+      v5 = [(SBHIconModelDelegate *)v4 listRotatedLayoutClusterGridSizeClassForIconModel:selfCopy];
 
       swift_unknownObjectRelease();
       goto LABEL_6;
@@ -1181,12 +1181,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)supportedGridSizeClassesForWidgetWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5
+- (id)supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
   sub_1BEE4708C();
   sub_1BEE4708C();
   sub_1BEE4708C();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1BEE1A888();
 
   return v7;
@@ -1202,49 +1202,49 @@ LABEL_6:
   return v2;
 }
 
-- (void)setRemovedIcons:(id)a3
+- (void)setRemovedIcons:(id)icons
 {
   sub_1BEB20D28(0, &qword_1EBDBFEA0);
   sub_1BEB2A7E0(&qword_1EBDBFDC0, &qword_1EBDBFEA0);
   *(self + OBJC_IVAR___SBHIconModel_removedIcons) = sub_1BEE4726C();
 }
 
-- (void)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (void)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
+  iconCopy = icon;
+  locationCopy = location;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1BEE1AFBC(v8, v9, a5);
+  selfCopy = self;
+  sub_1BEE1AFBC(iconCopy, locationCopy, context);
 
   swift_unknownObjectRelease();
 }
 
-- (void)iconWantsUninstall:(id)a3
+- (void)iconWantsUninstall:(id)uninstall
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
   if (v5)
   {
     v6 = v5;
-    v7 = a3;
-    v9 = self;
-    v8 = [(SBHIconModel *)v9 iconRepository];
-    [(SBHIconRepository *)v8 uninstallIcon:v6 completionHandler:0];
+    uninstallCopy = uninstall;
+    selfCopy = self;
+    iconRepository = [(SBHIconModel *)selfCopy iconRepository];
+    [(SBHIconRepository *)iconRepository uninstallIcon:v6 completionHandler:0];
   }
 }
 
-- (SBHIconGridSize)iconStateUnarchiver:(id)a3 listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)a4
+- (SBHIconGridSize)iconStateUnarchiver:(id)unarchiver listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)class
 {
-  v5 = self;
-  v6 = [(SBHIconModel *)v5 delegate];
-  if (!v6)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (!delegate)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  if (([(SBHIconModelDelegate *)v6 respondsToSelector:sel_iconModel_listWithNonDefaultSizedIconsGridSizeForFolderClass_]& 1) == 0)
+  v7 = delegate;
+  if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_listWithNonDefaultSizedIconsGridSizeForFolderClass_]& 1) == 0)
   {
     swift_unknownObjectRelease();
 LABEL_5:
@@ -1254,7 +1254,7 @@ LABEL_5:
     return (v9 | v10);
   }
 
-  v8 = [(SBHIconModelDelegate *)v7 iconModel:v5 listWithNonDefaultSizedIconsGridSizeForFolderClass:a4];
+  v8 = [(SBHIconModelDelegate *)v7 iconModel:selfCopy listWithNonDefaultSizedIconsGridSizeForFolderClass:class];
   swift_unknownObjectRelease();
 
   v9 = v8 & 0xFFFF0000;
@@ -1262,16 +1262,16 @@ LABEL_5:
   return (v9 | v10);
 }
 
-- (int64_t)maxIconCountForDockUtilitiesForIconStateUnarchiver:(id)a3
+- (int64_t)maxIconCountForDockUtilitiesForIconStateUnarchiver:(id)unarchiver
 {
-  v3 = self;
-  v4 = [(SBHIconModel *)v3 delegate];
-  if (v4)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v5 = v4;
-    if (([(SBHIconModelDelegate *)v4 respondsToSelector:sel_maxIconCountForDockUtilitiesForIconModel_]& 1) != 0)
+    v5 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_maxIconCountForDockUtilitiesForIconModel_]& 1) != 0)
     {
-      v6 = [(SBHIconModelDelegate *)v5 maxIconCountForDockUtilitiesForIconModel:v3];
+      v6 = [(SBHIconModelDelegate *)v5 maxIconCountForDockUtilitiesForIconModel:selfCopy];
     }
 
     else
@@ -1290,30 +1290,30 @@ LABEL_5:
   return v6;
 }
 
-- (id)gridSizeClassSizesForIconStateUnarchiver:(id)a3
+- (id)gridSizeClassSizesForIconStateUnarchiver:(id)unarchiver
 {
-  v3 = [(SBHIconModel *)self gridSizeClassSizes];
+  gridSizeClassSizes = [(SBHIconModel *)self gridSizeClassSizes];
 
-  return v3;
+  return gridSizeClassSizes;
 }
 
-- (id)listRotatedLayoutClusterGridSizeClassForIconStateUnarchiver:(id)a3
+- (id)listRotatedLayoutClusterGridSizeClassForIconStateUnarchiver:(id)unarchiver
 {
-  v3 = [(SBHIconModel *)self listRotatedLayoutClusterGridSizeClass];
+  listRotatedLayoutClusterGridSizeClass = [(SBHIconModel *)self listRotatedLayoutClusterGridSizeClass];
 
-  return v3;
+  return listRotatedLayoutClusterGridSizeClass;
 }
 
-- (BOOL)iconStateUnarchiver:(id)a3 listsAllowRotatedLayoutForFolderClass:(Class)a4
+- (BOOL)iconStateUnarchiver:(id)unarchiver listsAllowRotatedLayoutForFolderClass:(Class)class
 {
-  v5 = self;
-  v6 = [(SBHIconModel *)v5 delegate];
-  if (v6)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v7 = v6;
-    if (([(SBHIconModelDelegate *)v6 respondsToSelector:sel_iconModel_listsAllowRotatedLayoutForFolderClass_]& 1) != 0)
+    v7 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_listsAllowRotatedLayoutForFolderClass_]& 1) != 0)
     {
-      v8 = [(SBHIconModelDelegate *)v7 iconModel:v5 listsAllowRotatedLayoutForFolderClass:a4];
+      v8 = [(SBHIconModelDelegate *)v7 iconModel:selfCopy listsAllowRotatedLayoutForFolderClass:class];
     }
 
     else
@@ -1332,70 +1332,70 @@ LABEL_5:
   return v8;
 }
 
-- (id)iconStateUnarchiver:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4
+- (id)iconStateUnarchiver:(id)unarchiver allowedGridSizeClassesForFolderClass:(Class)class
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = self;
+  unarchiverCopy = unarchiver;
+  selfCopy = self;
   v8 = sub_1BEE22DA4();
 
   return v8;
 }
 
-- (id)allowedGridSizeClassesForDockForIconStateUnarchiver:(id)a3
+- (id)allowedGridSizeClassesForDockForIconStateUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  v5 = self;
+  unarchiverCopy = unarchiver;
+  selfCopy = self;
   v6 = sub_1BEE22E78();
 
   return v6;
 }
 
-- (id)allowedGridSizeClassesForTodayListForIconStateUnarchiver:(id)a3
+- (id)allowedGridSizeClassesForTodayListForIconStateUnarchiver:(id)unarchiver
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1BEE1A708();
 
   return v4;
 }
 
-- (id)iconStateUnarchiver:(id)a3 didUnarchiveWidgetIcon:(id)a4
+- (id)iconStateUnarchiver:(id)unarchiver didUnarchiveWidgetIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1BEE22F44(v7);
+  unarchiverCopy = unarchiver;
+  iconCopy = icon;
+  selfCopy = self;
+  v9 = sub_1BEE22F44(iconCopy);
 
   return v9;
 }
 
-- (id)iconStateUnarchiver:(id)a3 didUnarchiveFileStackIcon:(id)a4
+- (id)iconStateUnarchiver:(id)unarchiver didUnarchiveFileStackIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1BEE23084(v7);
+  unarchiverCopy = unarchiver;
+  iconCopy = icon;
+  selfCopy = self;
+  v9 = sub_1BEE23084(iconCopy);
 
   return v9;
 }
 
-- (id)iconStateUnarchiver:(id)a3 supportedGridSizeClassesForWidgetWithKind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6
+- (id)iconStateUnarchiver:(id)unarchiver supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = [(SBHIconModel *)self supportedGridSizeClassesForWidgetWithKind:a4 extensionBundleIdentifier:a5 containerBundleIdentifier:a6];
+  v6 = [(SBHIconModel *)self supportedGridSizeClassesForWidgetWithKind:kind extensionBundleIdentifier:identifier containerBundleIdentifier:bundleIdentifier];
 
   return v6;
 }
 
-- (int64_t)iconStateUnarchiver:(id)a3 listsFixedIconLocationBehaviorForFolderClass:(Class)a4
+- (int64_t)iconStateUnarchiver:(id)unarchiver listsFixedIconLocationBehaviorForFolderClass:(Class)class
 {
-  v5 = self;
-  v6 = [(SBHIconModel *)v5 delegate];
-  if (v6)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v7 = v6;
-    if (([(SBHIconModelDelegate *)v6 respondsToSelector:sel_iconModel_listsFixedIconLocationBehaviorForFolderClass_]& 1) != 0)
+    v7 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_listsFixedIconLocationBehaviorForFolderClass_]& 1) != 0)
     {
-      v8 = [(SBHIconModelDelegate *)v7 iconModel:v5 listsFixedIconLocationBehaviorForFolderClass:a4];
+      v8 = [(SBHIconModelDelegate *)v7 iconModel:selfCopy listsFixedIconLocationBehaviorForFolderClass:class];
     }
 
     else
@@ -1414,17 +1414,17 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)iconStateUnarchiver:(id)a3 shouldLeaveGapForMissingIconWithIdentifier:(id)a4
+- (BOOL)iconStateUnarchiver:(id)unarchiver shouldLeaveGapForMissingIconWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = self;
-  v7 = [(SBHIconModel *)v6 delegate];
-  if (v7)
+  identifierCopy = identifier;
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v8 = v7;
-    if (([(SBHIconModelDelegate *)v7 respondsToSelector:sel_iconModel_shouldLeaveGapForMissingArchivedIconWithIdentifier_]& 1) != 0)
+    v8 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_shouldLeaveGapForMissingArchivedIconWithIdentifier_]& 1) != 0)
     {
-      v9 = [(SBHIconModelDelegate *)v8 iconModel:v6 shouldLeaveGapForMissingArchivedIconWithIdentifier:v5];
+      v9 = [(SBHIconModelDelegate *)v8 iconModel:selfCopy shouldLeaveGapForMissingArchivedIconWithIdentifier:identifierCopy];
     }
 
     else
@@ -1443,17 +1443,17 @@ LABEL_5:
   return v9;
 }
 
-- (id)archiver:(id)a3 representationForIcon:(id)a4
+- (id)archiver:(id)archiver representationForIcon:(id)icon
 {
-  v5 = a4;
-  v6 = self;
-  v7 = [(SBHIconModel *)v6 delegate];
-  if (v7)
+  iconCopy = icon;
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v8 = v7;
-    if (([(SBHIconModelDelegate *)v7 respondsToSelector:sel_iconModel_archiveRepresentationForIcon_]& 1) != 0)
+    v8 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_archiveRepresentationForIcon_]& 1) != 0)
     {
-      v9 = [(SBHIconModelDelegate *)v8 iconModel:v6 archiveRepresentationForIcon:v5];
+      v9 = [(SBHIconModelDelegate *)v8 iconModel:selfCopy archiveRepresentationForIcon:iconCopy];
       swift_unknownObjectRelease();
       if (v9)
       {
@@ -1478,17 +1478,17 @@ LABEL_7:
   return v11;
 }
 
-- (id)archiver:(id)a3 representationForIconDataSource:(id)a4
+- (id)archiver:(id)archiver representationForIconDataSource:(id)source
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = [(SBHIconModel *)v6 delegate];
-  if (v7)
+  selfCopy = self;
+  delegate = [(SBHIconModel *)selfCopy delegate];
+  if (delegate)
   {
-    v8 = v7;
-    if (([(SBHIconModelDelegate *)v7 respondsToSelector:sel_iconModel_archiveRepresentationForIconDataSource_]& 1) != 0)
+    v8 = delegate;
+    if (([(SBHIconModelDelegate *)delegate respondsToSelector:sel_iconModel_archiveRepresentationForIconDataSource_]& 1) != 0)
     {
-      v9 = [(SBHIconModelDelegate *)v8 iconModel:v6 archiveRepresentationForIconDataSource:a4];
+      v9 = [(SBHIconModelDelegate *)v8 iconModel:selfCopy archiveRepresentationForIconDataSource:source];
       swift_unknownObjectRelease();
       if (v9)
       {
@@ -1518,18 +1518,18 @@ LABEL_7:
 
 - (void)installedWebClipsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE1C070();
 }
 
-- (void)noteApplicationIconImageChanged:(id)a3
+- (void)noteApplicationIconImageChanged:(id)changed
 {
   v4 = sub_1BEE4681C();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BEE467FC();
-  v8 = self;
+  selfCopy = self;
   sub_1BEE1C34C();
 
   (*(v5 + 8))(v7, v4);
@@ -1537,8 +1537,8 @@ LABEL_7:
 
 - (NSString)description
 {
-  v2 = self;
-  result = [(SBHIconModel *)v2 descriptionWithMultilinePrefix:0];
+  selfCopy = self;
+  result = [(SBHIconModel *)selfCopy descriptionWithMultilinePrefix:0];
   if (result)
   {
     v4 = result;
@@ -1556,14 +1556,14 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v2 = self;
-  result = [(SBHIconModel *)v2 succinctDescriptionBuilder];
+  selfCopy = self;
+  result = [(SBHIconModel *)selfCopy succinctDescriptionBuilder];
   if (result)
   {
     v4 = result;
-    v5 = [result build];
+    build = [result build];
 
-    if (v5)
+    if (build)
     {
       sub_1BEE4708C();
 
@@ -1589,14 +1589,14 @@ LABEL_7:
 
 - (id)succinctDescriptionBuilder
 {
-  v2 = [objc_allocWithZone(MEMORY[0x1E698E680]) initWithObject_];
+  initWithObject_ = [objc_allocWithZone(MEMORY[0x1E698E680]) initWithObject_];
 
-  return v2;
+  return initWithObject_;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     v4 = sub_1BEE4708C();
     v6 = v5;
@@ -1608,7 +1608,7 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1BEDF56F4(v4, v6);
   v9 = v8;
 
@@ -1625,96 +1625,96 @@ LABEL_7:
   return v10;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     sub_1BEE4708C();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1BEE2315C();
 
   return v5;
 }
 
-- (void)iconRepository:(id)a3 willRemoveIcon:(id)a4
+- (void)iconRepository:(id)repository willRemoveIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BEE23448(v7);
+  repositoryCopy = repository;
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEE23448(iconCopy);
 }
 
-- (void)iconRepository:(id)a3 didAddPlaceholderToApplicationIcon:(id)a4
+- (void)iconRepository:(id)repository didAddPlaceholderToApplicationIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BEE235C0(v7, &selRef_applicationPlaceholder, &selRef_replaceIconDataSourcesWithApplicationPlaceholder_);
+  repositoryCopy = repository;
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEE235C0(iconCopy, &selRef_applicationPlaceholder, &selRef_replaceIconDataSourcesWithApplicationPlaceholder_);
 }
 
-- (void)iconRepository:(id)a3 didRemovePlaceholderFromApplicationIcon:(id)a4
+- (void)iconRepository:(id)repository didRemovePlaceholderFromApplicationIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BEE235C0(v7, &selRef_application, &selRef_replaceIconDataSourcesWithApplication_);
+  repositoryCopy = repository;
+  iconCopy = icon;
+  selfCopy = self;
+  sub_1BEE235C0(iconCopy, &selRef_application, &selRef_replaceIconDataSourcesWithApplication_);
 }
 
-- (void)iconRepository:(id)a3 didChangeVisibilityForIconsToVisible:(id)a4 hidden:(id)a5
+- (void)iconRepository:(id)repository didChangeVisibilityForIconsToVisible:(id)visible hidden:(id)hidden
 {
   sub_1BEB20D28(0, &qword_1EBDBFFE0);
   v7 = sub_1BEE471AC();
   v8 = sub_1BEE471AC();
-  v9 = a3;
-  v10 = self;
+  repositoryCopy = repository;
+  selfCopy = self;
   sub_1BEE2377C(v7, v8);
 }
 
-- (void)folder:(id)a3 willAddIcon:(id)a4
+- (void)folder:(id)folder willAddIcon:(id)icon
 {
-  v5 = a4;
-  v6 = self;
-  if (![(SBHIconModel *)v6 isTrackingIcon:v5])
+  iconCopy = icon;
+  selfCopy = self;
+  if (![(SBHIconModel *)selfCopy isTrackingIcon:iconCopy])
   {
-    [(SBHIconModel *)v6 addIcon:v5];
+    [(SBHIconModel *)selfCopy addIcon:iconCopy];
   }
 }
 
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons
 {
-  v6 = a4;
-  if (a4)
+  iconsCopy = icons;
+  if (icons)
   {
     sub_1BEB20D28(0, &qword_1EBDBFEA0);
     sub_1BEB2A7E0(&qword_1EBDBFDC0, &qword_1EBDBFEA0);
-    v6 = sub_1BEE4726C();
+    iconsCopy = sub_1BEE4726C();
   }
 
-  if (a5)
+  if (removedIcons)
   {
     sub_1BEB20D28(0, &qword_1EBDBFEA0);
     sub_1BEB2A7E0(&qword_1EBDBFDC0, &qword_1EBDBFEA0);
-    a5 = sub_1BEE4726C();
+    removedIcons = sub_1BEE4726C();
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_1BEE23F18(v6, a5);
+  folderCopy = folder;
+  selfCopy = self;
+  sub_1BEE23F18(iconsCopy, removedIcons);
 }
 
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = self;
-  if (![(SBHIconModel *)v9 isTrackingIcon:v8])
+  iconCopy = icon;
+  withIconCopy = withIcon;
+  selfCopy = self;
+  if (![(SBHIconModel *)selfCopy isTrackingIcon:withIconCopy])
   {
-    [(SBHIconModel *)v9 addIcon:v8];
+    [(SBHIconModel *)selfCopy addIcon:withIconCopy];
   }
 
-  sub_1BEE0C540(v7);
+  sub_1BEE0C540(iconCopy);
 }
 
 @end

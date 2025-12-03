@@ -1,40 +1,40 @@
 @interface CSCPUTimeRestriction
-- (BOOL)isEqual:(id)a3;
-- (CSCPUTimeRestriction)initWithThreshold:(id)a3 andTimeWindow:(id)a4;
-- (CSCPUTimeRestriction)initWithThreshold:(id)a3 andTimeWindow:(id)a4 andFatal:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (CSCPUTimeRestriction)initWithThreshold:(id)threshold andTimeWindow:(id)window;
+- (CSCPUTimeRestriction)initWithThreshold:(id)threshold andTimeWindow:(id)window andFatal:(BOOL)fatal;
 - (id)getProperties;
-- (int)applyToProcess:(id)a3;
-- (int)releaseForProcess:(id)a3;
+- (int)applyToProcess:(id)process;
+- (int)releaseForProcess:(id)process;
 @end
 
 @implementation CSCPUTimeRestriction
 
-- (CSCPUTimeRestriction)initWithThreshold:(id)a3 andTimeWindow:(id)a4
+- (CSCPUTimeRestriction)initWithThreshold:(id)threshold andTimeWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  thresholdCopy = threshold;
+  windowCopy = window;
   cpuThreshold = self->_cpuThreshold;
-  self->_cpuThreshold = v6;
-  v9 = v6;
+  self->_cpuThreshold = thresholdCopy;
+  v9 = thresholdCopy;
 
   timeWindow = self->_timeWindow;
-  self->_timeWindow = v7;
+  self->_timeWindow = windowCopy;
 
   self->_fatalMitigation = 1;
   return self;
 }
 
-- (CSCPUTimeRestriction)initWithThreshold:(id)a3 andTimeWindow:(id)a4 andFatal:(BOOL)a5
+- (CSCPUTimeRestriction)initWithThreshold:(id)threshold andTimeWindow:(id)window andFatal:(BOOL)fatal
 {
-  result = [(CSCPUTimeRestriction *)self initWithThreshold:a3 andTimeWindow:a4];
-  result->_fatalMitigation = a5;
+  result = [(CSCPUTimeRestriction *)self initWithThreshold:threshold andTimeWindow:window];
+  result->_fatalMitigation = fatal;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -45,15 +45,15 @@
     if (objc_opt_isKindOfClass())
     {
       cpuThreshold = self->_cpuThreshold;
-      v6 = [(CSCPUTimeRestriction *)v4 cpuThreshold];
-      if (cpuThreshold == v6)
+      cpuThreshold = [(CSCPUTimeRestriction *)equalCopy cpuThreshold];
+      if (cpuThreshold == cpuThreshold)
       {
         timeWindow = self->_timeWindow;
-        v9 = [(CSCPUTimeRestriction *)v4 timeWindow];
-        if (timeWindow == v9)
+        timeWindow = [(CSCPUTimeRestriction *)equalCopy timeWindow];
+        if (timeWindow == timeWindow)
         {
           fatalMitigation = self->_fatalMitigation;
-          v7 = fatalMitigation == [(CSCPUTimeRestriction *)v4 fatalMitigation];
+          v7 = fatalMitigation == [(CSCPUTimeRestriction *)equalCopy fatalMitigation];
         }
 
         else
@@ -77,15 +77,15 @@
   return v7;
 }
 
-- (int)applyToProcess:(id)a3
+- (int)applyToProcess:(id)process
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  processCopy = process;
+  v4 = processCopy;
+  if (processCopy)
   {
-    v5 = [v3 trackedPIDs];
-    v6 = [v5 count];
+    trackedPIDs = [processCopy trackedPIDs];
+    v6 = [trackedPIDs count];
 
     if (!v6)
     {
@@ -96,8 +96,8 @@
       }
     }
 
-    v8 = [v4 cpuThreshold];
-    v9 = [v4 cpuTimeWindow];
+    cpuThreshold = [v4 cpuThreshold];
+    cpuTimeWindow = [v4 cpuTimeWindow];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -123,42 +123,42 @@
 
           v12 = *(*(&v34 + 1) + 8 * v14);
 
-          v16 = [v12 intValue];
+          intValue = [v12 intValue];
           v17 = +[CSLogger defaultCategory];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v33 identifier];
+            identifier = [v33 identifier];
             *buf = 138413058;
-            *v39 = v8;
+            *v39 = cpuThreshold;
             *&v39[8] = 2112;
-            *&v39[10] = v9;
+            *&v39[10] = cpuTimeWindow;
             *&v39[18] = 2112;
-            v40 = v18;
+            v40 = identifier;
             v41 = 1024;
-            v42 = v16;
+            v42 = intValue;
             _os_log_impl(&dword_243DC3000, v17, OS_LOG_TYPE_DEFAULT, "applyToProcess: Configuring cpuMonitor with cpuThreshold: %@, timeWindow:%@ for process:%@ (%d)", buf, 0x26u);
           }
 
-          [v8 floatValue];
+          [cpuThreshold floatValue];
           v20 = v19;
-          [v9 floatValue];
+          [cpuTimeWindow floatValue];
           LODWORD(v22) = v21;
           LODWORD(v23) = v20;
-          v24 = [CSCPUMonitorHelper setThreshold:v16 overTimeWindow:0 forPID:v23 withFatalEffect:v22];
+          v24 = [CSCPUMonitorHelper setThreshold:intValue overTimeWindow:0 forPID:v23 withFatalEffect:v22];
           if (v24)
           {
             v25 = v24;
             v26 = +[CSLogger defaultCategory];
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v27 = [v33 identifier];
+              identifier2 = [v33 identifier];
               *buf = 67109634;
               *v39 = v25;
               *&v39[4] = 2112;
-              *&v39[6] = v27;
-              v28 = v27;
+              *&v39[6] = identifier2;
+              v28 = identifier2;
               *&v39[14] = 1024;
-              *&v39[16] = v16;
+              *&v39[16] = intValue;
               _os_log_error_impl(&dword_243DC3000, v26, OS_LOG_TYPE_ERROR, "applyToProcess: Failed %d to apply thresholds on process:%@ (%d)", buf, 0x18u);
             }
           }
@@ -182,10 +182,10 @@
 
   else
   {
-    v8 = +[CSLogger defaultCategory];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    cpuThreshold = +[CSLogger defaultCategory];
+    if (os_log_type_enabled(cpuThreshold, OS_LOG_TYPE_ERROR))
     {
-      [CSCPUTimeRestriction applyToProcess:v8];
+      [CSCPUTimeRestriction applyToProcess:cpuThreshold];
     }
 
     v29 = 2;
@@ -195,16 +195,16 @@
   return v29;
 }
 
-- (int)releaseForProcess:(id)a3
+- (int)releaseForProcess:(id)process
 {
   v29 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = a3;
-  v3 = [v17 trackedPIDs];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v28 count:16];
+  processCopy = process;
+  trackedPIDs = [processCopy trackedPIDs];
+  v4 = [trackedPIDs countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -218,7 +218,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(trackedPIDs);
         }
 
         v6 = *(*(&v18 + 1) + 8 * v8);
@@ -230,14 +230,14 @@
           v12 = +[CSLogger defaultCategory];
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v13 = [v17 identifier];
-            v14 = [v6 intValue];
+            identifier = [processCopy identifier];
+            intValue = [v6 intValue];
             *buf = 67109634;
             v23 = v11;
             v24 = 2112;
-            v25 = v13;
+            v25 = identifier;
             v26 = 1024;
-            v27 = v14;
+            v27 = intValue;
             _os_log_error_impl(&dword_243DC3000, v12, OS_LOG_TYPE_ERROR, "releaseForProcess: clearMonitorForPID failed %d on process:%@ (%d)", buf, 0x18u);
           }
         }
@@ -247,13 +247,13 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v28 count:16];
+      v5 = [trackedPIDs countByEnumeratingWithState:&v18 objects:v28 count:16];
     }
 
     while (v5);
   }
 
-  [v17 setCpuMonitored:0];
+  [processCopy setCpuMonitored:0];
   v15 = *MEMORY[0x277D85DE8];
   return 0;
 }

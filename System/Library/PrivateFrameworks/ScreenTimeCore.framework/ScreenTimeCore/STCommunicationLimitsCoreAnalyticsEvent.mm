@@ -1,20 +1,20 @@
 @interface STCommunicationLimitsCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STCommunicationLimitsCoreAnalyticsEvent)initWithCommunicationLimited:(BOOL)a3 contactManagementEnabled:(BOOL)a4 contactEditingAllowed:(BOOL)a5 userAgeGroup:(int64_t)a6 userIsRemote:(BOOL)a7;
+- (STCommunicationLimitsCoreAnalyticsEvent)initWithCommunicationLimited:(BOOL)limited contactManagementEnabled:(BOOL)enabled contactEditingAllowed:(BOOL)allowed userAgeGroup:(int64_t)group userIsRemote:(BOOL)remote;
 @end
 
 @implementation STCommunicationLimitsCoreAnalyticsEvent
 
-- (STCommunicationLimitsCoreAnalyticsEvent)initWithCommunicationLimited:(BOOL)a3 contactManagementEnabled:(BOOL)a4 contactEditingAllowed:(BOOL)a5 userAgeGroup:(int64_t)a6 userIsRemote:(BOOL)a7
+- (STCommunicationLimitsCoreAnalyticsEvent)initWithCommunicationLimited:(BOOL)limited contactManagementEnabled:(BOOL)enabled contactEditingAllowed:(BOOL)allowed userAgeGroup:(int64_t)group userIsRemote:(BOOL)remote
 {
   v13.receiver = self;
   v13.super_class = STCommunicationLimitsCoreAnalyticsEvent;
   result = [(STCommunicationLimitsCoreAnalyticsEvent *)&v13 init];
-  result->_communicationLimited = a3;
-  result->_contactManagementEnabled = a4;
-  result->_contactEditingAllowed = a5;
-  result->_userAgeGroup = a6;
-  result->_userIsRemote = a7;
+  result->_communicationLimited = limited;
+  result->_contactManagementEnabled = enabled;
+  result->_contactEditingAllowed = allowed;
+  result->_userAgeGroup = group;
+  result->_userIsRemote = remote;
   return result;
 }
 

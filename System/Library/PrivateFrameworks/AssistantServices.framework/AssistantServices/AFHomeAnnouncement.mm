@@ -1,15 +1,15 @@
 @interface AFHomeAnnouncement
-+ (id)newWithBuilder:(id)a3;
-- (AFHomeAnnouncement)initWithBuilder:(id)a3;
-- (AFHomeAnnouncement)initWithCoder:(id)a3;
-- (AFHomeAnnouncement)initWithDictionaryRepresentation:(id)a3;
-- (AFHomeAnnouncement)initWithIdentifier:(id)a3 startedHostTime:(unint64_t)a4 finishedHostTime:(unint64_t)a5 startedDate:(id)a6 finishedDate:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFHomeAnnouncement)initWithBuilder:(id)builder;
+- (AFHomeAnnouncement)initWithCoder:(id)coder;
+- (AFHomeAnnouncement)initWithDictionaryRepresentation:(id)representation;
+- (AFHomeAnnouncement)initWithIdentifier:(id)identifier startedHostTime:(unint64_t)time finishedHostTime:(unint64_t)hostTime startedDate:(id)date finishedDate:(id)finishedDate;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFHomeAnnouncement
@@ -47,13 +47,13 @@
   return v10;
 }
 
-- (AFHomeAnnouncement)initWithDictionaryRepresentation:(id)a3
+- (AFHomeAnnouncement)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"identifier"];
+    v6 = [representationCopy objectForKey:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       v10 = 0;
     }
 
-    v11 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
     v12 = [v5 objectForKey:@"finishedHostTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@
       v13 = 0;
     }
 
-    v14 = [v13 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v13 unsignedLongLongValue];
     v15 = [v5 objectForKey:@"startedDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -115,54 +115,54 @@
       v18 = 0;
     }
 
-    self = [(AFHomeAnnouncement *)self initWithIdentifier:v7 startedHostTime:v11 finishedHostTime:v14 startedDate:v16 finishedDate:v18];
-    v8 = self;
+    self = [(AFHomeAnnouncement *)self initWithIdentifier:v7 startedHostTime:unsignedLongLongValue finishedHostTime:unsignedLongLongValue2 startedDate:v16 finishedDate:v18];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"AFHomeAnnouncement::identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"AFHomeAnnouncement::identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_startedHostTime];
-  [v7 encodeObject:v5 forKey:@"AFHomeAnnouncement::startedHostTime"];
+  [coderCopy encodeObject:v5 forKey:@"AFHomeAnnouncement::startedHostTime"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_finishedHostTime];
-  [v7 encodeObject:v6 forKey:@"AFHomeAnnouncement::finishedHostTime"];
+  [coderCopy encodeObject:v6 forKey:@"AFHomeAnnouncement::finishedHostTime"];
 
-  [v7 encodeObject:self->_startedDate forKey:@"AFHomeAnnouncement::startedDate"];
-  [v7 encodeObject:self->_finishedDate forKey:@"AFHomeAnnouncement::finishedDate"];
+  [coderCopy encodeObject:self->_startedDate forKey:@"AFHomeAnnouncement::startedDate"];
+  [coderCopy encodeObject:self->_finishedDate forKey:@"AFHomeAnnouncement::finishedDate"];
 }
 
-- (AFHomeAnnouncement)initWithCoder:(id)a3
+- (AFHomeAnnouncement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::startedHostTime"];
-  v7 = [v6 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::startedHostTime"];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::finishedHostTime"];
-  v9 = [v8 unsignedLongLongValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::finishedHostTime"];
+  unsignedLongLongValue2 = [v8 unsignedLongLongValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::startedDate"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::finishedDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::startedDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAnnouncement::finishedDate"];
 
-  v12 = [(AFHomeAnnouncement *)self initWithIdentifier:v5 startedHostTime:v7 finishedHostTime:v9 startedDate:v10 finishedDate:v11];
+  v12 = [(AFHomeAnnouncement *)self initWithIdentifier:v5 startedHostTime:unsignedLongLongValue finishedHostTime:unsignedLongLongValue2 startedDate:v10 finishedDate:v11];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -172,21 +172,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       startedHostTime = self->_startedHostTime;
       if (startedHostTime == [(AFHomeAnnouncement *)v5 startedHostTime]&& (finishedHostTime = self->_finishedHostTime, finishedHostTime == [(AFHomeAnnouncement *)v5 finishedHostTime]))
       {
-        v8 = [(AFHomeAnnouncement *)v5 identifier];
+        identifier = [(AFHomeAnnouncement *)v5 identifier];
         identifier = self->_identifier;
-        if (identifier == v8 || [(NSString *)identifier isEqual:v8])
+        if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
         {
-          v10 = [(AFHomeAnnouncement *)v5 startedDate];
+          startedDate = [(AFHomeAnnouncement *)v5 startedDate];
           startedDate = self->_startedDate;
-          if (startedDate == v10 || [(NSDate *)startedDate isEqual:v10])
+          if (startedDate == startedDate || [(NSDate *)startedDate isEqual:startedDate])
           {
-            v12 = [(AFHomeAnnouncement *)v5 finishedDate];
+            finishedDate = [(AFHomeAnnouncement *)v5 finishedDate];
             finishedDate = self->_finishedDate;
-            v14 = finishedDate == v12 || [(NSDate *)finishedDate isEqual:v12];
+            v14 = finishedDate == finishedDate || [(NSDate *)finishedDate isEqual:finishedDate];
           }
 
           else
@@ -229,7 +229,7 @@
   return v8 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -240,23 +240,23 @@
   return v6;
 }
 
-- (AFHomeAnnouncement)initWithIdentifier:(id)a3 startedHostTime:(unint64_t)a4 finishedHostTime:(unint64_t)a5 startedDate:(id)a6 finishedDate:(id)a7
+- (AFHomeAnnouncement)initWithIdentifier:(id)identifier startedHostTime:(unint64_t)time finishedHostTime:(unint64_t)hostTime startedDate:(id)date finishedDate:(id)finishedDate
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  finishedDateCopy = finishedDate;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __99__AFHomeAnnouncement_initWithIdentifier_startedHostTime_finishedHostTime_startedDate_finishedDate___block_invoke;
   v20[3] = &unk_1E7346B80;
-  v24 = a4;
-  v25 = a5;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  timeCopy = time;
+  hostTimeCopy = hostTime;
+  v21 = identifierCopy;
+  v22 = dateCopy;
+  v23 = finishedDateCopy;
+  v15 = finishedDateCopy;
+  v16 = dateCopy;
+  v17 = identifierCopy;
   v18 = [(AFHomeAnnouncement *)self initWithBuilder:v20];
 
   return v18;
@@ -273,33 +273,33 @@ void __99__AFHomeAnnouncement_initWithIdentifier_startedHostTime_finishedHostTim
   [v4 setFinishedDate:a1[6]];
 }
 
-- (AFHomeAnnouncement)initWithBuilder:(id)a3
+- (AFHomeAnnouncement)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFHomeAnnouncement;
   v5 = [(AFHomeAnnouncement *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFHomeAnnouncementMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFHomeAnnouncementMutation *)v7 isDirty])
     {
-      v8 = [(_AFHomeAnnouncementMutation *)v7 getIdentifier];
-      v9 = [v8 copy];
+      getIdentifier = [(_AFHomeAnnouncementMutation *)v7 getIdentifier];
+      v9 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v9;
 
       v6->_startedHostTime = [(_AFHomeAnnouncementMutation *)v7 getStartedHostTime];
       v6->_finishedHostTime = [(_AFHomeAnnouncementMutation *)v7 getFinishedHostTime];
-      v11 = [(_AFHomeAnnouncementMutation *)v7 getStartedDate];
-      v12 = [v11 copy];
+      getStartedDate = [(_AFHomeAnnouncementMutation *)v7 getStartedDate];
+      v12 = [getStartedDate copy];
       startedDate = v6->_startedDate;
       v6->_startedDate = v12;
 
-      v14 = [(_AFHomeAnnouncementMutation *)v7 getFinishedDate];
-      v15 = [v14 copy];
+      getFinishedDate = [(_AFHomeAnnouncementMutation *)v7 getFinishedDate];
+      v15 = [getFinishedDate copy];
       finishedDate = v6->_finishedDate;
       v6->_finishedDate = v15;
     }
@@ -308,38 +308,38 @@ void __99__AFHomeAnnouncement_initWithIdentifier_startedHostTime_finishedHostTim
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFHomeAnnouncementMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFHomeAnnouncementMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFHomeAnnouncement);
-      v7 = [(_AFHomeAnnouncementMutation *)v5 getIdentifier];
-      v8 = [v7 copy];
+      getIdentifier = [(_AFHomeAnnouncementMutation *)v5 getIdentifier];
+      v8 = [getIdentifier copy];
       identifier = v6->_identifier;
       v6->_identifier = v8;
 
       v6->_startedHostTime = [(_AFHomeAnnouncementMutation *)v5 getStartedHostTime];
       v6->_finishedHostTime = [(_AFHomeAnnouncementMutation *)v5 getFinishedHostTime];
-      v10 = [(_AFHomeAnnouncementMutation *)v5 getStartedDate];
-      v11 = [v10 copy];
+      getStartedDate = [(_AFHomeAnnouncementMutation *)v5 getStartedDate];
+      v11 = [getStartedDate copy];
       startedDate = v6->_startedDate;
       v6->_startedDate = v11;
 
-      v13 = [(_AFHomeAnnouncementMutation *)v5 getFinishedDate];
-      v14 = [v13 copy];
+      getFinishedDate = [(_AFHomeAnnouncementMutation *)v5 getFinishedDate];
+      v14 = [getFinishedDate copy];
       finishedDate = v6->_finishedDate;
       v6->_finishedDate = v14;
     }

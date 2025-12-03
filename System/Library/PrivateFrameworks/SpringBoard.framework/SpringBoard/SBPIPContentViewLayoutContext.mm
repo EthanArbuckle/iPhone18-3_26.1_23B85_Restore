@@ -1,17 +1,17 @@
 @interface SBPIPContentViewLayoutContext
-- (SBPIPContentViewLayoutContext)initWithPlatformMetrics:(id)a3 contentSize:(CGSize)a4 defaults:(id)a5;
-- (void)setCurrentSize:(double)a3 forAspectRatio:(double)a4;
-- (void)updatePlatformMetrics:(id)a3;
+- (SBPIPContentViewLayoutContext)initWithPlatformMetrics:(id)metrics contentSize:(CGSize)size defaults:(id)defaults;
+- (void)setCurrentSize:(double)size forAspectRatio:(double)ratio;
+- (void)updatePlatformMetrics:(id)metrics;
 @end
 
 @implementation SBPIPContentViewLayoutContext
 
-- (SBPIPContentViewLayoutContext)initWithPlatformMetrics:(id)a3 contentSize:(CGSize)a4 defaults:(id)a5
+- (SBPIPContentViewLayoutContext)initWithPlatformMetrics:(id)metrics contentSize:(CGSize)size defaults:(id)defaults
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  metricsCopy = metrics;
+  defaultsCopy = defaults;
   v18.receiver = self;
   v18.super_class = SBPIPContentViewLayoutContext;
   v11 = [(SBPIPContentViewLayoutContext *)&v18 init];
@@ -21,9 +21,9 @@
     v11->_sizeChanged = 0;
     v11->_minimumSizeSpanBetweenPreferredSizes = 0.0;
     v11->_maximumSizeSpanForPreferredSizeTuning = 0.0;
-    objc_storeStrong(&v11->_defaults, a5);
-    v13 = [v9 contentTypeIdentifier];
-    v14 = [v13 copy];
+    objc_storeStrong(&v11->_defaults, defaults);
+    contentTypeIdentifier = [metricsCopy contentTypeIdentifier];
+    v14 = [contentTypeIdentifier copy];
     contentTypeIdentifier = v12->_contentTypeIdentifier;
     v12->_contentTypeIdentifier = v14;
 
@@ -34,39 +34,39 @@
     }
 
     v12->_currentAspectRatio = height / v16;
-    [(SBPIPContentViewLayoutContext *)v12 updatePlatformMetrics:v9];
+    [(SBPIPContentViewLayoutContext *)v12 updatePlatformMetrics:metricsCopy];
   }
 
   return v12;
 }
 
-- (void)setCurrentSize:(double)a3 forAspectRatio:(double)a4
+- (void)setCurrentSize:(double)size forAspectRatio:(double)ratio
 {
-  if (self->_currentSize != a3)
+  if (self->_currentSize != size)
   {
-    self->_currentAspectRatio = a4;
-    self->_currentSize = a3;
+    self->_currentAspectRatio = ratio;
+    self->_currentSize = size;
     self->_sizeChanged = 1;
     [(SBPIPDefaults *)self->_defaults setLastKnownSize:self->_contentTypeIdentifier contentType:?];
   }
 }
 
-- (void)updatePlatformMetrics:(id)a3
+- (void)updatePlatformMetrics:(id)metrics
 {
-  v15 = a3;
-  v4 = [v15 contentTypeIdentifier];
-  v5 = [v4 isEqualToString:self->_contentTypeIdentifier];
+  metricsCopy = metrics;
+  contentTypeIdentifier = [metricsCopy contentTypeIdentifier];
+  v5 = [contentTypeIdentifier isEqualToString:self->_contentTypeIdentifier];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v15 contentTypeIdentifier];
-    v7 = [v6 copy];
+    contentTypeIdentifier2 = [metricsCopy contentTypeIdentifier];
+    v7 = [contentTypeIdentifier2 copy];
     contentTypeIdentifier = self->_contentTypeIdentifier;
     self->_contentTypeIdentifier = v7;
   }
 
-  v9 = [v15 sizePolicy];
-  v10 = [v9 sizePreferencesForAspectRatio:self->_currentAspectRatio];
+  sizePolicy = [metricsCopy sizePolicy];
+  v10 = [sizePolicy sizePreferencesForAspectRatio:self->_currentAspectRatio];
 
   [(SBPIPDefaults *)self->_defaults lastKnownSizeForContentType:self->_contentTypeIdentifier];
   v12 = v11;

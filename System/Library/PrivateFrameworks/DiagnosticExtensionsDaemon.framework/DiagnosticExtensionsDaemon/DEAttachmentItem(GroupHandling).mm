@@ -7,8 +7,8 @@
 
 - (uint64_t)isGroup
 {
-  v1 = [a1 attachmentType];
-  v2 = [v1 isEqualToString:@"DEAttachmentTypeGroup"];
+  attachmentType = [self attachmentType];
+  v2 = [attachmentType isEqualToString:@"DEAttachmentTypeGroup"];
 
   return v2;
 }
@@ -16,13 +16,13 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 displayName];
-  v4 = [a1 path];
-  v5 = [a1 modificationDate];
-  v6 = [a1 filesize];
-  v7 = [a1 shouldCompress];
-  v8 = [a1 attachedPath];
-  v9 = [v2 stringWithFormat:@"Item: (display %@) (path %@) (mod %@) (size %@) (compress %@) (attPath %@)", v3, v4, v5, v6, v7, v8];
+  displayName = [self displayName];
+  path = [self path];
+  modificationDate = [self modificationDate];
+  filesize = [self filesize];
+  shouldCompress = [self shouldCompress];
+  attachedPath = [self attachedPath];
+  v9 = [v2 stringWithFormat:@"Item: (display %@) (path %@) (mod %@) (size %@) (compress %@) (attPath %@)", displayName, path, modificationDate, filesize, shouldCompress, attachedPath];
 
   return v9;
 }

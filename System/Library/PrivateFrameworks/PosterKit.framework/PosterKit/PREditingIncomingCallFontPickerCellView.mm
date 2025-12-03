@@ -1,25 +1,25 @@
 @interface PREditingIncomingCallFontPickerCellView
-- (id)imageFromGlyph:(unsigned __int16)a3 fromFontRef:(__CTFont *)a4;
-- (id)imageRepresentingFont:(id)a3 text:(id)a4;
-- (unsigned)glyphForText:(id)a3 usingFontRef:(__CTFont *)a4;
-- (void)configureWithFont:(id)a3 text:(id)a4;
-- (void)displayImage:(id)a3;
-- (void)displayText:(id)a3 usingFont:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)imageFromGlyph:(unsigned __int16)glyph fromFontRef:(__CTFont *)ref;
+- (id)imageRepresentingFont:(id)font text:(id)text;
+- (unsigned)glyphForText:(id)text usingFontRef:(__CTFont *)ref;
+- (void)configureWithFont:(id)font text:(id)text;
+- (void)displayImage:(id)image;
+- (void)displayText:(id)text usingFont:(id)font;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PREditingIncomingCallFontPickerCellView
 
-- (void)configureWithFont:(id)a3 text:(id)a4
+- (void)configureWithFont:(id)font text:(id)text
 {
-  v6 = a3;
+  fontCopy = font;
   v9.receiver = self;
   v9.super_class = PREditingIncomingCallFontPickerCellView;
-  v7 = a4;
-  [(PREditingFontPickerCellView *)&v9 configureWithFont:v6 text:v7];
-  if ([v7 length] == 1)
+  textCopy = text;
+  [(PREditingFontPickerCellView *)&v9 configureWithFont:fontCopy text:textCopy];
+  if ([textCopy length] == 1)
   {
-    v8 = [(PREditingIncomingCallFontPickerCellView *)self imageRepresentingFont:v6 text:v7];
+    v8 = [(PREditingIncomingCallFontPickerCellView *)self imageRepresentingFont:fontCopy text:textCopy];
 
     if (v8)
     {
@@ -28,28 +28,28 @@
 
     else
     {
-      [(PREditingIncomingCallFontPickerCellView *)self displayText:@"Aa" usingFont:v6];
+      [(PREditingIncomingCallFontPickerCellView *)self displayText:@"Aa" usingFont:fontCopy];
     }
   }
 
   else
   {
-    [(PREditingIncomingCallFontPickerCellView *)self displayText:v7 usingFont:v6];
-    v8 = v7;
+    [(PREditingIncomingCallFontPickerCellView *)self displayText:textCopy usingFont:fontCopy];
+    v8 = textCopy;
   }
 }
 
-- (void)displayText:(id)a3 usingFont:(id)a4
+- (void)displayText:(id)text usingFont:(id)font
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
+  fontCopy = font;
+  textCopy = text;
+  contentView = [(PREditingIncomingCallFontPickerCellView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v10 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
-  v11 = v10;
+  contentView2 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
+  v11 = contentView2;
   if (isKindOfClass)
   {
     v12 = objc_opt_class();
@@ -77,7 +77,7 @@
 
   else
   {
-    [v10 removeFromSuperview];
+    [contentView2 removeFromSuperview];
 
     v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v15 setMinimumScaleFactor:0.5];
@@ -86,45 +86,45 @@
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PREditingIncomingCallFontPickerCellView *)self addSubview:v15];
     v24 = MEMORY[0x1E696ACD8];
-    v29 = [v15 topAnchor];
-    v28 = [(PREditingIncomingCallFontPickerCellView *)self topAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28 constant:4.0];
+    topAnchor = [v15 topAnchor];
+    topAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v31[0] = v27;
-    v26 = [v15 bottomAnchor];
-    v25 = [(PREditingIncomingCallFontPickerCellView *)self bottomAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25 constant:-4.0];
+    bottomAnchor = [v15 bottomAnchor];
+    bottomAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
     v31[1] = v23;
     [v15 leadingAnchor];
-    v16 = v30 = v7;
-    v17 = [(PREditingIncomingCallFontPickerCellView *)self leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:4.0];
+    v16 = v30 = textCopy;
+    leadingAnchor = [(PREditingIncomingCallFontPickerCellView *)self leadingAnchor];
+    v18 = [v16 constraintEqualToAnchor:leadingAnchor constant:4.0];
     v31[2] = v18;
-    v19 = [v15 trailingAnchor];
-    v20 = [(PREditingIncomingCallFontPickerCellView *)self trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:-4.0];
+    trailingAnchor = [v15 trailingAnchor];
+    trailingAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
     v31[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
     [v24 activateConstraints:v22];
 
-    v7 = v30;
+    textCopy = v30;
     objc_storeStrong(&self->_contentView, v15);
   }
 
-  [v15 setFont:v6];
+  [v15 setFont:fontCopy];
 
-  [v15 setText:v7];
+  [v15 setText:textCopy];
 }
 
-- (void)displayImage:(id)a3
+- (void)displayImage:(id)image
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
+  imageCopy = image;
+  contentView = [(PREditingIncomingCallFontPickerCellView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
-  v8 = v7;
+  contentView2 = [(PREditingIncomingCallFontPickerCellView *)self contentView];
+  v8 = contentView2;
   if (isKindOfClass)
   {
     v9 = objc_opt_class();
@@ -152,11 +152,11 @@
 
   else
   {
-    [v7 removeFromSuperview];
+    [contentView2 removeFromSuperview];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [v12 setTintColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v12 setTintColor:labelColor];
 
     [v12 setContentMode:1];
     LODWORD(v14) = 1144750080;
@@ -166,21 +166,21 @@
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PREditingIncomingCallFontPickerCellView *)self addSubview:v12];
     v24 = MEMORY[0x1E696ACD8];
-    v29 = [v12 topAnchor];
-    v28 = [(PREditingIncomingCallFontPickerCellView *)self topAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v27;
-    v26 = [v12 bottomAnchor];
-    v25 = [(PREditingIncomingCallFontPickerCellView *)self bottomAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[1] = v23;
-    v16 = [v12 leadingAnchor];
-    v17 = [(PREditingIncomingCallFontPickerCellView *)self leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[2] = v18;
-    v19 = [v12 trailingAnchor];
-    v20 = [(PREditingIncomingCallFontPickerCellView *)self trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [v12 trailingAnchor];
+    trailingAnchor2 = [(PREditingIncomingCallFontPickerCellView *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
     [v24 activateConstraints:v22];
@@ -188,21 +188,21 @@
     objc_storeStrong(&self->_contentView, v12);
   }
 
-  [v12 setImage:v4];
+  [v12 setImage:imageCopy];
 }
 
-- (id)imageRepresentingFont:(id)a3 text:(id)a4
+- (id)imageRepresentingFont:(id)font text:(id)text
 {
   v5 = MEMORY[0x1E69DB878];
-  v6 = a4;
-  v7 = [(PREditingFontPickerCellView *)self contentFont];
-  v8 = [v7 fontName];
-  v9 = [v5 pr_fontWithName:v8 forRole:@"PRPosterRoleIncomingCall" includingFallbackFonts:0];
-  v10 = [(PREditingFontPickerCellView *)self contentFont];
-  [v10 pointSize];
+  textCopy = text;
+  contentFont = [(PREditingFontPickerCellView *)self contentFont];
+  fontName = [contentFont fontName];
+  v9 = [v5 pr_fontWithName:fontName forRole:@"PRPosterRoleIncomingCall" includingFallbackFonts:0];
+  contentFont2 = [(PREditingFontPickerCellView *)self contentFont];
+  [contentFont2 pointSize];
   v11 = [v9 fontWithSize:?];
 
-  v12 = [(PREditingIncomingCallFontPickerCellView *)self glyphForText:v6 usingFontRef:v11];
+  v12 = [(PREditingIncomingCallFontPickerCellView *)self glyphForText:textCopy usingFontRef:v11];
   if (v12)
   {
     v13 = [(PREditingIncomingCallFontPickerCellView *)self imageFromGlyph:v12 fromFontRef:v11];
@@ -221,9 +221,9 @@
   return v14;
 }
 
-- (id)imageFromGlyph:(unsigned __int16)a3 fromFontRef:(__CTFont *)a4
+- (id)imageFromGlyph:(unsigned __int16)glyph fromFontRef:(__CTFont *)ref
 {
-  PathForGlyph = CTFontCreatePathForGlyph(a4, a3, 0);
+  PathForGlyph = CTFontCreatePathForGlyph(ref, glyph, 0);
   [(PREditingFontPickerCellView *)self cellSize];
   v7 = v6;
   v9 = v8;
@@ -244,11 +244,11 @@
   [(PREditingFontPickerCellView *)self cellSize];
   UIGraphicsBeginImageContextWithOptions(v24, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v12 CGColor]);
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [clearColor CGColor]);
 
-  v13 = [MEMORY[0x1E69DC888] labelColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v13 CGColor]);
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  CGContextSetFillColorWithColor(CurrentContext, [labelColor CGColor]);
 
   CGContextAddPath(CurrentContext, v10);
   CGContextDrawPath(CurrentContext, kCGPathFillStroke);
@@ -260,17 +260,17 @@
   return v14;
 }
 
-- (unsigned)glyphForText:(id)a3 usingFontRef:(__CTFont *)a4
+- (unsigned)glyphForText:(id)text usingFontRef:(__CTFont *)ref
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 length];
+  textCopy = text;
+  v6 = [textCopy length];
   MEMORY[0x1EEE9AC00](v6);
   v7 = (2 * v6 + 15) & 0xFFFFFFFFFFFFFFF0;
-  v8 = [v5 getCharacters:v13 - v7 range:{0, v6}];
+  v8 = [textCopy getCharacters:v13 - v7 range:{0, v6}];
   MEMORY[0x1EEE9AC00](v8);
   v9 = (v13 - v7);
-  CTFontGetGlyphsForCharacters(a4, (v13 - v7), (v13 - v7), v6);
+  CTFontGetGlyphsForCharacters(ref, (v13 - v7), (v13 - v7), v6);
   if (v6)
   {
     while (1)
@@ -298,14 +298,14 @@ LABEL_4:
   return v10;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = PREditingIncomingCallFontPickerCellView;
-  [(PREditingIncomingCallFontPickerCellView *)&v6 traitCollectionDidChange:a3];
-  v4 = [(PREditingFontPickerCellView *)self contentFont];
-  v5 = [(PREditingFontPickerCellView *)self contentText];
-  [(PREditingIncomingCallFontPickerCellView *)self configureWithFont:v4 text:v5];
+  [(PREditingIncomingCallFontPickerCellView *)&v6 traitCollectionDidChange:change];
+  contentFont = [(PREditingFontPickerCellView *)self contentFont];
+  contentText = [(PREditingFontPickerCellView *)self contentText];
+  [(PREditingIncomingCallFontPickerCellView *)self configureWithFont:contentFont text:contentText];
 }
 
 @end

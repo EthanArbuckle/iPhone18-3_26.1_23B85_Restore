@@ -1,18 +1,18 @@
 @interface PKEncryptedVPANPaymentCredentials
-- (PKEncryptedVPANPaymentCredentials)initWithDictionary:(id)a3;
+- (PKEncryptedVPANPaymentCredentials)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKEncryptedVPANPaymentCredentials
 
-- (PKEncryptedVPANPaymentCredentials)initWithDictionary:(id)a3
+- (PKEncryptedVPANPaymentCredentials)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKEncryptedVPANPaymentCredentials;
   v5 = [(PKEncryptedVPANPaymentCredentials *)&v13 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"ephemeralPublicKey"];
+    v6 = [dictionaryCopy PKStringForKey:@"ephemeralPublicKey"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v6 options:0];
@@ -20,7 +20,7 @@
       v5->_ephemeralPublicKey = v7;
     }
 
-    v9 = [v4 PKStringForKey:@"encryptedData"];
+    v9 = [dictionaryCopy PKStringForKey:@"encryptedData"];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v9 options:0];

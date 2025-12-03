@@ -1,10 +1,10 @@
 @interface SDMDMConfiguratorImplementation
 + (BOOL)isBetaEnrollmentDisabled;
-+ (BOOL)shouldReturnBecauseOfInvalidTokens:(id)a3 andReportErrorWith:(id)a4;
-+ (int64_t)applyMDMConfiguration:(id)a3;
-+ (int64_t)conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:(id)a3 userIdentifier:(id)a4;
-+ (int64_t)enrollWithRequireProgramToken:(id)a3 language:(id)a4 userIdentifier:(id)a5;
-+ (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 userIdentifier:(id)a6 language:(id)a7 completion:(id)a8;
++ (BOOL)shouldReturnBecauseOfInvalidTokens:(id)tokens andReportErrorWith:(id)with;
++ (int64_t)applyMDMConfiguration:(id)configuration;
++ (int64_t)conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:(id)config userIdentifier:(id)identifier;
++ (int64_t)enrollWithRequireProgramToken:(id)token language:(id)language userIdentifier:(id)identifier;
++ (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy userIdentifier:(id)identifier language:(id)language completion:(id)completion;
 + (void)isBetaEnrollmentDisabled;
 @end
 
@@ -28,7 +28,7 @@
   {
     if (v2)
     {
-      v5 = [v2 disableBetaEnrollment];
+      disableBetaEnrollment = [v2 disableBetaEnrollment];
       goto LABEL_7;
     }
 
@@ -40,32 +40,32 @@
     }
   }
 
-  v5 = 0;
+  disableBetaEnrollment = 0;
 LABEL_7:
 
-  return v5;
+  return disableBetaEnrollment;
 }
 
-+ (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 userIdentifier:(id)a6 language:(id)a7 completion:(id)a8
++ (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy userIdentifier:(id)identifier language:(id)language completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [[SDMDMConfiguration alloc] initWithPolicy:a5];
+  tokensCopy = tokens;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  languageCopy = language;
+  completionCopy = completion;
+  v19 = [[SDMDMConfiguration alloc] initWithPolicy:policy];
   v20 = v19;
-  if (a5 > 1)
+  if (policy > 1)
   {
-    if (a5 == 2)
+    if (policy == 2)
     {
       [(SDMDMConfiguration *)v19 setRestrictUserPrograms:1];
-      if (!v15)
+      if (!tokenCopy)
       {
         [(SDMDMConfiguration *)v20 setDisableBetaEnrollment:0];
-        if ([v14 count])
+        if ([tokensCopy count])
         {
-          if ([a1 shouldReturnBecauseOfInvalidTokens:v14 andReportErrorWith:v18])
+          if ([self shouldReturnBecauseOfInvalidTokens:tokensCopy andReportErrorWith:completionCopy])
           {
             goto LABEL_31;
           }
@@ -81,16 +81,16 @@ LABEL_7:
           }
         }
 
-        [(SDMDMConfiguration *)v20 setTokens:v14];
+        [(SDMDMConfiguration *)v20 setTokens:tokensCopy];
 LABEL_23:
-        v29 = [a1 applyMDMConfiguration:v20];
-        [a1 conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:v20 userIdentifier:v16];
+        v29 = [self applyMDMConfiguration:v20];
+        [self conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:v20 userIdentifier:identifierCopy];
         if (v29)
         {
 LABEL_24:
           v30 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.mdm-configurator" code:v29 userInfo:0];
 LABEL_30:
-          v18[2](v18, v30);
+          completionCopy[2](completionCopy, v30);
 
           goto LABEL_31;
         }
@@ -100,8 +100,8 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v31 = [MEMORY[0x277CBEB98] setWithObject:v15];
-      v32 = [a1 shouldReturnBecauseOfInvalidTokens:v31 andReportErrorWith:v18];
+      v31 = [MEMORY[0x277CBEB98] setWithObject:tokenCopy];
+      v32 = [self shouldReturnBecauseOfInvalidTokens:v31 andReportErrorWith:completionCopy];
 
       if (v32)
       {
@@ -109,15 +109,15 @@ LABEL_29:
       }
 
       [(SDMDMConfiguration *)v20 setDisableBetaEnrollment:1];
-      v33 = [MEMORY[0x277CBEB98] setWithObject:v15];
+      v33 = [MEMORY[0x277CBEB98] setWithObject:tokenCopy];
       [(SDMDMConfiguration *)v20 setTokens:v33];
 
-      [a1 enrollWithRequireProgramToken:v15 language:v17 userIdentifier:v16];
+      [self enrollWithRequireProgramToken:tokenCopy language:languageCopy userIdentifier:identifierCopy];
     }
 
     else
     {
-      if (a5 != 3)
+      if (policy != 3)
       {
         goto LABEL_18;
       }
@@ -128,9 +128,9 @@ LABEL_29:
       [(SDMDMConfiguration *)v20 setTokens:v24];
 
       v25 = +[SDDevice _currentDevice];
-      [v25 _unenrollWithUserIdentifier:v16];
+      [v25 _unenrollWithUserIdentifier:identifierCopy];
 
-      if (v15)
+      if (tokenCopy)
       {
         v26 = +[SDSeedingLogging mdmHandle];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -140,7 +140,7 @@ LABEL_29:
         }
       }
 
-      if (v14)
+      if (tokensCopy)
       {
         v27 = +[SDSeedingLogging mdmHandle];
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -151,7 +151,7 @@ LABEL_29:
       }
     }
 
-    v29 = [a1 applyMDMConfiguration:v20];
+    v29 = [self applyMDMConfiguration:v20];
     if (v29)
     {
       goto LABEL_24;
@@ -160,7 +160,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (!a5)
+  if (!policy)
   {
     [(SDMDMConfiguration *)v19 setRestrictUserPrograms:0];
     [(SDMDMConfiguration *)v20 setDisableBetaEnrollment:0];
@@ -171,13 +171,13 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a5 != 1)
+  if (policy != 1)
   {
 LABEL_18:
     v28 = +[SDSeedingLogging mdmHandle];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [SDMDMConfiguratorImplementation configureWithOfferProgramTokens:a5 requireProgramToken:v28 enrollmentPolicy:? userIdentifier:? language:? completion:?];
+      [SDMDMConfiguratorImplementation configureWithOfferProgramTokens:policy requireProgramToken:v28 enrollmentPolicy:? userIdentifier:? language:? completion:?];
     }
 
     v29 = 4;
@@ -186,13 +186,13 @@ LABEL_18:
 
   [(SDMDMConfiguration *)v19 setRestrictUserPrograms:0];
   [(SDMDMConfiguration *)v20 setDisableBetaEnrollment:0];
-  [(SDMDMConfiguration *)v20 setTokens:v14];
-  v21 = [(SDMDMConfiguration *)v20 tokens];
-  v22 = [a1 shouldReturnBecauseOfInvalidTokens:v21 andReportErrorWith:v18];
+  [(SDMDMConfiguration *)v20 setTokens:tokensCopy];
+  tokens = [(SDMDMConfiguration *)v20 tokens];
+  v22 = [self shouldReturnBecauseOfInvalidTokens:tokens andReportErrorWith:completionCopy];
 
   if ((v22 & 1) == 0)
   {
-    if (!v15)
+    if (!tokenCopy)
     {
       goto LABEL_23;
     }
@@ -210,11 +210,11 @@ LABEL_18:
 LABEL_31:
 }
 
-+ (int64_t)conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:(id)a3 userIdentifier:(id)a4
++ (int64_t)conditionallyUnenrollIfNotMatchingOfferedTokensWithConfig:(id)config userIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  configCopy = config;
+  identifierCopy = identifier;
   v7 = +[SDSeedingLogging mdmHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -229,32 +229,32 @@ LABEL_31:
     v9 = +[SDSeedingLogging mdmHandle];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v8 betaEnrollmentTokens];
+      betaEnrollmentTokens = [v8 betaEnrollmentTokens];
       v20 = 138543362;
-      v21 = v10;
+      v21 = betaEnrollmentTokens;
       _os_log_impl(&dword_22E41E000, v9, OS_LOG_TYPE_INFO, "Currently enrolled in MDM program with BETs [%{public}@]", &v20, 0xCu);
     }
 
-    v11 = [v5 tokens];
-    v12 = [v8 betaEnrollmentTokens];
-    v13 = [v11 intersectsSet:v12];
+    tokens = [configCopy tokens];
+    betaEnrollmentTokens2 = [v8 betaEnrollmentTokens];
+    v13 = [tokens intersectsSet:betaEnrollmentTokens2];
 
     if ((v13 & 1) == 0)
     {
       v14 = +[SDSeedingLogging mdmHandle];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v8 programID];
-        v16 = [v8 betaEnrollmentTokens];
+        programID = [v8 programID];
+        betaEnrollmentTokens3 = [v8 betaEnrollmentTokens];
         v20 = 134218242;
-        v21 = v15;
+        v21 = programID;
         v22 = 2114;
-        v23 = v16;
+        v23 = betaEnrollmentTokens3;
         _os_log_impl(&dword_22E41E000, v14, OS_LOG_TYPE_DEFAULT, "Currently enrolled MDM program [%lu: %{public}@] not in offered in new configuration. Will unenroll.", &v20, 0x16u);
       }
 
       v17 = +[SDDevice _currentDevice];
-      [v17 _unenrollWithUserIdentifier:v6];
+      [v17 _unenrollWithUserIdentifier:identifierCopy];
     }
   }
 
@@ -262,11 +262,11 @@ LABEL_31:
   return 0;
 }
 
-+ (BOOL)shouldReturnBecauseOfInvalidTokens:(id)a3 andReportErrorWith:(id)a4
++ (BOOL)shouldReturnBecauseOfInvalidTokens:(id)tokens andReportErrorWith:(id)with
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  tokensCopy = tokens;
+  withCopy = with;
   v7 = +[SDSeedingLogging mdmHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -275,7 +275,7 @@ LABEL_31:
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}s", &buf, 0xCu);
   }
 
-  if ([v5 count])
+  if ([tokensCopy count])
   {
     v8 = dispatch_group_create();
     *&buf = 0;
@@ -293,10 +293,10 @@ LABEL_31:
     p_buf = &buf;
     v10 = v8;
     v15 = v10;
-    [v9 validateBetaEnrollmentTokens:v5 errorHandler:v14];
+    [v9 validateBetaEnrollmentTokens:tokensCopy errorHandler:v14];
 
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-    v6[2](v6, *(*(&buf + 1) + 40));
+    withCopy[2](withCopy, *(*(&buf + 1) + 40));
     v11 = *(*(&buf + 1) + 40) != 0;
 
     _Block_object_dispose(&buf, 8);
@@ -331,23 +331,23 @@ void __89__SDMDMConfiguratorImplementation_shouldReturnBecauseOfInvalidTokens_an
   dispatch_group_leave(v6);
 }
 
-+ (int64_t)applyMDMConfiguration:(id)a3
++ (int64_t)applyMDMConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[SDBetaManager sharedManager];
   [v4 invalidateCache];
 
-  v5 = [SDPersistence saveMDMConfiguration:v3];
+  v5 = [SDPersistence saveMDMConfiguration:configurationCopy];
 
   return 4 * (v5 != 0);
 }
 
-+ (int64_t)enrollWithRequireProgramToken:(id)a3 language:(id)a4 userIdentifier:(id)a5
++ (int64_t)enrollWithRequireProgramToken:(id)token language:(id)language userIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  languageCopy = language;
+  identifierCopy = identifier;
   v10 = +[SDSeedingLogging mdmHandle];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -369,7 +369,7 @@ void __89__SDMDMConfiguratorImplementation_shouldReturnBecauseOfInvalidTokens_an
   p_buf = &buf;
   v13 = v11;
   v23 = v13;
-  [v12 enrollInProgramWithToken:v7 userIdentifier:v9 language:v8 shouldSaveToken:0 completion:&v19];
+  [v12 enrollInProgramWithToken:tokenCopy userIdentifier:identifierCopy language:languageCopy shouldSaveToken:0 completion:&v19];
 
   v14 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v13, v14))
@@ -397,9 +397,9 @@ void __89__SDMDMConfiguratorImplementation_shouldReturnBecauseOfInvalidTokens_an
 + (void)isBetaEnrollmentDisabled
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v5 = 138543362;
-  v6 = v3;
+  v6 = localizedDescription;
   _os_log_error_impl(&dword_22E41E000, a2, OS_LOG_TYPE_ERROR, "Failed to load mdm configuration: %{public}@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

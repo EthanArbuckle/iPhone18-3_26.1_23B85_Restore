@@ -1,46 +1,46 @@
 @interface RTTUIUtteranceCell
-+ (double)heightForUtterance:(id)a3 andWidth:(double)a4;
++ (double)heightForUtterance:(id)utterance andWidth:(double)width;
 - (BOOL)_accessibilityRealtimeCompleted;
 - (RTTUIUtteranceCellDelegate)delegate;
 - (_NSRange)selectedTextRange;
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)utteranceTextColor;
-- (void)_accessibilityHandleATFocused:(BOOL)a3 assistiveTech:(id)a4;
+- (void)_accessibilityHandleATFocused:(BOOL)focused assistiveTech:(id)tech;
 - (void)adjustTextViewSize;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSendProgressIndex:(unint64_t)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)updateUtterance:(id)a3 postNotifications:(BOOL)a4;
+- (void)setSendProgressIndex:(unint64_t)index;
+- (void)textViewDidChange:(id)change;
+- (void)updateUtterance:(id)utterance postNotifications:(BOOL)notifications;
 @end
 
 @implementation RTTUIUtteranceCell
 
-+ (double)heightForUtterance:(id)a3 andWidth:(double)a4
++ (double)heightForUtterance:(id)utterance andWidth:(double)width
 {
-  v5 = a3;
+  utteranceCopy = utterance;
   if (heightForUtterance_andWidth__onceToken != -1)
   {
     +[RTTUIUtteranceCell heightForUtterance:andWidth:];
   }
 
-  v6 = v5;
-  v7 = [v6 text];
-  v8 = [v7 length];
+  v6 = utteranceCopy;
+  text = [v6 text];
+  v8 = [text length];
 
   v9 = v6;
   if (!v8)
   {
     v10 = MEMORY[0x277D440E8];
-    v11 = [v6 contactPath];
+    contactPath = [v6 contactPath];
     v12 = ttyLocString();
-    v9 = [v10 utteranceWithContactPath:v11 andText:v12];
+    v9 = [v10 utteranceWithContactPath:contactPath andText:v12];
   }
 
   [heightForUtterance_andWidth__SizeCell updateUtterance:v9 postNotifications:0];
-  [heightForUtterance_andWidth__SizeCell preferredHeightForWidth:a4];
+  [heightForUtterance_andWidth__SizeCell preferredHeightForWidth:width];
   v14 = v13;
 
   return v14;
@@ -53,13 +53,13 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updateUtterance:(id)a3 postNotifications:(BOOL)a4
+- (void)updateUtterance:(id)utterance postNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = a3;
-  [(RTTUIUtteranceCell *)self setUtterance:v6];
+  notificationsCopy = notifications;
+  utteranceCopy = utterance;
+  [(RTTUIUtteranceCell *)self setUtterance:utteranceCopy];
   [(RTTUIUtteranceCell *)self updateLayout];
-  if (v4)
+  if (notificationsCopy)
   {
     if ((objc_opt_respondsToSelector() & 1) != 0 && [(RTTUIUtteranceCell *)self _accessibilityIsRealtimeElement])
     {
@@ -67,7 +67,7 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
       UIAccessibilityPostNotification(0x421u, 0);
     }
 
-    v7 = self;
+    selfCopy = self;
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -92,58 +92,58 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
       _Unwind_Resume(v9);
     }
 
-    v8(v7);
+    v8(selfCopy);
 
     UIAccessibilityPostNotification(0x3EDu, 0);
   }
 }
 
-- (void)setSendProgressIndex:(unint64_t)a3
+- (void)setSendProgressIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v18[0] = 67109120;
-    v18[1] = a3;
+    v18[1] = index;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "Set progress index: %d", v18, 8u);
   }
 
   v6 = objc_alloc(MEMORY[0x277CCAB48]);
-  v7 = [(UITextView *)self->_textView attributedText];
-  v8 = [v6 initWithAttributedString:v7];
+  attributedText = [(UITextView *)self->_textView attributedText];
+  v8 = [v6 initWithAttributedString:attributedText];
 
   [v8 beginEditing];
-  v9 = [(RTTUIUtteranceCell *)self delegate];
-  v10 = [v9 currentCall];
-  LODWORD(v7) = [RTTUIUtilities ttyShouldBeRealtimeForCall:v10];
+  delegate = [(RTTUIUtteranceCell *)self delegate];
+  currentCall = [delegate currentCall];
+  LODWORD(attributedText) = [RTTUIUtilities ttyShouldBeRealtimeForCall:currentCall];
 
-  if (v7)
+  if (attributedText)
   {
     v11 = [v8 length];
   }
 
   else
   {
-    v11 = a3 + 1;
+    v11 = index + 1;
   }
 
   v12 = [v8 length];
   v13 = *MEMORY[0x277D740C0];
-  v14 = [(RTTUIUtteranceCell *)self utteranceTextColor];
-  v15 = v14;
+  utteranceTextColor = [(RTTUIUtteranceCell *)self utteranceTextColor];
+  utteranceTextColor2 = utteranceTextColor;
   if (v11 >= v12)
   {
-    [v8 addAttribute:v13 value:v14 range:{0, objc_msgSend(v8, "length")}];
+    [v8 addAttribute:v13 value:utteranceTextColor range:{0, objc_msgSend(v8, "length")}];
   }
 
   else
   {
-    v16 = [v14 colorWithAlphaComponent:0.5];
+    v16 = [utteranceTextColor colorWithAlphaComponent:0.5];
     [v8 addAttribute:v13 value:v16 range:{v11, objc_msgSend(v8, "length") - v11}];
 
-    v15 = [(RTTUIUtteranceCell *)self utteranceTextColor];
-    v17 = [v15 colorWithAlphaComponent:1.0];
+    utteranceTextColor2 = [(RTTUIUtteranceCell *)self utteranceTextColor];
+    v17 = [utteranceTextColor2 colorWithAlphaComponent:1.0];
     [v8 addAttribute:v13 value:v17 range:{0, v11}];
   }
 
@@ -163,45 +163,45 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
 - (id)utteranceTextColor
 {
   IsRTTNotificationContentExtension = Soft_AXProcessIsRTTNotificationContentExtension();
-  v4 = [(RTTUIUtteranceCell *)self delegate];
-  v5 = [v4 isCurrentCallConnected];
+  delegate = [(RTTUIUtteranceCell *)self delegate];
+  isCurrentCallConnected = [delegate isCurrentCallConnected];
 
-  if (!v5 || IsRTTNotificationContentExtension)
+  if (!isCurrentCallConnected || IsRTTNotificationContentExtension)
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    labelColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v6;
+  return labelColor;
 }
 
 - (_NSRange)selectedTextRange
 {
-  v2 = [(UITextView *)self->_textView selectedRange];
+  selectedRange = [(UITextView *)self->_textView selectedRange];
   result.length = v3;
-  result.location = v2;
+  result.location = selectedRange;
   return result;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   v5 = +[RTTUIUtilities sharedUtilityProvider];
   [v5 bubbleInsetForMe:1];
   v7 = v6;
   v9 = v8;
 
-  [(UITextView *)self->_textView sizeThatFits:a3, 1.79769313e308];
+  [(UITextView *)self->_textView sizeThatFits:width, 1.79769313e308];
   return v10 - v7 - v9;
 }
 
 - (void)adjustTextViewSize
 {
-  v3 = [(RTTUIUtteranceCell *)self utterance];
-  v4 = [v3 isMe];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  isMe = [utterance isMe];
 
   [(RTTUIUtteranceCell *)self bounds];
   v6 = v5;
@@ -210,13 +210,13 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
   v12 = v11;
   v13 = MEMORY[0x277CBF348];
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v15 = [(RTTUIUtteranceCell *)self utterance];
-  v16 = [v15 isTranscription];
+  utterance2 = [(RTTUIUtteranceCell *)self utterance];
+  isTranscription = [utterance2 isTranscription];
 
-  if (v16)
+  if (isTranscription)
   {
-    v17 = [v14 fontDescriptor];
-    v18 = [v17 fontDescriptorWithSymbolicTraits:1];
+    fontDescriptor = [v14 fontDescriptor];
+    v18 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
 
     v19 = MEMORY[0x277D74300];
     [v14 pointSize];
@@ -251,7 +251,7 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
   }
 
   v28 = +[RTTUIUtilities sharedUtilityProvider];
-  v29 = [v28 textAlignmentForMe:v4];
+  v29 = [v28 textAlignmentForMe:isMe];
 
   if (v29 == 2)
   {
@@ -269,14 +269,14 @@ uint64_t __50__RTTUIUtteranceCell_heightForUtterance_andWidth___block_invoke()
 
   [(UITextView *)self->_textView setFrame:v22, v21, Width, v24];
   v31 = +[RTTUIUtilities sharedUtilityProvider];
-  [v31 textInsetForMe:v4];
+  [v31 textInsetForMe:isMe];
   v33 = v22 + v32;
   v35 = v21 + v34;
   v37 = Width - (v32 + v36);
   v39 = v24 - (v34 + v38);
 
   v40 = +[RTTUIUtilities sharedUtilityProvider];
-  [v40 bubbleInsetForMe:v4];
+  [v40 bubbleInsetForMe:isMe];
   v42 = v33 + v41;
   v44 = v35 + v43;
   v46 = v37 - (v41 + v45);
@@ -306,70 +306,70 @@ void __40__RTTUIUtteranceCell_adjustTextViewSize__block_invoke(uint64_t a1)
   v50.receiver = self;
   v50.super_class = RTTUIUtteranceCell;
   [(RTTUIUtteranceCell *)&v50 layoutSubviews];
-  v3 = [(RTTUIUtteranceCell *)self utterance];
-  v4 = [v3 isMe];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  isMe = [utterance isMe];
 
-  v5 = [(RTTUIUtteranceCell *)self delegate];
-  v6 = [v5 isCurrentCallConnected];
+  delegate = [(RTTUIUtteranceCell *)self delegate];
+  isCurrentCallConnected = [delegate isCurrentCallConnected];
 
   if (!self->_textView)
   {
     v7 = [RTTUIStaticTextView alloc];
-    v8 = [(RTTUIUtteranceCell *)self textLabel];
-    [v8 frame];
+    textLabel = [(RTTUIUtteranceCell *)self textLabel];
+    [textLabel frame];
     v9 = [(RTTUIStaticTextView *)v7 initWithFrame:0 textContainer:?];
     textView = self->_textView;
     self->_textView = v9;
 
     v11 = self->_textView;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v11 setBackgroundColor:clearColor];
 
     v13 = self->_textView;
     v14 = [MEMORY[0x277D74300] systemFontOfSize:20.0];
     [(UITextView *)v13 setFont:v14];
 
     [(UITextView *)self->_textView setDelegate:self];
-    v15 = [(UITextView *)self->_textView textContainer];
-    [v15 setLineBreakMode:0];
+    textContainer = [(UITextView *)self->_textView textContainer];
+    [textContainer setLineBreakMode:0];
 
-    v16 = [(UITextView *)self->_textView textContainer];
-    [v16 setMaximumNumberOfLines:0];
+    textContainer2 = [(UITextView *)self->_textView textContainer];
+    [textContainer2 setMaximumNumberOfLines:0];
 
     [(UITextView *)self->_textView setDataDetectorTypes:-1];
     [(UITextView *)self->_textView setEditable:0];
     [(UITextView *)self->_textView setSelectable:1];
     [(UITextView *)self->_textView setScrollEnabled:0];
     v17 = self->_textView;
-    v18 = [(RTTUIUtteranceCell *)self utteranceTextColor];
-    [(UITextView *)v17 setTextColor:v18];
+    utteranceTextColor = [(RTTUIUtteranceCell *)self utteranceTextColor];
+    [(UITextView *)v17 setTextColor:utteranceTextColor];
 
-    v19 = [(RTTUIUtteranceCell *)self contentView];
-    [v19 addSubview:self->_textView];
+    contentView = [(RTTUIUtteranceCell *)self contentView];
+    [contentView addSubview:self->_textView];
   }
 
-  v20 = [(RTTUIUtteranceCell *)self backgroundView];
-  if (!v20 || (v21 = v20, -[RTTUIUtteranceCell backgroundView](self, "backgroundView"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 tag] == 1, v22, v21, v4 != v23))
+  backgroundView = [(RTTUIUtteranceCell *)self backgroundView];
+  if (!backgroundView || (v21 = backgroundView, -[RTTUIUtteranceCell backgroundView](self, "backgroundView"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 tag] == 1, v22, v21, isMe != v23))
   {
     v24 = +[RTTUIUtilities sharedUtilityProvider];
-    v25 = [v24 bubbleFillForMe:v4];
+    v25 = [v24 bubbleFillForMe:isMe];
 
     v26 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v25];
-    [v26 setTag:v4];
+    [v26 setTag:isMe];
     [(RTTUIUtteranceCell *)self setBackgroundView:v26];
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(RTTUIUtteranceCell *)self setBackgroundColor:v27];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(RTTUIUtteranceCell *)self setBackgroundColor:clearColor2];
   }
 
   IsRTTNotificationContentExtension = Soft_AXProcessIsRTTNotificationContentExtension();
-  if (v6 && (IsRTTNotificationContentExtension & 1) == 0)
+  if (isCurrentCallConnected && (IsRTTNotificationContentExtension & 1) == 0)
   {
     v29 = MEMORY[0x277CBEB38];
-    v30 = [(UITextView *)self->_textView linkTextAttributes];
-    v31 = [v29 dictionaryWithDictionary:v30];
+    linkTextAttributes = [(UITextView *)self->_textView linkTextAttributes];
+    v31 = [v29 dictionaryWithDictionary:linkTextAttributes];
 
-    v32 = [MEMORY[0x277D75348] whiteColor];
-    [v31 setValue:v32 forKey:*MEMORY[0x277D740C0]];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v31 setValue:whiteColor forKey:*MEMORY[0x277D740C0]];
 
     [v31 setValue:&unk_2873FB8D8 forKey:*MEMORY[0x277D741F0]];
     [(UITextView *)self->_textView setLinkTextAttributes:v31];
@@ -377,16 +377,16 @@ void __40__RTTUIUtteranceCell_adjustTextViewSize__block_invoke(uint64_t a1)
 
   v33 = self->_textView;
   v34 = +[RTTUIUtilities sharedUtilityProvider];
-  [v34 textInsetForMe:v4];
+  [v34 textInsetForMe:isMe];
   [(UITextView *)v33 setTextContainerInset:?];
 
-  v35 = [(RTTUIUtteranceCell *)self utterance];
-  v36 = [v35 text];
+  utterance2 = [(RTTUIUtteranceCell *)self utterance];
+  text = [utterance2 text];
 
-  v37 = [(RTTUIUtteranceCell *)self utterance];
-  v38 = [v37 text];
-  v39 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v40 = [v38 stringByTrimmingCharactersInSet:v39];
+  utterance3 = [(RTTUIUtteranceCell *)self utterance];
+  text2 = [utterance3 text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v40 = [text2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v41 = [v40 length];
 
   if (!v41)
@@ -395,122 +395,122 @@ void __40__RTTUIUtteranceCell_adjustTextViewSize__block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  v42 = [(RTTUIUtteranceCell *)self utterance];
-  v43 = [v42 hasTranslation];
+  utterance4 = [(RTTUIUtteranceCell *)self utterance];
+  hasTranslation = [utterance4 hasTranslation];
 
-  if (v43)
+  if (hasTranslation)
   {
     v44 = MEMORY[0x277CCACA8];
     v45 = ttyLocString();
-    v46 = [(RTTUIUtteranceCell *)self utterance];
-    v47 = [v46 translatedText];
-    v48 = [v44 stringWithFormat:v45, v47];
+    utterance5 = [(RTTUIUtteranceCell *)self utterance];
+    translatedText = [utterance5 translatedText];
+    v48 = [v44 stringWithFormat:v45, translatedText];
 
-    v49 = [v36 stringByAppendingFormat:@"\n%@", v48];
+    v49 = [text stringByAppendingFormat:@"\n%@", v48];
 
-    v36 = v48;
+    text = v48;
 LABEL_13:
 
-    v36 = v49;
+    text = v49;
   }
 
-  [(UITextView *)self->_textView setText:v36];
+  [(UITextView *)self->_textView setText:text];
   [(RTTUIUtteranceCell *)self adjustTextViewSize];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(RTTUIUtteranceCell *)self adjustTextViewSize];
-  v5 = [(RTTUIUtteranceCell *)self utterance];
-  v6 = [v4 text];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  text = [changeCopy text];
 
-  [v5 updateText:v6];
-  v7 = [(RTTUIUtteranceCell *)self delegate];
+  [utterance updateText:text];
+  delegate = [(RTTUIUtteranceCell *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(RTTUIUtteranceCell *)self delegate];
-    [v8 utteranceCellDidUpdateContent:self];
+    delegate2 = [(RTTUIUtteranceCell *)self delegate];
+    [delegate2 utteranceCellDidUpdateContent:self];
   }
 }
 
 - (id)accessibilityLabel
 {
   v3 = MEMORY[0x277CBDA58];
-  v4 = [(RTTUIUtteranceCell *)self utterance];
-  v5 = [v4 contactPath];
-  v6 = [v3 contactForPhoneNumber:v5];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  contactPath = [utterance contactPath];
+  v6 = [v3 contactForPhoneNumber:contactPath];
 
   if ([v6 isKeyAvailable:@"givenName"])
   {
-    v7 = [v6 givenName];
+    givenName = [v6 givenName];
   }
 
   else
   {
-    v7 = &stru_2873F89E0;
+    givenName = &stru_2873F89E0;
   }
 
-  if (!-[__CFString length](v7, "length") && [v6 isKeyAvailable:@"emailAddresses"])
+  if (!-[__CFString length](givenName, "length") && [v6 isKeyAvailable:@"emailAddresses"])
   {
-    v8 = [v6 emailAddresses];
-    v9 = [v8 firstObject];
-    v10 = [v9 label];
+    emailAddresses = [v6 emailAddresses];
+    firstObject = [emailAddresses firstObject];
+    label = [firstObject label];
 
-    v7 = v10;
+    givenName = label;
   }
 
-  if (![(__CFString *)v7 length])
+  if (![(__CFString *)givenName length])
   {
     if ([v6 ttyIsMe])
     {
-      v11 = ttyLocString();
+      contactPath2 = ttyLocString();
     }
 
     else
     {
-      v12 = [(RTTUIUtteranceCell *)self utterance];
-      v11 = [(__CFString *)v12 contactPath];
+      utterance2 = [(RTTUIUtteranceCell *)self utterance];
+      contactPath2 = [(__CFString *)utterance2 contactPath];
 
-      v7 = v12;
+      givenName = utterance2;
     }
 
-    v7 = v11;
+    givenName = contactPath2;
   }
 
-  if (![(__CFString *)v7 length])
+  if (![(__CFString *)givenName length])
   {
     v13 = ttyLocString();
 
-    v7 = v13;
+    givenName = v13;
   }
 
-  return v7;
+  return givenName;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(RTTUIUtteranceCell *)self utterance];
-  v3 = [v2 text];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  text = [utterance text];
 
-  return v3;
+  return text;
 }
 
-- (void)_accessibilityHandleATFocused:(BOOL)a3 assistiveTech:(id)a4
+- (void)_accessibilityHandleATFocused:(BOOL)focused assistiveTech:(id)tech
 {
   v5.receiver = self;
   v5.super_class = RTTUIUtteranceCell;
-  [(RTTUIUtteranceCell *)&v5 _accessibilityHandleATFocused:a3 assistiveTech:a4];
+  [(RTTUIUtteranceCell *)&v5 _accessibilityHandleATFocused:focused assistiveTech:tech];
   [(RTTUIUtteranceCell *)self _accessibilitySetIsUnread:0];
 }
 
 - (BOOL)_accessibilityRealtimeCompleted
 {
-  v2 = [(RTTUIUtteranceCell *)self utterance];
-  v3 = [v2 isComplete];
+  utterance = [(RTTUIUtteranceCell *)self utterance];
+  isComplete = [utterance isComplete];
 
-  return v3;
+  return isComplete;
 }
 
 - (RTTUIUtteranceCellDelegate)delegate

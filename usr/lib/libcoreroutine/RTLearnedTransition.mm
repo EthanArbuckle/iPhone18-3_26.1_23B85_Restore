@@ -1,30 +1,30 @@
 @interface RTLearnedTransition
-+ (id)createWithLearnedLocationOfInterestTransitionMO:(id)a3;
-+ (id)createWithLearnedTransitionMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithLearnedLocationOfInterestTransitionMO:(id)o;
++ (id)createWithLearnedTransitionMO:(id)o;
++ (id)createWithManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RTLearnedTransition)initWithIdentifier:(id)a3 startDate:(id)a4 stopDate:(id)a5 visitIdentifierOrigin:(id)a6 visitIdentifierDestination:(id)a7 creationDate:(id)a8 expirationDate:(id)a9 predominantMotionActivityType:(unint64_t)a10;
-- (id)managedObjectWithContext:(id)a3;
+- (RTLearnedTransition)initWithIdentifier:(id)identifier startDate:(id)date stopDate:(id)stopDate visitIdentifierOrigin:(id)origin visitIdentifierDestination:(id)destination creationDate:(id)creationDate expirationDate:(id)expirationDate predominantMotionActivityType:(unint64_t)self0;
+- (id)managedObjectWithContext:(id)context;
 - (unint64_t)hash;
-- (void)updateManagedObject:(id)a3;
+- (void)updateManagedObject:(id)object;
 @end
 
 @implementation RTLearnedTransition
 
-- (RTLearnedTransition)initWithIdentifier:(id)a3 startDate:(id)a4 stopDate:(id)a5 visitIdentifierOrigin:(id)a6 visitIdentifierDestination:(id)a7 creationDate:(id)a8 expirationDate:(id)a9 predominantMotionActivityType:(unint64_t)a10
+- (RTLearnedTransition)initWithIdentifier:(id)identifier startDate:(id)date stopDate:(id)stopDate visitIdentifierOrigin:(id)origin visitIdentifierDestination:(id)destination creationDate:(id)creationDate expirationDate:(id)expirationDate predominantMotionActivityType:(unint64_t)self0
 {
   v59 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  identifierCopy = identifier;
+  dateCopy = date;
+  stopDateCopy = stopDate;
+  originCopy = origin;
+  destinationCopy = destination;
+  creationDateCopy = creationDate;
+  expirationDateCopy = expirationDate;
+  if (identifierCopy)
   {
-    if (v17)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -42,10 +42,10 @@
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
     }
 
-    if (v17)
+    if (dateCopy)
     {
 LABEL_3:
-      if (v18)
+      if (stopDateCopy)
       {
         goto LABEL_4;
       }
@@ -64,10 +64,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v18)
+  if (stopDateCopy)
   {
 LABEL_4:
-    if (v19)
+    if (originCopy)
     {
       goto LABEL_5;
     }
@@ -86,10 +86,10 @@ LABEL_23:
     _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: stopDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v19)
+  if (originCopy)
   {
 LABEL_5:
-    if (v20)
+    if (destinationCopy)
     {
       goto LABEL_6;
     }
@@ -108,10 +108,10 @@ LABEL_26:
     _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visitIdentifierOrigin (in %s:%d)", buf, 0x12u);
   }
 
-  if (v20)
+  if (destinationCopy)
   {
 LABEL_6:
-    if (v21)
+    if (creationDateCopy)
     {
       goto LABEL_7;
     }
@@ -130,10 +130,10 @@ LABEL_29:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visitIdentifierDestination (in %s:%d)", buf, 0x12u);
   }
 
-  if (v21)
+  if (creationDateCopy)
   {
 LABEL_7:
-    if (v22)
+    if (expirationDateCopy)
     {
       goto LABEL_8;
     }
@@ -163,28 +163,28 @@ LABEL_32:
     _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: creationDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v22)
+  if (!expirationDateCopy)
   {
     goto LABEL_35;
   }
 
 LABEL_8:
-  v23 = 0;
-  if (v16 && v17 && v18 && v19 && v20 && v21)
+  selfCopy = 0;
+  if (identifierCopy && dateCopy && stopDateCopy && originCopy && destinationCopy && creationDateCopy)
   {
-    if ([v17 compare:v18] == 1)
+    if ([dateCopy compare:stopDateCopy] == 1)
     {
       v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v17 stringFromDate];
-        v25 = [v18 stringFromDate];
+        stringFromDate = [dateCopy stringFromDate];
+        stringFromDate2 = [stopDateCopy stringFromDate];
         *buf = 138413058;
-        v52 = v49;
+        v52 = stringFromDate;
         v53 = 2112;
         v55 = 2080;
-        v54 = v25;
-        v26 = v25;
+        v54 = stringFromDate2;
+        v26 = stringFromDate2;
         v56 = "[RTLearnedTransition initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:]";
         v57 = 1024;
         v58 = 56;
@@ -193,7 +193,7 @@ LABEL_8:
 
 LABEL_37:
 
-      v23 = 0;
+      selfCopy = 0;
       goto LABEL_41;
     }
 
@@ -202,116 +202,116 @@ LABEL_37:
     v33 = [(RTLearnedTransition *)&v50 init];
     if (v33)
     {
-      v34 = [v16 copy];
+      v34 = [identifierCopy copy];
       identifier = v33->_identifier;
       v33->_identifier = v34;
 
-      v36 = [v17 copy];
+      v36 = [dateCopy copy];
       startDate = v33->_startDate;
       v33->_startDate = v36;
 
-      v38 = [v18 copy];
+      v38 = [stopDateCopy copy];
       stopDate = v33->_stopDate;
       v33->_stopDate = v38;
 
-      v40 = [v19 copy];
+      v40 = [originCopy copy];
       visitIdentifierOrigin = v33->_visitIdentifierOrigin;
       v33->_visitIdentifierOrigin = v40;
 
-      v42 = [v20 copy];
+      v42 = [destinationCopy copy];
       visitIdentifierDestination = v33->_visitIdentifierDestination;
       v33->_visitIdentifierDestination = v42;
 
-      v44 = [v21 copy];
+      v44 = [creationDateCopy copy];
       creationDate = v33->_creationDate;
       v33->_creationDate = v44;
 
-      v46 = [v22 copy];
+      v46 = [expirationDateCopy copy];
       expirationDate = v33->_expirationDate;
       v33->_expirationDate = v46;
 
-      v33->_predominantMotionActivityType = a10;
+      v33->_predominantMotionActivityType = type;
     }
 
     self = v33;
-    v23 = self;
+    selfCopy = self;
   }
 
 LABEL_41:
 
-  return v23;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v20 = [(RTLearnedTransition *)self identifier];
-  v14 = [v20 UUIDString];
-  v19 = [(RTLearnedTransition *)self startDate];
-  v13 = [v19 stringFromDate];
-  v18 = [(RTLearnedTransition *)self stopDate];
-  v12 = [v18 stringFromDate];
-  v17 = [(RTLearnedTransition *)self visitIdentifierOrigin];
-  v3 = [v17 UUIDString];
-  v4 = [(RTLearnedTransition *)self visitIdentifierDestination];
-  v5 = [v4 UUIDString];
-  v6 = [(RTLearnedTransition *)self creationDate];
-  v7 = [v6 stringFromDate];
-  v8 = [(RTLearnedTransition *)self expirationDate];
-  v9 = [v8 stringFromDate];
+  identifier = [(RTLearnedTransition *)self identifier];
+  uUIDString = [identifier UUIDString];
+  startDate = [(RTLearnedTransition *)self startDate];
+  stringFromDate = [startDate stringFromDate];
+  stopDate = [(RTLearnedTransition *)self stopDate];
+  stringFromDate2 = [stopDate stringFromDate];
+  visitIdentifierOrigin = [(RTLearnedTransition *)self visitIdentifierOrigin];
+  uUIDString2 = [visitIdentifierOrigin UUIDString];
+  visitIdentifierDestination = [(RTLearnedTransition *)self visitIdentifierDestination];
+  uUIDString3 = [visitIdentifierDestination UUIDString];
+  creationDate = [(RTLearnedTransition *)self creationDate];
+  stringFromDate3 = [creationDate stringFromDate];
+  expirationDate = [(RTLearnedTransition *)self expirationDate];
+  stringFromDate4 = [expirationDate stringFromDate];
   v10 = [MEMORY[0x277D011B8] motionActivityTypeToString:{-[RTLearnedTransition predominantMotionActivityType](self, "predominantMotionActivityType")}];
-  v16 = [v15 stringWithFormat:@"identifier, %@, startDate, %@, stopDate, %@, visitIdentifierOrigin, %@, visitIdentifierDestination, %@, creationDate, %@, expirationDate, %@, predominantMotionActivityType, %@", v14, v13, v12, v3, v5, v7, v9, v10];
+  v16 = [v15 stringWithFormat:@"identifier, %@, startDate, %@, stopDate, %@, visitIdentifierOrigin, %@, visitIdentifierDestination, %@, creationDate, %@, expirationDate, %@, predominantMotionActivityType, %@", uUIDString, stringFromDate, stringFromDate2, uUIDString2, uUIDString3, stringFromDate3, stringFromDate4, v10];
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v6)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
-        v9 = [(RTLearnedTransition *)self identifier];
-        if (v9 || ([(RTLearnedTransition *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLearnedTransition *)self identifier];
+        if (identifier || ([(RTLearnedTransition *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(RTLearnedTransition *)self identifier];
-          v10 = [(RTLearnedTransition *)v8 identifier];
-          v11 = [v4 isEqual:v10];
+          identifier2 = [(RTLearnedTransition *)self identifier];
+          identifier3 = [(RTLearnedTransition *)v8 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v9)
+          if (identifier)
           {
 LABEL_12:
 
-            v13 = [(RTLearnedTransition *)self expirationDate];
-            if (v13 || ([(RTLearnedTransition *)v8 expirationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+            expirationDate = [(RTLearnedTransition *)self expirationDate];
+            if (expirationDate || ([(RTLearnedTransition *)v8 expirationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(RTLearnedTransition *)self expirationDate];
-              v15 = [(RTLearnedTransition *)v8 expirationDate];
-              v16 = [v14 isEqual:v15];
+              expirationDate2 = [(RTLearnedTransition *)self expirationDate];
+              expirationDate3 = [(RTLearnedTransition *)v8 expirationDate];
+              v16 = [expirationDate2 isEqual:expirationDate3];
 
-              if (v13)
+              if (expirationDate)
               {
 LABEL_18:
 
-                v17 = [(RTLearnedTransition *)self creationDate];
-                if (v17 || ([(RTLearnedTransition *)v8 creationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+                creationDate = [(RTLearnedTransition *)self creationDate];
+                if (creationDate || ([(RTLearnedTransition *)v8 creationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v18 = [(RTLearnedTransition *)self creationDate];
-                  v19 = [(RTLearnedTransition *)v8 creationDate];
-                  v20 = [v18 isEqual:v19];
+                  creationDate2 = [(RTLearnedTransition *)self creationDate];
+                  creationDate3 = [(RTLearnedTransition *)v8 creationDate];
+                  v20 = [creationDate2 isEqual:creationDate3];
 
-                  if (v17)
+                  if (creationDate)
                   {
 LABEL_24:
 
@@ -357,26 +357,26 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(RTLearnedTransition *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(RTLearnedTransition *)self expirationDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RTLearnedTransition *)self creationDate];
-  v8 = [v7 hash];
+  identifier = [(RTLearnedTransition *)self identifier];
+  v4 = [identifier hash];
+  expirationDate = [(RTLearnedTransition *)self expirationDate];
+  v6 = [expirationDate hash] ^ v4;
+  creationDate = [(RTLearnedTransition *)self creationDate];
+  v8 = [creationDate hash];
 
   return v6 ^ v8;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithLearnedTransitionMO:v3];
+      v4 = [objc_opt_class() createWithLearnedTransitionMO:objectCopy];
 LABEL_6:
       v5 = v4;
       goto LABEL_11;
@@ -385,7 +385,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithLearnedLocationOfInterestTransitionMO:v3];
+      v4 = [objc_opt_class() createWithLearnedLocationOfInterestTransitionMO:objectCopy];
       goto LABEL_6;
     }
 
@@ -393,7 +393,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412802;
-      v9 = v3;
+      v9 = objectCopy;
       v10 = 2080;
       v11 = "+[RTLearnedTransition(RTCoreDataTransformable) createWithManagedObject:]";
       v12 = 1024;
@@ -408,14 +408,14 @@ LABEL_11:
   return v5;
 }
 
-+ (id)createWithLearnedTransitionMO:(id)a3
++ (id)createWithLearnedTransitionMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -424,16 +424,16 @@ LABEL_11:
     v19 = "Invalid parameter not satisfying: learnedTransitionMO";
     v20 = &v26;
 LABEL_20:
-    _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, v19, v20, 2u);
+    _os_log_error_impl(&dword_2304B3000, managedObjectContext2, OS_LOG_TYPE_ERROR, v19, v20, 2u);
     goto LABEL_15;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -444,14 +444,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 managedObjectContext];
-    if ((-[NSObject allowTombstones](v8, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
+    managedObjectContext2 = [v4 managedObjectContext];
+    if ((-[NSObject allowTombstones](managedObjectContext2, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
     {
 
       goto LABEL_7;
@@ -465,25 +465,25 @@ LABEL_15:
 
 LABEL_7:
   v9 = [RTLearnedTransition alloc];
-  v24 = [v4 identifier];
-  v23 = [v4 startDate];
-  v22 = [v4 stopDate];
-  v10 = [v4 origin];
-  v11 = [v10 identifier];
-  v12 = [v4 destination];
-  v13 = [v12 identifier];
-  v14 = [v4 creationDate];
-  v15 = v14;
-  if (!v14)
+  identifier2 = [v4 identifier];
+  startDate = [v4 startDate];
+  stopDate = [v4 stopDate];
+  origin = [v4 origin];
+  identifier3 = [origin identifier];
+  destination = [v4 destination];
+  identifier4 = [destination identifier];
+  creationDate = [v4 creationDate];
+  distantPast = creationDate;
+  if (!creationDate)
   {
-    v15 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v16 = [v4 expirationDate];
-  v17 = [v4 predominantMotionActivityType];
-  v18 = -[RTLearnedTransition initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:](v9, "initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:", v24, v23, v22, v11, v13, v15, v16, [v17 integerValue]);
+  expirationDate = [v4 expirationDate];
+  predominantMotionActivityType = [v4 predominantMotionActivityType];
+  v18 = -[RTLearnedTransition initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:](v9, "initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:", identifier2, startDate, stopDate, identifier3, identifier4, distantPast, expirationDate, [predominantMotionActivityType integerValue]);
 
-  if (!v14)
+  if (!creationDate)
   {
   }
 
@@ -492,11 +492,11 @@ LABEL_16:
   return v18;
 }
 
-+ (id)createWithLearnedLocationOfInterestTransitionMO:(id)a3
++ (id)createWithLearnedLocationOfInterestTransitionMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -512,20 +512,20 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     v6 = [RTLearnedTransition alloc];
-    v7 = [v4 identifier];
-    v8 = [v4 startDate];
-    v9 = [v4 stopDate];
-    v10 = [v4 visitIdentifierOrigin];
-    v11 = [v4 visitIdentifierDestination];
-    v12 = [v4 creationDate];
-    v13 = [v4 expirationDate];
-    v14 = [v4 predominantMotionActivityType];
-    v15 = -[RTLearnedTransition initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:](v6, "initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:", v7, v8, v9, v10, v11, v12, v13, [v14 integerValue]);
+    identifier2 = [v4 identifier];
+    startDate = [v4 startDate];
+    stopDate = [v4 stopDate];
+    visitIdentifierOrigin = [v4 visitIdentifierOrigin];
+    visitIdentifierDestination = [v4 visitIdentifierDestination];
+    creationDate = [v4 creationDate];
+    expirationDate = [v4 expirationDate];
+    predominantMotionActivityType = [v4 predominantMotionActivityType];
+    v15 = -[RTLearnedTransition initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:](v6, "initWithIdentifier:startDate:stopDate:visitIdentifierOrigin:visitIdentifierDestination:creationDate:expirationDate:predominantMotionActivityType:", identifier2, startDate, stopDate, visitIdentifierOrigin, visitIdentifierDestination, creationDate, expirationDate, [predominantMotionActivityType integerValue]);
 
     goto LABEL_8;
   }
@@ -547,11 +547,11 @@ LABEL_8:
   return v15;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTLearnedTransitionMO managedObjectWithTransition:self inManagedObjectContext:a3];
+    v3 = [RTLearnedTransitionMO managedObjectWithTransition:self inManagedObjectContext:context];
   }
 
   else
@@ -569,11 +569,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)updateManagedObject:(id)a3
+- (void)updateManagedObject:(id)object
 {
-  v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTLearnedTransitionMO managedObjectWithTransition:self managedObject:v6 inManagedObjectContext:v4];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
+  v5 = [RTLearnedTransitionMO managedObjectWithTransition:self managedObject:objectCopy inManagedObjectContext:managedObjectContext];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface OutstreamVideoTapAction
-- (_TtC15PromotedContent23OutstreamVideoTapAction)initWithActionType:(int64_t)a3 confirmedClickInterval:(double)a4;
+- (_TtC15PromotedContent23OutstreamVideoTapAction)initWithActionType:(int64_t)type confirmedClickInterval:(double)interval;
 @end
 
 @implementation OutstreamVideoTapAction
 
-- (_TtC15PromotedContent23OutstreamVideoTapAction)initWithActionType:(int64_t)a3 confirmedClickInterval:(double)a4
+- (_TtC15PromotedContent23OutstreamVideoTapAction)initWithActionType:(int64_t)type confirmedClickInterval:(double)interval
 {
   v6 = OBJC_IVAR____TtC15PromotedContent23OutstreamVideoTapAction_url;
   v7 = sub_1C1B944A8();
@@ -13,7 +13,7 @@
   *(&self->super.super.isa + OBJC_IVAR____TtC15PromotedContent23OutstreamVideoTapAction_adamIdentifier) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC15PromotedContent23OutstreamVideoTapAction_iTunesMetadata) = 0;
   *(&self->super.super.isa + OBJC_IVAR___APPCTapAction_actionType) = 4;
-  *(&self->super.super.isa + OBJC_IVAR___APPCTapAction_confirmedClickInterval) = a4;
+  *(&self->super.super.isa + OBJC_IVAR___APPCTapAction_confirmedClickInterval) = interval;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TapAction();
   return [(APPCTapAction *)&v9 init];

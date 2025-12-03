@@ -1,6 +1,6 @@
 @interface OADFlattenedGroup
 - (OADFlattenedGroup)init;
-- (void)addDrawable:(id)a3;
+- (void)addDrawable:(id)drawable;
 @end
 
 @implementation OADFlattenedGroup
@@ -20,12 +20,12 @@
   return v2;
 }
 
-- (void)addDrawable:(id)a3
+- (void)addDrawable:(id)drawable
 {
-  v4 = a3;
-  if (v4)
+  drawableCopy = drawable;
+  if (drawableCopy)
   {
-    [(NSMutableArray *)self->mDrawables addObject:v4];
+    [(NSMutableArray *)self->mDrawables addObject:drawableCopy];
   }
 }
 

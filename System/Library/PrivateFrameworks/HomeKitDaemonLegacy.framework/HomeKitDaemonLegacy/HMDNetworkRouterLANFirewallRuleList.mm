@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterLANFirewallRuleList
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterLANFirewallRuleList)init;
-- (HMDNetworkRouterLANFirewallRuleList)initWithMulticastBridgingRules:(id)a3 staticPortRules:(id)a4 dynamicPortRules:(id)a5 staticICMPRules:(id)a6;
+- (HMDNetworkRouterLANFirewallRuleList)initWithMulticastBridgingRules:(id)rules staticPortRules:(id)portRules dynamicPortRules:(id)dynamicPortRules staticICMPRules:(id)pRules;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterLANFirewallRuleList
@@ -14,19 +14,19 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
-  v5 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
-  v6 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
-  v7 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
-  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterLANFirewallRuleList multicastBridgingRules=%@, staticPortRules=%@, dynamicPortRules=%@, staticICMPRules=%@>", v4, v5, v6, v7];
+  multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
+  staticPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
+  dynamicPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
+  staticICMPRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
+  v8 = [v3 stringWithFormat:@"<HMDNetworkRouterLANFirewallRuleList multicastBridgingRules=%@, staticPortRules=%@, dynamicPortRules=%@, staticICMPRules=%@>", multicastBridgingRules, staticPortRules, dynamicPortRules, staticICMPRules];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,34 +36,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
-      v8 = [(HMDNetworkRouterLANFirewallRuleList *)v6 multicastBridgingRules];
-      if (v7 != v8)
+      v6 = equalCopy;
+      multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
+      multicastBridgingRules2 = [(HMDNetworkRouterLANFirewallRuleList *)v6 multicastBridgingRules];
+      if (multicastBridgingRules != multicastBridgingRules2)
       {
-        v9 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
+        multicastBridgingRules3 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
         [(HMDNetworkRouterLANFirewallRuleList *)v6 multicastBridgingRules];
-        v33 = v32 = v9;
-        if (![v9 isEqual:?])
+        v33 = v32 = multicastBridgingRules3;
+        if (![multicastBridgingRules3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_24;
         }
       }
 
-      v11 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
-      v12 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticPortRules];
-      if (v11 != v12)
+      staticPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
+      staticPortRules2 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticPortRules];
+      if (staticPortRules != staticPortRules2)
       {
-        v3 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
-        v30 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticPortRules];
-        if (![v3 isEqual:?])
+        staticPortRules3 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
+        staticPortRules4 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticPortRules];
+        if (![staticPortRules3 isEqual:?])
         {
           v10 = 0;
 LABEL_22:
 
 LABEL_23:
-          if (v7 == v8)
+          if (multicastBridgingRules == multicastBridgingRules2)
           {
 LABEL_25:
 
@@ -76,38 +76,38 @@ LABEL_24:
         }
       }
 
-      v13 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
-      v14 = [(HMDNetworkRouterLANFirewallRuleList *)v6 dynamicPortRules];
-      v31 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      dynamicPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
+      dynamicPortRules2 = [(HMDNetworkRouterLANFirewallRuleList *)v6 dynamicPortRules];
+      v31 = dynamicPortRules;
+      v15 = dynamicPortRules == dynamicPortRules2;
+      v16 = dynamicPortRules2;
       if (v15)
       {
-        v28 = v3;
-        v29 = v12;
+        v28 = staticPortRules3;
+        v29 = staticPortRules2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
-        v25 = [(HMDNetworkRouterLANFirewallRuleList *)v6 dynamicPortRules];
-        v26 = v17;
-        if (![v17 isEqual:?])
+        dynamicPortRules3 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
+        dynamicPortRules4 = [(HMDNetworkRouterLANFirewallRuleList *)v6 dynamicPortRules];
+        v26 = dynamicPortRules3;
+        if (![dynamicPortRules3 isEqual:?])
         {
           v10 = 0;
           v23 = v31;
           goto LABEL_20;
         }
 
-        v28 = v3;
-        v29 = v12;
+        v28 = staticPortRules3;
+        v29 = staticPortRules2;
       }
 
       v27 = v16;
-      v18 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
-      v19 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticICMPRules];
-      v20 = v19;
-      if (v18 == v19)
+      staticICMPRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
+      staticICMPRules2 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticICMPRules];
+      v20 = staticICMPRules2;
+      if (staticICMPRules == staticICMPRules2)
       {
 
         v10 = 1;
@@ -115,20 +115,20 @@ LABEL_24:
 
       else
       {
-        v21 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
-        v22 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticICMPRules];
-        v10 = [v21 isEqual:v22];
+        staticICMPRules3 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
+        staticICMPRules4 = [(HMDNetworkRouterLANFirewallRuleList *)v6 staticICMPRules];
+        v10 = [staticICMPRules3 isEqual:staticICMPRules4];
       }
 
       v23 = v31;
       v16 = v27;
-      v3 = v28;
-      v12 = v29;
+      staticPortRules3 = v28;
+      staticPortRules2 = v29;
       if (v31 == v27)
       {
 LABEL_21:
 
-        if (v11 == v12)
+        if (staticPortRules == staticPortRules2)
         {
           goto LABEL_23;
         }
@@ -149,19 +149,19 @@ LABEL_26:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterLANFirewallRuleList allocWithZone:a3];
-  v5 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
-  v6 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
-  v7 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
-  v8 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
-  v9 = [(HMDNetworkRouterLANFirewallRuleList *)v4 initWithMulticastBridgingRules:v5 staticPortRules:v6 dynamicPortRules:v7 staticICMPRules:v8];
+  v4 = [HMDNetworkRouterLANFirewallRuleList allocWithZone:zone];
+  multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
+  staticPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
+  dynamicPortRules = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
+  staticICMPRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
+  v9 = [(HMDNetworkRouterLANFirewallRuleList *)v4 initWithMulticastBridgingRules:multicastBridgingRules staticPortRules:staticPortRules dynamicPortRules:dynamicPortRules staticICMPRules:staticICMPRules];
 
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v86 = *MEMORY[0x277D85DE8];
   v85 = 0u;
@@ -190,8 +190,8 @@ LABEL_26:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self multicastBridgingRules];
+  v6 = [multicastBridgingRules countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v6)
   {
     v7 = v6;
@@ -203,7 +203,7 @@ LABEL_3:
     {
       if (*v58 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(multicastBridgingRules);
       }
 
       v11 = *(*(&v57 + 1) + 8 * v10);
@@ -223,14 +223,14 @@ LABEL_3:
 LABEL_46:
         v37 = v13;
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_51;
         }
 
         v38 = v37;
         v36 = 0;
-        *a3 = v37;
+        *error = v37;
         goto LABEL_52;
       }
 
@@ -247,7 +247,7 @@ LABEL_46:
       v8 = 1;
       if (v7 == v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+        v7 = [multicastBridgingRules countByEnumeratingWithState:&v57 objects:v64 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -266,8 +266,8 @@ LABEL_12:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v5 = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
-    v15 = [v5 countByEnumeratingWithState:&v52 objects:v63 count:16];
+    multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticPortRules];
+    v15 = [multicastBridgingRules countByEnumeratingWithState:&v52 objects:v63 count:16];
     if (v15)
     {
       v16 = v15;
@@ -279,7 +279,7 @@ LABEL_14:
       {
         if (*v53 != v18)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(multicastBridgingRules);
         }
 
         v20 = *(*(&v52 + 1) + 8 * v19);
@@ -312,7 +312,7 @@ LABEL_14:
         v17 = 1;
         if (v16 == v19)
         {
-          v16 = [v5 countByEnumeratingWithState:&v52 objects:v63 count:16];
+          v16 = [multicastBridgingRules countByEnumeratingWithState:&v52 objects:v63 count:16];
           if (v16)
           {
             goto LABEL_14;
@@ -331,8 +331,8 @@ LABEL_23:
       v48 = 0u;
       v49 = 0u;
       v47 = 0u;
-      v5 = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
-      v22 = [v5 countByEnumeratingWithState:&v47 objects:v62 count:16];
+      multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self dynamicPortRules];
+      v22 = [multicastBridgingRules countByEnumeratingWithState:&v47 objects:v62 count:16];
       if (v22)
       {
         v23 = v22;
@@ -344,7 +344,7 @@ LABEL_25:
         {
           if (*v48 != v25)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(multicastBridgingRules);
           }
 
           v27 = *(*(&v47 + 1) + 8 * v26);
@@ -377,7 +377,7 @@ LABEL_25:
           v24 = 1;
           if (v23 == v26)
           {
-            v23 = [v5 countByEnumeratingWithState:&v47 objects:v62 count:16];
+            v23 = [multicastBridgingRules countByEnumeratingWithState:&v47 objects:v62 count:16];
             if (v23)
             {
               goto LABEL_25;
@@ -396,8 +396,8 @@ LABEL_34:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v5 = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
-        v29 = [v5 countByEnumeratingWithState:&v42 objects:v61 count:16];
+        multicastBridgingRules = [(HMDNetworkRouterLANFirewallRuleList *)self staticICMPRules];
+        v29 = [multicastBridgingRules countByEnumeratingWithState:&v42 objects:v61 count:16];
         if (!v29)
         {
 LABEL_45:
@@ -416,7 +416,7 @@ LABEL_36:
         {
           if (*v43 != v32)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(multicastBridgingRules);
           }
 
           v34 = *(*(&v42 + 1) + 8 * v33);
@@ -449,7 +449,7 @@ LABEL_36:
           v31 = 1;
           if (v30 == v33)
           {
-            v30 = [v5 countByEnumeratingWithState:&v42 objects:v61 count:16];
+            v30 = [multicastBridgingRules countByEnumeratingWithState:&v42 objects:v61 count:16];
             if (v30)
             {
               goto LABEL_36;
@@ -462,11 +462,11 @@ LABEL_36:
     }
   }
 
-  if (a3)
+  if (error)
   {
     HMErrorFromOSStatus();
     v37 = 0;
-    *a3 = v36 = 0;
+    *error = v36 = 0;
   }
 
   else
@@ -484,28 +484,28 @@ LABEL_52:
   return v36;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v27 = self;
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  selfCopy = self;
+  dataCopy = data;
+  v6 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = [v5 bytes];
+  bytes = [dataCopy bytes];
   v8 = [v6 length];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   if (!v8)
   {
 LABEL_34:
-    if ([v9 count])
+    if ([array count])
     {
-      v21 = v9;
+      v21 = array;
     }
 
     else
@@ -514,10 +514,10 @@ LABEL_34:
     }
 
     [v28 setMulticastBridgingRules:v21];
-    v22 = v29;
-    if ([v29 count])
+    v22 = array2;
+    if ([array2 count])
     {
-      v23 = v29;
+      v23 = array2;
     }
 
     else
@@ -526,9 +526,9 @@ LABEL_34:
     }
 
     [v28 setStaticPortRules:v23];
-    if ([v10 count])
+    if ([array3 count])
     {
-      v24 = v10;
+      v24 = array3;
     }
 
     else
@@ -537,9 +537,9 @@ LABEL_34:
     }
 
     [v28 setDynamicPortRules:v24];
-    if ([v11 count])
+    if ([array4 count])
     {
-      v25 = v11;
+      v25 = array4;
     }
 
     else
@@ -554,7 +554,7 @@ LABEL_34:
   }
 
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v38 = 0;
@@ -564,10 +564,10 @@ LABEL_34:
     v35 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_48;
       }
 
@@ -593,7 +593,7 @@ LABEL_34:
           goto LABEL_20;
         }
 
-        v17 = v10;
+        v17 = array3;
         goto LABEL_22;
       }
 
@@ -606,7 +606,7 @@ LABEL_34:
 
         if (!v16)
         {
-          v17 = v11;
+          v17 = array4;
           goto LABEL_22;
         }
 
@@ -630,9 +630,9 @@ LABEL_23:
           goto LABEL_20;
         }
 
-        v17 = v9;
+        v17 = array;
 LABEL_22:
-        [v17 addObject:{v15, v27}];
+        [v17 addObject:{v15, selfCopy}];
         v12 = 0;
         goto LABEL_23;
       }
@@ -646,7 +646,7 @@ LABEL_22:
 
         if (!v16)
         {
-          v17 = v29;
+          v17 = array2;
           goto LABEL_22;
         }
 
@@ -674,39 +674,39 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v12;
     v18 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_48;
   }
 
 LABEL_47:
   v18 = 0;
 LABEL_48:
-  v22 = v29;
+  v22 = array2;
 LABEL_49:
 
   return v18;
 }
 
-- (HMDNetworkRouterLANFirewallRuleList)initWithMulticastBridgingRules:(id)a3 staticPortRules:(id)a4 dynamicPortRules:(id)a5 staticICMPRules:(id)a6
+- (HMDNetworkRouterLANFirewallRuleList)initWithMulticastBridgingRules:(id)rules staticPortRules:(id)portRules dynamicPortRules:(id)dynamicPortRules staticICMPRules:(id)pRules
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  rulesCopy = rules;
+  portRulesCopy = portRules;
+  dynamicPortRulesCopy = dynamicPortRules;
+  pRulesCopy = pRules;
   v18.receiver = self;
   v18.super_class = HMDNetworkRouterLANFirewallRuleList;
   v15 = [(HMDNetworkRouterLANFirewallRuleList *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_multicastBridgingRules, a3);
-    objc_storeStrong(&v16->_staticPortRules, a4);
-    objc_storeStrong(&v16->_dynamicPortRules, a5);
-    objc_storeStrong(&v16->_staticICMPRules, a6);
+    objc_storeStrong(&v15->_multicastBridgingRules, rules);
+    objc_storeStrong(&v16->_staticPortRules, portRules);
+    objc_storeStrong(&v16->_dynamicPortRules, dynamicPortRules);
+    objc_storeStrong(&v16->_staticICMPRules, pRules);
   }
 
   return v16;
@@ -719,24 +719,24 @@ LABEL_49:
   return [(HMDNetworkRouterLANFirewallRuleList *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterLANFirewallRuleList);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterLANFirewallRuleList *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterLANFirewallRuleList *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

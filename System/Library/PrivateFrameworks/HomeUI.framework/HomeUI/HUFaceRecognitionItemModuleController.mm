@@ -1,24 +1,24 @@
 @interface HUFaceRecognitionItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)a3 animated:(BOOL)a4;
-- (id)presentFaceRecognitionPersonSettingsForPerson:(id)a3 personManager:(id)a4 animated:(BOOL)a5;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)event animated:(BOOL)animated;
+- (id)presentFaceRecognitionPersonSettingsForPerson:(id)person personManager:(id)manager animated:(BOOL)animated;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUFaceRecognitionItemModuleController
 
-- (id)presentFaceRecognitionPersonSettingsForPerson:(id)a3 personManager:(id)a4 animated:(BOOL)a5
+- (id)presentFaceRecognitionPersonSettingsForPerson:(id)person personManager:(id)manager animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  personCopy = person;
+  managerCopy = manager;
   objc_opt_class();
-  v10 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = module;
   }
 
   else
@@ -29,24 +29,24 @@
   v12 = v11;
 
   v13 = [HUFaceRecognitionLibraryListViewController alloc];
-  v14 = [v12 home];
+  home = [v12 home];
 
-  v15 = [(HUFaceRecognitionLibraryListViewController *)v13 initWithHome:v14];
+  v15 = [(HUFaceRecognitionLibraryListViewController *)v13 initWithHome:home];
   v16 = [HUViewControllerPresentationRequest requestWithViewController:v15];
-  [v16 setAnimated:v5];
+  [v16 setAnimated:animatedCopy];
   [v16 setPreferredPresentationType:1];
-  v17 = [(HUItemModuleController *)self host];
-  v18 = [v17 moduleController:self presentViewControllerForRequest:v16];
+  host = [(HUItemModuleController *)self host];
+  v18 = [host moduleController:self presentViewControllerForRequest:v16];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSettingsForPerson_personManager_animated___block_invoke;
   v24[3] = &unk_277DC14E0;
-  v25 = v8;
-  v26 = v9;
+  v25 = personCopy;
+  v26 = managerCopy;
   v27 = v15;
-  v28 = v5;
-  v19 = v8;
-  v20 = v9;
+  v28 = animatedCopy;
+  v19 = personCopy;
+  v20 = managerCopy;
   v21 = v15;
   v22 = [v18 flatMap:v24];
 
@@ -68,15 +68,15 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
   return v1;
 }
 
-- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)a3 animated:(BOOL)a4
+- (id)presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent:(id)event animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  eventCopy = event;
   objc_opt_class();
-  v7 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = module;
   }
 
   else
@@ -87,36 +87,36 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
   v9 = v8;
 
   v10 = [HUFaceRecognitionLibraryListViewController alloc];
-  v11 = [v9 home];
+  home = [v9 home];
 
-  v12 = [(HUFaceRecognitionLibraryListViewController *)v10 initWithHome:v11];
+  v12 = [(HUFaceRecognitionLibraryListViewController *)v10 initWithHome:home];
   v13 = [HUViewControllerPresentationRequest requestWithViewController:v12];
-  [v13 setAnimated:v4];
+  [v13 setAnimated:animatedCopy];
   [v13 setPreferredPresentationType:1];
-  v14 = [(HUItemModuleController *)self host];
-  v15 = [v14 moduleController:self presentViewControllerForRequest:v13];
+  host = [(HUItemModuleController *)self host];
+  v15 = [host moduleController:self presentViewControllerForRequest:v13];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __111__HUFaceRecognitionItemModuleController_presentFaceRecognitionAddPersonSettingsForUnknownPersonEvent_animated___block_invoke;
   v20[3] = &unk_277DC1508;
   v21 = v12;
-  v22 = v6;
-  v23 = v4;
+  v22 = eventCopy;
+  v23 = animatedCopy;
   v16 = v12;
-  v17 = v6;
+  v17 = eventCopy;
   v18 = [v15 flatMap:v20];
 
   return v18;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -126,9 +126,9 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
 
   v7 = v6;
 
-  v8 = [v7 faceRecognitionCellItem];
+  faceRecognitionCellItem = [v7 faceRecognitionCellItem];
 
-  if (v8 != v4)
+  if (faceRecognitionCellItem != itemCopy)
   {
     NSLog(&cfstr_ForgotToDeclar.isa);
   }
@@ -138,15 +138,15 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
   return v9;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v14 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
-  v7 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = module;
   }
 
   else
@@ -156,12 +156,12 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
 
   v9 = v8;
 
-  v10 = [v9 faceRecognitionCellItem];
+  faceRecognitionCellItem = [v9 faceRecognitionCellItem];
 
-  if (v10 == v6)
+  if (faceRecognitionCellItem == itemCopy)
   {
     objc_opt_class();
-    v11 = v14;
+    v11 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -179,15 +179,15 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v15 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
-  v8 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = module;
   }
 
   else
@@ -197,26 +197,26 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
 
   v10 = v9;
 
-  v11 = [v10 faceRecognitionCellItem];
+  faceRecognitionCellItem = [v10 faceRecognitionCellItem];
 
-  if (v11 == v7)
+  if (faceRecognitionCellItem == itemCopy)
   {
-    v12 = [v7 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v14 = [v13 BOOLValue];
+    latestResults = [itemCopy latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v13 BOOLValue];
 
-    [v15 setAccessoryType:v14 ^ 1u];
+    [cellCopy setAccessoryType:bOOLValue ^ 1u];
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -226,21 +226,21 @@ id __110__HUFaceRecognitionItemModuleController_presentFaceRecognitionPersonSett
 
   v7 = v6;
 
-  v8 = [v7 faceRecognitionCellItem];
-  v9 = [v4 isEqual:v8];
+  faceRecognitionCellItem = [v7 faceRecognitionCellItem];
+  v9 = [itemCopy isEqual:faceRecognitionCellItem];
 
   v10 = 0;
   if (v9)
   {
     v11 = [HUFaceRecognitionLibraryListViewController alloc];
-    v12 = [v7 home];
-    v13 = [(HUFaceRecognitionLibraryListViewController *)v11 initWithHome:v12];
+    home = [v7 home];
+    v13 = [(HUFaceRecognitionLibraryListViewController *)v11 initWithHome:home];
 
     v14 = [HUViewControllerPresentationRequest requestWithViewController:v13];
     v10 = 1;
     [v14 setPreferredPresentationType:1];
-    v15 = [(HUItemModuleController *)self host];
-    v16 = [v15 moduleController:self presentViewControllerForRequest:v14];
+    host = [(HUItemModuleController *)self host];
+    v16 = [host moduleController:self presentViewControllerForRequest:v14];
   }
 
   return v10;

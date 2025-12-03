@@ -1,12 +1,12 @@
 @interface PPSocialHighlightFeaturizer
-+ (double)_intervalForBucketedString:(uint64_t)a1;
-+ (id)_feedbackFeaturesForPublisher:(void *)a3 highlights:(void *)a4 features:;
-+ (id)_flattenArraysInDictionary:(void *)a3 keyPath:;
-+ (id)_lastInteractionsByContactForHighlights:(void *)a3 bundlePredicate:(void *)a4 mechanismPredicate:(void *)a5 interactionStore:;
++ (double)_intervalForBucketedString:(uint64_t)string;
++ (id)_feedbackFeaturesForPublisher:(void *)publisher highlights:(void *)highlights features:;
++ (id)_flattenArraysInDictionary:(void *)dictionary keyPath:;
++ (id)_lastInteractionsByContactForHighlights:(void *)highlights bundlePredicate:(void *)predicate mechanismPredicate:(void *)mechanismPredicate interactionStore:;
 + (id)trialSpecifiedFeatures;
-- (PPSocialHighlightFeaturizer)initWithFeatureValues:(id)a3;
-- (PPSocialHighlightFeaturizer)initWithFeedbackPublisher:(id)a3 topicStore:(id)a4 interactionStore:(id)a5 significantContactHandles:(id)a6 features:(id)a7 highlights:(id)a8;
-- (id)featurizeHighlights:(id)a3;
+- (PPSocialHighlightFeaturizer)initWithFeatureValues:(id)values;
+- (PPSocialHighlightFeaturizer)initWithFeedbackPublisher:(id)publisher topicStore:(id)store interactionStore:(id)interactionStore significantContactHandles:(id)handles features:(id)features highlights:(id)highlights;
+- (id)featurizeHighlights:(id)highlights;
 @end
 
 @implementation PPSocialHighlightFeaturizer
@@ -37,14 +37,14 @@
   return v5;
 }
 
-- (id)featurizeHighlights:(id)a3
+- (id)featurizeHighlights:(id)highlights
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__PPSocialHighlightFeaturizer_featurizeHighlights___block_invoke;
   v5[3] = &unk_278974FB0;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [highlights _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }
@@ -115,20 +115,20 @@ id __51__PPSocialHighlightFeaturizer_featurizeHighlights___block_invoke(uint64_t
   return v14;
 }
 
-- (PPSocialHighlightFeaturizer)initWithFeedbackPublisher:(id)a3 topicStore:(id)a4 interactionStore:(id)a5 significantContactHandles:(id)a6 features:(id)a7 highlights:(id)a8
+- (PPSocialHighlightFeaturizer)initWithFeedbackPublisher:(id)publisher topicStore:(id)store interactionStore:(id)interactionStore significantContactHandles:(id)handles features:(id)features highlights:(id)highlights
 {
   v377 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v283 = a4;
-  v282 = a5;
-  v14 = a7;
-  v15 = a8;
-  v279 = a6;
+  publisherCopy = publisher;
+  storeCopy = store;
+  interactionStoreCopy = interactionStore;
+  featuresCopy = features;
+  highlightsCopy = highlights;
+  handlesCopy = handles;
   v284 = objc_opt_new();
-  v281 = v13;
-  if (v13)
+  v281 = publisherCopy;
+  if (publisherCopy)
   {
-    v16 = v13;
+    v16 = publisherCopy;
   }
 
   else
@@ -143,16 +143,16 @@ id __51__PPSocialHighlightFeaturizer_featurizeHighlights___block_invoke(uint64_t
     v16 = 0;
   }
 
-  v18 = [PPSocialHighlightFeaturizer _feedbackFeaturesForPublisher:v16 highlights:v15 features:v14];
+  v18 = [PPSocialHighlightFeaturizer _feedbackFeaturesForPublisher:v16 highlights:highlightsCopy features:featuresCopy];
   [v284 addEntriesFromDictionary:v18];
 
-  v290 = v14;
-  v291 = v15;
-  if (v282)
+  v290 = featuresCopy;
+  v291 = highlightsCopy;
+  if (interactionStoreCopy)
   {
-    v316 = v282;
-    v311 = v15;
-    v19 = v14;
+    v316 = interactionStoreCopy;
+    v311 = highlightsCopy;
+    v19 = featuresCopy;
     v20 = 0x27896F000uLL;
     objc_opt_self();
     v21 = objc_opt_new();
@@ -290,7 +290,7 @@ LABEL_26:
 LABEL_28:
 
         [v284 addEntriesFromDictionary:v21];
-        v14 = v290;
+        featuresCopy = v290;
         goto LABEL_31;
       }
     }
@@ -306,7 +306,7 @@ LABEL_28:
 
 LABEL_31:
 
-  if (!v283)
+  if (!storeCopy)
   {
     v103 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
@@ -321,9 +321,9 @@ LABEL_31:
 
   v60 = v20;
   v61 = *(v20 + 3448);
-  v62 = v283;
+  v62 = storeCopy;
   v63 = v291;
-  v64 = v14;
+  v64 = featuresCopy;
   objc_opt_self();
   v65 = objc_autoreleasePoolPush();
   v66 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"meanTopicScore", @"medianTopicScore", @"topicCount", @"maxTopicScore", @"minTopicScore", 0}];
@@ -365,13 +365,13 @@ LABEL_31:
 
         v75 = *(*(&v349 + 1) + 8 * k);
         v76 = objc_autoreleasePoolPush();
-        v77 = [v75 attributionIdentifier];
+        attributionIdentifier = [v75 attributionIdentifier];
 
-        if (v77)
+        if (attributionIdentifier)
         {
-          v78 = [v75 highlightIdentifier];
-          v79 = [v75 attributionIdentifier];
-          [v69 setObject:v78 forKeyedSubscript:v79];
+          highlightIdentifier = [v75 highlightIdentifier];
+          attributionIdentifier2 = [v75 attributionIdentifier];
+          [v69 setObject:highlightIdentifier forKeyedSubscript:attributionIdentifier2];
         }
 
         objc_autoreleasePoolPop(v76);
@@ -390,8 +390,8 @@ LABEL_31:
     v80 = objc_opt_new();
     v81 = objc_opt_new();
     v82 = objc_alloc(MEMORY[0x277CBEB98]);
-    v83 = [v69 allKeys];
-    v84 = [v82 initWithArray:v83];
+    allKeys = [v69 allKeys];
+    v84 = [v82 initWithArray:allKeys];
     [v81 setMatchingDocumentIds:v84];
 
     [v81 setLimit:50];
@@ -411,7 +411,7 @@ LABEL_31:
     v272 = v81;
     LOBYTE(v84) = [v287 iterTopicRecordsWithQuery:v81 error:&v375 block:&v353];
     v273 = v375;
-    v14 = v290;
+    featuresCopy = v290;
     v275 = v85;
     if (v84)
     {
@@ -424,7 +424,7 @@ LABEL_31:
         objc_opt_self();
         v89 = objc_autoreleasePoolPush();
         v90 = v88;
-        v91 = [v88 cachedTopicScores];
+        cachedTopicScores = [v88 cachedTopicScores];
         objc_autoreleasePoolPop(v89);
         v92 = objc_opt_new();
         aBlock = 0u;
@@ -447,7 +447,7 @@ LABEL_31:
               }
 
               v98 = *(*(&aBlock + 1) + 8 * m);
-              v99 = [v91 objectForKeyedSubscript:v98];
+              v99 = [cachedTopicScores objectForKeyedSubscript:v98];
 
               if (!v99)
               {
@@ -464,7 +464,7 @@ LABEL_31:
                 goto LABEL_67;
               }
 
-              v100 = [v91 objectForKeyedSubscript:v98];
+              v100 = [cachedTopicScores objectForKeyedSubscript:v98];
               [v92 setObject:v100 forKeyedSubscript:v98];
             }
 
@@ -531,9 +531,9 @@ LABEL_67:
                 v117 = MEMORY[0x277CCABB0];
                 [v116 score];
                 v118 = [v117 numberWithDouble:?];
-                v119 = [v116 item];
-                v120 = [v119 topicIdentifier];
-                [v101 setObject:v118 forKeyedSubscript:v120];
+                item = [v116 item];
+                topicIdentifier = [item topicIdentifier];
+                [v101 setObject:v118 forKeyedSubscript:topicIdentifier];
               }
 
               v113 = [v111 countByEnumeratingWithState:&v345 objects:buf count:16];
@@ -551,9 +551,9 @@ LABEL_67:
         v122 = [v86 count];
         v123 = [v121 _pas_proxyArrayWithObject:MEMORY[0x277CBEBF8] repetitions:v122];
         v124 = objc_alloc(MEMORY[0x277CBEB38]);
-        v125 = [v86 allValues];
+        allValues = [v86 allValues];
         v271 = v123;
-        v322 = [v124 initWithObjects:v123 forKeys:v125];
+        v322 = [v124 initWithObjects:v123 forKeys:allValues];
 
         v343 = 0u;
         v344 = 0u;
@@ -595,8 +595,8 @@ LABEL_67:
 
               else
               {
-                v141 = [MEMORY[0x277CCA890] currentHandler];
-                [v141 handleFailureInMethod:sel__topicScoresMatchingSocialHighlights_topicStore_ object:v274 file:@"PPSocialHighlightFeaturizer.m" lineNumber:525 description:@"Iterating through keys should always result in a value"];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:sel__topicScoresMatchingSocialHighlights_topicStore_ object:v274 file:@"PPSocialHighlightFeaturizer.m" lineNumber:525 description:@"Iterating through keys should always result in a value"];
 
                 v130 = contextb;
                 if (contextb)
@@ -669,7 +669,7 @@ LABEL_100:
         }
 
         v20 = 0x27896F000uLL;
-        v14 = v290;
+        featuresCopy = v290;
       }
 
       else
@@ -706,7 +706,7 @@ LABEL_100:
   else
   {
     v105 = pp_social_highlights_log_handle();
-    v14 = v290;
+    featuresCopy = v290;
     v275 = v105;
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
     {
@@ -783,7 +783,7 @@ LABEL_100:
           while (v148);
         }
 
-        v14 = v290;
+        featuresCopy = v290;
         v104 = v291;
         v103 = v289;
         goto LABEL_143;
@@ -893,7 +893,7 @@ LABEL_100:
           while (contextc);
         }
 
-        v14 = v290;
+        featuresCopy = v290;
         v104 = v291;
         v63 = v285;
         v62 = v286;
@@ -943,8 +943,8 @@ LABEL_153:
 
   v181 = *(v20 + 3448);
   objc = v104;
-  contextd = v279;
-  v182 = v14;
+  contextd = handlesCopy;
+  v182 = featuresCopy;
   objc_opt_self();
   v319 = objc_opt_new();
   v370 = 0u;
@@ -1173,28 +1173,28 @@ LABEL_189:
                 }
 
                 v221 = *(*(&v345 + 1) + 8 * nn);
-                v222 = [v221 highlightIdentifier];
+                highlightIdentifier2 = [v221 highlightIdentifier];
 
-                if (v222)
+                if (highlightIdentifier2)
                 {
-                  v223 = [v221 highlightIdentifier];
-                  v224 = [v214 objectForKeyedSubscript:v223];
+                  highlightIdentifier3 = [v221 highlightIdentifier];
+                  v224 = [v214 objectForKeyedSubscript:highlightIdentifier3];
 
                   if (!v224)
                   {
                     v225 = objc_opt_new();
-                    v226 = [v221 highlightIdentifier];
-                    [v214 setObject:v225 forKeyedSubscript:v226];
+                    highlightIdentifier4 = [v221 highlightIdentifier];
+                    [v214 setObject:v225 forKeyedSubscript:highlightIdentifier4];
                   }
 
-                  v227 = [v221 domainIdentifier];
+                  domainIdentifier = [v221 domainIdentifier];
 
-                  if (v227)
+                  if (domainIdentifier)
                   {
-                    v228 = [v221 highlightIdentifier];
-                    v229 = [v214 objectForKeyedSubscript:v228];
-                    v230 = [v221 domainIdentifier];
-                    [v229 addObject:v230];
+                    highlightIdentifier5 = [v221 highlightIdentifier];
+                    v229 = [v214 objectForKeyedSubscript:highlightIdentifier5];
+                    domainIdentifier2 = [v221 domainIdentifier];
+                    [v229 addObject:domainIdentifier2];
                   }
                 }
               }
@@ -1273,19 +1273,19 @@ LABEL_189:
                 v246 = *(*(&v337 + 1) + 8 * i2);
                 if ([v246 highlightType] == 2)
                 {
-                  v247 = [v246 sender];
-                  v248 = [v247 handle];
+                  sender = [v246 sender];
+                  handle = [sender handle];
 
-                  if (v248)
+                  if (handle)
                   {
                     v249 = MEMORY[0x277CCABB0];
-                    v250 = [v246 sender];
-                    v251 = [v250 handle];
-                    v252 = [v232 objectForKeyedSubscript:v251];
+                    sender2 = [v246 sender];
+                    handle2 = [sender2 handle];
+                    v252 = [v232 objectForKeyedSubscript:handle2];
                     v253 = [v249 numberWithInteger:{objc_msgSend(v252, "integerValue") + 1}];
-                    v254 = [v246 sender];
-                    v255 = [v254 handle];
-                    [v232 setObject:v253 forKeyedSubscript:v255];
+                    sender3 = [v246 sender];
+                    handle3 = [sender3 handle];
+                    [v232 setObject:v253 forKeyedSubscript:handle3];
                   }
                 }
               }
@@ -1334,16 +1334,16 @@ LABEL_189:
                 v261 = *(*&v358[8] + 8 * i3);
                 if ([v261 highlightType] == 2)
                 {
-                  v262 = [v261 domainIdentifier];
+                  domainIdentifier3 = [v261 domainIdentifier];
 
-                  if (v262)
+                  if (domainIdentifier3)
                   {
                     v263 = MEMORY[0x277CCABB0];
-                    v264 = [v261 domainIdentifier];
-                    v265 = [v232 objectForKeyedSubscript:v264];
+                    domainIdentifier4 = [v261 domainIdentifier];
+                    v265 = [v232 objectForKeyedSubscript:domainIdentifier4];
                     v266 = [v263 numberWithInteger:{objc_msgSend(v265, "integerValue") + 1}];
-                    v267 = [v261 domainIdentifier];
-                    [v232 setObject:v266 forKeyedSubscript:v267];
+                    domainIdentifier5 = [v261 domainIdentifier];
+                    [v232 setObject:v266 forKeyedSubscript:domainIdentifier5];
                   }
                 }
               }
@@ -1377,12 +1377,12 @@ LABEL_242:
   return v268;
 }
 
-+ (id)_feedbackFeaturesForPublisher:(void *)a3 highlights:(void *)a4 features:
++ (id)_feedbackFeaturesForPublisher:(void *)publisher highlights:(void *)highlights features:
 {
   v59 = *MEMORY[0x277D85DE8];
   v42 = a2;
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  highlightsCopy = highlights;
   v41 = objc_opt_self();
   v52 = 0;
   v53 = &v52;
@@ -1394,7 +1394,7 @@ LABEL_242:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v7;
+  obj = highlightsCopy;
   v8 = [obj countByEnumeratingWithState:&v48 objects:v58 count:16];
   if (v8)
   {
@@ -1412,7 +1412,7 @@ LABEL_242:
         v11 = *(*(&v48 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
         v13 = v11;
-        v14 = v6;
+        v14 = publisherCopy;
         objc_opt_self();
         if ([v13 isEqualToString:@"countHiddenFromThread"])
         {
@@ -1640,8 +1640,8 @@ LABEL_17:
         {
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
-            v21 = [MEMORY[0x277CCA890] currentHandler];
-            [v21 handleFailureInMethod:sel__feedbackFeaturesForPublisher_highlights_features_ object:v41 file:@"PPSocialHighlightFeaturizer.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"[featureProvider respondsToSelector:@selector(applyFeedback:)]"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:sel__feedbackFeaturesForPublisher_highlights_features_ object:v41 file:@"PPSocialHighlightFeaturizer.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"[featureProvider respondsToSelector:@selector(applyFeedback:)]"}];
           }
 
           [v53[5] setObject:v20 forKeyedSubscript:v13];
@@ -1741,24 +1741,24 @@ double __93__PPSocialHighlightFeaturizer__highlightFeatureProviderForFeature_sig
   return v9;
 }
 
-+ (double)_intervalForBucketedString:(uint64_t)a1
++ (double)_intervalForBucketedString:(uint64_t)string
 {
   v2 = a2;
   objc_opt_self();
   v3 = [v2 componentsSeparatedByString:@":"];
 
-  v4 = [v3 lastObject];
-  [v4 doubleValue];
+  lastObject = [v3 lastObject];
+  [lastObject doubleValue];
   v6 = v5 * 3600.0;
 
   return v6;
 }
 
-+ (id)_flattenArraysInDictionary:(void *)a3 keyPath:
++ (id)_flattenArraysInDictionary:(void *)dictionary keyPath:
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_self();
   v6 = objc_opt_new();
   v19 = 0u;
@@ -1782,7 +1782,7 @@ double __93__PPSocialHighlightFeaturizer__highlightFeatureProviderForFeature_sig
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:{v12, v19}];
-        v14 = [v13 valueForKeyPath:v5];
+        v14 = [v13 valueForKeyPath:dictionaryCopy];
         v15 = v14;
         if (v14)
         {
@@ -1851,13 +1851,13 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
   objc_autoreleasePoolPop(v3);
 }
 
-+ (id)_lastInteractionsByContactForHighlights:(void *)a3 bundlePredicate:(void *)a4 mechanismPredicate:(void *)a5 interactionStore:
++ (id)_lastInteractionsByContactForHighlights:(void *)highlights bundlePredicate:(void *)predicate mechanismPredicate:(void *)mechanismPredicate interactionStore:
 {
   v100 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v73 = a3;
-  v72 = a4;
-  v71 = a5;
+  highlightsCopy = highlights;
+  predicateCopy = predicate;
+  mechanismPredicateCopy = mechanismPredicate;
   objc_opt_self();
   v9 = v8;
   objc_opt_self();
@@ -1883,9 +1883,9 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
 
         v15 = *(*(&v88 + 1) + 8 * i);
         v16 = MEMORY[0x277CFE080];
-        v17 = [v15 sender];
-        v18 = [v17 handle];
-        v19 = [v16 normalizedStringFromContactString:v18];
+        sender = [v15 sender];
+        handle = [sender handle];
+        v19 = [v16 normalizedStringFromContactString:handle];
 
         if (v19)
         {
@@ -1897,9 +1897,9 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
           v20 = pp_social_highlights_log_handle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v15 highlightIdentifier];
+            highlightIdentifier = [v15 highlightIdentifier];
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v21;
+            *(&buf + 4) = highlightIdentifier;
             _os_log_debug_impl(&dword_23224A000, v20, OS_LOG_TYPE_DEBUG, "PPSocialHighlightFeaturizer: no contact for highlight %@, will be unresponsive to recency.", &buf, 0xCu);
           }
         }
@@ -1911,18 +1911,18 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
     while (v12);
   }
 
-  v22 = [v10 allObjects];
+  allObjects = [v10 allObjects];
 
-  if ([v22 count])
+  if ([allObjects count])
   {
     v23 = objc_autoreleasePoolPush();
     v24 = MEMORY[0x277CCAC30];
-    v87 = v22;
+    v87 = allObjects;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
     v26 = [v24 predicateWithFormat:@"sender.identifier in %@" argumentArray:v25];
 
     v27 = MEMORY[0x277CCAC30];
-    v86 = v22;
+    v86 = allObjects;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
     v29 = [v27 predicateWithFormat:@"ANY recipients.identifier in %@" argumentArray:v28];
 
@@ -1932,12 +1932,12 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:2];
     v32 = [v30 initWithType:2 subpredicates:v31];
 
-    v84[0] = v73;
+    v84[0] = highlightsCopy;
     v84[1] = v32;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v84 count:2];
     v34 = [v33 mutableCopy];
 
-    if (v72)
+    if (predicateCopy)
     {
       [v34 addObject:?];
     }
@@ -1952,7 +1952,7 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
 
     v78 = 0;
     v70 = v35;
-    v39 = [v71 queryInteractionsUsingPredicate:v35 sortDescriptors:v38 limit:50 error:&v78];
+    v39 = [mechanismPredicateCopy queryInteractionsUsingPredicate:v35 sortDescriptors:v38 limit:50 error:&v78];
     v40 = v78;
     v41 = pp_social_highlights_log_handle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -1969,7 +1969,7 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
     {
       if (![obj count] || -[NSObject count](v39, "count"))
       {
-        v69 = v22;
+        v69 = allObjects;
 
         objc_autoreleasePoolPop(v36);
         v68 = v39;
@@ -1995,24 +1995,24 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
               }
 
               v46 = *(*(&buf + 1) + 8 * j);
-              v47 = [v46 startDate];
+              startDate = [v46 startDate];
 
-              if (v47)
+              if (startDate)
               {
-                v48 = [v46 sender];
-                v49 = [v48 identifier];
+                sender2 = [v46 sender];
+                identifier = [sender2 identifier];
 
-                v50 = [v46 recipients];
-                v51 = [v50 _pas_mappedArrayWithTransform:&__block_literal_global_87];
+                recipients = [v46 recipients];
+                v51 = [recipients _pas_mappedArrayWithTransform:&__block_literal_global_87];
 
-                if (v49)
+                if (identifier)
                 {
-                  v52 = [v44 objectForKeyedSubscript:v49];
+                  v52 = [v44 objectForKeyedSubscript:identifier];
 
                   if (!v52)
                   {
-                    v53 = [v46 startDate];
-                    [v44 setObject:v53 forKeyedSubscript:v49];
+                    startDate2 = [v46 startDate];
+                    [v44 setObject:startDate2 forKeyedSubscript:identifier];
                   }
                 }
 
@@ -2040,8 +2040,8 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
 
                       if (!v60)
                       {
-                        v61 = [v46 startDate];
-                        [v44 setObject:v61 forKeyedSubscript:v59];
+                        startDate3 = [v46 startDate];
+                        [v44 setObject:startDate3 forKeyedSubscript:v59];
                       }
                     }
 
@@ -2060,7 +2060,7 @@ void __79__PPSocialHighlightFeaturizer__topicScoresMatchingSocialHighlights_topi
         }
 
         v39 = v68;
-        v22 = v69;
+        allObjects = v69;
         goto LABEL_50;
       }
 
@@ -2198,16 +2198,16 @@ void __81__PPSocialHighlightFeaturizer__feedbackFeaturesForPublisher_highlights_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (PPSocialHighlightFeaturizer)initWithFeatureValues:(id)a3
+- (PPSocialHighlightFeaturizer)initWithFeatureValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = PPSocialHighlightFeaturizer;
   v6 = [(PPSocialHighlightFeaturizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_featureValues, a3);
+    objc_storeStrong(&v6->_featureValues, values);
   }
 
   return v7;

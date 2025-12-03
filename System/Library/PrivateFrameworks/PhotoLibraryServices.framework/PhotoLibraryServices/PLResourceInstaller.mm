@@ -1,73 +1,73 @@
 @interface PLResourceInstaller
-+ (BOOL)_installInternalResourcesForExistingAsset:(id)a3 assumeNoExistingResources:(BOOL)a4 referencedResourceURLs:(id)a5 includeLegacyCloudResources:(BOOL)a6 outResourcesStoreCount:(unint64_t *)a7 error:(id *)a8;
-+ (BOOL)createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:(id)a3 migrator:(id)a4;
-+ (BOOL)installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:(id)a3 migrator:(id)a4;
-+ (BOOL)installSupplementalResourceForExistingFileAtURL:(id)a3 ptpTrashedState:(int64_t)a4 index:(id)a5 forAsset:(id)a6 imageOrientation:(id)a7 resultingResource:(id *)a8 error:(id *)a9;
-+ (BOOL)reconsiderSavedAssetTypeInStore:(id)a3 migrator:(id)a4;
-+ (BOOL)recoverSupplementalResourcesForAsset:(id)a3 usingSidecarFinder:(id)a4 outResourcesStoreCount:(unint64_t *)a5 error:(id *)a6;
-+ (BOOL)removeLegacyCloudResourcesInStore:(id)a3 migrator:(id)a4;
-+ (BOOL)resetImageRequestHintsInContext:(id)a3 allowOneTimeThumbRebuild:(BOOL)a4;
-+ (BOOL)resetInternalResourcesInStore:(id)a3 resetUTIs:(BOOL)a4 resetCodecs:(BOOL)a5 resetMasters:(BOOL)a6 migrator:(id)a7;
-+ (id)_speculativePathForPenultimateFullsizeRenderImageFileForAsset:(id)a3;
-+ (id)_storeValidatedLocalExternalResource:(id)a3 forAsset:(id)a4;
-+ (id)_validatedExternalResourceAtPath:(id)a3 recipe:(id)a4 type:(unsigned int)a5 version:(unsigned int)a6 identifier:(id)a7;
-+ (id)_validatedExternalResourceForComputeResourceAtPath:(id)a3 recipe:(id)a4;
-+ (id)_validatedExternalResourceForComputeResourceWithRecipe:(id)a3;
-+ (id)_validatedExternalResourceFromSupplementalFileURL:(id)a3 withUTI:(id)a4 ptpTrashedState:(int64_t)a5 index:(id)a6 asset:(id)a7;
-+ (id)_validatedExternalResourceIfPresentForAudioOrUnknownAsset:(id)a3;
-+ (id)_validatedExternalResourcesFromLocalImageOrVideoAsset:(id)a3 referencedResourceURLs:(id)a4;
-+ (id)_validatedExternalResourcesFromSharedStreamAsset:(id)a3;
-+ (id)externalResourcesForExistingAsset:(id)a3 referencedResourceURLs:(id)a4;
-+ (id)generateAdjustedFullSizeRenderResourceForFilePath:(id)a3 requireFileToBePresent:(BOOL)a4 basedOnFullSizeWidth:(int64_t)a5 andHeight:(int64_t)a6;
-+ (id)generateExternalResourceFromCPLResource:(id)a3 asset:(id)a4 fromAdjustedSet:(BOOL)a5;
-+ (id)generateExternalResourceFromCPLResource:(id)a3 cloudMaster:(id)a4 masterResources:(id)a5;
-+ (id)generateValidatedExternalImageResourceOfType:(unsigned int)a3 forFilePath:(id)a4 requireFileToBePresent:(BOOL)a5 version:(unsigned int)a6 basedOnFullSizeWidth:(int64_t)a7 andHeight:(int64_t)a8 recipe:(id)a9 assetKind:(signed __int16)a10 error:(id *)a11;
-+ (id)generateValidatedExternalOtherResourceOfType:(unsigned int)a3 forFilePath:(id)a4 uti:(id)a5 requireFileToBePresent:(BOOL)a6 version:(unsigned int)a7;
-+ (id)generateVideoResourcesFromVideoAsset:(id)a3 referencedVideoPath:(id)a4;
-+ (id)generatedValidatedExternalSyndicationResourceOfType:(unsigned int)a3 version:(unsigned int)a4 recipeID:(unsigned int)a5 fileURL:(id)a6 requireFileToBePresent:(BOOL)a7 uniformTypeIdentifier:(id)a8;
-+ (id)onDemand_installAdjustedDeferredFullSizeVideoComplementResourceForAsset:(id)a3;
-+ (id)onDemand_installAdjustedFullSizeRenderResourceAtFilePath:(id)a3 forAsset:(id)a4;
-+ (id)onDemand_installAdjustedFullSizeVideoComplementResourceIfPresentForAsset:(id)a3;
-+ (id)onDemand_installEmptyComputeResourceWithRecipe:(id)a3 forAsset:(id)a4 error:(id *)a5;
-+ (id)onDemand_installExistingAdjustedResourceAtFilePath:(id)a3 withType:(unsigned int)a4 recipe:(id)a5 forAsset:(id)a6 error:(id *)a7;
-+ (id)onDemand_installExistingAdjustmentSuggestionResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5;
-+ (id)onDemand_installExistingAlchemistV2ResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5;
-+ (id)onDemand_installExistingComputeResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5;
-+ (id)onDemand_installLocalVideoKeyFrameForAsset:(id)a3;
-+ (id)onDemand_installOriginalAdjustmentResourceIfPresentForAsset:(id)a3;
-+ (id)onDemand_installOriginalResourceForSyndicationAsset:(id)a3;
-+ (id)onDemand_installOriginalSOCImagePresentForAsset:(id)a3 referencedResourceURLs:(id)a4;
-+ (id)onDemand_installOriginalSOCVideoComplementPresentForAsset:(id)a3 referencedResourceURLs:(id)a4;
-+ (id)onDemand_installOriginalSOCVideoPresentForAsset:(id)a3 referencedResourceURLs:(id)a4;
-+ (id)onDemand_installOriginalVideoComplementForSyndicationAsset:(id)a3 contentType:(id)a4;
-+ (id)onDemand_installOriginalVideoComplementResourceIfPresentForAsset:(id)a3;
-+ (id)onDemand_installPrimaryImageResourceWithRecipe:(id)a3 version:(unsigned int)a4 forAsset:(id)a5 requireFileToBePresent:(BOOL)a6;
-+ (id)onDemand_installResourceWithResourceIdentity:(id)a3 forAsset:(id)a4;
-+ (id)validatedExternalResourceForLocalVideoIfPresentAtPath:(id)a3 context:(id)a4;
-+ (id)validatedExternalResourceFromExternalResourceCloudAttributes:(id)a3 cplType:(unint64_t)a4 assetType:(signed __int16)a5 uti:(id)a6 resourceWidth:(unint64_t)a7 resourceHeight:(unint64_t)a8 resourceFingerprint:(id)a9 resourceStableHash:(id)a10 resourceSize:(unint64_t)a11 isAvailable:(BOOL)a12 fromAdjustedSet:(BOOL)a13 resourceURL:(id)a14 cloudMaster:(id)a15 isForMigration:(BOOL)a16 context:(id)a17;
-+ (unint64_t)_getURLDataLength:(id)a3;
-+ (unint64_t)derivativeCPLTypeFromRecipeID:(unsigned int)a3 version:(unsigned int)a4;
-+ (unint64_t)nonDerivativeCPLTypeFromResourceType:(unsigned int)a3 version:(unsigned int)a4 uniformTypeIdentifier:(id)a5;
-+ (unsigned)recipeIDFromCPLResourceType:(unint64_t)a3 assetType:(signed __int16)a4 fromAdjustedSet:(BOOL)a5;
-+ (unsigned)resourceTypeFromCPLType:(unint64_t)a3 assetType:(signed __int16)a4;
-+ (unsigned)resourceVersionFromCPLType:(unint64_t)a3 fromAdjustedSet:(BOOL)a4;
-+ (void)_applyCodecToNonDerivativeExternalResource:(id)a3 fromCloudMaster:(id)a4;
-+ (void)_applyColorSpaceAndCodecUsingFileToExternalResource:(id)a3 managedObjectContext:(id)a4;
-+ (void)_applyImageIOMetadataToExternalResource:(id)a3 fromFileURL:(id)a4 fileExists:(BOOL)a5 assumedWidth:(int64_t)a6 assumedHeight:(int64_t)a7 recipe:(id)a8 assetKind:(signed __int16)a9;
-+ (void)_recipeAndDerivativeStateFromCPLResourceType:(unint64_t)a3 fromAdjustedSet:(BOOL)a4 assetType:(signed __int16)a5 recipeID:(unsigned int *)a6;
++ (BOOL)_installInternalResourcesForExistingAsset:(id)asset assumeNoExistingResources:(BOOL)resources referencedResourceURLs:(id)ls includeLegacyCloudResources:(BOOL)cloudResources outResourcesStoreCount:(unint64_t *)count error:(id *)error;
++ (BOOL)createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:(id)store migrator:(id)migrator;
++ (BOOL)installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:(id)context migrator:(id)migrator;
++ (BOOL)installSupplementalResourceForExistingFileAtURL:(id)l ptpTrashedState:(int64_t)state index:(id)index forAsset:(id)asset imageOrientation:(id)orientation resultingResource:(id *)resource error:(id *)error;
++ (BOOL)reconsiderSavedAssetTypeInStore:(id)store migrator:(id)migrator;
++ (BOOL)recoverSupplementalResourcesForAsset:(id)asset usingSidecarFinder:(id)finder outResourcesStoreCount:(unint64_t *)count error:(id *)error;
++ (BOOL)removeLegacyCloudResourcesInStore:(id)store migrator:(id)migrator;
++ (BOOL)resetImageRequestHintsInContext:(id)context allowOneTimeThumbRebuild:(BOOL)rebuild;
++ (BOOL)resetInternalResourcesInStore:(id)store resetUTIs:(BOOL)is resetCodecs:(BOOL)codecs resetMasters:(BOOL)masters migrator:(id)migrator;
++ (id)_speculativePathForPenultimateFullsizeRenderImageFileForAsset:(id)asset;
++ (id)_storeValidatedLocalExternalResource:(id)resource forAsset:(id)asset;
++ (id)_validatedExternalResourceAtPath:(id)path recipe:(id)recipe type:(unsigned int)type version:(unsigned int)version identifier:(id)identifier;
++ (id)_validatedExternalResourceForComputeResourceAtPath:(id)path recipe:(id)recipe;
++ (id)_validatedExternalResourceForComputeResourceWithRecipe:(id)recipe;
++ (id)_validatedExternalResourceFromSupplementalFileURL:(id)l withUTI:(id)i ptpTrashedState:(int64_t)state index:(id)index asset:(id)asset;
++ (id)_validatedExternalResourceIfPresentForAudioOrUnknownAsset:(id)asset;
++ (id)_validatedExternalResourcesFromLocalImageOrVideoAsset:(id)asset referencedResourceURLs:(id)ls;
++ (id)_validatedExternalResourcesFromSharedStreamAsset:(id)asset;
++ (id)externalResourcesForExistingAsset:(id)asset referencedResourceURLs:(id)ls;
++ (id)generateAdjustedFullSizeRenderResourceForFilePath:(id)path requireFileToBePresent:(BOOL)present basedOnFullSizeWidth:(int64_t)width andHeight:(int64_t)height;
++ (id)generateExternalResourceFromCPLResource:(id)resource asset:(id)asset fromAdjustedSet:(BOOL)set;
++ (id)generateExternalResourceFromCPLResource:(id)resource cloudMaster:(id)master masterResources:(id)resources;
++ (id)generateValidatedExternalImageResourceOfType:(unsigned int)type forFilePath:(id)path requireFileToBePresent:(BOOL)present version:(unsigned int)version basedOnFullSizeWidth:(int64_t)width andHeight:(int64_t)height recipe:(id)recipe assetKind:(signed __int16)self0 error:(id *)self1;
++ (id)generateValidatedExternalOtherResourceOfType:(unsigned int)type forFilePath:(id)path uti:(id)uti requireFileToBePresent:(BOOL)present version:(unsigned int)version;
++ (id)generateVideoResourcesFromVideoAsset:(id)asset referencedVideoPath:(id)path;
++ (id)generatedValidatedExternalSyndicationResourceOfType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d fileURL:(id)l requireFileToBePresent:(BOOL)present uniformTypeIdentifier:(id)identifier;
++ (id)onDemand_installAdjustedDeferredFullSizeVideoComplementResourceForAsset:(id)asset;
++ (id)onDemand_installAdjustedFullSizeRenderResourceAtFilePath:(id)path forAsset:(id)asset;
++ (id)onDemand_installAdjustedFullSizeVideoComplementResourceIfPresentForAsset:(id)asset;
++ (id)onDemand_installEmptyComputeResourceWithRecipe:(id)recipe forAsset:(id)asset error:(id *)error;
++ (id)onDemand_installExistingAdjustedResourceAtFilePath:(id)path withType:(unsigned int)type recipe:(id)recipe forAsset:(id)asset error:(id *)error;
++ (id)onDemand_installExistingAdjustmentSuggestionResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset;
++ (id)onDemand_installExistingAlchemistV2ResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset;
++ (id)onDemand_installExistingComputeResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset;
++ (id)onDemand_installLocalVideoKeyFrameForAsset:(id)asset;
++ (id)onDemand_installOriginalAdjustmentResourceIfPresentForAsset:(id)asset;
++ (id)onDemand_installOriginalResourceForSyndicationAsset:(id)asset;
++ (id)onDemand_installOriginalSOCImagePresentForAsset:(id)asset referencedResourceURLs:(id)ls;
++ (id)onDemand_installOriginalSOCVideoComplementPresentForAsset:(id)asset referencedResourceURLs:(id)ls;
++ (id)onDemand_installOriginalSOCVideoPresentForAsset:(id)asset referencedResourceURLs:(id)ls;
++ (id)onDemand_installOriginalVideoComplementForSyndicationAsset:(id)asset contentType:(id)type;
++ (id)onDemand_installOriginalVideoComplementResourceIfPresentForAsset:(id)asset;
++ (id)onDemand_installPrimaryImageResourceWithRecipe:(id)recipe version:(unsigned int)version forAsset:(id)asset requireFileToBePresent:(BOOL)present;
++ (id)onDemand_installResourceWithResourceIdentity:(id)identity forAsset:(id)asset;
++ (id)validatedExternalResourceForLocalVideoIfPresentAtPath:(id)path context:(id)context;
++ (id)validatedExternalResourceFromExternalResourceCloudAttributes:(id)attributes cplType:(unint64_t)type assetType:(signed __int16)assetType uti:(id)uti resourceWidth:(unint64_t)width resourceHeight:(unint64_t)height resourceFingerprint:(id)fingerprint resourceStableHash:(id)self0 resourceSize:(unint64_t)self1 isAvailable:(BOOL)self2 fromAdjustedSet:(BOOL)self3 resourceURL:(id)self4 cloudMaster:(id)self5 isForMigration:(BOOL)self6 context:(id)self7;
++ (unint64_t)_getURLDataLength:(id)length;
++ (unint64_t)derivativeCPLTypeFromRecipeID:(unsigned int)d version:(unsigned int)version;
++ (unint64_t)nonDerivativeCPLTypeFromResourceType:(unsigned int)type version:(unsigned int)version uniformTypeIdentifier:(id)identifier;
++ (unsigned)recipeIDFromCPLResourceType:(unint64_t)type assetType:(signed __int16)assetType fromAdjustedSet:(BOOL)set;
++ (unsigned)resourceTypeFromCPLType:(unint64_t)type assetType:(signed __int16)assetType;
++ (unsigned)resourceVersionFromCPLType:(unint64_t)type fromAdjustedSet:(BOOL)set;
++ (void)_applyCodecToNonDerivativeExternalResource:(id)resource fromCloudMaster:(id)master;
++ (void)_applyColorSpaceAndCodecUsingFileToExternalResource:(id)resource managedObjectContext:(id)context;
++ (void)_applyImageIOMetadataToExternalResource:(id)resource fromFileURL:(id)l fileExists:(BOOL)exists assumedWidth:(int64_t)width assumedHeight:(int64_t)height recipe:(id)recipe assetKind:(signed __int16)kind;
++ (void)_recipeAndDerivativeStateFromCPLResourceType:(unint64_t)type fromAdjustedSet:(BOOL)set assetType:(signed __int16)assetType recipeID:(unsigned int *)d;
 @end
 
 @implementation PLResourceInstaller
 
-+ (id)generateExternalResourceFromCPLResource:(id)a3 asset:(id)a4 fromAdjustedSet:(BOOL)a5
++ (id)generateExternalResourceFromCPLResource:(id)resource asset:(id)asset fromAdjustedSet:(BOOL)set
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  setCopy = set;
+  resourceCopy = resource;
+  assetCopy = asset;
+  v11 = assetCopy;
+  if (resourceCopy)
   {
-    if (v10)
+    if (assetCopy)
     {
       goto LABEL_3;
     }
@@ -75,8 +75,8 @@
 
   else
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:619 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:619 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
 
     if (v11)
     {
@@ -84,34 +84,34 @@
     }
   }
 
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
 LABEL_3:
   v12 = objc_alloc_init(PLValidatedExternalCloudResource);
-  v13 = [v11 master];
-  v14 = [v13 creationDate];
+  master = [v11 master];
+  creationDate = [master creationDate];
   v44 = v12;
-  [(PLValidatedExternalCloudResource *)v12 setMasterDateCreated:v14];
+  [(PLValidatedExternalCloudResource *)v12 setMasterDateCreated:creationDate];
 
-  v15 = [v9 identity];
-  [v15 imageDimensions];
+  identity = [resourceCopy identity];
+  [identity imageDimensions];
   v17 = v16;
   v19 = v18;
-  v20 = [v15 fileUTI];
-  if (!v20)
+  fileUTI = [identity fileUTI];
+  if (!fileUTI)
   {
     v21 = MEMORY[0x1E69C08F0];
-    v22 = [v15 fileURL];
-    v23 = [v22 pathExtension];
-    v24 = [v21 resourceModelTypeForFilenameExtension:v23];
-    v20 = [v24 identifier];
+    fileURL = [identity fileURL];
+    pathExtension = [fileURL pathExtension];
+    v24 = [v21 resourceModelTypeForFilenameExtension:pathExtension];
+    fileUTI = [v24 identifier];
   }
 
-  v25 = [v11 pathForCPLResourceType:objc_msgSend(v9 adjusted:{"resourceType"), v5}];
-  v46 = a1;
-  v45 = v5;
-  v43 = v20;
+  v25 = [v11 pathForCPLResourceType:objc_msgSend(resourceCopy adjusted:{"resourceType"), setCopy}];
+  selfCopy = self;
+  v45 = setCopy;
+  v43 = fileUTI;
   v41 = v25;
   if (v25)
   {
@@ -123,32 +123,32 @@ LABEL_3:
     v42 = 0;
   }
 
-  v39 = [v9 resourceType];
-  v26 = [v11 kind];
-  v27 = [v15 fingerPrint];
-  v28 = [v15 stableHash];
-  v29 = [v15 fileSize];
-  v30 = [v15 isAvailable];
-  v31 = [v11 master];
+  resourceType = [resourceCopy resourceType];
+  kind = [v11 kind];
+  fingerPrint = [identity fingerPrint];
+  stableHash = [identity stableHash];
+  fileSize = [identity fileSize];
+  isAvailable = [identity isAvailable];
+  master2 = [v11 master];
   [v11 managedObjectContext];
-  v32 = v40 = v9;
+  v32 = v40 = resourceCopy;
   LOBYTE(v38) = 0;
   BYTE1(v37) = v45;
-  LOBYTE(v37) = v30;
-  v33 = [v46 validatedExternalResourceFromExternalResourceCloudAttributes:v44 cplType:v39 assetType:v26 uti:v43 resourceWidth:v17 resourceHeight:v19 resourceFingerprint:v27 resourceStableHash:v28 resourceSize:v29 isAvailable:v37 fromAdjustedSet:v42 resourceURL:v31 cloudMaster:v38 isForMigration:v32 context:?];
+  LOBYTE(v37) = isAvailable;
+  v33 = [selfCopy validatedExternalResourceFromExternalResourceCloudAttributes:v44 cplType:resourceType assetType:kind uti:v43 resourceWidth:v17 resourceHeight:v19 resourceFingerprint:fingerPrint resourceStableHash:stableHash resourceSize:fileSize isAvailable:v37 fromAdjustedSet:v42 resourceURL:master2 cloudMaster:v38 isForMigration:v32 context:?];
 
   return v33;
 }
 
-+ (id)generateExternalResourceFromCPLResource:(id)a3 cloudMaster:(id)a4 masterResources:(id)a5
++ (id)generateExternalResourceFromCPLResource:(id)resource cloudMaster:(id)master masterResources:(id)resources
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  resourceCopy = resource;
+  masterCopy = master;
+  resourcesCopy = resources;
+  if (resourceCopy)
   {
-    if (v10)
+    if (masterCopy)
     {
       goto LABEL_3;
     }
@@ -156,32 +156,32 @@ LABEL_3:
 
   else
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:568 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:568 description:{@"Invalid parameter not satisfying: %@", @"resource"}];
 
-    if (v10)
+    if (masterCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v50 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v50 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:569 description:{@"Invalid parameter not satisfying: %@", @"cloudMaster"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:569 description:{@"Invalid parameter not satisfying: %@", @"cloudMaster"}];
 
 LABEL_3:
-  v57 = a1;
+  selfCopy = self;
   v12 = objc_alloc_init(PLValidatedExternalCloudResource);
-  v13 = [v10 creationDate];
-  [(PLValidatedExternalCloudResource *)v12 setMasterDateCreated:v13];
+  creationDate = [masterCopy creationDate];
+  [(PLValidatedExternalCloudResource *)v12 setMasterDateCreated:creationDate];
 
   v56 = v12;
   [(PLValidatedExternalCloudResource *)v12 setCloudLocalState:3];
-  v14 = [v10 uniformTypeIdentifier];
-  if (v14)
+  uniformTypeIdentifier = [masterCopy uniformTypeIdentifier];
+  if (uniformTypeIdentifier)
   {
-    v15 = v14;
+    identifier = uniformTypeIdentifier;
 LABEL_6:
-    v20 = [PLUniformTypeIdentifier utiWithIdentifier:v15];
+    v20 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
     if ([v20 conformsToImage])
     {
       v55 = 0;
@@ -211,12 +211,12 @@ LABEL_6:
   }
 
   v16 = MEMORY[0x1E69C08F0];
-  v17 = [v10 originalFilename];
-  v18 = [v17 pathExtension];
-  v19 = [v16 resourceModelTypeForFilenameExtension:v18];
-  v15 = [v19 identifier];
+  originalFilename = [masterCopy originalFilename];
+  pathExtension = [originalFilename pathExtension];
+  v19 = [v16 resourceModelTypeForFilenameExtension:pathExtension];
+  identifier = [v19 identifier];
 
-  if (v15)
+  if (identifier)
   {
     goto LABEL_6;
   }
@@ -225,15 +225,15 @@ LABEL_6:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v15 = v11;
-  v36 = [v15 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  identifier = resourcesCopy;
+  v36 = [identifier countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (!v36)
   {
     goto LABEL_33;
   }
 
   v37 = v36;
-  v38 = v10;
+  v38 = masterCopy;
   v39 = *v59;
 LABEL_21:
   v40 = 0;
@@ -241,7 +241,7 @@ LABEL_21:
   {
     if (*v59 != v39)
     {
-      objc_enumerationMutation(v15);
+      objc_enumerationMutation(identifier);
     }
 
     v41 = *(*(&v58 + 1) + 8 * v40);
@@ -252,35 +252,35 @@ LABEL_21:
 
     if (v37 == ++v40)
     {
-      v37 = [v15 countByEnumeratingWithState:&v58 objects:v62 count:16];
+      v37 = [identifier countByEnumeratingWithState:&v58 objects:v62 count:16];
       if (v37)
       {
         goto LABEL_21;
       }
 
       v55 = 0;
-      v10 = v38;
+      masterCopy = v38;
       goto LABEL_15;
     }
   }
 
-  v42 = [v41 identity];
-  v43 = [v42 fileUTI];
+  identity = [v41 identity];
+  fileUTI = [identity fileUTI];
 
-  if (v43)
+  if (fileUTI)
   {
 
-    v15 = v43;
-    v10 = v38;
+    identifier = fileUTI;
+    masterCopy = v38;
     goto LABEL_6;
   }
 
-  v44 = [v41 identity];
-  v45 = [v44 fileURL];
-  v46 = [v45 pathExtension];
+  identity2 = [v41 identity];
+  fileURL = [identity2 fileURL];
+  pathExtension2 = [fileURL pathExtension];
 
-  v10 = v38;
-  if (!v46)
+  masterCopy = v38;
+  if (!pathExtension2)
   {
 LABEL_33:
     v55 = 0;
@@ -289,42 +289,42 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v47 = [MEMORY[0x1E69C08F0] resourceModelTypeForFilenameExtension:v46];
-  v48 = [v47 identifier];
+  v47 = [MEMORY[0x1E69C08F0] resourceModelTypeForFilenameExtension:pathExtension2];
+  identifier2 = [v47 identifier];
 
-  if (v48)
+  if (identifier2)
   {
-    v15 = v48;
+    identifier = identifier2;
     goto LABEL_6;
   }
 
   v55 = 0;
 LABEL_16:
-  v22 = [v9 identity];
-  [v22 imageDimensions];
+  identity3 = [resourceCopy identity];
+  [identity3 imageDimensions];
   v24 = v23;
   v26 = v25;
-  v53 = [v9 resourceType];
-  v27 = [v22 fileUTI];
-  v54 = v9;
-  v28 = [v22 fingerPrint];
-  v29 = [v22 stableHash];
-  v30 = [v22 fileSize];
-  v31 = [v22 isAvailable];
-  [v10 managedObjectContext];
-  v33 = v32 = v10;
+  resourceType = [resourceCopy resourceType];
+  fileUTI2 = [identity3 fileUTI];
+  v54 = resourceCopy;
+  fingerPrint = [identity3 fingerPrint];
+  stableHash = [identity3 stableHash];
+  fileSize = [identity3 fileSize];
+  isAvailable = [identity3 isAvailable];
+  [masterCopy managedObjectContext];
+  v33 = v32 = masterCopy;
   LOBYTE(v52) = 0;
-  LOWORD(v51) = v31;
-  v34 = [v57 validatedExternalResourceFromExternalResourceCloudAttributes:v56 cplType:v53 assetType:v55 uti:v27 resourceWidth:v24 resourceHeight:v26 resourceFingerprint:v28 resourceStableHash:v29 resourceSize:v30 isAvailable:v51 fromAdjustedSet:0 resourceURL:v32 cloudMaster:v52 isForMigration:v33 context:?];
+  LOWORD(v51) = isAvailable;
+  v34 = [selfCopy validatedExternalResourceFromExternalResourceCloudAttributes:v56 cplType:resourceType assetType:v55 uti:fileUTI2 resourceWidth:v24 resourceHeight:v26 resourceFingerprint:fingerPrint resourceStableHash:stableHash resourceSize:fileSize isAvailable:v51 fromAdjustedSet:0 resourceURL:v32 cloudMaster:v52 isForMigration:v33 context:?];
 
   return v34;
 }
 
-+ (unsigned)resourceVersionFromCPLType:(unint64_t)a3 fromAdjustedSet:(BOOL)a4
++ (unsigned)resourceVersionFromCPLType:(unint64_t)type fromAdjustedSet:(BOOL)set
 {
-  v4 = a4;
-  v5 = [a1 _isPenultimateVersionFromCPLType:a3];
-  if (v4)
+  setCopy = set;
+  v5 = [self _isPenultimateVersionFromCPLType:type];
+  if (setCopy)
   {
     v6 = 2;
   }
@@ -345,90 +345,90 @@ LABEL_16:
   }
 }
 
-+ (id)validatedExternalResourceFromExternalResourceCloudAttributes:(id)a3 cplType:(unint64_t)a4 assetType:(signed __int16)a5 uti:(id)a6 resourceWidth:(unint64_t)a7 resourceHeight:(unint64_t)a8 resourceFingerprint:(id)a9 resourceStableHash:(id)a10 resourceSize:(unint64_t)a11 isAvailable:(BOOL)a12 fromAdjustedSet:(BOOL)a13 resourceURL:(id)a14 cloudMaster:(id)a15 isForMigration:(BOOL)a16 context:(id)a17
++ (id)validatedExternalResourceFromExternalResourceCloudAttributes:(id)attributes cplType:(unint64_t)type assetType:(signed __int16)assetType uti:(id)uti resourceWidth:(unint64_t)width resourceHeight:(unint64_t)height resourceFingerprint:(id)fingerprint resourceStableHash:(id)self0 resourceSize:(unint64_t)self1 isAvailable:(BOOL)self2 fromAdjustedSet:(BOOL)self3 resourceURL:(id)self4 cloudMaster:(id)self5 isForMigration:(BOOL)self6 context:(id)self7
 {
-  v44 = a5;
-  v20 = a3;
-  v21 = a6;
-  v22 = a9;
-  v23 = a10;
-  v24 = a14;
-  v25 = a15;
-  v26 = a17;
-  if (!v20)
+  assetTypeCopy = assetType;
+  attributesCopy = attributes;
+  utiCopy = uti;
+  fingerprintCopy = fingerprint;
+  hashCopy = hash;
+  lCopy = l;
+  masterCopy = master;
+  contextCopy = context;
+  if (!attributesCopy)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"externalResourceCloudAttributes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"externalResourceCloudAttributes"}];
   }
 
-  v27 = v20;
-  [v27 setVersion:{objc_msgSend(objc_opt_class(), "resourceVersionFromCPLType:fromAdjustedSet:", a4, a13)}];
-  [v27 setResourceType:{objc_msgSend(objc_opt_class(), "resourceTypeFromCPLType:assetType:", a4, v44)}];
-  [v27 setCplType:a4];
-  if (v21)
+  v27 = attributesCopy;
+  [v27 setVersion:{objc_msgSend(objc_opt_class(), "resourceVersionFromCPLType:fromAdjustedSet:", type, set)}];
+  [v27 setResourceType:{objc_msgSend(objc_opt_class(), "resourceTypeFromCPLType:assetType:", type, assetTypeCopy)}];
+  [v27 setCplType:type];
+  if (utiCopy)
   {
-    [PLUniformTypeIdentifier utiWithIdentifier:v21];
-    v28 = v21;
-    v29 = v24;
-    v30 = v23;
-    v31 = v22;
-    v32 = v26;
-    v34 = v33 = v25;
+    [PLUniformTypeIdentifier utiWithIdentifier:utiCopy];
+    v28 = utiCopy;
+    v29 = lCopy;
+    v30 = hashCopy;
+    v31 = fingerprintCopy;
+    v32 = contextCopy;
+    v34 = v33 = masterCopy;
     [v27 setUniformTypeIdentifier:v34];
 
-    v25 = v33;
-    v26 = v32;
-    v22 = v31;
-    v23 = v30;
-    v24 = v29;
-    v21 = v28;
+    masterCopy = v33;
+    contextCopy = v32;
+    fingerprintCopy = v31;
+    hashCopy = v30;
+    lCopy = v29;
+    utiCopy = v28;
   }
 
   v45 = 0;
-  [a1 _recipeAndDerivativeStateFromCPLResourceType:a4 fromAdjustedSet:a13 assetType:v44 recipeID:&v45];
+  [self _recipeAndDerivativeStateFromCPLResourceType:type fromAdjustedSet:set assetType:assetTypeCopy recipeID:&v45];
   [v27 setRecipeID:v45];
-  [v27 setUnorientedWidth:a7];
-  [v27 setUnorientedHeight:a8];
-  [v27 setFileURL:v24];
-  [v27 setFingerprint:v22];
-  [v27 setStableHash:v23];
-  [v27 setDataLength:a11];
-  [v27 setRemoteAvailability:a12];
+  [v27 setUnorientedWidth:width];
+  [v27 setUnorientedHeight:height];
+  [v27 setFileURL:lCopy];
+  [v27 setFingerprint:fingerprintCopy];
+  [v27 setStableHash:hashCopy];
+  [v27 setDataLength:size];
+  [v27 setRemoteAvailability:available];
   if ([v27 hasRecipe])
   {
-    if (a16)
+    if (migration)
     {
       if ([v27 hasRecipe])
       {
         v35 = [PLResourceRecipe recipeFromID:v45];
         [v35 codecFourCharCodeName];
-        v36 = v26;
-        v38 = v37 = v25;
+        v36 = contextCopy;
+        v38 = v37 = masterCopy;
         [v27 setCodecFourCharCode:v38];
 
-        v25 = v37;
-        v26 = v36;
+        masterCopy = v37;
+        contextCopy = v36;
       }
     }
 
     else
     {
-      [a1 _applyColorSpaceAndCodecUsingFileToExternalResource:v27 managedObjectContext:v26];
+      [self _applyColorSpaceAndCodecUsingFileToExternalResource:v27 managedObjectContext:contextCopy];
     }
   }
 
   else
   {
-    [a1 _applyCodecToNonDerivativeExternalResource:v27 fromCloudMaster:v25];
+    [self _applyCodecToNonDerivativeExternalResource:v27 fromCloudMaster:masterCopy];
   }
 
   return v27;
 }
 
-+ (void)_applyCodecToNonDerivativeExternalResource:(id)a3 fromCloudMaster:(id)a4
++ (void)_applyCodecToNonDerivativeExternalResource:(id)resource fromCloudMaster:(id)master
 {
-  v5 = a3;
-  v6 = a4;
+  resourceCopy = resource;
+  masterCopy = master;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -440,30 +440,30 @@ LABEL_16:
   v17 = __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_fromCloudMaster___block_invoke;
   v18 = &unk_1E7578910;
   v20 = &v21;
-  v7 = v6;
+  v7 = masterCopy;
   v19 = v7;
   v8 = _Block_copy(&v15);
-  if ([v5 resourceType] == 1)
+  if ([resourceCopy resourceType] == 1)
   {
     v8[2](v8);
     v9 = [MEMORY[0x1E6987E28] assetProxyWithPropertyList:v22[5]];
-    v10 = [v9 plVideoCodecFourCharCodeString];
-    if (v10)
+    plVideoCodecFourCharCodeString = [v9 plVideoCodecFourCharCodeString];
+    if (plVideoCodecFourCharCodeString)
     {
-      [v5 setCodecFourCharCode:v10];
+      [resourceCopy setCodecFourCharCode:plVideoCodecFourCharCodeString];
     }
   }
 
   else
   {
-    if ([v5 resourceType] != 3)
+    if ([resourceCopy resourceType] != 3)
     {
       goto LABEL_10;
     }
 
     v11 = MEMORY[0x1E69C08F0];
-    v12 = [v7 uniformTypeIdentifier];
-    v13 = [v11 typeWithIdentifier:v12];
+    uniformTypeIdentifier = [v7 uniformTypeIdentifier];
+    v13 = [v11 typeWithIdentifier:uniformTypeIdentifier];
     v14 = [v13 conformsToType:*MEMORY[0x1E6982E00]];
 
     if (v14)
@@ -476,7 +476,7 @@ LABEL_16:
       +[PLCodec H264fourCharCode];
     }
     v9 = ;
-    [v5 setCodecFourCharCode:v9];
+    [resourceCopy setCodecFourCharCode:v9];
   }
 
 LABEL_10:
@@ -503,48 +503,48 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
   }
 }
 
-+ (void)_applyColorSpaceAndCodecUsingFileToExternalResource:(id)a3 managedObjectContext:(id)a4
++ (void)_applyColorSpaceAndCodecUsingFileToExternalResource:(id)resource managedObjectContext:(id)context
 {
-  v10 = a3;
-  v4 = [v10 fileURL];
-  if (v4)
+  resourceCopy = resource;
+  fileURL = [resourceCopy fileURL];
+  if (fileURL)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6 isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [fileURL path];
+    v7 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v7)
     {
-      if ([v10 resourceType] == 1 || objc_msgSend(v10, "resourceType") == 3)
+      if ([resourceCopy resourceType] == 1 || objc_msgSend(resourceCopy, "resourceType") == 3)
       {
-        v8 = [MEMORY[0x1E6987E28] assetWithURL:v4];
-        v9 = [v8 plVideoCodecFourCharCodeString];
-        if (v9)
+        v8 = [MEMORY[0x1E6987E28] assetWithURL:fileURL];
+        plVideoCodecFourCharCodeString = [v8 plVideoCodecFourCharCodeString];
+        if (plVideoCodecFourCharCodeString)
         {
-          [v10 setCodecFourCharCode:v9];
+          [resourceCopy setCodecFourCharCode:plVideoCodecFourCharCodeString];
         }
       }
     }
   }
 }
 
-+ (unsigned)resourceTypeFromCPLType:(unint64_t)a3 assetType:(signed __int16)a4
++ (unsigned)resourceTypeFromCPLType:(unint64_t)type assetType:(signed __int16)assetType
 {
   result = 31;
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
-      if (a4 >= 3)
+      if (assetType >= 3)
       {
-        v8 = 31;
+        assetTypeCopy = 31;
       }
 
       else
       {
-        v8 = a4;
+        assetTypeCopy = assetType;
       }
 
-      result = v8;
+      result = assetTypeCopy;
       break;
     case 2uLL:
     case 3uLL:
@@ -559,7 +559,7 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     case 0x15uLL:
     case 0x19uLL:
     case 0x1CuLL:
-      if (a4)
+      if (assetType)
       {
         result = 1;
       }
@@ -608,10 +608,10 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
       result = 13;
       break;
     default:
-      if (a3 == 1000)
+      if (type == 1000)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:420 description:@"Unexpected CPL type: CPLResourceTypeAdjustmentOriginalResource"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:420 description:@"Unexpected CPL type: CPLResourceTypeAdjustmentOriginalResource"];
 
         result = 31;
       }
@@ -622,25 +622,25 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
   return result;
 }
 
-+ (void)_recipeAndDerivativeStateFromCPLResourceType:(unint64_t)a3 fromAdjustedSet:(BOOL)a4 assetType:(signed __int16)a5 recipeID:(unsigned int *)a6
++ (void)_recipeAndDerivativeStateFromCPLResourceType:(unint64_t)type fromAdjustedSet:(BOOL)set assetType:(signed __int16)assetType recipeID:(unsigned int *)d
 {
-  v7 = a5;
-  v8 = a4;
-  if (!a6)
+  assetTypeCopy = assetType;
+  setCopy = set;
+  if (!d)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"outRecipeID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"outRecipeID"}];
   }
 
-  *a6 = [objc_opt_class() recipeIDFromCPLResourceType:a3 assetType:v7 fromAdjustedSet:v8];
+  *d = [objc_opt_class() recipeIDFromCPLResourceType:type assetType:assetTypeCopy fromAdjustedSet:setCopy];
 }
 
-+ (unsigned)recipeIDFromCPLResourceType:(unint64_t)a3 assetType:(signed __int16)a4 fromAdjustedSet:(BOOL)a5
++ (unsigned)recipeIDFromCPLResourceType:(unint64_t)type assetType:(signed __int16)assetType fromAdjustedSet:(BOOL)set
 {
   result = 0;
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    if (a4)
+    if (assetType)
     {
       v7 = 131079;
     }
@@ -651,22 +651,22 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     }
 
     v8 = 131277;
-    if (a4)
+    if (assetType)
     {
       v8 = 131081;
     }
 
-    if (a3 != 7)
+    if (type != 7)
     {
       v8 = 0;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v8 = v7;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v9 = 65743;
     }
@@ -677,28 +677,28 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     }
 
     v10 = 65938;
-    if (!a5)
+    if (!set)
     {
       v10 = 65737;
     }
 
     v11 = 65741;
-    if (a3 != 4)
+    if (type != 4)
     {
       v11 = 0;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v11 = 65739;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v11 = v10;
     }
 
-    if (a3 <= 4)
+    if (type <= 4)
     {
       return v11;
     }
@@ -709,11 +709,11 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     }
   }
 
-  if (a3 <= 20)
+  if (type <= 20)
   {
-    if (a3 != 10)
+    if (type != 10)
     {
-      if (a5)
+      if (set)
       {
         v12 = 0x20000;
       }
@@ -724,12 +724,12 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
       }
 
       v13 = 131272;
-      if (a3 != 19)
+      if (type != 19)
       {
         v13 = 0;
       }
 
-      if (a3 == 16)
+      if (type == 16)
       {
         return v12;
       }
@@ -743,17 +743,17 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     return 327683;
   }
 
-  if (a3 > 27)
+  if (type > 27)
   {
-    if (a3 == 28)
+    if (type == 28)
     {
       return 131475;
     }
 
-    if (a3 == 1000)
+    if (type == 1000)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:292 description:@"Unexpected CPL type: CPLResourceTypeAdjustmentOriginalResource"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:292 description:@"Unexpected CPL type: CPLResourceTypeAdjustmentOriginalResource"];
 
       return 0;
     }
@@ -761,12 +761,12 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     return result;
   }
 
-  if (a3 == 21)
+  if (type == 21)
   {
     return 131077;
   }
 
-  if (a3 == 27)
+  if (type == 27)
   {
     return 327683;
   }
@@ -774,13 +774,13 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
   return result;
 }
 
-+ (unint64_t)nonDerivativeCPLTypeFromResourceType:(unsigned int)a3 version:(unsigned int)a4 uniformTypeIdentifier:(id)a5
++ (unint64_t)nonDerivativeCPLTypeFromResourceType:(unsigned int)type version:(unsigned int)version uniformTypeIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 2)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (version == 2)
   {
-    if (a3 >= 8)
+    if (type >= 8)
     {
       goto LABEL_22;
     }
@@ -789,39 +789,39 @@ void __87__PLResourceInstaller_CPL___applyCodecToNonDerivativeExternalResource_f
     goto LABEL_16;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
-    if (a3 >= 4)
+    if (type >= 4)
     {
       goto LABEL_22;
     }
 
     v12 = &unk_19C60B1A0;
 LABEL_16:
-    v11 = v12[a3];
+    v11 = v12[type];
     goto LABEL_23;
   }
 
-  if (a4)
+  if (version)
   {
     goto LABEL_22;
   }
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
     v9 = 8;
     v10 = 18;
-    if (a3 != 3)
+    if (type != 3)
     {
       v10 = 0;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       v9 = v10;
     }
 
-    if (a3 >= 2)
+    if (type >= 2)
     {
       v11 = v9;
     }
@@ -834,20 +834,20 @@ LABEL_16:
     goto LABEL_23;
   }
 
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v11 = 17;
       goto LABEL_23;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
-      v13 = [v7 identifier];
-      v14 = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
-      v15 = [v14 identifier];
-      v16 = [v13 isEqualToString:v15];
+      identifier = [identifierCopy identifier];
+      supplementalResourceXMPType = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
+      identifier2 = [supplementalResourceXMPType identifier];
+      v16 = [identifier isEqualToString:identifier2];
 
       if (v16)
       {
@@ -856,10 +856,10 @@ LABEL_16:
 
       else
       {
-        v19 = [v8 identifier];
-        v20 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-        v21 = [v20 identifier];
-        v22 = [v19 isEqualToString:v21];
+        identifier3 = [v8 identifier];
+        supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+        identifier4 = [supplementalResourceAAEType identifier];
+        v22 = [identifier3 isEqualToString:identifier4];
 
         if (v22)
         {
@@ -881,12 +881,12 @@ LABEL_22:
   }
 
   v18 = 24;
-  if (a3 != 11)
+  if (type != 11)
   {
     v18 = 0;
   }
 
-  if (a3 == 10)
+  if (type == 10)
   {
     v11 = 23;
   }
@@ -901,22 +901,22 @@ LABEL_23:
   return v11;
 }
 
-+ (unint64_t)derivativeCPLTypeFromRecipeID:(unsigned int)a3 version:(unsigned int)a4
++ (unint64_t)derivativeCPLTypeFromRecipeID:(unsigned int)d version:(unsigned int)version
 {
   v8 = [PLResourceRecipe recipeFromID:?];
-  v9 = [v8 isDerivative];
+  isDerivative = [v8 isDerivative];
 
-  if ((v9 & 1) == 0)
+  if ((isDerivative & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller+CPL.m" lineNumber:50 description:@"only derivative recipes support mapping to CPL type."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller+CPL.m" lineNumber:50 description:@"only derivative recipes support mapping to CPL type."];
   }
 
-  if (a3 <= 131078)
+  if (d <= 131078)
   {
-    if (a3 > 65742)
+    if (d > 65742)
     {
-      switch(a3)
+      switch(d)
       {
         case 0x100CFu:
           return 5;
@@ -929,7 +929,7 @@ LABEL_23:
 
     else
     {
-      switch(a3)
+      switch(d)
       {
         case 0x100C9u:
           return 2;
@@ -943,16 +943,16 @@ LABEL_23:
     return 0;
   }
 
-  if (a3 <= 131276)
+  if (d <= 131276)
   {
-    if (a3 == 131079)
+    if (d == 131079)
     {
       return 6;
     }
 
-    if (a3 != 131081)
+    if (d != 131081)
     {
-      if (a3 != 131275)
+      if (d != 131275)
       {
         return 0;
       }
@@ -963,28 +963,28 @@ LABEL_23:
     return 7;
   }
 
-  if (a3 == 131277)
+  if (d == 131277)
   {
     return 7;
   }
 
-  if (a3 == 131475)
+  if (d == 131475)
   {
     return 28;
   }
 
-  if (a3 != 327683)
+  if (d != 327683)
   {
     return 0;
   }
 
   v11 = 27;
-  if (a4 != 2)
+  if (version != 2)
   {
     v11 = 0;
   }
 
-  if (a4)
+  if (version)
   {
     return v11;
   }
@@ -995,26 +995,26 @@ LABEL_23:
   }
 }
 
-+ (id)generatedValidatedExternalSyndicationResourceOfType:(unsigned int)a3 version:(unsigned int)a4 recipeID:(unsigned int)a5 fileURL:(id)a6 requireFileToBePresent:(BOOL)a7 uniformTypeIdentifier:(id)a8
++ (id)generatedValidatedExternalSyndicationResourceOfType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d fileURL:(id)l requireFileToBePresent:(BOOL)present uniformTypeIdentifier:(id)identifier
 {
-  v9 = a7;
-  v10 = *&a5;
-  v11 = *&a4;
-  v12 = *&a3;
-  v14 = a6;
-  v15 = a8;
+  presentCopy = present;
+  v10 = *&d;
+  v11 = *&version;
+  v12 = *&type;
+  lCopy = l;
+  identifierCopy = identifier;
   v16 = objc_alloc_init(PLSyndicationValidatedExternalResource);
   [(PLValidatedExternalResource *)v16 setResourceType:v12];
   [(PLValidatedExternalResource *)v16 setVersion:v11];
   [(PLValidatedExternalResource *)v16 setRecipeID:v10];
-  [(PLValidatedExternalResource *)v16 setUniformTypeIdentifier:v15];
+  [(PLValidatedExternalResource *)v16 setUniformTypeIdentifier:identifierCopy];
 
-  if (v14 && (-[PLValidatedExternalResource setFileURL:](v16, "setFileURL:", v14), (v17 = [a1 _getURLDataLength:v14]) != 0))
+  if (lCopy && (-[PLValidatedExternalResource setFileURL:](v16, "setFileURL:", lCopy), (v17 = [self _getURLDataLength:lCopy]) != 0))
   {
     [(PLValidatedExternalResource *)v16 setDataLength:v17];
   }
 
-  else if (v9)
+  else if (presentCopy)
   {
 
     v16 = 0;
@@ -1023,19 +1023,19 @@ LABEL_23:
   return v16;
 }
 
-+ (id)generateValidatedExternalOtherResourceOfType:(unsigned int)a3 forFilePath:(id)a4 uti:(id)a5 requireFileToBePresent:(BOOL)a6 version:(unsigned int)a7
++ (id)generateValidatedExternalOtherResourceOfType:(unsigned int)type forFilePath:(id)path uti:(id)uti requireFileToBePresent:(BOOL)present version:(unsigned int)version
 {
-  v7 = *&a7;
-  v8 = a6;
-  v10 = *&a3;
-  v12 = a4;
-  v13 = a5;
-  if (v12)
+  v7 = *&version;
+  presentCopy = present;
+  v10 = *&type;
+  pathCopy = path;
+  utiCopy = uti;
+  if (pathCopy)
   {
-    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
-    v15 = [a1 _getURLDataLength:v14];
+    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+    v15 = [self _getURLDataLength:v14];
     v16 = v15 != 0;
-    if (!v8)
+    if (!presentCopy)
     {
       goto LABEL_7;
     }
@@ -1046,7 +1046,7 @@ LABEL_23:
     v14 = 0;
     v16 = 0;
     v15 = 0;
-    if (!v8)
+    if (!presentCopy)
     {
       goto LABEL_7;
     }
@@ -1062,7 +1062,7 @@ LABEL_7:
   v17 = objc_alloc_init(PLValidatedExternalResource);
   [(PLValidatedExternalResource *)v17 setResourceType:v10];
   [(PLValidatedExternalResource *)v17 setVersion:v7];
-  [(PLValidatedExternalResource *)v17 setUniformTypeIdentifier:v13];
+  [(PLValidatedExternalResource *)v17 setUniformTypeIdentifier:utiCopy];
   [(PLValidatedExternalResource *)v17 setDataLength:v15];
   [(PLValidatedExternalResource *)v17 setFileURL:v14];
 LABEL_8:
@@ -1070,20 +1070,20 @@ LABEL_8:
   return v17;
 }
 
-+ (id)generateValidatedExternalImageResourceOfType:(unsigned int)a3 forFilePath:(id)a4 requireFileToBePresent:(BOOL)a5 version:(unsigned int)a6 basedOnFullSizeWidth:(int64_t)a7 andHeight:(int64_t)a8 recipe:(id)a9 assetKind:(signed __int16)a10 error:(id *)a11
++ (id)generateValidatedExternalImageResourceOfType:(unsigned int)type forFilePath:(id)path requireFileToBePresent:(BOOL)present version:(unsigned int)version basedOnFullSizeWidth:(int64_t)width andHeight:(int64_t)height recipe:(id)recipe assetKind:(signed __int16)self0 error:(id *)self1
 {
-  v11 = *&a6;
-  v12 = a5;
-  v13 = *&a3;
+  v11 = *&version;
+  presentCopy = present;
+  v13 = *&type;
   v32[1] = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = a9;
-  if (v15)
+  pathCopy = path;
+  recipeCopy = recipe;
+  if (pathCopy)
   {
-    v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15 isDirectory:0];
-    v18 = [a1 _getURLDataLength:v17];
+    v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+    v18 = [self _getURLDataLength:v17];
     v19 = v18 != 0;
-    if (!v12)
+    if (!presentCopy)
     {
       goto LABEL_9;
     }
@@ -1094,21 +1094,21 @@ LABEL_8:
     v19 = 0;
     v18 = 0;
     v17 = 0;
-    if (!v12)
+    if (!presentCopy)
     {
 LABEL_9:
       v26 = objc_alloc_init(PLValidatedExternalResource);
       [(PLValidatedExternalResource *)v26 setResourceType:v13];
       [(PLValidatedExternalResource *)v26 setVersion:v11];
-      -[PLValidatedExternalResource setRecipeID:](v26, "setRecipeID:", [v16 recipeID]);
+      -[PLValidatedExternalResource setRecipeID:](v26, "setRecipeID:", [recipeCopy recipeID]);
       if (v19)
       {
         [(PLValidatedExternalResource *)v26 setFileURL:v17];
         [(PLValidatedExternalResource *)v26 setDataLength:v18];
       }
 
-      LOWORD(v28) = a10;
-      [objc_opt_class() _applyImageIOMetadataToExternalResource:v26 fromFileURL:v17 fileExists:v19 assumedWidth:a7 assumedHeight:a8 recipe:v16 assetKind:v28];
+      LOWORD(v28) = kind;
+      [objc_opt_class() _applyImageIOMetadataToExternalResource:v26 fromFileURL:v17 fileExists:v19 assumedWidth:width assumedHeight:height recipe:recipeCopy assetKind:v28];
       [(PLValidatedExternalResource *)v26 setTrashedStateFromURL];
       goto LABEL_12;
     }
@@ -1122,15 +1122,15 @@ LABEL_9:
   v20 = MEMORY[0x1E696ABC0];
   v21 = *MEMORY[0x1E696A250];
   v31 = *MEMORY[0x1E696A278];
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"file does not exist at path: %@", v15];
-  v32[0] = v22;
+  pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"file does not exist at path: %@", pathCopy];
+  v32[0] = pathCopy;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   v24 = [v20 errorWithDomain:v21 code:4 userInfo:v23];
 
-  if (a11)
+  if (error)
   {
     v25 = v24;
-    *a11 = v24;
+    *error = v24;
   }
 
   v26 = 0;
@@ -1139,48 +1139,48 @@ LABEL_12:
   return v26;
 }
 
-+ (id)externalResourcesForExistingAsset:(id)a3 referencedResourceURLs:(id)a4
++ (id)externalResourcesForExistingAsset:(id)asset referencedResourceURLs:(id)ls
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  lsCopy = ls;
+  if (!assetCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:1480 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:1480 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  if ([v7 isCloudSharedAsset])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([assetCopy isCloudSharedAsset])
   {
-    v10 = [a1 _validatedExternalResourcesFromSharedStreamAsset:v7];
+    v10 = [self _validatedExternalResourcesFromSharedStreamAsset:assetCopy];
 LABEL_8:
     v11 = v10;
-    [v9 addObjectsFromArray:v10];
+    [array addObjectsFromArray:v10];
     goto LABEL_9;
   }
 
-  if (![v7 kind] || objc_msgSend(v7, "kind") == 1)
+  if (![assetCopy kind] || objc_msgSend(assetCopy, "kind") == 1)
   {
-    v10 = [a1 _validatedExternalResourcesFromLocalImageOrVideoAsset:v7 referencedResourceURLs:v8];
+    v10 = [self _validatedExternalResourcesFromLocalImageOrVideoAsset:assetCopy referencedResourceURLs:lsCopy];
     goto LABEL_8;
   }
 
-  v11 = [a1 _validatedExternalResourceIfPresentForAudioOrUnknownAsset:v7];
+  v11 = [self _validatedExternalResourceIfPresentForAudioOrUnknownAsset:assetCopy];
   if (v11)
   {
-    [v9 addObject:v11];
+    [array addObject:v11];
   }
 
 LABEL_9:
 
-  return v9;
+  return array;
 }
 
-+ (BOOL)installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:(id)a3 migrator:(id)a4
++ (BOOL)installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:(id)context migrator:(id)migrator
 {
   v43[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  migratorCopy = migrator;
   v8 = PLImageManagerGetLog();
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
@@ -1215,17 +1215,17 @@ LABEL_9:
   v37[1] = 3221225472;
   v37[2] = __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext_migrator___block_invoke;
   v37[3] = &unk_1E7574590;
-  v19 = v7;
+  v19 = migratorCopy;
   v38 = v19;
   v20 = v17;
   v39 = v20;
-  v21 = v6;
+  v21 = contextCopy;
   v40 = v21;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext_migrator___block_invoke_2;
   v34[3] = &unk_1E756C570;
-  v36 = a1;
+  selfCopy = self;
   v22 = v16;
   v35 = v22;
   v23 = [(PLEnumerateAndSaveController *)v18 initWithName:v20 fetchRequest:v14 context:v21 options:5 generateContextBlock:v37 didFetchObjectIDsBlock:0 processResultBlock:v34];
@@ -1295,46 +1295,46 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   }
 }
 
-+ (BOOL)removeLegacyCloudResourcesInStore:(id)a3 migrator:(id)a4
++ (BOOL)removeLegacyCloudResourcesInStore:(id)store migrator:(id)migrator
 {
-  v4 = [a4 managedObjectContextForMigrationInStore:a3 name:"+[PLResourceInstaller removeLegacyCloudResourcesInStore:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v4 = [migrator managedObjectContextForMigrationInStore:store name:"+[PLResourceInstaller removeLegacyCloudResourcesInStore:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
   v5 = +[PLCloudResource entityName];
   v6 = [PLModelMigrator executeBatchDeleteWithEntityName:v5 predicate:0 managedObjectContext:v4 error:0];
 
   return v6;
 }
 
-+ (BOOL)createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:(id)a3 migrator:(id)a4
++ (BOOL)createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:(id)store migrator:(id)migrator
 {
   v6 = *MEMORY[0x1E695D708];
-  v7 = a4;
-  v8 = [v7 managedObjectContextForMigrationInStore:a3 name:"+[PLResourceInstaller createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:migrator:]" concurrencyType:v6];
-  LOBYTE(a1) = [a1 installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:v8 migrator:v7];
+  migratorCopy = migrator;
+  v8 = [migratorCopy managedObjectContextForMigrationInStore:store name:"+[PLResourceInstaller createInternalResourcesForExistingAssetsWithNoExistingResourcesInStore:migrator:]" concurrencyType:v6];
+  LOBYTE(self) = [self installInternalResourcesForExistingAssetsWithNoExistingResourcesInManagedObjectContext:v8 migrator:migratorCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)resetInternalResourcesInStore:(id)a3 resetUTIs:(BOOL)a4 resetCodecs:(BOOL)a5 resetMasters:(BOOL)a6 migrator:(id)a7
++ (BOOL)resetInternalResourcesInStore:(id)store resetUTIs:(BOOL)is resetCodecs:(BOOL)codecs resetMasters:(BOOL)masters migrator:(id)migrator
 {
-  v11 = a3;
-  v12 = a7;
+  storeCopy = store;
+  migratorCopy = migrator;
   v13 = objc_autoreleasePoolPush();
-  v14 = [v12 managedObjectContextForMigrationInStore:v11 name:"+[PLResourceInstaller resetInternalResourcesInStore:resetUTIs:resetCodecs:resetMasters:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
-  if (a4)
+  v14 = [migratorCopy managedObjectContextForMigrationInStore:storeCopy name:"+[PLResourceInstaller resetInternalResourcesInStore:resetUTIs:resetCodecs:resetMasters:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
+  if (is)
   {
-    v15 = 0;
+    _predicateForUnrecoverableResources = 0;
   }
 
   else
   {
-    v15 = [a1 _predicateForUnrecoverableResources];
+    _predicateForUnrecoverableResources = [self _predicateForUnrecoverableResources];
   }
 
   v16 = +[PLInternalResource entityName];
-  v17 = [PLModelMigrator executeBatchDeleteWithEntityName:v16 predicate:v15 managedObjectContext:v14 error:0];
+  v17 = [PLModelMigrator executeBatchDeleteWithEntityName:v16 predicate:_predicateForUnrecoverableResources managedObjectContext:v14 error:0];
 
-  v18 = !a6;
-  LOBYTE(v19) = !a6 && v17;
+  v18 = !masters;
+  LOBYTE(v19) = !masters && v17;
   if (!v18 && v17)
   {
     v20 = +[PLCloudResource entityName];
@@ -1351,12 +1351,12 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   return v19;
 }
 
-+ (BOOL)reconsiderSavedAssetTypeInStore:(id)a3 migrator:(id)a4
++ (BOOL)reconsiderSavedAssetTypeInStore:(id)store migrator:(id)migrator
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isCloudPhotoLibraryEnabled])
+  storeCopy = store;
+  migratorCopy = migrator;
+  if ([migratorCopy isCloudPhotoLibraryEnabled])
   {
     v7 = 1;
   }
@@ -1365,7 +1365,7 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   {
     context = objc_autoreleasePoolPush();
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", @"PhotoData", @"CPLAssets"];
-    v9 = [v6 managedObjectContextForMigrationInStore:v5 name:"+[PLResourceInstaller reconsiderSavedAssetTypeInStore:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v9 = [migratorCopy managedObjectContextForMigrationInStore:storeCopy name:"+[PLResourceInstaller reconsiderSavedAssetTypeInStore:migrator:]" concurrencyType:*MEMORY[0x1E695D708]];
     v10 = MEMORY[0x1E695D560];
     v11 = +[PLManagedAsset entityName];
     v12 = [v10 batchUpdateRequestWithEntityName:v11];
@@ -1399,9 +1399,9 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v22 result];
+        result = [v22 result];
         *buf = 138412290;
-        v32 = v26;
+        v32 = result;
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "Fixing savedAssetType successful with result %@", buf, 0xCu);
       }
     }
@@ -1420,10 +1420,10 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   return v7;
 }
 
-+ (BOOL)resetImageRequestHintsInContext:(id)a3 allowOneTimeThumbRebuild:(BOOL)a4
++ (BOOL)resetImageRequestHintsInContext:(id)context allowOneTimeThumbRebuild:(BOOL)rebuild
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
@@ -1438,9 +1438,9 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   v39 = 0x3020000000;
   v40 = 0;
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLResourceInstaller resetImageRequestHintsInContext:allowOneTimeThumbRebuild:]"];
-  v11 = [v5 pathManager];
-  v12 = [v5 persistentStoreCoordinator];
-  v13 = [v5 transactionAuthor];
+  pathManager = [contextCopy pathManager];
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  transactionAuthor = [contextCopy transactionAuthor];
   v14 = [PLEnumerateAndSaveController alloc];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -1448,19 +1448,19 @@ void __119__PLResourceInstaller_installInternalResourcesForExistingAssetsWithNoE
   v32[3] = &unk_1E756C520;
   v15 = v10;
   v33 = v15;
-  v16 = v12;
+  v16 = persistentStoreCoordinator;
   v34 = v16;
-  v17 = v13;
+  v17 = transactionAuthor;
   v35 = v17;
-  v18 = v11;
+  v18 = pathManager;
   v36 = v18;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumbRebuild___block_invoke_3;
   v30[3] = &unk_1E756C548;
-  v31 = a4;
+  rebuildCopy = rebuild;
   v30[4] = &v37;
-  v19 = [(PLEnumerateAndSaveController *)v14 initWithName:v15 fetchRequest:v8 context:v5 options:5 generateContextBlock:v32 didFetchObjectIDsBlock:0 processResultBlock:v30];
+  v19 = [(PLEnumerateAndSaveController *)v14 initWithName:v15 fetchRequest:v8 context:contextCopy options:5 generateContextBlock:v32 didFetchObjectIDsBlock:0 processResultBlock:v30];
   v29 = 0;
   v20 = [(PLEnumerateAndSaveController *)v19 processObjectsWithError:&v29];
   v21 = v29;
@@ -1543,95 +1543,95 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
   [v3 setObject:v2 forKeyedSubscript:@"com.apple.photos.PLModelMigratorPathManagerKey"];
 }
 
-+ (id)_validatedExternalResourcesFromSharedStreamAsset:(id)a3
++ (id)_validatedExternalResourcesFromSharedStreamAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 assetID];
-  v5 = [v4 libraryID];
-  v6 = PLDataStoreForClassIDAndLibraryID(2, v5);
+  assetCopy = asset;
+  assetID = [assetCopy assetID];
+  libraryID = [assetID libraryID];
+  v6 = PLDataStoreForClassIDAndLibraryID(2, libraryID);
 
-  v7 = [v6 requiredExternalResourcesForMigratingOrImportingAsset:v3];
+  v7 = [v6 requiredExternalResourcesForMigratingOrImportingAsset:assetCopy];
 
   return v7;
 }
 
-+ (id)generateVideoResourcesFromVideoAsset:(id)a3 referencedVideoPath:(id)a4
++ (id)generateVideoResourcesFromVideoAsset:(id)asset referencedVideoPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v6 managedObjectContext];
-  v10 = v7;
-  v11 = v10;
+  assetCopy = asset;
+  pathCopy = path;
+  array = [MEMORY[0x1E695DF70] array];
+  managedObjectContext = [assetCopy managedObjectContext];
+  v10 = pathCopy;
+  pathForOriginalFile = v10;
   if (!v10)
   {
-    v11 = [v6 pathForOriginalFile];
+    pathForOriginalFile = [assetCopy pathForOriginalFile];
   }
 
-  v12 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v11 context:v9];
+  v12 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForOriginalFile context:managedObjectContext];
   v13 = v12;
   if (v12)
   {
     [v12 setResourceType:1];
     [v13 setVersion:0];
-    [v8 addObject:v13];
+    [array addObject:v13];
   }
 
-  v14 = [v6 pathForNonAdjustedLargeVideoFile];
-  v15 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v14 context:v9];
+  pathForNonAdjustedLargeVideoFile = [assetCopy pathForNonAdjustedLargeVideoFile];
+  v15 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForNonAdjustedLargeVideoFile context:managedObjectContext];
   v16 = v15;
   if (v15)
   {
     [v15 setResourceType:1];
     [v16 setVersion:0];
     [v16 setRecipeID:131077];
-    [v8 addObject:v16];
+    [array addObject:v16];
   }
 
-  v17 = [v6 pathForNonAdjustedMediumVideoFile];
-  v18 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v17 context:v9];
+  pathForNonAdjustedMediumVideoFile = [assetCopy pathForNonAdjustedMediumVideoFile];
+  v18 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForNonAdjustedMediumVideoFile context:managedObjectContext];
   v19 = v18;
   if (v18)
   {
     [v18 setResourceType:1];
     [v19 setVersion:0];
     [v19 setRecipeID:131079];
-    [v8 addObject:v19];
+    [array addObject:v19];
   }
 
-  v20 = [v6 pathForNonAdjustedMediumHDRVideoFile];
-  v21 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v20 context:v9];
+  pathForNonAdjustedMediumHDRVideoFile = [assetCopy pathForNonAdjustedMediumHDRVideoFile];
+  v21 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForNonAdjustedMediumHDRVideoFile context:managedObjectContext];
   v22 = v21;
   if (v21)
   {
     [v21 setResourceType:1];
     [v22 setVersion:0];
     [v22 setRecipeID:131475];
-    [v8 addObject:v22];
+    [array addObject:v22];
   }
 
-  v23 = [v6 pathForNonAdjustedSmallVideoFile];
-  v24 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v23 context:v9];
+  pathForNonAdjustedSmallVideoFile = [assetCopy pathForNonAdjustedSmallVideoFile];
+  v24 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForNonAdjustedSmallVideoFile context:managedObjectContext];
   v25 = v24;
   if (v24)
   {
     [v24 setResourceType:1];
     [v25 setVersion:0];
     [v25 setRecipeID:131081];
-    [v8 addObject:v25];
+    [array addObject:v25];
   }
 
-  if ([v6 hasAdjustments] && (objc_msgSend(v6, "isDefaultAdjustedSlomo") & 1) == 0)
+  if ([assetCopy hasAdjustments] && (objc_msgSend(assetCopy, "isDefaultAdjustedSlomo") & 1) == 0)
   {
-    v26 = [v6 hasUnrenderedAsyncAdjustments];
-    v27 = [v6 pathForFullsizeRenderVideoFile];
-    v28 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v27 context:v9];
-    if (!v28 && v26)
+    hasUnrenderedAsyncAdjustments = [assetCopy hasUnrenderedAsyncAdjustments];
+    pathForFullsizeRenderVideoFile = [assetCopy pathForFullsizeRenderVideoFile];
+    v28 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForFullsizeRenderVideoFile context:managedObjectContext];
+    if (!v28 && hasUnrenderedAsyncAdjustments)
     {
       v29 = [PLResourceRecipe recipeFromID:0x20000];
       v28 = objc_alloc_init(PLValidatedExternalResource);
-      v30 = [v29 codecFourCharCodeName];
-      [(PLValidatedExternalResource *)v28 setCodecFourCharCode:v30];
+      codecFourCharCodeName = [v29 codecFourCharCodeName];
+      [(PLValidatedExternalResource *)v28 setCodecFourCharCode:codecFourCharCodeName];
 
       v31 = [v29 uti];
       [(PLValidatedExternalResource *)v28 setUniformTypeIdentifier:v31];
@@ -1642,74 +1642,74 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
       [(PLValidatedExternalResource *)v28 setResourceType:1];
       [(PLValidatedExternalResource *)v28 setVersion:2];
       [(PLValidatedExternalResource *)v28 setRecipeID:0x20000];
-      [v8 addObject:v28];
+      [array addObject:v28];
     }
 
-    v32 = [v6 pathForPenultimateFullsizeRenderVideoFile];
-    v33 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v32 context:v9];
+    pathForPenultimateFullsizeRenderVideoFile = [assetCopy pathForPenultimateFullsizeRenderVideoFile];
+    v33 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForPenultimateFullsizeRenderVideoFile context:managedObjectContext];
     v34 = v33;
     if (v33)
     {
       [v33 setResourceType:1];
       [v34 setVersion:1];
-      [v8 addObject:v34];
+      [array addObject:v34];
     }
 
-    v35 = [v6 pathForAdjustedLargeVideoFile];
-    v36 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v35 context:v9];
+    pathForAdjustedLargeVideoFile = [assetCopy pathForAdjustedLargeVideoFile];
+    v36 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForAdjustedLargeVideoFile context:managedObjectContext];
     v37 = v36;
     if (v36)
     {
       [v36 setResourceType:1];
       [v37 setVersion:2];
       [v37 setRecipeID:131077];
-      [v8 addObject:v37];
+      [array addObject:v37];
     }
 
-    v38 = [v6 pathForAdjustedMediumVideoFile];
-    v39 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v38 context:v9];
+    pathForAdjustedMediumVideoFile = [assetCopy pathForAdjustedMediumVideoFile];
+    v39 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForAdjustedMediumVideoFile context:managedObjectContext];
     v40 = v39;
     if (v39)
     {
       [v39 setResourceType:1];
       [v40 setVersion:2];
       [v40 setRecipeID:131079];
-      [v8 addObject:v40];
+      [array addObject:v40];
     }
 
-    v41 = [v6 pathForAdjustedMediumHDRVideoFile];
-    v42 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v41 context:v9];
+    pathForAdjustedMediumHDRVideoFile = [assetCopy pathForAdjustedMediumHDRVideoFile];
+    v42 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForAdjustedMediumHDRVideoFile context:managedObjectContext];
     v43 = v42;
     if (v42)
     {
       [v42 setResourceType:1];
       [v43 setVersion:2];
       [v43 setRecipeID:131475];
-      [v8 addObject:v43];
+      [array addObject:v43];
     }
 
-    v44 = [v6 pathForAdjustedSmallVideoFile];
-    v45 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v44 context:v9];
+    pathForAdjustedSmallVideoFile = [assetCopy pathForAdjustedSmallVideoFile];
+    v45 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForAdjustedSmallVideoFile context:managedObjectContext];
     v46 = v45;
     if (v45)
     {
       [v45 setResourceType:1];
       [v46 setVersion:2];
       [v46 setRecipeID:131081];
-      [v8 addObject:v46];
+      [array addObject:v46];
     }
   }
 
-  return v8;
+  return array;
 }
 
-+ (id)validatedExternalResourceForLocalVideoIfPresentAtPath:(id)a3 context:(id)a4
++ (id)validatedExternalResourceForLocalVideoIfPresentAtPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  pathCopy = path;
+  contextCopy = context;
+  if (pathCopy)
   {
-    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   }
 
   else
@@ -1717,7 +1717,7 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
     v8 = 0;
   }
 
-  v9 = [a1 _getURLDataLength:v8];
+  v9 = [self _getURLDataLength:v8];
   if (v9)
   {
     v10 = v9;
@@ -1725,10 +1725,10 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
     if (v11)
     {
       v12 = objc_alloc_init(PLValidatedExternalResource);
-      v13 = [v11 plVideoCodecFourCharCodeString];
-      if (v13)
+      plVideoCodecFourCharCodeString = [v11 plVideoCodecFourCharCodeString];
+      if (plVideoCodecFourCharCodeString)
       {
-        [(PLValidatedExternalResource *)v12 setCodecFourCharCode:v13];
+        [(PLValidatedExternalResource *)v12 setCodecFourCharCode:plVideoCodecFourCharCodeString];
       }
 
       [PLManagedAsset dimensionsForAVAsset:v11];
@@ -1738,13 +1738,13 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
       [(PLValidatedExternalResource *)v12 setFileURL:v8];
       [(PLValidatedExternalResource *)v12 setDataLength:v10];
       v17 = MEMORY[0x1E69C08F0];
-      v18 = [v6 pathExtension];
-      v19 = [v17 resourceModelTypeForFilenameExtension:v18];
-      v20 = [v19 identifier];
+      pathExtension = [pathCopy pathExtension];
+      v19 = [v17 resourceModelTypeForFilenameExtension:pathExtension];
+      identifier = [v19 identifier];
 
-      if (v20)
+      if (identifier)
       {
-        v21 = [PLUniformTypeIdentifier utiWithIdentifier:v20];
+        v21 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
         [(PLValidatedExternalResource *)v12 setUniformTypeIdentifier:v21];
       }
     }
@@ -1763,22 +1763,22 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
   return v12;
 }
 
-+ (id)_storeValidatedLocalExternalResource:(id)a3 forAsset:(id)a4
++ (id)_storeValidatedLocalExternalResource:(id)resource forAsset:(id)asset
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20[0] = v5;
+  resourceCopy = resource;
+  v20[0] = resourceCopy;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
+  assetCopy = asset;
   v8 = [v6 arrayWithObjects:v20 count:1];
   v17 = 0;
-  v9 = [PLResourceDataStoreManager storeExternalResources:v8 forAsset:v7 forLifecycleEvent:2 error:&v17];
+  v9 = [PLResourceDataStoreManager storeExternalResources:v8 forAsset:assetCopy forLifecycleEvent:2 error:&v17];
 
   v10 = v17;
   if (v9)
   {
-    v11 = [v9 anyObject];
-    v12 = [MEMORY[0x1E69BF2D0] successWithResult:v11];
+    anyObject = [v9 anyObject];
+    v12 = [MEMORY[0x1E69BF2D0] successWithResult:anyObject];
   }
 
   else
@@ -1799,48 +1799,48 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
   return v12;
 }
 
-+ (id)_validatedExternalResourcesFromLocalImageOrVideoAsset:(id)a3 referencedResourceURLs:(id)a4
++ (id)_validatedExternalResourcesFromLocalImageOrVideoAsset:(id)asset referencedResourceURLs:(id)ls
 {
-  v6 = a3;
-  v109 = a4;
-  v108 = [MEMORY[0x1E695DF70] array];
-  v107 = [v6 managedObjectContext];
-  v106 = [v6 hasAdjustments];
-  v7 = [v6 width];
-  v8 = [v6 height];
-  if (![v6 kind])
+  assetCopy = asset;
+  lsCopy = ls;
+  array = [MEMORY[0x1E695DF70] array];
+  managedObjectContext = [assetCopy managedObjectContext];
+  hasAdjustments = [assetCopy hasAdjustments];
+  width = [assetCopy width];
+  height = [assetCopy height];
+  if (![assetCopy kind])
   {
-    v9 = [v109 objectForKeyedSubscript:&unk_1F0FBC808];
-    if (!v9)
+    mainFileURL = [lsCopy objectForKeyedSubscript:&unk_1F0FBC808];
+    if (!mainFileURL)
     {
-      v9 = [v6 mainFileURL];
+      mainFileURL = [assetCopy mainFileURL];
     }
 
-    v10 = [a1 _getURLDataLength:v9];
+    v10 = [self _getURLDataLength:mainFileURL];
     if (v10)
     {
       v11 = v10;
-      v12 = objc_alloc_init(PLValidatedExternalResource);
-      [(PLValidatedExternalResource *)v12 setResourceType:0];
-      [(PLValidatedExternalResource *)v12 setVersion:0];
-      [(PLValidatedExternalResource *)v12 setFileURL:v9];
-      [(PLValidatedExternalResource *)v12 setDataLength:v11];
-      v13 = [v6 originalUniformTypeIdentifier];
-      v14 = [PLUniformTypeIdentifier utiWithIdentifier:v13];
+      pathForDeferredProcessingPreviewFile = objc_alloc_init(PLValidatedExternalResource);
+      [(PLValidatedExternalResource *)pathForDeferredProcessingPreviewFile setResourceType:0];
+      [(PLValidatedExternalResource *)pathForDeferredProcessingPreviewFile setVersion:0];
+      [(PLValidatedExternalResource *)pathForDeferredProcessingPreviewFile setFileURL:mainFileURL];
+      [(PLValidatedExternalResource *)pathForDeferredProcessingPreviewFile setDataLength:v11];
+      originalUniformTypeIdentifier = [assetCopy originalUniformTypeIdentifier];
+      v14 = [PLUniformTypeIdentifier utiWithIdentifier:originalUniformTypeIdentifier];
 
-      [(PLValidatedExternalResource *)v12 setUniformTypeIdentifier:v14];
-      -[PLValidatedExternalResource setUnorientedWidth:](v12, "setUnorientedWidth:", [v6 originalWidth]);
-      -[PLValidatedExternalResource setUnorientedHeight:](v12, "setUnorientedHeight:", [v6 originalHeight]);
-      [v108 addObject:v12];
+      [(PLValidatedExternalResource *)pathForDeferredProcessingPreviewFile setUniformTypeIdentifier:v14];
+      -[PLValidatedExternalResource setUnorientedWidth:](pathForDeferredProcessingPreviewFile, "setUnorientedWidth:", [assetCopy originalWidth]);
+      -[PLValidatedExternalResource setUnorientedHeight:](pathForDeferredProcessingPreviewFile, "setUnorientedHeight:", [assetCopy originalHeight]);
+      [array addObject:pathForDeferredProcessingPreviewFile];
     }
 
     else
     {
-      v89 = [v6 additionalAttributes];
-      v90 = [v89 deferredPhotoIdentifier];
-      if (v90)
+      additionalAttributes = [assetCopy additionalAttributes];
+      deferredPhotoIdentifier = [additionalAttributes deferredPhotoIdentifier];
+      if (deferredPhotoIdentifier)
       {
-        v91 = [v6 deferredProcessingNeeded] == 1 || objc_msgSend(v6, "deferredProcessingNeeded") == 5;
+        v91 = [assetCopy deferredProcessingNeeded] == 1 || objc_msgSend(assetCopy, "deferredProcessingNeeded") == 5;
       }
 
       else
@@ -1848,14 +1848,14 @@ void __80__PLResourceInstaller_resetImageRequestHintsInContext_allowOneTimeThumb
         v91 = 0;
       }
 
-      v96 = [v6 deferredProcessingNeeded];
-      if (!v91 && v96 != 10)
+      deferredProcessingNeeded = [assetCopy deferredProcessingNeeded];
+      if (!v91 && deferredProcessingNeeded != 10)
       {
         goto LABEL_8;
       }
 
-      v12 = [v6 pathForDeferredProcessingPreviewFile];
-      if (!v12)
+      pathForDeferredProcessingPreviewFile = [assetCopy pathForDeferredProcessingPreviewFile];
+      if (!pathForDeferredProcessingPreviewFile)
       {
 LABEL_7:
 
@@ -1874,13 +1874,13 @@ LABEL_8:
       }
 
       v98 = [PLResourceRecipe recipeFromID:(v97 + 65741)];
-      v99 = [v6 originalWidth];
-      v100 = [v6 originalHeight];
-      LOWORD(v101) = [v6 kind];
-      v14 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v12 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v99 andHeight:v100 recipe:v98 assetKind:v101 error:0];
+      originalWidth = [assetCopy originalWidth];
+      originalHeight = [assetCopy originalHeight];
+      LOWORD(v101) = [assetCopy kind];
+      v14 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForDeferredProcessingPreviewFile requireFileToBePresent:1 version:0 basedOnFullSizeWidth:originalWidth andHeight:originalHeight recipe:v98 assetKind:v101 error:0];
       if (v14)
       {
-        [v108 addObject:v14];
+        [array addObject:v14];
       }
     }
 
@@ -1888,27 +1888,27 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (([v6 cameraProcessingAdjustmentState] & 1) == 0)
+  if (([assetCopy cameraProcessingAdjustmentState] & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  if ([v6 kind])
+  if ([assetCopy kind])
   {
-    if ([v6 kind] != 1)
+    if ([assetCopy kind] != 1)
     {
       goto LABEL_21;
     }
 
-    v15 = [v109 objectForKeyedSubscript:&unk_1F0FBC7D8];
-    v16 = [v15 path];
+    v15 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7D8];
+    path = [v15 path];
 
-    if (!v16)
+    if (!path)
     {
-      v16 = [v6 pathForSpatialOverCaptureContentFile];
+      path = [assetCopy pathForSpatialOverCaptureContentFile];
     }
 
-    v17 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v16 context:v107];
+    v17 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:path context:managedObjectContext];
     v18 = v17;
     if (!v17)
     {
@@ -1921,14 +1921,14 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  if ([v6 deferredProcessingNeeded] == 1 || objc_msgSend(v6, "deferredProcessingNeeded") == 6)
+  if ([assetCopy deferredProcessingNeeded] == 1 || objc_msgSend(assetCopy, "deferredProcessingNeeded") == 6)
   {
-    v16 = [PLResourceRecipe recipeFromID:65946];
-    v19 = [v6 pathForSpatialOverCaptureContentFile];
-    v20 = [v6 originalHeight];
-    v21 = [v6 originalWidth];
-    LOWORD(v101) = [v6 kind];
-    v18 = [a1 generateValidatedExternalImageResourceOfType:10 forFilePath:v19 requireFileToBePresent:0 version:0 basedOnFullSizeWidth:v20 andHeight:v21 recipe:v16 assetKind:v101 error:0];
+    path = [PLResourceRecipe recipeFromID:65946];
+    pathForSpatialOverCaptureContentFile = [assetCopy pathForSpatialOverCaptureContentFile];
+    originalHeight2 = [assetCopy originalHeight];
+    originalWidth2 = [assetCopy originalWidth];
+    LOWORD(v101) = [assetCopy kind];
+    v18 = [self generateValidatedExternalImageResourceOfType:10 forFilePath:pathForSpatialOverCaptureContentFile requireFileToBePresent:0 version:0 basedOnFullSizeWidth:originalHeight2 andHeight:originalWidth2 recipe:path assetKind:v101 error:0];
 
     if (!v18)
     {
@@ -1938,20 +1938,20 @@ LABEL_20:
     }
 
 LABEL_19:
-    [v108 addObject:v18];
+    [array addObject:v18];
     goto LABEL_20;
   }
 
-  v92 = [v109 objectForKeyedSubscript:&unk_1F0FBC7D8];
-  v16 = [v92 path];
+  v92 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7D8];
+  path = [v92 path];
 
-  if (v16)
+  if (path)
   {
 LABEL_84:
-    v94 = [v6 originalWidth];
-    v95 = [v6 originalHeight];
-    LOWORD(v101) = [v6 kind];
-    v18 = [a1 generateValidatedExternalImageResourceOfType:10 forFilePath:v16 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v94 andHeight:v95 recipe:0 assetKind:v101 error:0];
+    originalWidth3 = [assetCopy originalWidth];
+    originalHeight3 = [assetCopy originalHeight];
+    LOWORD(v101) = [assetCopy kind];
+    v18 = [self generateValidatedExternalImageResourceOfType:10 forFilePath:path requireFileToBePresent:1 version:0 basedOnFullSizeWidth:originalWidth3 andHeight:originalHeight3 recipe:0 assetKind:v101 error:0];
     if (!v18)
     {
       goto LABEL_20;
@@ -1960,118 +1960,118 @@ LABEL_84:
     goto LABEL_19;
   }
 
-  v93 = [v6 pathForSpatialOverCaptureContentFile];
-  if (v93)
+  pathForSpatialOverCaptureContentFile2 = [assetCopy pathForSpatialOverCaptureContentFile];
+  if (pathForSpatialOverCaptureContentFile2)
   {
-    v16 = v93;
+    path = pathForSpatialOverCaptureContentFile2;
     goto LABEL_84;
   }
 
 LABEL_21:
   v22 = [PLResourceRecipe recipeFromID:65737];
-  v23 = [v6 pathForNonAdjustedFullsizeImageFile];
-  v24 = [v6 originalWidth];
-  v25 = [v6 originalHeight];
-  LOWORD(v101) = [v6 kind];
-  v26 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v23 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v24 andHeight:v25 recipe:v22 assetKind:v101 error:0];
+  pathForNonAdjustedFullsizeImageFile = [assetCopy pathForNonAdjustedFullsizeImageFile];
+  originalWidth4 = [assetCopy originalWidth];
+  originalHeight4 = [assetCopy originalHeight];
+  LOWORD(v101) = [assetCopy kind];
+  v26 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForNonAdjustedFullsizeImageFile requireFileToBePresent:1 version:0 basedOnFullSizeWidth:originalWidth4 andHeight:originalHeight4 recipe:v22 assetKind:v101 error:0];
 
   if (v26)
   {
-    [v108 addObject:v26];
+    [array addObject:v26];
   }
 
   v27 = [PLResourceRecipe recipeFromID:65741];
-  v28 = [v6 pathForNonAdjustedLargeThumbnailFile];
-  v29 = [v6 originalWidth];
-  v30 = [v6 originalHeight];
-  LOWORD(v102) = [v6 kind];
-  v31 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v28 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v29 andHeight:v30 recipe:v27 assetKind:v102 error:0];
+  pathForNonAdjustedLargeThumbnailFile = [assetCopy pathForNonAdjustedLargeThumbnailFile];
+  originalWidth5 = [assetCopy originalWidth];
+  originalHeight5 = [assetCopy originalHeight];
+  LOWORD(v102) = [assetCopy kind];
+  v31 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForNonAdjustedLargeThumbnailFile requireFileToBePresent:1 version:0 basedOnFullSizeWidth:originalWidth5 andHeight:originalHeight5 recipe:v27 assetKind:v102 error:0];
 
-  v32 = v108;
+  v32 = array;
   if (v31)
   {
-    [v108 addObject:v31];
+    [array addObject:v31];
   }
 
-  if ([v6 kindSubtype] == 2)
+  if ([assetCopy kindSubtype] == 2)
   {
-    v33 = [v109 objectForKeyedSubscript:&unk_1F0FBC820];
-    v34 = [v33 path];
+    v33 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC820];
+    path2 = [v33 path];
 
-    if (!v34)
+    if (!path2)
     {
-      v34 = [v6 pathForVideoComplementFile];
+      path2 = [assetCopy pathForVideoComplementFile];
     }
 
-    v35 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v34 context:v107];
+    v35 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:path2 context:managedObjectContext];
     v36 = v35;
     if (v35)
     {
       [v35 setResourceType:3];
       [v36 setVersion:0];
-      [v108 addObject:v36];
+      [array addObject:v36];
     }
 
-    if ([v6 cameraProcessingAdjustmentState])
+    if ([assetCopy cameraProcessingAdjustmentState])
     {
-      v37 = [v109 objectForKeyedSubscript:&unk_1F0FBC7F0];
-      v38 = [v37 path];
+      v37 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7F0];
+      path3 = [v37 path];
 
-      if (!v38)
+      if (!path3)
       {
-        v38 = [v6 pathForVideoComplementSpatialOverCaptureContentFile];
+        path3 = [assetCopy pathForVideoComplementSpatialOverCaptureContentFile];
       }
 
-      v39 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v38 context:v107];
+      v39 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:path3 context:managedObjectContext];
       v40 = v39;
       if (v39)
       {
         [v39 setResourceType:11];
         [v40 setVersion:0];
         [v40 setTrashedStateFromURL];
-        [v108 addObject:v40];
+        [array addObject:v40];
       }
     }
   }
 
-  if (v106)
+  if (hasAdjustments)
   {
     v41 = [PLResourceRecipe recipeFromID:65937];
-    v42 = [v6 pathForSubstandardFullsizeRenderImageFile];
-    LOWORD(v103) = [v6 kind];
-    v43 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v42 requireFileToBePresent:1 version:2 basedOnFullSizeWidth:v7 andHeight:v8 recipe:v41 assetKind:v103 error:0];
+    pathForSubstandardFullsizeRenderImageFile = [assetCopy pathForSubstandardFullsizeRenderImageFile];
+    LOWORD(v103) = [assetCopy kind];
+    v43 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForSubstandardFullsizeRenderImageFile requireFileToBePresent:1 version:2 basedOnFullSizeWidth:width andHeight:height recipe:v41 assetKind:v103 error:0];
 
     if (v43)
     {
-      [v108 addObject:v43];
+      [array addObject:v43];
     }
 
-    if ([v6 hasUnrenderedAsyncAdjustments])
+    if ([assetCopy hasUnrenderedAsyncAdjustments])
     {
       v44 = [PLResourceRecipe recipeFromID:65941];
-      v45 = [v6 pathForAsyncAdjustedRenderPreviewImageFile];
-      LOWORD(v104) = [v6 kind];
-      v46 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v45 requireFileToBePresent:1 version:2 basedOnFullSizeWidth:v7 andHeight:v8 recipe:v44 assetKind:v104 error:0];
+      pathForAsyncAdjustedRenderPreviewImageFile = [assetCopy pathForAsyncAdjustedRenderPreviewImageFile];
+      LOWORD(v104) = [assetCopy kind];
+      v46 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForAsyncAdjustedRenderPreviewImageFile requireFileToBePresent:1 version:2 basedOnFullSizeWidth:width andHeight:height recipe:v44 assetKind:v104 error:0];
 
-      v32 = v108;
+      v32 = array;
       if (v46)
       {
-        [v108 addObject:v46];
+        [array addObject:v46];
       }
     }
 
-    v47 = !v43 && ![v6 hasUnrenderedAsyncAdjustments] || objc_msgSend(v6, "kind") != 0;
-    v48 = [v6 pathForAdjustedFullsizeImageFile];
-    v49 = [a1 generateAdjustedFullSizeRenderResourceForFilePath:v48 requireFileToBePresent:v47 basedOnFullSizeWidth:v7 andHeight:v8];
+    v47 = !v43 && ![assetCopy hasUnrenderedAsyncAdjustments] || objc_msgSend(assetCopy, "kind") != 0;
+    pathForAdjustedFullsizeImageFile = [assetCopy pathForAdjustedFullsizeImageFile];
+    v49 = [self generateAdjustedFullSizeRenderResourceForFilePath:pathForAdjustedFullsizeImageFile requireFileToBePresent:v47 basedOnFullSizeWidth:width andHeight:height];
 
     if (v49)
     {
       [v32 addObject:v49];
     }
 
-    v50 = [a1 _speculativePathForPenultimateFullsizeRenderImageFileForAsset:v6];
-    LOWORD(v104) = [v6 kind];
-    v51 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v50 requireFileToBePresent:1 version:1 basedOnFullSizeWidth:v7 andHeight:v8 recipe:0 assetKind:v104 error:0];
+    v50 = [self _speculativePathForPenultimateFullsizeRenderImageFileForAsset:assetCopy];
+    LOWORD(v104) = [assetCopy kind];
+    v51 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:v50 requireFileToBePresent:1 version:1 basedOnFullSizeWidth:width andHeight:height recipe:0 assetKind:v104 error:0];
 
     if (v51)
     {
@@ -2079,37 +2079,37 @@ LABEL_21:
     }
 
     v52 = [PLResourceRecipe recipeFromID:65741];
-    v53 = [v6 pathForAdjustedLargeThumbnailFile];
-    LOWORD(v105) = [v6 kind];
-    v54 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v53 requireFileToBePresent:1 version:2 basedOnFullSizeWidth:v7 andHeight:v8 recipe:v52 assetKind:v105 error:0];
+    pathForAdjustedLargeThumbnailFile = [assetCopy pathForAdjustedLargeThumbnailFile];
+    LOWORD(v105) = [assetCopy kind];
+    v54 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForAdjustedLargeThumbnailFile requireFileToBePresent:1 version:2 basedOnFullSizeWidth:width andHeight:height recipe:v52 assetKind:v105 error:0];
 
     if (v54)
     {
       [v32 addObject:v54];
     }
 
-    v55 = [*MEMORY[0x1E6982D60] identifier];
-    v56 = [PLUniformTypeIdentifier utiWithIdentifier:v55];
+    identifier = [*MEMORY[0x1E6982D60] identifier];
+    v56 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
 
-    v57 = [v6 pathForAdjustmentSecondaryDataFile];
-    v58 = [a1 generateValidatedExternalOtherResourceOfType:7 forFilePath:v57 uti:v56 requireFileToBePresent:1 version:2];
+    pathForAdjustmentSecondaryDataFile = [assetCopy pathForAdjustmentSecondaryDataFile];
+    v58 = [self generateValidatedExternalOtherResourceOfType:7 forFilePath:pathForAdjustmentSecondaryDataFile uti:v56 requireFileToBePresent:1 version:2];
 
     if (v58)
     {
       [v32 addObject:v58];
     }
 
-    if ([v6 kindSubtype] == 2)
+    if ([assetCopy kindSubtype] == 2)
     {
-      v59 = [v6 hasUnrenderedAsyncAdjustments];
-      v60 = [v6 pathForFullsizeRenderVideoFile];
-      v61 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v60 context:v107];
-      if (!v61 && v59)
+      hasUnrenderedAsyncAdjustments = [assetCopy hasUnrenderedAsyncAdjustments];
+      pathForFullsizeRenderVideoFile = [assetCopy pathForFullsizeRenderVideoFile];
+      v61 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForFullsizeRenderVideoFile context:managedObjectContext];
+      if (!v61 && hasUnrenderedAsyncAdjustments)
       {
         v62 = [PLResourceRecipe recipeFromID:131272];
         v61 = objc_alloc_init(PLValidatedExternalResource);
-        v63 = [v62 codecFourCharCodeName];
-        [(PLValidatedExternalResource *)v61 setCodecFourCharCode:v63];
+        codecFourCharCodeName = [v62 codecFourCharCodeName];
+        [(PLValidatedExternalResource *)v61 setCodecFourCharCode:codecFourCharCodeName];
 
         v64 = [v62 uti];
         [(PLValidatedExternalResource *)v61 setUniformTypeIdentifier:v64];
@@ -2123,8 +2123,8 @@ LABEL_21:
         [v32 addObject:v61];
       }
 
-      v65 = [v6 pathForPenultimateFullsizeRenderVideoFile];
-      v66 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v65 context:v107];
+      pathForPenultimateFullsizeRenderVideoFile = [assetCopy pathForPenultimateFullsizeRenderVideoFile];
+      v66 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForPenultimateFullsizeRenderVideoFile context:managedObjectContext];
       v67 = v66;
       if (v66)
       {
@@ -2135,19 +2135,19 @@ LABEL_21:
     }
   }
 
-  if ([v6 kind] == 1)
+  if ([assetCopy kind] == 1)
   {
-    v68 = [v109 objectForKeyedSubscript:&unk_1F0FBC838];
-    v69 = [v68 path];
-    v70 = [a1 generateVideoResourcesFromVideoAsset:v6 referencedVideoPath:v69];
+    v68 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC838];
+    path4 = [v68 path];
+    v70 = [self generateVideoResourcesFromVideoAsset:assetCopy referencedVideoPath:path4];
     [v32 addObjectsFromArray:v70];
 
     v71 = [PLResourceRecipe recipeFromID:65948];
-    v72 = [v6 pathForTransientVideoPosterFramePreview];
-    v73 = [v6 width];
-    v74 = [v6 height];
-    LOWORD(v103) = [v6 kind];
-    v75 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v72 requireFileToBePresent:1 version:2 basedOnFullSizeWidth:v73 andHeight:v74 recipe:v71 assetKind:v103 error:0];
+    pathForTransientVideoPosterFramePreview = [assetCopy pathForTransientVideoPosterFramePreview];
+    width2 = [assetCopy width];
+    height2 = [assetCopy height];
+    LOWORD(v103) = [assetCopy kind];
+    v75 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathForTransientVideoPosterFramePreview requireFileToBePresent:1 version:2 basedOnFullSizeWidth:width2 andHeight:height2 recipe:v71 assetKind:v103 error:0];
 
     if (v75)
     {
@@ -2155,19 +2155,19 @@ LABEL_21:
     }
   }
 
-  v76 = [v109 objectForKeyedSubscript:&unk_1F0FBC850];
-  v77 = [v76 path];
+  v76 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC850];
+  path5 = [v76 path];
 
-  if (!v77)
+  if (!path5)
   {
-    v77 = [v6 pathForOriginalAdjustmentFile];
+    path5 = [assetCopy pathForOriginalAdjustmentFile];
   }
 
-  v78 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-  v79 = [v78 identifier];
-  v80 = [PLUniformTypeIdentifier utiWithIdentifier:v79];
+  supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+  identifier2 = [supplementalResourceAAEType identifier];
+  v80 = [PLUniformTypeIdentifier utiWithIdentifier:identifier2];
 
-  v81 = [a1 generateValidatedExternalOtherResourceOfType:5 forFilePath:v77 uti:v80 requireFileToBePresent:1 version:0];
+  v81 = [self generateValidatedExternalOtherResourceOfType:5 forFilePath:path5 uti:v80 requireFileToBePresent:1 version:0];
   v82 = v81;
   if (v81)
   {
@@ -2175,61 +2175,61 @@ LABEL_21:
     [v32 addObject:v82];
   }
 
-  v83 = [v6 pathForXMPFile];
-  v84 = [MEMORY[0x1E695DFF8] fileURLWithPath:v83];
-  v85 = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
-  v86 = [v85 identifier];
-  v87 = [a1 _validatedExternalResourceFromSupplementalFileURL:v84 withUTI:v86 ptpTrashedState:0 index:0 asset:v6];
+  pathForXMPFile = [assetCopy pathForXMPFile];
+  v84 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForXMPFile];
+  supplementalResourceXMPType = [MEMORY[0x1E69C08F0] supplementalResourceXMPType];
+  identifier3 = [supplementalResourceXMPType identifier];
+  v87 = [self _validatedExternalResourceFromSupplementalFileURL:v84 withUTI:identifier3 ptpTrashedState:0 index:0 asset:assetCopy];
 
   if (v87)
   {
     [v82 setRecipeID:0];
-    [v108 addObject:v87];
+    [array addObject:v87];
   }
 
-  return v108;
+  return array;
 }
 
-+ (id)_speculativePathForPenultimateFullsizeRenderImageFileForAsset:(id)a3
++ (id)_speculativePathForPenultimateFullsizeRenderImageFileForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 pathForPenultimateFullsizeRenderImageFileWithUTI:@"public.heic"];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  assetCopy = asset;
+  v4 = [assetCopy pathForPenultimateFullsizeRenderImageFileWithUTI:@"public.heic"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {
-    v7 = v4;
+    pathForPenultimateFullsizeRenderImageFile = v4;
   }
 
   else
   {
-    v7 = [v3 pathForPenultimateFullsizeRenderImageFile];
+    pathForPenultimateFullsizeRenderImageFile = [assetCopy pathForPenultimateFullsizeRenderImageFile];
   }
 
-  v8 = v7;
+  v8 = pathForPenultimateFullsizeRenderImageFile;
 
   return v8;
 }
 
-+ (id)generateAdjustedFullSizeRenderResourceForFilePath:(id)a3 requireFileToBePresent:(BOOL)a4 basedOnFullSizeWidth:(int64_t)a5 andHeight:(int64_t)a6
++ (id)generateAdjustedFullSizeRenderResourceForFilePath:(id)path requireFileToBePresent:(BOOL)present basedOnFullSizeWidth:(int64_t)width andHeight:(int64_t)height
 {
-  v8 = a4;
-  v10 = a3;
+  presentCopy = present;
+  pathCopy = path;
   v11 = [PLResourceRecipe recipeFromID:65938];
   LOWORD(v14) = 0;
-  v12 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v10 requireFileToBePresent:v8 version:2 basedOnFullSizeWidth:a5 andHeight:a6 recipe:v11 assetKind:v14 error:0];
+  v12 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:pathCopy requireFileToBePresent:presentCopy version:2 basedOnFullSizeWidth:width andHeight:height recipe:v11 assetKind:v14 error:0];
 
   return v12;
 }
 
-+ (id)onDemand_installResourceWithResourceIdentity:(id)a3 forAsset:(id)a4
++ (id)onDemand_installResourceWithResourceIdentity:(id)identity forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identityCopy = identity;
+  assetCopy = asset;
+  if (assetCopy)
   {
-    if (v7)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -2237,41 +2237,41 @@ LABEL_21:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:721 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    if (v7)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"nonPersistedResource"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:722 description:{@"Invalid parameter not satisfying: %@", @"nonPersistedResource"}];
 
 LABEL_3:
   v9 = objc_alloc_init(PLValidatedExternalResource);
   if (v9)
   {
-    v10 = [v7 recipeID];
-    v11 = [PLResourceRecipe recipeFromID:v10];
-    -[PLValidatedExternalResource setResourceType:](v9, "setResourceType:", [v7 resourceType]);
-    -[PLValidatedExternalResource setVersion:](v9, "setVersion:", [v7 version]);
-    [(PLValidatedExternalResource *)v9 setRecipeID:v10];
-    v12 = [v11 codecFourCharCodeName];
-    [(PLValidatedExternalResource *)v9 setCodecFourCharCode:v12];
+    recipeID = [identityCopy recipeID];
+    v11 = [PLResourceRecipe recipeFromID:recipeID];
+    -[PLValidatedExternalResource setResourceType:](v9, "setResourceType:", [identityCopy resourceType]);
+    -[PLValidatedExternalResource setVersion:](v9, "setVersion:", [identityCopy version]);
+    [(PLValidatedExternalResource *)v9 setRecipeID:recipeID];
+    codecFourCharCodeName = [v11 codecFourCharCodeName];
+    [(PLValidatedExternalResource *)v9 setCodecFourCharCode:codecFourCharCodeName];
 
     v13 = [v11 uti];
     [(PLValidatedExternalResource *)v9 setUniformTypeIdentifier:v13];
 
-    v14 = [v8 assetID];
-    v15 = [v14 libraryID];
-    v16 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:v15];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v16 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:libraryID];
 
     if (v16)
     {
       v21 = 0;
-      [v16 storeExternalResource:v9 forAsset:v8 options:0 error:0 resultingResource:&v21];
+      [v16 storeExternalResource:v9 forAsset:assetCopy options:0 error:0 resultingResource:&v21];
       v17 = v21;
     }
 
@@ -2289,101 +2289,101 @@ LABEL_3:
   return v17;
 }
 
-+ (id)onDemand_installExistingAdjustmentSuggestionResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5
++ (id)onDemand_installExistingAdjustmentSuggestionResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset
 {
-  v8 = a5;
+  assetCopy = asset;
   v9 = *MEMORY[0x1E6982E00];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 identifier];
-  v13 = [a1 _validatedExternalResourceAtPath:v11 recipe:v10 type:15 version:3 identifier:v12];
+  recipeCopy = recipe;
+  pathCopy = path;
+  identifier = [v9 identifier];
+  v13 = [self _validatedExternalResourceAtPath:pathCopy recipe:recipeCopy type:15 version:3 identifier:identifier];
 
   if ([v13 isSuccess])
   {
-    v14 = [v13 result];
-    [a1 _storeValidatedLocalExternalResource:v14 forAsset:v8];
+    result = [v13 result];
+    [self _storeValidatedLocalExternalResource:result forAsset:assetCopy];
   }
 
   else
   {
     v15 = MEMORY[0x1E69BF2D0];
-    v14 = [v13 error];
-    [v15 failureWithError:v14];
+    result = [v13 error];
+    [v15 failureWithError:result];
   }
   v16 = ;
 
   return v16;
 }
 
-+ (id)onDemand_installExistingAlchemistV2ResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5
++ (id)onDemand_installExistingAlchemistV2ResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset
 {
-  v8 = a5;
+  assetCopy = asset;
   v9 = *MEMORY[0x1E6983148];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 identifier];
-  v13 = [a1 _validatedExternalResourceAtPath:v11 recipe:v10 type:14 version:3 identifier:v12];
+  recipeCopy = recipe;
+  pathCopy = path;
+  identifier = [v9 identifier];
+  v13 = [self _validatedExternalResourceAtPath:pathCopy recipe:recipeCopy type:14 version:3 identifier:identifier];
 
   if ([v13 isSuccess])
   {
-    v14 = [v13 result];
-    [a1 _storeValidatedLocalExternalResource:v14 forAsset:v8];
+    result = [v13 result];
+    [self _storeValidatedLocalExternalResource:result forAsset:assetCopy];
   }
 
   else
   {
     v15 = MEMORY[0x1E69BF2D0];
-    v14 = [v13 error];
-    [v15 failureWithError:v14];
+    result = [v13 error];
+    [v15 failureWithError:result];
   }
   v16 = ;
 
   return v16;
 }
 
-+ (id)onDemand_installExistingComputeResourceAtFilePath:(id)a3 recipe:(id)a4 forAsset:(id)a5
++ (id)onDemand_installExistingComputeResourceAtFilePath:(id)path recipe:(id)recipe forAsset:(id)asset
 {
-  v8 = a5;
+  assetCopy = asset;
   v9 = *MEMORY[0x1E6982D60];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 identifier];
-  v13 = [a1 _validatedExternalResourceAtPath:v11 recipe:v10 type:14 version:3 identifier:v12];
+  recipeCopy = recipe;
+  pathCopy = path;
+  identifier = [v9 identifier];
+  v13 = [self _validatedExternalResourceAtPath:pathCopy recipe:recipeCopy type:14 version:3 identifier:identifier];
 
   if ([v13 isSuccess])
   {
-    v14 = [v13 result];
-    [a1 _storeValidatedLocalExternalResource:v14 forAsset:v8];
+    result = [v13 result];
+    [self _storeValidatedLocalExternalResource:result forAsset:assetCopy];
   }
 
   else
   {
     v15 = MEMORY[0x1E69BF2D0];
-    v14 = [v13 error];
-    [v15 failureWithError:v14];
+    result = [v13 error];
+    [v15 failureWithError:result];
   }
   v16 = ;
 
   return v16;
 }
 
-+ (id)onDemand_installEmptyComputeResourceWithRecipe:(id)a3 forAsset:(id)a4 error:(id *)a5
++ (id)onDemand_installEmptyComputeResourceWithRecipe:(id)recipe forAsset:(id)asset error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a1 _validatedExternalResourceForComputeResourceWithRecipe:a3];
+  assetCopy = asset;
+  v9 = [self _validatedExternalResourceForComputeResourceWithRecipe:recipe];
   v10 = v9;
   if (v9)
   {
     v23[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     v20 = 0;
-    v12 = [PLResourceDataStoreManager storeExternalResources:v11 forAsset:v8 forLifecycleEvent:2 error:&v20];
+    v12 = [PLResourceDataStoreManager storeExternalResources:v11 forAsset:assetCopy forLifecycleEvent:2 error:&v20];
     v13 = v20;
 
     if (v12)
     {
-      v14 = [v12 anyObject];
+      anyObject = [v12 anyObject];
     }
 
     else
@@ -2398,10 +2398,10 @@ LABEL_3:
         v13 = [v15 errorWithDomain:v16 code:1 userInfo:v17];
       }
 
-      v14 = 0;
+      anyObject = 0;
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -2410,43 +2410,43 @@ LABEL_3:
   else
   {
     v13 = 0;
-    v14 = 0;
-    if (a5)
+    anyObject = 0;
+    if (error)
     {
 LABEL_10:
       v18 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
-  return v14;
+  return anyObject;
 }
 
-+ (id)onDemand_installExistingAdjustedResourceAtFilePath:(id)a3 withType:(unsigned int)a4 recipe:(id)a5 forAsset:(id)a6 error:(id *)a7
++ (id)onDemand_installExistingAdjustedResourceAtFilePath:(id)path withType:(unsigned int)type recipe:(id)recipe forAsset:(id)asset error:(id *)error
 {
-  v10 = *&a4;
+  v10 = *&type;
   v36[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (!v13)
+  pathCopy = path;
+  recipeCopy = recipe;
+  assetCopy = asset;
+  v16 = assetCopy;
+  if (!pathCopy)
   {
-    v24 = 0;
+    anyObject = 0;
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!assetCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:653 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v17 = [v16 width];
-  v18 = [v16 height];
+  width = [v16 width];
+  height = [v16 height];
   v33 = 0;
   LOWORD(v31) = [v16 kind];
-  v19 = [a1 generateValidatedExternalImageResourceOfType:v10 forFilePath:v13 requireFileToBePresent:1 version:2 basedOnFullSizeWidth:v17 andHeight:v18 recipe:v14 assetKind:v31 error:&v33];
+  v19 = [self generateValidatedExternalImageResourceOfType:v10 forFilePath:pathCopy requireFileToBePresent:1 version:2 basedOnFullSizeWidth:width andHeight:height recipe:recipeCopy assetKind:v31 error:&v33];
   v20 = v33;
   if (v19)
   {
@@ -2458,7 +2458,7 @@ LABEL_10:
 
     if (v22)
     {
-      v24 = [v22 anyObject];
+      anyObject = [v22 anyObject];
     }
 
     else
@@ -2473,11 +2473,11 @@ LABEL_10:
         v23 = [v25 errorWithDomain:v26 code:1 userInfo:v27];
       }
 
-      v24 = 0;
+      anyObject = 0;
     }
 
     v20 = v23;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -2485,31 +2485,31 @@ LABEL_10:
 
   else
   {
-    v24 = 0;
-    if (!a7)
+    anyObject = 0;
+    if (!error)
     {
       goto LABEL_15;
     }
   }
 
   v28 = v20;
-  *a7 = v20;
+  *error = v20;
 LABEL_15:
 
 LABEL_16:
 
-  return v24;
+  return anyObject;
 }
 
-+ (id)onDemand_installOriginalVideoComplementForSyndicationAsset:(id)a3 contentType:(id)a4
++ (id)onDemand_installOriginalVideoComplementForSyndicationAsset:(id)asset contentType:(id)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 additionalAttributes];
-  v9 = [v8 syndicationIdentifier];
+  assetCopy = asset;
+  typeCopy = type;
+  additionalAttributes = [assetCopy additionalAttributes];
+  syndicationIdentifier = [additionalAttributes syndicationIdentifier];
 
-  if (!v9)
+  if (!syndicationIdentifier)
   {
     v10 = PLBackendGetLog();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2517,9 +2517,9 @@ LABEL_16:
       goto LABEL_12;
     }
 
-    v11 = [v6 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v26 = v11;
+    v26 = uuid;
     v12 = "Cannot install syndication resource on asset that is missing syndication identifier, uuid: %{public}@";
 LABEL_10:
     v13 = v10;
@@ -2527,7 +2527,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 bundleScope] != 3)
+  if ([assetCopy bundleScope] != 3)
   {
     v10 = PLBackendGetLog();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2535,23 +2535,23 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    v11 = [v6 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v26 = v11;
+    v26 = uuid;
     v12 = "Cannot install syndication resource on asset that is not in syndication bundle scope, uuid: %{public}@";
     goto LABEL_10;
   }
 
-  if ([v6 kind] - 1 <= 2)
+  if ([assetCopy kind] - 1 <= 2)
   {
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 uuid];
+      uuid = [assetCopy uuid];
       *buf = 138543618;
-      v26 = v11;
+      v26 = uuid;
       v27 = 2050;
-      v28 = [v6 kind];
+      kind = [assetCopy kind];
       v12 = "Only images can be live photos, cannot install syndication video complement, uuid: %{public}@, type: %{public}ld";
       v13 = v10;
       v14 = 22;
@@ -2560,36 +2560,36 @@ LABEL_11:
     }
 
 LABEL_12:
-    v15 = 0;
+    anyObject = 0;
     goto LABEL_13;
   }
 
   v17 = MEMORY[0x1E695DFF8];
-  v18 = [v6 pathForVideoComplementFile];
-  v19 = [v17 fileURLWithPath:v18];
-  v20 = [v7 identifier];
-  v21 = [PLUniformTypeIdentifier utiWithIdentifier:v20];
-  v10 = [a1 generatedValidatedExternalSyndicationResourceOfType:3 version:0 recipeID:0 fileURL:v19 requireFileToBePresent:0 uniformTypeIdentifier:v21];
+  pathForVideoComplementFile = [assetCopy pathForVideoComplementFile];
+  v19 = [v17 fileURLWithPath:pathForVideoComplementFile];
+  identifier = [typeCopy identifier];
+  v21 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
+  v10 = [self generatedValidatedExternalSyndicationResourceOfType:3 version:0 recipeID:0 fileURL:v19 requireFileToBePresent:0 uniformTypeIdentifier:v21];
 
   v24 = v10;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-  v23 = [PLResourceDataStoreManager storeExternalResources:v22 forAsset:v6 forLifecycleEvent:0 error:0];
+  v23 = [PLResourceDataStoreManager storeExternalResources:v22 forAsset:assetCopy forLifecycleEvent:0 error:0];
 
-  v15 = [v23 anyObject];
+  anyObject = [v23 anyObject];
 
 LABEL_13:
 
-  return v15;
+  return anyObject;
 }
 
-+ (id)onDemand_installOriginalResourceForSyndicationAsset:(id)a3
++ (id)onDemand_installOriginalResourceForSyndicationAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 additionalAttributes];
-  v6 = [v5 syndicationIdentifier];
+  assetCopy = asset;
+  additionalAttributes = [assetCopy additionalAttributes];
+  syndicationIdentifier = [additionalAttributes syndicationIdentifier];
 
-  if (!v6)
+  if (!syndicationIdentifier)
   {
     v12 = PLSyndicationGetLog();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2597,9 +2597,9 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v16 = [v4 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v21 = v16;
+    v21 = uuid;
     v17 = "[sync] cannot install resource on asset missing syndication identifier, uuid: %{public}@";
 LABEL_12:
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, v17, buf, 0xCu);
@@ -2607,7 +2607,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v4 bundleScope] != 3)
+  if ([assetCopy bundleScope] != 3)
   {
     v12 = PLSyndicationGetLog();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2615,36 +2615,36 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v16 = [v4 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v21 = v16;
+    v21 = uuid;
     v17 = "[sync] cannot install resource on asset that is not in syndication bundle scope, uuid: %{public}@";
     goto LABEL_12;
   }
 
-  v7 = [v4 kind];
-  if (v7 != 3)
+  kind = [assetCopy kind];
+  if (kind != 3)
   {
-    if (v7 == 2)
+    if (kind == 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7 == 1;
+      v8 = kind == 1;
     }
 
-    v9 = [v4 mainFileURL];
-    v10 = [v4 uniformTypeIdentifier];
-    v11 = [PLUniformTypeIdentifier utiWithIdentifier:v10];
-    v12 = [a1 generatedValidatedExternalSyndicationResourceOfType:v8 version:0 recipeID:0 fileURL:v9 requireFileToBePresent:0 uniformTypeIdentifier:v11];
+    mainFileURL = [assetCopy mainFileURL];
+    uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+    v11 = [PLUniformTypeIdentifier utiWithIdentifier:uniformTypeIdentifier];
+    v12 = [self generatedValidatedExternalSyndicationResourceOfType:v8 version:0 recipeID:0 fileURL:mainFileURL requireFileToBePresent:0 uniformTypeIdentifier:v11];
 
     v19 = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-    v14 = [PLResourceDataStoreManager storeExternalResources:v13 forAsset:v4 forLifecycleEvent:0 error:0];
+    v14 = [PLResourceDataStoreManager storeExternalResources:v13 forAsset:assetCopy forLifecycleEvent:0 error:0];
 
-    v15 = [v14 anyObject];
+    anyObject = [v14 anyObject];
 
     goto LABEL_14;
   }
@@ -2652,75 +2652,75 @@ LABEL_12:
   v12 = PLSyndicationGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v16 = [v4 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138543362;
-    v21 = v16;
+    v21 = uuid;
     v17 = "[sync] cannot install resource on asset with unknown type, uuid: %{public}@";
     goto LABEL_12;
   }
 
 LABEL_13:
-  v15 = 0;
+  anyObject = 0;
 LABEL_14:
 
-  return v15;
+  return anyObject;
 }
 
-+ (id)onDemand_installLocalVideoKeyFrameForAsset:(id)a3
++ (id)onDemand_installLocalVideoKeyFrameForAsset:(id)asset
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = [PLResourceRecipe recipeFromID:65749];
-  v6 = [v4 width];
-  v7 = [v4 height];
-  LOWORD(v14) = [v4 kind];
-  v8 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:0 requireFileToBePresent:0 version:3 basedOnFullSizeWidth:v6 andHeight:v7 recipe:v5 assetKind:v14 error:0];
+  width = [assetCopy width];
+  height = [assetCopy height];
+  LOWORD(v14) = [assetCopy kind];
+  v8 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:0 requireFileToBePresent:0 version:3 basedOnFullSizeWidth:width andHeight:height recipe:v5 assetKind:v14 error:0];
   v9 = +[PLUniformTypeIdentifier jpegUniformTypeIdentifier];
   [v8 setUniformTypeIdentifier:v9];
 
   v15[0] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [PLResourceDataStoreManager storeExternalResources:v10 forAsset:v4 forLifecycleEvent:2 error:0];
+  v11 = [PLResourceDataStoreManager storeExternalResources:v10 forAsset:assetCopy forLifecycleEvent:2 error:0];
 
-  v12 = [v11 anyObject];
+  anyObject = [v11 anyObject];
 
-  return v12;
+  return anyObject;
 }
 
-+ (id)onDemand_installOriginalSOCVideoComplementPresentForAsset:(id)a3 referencedResourceURLs:(id)a4
++ (id)onDemand_installOriginalSOCVideoComplementPresentForAsset:(id)asset referencedResourceURLs:(id)ls
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 managedObjectContext];
-  if (!v7)
+  assetCopy = asset;
+  lsCopy = ls;
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (!assetCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:565 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:565 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v10 = [v8 objectForKeyedSubscript:&unk_1F0FBC7F0];
-  v11 = [v10 path];
+  v10 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7F0];
+  path = [v10 path];
 
-  if (!v11)
+  if (!path)
   {
-    v11 = [v7 pathForVideoComplementSpatialOverCaptureContentFile];
+    path = [assetCopy pathForVideoComplementSpatialOverCaptureContentFile];
   }
 
-  v12 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v11 context:v9];
+  v12 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:path context:managedObjectContext];
   v13 = v12;
   if (v12)
   {
     [v12 setResourceType:11];
     [v13 setVersion:0];
     [v13 setTrashedStateFromURL];
-    v14 = [v7 assetID];
-    v15 = [v14 libraryID];
-    v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:v15];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:libraryID];
 
     if (v16)
     {
       v20 = 0;
-      [v16 storeExternalResource:v13 forAsset:v7 options:0 error:0 resultingResource:&v20];
+      [v16 storeExternalResource:v13 forAsset:assetCopy options:0 error:0 resultingResource:&v20];
       v17 = v20;
     }
 
@@ -2738,37 +2738,37 @@ LABEL_14:
   return v17;
 }
 
-+ (id)onDemand_installOriginalSOCVideoPresentForAsset:(id)a3 referencedResourceURLs:(id)a4
++ (id)onDemand_installOriginalSOCVideoPresentForAsset:(id)asset referencedResourceURLs:(id)ls
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 managedObjectContext];
-  if (!v7)
+  assetCopy = asset;
+  lsCopy = ls;
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (!assetCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:542 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:542 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v10 = [v8 objectForKeyedSubscript:&unk_1F0FBC7D8];
-  v11 = [v10 path];
+  v10 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7D8];
+  path = [v10 path];
 
-  if (v11 || ([v7 pathForSpatialOverCaptureContentFile], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (path || ([assetCopy pathForSpatialOverCaptureContentFile], (path = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v11 context:v9];
+    v12 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:path context:managedObjectContext];
     v13 = v12;
     if (v12)
     {
       [v12 setResourceType:10];
       [v13 setVersion:0];
       [v13 setTrashedStateFromURL];
-      v14 = [v7 assetID];
-      v15 = [v14 libraryID];
-      v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:v15];
+      assetID = [assetCopy assetID];
+      libraryID = [assetID libraryID];
+      v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:libraryID];
 
       if (v16)
       {
         v20 = 0;
-        [v16 storeExternalResource:v13 forAsset:v7 options:0 error:0 resultingResource:&v20];
+        [v16 storeExternalResource:v13 forAsset:assetCopy options:0 error:0 resultingResource:&v20];
         v17 = v20;
       }
 
@@ -2792,35 +2792,35 @@ LABEL_14:
   return v17;
 }
 
-+ (id)onDemand_installOriginalSOCImagePresentForAsset:(id)a3 referencedResourceURLs:(id)a4
++ (id)onDemand_installOriginalSOCImagePresentForAsset:(id)asset referencedResourceURLs:(id)ls
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  assetCopy = asset;
+  lsCopy = ls;
+  if (!assetCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:522 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:522 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v9 = [v8 objectForKeyedSubscript:&unk_1F0FBC7D8];
-  v10 = [v9 path];
+  v9 = [lsCopy objectForKeyedSubscript:&unk_1F0FBC7D8];
+  path = [v9 path];
 
-  if (v10 || ([v7 pathForSpatialOverCaptureContentFile], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (path || ([assetCopy pathForSpatialOverCaptureContentFile], (path = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = [v7 originalWidth];
-    v12 = [v7 originalHeight];
-    LOWORD(v20) = [v7 kind];
-    v13 = [a1 generateValidatedExternalImageResourceOfType:10 forFilePath:v10 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v11 andHeight:v12 recipe:0 assetKind:v20 error:0];
+    originalWidth = [assetCopy originalWidth];
+    originalHeight = [assetCopy originalHeight];
+    LOWORD(v20) = [assetCopy kind];
+    v13 = [self generateValidatedExternalImageResourceOfType:10 forFilePath:path requireFileToBePresent:1 version:0 basedOnFullSizeWidth:originalWidth andHeight:originalHeight recipe:0 assetKind:v20 error:0];
     if (v13)
     {
-      v14 = [v7 assetID];
-      v15 = [v14 libraryID];
-      v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:v15];
+      assetID = [assetCopy assetID];
+      libraryID = [assetID libraryID];
+      v16 = [PLResourceDataStoreManager storeForExternalResource:v13 inLibraryWithID:libraryID];
 
       if (v16)
       {
         v21 = 0;
-        [v16 storeExternalResource:v13 forAsset:v7 options:0 error:0 resultingResource:&v21];
+        [v16 storeExternalResource:v13 forAsset:assetCopy options:0 error:0 resultingResource:&v21];
         v17 = v21;
       }
 
@@ -2844,33 +2844,33 @@ LABEL_14:
   return v17;
 }
 
-+ (id)onDemand_installOriginalAdjustmentResourceIfPresentForAsset:(id)a3
++ (id)onDemand_installOriginalAdjustmentResourceIfPresentForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [v5 pathForOriginalAdjustmentFile];
-  v7 = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
-  v8 = [v7 identifier];
-  v9 = [PLUniformTypeIdentifier utiWithIdentifier:v8];
+  pathForOriginalAdjustmentFile = [assetCopy pathForOriginalAdjustmentFile];
+  supplementalResourceAAEType = [MEMORY[0x1E69C08F0] supplementalResourceAAEType];
+  identifier = [supplementalResourceAAEType identifier];
+  v9 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
 
-  v10 = [a1 generateValidatedExternalOtherResourceOfType:5 forFilePath:v6 uti:v9 requireFileToBePresent:1 version:0];
+  v10 = [self generateValidatedExternalOtherResourceOfType:5 forFilePath:pathForOriginalAdjustmentFile uti:v9 requireFileToBePresent:1 version:0];
   v11 = v10;
   if (v10)
   {
     [v10 setRecipeID:0];
-    v12 = [v5 assetID];
-    v13 = [v12 libraryID];
-    v14 = [PLResourceDataStoreManager storeForExternalResource:v11 inLibraryWithID:v13];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v14 = [PLResourceDataStoreManager storeForExternalResource:v11 inLibraryWithID:libraryID];
 
     if (v14)
     {
       v18 = 0;
-      [v14 storeExternalResource:v11 forAsset:v5 options:0 error:0 resultingResource:&v18];
+      [v14 storeExternalResource:v11 forAsset:assetCopy options:0 error:0 resultingResource:&v18];
       v15 = v18;
     }
 
@@ -2888,13 +2888,13 @@ LABEL_14:
   return v15;
 }
 
-+ (id)onDemand_installAdjustedDeferredFullSizeVideoComplementResourceForAsset:(id)a3
++ (id)onDemand_installAdjustedDeferredFullSizeVideoComplementResourceForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:476 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:476 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v6 = objc_alloc_init(PLValidatedExternalResource);
@@ -2904,20 +2904,20 @@ LABEL_14:
     [(PLValidatedExternalResource *)v6 setResourceType:3];
     [(PLValidatedExternalResource *)v6 setVersion:2];
     [(PLValidatedExternalResource *)v6 setRecipeID:131272];
-    v8 = [v7 codecFourCharCodeName];
-    [(PLValidatedExternalResource *)v6 setCodecFourCharCode:v8];
+    codecFourCharCodeName = [v7 codecFourCharCodeName];
+    [(PLValidatedExternalResource *)v6 setCodecFourCharCode:codecFourCharCodeName];
 
     v9 = [v7 uti];
     [(PLValidatedExternalResource *)v6 setUniformTypeIdentifier:v9];
 
-    v10 = [v5 assetID];
-    v11 = [v10 libraryID];
-    v12 = [PLResourceDataStoreManager storeForExternalResource:v6 inLibraryWithID:v11];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v12 = [PLResourceDataStoreManager storeForExternalResource:v6 inLibraryWithID:libraryID];
 
     if (v12)
     {
       v16 = 0;
-      [v12 storeExternalResource:v6 forAsset:v5 options:0 error:0 resultingResource:&v16];
+      [v12 storeExternalResource:v6 forAsset:assetCopy options:0 error:0 resultingResource:&v16];
       v13 = v16;
     }
 
@@ -2935,32 +2935,32 @@ LABEL_14:
   return v13;
 }
 
-+ (id)onDemand_installAdjustedFullSizeVideoComplementResourceIfPresentForAsset:(id)a3
++ (id)onDemand_installAdjustedFullSizeVideoComplementResourceIfPresentForAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 managedObjectContext];
-  if (!v5)
+  assetCopy = asset;
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (!assetCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:454 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:454 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v7 = [v5 pathForFullsizeRenderVideoFile];
-  v8 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v7 context:v6];
+  pathForFullsizeRenderVideoFile = [assetCopy pathForFullsizeRenderVideoFile];
+  v8 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForFullsizeRenderVideoFile context:managedObjectContext];
   v9 = v8;
   if (v8)
   {
     [v8 setResourceType:3];
     [v9 setVersion:2];
     [v9 setRecipeID:131272];
-    v10 = [v5 assetID];
-    v11 = [v10 libraryID];
-    v12 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:v11];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v12 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:libraryID];
 
     if (v12)
     {
       v16 = 0;
-      [v12 storeExternalResource:v9 forAsset:v5 options:0 error:0 resultingResource:&v16];
+      [v12 storeExternalResource:v9 forAsset:assetCopy options:0 error:0 resultingResource:&v16];
       v13 = v16;
     }
 
@@ -2978,31 +2978,31 @@ LABEL_14:
   return v13;
 }
 
-+ (id)onDemand_installOriginalVideoComplementResourceIfPresentForAsset:(id)a3
++ (id)onDemand_installOriginalVideoComplementResourceIfPresentForAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 managedObjectContext];
-  if (!v5)
+  assetCopy = asset;
+  managedObjectContext = [assetCopy managedObjectContext];
+  if (!assetCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:432 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:432 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v7 = [v5 pathForVideoComplementFile];
-  v8 = [a1 validatedExternalResourceForLocalVideoIfPresentAtPath:v7 context:v6];
+  pathForVideoComplementFile = [assetCopy pathForVideoComplementFile];
+  v8 = [self validatedExternalResourceForLocalVideoIfPresentAtPath:pathForVideoComplementFile context:managedObjectContext];
   v9 = v8;
   if (v8)
   {
     [v8 setResourceType:3];
     [v9 setVersion:0];
-    v10 = [v5 assetID];
-    v11 = [v10 libraryID];
-    v12 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:v11];
+    assetID = [assetCopy assetID];
+    libraryID = [assetID libraryID];
+    v12 = [PLResourceDataStoreManager storeForExternalResource:v9 inLibraryWithID:libraryID];
 
     if (v12)
     {
       v16 = 0;
-      [v12 storeExternalResource:v9 forAsset:v5 options:0 error:0 resultingResource:&v16];
+      [v12 storeExternalResource:v9 forAsset:assetCopy options:0 error:0 resultingResource:&v16];
       v13 = v16;
     }
 
@@ -3020,25 +3020,25 @@ LABEL_14:
   return v13;
 }
 
-+ (id)onDemand_installAdjustedFullSizeRenderResourceAtFilePath:(id)a3 forAsset:(id)a4
++ (id)onDemand_installAdjustedFullSizeRenderResourceAtFilePath:(id)path forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pathCopy = path;
+  assetCopy = asset;
+  v9 = assetCopy;
+  if (pathCopy)
   {
-    if (!v8)
+    if (!assetCopy)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
     }
 
-    v10 = [a1 generateAdjustedFullSizeRenderResourceForFilePath:v7 requireFileToBePresent:0 basedOnFullSizeWidth:objc_msgSend(v9 andHeight:{"width"), objc_msgSend(v9, "height")}];
+    v10 = [self generateAdjustedFullSizeRenderResourceForFilePath:pathCopy requireFileToBePresent:0 basedOnFullSizeWidth:objc_msgSend(v9 andHeight:{"width"), objc_msgSend(v9, "height")}];
     if (v10)
     {
-      v11 = [v9 assetID];
-      v12 = [v11 libraryID];
-      v13 = [PLResourceDataStoreManager storeForExternalResource:v10 inLibraryWithID:v12];
+      assetID = [v9 assetID];
+      libraryID = [assetID libraryID];
+      v13 = [PLResourceDataStoreManager storeForExternalResource:v10 inLibraryWithID:libraryID];
 
       if (v13)
       {
@@ -3067,39 +3067,39 @@ LABEL_14:
   return v14;
 }
 
-+ (id)onDemand_installPrimaryImageResourceWithRecipe:(id)a3 version:(unsigned int)a4 forAsset:(id)a5 requireFileToBePresent:(BOOL)a6
++ (id)onDemand_installPrimaryImageResourceWithRecipe:(id)recipe version:(unsigned int)version forAsset:(id)asset requireFileToBePresent:(BOOL)present
 {
-  v6 = a6;
-  v8 = *&a4;
+  presentCopy = present;
+  v8 = *&version;
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  recipeCopy = recipe;
+  assetCopy = asset;
+  if (!recipeCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:391 description:{@"Invalid parameter not satisfying: %@", @"recipe"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:391 description:{@"Invalid parameter not satisfying: %@", @"recipe"}];
   }
 
-  v13 = [v11 expectedFileURLForVersion:v8 asset:v12];
+  v13 = [recipeCopy expectedFileURLForVersion:v8 asset:assetCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 path];
-    v16 = [v12 width];
-    v17 = [v12 height];
-    LOWORD(v28) = [v12 kind];
-    v18 = [a1 generateValidatedExternalImageResourceOfType:0 forFilePath:v15 requireFileToBePresent:v6 version:v8 basedOnFullSizeWidth:v16 andHeight:v17 recipe:v11 assetKind:v28 error:0];
+    path = [v13 path];
+    width = [assetCopy width];
+    height = [assetCopy height];
+    LOWORD(v28) = [assetCopy kind];
+    v18 = [self generateValidatedExternalImageResourceOfType:0 forFilePath:path requireFileToBePresent:presentCopy version:v8 basedOnFullSizeWidth:width andHeight:height recipe:recipeCopy assetKind:v28 error:0];
 
     if (v18)
     {
-      v19 = [v12 assetID];
-      v20 = [v19 libraryID];
-      v21 = [PLResourceDataStoreManager storeForExternalResource:v18 inLibraryWithID:v20];
+      assetID = [assetCopy assetID];
+      libraryID = [assetID libraryID];
+      v21 = [PLResourceDataStoreManager storeForExternalResource:v18 inLibraryWithID:libraryID];
 
       if (v21)
       {
         v29 = 0;
-        [v21 storeExternalResource:v18 forAsset:v12 options:0 error:0 resultingResource:&v29];
+        [v21 storeExternalResource:v18 forAsset:assetCopy options:0 error:0 resultingResource:&v29];
         v22 = v29;
       }
 
@@ -3117,7 +3117,7 @@ LABEL_14:
     v18 = PLBackendGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v12 uuid];
+      uuid = [assetCopy uuid];
       if (v8 > 2)
       {
         v24 = @"cur";
@@ -3130,9 +3130,9 @@ LABEL_14:
 
       v25 = v24;
       *buf = 138543874;
-      v31 = v23;
+      v31 = uuid;
       v32 = 2114;
-      v33 = v11;
+      v33 = recipeCopy;
       v34 = 2114;
       v35 = v25;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Unable to resolve expected file url for asset %{public}@, recipe: %{public}@, version: %{public}@", buf, 0x20u);
@@ -3145,18 +3145,18 @@ LABEL_15:
   return v22;
 }
 
-+ (void)_applyImageIOMetadataToExternalResource:(id)a3 fromFileURL:(id)a4 fileExists:(BOOL)a5 assumedWidth:(int64_t)a6 assumedHeight:(int64_t)a7 recipe:(id)a8 assetKind:(signed __int16)a9
++ (void)_applyImageIOMetadataToExternalResource:(id)resource fromFileURL:(id)l fileExists:(BOOL)exists assumedWidth:(int64_t)width assumedHeight:(int64_t)height recipe:(id)recipe assetKind:(signed __int16)kind
 {
-  v12 = a5;
+  existsCopy = exists;
   v41[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  resourceCopy = resource;
+  lCopy = l;
+  recipeCopy = recipe;
   v17 = 0x1E69C0000uLL;
-  if (v15 && v12 && (v18 = CGImageSourceCreateWithURL(v15, 0)) != 0)
+  if (lCopy && existsCopy && (v18 = CGImageSourceCreateWithURL(lCopy, 0)) != 0)
   {
     v19 = v18;
-    v20 = CGImageSourceGetType(v18);
+    identifier = CGImageSourceGetType(v18);
     v21 = *MEMORY[0x1E696E0E0];
     v40[0] = *MEMORY[0x1E696E0A8];
     v40[1] = v21;
@@ -3166,91 +3166,91 @@ LABEL_15:
     v23 = CGImageSourceCopyPropertiesAtIndex(v19, 0, v22);
     if (v23)
     {
-      v24 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v20];
+      v24 = [MEMORY[0x1E69C08F0] typeWithIdentifier:identifier];
       v25 = [v24 conformsToType:*MEMORY[0x1E6982F88]];
 
       v26 = [(__CFDictionary *)v23 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
-      [v14 setUnorientedWidth:{objc_msgSend(v26, "integerValue")}];
+      [resourceCopy setUnorientedWidth:{objc_msgSend(v26, "integerValue")}];
 
       v27 = [(__CFDictionary *)v23 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
-      [v14 setUnorientedHeight:{objc_msgSend(v27, "integerValue")}];
+      [resourceCopy setUnorientedHeight:{objc_msgSend(v27, "integerValue")}];
 
       if (v25)
       {
         v28 = PLExifPixelXDimensionFromImageProperties(v23);
-        v29 = [v28 integerValue];
+        integerValue = [v28 integerValue];
 
         v30 = PLExifPixelYDimensionFromImageProperties(v23);
-        v31 = [v30 integerValue];
+        integerValue2 = [v30 integerValue];
 
         v17 = 0x1E69C0000;
-        if (v29 > [v14 unorientedWidth] && v31 > objc_msgSend(v14, "unorientedHeight"))
+        if (integerValue > [resourceCopy unorientedWidth] && integerValue2 > objc_msgSend(resourceCopy, "unorientedHeight"))
         {
-          [v14 setUnorientedWidth:v29];
-          [v14 setUnorientedHeight:v31];
+          [resourceCopy setUnorientedWidth:integerValue];
+          [resourceCopy setUnorientedHeight:integerValue2];
         }
       }
     }
 
     CFRelease(v19);
 
-    if (v20)
+    if (identifier)
     {
       goto LABEL_18;
     }
   }
 
-  else if (v16)
+  else if (recipeCopy)
   {
-    v32 = [v16 expectedSizeFromWidth:a6 height:a7];
+    v32 = [recipeCopy expectedSizeFromWidth:width height:height];
     v33 = v32;
     if (v32)
     {
       v34 = MEMORY[0x19EAED7D0](v32);
       v36 = v35;
-      [v14 setUnorientedWidth:v34];
-      a7 = v36;
+      [resourceCopy setUnorientedWidth:v34];
+      height = v36;
     }
 
     else
     {
-      [v14 setUnorientedWidth:a6];
+      [resourceCopy setUnorientedWidth:width];
     }
 
-    [v14 setUnorientedHeight:a7];
+    [resourceCopy setUnorientedHeight:height];
   }
 
   else
   {
-    [v14 setUnorientedWidth:a6];
-    [v14 setUnorientedHeight:a7];
+    [resourceCopy setUnorientedWidth:width];
+    [resourceCopy setUnorientedHeight:height];
   }
 
-  v37 = [(__CFURL *)v15 pathExtension];
-  v38 = [*(v17 + 2288) resourceModelTypeForFilenameExtension:v37];
-  v20 = [v38 identifier];
+  pathExtension = [(__CFURL *)lCopy pathExtension];
+  v38 = [*(v17 + 2288) resourceModelTypeForFilenameExtension:pathExtension];
+  identifier = [v38 identifier];
 
-  if (!v20)
+  if (!identifier)
   {
-    v39 = [v16 uti];
+    v39 = [recipeCopy uti];
     goto LABEL_20;
   }
 
 LABEL_18:
-  v39 = [PLUniformTypeIdentifier utiWithIdentifier:v20];
+  v39 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
 
 LABEL_20:
-  [v14 setUniformTypeIdentifier:v39];
+  [resourceCopy setUniformTypeIdentifier:v39];
 }
 
-+ (BOOL)_installInternalResourcesForExistingAsset:(id)a3 assumeNoExistingResources:(BOOL)a4 referencedResourceURLs:(id)a5 includeLegacyCloudResources:(BOOL)a6 outResourcesStoreCount:(unint64_t *)a7 error:(id *)a8
++ (BOOL)_installInternalResourcesForExistingAsset:(id)asset assumeNoExistingResources:(BOOL)resources referencedResourceURLs:(id)ls includeLegacyCloudResources:(BOOL)cloudResources outResourcesStoreCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a6;
-  v11 = a4;
-  v13 = a3;
-  v14 = a5;
+  cloudResourcesCopy = cloudResources;
+  resourcesCopy = resources;
+  assetCopy = asset;
+  lsCopy = ls;
   v15 = PLImageManagerGetLog();
-  v16 = os_signpost_id_make_with_pointer(v15, v13);
+  v16 = os_signpost_id_make_with_pointer(v15, assetCopy);
   v17 = v15;
   v18 = v17;
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -3259,18 +3259,18 @@ LABEL_20:
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "ResourceModel", "InstallResources", buf, 2u);
   }
 
-  if (v9 && ([v13 master], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  if (cloudResourcesCopy && ([assetCopy master], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
-    v20 = [PLCloudResource validatedExternalResourcesUsingLegacyCloudResourcesFromAssetWithCloudMaster:v13];
+    v20 = [PLCloudResource validatedExternalResourcesUsingLegacyCloudResourcesFromAssetWithCloudMaster:assetCopy];
   }
 
   else
   {
-    v20 = [a1 externalResourcesForExistingAsset:v13 referencedResourceURLs:v14];
+    v20 = [self externalResourcesForExistingAsset:assetCopy referencedResourceURLs:lsCopy];
   }
 
   v21 = v20;
-  if (v11)
+  if (resourcesCopy)
   {
     v22 = 1;
   }
@@ -3281,7 +3281,7 @@ LABEL_20:
   }
 
   v31 = 0;
-  v23 = [PLResourceDataStoreManager storeExternalResources:v20 forAsset:v13 forLifecycleEvent:v22 error:&v31];
+  v23 = [PLResourceDataStoreManager storeExternalResources:v20 forAsset:assetCopy forLifecycleEvent:v22 error:&v31];
   v24 = v31;
   v25 = v18;
   v26 = v25;
@@ -3291,80 +3291,80 @@ LABEL_20:
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v26, OS_SIGNPOST_INTERVAL_END, v16, "ResourceModel", "InstallResources", v30, 2u);
   }
 
-  if (a7)
+  if (count)
   {
-    *a7 = [v23 count];
+    *count = [v23 count];
   }
 
-  if (a8 && v24)
+  if (error && v24)
   {
     v27 = v24;
-    *a8 = v24;
+    *error = v24;
   }
 
   return v24 == 0;
 }
 
-+ (BOOL)installSupplementalResourceForExistingFileAtURL:(id)a3 ptpTrashedState:(int64_t)a4 index:(id)a5 forAsset:(id)a6 imageOrientation:(id)a7 resultingResource:(id *)a8 error:(id *)a9
++ (BOOL)installSupplementalResourceForExistingFileAtURL:(id)l ptpTrashedState:(int64_t)state index:(id)index forAsset:(id)asset imageOrientation:(id)orientation resultingResource:(id *)resource error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
+  lCopy = l;
+  assetCopy = asset;
   v16 = MEMORY[0x1E69C08F0];
-  v17 = a5;
-  v18 = [v14 pathExtension];
-  v19 = [v16 resourceModelTypeForFilenameExtension:v18];
-  v20 = [v19 identifier];
+  indexCopy = index;
+  pathExtension = [lCopy pathExtension];
+  v19 = [v16 resourceModelTypeForFilenameExtension:pathExtension];
+  identifier = [v19 identifier];
 
-  v21 = [a1 _validatedExternalResourceFromSupplementalFileURL:v14 withUTI:v20 ptpTrashedState:a4 index:v17 asset:v15];
+  v21 = [self _validatedExternalResourceFromSupplementalFileURL:lCopy withUTI:identifier ptpTrashedState:state index:indexCopy asset:assetCopy];
 
   if (!v21)
   {
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate a supplemental resource from fileURL: %@", v14];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to generate a supplemental resource from fileURL: %@", lCopy];
     v26 = MEMORY[0x1E696ABC0];
     v27 = *MEMORY[0x1E69BFF70];
     v31 = *MEMORY[0x1E696A578];
-    v32 = v23;
-    v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v24 = [v26 errorWithDomain:v27 code:1 userInfo:v25];
+    v32 = lCopy;
+    anyObject = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+    v24 = [v26 errorWithDomain:v27 code:1 userInfo:anyObject];
     goto LABEL_5;
   }
 
   v33[0] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   v30 = 0;
-  v23 = [PLResourceDataStoreManager storeExternalResources:v22 forAsset:v15 forLifecycleEvent:2 error:&v30];
+  lCopy = [PLResourceDataStoreManager storeExternalResources:v22 forAsset:assetCopy forLifecycleEvent:2 error:&v30];
   v24 = v30;
 
-  if (a8)
+  if (resource)
   {
-    v25 = [v23 anyObject];
-    *a8 = v25;
+    anyObject = [lCopy anyObject];
+    *resource = anyObject;
 LABEL_5:
   }
 
-  if (a9 && v24)
+  if (error && v24)
   {
     v28 = v24;
-    *a9 = v24;
+    *error = v24;
   }
 
   return v24 == 0;
 }
 
-+ (BOOL)recoverSupplementalResourcesForAsset:(id)a3 usingSidecarFinder:(id)a4 outResourcesStoreCount:(unint64_t *)a5 error:(id *)a6
++ (BOOL)recoverSupplementalResourcesForAsset:(id)asset usingSidecarFinder:(id)finder outResourcesStoreCount:(unint64_t *)count error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  assetCopy = asset;
+  finderCopy = finder;
+  if (!finderCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"finder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"finder"}];
   }
 
   v11 = PLImageManagerGetLog();
-  v12 = os_signpost_id_make_with_pointer(v11, v9);
+  v12 = os_signpost_id_make_with_pointer(v11, assetCopy);
   v13 = v11;
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
@@ -3373,7 +3373,7 @@ LABEL_5:
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "ResourceModel", "RecoverSupplementalResources", buf, 2u);
   }
 
-  if (([v9 isPhotoIris] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69BF328], "maskForRecoverSupplementalResourcesForAsset"), objc_msgSend(v9, "savedAssetType"), (PLValidatedSavedAssetTypeApplies() & 1) == 0) && (!objc_msgSend(v9, "isCloudPhotoLibraryAsset") || (objc_msgSend(v9, "master"), v30 = objc_claimAutoreleasedReturnValue(), v30, v30)))
+  if (([assetCopy isPhotoIris] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69BF328], "maskForRecoverSupplementalResourcesForAsset"), objc_msgSend(assetCopy, "savedAssetType"), (PLValidatedSavedAssetTypeApplies() & 1) == 0) && (!objc_msgSend(assetCopy, "isCloudPhotoLibraryAsset") || (objc_msgSend(assetCopy, "master"), v30 = objc_claimAutoreleasedReturnValue(), v30, v30)))
   {
     v15 = 1;
   }
@@ -3381,17 +3381,17 @@ LABEL_5:
   else
   {
     v39 = v12 - 1;
-    v40 = a5;
+    countCopy = count;
     spid = v12;
-    v16 = [v9 mainFileURL];
-    v17 = [v16 URLByDeletingLastPathComponent];
+    mainFileURL = [assetCopy mainFileURL];
+    uRLByDeletingLastPathComponent = [mainFileURL URLByDeletingLastPathComponent];
 
-    v18 = [v9 filename];
-    v19 = [v9 managedObjectContext];
+    filename = [assetCopy filename];
+    managedObjectContext = [assetCopy managedObjectContext];
     v15 = 1;
-    v41 = v10;
-    v38 = v17;
-    v20 = [v10 collectSidecarURLsForAssetFilename:v18 inDirectory:v17 context:v19 removeWhenDone:1];
+    v41 = finderCopy;
+    v38 = uRLByDeletingLastPathComponent;
+    v20 = [finderCopy collectSidecarURLsForAssetFilename:filename inDirectory:uRLByDeletingLastPathComponent context:managedObjectContext removeWhenDone:1];
 
     v47 = 0u;
     v48 = 0u;
@@ -3418,10 +3418,10 @@ LABEL_5:
 
           v26 = *(*(&v45 + 1) + 8 * v25);
           v27 = objc_autoreleasePoolPush();
-          v28 = [v9 additionalAttributes];
-          v29 = [v28 originalOrientation];
+          additionalAttributes = [assetCopy additionalAttributes];
+          originalOrientation = [additionalAttributes originalOrientation];
           v44 = 0;
-          LODWORD(v26) = [a1 installSupplementalResourceForExistingFileAtURL:v26 ptpTrashedState:0 index:0 forAsset:v9 imageOrientation:v29 resultingResource:0 error:&v44];
+          LODWORD(v26) = [self installSupplementalResourceForExistingFileAtURL:v26 ptpTrashedState:0 index:0 forAsset:assetCopy imageOrientation:originalOrientation resultingResource:0 error:&v44];
 
           objc_autoreleasePoolPop(v27);
           if (!v26)
@@ -3463,30 +3463,30 @@ LABEL_22:
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v32, OS_SIGNPOST_INTERVAL_END, spid, "ResourceModel", "RecoverSupplementalResources", buf, 2u);
     }
 
-    if (v40)
+    if (countCopy)
     {
-      *v40 = v23;
+      *countCopy = v23;
     }
 
-    v10 = v41;
+    finderCopy = v41;
   }
 
   return v15;
 }
 
-+ (id)_validatedExternalResourceAtPath:(id)a3 recipe:(id)a4 type:(unsigned int)a5 version:(unsigned int)a6 identifier:(id)a7
++ (id)_validatedExternalResourceAtPath:(id)path recipe:(id)recipe type:(unsigned int)type version:(unsigned int)version identifier:(id)identifier
 {
-  v8 = *&a6;
-  v9 = *&a5;
+  v8 = *&version;
+  v9 = *&type;
   v38[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12)
+  pathCopy = path;
+  recipeCopy = recipe;
+  identifierCopy = identifier;
+  if (pathCopy)
   {
     v34 = 0;
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v16 = [v15 fileExistsAtPath:v12 isDirectory:&v34];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v16 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v34];
 
     if (!v16 || (v34 & 1) != 0)
     {
@@ -3500,12 +3500,12 @@ LABEL_22:
         v27 = @"does not exist";
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"file %@ at path: %@", v27, v12];
+      pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"file %@ at path: %@", v27, pathCopy];
       v28 = MEMORY[0x1E69BF2D0];
       v29 = MEMORY[0x1E696ABC0];
       v30 = *MEMORY[0x1E69BFF48];
       v37 = *MEMORY[0x1E696A278];
-      v38[0] = v17;
+      v38[0] = pathCopy;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
       v32 = [v29 errorWithDomain:v30 code:47001 userInfo:v31];
       v21 = [v28 failureWithError:v32];
@@ -3513,20 +3513,20 @@ LABEL_22:
 
     else
     {
-      v17 = objc_alloc_init(PLValidatedExternalResource);
-      [(PLValidatedExternalResource *)v17 setVersion:v8];
-      -[PLValidatedExternalResource setRecipeID:](v17, "setRecipeID:", [v13 recipeID]);
-      v18 = [PLUniformTypeIdentifier utiWithIdentifier:v14];
-      [(PLValidatedExternalResource *)v17 setUniformTypeIdentifier:v18];
+      pathCopy = objc_alloc_init(PLValidatedExternalResource);
+      [(PLValidatedExternalResource *)pathCopy setVersion:v8];
+      -[PLValidatedExternalResource setRecipeID:](pathCopy, "setRecipeID:", [recipeCopy recipeID]);
+      v18 = [PLUniformTypeIdentifier utiWithIdentifier:identifierCopy];
+      [(PLValidatedExternalResource *)pathCopy setUniformTypeIdentifier:v18];
 
-      [(PLValidatedExternalResource *)v17 setResourceType:v9];
-      v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
-      [(PLValidatedExternalResource *)v17 setFileURL:v19];
+      [(PLValidatedExternalResource *)pathCopy setResourceType:v9];
+      v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+      [(PLValidatedExternalResource *)pathCopy setFileURL:v19];
 
-      v20 = [(PLValidatedExternalResource *)v17 fileURL];
-      -[PLValidatedExternalResource setDataLength:](v17, "setDataLength:", [a1 _getURLDataLength:v20]);
+      fileURL = [(PLValidatedExternalResource *)pathCopy fileURL];
+      -[PLValidatedExternalResource setDataLength:](pathCopy, "setDataLength:", [self _getURLDataLength:fileURL]);
 
-      v21 = [MEMORY[0x1E69BF2D0] successWithResult:v17];
+      v21 = [MEMORY[0x1E69BF2D0] successWithResult:pathCopy];
     }
   }
 
@@ -3545,38 +3545,38 @@ LABEL_22:
   return v21;
 }
 
-+ (id)_validatedExternalResourceForComputeResourceWithRecipe:(id)a3
++ (id)_validatedExternalResourceForComputeResourceWithRecipe:(id)recipe
 {
-  v3 = a3;
-  v4 = [v3 uti];
+  recipeCopy = recipe;
+  v4 = [recipeCopy uti];
   v5 = v4;
   if (!v4 || [v4 isDynamic])
   {
-    v6 = [*MEMORY[0x1E6982D60] identifier];
-    v7 = [PLUniformTypeIdentifier utiWithIdentifier:v6];
+    identifier = [*MEMORY[0x1E6982D60] identifier];
+    v7 = [PLUniformTypeIdentifier utiWithIdentifier:identifier];
 
     v5 = v7;
   }
 
   v8 = objc_alloc_init(PLValidatedExternalResource);
   [(PLValidatedExternalResource *)v8 setVersion:3];
-  v9 = [v3 recipeID];
+  recipeID = [recipeCopy recipeID];
 
-  [(PLValidatedExternalResource *)v8 setRecipeID:v9];
+  [(PLValidatedExternalResource *)v8 setRecipeID:recipeID];
   [(PLValidatedExternalResource *)v8 setUniformTypeIdentifier:v5];
   [(PLValidatedExternalResource *)v8 setResourceType:14];
 
   return v8;
 }
 
-+ (id)_validatedExternalResourceForComputeResourceAtPath:(id)a3 recipe:(id)a4
++ (id)_validatedExternalResourceForComputeResourceAtPath:(id)path recipe:(id)recipe
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v13 = 0, [MEMORY[0x1E696AC08] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:isDirectory:", v6, &v13), v8, v9) && (v13 & 1) == 0)
+  pathCopy = path;
+  recipeCopy = recipe;
+  if (pathCopy && (v13 = 0, [MEMORY[0x1E696AC08] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:isDirectory:", pathCopy, &v13), v8, v9) && (v13 & 1) == 0)
   {
-    v10 = [a1 _validatedExternalResourceForComputeResourceWithRecipe:v7];
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v10 = [self _validatedExternalResourceForComputeResourceWithRecipe:recipeCopy];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     [v10 setFileURL:v12];
   }
 
@@ -3588,25 +3588,25 @@ LABEL_22:
   return v10;
 }
 
-+ (id)_validatedExternalResourceIfPresentForAudioOrUnknownAsset:(id)a3
++ (id)_validatedExternalResourceIfPresentForAudioOrUnknownAsset:(id)asset
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLResourceInstaller.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResourceInstaller.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [v5 uniformTypeIdentifier];
-  v7 = [v5 mainFileURL];
-  v8 = v7;
+  uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+  mainFileURL = [assetCopy mainFileURL];
+  v8 = mainFileURL;
   v9 = 0;
-  if (v6 && v7)
+  if (uniformTypeIdentifier && mainFileURL)
   {
-    if ([a1 _getURLDataLength:v7])
+    if ([self _getURLDataLength:mainFileURL])
     {
-      v10 = [PLUniformTypeIdentifier utiWithIdentifier:v6];
+      v10 = [PLUniformTypeIdentifier utiWithIdentifier:uniformTypeIdentifier];
       v9 = objc_alloc_init(PLValidatedExternalResource);
       [(PLValidatedExternalResource *)v9 setVersion:0];
       [(PLValidatedExternalResource *)v9 setRecipeID:0];
@@ -3623,11 +3623,11 @@ LABEL_22:
         v13 = PLMigrationGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v5 uuid];
+          uuid = [assetCopy uuid];
           *buf = 138543874;
-          v18 = v14;
+          v18 = uuid;
           v19 = 2048;
-          v20 = [v5 kind];
+          kind = [assetCopy kind];
           v21 = 2114;
           v22 = v8;
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Inserting resource with PLResourceTypeUnknown on asset uuid: %{public}@, kind: %ld, from URL: %{public}@", buf, 0x20u);
@@ -3649,29 +3649,29 @@ LABEL_22:
   return v9;
 }
 
-+ (id)_validatedExternalResourceFromSupplementalFileURL:(id)a3 withUTI:(id)a4 ptpTrashedState:(int64_t)a5 index:(id)a6 asset:(id)a7
++ (id)_validatedExternalResourceFromSupplementalFileURL:(id)l withUTI:(id)i ptpTrashedState:(int64_t)state index:(id)index asset:(id)asset
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  lCopy = l;
+  indexCopy = index;
+  assetCopy = asset;
   v14 = 0;
-  if (v11 && a4)
+  if (lCopy && i)
   {
-    v15 = [PLUniformTypeIdentifier utiWithIdentifier:a4];
+    v15 = [PLUniformTypeIdentifier utiWithIdentifier:i];
     if ([v15 conformsToImage])
     {
-      v16 = [v11 path];
-      v17 = [v13 width];
-      v18 = [v13 height];
-      LOWORD(v25) = [v13 kind];
-      v14 = [a1 generateValidatedExternalImageResourceOfType:4 forFilePath:v16 requireFileToBePresent:1 version:0 basedOnFullSizeWidth:v17 andHeight:v18 recipe:0 assetKind:v25 error:0];
+      path = [lCopy path];
+      width = [assetCopy width];
+      height = [assetCopy height];
+      LOWORD(v25) = [assetCopy kind];
+      v14 = [self generateValidatedExternalImageResourceOfType:4 forFilePath:path requireFileToBePresent:1 version:0 basedOnFullSizeWidth:width andHeight:height recipe:0 assetKind:v25 error:0];
     }
 
     else
     {
       v19 = MEMORY[0x1E69BF238];
-      v20 = [v11 path];
-      v21 = [v19 fileLengthForFilePath:v20];
+      path2 = [lCopy path];
+      v21 = [v19 fileLengthForFilePath:path2];
 
       if (v21 < 1)
       {
@@ -3683,7 +3683,7 @@ LABEL_22:
         v14 = objc_alloc_init(PLValidatedExternalResource);
         [(PLValidatedExternalResource *)v14 setVersion:0];
         [(PLValidatedExternalResource *)v14 setRecipeID:0];
-        [(PLValidatedExternalResource *)v14 setFileURL:v11];
+        [(PLValidatedExternalResource *)v14 setFileURL:lCopy];
         [(PLValidatedExternalResource *)v14 setDataLength:v21];
         [(PLValidatedExternalResource *)v14 setUniformTypeIdentifier:v15];
         if ([v15 conformsToAudio])
@@ -3702,19 +3702,19 @@ LABEL_22:
       }
     }
 
-    [(PLValidatedExternalResource *)v14 setSidecarIndex:v12];
+    [(PLValidatedExternalResource *)v14 setSidecarIndex:indexCopy];
   }
 
   return v14;
 }
 
-+ (unint64_t)_getURLDataLength:(id)a3
++ (unint64_t)_getURLDataLength:(id)length
 {
-  result = a3;
-  if (a3)
+  result = length;
+  if (length)
   {
     v4 = 0;
-    if ([a3 getResourceValue:&v4 forKey:*MEMORY[0x1E695DB50] error:0])
+    if ([length getResourceValue:&v4 forKey:*MEMORY[0x1E695DB50] error:0])
     {
       return [v4 longLongValue];
     }

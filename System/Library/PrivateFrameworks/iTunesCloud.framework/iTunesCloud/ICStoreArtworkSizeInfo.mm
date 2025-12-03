@@ -1,5 +1,5 @@
 @interface ICStoreArtworkSizeInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maxSupportedSize;
 - (unint64_t)hash;
 @end
@@ -154,32 +154,32 @@
   return (v90 + v91) ^ __ROR8__(v90, 47) ^ v93 ^ __ROR8__(v90 + v91, 32) ^ v93 ^ __ROR8__(v91 ^ v92, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(ICStoreArtworkSizeInfo *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICStoreArtworkSizeInfo *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(ICStoreArtworkSizeInfo *)self type];
-      if (v6 == [(ICStoreArtworkSizeInfo *)v5 type])
+      v5 = equalCopy;
+      type = [(ICStoreArtworkSizeInfo *)self type];
+      if (type == [(ICStoreArtworkSizeInfo *)v5 type])
       {
-        v7 = [(ICStoreArtworkSizeInfo *)self supportedSizes];
-        v8 = [(ICStoreArtworkSizeInfo *)v5 supportedSizes];
-        v9 = v8;
-        if (v7 == v8)
+        supportedSizes = [(ICStoreArtworkSizeInfo *)self supportedSizes];
+        supportedSizes2 = [(ICStoreArtworkSizeInfo *)v5 supportedSizes];
+        v9 = supportedSizes2;
+        if (supportedSizes == supportedSizes2)
         {
         }
 
         else
         {
-          v10 = [v7 isEqual:v8];
+          v10 = [supportedSizes isEqual:supportedSizes2];
 
           if ((v10 & 1) == 0)
           {
@@ -187,8 +187,8 @@
           }
         }
 
-        v12 = [(ICStoreArtworkSizeInfo *)self hasMaxSupportedSize];
-        if (v12 == [(ICStoreArtworkSizeInfo *)v5 hasMaxSupportedSize])
+        hasMaxSupportedSize = [(ICStoreArtworkSizeInfo *)self hasMaxSupportedSize];
+        if (hasMaxSupportedSize == [(ICStoreArtworkSizeInfo *)v5 hasMaxSupportedSize])
         {
           [(ICStoreArtworkSizeInfo *)self maxSupportedSize];
           v15 = v14;

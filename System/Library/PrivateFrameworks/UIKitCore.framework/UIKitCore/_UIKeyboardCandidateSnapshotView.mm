@@ -1,10 +1,10 @@
 @interface _UIKeyboardCandidateSnapshotView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UIKeyboardCandidateSnapshotView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -19,11 +19,11 @@
 
   CGContextClear();
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 candidateController];
-  v7 = [v6 candidateBar];
-  v8 = [v7 layer];
+  candidateController = [v5 candidateController];
+  candidateBar = [candidateController candidateBar];
+  layer = [candidateBar layer];
 
-  [v8 renderInContext:v4];
+  [layer renderInContext:v4];
 }
 
 @end

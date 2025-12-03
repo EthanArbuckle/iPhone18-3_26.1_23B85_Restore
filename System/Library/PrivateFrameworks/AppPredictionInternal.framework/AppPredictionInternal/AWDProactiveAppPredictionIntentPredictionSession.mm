@@ -1,45 +1,45 @@
 @interface AWDProactiveAppPredictionIntentPredictionSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConsumerSubType:(id)a3;
-- (int)StringAsCurrentLOIType:(id)a3;
-- (int)StringAsEngagementType:(id)a3;
+- (int)StringAsConsumerSubType:(id)type;
+- (int)StringAsCurrentLOIType:(id)type;
+- (int)StringAsEngagementType:(id)type;
 - (int)consumerSubType;
 - (int)currentLOIType;
-- (int)engagedActionCacheIndicesAtIndex:(unint64_t)a3;
+- (int)engagedActionCacheIndicesAtIndex:(unint64_t)index;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)addActionData:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addActionData:(id)data;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppActionCoreMotionCurrentMotionLaunches:(BOOL)a3;
-- (void)setHasAppForAllActionsCoreMotionCurrentMotionLaunches:(BOOL)a3;
-- (void)setHasConsumerSubType:(BOOL)a3;
-- (void)setHasCurrentLOIType:(BOOL)a3;
-- (void)setHasDayOfWeek:(BOOL)a3;
-- (void)setHasEngagementType:(BOOL)a3;
-- (void)setHasInAirplaneMode:(BOOL)a3;
-- (void)setHasIntentDonationDelay:(BOOL)a3;
-- (void)setHasIsInternalBuild:(BOOL)a3;
-- (void)setHasLocationDistanceFromHome:(BOOL)a3;
-- (void)setHasLocationDistanceFromWork:(BOOL)a3;
-- (void)setHasLogType:(BOOL)a3;
-- (void)setHasPredictionAge:(BOOL)a3;
-- (void)setHasSessionLogVersion:(BOOL)a3;
-- (void)setHasTimeOfDayInterval:(BOOL)a3;
-- (void)setHasTotalAppActionAirplaneModeLaunches:(BOOL)a3;
-- (void)setHasTotalAppActionCoarseTimeOfDayLaunches:(BOOL)a3;
-- (void)setHasTotalAppActionCurrentDayOfWeekLaunches:(BOOL)a3;
-- (void)setHasTotalAppActionTimeOfDayLaunches:(BOOL)a3;
-- (void)setHasTotalAppForAllActionTimeOfDayLaunches:(BOOL)a3;
-- (void)setHasTotalAppForAllActionsAirplaneModeLaunches:(BOOL)a3;
-- (void)setHasTotalAppForAllActionsCoarseTimeOfDayLaunches:(BOOL)a3;
-- (void)setHasTotalAppForAllActionsCurrentDayOfWeekLaunches:(BOOL)a3;
-- (void)setHasUiFeedbackDelay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppActionCoreMotionCurrentMotionLaunches:(BOOL)launches;
+- (void)setHasAppForAllActionsCoreMotionCurrentMotionLaunches:(BOOL)launches;
+- (void)setHasConsumerSubType:(BOOL)type;
+- (void)setHasCurrentLOIType:(BOOL)type;
+- (void)setHasDayOfWeek:(BOOL)week;
+- (void)setHasEngagementType:(BOOL)type;
+- (void)setHasInAirplaneMode:(BOOL)mode;
+- (void)setHasIntentDonationDelay:(BOOL)delay;
+- (void)setHasIsInternalBuild:(BOOL)build;
+- (void)setHasLocationDistanceFromHome:(BOOL)home;
+- (void)setHasLocationDistanceFromWork:(BOOL)work;
+- (void)setHasLogType:(BOOL)type;
+- (void)setHasPredictionAge:(BOOL)age;
+- (void)setHasSessionLogVersion:(BOOL)version;
+- (void)setHasTimeOfDayInterval:(BOOL)interval;
+- (void)setHasTotalAppActionAirplaneModeLaunches:(BOOL)launches;
+- (void)setHasTotalAppActionCoarseTimeOfDayLaunches:(BOOL)launches;
+- (void)setHasTotalAppActionCurrentDayOfWeekLaunches:(BOOL)launches;
+- (void)setHasTotalAppActionTimeOfDayLaunches:(BOOL)launches;
+- (void)setHasTotalAppForAllActionTimeOfDayLaunches:(BOOL)launches;
+- (void)setHasTotalAppForAllActionsAirplaneModeLaunches:(BOOL)launches;
+- (void)setHasTotalAppForAllActionsCoarseTimeOfDayLaunches:(BOOL)launches;
+- (void)setHasTotalAppForAllActionsCurrentDayOfWeekLaunches:(BOOL)launches;
+- (void)setHasUiFeedbackDelay:(BOOL)delay;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveAppPredictionIntentPredictionSession
@@ -52,27 +52,27 @@
   [(AWDProactiveAppPredictionIntentPredictionSession *)&v3 dealloc];
 }
 
-- (void)addActionData:(id)a3
+- (void)addActionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   actionDatas = self->_actionDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!actionDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_actionDatas;
     self->_actionDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     actionDatas = self->_actionDatas;
   }
 
-  [(NSMutableArray *)actionDatas addObject:v4];
+  [(NSMutableArray *)actionDatas addObject:dataCopy];
 }
 
-- (void)setHasAppActionCoreMotionCurrentMotionLaunches:(BOOL)a3
+- (void)setHasAppActionCoreMotionCurrentMotionLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 2;
   }
@@ -98,9 +98,9 @@
   }
 }
 
-- (void)setHasConsumerSubType:(BOOL)a3
+- (void)setHasConsumerSubType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -113,205 +113,205 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsConsumerSubType:(id)a3
+- (int)StringAsConsumerSubType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ATXConsumerSubTypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ATXConsumerSubTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeWidgetUnknown"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeWidgetUnknown"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeWidgetToday"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeWidgetToday"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeWidgetLockScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeWidgetLockScreen"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightPullDownHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightPullDownHomeScreen"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightNotificationCenterOverApp"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightNotificationCenterOverApp"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightNotificationCenterHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightNotificationCenterHomeScreen"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightTodayLockScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightTodayLockScreen"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightTodayHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightTodayHomeScreen"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSpotlightUnknown"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSpotlightUnknown"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypePreferenceSiriKit"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypePreferenceSiriKit"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypePreferenceShadowLog"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypePreferenceShadowLog"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypePreferenceUnknown"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypePreferenceUnknown"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeAppConnectionExpertSpringBoard"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeAppConnectionExpertSpringBoard"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSuperGreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSuperGreen"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeShadowLogging"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeShadowLogging"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionUnknown"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionUnknown"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionShadowLog"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionShadowLog"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionSpotlightPullDownHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionSpotlightPullDownHomeScreen"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionSpotlightTodayLockScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionSpotlightTodayLockScreen"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionSpotlightTodayHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionSpotlightTodayHomeScreen"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionSpotlightUnknown"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionSpotlightUnknown"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionLockScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionLockScreen"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionVoiceShortcuts"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionVoiceShortcuts"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSlotResolution"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSlotResolution"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSlotResolutionShadowLog"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSlotResolutionShadowLog"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionValuation"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionValuation"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionValuationShadowLog"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionValuationShadowLog"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionValuationLockscreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionValuationLockscreen"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeDock"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeDock"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeMax"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeMax"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionCarPlayDashboard"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionCarPlayDashboard"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeShortcutsGallery"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeShortcutsGallery"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSuggestionHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSuggestionHomeScreen"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeAppDirectory"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeAppDirectory"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeAppSuggestionHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeAppSuggestionHomeScreen"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeActionSuggestionHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeActionSuggestionHomeScreen"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSuggestionsWidgetHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSuggestionsWidgetHomeScreen"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeSuggestionsWidgetTodayHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeSuggestionsWidgetTodayHomeScreen"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"ATXConsumerSubTypeAppSuggestionTodayHomeScreen"])
+  else if ([typeCopy isEqualToString:@"ATXConsumerSubTypeAppSuggestionTodayHomeScreen"])
   {
     v4 = 39;
   }
@@ -337,9 +337,9 @@
   }
 }
 
-- (void)setHasCurrentLOIType:(BOOL)a3
+- (void)setHasCurrentLOIType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -352,25 +352,25 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsCurrentLOIType:(id)a3
+- (int)StringAsCurrentLOIType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ProactiveAppPredictionLOITypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ProactiveAppPredictionLOITypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLOITypeWork"])
+  else if ([typeCopy isEqualToString:@"ProactiveAppPredictionLOITypeWork"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLOITypeHome"])
+  else if ([typeCopy isEqualToString:@"ProactiveAppPredictionLOITypeHome"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ProactiveAppPredictionLOITypeGym"])
+  else if ([typeCopy isEqualToString:@"ProactiveAppPredictionLOITypeGym"])
   {
     v4 = 3;
   }
@@ -383,9 +383,9 @@
   return v4;
 }
 
-- (void)setHasDayOfWeek:(BOOL)a3
+- (void)setHasDayOfWeek:(BOOL)week
 {
-  if (a3)
+  if (week)
   {
     v3 = 32;
   }
@@ -398,20 +398,20 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)engagedActionCacheIndicesAtIndex:(unint64_t)a3
+- (int)engagedActionCacheIndicesAtIndex:(unint64_t)index
 {
   p_engagedActionCacheIndices = &self->_engagedActionCacheIndices;
   count = self->_engagedActionCacheIndices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_engagedActionCacheIndices->list[a3];
+  return p_engagedActionCacheIndices->list[index];
 }
 
 - (int)engagementType
@@ -427,9 +427,9 @@
   }
 }
 
-- (void)setHasEngagementType:(BOOL)a3
+- (void)setHasEngagementType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -442,60 +442,60 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ATXActionEngagementTypeUnknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ATXActionEngagementTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeEngagedInitial"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeEngagedInitial"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeEngagedFinalComplete"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeEngagedFinalComplete"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeEngagedFinalPartial"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeEngagedFinalPartial"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeEngagedDirectComplete"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeEngagedDirectComplete"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeAbandonedDirect"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeAbandonedDirect"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeAbandonedFinal"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeAbandonedFinal"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeFoundComplete"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeFoundComplete"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeFoundPartial"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeFoundPartial"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeFoundNone"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeFoundNone"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ATXActionEngagementTypeMax"])
+  else if ([typeCopy isEqualToString:@"ATXActionEngagementTypeMax"])
   {
     v4 = 10;
   }
@@ -508,9 +508,9 @@
   return v4;
 }
 
-- (void)setHasInAirplaneMode:(BOOL)a3
+- (void)setHasInAirplaneMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x800000;
   }
@@ -523,9 +523,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasIntentDonationDelay:(BOOL)a3
+- (void)setHasIntentDonationDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 128;
   }
@@ -538,9 +538,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasIsInternalBuild:(BOOL)a3
+- (void)setHasIsInternalBuild:(BOOL)build
 {
-  if (a3)
+  if (build)
   {
     v3 = 0x1000000;
   }
@@ -553,9 +553,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasLogType:(BOOL)a3
+- (void)setHasLogType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -568,9 +568,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasPredictionAge:(BOOL)a3
+- (void)setHasPredictionAge:(BOOL)age
 {
-  if (a3)
+  if (age)
   {
     v3 = 2048;
   }
@@ -583,9 +583,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTimeOfDayInterval:(BOOL)a3
+- (void)setHasTimeOfDayInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 0x2000;
   }
@@ -598,9 +598,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasTotalAppActionAirplaneModeLaunches:(BOOL)a3
+- (void)setHasTotalAppActionAirplaneModeLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x4000;
   }
@@ -613,9 +613,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasTotalAppActionCurrentDayOfWeekLaunches:(BOOL)a3
+- (void)setHasTotalAppActionCurrentDayOfWeekLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x10000;
   }
@@ -628,9 +628,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTotalAppForAllActionsAirplaneModeLaunches:(BOOL)a3
+- (void)setHasTotalAppForAllActionsAirplaneModeLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x80000;
   }
@@ -643,9 +643,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasTotalAppForAllActionsCurrentDayOfWeekLaunches:(BOOL)a3
+- (void)setHasTotalAppForAllActionsCurrentDayOfWeekLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x200000;
   }
@@ -658,9 +658,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasUiFeedbackDelay:(BOOL)a3
+- (void)setHasUiFeedbackDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 0x400000;
   }
@@ -673,9 +673,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasSessionLogVersion:(BOOL)a3
+- (void)setHasSessionLogVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4096;
   }
@@ -688,9 +688,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasAppForAllActionsCoreMotionCurrentMotionLaunches:(BOOL)a3
+- (void)setHasAppForAllActionsCoreMotionCurrentMotionLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 4;
   }
@@ -703,9 +703,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasLocationDistanceFromHome:(BOOL)a3
+- (void)setHasLocationDistanceFromHome:(BOOL)home
 {
-  if (a3)
+  if (home)
   {
     v3 = 256;
   }
@@ -718,9 +718,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasLocationDistanceFromWork:(BOOL)a3
+- (void)setHasLocationDistanceFromWork:(BOOL)work
 {
-  if (a3)
+  if (work)
   {
     v3 = 512;
   }
@@ -733,9 +733,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTotalAppActionTimeOfDayLaunches:(BOOL)a3
+- (void)setHasTotalAppActionTimeOfDayLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x20000;
   }
@@ -748,9 +748,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasTotalAppForAllActionTimeOfDayLaunches:(BOOL)a3
+- (void)setHasTotalAppForAllActionTimeOfDayLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x40000;
   }
@@ -763,9 +763,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasTotalAppActionCoarseTimeOfDayLaunches:(BOOL)a3
+- (void)setHasTotalAppActionCoarseTimeOfDayLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x8000;
   }
@@ -778,9 +778,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasTotalAppForAllActionsCoarseTimeOfDayLaunches:(BOOL)a3
+- (void)setHasTotalAppForAllActionsCoarseTimeOfDayLaunches:(BOOL)launches
 {
-  if (a3)
+  if (launches)
   {
     v3 = 0x100000;
   }
@@ -799,8 +799,8 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveAppPredictionIntentPredictionSession;
   v4 = [(AWDProactiveAppPredictionIntentPredictionSession *)&v8 description];
-  v5 = [(AWDProactiveAppPredictionIntentPredictionSession *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveAppPredictionIntentPredictionSession *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -808,11 +808,11 @@
 - (id)dictionaryRepresentation
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_actionDatas count])
@@ -837,8 +837,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -847,20 +847,20 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"actionData"];
+    [dictionary setObject:v5 forKey:@"actionData"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_appActionCoreMotionCurrentMotionLaunches];
-    [v3 setObject:v12 forKey:@"appActionCoreMotionCurrentMotionLaunches"];
+    [dictionary setObject:v12 forKey:@"appActionCoreMotionCurrentMotionLaunches"];
   }
 
   appSequence = self->_appSequence;
   if (appSequence)
   {
-    v14 = [(AWDProactiveAppPredictionAppLaunchSequence *)appSequence dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"appSequence"];
+    dictionaryRepresentation2 = [(AWDProactiveAppPredictionAppLaunchSequence *)appSequence dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"appSequence"];
   }
 
   has = self->_has;
@@ -877,7 +877,7 @@
       v30 = off_2785A2300[consumerSubType];
     }
 
-    [v3 setObject:v30 forKey:@"consumerSubType"];
+    [dictionary setObject:v30 forKey:@"consumerSubType"];
 
     has = self->_has;
     if ((*&has & 0x10) == 0)
@@ -908,18 +908,18 @@ LABEL_18:
     v40 = off_2785A2440[currentLOIType];
   }
 
-  [v3 setObject:v40 forKey:@"currentLOIType"];
+  [dictionary setObject:v40 forKey:@"currentLOIType"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_19:
     v16 = [MEMORY[0x277CCABB0] numberWithInt:self->_dayOfWeek];
-    [v3 setObject:v16 forKey:@"dayOfWeek"];
+    [dictionary setObject:v16 forKey:@"dayOfWeek"];
   }
 
 LABEL_20:
   v17 = PBRepeatedInt32NSArray();
-  [v3 setObject:v17 forKey:@"engagedActionCacheIndices"];
+  [dictionary setObject:v17 forKey:@"engagedActionCacheIndices"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40) != 0)
@@ -935,7 +935,7 @@ LABEL_20:
       v32 = off_2785A2460[engagementType];
     }
 
-    [v3 setObject:v32 forKey:@"engagementType"];
+    [dictionary setObject:v32 forKey:@"engagementType"];
 
     v18 = self->_has;
     if ((*&v18 & 0x800000) == 0)
@@ -956,7 +956,7 @@ LABEL_22:
   }
 
   v41 = [MEMORY[0x277CCABB0] numberWithBool:self->_inAirplaneMode];
-  [v3 setObject:v41 forKey:@"inAirplaneMode"];
+  [dictionary setObject:v41 forKey:@"inAirplaneMode"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80) == 0)
@@ -972,7 +972,7 @@ LABEL_23:
 
 LABEL_67:
   v42 = [MEMORY[0x277CCABB0] numberWithInt:self->_intentDonationDelay];
-  [v3 setObject:v42 forKey:@"intentDonationDelay"];
+  [dictionary setObject:v42 forKey:@"intentDonationDelay"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000000) == 0)
@@ -988,7 +988,7 @@ LABEL_24:
 
 LABEL_68:
   v43 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInternalBuild];
-  [v3 setObject:v43 forKey:@"isInternalBuild"];
+  [dictionary setObject:v43 forKey:@"isInternalBuild"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400) == 0)
@@ -1004,7 +1004,7 @@ LABEL_25:
 
 LABEL_69:
   v44 = [MEMORY[0x277CCABB0] numberWithInt:self->_logType];
-  [v3 setObject:v44 forKey:@"logType"];
+  [dictionary setObject:v44 forKey:@"logType"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800) == 0)
@@ -1020,7 +1020,7 @@ LABEL_26:
 
 LABEL_70:
   v45 = [MEMORY[0x277CCABB0] numberWithInt:self->_predictionAge];
-  [v3 setObject:v45 forKey:@"predictionAge"];
+  [dictionary setObject:v45 forKey:@"predictionAge"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000) == 0)
@@ -1036,7 +1036,7 @@ LABEL_27:
 
 LABEL_71:
   v46 = [MEMORY[0x277CCABB0] numberWithInt:self->_timeOfDayInterval];
-  [v3 setObject:v46 forKey:@"timeOfDayInterval"];
+  [dictionary setObject:v46 forKey:@"timeOfDayInterval"];
 
   v18 = self->_has;
   if ((*&v18 & 0x4000) == 0)
@@ -1052,7 +1052,7 @@ LABEL_28:
 
 LABEL_72:
   v47 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppActionAirplaneModeLaunches];
-  [v3 setObject:v47 forKey:@"totalAppActionAirplaneModeLaunches"];
+  [dictionary setObject:v47 forKey:@"totalAppActionAirplaneModeLaunches"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000) == 0)
@@ -1068,7 +1068,7 @@ LABEL_29:
 
 LABEL_73:
   v48 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppActionCurrentDayOfWeekLaunches];
-  [v3 setObject:v48 forKey:@"totalAppActionCurrentDayOfWeekLaunches"];
+  [dictionary setObject:v48 forKey:@"totalAppActionCurrentDayOfWeekLaunches"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80000) == 0)
@@ -1084,7 +1084,7 @@ LABEL_30:
 
 LABEL_74:
   v49 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppForAllActionsAirplaneModeLaunches];
-  [v3 setObject:v49 forKey:@"totalAppForAllActionsAirplaneModeLaunches"];
+  [dictionary setObject:v49 forKey:@"totalAppForAllActionsAirplaneModeLaunches"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200000) == 0)
@@ -1100,7 +1100,7 @@ LABEL_31:
 
 LABEL_75:
   v50 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppForAllActionsCurrentDayOfWeekLaunches];
-  [v3 setObject:v50 forKey:@"totalAppForAllActionsCurrentDayOfWeekLaunches"];
+  [dictionary setObject:v50 forKey:@"totalAppForAllActionsCurrentDayOfWeekLaunches"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400000) == 0)
@@ -1116,27 +1116,27 @@ LABEL_32:
 
 LABEL_76:
   v51 = [MEMORY[0x277CCABB0] numberWithInt:self->_uiFeedbackDelay];
-  [v3 setObject:v51 forKey:@"uiFeedbackDelay"];
+  [dictionary setObject:v51 forKey:@"uiFeedbackDelay"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_33:
     v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionLogVersion];
-    [v3 setObject:v19 forKey:@"session_log_version"];
+    [dictionary setObject:v19 forKey:@"session_log_version"];
   }
 
 LABEL_34:
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
   v21 = self->_has;
   if ((*&v21 & 4) != 0)
   {
     v33 = [MEMORY[0x277CCABB0] numberWithInt:self->_appForAllActionsCoreMotionCurrentMotionLaunches];
-    [v3 setObject:v33 forKey:@"appForAllActionsCoreMotionCurrentMotionLaunches"];
+    [dictionary setObject:v33 forKey:@"appForAllActionsCoreMotionCurrentMotionLaunches"];
 
     v21 = self->_has;
     if ((*&v21 & 0x100) == 0)
@@ -1157,7 +1157,7 @@ LABEL_38:
   }
 
   v34 = [MEMORY[0x277CCABB0] numberWithInt:self->_locationDistanceFromHome];
-  [v3 setObject:v34 forKey:@"locationDistanceFromHome"];
+  [dictionary setObject:v34 forKey:@"locationDistanceFromHome"];
 
   v21 = self->_has;
   if ((*&v21 & 0x200) == 0)
@@ -1173,7 +1173,7 @@ LABEL_39:
 
 LABEL_55:
   v35 = [MEMORY[0x277CCABB0] numberWithInt:self->_locationDistanceFromWork];
-  [v3 setObject:v35 forKey:@"locationDistanceFromWork"];
+  [dictionary setObject:v35 forKey:@"locationDistanceFromWork"];
 
   v21 = self->_has;
   if ((*&v21 & 0x20000) == 0)
@@ -1189,7 +1189,7 @@ LABEL_40:
 
 LABEL_56:
   v36 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppActionTimeOfDayLaunches];
-  [v3 setObject:v36 forKey:@"totalAppActionTimeOfDayLaunches"];
+  [dictionary setObject:v36 forKey:@"totalAppActionTimeOfDayLaunches"];
 
   v21 = self->_has;
   if ((*&v21 & 0x40000) == 0)
@@ -1205,7 +1205,7 @@ LABEL_41:
 
 LABEL_57:
   v37 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppForAllActionTimeOfDayLaunches];
-  [v3 setObject:v37 forKey:@"totalAppForAllActionTimeOfDayLaunches"];
+  [dictionary setObject:v37 forKey:@"totalAppForAllActionTimeOfDayLaunches"];
 
   v21 = self->_has;
   if ((*&v21 & 0x8000) == 0)
@@ -1221,39 +1221,39 @@ LABEL_42:
 
 LABEL_58:
   v38 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppActionCoarseTimeOfDayLaunches];
-  [v3 setObject:v38 forKey:@"totalAppActionCoarseTimeOfDayLaunches"];
+  [dictionary setObject:v38 forKey:@"totalAppActionCoarseTimeOfDayLaunches"];
 
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_43:
     v22 = [MEMORY[0x277CCABB0] numberWithInt:self->_totalAppForAllActionsCoarseTimeOfDayLaunches];
-    [v3 setObject:v22 forKey:@"totalAppForAllActionsCoarseTimeOfDayLaunches"];
+    [dictionary setObject:v22 forKey:@"totalAppForAllActionsCoarseTimeOfDayLaunches"];
   }
 
 LABEL_44:
   appActionSequence = self->_appActionSequence;
   if (appActionSequence)
   {
-    v24 = [(AWDProactiveAppPredictionAppActionSequence *)appActionSequence dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"appActionSequence"];
+    dictionaryRepresentation3 = [(AWDProactiveAppPredictionAppActionSequence *)appActionSequence dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"appActionSequence"];
   }
 
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
-  v26 = v3;
+  v26 = dictionary;
 
   v27 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -1640,23 +1640,23 @@ LABEL_45:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 46) |= 1u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 46) |= 1u;
   }
 
-  v17 = v4;
+  v17 = toCopy;
   if ([(AWDProactiveAppPredictionIntentPredictionSession *)self actionDatasCount])
   {
     [v17 clearActionDatas];
-    v5 = [(AWDProactiveAppPredictionIntentPredictionSession *)self actionDatasCount];
-    if (v5)
+    actionDatasCount = [(AWDProactiveAppPredictionIntentPredictionSession *)self actionDatasCount];
+    if (actionDatasCount)
     {
-      v6 = v5;
+      v6 = actionDatasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDProactiveAppPredictionIntentPredictionSession *)self actionDataAtIndex:i];
@@ -1717,10 +1717,10 @@ LABEL_15:
   if ([(AWDProactiveAppPredictionIntentPredictionSession *)self engagedActionCacheIndicesCount])
   {
     [v17 clearEngagedActionCacheIndices];
-    v11 = [(AWDProactiveAppPredictionIntentPredictionSession *)self engagedActionCacheIndicesCount];
-    if (v11)
+    engagedActionCacheIndicesCount = [(AWDProactiveAppPredictionIntentPredictionSession *)self engagedActionCacheIndicesCount];
+    if (engagedActionCacheIndicesCount)
     {
-      v12 = v11;
+      v12 = engagedActionCacheIndicesCount;
       for (j = 0; j != v12; ++j)
       {
         [v17 addEngagedActionCacheIndices:{-[AWDProactiveAppPredictionIntentPredictionSession engagedActionCacheIndicesAtIndex:](self, "engagedActionCacheIndicesAtIndex:", j)}];
@@ -2024,10 +2024,10 @@ LABEL_43:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -2055,7 +2055,7 @@ LABEL_43:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v26 + 1) + 8 * v11) copyWithZone:{a3, v26}];
+        v12 = [*(*(&v26 + 1) + 8 * v11) copyWithZone:{zone, v26}];
         [v6 addActionData:v12];
 
         ++v11;
@@ -2074,7 +2074,7 @@ LABEL_43:
     *(v6 + 184) |= 2u;
   }
 
-  v13 = [(AWDProactiveAppPredictionAppLaunchSequence *)self->_appSequence copyWithZone:a3, v26];
+  v13 = [(AWDProactiveAppPredictionAppLaunchSequence *)self->_appSequence copyWithZone:zone, v26];
   v14 = *(v6 + 80);
   *(v6 + 80) = v13;
 
@@ -2295,7 +2295,7 @@ LABEL_29:
   }
 
 LABEL_30:
-  v17 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v17 = [(NSString *)self->_abGroup copyWithZone:zone];
   v18 = *(v6 + 40);
   *(v6 + 40) = v17;
 
@@ -2392,11 +2392,11 @@ LABEL_37:
   }
 
 LABEL_38:
-  v20 = [(AWDProactiveAppPredictionAppActionSequence *)self->_appActionSequence copyWithZone:a3];
+  v20 = [(AWDProactiveAppPredictionAppActionSequence *)self->_appActionSequence copyWithZone:zone];
   v21 = *(v6 + 64);
   *(v6 + 64) = v20;
 
-  v22 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v22 = [(NSString *)self->_sessionId copyWithZone:zone];
   v23 = *(v6 + 128);
   *(v6 + 128) = v22;
 
@@ -2404,19 +2404,19 @@ LABEL_38:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_147;
   }
 
   has = self->_has;
-  v6 = *(v4 + 46);
+  v6 = *(equalCopy + 46);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_147;
     }
@@ -2428,7 +2428,7 @@ LABEL_38:
   }
 
   actionDatas = self->_actionDatas;
-  if (actionDatas | *(v4 + 6))
+  if (actionDatas | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)actionDatas isEqual:?])
     {
@@ -2438,10 +2438,10 @@ LABEL_38:
     has = self->_has;
   }
 
-  v8 = *(v4 + 46);
+  v8 = *(equalCopy + 46);
   if ((*&has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_appActionCoreMotionCurrentMotionLaunches != *(v4 + 14))
+    if ((v8 & 2) == 0 || self->_appActionCoreMotionCurrentMotionLaunches != *(equalCopy + 14))
     {
       goto LABEL_147;
     }
@@ -2453,7 +2453,7 @@ LABEL_38:
   }
 
   appSequence = self->_appSequence;
-  if (appSequence | *(v4 + 10))
+  if (appSequence | *(equalCopy + 10))
   {
     if (![(AWDProactiveAppPredictionAppLaunchSequence *)appSequence isEqual:?])
     {
@@ -2463,10 +2463,10 @@ LABEL_38:
     has = self->_has;
   }
 
-  v10 = *(v4 + 46);
+  v10 = *(equalCopy + 46);
   if ((*&has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_consumerSubType != *(v4 + 22))
+    if ((v10 & 8) == 0 || self->_consumerSubType != *(equalCopy + 22))
     {
       goto LABEL_147;
     }
@@ -2479,7 +2479,7 @@ LABEL_38:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_currentLOIType != *(v4 + 23))
+    if ((v10 & 0x10) == 0 || self->_currentLOIType != *(equalCopy + 23))
     {
       goto LABEL_147;
     }
@@ -2492,7 +2492,7 @@ LABEL_38:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_dayOfWeek != *(v4 + 24))
+    if ((v10 & 0x20) == 0 || self->_dayOfWeek != *(equalCopy + 24))
     {
       goto LABEL_147;
     }
@@ -2511,10 +2511,10 @@ LABEL_147:
   }
 
   v11 = self->_has;
-  v12 = *(v4 + 46);
+  v12 = *(equalCopy + 46);
   if ((*&v11 & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_engagementType != *(v4 + 25))
+    if ((v12 & 0x40) == 0 || self->_engagementType != *(equalCopy + 25))
     {
       goto LABEL_147;
     }
@@ -2532,16 +2532,16 @@ LABEL_147:
       goto LABEL_147;
     }
 
-    v13 = *(v4 + 180);
+    v13 = *(equalCopy + 180);
     if (self->_inAirplaneMode)
     {
-      if ((*(v4 + 180) & 1) == 0)
+      if ((*(equalCopy + 180) & 1) == 0)
       {
         goto LABEL_147;
       }
     }
 
-    else if (*(v4 + 180))
+    else if (*(equalCopy + 180))
     {
       goto LABEL_147;
     }
@@ -2554,7 +2554,7 @@ LABEL_147:
 
   if ((*&v11 & 0x80) != 0)
   {
-    if ((v12 & 0x80) == 0 || self->_intentDonationDelay != *(v4 + 26))
+    if ((v12 & 0x80) == 0 || self->_intentDonationDelay != *(equalCopy + 26))
     {
       goto LABEL_147;
     }
@@ -2572,16 +2572,16 @@ LABEL_147:
       goto LABEL_147;
     }
 
-    v14 = *(v4 + 181);
+    v14 = *(equalCopy + 181);
     if (self->_isInternalBuild)
     {
-      if ((*(v4 + 181) & 1) == 0)
+      if ((*(equalCopy + 181) & 1) == 0)
       {
         goto LABEL_147;
       }
     }
 
-    else if (*(v4 + 181))
+    else if (*(equalCopy + 181))
     {
       goto LABEL_147;
     }
@@ -2594,7 +2594,7 @@ LABEL_147:
 
   if ((*&v11 & 0x400) != 0)
   {
-    if ((v12 & 0x400) == 0 || self->_logType != *(v4 + 29))
+    if ((v12 & 0x400) == 0 || self->_logType != *(equalCopy + 29))
     {
       goto LABEL_147;
     }
@@ -2607,7 +2607,7 @@ LABEL_147:
 
   if ((*&v11 & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_predictionAge != *(v4 + 30))
+    if ((v12 & 0x800) == 0 || self->_predictionAge != *(equalCopy + 30))
     {
       goto LABEL_147;
     }
@@ -2620,7 +2620,7 @@ LABEL_147:
 
   if ((*&v11 & 0x2000) != 0)
   {
-    if ((v12 & 0x2000) == 0 || self->_timeOfDayInterval != *(v4 + 35))
+    if ((v12 & 0x2000) == 0 || self->_timeOfDayInterval != *(equalCopy + 35))
     {
       goto LABEL_147;
     }
@@ -2633,7 +2633,7 @@ LABEL_147:
 
   if ((*&v11 & 0x4000) != 0)
   {
-    if ((v12 & 0x4000) == 0 || self->_totalAppActionAirplaneModeLaunches != *(v4 + 36))
+    if ((v12 & 0x4000) == 0 || self->_totalAppActionAirplaneModeLaunches != *(equalCopy + 36))
     {
       goto LABEL_147;
     }
@@ -2646,7 +2646,7 @@ LABEL_147:
 
   if ((*&v11 & 0x10000) != 0)
   {
-    if ((v12 & 0x10000) == 0 || self->_totalAppActionCurrentDayOfWeekLaunches != *(v4 + 38))
+    if ((v12 & 0x10000) == 0 || self->_totalAppActionCurrentDayOfWeekLaunches != *(equalCopy + 38))
     {
       goto LABEL_147;
     }
@@ -2659,7 +2659,7 @@ LABEL_147:
 
   if ((*&v11 & 0x80000) != 0)
   {
-    if ((v12 & 0x80000) == 0 || self->_totalAppForAllActionsAirplaneModeLaunches != *(v4 + 41))
+    if ((v12 & 0x80000) == 0 || self->_totalAppForAllActionsAirplaneModeLaunches != *(equalCopy + 41))
     {
       goto LABEL_147;
     }
@@ -2672,7 +2672,7 @@ LABEL_147:
 
   if ((*&v11 & 0x200000) != 0)
   {
-    if ((v12 & 0x200000) == 0 || self->_totalAppForAllActionsCurrentDayOfWeekLaunches != *(v4 + 43))
+    if ((v12 & 0x200000) == 0 || self->_totalAppForAllActionsCurrentDayOfWeekLaunches != *(equalCopy + 43))
     {
       goto LABEL_147;
     }
@@ -2685,7 +2685,7 @@ LABEL_147:
 
   if ((*&v11 & 0x400000) != 0)
   {
-    if ((v12 & 0x400000) == 0 || self->_uiFeedbackDelay != *(v4 + 44))
+    if ((v12 & 0x400000) == 0 || self->_uiFeedbackDelay != *(equalCopy + 44))
     {
       goto LABEL_147;
     }
@@ -2698,7 +2698,7 @@ LABEL_147:
 
   if ((*&v11 & 0x1000) != 0)
   {
-    if ((v12 & 0x1000) == 0 || self->_sessionLogVersion != *(v4 + 34))
+    if ((v12 & 0x1000) == 0 || self->_sessionLogVersion != *(equalCopy + 34))
     {
       goto LABEL_147;
     }
@@ -2710,7 +2710,7 @@ LABEL_147:
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 5))
+  if (abGroup | *(equalCopy + 5))
   {
     if ([(NSString *)abGroup isEqual:?])
     {
@@ -2722,10 +2722,10 @@ LABEL_147:
   }
 
 LABEL_108:
-  v16 = *(v4 + 46);
+  v16 = *(equalCopy + 46);
   if ((*&v11 & 4) != 0)
   {
-    if ((v16 & 4) == 0 || self->_appForAllActionsCoreMotionCurrentMotionLaunches != *(v4 + 18))
+    if ((v16 & 4) == 0 || self->_appForAllActionsCoreMotionCurrentMotionLaunches != *(equalCopy + 18))
     {
       goto LABEL_147;
     }
@@ -2738,7 +2738,7 @@ LABEL_108:
 
   if ((*&v11 & 0x100) != 0)
   {
-    if ((v16 & 0x100) == 0 || self->_locationDistanceFromHome != *(v4 + 27))
+    if ((v16 & 0x100) == 0 || self->_locationDistanceFromHome != *(equalCopy + 27))
     {
       goto LABEL_147;
     }
@@ -2751,7 +2751,7 @@ LABEL_108:
 
   if ((*&v11 & 0x200) != 0)
   {
-    if ((v16 & 0x200) == 0 || self->_locationDistanceFromWork != *(v4 + 28))
+    if ((v16 & 0x200) == 0 || self->_locationDistanceFromWork != *(equalCopy + 28))
     {
       goto LABEL_147;
     }
@@ -2764,7 +2764,7 @@ LABEL_108:
 
   if ((*&v11 & 0x20000) != 0)
   {
-    if ((v16 & 0x20000) == 0 || self->_totalAppActionTimeOfDayLaunches != *(v4 + 39))
+    if ((v16 & 0x20000) == 0 || self->_totalAppActionTimeOfDayLaunches != *(equalCopy + 39))
     {
       goto LABEL_147;
     }
@@ -2777,7 +2777,7 @@ LABEL_108:
 
   if ((*&v11 & 0x40000) != 0)
   {
-    if ((v16 & 0x40000) == 0 || self->_totalAppForAllActionTimeOfDayLaunches != *(v4 + 40))
+    if ((v16 & 0x40000) == 0 || self->_totalAppForAllActionTimeOfDayLaunches != *(equalCopy + 40))
     {
       goto LABEL_147;
     }
@@ -2790,7 +2790,7 @@ LABEL_108:
 
   if ((*&v11 & 0x8000) != 0)
   {
-    if ((v16 & 0x8000) == 0 || self->_totalAppActionCoarseTimeOfDayLaunches != *(v4 + 37))
+    if ((v16 & 0x8000) == 0 || self->_totalAppActionCoarseTimeOfDayLaunches != *(equalCopy + 37))
     {
       goto LABEL_147;
     }
@@ -2803,7 +2803,7 @@ LABEL_108:
 
   if ((*&v11 & 0x100000) != 0)
   {
-    if ((v16 & 0x100000) == 0 || self->_totalAppForAllActionsCoarseTimeOfDayLaunches != *(v4 + 42))
+    if ((v16 & 0x100000) == 0 || self->_totalAppForAllActionsCoarseTimeOfDayLaunches != *(equalCopy + 42))
     {
       goto LABEL_147;
     }
@@ -2815,13 +2815,13 @@ LABEL_108:
   }
 
   appActionSequence = self->_appActionSequence;
-  if (appActionSequence | *(v4 + 8) && ![(AWDProactiveAppPredictionAppActionSequence *)appActionSequence isEqual:?])
+  if (appActionSequence | *(equalCopy + 8) && ![(AWDProactiveAppPredictionAppActionSequence *)appActionSequence isEqual:?])
   {
     goto LABEL_147;
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 16))
+  if (sessionId | *(equalCopy + 16))
   {
     v19 = [(NSString *)sessionId isEqual:?];
   }
@@ -3174,14 +3174,14 @@ LABEL_56:
   return v21 ^ v22 ^ [(NSString *)self->_sessionId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 184))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 184))
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -3189,7 +3189,7 @@ LABEL_56:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -3267,10 +3267,10 @@ LABEL_20:
   }
 
 LABEL_21:
-  v14 = [v5 engagedActionCacheIndicesCount];
-  if (v14)
+  engagedActionCacheIndicesCount = [v5 engagedActionCacheIndicesCount];
+  if (engagedActionCacheIndicesCount)
   {
-    v15 = v14;
+    v15 = engagedActionCacheIndicesCount;
     for (j = 0; j != v15; ++j)
     {
       -[AWDProactiveAppPredictionIntentPredictionSession addEngagedActionCacheIndices:](self, "addEngagedActionCacheIndices:", [v5 engagedActionCacheIndicesAtIndex:j]);

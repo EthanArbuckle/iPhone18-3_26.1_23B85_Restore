@@ -1,53 +1,53 @@
 @interface VideoMattingMetal
-+ (id)textureFromCacheUsingPixelBuffer:(__CVBuffer *)a3 textureDescriptor:(id)a4 plane:(unint64_t)a5 textureCache:(__CVMetalTextureCache *)a6;
-+ (void)decomposeYuvPixelBuffer:(__CVBuffer *)a3 yTexture:(id *)a4 uvTexture:(id *)a5 textureCache:(__CVMetalTextureCache *)a6;
-+ (void)saveTexture:(id)a3 toFilename:(id)a4;
++ (id)textureFromCacheUsingPixelBuffer:(__CVBuffer *)buffer textureDescriptor:(id)descriptor plane:(unint64_t)plane textureCache:(__CVMetalTextureCache *)cache;
++ (void)decomposeYuvPixelBuffer:(__CVBuffer *)buffer yTexture:(id *)texture uvTexture:(id *)uvTexture textureCache:(__CVMetalTextureCache *)cache;
++ (void)saveTexture:(id)texture toFilename:(id)filename;
 - (CGRect)primaryCaptureRect;
-- (VideoMattingMetal)initWithStaticParams:(const VideoMattingStaticParams *)a3 renderingDisparityUpdateRate:(float)a4 renderingDisparityBlurRadius:(float)a5 renderingLensFocalLength_mm:(float)a6 useTemporalConfidence:(BOOL)a7 metalContext:(void *)a8 error:(id *)a9;
-- (__CVBuffer)createCVBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5;
-- (id)disparityPostprocessingWithCanonicalDisparity:(const __CVBuffer *)a3 color:(const __CVBuffer *)a4 postProcessedDisparity:(__CVBuffer *)a5 staticParams:(const VideoMattingStaticParams *)a6 dynamicParams:(const void *)a7 postProcessingParams:(const VideoPostprocessingParams *)a8 facesArray:(id)a9 faceModel:(id)a10 isFinalStage:(BOOL)a11 callbackQueue:(id)a12 callback:(id)a13;
-- (id)getPTTextureFromLuma:(id)a3 chroma:(id)a4;
-- (void)alphaMattingWithPostprocessedDisparity:(const __CVBuffer *)a3 source:(const __CVBuffer *)a4 inSegmentation:(__CVBuffer *)a5 alpha:(__CVBuffer *)a6 staticParams:(const VideoMattingStaticParams *)a7 dynamicParams:(const void *)a8 usePostprocessedDisparity:(BOOL)a9 isFinalStage:(BOOL)a10 dilateForegroundMask:(BOOL)a11 properties:(id)a12 callbackQueue:(id)a13 callback:(id)a14;
-- (void)cropFrame:(const __CVBuffer *)a3 destination:(__CVBuffer *)a4 rect:(CGRect)a5;
+- (VideoMattingMetal)initWithStaticParams:(const VideoMattingStaticParams *)params renderingDisparityUpdateRate:(float)rate renderingDisparityBlurRadius:(float)radius renderingLensFocalLength_mm:(float)length_mm useTemporalConfidence:(BOOL)confidence metalContext:(void *)context error:(id *)error;
+- (__CVBuffer)createCVBufferWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format;
+- (id)disparityPostprocessingWithCanonicalDisparity:(const __CVBuffer *)disparity color:(const __CVBuffer *)color postProcessedDisparity:(__CVBuffer *)processedDisparity staticParams:(const VideoMattingStaticParams *)params dynamicParams:(const void *)dynamicParams postProcessingParams:(const VideoPostprocessingParams *)processingParams facesArray:(id)array faceModel:(id)self0 isFinalStage:(BOOL)self1 callbackQueue:(id)self2 callback:(id)self3;
+- (id)getPTTextureFromLuma:(id)luma chroma:(id)chroma;
+- (void)alphaMattingWithPostprocessedDisparity:(const __CVBuffer *)disparity source:(const __CVBuffer *)source inSegmentation:(__CVBuffer *)segmentation alpha:(__CVBuffer *)alpha staticParams:(const VideoMattingStaticParams *)params dynamicParams:(const void *)dynamicParams usePostprocessedDisparity:(BOOL)postprocessedDisparity isFinalStage:(BOOL)self0 dilateForegroundMask:(BOOL)self1 properties:(id)self2 callbackQueue:(id)self3 callback:(id)self4;
+- (void)cropFrame:(const __CVBuffer *)frame destination:(__CVBuffer *)destination rect:(CGRect)rect;
 - (void)dealloc;
-- (void)downsampleWithHWScalerSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4;
-- (void)encode420Bilinear2xDownsamplingToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5;
-- (void)encode420HybridDownsamplingToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5;
-- (void)encode420ScalingByMPSToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5;
-- (void)encodeBackgroundFillToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputMask:(id)a5 outputDisparity:(id)a6;
-- (void)encodeColorSimL1ToCommandBuffer:(id)a3 prevSource:(id)a4 currSource:(id)a5 destination:(id)a6;
-- (void)encodeColorSimToCommandBuffer:(id)a3 prevSource:(id)a4 currSource:(id)a5 destination:(id)a6 similarityScaleFactor:(float)a7;
-- (void)encodeConfidenceMaskToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputDisparityNoInvalid:(id)a5 outputConfidenceMask:(id)a6;
-- (void)encodeCopyTextureToCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5;
-- (void)encodeDiffusionMapToCommandBuffer:(id)a3 color:(id)a4 diffusionMap:(id)a5;
-- (void)encodeDisparityCleanupToCommandBuffer:(id)a3 prevDisparity:(id)a4 currDisparity:(id)a5 colorSim:(id)a6 cleanDisparity:(id)a7;
-- (void)encodeDisparityDecimateToCommandBuffer:(id)a3 canonicalDisparity:(__CVBuffer *)a4 disparityOut:(id)a5;
-- (void)encodeDisparityMasksToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputSegmentation:(id)a5 useSegmentationOnly:(BOOL)a6 outputForegroundMask:(id)a7 outputIsForeground:(id)a8 disparityMin:(float)a9 focusDisparity:(float)a10 hardness:(float)a11 minDistToDeweight:(float)a12 unconfidentWeight:(float)a13;
-- (void)encodeDisparitySmoothingToCommandBuffer:(id)a3 disparity:(id)a4;
-- (void)encodeDisparityTemporalFilterToCommandBuffer:(id)a3 currentDisparity:(id)a4 previousDisparity:(id)a5 currConfidence:(id)a6 prevSmoothConfidence:(id)a7 colorSim:(id)a8 outPrevSmoothConfidence:(id)a9 outTemporallyFilteredDisparity:(id)a10 disparityFallbackToInvalid:(BOOL)a11 disparityFilterUpdateRate:(float)a12 minimumConfidenceToKeepDisparity:(float)a13 maximumSimilarityToKeepDisparity:(float)a14;
-- (void)encodeDomainTransformToCommandBuffer:(id)a3 inputDiffusionMap:(id)a4 inputDistanceFromKnownDisparity:(id)a5 outputDomainTransformX:(id)a6 outputDomainTransformY:(id)a7;
-- (void)encodeEdgeAwareFillToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputDomainTransformX:(id)a5 inputDomainTransformY:(id)a6 outputDisparity:(id)a7;
-- (void)encodeFillAlphaToCommandBuffer:(id)a3 alpha:(id)a4;
-- (void)encodeFillBackgroundDisparityToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputFacemask:(id)a5 outputDistanceFromKnownDisparity:(id)a6 outputDisparity:(id)a7 backgroundDisparityValue:(float)a8 minimumDistanceFromValidDisparity:(float)a9;
-- (void)encodeFilterCoefficientToBuffer:(id)a3 inputCoeff:(id)a4 prevCoeff:(id)a5 outCoeff:(id)a6 inColorSim:(id)a7 updateRate:(float)a8;
-- (void)encodeGuidedFilterWeightToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputSegmentation:(id)a5 useSegmentationOnly:(BOOL)a6 inputForegroundDistance:(id)a7 outputForegroundMask:(id)a8 outputWeight:(id)a9 minDistToDeweight:(float)a10 unconfidentWeight:(float)a11 dilateForegroundMask:(BOOL)a12 foregroundMaskDilationRadius:(float)a13;
-- (void)encodeInvalidDisparityMaskToCommandBuffer:(id)a3 inputDisparity:(id)a4 outputMask:(id)a5;
-- (void)encodeOutputDisparityToCommandBuffer:(id)a3 inputDisparity:(id)a4 outputDisparity:(id)a5;
-- (void)encodeRotateAndFitIntoRectWithCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5 rotateClockwise:(BOOL)a6;
-- (void)encodeScaleSourceToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 targetWidth:(unint64_t)a5 targetHeight:(unint64_t)a6;
-- (void)encodeSimpleConfidenceToCommandBuffer:(id)a3 disparity:(id)a4 outConfidence:(id)a5;
-- (void)encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:(id)a3 disparity:(id)a4 prevSmoothConfidence:(id)a5 lastValidDisparityIn:(id)a6 lastValidDisparityOut:(id)a7 currConfidenceOut:(id)a8 useTemporalConfidence:(BOOL)a9;
-- (void)initSourceTexture:(__CVBuffer *)a3;
-- (void)prewarmGuidedFilter:(id)a3 device:(id)a4 commandBuffer:(id)a5 width:(int)a6 height:(int)a7 width2:(int)a8 height2:(int)a9;
-- (void)renderContinuousWithSource:(const __CVBuffer *)a3 segmentationPixelBuffer:(const __CVBuffer *)a4 alpha:(const __CVBuffer *)a5 canonicalDisparity:(const __CVBuffer *)a6 disparityInFocus:(float)a7 focusCanonicalDisparity:(float)a8 fNumber:(float)a9 infConvolutionScale:(float)a10 noiseBits:(float)a11 disparityUpdateRate:(float)a12 focusThresholdHardness:(float)a13 cubeIntensity:(float)a14 usePostprocessedDisparity:(BOOL)a15 dstColor:(__CVBuffer *)a16 isFinalStage:(BOOL)a17 properties:(id)a18 callbackQueue:(id)a19 withCallback:(id)a20;
-- (void)renderStageLightWithSource:(const __CVBuffer *)a3 alpha:(const __CVBuffer *)a4 canonicalDisparity:(const __CVBuffer *)a5 dstColor:(__CVBuffer *)a6 blackBackgroundIntensity:(float)a7 vignetteIntensity:(float)a8 isFinalStage:(BOOL)a9 callbackQueue:(id)a10 withCallback:(id)a11;
-- (void)segmentationAverage:(__CVBuffer *)a3 callbackQueue:(id)a4 callback:(id)a5;
-- (void)setAlphaLut:(float)a3 gammaExponent:(float)a4;
-- (void)setBgLut:(id)a3;
-- (void)setFgLut:(id)a3;
-- (void)setPortraitForegroundCubeData:(id)a3 backgroundCubeData:(id)a4;
-- (void)setStageLightProxyCubeData:(id)a3 cubeData:(id)a4;
-- (void)updateRenderRequestwithPerFrameMetadata:(id)a3 properties:(id)a4;
+- (void)downsampleWithHWScalerSource:(__CVBuffer *)source destination:(__CVBuffer *)destination;
+- (void)encode420Bilinear2xDownsamplingToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination;
+- (void)encode420HybridDownsamplingToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination;
+- (void)encode420ScalingByMPSToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination;
+- (void)encodeBackgroundFillToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputMask:(id)mask outputDisparity:(id)outputDisparity;
+- (void)encodeColorSimL1ToCommandBuffer:(id)buffer prevSource:(id)source currSource:(id)currSource destination:(id)destination;
+- (void)encodeColorSimToCommandBuffer:(id)buffer prevSource:(id)source currSource:(id)currSource destination:(id)destination similarityScaleFactor:(float)factor;
+- (void)encodeConfidenceMaskToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputDisparityNoInvalid:(id)invalid outputConfidenceMask:(id)mask;
+- (void)encodeCopyTextureToCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture;
+- (void)encodeDiffusionMapToCommandBuffer:(id)buffer color:(id)color diffusionMap:(id)map;
+- (void)encodeDisparityCleanupToCommandBuffer:(id)buffer prevDisparity:(id)disparity currDisparity:(id)currDisparity colorSim:(id)sim cleanDisparity:(id)cleanDisparity;
+- (void)encodeDisparityDecimateToCommandBuffer:(id)buffer canonicalDisparity:(__CVBuffer *)disparity disparityOut:(id)out;
+- (void)encodeDisparityMasksToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputSegmentation:(id)segmentation useSegmentationOnly:(BOOL)only outputForegroundMask:(id)mask outputIsForeground:(id)foreground disparityMin:(float)min focusDisparity:(float)self0 hardness:(float)self1 minDistToDeweight:(float)self2 unconfidentWeight:(float)self3;
+- (void)encodeDisparitySmoothingToCommandBuffer:(id)buffer disparity:(id)disparity;
+- (void)encodeDisparityTemporalFilterToCommandBuffer:(id)buffer currentDisparity:(id)disparity previousDisparity:(id)previousDisparity currConfidence:(id)confidence prevSmoothConfidence:(id)smoothConfidence colorSim:(id)sim outPrevSmoothConfidence:(id)prevSmoothConfidence outTemporallyFilteredDisparity:(id)self0 disparityFallbackToInvalid:(BOOL)self1 disparityFilterUpdateRate:(float)self2 minimumConfidenceToKeepDisparity:(float)self3 maximumSimilarityToKeepDisparity:(float)self4;
+- (void)encodeDomainTransformToCommandBuffer:(id)buffer inputDiffusionMap:(id)map inputDistanceFromKnownDisparity:(id)disparity outputDomainTransformX:(id)x outputDomainTransformY:(id)y;
+- (void)encodeEdgeAwareFillToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputDomainTransformX:(id)x inputDomainTransformY:(id)y outputDisparity:(id)outputDisparity;
+- (void)encodeFillAlphaToCommandBuffer:(id)buffer alpha:(id)alpha;
+- (void)encodeFillBackgroundDisparityToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputFacemask:(id)facemask outputDistanceFromKnownDisparity:(id)knownDisparity outputDisparity:(id)outputDisparity backgroundDisparityValue:(float)value minimumDistanceFromValidDisparity:(float)validDisparity;
+- (void)encodeFilterCoefficientToBuffer:(id)buffer inputCoeff:(id)coeff prevCoeff:(id)prevCoeff outCoeff:(id)outCoeff inColorSim:(id)sim updateRate:(float)rate;
+- (void)encodeGuidedFilterWeightToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputSegmentation:(id)segmentation useSegmentationOnly:(BOOL)only inputForegroundDistance:(id)distance outputForegroundMask:(id)mask outputWeight:(id)weight minDistToDeweight:(float)self0 unconfidentWeight:(float)self1 dilateForegroundMask:(BOOL)self2 foregroundMaskDilationRadius:(float)self3;
+- (void)encodeInvalidDisparityMaskToCommandBuffer:(id)buffer inputDisparity:(id)disparity outputMask:(id)mask;
+- (void)encodeOutputDisparityToCommandBuffer:(id)buffer inputDisparity:(id)disparity outputDisparity:(id)outputDisparity;
+- (void)encodeRotateAndFitIntoRectWithCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture rotateClockwise:(BOOL)clockwise;
+- (void)encodeScaleSourceToCommandBuffer:(id)buffer source:(__CVBuffer *)source targetWidth:(unint64_t)width targetHeight:(unint64_t)height;
+- (void)encodeSimpleConfidenceToCommandBuffer:(id)buffer disparity:(id)disparity outConfidence:(id)confidence;
+- (void)encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:(id)buffer disparity:(id)disparity prevSmoothConfidence:(id)confidence lastValidDisparityIn:(id)in lastValidDisparityOut:(id)out currConfidenceOut:(id)confidenceOut useTemporalConfidence:(BOOL)temporalConfidence;
+- (void)initSourceTexture:(__CVBuffer *)texture;
+- (void)prewarmGuidedFilter:(id)filter device:(id)device commandBuffer:(id)buffer width:(int)width height:(int)height width2:(int)width2 height2:(int)height2;
+- (void)renderContinuousWithSource:(const __CVBuffer *)source segmentationPixelBuffer:(const __CVBuffer *)buffer alpha:(const __CVBuffer *)alpha canonicalDisparity:(const __CVBuffer *)disparity disparityInFocus:(float)focus focusCanonicalDisparity:(float)canonicalDisparity fNumber:(float)number infConvolutionScale:(float)self0 noiseBits:(float)self1 disparityUpdateRate:(float)self2 focusThresholdHardness:(float)self3 cubeIntensity:(float)self4 usePostprocessedDisparity:(BOOL)self5 dstColor:(__CVBuffer *)self6 isFinalStage:(BOOL)self7 properties:(id)self8 callbackQueue:(id)self9 withCallback:(id)callback;
+- (void)renderStageLightWithSource:(const __CVBuffer *)source alpha:(const __CVBuffer *)alpha canonicalDisparity:(const __CVBuffer *)disparity dstColor:(__CVBuffer *)color blackBackgroundIntensity:(float)intensity vignetteIntensity:(float)vignetteIntensity isFinalStage:(BOOL)stage callbackQueue:(id)self0 withCallback:(id)self1;
+- (void)segmentationAverage:(__CVBuffer *)average callbackQueue:(id)queue callback:(id)callback;
+- (void)setAlphaLut:(float)lut gammaExponent:(float)exponent;
+- (void)setBgLut:(id)lut;
+- (void)setFgLut:(id)lut;
+- (void)setPortraitForegroundCubeData:(id)data backgroundCubeData:(id)cubeData;
+- (void)setStageLightProxyCubeData:(id)data cubeData:(id)cubeData;
+- (void)updateRenderRequestwithPerFrameMetadata:(id)metadata properties:(id)properties;
 @end
 
 @implementation VideoMattingMetal
@@ -66,34 +66,34 @@
   return result;
 }
 
-- (void)encodeFillAlphaToCommandBuffer:(id)a3 alpha:(id)a4
+- (void)encodeFillAlphaToCommandBuffer:(id)buffer alpha:(id)alpha
 {
-  v6 = a4;
-  v7 = [a3 computeCommandEncoder];
-  [v7 setLabel:@"_alphaFillKernel"];
-  [v7 setComputePipelineState:self->_alphaFillKernel];
-  [v7 setTexture:v6 atIndex:0];
-  v10[0] = ([v6 width] + 15) >> 4;
-  v10[1] = ([v6 height] + 15) >> 4;
+  alphaCopy = alpha;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_alphaFillKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_alphaFillKernel];
+  [computeCommandEncoder setTexture:alphaCopy atIndex:0];
+  v10[0] = ([alphaCopy width] + 15) >> 4;
+  v10[1] = ([alphaCopy height] + 15) >> 4;
   v10[2] = 1;
   v8 = vdupq_n_s64(0x10uLL);
   v9 = 1;
-  [v7 dispatchThreadgroups:v10 threadsPerThreadgroup:&v8];
-  [v7 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v10 threadsPerThreadgroup:&v8];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encode420ScalingByMPSToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5
+- (void)encode420ScalingByMPSToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination
 {
-  v28 = a3;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v11 = CVPixelBufferGetWidth(a5);
-  v12 = CVPixelBufferGetHeight(a5);
+  bufferCopy = buffer;
+  Width = CVPixelBufferGetWidth(source);
+  Height = CVPixelBufferGetHeight(source);
+  v11 = CVPixelBufferGetWidth(destination);
+  v12 = CVPixelBufferGetHeight(destination);
   v13 = v12;
   if (v11 <= 1)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3238 description:{@"targetWidth not in [2, inf"}]);
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3238 description:{@"targetWidth not in [2, inf"}]);
 
     if (v13 > 1)
     {
@@ -106,12 +106,12 @@
     goto LABEL_3;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3239 description:{@"targetHeight not in [2, inf"}]);
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3239 description:{@"targetHeight not in [2, inf"}]);
 
 LABEL_3:
-  IOSurface = CVPixelBufferGetIOSurface(a4);
-  v15 = CVPixelBufferGetIOSurface(a5);
+  IOSurface = CVPixelBufferGetIOSurface(source);
+  v15 = CVPixelBufferGetIOSurface(destination);
   v27 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:Width height:Height mipmapped:0];
   v16 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:30 width:Width >> 1 height:Height >> 1 mipmapped:0];
   v17 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v27 iosurface:IOSurface plane:0];
@@ -122,20 +122,20 @@ LABEL_3:
   [v20 setUsage:3];
   v21 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v19 iosurface:v15 plane:0];
   v22 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v20 iosurface:v15 plane:1];
-  v23 = [(CVAFilterHybridResampling *)self->_hybridResampler scaler];
-  [v23 encodeToCommandBuffer:v28 sourceTexture:v17 destinationTexture:v21];
+  scaler = [(CVAFilterHybridResampling *)self->_hybridResampler scaler];
+  [scaler encodeToCommandBuffer:bufferCopy sourceTexture:v17 destinationTexture:v21];
 
-  v24 = [(CVAFilterHybridResampling *)self->_hybridResampler scaler];
-  [v24 encodeToCommandBuffer:v28 sourceTexture:v18 destinationTexture:v22];
+  scaler2 = [(CVAFilterHybridResampling *)self->_hybridResampler scaler];
+  [scaler2 encodeToCommandBuffer:bufferCopy sourceTexture:v18 destinationTexture:v22];
 }
 
-- (void)encode420Bilinear2xDownsamplingToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5
+- (void)encode420Bilinear2xDownsamplingToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination
 {
-  v26 = a3;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  IOSurface = CVPixelBufferGetIOSurface(a4);
-  v11 = CVPixelBufferGetIOSurface(a5);
+  bufferCopy = buffer;
+  Width = CVPixelBufferGetWidth(source);
+  Height = CVPixelBufferGetHeight(source);
+  IOSurface = CVPixelBufferGetIOSurface(source);
+  v11 = CVPixelBufferGetIOSurface(destination);
   [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:Width height:Height mipmapped:0];
   v12 = Width >> 1;
   v21 = v13 = Height >> 1;
@@ -150,58 +150,58 @@ LABEL_3:
   [v17 setUsage:3];
   v23 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v14 iosurface:v11 plane:0];
   v18 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v17 iosurface:v11 plane:1];
-  v19 = [v26 computeCommandEncoder];
-  [v19 setLabel:@"_halfDownSampler"];
-  [v19 setComputePipelineState:self->_halfDownSampler];
-  [v19 setTexture:v24 atIndex:0];
-  [v19 setTexture:v23 atIndex:1];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_halfDownSampler"];
+  [computeCommandEncoder setComputePipelineState:self->_halfDownSampler];
+  [computeCommandEncoder setTexture:v24 atIndex:0];
+  [computeCommandEncoder setTexture:v23 atIndex:1];
   v29 = (v12 + 15) >> 4;
   v30 = (v13 + 15) >> 4;
   v31 = 1;
   v27 = vdupq_n_s64(0x10uLL);
   v28 = 1;
-  [v19 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v19 endEncoding];
-  v20 = [v26 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v20 setLabel:@"_halfDownSampler"];
-  [v20 setComputePipelineState:self->_halfDownSampler];
-  [v20 setTexture:v22 atIndex:0];
-  [v20 setTexture:v18 atIndex:1];
+  [computeCommandEncoder2 setLabel:@"_halfDownSampler"];
+  [computeCommandEncoder2 setComputePipelineState:self->_halfDownSampler];
+  [computeCommandEncoder2 setTexture:v22 atIndex:0];
+  [computeCommandEncoder2 setTexture:v18 atIndex:1];
   v29 = (v15 + 15) >> 4;
   v30 = (v16 + 15) >> 4;
   v31 = 1;
   v27 = vdupq_n_s64(0x10uLL);
   v28 = 1;
-  [v20 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v20 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)cropFrame:(const __CVBuffer *)a3 destination:(__CVBuffer *)a4 rect:(CGRect)a5
+- (void)cropFrame:(const __CVBuffer *)frame destination:(__CVBuffer *)destination rect:(CGRect)rect
 {
-  CVPixelBufferGetWidth(a4);
-  CVPixelBufferGetHeight(a4);
+  CVPixelBufferGetWidth(destination);
+  CVPixelBufferGetHeight(destination);
   hwScaler = self->_hwScaler;
-  CVPixelBufferGetIOSurface(a3);
-  CVPixelBufferGetIOSurface(a4);
+  CVPixelBufferGetIOSurface(frame);
+  CVPixelBufferGetIOSurface(destination);
   IOSurfaceAcceleratorTransformSurface();
 }
 
-- (void)downsampleWithHWScalerSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4
+- (void)downsampleWithHWScalerSource:(__CVBuffer *)source destination:(__CVBuffer *)destination
 {
   if (!self->_yuvSourceDownsampledBuffer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3060 description:@"Relighting code should be rewritten to support different scale!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3060 description:@"Relighting code should be rewritten to support different scale!"];
 
-    v9 = CVPixelBufferGetWidth(a3) >> 2;
-    v10 = CVPixelBufferGetHeight(a3) >> 2;
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    v9 = CVPixelBufferGetWidth(source) >> 2;
+    v10 = CVPixelBufferGetHeight(source) >> 2;
+    PixelFormatType = CVPixelBufferGetPixelFormatType(source);
     self->_yuvSourceDownsampledBuffer = [(VideoMattingMetal *)self createCVBufferWithWidth:v9 height:v10 format:PixelFormatType];
     if (PixelFormatType != 875704422)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3068 description:@"Unexpected source format in downsampleWithHWScalerSource()!"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3068 description:@"Unexpected source format in downsampleWithHWScalerSource()!"];
     }
 
     v12 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:500 width:v9 height:v10 mipmapped:0];
@@ -216,26 +216,26 @@ LABEL_3:
   CFDictionarySetValue(Mutable, *MEMORY[0x1E69A85B8], *MEMORY[0x1E695E4D0]);
   CFDictionarySetValue(Mutable, *MEMORY[0x1E69A8508], v16);
   hwScaler = self->_hwScaler;
-  CVPixelBufferGetIOSurface(a3);
+  CVPixelBufferGetIOSurface(source);
   CVPixelBufferGetIOSurface(self->_yuvSourceDownsampledBuffer);
   IOSurfaceAcceleratorTransformSurface();
   v18 = self->_hwScaler;
   CVPixelBufferGetIOSurface(self->_yuvSourceDownsampledBuffer);
-  CVPixelBufferGetIOSurface(a4);
+  CVPixelBufferGetIOSurface(destination);
   IOSurfaceAcceleratorTransformSurface();
   CFRelease(Mutable);
 }
 
-- (void)encode420HybridDownsamplingToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 destination:(__CVBuffer *)a5
+- (void)encode420HybridDownsamplingToCommandBuffer:(id)buffer source:(__CVBuffer *)source destination:(__CVBuffer *)destination
 {
-  v9 = a3;
+  bufferCopy = buffer;
   yuvSourceDownsampledBuffer = self->_yuvSourceDownsampledBuffer;
-  v23 = v9;
+  v23 = bufferCopy;
   if (!yuvSourceDownsampledBuffer)
   {
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+    Width = CVPixelBufferGetWidth(source);
+    Height = CVPixelBufferGetHeight(source);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(source);
     v14 = Width >> 1;
     v15 = Height >> 1;
     self->_yuvSourceDownsampledBuffer = [(VideoMattingMetal *)self createCVBufferWithWidth:v14 height:v15 format:PixelFormatType];
@@ -245,8 +245,8 @@ LABEL_3:
 
     if ((v18 & 1) == 0)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3018 description:@"Unexpected source format in encode420HybridDownsamplingToCommandBuffer()!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3018 description:@"Unexpected source format in encode420HybridDownsamplingToCommandBuffer()!"];
     }
 
     v19 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:500 width:v14 height:v15 mipmapped:0];
@@ -256,88 +256,88 @@ LABEL_3:
     self->_yuvSourceDownsampledTexture = v20;
 
     yuvSourceDownsampledBuffer = self->_yuvSourceDownsampledBuffer;
-    v9 = v23;
+    bufferCopy = v23;
   }
 
-  [(VideoMattingMetal *)self encode420Bilinear2xDownsamplingToCommandBuffer:v9 source:a4 destination:yuvSourceDownsampledBuffer];
-  [(VideoMattingMetal *)self encode420ScalingByMPSToCommandBuffer:v23 source:self->_yuvSourceDownsampledBuffer destination:a5];
+  [(VideoMattingMetal *)self encode420Bilinear2xDownsamplingToCommandBuffer:bufferCopy source:source destination:yuvSourceDownsampledBuffer];
+  [(VideoMattingMetal *)self encode420ScalingByMPSToCommandBuffer:v23 source:self->_yuvSourceDownsampledBuffer destination:destination];
 }
 
-- (void)renderStageLightWithSource:(const __CVBuffer *)a3 alpha:(const __CVBuffer *)a4 canonicalDisparity:(const __CVBuffer *)a5 dstColor:(__CVBuffer *)a6 blackBackgroundIntensity:(float)a7 vignetteIntensity:(float)a8 isFinalStage:(BOOL)a9 callbackQueue:(id)a10 withCallback:(id)a11
+- (void)renderStageLightWithSource:(const __CVBuffer *)source alpha:(const __CVBuffer *)alpha canonicalDisparity:(const __CVBuffer *)disparity dstColor:(__CVBuffer *)color blackBackgroundIntensity:(float)intensity vignetteIntensity:(float)vignetteIntensity isFinalStage:(BOOL)stage callbackQueue:(id)self0 withCallback:(id)self1
 {
-  v11 = a9;
-  v32 = a10;
-  v31 = a11;
-  if (a7 < 0.0 || a7 > 1.0)
+  stageCopy = stage;
+  queueCopy = queue;
+  callbackCopy = callback;
+  if (intensity < 0.0 || intensity > 1.0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2881 description:{@"blackBackgroundIntensity not in [0, 1]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2881 description:{@"blackBackgroundIntensity not in [0, 1]"}];
   }
 
   v42[0] = 0;
   v41 = 0;
-  v21 = sub_1DED6F954(a3);
-  v22 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a3 textureDescriptor:v21 plane:0 textureCache:self->_textureCache];
+  v21 = sub_1DED6F954(source);
+  v22 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:source textureDescriptor:v21 plane:0 textureCache:self->_textureCache];
 
-  v23 = sub_1DED6F954(a4);
-  v24 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a4 textureDescriptor:v23 plane:0 textureCache:self->_textureCache];
+  v23 = sub_1DED6F954(alpha);
+  v24 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:alpha textureDescriptor:v23 plane:0 textureCache:self->_textureCache];
 
-  CVPixelBufferRetain(a3);
-  CVPixelBufferRetain(a4);
-  CVPixelBufferRetain(a5);
-  CVPixelBufferRetain(a6);
-  [VideoMattingMetal decomposeYuvPixelBuffer:a6 yTexture:v42 uvTexture:&v41 textureCache:self->_textureCache];
+  CVPixelBufferRetain(source);
+  CVPixelBufferRetain(alpha);
+  CVPixelBufferRetain(disparity);
+  CVPixelBufferRetain(color);
+  [VideoMattingMetal decomposeYuvPixelBuffer:color yTexture:v42 uvTexture:&v41 textureCache:self->_textureCache];
   [v42[0] setLabel:@"dstColorTex_Y"];
   [v41 setLabel:@"dstColorTex_uv"];
-  v25 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v25 setLabel:@"renderContinuousWithSource"];
-  *&v26 = a7;
-  *&v27 = a8;
-  [(CVAFilterRenderStagelight *)self->_stagelightFilter encodeToCommandBuffer:v25 srcColorTex:v22 srcAlphaTex:v24 dstYTex:v42[0] dstUVTex:v41 stageLightProxyLut:self->_stageLightProxyLut stageLightLut:v26 blackBackgroundIntensity:v27 vignetteIntensity:self->_stageLightLut];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"renderContinuousWithSource"];
+  *&v26 = intensity;
+  *&v27 = vignetteIntensity;
+  [(CVAFilterRenderStagelight *)self->_stagelightFilter encodeToCommandBuffer:commandBuffer srcColorTex:v22 srcAlphaTex:v24 dstYTex:v42[0] dstUVTex:v41 stageLightProxyLut:self->_stageLightProxyLut stageLightLut:v26 blackBackgroundIntensity:v27 vignetteIntensity:self->_stageLightLut];
   dispatch_semaphore_wait(self->_renderingCallbackSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = sub_1DED62EC4;
   v33[3] = &unk_1E869B040;
-  v37 = a3;
-  v38 = a4;
-  v39 = a5;
-  v28 = v32;
+  sourceCopy = source;
+  alphaCopy = alpha;
+  disparityCopy = disparity;
+  v28 = queueCopy;
   v34 = v28;
-  v35 = self;
-  v29 = v31;
+  selfCopy = self;
+  v29 = callbackCopy;
   v36 = v29;
-  v40 = a6;
-  [v25 addCompletedHandler:v33];
-  [v25 commit];
+  colorCopy = color;
+  [commandBuffer addCompletedHandler:v33];
+  [commandBuffer commit];
 
   self->_lastCommittedCommand = 3;
-  if (v11)
+  if (stageCopy)
   {
     ++self->_frameIndex;
   }
 }
 
-- (void)renderContinuousWithSource:(const __CVBuffer *)a3 segmentationPixelBuffer:(const __CVBuffer *)a4 alpha:(const __CVBuffer *)a5 canonicalDisparity:(const __CVBuffer *)a6 disparityInFocus:(float)a7 focusCanonicalDisparity:(float)a8 fNumber:(float)a9 infConvolutionScale:(float)a10 noiseBits:(float)a11 disparityUpdateRate:(float)a12 focusThresholdHardness:(float)a13 cubeIntensity:(float)a14 usePostprocessedDisparity:(BOOL)a15 dstColor:(__CVBuffer *)a16 isFinalStage:(BOOL)a17 properties:(id)a18 callbackQueue:(id)a19 withCallback:(id)a20
+- (void)renderContinuousWithSource:(const __CVBuffer *)source segmentationPixelBuffer:(const __CVBuffer *)buffer alpha:(const __CVBuffer *)alpha canonicalDisparity:(const __CVBuffer *)disparity disparityInFocus:(float)focus focusCanonicalDisparity:(float)canonicalDisparity fNumber:(float)number infConvolutionScale:(float)self0 noiseBits:(float)self1 disparityUpdateRate:(float)self2 focusThresholdHardness:(float)self3 cubeIntensity:(float)self4 usePostprocessedDisparity:(BOOL)self5 dstColor:(__CVBuffer *)self6 isFinalStage:(BOOL)self7 properties:(id)self8 callbackQueue:(id)self9 withCallback:(id)callback
 {
   v128[5] = *MEMORY[0x1E69E9840];
-  v107 = a18;
-  v104 = a19;
-  v105 = a20;
-  v34 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v102 = a15;
-  [v34 setLabel:@"renderContinuousWithSource"];
+  propertiesCopy = properties;
+  queueCopy = queue;
+  callbackCopy = callback;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  postprocessedDisparityCopy = postprocessedDisparity;
+  [commandBuffer setLabel:@"renderContinuousWithSource"];
   v119 = 0;
   v120 = 0;
-  [VideoMattingMetal decomposeYuvPixelBuffer:a16 yTexture:&v120 uvTexture:&v119 textureCache:self->_textureCache];
+  [VideoMattingMetal decomposeYuvPixelBuffer:color yTexture:&v120 uvTexture:&v119 textureCache:self->_textureCache];
   [v120 setLabel:@"dstColorTextureY"];
   [v119 setLabel:@"dstColorTextureUV"];
-  CVPixelBufferRetain(a3);
-  CVPixelBufferRetain(a5);
-  CVPixelBufferRetain(a6);
-  CVPixelBufferRetain(a16);
-  v106 = a6;
-  pixelBuffer = a3;
+  CVPixelBufferRetain(source);
+  CVPixelBufferRetain(alpha);
+  CVPixelBufferRetain(disparity);
+  CVPixelBufferRetain(color);
+  disparityCopy = disparity;
+  pixelBuffer = source;
   if (self->_sdofRenderingHasForegroundBlur)
   {
     if (!self->_renderStateIsConfigured)
@@ -450,33 +450,33 @@ LABEL_3:
     v109 = [(VideoMattingMetal *)self getPTTextureFromLuma:v120 chroma:v119];
     v123 = 0;
     v118 = 0;
-    [VideoMattingMetal decomposeYuvPixelBuffer:a3 yTexture:&v123 uvTexture:&v118 textureCache:self->_textureCache];
-    v53 = [v34 blitCommandEncoder];
-    [v53 copyFromTexture:v123 toTexture:v120];
-    [v53 copyFromTexture:v118 toTexture:v119];
-    [v53 endEncoding];
+    [VideoMattingMetal decomposeYuvPixelBuffer:source yTexture:&v123 uvTexture:&v118 textureCache:self->_textureCache];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    [blitCommandEncoder copyFromTexture:v123 toTexture:v120];
+    [blitCommandEncoder copyFromTexture:v118 toTexture:v119];
+    [blitCommandEncoder endEncoding];
     v54 = [(VideoMattingMetal *)self getPTTextureFromLuma:v123 chroma:v118];
-    v55 = sub_1DED6F954(a6);
-    v56 = a16;
-    v57 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a6 textureDescriptor:v55 plane:0 textureCache:self->_textureCache];
-    [(VideoMattingMetal *)self encodeRotateAndFitIntoRectWithCommandBuffer:v34 inTexture:v57 outTexture:self->_disparityInScreenAspectRatio rotateClockwise:0];
+    v55 = sub_1DED6F954(disparity);
+    colorCopy = color;
+    v57 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:disparity textureDescriptor:v55 plane:0 textureCache:self->_textureCache];
+    [(VideoMattingMetal *)self encodeRotateAndFitIntoRectWithCommandBuffer:commandBuffer inTexture:v57 outTexture:self->_disparityInScreenAspectRatio rotateClockwise:0];
     origin = self->_primaryCaptureRect.origin;
     size = self->_primaryCaptureRect.size;
-    [(VideoMattingMetal *)self updateRenderRequestwithPerFrameMetadata:self->_sbufMetadata properties:v107];
+    [(VideoMattingMetal *)self updateRenderRequestwithPerFrameMetadata:self->_sbufMetadata properties:propertiesCopy];
     [(PTRenderRequest *)self->_ptRenderRequest setRenderState:self->_ptRenderState];
     [(PTRenderRequest *)self->_ptRenderRequest setSourceColor:v54];
     [(PTRenderRequest *)self->_ptRenderRequest setSourceDisparity:self->_disparityInScreenAspectRatio];
     [(PTRenderRequest *)self->_ptRenderRequest setDestinationColor:v109];
-    *&v58 = a9;
+    *&v58 = number;
     [(PTRenderRequest *)self->_ptRenderRequest setFNumber:v58];
-    *&v59 = a8;
+    *&v59 = canonicalDisparity;
     [(PTRenderRequest *)self->_ptRenderRequest setFocusDisparity:v59];
     v60 = self->_ptRenderRequest;
     *__p = vcvtq_u64_f64(origin);
     *&__p[16] = vcvtq_u64_f64(size);
     [(PTRenderRequest *)v60 setScissorRect:__p];
     [(PTRenderRequest *)self->_ptRenderRequest setColorCube:self->_fgColorLut];
-    [(PTRenderPipeline *)self->_ptRenderPipeline encodeRenderTo:v34 withRenderRequest:self->_ptRenderRequest];
+    [(PTRenderPipeline *)self->_ptRenderPipeline encodeRenderTo:commandBuffer withRenderRequest:self->_ptRenderRequest];
 
     goto LABEL_49;
   }
@@ -492,10 +492,10 @@ LABEL_3:
 
   if (byte_1ECDE1628 == 1)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"fNumber = %f", a9];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"fNumber = %f", number];
   }
 
-  self->_infConvolutionScale = a10;
+  self->_infConvolutionScale = scale;
   lastCommittedCommand = self->_lastCommittedCommand;
   if ((lastCommittedCommand - 3) > 0xFFFFFFFD)
   {
@@ -507,8 +507,8 @@ LABEL_3:
     goto LABEL_21;
   }
 
-  v96 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v96 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2726 description:{@"renderContinuousWithSource called in the wrong state: %d not in {%d, %d}", self->_lastCommittedCommand, 1, 2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2726 description:{@"renderContinuousWithSource called in the wrong state: %d not in {%d, %d}", self->_lastCommittedCommand, 1, 2}];
 
   if (self->_lastCommittedCommand == 2)
   {
@@ -517,30 +517,30 @@ LABEL_21:
   }
 
 LABEL_22:
-  sub_1DED6FBF4(__p, a3, a5, self->_device);
+  sub_1DED6FBF4(__p, source, alpha, self->_device);
   v62 = *&__p[8];
   v109 = *__p;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v65 = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig advancedBuffer];
-  v66 = v65;
-  v67 = [v65 contents];
+  Width = CVPixelBufferGetWidth(source);
+  Height = CVPixelBufferGetHeight(source);
+  advancedBuffer = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig advancedBuffer];
+  v66 = advancedBuffer;
+  contents = [advancedBuffer contents];
 
-  *&v68 = a12;
+  *&v68 = rate;
   [(VideoMattingMetal *)self setRenderingDisparityUpdateRate:v68];
-  *v67 = a8;
-  *(v67 + 4) = a8 * 0.5;
+  *contents = canonicalDisparity;
+  *(contents + 4) = canonicalDisparity * 0.5;
   [(VideoMattingMetal *)self renderingDisparityUpdateRate];
-  v101 = a16;
-  *(v67 + 8) = v69;
-  v70 = 1.0 / fmaxf(a8, 0.001);
-  *(v67 + 20) = a7;
-  *(v67 + 24) = v70;
-  *(v67 + 28) = v70 + v70;
-  *(v67 + 32) = self->_frameIndex == 0;
-  v71 = 1.0 / fmaxf((a8 - a7) * a13, 0.001);
-  *(v67 + 12) = v71;
-  *(v67 + 16) = a8 - (1.0 / v71);
+  colorCopy2 = color;
+  *(contents + 8) = v69;
+  v70 = 1.0 / fmaxf(canonicalDisparity, 0.001);
+  *(contents + 20) = focus;
+  *(contents + 24) = v70;
+  *(contents + 28) = v70 + v70;
+  *(contents + 32) = self->_frameIndex == 0;
+  v71 = 1.0 / fmaxf((canonicalDisparity - focus) * hardness, 0.001);
+  *(contents + 12) = v71;
+  *(contents + 16) = canonicalDisparity - (1.0 / v71);
   if ((atomic_load_explicit(&qword_1ECDE1640, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1640))
   {
     qword_1ECDE1638 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -567,7 +567,7 @@ LABEL_22:
 
   else
   {
-    v76 = (sub_1DED2E328([v107 videoPipelineDevice]) >> 48) & 1;
+    v76 = (sub_1DED2E328([propertiesCopy videoPipelineDevice]) >> 48) & 1;
   }
 
   if (Width <= Height)
@@ -581,8 +581,8 @@ LABEL_22:
   }
 
   *&v75 = v77;
-  *&v73 = a8;
-  *&v74 = a9;
+  *&v73 = canonicalDisparity;
+  *&v74 = number;
   *&v72 = self->_renderingLensFocalLength_mm;
   [(VideoMattingMetal *)self blurRadiusAndStdAtInfinityForFocalLength:v76 focusCanonicalDisparity:v72 fNumber:v73 xResolution:v74 useNewCoCFormula:v75];
   v79 = v78;
@@ -595,8 +595,8 @@ LABEL_22:
     v83 = 0;
   }
 
-  v84 = ceilf(a11);
-  if (a11 < 0.0)
+  v84 = ceilf(bits);
+  if (bits < 0.0)
   {
     v85 = 4.0;
   }
@@ -607,13 +607,13 @@ LABEL_22:
   }
 
   v86 = 1.0;
-  if (a11 >= 0.0)
+  if (bits >= 0.0)
   {
-    v86 = exp2f(a11 - v84);
+    v86 = exp2f(bits - v84);
   }
 
-  [(CVAFilterColorAlphaToFgBg *)self->_colorAlphaToFgBg encodeToCommandBuffer:v34 srcColorTex:v109 srcAlphaTex:v62 dstForegroundTex:0 dstBackgroundTex:self->_bg];
-  if (self->_renderingUsesPostprocessing && v102)
+  [(CVAFilterColorAlphaToFgBg *)self->_colorAlphaToFgBg encodeToCommandBuffer:commandBuffer srcColorTex:v109 srcAlphaTex:v62 dstForegroundTex:0 dstBackgroundTex:self->_bg];
+  if (self->_renderingUsesPostprocessing && postprocessedDisparityCopy)
   {
     v87 = &OBJC_IVAR___VideoMattingMetal__smoothDisparity;
   }
@@ -623,7 +623,7 @@ LABEL_22:
     v87 = &OBJC_IVAR___VideoMattingMetal__disparity;
   }
 
-  [(VideoMattingMetal *)self encodeDisparitySmoothingToCommandBuffer:v34 disparity:*(&self->super.super.isa + 8 * (self->_frameIndex & 1) + *v87)];
+  [(VideoMattingMetal *)self encodeDisparitySmoothingToCommandBuffer:commandBuffer disparity:*(&self->super.super.isa + 8 * (self->_frameIndex & 1) + *v87)];
   if (self->_isBgColorLutBlack)
   {
     v89 = self->_bg;
@@ -632,7 +632,7 @@ LABEL_22:
   else
   {
     LODWORD(v88) = v81;
-    [(CVAFilterMaskedVariableBlur *)self->_maskedVariableBlur encodeToCommandBuffer:v34 source:self->_bg destination:self->_blurredBg mask:self->_coc maxBlurRadius:v88];
+    [(CVAFilterMaskedVariableBlur *)self->_maskedVariableBlur encodeToCommandBuffer:commandBuffer source:self->_bg destination:self->_blurredBg mask:self->_coc maxBlurRadius:v88];
     v89 = self->_blurredBg;
   }
 
@@ -644,10 +644,10 @@ LABEL_22:
 
   LODWORD(v99) = v85;
   *&v90 = v86;
-  *&v91 = a14;
-  [(CVAFilterRenderComposite *)self->_renderComposite encodeToCommandBuffer:v34 srcForegroundTex:v109 srcBackgroundTex:v89 srcCocTex:self->_coc dstYTex:v120 dstUVTex:v119 fgColorLut:v90 bgColorLut:v91 frameNumber:self->_fgColorLut seedGeneratorFactor:self->_bgColorLut noiseBits:__PAIR64__(v83 noiseBitsFactor:frameIndex) cubeIntensity:v99 maxBlurRadius:v92 | v76];
+  *&v91 = intensity;
+  [(CVAFilterRenderComposite *)self->_renderComposite encodeToCommandBuffer:commandBuffer srcForegroundTex:v109 srcBackgroundTex:v89 srcCocTex:self->_coc dstYTex:v120 dstUVTex:v119 fgColorLut:v90 bgColorLut:v91 frameNumber:self->_fgColorLut seedGeneratorFactor:self->_bgColorLut noiseBits:__PAIR64__(v83 noiseBitsFactor:frameIndex) cubeIntensity:v99 maxBlurRadius:v92 | v76];
 
-  v56 = v101;
+  colorCopy = colorCopy2;
 LABEL_49:
 
   dispatch_semaphore_wait(self->_renderingCallbackSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -655,20 +655,20 @@ LABEL_49:
   v111[1] = 3221225472;
   v111[2] = sub_1DED63F6C;
   v111[3] = &unk_1E869B040;
-  v115 = a5;
-  v116 = v106;
+  alphaCopy = alpha;
+  v116 = disparityCopy;
   v114 = pixelBuffer;
   v111[4] = self;
-  v93 = v104;
+  v93 = queueCopy;
   v112 = v93;
-  v94 = v105;
+  v94 = callbackCopy;
   v113 = v94;
-  v117 = v56;
-  [v34 addCompletedHandler:v111];
-  [v34 commit];
+  v117 = colorCopy;
+  [commandBuffer addCompletedHandler:v111];
+  [commandBuffer commit];
 
   self->_lastCommittedCommand = 3;
-  if (a17)
+  if (stage)
   {
     ++self->_frameIndex;
   }
@@ -676,24 +676,24 @@ LABEL_49:
   v95 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRenderRequestwithPerFrameMetadata:(id)a3 properties:(id)a4
+- (void)updateRenderRequestwithPerFrameMetadata:(id)metadata properties:(id)properties
 {
-  v39 = a3;
-  v6 = a4;
-  v7 = [v39 objectForKeyedSubscript:@"FinalCropRectFromSource"];
+  metadataCopy = metadata;
+  propertiesCopy = properties;
+  v7 = [metadataCopy objectForKeyedSubscript:@"FinalCropRectFromSource"];
 
   if (v7)
   {
-    v8 = [v39 objectForKeyedSubscript:@"FinalCropRectFromSource"];
+    v8 = [metadataCopy objectForKeyedSubscript:@"FinalCropRectFromSource"];
     v9 = [v8 objectForKeyedSubscript:@"Width"];
     [v9 floatValue];
     v11 = v10;
-    v12 = [v39 objectForKeyedSubscript:@"FinalCropRectFromSource"];
+    v12 = [metadataCopy objectForKeyedSubscript:@"FinalCropRectFromSource"];
     v13 = [v12 objectForKeyedSubscript:@"Height"];
     [v13 floatValue];
     v15 = v14;
 
-    sub_1DED2E328([v6 videoPipelineDevice]);
+    sub_1DED2E328([propertiesCopy videoPipelineDevice]);
     *v16.i32 = 1.0 / v11;
     *&v16.i32[1] = 1.0 / v15;
     __asm { FMOV            V1.2S, #1.0 }
@@ -728,30 +728,30 @@ LABEL_49:
   v31 = v29 / width;
   v32 = height / v30;
   [(PTRenderRequest *)self->_ptRenderRequest setVisCropFactorPreview:COERCE_DOUBLE(vmul_n_f32(_D8, sqrtf((v32 * v32) + (v31 * v31)) / 1.4142))];
-  v33 = [v39 objectForKeyedSubscript:@"FocalLenIn35mmFilm"];
+  v33 = [metadataCopy objectForKeyedSubscript:@"FocalLenIn35mmFilm"];
   [v33 floatValue];
   [(PTRenderRequest *)self->_ptRenderRequest setFocalLenIn35mmFilm:?];
 
-  v34 = [v39 objectForKeyedSubscript:@"SensorID"];
+  v34 = [metadataCopy objectForKeyedSubscript:@"SensorID"];
   -[PTRenderRequest setSensorID:](self->_ptRenderRequest, "setSensorID:", [v34 intValue]);
 
-  v35 = [v39 objectForKeyedSubscript:@"ConversionGain"];
+  v35 = [metadataCopy objectForKeyedSubscript:@"ConversionGain"];
   -[PTRenderRequest setConversionGain:](self->_ptRenderRequest, "setConversionGain:", [v35 intValue]);
 
-  v36 = [v39 objectForKeyedSubscript:@"ReadNoise_1x"];
+  v36 = [metadataCopy objectForKeyedSubscript:@"ReadNoise_1x"];
   -[PTRenderRequest setReadNoise_1x:](self->_ptRenderRequest, "setReadNoise_1x:", [v36 intValue]);
 
-  v37 = [v39 objectForKeyedSubscript:@"ReadNoise_8x"];
+  v37 = [metadataCopy objectForKeyedSubscript:@"ReadNoise_8x"];
   -[PTRenderRequest setReadNoise_8x:](self->_ptRenderRequest, "setReadNoise_8x:", [v37 intValue]);
 
-  v38 = [v39 objectForKeyedSubscript:@"AGC"];
+  v38 = [metadataCopy objectForKeyedSubscript:@"AGC"];
   -[PTRenderRequest setAGC:](self->_ptRenderRequest, "setAGC:", [v38 intValue]);
 }
 
-- (id)getPTTextureFromLuma:(id)a3 chroma:(id)a4
+- (id)getPTTextureFromLuma:(id)luma chroma:(id)chroma
 {
-  v5 = a3;
-  v6 = a4;
+  lumaCopy = luma;
+  chromaCopy = chroma;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -770,7 +770,7 @@ LABEL_49:
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  v9 = [v8 createYUV420:v5 chroma:v6];
+  v9 = [v8 createYUV420:lumaCopy chroma:chromaCopy];
   [v9 setColorPrimaries:*MEMORY[0x1E695FFD0]];
   [v9 setTransferFunction:*MEMORY[0x1E6965F50]];
   [v9 setYCbCrMatrix:*MEMORY[0x1E6965FC8]];
@@ -780,59 +780,59 @@ LABEL_49:
   return v9;
 }
 
-- (void)encodeDisparitySmoothingToCommandBuffer:(id)a3 disparity:(id)a4
+- (void)encodeDisparitySmoothingToCommandBuffer:(id)buffer disparity:(id)disparity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 computeCommandEncoder];
-  [v8 setLabel:@"_renderingDisparityDeweightKernel"];
-  [v8 setComputePipelineState:self->_renderingDisparityDeweightKernel];
-  [v8 setTexture:v7 atIndex:0];
-  [v8 setTexture:self->_deweightedDisparity atIndex:1];
-  v9 = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig currentBuffer];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_renderingDisparityDeweightKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_renderingDisparityDeweightKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:self->_deweightedDisparity atIndex:1];
+  currentBuffer = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig currentBuffer];
+  [computeCommandEncoder setBuffer:currentBuffer offset:0 atIndex:0];
 
-  v16 = ([v7 width] + 15) >> 4;
-  v17 = ([v7 height] + 15) >> 4;
+  v16 = ([disparityCopy width] + 15) >> 4;
+  v17 = ([disparityCopy height] + 15) >> 4;
   v18 = 1;
   v14 = xmmword_1DED747F0;
   v15 = 1;
-  [v8 dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
-  [v8 endEncoding];
-  [(MPSImageBox *)self->_disparityBlurBoxKernel encodeToCommandBuffer:v6 sourceTexture:self->_deweightedDisparity destinationTexture:self->_shift[self->_frameIndex & 1]];
-  [(CVAFilterBox *)self->_boxFilter encodeToCommandBuffer:v6 inTexture:self->_colorSim outTexture:self->_colorSim radius:5 normalize:2];
-  v10 = [v6 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
+  [(MPSImageBox *)self->_disparityBlurBoxKernel encodeToCommandBuffer:bufferCopy sourceTexture:self->_deweightedDisparity destinationTexture:self->_shift[self->_frameIndex & 1]];
+  [(CVAFilterBox *)self->_boxFilter encodeToCommandBuffer:bufferCopy inTexture:self->_colorSim outTexture:self->_colorSim radius:5 normalize:2];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v10 setLabel:@"_renderingDisparityFillAndFilterKernel"];
-  [v10 setComputePipelineState:self->_renderingDisparityFillAndFilterKernel];
-  [v10 setTexture:self->_shift[(self->_frameIndex & 1) == 0] atIndex:0];
-  [v10 setTexture:self->_shift[self->_frameIndex & 1] atIndex:1];
-  [v10 setTexture:self->_colorSim atIndex:2];
-  [v10 setTexture:self->_shift[self->_frameIndex & 1] atIndex:3];
-  [v10 setTexture:self->_coc atIndex:4];
-  v11 = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig currentBuffer];
-  [v10 setBuffer:v11 offset:0 atIndex:0];
+  [computeCommandEncoder2 setLabel:@"_renderingDisparityFillAndFilterKernel"];
+  [computeCommandEncoder2 setComputePipelineState:self->_renderingDisparityFillAndFilterKernel];
+  [computeCommandEncoder2 setTexture:self->_shift[(self->_frameIndex & 1) == 0] atIndex:0];
+  [computeCommandEncoder2 setTexture:self->_shift[self->_frameIndex & 1] atIndex:1];
+  [computeCommandEncoder2 setTexture:self->_colorSim atIndex:2];
+  [computeCommandEncoder2 setTexture:self->_shift[self->_frameIndex & 1] atIndex:3];
+  [computeCommandEncoder2 setTexture:self->_coc atIndex:4];
+  currentBuffer2 = [(CVAPhotoMTLRingBuffer *)self->_disparityConfig currentBuffer];
+  [computeCommandEncoder2 setBuffer:currentBuffer2 offset:0 atIndex:0];
 
-  v12 = [v7 width];
-  v13 = [v7 height];
-  v16 = (v12 + 15) >> 4;
-  v17 = (v13 + 15) >> 4;
+  width = [disparityCopy width];
+  height = [disparityCopy height];
+  v16 = (width + 15) >> 4;
+  v17 = (height + 15) >> 4;
   v18 = 1;
   v14 = xmmword_1DED747F0;
   v15 = 1;
-  [v10 dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
-  [v10 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)encodeDisparityDecimateToCommandBuffer:(id)a3 canonicalDisparity:(__CVBuffer *)a4 disparityOut:(id)a5
+- (void)encodeDisparityDecimateToCommandBuffer:(id)buffer canonicalDisparity:(__CVBuffer *)disparity disparityOut:(id)out
 {
-  v8 = a3;
-  v9 = a5;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v12 = [v9 width];
-  v13 = [v9 height];
-  if (CVPixelBufferGetPixelFormatType(a4) == 1751411059)
+  bufferCopy = buffer;
+  outCopy = out;
+  Width = CVPixelBufferGetWidth(disparity);
+  Height = CVPixelBufferGetHeight(disparity);
+  width = [outCopy width];
+  height = [outCopy height];
+  if (CVPixelBufferGetPixelFormatType(disparity) == 1751411059)
   {
     v14 = 25;
   }
@@ -843,122 +843,122 @@ LABEL_49:
   }
 
   v15 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:Width height:Height mipmapped:0];
-  v16 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a4 textureDescriptor:v15 plane:0 textureCache:self->_textureCache];
+  v16 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:disparity textureDescriptor:v15 plane:0 textureCache:self->_textureCache];
   if (self->_sdofRenderingHasForegroundBlur)
   {
-    [(VideoMattingMetal *)self encodeRotateAndFitIntoRectWithCommandBuffer:v8 inTexture:v16 outTexture:v9 rotateClockwise:0];
+    [(VideoMattingMetal *)self encodeRotateAndFitIntoRectWithCommandBuffer:bufferCopy inTexture:v16 outTexture:outCopy rotateClockwise:0];
   }
 
   else
   {
-    v17 = [v8 computeCommandEncoder];
-    [v17 setLabel:@"_disparityDecimateKernel"];
-    [v17 setComputePipelineState:self->_disparityDecimateKernel];
-    [v17 setTexture:v16 atIndex:0];
-    [v17 setTexture:v9 atIndex:1];
-    v20[0] = (v12 + 15) >> 4;
-    v20[1] = (v13 + 15) >> 4;
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"_disparityDecimateKernel"];
+    [computeCommandEncoder setComputePipelineState:self->_disparityDecimateKernel];
+    [computeCommandEncoder setTexture:v16 atIndex:0];
+    [computeCommandEncoder setTexture:outCopy atIndex:1];
+    v20[0] = (width + 15) >> 4;
+    v20[1] = (height + 15) >> 4;
     v20[2] = 1;
     v18 = xmmword_1DED747F0;
     v19 = 1;
-    [v17 dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
-    [v17 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)encodeRotateAndFitIntoRectWithCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5 rotateClockwise:(BOOL)a6
+- (void)encodeRotateAndFitIntoRectWithCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture rotateClockwise:(BOOL)clockwise
 {
-  v10 = a4;
-  v11 = a5;
-  v19 = a6;
+  textureCopy = texture;
+  outTextureCopy = outTexture;
+  clockwiseCopy = clockwise;
   *v12.f32 = vcvt_f32_s32(*&self->_width);
   v12.i64[1] = v12.i64[0];
   v18 = vdivq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(self->_primaryCaptureRect.origin), self->_primaryCaptureRect.size), v12);
-  v13 = [a3 computeCommandEncoder];
-  [v13 setLabel:@"_rotateAndFitIntoRectKernel"];
-  [v13 setComputePipelineState:self->_rotateAndFitIntoRectKernel];
-  [v13 setTexture:v10 atIndex:0];
-  [v13 setTexture:v11 atIndex:1];
-  [v13 setBytes:&v18 length:16 atIndex:0];
-  [v13 setBytes:&v19 length:1 atIndex:1];
-  v14 = [(MTLComputePipelineState *)self->_rotateAndFitIntoRectKernel threadExecutionWidth];
-  v15 = [(MTLComputePipelineState *)self->_rotateAndFitIntoRectKernel maxTotalThreadsPerThreadgroup];
-  v17[0] = [v11 width];
-  v17[1] = [v11 height];
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_rotateAndFitIntoRectKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_rotateAndFitIntoRectKernel];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:outTextureCopy atIndex:1];
+  [computeCommandEncoder setBytes:&v18 length:16 atIndex:0];
+  [computeCommandEncoder setBytes:&clockwiseCopy length:1 atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_rotateAndFitIntoRectKernel threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_rotateAndFitIntoRectKernel maxTotalThreadsPerThreadgroup];
+  v17[0] = [outTextureCopy width];
+  v17[1] = [outTextureCopy height];
   v17[2] = 1;
-  v16[0] = v14;
-  v16[1] = v15 / v14;
+  v16[0] = threadExecutionWidth;
+  v16[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v16[2] = 1;
-  [v13 dispatchThreads:v17 threadsPerThreadgroup:v16];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v17 threadsPerThreadgroup:v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeGuidedFilterWeightToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputSegmentation:(id)a5 useSegmentationOnly:(BOOL)a6 inputForegroundDistance:(id)a7 outputForegroundMask:(id)a8 outputWeight:(id)a9 minDistToDeweight:(float)a10 unconfidentWeight:(float)a11 dilateForegroundMask:(BOOL)a12 foregroundMaskDilationRadius:(float)a13
+- (void)encodeGuidedFilterWeightToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputSegmentation:(id)segmentation useSegmentationOnly:(BOOL)only inputForegroundDistance:(id)distance outputForegroundMask:(id)mask outputWeight:(id)weight minDistToDeweight:(float)self0 unconfidentWeight:(float)self1 dilateForegroundMask:(BOOL)self2 foregroundMaskDilationRadius:(float)self3
 {
-  _S8 = a13;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = [v26 width];
-  if (v29 != [v24 width])
+  _S8 = radius;
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  segmentationCopy = segmentation;
+  distanceCopy = distance;
+  maskCopy = mask;
+  weightCopy = weight;
+  width = [distanceCopy width];
+  if (width != [disparityCopy width])
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2158 description:@"Precondition: inputForegroundDistance.width == disparity.width"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2158 description:@"Precondition: inputForegroundDistance.width == disparity.width"];
   }
 
-  v30 = [v26 height];
-  if (v30 != [v24 height])
+  height = [distanceCopy height];
+  if (height != [disparityCopy height])
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2160 description:@"Precondition: inputForegroundDistance.height == disparity.height"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2160 description:@"Precondition: inputForegroundDistance.height == disparity.height"];
   }
 
-  v31 = [v28 width];
-  if (v31 != [v24 width])
+  width2 = [weightCopy width];
+  if (width2 != [disparityCopy width])
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2161 description:@"Precondition: outputWeight.width == disparity.width"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2161 description:@"Precondition: outputWeight.width == disparity.width"];
   }
 
-  v32 = [v28 height];
-  if (v32 != [v24 height])
+  height2 = [weightCopy height];
+  if (height2 != [disparityCopy height])
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2162 description:@"Precondition: outputWeight.height == disparity.height"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:2162 description:@"Precondition: outputWeight.height == disparity.height"];
   }
 
-  *v46 = a10;
-  *&v46[1] = a11;
-  v47 = a6;
-  v49 = a12;
+  *v46 = deweight;
+  *&v46[1] = unconfidentWeight;
+  onlyCopy = only;
+  foregroundMaskCopy = foregroundMask;
   __asm { FCVT            H0, S8 }
 
   v48 = _H0;
-  v38 = [v23 computeCommandEncoder];
-  [v38 setLabel:@"_guidedFilterWeightKernel"];
-  [v38 setComputePipelineState:self->_guidedFilterWeightKernel];
-  [v38 setTexture:v24 atIndex:0];
-  [v38 setTexture:v26 atIndex:1];
-  [v38 setTexture:v25 atIndex:2];
-  [v38 setTexture:v28 atIndex:3];
-  [v38 setTexture:v27 atIndex:4];
-  [v38 setBytes:v46 length:16 atIndex:0];
-  v45[0] = ([v24 width] + 15) >> 4;
-  v45[1] = ([v24 height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_guidedFilterWeightKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_guidedFilterWeightKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:distanceCopy atIndex:1];
+  [computeCommandEncoder setTexture:segmentationCopy atIndex:2];
+  [computeCommandEncoder setTexture:weightCopy atIndex:3];
+  [computeCommandEncoder setTexture:maskCopy atIndex:4];
+  [computeCommandEncoder setBytes:v46 length:16 atIndex:0];
+  v45[0] = ([disparityCopy width] + 15) >> 4;
+  v45[1] = ([disparityCopy height] + 15) >> 4;
   v45[2] = 1;
   v43 = xmmword_1DED747F0;
   v44 = 1;
-  [v38 dispatchThreadgroups:v45 threadsPerThreadgroup:&v43];
-  [v38 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v45 threadsPerThreadgroup:&v43];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeScaleSourceToCommandBuffer:(id)a3 source:(__CVBuffer *)a4 targetWidth:(unint64_t)a5 targetHeight:(unint64_t)a6
+- (void)encodeScaleSourceToCommandBuffer:(id)buffer source:(__CVBuffer *)source targetWidth:(unint64_t)width targetHeight:(unint64_t)height
 {
-  v27 = a3;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  bufferCopy = buffer;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(source);
   v11 = +[CVAVideoPipelineProperties_Impl allSupportedYCbCrPixelFormats];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:PixelFormatType];
   v13 = [v11 containsObject:v12];
@@ -987,8 +987,8 @@ LABEL_49:
       v17 = 1111970369;
     }
 
-    self->_scaledSourceCV[v15] = [(VideoMattingMetal *)self createCVBufferWithWidth:a5 height:a6 format:v17];
-    v18 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:a5 height:a6 mipmapped:0];
+    self->_scaledSourceCV[v15] = [(VideoMattingMetal *)self createCVBufferWithWidth:width height:height format:v17];
+    v18 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:width height:height mipmapped:0];
     [v18 setUsage:3];
     v19 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:self->_scaledSourceCV[v15] textureDescriptor:v18 plane:0 textureCache:self->_textureCache];
     v20 = scaledSource[v15];
@@ -1001,65 +1001,65 @@ LABEL_49:
 
   if (v23)
   {
-    [(VideoMattingMetal *)self encode420HybridDownsamplingToCommandBuffer:v27 source:a4 destination:self->_scaledSourceCV[v15]];
+    [(VideoMattingMetal *)self encode420HybridDownsamplingToCommandBuffer:bufferCopy source:source destination:self->_scaledSourceCV[v15]];
   }
 
   else
   {
-    Width = CVPixelBufferGetWidth(a4);
-    v25 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:Width height:CVPixelBufferGetHeight(a4) mipmapped:0];
-    v26 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a4 textureDescriptor:v25 plane:0 textureCache:self->_textureCache];
-    [(CVAFilterHybridResampling *)self->_hybridResampler encodeHybridDownsamplingToCommandBuffer:v27 source:v26 destination:scaledSource[v15]];
+    Width = CVPixelBufferGetWidth(source);
+    v25 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v14 width:Width height:CVPixelBufferGetHeight(source) mipmapped:0];
+    v26 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:source textureDescriptor:v25 plane:0 textureCache:self->_textureCache];
+    [(CVAFilterHybridResampling *)self->_hybridResampler encodeHybridDownsamplingToCommandBuffer:bufferCopy source:v26 destination:scaledSource[v15]];
   }
 }
 
-- (__CVBuffer)createCVBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5
+- (__CVBuffer)createCVBufferWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = *MEMORY[0x1E69660D8];
   v14[0] = MEMORY[0x1E695E0F8];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  CVPixelBufferCreate(*MEMORY[0x1E695E480], a3, a4, a5, v8, &v12);
+  CVPixelBufferCreate(*MEMORY[0x1E695E480], width, height, format, v8, &v12);
   v9 = v12;
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (void)encodeFilterCoefficientToBuffer:(id)a3 inputCoeff:(id)a4 prevCoeff:(id)a5 outCoeff:(id)a6 inColorSim:(id)a7 updateRate:(float)a8
+- (void)encodeFilterCoefficientToBuffer:(id)buffer inputCoeff:(id)coeff prevCoeff:(id)prevCoeff outCoeff:(id)outCoeff inColorSim:(id)sim updateRate:(float)rate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [v15 width];
-  v20 = [v15 height];
+  bufferCopy = buffer;
+  coeffCopy = coeff;
+  prevCoeffCopy = prevCoeff;
+  outCoeffCopy = outCoeff;
+  simCopy = sim;
+  width = [coeffCopy width];
+  height = [coeffCopy height];
   v25[0] = self->_frameIndex != 0;
-  v26 = 1.0 - a8;
-  v21 = [v14 computeCommandEncoder];
-  [v21 setLabel:@"_temporalCoefficientsFilterKernel"];
-  [v21 setComputePipelineState:self->_temporalCoefficientsFilterKernel];
-  [v21 setTexture:v15 atIndex:0];
-  [v21 setTexture:v16 atIndex:1];
-  [v21 setTexture:v17 atIndex:2];
-  [v21 setTexture:v18 atIndex:3];
-  [v21 setBytes:v25 length:12 atIndex:0];
-  v24[0] = (v19 + 15) >> 4;
-  v24[1] = (v20 + 15) >> 4;
+  v26 = 1.0 - rate;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_temporalCoefficientsFilterKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_temporalCoefficientsFilterKernel];
+  [computeCommandEncoder setTexture:coeffCopy atIndex:0];
+  [computeCommandEncoder setTexture:prevCoeffCopy atIndex:1];
+  [computeCommandEncoder setTexture:outCoeffCopy atIndex:2];
+  [computeCommandEncoder setTexture:simCopy atIndex:3];
+  [computeCommandEncoder setBytes:v25 length:12 atIndex:0];
+  v24[0] = (width + 15) >> 4;
+  v24[1] = (height + 15) >> 4;
   v24[2] = 1;
   v22 = vdupq_n_s64(0x10uLL);
   v23 = 1;
-  [v21 dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
-  [v21 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)initSourceTexture:(__CVBuffer *)a3
+- (void)initSourceTexture:(__CVBuffer *)texture
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(texture);
+  Height = CVPixelBufferGetHeight(texture);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(texture);
   v10 = +[CVAVideoPipelineProperties_Impl allSupportedYCbCrPixelFormats];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:PixelFormatType];
   v8 = [v10 containsObject:v7];
@@ -1078,20 +1078,20 @@ LABEL_49:
   [v11 setStorageMode:0];
 }
 
-- (void)alphaMattingWithPostprocessedDisparity:(const __CVBuffer *)a3 source:(const __CVBuffer *)a4 inSegmentation:(__CVBuffer *)a5 alpha:(__CVBuffer *)a6 staticParams:(const VideoMattingStaticParams *)a7 dynamicParams:(const void *)a8 usePostprocessedDisparity:(BOOL)a9 isFinalStage:(BOOL)a10 dilateForegroundMask:(BOOL)a11 properties:(id)a12 callbackQueue:(id)a13 callback:(id)a14
+- (void)alphaMattingWithPostprocessedDisparity:(const __CVBuffer *)disparity source:(const __CVBuffer *)source inSegmentation:(__CVBuffer *)segmentation alpha:(__CVBuffer *)alpha staticParams:(const VideoMattingStaticParams *)params dynamicParams:(const void *)dynamicParams usePostprocessedDisparity:(BOOL)postprocessedDisparity isFinalStage:(BOOL)self0 dilateForegroundMask:(BOOL)self1 properties:(id)self2 callbackQueue:(id)self3 callback:(id)self4
 {
-  v76 = a12;
-  v72 = a13;
-  v71 = a14;
-  v19 = sub_1DED6F954(a4);
-  v69 = a4;
-  v20 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a4 textureDescriptor:v19 plane:0 textureCache:self->_textureCache];
+  propertiesCopy = properties;
+  queueCopy = queue;
+  callbackCopy = callback;
+  v19 = sub_1DED6F954(source);
+  sourceCopy = source;
+  v20 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:source textureDescriptor:v19 plane:0 textureCache:self->_textureCache];
 
   v73 = v20;
-  if (a5)
+  if (segmentation)
   {
-    v21 = sub_1DED6F954(a5);
-    v75 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a5 textureDescriptor:v21 plane:0 textureCache:self->_textureCache];
+    v21 = sub_1DED6F954(segmentation);
+    v75 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:segmentation textureDescriptor:v21 plane:0 textureCache:self->_textureCache];
   }
 
   else
@@ -1099,35 +1099,35 @@ LABEL_49:
     v75 = 0;
   }
 
-  v22 = sub_1DED6F954(a6);
-  v23 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a6 textureDescriptor:v22 plane:0 textureCache:self->_textureCache];
+  v22 = sub_1DED6F954(alpha);
+  v23 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:alpha textureDescriptor:v22 plane:0 textureCache:self->_textureCache];
 
-  v24 = *(a8 + 4);
-  v25 = *(a8 + 10);
+  v24 = *(dynamicParams + 4);
+  v25 = *(dynamicParams + 10);
   v70 = v23;
   if (sub_1DED573AC())
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"focusCanonicalDisparity = %5.3f", *(a8 + 4)];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"focusCanonicalDisparity = %5.3f", *(dynamicParams + 4)];
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"alphaMatte.cutoffCanonicalDisparity = %5.3f", (*(a8 + 4) - *(a8 + 10))];
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"alphaMatteDeltaCanonicalDisparity = %5.3f", *(a8 + 10)];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"alphaMatte.cutoffCanonicalDisparity = %5.3f", (*(dynamicParams + 4) - *(dynamicParams + 10))];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"alphaMatteDeltaCanonicalDisparity = %5.3f", *(dynamicParams + 10)];
 
-    v26 = *(a8 + 4);
-    v27 = 1.0 / (v26 - *(a8 + 10));
+    v26 = *(dynamicParams + 4);
+    v27 = 1.0 / (v26 - *(dynamicParams + 10));
     v28 = 1.0 / v26;
     v29 = v27 - v28;
     *&v27 = v27;
     [MEMORY[0x1E696AEC0] stringWithFormat:@"alphaMatte.focus = %5.3fm delta = %5.3fm cutoff = %5.3fm", *&v28, v29, *&v27];
   }
 
-  v30 = *(a8 + 2);
-  v31 = *(a8 + 9);
-  v32 = atan2f(*(a8 + 8), *(a8 + 7));
-  v33 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v33 setLabel:@"alphaMattingWithPostprocessedDisparity"];
+  v30 = *(dynamicParams + 2);
+  v31 = *(dynamicParams + 9);
+  v32 = atan2f(*(dynamicParams + 8), *(dynamicParams + 7));
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"alphaMattingWithPostprocessedDisparity"];
   *&v34 = 1.0 / ((((v30 / 255.0) * (v30 / 255.0)) + ((v30 / 255.0) * (v30 / 255.0))) * 3.0);
-  [(VideoMattingMetal *)self encodeColorSimToCommandBuffer:v33 prevSource:self->_scaledSource[!(self->_frameIndex & 1)] currSource:self->_scaledSource[self->_frameIndex & 1] destination:self->_colorSim similarityScaleFactor:v34];
-  if (self->_mattingUsesPostprocessing && a9)
+  [(VideoMattingMetal *)self encodeColorSimToCommandBuffer:commandBuffer prevSource:self->_scaledSource[!(self->_frameIndex & 1)] currSource:self->_scaledSource[self->_frameIndex & 1] destination:self->_colorSim similarityScaleFactor:v34];
+  if (self->_mattingUsesPostprocessing && postprocessedDisparity)
   {
     v41 = &OBJC_IVAR___VideoMattingMetal__smoothDisparity;
   }
@@ -1145,15 +1145,15 @@ LABEL_49:
 
   gfWeight = self->_gfWeight;
   gfForegroundMask = self->_gfForegroundMask;
-  LODWORD(v36) = *(a8 + 4);
-  LODWORD(v37) = *(a8 + 6);
-  *&v39 = a7->guidedFilterUnconfidentWeight;
-  *&v38 = a7->guidedFilterMinDistToDeweight;
-  *&v40 = a7->foregroundMaskDilationRadius;
-  LOBYTE(v67) = *(a8 + 81);
-  LOBYTE(v66) = a11;
+  LODWORD(v36) = *(dynamicParams + 4);
+  LODWORD(v37) = *(dynamicParams + 6);
+  *&v39 = params->guidedFilterUnconfidentWeight;
+  *&v38 = params->guidedFilterMinDistToDeweight;
+  *&v40 = params->foregroundMaskDilationRadius;
+  LOBYTE(v67) = *(dynamicParams + 81);
+  LOBYTE(v66) = mask;
   *&v35 = v24 - v25;
-  [VideoMattingMetal encodeForegroundMaskToBuffer:"encodeForegroundMaskToBuffer:disparity:inSegmentation:useSegmentationOnly:weight:foregroundMask:erodedForegroundMask:disparityMin:focusDisparity:hardness:minDistToDeweight:unconfidentWeight:dilateForegroundMask:foregroundMaskDilationRadius:properties:applyRotation:" disparity:v33 inSegmentation:v42 useSegmentationOnly:v35 weight:v36 foregroundMask:v37 erodedForegroundMask:v38 disparityMin:v39 focusDisparity:v40 hardness:0 minDistToDeweight:v66 unconfidentWeight:v76 dilateForegroundMask:v67 foregroundMaskDilationRadius:? properties:? applyRotation:?];
+  [VideoMattingMetal encodeForegroundMaskToBuffer:"encodeForegroundMaskToBuffer:disparity:inSegmentation:useSegmentationOnly:weight:foregroundMask:erodedForegroundMask:disparityMin:focusDisparity:hardness:minDistToDeweight:unconfidentWeight:dilateForegroundMask:foregroundMaskDilationRadius:properties:applyRotation:" disparity:commandBuffer inSegmentation:v42 useSegmentationOnly:v35 weight:v36 foregroundMask:v37 erodedForegroundMask:v38 disparityMin:v39 focusDisparity:v40 hardness:0 minDistToDeweight:v66 unconfidentWeight:propertiesCopy dilateForegroundMask:v67 foregroundMaskDilationRadius:? properties:? applyRotation:?];
   v46 = &qword_1ECDE1000;
   if ((atomic_load_explicit(&qword_1ECDE15E8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE15E8))
   {
@@ -1198,66 +1198,66 @@ LABEL_49:
 
   [v46[188] floatValue];
   [(MPSImageGuidedFilter *)self->_guidedFilter setEpsilon:?];
-  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:v33 sourceTexture:self->_gfForegroundMask guidanceTexture:self->_scaledSource[self->_frameIndex & 1] weightsTexture:self->_gfWeight destinationCoefficientsTexture:self->_coeff];
+  [(MPSImageGuidedFilter *)self->_guidedFilter encodeRegressionToCommandBuffer:commandBuffer sourceTexture:self->_gfForegroundMask guidanceTexture:self->_scaledSource[self->_frameIndex & 1] weightsTexture:self->_gfWeight destinationCoefficientsTexture:self->_coeff];
   v51 = self->_frameIndex & 1;
   v52 = self->_coeffHistory[v51];
   v53 = self->_coeffHistory[v51 ^ 1];
-  LODWORD(v54) = *a8;
-  [(VideoMattingMetal *)self encodeFilterCoefficientToBuffer:v33 inputCoeff:self->_coeff prevCoeff:v53 outCoeff:v52 inColorSim:self->_colorSim updateRate:v54];
-  [(MPSImageGuidedFilter *)self->_guidedFilter encodeReconstructionToCommandBuffer:v33 guidanceTexture:v73 coefficientsTexture:v52 destinationTexture:self->_alphaNoPostprocessing];
-  v55 = fabsf(*(a8 + 9));
+  LODWORD(v54) = *dynamicParams;
+  [(VideoMattingMetal *)self encodeFilterCoefficientToBuffer:commandBuffer inputCoeff:self->_coeff prevCoeff:v53 outCoeff:v52 inColorSim:self->_colorSim updateRate:v54];
+  [(MPSImageGuidedFilter *)self->_guidedFilter encodeReconstructionToCommandBuffer:commandBuffer guidanceTexture:v73 coefficientsTexture:v52 destinationTexture:self->_alphaNoPostprocessing];
+  v55 = fabsf(*(dynamicParams + 9));
   v56 = fmaxf(v55 * (v55 * (v55 * v55)), 0.1) * 0.5;
   infConvolutionScale = self->_infConvolutionScale;
   *&v58 = infConvolutionScale * (1.0 - v56);
   *&v59 = infConvolutionScale * v56;
   *&v60 = self->_gammaExponent;
   *&v61 = v32;
-  [(CVAFilterGuided *)self->_cvaGuidedFilter encodePostProcessAlphaToCommandBuffer:v33 source:self->_alphaNoPostprocessing destination:v70 alphaMaxLaplacian:self->_enableInfConvolution infConvOrientation:COERCE_DOUBLE(LODWORD(a7->alphaMaxLaplacian)) infConvMajorRadius:v61 infConvMinorRadius:v58 gammaExponent:v59 enableInfConvolution:v60];
-  CVPixelBufferRetain(v69);
-  CVPixelBufferRetain(a6);
-  CVPixelBufferRetain(a5);
+  [(CVAFilterGuided *)self->_cvaGuidedFilter encodePostProcessAlphaToCommandBuffer:commandBuffer source:self->_alphaNoPostprocessing destination:v70 alphaMaxLaplacian:self->_enableInfConvolution infConvOrientation:COERCE_DOUBLE(LODWORD(params->alphaMaxLaplacian)) infConvMajorRadius:v61 infConvMinorRadius:v58 gammaExponent:v59 enableInfConvolution:v60];
+  CVPixelBufferRetain(sourceCopy);
+  CVPixelBufferRetain(alpha);
+  CVPixelBufferRetain(segmentation);
   dispatch_semaphore_wait(self->_mattingCallbackSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = sub_1DED66914;
   v77[3] = &unk_1E869AFF8;
-  v80 = v69;
-  v81 = a5;
+  v80 = sourceCopy;
+  segmentationCopy = segmentation;
   v77[4] = self;
-  v62 = v72;
+  v62 = queueCopy;
   v78 = v62;
-  v63 = v71;
+  v63 = callbackCopy;
   v79 = v63;
-  v82 = a6;
-  [v33 addCompletedHandler:v77];
-  [v33 commit];
+  alphaCopy = alpha;
+  [commandBuffer addCompletedHandler:v77];
+  [commandBuffer commit];
 
   self->_lastCommittedCommand = 1;
-  if (a10)
+  if (stage)
   {
     ++self->_frameIndex;
   }
 }
 
-- (id)disparityPostprocessingWithCanonicalDisparity:(const __CVBuffer *)a3 color:(const __CVBuffer *)a4 postProcessedDisparity:(__CVBuffer *)a5 staticParams:(const VideoMattingStaticParams *)a6 dynamicParams:(const void *)a7 postProcessingParams:(const VideoPostprocessingParams *)a8 facesArray:(id)a9 faceModel:(id)a10 isFinalStage:(BOOL)a11 callbackQueue:(id)a12 callback:(id)a13
+- (id)disparityPostprocessingWithCanonicalDisparity:(const __CVBuffer *)disparity color:(const __CVBuffer *)color postProcessedDisparity:(__CVBuffer *)processedDisparity staticParams:(const VideoMattingStaticParams *)params dynamicParams:(const void *)dynamicParams postProcessingParams:(const VideoPostprocessingParams *)processingParams facesArray:(id)array faceModel:(id)self0 isFinalStage:(BOOL)self1 callbackQueue:(id)self2 callback:(id)self3
 {
-  v101 = a12;
-  v100 = a13;
-  v104 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v104 setLabel:@"disparityPostprocessingWithCanonicalDisparity"];
-  [(VideoMattingMetal *)self encodeScaleSourceToCommandBuffer:v104 source:a4 targetWidth:self->_width2 targetHeight:self->_height2];
+  queueCopy = queue;
+  callbackCopy = callback;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"disparityPostprocessingWithCanonicalDisparity"];
+  [(VideoMattingMetal *)self encodeScaleSourceToCommandBuffer:commandBuffer source:color targetWidth:self->_width2 targetHeight:self->_height2];
   disparity = self->_disparity;
-  [(VideoMattingMetal *)self encodeDisparityDecimateToCommandBuffer:v104 canonicalDisparity:a3 disparityOut:self->_disparity[self->_frameIndex & 1]];
+  [(VideoMattingMetal *)self encodeDisparityDecimateToCommandBuffer:commandBuffer canonicalDisparity:disparity disparityOut:self->_disparity[self->_frameIndex & 1]];
   if (!self->_sdofRenderingHasForegroundBlur)
   {
-    if (self->_doDisparityDiffusion && ![(VideoMattingMetal *)self bypassShiftCleanup]&& (*(a7 + 80) & 1) != 0)
+    if (self->_doDisparityDiffusion && ![(VideoMattingMetal *)self bypassShiftCleanup]&& (*(dynamicParams + 80) & 1) != 0)
     {
       if (self->_doDisparityDiffusion)
       {
-        [(VideoMattingMetal *)self encodeDiffusionMapToCommandBuffer:v104 color:self->_scaledSource[self->_frameIndex & 1] diffusionMap:self->_diffusionMapTexture];
+        [(VideoMattingMetal *)self encodeDiffusionMapToCommandBuffer:commandBuffer color:self->_scaledSource[self->_frameIndex & 1] diffusionMap:self->_diffusionMapTexture];
         frameIndex = self->_frameIndex;
         v48 = disparity[frameIndex & 1];
-        if (a8->useTemporalRejection)
+        if (processingParams->useTemporalRejection)
         {
           smoothConfidence = self->_smoothConfidence;
           v50 = !(frameIndex & 1);
@@ -1274,7 +1274,7 @@ LABEL_49:
           }
 
           LOBYTE(v98) = self->_useTemporalConfidence;
-          [(VideoMattingMetal *)self encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:v104 disparity:v48 prevSmoothConfidence:v51 lastValidDisparityIn:*v53 lastValidDisparityOut:self->_disparityLastValidValue[self->_frameIndex & 1] currConfidenceOut:self->_disparityConfidenceMaskTexture useTemporalConfidence:v98];
+          [(VideoMattingMetal *)self encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:commandBuffer disparity:v48 prevSmoothConfidence:v51 lastValidDisparityIn:*v53 lastValidDisparityOut:self->_disparityLastValidValue[self->_frameIndex & 1] currConfidenceOut:self->_disparityConfidenceMaskTexture useTemporalConfidence:v98];
           v57 = self->_frameIndex;
           v58 = disparity[v57 & 1];
           if (v57)
@@ -1291,17 +1291,17 @@ LABEL_49:
             v61 = disparityConfidenceMaskTexture;
           }
 
-          *&v54 = a6->shiftFilterUpdateRate;
-          *&v55 = a6->minimumConfidenceToKeepDisparity;
-          *&v56 = a6->maximumSimilarityToKeepDisparity;
+          *&v54 = params->shiftFilterUpdateRate;
+          *&v55 = params->minimumConfidenceToKeepDisparity;
+          *&v56 = params->maximumSimilarityToKeepDisparity;
           LOBYTE(v99) = self->_isBgColorLutBlack;
-          [(VideoMattingMetal *)self encodeDisparityTemporalFilterToCommandBuffer:v104 currentDisparity:v58 previousDisparity:*disparity currConfidence:disparityConfidenceMaskTexture prevSmoothConfidence:v61 colorSim:self->_colorSim outPrevSmoothConfidence:v54 outTemporallyFilteredDisparity:v55 disparityFallbackToInvalid:v56 disparityFilterUpdateRate:smoothConfidence[v57 & 1] minimumConfidenceToKeepDisparity:self->_temporallyFilteredDisparity maximumSimilarityToKeepDisparity:v99];
+          [(VideoMattingMetal *)self encodeDisparityTemporalFilterToCommandBuffer:commandBuffer currentDisparity:v58 previousDisparity:*disparity currConfidence:disparityConfidenceMaskTexture prevSmoothConfidence:v61 colorSim:self->_colorSim outPrevSmoothConfidence:v54 outTemporallyFilteredDisparity:v55 disparityFallbackToInvalid:v56 disparityFilterUpdateRate:smoothConfidence[v57 & 1] minimumConfidenceToKeepDisparity:self->_temporallyFilteredDisparity maximumSimilarityToKeepDisparity:v99];
         }
 
         else
         {
-          [(VideoMattingMetal *)self encodeCopyTextureToCommandBuffer:v104 inTexture:v48 outTexture:self->_temporallyFilteredDisparity];
-          [(VideoMattingMetal *)self encodeSimpleConfidenceToCommandBuffer:v104 disparity:disparity[self->_frameIndex & 1] outConfidence:self->_disparityConfidenceMaskTexture];
+          [(VideoMattingMetal *)self encodeCopyTextureToCommandBuffer:commandBuffer inTexture:v48 outTexture:self->_temporallyFilteredDisparity];
+          [(VideoMattingMetal *)self encodeSimpleConfidenceToCommandBuffer:commandBuffer disparity:disparity[self->_frameIndex & 1] outConfidence:self->_disparityConfidenceMaskTexture];
         }
 
         facemaskDisparity = self->_facemaskDisparity;
@@ -1315,26 +1315,26 @@ LABEL_49:
         self->_temporallyFilteredDisparity = facemaskDisparity;
 
         facemaskRegionTexture = 0;
-        if (a10 && self->_doFaceMask)
+        if (model && self->_doFaceMask)
         {
           facemaskRegionTexture = self->_facemaskRegionTexture;
         }
 
         p_filledDisparityTexture = &self->_filledDisparityTexture;
-        LODWORD(v93) = *(a7 + 5);
-        *&v94 = a8->backgroundFillMarginFromValidDisparity_px;
-        [(VideoMattingMetal *)self encodeFillBackgroundDisparityToCommandBuffer:v104 inputDisparity:self->_facemaskDisparity inputFacemask:facemaskRegionTexture outputDistanceFromKnownDisparity:self->_distanceFromKnownDisparityTexture outputDisparity:self->_filledDisparityTexture backgroundDisparityValue:v93 minimumDistanceFromValidDisparity:v94];
-        [(VideoMattingMetal *)self encodeDomainTransformToCommandBuffer:v104 inputDiffusionMap:self->_diffusionMapTexture inputDistanceFromKnownDisparity:self->_distanceFromKnownDisparityTexture outputDomainTransformX:self->_domainTransformXTexture outputDomainTransformY:self->_domainTransformYTexture];
-        if (!a8->fillLargeHolesWithBackground && !self->_isBgColorLutBlack)
+        LODWORD(v93) = *(dynamicParams + 5);
+        *&v94 = processingParams->backgroundFillMarginFromValidDisparity_px;
+        [(VideoMattingMetal *)self encodeFillBackgroundDisparityToCommandBuffer:commandBuffer inputDisparity:self->_facemaskDisparity inputFacemask:facemaskRegionTexture outputDistanceFromKnownDisparity:self->_distanceFromKnownDisparityTexture outputDisparity:self->_filledDisparityTexture backgroundDisparityValue:v93 minimumDistanceFromValidDisparity:v94];
+        [(VideoMattingMetal *)self encodeDomainTransformToCommandBuffer:commandBuffer inputDiffusionMap:self->_diffusionMapTexture inputDistanceFromKnownDisparity:self->_distanceFromKnownDisparityTexture outputDomainTransformX:self->_domainTransformXTexture outputDomainTransformY:self->_domainTransformYTexture];
+        if (!processingParams->fillLargeHolesWithBackground && !self->_isBgColorLutBlack)
         {
           p_filledDisparityTexture = &self->_facemaskDisparity;
         }
 
-        [(VideoMattingMetal *)self encodeEdgeAwareFillToCommandBuffer:v104 inputDisparity:*p_filledDisparityTexture inputDomainTransformX:self->_domainTransformXTexture inputDomainTransformY:self->_domainTransformYTexture outputDisparity:self->_initDisparity];
-        [(VideoMattingMetal *)self encodeInvalidDisparityMaskToCommandBuffer:v104 inputDisparity:self->_initDisparity outputMask:self->_invalidDisparityMaskTexture];
-        [(VideoMattingMetal *)self encodeBackgroundFillToCommandBuffer:v104 inputDisparity:self->_initDisparity inputMask:self->_invalidDisparityMaskTexture outputDisparity:self->_initDisparity];
+        [(VideoMattingMetal *)self encodeEdgeAwareFillToCommandBuffer:commandBuffer inputDisparity:*p_filledDisparityTexture inputDomainTransformX:self->_domainTransformXTexture inputDomainTransformY:self->_domainTransformYTexture outputDisparity:self->_initDisparity];
+        [(VideoMattingMetal *)self encodeInvalidDisparityMaskToCommandBuffer:commandBuffer inputDisparity:self->_initDisparity outputMask:self->_invalidDisparityMaskTexture];
+        [(VideoMattingMetal *)self encodeBackgroundFillToCommandBuffer:commandBuffer inputDisparity:self->_initDisparity inputMask:self->_invalidDisparityMaskTexture outputDisparity:self->_initDisparity];
         LODWORD(v98) = 15;
-        [(CVAFilterDiffusion *)self->_diffusion encodeToCommandBuffer:v104 priorTexture:self->_initDisparity sourceTexture:self->_initDisparity destinationTexture:self->_smoothDisparity[self->_frameIndex & 1] diffusionMapTexture:self->_diffusionMapTexture confidenceTexture:self->_disparityConfidenceMaskTexture iterations:v98];
+        [(CVAFilterDiffusion *)self->_diffusion encodeToCommandBuffer:commandBuffer priorTexture:self->_initDisparity sourceTexture:self->_initDisparity destinationTexture:self->_smoothDisparity[self->_frameIndex & 1] diffusionMapTexture:self->_diffusionMapTexture confidenceTexture:self->_disparityConfidenceMaskTexture iterations:v98];
       }
     }
 
@@ -1344,20 +1344,20 @@ LABEL_49:
     }
 
     objc_storeStrong(&self->_filteredBeforeSmoothDisparity, self->_smoothDisparity[self->_frameIndex & 1]);
-    if (a5 && (*(a7 + 80) & 1) != 0)
+    if (processedDisparity && (*(dynamicParams + 80) & 1) != 0)
     {
-      Width = CVPixelBufferGetWidth(a5);
-      Height = CVPixelBufferGetHeight(a5);
-      if (CVPixelBufferGetPixelFormatType(a5) != 1751411059)
+      Width = CVPixelBufferGetWidth(processedDisparity);
+      Height = CVPixelBufferGetHeight(processedDisparity);
+      if (CVPixelBufferGetPixelFormatType(processedDisparity) != 1751411059)
       {
-        v97 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v97 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:1675 description:@"Postprocessed disparity buffer is not kCVPixelFormatType_DisparityFloat16"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:1675 description:@"Postprocessed disparity buffer is not kCVPixelFormatType_DisparityFloat16"];
       }
 
       v64 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:Width height:Height mipmapped:0];
       [v64 setUsage:2];
-      v65 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a5 textureDescriptor:v64 plane:0 textureCache:self->_textureCache];
-      [(VideoMattingMetal *)self encodeOutputDisparityToCommandBuffer:v104 inputDisparity:self->_smoothDisparity[self->_frameIndex & 1] outputDisparity:v65];
+      v65 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:processedDisparity textureDescriptor:v64 plane:0 textureCache:self->_textureCache];
+      [(VideoMattingMetal *)self encodeOutputDisparityToCommandBuffer:commandBuffer inputDisparity:self->_smoothDisparity[self->_frameIndex & 1] outputDisparity:v65];
     }
 
     goto LABEL_69;
@@ -1368,21 +1368,21 @@ LABEL_49:
     goto LABEL_69;
   }
 
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a5, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  v20 = CVPixelBufferGetHeight(a3);
-  v21 = CVPixelBufferGetWidth(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  v23 = CVPixelBufferGetBaseAddress(a5);
-  CVPixelBufferGetHeight(a5);
-  CVPixelBufferGetWidth(a5);
-  v24 = CVPixelBufferGetBytesPerRow(a5);
+  CVPixelBufferLockBaseAddress(disparity, 1uLL);
+  CVPixelBufferLockBaseAddress(processedDisparity, 0);
+  BaseAddress = CVPixelBufferGetBaseAddress(disparity);
+  v20 = CVPixelBufferGetHeight(disparity);
+  v21 = CVPixelBufferGetWidth(disparity);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(disparity);
+  v23 = CVPixelBufferGetBaseAddress(processedDisparity);
+  CVPixelBufferGetHeight(processedDisparity);
+  CVPixelBufferGetWidth(processedDisparity);
+  v24 = CVPixelBufferGetBytesPerRow(processedDisparity);
   v25 = sub_1DED5D1F8(@"CVAPhotoBackgroundDeadzoneInCentimeters", @"com.apple.coremedia", 10);
   v26 = sub_1DED5D1F8(@"CVAPhotoForegroundDeadzoneInCentimeters", @"com.apple.coremedia", 10);
   v27 = v25 / 100.0;
   v28 = v26 / 100.0;
-  _S10 = *(a7 + 4);
+  _S10 = *(dynamicParams + 4);
   v30 = 1.0 / ((1.0 / _S10) + v27);
   v31 = 1.0 / fmax(1.0 / _S10 - v28, 0.05);
   v32 = _S10 - v30;
@@ -1529,28 +1529,28 @@ LABEL_56:
 
   while (v20 >= v41);
 LABEL_68:
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  CVPixelBufferUnlockBaseAddress(a5, 0);
+  CVPixelBufferUnlockBaseAddress(disparity, 1uLL);
+  CVPixelBufferUnlockBaseAddress(processedDisparity, 0);
 LABEL_69:
   sub_1DED49608(*(self->_metalContext + 6), self->_device, self->_commandQueue);
-  CVPixelBufferRetain(a4);
-  CVPixelBufferRetain(a5);
+  CVPixelBufferRetain(color);
+  CVPixelBufferRetain(processedDisparity);
   dispatch_semaphore_wait(self->_mattingCallbackSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v110[0] = MEMORY[0x1E69E9820];
   v110[1] = 3221225472;
   v110[2] = sub_1DED675B4;
   v110[3] = &unk_1E869AFD0;
-  v113 = a4;
+  colorCopy = color;
   v110[4] = self;
-  v84 = v101;
+  v84 = queueCopy;
   v111 = v84;
-  v85 = v100;
+  v85 = callbackCopy;
   v112 = v85;
-  v114 = a5;
-  [v104 addCompletedHandler:v110];
-  [v104 commit];
+  processedDisparityCopy = processedDisparity;
+  [commandBuffer addCompletedHandler:v110];
+  [commandBuffer commit];
 
-  if (a11)
+  if (stage)
   {
     ++self->_frameIndex;
   }
@@ -1561,10 +1561,10 @@ LABEL_69:
   return yuvSourceDownsampledTexture;
 }
 
-- (void)segmentationAverage:(__CVBuffer *)a3 callbackQueue:(id)a4 callback:(id)a5
+- (void)segmentationAverage:(__CVBuffer *)average callbackQueue:(id)queue callback:(id)callback
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  callbackCopy = callback;
   if (!self->_foregroundRatioBuffer)
   {
     v10 = [(MTLDeviceSPI *)self->_device newBufferWithLength:4 options:0];
@@ -1572,214 +1572,214 @@ LABEL_69:
     self->_foregroundRatioBuffer = v10;
   }
 
-  v12 = sub_1DED6F954(a3);
-  v13 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:a3 textureDescriptor:v12 plane:0 textureCache:self->_textureCache];
+  v12 = sub_1DED6F954(average);
+  v13 = [VideoMattingMetal textureFromCacheUsingPixelBuffer:average textureDescriptor:v12 plane:0 textureCache:self->_textureCache];
 
-  v14 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v14 setLabel:@"segmentationAverage"];
-  [(GlobalReductionAverage *)self->_globalReductionAverage parallelReductionAverage:v14 inTexture:v13 outGlobalAverage:self->_foregroundRatioBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"segmentationAverage"];
+  [(GlobalReductionAverage *)self->_globalReductionAverage parallelReductionAverage:commandBuffer inTexture:v13 outGlobalAverage:self->_foregroundRatioBuffer];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_1DED6796C;
   v17[3] = &unk_1E869AF80;
   v17[4] = self;
-  v15 = v8;
+  v15 = queueCopy;
   v18 = v15;
-  v16 = v9;
+  v16 = callbackCopy;
   v19 = v16;
-  [v14 addCompletedHandler:v17];
-  [v14 commit];
+  [commandBuffer addCompletedHandler:v17];
+  [commandBuffer commit];
 }
 
-- (void)encodeOutputDisparityToCommandBuffer:(id)a3 inputDisparity:(id)a4 outputDisparity:(id)a5
+- (void)encodeOutputDisparityToCommandBuffer:(id)buffer inputDisparity:(id)disparity outputDisparity:(id)outputDisparity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v11 pixelFormat] != 25)
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  outputDisparityCopy = outputDisparity;
+  if ([outputDisparityCopy pixelFormat] != 25)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:1461 description:{@"Output disparity texture should be MTLPixelFormatR16Float (%lu), but is %lu", 25, objc_msgSend(v11, "pixelFormat")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:1461 description:{@"Output disparity texture should be MTLPixelFormatR16Float (%lu), but is %lu", 25, objc_msgSend(outputDisparityCopy, "pixelFormat")}];
   }
 
-  v12 = [v9 computeCommandEncoder];
-  [v12 setLabel:@"_internalDisparityToCanonicalDisparityKernel"];
-  [v12 setComputePipelineState:self->_internalDisparityToCanonicalDisparityKernel];
-  [v12 setTexture:v10 atIndex:0];
-  [v12 setTexture:self->_outputCanonicalDisparity atIndex:1];
-  v13 = [(MTLTexture *)self->_outputCanonicalDisparity width];
-  v14 = [(MTLTexture *)self->_outputCanonicalDisparity height];
-  v18[0] = (v13 + 15) >> 4;
-  v18[1] = (v14 + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_internalDisparityToCanonicalDisparityKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_internalDisparityToCanonicalDisparityKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:self->_outputCanonicalDisparity atIndex:1];
+  width = [(MTLTexture *)self->_outputCanonicalDisparity width];
+  height = [(MTLTexture *)self->_outputCanonicalDisparity height];
+  v18[0] = (width + 15) >> 4;
+  v18[1] = (height + 15) >> 4;
   v18[2] = 1;
   v16 = xmmword_1DED747F0;
   v17 = 1;
-  [v12 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v12 endEncoding];
-  [(CVAFilterHybridResampling *)self->_hybridResampler encodeBilinearScalingToCommandBuffer:v9 source:self->_outputCanonicalDisparity destination:v11 mode:2];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
+  [(CVAFilterHybridResampling *)self->_hybridResampler encodeBilinearScalingToCommandBuffer:bufferCopy source:self->_outputCanonicalDisparity destination:outputDisparityCopy mode:2];
 }
 
-- (void)encodeConfidenceMaskToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputDisparityNoInvalid:(id)a5 outputConfidenceMask:(id)a6
+- (void)encodeConfidenceMaskToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputDisparityNoInvalid:(id)invalid outputConfidenceMask:(id)mask
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  disparityCopy = disparity;
+  invalidCopy = invalid;
+  maskCopy = mask;
   v17 = 0x3F800000C59F6000;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setLabel:@"_disparityConfidenceMaskKernel"];
-  [v13 setComputePipelineState:self->_disparityConfidenceMaskKernel];
-  [v13 setTexture:v10 atIndex:0];
-  [v13 setTexture:v11 atIndex:1];
-  [v13 setTexture:v12 atIndex:2];
-  [v13 setBytes:&v17 length:8 atIndex:0];
-  v16[0] = ([v12 width] + 15) >> 4;
-  v16[1] = ([v12 height] + 15) >> 4;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_disparityConfidenceMaskKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_disparityConfidenceMaskKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:invalidCopy atIndex:1];
+  [computeCommandEncoder setTexture:maskCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v17 length:8 atIndex:0];
+  v16[0] = ([maskCopy width] + 15) >> 4;
+  v16[1] = ([maskCopy height] + 15) >> 4;
   v16[2] = 1;
   v14 = xmmword_1DED747F0;
   v15 = 1;
-  [v13 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeFillBackgroundDisparityToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputFacemask:(id)a5 outputDistanceFromKnownDisparity:(id)a6 outputDisparity:(id)a7 backgroundDisparityValue:(float)a8 minimumDistanceFromValidDisparity:(float)a9
+- (void)encodeFillBackgroundDisparityToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputFacemask:(id)facemask outputDistanceFromKnownDisparity:(id)knownDisparity outputDisparity:(id)outputDisparity backgroundDisparityValue:(float)value minimumDistanceFromValidDisparity:(float)validDisparity
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  *v31 = a9;
-  *&v31[1] = a8;
-  v21 = [v16 computeCommandEncoder];
-  [v21 setLabel:@"_disparityIsValidKernel"];
-  [v21 setComputePipelineState:self->_disparityIsValidKernel];
-  [v21 setTexture:v17 atIndex:0];
-  [v21 setTexture:self->_disparityIsValidTexture atIndex:1];
-  v28 = ([v17 width] + 15) >> 4;
-  v29 = ([v17 height] + 15) >> 4;
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  facemaskCopy = facemask;
+  knownDisparityCopy = knownDisparity;
+  outputDisparityCopy = outputDisparity;
+  *v31 = validDisparity;
+  *&v31[1] = value;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_disparityIsValidKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_disparityIsValidKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:self->_disparityIsValidTexture atIndex:1];
+  v28 = ([disparityCopy width] + 15) >> 4;
+  v29 = ([disparityCopy height] + 15) >> 4;
   v30 = 1;
   v26 = xmmword_1DED747F0;
   v27 = 1;
-  [v21 dispatchThreadgroups:&v28 threadsPerThreadgroup:&v26];
-  [v21 endEncoding];
-  [(CVAFilterDistanceTransform *)self->_distanceTransform encodeToCommandBuffer:v16 sourceTexture:self->_disparityIsValidTexture destinationTexture:v19];
-  v22 = [v16 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v28 threadsPerThreadgroup:&v26];
+  [computeCommandEncoder endEncoding];
+  [(CVAFilterDistanceTransform *)self->_distanceTransform encodeToCommandBuffer:bufferCopy sourceTexture:self->_disparityIsValidTexture destinationTexture:knownDisparityCopy];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  if (v18)
+  if (facemaskCopy)
   {
-    [v22 setLabel:@"_fillBackgroundDisparityKernel_faceMask"];
+    [computeCommandEncoder2 setLabel:@"_fillBackgroundDisparityKernel_faceMask"];
     v23 = &OBJC_IVAR___VideoMattingMetal__fillBackgroundDisparityKernel_faceMask;
   }
 
   else
   {
-    [v22 setLabel:@"_fillBackgroundDisparityKernel"];
+    [computeCommandEncoder2 setLabel:@"_fillBackgroundDisparityKernel"];
     v23 = &OBJC_IVAR___VideoMattingMetal__fillBackgroundDisparityKernel;
   }
 
-  [v22 setComputePipelineState:*(&self->super.super.isa + *v23)];
-  [v22 setTexture:v17 atIndex:0];
-  [v22 setTexture:v18 atIndex:1];
-  [v22 setTexture:v19 atIndex:2];
-  [v22 setTexture:v20 atIndex:3];
-  [v22 setBytes:v31 length:8 atIndex:0];
-  v24 = [v20 width];
-  v25 = [v20 height];
-  v28 = (v24 + 15) >> 4;
-  v29 = (v25 + 15) >> 4;
+  [computeCommandEncoder2 setComputePipelineState:*(&self->super.super.isa + *v23)];
+  [computeCommandEncoder2 setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder2 setTexture:facemaskCopy atIndex:1];
+  [computeCommandEncoder2 setTexture:knownDisparityCopy atIndex:2];
+  [computeCommandEncoder2 setTexture:outputDisparityCopy atIndex:3];
+  [computeCommandEncoder2 setBytes:v31 length:8 atIndex:0];
+  width = [outputDisparityCopy width];
+  height = [outputDisparityCopy height];
+  v28 = (width + 15) >> 4;
+  v29 = (height + 15) >> 4;
   v30 = 1;
   v26 = xmmword_1DED747F0;
   v27 = 1;
-  [v22 dispatchThreadgroups:&v28 threadsPerThreadgroup:&v26];
-  [v22 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v28 threadsPerThreadgroup:&v26];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)encodeDisparityMasksToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputSegmentation:(id)a5 useSegmentationOnly:(BOOL)a6 outputForegroundMask:(id)a7 outputIsForeground:(id)a8 disparityMin:(float)a9 focusDisparity:(float)a10 hardness:(float)a11 minDistToDeweight:(float)a12 unconfidentWeight:(float)a13
+- (void)encodeDisparityMasksToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputSegmentation:(id)segmentation useSegmentationOnly:(BOOL)only outputForegroundMask:(id)mask outputIsForeground:(id)foreground disparityMin:(float)min focusDisparity:(float)self0 hardness:(float)self1 minDistToDeweight:(float)self2 unconfidentWeight:(float)self3
 {
-  v24 = a4;
-  v25 = a5;
-  v26 = a7;
-  v27 = a8;
-  *v32 = a9;
-  *&v32[1] = 1.0 / fmaxf((a10 - a9) * (1.0 - a11), 0.001);
-  *&v32[2] = a10;
-  *&v32[3] = a12;
-  *&v32[4] = a13;
-  v33 = a6;
-  v28 = [a3 computeCommandEncoder];
-  [v28 setLabel:@"_disparityMasksKernel"];
-  [v28 setComputePipelineState:self->_disparityMasksKernel];
-  [v28 setTexture:v24 atIndex:0];
-  [v28 setTexture:v25 atIndex:1];
-  [v28 setTexture:v26 atIndex:2];
-  [v28 setTexture:v27 atIndex:3];
-  [v28 setBytes:v32 length:24 atIndex:0];
-  v31[0] = ([v24 width] + 15) >> 4;
-  v31[1] = ([v24 height] + 15) >> 4;
+  disparityCopy = disparity;
+  segmentationCopy = segmentation;
+  maskCopy = mask;
+  foregroundCopy = foreground;
+  *v32 = min;
+  *&v32[1] = 1.0 / fmaxf((focusDisparity - min) * (1.0 - hardness), 0.001);
+  *&v32[2] = focusDisparity;
+  *&v32[3] = deweight;
+  *&v32[4] = weight;
+  onlyCopy = only;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_disparityMasksKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_disparityMasksKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:segmentationCopy atIndex:1];
+  [computeCommandEncoder setTexture:maskCopy atIndex:2];
+  [computeCommandEncoder setTexture:foregroundCopy atIndex:3];
+  [computeCommandEncoder setBytes:v32 length:24 atIndex:0];
+  v31[0] = ([disparityCopy width] + 15) >> 4;
+  v31[1] = ([disparityCopy height] + 15) >> 4;
   v31[2] = 1;
   v29 = xmmword_1DED747F0;
   v30 = 1;
-  [v28 dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
-  [v28 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeDiffusionMapToCommandBuffer:(id)a3 color:(id)a4 diffusionMap:(id)a5
+- (void)encodeDiffusionMapToCommandBuffer:(id)buffer color:(id)color diffusionMap:(id)map
 {
-  v8 = a4;
-  v9 = a5;
+  colorCopy = color;
+  mapCopy = map;
   v14 = 0xC1A000003A83126FLL;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_diffusionMapKernel"];
-  [v10 setComputePipelineState:self->_diffusionMapKernel];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
-  [v10 setBytes:&v14 length:8 atIndex:0];
-  v13[0] = ([v9 width] + 15) >> 4;
-  v13[1] = ([v9 height] + 15) >> 4;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_diffusionMapKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_diffusionMapKernel];
+  [computeCommandEncoder setTexture:colorCopy atIndex:0];
+  [computeCommandEncoder setTexture:mapCopy atIndex:1];
+  [computeCommandEncoder setBytes:&v14 length:8 atIndex:0];
+  v13[0] = ([mapCopy width] + 15) >> 4;
+  v13[1] = ([mapCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeDisparityTemporalFilterToCommandBuffer:(id)a3 currentDisparity:(id)a4 previousDisparity:(id)a5 currConfidence:(id)a6 prevSmoothConfidence:(id)a7 colorSim:(id)a8 outPrevSmoothConfidence:(id)a9 outTemporallyFilteredDisparity:(id)a10 disparityFallbackToInvalid:(BOOL)a11 disparityFilterUpdateRate:(float)a12 minimumConfidenceToKeepDisparity:(float)a13 maximumSimilarityToKeepDisparity:(float)a14
+- (void)encodeDisparityTemporalFilterToCommandBuffer:(id)buffer currentDisparity:(id)disparity previousDisparity:(id)previousDisparity currConfidence:(id)confidence prevSmoothConfidence:(id)smoothConfidence colorSim:(id)sim outPrevSmoothConfidence:(id)prevSmoothConfidence outTemporallyFilteredDisparity:(id)self0 disparityFallbackToInvalid:(BOOL)self1 disparityFilterUpdateRate:(float)self2 minimumConfidenceToKeepDisparity:(float)self3 maximumSimilarityToKeepDisparity:(float)self4
 {
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
-  *v36 = a12;
-  *&v36[1] = a13;
-  *&v36[2] = a14;
-  v30 = [a3 computeCommandEncoder];
-  v31 = v30;
-  if (a11)
+  disparityCopy = disparity;
+  previousDisparityCopy = previousDisparity;
+  confidenceCopy = confidence;
+  smoothConfidenceCopy = smoothConfidence;
+  simCopy = sim;
+  prevSmoothConfidenceCopy = prevSmoothConfidence;
+  filteredDisparityCopy = filteredDisparity;
+  *v36 = rate;
+  *&v36[1] = keepDisparity;
+  *&v36[2] = toKeepDisparity;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v31 = computeCommandEncoder;
+  if (invalid)
   {
-    [v30 setLabel:@"_temporalDisparityFilterKernel_fallbackToInvalid"];
+    [computeCommandEncoder setLabel:@"_temporalDisparityFilterKernel_fallbackToInvalid"];
     v32 = &OBJC_IVAR___VideoMattingMetal__temporalDisparityFilterKernel_fallbackToInvalid;
   }
 
   else
   {
-    [v30 setLabel:@"_temporalDisparityFilterKernel"];
+    [computeCommandEncoder setLabel:@"_temporalDisparityFilterKernel"];
     v32 = &OBJC_IVAR___VideoMattingMetal__temporalDisparityFilterKernel;
   }
 
   [v31 setComputePipelineState:*(&self->super.super.isa + *v32)];
-  [v31 setTexture:v23 atIndex:0];
-  [v31 setTexture:v24 atIndex:1];
-  [v31 setTexture:v25 atIndex:2];
-  [v31 setTexture:v27 atIndex:3];
-  [v31 setTexture:v26 atIndex:4];
-  [v31 setTexture:v29 atIndex:5];
-  [v31 setTexture:v28 atIndex:6];
+  [v31 setTexture:disparityCopy atIndex:0];
+  [v31 setTexture:previousDisparityCopy atIndex:1];
+  [v31 setTexture:confidenceCopy atIndex:2];
+  [v31 setTexture:simCopy atIndex:3];
+  [v31 setTexture:smoothConfidenceCopy atIndex:4];
+  [v31 setTexture:filteredDisparityCopy atIndex:5];
+  [v31 setTexture:prevSmoothConfidenceCopy atIndex:6];
   [v31 setBytes:v36 length:12 atIndex:0];
-  v35[0] = ([v29 width] + 15) >> 4;
-  v35[1] = ([v29 height] + 15) >> 4;
+  v35[0] = ([filteredDisparityCopy width] + 15) >> 4;
+  v35[1] = ([filteredDisparityCopy height] + 15) >> 4;
   v35[2] = 1;
   v33 = xmmword_1DED747F0;
   v34 = 1;
@@ -1787,37 +1787,37 @@ LABEL_69:
   [v31 endEncoding];
 }
 
-- (void)encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:(id)a3 disparity:(id)a4 prevSmoothConfidence:(id)a5 lastValidDisparityIn:(id)a6 lastValidDisparityOut:(id)a7 currConfidenceOut:(id)a8 useTemporalConfidence:(BOOL)a9
+- (void)encodeUpdateConfidenceAndLastValidDisparityToCommandBuffer:(id)buffer disparity:(id)disparity prevSmoothConfidence:(id)confidence lastValidDisparityIn:(id)in lastValidDisparityOut:(id)out currConfidenceOut:(id)confidenceOut useTemporalConfidence:(BOOL)temporalConfidence
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  disparityCopy = disparity;
+  confidenceCopy = confidence;
+  inCopy = in;
+  outCopy = out;
+  confidenceOutCopy = confidenceOut;
   v26 = self->_frameIndex == 0;
-  v20 = [a3 computeCommandEncoder];
-  v21 = v20;
-  if (a9)
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v21 = computeCommandEncoder;
+  if (temporalConfidence)
   {
-    [v20 setLabel:@"_updateConfidenceAndLastValidDisparityKernel_useTemporalConfidence"];
+    [computeCommandEncoder setLabel:@"_updateConfidenceAndLastValidDisparityKernel_useTemporalConfidence"];
     v22 = &OBJC_IVAR___VideoMattingMetal__updateConfidenceAndLastValidDisparityKernel_useTemporalConfidence;
   }
 
   else
   {
-    [v20 setLabel:@"_updateConfidenceAndLastValidDisparityKernel"];
+    [computeCommandEncoder setLabel:@"_updateConfidenceAndLastValidDisparityKernel"];
     v22 = &OBJC_IVAR___VideoMattingMetal__updateConfidenceAndLastValidDisparityKernel;
   }
 
   [v21 setComputePipelineState:*(&self->super.super.isa + *v22)];
-  [v21 setTexture:v15 atIndex:0];
-  [v21 setTexture:v16 atIndex:1];
-  [v21 setTexture:v17 atIndex:2];
-  [v21 setTexture:v18 atIndex:3];
-  [v21 setTexture:v19 atIndex:4];
+  [v21 setTexture:disparityCopy atIndex:0];
+  [v21 setTexture:confidenceCopy atIndex:1];
+  [v21 setTexture:inCopy atIndex:2];
+  [v21 setTexture:outCopy atIndex:3];
+  [v21 setTexture:confidenceOutCopy atIndex:4];
   [v21 setBytes:&v26 length:1 atIndex:0];
-  v25[0] = ([v15 width] + 15) >> 4;
-  v25[1] = ([v15 height] + 15) >> 4;
+  v25[0] = ([disparityCopy width] + 15) >> 4;
+  v25[1] = ([disparityCopy height] + 15) >> 4;
   v25[2] = 1;
   v23 = xmmword_1DED747F0;
   v24 = 1;
@@ -1825,220 +1825,220 @@ LABEL_69:
   [v21 endEncoding];
 }
 
-- (void)encodeSimpleConfidenceToCommandBuffer:(id)a3 disparity:(id)a4 outConfidence:(id)a5
+- (void)encodeSimpleConfidenceToCommandBuffer:(id)buffer disparity:(id)disparity outConfidence:(id)confidence
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_simpleConfidenceKernel"];
-  [v10 setComputePipelineState:self->_simpleConfidenceKernel];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
-  v13[0] = ([v8 width] + 15) >> 4;
-  v13[1] = ([v8 height] + 15) >> 4;
+  disparityCopy = disparity;
+  confidenceCopy = confidence;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_simpleConfidenceKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_simpleConfidenceKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:confidenceCopy atIndex:1];
+  v13[0] = ([disparityCopy width] + 15) >> 4;
+  v13[1] = ([disparityCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeBackgroundFillToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputMask:(id)a5 outputDisparity:(id)a6
+- (void)encodeBackgroundFillToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputMask:(id)mask outputDisparity:(id)outputDisparity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 computeCommandEncoder];
-  [v14 setLabel:@"_bgFillYKernel"];
-  [v14 setComputePipelineState:self->_bgFillYKernel];
-  [v14 setTexture:v11 atIndex:0];
-  [v14 setTexture:v12 atIndex:1];
-  [v14 setTexture:self->_bgFillTempTexture atIndex:2];
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  maskCopy = mask;
+  outputDisparityCopy = outputDisparity;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_bgFillYKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_bgFillYKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:maskCopy atIndex:1];
+  [computeCommandEncoder setTexture:self->_bgFillTempTexture atIndex:2];
   v20 = vdupq_n_s64(1uLL);
   v17 = xmmword_1DED747D8;
   v18 = 1;
-  v19 = ([v11 width] + 31) >> 5;
-  [v14 dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
-  [v14 endEncoding];
-  v15 = [v10 computeCommandEncoder];
+  v19 = ([disparityCopy width] + 31) >> 5;
+  [computeCommandEncoder dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v15 setLabel:@"_bgFillXKernel"];
-  [v15 setComputePipelineState:self->_bgFillXKernel];
-  [v15 setTexture:self->_bgFillTempTexture atIndex:0];
-  [v15 setTexture:v12 atIndex:1];
-  [v15 setTexture:v13 atIndex:2];
-  v16 = [v11 height];
+  [computeCommandEncoder2 setLabel:@"_bgFillXKernel"];
+  [computeCommandEncoder2 setComputePipelineState:self->_bgFillXKernel];
+  [computeCommandEncoder2 setTexture:self->_bgFillTempTexture atIndex:0];
+  [computeCommandEncoder2 setTexture:maskCopy atIndex:1];
+  [computeCommandEncoder2 setTexture:outputDisparityCopy atIndex:2];
+  height = [disparityCopy height];
   v19 = 1;
-  v20.i64[0] = (v16 + 31) >> 5;
+  v20.i64[0] = (height + 31) >> 5;
   v20.i64[1] = 1;
   v17 = xmmword_1DED747C0;
   v18 = 1;
-  [v15 dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
-  [v15 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)encodeInvalidDisparityMaskToCommandBuffer:(id)a3 inputDisparity:(id)a4 outputMask:(id)a5
+- (void)encodeInvalidDisparityMaskToCommandBuffer:(id)buffer inputDisparity:(id)disparity outputMask:(id)mask
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setLabel:@"_invalidDisparityMaskKernel"];
-  [v10 setComputePipelineState:self->_invalidDisparityMaskKernel];
-  [v10 setTexture:v8 atIndex:0];
-  [v10 setTexture:v9 atIndex:1];
-  v13[0] = ([v8 width] + 15) >> 4;
-  v13[1] = ([v8 height] + 15) >> 4;
+  disparityCopy = disparity;
+  maskCopy = mask;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_invalidDisparityMaskKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_invalidDisparityMaskKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:maskCopy atIndex:1];
+  v13[0] = ([disparityCopy width] + 15) >> 4;
+  v13[1] = ([disparityCopy height] + 15) >> 4;
   v13[2] = 1;
   v11 = xmmword_1DED747F0;
   v12 = 1;
-  [v10 dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v13 threadsPerThreadgroup:&v11];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeEdgeAwareFillToCommandBuffer:(id)a3 inputDisparity:(id)a4 inputDomainTransformX:(id)a5 inputDomainTransformY:(id)a6 outputDisparity:(id)a7
+- (void)encodeEdgeAwareFillToCommandBuffer:(id)buffer inputDisparity:(id)disparity inputDomainTransformX:(id)x inputDomainTransformY:(id)y outputDisparity:(id)outputDisparity
 {
-  v12 = a3;
-  v25 = a4;
-  v13 = a5;
-  v14 = a6;
-  v26 = a7;
+  bufferCopy = buffer;
+  disparityCopy = disparity;
+  xCopy = x;
+  yCopy = y;
+  outputDisparityCopy = outputDisparity;
   v32 = 0x141700000;
-  v15 = [v12 computeCommandEncoder];
-  [v15 setLabel:@"_edgeAwareFillXKernel"];
-  [v15 setComputePipelineState:self->_edgeAwareFillXKernel];
-  [v15 setTexture:v25 atIndex:0];
-  [v15 setTexture:v13 atIndex:1];
-  [v15 setTexture:self->_edgeAwareFillTempTexture atIndex:2];
-  [v15 setBytes:&v32 length:8 atIndex:0];
-  v29 = (([v13 width] >> 1) + 15) >> 4;
-  v30 = ([v13 height] + 15) >> 4;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_edgeAwareFillXKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_edgeAwareFillXKernel];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
+  [computeCommandEncoder setTexture:xCopy atIndex:1];
+  [computeCommandEncoder setTexture:self->_edgeAwareFillTempTexture atIndex:2];
+  [computeCommandEncoder setBytes:&v32 length:8 atIndex:0];
+  v29 = (([xCopy width] >> 1) + 15) >> 4;
+  v30 = ([xCopy height] + 15) >> 4;
   v31 = 1;
   v27 = xmmword_1DED747F0;
   v28 = 1;
-  [v15 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v15 endEncoding];
-  v16 = [v12 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v16 setLabel:@"_edgeAwareFillYKernel"];
-  [v16 setComputePipelineState:self->_edgeAwareFillYKernel];
-  [v16 setTexture:self->_edgeAwareFillTempTexture atIndex:0];
-  [v16 setTexture:v14 atIndex:1];
-  [v16 setTexture:v26 atIndex:2];
-  [v16 setBytes:&v32 length:8 atIndex:0];
-  v17 = [v14 width];
-  v18 = [v14 height];
-  v29 = (v17 + 15) >> 4;
-  v30 = ((v18 >> 1) + 15) >> 4;
+  [computeCommandEncoder2 setLabel:@"_edgeAwareFillYKernel"];
+  [computeCommandEncoder2 setComputePipelineState:self->_edgeAwareFillYKernel];
+  [computeCommandEncoder2 setTexture:self->_edgeAwareFillTempTexture atIndex:0];
+  [computeCommandEncoder2 setTexture:yCopy atIndex:1];
+  [computeCommandEncoder2 setTexture:outputDisparityCopy atIndex:2];
+  [computeCommandEncoder2 setBytes:&v32 length:8 atIndex:0];
+  width = [yCopy width];
+  height = [yCopy height];
+  v29 = (width + 15) >> 4;
+  v30 = ((height >> 1) + 15) >> 4;
   v31 = 1;
   v27 = xmmword_1DED747F0;
   v28 = 1;
-  [v16 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v16 endEncoding];
-  v19 = [v12 computeCommandEncoder];
+  [computeCommandEncoder2 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder2 endEncoding];
+  computeCommandEncoder3 = [bufferCopy computeCommandEncoder];
 
-  [v19 setLabel:@"_edgeAwareFillXKernel"];
-  [v19 setComputePipelineState:self->_edgeAwareFillXKernel];
-  [v19 setTexture:v26 atIndex:0];
-  [v19 setTexture:v13 atIndex:1];
-  [v19 setTexture:self->_edgeAwareFillTempTexture atIndex:2];
-  [v19 setBytes:&v32 length:8 atIndex:0];
-  v20 = [v13 width];
-  v21 = [v13 height];
-  v29 = ((v20 >> 1) + 15) >> 4;
-  v30 = (v21 + 15) >> 4;
+  [computeCommandEncoder3 setLabel:@"_edgeAwareFillXKernel"];
+  [computeCommandEncoder3 setComputePipelineState:self->_edgeAwareFillXKernel];
+  [computeCommandEncoder3 setTexture:outputDisparityCopy atIndex:0];
+  [computeCommandEncoder3 setTexture:xCopy atIndex:1];
+  [computeCommandEncoder3 setTexture:self->_edgeAwareFillTempTexture atIndex:2];
+  [computeCommandEncoder3 setBytes:&v32 length:8 atIndex:0];
+  width2 = [xCopy width];
+  height2 = [xCopy height];
+  v29 = ((width2 >> 1) + 15) >> 4;
+  v30 = (height2 + 15) >> 4;
   v31 = 1;
   v27 = xmmword_1DED747F0;
   v28 = 1;
-  [v19 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v19 endEncoding];
-  v22 = [v12 computeCommandEncoder];
+  [computeCommandEncoder3 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder3 endEncoding];
+  computeCommandEncoder4 = [bufferCopy computeCommandEncoder];
 
-  [v22 setLabel:@"_edgeAwareFillYKernel"];
-  [v22 setComputePipelineState:self->_edgeAwareFillYKernel];
-  [v22 setTexture:self->_edgeAwareFillTempTexture atIndex:0];
-  [v22 setTexture:v14 atIndex:1];
-  [v22 setTexture:v26 atIndex:2];
-  [v22 setBytes:&v32 length:8 atIndex:0];
-  v23 = [v14 width];
-  v24 = [v14 height];
-  v29 = (v23 + 15) >> 4;
-  v30 = ((v24 >> 1) + 15) >> 4;
+  [computeCommandEncoder4 setLabel:@"_edgeAwareFillYKernel"];
+  [computeCommandEncoder4 setComputePipelineState:self->_edgeAwareFillYKernel];
+  [computeCommandEncoder4 setTexture:self->_edgeAwareFillTempTexture atIndex:0];
+  [computeCommandEncoder4 setTexture:yCopy atIndex:1];
+  [computeCommandEncoder4 setTexture:outputDisparityCopy atIndex:2];
+  [computeCommandEncoder4 setBytes:&v32 length:8 atIndex:0];
+  width3 = [yCopy width];
+  height3 = [yCopy height];
+  v29 = (width3 + 15) >> 4;
+  v30 = ((height3 >> 1) + 15) >> 4;
   v31 = 1;
   v27 = xmmword_1DED747F0;
   v28 = 1;
-  [v22 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
-  [v22 endEncoding];
+  [computeCommandEncoder4 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder4 endEncoding];
 }
 
-- (void)encodeDomainTransformToCommandBuffer:(id)a3 inputDiffusionMap:(id)a4 inputDistanceFromKnownDisparity:(id)a5 outputDomainTransformX:(id)a6 outputDomainTransformY:(id)a7
+- (void)encodeDomainTransformToCommandBuffer:(id)buffer inputDiffusionMap:(id)map inputDistanceFromKnownDisparity:(id)disparity outputDomainTransformX:(id)x outputDomainTransformY:(id)y
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  bufferCopy = buffer;
+  mapCopy = map;
+  disparityCopy = disparity;
+  xCopy = x;
+  yCopy = y;
   v23 = 1087373312;
-  v17 = [v12 computeCommandEncoder];
-  [v17 setLabel:@"_domainTransformXKernel"];
-  [v17 setComputePipelineState:self->_domainTransformXKernel];
-  [v17 setTexture:v13 atIndex:0];
-  [v17 setTexture:v14 atIndex:1];
-  [v17 setTexture:v15 atIndex:2];
-  [v17 setBytes:&v23 length:4 atIndex:0];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_domainTransformXKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_domainTransformXKernel];
+  [computeCommandEncoder setTexture:mapCopy atIndex:0];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:1];
+  [computeCommandEncoder setTexture:xCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v23 length:4 atIndex:0];
   v21 = 1;
-  v22.i64[0] = ([v15 height] + 31) >> 5;
+  v22.i64[0] = ([xCopy height] + 31) >> 5;
   v22.i64[1] = 1;
   v19 = xmmword_1DED747C0;
   v20 = 1;
-  [v17 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
-  [v17 endEncoding];
-  v18 = [v12 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v18 setLabel:@"_domainTransformYKernel"];
-  [v18 setComputePipelineState:self->_domainTransformYKernel];
-  [v18 setTexture:v13 atIndex:0];
-  [v18 setTexture:v14 atIndex:1];
-  [v18 setTexture:v16 atIndex:2];
-  [v18 setBytes:&v23 length:4 atIndex:0];
-  v21 = ([v16 width] + 31) >> 5;
+  [computeCommandEncoder2 setLabel:@"_domainTransformYKernel"];
+  [computeCommandEncoder2 setComputePipelineState:self->_domainTransformYKernel];
+  [computeCommandEncoder2 setTexture:mapCopy atIndex:0];
+  [computeCommandEncoder2 setTexture:disparityCopy atIndex:1];
+  [computeCommandEncoder2 setTexture:yCopy atIndex:2];
+  [computeCommandEncoder2 setBytes:&v23 length:4 atIndex:0];
+  v21 = ([yCopy width] + 31) >> 5;
   v22 = vdupq_n_s64(1uLL);
   v19 = xmmword_1DED747D8;
   v20 = 1;
-  [v18 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
-  [v18 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)encodeDisparityCleanupToCommandBuffer:(id)a3 prevDisparity:(id)a4 currDisparity:(id)a5 colorSim:(id)a6 cleanDisparity:(id)a7
+- (void)encodeDisparityCleanupToCommandBuffer:(id)buffer prevDisparity:(id)disparity currDisparity:(id)currDisparity colorSim:(id)sim cleanDisparity:(id)cleanDisparity
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  disparityCopy = disparity;
+  currDisparityCopy = currDisparity;
+  simCopy = sim;
+  cleanDisparityCopy = cleanDisparity;
   v22 = 0x3F0000003D4CCCCDLL;
-  v16 = [a3 computeCommandEncoder];
-  v17 = v16;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v17 = computeCommandEncoder;
   if (self->_frameIndex)
   {
-    [v16 setLabel:@"_disparityCleanupKernel"];
+    [computeCommandEncoder setLabel:@"_disparityCleanupKernel"];
     v18 = &OBJC_IVAR___VideoMattingMetal__disparityCleanupKernel;
   }
 
   else
   {
-    [v16 setLabel:@"_disparityCleanupKernel_firstFrame"];
+    [computeCommandEncoder setLabel:@"_disparityCleanupKernel_firstFrame"];
     v18 = &OBJC_IVAR___VideoMattingMetal__disparityCleanupKernel_firstFrame;
   }
 
   [v17 setComputePipelineState:*(&self->super.super.isa + *v18)];
-  [v17 setTexture:v12 atIndex:0];
-  [v17 setTexture:v12 atIndex:1];
-  [v17 setTexture:v13 atIndex:2];
-  [v17 setTexture:v14 atIndex:3];
-  [v17 setTexture:v15 atIndex:4];
+  [v17 setTexture:disparityCopy atIndex:0];
+  [v17 setTexture:disparityCopy atIndex:1];
+  [v17 setTexture:currDisparityCopy atIndex:2];
+  [v17 setTexture:simCopy atIndex:3];
+  [v17 setTexture:cleanDisparityCopy atIndex:4];
   [v17 setBytes:&v22 length:8 atIndex:0];
-  v21[0] = ([v15 width] + 15) >> 4;
-  v21[1] = ([v15 height] + 15) >> 4;
+  v21[0] = ([cleanDisparityCopy width] + 15) >> 4;
+  v21[1] = ([cleanDisparityCopy height] + 15) >> 4;
   v21[2] = 1;
   v19 = xmmword_1DED747F0;
   v20 = 1;
@@ -2046,155 +2046,155 @@ LABEL_69:
   [v17 endEncoding];
 }
 
-- (void)encodeColorSimL1ToCommandBuffer:(id)a3 prevSource:(id)a4 currSource:(id)a5 destination:(id)a6
+- (void)encodeColorSimL1ToCommandBuffer:(id)buffer prevSource:(id)source currSource:(id)currSource destination:(id)destination
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  currSourceCopy = currSource;
+  destinationCopy = destination;
   v17 = 1084227584;
-  v18 = v10 == 0;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setLabel:@"_colorSimL1Kernel"];
-  [v13 setComputePipelineState:self->_colorSimL1Kernel];
-  [v13 setTexture:v10 atIndex:0];
-  [v13 setTexture:v11 atIndex:1];
-  [v13 setTexture:v12 atIndex:2];
-  [v13 setBytes:&v17 length:8 atIndex:0];
-  v16[0] = ([v12 width] + 15) >> 4;
-  v16[1] = ([v12 height] + 15) >> 4;
+  v18 = sourceCopy == 0;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_colorSimL1Kernel"];
+  [computeCommandEncoder setComputePipelineState:self->_colorSimL1Kernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:currSourceCopy atIndex:1];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:2];
+  [computeCommandEncoder setBytes:&v17 length:8 atIndex:0];
+  v16[0] = ([destinationCopy width] + 15) >> 4;
+  v16[1] = ([destinationCopy height] + 15) >> 4;
   v16[2] = 1;
   v14 = xmmword_1DED747F0;
   v15 = 1;
-  [v13 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeColorSimToCommandBuffer:(id)a3 prevSource:(id)a4 currSource:(id)a5 destination:(id)a6 similarityScaleFactor:(float)a7
+- (void)encodeColorSimToCommandBuffer:(id)buffer prevSource:(id)source currSource:(id)currSource destination:(id)destination similarityScaleFactor:(float)factor
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v19 = a7;
-  v20 = v12 == 0;
-  v15 = [a3 computeCommandEncoder];
-  [v15 setLabel:@"_colorSimKernel"];
-  [v15 setComputePipelineState:self->_colorSimKernel];
-  [v15 setTexture:v12 atIndex:0];
-  [v15 setTexture:v13 atIndex:1];
-  [v15 setTexture:v14 atIndex:2];
-  [v15 setBytes:&v19 length:8 atIndex:0];
-  v18[0] = ([v14 width] + 15) >> 4;
-  v18[1] = ([v14 height] + 15) >> 4;
+  sourceCopy = source;
+  currSourceCopy = currSource;
+  destinationCopy = destination;
+  factorCopy = factor;
+  v20 = sourceCopy == 0;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"_colorSimKernel"];
+  [computeCommandEncoder setComputePipelineState:self->_colorSimKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
+  [computeCommandEncoder setTexture:currSourceCopy atIndex:1];
+  [computeCommandEncoder setTexture:destinationCopy atIndex:2];
+  [computeCommandEncoder setBytes:&factorCopy length:8 atIndex:0];
+  v18[0] = ([destinationCopy width] + 15) >> 4;
+  v18[1] = ([destinationCopy height] + 15) >> 4;
   v18[2] = 1;
   v16 = xmmword_1DED747F0;
   v17 = 1;
-  [v15 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v15 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeCopyTextureToCommandBuffer:(id)a3 inTexture:(id)a4 outTexture:(id)a5
+- (void)encodeCopyTextureToCommandBuffer:(id)buffer inTexture:(id)texture outTexture:(id)outTexture
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 width];
-  v11 = [v8 height];
-  v12 = [v8 depth];
-  v13 = [v7 blitCommandEncoder];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  outTextureCopy = outTexture;
+  width = [textureCopy width];
+  height = [textureCopy height];
+  depth = [textureCopy depth];
+  blitCommandEncoder = [bufferCopy blitCommandEncoder];
   memset(v16, 0, sizeof(v16));
-  v15[0] = v10;
-  v15[1] = v11;
-  v15[2] = v12;
+  v15[0] = width;
+  v15[1] = height;
+  v15[2] = depth;
   memset(v14, 0, sizeof(v14));
-  [v13 copyFromTexture:v8 sourceSlice:0 sourceLevel:0 sourceOrigin:v16 sourceSize:v15 toTexture:v9 destinationSlice:0 destinationLevel:0 destinationOrigin:v14];
-  [v13 endEncoding];
+  [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:0 sourceLevel:0 sourceOrigin:v16 sourceSize:v15 toTexture:outTextureCopy destinationSlice:0 destinationLevel:0 destinationOrigin:v14];
+  [blitCommandEncoder endEncoding];
 }
 
-- (void)setStageLightProxyCubeData:(id)a3 cubeData:(id)a4
+- (void)setStageLightProxyCubeData:(id)data cubeData:(id)cubeData
 {
-  v12 = a3;
-  v7 = a4;
+  dataCopy = data;
+  cubeDataCopy = cubeData;
   self->_isBgColorLutBlack = 1;
-  if (self->_lastStageLightProxyCubeData != v12)
+  if (self->_lastStageLightProxyCubeData != dataCopy)
   {
-    objc_storeStrong(&self->_lastStageLightProxyCubeData, a3);
-    v8 = sub_1DED6FF78(v12, self->_device);
+    objc_storeStrong(&self->_lastStageLightProxyCubeData, data);
+    v8 = sub_1DED6FF78(dataCopy, self->_device);
     stageLightProxyLut = self->_stageLightProxyLut;
     self->_stageLightProxyLut = v8;
   }
 
-  if (self->_lastStageLightCubeData != v7)
+  if (self->_lastStageLightCubeData != cubeDataCopy)
   {
-    objc_storeStrong(&self->_lastStageLightCubeData, a4);
-    v10 = sub_1DED6FF78(v7, self->_device);
+    objc_storeStrong(&self->_lastStageLightCubeData, cubeData);
+    v10 = sub_1DED6FF78(cubeDataCopy, self->_device);
     stageLightLut = self->_stageLightLut;
     self->_stageLightLut = v10;
   }
 }
 
-- (void)setPortraitForegroundCubeData:(id)a3 backgroundCubeData:(id)a4
+- (void)setPortraitForegroundCubeData:(id)data backgroundCubeData:(id)cubeData
 {
-  v7 = a3;
-  v6 = a4;
+  dataCopy = data;
+  cubeDataCopy = cubeData;
   self->_isBgColorLutBlack = 0;
-  [(VideoMattingMetal *)self setFgLut:v7];
-  [(VideoMattingMetal *)self setBgLut:v6];
+  [(VideoMattingMetal *)self setFgLut:dataCopy];
+  [(VideoMattingMetal *)self setBgLut:cubeDataCopy];
 }
 
-- (void)setFgLut:(id)a3
+- (void)setFgLut:(id)lut
 {
-  v5 = a3;
-  if (self->_lastFgLutData != v5)
+  lutCopy = lut;
+  if (self->_lastFgLutData != lutCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_lastFgLutData, a3);
+    v8 = lutCopy;
+    objc_storeStrong(&self->_lastFgLutData, lut);
     v6 = sub_1DED6FF78(v8, self->_device);
     fgColorLut = self->_fgColorLut;
     self->_fgColorLut = v6;
 
-    v5 = v8;
+    lutCopy = v8;
   }
 }
 
-- (void)setBgLut:(id)a3
+- (void)setBgLut:(id)lut
 {
-  v5 = a3;
-  if (self->_lastBgLutData != v5)
+  lutCopy = lut;
+  if (self->_lastBgLutData != lutCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_lastBgLutData, a3);
+    v8 = lutCopy;
+    objc_storeStrong(&self->_lastBgLutData, lut);
     v6 = sub_1DED6FF78(v8, self->_device);
     bgColorLut = self->_bgColorLut;
     self->_bgColorLut = v6;
 
-    v5 = v8;
+    lutCopy = v8;
   }
 }
 
-- (void)setAlphaLut:(float)a3 gammaExponent:(float)a4
+- (void)setAlphaLut:(float)lut gammaExponent:(float)exponent
 {
-  if (a3 != 2.0)
+  if (lut != 2.0)
   {
-    v4 = a4;
-    v5 = self;
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:v5 file:@"VideoMattingMetal.mm" lineNumber:945 description:{@"contrastExponent value %f is not supported", a3}];
+    exponentCopy = exponent;
+    selfCopy = self;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"VideoMattingMetal.mm" lineNumber:945 description:{@"contrastExponent value %f is not supported", lut}];
 
-    a4 = v4;
-    self = v5;
+    exponent = exponentCopy;
+    self = selfCopy;
   }
 
-  self->_gammaExponent = a4;
+  self->_gammaExponent = exponent;
 }
 
-- (void)prewarmGuidedFilter:(id)a3 device:(id)a4 commandBuffer:(id)a5 width:(int)a6 height:(int)a7 width2:(int)a8 height2:(int)a9
+- (void)prewarmGuidedFilter:(id)filter device:(id)device commandBuffer:(id)buffer width:(int)width height:(int)height width2:(int)width2 height2:(int)height2
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  [v11 epsilon];
+  filterCopy = filter;
+  deviceCopy = device;
+  bufferCopy = buffer;
+  [filterCopy epsilon];
   LODWORD(v14) = 1008981770;
-  [v11 setEpsilon:v14];
+  [filterCopy setEpsilon:v14];
   operator new();
 }
 
@@ -2237,7 +2237,7 @@ LABEL_69:
   [(ImageSaverRegistrator *)&v9 dealloc];
 }
 
-- (VideoMattingMetal)initWithStaticParams:(const VideoMattingStaticParams *)a3 renderingDisparityUpdateRate:(float)a4 renderingDisparityBlurRadius:(float)a5 renderingLensFocalLength_mm:(float)a6 useTemporalConfidence:(BOOL)a7 metalContext:(void *)a8 error:(id *)a9
+- (VideoMattingMetal)initWithStaticParams:(const VideoMattingStaticParams *)params renderingDisparityUpdateRate:(float)rate renderingDisparityBlurRadius:(float)radius renderingLensFocalLength_mm:(float)length_mm useTemporalConfidence:(BOOL)confidence metalContext:(void *)context error:(id *)error
 {
   v328[1] = *MEMORY[0x1E69E9840];
   v145.receiver = self;
@@ -2246,27 +2246,27 @@ LABEL_69:
   v17 = v16;
   if (v16)
   {
-    v16->_sdofRenderingHasForegroundBlur = a3->supportsForegroundBlur;
-    v16->_deadzoneInCinematic = a3->deadzoneInCinematic;
+    v16->_sdofRenderingHasForegroundBlur = params->supportsForegroundBlur;
+    v16->_deadzoneInCinematic = params->deadzoneInCinematic;
     v16->_renderStateIsConfigured = 0;
-    v16->_width = a3->colorWidth;
-    v16->_height = a3->colorHeight;
-    v16->_width2 = a3->guidedFilterWidth;
+    v16->_width = params->colorWidth;
+    v16->_height = params->colorHeight;
+    v16->_width2 = params->guidedFilterWidth;
     p_width2 = &v16->_width2;
-    v16->_height2 = a3->guidedFilterHeight;
+    v16->_height2 = params->guidedFilterHeight;
     width2 = v16->_width2;
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_width2: %d outside bounds [2, %d] for guided filter", width2, 0xFFFFLL];
-    v21 = [v19 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 423, v20];
-    sub_1DED25D64(width2 < 2, a9, 4294944393, v21);
+    0xFFFFLL = [MEMORY[0x1E696AEC0] stringWithFormat:@"_width2: %d outside bounds [2, %d] for guided filter", width2, 0xFFFFLL];
+    v21 = [v19 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 423, 0xFFFFLL];
+    sub_1DED25D64(width2 < 2, error, 4294944393, v21);
 
     if (width2 >= 2)
     {
       height2 = v17->_height2;
       v23 = MEMORY[0x1E696AEC0];
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_height2: %d outside bounds [2, %d] for guided filter", height2, 0xFFFFLL];
-      v25 = [v23 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 433, v24];
-      sub_1DED25D64(height2 < 2, a9, 4294944393, v25);
+      0xFFFFLL2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_height2: %d outside bounds [2, %d] for guided filter", height2, 0xFFFFLL];
+      v25 = [v23 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 433, 0xFFFFLL2];
+      sub_1DED25D64(height2 < 2, error, 4294944393, v25);
 
       if (height2 >= 2)
       {
@@ -2289,14 +2289,14 @@ LABEL_69:
         [v144 setConstantValue:&v17->_height2 type:29 withName:@"kDistanceTransformHeight"];
         v143 = 0;
         [v144 setConstantValue:&v143 type:53 withName:@"kDoVignetting"];
-        objc_storeStrong(&v17->_device, *(a8 + 1));
-        objc_storeStrong(&v17->_commandQueue, *(a8 + 2));
-        objc_storeStrong(&v17->_defaultLibrary, *(a8 + 3));
-        objc_storeStrong(&v17->_pipelineLibrary, *(a8 + 4));
-        v17->_metalContext = a8;
+        objc_storeStrong(&v17->_device, *(context + 1));
+        objc_storeStrong(&v17->_commandQueue, *(context + 2));
+        objc_storeStrong(&v17->_defaultLibrary, *(context + 3));
+        objc_storeStrong(&v17->_pipelineLibrary, *(context + 4));
+        v17->_metalContext = context;
         if (v17->_sdofRenderingHasForegroundBlur)
         {
-          v33 = [[GlobalReductionAverage alloc] initWithFigMetalContext:*a8 textureSize:256.0, 192.0];
+          v33 = [[GlobalReductionAverage alloc] initWithFigMetalContext:*context textureSize:256.0, 192.0];
           globalReductionAverage = v17->_globalReductionAverage;
           v17->_globalReductionAverage = v33;
         }
@@ -2318,7 +2318,7 @@ LABEL_69:
         v37 = MEMORY[0x1E696AEC0];
         v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error allocating texture cache"];
         v39 = [v37 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 479, v38];
-        sub_1DED25D64(v36, a9, 4294944382, v39);
+        sub_1DED25D64(v36, error, 4294944382, v39);
 
         if (v36)
         {
@@ -2326,10 +2326,10 @@ LABEL_69:
         }
 
         v17->_isBgColorLutBlack = 0;
-        v17->_renderingDisparityUpdateRate = a4;
-        v17->_renderingDisparityBlurRadius = a5;
-        v17->_renderingLensFocalLength_mm = a6;
-        v17->_useTemporalConfidence = a7;
+        v17->_renderingDisparityUpdateRate = rate;
+        v17->_renderingDisparityBlurRadius = radius;
+        v17->_renderingLensFocalLength_mm = length_mm;
+        v17->_useTemporalConfidence = confidence;
         v40 = [[CVAPhotoMTLRingBuffer alloc] initWithLength:36 options:0 device:v17->_device];
         disparityConfig = v17->_disparityConfig;
         v17->_disparityConfig = v40;
@@ -2338,7 +2338,7 @@ LABEL_69:
         v43 = MEMORY[0x1E696AEC0];
         v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[_Nonnull id<MTLDeviceSPI> newBufferWithLength:%lu] is nil", 36];
         v45 = [v43 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 509, v44];
-        sub_1DED25D64(v42 == 0, a9, 4294944382, v45);
+        sub_1DED25D64(v42 == 0, error, 4294944382, v45);
 
         if (!v42)
         {
@@ -2348,7 +2348,7 @@ LABEL_69:
         v46 = [CVAFilterDiffusion alloc];
         LODWORD(v47) = 998310275;
         LODWORD(v48) = 1.0;
-        v49 = [(CVAFilterDiffusion *)v46 initWithFigMetalContext:*a8 bufferWidth:*p_width2 bufferHeight:v17->_height2 edgeVariance:a9 stepSize:v47 error:v48];
+        v49 = [(CVAFilterDiffusion *)v46 initWithFigMetalContext:*context bufferWidth:*p_width2 bufferHeight:v17->_height2 edgeVariance:error stepSize:v47 error:v48];
         diffusion = v17->_diffusion;
         v17->_diffusion = v49;
 
@@ -2364,12 +2364,12 @@ LABEL_69:
         }
 
         v51 = [CVAFilterDistanceTransform alloc];
-        v52 = *a8;
+        v52 = *context;
         v53 = v17->_height2;
         *buf = *p_width2;
         v147 = v53;
         v148 = 1;
-        v54 = [(CVAFilterDistanceTransform *)v51 initWithFigMetalContext:v52 textureSize:buf error:a9];
+        v54 = [(CVAFilterDistanceTransform *)v51 initWithFigMetalContext:v52 textureSize:buf error:error];
         distanceTransform = v17->_distanceTransform;
         v17->_distanceTransform = v54;
 
@@ -2379,12 +2379,12 @@ LABEL_69:
         }
 
         v56 = [CVAFilterBox alloc];
-        v57 = *a8;
+        v57 = *context;
         v58 = v17->_height2;
         *buf = *p_width2;
         v147 = v58;
         v148 = 1;
-        v59 = [(CVAFilterBox *)v56 initWithFigMetalContext:v57 textureSize:buf error:a9];
+        v59 = [(CVAFilterBox *)v56 initWithFigMetalContext:v57 textureSize:buf error:error];
         boxFilter = v17->_boxFilter;
         v17->_boxFilter = v59;
 
@@ -2393,7 +2393,7 @@ LABEL_69:
           goto LABEL_40;
         }
 
-        v61 = [[CVAFilterColorAlphaToFgBg alloc] initWithFigMetalContext:*a8 error:a9];
+        v61 = [[CVAFilterColorAlphaToFgBg alloc] initWithFigMetalContext:*context error:error];
         colorAlphaToFgBg = v17->_colorAlphaToFgBg;
         v17->_colorAlphaToFgBg = v61;
 
@@ -2402,7 +2402,7 @@ LABEL_69:
           goto LABEL_40;
         }
 
-        v63 = [[CVAFilterHybridResampling alloc] initWithFigMetalContext:*a8 commandQueue:v17->_commandQueue error:a9];
+        v63 = [[CVAFilterHybridResampling alloc] initWithFigMetalContext:*context commandQueue:v17->_commandQueue error:error];
         hybridResampler = v17->_hybridResampler;
         v17->_hybridResampler = v63;
 
@@ -2412,7 +2412,7 @@ LABEL_69:
         }
 
         v135 = sub_1DED5D1F8(@"harvesting.enabled", @"com.apple.coremedia", 0);
-        v136 = ((floorf(((a3->kernelSize * 0.5) * *p_width2) / a3->alphaWidth) * 2.0) + 1.0);
+        v136 = ((floorf(((params->kernelSize * 0.5) * *p_width2) / params->alphaWidth) * 2.0) + 1.0);
         if (!v135)
         {
           v65 = [objc_alloc(MEMORY[0x1E69745D0]) initWithDevice:v17->_device kernelDiameter:v136];
@@ -2423,7 +2423,7 @@ LABEL_69:
           v68 = MEMORY[0x1E696AEC0];
           v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MPSImageGuidedFilter is nil"];
           v70 = [v68 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 592, v69];
-          sub_1DED25D64(v67 == 0, a9, 4294944382, v70);
+          sub_1DED25D64(v67 == 0, error, 4294944382, v70);
 
           if (!v67)
           {
@@ -2437,20 +2437,20 @@ LABEL_69:
         commandQueue = v17->_commandQueue;
         v73 = *p_width2;
         v74 = v17->_height2;
-        laplacianLimitingDownsampling = a3->laplacianLimitingDownsampling;
-        infConvolutionDownsampling = a3->infConvolutionDownsampling;
-        v77 = *&a3->alphaWidth;
+        laplacianLimitingDownsampling = params->laplacianLimitingDownsampling;
+        infConvolutionDownsampling = params->infConvolutionDownsampling;
+        v77 = *&params->alphaWidth;
         *&v78 = v77;
         *(&v78 + 1) = HIDWORD(v77);
         v141 = v78;
-        v79 = *a8;
+        v79 = *context;
         *buf = v73;
         v147 = v74;
         v148 = 1;
         v142 = 1;
         LODWORD(v133) = laplacianLimitingDownsampling;
-        HIDWORD(v133) = a3->laplacianLimitingBlurSize;
-        v80 = [(CVAFilterGuided *)v71 initWithFigMetalContext:v79 commandQueue:commandQueue textureSize:buf alphaSize:&v141 kernelSize:v136 infConvolutionDownsampling:infConvolutionDownsampling laplacianLimitingDownsampling:v133 laplacianLimitingBlurSize:a9 error:?];
+        HIDWORD(v133) = params->laplacianLimitingBlurSize;
+        v80 = [(CVAFilterGuided *)v71 initWithFigMetalContext:v79 commandQueue:commandQueue textureSize:buf alphaSize:&v141 kernelSize:v136 infConvolutionDownsampling:infConvolutionDownsampling laplacianLimitingDownsampling:v133 laplacianLimitingBlurSize:error error:?];
         cvaGuidedFilter = v17->_cvaGuidedFilter;
         v17->_cvaGuidedFilter = v80;
 
@@ -2459,7 +2459,7 @@ LABEL_69:
           goto LABEL_40;
         }
 
-        v82 = [[CVAFilterMaskedVariableBlur alloc] initWithFigMetalContext:*a8 commandQueue:v17->_commandQueue kernelSize:7 error:a9];
+        v82 = [[CVAFilterMaskedVariableBlur alloc] initWithFigMetalContext:*context commandQueue:v17->_commandQueue kernelSize:7 error:error];
         maskedVariableBlur = v17->_maskedVariableBlur;
         v17->_maskedVariableBlur = v82;
 
@@ -2468,11 +2468,11 @@ LABEL_69:
           goto LABEL_40;
         }
 
-        v84 = [[CVAFilterRenderStagelight alloc] initWithFigMetalContext:*v17->_metalContext error:a9];
+        v84 = [[CVAFilterRenderStagelight alloc] initWithFigMetalContext:*v17->_metalContext error:error];
         stagelightFilter = v17->_stagelightFilter;
         v17->_stagelightFilter = v84;
 
-        if (!v17->_stagelightFilter || (v86 = [[CVAFilterRenderComposite alloc] initWithFigMetalContext:*v17->_metalContext error:a9], renderComposite = v17->_renderComposite, v17->_renderComposite = v86, renderComposite, !v17->_renderComposite))
+        if (!v17->_stagelightFilter || (v86 = [[CVAFilterRenderComposite alloc] initWithFigMetalContext:*v17->_metalContext error:error], renderComposite = v17->_renderComposite, v17->_renderComposite = v86, renderComposite, !v17->_renderComposite))
         {
 LABEL_40:
           v26 = 0;
@@ -2586,7 +2586,7 @@ LABEL_41:
         {
           while (1)
           {
-            sub_1DED422A0(*v88, *a8, *(v88 + 8), *(v88 + 16));
+            sub_1DED422A0(*v88, *context, *(v88 + 8), *(v88 + 16));
             if (!**v88)
             {
               break;
@@ -2621,7 +2621,7 @@ LABEL_30:
         v157 = 0;
         p_guidedFilterWeightKernel = &v17->_alphaNoPostprocessing;
         v159 = 10;
-        v160 = *&a3->alphaWidth;
+        v160 = *&params->alphaWidth;
         p_disparityConfidenceMaskKernel = 0;
         p_gfForegroundMask = &v17->_gfForegroundMask;
         v163 = 10;
@@ -2815,7 +2815,7 @@ LABEL_30:
         {
           do
           {
-            v92 = sub_1DED6FDC8(v17->_device, v90[1], *(v90 + 4), *(v90 + 5), v90[3], a9);
+            v92 = sub_1DED6FDC8(v17->_device, v90[1], *(v90 + 4), *(v90 + 5), v90[3], error);
             v93 = **v90;
             **v90 = v92;
 
@@ -2840,7 +2840,7 @@ LABEL_30:
         v98 = MEMORY[0x1E696AEC0];
         v99 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_facemaskRegionTexture is nil"];
         v100 = [v98 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 788, v99];
-        sub_1DED25D64(v97 == 0, a9, 4294944382, v100);
+        sub_1DED25D64(v97 == 0, error, 4294944382, v100);
 
         if (v97)
         {
@@ -2860,8 +2860,8 @@ LABEL_30:
           v103 = [(MTLDeviceSPI *)v17->_device newTextureWithDescriptor:v102];
           v104 = MEMORY[0x1E696AEC0];
           v105 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_bg is nil"];
-          v106 = [v104 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 802, v105];
-          sub_1DED25D64(v103 == 0, a9, 4294944382, v106);
+          v105 = [v104 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 802, v105];
+          sub_1DED25D64(v103 == 0, error, 4294944382, v105);
 
           if (v103)
           {
@@ -2919,18 +2919,18 @@ LABEL_39:
             v128 = IOSurfaceAcceleratorCreate();
             v129 = MEMORY[0x1E696AEC0];
             v130 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create IOAccelerator"];
-            v131 = [v129 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 836, v130];
-            sub_1DED25D64(v128 != 0, a9, 4294944396, v131);
+            v130 = [v129 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[VideoMattingMetal initWithStaticParams:renderingDisparityUpdateRate:renderingDisparityBlurRadius:renderingLensFocalLength_mm:useTemporalConfidence:metalContext:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/module/sdof/src/pipeline/VideoMattingMetal.mm", 836, v130];
+            sub_1DED25D64(v128 != 0, error, 4294944396, v130);
 
             if (!v128)
             {
-              v132 = [(MTLCommandQueue *)v17->_commandQueue commandBuffer];
-              [v132 setLabel:@"MPS-prewarming"];
-              sub_1DED70534(v17->_disparityBlurBoxKernel, v17->_device, v132, [(MTLTexture *)v17->_deweightedDisparity pixelFormat]);
+              commandBuffer = [(MTLCommandQueue *)v17->_commandQueue commandBuffer];
+              [commandBuffer setLabel:@"MPS-prewarming"];
+              sub_1DED70534(v17->_disparityBlurBoxKernel, v17->_device, commandBuffer, [(MTLTexture *)v17->_deweightedDisparity pixelFormat]);
               LODWORD(v134) = v17->_height2;
-              [(VideoMattingMetal *)v17 prewarmGuidedFilter:v17->_guidedFilter device:v17->_device commandBuffer:v132 width:v17->_width height:v17->_height width2:*p_width2 height2:v134];
-              [(VideoMattingMetal *)v17 encodeCopyTextureToCommandBuffer:v132 inTexture:v17->_disparity[0] outTexture:v17->_disparity[1]];
-              [v132 commit];
+              [(VideoMattingMetal *)v17 prewarmGuidedFilter:v17->_guidedFilter device:v17->_device commandBuffer:commandBuffer width:v17->_width height:v17->_height width2:*p_width2 height2:v134];
+              [(VideoMattingMetal *)v17 encodeCopyTextureToCommandBuffer:commandBuffer inTexture:v17->_disparity[0] outTexture:v17->_disparity[1]];
+              [commandBuffer commit];
 
               goto LABEL_39;
             }
@@ -2968,65 +2968,65 @@ LABEL_5:
   return v26;
 }
 
-+ (void)decomposeYuvPixelBuffer:(__CVBuffer *)a3 yTexture:(id *)a4 uvTexture:(id *)a5 textureCache:(__CVMetalTextureCache *)a6
++ (void)decomposeYuvPixelBuffer:(__CVBuffer *)buffer yTexture:(id *)texture uvTexture:(id *)uvTexture textureCache:(__CVMetalTextureCache *)cache
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v12 = +[CVAVideoPipelineProperties_Impl allSupportedYCbCrPixelFormats];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:PixelFormatType];
   v14 = [v12 containsObject:v13];
 
   if ((v14 & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = +[CVAVideoPipelineProperties_Impl allSupportedYCbCrPixelFormats];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"VideoMattingMetal.mm" lineNumber:3374 description:{@"yuvBuffer is not one of %@", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3374 description:{@"yuvBuffer is not one of %@", v23}];
   }
 
   v27 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:Width height:Height mipmapped:0];
   [v27 setUsage:3];
   v15 = MEMORY[0x1E69741C0];
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-  v17 = [v15 texture2DDescriptorWithPixelFormat:30 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(a3 mipmapped:1uLL), 0];
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 1uLL);
+  v17 = [v15 texture2DDescriptorWithPixelFormat:30 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(buffer mipmapped:1uLL), 0];
   [v17 setUsage:3];
-  v18 = [a1 textureFromCacheUsingPixelBuffer:a3 textureDescriptor:? plane:? textureCache:?];
-  v19 = *a4;
-  *a4 = v18;
+  v18 = [self textureFromCacheUsingPixelBuffer:buffer textureDescriptor:? plane:? textureCache:?];
+  v19 = *texture;
+  *texture = v18;
 
-  v20 = [a1 textureFromCacheUsingPixelBuffer:a3 textureDescriptor:v17 plane:1 textureCache:a6];
-  v21 = *a5;
-  *a5 = v20;
+  v20 = [self textureFromCacheUsingPixelBuffer:buffer textureDescriptor:v17 plane:1 textureCache:cache];
+  v21 = *uvTexture;
+  *uvTexture = v20;
 }
 
-+ (id)textureFromCacheUsingPixelBuffer:(__CVBuffer *)a3 textureDescriptor:(id)a4 plane:(unint64_t)a5 textureCache:(__CVMetalTextureCache *)a6
++ (id)textureFromCacheUsingPixelBuffer:(__CVBuffer *)buffer textureDescriptor:(id)descriptor plane:(unint64_t)plane textureCache:(__CVMetalTextureCache *)cache
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  descriptorCopy = descriptor;
   image = 0;
   v27[0] = *MEMORY[0x1E6966010];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "usage")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptorCopy, "usage")}];
   v28[0] = v11;
   v27[1] = *MEMORY[0x1E6966008];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "storageMode")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(descriptorCopy, "storageMode")}];
   v28[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-  v14 = [v10 pixelFormat];
-  v15 = [v10 width];
-  v16 = [v10 height];
-  v17 = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x1E695E480], a6, a3, v13, v14, v15, v16, a5, &image);
+  pixelFormat = [descriptorCopy pixelFormat];
+  width = [descriptorCopy width];
+  height = [descriptorCopy height];
+  v17 = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x1E695E480], cache, buffer, v13, pixelFormat, width, height, plane, &image);
 
   if (v17)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"VideoMattingMetal.mm" lineNumber:3351 description:{@"Cannot get textureRef from cache. Error code %ul", v17}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3351 description:{@"Cannot get textureRef from cache. Error code %ul", v17}];
   }
 
   v18 = image;
   if (!image)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"VideoMattingMetal.mm" lineNumber:3352 description:@"Cannot get textureRef from cache"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3352 description:@"Cannot get textureRef from cache"];
 
     v18 = image;
   }
@@ -3035,8 +3035,8 @@ LABEL_5:
   CFRelease(image);
   if (!v19)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"VideoMattingMetal.mm" lineNumber:3357 description:@"Cannot get texture from textureRef"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3357 description:@"Cannot get texture from textureRef"];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -3044,28 +3044,28 @@ LABEL_5:
   return v19;
 }
 
-+ (void)saveTexture:(id)a3 toFilename:(id)a4
++ (void)saveTexture:(id)texture toFilename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 pixelFormat] != 252 && objc_msgSend(v7, "pixelFormat") != 55)
+  textureCopy = texture;
+  filenameCopy = filename;
+  if ([textureCopy pixelFormat] != 252 && objc_msgSend(textureCopy, "pixelFormat") != 55)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"VideoMattingMetal.mm" lineNumber:3311 description:@"unsupported pixel format!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VideoMattingMetal.mm" lineNumber:3311 description:@"unsupported pixel format!"];
   }
 
-  v9 = [v7 width];
-  v10 = [v7 height];
-  v11 = v10;
-  v12 = malloc_type_malloc(vcvtd_n_u64_f64(v9 * v10, 2uLL), 0xA7B50A40uLL);
-  v13 = vcvtd_n_u64_f64(v9, 2uLL);
+  width = [textureCopy width];
+  height = [textureCopy height];
+  v11 = height;
+  v12 = malloc_type_malloc(vcvtd_n_u64_f64(width * height, 2uLL), 0xA7B50A40uLL);
+  v13 = vcvtd_n_u64_f64(width, 2uLL);
   memset(v18, 0, 24);
-  v18[3] = v9;
-  v18[4] = v10;
+  v18[3] = width;
+  v18[4] = height;
   v18[5] = 1;
-  [v7 getBytes:v12 bytesPerRow:v13 fromRegion:v18 mipmapLevel:0];
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_32f_%dx%d.raw", v9, v10];
-  v15 = [v8 stringByAppendingString:v14];
+  [textureCopy getBytes:v12 bytesPerRow:v13 fromRegion:v18 mipmapLevel:0];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_32f_%dx%d.raw", width, height];
+  v15 = [filenameCopy stringByAppendingString:v14];
 
   v16 = fopen([v15 cStringUsingEncoding:4], "wb");
   if (v16)

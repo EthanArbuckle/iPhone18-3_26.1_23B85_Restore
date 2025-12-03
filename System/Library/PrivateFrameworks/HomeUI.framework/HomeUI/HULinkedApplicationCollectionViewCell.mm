@@ -1,36 +1,36 @@
 @interface HULinkedApplicationCollectionViewCell
 - (BOOL)bottomSeparatorVisible;
 - (BOOL)topSeparatorVisible;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (HFItem)item;
-- (HULinkedApplicationCollectionViewCell)initWithFrame:(CGRect)a3;
+- (HULinkedApplicationCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomSeparatorVisible:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setTopSeparatorVisible:(BOOL)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setBottomSeparatorVisible:(BOOL)visible;
+- (void)setItem:(id)item;
+- (void)setTopSeparatorVisible:(BOOL)visible;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HULinkedApplicationCollectionViewCell
 
-- (HULinkedApplicationCollectionViewCell)initWithFrame:(CGRect)a3
+- (HULinkedApplicationCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v28 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = HULinkedApplicationCollectionViewCell;
-  v3 = [(HULinkedApplicationCollectionViewCell *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HULinkedApplicationCollectionViewCell *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(HULinkedApplicationCollectionViewCell *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(HULinkedApplicationCollectionViewCell *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc_init(HULinkedApplicationView);
     linkedApplicationView = v3->_linkedApplicationView;
     v3->_linkedApplicationView = v5;
 
-    v7 = [(HULinkedApplicationCollectionViewCell *)v3 contentView];
-    [v7 addSubview:v3->_linkedApplicationView];
+    contentView = [(HULinkedApplicationCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_linkedApplicationView];
 
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     topSeparatorView = v3->_topSeparatorView;
@@ -63,11 +63,11 @@
 
           v17 = *(*(&v21 + 1) + 8 * i);
           [v17 setHidden:1];
-          v18 = [MEMORY[0x277D75348] tableSeparatorDarkColor];
-          [v17 setBackgroundColor:v18];
+          tableSeparatorDarkColor = [MEMORY[0x277D75348] tableSeparatorDarkColor];
+          [v17 setBackgroundColor:tableSeparatorDarkColor];
 
-          v19 = [(HULinkedApplicationCollectionViewCell *)v3 contentView];
-          [v19 addSubview:v17];
+          contentView2 = [(HULinkedApplicationCollectionViewCell *)v3 contentView];
+          [contentView2 addSubview:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -80,14 +80,14 @@
   return v3;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  linkedApplicationView = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [linkedApplicationView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -103,33 +103,33 @@
   v24.receiver = self;
   v24.super_class = HULinkedApplicationCollectionViewCell;
   [(HULinkedApplicationCollectionViewCell *)&v24 layoutSubviews];
-  v3 = [(HULinkedApplicationCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(HULinkedApplicationCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  linkedApplicationView = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
+  [linkedApplicationView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v15 = 1.0 / v14;
 
-  v16 = [(HULinkedApplicationCollectionViewCell *)self contentView];
-  [v16 bounds];
+  contentView2 = [(HULinkedApplicationCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   Width = CGRectGetWidth(v25);
-  v18 = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
-  [v18 setFrame:{0.0, 0.0, Width, v15}];
+  topSeparatorView = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
+  [topSeparatorView setFrame:{0.0, 0.0, Width, v15}];
 
-  v19 = [(HULinkedApplicationCollectionViewCell *)self contentView];
-  [v19 bounds];
+  contentView3 = [(HULinkedApplicationCollectionViewCell *)self contentView];
+  [contentView3 bounds];
   v20 = CGRectGetMaxY(v26) - v15;
-  v21 = [(HULinkedApplicationCollectionViewCell *)self contentView];
-  [v21 bounds];
+  contentView4 = [(HULinkedApplicationCollectionViewCell *)self contentView];
+  [contentView4 bounds];
   v22 = CGRectGetWidth(v27);
-  v23 = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
-  [v23 setFrame:{0.0, v20, v22, v15}];
+  bottomSeparatorView = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
+  [bottomSeparatorView setFrame:{0.0, v20, v22, v15}];
 }
 
 - (void)prepareForReuse
@@ -143,54 +143,54 @@
 
 - (HFItem)item
 {
-  v2 = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
-  v3 = [v2 item];
+  linkedApplicationView = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
+  item = [linkedApplicationView item];
 
-  return v3;
+  return item;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
-  [v5 setItem:v4];
+  itemCopy = item;
+  linkedApplicationView = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
+  [linkedApplicationView setItem:itemCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
-  [v4 updateUIWithAnimation:v3];
+  animationCopy = animation;
+  linkedApplicationView = [(HULinkedApplicationCollectionViewCell *)self linkedApplicationView];
+  [linkedApplicationView updateUIWithAnimation:animationCopy];
 }
 
 - (BOOL)topSeparatorVisible
 {
-  v2 = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
-  v3 = [v2 isHidden];
+  topSeparatorView = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
+  isHidden = [topSeparatorView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setTopSeparatorVisible:(BOOL)a3
+- (void)setTopSeparatorVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  topSeparatorView = [(HULinkedApplicationCollectionViewCell *)self topSeparatorView];
+  [topSeparatorView setHidden:!visibleCopy];
 }
 
 - (BOOL)bottomSeparatorVisible
 {
-  v2 = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
-  v3 = [v2 isHidden];
+  bottomSeparatorView = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
+  isHidden = [bottomSeparatorView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setBottomSeparatorVisible:(BOOL)a3
+- (void)setBottomSeparatorVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  bottomSeparatorView = [(HULinkedApplicationCollectionViewCell *)self bottomSeparatorView];
+  [bottomSeparatorView setHidden:!visibleCopy];
 }
 
 @end

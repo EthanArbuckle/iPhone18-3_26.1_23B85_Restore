@@ -1,23 +1,23 @@
 @interface CRTableCellGroupRegion
-- (CRTableCellGroupRegion)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5 rows:(_NSRange)a6 columns:(_NSRange)a7;
+- (CRTableCellGroupRegion)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions rows:(_NSRange)rows columns:(_NSRange)columns;
 - (_NSRange)columns;
 - (_NSRange)rows;
 @end
 
 @implementation CRTableCellGroupRegion
 
-- (CRTableCellGroupRegion)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 subregions:(id)a5 rows:(_NSRange)a6 columns:(_NSRange)a7
+- (CRTableCellGroupRegion)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction subregions:(id)subregions rows:(_NSRange)rows columns:(_NSRange)columns
 {
-  length = a6.length;
-  location = a6.location;
+  length = rows.length;
+  location = rows.location;
   v10.receiver = self;
   v10.super_class = CRTableCellGroupRegion;
-  result = [(CRGroupRegion *)&v10 initWithBoundingQuad:a3 layoutDirection:a4 subregions:a5];
+  result = [(CRGroupRegion *)&v10 initWithBoundingQuad:quad layoutDirection:direction subregions:subregions];
   if (result)
   {
     result->_rows.location = location;
     result->_rows.length = length;
-    result->_columns = a7;
+    result->_columns = columns;
   }
 
   return result;

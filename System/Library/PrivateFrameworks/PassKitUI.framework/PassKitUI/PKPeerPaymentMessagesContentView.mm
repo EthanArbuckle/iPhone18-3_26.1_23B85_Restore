@@ -1,5 +1,5 @@
 @interface PKPeerPaymentMessagesContentView
-- (PKPeerPaymentMessagesContentView)initWithFrame:(CGRect)a3;
+- (PKPeerPaymentMessagesContentView)initWithFrame:(CGRect)frame;
 - (UIActivityIndicatorView)activityIndicator;
 - (UIButton)button;
 - (UIEdgeInsets)contentInset;
@@ -10,11 +10,11 @@
 
 @implementation PKPeerPaymentMessagesContentView
 
-- (PKPeerPaymentMessagesContentView)initWithFrame:(CGRect)a3
+- (PKPeerPaymentMessagesContentView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PKPeerPaymentMessagesContentView;
-  v3 = [(PKPeerPaymentMessagesContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPeerPaymentMessagesContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PKPeerPaymentTheme backgroundColor];
@@ -22,10 +22,10 @@
 
     v3->_contentAlignment = *MEMORY[0x1E69BB7F8];
     v3->_verticalPadding = 10.0;
-    v5 = [(UIView *)v3 pkui_userInterfaceIdiomSupportsLargeLayouts];
+    pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIView *)v3 pkui_userInterfaceIdiomSupportsLargeLayouts];
     v6 = 44.0;
     v3->_contentInset.top = 8.0;
-    if (!v5)
+    if (!pkui_userInterfaceIdiomSupportsLargeLayouts)
     {
       v6 = 24.0;
     }
@@ -41,8 +41,8 @@
 - (void)layoutSubviews
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentMessagesContentView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(PKPeerPaymentMessagesContentView *)self subviews];
+  v4 = [subviews count];
 
   if (v4)
   {
@@ -77,8 +77,8 @@
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v25 = [(PKPeerPaymentMessagesContentView *)self subviews];
-    v26 = [v25 countByEnumeratingWithState:&v63 objects:v69 count:16];
+    subviews2 = [(PKPeerPaymentMessagesContentView *)self subviews];
+    v26 = [subviews2 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v26)
     {
       v27 = v26;
@@ -91,7 +91,7 @@
         {
           if (*v64 != v30)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(subviews2);
           }
 
           v32 = *(*(&v63 + 1) + 8 * i);
@@ -123,7 +123,7 @@
           v24 = v24 - v36;
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v63 objects:v69 count:16];
+        v27 = [subviews2 countByEnumeratingWithState:&v63 objects:v69 count:16];
       }
 
       while (v27);
@@ -134,15 +134,15 @@
     {
       [(PKPeerPaymentMessagesContentView *)self bounds];
       v45 = v44;
-      v46 = [(PKPeerPaymentMessagesContentView *)self subviews];
-      v47 = [v46 count];
+      subviews3 = [(PKPeerPaymentMessagesContentView *)self subviews];
+      v47 = [subviews3 count];
 
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v38 = [(PKPeerPaymentMessagesContentView *)self subviews];
-      v48 = [v38 countByEnumeratingWithState:&v55 objects:v67 count:16];
+      subviews4 = [(PKPeerPaymentMessagesContentView *)self subviews];
+      v48 = [subviews4 countByEnumeratingWithState:&v55 objects:v67 count:16];
       if (v48)
       {
         v49 = v48;
@@ -155,7 +155,7 @@
           {
             if (*v56 != v51)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(subviews4);
             }
 
             v54 = *(*(&v55 + 1) + 8 * j);
@@ -167,7 +167,7 @@
             }
           }
 
-          v49 = [v38 countByEnumeratingWithState:&v55 objects:v67 count:16];
+          v49 = [subviews4 countByEnumeratingWithState:&v55 objects:v67 count:16];
         }
 
         while (v49);
@@ -185,8 +185,8 @@
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v38 = [(PKPeerPaymentMessagesContentView *)self subviews];
-      v39 = [v38 countByEnumeratingWithState:&v59 objects:v68 count:16];
+      subviews4 = [(PKPeerPaymentMessagesContentView *)self subviews];
+      v39 = [subviews4 countByEnumeratingWithState:&v59 objects:v68 count:16];
       if (v39)
       {
         v40 = v39;
@@ -197,7 +197,7 @@
           {
             if (*v60 != v41)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(subviews4);
             }
 
             v43 = *(*(&v59 + 1) + 8 * k);
@@ -208,7 +208,7 @@
             }
           }
 
-          v40 = [v38 countByEnumeratingWithState:&v59 objects:v68 count:16];
+          v40 = [subviews4 countByEnumeratingWithState:&v59 objects:v68 count:16];
         }
 
         while (v40);
@@ -255,8 +255,8 @@
     self->_activityIndicator = v4;
 
     v6 = self->_activityIndicator;
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)v6 setColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)v6 setColor:whiteColor];
 
     [(PKPeerPaymentMessagesContentView *)self addSubview:self->_activityIndicator];
     activityIndicator = self->_activityIndicator;
@@ -270,13 +270,13 @@
   button = self->_button;
   if (!button)
   {
-    v4 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
-    [v4 setButtonSize:3];
-    [v4 setCornerStyle:4];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+    [_glassButtonConfiguration setButtonSize:3];
+    [_glassButtonConfiguration setCornerStyle:4];
     v5 = +[PKPeerPaymentTheme primaryTextColor];
-    [v4 setBaseForegroundColor:v5];
+    [_glassButtonConfiguration setBaseForegroundColor:v5];
 
-    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v4 primaryAction:0];
+    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:_glassButtonConfiguration primaryAction:0];
     v7 = self->_button;
     self->_button = v6;
 

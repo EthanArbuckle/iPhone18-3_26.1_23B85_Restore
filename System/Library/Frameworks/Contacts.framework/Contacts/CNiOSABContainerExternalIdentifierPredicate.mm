@@ -1,39 +1,39 @@
 @interface CNiOSABContainerExternalIdentifierPredicate
-- (CNiOSABContainerExternalIdentifierPredicate)initWithCoder:(id)a3;
-- (CNiOSABContainerExternalIdentifierPredicate)initWithExternalIdentifier:(id)a3;
+- (CNiOSABContainerExternalIdentifierPredicate)initWithCoder:(id)coder;
+- (CNiOSABContainerExternalIdentifierPredicate)initWithExternalIdentifier:(id)identifier;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContainerExternalIdentifierPredicate
 
-- (CNiOSABContainerExternalIdentifierPredicate)initWithExternalIdentifier:(id)a3
+- (CNiOSABContainerExternalIdentifierPredicate)initWithExternalIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifier == %@", v5];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"externalIdentifier == %@", identifierCopy];
   v11.receiver = self;
   v11.super_class = CNiOSABContainerExternalIdentifierPredicate;
-  v7 = [(CNPredicate *)&v11 initWithPredicate:v6];
+  v7 = [(CNPredicate *)&v11 initWithPredicate:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_externalIdentifier, a3);
+    objc_storeStrong(&v7->_externalIdentifier, identifier);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (CNiOSABContainerExternalIdentifierPredicate)initWithCoder:(id)a3
+- (CNiOSABContainerExternalIdentifierPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CNiOSABContainerExternalIdentifierPredicate;
-  v5 = [(CNPredicate *)&v10 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v6;
 
@@ -43,24 +43,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContainerExternalIdentifierPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_externalIdentifier forKey:{@"externalIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:{@"externalIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
   v6 = *MEMORY[0x1E6996570];
-  v7 = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
-  LODWORD(v6) = (*(v6 + 16))(v6, v7);
+  externalIdentifier = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
+  LODWORD(v6) = (*(v6 + 16))(v6, externalIdentifier);
 
   if (v6)
   {
-    v8 = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
+    externalIdentifier2 = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
     v9 = ABAddressBookCopySourceWithAccountAndExternalIdentifiers();
 
     v16 = v9;
@@ -83,11 +83,11 @@
     return CFArrayCreate(v10, v12, v13, v11);
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = [CNErrorFactory errorWithCode:400 userInfo:0];
     result = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -102,12 +102,12 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContainer predicateForContainerWithExternalIdentifier:]"];
-  v5 = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
-  v6 = [v3 appendObject:v5 withName:@"externalIdentifier"];
+  externalIdentifier = [(CNiOSABContainerExternalIdentifierPredicate *)self externalIdentifier];
+  v6 = [v3 appendObject:externalIdentifier withName:@"externalIdentifier"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

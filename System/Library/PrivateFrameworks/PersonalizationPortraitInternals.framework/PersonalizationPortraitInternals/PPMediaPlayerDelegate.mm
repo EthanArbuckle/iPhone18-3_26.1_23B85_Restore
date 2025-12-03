@@ -1,49 +1,49 @@
 @interface PPMediaPlayerDelegate
 + (id)bundleIdOfCurrentForegroundApp;
 - (PPMediaPlayerDelegate)init;
-- (PPMediaPlayerDelegate)initWithNamedEntityStore:(id)a3 donationDelaySeconds:(double)a4 registersResponseLoading:(BOOL)a5 useNamedEntityDissector:(BOOL)a6;
+- (PPMediaPlayerDelegate)initWithNamedEntityStore:(id)store donationDelaySeconds:(double)seconds registersResponseLoading:(BOOL)loading useNamedEntityDissector:(BOOL)dissector;
 - (id)getResponse;
-- (void)_donateDelayedResponse:(id)a3 timePlayed:(double)a4 bundleId:(id)a5;
+- (void)_donateDelayedResponse:(id)response timePlayed:(double)played bundleId:(id)id;
 - (void)_registerForNowPlayingNotifications;
-- (void)processResponse:(id)a3;
+- (void)processResponse:(id)response;
 @end
 
 @implementation PPMediaPlayerDelegate
 
-- (void)processResponse:(id)a3
+- (void)processResponse:(id)response
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   v6 = objc_opt_new();
   v7 = pp_entities_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v29 = [v5 title];
-    v24 = [v29 length];
-    v25 = [v5 state];
-    v26 = [v5 bundleID];
-    v27 = [v5 playerID];
+    title = [responseCopy title];
+    v24 = [title length];
+    state = [responseCopy state];
+    bundleID = [responseCopy bundleID];
+    playerID = [responseCopy playerID];
     *buf = 134219010;
     v35 = v24;
     v36 = 1024;
-    v37 = v25;
+    v37 = state;
     v38 = 2112;
     v39 = v6;
     v40 = 2112;
-    v41 = v26;
+    v41 = bundleID;
     v42 = 2112;
-    v43 = v27;
+    v43 = playerID;
     _os_log_debug_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEBUG, "PPMediaPlayerDelegate: processResponse: title.length:%tu state:%d timestamp:%@ bundleId:%@ playerId:%@", buf, 0x30u);
   }
 
-  if ([v5 state] != 1 || (objc_msgSend(v5, "isEqualToResponse:", self->_pendingDonation) & 1) == 0)
+  if ([responseCopy state] != 1 || (objc_msgSend(responseCopy, "isEqualToResponse:", self->_pendingDonation) & 1) == 0)
   {
     p_pendingDonation = &self->_pendingDonation;
     v9 = self->_pendingDonation;
     v10 = self->_pendingDonationTimestamp;
-    if ([v5 state] == 1)
+    if ([responseCopy state] == 1)
     {
-      objc_storeStrong(&self->_pendingDonation, a3);
+      objc_storeStrong(&self->_pendingDonation, response);
       v11 = v6;
     }
 
@@ -64,24 +64,24 @@
 
     if (v9 && v16 >= self->_donationDelaySeconds)
     {
-      v17 = [(PPMediaPlayerResponse *)v9 bundleID];
-      if (([v17 hasPrefix:@"com.apple.WebKit"] & 1) == 0 && (objc_msgSend(v17, "isEqualToString:", *MEMORY[0x277D3A698]) & 1) == 0)
+      bundleID2 = [(PPMediaPlayerResponse *)v9 bundleID];
+      if (([bundleID2 hasPrefix:@"com.apple.WebKit"] & 1) == 0 && (objc_msgSend(bundleID2, "isEqualToString:", *MEMORY[0x277D3A698]) & 1) == 0)
       {
         v18 = pp_entities_log_handle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [(PPMediaPlayerResponse *)v9 title];
-          v19 = [v28 length];
-          v20 = [(PPMediaPlayerResponse *)v9 state];
-          v21 = [(PPMediaPlayerResponse *)v9 playerID];
+          title2 = [(PPMediaPlayerResponse *)v9 title];
+          v19 = [title2 length];
+          state2 = [(PPMediaPlayerResponse *)v9 state];
+          playerID2 = [(PPMediaPlayerResponse *)v9 playerID];
           *buf = 134218754;
           v35 = v19;
           v36 = 1024;
-          v37 = v20;
+          v37 = state2;
           v38 = 2112;
-          v39 = v17;
+          v39 = bundleID2;
           v40 = 2112;
-          v41 = v21;
+          v41 = playerID2;
           _os_log_impl(&dword_23224A000, v18, OS_LOG_TYPE_DEFAULT, "PPMediaPlayerDelegate: donating response: title.length:%tu state:%d bundleId:%@ playerId:%@", buf, 0x26u);
         }
 
@@ -93,7 +93,7 @@
         block[4] = self;
         v31 = v9;
         v33 = v16;
-        v32 = v17;
+        v32 = bundleID2;
         dispatch_async(dispatchQueue, block);
       }
     }
@@ -189,22 +189,22 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
   dispatch_group_leave(v3);
 }
 
-- (void)_donateDelayedResponse:(id)a3 timePlayed:(double)a4 bundleId:(id)a5
+- (void)_donateDelayedResponse:(id)response timePlayed:(double)played bundleId:(id)id
 {
   v154 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  responseCopy = response;
+  idCopy = id;
+  if (responseCopy)
   {
-    v10 = [v8 title];
-    v11 = [v10 length];
+    title = [responseCopy title];
+    v11 = [title length];
 
     if (v11)
     {
-      if ([v9 length])
+      if ([idCopy length])
       {
-        [v8 duration];
-        v13 = fmin(a4 / v12, 1.0);
+        [responseCopy duration];
+        v13 = fmin(played / v12, 1.0);
         if (v13 < 0.0)
         {
           v13 = 0.0;
@@ -220,32 +220,32 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
           v14 = 1.0;
         }
 
-        v15 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:a4 lengthSeconds:v12 lengthCharacters:0 donationCount:0 contactHandleCount:0 flags:0];
-        v16 = [v8 storeItemID];
-        if (v16 && (v17 = v16, [v8 storeItemID], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "longValue"), v18, v17, v19))
+        v15 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:played lengthSeconds:v12 lengthCharacters:0 donationCount:0 contactHandleCount:0 flags:0];
+        storeItemID = [responseCopy storeItemID];
+        if (storeItemID && (v17 = storeItemID, [responseCopy storeItemID], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "longValue"), v18, v17, v19))
         {
           v20 = objc_alloc(MEMORY[0x277CCACA8]);
-          v21 = [v8 storeItemID];
-          v22 = [v20 initWithFormat:@"storeAdamID:%@", v21];
+          storeItemID2 = [responseCopy storeItemID];
+          uUIDString = [v20 initWithFormat:@"storeAdamID:%@", storeItemID2];
         }
 
         else
         {
-          v21 = objc_opt_new();
-          v22 = [v21 UUIDString];
+          storeItemID2 = objc_opt_new();
+          uUIDString = [storeItemID2 UUIDString];
         }
 
-        v23 = v22;
+        v23 = uUIDString;
 
         v24 = objc_alloc(MEMORY[0x277D3A4D8]);
         v25 = *MEMORY[0x277D3A708];
         v26 = objc_opt_new();
         v119 = v23;
         v120 = v15;
-        v27 = [v24 initWithBundleId:v9 groupId:v25 documentId:v23 date:v26 relevanceDate:0 contactHandles:0 language:0 metadata:v15];
+        v27 = [v24 initWithBundleId:idCopy groupId:v25 documentId:v23 date:v26 relevanceDate:0 contactHandles:0 language:0 metadata:v15];
 
         v28 = objc_opt_new();
-        v118 = self;
+        selfCopy = self;
         useNamedEntityDissector = self->_useNamedEntityDissector;
         v30 = 0x277D3A000uLL;
         v31 = 0x277D3A000uLL;
@@ -256,16 +256,16 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
           v33 = +[PPConfiguration sharedInstance];
           [v27 language];
           v35 = v34 = v27;
-          v113 = v9;
-          v36 = [v33 extractionAlgorithmsForBundleId:v9 sourceLanguage:v35 conservative:1 domain:1];
+          v113 = idCopy;
+          v36 = [v33 extractionAlgorithmsForBundleId:idCopy sourceLanguage:v35 conservative:1 domain:1];
 
           v37 = +[PPNamedEntityDissector sharedInstance];
-          v117 = v8;
-          v38 = [v8 title];
+          v117 = responseCopy;
+          title2 = [responseCopy title];
           v114 = v37;
           v115 = v36;
           v116 = v34;
-          v39 = [v37 entitiesInPlainText:v38 eligibleRegions:0 source:v34 cloudSync:0 algorithms:v36];
+          v39 = [v37 entitiesInPlainText:title2 eligibleRegions:0 source:v34 cloudSync:0 algorithms:v36];
 
           v146 = 0u;
           v147 = 0u;
@@ -293,8 +293,8 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                 v141 = 0u;
                 v142 = 0u;
                 v143 = 0u;
-                v43 = [v42 entities];
-                v44 = [v43 countByEnumeratingWithState:&v140 objects:v152 count:16];
+                entities = [v42 entities];
+                v44 = [entities countByEnumeratingWithState:&v140 objects:v152 count:16];
                 if (v44)
                 {
                   v45 = v44;
@@ -305,17 +305,17 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                     {
                       if (*v141 != v46)
                       {
-                        objc_enumerationMutation(v43);
+                        objc_enumerationMutation(entities);
                       }
 
                       v48 = *(*(&v140 + 1) + 8 * i);
                       v49 = objc_autoreleasePoolPush();
                       v50 = objc_alloc(MEMORY[0x277D3A420]);
-                      v51 = [v48 item];
-                      v52 = [v51 name];
-                      v53 = [v48 item];
-                      v54 = [v53 bestLanguage];
-                      v55 = [v50 initWithName:v52 category:6 language:v54];
+                      item = [v48 item];
+                      name = [item name];
+                      item2 = [v48 item];
+                      bestLanguage = [item2 bestLanguage];
+                      v55 = [v50 initWithName:name category:6 language:bestLanguage];
 
                       v56 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:v55 score:v14];
                       v32 = v129;
@@ -325,7 +325,7 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                       objc_autoreleasePoolPop(v49);
                     }
 
-                    v45 = [v43 countByEnumeratingWithState:&v140 objects:v152 count:16];
+                    v45 = [entities countByEnumeratingWithState:&v140 objects:v152 count:16];
                   }
 
                   while (v45);
@@ -342,14 +342,14 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
             while (v123);
           }
 
-          v8 = v117;
-          v57 = [v117 album];
-          v58 = [v57 length];
+          responseCopy = v117;
+          album = [v117 album];
+          v58 = [album length];
 
           if (v58)
           {
-            v59 = [v117 album];
-            v60 = [v114 entitiesInPlainText:v59 eligibleRegions:0 source:v116 cloudSync:0 algorithms:v115];
+            album2 = [v117 album];
+            v60 = [v114 entitiesInPlainText:album2 eligibleRegions:0 source:v116 cloudSync:0 algorithms:v115];
 
             v138 = 0u;
             v139 = 0u;
@@ -377,8 +377,8 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                   v133 = 0u;
                   v134 = 0u;
                   v135 = 0u;
-                  v64 = [v63 entities];
-                  v65 = [v64 countByEnumeratingWithState:&v132 objects:v150 count:16];
+                  entities2 = [v63 entities];
+                  v65 = [entities2 countByEnumeratingWithState:&v132 objects:v150 count:16];
                   if (v65)
                   {
                     v66 = v65;
@@ -389,17 +389,17 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                       {
                         if (*v133 != v67)
                         {
-                          objc_enumerationMutation(v64);
+                          objc_enumerationMutation(entities2);
                         }
 
                         v69 = *(*(&v132 + 1) + 8 * j);
                         v70 = objc_autoreleasePoolPush();
                         v71 = objc_alloc(*(v30 + 1056));
-                        v72 = [v69 item];
-                        v73 = [v72 name];
-                        v74 = [v69 item];
-                        v75 = [v74 bestLanguage];
-                        v76 = [v71 initWithName:v73 category:6 language:v75];
+                        item3 = [v69 item];
+                        name2 = [item3 name];
+                        item4 = [v69 item];
+                        bestLanguage2 = [item4 bestLanguage];
+                        v76 = [v71 initWithName:name2 category:6 language:bestLanguage2];
 
                         v30 = 0x277D3A000;
                         v77 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:v76 score:v14];
@@ -409,7 +409,7 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
                         objc_autoreleasePoolPop(v70);
                       }
 
-                      v66 = [v64 countByEnumeratingWithState:&v132 objects:v150 count:16];
+                      v66 = [entities2 countByEnumeratingWithState:&v132 objects:v150 count:16];
                     }
 
                     while (v66);
@@ -426,9 +426,9 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
               while (v124);
             }
 
-            v8 = v117;
-            v78 = v118;
-            v9 = v113;
+            responseCopy = v117;
+            v78 = selfCopy;
+            idCopy = v113;
             v80 = v119;
             v79 = v120;
             v27 = v116;
@@ -437,9 +437,9 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
 
           else
           {
-            v9 = v113;
+            idCopy = v113;
             v79 = v120;
-            v78 = v118;
+            v78 = selfCopy;
             v27 = v116;
             v31 = 0x277D3A000uLL;
             v61 = v40;
@@ -450,22 +450,22 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
         else
         {
           v82 = objc_alloc(MEMORY[0x277D3A420]);
-          v83 = [v8 title];
-          v84 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
-          v85 = [v82 initWithName:v83 category:6 language:v84];
+          title3 = [responseCopy title];
+          currentLocaleLanguageCode = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
+          v85 = [v82 initWithName:title3 category:6 language:currentLocaleLanguageCode];
 
           v32 = v129;
           v86 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:v85 score:v14];
           [v129 addObject:v86];
-          v87 = [v8 album];
-          v88 = [v87 length];
+          album3 = [responseCopy album];
+          v88 = [album3 length];
 
           if (v88)
           {
             v89 = objc_alloc(MEMORY[0x277D3A420]);
-            v90 = [v8 album];
-            v91 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
-            v92 = [v89 initWithName:v90 category:6 language:v91];
+            album4 = [responseCopy album];
+            currentLocaleLanguageCode2 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
+            v92 = [v89 initWithName:album4 category:6 language:currentLocaleLanguageCode2];
 
             v32 = v129;
             v93 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:v92 score:v14];
@@ -474,18 +474,18 @@ void __36__PPMediaPlayerDelegate_getResponse__block_invoke_2(uint64_t a1, uint64
 
           v80 = v119;
           v79 = v120;
-          v78 = v118;
+          v78 = selfCopy;
         }
 
-        v94 = [v8 artist];
-        v95 = [v94 length];
+        artist = [responseCopy artist];
+        v95 = [artist length];
 
         if (v95)
         {
           v96 = objc_alloc(MEMORY[0x277D3A420]);
-          v97 = [v8 artist];
-          v98 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
-          v99 = [v96 initWithName:v97 category:7 language:v98];
+          artist2 = [responseCopy artist];
+          currentLocaleLanguageCode3 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
+          v99 = [v96 initWithName:artist2 category:7 language:currentLocaleLanguageCode3];
 
           v32 = v129;
           v100 = [objc_alloc(*(v31 + 1176)) initWithItem:v99 score:v14];
@@ -587,14 +587,14 @@ void __68__PPMediaPlayerDelegate__donateDelayedResponse_timePlayed_bundleId___bl
   CFNotificationCenterAddObserver(v4, self, _nowPlayingInfoCallback, v5, 0, CFNotificationSuspensionBehaviorDrop);
 }
 
-- (PPMediaPlayerDelegate)initWithNamedEntityStore:(id)a3 donationDelaySeconds:(double)a4 registersResponseLoading:(BOOL)a5 useNamedEntityDissector:(BOOL)a6
+- (PPMediaPlayerDelegate)initWithNamedEntityStore:(id)store donationDelaySeconds:(double)seconds registersResponseLoading:(BOOL)loading useNamedEntityDissector:(BOOL)dissector
 {
-  v7 = a5;
-  v12 = a3;
-  if (!v12)
+  loadingCopy = loading;
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PPMediaPlayerDelegate.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"namedEntityStore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPMediaPlayerDelegate.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"namedEntityStore"}];
   }
 
   v22.receiver = self;
@@ -609,16 +609,16 @@ void __68__PPMediaPlayerDelegate__donateDelayedResponse_timePlayed_bundleId___bl
     dispatchQueue = v13->_dispatchQueue;
     v13->_dispatchQueue = v16;
 
-    objc_storeStrong(&v13->_namedEntityStore, a3);
-    v13->_donationDelaySeconds = a4;
-    v13->_useNamedEntityDissector = a6;
+    objc_storeStrong(&v13->_namedEntityStore, store);
+    v13->_donationDelaySeconds = seconds;
+    v13->_useNamedEntityDissector = dissector;
     pendingDonation = v13->_pendingDonation;
     v13->_pendingDonation = 0;
 
     pendingDonationTimestamp = v13->_pendingDonationTimestamp;
     v13->_pendingDonationTimestamp = 0;
 
-    if (v7)
+    if (loadingCopy)
     {
       [(PPMediaPlayerDelegate *)v13 _registerForNowPlayingNotifications];
     }
@@ -633,22 +633,22 @@ void __68__PPMediaPlayerDelegate__donateDelayedResponse_timePlayed_bundleId___bl
   if (v3)
   {
     self = [(PPMediaPlayerDelegate *)self initWithNamedEntityStore:v3 donationDelaySeconds:1 registersResponseLoading:1 useNamedEntityDissector:32.0];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (id)bundleIdOfCurrentForegroundApp
 {
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForForegroundApp];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForForegroundApp = [MEMORY[0x277CFE338] keyPathForForegroundApp];
+  v4 = [userContext objectForKeyedSubscript:keyPathForForegroundApp];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

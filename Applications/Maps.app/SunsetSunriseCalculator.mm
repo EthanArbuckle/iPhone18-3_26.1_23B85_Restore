@@ -1,100 +1,100 @@
 @interface SunsetSunriseCalculator
 + (SunsetSunriseCalculator)sharedCalculator;
 - (SunsetSunriseCalculator)init;
-- (id)_sunriseForLocation:(id)a3;
-- (id)_sunsetForLocation:(id)a3;
-- (int64_t)currentStateForLocation:(id)a3 offsetThreshold:(double)a4;
+- (id)_sunriseForLocation:(id)location;
+- (id)_sunsetForLocation:(id)location;
+- (int64_t)currentStateForLocation:(id)location offsetThreshold:(double)threshold;
 @end
 
 @implementation SunsetSunriseCalculator
 
-- (id)_sunriseForLocation:(id)a3
+- (id)_sunriseForLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
-    v5 = [(SunsetSunriseCalculator *)self almanac];
-    [v4 coordinate];
+    locationCopy = location;
+    almanac = [(SunsetSunriseCalculator *)self almanac];
+    [locationCopy coordinate];
     v7 = v6;
     v9 = v8;
 
     +[NSDate timeIntervalSinceReferenceDate];
-    [v5 calculateAstronomicalTimeForLocation:2 time:v7 altitudeInDegrees:v9 options:{v10, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
+    [almanac calculateAstronomicalTimeForLocation:2 time:v7 altitudeInDegrees:v9 options:{v10, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
 
-    v11 = [(SunsetSunriseCalculator *)self almanac];
-    v12 = [v11 sunrise];
+    almanac2 = [(SunsetSunriseCalculator *)self almanac];
+    sunrise = [almanac2 sunrise];
   }
 
   else
   {
-    v12 = 0;
+    sunrise = 0;
   }
 
-  return v12;
+  return sunrise;
 }
 
-- (id)_sunsetForLocation:(id)a3
+- (id)_sunsetForLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
-    v5 = [(SunsetSunriseCalculator *)self almanac];
-    [v4 coordinate];
+    locationCopy = location;
+    almanac = [(SunsetSunriseCalculator *)self almanac];
+    [locationCopy coordinate];
     v7 = v6;
     v9 = v8;
 
     +[NSDate timeIntervalSinceReferenceDate];
-    [v5 calculateAstronomicalTimeForLocation:2 time:v7 altitudeInDegrees:v9 options:{v10, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
+    [almanac calculateAstronomicalTimeForLocation:2 time:v7 altitudeInDegrees:v9 options:{v10, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
 
-    v11 = [(SunsetSunriseCalculator *)self almanac];
-    v12 = [v11 sunset];
+    almanac2 = [(SunsetSunriseCalculator *)self almanac];
+    sunset = [almanac2 sunset];
   }
 
   else
   {
-    v12 = 0;
+    sunset = 0;
   }
 
-  return v12;
+  return sunset;
 }
 
-- (int64_t)currentStateForLocation:(id)a3 offsetThreshold:(double)a4
+- (int64_t)currentStateForLocation:(id)location offsetThreshold:(double)threshold
 {
-  v6 = a3;
-  if (v6)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v7 = [(SunsetSunriseCalculator *)self almanac];
-    [v6 coordinate];
+    almanac = [(SunsetSunriseCalculator *)self almanac];
+    [locationCopy coordinate];
     v9 = v8;
     v11 = v10;
     +[NSDate timeIntervalSinceReferenceDate];
     v12 = 2;
-    [v7 calculateAstronomicalTimeForLocation:2 time:v9 altitudeInDegrees:v11 options:{v13, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
+    [almanac calculateAstronomicalTimeForLocation:2 time:v9 altitudeInDegrees:v11 options:{v13, GEOAlmanacAltitudeMiddleOfCivilTwilight}];
 
-    v14 = [(SunsetSunriseCalculator *)self almanac];
-    v15 = [v14 sunset];
+    almanac2 = [(SunsetSunriseCalculator *)self almanac];
+    sunset = [almanac2 sunset];
     v16 = +[NSDate date];
-    [v15 timeIntervalSinceDate:v16];
+    [sunset timeIntervalSinceDate:v16];
     v18 = v17;
 
-    v19 = [(SunsetSunriseCalculator *)self almanac];
-    v20 = [v19 isDayLight];
+    almanac3 = [(SunsetSunriseCalculator *)self almanac];
+    isDayLight = [almanac3 isDayLight];
 
     v21 = +[NSDate date];
-    v22 = [(SunsetSunriseCalculator *)self almanac];
-    v23 = [v22 sunrise];
-    [v21 timeIntervalSinceDate:v23];
+    almanac4 = [(SunsetSunriseCalculator *)self almanac];
+    sunrise = [almanac4 sunrise];
+    [v21 timeIntervalSinceDate:sunrise];
     v25 = v24;
 
-    if (v18 <= 0.0 || v18 > a4)
+    if (v18 <= 0.0 || v18 > threshold)
     {
       v26 = 4;
-      if (v25 <= 0.0 || v25 > a4)
+      if (v25 <= 0.0 || v25 > threshold)
       {
         v26 = 1;
       }
 
-      if (v20)
+      if (isDayLight)
       {
         v12 = v26;
       }

@@ -1,21 +1,21 @@
 @interface FCSportsEventsFetchOperation
 - (BOOL)validateOperation;
-- (FCSportsEventsFetchOperation)initWithContext:(id)a3 tagController:(id)a4 sportsEventIDs:(id)a5 delegate:(id)a6;
+- (FCSportsEventsFetchOperation)initWithContext:(id)context tagController:(id)controller sportsEventIDs:(id)ds delegate:(id)delegate;
 - (id)delegate;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCSportsEventsFetchOperation
 
-- (FCSportsEventsFetchOperation)initWithContext:(id)a3 tagController:(id)a4 sportsEventIDs:(id)a5 delegate:(id)a6
+- (FCSportsEventsFetchOperation)initWithContext:(id)context tagController:(id)controller sportsEventIDs:(id)ds delegate:(id)delegate
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  controllerCopy = controller;
+  dsCopy = ds;
+  delegateCopy = delegate;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context"];
     *buf = 136315906;
@@ -28,13 +28,13 @@
     v32 = v21;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v12)
+    if (controllerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (controllerCopy)
   {
     goto LABEL_6;
   }
@@ -54,7 +54,7 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "sportsEventIDs"];
     *buf = 136315906;
@@ -74,14 +74,14 @@ LABEL_6:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeStrong(&v16->_tagController, a4);
-    objc_storeStrong(&v16->_sportsEventIDs, a5);
-    v17 = [v11 news_core_ConfigurationManager];
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v16->_tagController, controller);
+    objc_storeStrong(&v16->_sportsEventIDs, ds);
+    news_core_ConfigurationManager = [contextCopy news_core_ConfigurationManager];
     appConfigurationManager = v16->_appConfigurationManager;
-    v16->_appConfigurationManager = v17;
+    v16->_appConfigurationManager = news_core_ConfigurationManager;
 
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -123,8 +123,8 @@ LABEL_6:
   }
 
   [(FCRecordChainFetchOperation *)v4 setContext:context];
-  v6 = [(FCSportsEventsFetchOperation *)self cachePolicy];
-  [(FCRecordChainFetchOperation *)v4 setCachePolicy:v6];
+  cachePolicy = [(FCSportsEventsFetchOperation *)self cachePolicy];
+  [(FCRecordChainFetchOperation *)v4 setCachePolicy:cachePolicy];
 
   v12[0] = @"SportsEvent";
   v11[0] = @"eventCompetitorTagIDs";
@@ -395,15 +395,15 @@ uint64_t __48__FCSportsEventsFetchOperation_performOperation__block_invoke_19(ui
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v12 = a3;
-  v4 = [(FCSportsEventsFetchOperation *)&self->super.super.super.isa delegate];
+  errorCopy = error;
+  delegate = [(FCSportsEventsFetchOperation *)&self->super.super.super.isa delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(FCSportsEventsFetchOperation *)&self->super.super.super.isa delegate];
-    v6 = v5;
+    delegate2 = [(FCSportsEventsFetchOperation *)&self->super.super.super.isa delegate];
+    v6 = delegate2;
     if (self)
     {
       resultSportsEvents = self->_resultSportsEvents;
@@ -414,15 +414,15 @@ uint64_t __48__FCSportsEventsFetchOperation_performOperation__block_invoke_19(ui
       resultSportsEvents = 0;
     }
 
-    [v5 sportsEventsFetchOperation:self didFetchSportsEvents:resultSportsEvents];
+    [delegate2 sportsEventsFetchOperation:self didFetchSportsEvents:resultSportsEvents];
   }
 
-  v8 = [(FCSportsEventsFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCSportsEventsFetchOperation *)self fetchCompletionHandler];
 
-  if (v8)
+  if (fetchCompletionHandler)
   {
-    v9 = [(FCSportsEventsFetchOperation *)self fetchCompletionHandler];
-    v10 = v9;
+    fetchCompletionHandler2 = [(FCSportsEventsFetchOperation *)self fetchCompletionHandler];
+    v10 = fetchCompletionHandler2;
     if (self)
     {
       v11 = self->_resultSportsEvents;
@@ -433,7 +433,7 @@ uint64_t __48__FCSportsEventsFetchOperation_performOperation__block_invoke_19(ui
       v11 = 0;
     }
 
-    (*(v9 + 16))(v9, v11, v12);
+    (*(fetchCompletionHandler2 + 16))(fetchCompletionHandler2, v11, errorCopy);
   }
 }
 

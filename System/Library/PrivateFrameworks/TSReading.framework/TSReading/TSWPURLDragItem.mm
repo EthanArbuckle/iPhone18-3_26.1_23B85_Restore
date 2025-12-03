@@ -1,21 +1,21 @@
 @interface TSWPURLDragItem
 - (CGPoint)canvasDragPoint;
-- (TSWPURLDragItem)initWithDragPreview:(id)a3 canvasRect:(CGRect)a4 canvasDragPoint:(CGPoint)a5 range:(_NSRange)a6;
+- (TSWPURLDragItem)initWithDragPreview:(id)preview canvasRect:(CGRect)rect canvasDragPoint:(CGPoint)point range:(_NSRange)range;
 - (_NSRange)range;
-- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)a3 icc:(id)a4 canvasView:(id)a5 boundsRect:(CGRect)a6;
+- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)preview icc:(id)icc canvasView:(id)view boundsRect:(CGRect)rect;
 @end
 
 @implementation TSWPURLDragItem
 
-- (TSWPURLDragItem)initWithDragPreview:(id)a3 canvasRect:(CGRect)a4 canvasDragPoint:(CGPoint)a5 range:(_NSRange)a6
+- (TSWPURLDragItem)initWithDragPreview:(id)preview canvasRect:(CGRect)rect canvasDragPoint:(CGPoint)point range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  y = a5.y;
-  x = a5.x;
+  length = range.length;
+  location = range.location;
+  y = point.y;
+  x = point.x;
   v11.receiver = self;
   v11.super_class = TSWPURLDragItem;
-  result = [(TSWPDragItem *)&v11 initWithDragPreview:a3 canvasRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  result = [(TSWPDragItem *)&v11 initWithDragPreview:preview canvasRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (result)
   {
     result->_canvasDragPoint.x = x;
@@ -27,20 +27,20 @@
   return result;
 }
 
-- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)a3 icc:(id)a4 canvasView:(id)a5 boundsRect:(CGRect)a6
+- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)preview icc:(id)icc canvasView:(id)view boundsRect:(CGRect)rect
 {
   objc_opt_class();
   [(TSWPURLDragItem *)self canvasDragPoint];
-  [a4 hitRep:?];
+  [icc hitRep:?];
   result = TSUDynamicCast();
   if (result)
   {
     v9 = result;
-    v10 = [(TSWPURLDragItem *)self range];
-    v12 = [TSWPSelection selectionWithRange:v10, v11];
+    range = [(TSWPURLDragItem *)self range];
+    v12 = [TSWPSelection selectionWithRange:range, v11];
     v13 = [MEMORY[0x277CBEB98] setWithObject:v9];
 
-    return [TSWPEditingController _targetedDragPreviewForSelection:v12 interactiveCanvasController:a4 reps:v13 applyScale:1 imageFrameUnion:0];
+    return [TSWPEditingController _targetedDragPreviewForSelection:v12 interactiveCanvasController:icc reps:v13 applyScale:1 imageFrameUnion:0];
   }
 
   return result;

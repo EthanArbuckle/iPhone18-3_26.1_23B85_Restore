@@ -3,9 +3,9 @@
 - (BOOL)isAccessibilityElement;
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC7Journal24CanvasGridCollectionView)initWithCoder:(id)a3;
+- (_TtC7Journal24CanvasGridCollectionView)initWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation CanvasGridCollectionView
@@ -14,12 +14,12 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static UIView.Invalidating.subscript.getter();
 
   if (v10 == 1)
   {
-    [(CanvasGridCollectionView *)v3 contentSize];
+    [(CanvasGridCollectionView *)selfCopy contentSize];
   }
 
   else
@@ -47,34 +47,34 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = type metadata accessor for CanvasGridCollectionView();
   v16.receiver = self;
   v16.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(CanvasGridCollectionView *)&v16 contentSize];
   v9 = v8;
   v11 = v10;
-  v15.receiver = v7;
+  v15.receiver = selfCopy;
   v15.super_class = v6;
   [(CanvasGridCollectionView *)&v15 setContentSize:width, height];
-  [(CanvasGridCollectionView *)v7 contentSize];
+  [(CanvasGridCollectionView *)selfCopy contentSize];
   if (v13 != v9 || v12 != v11)
   {
-    [(CanvasGridCollectionView *)v7 invalidateIntrinsicContentSize];
+    [(CanvasGridCollectionView *)selfCopy invalidateIntrinsicContentSize];
   }
 }
 
 - (void)invalidateIntrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006AB10();
 }
 
-- (_TtC7Journal24CanvasGridCollectionView)initWithCoder:(id)a3
+- (_TtC7Journal24CanvasGridCollectionView)initWithCoder:(id)coder
 {
   v5 = type metadata accessor for UIView.Invalidations.IntrinsicContentSize();
   __chkstk_darwin(v5);
@@ -84,7 +84,7 @@
   v9 = &v13[-v8];
   v10 = OBJC_IVAR____TtC7Journal24CanvasGridCollectionView__isExpanded;
   v13[15] = 0;
-  v11 = a3;
+  coderCopy = coder;
   UIView.Invalidations.IntrinsicContentSize.init()();
   UIView.Invalidating.init(wrappedValue:_:)();
 
@@ -103,9 +103,9 @@
   v2 = v5.receiver;
   if ([(CanvasGridCollectionView *)&v5 isAccessibilityElement])
   {
-    v3 = [v2 numberOfSections];
+    numberOfSections = [v2 numberOfSections];
 
-    return v3 > 0;
+    return numberOfSections > 0;
   }
 
   else
@@ -128,9 +128,9 @@
 
   else
   {
-    v4 = [v2 numberOfSections];
+    numberOfSections = [v2 numberOfSections];
 
-    return v4 == 0;
+    return numberOfSections == 0;
   }
 }
 

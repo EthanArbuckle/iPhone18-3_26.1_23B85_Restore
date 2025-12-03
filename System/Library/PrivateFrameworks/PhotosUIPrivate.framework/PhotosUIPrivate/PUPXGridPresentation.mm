@@ -1,54 +1,54 @@
 @interface PUPXGridPresentation
 - (PUPXGridPresentation)init;
-- (id)_createPeopleViewControllerWithHostViewController:(id)a3;
-- (id)createAssetPickerPhotosAlbumViewControllerForAlbum:(id)a3;
-- (id)createDuplicatesGridViewControllerWithCollection:(id)a3;
-- (id)createImportHistoryGridViewControllerWithCollection:(id)a3;
+- (id)_createPeopleViewControllerWithHostViewController:(id)controller;
+- (id)createAssetPickerPhotosAlbumViewControllerForAlbum:(id)album;
+- (id)createDuplicatesGridViewControllerWithCollection:(id)collection;
+- (id)createImportHistoryGridViewControllerWithCollection:(id)collection;
 - (id)createPanoramaViewController;
-- (id)createPhotosAlbumViewControllerForAlbum:(id)a3 withFetchResult:(id)a4;
-- (id)createPlacesViewControllerForAssetCollection:(id)a3;
-- (id)createViewControllerForAssetCollection:(id)a3 hostViewController:(id)a4;
-- (void)_customizePhotosViewConfiguationForAssetPicker:(id)a3 assetCollection:(id)a4;
+- (id)createPhotosAlbumViewControllerForAlbum:(id)album withFetchResult:(id)result;
+- (id)createPlacesViewControllerForAssetCollection:(id)collection;
+- (id)createViewControllerForAssetCollection:(id)collection hostViewController:(id)controller;
+- (void)_customizePhotosViewConfiguationForAssetPicker:(id)picker assetCollection:(id)collection;
 @end
 
 @implementation PUPXGridPresentation
 
-- (void)_customizePhotosViewConfiguationForAssetPicker:(id)a3 assetCollection:(id)a4
+- (void)_customizePhotosViewConfiguationForAssetPicker:(id)picker assetCollection:(id)collection
 {
-  v18 = a3;
-  v6 = a4;
-  [v18 setAllowsDragIn:0];
-  v7 = [(PUPXGridPresentation *)self sessionInfo];
-  [v18 setStartsInSelectMode:{objc_msgSend(v7, "allowsMultipleSelection")}];
+  pickerCopy = picker;
+  collectionCopy = collection;
+  [pickerCopy setAllowsDragIn:0];
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  [pickerCopy setStartsInSelectMode:{objc_msgSend(sessionInfo, "allowsMultipleSelection")}];
 
-  v8 = [(PUPXGridPresentation *)self sessionInfo];
-  [v18 setWantsNumberedSelectionStyle:{objc_msgSend(v8, "wantsNumberedSelectionStyle")}];
+  sessionInfo2 = [(PUPXGridPresentation *)self sessionInfo];
+  [pickerCopy setWantsNumberedSelectionStyle:{objc_msgSend(sessionInfo2, "wantsNumberedSelectionStyle")}];
 
-  v9 = [(PUPXGridPresentation *)self sessionInfo];
-  [v18 setNoContentPlaceholderType:{objc_msgSend(v9, "noContentPlaceholderType")}];
+  sessionInfo3 = [(PUPXGridPresentation *)self sessionInfo];
+  [pickerCopy setNoContentPlaceholderType:{objc_msgSend(sessionInfo3, "noContentPlaceholderType")}];
 
-  v10 = [(PUPXGridPresentation *)self sessionInfo];
-  v11 = [v10 photosViewDelegate];
-  [v18 setDelegate:v11];
+  sessionInfo4 = [(PUPXGridPresentation *)self sessionInfo];
+  photosViewDelegate = [sessionInfo4 photosViewDelegate];
+  [pickerCopy setDelegate:photosViewDelegate];
 
-  v12 = [(PUPXGridPresentation *)self sessionInfo];
-  v13 = [v12 loadingStatusManager];
-  [v18 setLoadingStatusManager:v13];
+  sessionInfo5 = [(PUPXGridPresentation *)self sessionInfo];
+  loadingStatusManager = [sessionInfo5 loadingStatusManager];
+  [pickerCopy setLoadingStatusManager:loadingStatusManager];
 
-  [v18 setOneUpPresentationOrigin:PXOneUpPresentationOriginForAssetCollection()];
-  v14 = [(PUPXGridPresentation *)self sessionInfo];
-  [v18 setContentStartingPosition:{objc_msgSend(v14, "contentStartingPosition")}];
+  [pickerCopy setOneUpPresentationOrigin:PXOneUpPresentationOriginForAssetCollection()];
+  sessionInfo6 = [(PUPXGridPresentation *)self sessionInfo];
+  [pickerCopy setContentStartingPosition:{objc_msgSend(sessionInfo6, "contentStartingPosition")}];
 
-  v15 = [(PUPXGridPresentation *)self sessionInfo];
-  v16 = [v15 pickerClientBundleIdentifier];
-  [v18 setPickerClientBundleIdentifier:v16];
+  sessionInfo7 = [(PUPXGridPresentation *)self sessionInfo];
+  pickerClientBundleIdentifier = [sessionInfo7 pickerClientBundleIdentifier];
+  [pickerCopy setPickerClientBundleIdentifier:pickerClientBundleIdentifier];
 
-  if ([v6 px_isImportHistoryCollection])
+  if ([collectionCopy px_isImportHistoryCollection])
   {
     v17 = 2;
   }
 
-  else if ([v6 px_isAllLibraryDuplicatesSmartAlbum])
+  else if ([collectionCopy px_isAllLibraryDuplicatesSmartAlbum])
   {
     v17 = 4;
   }
@@ -58,13 +58,13 @@
     v17 = 0;
   }
 
-  [v18 setSectionHeaderStyle:v17];
+  [pickerCopy setSectionHeaderStyle:v17];
 }
 
-- (id)createDuplicatesGridViewControllerWithCollection:(id)a3
+- (id)createDuplicatesGridViewControllerWithCollection:(id)collection
 {
-  v5 = a3;
-  if (v5)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -72,24 +72,24 @@
       goto LABEL_3;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v5 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v13, v15}];
+    px_descriptionForAssertionMessage = [collectionCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v13, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v13}];
   }
 
 LABEL_3:
-  v6 = [(PUPXGridPresentation *)self sessionInfo];
-  v7 = [v6 selectionCoordinator];
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  selectionCoordinator = [sessionInfo selectionCoordinator];
   v8 = PXDeduplicationPhotosViewConfiguration();
 
   v9 = [objc_alloc(MEMORY[0x1E69C38F8]) initWithConfiguration:v8];
@@ -97,54 +97,54 @@ LABEL_3:
   return v9;
 }
 
-- (id)createImportHistoryGridViewControllerWithCollection:(id)a3
+- (id)createImportHistoryGridViewControllerWithCollection:(id)collection
 {
-  v5 = a3;
-  if ([v5 canContainAssets])
+  collectionCopy = collection;
+  if ([collectionCopy canContainAssets])
   {
-    v6 = v5;
+    v6 = collectionCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_4:
-        v7 = [v6 photoLibrary];
-        v8 = [v7 librarySpecificFetchOptions];
+        photoLibrary = [v6 photoLibrary];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-        [v8 setReverseSortOrder:0];
-        v9 = [MEMORY[0x1E6978890] fetchImportSessionsWithOptions:v8];
-        v10 = [(PUPXGridPresentation *)self sessionInfo];
-        v11 = [v10 isForAssetPicker];
+        [librarySpecificFetchOptions setReverseSortOrder:0];
+        v9 = [MEMORY[0x1E6978890] fetchImportSessionsWithOptions:librarySpecificFetchOptions];
+        sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+        isForAssetPicker = [sessionInfo isForAssetPicker];
 
-        v12 = [(PUPXGridPresentation *)self sessionInfo];
-        v13 = v12;
-        if (v11)
+        sessionInfo2 = [(PUPXGridPresentation *)self sessionInfo];
+        v13 = sessionInfo2;
+        if (isForAssetPicker)
         {
-          [v12 assetsFilterPredicate];
-          v14 = v30 = v5;
-          v15 = [(PUPXGridPresentation *)self sessionInfo];
-          [v15 reverseSortOrder];
-          v16 = [(PUPXGridPresentation *)self sessionInfo];
-          v17 = [v16 selectionCoordinator];
+          [sessionInfo2 assetsFilterPredicate];
+          v14 = v30 = collectionCopy;
+          sessionInfo3 = [(PUPXGridPresentation *)self sessionInfo];
+          [sessionInfo3 reverseSortOrder];
+          sessionInfo4 = [(PUPXGridPresentation *)self sessionInfo];
+          selectionCoordinator = [sessionInfo4 selectionCoordinator];
           [(PUPXGridPresentation *)self sessionInfo];
-          v18 = v31 = v8;
+          v18 = v31 = librarySpecificFetchOptions;
           *(&v29 + 1) = [v18 allowsSwipeToSelect];
           LOBYTE(v29) = 0;
           v19 = PXPhotosViewConfigurationForImagePickerWithAssetCollectionFetchResult();
 
-          v5 = v30;
+          collectionCopy = v30;
           [(PUPXGridPresentation *)self _customizePhotosViewConfiguationForAssetPicker:v19 assetCollection:v6, v29];
           v20 = [objc_alloc(MEMORY[0x1E69C38F8]) initWithConfiguration:v19];
-          v21 = [v6 localizedTitle];
-          [v20 setTitle:v21];
+          localizedTitle = [v6 localizedTitle];
+          [v20 setTitle:localizedTitle];
 
-          v8 = v31;
+          librarySpecificFetchOptions = v31;
         }
 
         else
         {
-          v22 = [v12 selectionCoordinator];
+          selectionCoordinator2 = [sessionInfo2 selectionCoordinator];
           v19 = PXPhotosViewConfigurationForAssetCollectionFetchResult();
 
           [v19 setOneUpPresentationOrigin:10];
@@ -154,19 +154,19 @@ LABEL_4:
         goto LABEL_9;
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = objc_opt_class();
       v26 = NSStringFromClass(v27);
-      v28 = [v6 px_descriptionForAssertionMessage];
-      [v24 handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:219 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, v28}];
+      px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:219 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      [v24 handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:219 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXGridPresentation.m" lineNumber:219 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
     }
 
     goto LABEL_4;
@@ -180,41 +180,41 @@ LABEL_9:
 
 - (id)createPanoramaViewController
 {
-  v3 = [(PUPXGridPresentation *)self photoLibrary];
-  v4 = [(PUPXGridPresentation *)self sessionInfo];
-  v5 = [v4 isForAssetPicker];
+  photoLibrary = [(PUPXGridPresentation *)self photoLibrary];
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  isForAssetPicker = [sessionInfo isForAssetPicker];
 
   v6 = MEMORY[0x1E6978650];
-  v7 = [v3 librarySpecificFetchOptions];
-  v8 = [v6 fetchAssetCollectionsWithType:2 subtype:201 options:v7];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v8 = [v6 fetchAssetCollectionsWithType:2 subtype:201 options:librarySpecificFetchOptions];
   v9 = v8;
-  if (v5)
+  if (isForAssetPicker)
   {
-    v10 = [v8 firstObject];
+    firstObject = [v8 firstObject];
 
-    v11 = [(PUPXGridPresentation *)self sessionInfo];
-    v12 = [v11 assetsFilterPredicate];
-    v13 = [(PUPXGridPresentation *)self sessionInfo];
-    [v13 reverseSortOrder];
-    v14 = [(PUPXGridPresentation *)self sessionInfo];
-    v15 = [v14 selectionCoordinator];
-    v16 = [(PUPXGridPresentation *)self sessionInfo];
-    [v16 allowsSwipeToSelect];
+    sessionInfo2 = [(PUPXGridPresentation *)self sessionInfo];
+    assetsFilterPredicate = [sessionInfo2 assetsFilterPredicate];
+    sessionInfo3 = [(PUPXGridPresentation *)self sessionInfo];
+    [sessionInfo3 reverseSortOrder];
+    sessionInfo4 = [(PUPXGridPresentation *)self sessionInfo];
+    selectionCoordinator = [sessionInfo4 selectionCoordinator];
+    sessionInfo5 = [(PUPXGridPresentation *)self sessionInfo];
+    [sessionInfo5 allowsSwipeToSelect];
     v17 = PXPhotosViewConfigurationForImagePickerWithAssetCollection();
 
-    [(PUPXGridPresentation *)self _customizePhotosViewConfiguationForAssetPicker:v17 assetCollection:v10];
+    [(PUPXGridPresentation *)self _customizePhotosViewConfiguationForAssetPicker:v17 assetCollection:firstObject];
     v18 = [objc_alloc(MEMORY[0x1E69C38F8]) initWithConfiguration:v17];
-    v19 = [v10 localizedTitle];
-    [v18 setTitle:v19];
+    localizedTitle = [firstObject localizedTitle];
+    [v18 setTitle:localizedTitle];
 
-    v9 = v10;
+    v9 = firstObject;
   }
 
   else
   {
 
-    v20 = [(PUPXGridPresentation *)self sessionInfo];
-    v21 = [v20 selectionCoordinator];
+    sessionInfo6 = [(PUPXGridPresentation *)self sessionInfo];
+    selectionCoordinator2 = [sessionInfo6 selectionCoordinator];
     v17 = PXPhotosViewConfigurationForAssetCollectionFetchResult();
 
     [v17 setOneUpPresentationOrigin:8];
@@ -224,44 +224,44 @@ LABEL_9:
   return v18;
 }
 
-- (id)createAssetPickerPhotosAlbumViewControllerForAlbum:(id)a3
+- (id)createAssetPickerPhotosAlbumViewControllerForAlbum:(id)album
 {
-  v4 = a3;
-  v5 = [(PUPXGridPresentation *)self sessionInfo];
-  v6 = [v5 assetsFilterPredicate];
-  v7 = [(PUPXGridPresentation *)self sessionInfo];
-  [v7 reverseSortOrder];
-  v8 = [(PUPXGridPresentation *)self sessionInfo];
-  v9 = [v8 selectionCoordinator];
-  v10 = [(PUPXGridPresentation *)self sessionInfo];
-  [v10 allowsSwipeToSelect];
+  albumCopy = album;
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  assetsFilterPredicate = [sessionInfo assetsFilterPredicate];
+  sessionInfo2 = [(PUPXGridPresentation *)self sessionInfo];
+  [sessionInfo2 reverseSortOrder];
+  sessionInfo3 = [(PUPXGridPresentation *)self sessionInfo];
+  selectionCoordinator = [sessionInfo3 selectionCoordinator];
+  sessionInfo4 = [(PUPXGridPresentation *)self sessionInfo];
+  [sessionInfo4 allowsSwipeToSelect];
   v11 = PXPhotosViewConfigurationForImagePickerWithAssetCollection();
 
-  [(PUPXGridPresentation *)self _customizePhotosViewConfiguationForAssetPicker:v11 assetCollection:v4];
+  [(PUPXGridPresentation *)self _customizePhotosViewConfiguationForAssetPicker:v11 assetCollection:albumCopy];
   v12 = [objc_alloc(MEMORY[0x1E69C38F8]) initWithConfiguration:v11];
-  v13 = [v4 localizedTitle];
+  localizedTitle = [albumCopy localizedTitle];
 
-  [v12 setTitle:v13];
+  [v12 setTitle:localizedTitle];
 
   return v12;
 }
 
-- (id)createPhotosAlbumViewControllerForAlbum:(id)a3 withFetchResult:(id)a4
+- (id)createPhotosAlbumViewControllerForAlbum:(id)album withFetchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUPXGridPresentation *)self sessionInfo];
-  v9 = [v8 isForAssetPicker];
+  albumCopy = album;
+  resultCopy = result;
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  isForAssetPicker = [sessionInfo isForAssetPicker];
 
-  if (v9)
+  if (isForAssetPicker)
   {
-    v10 = [(PUPXGridPresentation *)self createAssetPickerPhotosAlbumViewControllerForAlbum:v6];
+    v10 = [(PUPXGridPresentation *)self createAssetPickerPhotosAlbumViewControllerForAlbum:albumCopy];
   }
 
   else
   {
-    v11 = [(PUPXGridPresentation *)self sessionInfo];
-    v12 = [v11 selectionCoordinator];
+    sessionInfo2 = [(PUPXGridPresentation *)self sessionInfo];
+    selectionCoordinator = [sessionInfo2 selectionCoordinator];
     v13 = PXPhotosViewConfigurationForAssetCollectionWithExistingAssetsFetchResult();
 
     [v13 setOneUpPresentationOrigin:PXOneUpPresentationOriginForAssetCollection()];
@@ -271,38 +271,38 @@ LABEL_9:
   return v10;
 }
 
-- (id)_createPeopleViewControllerWithHostViewController:(id)a3
+- (id)_createPeopleViewControllerWithHostViewController:(id)controller
 {
   v4 = MEMORY[0x1E69C3648];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [v4 alloc];
-  v7 = [(PUPXGridPresentation *)self photoLibrary];
-  v8 = [(PUPXGridPresentation *)self sessionInfo];
-  v9 = [v8 selectionCoordinator];
-  v10 = [v6 initWithPhotoLibrary:v7 selectionCoordinator:v9 hostViewController:v5];
+  photoLibrary = [(PUPXGridPresentation *)self photoLibrary];
+  sessionInfo = [(PUPXGridPresentation *)self sessionInfo];
+  selectionCoordinator = [sessionInfo selectionCoordinator];
+  v10 = [v6 initWithPhotoLibrary:photoLibrary selectionCoordinator:selectionCoordinator hostViewController:controllerCopy];
 
   return v10;
 }
 
-- (id)createPlacesViewControllerForAssetCollection:(id)a3
+- (id)createPlacesViewControllerForAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
   v5 = [objc_alloc(MEMORY[0x1E69C3918]) initWithConfiguration:&__block_literal_global_50773];
-  v6 = [objc_alloc(MEMORY[0x1E69C3920]) initWithPhotoLibrary:v4 configuration:v5];
-  v7 = [v6 fetchResultViewController];
-  v8 = [v7 mapFetchResultsController];
-  [v8 preloadMap];
-  objc_initWeak(&location, v8);
+  v6 = [objc_alloc(MEMORY[0x1E69C3920]) initWithPhotoLibrary:photoLibrary configuration:v5];
+  fetchResultViewController = [v6 fetchResultViewController];
+  mapFetchResultsController = [fetchResultViewController mapFetchResultsController];
+  [mapFetchResultsController preloadMap];
+  objc_initWeak(&location, mapFetchResultsController);
   v9 = dispatch_get_global_queue(25, 0);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__PUPXGridPresentation_createPlacesViewControllerForAssetCollection___block_invoke_2;
   v13[3] = &unk_1E7B7F820;
-  v14 = v4;
-  v15 = v3;
-  v10 = v3;
-  v11 = v4;
+  v14 = photoLibrary;
+  v15 = collectionCopy;
+  v10 = collectionCopy;
+  v11 = photoLibrary;
   objc_copyWeak(&v16, &location);
   dispatch_async(v9, v13);
 
@@ -336,40 +336,40 @@ void __69__PUPXGridPresentation_createPlacesViewControllerForAssetCollection___b
   [WeakRetained reloadContentModeWithCompletion:0];
 }
 
-- (id)createViewControllerForAssetCollection:(id)a3 hostViewController:(id)a4
+- (id)createViewControllerForAssetCollection:(id)collection hostViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 px_isImportHistoryCollection])
+  collectionCopy = collection;
+  controllerCopy = controller;
+  if ([collectionCopy px_isImportHistoryCollection])
   {
-    v8 = [(PUPXGridPresentation *)self createImportHistoryGridViewControllerWithCollection:v6];
+    v8 = [(PUPXGridPresentation *)self createImportHistoryGridViewControllerWithCollection:collectionCopy];
   }
 
-  else if ([v6 px_isAllLibraryDuplicatesSmartAlbum])
+  else if ([collectionCopy px_isAllLibraryDuplicatesSmartAlbum])
   {
-    v8 = [(PUPXGridPresentation *)self createDuplicatesGridViewControllerWithCollection:v6];
+    v8 = [(PUPXGridPresentation *)self createDuplicatesGridViewControllerWithCollection:collectionCopy];
   }
 
-  else if (([v6 px_isTransientPlacesCollection] & 1) != 0 || objc_msgSend(v6, "px_isPlacesSmartAlbum"))
+  else if (([collectionCopy px_isTransientPlacesCollection] & 1) != 0 || objc_msgSend(collectionCopy, "px_isPlacesSmartAlbum"))
   {
-    v8 = [(PUPXGridPresentation *)self createPlacesViewControllerForAssetCollection:v6];
+    v8 = [(PUPXGridPresentation *)self createPlacesViewControllerForAssetCollection:collectionCopy];
   }
 
-  else if ([v6 px_isPeopleVirtualCollection])
+  else if ([collectionCopy px_isPeopleVirtualCollection])
   {
-    v8 = [(PUPXGridPresentation *)self _createPeopleViewControllerWithHostViewController:v7];
+    v8 = [(PUPXGridPresentation *)self _createPeopleViewControllerWithHostViewController:controllerCopy];
   }
 
   else
   {
-    if ([v6 px_isPanoramasSmartAlbum])
+    if ([collectionCopy px_isPanoramasSmartAlbum])
     {
       [(PUPXGridPresentation *)self createPanoramaViewController];
     }
 
     else
     {
-      [(PUPXGridPresentation *)self createPhotosAlbumViewControllerForAlbum:v6 withFetchResult:0];
+      [(PUPXGridPresentation *)self createPhotosAlbumViewControllerForAlbum:collectionCopy withFetchResult:0];
     }
     v8 = ;
   }
@@ -386,9 +386,9 @@ void __69__PUPXGridPresentation_createPlacesViewControllerForAssetCollection___b
   v2 = [(PUPXGridPresentation *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     photoLibrary = v2->_photoLibrary;
-    v2->_photoLibrary = v3;
+    v2->_photoLibrary = px_deprecated_appPhotoLibrary;
   }
 
   return v2;

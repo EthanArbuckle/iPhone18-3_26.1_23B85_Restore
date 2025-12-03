@@ -1,30 +1,30 @@
 @interface WGWidgetListFooterView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WGWidgetListFooterView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WGWidgetListFooterView)initWithFrame:(CGRect)frame;
 - (WGWidgetListFooterViewDelegate)delegate;
 - (id)_referenceFont;
 - (void)_addCustomizeButton;
-- (void)_availableWidgetsUpdated:(id)a3;
-- (void)_setAttributedString:(id)a3 forWidgetIdentifier:(id)a4;
+- (void)_availableWidgetsUpdated:(id)updated;
+- (void)_setAttributedString:(id)string forWidgetIdentifier:(id)identifier;
 - (void)invalidateSubviewGeometery;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)setLayoutMode:(int64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setShouldSizeContent:(BOOL)a3;
-- (void)setVisibleWidgetsIDs:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setLayoutMode:(int64_t)mode;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setShouldSizeContent:(BOOL)content;
+- (void)setVisibleWidgetsIDs:(id)ds;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WGWidgetListFooterView
 
-- (WGWidgetListFooterView)initWithFrame:(CGRect)a3
+- (WGWidgetListFooterView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = WGWidgetListFooterView;
-  v3 = [(WGWidgetListFooterView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WGWidgetListFooterView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -46,13 +46,13 @@
 
     [(UIView *)v3->_contentView addSubview:v3->_editButton];
     [(WGWidgetListFooterView *)v3 _addCustomizeButton];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      [v12 addObserver:v3 selector:sel__availableWidgetsUpdated_ name:@"WGAvailableWidgetsUpdatedNotification" object:0];
+      [defaultCenter addObserver:v3 selector:sel__availableWidgetsUpdated_ name:@"WGAvailableWidgetsUpdatedNotification" object:0];
     }
 
-    [v12 addObserver:v3 selector:sel__updateForContentCategorySizeDidChange name:*MEMORY[0x277D76810] object:0];
+    [defaultCenter addObserver:v3 selector:sel__updateForContentCategorySizeDidChange name:*MEMORY[0x277D76810] object:0];
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     widgetIDsToAttributionViews = v3->_widgetIDsToAttributionViews;
     v3->_widgetIDsToAttributionViews = v13;
@@ -63,25 +63,25 @@
   return v3;
 }
 
-- (void)setLayoutMode:(int64_t)a3
+- (void)setLayoutMode:(int64_t)mode
 {
-  if (self->_layoutMode != a3)
+  if (self->_layoutMode != mode)
   {
-    self->_layoutMode = a3;
+    self->_layoutMode = mode;
     [(WGWidgetListFooterView *)self setNeedsLayout];
   }
 }
 
-- (void)setVisibleWidgetsIDs:(id)a3
+- (void)setVisibleWidgetsIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  allKeys = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,11 +93,11 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        if (([v4 containsObject:v11] & 1) == 0)
+        if (([dsCopy containsObject:v11] & 1) == 0)
         {
           v12 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews objectForKey:v11];
           [v12 removeFromSuperview];
@@ -107,7 +107,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v7);
@@ -127,7 +127,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v4;
+  v13 = dsCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
@@ -192,22 +192,22 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   [WeakRetained _setAttributedString:*(a1 + 32) forWidgetIdentifier:*(a1 + 40)];
 }
 
-- (void)_setAttributedString:(id)a3 forWidgetIdentifier:(id)a4
+- (void)_setAttributedString:(id)string forWidgetIdentifier:(id)identifier
 {
   widgetIDsToAttributionViews = self->_widgetIDsToAttributionViews;
-  v7 = a4;
-  v8 = a3;
-  v12 = [(NSMutableDictionary *)widgetIDsToAttributionViews objectForKey:v7];
+  identifierCopy = identifier;
+  stringCopy = string;
+  v12 = [(NSMutableDictionary *)widgetIDsToAttributionViews objectForKey:identifierCopy];
   [v12 removeFromSuperview];
-  v9 = [[WGWidgetAttributionView alloc] initWithWidgetAttributedString:v8];
+  v9 = [[WGWidgetAttributionView alloc] initWithWidgetAttributedString:stringCopy];
 
   [(WGWidgetAttributionView *)v9 setDelegate:self];
-  v10 = [(WGWidgetListFooterView *)self legibilitySettings];
-  v11 = [v10 primaryColor];
-  [(WGWidgetAttributionView *)v9 setLegibilityTextColor:v11];
+  legibilitySettings = [(WGWidgetListFooterView *)self legibilitySettings];
+  primaryColor = [legibilitySettings primaryColor];
+  [(WGWidgetAttributionView *)v9 setLegibilityTextColor:primaryColor];
 
   [(WGWidgetAttributionView *)v9 _setInteractiveTextSelectionDisabled:1];
-  [(NSMutableDictionary *)self->_widgetIDsToAttributionViews setObject:v9 forKey:v7];
+  [(NSMutableDictionary *)self->_widgetIDsToAttributionViews setObject:v9 forKey:identifierCopy];
 
   [(UIView *)self->_contentView addSubview:v9];
   [(WGWidgetListFooterView *)self invalidateIntrinsicContentSize];
@@ -237,8 +237,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v10 = [v9 localizedStringForKey:@"WIDGETS_CUSTOMIZE_BUTTON" value:&stru_2883435D8 table:@"Widgets"];
   [v8 setText:v10];
 
-  v11 = [MEMORY[0x277D75348] labelColor];
-  [v8 setTextColor:v11];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v8 setTextColor:labelColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = MEMORY[0x277D755D0];
@@ -259,25 +259,25 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   [(UIButton *)v19 addSubview:v8];
   [(UIButton *)v19 addSubview:v13];
   v31 = MEMORY[0x277CCAAD0];
-  v37 = [v8 leadingAnchor];
-  v36 = [(UIButton *)v19 leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:10.0];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [(UIButton *)v19 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v43[0] = v35;
-  v34 = [v13 leadingAnchor];
-  v33 = [v8 trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  leadingAnchor3 = [v13 leadingAnchor];
+  trailingAnchor = [v8 trailingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
   v43[1] = v32;
-  v30 = [(UIButton *)v19 trailingAnchor];
-  v29 = [v13 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:10.0];
+  trailingAnchor2 = [(UIButton *)v19 trailingAnchor];
+  trailingAnchor3 = [v13 trailingAnchor];
+  v28 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:10.0];
   v43[2] = v28;
-  v20 = [v8 centerYAnchor];
-  v21 = [(UIButton *)v19 centerYAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  centerYAnchor = [v8 centerYAnchor];
+  centerYAnchor2 = [(UIButton *)v19 centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v43[3] = v22;
-  v23 = [v13 centerYAnchor];
-  v24 = [(UIButton *)v19 centerYAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  centerYAnchor3 = [v13 centerYAnchor];
+  centerYAnchor4 = [(UIButton *)v19 centerYAnchor];
+  v25 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v43[4] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:5];
   [v31 activateConstraints:v26];
@@ -287,12 +287,12 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   self->_customizeButton = v19;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  objc_storeWeak(&self->_delegate, a3);
-  v4 = [(WGWidgetListFooterView *)self delegate];
-  v5 = [v4 editingMaterialViewForWidgetListFooterView:self];
+  objc_storeWeak(&self->_delegate, delegate);
+  delegate = [(WGWidgetListFooterView *)self delegate];
+  v5 = [delegate editingMaterialViewForWidgetListFooterView:self];
   customizeButtonBackground = self->_customizeButtonBackground;
   self->_customizeButtonBackground = v5;
 
@@ -300,8 +300,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(UIButton *)self->_customizeButton subviews];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [(UIButton *)self->_customizeButton subviews];
+  v8 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -313,7 +313,7 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -324,29 +324,29 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setShouldSizeContent:(BOOL)a3
+- (void)setShouldSizeContent:(BOOL)content
 {
-  if (self->_shouldSizeContent != a3)
+  if (self->_shouldSizeContent != content)
   {
-    self->_shouldSizeContent = a3;
+    self->_shouldSizeContent = content;
     [(WGWidgetListFooterView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v44 = *MEMORY[0x277D85DE8];
-  v6 = [(WGWidgetListFooterView *)self _referenceFont];
-  [v6 _scaledValueForValue:12.0];
+  _referenceFont = [(WGWidgetListFooterView *)self _referenceFont];
+  [_referenceFont _scaledValueForValue:12.0];
   v8 = v7;
   [(WGShortLookStyleButton *)self->_editButton alpha];
   if (v9 > 0.0)
@@ -362,10 +362,10 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
     v8 = v8 + v12;
   }
 
-  v13 = [(WGNewWidgetsButton *)self->_widgetAvailableButton badgeNumber];
+  badgeNumber = [(WGNewWidgetsButton *)self->_widgetAvailableButton badgeNumber];
   v14 = 0.0;
   v15 = 0.0;
-  if (v13)
+  if (badgeNumber)
   {
     [(WGNewWidgetsButton *)self->_widgetAvailableButton sizeThatFits:width, 0.0];
     v15 = v16 + 22.0;
@@ -375,7 +375,7 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v18 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews count];
   if (v18 >= 1)
   {
-    [v6 _scaledValueForValue:v18 * 15.0 + 7.0];
+    [_referenceFont _scaledValueForValue:v18 * 15.0 + 7.0];
     v14 = v19;
   }
 
@@ -384,8 +384,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v21 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
-  v22 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  allValues = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
+  v22 = [allValues countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v22)
   {
     v23 = v22;
@@ -396,7 +396,7 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allValues);
         }
 
         v26 = *(*(&v39 + 1) + 8 * i);
@@ -406,19 +406,19 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
         v29 = v28;
         [v26 textContainerInset];
         v31 = v29 - v30;
-        [v6 lineHeight];
+        [_referenceFont lineHeight];
         v33 = v31 - v32;
         [v26 textContainerInset];
         v20 = v20 + v33 - v34;
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v23 = [allValues countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v23);
   }
 
-  [v6 _scaledValueForValue:5.5];
+  [_referenceFont _scaledValueForValue:5.5];
   v36 = v35;
 
   v37 = v20 + v36;
@@ -449,8 +449,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WGWidgetListFooterView *)self _referenceFont];
-  [v11 _scaledValueForValue:12.0];
+  _referenceFont = [(WGWidgetListFooterView *)self _referenceFont];
+  [_referenceFont _scaledValueForValue:12.0];
   v13 = v12;
 
   v69 = v13;
@@ -467,8 +467,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   [(WGShortLookStyleButton *)self->_editButton setFrame:*&v66];
   v16 = v8;
   [(UIButton *)self->_customizeButton setFrame:0.0, v69, v8, 20.0];
-  v17 = [(WGWidgetListFooterView *)self _referenceFont];
-  [v17 _scaledValueForValue:v15];
+  _referenceFont2 = [(WGWidgetListFooterView *)self _referenceFont];
+  [_referenceFont2 _scaledValueForValue:v15];
   v19 = v69 + v18;
 
   widgetAvailableButton = self->_widgetAvailableButton;
@@ -486,11 +486,11 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(WGWidgetListFooterView *)self _referenceFont];
-    [v29 _scaledValueForValue:v22];
+    _referenceFont3 = [(WGWidgetListFooterView *)self _referenceFont];
+    [_referenceFont3 _scaledValueForValue:v22];
     v31 = v30;
-    v32 = [(WGWidgetListFooterView *)self _referenceFont];
-    [v32 ascender];
+    _referenceFont4 = [(WGWidgetListFooterView *)self _referenceFont];
+    [_referenceFont4 ascender];
     v34 = v31 - v33;
 
     [(WGNewWidgetsButton *)self->_widgetAvailableButton setFrame:v24, v34, v26, v28];
@@ -499,8 +499,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
 
   if ([(NSMutableDictionary *)self->_widgetIDsToAttributionViews count])
   {
-    v35 = [(WGWidgetListFooterView *)self _referenceFont];
-    [v35 _scaledValueForValue:7.0];
+    _referenceFont5 = [(WGWidgetListFooterView *)self _referenceFont];
+    [_referenceFont5 _scaledValueForValue:7.0];
     v19 = v19 + v36;
   }
 
@@ -526,8 +526,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
         v42 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews objectForKey:*(*(&v70 + 1) + 8 * i)];
         if (v42)
         {
-          v43 = [(WGWidgetListFooterView *)self _referenceFont];
-          [v43 _scaledValueForValue:15.0];
+          _referenceFont6 = [(WGWidgetListFooterView *)self _referenceFont];
+          [_referenceFont6 _scaledValueForValue:15.0];
           v45 = v19 + v44;
 
           [v42 sizeThatFits:{v16 + -40.0, 0.0}];
@@ -537,11 +537,11 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
           v47 = v46;
           v49 = v48;
           v51 = v50;
-          v52 = [(WGWidgetListFooterView *)self _referenceFont];
-          [v52 _scaledValueForValue:v45];
+          _referenceFont7 = [(WGWidgetListFooterView *)self _referenceFont];
+          [_referenceFont7 _scaledValueForValue:v45];
           v54 = v53;
-          v55 = [(WGWidgetListFooterView *)self _referenceFont];
-          [v55 ascender];
+          _referenceFont8 = [(WGWidgetListFooterView *)self _referenceFont];
+          [_referenceFont8 ascender];
           v57 = v54 - v56;
 
           [v42 setFrame:{v47, v57, v49, v51}];
@@ -549,8 +549,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
           v59 = v58;
           [v42 textContainerInset];
           v61 = v59 - v60;
-          v62 = [(WGWidgetListFooterView *)self _referenceFont];
-          [v62 lineHeight];
+          _referenceFont9 = [(WGWidgetListFooterView *)self _referenceFont];
+          [_referenceFont9 lineHeight];
           v64 = v61 - v63;
           [v42 textContainerInset];
           v19 = v45 + v64 - v65;
@@ -571,8 +571,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -584,14 +584,14 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setNeedsLayout];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -601,19 +601,19 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   [(WGWidgetListFooterView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [(NSMutableDictionary *)self->_widgetIDsToAttributionViews allValues];
+    v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -625,18 +625,18 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
-          v12 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-          [v11 setLegibilityTextColor:v12];
+          primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+          [v11 setLegibilityTextColor:primaryColor];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -647,14 +647,14 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   }
 }
 
-- (void)_availableWidgetsUpdated:(id)a3
+- (void)_availableWidgetsUpdated:(id)updated
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"WGNewWidgetsCountKey"];
-  v6 = [v5 intValue];
+  userInfo = [updated userInfo];
+  v5 = [userInfo objectForKey:@"WGNewWidgetsCountKey"];
+  intValue = [v5 intValue];
 
   widgetAvailableButton = self->_widgetAvailableButton;
-  if (v6)
+  if (intValue)
   {
     if (!widgetAvailableButton)
     {
@@ -663,14 +663,14 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
       self->_widgetAvailableButton = v8;
 
       v10 = self->_widgetAvailableButton;
-      v11 = [(WGWidgetListFooterView *)self legibilitySettings];
-      [(WGNewWidgetsButton *)v10 setLegibilitySettings:v11];
+      legibilitySettings = [(WGWidgetListFooterView *)self legibilitySettings];
+      [(WGNewWidgetsButton *)v10 setLegibilitySettings:legibilitySettings];
 
       [(UIView *)self->_contentView addSubview:self->_widgetAvailableButton];
       widgetAvailableButton = self->_widgetAvailableButton;
     }
 
-    [(WGNewWidgetsButton *)widgetAvailableButton setBadgeNumber:v6];
+    [(WGNewWidgetsButton *)widgetAvailableButton setBadgeNumber:intValue];
     [(WGWidgetListFooterView *)self invalidateIntrinsicContentSize];
     [(WGWidgetListFooterView *)self setNeedsLayout];
   }
@@ -682,8 +682,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
     self->_widgetAvailableButton = 0;
   }
 
-  v13 = [(WGWidgetListFooterView *)self delegate];
-  [v13 widgetListFooterViewAvailableNewWidgetsUpdated:self];
+  delegate = [(WGWidgetListFooterView *)self delegate];
+  [delegate widgetListFooterViewAvailableNewWidgetsUpdated:self];
 }
 
 - (id)_referenceFont
@@ -691,8 +691,8 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   referenceFont = self->_referenceFont;
   if (!referenceFont)
   {
-    v4 = [MEMORY[0x277CF0D60] defaultFontProvider];
-    v5 = [v4 preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
+    defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+    v5 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76940] hiFontStyle:1];
     v6 = self->_referenceFont;
     self->_referenceFont = v5;
 
@@ -702,17 +702,17 @@ void __47__WGWidgetListFooterView_setVisibleWidgetsIDs___block_invoke_2(uint64_t
   return referenceFont;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
-  if ((a6 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  lCopy = l;
+  if ((interaction - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v8 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__WGWidgetListFooterView_textView_shouldInteractWithURL_inRange_interaction___block_invoke;
     block[3] = &unk_279ED0948;
-    v11 = v7;
+    v11 = lCopy;
     dispatch_async(v8, block);
   }
 
@@ -742,19 +742,19 @@ void __77__WGWidgetListFooterView_textView_shouldInteractWithURL_inRange_interac
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = WGWidgetListFooterView;
-  v4 = a3;
-  [(WGWidgetListFooterView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WGWidgetListFooterView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(WGWidgetListFooterView *)self traitCollection:v10.receiver];
-  v6 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  if (v6)
+  if (preferredContentSizeCategory)
   {
-    v7 = [v5 preferredContentSizeCategory];
-    v8 = [v7 isEqualToString:v6];
+    preferredContentSizeCategory2 = [v5 preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory2 isEqualToString:preferredContentSizeCategory];
 
     if ((v8 & 1) == 0)
     {

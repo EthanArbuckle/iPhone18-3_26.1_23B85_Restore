@@ -1,39 +1,39 @@
 @interface ACC2SVController
 - (ACCTicketManagerProtocol)ticketManager;
 - (id)createCancelError;
-- (id)createTrustedDeviceWithDictionary:(id)a3;
-- (id)ssoTokenWithResponse:(id)a3 context:(id)a4;
-- (id)trustedDevicesFromResponse:(id)a3 withContext:(id)a4;
-- (id)uiControllerRealm:(id)a3;
-- (id)uiControllerTitle:(id)a3;
-- (unint64_t)passcodeLengthFromEncryptedContent:(id)a3 withHmac:(id)a4 context:(id)a5;
+- (id)createTrustedDeviceWithDictionary:(id)dictionary;
+- (id)ssoTokenWithResponse:(id)response context:(id)context;
+- (id)trustedDevicesFromResponse:(id)response withContext:(id)context;
+- (id)uiControllerRealm:(id)realm;
+- (id)uiControllerTitle:(id)title;
+- (unint64_t)passcodeLengthFromEncryptedContent:(id)content withHmac:(id)hmac context:(id)context;
 - (void)cancel2SVAuthentication;
-- (void)cancelWithCompletion:(id)a3;
+- (void)cancelWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)enterAndVerifySecureCodeOfLength:(unint64_t)a3;
+- (void)enterAndVerifySecureCodeOfLength:(unint64_t)length;
 - (void)enterCredentials;
-- (void)generateAndSendSecCodeToDevice:(id)a3 withCompletion:(id)a4;
+- (void)generateAndSendSecCodeToDevice:(id)device withCompletion:(id)completion;
 - (void)goBackToTrustedDevices;
-- (void)handleErrorOnGetTrustedDevices:(id)a3;
-- (void)handleErrorOnResendSecurityCode:(id)a3 alertCancelled:(BOOL)a4;
-- (void)handleErrorOnSendSecurityCode:(id)a3 alertCancelled:(BOOL)a4;
-- (void)hideUIAndReturnError:(id)a3;
-- (void)hideUIWithCompletion:(id)a3;
-- (void)perform2StepVerificationWithRequest:(id)a3 completion:(id)a4;
+- (void)handleErrorOnGetTrustedDevices:(id)devices;
+- (void)handleErrorOnResendSecurityCode:(id)code alertCancelled:(BOOL)cancelled;
+- (void)handleErrorOnSendSecurityCode:(id)code alertCancelled:(BOOL)cancelled;
+- (void)hideUIAndReturnError:(id)error;
+- (void)hideUIWithCompletion:(id)completion;
+- (void)perform2StepVerificationWithRequest:(id)request completion:(id)completion;
 - (void)refreshTrustedDevicesList;
-- (void)reportError:(id)a3 completionBlock:(id)a4;
-- (void)sendVerificationCodeToDevice:(id)a3;
-- (void)setSecondFactorAuthUIController:(id)a3;
-- (void)start2StepVerificationWithRequest:(id)a3;
-- (void)uiController:(id)a3 getImageWithURL:(id)a4 completion:(id)a5;
-- (void)uiController:(id)a3 resendVerificationCodeWithCompletion:(id)a4;
-- (void)uiControllerCancelGettingImages:(id)a3;
-- (void)uiControllerHideViewAnimated:(id)a3;
-- (void)uiControllerSetup:(id)a3;
-- (void)uiControllerUserIsUnableToReceiveVerificationCode:(id)a3;
-- (void)verifySecureCode:(id)a3 withCompletion:(id)a4;
-- (void)verifySecurityCodeDidFailWithError:(id)a3;
-- (void)verifySecurityCodeDidFinishWithToken:(id)a3;
+- (void)reportError:(id)error completionBlock:(id)block;
+- (void)sendVerificationCodeToDevice:(id)device;
+- (void)setSecondFactorAuthUIController:(id)controller;
+- (void)start2StepVerificationWithRequest:(id)request;
+- (void)uiController:(id)controller getImageWithURL:(id)l completion:(id)completion;
+- (void)uiController:(id)controller resendVerificationCodeWithCompletion:(id)completion;
+- (void)uiControllerCancelGettingImages:(id)images;
+- (void)uiControllerHideViewAnimated:(id)animated;
+- (void)uiControllerSetup:(id)setup;
+- (void)uiControllerUserIsUnableToReceiveVerificationCode:(id)code;
+- (void)verifySecureCode:(id)code withCompletion:(id)completion;
+- (void)verifySecurityCodeDidFailWithError:(id)error;
+- (void)verifySecurityCodeDidFinishWithToken:(id)token;
 @end
 
 @implementation ACC2SVController
@@ -51,17 +51,17 @@
   [(ACC2SVController *)&v3 dealloc];
 }
 
-- (void)setSecondFactorAuthUIController:(id)a3
+- (void)setSecondFactorAuthUIController:(id)controller
 {
   secondFactorAuthUIController = self->_secondFactorAuthUIController;
-  if (secondFactorAuthUIController != a3)
+  if (secondFactorAuthUIController != controller)
   {
     [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController setDelegate:0];
 
-    v6 = a3;
-    self->_secondFactorAuthUIController = v6;
+    controllerCopy = controller;
+    self->_secondFactorAuthUIController = controllerCopy;
 
-    [(ACC2SVAuthenticationUIControllerProtocol *)v6 setDelegate:self];
+    [(ACC2SVAuthenticationUIControllerProtocol *)controllerCopy setDelegate:self];
   }
 }
 
@@ -72,33 +72,33 @@
   return [v2 ticketManager];
 }
 
-- (void)perform2StepVerificationWithRequest:(id)a3 completion:(id)a4
+- (void)perform2StepVerificationWithRequest:(id)request completion:(id)completion
 {
-  [(ACC2SVController *)self setCompletionBlock:a4];
+  [(ACC2SVController *)self setCompletionBlock:completion];
 
-  [(ACC2SVController *)self start2StepVerificationWithRequest:a3];
+  [(ACC2SVController *)self start2StepVerificationWithRequest:request];
 }
 
-- (void)cancelWithCompletion:(id)a3
+- (void)cancelWithCompletion:(id)completion
 {
   if ([(ACC2SVController *)self completionBlock])
   {
-    v5 = [a3 copy];
-    v6 = [(ACC2SVController *)self secondFactorAuthUIController];
+    v5 = [completion copy];
+    secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __41__ACC2SVController_cancelWithCompletion___block_invoke;
     v8[3] = &unk_29EE91860;
     v8[4] = self;
     v8[5] = v5;
-    [(ACC2SVAuthenticationUIControllerProtocol *)v6 hideUIAnimated:0 withCompletion:v8];
+    [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController hideUIAnimated:0 withCompletion:v8];
   }
 
-  else if (a3)
+  else if (completion)
   {
-    v7 = *(a3 + 2);
+    v7 = *(completion + 2);
 
-    v7(a3);
+    v7(completion);
   }
 }
 
@@ -118,23 +118,23 @@ uint64_t __41__ACC2SVController_cancelWithCompletion___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)hideUIWithCompletion:(id)a3
+- (void)hideUIWithCompletion:(id)completion
 {
   [(ACC2SVControllerDelegate *)[(ACC2SVController *)self delegate] twoSVControllerWillClose:self];
-  v5 = [(ACC2SVController *)self secondFactorAuthUIController];
+  secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
 
-  [(ACC2SVAuthenticationUIControllerProtocol *)v5 hideUIAnimated:1 withCompletion:a3];
+  [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController hideUIAnimated:1 withCompletion:completion];
 }
 
 - (void)enterCredentials
 {
-  v3 = [(ACC2SVController *)self secondFactorAuthUIController];
+  secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __36__ACC2SVController_enterCredentials__block_invoke;
   v4[3] = &unk_29EE91778;
   v4[4] = self;
-  [(ACC2SVAuthenticationUIControllerProtocol *)v3 handleFailoverWithCompletion:v4];
+  [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController handleFailoverWithCompletion:v4];
 }
 
 uint64_t __36__ACC2SVController_enterCredentials__block_invoke(uint64_t a1)
@@ -145,16 +145,16 @@ uint64_t __36__ACC2SVController_enterCredentials__block_invoke(uint64_t a1)
   return [v2 twoSVControllerEnterCredentials:v3];
 }
 
-- (void)enterAndVerifySecureCodeOfLength:(unint64_t)a3
+- (void)enterAndVerifySecureCodeOfLength:(unint64_t)length
 {
-  v5 = [(ACC2SVController *)self secondFactorAuthUIController];
-  v6 = [(ACC2SVController *)self currentDevice];
+  secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
+  currentDevice = [(ACC2SVController *)self currentDevice];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __53__ACC2SVController_enterAndVerifySecureCodeOfLength___block_invoke;
   v7[3] = &unk_29EE91C08;
   v7[4] = self;
-  [(ACC2SVAuthenticationUIControllerProtocol *)v5 enterVerificationCodeWithLength:a3 forDevice:v6 completion:v7];
+  [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController enterVerificationCodeWithLength:length forDevice:currentDevice completion:v7];
 }
 
 uint64_t __53__ACC2SVController_enterAndVerifySecureCodeOfLength___block_invoke(uint64_t a1, void *a2)
@@ -210,13 +210,13 @@ uint64_t __53__ACC2SVController_enterAndVerifySecureCodeOfLength___block_invoke_
   }
 }
 
-- (void)sendVerificationCodeToDevice:(id)a3
+- (void)sendVerificationCodeToDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
-    if ([a3 isTOTPDevice])
+    if ([device isTOTPDevice])
     {
-      [(ACC2SVController *)self setCurrentDevice:a3];
+      [(ACC2SVController *)self setCurrentDevice:device];
 
       [(ACC2SVController *)self enterAndVerifySecureCodeOfLength:6];
     }
@@ -225,7 +225,7 @@ uint64_t __53__ACC2SVController_enterAndVerifySecureCodeOfLength___block_invoke_
     {
       if (qword_2A1EB8FD0 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
       {
-        ACFLog(6, "-[ACC2SVController sendVerificationCodeToDevice:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 155, 0, "Send code to device %@.", [a3 deviceDisplayDescription]);
+        ACFLog(6, "-[ACC2SVController sendVerificationCodeToDevice:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 155, 0, "Send code to device %@.", [device deviceDisplayDescription]);
       }
 
       v5[0] = MEMORY[0x29EDCA5F8];
@@ -233,7 +233,7 @@ uint64_t __53__ACC2SVController_enterAndVerifySecureCodeOfLength___block_invoke_
       v5[2] = __49__ACC2SVController_sendVerificationCodeToDevice___block_invoke;
       v5[3] = &unk_29EE91C58;
       v5[4] = self;
-      [(ACC2SVController *)self generateAndSendSecCodeToDevice:a3 withCompletion:v5];
+      [(ACC2SVController *)self generateAndSendSecCodeToDevice:device withCompletion:v5];
     }
   }
 
@@ -285,13 +285,13 @@ uint64_t __49__ACC2SVController_sendVerificationCodeToDevice___block_invoke(uint
     ACFLog(6, "[ACC2SVController goBackToTrustedDevices]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 183, 0, "Go back to trusted devices");
   }
 
-  v3 = [(ACC2SVController *)self secondFactorAuthUIController];
+  secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __42__ACC2SVController_goBackToTrustedDevices__block_invoke;
   v4[3] = &unk_29EE91C80;
   v4[4] = self;
-  [(ACC2SVAuthenticationUIControllerProtocol *)v3 chooseTrustedDeviceWithDeviceList:0 completion:v4];
+  [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController chooseTrustedDeviceWithDeviceList:0 completion:v4];
 }
 
 - (id)createCancelError
@@ -306,19 +306,19 @@ uint64_t __49__ACC2SVController_sendVerificationCodeToDevice___block_invoke(uint
 
 - (void)cancel2SVAuthentication
 {
-  v3 = [(ACC2SVController *)self createCancelError];
+  createCancelError = [(ACC2SVController *)self createCancelError];
 
-  [(ACC2SVController *)self hideUIAndReturnError:v3];
+  [(ACC2SVController *)self hideUIAndReturnError:createCancelError];
 }
 
-- (void)hideUIAndReturnError:(id)a3
+- (void)hideUIAndReturnError:(id)error
 {
   v3[0] = MEMORY[0x29EDCA5F8];
   v3[1] = 3221225472;
   v3[2] = __41__ACC2SVController_hideUIAndReturnError___block_invoke;
   v3[3] = &unk_29EE918B0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = error;
   [(ACC2SVController *)self hideUIWithCompletion:v3];
 }
 
@@ -337,11 +337,11 @@ uint64_t __41__ACC2SVController_hideUIAndReturnError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)passcodeLengthFromEncryptedContent:(id)a3 withHmac:(id)a4 context:(id)a5
+- (unint64_t)passcodeLengthFromEncryptedContent:(id)content withHmac:(id)hmac context:(id)context
 {
-  if ([a3 length] && objc_msgSend(a4, "length"))
+  if ([content length] && objc_msgSend(hmac, "length"))
   {
-    v9 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] decryptEncryptedContent:a3 withHmac:a4 context:a5];
+    v9 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] decryptEncryptedContent:content withHmac:hmac context:context];
     if (v9)
     {
       v11 = 100;
@@ -364,12 +364,12 @@ uint64_t __41__ACC2SVController_hideUIAndReturnError___block_invoke(uint64_t a1)
       ACFLog(3, "[ACC2SVController passcodeLengthFromEncryptedContent:withHmac:context:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 234, 0, "Invalid Parameters");
     }
 
-    if (![a3 length] && (ACFLogSettingsGetLevelMask() & 8) != 0)
+    if (![content length] && (ACFLogSettingsGetLevelMask() & 8) != 0)
     {
       ACFLog(3, "[ACC2SVController passcodeLengthFromEncryptedContent:withHmac:context:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 238, 0, "Encrypted data is empty");
     }
 
-    if (![a4 length] && (ACFLogSettingsGetLevelMask() & 8) != 0)
+    if (![hmac length] && (ACFLogSettingsGetLevelMask() & 8) != 0)
     {
       ACFLog(3, "[ACC2SVController passcodeLengthFromEncryptedContent:withHmac:context:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 242, 0, "Encrypted content hmac is empty");
     }
@@ -377,22 +377,22 @@ uint64_t __41__ACC2SVController_hideUIAndReturnError___block_invoke(uint64_t a1)
 
   else
   {
-    [a3 length];
-    [a4 length];
+    [content length];
+    [hmac length];
   }
 
   return 0;
 }
 
-- (void)generateAndSendSecCodeToDevice:(id)a3 withCompletion:(id)a4
+- (void)generateAndSendSecCodeToDevice:(id)device withCompletion:(id)completion
 {
   [(ACC2SVController *)self setCurrentDevice:?];
   v7 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] authContextWithRequest:[(ACC2SVController *)self authRequest] sessionToken:[(ACFMessage *)[(ACC2SVController *)self authRequest] sessionToken]];
   [v7 setPersonID:{-[ACFMessage personId](-[ACC2SVController authRequest](self, "authRequest"), "personId")}];
-  [v7 setSelectedDeviceId:{objc_msgSend(a3, "deviceID")}];
-  [v7 setSelectedDeviceType:{objc_msgSend(a3, "deviceType")}];
-  v8 = [a4 copy];
-  v9 = [(ACC2SVController *)self transportController];
+  [v7 setSelectedDeviceId:{objc_msgSend(device, "deviceID")}];
+  [v7 setSelectedDeviceType:{objc_msgSend(device, "deviceType")}];
+  v8 = [completion copy];
+  transportController = [(ACC2SVController *)self transportController];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __66__ACC2SVController_generateAndSendSecCodeToDevice_withCompletion___block_invoke;
@@ -400,7 +400,7 @@ uint64_t __41__ACC2SVController_hideUIAndReturnError___block_invoke(uint64_t a1)
   v10[4] = self;
   v10[5] = v7;
   v10[6] = v8;
-  [(ACC2SVTransportControllerProtocol *)v9 generateAndSendSecCodeWithContext:v7 completion:v10];
+  [(ACC2SVTransportControllerProtocol *)transportController generateAndSendSecCodeWithContext:v7 completion:v10];
 }
 
 uint64_t __66__ACC2SVController_generateAndSendSecCodeToDevice_withCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -436,7 +436,7 @@ uint64_t __66__ACC2SVController_generateAndSendSecCodeToDevice_withCompletion___
   return v4();
 }
 
-- (void)verifySecureCode:(id)a3 withCompletion:(id)a4
+- (void)verifySecureCode:(id)code withCompletion:(id)completion
 {
   if (qword_2A1EB8FD0 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
   {
@@ -447,16 +447,16 @@ uint64_t __66__ACC2SVController_generateAndSendSecCodeToDevice_withCompletion___
   [v7 setPersonID:{-[ACFMessage personId](-[ACC2SVController authRequest](self, "authRequest"), "personId")}];
   [v7 setSelectedDeviceId:{-[ACC2SVTrustedDeviceObject deviceID](-[ACC2SVController currentDevice](self, "currentDevice"), "deviceID")}];
   [v7 setSelectedDeviceType:{-[ACC2SVTrustedDeviceObject deviceType](-[ACC2SVController currentDevice](self, "currentDevice"), "deviceType")}];
-  [v7 setTwoStepVerificationCode:a3];
-  v8 = [(ACC2SVController *)self transportController];
+  [v7 setTwoStepVerificationCode:code];
+  transportController = [(ACC2SVController *)self transportController];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __52__ACC2SVController_verifySecureCode_withCompletion___block_invoke;
   v9[3] = &unk_29EE91CA8;
   v9[4] = self;
   v9[5] = v7;
-  v9[6] = a4;
-  [(ACC2SVTransportControllerProtocol *)v8 verifySecureCodeWithContext:v7 completion:v9];
+  v9[6] = completion;
+  [(ACC2SVTransportControllerProtocol *)transportController verifySecureCodeWithContext:v7 completion:v9];
 }
 
 uint64_t __52__ACC2SVController_verifySecureCode_withCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -488,19 +488,19 @@ uint64_t __52__ACC2SVController_verifySecureCode_withCompletion___block_invoke(u
   return result;
 }
 
-- (void)start2StepVerificationWithRequest:(id)a3
+- (void)start2StepVerificationWithRequest:(id)request
 {
-  [(ACC2SVController *)self setAuthRequest:a3];
+  [(ACC2SVController *)self setAuthRequest:request];
   v4 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] authContextWithRequest:[(ACC2SVController *)self authRequest] sessionToken:[(ACFMessage *)[(ACC2SVController *)self authRequest] sessionToken]];
   [v4 setPersonID:{-[ACFMessage personID](-[ACC2SVController authRequest](self, "authRequest"), "personID")}];
-  v5 = [(ACC2SVController *)self transportController];
+  transportController = [(ACC2SVController *)self transportController];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __54__ACC2SVController_start2StepVerificationWithRequest___block_invoke;
   v6[3] = &unk_29EE91CF8;
   v6[4] = self;
   v6[5] = v4;
-  [(ACC2SVTransportControllerProtocol *)v5 loadTrustedDevicesWithContext:v4 completion:v6];
+  [(ACC2SVTransportControllerProtocol *)transportController loadTrustedDevicesWithContext:v4 completion:v6];
 }
 
 uint64_t __54__ACC2SVController_start2StepVerificationWithRequest___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -561,28 +561,28 @@ uint64_t __54__ACC2SVController_start2StepVerificationWithRequest___block_invoke
   }
 }
 
-- (void)handleErrorOnGetTrustedDevices:(id)a3
+- (void)handleErrorOnGetTrustedDevices:(id)devices
 {
   v3[0] = MEMORY[0x29EDCA5F8];
   v3[1] = 3221225472;
   v3[2] = __51__ACC2SVController_handleErrorOnGetTrustedDevices___block_invoke;
   v3[3] = &unk_29EE91D20;
   v3[4] = self;
-  [(ACC2SVController *)self reportError:a3 completionBlock:v3];
+  [(ACC2SVController *)self reportError:devices completionBlock:v3];
 }
 
 - (void)refreshTrustedDevicesList
 {
   v3 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] authContextWithRequest:[(ACC2SVController *)self authRequest] sessionToken:[(ACFMessage *)[(ACC2SVController *)self authRequest] sessionToken]];
   [v3 setPersonID:{-[ACFMessage personID](-[ACC2SVController authRequest](self, "authRequest"), "personID")}];
-  v4 = [(ACC2SVController *)self transportController];
+  transportController = [(ACC2SVController *)self transportController];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __45__ACC2SVController_refreshTrustedDevicesList__block_invoke;
   v5[3] = &unk_29EE91CF8;
   v5[4] = self;
   v5[5] = v3;
-  [(ACC2SVTransportControllerProtocol *)v4 loadTrustedDevicesWithContext:v3 completion:v5];
+  [(ACC2SVTransportControllerProtocol *)transportController loadTrustedDevicesWithContext:v3 completion:v5];
 }
 
 void __45__ACC2SVController_refreshTrustedDevicesList__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -612,23 +612,23 @@ void __45__ACC2SVController_refreshTrustedDevicesList__block_invoke(uint64_t a1,
   }
 }
 
-- (id)createTrustedDeviceWithDictionary:(id)a3
+- (id)createTrustedDeviceWithDictionary:(id)dictionary
 {
   v3 = [objc_alloc(-[ACC2SVController deviceObjectClass](self "deviceObjectClass"))];
 
   return v3;
 }
 
-- (id)trustedDevicesFromResponse:(id)a3 withContext:(id)a4
+- (id)trustedDevicesFromResponse:(id)response withContext:(id)context
 {
   v25 = *MEMORY[0x29EDCA608];
-  if (a3)
+  if (response)
   {
-    v7 = [a3 objectForKey:@"end"];
-    v8 = [a3 objectForKey:@"enh"];
+    v7 = [response objectForKey:@"end"];
+    v8 = [response objectForKey:@"enh"];
     if ([v7 length] && objc_msgSend(v8, "length"))
     {
-      v9 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] decryptEncryptedContent:v7 withHmac:v8 context:a4];
+      v9 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] decryptEncryptedContent:v7 withHmac:v8 context:context];
       if ([v9 length])
       {
         v23 = 100;
@@ -641,7 +641,7 @@ void __45__ACC2SVController_refreshTrustedDevicesList__block_invoke(uint64_t a1,
         if (v11)
         {
           v12 = v11;
-          v13 = 0;
+          array = 0;
           v14 = *v20;
           do
           {
@@ -653,12 +653,12 @@ void __45__ACC2SVController_refreshTrustedDevicesList__block_invoke(uint64_t a1,
               }
 
               v16 = *(*(&v19 + 1) + 8 * i);
-              if (!v13)
+              if (!array)
               {
-                v13 = [MEMORY[0x29EDB8DE8] array];
+                array = [MEMORY[0x29EDB8DE8] array];
               }
 
-              [v13 addObject:{-[ACC2SVController createTrustedDeviceWithDictionary:](self, "createTrustedDeviceWithDictionary:", v16)}];
+              [array addObject:{-[ACC2SVController createTrustedDeviceWithDictionary:](self, "createTrustedDeviceWithDictionary:", v16)}];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -699,10 +699,10 @@ void __45__ACC2SVController_refreshTrustedDevicesList__block_invoke(uint64_t a1,
       [v8 length];
     }
 
-    v13 = 0;
+    array = 0;
 LABEL_33:
     v18 = [MEMORY[0x29EDBA0F0] sortDescriptorWithKey:@"lastUseDate" ascending:0];
-    return [v13 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x29EDB8D80], "arrayWithObject:", v18)}];
+    return [array sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x29EDB8D80], "arrayWithObject:", v18)}];
   }
 
   if (qword_2A1EB8FD0 && (ACFLogSettingsGetLevelMask() & 8) != 0)
@@ -713,9 +713,9 @@ LABEL_33:
   return 0;
 }
 
-- (id)ssoTokenWithResponse:(id)a3 context:(id)a4
+- (id)ssoTokenWithResponse:(id)response context:(id)context
 {
-  v5 = -[ACCTicketManagerProtocol createSSOTokenWithContent:context:](-[ACC2SVController ticketManager](self, "ticketManager"), "createSSOTokenWithContent:context:", -[ACCTicketManagerProtocol decryptEncryptedContent:withHmac:context:](-[ACC2SVController ticketManager](self, "ticketManager"), "decryptEncryptedContent:withHmac:context:", [a3 objectForKey:@"pt"], objc_msgSend(a3, "objectForKey:", @"ph"), a4), a4);
+  v5 = -[ACCTicketManagerProtocol createSSOTokenWithContent:context:](-[ACC2SVController ticketManager](self, "ticketManager"), "createSSOTokenWithContent:context:", -[ACCTicketManagerProtocol decryptEncryptedContent:withHmac:context:](-[ACC2SVController ticketManager](self, "ticketManager"), "decryptEncryptedContent:withHmac:context:", [response objectForKey:@"pt"], objc_msgSend(response, "objectForKey:", @"ph"), context), context);
   v6 = [(ACCTicketManagerProtocol *)[(ACC2SVController *)self ticketManager] serviceTicketStringWithRequest:[(ACC2SVController *)self authRequest] ssoToken:v5];
   if (v6)
   {
@@ -735,9 +735,9 @@ LABEL_33:
   return v5;
 }
 
-- (void)handleErrorOnSendSecurityCode:(id)a3 alertCancelled:(BOOL)a4
+- (void)handleErrorOnSendSecurityCode:(id)code alertCancelled:(BOOL)cancelled
 {
-  v5 = [a3 code] + 200270;
+  v5 = [code code] + 200270;
   if (v5 > 0x3C)
   {
     goto LABEL_16;
@@ -767,15 +767,15 @@ LABEL_33:
   else
   {
 LABEL_16:
-    v6 = [(ACC2SVController *)self secondFactorAuthUIController];
+    secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
 
-    [(ACC2SVAuthenticationUIControllerProtocol *)v6 resetTrustedDevicesViewControllerWithDeviceList:0];
+    [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController resetTrustedDevicesViewControllerWithDeviceList:0];
   }
 }
 
-- (void)handleErrorOnResendSecurityCode:(id)a3 alertCancelled:(BOOL)a4
+- (void)handleErrorOnResendSecurityCode:(id)code alertCancelled:(BOOL)cancelled
 {
-  v5 = [a3 code] + 200270;
+  v5 = [code code] + 200270;
   if (v5 > 0x3C)
   {
     goto LABEL_14;
@@ -799,27 +799,27 @@ LABEL_16:
       ACFLog(6, "[ACC2SVController handleErrorOnResendSecurityCode:alertCancelled:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Core/Sources/ACC2SVController.m", 509, 0, "Device not available on resend code. Show trusted devices");
     }
 
-    v6 = [(ACC2SVController *)self secondFactorAuthUIController];
+    secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __67__ACC2SVController_handleErrorOnResendSecurityCode_alertCancelled___block_invoke;
     v8[3] = &unk_29EE91778;
     v8[4] = self;
-    [(ACC2SVAuthenticationUIControllerProtocol *)v6 handleFailoverWithCompletion:v8];
+    [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController handleFailoverWithCompletion:v8];
   }
 
   else
   {
 LABEL_14:
-    v7 = [(ACC2SVController *)self secondFactorAuthUIController];
+    secondFactorAuthUIController2 = [(ACC2SVController *)self secondFactorAuthUIController];
 
-    [(ACC2SVAuthenticationUIControllerProtocol *)v7 resetCodeVerificationViewController];
+    [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController2 resetCodeVerificationViewController];
   }
 }
 
-- (void)verifySecurityCodeDidFinishWithToken:(id)a3
+- (void)verifySecurityCodeDidFinishWithToken:(id)token
 {
-  if (a3)
+  if (token)
   {
     v5 = 0;
   }
@@ -834,22 +834,22 @@ LABEL_14:
 
   if ([(ACC2SVController *)self completionBlock])
   {
-    v9 = [(ACC2SVController *)self completionBlock];
-    v9[2](v9, v5, a3);
+    completionBlock = [(ACC2SVController *)self completionBlock];
+    completionBlock[2](completionBlock, v5, token);
 
     [(ACC2SVController *)self setCompletionBlock:0];
   }
 }
 
-- (void)verifySecurityCodeDidFailWithError:(id)a3
+- (void)verifySecurityCodeDidFailWithError:(id)error
 {
   v3[0] = MEMORY[0x29EDCA5F8];
   v3[1] = 3221225472;
   v3[2] = __55__ACC2SVController_verifySecurityCodeDidFailWithError___block_invoke;
   v3[3] = &unk_29EE91C30;
-  v3[4] = a3;
+  v3[4] = error;
   v3[5] = self;
-  [(ACC2SVController *)self reportError:a3 completionBlock:v3];
+  [(ACC2SVController *)self reportError:error completionBlock:v3];
 }
 
 uint64_t __55__ACC2SVController_verifySecurityCodeDidFailWithError___block_invoke(uint64_t a1)
@@ -893,42 +893,42 @@ LABEL_16:
   }
 }
 
-- (void)reportError:(id)a3 completionBlock:(id)a4
+- (void)reportError:(id)error completionBlock:(id)block
 {
-  v5 = a3;
-  if ([a3 code] == -200240 && !-[ACC2SVTrustedDeviceObject isTOTPDevice](-[ACC2SVController currentDevice](self, "currentDevice"), "isTOTPDevice") && !-[ACC2SVTrustedDeviceObject isSMSDevice](-[ACC2SVController currentDevice](self, "currentDevice"), "isSMSDevice"))
+  errorCopy = error;
+  if ([error code] == -200240 && !-[ACC2SVTrustedDeviceObject isTOTPDevice](-[ACC2SVController currentDevice](self, "currentDevice"), "isTOTPDevice") && !-[ACC2SVTrustedDeviceObject isSMSDevice](-[ACC2SVController currentDevice](self, "currentDevice"), "isSMSDevice"))
   {
-    v7 = [objc_msgSend(v5 "userInfo")];
+    v7 = [objc_msgSend(errorCopy "userInfo")];
     v8 = [ACMBaseLocale localizedString:@"You have sent too many codes to verify your device. Please try again later."];
     [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x29EDB9ED8]];
-    v5 = [MEMORY[0x29EDB9FA0] errorWithDomain:objc_msgSend(v5 code:"domain") userInfo:{objc_msgSend(v5, "code"), v7}];
+    errorCopy = [MEMORY[0x29EDB9FA0] errorWithDomain:objc_msgSend(errorCopy code:"domain") userInfo:{objc_msgSend(errorCopy, "code"), v7}];
   }
 
-  v9 = [(ACC2SVController *)self secondFactorAuthUIController];
+  secondFactorAuthUIController = [(ACC2SVController *)self secondFactorAuthUIController];
 
-  [(ACC2SVAuthenticationUIControllerProtocol *)v9 showAlertWithError:v5 completion:a4];
+  [(ACC2SVAuthenticationUIControllerProtocol *)secondFactorAuthUIController showAlertWithError:errorCopy completion:block];
 }
 
-- (void)uiController:(id)a3 resendVerificationCodeWithCompletion:(id)a4
+- (void)uiController:(id)controller resendVerificationCodeWithCompletion:(id)completion
 {
   if ([(ACC2SVController *)self currentDevice])
   {
-    v6 = [a4 copy];
-    v7 = [(ACC2SVController *)self currentDevice];
+    v6 = [completion copy];
+    currentDevice = [(ACC2SVController *)self currentDevice];
     v9[0] = MEMORY[0x29EDCA5F8];
     v9[1] = 3221225472;
     v9[2] = __70__ACC2SVController_uiController_resendVerificationCodeWithCompletion___block_invoke;
     v9[3] = &unk_29EE91D48;
     v9[4] = self;
     v9[5] = v6;
-    [(ACC2SVController *)self generateAndSendSecCodeToDevice:v7 withCompletion:v9];
+    [(ACC2SVController *)self generateAndSendSecCodeToDevice:currentDevice withCompletion:v9];
   }
 
-  else if (a4)
+  else if (completion)
   {
-    v8 = *(a4 + 2);
+    v8 = *(completion + 2);
 
-    v8(a4, 0);
+    v8(completion, 0);
   }
 }
 
@@ -970,60 +970,60 @@ uint64_t __70__ACC2SVController_uiController_resendVerificationCodeWithCompletio
   return result;
 }
 
-- (void)uiControllerUserIsUnableToReceiveVerificationCode:(id)a3
+- (void)uiControllerUserIsUnableToReceiveVerificationCode:(id)code
 {
-  v4 = [(ACC2SVController *)self delegate];
-  v5 = [(ACFMessage *)[(ACC2SVController *)self authRequest] realm];
+  delegate = [(ACC2SVController *)self delegate];
+  realm = [(ACFMessage *)[(ACC2SVController *)self authRequest] realm];
 
-  [(ACC2SVControllerDelegate *)v4 twoSVController:self openMyAppleConnectForRealm:v5];
+  [(ACC2SVControllerDelegate *)delegate twoSVController:self openMyAppleConnectForRealm:realm];
 }
 
-- (void)uiController:(id)a3 getImageWithURL:(id)a4 completion:(id)a5
+- (void)uiController:(id)controller getImageWithURL:(id)l completion:(id)completion
 {
-  v7 = [(ACC2SVController *)self transportController];
+  transportController = [(ACC2SVController *)self transportController];
 
-  [(ACC2SVTransportControllerProtocol *)v7 getImageWithURL:a4 completion:a5];
+  [(ACC2SVTransportControllerProtocol *)transportController getImageWithURL:l completion:completion];
 }
 
-- (void)uiControllerCancelGettingImages:(id)a3
+- (void)uiControllerCancelGettingImages:(id)images
 {
-  v3 = [(ACC2SVController *)self transportController];
+  transportController = [(ACC2SVController *)self transportController];
 
-  [(ACC2SVTransportControllerProtocol *)v3 cancelImageFetching];
+  [(ACC2SVTransportControllerProtocol *)transportController cancelImageFetching];
 }
 
-- (void)uiControllerHideViewAnimated:(id)a3
+- (void)uiControllerHideViewAnimated:(id)animated
 {
-  v4 = [(ACC2SVController *)self delegate];
+  delegate = [(ACC2SVController *)self delegate];
 
-  [(ACC2SVControllerDelegate *)v4 twoSVControllerWillClose:self];
+  [(ACC2SVControllerDelegate *)delegate twoSVControllerWillClose:self];
 }
 
-- (void)uiControllerSetup:(id)a3
+- (void)uiControllerSetup:(id)setup
 {
-  v4 = [(ACC2SVController *)self delegate];
-  v5 = [(ACFMessage *)[(ACC2SVController *)self authRequest] realm];
+  delegate = [(ACC2SVController *)self delegate];
+  realm = [(ACFMessage *)[(ACC2SVController *)self authRequest] realm];
 
-  [(ACC2SVControllerDelegate *)v4 twoSVController:self openMyAppleConnectForRealm:v5];
+  [(ACC2SVControllerDelegate *)delegate twoSVController:self openMyAppleConnectForRealm:realm];
 }
 
-- (id)uiControllerTitle:(id)a3
+- (id)uiControllerTitle:(id)title
 {
   if (![(ACFMessage *)[(ACC2SVController *)self authRequest] applicationName])
   {
     return &stru_2A1EB91A0;
   }
 
-  v4 = [(ACC2SVController *)self authRequest];
+  authRequest = [(ACC2SVController *)self authRequest];
 
-  return [(ACFMessage *)v4 applicationName];
+  return [(ACFMessage *)authRequest applicationName];
 }
 
-- (id)uiControllerRealm:(id)a3
+- (id)uiControllerRealm:(id)realm
 {
-  v3 = [(ACC2SVController *)self authRequest];
+  authRequest = [(ACC2SVController *)self authRequest];
 
-  return [(ACFMessage *)v3 realm];
+  return [(ACFMessage *)authRequest realm];
 }
 
 @end

@@ -1,108 +1,108 @@
 @interface NTKFaceViewController
-+ (id)_controllerForComplication:(id)a3 face:(id)a4 slot:(id)a5;
-+ (id)_createNormalDisplayForComplicationController:(id)a3 slot:(id)a4 face:(id)a5 faceView:(id)a6;
++ (id)_controllerForComplication:(id)complication face:(id)face slot:(id)slot;
++ (id)_createNormalDisplayForComplicationController:(id)controller slot:(id)slot face:(id)face faceView:(id)view;
 + (void)initialize;
-- (BOOL)_handlePhysicalButton:(unint64_t)a3 event:(unint64_t)a4;
+- (BOOL)_handlePhysicalButton:(unint64_t)button event:(unint64_t)event;
 - (BOOL)_shouldHideFaceUI;
 - (BOOL)_shouldWidgetComplicationsEnableTap;
 - (BOOL)_shouldWidgetComplicationsShowSnapshots;
-- (BOOL)_wheelChangedWithEvent:(id)a3;
+- (BOOL)_wheelChangedWithEvent:(id)event;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)faceView:(id)a3 wantsToDismissPresentedViewControllerAnimated:(BOOL)a4 completion:(id)a5;
-- (BOOL)faceViewComplicationIsEmptyForSlot:(id)a3;
+- (BOOL)faceView:(id)view wantsToDismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (BOOL)faceViewComplicationIsEmptyForSlot:(id)slot;
 - (BOOL)shouldLoadLiveFaceAtNextScreenOff;
-- (CGRect)launchRectForComplicationApplicationIdentifier:(id)a3;
+- (CGRect)launchRectForComplicationApplicationIdentifier:(id)identifier;
 - (NSString)description;
-- (NTKFaceViewController)initWithFace:(id)a3 configuration:(id)a4;
+- (NTKFaceViewController)initWithFace:(id)face configuration:(id)configuration;
 - (NTKFaceViewControllerDelegate)delegate;
 - (NTKFaceViewControllerStatusBarDelegate)statusBarDelegate;
-- (double)editViewDarkeningViewAlphaForEditMode:(int64_t)a3;
-- (id)PPTDescriptionForComplication:(id)a3;
+- (double)editViewDarkeningViewAlphaForEditMode:(int64_t)mode;
+- (id)PPTDescriptionForComplication:(id)complication;
 - (id)PPTUniqueComplicationsToSlotForCurrentFace;
 - (id)_dailySnapshot;
-- (id)_newNormalDisplayForComplicationController:(id)a3 slot:(id)a4;
-- (id)_overrideDateForWake:(BOOL)a3;
-- (id)_selectedVisibleSlotForEditMode:(int64_t)a3;
+- (id)_newNormalDisplayForComplicationController:(id)controller slot:(id)slot;
+- (id)_overrideDateForWake:(BOOL)wake;
+- (id)_selectedVisibleSlotForEditMode:(int64_t)mode;
 - (id)acquireComplicationTouchCancellationAssertion;
 - (id)currentClockComplicationCountSet;
-- (id)faceViewComplicationAppIdentifierForSlot:(id)a3;
-- (id)faceViewComplicationControllerForSlot:(id)a3;
+- (id)faceViewComplicationAppIdentifierForSlot:(id)slot;
+- (id)faceViewComplicationControllerForSlot:(id)slot;
 - (id)faceViewWantsFaceColorPalette;
 - (id)removeStatusBarViewController;
-- (id)tritium_complicationControllerForSlot:(id)a3;
-- (int64_t)faceViewComplicationFamilyForSlot:(id)a3;
+- (id)tritium_complicationControllerForSlot:(id)slot;
+- (int64_t)faceViewComplicationFamilyForSlot:(id)slot;
 - (unint64_t)effectiveWidgetContentOverride;
 - (void)PPTCleanupLastComplication;
-- (void)PPTCreateComplication:(id)a3 forSlot:(id)a4 synchronously:(BOOL)a5;
+- (void)PPTCreateComplication:(id)complication forSlot:(id)slot synchronously:(BOOL)synchronously;
 - (void)PPTPrepareComplicationTest;
-- (void)_applyConfigurationWithDuration:(double)a3;
+- (void)_applyConfigurationWithDuration:(double)duration;
 - (void)_clearFaceLaunchRect;
 - (void)_clearLastTappedComplication;
-- (void)_configureDarkeningViewAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_ensureDetachedComplication:(id)a3;
-- (void)_ensureNormalComplication:(id)a3 forSlot:(id)a4;
+- (void)_configureDarkeningViewAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_ensureDetachedComplication:(id)complication;
+- (void)_ensureNormalComplication:(id)complication forSlot:(id)slot;
 - (void)_ensureNotLive;
 - (void)_ensurePauseDate;
-- (void)_faceSnapshotDidChange:(id)a3;
+- (void)_faceSnapshotDidChange:(id)change;
 - (void)_handleDeviceLockChange;
 - (void)_handleStatusBarChange;
-- (void)_insertDetachedComplicationDisplay:(id)a3 controller:(id)a4 forSlot:(id)a5;
-- (void)_insertNormalComplicationDisplay:(id)a3 controller:(id)a4 forSlot:(id)a5;
+- (void)_insertDetachedComplicationDisplay:(id)display controller:(id)controller forSlot:(id)slot;
+- (void)_insertNormalComplicationDisplay:(id)display controller:(id)controller forSlot:(id)slot;
 - (void)_loadInitialComplicationVisibilityFromFace;
-- (void)_removeDetachedComplicationForSlot:(id)a3 andDisconnectDisplay:(BOOL)a4;
-- (void)_removeNormalComplicationForSlot:(id)a3 andDisconnectDisplay:(BOOL)a4;
-- (void)_setDataMode:(int64_t)a3 becomeLiveOnUnfreeze:(BOOL)a4;
+- (void)_removeDetachedComplicationForSlot:(id)slot andDisconnectDisplay:(BOOL)display;
+- (void)_removeNormalComplicationForSlot:(id)slot andDisconnectDisplay:(BOOL)display;
+- (void)_setDataMode:(int64_t)mode becomeLiveOnUnfreeze:(BOOL)unfreeze;
 - (void)_setFaceViewResourceDirectoryFromFace;
 - (void)_showStatusBarAfterWake;
 - (void)_updateInteractivityOfComplicationDisplays;
 - (void)_updateWidgetComplicationSnapshotState;
 - (void)_validateIfCurrentSelectedColorStillExists;
-- (void)_wrapperViewTapped:(id)a3;
+- (void)_wrapperViewTapped:(id)tapped;
 - (void)cleanupAfterZoom;
-- (void)configureWithDuration:(double)a3 block:(id)a4;
+- (void)configureWithDuration:(double)duration block:(id)block;
 - (void)dealloc;
-- (void)enumerateComplicationControllersAndDisplaysWithBlock:(id)a3;
-- (void)faceConfigurationDidChange:(id)a3;
-- (void)faceResourceDirectoryDidChange:(id)a3;
+- (void)enumerateComplicationControllersAndDisplaysWithBlock:(id)block;
+- (void)faceConfigurationDidChange:(id)change;
+- (void)faceResourceDirectoryDidChange:(id)change;
 - (void)faceViewDidChangePaddingForStatusBar;
-- (void)faceViewDidChangeStatusBarOverrideColor:(BOOL)a3;
+- (void)faceViewDidChangeStatusBarOverrideColor:(BOOL)color;
 - (void)faceViewDidChangeWantsStatusBarIconShadow;
-- (void)faceViewDidScrubToDate:(id)a3 forced:(BOOL)a4;
-- (void)faceViewRequestedLaunchFromRect:(CGRect)a3;
-- (void)faceViewUpdatedResourceDirectory:(id)a3 wantsToTransferOwnership:(BOOL)a4;
+- (void)faceViewDidScrubToDate:(id)date forced:(BOOL)forced;
+- (void)faceViewRequestedLaunchFromRect:(CGRect)rect;
+- (void)faceViewUpdatedResourceDirectory:(id)directory wantsToTransferOwnership:(BOOL)ownership;
 - (void)faceViewWantsComplicationKeylineFramesReloaded;
-- (void)faceViewWantsStatusBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)faceViewWantsToPresentViewController:(id)a3;
+- (void)faceViewWantsStatusBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)faceViewWantsToPresentViewController:(id)controller;
 - (void)faceViewWantsUnadornedSnapshotViewRemoved;
 - (void)faceViewWillEnterTimeTravel;
 - (void)faceViewWillExitTimeTravel;
-- (void)finalizeForSnapshottingWithMetrics:(id)a3 completion:(id)a4;
+- (void)finalizeForSnapshottingWithMetrics:(id)metrics completion:(id)completion;
 - (void)freeze;
-- (void)freezeAfterDelay:(double)a3;
-- (void)getComplicationController:(id *)a3 andDisplay:(id *)a4 forSlot:(id)a5;
+- (void)freezeAfterDelay:(double)delay;
+- (void)getComplicationController:(id *)controller andDisplay:(id *)display forSlot:(id)slot;
 - (void)handleOrdinaryScreenWake;
 - (void)handleWristRaiseScreenWake;
-- (void)hideFaceEditingUIAnimated:(BOOL)a3 destination:(unint64_t)a4 completion:(id)a5;
+- (void)hideFaceEditingUIAnimated:(BOOL)animated destination:(unint64_t)destination completion:(id)completion;
 - (void)loadView;
 - (void)prepareForOrb;
 - (void)prepareForSnapshotting;
-- (void)prepareToZoomWithIconView:(id)a3 minDiameter:(double)a4 maxDiameter:(double)a5;
-- (void)setDataMode:(int64_t)a3;
-- (void)setIgnoreSnapshotImages:(BOOL)a3;
-- (void)setPauseDate:(id)a3;
-- (void)setShouldShowSnapshot:(BOOL)a3;
-- (void)setShouldUseSampleTemplate:(BOOL)a3;
-- (void)setShowContentForUnadornedSnapshot:(BOOL)a3;
-- (void)setShowsCanonicalContent:(BOOL)a3;
-- (void)setShowsLockedUI:(BOOL)a3;
-- (void)setSnapshotWidgetsAsPlaceholders:(BOOL)a3;
-- (void)setStatusBarViewController:(id)a3;
-- (void)setSuppressFaceViewInteraction:(BOOL)a3;
-- (void)setSupressesNonSnapshotUI:(BOOL)a3;
-- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)a3;
-- (void)setZoomFraction:(double)a3 iconDiameter:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)prepareToZoomWithIconView:(id)view minDiameter:(double)diameter maxDiameter:(double)maxDiameter;
+- (void)setDataMode:(int64_t)mode;
+- (void)setIgnoreSnapshotImages:(BOOL)images;
+- (void)setPauseDate:(id)date;
+- (void)setShouldShowSnapshot:(BOOL)snapshot;
+- (void)setShouldUseSampleTemplate:(BOOL)template;
+- (void)setShowContentForUnadornedSnapshot:(BOOL)snapshot;
+- (void)setShowsCanonicalContent:(BOOL)content;
+- (void)setShowsLockedUI:(BOOL)i;
+- (void)setSnapshotWidgetsAsPlaceholders:(BOOL)placeholders;
+- (void)setStatusBarViewController:(id)controller;
+- (void)setSuppressFaceViewInteraction:(BOOL)interaction;
+- (void)setSupressesNonSnapshotUI:(BOOL)i;
+- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)snapshot;
+- (void)setZoomFraction:(double)fraction iconDiameter:(double)diameter;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unfreeze;
 - (void)viewDidLayoutSubviews;
 @end
@@ -111,23 +111,23 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && NTKConfigureFaceDefaultsChangedNotification_onceToken != -1)
+  if (objc_opt_class() == self && NTKConfigureFaceDefaultsChangedNotification_onceToken != -1)
   {
     NTKConfigureFaceDefaultsChangedNotification_cold_1();
   }
 }
 
-- (NTKFaceViewController)initWithFace:(id)a3 configuration:(id)a4
+- (NTKFaceViewController)initWithFace:(id)face configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = NTKFaceViewController;
   v9 = [(NTKFaceViewController *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_face, a3);
+    objc_storeStrong(&v9->_face, face);
     [(NTKFace *)v10->_face addObserver:v10];
     [(NTKFace *)v10->_face performComplicationTypeMigration];
     v10->_normalComplicationControllersLock._os_unfair_lock_opaque = 0;
@@ -140,28 +140,28 @@
     detachedComplicationControllers = v10->_detachedComplicationControllers;
     v10->_detachedComplicationControllers = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel__handleDeviceLockChange name:*MEMORY[0x277CBB690] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleDeviceLockChange name:*MEMORY[0x277CBB690] object:0];
 
-    v16 = [MEMORY[0x277CBBB70] sharedMonitor];
-    [v16 addSensitiveUIObserver:v10];
+    mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+    [mEMORY[0x277CBBB70] addSensitiveUIObserver:v10];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v10 selector:sel__faceSnapshotDidChange_ name:@"NTKFaceSnapshotChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__faceSnapshotDidChange_ name:@"NTKFaceSnapshotChangedNotification" object:0];
 
-    v18 = [v7 device];
-    v10->_deviceLocked = [v18 isLocked];
+    device = [faceCopy device];
+    v10->_deviceLocked = [device isLocked];
 
     v22 = *(MEMORY[0x277CBF398] + 16);
     v23 = *MEMORY[0x277CBF398];
     v10->_faceLaunchRect.origin = *MEMORY[0x277CBF398];
     v10->_faceLaunchRect.size = v22;
-    v19 = [(NTKFaceViewController *)v10 view];
+    view = [(NTKFaceViewController *)v10 view];
     [(NTKFaceViewController *)v10 setDefinesPresentationContext:1];
     v10->_dataMode = 1;
-    [(NTKFaceViewController *)v10 configureWithDuration:v8 block:0.0];
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v10 selector:sel__faceColorEditOptionsChanged name:@"NTKColorEditOptionsChangedNotificationName" object:v10->_face];
+    [(NTKFaceViewController *)v10 configureWithDuration:configurationCopy block:0.0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v10 selector:sel__faceColorEditOptionsChanged name:@"NTKColorEditOptionsChangedNotificationName" object:v10->_face];
 
     v10->_editingFromFaceContainerFrame.origin = v23;
     v10->_editingFromFaceContainerFrame.size = v22;
@@ -173,21 +173,21 @@
 - (void)dealloc
 {
   [(NTKFace *)self->_face removeObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB690] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB690] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"NTKFaceSnapshotChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"NTKFaceSnapshotChangedNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"NTKColorEditOptionsChangedNotificationName" object:self->_face];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"NTKColorEditOptionsChangedNotificationName" object:self->_face];
 
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:&__block_literal_global_19];
-  v6 = [(NTKFaceViewController *)self removeStatusBarViewController];
-  if (v6)
+  removeStatusBarViewController = [(NTKFaceViewController *)self removeStatusBarViewController];
+  if (removeStatusBarViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBarDelegate);
-    [WeakRetained makeStatusBarViewControllerAvailableForReuse:v6];
+    [WeakRetained makeStatusBarViewControllerAvailableForReuse:removeStatusBarViewController];
   }
 
   v8.receiver = self;
@@ -198,15 +198,15 @@
 - (void)loadView
 {
   v6 = objc_opt_new();
-  v3 = [(NTKFace *)self->_face faceView];
-  v4 = v3;
-  if (!v3)
+  faceView = [(NTKFace *)self->_face faceView];
+  v4 = faceView;
+  if (!faceView)
   {
     v4 = [NTKFaceView newFaceViewForFace:0];
   }
 
   objc_storeStrong(&self->_faceView, v4);
-  if (!v3)
+  if (!faceView)
   {
   }
 
@@ -217,8 +217,8 @@
   [(NTKFaceViewController *)self _loadInitialComplicationVisibilityFromFace];
   if ([(NTKFaceViewController *)self _shouldHideFaceUI])
   {
-    v5 = [v6 layer];
-    [v5 setAllowsGroupOpacity:1];
+    layer = [v6 layer];
+    [layer setAllowsGroupOpacity:1];
   }
 
   [(NTKFaceView *)self->_faceView bounds];
@@ -227,10 +227,10 @@
   [(NTKFaceViewController *)self setView:v6];
 }
 
-- (id)tritium_complicationControllerForSlot:(id)a3
+- (id)tritium_complicationControllerForSlot:(id)slot
 {
   v5 = 0;
-  [(NTKFaceViewController *)self getComplicationController:&v5 andDisplay:0 forSlot:a3];
+  [(NTKFaceViewController *)self getComplicationController:&v5 andDisplay:0 forSlot:slot];
   v3 = v5;
 
   return v3;
@@ -238,26 +238,26 @@
 
 - (BOOL)_shouldHideFaceUI
 {
-  v2 = [objc_opt_class() uiSensitivity];
-  v3 = [MEMORY[0x277CBBB70] sharedMonitor];
-  LOBYTE(v2) = [v3 shouldHideForSensitivity:v2];
+  uiSensitivity = [objc_opt_class() uiSensitivity];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  LOBYTE(uiSensitivity) = [mEMORY[0x277CBBB70] shouldHideForSensitivity:uiSensitivity];
 
-  return v2;
+  return uiSensitivity;
 }
 
-- (void)setStatusBarViewController:(id)a3
+- (void)setStatusBarViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   statusBarViewController = self->_statusBarViewController;
-  if (statusBarViewController != v5)
+  if (statusBarViewController != controllerCopy)
   {
-    v14 = v5;
+    v14 = controllerCopy;
     [(NTKClockStatusBarViewController *)statusBarViewController willMoveToParentViewController:0];
-    v7 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
-    [v7 removeFromSuperview];
+    view = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+    [view removeFromSuperview];
 
     [(NTKClockStatusBarViewController *)self->_statusBarViewController removeFromParentViewController];
-    objc_storeStrong(&self->_statusBarViewController, a3);
+    objc_storeStrong(&self->_statusBarViewController, controller);
     v8 = self->_statusBarViewController;
     [(NTKFaceView *)self->_faceView horizontalPaddingForStatusBar];
     [(NTKClockStatusBarViewController *)v8 setHorizontalPadding:?];
@@ -267,8 +267,8 @@
     if (objc_opt_respondsToSelector())
     {
       v10 = self->_statusBarViewController;
-      v11 = [(NTKFaceView *)self->_faceView overrideColorForStatusBar];
-      [(NTKClockStatusBarViewController *)v10 setOverrideColor:v11];
+      overrideColorForStatusBar = [(NTKFaceView *)self->_faceView overrideColorForStatusBar];
+      [(NTKClockStatusBarViewController *)v10 setOverrideColor:overrideColorForStatusBar];
     }
 
     [(NTKFaceViewController *)self _handleStatusBarChange];
@@ -278,12 +278,12 @@
     }
 
     [(NTKFaceViewController *)self addChildViewController:self->_statusBarViewController];
-    v12 = [(NTKFaceViewController *)self view];
-    v13 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
-    [v12 addSubview:v13];
+    view2 = [(NTKFaceViewController *)self view];
+    view3 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+    [view2 addSubview:view3];
 
     [(NTKClockStatusBarViewController *)self->_statusBarViewController didMoveToParentViewController:self];
-    v5 = v14;
+    controllerCopy = v14;
   }
 }
 
@@ -293,8 +293,8 @@
   if (statusBarViewController)
   {
     [(NTKClockStatusBarViewController *)statusBarViewController willMoveToParentViewController:0];
-    v4 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
-    [v4 removeFromSuperview];
+    view = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+    [view removeFromSuperview];
 
     [(NTKClockStatusBarViewController *)self->_statusBarViewController removeFromParentViewController];
     v5 = self->_statusBarViewController;
@@ -323,7 +323,7 @@
   [(NTKFaceView *)faceView setFrozen:1];
 }
 
-- (void)freezeAfterDelay:(double)a3
+- (void)freezeAfterDelay:(double)delay
 {
   delayedFreezeBlock = self->_delayedFreezeBlock;
   if (delayedFreezeBlock)
@@ -340,7 +340,7 @@
     v9[2] = __42__NTKFaceViewController_freezeAfterDelay___block_invoke;
     v9[3] = &unk_27877F2D8;
     v9[4] = self;
-    v7 = [(NTKDelayedBlock *)v6 initWithDelay:v9 action:a3];
+    v7 = [(NTKDelayedBlock *)v6 initWithDelay:v9 action:delay];
     v8 = self->_delayedFreezeBlock;
     self->_delayedFreezeBlock = v7;
   }
@@ -369,11 +369,11 @@
   [(NTKFaceView *)faceView prepareForOrb];
 }
 
-- (void)setShowsLockedUI:(BOOL)a3
+- (void)setShowsLockedUI:(BOOL)i
 {
-  if (self->_showsLockedUI != a3)
+  if (self->_showsLockedUI != i)
   {
-    self->_showsLockedUI = a3;
+    self->_showsLockedUI = i;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
@@ -381,49 +381,49 @@
 - (void)_handleDeviceLockChange
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFace *)self->_face device];
-  v4 = [v3 isLocked];
+  device = [(NTKFace *)self->_face device];
+  isLocked = [device isLocked];
 
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NTKFace *)self->_face device];
-    v7 = [v6 isLocked];
+    device2 = [(NTKFace *)self->_face device];
+    isLocked2 = [device2 isLocked];
     deviceLocked = self->_deviceLocked;
     v9[0] = 67109376;
-    v9[1] = v7;
+    v9[1] = isLocked2;
     v10 = 1024;
     v11 = deviceLocked;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "FaceViewController received CLKDeviceLockStateChangedNotification locked?%i _deviceLocked?%i", v9, 0xEu);
   }
 
-  if (self->_deviceLocked != v4)
+  if (self->_deviceLocked != isLocked)
   {
-    self->_deviceLocked = v4;
+    self->_deviceLocked = isLocked;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)_faceSnapshotDidChange:(id)a3
+- (void)_faceSnapshotDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [(NTKFaceViewController *)self face];
-  v6 = [v5 dailySnapshotKey];
-  v7 = [v4 isEqual:v6];
+  object = [change object];
+  face = [(NTKFaceViewController *)self face];
+  dailySnapshotKey = [face dailySnapshotKey];
+  v7 = [object isEqual:dailySnapshotKey];
 
-  if ((v7 & 1) != 0 || [v5 wantsUnadornedSnapshot] && (objc_msgSend(v5, "unadornedSnapshotKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v4, "isEqual:", v11), v11, v12))
+  if ((v7 & 1) != 0 || [face wantsUnadornedSnapshot] && (objc_msgSend(face, "unadornedSnapshotKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(object, "isEqual:", v11), v11, v12))
   {
-    v8 = [(NTKFaceViewController *)self faceView];
-    v9 = [v8 editing];
+    faceView = [(NTKFaceViewController *)self faceView];
+    editing = [faceView editing];
 
-    if ((v9 & 1) == 0)
+    if ((editing & 1) == 0)
     {
       v10 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v5;
+        v14 = face;
         _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "FVC reloading snapshot for face %@", &v13, 0xCu);
       }
 
@@ -434,8 +434,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v16 = [(NTKFaceViewController *)self view];
-  [v16 bounds];
+  view = [(NTKFaceViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -451,71 +451,71 @@
   statusBarViewController = self->_statusBarViewController;
   if (statusBarViewController)
   {
-    v13 = [(NTKClockStatusBarViewController *)statusBarViewController view];
-    [v13 ntk_setBoundsAndPositionFromFrame:{v4, v6, v8, v10}];
-    [v16 bringSubviewToFront:v13];
+    view2 = [(NTKClockStatusBarViewController *)statusBarViewController view];
+    [view2 ntk_setBoundsAndPositionFromFrame:{v4, v6, v8, v10}];
+    [view bringSubviewToFront:view2];
   }
 
   editView = self->_editView;
-  v15 = v16;
+  v15 = view;
   if (editView)
   {
     [(NTKFaceEditView *)editView setFrame:v4, v6, v8, v10];
-    [v16 bringSubviewToFront:self->_editView];
-    v15 = v16;
+    [view bringSubviewToFront:self->_editView];
+    v15 = view;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKFaceViewController;
-  [(NTKFaceViewController *)&v5 traitCollectionDidChange:a3];
+  [(NTKFaceViewController *)&v5 traitCollectionDidChange:change];
   [(NTKFaceView *)self->_faceView setNeedsLayout];
-  v4 = [(NTKFaceViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(NTKFaceViewController *)self view];
+  [view setNeedsLayout];
 
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:&__block_literal_global_35];
 }
 
 - (void)prepareForSnapshotting
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(NTKFaceViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(NTKFaceViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   faceView = self->_faceView;
 
   [(NTKFaceView *)faceView _prepareForSnapshotting];
 }
 
-- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)a3
+- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)snapshot
 {
-  if (self->_widgetHostPriorityTransientSnapshot != a3)
+  if (self->_widgetHostPriorityTransientSnapshot != snapshot)
   {
-    self->_widgetHostPriorityTransientSnapshot = a3;
+    self->_widgetHostPriorityTransientSnapshot = snapshot;
     [(NTKFaceView *)self->_faceView setWidgetHostPriorityTransientSnapshot:?];
   }
 }
 
-- (void)finalizeForSnapshottingWithMetrics:(id)a3 completion:(id)a4
+- (void)finalizeForSnapshottingWithMetrics:(id)metrics completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  completionCopy = completion;
   v8 = self->_faceView;
   if (v8)
   {
-    v9 = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
+    effectiveWidgetContentOverride = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __71__NTKFaceViewController_finalizeForSnapshottingWithMetrics_completion___block_invoke_2;
     v28[3] = &__block_descriptor_40_e56_v24__0__NSString_8__NTKComplicationDisplayWrapperView_16l;
-    v28[4] = v9;
+    v28[4] = effectiveWidgetContentOverride;
     [(NTKFaceView *)v8 enumerateComplicationDisplayWrappersWithBlock:v28];
-    if (v6)
+    if (metricsCopy)
     {
       v27 = 0;
-      v10 = [v6 childTaskNamed:@"Widgets" error:&v27];
+      v10 = [metricsCopy childTaskNamed:@"Widgets" error:&v27];
       v11 = v27;
       if (!v10)
       {
@@ -536,11 +536,11 @@
     v22[1] = 3221225472;
     v22[2] = __71__NTKFaceViewController_finalizeForSnapshottingWithMetrics_completion___block_invoke_44;
     v22[3] = &unk_27877EAC8;
-    v23 = v6;
+    v23 = metricsCopy;
     v24 = v10;
     v25 = v8;
-    v26 = v7;
-    v21 = v7;
+    v26 = completionCopy;
+    v21 = completionCopy;
     v20 = v10;
     [(NTKFaceView *)v25 ensureWidgetContentWithMetrics:v20 timeout:v22 completion:5.0];
   }
@@ -551,8 +551,8 @@
     block[1] = 3221225472;
     block[2] = __71__NTKFaceViewController_finalizeForSnapshottingWithMetrics_completion___block_invoke;
     block[3] = &unk_27877E960;
-    v30 = v7;
-    v19 = v7;
+    v30 = completionCopy;
+    v19 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v20 = v30;
   }
@@ -652,25 +652,25 @@ void __71__NTKFaceViewController_finalizeForSnapshottingWithMetrics_completion__
   return v6;
 }
 
-- (void)getComplicationController:(id *)a3 andDisplay:(id *)a4 forSlot:(id)a5
+- (void)getComplicationController:(id *)controller andDisplay:(id *)display forSlot:(id)slot
 {
-  v8 = a5;
-  if (a3)
+  slotCopy = slot;
+  if (controller)
   {
     os_unfair_lock_lock(&self->_normalComplicationControllersLock);
-    *a3 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:v8];
+    *controller = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:slotCopy];
     os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
   }
 
-  if (a4)
+  if (display)
   {
-    *a4 = [(NTKFaceView *)self->_faceView normalComplicationDisplayWrapperForSlot:v8];
+    *display = [(NTKFaceView *)self->_faceView normalComplicationDisplayWrapperForSlot:slotCopy];
   }
 }
 
-- (void)enumerateComplicationControllersAndDisplaysWithBlock:(id)a3
+- (void)enumerateComplicationControllersAndDisplaysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_normalComplicationControllersLock);
   v5 = [(NSMutableDictionary *)self->_normalComplicationControllers copy];
   os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
@@ -678,7 +678,7 @@ void __71__NTKFaceViewController_finalizeForSnapshottingWithMetrics_completion__
   v11[1] = 3221225472;
   v11[2] = __78__NTKFaceViewController_enumerateComplicationControllersAndDisplaysWithBlock___block_invoke;
   v11[3] = &unk_27877F320;
-  v6 = v4;
+  v6 = blockCopy;
   v11[4] = self;
   v12 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v11];
@@ -717,12 +717,12 @@ void __78__NTKFaceViewController_enumerateComplicationControllersAndDisplaysWith
 
 - (void)_updateWidgetComplicationSnapshotState
 {
-  v3 = [(NTKFaceViewController *)self _shouldWidgetComplicationsShowSnapshots];
+  _shouldWidgetComplicationsShowSnapshots = [(NTKFaceViewController *)self _shouldWidgetComplicationsShowSnapshots];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__NTKFaceViewController__updateWidgetComplicationSnapshotState__block_invoke;
   v4[3] = &__block_descriptor_33_e86_v32__0__NSString_8__NTKComplicationController_16__NTKComplicationDisplayWrapperView_24l;
-  v5 = v3;
+  v5 = _shouldWidgetComplicationsShowSnapshots;
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v4];
 }
 
@@ -752,67 +752,67 @@ uint64_t __63__NTKFaceViewController__updateWidgetComplicationSnapshotState__blo
   return v3 & 1;
 }
 
-- (void)configureWithDuration:(double)a3 block:(id)a4
+- (void)configureWithDuration:(double)duration block:(id)block
 {
   self->_readyToApplyConfiguration = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, self);
+    (*(block + 2))(block, self);
   }
 
   self->_readyToApplyConfiguration = 1;
 
-  [(NTKFaceViewController *)self _applyConfigurationWithDuration:a3];
+  [(NTKFaceViewController *)self _applyConfigurationWithDuration:duration];
 }
 
-- (void)setShouldShowSnapshot:(BOOL)a3
+- (void)setShouldShowSnapshot:(BOOL)snapshot
 {
-  if (self->_shouldShowSnapshot != a3)
+  if (self->_shouldShowSnapshot != snapshot)
   {
-    self->_shouldShowSnapshot = a3;
+    self->_shouldShowSnapshot = snapshot;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)setSupressesNonSnapshotUI:(BOOL)a3
+- (void)setSupressesNonSnapshotUI:(BOOL)i
 {
-  if (self->_supressesNonSnapshotUI != a3)
+  if (self->_supressesNonSnapshotUI != i)
   {
-    self->_supressesNonSnapshotUI = a3;
+    self->_supressesNonSnapshotUI = i;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)setShowsCanonicalContent:(BOOL)a3
+- (void)setShowsCanonicalContent:(BOOL)content
 {
-  if (self->_showsCanonicalContent != a3)
+  if (self->_showsCanonicalContent != content)
   {
-    self->_showsCanonicalContent = a3;
+    self->_showsCanonicalContent = content;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)setShowContentForUnadornedSnapshot:(BOOL)a3
+- (void)setShowContentForUnadornedSnapshot:(BOOL)snapshot
 {
-  if (self->_showContentForUnadornedSnapshot != a3)
+  if (self->_showContentForUnadornedSnapshot != snapshot)
   {
-    self->_showContentForUnadornedSnapshot = a3;
+    self->_showContentForUnadornedSnapshot = snapshot;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)setIgnoreSnapshotImages:(BOOL)a3
+- (void)setIgnoreSnapshotImages:(BOOL)images
 {
-  if (self->_ignoreSnapshotImages != a3)
+  if (self->_ignoreSnapshotImages != images)
   {
-    self->_ignoreSnapshotImages = a3;
+    self->_ignoreSnapshotImages = images;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
   }
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
-  if (a3 == 1 && self->_frozen)
+  if (mode == 1 && self->_frozen)
   {
     v4 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -831,9 +831,9 @@ uint64_t __63__NTKFaceViewController__updateWidgetComplicationSnapshotState__blo
   }
 }
 
-- (void)setPauseDate:(id)a3
+- (void)setPauseDate:(id)date
 {
-  objc_storeStrong(&self->_pauseDate, a3);
+  objc_storeStrong(&self->_pauseDate, date);
   if (self->_dataMode == 2)
   {
 
@@ -861,7 +861,7 @@ uint64_t __63__NTKFaceViewController__updateWidgetComplicationSnapshotState__blo
   }
 }
 
-- (id)_overrideDateForWake:(BOOL)a3
+- (id)_overrideDateForWake:(BOOL)wake
 {
   v5 = NTKNilOrDateOverrideInDemoMode();
   dataMode = self->_dataMode;
@@ -871,7 +871,7 @@ uint64_t __63__NTKFaceViewController__updateWidgetComplicationSnapshotState__blo
     goto LABEL_6;
   }
 
-  if (dataMode == 2 && !a3)
+  if (dataMode == 2 && !wake)
   {
     [(NTKFaceViewController *)self _ensurePauseDate];
     v7 = self->_pauseDate;
@@ -893,28 +893,28 @@ LABEL_6:
   return v5;
 }
 
-- (void)_setDataMode:(int64_t)a3 becomeLiveOnUnfreeze:(BOOL)a4
+- (void)_setDataMode:(int64_t)mode becomeLiveOnUnfreeze:(BOOL)unfreeze
 {
-  v4 = a4;
+  unfreezeCopy = unfreeze;
   v15 = *MEMORY[0x277D85DE8];
   v7 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     face = self->_face;
     v9 = 134218498;
-    v10 = a3;
+    modeCopy = mode;
     v11 = 1024;
-    v12 = v4;
+    v12 = unfreezeCopy;
     v13 = 2112;
     v14 = face;
     _os_log_debug_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEBUG, "Set Data Mode: %ld, become live: %d, %@", &v9, 0x1Cu);
   }
 
-  self->_becomeLiveOnUnfreeze = v4;
-  if (self->_dataMode != a3)
+  self->_becomeLiveOnUnfreeze = unfreezeCopy;
+  if (self->_dataMode != mode)
   {
-    self->_dataMode = a3;
-    self->_hasGoneLive |= a3 != 3;
+    self->_dataMode = mode;
+    self->_hasGoneLive |= mode != 3;
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
     if (self->_dataMode == 1)
     {
@@ -923,7 +923,7 @@ LABEL_6:
   }
 }
 
-- (void)_applyConfigurationWithDuration:(double)a3
+- (void)_applyConfigurationWithDuration:(double)duration
 {
   v107 = *MEMORY[0x277D85DE8];
   if (!self->_readyToApplyConfiguration)
@@ -1003,30 +1003,30 @@ LABEL_6:
   faceView = self->_faceView;
   if (v5)
   {
-    v10 = [(NTKFaceView *)faceView switcherSnapshotView];
-    v11 = v10 == 0;
+    switcherSnapshotView = [(NTKFaceView *)faceView switcherSnapshotView];
+    v11 = switcherSnapshotView == 0;
 
     if (v11)
     {
       v12 = objc_alloc_init(MEMORY[0x277D755E8]);
       if (NTKDebugShowVisualIndicatorOnSnapshot())
       {
-        v13 = [v12 layer];
-        [v13 setBorderWidth:3.0];
+        layer = [v12 layer];
+        [layer setBorderWidth:3.0];
 
-        v14 = [MEMORY[0x277D75348] yellowColor];
-        v15 = v14;
-        v16 = [v14 CGColor];
-        v17 = [v12 layer];
-        [v17 setBorderColor:v16];
+        yellowColor = [MEMORY[0x277D75348] yellowColor];
+        v15 = yellowColor;
+        cGColor = [yellowColor CGColor];
+        layer2 = [v12 layer];
+        [layer2 setBorderColor:cGColor];
       }
 
       [(NTKFaceView *)self->_faceView setSwitcherSnapshotView:v12];
     }
 
-    v18 = [(NTKFaceView *)self->_faceView switcherSnapshotView];
+    switcherSnapshotView2 = [(NTKFaceView *)self->_faceView switcherSnapshotView];
     v19 = v67[2]();
-    [v18 setImage:v19];
+    [switcherSnapshotView2 setImage:v19];
 
     v20 = 0;
   }
@@ -1040,8 +1040,8 @@ LABEL_6:
       goto LABEL_21;
     }
 
-    v18 = v66[2]();
-    v20 = v18 != 0;
+    switcherSnapshotView2 = v66[2]();
+    v20 = switcherSnapshotView2 != 0;
   }
 
 LABEL_21:
@@ -1050,7 +1050,7 @@ LABEL_21:
   {
     v22 = objc_opt_class();
     v23 = self->_faceView;
-    v24 = [(NTKFaceView *)v23 supportsUnadornedSnapshot];
+    supportsUnadornedSnapshot = [(NTKFaceView *)v23 supportsUnadornedSnapshot];
     hasRemovedUnadornedSnapshot = self->_hasRemovedUnadornedSnapshot;
     wantsRemoveUnadorned = self->_wantsRemoveUnadorned;
     *buf = 138413570;
@@ -1060,7 +1060,7 @@ LABEL_21:
     v99 = 2048;
     v100 = v5;
     v101 = 2048;
-    v102 = v24;
+    v102 = supportsUnadornedSnapshot;
     v103 = 2048;
     v104 = hasRemovedUnadornedSnapshot;
     v105 = 2048;
@@ -1072,22 +1072,22 @@ LABEL_21:
   {
     if (!self->_hasUsedUnadornedSnapshot)
     {
-      v27 = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
-      v28 = v27 == 0;
+      unadornedSnapshotView = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
+      v28 = unadornedSnapshotView == 0;
 
       if (v28)
       {
         v29 = objc_alloc_init(MEMORY[0x277D755E8]);
         if (NTKDebugShowVisualIndicatorOnSnapshot())
         {
-          v30 = [v29 layer];
-          [v30 setBorderWidth:3.0];
+          layer3 = [v29 layer];
+          [layer3 setBorderWidth:3.0];
 
-          v31 = [MEMORY[0x277D75348] redColor];
-          v32 = v31;
-          v33 = [v31 CGColor];
-          v34 = [v29 layer];
-          [v34 setBorderColor:v33];
+          redColor = [MEMORY[0x277D75348] redColor];
+          v32 = redColor;
+          cGColor2 = [redColor CGColor];
+          layer4 = [v29 layer];
+          [layer4 setBorderColor:cGColor2];
         }
 
         [(NTKFaceView *)self->_faceView setUnadornedSnapshotView:v29];
@@ -1097,9 +1097,9 @@ LABEL_21:
       }
     }
 
-    v35 = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
+    unadornedSnapshotView2 = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
     v36 = v66[2]();
-    [v35 setImage:v36];
+    [unadornedSnapshotView2 setImage:v36];
   }
 
   else
@@ -1119,8 +1119,8 @@ LABEL_21:
 
     if (v37 || v38 || !v5 && v40)
     {
-      v41 = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
-      [v41 removeFromSuperview];
+      unadornedSnapshotView3 = [(NTKFaceView *)self->_faceView unadornedSnapshotView];
+      [unadornedSnapshotView3 removeFromSuperview];
 
       [(NTKFaceView *)self->_faceView setUnadornedSnapshotView:0];
       [(NTKFaceView *)self->_faceView loadContentToReplaceUnadornedSnapshot];
@@ -1159,7 +1159,7 @@ LABEL_21:
   }
 
   v45 = [(NTKFaceViewController *)self _overrideDateForWake:0];
-  [(NTKFaceView *)self->_faceView setOverrideDate:v45 duration:a3];
+  [(NTKFaceView *)self->_faceView setOverrideDate:v45 duration:duration];
   v65 = v45;
   v46 = self->_showsLockedUI || self->_deviceLocked;
   v47 = v46;
@@ -1180,13 +1180,13 @@ LABEL_21:
   v64 = v48;
   v80 = v64;
   [(NTKFace *)face enumerateComplicationSlotsWithBlock:v79];
-  v50 = [(NTKFaceView *)self->_faceView _detachedComplicationDisplays];
+  _detachedComplicationDisplays = [(NTKFaceView *)self->_faceView _detachedComplicationDisplays];
   v51 = objc_opt_new();
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v52 = v50;
+  v52 = _detachedComplicationDisplays;
   v53 = [v52 countByEnumeratingWithState:&v75 objects:v94 count:16];
   if (v53)
   {
@@ -1200,8 +1200,8 @@ LABEL_21:
           objc_enumerationMutation(v52);
         }
 
-        v56 = [*(*(&v75 + 1) + 8 * i) identifier];
-        [v51 addObject:v56];
+        identifier = [*(*(&v75 + 1) + 8 * i) identifier];
+        [v51 addObject:identifier];
       }
 
       v53 = [v52 countByEnumeratingWithState:&v75 objects:v94 count:16];
@@ -1211,8 +1211,8 @@ LABEL_21:
   }
 
   os_unfair_lock_lock(&self->_detachedComplicationControllersLock);
-  v57 = [(NSMutableDictionary *)self->_detachedComplicationControllers allKeys];
-  v58 = [v57 copy];
+  allKeys = [(NSMutableDictionary *)self->_detachedComplicationControllers allKeys];
+  v58 = [allKeys copy];
 
   os_unfair_lock_unlock(&self->_detachedComplicationControllersLock);
   v74 = 0u;
@@ -1385,46 +1385,46 @@ void __57__NTKFaceViewController__applyConfigurationWithDuration___block_invoke_
   [v8 setShowsLockedUI:*(a1 + 40)];
 }
 
-- (void)hideFaceEditingUIAnimated:(BOOL)a3 destination:(unint64_t)a4 completion:(id)a5
+- (void)hideFaceEditingUIAnimated:(BOOL)animated destination:(unint64_t)destination completion:(id)completion
 {
-  v6 = a3;
+  animatedCopy = animated;
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(11, "NTKLoggingDomainFaceLibraryViewController");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11[0] = 67109634;
-    v11[1] = v6;
+    v11[1] = animatedCopy;
     v12 = 2048;
-    v13 = a4;
+    destinationCopy = destination;
     v14 = 2112;
     v15 = v10;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "#events hideFaceEditingUIAnimated: %d, destination: %lu, for %@", v11, 0x1Cu);
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(NTKFaceViewController *)self presentedViewController];
+  presentedViewController = [(NTKFaceViewController *)self presentedViewController];
 
-  if (v3 && (-[NTKFaceViewController faceView](self, "faceView"), v4 = objc_claimAutoreleasedReturnValue(), -[NTKFaceViewController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 presentedViewControllerShouldBecomeFirstResponder:v5], v5, v4, v6))
+  if (presentedViewController && (-[NTKFaceViewController faceView](self, "faceView"), v4 = objc_claimAutoreleasedReturnValue(), -[NTKFaceViewController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 presentedViewControllerShouldBecomeFirstResponder:v5], v5, v4, v6))
   {
-    v7 = [(NTKFaceViewController *)self presentedViewController];
-    v8 = [v7 canBecomeFirstResponder];
+    presentedViewController2 = [(NTKFaceViewController *)self presentedViewController];
+    canBecomeFirstResponder = [presentedViewController2 canBecomeFirstResponder];
 
-    return v8;
+    return canBecomeFirstResponder;
   }
 
   else
   {
-    v10 = [(NTKFaceViewController *)self faceView];
-    v11 = [v10 canBecomeFirstResponder];
+    faceView = [(NTKFaceViewController *)self faceView];
+    canBecomeFirstResponder2 = [faceView canBecomeFirstResponder];
 
-    if (v11)
+    if (canBecomeFirstResponder2)
     {
       return 1;
     }
@@ -1440,22 +1440,22 @@ void __57__NTKFaceViewController__applyConfigurationWithDuration___block_invoke_
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(NTKFaceViewController *)self presentedViewController];
+  presentedViewController = [(NTKFaceViewController *)self presentedViewController];
 
-  if (v3 && (-[NTKFaceViewController faceView](self, "faceView"), v4 = objc_claimAutoreleasedReturnValue(), -[NTKFaceViewController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 presentedViewControllerShouldBecomeFirstResponder:v5], v5, v4, v6))
+  if (presentedViewController && (-[NTKFaceViewController faceView](self, "faceView"), v4 = objc_claimAutoreleasedReturnValue(), -[NTKFaceViewController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 presentedViewControllerShouldBecomeFirstResponder:v5], v5, v4, v6))
   {
-    v7 = [(NTKFaceViewController *)self presentedViewController];
-    v8 = [v7 becomeFirstResponder];
+    presentedViewController2 = [(NTKFaceViewController *)self presentedViewController];
+    becomeFirstResponder = [presentedViewController2 becomeFirstResponder];
 
-    return v8;
+    return becomeFirstResponder;
   }
 
   else
   {
-    v10 = [(NTKFaceViewController *)self faceView];
-    v11 = [v10 becomeFirstResponder];
+    faceView = [(NTKFaceViewController *)self faceView];
+    becomeFirstResponder2 = [faceView becomeFirstResponder];
 
-    if (v11)
+    if (becomeFirstResponder2)
     {
       return 1;
     }
@@ -1471,8 +1471,8 @@ void __57__NTKFaceViewController__applyConfigurationWithDuration___block_invoke_
 
 - (void)_loadInitialComplicationVisibilityFromFace
 {
-  v3 = [(NTKFaceView *)self->_faceView _complicationSlotsHiddenByCurrentConfiguration];
-  if ([v3 count])
+  _complicationSlotsHiddenByCurrentConfiguration = [(NTKFaceView *)self->_faceView _complicationSlotsHiddenByCurrentConfiguration];
+  if ([_complicationSlotsHiddenByCurrentConfiguration count])
   {
     face = self->_face;
     v5[0] = MEMORY[0x277D85DD0];
@@ -1480,7 +1480,7 @@ void __57__NTKFaceViewController__applyConfigurationWithDuration___block_invoke_
     v5[2] = __67__NTKFaceViewController__loadInitialComplicationVisibilityFromFace__block_invoke;
     v5[3] = &unk_27877F498;
     v5[4] = self;
-    v6 = v3;
+    v6 = _complicationSlotsHiddenByCurrentConfiguration;
     [(NTKFace *)face enumerateComplicationSlotsWithBlock:v5];
   }
 }
@@ -1496,21 +1496,21 @@ void __67__NTKFaceViewController__loadInitialComplicationVisibilityFromFace__blo
 - (void)_setFaceViewResourceDirectoryFromFace
 {
   faceView = self->_faceView;
-  v3 = [(NTKFace *)self->_face resourceDirectory];
-  [(NTKFaceView *)faceView setResourceDirectory:v3];
+  resourceDirectory = [(NTKFace *)self->_face resourceDirectory];
+  [(NTKFaceView *)faceView setResourceDirectory:resourceDirectory];
 }
 
-- (void)faceViewWantsStatusBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)faceViewWantsStatusBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
   statusBarViewController = self->_statusBarViewController;
-  if (a3)
+  if (hidden)
   {
-    [(NTKClockStatusBarViewController *)statusBarViewController hideAnimated:a4];
+    [(NTKClockStatusBarViewController *)statusBarViewController hideAnimated:animated];
   }
 
   else
   {
-    [(NTKClockStatusBarViewController *)statusBarViewController showAnimated:a4];
+    [(NTKClockStatusBarViewController *)statusBarViewController showAnimated:animated];
   }
 }
 
@@ -1519,9 +1519,9 @@ void __67__NTKFaceViewController__loadInitialComplicationVisibilityFromFace__blo
   if (objc_opt_respondsToSelector())
   {
     statusBarViewController = self->_statusBarViewController;
-    v4 = [(NTKFaceView *)self->_faceView wantsStatusBarIconShadow];
+    wantsStatusBarIconShadow = [(NTKFaceView *)self->_faceView wantsStatusBarIconShadow];
 
-    [(NTKClockStatusBarViewController *)statusBarViewController setWantsIconShadow:v4];
+    [(NTKClockStatusBarViewController *)statusBarViewController setWantsIconShadow:wantsStatusBarIconShadow];
   }
 }
 
@@ -1539,21 +1539,21 @@ void __67__NTKFaceViewController__loadInitialComplicationVisibilityFromFace__blo
   }
 }
 
-- (void)faceViewDidChangeStatusBarOverrideColor:(BOOL)a3
+- (void)faceViewDidChangeStatusBarOverrideColor:(BOOL)color
 {
   if (objc_opt_respondsToSelector())
   {
     statusBarViewController = self->_statusBarViewController;
-    v5 = [(NTKFaceView *)self->_faceView overrideColorForStatusBar];
-    [(NTKClockStatusBarViewController *)statusBarViewController setOverrideColor:v5];
+    overrideColorForStatusBar = [(NTKFaceView *)self->_faceView overrideColorForStatusBar];
+    [(NTKClockStatusBarViewController *)statusBarViewController setOverrideColor:overrideColorForStatusBar];
   }
 }
 
 - (void)faceViewWantsComplicationKeylineFramesReloaded
 {
   v3 = objc_opt_class();
-  v4 = [(NTKFace *)self->_face device];
-  v5 = [v3 fixedComplicationSlotsForDevice:v4];
+  device = [(NTKFace *)self->_face device];
+  v5 = [v3 fixedComplicationSlotsForDevice:device];
 
   face = self->_face;
   v8[0] = MEMORY[0x277D85DD0];
@@ -1561,7 +1561,7 @@ void __67__NTKFaceViewController__loadInitialComplicationVisibilityFromFace__blo
   v8[2] = __71__NTKFaceViewController_faceViewWantsComplicationKeylineFramesReloaded__block_invoke;
   v8[3] = &unk_27877F498;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   [(NTKFace *)face enumerateVisibleComplicationSlotsForCurrentConfigurationWithBlock:v8];
 }
@@ -1599,11 +1599,11 @@ void __52__NTKFaceViewController_faceViewWillEnterTimeTravel__block_invoke(uint6
   }
 }
 
-- (void)faceViewDidScrubToDate:(id)a3 forced:(BOOL)a4
+- (void)faceViewDidScrubToDate:(id)date forced:(BOOL)forced
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = NTKRoundDateDownToNearestMinute();
-  if (a4)
+  if (forced)
   {
     objc_storeStrong(&self->_scrubDate, v7);
 LABEL_3:
@@ -1611,7 +1611,7 @@ LABEL_3:
     v13[1] = 3221225472;
     v13[2] = __55__NTKFaceViewController_faceViewDidScrubToDate_forced___block_invoke_2;
     v13[3] = &unk_27877F4C0;
-    v14 = v6;
+    v14 = dateCopy;
     [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v13];
 
     goto LABEL_6;
@@ -1664,8 +1664,8 @@ void __55__NTKFaceViewController_faceViewDidScrubToDate_forced___block_invoke_2(
 
 - (void)faceViewWillExitTimeTravel
 {
-  v3 = [(NTKFaceViewController *)self faceView];
-  -[NTKFaceViewController faceViewWantsStatusBarHidden:animated:](self, "faceViewWantsStatusBarHidden:animated:", [v3 wantsStatusBarHidden], 1);
+  faceView = [(NTKFaceViewController *)self faceView];
+  -[NTKFaceViewController faceViewWantsStatusBarHidden:animated:](self, "faceViewWantsStatusBarHidden:animated:", [faceView wantsStatusBarHidden], 1);
 
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:&__block_literal_global_85];
 }
@@ -1688,93 +1688,93 @@ void __51__NTKFaceViewController_faceViewWillExitTimeTravel__block_invoke(uint64
   }
 }
 
-- (BOOL)faceViewComplicationIsEmptyForSlot:(id)a3
+- (BOOL)faceViewComplicationIsEmptyForSlot:(id)slot
 {
-  v3 = [(NTKFace *)self->_face complicationForSlot:a3];
+  v3 = [(NTKFace *)self->_face complicationForSlot:slot];
   v4 = [v3 complicationType] == 0;
 
   return v4;
 }
 
-- (void)faceViewUpdatedResourceDirectory:(id)a3 wantsToTransferOwnership:(BOOL)a4
+- (void)faceViewUpdatedResourceDirectory:(id)directory wantsToTransferOwnership:(BOOL)ownership
 {
   face = self->_face;
-  if (a4)
+  if (ownership)
   {
-    [(NTKFace *)face setResourceDirectoryByTransferringOwnership:a3];
+    [(NTKFace *)face setResourceDirectoryByTransferringOwnership:directory];
   }
 
   else
   {
-    [(NTKFace *)face setResourceDirectory:a3];
+    [(NTKFace *)face setResourceDirectory:directory];
   }
 }
 
-- (void)faceViewWantsToPresentViewController:(id)a3
+- (void)faceViewWantsToPresentViewController:(id)controller
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setModalPresentationStyle:6];
+  controllerCopy = controller;
+  [controllerCopy setModalPresentationStyle:6];
   v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = controllerCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "Presenting view controller %@", &v6, 0xCu);
   }
 
-  [(NTKFaceViewController *)self presentViewController:v4 animated:1 completion:0];
+  [(NTKFaceViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (BOOL)faceView:(id)a3 wantsToDismissPresentedViewControllerAnimated:(BOOL)a4 completion:(id)a5
+- (BOOL)faceView:(id)view wantsToDismissPresentedViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NTKFaceViewController *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(NTKFaceViewController *)self presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    [(NTKFaceViewController *)self dismissViewControllerAnimated:v5 completion:v7];
+    [(NTKFaceViewController *)self dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
-  return v8 != 0;
+  return presentedViewController != 0;
 }
 
-- (id)faceViewComplicationAppIdentifierForSlot:(id)a3
+- (id)faceViewComplicationAppIdentifierForSlot:(id)slot
 {
-  v3 = [(NTKFace *)self->_face complicationForSlot:a3];
+  v3 = [(NTKFace *)self->_face complicationForSlot:slot];
   if ([v3 complicationType])
   {
-    v4 = [v3 appIdentifier];
+    appIdentifier = [v3 appIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    appIdentifier = 0;
   }
 
-  return v4;
+  return appIdentifier;
 }
 
-- (int64_t)faceViewComplicationFamilyForSlot:(id)a3
+- (int64_t)faceViewComplicationFamilyForSlot:(id)slot
 {
   face = self->_face;
-  v5 = a3;
-  v6 = [(NTKFaceViewController *)self faceViewComplicationForSlot:v5];
-  v7 = [(NTKFace *)face preferredComplicationFamilyForComplication:v6 withSlot:v5];
+  slotCopy = slot;
+  v6 = [(NTKFaceViewController *)self faceViewComplicationForSlot:slotCopy];
+  v7 = [(NTKFace *)face preferredComplicationFamilyForComplication:v6 withSlot:slotCopy];
 
   return v7;
 }
 
-- (id)faceViewComplicationControllerForSlot:(id)a3
+- (id)faceViewComplicationControllerForSlot:(id)slot
 {
   v5 = 0;
-  [(NTKFaceViewController *)self getComplicationController:&v5 andDisplay:0 forSlot:a3];
+  [(NTKFaceViewController *)self getComplicationController:&v5 andDisplay:0 forSlot:slot];
   v3 = v5;
 
   return v3;
@@ -1785,9 +1785,9 @@ void __51__NTKFaceViewController_faceViewWillExitTimeTravel__block_invoke(uint64
   if ([(NTKFace *)self->_face supportsPigmentEditOption])
   {
     v2 = [NTKFaceColorPalette alloc];
-    v3 = [objc_opt_class() pigmentFaceDomain];
+    pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [(NTKFaceColorPalette *)v2 initWithDomainName:v3 inBundle:v4];
+    v5 = [(NTKFaceColorPalette *)v2 initWithDomainName:pigmentFaceDomain inBundle:v4];
   }
 
   else
@@ -1800,18 +1800,18 @@ void __51__NTKFaceViewController_faceViewWillExitTimeTravel__block_invoke(uint64
 
 - (id)PPTUniqueComplicationsToSlotForCurrentFace
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   face = self->_face;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__block_invoke;
   v11[3] = &unk_27877F4E8;
   v11[4] = self;
-  v12 = v4;
-  v6 = v3;
+  v12 = dictionary2;
+  v6 = dictionary;
   v13 = v6;
-  v7 = v4;
+  v7 = dictionary2;
   [(NTKFace *)face enumerateComplicationSlotsWithBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -1877,42 +1877,42 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
   [v2 synchronize];
 }
 
-- (void)PPTCreateComplication:(id)a3 forSlot:(id)a4 synchronously:(BOOL)a5
+- (void)PPTCreateComplication:(id)complication forSlot:(id)slot synchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
+  synchronouslyCopy = synchronously;
+  complicationCopy = complication;
+  slotCopy = slot;
   [(NTKFace *)self->_face faceStyle];
-  [(NTKFace *)self->_face preferredComplicationFamilyForComplication:v15 withSlot:v8];
-  [v15 complicationType];
+  [(NTKFace *)self->_face preferredComplicationFamilyForComplication:complicationCopy withSlot:slotCopy];
+  [complicationCopy complicationType];
   kdebug_trace();
-  v9 = [(NTKFaceViewController *)self dataMode];
-  if (v5)
+  dataMode = [(NTKFaceViewController *)self dataMode];
+  if (synchronouslyCopy)
   {
     [(NTKFaceViewController *)self setDataMode:3];
   }
 
-  v10 = [objc_opt_class() _controllerForComplication:v15 face:self->_face slot:v8];
+  v10 = [objc_opt_class() _controllerForComplication:complicationCopy face:self->_face slot:slotCopy];
   pptComplicationController = self->_pptComplicationController;
   self->_pptComplicationController = v10;
 
-  v12 = [(NTKFaceViewController *)self _newNormalDisplayForComplicationController:self->_pptComplicationController slot:v8];
+  v12 = [(NTKFaceViewController *)self _newNormalDisplayForComplicationController:self->_pptComplicationController slot:slotCopy];
   pptComplicationDisplay = self->_pptComplicationDisplay;
   self->_pptComplicationDisplay = v12;
 
-  v14 = [(NTKFaceViewController *)self view];
-  [v14 addSubview:self->_pptComplicationDisplay];
+  view = [(NTKFaceViewController *)self view];
+  [view addSubview:self->_pptComplicationDisplay];
 
   [MEMORY[0x277CD9FF0] flush];
   [MEMORY[0x277CD9FF0] synchronize];
-  if (v5)
+  if (synchronouslyCopy)
   {
-    [(NTKFaceViewController *)self setDataMode:v9];
+    [(NTKFaceViewController *)self setDataMode:dataMode];
   }
 
   [(NTKFace *)self->_face faceStyle];
-  [(NTKFace *)self->_face preferredComplicationFamilyForComplication:v15 withSlot:v8];
-  [v15 complicationType];
+  [(NTKFace *)self->_face preferredComplicationFamilyForComplication:complicationCopy withSlot:slotCopy];
+  [complicationCopy complicationType];
   kdebug_trace();
 }
 
@@ -1926,30 +1926,30 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
   pptComplicationController = self->_pptComplicationController;
   self->_pptComplicationController = 0;
 
-  v5 = [(NTKFaceViewController *)self view];
-  [v5 addSubview:self->_faceView];
+  view = [(NTKFaceViewController *)self view];
+  [view addSubview:self->_faceView];
 
-  v6 = [(NTKFaceViewController *)self view];
-  [v6 setNeedsLayout];
+  view2 = [(NTKFaceViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
-- (id)PPTDescriptionForComplication:(id)a3
+- (id)PPTDescriptionForComplication:(id)complication
 {
-  v3 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(a3, "complicationType")}];
+  v3 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(complication, "complicationType")}];
   v4 = NTKComplicationTypeDescription(v3);
 
   return v4;
 }
 
-- (void)faceConfigurationDidChange:(id)a3
+- (void)faceConfigurationDidChange:(id)change
 {
-  if (self->_face == a3)
+  if (self->_face == change)
   {
     colorPickerConfig = self->_colorPickerConfig;
     self->_colorPickerConfig = 0;
-    v6 = a3;
+    changeCopy = change;
 
-    [(NTKFaceView *)self->_faceView populateFaceViewEditOptionsFromFace:v6];
+    [(NTKFaceView *)self->_faceView populateFaceViewEditOptionsFromFace:changeCopy];
     [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
     [(NTKFaceViewController *)self _clearFaceLaunchRect];
 
@@ -1957,52 +1957,52 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
   }
 }
 
-- (void)faceResourceDirectoryDidChange:(id)a3
+- (void)faceResourceDirectoryDidChange:(id)change
 {
   [(NTKFaceViewController *)self _setFaceViewResourceDirectoryFromFace];
 
   [(NTKFaceViewController *)self _applyConfigurationWithDuration:0.0];
 }
 
-- (void)prepareToZoomWithIconView:(id)a3 minDiameter:(double)a4 maxDiameter:(double)a5
+- (void)prepareToZoomWithIconView:(id)view minDiameter:(double)diameter maxDiameter:(double)maxDiameter
 {
   kdebug_trace();
-  self->_zoomingMinDiameter = a4;
-  self->_zoomingMaxDiameter = a5;
-  v17 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
-  v8 = [(NTKFaceViewController *)self view];
+  self->_zoomingMinDiameter = diameter;
+  self->_zoomingMaxDiameter = maxDiameter;
+  view = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+  view2 = [(NTKFaceViewController *)self view];
   [(NTKFaceView *)self->_faceView center];
-  [v8 convertPoint:v17 toView:?];
+  [view2 convertPoint:view toView:?];
   v10 = v9;
   v12 = v11;
 
-  [v17 bounds];
+  [view bounds];
   v13 = v10 / CGRectGetWidth(v19);
-  [v17 bounds];
+  [view bounds];
   v14 = v12 / CGRectGetHeight(v20);
-  v15 = [v17 layer];
-  [v15 setAnchorPoint:{v13, v14}];
+  layer = [view layer];
+  [layer setAnchorPoint:{v13, v14}];
 
   [(NTKFaceView *)self->_faceView prepareToZoom];
-  v16 = [(NTKFaceViewController *)self view];
-  [v16 layoutIfNeeded];
+  view3 = [(NTKFaceViewController *)self view];
+  [view3 layoutIfNeeded];
 
   [(NTKFaceView *)self->_faceView layoutIfNeeded];
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:&__block_literal_global_92];
 }
 
-- (void)setZoomFraction:(double)a3 iconDiameter:(double)a4
+- (void)setZoomFraction:(double)fraction iconDiameter:(double)diameter
 {
   kdebug_trace();
   zoomingMaxDiameter = self->_zoomingMaxDiameter;
   memset(&v10, 0, sizeof(v10));
-  CGAffineTransformMakeScale(&v10, a4 / zoomingMaxDiameter, a4 / zoomingMaxDiameter);
+  CGAffineTransformMakeScale(&v10, diameter / zoomingMaxDiameter, diameter / zoomingMaxDiameter);
   v9 = v10;
   [(NTKFaceView *)self->_faceView setTransform:&v9];
   v8 = v10;
-  v7 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+  view = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
   v9 = v8;
-  [v7 setTransform:&v9];
+  [view setTransform:&v9];
 
   CLKInterpolateBetweenFloatsClipped();
   [(NTKFaceView *)self->_faceView setAlpha:?];
@@ -2010,18 +2010,18 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
 
 - (void)cleanupAfterZoom
 {
-  v3 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
-  v4 = [v3 layer];
-  [v4 setAnchorPoint:{0.5, 0.5}];
+  view = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+  layer = [view layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v5 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
+  view2 = [(NTKClockStatusBarViewController *)self->_statusBarViewController view];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   v12 = *MEMORY[0x277CBF2C0];
   v11 = v12;
   v13 = v10;
   v14 = *(MEMORY[0x277CBF2C0] + 32);
   v9 = v14;
-  [v5 setTransform:&v12];
+  [view2 setTransform:&v12];
 
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:&__block_literal_global_94];
   [(NTKFaceView *)self->_faceView cleanupAfterZoom];
@@ -2031,19 +2031,19 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
   v13 = v10;
   v14 = v9;
   [(NTKFaceView *)faceView setTransform:&v12];
-  v7 = [(NTKFaceViewController *)self view];
-  [v7 bounds];
+  view3 = [(NTKFaceViewController *)self view];
+  [view3 bounds];
   [(NTKFaceView *)self->_faceView setFrame:?];
 
-  v8 = [(NTKFaceViewController *)self view];
-  [v8 setNeedsLayout];
+  view4 = [(NTKFaceViewController *)self view];
+  [view4 setNeedsLayout];
 
   kdebug_trace();
 }
 
-- (BOOL)_wheelChangedWithEvent:(id)a3
+- (BOOL)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   editView = self->_editView;
   if (editView)
   {
@@ -2055,7 +2055,7 @@ void __67__NTKFaceViewController_PPTUniqueComplicationsToSlotForCurrentFace__blo
     editView = self->_faceView;
 LABEL_7:
     v8 = editView;
-    v7 = [v8 _wheelChangedWithEvent:v4];
+    v7 = [v8 _wheelChangedWithEvent:eventCopy];
 
     goto LABEL_8;
   }
@@ -2066,7 +2066,7 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)_handlePhysicalButton:(unint64_t)a3 event:(unint64_t)a4
+- (BOOL)_handlePhysicalButton:(unint64_t)button event:(unint64_t)event
 {
   editView = self->_editView;
   if (!editView)
@@ -2075,7 +2075,7 @@ LABEL_8:
   }
 
   v7 = editView;
-  v8 = [v7 _handlePhysicalButton:a3 event:a4];
+  v8 = [v7 _handlePhysicalButton:button event:event];
 
   return v8;
 }
@@ -2107,12 +2107,12 @@ LABEL_8:
   v4 = v3;
   v18 = v4;
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v17];
-  v5 = [(NTKFaceView *)self->_faceView _additionalPrelaunchApplicationIdentifiers];
+  _additionalPrelaunchApplicationIdentifiers = [(NTKFaceView *)self->_faceView _additionalPrelaunchApplicationIdentifiers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v6 = [_additionalPrelaunchApplicationIdentifiers countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2124,7 +2124,7 @@ LABEL_8:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_additionalPrelaunchApplicationIdentifiers);
         }
 
         v10 = [objc_alloc(MEMORY[0x277CBB6F0]) initWithApplicationIdentifier:*(*(&v13 + 1) + 8 * v9) countOnFace:1 isWidget:1];
@@ -2134,7 +2134,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [_additionalPrelaunchApplicationIdentifiers countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
@@ -2163,48 +2163,48 @@ void __57__NTKFaceViewController_currentClockComplicationCountSet__block_invoke(
 {
   if (![(NTKFaceView *)self->_faceView wantsStatusBarHidden])
   {
-    v3 = [(NTKFaceViewController *)self statusBarViewController];
-    v4 = [v3 view];
-    [v4 setAlpha:1.0];
+    statusBarViewController = [(NTKFaceViewController *)self statusBarViewController];
+    view = [statusBarViewController view];
+    [view setAlpha:1.0];
 
-    v5 = [(NTKFaceViewController *)self statusBarViewController];
-    [v5 showAnimated:0];
+    statusBarViewController2 = [(NTKFaceViewController *)self statusBarViewController];
+    [statusBarViewController2 showAnimated:0];
 
-    v6 = [(NTKFaceViewController *)self statusBarViewController];
-    [v6 prepareToAnimate];
+    statusBarViewController3 = [(NTKFaceViewController *)self statusBarViewController];
+    [statusBarViewController3 prepareToAnimate];
 
-    v7 = [(NTKFaceViewController *)self statusBarViewController];
-    [v7 animate];
+    statusBarViewController4 = [(NTKFaceViewController *)self statusBarViewController];
+    [statusBarViewController4 animate];
   }
 }
 
 - (void)_handleStatusBarChange
 {
-  v3 = [(NTKClockStatusBarViewController *)self->_statusBarViewController isDisplayingStatus];
+  isDisplayingStatus = [(NTKClockStatusBarViewController *)self->_statusBarViewController isDisplayingStatus];
   faceView = self->_faceView;
 
-  [(NTKFaceView *)faceView prepareForStatusChange:v3];
+  [(NTKFaceView *)faceView prepareForStatusChange:isDisplayingStatus];
 }
 
-- (void)_ensureNormalComplication:(id)a3 forSlot:(id)a4
+- (void)_ensureNormalComplication:(id)complication forSlot:(id)slot
 {
-  v15 = a3;
-  v6 = a4;
+  complicationCopy = complication;
+  slotCopy = slot;
   os_unfair_lock_lock(&self->_normalComplicationControllersLock);
-  v7 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:slotCopy];
   os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
-  if (!v7 || ([v7 complication], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqual:", v15), v8, (v9 & 1) == 0))
+  if (!v7 || ([v7 complication], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqual:", complicationCopy), v8, (v9 & 1) == 0))
   {
-    [(NTKFaceViewController *)self _removeNormalComplicationForSlot:v6 andDisconnectDisplay:1];
-    v10 = [objc_opt_class() _controllerForComplication:v15 face:self->_face slot:v6];
-    v11 = [(NTKFaceViewController *)self _newNormalDisplayForComplicationController:v10 slot:v6];
-    [(NTKFaceViewController *)self _insertNormalComplicationDisplay:v11 controller:v10 forSlot:v6];
-    v12 = [(NTKFaceView *)self->_faceView device];
-    if ((NTKShowGossamerUI(v12) & 1) == 0)
+    [(NTKFaceViewController *)self _removeNormalComplicationForSlot:slotCopy andDisconnectDisplay:1];
+    v10 = [objc_opt_class() _controllerForComplication:complicationCopy face:self->_face slot:slotCopy];
+    v11 = [(NTKFaceViewController *)self _newNormalDisplayForComplicationController:v10 slot:slotCopy];
+    [(NTKFaceViewController *)self _insertNormalComplicationDisplay:v11 controller:v10 forSlot:slotCopy];
+    device = [(NTKFaceView *)self->_faceView device];
+    if ((NTKShowGossamerUI(device) & 1) == 0)
     {
-      v13 = [(NTKFaceView *)self->_faceView _legacyShouldSwapGraphicCircularComplicationColors];
+      _legacyShouldSwapGraphicCircularComplicationColors = [(NTKFaceView *)self->_faceView _legacyShouldSwapGraphicCircularComplicationColors];
 
-      if (!v13)
+      if (!_legacyShouldSwapGraphicCircularComplicationColors)
       {
 LABEL_7:
 
@@ -2212,8 +2212,8 @@ LABEL_7:
       }
 
       faceView = self->_faceView;
-      v12 = [v11 display];
-      [(NTKFaceView *)faceView _configureComplicationView:v12 forSlot:v6];
+      device = [v11 display];
+      [(NTKFaceView *)faceView _configureComplicationView:device forSlot:slotCopy];
     }
 
     goto LABEL_7;
@@ -2222,94 +2222,94 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_ensureDetachedComplication:(id)a3
+- (void)_ensureDetachedComplication:(id)complication
 {
-  v20 = a3;
-  v4 = [v20 identifier];
-  v5 = [v20 complication];
+  complicationCopy = complication;
+  identifier = [complicationCopy identifier];
+  complication = [complicationCopy complication];
   os_unfair_lock_lock(&self->_detachedComplicationControllersLock);
-  v6 = [(NSMutableDictionary *)self->_detachedComplicationControllers objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_detachedComplicationControllers objectForKey:identifier];
   os_unfair_lock_unlock(&self->_detachedComplicationControllersLock);
-  if (!v6 || ([v6 complication], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", v5), v7, (v8 & 1) == 0))
+  if (!v6 || ([v6 complication], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqual:", complication), v7, (v8 & 1) == 0))
   {
-    [(NTKFaceViewController *)self _removeDetachedComplicationForSlot:v4 andDisconnectDisplay:1];
-    v9 = [v20 family];
-    v10 = [(NTKFaceViewController *)self face];
-    v11 = [v10 device];
-    v12 = [NTKComplicationVariant defaultVariantForFamily:v9 device:v11];
+    [(NTKFaceViewController *)self _removeDetachedComplicationForSlot:identifier andDisconnectDisplay:1];
+    family = [complicationCopy family];
+    face = [(NTKFaceViewController *)self face];
+    device = [face device];
+    v12 = [NTKComplicationVariant defaultVariantForFamily:family device:device];
 
-    v13 = [(NTKFaceViewController *)self face];
-    v14 = [v13 device];
-    v15 = [NTKComplicationController controllerForComplication:v5 variant:v12 device:v14];
+    face2 = [(NTKFaceViewController *)self face];
+    device2 = [face2 device];
+    v15 = [NTKComplicationController controllerForComplication:complication variant:v12 device:device2];
 
     v16 = [NTKComplicationDisplayWrapperView alloc];
-    v17 = [v20 display];
-    v18 = -[NTKComplicationDisplayWrapperView initWithCustomTemplateDisplay:isDetachedDisplay:family:](v16, "initWithCustomTemplateDisplay:isDetachedDisplay:family:", v17, 1, [v20 family]);
+    display = [complicationCopy display];
+    v18 = -[NTKComplicationDisplayWrapperView initWithCustomTemplateDisplay:isDetachedDisplay:family:](v16, "initWithCustomTemplateDisplay:isDetachedDisplay:family:", display, 1, [complicationCopy family]);
 
-    [(NTKComplicationDisplayWrapperView *)v18 setComplicationSlotIdentifier:v4];
+    [(NTKComplicationDisplayWrapperView *)v18 setComplicationSlotIdentifier:identifier];
     v19 = objc_opt_new();
     [v19 setFaceDataMode:self->_dataMode];
     [v15 setPauseDate:self->_pauseDate];
     [v15 addDisplayWrapper:v18 withDisplayProperties:v19];
-    [(NTKFaceViewController *)self _insertDetachedComplicationDisplay:v18 controller:v15 forSlot:v4];
+    [(NTKFaceViewController *)self _insertDetachedComplicationDisplay:v18 controller:v15 forSlot:identifier];
   }
 }
 
-- (void)_insertDetachedComplicationDisplay:(id)a3 controller:(id)a4 forSlot:(id)a5
+- (void)_insertDetachedComplicationDisplay:(id)display controller:(id)controller forSlot:(id)slot
 {
-  v13 = a4;
+  controllerCopy = controller;
   faceView = self->_faceView;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NTKFaceView *)faceView detachedComplicationDisplayWrapperForSlot:v9];
-  [(NTKFaceView *)self->_faceView setDetachedComplicationDisplayWrapper:v10 forSlot:v9];
+  slotCopy = slot;
+  displayCopy = display;
+  v11 = [(NTKFaceView *)faceView detachedComplicationDisplayWrapperForSlot:slotCopy];
+  [(NTKFaceView *)self->_faceView setDetachedComplicationDisplayWrapper:displayCopy forSlot:slotCopy];
 
   os_unfair_lock_lock(&self->_detachedComplicationControllersLock);
-  [(NSMutableDictionary *)self->_detachedComplicationControllers setObject:v13 forKey:v9];
+  [(NSMutableDictionary *)self->_detachedComplicationControllers setObject:controllerCopy forKey:slotCopy];
   os_unfair_lock_unlock(&self->_detachedComplicationControllersLock);
-  v12 = [(NTKFaceView *)self->_faceView detachedComplicationDisplayWrapperForSlot:v9];
+  v12 = [(NTKFaceView *)self->_faceView detachedComplicationDisplayWrapperForSlot:slotCopy];
 
   if (v11 != v12)
   {
-    [v13 removeDisplayWrapper:v11];
+    [controllerCopy removeDisplayWrapper:v11];
   }
 }
 
-- (void)_insertNormalComplicationDisplay:(id)a3 controller:(id)a4 forSlot:(id)a5
+- (void)_insertNormalComplicationDisplay:(id)display controller:(id)controller forSlot:(id)slot
 {
-  v13 = a4;
+  controllerCopy = controller;
   faceView = self->_faceView;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NTKFaceView *)faceView normalComplicationDisplayWrapperForSlot:v9];
-  [(NTKFaceView *)self->_faceView setNormalComplicationDisplayWrapper:v10 forSlot:v9];
+  slotCopy = slot;
+  displayCopy = display;
+  v11 = [(NTKFaceView *)faceView normalComplicationDisplayWrapperForSlot:slotCopy];
+  [(NTKFaceView *)self->_faceView setNormalComplicationDisplayWrapper:displayCopy forSlot:slotCopy];
 
   os_unfair_lock_lock(&self->_normalComplicationControllersLock);
-  [(NSMutableDictionary *)self->_normalComplicationControllers setObject:v13 forKey:v9];
+  [(NSMutableDictionary *)self->_normalComplicationControllers setObject:controllerCopy forKey:slotCopy];
   os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
-  v12 = [(NTKFaceView *)self->_faceView normalComplicationDisplayWrapperForSlot:v9];
+  v12 = [(NTKFaceView *)self->_faceView normalComplicationDisplayWrapperForSlot:slotCopy];
 
   if (v11 != v12)
   {
-    [v13 removeDisplayWrapper:v11];
+    [controllerCopy removeDisplayWrapper:v11];
   }
 
   [(NTKFaceViewController *)self _updateInteractivityOfComplicationDisplays];
   [(NTKFaceViewController *)self _updateWidgetVisibilityOfComplicationDisplays];
 }
 
-- (void)_removeDetachedComplicationForSlot:(id)a3 andDisconnectDisplay:(BOOL)a4
+- (void)_removeDetachedComplicationForSlot:(id)slot andDisconnectDisplay:(BOOL)display
 {
-  v4 = a4;
-  v8 = a3;
+  displayCopy = display;
+  slotCopy = slot;
   v6 = [(NTKFaceView *)self->_faceView detachedComplicationDisplayWrapperForSlot:?];
   if (v6)
   {
-    [(NTKFaceView *)self->_faceView setDetachedComplicationDisplayWrapper:0 forSlot:v8];
+    [(NTKFaceView *)self->_faceView setDetachedComplicationDisplayWrapper:0 forSlot:slotCopy];
     os_unfair_lock_lock(&self->_detachedComplicationControllersLock);
-    v7 = [(NSMutableDictionary *)self->_detachedComplicationControllers objectForKey:v8];
+    v7 = [(NSMutableDictionary *)self->_detachedComplicationControllers objectForKey:slotCopy];
     os_unfair_lock_unlock(&self->_detachedComplicationControllersLock);
-    if (v4)
+    if (displayCopy)
     {
       [v7 removeDisplayWrapper:v6];
     }
@@ -2321,22 +2321,22 @@ LABEL_8:
   }
 
   os_unfair_lock_lock(&self->_detachedComplicationControllersLock);
-  [(NSMutableDictionary *)self->_detachedComplicationControllers removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_detachedComplicationControllers removeObjectForKey:slotCopy];
   os_unfair_lock_unlock(&self->_detachedComplicationControllersLock);
 }
 
-- (void)_removeNormalComplicationForSlot:(id)a3 andDisconnectDisplay:(BOOL)a4
+- (void)_removeNormalComplicationForSlot:(id)slot andDisconnectDisplay:(BOOL)display
 {
-  v4 = a4;
-  v8 = a3;
+  displayCopy = display;
+  slotCopy = slot;
   v6 = [(NTKFaceView *)self->_faceView normalComplicationDisplayWrapperForSlot:?];
   if (v6)
   {
-    [(NTKFaceView *)self->_faceView setNormalComplicationDisplayWrapper:0 forSlot:v8];
+    [(NTKFaceView *)self->_faceView setNormalComplicationDisplayWrapper:0 forSlot:slotCopy];
     os_unfair_lock_lock(&self->_normalComplicationControllersLock);
-    v7 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:v8];
+    v7 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKey:slotCopy];
     os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
-    if (v4)
+    if (displayCopy)
     {
       [v7 removeDisplayWrapper:v6];
     }
@@ -2348,27 +2348,27 @@ LABEL_8:
   }
 
   os_unfair_lock_lock(&self->_normalComplicationControllersLock);
-  [(NSMutableDictionary *)self->_normalComplicationControllers removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_normalComplicationControllers removeObjectForKey:slotCopy];
   os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
 }
 
-- (void)setSuppressFaceViewInteraction:(BOOL)a3
+- (void)setSuppressFaceViewInteraction:(BOOL)interaction
 {
-  if (self->_suppressFaceViewInteraction != a3)
+  if (self->_suppressFaceViewInteraction != interaction)
   {
-    self->_suppressFaceViewInteraction = a3;
-    [(NTKFaceView *)self->_faceView setUserInteractionEnabled:!a3];
+    self->_suppressFaceViewInteraction = interaction;
+    [(NTKFaceView *)self->_faceView setUserInteractionEnabled:!interaction];
   }
 }
 
 - (void)_updateInteractivityOfComplicationDisplays
 {
-  v3 = [(NTKFaceViewController *)self _shouldWidgetComplicationsEnableTap];
+  _shouldWidgetComplicationsEnableTap = [(NTKFaceViewController *)self _shouldWidgetComplicationsEnableTap];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__NTKFaceViewController__updateInteractivityOfComplicationDisplays__block_invoke;
   v4[3] = &__block_descriptor_33_e86_v32__0__NSString_8__NTKComplicationController_16__NTKComplicationDisplayWrapperView_24l;
-  v5 = v3;
+  v5 = _shouldWidgetComplicationsEnableTap;
   [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v4];
 }
 
@@ -2416,68 +2416,68 @@ void __67__NTKFaceViewController__updateInteractivityOfComplicationDisplays__blo
   }
 }
 
-- (id)_newNormalDisplayForComplicationController:(id)a3 slot:(id)a4
+- (id)_newNormalDisplayForComplicationController:(id)controller slot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _createNormalDisplayForComplicationController:v7 slot:v6 face:self->_face faceView:self->_faceView];
+  slotCopy = slot;
+  controllerCopy = controller;
+  v8 = [objc_opt_class() _createNormalDisplayForComplicationController:controllerCopy slot:slotCopy face:self->_face faceView:self->_faceView];
   [v8 addTarget:self action:sel__wrapperViewTapped_ forControlEvents:64];
-  [(NTKFaceView *)self->_faceView configureComplicationViewDisplayWrapper:v8 forSlot:v6];
+  [(NTKFaceView *)self->_faceView configureComplicationViewDisplayWrapper:v8 forSlot:slotCopy];
 
   v9 = objc_opt_new();
   [v9 setContentOverride:{-[NTKFaceViewController effectiveWidgetContentOverride](self, "effectiveWidgetContentOverride")}];
   [v9 setFaceDataMode:self->_dataMode];
   [v9 setWidgetShowsSnapshot:{-[NTKFaceViewController _shouldWidgetComplicationsShowSnapshots](self, "_shouldWidgetComplicationsShowSnapshots")}];
   [v9 setWidgetHostPriorityTransientSnapshot:{-[NTKFaceViewController widgetHostPriorityTransientSnapshot](self, "widgetHostPriorityTransientSnapshot")}];
-  [v7 setPauseDate:self->_pauseDate];
-  [v7 addDisplayWrapper:v8 withDisplayProperties:v9];
+  [controllerCopy setPauseDate:self->_pauseDate];
+  [controllerCopy addDisplayWrapper:v8 withDisplayProperties:v9];
 
   return v8;
 }
 
-+ (id)_createNormalDisplayForComplicationController:(id)a3 slot:(id)a4 face:(id)a5 faceView:(id)a6
++ (id)_createNormalDisplayForComplicationController:(id)controller slot:(id)slot face:(id)face faceView:(id)view
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 complication];
-  v14 = [v11 preferredComplicationFamilyForComplication:v13 withSlot:v10];
-  v15 = [v12 _filterProviderForSlot:v10];
-  if ([v9 wantsLegacyDisplay])
+  controllerCopy = controller;
+  slotCopy = slot;
+  faceCopy = face;
+  viewCopy = view;
+  complication = [controllerCopy complication];
+  v14 = [faceCopy preferredComplicationFamilyForComplication:complication withSlot:slotCopy];
+  v15 = [viewCopy _filterProviderForSlot:slotCopy];
+  if ([controllerCopy wantsLegacyDisplay])
   {
-    v16 = [v12 newLegacyComplicationViewForSlot:v10 family:v14 complication:v13];
+    v16 = [viewCopy newLegacyComplicationViewForSlot:slotCopy family:v14 complication:complication];
     if (!v16)
     {
       v17 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v31 = 138412802;
-        v32 = v13;
+        v32 = complication;
         v33 = 2112;
-        v34 = v10;
+        v34 = slotCopy;
         v35 = 2048;
         v36 = v14;
         _os_log_error_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_ERROR, "Missing legacy complication view for %@ slot %@ family %ld", &v31, 0x20u);
       }
     }
 
-    v18 = -[NTKComplicationDisplayWrapperView initWithLegacyDisplay:layoutOverride:]([NTKComplicationDisplayWrapperView alloc], "initWithLegacyDisplay:layoutOverride:", v16, [v12 legacyComplicationLayoutOverrideForSlot:v10 complication:v13]);
-    [v12 configureComplicationView:v16 forSlot:v10];
+    v18 = -[NTKComplicationDisplayWrapperView initWithLegacyDisplay:layoutOverride:]([NTKComplicationDisplayWrapperView alloc], "initWithLegacyDisplay:layoutOverride:", v16, [viewCopy legacyComplicationLayoutOverrideForSlot:slotCopy complication:complication]);
+    [viewCopy configureComplicationView:v16 forSlot:slotCopy];
   }
 
   else
   {
     v19 = objc_opt_class();
-    v20 = [v11 device];
-    v21 = [v19 richComplicationSlotsForDevice:v20];
-    v22 = [v21 containsObject:v10];
+    device = [faceCopy device];
+    v21 = [v19 richComplicationSlotsForDevice:device];
+    v22 = [v21 containsObject:slotCopy];
 
-    v23 = [v9 richComplicationDisplayViewClass];
-    if (v22 && (v24 = v23) != 0)
+    richComplicationDisplayViewClass = [controllerCopy richComplicationDisplayViewClass];
+    if (v22 && (v24 = richComplicationDisplayViewClass) != 0)
     {
-      if ([v23 instancesRespondToSelector:sel_initWithFamily_])
+      if ([richComplicationDisplayViewClass instancesRespondToSelector:sel_initWithFamily_])
       {
         v25 = [[v24 alloc] initWithFamily:v14];
       }
@@ -2489,7 +2489,7 @@ void __67__NTKFaceViewController__updateInteractivityOfComplicationDisplays__blo
 
       v27 = v25;
       [v25 setFilterProvider:v15];
-      [v12 configureComplicationView:v27 forSlot:v10];
+      [viewCopy configureComplicationView:v27 forSlot:slotCopy];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v29 = [NTKComplicationDisplayWrapperView alloc];
@@ -2519,18 +2519,18 @@ void __67__NTKFaceViewController__updateInteractivityOfComplicationDisplays__blo
   }
 
 LABEL_13:
-  [(NTKComplicationDisplayWrapperView *)v18 setComplicationSlotIdentifier:v10];
+  [(NTKComplicationDisplayWrapperView *)v18 setComplicationSlotIdentifier:slotCopy];
 
   return v18;
 }
 
-+ (id)_controllerForComplication:(id)a3 face:(id)a4 slot:(id)a5
++ (id)_controllerForComplication:(id)complication face:(id)face slot:(id)slot
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 complicationVariantForComplication:v7 withSlot:v9];
-  v11 = [v8 customComplicationControllerForComplication:v7 variant:v10 slot:v9];
+  complicationCopy = complication;
+  faceCopy = face;
+  slotCopy = slot;
+  v10 = [faceCopy complicationVariantForComplication:complicationCopy withSlot:slotCopy];
+  v11 = [faceCopy customComplicationControllerForComplication:complicationCopy variant:v10 slot:slotCopy];
 
   if (v11)
   {
@@ -2539,26 +2539,26 @@ LABEL_13:
 
   else
   {
-    v13 = [v8 device];
-    v12 = [NTKComplicationController controllerForComplication:v7 variant:v10 device:v13];
+    device = [faceCopy device];
+    v12 = [NTKComplicationController controllerForComplication:complicationCopy variant:v10 device:device];
   }
 
   return v12;
 }
 
-- (void)setShouldUseSampleTemplate:(BOOL)a3
+- (void)setShouldUseSampleTemplate:(BOOL)template
 {
-  if (self->_shouldUseSampleTemplate != a3)
+  if (self->_shouldUseSampleTemplate != template)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_shouldUseSampleTemplate = a3;
-    v6 = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
+    self->_shouldUseSampleTemplate = template;
+    effectiveWidgetContentOverride = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52__NTKFaceViewController_setShouldUseSampleTemplate___block_invoke;
     v7[3] = &__block_descriptor_40_e86_v32__0__NSString_8__NTKComplicationController_16__NTKComplicationDisplayWrapperView_24l;
-    v7[4] = v6;
+    v7[4] = effectiveWidgetContentOverride;
     [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v7];
   }
 }
@@ -2573,19 +2573,19 @@ uint64_t __52__NTKFaceViewController_setShouldUseSampleTemplate___block_invoke(u
   return [a3 updatePropertiesForDisplayWrapper:a4 withBlock:v5];
 }
 
-- (void)setSnapshotWidgetsAsPlaceholders:(BOOL)a3
+- (void)setSnapshotWidgetsAsPlaceholders:(BOOL)placeholders
 {
-  if (self->_snapshotWidgetsAsPlaceholders != a3)
+  if (self->_snapshotWidgetsAsPlaceholders != placeholders)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_snapshotWidgetsAsPlaceholders = a3;
-    v6 = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
+    self->_snapshotWidgetsAsPlaceholders = placeholders;
+    effectiveWidgetContentOverride = [(NTKFaceViewController *)self effectiveWidgetContentOverride];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__NTKFaceViewController_setSnapshotWidgetsAsPlaceholders___block_invoke;
     v7[3] = &__block_descriptor_40_e86_v32__0__NSString_8__NTKComplicationController_16__NTKComplicationDisplayWrapperView_24l;
-    v7[4] = v6;
+    v7[4] = effectiveWidgetContentOverride;
     [(NTKFaceViewController *)self enumerateComplicationControllersAndDisplaysWithBlock:v7];
   }
 }
@@ -2615,11 +2615,11 @@ uint64_t __58__NTKFaceViewController_setSnapshotWidgetsAsPlaceholders___block_in
   return 1;
 }
 
-- (id)_selectedVisibleSlotForEditMode:(int64_t)a3
+- (id)_selectedVisibleSlotForEditMode:(int64_t)mode
 {
   faceView = self->_faceView;
   v5 = [(NTKFace *)self->_face selectedSlotForEditMode:?];
-  v6 = [(NTKFaceView *)faceView closestVisibleSlotToSlot:v5 editMode:a3];
+  v6 = [(NTKFaceView *)faceView closestVisibleSlotToSlot:v5 editMode:mode];
 
   return v6;
 }
@@ -2633,8 +2633,8 @@ uint64_t __58__NTKFaceViewController_setSnapshotWidgetsAsPlaceholders___block_in
   aBlock[3] = &unk_27877F598;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(NTKFaceViewController *)self face];
-  v5 = [v4 slotsForCustomEditMode:10];
+  face = [(NTKFaceViewController *)self face];
+  v5 = [face slotsForCustomEditMode:10];
 
   if (v5)
   {
@@ -2691,22 +2691,22 @@ void __67__NTKFaceViewController__validateIfCurrentSelectedColorStillExists__blo
   }
 }
 
-- (void)_configureDarkeningViewAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureDarkeningViewAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKFaceViewController *)self editViewDarkeningViewAlphaForEditMode:a4];
-  [(NTKFaceViewController *)self editViewDarkeningViewAlphaForEditMode:a5];
+  [(NTKFaceViewController *)self editViewDarkeningViewAlphaForEditMode:mode];
+  [(NTKFaceViewController *)self editViewDarkeningViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   editView = self->_editView;
 
   [(NTKFaceEditView *)editView setDarkeningViewAlpha:?];
 }
 
-- (double)editViewDarkeningViewAlphaForEditMode:(int64_t)a3
+- (double)editViewDarkeningViewAlphaForEditMode:(int64_t)mode
 {
-  v5 = (a3 == 1) & [(NTKFaceView *)self->_faceView isEveryComplicationHidden];
-  v6 = [(NTKFaceView *)self->_faceView _editModesDisabledByCurrentConfiguration];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v8 = [v6 containsObject:v7];
+  v5 = (mode == 1) & [(NTKFaceView *)self->_faceView isEveryComplicationHidden];
+  _editModesDisabledByCurrentConfiguration = [(NTKFaceView *)self->_faceView _editModesDisabledByCurrentConfiguration];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+  v8 = [_editModesDisabledByCurrentConfiguration containsObject:v7];
 
   if (v8 | v5)
   {
@@ -2723,9 +2723,9 @@ void __67__NTKFaceViewController__validateIfCurrentSelectedColorStillExists__blo
   return v10;
 }
 
-- (CGRect)launchRectForComplicationApplicationIdentifier:(id)a3
+- (CGRect)launchRectForComplicationApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = &v32;
   v32 = 0;
   v33 = &v32;
@@ -2739,8 +2739,8 @@ void __67__NTKFaceViewController__validateIfCurrentSelectedColorStillExists__blo
     os_unfair_lock_lock(&self->_normalComplicationControllersLock);
     v7 = [(NSMutableDictionary *)self->_normalComplicationControllers objectForKeyedSubscript:self->_lastTappedSlotIdentifier];
     os_unfair_lock_unlock(&self->_normalComplicationControllersLock);
-    v8 = [v7 complicationApplicationIdentifier];
-    v9 = [v8 isEqualToString:v4];
+    complicationApplicationIdentifier = [v7 complicationApplicationIdentifier];
+    v9 = [complicationApplicationIdentifier isEqualToString:identifierCopy];
 
     if (v9)
     {
@@ -2774,9 +2774,9 @@ void __67__NTKFaceViewController__validateIfCurrentSelectedColorStillExists__blo
     v28[1] = 3221225472;
     v28[2] = __72__NTKFaceViewController_launchRectForComplicationApplicationIdentifier___block_invoke;
     v28[3] = &unk_27877F5C0;
-    v30 = self;
+    selfCopy = self;
     v31 = &v32;
-    v29 = v4;
+    v29 = identifierCopy;
     [v19 enumerateKeysAndObjectsUsingBlock:v28];
   }
 
@@ -2830,36 +2830,36 @@ void __72__NTKFaceViewController_launchRectForComplicationApplicationIdentifier_
   self->_faceLaunchRect.size = v2;
 }
 
-- (void)faceViewRequestedLaunchFromRect:(CGRect)a3
+- (void)faceViewRequestedLaunchFromRect:(CGRect)rect
 {
-  self->_faceLaunchRect = a3;
+  self->_faceLaunchRect = rect;
   lastTappedSlotIdentifier = self->_lastTappedSlotIdentifier;
   self->_lastTappedSlotIdentifier = 0;
 }
 
-- (void)_wrapperViewTapped:(id)a3
+- (void)_wrapperViewTapped:(id)tapped
 {
-  v4 = [a3 complicationSlotIdentifier];
+  complicationSlotIdentifier = [tapped complicationSlotIdentifier];
   lastTappedSlotIdentifier = self->_lastTappedSlotIdentifier;
-  self->_lastTappedSlotIdentifier = v4;
+  self->_lastTappedSlotIdentifier = complicationSlotIdentifier;
 
   [(NTKFaceViewController *)self _clearFaceLaunchRect];
 }
 
 - (BOOL)shouldLoadLiveFaceAtNextScreenOff
 {
-  v3 = [(NTKFaceViewController *)self _unadornedSnapshot];
-  if (v3)
+  _unadornedSnapshot = [(NTKFaceViewController *)self _unadornedSnapshot];
+  if (_unadornedSnapshot)
   {
-    v4 = [(NTKFaceView *)self->_faceView _wantsOpportunisticLiveFaceLoading];
+    _wantsOpportunisticLiveFaceLoading = [(NTKFaceView *)self->_faceView _wantsOpportunisticLiveFaceLoading];
   }
 
   else
   {
-    v4 = 0;
+    _wantsOpportunisticLiveFaceLoading = 0;
   }
 
-  return v4;
+  return _wantsOpportunisticLiveFaceLoading;
 }
 
 - (id)_dailySnapshot

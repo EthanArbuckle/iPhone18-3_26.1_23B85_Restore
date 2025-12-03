@@ -6,8 +6,8 @@
 
 + (BOOL)isPasswordBreachDetectionEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"PasswordBreachDetectionOn" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"PasswordBreachDetectionOn" defaultValue:1];
 
   return v3;
 }

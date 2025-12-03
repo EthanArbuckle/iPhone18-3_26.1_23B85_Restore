@@ -1,18 +1,18 @@
 @interface ATXPBUserNotificationDigestLoggingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventTypeAsString:(int)a3;
-- (id)initFromJSON:(id)a3;
+- (id)eventTypeAsString:(int)string;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotificationDigestLoggingEvent
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -45,40 +45,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)eventTypeAsString:(int)a3
+- (id)eventTypeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C25D8[a3];
+    v4 = off_1E80C25D8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ScheduledView"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ScheduledView"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CollapsedView"])
+  else if ([typeCopy isEqualToString:@"CollapsedView"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingView"])
+  else if ([typeCopy isEqualToString:@"UpcomingView"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([typeCopy isEqualToString:@"Total"])
   {
     v4 = 3;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotificationDigestLoggingEvent;
   v4 = [(ATXPBUserNotificationDigestLoggingEvent *)&v8 description];
-  v5 = [(ATXPBUserNotificationDigestLoggingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotificationDigestLoggingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   digest = self->_digest;
   if (digest)
   {
-    v5 = [(ATXPBUserNotificationDigest *)digest dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"digest"];
+    dictionaryRepresentation = [(ATXPBUserNotificationDigest *)digest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"digest"];
   }
 
   has = self->_has;
@@ -127,7 +127,7 @@
       v8 = off_1E80C25D8[eventType];
     }
 
-    [v3 setObject:v8 forKey:@"eventType"];
+    [dictionary setObject:v8 forKey:@"eventType"];
 
     has = self->_has;
   }
@@ -135,66 +135,66 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v9 forKey:@"timestamp"];
+    [dictionary setObject:v9 forKey:@"timestamp"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_digest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_digest)
   {
-    v6 = v4;
-    [v4 setDigest:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setDigest:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_eventType;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_eventType;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXPBUserNotificationDigest *)self->_digest copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXPBUserNotificationDigest *)self->_digest copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -215,16 +215,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   digest = self->_digest;
-  if (digest | *(v4 + 2))
+  if (digest | *(equalCopy + 2))
   {
     if (![(ATXPBUserNotificationDigest *)digest isEqual:?])
     {
@@ -234,23 +234,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_eventType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_eventType != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 1) == 0;
+  v6 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
@@ -314,11 +314,11 @@ LABEL_3:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   digest = self->_digest;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (digest)
   {
     if (!v6)
@@ -326,7 +326,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     digest = [(ATXPBUserNotificationDigest *)digest mergeFrom:?];
   }
 
@@ -337,39 +337,39 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     digest = [(ATXPBUserNotificationDigestLoggingEvent *)self setDigest:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 28);
+  v7 = *(fromCopy + 28);
   if ((v7 & 2) != 0)
   {
-    self->_eventType = *(v4 + 6);
+    self->_eventType = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v7 = *(v4 + 28);
+    v7 = *(fromCopy + 28);
   }
 
   if (v7)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](digest, v4);
+  MEMORY[0x1EEE66BB8](digest, fromCopy);
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotificationDigestLoggingEvent *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [ATXPBUserNotificationDigest alloc];
       v8 = [v6 objectForKeyedSubscript:@"digest"];
       v9 = [(ATXPBUserNotificationDigest *)v7 initFromJSON:v8];
@@ -415,8 +415,8 @@ LABEL_7:
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"digest";
-  v3 = [(ATXPBUserNotificationDigest *)self->_digest jsonRepresentation];
-  v4 = [ATXJSONHelper wrapObject:v3];
+  jsonRepresentation = [(ATXPBUserNotificationDigest *)self->_digest jsonRepresentation];
+  v4 = [ATXJSONHelper wrapObject:jsonRepresentation];
   v13[0] = v4;
   v12[1] = @"eventType";
   eventType = self->_eventType;

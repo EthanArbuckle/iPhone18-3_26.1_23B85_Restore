@@ -1,24 +1,24 @@
 @interface TRIDefaultFactorProvider
-- (BOOL)hasRegisteredNamespaceWithName:(id)a3;
-- (BOOL)hasTreatmentInAnyOfLayers:(unint64_t)a3 withNamespaceName:(id)a4;
-- (TRIDefaultFactorProvider)initWithPaths:(id)a3 factorsState:(id)a4;
-- (id)_experimentDeploymentFromActiveFactorProviderWithNamespaceName:(id)a3;
-- (id)_experimentDeploymentWithNamespaceName:(id)a3 treatmentLayer:(unint64_t)a4;
-- (id)_providerForNamespace:(id)a3;
-- (id)_treatmentIdFromActiveFactorProviderWithNamespaceName:(id)a3;
-- (id)_treatmentIdWithNamespaceName:(id)a3 treatmentLayer:(unint64_t)a4;
-- (id)counterfactualFactorsStatesForNamespace:(id)a3;
-- (id)experimentDeploymentWithNamespaceName:(id)a3;
-- (id)factorLevelsWithNamespaceName:(id)a3;
-- (id)factorPackIdForRolloutWithNamespaceName:(id)a3;
-- (id)levelForFactor:(id)a3 withNamespaceName:(id)a4;
-- (id)promotableFactorPackIdForNamespaceName:(id)a3;
-- (id)rolloutDeploymentWithNamespaceName:(id)a3;
-- (id)treatmentIdWithNamespaceName:(id)a3;
-- (unsigned)compatibilityVersionWithNamespaceName:(id)a3;
-- (void)cacheFactorLevelsWithNamespaceName:(id)a3;
+- (BOOL)hasRegisteredNamespaceWithName:(id)name;
+- (BOOL)hasTreatmentInAnyOfLayers:(unint64_t)layers withNamespaceName:(id)name;
+- (TRIDefaultFactorProvider)initWithPaths:(id)paths factorsState:(id)state;
+- (id)_experimentDeploymentFromActiveFactorProviderWithNamespaceName:(id)name;
+- (id)_experimentDeploymentWithNamespaceName:(id)name treatmentLayer:(unint64_t)layer;
+- (id)_providerForNamespace:(id)namespace;
+- (id)_treatmentIdFromActiveFactorProviderWithNamespaceName:(id)name;
+- (id)_treatmentIdWithNamespaceName:(id)name treatmentLayer:(unint64_t)layer;
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace;
+- (id)experimentDeploymentWithNamespaceName:(id)name;
+- (id)factorLevelsWithNamespaceName:(id)name;
+- (id)factorPackIdForRolloutWithNamespaceName:(id)name;
+- (id)levelForFactor:(id)factor withNamespaceName:(id)name;
+- (id)promotableFactorPackIdForNamespaceName:(id)name;
+- (id)rolloutDeploymentWithNamespaceName:(id)name;
+- (id)treatmentIdWithNamespaceName:(id)name;
+- (unsigned)compatibilityVersionWithNamespaceName:(id)name;
+- (void)cacheFactorLevelsWithNamespaceName:(id)name;
 - (void)invalidateAllFactorProviders;
-- (void)setContainer:(id)a3 forNamespaceName:(id)a4;
+- (void)setContainer:(id)container forNamespaceName:(id)name;
 @end
 
 @implementation TRIDefaultFactorProvider
@@ -68,10 +68,10 @@ void __56__TRIDefaultFactorProvider_invalidateAllFactorProviders__block_invoke(u
   objc_storeStrong(v5 + 1, *(a1 + 32));
 }
 
-- (TRIDefaultFactorProvider)initWithPaths:(id)a3 factorsState:(id)a4
+- (TRIDefaultFactorProvider)initWithPaths:(id)paths factorsState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  pathsCopy = paths;
+  stateCopy = state;
   v22.receiver = self;
   v22.super_class = TRIDefaultFactorProvider;
   v9 = [(TRIDefaultFactorProvider *)&v22 init];
@@ -81,9 +81,9 @@ void __56__TRIDefaultFactorProvider_invalidateAllFactorProviders__block_invoke(u
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v9->_paths, a3);
-  objc_storeStrong(&v10->_factorsState, a4);
-  v11 = [[TRINamespaceResolver alloc] initWithPaths:v7 factorsState:v10->_factorsState];
+  objc_storeStrong(&v9->_paths, paths);
+  objc_storeStrong(&v10->_factorsState, state);
+  v11 = [[TRINamespaceResolver alloc] initWithPaths:pathsCopy factorsState:v10->_factorsState];
   if (v11)
   {
     v12 = objc_opt_new();
@@ -110,18 +110,18 @@ LABEL_4:
   return v11;
 }
 
-- (void)setContainer:(id)a3 forNamespaceName:(id)a4
+- (void)setContainer:(id)container forNamespaceName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  nameCopy = name;
   v8 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = containerCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = nameCopy;
     _os_log_impl(&dword_22EA6B000, v8, OS_LOG_TYPE_DEFAULT, "Setting container %@ for namespace %@", buf, 0x16u);
   }
 
@@ -130,11 +130,11 @@ LABEL_4:
   v13[1] = 3221225472;
   v13[2] = __58__TRIDefaultFactorProvider_setContainer_forNamespaceName___block_invoke;
   v13[3] = &unk_27885E228;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
-  v10 = v7;
-  v11 = v6;
+  v14 = containerCopy;
+  v15 = nameCopy;
+  selfCopy = self;
+  v10 = nameCopy;
+  v11 = containerCopy;
   [(_PASLock *)lock runWithLockAcquired:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -158,9 +158,9 @@ uint64_t __58__TRIDefaultFactorProvider_setContainer_forNamespaceName___block_in
   }
 }
 
-- (id)_providerForNamespace:(id)a3
+- (id)_providerForNamespace:(id)namespace
 {
-  v5 = a3;
+  namespaceCopy = namespace;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -173,9 +173,9 @@ uint64_t __58__TRIDefaultFactorProvider_setContainer_forNamespaceName___block_in
   v10[2] = __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke;
   v10[3] = &unk_27885E250;
   v13 = &v15;
-  v7 = v5;
+  v7 = namespaceCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v14 = a2;
   [(_PASLock *)lock runWithLockAcquired:v10];
   v8 = v16[5];
@@ -224,47 +224,47 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
   }
 }
 
-- (BOOL)hasRegisteredNamespaceWithName:(id)a3
+- (BOOL)hasRegisteredNamespaceWithName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isRegistered];
+    isRegistered = [v3 isRegistered];
   }
 
   else
   {
-    v4 = 0;
+    isRegistered = 0;
   }
 
-  return v4;
+  return isRegistered;
 }
 
-- (unsigned)compatibilityVersionWithNamespaceName:(id)a3
+- (unsigned)compatibilityVersionWithNamespaceName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 namespaceCompatibilityVersion];
+    namespaceCompatibilityVersion = [v3 namespaceCompatibilityVersion];
   }
 
   else
   {
-    v4 = 0;
+    namespaceCompatibilityVersion = 0;
   }
 
-  return v4;
+  return namespaceCompatibilityVersion;
 }
 
-- (BOOL)hasTreatmentInAnyOfLayers:(unint64_t)a3 withNamespaceName:(id)a4
+- (BOOL)hasTreatmentInAnyOfLayers:(unint64_t)layers withNamespaceName:(id)name
 {
-  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a4];
+  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 hasAnyTreatmentInLayers:a3];
+    v6 = [v5 hasAnyTreatmentInLayers:layers];
   }
 
   else
@@ -275,36 +275,36 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
   return v6;
 }
 
-- (id)levelForFactor:(id)a3 withNamespaceName:(id)a4
+- (id)levelForFactor:(id)factor withNamespaceName:(id)name
 {
-  v6 = a3;
-  v7 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a4];
-  v8 = [v7 levelForFactor:v6];
+  factorCopy = factor;
+  v7 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
+  v8 = [v7 levelForFactor:factorCopy];
 
   return v8;
 }
 
-- (id)factorLevelsWithNamespaceName:(id)a3
+- (id)factorLevelsWithNamespaceName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
-  v4 = [v3 factorLevels];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
+  factorLevels = [v3 factorLevels];
 
-  return v4;
+  return factorLevels;
 }
 
-- (void)cacheFactorLevelsWithNamespaceName:(id)a3
+- (void)cacheFactorLevelsWithNamespaceName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   [v3 cacheFactorLevels];
 }
 
-- (id)experimentDeploymentWithNamespaceName:(id)a3
+- (id)experimentDeploymentWithNamespaceName:(id)name
 {
-  v4 = a3;
-  v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentWithNamespaceName:v4 treatmentLayer:32];
+  nameCopy = name;
+  v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentWithNamespaceName:nameCopy treatmentLayer:32];
   if (!v5)
   {
-    v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentWithNamespaceName:v4 treatmentLayer:4];
+    v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentWithNamespaceName:nameCopy treatmentLayer:4];
     if (!v5)
     {
       v6 = TRILogCategory_ClientFramework();
@@ -314,7 +314,7 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
         _os_log_impl(&dword_22EA6B000, v6, OS_LOG_TYPE_INFO, "Could not resolve to experiment deployment. Attempting to read from active factor provider.", v9, 2u);
       }
 
-      v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentFromActiveFactorProviderWithNamespaceName:v4];
+      v5 = [(TRIDefaultFactorProvider *)self _experimentDeploymentFromActiveFactorProviderWithNamespaceName:nameCopy];
     }
   }
 
@@ -323,18 +323,18 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
   return v7;
 }
 
-- (id)_experimentDeploymentWithNamespaceName:(id)a3 treatmentLayer:(unint64_t)a4
+- (id)_experimentDeploymentWithNamespaceName:(id)name treatmentLayer:(unint64_t)layer
 {
-  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
-  v6 = [v5 providerForTreatmentLayer:a4];
+  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
+  v6 = [v5 providerForTreatmentLayer:layer];
 
   if (v6)
   {
-    v7 = [v6 experimentId];
-    v8 = [v6 deploymentId];
-    if (v7)
+    experimentId = [v6 experimentId];
+    deploymentId = [v6 deploymentId];
+    if (experimentId)
     {
-      v9 = [[TRIExperimentDeployment alloc] initWithExperimentId:v7 deploymentId:v8];
+      v9 = [[TRIExperimentDeployment alloc] initWithExperimentId:experimentId deploymentId:deploymentId];
     }
 
     else
@@ -351,9 +351,9 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
   return v9;
 }
 
-- (id)_experimentDeploymentFromActiveFactorProviderWithNamespaceName:(id)a3
+- (id)_experimentDeploymentFromActiveFactorProviderWithNamespaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -365,7 +365,7 @@ void __50__TRIDefaultFactorProvider__providerForNamespace___block_invoke(void *a
   v9[1] = 3221225472;
   v9[2] = __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProviderWithNamespaceName___block_invoke;
   v9[3] = &unk_27885E278;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)lock runWithLockAcquired:v9];
@@ -392,10 +392,10 @@ void __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProvide
   }
 }
 
-- (id)treatmentIdWithNamespaceName:(id)a3
+- (id)treatmentIdWithNamespaceName:(id)name
 {
-  v4 = a3;
-  v5 = [(TRIDefaultFactorProvider *)self _treatmentIdWithNamespaceName:v4 treatmentLayer:32];
+  nameCopy = name;
+  v5 = [(TRIDefaultFactorProvider *)self _treatmentIdWithNamespaceName:nameCopy treatmentLayer:32];
   v6 = v5;
   if (v5)
   {
@@ -404,7 +404,7 @@ void __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProvide
 
   else
   {
-    v8 = [(TRIDefaultFactorProvider *)self _treatmentIdWithNamespaceName:v4 treatmentLayer:4];
+    v8 = [(TRIDefaultFactorProvider *)self _treatmentIdWithNamespaceName:nameCopy treatmentLayer:4];
     v9 = v8;
     if (v8)
     {
@@ -420,7 +420,7 @@ void __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProvide
         _os_log_impl(&dword_22EA6B000, v11, OS_LOG_TYPE_INFO, "Could not resolve to treatment id. Attempting to read from active factor provider.", v13, 2u);
       }
 
-      v10 = [(TRIDefaultFactorProvider *)self _treatmentIdFromActiveFactorProviderWithNamespaceName:v4];
+      v10 = [(TRIDefaultFactorProvider *)self _treatmentIdFromActiveFactorProviderWithNamespaceName:nameCopy];
     }
 
     v7 = v10;
@@ -429,9 +429,9 @@ void __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProvide
   return v7;
 }
 
-- (id)_treatmentIdFromActiveFactorProviderWithNamespaceName:(id)a3
+- (id)_treatmentIdFromActiveFactorProviderWithNamespaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -443,7 +443,7 @@ void __91__TRIDefaultFactorProvider__experimentDeploymentFromActiveFactorProvide
   v9[1] = 3221225472;
   v9[2] = __82__TRIDefaultFactorProvider__treatmentIdFromActiveFactorProviderWithNamespaceName___block_invoke;
   v9[3] = &unk_27885E278;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)lock runWithLockAcquired:v9];
@@ -469,9 +469,9 @@ void __82__TRIDefaultFactorProvider__treatmentIdFromActiveFactorProviderWithName
   }
 }
 
-- (id)counterfactualFactorsStatesForNamespace:(id)a3
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -484,7 +484,7 @@ void __82__TRIDefaultFactorProvider__treatmentIdFromActiveFactorProviderWithName
   v9[2] = __68__TRIDefaultFactorProvider_counterfactualFactorsStatesForNamespace___block_invoke;
   v9[3] = &unk_27885E278;
   v11 = &v12;
-  v6 = v4;
+  v6 = namespaceCopy;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[5];
@@ -504,87 +504,87 @@ uint64_t __68__TRIDefaultFactorProvider_counterfactualFactorsStatesForNamespace_
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (id)_treatmentIdWithNamespaceName:(id)a3 treatmentLayer:(unint64_t)a4
+- (id)_treatmentIdWithNamespaceName:(id)name treatmentLayer:(unint64_t)layer
 {
-  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
-  v6 = [v5 providerForTreatmentLayer:a4];
+  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
+  v6 = [v5 providerForTreatmentLayer:layer];
 
-  v7 = [v6 treatmentId];
+  treatmentId = [v6 treatmentId];
 
-  return v7;
+  return treatmentId;
 }
 
-- (id)factorPackIdForRolloutWithNamespaceName:(id)a3
+- (id)factorPackIdForRolloutWithNamespaceName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   v4 = [v3 providerForTreatmentLayer:2];
 
-  v5 = [v4 treatmentId];
+  treatmentId = [v4 treatmentId];
 
-  return v5;
+  return treatmentId;
 }
 
-- (id)rolloutDeploymentWithNamespaceName:(id)a3
+- (id)rolloutDeploymentWithNamespaceName:(id)name
 {
-  v4 = a3;
-  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:v4];
+  nameCopy = name;
+  v5 = [(TRIDefaultFactorProvider *)self _providerForNamespace:nameCopy];
   v6 = [v5 providerForTreatmentLayer:2];
 
-  v7 = [v6 experimentId];
-  if (v7)
+  experimentId = [v6 experimentId];
+  if (experimentId)
   {
-    v8 = -[TRIRolloutDeployment initWithRolloutId:deploymentId:]([TRIRolloutDeployment alloc], "initWithRolloutId:deploymentId:", v7, [v6 deploymentId]);
+    experimentId2 = -[TRIRolloutDeployment initWithRolloutId:deploymentId:]([TRIRolloutDeployment alloc], "initWithRolloutId:deploymentId:", experimentId, [v6 deploymentId]);
   }
 
   else
   {
-    v9 = [v6 treatmentId];
-    if (v9)
+    treatmentId = [v6 treatmentId];
+    if (treatmentId)
     {
-      v10 = [TRITreatmentInfo loadInfoForTreatment:v9 namespaceName:v4 paths:self->_paths];
+      v10 = [TRITreatmentInfo loadInfoForTreatment:treatmentId namespaceName:nameCopy paths:self->_paths];
       v11 = v10;
       if (v10)
       {
-        v8 = [v10 experimentId];
+        experimentId2 = [v10 experimentId];
 
-        if (v8)
+        if (experimentId2)
         {
           v12 = [TRIRolloutDeployment alloc];
-          v13 = [v11 experimentId];
-          v8 = -[TRIRolloutDeployment initWithRolloutId:deploymentId:](v12, "initWithRolloutId:deploymentId:", v13, [v11 deploymentId]);
+          experimentId3 = [v11 experimentId];
+          experimentId2 = -[TRIRolloutDeployment initWithRolloutId:deploymentId:](v12, "initWithRolloutId:deploymentId:", experimentId3, [v11 deploymentId]);
         }
       }
 
       else
       {
-        v8 = 0;
+        experimentId2 = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      experimentId2 = 0;
     }
   }
 
-  return v8;
+  return experimentId2;
 }
 
-- (id)promotableFactorPackIdForNamespaceName:(id)a3
+- (id)promotableFactorPackIdForNamespaceName:(id)name
 {
-  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:a3];
+  v3 = [(TRIDefaultFactorProvider *)self _providerForNamespace:name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 promotableFactorPackId];
+    promotableFactorPackId = [v3 promotableFactorPackId];
   }
 
   else
   {
-    v4 = 0;
+    promotableFactorPackId = 0;
   }
 
-  return v4;
+  return promotableFactorPackId;
 }
 
 @end

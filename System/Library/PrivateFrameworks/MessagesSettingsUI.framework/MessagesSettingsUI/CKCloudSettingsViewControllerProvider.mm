@@ -1,14 +1,14 @@
 @interface CKCloudSettingsViewControllerProvider
-+ (id)messagesCloudSettingsViewControllerWithAccountManager:(id)a3;
++ (id)messagesCloudSettingsViewControllerWithAccountManager:(id)manager;
 @end
 
 @implementation CKCloudSettingsViewControllerProvider
 
-+ (id)messagesCloudSettingsViewControllerWithAccountManager:(id)a3
++ (id)messagesCloudSettingsViewControllerWithAccountManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = objc_alloc_init(CKCloudSettingsViewController);
-  [(CKCloudSettingsViewController *)v4 setAccountManager:v3];
+  [(CKCloudSettingsViewController *)v4 setAccountManager:managerCopy];
 
   return v4;
 }

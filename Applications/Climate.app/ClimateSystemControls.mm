@@ -1,12 +1,12 @@
 @interface ClimateSystemControls
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate21ClimateSystemControls)initWithCoder:(id)a3;
-- (_TtC7Climate21ClimateSystemControls)initWithFrame:(CGRect)a3;
+- (_TtC7Climate21ClimateSystemControls)initWithCoder:(id)coder;
+- (_TtC7Climate21ClimateSystemControls)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ClimateSystemControls
 
-- (_TtC7Climate21ClimateSystemControls)initWithCoder:(id)a3
+- (_TtC7Climate21ClimateSystemControls)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate21ClimateSystemControls____lazy_storage___controls) = 0;
   v4 = OBJC_IVAR____TtC7Climate21ClimateSystemControls_stackView;
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC7Climate21ClimateSystemControls)initWithFrame:(CGRect)a3
+- (_TtC7Climate21ClimateSystemControls)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

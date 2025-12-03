@@ -1,17 +1,17 @@
 @interface ASDTIOPAudioVTProperty
-+ (id)ioServiceDependenciesForConfig:(id)a3;
++ (id)ioServiceDependenciesForConfig:(id)config;
 - (ASDTIOPAudioVTDevice)vtDevice;
 - (void)dealloc;
 @end
 
 @implementation ASDTIOPAudioVTProperty
 
-+ (id)ioServiceDependenciesForConfig:(id)a3
++ (id)ioServiceDependenciesForConfig:(id)config
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 asdtServiceID];
-  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioVTServiceManager dependencyForID:v4 andConfiguration:v3];
+  configCopy = config;
+  asdtServiceID = [configCopy asdtServiceID];
+  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioVTServiceManager dependencyForID:asdtServiceID andConfiguration:configCopy];
 
   if (v5)
   {
@@ -31,8 +31,8 @@
 
 - (void)dealloc
 {
-  v3 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-  [v3 close];
+  vtDevice = [(ASDTIOPAudioVTProperty *)self vtDevice];
+  [vtDevice close];
 
   v4.receiver = self;
   v4.super_class = ASDTIOPAudioVTProperty;

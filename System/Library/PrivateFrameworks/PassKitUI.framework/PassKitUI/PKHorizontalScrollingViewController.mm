@@ -1,29 +1,29 @@
 @interface PKHorizontalScrollingViewController
 - (BOOL)_canReloadViewControllers;
 - (PKHorizontalScrollingViewController)init;
-- (double)_startOfItemAtIndex:(unint64_t)a3;
+- (double)_startOfItemAtIndex:(unint64_t)index;
 - (double)_transitionProgress;
-- (id)_dequeueNonVisibleViewControllerForIndex:(unint64_t)a3;
-- (id)_dequeueViewControllerForIndex:(unint64_t)a3;
+- (id)_dequeueNonVisibleViewControllerForIndex:(unint64_t)index;
+- (id)_dequeueViewControllerForIndex:(unint64_t)index;
 - (id)_recoverUnusedViewController;
-- (id)_visibileIndicesAtContentOffset:(CGPoint)a3;
-- (unint64_t)_indexAtContentOffset:(CGPoint)a3;
+- (id)_visibileIndicesAtContentOffset:(CGPoint)offset;
+- (unint64_t)_indexAtContentOffset:(CGPoint)offset;
 - (void)_layoutCollectionViews;
-- (void)_loadDataForContentOffset:(CGPoint)a3;
-- (void)_reloadDataForViewControllerAtIndex:(unint64_t)a3 swap:(BOOL)a4;
+- (void)_loadDataForContentOffset:(CGPoint)offset;
+- (void)_reloadDataForViewControllerAtIndex:(unint64_t)index swap:(BOOL)swap;
 - (void)_reloadPendingViewControllers;
-- (void)_retireViewControllerForIndex:(unint64_t)a3;
+- (void)_retireViewControllerForIndex:(unint64_t)index;
 - (void)_scrollViewStoppedScrolling;
-- (void)_switchPrimaryIndexToIndex:(unint64_t)a3;
+- (void)_switchPrimaryIndexToIndex:(unint64_t)index;
 - (void)_updateAlphaDuringTransition;
-- (void)_updatePrimaryIndex:(int64_t)a3;
+- (void)_updatePrimaryIndex:(int64_t)index;
 - (void)_updateScrollViewContentSize;
-- (void)resetVisibleViewControllersWithNewPrimaryIndex:(int64_t)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateScrollViewContentOffsetWithNewPrimaryIndex:(int64_t)a3;
+- (void)resetVisibleViewControllersWithNewPrimaryIndex:(int64_t)index;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateScrollViewContentOffsetWithNewPrimaryIndex:(int64_t)index;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -49,13 +49,13 @@
   return v2;
 }
 
-- (void)updateScrollViewContentOffsetWithNewPrimaryIndex:(int64_t)a3
+- (void)updateScrollViewContentOffsetWithNewPrimaryIndex:(int64_t)index
 {
-  [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:a3];
-  v4 = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
-  if (v4)
+  [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:index];
+  viewIfLoaded = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v6 = v4;
+    v6 = viewIfLoaded;
     [(PKHorizontalScrollingViewController *)self _updateScrollViewContentSize];
     if ([(PKHorizontalScrollingViewController *)self numberOfItems]>= 1)
     {
@@ -65,7 +65,7 @@
     }
 
     [v6 setNeedsLayout];
-    v4 = v6;
+    viewIfLoaded = v6;
   }
 }
 
@@ -75,8 +75,8 @@
   v47.receiver = self;
   v47.super_class = PKHorizontalScrollingViewController;
   [(PKHorizontalScrollingViewController *)&v47 viewDidLoad];
-  v3 = [(PKHorizontalScrollingViewController *)self emptyViewControllers];
-  v4 = [v3 count];
+  emptyViewControllers = [(PKHorizontalScrollingViewController *)self emptyViewControllers];
+  v4 = [emptyViewControllers count];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v4];
   indicesToViewControllerMapping = self->_indicesToViewControllerMapping;
   self->_indicesToViewControllerMapping = v5;
@@ -99,7 +99,7 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v15 = v3;
+  v15 = emptyViewControllers;
   v16 = [v15 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v16)
   {
@@ -116,11 +116,11 @@
 
         v20 = *(*(&v43 + 1) + 8 * i);
         [v20 setContentInset:{0.0, 0.0, v14, 0.0}];
-        v21 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-        [v20 setGestureRecognizerRequiredToFail:v21];
+        panGestureRecognizer = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+        [v20 setGestureRecognizerRequiredToFail:panGestureRecognizer];
 
-        v22 = [v20 view];
-        [v22 setHidden:1];
+        view = [v20 view];
+        [view setHidden:1];
 
         [(NSMutableSet *)self->_unusedViewControllers addObject:v20];
       }
@@ -132,20 +132,20 @@
   }
 
   [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:[(PKHorizontalScrollingViewController *)self startingIndex]];
-  v23 = [(PKHorizontalScrollingViewController *)self view];
-  [v23 addSubview:self->_scrollView];
+  view2 = [(PKHorizontalScrollingViewController *)self view];
+  [view2 addSubview:self->_scrollView];
   v24 = +[PKDashboardViewController backgroundColor];
-  [v23 setBackgroundColor:v24];
+  [view2 setBackgroundColor:v24];
 
-  v25 = [(PKHorizontalScrollingViewController *)self footerView];
+  footerView = [(PKHorizontalScrollingViewController *)self footerView];
 
-  if (v25)
+  if (footerView)
   {
-    v26 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v23 addSubview:v26];
+    footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+    [view2 addSubview:footerView2];
   }
 
-  v38 = v23;
+  v38 = view2;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -168,8 +168,8 @@
         v32 = *(*(&v39 + 1) + 8 * j);
         [(PKHorizontalScrollingViewController *)self addChildViewController:v32];
         scrollView = self->_scrollView;
-        v34 = [v32 view];
-        [(UIScrollView *)scrollView addSubview:v34];
+        view3 = [v32 view];
+        [(UIScrollView *)scrollView addSubview:view3];
 
         [v32 didMoveToParentViewController:self];
       }
@@ -204,8 +204,8 @@
   v16.receiver = self;
   v16.super_class = PKHorizontalScrollingViewController;
   [(PKHorizontalScrollingViewController *)&v16 viewWillLayoutSubviews];
-  v3 = [(PKHorizontalScrollingViewController *)self view];
-  [v3 bounds];
+  view = [(PKHorizontalScrollingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -214,12 +214,12 @@
   self->_currentSize.height = v10;
   [(PKHorizontalScrollingViewController *)self footerViewContentHeight];
   v13 = v12;
-  v14 = [(PKHorizontalScrollingViewController *)self footerView];
+  footerView = [(PKHorizontalScrollingViewController *)self footerView];
 
-  if (v14)
+  if (footerView)
   {
-    v15 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v15 setFrame:{0.0, v7 + v11 - v13, v9, v13}];
+    footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+    [footerView2 setFrame:{0.0, v7 + v11 - v13, v9, v13}];
   }
 
   v17.origin.x = v5;
@@ -241,9 +241,9 @@
 
 - (void)_layoutCollectionViews
 {
-  v3 = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
+  viewIfLoaded = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
     nonVisibleIndicesToViewControllerMapping = self->_nonVisibleIndicesToViewControllerMapping;
     v7[0] = MEMORY[0x1E69E9820];
@@ -300,24 +300,24 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
 
 - (void)_updateScrollViewContentSize
 {
-  v3 = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(PKHorizontalScrollingViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v12 = v3;
-    [v3 bounds];
+    v12 = viewIfLoaded;
+    [viewIfLoaded bounds];
     v5 = v4;
     v7 = v6;
-    v8 = [(PKHorizontalScrollingViewController *)self numberOfItems];
-    v9 = v5 * v8;
-    if (v8 >= 2)
+    numberOfItems = [(PKHorizontalScrollingViewController *)self numberOfItems];
+    v9 = v5 * numberOfItems;
+    if (numberOfItems >= 2)
     {
-      v10 = (v8 - 1);
+      v10 = (numberOfItems - 1);
       [(PKHorizontalScrollingViewController *)self _negativeGap];
       v9 = v9 - v10 * v11;
     }
 
     [(UIScrollView *)self->_scrollView setContentSize:v9, v7];
-    v3 = v12;
+    viewIfLoaded = v12;
   }
 }
 
@@ -332,7 +332,7 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
   [(PKHorizontalScrollingViewController *)self _reloadPendingViewControllers];
 }
 
-- (void)resetVisibleViewControllersWithNewPrimaryIndex:(int64_t)a3
+- (void)resetVisibleViewControllersWithNewPrimaryIndex:(int64_t)index
 {
   indicesToViewControllerMapping = self->_indicesToViewControllerMapping;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_primaryIndex];
@@ -345,7 +345,7 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
   v32[3] = &unk_1E8011A90;
   v9 = v7;
   v33 = v9;
-  v34 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)v8 enumerateKeysAndObjectsUsingBlock:v32];
   [(NSMutableDictionary *)self->_indicesToViewControllerMapping removeAllObjects];
   nonVisibleIndicesToViewControllerMapping = self->_nonVisibleIndicesToViewControllerMapping;
@@ -356,14 +356,14 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
   v31[4] = self;
   [(NSMutableDictionary *)nonVisibleIndicesToViewControllerMapping enumerateKeysAndObjectsUsingBlock:v31];
   [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping removeAllObjects];
-  [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:a3];
+  [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:index];
   v11 = self->_indicesToViewControllerMapping;
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:self->_primaryIndex];
   [(NSMutableDictionary *)v11 setObject:v9 forKey:v12];
 
   scrollView = self->_scrollView;
-  v14 = [v9 view];
-  [(UIScrollView *)scrollView bringSubviewToFront:v14];
+  view = [v9 view];
+  [(UIScrollView *)scrollView bringSubviewToFront:view];
 
   v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:self->_primaryIndex];
   visibleIndices = self->_visibleIndices;
@@ -373,8 +373,8 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
   v17 = self->_scrollView;
   [(PKHorizontalScrollingViewController *)self _startOfItemAtIndex:self->_primaryIndex];
   [(UIScrollView *)v17 setContentOffset:?];
-  v18 = [(PKHorizontalScrollingViewController *)self view];
-  [v18 setNeedsLayout];
+  view2 = [(PKHorizontalScrollingViewController *)self view];
+  [view2 setNeedsLayout];
 
   if ([(PKHorizontalScrollingViewController *)self numberOfItems]<= 1)
   {
@@ -383,29 +383,29 @@ void __61__PKHorizontalScrollingViewController__layoutCollectionViews__block_inv
   }
 
   [(PKHorizontalScrollingViewController *)self _reloadDataForViewControllerAtIndex:self->_primaryIndex swap:1];
-  v19 = [(PKHorizontalScrollingViewController *)self footerView];
+  footerView = [(PKHorizontalScrollingViewController *)self footerView];
 
-  if (v19)
+  if (footerView)
   {
-    v20 = [(PKHorizontalScrollingViewController *)self footerView];
-    v21 = [v9 footer];
-    [v20 setCurrentFooter:v21];
+    footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+    footer = [v9 footer];
+    [footerView2 setCurrentFooter:footer];
 
-    v22 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v22 setNextFooter:0];
+    footerView3 = [(PKHorizontalScrollingViewController *)self footerView];
+    [footerView3 setNextFooter:0];
 
-    v23 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v23 setTransitionProgress:0.0];
+    footerView4 = [(PKHorizontalScrollingViewController *)self footerView];
+    [footerView4 setTransitionProgress:0.0];
   }
 
-  v24 = [v9 collectionView];
-  [v24 contentOffset];
+  collectionView = [v9 collectionView];
+  [collectionView contentOffset];
   v26 = v25;
   v28 = v27;
-  [v24 pkui_naturalRestingBounds];
+  [collectionView pkui_naturalRestingBounds];
   if (v26 != v30 || v28 != v29)
   {
-    [v24 setContentOffset:1 animated:?];
+    [collectionView setContentOffset:1 animated:?];
   }
 }
 
@@ -491,10 +491,10 @@ void __86__PKHorizontalScrollingViewController_resetVisibleViewControllersWithNe
     }
   }
 
-  v16 = [(PKHorizontalScrollingViewController *)self numberOfItems];
+  numberOfItems = [(PKHorizontalScrollingViewController *)self numberOfItems];
   v17 = self->_primaryIndex;
   v18 = v17 + 2;
-  if (v16 > v17 + 2)
+  if (numberOfItems > v17 + 2)
   {
     v19 = [(PKHorizontalScrollingViewController *)self cachedDataAtIndex:v17 + 2];
     if (v19 && [(PKHorizontalScrollingViewController *)self _canReloadViewControllers])
@@ -524,9 +524,9 @@ void __86__PKHorizontalScrollingViewController_resetVisibleViewControllersWithNe
   *&v18[5] = 1.0 - v7;
   *&v18[6] = v7;
   [(NSIndexSet *)visibleIndices enumerateIndexesUsingBlock:v18];
-  v10 = [(PKHorizontalScrollingViewController *)self footerView];
+  footerView = [(PKHorizontalScrollingViewController *)self footerView];
 
-  if (v10)
+  if (footerView)
   {
     if (v4 >= v6)
     {
@@ -535,9 +535,9 @@ void __86__PKHorizontalScrollingViewController_resetVisibleViewControllersWithNe
         goto LABEL_8;
       }
 
-      v13 = [(PKHorizontalScrollingViewController *)self numberOfItems];
+      numberOfItems = [(PKHorizontalScrollingViewController *)self numberOfItems];
       v11 = self->_primaryIndex + 1;
-      if (v13 <= v11)
+      if (numberOfItems <= v11)
       {
         goto LABEL_8;
       }
@@ -554,14 +554,14 @@ void __86__PKHorizontalScrollingViewController_resetVisibleViewControllersWithNe
     }
 
     v14 = [(PKHorizontalScrollingViewController *)self _dequeueViewControllerForIndex:v11];
-    v15 = [v14 footer];
+    footer = [v14 footer];
 
-    v16 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v16 setNextFooter:v15];
+    footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+    [footerView2 setNextFooter:footer];
 
 LABEL_8:
-    v17 = [(PKHorizontalScrollingViewController *)self footerView];
-    [v17 setTransitionProgress:v8];
+    footerView3 = [(PKHorizontalScrollingViewController *)self footerView];
+    [footerView3 setTransitionProgress:v8];
   }
 }
 
@@ -591,9 +591,9 @@ void __67__PKHorizontalScrollingViewController__updateAlphaDuringTransition__blo
   [v9 setAlphaTransition:*(a1 + v8)];
 }
 
-- (void)_loadDataForContentOffset:(CGPoint)a3
+- (void)_loadDataForContentOffset:(CGPoint)offset
 {
-  v4 = [(PKHorizontalScrollingViewController *)self _visibileIndicesAtContentOffset:a3.x, a3.y];
+  v4 = [(PKHorizontalScrollingViewController *)self _visibileIndicesAtContentOffset:offset.x, offset.y];
   if (!self->_visibleIndices)
   {
     visibleIndices = 0;
@@ -630,8 +630,8 @@ LABEL_5:
     v10[4] = self;
     [v8 enumerateIndexesUsingBlock:v10];
     objc_storeStrong(&self->_visibleIndices, v4);
-    v9 = [(PKHorizontalScrollingViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(PKHorizontalScrollingViewController *)self view];
+    [view setNeedsLayout];
   }
 
   [(PKHorizontalScrollingViewController *)self _updateAlphaDuringTransition];
@@ -648,10 +648,10 @@ void *__65__PKHorizontalScrollingViewController__loadDataForContentOffset___bloc
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v6 = v5;
   v8 = v7;
   [(PKHorizontalScrollingViewController *)self _startOfItemAtIndex:self->_primaryIndex];
@@ -828,11 +828,11 @@ void __59__PKHorizontalScrollingViewController_scrollViewDidScroll___block_invok
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
+  x = velocity.x;
   self->_isDragging = 0;
-  [(UIScrollView *)self->_scrollView contentOffset:a3];
+  [(UIScrollView *)self->_scrollView contentOffset:dragging];
   v9 = [(PKHorizontalScrollingViewController *)self _indexAtContentOffset:v8 + self->_currentSize.width * 0.5];
   v10 = v9;
   if (v9 == self->_primaryIndex)
@@ -846,25 +846,25 @@ void __59__PKHorizontalScrollingViewController_scrollViewDidScroll___block_invok
   }
 
   [(PKHorizontalScrollingViewController *)self _startOfItemAtIndex:v10];
-  a5->x = v14;
-  a5->y = 0.0;
+  offset->x = v14;
+  offset->y = 0.0;
 
   [(PKHorizontalScrollingViewController *)self _switchPrimaryIndexToIndex:v10];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4 && self->_isScrolling)
+  draggingCopy = dragging;
+  if (!decelerate && self->_isScrolling)
   {
     self->_isScrolling = 0;
-    v7 = v6;
+    v7 = draggingCopy;
     [(PKHorizontalScrollingViewController *)self _scrollViewStoppedScrolling];
-    v6 = v7;
+    draggingCopy = v7;
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_isScrolling)
   {
@@ -873,92 +873,92 @@ void __59__PKHorizontalScrollingViewController_scrollViewDidScroll___block_invok
   }
 }
 
-- (id)_dequeueViewControllerForIndex:(unint64_t)a3
+- (id)_dequeueViewControllerForIndex:(unint64_t)index
 {
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   v6 = [(NSMutableDictionary *)self->_indicesToViewControllerMapping objectForKey:v5];
   if (v6)
   {
-    v7 = v6;
+    _recoverUnusedViewController = v6;
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping objectForKey:v5];
+    _recoverUnusedViewController = [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping objectForKey:v5];
     [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping removeObjectForKey:v5];
-    if (!v7)
+    if (!_recoverUnusedViewController)
     {
-      v7 = [(PKHorizontalScrollingViewController *)self _recoverUnusedViewController];
-      v8 = [(PKHorizontalScrollingViewController *)self view];
-      [v8 setNeedsLayout];
+      _recoverUnusedViewController = [(PKHorizontalScrollingViewController *)self _recoverUnusedViewController];
+      view = [(PKHorizontalScrollingViewController *)self view];
+      [view setNeedsLayout];
 
-      if (!v7)
+      if (!_recoverUnusedViewController)
       {
         goto LABEL_8;
       }
     }
   }
 
-  [(NSMutableDictionary *)self->_indicesToViewControllerMapping setObject:v7 forKey:v5];
-  if (self->_primaryIndex == a3)
+  [(NSMutableDictionary *)self->_indicesToViewControllerMapping setObject:_recoverUnusedViewController forKey:v5];
+  if (self->_primaryIndex == index)
   {
     scrollView = self->_scrollView;
-    v10 = [v7 view];
-    [(UIScrollView *)scrollView bringSubviewToFront:v10];
+    view2 = [_recoverUnusedViewController view];
+    [(UIScrollView *)scrollView bringSubviewToFront:view2];
   }
 
-  [v7 setVisible:1];
+  [_recoverUnusedViewController setVisible:1];
 LABEL_8:
 
-  return v7;
+  return _recoverUnusedViewController;
 }
 
-- (id)_dequeueNonVisibleViewControllerForIndex:(unint64_t)a3
+- (id)_dequeueNonVisibleViewControllerForIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v5 = [(NSMutableDictionary *)self->_indicesToViewControllerMapping objectForKey:v4];
 
   if (v5)
   {
-    v6 = 0;
+    _recoverUnusedViewController = 0;
     goto LABEL_8;
   }
 
   v7 = [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping objectForKey:v4];
   if (v7)
   {
-    v6 = v7;
+    _recoverUnusedViewController = v7;
 LABEL_6:
-    [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping setObject:v6 forKey:v4];
-    [v6 setVisible:0];
-    [(PKHorizontalScrollingViewController *)self didDequeueViewController:v6];
+    [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping setObject:_recoverUnusedViewController forKey:v4];
+    [_recoverUnusedViewController setVisible:0];
+    [(PKHorizontalScrollingViewController *)self didDequeueViewController:_recoverUnusedViewController];
     goto LABEL_7;
   }
 
-  v6 = [(PKHorizontalScrollingViewController *)self _recoverUnusedViewController];
-  if (v6)
+  _recoverUnusedViewController = [(PKHorizontalScrollingViewController *)self _recoverUnusedViewController];
+  if (_recoverUnusedViewController)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v8 = [(PKHorizontalScrollingViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(PKHorizontalScrollingViewController *)self view];
+  [view setNeedsLayout];
 
 LABEL_8:
 
-  return v6;
+  return _recoverUnusedViewController;
 }
 
 - (id)_recoverUnusedViewController
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableSet *)self->_unusedViewControllers anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_unusedViewControllers anyObject];
+  if (anyObject)
   {
-    v4 = v3;
-    v5 = [v3 view];
-    [v5 setHidden:0];
+    v4 = anyObject;
+    view = [anyObject view];
+    [view setHidden:0];
 
     [(NSMutableSet *)self->_unusedViewControllers removeObject:v4];
     v6 = v4;
@@ -966,8 +966,8 @@ LABEL_8:
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping allKeys];
-    v8 = [v7 firstObject];
+    allKeys = [(NSMutableDictionary *)self->_nonVisibleIndicesToViewControllerMapping allKeys];
+    firstObject = [allKeys firstObject];
 
     v29 = 0u;
     v30 = 0u;
@@ -991,13 +991,13 @@ LABEL_8:
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 integerValue];
+          integerValue = [v14 integerValue];
           primaryIndex = self->_primaryIndex;
-          v17 = [v14 integerValue];
+          integerValue2 = [v14 integerValue];
           v18 = self->_primaryIndex;
-          v19 = v18 - v17;
-          v20 = v17 - v18;
-          if (v15 >= primaryIndex)
+          v19 = v18 - integerValue2;
+          v20 = integerValue2 - v18;
+          if (integerValue >= primaryIndex)
           {
             v21 = v20;
           }
@@ -1011,7 +1011,7 @@ LABEL_8:
           {
             v22 = v14;
 
-            v8 = v22;
+            firstObject = v22;
             v11 = v21;
           }
         }
@@ -1022,10 +1022,10 @@ LABEL_8:
       while (v10);
     }
 
-    if (v8)
+    if (firstObject)
     {
-      v23 = [*(&self->super.super.super.isa + v25) objectForKey:v8];
-      [*(&self->super.super.super.isa + v25) removeObjectForKey:v8];
+      v23 = [*(&self->super.super.super.isa + v25) objectForKey:firstObject];
+      [*(&self->super.super.super.isa + v25) removeObjectForKey:firstObject];
     }
 
     else
@@ -1039,9 +1039,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)_retireViewControllerForIndex:(unint64_t)a3
+- (void)_retireViewControllerForIndex:(unint64_t)index
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v4 = [(NSMutableDictionary *)self->_indicesToViewControllerMapping objectForKey:?];
   v5 = v4;
   if (v4)
@@ -1059,21 +1059,21 @@ LABEL_8:
   }
 }
 
-- (id)_visibileIndicesAtContentOffset:(CGPoint)a3
+- (id)_visibileIndicesAtContentOffset:(CGPoint)offset
 {
-  x = a3.x;
+  x = offset.x;
   width = self->_currentSize.width;
-  [(PKHorizontalScrollingViewController *)self _negativeGap:a3.x];
+  [(PKHorizontalScrollingViewController *)self _negativeGap:offset.x];
   v7 = v6;
-  v8 = [(PKHorizontalScrollingViewController *)self numberOfItems];
-  if (v8)
+  numberOfItems = [(PKHorizontalScrollingViewController *)self numberOfItems];
+  if (numberOfItems)
   {
-    v9 = v8;
+    v9 = numberOfItems;
     v10 = x / (width - v7);
     v11 = vcvtms_u32_f32(v10);
-    if (v8 <= v11)
+    if (numberOfItems <= v11)
     {
-      v12 = v8 - 1;
+      v12 = numberOfItems - 1;
     }
 
     else
@@ -1130,21 +1130,21 @@ LABEL_8:
   return v18;
 }
 
-- (unint64_t)_indexAtContentOffset:(CGPoint)a3
+- (unint64_t)_indexAtContentOffset:(CGPoint)offset
 {
-  x = a3.x;
+  x = offset.x;
   width = self->_currentSize.width;
-  [(PKHorizontalScrollingViewController *)self _negativeGap:a3.x];
+  [(PKHorizontalScrollingViewController *)self _negativeGap:offset.x];
   *&v5 = x / (width - v5);
   return vcvtms_u32_f32(*&v5);
 }
 
-- (double)_startOfItemAtIndex:(unint64_t)a3
+- (double)_startOfItemAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   width = self->_currentSize.width;
   [(PKHorizontalScrollingViewController *)self _negativeGap];
-  return (width - v5) * v3;
+  return (width - v5) * indexCopy;
 }
 
 - (double)_transitionProgress
@@ -1158,9 +1158,9 @@ LABEL_8:
   return fmax(fmin(v6 / (width - v8), 1.0), 0.0);
 }
 
-- (void)_switchPrimaryIndexToIndex:(unint64_t)a3
+- (void)_switchPrimaryIndexToIndex:(unint64_t)index
 {
-  if (self->_primaryIndex != a3)
+  if (self->_primaryIndex != index)
   {
     self->_hasPrefetchedLeft = 0;
     self->_hasPrefetchedRight = 0;
@@ -1168,26 +1168,26 @@ LABEL_8:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     v7 = [(NSMutableDictionary *)indicesToViewControllerMapping objectForKey:v6];
 
-    [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:a3];
+    [(PKHorizontalScrollingViewController *)self _updatePrimaryIndex:index];
     v8 = self->_indicesToViewControllerMapping;
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_primaryIndex];
     v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
 
     scrollView = self->_scrollView;
-    v12 = [v10 view];
-    [(UIScrollView *)scrollView bringSubviewToFront:v12];
+    view = [v10 view];
+    [(UIScrollView *)scrollView bringSubviewToFront:view];
 
-    v13 = [(PKHorizontalScrollingViewController *)self footerView];
+    footerView = [(PKHorizontalScrollingViewController *)self footerView];
 
-    if (v13)
+    if (footerView)
     {
-      v14 = [(PKHorizontalScrollingViewController *)self footerView];
-      v15 = [v10 footer];
-      [v14 setCurrentFooter:v15];
+      footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+      footer = [v10 footer];
+      [footerView2 setCurrentFooter:footer];
 
-      v16 = [(PKHorizontalScrollingViewController *)self footerView];
-      v17 = [v7 footer];
-      [v16 setNextFooter:v17];
+      footerView3 = [(PKHorizontalScrollingViewController *)self footerView];
+      footer2 = [v7 footer];
+      [footerView3 setNextFooter:footer2];
     }
 
     v18 = self->_indicesToViewControllerMapping;
@@ -1197,8 +1197,8 @@ LABEL_8:
     v20[3] = &unk_1E8011A40;
     v20[4] = self;
     [(NSMutableDictionary *)v18 enumerateKeysAndObjectsUsingBlock:v20];
-    v19 = [(PKHorizontalScrollingViewController *)self view];
-    [v19 setNeedsLayout];
+    view2 = [(PKHorizontalScrollingViewController *)self view];
+    [view2 setNeedsLayout];
   }
 }
 
@@ -1224,43 +1224,43 @@ void __66__PKHorizontalScrollingViewController__switchPrimaryIndexToIndex___bloc
   }
 }
 
-- (void)_updatePrimaryIndex:(int64_t)a3
+- (void)_updatePrimaryIndex:(int64_t)index
 {
-  if (self->_primaryIndex != a3)
+  if (self->_primaryIndex != index)
   {
-    self->_primaryIndex = a3;
+    self->_primaryIndex = index;
     [(PKHorizontalScrollingViewController *)self didMoveToPrimaryIndex:?];
   }
 }
 
-- (void)_reloadDataForViewControllerAtIndex:(unint64_t)a3 swap:(BOOL)a4
+- (void)_reloadDataForViewControllerAtIndex:(unint64_t)index swap:(BOOL)swap
 {
-  v4 = a4;
+  swapCopy = swap;
   v7 = [(PKHorizontalScrollingViewController *)self _dequeueViewControllerForIndex:?];
   if (v7)
   {
-    v8 = [(PKHorizontalScrollingViewController *)self cachedDataAtIndex:a3];
+    v8 = [(PKHorizontalScrollingViewController *)self cachedDataAtIndex:index];
     if (v8 && !self->_isLowEndDevice)
     {
-      [v7 setData:v8 swap:v4];
-      v11 = [(PKHorizontalScrollingViewController *)self footerView];
-      if (v11)
+      [v7 setData:v8 swap:swapCopy];
+      footerView = [(PKHorizontalScrollingViewController *)self footerView];
+      if (footerView)
       {
         primaryIndex = self->_primaryIndex;
 
-        if (primaryIndex == a3)
+        if (primaryIndex == index)
         {
-          v13 = [(PKHorizontalScrollingViewController *)self footerView];
-          v14 = [v7 footer];
-          [v13 setCurrentFooter:v14];
+          footerView2 = [(PKHorizontalScrollingViewController *)self footerView];
+          footer = [v7 footer];
+          [footerView2 setCurrentFooter:footer];
         }
       }
     }
 
     else
     {
-      v9 = [v7 data];
-      v10 = [(PKHorizontalScrollingViewController *)self loadingDataObjectWithCurrentData:v9 index:a3 swap:v4];
+      data = [v7 data];
+      v10 = [(PKHorizontalScrollingViewController *)self loadingDataObjectWithCurrentData:data index:index swap:swapCopy];
 
       if (v10)
       {
@@ -1273,10 +1273,10 @@ void __66__PKHorizontalScrollingViewController__switchPrimaryIndexToIndex___bloc
       v15[2] = __80__PKHorizontalScrollingViewController__reloadDataForViewControllerAtIndex_swap___block_invoke;
       v15[3] = &unk_1E8011B80;
       objc_copyWeak(v16, &location);
-      v16[1] = a3;
+      v16[1] = index;
       v15[4] = self;
-      v17 = v4;
-      [(PKHorizontalScrollingViewController *)self fetchDataAtIndex:a3 completion:v15];
+      v17 = swapCopy;
+      [(PKHorizontalScrollingViewController *)self fetchDataAtIndex:index completion:v15];
       objc_destroyWeak(v16);
       objc_destroyWeak(&location);
     }

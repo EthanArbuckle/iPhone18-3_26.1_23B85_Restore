@@ -1,33 +1,33 @@
 @interface _HKCFGNonTerminal
-+ (id)nonTerminalWithLabel:(id)a3;
-- (BOOL)_tryNodesForExpressions:(id)a3 nodes:(id)a4 context:(id)a5 solutionTest:(id)a6;
-- (_HKCFGNonTerminal)initWithLabel:(id)a3;
-- (id)_parseTreeWithContext:(id)a3;
++ (id)nonTerminalWithLabel:(id)label;
+- (BOOL)_tryNodesForExpressions:(id)expressions nodes:(id)nodes context:(id)context solutionTest:(id)test;
+- (_HKCFGNonTerminal)initWithLabel:(id)label;
+- (id)_parseTreeWithContext:(id)context;
 - (void)_checkForCycles;
-- (void)_checkForCycles:(id)a3;
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4;
-- (void)addReplacementRuleWithExpressions:(id)a3 nodeEvaluator:(id)a4;
+- (void)_checkForCycles:(id)cycles;
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test;
+- (void)addReplacementRuleWithExpressions:(id)expressions nodeEvaluator:(id)evaluator;
 @end
 
 @implementation _HKCFGNonTerminal
 
-+ (id)nonTerminalWithLabel:(id)a3
++ (id)nonTerminalWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLabel:v4];
+  labelCopy = label;
+  v5 = [[self alloc] initWithLabel:labelCopy];
 
   return v5;
 }
 
-- (_HKCFGNonTerminal)initWithLabel:(id)a3
+- (_HKCFGNonTerminal)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = _HKCFGNonTerminal;
   v5 = [(_HKCFGNonTerminal *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
 
@@ -35,30 +35,30 @@
     replacementRules = v5->_replacementRules;
     v5->_replacementRules = v8;
 
-    v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     charactersToBeSkipped = v5->_charactersToBeSkipped;
-    v5->_charactersToBeSkipped = v10;
+    v5->_charactersToBeSkipped = whitespaceAndNewlineCharacterSet;
   }
 
   return v5;
 }
 
-- (void)addReplacementRuleWithExpressions:(id)a3 nodeEvaluator:(id)a4
+- (void)addReplacementRuleWithExpressions:(id)expressions nodeEvaluator:(id)evaluator
 {
   replacementRules = self->_replacementRules;
-  v5 = [_HKCFGReplacementRule ruleWithLHS:self RHS:a3 nodeEvaluator:a4];
+  v5 = [_HKCFGReplacementRule ruleWithLHS:self RHS:expressions nodeEvaluator:evaluator];
   [(NSMutableArray *)replacementRules addObject:v5];
 }
 
-- (void)_tryNodesWithContext:(id)a3 solutionTest:(id)a4
+- (void)_tryNodesWithContext:(id)context solutionTest:(id)test
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v31 = [v5 scanner];
-  v30 = [v31 scanLocation];
-  v7 = [v5 cache];
-  v27 = [v7 nodesForPosition:v30 nonTerminal:self withLengthAllowance:{objc_msgSend(v5, "lengthAllowance")}];
+  contextCopy = context;
+  testCopy = test;
+  scanner = [contextCopy scanner];
+  scanLocation = [scanner scanLocation];
+  cache = [contextCopy cache];
+  v27 = [cache nodesForPosition:scanLocation nonTerminal:self withLengthAllowance:{objc_msgSend(contextCopy, "lengthAllowance")}];
 
   if (v27)
   {
@@ -66,8 +66,8 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v8 = v27;
-    v9 = [v8 countByEnumeratingWithState:&v49 objects:v54 count:16];
+    array = v27;
+    v9 = [array countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v9)
     {
       v10 = *v50;
@@ -77,22 +77,22 @@ LABEL_4:
       {
         if (*v50 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(array);
         }
 
         v12 = *(*(&v49 + 1) + 8 * v11);
-        v13 = [v5 scanner];
-        v14 = [v12 rangeOfString];
-        [v13 setScanLocation:v14 + v15];
+        scanner2 = [contextCopy scanner];
+        rangeOfString = [v12 rangeOfString];
+        [scanner2 setScanLocation:rangeOfString + v15];
 
-        if (v6[2](v6, v12))
+        if (testCopy[2](testCopy, v12))
         {
           break;
         }
 
         if (v9 == ++v11)
         {
-          v9 = [v8 countByEnumeratingWithState:&v49 objects:v54 count:16];
+          v9 = [array countByEnumeratingWithState:&v49 objects:v54 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -106,12 +106,12 @@ LABEL_4:
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v45 = 0;
     v46 = &v45;
     v47 = 0x2020000000;
     v48 = 0;
-    [v31 setCharactersToBeSkipped:self->_charactersToBeSkipped];
+    [scanner setCharactersToBeSkipped:self->_charactersToBeSkipped];
     v44 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -132,32 +132,32 @@ LABEL_13:
         }
 
         v20 = *(*(&v41 + 1) + 8 * v19);
-        v21 = [v5 lengthAllowance];
-        if (v21 >= [v20 lengthIncrease])
+        lengthAllowance = [contextCopy lengthAllowance];
+        if (lengthAllowance >= [v20 lengthIncrease])
         {
-          [v5 decreaseLengthAllowance:{objc_msgSend(v20, "lengthIncrease")}];
-          [v5 incrementRecursiveDepth];
-          v22 = [MEMORY[0x1E695DF70] array];
-          v23 = [v20 rightHandSide];
+          [contextCopy decreaseLengthAllowance:{objc_msgSend(v20, "lengthIncrease")}];
+          [contextCopy incrementRecursiveDepth];
+          array2 = [MEMORY[0x1E695DF70] array];
+          rightHandSide = [v20 rightHandSide];
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v33[0] = __55___HKCFGNonTerminal__tryNodesWithContext_solutionTest___block_invoke;
           v33[1] = &unk_1E737B698;
-          v40 = v30;
-          v34 = v31;
-          v24 = v22;
+          v40 = scanLocation;
+          v34 = scanner;
+          v24 = array2;
           v35 = v24;
           v36 = v20;
-          v37 = v8;
+          v37 = array;
           v39 = &v45;
-          v38 = v6;
-          [(_HKCFGNonTerminal *)self _tryNodesForExpressions:v23 nodes:v24 context:v5 solutionTest:v32];
+          v38 = testCopy;
+          [(_HKCFGNonTerminal *)self _tryNodesForExpressions:rightHandSide nodes:v24 context:contextCopy solutionTest:v32];
 
-          [v5 increaseLengthAllowance:{objc_msgSend(v20, "lengthIncrease")}];
-          [v5 decrementRecursiveDepth];
-          LOBYTE(v23) = *(v46 + 24);
+          [contextCopy increaseLengthAllowance:{objc_msgSend(v20, "lengthIncrease")}];
+          [contextCopy decrementRecursiveDepth];
+          LOBYTE(rightHandSide) = *(v46 + 24);
 
-          if (v23)
+          if (rightHandSide)
           {
             break;
           }
@@ -176,46 +176,46 @@ LABEL_13:
       }
     }
 
-    v25 = [v5 cache];
-    [v25 cacheNodes:v8 forPosition:v30 nonTerminal:self lengthAllowance:{objc_msgSend(v5, "lengthAllowance")}];
+    cache2 = [contextCopy cache];
+    [cache2 cacheNodes:array forPosition:scanLocation nonTerminal:self lengthAllowance:{objc_msgSend(contextCopy, "lengthAllowance")}];
 
     _Block_object_dispose(&v45, 8);
   }
 
-  [v31 setScanLocation:v30];
+  [scanner setScanLocation:scanLocation];
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_tryNodesForExpressions:(id)a3 nodes:(id)a4 context:(id)a5 solutionTest:(id)a6
+- (BOOL)_tryNodesForExpressions:(id)expressions nodes:(id)nodes context:(id)context solutionTest:(id)test
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  expressionsCopy = expressions;
+  nodesCopy = nodes;
+  contextCopy = context;
+  testCopy = test;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v14 = [v11 count];
-  if (v14 >= [v10 count])
+  v14 = [nodesCopy count];
+  if (v14 >= [expressionsCopy count])
   {
-    v16 = v13[2](v13);
+    v16 = testCopy[2](testCopy);
     *(v26 + 24) = v16;
   }
 
   else
   {
-    v15 = [v10 objectAtIndexedSubscript:v14];
+    v15 = [expressionsCopy objectAtIndexedSubscript:v14];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72___HKCFGNonTerminal__tryNodesForExpressions_nodes_context_solutionTest___block_invoke;
     v18[3] = &unk_1E737B6C0;
     v24 = &v25;
-    v19 = v11;
-    v20 = self;
-    v21 = v10;
-    v22 = v12;
-    v23 = v13;
+    v19 = nodesCopy;
+    selfCopy = self;
+    v21 = expressionsCopy;
+    v22 = contextCopy;
+    v23 = testCopy;
     [v15 _tryNodesWithContext:v22 solutionTest:v18];
 
     v16 = *(v26 + 24);
@@ -226,9 +226,9 @@ LABEL_13:
   return v16 & 1;
 }
 
-- (id)_parseTreeWithContext:(id)a3
+- (id)_parseTreeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -239,7 +239,7 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __43___HKCFGNonTerminal__parseTreeWithContext___block_invoke;
   v8[3] = &unk_1E737B6E8;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   v10 = &v11;
   [(_HKCFGNonTerminal *)self _tryNodesWithContext:v5 solutionTest:v8];
@@ -256,16 +256,16 @@ LABEL_13:
   [(_HKCFGNonTerminal *)self _checkForCycles:v3];
 }
 
-- (void)_checkForCycles:(id)a3
+- (void)_checkForCycles:(id)cycles
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 containsObject:self])
+  cyclesCopy = cycles;
+  if ([cyclesCopy containsObject:self])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Grammar contains cycle involving non-terminal %@", self->_label}];
   }
 
-  [v4 addObject:self];
+  [cyclesCopy addObject:self];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -286,17 +286,17 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) rightHandSide];
-        if ([v10 count] == 1)
+        rightHandSide = [*(*(&v15 + 1) + 8 * v9) rightHandSide];
+        if ([rightHandSide count] == 1)
         {
-          v11 = [v10 objectAtIndexedSubscript:0];
+          v11 = [rightHandSide objectAtIndexedSubscript:0];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v13 = [v10 objectAtIndexedSubscript:0];
-            [v13 _checkForCycles:v4];
+            v13 = [rightHandSide objectAtIndexedSubscript:0];
+            [v13 _checkForCycles:cyclesCopy];
           }
         }
 

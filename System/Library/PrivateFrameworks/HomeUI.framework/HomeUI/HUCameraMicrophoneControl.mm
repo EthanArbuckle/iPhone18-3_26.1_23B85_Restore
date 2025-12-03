@@ -1,27 +1,27 @@
 @interface HUCameraMicrophoneControl
 - (CGSize)intrinsicContentSize;
-- (HUCameraMicrophoneControl)initWithFrame:(CGRect)a3;
+- (HUCameraMicrophoneControl)initWithFrame:(CGRect)frame;
 - (UIButton)doneButton;
 - (UIButton)talkButton;
-- (void)setTalking:(BOOL)a3;
+- (void)setTalking:(BOOL)talking;
 @end
 
 @implementation HUCameraMicrophoneControl
 
-- (HUCameraMicrophoneControl)initWithFrame:(CGRect)a3
+- (HUCameraMicrophoneControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HUCameraMicrophoneControl;
-  v3 = [(HUCameraMicrophoneControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraMicrophoneControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(HUCameraMicrophoneControl *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(HUCameraMicrophoneControl *)v4 talkButton];
-    [(HUCameraMicrophoneControl *)v4 addSubview:v5];
+    talkButton = [(HUCameraMicrophoneControl *)v4 talkButton];
+    [(HUCameraMicrophoneControl *)v4 addSubview:talkButton];
 
-    v6 = [(HUCameraMicrophoneControl *)v4 doneButton];
-    [(HUCameraMicrophoneControl *)v4 addSubview:v6];
+    doneButton = [(HUCameraMicrophoneControl *)v4 doneButton];
+    [(HUCameraMicrophoneControl *)v4 addSubview:doneButton];
   }
 
   return v4;
@@ -34,8 +34,8 @@
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
     [MEMORY[0x277D75220] hu_talkStateForButton:v4 usingStandardSymbolConfiguration:1];
-    v5 = [(UIButton *)v4 heightAnchor];
-    v6 = [v5 constraintEqualToConstant:44.0];
+    heightAnchor = [(UIButton *)v4 heightAnchor];
+    v6 = [heightAnchor constraintEqualToConstant:44.0];
     [v6 setActive:1];
 
     [(UIButton *)v4 setUserInteractionEnabled:0];
@@ -56,8 +56,8 @@
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
     [MEMORY[0x277D75220] hu_doneStateForButton:v4 usingStandardSymbolConfiguration:1];
-    v5 = [(UIButton *)v4 heightAnchor];
-    v6 = [v5 constraintEqualToConstant:44.0];
+    heightAnchor = [(UIButton *)v4 heightAnchor];
+    v6 = [heightAnchor constraintEqualToConstant:44.0];
     [v6 setActive:1];
 
     [(UIButton *)v4 setHidden:1];
@@ -68,22 +68,22 @@
     v9 = [v8 initWithPackageIdentifier:*MEMORY[0x277D136F8]];
     [v7 updateWithIconDescriptor:v9 displayStyle:1 animated:1];
     [(UIButton *)v4 addSubview:v7];
-    v10 = [v7 topAnchor];
-    v11 = [(UIButton *)v4 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:13.0];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [(UIButton *)v4 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:13.0];
     [v12 setActive:1];
 
-    v13 = [v7 leadingAnchor];
-    v14 = [(UIButton *)v4 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:10.0];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [(UIButton *)v4 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     [v15 setActive:1];
 
-    v16 = [v7 widthAnchor];
-    v17 = [v16 constraintEqualToConstant:18.0];
+    widthAnchor = [v7 widthAnchor];
+    v17 = [widthAnchor constraintEqualToConstant:18.0];
     [v17 setActive:1];
 
-    v18 = [v7 heightAnchor];
-    v19 = [v18 constraintEqualToConstant:18.0];
+    heightAnchor2 = [v7 heightAnchor];
+    v19 = [heightAnchor2 constraintEqualToConstant:18.0];
     [v19 setActive:1];
 
     doneButtonIconView = self->_doneButtonIconView;
@@ -99,18 +99,18 @@
   return doneButton;
 }
 
-- (void)setTalking:(BOOL)a3
+- (void)setTalking:(BOOL)talking
 {
-  if (self->_talking != a3)
+  if (self->_talking != talking)
   {
-    v3 = a3;
-    v5 = [(HUCameraMicrophoneControl *)self talkButton];
-    [v5 setHidden:v3];
+    talkingCopy = talking;
+    talkButton = [(HUCameraMicrophoneControl *)self talkButton];
+    [talkButton setHidden:talkingCopy];
 
-    v6 = [(HUCameraMicrophoneControl *)self doneButton];
-    [v6 setHidden:v3 ^ 1];
+    doneButton = [(HUCameraMicrophoneControl *)self doneButton];
+    [doneButton setHidden:talkingCopy ^ 1];
 
-    self->_talking = v3;
+    self->_talking = talkingCopy;
 
     [(HUCameraMicrophoneControl *)self invalidateIntrinsicContentSize];
   }

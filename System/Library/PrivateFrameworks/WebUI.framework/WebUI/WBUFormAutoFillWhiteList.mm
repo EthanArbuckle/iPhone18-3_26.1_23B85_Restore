@@ -1,6 +1,6 @@
 @interface WBUFormAutoFillWhiteList
 + (id)sharedAutoFillWhiteList;
-- (BOOL)allowsURL:(id)a3;
+- (BOOL)allowsURL:(id)l;
 - (WBUFormAutoFillWhiteList)init;
 - (void)dealloc;
 @end
@@ -38,8 +38,8 @@ uint64_t __51__WBUFormAutoFillWhiteList_sharedAutoFillWhiteList__block_invoke()
     v2->_cache = v3;
 
     [(NSCache *)v2->_cache setCountLimit:10];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__whiteListSettingsChanged_ name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__whiteListSettingsChanged_ name:*MEMORY[0x277D25CA0] object:0];
 
     v6 = v2;
   }
@@ -49,18 +49,18 @@ uint64_t __51__WBUFormAutoFillWhiteList_sharedAutoFillWhiteList__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WBUFormAutoFillWhiteList;
   [(WBUFormAutoFillWhiteList *)&v4 dealloc];
 }
 
-- (BOOL)allowsURL:(id)a3
+- (BOOL)allowsURL:(id)l
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_cache objectForKey:v4];
+  lCopy = l;
+  v5 = [(NSCache *)self->_cache objectForKey:lCopy];
   v6 = v5;
   if (v5)
   {
@@ -69,12 +69,12 @@ uint64_t __51__WBUFormAutoFillWhiteList_sharedAutoFillWhiteList__block_invoke()
 
   else
   {
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v8 isSafariPasswordAutoFillAllowedForURL:v4];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v7 = [mEMORY[0x277D262A0] isSafariPasswordAutoFillAllowedForURL:lCopy];
 
     cache = self->_cache;
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-    [(NSCache *)cache setObject:v10 forKey:v4];
+    [(NSCache *)cache setObject:v10 forKey:lCopy];
   }
 
   return v7;

@@ -1,25 +1,25 @@
 @interface PushTokenMonitor.PushDelegate
 - (_TtCC13findmylocated16PushTokenMonitorP33_563BA6038F1BAEF600D1CF24D8E6003E12PushDelegate)init;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushTokenMonitor.PushDelegate
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    connectionCopy = connection;
+    selfCopy = self;
+    tokenCopy = token;
     v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }

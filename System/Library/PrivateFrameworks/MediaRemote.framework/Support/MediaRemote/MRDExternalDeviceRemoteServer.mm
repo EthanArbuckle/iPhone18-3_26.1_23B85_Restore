@@ -1,124 +1,124 @@
 @interface MRDExternalDeviceRemoteServer
-- (BOOL)_connection:(id)a3 canReceiveUpdatesForOrigin:(id)a4;
-- (BOOL)_connection:(id)a3 canReceiveUpdatesForPlayerPath:(id)a4;
-- (BOOL)_connection:(id)a3 wasPreviouslySubscribedToPlayerPath:(id)a4;
-- (BOOL)_isConnectionForManagedConfigIDAllowed:(id)a3;
-- (BOOL)_origin:(id)a3 client:(id)a4 matchesSubscribedPlayerPath:(id)a5;
-- (BOOL)_origin:(id)a3 client:(id)a4 player:(id)a5 matchesSubscribedPlayerPath:(id)a6;
-- (BOOL)_origin:(id)a3 matchesSubscribedPlayerPath:(id)a4;
-- (BOOL)_playerPath:(id)a3 matchesSubscribedPlayerPath:(id)a4;
-- (BOOL)_shouldSendStateUpdateMessageFromSource:(int64_t)a3 toClient:(id)a4;
-- (BOOL)_verifyClientVersionCompatibility:(id)a3 withError:(id *)a4;
-- (MRDExternalDeviceRemoteServer)initWithRoutingDataSource:(id)a3;
+- (BOOL)_connection:(id)_connection canReceiveUpdatesForOrigin:(id)origin;
+- (BOOL)_connection:(id)_connection canReceiveUpdatesForPlayerPath:(id)path;
+- (BOOL)_connection:(id)_connection wasPreviouslySubscribedToPlayerPath:(id)path;
+- (BOOL)_isConnectionForManagedConfigIDAllowed:(id)allowed;
+- (BOOL)_origin:(id)_origin client:(id)client matchesSubscribedPlayerPath:(id)path;
+- (BOOL)_origin:(id)_origin client:(id)client player:(id)player matchesSubscribedPlayerPath:(id)path;
+- (BOOL)_origin:(id)_origin matchesSubscribedPlayerPath:(id)path;
+- (BOOL)_playerPath:(id)path matchesSubscribedPlayerPath:(id)playerPath;
+- (BOOL)_shouldSendStateUpdateMessageFromSource:(int64_t)source toClient:(id)client;
+- (BOOL)_verifyClientVersionCompatibility:(id)compatibility withError:(id *)error;
+- (MRDExternalDeviceRemoteServer)initWithRoutingDataSource:(id)source;
 - (NSArray)clients;
 - (NSArray)endpoints;
-- (id)_clientForIdentifier:(id)a3;
-- (id)_clientForPairingSession:(id)a3;
-- (id)_createLocalizedOutputDevices:(id)a3 redactVolume:(BOOL)a4 forClient:(id)a5 endpoint:(id)a6;
-- (id)_findClientIf:(id)a3;
-- (id)_unpair:(id)a3;
-- (unsigned)serverDiscoveryModeForConfiguration:(id)a3;
-- (void)_activeSystemEndpointDidChangeNotification:(id)a3;
-- (void)_addNowPlayingStateToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5;
-- (void)_addOutputDevicesToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5;
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 nowPlayingClient:(id)a5;
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 originClient:(id)a5;
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 playerClient:(id)a5;
-- (void)_addToMessage:(id)a3 withAllClusterDeviceMembers:(id)a4 block:(id)a5;
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 outputDevice:(id)a5 withEndpoint:(id)a6;
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5;
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5 completion:(id)a6;
-- (void)_broadcastKeyboardMessageWithState:(unint64_t)a3 text:(id)a4 attributes:(id)a5;
-- (void)_broadcastRemoteTextInputMessageWithPayload:(id)a3;
-- (void)_clearPlaybackQueueForPlayerPath:(id)a3;
-- (void)_disconnectClient:(id)a3 withError:(id)a4;
-- (void)_handleAdjustVolumeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleApplicationConnectionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleClientConnection:(id)a3;
-- (void)_handleClientUpdatesConfigMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleCreateApplicationConnectionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleCreateHostedEndpointRequestMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleDeletePairedDeviceMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleDeletePairingIdentityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleDeviceInfoRequest:(id)a3 fromClient:(id)a4;
-- (void)_handleDeviceInfoUpdateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGenericMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetInputModeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPairedDevicesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetVolumeControlCapabilitiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetVolumeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetVolumeMutedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleInvalidateApplicationConnectionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleLyricsEventMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleModifyOutputContextRequestMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleMuteVolumeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackQueueRequestMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionMigrateBeginMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionMigrateEndMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionMigratePostMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionMigrateRequestMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionRequestMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleReceivedCommand:(id)a3 fromClient:(id)a4;
-- (void)_handleReceivedVoiceInputMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRegisterGameControllerMessage:(id)a3 client:(id)a4;
-- (void)_handleRegisterHIDDeviceMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRegisterVoiceInputDeviceMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestGroupSessionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestMicrophoneConnectionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSendTelevisionCustomDataMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetConnectionStateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetConversationDetectionEnabledMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetDiscoveryModeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetInputModeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetListeningModeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetMessageLogging:(id)a3 fromClient:(id)a4;
-- (void)_handleSetVolumeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleTelevisionEndpointAvailableMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleTouchEvent:(_MRHIDTouchEvent *)a3 withDeviceID:(unint64_t)a4 fromClient:(id)a5;
-- (void)_handleTriggerAudioFadeMessage:(id)a3 fromClient:(id)a4;
-- (void)_notifyAndDisconnectClient:(id)a3 withError:(id)a4;
-- (void)_notifyAndDisconnectClients:(id)a3 withError:(id)a4 completion:(id)a5;
-- (void)_onQueue_registerDisconnectionHandler:(id)a3 forClient:(id)a4;
+- (id)_clientForIdentifier:(id)identifier;
+- (id)_clientForPairingSession:(id)session;
+- (id)_createLocalizedOutputDevices:(id)devices redactVolume:(BOOL)volume forClient:(id)client endpoint:(id)endpoint;
+- (id)_findClientIf:(id)if;
+- (id)_unpair:(id)_unpair;
+- (unsigned)serverDiscoveryModeForConfiguration:(id)configuration;
+- (void)_activeSystemEndpointDidChangeNotification:(id)notification;
+- (void)_addNowPlayingStateToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint;
+- (void)_addOutputDevicesToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint;
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client nowPlayingClient:(id)playingClient;
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client originClient:(id)originClient;
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client playerClient:(id)playerClient;
+- (void)_addToMessage:(id)message withAllClusterDeviceMembers:(id)members block:(id)block;
+- (void)_addVolumeToMessage:(id)message forClient:(id)client outputDevice:(id)device withEndpoint:(id)endpoint;
+- (void)_addVolumeToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint;
+- (void)_addVolumeToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint completion:(id)completion;
+- (void)_broadcastKeyboardMessageWithState:(unint64_t)state text:(id)text attributes:(id)attributes;
+- (void)_broadcastRemoteTextInputMessageWithPayload:(id)payload;
+- (void)_clearPlaybackQueueForPlayerPath:(id)path;
+- (void)_disconnectClient:(id)client withError:(id)error;
+- (void)_handleAdjustVolumeMessage:(id)message fromClient:(id)client;
+- (void)_handleApplicationConnectionMessage:(id)message fromClient:(id)client;
+- (void)_handleClientConnection:(id)connection;
+- (void)_handleClientUpdatesConfigMessage:(id)message fromClient:(id)client;
+- (void)_handleCreateApplicationConnectionMessage:(id)message fromClient:(id)client;
+- (void)_handleCreateHostedEndpointRequestMessage:(id)message fromClient:(id)client;
+- (void)_handleDeletePairedDeviceMessage:(id)message fromClient:(id)client;
+- (void)_handleDeletePairingIdentityMessage:(id)message fromClient:(id)client;
+- (void)_handleDeviceInfoRequest:(id)request fromClient:(id)client;
+- (void)_handleDeviceInfoUpdateMessage:(id)message fromClient:(id)client;
+- (void)_handleGenericMessage:(id)message fromClient:(id)client;
+- (void)_handleGetInputModeMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPairedDevicesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetVolumeControlCapabilitiesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetVolumeMessage:(id)message fromClient:(id)client;
+- (void)_handleGetVolumeMutedMessage:(id)message fromClient:(id)client;
+- (void)_handleInvalidateApplicationConnectionMessage:(id)message fromClient:(id)client;
+- (void)_handleLyricsEventMessage:(id)message fromClient:(id)client;
+- (void)_handleModifyOutputContextRequestMessage:(id)message fromClient:(id)client;
+- (void)_handleMuteVolumeMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackQueueRequestMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionMigrateBeginMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionMigrateEndMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionMigratePostMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionMigrateRequestMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionRequestMessage:(id)message fromClient:(id)client;
+- (void)_handleReceivedCommand:(id)command fromClient:(id)client;
+- (void)_handleReceivedVoiceInputMessage:(id)message fromClient:(id)client;
+- (void)_handleRegisterGameControllerMessage:(id)message client:(id)client;
+- (void)_handleRegisterHIDDeviceMessage:(id)message fromClient:(id)client;
+- (void)_handleRegisterVoiceInputDeviceMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestGroupSessionMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestMicrophoneConnectionMessage:(id)message fromClient:(id)client;
+- (void)_handleSendTelevisionCustomDataMessage:(id)message fromClient:(id)client;
+- (void)_handleSetConnectionStateMessage:(id)message fromClient:(id)client;
+- (void)_handleSetConversationDetectionEnabledMessage:(id)message fromClient:(id)client;
+- (void)_handleSetDiscoveryModeMessage:(id)message fromClient:(id)client;
+- (void)_handleSetInputModeMessage:(id)message fromClient:(id)client;
+- (void)_handleSetListeningModeMessage:(id)message fromClient:(id)client;
+- (void)_handleSetMessageLogging:(id)logging fromClient:(id)client;
+- (void)_handleSetVolumeMessage:(id)message fromClient:(id)client;
+- (void)_handleTelevisionEndpointAvailableMessage:(id)message fromClient:(id)client;
+- (void)_handleTouchEvent:(_MRHIDTouchEvent *)event withDeviceID:(unint64_t)d fromClient:(id)client;
+- (void)_handleTriggerAudioFadeMessage:(id)message fromClient:(id)client;
+- (void)_notifyAndDisconnectClient:(id)client withError:(id)error;
+- (void)_notifyAndDisconnectClients:(id)clients withError:(id)error completion:(id)completion;
+- (void)_onQueue_registerDisconnectionHandler:(id)handler forClient:(id)client;
 - (void)_prewarmMediaApps;
-- (void)_promoteClient:(id)a3;
+- (void)_promoteClient:(id)client;
 - (void)_registerCallbacks;
-- (void)_sendMessageFromEndpoint:(id)a3 outputDevice:(id)a4 withSource:(int64_t)a5 handler:(id)a6;
-- (void)_sendMessageFromEndpoint:(id)a3 withSource:(int64_t)a4 handler:(id)a5;
-- (void)_sendStateUpdateMessageFromOrigin:(id)a3 source:(int64_t)a4 handler:(id)a5;
-- (void)_sendStateUpdateMessageFromPlayerPath:(id)a3 source:(int64_t)a4 handler:(id)a5;
-- (void)_syncStateToClient:(id)a3;
-- (void)addAuthorizationCallbackForOutputDeviceUID:(id)a3 client:(id)a4;
-- (void)clearEndpointForClient:(id)a3;
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4;
-- (void)collectDiagnostic:(id)a3;
+- (void)_sendMessageFromEndpoint:(id)endpoint outputDevice:(id)device withSource:(int64_t)source handler:(id)handler;
+- (void)_sendMessageFromEndpoint:(id)endpoint withSource:(int64_t)source handler:(id)handler;
+- (void)_sendStateUpdateMessageFromOrigin:(id)origin source:(int64_t)source handler:(id)handler;
+- (void)_sendStateUpdateMessageFromPlayerPath:(id)path source:(int64_t)source handler:(id)handler;
+- (void)_syncStateToClient:(id)client;
+- (void)addAuthorizationCallbackForOutputDeviceUID:(id)d client:(id)client;
+- (void)clearEndpointForClient:(id)client;
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message;
+- (void)collectDiagnostic:(id)diagnostic;
 - (void)dealloc;
-- (void)deviceInfoDidChangeNotification:(id)a3;
-- (void)endpointDidAddOutputDeviceNotification:(id)a3;
-- (void)endpointDidChangeOutputDeviceNotification:(id)a3;
-- (void)endpointDidRemoveOutputDeviceNotification:(id)a3;
-- (void)endpointVolumeControlCapabilitiesDidChangeNotification:(id)a3;
-- (void)endpointVolumeDidChangeNotification:(id)a3;
-- (void)endpointVolumeMutedDidChangeNotification:(id)a3;
-- (void)externalDeviceClient:(id)a3 gameController:(unint64_t)a4 propertiesChanged:(id)a5;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
-- (void)outputDevicesChanged:(id)a3 forConfiguration:(id)a4;
-- (void)pairingSession:(id)a3 didCompleteExchangeWithError:(id)a4;
-- (void)pairingSession:(id)a3 didPrepareExchangeData:(id)a4;
-- (void)pairingSession:(id)a3 showSetupCode:(id)a4;
-- (void)pinPairingDialogDidClose:(id)a3 forClient:(id)a4 userCancelled:(BOOL)a5;
-- (void)playbackDidTimeoutNotification:(id)a3;
-- (void)playerParticipantsDidChangeNotification:(id)a3;
+- (void)deviceInfoDidChangeNotification:(id)notification;
+- (void)endpointDidAddOutputDeviceNotification:(id)notification;
+- (void)endpointDidChangeOutputDeviceNotification:(id)notification;
+- (void)endpointDidRemoveOutputDeviceNotification:(id)notification;
+- (void)endpointVolumeControlCapabilitiesDidChangeNotification:(id)notification;
+- (void)endpointVolumeDidChangeNotification:(id)notification;
+- (void)endpointVolumeMutedDidChangeNotification:(id)notification;
+- (void)externalDeviceClient:(id)client gameController:(unint64_t)controller propertiesChanged:(id)changed;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
+- (void)outputDevicesChanged:(id)changed forConfiguration:(id)configuration;
+- (void)pairingSession:(id)session didCompleteExchangeWithError:(id)error;
+- (void)pairingSession:(id)session didPrepareExchangeData:(id)data;
+- (void)pairingSession:(id)session showSetupCode:(id)code;
+- (void)pinPairingDialogDidClose:(id)close forClient:(id)client userCancelled:(BOOL)cancelled;
+- (void)playbackDidTimeoutNotification:(id)notification;
+- (void)playerParticipantsDidChangeNotification:(id)notification;
 - (void)purgeUnusedDiscoverySessions;
 - (void)registerNotifications;
-- (void)requestRouteAuthorizationStatusForDeviceUID:(id)a3 client:(id)a4;
-- (void)sleepObserverSystemWillSleep:(id)a3 completion:(id)a4;
-- (void)stateObserver:(id)a3 didReceiveClientDidUnregister:(id)a4;
-- (void)stateObserver:(id)a3 didReceiveCoalescedNowPlayingStateChange:(id)a4 playerPath:(id)a5;
-- (void)stateObserver:(id)a3 didReceiveDefaultSupportedCommandsChange:(id)a4 playerPath:(id)a5;
-- (void)stateObserver:(id)a3 didReceiveNowPlayingClientChange:(id)a4;
-- (void)stateObserver:(id)a3 didReceiveNowPlayingPlayerChange:(id)a4;
-- (void)stateObserver:(id)a3 didReceivePlayerDidUnregister:(id)a4;
-- (void)updateASEAssertionForRemoteDeviceID:(id)a3 isAsserting:(BOOL)a4;
+- (void)requestRouteAuthorizationStatusForDeviceUID:(id)d client:(id)client;
+- (void)sleepObserverSystemWillSleep:(id)sleep completion:(id)completion;
+- (void)stateObserver:(id)observer didReceiveClientDidUnregister:(id)unregister;
+- (void)stateObserver:(id)observer didReceiveCoalescedNowPlayingStateChange:(id)change playerPath:(id)path;
+- (void)stateObserver:(id)observer didReceiveDefaultSupportedCommandsChange:(id)change playerPath:(id)path;
+- (void)stateObserver:(id)observer didReceiveNowPlayingClientChange:(id)change;
+- (void)stateObserver:(id)observer didReceiveNowPlayingPlayerChange:(id)change;
+- (void)stateObserver:(id)observer didReceivePlayerDidUnregister:(id)unregister;
+- (void)updateASEAssertionForRemoteDeviceID:(id)d isAsserting:(BOOL)asserting;
 @end
 
 @implementation MRDExternalDeviceRemoteServer
@@ -145,17 +145,17 @@
   return v3;
 }
 
-- (MRDExternalDeviceRemoteServer)initWithRoutingDataSource:(id)a3
+- (MRDExternalDeviceRemoteServer)initWithRoutingDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = MRDExternalDeviceRemoteServer;
   v6 = [(MRDExternalDeviceRemoteServer *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routingDataSource, a3);
-    v8 = [[MRDRemoteControlService alloc] initWithRoutingDataSource:v5];
+    objc_storeStrong(&v6->_routingDataSource, source);
+    v8 = [[MRDRemoteControlService alloc] initWithRoutingDataSource:sourceCopy];
     remoteControlService = v7->_remoteControlService;
     v7->_remoteControlService = v8;
 
@@ -260,8 +260,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) cryptoSession];
-        [v9 setDelegate:0];
+        cryptoSession = [*(*(&v11 + 1) + 8 * v8) cryptoSession];
+        [cryptoSession setDelegate:0];
 
         v8 = v8 + 1;
       }
@@ -278,14 +278,14 @@
   [(MRDExternalDeviceRemoteServer *)&v10 dealloc];
 }
 
-- (void)clearEndpointForClient:(id)a3
+- (void)clearEndpointForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = clientCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Removing television endpoint for client %{public}@", buf, 0xCu);
   }
 
@@ -295,8 +295,8 @@
   v8[2] = sub_100106F48;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = clientCopy;
+  v7 = clientCopy;
   dispatch_sync(serialQueue, v8);
 }
 
@@ -322,24 +322,24 @@
   return v3;
 }
 
-- (void)clientConnection:(id)a3 didReceiveMessage:(id)a4
+- (void)clientConnection:(id)connection didReceiveMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
-  v9 = v6;
-  if ([v7 type] == 15 || objc_msgSend(v7, "type") == 37)
+  connectionCopy = connection;
+  messageCopy = message;
+  type = [messageCopy type];
+  v9 = connectionCopy;
+  if ([messageCopy type] == 15 || objc_msgSend(messageCopy, "type") == 37)
   {
-    v10 = v7;
-    v11 = [v10 deviceInfo];
+    v10 = messageCopy;
+    deviceInfo = [v10 deviceInfo];
 
-    if (v11)
+    if (deviceInfo)
     {
-      v12 = [v10 deviceInfo];
-      [v9 setDeviceInfo:v12];
+      deviceInfo2 = [v10 deviceInfo];
+      [v9 setDeviceInfo:deviceInfo2];
 
-      v13 = [v10 supportedProtocolMessages];
-      [v9 setSupportedMessages:v13];
+      supportedProtocolMessages = [v10 supportedProtocolMessages];
+      [v9 setSupportedMessages:supportedProtocolMessages];
     }
   }
 
@@ -357,11 +357,11 @@
     goto LABEL_16;
   }
 
-  if ([v7 encryptionType] == 1)
+  if ([messageCopy encryptionType] == 1)
   {
     if ([v9 cryptoEnabled])
     {
-      if ([v7 encryptionType] != 1 || (objc_msgSend(v9, "cryptoSession"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isValid"), v16, (v17 & 1) == 0))
+      if ([messageCopy encryptionType] != 1 || (objc_msgSend(v9, "cryptoSession"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isValid"), v16, (v17 & 1) == 0))
       {
         v18 = _MRLogForCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -376,7 +376,7 @@ LABEL_16:
     }
   }
 
-  if (([v9 isAllowedToSendMessageType:v8] & 1) == 0)
+  if (([v9 isAllowedToSendMessageType:type] & 1) == 0)
   {
     v20 = _MRLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -391,90 +391,90 @@ LABEL_16:
   if (Error)
   {
     v22 = [[MRProtocolMessage alloc] initWithUnderlyingCodableMessage:0 error:Error];
-    [v7 replyWithMessage:v22];
+    [messageCopy replyWithMessage:v22];
 LABEL_23:
   }
 
-  else if (v8 > 100)
+  else if (type > 100)
   {
-    if (v8 <= 127)
+    if (type <= 127)
     {
-      if (v8 > 120)
+      if (type > 120)
       {
-        switch(v8)
+        switch(type)
         {
           case 'y':
-            [(MRDExternalDeviceRemoteServer *)self _handleCreateHostedEndpointRequestMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleCreateHostedEndpointRequestMessage:messageCopy fromClient:v9];
             break;
           case '}':
-            [(MRDExternalDeviceRemoteServer *)self _handleAdjustVolumeMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleAdjustVolumeMessage:messageCopy fromClient:v9];
             break;
           case '~':
-            [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeMutedMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeMutedMessage:messageCopy fromClient:v9];
             break;
         }
       }
 
       else
       {
-        switch(v8)
+        switch(type)
         {
           case 'e':
-            [(MRDExternalDeviceRemoteServer *)self _handleSetDiscoveryModeMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleSetDiscoveryModeMessage:messageCopy fromClient:v9];
             break;
           case 'j':
-            [(MRDExternalDeviceRemoteServer *)self _handleTriggerAudioFadeMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleTriggerAudioFadeMessage:messageCopy fromClient:v9];
             break;
           case 'n':
-            [(MRDExternalDeviceRemoteServer *)self _handleSetListeningModeMessage:v7 fromClient:v9];
+            [(MRDExternalDeviceRemoteServer *)self _handleSetListeningModeMessage:messageCopy fromClient:v9];
             break;
         }
       }
     }
 
-    else if (v8 <= 133)
+    else if (type <= 133)
     {
-      switch(v8)
+      switch(type)
       {
         case 128:
-          [(MRDExternalDeviceRemoteServer *)self _handleMuteVolumeMessage:v7 fromClient:v9];
+          [(MRDExternalDeviceRemoteServer *)self _handleMuteVolumeMessage:messageCopy fromClient:v9];
           break;
         case 130:
-          [(MRDExternalDeviceRemoteServer *)self _handleSetConversationDetectionEnabledMessage:v7 fromClient:v9];
+          [(MRDExternalDeviceRemoteServer *)self _handleSetConversationDetectionEnabledMessage:messageCopy fromClient:v9];
           break;
         case 132:
-          [(MRDExternalDeviceRemoteServer *)self _handleRequestGroupSessionMessage:v7 fromClient:v9];
+          [(MRDExternalDeviceRemoteServer *)self _handleRequestGroupSessionMessage:messageCopy fromClient:v9];
           break;
       }
     }
 
-    else if (v8 > 135)
+    else if (type > 135)
     {
-      if (v8 == 136)
+      if (type == 136)
       {
-        [(MRDExternalDeviceRemoteServer *)self _handleInvalidateApplicationConnectionMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleInvalidateApplicationConnectionMessage:messageCopy fromClient:v9];
       }
 
-      else if (v8 == 137)
+      else if (type == 137)
       {
-        [(MRDExternalDeviceRemoteServer *)self _handleRequestMicrophoneConnectionMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleRequestMicrophoneConnectionMessage:messageCopy fromClient:v9];
       }
     }
 
-    else if (v8 == 134)
+    else if (type == 134)
     {
-      [(MRDExternalDeviceRemoteServer *)self _handleCreateApplicationConnectionMessage:v7 fromClient:v9];
+      [(MRDExternalDeviceRemoteServer *)self _handleCreateApplicationConnectionMessage:messageCopy fromClient:v9];
     }
 
     else
     {
-      [(MRDExternalDeviceRemoteServer *)self _handleApplicationConnectionMessage:v7 fromClient:v9];
+      [(MRDExternalDeviceRemoteServer *)self _handleApplicationConnectionMessage:messageCopy fromClient:v9];
     }
   }
 
   else
   {
-    switch(v8)
+    switch(type)
     {
       case 0:
       case 40:
@@ -486,19 +486,19 @@ LABEL_23:
 
         goto LABEL_23;
       case 1:
-        [(MRDExternalDeviceRemoteServer *)self _handleReceivedCommand:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleReceivedCommand:messageCopy fromClient:v9];
         break;
       case 6:
-        [(MRDExternalDeviceRemoteServer *)self _handleRegisterHIDDeviceMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleRegisterHIDDeviceMessage:messageCopy fromClient:v9];
         break;
       case 8:
       case 39:
-        v25 = [v7 buttonEvent];
-        [(MRDExternalDeviceRemoteServer *)self _handleReceivedButtonEvent:v25 fromClient:v26, v9];
+        buttonEvent = [messageCopy buttonEvent];
+        [(MRDExternalDeviceRemoteServer *)self _handleReceivedButtonEvent:buttonEvent fromClient:v26, v9];
         break;
       case 10:
       case 43:
-        v23 = v7;
+        v23 = messageCopy;
         v24 = v23;
         if (v23)
         {
@@ -514,38 +514,38 @@ LABEL_23:
         -[MRDExternalDeviceRemoteServer _handleTouchEvent:withDeviceID:fromClient:](self, "_handleTouchEvent:withDeviceID:fromClient:", &v29, [v24 virtualDeviceID], v9);
         goto LABEL_94;
       case 15:
-        [(MRDExternalDeviceRemoteServer *)self _handleDeviceInfoRequest:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleDeviceInfoRequest:messageCopy fromClient:v9];
         break;
       case 16:
-        [(MRDExternalDeviceRemoteServer *)self _handleClientUpdatesConfigMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleClientUpdatesConfigMessage:messageCopy fromClient:v9];
         break;
       case 18:
-        v27 = v7;
+        v27 = messageCopy;
         v24 = [v9 gameControllerWithID:{objc_msgSend(v27, "controllerID")}];
-        v28 = [v27 event];
+        event = [v27 event];
 
-        [v24 sendGameControllerEvent:v28];
+        [v24 sendGameControllerEvent:event];
         goto LABEL_94;
       case 19:
-        [(MRDExternalDeviceRemoteServer *)self _handleRegisterGameControllerMessage:v7 client:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleRegisterGameControllerMessage:messageCopy client:v9];
         break;
       case 21:
-        [v9 removeGameController:{objc_msgSend(v7, "controllerID")}];
+        [v9 removeGameController:{objc_msgSend(messageCopy, "controllerID")}];
         break;
       case 24:
-        [(MRDExternalDeviceRemoteServer *)self _handleGetKeyboardSessionMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleGetKeyboardSessionMessage:messageCopy fromClient:v9];
         break;
       case 25:
-        [(MRDExternalDeviceRemoteServer *)self _handleTextInputMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleTextInputMessage:messageCopy fromClient:v9];
         break;
       case 28:
-        [(MRDExternalDeviceRemoteServer *)self _handleRegisterVoiceInputDeviceMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleRegisterVoiceInputDeviceMessage:messageCopy fromClient:v9];
         break;
       case 31:
-        [(MRDExternalDeviceRemoteServer *)self _handleReceivedVoiceInputMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleReceivedVoiceInputMessage:messageCopy fromClient:v9];
         break;
       case 32:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackQueueRequestMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackQueueRequestMessage:messageCopy fromClient:v9];
         break;
       case 36:
         v24 = [[MRSetConnectionStateMessage alloc] initWithConnectionState:2];
@@ -554,58 +554,58 @@ LABEL_94:
 
         break;
       case 37:
-        [(MRDExternalDeviceRemoteServer *)self _handleDeviceInfoUpdateMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleDeviceInfoUpdateMessage:messageCopy fromClient:v9];
         break;
       case 38:
-        [(MRDExternalDeviceRemoteServer *)self _handleSetConnectionStateMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleSetConnectionStateMessage:messageCopy fromClient:v9];
         break;
       case 41:
         sub_1001A02A4(1);
         break;
       case 42:
-        [(MRDExternalDeviceRemoteServer *)self _handleGenericMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleGenericMessage:messageCopy fromClient:v9];
         break;
       case 44:
-        [(MRDExternalDeviceRemoteServer *)self _handleLyricsEventMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleLyricsEventMessage:messageCopy fromClient:v9];
         break;
       case 48:
-        [(MRDExternalDeviceRemoteServer *)self _handleModifyOutputContextRequestMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleModifyOutputContextRequestMessage:messageCopy fromClient:v9];
         break;
       case 49:
-        [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeMessage:messageCopy fromClient:v9];
         break;
       case 51:
-        [(MRDExternalDeviceRemoteServer *)self _handleSetVolumeMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleSetVolumeMessage:messageCopy fromClient:v9];
         break;
       case 62:
-        [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeControlCapabilitiesMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleGetVolumeControlCapabilitiesMessage:messageCopy fromClient:v9];
         break;
       case 67:
-        [(MRDExternalDeviceRemoteServer *)self _handleRemoteTextInputMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleRemoteTextInputMessage:messageCopy fromClient:v9];
         break;
       case 68:
-        [(MRDExternalDeviceRemoteServer *)self _handleGetRemoteTextInputSessionMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleGetRemoteTextInputSessionMessage:messageCopy fromClient:v9];
         break;
       case 69:
         notify_post([@"kAirPlayWHANotification_BreakAwayFromCurrentGroup" UTF8String]);
         break;
       case 70:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionRequestMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionRequestMessage:messageCopy fromClient:v9];
         break;
       case 73:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateRequestMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateRequestMessage:messageCopy fromClient:v9];
         break;
       case 75:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateBeginMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateBeginMessage:messageCopy fromClient:v9];
         break;
       case 76:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateEndMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigrateEndMessage:messageCopy fromClient:v9];
         break;
       case 77:
-        [(MRDExternalDeviceRemoteServer *)self _handleUpdateActiveSystemEndpointMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handleUpdateActiveSystemEndpointMessage:messageCopy fromClient:v9];
         break;
       case 78:
-        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigratePostMessage:v7 fromClient:v9];
+        [(MRDExternalDeviceRemoteServer *)self _handlePlaybackSessionMigratePostMessage:messageCopy fromClient:v9];
         break;
       default:
         break;
@@ -613,9 +613,9 @@ LABEL_94:
   }
 }
 
-- (void)stateObserver:(id)a3 didReceiveClientDidUnregister:(id)a4
+- (void)stateObserver:(id)observer didReceiveClientDidUnregister:(id)unregister
 {
-  v5 = a4;
+  unregisterCopy = unregister;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -623,8 +623,8 @@ LABEL_94:
   }
 
   v7 = [MRRemoveClientMessage alloc];
-  v8 = [v5 client];
-  v9 = [v7 initWithClient:v8];
+  client = [unregisterCopy client];
+  v9 = [v7 initWithClient:client];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -632,12 +632,12 @@ LABEL_94:
   v11[3] = &unk_1004BCAE8;
   v12 = v9;
   v10 = v9;
-  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v5 source:1 handler:v11];
+  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:unregisterCopy source:1 handler:v11];
 }
 
-- (void)stateObserver:(id)a3 didReceivePlayerDidUnregister:(id)a4
+- (void)stateObserver:(id)observer didReceivePlayerDidUnregister:(id)unregister
 {
-  v5 = a4;
+  unregisterCopy = unregister;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -648,14 +648,14 @@ LABEL_94:
   v8[1] = 3221225472;
   v8[2] = sub_100107A10;
   v8[3] = &unk_1004BCAE8;
-  v9 = [[MRRemovePlayerMessage alloc] initWithPlayerPath:v5];
+  v9 = [[MRRemovePlayerMessage alloc] initWithPlayerPath:unregisterCopy];
   v7 = v9;
-  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v5 source:1 handler:v8];
+  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:unregisterCopy source:1 handler:v8];
 }
 
-- (void)stateObserver:(id)a3 didReceiveNowPlayingClientChange:(id)a4
+- (void)stateObserver:(id)observer didReceiveNowPlayingClientChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -665,11 +665,11 @@ LABEL_94:
   v7 = objc_alloc_init(MRProtocolMessageOptions);
   [v7 setPriority:4];
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 nowPlayingServer];
+  nowPlayingServer = [v8 nowPlayingServer];
 
   v10 = [MRSetNowPlayingClientMessage alloc];
-  v11 = [v5 client];
-  v12 = [v10 initWithClient:v11];
+  client = [changeCopy client];
+  v12 = [v10 initWithClient:client];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -677,19 +677,19 @@ LABEL_94:
   v17[3] = &unk_1004BCB10;
   v18 = v7;
   v19 = v12;
-  v20 = self;
-  v21 = v5;
-  v22 = v9;
-  v13 = v9;
-  v14 = v5;
+  selfCopy = self;
+  v21 = changeCopy;
+  v22 = nowPlayingServer;
+  v13 = nowPlayingServer;
+  v14 = changeCopy;
   v15 = v12;
   v16 = v7;
   [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v14 source:1 handler:v17];
 }
 
-- (void)stateObserver:(id)a3 didReceiveNowPlayingPlayerChange:(id)a4
+- (void)stateObserver:(id)observer didReceiveNowPlayingPlayerChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -700,15 +700,15 @@ LABEL_94:
   v8[1] = 3221225472;
   v8[2] = sub_100107DCC;
   v8[3] = &unk_1004BCAE8;
-  v9 = [[MRSetNowPlayingPlayerMessage alloc] initWithPlayerPath:v5];
+  v9 = [[MRSetNowPlayingPlayerMessage alloc] initWithPlayerPath:changeCopy];
   v7 = v9;
-  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v5 source:1 handler:v8];
+  [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:changeCopy source:1 handler:v8];
 }
 
-- (void)stateObserver:(id)a3 didReceiveDefaultSupportedCommandsChange:(id)a4 playerPath:(id)a5
+- (void)stateObserver:(id)observer didReceiveDefaultSupportedCommandsChange:(id)change playerPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  pathCopy = path;
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -720,10 +720,10 @@ LABEL_94:
   v16[2] = sub_100108064;
   v16[3] = &unk_1004BCB38;
   v17 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v18 = v7;
-  v19 = v8;
-  v10 = v8;
-  v11 = v7;
+  v18 = changeCopy;
+  v19 = pathCopy;
+  v10 = pathCopy;
+  v11 = changeCopy;
   v12 = v17;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -734,10 +734,10 @@ LABEL_94:
   [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v10 source:1 handler:v14];
 }
 
-- (void)stateObserver:(id)a3 didReceiveCoalescedNowPlayingStateChange:(id)a4 playerPath:(id)a5
+- (void)stateObserver:(id)observer didReceiveCoalescedNowPlayingStateChange:(id)change playerPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  pathCopy = path;
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -748,72 +748,72 @@ LABEL_94:
   v12[1] = 3221225472;
   v12[2] = sub_1001082CC;
   v12[3] = &unk_1004BCB88;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = changeCopy;
+  v14 = pathCopy;
+  v10 = pathCopy;
+  v11 = changeCopy;
   [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v10 source:1 handler:v12];
 }
 
-- (void)pairingSession:(id)a3 didPrepareExchangeData:(id)a4
+- (void)pairingSession:(id)session didPrepareExchangeData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:v6];
+  sessionCopy = session;
+  dataCopy = data;
+  v8 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:sessionCopy];
   v9 = _MRLogForCategory();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
   {
     if (v10)
     {
-      v11 = [v7 length];
-      v12 = [v8 deviceInfo];
-      v13 = [v12 name];
+      v11 = [dataCopy length];
+      deviceInfo = [v8 deviceInfo];
+      name = [deviceInfo name];
       v14 = 134218242;
       v15 = v11;
       v16 = 2114;
-      v17 = v13;
+      v17 = name;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Exchanging %llu bytes of crypto pairing data with client %{public}@", &v14, 0x16u);
     }
 
-    v9 = [[MRCryptoPairingMessage alloc] initWithPairingData:v7 status:0];
+    v9 = [[MRCryptoPairingMessage alloc] initWithPairingData:dataCopy status:0];
     [v8 sendMessage:v9];
   }
 
   else if (v10)
   {
     v14 = 138543362;
-    v15 = v6;
+    v15 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] ERROR: Unable to exchange pairing data. Unknown client for crypto pairing session: %{public}@", &v14, 0xCu);
   }
 }
 
-- (void)pairingSession:(id)a3 showSetupCode:(id)a4
+- (void)pairingSession:(id)session showSetupCode:(id)code
 {
-  v6 = a4;
-  v7 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:a3];
+  codeCopy = code;
+  v7 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:session];
   v8 = +[MROrigin localOrigin];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10010884C;
   v11[3] = &unk_1004BCBB0;
-  v12 = v6;
-  v13 = self;
+  v12 = codeCopy;
+  selfCopy = self;
   v14 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = codeCopy;
   [MRDeviceInfoRequest deviceInfoForOrigin:v8 queue:&_dispatch_main_q completion:v11];
 }
 
-- (void)pairingSession:(id)a3 didCompleteExchangeWithError:(id)a4
+- (void)pairingSession:(id)session didCompleteExchangeWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:v6];
-  v9 = [v8 deviceInfo];
-  v10 = [v9 name];
+  sessionCopy = session;
+  errorCopy = error;
+  v8 = [(MRDExternalDeviceRemoteServer *)self _clientForPairingSession:sessionCopy];
+  deviceInfo = [v8 deviceInfo];
+  name = [deviceInfo name];
 
-  if (!v7)
+  if (!errorCopy)
   {
     v13 = _MRLogForCategory();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -822,7 +822,7 @@ LABEL_94:
     }
 
     *buf = 138543362;
-    v19[0] = v10;
+    v19[0] = name;
     v14 = "[ExternalDeviceServer] Successfully opened security session with peer %{public}@";
 LABEL_10:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 0xCu);
@@ -838,23 +838,23 @@ LABEL_10:
     }
 
     *buf = 138543362;
-    v19[0] = v6;
+    v19[0] = sessionCopy;
     v14 = "[ExternalDeviceServer] ERROR: Unable to send pairing failure message. Unknown client for crypto pairing session: %{public}@";
     goto LABEL_10;
   }
 
-  v11 = [v7 code];
+  code = [errorCopy code];
   v12 = _MRLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    LODWORD(v19[0]) = v11;
+    LODWORD(v19[0]) = code;
     WORD2(v19[0]) = 2114;
-    *(v19 + 6) = v10;
+    *(v19 + 6) = name;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Returning OSStatus code %d back to %{public}@", buf, 0x12u);
   }
 
-  v13 = [[MRCryptoPairingMessage alloc] initWithPairingData:0 status:v11];
+  v13 = [[MRCryptoPairingMessage alloc] initWithPairingData:0 status:code];
   [v8 sendMessage:v13];
 LABEL_11:
 
@@ -868,67 +868,67 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, v16);
 }
 
-- (void)pinPairingDialogDidClose:(id)a3 forClient:(id)a4 userCancelled:(BOOL)a5
+- (void)pinPairingDialogDidClose:(id)close forClient:(id)client userCancelled:(BOOL)cancelled
 {
-  v9 = a4;
-  v6 = [v9 cryptoSession];
-  v7 = [v6 isValid];
+  clientCopy = client;
+  cryptoSession = [clientCopy cryptoSession];
+  isValid = [cryptoSession isValid];
 
-  if ((v7 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     Error = MRMediaRemoteCreateError();
-    [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClient:v9 withError:Error];
+    [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClient:clientCopy withError:Error];
   }
 }
 
-- (void)externalDeviceClient:(id)a3 gameController:(unint64_t)a4 propertiesChanged:(id)a5
+- (void)externalDeviceClient:(id)client gameController:(unint64_t)controller propertiesChanged:(id)changed
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[MRGameControllerPropertiesMessage alloc] initWithGameControllerProperties:v7 controllerID:a4];
+  changedCopy = changed;
+  clientCopy = client;
+  v9 = [[MRGameControllerPropertiesMessage alloc] initWithGameControllerProperties:changedCopy controllerID:controller];
 
-  [v8 sendMessage:v9];
+  [clientCopy sendMessage:v9];
 }
 
-- (id)_createLocalizedOutputDevices:(id)a3 redactVolume:(BOOL)a4 forClient:(id)a5 endpoint:(id)a6
+- (id)_createLocalizedOutputDevices:(id)devices redactVolume:(BOOL)volume forClient:(id)client endpoint:(id)endpoint
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 mr_allOutputDevices];
-  v12 = [v11 mr_redactClusterMembers];
+  clientCopy = client;
+  endpointCopy = endpoint;
+  mr_allOutputDevices = [devices mr_allOutputDevices];
+  mr_redactClusterMembers = [mr_allOutputDevices mr_redactClusterMembers];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100109140;
   v25[3] = &unk_1004B8A40;
-  v13 = v9;
+  v13 = clientCopy;
   v26 = v13;
-  v14 = [v12 msv_filter:v25];
+  v14 = [mr_redactClusterMembers msv_filter:v25];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1001091D4;
   v22[3] = &unk_1004B9AD0;
   v23 = v13;
-  v24 = v10;
-  v15 = v10;
+  v24 = endpointCopy;
+  v15 = endpointCopy;
   v16 = v13;
   v17 = [v14 msv_map:v22];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100109248;
   v20[3] = &unk_1004BCBD0;
-  v21 = a4;
+  volumeCopy = volume;
   v18 = [v17 msv_map:v20];
 
   return v18;
 }
 
-- (void)endpointDidAddOutputDeviceNotification:(id)a3
+- (void)endpointDidAddOutputDeviceNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -936,19 +936,19 @@ LABEL_11:
   v10[3] = &unk_1004BCBF8;
   v10[4] = self;
   v11 = v7;
-  v12 = v5;
-  v8 = v5;
+  v12 = object;
+  v8 = object;
   v9 = v7;
   [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v8 outputDevice:v9 withSource:3 handler:v10];
 }
 
-- (void)endpointDidChangeOutputDeviceNotification:(id)a3
+- (void)endpointDidChangeOutputDeviceNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -956,19 +956,19 @@ LABEL_11:
   v10[3] = &unk_1004BCBF8;
   v10[4] = self;
   v11 = v7;
-  v12 = v5;
-  v8 = v5;
+  v12 = object;
+  v8 = object;
   v9 = v7;
   [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v8 outputDevice:v9 withSource:3 handler:v10];
 }
 
-- (void)endpointDidRemoveOutputDeviceNotification:(id)a3
+- (void)endpointDidRemoveOutputDeviceNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -976,48 +976,48 @@ LABEL_11:
   v10[3] = &unk_1004BCBF8;
   v10[4] = self;
   v11 = v7;
-  v12 = v5;
-  v8 = v5;
+  v12 = object;
+  v8 = object;
   v9 = v7;
   [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v8 outputDevice:v9 withSource:3 handler:v10];
 }
 
-- (void)endpointVolumeControlCapabilitiesDidChangeNotification:(id)a3
+- (void)endpointVolumeControlCapabilitiesDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointVolumeControlCapabilitiesUserInfoKey];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointVolumeControlCapabilitiesUserInfoKey];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v9 = [userInfo2 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   if (v9)
   {
-    v10 = [v7 intValue];
+    intValue = [v7 intValue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100109AB0;
     v11[3] = &unk_1004BCC20;
     v11[4] = self;
     v12 = v9;
-    v13 = v5;
-    v14 = v10;
+    v13 = object;
+    v14 = intValue;
     [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v13 outputDevice:v12 withSource:2 handler:v11];
   }
 }
 
-- (void)endpointVolumeDidChangeNotification:(id)a3
+- (void)endpointVolumeDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointVolumeUserInfoKey];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointVolumeUserInfoKey];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v9 = [userInfo2 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   if (v9)
   {
@@ -1029,45 +1029,45 @@ LABEL_11:
     v12[3] = &unk_1004BCC20;
     v12[4] = self;
     v13 = v9;
-    v14 = v5;
+    v14 = object;
     v15 = v11;
     [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v14 outputDevice:v13 withSource:2 handler:v12];
   }
 }
 
-- (void)endpointVolumeMutedDidChangeNotification:(id)a3
+- (void)endpointVolumeMutedDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:MRAVEndpointVolumeMutedUserInfoKey];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:MRAVEndpointVolumeMutedUserInfoKey];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
+  v9 = [userInfo2 objectForKeyedSubscript:MRAVEndpointOutputDeviceUserInfoKey];
 
   if (v9)
   {
-    v10 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100109EC8;
     v11[3] = &unk_1004BCC48;
     v11[4] = self;
     v12 = v9;
-    v13 = v5;
-    v14 = v10;
+    v13 = object;
+    v14 = bOOLValue;
     [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:v13 outputDevice:v12 withSource:2 handler:v11];
   }
 }
 
-- (void)deviceInfoDidChangeNotification:(id)a3
+- (void)deviceInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v6 = MRGetPlayerPathFromUserInfo();
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
   v8 = MRGetDeviceInfoFromUserInfo();
 
   if (v8)
@@ -1078,61 +1078,61 @@ LABEL_11:
     v13[3] = sub_10003511C;
     v13[4] = sub_100035A44;
     v14 = 0;
-    v9 = [v6 origin];
+    origin = [v6 origin];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10010A0D4;
     v10[3] = &unk_1004BCC70;
     v12 = v13;
     v11 = v8;
-    [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromOrigin:v9 source:0 handler:v10];
+    [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromOrigin:origin source:0 handler:v10];
 
     _Block_object_dispose(v13, 8);
   }
 }
 
-- (void)playerParticipantsDidChangeNotification:(id)a3
+- (void)playerParticipantsDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = MRGetPlayerPathFromUserInfo();
 
   if (v5 && [v5 isResolved])
   {
     v6 = +[MRDMediaRemoteServer server];
-    v7 = [v6 nowPlayingServer];
-    v8 = [v7 queryExistingPlayerPath:v5];
+    nowPlayingServer = [v6 nowPlayingServer];
+    v8 = [nowPlayingServer queryExistingPlayerPath:v5];
 
-    v9 = [v8 playerClient];
-    v10 = v9;
-    if (v9)
+    playerClient = [v8 playerClient];
+    v10 = playerClient;
+    if (playerClient)
     {
-      v11 = [v9 participantDataSource];
+      participantDataSource = [playerClient participantDataSource];
 
-      if (v11)
+      if (participantDataSource)
       {
         v12 = [MRPlayerClientParticipantsUpdateMessage alloc];
-        v13 = [v10 playerPath];
-        v14 = [v10 participantDataSource];
-        v15 = [v14 participants];
-        v16 = [v12 initWithPlayerPath:v13 participants:v15];
+        playerPath = [v10 playerPath];
+        participantDataSource2 = [v10 participantDataSource];
+        participants = [participantDataSource2 participants];
+        v16 = [v12 initWithPlayerPath:playerPath participants:participants];
 
-        v17 = [v5 origin];
+        origin = [v5 origin];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_10010A308;
         v19[3] = &unk_1004BCAE8;
         v20 = v16;
         v18 = v16;
-        [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromOrigin:v17 source:1 handler:v19];
+        [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromOrigin:origin source:1 handler:v19];
       }
     }
   }
 }
 
-- (void)playbackDidTimeoutNotification:(id)a3
+- (void)playbackDidTimeoutNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v6 = MRGetOriginFromUserInfo();
 
   v11[0] = 0;
@@ -1153,16 +1153,16 @@ LABEL_11:
   _Block_object_dispose(v11, 8);
 }
 
-- (void)_addToMessage:(id)a3 withAllClusterDeviceMembers:(id)a4 block:(id)a5
+- (void)_addToMessage:(id)message withAllClusterDeviceMembers:(id)members block:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a4 clusterComposition];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  clusterComposition = [members clusterComposition];
+  v10 = [clusterComposition countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1173,44 +1173,44 @@ LABEL_11:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(clusterComposition);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
         v15 = [v14 uid];
-        v16 = v8[2](v8, v15, [v14 deviceSubtype]);
+        v16 = blockCopy[2](blockCopy, v15, [v14 deviceSubtype]);
 
         if (v16)
         {
-          [v7 addMessage:v16];
+          [messageCopy addMessage:v16];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [clusterComposition countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_activeSystemEndpointDidChangeNotification:(id)a3
+- (void)_activeSystemEndpointDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
   v6 = [v5 copy];
 
   if (v6 && ![v6 type] && (objc_msgSend(v6, "isPairedDeviceSync") & 1) == 0 && (objc_msgSend(v6, "suppressPairedDeviceSync") & 1) == 0)
   {
-    v7 = [v6 outputDeviceUID];
-    if (!v7)
+    outputDeviceUID = [v6 outputDeviceUID];
+    if (!outputDeviceUID)
     {
       goto LABEL_7;
     }
 
-    v8 = v7;
-    v9 = [v6 outputDeviceUID];
+    v8 = outputDeviceUID;
+    outputDeviceUID2 = [v6 outputDeviceUID];
     v10 = +[MRAVOutputDevice localDeviceUID];
-    v11 = [v9 isEqualToString:v10];
+    v11 = [outputDeviceUID2 isEqualToString:v10];
 
     if (v11)
     {
@@ -1218,8 +1218,8 @@ LABEL_7:
       v12 = +[MROrigin localOrigin];
       v13 = [MRDeviceInfoRequest deviceInfoForOrigin:v12];
 
-      v14 = [v13 WHAIdentifier];
-      [v6 setOutputDeviceUID:v14];
+      wHAIdentifier = [v13 WHAIdentifier];
+      [v6 setOutputDeviceUID:wHAIdentifier];
     }
 
     v15 = [[MRUpdateActiveSystemEndpointMessage alloc] initWithRequest:v6];
@@ -1234,10 +1234,10 @@ LABEL_7:
   }
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   uint64 = xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY");
   if (uint64 > 0x600000000000005)
   {
@@ -1245,12 +1245,12 @@ LABEL_7:
     {
       if (uint64 == 0x600000000000006)
       {
-        [(MRDExternalDeviceRemoteServer *)self _handleSetMessageLogging:xdict fromClient:v6];
+        [(MRDExternalDeviceRemoteServer *)self _handleSetMessageLogging:xdict fromClient:clientCopy];
       }
 
       else if (uint64 == 0x600000000000009)
       {
-        [(MRDExternalDeviceRemoteServer *)self _handleTelevisionEndpointAvailableMessage:xdict fromClient:v6];
+        [(MRDExternalDeviceRemoteServer *)self _handleTelevisionEndpointAvailableMessage:xdict fromClient:clientCopy];
       }
     }
 
@@ -1259,13 +1259,13 @@ LABEL_7:
       switch(uint64)
       {
         case 0x60000000000000ALL:
-          [(MRDExternalDeviceRemoteServer *)self _handleSendTelevisionCustomDataMessage:xdict fromClient:v6];
+          [(MRDExternalDeviceRemoteServer *)self _handleSendTelevisionCustomDataMessage:xdict fromClient:clientCopy];
           break;
         case 0x60000000000000BLL:
-          [(MRDExternalDeviceRemoteServer *)self _handleSystemGroupSessionStartMessage:xdict fromClient:v6];
+          [(MRDExternalDeviceRemoteServer *)self _handleSystemGroupSessionStartMessage:xdict fromClient:clientCopy];
           break;
         case 0x60000000000000CLL:
-          [(MRDExternalDeviceRemoteServer *)self _handleSystemGroupSessionStopMessage:xdict fromClient:v6];
+          [(MRDExternalDeviceRemoteServer *)self _handleSystemGroupSessionStopMessage:xdict fromClient:clientCopy];
           break;
       }
     }
@@ -1275,61 +1275,61 @@ LABEL_7:
   {
     if (uint64 == 0x600000000000001)
     {
-      [(MRDExternalDeviceRemoteServer *)self _handleGetInputModeMessage:xdict fromClient:v6];
+      [(MRDExternalDeviceRemoteServer *)self _handleGetInputModeMessage:xdict fromClient:clientCopy];
     }
 
     else if (uint64 == 0x600000000000002)
     {
-      [(MRDExternalDeviceRemoteServer *)self _handleSetInputModeMessage:xdict fromClient:v6];
+      [(MRDExternalDeviceRemoteServer *)self _handleSetInputModeMessage:xdict fromClient:clientCopy];
     }
   }
 
   else if (uint64 == 0x600000000000003)
   {
-    [(MRDExternalDeviceRemoteServer *)self _handleDeletePairingIdentityMessage:xdict fromClient:v6];
+    [(MRDExternalDeviceRemoteServer *)self _handleDeletePairingIdentityMessage:xdict fromClient:clientCopy];
   }
 
   else if (uint64 == 0x600000000000004)
   {
-    [(MRDExternalDeviceRemoteServer *)self _handleGetPairedDevicesMessage:xdict fromClient:v6];
+    [(MRDExternalDeviceRemoteServer *)self _handleGetPairedDevicesMessage:xdict fromClient:clientCopy];
   }
 
   else
   {
-    [(MRDExternalDeviceRemoteServer *)self _handleDeletePairedDeviceMessage:xdict fromClient:v6];
+    [(MRDExternalDeviceRemoteServer *)self _handleDeletePairedDeviceMessage:xdict fromClient:clientCopy];
   }
 }
 
-- (void)sleepObserverSystemWillSleep:(id)a3 completion:(id)a4
+- (void)sleepObserverSystemWillSleep:(id)sleep completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   Error = MRMediaRemoteCreateError();
-  v6 = [(MRDExternalDeviceRemoteServer *)self clients];
-  [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClients:v6 withError:Error completion:v5];
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
+  [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClients:clients withError:Error completion:completionCopy];
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010ABBC;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = diagnosticCopy;
+  selfCopy = self;
+  v6 = diagnosticCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)_handleClientConnection:(id)a3
+- (void)_handleClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v4;
+    v18 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Client connected: %{public}@", buf, 0xCu);
   }
 
@@ -1338,9 +1338,9 @@ LABEL_7:
   v12 = 3221225472;
   v13 = sub_10010AF7C;
   v14 = &unk_1004B68F0;
-  v15 = self;
-  v16 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v16 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_sync(serialQueue, &v11);
   v8 = [MRUserSettings currentSettings:v11];
   [v8 externalDeviceSleepAssertionOnClientConnectDuration];
@@ -1366,18 +1366,18 @@ LABEL_7:
   MRMediaRemoteGetSupportedCommandsForClient();
 }
 
-- (void)_disconnectClient:(id)a3 withError:(id)a4
+- (void)_disconnectClient:(id)client withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  clientCopy = client;
+  errorCopy = error;
+  v8 = clientCopy;
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] MRExternalClientConnection did disconnect client: %{public}@ with error %{public}@", buf, 0x16u);
   }
 
@@ -1426,17 +1426,17 @@ LABEL_7:
     [(MRDExternalDeviceRemoteServer *)self purgeUnusedDiscoverySessions];
     if (MSVDeviceIsAudioAccessory())
     {
-      v13 = [v12 deviceInfo];
-      v14 = [v13 WHAIdentifier];
-      [(MRDExternalDeviceRemoteServer *)self updateASEAssertionForRemoteDeviceID:v14 isAsserting:0];
+      deviceInfo = [v12 deviceInfo];
+      wHAIdentifier = [deviceInfo WHAIdentifier];
+      [(MRDExternalDeviceRemoteServer *)self updateASEAssertionForRemoteDeviceID:wHAIdentifier isAsserting:0];
     }
 
     v15 = +[MRDMediaRemoteServer server];
     [v15 postClientNotificationNamed:kMRTelevisionServicePairedDevicesDidChangeNotification];
 
     v16 = +[NSNotificationCenter defaultCenter];
-    v17 = [v12 connection];
-    [v16 postNotificationName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:v17 userInfo:0];
+    connection = [v12 connection];
+    [v16 postNotificationName:@"MRDMediaRemoteExternalDeviceServerClientInvalidatedNotification" object:connection userInfo:0];
 
     v24 = 0u;
     v25 = 0u;
@@ -1473,9 +1473,9 @@ LABEL_7:
   _Block_object_dispose(&v32, 8);
 }
 
-- (id)_findClientIf:(id)a3
+- (id)_findClientIf:(id)if
 {
-  v4 = a3;
+  ifCopy = if;
   [(MRDExternalDeviceRemoteServer *)self clients];
   v11 = 0u;
   v12 = 0u;
@@ -1495,7 +1495,7 @@ LABEL_7:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (v4[2](v4, v9))
+        if (ifCopy[2](ifCopy, v9))
         {
           v6 = v9;
           goto LABEL_11;
@@ -1517,45 +1517,45 @@ LABEL_11:
   return v6;
 }
 
-- (id)_clientForPairingSession:(id)a3
+- (id)_clientForPairingSession:(id)session
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010B908;
   v7[3] = &unk_1004BCDB0;
-  v8 = a3;
-  v4 = v8;
+  sessionCopy = session;
+  v4 = sessionCopy;
   v5 = [(MRDExternalDeviceRemoteServer *)self _findClientIf:v7];
 
   return v5;
 }
 
-- (id)_clientForIdentifier:(id)a3
+- (id)_clientForIdentifier:(id)identifier
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010B9F8;
   v7[3] = &unk_1004BCDB0;
-  v8 = a3;
-  v4 = v8;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   v5 = [(MRDExternalDeviceRemoteServer *)self _findClientIf:v7];
 
   return v5;
 }
 
-- (BOOL)_verifyClientVersionCompatibility:(id)a3 withError:(id *)a4
+- (BOOL)_verifyClientVersionCompatibility:(id)compatibility withError:(id *)error
 {
-  v5 = [a3 deviceInfo];
-  v6 = [v5 name];
-  v7 = [v5 bundleIdentifier];
-  v8 = [v5 bundleVersion];
-  v9 = [v5 protocolVersion];
-  if (v9 >= [objc_opt_class() minimumSupportedProtocolVersion])
+  deviceInfo = [compatibility deviceInfo];
+  name = [deviceInfo name];
+  bundleIdentifier = [deviceInfo bundleIdentifier];
+  bundleVersion = [deviceInfo bundleVersion];
+  protocolVersion = [deviceInfo protocolVersion];
+  if (protocolVersion >= [objc_opt_class() minimumSupportedProtocolVersion])
   {
-    if (![v7 isEqualToString:@"com.apple.TVRemote"] || (v14 = objc_msgSend(v8, "integerValue"), v14 >= objc_msgSend(objc_opt_class(), "minimumSupportedHangdogApplicationVersion")))
+    if (![bundleIdentifier isEqualToString:@"com.apple.TVRemote"] || (v14 = objc_msgSend(bundleVersion, "integerValue"), v14 >= objc_msgSend(objc_opt_class(), "minimumSupportedHangdogApplicationVersion")))
     {
       Error = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_6;
       }
@@ -1567,11 +1567,11 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = v6;
+      v16 = name;
       v17 = 2048;
-      v18 = [v8 integerValue];
+      integerValue = [bundleVersion integerValue];
       v19 = 2048;
-      v20 = [objc_opt_class() minimumSupportedHangdogApplicationVersion];
+      minimumSupportedHangdogApplicationVersion = [objc_opt_class() minimumSupportedHangdogApplicationVersion];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Client %{public}@ is not compatible. TVRemote application version %llu is less than the required minimum version %llu", &v15, 0x20u);
     }
   }
@@ -1582,21 +1582,21 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = v6;
+      v16 = name;
       v17 = 2048;
-      v18 = [v5 protocolVersion];
+      integerValue = [deviceInfo protocolVersion];
       v19 = 2048;
-      v20 = [objc_opt_class() minimumSupportedProtocolVersion];
+      minimumSupportedHangdogApplicationVersion = [objc_opt_class() minimumSupportedProtocolVersion];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Client %{public}@ is not compatible. Protocol version %llu is less than the required minimum version %llu", &v15, 0x20u);
     }
   }
 
   Error = MRMediaRemoteCreateError();
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v12 = Error;
-    *a4 = Error;
+    *error = Error;
   }
 
 LABEL_6:
@@ -1604,22 +1604,22 @@ LABEL_6:
   return Error == 0;
 }
 
-- (BOOL)_connection:(id)a3 wasPreviouslySubscribedToPlayerPath:(id)a4
+- (BOOL)_connection:(id)_connection wasPreviouslySubscribedToPlayerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  _connectionCopy = _connection;
+  pathCopy = path;
+  if (pathCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = [v6 subscribedPlayerPaths];
+    obj = [_connectionCopy subscribedPlayerPaths];
     v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
-      v22 = v6;
+      v22 = _connectionCopy;
       v10 = *v25;
       while (2)
       {
@@ -1631,14 +1631,14 @@ LABEL_6:
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v7 origin];
-          v14 = [(MRDExternalDeviceRemoteServer *)self _origin:v13 matchesSubscribedPlayerPath:v12];
+          origin = [pathCopy origin];
+          v14 = [(MRDExternalDeviceRemoteServer *)self _origin:origin matchesSubscribedPlayerPath:v12];
 
           if (v14)
           {
-            v15 = [v12 client];
+            client = [v12 client];
             v16 = +[MRClient anyClient];
-            if ([v15 isEqual:v16])
+            if ([client isEqual:v16])
             {
 
 LABEL_16:
@@ -1646,9 +1646,9 @@ LABEL_16:
               goto LABEL_17;
             }
 
-            v17 = [v12 client];
-            v18 = [v7 client];
-            v19 = [v17 isEqual:v18];
+            client2 = [v12 client];
+            client3 = [pathCopy client];
+            v19 = [client2 isEqual:client3];
 
             if (v19)
             {
@@ -1668,7 +1668,7 @@ LABEL_16:
 
       v20 = 0;
 LABEL_17:
-      v6 = v22;
+      _connectionCopy = v22;
     }
 
     else
@@ -1685,18 +1685,18 @@ LABEL_17:
   return v20;
 }
 
-- (BOOL)_connection:(id)a3 canReceiveUpdatesForPlayerPath:(id)a4
+- (BOOL)_connection:(id)_connection canReceiveUpdatesForPlayerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  _connectionCopy = _connection;
+  pathCopy = path;
+  if (pathCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v6 subscribedPlayerPaths];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subscribedPlayerPaths = [_connectionCopy subscribedPlayerPaths];
+    v9 = [subscribedPlayerPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1707,17 +1707,17 @@ LABEL_17:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subscribedPlayerPaths);
           }
 
-          if ([(MRDExternalDeviceRemoteServer *)self _playerPath:v7 matchesSubscribedPlayerPath:*(*(&v15 + 1) + 8 * i)])
+          if ([(MRDExternalDeviceRemoteServer *)self _playerPath:pathCopy matchesSubscribedPlayerPath:*(*(&v15 + 1) + 8 * i)])
           {
             v13 = 1;
             goto LABEL_12;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [subscribedPlayerPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -1739,18 +1739,18 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_connection:(id)a3 canReceiveUpdatesForOrigin:(id)a4
+- (BOOL)_connection:(id)_connection canReceiveUpdatesForOrigin:(id)origin
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  _connectionCopy = _connection;
+  originCopy = origin;
+  if (originCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v6 subscribedPlayerPaths];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subscribedPlayerPaths = [_connectionCopy subscribedPlayerPaths];
+    v9 = [subscribedPlayerPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1761,17 +1761,17 @@ LABEL_12:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subscribedPlayerPaths);
           }
 
-          if ([(MRDExternalDeviceRemoteServer *)self _origin:v7 matchesSubscribedPlayerPath:*(*(&v15 + 1) + 8 * i)])
+          if ([(MRDExternalDeviceRemoteServer *)self _origin:originCopy matchesSubscribedPlayerPath:*(*(&v15 + 1) + 8 * i)])
           {
             v13 = 1;
             goto LABEL_12;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [subscribedPlayerPaths countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -1793,10 +1793,10 @@ LABEL_12:
   return v13;
 }
 
-- (void)_sendMessageFromEndpoint:(id)a3 withSource:(int64_t)a4 handler:(id)a5
+- (void)_sendMessageFromEndpoint:(id)endpoint withSource:(int64_t)source handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   [(MRDExternalDeviceRemoteServer *)self clients];
   v23 = 0u;
   v24 = 0u;
@@ -1816,17 +1816,17 @@ LABEL_12:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:a4 toClient:v14])
+        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:source toClient:v14])
         {
           objc_initWeak(&location, self);
           v15[0] = _NSConcreteStackBlock;
           v15[1] = 3221225472;
           v15[2] = sub_10010C324;
           v15[3] = &unk_1004BCDD8;
-          v16 = v8;
+          v16 = endpointCopy;
           objc_copyWeak(&v19, &location);
           v17 = v14;
-          v18 = v9;
+          v18 = handlerCopy;
           [v14 requestDestinationEndpoint:v15];
 
           objc_destroyWeak(&v19);
@@ -1841,29 +1841,29 @@ LABEL_12:
   }
 }
 
-- (void)_sendMessageFromEndpoint:(id)a3 outputDevice:(id)a4 withSource:(int64_t)a5 handler:(id)a6
+- (void)_sendMessageFromEndpoint:(id)endpoint outputDevice:(id)device withSource:(int64_t)source handler:(id)handler
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10010C4B0;
   v12[3] = &unk_1004BCE00;
-  v13 = a4;
-  v14 = a6;
-  v10 = v14;
-  v11 = v13;
-  [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:a3 withSource:a5 handler:v12];
+  deviceCopy = device;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  v11 = deviceCopy;
+  [(MRDExternalDeviceRemoteServer *)self _sendMessageFromEndpoint:endpoint withSource:source handler:v12];
 }
 
-- (void)_sendStateUpdateMessageFromPlayerPath:(id)a3 source:(int64_t)a4 handler:(id)a5
+- (void)_sendStateUpdateMessageFromPlayerPath:(id)path source:(int64_t)source handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MRDExternalDeviceRemoteServer *)self clients];
+  pathCopy = path;
+  handlerCopy = handler;
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [clients countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1874,13 +1874,13 @@ LABEL_12:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clients);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:a4 toClient:v15]&& [(MRDExternalDeviceRemoteServer *)self _connection:v15 canReceiveUpdatesForPlayerPath:v8])
+        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:source toClient:v15]&& [(MRDExternalDeviceRemoteServer *)self _connection:v15 canReceiveUpdatesForPlayerPath:pathCopy])
         {
-          v16 = v9[2](v9, v15);
+          v16 = handlerCopy[2](handlerCopy, v15);
           if (v16)
           {
             [v15 sendMessage:v16];
@@ -1888,23 +1888,23 @@ LABEL_12:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [clients countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_sendStateUpdateMessageFromOrigin:(id)a3 source:(int64_t)a4 handler:(id)a5
+- (void)_sendStateUpdateMessageFromOrigin:(id)origin source:(int64_t)source handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MRDExternalDeviceRemoteServer *)self clients];
+  originCopy = origin;
+  handlerCopy = handler;
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [clients countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1915,13 +1915,13 @@ LABEL_12:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clients);
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:a4 toClient:v15]&& [(MRDExternalDeviceRemoteServer *)self _connection:v15 canReceiveUpdatesForOrigin:v8])
+        if ([(MRDExternalDeviceRemoteServer *)self _shouldSendStateUpdateMessageFromSource:source toClient:v15]&& [(MRDExternalDeviceRemoteServer *)self _connection:v15 canReceiveUpdatesForOrigin:originCopy])
         {
-          v16 = v9[2](v9, v15);
+          v16 = handlerCopy[2](handlerCopy, v15);
           if (v16)
           {
             [v15 sendMessage:v16];
@@ -1929,62 +1929,62 @@ LABEL_12:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [clients countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
   }
 }
 
-- (BOOL)_shouldSendStateUpdateMessageFromSource:(int64_t)a3 toClient:(id)a4
+- (BOOL)_shouldSendStateUpdateMessageFromSource:(int64_t)source toClient:(id)client
 {
-  v5 = a4;
-  v6 = v5;
+  clientCopy = client;
+  v6 = clientCopy;
   v7 = 1;
-  if (a3 > 2)
+  if (source > 2)
   {
-    if (a3 == 3)
+    if (source == 3)
     {
-      v8 = [v5 registeredToOutputDeviceUpdates];
+      registeredToOutputDeviceUpdates = [clientCopy registeredToOutputDeviceUpdates];
       goto LABEL_10;
     }
 
-    if (a3 == 4)
+    if (source == 4)
     {
-      v8 = [v5 registeredToSystemEndpointUpdates];
+      registeredToOutputDeviceUpdates = [clientCopy registeredToSystemEndpointUpdates];
       goto LABEL_10;
     }
   }
 
   else
   {
-    if (a3 == 1)
+    if (source == 1)
     {
-      v8 = [v5 registeredToNowPlayingUpdates];
+      registeredToOutputDeviceUpdates = [clientCopy registeredToNowPlayingUpdates];
       goto LABEL_10;
     }
 
-    if (a3 == 2)
+    if (source == 2)
     {
-      v8 = [v5 registeredToVolumeUpdates];
+      registeredToOutputDeviceUpdates = [clientCopy registeredToVolumeUpdates];
 LABEL_10:
-      v7 = v8;
+      v7 = registeredToOutputDeviceUpdates;
     }
   }
 
   return v7;
 }
 
-- (void)_broadcastKeyboardMessageWithState:(unint64_t)a3 text:(id)a4 attributes:(id)a5
+- (void)_broadcastKeyboardMessageWithState:(unint64_t)state text:(id)text attributes:(id)attributes
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MRDExternalDeviceRemoteServer *)self clients];
+  textCopy = text;
+  attributesCopy = attributes;
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [clients countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1995,29 +1995,29 @@ LABEL_10:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(clients);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
         if ([v15 registeredKeyboardUpdates])
         {
-          v16 = [v15 cryptoSession];
-          v17 = [MRKeyboardMessage encryptedMessageWithState:a3 text:v8 attributes:v9 usingCryptoSession:v16];
+          cryptoSession = [v15 cryptoSession];
+          v17 = [MRKeyboardMessage encryptedMessageWithState:state text:textCopy attributes:attributesCopy usingCryptoSession:cryptoSession];
 
           [v15 sendMessage:v17];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [clients countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_broadcastRemoteTextInputMessageWithPayload:(id)a3
+- (void)_broadcastRemoteTextInputMessageWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2054,9 +2054,9 @@ LABEL_10:
         if ([v10 registeredKeyboardUpdates])
         {
           v11 = [MRRemoteTextInputMessage alloc];
-          v12 = [v4 version];
-          v13 = [v4 data];
-          v14 = [v11 initWithVersion:v12 data:v13];
+          version = [payloadCopy version];
+          data = [payloadCopy data];
+          v14 = [v11 initWithVersion:version data:data];
 
           [v10 sendMessage:v14];
         }
@@ -2071,54 +2071,54 @@ LABEL_10:
   _Block_object_dispose(&v20, 8);
 }
 
-- (id)_unpair:(id)a3
+- (id)_unpair:(id)_unpair
 {
-  v4 = a3;
+  _unpairCopy = _unpair;
   v5 = objc_alloc_init(MRDeviceInfo);
-  [v5 setIdentifier:v4];
+  [v5 setIdentifier:_unpairCopy];
   v6 = [[MRCoreUtilsPairingSession alloc] initWithRole:0 device:v5];
   [v6 open];
-  v7 = [v6 removePeer];
-  if (v7)
+  removePeer = [v6 removePeer];
+  if (removePeer)
   {
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = v4;
+      v13 = _unpairCopy;
       v14 = 2114;
-      v15 = v7;
+      v15 = removePeer;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Error unpairing device: %{public}@ error: %{public}@", &v12, 0x16u);
     }
   }
 
-  v9 = [(MRDExternalDeviceRemoteServer *)self _clientForIdentifier:v4];
+  v9 = [(MRDExternalDeviceRemoteServer *)self _clientForIdentifier:_unpairCopy];
   if (v9)
   {
     Error = MRMediaRemoteCreateError();
     [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClient:v9 withError:Error];
   }
 
-  return v7;
+  return removePeer;
 }
 
-- (void)_notifyAndDisconnectClient:(id)a3 withError:(id)a4
+- (void)_notifyAndDisconnectClient:(id)client withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v10 = v6;
+  v10 = clientCopy;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
-  [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClients:v9 withError:v7 completion:0];
+  [(MRDExternalDeviceRemoteServer *)self _notifyAndDisconnectClients:v9 withError:errorCopy completion:0];
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)_notifyAndDisconnectClients:(id)a3 withError:(id)a4 completion:(id)a5
+- (void)_notifyAndDisconnectClients:(id)clients withError:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientsCopy = clients;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v13 = dispatch_queue_create("com.apple.MediaRemote.MRTelevisionRemoteServer.WorkerQueue", v12);
@@ -2127,12 +2127,12 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = sub_10010D240;
   v17[3] = &unk_1004B6BB0;
-  v14 = v9;
+  v14 = errorCopy;
   v18 = v14;
-  v15 = v8;
+  v15 = clientsCopy;
   v19 = v15;
-  v20 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = completionCopy;
   v21 = v16;
   dispatch_async(v13, v17);
 
@@ -2160,9 +2160,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)_isConnectionForManagedConfigIDAllowed:(id)a3
+- (BOOL)_isConnectionForManagedConfigIDAllowed:(id)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -2195,9 +2195,9 @@ LABEL_6:
         objc_enumerationMutation(v7);
       }
 
-      v11 = [*(*(&v16 + 1) + 8 * v10) lowercaseString];
-      v12 = [v3 lowercaseString];
-      v13 = [v11 isEqualToString:v12];
+      lowercaseString = [*(*(&v16 + 1) + 8 * v10) lowercaseString];
+      lowercaseString2 = [allowedCopy lowercaseString];
+      v13 = [lowercaseString isEqualToString:lowercaseString2];
 
       if (v13)
       {
@@ -2238,22 +2238,22 @@ LABEL_16:
   return v8;
 }
 
-- (void)_onQueue_registerDisconnectionHandler:(id)a3 forClient:(id)a4
+- (void)_onQueue_registerDisconnectionHandler:(id)handler forClient:(id)client
 {
-  v13 = a4;
+  clientCopy = client;
   clientDisconnectionHandlers = self->_clientDisconnectionHandlers;
-  v7 = a3;
-  v8 = [(NSMapTable *)clientDisconnectionHandlers objectForKey:v13];
+  handlerCopy = handler;
+  v8 = [(NSMapTable *)clientDisconnectionHandlers objectForKey:clientCopy];
 
   if (!v8)
   {
     v9 = self->_clientDisconnectionHandlers;
     v10 = +[NSMutableArray array];
-    [(NSMapTable *)v9 setObject:v10 forKey:v13];
+    [(NSMapTable *)v9 setObject:v10 forKey:clientCopy];
   }
 
-  v11 = [(NSMapTable *)self->_clientDisconnectionHandlers objectForKey:v13];
-  v12 = objc_retainBlock(v7);
+  v11 = [(NSMapTable *)self->_clientDisconnectionHandlers objectForKey:clientCopy];
+  v12 = objc_retainBlock(handlerCopy);
 
   [v11 addObject:v12];
 }
@@ -2272,15 +2272,15 @@ LABEL_16:
   objc_sync_exit(v3);
 }
 
-- (unsigned)serverDiscoveryModeForConfiguration:(id)a3
+- (unsigned)serverDiscoveryModeForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MRDExternalDeviceRemoteServer *)self clients];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
+  v6 = [clients countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2292,17 +2292,17 @@ LABEL_16:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clients);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) discoveryModeForConfiguration:v4];
+        v11 = [*(*(&v13 + 1) + 8 * i) discoveryModeForConfiguration:configurationCopy];
         if (v11 > v8)
         {
           v8 = v11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [clients countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -2316,16 +2316,16 @@ LABEL_16:
   return v8;
 }
 
-- (void)outputDevicesChanged:(id)a3 forConfiguration:(id)a4
+- (void)outputDevicesChanged:(id)changed forConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  configurationCopy = configuration;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(MRDExternalDeviceRemoteServer *)self clients];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  clients = [(MRDExternalDeviceRemoteServer *)self clients];
+  v9 = [clients countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2336,33 +2336,33 @@ LABEL_16:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(clients);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if ([v13 discoveryModeForConfiguration:v7])
+        if ([v13 discoveryModeForConfiguration:configurationCopy])
         {
           v14[0] = _NSConcreteStackBlock;
           v14[1] = 3221225472;
           v14[2] = sub_10010E2E0;
           v14[3] = &unk_1004BCE78;
-          v15 = v6;
-          v16 = v7;
+          v15 = changedCopy;
+          v16 = configurationCopy;
           v17 = v13;
           [v13 requestDestinationEndpoint:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [clients countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_handleGetInputModeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetInputModeMessage:(id)message fromClient:(id)client
 {
-  original = a3;
+  original = message;
   v5 = xpc_dictionary_get_remote_connection(original);
   if (v5)
   {
@@ -2376,9 +2376,9 @@ LABEL_16:
   }
 }
 
-- (void)_handleSetInputModeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetInputModeMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
+  xdict = message;
   [(MRDExternalDeviceRemoteServer *)self _setGameControllerInputMode:xpc_dictionary_get_uint64(xdict, "MRXPC_GAMECONTROLLER_INPUT_MODE_KEY")];
   v5 = xpc_dictionary_get_remote_connection(xdict);
   if (v5)
@@ -2391,9 +2391,9 @@ LABEL_16:
   }
 }
 
-- (void)_handleDeletePairingIdentityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleDeletePairingIdentityMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [[MRCryptoPairingSession alloc] initWithRole:1 device:0];
   v10 = 0;
   v6 = [v5 deleteIdentityWithError:&v10];
@@ -2416,32 +2416,32 @@ LABEL_16:
     v8 = 1;
   }
 
-  sub_10000F9E4(v4, v8);
+  sub_10000F9E4(messageCopy, v8);
 }
 
-- (void)_handleGetPairedDevicesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPairedDevicesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [[MRCoreUtilsPairingSession alloc] initWithRole:0 device:0];
   [v6 open];
-  v7 = [v6 pairedDevices];
+  pairedDevices = [v6 pairedDevices];
   serialQueue = self->_serialQueue;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10010E770;
   v14 = &unk_1004B68F0;
-  v15 = v7;
-  v16 = self;
-  v9 = v7;
+  v15 = pairedDevices;
+  selfCopy = self;
+  v9 = pairedDevices;
   dispatch_sync(serialQueue, &v11);
   v10 = [MRDeviceInfo dataFromDeviceInfos:v9, v11, v12, v13, v14];
-  sub_10001673C(v5, "MRXPC_PAIRED_EXTERNAL_DEVICES_DATA", v10, 0);
+  sub_10001673C(messageCopy, "MRXPC_PAIRED_EXTERNAL_DEVICES_DATA", v10, 0);
 }
 
-- (void)_handleDeletePairedDeviceMessage:(id)a3 fromClient:(id)a4
+- (void)_handleDeletePairedDeviceMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [NSString stringWithCString:xpc_dictionary_get_string(v5 encoding:"MRXPC_PAIRED_EXTERNAL_DEVICE"), 4];
+  messageCopy = message;
+  v6 = [NSString stringWithCString:xpc_dictionary_get_string(messageCopy encoding:"MRXPC_PAIRED_EXTERNAL_DEVICE"), 4];
   v7 = [(MRDExternalDeviceRemoteServer *)self _unpair:v6];
   if (v7)
   {
@@ -2463,35 +2463,35 @@ LABEL_16:
     v9 = 0;
   }
 
-  sub_10000F9E4(v5, v9);
+  sub_10000F9E4(messageCopy, v9);
 }
 
-- (void)_handleSetMessageLogging:(id)a3 fromClient:(id)a4
+- (void)_handleSetMessageLogging:(id)logging fromClient:(id)client
 {
-  v4 = xpc_dictionary_get_BOOL(a3, "MRXPC_EXTERNAL_DEVICE_LOGGING_KEY");
+  v4 = xpc_dictionary_get_BOOL(logging, "MRXPC_EXTERNAL_DEVICE_LOGGING_KEY");
   v5 = +[MRProtocolMessageLogger sharedLogger];
   [v5 setShouldVerboselyLog:v4];
 }
 
-- (void)_handleTelevisionEndpointAvailableMessage:(id)a3 fromClient:(id)a4
+- (void)_handleTelevisionEndpointAvailableMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_BOOL(a3, "MRXPC_TELEVISION_ENDPOINT_AVAILABLE_KEY");
+  clientCopy = client;
+  v7 = xpc_dictionary_get_BOOL(message, "MRXPC_TELEVISION_ENDPOINT_AVAILABLE_KEY");
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010EBAC;
   block[3] = &unk_1004B8870;
   v13 = v7;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
+  v11 = clientCopy;
+  selfCopy = self;
+  v9 = clientCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)_handleSendTelevisionCustomDataMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSendTelevisionCustomDataMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreatePropertyListFromXPCMessage();
   v7 = MRCreatePropertyListFromXPCMessage();
 
@@ -2509,62 +2509,62 @@ LABEL_16:
   [(MRDExternalDeviceRemoteServer *)self _sendStateUpdateMessageFromPlayerPath:v11 source:0 handler:v13];
 }
 
-- (void)_handleDeviceInfoRequest:(id)a3 fromClient:(id)a4
+- (void)_handleDeviceInfoRequest:(id)request fromClient:(id)client
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010EEB8;
   v7[3] = &unk_1004BCEA0;
-  v8 = a3;
-  v9 = self;
-  v6 = v8;
-  [a4 requestConnectedDestinationEndpoint:v7];
+  requestCopy = request;
+  selfCopy = self;
+  v6 = requestCopy;
+  [client requestConnectedDestinationEndpoint:v7];
 }
 
-- (void)_handleReceivedCommand:(id)a3 fromClient:(id)a4
+- (void)_handleReceivedCommand:(id)command fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 playerPath];
+  commandCopy = command;
+  clientCopy = client;
+  playerPath = [commandCopy playerPath];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10010F11C;
   v14 = &unk_1004BCEC8;
-  v15 = v6;
-  v16 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v9 localizeDestinationPlayerPath:v8 completion:&v11];
+  v15 = commandCopy;
+  v16 = clientCopy;
+  v9 = clientCopy;
+  v10 = commandCopy;
+  [v9 localizeDestinationPlayerPath:playerPath completion:&v11];
 
   [(MRDExternalDeviceRemoteServer *)self _promoteClient:v9, v11, v12, v13, v14];
 }
 
-- (void)_handleRegisterHIDDeviceMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRegisterHIDDeviceMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 deviceDescriptor];
+    deviceDescriptor = [messageCopy deviceDescriptor];
     v17 = 138543362;
-    v18 = v8;
+    v18 = deviceDescriptor;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Registering HID device with descriptor: %{public}@", &v17, 0xCu);
   }
 
   v9 = [MRDVirtualTouchDevice alloc];
-  v10 = [v5 deviceDescriptor];
-  v11 = [(MRDVirtualTouchDevice *)v9 initWithDeviceDescriptor:v10];
+  deviceDescriptor2 = [messageCopy deviceDescriptor];
+  v11 = [(MRDVirtualTouchDevice *)v9 initWithDeviceDescriptor:deviceDescriptor2];
 
   if (v11)
   {
-    v12 = [v6 addVirtualTouchDevice:v11];
+    v12 = [clientCopy addVirtualTouchDevice:v11];
     v13 = _MRLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MRDVirtualTouchDevice *)v11 uniqueIdentifier];
+      uniqueIdentifier = [(MRDVirtualTouchDevice *)v11 uniqueIdentifier];
       v17 = 134217984;
-      v18 = v14;
+      v18 = uniqueIdentifier;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Registered new virtual touch device with ID %llu", &v17, 0xCu);
     }
 
@@ -2584,23 +2584,23 @@ LABEL_16:
   }
 
   v16 = [[MRRegisterHIDDeviceResultMessage alloc] initWithErrorCode:v15 deviceIdentifier:v12];
-  [v5 replyWithMessage:v16];
+  [messageCopy replyWithMessage:v16];
 }
 
-- (void)_handleTouchEvent:(_MRHIDTouchEvent *)a3 withDeviceID:(unint64_t)a4 fromClient:(id)a5
+- (void)_handleTouchEvent:(_MRHIDTouchEvent *)event withDeviceID:(unint64_t)d fromClient:(id)client
 {
-  v7 = a5;
-  v8 = [v7 virtualTouchDeviceWithID:a4];
+  clientCopy = client;
+  v8 = [clientCopy virtualTouchDeviceWithID:d];
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var2;
-    v14[0] = *&a3->var0.var0.var0;
+    v10 = *&event->var2;
+    v14[0] = *&event->var0.var0.var0;
     v14[1] = v10;
     [v8 handleTouchEvent:v14];
   }
 
-  v11 = [v7 gameControllerWithID:a4];
+  v11 = [clientCopy gameControllerWithID:d];
   if (v11)
   {
     v12 = MRGameControllerDigitizerCreateWithHIDTouchEvent();
@@ -2609,34 +2609,34 @@ LABEL_16:
   }
 }
 
-- (void)_handleRegisterGameControllerMessage:(id)a3 client:(id)a4
+- (void)_handleRegisterGameControllerMessage:(id)message client:(id)client
 {
-  v5 = a4;
-  v6 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v7 = [MREmulatedGameController alloc];
-  v8 = [v6 properties];
-  v11 = [v7 initWithProperties:v8];
+  properties = [messageCopy properties];
+  v11 = [v7 initWithProperties:properties];
 
-  v9 = [v5 addGameController:v11];
+  v9 = [clientCopy addGameController:v11];
   v10 = [[MRRegisterGameControllerResponseMessage alloc] initWithControllerID:v9];
-  [v6 replyWithMessage:v10];
+  [messageCopy replyWithMessage:v10];
 }
 
-- (void)_handleClientUpdatesConfigMessage:(id)a3 fromClient:(id)a4
+- (void)_handleClientUpdatesConfigMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 registeredToNowPlayingUpdates];
-  v9 = [v7 registeredToVolumeUpdates];
-  v10 = [v7 registeredToOutputDeviceUpdates];
-  v11 = [v7 subscribedPlayerPaths];
-  v12 = [v7 registeredToNowPlayingUpdates];
-  if (v12 != [v6 nowPlayingUpdates])
+  messageCopy = message;
+  clientCopy = client;
+  registeredToNowPlayingUpdates = [clientCopy registeredToNowPlayingUpdates];
+  registeredToVolumeUpdates = [clientCopy registeredToVolumeUpdates];
+  registeredToOutputDeviceUpdates = [clientCopy registeredToOutputDeviceUpdates];
+  subscribedPlayerPaths = [clientCopy subscribedPlayerPaths];
+  registeredToNowPlayingUpdates2 = [clientCopy registeredToNowPlayingUpdates];
+  if (registeredToNowPlayingUpdates2 != [messageCopy nowPlayingUpdates])
   {
-    [v7 setRegisteredToNowPlayingUpdates:{objc_msgSend(v6, "nowPlayingUpdates")}];
-    v13 = [v6 nowPlayingUpdates];
+    [clientCopy setRegisteredToNowPlayingUpdates:{objc_msgSend(messageCopy, "nowPlayingUpdates")}];
+    nowPlayingUpdates = [messageCopy nowPlayingUpdates];
     stateObserver = self->_stateObserver;
-    if (v13)
+    if (nowPlayingUpdates)
     {
       [(MRDNowPlayingStateObserver *)stateObserver beginReceivingUpdatesForSource:1];
     }
@@ -2647,13 +2647,13 @@ LABEL_16:
     }
   }
 
-  v15 = [v7 registeredToVolumeUpdates];
-  if (v15 != [v6 volumeUpdates])
+  registeredToVolumeUpdates2 = [clientCopy registeredToVolumeUpdates];
+  if (registeredToVolumeUpdates2 != [messageCopy volumeUpdates])
   {
-    [v7 setRegisteredToVolumeUpdates:{objc_msgSend(v6, "volumeUpdates")}];
-    v16 = [v6 volumeUpdates];
+    [clientCopy setRegisteredToVolumeUpdates:{objc_msgSend(messageCopy, "volumeUpdates")}];
+    volumeUpdates = [messageCopy volumeUpdates];
     v17 = self->_stateObserver;
-    if (v16)
+    if (volumeUpdates)
     {
       [(MRDNowPlayingStateObserver *)v17 beginReceivingUpdatesForSource:2];
     }
@@ -2668,23 +2668,23 @@ LABEL_16:
   v21[1] = 3221225472;
   v21[2] = sub_10010F94C;
   v21[3] = &unk_1004BCF18;
-  v22 = v6;
-  v23 = v7;
-  v26 = v10;
-  v27 = v9;
-  v24 = self;
-  v25 = v11;
-  v28 = v8;
-  v18 = v11;
-  v19 = v7;
-  v20 = v6;
+  v22 = messageCopy;
+  v23 = clientCopy;
+  v26 = registeredToOutputDeviceUpdates;
+  v27 = registeredToVolumeUpdates;
+  selfCopy = self;
+  v25 = subscribedPlayerPaths;
+  v28 = registeredToNowPlayingUpdates;
+  v18 = subscribedPlayerPaths;
+  v19 = clientCopy;
+  v20 = messageCopy;
   [v19 requestConnectedDestinationEndpoint:v21];
 }
 
-- (void)_syncStateToClient:(id)a3
+- (void)_syncStateToClient:(id)client
 {
-  v7 = a3;
-  if ([v7 isDestinationLocal])
+  clientCopy = client;
+  if ([clientCopy isDestinationLocal])
   {
     v4 = objc_alloc_init(MRCompositeMessage);
     if (self->_gameControllerInputMode)
@@ -2693,80 +2693,80 @@ LABEL_16:
       [v4 addMessage:v5];
     }
 
-    [v7 sendMessage:v4];
+    [clientCopy sendMessage:v4];
     v6 = +[MRDMediaRemoteServer server];
     [v6 postClientNotificationNamed:kMRTelevisionServicePairedDevicesDidChangeNotification];
   }
 }
 
-- (void)_addOutputDevicesToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5
+- (void)_addOutputDevicesToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 outputDevicesForEndpoint:v8];
-  v15 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v11 redactVolume:1 forClient:v9 endpoint:v8];
+  endpointCopy = endpoint;
+  clientCopy = client;
+  messageCopy = message;
+  v11 = [clientCopy outputDevicesForEndpoint:endpointCopy];
+  v15 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v11 redactVolume:1 forClient:clientCopy endpoint:endpointCopy];
 
   v12 = [MRSyncOutputDevicesMessage alloc];
-  v13 = [v9 deviceInfo];
+  deviceInfo = [clientCopy deviceInfo];
 
-  v14 = [v12 initWithOutputDevices:v15 forClientWithDeviceInfo:v13];
-  [v10 addMessage:v14];
+  v14 = [v12 initWithOutputDevices:v15 forClientWithDeviceInfo:deviceInfo];
+  [messageCopy addMessage:v14];
 }
 
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5 completion:(id)a6
+- (void)_addVolumeToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint completion:(id)completion
 {
-  v44 = a3;
-  v9 = a4;
-  v45 = a5;
-  v10 = a6;
+  messageCopy = message;
+  clientCopy = client;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v11 = +[MRUserSettings currentSettings];
   if (![v11 supportOutputContextSync])
   {
     goto LABEL_6;
   }
 
-  v12 = [v45 deviceInfo];
-  if (([v12 supportsOutputContextSync] & 1) == 0)
+  deviceInfo = [endpointCopy deviceInfo];
+  if (([deviceInfo supportsOutputContextSync] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [v9 deviceInfo];
-  v14 = [v13 supportsOutputContextSync];
+  deviceInfo2 = [clientCopy deviceInfo];
+  supportsOutputContextSync = [deviceInfo2 supportsOutputContextSync];
 
-  if (v14)
+  if (supportsOutputContextSync)
   {
-    [(MRDExternalDeviceRemoteServer *)self _addVolumeToMessage:v44 forClient:v9 withEndpoint:v45];
-    v10[2](v10);
+    [(MRDExternalDeviceRemoteServer *)self _addVolumeToMessage:messageCopy forClient:clientCopy withEndpoint:endpointCopy];
+    completionCopy[2](completionCopy);
     goto LABEL_21;
   }
 
 LABEL_7:
   group = dispatch_group_create();
   v15 = +[MRDMediaRemoteServer server];
-  v16 = [v15 nowPlayingServer];
-  v17 = [v45 origin];
-  v18 = [v16 originClientForOrigin:v17];
+  nowPlayingServer = [v15 nowPlayingServer];
+  origin = [endpointCopy origin];
+  v18 = [nowPlayingServer originClientForOrigin:origin];
 
-  v19 = [v18 volumeControlCapabilities];
-  if (v19)
+  volumeControlCapabilities = [v18 volumeControlCapabilities];
+  if (volumeControlCapabilities)
   {
-    v20 = [[MRLegacyVolumeControlCapabilitiesDidChangeMessage alloc] initWithCapabilities:v19];
-    [v44 addMessage:v20];
+    v20 = [[MRLegacyVolumeControlCapabilitiesDidChangeMessage alloc] initWithCapabilities:volumeControlCapabilities];
+    [messageCopy addMessage:v20];
   }
 
-  v39 = v10;
+  v39 = completionCopy;
   v21 = "v52@0:8Q16@24@32B40@44" + 19;
-  if (([v9 registeredToOutputDeviceUpdates] & 1) != 0 || (objc_msgSend(v9, "supportedMessages"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isSupported:", 65), v22, (v23 & 1) == 0))
+  if (([clientCopy registeredToOutputDeviceUpdates] & 1) != 0 || (objc_msgSend(clientCopy, "supportedMessages"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isSupported:", 65), v22, (v23 & 1) == 0))
   {
     v57 = 0u;
     v58 = 0u;
     v56 = 0u;
     v55 = 0u;
-    obj = [v45 outputDevices];
+    obj = [endpointCopy outputDevices];
     v30 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v30)
     {
@@ -2782,25 +2782,25 @@ LABEL_7:
           }
 
           v33 = *(*(&v55 + 1) + 8 * i);
-          v34 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevice:v33 redactVolume:0 forClient:v9 endpoint:v45];
+          v34 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevice:v33 redactVolume:0 forClient:clientCopy endpoint:endpointCopy];
           dispatch_group_enter(group);
           [v33 uid];
-          v36 = v35 = v9;
+          v36 = v35 = clientCopy;
           v48[0] = _NSConcreteStackBlock;
           v48[1] = 3221225472;
           v48[2] = sub_100110408;
           v48[3] = &unk_1004BCF90;
-          v49 = v44;
+          v49 = messageCopy;
           v50 = v34;
-          v51 = self;
+          selfCopy = self;
           v52 = v33;
           v53 = group;
-          v37 = v45;
+          v37 = endpointCopy;
           v54 = v37;
           v38 = v34;
           [v37 outputDeviceVolumeControlCapabilities:v36 queue:&_dispatch_main_q completion:v48];
 
-          v9 = v35;
+          clientCopy = v35;
         }
 
         v31 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -2814,48 +2814,48 @@ LABEL_7:
 
   else
   {
-    [v45 outputDevices];
-    v25 = v24 = v9;
-    v26 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v25 redactVolume:0 forClient:v24 endpoint:v45];
+    [endpointCopy outputDevices];
+    v25 = v24 = clientCopy;
+    v26 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v25 redactVolume:0 forClient:v24 endpoint:endpointCopy];
 
     v27 = [MRSyncOutputDevicesMessage alloc];
-    v28 = [v24 deviceInfo];
-    v29 = [v27 initWithOutputDevices:v26 forClientWithDeviceInfo:v28];
-    [v44 addMessage:v29];
+    deviceInfo3 = [v24 deviceInfo];
+    v29 = [v27 initWithOutputDevices:v26 forClientWithDeviceInfo:deviceInfo3];
+    [messageCopy addMessage:v29];
 
-    v9 = v24;
+    clientCopy = v24;
   }
 
   block[0] = _NSConcreteStackBlock;
   block[1] = *(v21 + 230);
   block[2] = sub_10011085C;
   block[3] = &unk_1004B79A0;
-  v10 = v39;
+  completionCopy = v39;
   v47 = v39;
   dispatch_group_notify(group, &_dispatch_main_q, block);
 
 LABEL_21:
 }
 
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5
+- (void)_addVolumeToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  clientCopy = client;
+  endpointCopy = endpoint;
   v11 = +[MRDMediaRemoteServer server];
-  v12 = [v11 nowPlayingServer];
-  v13 = [v10 origin];
-  v14 = [v12 originClientForOrigin:v13];
+  nowPlayingServer = [v11 nowPlayingServer];
+  origin = [endpointCopy origin];
+  v14 = [nowPlayingServer originClientForOrigin:origin];
 
-  v15 = [v14 volumeControlCapabilities];
-  if (v15)
+  volumeControlCapabilities = [v14 volumeControlCapabilities];
+  if (volumeControlCapabilities)
   {
-    v16 = [[MRLegacyVolumeControlCapabilitiesDidChangeMessage alloc] initWithCapabilities:v15];
-    [v8 addMessage:v16];
+    v16 = [[MRLegacyVolumeControlCapabilitiesDidChangeMessage alloc] initWithCapabilities:volumeControlCapabilities];
+    [messageCopy addMessage:v16];
   }
 
-  v17 = [v9 outputDevicesForEndpoint:v10];
-  v18 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v17 redactVolume:0 forClient:v9 endpoint:v10];
+  v17 = [clientCopy outputDevicesForEndpoint:endpointCopy];
+  v18 = [(MRDExternalDeviceRemoteServer *)self _createLocalizedOutputDevices:v17 redactVolume:0 forClient:clientCopy endpoint:endpointCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -2877,7 +2877,7 @@ LABEL_21:
           objc_enumerationMutation(v19);
         }
 
-        [(MRDExternalDeviceRemoteServer *)self _addVolumeToMessage:v8 forClient:v9 outputDevice:*(*(&v24 + 1) + 8 * v23) withEndpoint:v10, v24];
+        [(MRDExternalDeviceRemoteServer *)self _addVolumeToMessage:messageCopy forClient:clientCopy outputDevice:*(*(&v24 + 1) + 8 * v23) withEndpoint:endpointCopy, v24];
         v23 = v23 + 1;
       }
 
@@ -2889,41 +2889,41 @@ LABEL_21:
   }
 }
 
-- (void)_addVolumeToMessage:(id)a3 forClient:(id)a4 outputDevice:(id)a5 withEndpoint:(id)a6
+- (void)_addVolumeToMessage:(id)message forClient:(id)client outputDevice:(id)device withEndpoint:(id)endpoint
 {
-  v21 = a3;
-  v7 = a5;
-  v8 = [v7 volumeCapabilities];
-  if (v8)
+  messageCopy = message;
+  deviceCopy = device;
+  volumeCapabilities = [deviceCopy volumeCapabilities];
+  if (volumeCapabilities)
   {
-    v9 = v8;
+    v9 = volumeCapabilities;
     v10 = [MRVolumeControlCapabilitiesDidChangeMessage alloc];
-    v11 = [v7 groupID];
-    v12 = [v7 uid];
-    v13 = [v10 initWithCapabilities:v9 endpointUID:v11 outputDeviceUID:v12];
-    [v21 addMessage:v13];
+    groupID = [deviceCopy groupID];
+    v12 = [deviceCopy uid];
+    v13 = [v10 initWithCapabilities:v9 endpointUID:groupID outputDeviceUID:v12];
+    [messageCopy addMessage:v13];
 
     if ((v9 & 2) != 0)
     {
-      [v7 volume];
+      [deviceCopy volume];
       v15 = v14;
       v16 = [MRVolumeDidChangeMessage alloc];
-      v17 = [v7 groupID];
-      v18 = [v7 uid];
+      groupID2 = [deviceCopy groupID];
+      v18 = [deviceCopy uid];
       LODWORD(v19) = v15;
-      v20 = [v16 initWithVolume:v17 endpointUID:v18 outputDeviceUID:v19];
-      [v21 addMessage:v20];
+      v20 = [v16 initWithVolume:groupID2 endpointUID:v18 outputDeviceUID:v19];
+      [messageCopy addMessage:v20];
     }
   }
 }
 
-- (BOOL)_origin:(id)a3 matchesSubscribedPlayerPath:(id)a4
+- (BOOL)_origin:(id)_origin matchesSubscribedPlayerPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 origin];
-  v8 = v7;
-  if (v7 == v5)
+  _originCopy = _origin;
+  pathCopy = path;
+  origin = [pathCopy origin];
+  nowPlayingServer = origin;
+  if (origin == _originCopy)
   {
     v13 = 1;
 LABEL_10:
@@ -2931,30 +2931,30 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [v7 isEqual:v5];
+  v9 = [origin isEqual:_originCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 origin];
+    origin2 = [pathCopy origin];
     v11 = +[MROrigin anyOrigin];
-    v12 = [v10 isEqual:v11];
+    v12 = [origin2 isEqual:v11];
 
     if ((v12 & 1) == 0)
     {
       v14 = +[MRDMediaRemoteServer server];
-      v8 = [v14 nowPlayingServer];
+      nowPlayingServer = [v14 nowPlayingServer];
 
-      v15 = [v6 origin];
-      if (v15)
+      origin3 = [pathCopy origin];
+      if (origin3)
       {
         v13 = 0;
       }
 
       else
       {
-        v16 = [v8 activeOriginClient];
-        v17 = [v16 origin];
-        v13 = [v5 isEqual:v17];
+        activeOriginClient = [nowPlayingServer activeOriginClient];
+        origin4 = [activeOriginClient origin];
+        v13 = [_originCopy isEqual:origin4];
       }
 
       goto LABEL_10;
@@ -2967,26 +2967,26 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_origin:(id)a3 client:(id)a4 matchesSubscribedPlayerPath:(id)a5
+- (BOOL)_origin:(id)_origin client:(id)client matchesSubscribedPlayerPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  clientCopy = client;
+  pathCopy = path;
+  _originCopy = _origin;
   v10 = +[MRDMediaRemoteServer server];
-  v11 = [v10 nowPlayingServer];
+  nowPlayingServer = [v10 nowPlayingServer];
 
-  v12 = [v11 originClientForOrigin:v9];
+  v12 = [nowPlayingServer originClientForOrigin:_originCopy];
 
-  v13 = [v8 client];
+  client = [pathCopy client];
 
-  v14 = [v13 copy];
+  v14 = [client copy];
   if ([v14 hasPlaceholder])
   {
-    v15 = [v12 deviceInfo];
-    [v14 resolvePlaceholdersForDeviceInfo:v15];
+    deviceInfo = [v12 deviceInfo];
+    [v14 resolvePlaceholdersForDeviceInfo:deviceInfo];
   }
 
-  if (v14 == v7 || ([v14 isEqual:v7] & 1) != 0 || (+[MRClient anyClient](MRClient, "anyClient"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v14, "isEqual:", v16), v16, (v17 & 1) != 0))
+  if (v14 == clientCopy || ([v14 isEqual:clientCopy] & 1) != 0 || (+[MRClient anyClient](MRClient, "anyClient"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v14, "isEqual:", v16), v16, (v17 & 1) != 0))
   {
     v18 = 1;
   }
@@ -2998,23 +2998,23 @@ LABEL_11:
 
   else
   {
-    v20 = [v12 activeNowPlayingClient];
-    v21 = [v20 client];
-    v18 = [v7 isEqual:v21];
+    activeNowPlayingClient = [v12 activeNowPlayingClient];
+    client2 = [activeNowPlayingClient client];
+    v18 = [clientCopy isEqual:client2];
   }
 
   return v18;
 }
 
-- (BOOL)_origin:(id)a3 client:(id)a4 player:(id)a5 matchesSubscribedPlayerPath:(id)a6
+- (BOOL)_origin:(id)_origin client:(id)client player:(id)player matchesSubscribedPlayerPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 player];
-  v14 = v13;
-  if (v13 == v11)
+  _originCopy = _origin;
+  clientCopy = client;
+  playerCopy = player;
+  pathCopy = path;
+  player = [pathCopy player];
+  nowPlayingServer = player;
+  if (player == playerCopy)
   {
     v19 = 1;
 LABEL_13:
@@ -3022,30 +3022,30 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v15 = [v13 isEqual:v11];
+  v15 = [player isEqual:playerCopy];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [v12 player];
+    player2 = [pathCopy player];
     v17 = +[MRPlayer anyPlayer];
-    v18 = [v16 isEqual:v17];
+    v18 = [player2 isEqual:v17];
 
     if ((v18 & 1) == 0)
     {
       v20 = +[MRDMediaRemoteServer server];
-      v14 = [v20 nowPlayingServer];
+      nowPlayingServer = [v20 nowPlayingServer];
 
-      v21 = [v14 originClientForOrigin:v9];
-      v22 = [v21 existingNowPlayingClientForClient:v10];
-      v23 = [v22 activePlayerClient];
-      v24 = [v23 player];
+      v21 = [nowPlayingServer originClientForOrigin:_originCopy];
+      v22 = [v21 existingNowPlayingClientForClient:clientCopy];
+      activePlayerClient = [v22 activePlayerClient];
+      player3 = [activePlayerClient player];
 
-      v25 = [v12 player];
-      if (v25)
+      player4 = [pathCopy player];
+      if (player4)
       {
       }
 
-      else if (!v24 || ([v11 isEqual:v24] & 1) != 0)
+      else if (!player3 || ([playerCopy isEqual:player3] & 1) != 0)
       {
         v19 = 1;
         goto LABEL_12;
@@ -3064,31 +3064,31 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)_playerPath:(id)a3 matchesSubscribedPlayerPath:(id)a4
+- (BOOL)_playerPath:(id)path matchesSubscribedPlayerPath:(id)playerPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 origin];
-  v9 = [(MRDExternalDeviceRemoteServer *)self _origin:v8 matchesSubscribedPlayerPath:v7];
+  pathCopy = path;
+  playerPathCopy = playerPath;
+  origin = [pathCopy origin];
+  v9 = [(MRDExternalDeviceRemoteServer *)self _origin:origin matchesSubscribedPlayerPath:playerPathCopy];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [v6 origin];
-  v11 = [v6 client];
-  v12 = [(MRDExternalDeviceRemoteServer *)self _origin:v10 client:v11 matchesSubscribedPlayerPath:v7];
+  origin2 = [pathCopy origin];
+  client = [pathCopy client];
+  v12 = [(MRDExternalDeviceRemoteServer *)self _origin:origin2 client:client matchesSubscribedPlayerPath:playerPathCopy];
 
   if (!v12)
   {
     goto LABEL_5;
   }
 
-  v13 = [v6 origin];
-  v14 = [v6 client];
-  v15 = [v6 player];
-  v16 = [(MRDExternalDeviceRemoteServer *)self _origin:v13 client:v14 player:v15 matchesSubscribedPlayerPath:v7];
+  origin3 = [pathCopy origin];
+  client2 = [pathCopy client];
+  player = [pathCopy player];
+  v16 = [(MRDExternalDeviceRemoteServer *)self _origin:origin3 client:client2 player:player matchesSubscribedPlayerPath:playerPathCopy];
 
   if (v16)
   {
@@ -3104,191 +3104,191 @@ LABEL_5:
   return v17;
 }
 
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 originClient:(id)a5
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client originClient:(id)originClient
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 playerPath];
-  v12 = [v11 origin];
-  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:v9 canReceiveUpdatesForOrigin:v12];
+  messageCopy = message;
+  clientCopy = client;
+  originClientCopy = originClient;
+  playerPath = [originClientCopy playerPath];
+  origin = [playerPath origin];
+  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:clientCopy canReceiveUpdatesForOrigin:origin];
 
   if (self)
   {
-    v13 = [v9 deviceInfo];
-    v14 = [v13 supportsSharedQueue];
+    deviceInfo = [clientCopy deviceInfo];
+    supportsSharedQueue = [deviceInfo supportsSharedQueue];
 
-    if (v14)
+    if (supportsSharedQueue)
     {
-      v15 = [v10 origin];
-      if ([v15 isHosted])
+      origin2 = [originClientCopy origin];
+      if ([origin2 isHosted])
       {
         v16 = +[MRDMediaRemoteServer server];
-        v17 = [v16 nowPlayingServer];
-        v18 = [v17 localOriginClient];
+        nowPlayingServer = [v16 nowPlayingServer];
+        localOriginClient = [nowPlayingServer localOriginClient];
       }
 
       else
       {
-        v18 = v10;
+        localOriginClient = originClientCopy;
       }
 
-      v19 = [v18 defaultSupportedCommands];
+      defaultSupportedCommands = [localOriginClient defaultSupportedCommands];
       v32 = _NSConcreteStackBlock;
       v33 = 3221225472;
       v34 = sub_1001113E0;
       v35 = &unk_1004BCFB8;
-      v20 = v8;
+      v20 = messageCopy;
       v36 = v20;
-      v37 = v9;
-      [v19 enumerateKeysAndObjectsUsingBlock:&v32];
+      v37 = clientCopy;
+      [defaultSupportedCommands enumerateKeysAndObjectsUsingBlock:&v32];
 
       v21 = [MROriginClientPropertiesMessage alloc];
-      [v10 timeSincePlaying];
+      [originClientCopy timeSincePlaying];
       v23 = [NSDate dateWithTimeIntervalSinceNow:-v22];
-      v24 = [v10 devicePlaybackSessionID];
-      v25 = [v21 initWithLastPlayingDate:v23 devicePlaybackSessionID:v24];
+      devicePlaybackSessionID = [originClientCopy devicePlaybackSessionID];
+      v25 = [v21 initWithLastPlayingDate:v23 devicePlaybackSessionID:devicePlaybackSessionID];
       [v20 addMessage:v25];
     }
 
-    v26 = [v10 activeNowPlayingClient];
-    if (v26)
+    activeNowPlayingClient = [originClientCopy activeNowPlayingClient];
+    if (activeNowPlayingClient)
     {
-      v27 = [v9 deviceInfo];
-      v28 = [v27 supportsSharedQueue];
+      deviceInfo2 = [clientCopy deviceInfo];
+      supportsSharedQueue2 = [deviceInfo2 supportsSharedQueue];
 
-      if (v28)
+      if (supportsSharedQueue2)
       {
         v29 = [MRSetNowPlayingClientMessage alloc];
-        v30 = [v26 client];
-        v31 = [v29 initWithClient:v30];
+        client = [activeNowPlayingClient client];
+        v31 = [v29 initWithClient:client];
 
-        [v8 addMessage:v31];
+        [messageCopy addMessage:v31];
       }
     }
   }
 }
 
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 nowPlayingClient:(id)a5
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client nowPlayingClient:(id)playingClient
 {
-  v21 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 playerPath];
-  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:v9 canReceiveUpdatesForPlayerPath:v10];
+  messageCopy = message;
+  playingClientCopy = playingClient;
+  clientCopy = client;
+  playerPath = [playingClientCopy playerPath];
+  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:clientCopy canReceiveUpdatesForPlayerPath:playerPath];
 
   if (self)
   {
-    v11 = [v8 client];
-    if ([v11 hasAuxiliaryProperties])
+    client = [playingClientCopy client];
+    if ([client hasAuxiliaryProperties])
     {
-      v12 = [[MRUpdateClientMessage alloc] initWithClient:v11];
-      [v21 addMessage:v12];
+      v12 = [[MRUpdateClientMessage alloc] initWithClient:client];
+      [messageCopy addMessage:v12];
     }
 
-    v13 = [v8 activePlayerClient];
-    v14 = [v13 player];
+    activePlayerClient = [playingClientCopy activePlayerClient];
+    player = [activePlayerClient player];
     v15 = +[MRPlayer defaultPlayer];
-    v16 = [v14 isEqual:v15];
+    v16 = [player isEqual:v15];
 
     if ((v16 & 1) == 0)
     {
       v17 = [MRSetNowPlayingPlayerMessage alloc];
-      v18 = [v8 activePlayerClient];
-      v19 = [v18 playerPath];
-      v20 = [v17 initWithPlayerPath:v19];
+      activePlayerClient2 = [playingClientCopy activePlayerClient];
+      playerPath2 = [activePlayerClient2 playerPath];
+      v20 = [v17 initWithPlayerPath:playerPath2];
 
-      [v21 addMessage:v20];
+      [messageCopy addMessage:v20];
     }
   }
 }
 
-- (void)_addSubscribedStateToMessage:(id)a3 forClient:(id)a4 playerClient:(id)a5
+- (void)_addSubscribedStateToMessage:(id)message forClient:(id)client playerClient:(id)playerClient
 {
-  v44 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 playerPath];
-  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:v8 canReceiveUpdatesForPlayerPath:v10];
+  messageCopy = message;
+  clientCopy = client;
+  playerClientCopy = playerClient;
+  playerPath = [playerClientCopy playerPath];
+  LODWORD(self) = [(MRDExternalDeviceRemoteServer *)self _connection:clientCopy canReceiveUpdatesForPlayerPath:playerPath];
 
   if (self)
   {
-    v11 = [v9 nowPlayingState];
-    v12 = [v9 playerPath];
-    v13 = [v8 exportNowPlayingState:v11 forPlayerPath:v12];
+    nowPlayingState = [playerClientCopy nowPlayingState];
+    playerPath2 = [playerClientCopy playerPath];
+    v13 = [clientCopy exportNowPlayingState:nowPlayingState forPlayerPath:playerPath2];
 
     v14 = [MRSetStateMessage alloc];
-    v15 = [v8 deviceInfo];
-    v16 = [v14 initWithNowPlayingState:v13 encoding:{objc_msgSend(v15, "preferredEncoding")}];
+    deviceInfo = [clientCopy deviceInfo];
+    v16 = [v14 initWithNowPlayingState:v13 encoding:{objc_msgSend(deviceInfo, "preferredEncoding")}];
 
-    [v44 addMessage:v16];
+    [messageCopy addMessage:v16];
     v17 = +[MRPlaybackQueueRequest defaultPlaybackQueueRequest];
-    v18 = [v8 playbackQueueRequests];
-    v19 = [v16 state];
-    v20 = [v19 playerPath];
-    v21 = [v18 subscriptionControllerForPlayerPath:v20];
+    playbackQueueRequests = [clientCopy playbackQueueRequests];
+    state = [v16 state];
+    playerPath3 = [state playerPath];
+    v21 = [playbackQueueRequests subscriptionControllerForPlayerPath:playerPath3];
 
-    v22 = [v16 state];
-    v23 = [v22 playbackQueue];
-    [v21 subscribeToPlaybackQueue:v23 forRequest:v17];
+    state2 = [v16 state];
+    playbackQueue = [state2 playbackQueue];
+    [v21 subscribeToPlaybackQueue:playbackQueue forRequest:v17];
 
     v24 = [MRPlayerClientPropertiesMessage alloc];
-    v25 = [v9 playerPath];
-    v26 = [v9 lastPlayingDate];
-    v27 = [v24 initWithPlayerPath:v25 lastPlayingDate:v26];
-    [v44 addMessage:v27];
+    playerPath4 = [playerClientCopy playerPath];
+    lastPlayingDate = [playerClientCopy lastPlayingDate];
+    v27 = [v24 initWithPlayerPath:playerPath4 lastPlayingDate:lastPlayingDate];
+    [messageCopy addMessage:v27];
 
-    v28 = [v9 player];
-    if ([v28 hasAuxiliaryProperties])
+    player = [playerClientCopy player];
+    if ([player hasAuxiliaryProperties])
     {
       v29 = [MRUpdatePlayerMessage alloc];
-      v30 = [v9 playerPath];
-      v31 = [v29 initWithPlayerPath:v30];
+      playerPath5 = [playerClientCopy playerPath];
+      v31 = [v29 initWithPlayerPath:playerPath5];
 
-      [v44 addMessage:v31];
+      [messageCopy addMessage:v31];
     }
 
-    v32 = [v9 participantDataSource];
+    participantDataSource = [playerClientCopy participantDataSource];
 
-    if (v32)
+    if (participantDataSource)
     {
       v33 = [MRPlayerClientParticipantsUpdateMessage alloc];
-      v34 = [v9 playerPath];
-      v35 = [v9 participantDataSource];
-      [v35 participants];
-      v43 = v8;
-      v36 = v28;
+      playerPath6 = [playerClientCopy playerPath];
+      participantDataSource2 = [playerClientCopy participantDataSource];
+      [participantDataSource2 participants];
+      v43 = clientCopy;
+      v36 = player;
       v37 = v16;
       v38 = v21;
       v39 = v17;
       v41 = v40 = v13;
-      v42 = [v33 initWithPlayerPath:v34 participants:v41];
+      v42 = [v33 initWithPlayerPath:playerPath6 participants:v41];
 
       v13 = v40;
       v17 = v39;
       v21 = v38;
       v16 = v37;
-      v28 = v36;
-      v8 = v43;
+      player = v36;
+      clientCopy = v43;
 
-      [v44 addMessage:v42];
+      [messageCopy addMessage:v42];
     }
   }
 }
 
-- (void)_addNowPlayingStateToMessage:(id)a3 forClient:(id)a4 withEndpoint:(id)a5
+- (void)_addNowPlayingStateToMessage:(id)message forClient:(id)client withEndpoint:(id)endpoint
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v9 = +[MRDMediaRemoteServer server];
-  v10 = [v9 nowPlayingServer];
+  nowPlayingServer = [v9 nowPlayingServer];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v28 = v10;
-  obj = [v10 originClients];
+  v28 = nowPlayingServer;
+  obj = [nowPlayingServer originClients];
   v11 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v11)
   {
@@ -3307,19 +3307,19 @@ LABEL_5:
         }
 
         v15 = *(*(&v42 + 1) + 8 * v14);
-        [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:v7 forClient:v8 originClient:v15];
-        v16 = [v8 deviceInfo];
-        v17 = [v16 supportsSharedQueue];
+        [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:messageCopy forClient:clientCopy originClient:v15];
+        deviceInfo = [clientCopy deviceInfo];
+        supportsSharedQueue = [deviceInfo supportsSharedQueue];
 
-        if (v17)
+        if (supportsSharedQueue)
         {
           v32 = v14;
           v40 = 0u;
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v33 = [v15 nowPlayingClients];
-          v18 = [v33 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          nowPlayingClients = [v15 nowPlayingClients];
+          v18 = [nowPlayingClients countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (v18)
           {
             v19 = v18;
@@ -3330,17 +3330,17 @@ LABEL_5:
               {
                 if (*v39 != v20)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(nowPlayingClients);
                 }
 
                 v22 = *(*(&v38 + 1) + 8 * i);
-                [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:v7 forClient:v8 nowPlayingClient:v22];
+                [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:messageCopy forClient:clientCopy nowPlayingClient:v22];
                 v36 = 0u;
                 v37 = 0u;
                 v34 = 0u;
                 v35 = 0u;
-                v23 = [v22 playerClients];
-                v24 = [v23 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                playerClients = [v22 playerClients];
+                v24 = [playerClients countByEnumeratingWithState:&v34 objects:v46 count:16];
                 if (v24)
                 {
                   v25 = v24;
@@ -3351,20 +3351,20 @@ LABEL_5:
                     {
                       if (*v35 != v26)
                       {
-                        objc_enumerationMutation(v23);
+                        objc_enumerationMutation(playerClients);
                       }
 
-                      [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:v7 forClient:v8 playerClient:*(*(&v34 + 1) + 8 * j)];
+                      [(MRDExternalDeviceRemoteServer *)self _addSubscribedStateToMessage:messageCopy forClient:clientCopy playerClient:*(*(&v34 + 1) + 8 * j)];
                     }
 
-                    v25 = [v23 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                    v25 = [playerClients countByEnumeratingWithState:&v34 objects:v46 count:16];
                   }
 
                   while (v25);
                 }
               }
 
-              v19 = [v33 countByEnumeratingWithState:&v38 objects:v47 count:16];
+              v19 = [nowPlayingClients countByEnumeratingWithState:&v38 objects:v47 count:16];
             }
 
             while (v19);
@@ -3386,106 +3386,106 @@ LABEL_5:
   }
 }
 
-- (void)_handleRegisterVoiceInputDeviceMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRegisterVoiceInputDeviceMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 descriptor];
+  messageCopy = message;
+  clientCopy = client;
+  descriptor = [messageCopy descriptor];
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v7;
+    v14 = descriptor;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Registering new virtual voice input device with descriptor: %{public}@", buf, 0xCu);
   }
 
-  v11 = v6;
-  v12 = v5;
-  v9 = v5;
-  v10 = v6;
+  v11 = clientCopy;
+  v12 = messageCopy;
+  v9 = messageCopy;
+  v10 = clientCopy;
   MRVirtualVoiceInputRegisterDevice();
 }
 
-- (void)_handleReceivedVoiceInputMessage:(id)a3 fromClient:(id)a4
+- (void)_handleReceivedVoiceInputMessage:(id)message fromClient:(id)client
 {
-  v8 = a3;
-  v5 = [a4 registeredVirtualVoiceInputDevices];
-  if ([v5 count])
+  messageCopy = message;
+  registeredVirtualVoiceInputDevices = [client registeredVirtualVoiceInputDevices];
+  if ([registeredVirtualVoiceInputDevices count])
   {
-    v6 = [v5 firstObject];
-    [v6 unsignedIntValue];
+    firstObject = [registeredVirtualVoiceInputDevices firstObject];
+    [firstObject unsignedIntValue];
 
-    v7 = [v8 buffer];
-    [v8 time];
-    [v8 gain];
+    buffer = [messageCopy buffer];
+    [messageCopy time];
+    [messageCopy gain];
     MRVirtualVoiceInputProcessAudioData();
   }
 }
 
-- (void)_handlePlaybackQueueRequestMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackQueueRequestMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 playerPath];
+  messageCopy = message;
+  clientCopy = client;
+  playerPath = [messageCopy playerPath];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001120D4;
   v10[3] = &unk_1004BCEC8;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
-  [v9 localizeDestinationPlayerPath:v7 completion:v10];
+  v11 = clientCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = clientCopy;
+  [v9 localizeDestinationPlayerPath:playerPath completion:v10];
 }
 
-- (void)_handleDeviceInfoUpdateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleDeviceInfoUpdateMessage:(id)message fromClient:(id)client
 {
-  v5 = [a3 deviceInfo];
-  [(MRDExternalDeviceRemoteServer *)self _handleRemoteDeviceInfo:v5];
+  deviceInfo = [message deviceInfo];
+  [(MRDExternalDeviceRemoteServer *)self _handleRemoteDeviceInfo:deviceInfo];
 }
 
-- (void)_handleSetConnectionStateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetConnectionStateMessage:(id)message fromClient:(id)client
 {
-  v11 = a4;
-  v6 = [a3 state];
-  if (v6 == 3)
+  clientCopy = client;
+  state = [message state];
+  if (state == 3)
   {
-    v8 = [v11 deviceInfo];
-    v9 = [v8 identifier];
-    v10 = [(MRDExternalDeviceRemoteServer *)self _unpair:v9];
+    deviceInfo = [clientCopy deviceInfo];
+    identifier = [deviceInfo identifier];
+    v10 = [(MRDExternalDeviceRemoteServer *)self _unpair:identifier];
   }
 
   else
   {
-    v7 = v11;
-    if (v6 != 2)
+    v7 = clientCopy;
+    if (state != 2)
     {
       goto LABEL_6;
     }
 
-    [(MRDExternalDeviceRemoteServer *)self _syncStateToClient:v11];
+    [(MRDExternalDeviceRemoteServer *)self _syncStateToClient:clientCopy];
   }
 
-  v7 = v11;
+  v7 = clientCopy;
 LABEL_6:
 }
 
-- (void)_handleGenericMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGenericMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  if ([a4 isDestinationLocal])
+  messageCopy = message;
+  if ([client isDestinationLocal])
   {
-    v7 = [v6 key];
+    v7 = [messageCopy key];
     if ([v7 isEqualToString:MRGenericMessageSetNameKey])
     {
-      v8 = [v6 data];
-      v9 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v8 bytes]);
+      data = [messageCopy data];
+      endpoints = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [data bytes]);
 
       v10 = _MRLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v31 = v9;
+        v31 = endpoints;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Changing name to %{public}@", buf, 0xCu);
       }
 
@@ -3495,7 +3495,7 @@ LABEL_6:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v31 = v9;
+          v31 = endpoints;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Could not set device name to %{public}@", buf, 0xCu);
         }
       }
@@ -3503,22 +3503,22 @@ LABEL_6:
 
     else if (v7)
     {
-      v9 = [(MRDExternalDeviceRemoteServer *)self endpoints];
-      if ([v9 count])
+      endpoints = [(MRDExternalDeviceRemoteServer *)self endpoints];
+      if ([endpoints count])
       {
         v25 = v7;
         v12 = MRCreateXPCMessage();
-        [v6 key];
+        [messageCopy key];
         MRAddPropertyListToXPCMessage();
-        v13 = v6;
-        [v6 data];
+        v13 = messageCopy;
+        [messageCopy data];
         MRAddPropertyListToXPCMessage();
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v24 = v9;
-        v14 = v9;
+        v24 = endpoints;
+        v14 = endpoints;
         v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v15)
         {
@@ -3545,9 +3545,9 @@ LABEL_6:
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Sending custom data %{public}@ to endpoint %{public}@", buf, 0x16u);
               }
 
-              v22 = [v19 connection];
-              v23 = [v22 connection];
-              xpc_connection_send_message(v23, v12);
+              connection = [v19 connection];
+              v22Connection = [connection connection];
+              xpc_connection_send_message(v22Connection, v12);
             }
 
             v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -3556,202 +3556,202 @@ LABEL_6:
           while (v16);
         }
 
-        v6 = v13;
-        v9 = v24;
+        messageCopy = v13;
+        endpoints = v24;
         v7 = v25;
       }
     }
 
     else
     {
-      v9 = [[MRProtocolMessage alloc] initWithUnderlyingCodableMessage:0 error:0];
-      [v6 replyWithMessage:v9];
+      endpoints = [[MRProtocolMessage alloc] initWithUnderlyingCodableMessage:0 error:0];
+      [messageCopy replyWithMessage:endpoints];
     }
   }
 }
 
-- (void)_handleLyricsEventMessage:(id)a3 fromClient:(id)a4
+- (void)_handleLyricsEventMessage:(id)message fromClient:(id)client
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100112988;
   v7[3] = &unk_1004BD030;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  messageCopy = message;
+  clientCopy = client;
+  v5 = clientCopy;
+  v6 = messageCopy;
   [v5 localizeDestinationOrigin:0 completion:v7];
 }
 
-- (void)addAuthorizationCallbackForOutputDeviceUID:(id)a3 client:(id)a4
+- (void)addAuthorizationCallbackForOutputDeviceUID:(id)d client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  clientCopy = client;
   routingDataSource = self->_routingDataSource;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100112AE4;
   v11[3] = &unk_1004BD080;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = clientCopy;
+  v9 = clientCopy;
+  v10 = dCopy;
   [(MRDAVRoutingDataSource *)routingDataSource addAuthorizationCallbackForRouteID:v10 requestCallback:v11];
 }
 
-- (void)requestRouteAuthorizationStatusForDeviceUID:(id)a3 client:(id)a4
+- (void)requestRouteAuthorizationStatusForDeviceUID:(id)d client:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = dispatch_get_global_queue(0, 0);
-  v7 = a3;
+  dCopy = d;
   v8 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100112E54;
   v10[3] = &unk_1004BD0A8;
-  v11 = v5;
-  v9 = v5;
-  [v8 searchForOutputDeviceUID:v7 timeout:@"authorization status" reason:v6 queue:v10 completion:7.0];
+  v11 = clientCopy;
+  v9 = clientCopy;
+  [v8 searchForOutputDeviceUID:dCopy timeout:@"authorization status" reason:v6 queue:v10 completion:7.0];
 }
 
-- (void)_handleModifyOutputContextRequestMessage:(id)a3 fromClient:(id)a4
+- (void)_handleModifyOutputContextRequestMessage:(id)message fromClient:(id)client
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100112FA4;
   v8[3] = &unk_1004BCE78;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  messageCopy = message;
+  selfCopy = self;
+  clientCopy = client;
+  v6 = clientCopy;
+  v7 = messageCopy;
   [v6 requestDestinationEndpoint:v8];
   [(MRDExternalDeviceRemoteServer *)self _promoteClient:v6];
 }
 
-- (void)_handleGetVolumeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetVolumeMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001134B4;
   v6[3] = &unk_1004B9CA8;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestDestinationEndpoint:v6];
 }
 
-- (void)_handleGetVolumeControlCapabilitiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetVolumeControlCapabilitiesMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100113678;
   v6[3] = &unk_1004B9CA8;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestDestinationEndpoint:v6];
 }
 
-- (void)_handleSetVolumeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetVolumeMessage:(id)message fromClient:(id)client
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100113854;
   v8[3] = &unk_1004B9CA8;
-  v9 = a3;
-  v6 = v9;
-  v7 = a4;
-  [v7 requestDestinationEndpoint:v8];
-  [(MRDExternalDeviceRemoteServer *)self _promoteClient:v7];
+  messageCopy = message;
+  v6 = messageCopy;
+  clientCopy = client;
+  [clientCopy requestDestinationEndpoint:v8];
+  [(MRDExternalDeviceRemoteServer *)self _promoteClient:clientCopy];
 }
 
-- (void)_handlePlaybackSessionRequestMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionRequestMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v8 = [v7 startEvent:@"GetPlaybackSession" role:2];
-  v9 = [v5 playerPath];
+  playerPath = [messageCopy playerPath];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100113AD0;
   v12[3] = &unk_1004BD188;
-  v13 = v5;
+  v13 = messageCopy;
   v14 = v7;
   v15 = v8;
   v10 = v7;
-  v11 = v5;
-  [v6 localizeDestinationPlayerPath:v9 completion:v12];
+  v11 = messageCopy;
+  [clientCopy localizeDestinationPlayerPath:playerPath completion:v12];
 }
 
-- (void)_handlePlaybackSessionMigrateRequestMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionMigrateRequestMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
-  v9 = [v8 startEvent:@"SendPlaybackSession" role:3];
+  messageCopy = message;
+  clientCopy = client;
+  request = [messageCopy request];
+  v9 = [request startEvent:@"SendPlaybackSession" role:3];
 
-  v10 = [v6 playerPath];
+  playerPath = [messageCopy playerPath];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100113E30;
   v13[3] = &unk_1004BD188;
   v16 = v9;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [v11 localizeDestinationPlayerPath:v10 completion:v13];
+  v14 = messageCopy;
+  v15 = clientCopy;
+  v11 = clientCopy;
+  v12 = messageCopy;
+  [v11 localizeDestinationPlayerPath:playerPath completion:v13];
 
   [(MRDExternalDeviceRemoteServer *)self _promoteClient:v11];
 }
 
-- (void)_handlePlaybackSessionMigrateBeginMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionMigrateBeginMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v8 = [v7 startEvent:@"Prepare" role:2];
-  v9 = [v5 playerPath];
+  playerPath = [messageCopy playerPath];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100114928;
   v13[3] = &unk_1004BD2B8;
   v17 = v8;
   v14 = v7;
-  v15 = v5;
-  v16 = v6;
-  v10 = v6;
-  v11 = v5;
+  v15 = messageCopy;
+  v16 = clientCopy;
+  v10 = clientCopy;
+  v11 = messageCopy;
   v12 = v7;
-  [v10 localizeDestinationPlayerPath:v9 completion:v13];
+  [v10 localizeDestinationPlayerPath:playerPath completion:v13];
 }
 
-- (void)_handlePlaybackSessionMigratePostMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionMigratePostMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 request];
-  v8 = [v7 startEvent:@"Post" role:2];
+  messageCopy = message;
+  clientCopy = client;
+  request = [messageCopy request];
+  v8 = [request startEvent:@"Post" role:2];
 
-  v9 = [v5 playerPath];
+  playerPath = [messageCopy playerPath];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100114EE0;
   v11[3] = &unk_1004BD330;
   v13 = v8;
-  v12 = v5;
-  v10 = v5;
-  [v6 localizeDestinationPlayerPath:v9 completion:v11];
+  v12 = messageCopy;
+  v10 = messageCopy;
+  [clientCopy localizeDestinationPlayerPath:playerPath completion:v11];
 }
 
-- (void)_clearPlaybackQueueForPlayerPath:(id)a3
+- (void)_clearPlaybackQueueForPlayerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v3;
+    v14 = pathCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Clearing playback queue for %@", buf, 0xCu);
   }
 
@@ -3761,52 +3761,52 @@ LABEL_6:
   v12 = ExternalRepresentation;
   v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:0];
-  v8 = [[MRDRemoteControlCommand alloc] initWithCommandType:122 playerPath:v3 unresolvedPlayerPath:v3 senderAppDisplayID:@"mediaremoted" optionsData:v7];
+  v8 = [[MRDRemoteControlCommand alloc] initWithCommandType:122 playerPath:pathCopy unresolvedPlayerPath:pathCopy senderAppDisplayID:@"mediaremoted" optionsData:v7];
   v9 = +[MRDMediaRemoteServer server];
-  v10 = [v9 remoteControlServer];
-  [v10 sendRemoteControlCommand:v8 completion:&stru_1004BD370];
+  remoteControlServer = [v9 remoteControlServer];
+  [remoteControlServer sendRemoteControlCommand:v8 completion:&stru_1004BD370];
 }
 
-- (void)_handlePlaybackSessionMigrateEndMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionMigrateEndMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
   v8 = [v7 startEvent:@"Finalize" role:2];
-  v9 = [v5 playerPath];
+  playerPath = [messageCopy playerPath];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100115644;
   v13[3] = &unk_1004BD2B8;
   v17 = v8;
   v14 = v7;
-  v15 = v5;
-  v16 = v6;
-  v10 = v6;
-  v11 = v5;
+  v15 = messageCopy;
+  v16 = clientCopy;
+  v10 = clientCopy;
+  v11 = messageCopy;
   v12 = v7;
-  [v10 localizeDestinationPlayerPath:v9 completion:v13];
+  [v10 localizeDestinationPlayerPath:playerPath completion:v13];
 }
 
-- (void)_handleTriggerAudioFadeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleTriggerAudioFadeMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[MRDMediaRemoteServer server];
-  v6 = [v5 nowPlayingServer];
-  v7 = [v4 playerPath];
-  v8 = [v6 resolveExistingPlayerPath:v7];
+  nowPlayingServer = [v5 nowPlayingServer];
+  playerPath = [messageCopy playerPath];
+  v8 = [nowPlayingServer resolveExistingPlayerPath:playerPath];
 
-  v9 = [v4 fadeType];
+  fadeType = [messageCopy fadeType];
   v10 = [[MRNowPlayingRequest alloc] initWithPlayerPath:v8];
-  if (v9)
+  if (fadeType)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100115D58;
     v14[3] = &unk_1004B6FC0;
     v11 = &v15;
-    v15 = v4;
-    v12 = v4;
+    v15 = messageCopy;
+    v12 = messageCopy;
     [v10 triggerAudioFadeInWithReplyQueue:&_dispatch_main_q completion:v14];
   }
 
@@ -3817,18 +3817,18 @@ LABEL_6:
     v16[2] = sub_100115CD8;
     v16[3] = &unk_1004BD398;
     v11 = &v17;
-    v17 = v4;
-    v13 = v4;
+    v17 = messageCopy;
+    v13 = messageCopy;
     [v10 triggerAudioFadeOutForNowPlayingApplicationWithReplyQueue:&_dispatch_main_q completion:v16];
   }
 }
 
-- (void)_handleSetDiscoveryModeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetDiscoveryModeMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 configuration];
-  [v7 setDiscoveryMode:objc_msgSend(v6 forConfiguration:{"mode"), v8}];
+  messageCopy = message;
+  clientCopy = client;
+  configuration = [messageCopy configuration];
+  [clientCopy setDiscoveryMode:objc_msgSend(messageCopy forConfiguration:{"mode"), configuration}];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3837,133 +3837,133 @@ LABEL_6:
   v22 = 0;
   v9 = self->_discoverySessions;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)self->_discoverySessions objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_discoverySessions objectForKeyedSubscript:configuration];
   v11 = v18[5];
   v18[5] = v10;
 
   objc_sync_exit(v9);
   if (v18[5])
   {
-    if ([v6 mode])
+    if ([messageCopy mode])
     {
-      v12 = [v18[5] availableOutputDevices];
+      availableOutputDevices = [v18[5] availableOutputDevices];
 
-      if (v12)
+      if (availableOutputDevices)
       {
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_100115FCC;
         v13[3] = &unk_1004BD3C0;
         v16 = &v17;
-        v14 = v8;
-        v15 = v7;
+        v14 = configuration;
+        v15 = clientCopy;
         [v15 requestDestinationEndpoint:v13];
       }
     }
   }
 
-  [(MRDExternalDeviceRemoteServer *)self setServerDiscoveryMode:[(MRDExternalDeviceRemoteServer *)self serverDiscoveryModeForConfiguration:v8] forConfiguration:v8];
+  [(MRDExternalDeviceRemoteServer *)self setServerDiscoveryMode:[(MRDExternalDeviceRemoteServer *)self serverDiscoveryModeForConfiguration:configuration] forConfiguration:configuration];
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_handleSetListeningModeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetListeningModeMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001161D4;
   v6[3] = &unk_1004B9CA8;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestDestinationEndpoint:v6];
 }
 
-- (void)_handleSetConversationDetectionEnabledMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetConversationDetectionEnabledMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001163C0;
   v6[3] = &unk_1004B9CA8;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestDestinationEndpoint:v6];
 }
 
-- (void)_handleCreateHostedEndpointRequestMessage:(id)a3 fromClient:(id)a4
+- (void)_handleCreateHostedEndpointRequestMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = [MRRequestDetails alloc];
-  v8 = [v6 deviceInfo];
+  deviceInfo = [clientCopy deviceInfo];
 
-  v9 = [v8 name];
-  v10 = [v7 initWithName:@"_handleCreateHostedEndpointRequestMessage" requestID:0 reason:v9];
+  name = [deviceInfo name];
+  v10 = [v7 initWithName:@"_handleCreateHostedEndpointRequestMessage" requestID:0 reason:name];
 
-  v11 = [v5 outputDeviceUIDs];
+  outputDeviceUIDs = [messageCopy outputDeviceUIDs];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100116648;
   v13[3] = &unk_1004BD3E8;
-  v14 = v5;
-  v12 = v5;
-  [MRDCreateHostedEndpointRequest createHostedEndpointWithOutputDeviceUIDs:v11 timeout:v10 details:v13 groupUIDCompletion:30.0];
+  v14 = messageCopy;
+  v12 = messageCopy;
+  [MRDCreateHostedEndpointRequest createHostedEndpointWithOutputDeviceUIDs:outputDeviceUIDs timeout:v10 details:v13 groupUIDCompletion:30.0];
 }
 
-- (void)_handleAdjustVolumeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleAdjustVolumeMessage:(id)message fromClient:(id)client
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100116800;
   v8[3] = &unk_1004B9CA8;
-  v9 = a3;
-  v6 = v9;
-  v7 = a4;
-  [v7 requestDestinationEndpoint:v8];
-  [(MRDExternalDeviceRemoteServer *)self _promoteClient:v7];
+  messageCopy = message;
+  v6 = messageCopy;
+  clientCopy = client;
+  [clientCopy requestDestinationEndpoint:v8];
+  [(MRDExternalDeviceRemoteServer *)self _promoteClient:clientCopy];
 }
 
-- (void)_handleGetVolumeMutedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetVolumeMutedMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100116A04;
   v6[3] = &unk_1004B9CA8;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestDestinationEndpoint:v6];
 }
 
-- (void)_handleMuteVolumeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleMuteVolumeMessage:(id)message fromClient:(id)client
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100116C0C;
   v8[3] = &unk_1004B9CA8;
-  v9 = a3;
-  v6 = v9;
-  v7 = a4;
-  [v7 requestDestinationEndpoint:v8];
-  [(MRDExternalDeviceRemoteServer *)self _promoteClient:v7];
+  messageCopy = message;
+  v6 = messageCopy;
+  clientCopy = client;
+  [clientCopy requestDestinationEndpoint:v8];
+  [(MRDExternalDeviceRemoteServer *)self _promoteClient:clientCopy];
 }
 
-- (void)_handleRequestGroupSessionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestGroupSessionMessage:(id)message fromClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100116E10;
   v6[3] = &unk_1004BD478;
-  v7 = a3;
-  v5 = v7;
-  [a4 requestConnectedDestinationEndpoint:v6];
+  messageCopy = message;
+  v5 = messageCopy;
+  [client requestConnectedDestinationEndpoint:v6];
 }
 
-- (void)_handleRequestMicrophoneConnectionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestMicrophoneConnectionMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[ExternalDeviceServer] Received incoming microphone connection request: %@", &v10, 0xCu);
   }
 
@@ -3977,94 +3977,94 @@ LABEL_6:
   v8 = [[NSError alloc] initWithMRError:2];
   v9 = [v7 initWithUnderlyingCodableMessage:0 error:v8];
 
-  [v4 replyWithMessage:v9];
+  [messageCopy replyWithMessage:v9];
 }
 
-- (void)_handleCreateApplicationConnectionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleCreateApplicationConnectionMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 context];
-  objc_initWeak(&location, v7);
-  v9 = [v8 destinationPlayerPath];
+  messageCopy = message;
+  clientCopy = client;
+  context = [messageCopy context];
+  objc_initWeak(&location, clientCopy);
+  destinationPlayerPath = [context destinationPlayerPath];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001171A0;
   v13[3] = &unk_1004BD518;
-  v10 = v8;
+  v10 = context;
   v14 = v10;
-  v11 = v6;
+  v11 = messageCopy;
   v15 = v11;
   objc_copyWeak(&v18, &location);
-  v16 = self;
-  v12 = v7;
+  selfCopy = self;
+  v12 = clientCopy;
   v17 = v12;
-  [v12 localizeDestinationPlayerPath:v9 completion:v13];
+  [v12 localizeDestinationPlayerPath:destinationPlayerPath completion:v13];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleApplicationConnectionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleApplicationConnectionMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 context];
-  v8 = [v7 destinationPlayerPath];
+  messageCopy = message;
+  clientCopy = client;
+  context = [messageCopy context];
+  destinationPlayerPath = [context destinationPlayerPath];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100117820;
   v11[3] = &unk_1004BCEC8;
-  v12 = v7;
-  v13 = v5;
-  v9 = v5;
-  v10 = v7;
-  [v6 localizeDestinationPlayerPath:v8 completion:v11];
+  v12 = context;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = context;
+  [clientCopy localizeDestinationPlayerPath:destinationPlayerPath completion:v11];
 }
 
-- (void)_handleInvalidateApplicationConnectionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleInvalidateApplicationConnectionMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 context];
-  v8 = [v7 destinationPlayerPath];
+  messageCopy = message;
+  clientCopy = client;
+  context = [messageCopy context];
+  destinationPlayerPath = [context destinationPlayerPath];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100117A1C;
   v11[3] = &unk_1004BCEC8;
-  v12 = v7;
-  v13 = v5;
-  v9 = v5;
-  v10 = v7;
-  [v6 localizeDestinationPlayerPath:v8 completion:v11];
+  v12 = context;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = context;
+  [clientCopy localizeDestinationPlayerPath:destinationPlayerPath completion:v11];
 }
 
-- (void)updateASEAssertionForRemoteDeviceID:(id)a3 isAsserting:(BOOL)a4
+- (void)updateASEAssertionForRemoteDeviceID:(id)d isAsserting:(BOOL)asserting
 {
-  v6 = a3;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100117BE0;
   block[3] = &unk_1004B8870;
-  v11 = a4;
+  assertingCopy = asserting;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)_promoteClient:(id)a3
+- (void)_promoteClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100117E8C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(serialQueue, v7);
 }
 

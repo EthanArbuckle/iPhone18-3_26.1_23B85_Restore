@@ -1,19 +1,19 @@
 @interface UIPasteControl
 - (BOOL)shouldTrack;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIPasteControl)initWithCoder:(NSCoder *)coder;
 - (UIPasteControl)initWithConfiguration:(UIPasteControlConfiguration *)configuration;
 - (UIPasteControl)initWithFrame:(CGRect)frame;
 - (id)target;
-- (void)_commonInitWithConfiguration:(void *)a3 target:;
-- (void)_observePasteboard:(_BYTE *)a1;
-- (void)_updateEnabledWithNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_commonInitWithConfiguration:(void *)configuration target:;
+- (void)_observePasteboard:(_BYTE *)pasteboard;
+- (void)_updateEnabledWithNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setTarget:(id)target;
 @end
 
@@ -34,10 +34,10 @@
   return v6;
 }
 
-- (void)_commonInitWithConfiguration:(void *)a3 target:
+- (void)_commonInitWithConfiguration:(void *)configuration target:
 {
   v19 = a2;
-  v5 = a3;
+  configurationCopy = configuration;
   if (v19)
   {
     v6 = [_UIImmutablePasteControlConfiguration alloc];
@@ -64,15 +64,15 @@
     v6 = objc_alloc_init(_UIImmutablePasteControlConfiguration);
   }
 
-  v9 = *(a1 + 472);
-  *(a1 + 472) = v6;
+  v9 = *(self + 472);
+  *(self + 472) = v6;
 
-  objc_storeWeak((a1 + 480), v5);
-  v10 = [v19 displayMode];
+  objc_storeWeak((self + 480), configurationCopy);
+  displayMode = [v19 displayMode];
   v11 = 0;
-  if (v10 > 1)
+  if (displayMode > 1)
   {
-    if (v10 == 2)
+    if (displayMode == 2)
     {
       v12 = objc_alloc(MEMORY[0x1E69DEC88]);
       v13 = 0;
@@ -80,7 +80,7 @@
 
     else
     {
-      if (v10 != 3)
+      if (displayMode != 3)
       {
         goto LABEL_18;
       }
@@ -92,9 +92,9 @@
 
   else
   {
-    if (v10)
+    if (displayMode)
     {
-      if (v10 != 1)
+      if (displayMode != 1)
       {
         goto LABEL_18;
       }
@@ -113,22 +113,22 @@
 LABEL_17:
   v11 = [v12 initWithType:1 iconIndex:v13 labelIndex:v14];
 LABEL_18:
-  v15 = [[_UISecureController alloc] initWithCategory:v11 control:a1];
-  v16 = *(a1 + 456);
-  *(a1 + 456) = v15;
+  v15 = [[_UISecureController alloc] initWithCategory:v11 control:self];
+  v16 = *(self + 456);
+  *(self + 456) = v15;
 
   [v19 cornerRadius];
-  [*(a1 + 456) setCornerRadius:?];
-  [*(a1 + 456) setCornerStyle:{objc_msgSend(v19, "cornerStyle")}];
-  v17 = [v19 baseForegroundColor];
-  [*(a1 + 456) setBaseForegroundColor:{objc_msgSend(v17, "CGColor")}];
+  [*(self + 456) setCornerRadius:?];
+  [*(self + 456) setCornerStyle:{objc_msgSend(v19, "cornerStyle")}];
+  baseForegroundColor = [v19 baseForegroundColor];
+  [*(self + 456) setBaseForegroundColor:{objc_msgSend(baseForegroundColor, "CGColor")}];
 
-  v18 = [v19 baseBackgroundColor];
-  [*(a1 + 456) setBaseBackgroundColor:{objc_msgSend(v18, "CGColor")}];
+  baseBackgroundColor = [v19 baseBackgroundColor];
+  [*(self + 456) setBaseBackgroundColor:{objc_msgSend(baseBackgroundColor, "CGColor")}];
 
-  [*(a1 + 456) setImagePlacement:{objc_msgSend(v19, "imagePlacement")}];
-  [*(a1 + 456) setShouldLayoutSynchronously:{objc_msgSend(v19, "_shouldLayoutSynchronously")}];
-  [(UIPasteControl *)a1 _observePasteboard:?];
+  [*(self + 456) setImagePlacement:{objc_msgSend(v19, "imagePlacement")}];
+  [*(self + 456) setShouldLayoutSynchronously:{objc_msgSend(v19, "_shouldLayoutSynchronously")}];
+  [(UIPasteControl *)self _observePasteboard:?];
 }
 
 - (UIPasteControl)initWithCoder:(NSCoder *)coder
@@ -161,61 +161,61 @@ LABEL_18:
   return v4;
 }
 
-- (void)_observePasteboard:(_BYTE *)a1
+- (void)_observePasteboard:(_BYTE *)pasteboard
 {
-  if (!a1)
+  if (!pasteboard)
   {
     return;
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = v4;
-  if (a2 && (a1[464] & 1) == 0)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v6 = defaultCenter;
+  if (a2 && (pasteboard[464] & 1) == 0)
   {
-    [v4 addObserver:a1 selector:sel__updateEnabledWithNotification_ name:0x1EFB861D0 object:0];
+    [defaultCenter addObserver:pasteboard selector:sel__updateEnabledWithNotification_ name:0x1EFB861D0 object:0];
     v5 = 1;
 LABEL_8:
-    a1[464] = v5;
+    pasteboard[464] = v5;
     goto LABEL_9;
   }
 
-  if (a1[464] && (a2 & 1) == 0)
+  if (pasteboard[464] && (a2 & 1) == 0)
   {
-    [v4 removeObserver:a1 name:0x1EFB861D0 object:0];
+    [defaultCenter removeObserver:pasteboard name:0x1EFB861D0 object:0];
     v5 = 0;
     goto LABEL_8;
   }
 
 LABEL_9:
-  [a1 _updateEnabledWithNotification:0];
+  [pasteboard _updateEnabledWithNotification:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIPasteControl;
-  v4 = a3;
-  [(UIControl *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"UIPasteControlConfiguration", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(UIControl *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"UIPasteControlConfiguration", v6.receiver, v6.super_class}];
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  [v4 encodeObject:WeakRetained forKey:@"UIPasteControlTarget"];
+  [coderCopy encodeObject:WeakRetained forKey:@"UIPasteControlTarget"];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _authenticationMessage];
-  [UIPasteboard _attemptAuthenticationWithMessage:v8];
+  touchCopy = touch;
+  eventCopy = event;
+  _authenticationMessage = [eventCopy _authenticationMessage];
+  [UIPasteboard _attemptAuthenticationWithMessage:_authenticationMessage];
 
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (WeakRetained)
   {
     v10 = +[UIPasteboard generalPasteboard];
-    v11 = [v10 itemProviders];
+    itemProviders = [v10 itemProviders];
 
     v12 = WeakRetained;
-    v13 = v11;
+    v13 = itemProviders;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,7 +251,7 @@ LABEL_9:
       if (objc_opt_isKindOfClass())
       {
         v16 = v14;
-        v17 = [v16 _dataOwnerForPaste];
+        _dataOwnerForPaste = [v16 _dataOwnerForPaste];
         if ([v16 canBecomeFirstResponder])
         {
           [v16 becomeFirstResponder];
@@ -260,7 +260,7 @@ LABEL_9:
 
       else
       {
-        v17 = 0;
+        _dataOwnerForPaste = 0;
       }
 
       v19[0] = MEMORY[0x1E69E9820];
@@ -269,13 +269,13 @@ LABEL_9:
       v19[3] = &unk_1E70F35B8;
       v20 = v14;
       v21 = v13;
-      [UIPasteboard _performAsDataOwner:v17 block:v19];
+      [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:v19];
     }
   }
 
   v18.receiver = self;
   v18.super_class = UIPasteControl;
-  [(UIControl *)&v18 endTrackingWithTouch:v6 withEvent:v7];
+  [(UIControl *)&v18 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
 - (void)setTarget:(id)target
@@ -290,16 +290,16 @@ LABEL_9:
   }
 }
 
-- (void)_updateEnabledWithNotification:(id)a3
+- (void)_updateEnabledWithNotification:(id)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_target);
     v5 = +[UIPasteboard generalPasteboard];
-    v6 = [v5 itemProviders];
+    itemProviders = [v5 itemProviders];
     v7 = v4;
-    v8 = v6;
+    v8 = itemProviders;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -363,38 +363,38 @@ LABEL_9:
   [(UIView *)&v3 layoutSubviews];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = UIPasteControl;
-  [(UIControl *)&v4 setEnabled:a3];
+  [(UIControl *)&v4 setEnabled:enabled];
   [(_UISecureController *)self->_secureController updateState];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = UIPasteControl;
-  [(UIControl *)&v4 setHighlighted:a3];
+  [(UIControl *)&v4 setHighlighted:highlighted];
   [(_UISecureController *)self->_secureController updateState];
 }
 
 - (BOOL)shouldTrack
 {
-  v3 = [(_UISecureController *)self->_secureController enchanted];
-  if (v3)
+  enchanted = [(_UISecureController *)self->_secureController enchanted];
+  if (enchanted)
   {
     v5.receiver = self;
     v5.super_class = UIPasteControl;
-    LOBYTE(v3) = [(UIControl *)&v5 shouldTrack];
+    LOBYTE(enchanted) = [(UIControl *)&v5 shouldTrack];
   }
 
-  return v3;
+  return enchanted;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UISecureController *)self->_secureController intrinsicContentSize:a3.width];
+  [(_UISecureController *)self->_secureController intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;

@@ -6,19 +6,19 @@
 + (id)loadFromDisk;
 + (void)_registerNotifications;
 + (void)erase;
-- (AMSEngagementClientData)initWithCacheObject:(id)a3;
-- (BOOL)destination:(id)a3 allowsEvent:(id)a4;
-- (id)_appForIdentifier:(id)a3;
-- (id)cachedResponseDataForEvent:(id)a3;
-- (id)destinationsForEvent:(id)a3;
-- (id)destinationsNeedingSyncSinceBuild:(id)a3;
-- (id)lastSyncedBuildForDestination:(id)a3;
-- (void)_enumerateAppsWithBlock:(id)a3;
-- (void)_setApp:(id)a3 forIdentifier:(id)a4;
-- (void)addCachedResponseData:(id)a3 cacheInfo:(id)a4 appIdentifier:(id)a5;
+- (AMSEngagementClientData)initWithCacheObject:(id)object;
+- (BOOL)destination:(id)destination allowsEvent:(id)event;
+- (id)_appForIdentifier:(id)identifier;
+- (id)cachedResponseDataForEvent:(id)event;
+- (id)destinationsForEvent:(id)event;
+- (id)destinationsNeedingSyncSinceBuild:(id)build;
+- (id)lastSyncedBuildForDestination:(id)destination;
+- (void)_enumerateAppsWithBlock:(id)block;
+- (void)_setApp:(id)app forIdentifier:(id)identifier;
+- (void)addCachedResponseData:(id)data cacheInfo:(id)info appIdentifier:(id)identifier;
 - (void)saveToDisk;
-- (void)setAllowedEvents:(id)a3 appIdentifier:(id)a4;
-- (void)setLastSyncedBuild:(id)a3 appIdentifier:(id)a4;
+- (void)setAllowedEvents:(id)events appIdentifier:(id)identifier;
+- (void)setLastSyncedBuild:(id)build appIdentifier:(id)identifier;
 @end
 
 @implementation AMSEngagementClientData
@@ -31,14 +31,14 @@
   v10 = __Block_byref_object_copy__26;
   v11 = __Block_byref_object_dispose__26;
   v12 = 0;
-  v3 = [a1 _sharedQueue];
+  _sharedQueue = [self _sharedQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__AMSEngagementClientData_loadFromDisk__block_invoke;
   v6[3] = &unk_1E73B5F60;
   v6[4] = &v7;
-  v6[5] = a1;
-  dispatch_sync(v3, v6);
+  v6[5] = self;
+  dispatch_sync(_sharedQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -96,15 +96,15 @@ void __39__AMSEngagementClientData__sharedQueue__block_invoke()
 + (id)_fetchClientData
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = [a1 clientDataURL];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  clientDataURL = [self clientDataURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [clientDataURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
     v22 = 0;
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2 options:0 error:&v22];
+    oSLogObject2 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:clientDataURL options:0 error:&v22];
     v7 = v22;
     if (v7)
     {
@@ -115,8 +115,8 @@ void __39__AMSEngagementClientData__sharedQueue__block_invoke()
         v9 = +[AMSLogConfig sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v11 = objc_opt_class();
         v12 = AMSLogKey();
@@ -126,17 +126,17 @@ void __39__AMSEngagementClientData__sharedQueue__block_invoke()
         v26 = v12;
         v27 = 2114;
         v28 = v8;
-        _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to lookup client data. %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to lookup client data. %{public}@", buf, 0x20u);
       }
 
       v13 = 0;
       goto LABEL_8;
     }
 
-    if (v6)
+    if (oSLogObject2)
     {
       v21 = 0;
-      v16 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:&v21];
+      v16 = [MEMORY[0x1E696ACB0] JSONObjectWithData:oSLogObject2 options:0 error:&v21];
       v8 = v21;
       v9 = v16;
       objc_opt_class();
@@ -151,14 +151,14 @@ void __39__AMSEngagementClientData__sharedQueue__block_invoke()
         goto LABEL_9;
       }
 
-      v10 = +[AMSLogConfig sharedEngagementConfig];
-      if (!v10)
+      oSLogObject = +[AMSLogConfig sharedEngagementConfig];
+      if (!oSLogObject)
       {
-        v10 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v10 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      v10OSLogObject = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v10OSLogObject, OS_LOG_TYPE_ERROR))
       {
         v18 = objc_opt_class();
         v19 = AMSLogKey();
@@ -168,7 +168,7 @@ void __39__AMSEngagementClientData__sharedQueue__block_invoke()
         v26 = v19;
         v27 = 2114;
         v28 = v8;
-        _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode client data. %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, v10OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode client data. %{public}@", buf, 0x20u);
       }
 
 LABEL_8:
@@ -188,8 +188,8 @@ LABEL_9:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v8 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -197,7 +197,7 @@ LABEL_9:
       v24 = v14;
       v25 = 2114;
       v26 = v15;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No client data", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No client data", buf, 0x16u);
     }
   }
 
@@ -209,8 +209,8 @@ LABEL_25:
 
 + (NSURL)clientDataURL
 {
-  v2 = [MEMORY[0x1E695DFF8] ams_engagementDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"clientData.txt"];
+  ams_engagementDirectory = [MEMORY[0x1E695DFF8] ams_engagementDirectory];
+  v3 = [ams_engagementDirectory URLByAppendingPathComponent:@"clientData.txt"];
 
   return v3;
 }
@@ -231,7 +231,7 @@ void __49__AMSEngagementClientData__registerNotifications__block_invoke(uint64_t
     block[1] = 3221225472;
     block[2] = __49__AMSEngagementClientData__registerNotifications__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (_registerNotifications_onceToken != -1)
     {
       dispatch_once(&_registerNotifications_onceToken, block);
@@ -241,22 +241,22 @@ void __49__AMSEngagementClientData__registerNotifications__block_invoke(uint64_t
 
 + (BOOL)_isDaemon
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
-  v4 = [v3 isEqualToString:@"amsengagementd"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v4 = [processName isEqualToString:@"amsengagementd"];
 
   return v4;
 }
 
-- (AMSEngagementClientData)initWithCacheObject:(id)a3
+- (AMSEngagementClientData)initWithCacheObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = AMSEngagementClientData;
   v5 = [(AMSEngagementClientData *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"lastSyncedBuild"];
+    v6 = [objectCopy objectForKeyedSubscript:@"lastSyncedBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -271,7 +271,7 @@ void __49__AMSEngagementClientData__registerNotifications__block_invoke(uint64_t
     lastSyncedBuild = v5->_lastSyncedBuild;
     v5->_lastSyncedBuild = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"apps"];
+    v9 = [objectCopy objectForKeyedSubscript:@"apps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -340,52 +340,52 @@ void __47__AMSEngagementClientData_initWithCacheObject___block_invoke(uint64_t a
   }
 }
 
-- (void)addCachedResponseData:(id)a3 cacheInfo:(id)a4 appIdentifier:(id)a5
+- (void)addCachedResponseData:(id)data cacheInfo:(id)info appIdentifier:(id)identifier
 {
-  v15 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  infoCopy = info;
+  dataCopy = data;
   +[AMSEngagementClientData _assertEngagementd];
-  v10 = [(AMSEngagementClientData *)self _appForIdentifier:v15];
+  v10 = [(AMSEngagementClientData *)self _appForIdentifier:identifierCopy];
   v11 = [v10 copy];
 
   if (!v11)
   {
-    v11 = [[AMSEngagementAppData alloc] initWithIdentifier:v15 cacheObject:0];
+    v11 = [[AMSEngagementAppData alloc] initWithIdentifier:identifierCopy cacheObject:0];
   }
 
-  v12 = [[AMSEngagementAppResponseModel alloc] initWithData:v9 cacheInfo:v8];
+  v12 = [[AMSEngagementAppResponseModel alloc] initWithData:dataCopy cacheInfo:infoCopy];
 
   if (v12)
   {
-    v13 = [(AMSEngagementAppData *)v11 cachedResponses];
-    v14 = [v13 arrayByAddingObject:v12];
+    cachedResponses = [(AMSEngagementAppData *)v11 cachedResponses];
+    v14 = [cachedResponses arrayByAddingObject:v12];
     [(AMSEngagementAppData *)v11 setCachedResponses:v14];
   }
 
-  [(AMSEngagementClientData *)self _setApp:v11 forIdentifier:v15];
+  [(AMSEngagementClientData *)self _setApp:v11 forIdentifier:identifierCopy];
 }
 
-- (void)setAllowedEvents:(id)a3 appIdentifier:(id)a4
+- (void)setAllowedEvents:(id)events appIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  identifierCopy = identifier;
   +[AMSEngagementClientData _assertEngagementd];
-  v8 = [(AMSEngagementClientData *)self _appForIdentifier:v7];
+  v8 = [(AMSEngagementClientData *)self _appForIdentifier:identifierCopy];
   v9 = [v8 copy];
 
   if (!v9)
   {
-    v9 = [[AMSEngagementAppData alloc] initWithIdentifier:v7 cacheObject:0];
+    v9 = [[AMSEngagementAppData alloc] initWithIdentifier:identifierCopy cacheObject:0];
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v6;
+  v11 = eventsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -420,12 +420,12 @@ void __47__AMSEngagementClientData_initWithCacheObject___block_invoke(uint64_t a
   }
 
   [(AMSEngagementAppData *)v9 setEventFilters:v10];
-  [(AMSEngagementClientData *)self _setApp:v9 forIdentifier:v7];
+  [(AMSEngagementClientData *)self _setApp:v9 forIdentifier:identifierCopy];
 }
 
-- (id)cachedResponseDataForEvent:(id)a3
+- (id)cachedResponseDataForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -436,15 +436,15 @@ void __47__AMSEngagementClientData_initWithCacheObject___block_invoke(uint64_t a
   v9 = 3221225472;
   v10 = __54__AMSEngagementClientData_cachedResponseDataForEvent___block_invoke;
   v11 = &unk_1E73B7540;
-  v5 = v4;
+  v5 = eventCopy;
   v12 = v5;
   v13 = &v14;
   [(AMSEngagementClientData *)self _enumerateAppsWithBlock:&v8];
-  v6 = [v15[5] responseData];
+  responseData = [v15[5] responseData];
 
   _Block_object_dispose(&v14, 8);
 
-  return v6;
+  return responseData;
 }
 
 void __54__AMSEngagementClientData_cachedResponseDataForEvent___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -484,30 +484,30 @@ void __54__AMSEngagementClientData_cachedResponseDataForEvent___block_invoke(uin
   }
 }
 
-- (BOOL)destination:(id)a3 allowsEvent:(id)a4
+- (BOOL)destination:(id)destination allowsEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  eventCopy = event;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [objc_opt_class() _sharedQueue];
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__AMSEngagementClientData_destination_allowsEvent___block_invoke;
   v12[3] = &unk_1E73B7568;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = destinationCopy;
+  v14 = eventCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = eventCopy;
+  v10 = destinationCopy;
+  dispatch_sync(_sharedQueue, v12);
 
-  LOBYTE(v7) = *(v17 + 24);
+  LOBYTE(eventCopy) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
-  return v7;
+  return eventCopy;
 }
 
 void __51__AMSEngagementClientData_destination_allowsEvent___block_invoke(uint64_t a1)
@@ -555,37 +555,37 @@ void __51__AMSEngagementClientData_destination_allowsEvent___block_invoke(uint64
 LABEL_11:
 }
 
-- (id)lastSyncedBuildForDestination:(id)a3
+- (id)lastSyncedBuildForDestination:(id)destination
 {
-  v3 = [(AMSEngagementClientData *)self _appForIdentifier:a3];
-  v4 = [v3 lastSyncedBuild];
+  v3 = [(AMSEngagementClientData *)self _appForIdentifier:destination];
+  lastSyncedBuild = [v3 lastSyncedBuild];
 
-  return v4;
+  return lastSyncedBuild;
 }
 
-- (void)setLastSyncedBuild:(id)a3 appIdentifier:(id)a4
+- (void)setLastSyncedBuild:(id)build appIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSEngagementClientData *)self _appForIdentifier:v6];
+  identifierCopy = identifier;
+  buildCopy = build;
+  v8 = [(AMSEngagementClientData *)self _appForIdentifier:identifierCopy];
   v9 = [v8 copy];
 
-  [v9 setLastSyncedBuild:v7];
-  [(AMSEngagementClientData *)self _setApp:v9 forIdentifier:v6];
+  [v9 setLastSyncedBuild:buildCopy];
+  [(AMSEngagementClientData *)self _setApp:v9 forIdentifier:identifierCopy];
 }
 
-- (id)destinationsNeedingSyncSinceBuild:(id)a3
+- (id)destinationsNeedingSyncSinceBuild:(id)build
 {
-  v4 = a3;
+  buildCopy = build;
   v5 = [MEMORY[0x1E695DFA8] set];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__AMSEngagementClientData_destinationsNeedingSyncSinceBuild___block_invoke;
   v11[3] = &unk_1E73B7590;
-  v12 = v4;
+  v12 = buildCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = buildCopy;
   [(AMSEngagementClientData *)self _enumerateAppsWithBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -604,18 +604,18 @@ void __61__AMSEngagementClientData_destinationsNeedingSyncSinceBuild___block_inv
   }
 }
 
-- (id)destinationsForEvent:(id)a3
+- (id)destinationsForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__AMSEngagementClientData_destinationsForEvent___block_invoke;
   v11[3] = &unk_1E73B7590;
-  v12 = v4;
+  v12 = eventCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = eventCopy;
   [(AMSEngagementClientData *)self _enumerateAppsWithBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -679,10 +679,10 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
 + (void)erase
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [a1 clientDataURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  clientDataURL = [self clientDataURL];
   v13 = 0;
-  v5 = [v3 removeItemAtURL:v4 error:&v13];
+  v5 = [defaultManager removeItemAtURL:clientDataURL error:&v13];
   v6 = v13;
 
   if ((v5 & 1) == 0)
@@ -695,8 +695,8 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
         v9 = +[AMSLogConfig sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v11 = objc_opt_class();
         v12 = AMSLogKey();
@@ -706,7 +706,7 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
         v17 = v12;
         v18 = 2114;
         v19 = v6;
-        _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to erase client data: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to erase client data: %{public}@", buf, 0x20u);
       }
     }
   }
@@ -717,8 +717,8 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
   v38 = *MEMORY[0x1E69E9840];
   +[AMSEngagementClientData _assertEngagementd];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSEngagementClientData *)self lastSyncedBuild];
-  [v3 setObject:v4 forKeyedSubscript:@"lastSyncedBuild"];
+  lastSyncedBuild = [(AMSEngagementClientData *)self lastSyncedBuild];
+  [v3 setObject:lastSyncedBuild forKeyedSubscript:@"lastSyncedBuild"];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30[0] = MEMORY[0x1E69E9820];
@@ -730,42 +730,42 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
   [(AMSEngagementClientData *)self _enumerateAppsWithBlock:v30];
   [v3 setObject:v6 forKeyedSubscript:@"apps"];
   v7 = +[AMSEngagementClientData clientDataURL];
-  v8 = [v7 URLByDeletingLastPathComponent];
-  v9 = [v8 path];
+  uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:path];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v29 = 0;
-    v13 = [v12 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v29];
+    v13 = [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v29];
     v14 = v29;
 
     if (v14 || (v13 & 1) == 0)
     {
-      v15 = +[AMSLogConfig sharedEngagementConfig];
-      if (!v15)
+      oSLogObject2 = +[AMSLogConfig sharedEngagementConfig];
+      if (!oSLogObject2)
       {
-        v15 = +[AMSLogConfig sharedConfig];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v15 OSLogObject];
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [oSLogObject2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_19;
       }
 
       v22 = objc_opt_class();
-      v18 = AMSLogKey();
+      v17OSLogObject = AMSLogKey();
       *buf = 138543874;
       v33 = v22;
       v34 = 2114;
-      v35 = v18;
+      v35 = v17OSLogObject;
       v36 = 2114;
       v37 = v14;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating directory. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error creating directory. %{public}@", buf, 0x20u);
       goto LABEL_18;
     }
   }
@@ -773,19 +773,19 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
   if ([MEMORY[0x1E696ACB0] isValidJSONObject:v3])
   {
     v28 = 0;
-    v15 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v28];
+    oSLogObject2 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v28];
     v14 = v28;
     v16 = +[AMSLogConfig sharedEngagementConfig];
-    v17 = v16;
+    oSLogObject = v16;
     if (v14)
     {
       if (!v16)
       {
-        v17 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      v17OSLogObject = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v17OSLogObject, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
         v20 = AMSLogKey();
@@ -795,7 +795,7 @@ void __48__AMSEngagementClientData_destinationsForEvent___block_invoke(uint64_t 
         v35 = v20;
         v36 = 2114;
         v37 = v14;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failing to serialize client data. %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, v17OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failing to serialize client data. %{public}@", buf, 0x20u);
       }
 
 LABEL_18:
@@ -805,11 +805,11 @@ LABEL_18:
 
     if (!v16)
     {
-      v17 = +[AMSLogConfig sharedConfig];
+      oSLogObject = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v17 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    v17OSLogObject2 = [oSLogObject OSLogObject];
+    if (os_log_type_enabled(v17OSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -817,11 +817,11 @@ LABEL_18:
       v33 = v24;
       v34 = 2114;
       v35 = v25;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overwriting client data.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, v17OSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overwriting client data.", buf, 0x16u);
     }
 
-    v26 = [v7 path];
-    [v15 writeToFile:v26 atomically:1];
+    path2 = [v7 path];
+    [oSLogObject2 writeToFile:path2 atomically:1];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AMSEngagementClientDataChanged", 0, 0, 1u);
@@ -836,16 +836,16 @@ LABEL_18:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
-      v17 = AMSLogKey();
+      oSLogObject = AMSLogKey();
       *buf = 138543618;
       v33 = v21;
       v34 = 2114;
-      v35 = v17;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failing to validate client data, invalid format.", buf, 0x16u);
+      v35 = oSLogObject;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failing to validate client data, invalid format.", buf, 0x16u);
 LABEL_19:
     }
   }
@@ -858,25 +858,25 @@ void __37__AMSEngagementClientData_saveToDisk__block_invoke(uint64_t a1, void *a
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)_appForIdentifier:(id)a3
+- (id)_appForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__26;
   v16 = __Block_byref_object_dispose__26;
   v17 = 0;
-  v5 = [objc_opt_class() _sharedQueue];
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__AMSEngagementClientData__appForIdentifier___block_invoke;
   block[3] = &unk_1E73B75E0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(_sharedQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -893,18 +893,18 @@ void __45__AMSEngagementClientData__appForIdentifier___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_enumerateAppsWithBlock:(id)a3
+- (void)_enumerateAppsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _sharedQueue];
+  blockCopy = block;
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__AMSEngagementClientData__enumerateAppsWithBlock___block_invoke;
   v7[3] = &unk_1E73B36D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(_sharedQueue, v7);
 }
 
 void __51__AMSEngagementClientData__enumerateAppsWithBlock___block_invoke(uint64_t a1)
@@ -913,21 +913,21 @@ void __51__AMSEngagementClientData__enumerateAppsWithBlock___block_invoke(uint64
   [v2 enumerateKeysAndObjectsUsingBlock:*(a1 + 40)];
 }
 
-- (void)_setApp:(id)a3 forIdentifier:(id)a4
+- (void)_setApp:(id)app forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _sharedQueue];
+  appCopy = app;
+  identifierCopy = identifier;
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__AMSEngagementClientData__setApp_forIdentifier___block_invoke;
   block[3] = &unk_1E73B71B0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = identifierCopy;
+  v13 = appCopy;
+  v9 = appCopy;
+  v10 = identifierCopy;
+  dispatch_sync(_sharedQueue, block);
 }
 
 void __49__AMSEngagementClientData__setApp_forIdentifier___block_invoke(uint64_t a1)

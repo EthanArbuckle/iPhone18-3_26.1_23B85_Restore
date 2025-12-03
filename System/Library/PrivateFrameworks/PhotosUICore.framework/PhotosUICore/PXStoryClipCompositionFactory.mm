@@ -22,44 +22,44 @@
 + (PXStoryClipComposition)twoUpTwoThirdsLeadingOneThirdTrailingComposition;
 + (PXStoryClipComposition)twoUpTwoThirdsTopOneThirdBottomAssetSplitComposition;
 + (PXStoryClipComposition)twoUpTwoThirdsTopOneThirdBottomComposition;
-+ (id)oneUpCompositionWithAspectRatioNumerator:(int64_t)a3 denominator:(int64_t)a4;
-+ (id)oneUpCompositionsWithAspectRatioPassingTest:(id)a3;
++ (id)oneUpCompositionWithAspectRatioNumerator:(int64_t)numerator denominator:(int64_t)denominator;
++ (id)oneUpCompositionsWithAspectRatioPassingTest:(id)test;
 @end
 
 @implementation PXStoryClipCompositionFactory
 
 + (NSArray)allSupportedCompositions
 {
-  v3 = [a1 supportedOneUpCompositions];
-  v4 = [a1 supportedNUpCompositions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  supportedOneUpCompositions = [self supportedOneUpCompositions];
+  supportedNUpCompositions = [self supportedNUpCompositions];
+  v5 = [supportedOneUpCompositions arrayByAddingObjectsFromArray:supportedNUpCompositions];
 
   return v5;
 }
 
 + (NSArray)allDefaultCompositions
 {
-  v3 = [a1 defaultOneUpCompositions];
-  v4 = [a1 defaultNUpCompositions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultOneUpCompositions = [self defaultOneUpCompositions];
+  defaultNUpCompositions = [self defaultNUpCompositions];
+  v5 = [defaultOneUpCompositions arrayByAddingObjectsFromArray:defaultNUpCompositions];
 
   return v5;
 }
 
 + (NSArray)supportedNUpCompositions
 {
-  v3 = [a1 supportedTwoUpCompositions];
-  v4 = [a1 supportedThreeUpCompositions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  supportedTwoUpCompositions = [self supportedTwoUpCompositions];
+  supportedThreeUpCompositions = [self supportedThreeUpCompositions];
+  v5 = [supportedTwoUpCompositions arrayByAddingObjectsFromArray:supportedThreeUpCompositions];
 
   return v5;
 }
 
 + (NSArray)defaultNUpCompositions
 {
-  v3 = [a1 defaultTwoUpCompositions];
-  v4 = [a1 defaultThreeUpCompositions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultTwoUpCompositions = [self defaultTwoUpCompositions];
+  defaultThreeUpCompositions = [self defaultThreeUpCompositions];
+  v5 = [defaultTwoUpCompositions arrayByAddingObjectsFromArray:defaultThreeUpCompositions];
 
   return v5;
 }
@@ -67,10 +67,10 @@
 + (NSArray)defaultThreeUpCompositions
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v3 = [a1 threeUpVerticalThirdsComposition];
-  v11[0] = v3;
-  v4 = [a1 threeUpHorizontalThirdsComposition];
-  v11[1] = v4;
+  threeUpVerticalThirdsComposition = [self threeUpVerticalThirdsComposition];
+  v11[0] = threeUpVerticalThirdsComposition;
+  threeUpHorizontalThirdsComposition = [self threeUpHorizontalThirdsComposition];
+  v11[1] = threeUpHorizontalThirdsComposition;
   v5 = [[_PXStoryConcreteClipComposition alloc] initWithNumberOfClips:3 primaryEdge:0 splitRatio:1 secondaryEdge:@"3-Up [|-]" splitRatio:0.5 label:0.5];
   v11[2] = v5;
   v6 = [[_PXStoryConcreteClipComposition alloc] initWithNumberOfClips:3 primaryEdge:2 splitRatio:1 secondaryEdge:@"3-Up [-|]" splitRatio:0.5 label:0.5];
@@ -100,9 +100,9 @@
 
 + (NSArray)supportedTwoUpCompositions
 {
-  v3 = [a1 defaultTwoUpCompositions];
-  v4 = [a1 supportedTwoUpAssetSplitCompositions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  defaultTwoUpCompositions = [self defaultTwoUpCompositions];
+  supportedTwoUpAssetSplitCompositions = [self supportedTwoUpAssetSplitCompositions];
+  v5 = [defaultTwoUpCompositions arrayByAddingObjectsFromArray:supportedTwoUpAssetSplitCompositions];
 
   return v5;
 }
@@ -110,14 +110,14 @@
 + (NSArray)supportedTwoUpAssetSplitCompositions
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v3 = [a1 twoUpOneThirdLeadingTwoThirdsTrailingAssetSplitComposition];
-  v9[0] = v3;
-  v4 = [a1 twoUpTwoThirdsLeadingOneThirdTrailingAssetSplitComposition];
-  v9[1] = v4;
-  v5 = [a1 twoUpOneThirdTopTwoThirdsBottomAssetSplitComposition];
-  v9[2] = v5;
-  v6 = [a1 twoUpTwoThirdsTopOneThirdBottomAssetSplitComposition];
-  v9[3] = v6;
+  twoUpOneThirdLeadingTwoThirdsTrailingAssetSplitComposition = [self twoUpOneThirdLeadingTwoThirdsTrailingAssetSplitComposition];
+  v9[0] = twoUpOneThirdLeadingTwoThirdsTrailingAssetSplitComposition;
+  twoUpTwoThirdsLeadingOneThirdTrailingAssetSplitComposition = [self twoUpTwoThirdsLeadingOneThirdTrailingAssetSplitComposition];
+  v9[1] = twoUpTwoThirdsLeadingOneThirdTrailingAssetSplitComposition;
+  twoUpOneThirdTopTwoThirdsBottomAssetSplitComposition = [self twoUpOneThirdTopTwoThirdsBottomAssetSplitComposition];
+  v9[2] = twoUpOneThirdTopTwoThirdsBottomAssetSplitComposition;
+  twoUpTwoThirdsTopOneThirdBottomAssetSplitComposition = [self twoUpTwoThirdsTopOneThirdBottomAssetSplitComposition];
+  v9[3] = twoUpTwoThirdsTopOneThirdBottomAssetSplitComposition;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
 
   return v7;
@@ -154,18 +154,18 @@
 + (NSArray)defaultTwoUpCompositions
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  v3 = [a1 twoUpHalfLeadingHalfTrailingComposition];
-  v11[0] = v3;
-  v4 = [a1 twoUpHalfTopHalfBottomComposition];
-  v11[1] = v4;
-  v5 = [a1 twoUpOneThirdLeadingTwoThirdsTrailingComposition];
-  v11[2] = v5;
-  v6 = [a1 twoUpTwoThirdsLeadingOneThirdTrailingComposition];
-  v11[3] = v6;
-  v7 = [a1 twoUpOneThirdTopTwoThirdsBottomComposition];
-  v11[4] = v7;
-  v8 = [a1 twoUpTwoThirdsTopOneThirdBottomComposition];
-  v11[5] = v8;
+  twoUpHalfLeadingHalfTrailingComposition = [self twoUpHalfLeadingHalfTrailingComposition];
+  v11[0] = twoUpHalfLeadingHalfTrailingComposition;
+  twoUpHalfTopHalfBottomComposition = [self twoUpHalfTopHalfBottomComposition];
+  v11[1] = twoUpHalfTopHalfBottomComposition;
+  twoUpOneThirdLeadingTwoThirdsTrailingComposition = [self twoUpOneThirdLeadingTwoThirdsTrailingComposition];
+  v11[2] = twoUpOneThirdLeadingTwoThirdsTrailingComposition;
+  twoUpTwoThirdsLeadingOneThirdTrailingComposition = [self twoUpTwoThirdsLeadingOneThirdTrailingComposition];
+  v11[3] = twoUpTwoThirdsLeadingOneThirdTrailingComposition;
+  twoUpOneThirdTopTwoThirdsBottomComposition = [self twoUpOneThirdTopTwoThirdsBottomComposition];
+  v11[4] = twoUpOneThirdTopTwoThirdsBottomComposition;
+  twoUpTwoThirdsTopOneThirdBottomComposition = [self twoUpTwoThirdsTopOneThirdBottomComposition];
+  v11[5] = twoUpTwoThirdsTopOneThirdBottomComposition;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
 
   return v9;
@@ -213,17 +213,17 @@
   return v2;
 }
 
-+ (id)oneUpCompositionsWithAspectRatioPassingTest:(id)a3
++ (id)oneUpCompositionsWithAspectRatioPassingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a1 defaultOneUpCompositions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  defaultOneUpCompositions = [self defaultOneUpCompositions];
+  v7 = [defaultOneUpCompositions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -234,7 +234,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(defaultOneUpCompositions);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -242,14 +242,14 @@
         if (objc_opt_isKindOfClass())
         {
           [v11 aspectRatio];
-          if (v4[2](v4))
+          if (testCopy[2](testCopy))
           {
             [v5 addObject:v11];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [defaultOneUpCompositions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -263,31 +263,31 @@
 + (NSArray)defaultOneUpCompositions
 {
   v14[9] = *MEMORY[0x1E69E9840];
-  v3 = [a1 oneUpComposition];
-  v4 = [a1 aspectFitOneUpComposition];
-  v14[1] = v4;
-  v5 = [a1 oneUpCompositionWithAspectRatioNumerator:16 denominator:9];
+  oneUpComposition = [self oneUpComposition];
+  aspectFitOneUpComposition = [self aspectFitOneUpComposition];
+  v14[1] = aspectFitOneUpComposition;
+  v5 = [self oneUpCompositionWithAspectRatioNumerator:16 denominator:9];
   v14[2] = v5;
-  v6 = [a1 oneUpCompositionWithAspectRatioNumerator:3 denominator:2];
+  v6 = [self oneUpCompositionWithAspectRatioNumerator:3 denominator:2];
   v14[3] = v6;
-  v7 = [a1 oneUpCompositionWithAspectRatioNumerator:4 denominator:3];
+  v7 = [self oneUpCompositionWithAspectRatioNumerator:4 denominator:3];
   v14[4] = v7;
-  v8 = [a1 oneUpCompositionWithAspectRatioNumerator:1 denominator:1];
+  v8 = [self oneUpCompositionWithAspectRatioNumerator:1 denominator:1];
   v14[5] = v8;
-  v9 = [a1 oneUpCompositionWithAspectRatioNumerator:3 denominator:4];
+  v9 = [self oneUpCompositionWithAspectRatioNumerator:3 denominator:4];
   v14[6] = v9;
-  v10 = [a1 oneUpCompositionWithAspectRatioNumerator:2 denominator:3];
+  v10 = [self oneUpCompositionWithAspectRatioNumerator:2 denominator:3];
   v14[7] = v10;
-  v11 = [a1 oneUpCompositionWithAspectRatioNumerator:9 denominator:16];
+  v11 = [self oneUpCompositionWithAspectRatioNumerator:9 denominator:16];
   v14[8] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:9];
 
   return v12;
 }
 
-+ (id)oneUpCompositionWithAspectRatioNumerator:(int64_t)a3 denominator:(int64_t)a4
++ (id)oneUpCompositionWithAspectRatioNumerator:(int64_t)numerator denominator:(int64_t)denominator
 {
-  v4 = [[_PXStoryConcreteFixedAspectOneUpClipComposition alloc] initWithAspectRatioNumerator:a3 denominator:a4];
+  v4 = [[_PXStoryConcreteFixedAspectOneUpClipComposition alloc] initWithAspectRatioNumerator:numerator denominator:denominator];
 
   return v4;
 }

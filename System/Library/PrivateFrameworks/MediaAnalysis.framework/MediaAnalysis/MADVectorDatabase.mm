@@ -1,44 +1,44 @@
 @interface MADVectorDatabase
 + (id)_vectorDatabaseAttributes;
 + (id)_vectorDatabaseVersion;
-+ (id)databaseDirectoryURLForPhotoLibrary:(id)a3;
-+ (id)databaseWithPhotoLibrary:(id)a3 readyOnly:(BOOL)a4;
++ (id)databaseDirectoryURLForPhotoLibrary:(id)library;
++ (id)databaseWithPhotoLibrary:(id)library readyOnly:(BOOL)only;
 + (id)historicalFolderNames;
 + (int64_t)_vectorDatabaseMetric;
-- (MADVectorDatabase)initWithPhotoLibrary:(id)a3 readyOnly:(BOOL)a4;
-- (id)_vectorDatabaseReadOnlyConfigWithError:(id *)a3;
-- (id)_vectorDatabaseReadWriteConfigWithError:(id *)a3;
-- (id)fetchAllAssetsWithLimit:(unint64_t)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)fetchAssetsWithEmbeddingType:(unint64_t)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 error:(id *)a6;
-- (id)fetchAssetsWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 error:(id *)a5;
-- (id)fetchAssetsWithLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)searchWithEmbeddings:(id)a3 localIdentifiers:(id)a4 attributeFilters:(id)a5 limit:(int)a6 fullScan:(BOOL)a7 includePayload:(BOOL)a8 numberOfProbes:(id)a9 batchSize:(id)a10 numConcurrentReaders:(id)a11 error:(id *)a12;
-- (int)_openVSKClientWithError:(id *)a3;
-- (int)insertOrReplaceAssetsEmbeddings:(id)a3 error:(id *)a4;
-- (int)rebuildWithForce:(BOOL)a3 cancelBlock:(id)a4 extendTimeoutBlock:(id)a5 totalEmbeddingCount:(int64_t *)a6;
-- (int)removeEmbeddingsWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 error:(id *)a5;
-- (int)removeEmbeddingsWithLocalIdentifiers:(id)a3 error:(id *)a4;
-- (unint64_t)assetCountForEmbeddingType:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)assetCountWithError:(id *)a3;
+- (MADVectorDatabase)initWithPhotoLibrary:(id)library readyOnly:(BOOL)only;
+- (id)_vectorDatabaseReadOnlyConfigWithError:(id *)error;
+- (id)_vectorDatabaseReadWriteConfigWithError:(id *)error;
+- (id)fetchAllAssetsWithLimit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error;
+- (id)fetchAssetsWithEmbeddingType:(unint64_t)type limit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error;
+- (id)fetchAssetsWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type error:(id *)error;
+- (id)fetchAssetsWithLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)searchWithEmbeddings:(id)embeddings localIdentifiers:(id)identifiers attributeFilters:(id)filters limit:(int)limit fullScan:(BOOL)scan includePayload:(BOOL)payload numberOfProbes:(id)probes batchSize:(id)self0 numConcurrentReaders:(id)self1 error:(id *)self2;
+- (int)_openVSKClientWithError:(id *)error;
+- (int)insertOrReplaceAssetsEmbeddings:(id)embeddings error:(id *)error;
+- (int)rebuildWithForce:(BOOL)force cancelBlock:(id)block extendTimeoutBlock:(id)timeoutBlock totalEmbeddingCount:(int64_t *)count;
+- (int)removeEmbeddingsWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type error:(id *)error;
+- (int)removeEmbeddingsWithLocalIdentifiers:(id)identifiers error:(id *)error;
+- (unint64_t)assetCountForEmbeddingType:(unint64_t)type error:(id *)error;
+- (unint64_t)assetCountWithError:(id *)error;
 - (unint64_t)deltaStoreCount;
-- (unint64_t)embeddingCountWithError:(id *)a3;
+- (unint64_t)embeddingCountWithError:(id *)error;
 - (void)_purgeHistoricalData;
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3;
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit;
 @end
 
 @implementation MADVectorDatabase
 
-- (MADVectorDatabase)initWithPhotoLibrary:(id)a3 readyOnly:(BOOL)a4
+- (MADVectorDatabase)initWithPhotoLibrary:(id)library readyOnly:(BOOL)only
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  libraryCopy = library;
   v21.receiver = self;
   v21.super_class = MADVectorDatabase;
   v8 = [(MADVectorDatabase *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_photoLibrary, a3);
+    objc_storeStrong(&v8->_photoLibrary, library);
     v10 = [objc_opt_class() databaseDirectoryURLForPhotoLibrary:v9->_photoLibrary];
     directoryURL = v9->_directoryURL;
     v9->_directoryURL = v10;
@@ -48,7 +48,7 @@
     vskClientQueue = v9->_vskClientQueue;
     v9->_vskClientQueue = v13;
 
-    v9->_readOnly = a4;
+    v9->_readOnly = only;
     v20 = 0;
     LODWORD(v12) = [(MADVectorDatabase *)v9 _openVSKClientWithError:&v20];
     v15 = v20;
@@ -84,29 +84,29 @@
   return v18;
 }
 
-+ (id)databaseWithPhotoLibrary:(id)a3 readyOnly:(BOOL)a4
++ (id)databaseWithPhotoLibrary:(id)library readyOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v5 readyOnly:v4];
+  onlyCopy = only;
+  libraryCopy = library;
+  v6 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy readyOnly:onlyCopy];
 
   return v6;
 }
 
-+ (id)databaseDirectoryURLForPhotoLibrary:(id)a3
++ (id)databaseDirectoryURLForPhotoLibrary:(id)library
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  libraryCopy = library;
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [v3 vcp_mediaAnalysisDirectory];
-  v6 = [v4 fileURLWithPath:v5 isDirectory:1];
+  vcp_mediaAnalysisDirectory = [libraryCopy vcp_mediaAnalysisDirectory];
+  v6 = [v4 fileURLWithPath:vcp_mediaAnalysisDirectory isDirectory:1];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v12 = 0;
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8 isDirectory:&v12];
+    path = [v6 path];
+    v9 = [defaultManager fileExistsAtPath:path isDirectory:&v12];
 
     if (v12 & v9)
     {
@@ -131,7 +131,7 @@
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = libraryCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VSKDB] Failed to retrieve path for Photo Library %@", buf, 0xCu);
     }
 
@@ -163,10 +163,10 @@
 {
   v33 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisDirectory];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  vcp_mediaAnalysisDirectory = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisDirectory];
+  v4 = [v2 fileURLWithPath:vcp_mediaAnalysisDirectory isDirectory:1];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -189,13 +189,13 @@
         v10 = *(*(&v24 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
         v12 = [v4 URLByAppendingPathComponent:v10];
-        v13 = [v12 path];
-        LODWORD(v10) = [v5 fileExistsAtPath:v13 isDirectory:0];
+        path = [v12 path];
+        LODWORD(v10) = [defaultManager fileExistsAtPath:path isDirectory:0];
 
         if (v10)
         {
           v23 = v6;
-          v14 = [v5 removeItemAtURL:v12 error:&v23];
+          v14 = [defaultManager removeItemAtURL:v12 error:&v23];
           v15 = v23;
 
           if (v14)
@@ -250,8 +250,8 @@ LABEL_14:
 + (id)_vectorDatabaseAttributes
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DF600] mad_embeddingVersionAttribute];
-  v5[0] = v2;
+  mad_embeddingVersionAttribute = [MEMORY[0x1E69DF600] mad_embeddingVersionAttribute];
+  v5[0] = mad_embeddingVersionAttribute;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -311,10 +311,10 @@ LABEL_14:
   }
 }
 
-- (id)_vectorDatabaseReadWriteConfigWithError:(id *)a3
+- (id)_vectorDatabaseReadWriteConfigWithError:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = [objc_opt_class() _vectorDatabaseVersion];
+  _vectorDatabaseVersion = [objc_opt_class() _vectorDatabaseVersion];
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -339,8 +339,8 @@ LABEL_14:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v14, OS_SIGNPOST_INTERVAL_END, v6, "MAD_VSKConfigAbbreviatedInit", "", buf, 2u);
   }
 
-  v15 = [v11 clientVersion];
-  v16 = [v15 isEqualToString:v4];
+  clientVersion = [v11 clientVersion];
+  v16 = [clientVersion isEqualToString:_vectorDatabaseVersion];
 
   if (!v16)
   {
@@ -356,37 +356,37 @@ LABEL_14:
 
     else
     {
-      v19 = [v11 clientVersion];
-      v20 = [v19 isEqualToString:v4];
+      clientVersion2 = [v11 clientVersion];
+      v20 = [clientVersion2 isEqualToString:_vectorDatabaseVersion];
 
       if ((v20 & 1) == 0 && MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v11 clientVersion];
+        clientVersion3 = [v11 clientVersion];
         *buf = 138412546;
-        v61 = v21;
+        v61 = clientVersion3;
         v62 = 2112;
-        v63 = v4;
+        v63 = _vectorDatabaseVersion;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VSKDB] Existing version %@, upgrading to %@", buf, 0x16u);
       }
     }
 
     self->_hasMigration = 1;
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    v23 = [(NSURL *)self->_directoryURL path];
-    v24 = [v22 fileExistsAtPath:v23 isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [(NSURL *)self->_directoryURL path];
+    v24 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v24)
     {
       v25 = self->_directoryURL;
       v56 = 0;
-      v26 = [v22 removeItemAtURL:v25 error:&v56];
+      v26 = [defaultManager removeItemAtURL:v25 error:&v56];
       v27 = v56;
       v12 = v27;
       if ((v26 & 1) == 0)
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [(NSURL *)v27 copy];
+          *error = [(NSURL *)v27 copy];
         }
 
         if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -419,13 +419,13 @@ LABEL_14:
       v12 = 0;
     }
 
-    v29 = [(NSURL *)self->_directoryURL path];
+    path2 = [(NSURL *)self->_directoryURL path];
     v58 = *MEMORY[0x1E696A370];
     v30 = [MEMORY[0x1E696AD98] numberWithShort:493];
     v59 = v30;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v55 = v12;
-    v32 = [v22 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:v31 error:&v55];
+    v32 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:v31 error:&v55];
     v33 = v55;
 
     v12 = v33;
@@ -444,12 +444,12 @@ LABEL_14:
 
       v37 = objc_alloc(MEMORY[0x1E69DF618]);
       v38 = self->_directoryURL;
-      v39 = [objc_opt_class() _vectorDatabaseMetric];
-      v40 = [objc_opt_class() _vectorDatabaseAttributes];
+      _vectorDatabaseMetric = [objc_opt_class() _vectorDatabaseMetric];
+      _vectorDatabaseAttributes = [objc_opt_class() _vectorDatabaseAttributes];
       v54 = v12;
       LOWORD(v51) = 0;
       LOBYTE(v50) = 1;
-      v41 = [v37 initWithBaseDirectory:v38 distanceMetric:v39 filterableAttributes:v40 dimension:512 averagePartitionSize:0 batchSize:0 batchFactor:0 tradeOffParameterBetweenClusteringAndBalance:0 enableFTS:v50 dataType:0 maxIndexConstructionBatches:0 readOnly:v51 pretokenizationEnabled:MEMORY[0x1E695E0F0] prefixIndices:0 perConnectionPeakMemory:v4 clientVersion:&v54 error:?];
+      v41 = [v37 initWithBaseDirectory:v38 distanceMetric:_vectorDatabaseMetric filterableAttributes:_vectorDatabaseAttributes dimension:512 averagePartitionSize:0 batchSize:0 batchFactor:0 tradeOffParameterBetweenClusteringAndBalance:0 enableFTS:v50 dataType:0 maxIndexConstructionBatches:0 readOnly:v51 pretokenizationEnabled:MEMORY[0x1E695E0F0] prefixIndices:0 perConnectionPeakMemory:_vectorDatabaseVersion clientVersion:&v54 error:?];
       v42 = v54;
 
       v43 = VCPSignPostLog();
@@ -470,9 +470,9 @@ LABEL_14:
         }
 
         v18 = 0;
-        if (a3)
+        if (error)
         {
-          *a3 = [(NSURL *)v42 copy];
+          *error = [(NSURL *)v42 copy];
         }
       }
 
@@ -485,9 +485,9 @@ LABEL_14:
       goto LABEL_54;
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [(NSURL *)v33 copy];
+      *error = [(NSURL *)v33 copy];
     }
 
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -511,9 +511,9 @@ LABEL_50:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v11 clientVersion];
+    clientVersion4 = [v11 clientVersion];
     *buf = 138412290;
-    v61 = v17;
+    v61 = clientVersion4;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VSKDB] Existing version %@ matches target", buf, 0xCu);
   }
 
@@ -524,12 +524,12 @@ LABEL_55:
   return v18;
 }
 
-- (id)_vectorDatabaseReadOnlyConfigWithError:(id *)a3
+- (id)_vectorDatabaseReadOnlyConfigWithError:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(NSURL *)self->_directoryURL path];
-  v7 = [v5 fileExistsAtPath:v6 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_directoryURL path];
+  v7 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v7)
   {
@@ -567,9 +567,9 @@ LABEL_55:
       }
 
       v18 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = [v15 copy];
+        *error = [v15 copy];
       }
     }
 
@@ -581,14 +581,14 @@ LABEL_55:
 
   else
   {
-    if (a3)
+    if (error)
     {
       v19 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A578];
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VSKDB] Database directory does not exist"];
       v27[0] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a3 = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v21];
+      *error = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v21];
     }
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -603,7 +603,7 @@ LABEL_55:
   return v18;
 }
 
-- (int)_openVSKClientWithError:(id *)a3
+- (int)_openVSKClientWithError:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
   if (self->_readOnly)
@@ -644,9 +644,9 @@ LABEL_55:
   v11 = v10;
   if (!v9)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [v10 copy];
+      *error = [v10 copy];
     }
 
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -696,9 +696,9 @@ LABEL_55:
   v11 = v18;
   if (!self->_vskClient)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [v18 copy];
+      *error = [v18 copy];
     }
 
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -774,9 +774,9 @@ LABEL_43:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [v29 copy];
+      *error = [v29 copy];
     }
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -813,11 +813,11 @@ MADVSKClient *__45__MADVectorDatabase__openVSKClientWithError___block_invoke(uin
   return v4;
 }
 
-- (int)insertOrReplaceAssetsEmbeddings:(id)a3 error:(id *)a4
+- (int)insertOrReplaceAssetsEmbeddings:(id)embeddings error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  embeddingsCopy = embeddings;
+  v7 = embeddingsCopy;
   if (self->_readOnly)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -842,10 +842,10 @@ MADVSKClient *__45__MADVectorDatabase__openVSKClientWithError___block_invoke(uin
     block[2] = __59__MADVectorDatabase_insertOrReplaceAssetsEmbeddings_error___block_invoke;
     block[3] = &unk_1E834D4E8;
     block[4] = self;
-    v12 = v6;
+    v12 = embeddingsCopy;
     v13 = @"[VSKDB][InsertOrReplace]";
     p_buf = &buf;
-    v15 = a4;
+    errorCopy = error;
     dispatch_sync(vskClientQueue, block);
     v8 = *(*(&buf + 1) + 24);
 
@@ -907,11 +907,11 @@ void __59__MADVectorDatabase_insertOrReplaceAssetsEmbeddings_error___block_invok
   }
 }
 
-- (int)removeEmbeddingsWithLocalIdentifiers:(id)a3 error:(id *)a4
+- (int)removeEmbeddingsWithLocalIdentifiers:(id)identifiers error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  identifiersCopy = identifiers;
+  v7 = identifiersCopy;
   if (self->_readOnly)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -935,11 +935,11 @@ void __59__MADVectorDatabase_insertOrReplaceAssetsEmbeddings_error___block_invok
     block[1] = 3221225472;
     block[2] = __64__MADVectorDatabase_removeEmbeddingsWithLocalIdentifiers_error___block_invoke;
     block[3] = &unk_1E834D4E8;
-    v12 = v6;
-    v13 = self;
+    v12 = identifiersCopy;
+    selfCopy = self;
     v14 = @"[VSKDB][Remove]";
     p_buf = &buf;
-    v16 = a4;
+    errorCopy = error;
     dispatch_sync(vskClientQueue, block);
     v8 = *(*(&buf + 1) + 24);
 
@@ -1017,11 +1017,11 @@ void __64__MADVectorDatabase_removeEmbeddingsWithLocalIdentifiers_error___block_
   }
 }
 
-- (int)removeEmbeddingsWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 error:(id *)a5
+- (int)removeEmbeddingsWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
   if (self->_readOnly)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1045,12 +1045,12 @@ void __64__MADVectorDatabase_removeEmbeddingsWithLocalIdentifiers_error___block_
     v13[1] = 3221225472;
     v13[2] = __78__MADVectorDatabase_removeEmbeddingsWithLocalIdentifiers_embeddingType_error___block_invoke;
     v13[3] = &unk_1E834D510;
-    v14 = v8;
-    v15 = self;
+    v14 = identifiersCopy;
+    selfCopy = self;
     v16 = @"[VSKDB][RemoveWithEmbeddingType]";
     p_buf = &buf;
-    v18 = a4;
-    v19 = a5;
+    typeCopy = type;
+    errorCopy = error;
     dispatch_sync(vskClientQueue, v13);
     v10 = *(*(&buf + 1) + 24);
 
@@ -1226,11 +1226,11 @@ LABEL_8:
   }
 }
 
-- (int)rebuildWithForce:(BOOL)a3 cancelBlock:(id)a4 extendTimeoutBlock:(id)a5 totalEmbeddingCount:(int64_t *)a6
+- (int)rebuildWithForce:(BOOL)force cancelBlock:(id)block extendTimeoutBlock:(id)timeoutBlock totalEmbeddingCount:(int64_t *)count
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  blockCopy = block;
+  timeoutBlockCopy = timeoutBlock;
   if (self->_readOnly)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1243,7 +1243,7 @@ LABEL_8:
     v12 = -18;
   }
 
-  else if (v10 && v10[2](v10))
+  else if (blockCopy && blockCopy[2](blockCopy))
   {
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -1266,13 +1266,13 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __89__MADVectorDatabase_rebuildWithForce_cancelBlock_extendTimeoutBlock_totalEmbeddingCount___block_invoke;
     block[3] = &unk_1E834D5B0;
-    v18 = v10;
+    v18 = blockCopy;
     v16 = @"[VSKDB][Rebuild]";
     p_buf = &buf;
-    v19 = v11;
-    v17 = self;
-    v21 = a6;
-    v22 = a3;
+    v19 = timeoutBlockCopy;
+    selfCopy = self;
+    countCopy = count;
+    forceCopy = force;
     dispatch_sync(vskClientQueue, block);
     v12 = *(*(&buf + 1) + 24);
 
@@ -1572,7 +1572,7 @@ void __89__MADVectorDatabase_rebuildWithForce_cancelBlock_extendTimeoutBlock_tot
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (unint64_t)assetCountWithError:(id *)a3
+- (unint64_t)assetCountWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1586,7 +1586,7 @@ void __89__MADVectorDatabase_rebuildWithForce_cancelBlock_extendTimeoutBlock_tot
   v6[4] = self;
   v7 = @"[VSKDB][AssetCount]";
   v8 = &v10;
-  v9 = a3;
+  errorCopy = error;
   dispatch_sync(vskClientQueue, v6);
   v4 = v11[3];
 
@@ -1654,14 +1654,14 @@ void __41__MADVectorDatabase_assetCountWithError___block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)assetCountForEmbeddingType:(unint64_t)a3 error:(id *)a4
+- (unint64_t)assetCountForEmbeddingType:(unint64_t)type error:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v29[1] = *MEMORY[0x1E69E9840];
-  if (a3 - 3 > 0xFFFFFFFFFFFFFFFDLL)
+  if (type - 3 > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v10 = [MEMORY[0x1E69DF5F8] mad_embeddingTypeFilter:a3];
-    v7 = v10;
+    v10 = [MEMORY[0x1E69DF5F8] mad_embeddingTypeFilter:type];
+    type2 = v10;
     if (v10)
     {
       v22 = 0;
@@ -1673,51 +1673,51 @@ void __41__MADVectorDatabase_assetCountWithError___block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __54__MADVectorDatabase_assetCountForEmbeddingType_error___block_invoke;
       block[3] = &unk_1E834D510;
-      v20 = a3;
+      typeCopy = type;
       block[4] = self;
-      v7 = v10;
-      v17 = v7;
+      type2 = v10;
+      v17 = type2;
       v18 = @"[VSKDB][AssetCountByEmbeddingType]";
-      v21 = v4;
+      v21 = errorCopy;
       v19 = &v22;
       dispatch_sync(vskClientQueue, block);
-      v4 = v23[3];
+      errorCopy = v23[3];
 
       _Block_object_dispose(&v22, 8);
     }
 
-    else if (v4)
+    else if (errorCopy)
     {
       v12 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A578];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Failed to create filter for embedding type %d", @"[VSKDB][AssetCountByEmbeddingType]", a3];
-      v27 = v13;
+      type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Failed to create filter for embedding type %d", @"[VSKDB][AssetCountByEmbeddingType]", type];
+      v27 = type;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      *v4 = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
+      *errorCopy = [v12 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
 
       goto LABEL_8;
     }
 
 LABEL_9:
 
-    return v4;
+    return errorCopy;
   }
 
-  if (a4)
+  if (error)
   {
     v6 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Unknown embedding type %d", @"[VSKDB][AssetCountByEmbeddingType]", a3];
-    v29[0] = v7;
+    type2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Unknown embedding type %d", @"[VSKDB][AssetCountByEmbeddingType]", type];
+    v29[0] = type2;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    *v4 = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v8];
+    *errorCopy = [v6 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v8];
 
 LABEL_8:
-    v4 = 0;
+    errorCopy = 0;
     goto LABEL_9;
   }
 
-  return v4;
+  return errorCopy;
 }
 
 void __54__MADVectorDatabase_assetCountForEmbeddingType_error___block_invoke(uint64_t a1)
@@ -1786,7 +1786,7 @@ void __54__MADVectorDatabase_assetCountForEmbeddingType_error___block_invoke(uin
   }
 }
 
-- (unint64_t)embeddingCountWithError:(id *)a3
+- (unint64_t)embeddingCountWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1800,7 +1800,7 @@ void __54__MADVectorDatabase_assetCountForEmbeddingType_error___block_invoke(uin
   v6[4] = self;
   v7 = @"[VSKDB][EmbeddingCount]";
   v8 = &v10;
-  v9 = a3;
+  errorCopy = error;
   dispatch_sync(vskClientQueue, v6);
   v4 = v11[3];
 
@@ -1868,7 +1868,7 @@ void __45__MADVectorDatabase_embeddingCountWithError___block_invoke(uint64_t a1)
   }
 }
 
-- (id)fetchAllAssetsWithLimit:(unint64_t)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchAllAssetsWithLimit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1882,11 +1882,11 @@ void __45__MADVectorDatabase_embeddingCountWithError___block_invoke(uint64_t a1)
   v8[2] = __58__MADVectorDatabase_fetchAllAssetsWithLimit_offset_error___block_invoke;
   v8[3] = &unk_1E834D600;
   v10 = &v14;
-  v11 = a3;
+  limitCopy = limit;
   v8[4] = self;
   v9 = @"[VSKDB][FetchAllAssets]";
-  v12 = a4;
-  v13 = a5;
+  offsetCopy = offset;
+  errorCopy = error;
   dispatch_sync(vskClientQueue, v8);
   v6 = v15[5];
 
@@ -1949,29 +1949,29 @@ void __58__MADVectorDatabase_fetchAllAssetsWithLimit_offset_error___block_invoke
   }
 }
 
-- (id)fetchAssetsWithEmbeddingType:(unint64_t)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 error:(id *)a6
+- (id)fetchAssetsWithEmbeddingType:(unint64_t)type limit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error
 {
-  v6 = a6;
+  errorCopy = error;
   v37[1] = *MEMORY[0x1E69E9840];
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (type - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_10;
     }
 
     v8 = MEMORY[0x1E696ABC0];
     v36 = *MEMORY[0x1E696A578];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Unknown embedding type %d", a4, a5, @"[VSKDB][FetchAssetsByEmbeddingType]", a3];
-    v37[0] = v9;
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Unknown embedding type %d", limit, offset, @"[VSKDB][FetchAssetsByEmbeddingType]", type];
+    v37[0] = type;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-    *v6 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v10];
+    *errorCopy = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v10];
 
     goto LABEL_8;
   }
 
-  v14 = [MEMORY[0x1E69DF5F8] mad_embeddingTypeFilter:a3];
-  v9 = v14;
+  v14 = [MEMORY[0x1E69DF5F8] mad_embeddingTypeFilter:type];
+  type = v14;
   if (v14)
   {
     v28 = 0;
@@ -1986,36 +1986,36 @@ void __58__MADVectorDatabase_fetchAllAssetsWithLimit_offset_error___block_invoke
     block[2] = __69__MADVectorDatabase_fetchAssetsWithEmbeddingType_limit_offset_error___block_invoke;
     block[3] = &unk_1E834D628;
     v23 = &v28;
-    v24 = a3;
+    typeCopy = type;
     block[4] = self;
-    v9 = v14;
-    v25 = a4;
-    v26 = a5;
-    v21 = v9;
+    type = v14;
+    limitCopy = limit;
+    offsetCopy = offset;
+    v21 = type;
     v22 = @"[VSKDB][FetchAssetsByEmbeddingType]";
-    v27 = v6;
+    v27 = errorCopy;
     dispatch_sync(vskClientQueue, block);
-    v6 = v29[5];
+    errorCopy = v29[5];
 
     _Block_object_dispose(&v28, 8);
   }
 
-  else if (v6)
+  else if (errorCopy)
   {
     v16 = MEMORY[0x1E696ABC0];
     v34 = *MEMORY[0x1E696A578];
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Failed to create filter for embedding type %d", @"[VSKDB][FetchAssetsByEmbeddingType]", a3];
-    v35 = v17;
+    type2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Operation failed - Failed to create filter for embedding type %d", @"[VSKDB][FetchAssetsByEmbeddingType]", type];
+    v35 = type2;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    *v6 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v18];
+    *errorCopy = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v18];
 
 LABEL_8:
-    v6 = 0;
+    errorCopy = 0;
   }
 
 LABEL_10:
 
-  return v6;
+  return errorCopy;
 }
 
 void __69__MADVectorDatabase_fetchAssetsWithEmbeddingType_limit_offset_error___block_invoke(uint64_t a1)
@@ -2078,9 +2078,9 @@ void __69__MADVectorDatabase_fetchAssetsWithEmbeddingType_limit_offset_error___b
   }
 }
 
-- (id)fetchAssetsWithLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)fetchAssetsWithLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2092,12 +2092,12 @@ void __69__MADVectorDatabase_fetchAssetsWithEmbeddingType_limit_offset_error___b
   block[1] = 3221225472;
   block[2] = __59__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_error___block_invoke;
   block[3] = &unk_1E834D650;
-  v12 = v6;
-  v13 = self;
+  v12 = identifiersCopy;
+  selfCopy = self;
   v14 = @"[VSKDB][FetchAssets]";
   v15 = &v17;
-  v16 = a4;
-  v8 = v6;
+  errorCopy = error;
+  v8 = identifiersCopy;
   dispatch_sync(vskClientQueue, block);
   v9 = v18[5];
 
@@ -2164,9 +2164,9 @@ void __59__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_error___block_invok
   }
 }
 
-- (id)fetchAssetsWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 error:(id *)a5
+- (id)fetchAssetsWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type error:(id *)error
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2178,13 +2178,13 @@ void __59__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_error___block_invok
   v13[1] = 3221225472;
   v13[2] = __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error___block_invoke;
   v13[3] = &unk_1E834D678;
-  v14 = v8;
-  v15 = self;
+  v14 = identifiersCopy;
+  selfCopy = self;
   v16 = @"[VSKDB][FetchAssets]";
   v17 = &v20;
-  v18 = a4;
-  v19 = a5;
-  v10 = v8;
+  typeCopy = type;
+  errorCopy = error;
+  v10 = identifiersCopy;
   dispatch_sync(vskClientQueue, v13);
   v11 = v21[5];
 
@@ -2279,29 +2279,29 @@ void __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error
   }
 }
 
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit
 {
   for (i = [MEMORY[0x1E695DF70] array];
   {
-    v5 = [(VCPObjectPool *)self->_searchClientPool getObject];
-    v6 = [v5 object];
-    [v6 warmup];
+    getObject = [(VCPObjectPool *)self->_searchClientPool getObject];
+    object = [getObject object];
+    [object warmup];
 
-    [i addObject:v5];
+    [i addObject:getObject];
   }
 }
 
-- (id)searchWithEmbeddings:(id)a3 localIdentifiers:(id)a4 attributeFilters:(id)a5 limit:(int)a6 fullScan:(BOOL)a7 includePayload:(BOOL)a8 numberOfProbes:(id)a9 batchSize:(id)a10 numConcurrentReaders:(id)a11 error:(id *)a12
+- (id)searchWithEmbeddings:(id)embeddings localIdentifiers:(id)identifiers attributeFilters:(id)filters limit:(int)limit fullScan:(BOOL)scan includePayload:(BOOL)payload numberOfProbes:(id)probes batchSize:(id)self0 numConcurrentReaders:(id)self1 error:(id *)self2
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = *&a6;
-  v45 = a3;
-  v46 = a4;
-  v44 = a5;
-  v43 = a9;
-  v42 = a10;
-  v41 = a11;
+  payloadCopy = payload;
+  scanCopy = scan;
+  v14 = *&limit;
+  embeddingsCopy = embeddings;
+  identifiersCopy = identifiers;
+  filtersCopy = filters;
+  probesCopy = probes;
+  sizeCopy = size;
+  readersCopy = readers;
   v18 = VCPSignPostLog();
   v19 = os_signpost_id_generate(v18);
 
@@ -2313,7 +2313,7 @@ void __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v19, "MAD_VSKSearchGetVSKClient", "", buf, 2u);
   }
 
-  v22 = [(VCPObjectPool *)self->_searchClientPool getObject];
+  getObject = [(VCPObjectPool *)self->_searchClientPool getObject];
   v23 = VCPSignPostLog();
   v24 = v23;
   if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
@@ -2322,10 +2322,10 @@ void __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v24, OS_SIGNPOST_INTERVAL_END, v19, "MAD_VSKSearchGetVSKClient", "", buf, 2u);
   }
 
-  v25 = [v22 object];
-  [v25 warmup];
+  object = [getObject object];
+  [object warmup];
 
-  v26 = [MEMORY[0x1E69DF5F8] mad_stringIdentifiersFromLocalIdentifiers:v46];
+  v26 = [MEMORY[0x1E69DF5F8] mad_stringIdentifiersFromLocalIdentifiers:identifiersCopy];
   v27 = v26;
   v28 = MEMORY[0x1E695E0F0];
   if (v26)
@@ -2346,10 +2346,10 @@ void __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "MAD_VSKSearchBatchSearch", "", buf, 2u);
   }
 
-  v34 = [v22 object];
-  v35 = [v34 client];
+  object2 = [getObject object];
+  client = [object2 client];
   v47 = 0;
-  v36 = [v35 searchByBatch:v45 stringIdentifiers:v29 attributeFilters:v44 limit:v14 fullScan:v13 includePayload:v12 numberOfProbes:v43 batchSize:v42 numConcurrentReaders:v41 error:&v47];
+  v36 = [client searchByBatch:embeddingsCopy stringIdentifiers:v29 attributeFilters:filtersCopy limit:v14 fullScan:scanCopy includePayload:payloadCopy numberOfProbes:probesCopy batchSize:sizeCopy numConcurrentReaders:readersCopy error:&v47];
   v37 = v47;
 
   v38 = VCPSignPostLog();
@@ -2360,9 +2360,9 @@ void __73__MADVectorDatabase_fetchAssetsWithLocalIdentifiers_embeddingType_error
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v39, OS_SIGNPOST_INTERVAL_END, v31, "MAD_VSKSearchBatchSearch", "", buf, 2u);
   }
 
-  if (a12 && v37)
+  if (error && v37)
   {
-    *a12 = [v37 copy];
+    *error = [v37 copy];
   }
 
   return v36;

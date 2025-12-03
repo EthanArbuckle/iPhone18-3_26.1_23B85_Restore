@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneSearchSortField
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsScores;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setMissingValueWithId:(id)a3;
+- (void)setMissingValueWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneSearchSortField
 
-- (void)setMissingValueWithId:(id)a3
+- (void)setMissingValueWithId:(id)id
 {
   type = self->type_;
   if ((atomic_load_explicit(OrgApacheLuceneSearchSortField_TypeEnum__initialized, memory_order_acquire) & 1) == 0)
@@ -32,7 +32,7 @@
   if (v6 == qword_1005576C0)
   {
 LABEL_20:
-    if (OrgApacheLuceneSearchSortField_STRING_FIRST_ != a3 && OrgApacheLuceneSearchSortField_STRING_LAST_ != a3)
+    if (OrgApacheLuceneSearchSortField_STRING_FIRST_ != id && OrgApacheLuceneSearchSortField_STRING_LAST_ != id)
     {
       v11 = @"For STRING type, missing value must be either STRING_FIRST or STRING_LAST";
 LABEL_28:
@@ -83,18 +83,18 @@ LABEL_28:
     }
   }
 
-  JreStrongAssign(&self->missingValue_, a3);
+  JreStrongAssign(&self->missingValue_, id);
 }
 
 - (id)description
 {
   v3 = new_JavaLangStringBuilder_init();
-  v4 = [(JavaLangEnum *)self->type_ ordinal];
-  if (v4 > 4)
+  ordinal = [(JavaLangEnum *)self->type_ ordinal];
+  if (ordinal > 4)
   {
-    if (v4 <= 6)
+    if (ordinal <= 6)
     {
-      if (v4 == 5)
+      if (ordinal == 5)
       {
         v5 = @"<long: ";
       }
@@ -120,7 +120,7 @@ LABEL_39:
       JreThrowNullPointerException();
     }
 
-    switch(v4)
+    switch(ordinal)
     {
       case 7:
         v8 = [(JavaLangStringBuilder *)v3 appendWithNSString:@"<custom:"];
@@ -154,14 +154,14 @@ LABEL_39:
     goto LABEL_27;
   }
 
-  if (v4 > 1)
+  if (ordinal > 1)
   {
-    if (v4 == 2)
+    if (ordinal == 2)
     {
       v5 = @"<string: ";
     }
 
-    else if (v4 == 3)
+    else if (ordinal == 3)
     {
       v5 = @"<int: ";
     }
@@ -174,13 +174,13 @@ LABEL_39:
     goto LABEL_28;
   }
 
-  if (!v4)
+  if (!ordinal)
   {
     v6 = @"<score>";
     goto LABEL_17;
   }
 
-  if (v4 != 1)
+  if (ordinal != 1)
   {
 LABEL_27:
     v5 = @"<???: ";
@@ -207,9 +207,9 @@ LABEL_32:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -222,7 +222,7 @@ LABEL_32:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -232,12 +232,12 @@ LABEL_32:
     JreThrowClassCastException();
   }
 
-  v5 = OrgApacheLuceneUtilStringHelper_equalsWithNSString_withNSString_(*(a3 + 3), self->field_);
+  v5 = OrgApacheLuceneUtilStringHelper_equalsWithNSString_withNSString_(*(equal + 3), self->field_);
   if (v5)
   {
-    if (*(a3 + 4) == self->type_ && *(a3 + 8) == self->reverse_)
+    if (*(equal + 4) == self->type_ && *(equal + 8) == self->reverse_)
     {
-      v6 = *(a3 + 5);
+      v6 = *(equal + 5);
       comparatorSource = self->comparatorSource_;
       if (v6)
       {
@@ -305,7 +305,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(OrgApacheLuceneSearchSortField_TypeEnum__initialized, memory_order_acquire) & 1) == 0)
     {

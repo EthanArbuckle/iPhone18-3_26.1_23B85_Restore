@@ -1,29 +1,29 @@
 @interface DiagnosticLiaison
 - (DiagnosticLiaison)init;
 - (DiagnosticLiaisonDelegate)delegate;
-- (id)basicSignatureFrom:(id)a3;
-- (id)caseSignatureForRemoteSignature:(id)a3 groupIdentifier:(id)a4;
+- (id)basicSignatureFrom:(id)from;
+- (id)caseSignatureForRemoteSignature:(id)signature groupIdentifier:(id)identifier;
 - (id)homeKitAgent;
 - (id)idsTransport;
-- (id)remoteCasePayloadForIDSTransport:(id)a3 groupID:(id)a4;
-- (void)checkForUIImpactScenarioForCase:(id)a3;
+- (id)remoteCasePayloadForIDSTransport:(id)transport groupID:(id)d;
+- (void)checkForUIImpactScenarioForCase:(id)case;
 - (void)dealloc;
-- (void)messageReceivedFromIDS:(id)a3;
-- (void)messageWithIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)messageWithIdentifierHasBeenDelivered:(id)a3;
-- (void)processPayloadFromIDSTransport:(id)a3 incomingTime:(id)a4;
-- (void)processPayloadVersionOneFromIDSTransport:(id)a3 incomingTime:(id)a4;
-- (void)processPayloadVersionTwoFromIDSTransport:(id)a3 incomingTime:(id)a4;
+- (void)messageReceivedFromIDS:(id)s;
+- (void)messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)messageWithIdentifierHasBeenDelivered:(id)delivered;
+- (void)processPayloadFromIDSTransport:(id)transport incomingTime:(id)time;
+- (void)processPayloadVersionOneFromIDSTransport:(id)transport incomingTime:(id)time;
+- (void)processPayloadVersionTwoFromIDSTransport:(id)transport incomingTime:(id)time;
 - (void)registerAdministrativeTransports;
-- (void)registerAutoBugCaptureTransports:(id)a3;
-- (void)remotelyDisableAutoBugCapture:(id)a3;
-- (void)remotelyEnableAutoBugCapture:(id)a3;
-- (void)remotelyTriggerSessionForSignature:(id)a3 groupIdentifier:(id)a4 event:(id)a5 queue:(id)a6 reply:(id)a7;
-- (void)remotelyTriggerSessionWithSignature:(id)a3 forDestinations:(id)a4 groupIdentifier:(id)a5 validFor:(double)a6 queue:(id)a7 reply:(id)a8;
-- (void)residentDevicesIDSIdentifiersWithReply:(id)a3;
-- (void)sendPayloadToHomeKitRelays:(id)a3 additionalPredicate:(id)a4 toEndpoint:(id)a5 reply:(id)a6;
-- (void)startRemotelyTriggeredSessionForSignature:(id)a3 groupIdentifier:(id)a4 events:(id)a5;
-- (void)unregisterAllTransports:(id)a3;
+- (void)registerAutoBugCaptureTransports:(id)transports;
+- (void)remotelyDisableAutoBugCapture:(id)capture;
+- (void)remotelyEnableAutoBugCapture:(id)capture;
+- (void)remotelyTriggerSessionForSignature:(id)signature groupIdentifier:(id)identifier event:(id)event queue:(id)queue reply:(id)reply;
+- (void)remotelyTriggerSessionWithSignature:(id)signature forDestinations:(id)destinations groupIdentifier:(id)identifier validFor:(double)for queue:(id)queue reply:(id)reply;
+- (void)residentDevicesIDSIdentifiersWithReply:(id)reply;
+- (void)sendPayloadToHomeKitRelays:(id)relays additionalPredicate:(id)predicate toEndpoint:(id)endpoint reply:(id)reply;
+- (void)startRemotelyTriggeredSessionForSignature:(id)signature groupIdentifier:(id)identifier events:(id)events;
+- (void)unregisterAllTransports:(id)transports;
 - (void)unregisterAllTransportsSync;
 @end
 
@@ -43,9 +43,9 @@
 
     v2->_allowRemoteTrigger = 1;
     v6 = +[SystemProperties sharedInstance];
-    v7 = [v6 deviceClass];
+    deviceClass = [v6 deviceClass];
 
-    if (v7 == 7)
+    if (deviceClass == 7)
     {
       v2->_allowRemoteTrigger = 0;
     }
@@ -78,18 +78,18 @@
   homeKitAgent = self->_homeKitAgent;
   if (!homeKitAgent)
   {
-    v4 = [(DiagnosticLiaison *)self idsTransport];
-    v5 = [v4 idsService];
+    idsTransport = [(DiagnosticLiaison *)self idsTransport];
+    idsService = [idsTransport idsService];
 
     v6 = liaisonLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = idsService;
       _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_INFO, "Creating HomeKitAgent with IDSService %@", &v11, 0xCu);
     }
 
-    v7 = [[HomeKitAgent alloc] initWithIDSService:v5];
+    v7 = [[HomeKitAgent alloc] initWithIDSService:idsService];
     v8 = self->_homeKitAgent;
     self->_homeKitAgent = v7;
 
@@ -121,20 +121,20 @@
   if ([v3 deviceClass] == 7)
   {
     v4 = +[ABCAdministrator sharedInstance];
-    v5 = [v4 configurationManager];
-    v6 = [v5 autoBugCaptureAvailable];
+    configurationManager = [v4 configurationManager];
+    autoBugCaptureAvailable = [configurationManager autoBugCaptureAvailable];
 
-    if (v6)
+    if (autoBugCaptureAvailable)
     {
       goto LABEL_4;
     }
   }
 
   v7 = +[ABCAdministrator sharedInstance];
-  v8 = [v7 configurationManager];
-  v9 = [v8 autoBugCaptureEnabled];
+  configurationManager2 = [v7 configurationManager];
+  autoBugCaptureEnabled = [configurationManager2 autoBugCaptureEnabled];
 
-  if (v9)
+  if (autoBugCaptureEnabled)
   {
 LABEL_4:
     queue = self->_queue;
@@ -159,17 +159,17 @@ void __53__DiagnosticLiaison_registerAdministrativeTransports__block_invoke(uint
   }
 }
 
-- (void)registerAutoBugCaptureTransports:(id)a3
+- (void)registerAutoBugCaptureTransports:(id)transports
 {
-  v4 = a3;
+  transportsCopy = transports;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__DiagnosticLiaison_registerAutoBugCaptureTransports___block_invoke;
   v7[3] = &unk_278CEFEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transportsCopy;
+  v6 = transportsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -217,17 +217,17 @@ void __54__DiagnosticLiaison_registerAutoBugCaptureTransports___block_invoke(uin
   }
 }
 
-- (void)unregisterAllTransports:(id)a3
+- (void)unregisterAllTransports:(id)transports
 {
-  v4 = a3;
+  transportsCopy = transports;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__DiagnosticLiaison_unregisterAllTransports___block_invoke;
   v7[3] = &unk_278CEFEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transportsCopy;
+  v6 = transportsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -245,24 +245,24 @@ uint64_t __45__DiagnosticLiaison_unregisterAllTransports___block_invoke(uint64_t
   return result;
 }
 
-- (id)caseSignatureForRemoteSignature:(id)a3 groupIdentifier:(id)a4
+- (id)caseSignatureForRemoteSignature:(id)signature groupIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  identifierCopy = identifier;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:signature];
   v7 = v6;
-  if (v5)
+  if (identifierCopy)
   {
-    [v6 setObject:v5 forKeyedSubscript:@"groupID"];
+    [v6 setObject:identifierCopy forKeyedSubscript:@"groupID"];
   }
 
   return v7;
 }
 
-- (void)startRemotelyTriggeredSessionForSignature:(id)a3 groupIdentifier:(id)a4 events:(id)a5
+- (void)startRemotelyTriggeredSessionForSignature:(id)signature groupIdentifier:(id)identifier events:(id)events
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(DiagnosticLiaison *)self caseSignatureForRemoteSignature:a3 groupIdentifier:a4];
+  eventsCopy = events;
+  v9 = [(DiagnosticLiaison *)self caseSignatureForRemoteSignature:signature groupIdentifier:identifier];
   v10 = liaisonLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -270,7 +270,7 @@ uint64_t __45__DiagnosticLiaison_unregisterAllTransports___block_invoke(uint64_t
     _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_DEBUG, "Ready to start remotely triggered case", &v14, 2u);
   }
 
-  v11 = [(DiagnosticLiaison *)self delegate];
+  delegate = [(DiagnosticLiaison *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = liaisonLogHandle();
@@ -281,41 +281,41 @@ uint64_t __45__DiagnosticLiaison_unregisterAllTransports___block_invoke(uint64_t
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEFAULT, "Starting a remotely triggered case with signature: %@", &v14, 0xCu);
     }
 
-    [v11 requestSnapshotWithSignature:v9 flags:3 events:v8];
+    [delegate requestSnapshotWithSignature:v9 flags:3 events:eventsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remotelyTriggerSessionWithSignature:(id)a3 forDestinations:(id)a4 groupIdentifier:(id)a5 validFor:(double)a6 queue:(id)a7 reply:(id)a8
+- (void)remotelyTriggerSessionWithSignature:(id)signature forDestinations:(id)destinations groupIdentifier:(id)identifier validFor:(double)for queue:(id)queue reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [MEMORY[0x277CBEB38] dictionary];
-  [v19 setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
-  [v19 setObject:@"IDSTransportSend" forKeyedSubscript:@"name"];
+  signatureCopy = signature;
+  destinationsCopy = destinations;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  replyCopy = reply;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
+  [dictionary setObject:@"IDSTransportSend" forKeyedSubscript:@"name"];
   queue = self->_queue;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __110__DiagnosticLiaison_remotelyTriggerSessionWithSignature_forDestinations_groupIdentifier_validFor_queue_reply___block_invoke;
   v27[3] = &unk_278CEFF28;
-  v28 = v15;
-  v29 = self;
-  v30 = v19;
-  v31 = v14;
-  v35 = a6;
-  v33 = v17;
-  v34 = v18;
-  v32 = v16;
-  v21 = v17;
-  v22 = v18;
-  v23 = v16;
-  v24 = v14;
-  v25 = v19;
-  v26 = v15;
+  v28 = destinationsCopy;
+  selfCopy = self;
+  v30 = dictionary;
+  v31 = signatureCopy;
+  forCopy = for;
+  v33 = queueCopy;
+  v34 = replyCopy;
+  v32 = identifierCopy;
+  v21 = queueCopy;
+  v22 = replyCopy;
+  v23 = identifierCopy;
+  v24 = signatureCopy;
+  v25 = dictionary;
+  v26 = destinationsCopy;
   dispatch_async(queue, v27);
 }
 
@@ -448,15 +448,15 @@ uint64_t __110__DiagnosticLiaison_remotelyTriggerSessionWithSignature_forDestina
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)remotelyTriggerSessionForSignature:(id)a3 groupIdentifier:(id)a4 event:(id)a5 queue:(id)a6 reply:(id)a7
+- (void)remotelyTriggerSessionForSignature:(id)signature groupIdentifier:(id)identifier event:(id)event queue:(id)queue reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (a5)
+  signatureCopy = signature;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  replyCopy = reply;
+  if (event)
   {
-    [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
+    [MEMORY[0x277CBEB38] dictionaryWithDictionary:event];
   }
 
   else
@@ -467,8 +467,8 @@ uint64_t __110__DiagnosticLiaison_remotelyTriggerSessionWithSignature_forDestina
   [v16 setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
   [v16 setObject:@"failure" forKeyedSubscript:@"result"];
   v17 = MEMORY[0x277CCABB0];
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v19 = [v17 numberWithDouble:?];
   [v16 setObject:v19 forKeyedSubscript:@"timestamp"];
 
@@ -479,14 +479,14 @@ uint64_t __110__DiagnosticLiaison_remotelyTriggerSessionWithSignature_forDestina
   v26[3] = &unk_278CEFFC8;
   v26[4] = self;
   v27 = v16;
-  v28 = v12;
-  v29 = v13;
-  v30 = v14;
-  v31 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
-  v24 = v15;
+  v28 = signatureCopy;
+  v29 = identifierCopy;
+  v30 = queueCopy;
+  v31 = replyCopy;
+  v21 = queueCopy;
+  v22 = identifierCopy;
+  v23 = signatureCopy;
+  v24 = replyCopy;
   v25 = v16;
   dispatch_async(queue, v26);
 }
@@ -676,13 +676,13 @@ void __90__DiagnosticLiaison_remotelyTriggerSessionForSignature_groupIdentifier_
   }
 }
 
-- (void)sendPayloadToHomeKitRelays:(id)a3 additionalPredicate:(id)a4 toEndpoint:(id)a5 reply:(id)a6
+- (void)sendPayloadToHomeKitRelays:(id)relays additionalPredicate:(id)predicate toEndpoint:(id)endpoint reply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  relaysCopy = relays;
+  predicateCopy = predicate;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   if (!self->_allowRemoteTrigger)
   {
     v16 = liaisonLogHandle();
@@ -697,7 +697,7 @@ void __90__DiagnosticLiaison_remotelyTriggerSessionForSignature_groupIdentifier_
     goto LABEL_14;
   }
 
-  if (![v12 length])
+  if (![endpointCopy length])
   {
     v16 = liaisonLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -712,7 +712,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v10 || ![v10 count])
+  if (!relaysCopy || ![relaysCopy count])
   {
     v16 = liaisonLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -737,8 +737,8 @@ LABEL_13:
 
   else
   {
-    v20 = [(DiagnosticLiaison *)self queue];
-    v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v20);
+    queue = [(DiagnosticLiaison *)self queue];
+    v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
 
     v22 = dispatch_time(0, 60000000000);
     dispatch_source_set_timer(v21, v22, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
@@ -747,8 +747,8 @@ LABEL_13:
     handler[2] = __85__DiagnosticLiaison_sendPayloadToHomeKitRelays_additionalPredicate_toEndpoint_reply___block_invoke;
     handler[3] = &unk_278CEFFF0;
     handler[4] = self;
-    v33 = v12;
-    v34 = v13;
+    v33 = endpointCopy;
+    v34 = replyCopy;
     dispatch_source_set_event_handler(v21, handler);
     v23 = self->_homekitRelayTimer;
     self->_homekitRelayTimer = v21;
@@ -761,21 +761,21 @@ LABEL_13:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v11;
+    v36 = predicateCopy;
     _os_log_impl(&dword_241804000, v25, OS_LOG_TYPE_INFO, "Looking up IDS identifiers for HomeKit relay devices (additional predicate: %@)", buf, 0xCu);
   }
 
-  v26 = [(DiagnosticLiaison *)self homeKitAgent];
+  homeKitAgent = [(DiagnosticLiaison *)self homeKitAgent];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __85__DiagnosticLiaison_sendPayloadToHomeKitRelays_additionalPredicate_toEndpoint_reply___block_invoke_49;
   v27[3] = &unk_278CF0068;
   v27[4] = self;
-  v28 = v11;
-  v29 = v10;
-  v30 = v12;
-  v31 = v13;
-  [v26 fetchResidentDevicesIDSIdentifiersWithReply:v27];
+  v28 = predicateCopy;
+  v29 = relaysCopy;
+  v30 = endpointCopy;
+  v31 = replyCopy;
+  [homeKitAgent fetchResidentDevicesIDSIdentifiersWithReply:v27];
 
 LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
@@ -1003,15 +1003,15 @@ void __85__DiagnosticLiaison_sendPayloadToHomeKitRelays_additionalPredicate_toEn
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remotelyEnableAutoBugCapture:(id)a3
+- (void)remotelyEnableAutoBugCapture:(id)capture
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  captureCopy = capture;
   if (self->_allowRemoteTrigger)
   {
-    v5 = [(DiagnosticLiaison *)self idsTransport];
+    idsTransport = [(DiagnosticLiaison *)self idsTransport];
 
-    if (v5)
+    if (idsTransport)
     {
       v6 = [(DiagnosticLiaison *)self abcPayloadForIDSTransport:1];
       v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"modelIdentifier BEGINSWITH 'AudioAccessory'"];
@@ -1019,7 +1019,7 @@ void __85__DiagnosticLiaison_sendPayloadToHomeKitRelays_additionalPredicate_toEn
       v10[1] = 3221225472;
       v10[2] = __50__DiagnosticLiaison_remotelyEnableAutoBugCapture___block_invoke;
       v10[3] = &unk_278CF0090;
-      v11 = v4;
+      v11 = captureCopy;
       [(DiagnosticLiaison *)self sendPayloadToHomeKitRelays:v6 additionalPredicate:v7 toEndpoint:@"AutoBugCapture" reply:v10];
     }
 
@@ -1041,7 +1041,7 @@ void __85__DiagnosticLiaison_sendPayloadToHomeKitRelays_additionalPredicate_toEn
     {
       v8 = +[SystemProperties sharedInstance];
       *buf = 67109120;
-      v13 = [v8 deviceClass];
+      deviceClass = [v8 deviceClass];
       _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_DEFAULT, "Sending remote ABC toggle is not supported on this device (%d)", buf, 8u);
     }
   }
@@ -1071,15 +1071,15 @@ uint64_t __50__DiagnosticLiaison_remotelyEnableAutoBugCapture___block_invoke(uin
   return result;
 }
 
-- (void)remotelyDisableAutoBugCapture:(id)a3
+- (void)remotelyDisableAutoBugCapture:(id)capture
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  captureCopy = capture;
   if (self->_allowRemoteTrigger)
   {
-    v5 = [(DiagnosticLiaison *)self idsTransport];
+    idsTransport = [(DiagnosticLiaison *)self idsTransport];
 
-    if (v5)
+    if (idsTransport)
     {
       v6 = [(DiagnosticLiaison *)self abcPayloadForIDSTransport:0];
       v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"modelIdentifier BEGINSWITH 'AudioAccessory'"];
@@ -1087,7 +1087,7 @@ uint64_t __50__DiagnosticLiaison_remotelyEnableAutoBugCapture___block_invoke(uin
       v10[1] = 3221225472;
       v10[2] = __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke;
       v10[3] = &unk_278CF0090;
-      v11 = v4;
+      v11 = captureCopy;
       [(DiagnosticLiaison *)self sendPayloadToHomeKitRelays:v6 additionalPredicate:v7 toEndpoint:@"AutoBugCapture" reply:v10];
     }
 
@@ -1109,7 +1109,7 @@ uint64_t __50__DiagnosticLiaison_remotelyEnableAutoBugCapture___block_invoke(uin
     {
       v8 = +[SystemProperties sharedInstance];
       *buf = 67109120;
-      v13 = [v8 deviceClass];
+      deviceClass = [v8 deviceClass];
       _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_DEFAULT, "sending remote ABC toggle is not supported on this device (%d)", buf, 8u);
     }
   }
@@ -1139,185 +1139,185 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
   return result;
 }
 
-- (void)residentDevicesIDSIdentifiersWithReply:(id)a3
+- (void)residentDevicesIDSIdentifiersWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(DiagnosticLiaison *)self homeKitAgent];
+    homeKitAgent = [(DiagnosticLiaison *)self homeKitAgent];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__DiagnosticLiaison_residentDevicesIDSIdentifiersWithReply___block_invoke;
     v6[3] = &unk_278CF00B8;
-    v7 = v4;
-    [v5 fetchResidentDevicesIDSIdentifiersWithReply:v6];
+    v7 = replyCopy;
+    [homeKitAgent fetchResidentDevicesIDSIdentifiersWithReply:v6];
   }
 }
 
-- (void)messageReceivedFromIDS:(id)a3
+- (void)messageReceivedFromIDS:(id)s
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   v5 = liaisonLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = sCopy;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "Received message from IDS transport: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (sCopy)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__DiagnosticLiaison_messageReceivedFromIDS___block_invoke;
     block[3] = &unk_278CF00E0;
     block[4] = self;
-    v11 = v4;
-    v12 = v6;
-    v8 = v6;
+    v11 = sCopy;
+    v12 = date;
+    v8 = date;
     dispatch_async(queue, block);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageWithIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5
+- (void)messageWithIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
-  v9 = [(DiagnosticLiaison *)self delegate];
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
+  delegate = [(DiagnosticLiaison *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [v10 setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
-    [v10 setObject:@"IDSTransportSend" forKeyedSubscript:@"name"];
-    [v10 setObject:@"Finished" forKeyedSubscript:@"status"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
+    [dictionary setObject:@"IDSTransportSend" forKeyedSubscript:@"name"];
+    [dictionary setObject:@"Finished" forKeyedSubscript:@"status"];
     v11 = kSymptomDiagnosticEventResultSuccess;
-    if (!v6)
+    if (!successCopy)
     {
       v11 = kSymptomDiagnosticEventResultFailure;
     }
 
-    [v10 setObject:*v11 forKeyedSubscript:@"result"];
+    [dictionary setObject:*v11 forKeyedSubscript:@"result"];
     v12 = MEMORY[0x277CCABB0];
-    v13 = [MEMORY[0x277CBEAA8] date];
-    [v13 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v14 = [v12 numberWithDouble:?];
-    [v10 setObject:v14 forKeyedSubscript:@"timestamp"];
+    [dictionary setObject:v14 forKeyedSubscript:@"timestamp"];
 
-    [v10 setObject:v15 forKeyedSubscript:@"IDSMessageIdentifier"];
-    if (v8)
+    [dictionary setObject:identifierCopy forKeyedSubscript:@"IDSMessageIdentifier"];
+    if (errorCopy)
     {
-      [v10 setObject:v8 forKeyedSubscript:@"errorObj"];
+      [dictionary setObject:errorCopy forKeyedSubscript:@"errorObj"];
     }
 
-    [v9 remoteTriggerDeliveryUpdateEvent:v10];
+    [delegate remoteTriggerDeliveryUpdateEvent:dictionary];
   }
 }
 
-- (void)messageWithIdentifierHasBeenDelivered:(id)a3
+- (void)messageWithIdentifierHasBeenDelivered:(id)delivered
 {
-  v9 = a3;
-  v4 = [(DiagnosticLiaison *)self delegate];
+  deliveredCopy = delivered;
+  delegate = [(DiagnosticLiaison *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
-    [v5 setObject:@"IDSTransportDelivered" forKeyedSubscript:@"name"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"remoteTrigger" forKeyedSubscript:@"type"];
+    [dictionary setObject:@"IDSTransportDelivered" forKeyedSubscript:@"name"];
     v6 = MEMORY[0x277CCABB0];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = [v6 numberWithDouble:?];
-    [v5 setObject:v8 forKeyedSubscript:@"timestamp"];
+    [dictionary setObject:v8 forKeyedSubscript:@"timestamp"];
 
-    [v5 setObject:v9 forKeyedSubscript:@"IDSMessageIdentifier"];
-    [v4 remoteTriggerDeliveryUpdateEvent:v5];
+    [dictionary setObject:deliveredCopy forKeyedSubscript:@"IDSMessageIdentifier"];
+    [delegate remoteTriggerDeliveryUpdateEvent:dictionary];
   }
 }
 
-- (id)basicSignatureFrom:(id)a3
+- (id)basicSignatureFrom:(id)from
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 objectForKeyedSubscript:@"domain"];
+  fromCopy = from;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = [fromCopy objectForKeyedSubscript:@"domain"];
 
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:@"domain"];
-    [v4 setObject:v6 forKeyedSubscript:@"domain"];
+    v6 = [fromCopy objectForKeyedSubscript:@"domain"];
+    [dictionary setObject:v6 forKeyedSubscript:@"domain"];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"type"];
+  v7 = [fromCopy objectForKeyedSubscript:@"type"];
 
   if (v7)
   {
-    v8 = [v3 objectForKeyedSubscript:@"type"];
-    [v4 setObject:v8 forKeyedSubscript:@"type"];
+    v8 = [fromCopy objectForKeyedSubscript:@"type"];
+    [dictionary setObject:v8 forKeyedSubscript:@"type"];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"subtype"];
+  v9 = [fromCopy objectForKeyedSubscript:@"subtype"];
 
   if (v9)
   {
-    v10 = [v3 objectForKeyedSubscript:@"subtype"];
-    [v4 setObject:v10 forKeyedSubscript:@"subtype"];
+    v10 = [fromCopy objectForKeyedSubscript:@"subtype"];
+    [dictionary setObject:v10 forKeyedSubscript:@"subtype"];
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"additional"];
+  v11 = [fromCopy objectForKeyedSubscript:@"additional"];
 
   if (v11)
   {
-    v12 = [v3 objectForKeyedSubscript:@"additional"];
-    [v4 setObject:v12 forKeyedSubscript:@"additional"];
+    v12 = [fromCopy objectForKeyedSubscript:@"additional"];
+    [dictionary setObject:v12 forKeyedSubscript:@"additional"];
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"detected"];
+  v13 = [fromCopy objectForKeyedSubscript:@"detected"];
 
   if (v13)
   {
-    v14 = [v3 objectForKeyedSubscript:@"detected"];
-    [v4 setObject:v14 forKeyedSubscript:@"detected"];
+    v14 = [fromCopy objectForKeyedSubscript:@"detected"];
+    [dictionary setObject:v14 forKeyedSubscript:@"detected"];
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"effective"];
+  v15 = [fromCopy objectForKeyedSubscript:@"effective"];
 
   if (v15)
   {
-    v16 = [v3 objectForKeyedSubscript:@"effective"];
-    [v4 setObject:v16 forKeyedSubscript:@"effective"];
+    v16 = [fromCopy objectForKeyedSubscript:@"effective"];
+    [dictionary setObject:v16 forKeyedSubscript:@"effective"];
   }
 
-  v17 = [v3 objectForKeyedSubscript:@"threshval"];
+  v17 = [fromCopy objectForKeyedSubscript:@"threshval"];
 
   if (v17)
   {
-    v18 = [v3 objectForKeyedSubscript:@"threshval"];
-    [v4 setObject:v18 forKeyedSubscript:@"threshval"];
+    v18 = [fromCopy objectForKeyedSubscript:@"threshval"];
+    [dictionary setObject:v18 forKeyedSubscript:@"threshval"];
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)remoteCasePayloadForIDSTransport:(id)a3 groupID:(id)a4
+- (id)remoteCasePayloadForIDSTransport:(id)transport groupID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "length"))
+  transportCopy = transport;
+  dCopy = d;
+  if ([transportCopy count] || objc_msgSend(dCopy, "length"))
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [v8 setObject:@"remoteCase" forKeyedSubscript:@"type"];
-    v9 = [(DiagnosticLiaison *)self basicSignatureFrom:v6];
-    [v8 setObject:v9 forKeyedSubscript:@"sig"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"remoteCase" forKeyedSubscript:@"type"];
+    v9 = [(DiagnosticLiaison *)self basicSignatureFrom:transportCopy];
+    [dictionary setObject:v9 forKeyedSubscript:@"sig"];
 
-    [v8 setObject:v7 forKeyedSubscript:@"gid"];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v8 setObject:v10 forKeyedSubscript:@"time"];
+    [dictionary setObject:dCopy forKeyedSubscript:@"gid"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [dictionary setObject:date forKeyedSubscript:@"time"];
 
-    [v8 setObject:&unk_28537A008 forKeyedSubscript:@"vers"];
+    [dictionary setObject:&unk_28537A008 forKeyedSubscript:@"vers"];
   }
 
   else
@@ -1329,21 +1329,21 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_ERROR, "IDS payload requires a signature dictionary and group identifier.", v13, 2u);
     }
 
-    v8 = 0;
+    dictionary = 0;
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (void)processPayloadFromIDSTransport:(id)a3 incomingTime:(id)a4
+- (void)processPayloadFromIDSTransport:(id)transport incomingTime:(id)time
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 objectForKeyedSubscript:@"vers"];
+  transportCopy = transport;
+  timeCopy = time;
+  v7 = [transportCopy objectForKeyedSubscript:@"vers"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqual:&unk_28537A020])
   {
-    [(DiagnosticLiaison *)self processPayloadVersionOneFromIDSTransport:v8 incomingTime:v6];
+    [(DiagnosticLiaison *)self processPayloadVersionOneFromIDSTransport:transportCopy incomingTime:timeCopy];
   }
 
   else
@@ -1351,22 +1351,22 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqual:&unk_28537A008])
     {
-      [(DiagnosticLiaison *)self processPayloadVersionTwoFromIDSTransport:v8 incomingTime:v6];
+      [(DiagnosticLiaison *)self processPayloadVersionTwoFromIDSTransport:transportCopy incomingTime:timeCopy];
     }
   }
 }
 
-- (void)processPayloadVersionOneFromIDSTransport:(id)a3 incomingTime:(id)a4
+- (void)processPayloadVersionOneFromIDSTransport:(id)transport incomingTime:(id)time
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  transportCopy = transport;
+  timeCopy = time;
+  if (!timeCopy)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    timeCopy = [MEMORY[0x277CBEAA8] date];
   }
 
-  v7 = [(__CFString *)v5 objectForKeyedSubscript:@"sig"];
+  v7 = [(__CFString *)transportCopy objectForKeyedSubscript:@"sig"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1403,7 +1403,7 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
     v8 = 0;
   }
 
-  v13 = [(__CFString *)v5 objectForKeyedSubscript:@"time"];
+  v13 = [(__CFString *)transportCopy objectForKeyedSubscript:@"time"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1440,7 +1440,7 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
     v14 = 0;
   }
 
-  v19 = [(__CFString *)v5 objectForKeyedSubscript:@"gid"];
+  v19 = [(__CFString *)transportCopy objectForKeyedSubscript:@"gid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1505,7 +1505,7 @@ uint64_t __51__DiagnosticLiaison_remotelyDisableAutoBugCapture___block_invoke(ui
     v37[1] = @"IDSTransportReceive";
     v36[2] = @"timestamp";
     v28 = MEMORY[0x277CCABB0];
-    [v6 timeIntervalSince1970];
+    [timeCopy timeIntervalSince1970];
     v29 = [v28 numberWithDouble:?];
     v37[2] = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:3];
@@ -1524,7 +1524,7 @@ LABEL_31:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v41 = v5;
+    v41 = transportCopy;
     _os_log_impl(&dword_241804000, v27, OS_LOG_TYPE_ERROR, "Received a cross device trigger message over IDS that was malformed: %@", buf, 0xCu);
   }
 
@@ -1533,12 +1533,12 @@ LABEL_33:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPayloadVersionTwoFromIDSTransport:(id)a3 incomingTime:(id)a4
+- (void)processPayloadVersionTwoFromIDSTransport:(id)transport incomingTime:(id)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"type"];
+  transportCopy = transport;
+  timeCopy = time;
+  v8 = [transportCopy objectForKeyedSubscript:@"type"];
   v9 = v8;
   if (!v8)
   {
@@ -1547,20 +1547,20 @@ LABEL_33:
 
   if ([(__CFString *)v8 isEqualToString:@"remoteCase"])
   {
-    [(DiagnosticLiaison *)self processPayloadVersionOneFromIDSTransport:v6 incomingTime:v7];
+    [(DiagnosticLiaison *)self processPayloadVersionOneFromIDSTransport:transportCopy incomingTime:timeCopy];
     goto LABEL_16;
   }
 
   if ([(__CFString *)v9 isEqualToString:@"AutoBugCapture"])
   {
-    v10 = [v6 objectForKeyedSubscript:@"UserConsent"];
-    v11 = [v10 BOOLValue];
+    v10 = [transportCopy objectForKeyedSubscript:@"UserConsent"];
+    bOOLValue = [v10 BOOLValue];
 
     v12 = liaisonLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = @"NO";
-      if (v11)
+      if (bOOLValue)
       {
         v13 = @"YES";
       }
@@ -1571,7 +1571,7 @@ LABEL_33:
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    if (v11)
+    if (bOOLValue)
     {
       v15 = @"com.apple.autobugcapture.UserConsentYES";
     }
@@ -1601,16 +1601,16 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForUIImpactScenarioForCase:(id)a3
+- (void)checkForUIImpactScenarioForCase:(id)case
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PrimaryInterfaceUtils *)self->_interfaceUtils interfaceBecamePrimaryDate];
-  if (v5)
+  caseCopy = case;
+  interfaceBecamePrimaryDate = [(PrimaryInterfaceUtils *)self->_interfaceUtils interfaceBecamePrimaryDate];
+  if (interfaceBecamePrimaryDate)
   {
     if ([(PrimaryInterfaceUtils *)self->_interfaceUtils primaryInterfaceType]== 1)
     {
-      [v5 timeIntervalSinceNow];
+      [interfaceBecamePrimaryDate timeIntervalSinceNow];
       if (v6 > -180.0)
       {
         v7 = -v6;
@@ -1627,31 +1627,31 @@ LABEL_16:
         symptom_set_qualifier();
         [(PrimaryInterfaceUtils *)self->_interfaceUtils primaryInterfaceType];
         symptom_set_qualifier();
-        v9 = [v4 signature];
-        v10 = [v9 objectForKeyedSubscript:@"detected"];
+        signature = [caseCopy signature];
+        v10 = [signature objectForKeyedSubscript:@"detected"];
 
-        v11 = [v10 UTF8String];
-        if (v11)
+        uTF8String = [v10 UTF8String];
+        if (uTF8String)
         {
-          strlen(v11);
+          strlen(uTF8String);
           symptom_set_additional_qualifier();
         }
 
-        v12 = [v4 signature];
-        v13 = [v12 objectForKeyedSubscript:@"subtype"];
+        signature2 = [caseCopy signature];
+        v13 = [signature2 objectForKeyedSubscript:@"subtype"];
 
-        v14 = [v13 UTF8String];
-        if (v14)
+        uTF8String2 = [v13 UTF8String];
+        if (uTF8String2)
         {
-          strlen(v14);
+          strlen(uTF8String2);
           symptom_set_additional_qualifier();
         }
 
-        v15 = [v4 deParametersFromPayloads];
-        v16 = v15;
-        if (v15)
+        deParametersFromPayloads = [caseCopy deParametersFromPayloads];
+        v16 = deParametersFromPayloads;
+        if (deParametersFromPayloads)
         {
-          v17 = [v15 objectForKeyedSubscript:@"com.apple.DiagnosticExtensions.tailspin"];
+          v17 = [deParametersFromPayloads objectForKeyedSubscript:@"com.apple.DiagnosticExtensions.tailspin"];
           if ([v17 count])
           {
             Data = CFPropertyListCreateData(*MEMORY[0x277CBECE8], v16, kCFPropertyListXMLFormat_v1_0, 0, 0);

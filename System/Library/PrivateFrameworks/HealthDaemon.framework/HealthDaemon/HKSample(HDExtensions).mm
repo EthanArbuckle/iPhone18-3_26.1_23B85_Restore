@@ -8,8 +8,8 @@
 - (id)hd_associatedSampleTypes
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 hd_sampleType];
-  v3 = [v1 setWithObject:v2];
+  hd_sampleType = [self hd_sampleType];
+  v3 = [v1 setWithObject:hd_sampleType];
 
   return v3;
 }
@@ -41,8 +41,8 @@
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 hd_associatedSampleTypes];
-        [v4 unionSet:v12];
+        hd_associatedSampleTypes = [v10 hd_associatedSampleTypes];
+        [v4 unionSet:hd_associatedSampleTypes];
 
         objc_autoreleasePoolPop(v11);
         ++v9;

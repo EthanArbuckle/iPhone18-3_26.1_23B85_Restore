@@ -3,15 +3,15 @@
 - (NSArray)globalNames;
 - (NSArray)inputNames;
 - (NSArray)outputNames;
-- (SNNEspressoV1ExecutionContext)initWithMILProgram:(id)a3 primaryComputeUnit:(id)a4 computeUnits:(id)a5 preferredMetalDevice:(id)a6 computePrecision:(id)a7 error:(id *)a8;
+- (SNNEspressoV1ExecutionContext)initWithMILProgram:(id)program primaryComputeUnit:(id)unit computeUnits:(id)units preferredMetalDevice:(id)device computePrecision:(id)precision error:(id *)error;
 - (id).cxx_construct;
 - (id)inputAndOutputNames;
-- (id)shapeForBlobWithName:(id)a3;
-- (id)shapeForInputWithName:(id)a3;
-- (id)shapeForOutputWithName:(id)a3;
-- (unint64_t)dataTypeForBlobWithName:(id)a3;
-- (unint64_t)rawSizeForInputWithName:(id)a3;
-- (unint64_t)rawSizeForOutputWithName:(id)a3;
+- (id)shapeForBlobWithName:(id)name;
+- (id)shapeForInputWithName:(id)name;
+- (id)shapeForOutputWithName:(id)name;
+- (unint64_t)dataTypeForBlobWithName:(id)name;
+- (unint64_t)rawSizeForInputWithName:(id)name;
+- (unint64_t)rawSizeForOutputWithName:(id)name;
 - (void)dealloc;
 - (void)deallocEspressoResources;
 @end
@@ -28,45 +28,45 @@
   return result;
 }
 
-- (SNNEspressoV1ExecutionContext)initWithMILProgram:(id)a3 primaryComputeUnit:(id)a4 computeUnits:(id)a5 preferredMetalDevice:(id)a6 computePrecision:(id)a7 error:(id *)a8
+- (SNNEspressoV1ExecutionContext)initWithMILProgram:(id)program primaryComputeUnit:(id)unit computeUnits:(id)units preferredMetalDevice:(id)device computePrecision:(id)precision error:(id *)error
 {
-  v43 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v45 = a7;
+  programCopy = program;
+  unitCopy = unit;
+  unitsCopy = units;
+  deviceCopy = device;
+  precisionCopy = precision;
   v48.receiver = self;
   v48.super_class = SNNEspressoV1ExecutionContext;
   v18 = [(SNNEspressoV1ExecutionContext *)&v48 init];
-  if (![v16 count])
+  if (![unitsCopy count])
   {
     __assert_rtn("[SNNEspressoV1ExecutionContext initWithMILProgram:primaryComputeUnit:computeUnits:preferredMetalDevice:computePrecision:error:]", "SNNEspressoExecutors.mm", 139, "computeUnits.count > 0");
   }
 
-  objc_storeStrong(v18 + 3, a4);
-  objc_storeStrong(v18 + 4, a5);
-  objc_storeStrong(v18 + 5, a7);
-  v19 = v43;
-  v20 = [*(v18 + 3) kind];
-  if (v17 && v20 == 2)
+  objc_storeStrong(v18 + 3, unit);
+  objc_storeStrong(v18 + 4, units);
+  objc_storeStrong(v18 + 5, precision);
+  v19 = programCopy;
+  kind = [*(v18 + 3) kind];
+  if (deviceCopy && kind == 2)
   {
     espresso_device_id_for_metal_device();
   }
 
-  [v15 platform];
+  [unitCopy platform];
   context = espresso_create_context();
   *(v18 + 6) = context;
   if (context)
   {
-    v22 = [SNNComputeUnit bitmakForComputeUnits:v16];
+    v22 = [SNNComputeUnit bitmakForComputeUnits:unitsCopy];
     if (v22 && (v23 = *(v18 + 6), espresso_context_set_int_option()))
     {
-      if (a8)
+      if (error)
       {
         v24 = NSStringFromSelector(a2);
         v25 = [SNNError invalidEspressoContextErrorForMethod:v24 description:@"Invalid compute unit selection."];
 LABEL_29:
-        *a8 = v25;
+        *error = v25;
       }
     }
 
@@ -91,9 +91,9 @@ LABEL_29:
         if ([v19 isReferencingBlobFile] && (objc_msgSend(v19, "milFilePath"), v30 = objc_claimAutoreleasedReturnValue(), v30, v30))
         {
           v31 = *(v18 + 7);
-          v32 = [v19 milFilePath];
-          [v32 UTF8String];
-          [v45 storageType];
+          milFilePath = [v19 milFilePath];
+          [milFilePath UTF8String];
+          [precisionCopy storageType];
           v33 = espresso_plan_add_network();
 
           v19 = v44;
@@ -112,7 +112,7 @@ LABEL_29:
             v46 = 0;
           }
 
-          [v45 storageType];
+          [precisionCopy storageType];
           v33 = espresso_plan_add_cpp_net_from_mil_program_and_reload();
           if (v46)
           {
@@ -122,7 +122,7 @@ LABEL_29:
 
         if (v33)
         {
-          if (a8)
+          if (error)
           {
             v24 = NSStringFromSelector(a2);
             v25 = [SNNError invalidEspressoNetworkErrorForMethod:v24 description:@"Failed to build plan."];
@@ -150,7 +150,7 @@ LABEL_29:
 
           if (!*(v18 + 1))
           {
-            if (!a8)
+            if (!error)
             {
               goto LABEL_30;
             }
@@ -169,7 +169,7 @@ LABEL_29:
             goto LABEL_31;
           }
 
-          if (a8)
+          if (error)
           {
             v24 = NSStringFromSelector(a2);
             v25 = [SNNError invalidEspressoConfigurationErrorForMethod:v24 description:@"Invalid built state."];
@@ -178,7 +178,7 @@ LABEL_29:
         }
       }
 
-      else if (a8)
+      else if (error)
       {
         v24 = NSStringFromSelector(a2);
         v25 = [SNNError invalidEspressoPlanErrorForMethod:v24 description:@"Failed to create plan."];
@@ -187,7 +187,7 @@ LABEL_29:
     }
   }
 
-  else if (a8)
+  else if (error)
   {
     v24 = NSStringFromSelector(a2);
     v25 = [SNNError invalidEspressoContextErrorForMethod:v24 description:@"Failed to create context."];
@@ -396,26 +396,26 @@ LABEL_31:
   return v3;
 }
 
-- (id)shapeForInputWithName:(id)a3
+- (id)shapeForInputWithName:(id)name
 {
-  v3 = [(SNNEspressoV1ExecutionContext *)self shapeForBlobWithName:a3];
+  v3 = [(SNNEspressoV1ExecutionContext *)self shapeForBlobWithName:name];
 
   return v3;
 }
 
-- (id)shapeForOutputWithName:(id)a3
+- (id)shapeForOutputWithName:(id)name
 {
-  v3 = [(SNNEspressoV1ExecutionContext *)self shapeForBlobWithName:a3];
+  v3 = [(SNNEspressoV1ExecutionContext *)self shapeForBlobWithName:name];
 
   return v3;
 }
 
-- (id)shapeForBlobWithName:(id)a3
+- (id)shapeForBlobWithName:(id)name
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   ptr = self->_cppNetwork.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&__p, [nameCopy UTF8String]);
   p_p = &__p;
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(ptr + 17, &__p);
   v8 = v6[5];
@@ -525,11 +525,11 @@ LABEL_20:
   return v16;
 }
 
-- (unint64_t)dataTypeForBlobWithName:(id)a3
+- (unint64_t)dataTypeForBlobWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   ptr = self->_cppNetwork.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [nameCopy UTF8String]);
   v36 = __p;
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(ptr + 17, __p);
   v8 = v6[5];
@@ -674,11 +674,11 @@ LABEL_34:
   }
 }
 
-- (unint64_t)rawSizeForInputWithName:(id)a3
+- (unint64_t)rawSizeForInputWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   ptr = self->_cppNetwork.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [nameCopy UTF8String]);
   v13 = __p;
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(ptr + 17, __p);
   v8 = v6[5];
@@ -702,11 +702,11 @@ LABEL_34:
   return v9;
 }
 
-- (unint64_t)rawSizeForOutputWithName:(id)a3
+- (unint64_t)rawSizeForOutputWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   ptr = self->_cppNetwork.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [nameCopy UTF8String]);
   v13 = __p;
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<Espresso::abstract_blob_container>>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(ptr + 17, __p);
   v8 = v6[5];

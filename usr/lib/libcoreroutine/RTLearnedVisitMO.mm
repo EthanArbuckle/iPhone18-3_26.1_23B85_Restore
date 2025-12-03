@@ -1,16 +1,16 @@
 @interface RTLearnedVisitMO
 + (id)fetchRequest;
-+ (id)managedObjectWithVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 place:(id)a5 inManagedObjectContext:(id)a6;
-+ (id)managedObjectWithVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 place:(id)a5 managedObject:(id)a6 inManagedObjectContext:(id)a7;
-+ (id)managedObjectWithVisit:(id)a3 place:(id)a4 inManagedObjectContext:(id)a5;
-- (BOOL)intersectsWithVisit:(id)a3 distanceCalculator:(id)a4;
-- (BOOL)overlapsWithVisit:(id)a3;
++ (id)managedObjectWithVisit:(id)visit finerGranularityInferredMapItem:(id)item place:(id)place inManagedObjectContext:(id)context;
++ (id)managedObjectWithVisit:(id)visit finerGranularityInferredMapItem:(id)item place:(id)place managedObject:(id)object inManagedObjectContext:(id)context;
++ (id)managedObjectWithVisit:(id)visit place:(id)place inManagedObjectContext:(id)context;
+- (BOOL)intersectsWithVisit:(id)visit distanceCalculator:(id)calculator;
+- (BOOL)overlapsWithVisit:(id)visit;
 - (NSDateInterval)interval;
 - (NSNumber)locationHorizontalUncertainty;
 - (id)finerGranularityInferredMapItem;
 - (id)finerGranularityMapItem;
-- (void)setFinerGranularityMapItem:(id)a3;
-- (void)setLocationHorizontalUncertainty:(id)a3;
+- (void)setFinerGranularityMapItem:(id)item;
+- (void)setLocationHorizontalUncertainty:(id)uncertainty;
 @end
 
 @implementation RTLearnedVisitMO
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (void)setLocationHorizontalUncertainty:(id)a3
+- (void)setLocationHorizontalUncertainty:(id)uncertainty
 {
-  v6 = a3;
-  v4 = [(RTLearnedVisitMO *)self locationUncertainty];
-  v5 = [v6 isEqual:v4];
+  uncertaintyCopy = uncertainty;
+  locationUncertainty = [(RTLearnedVisitMO *)self locationUncertainty];
+  v5 = [uncertaintyCopy isEqual:locationUncertainty];
 
   if ((v5 & 1) == 0)
   {
     [(RTCloudManagedObject *)self willChangeValueForKey:@"locationUncertainty"];
-    [(RTLearnedVisitMO *)self setPrimitiveValue:v6 forKey:@"locationUncertainty"];
+    [(RTLearnedVisitMO *)self setPrimitiveValue:uncertaintyCopy forKey:@"locationUncertainty"];
     [(RTLearnedVisitMO *)self didChangeValueForKey:@"locationUncertainty"];
   }
 }
@@ -49,13 +49,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   [(RTLearnedVisitMO *)self willAccessValueForKey:@"finerGranularityMapItem"];
-  v4 = [(RTLearnedVisitMO *)self cachedFinerGranularityMapItem];
+  cachedFinerGranularityMapItem = [(RTLearnedVisitMO *)self cachedFinerGranularityMapItem];
 
-  if (!v4)
+  if (!cachedFinerGranularityMapItem)
   {
-    v5 = [(RTLearnedVisitMO *)self finerGranularityMapItemIdentifier];
+    finerGranularityMapItemIdentifier = [(RTLearnedVisitMO *)self finerGranularityMapItemIdentifier];
     v13 = 0;
-    v6 = [RTMapItemMO mapItemForIdentifier:v5 error:&v13];
+    v6 = [RTMapItemMO mapItemForIdentifier:finerGranularityMapItemIdentifier error:&v13];
     v7 = v13;
     [(RTLearnedVisitMO *)self setCachedFinerGranularityMapItem:v6];
 
@@ -65,41 +65,41 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v11 = NSStringFromSelector(a2);
-        v12 = [(RTLearnedVisitMO *)self finerGranularityMapItemIdentifier];
+        finerGranularityMapItemIdentifier2 = [(RTLearnedVisitMO *)self finerGranularityMapItemIdentifier];
         *buf = 138412802;
         v15 = v11;
         v16 = 2112;
         v17 = v7;
         v18 = 2112;
-        v19 = v12;
+        v19 = finerGranularityMapItemIdentifier2;
         _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "%@, Error fulfilling transient property finerGranularityMapItemIdentifier, %@, map item identifier, %@", buf, 0x20u);
       }
     }
   }
 
   [(RTLearnedVisitMO *)self didAccessValueForKey:@"finerGranularityMapItem"];
-  v9 = [(RTLearnedVisitMO *)self cachedFinerGranularityMapItem];
+  cachedFinerGranularityMapItem2 = [(RTLearnedVisitMO *)self cachedFinerGranularityMapItem];
 
-  return v9;
+  return cachedFinerGranularityMapItem2;
 }
 
-- (void)setFinerGranularityMapItem:(id)a3
+- (void)setFinerGranularityMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(RTCloudManagedObject *)self willChangeValueForKey:@"finerGranularityMapItem"];
-  v5 = [v4 identifier];
-  [(RTLearnedVisitMO *)self setFinerGranularityMapItemIdentifier:v5];
+  identifier = [itemCopy identifier];
+  [(RTLearnedVisitMO *)self setFinerGranularityMapItemIdentifier:identifier];
 
-  [(RTLearnedVisitMO *)self setCachedFinerGranularityMapItem:v4];
+  [(RTLearnedVisitMO *)self setCachedFinerGranularityMapItem:itemCopy];
 
   [(RTLearnedVisitMO *)self didChangeValueForKey:@"finerGranularityMapItem"];
 }
 
-- (BOOL)intersectsWithVisit:(id)a3 distanceCalculator:(id)a4
+- (BOOL)intersectsWithVisit:(id)visit distanceCalculator:(id)calculator
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 == self)
+  visitCopy = visit;
+  calculatorCopy = calculator;
+  if (visitCopy == self)
   {
     v47 = 1;
   }
@@ -109,55 +109,55 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = visitCopy;
       v54 = objc_alloc(MEMORY[0x277D01160]);
-      v52 = [(RTLearnedVisitMO *)self locationLatitude];
-      [v52 doubleValue];
+      locationLatitude = [(RTLearnedVisitMO *)self locationLatitude];
+      [locationLatitude doubleValue];
       v10 = v9;
-      v50 = [(RTLearnedVisitMO *)self locationLongitude];
-      [v50 doubleValue];
+      locationLongitude = [(RTLearnedVisitMO *)self locationLongitude];
+      [locationLongitude doubleValue];
       v12 = v11;
-      v13 = [(RTLearnedVisitMO *)self locationHorizontalUncertainty];
-      [v13 doubleValue];
+      locationHorizontalUncertainty = [(RTLearnedVisitMO *)self locationHorizontalUncertainty];
+      [locationHorizontalUncertainty doubleValue];
       v15 = v14;
-      v16 = [(RTLearnedVisitMO *)self locationAltitude];
-      [v16 doubleValue];
+      locationAltitude = [(RTLearnedVisitMO *)self locationAltitude];
+      [locationAltitude doubleValue];
       v18 = v17;
-      v19 = [(RTLearnedVisitMO *)self locationVerticalUncertainty];
-      [v19 doubleValue];
+      locationVerticalUncertainty = [(RTLearnedVisitMO *)self locationVerticalUncertainty];
+      [locationVerticalUncertainty doubleValue];
       v21 = v20;
       [(RTLearnedVisitMO *)self entryDate];
-      v22 = v56 = v7;
-      v23 = [(RTLearnedVisitMO *)self locationReferenceFrame];
-      [v23 doubleValue];
+      v22 = v56 = calculatorCopy;
+      locationReferenceFrame = [(RTLearnedVisitMO *)self locationReferenceFrame];
+      [locationReferenceFrame doubleValue];
       v25 = v24;
-      v26 = [(RTLearnedVisitMO *)self locationSourceAccuracy];
-      v55 = [v54 initWithLatitude:v22 longitude:v25 horizontalUncertainty:objc_msgSend(v26 altitude:"intValue") verticalUncertainty:v10 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
+      locationSourceAccuracy = [(RTLearnedVisitMO *)self locationSourceAccuracy];
+      v55 = [v54 initWithLatitude:v22 longitude:v25 horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v10 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
 
       v49 = objc_alloc(MEMORY[0x277D01160]);
-      v53 = [(RTLearnedVisitMO *)v8 locationLatitude];
-      [v53 doubleValue];
+      locationLatitude2 = [(RTLearnedVisitMO *)v8 locationLatitude];
+      [locationLatitude2 doubleValue];
       v28 = v27;
-      v51 = [(RTLearnedVisitMO *)v8 locationLongitude];
-      [v51 doubleValue];
+      locationLongitude2 = [(RTLearnedVisitMO *)v8 locationLongitude];
+      [locationLongitude2 doubleValue];
       v30 = v29;
-      v31 = [(RTLearnedVisitMO *)v8 locationHorizontalUncertainty];
-      [v31 doubleValue];
+      locationHorizontalUncertainty2 = [(RTLearnedVisitMO *)v8 locationHorizontalUncertainty];
+      [locationHorizontalUncertainty2 doubleValue];
       v33 = v32;
-      v34 = [(RTLearnedVisitMO *)v8 locationAltitude];
-      [v34 doubleValue];
+      locationAltitude2 = [(RTLearnedVisitMO *)v8 locationAltitude];
+      [locationAltitude2 doubleValue];
       v36 = v35;
-      v37 = [(RTLearnedVisitMO *)v8 locationVerticalUncertainty];
-      [v37 doubleValue];
+      locationVerticalUncertainty2 = [(RTLearnedVisitMO *)v8 locationVerticalUncertainty];
+      [locationVerticalUncertainty2 doubleValue];
       v39 = v38;
-      v40 = [(RTLearnedVisitMO *)v8 entryDate];
-      v41 = [(RTLearnedVisitMO *)v8 locationReferenceFrame];
-      [v41 doubleValue];
+      entryDate = [(RTLearnedVisitMO *)v8 entryDate];
+      locationReferenceFrame2 = [(RTLearnedVisitMO *)v8 locationReferenceFrame];
+      [locationReferenceFrame2 doubleValue];
       v43 = v42;
-      v44 = [(RTLearnedVisitMO *)v8 locationSourceAccuracy];
-      v45 = [v49 initWithLatitude:v40 longitude:v43 horizontalUncertainty:objc_msgSend(v44 altitude:"intValue") verticalUncertainty:v28 date:v30 referenceFrame:v33 speed:v36 sourceAccuracy:{v39, 0.0}];
+      locationSourceAccuracy2 = [(RTLearnedVisitMO *)v8 locationSourceAccuracy];
+      v45 = [v49 initWithLatitude:entryDate longitude:v43 horizontalUncertainty:objc_msgSend(locationSourceAccuracy2 altitude:"intValue") verticalUncertainty:v28 date:v30 referenceFrame:v33 speed:v36 sourceAccuracy:{v39, 0.0}];
 
-      v7 = v56;
+      calculatorCopy = v56;
       v57 = 0;
       [v56 distanceFromLocation:v55 toLocation:v45 error:&v57];
       v47 = 0;
@@ -176,10 +176,10 @@
   return v47;
 }
 
-- (BOOL)overlapsWithVisit:(id)a3
+- (BOOL)overlapsWithVisit:(id)visit
 {
-  v4 = a3;
-  if (v4 == self)
+  visitCopy = visit;
+  if (visitCopy == self)
   {
     v8 = 1;
   }
@@ -189,11 +189,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTLearnedVisitMO *)self interval];
-      v7 = [(RTLearnedVisitMO *)v5 interval];
+      v5 = visitCopy;
+      interval = [(RTLearnedVisitMO *)self interval];
+      interval2 = [(RTLearnedVisitMO *)v5 interval];
 
-      v8 = [v6 intersectsDateInterval:v7];
+      v8 = [interval intersectsDateInterval:interval2];
     }
 
     else
@@ -205,11 +205,11 @@
   return v8;
 }
 
-+ (id)managedObjectWithVisit:(id)a3 place:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithVisit:(id)visit place:(id)place inManagedObjectContext:(id)context
 {
-  if (a4)
+  if (place)
   {
-    v5 = [a1 managedObjectWithVisit:a3 finerGranularityInferredMapItem:0 place:a4 managedObject:0 inManagedObjectContext:a5];
+    v5 = [self managedObjectWithVisit:visit finerGranularityInferredMapItem:0 place:place managedObject:0 inManagedObjectContext:context];
   }
 
   else
@@ -227,11 +227,11 @@
   return v5;
 }
 
-+ (id)managedObjectWithVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 place:(id)a5 inManagedObjectContext:(id)a6
++ (id)managedObjectWithVisit:(id)visit finerGranularityInferredMapItem:(id)item place:(id)place inManagedObjectContext:(id)context
 {
-  if (a5)
+  if (place)
   {
-    v6 = [a1 managedObjectWithVisit:a3 finerGranularityInferredMapItem:a4 place:a5 managedObject:0 inManagedObjectContext:a6];
+    v6 = [self managedObjectWithVisit:visit finerGranularityInferredMapItem:item place:place managedObject:0 inManagedObjectContext:context];
   }
 
   else
@@ -249,16 +249,16 @@
   return v6;
 }
 
-+ (id)managedObjectWithVisit:(id)a3 finerGranularityInferredMapItem:(id)a4 place:(id)a5 managedObject:(id)a6 inManagedObjectContext:(id)a7
++ (id)managedObjectWithVisit:(id)visit finerGranularityInferredMapItem:(id)item place:(id)place managedObject:(id)object inManagedObjectContext:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v12)
+  visitCopy = visit;
+  itemCopy = item;
+  placeCopy = place;
+  objectCopy = object;
+  contextCopy = context;
+  v17 = contextCopy;
+  if (!visitCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -270,7 +270,7 @@
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!contextCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -282,7 +282,7 @@
     goto LABEL_19;
   }
 
-  if (v15)
+  if (objectCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -300,7 +300,7 @@ LABEL_19:
     }
   }
 
-  if (!v13 || ([v13 mapItem], v18 = objc_claimAutoreleasedReturnValue(), v32 = 0, +[RTMapItemMO updateDatabaseWithMapItem:managedObjectContext:error:](RTMapItemMO, "updateDatabaseWithMapItem:managedObjectContext:error:", v18, v17, &v32), v19 = v32, v18, !v19))
+  if (!itemCopy || ([itemCopy mapItem], v18 = objc_claimAutoreleasedReturnValue(), v32 = 0, +[RTMapItemMO updateDatabaseWithMapItem:managedObjectContext:error:](RTMapItemMO, "updateDatabaseWithMapItem:managedObjectContext:error:", v18, v17, &v32), v19 = v32, v18, !v19))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -313,11 +313,11 @@ LABEL_19:
     v25[2] = __118__RTLearnedVisitMO_managedObjectWithVisit_finerGranularityInferredMapItem_place_managedObject_inManagedObjectContext___block_invoke;
     v25[3] = &unk_2788D34E0;
     v31 = buf;
-    v26 = v15;
+    v26 = objectCopy;
     v27 = v17;
-    v28 = v12;
-    v29 = v14;
-    v30 = v13;
+    v28 = visitCopy;
+    v29 = placeCopy;
+    v30 = itemCopy;
     [v27 performBlockAndWait:v25];
     v22 = *(*&buf[8] + 40);
 
@@ -332,7 +332,7 @@ LABEL_19:
     *buf = 138412803;
     *&buf[4] = v24;
     *&buf[12] = 2117;
-    *&buf[14] = v12;
+    *&buf[14] = visitCopy;
     *&buf[22] = 2112;
     v34 = v19;
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@, error persisting visit, %{sensitive}@, error, %@", buf, 0x20u);
@@ -484,19 +484,19 @@ void __118__RTLearnedVisitMO_managedObjectWithVisit_finerGranularityInferredMapI
 
 - (id)finerGranularityInferredMapItem
 {
-  v3 = [(RTLearnedVisitMO *)self finerGranularityMapItem];
+  finerGranularityMapItem = [(RTLearnedVisitMO *)self finerGranularityMapItem];
 
-  if (v3)
+  if (finerGranularityMapItem)
   {
     v4 = objc_alloc(MEMORY[0x277D01128]);
     v5 = MEMORY[0x277D011A0];
-    v6 = [(RTLearnedVisitMO *)self finerGranularityMapItem];
-    v7 = [v5 createWithManagedObject:v6];
-    v8 = [(RTLearnedVisitMO *)self finerGranularityMapItemConfidence];
-    [v8 doubleValue];
+    finerGranularityMapItem2 = [(RTLearnedVisitMO *)self finerGranularityMapItem];
+    v7 = [v5 createWithManagedObject:finerGranularityMapItem2];
+    finerGranularityMapItemConfidence = [(RTLearnedVisitMO *)self finerGranularityMapItemConfidence];
+    [finerGranularityMapItemConfidence doubleValue];
     v10 = v9;
-    v11 = [(RTLearnedVisitMO *)self finerGranularityMapItemSource];
-    v12 = [v4 initWithMapItem:v7 confidence:objc_msgSend(v11 source:{"unsignedIntegerValue"), v10}];
+    finerGranularityMapItemSource = [(RTLearnedVisitMO *)self finerGranularityMapItemSource];
+    v12 = [v4 initWithMapItem:v7 confidence:objc_msgSend(finerGranularityMapItemSource source:{"unsignedIntegerValue"), v10}];
   }
 
   else
@@ -513,9 +513,9 @@ void __118__RTLearnedVisitMO_managedObjectWithVisit_finerGranularityInferredMapI
   if (!interval)
   {
     v4 = objc_alloc(MEMORY[0x277CCA970]);
-    v5 = [(RTLearnedVisitMO *)self entryDate];
-    v6 = [(RTLearnedVisitMO *)self exitDate];
-    v7 = [v4 initWithStartDate:v5 endDate:v6];
+    entryDate = [(RTLearnedVisitMO *)self entryDate];
+    exitDate = [(RTLearnedVisitMO *)self exitDate];
+    v7 = [v4 initWithStartDate:entryDate endDate:exitDate];
     v8 = self->_interval;
     self->_interval = v7;
 
